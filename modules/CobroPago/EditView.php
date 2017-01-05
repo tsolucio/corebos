@@ -32,7 +32,7 @@ if (!empty($_REQUEST['related_id'])) {
 			$lermods=($lermod=='quotes' ? 'quote':$lermod);
 			$relq = $adb->pquery('select accountid,contactid,total from vtiger_'.$lermod.' where '.$lermods.'id=?',array($_REQUEST['related_id']));
 			$relid = $_REQUEST['parent_id']=$adb->query_result($relq,0,'accountid');
-			if (empty($relid) or GlobalVariable::getVariable('B2B', '1')=='0') {
+			if (empty($relid) or GlobalVariable::getVariable('Application_B2B', '1')=='0') {
 				$relid = $_REQUEST['parent_id']=$adb->query_result($relq,0,'contactid');
 			}
 			$_REQUEST['parent_id']=$relid;

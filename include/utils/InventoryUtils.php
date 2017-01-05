@@ -468,7 +468,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 	}
 	$tot_no_prod = $_REQUEST['totalProductCount'];
 	if ($module != 'PurchaseOrder') {
-		if (GlobalVariable::getVariable('B2B', '1')=='1') {
+		if (GlobalVariable::getVariable('Application_B2B', '1')=='1') {
 			$acvid = $focus->column_fields['account_id'];
 		} else {
 			$acvid = $focus->column_fields['contact_id'];

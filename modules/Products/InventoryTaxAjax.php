@@ -18,7 +18,7 @@ if (isset($_REQUEST['invmod'])) {
 	if ($_REQUEST['invmod']=='PurchaseOrder') {
 		if (!empty($_REQUEST['vndid'])) $acvid = $_REQUEST['vndid'];
 	} else {
-		if (GlobalVariable::getVariable('B2B', '1')=='1') {
+		if (GlobalVariable::getVariable('Application_B2B', '1')=='1') {
 			if (!empty($_REQUEST['accid'])) $acvid = $_REQUEST['accid'];
 		} else {
 			if (!empty($_REQUEST['ctoid'])) $acvid = $_REQUEST['ctoid'];

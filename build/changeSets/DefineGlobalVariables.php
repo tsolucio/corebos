@@ -63,6 +63,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_UI_Version',
 				'Application_UI_URL',
 				'Application_Group_Selection_Permitted',
+				'Application_B2B',
 
 				'Calendar_Modules_Panel_Visible',
 				'Calendar_Default_Reminder_Minutes',
@@ -77,6 +78,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 
 				'BusinessMapping_SalesOrder2Invoice',
 				'BusinessMapping_PotentialOnCampaignRelation',
+				'BusinessMapping_Quotes2Invoice',
+				'BusinessMapping_Quotes2SalesOrder',
 
 				'Mobile_Module_by_default',
 

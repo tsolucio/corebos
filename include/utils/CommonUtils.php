@@ -817,7 +817,7 @@ function getParentName($parent_id) {
 function getRelatedAccountContact($entityid,$module='') {
 	global $adb,$log,$current_user;
 	if ($module=='' or ($module!='Accounts' and $module!='Contacts')) {
-		if (GlobalVariable::getVariable('B2B', '1')) {
+		if (GlobalVariable::getVariable('Application_B2B', '1')) {
 			$module = 'Accounts';
 		} else {
 			$module = 'Contacts';

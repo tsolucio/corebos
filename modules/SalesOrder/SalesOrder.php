@@ -144,14 +144,14 @@ class SalesOrder extends CRMEntity {
 	function registerInventoryHistory() {
 		global $app_strings;
 		if ($_REQUEST['ajxaction'] == 'DETAILVIEW') { //if we use ajax edit
-			if (GlobalVariable::getVariable('B2B', '1')) {
+			if (GlobalVariable::getVariable('Application_B2B', '1')) {
 				$relatedname = getAccountName($this->column_fields['account_id']);
 			} else {
 				$relatedname = getContactName($this->column_fields['contact_id']);
 			}
 			$total = $this->column_fields['hdnGrandTotal'];
 		} else { //using edit button and save
-			if (GlobalVariable::getVariable('B2B', '1')) {
+			if (GlobalVariable::getVariable('Application_B2B', '1')) {
 				$relatedname = $_REQUEST["account_name"];
 			} else {
 				$relatedname = $_REQUEST["contact_name"];
