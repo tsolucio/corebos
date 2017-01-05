@@ -320,13 +320,28 @@ class HelpDesk extends CRMEntity {
 		for($i=0;$i<$noofrows;$i++) {
 			$ownerid = $this->db->query_result($result,$i,'ownerid');
 			$ownertype = $this->db->query_result($result,$i,'ownertype');
+			$name = '';
 			if($ownertype == 'user') {
 				$name = getUserFullName($ownerid);
 			} elseif($ownertype == 'customer') {
 				$sql1 = 'select * from vtiger_portalinfo where id=?';
-				$name = $this->db->query_result($this->db->pquery($sql1, array($ownerid)),0,'user_name');
+				$rs = $this->db->pquery($sql1, array($ownerid));
+				if ($rs and $this->db->num_rows($rs)>0) {
+					$name = $this->db->query_result($rs,0,'user_name');
+				} else {
+					$sql1 = 'select email from vtiger_contactdetails where contactid=?';
+					$rs = $this->db->pquery($sql1, array($ownerid));
+					if ($rs and $this->db->num_rows($rs)>0) {
+						$name = $this->db->query_result($rs,0,'email');
+					} else {
+						$sql1 = 'select accountname from vtiger_account where accountid=?';
+						$rs = $this->db->pquery($sql1, array($ownerid));
+						if ($rs and $this->db->num_rows($rs)>0) {
+							$name = $this->db->query_result($rs,0,'accountname');
+						}
+					}
+				}
 			}
-
 			$output[$i]['comments'] = nl2br($this->db->query_result($result,$i,'comments'));
 			$output[$i]['owner'] = $name;
 			$output[$i]['createdtime'] = $this->db->query_result($result,$i,'createdtime');
