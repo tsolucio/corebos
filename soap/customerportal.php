@@ -897,6 +897,7 @@ function update_ticket_comment($input_array)
 		$ticket->column_fields = array_map(decode_html, $ticket->column_fields);
 		$ticket->column_fields['comments'] = $comments;
 		$ticket->column_fields['from_portal'] = 1;
+		$ticket->column_fields['__portal_contact'] = $ownerid;
 		$ticket->save('HelpDesk');
 	}
 }

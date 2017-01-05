@@ -168,7 +168,7 @@ class HelpDesk extends CRMEntity {
 			$ownerId = $current_user->id;
 		} else {
 			$ownertype = 'customer';
-			$ownerId = $this->column_fields['parent_id'];
+			$ownerId = (!empty($this->column_fields['__portal_contact']) ? $this->column_fields['__portal_contact'] : $this->column_fields['parent_id']);
 		}
 
 		$comment = $this->column_fields['comments'];
