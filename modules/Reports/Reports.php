@@ -12,7 +12,7 @@ require_once('data/CRMEntity.php');
 require_once('include/utils/UserInfoUtil.php');
 require_once 'modules/Reports/ReportUtils.php';
 require_once 'modules/Reports/ReportRun.php';
-global $app_strings,$mod_strings, $app_list_strings, $modules, $blocks, $adv_filter_options;
+global $app_strings,$mod_strings, $modules, $blocks, $adv_filter_options;
 global $log, $report_modules, $related_modules, $old_related_modules;
 
 $adv_filter_options = array(
@@ -1586,7 +1586,7 @@ function getEscapedColumns($selectedfields) {
  */
 function getReportsModuleList($focus)
 {
-	global $adb, $app_list_strings, $mod_strings;
+	global $adb, $mod_strings;
 	$modules = Array();
 	foreach($focus->module_list as $key=>$value) {
 		if(isPermitted($key,'index') == "yes") {
@@ -1604,7 +1604,7 @@ function getReportsModuleList($focus)
  */
 function getReportRelatedModules($module,$focus)
 {
-	global $app_list_strings, $related_modules, $mod_strings;
+	global $related_modules, $mod_strings;
 	$optionhtml = Array();
 	if(vtlib_isModuleActive($module)){
 		if(!empty($focus->related_modules[$module])) {

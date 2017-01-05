@@ -15,7 +15,6 @@ require_once("include/calculator/Calc.php");
 
 global $currentModule,$default_charset;
 global $app_strings;
-global $app_list_strings;
 global $moduleList;
 global $theme;
 $theme_path="themes/".$theme."/";
@@ -45,7 +44,6 @@ $smarty->assign("DATE", $date->getDisplayDateTimeValue());
 $smarty->assign("CURRENT_USER_MAIL", $current_user->email1);
 $smarty->assign("CURRENT_USER", $current_user->user_name);
 $smarty->assign("CURRENT_USER_ID", $current_user->id);
-$smarty->assign("MODULELISTS",$app_list_strings['moduleList']);
 $smarty->assign("CATEGORY",getParentTab());
 $smarty->assign("CALC",get_calc($image_path));
 $smarty->assign("ANNOUNCEMENT",get_announcements());

@@ -13,7 +13,7 @@ require_once 'include/utils/utils.php';
 require_once 'modules/PickList/PickListUtils.php';
 require_once 'modules/PickList/DependentPickListUtils.php';
 
-global $app_strings, $app_list_strings, $current_language, $currentModule, $theme, $current_user;
+global $app_strings, $current_language, $currentModule, $theme, $current_user;
 
 if(!is_admin($current_user)) {
 	echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";

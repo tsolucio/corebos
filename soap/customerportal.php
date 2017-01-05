@@ -1936,7 +1936,7 @@ function get_pdf($id,$block,$customerid,$sessionid)
 {
 	global $adb;
 	global $current_user,$log,$default_language;
-	global $currentModule,$mod_strings,$app_strings,$app_list_strings;
+	global $currentModule,$mod_strings,$app_strings;
 	$log->debug("Entering customer portal function get_pdf");
 	$isPermitted = check_permission($customerid,$block,$id);
 	if($isPermitted == false) {
@@ -1952,7 +1952,6 @@ function get_pdf($id,$block,$customerid,$sessionid)
 	$currentModule = $block;
 	$current_language = $default_language;
 	$app_strings = return_application_language($current_language);
-	$app_list_strings = return_app_list_strings_language($current_language);
 	$mod_strings = return_module_language($current_language, $currentModule);
 
 	$_REQUEST['record']= $id;

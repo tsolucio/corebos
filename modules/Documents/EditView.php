@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-global $app_strings, $app_list_strings, $mod_strings, $current_language, $currentModule, $theme, $adb;
+global $app_strings, $mod_strings, $current_language, $currentModule, $theme, $adb;
 require_once('Smarty_setup.php');
 require_once('data/Tracker.php');
 

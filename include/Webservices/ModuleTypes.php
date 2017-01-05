@@ -101,10 +101,9 @@
 		}catch(WebServiceException $exception){
 			throw $exception;
 		}catch(Exception $exception){
-			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR,
-				"An Database error occured while performing the operation");
+			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, 'A Database error occured while performing the operation');
 		}
-		
+
 		$default_language = VTWS_PreserveGlobal::getGlobal('default_language');
 		global $current_language;
 		if(empty($current_language)) $current_language = $default_language;

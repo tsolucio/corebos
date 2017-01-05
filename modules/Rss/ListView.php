@@ -13,7 +13,7 @@ require_once('include/logging.php');
 require_once('include/ListView/ListView.php');
 require_once('include/utils/utils.php');
 require_once('modules/Rss/Rss.php');
-global $app_strings, $app_list_strings, $mod_strings;
+global $app_strings, $mod_strings;
 
 $current_module_strings = return_module_language($current_language, 'Rss');
 $log = LoggerManager::getLogger('rss_list');

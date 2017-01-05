@@ -13,7 +13,7 @@ require_once('include/logging.php');
 require_once('include/utils/utils.php');
 require_once('modules/Reports/Reports.php');
 
-global $log, $app_strings, $app_list_strings, $mod_strings,$current_user;
+global $log, $app_strings, $mod_strings,$current_user;
 $current_module_strings = return_module_language($current_language, 'Reports');
 
 $log = LoggerManager::getLogger('report_list');
@@ -26,7 +26,6 @@ $image_path=$theme_path."images/";
 $list_report_form = new vtigerCRM_Smarty;
 $list_report_form->assign("MOD", $mod_strings);
 $list_report_form->assign("APP", $app_strings);
-$list_report_form->assign("APPLIST", $app_list_strings);
 $tool_buttons = array(
 'EditView' => 'no',
 'CreateView' => 'no',

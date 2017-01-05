@@ -12,7 +12,7 @@ require_once('data/Tracker.php');
 require_once('include/utils/utils.php');
 require_once('include/utils/UserInfoUtil.php');
 
-global $log, $app_strings, $app_list_strings, $mod_strings, $current_user, $currentModule, $default_charset;
+global $log, $app_strings, $mod_strings, $current_user, $currentModule, $default_charset;
 
 $focus = CRMEntity::getInstance($currentModule);
 $smarty = new vtigerCRM_Smarty();

@@ -10,8 +10,6 @@
 require_once('include/utils/utils.php');
 global $mod_strings;
 global $app_strings;
-global $app_list_strings;
-
 global $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";

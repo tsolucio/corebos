@@ -9,16 +9,14 @@
  ********************************************************************************/
 require_once('include/ComboUtil.php');
 require_once('modules/Leads/Leads.php');
-global $app_list_strings, $app_strings, $current_user;
+global $app_strings, $current_user;
 
 $focus = new Leads();
 $idlist = $_POST['idlist'];
-//echo $idlist;
 
 // Get _dom arrays from Database
 $comboFieldNames = Array('leadstatus'=>'lead_status_dom');
 $comboFieldArray = getComboArray($comboFieldNames);
-
 ?>
 <script>
 function updateOwner()

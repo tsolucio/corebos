@@ -76,9 +76,7 @@ if(isset($_REQUEST["record"]) == false || $_REQUEST["record"]=='')
  */
 function getPrimaryStdFilterHTML($module,$selected="")
 {
-	global $app_list_strings;
-	global $ogReport;
-	global $current_language;
+	global $ogReport, $current_language;
 	$ogReport->oCustomView=new CustomView();
 	$result = $ogReport->oCustomView->getStdCriteriaByModule($module);
 	$mod_strings = return_module_language($current_language,$module);
@@ -111,20 +109,17 @@ function getPrimaryStdFilterHTML($module,$selected="")
 			}
 		}
 	}
-	
 	return $shtml;
 }
 
-	/** Function to get the HTML strings for the secondary  standard filters
-	 * @ param $module : Type String
-	 * @ param $selected : Type String(optional)
-	 *  This Returns a HTML combo srings for the secondary modules
-	 */
+/** Function to get the HTML strings for the secondary  standard filters
+ * @ param $module : Type String
+ * @ param $selected : Type String(optional)
+ *  This Returns a HTML combo srings for the secondary modules
+ */
 function getSecondaryStdFilterHTML($module,$selected="")
 {
-	global $app_list_strings;
-	global $ogReport;
-	global $current_language;
+	global $ogReport, $current_language;
 	$ogReport->oCustomView=new CustomView();
 	if($module != "")
         {

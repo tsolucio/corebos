@@ -8,7 +8,7 @@
  * All Rights Reserved.
  * ****************************************************************************** */
 
-global $app_strings, $mod_strings, $app_list_strings, $theme;
+global $app_strings, $mod_strings, $theme;
 $theme_path = "themes/" . $theme . "/";
 $image_path = $theme_path . "images/";
 require_once('include/utils/utils.php');

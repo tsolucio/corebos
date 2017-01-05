@@ -7,16 +7,13 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('include/utils/utils.php');
 require_once('include/utils/UserInfoUtil.php');
 require_once('Smarty_setup.php');
 
 $delete_role_id = vtlib_purify($_REQUEST['roleid']);
 $delete_role_name = getRoleName($delete_role_id);
-global $app_strings;
-global $app_list_strings;
-global $mod_strings;
+global $app_strings, $mod_strings;
 $smarty=new vtigerCRM_Smarty;
 $smarty->assign("APP", $app_strings);
 $smarty->assign("MOD", return_module_language($current_language,'Settings'));

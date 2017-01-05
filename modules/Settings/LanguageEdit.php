@@ -81,11 +81,9 @@ $smarty->assign("MODULES",$module_array);
 
 //General language strings
 if($pmodule=='' || $pmodule=='General'){
-
 	//Get Reference Strings
 	include 'include/language/'.$ref_language.'.lang.php';
 	$ref_app_strings = $app_strings;
-	$ref_app_list_strings=$app_list_strings;
 	
 	//Get translated Strings
 	if(!file_exists('include/language/'.$row['prefix'].'.lang.php')){
@@ -94,8 +92,8 @@ if($pmodule=='' || $pmodule=='General'){
 	}
 	$error=(is_writable('include/language/'.$row['prefix'].'.lang.php'))?'':$mod_strings['ERROR_GENERAL_FILE_WRITE'];
 	include 'include/language/'.$row['prefix'].'.lang.php';
-	
-	//Merge the two languages stings in array and make some pour stats :)
+
+	//Merge the two languages stings in array and make some poor stats :)
 	$total_strings=0;
 	$translated_string=0;
 	foreach($ref_app_strings As $key=>$tr_string){
@@ -111,26 +109,6 @@ if($pmodule=='' || $pmodule=='General'){
 			$translated_string++;
 		}
 		$total_strings++;
-	}
-
-	//Same for list strings
-	foreach($ref_app_list_strings As $key=>$list_tr_string){
-		if(is_array($list_tr_string)){
-			foreach($list_tr_string As $skey=>$str_string){
-					$tr_list2[$key][$skey][0]=htmlentities($str_string, ENT_QUOTES, $ref_encoding);
-					$tr_list2[$key][$skey][1]=htmlentities($app_list_strings[$key][$skey], ENT_QUOTES, $trans_encoding);
-					$tr_list2[$key][$skey][2]=($skey=='')?'#empty#':$skey;
-					$tr_list2[$key][$skey][3]='not_translated';
-					if(!isset($app_list_strings[$key][$skey])){
-						$tr_list2[$key][$skey][3]='new';
-					}
-					elseif($str_string!=$app_list_strings[$key][$skey]){
-						$tr_list2[$key][$skey][3]='translated';
-						$translated_string++;
-					}
-					$total_strings++;
-			}
-		}
 	}
 }
 //JavaScript strings
@@ -185,7 +163,6 @@ elseif($pmodule=='JavaScript'){
 		}
 		$total_strings++;
 	}
-	$tr_list2 = array(); // no secondary list exists for these files
 }
 //Modules language strings
 else {
@@ -194,7 +171,6 @@ else {
 	include 'modules/'.$pmodule.'/language/'.$ref_language.'.lang.php';
 	$ref_mod_strings = $mod_strings;
 	$tr_list = array();
-	$tr_list2 = array(); // no secondary list exists for these files
 
 	//Get your languague strings
 	if(!file_exists('modules/'.$pmodule.'/language/'.$row['prefix'].'.lang.php')){

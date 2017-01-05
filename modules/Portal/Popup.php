@@ -8,7 +8,7 @@
 * All Rights Reserved.
 ********************************************************************************/
 require_once('modules/Portal/Portal.php');
-global $app_strings,$app_list_strings,$mod_strings,$adb,$theme;
+global $app_strings,$mod_strings,$adb,$theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 if(isset($_REQUEST['record']) && $_REQUEST['record'] !='')

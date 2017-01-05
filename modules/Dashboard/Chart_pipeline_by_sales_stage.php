@@ -10,7 +10,7 @@
 require_once('include/utils/utils.php');
 require_once('include/logging.php');
 require_once("modules/Dashboard/DashboardCharts.php");
-global $app_list_strings, $current_language, $currentModule, $action;
+global $current_language, $currentModule, $action;
 $current_module_strings = return_module_language($current_language, 'Dashboard');
 require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
 require('user_privileges/user_privileges_'.$current_user->id.'.php');

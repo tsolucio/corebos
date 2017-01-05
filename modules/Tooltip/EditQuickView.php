@@ -7,15 +7,12 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once 'Smarty_setup.php';
 require_once 'include/utils/utils.php';
 require_once 'modules/Tooltip/TooltipUtils.php';
 
 global $mod_strings;
 global $app_strings;
-global $app_list_strings;
-
 global $adb,$currentModule;
 global $theme;
 

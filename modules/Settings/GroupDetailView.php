@@ -7,13 +7,10 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('include/database/PearDatabase.php');
 require_once('include/utils/UserInfoUtil.php');
 
-global $mod_strings;
-global $app_strings;
-global $app_list_strings;
+global $mod_strings, $app_strings;
 
 $groupId=vtlib_purify($_REQUEST['groupId']);
 $groupInfoArr=getGroupInfo($groupId);

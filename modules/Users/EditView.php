@@ -15,7 +15,7 @@ require_once('modules/Users/Forms.php');
 require_once('include/database/PearDatabase.php');
 require_once('modules/Leads/ListViewTop.php');
 
-global $app_strings, $app_list_strings, $mod_strings, $currentModule, $default_charset;
+global $app_strings, $mod_strings, $currentModule, $default_charset;
 
 $smarty=new vtigerCRM_Smarty;
 $focus = new Users();

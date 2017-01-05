@@ -22,7 +22,7 @@ require_once('include/utils/CommonUtils.php');
 require_once('include/freetag/freetag.class.php');
 require_once 'modules/Home/HomeUtils.php';
 
-global $app_strings, $app_list_strings, $mod_strings;
+global $app_strings, $mod_strings;
 global $adb, $current_user, $theme, $current_language;
 
 $theme_path="themes/".$theme."/";

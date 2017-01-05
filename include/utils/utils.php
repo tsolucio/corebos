@@ -384,37 +384,10 @@ function safe_map_named($request_var, & $focus, $member_var, $always_copy)
 	$log->debug("Exiting safe_map_named method ...");
 }
 
-/** This function retrieves an application language file and returns the array of strings included in the $app_list_strings var.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * If you are using the current language, do not call this function unless you are loading it for the first time */
-
-function return_app_list_strings_language($language)
-{
-	global $log;
-	$log->debug("Entering return_app_list_strings_language(".$language.") method ...");
-	global $app_list_strings, $default_language, $log;
-	$temp_app_list_strings = $app_list_strings;
-
-	@include("include/language/$language.lang.php");
-	if(!isset($app_list_strings))
-	{
-		$log->warn("Unable to find the application language file for language: ".$language);
-		require("include/language/$default_language.lang.php");
-	}
-
-	if(!isset($app_list_strings))
-	{
-		$log->fatal("Unable to load the application language file for the selected language($language) or the default language($default_language)");
-		$log->debug("Exiting return_app_list_strings_language method ...");
-		return null;
-	}
-
-	$return_value = $app_list_strings;
-	$app_list_strings = $temp_app_list_strings;
-
-	$log->debug("Exiting return_app_list_strings_language method ...");
-	return $return_value;
+/** DEPRECATED: use getTranslatedString **/
+function return_app_list_strings_language($language) {
+	// function left with an empty value for backward compatibility
+	return null;
 }
 
 /**
@@ -2734,7 +2707,7 @@ function getCurrentModule($perform_set=false) {
  * Set the language strings.
  */
 function setCurrentLanguage($active_module=null) {
-	global $current_language, $default_language, $app_strings, $app_list_strings, $mod_strings, $currentModule;
+	global $current_language, $default_language, $app_strings, $mod_strings, $currentModule;
 
 	if($active_module==null) {
 		if (!isset($currentModule))
@@ -2755,8 +2728,6 @@ function setCurrentLanguage($active_module=null) {
 	//set module and application string arrays based upon selected language
 	if (!isset($app_strings))
 		$app_strings = return_application_language($current_language);
-	if (!isset($app_list_strings))
-		$app_list_strings = return_app_list_strings_language($current_language);
 	if (!isset($mod_strings) && isset($active_module))
 		$mod_strings = return_module_language($current_language, $active_module);
 }
