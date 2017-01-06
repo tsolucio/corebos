@@ -88,49 +88,6 @@ if (is_file('config_override.php')) {
 	require_once('config_override.php');
 }
 
-/**
- * Check for vtiger installed version and codebase
- */
-global $adb, $vtiger_current_version;
-if(isset($_SESSION['VTIGER_DB_VERSION']) && isset($_SESSION['authenticated_user_id'])) {
-	if(version_compare($_SESSION['VTIGER_DB_VERSION'], $vtiger_current_version, '!=')) {
-		coreBOS_Session::delete('VTIGER_DB_VERSION');
-		echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
-		echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
-			<table border='0' cellpadding='5' cellspacing='0' width='98%'>
-			<tbody><tr>
-			<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span class='genHeaderSmall'>Migration Incompleted.</span></td>
-			</tr>
-			<tr>
-			<td class='small' align='right' nowrap='nowrap'>Please contact your system administrator.<br></td>
-			</tr>
-			</tbody></table>
-			</div>";
-		echo "</td></tr></table>";
-		exit();
-	}
-} else {
-	$result = $adb->query("SELECT * FROM vtiger_version");
-	$dbversion = $adb->query_result($result, 0, 'current_version');
-	if(version_compare($dbversion, $vtiger_current_version, '=')) {
-		coreBOS_Session::set('VTIGER_DB_VERSION', $dbversion);
-	} else {
-		echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
-		echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
-			<table border='0' cellpadding='5' cellspacing='0' width='98%'>
-			<tbody><tr>
-			<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span class='genHeaderSmall'>Migration Incompleted.</span></td>
-			</tr>
-			<tr>
-			<td class='small' align='right' nowrap='nowrap'>Please contact your system administrator.<br></td>
-			</tr>
-			</tbody></table>
-			</div>";
-		echo "</td></tr></table>";
-		exit();
-	}
-}
-
 // Set the default timezone preferred by user
 global $default_timezone;
 if(isset($default_timezone) && function_exists('date_default_timezone_set')) {
