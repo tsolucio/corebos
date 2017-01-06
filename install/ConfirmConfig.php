@@ -30,17 +30,17 @@ if (isset($_REQUEST['root_password'])) $_SESSION['installation_info']['root_pass
 if (isset($_REQUEST['admin_email'])) $_SESSION['installation_info']['admin_email']= $admin_email = $_REQUEST['admin_email'];
 if (isset($_REQUEST['admin_password'])) $_SESSION['installation_info']['admin_password'] = $admin_password = $_REQUEST['admin_password'];
 
-if (isset($_REQUEST['create_utf8_db'])) 
+if (isset($_REQUEST['create_utf8_db']))
 	$_SESSION['installation_info']['create_utf8_db'] = $create_utf8_db = 'true';
-else 
+else
 	$_SESSION['installation_info']['create_utf8_db'] = $create_utf8_db = 'false';
 
-if (isset($_REQUEST['db_populate'])) 
+if (isset($_REQUEST['db_populate']))
 	$_SESSION['installation_info']['db_populate'] = $db_populate = 'true';
 else
 	$_SESSION['installation_info']['db_populate'] = $db_populate = 'false';
 
-if(isset($currency_name)){
+if (isset($currency_name)) {
 	$_SESSION['installation_info']['currency_code'] = $currencies[$currency_name][0];
 	$_SESSION['installation_info']['currency_symbol'] = $currencies[$currency_name][1];
 }
@@ -50,8 +50,8 @@ if(isset($_REQUEST['check_createdb']) && $_REQUEST['check_createdb'] == 'on') $c
 
 $dbCheckResult = Installation_Utils::checkDbConnection($db_type, $db_hostname, $db_username, $db_password, $db_name, $create_db, $create_utf8_db, $root_user, $root_password);
 $next = $dbCheckResult['flag'];
-$error_msg = $dbCheckResult['error_msg'];
-$error_msg_info = $dbCheckResult['error_msg_info'];
+$error_msg = isset($dbCheckResult['error_msg']) ? $dbCheckResult['error_msg'] : '';
+$error_msg_info = isset($dbCheckResult['error_msg_info']) ? $dbCheckResult['error_msg_info'] : '';
 $db_utf8_support = $dbCheckResult['db_utf8_support'];
 $vt_charset = ($db_utf8_support)? "UTF-8" : "ISO-8859-1";
 $_SESSION['config_file_info']['vt_charset']= $vt_charset;
@@ -231,7 +231,7 @@ if($mode == 'migration') {
 			<td class=small align=center> <a href="<?php echo $coreBOS_app_url; ?>" target="_blank"><?php echo $coreBOS_app_name; ?></a></td>
 		</tr>
 	</table>
-	<!-- Prefetch image to display later for Screen blocker -->	
+	<!-- Prefetch image to display later for Screen blocker -->
 	<img style="display: none;" src="include/install/images/loading.gif">
 	<img src="themes/softed/images/layerPopupBg.gif" style="display: none;"/>
 </body>
