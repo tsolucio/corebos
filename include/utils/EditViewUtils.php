@@ -1087,7 +1087,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 				$rate_symbol = getCurrencySymbolandCRate(getProductBaseCurrency($col_fields['record_id'],$module_name));
 				$currencySymbol = $rate_symbol['symbol'];
 			} else {
-				$currency_info = getInventoryCurrencyInfo($module, $col_fields['record_id']);
+				$currency_info = getInventoryCurrencyInfo($module_name, $col_fields['record_id']);
 				$currencySymbol = $currency_info['currency_symbol'];
 			}
 			$fieldvalue[] = $currencyField->getDisplayValue(null, true);
