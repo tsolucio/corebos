@@ -162,13 +162,7 @@ function vtlib_toggleModuleAccess($module, $enable_disable, $noevents = false) {
 
 	create_tab_data_file();
 	create_parenttab_data_file();
-
-	// UserPrivilege file needs to be regenerated if module state is changed from
-	// vtiger 5.1.0 onwards
-	global $vtiger_current_version;
-	if(version_compare($vtiger_current_version, '5.0.4', '>')) {
-		vtlib_RecreateUserPrivilegeFiles();
-	}
+	vtlib_RecreateUserPrivilegeFiles();
 
 	if (!$noevents) {
 		Vtiger_Module::fireEvent($module, $event_type);
