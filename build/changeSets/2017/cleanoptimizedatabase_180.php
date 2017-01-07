@@ -37,7 +37,7 @@ class cleanoptimizedatabase_180 extends cbupdaterWorker {
 			$this->ExecuteQuery('ALTER TABLE `vtiger_inventorysubproductrel` ADD INDEX( `id`, `sequence_no`)', array());
 			$this->ExecuteQuery('ALTER TABLE `vtiger_settings_blocks` ADD INDEX(`label`)', array());
 			$this->ExecuteQuery('ALTER TABLE `com_vtiger_workflows` ADD INDEX( `module_name`, `execution_condition`)', array());
-			$this->ExecuteQuery('ALTER TABLE `vtiger_ws_operation` ADD UNIQUE(` name `)', array());
+			$this->ExecuteQuery('ALTER TABLE `vtiger_ws_operation` ADD UNIQUE(`name`)', array());
 			$this->ExecuteQuery('ALTER TABLE `com_vtiger_workflow_tasktypes` ADD PRIMARY KEY(`id`)', array());
 			$this->ExecuteQuery('ALTER TABLE `com_vtiger_workflow_tasktypes` ADD UNIQUE(`tasktypename`)', array());
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
