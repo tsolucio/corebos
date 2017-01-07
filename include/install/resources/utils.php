@@ -962,7 +962,7 @@ class Common_Install_Wizard_Utils {
 	}
 	// Fix for ticket 6605 : detect mysql extension during installation
 	static function check_mysql_extension() {
-		if(function_exists('mysql_connect')) {
+		if(function_exists('mysql_connect') or function_exists('mysqli_connect')) {
 			$mysql_extension = true;
 		}
 		else {
