@@ -12,7 +12,7 @@ include('vtigerversion.php');
 
 // memory limit default value = 64M
 ini_set('memory_limit','1024M');
-
+error_reporting(E_ERROR);
 /* database configuration
  db_server
  db_port
