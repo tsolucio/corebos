@@ -5853,7 +5853,7 @@ CREATE TABLE `vtiger_language` (
 
 LOCK TABLES `vtiger_language` WRITE;
 /*!40000 ALTER TABLE `vtiger_language` DISABLE KEYS */;
-INSERT INTO `vtiger_language` VALUES (1,'English','en_us','US English','2014-10-07 15:43:32',NULL,1,1),(2,'Brazilian','pt_br','PT Brasil','2017-01-06 23:15:18',NULL,0,0),(3,'BritishEnglish','en_gb','British English','2017-01-06 23:15:18',NULL,0,0),(4,'Deutsch','de_de','DE Deutsch','2017-01-06 23:15:18',NULL,0,0),(5,'Dutch','nl_nl','NL-Dutch','2017-01-06 23:15:18',NULL,0,0),(6,'French','fr_fr','Francais','2017-01-06 23:15:18',NULL,0,0),(7,'Hungarian','hu_hu','HU Magyar','2017-01-06 23:15:18',NULL,0,0),(8,'Mexican Spanish','es_mx','ES Mexico','2017-01-06 23:15:18',NULL,0,0),(9,'Spanish','es_es','ES Spanish','2017-01-06 23:15:19',NULL,0,0),(10,'Italian','it_it','IT Italian','2017-01-06 23:15:18',NULL,0,0);
+INSERT INTO `vtiger_language` VALUES (1,'English','en_us','US English','2014-10-07 15:43:32',NULL,1,1),(2,'Brazilian','pt_br','PT Brasil','2017-01-06 23:28:52',NULL,0,0),(3,'BritishEnglish','en_gb','British English','2017-01-06 23:28:52',NULL,0,0),(4,'Deutsch','de_de','DE Deutsch','2017-01-06 23:28:53',NULL,0,0),(5,'Dutch','nl_nl','NL-Dutch','2017-01-06 23:28:53',NULL,0,0),(6,'French','fr_fr','Francais','2017-01-06 23:28:53',NULL,0,0),(7,'Hungarian','hu_hu','HU Magyar','2017-01-06 23:28:53',NULL,0,0),(8,'Mexican Spanish','es_mx','ES Mexico','2017-01-06 23:28:53',NULL,0,0),(9,'Spanish','es_es','ES Spanish','2017-01-06 23:28:53',NULL,0,0),(10,'Italian','it_it','IT Italian','2017-01-06 23:28:52',NULL,0,0);
 /*!40000 ALTER TABLE `vtiger_language` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -6258,7 +6258,7 @@ CREATE TABLE `vtiger_loginhistory` (
   `login_time` timestamp NULL DEFAULT NULL,
   `status` varchar(25) DEFAULT NULL,
   PRIMARY KEY (`login_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6267,7 +6267,7 @@ CREATE TABLE `vtiger_loginhistory` (
 
 LOCK TABLES `vtiger_loginhistory` WRITE;
 /*!40000 ALTER TABLE `vtiger_loginhistory` DISABLE KEYS */;
-INSERT INTO `vtiger_loginhistory` VALUES (1,'admin','127.0.0.1','2014-10-07 19:55:14','2014-10-07 13:52:20','Signed off'),(2,'admin','127.0.0.1',NULL,'2014-11-29 23:01:25','Signed in'),(3,'admin','127.0.0.1','2016-04-24 08:42:38','2016-04-24 08:30:31','Signed off'),(4,'admin','127.0.0.1','2016-06-28 20:30:17','2016-06-28 16:26:08','Signed off'),(5,'admin','172.17.0.1','2016-10-25 20:25:25','2016-10-25 20:23:34','Signed off'),(6,'admin','::1','2017-01-06 22:18:20','2017-01-06 22:15:37','Signed off');
+INSERT INTO `vtiger_loginhistory` VALUES (1,'admin','127.0.0.1','2014-10-07 19:55:14','2014-10-07 13:52:20','Signed off'),(2,'admin','127.0.0.1',NULL,'2014-11-29 23:01:25','Signed in'),(3,'admin','127.0.0.1','2016-04-24 08:42:38','2016-04-24 08:30:31','Signed off'),(4,'admin','127.0.0.1','2016-06-28 20:30:17','2016-06-28 16:26:08','Signed off'),(5,'admin','172.17.0.1','2016-10-25 20:25:25','2016-10-25 20:23:34','Signed off'),(6,'admin','::1','2017-01-06 22:18:20','2017-01-06 22:15:37','Signed off'),(7,'admin','::1','2017-01-06 22:29:56','2017-01-06 22:29:08','Signed off');
 /*!40000 ALTER TABLE `vtiger_loginhistory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -12276,7 +12276,7 @@ CREATE TABLE `vtiger_users` (
 
 LOCK TABLES `vtiger_users` WRITE;
 /*!40000 ALTER TABLE `vtiger_users` DISABLE KEYS */;
-INSERT INTO `vtiger_users` VALUES (1,'admin','$1$ad000000$hzXFXvL3XVlnUE/X.1n9t/','','#E6FAD8','','Administrator','','on',1,'','2016-10-26 00:24:30','2017-01-06 23:15:14',NULL,'','','','','','','','joe@tsolucio.com','','','Active','','','','','','',NULL,NULL,NULL,NULL,NULL,NULL,'yyyy-mm-dd','am/pm','08:00','23:00','This Week','Today','',0,'$1$ad000000$hzXFXvL3XVlnUE/X.1n9t/','1','1 Minute',NULL,'PHP5.3MD5','eT66kDrVyaM3YmiT','softed','en_us','UTC','','','','','hring','1','2',0,'2017-01-07',0);
+INSERT INTO `vtiger_users` VALUES (1,'admin','$1$ad000000$hzXFXvL3XVlnUE/X.1n9t/','','#E6FAD8','','Administrator','','on',1,'','2016-10-26 00:24:30','2017-01-06 23:28:50',NULL,'','','','','','','','joe@tsolucio.com','','','Active','','','','','','',NULL,NULL,NULL,NULL,NULL,NULL,'yyyy-mm-dd','am/pm','08:00','23:00','This Week','Today','',0,'$1$ad000000$hzXFXvL3XVlnUE/X.1n9t/','1','1 Minute',NULL,'PHP5.3MD5','bpkAgeBNInBqt4MT','softed','en_us','UTC','','','','','hring','1','2',0,'2017-01-07',0);
 /*!40000 ALTER TABLE `vtiger_users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -12869,7 +12869,8 @@ CREATE TABLE `vtiger_ws_operation` (
   `handler_method` varchar(64) NOT NULL,
   `type` varchar(8) NOT NULL,
   `prelogin` int(3) NOT NULL,
-  PRIMARY KEY (`operationid`)
+  PRIMARY KEY (`operationid`),
+  UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -13119,4 +13120,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-01-07  0:18:45
+-- Dump completed on 2017-01-07  2:08:58
