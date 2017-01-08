@@ -39,7 +39,6 @@ class HelpDesk extends CRMEntity {
 		'vtiger_troubletickets'=>'ticketid',
 		'vtiger_ticketcf'=>'ticketid',
 		'vtiger_ticketcomments'=>'ticketid');
-	var $entity_table = 'vtiger_crmentity';
 
 	/**
 	 * Mandatory for Listing (Related listview)
@@ -485,7 +484,7 @@ class HelpDesk extends CRMEntity {
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>
 					'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 		$query = "SELECT $fields_list,case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name
-			FROM ".$this->entity_table. "
+			FROM vtiger_crmentity
 			INNER JOIN vtiger_troubletickets ON vtiger_troubletickets.ticketid =vtiger_crmentity.crmid
 			LEFT JOIN vtiger_crmentity vtiger_crmentityRelatedTo ON vtiger_crmentityRelatedTo.crmid = vtiger_troubletickets.parent_id
 			LEFT JOIN vtiger_account ON vtiger_account.accountid = vtiger_troubletickets.parent_id

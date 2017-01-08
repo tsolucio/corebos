@@ -29,8 +29,6 @@ class Leads extends CRMEntity {
 	var $tab_name = Array('vtiger_crmentity','vtiger_leaddetails','vtiger_leadsubdetails','vtiger_leadaddress','vtiger_leadscf');
 	var $tab_name_index = Array('vtiger_crmentity'=>'crmid','vtiger_leaddetails'=>'leadid','vtiger_leadsubdetails'=>'leadsubscriptionid','vtiger_leadaddress'=>'leadaddressid','vtiger_leadscf'=>'leadid');
 
-	var $entity_table = 'vtiger_crmentity';
-
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
@@ -136,7 +134,7 @@ class Leads extends CRMEntity {
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>
 						'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 		$query = "SELECT $fields_list,case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name
-				FROM ".$this->entity_table."
+				FROM vtiger_crmentity
 				INNER JOIN vtiger_leaddetails ON vtiger_crmentity.crmid=vtiger_leaddetails.leadid
 				LEFT JOIN vtiger_leadsubdetails ON vtiger_leaddetails.leadid = vtiger_leadsubdetails.leadsubscriptionid
 				LEFT JOIN vtiger_leadaddress ON vtiger_leaddetails.leadid=vtiger_leadaddress.leadaddressid

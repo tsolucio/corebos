@@ -36,7 +36,6 @@ class Accounts extends CRMEntity {
 		'vtiger_accountbillads' => Array ('accountaddressid', 'vtiger_account', 'accountid'),
 		'vtiger_accountshipads' => Array ('accountaddressid', 'vtiger_account', 'accountid'),
 	);
-	var $entity_table = 'vtiger_crmentity';
 
 	var $tab_name = Array('vtiger_crmentity','vtiger_account','vtiger_accountbillads','vtiger_accountshipads','vtiger_accountscf');
 	var $tab_name_index = Array('vtiger_crmentity'=>'crmid','vtiger_account'=>'accountid','vtiger_accountbillads'=>'accountaddressid','vtiger_accountshipads'=>'accountaddressid','vtiger_accountscf'=>'accountid');
@@ -784,7 +783,7 @@ class Accounts extends CRMEntity {
 		$fields_list = getFieldsListFromQuery($sql);
 
 		$query = "SELECT $fields_list,case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name
-				FROM ".$this->entity_table."
+				FROM vtiger_crmentity
 				INNER JOIN vtiger_account ON vtiger_account.accountid = vtiger_crmentity.crmid
 				LEFT JOIN vtiger_accountbillads ON vtiger_accountbillads.accountaddressid = vtiger_account.accountid
 				LEFT JOIN vtiger_accountshipads ON vtiger_accountshipads.accountaddressid = vtiger_account.accountid

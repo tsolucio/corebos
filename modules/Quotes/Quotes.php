@@ -31,7 +31,6 @@ class Quotes extends CRMEntity {
 	var $customFieldTable = Array('vtiger_quotescf', 'quoteid');
 	// Uncomment the line below to support custom field columns on related lists
 	var $related_tables = Array('vtiger_account'=>array('accountid'));
-	var $entity_table = 'vtiger_crmentity';
 
 	var $sortby_fields = Array('subject','crmid','smownerid','accountname','lastname');
 
@@ -466,7 +465,7 @@ class Quotes extends CRMEntity {
 		$fields_list .= getInventoryFieldsForExport($this->table_name);
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 
-		$query = "SELECT $fields_list FROM ".$this->entity_table."
+		$query = "SELECT $fields_list FROM vtiger_crmentity
 			INNER JOIN vtiger_quotes ON vtiger_quotes.quoteid = vtiger_crmentity.crmid
 			LEFT JOIN vtiger_quotescf ON vtiger_quotescf.quoteid = vtiger_quotes.quoteid
 			LEFT JOIN vtiger_quotesbillads ON vtiger_quotesbillads.quotebilladdressid = vtiger_quotes.quoteid

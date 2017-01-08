@@ -30,7 +30,6 @@ class SalesOrder extends CRMEntity {
 	var $customFieldTable = Array('vtiger_salesordercf', 'salesorderid');
 	// Uncomment the line below to support custom field columns on related lists
 	var $related_tables = Array('vtiger_account'=>array('accountid'));
-	var $entity_table = 'vtiger_crmentity';
 
 	var $update_product_array = Array();
 
@@ -509,7 +508,7 @@ class SalesOrder extends CRMEntity {
 		$fields_list .= getInventoryFieldsForExport($this->table_name);
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 
-		$query = "SELECT $fields_list FROM ".$this->entity_table."
+		$query = "SELECT $fields_list FROM vtiger_crmentity
 			INNER JOIN vtiger_salesorder ON vtiger_salesorder.salesorderid = vtiger_crmentity.crmid
 			LEFT JOIN vtiger_salesordercf ON vtiger_salesordercf.salesorderid = vtiger_salesorder.salesorderid
 			LEFT JOIN vtiger_sobillads ON vtiger_sobillads.sobilladdressid = vtiger_salesorder.salesorderid
