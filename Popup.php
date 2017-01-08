@@ -243,13 +243,7 @@ switch($currentModule)
 		$alphabetical = AlphabeticalSearch($currentModule,'Popup',$focus->def_basicsearch_col,'true','basic',$popuptype,"","",$url);
 		if (isset($_REQUEST['select'])) $smarty->assign("SELECT",'enable');
 		break;
-	// END
 }
-// vtlib customization: Initialize focus to get generic popup
-if($_REQUEST['form'] == 'vtlibPopupView' or $_REQUEST['form'] == 'DetailView') {
-	vtlib_setup_modulevars($currentModule, $focus);
-}
-// END
 
 $smarty->assign('RETURN_ACTION',isset($_REQUEST['return_action']) ? vtlib_purify($_REQUEST['return_action']) : '');
 

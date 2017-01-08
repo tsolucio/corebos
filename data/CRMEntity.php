@@ -1136,7 +1136,6 @@ class CRMEntity {
 			$columnname = $this->db->query_result($linkedModulesQuery, $i, 'columnname');
 
 			$other = CRMEntity::getInstance($related_module);
-			vtlib_setup_modulevars($related_module, $other);
 
 			if(!in_array($other->table_name, $joinedTables)) {
 				$query .= " LEFT JOIN $other->table_name ON $other->table_name.$other->table_index = $this->table_name.$columnname";
@@ -1186,7 +1185,6 @@ class CRMEntity {
 			$columnname = $this->db->query_result($linkedModulesQuery, $i, 'columnname');
 
 			$other = CRMEntity::getInstance($related_module);
-			vtlib_setup_modulevars($related_module, $other);
 
 			if(!empty($rel_mods[$other->table_name])) {
 				$rel_mods[$other->table_name] = $rel_mods[$other->table_name] + 1;
@@ -1595,8 +1593,6 @@ class CRMEntity {
 		list($module, $result, $returnResult) = cbEventHandler::do_filter('corebos.filter.ModuleSeqNumber.fillempty', array($module, '', false));
 		if ($returnResult) return $result;
 
-		vtlib_setup_modulevars($module, $this);
-
 		if (!$this->isModuleSequenceConfigured($module))
 			return;
 
@@ -1654,10 +1650,6 @@ class CRMEntity {
 
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		$other = CRMEntity::getInstance($related_module);
-
-		// Some standard module class doesn't have required variables
-		// that are used in the query, they are defined in this generic API
-		vtlib_setup_modulevars($related_module, $other);
 
 		$singular_modname = vtlib_toSingular($related_module);
 		$button = '';
@@ -1729,7 +1721,6 @@ class CRMEntity {
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once("modules/$related_module/$related_module.php");
 		$other = new $related_module();
-		vtlib_setup_modulevars($related_module, $other);
 		$singular_modname = vtlib_toSingular($related_module);
 
 		$parenttab = getParentTab();
@@ -1904,11 +1895,6 @@ class CRMEntity {
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		$other = CRMEntity::getInstance($related_module);
 
-		// Some standard module class doesn't have required variables
-		// that are used in the query, they are defined in this generic API
-		vtlib_setup_modulevars($currentModule, $this);
-		vtlib_setup_modulevars($related_module, $other);
-
 		$singular_modname = 'SINGLE_' . $related_module;
 
 		$button = '';
@@ -1995,11 +1981,6 @@ class CRMEntity {
 
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		$other = CRMEntity::getInstance($related_module);
-
-		// Some standard module class doesn't have required variables
-		// that are used in the query, they are defined in this generic API
-		vtlib_setup_modulevars($currentModule, $this);
-		vtlib_setup_modulevars($related_module, $other);
 
 		$singular_modname = 'SINGLE_' . $related_module;
 
@@ -2148,7 +2129,6 @@ class CRMEntity {
 		global $adb;
 		$primary = CRMEntity::getInstance($module);
 
-		vtlib_setup_modulevars($module, $primary);
 		$moduletable = $primary->table_name;
 		$moduleindex = $primary->table_index;
 		$modulecftable = $primary->customFieldTable[0];
@@ -2180,7 +2160,6 @@ class CRMEntity {
 					for ($j = 0; $j < $adb->num_rows($ui10_modules_query); $j++) {
 						$rel_mod = $adb->query_result($ui10_modules_query, $j, 'relmodule');
 						$rel_obj = CRMEntity::getInstance($rel_mod);
-						vtlib_setup_modulevars($rel_mod, $rel_obj);
 
 						$rel_tab_name = $rel_obj->table_name;
 						$rel_tab_index = $rel_obj->table_index;
@@ -2210,8 +2189,6 @@ class CRMEntity {
 	function generateReportsSecQuery($module, $secmodule) {
 		global $adb;
 		$secondary = CRMEntity::getInstance($secmodule);
-
-		vtlib_setup_modulevars($secmodule, $secondary);
 
 		$tablename = $secondary->table_name;
 		$tableindex = $secondary->table_index;
@@ -2245,7 +2222,6 @@ class CRMEntity {
 					for ($j = 0; $j < $adb->num_rows($ui10_modules_query); $j++) {
 						$rel_mod = $adb->query_result($ui10_modules_query, $j, 'relmodule');
 						$rel_obj = CRMEntity::getInstance($rel_mod);
-						vtlib_setup_modulevars($rel_mod, $rel_obj);
 
 						$rel_tab_name = $rel_obj->table_name;
 						$rel_tab_index = $rel_obj->table_index;
@@ -2681,7 +2657,6 @@ class CRMEntity {
 		//as mysql query optimizer puts crmentity on the left side and considerably slow down
 		$query = preg_replace('/\s+/', ' ', $query);
 		if (strripos($query, ' WHERE ') !== false) {
-			vtlib_setup_modulevars(get_class($this), $this);
 			$query = str_ireplace(' where ', " WHERE $this->table_name.$this->table_index > 0 AND ", $query);
 		}
 		return $query;

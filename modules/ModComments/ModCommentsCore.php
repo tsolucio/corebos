@@ -156,7 +156,6 @@ class ModCommentsCore extends CRMEntity {
 			$columnname = $this->db->query_result($linkedModulesQuery, $i, 'columnname');
 
 			$other = CRMEntity::getInstance($related_module);
-			vtlib_setup_modulevars($related_module, $other);
 
 			if(!in_array($other->table_name, $joinedTables)) {
 				$query .= " LEFT JOIN $other->table_name ON $other->table_name.$other->table_index = $this->table_name.$columnname";

@@ -247,7 +247,6 @@ class Faq extends CRMEntity {
 			$columnname = $this->db->query_result($linkedModulesQuery, $i, 'columnname');
 
 			$other = CRMEntity::getInstance($related_module);
-			vtlib_setup_modulevars($related_module, $other);
 
 			if($rel_mods[$other->table_name]) {
 				$rel_mods[$other->table_name] = $rel_mods[$other->table_name] + 1;

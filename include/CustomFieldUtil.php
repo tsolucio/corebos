@@ -155,7 +155,6 @@ function getCustomFieldTableInfo($module)
 	global $log;
 	$log->debug("Entering getCustomFieldTableInfo($module) method ...");
 	$primary = CRMEntity::getInstance($module);
-	vtlib_setup_modulevars($module, $primary);
 	if (isset($primary->customFieldTable)) {
 		$cfinfo = $primary->customFieldTable;
 	} else {

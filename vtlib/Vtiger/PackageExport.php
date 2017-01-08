@@ -320,9 +320,6 @@ class Vtiger_PackageExport {
 		if($moduleInstance->isentitytype) {
 			$focus = CRMEntity::getInstance($modulename);
 
-			// Setup required module variables which is need for vtlib API's
-			vtlib_setup_modulevars($modulename, $focus);
-
 			$tables = Array ($focus->table_name);
 			if(!empty($focus->groupTable)) $tables[] = $focus->groupTable[0];
 			if(!empty($focus->customFieldTable)) $tables[] = $focus->customFieldTable[0];
