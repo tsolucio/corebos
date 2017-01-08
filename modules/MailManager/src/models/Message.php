@@ -483,6 +483,10 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 	 */
 	function date($format = false) {
 		$date = $this->_date;
+		if (preg_match('#[^0-9\-\/]#',$date)) {
+			// date is in textual format we try to put it into ISO
+			$date = date('Y-m-d',strtotime($date));
+		}
 		if ($format) {
 			if (preg_match(sprintf("/%s ([^ ]+)/", date('D, d M Y')), $date, $m)) {
 				$date = $m[1]; // Pick only time part for today
