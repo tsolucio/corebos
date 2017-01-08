@@ -253,144 +253,17 @@ function vtlib_getFieldHelpInfo($module) {
 }
 
 /**
- * Setup mandatory (requried) module variable values in the module class.
+ * @deprecated: the variables have been moved to each module
  */
 function vtlib_setup_modulevars($module, $focus) {
-
-	$checkfor = Array('table_name', 'table_index', 'related_tables', 'popup_fields', 'IsCustomModule');
-	foreach($checkfor as $check) {
-		if(!isset($focus->$check)) $focus->$check = __vtlib_get_modulevar_value($module, $check);
-	}
+	// left here for backward compatibility
 }
+/**
+ * @deprecated: the variables have been moved to each module
+ */
 function __vtlib_get_modulevar_value($module, $varname) {
-	$mod_var_mapping =
-		Array(
-			'Accounts' =>
-			Array(
-				'IsCustomModule'=>false,
-				'table_name'  => 'vtiger_account',
-				'table_index' => 'accountid',
-				// related_tables variable should define the association (relation) between dependent tables
-				// FORMAT: related_tablename => Array ( related_tablename_column[, base_tablename, base_tablename_column] )
-				// Here base_tablename_column should establish relation with related_tablename_column
-				// NOTE: If base_tablename and base_tablename_column are not specified, it will default to modules (table_name, related_tablename_column)
-				'related_tables' => Array(
-					'vtiger_accountbillads' => Array ('accountaddressid', 'vtiger_account', 'accountid'),
-					'vtiger_accountshipads' => Array ('accountaddressid', 'vtiger_account', 'accountid'),
-				),
-				'popup_fields' => Array('accountname'), // TODO: Add this initialization to all the standard module
-			),
-			'Contacts' =>
-			Array(
-				'IsCustomModule'=>false,
-				'table_name'  => 'vtiger_contactdetails',
-				'table_index' => 'contactid',
-				'related_tables'=> Array( 'vtiger_account' => Array ('accountid' ) ),
-				'popup_fields' => Array ('lastname'),
-			),
-			'Leads' =>
-			Array(
-				'IsCustomModule'=>false,
-				'table_name'  => 'vtiger_leaddetails',
-				'table_index' => 'leadid',
-				'related_tables' => Array (
-					'vtiger_leadsubdetails' => Array ( 'leadsubscriptionid', 'vtiger_leaddetails', 'leadid' ),
-					'vtiger_leadaddress'    => Array ( 'leadaddressid', 'vtiger_leaddetails', 'leadid' ),
-				),
-				'popup_fields'=> Array ('lastname'),
-			),
-			'Campaigns' =>
-			Array(
-				'IsCustomModule'=>false,
-				'table_name'  => 'vtiger_campaign',
-				'table_index' => 'campaignid',
-				'popup_fields' => Array ('campaignname'),
-			),
-			'Potentials' =>
-			Array(
-				'IsCustomModule'=>false,
-				'table_name' => 'vtiger_potential',
-				'table_index'=> 'potentialid',
-				// NOTE: UIType 10 is being used instead of direct relationship from 5.1.0
-				//'related_tables' => Array ('vtiger_account' => Array('accountid')),
-				'popup_fields'=> Array('potentialname'),
-			),
-			'Quotes' =>
-			Array(
-				'IsCustomModule'=>false,
-				'table_name' => 'vtiger_quotes',
-				'table_index'=> 'quoteid',
-				'related_tables' => Array ('vtiger_account' => Array('accountid')),
-				'popup_fields'=>Array('subject'),
-			),
-			'SalesOrder'=>
-			Array(
-				'IsCustomModule'=>false,
-				'table_name' => 'vtiger_salesorder',
-				'table_index'=> 'salesorderid',
-				'related_tables'=> Array ('vtiger_account' => Array('accountid')),
-				'popup_fields'=>Array('subject'),
-			),
-			'PurchaseOrder'=>
-			Array(
-				'IsCustomModule'=>false,
-				'table_name' => 'vtiger_purchaseorder',
-				'table_index'=> 'purchaseorderid',
-				'popup_fields'=>Array('subject'),
-			),
-			'Invoice'=>
-			Array(
-				'IsCustomModule'=>false,
-				'table_name' => 'vtiger_invoice',
-				'table_index'=> 'invoiceid',
-				'popup_fields'=> Array('subject'),
-			),
-			'HelpDesk'=>
-			Array(
-				'IsCustomModule'=>false,
-				'table_name' => 'vtiger_troubletickets',
-				'table_index'=> 'ticketid',
-				'popup_fields'=> Array('ticket_title')
-			),
-			'Faq'=>
-			Array(
-				'IsCustomModule'=>false,
-				'table_name' => 'vtiger_faq',
-				'table_index'=> 'id',
-			),
-			'Documents'=>
-			Array(
-				'IsCustomModule'=>false,
-				'table_name' => 'vtiger_notes',
-				'table_index'=> 'notesid',
-			),
-			'Products'=>
-			Array(
-				'IsCustomModule'=>false,
-				'table_name' => 'vtiger_products',
-				'table_index'=> 'productid',
-				'popup_fields'=> Array('productname'),
-			),
-			'PriceBooks'=>
-			Array(
-				'IsCustomModule'=>false,
-				'table_name' => 'vtiger_pricebook',
-				'table_index'=> 'pricebookid',
-			),
-			'Vendors'=>
-			Array(
-				'IsCustomModule'=>false,
-				'table_name' => 'vtiger_vendor',
-				'table_index'=> 'vendorid',
-				'popup_fields'=>Array('vendorname'),
-			)
-		);
-	if (isset($mod_var_mapping[$module]) and isset($mod_var_mapping[$module][$varname])) {
-		$retval = $mod_var_mapping[$module][$varname];
-	} else {
-		$retval = null;
-	}
-	return $retval;
+	// left here for backward compatibility
+	return null;
 }
 
 /**

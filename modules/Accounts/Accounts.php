@@ -27,10 +27,15 @@ class Accounts extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	var $IsCustomModule = false;
 	var $HasDirectImageField = false;
+
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
 	var $customFieldTable = Array('vtiger_accountscf', 'accountid');
+	var $related_tables = Array(
+		'vtiger_accountbillads' => Array ('accountaddressid', 'vtiger_account', 'accountid'),
+		'vtiger_accountshipads' => Array ('accountaddressid', 'vtiger_account', 'accountid'),
+	);
 	var $entity_table = 'vtiger_crmentity';
 
 	var $tab_name = Array('vtiger_crmentity','vtiger_account','vtiger_accountbillads','vtiger_accountshipads','vtiger_accountscf');
@@ -51,8 +56,11 @@ class Accounts extends CRMEntity {
 		'Phone'=>'phone',
 		'Assigned To'=>'assigned_user_id'
 	);
-	var $list_link_field= 'accountname';
 
+	// Make the field link to detail view from list view (Fieldname)
+	var $list_link_field = 'accountname';
+
+	// For Popup listview and UI type support
 	var $search_fields = Array(
 		'Account Name'=>Array('vtiger_account'=>'accountname'),
 		'Billing City'=>Array('vtiger_accountbillads'=>'bill_city'),

@@ -28,6 +28,8 @@ class SalesOrder extends CRMEntity {
 	 * Mandatory table for supporting custom fields.
 	 */
 	var $customFieldTable = Array('vtiger_salesordercf', 'salesorderid');
+	// Uncomment the line below to support custom field columns on related lists
+	var $related_tables = Array('vtiger_account'=>array('accountid'));
 	var $entity_table = 'vtiger_crmentity';
 
 	var $update_product_array = Array();
@@ -68,6 +70,9 @@ class SalesOrder extends CRMEntity {
 		'Account Name'=>'account_id',
 		'Quote Name'=>'quote_id'
 	);
+
+	// For Popup window record selection
+	var $popup_fields = Array('subject');
 
 	// For Alphabetical search
 	var $def_basicsearch_col = 'subject';

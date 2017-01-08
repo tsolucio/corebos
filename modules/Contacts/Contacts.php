@@ -31,6 +31,7 @@ class Contacts extends CRMEntity {
 	 * Mandatory table for supporting custom fields.
 	 */
 	var $customFieldTable = Array('vtiger_contactscf', 'contactid');
+	var $related_tables = Array('vtiger_account' => Array('accountid'));
 
 	/**
 	 * Mandatory for Saving, Include tables related to this module.

@@ -35,6 +35,10 @@ class Leads extends CRMEntity {
 	 * Mandatory table for supporting custom fields.
 	 */
 	var $customFieldTable = Array('vtiger_leadscf', 'leadid');
+	var $related_tables = Array (
+		'vtiger_leadsubdetails' => Array('leadsubscriptionid', 'vtiger_leaddetails', 'leadid'),
+		'vtiger_leadaddress'    => Array('leadaddressid', 'vtiger_leaddetails', 'leadid'),
+	);
 
 	var $sortby_fields = Array('lastname','firstname','email','phone','company','smownerid','website');
 
@@ -60,8 +64,11 @@ class Leads extends CRMEntity {
 		'Email'=>'email',
 		'Assigned To'=>'assigned_user_id'
 	);
-	var $list_link_field= 'lastname';
 
+	// Make the field link to detail view from list view (Fieldname)
+	var $list_link_field = 'lastname';
+
+	// For Popup listview and UI type support
 	var $search_fields = Array(
 		'Name'=>Array('leaddetails'=>'lastname'),
 		'Company'=>Array('leaddetails'=>'company')
@@ -70,6 +77,9 @@ class Leads extends CRMEntity {
 		'Name'=>'lastname',
 		'Company'=>'company'
 	);
+
+	// For Popup window record selection
+	var $popup_fields = Array('lastname');
 
 	var $required_fields = array();
 

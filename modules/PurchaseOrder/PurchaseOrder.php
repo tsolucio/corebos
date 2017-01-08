@@ -52,8 +52,11 @@ class PurchaseOrder extends CRMEntity {
 		'Total'=>'hdnGrandTotal',
 		'Assigned To'=>'assigned_user_id'
 	);
-	var $list_link_field= 'subject';
 
+	// Make the field link to detail view from list view (Fieldname)
+	var $list_link_field = 'subject';
+
+	// For Popup listview and UI type support
 	var $search_fields = Array(
 		'Order No'=>Array('purchaseorder'=>'purchaseorder_no'),
 		'Subject'=>Array('purchaseorder'=>'subject'),
@@ -62,6 +65,10 @@ class PurchaseOrder extends CRMEntity {
 		'Order No'=>'purchaseorder_no',
 		'Subject'=>'subject',
 	);
+
+	// For Popup window record selection
+	var $popup_fields = Array('subject');
+
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
 	var $mandatory_fields = Array('subject', 'vendor_id','createdtime' ,'modifiedtime');

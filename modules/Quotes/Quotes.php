@@ -29,6 +29,8 @@ class Quotes extends CRMEntity {
 	 * Mandatory table for supporting custom fields.
 	 */
 	var $customFieldTable = Array('vtiger_quotescf', 'quoteid');
+	// Uncomment the line below to support custom field columns on related lists
+	var $related_tables = Array('vtiger_account'=>array('accountid'));
 	var $entity_table = 'vtiger_crmentity';
 
 	var $sortby_fields = Array('subject','crmid','smownerid','accountname','lastname');
@@ -46,7 +48,6 @@ class Quotes extends CRMEntity {
 		'Total'=>Array('quotes'=> 'total'),
 		'Assigned To'=>Array('crmentity'=>'smownerid')
 	);
-
 	var $list_fields_name = Array(
 		'Quote No'=>'quote_no',
 		'Subject'=>'subject',
@@ -56,8 +57,11 @@ class Quotes extends CRMEntity {
 		'Total'=>'hdnGrandTotal',
 		'Assigned To'=>'assigned_user_id'
 	);
-	var $list_link_field= 'subject';
 
+	// Make the field link to detail view from list view (Fieldname)
+	var $list_link_field = 'subject';
+
+	// For Popup listview and UI type support
 	var $search_fields = Array(
 		'Quote No'=>Array('quotes'=>'quote_no'),
 		'Subject'=>Array('quotes'=>'subject'),
@@ -71,6 +75,9 @@ class Quotes extends CRMEntity {
 		'Account Name'=>'account_id',
 		'Quote Stage'=>'quotestage',
 	);
+
+	// For Popup window record selection
+	var $popup_fields = Array('subject');
 
 	// For Alphabetical search
 	var $def_basicsearch_col = 'subject';

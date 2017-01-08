@@ -68,6 +68,9 @@ class Invoice extends CRMEntity {
 		'Account Name'=>'account_id',
 	);
 
+	// For Popup window record selection
+	var $popup_fields = Array('subject');
+
 	// Placeholder for sort fields - All the fields will be initialized for Sorting through initSortFields
 	var $sortby_fields = Array('subject','invoice_no','invoicestatus','smownerid','accountname','lastname');
 
