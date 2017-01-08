@@ -88,10 +88,10 @@ class Vtiger_PackageExport {
 		}
 	}
 
-    /**
+	/**
 	 * Clean up the temporary files created.
 	 * @access private
-     */
+	 */
 	function __cleanupExport() {
 		if(!empty($this->_export_modulexml_filename)) {
 			unlink($this->__getManifestFilePath());
@@ -300,9 +300,9 @@ class Vtiger_PackageExport {
 		$this->export_CustomLinks($moduleInstance);
 
 		//Export cronTasks
-        $this->export_CronTasks($moduleInstance);
+		$this->export_CronTasks($moduleInstance);
 
-        $this->closeNode('module');
+		$this->closeNode('module');
 	}
 
 	/**
@@ -721,22 +721,22 @@ class Vtiger_PackageExport {
 	/**
 	 * Export cron tasks for the module.
 	 * @access private
-	 */        
+	 */
 	function export_CronTasks($moduleInstance){
-        $cronTasks = Vtiger_Cron::listAllInstancesByModule($moduleInstance->name);
-        $this->openNode('crons');
-        foreach($cronTasks as $cronTask){
-            $this->openNode('cron');
-            $this->outputNode($cronTask->getName(),'name');
-            $this->outputNode($cronTask->getFrequency(),'frequency');
-            $this->outputNode($cronTask->getStatus(),'status');
-            $this->outputNode($cronTask->getHandlerFile(),'handler');
-            $this->outputNode($cronTask->getSequence(),'sequence');
-            $this->outputNode($cronTask->getDescription(),'description');
-            $this->closeNode('cron');
-        }
-      $this->closeNode('crons');
-    }
+		$cronTasks = Vtiger_Cron::listAllInstancesByModule($moduleInstance->name);
+		$this->openNode('crons');
+		foreach($cronTasks as $cronTask){
+			$this->openNode('cron');
+			$this->outputNode($cronTask->getName(),'name');
+			$this->outputNode($cronTask->getFrequency(),'frequency');
+			$this->outputNode($cronTask->getStatus(),'status');
+			$this->outputNode($cronTask->getHandlerFile(),'handler');
+			$this->outputNode($cronTask->getSequence(),'sequence');
+			$this->outputNode($cronTask->getDescription(),'description');
+			$this->closeNode('cron');
+		}
+		$this->closeNode('crons');
+	}
 
 	/**
 	 * Helper function to log messages

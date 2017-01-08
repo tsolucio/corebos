@@ -384,7 +384,9 @@ function safe_map_named($request_var, & $focus, $member_var, $always_copy)
 	$log->debug("Exiting safe_map_named method ...");
 }
 
-/** DEPRECATED: use getTranslatedString **/
+/**
+ * @deprecated: use getTranslatedString
+ */
 function return_app_list_strings_language($language) {
 	// function left with an empty value for backward compatibility
 	return null;

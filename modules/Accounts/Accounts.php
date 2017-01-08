@@ -113,7 +113,6 @@ class Accounts extends CRMEntity {
 		}
 	}
 
-	// Mike Crowe Mod --------------------------------------------------------Default ordering for us
 	/** Returns a list of the associated Campaigns
 	 * @param $id -- campaign id :: Type Integer
 	 * @returns list of campaigns in array format
@@ -710,6 +709,7 @@ class Accounts extends CRMEntity {
 		$log->debug("Exiting get_tickets method ...");
 		return $return_value;
 	}
+
 	/**
 	* Function to get Account related Products
 	* @param  integer   $id      - accountid
