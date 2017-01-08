@@ -21,7 +21,6 @@ require('user_privileges/default_module_view.php');
 class Potentials extends CRMEntity {
 	var $db, $log; // Used in class functions of CRMEntity
 
-	var $module_name= 'Potentials';
 	var $table_name = 'vtiger_potential';
 	var $table_index= 'potentialid';
 	var $column_fields = Array();
@@ -754,7 +753,7 @@ class Potentials extends CRMEntity {
 		if(empty($return_module) || empty($return_id)) return;
 
 		if($return_module == 'Accounts') {
-			$this->trash($this->module_name, $id);
+			$this->trash('Potentials', $id);
 		} elseif($return_module == 'Campaigns') {
 			$sql = 'UPDATE vtiger_potential SET campaignid = ? WHERE potentialid = ?';
 			$this->db->pquery($sql, array(null, $id));
@@ -768,7 +767,7 @@ class Potentials extends CRMEntity {
 			// Potential directly linked with Contact (not through Account - vtiger_contpotentialrel)
 			$directRelCheck = $this->db->pquery('SELECT related_to FROM vtiger_potential WHERE potentialid=? AND related_to=?', array($id, $return_id));
 			if($this->db->num_rows($directRelCheck)) {
-				$this->trash($this->module_name, $id);
+				$this->trash('Potentials', $id);
 			}
 
 		} else {
