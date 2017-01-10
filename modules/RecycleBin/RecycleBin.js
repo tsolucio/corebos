@@ -192,7 +192,7 @@ function emptyRecyclebin(id) {
 	VtigerJS_DialogBox.progress();
 	jQuery.ajax({
 			method: 'POST',
-			url: "index.phpmodule=RecycleBin&action=RecycleBinAjax&file=EmptyRecyclebin&mode=ajax&ajax=true&selected_module=&allrec=1"
+			url: "index.php?module=RecycleBin&action=RecycleBinAjax&file=EmptyRecyclebin&mode=ajax&ajax=true&selected_module=&allrec=1"
 	}).done(function (response) {
 			document.getElementById("status").style.display="none";
 			document.getElementById("modules_datas").innerHTML= response;
