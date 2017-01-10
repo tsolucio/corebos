@@ -190,6 +190,10 @@ class ReportRun extends CRMEntity {
 						$concatSql = getSqlForNameInDisplayFormat(array('last_name'=>'vtiger_lastModifiedBy'.$module.'.last_name', 'first_name'=>'vtiger_lastModifiedBy'.$module.'.first_name'), 'Users');
 						$columnslist[$fieldcolname] = "trim($concatSql) as $header_label";
 					}
+					elseif(stristr($selectedfields[0],"vtiger_crmentity") && ($selectedfields[1] == 'smcreatorid')) {
+						$concatSql = getSqlForNameInDisplayFormat(array('last_name'=>'vtiger_CreatedBy'.$module.'.last_name', 'first_name'=>'vtiger_CreatedBy'.$module.'.first_name'), 'Users');
+						$columnslist[$fieldcolname] = "trim($concatSql) as $header_label";
+					}
 					elseif($selectedfields[0] == "vtiger_crmentity".$this->primarymodule)
 					{
 						$columnslist[$fieldcolname] = "vtiger_crmentity.".$selectedfields[1]." AS '".$header_label."'";
@@ -529,6 +533,11 @@ class ReportRun extends CRMEntity {
 				$fieldtablename = "vtiger_lastModifiedBy".$module;
 				$fieldcolname = "user_name";
 			}
+			if($fieldtablename == "vtiger_crmentity" && $fieldname == "smcreatorid")
+			{
+				$fieldtablename = "vtiger_CreatedBy".$module;
+				$fieldcolname = "user_name";
+			}
 			if($fieldname == "assigned_user_id1")
 			{
 				$fieldtablename = "vtiger_usersRel1";
@@ -682,6 +691,15 @@ class ReportRun extends CRMEntity {
 							$fieldvalue = "vtiger_crmentity.".$selectedfields[1]." ".$this->getAdvComparator($comparator,trim($value),$datatype);
 						} elseif($selectedfields[2] == 'Quotes_Inventory_Manager'){
 							$fieldvalue = ("trim($concatSql)" . $this->getAdvComparator($comparator,trim($value),$datatype));
+						} elseif($selectedfields[1]=='smcreatorid') {
+							$module_from_tablename = str_replace("vtiger_crmentity","",$selectedfields[0]);
+							if($module_from_tablename != '') {
+								$tableName = 'vtiger_CreatedBy'.$module_from_tablename;
+							} else {
+								$tableName = 'vtiger_CreatedBy'.$this->primarymodule;
+							}
+							$fieldvalue = getSqlForNameInDisplayFormat(array('last_name'=>"$tableName.last_name",'first_name'=>"$tableName.first_name"), 'Users').
+									$this->getAdvComparator($comparator,trim($value),$datatype);
 						} elseif($selectedfields[1]=='modifiedby') {
 							$module_from_tablename = str_replace("vtiger_crmentity","",$selectedfields[0]);
 							if($module_from_tablename != '') {
@@ -1462,6 +1480,7 @@ class ReportRun extends CRMEntity {
 				left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid
 				left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
 				left join vtiger_users as vtiger_lastModifiedByLeads on vtiger_lastModifiedByLeads.id = vtiger_crmentity.modifiedby
+				left join vtiger_users as vtiger_CreatedByLeads on vtiger_CreatedByLeads.id = vtiger_crmentity.smcreatorid
 				".$this->getRelatedModulesQuery($module,$this->secondarymodule,$type,$where_condition).
 						getNonAdminAccessControlQuery($this->primarymodule,$current_user)."
 				where vtiger_crmentity.deleted=0 and vtiger_leaddetails.converted=$val_conv";
@@ -1493,6 +1512,7 @@ class ReportRun extends CRMEntity {
 				left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
 				left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid
 				left join vtiger_users as vtiger_lastModifiedByContacts on vtiger_lastModifiedByContacts.id = vtiger_crmentity.modifiedby
+				left join vtiger_users as vtiger_CreatedByContacts on vtiger_CreatedByContacts.id = vtiger_crmentity.smcreatorid
 				".$this->getRelatedModulesQuery($module,$this->secondarymodule,$type,$where_condition).
 						getNonAdminAccessControlQuery($this->primarymodule,$current_user)."
 				where vtiger_crmentity.deleted=0";
@@ -1544,6 +1564,7 @@ class ReportRun extends CRMEntity {
 				left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid
 				left join vtiger_users on vtiger_crmentity.smownerid=vtiger_users.id
 				left join vtiger_users as vtiger_lastModifiedByHelpDesk on vtiger_lastModifiedByHelpDesk.id = vtiger_crmentity.modifiedby
+				left join vtiger_users as vtiger_CreatedByHelpDesk on vtiger_CreatedByHelpDesk.id = vtiger_crmentity.smcreatorid
 				".$this->getRelatedModulesQuery($module,$this->secondarymodule,$type,$where_condition).
 						getNonAdminAccessControlQuery($this->primarymodule,$current_user)."
 				where vtiger_crmentity.deleted=0 ";
@@ -1575,6 +1596,7 @@ class ReportRun extends CRMEntity {
 				left join vtiger_campaign as vtiger_campaignRelCalendar on vtiger_campaignRelCalendar.campaignid = vtiger_crmentityRelCalendar.crmid
 				left join vtiger_vendor as vtiger_vendorRelCalendar on vtiger_vendorRelCalendar.vendorid = vtiger_crmentityRelCalendar.crmid
 				left join vtiger_users as vtiger_lastModifiedByCalendar on vtiger_lastModifiedByCalendar.id = vtiger_crmentity.modifiedby
+				left join vtiger_users as vtiger_CreatedByCalendar on vtiger_CreatedByCalendar.id = vtiger_crmentity.smcreatorid
 				".$this->getRelatedModulesQuery($module,$this->secondarymodule).
 						getNonAdminAccessControlQuery($this->primarymodule,$current_user)."
 				WHERE vtiger_crmentity.deleted=0 and (vtiger_activity.activitytype != 'Emails')";
@@ -1582,16 +1604,14 @@ class ReportRun extends CRMEntity {
 		else if($module == "Emails") {
 			$query = "FROM vtiger_activity
 			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_activity.activityid AND vtiger_activity.activitytype = 'Emails'";
-		
+
 			$query .= " LEFT JOIN vtiger_email_track ON vtiger_email_track.mailid = vtiger_activity.activityid";
 			$query .= " LEFT JOIN vtiger_emaildetails ON vtiger_emaildetails.emailid=vtiger_activity.activityid";
-				
-			// TODO optimize inclusion of these tables
 			$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
 			$query .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
-		
 			$query .= " LEFT JOIN vtiger_users AS vtiger_lastModifiedBy".$module." ON vtiger_lastModifiedBy".$module.".id = vtiger_crmentity.modifiedby";
-		
+			$query .= " LEFT JOIN vtiger_users AS vtiger_CreatedBy".$module." ON vtiger_CreatedBy".$module.".id = vtiger_crmentity.smcreatorid";
+
 			$query .= " ".$this->getRelatedModulesQuery($module,$this->secondarymodule).
 			getNonAdminAccessControlQuery($this->primarymodule,$current_user).
 			" WHERE vtiger_crmentity.deleted = 0";
@@ -1615,6 +1635,7 @@ class ReportRun extends CRMEntity {
 				left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid
 				left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
 				left join vtiger_users as vtiger_lastModifiedByQuotes on vtiger_lastModifiedByQuotes.id = vtiger_crmentity.modifiedby
+				left join vtiger_users as vtiger_CreatedByQuotes on vtiger_CreatedByQuotes.id = vtiger_crmentity.smcreatorid
 				left join vtiger_users as vtiger_usersRel1 on vtiger_usersRel1.id = vtiger_quotes.inventorymanager
 				left join vtiger_potential as vtiger_potentialRelQuotes on vtiger_potentialRelQuotes.potentialid = vtiger_quotes.potentialid
 				left join vtiger_contactdetails as vtiger_contactdetailsQuotes on vtiger_contactdetailsQuotes.contactid = vtiger_quotes.contactid
@@ -1642,6 +1663,7 @@ class ReportRun extends CRMEntity {
 				left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid
 				left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
 				left join vtiger_users as vtiger_lastModifiedByPurchaseOrder on vtiger_lastModifiedByPurchaseOrder.id = vtiger_crmentity.modifiedby
+				left join vtiger_users as vtiger_CreatedByPurchaseOrder on vtiger_CreatedByPurchaseOrder.id = vtiger_crmentity.smcreatorid
 				left join vtiger_vendor as vtiger_vendorRelPurchaseOrder on vtiger_vendorRelPurchaseOrder.vendorid = vtiger_purchaseorder.vendorid
 				left join vtiger_contactdetails as vtiger_contactdetailsPurchaseOrder on vtiger_contactdetailsPurchaseOrder.contactid = vtiger_purchaseorder.contactid
 				".$this->getRelatedModulesQuery($module,$this->secondarymodule,$type,$where_condition).
@@ -1668,6 +1690,7 @@ class ReportRun extends CRMEntity {
 				left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid
 				left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
 				left join vtiger_users as vtiger_lastModifiedByInvoice on vtiger_lastModifiedByInvoice.id = vtiger_crmentity.modifiedby
+				left join vtiger_users as vtiger_CreatedByInvoice on vtiger_CreatedByInvoice.id = vtiger_crmentity.smcreatorid
 				left join vtiger_account as vtiger_accountInvoice on vtiger_accountInvoice.accountid = vtiger_invoice.accountid
 				left join vtiger_contactdetails as vtiger_contactdetailsInvoice on vtiger_contactdetailsInvoice.contactid = vtiger_invoice.contactid
 				".$this->getRelatedModulesQuery($module,$this->secondarymodule,$type,$where_condition).
@@ -1697,11 +1720,10 @@ class ReportRun extends CRMEntity {
 				left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid
 				left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
 				left join vtiger_users as vtiger_lastModifiedBySalesOrder on vtiger_lastModifiedBySalesOrder.id = vtiger_crmentity.modifiedby
+				left join vtiger_users as vtiger_CreatedBySalesOrder on vtiger_CreatedBySalesOrder.id = vtiger_crmentity.smcreatorid
 				".$this->getRelatedModulesQuery($module,$this->secondarymodule,$type,$where_condition).
 						getNonAdminAccessControlQuery($this->primarymodule,$current_user)."
 				where vtiger_crmentity.deleted=0";
-
-
 		}
 		else if($module == "Campaigns")
 		{
@@ -1714,6 +1736,7 @@ class ReportRun extends CRMEntity {
 				left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid
 				left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
 				left join vtiger_users as vtiger_lastModifiedBy".$module." on vtiger_lastModifiedBy".$module.".id = vtiger_crmentity.modifiedby
+				left join vtiger_users as vtiger_CreatedBy".$module." on vtiger_CreatedBy".$module.".id = vtiger_crmentity.smcreatorid
 				".$this->getRelatedModulesQuery($module,$this->secondarymodule,$type,$where_condition).
 					getNonAdminAccessControlQuery($this->primarymodule,$current_user)."
 				where vtiger_crmentity.deleted=0";
