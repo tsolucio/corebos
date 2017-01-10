@@ -7,27 +7,24 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-//Code Added by Minnie -Starts
+
 /**
- * To get the lists of sharedids 
+ * To get the lists of sharedids
  * @param $id -- The user id :: Type integer
  * @returns $sharedids -- The shared vtiger_users id :: Type Array
  */
 function getSharedUserId($id)
 {
 	global $adb;
-        $sharedid = Array();
-        $query = "SELECT vtiger_users.*,vtiger_sharedcalendar.* from vtiger_sharedcalendar left join vtiger_users on vtiger_sharedcalendar.sharedid=vtiger_users.id where userid=?";
-        $result = $adb->pquery($query, array($id));
-        $rows = $adb->num_rows($result);
-        for($j=0;$j<$rows;$j++)
-        {
-
-                $id = $adb->query_result($result,$j,'sharedid');
-                $sharedname = getFullNameFromQResult($result, $j, 'Users');
-                $sharedid[$id]=$sharedname;
-
-        }
+	$sharedid = Array();
+	$query = "SELECT vtiger_users.*,vtiger_sharedcalendar.* from vtiger_sharedcalendar left join vtiger_users on vtiger_sharedcalendar.sharedid=vtiger_users.id where userid=?";
+	$result = $adb->pquery($query, array($id));
+	$rows = $adb->num_rows($result);
+	for($j=0;$j<$rows;$j++) {
+		$id = $adb->query_result($result,$j,'sharedid');
+		$sharedname = getFullNameFromQResult($result, $j, 'Users');
+		$sharedid[$id]=$sharedname;
+	}
 	return $sharedid;
 }
 
@@ -78,11 +75,9 @@ function getOtherUserName($id)
  * @returns $user_details -- Array in the following format:
  * $user_details=Array($userid1=>$username, $userid2=>$username,............,$useridn=>$username);
  */
-
-function getSharingUserName($id)
-{
+function getSharingUserName($id) {
 	global $adb,$current_user;
-        $user_details=Array();
+	$user_details=Array();
 	$assigned_user_id = $current_user->id;
 	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
@@ -123,7 +118,7 @@ function getaddEventPopupTime($starttime,$endtime,$format)
 {
 	$timearr = Array();
 	list($sthr,$stmin) = explode(":",$starttime);
-	list($edhr,$edmin)  = explode(":",$endtime);
+	list($edhr,$edmin) = (!empty($endtime) ? explode(':',$endtime) : array('23','0'));
 	if($format == 'am/pm')
 	{
 		$hr = $sthr+0;
@@ -136,7 +131,7 @@ function getaddEventPopupTime($starttime,$endtime,$format)
 		$timearr['endfmt'] = ($edhr >= 12) ? "pm" : "am";
 		if($edhr == 0) $edhr = 12;
 		$timearr['endhour'] = twoDigit(($edhr>12)?($edhr-12):$edhr);
-		$timearr['endmin']    = $edmin;
+		$timearr['endmin']  = $edmin;
 		return $timearr;
 	}
 	if($format == '24')
@@ -179,7 +174,7 @@ function getTimeCombo($format,$bimode,$hour='',$min='',$fmt='',$todocheck=false)
 			}
 			else
 				$hrvalue = $hrtext = twoDigit($i);
-			$hrsel = ($hour == $hrvalue)?'selected':'';	
+			$hrsel = ($hour == $hrvalue)?'selected':'';
 			$combo .= '<option value="'.$hrvalue.'" '.$hrsel.'>'.$hrtext.'</option>';
 		}
 		$combo .= '</select>&nbsp;';
@@ -229,9 +224,7 @@ function getTimeCombo($format,$bimode,$hour='',$min='',$fmt='',$todocheck=false)
  *constructs html select combo box for combo field
  *and returns it in string format.
  */
-
-function getActFieldCombo($fieldname,$tablename,$follow_activitytype = false)
-{
+function getActFieldCombo($fieldname,$tablename,$follow_activitytype = false) {
 	global $adb, $mod_strings,$current_user;
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	$combo = '';
@@ -254,7 +247,7 @@ function getActFieldCombo($fieldname,$tablename,$follow_activitytype = false)
 			array_push($roleids, $roleid);
 		}
 		else
-		{	
+		{
 			$roleids = $roleid;
 		}
 
@@ -295,7 +288,7 @@ function getAssignedTo($tabid)
 		$result = get_group_options();
 	}
 	if($result) $nameArray = $adb->fetch_array($result);
-	
+
 	if($is_admin==false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[$tabid] == 3 or $defaultOrgSharingPermission[$tabid] == 0))
 	{
 		$users_combo = get_select_options_array(get_user_array(FALSE, "Active", $assigned_user_id,'private'), $assigned_user_id);
@@ -381,10 +374,11 @@ function twoDigit( $no ){
 }
 
 function timeString($datetime,$fmt){
-        if (is_object($datetime))
-            $dateStr = $datetime->year."-".twoDigit($datetime->month)."-".twoDigit($datetime->day);
-        else
-            $dateStr = $datetime['year']."-".twoDigit($datetime['month'])."-".twoDigit($datetime['day']);
+	if (is_object($datetime)) {
+		$dateStr = $datetime->year."-".twoDigit($datetime->month)."-".twoDigit($datetime->day);
+	} else {
+		$dateStr = $datetime['year']."-".twoDigit($datetime['month'])."-".twoDigit($datetime['day']);
+	}
 	$timeStr = formatUserTimeString($datetime, $fmt);
 	$date = new DateTimeField($dateStr." ".$timeStr);
 	list($h, $m) = explode(':', $date->getDisplayTime());
@@ -396,10 +390,9 @@ function timeString($datetime,$fmt){
  *
  * @param type $datetime
  * @param type $fmt
- * @return Date 
+ * @return Date
  */
-function formatUserTimeString($datetime,$fmt){
-	
+function formatUserTimeString($datetime,$fmt) {
 	if(is_object($datetime)){
 		$hr = $datetime->hour;
 		$min = $datetime->minute;
@@ -471,7 +464,7 @@ function getActivityMailInfo($return_id,$status,$activity_type)
 	$owner_qry = "select smownerid from vtiger_crmentity where crmid=?";
 	$res = $adb->pquery($owner_qry, array($return_id));
 	$owner_id = $adb->query_result($res,0,"smownerid");
-	
+
 	$usr_res = $adb->pquery("select count(*) as count from vtiger_users where id=?",array($owner_id));
 	if($adb->query_result($usr_res, 0, 'count')>0) {
 		$assignType = "U";
@@ -488,13 +481,12 @@ function getActivityMailInfo($return_id,$status,$activity_type)
 	$des_res = $adb->pquery($desc_qry, array($return_id));
 	$description = $adb->query_result($des_res,0,"description");
 
-		
 	$rel_qry = "select case vtiger_crmentity.setype when 'Leads' then vtiger_leaddetails.lastname when 'Accounts' then vtiger_account.accountname when 'Potentials' then vtiger_potential.potentialname when 'Quotes' then vtiger_quotes.subject when 'PurchaseOrder' then vtiger_purchaseorder.subject when 'SalesOrder' then vtiger_salesorder.subject when 'Invoice' then vtiger_invoice.subject when 'Campaigns' then vtiger_campaign.campaignname when 'HelpDesk' then vtiger_troubletickets.title  end as relname from vtiger_seactivityrel inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_seactivityrel.crmid left join vtiger_leaddetails on vtiger_leaddetails.leadid = vtiger_seactivityrel.crmid  left join vtiger_account on vtiger_account.accountid=vtiger_seactivityrel.crmid left join vtiger_potential on vtiger_potential.potentialid=vtiger_seactivityrel.crmid left join vtiger_quotes on vtiger_quotes.quoteid= vtiger_seactivityrel.crmid left join vtiger_purchaseorder on vtiger_purchaseorder.purchaseorderid = vtiger_seactivityrel.crmid  left join vtiger_salesorder on vtiger_salesorder.salesorderid = vtiger_seactivityrel.crmid left join vtiger_invoice on vtiger_invoice.invoiceid = vtiger_seactivityrel.crmid  left join vtiger_campaign on vtiger_campaign.campaignid = vtiger_seactivityrel.crmid left join vtiger_troubletickets on vtiger_troubletickets.ticketid = vtiger_seactivityrel.crmid where vtiger_seactivityrel.activityid=?";
 	$rel_res = $adb->pquery($rel_qry, array($return_id));
 	$rel_name = $adb->query_result($rel_res,0,"relname");
 
 	$relatedContacts = getActivityRelatedContacts($return_id);
-	
+
 	$mail_data['mode'] = "edit";
 	$mail_data['activity_mode'] = $activity_type;
 	$mail_data['sendnotification'] = $send_notification;
@@ -534,7 +526,7 @@ function calendarview_getSelectedUserId() {
 	return $only_for_user;
 }
 
-function calendarview_getSelectedUserFilterQuerySuffix() {	
+function calendarview_getSelectedUserFilterQuerySuffix() {
 	global $current_user, $adb;
 	$only_for_user = calendarview_getSelectedUserId();
 	$qcondition = '';
@@ -546,12 +538,12 @@ function calendarview_getSelectedUserFilterQuerySuffix() {
 				// User does not belong to any group? Let us reset to non-existent group
 				if(!empty($user_group_ids)) $user_group_ids .= ',';
 				else $user_group_ids = '';
-				$user_group_ids .= $current_user->id;	
+				$user_group_ids .= $current_user->id;
 				$qcondition = " AND vtiger_crmentity.smownerid IN (" . $user_group_ids .")";
 			} else {
 				$qcondition = " AND vtiger_crmentity.smownerid = "  . $adb->sql_escape_string($only_for_user);
 			}
-		} 
+		}
 	}
 	return $qcondition;
 }
@@ -567,20 +559,20 @@ function calendarview_getUserSelectOptions($useridInUse) {
 	$userscount = $adb->num_rows($users);
 
 	$userSelectdata = "<span style='padding-left: 10px; padding-right: 10px;'><b>" . $app_strings['LBL_LIST_OF'] . " : </b>";
-    $userSelectdata .="<select class='small' onchange='fnRedirect();' name='onlyforuser'>";
-    
-    // Providing All option for administrators only
-    if(is_admin($current_user)) {
+	$userSelectdata .="<select class='small' onchange='fnRedirect();' name='onlyforuser'>";
+
+	// Providing All option for administrators only
+	if(is_admin($current_user)) {
 		$userSelectdata .= "<option value='ALL'>" . $app_strings['COMBO_ALL'] . "</option>";
-    } 
-    
-	$userSelectdata .= "<option value='$current_user->id'".(($current_user->id == $useridInUse)? "selected='true'":"").">".$mod_strings['LBL_MINE']."</option>";	
-	
+	}
+
+	$userSelectdata .= "<option value='$current_user->id'".(($current_user->id == $useridInUse)? "selected='true'":"").">".$mod_strings['LBL_MINE']."</option>";
+
 	for($index = 0; $index < $userscount; ++$index) {
 		$userid = $adb->query_result($users, $index, 'id');
 		if($userid == $current_user->id) {
 			continue; // We have already taken care of listing at first.
-		}		
+		}
 		$username = $adb->query_result($users, $index, 'user_name');
 		$userselect = '';
 		if($userid == $useridInUse) $userselect = "selected='true'";
@@ -589,6 +581,5 @@ function calendarview_getUserSelectOptions($useridInUse) {
 	$userSelectdata .= "</select></span>";
 	return $userSelectdata;
 }
-// END
 
 ?>

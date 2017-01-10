@@ -50,7 +50,7 @@ for($i=0 ; $i<$no_of_portals; $i++)
 ?>
 </script>
 <?php
-if($def_ault == '')
+if(empty($def_ault))
 	$def_ault = $adb->query_result($result,0,'portalurl');
 $smarty = new vtigerCRM_Smarty;
 $smarty->assign("THEME", $theme);
@@ -63,9 +63,22 @@ $smarty->assign("PORTALS", $portal_info);
 $smarty->assign("MODULE", $currentModule);
 $smarty->assign("DEFAULT",'yes');
 $smarty->assign("CATEGORY", getParentTab());
-if($_REQUEST['datamode'] == 'data')
+$tool_buttons = array(
+	'EditView' => 'no',
+	'CreateView' => 'no',
+	'index' => 'no',
+	'Import' => 'no',
+	'Export' => 'no',
+	'Merge' => 'no',
+	'DuplicatesHandling' => 'no',
+	'Calendar' => 'no',
+	'moduleSettings' => 'no',
+);
+$smarty->assign('CHECK',$tool_buttons);
+$smarty->assign('CUSTOM_MODULE',false);
+if(isset($_REQUEST['datamode']) and $_REQUEST['datamode'] == 'data')
 	$smarty->display("MySitesContents.tpl");
-elseif($_REQUEST['datamode'] == 'manage')
+elseif(isset($_REQUEST['datamode']) and $_REQUEST['datamode'] == 'manage')
 	$smarty->display("MySitesManage.tpl");
 else
 	$smarty->display("MySites.tpl");

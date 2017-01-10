@@ -20,9 +20,10 @@ if(isset($_REQUEST['record']) && $_REQUEST['record'] !='')
 	$portalurl = $adb->query_result($result,0,'portalurl');
 	/* to remove http:// from portal url*/
 	$portalurl = preg_replace("/http:\/\//i","",$portalurl);
+} else {
+	$portalid = $portalname = $portalurl = '';
 }
-$portal_inputs='';
-$portal_inputs.='<div style="display:block;position:relative;" id="orgLay" class="layerPopup">
+$portal_inputs = '<div style="display:block;position:relative;" id="orgLay" class="layerPopup">
 		<form onSubmit="OnUrlChange(); SaveSite(\''.$portalid.'\');return false;" >
 		<table border="0" cellpadding="3" cellspacing="0" width="100%" class="layerHeadingULine">
 		<tr>
