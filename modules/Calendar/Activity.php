@@ -105,8 +105,9 @@ class Activity extends CRMEntity {
 			$listofctos = explode(';',$this->column_fields['contact_id']);
 			foreach ($listofctos as $cto) {
 				$this->column_fields['contact_id'] = $cto;
-				if($cto != '' & $cto != '0')
+				if(!empty($cto)) {
 					$adb->pquery("insert into vtiger_cntactivityrel(contactid,activityid) values(?,?)",array($cto,$this->id));
+				}
 			}
 			$this->column_fields['contact_id'] = $ctovalue;
 		}
