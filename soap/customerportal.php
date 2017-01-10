@@ -1379,7 +1379,7 @@ function add_ticket_attachment($input_array)
 	//Now store this file information in db and relate with the ticket
 	$date_var = $adb->formatDate(date('Y-m-d H:i:s'), true);
 
-	$crmquery = "insert into vtiger_crmentity (crmid,setype,description,createdtime) values(?,?,?,?)";
+	$crmquery = 'insert into vtiger_crmentity (crmid,setype,description,createdtime,modifiedtime) values(?,?,?,?,NOW())';
 	$crmresult = $adb->pquery($crmquery, array($attachmentid, 'HelpDesk Attachment', $description, $date_var));
 
 	$attachmentquery = "insert into vtiger_attachments(attachmentsid,name,description,type,path) values(?,?,?,?,?)";
