@@ -32,7 +32,7 @@
         <label></label>
         <sequence></sequence>
         <type></type> RelatedList | Widget | CodeWithHeader | CodeWithoutHeader
-        <loadfrom></loadfrom> related list label or id | file to load | widget reference
+        <loadfrom></loadfrom> related list label or module id | file to load | widget reference
         <loadphp></loadphp>
         <handler_path></handler_path>
         <handler_class></handler_class>
@@ -104,10 +104,9 @@ class RelatedPanes extends processcbMap {
 					$block['loadfrom'] = (String)$value->loadfrom;
 					$block['loadphp'] = (isset($value->loadphp) ? (String)$value->loadphp : '');
 					if ($block['type']=='RelatedList') {
-						if (is_numeric($tid) and !vtlib_isModuleActive($block['loadfrom'])) continue;
+						if (is_numeric($block['loadfrom']) and !vtlib_isModuleActive($block['loadfrom'])) continue;
 						$rels = $this->getRelationIds($origintab,$block['loadfrom']);
 						$block['relatedid'] = $rels[$block['loadfrom']];
-						$tid=getTabid($block['loadfrom']);
 						if (empty($block['label'])) $block['label'] = getTranslatedString($block['loadfrom'],$block['loadfrom']);
 						if (!empty($rels[$block['loadfrom']])) $restrictedRelations[] = $rels[$block['loadfrom']];
 					} elseif ($block['type']=='Widget') {
