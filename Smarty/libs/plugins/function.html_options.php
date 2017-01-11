@@ -93,6 +93,17 @@ function smarty_function_html_options($params)
                 }
                 break;
 
+            case 'multiple':
+            	if ($_val)
+            		$extra .= ' multiple="true" size="6"';
+            	break;
+            case 'sortoptions':
+                if ($_val=='desc')
+                	arsort($options);
+                else
+              		asort($options);
+                break;
+
             case 'strict':
                 break;
 
