@@ -44,6 +44,7 @@ $smarty->assign('THEME', $theme);
 $smarty->assign('ID', $focus->id);
 $smarty->assign('RECORDID', $focus->id);
 $smarty->assign('MODE', $focus->mode);
+$smarty->assign('USE_ASTERISK', get_use_asterisk($current_user->id));
 
 $recordName = array_values(getEntityName($currentModule, $focus->id));
 $recordName = $recordName[0];

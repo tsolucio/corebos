@@ -78,7 +78,11 @@ class ListViewController {
 		if(count($idList) == 0) {
 			return;
 		}
-		$moduleList = $referenceFieldInfoList[$fieldName];
+		if (isset($referenceFieldInfoList[$fieldName])) {
+			$moduleList = $referenceFieldInfoList[$fieldName];
+		} else {
+			$moduleList = array();
+		}
 		foreach ($moduleList as $module) {
 			$meta = $this->queryGenerator->getMeta($module);
 			if ($meta->isModuleEntity()) {

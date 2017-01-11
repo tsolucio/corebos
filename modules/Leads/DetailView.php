@@ -59,7 +59,6 @@ if (isPermitted('Leads', 'Merge', '') == 'yes') {
 	$smarty->assign('TOPTIONS', $optionString);
 }
 
-$smarty->assign('USE_ASTERISK', get_use_asterisk($current_user->id));
 if (useInternalMailer() == 1)
 	$smarty->assign('INT_MAILER', 'true');
 

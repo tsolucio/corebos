@@ -1235,10 +1235,10 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 	return $list;
 }
 
-/* * This function generates the value for a given vtiger_field namee
+/* * This function generates the value for a given field name
  * Param $field_result - vtiger_field result in array
  * Param $list_result - resultset of a listview query
- * Param $fieldname - vtiger_field name
+ * Param $fieldname - field name
  * Param $focus - module object
  * Param $module - module name
  * Param $entity_id - entity id
@@ -1593,7 +1593,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 	}
 	elseif ($uitype == 79) {
 		if ($temp_val != '') {
-
 			$purchaseorder_name = getPoName($temp_val);
 			$value = '<a href=index.php?module=PurchaseOrder&action=DetailView&record=' . $temp_val . '&parenttab=' . urlencode($tabname) . '>' . textlength_check($purchaseorder_name) . '</a>';
 		}
@@ -1602,7 +1601,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 	}
 	elseif ($uitype == 80) {
 		if ($temp_val != '') {
-
 			$salesorder_name = getSoName($temp_val);
 			$value = "<a href=index.php?module=SalesOrder&action=DetailView&record=$temp_val&parenttab=" . urlencode($tabname) . ">" . textlength_check($salesorder_name) . '</a>';
 		}
@@ -1610,9 +1608,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 			$value = '';
 	}
 	elseif ($uitype == 75 || $uitype == 81) {
-
 		if ($temp_val != '') {
-
 			$vendor_name = getVendorName($temp_val);
 			$value = '<a href=index.php?module=Vendors&action=DetailView&record=' . $temp_val . '&parenttab=' . urlencode($tabname) . '>' . textlength_check($vendor_name) . '</a>';
 		}

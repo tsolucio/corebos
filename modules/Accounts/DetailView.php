@@ -13,7 +13,6 @@ global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
 
 $smarty = new vtigerCRM_Smarty();
 
-$smarty->assign('USE_ASTERISK', get_use_asterisk($current_user->id));
 if(useInternalMailer() == 1)
 	$smarty->assign('INT_MAILER','true');
 
