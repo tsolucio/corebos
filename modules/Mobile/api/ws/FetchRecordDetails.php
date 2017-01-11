@@ -240,8 +240,13 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 							}
 						}
 						$editview_label[]=getTranslatedString($fieldlabel, $module);
+						foreach ($valueArr as $key => $value) {
+							$valueArr[$key] = getTranslatedString($value, $module);
+						}
 						if ($field['uitype'] == '33') {
 							$field['value'] = implode ( ',' , $valueArr ) ;
+						}else{
+							$field['value'] = $valueArr[0];
 						}
 	
 						$fieldvalue [] = $options;
