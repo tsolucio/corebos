@@ -531,7 +531,17 @@ class ListViewController {
 						$modrel=getTabModuleName($field->getTabId());
 						$fieldName=str_replace($modrel.'.',"",$fieldName);
 					}
-					$moduleList = $referenceFieldInfoList[$fieldName];
+					if (isset($referenceFieldInfoList[$fieldName])) {
+						$moduleList = $referenceFieldInfoList[$fieldName];
+					} else {
+						$setype = getSalesEntityType($value);
+						$moduleList = array($setype);
+						if (!isset($this->nameList[$fieldName])) $this->nameList[$fieldName] = array($fieldName=>array());
+						if (!isset($this->nameList[$fieldName][$value])) {
+							$en = getEntityName($setype, $value);
+							$this->nameList[$fieldName][$value] = $en[$value];
+						}
+					}
 					if(count($moduleList) == 1) {
 						$parentModule = $moduleList[0];
 					} else {
