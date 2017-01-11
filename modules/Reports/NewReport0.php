@@ -13,11 +13,12 @@ require_once('include/logging.php');
 require_once('include/utils/utils.php');
 require_once('modules/Reports/Reports.php');
 
-global $app_strings, $app_list_strings, $mod_strings;
+global $app_strings, $mod_strings;
 $current_module_strings = return_module_language($current_language, 'Reports');
 $log = LoggerManager::getLogger('report_list');
 global $currentModule, $image_path, $theme;
 $recordid = vtlib_purify($_REQUEST['record']);
+$report = new Reports();
 
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
@@ -31,6 +32,7 @@ $repObj = new Reports ();
 $folderid = 0;
 if($recordid!=''){
 	$oRep = new Reports($recordid);
+	$sec_module = array();
 	if($oRep->secmodule!=''){
 		$sec_mod = explode(":",$oRep->secmodule);
 		$rel_modules = getReportRelatedModules($oRep->primodule,$oRep);
@@ -76,6 +78,7 @@ if($recordid!=''){
 	}
 	$list_report_form->assign("RESTRICTEDMODULES",$restrictedmod);
 	$list_report_form->assign("BACK",'true');
+
 }
 if(!empty($_REQUEST['reportmodule'])) {
 	if(vtlib_isModuleActive($_REQUEST['reportmodule'])==false || isPermitted($_REQUEST['reportmodule'],'index')!= "yes"){
@@ -111,10 +114,48 @@ if(!empty($_REQUEST['reportName'])) {
 	$list_report_form->assign("SEC_MODULE",$sec_module);
 	$list_report_form->assign("BACK_WALK",'true');
 }
+
+// Schedule Report
+require_once 'modules/Reports/ScheduledReports.php';
+$availableUsersHTML = VTScheduledReport::getAvailableUsersHTML();
+$availableGroupsHTML = VTScheduledReport::getAvailableGroupsHTML();
+$availableRolesHTML = VTScheduledReport::getAvailableRolesHTML();
+$availableRolesAndSubHTML = VTScheduledReport::getAvailableRolesAndSubordinatesHTML();
+
+getBrowserVariables($list_report_form);
+
+$list_report_form->assign("AVAILABLE_USERS", $availableUsersHTML);
+$list_report_form->assign("AVAILABLE_GROUPS", $availableGroupsHTML);
+$list_report_form->assign("AVAILABLE_ROLES", $availableRolesHTML);
+$list_report_form->assign("AVAILABLE_ROLESANDSUB", $availableRolesAndSubHTML);
+
+$reportid = vtlib_purify($_REQUEST["record"]);
+$scheduledReport = new VTScheduledReport($adb, $current_user, $reportid);
+$scheduledReport->getReportScheduleInfo();
+
+$list_report_form->assign('IS_SCHEDULED', $scheduledReport->isScheduled);
+$list_report_form->assign('REPORT_FORMAT', $scheduledReport->scheduledFormat);
+
+$selectedRecipientsHTML = $scheduledReport->getSelectedRecipientsHTML();
+$list_report_form->assign("SELECTED_RECIPIENTS", $selectedRecipientsHTML);
+
+$list_report_form->assign("schtypeid",$scheduledReport->scheduledInterval['scheduletype']);
+$list_report_form->assign("schtime",$scheduledReport->scheduledInterval['time']);
+$list_report_form->assign("schday",$scheduledReport->scheduledInterval['date']);
+$list_report_form->assign("schweek",$scheduledReport->scheduledInterval['day']);
+$list_report_form->assign("schmonth",$scheduledReport->scheduledInterval['month']);
+
 $list_report_form->assign('FOLDERID',isset($_REQUEST['folder'])?vtlib_purify($_REQUEST['folder']):$folderid);
 $list_report_form->assign("REP_FOLDERS",$repObj->sgetRptFldr());
 $list_report_form->assign("IMAGE_PATH", $image_path);
 $list_report_form->assign("THEME_PATH", $theme_path);
 $list_report_form->assign("ERROR_MSG", $mod_strings['LBL_NO_PERMISSION']);
+
+$BLOCKJS = $repObj->getCriteriaJS();
+$list_report_form->assign("BLOCKJS_STD",$BLOCKJS);
+$list_report_form->assign("DATEFORMAT",$current_user->date_format);
+$list_report_form->assign("JS_DATEFORMAT",parse_calendardate($app_strings['NTC_DATE_FORMAT']));
+$list_report_form->assign('MODULE','Reports');
+
 $list_report_form->display("ReportsStep0.tpl");
 ?>

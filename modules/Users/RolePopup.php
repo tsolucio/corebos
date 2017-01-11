@@ -11,7 +11,7 @@ require_once('include/utils/UserInfoUtil.php');
 require_once('Smarty_setup.php');
 $smarty = new vtigerCRM_Smarty;
 
-global $mod_strings, $app_strings, $app_list_strings, $adb, $theme;
+global $mod_strings, $app_strings, $adb, $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 

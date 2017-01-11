@@ -15,11 +15,21 @@ class ClickATell implements ISMSProvider {
 	private $_username;
 	private $_password;
 	private $_parameters = array();
+	public $helpURL = 'https://archive.clickatell.com/developers/2015/10/08/http/s/';
+	public $helpLink = 'ClickATell HTTP';
 
 	const SERVICE_URI = 'http://api.clickatell.com';
 	private static $REQUIRED_PARAMETERS = array('api_id', 'from', 'mo');
 
 	function __construct() {
+	}
+
+	/**
+	 * Function to get provider name
+	 * @return <String> provider name
+	 */
+	public function getName() {
+		return $this->helpLink;
 	}
 
 	public function setAuthParameters($username, $password) {
@@ -149,5 +159,66 @@ class ClickATell implements ISMSProvider {
 		}
 		return $result;
 	}
+
+	/**
+	* Function to handle UTF-8 Check and conversion
+	* @author Nuri Unver
+	*/
+	public function smstxtcode($data) {
+		$mb_hex = '';
+		$utf = 0;
+		for($i = 0; $i < strlen ( $data ); $i ++) {
+			$c = mb_substr ( $data, $i, 1, 'UTF-8' );
+			$o = unpack ( 'N', mb_convert_encoding ( $c, 'UCS-4BE', 'UTF-8' ) );
+			$hx = sprintf ( '%04X', $o [1] );
+			$utf += intval ( substr ( $hx, 0, 2 ) );
+			$mb_hex .= $hx;
+		}
+		if ($utf > 0) {
+			$return = $mb_hex;
+			$utf = 1;
+		} else {
+			$return = utf8_decode ( $data );
+			$utf = 0;
+		}
+		return array (
+			$utf,
+			$return
+		);
+	}
+
 }
+
+/*
+ * On vtiger CRM forum: Nuri Unver February 2014
+
+For those who need to send UTF-8 messages. The ClickATell extension, as it is, just sends whatever text you type. So, you get garbage when you use extended character sets.
+I changed the ClickATell.php file so that
+
+1) It checks whether the message contains any extended characters
+2) If it does, in converts the message into unicode hex format (credits for conversion code goes to Dagon on phpbuilder forum)
+3) If the message contains extended characters, it sets unicode setting when sending message to ClickATell, that knows it is receiving unicode hex instead of plain text.
+4) If the message does not contain extended characters, it does a utf8 decoding just in case you have characters that are not extended but not latin either.
+5) Finally, I also added concat parameter so that if the message is long, it can send it as two or three messages. This is important especially for UTF-8 messages as the maximum you can get is 70 chars per message.
+
+CODE
+
+Add method smstxtcode() // already included
+
+protected function prepareParameters() {
+-$params = array('user' => $this->userName, 'password' => $this->password);
++$params = array('user' => $this->userName, 'password' => $this->password, 'unicode' => '1', 'concat' => '3');
+foreach (self::$REQUIRED_PARAMETERS as $key) {
+
+
+In function send($message, $toNumbers)
+
+$params = $this->prepareParameters();
+-$params['text'] = $message;
++$smsarray = $this->smstxtcode($message);
++$params['text'] = $smsarray[1];
++$params['unicode'] = $smsarray[0];
+$params['to'] = implode(',', $toNumbers);
+
+*/
 ?>

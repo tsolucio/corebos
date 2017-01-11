@@ -15,7 +15,7 @@ require_once('include/database/PearDatabase.php');
 require_once 'include/utils/ListViewUtils.php';
 require_once('modules/CustomView/CustomView.php');
 
-global $mod_strings,$app_strings,$app_list_strings,$theme,$adb,$current_user;
+global $mod_strings,$app_strings,$theme,$adb,$current_user;
 
 $theme_path="themes/".$theme."/";
 

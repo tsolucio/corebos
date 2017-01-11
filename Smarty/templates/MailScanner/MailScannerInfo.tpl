@@ -51,7 +51,7 @@ function performScanNow(app_key, scannername) {
 						{if $CRON_TASK->isDisabled() }{'LBL_DISABLED'|@getTranslatedString:$MODULE}{/if}
 						{if $CRON_TASK->isRunning() }{'LBL_RUNNING'|@getTranslatedString:$MODULE}{/if}
 						{if $CRON_TASK->isEnabled()}
-							{if $CRON_TASK->hadTimedout}
+							{if $CRON_TASK->hadTimedout()}
 								{'LBL_LAST_SCAN_TIMED_OUT'|@getTranslatedString:$MODULE}.
 							{elseif $CRON_TASK->getLastEndDateTime() neq ''}
 								{'LBL_LAST_SCAN_AT'|@getTranslatedString:$MODULE}

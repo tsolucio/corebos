@@ -8,7 +8,6 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script type="text/javascript" src="include/js/menu.js"></script>
 <script type="text/javascript" src="include/js/ColorPicker2.js"></script>
 <script type="text/javascript" src="include/js/dtlviewajax.js"></script>
 <script type="text/javascript" src="include/js/smoothscroll.js"></script>
@@ -82,12 +81,12 @@
 							<tr>
 								<td colspan="2" nowrap align="right">
 									{if $IS_ADMIN eq 'true' && !$mustChangePassword}
-									<input type="button" onclick="showAuditTrail();" value="{$MOD.LBL_VIEW_AUDIT_TRAIL}" class="crmButton small save"></input>
+									<input type="button" onclick="gotourl('index.php?module=cbLoginHistory&action=ListView&page=1&user_list={$ID}');" value="{$MOD.LBL_VIEW_AUDIT_TRAIL}" class="crmButton small save"></input>
 									<input type="button" onclick="VtigerJS_DialogBox.block();window.document.location.href = 'index.php?module=Users&action=UsersAjax&file=CalculatePrivilegeFiles&record={$ID}';" value="{$MOD.LBL_RECALCULATE_BUTTON}" class="crmButton small cancel"></input>
 									{/if}
-									{if $CATEGORY eq 'Settings'}
-														{$DUPLICATE_BUTTON}
-												{/if}
+									{if $IS_ADMIN eq 'true'}
+										{$DUPLICATE_BUTTON}
+									{/if}
 									{$EDIT_BUTTON}
 									{if $CATEGORY eq 'Settings' && $ID neq 1 && $ID neq $CURRENT_USERID}
 									<input type="button" onclick="deleteUser({$ID});" class="crmButton small cancel" value="{$UMOD.LBL_DELETE}"></input>
@@ -218,22 +217,6 @@
 									<tr><td align="left"><div id="user_group_cont" style="display:none;"></div></td></tr>
 									</table>
 									<br>
-									<!-- Login History -->
-									{if $IS_ADMIN eq 'true'}
-									<table class="tableHeading" border="0" cellpadding="5" cellspacing="0" width="100%">
-										<tr>
-										 <td class="big">
-										<strong>{$list_numbering+4}. {$UMOD.LBL_LOGIN_HISTORY}</strong>
-										 </td>
-										 <td class="small" align="right"><img src="{'showDown.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" onClick="fetchlogin_js({$ID});"></td>
-										</tr>
-									</table>
-
-									<table border="0" cellpadding="5" cellspacing="0" width="100%">
-									<tr><td align="left"><div id="login_history_cont" style="display:none;"></div></td></tr>
-									</table>
-									<br>
-									{/if}
 								</td>
 								</tr>
 								</table>
@@ -269,7 +252,6 @@
 			</table>
 
 <br>
-{$JAVASCRIPT}
 <div id="tempdiv" style="display:block;position:absolute;left:350px;top:200px;"></div>
 <!-- added for validation -->
 <script>
@@ -284,28 +266,6 @@ function ShowHidefn(divid)
 		jQuery("#"+divid).fadeIn();
 {rdelim}
 {literal}
-function fetchlogin_js(id)
-{
-	if(document.getElementById('login_history_cont').style.display != 'none')
-		jQuery('#login_history_cont').fadeOut();
-	else
-		fetchLoginHistory(id);
-
-}
-function fetchLoginHistory(id)
-{
-		document.getElementById("status").style.display="inline";
-		jQuery.ajax({
-				method:"POST",
-				url:'index.php?module=Users&action=UsersAjax&file=ShowHistory&ajax=true&record='+id
-		}).done(function(response) {
-				document.getElementById("status").style.display="none";
-				document.getElementById("login_history_cont").innerHTML= response;
-				jQuery('#login_history_cont').fadeIn();
-		}
-	);
-
-}
 function fetchGroups_js(id)
 {
 	if(document.getElementById('user_group_cont').style.display != 'none')
@@ -325,13 +285,6 @@ function fetchUserGroups(id)
 					jQuery('#user_group_cont').fadeIn();
 			}
 		);
-
-}
-
-function showAuditTrail()
-{
-	var userid =  document.getElementById('userid').value;
-	window.open("index.php?module=Settings&action=SettingsAjax&file=ShowAuditTrail&userid="+userid,"","width=650,height=800,resizable=0,scrollbars=1,left=100");
 }
 
 function deleteUser(userid)
@@ -348,25 +301,11 @@ function deleteUser(userid)
 }
 function transferUser(del_userid)
 {
-        document.getElementById("status").style.display="inline";
-        document.getElementById("DeleteLay").style.display="none";
-        var trans_userid=document.getElementById('transfer_user_id').options[document.getElementById('transfer_user_id').options.selectedIndex].value;
+	document.getElementById("status").style.display="inline";
+	document.getElementById("DeleteLay").style.display="none";
+	var trans_userid=document.getElementById('transfer_user_id').options[document.getElementById('transfer_user_id').options.selectedIndex].value;
 	window.document.location.href = 'index.php?module=Users&action=DeleteUser&ajax_delete=false&delete_user_id='+del_userid+'&transfer_user_id='+trans_userid;
 }
 {/literal}
-</script>
-<script>
-function getListViewEntries_js(module,url)
-{ldelim}
-	document.getElementById("status").style.display="inline";
-        jQuery.ajax({ldelim}
-				method:"POST",
-				url:"index.php?module="+module+"&action="+module+"Ajax&file=ShowHistory&record={$ID}&ajax=true&"+url
-		{rdelim}).done(function(response) {ldelim}
-					document.getElementById("status").style.display="none";
-					document.getElementById("login_history_cont").innerHTML= response;
-		{rdelim}
-		);
-{rdelim}
 </script>
 

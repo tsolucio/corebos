@@ -16,7 +16,7 @@
 
 // Product line support
 if ($elementType != 'PurchaseOrder') {
-	if (GlobalVariable::getVariable('B2B', '1')=='1') {
+	if (GlobalVariable::getVariable('Application_B2B', '1')=='1') {
 		$acvid = $element['account_id'];
 	} else {
 		$acvid = $element['contact_id'];

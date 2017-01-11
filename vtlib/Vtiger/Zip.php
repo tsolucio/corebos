@@ -7,13 +7,56 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('vtlib/thirdparty/dZip.inc.php');
 
 /**
- * Wrapper class over dZip.
+ * Zip creation class
  * @package vtlib
  */
-class Vtiger_Zip extends dZip {
+class Vtiger_Zip {
+	public $filename;
+	private $zipa;
+
+	public function __construct($filename) {
+		$this->filename  = $filename;
+		$this->overwrite = $overwrite;
+		$this->zipa = new ZipArchive();
+		if ($this->zipa->open($filename, ZipArchive::CREATE)!==TRUE) {
+			throw new Exception("cannot open <$filename>");
+		}
+	}
+
+	public function addDir($dirname) {
+		$dirname = rtrim($dirname,'/');
+		$this->zipa->addEmptyDir($dirname);
+	}
+
+	public function addFile($filename, $cfilename, $fileComments='', $data=false){
+		// $filename can be a local file OR the data which will be compressed
+		if(substr($cfilename, -1)=='/'){
+			$data = '';
+			$this->zipa->addFromString($cfilename, $data);
+		}
+		elseif(file_exists($filename)){
+			$data = file_get_contents($filename);
+			$this->zipa->addFile($filename, $cfilename);
+		}
+		elseif($filename){
+			throw new Exception("Cannot add $filename. File not found");
+			return false;
+		}
+		else{
+			// DATA is given
+			$this->zipa->addFromString($cfilename, $data);
+		}
+	}
+
+	public function save($zipComments=''){
+		if ($zipComments!='') {
+			$this->zipa->setArchiveComment($zipComments);
+		}
+		$this->zipa->close();
+	}
+
 	/**
 	 * Push out the file content for download.
 	 */

@@ -65,6 +65,7 @@
 					<h3>{$_BLOCKLABEL|@getTranslatedString:$_MODULE->name()}</h3>
 					<p>
 					{foreach item=_FIELD from=$_FIELDS}
+						{if $_FIELD->displaytype() eq '1' || ($_FIELD->name() eq 'time_start' || $_FIELD->name() eq 'time_end')}
 							<div>   
 								{if $_FIELD->uitype() eq '1' || $_FIELD->uitype() eq '2' || $_FIELD->uitype() eq '55' || $_FIELD->uitype() eq '255' || $_FIELD->uitype() eq '11'  || $_FIELD->uitype() eq '13'  || $_FIELD->uitype() eq '17' || $_FIELD->uitype() eq '72' || $_FIELD->uitype() eq '22'  || $_FIELD->uitype() eq '20'}
 									{if $_MODULE->name() eq 'Calendar' && $_FIELD->name() eq 'location'}
@@ -85,7 +86,7 @@
 										{if $_FIELD->name() neq 'time_start' &&  $_FIELD->name() neq 'time_end'}
 											{if $_FIELD->name() eq 'date_start'}
 												<input type="hidden" name="dateformat" id="dateformat" value="{$DATEFORMAT}" />
-												<label for="{$_FIELD->name()}">{'Start Date & Time'|@getTranslatedString:$_MODULE->name()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
+												<label for="{$_FIELD->name()}">{'Start Date'|@getTranslatedString:$_MODULE->name()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
 											{else}
 												<label for="{$_FIELD->name()}">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
 											{/if}
@@ -93,17 +94,15 @@
 											<div id="format_note_{$_FIELD->name()}" style="margin-bottom:25px;font-style:italic;font-size:10px;display:none;">Format: YYYY-MM-DD</div>
 										{/if}
 										{if $_FIELD->uitype() eq '252' && $_FIELD->name() eq 'time_start'}
+											<label for="{$_FIELD->name()}">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
 											<input type="hidden" name="startformat" id="startformat" value="{$dateStr}" />
-											<input type="time" name="time_start" id="time_start" value="{$time_value}" class="required" />
+											<input type="time" name="time_start" id="time_start" value="{$_FIELD->value()}" class="required" />
 											<div id="format_note_{$_FIELD->name()}" style="margin-bottom:25px;font-style:italic;font-size:10px;display:none;">Format: HH:MM (24 H)</div>
 										{/if}
 										{if $_FIELD->uitype() eq '252' && $_FIELD->name() eq 'time_end' && $ORIGMODULE eq 'Events'}
-											{if $mode eq 'create'}
-											<input type="hidden" name="time_end" id="time_end" value=""  />
-											{else}
-											<input type="time" name="time_end" id="time_end" value="{$time_value}" />
+											<label for="{$_FIELD->name()}">{$_FIELD->label()|@getTranslatedString:$_MODULE->name()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
+											<input type="time" name="time_end" id="time_end" value="{$_FIELD->value()}" />
 											<div id="format_note_time_end" style="margin-bottom:25px;font-style:italic;font-size:10px;display:none;">Format: HH:MM (24 H)</div>
-											{/if}
 										{/if}
 								{/if}	
 								{if $_FIELD->uitype() eq '4'}
@@ -281,7 +280,8 @@
 										<input  type="text" name="{$_FIELD->name()}" id="{$_FIELD->label()}" value="{$_FIELD->valueLabel()}" {if $_FIELD->ismandatory() eq 'M'}class="required"{/if} />
 								    </div>
 							    {/if}
-                          </div>								
+                          </div>
+						{/if}
 					{/foreach}
 					</p>
 				</div>

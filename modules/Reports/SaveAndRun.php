@@ -100,7 +100,7 @@ if($numOfRows > 0) {
 				//$groupByField = $oReportRun->GetFirstSortByField($reportid);
 				$queryReports = CustomReportUtils::getCustomReportsQuery($Report_ID,$filtersql);
 				$queryResult = $adb->pquery($queryReports,array());
-				if($adb->num_rows($queryResult)){
+				if($queryResult and $adb->num_rows($queryResult)){
 					$ChartDetails = ChartUtils::generateChartDataFromReports($queryResult, strtolower($module_field), $fieldDetails, $reportid);
 					$list_report_form->assign('CHARTDATA',$ChartDetails);
 				}
@@ -224,7 +224,7 @@ if($numOfRows > 0) {
  */
 function getPrimaryStdFilterHTML($module,$selected="")
 {
-	global $app_list_strings, $ogReport, $current_language;
+	global $ogReport, $current_language;
 	$ogReport->oCustomView=new CustomView();
 	$result = $ogReport->oCustomView->getStdCriteriaByModule($module);
 	$mod_strings = return_module_language($current_language,$module);
@@ -263,7 +263,7 @@ function getPrimaryStdFilterHTML($module,$selected="")
  *  This Returns a HTML sring
  */
 function getSecondaryStdFilterHTML($module,$selected='') {
-	global $app_list_strings, $ogReport, $current_language;
+	global $ogReport, $current_language;
 	$ogReport->oCustomView=new CustomView();
 	if($module != '') {
 		$secmodule = explode(":",$module);
@@ -293,14 +293,14 @@ function getSecondaryStdFilterHTML($module,$selected='') {
 }
 
 function getPrimaryColumns_AdvFilter_HTML($module, $ogReport, $selected='') {
-	global $app_list_strings, $current_language;
+	global $current_language;
 	$mod_strings = return_module_language($current_language,$module);
 	$block_listed = array();
 	$shtml = '';
 	foreach($ogReport->module_list[$module] as $key=>$value) {
 		if(isset($ogReport->pri_module_columnslist[$module][$value]) && empty($block_listed[$value])) {
 			$block_listed[$value] = true;
-			$shtml .= "<optgroup label=\"".$app_list_strings['moduleList'][$module]." ".getTranslatedString($value)."\" class=\"select\" style=\"border:none\">";
+			$shtml .= '<optgroup label="'.getTranslatedString($module,$module).' '.getTranslatedString($value).'" class="select" style="border:none">';
 			foreach($ogReport->pri_module_columnslist[$module][$value] as $field=>$fieldlabel)
 			{
 				if(isset($mod_strings[$fieldlabel]))
@@ -333,7 +333,7 @@ function getPrimaryColumns_AdvFilter_HTML($module, $ogReport, $selected='') {
 }
 
 function getSecondaryColumns_AdvFilter_HTML($module, $ogReport, $selected="") {
-	global $app_list_strings, $current_language;
+	global $current_language;
 	$shtml = '';
 	if($module != '') {
 		$secmodule = explode(":",$module);
@@ -342,9 +342,9 @@ function getSecondaryColumns_AdvFilter_HTML($module, $ogReport, $selected="") {
 			if(vtlib_isModuleActive($secmodule[$i])){
 				$block_listed = array();
 				foreach($ogReport->module_list[$secmodule[$i]] as $key=>$value) {
-					if(isset($ogReport->sec_module_columnslist[$secmodule[$i]][$value]) && !$block_listed[$value]) {
+					if(isset($ogReport->sec_module_columnslist[$secmodule[$i]][$value]) && empty($block_listed[$value])) {
 						$block_listed[$value] = true;
-						$shtml .= "<optgroup label=\"".$app_list_strings['moduleList'][$secmodule[$i]]." ".getTranslatedString($value)."\" class=\"select\" style=\"border:none\">";
+						$shtml .= '<optgroup label="'.getTranslatedString($secmodule[$i],$secmodule[$i]).' '.getTranslatedString($value).'" class="select" style="border:none">';
 						foreach($ogReport->sec_module_columnslist[$secmodule[$i]][$value] as $field=>$fieldlabel) {
 							if(isset($mod_strings[$fieldlabel]))
 							{

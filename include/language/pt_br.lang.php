@@ -136,7 +136,6 @@ $app_strings = array (
 'LBL_LIST_OF' => 'de',
 'LNK_PRINT' => 'Imprimir',
 'LNK_HELP' => 'Ajuda',
-'LNK_VTDOCS' => 'Docs vtiger',
 'LNK_ABOUT' => 'Sobre',
 'LNK_OUTLOOK' => './include/images/outlook_download.gif',
 'SINGLE_Accounts' => 'Organização',
@@ -1310,106 +1309,9 @@ $app_strings = array (
 'Subscribe' => 'Subscribe',
 );
 
-$app_list_strings = array (
-  'moduleList' =>
-  array (
-    'Home' => 'Principal',
-    'Dashboard' => 'Painel',
-    'Leads' => 'Leads',
-    'Contacts' => 'Contatos',
-    'Accounts' => 'Organizações',
-    'Potentials' => 'Oportunidade',
-    'Campaigns' => 'Campanhas',
-    'Emails' => 'Emails',
-    'Activities' => 'Atividades',
-    'Products' => 'Produtos',
-    'HelpDesk' => 'Tickets',
-    'Faq' => 'FAQ',
-    'Calendar' => 'Compromissos',
-    'Quotes' => 'Cotações',
-    'PurchaseOrder' => 'Pedido Compra',
-    'Invoice' => 'Fatura',
-    'Rss' => 'RSS',
-    'Reports' => 'Relatórios',
-    'Vendors' => 'Fornecedores',
-    'PriceBooks' => 'Lista Preços',
-    'SalesOrder' => 'Pedido Venda',
-    'Portal' => 'Meus Sites',
-
-	// Added after 5.0.4 GA
-    'Documents' => 'Documentos',
-  ),
-  'opportunity_relationship_type_default_key' => 'Primary Decision Maker',
-  'opportunity_relationship_type_dom' =>
-  array (
-    '' => '',
-    'Primary Decision Maker' => 'Decisor Principal',
-    'Business Decision Maker' => 'Decisor Negócio',
-    'Business Evaluator' => 'Avaliador Negócio',
-    'Technical Decision Maker' => 'Decisor Técnico',
-    'Technical Evaluator' => 'Avaliador Técnico',
-    'Executive Sponsor' => 'Patrocinador Executivo',
-    'Influencer' => 'Influenciador',
-    'Other' => 'Outro',
-  ),
-  'case_relationship_type_default_key' => 'Primary Contact',
-  'case_relationship_type_dom' =>
-  array (
-    '' => '',
-    'Primary Contact' => 'Contato Principal',
-    'Alternate Contact' => 'Contato Alternativo',
-  ),
-  'task_priority_dom' =>
-  array (
-    'High' => 'Alta',
-    'Medium' => 'Média',
-    'Low' => 'Baixa',
-  ),
-  'task_status_dom' =>
-  array (
-    'Planned' => 'Planejada',
-    'Completed' => 'Concluída',
-    'Deferred' => 'Adiada',
-  ),
-  'meeting_status_dom' =>
-  array (
-    'Planned' => 'Planejada',
-    'Held' => 'Confirmada',
-    'Not Held' => 'Não Confirmada',
-  ),
-  'call_status_dom' =>
-  array (
-    'Planned' => 'Planejada',
-    'Held' => 'Confirmada',
-    'Not Held' => 'Não Confirmada',
-  ),
-  'case_status_default_key' => 'New',
-  'case_status_dom' =>
-  array (
-    'New' => 'Novo',
-    'Assigned' => 'Designado',
-    'Closed' => 'Fechado',
-    'Pending Input' => 'Pendente',
-    'Rejected' => 'Rejeitado',
-  ),
-  'user_status_dom' =>
-  array (
-    'Active' => 'Ativo',
-    'Inactive' => 'Inativo',
-  ),
-  'record_type_default_key' => 'Accounts',
-  'record_type_display' =>
-  array (
-    'Accounts' => 'Organização',
-    'Leads' => 'Lead',
-    'Opportunities' => 'Oportunidade',
-  ),
-  
-);
-
 // Translation for currency names
 $app_currency_strings = array(
-    	'Albania, Leke' 		=> 'Albânia, Leke',
+	'Albania, Leke' 		=> 'Albânia, Leke',
 	'Argentina, Pesos' 		=> 'Argentina, Pesos',
 	'Aruba, Guilders' 		=> 'Aruba, Guilders',
 	'Australia, Dollars' 	=> 'Australia, Dólar',

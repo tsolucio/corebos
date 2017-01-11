@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
-
 require_once('include/database/PearDatabase.php');
 require_once 'include/utils/utils.php';
 require_once("modules/Users/Users.php");
@@ -146,15 +145,14 @@ function getEmailFieldId($meta, $entityId){
 }
 
 function vtws_getParameter($parameterArray, $paramName,$default=null){
-
 	if (!get_magic_quotes_gpc()) {
-		if(is_array($parameterArray[$paramName])) {
+		if(isset($parameterArray[$paramName]) and is_array($parameterArray[$paramName])) {
 			$param = array_map('addslashes', $parameterArray[$paramName]);
 		} else {
-			$param = addslashes($parameterArray[$paramName]);
+			$param = isset($parameterArray[$paramName]) ? addslashes($parameterArray[$paramName]) : '';
 		}
 	} else {
-		$param = $parameterArray[$paramName];
+		$param = isset($parameterArray[$paramName]) ? $parameterArray[$paramName] : '';
 	}
 	if(!$param){
 		$param = $default;
@@ -185,9 +183,7 @@ function vtws_getEntityNameFields($moduleName){
  */
 function vtws_getModuleNameList(){
 	global $adb;
-
-	$sql = "select name from vtiger_tab where isentitytype=1 and name not in ('Rss','Webmails',".
-	"'Recyclebin','Events') order by tabsequence";
+	$sql = "select name from vtiger_tab where isentitytype=1 and name not in ('Rss','Webmails','Recyclebin','Events') order by tabsequence";
 	$res = $adb->pquery($sql, array());
 	$mod_array = Array();
 	while($row = $adb->fetchByAssoc($res)){
@@ -250,7 +246,6 @@ function vtws_isRecordOwnerGroup($ownerId){
 	} else {
 		$ownedByGroup = $cache[$ownerId];
 	}
-	
 	return $ownedByGroup;
 }
 

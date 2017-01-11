@@ -67,10 +67,10 @@ class LoginHistory {
 	var $default_order_by = "login_time";
 	var $default_sort_order = 'DESC';
 
-/**
- * Function to get the Header values of Login History.
- * Returns Header Values like UserName, IP, LoginTime etc in an array format.
-**/
+	/**
+	 * Function to get the Header values of Login History.
+	 * Returns Header Values like UserName, IP, LoginTime etc in an array format.
+	**/
 	function getHistoryListViewHeader()
 	{
 		global $log,$app_strings;
@@ -80,13 +80,13 @@ class LoginHistory {
 		return $header_array;
 	}
 
-/**
-  * Function to get the Login History values of the User.
-  * @param $navigation_array - Array values to navigate through the number of entries.
-  * @param $sortorder - DESC
-  * @param $orderby - login_time
-  * Returns the login history entries in an array format.
-**/
+	/**
+	  * Function to get the Login History values of the User.
+	  * @param $navigation_array - Array values to navigate through the number of entries.
+	  * @param $sortorder - DESC
+	  * @param $orderby - login_time
+	  * Returns the login history entries in an array format.
+	**/
 	function getHistoryListViewEntries($username, $navigation_array, $sorder='', $orderby='')
 	{
 		global $log, $adb, $current_user;
@@ -114,9 +114,73 @@ class LoginHistory {
 				$entries[] = ($adb->query_result($result, $i-1, 'status')=='Signed in' ? $in : $out);
 				$entries_list[] = $entries;
 			}
-			$log->debug("Exiting getHistoryListViewEntries() method ...");
-			return $entries_list;
 		}
+		$log->debug("Exiting getHistoryListViewEntries() method ...");
+		return $entries_list;
+	}
+
+	function getHistoryJSON($userid, $page, $order_by='login_time', $sorder='DESC')
+	{
+		global $log, $adb, $current_user;
+		$log->debug("Entering getHistoryJSON() method ...");
+
+		if (empty($userid)) {
+			$where = '';
+			$params = array();
+		} else {
+			$where = 'where user_name=?';
+			$username = getUserName($userid);
+			$params = array($username);
+		}
+		if($sorder != '' && $order_by != '')
+			$list_query = "Select * from vtiger_loginhistory $where order by $order_by $sorder";
+		else
+			$list_query = "Select * from vtiger_loginhistory $where order by ".$this->default_order_by." ".$this->default_sort_order;
+		$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize',40);
+		$from = ($page-1)*$rowsperpage;
+		$limit = " limit $from,$rowsperpage";
+
+		$result = $adb->pquery($list_query.$limit, $params);
+		$rscnt = $adb->pquery("select count(*) from vtiger_loginhistory $where", array($params));
+		$noofrows = $adb->query_result($rscnt, 0,0);
+		$last_page = ceil($noofrows/$rowsperpage);
+		if ($page*$rowsperpage>$noofrows-($noofrows % $rowsperpage)) {
+			$islastpage = true;
+			$to = $noofrows;
+		} else {
+			$islastpage = false;
+			$to = $page*$rowsperpage;
+		}
+		$entries_list = array(
+			'total' => $noofrows,
+			'per_page' => $rowsperpage,
+			'current_page' => $page,
+			'last_page' => $last_page,
+			'next_page_url' => '',
+			'prev_page_url' => '',
+			'from' => $from+1,
+			'to' => $to,
+			'data' => array(),
+		);
+		if ($islastpage and $page!=1) {
+			$entries_list['next_page_url'] = null;
+		} else {
+			$entries_list['next_page_url'] = 'index.php?module=cbLoginHistory&action=cbLoginHistoryAjax&file=getJSON&page='.($islastpage ? $page : $page+1);
+		}
+		$entries_list['prev_page_url'] = 'index.php?module=cbLoginHistory&action=cbLoginHistoryAjax&file=getJSON&page='.($page == 1 ? 1 : $page-1);
+		$in = getTranslatedString('Signed in');
+		$out = getTranslatedString('Signed off');
+		while($lgn = $adb->fetch_array($result)) {
+			$entry = array();
+			$entry['User Name'] = $lgn['user_name'];
+			$entry['User IP'] = $lgn['user_ip'];
+			$entry['Signin Time'] = $lgn['login_time'];
+			$entry['Signout Time'] = $lgn['logout_time'];
+			$entry['Status'] = ($lgn['status']=='Signed in' ? $in : $out);
+			$entries_list['data'][] = $entry;
+		}
+		$log->debug("Exiting getHistoryJSON() method ...");
+		return json_encode($entries_list);
 	}
 
 	/** Function that Records the Login info of the User

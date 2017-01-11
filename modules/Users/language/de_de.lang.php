@@ -113,6 +113,7 @@ $mod_strings = Array(
     'ERR_PASSWORD_CHANGE_FAILED_2'=>' nicht erfolgreich.  Ein neues Passwort muss gesetzt werden.',
     'ERR_PASSWORD_INCORRECT_OLD'=>'Altes Passwort für Benutzer $this->user_name. Bitte nochmals eingeben..',
     'ERR_PASSWORD_NOT_CHANGED' => 'Old and New Passwords are the same. Please use a different password.',
+	'ERR_USER_DOESNOT_EXISTS'=>'User does not exist.',
     'ERR_USER_NAME_EXISTS_1'=>'Benutzername ',
     'ERR_USER_NAME_EXISTS_2'=>' existiert bereits.  Doppelte Benutzernamen sind nicht möglich.<br>Wechseln Sie den Benutzernamen.',
     'ERR_LAST_ADMIN_1'=>'Benutzername ',

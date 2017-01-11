@@ -389,7 +389,7 @@ var crmtogo_Index_Js = {
 		var origmodule = $("#origmodule").val()
 		var time_end = $("#time_end").val();
 		
-		if (mode =='edit' && origmodule == 'Events') {
+		if (origmodule == 'Events') {
 			//we use time_end for events
 			var endtime_arr = $("#time_end").val().split(':');
 			var endhour = parseFloat(endtime_arr[0]);
@@ -445,22 +445,13 @@ var crmtogo_Index_Js = {
 
 		var date1 = new Date(y1, m1, d1, starthour, startmin, 0);
 		if (origmodule == 'Events') {
-			if (mode == 'edit') {
-				var date2 = new Date(y1, m1, d1, endhour, endmin, 0);
-				if (date1 - date2 == '0') {
-					//add 5 minutes for create mode for events
-					date2.setMinutes(date2.getMinutes() + 5);
-					var fiveminutes = date2.getHours() + ":" + date2.getMinutes();
-					$("#time_end").val(fiveminutes);
-				}
-			}		
-			else {
-				var date2 = date1;
+			var date2 = new Date(y1, m1, d1, endhour, endmin, 0);
+			if (date1 - date2 == '0') {
 				//add 5 minutes for create mode for events
 				date2.setMinutes(date2.getMinutes() + 5);
 				var fiveminutes = date2.getHours() + ":" + date2.getMinutes();
 				$("#time_end").val(fiveminutes);
-			}		
+			}
 		}
 		//must be in the future
 		if(new Date() > date1){

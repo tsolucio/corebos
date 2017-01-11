@@ -19,10 +19,23 @@ $req_module = vtlib_purify($_REQUEST['module']);
 $focus = CRMEntity::getInstance($req_module);
 
 $return_module=vtlib_purify($_REQUEST['module']);
-$delete_idstring=vtlib_purify($_REQUEST['idlist']);
+$delete_idstring=isset($_REQUEST['idlist']) ? vtlib_purify($_REQUEST['idlist']) : '';
 
 $smarty = new vtigerCRM_Smarty;
-
+$tool_buttons = array(
+'EditView' => 'no',
+'CreateView' => 'no',
+'index' => 'yes',
+'Import' => 'no',
+'Export' => 'no',
+'Merge' => 'no',
+'DuplicatesHandling' => 'no',
+'Calendar' => 'no',
+'moduleSettings' => 'no',
+);
+$smarty->assign('CHECK', $tool_buttons);
+$smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
+$smarty->assign('CATEGORY', getParentTab($currentModule));
 $ids_list = array();
 $errormsg = '';
 if(isset($_REQUEST['del_rec'])) {

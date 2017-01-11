@@ -548,7 +548,6 @@ function getMapFieldDependency(){
 
 function getPrimaryFieldHTML($module,$modtype)
 {
-    global $app_list_strings;
     global $app_strings;
     global $current_language;
     $id_added=false;
@@ -718,7 +717,7 @@ function getBlockInfo($modId)
 }
 function getBlockHTML($blocks,$module)
 {
-    global $app_list_strings,$log;
+    global $log;
     global $app_strings;
     global $current_language;
     $id_added=false;

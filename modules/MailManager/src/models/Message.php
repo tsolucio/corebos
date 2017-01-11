@@ -11,7 +11,7 @@ include_once 'modules/Settings/MailScanner/core/MailRecord.php';
 include_once dirname(__FILE__) . '/../helpers/Utils.php';
 require_once dirname(__FILE__).'/../../config.inc.php';
 
-class MailManager_Model_Message extends Vtiger_MailRecord  {
+class MailManager_Model_Message extends Vtiger_MailRecord {
 
 	/**
 	 * Sets the Imap connection
@@ -49,7 +49,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord  {
 			$this->mBox = $mBox;
 			$this->mMsgNo = $msgno;
 			$loaded = false;
-			
+
 			// Unique ID based on sequence number
 			$this->mUid = imap_uid($mBox, $msgno);
 			if ($fetchbody) {
@@ -90,64 +90,63 @@ class MailManager_Model_Message extends Vtiger_MailRecord  {
 			$data = imap_body($imap,$messageid); //not multipart
 		}
 		// Any part may be encoded, even plain text messages, so check everything.
-    	if ($p->encoding==4) $data = quoted_printable_decode($data);
+		if ($p->encoding==4) $data = quoted_printable_decode($data);
 		elseif ($p->encoding==3) $data = base64_decode($data);
 		// no need to decode 7-bit, 8-bit, or binary
 
-    	// PARAMETERS
-	    // get all parameters, like charset, filenames of attachments, etc.
-    	$params = array();
-	    if ($p->parameters) {
+		// PARAMETERS
+		// get all parameters, like charset, filenames of attachments, etc.
+		$params = array();
+		if ($p->parameters) {
 			foreach ($p->parameters as $x) $params[ strtolower( $x->attribute ) ] = $x->value;
 		}
-	    if ($p->dparameters) {
+		if ($p->dparameters) {
 			foreach ($p->dparameters as $x) $params[ strtolower( $x->attribute ) ] = $x->value;
 		}
 
 		// ATTACHMENT
-    	// Any part with a filename is an attachment,
-	    // so an attached text file (type 0) is not mistaken as the message.
-    	if ($params['filename'] || $params['name']) {
-        	// filename may be given as 'Filename' or 'Name' or both
-	        $filename = ($params['filename'])? $params['filename'] : $params['name'];
+		// Any part with a filename is an attachment,
+		// so an attached text file (type 0) is not mistaken as the message.
+		if ($params['filename'] || $params['name']) {
+			// filename may be given as 'Filename' or 'Name' or both
+			$filename = ($params['filename'])? $params['filename'] : $params['name'];
 			// filename may be encoded, so see imap_mime_header_decode()
 			if(!$this->_attachments) $this->_attachments = Array();
 			$this->_attachments[$filename] = $data;  // TODO: this is a problem if two files have same name
-	    }
+		}
 		// embedded images right now are treated as attachments
-		elseif ($p->ifdisposition && $p->disposition == "INLINE" && $p->bytes > 0 &&
-                $p->subtype != 'PLAIN' && $p->subtype != 'HTML') {
+		elseif ($p->ifdisposition && $p->disposition == "INLINE" && $p->bytes > 0 && $p->subtype != 'PLAIN' && $p->subtype != 'HTML') {
 			$this->_attachments["noname".$partno. "." .$p->subtype] = $data;
 		}
-	    // TEXT
-    	elseif ($p->type==0 && $data) {
-    		$this->_charset = $params['charset'];  // assume all parts are same charset
-    		$data = self::__convert_encoding($data, 'UTF-8', $this->_charset);
+		// TEXT
+		elseif ($p->type==0 && $data) {
+			$this->_charset = $params['charset'];  // assume all parts are same charset
+			$data = self::__convert_encoding($data, 'UTF-8', $this->_charset);
 
-        	// Messages may be split in different parts because of inline attachments,
-	        // so append parts together with blank row.
-    	    if (strtolower($p->subtype)=='plain') $this->_plainmessage .= trim($data) ."\n\n";
-	        else $this->_htmlmessage .= $data ."<br><br>";
+			// Messages may be split in different parts because of inline attachments,
+			// so append parts together with blank row.
+			if (strtolower($p->subtype)=='plain') $this->_plainmessage .= trim($data) ."\n\n";
+			else $this->_htmlmessage .= $data ."<br><br>";
 		}
 
-	    // EMBEDDED MESSAGE
-    	// Many bounce notifications embed the original message as type 2,
-	    // but AOL uses type 1 (multipart), which is not handled here.
-    	// There are no PHP functions to parse embedded messages,
-	    // so this just appends the raw source to the main message.
-    	elseif ($p->type==2 && $data) {
+		// EMBEDDED MESSAGE
+		// Many bounce notifications embed the original message as type 2,
+		// but AOL uses type 1 (multipart), which is not handled here.
+		// There are no PHP functions to parse embedded messages,
+		// so this just appends the raw source to the main message.
+		elseif ($p->type==2 && $data) {
 			$this->_plainmessage .= trim($data) ."\n\n";
-	    }
+		}
 
-    	// SUBPART RECURSION
-	    if ($p->parts) {
-        	foreach ($p->parts as $partno0=>$p2)
-            	$this->__getpart($imap,$messageid,$p2,$partno.'.'.($partno0+1));  // 1.2, 1.2.1, etc.
-    	}
+		// SUBPART RECURSION
+		if ($p->parts) {
+			foreach ($p->parts as $partno0=>$p2)
+				$this->__getpart($imap,$messageid,$p2,$partno.'.'.($partno0+1));  // 1.2, 1.2.1, etc.
+		}
 	}
-	
+
 	/**
-	 * Clears the cache data 
+	 * Clears the cache data
 	 * @global PearDataBase Instance $adb
 	 * @global Users Instance $current_user
 	 * @param Integer $waybacktime
@@ -175,7 +174,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord  {
 
 		$mailManagerAttachments = $adb->pquery("SELECT attachid, aname, path FROM vtiger_mailmanager_mailattachments
 			WHERE userid=? AND lastsavedtime < ?", array($current_user->id, $waybacktime));
-		
+
 		for($i=0; $i<$adb->num_rows($mailManagerAttachments); $i++) {
 			$atResultRow = $adb->raw_query_result_rowdata($mailManagerAttachments, $i);
 
@@ -234,15 +233,15 @@ class MailManager_Model_Message extends Vtiger_MailRecord  {
 	 */
 	protected function loadAttachmentsFromDB($withContent, $aName=false) {
 		global $adb, $current_user, $upload_badext;
-		
+
 		if (empty($this->_attachments)) {
 			$this->_attachments = array();
-			
+
 			$params = array($current_user->id, $this->muid());
 
 			$filteredColumns = "aname, attachid";
 			if($withContent) $filteredColumns = "aname, attachid, path";
-			
+
 			$whereClause = "";
 			if ($aName) { $whereClause = " AND aname=?"; $params[] = $aName; }
 
@@ -263,7 +262,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord  {
 
 				$atResult->free();
 				unset($atResult); // Indicate cleanup
-			} 
+			}
 		}
 	}
 
@@ -276,9 +275,9 @@ class MailManager_Model_Message extends Vtiger_MailRecord  {
 	 */
 	protected function saveToDB($uid) {
 		global $adb, $current_user;
-		
+
 		$savedtime = strtotime("now");
-		
+
 		$params = array($current_user->id);
 		$params[] = $uid;
 		$params[] = json_encode($this->_from);
@@ -305,7 +304,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord  {
 			foreach($this->_attachments as $aName => $aValue) {
 
 				$attachInfo = $this->__SaveAttachmentFile($aName, $aValue);
-				
+
 				if(is_array($attachInfo) && !empty($attachInfo)) {
 					$adb->pquery("INSERT INTO vtiger_mailmanager_mailattachments
 					(userid, muid, attachid, aname, path, lastsavedtime) VALUES (?, ?, ?, ?, ?, ?)",
@@ -340,18 +339,18 @@ class MailManager_Model_Message extends Vtiger_MailRecord  {
 
 		$attachid = $adb->getUniqueId('vtiger_crmentity');
 		$saveasfile = "$dirname/$attachid". "_" .$binFile;
-		
+
 		$fh = fopen($saveasfile, 'wb');
 		fwrite($fh, $filecontent);
 		fclose($fh);
 
 		$mimetype = MailAttachmentMIME::detect($saveasfile);
-		
+
 		$adb->pquery("INSERT INTO vtiger_crmentity(crmid, smcreatorid, smownerid,
 				modifiedby, setype, description, createdtime, modifiedtime, presence, deleted)
 				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 				Array($attachid, $current_user->id, $current_user->id, $current_user->id, "MailManager Attachment", $binFile, $usetime, $usetime, 1, 0));
-		
+
 		$adb->pquery("INSERT INTO vtiger_attachments SET attachmentsid=?, name=?, description=?, type=?, path=?",
 			Array($attachid, $binFile, $binFile, $mimetype, $dirname));
 
@@ -484,6 +483,10 @@ class MailManager_Model_Message extends Vtiger_MailRecord  {
 	 */
 	function date($format = false) {
 		$date = $this->_date;
+		if (preg_match('#[^0-9\-\/]#',$date)) {
+			// date is in textual format we try to put it into ISO
+			$date = date('Y-m-d',strtotime($date));
+		}
 		if ($format) {
 			if (preg_match(sprintf("/%s ([^ ]+)/", date('D, d M Y')), $date, $m)) {
 				$date = $m[1]; // Pick only time part for today
@@ -554,6 +557,6 @@ class MailManager_Model_Message extends Vtiger_MailRecord  {
 		$instance->setMsgNo($result->msgno);
 		return $instance;
 	}
-	
+
 }
 ?>

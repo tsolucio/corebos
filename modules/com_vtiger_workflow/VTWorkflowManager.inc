@@ -276,7 +276,6 @@
 
 		}
 
-
 		/**
 		 * Export a workflow as a json encoded string
 		 *
@@ -427,7 +426,7 @@
 			foreach($tasks as $task){
 				if(is_object($task) and $task->active) {
 					$logbg->debug($task->summary);
-					$trigger = $task->trigger;
+					$trigger = (empty($task->trigger) ? null : $task->trigger);
 					if($trigger != null){
 						$delay = strtotime($data[$trigger['field']])+$trigger['days']*86400;
 					}else{

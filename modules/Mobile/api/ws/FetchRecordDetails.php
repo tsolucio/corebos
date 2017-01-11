@@ -189,6 +189,7 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 							'label' => $fieldinfo['label'],
 							'uitype'=> $fieldinfo['uitype'],
 							'typeofdata'=> $fieldinfo['typeofdata'],
+							'displaytype'=> $fieldinfo['displaytype'],
 							'mandatory'=> $fieldinfo['mandatory']
 					);
 					//handling for special UI types: modify $field

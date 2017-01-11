@@ -14,7 +14,7 @@ require_once('include/utils/utils.php');
 $module = vtlib_purify($_REQUEST['module']);
 $focus = CRMEntity::getInstance($module);
 
-global $mod_strings, $app_strings, $app_list_strings;
+global $mod_strings, $app_strings;
 global $current_language, $currentModule, $theme, $adb;
 
 $theme_path="themes/".$theme."/";

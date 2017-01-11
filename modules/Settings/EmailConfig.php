@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 require_once('Smarty_setup.php');
-global $mod_strings, $app_strings, $app_list_strings, $adb, $theme;
+global $mod_strings, $app_strings, $adb, $theme;
 
 //Display the mail send status
 $smarty = new vtigerCRM_Smarty;

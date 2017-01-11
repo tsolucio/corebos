@@ -9,7 +9,7 @@
  ********************************************************************************/
 require_once('include/utils/utils.php');
 require_once('include/utils/UserInfoUtil.php');
-global $mod_strings, $app_strings, $app_list_strings, $theme;
+global $mod_strings, $app_strings, $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 

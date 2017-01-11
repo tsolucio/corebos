@@ -27,7 +27,7 @@ if(getMigrationCharsetFlag() != MIG_CHARSET_PHP_UTF8_DB_UTF8 && !isset($_REQUEST
 
 include("modules/Migration/versions.php");
 require_once('Smarty_setup.php');
-global $app_strings,$app_list_strings,$mod_strings,$theme,$currentModule;
+global $app_strings,$mod_strings,$theme,$currentModule;
 include("vtigerversion.php");
 //Check the current version before starting migration. If the current versin is latest, then we wont allow to do 5.x migration. But here we must allow for 4.x migration. Because 4.x migration can be done with out changing the current database. -Shahul
 $status=true;

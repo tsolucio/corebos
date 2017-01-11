@@ -26,6 +26,7 @@ function getMyFaq($maxval,$calCnt)
 
 	$url_string = '';
 	$sorder = '';
+	$order_by = '';
 	$oCustomView = new CustomView("Faq");
 	if(isset($_REQUEST['viewname']) == false || $_REQUEST['viewname']=='')
 	{

@@ -74,12 +74,15 @@ if (isset($_REQUEST['parent_id'])) {
 }
 if (isset($_REQUEST['parent_type'])) {
 	$focus->parent_type = $_REQUEST['parent_type'];
+} else {
+	if (GlobalVariable::getVariable('Application_B2B', '1')) {
+		$focus->parent_type = 'Accounts';
+	} else {
+		$focus->parent_type = 'Contacts';
+	}
 }
 if (isset($_REQUEST['filename']) && is_null($focus->filename)) {
 	$focus->filename = $_REQUEST['filename'];
-}
-elseif (is_null($focus->parent_type)) {
-	$focus->parent_type = $app_list_strings['record_type_default_key'];
 }
 
 $submenu = array('LBL_EMAILS_TITLE'=>'index.php?module=Emails&action=index','LBL_WEBMAILS_TITLE'=>'index.php?module=squirrelmail-1.4.4&action=redirect');

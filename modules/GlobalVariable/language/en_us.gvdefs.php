@@ -735,6 +735,27 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Row height of Excel sheets obtained from reporting export. The default value is 20',
 ),
+'Inventory_ListPrice_ReadOnly' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Block list price on inventory module. Default is unblocked.',
+),
+'Application_Group_Selection_Permitted' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Permit selection of groups for the assigned to field. Default is to permit selection.',
+),
+'Application_B2B' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Application should tend to use Accounts (1) or Contacts (0). Default is to use Accounts (1).',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/en_us.gvdefs.*.php',GLOB_BRACE) as $tcode) {

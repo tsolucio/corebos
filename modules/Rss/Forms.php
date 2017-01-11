@@ -27,7 +27,6 @@ $allrsshtml = $oRss->getAllRssFeeds();
 function get_rssfeeds_form() {
 global $mod_strings;
 global $app_strings;
-global $app_list_strings;
 global $image_path;
 
 $oRss = new vtigerRSS();

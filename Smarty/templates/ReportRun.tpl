@@ -64,7 +64,7 @@
 <table class="small reportGenerateTable" align="center" cellpadding="5" cellspacing="0" width="95%" border=0>
 	<tr>
 		<td align="left" style="padding:5px" width="80%">
-			{include file='AdvanceFilter.tpl' SOURCE='reports'}
+			{include file='AdvanceFilter.tpl' SOURCE='reports1'}
 		</td>
 	</tr>
 	<tr>
@@ -160,16 +160,17 @@
 	</table>
 </div>
 {literal}
-<script src="include/bunnyjs/utils_dom.min.js"></script>
+<link rel="stylesheet" href="include/bunnyjs/css/svg-icons.css">
+<script src="include/bunnyjs/utils-dom.min.js"></script>
 <script src="include/bunnyjs/ajax.min.js"></script>
 <script src="include/bunnyjs/template.min.js"></script>
 <script src="include/bunnyjs/pagination.min.js"></script>
 <script src="include/bunnyjs/url.min.js"></script>
 <script src="include/bunnyjs/utils-svg.min.js"></script>
 <script src="include/bunnyjs/spinner.min.js"></script>
-<script src="include/bunnyjs/element.min.js"></script>
 <script src="include/bunnyjs/datatable.min.js"></script>
 <script src="include/bunnyjs/datatable.icons.min.js"></script>
+<script src="include/bunnyjs/element.min.js"></script>
 <script src="include/bunnyjs/datatable.scrolltop.min.js"></script>
 <script type="text/javascript">
 Template.define('report_row_template', {});
@@ -266,7 +267,7 @@ function generateReport(id) {
 
 	jQuery.ajax({
 			method: 'POST',
-			data : {'advft_criteria': advft_criteria, 'advft_criteria_groups=': advft_criteria_groups},
+			data : {'advft_criteria': advft_criteria, 'advft_criteria_groups': advft_criteria_groups},
 			url: 'index.php?action=ReportsAjax&file=SaveAndRun&mode=ajax&module=Reports&submode=generateReport&record='+id,
 	}).done(function (response) {
 							getObj('Generate').innerHTML = response;
@@ -277,9 +278,8 @@ function generateReport(id) {
 								if(document.getElementById('_reportrun_total')) document.getElementById('_reportrun_total').innerHTML=data.total;
 							});
 							setTimeout(function(){
-								let firstPageLink = document.querySelector('pagination li a');
-								if (firstPageLink) firstPageLink.click();
-							}, 1000);
+								DataTable.changePage(document.getElementById('rptDatatable'),1);
+							}, 500);
 							VtigerJS_DialogBox.unblock();
 					}
 		);

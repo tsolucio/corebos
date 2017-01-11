@@ -1,19 +1,21 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
- * All Rights Reserved.
- ********************************************************************************/
+/*************************************************************************************************
+ * Copyright 2016 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
+ * file except in compliance with the License. You can redistribute it and/or modify it
+ * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
+ * granted by the License. coreBOS distributed by JPL TSolucio S.L. is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. Unless required by
+ * applicable law or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT ANY WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language governing
+ * permissions and limitations under the License. You may obtain a copy of the License
+ * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
+ *************************************************************************************************/
 global $entityDel, $display, $category;
 
-if(version_compare(phpversion(), '5.2.0') < 0 or version_compare(phpversion(), '6.0.0') >= 0) {
+if(version_compare(phpversion(), '5.2.0') < 0 or version_compare(phpversion(), '7.1.0') >= 0) {
 	insert_charset_header();
 	$serverPhpVersion = phpversion();
 	require_once('phpversionfail.php');
@@ -84,49 +86,6 @@ if (!isset($dbconfig['db_hostname']) || $dbconfig['db_status']=='_DB_STAT_') {
 // load up the config_override.php file.  This is used to provide default user settings
 if (is_file('config_override.php')) {
 	require_once('config_override.php');
-}
-
-/**
- * Check for vtiger installed version and codebase
- */
-global $adb, $vtiger_current_version;
-if(isset($_SESSION['VTIGER_DB_VERSION']) && isset($_SESSION['authenticated_user_id'])) {
-	if(version_compare($_SESSION['VTIGER_DB_VERSION'], $vtiger_current_version, '!=')) {
-		coreBOS_Session::delete('VTIGER_DB_VERSION');
-		echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
-		echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
-			<table border='0' cellpadding='5' cellspacing='0' width='98%'>
-			<tbody><tr>
-			<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span class='genHeaderSmall'>Migration Incompleted.</span></td>
-			</tr>
-			<tr>
-			<td class='small' align='right' nowrap='nowrap'>Please contact your system administrator.<br></td>
-			</tr>
-			</tbody></table>
-			</div>";
-		echo "</td></tr></table>";
-		exit();
-	}
-} else {
-	$result = $adb->query("SELECT * FROM vtiger_version");
-	$dbversion = $adb->query_result($result, 0, 'current_version');
-	if(version_compare($dbversion, $vtiger_current_version, '=')) {
-		coreBOS_Session::set('VTIGER_DB_VERSION', $dbversion);
-	} else {
-		echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
-		echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
-			<table border='0' cellpadding='5' cellspacing='0' width='98%'>
-			<tbody><tr>
-			<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span class='genHeaderSmall'>Migration Incompleted.</span></td>
-			</tr>
-			<tr>
-			<td class='small' align='right' nowrap='nowrap'>Please contact your system administrator.<br></td>
-			</tr>
-			</tbody></table>
-			</div>";
-		echo "</td></tr></table>";
-		exit();
-	}
 }
 
 // Set the default timezone preferred by user
@@ -421,7 +380,6 @@ $log->info("current page is $currentModuleFile current module is $currentModule 
 $module = (isset($_REQUEST['module'])) ? vtlib_purify($_REQUEST['module']) : "";
 $action = (isset($_REQUEST['action'])) ? vtlib_purify($_REQUEST['action']) : "";
 $record = (isset($_REQUEST['record'])) ? vtlib_purify($_REQUEST['record']) : "";
-$lang_crm = (isset($_SESSION['authenticated_user_language'])) ? $_SESSION['authenticated_user_language'] : "";
 
 $current_user = new Users();
 
@@ -502,7 +460,6 @@ $log->debug('current_language is: '.$current_language);
 //set module and application string arrays based upon selected language
 $app_currency_strings = return_app_currency_strings_language($current_language);
 $app_strings = return_application_language($current_language);
-$app_list_strings = return_app_list_strings_language($current_language);
 $mod_strings = return_module_language($current_language, $currentModule);
 
 //If DetailView, set focus to record passed in
@@ -532,14 +489,6 @@ $siteURLParts = parse_url($site_URL); $cookieDomain = $siteURLParts['host'];
 if (isset($_SESSION['authenticated_user_id'])) {
 	$log->debug("setting cookie ck_login_id_vtiger to ".$_SESSION['authenticated_user_id']);
 	setcookie('ck_login_id_vtiger', $_SESSION['authenticated_user_id'],0,null,$cookieDomain,false,true);
-}
-if (isset($_SESSION['vtiger_authenticated_user_theme'])) {
-	$log->debug("setting cookie ck_login_theme_vtiger to ".$_SESSION['vtiger_authenticated_user_theme']);
-	setcookie('ck_login_theme_vtiger', $_SESSION['vtiger_authenticated_user_theme'],0,null,$cookieDomain,false,true);
-}
-if (isset($_SESSION['authenticated_user_language'])) {
-	$log->debug("setting cookie ck_login_language_vtiger to ".$_SESSION['authenticated_user_language']);
-	setcookie('ck_login_language_vtiger', $_SESSION['authenticated_user_language'],0,null,$cookieDomain,false,true);
 }
 
 if($_REQUEST['module'] == 'Documents' && $action == 'DownloadFile')
@@ -613,8 +562,10 @@ if(!$skipSecurityCheck && $use_current_login)
 	$seclog->debug('########### Pemitted ---> yes  ##############');
 }
 
-if($display == "no")
-{
+if($display == "no"
+		and !(($currentModule=='Tooltip' and $action==$module."Ajax" and $_REQUEST['file']=='ComputeTooltip')
+			or ($currentModule=='GlobalVariable' and $action==$module."Ajax" and $_REQUEST['file']=='SearchGlobalVar'))
+	) {
 	echo "<link rel='stylesheet' type='text/css' href='themes/$theme/style.css'>";
 	if ($action==$module."Ajax") {
 	echo "<table border='0' cellpadding='5' cellspacing='0' width='100%'><tr><td align='center'>";
@@ -645,10 +596,12 @@ if($display == "no")
 	}
 }
 // vtlib customization: Check if module has been de-activated
-else if(!vtlib_isModuleActive($currentModule) and !($currentModule=='Tooltip' and $action==$module."Ajax" and $_REQUEST['file']=='ComputeTooltip')) {
-	echo "<link rel='stylesheet' type='text/css' href='themes/$theme/style.css'>";
+else if(!vtlib_isModuleActive($currentModule)
+		and !(($currentModule=='Tooltip' and $action==$module."Ajax" and $_REQUEST['file']=='ComputeTooltip')
+			or ($currentModule=='GlobalVariable' and $action==$module."Ajax" and $_REQUEST['file']=='SearchGlobalVar'))
+	) {
 	echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
-	echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 85%; position: relative; z-index: 10000000;'>
+	echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 85%; position: relative; z-index: 10;'>
 		<table border='0' cellpadding='5' cellspacing='0' width='98%'>
 		<tbody><tr>
 		<td rowspan='2' width='11%'><img src='". vtiger_imageurl('denied.gif', $theme) . "' ></td>

@@ -183,7 +183,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		}
 		$fieldvalue [] = $options;
 	}
-	elseif($uitype == 1613) {
+	elseif($uitype == 1613 || $uitype == 1614) {
 		require_once 'modules/PickList/PickListUtils.php';
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue [] = getPicklistValuesSpecialUitypes($uitype,$fieldname,$value);
@@ -219,7 +219,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		}
 		$editview_label[]=getTranslatedString($fieldlabel,$module_name,$value);
 		$fieldvalue [] = $options;
-	} elseif($uitype == 3313){
+	} elseif($uitype == 3313 || $uitype == 3314){
 		require_once 'modules/PickList/PickListUtils.php';
 		$editview_label[]=getTranslatedString($fieldlabel,$module_name);
 		$fieldvalue [] = getPicklistValuesSpecialUitypes($uitype,$fieldname,$value);
@@ -254,9 +254,9 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			//Assign the value from focus->column_fields (if we create Invoice from SO the SO's terms and conditions will be loaded to Invoice's terms and conditions, etc.,)
 			$value = $col_fields['terms_conditions'];
 
-			//if the value is empty then only we should get the default Terms and Conditions
+			//if the value is empty then we should get the default Terms and Conditions
 			if($value == '' && $mode != 'edit')
-				$value=getTermsandConditions();
+				$value=getTermsandConditions($module_name);
 		}
 
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
@@ -331,7 +331,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			$ua = get_user_array(FALSE, "Active", $assigned_user_id);
 		}
 		$users_combo = get_select_options_array($ua, $assigned_user_id);
-
+		$groups_combo = '';
 		if($noof_group_rows!=0)
 		{
 			if($fieldname == 'assigned_user_id' && $is_admin==false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid($module_name)] == 3 or $defaultOrgSharingPermission[getTabid($module_name)] == 0))
@@ -344,6 +344,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			}
 			$groups_combo = get_select_options_array($ga, $assigned_user_id);
 		}
+		if (GlobalVariable::getVariable('Application_Group_Selection_Permitted',1)!=1) $groups_combo = '';
 		$fieldvalue[]=$users_combo;
 		$fieldvalue[] = $groups_combo;
 	}
@@ -1086,7 +1087,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 				$rate_symbol = getCurrencySymbolandCRate(getProductBaseCurrency($col_fields['record_id'],$module_name));
 				$currencySymbol = $rate_symbol['symbol'];
 			} else {
-				$currency_info = getInventoryCurrencyInfo($module, $col_fields['record_id']);
+				$currency_info = getInventoryCurrencyInfo($module_name, $col_fields['record_id']);
 				$currencySymbol = $currency_info['currency_symbol'];
 			}
 			$fieldvalue[] = $currencyField->getDisplayValue(null, true);
@@ -1129,6 +1130,8 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		{
 			$value = $_REQUEST['potental_id'];
 			$potential_name = getPotentialName($value);
+		} else {
+			$potential_name = '';
 		}
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue[] = $potential_name;
@@ -1143,7 +1146,9 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		elseif(isset($_REQUEST['quote_id']) && $_REQUEST['quote_id'] != '')
 		{
 			$value = $_REQUEST['quote_id'];
-			$potential_name = getQuoteName($value);
+			$quote_name = getQuoteName($value);
+		} else {
+			$quote_name = '';
 		}
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue[] = $quote_name;
@@ -1159,6 +1164,8 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		{
 			$value = $_REQUEST['purchaseorder_id'];
 			$purchaseorder_name = getPoName($value);
+		} else {
+			$purchaseorder_name = '';
 		}
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue[] = $purchaseorder_name;
@@ -1175,6 +1182,8 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		{
 			$value = $_REQUEST['salesorder_id'];
 			$salesorder_name = getSoName($value);
+		} else {
+			$salesorder_name = '';
 		}
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue[] = $salesorder_name;
@@ -1276,7 +1285,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 				$image_path_array[] = $adb->query_result($result_image,$image_iter,'path');
 			}
 		}
-		if(is_array($image_array))
+		if(isset($image_array) && is_array($image_array))
 			for($img_itr=0;$img_itr<count($image_array);$img_itr++)
 			{
 				$fieldvalue[] = array('name'=>$image_array[$img_itr],'path'=>$image_path_array[$img_itr]);
@@ -1537,7 +1546,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 	$theme_path="themes/".$theme."/";
 	$image_path=$theme_path."images/";
 	$product_Detail = Array();
-
+	$acvid = 0;
 	if (in_array($module, getInventoryModules()))
 	{
 		$query="SELECT
@@ -1555,7 +1564,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 			WHERE id=? ORDER BY sequence_no";
 			$params = array($focus->id);
 		if ($module != 'PurchaseOrder') {
-			if (GlobalVariable::getVariable('B2B', '1')=='1') {
+			if (GlobalVariable::getVariable('Application_B2B', '1')=='1') {
 				if($module == 'Issuecards')
 					$acvid = $focus->column_fields['accid'];
 				else

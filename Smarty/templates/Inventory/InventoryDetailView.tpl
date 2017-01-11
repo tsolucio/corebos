@@ -233,7 +233,7 @@ function DeleteTag(id,recordid)
 																						<tr><td>&nbsp;</td></tr>
 																					{/if}
 
-																					{if $header neq 'Comments' && isset($BLOCKS.$header.relatedlist) && $BLOCKS.$header.relatedlist eq 0}
+																					{if $header neq 'Comments' && (!isset($BLOCKS.$header.relatedlist) || $BLOCKS.$header.relatedlist eq 0)}
 
 																						<tr class="detailview_block_header">{strip}
 		<td colspan=4 class="dvInnerHeader" >
@@ -270,7 +270,9 @@ function DeleteTag(id,recordid)
             {else}
                {foreach item=detailInfo from=$detail}
 				<tr style="height:25px" class="detailview_row">
+					{assign var=numfieldspainted value=0}
                     {foreach key=label item=data from=$detailInfo}
+                    		{assign var=numfieldspainted value=$numfieldspainted+1}
                             {assign var=keyid value=$data.ui}
                             {assign var=keyval value=$data.value}
                             {assign var=keytblname value=$data.tablename}
@@ -314,6 +316,7 @@ function DeleteTag(id,recordid)
                                             {/if}
                                     {/if}
                     {/foreach}
+                    {if $numfieldspainted eq 1 && $keyid neq 19 && $keyid neq 20}<td colspan=2></td>{/if}
                </tr>
                {/foreach}
            {/if}
@@ -342,7 +345,7 @@ function DeleteTag(id,recordid)
 <br>
 
 										<!-- Product Details informations -->
-										{$ASSOCIATED_PRODUCTS}
+										{if isset($ASSOCIATED_PRODUCTS)}{$ASSOCIATED_PRODUCTS}{/if}
 									</td>
 <!-- The following table is used to display the buttons -->
 								<table border=0 cellspacing=0 cellpadding=0 width=100%>

@@ -10,7 +10,7 @@
 require_once('include/utils/UserInfoUtil.php');
 require_once('include/utils/utils.php');
 
-global $mod_strings, $app_strings, $app_list_strings;
+global $mod_strings, $app_strings;
 
 $smarty = new vtigerCRM_Smarty;
 

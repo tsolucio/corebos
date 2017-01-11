@@ -10,7 +10,7 @@
 require_once('Smarty_setup.php');
 if (isPermitted('VtigerBackup','')=='yes') {
 
-global $mod_strings, $app_strings, $enable_backup, $app_list_strings, $adb, $theme;
+global $mod_strings, $app_strings, $enable_backup, $adb, $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 

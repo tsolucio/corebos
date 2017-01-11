@@ -22,8 +22,6 @@ function c_toggleAssignType(currType){
 	}
 }
 
-var gValidationCall='';
-
 if (document.all)
 	var browser_ie=true;
 
@@ -73,6 +71,10 @@ function getObj(n,d) {
 		// IE7 was returning form element with name = n (if there was multiple instance)
 		// But not firefox, so we are making a double check
 		if(x && x.id != n) x = false;
+	}
+
+	if (!x && d.getElementById) {
+		x=d.getElementById('txtbox_'+n); // for detail view edit fields
 	}
 
 	for(i=0;!x && i<d.forms.length;i++) {
@@ -1077,9 +1079,8 @@ function doServerValidation(edit_type,formName,callback) {
 }
 
 function doformValidation(edit_type) {
-	//Validation for Portal User
-	if(gVTModule == 'Contacts' && gValidationCall != 'tabchange')
-	{
+	if(gVTModule == 'Contacts') {
+		//Validation for Portal User
 		//if existing portal value = 0, portal checkbox = checked, ( email field is not available OR  email is empty ) then we should not allow -- OR --
 		//if existing portal value = 1, portal checkbox = checked, ( email field is available     AND email is empty ) then we should not allow
 		if(edit_type=='')
@@ -1601,44 +1602,6 @@ function fnhide(divId) {
 	id.style.display = 'none';
 }
 
-function fnLoadValues(obj1,obj2,SelTab,unSelTab,moduletype,module){
-	var oform = document.forms['EditView'];
-	oform.action.value='Save';
-	//global variable to check the validation calling function to avoid validating when tab change
-	gValidationCall = 'tabchange';
-
-	/*var tabName1 = document.getElementById(obj1);
-	var tabName2 = document.getElementById(obj2);
-	var tagName1 = document.getElementById(SelTab);
-	var tagName2 = document.getElementById(unSelTab);
-	if(tabName1.className == "dvtUnSelectedCell")
-		tabName1.className = "dvtSelectedCell";
-	if(tabName2.className == "dvtSelectedCell")
-		tabName2.className = "dvtUnSelectedCell";
-
-	tagName1.style.display='block';
-	tagName2.style.display='none';*/
-	gValidationCall = 'tabchange';
-
-	// if((moduletype == 'inventory' && validateInventory(module)) ||(moduletype == 'normal') && formValidate())
-	// if(formValidate())
-	// {
-	var tabName1 = document.getElementById(obj1);
-	var tabName2 = document.getElementById(obj2);
-	var tagName1 = document.getElementById(SelTab);
-	var tagName2 = document.getElementById(unSelTab);
-	if(tabName1.className == "dvtUnSelectedCell")
-		tabName1.className = "dvtSelectedCell";
-
-	if(tabName2.className == "dvtSelectedCell")
-		tabName2.className = "dvtUnSelectedCell";
-
-	tagName1.style.display='block';
-	tagName2.style.display='none';
-	// }
-	gValidationCall = '';
-}
-
 function fnCopy(source,design){
 	document.getElementById(source).value=document.getElementById(design).value;
 	document.getElementById(source).disabled=true;
@@ -1899,54 +1862,6 @@ function ActivateCheckBox()
 	else
 	{
 		source.disabled = true;
-	}
-}
-
-//wipe for Convert Lead
-
-function fnSlide2(obj,inner)
-{
-	var buff = document.getElementById(obj).height;
-	closeLimit = buff.substring(0,buff.length);
-	menu_max = eval(closeLimit);
-	var tagName = document.getElementById(inner);
-	document.getElementById(obj).style.height=0 + "px";
-	menu_i=0;
-	if (tagName.style.display == 'none')
-		fnexpanLay2(obj,inner);
-	else
-		fncloseLay2(obj,inner);
-}
-
-function fnexpanLay2(obj,inner)
-{
-	// document.getElementById(obj).style.display = 'run-in';
-	var setText = eval(closeLimit) - 1;
-	if (menu_i<=eval(closeLimit))
-	{
-		if (menu_i>setText){
-			document.getElementById(inner).style.display='block';
-		}
-		document.getElementById(obj).style.height=menu_i + "px";
-		setTimeout(function() {
-			fnexpanLay2(obj,inner);
-		},5);
-		menu_i=menu_i+5;
-	}
-}
-
-function fncloseLay2(obj,inner)
-{
-	if (menu_max >= eval(openLimit))
-	{
-		if (menu_max<eval(closeLimit)){
-			document.getElementById(inner).style.display='none';
-		}
-		document.getElementById(obj).style.height=menu_max +"px";
-		setTimeout(function() {
-			fncloseLay2(obj,inner);
-		}, 5);
-		menu_max = menu_max -5;
 	}
 }
 
@@ -2228,11 +2143,11 @@ function fnDropDown(obj,Lay){
 	if(getVal > document.body.clientWidth ){
 		leftSide = eval(leftSide) - eval(widthM);
 		tagName.style.left = leftSide + 34 + 'px';
-	}
-	else
+	} else {
 		tagName.style.left= leftSide + 'px';
-		tagName.style.top= topSide + obj.clientHeight +'px';
-		tagName.style.display = 'block';
+	}
+	tagName.style.top= topSide + obj.clientHeight +'px';
+	tagName.style.display = 'block';
 }
 
 function fnShowDrop(obj){

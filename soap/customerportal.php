@@ -712,6 +712,14 @@ function get_tickets_list($input_array) {
 
 	$focus = new HelpDesk();
 	$focus->filterInactiveFields('HelpDesk');
+	$bmapname = 'HelpDesk_ListColumns';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapLC = $cbMap->ListColumns();
+		$focus->list_fields = $cbMapLC->getListFieldsFor('CustomerPortal');
+		$focus->list_fields_name = $cbMapLC->getListFieldsNameFor('CustomerPortal');
+	}
 	foreach ($focus->list_fields as $fieldlabel => $values){
 		foreach($values as $table => $fieldname){
 			$fields_list[$fieldlabel] = $fieldname;
@@ -897,6 +905,7 @@ function update_ticket_comment($input_array)
 		$ticket->column_fields = array_map(decode_html, $ticket->column_fields);
 		$ticket->column_fields['comments'] = $comments;
 		$ticket->column_fields['from_portal'] = 1;
+		$ticket->column_fields['__portal_contact'] = $ownerid;
 		$ticket->save('HelpDesk');
 	}
 }
@@ -1370,7 +1379,7 @@ function add_ticket_attachment($input_array)
 	//Now store this file information in db and relate with the ticket
 	$date_var = $adb->formatDate(date('Y-m-d H:i:s'), true);
 
-	$crmquery = "insert into vtiger_crmentity (crmid,setype,description,createdtime) values(?,?,?,?)";
+	$crmquery = 'insert into vtiger_crmentity (crmid,setype,description,createdtime,modifiedtime) values(?,?,?,?,NOW())';
 	$crmresult = $adb->pquery($crmquery, array($attachmentid, 'HelpDesk Attachment', $description, $date_var));
 
 	$attachmentquery = "insert into vtiger_attachments(attachmentsid,name,description,type,path) values(?,?,?,?,?)";
@@ -1563,6 +1572,14 @@ function get_list_values($id,$module,$sessionid,$only_mine='true')
 	$current_user = $user->retrieveCurrentUserInfoFromFile($userid);
 	$focus = new $module();
 	$focus->filterInactiveFields($module);
+	$bmapname = $module.'_ListColumns';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapLC = $cbMap->ListColumns();
+		$focus->list_fields = $cbMapLC->getListFieldsFor('CustomerPortal');
+		$focus->list_fields_name = $cbMapLC->getListFieldsNameFor('CustomerPortal');
+	}
 	foreach ($focus->list_fields as $fieldlabel => $values){
 		foreach($values as $table => $fieldname){
 			$fields_list[$fieldlabel] = $fieldname;
@@ -1919,7 +1936,7 @@ function get_pdf($id,$block,$customerid,$sessionid)
 {
 	global $adb;
 	global $current_user,$log,$default_language;
-	global $currentModule,$mod_strings,$app_strings,$app_list_strings;
+	global $currentModule,$mod_strings,$app_strings;
 	$log->debug("Entering customer portal function get_pdf");
 	$isPermitted = check_permission($customerid,$block,$id);
 	if($isPermitted == false) {
@@ -1935,7 +1952,6 @@ function get_pdf($id,$block,$customerid,$sessionid)
 	$currentModule = $block;
 	$current_language = $default_language;
 	$app_strings = return_application_language($current_language);
-	$app_list_strings = return_app_list_strings_language($current_language);
 	$mod_strings = return_module_language($current_language, $currentModule);
 
 	$_REQUEST['record']= $id;
@@ -2133,6 +2149,14 @@ function get_product_list_values($id,$modulename,$sessionid,$only_mine='true')
 
 	$focus = new Products();
 	$focus->filterInactiveFields('Products');
+	$bmapname = 'Products_ListColumns';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapLC = $cbMap->ListColumns();
+		$focus->list_fields = $cbMapLC->getListFieldsFor('CustomerPortal');
+		$focus->list_fields_name = $cbMapLC->getListFieldsNameFor('CustomerPortal');
+	}
 	foreach ($focus->list_fields as $fieldlabel => $values){
 		foreach($values as $table => $fieldname){
 			$fields_list[$fieldlabel] = $fieldname;
@@ -2861,7 +2885,14 @@ function get_project_components($id,$module,$customerid,$sessionid) {
 	$focus->filterInactiveFields($module);
 	$componentfieldVisibilityByColumn = array();
 	$fields_list = array();
-
+	$bmapname = $module.'_ListColumns';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapLC = $cbMap->ListColumns();
+		$focus->list_fields = $cbMapLC->getListFieldsFor('CustomerPortal');
+		$focus->list_fields_name = $cbMapLC->getListFieldsNameFor('CustomerPortal');
+	}
 	foreach ($focus->list_fields as $fieldlabel => $values){
 		foreach($values as $table => $fieldname){
 			$fields_list[$fieldlabel] = $fieldname;
@@ -2931,6 +2962,14 @@ function get_project_tickets($id,$module,$customerid,$sessionid) {
 	$focus->filterInactiveFields('HelpDesk');
 	$TicketsfieldVisibilityByColumn = array();
 	$fields_list = array();
+	$bmapname = 'HelpDesk_ListColumns';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapLC = $cbMap->ListColumns();
+		$focus->list_fields = $cbMapLC->getListFieldsFor('CustomerPortal');
+		$focus->list_fields_name = $cbMapLC->getListFieldsNameFor('CustomerPortal');
+	}
 	foreach ($focus->list_fields as $fieldlabel => $values){
 		foreach($values as $table => $fieldname){
 			$fields_list[$fieldlabel] = $fieldname;
@@ -3033,6 +3072,14 @@ function get_service_list_values($id,$modulename,$sessionid,$only_mine='true')
 
 	$focus = new Services();
 	$focus->filterInactiveFields('Services');
+	$bmapname = 'Services_ListColumns';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapLC = $cbMap->ListColumns();
+		$focus->list_fields = $cbMapLC->getListFieldsFor('CustomerPortal');
+		$focus->list_fields_name = $cbMapLC->getListFieldsNameFor('CustomerPortal');
+	}
 	foreach ($focus->list_fields as $fieldlabel => $values){
 		foreach($values as $table => $fieldname){
 			$fields_list[$fieldlabel] = $fieldname;

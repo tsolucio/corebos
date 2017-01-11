@@ -15,8 +15,18 @@
  * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
  ********************************************************************************/
 
-$mod_strings = array(
-	'LBL_MODULE_NAME' => 'Jelöltek',
+if ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true')) {
+	$toggle_historicos = 'See Non Converted Jelöltek';
+	$toggle_name = 'Converted Jelöltek';
+} else {
+	$toggle_historicos = 'See Converted Jelöltek';
+	$toggle_name = 'Jelöltek';
+}
+
+$mod_strings = Array(
+'LBL_TGL_HISTORICOS' => $toggle_historicos,
+'LBL_MODULE_NAME'=>$toggle_name,
+'Leads' => $toggle_name,
 	'LBL_DIRECT_REPORTS_FORM_NAME' => 'Közvetlen Jelentések',
 	'LBL_MODULE_TITLE' => 'Jelöltek: Kezdőlap',
 	'LBL_SEARCH_FORM_TITLE' => 'Jelöltek Keresés',

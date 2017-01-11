@@ -354,7 +354,6 @@ $mod_strings = array (
 		'End date and time' => 'Date et heure de fin',
 		'End Date and Time' => 'Date et heure de fin',
 		'End date' => 'Date de fin',
-		'LBL_SET_DATE' => 'Définir la date...',
 		'INVITATION' => ' Invitation',
 		'LBL_YEAR_BUTTON_TITLE' => 'Année [Alt+Y]',
 		'LBL_SELECT_CONTACT' => 'Selectionnez les contacts',

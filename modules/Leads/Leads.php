@@ -29,12 +29,14 @@ class Leads extends CRMEntity {
 	var $tab_name = Array('vtiger_crmentity','vtiger_leaddetails','vtiger_leadsubdetails','vtiger_leadaddress','vtiger_leadscf');
 	var $tab_name_index = Array('vtiger_crmentity'=>'crmid','vtiger_leaddetails'=>'leadid','vtiger_leadsubdetails'=>'leadsubscriptionid','vtiger_leadaddress'=>'leadaddressid','vtiger_leadscf'=>'leadid');
 
-	var $entity_table = 'vtiger_crmentity';
-
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
 	var $customFieldTable = Array('vtiger_leadscf', 'leadid');
+	var $related_tables = Array (
+		'vtiger_leadsubdetails' => Array('leadsubscriptionid', 'vtiger_leaddetails', 'leadid'),
+		'vtiger_leadaddress'    => Array('leadaddressid', 'vtiger_leaddetails', 'leadid'),
+	);
 
 	var $sortby_fields = Array('lastname','firstname','email','phone','company','smownerid','website');
 
@@ -60,8 +62,11 @@ class Leads extends CRMEntity {
 		'Email'=>'email',
 		'Assigned To'=>'assigned_user_id'
 	);
-	var $list_link_field= 'lastname';
 
+	// Make the field link to detail view from list view (Fieldname)
+	var $list_link_field = 'lastname';
+
+	// For Popup listview and UI type support
 	var $search_fields = Array(
 		'Name'=>Array('leaddetails'=>'lastname'),
 		'Company'=>Array('leaddetails'=>'company')
@@ -70,6 +75,9 @@ class Leads extends CRMEntity {
 		'Name'=>'lastname',
 		'Company'=>'company'
 	);
+
+	// For Popup window record selection
+	var $popup_fields = Array('lastname');
 
 	var $required_fields = array();
 
@@ -126,7 +134,7 @@ class Leads extends CRMEntity {
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>
 						'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 		$query = "SELECT $fields_list,case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name
-				FROM ".$this->entity_table."
+				FROM vtiger_crmentity
 				INNER JOIN vtiger_leaddetails ON vtiger_crmentity.crmid=vtiger_leaddetails.leadid
 				LEFT JOIN vtiger_leadsubdetails ON vtiger_leaddetails.leadid = vtiger_leadsubdetails.leadsubscriptionid
 				LEFT JOIN vtiger_leadaddress ON vtiger_leaddetails.leadid=vtiger_leadaddress.leadaddressid
@@ -134,7 +142,8 @@ class Leads extends CRMEntity {
 				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 				LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id and vtiger_users.status='Active'";
 		$query .= $this->getNonAdminAccessControlQuery('Leads',$current_user);
-		$where_auto = " vtiger_crmentity.deleted=0 AND vtiger_leaddetails.converted =0";
+		$val_conv = ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true') ? 1 : 0);
+		$where_auto = " vtiger_crmentity.deleted=0 AND vtiger_leaddetails.converted =$val_conv";
 
 		if($where != "")
 			$query .= " where ($where) AND ".$where_auto;
@@ -157,7 +166,6 @@ class Leads extends CRMEntity {
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once("modules/$related_module/Activity.php");
 		$other = new Activity();
-		vtlib_setup_modulevars($related_module, $other);
 		$singular_modname = vtlib_toSingular($related_module);
 
 		$parenttab = getParentTab();
@@ -229,7 +237,6 @@ class Leads extends CRMEntity {
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once("modules/$related_module/$related_module.php");
 		$other = new $related_module();
-		vtlib_setup_modulevars($related_module, $other);
 		$singular_modname = vtlib_toSingular($related_module);
 
 		$parenttab = getParentTab();
@@ -314,7 +321,6 @@ class Leads extends CRMEntity {
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once("modules/$related_module/$related_module.php");
 		$other = new $related_module();
-		vtlib_setup_modulevars($related_module, $other);
 		$singular_modname = vtlib_toSingular($related_module);
 
 		$parenttab = getParentTab();

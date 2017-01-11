@@ -292,7 +292,6 @@ class Emails extends CRMEntity {
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once("modules/$related_module/$related_module.php");
 		$other = new $related_module();
-		vtlib_setup_modulevars($related_module, $other);
 		$singular_modname = vtlib_toSingular($related_module);
 
 		$parenttab = getParentTab();
@@ -443,10 +442,10 @@ class Emails extends CRMEntity {
 	/**
 	 * Returns a list of the Emails to be exported
 	 */
-	function create_export_query(&$order_by, &$where) {
+	function create_export_query($where) {
 		global $log;
 		global $current_user;
-		$log->debug("Entering create_export_query(" . $order_by . "," . $where . ") method ...");
+		$log->debug("Entering create_export_query( $where ) method ...");
 
 		include("include/utils/ExportUtils.php");
 

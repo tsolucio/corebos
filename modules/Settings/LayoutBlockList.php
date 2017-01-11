@@ -210,9 +210,13 @@ function getFieldListEntries($module) {
 			}
 			if($row["blocklabel"] == 'LBL_COMMENTS' || $row['blocklabel'] == 'LBL_COMMENT_INFORMATION' ) {
 				$smarty->assign("COMMENTSECTIONID",$row["blockid"]);
+			} else {
+				$smarty->assign('COMMENTSECTIONID',0);
 			}
 			if($row['blocklabel'] == 'LBL_TICKET_RESOLUTION') {
 				$smarty->assign("SOLUTIONBLOCKID",$row["blockid"]);
+			} else {
+				$smarty->assign('SOLUTIONBLOCKID',0);
 			}
 			if($row['blocklabel'] == '') {
 				continue;
@@ -370,7 +374,8 @@ function getFieldListEntries($module) {
 
 /* inserts Detail View Widget Blocks into the given array */
 function insertDetailViewBlockWidgets($cfentries,$fld_module) {
-	$dvb = Vtiger_Link::getAllByType(getTabid($fld_module), Array('DETAILVIEWWIDGET'));
+	$tabid = getTabid($fld_module);
+	$dvb = Vtiger_Link::getAllByType($tabid, Array('DETAILVIEWWIDGET'));
 	if (count($dvb['DETAILVIEWWIDGET'])>0) {
 		$dvb = $dvb['DETAILVIEWWIDGET'];
 		$retarr = array();
@@ -407,7 +412,8 @@ function insertDetailViewBlockWidgets($cfentries,$fld_module) {
 					}
 					$retarr[$idx++] = array(
 						'DVB'=>$CUSTOM_LINK_DETAILVIEWWIDGET->linkid,
-						'label'=>$lbl
+						'label'=>$lbl,
+						'tabid'=>$tabid
 					);
 				}
 			}
@@ -1151,6 +1157,7 @@ function getRelatedListInfo($module) {
 			'left join vtiger_tab on vtiger_relatedlists.related_tabid = vtiger_tab.tabid and vtiger_tab.presence = 0 where vtiger_relatedlists.tabid = ? order by sequence';
 	$relinfo = $adb->pquery($related_query,array($tabid));
 	$noofrows = $adb->num_rows($relinfo);
+	$res = array();
 	for($i=0;$i<$noofrows;$i++) {
 		$res[$i]['name'] = $adb->query_result($relinfo,$i,'name');
 		$res[$i]['sequence'] = $adb->query_result($relinfo,$i,'sequence');

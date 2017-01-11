@@ -27,11 +27,12 @@ class vtigerCRM_Smarty extends Smarty{
 	{
 		global $current_user, $currentModule;
 
-		$this->Smarty();
-		$this->template_dir = 'Smarty/templates';
-		$this->compile_dir = 'Smarty/templates_c';
-		$this->config_dir = 'Smarty/configs';
-		$this->cache_dir = 'Smarty/cache';
+		parent::__construct();
+		$this->setTemplateDir('Smarty/templates');
+		$this->setCompileDir('Smarty/templates_c');
+		$this->setConfigDir('Smarty/configs');
+		$this->setCacheDir('Smarty/cache');
+		$this->setPluginsDir('Smarty/libs/plugins');
 
 		//$this->caching = true;
 		$CALENDAR_DISPLAY = GlobalVariable::getVariable('Application_Display_Mini_Calendar',1,$currentModule);
@@ -51,8 +52,8 @@ class vtigerCRM_Smarty extends Smarty{
 			//Added to provide User based Tagcloud
 			$this->assign('TAG_CLOUD_DISPLAY', self::lookupTagCloudView($current_user->id) );
 		}
-		$this->load_filter('output', 'trimwhitespace');
-		$this->register_function('process_widget', 'smarty_function_process_widget');
+		$this->loadFilter('output', 'trimwhitespace');
+		$this->registerPlugin('function', 'process_widget', 'smarty_function_process_widget');
 	}
 }
 

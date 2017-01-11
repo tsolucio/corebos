@@ -47,7 +47,7 @@ class Installation_Utils {
 
 		//Checking for database connection parameters
 		if($db_type) {
-			$conn = &NewADOConnection($db_type);
+			$conn = NewADOConnection($db_type);
 			$db_type_status = true;
 			if(@$conn->Connect($db_hostname,$db_username,$db_password)) {
 				$db_server_status = true;
@@ -57,7 +57,7 @@ class Installation_Utils {
 				}
 				if($create_db) {
 					// drop the current database if it exists
-					$dropdb_conn = &NewADOConnection($db_type);
+					$dropdb_conn = NewADOConnection($db_type);
 					if(@$dropdb_conn->Connect($db_hostname, $root_user, $root_password, $db_name)) {
 						$query = "drop database ".$db_name;
 						$dropdb_conn->Execute($query);
@@ -66,7 +66,7 @@ class Installation_Utils {
 
 					// create the new database
 					$db_creation_failed = true;
-					$createdb_conn = &NewADOConnection($db_type);
+					$createdb_conn = NewADOConnection($db_type);
 					if(@$createdb_conn->Connect($db_hostname, $root_user, $root_password)) {
 						$query = "create database ".$db_name;
 						if($create_utf8_db == 'true') {
@@ -186,7 +186,7 @@ class Migration_Utils {
 		require_once('include/DatabaseUtil.php');
 		//Checking for database connection parameters and copying old database into new database
 		if($db_type) {
-			$conn = &NewADOConnection($db_type);
+			$conn = NewADOConnection($db_type);
 			$db_type_status = true;
 			if(@$conn->Connect($db_hostname,$db_username,$db_password)) {
 				$db_server_status = true;
@@ -196,7 +196,7 @@ class Migration_Utils {
 				}
 
 				// test the connection to the old database
-				$olddb_conn = &NewADOConnection($db_type);
+				$olddb_conn = NewADOConnection($db_type);
 				if(@$olddb_conn->Connect($db_hostname, $db_username, $db_password, $old_db_name))
 				{
 					$old_db_exist_status = true;
@@ -235,7 +235,7 @@ class Migration_Utils {
 				}
 
 				// test the connection to the new database
-				$newdb_conn = &NewADOConnection($db_type);
+				$newdb_conn = NewADOConnection($db_type);
 				if(@$newdb_conn->Connect($db_hostname, $db_username, $db_password, $new_db_name))
 				{
 					$new_db_exist_status = true;
@@ -467,7 +467,7 @@ class Migration_Utils {
 			require_once($source_directory.'user_privileges/CustomInvoiceNo.php');
 		}
 
-		$migrationlog =& LoggerManager::getLogger('MIGRATION');
+		$migrationlog = LoggerManager::getLogger('MIGRATION');
 		if (isset($migrationInfo['old_version'])) $source_version = $migrationInfo['old_version'];
 		if(!isset($source_version) || empty($source_version)) {
 			//If source version is not set then we cannot proceed
@@ -962,7 +962,7 @@ class Common_Install_Wizard_Utils {
 	}
 	// Fix for ticket 6605 : detect mysql extension during installation
 	static function check_mysql_extension() {
-		if(function_exists('mysql_connect')) {
+		if(function_exists('mysql_connect') or function_exists('mysqli_connect')) {
 			$mysql_extension = true;
 		}
 		else {

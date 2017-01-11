@@ -1,5 +1,4 @@
 {*<!--
-
 /*********************************************************************************
 ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
@@ -7,16 +6,10 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
-
 -->*}
-{php}
-	//add the settings page values
-	$this->assign("BLOCKS",getSettingsBlocks());
-	$this->assign("FIELDS",getSettingsFields());
-{/php}
-
+{assign var='BLOCKS' value=getSettingsBlocks()}
+{assign var='FIELDS' value=getSettingsFields()}
 <table border=0 cellspacing=0 cellpadding=20 width="99%" class="settingsUI">
 	<tr>
 		<td valign=top>

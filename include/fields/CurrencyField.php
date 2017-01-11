@@ -400,6 +400,11 @@ class CurrencyField {
 		$res = $adb->pquery("select currency_id, $inventory_table.conversion_rate as conv_rate, vtiger_currency_info.* from $inventory_table
 							inner join vtiger_currency_info on $inventory_table.currency_id = vtiger_currency_info.id
 							where $inventory_id=?", array($crmid));
+		if (!$res or $adb->num_rows($res)==0) {
+			// if there is no conversion information we suppose the currency field is in the default currency
+			$res = $adb->pquery('SELECT id as currency_id, 1 as conv_rate, currency_name, currency_code, currency_symbol, currency_position
+					FROM vtiger_currency_info WHERE defaultid < 0', array());
+		}
 
 		$currency_info = array();
 		$currency_info['currency_id'] = $adb->query_result($res,0,'currency_id');

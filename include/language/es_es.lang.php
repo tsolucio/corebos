@@ -134,7 +134,6 @@ $app_strings = array (
       'LBL_LIST_OF' => 'de',
       'LNK_PRINT' => 'Imprimir',
       'LNK_HELP' => 'Ayuda',
-      'LNK_VTDOCS' => 'Documentación de coreBOS',
       'LNK_ABOUT' => 'Acerca de...',
       'LNK_OUTLOOK' => './include/images/outlook_download.gif',
       'Task' => 'Tarea',
@@ -1281,87 +1280,7 @@ $app_strings = array (
 	'SetReturnAddressDescription' => 'Selecciona que dirección quieres sobrescribir, si procede',
 	'Subscribe' => 'Suscribir',
 );
-$app_list_strings = array (
-      'moduleList' => array(
-            'Home' => 'Portada',
-            'Dashboard' => 'Indicadores',
-            'Leads' => 'Pre-Contactos',
-            'Contacts' => 'Contactos',
-            'Accounts' => 'Cuentas',
-            'Potentials' => 'Oportunidades',
-            'Campaigns' => 'Campañas',
-            'Emails' => 'Emails',
-            'Activities' => 'Actividades',
-            'Products' => 'Productos',
-            'HelpDesk' => 'Incidencias',
-            'Faq' => 'Faq',
-            'Calendar' => 'Tareas',
-            'Quotes' => 'Presupuestos',
-            'PurchaseOrder' => 'Ordenes de Compra',
-            'Invoice' => 'Facturas',
-            'Rss' => 'RSS',
-            'Reports' => 'Informes',
-            'Vendors' => 'Proveedores',
-            'PriceBooks' => 'Tarifas',
-            'SalesOrder' => 'Ordenes de Venta',
-            'Portal' => 'Portal',
-            
-            // Added after 5.0.4 GA
-            'Documents' => 'Documentos',
-                             ),
-      'opportunity_relationship_type_dom' => array(
-            '0' => '',
-            'Primary Decision Maker' => 'Toma la Decisión',
-            'Business Decision Maker' => 'Decide viabilidad de la propuesta',
-            'Business Evaluator' => 'Evalua económicamente la propuesta',
-            'Technical Decision Maker' => 'Decide la viabilidad técnica',
-            'Technical Evaluator' => 'Evalua técnicamente la propuesta',
-            'Executive Sponsor' => 'Pagador',
-            'Influencer' => 'Influye',
-            'Other' => 'Otra',
-                             ),
-      'case_relationship_type_dom' => array(
-            '0' => '',
-            'Primary Contact' => 'Contacto Principal',
-            'Alternate Contact' => 'Contacto Alternativo',
-                             ),
-      'task_priority_dom' => array(
-            'High' => 'Alta',
-            'Medium' => 'Media',
-            'Low' => 'Baja',
-                             ),
-      'task_status_dom' => array(
-            'Planned' => 'Programada',
-            'Completed' => 'Finalizada',
-            'Deferred' => 'Retrasada',
-                             ),
-      'meeting_status_dom' => array(
-            'Planned' => 'Planeada',
-            'Held' => 'Realizada',
-            'Not Held' => 'No Realizada',
-                             ),
-      'call_status_dom' => array(
-            'Planned' => 'Programada',
-            'Held' => 'Realizada',
-            'Not Held' => 'No Realizada',
-                             ),
-      'case_status_dom' => array(
-            'New' => 'Nuevo',
-            'Assigned' => 'Asignado',
-            'Closed' => 'Cerrado',
-            'Pending Input' => 'Esperando Respuesta',
-            'Rejected' => 'Rechazado',
-                             ),
-      'user_status_dom' => array(
-            'Active' => 'Activo',
-            'Inactive' => 'Inactivo',
-                             ),
-      'record_type_display' => array(
-            'Accounts' => 'Cuentas',
-            'Leads' => 'Pre-Contactos',
-            'Opportunities' => 'Oportunidades',
-                             ),
-);
+
 // Translation for currency names
 $app_currency_strings = array(
 	'Albania, Leke' 		=> 'Albania, Leke',

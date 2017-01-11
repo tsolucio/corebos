@@ -70,10 +70,14 @@ function vtRunTaskJob($adb){
 		$entityCache = new VTEntityCache($adminUser);
 		$wsModuleName = $util->toWSModuleName($entity);
 		$wsId = vtws_getWebserviceEntityId($wsModuleName, $entity->getId());
-		if (empty($task->test) or $task->evaluate($entityCache, $entity->getId())) {
+		if (empty($task->test)
+				or (isset($task->reevaluate) and $task->reevaluate==0)
+				or ((!isset($task->reevaluate) or $task->reevaluate==1) and $task->evaluate($entityCache, $entity->getId()))) {
 			$logbg->debug("WF Cron:: Task ".$taskId." will be call function doTask with entityId: ".$entityId);
 			$task->doTask($entity);
 			$logbg->debug("WF Cron:: Task ".$taskId." executed with success the function doTask with entityId: ".$entityId);
+		} else {
+			$logbg->debug("WF Cron:: Task ".$taskId." was skipped due to unsatisfied conditions: ".$entityId);
 		}
 	}
 }

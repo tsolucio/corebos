@@ -37,6 +37,7 @@ $mod_strings = array(
 	'LBL_WORKFLOW_LIST' => 'Automatikus Műveletek Listája',
 	'LBL_AVAILABLE_WORKLIST_LIST' => 'Elérhető Automatikus Műveletek',
 	'LBL_LOADING' => 'Betöltés...',
+	'LBL_REEVALCONDITIONS' => 'Evaluate conditions on execution',
 	'LBL_VALIDATION_ERROR' => 'Érvényesítési hiba',
 	'LBL_SELECT_OPTION_DOTDOTDOT' => 'Opció kiválasztása...',
 	'LBL_WORKFLOW_NOTE_CRON_CONFIG' => 'Megjegyzés: az Automatikus Műveletek időzítőt (cron script) be kell állítani.',

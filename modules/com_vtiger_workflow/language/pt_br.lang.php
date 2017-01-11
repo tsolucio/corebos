@@ -32,6 +32,7 @@ $mod_strings = array(
 'LBL_WORKFLOW_LIST'=>'Lista Workflow',
 'LBL_AVAILABLE_WORKLIST_LIST'=>'Workflows Disponíveis',
 'LBL_LOADING'=>'Carregando...',
+'LBL_REEVALCONDITIONS' => 'Evaluate conditions on execution',
 'LBL_VALIDATION_ERROR'=>'Erro Validação',
 'LBL_SELECT_OPTION_DOTDOTDOT'=>'Selecionar Opção...',
 'LBL_WORKFLOW_NOTE_CRON_CONFIG'=>'NOTA: Você deve ter um script Cron configurado para o Workflow.',

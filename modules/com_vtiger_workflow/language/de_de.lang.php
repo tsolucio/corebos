@@ -33,6 +33,7 @@ $mod_strings = array(
     'LBL_WORKFLOW_LIST'=>'Liste der Workflow',
     'LBL_AVAILABLE_WORKLIST_LIST'=>'Verfügbare Workflows',
     'LBL_LOADING'=>'Lade...',
+	'LBL_REEVALCONDITIONS' => 'Evaluate conditions on execution',
     'LBL_VALIDATION_ERROR'=>'Überprüfungsfehler',
     'LBL_SELECT_OPTION_DOTDOTDOT'=>'Option wählen...',
     'LBL_WORKFLOW_NOTE_CRON_CONFIG'=>'Hinweis: Sie können die Ersatzfelder verwenden.',

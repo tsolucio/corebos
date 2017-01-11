@@ -9,7 +9,7 @@
  ********************************************************************************/
 require_once('data/Tracker.php');
 
-global $mod_strings, $app_list_strings, $app_strings, $current_user, $theme, $log, $default_charset;
+global $mod_strings, $app_strings, $current_user, $theme, $log, $default_charset;
 $focus = 0;
 
 //<<<<<>>>>>>
@@ -171,7 +171,7 @@ function generateSelectColumnsHTML($columnsList, $module) {
 }
 
 function getByModule_ColumnsList($mod,$columnslist,$selected="") {
-	global $oCustomView, $current_language, $theme, $app_list_strings;
+	global $oCustomView, $current_language, $theme;
 	$advfilter = array();
 	$check_dup = Array();
 	foreach($oCustomView->module_list as $module=>$blks) {
@@ -229,9 +229,8 @@ function getByModule_ColumnsList($mod,$columnslist,$selected="") {
 */
 function getStdFilterHTML($module,$selected="")
 {
-	global $app_list_strings, $current_language,$app_strings,$current_user;
+	global $current_language, $app_strings, $current_user, $oCustomView;
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
-	global $oCustomView;
 	$stdfilter = array();
 	$result = $oCustomView->getStdCriteriaByModule($module);
 	$mod_strings = return_module_language($current_language,$module);
@@ -245,9 +244,6 @@ function getStdFilterHTML($module,$selected="")
 				$value = 'Start Date';
 			}
 			$use_module_label =  getTranslatedString($module, $module);
-			if(isset($app_list_strings['moduleList'][$module])) {
-				$use_module_label = $app_list_strings['moduleList'][$module];
-			}
 			if(isset($mod_strings[$value]))
 			{
 				if($key == $selected)

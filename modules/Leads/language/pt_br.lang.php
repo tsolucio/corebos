@@ -9,8 +9,18 @@
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
 
+if ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true')) {
+	$toggle_historicos = 'See Non Converted Leads';
+	$toggle_name = 'Converted Leads';
+} else {
+	$toggle_historicos = 'See Converted Leads';
+	$toggle_name = 'Leads';
+}
+
 $mod_strings = Array(
-'LBL_MODULE_NAME'=>'Leads',
+'LBL_TGL_HISTORICOS' => $toggle_historicos,
+'LBL_MODULE_NAME'=>$toggle_name,
+'Leads' => $toggle_name,
 'LBL_DIRECT_REPORTS_FORM_NAME'=>'Subordinado Direto',
 'LBL_MODULE_TITLE'=>'Leads: Principal',
 'LBL_SEARCH_FORM_TITLE'=>'Pesquisa Lead',

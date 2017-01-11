@@ -11,7 +11,7 @@ require_once('Smarty_setup.php');
 require_once('include/utils/utils.php');
 require_once('modules/Settings/savewordtemplate.php');
 
-global $app_strings, $mod_strings, $app_list_strings, $adb, $theme, $default_charset;
+global $app_strings, $mod_strings, $adb, $theme, $default_charset;
 
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";

@@ -65,8 +65,8 @@
 						<div class="ui-block-a">
 							{if $_MODULE->name() eq 'Calendar' || $_MODULE->name() eq 'Events'}
 								{if $_FIELD->name() eq 'date_start'}
-									{'Start Date & Time'}:
-								{elseif $_FIELD->name() neq 'reminder_time' && $_FIELD->name() neq 'time_end' && $_FIELD->name() neq 'recurringtype' && $_FIELD->name() neq 'duration_hours' && $_FIELD->name() neq 'duration_minutes' && $_FIELD->name() neq 'notime' && $_FIELD->name() neq 'location'}
+									{'Start Date'|@getTranslatedString:$_MODULE->name()}:
+								{elseif $_FIELD->name() neq 'reminder_time' && $_FIELD->name() neq 'recurringtype' && $_FIELD->name() neq 'duration_hours' && $_FIELD->name() neq 'duration_minutes' && $_FIELD->name() neq 'notime' && $_FIELD->name() neq 'location'}
 									{if ($_FIELD->name() neq 'eventstatus' && $_FIELD->name() neq 'taskstatus') || $_FIELD->valueLabel() neq ''}
 										{$_FIELD->label()}:
 									{/if}
@@ -89,7 +89,7 @@
 									</a>
 								{/if}
 							{else}
-								{if ($_MODULE->name() eq 'Calendar' || $_MODULE->name() eq 'Events') && $_FIELD->name() neq 'reminder_time' && $_FIELD->name() neq 'time_end' && $_FIELD->name() neq 'recurringtype' && $_FIELD->name() neq 'duration_hours' && $_FIELD->name() neq 'duration_minutes' && $_FIELD->name() neq 'notime' && $_FIELD->name() neq 'location'}
+								{if ($_MODULE->name() eq 'Calendar' || $_MODULE->name() eq 'Events') && $_FIELD->name() neq 'reminder_time' && $_FIELD->name() neq 'recurringtype' && $_FIELD->name() neq 'duration_hours' && $_FIELD->name() neq 'duration_minutes' && $_FIELD->name() neq 'notime' && $_FIELD->name() neq 'location'}
 									{if $_FIELD->name() eq 'date_start' ||$_FIELD->name() eq 'due_date'}
 										{$_FIELD->valueLabel()}
 									{else}

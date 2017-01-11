@@ -29,6 +29,7 @@ $mod_strings = array(
 'LBL_WORKFLOW_LIST'=>'Flujos de Trabajo',
 'LBL_AVAILABLE_WORKLIST_LIST'=>'Flujos de Trabajo Disponibles',
 'LBL_LOADING'=>'Cargando...',
+'LBL_REEVALCONDITIONS' => 'Evaluar condiciones en el momento de la ejecución',
 'LBL_VALIDATION_ERROR'=>'Error de Validación',
 'LBL_SELECT_OPTION_DOTDOTDOT'=>'Selecciona Opción...',
 'LBL_WORKFLOW_NOTE_CRON_CONFIG'=>'NOTA: Debes configurar la tarea programada de Flujo de Trabajo.',
@@ -116,7 +117,7 @@ $mod_strings = array(
 'LBL_START_DATE' => 'Fecha de inicio',
 'LBL_END_TIME' => 'Hora de finalización',
 'LBL_END_DATE' => 'Fecha de finalización',
-
+'LBL_SET_DATE'=>'Set Date',
 'LBL_AFTER' => 'Después',
 'LBL_BEFORE' => 'Antes',
 'LBL_DAYS' => 'días',

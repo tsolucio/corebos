@@ -198,9 +198,9 @@ class Import_Index_Controller {
 			$userInputObject->set('error_message', getTranslatedString('LBL_FILE_UPLOAD_FAILED', 'Import'));
 			return false;
 		}
-		if ($_FILES['userfile']['size'] > $uploadMaxSize) {
+		if ($_FILES['import_file']['size'] > $uploadMaxSize) {
 			$userInputObject->set('error_message', getTranslatedString('LBL_IMPORT_ERROR_LARGE_FILE', 'Import').
-												' $uploadMaxSize.'.getTranslatedString('LBL_IMPORT_CHANGE_UPLOAD_SIZE', 'Import'));
+								' $uploadMaxSize.'.getTranslatedString('LBL_IMPORT_CHANGE_UPLOAD_SIZE', 'Import'));
 			return false;
 		}
 		if(!is_writable($importDirectory)) {

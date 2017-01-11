@@ -39,7 +39,6 @@ class HelpDesk extends CRMEntity {
 		'vtiger_troubletickets'=>'ticketid',
 		'vtiger_ticketcf'=>'ticketid',
 		'vtiger_ticketcomments'=>'ticketid');
-	var $entity_table = 'vtiger_crmentity';
 
 	/**
 	 * Mandatory for Listing (Related listview)
@@ -168,7 +167,7 @@ class HelpDesk extends CRMEntity {
 			$ownerId = $current_user->id;
 		} else {
 			$ownertype = 'customer';
-			$ownerId = $this->column_fields['parent_id'];
+			$ownerId = (!empty($this->column_fields['__portal_contact']) ? $this->column_fields['__portal_contact'] : $this->column_fields['parent_id']);
 		}
 
 		$comment = $this->column_fields['comments'];
@@ -217,7 +216,6 @@ class HelpDesk extends CRMEntity {
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once("modules/$related_module/Activity.php");
 		$other = new Activity();
-		vtlib_setup_modulevars($related_module, $other);
 		$singular_modname = vtlib_toSingular($related_module);
 
 		$parenttab = getParentTab();
@@ -314,28 +312,41 @@ class HelpDesk extends CRMEntity {
 	{
 		global $log;
 		$log->debug("Entering get_ticket_comments_list(".$ticketid.") method ...");
-		 $sql = "select * from vtiger_ticketcomments where ticketid=? order by createdtime DESC";
-		 $result = $this->db->pquery($sql, array($ticketid));
-		 $noofrows = $this->db->num_rows($result);
-		 for($i=0;$i<$noofrows;$i++)
-		 {
-			 $ownerid = $this->db->query_result($result,$i,"ownerid");
-			 $ownertype = $this->db->query_result($result,$i,"ownertype");
-			 if($ownertype == 'user')
-				 $name = getUserFullName($ownerid);
-			 elseif($ownertype == 'customer')
-			 {
-				 $sql1 = 'select * from vtiger_portalinfo where id=?';
-				 $name = $this->db->query_result($this->db->pquery($sql1, array($ownerid)),0,'user_name');
-			 }
-
-			 $output[$i]['comments'] = nl2br($this->db->query_result($result,$i,"comments"));
-			 $output[$i]['owner'] = $name;
-			 $output[$i]['createdtime'] = $this->db->query_result($result,$i,"createdtime");
-		 }
-		$log->debug("Exiting get_ticket_comments_list method ...");
-		 return $output;
-	 }
+		$sql = 'select * from vtiger_ticketcomments where ticketid=? order by createdtime DESC';
+		$result = $this->db->pquery($sql, array($ticketid));
+		$noofrows = $this->db->num_rows($result);
+		for($i=0;$i<$noofrows;$i++) {
+			$ownerid = $this->db->query_result($result,$i,'ownerid');
+			$ownertype = $this->db->query_result($result,$i,'ownertype');
+			$name = '';
+			if($ownertype == 'user') {
+				$name = getUserFullName($ownerid);
+			} elseif($ownertype == 'customer') {
+				$sql1 = 'select * from vtiger_portalinfo where id=?';
+				$rs = $this->db->pquery($sql1, array($ownerid));
+				if ($rs and $this->db->num_rows($rs)>0) {
+					$name = $this->db->query_result($rs,0,'user_name');
+				} else {
+					$sql1 = 'select email from vtiger_contactdetails where contactid=?';
+					$rs = $this->db->pquery($sql1, array($ownerid));
+					if ($rs and $this->db->num_rows($rs)>0) {
+						$name = $this->db->query_result($rs,0,'email');
+					} else {
+						$sql1 = 'select accountname from vtiger_account where accountid=?';
+						$rs = $this->db->pquery($sql1, array($ownerid));
+						if ($rs and $this->db->num_rows($rs)>0) {
+							$name = $this->db->query_result($rs,0,'accountname');
+						}
+					}
+				}
+			}
+			$output[$i]['comments'] = nl2br($this->db->query_result($result,$i,'comments'));
+			$output[$i]['owner'] = $name;
+			$output[$i]['createdtime'] = $this->db->query_result($result,$i,'createdtime');
+		}
+		$log->debug('Exiting get_ticket_comments_list method...');
+		return $output;
+	}
 
 	/**	Function to get the HelpDesk field labels in caps letters without space
 	 *	@return array $mergeflds - array(	key => val	)    where   key=0,1,2..n & val = ASSIGNEDTO,RELATEDTO, .,etc
@@ -473,7 +484,7 @@ class HelpDesk extends CRMEntity {
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>
 					'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 		$query = "SELECT $fields_list,case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name
-			FROM ".$this->entity_table. "
+			FROM vtiger_crmentity
 			INNER JOIN vtiger_troubletickets ON vtiger_troubletickets.ticketid =vtiger_crmentity.crmid
 			LEFT JOIN vtiger_crmentity vtiger_crmentityRelatedTo ON vtiger_crmentityRelatedTo.crmid = vtiger_troubletickets.parent_id
 			LEFT JOIN vtiger_account ON vtiger_account.accountid = vtiger_troubletickets.parent_id
@@ -699,7 +710,7 @@ class HelpDesk extends CRMEntity {
 	}
 
 	public static function getTicketEmailContents($entityData) {
-	 $adb = PearDatabase::getInstance();
+		$adb = PearDatabase::getInstance();
 		$moduleName = $entityData->getModuleName();
 		$wsId = $entityData->getId();
 		$parts = explode('x', $wsId);

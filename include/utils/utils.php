@@ -53,7 +53,7 @@ define("RB_RECORD_UPDATED", 'update');
  * @returns array with the variables
  */
 function getBrowserVariables(&$smarty) {
-	global $currentModule,$current_user,$default_charset,$theme,$adb;
+	global $currentModule,$current_user,$default_charset,$theme,$adb,$current_language;
 	$vars = array();
 	$vars['gVTModule'] = $currentModule;
 	$vars['gVTTheme']  = $theme;
@@ -93,6 +93,7 @@ function getBrowserVariables(&$smarty) {
 		$smarty->assign('USER_CURRENCY_SEPARATOR', $vars['userCurrencySeparator']);
 		$smarty->assign('USER_DECIMAL_FORMAT', $vars['userDecimalSeparator']);
 		$smarty->assign('USER_NUMBER_DECIMALS', $vars['userNumberOfDecimals']);
+		$smarty->assign('USER_LANGUAGE', $current_language);
 	}
 }
 
@@ -383,37 +384,12 @@ function safe_map_named($request_var, & $focus, $member_var, $always_copy)
 	$log->debug("Exiting safe_map_named method ...");
 }
 
-/** This function retrieves an application language file and returns the array of strings included in the $app_list_strings var.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * If you are using the current language, do not call this function unless you are loading it for the first time */
-
-function return_app_list_strings_language($language)
-{
-	global $log;
-	$log->debug("Entering return_app_list_strings_language(".$language.") method ...");
-	global $app_list_strings, $default_language, $log;
-	$temp_app_list_strings = $app_list_strings;
-
-	@include("include/language/$language.lang.php");
-	if(!isset($app_list_strings))
-	{
-		$log->warn("Unable to find the application language file for language: ".$language);
-		require("include/language/$default_language.lang.php");
-	}
-
-	if(!isset($app_list_strings))
-	{
-		$log->fatal("Unable to load the application language file for the selected language($language) or the default language($default_language)");
-		$log->debug("Exiting return_app_list_strings_language method ...");
-		return null;
-	}
-
-	$return_value = $app_list_strings;
-	$app_list_strings = $temp_app_list_strings;
-
-	$log->debug("Exiting return_app_list_strings_language method ...");
-	return $return_value;
+/**
+ * @deprecated: use getTranslatedString
+ */
+function return_app_list_strings_language($language) {
+	// function left with an empty value for backward compatibility
+	return null;
 }
 
 /**
@@ -2733,7 +2709,7 @@ function getCurrentModule($perform_set=false) {
  * Set the language strings.
  */
 function setCurrentLanguage($active_module=null) {
-	global $current_language, $default_language, $app_strings, $app_list_strings, $mod_strings, $currentModule;
+	global $current_language, $default_language, $app_strings, $mod_strings, $currentModule;
 
 	if($active_module==null) {
 		if (!isset($currentModule))
@@ -2754,8 +2730,6 @@ function setCurrentLanguage($active_module=null) {
 	//set module and application string arrays based upon selected language
 	if (!isset($app_strings))
 		$app_strings = return_application_language($current_language);
-	if (!isset($app_list_strings))
-		$app_list_strings = return_app_list_strings_language($current_language);
 	if (!isset($mod_strings) && isset($active_module))
 		$mod_strings = return_module_language($current_language, $active_module);
 }
@@ -3154,6 +3128,7 @@ function getDuplicateQuery($module,$field_values,$ui_type_arr)
 	}
 	else if($module == 'Leads')
 	{
+		$val_conv = ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true') ? 1 : 0);
 		$nquery = "SELECT vtiger_leaddetails.leadid AS recordid, vtiger_users_last_import.deleted,$table_cols
 				FROM vtiger_leaddetails
 				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_leaddetails.leadid
@@ -3171,10 +3146,10 @@ function getDuplicateQuery($module,$field_values,$ui_type_arr)
 						LEFT JOIN vtiger_leadscf ON vtiger_leadscf.leadid=vtiger_leaddetails.leadid
 						LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 						LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
-						WHERE vtiger_crmentity.deleted=0 AND vtiger_leaddetails.converted = 0 $sec_parameter
+						WHERE vtiger_crmentity.deleted=0 AND vtiger_leaddetails.converted = $val_conv $sec_parameter
 						GROUP BY $table_cols HAVING COUNT(*)>1) as temp
 				ON ".get_on_clause($field_values,$ui_type_arr,$module) ."
-				WHERE vtiger_crmentity.deleted=0  AND vtiger_leaddetails.converted = 0 $sec_parameter ORDER BY $table_cols,vtiger_leaddetails.leadid ASC";
+				WHERE vtiger_crmentity.deleted=0  AND vtiger_leaddetails.converted = $val_conv $sec_parameter ORDER BY $table_cols,vtiger_leaddetails.leadid ASC";
 
 	}
 	else if($module == 'Products')
@@ -3485,10 +3460,9 @@ function getDuplicateRecordsArr($module)
 	$gro="group";
 	for($i=0;$i<$no_rows;$i++)
 	{
-		$ii=0;
-		$dis_group[]=$fld_values[$gro.$i][$ii];
+		if (empty($fld_values[$gro.$i])) continue;
+		$dis_group[]=$fld_values[$gro.$i][0];
 		$count_group[$i]=count($fld_values[$gro.$i]);
-		$ii++;
 		$new_group[]=$dis_group[$i];
 	}
 	$fld_nam=$new_group[0];
@@ -3637,11 +3611,11 @@ function getFieldValues($module)
 		$table_col = $tablename.".".$column_name;
 		if(getFieldVisibilityPermission($module,$current_user->id,$field_name) == 0)
 		{
-			$fld_name = ($special_fld_arr[$field_name] != '')?$special_fld_arr[$field_name]:$field_name;
+			$fld_name = (!empty($special_fld_arr[$field_name]))?$special_fld_arr[$field_name]:$field_name;
 
 			$fld_arr[] = $fld_name;
 			$col_arr[] = $column_name;
-			if($fld_table_arr[$table_col] != '')
+			if(!empty($fld_table_arr[$table_col]))
 				$table_col = $fld_table_arr[$table_col];
 
 			$field_values_array['fieldnames_list'][] = $table_col . "." . $fld_name;
@@ -4561,7 +4535,7 @@ function getBlockName($blockid) {
 }
 
 function validateAlphaNumericInput($string){
-	preg_match('/^[\w _\-\/]+$/', $string, $matches);
+	preg_match('/^[\w \-\/]+$/', $string, $matches);
 	if(count($matches) == 0) {
 		return false;
 	}

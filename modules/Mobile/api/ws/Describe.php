@@ -33,6 +33,9 @@ class crmtogo_WS_Describe extends crmtogo_WS_Controller {
 	
 	
 	protected function transformToBlocks($module) {
+		global $current_language;
+		if(empty($current_language))
+			$current_language = crmtogo_WS_Controller::sessionGet('language');
 		$current_user = $this->getActiveUser();
 		$moduleFieldGroups = crmtogo_WS_Utils::gatherModuleFieldGroupInfo($module);
 		$describeInfo = vtws_describe($module, $current_user);
@@ -57,6 +60,7 @@ class crmtogo_WS_Describe extends crmtogo_WS_Controller {
 						}
 						if (isset($describeField['type']) && $describeField['type']!='') {
 							$field['quickcreate'] = $describeField['quickcreate'];
+							$field['displaytype'] = $describeField['displaytype'];
 						}
 					}
 				}

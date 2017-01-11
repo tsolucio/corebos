@@ -50,8 +50,8 @@
 	}
 
 	global $seclog,$log;
-	$seclog =& LoggerManager::getLogger('SECURITY');
-	$log =& LoggerManager::getLogger('webservice');
+	$seclog = LoggerManager::getLogger('SECURITY');
+	$log = LoggerManager::getLogger('webservice');
 
 	function getRequestParamsArrayForOperation($operation){
 		global $operationInput;

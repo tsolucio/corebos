@@ -109,7 +109,6 @@ class ListViewSession {
 			$list_query = $_SESSION[$currentModule.'_listquery'];
 			$instance = CRMEntity::getInstance($currentModule);
 			$instance->getNonAdminAccessControlQuery($currentModule, $current_user);
-			vtlib_setup_modulevars($currentModule, $instance);
 			if($currentModule=='Documents' && !empty($folderId)){
 				$list_query = preg_replace("/[\n\r\s]+/"," ",$list_query);
 				$hasOrderBy = stripos($list_query, 'order by');
@@ -193,7 +192,7 @@ class ListViewSession {
 			$start = $_SESSION['lvs'][$currentModule][$viewid]['start'];
 		}
 		if(!$queryMode) {
-			$_SESSION['lvs'][$currentModule][$viewid]['start'] = intval($start);
+			coreBOS_Session::set('lvs^'.$currentModule.'^'.$viewid.'^'.'start', intval($start));
 		}
 		return $start;
 	}
@@ -201,7 +200,7 @@ class ListViewSession {
 	public static function setSessionQuery($currentModule,$query,$viewid){
 		if(isset($_SESSION[$currentModule.'_listquery'])){
 			if($_SESSION[$currentModule.'_listquery'] != $query){
-				unset($_SESSION[$currentModule.'_DetailView_Navigation'.$viewid]);
+				coreBOS_Session::delete($currentModule.'_DetailView_Navigation'.$viewid);
 			}
 		}
 		coreBOS_Session::set($currentModule.'_listquery',$query);

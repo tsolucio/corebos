@@ -7,8 +7,18 @@
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
 
-$mod_strings = array (
-	'LBL_MODULE_NAME' => 'Prospects',
+if ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true')) {
+	$toggle_historicos = 'See Non Converted Prospects';
+	$toggle_name = 'Converted Prospects';
+} else {
+	$toggle_historicos = 'See Converted Prospects';
+	$toggle_name = 'Prospects';
+}
+
+$mod_strings = Array(
+	'LBL_TGL_HISTORICOS' => $toggle_historicos,
+	'LBL_MODULE_NAME'=>$toggle_name,
+	'Leads' => $toggle_name,
 	'LBL_DIRECT_REPORTS_FORM_NAME' => 'Supérieur hiérarchique',
 	'LBL_MODULE_TITLE' => 'Prospects : accueil',
 	'LBL_SEARCH_FORM_TITLE' => 'Recherche prospects',

@@ -80,7 +80,7 @@ function getFieldsListFromQuery($query)
 
 	$result = $adb->query($query);
 	$num_rows = $adb->num_rows($result);
-
+	$fields = '';
 	for($i=0; $i < $num_rows;$i++)
 	{
 		$columnName = $adb->query_result($result,$i,"columnname");

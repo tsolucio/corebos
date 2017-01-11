@@ -82,5 +82,6 @@ $mod_strings = array(
 	'Vendors' => 'Leveranciers',
 	'Timecontrol' => 'Urenregistratie',
 	'InventoryDetails' => 'Voorraad Details',
+	'Divisible'=>'Deelbaar'
 );
 ?>

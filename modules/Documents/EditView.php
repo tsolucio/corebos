@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-global $app_strings, $app_list_strings, $mod_strings, $current_language, $currentModule, $theme, $adb;
+global $app_strings, $mod_strings, $current_language, $currentModule, $theme, $adb;
 require_once('Smarty_setup.php');
 require_once('data/Tracker.php');
 
@@ -126,9 +126,12 @@ if (isset($_REQUEST['parent_id']) /* && is_null($focus->parent_id) */ ) {
 }
 if (isset($_REQUEST['parent_type'])) {
 	$focus->parent_type = vtlib_purify($_REQUEST['parent_type']);
-}
-elseif (!isset($focus->parent_type)) {
-	$focus->parent_type = $app_list_strings['record_type_default_key'];
+} else {
+	if (GlobalVariable::getVariable('Application_B2B', '1')) {
+		$focus->parent_type = 'Accounts';
+	} else {
+		$focus->parent_type = 'Contacts';
+	}
 }
 
 $disp_view = getView($focus->mode);
@@ -155,7 +158,7 @@ $smarty->assign('CREATEMODE', isset($_REQUEST['createmode']) ? vtlib_purify($_RE
 $smarty->assign('CHECK', Button_Check($currentModule));
 $smarty->assign('DUPLICATE', $isduplicate);
 
-if($focus->mode == 'edit' || $isduplicate) {
+if($focus->mode == 'edit' || $isduplicate == 'true') {
 	$recordName = array_values(getEntityName($currentModule, $record));
 	$recordName = $recordName[0];
 	$smarty->assign('NAME', $recordName);

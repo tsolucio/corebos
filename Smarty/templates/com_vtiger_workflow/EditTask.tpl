@@ -67,18 +67,18 @@
 
 		<table border="0" cellpadding="5" cellspacing="0" width="100%" class="small">
 		<tr>
-			<td width='15%' nowrap="nowrap"><input type="checkbox" name="check_select_date" value="" id="check_select_date" {if $trigger neq null}checked{/if}>
+			<td width='15%' nowrap="nowrap"><input type="checkbox" name="check_select_date" value="" id="check_select_date" {if !empty($trigger)}checked{/if}>
 			<b>{$MOD.MSG_EXECUTE_TASK_DELAY}</b></td>
 			<td>
-				<div id="select_date" {if $trigger eq null}style="display:none;"{/if}>
-					<input type="text" name="select_date_days" value="{$trigger.days}" id="select_date_days" class="small"> days
+				<div id="select_date" {if empty($trigger)}style="display:none;"{/if}>
+					<input type="text" name="select_date_days" value="{if isset($trigger.days)}{$trigger.days}{/if}" id="select_date_days" class="small"> days
 					<select name="select_date_direction" class="small">
-						<option {if $trigger.direction eq 'after'}selected{/if} value='after'>{$MOD.LBL_AFTER}</option>
-						<option {if $trigger.direction eq 'before'}selected{/if} value='before'>{$MOD.LBL_BEFORE}</option>
+						<option {if isset($trigger.direction) && $trigger.direction eq 'after'}selected{/if} value='after'>{$MOD.LBL_AFTER}</option>
+						<option {if isset($trigger.direction) && $trigger.direction eq 'before'}selected{/if} value='before'>{$MOD.LBL_BEFORE}</option>
 					</select>
 					<select name="select_date_field" class="small">
 		{foreach key=name item=label from=$dateFields}
-						<option value='{$name}' {if $trigger.field eq $name}selected{/if}>
+						<option value='{$name}' {if isset($trigger.field) && $trigger.field eq $name}selected{/if}>
 							{$label}
 						</option>
 		{/foreach}
@@ -91,7 +91,7 @@
 		<table border="0" cellpadding="5" cellspacing="0" width="100%" class="small">
 		<tr>
 			<td width='100%' nowrap="nowrap">
-			{include file='com_vtiger_workflow/ListConditions.tpl'}
+			{include file='com_vtiger_workflow/ListConditions.tpl' showreeval='true'}
 			</td>
 		</tr>
 		</table>

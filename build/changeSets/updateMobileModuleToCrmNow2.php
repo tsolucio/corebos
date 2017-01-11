@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2014 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Copyright 2016 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
 * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
 * file except in compliance with the License. You can redistribute it and/or modify it
 * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
@@ -24,7 +24,7 @@ class updateMobileModuleToCrmNow2 extends cbupdaterWorker {
 			$module = 'Mobile';
 			if ($this->isModuleInstalled($module)) {
 				global $adb;
-				$Mobilers = $adb->pquery("SELECT version FROM vtiger_tab WHERE name = 'Mobile'");
+				$Mobilers = $adb->query("SELECT version FROM vtiger_tab WHERE name = 'Mobile'");
 				$version = $adb->query_result($Mobilers, 0, 'version');
 				if($version == '3.0'){
 					//Update module
@@ -39,7 +39,6 @@ class updateMobileModuleToCrmNow2 extends cbupdaterWorker {
 				}else{
 					$this->sendMsg($module.' was updated before ');
 				}
-				
 			} else {
 				$this->installManifestModule($module);
 			}

@@ -32,6 +32,7 @@ $mod_strings = array(
 'LBL_WORKFLOW_LIST'=>'Workflow List',
 'LBL_AVAILABLE_WORKLIST_LIST'=>'Available Workflows',
 'LBL_LOADING'=>'Loading...',
+'LBL_REEVALCONDITIONS' => 'Evaluate conditions on execution',
 'LBL_VALIDATION_ERROR'=>'Validation Error',
 'LBL_SELECT_OPTION_DOTDOTDOT'=>'Select Option...',
 'LBL_WORKFLOW_NOTE_CRON_CONFIG'=>'NOTE: You should have Workflow cron script configured.',
@@ -119,7 +120,7 @@ $mod_strings = array(
 'LBL_START_DATE' => 'Start Date',
 'LBL_END_TIME' => 'End Time',
 'LBL_END_DATE' => 'End Date',
-
+'LBL_SET_DATE'=>'Set Date',
 'LBL_AFTER' => 'After',
 'LBL_BEFORE' => 'Before',
 'LBL_DAYS' => 'days',

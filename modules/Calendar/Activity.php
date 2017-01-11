@@ -105,7 +105,9 @@ class Activity extends CRMEntity {
 			$listofctos = explode(';',$this->column_fields['contact_id']);
 			foreach ($listofctos as $cto) {
 				$this->column_fields['contact_id'] = $cto;
-				$this->insertIntoEntityTable('vtiger_cntactivityrel', $module);
+				if(!empty($cto)) {
+					$adb->pquery("insert into vtiger_cntactivityrel(contactid,activityid) values(?,?)",array($cto,$this->id));
+				}
 			}
 			$this->column_fields['contact_id'] = $ctovalue;
 		}
@@ -416,7 +418,6 @@ function insertIntoRecurringTable(& $recurObj)
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once("modules/$related_module/$related_module.php");
 		$other = new $related_module();
-		vtlib_setup_modulevars($related_module, $other);
 		$singular_modname = vtlib_toSingular($related_module);
 
 		$parenttab = getParentTab();

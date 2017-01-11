@@ -50,7 +50,7 @@ else
 
 require_once('Smarty_setup.php');
 
-global $app_strings,$app_list_strings,$mod_strings,$theme,$currentModule;
+global $app_strings,$mod_strings,$theme,$currentModule;
 
 $smarty = new vtigerCRM_Smarty();
 

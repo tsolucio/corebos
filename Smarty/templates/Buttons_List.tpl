@@ -12,6 +12,9 @@
 <TABLE id="LB_buttonlist" border=0 cellspacing=0 cellpadding=0 width=100% class=small>
 <tr><td style="height:2px"></td></tr>
 <tr>
+	{if empty($CATEGORY)}
+		{assign var="CATEGORY" value=""}
+	{/if}
 	{if $CATEGORY eq 'Settings' || $MODULE eq 'Calendar4You'}
 	{assign var="action" value="index"}
 	{else}

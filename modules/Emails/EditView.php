@@ -12,7 +12,7 @@ require_once('data/Tracker.php');
 require_once('include/utils/utils.php');
 require_once('include/utils/UserInfoUtil.php');
 
-global $log, $app_strings, $app_list_strings, $mod_strings, $current_user, $currentModule, $default_charset;
+global $log, $app_strings, $mod_strings, $current_user, $currentModule, $default_charset;
 
 $focus = CRMEntity::getInstance($currentModule);
 $smarty = new vtigerCRM_Smarty();
@@ -284,9 +284,12 @@ if (isset($_REQUEST['parent_type'])) {
 }
 if (isset($_REQUEST['filename']) && $_REQUEST['isDuplicate'] != 'true') {
 	$focus->filename = vtlib_purify($_REQUEST['filename']);
-}
-elseif (empty($focus->parent_type)) {
-	$focus->parent_type = 'Accounts'; ///$app_list_strings['record_type_default_key'];
+} else {
+	if (GlobalVariable::getVariable('Application_B2B', '1')) {
+		$focus->parent_type = 'Accounts';
+	} else {
+		$focus->parent_type = 'Contacts';
+	}
 }
 
 $log->info("Email detail view");

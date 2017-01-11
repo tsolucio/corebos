@@ -992,9 +992,65 @@
 </changeSet>
 <changeSet>
 	<author>kikojover</author>
-	<description>Set vtiger_activity sunject field to 250 chars</description>
+	<description>Set Activity subject field to 250 chars</description>
 	<filename>build/changeSets/grow_activity_subject.php</filename>
 	<classname>grow_activity_subject</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>shpend</author>
+	<description>Lightning design evvtmenu</description>
+	<filename>build/changeSets/ldMenu.php</filename>
+	<classname>ldMenu</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete Audit Trail and Login History from Settings: use cbAuditTrail and cbLoginHistory</description>
+	<filename>build/changeSets/delSettingsAuditLogin.php</filename>
+	<classname>delSettingsAuditLogin</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>kevinduqi</author>
+	<description>Install Terms and Conditions Module</description>
+	<filename>build/changeSets/installcbTermConditions.php</filename>
+	<classname>installcbTermConditions</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>albertxhani</author>
+	<description>Remove Calendar4You Link for moment.mn.js</description>
+	<filename>build/changeSets/RemoveMomentjs.php</filename>
+	<classname>RemoveMomentLink</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Feature: See Converted Leads</description>
+	<filename>build/changeSets/FeatureSeeConvertedLeads.php</filename>
+	<classname>FeatureSeeConvertedLeads</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Increment module Name/Label size and add missing indexes on SMS</description>
+	<filename>build/changeSets/cleanoptimizedatabase_170.php</filename>
+	<classname>cleanoptimizedatabase_170</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Change GlobalVariable Module-List UIType to 3314</description>
+	<filename>build/changeSets/2017/GlobalVarUITypeModuleList3314.php</filename>
+	<classname>GlobalVarUITypeModuleList3314</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add database indexes while studying MySQL queries with no index for a few hours</description>
+	<filename>build/changeSets/2017/cleanoptimizedatabase_180.php</filename>
+	<classname>cleanoptimizedatabase_180</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
 </updatesChangeLog>

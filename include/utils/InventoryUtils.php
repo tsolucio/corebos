@@ -468,7 +468,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 	}
 	$tot_no_prod = $_REQUEST['totalProductCount'];
 	if ($module != 'PurchaseOrder') {
-		if (GlobalVariable::getVariable('B2B', '1')=='1') {
+		if (GlobalVariable::getVariable('Application_B2B', '1')=='1') {
 			$acvid = $focus->column_fields['account_id'];
 		} else {
 			$acvid = $focus->column_fields['contact_id'];
@@ -777,6 +777,7 @@ function getPriceDetailsForProduct($productid, $unit_price, $available='availabl
 {
 	global $log, $adb;
 	$log->debug("Entering into function getPriceDetailsForProduct($productid)");
+	$price_details = array();
 	if($productid != '')
 	{
 		$product_currency_id = getProductBaseCurrency($productid, $itemtype);
@@ -1345,8 +1346,8 @@ function getCurrencyId($fieldValue) {
 
 function inventoryCanSaveProductLines($request,$module) {
 	global $log;
-	$return = ($request['action'] != $module.'Ajax' && $request['ajxaction'] != 'DETAILVIEW' && $request['ajxaction'] != 'Workflow'
-		&& $request['action'] != 'MassEditSave' && $request['action'] != 'ProcessDuplicates');
+	$return = ($request['action'] != $module.'Ajax' && $request['action'] != 'MassEditSave' && $request['action'] != 'ProcessDuplicates'
+			&& (empty($request['ajxaction']) || ($request['ajxaction'] != 'DETAILVIEW' && $request['ajxaction'] != 'Workflow')));
 	$log->debug('inventoryCanSaveProductLines: '.($return ? 'true':'false'));
 	return $return;
 }

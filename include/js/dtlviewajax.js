@@ -27,7 +27,7 @@ function hndCancel(valuespanid,textareapanid,fieldlabel)
 			getObj(globaltxtboxid).checked = true;
 		else
 			getObj(globaltxtboxid).checked = false;
-	} else if(globaluitype != '53' && globaluitype != '33' && globaluitype != '3313')
+	} else if(globaluitype != '53' && globaluitype != '33' && globaluitype != '3313' && globaluitype != '3314')
 		getObj(globaltxtboxid).value = globaltempvalue;
 	globaltempvalue = '';
 	itsonview=false;
@@ -57,7 +57,11 @@ function hndMouseOver(uitype,fieldLabel)
 		var assigntype = document.getElementsByName('assigntype');
 		if(assigntype.length > 0) {
 			var assign_type_U = assigntype[0].checked;
-			var assign_type_G = assigntype[1].checked;
+			if (assigntype[1]!=undefined) {
+				var assign_type_G = assigntype[1].checked;
+			} else {
+				var assign_type_G = false;
+			}
 			if(assign_type_U == true)
 				globaltxtboxid= 'txtbox_U'+fieldLabel;
 			else if(assign_type_G == true)
@@ -84,8 +88,8 @@ function handleEdit(event)
 {
 	show(globaleditareaspanid);
 	fnhide(globaldtlviewspanid);
-	if( ((globaluitype == 15 || globaluitype == 16 || globaluitype == 1613) && globaltempvalue == '') ||
-		 (globaluitype != 53 && globaluitype != 15 && globaluitype != 16 && globaluitype != 1613) ) {
+	if( ((globaluitype == 15 || globaluitype == 16 || globaluitype == 1613 || globaluitype == 1614) && globaltempvalue == '') ||
+		 (globaluitype != 53 && globaluitype != 15 && globaluitype != 16 && globaluitype != 1613 && globaluitype != 1614) ) {
 		globaltempvalue = getObj(globaltxtboxid).value;
 		if(getObj(globaltxtboxid).type != 'hidden')
 			getObj(globaltxtboxid).focus();
@@ -159,7 +163,11 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 		var assigntype = document.getElementsByName('assigntype');
 		if(assigntype.length > 0) {
 			var assign_type_U = assigntype[0].checked;
-			var assign_type_G = assigntype[1].checked;
+			if (assigntype[1]!=undefined) {
+				var assign_type_G = assigntype[1].checked;
+			} else {
+				var assign_type_G = false;
+			}
 		} else {
 			var assign_type_U = assigntype[0].checked;
 		}
@@ -174,7 +182,7 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 			var groupurl = "&assigned_group_id="+group_id+"&assigntype=T";
 		}
 	}
-	else if(uitype == 15 || uitype == 16 || uitype == 1613)
+	else if(uitype == 15 || uitype == 16 || uitype == 1613 || uitype == 1614)
 	{
 		var txtBox= "txtbox_"+ fieldLabel;
 		var not_access =document.getElementById(txtBox);
@@ -186,7 +194,7 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 			return false;
 		}
 	}
-	else if(globaluitype == 33 || globaluitype == 3313)
+	else if(globaluitype == 33 || globaluitype == 3313 || globaluitype == 3314)
 	{
 		var txtBox= "txtbox_"+ fieldLabel;
 		var oMulSelect = document.getElementById(txtBox);
@@ -241,7 +249,7 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 		{
 			tagValue = "off";
 		}
-	}else if(uitype == '33' || uitype == '3313')
+	}else if(uitype == '33' || uitype == '3313' || uitype == '3314')
 	{
 		tagValue = r.join(" |##| ");
 	}else if(uitype == '24' || uitype == '21')
@@ -341,7 +349,11 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 		var assigntype = document.getElementsByName('assigntype');
 		if(assigntype.length > 0) {
 			var assign_type_U = assigntype[0].checked;
-			var assign_type_G = assigntype[1].checked;
+			if (assigntype[1]!=undefined) {
+				var assign_type_G = assigntype[1].checked;
+			} else {
+				var assign_type_G = false;
+			}
 		} else {
 			var assign_type_U = assigntype[0].checked;
 		}
@@ -446,7 +458,7 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 		else
 			getObj(dtlView).innerHTML = get_converted_html(tagValue);
 	}
-	else if(uitype == '33' || uitype == '3313')
+	else if(uitype == '33' || uitype == '3313' || uitype == '3314')
 	{
 		/* Wordwrap a long list of multi-select combo box items at the item separator string */
 		var DETAILVIEW_WORDWRAP_WIDTH = "70"; // must match value in DetailViewUI.tpl.
@@ -556,7 +568,11 @@ function setSelectValue(fieldLabel)
 		var assigntype = document.getElementsByName('assigntype');
 		if(assigntype.length > 0) {
 			var assign_type_U = assigntype[0].checked;
-			var assign_type_G = assigntype[1].checked;
+			if (assigntype[1]!=undefined) {
+				var assign_type_G = assigntype[1].checked;
+			} else {
+				var assign_type_G = false;
+			}
 			if(assign_type_U == true)
 				var selCombo= 'txtbox_U'+fieldLabel;
 			else if(assign_type_G == true)

@@ -61,6 +61,7 @@ class coreBOS_Session {
 			}
 		}
 		if (empty($URL)) $URL = $site_URL;
+		if (empty($URL)) $URL = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
 		$purl = parse_url($URL);
 		$sn = preg_replace('/[^A-Za-z0-9]/', '', $purl['host'].(isset($purl['path'])?$purl['path']:'').(isset($purl['port'])?$purl['port']:''));
 		if (is_numeric($sn)) $sn = 'cb'.$sn;
@@ -79,6 +80,7 @@ class coreBOS_Session {
 	 */
 	static function setKCFinderVariables() {
 		global $upload_badext, $site_URL, $root_directory;
+		if (empty($site_URL)) return false;
 		self::init();
 		$_SESSION['KCFINDER'] = array();
 		$_SESSION['KCFINDER']['disabled'] = false;

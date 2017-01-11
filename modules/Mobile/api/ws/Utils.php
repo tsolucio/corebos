@@ -147,14 +147,14 @@ class crmtogo_WS_Utils {
 		}
 		if ($module != 'Calendar') {
 			$result = $db->pquery(
-				"SELECT fieldname, fieldlabel, blocklabel, uitype, typeofdata FROM vtiger_field INNER JOIN
+				"SELECT fieldname, fieldlabel, blocklabel, uitype, typeofdata, displaytype FROM vtiger_field INNER JOIN
 				vtiger_blocks ON vtiger_blocks.tabid=vtiger_field.tabid AND vtiger_blocks.blockid=vtiger_field.block 
 				WHERE vtiger_field.tabid=? AND vtiger_field.presence != 1 AND vtiger_field.tablename !='vtiger_ticketcomments'  ORDER BY vtiger_blocks.sequence, vtiger_field.sequence", array(getTabid($module))
 			);
 		}
 		else {
 			$result = $db->pquery(
-				"SELECT fieldname, fieldlabel, blocklabel, uitype, typeofdata FROM vtiger_field INNER JOIN
+				"SELECT fieldname, fieldlabel, blocklabel, uitype, typeofdata, displaytype FROM vtiger_field INNER JOIN
 				vtiger_blocks ON vtiger_blocks.tabid=vtiger_field.tabid AND vtiger_blocks.blockid=vtiger_field.block 
 				WHERE vtiger_field.tabid=? AND vtiger_field.presence != 1 and fieldname != 'eventstatus' and fieldname !=  'activitytype' ORDER BY vtiger_blocks.sequence, vtiger_field.sequence", array(getTabid($module))
 			);
@@ -182,6 +182,7 @@ class crmtogo_WS_Utils {
 					'label' => $fieldlabel,
 					'uitype'=> self::fixUIType($module, $resultrow['fieldname'], $resultrow['uitype']),
 					'typeofdata'=>$resultrow['typeofdata'],
+					'displaytype'=>$resultrow['displaytype'],
 					'mandatory'=>self::getMandatory ($resultrow['typeofdata'])
 				);
 		}

@@ -1,0 +1,60 @@
+@CHARSET "UTF-8";
+
+.evvtmenu-section, .evvtmenu-form {
+	width: 45%;
+	float: left;
+	display: block;
+}
+.evvtmenu_content {
+	padding: 10px 10px 10px 20px;
+}
+.evvtmenu_header {
+	color: olive;
+	font-weight: bold;
+	font-size: small;
+	padding: 10px;
+	border: 1px solid #14a1e9;
+	background: #FFFFFF;
+	border-radius: 5px;
+	margin-bottom: 6px;
+	width: 90%;
+	margin:auto;
+}
+#treeview .k-sprite {
+background-image: url("coloricons-sprite.png");
+}
+
+.rootfolder { background-position: 0 0; }
+.folder     { background-position: 0 -16px; }
+.pdf        { background-position: 0 -32px; }
+.html       { background-position: 0 -48px; }
+.image      { background-position: 0 -64px; }
+
+.treeview-back
+{
+    float: left;
+    margin: 0 0 2em;
+    padding: 20px;
+    -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.45), inner 0 0 30px rgba(0,0,0,0.07);
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+}
+.treeview{
+	margin-left:40px;
+}
+.treeitems{
+	margin-left:25px;
+}
+.show{
+	display: block;
+}
+.hide{
+	display:none;
+}
+
+.evvtmenu-label {
+	width: 75px;
+}

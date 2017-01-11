@@ -243,13 +243,7 @@ switch($currentModule)
 		$alphabetical = AlphabeticalSearch($currentModule,'Popup',$focus->def_basicsearch_col,'true','basic',$popuptype,"","",$url);
 		if (isset($_REQUEST['select'])) $smarty->assign("SELECT",'enable');
 		break;
-	// END
 }
-// vtlib customization: Initialize focus to get generic popup
-if($_REQUEST['form'] == 'vtlibPopupView' or $_REQUEST['form'] == 'DetailView') {
-	vtlib_setup_modulevars($currentModule, $focus);
-}
-// END
 
 $smarty->assign('RETURN_ACTION',isset($_REQUEST['return_action']) ? vtlib_purify($_REQUEST['return_action']) : '');
 
@@ -401,7 +395,7 @@ if(isset($order_by) && $order_by != '')
 $override_query = false;
 if(method_exists($focus, 'getQueryByModuleField')) {
 	$srcmodule = isset($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : vtlib_purify($_REQUEST['return_module']);
-	$forrecord = isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : isset($_REQUEST['recordid']) ? vtlib_purify($_REQUEST['recordid']) : 0;
+	$forrecord = isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : (isset($_REQUEST['recordid']) ? vtlib_purify($_REQUEST['recordid']) : 0);
 	$forfield = isset($_REQUEST['forfield']) ? vtlib_purify($_REQUEST['forfield']) : '';
 	$override_query = $focus->getQueryByModuleField($srcmodule, $forfield, $forrecord, $query);
 	if($override_query) {

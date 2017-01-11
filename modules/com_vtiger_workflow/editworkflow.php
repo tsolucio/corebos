@@ -35,7 +35,7 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 	}
 
 	$smarty = new vtigerCRM_Smarty();
-	if($request['source']=='from_template'){
+	if(isset($request['source']) and $request['source']=='from_template'){
 		$tm = new VTWorkflowTemplateManager($adb);
 		$template = $tm->retrieveTemplate($request['template_id']);
 		$workflow = $tm->createWorkflow($template);
@@ -77,9 +77,9 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 	$dayrange = array();
 	$intervalrange=array();
 	for ($d=1;$d<=31;$d++) $dayrange[$d] = $d;
-    for ($interval=5;$interval<=50;$interval+=5) $intervalrange[$interval]=$interval;
+	for ($interval=5;$interval<=50;$interval+=5) $intervalrange[$interval]=$interval;
 	$smarty->assign('days1_31', $dayrange);
-    $smarty->assign('interval_range',$intervalrange);
+	$smarty->assign('interval_range',$intervalrange);
 	$smarty->assign('wfnexttrigger_time',DateTimeField::convertToUserFormat($workflow->nexttrigger_time));
 	$smarty->assign("dateFormat", parse_calendardate($current_user->date_format));
 	$smarty->assign("returnUrl", vtlib_purify($request["return_url"]));
