@@ -435,7 +435,6 @@ class crmtogo_WS_Utils {
 		$focus->id = $id;
 		$focus->mode = 'edit';
 		$focus->column_fields['comments'] = $commentcontent;
-		$log->fatal($focus->column_fields);
 		$focus->save($targetModule);
 
 		return true;
