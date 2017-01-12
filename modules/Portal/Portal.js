@@ -87,7 +87,11 @@ function setSite(oUrllist)
 {
 	//var url = oUrllist.options[oUrllist.options.selectedIndex].value;
 	var id = oUrllist.options[oUrllist.options.selectedIndex].value;
-	document.getElementById('locatesite').src = mysitesArray[id];
+	//document.getElementById('locatesite').src = mysitesArray[id];
+
+	//open site in new browser window
+	//since many sites now do not support being opened in a iframe
+	window.open(mysitesArray[id]);
 }
 //added as an enhancement to set default value
 function defaultMysites(oSelectlist)

@@ -35,12 +35,13 @@
 <td nowrap align=left>{$MOD.LBL_BOOKMARK_LIST} : </span></td>
 <td align=left width=90% >
 	<select id="urllist" name="urllist" style="width: 99%;" class="small" onChange="setSite(this);">
+	<option disabled selected value></option>
 	{foreach item=portaldetails key=sno from=$PORTALS}
-	{if $portaldetails.set_def eq 1}
-		<option selected value="{$portaldetails.portalid}">{$portaldetails.portalname}</option>
-	{else}
+	{* if $portaldetails.set_def eq 1 *}
+		<!--<option selected value="{$portaldetails.portalid}">{$portaldetails.portalname}</option>-->
+	{* else *}
 		<option value="{$portaldetails.portalid}">{$portaldetails.portalname}</option>
-	{/if}
+	{* /if *}
 	<!--<option value="{$portaldetails.portalurl}">{$portaldetails.portalname}</option>-->
 	{/foreach}
 	</select>	
