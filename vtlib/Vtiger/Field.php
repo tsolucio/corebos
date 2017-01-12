@@ -58,7 +58,7 @@ class Vtiger_Field extends Vtiger_FieldBasic {
 				$adb->pquery("SELECT picklistid FROM vtiger_picklist WHERE name=?", Array($this->name)), 0, 'picklistid');
 		}
 
-		$specialNameSpacedPicklists  = array(
+		$specialNameSpacedPicklists = array(
 			'opportunity_type'=>'opptypeid',
 			'duration_minutes'=>'minutesid',
 			'recurringtype'=>'recurringeventid'
@@ -102,12 +102,12 @@ class Vtiger_Field extends Vtiger_FieldBasic {
 		global $adb;
 
 		$special_pl = array('recurring_frequency');
-                $picklist_table = 'vtiger_'.$this->name;
-                if(in_array($this->name, $special_pl)){
-                    $picklist_idcol = $this->name.'_id';
-                }else{
-                    $picklist_idcol = $this->name.'id';
-                }
+		$picklist_table = 'vtiger_'.$this->name;
+		if(in_array($this->name, $special_pl)){
+			$picklist_idcol = $this->name.'_id';
+		}else{
+			$picklist_idcol = $this->name.'id';
+		}
 
 		if(!Vtiger_Utils::CheckTable($picklist_table)) {
 			Vtiger_Utils::CreateTable(
@@ -150,11 +150,10 @@ class Vtiger_Field extends Vtiger_FieldBasic {
 				true
 			);
 		}
-		// END
 
 		global $adb;
-		$nextseq = $adb->query_result($adb->pquery('SELECT max(sequence) FROM vtiger_fieldmodulerel WHERE fieldid=? AND module=?',
-			Array($this->id, $this->getModuleName())),0,0);
+		$rs = $adb->pquery('SELECT max(sequence) FROM vtiger_fieldmodulerel WHERE fieldid=? AND module=?', array($this->id, $this->getModuleName()));
+		$nextseq = $adb->query_result($rs,0,0);
 		if (empty($nextseq)) $nextseq=0;
 		foreach($moduleNames as $relmodule) {
 			$checkres = $adb->pquery('SELECT * FROM vtiger_fieldmodulerel WHERE fieldid=? AND module=? AND relmodule=?',
