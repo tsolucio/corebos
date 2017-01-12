@@ -49,7 +49,7 @@
 </tr>
 <tr>
 	<td bgcolor="#ffffff" colspan=2>
-		<iframe id="locatesite" src="{$DEFAULT_URL}" frameborder="0" height="1100" scrolling="auto" width="100%"></iframe>
+		<!--<iframe id="locatesite" src="{$DEFAULT_URL}" frameborder="0" height="1100" scrolling="auto" width="100%"></iframe>-->
 	</td>
 </tr>
 </table>
