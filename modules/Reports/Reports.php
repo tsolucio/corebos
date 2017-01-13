@@ -191,28 +191,6 @@ class Reports extends CRMEntity{
 		}
 	}
 
-	// Update the module list for listing columns for report creation.
-	function updateModuleList($module) {
-		global $adb;
-		if (!isset($module)) return;
-		require_once('include/utils/utils.php');
-		$tabid = getTabid($module);
-		if ($module == 'Calendar') {
-			$tabid = array(9, 16);
-		}
-		$sql = "SELECT blockid, blocklabel FROM vtiger_blocks WHERE tabid IN (". generateQuestionMarks($tabid) .")";
-		$res = $adb->pquery($sql, array($tabid));
-		$noOfRows = $adb->num_rows($res);
-		if ($noOfRows <= 0) return;
-		for($index = 0; $index < $noOfRows; ++$index) {
-			$blockid = $adb->query_result($res,$index,'blockid');
-			if(in_array($blockid, $this->module_list[$module])) continue;
-			$blockid_list[] = $blockid;
-			$blocklabel = $adb->query_result($res,$index,'blocklabel');
-			$this->module_list[$module][$blocklabel] = $blockid;
-		}
-	}
-
 	// Initializes the module list for listing columns for report creation.
 	function initListOfModules() {
 		global $adb, $current_user, $old_related_modules;
@@ -463,7 +441,7 @@ class Reports extends CRMEntity{
 	 */
 	function getPriModuleColumnsList($module)
 	{
-		//$this->updateModuleList($module);
+		if (!isset($module)) return;
 		foreach($this->module_list[$module] as $key=>$value)
 		{
 			$temp = $this->getColumnsListbyBlock($module,$key);
@@ -500,7 +478,6 @@ class Reports extends CRMEntity{
 			$secmodule = explode(":",$module);
 			for($i=0;$i < count($secmodule) ;$i++)
 			{
-				//$this->updateModuleList($secmodule[$i]);
 				if($this->module_list[$secmodule[$i]]){
 					$this->sec_module_columnslist[$secmodule[$i]] = $this->getModuleFieldList(
 							$secmodule[$i]);
