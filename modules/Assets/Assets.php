@@ -259,14 +259,6 @@ class Assets extends CRMEntity {
 	}
 
 	/**
-	 * Transform the value while exporting
-	 */
-	function transform_export_value($key, $value) {
-		if($key == 'owner') return getOwnerName($value);
-		return parent::transform_export_value($key, $value);
-	}
-
-	/**
 	 * Handle saving related module information.
 	 * NOTE: This function has been added to CRMEntity (base class).
 	 * You can override the behavior by re-defining it here.

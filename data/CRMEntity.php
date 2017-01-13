@@ -1172,6 +1172,7 @@ class CRMEntity {
 
 		$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
 		$query .= " LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id and vtiger_users.status='Active'";
+		$query .= " LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'";
 
 		$linkedModulesQuery = $this->db->pquery("SELECT distinct fieldname, columnname, relmodule FROM vtiger_field" .
 			" INNER JOIN vtiger_fieldmodulerel ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid" .
@@ -1260,7 +1261,7 @@ class CRMEntity {
 	 * Function invoked during export of module record value.
 	 */
 	function transform_export_value($key, $value) {
-		// NOTE: The sub-class can override this function as required.
+		if($key == 'owner' or $key == 'reports_to_id' or $key == 'comercial') return getOwnerName($value);
 		return $value;
 	}
 
