@@ -49,7 +49,7 @@ if($norows  > 0){
 }
 $smarty->assign("USERNODELETE",$userid);
 
-if(!$_SESSION['lvs'][$currentModule]) {
+if(empty($_SESSION['lvs'][$currentModule])) {
 	coreBOS_Session::delete('lvs');
 	$modObj = new ListViewSession();
 	$modObj->sorder = $sorder;

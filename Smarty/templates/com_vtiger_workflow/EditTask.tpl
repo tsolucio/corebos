@@ -13,7 +13,7 @@
 	var returnUrl = '{$returnUrl}';
 	var validator;
 	edittaskscript(jQuery);
-{if $task->test}
+{if !empty($task->test)}
 	var conditions = JSON.parse('{$task->test|@addslashes}');
 {else}
 	var conditions = null;

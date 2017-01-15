@@ -87,7 +87,7 @@ require_once("VTWorkflowUtils.php");
 
 		$smarty->assign('dateFields', $dateFields);
 
-		if($task->trigger!=null){
+		if(isset($task->trigger) and $task->trigger!=null){
 			$trigger = $task->trigger;
 			$days = $trigger['days'];
 			if ($days < 0){

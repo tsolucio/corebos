@@ -71,30 +71,32 @@ if (isset($_REQUEST['return_action']))
 	$smarty->assign("RETURN_ACTION", vtlib_purify($_REQUEST['return_action']));
 	$RETURN_ACTION = vtlib_purify($_REQUEST['return_action']);
 }
-if ($_REQUEST['isDuplicate'] != 'true' && isset($_REQUEST['return_id']))
+if ((empty($_REQUEST['isDuplicate']) || $_REQUEST['isDuplicate'] != 'true') && isset($_REQUEST['return_id']))
 {
 	$smarty->assign("RETURN_ID", vtlib_purify($_REQUEST['return_id']));
 	$RETURN_ID = vtlib_purify($_REQUEST['return_id']);
+} else {
+	$smarty->assign('RETURN_ID', 0);
 }
 $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH", $image_path);
 $focus->mode = $mode;
 $smarty->assign('MASS_EDIT','0');
 $disp_view = getView($focus->mode);
-$smarty->assign("IMAGENAME",$focus->imagename);
+$smarty->assign('IMAGENAME',isset($focus->imagename) ? $focus->imagename : '');
 $smarty->assign('MASS_EDIT','0');
 $blocks = getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields);
 $smarty->assign('BLOCKS', $blocks);
 $smarty->assign("MODULE", 'Settings');
 $smarty->assign("MODE",$focus->mode);
-$smarty->assign("HOUR_FORMAT",$focus->hour_format);
-$smarty->assign("START_HOUR",$focus->start_hour);
-if ($_REQUEST['Edit'] == ' Edit ')
+$smarty->assign('HOUR_FORMAT',isset($focus->imagename) ? $focus->hour_format : '');
+$smarty->assign('START_HOUR',isset($focus->imagename) ? $focus->start_hour : '');
+if (isset($_REQUEST['Edit']) && $_REQUEST['Edit'] == ' Edit ')
 {
 	$smarty->assign("READONLY", "readonly");
 	$smarty->assign("USERNAME_READONLY", "readonly");
 }
-if(isset($_REQUEST['record']) && $_REQUEST['isDuplicate'] != 'true')
+if ((empty($_REQUEST['isDuplicate']) || $_REQUEST['isDuplicate'] != 'true') && isset($_REQUEST['record']))
 {
 	$smarty->assign("USERNAME_READONLY", "readonly");
 }
@@ -112,7 +114,7 @@ $smarty->assign("tagshow_options", array(
  "hcylinder" => $mod_strings['hcylinder'],
  "vcylinder" => $mod_strings['vcylinder'],
 ));
-$smarty->assign("DUPLICATE",vtlib_purify($_REQUEST['isDuplicate']));
+$smarty->assign('DUPLICATE',(isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : ''));
 $smarty->assign("USER_MODE",$mode);
 $smarty->assign('PARENTTAB', getParentTab());
 coreBOS_Session::set('Users_FORM_TOKEN', rand(5, 2000) * rand(2, 7));

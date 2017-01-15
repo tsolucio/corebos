@@ -80,7 +80,7 @@ function check_duplicate()
 
 		<form name="EditView" method="POST" action="index.php" ENCTYPE="multipart/form-data" onsubmit="VtigerJS_DialogBox.block();">
 		<input type="hidden" name="module" value="Users">
-		<input type="hidden" name="record" value="{$ID}">
+		<input type="hidden" name="record" value="{if isset($ID)}{$ID}{/if}">
 		<input type="hidden" name="mode" value="{$MODE}">
 		<input type='hidden' name='parenttab' value='{$PARENTTAB}'>
 		<input type="hidden" name="action">

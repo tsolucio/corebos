@@ -18,7 +18,7 @@
 -->*}
 <script type="text/javascript" charset="utf-8">
 	var moduleName = '{$entityName}';
-	var selectedEntityType = '{$task->relmodule}';
+	var selectedEntityType = '{if isset($task->relmodule)}{$task->relmodule}{/if}';
 {literal}
 	var vtinst = new VtigerWebservices('webservice.php');
 	function errorDialog(message){
@@ -80,7 +80,7 @@
 							uname.val(selectedEntityType);
 						}
 					}
-					uname.append('<option value="assigneduser">{/literal}{'Assigned User'|@getTranslatedString:$MODULE}{literal}</option>');
+					uname.append('<option value="assigneduser">{/literal}{'Assigned User'|@getTranslatedString:$module->name}{literal}</option>');
 					jQuery('#entity_type-busyicon').hide();
 					uname.show();
 				}
@@ -102,12 +102,12 @@
 	<h2>{'LBL_SELECT_MODULE'|@getTranslatedString:'Settings'}</h2>
 	<span id="entity_type-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
 	<select id="relmodule" name="relmodule" style="display:none;">
-		<option value=''>{'LBL_SELECT_ENTITY_TYPE'|@getTranslatedString:$MODULE}</option>
+		<option value=''>{'LBL_SELECT_ENTITY_TYPE'|@getTranslatedString:$module->name}</option>
 	</select>
 </div>
 <div style="float: left;">
-	<h2>{'LBL_SELECT_USER_BUTTON_LABEL'|@getTranslatedString:$MODULE}</h2>
+	<h2>{'LBL_SELECT_USER_BUTTON_LABEL'|@getTranslatedString:$module->name}</h2>
 	<select id="username" name="username" style="display:none;">
-		<option value=''>-- {'LBL_SELECT_USER_BUTTON_LABEL'|@getTranslatedString:$MODULE} --</option>
+		<option value=''>-- {'LBL_SELECT_USER_BUTTON_LABEL'|@getTranslatedString:$module->name} --</option>
 	</select>
 </div>
