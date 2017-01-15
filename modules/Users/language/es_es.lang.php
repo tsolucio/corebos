@@ -826,5 +826,9 @@ $mod_strings = Array(
 'Min. 1 number' => 'Mínimo un número',
 'Min. 1 special character' => 'Mínimo un caracter especial ! ? , ; - @ #',
 'Generate password' => 'Generar contraseña',
+// LDAP
+'LBL_QUERY' => 'Consulta',
+'LBL_FORE_LASTNAME' => 'Nombre o Apellido',
+'LBL_NO_LDAP_MATCHES' => 'No se han encontrado usuarios en el servidor LDAP!',
 );
 ?>

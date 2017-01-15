@@ -797,6 +797,10 @@
 'Min. 1 number' => 'Minimo un numero',
 'Min. 1 special character' => 'Minimo un carattere speciale ! ? , ; - @ #',
 'Generate password' => 'Generate password',
-);
+// LDAP
+'LBL_QUERY' => 'Query',
+'LBL_FORE_LASTNAME' => 'First or Last name',
+'LBL_NO_LDAP_MATCHES' => 'No matches found on the LDAP server!',
+ );
 
 ?>

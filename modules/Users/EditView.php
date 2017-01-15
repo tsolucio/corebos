@@ -123,5 +123,21 @@ $smarty->assign('FORM_TOKEN', $_SESSION['Users_FORM_TOKEN']);
 // Gather the help information associated with fields
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
 
+// When creating a new user with LDAP or AD access, add a button in the template which allows to load
+// full name, email address, telephone, etc from the LDAP server, so the admin doesn't have to enter this information manually
+$LdapBtnText = '';
+if ($mode == 'create') {
+	$authType = GlobalVariable::getVariable('User_AuthenticationType', 'SQL');
+	switch (strtoupper($authType)) {
+		case 'LDAP':
+			$LdapBtnText = 'LDAP';
+			break;
+		case 'AD':
+			$LdapBtnText = 'Active Dir.';
+			break;
+	}
+}
+$smarty->assign('LDAP_BUTTON', $LdapBtnText);
+
 $smarty->display('UserEditView.tpl');
 ?>

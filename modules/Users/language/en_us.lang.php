@@ -806,6 +806,11 @@ $mod_strings = Array(
 'Min. 1 special character' => 'Minimum one special character ! ? , ; - @ #',
 'Generate password' => 'Generar contraseña',
 
+// LDAP
+'LBL_QUERY' => 'Query',
+'LBL_FORE_LASTNAME' => 'First or Last name',
+'LBL_NO_LDAP_MATCHES' => 'No matches found on the LDAP server!',
+
 );
 
 ?>

@@ -704,5 +704,9 @@ $mod_strings = array(
 	'Decimal Separator' => 'Decimalen scheidingsteken',
 	'Digit Grouping Separator' => 'Duizendtallen groeperings scheidingsteken',
 	'Symbol Placement' => 'Symbool plaatsing',
+	// LDAP
+	'LBL_QUERY' => 'Query',
+	'LBL_FORE_LASTNAME' => 'First or Last name',
+	'LBL_NO_LDAP_MATCHES' => 'No matches found on the LDAP server!',
 );
 ?>
