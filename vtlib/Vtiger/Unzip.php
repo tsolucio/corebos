@@ -134,20 +134,20 @@ class Vtiger_Unzip {
 	}
 
 	public function getList(){
-		if(sizeof($this->compressedList)){
-			return $this->compressedList;
+		if(sizeof(self::$compressedList)){
+			return self::$compressedList;
 		}
 		for ($f=0; $f<$this->zipa->numFiles;$f++) {
 			$details = $this->zipa->statIndex($f);
 			$filename = $details['name'];
-			$this->compressedList[$filename]['file_name']          = $filename;
-			$this->compressedList[$filename]['compression_method'] = $details['comp_method'];
-			$this->compressedList[$filename]['lastmod_datetime']   = $details['mtime'];
-			$this->compressedList[$filename]['crc']                = $details['crc'];
-			$this->compressedList[$filename]['compressed_size']    = $details['comp_size'];
-			$this->compressedList[$filename]['uncompressed_size']  = $details['size'];
+			self::$compressedList[$filename]['file_name']          = $filename;
+			self::$compressedList[$filename]['compression_method'] = $details['comp_method'];
+			self::$compressedList[$filename]['lastmod_datetime']   = $details['mtime'];
+			self::$compressedList[$filename]['crc']                = $details['crc'];
+			self::$compressedList[$filename]['compressed_size']    = $details['comp_size'];
+			self::$compressedList[$filename]['uncompressed_size']  = $details['size'];
 		}
-		return $this->compressedList;
+		return self::$compressedList;
 	}
 
 	public function each($EachCallback){
@@ -165,12 +165,12 @@ class Vtiger_Unzip {
 	}
 
 	public function unzip($compressedFileName, $targetFileName=false, $applyChmod=0664) {
-		if(!sizeof($this->compressedList)){
+		if(!sizeof(self::$compressedList)){
 			$this->getList();
 		}
 
-		$fdetails = $this->compressedList[$compressedFileName];
-		if(!isset($this->compressedList[$compressedFileName])){
+		$fdetails = self::$compressedList[$compressedFileName];
+		if(!isset(self::$compressedList[$compressedFileName])){
 			throw new Exception("File '$compressedFileName' is not in the zip ".$this->fileName);
 		}
 		if(substr($compressedFileName, -1) == "/"){
@@ -180,9 +180,8 @@ class Vtiger_Unzip {
 		$destInfo = pathinfo($destPath);
 		$destDir = $destInfo['dirname'];
 		$destFile = $destInfo['basename'];
-		global $log;$log->fatal(array($destDir, $compressedFileName));
 		$ret = $this->zipa->extractTo($destDir, array($compressedFileName));
-		if ($newname!=$compressedFileName) {
+		if ($destPath!=$compressedFileName) {
 			rename($destDir.'/'.$compressedFileName, $destPath);
 		}
 		if($applyChmod && $ret)
