@@ -1,7 +1,9 @@
 <?php
+
 /*********************************************************************************
-** The contents of this file are subject to the vtiger CRM Public License Version 1.0
-* ("License"); You may not use this file except in compliance with the License
+* The contents of this file are subject to the vtiger CRM Public License Version 1.0
+* ("License");
+You may not use this file except in compliance with the License
 * The Original Code is:  vtiger CRM Open Source
 * The Initial Developer of the Original Code is vtiger.
 * Portions created by vtiger are Copyright (C) vtiger.
@@ -27,10 +29,14 @@ $portal_info=array();
 <script type="text/javascript">
 var mysitesArray = new Array()
 <?php
-for($i=0 ; $i<$no_of_portals; $i++)
+//added object in javascript array to define if site can be included in iframe
+for ($i=0 ; $i<$no_of_portals; $i++)
 {
 	$portalname = $adb->query_result($result,$i,'portalname');
 	$portalurl = $adb->query_result($result,$i,'portalurl');
+	//this call slows down the page but is the only way I have found to test
+	//should include some type of waiting sign
+	$embed = isEmbbedeable($portalurl);
 	//added as an enhancement to set default value
 	$portalid = $adb->query_result($result,$i,'portalid');
 	$set_default = $adb->query_result($result,$i,'setdefault');
@@ -38,25 +44,31 @@ for($i=0 ; $i<$no_of_portals; $i++)
 	$portal_array['portalid'] = $portalid;
 	if($set_default == 1) {
 		$def_ault = $portalurl;
+		$def_ault_embed = $embed;
 	}
 	$portal_array['portalname'] = (strlen($portalname) > 100) ? (substr($portalname,0,100).'...') : $portalname;
 	$portal_array['portalurl'] = $portalurl;
 	$portal_array['portaldisplayurl'] = (strlen($portalurl) > 100) ? (substr($portalurl,0,100).'...') : $portalurl;
-	$portal_info[]=$portal_array;
-?>
-	mysitesArray['<?php echo $portalid;?>'] = "<?php echo $portalurl;?>";
+	//added item in php array to define if site can be included in iframe
+	$portal_array['embed'] = $embed;
+	$portal_info[] = $portal_array;
+	?>
+	mysitesArray['<?php echo $portalid;?>'] = {url: "<?php echo $portalurl;?>", embed: <?php echo $embed;?>};
 <?php
 }
 ?>
 </script>
 <?php
-if(empty($def_ault))
-	$def_ault = $adb->query_result($result,0,'portalurl');
+//this code is redundant to code in line 24
+//if(empty($def_ault))
+	//$def_ault = $adb->query_result($result,0,'portalurl');
 $smarty = new vtigerCRM_Smarty;
 $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH", $image_path);
 $smarty->assign("MOD", $mod_strings);
 $smarty->assign("DEFAULT_URL", $def_ault);
+//added default embed
+$smarty->assign("DEFAULT_EMBED", $def_ault_embed);
 $smarty->assign("APP", $app_strings);
 $smarty->assign("PORTAL_COUNT", count($portal_info));
 $smarty->assign("PORTALS", $portal_info);
@@ -82,4 +94,31 @@ elseif(isset($_REQUEST['datamode']) and $_REQUEST['datamode'] == 'manage')
 	$smarty->display("MySitesManage.tpl");
 else
 	$smarty->display("MySites.tpl");
+
+//read http response variables to determine if site can be embedded
+function isEmbbedeable($url) {
+	$ch = curl_init();
+	$options = array(
+			CURLOPT_URL => $url,			CURLOPT_RETURNTRANSFER => TRUE,
+			CURLOPT_NOBODY => TRUE,			CURLOPT_HEADER => TRUE,
+			CURLOPT_CONNECTTIMEOUT => 120,	CURLOPT_TIMEOUT => 120,
+			CURLOPT_SSL_VERIFYHOST => FALSE
+			);
+	curl_setopt_array($ch, $options);
+	$response = curl_exec($ch);
+	$error = curl_errno($ch);
+	//if it needs a certificate to be able so show, send to another window
+	if ($error == CURLE_SSL_PEER_CERTIFICATE || $error == CURLE_SSL_CACERT || $error == 77) {
+		//it is a https request
+		return 0;
+	}
+	else{
+		$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+		$headers = substr($response, 0, $header_size);
+		// echo "$url <br />header - > ";
+		// var_dump($headers);
+		return (strpos($headers, 'X-Frame-Options: deny') > -1 || strpos($headers, 'X-Frame-Options: SAMEORIGIN') > -1 ? 0 : 1);
+	}
+	curl_close($ch);
+}
 ?>
