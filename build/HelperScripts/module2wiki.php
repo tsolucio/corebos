@@ -192,7 +192,7 @@ if ($argc==2 and !empty($argv[1])) {
 	exit(0);
 } else {
 	echo "\nmodule2wiki converts a module manifest.xml and composer.json file into a dokuwiki page with a Data Entry\n";
-	echo "\n\n  php module2wiki.php [module_directoty]\n\n";
-	echo "Where module_directoty is a directory which contains a valid coreBOS module structure.\n\n";
+	echo "\n\n  php module2wiki.php [module_directory]\n\n";
+	echo "Where module_directory is a directory which contains a valid coreBOS module structure.\n\n";
 }
 ?>
