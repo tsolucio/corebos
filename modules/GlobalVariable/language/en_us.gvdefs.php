@@ -756,6 +756,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Application should tend to use Accounts (1) or Contacts (0). Default is to use Accounts (1).',
 ),
+'User_AuthenticationType' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'LDAP | AD | SQL',
+	'definition' => 'Login authentication type. Use the default SQL to login using the passwords stored in the database',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/en_us.gvdefs.*.php',GLOB_BRACE) as $tcode) {

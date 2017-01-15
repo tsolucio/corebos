@@ -227,16 +227,17 @@ class Users extends CRMEntity {
 	}
 
 	/**
-	 * Checks the config.php AUTHCFG value for login type and forks off to the proper module
+	 * Checks the User_AuthenticationType global variavle value for login type and forks off to the proper module
 	 *
 	 * @param string $user_password - The password of the user to authenticate
 	 * @return true if the user is authenticated, false otherwise
 	 */
 	function doLogin($user_password) {
-		global $AUTHCFG;
+		$authType = GlobalVariable::getVariable('User_AuthenticationType', 'SQL');
+		if ($this->is_admin) $authType = 'SQL'; // admin users always login locally
 		$usr_name = $this->column_fields["user_name"];
 
-		switch (strtoupper($AUTHCFG['authType'])) {
+		switch (strtoupper($authType)) {
 			case 'LDAP' :
 				$this->log->debug("Using LDAP authentication");
 				require_once ('modules/Users/authTypes/LDAP.php');
