@@ -158,7 +158,7 @@
 							<td class="small" align="left" nowrap="nowrap">
 								{if $MODULE neq 'Calendar'}
 									<b><a class="nef_action" href="index.php?module={$MODULE}&action=EditView&return_action=DetailView&parenttab={$CATEGORY}">{$APP.LBL_CREATE} {$APP.$vowel_conf}
-										{if $APP.$MODULE_CREATE}{$APP.$MODULE_CREATE}{else}{$MODULE_CREATE}{/if}
+										{$MODULE_CREATE|@getTranslatedString:$MODULE}
 										{if $CHECK.Import eq 'yes' && $MODULE neq 'Documents'}
 										</a></b><br>
 										<b><a class="nef_action" href="index.php?module={$MODULE}&action=Import&step=1&return_module={$MODULE}&return_action=ListView&parenttab={$CATEGORY}">{$APP.LBL_IMPORT} {$MODULE|@getTranslatedString:$MODULE}
@@ -179,7 +179,7 @@
 						</tr>
 						<tr>
 							<td class="small" align="left" nowrap="nowrap">{$APP.LBL_YOU_ARE_NOT_ALLOWED_TO_CREATE} {$APP.$vowel_conf}
-							{if $APP.$MODULE_CREATE}{$APP.$MODULE_CREATE}{else}{$MODULE_CREATE}{/if}
+							{$MODULE_CREATE|@getTranslatedString:$MODULE}
 							<br>
 							</td>
 						</tr>

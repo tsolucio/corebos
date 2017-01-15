@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 require_once("data/Tracker.php");
 require_once('include/logging.php');
@@ -30,20 +29,15 @@ elseif(isset($_REQUEST["rssurl"]))
 	$newRssUrl = str_replace('##amp##','&',$_REQUEST["rssurl"]);
 	$setstarred = 0;
 	$oRss = new vtigerRSS();
-	if($oRss->setRSSUrl($newRssUrl))
-	{
-			$result = $oRss->saveRSSUrl($newRssUrl,$setstarred);
-        	if($result == false)
-        	{
-				echo $mod_strings['UNABLE_TO_SAVE'] ;
-        	}else
-        	{
-				echo $result;
-        	}
-	}else
-	{
+	if($oRss->setRSSUrl($newRssUrl)) {
+		$result = $oRss->saveRSSUrl($newRssUrl,$setstarred);
+		if($result == false) {
+			echo $mod_strings['UNABLE_TO_SAVE'] ;
+		} else {
+			echo $result;
+		}
+	} else {
 		echo $mod_strings['NOT_A_VALID'];
-
 	}
 }
 

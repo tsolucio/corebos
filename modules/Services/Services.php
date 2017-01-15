@@ -653,10 +653,10 @@ class Services extends CRMEntity {
 		$theme_path="themes/".$theme."/";
 		$image_path=$theme_path."images/";
 
-		$computeCount = $_REQUEST['withCount'];
-		if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true ||
-				((boolean) $computeCount) == true){
-			$noofrows = $adb->query_result($adb->query(mkCountQuery($query)),0,'count');
+		$computeCount = (isset($_REQUEST['withCount']) ? $_REQUEST['withCount'] : false);
+		if (PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true || ((boolean) $computeCount) == true) {
+			$rs = $adb->query(mkCountQuery($query));
+			$noofrows = $adb->query_result($rs,0,'count');
 		}else{
 			$noofrows = null;
 		}
