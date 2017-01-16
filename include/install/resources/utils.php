@@ -759,7 +759,6 @@ class Common_Install_Wizard_Utils {
 		'Configuration File' => './config.inc.php',
 		'Tabdata File' => './tabdata.php',
 		'Installation File' => './install.php',
-		'Parent Tabdata File' => './parent_tabdata.php',
 		'Cache Directory' => './cache/',
 		'Image Cache Directory' => './cache/images/',
 		'Import Cache Directory' => './cache/import/',

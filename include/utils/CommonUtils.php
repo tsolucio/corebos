@@ -1391,134 +1391,49 @@ function getBlockId($tabid, $label) {
 }
 
 /**
- * This function is used to get the Parent and Child vtiger_tab relation array.
- * Takes no parameter and get the data from parent_tabdata.php and vtiger_tabdata.php
+ * This function is used to get the Parent and Child tab relation array.
+ * Takes no parameter and get the data from parent_tabdata.php and tabdata.php
  * This returns array type value
+ * @deprecated
  */
 function getHeaderArray() {
-	global $log;
-	$log->debug("Entering getHeaderArray() method ...");
-	global $adb;
-	global $current_user;
-	require('user_privileges/user_privileges_' . $current_user->id . '.php');
-	include('parent_tabdata.php');
-	include('tabdata.php');
-	$noofrows = count($parent_tab_info_array);
-	foreach ($parent_tab_info_array as $parid => $parval) {
-		$subtabs = Array();
-		$tablist = $parent_child_tab_rel_array[$parid];
-		$noofsubtabs = count($tablist);
-
-		foreach ($tablist as $childTabId) {
-			$module = array_search($childTabId, $tab_info_array);
-
-			if ($is_admin) {
-				$subtabs[] = $module;
-			} elseif ($profileGlobalPermission[2] == 0 || $profileGlobalPermission[1] == 0 || $profileTabsPermission[$childTabId] == 0) {
-				$subtabs[] = $module;
-			}
-		}
-
-		$parenttab = getParentTabName($parid);
-		if ($parenttab == 'Settings' && $is_admin) {
-			$subtabs[] = 'Settings';
-		}
-
-		if ($parenttab != 'Settings' || ($parenttab == 'Settings' && $is_admin)) {
-			if (!empty($subtabs))
-				$relatedtabs[$parenttab] = $subtabs;
-		}
-	}
-	$log->debug("Exiting getHeaderArray method ...");
-	return $relatedtabs;
+	return array();
 }
 
 /**
- * This function is used to get the Parent Tab name for a given parent vtiger_tab id.
- * Takes the input parameter as $parenttabid - Parent vtiger_tab id
+ * This function is used to get the Parent Tab name for a given parent tab id.
+ * Takes the input parameter as $parenttabid - Parent tab id
  * This returns value string type
+ * @deprecated
  */
 function getParentTabName($parenttabid) {
-	global $log;
-	$log->debug("Entering getParentTabName(" . $parenttabid . ") method ...");
-	global $adb;
-	if (file_exists('parent_tabdata.php') && (filesize('parent_tabdata.php') != 0)) {
-		include('parent_tabdata.php');
-		$parent_tabname = $parent_tab_info_array[$parenttabid];
-	} else {
-		$sql = "select parenttab_label from vtiger_parenttab where parenttabid=?";
-		$result = $adb->pquery($sql, array($parenttabid));
-		$parent_tabname = $adb->query_result($result, 0, "parenttab_label");
-	}
-	$log->debug("Exiting getParentTabName method ...");
-	return $parent_tabname;
+	return 'ptab';
 }
 
 /**
  * This function is used to get the Parent Tab name for a given module.
  * Takes the input parameter as $module - module name
  * This returns value string type
+ * @deprecated
  */
 function getParentTabFromModule($module) {
-	global $log, $adb;
-	$log->debug("Entering getParentTabFromModule(" . $module . ") method ...");
-	if (file_exists('tabdata.php') && (filesize('tabdata.php') != 0) && file_exists('parent_tabdata.php') && (filesize('parent_tabdata.php') != 0)) {
-		include('tabdata.php');
-		include('parent_tabdata.php');
-		if (!isset($tab_info_array[$module])) return $module;
-		$tabid = $tab_info_array[$module];
-		$parent_tabname = '';
-		foreach ($parent_child_tab_rel_array as $parid => $childArr) {
-			if (in_array($tabid, $childArr)) {
-				$parent_tabname = $parent_tab_info_array[$parid];
-				break;
-			}
-		}
-		$log->debug("Exiting getParentTabFromModule method ...");
-		return $parent_tabname;
-	} else {
-		$sql = "select vtiger_parenttab.* from vtiger_parenttab inner join vtiger_parenttabrel on vtiger_parenttabrel.parenttabid=vtiger_parenttab.parenttabid inner join vtiger_tab on vtiger_tab.tabid=vtiger_parenttabrel.tabid where vtiger_tab.name=?";
-		$result = $adb->pquery($sql, array($module));
-		$tab = $adb->query_result($result, 0, "parenttab_label");
-		$log->debug("Exiting getParentTabFromModule method ...");
-		return $tab;
-	}
+	return $module;
 }
 
 /**
  * This function is used to get the Parent Tab name for a given module.
- * Takes no parameter but gets the vtiger_parenttab value from form request
+ * Takes no parameter but gets the parenttab value from form request
  * This returns value string type
+ * @deprecated
  */
 function getParentTab() {
-	global $log, $default_charset;
-	$log->debug("Entering getParentTab() method ...");
-	static $parenttab_cache = array();
-	if (!empty($_REQUEST['parenttab'])) {
-		$log->debug("Exiting getParentTab method ...");
-		if (array_key_exists($_REQUEST['parenttab'], $parenttab_cache)) {
-			return $parenttab_cache[$_REQUEST['parenttab']];
-		}
-		if (array_key_exists($_REQUEST['module'], $parenttab_cache)) {
-			return $parenttab_cache[$_REQUEST['module']];
-		}
-		$return = getParentTabFromModule($_REQUEST['module']);
-		$parenttab_cache[$_REQUEST['module']] = $return;
-	} else {
-		$log->debug("Exiting getParentTab method ...");
-		if (array_key_exists($_REQUEST['module'], $parenttab_cache)) {
-			return $parenttab_cache[$_REQUEST['module']];
-		}
-		$return = getParentTabFromModule($_REQUEST['module']);
-		$parenttab_cache[$_REQUEST['module']] = $return;
-	}
-	return $return;
+	return 'ptab';
 }
 
 /**
  * This function is used to get the days in between the current time and the modified time of an entity .
  * Takes the input parameter as $id - crmid  it will calculate the number of days in between the
- * the current time and the modified time from the vtiger_crmentity vtiger_table and return the result as a string.
+ * the current time and the modified time from the vtiger_crmentity table and return the result as a string.
  * The return format is updated <No of Days> day ago <(date when updated)>
  */
 function updateInfo($id) {
@@ -1901,80 +1816,13 @@ function create_tab_data_file() {
 }
 
 /**
- * Function to write the vtiger_parenttabid and name to a flat file parent_tabdata.txt so that the data
+ * Function to write the parenttabid and name to a flat file parent_tabdata.php so that the data
  * is obtained from the file instead of repeated queries
  * returns null
+ * @deprecated
  */
 function create_parenttab_data_file() {
-	global $log;
-	$log->debug("Entering create_parenttab_data_file() method ...");
-	$log->info("creating parent_tabdata file");
-	global $adb;
-	$sql = "select parenttabid,parenttab_label from vtiger_parenttab where visible=0 order by sequence";
-	$result = $adb->pquery($sql, array());
-	$num_rows = $adb->num_rows($result);
-	$result_array = Array();
-	for ($i = 0; $i < $num_rows; $i++) {
-		$parenttabid = $adb->query_result($result, $i, 'parenttabid');
-		$parenttab_label = $adb->query_result($result, $i, 'parenttab_label');
-		$result_array[$parenttabid] = $parenttab_label;
-	}
-
-	$filename = 'parent_tabdata.php';
-
-
-	if (file_exists($filename)) {
-
-		if (is_writable($filename)) {
-
-			if (!$handle = fopen($filename, 'w+')) {
-				echo "Cannot open file ($filename)";
-				exit;
-			}
-			require_once('modules/Users/CreateUserPrivilegeFile.php');
-			$newbuf = '';
-			$newbuf .="<?php\n\n";
-			$newbuf .="\n";
-			$newbuf .= "//This file contains the commonly used variables \n";
-			$newbuf .= "\n";
-			$newbuf .= "\$parent_tab_info_array=" . constructSingleStringValueArray($result_array) . ";\n";
-			$newbuf .="\n";
-
-
-			$parChildTabRelArray = Array();
-
-			foreach ($result_array as $parid => $parvalue) {
-				$childArray = Array();
-				//$sql = "select * from vtiger_parenttabrel where parenttabid=? order by sequence";
-				// vtlib customization: Disabling the tab item based on presence
-				$sql = "select * from vtiger_parenttabrel where parenttabid=?
-					and tabid in (select tabid from vtiger_tab where presence in (0,2)) order by sequence";
-				// END
-				$result = $adb->pquery($sql, array($parid));
-				$num_rows = $adb->num_rows($result);
-				$result_array = Array();
-				for ($i = 0; $i < $num_rows; $i++) {
-					$tabid = $adb->query_result($result, $i, 'tabid');
-					$childArray[] = $tabid;
-				}
-				$parChildTabRelArray[$parid] = $childArray;
-			}
-			$newbuf .= "\n";
-			$newbuf .= "\$parent_child_tab_rel_array=" . constructTwoDimensionalValueArray($parChildTabRelArray) . ";\n";
-			$newbuf .="\n";
-			$newbuf .="\n";
-			$newbuf .="\n";
-			$newbuf .= "?>";
-			fputs($handle, $newbuf);
-			fclose($handle);
-		} else {
-			echo "The file $filename is not writable";
-		}
-	} else {
-		echo "The file $filename does not exist";
-		$log->debug("Exiting create_parenttab_data_file method ...");
-		return;
-	}
+	return null;
 }
 
 /**
