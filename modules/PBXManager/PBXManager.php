@@ -17,6 +17,9 @@ class PBXManager extends CRMEntity {
 	var $table_index= 'pbxmanagerid';
 	var $column_fields = Array();
 
+	/** Indicator if this is a custom module or standard module */
+	var $IsCustomModule = false;
+	var $HasDirectImageField = false;
 	// Mandatory for function getGroupName
 	// Array(groupTableName, groupColumnId)
 	// groupTableName should have (groupname column)
@@ -78,7 +81,7 @@ class PBXManager extends CRMEntity {
 	/**
 	 * Get list view query.
 	 */
-	function getListQuery($module) {
+	function getListQuery($module, $usewhere='') {
 		$query = "SELECT $this->table_name.*, vtiger_crmentity.*";
 		$query .= " FROM $this->table_name";
 
@@ -252,7 +255,7 @@ class PBXManager extends CRMEntity {
 
 	function getListButtons($app_strings) {
 		$list_buttons = Array();
-		if(isPermitted('PBXManager','Delete','') == 'yes') $list_buttons['del'] = $app_strings[LBL_MASS_DELETE];
+		if(isPermitted('PBXManager','Delete','') == 'yes') $list_buttons['del'] = $app_strings['LBL_MASS_DELETE'];
 		return $list_buttons;
 	}
 

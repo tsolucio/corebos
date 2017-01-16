@@ -255,7 +255,7 @@ function popup_from_html($string, $encode = true) {
 
 /** To get the Currency of the specified user
  * @param $id -- The user Id:: Type integer
- * @returns  vtiger_currencyid :: Type integer
+ * @returns  currencyid :: Type integer
  */
 function fetchCurrency($id) {
 	global $log;
@@ -282,7 +282,7 @@ function fetchCurrency($id) {
 }
 
 /** Function to get the Currency name from the vtiger_currency_info
- * @param $currencyid -- vtiger_currencyid:: Type integer
+ * @param $currencyid -- currencyid:: Type integer
  * @returns $currencyname -- Currency Name:: Type varchar
  *
  */
@@ -320,7 +320,7 @@ function getCurrencyName($currencyid, $show_symbol = true) {
 }
 
 /**
- * Function to fetch the list of vtiger_groups from group vtiger_table
+ * Function to fetch the list of groups from group table
  * Takes no value as input
  * returns the query result set object
  */
@@ -510,9 +510,9 @@ function getSalesEntityType($crmid) {
 }
 
 /**
- * Function to get the AccountName when a vtiger_account id is given
- * Takes the input as $acount_id - vtiger_account id
- * returns the vtiger_account name in string format.
+ * Function to get the AccountName from an account id
+ * Takes the input as $acount_id - account id
+ * returns the account name in string format.
  */
 function getAccountName($account_id) {
 	global $log, $adb;
@@ -542,9 +542,9 @@ function getProductName($product_id) {
 }
 
 /**
- * Function to get the Potentail Name when a vtiger_potential id is given
- * Takes the input as $potential_id - vtiger_potential id
- * returns the vtiger_potential name in string format.
+ * Function to get the Potentail Name when a potential id is given
+ * Takes the input as $potential_id - potential id
+ * returns the potential name in string format.
  */
 function getPotentialName($potential_id) {
 	global $log, $adb;
@@ -651,8 +651,8 @@ function getCampaignName($campaign_id) {
 }
 
 /**
- * Function to get the Vendor Name when a vtiger_vendor id is given
- * Takes the input as $vendor_id - vtiger_vendor id
+ * Function to get the Vendor Name when a vendor id is given
+ * Takes the input as $vendor_id - vendor id
  * returns the Vendor Name in string format.
  */
 function getVendorName($vendor_id) {
@@ -668,7 +668,7 @@ function getVendorName($vendor_id) {
 }
 
 /**
- * Function to get the Quote Name when a vtiger_vendor id is given
+ * Function to get the Quote Name when a quote id is given
  * Takes the input as $quote_id - quote id
  * returns the Quote Name in string format.
  */
@@ -690,8 +690,8 @@ function getQuoteName($quote_id) {
 }
 
 /**
- * Function to get the PriceBook Name when a vtiger_pricebook id is given
- * Takes the input as $pricebook_id - vtiger_pricebook id
+ * Function to get the PriceBook Name when a pricebook id is given
+ * Takes the input as $pricebook_id - pricebook id
  * returns the PriceBook Name in string format.
  */
 function getPriceBookName($pricebookid) {
@@ -723,8 +723,8 @@ function getPoName($po_id) {
 }
 
 /**
- * Function to get the Sales Order Name when a vtiger_salesorder id is given
- * Takes the input as $salesorder_id - vtiger_salesorder id
+ * Function to get the Sales Order Name when a salesorder id is given
+ * Takes the input as $salesorder_id - salesorder id
  * returns the Salesorder Name in string format.
  */
 function getSoName($so_id) {
@@ -957,7 +957,7 @@ function getRelatedAccountContact($entityid,$module='') {
 
 /**
  * Creates and returns database query. To be used for search and other text links.   This method expects the module object.
- * param $focus - the module object contains the column vtiger_fields
+ * param $focus - the module object contains the column_fields
  */
 function getURLstring($focus) {
 	global $log;
@@ -1032,7 +1032,7 @@ function getNewDisplayTime() {
 	return $date->getDisplayTime($current_user);
 }
 
-/** This function returns the default vtiger_currency information.
+/** This function returns the default currency information.
  * Takes no param, return type array.
  */
 function getDisplayCurrency() {
@@ -1086,9 +1086,9 @@ function convertFromMasterCurrency($amount, $crate) {
 	return $amount * $crate;
 }
 
-/** This function returns the conversion rate and vtiger_currency symbol
+/** This function returns the conversion rate and currency symbol
  * in array format for a given id.
- * param $id - vtiger_currency id.
+ * param $id - currency id.
  */
 function getCurrencySymbolandCRate($id) {
 	global $log;
@@ -1142,7 +1142,7 @@ function getTermsandConditions($module='') {
  * Create select options in a dropdown list. To be used inside a reminder select statement in an activity form.
  * param $start - start value
  * param $end - end value
- * param $fldname - vtiger_field name
+ * param $fldname - field name
  * param $selvalue - selected value
  */
 function getReminderSelectOption($start, $end, $fldname, $selvalue = '', $class='') {
@@ -1163,7 +1163,7 @@ function getReminderSelectOption($start, $end, $fldname, $selvalue = '', $class=
 
 /** This function returns the List price of a given product in a given price book.
  * param $productid - product id.
- * param $pbid - vtiger_pricebook id.
+ * param $pbid - pricebook id.
  */
 function getListPrice($productid, $pbid) {
 	global $log;
@@ -1228,8 +1228,8 @@ function make_clickable($text) {
 }
 
 /**
- * This function returns the vtiger_blocks and its related information for given module.
- * Input Parameter are $module - module name, $disp_view = display view (edit,detail or create),$mode - edit, $col_fields - * column vtiger_fields/
+ * This function returns the blocks and its related information for given module.
+ * Input Parameter are $module - module name, $disp_view = display view (edit,detail or create),$mode - edit, $col_fields - * column_fields/
  * This function returns an array
  */
 function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = '') {
@@ -1319,7 +1319,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 }
 
 /**
- * This function returns the customized vtiger_blocks and its template.
+ * This function returns the customized blocks and its template.
  * Input Parameter are $module - module name, $disp_view = display view (edit,detail or create)
  * This function returns an array
  */
@@ -1633,7 +1633,7 @@ function file_exist_fn($filename, $exist) {
 
 /**
  * This function is used get the User Count.
- * It returns the array which has the total vtiger_users ,admin vtiger_users,and the non admin vtiger_users
+ * It returns the array which has the total users ,admin users,and the non admin users
  */
 function UserCount() {
 	global $log;
@@ -1724,7 +1724,7 @@ function setObjectValuesFromRequest($focus) {
 }
 
 /**
- * Function to write the tabid and name to a flat file vtiger_tabdata.txt so that the data
+ * Function to write the tabid and name to a flat file tabdata.php so that the data
  * is obtained from the file instead of repeated queries
  * returns null
  */
@@ -1861,7 +1861,7 @@ function getQuickCreateModules() {
 }
 
 /**
- * This function is used to get the Quick create form vtiger_field parameters for a given module.
+ * This function is used to get the Quick create form field parameters for a given module.
  * Param $module - module name
  * returns the value in array format
  */
