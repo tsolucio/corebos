@@ -209,12 +209,9 @@ function set_focus() {ldelim}
 								<input type="hidden" id="relmod" name="{$mod_var_name}" value="{$mod_var_value}">
 								<input type="hidden" id="relrecord_id" name="{$recid_var_name}" value="{$recid_var_value}">
 								<input name="form" id="popupform" type="hidden" value="{$smarty.request.form|@vtlib_purify}">
-								{* vtlib customization: For uitype 10 popup during paging *}
-								{if $smarty.request.form eq 'vtlibPopupView'}
-									<input name="forfield" id="forfield" type="hidden" value="{$smarty.request.forfield|@vtlib_purify}">
-									<input name="srcmodule" id="srcmodule" type="hidden" value="{$smarty.request.srcmodule|@vtlib_purify}">
-									<input name="forrecord" id="forrecord" type="hidden" value="{$smarty.request.forrecord|@vtlib_purify}">
-								{/if}
+								<input name="forfield" id="forfield" type="hidden" value="{$smarty.request.forfield|@vtlib_purify}">
+								<input name="srcmodule" id="srcmodule" type="hidden" value="{$smarty.request.srcmodule|@vtlib_purify}">
+								<input name="forrecord" id="forrecord" type="hidden" value="{$smarty.request.forrecord|@vtlib_purify}">
 								{if !empty($smarty.request.currencyid)}
 									<input type="hidden" name="currencyid" id="currencyid" value="{$smarty.request.currencyid|@vtlib_purify}">
 								{/if}
