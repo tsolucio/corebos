@@ -137,7 +137,7 @@ function getMenuArray($mparent) {
 					break;
 			}
 			$submenu = getMenuArray($menu['evvtmenuid']);
-			if ($menu['mparent']>0 or count($submenu)>0) {
+			if ($menu['mparent']>0 or count($submenu)>0 or $menu['mtype']=='module' or $menu['mtype']=='url') {
 				$menustructure[] = array(
 					'evvtmenuid' => $menu['evvtmenuid'],
 					'mparent' => $menu['mparent'],
