@@ -352,7 +352,7 @@ foreach($Users_Ids AS $userid) {
 				'visibility' => $visibility,
 				'editable' => $editable,
 				'activity_mode' => $activity_mode,
-				'title' => $title,
+				'title' => $title . (isset($row['description']) ? '<br>' . textlength_check($row['description']) : ''),
 				'start' => $user_date_start,
 				'end' => $user_due_date,
 				'allDay' => $allDay,
