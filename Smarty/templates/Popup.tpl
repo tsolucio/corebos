@@ -248,7 +248,7 @@ function set_focus() {ldelim}
 			</table>
 			<!-- ADVANCED SEARCH -->
 			<div id="advSearch" style="display:none;">
-			<form name="advSearch" method="post" action="index.php" onSubmit="return callSearch('Advanced');">
+			<form name="advSearch" method="post" action="index.php" onSubmit="callSearch('Advanced');return false">
 				<table cellspacing=0 cellpadding=5 width=100% class="searchUIAdv1 small" align="center" border=0>
 					<tr>
 						<td class="searchUIName small" nowrap align="left"><span class="moduleName">{$APP.LBL_SEARCH}</span><br><span class="small"><a href="#" onClick="show('searchAcc');fnhide('advSearch')">{$APP.LBL_GO_TO} {$APP.LNK_BASIC_SEARCH}</a></span></td>
