@@ -319,4 +319,4 @@ if($_REQUEST['maintab'] == 'Calendar' or (!empty($return_id) and empty($returnid
 	header("Location: index.php?action=".$return_action."&module=".$return_module."&view=".$view."&hour=".$hour."&day=".$day."&month=".$month."&year=".$year."&record=".$return_id."&viewOption=".$viewOption."&subtab=".$subtab."&parenttab=$parenttab");
 else
 	header("Location: index.php?action=$return_action&module=$return_module&view=$view&hour=$hour&day=$day&month=$month&year=$year&record=$returnid$activemode&viewname=$return_viewname$page&parenttab=$parenttab$search");
-?> 
+?>

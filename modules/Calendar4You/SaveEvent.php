@@ -404,4 +404,4 @@ echo $date->getDBInsertDateValue();
 
 echo "-".getTranslatedString("LBL_SUCCESSFULY_CREATED","Calendar4You");
 exit;
-?> 
+?>
