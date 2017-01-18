@@ -8,7 +8,7 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-{if $smarty.request.ajax neq ''}
+{if isset($smarty.request.ajax) && $smarty.request.ajax neq ''}
 &#&#&#{$ERROR}&#&#&#
 {/if}
 <table class="layerPopupTransport" width="100%">
@@ -83,7 +83,7 @@
 								</td>
 							</tr>
 						</table>
-                    </div>
+					</div>
 				</td>
 			{else}
 				<td>
@@ -108,7 +108,7 @@
                                 {foreach item=folder from=$FOLDERS}
 									<!-- folder division starts -->
 									{assign var=foldercount value=$FOLDERS|@count}
-		
+
                                     <div id='{$folder.folderid}' class="documentModuleFolderView">
 										<input type="hidden" name="numOfRows" id="numOfRows_selectall{$folder.folderid}" value="">
 										<input type="hidden" name="folderidVal" id="folderid_selectall{$folder.folderid}" value="{$folder.folderid}">
@@ -123,8 +123,8 @@
 														<font class="copy">[<i>{$folder.description}</i>]</font>
 													{/if}
 												</td>
-                                                <td class="mailSubHeader small" align="center" nowrap>{$folder.recordListRange}</td>
-                                                {$folder.record_count}&nbsp;&nbsp;&nbsp;&nbsp;{$folder.navigation}
+												<td class="mailSubHeader small" align="center" nowrap>{$folder.recordListRange}</td>
+												{$folder.navigation}
 											</tr>
                                             <tr>
 												<td colspan="4" >
@@ -241,7 +241,6 @@
 		</tr>
 	</table>
 </form>
-{$SELECT_SCRIPT}
 <div id="basicsearchcolumns" style="display:none;"><select name="search_field" id="bas_searchfield" class="txtBox" style="width:150px">{html_options  options=$SEARCHLISTHEADER}</select></div>
 <script>
 	{literal}

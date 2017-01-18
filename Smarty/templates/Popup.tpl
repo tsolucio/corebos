@@ -209,9 +209,9 @@ function set_focus() {ldelim}
 								<input type="hidden" id="relmod" name="{$mod_var_name}" value="{$mod_var_value}">
 								<input type="hidden" id="relrecord_id" name="{$recid_var_name}" value="{$recid_var_value}">
 								<input name="form" id="popupform" type="hidden" value="{$smarty.request.form|@vtlib_purify}">
-								<input name="forfield" id="forfield" type="hidden" value="{$smarty.request.forfield|@vtlib_purify}">
-								<input name="srcmodule" id="srcmodule" type="hidden" value="{$smarty.request.srcmodule|@vtlib_purify}">
-								<input name="forrecord" id="forrecord" type="hidden" value="{$smarty.request.forrecord|@vtlib_purify}">
+								<input name="forfield" id="forfield" type="hidden" value="{if isset($smarty.request.forfield)}{$smarty.request.forfield|@vtlib_purify}{/if}">
+								<input name="srcmodule" id="srcmodule" type="hidden" value="{if isset($smarty.request.srcmodule)}{$smarty.request.srcmodule|@vtlib_purify}{/if}">
+								<input name="forrecord" id="forrecord" type="hidden" value="{if isset($smarty.request.forrecord)}{$smarty.request.forrecord|@vtlib_purify}{/if}">
 								{if !empty($smarty.request.currencyid)}
 									<input type="hidden" name="currencyid" id="currencyid" value="{$smarty.request.currencyid|@vtlib_purify}">
 								{/if}

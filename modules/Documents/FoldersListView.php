@@ -20,8 +20,7 @@ $log = LoggerManager::getLogger('note_list');
 global $app_strings,$mod_strings,$currentModule,$image_path,$theme;
 $list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$currentModule);
 $category = getParentTab();
-if(!$_SESSION['lvs'][$currentModule])
-{
+if(empty($_SESSION['lvs'][$currentModule])) {
 	coreBOS_Session::delete('lvs');
 	$modObj = new ListViewSession();
 	$modObj->sorder = $sorder;
@@ -41,11 +40,12 @@ $url_string = ''; // assigning http url string
 $focus = new Documents();
 // Initialize sort by fields
 $focus->initSortbyField('Documents');
-// END
+
 $smarty = new vtigerCRM_Smarty;
 $other_text = Array();
+$smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
 
-if($_REQUEST['errormsg'] != '') {
+if(!empty($_REQUEST['errormsg'])) {
 	$errormsg = vtlib_purify($_REQUEST['errormsg']);
 	$smarty->assign('ERROR',"The User does not have permission to delete ".$errormsg." ".$currentModule);
 } else {
@@ -115,12 +115,12 @@ $hide_empty_folders = 'no';
 
 // Enabling Module Search
 $url_string = '';
-if($_REQUEST['query'] == 'true') {
+if(isset($_REQUEST['query']) and $_REQUEST['query'] == 'true') {
 	$queryGenerator->addUserSearchConditions($_REQUEST);
 	$ustring = getSearchURL($_REQUEST);
 	$url_string .= "&query=true$ustring";
-	$smarty->assign('SEARCH_URL', $url_string);
 }
+$smarty->assign('SEARCH_URL', $url_string);
 
 $query = $queryGenerator->getQuery();
 $where = $queryGenerator->getConditionalWhere();
@@ -160,8 +160,6 @@ $url_string .="&viewname=".$viewid;
 $controller = new ListViewController($adb, $current_user, $queryGenerator);
 $listview_header_search = $controller->getBasicSearchFieldInfoList();
 $smarty->assign('SEARCHLISTHEADER',$listview_header_search);
-
-$smarty->assign('SELECT_SCRIPT', $view_script);
 
 $start = Array();
 $request_folderid = '';
@@ -259,8 +257,7 @@ if($foldercount > 0 )
 		$folder_files = $controller->getListViewEntries($focus,$currentModule,$list_result,$navigation_array);
 		$folder_details['entries']= $folder_files;
 		$folder_details['navigation'] = getTableHeaderSimpleNavigation($navigation_array, $url_string,"Documents",$folder_id,$viewid);
-		$folder_details['recordListRange'] = getRecordRangeMessage($list_result, $limit_start_rec,
-				$num_records);
+		$folder_details['recordListRange'] = getRecordRangeMessage($list_result, $limit_start_rec, $num_records);
 		if ($displayFolder == true) {
 			$folders[$foldername] = $folder_details;
 		} else{
@@ -269,6 +266,7 @@ if($foldercount > 0 )
 		if ($folderid == 1) $default_folder_details = $folder_details;
 	}
 	if (count($folders) == 0) $folders[$default_folder_details['foldername']] = $default_folder_details;
+	$smarty->assign('NO_FOLDERS','no');
 }
 else
 {
@@ -281,8 +279,9 @@ $smarty->assign('EMPTY_FOLDERS', $emptyfolders);
 $smarty->assign('ALL_FOLDERS', array_merge($folders, $emptyfolders));
 
 //Added to select Multiple records in multiple pages
-$smarty->assign('SELECTEDIDS', vtlib_purify($_REQUEST['selobjs']));
-$smarty->assign('ALLSELECTEDIDS', vtlib_purify($_REQUEST['allselobjs']));
+$smarty->assign('SELECTEDIDS', (isset($_REQUEST['selobjs']) ? vtlib_purify($_REQUEST['selobjs']) : ''));
+$smarty->assign('ALLSELECTEDIDS', (isset($_REQUEST['allselobjs']) ? vtlib_purify($_REQUEST['allselobjs']) : ''));
+$smarty->assign('CURRENT_PAGE_BOXES', '');
 
 $alphabetical = AlphabeticalSearch($currentModule,'index','notes_title','true','basic','','','','',$viewid);
 $fieldnames = $controller->getAdvancedSearchOptionString();
@@ -290,8 +289,6 @@ $criteria = getcriteria_options();
 $smarty->assign("ALPHABETICAL", $alphabetical);
 $smarty->assign("FIELDNAMES", $fieldnames);
 $smarty->assign("CRITERIA", $criteria);
-$smarty->assign("NAVIGATION", $navigationOutput);
-$smarty->assign("RECORD_COUNTS", $record_string);
 $adminuser = is_admin($current_user);
 $smarty->assign("IS_ADMIN",$adminuser);
 
@@ -309,7 +306,7 @@ $smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModul
 $DEFAULT_SEARCH_PANEL_STATUS = GlobalVariable::getVariable('Application_Search_Panel_Open',1);
 $smarty->assign('DEFAULT_SEARCH_PANEL_STATUS',($DEFAULT_SEARCH_PANEL_STATUS ? 'display: block' : 'display: none'));
 
-if(isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '' || $_REQUEST['mode'] == 'ajax')
+if((isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') || (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'ajax'))
 	$smarty->display("DocumentsListViewEntries.tpl");
 else
 	$smarty->display("DocumentsListView.tpl");

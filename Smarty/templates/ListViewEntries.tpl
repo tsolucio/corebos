@@ -242,5 +242,4 @@
 		</tr>
 	</table>
 </form>
-{if isset($SELECT_SCRIPT)}{$SELECT_SCRIPT}{/if}
 <div id="basicsearchcolumns" style="display:none;"><select name="search_field" id="bas_searchfield" class="txtBox" style="width:150px">{html_options options=$SEARCHLISTHEADER}</select></div>

@@ -28,7 +28,7 @@
 			{foreach item=subdata from=$QUICKCREATE}
 				<tr>
 					{foreach key=mainlabel item=maindata from=$subdata}
-						{include file='EditViewUI.tpl'}
+						{if count($maindata)>0}{include file='EditViewUI.tpl'}{/if}
 					{/foreach}
 				</tr>
 			{/foreach}

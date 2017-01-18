@@ -401,7 +401,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 				$roleid=$current_user->roleid;
 				$picklistValues = getAssignedPicklistValues('salutationtype', $roleid, $adb);
 				$pickcount = 0;
-				$salt_value = $col_fields["salutationtype"];
+				$salt_value = (isset($col_fields['salutationtype']) ? $col_fields['salutationtype'] : '');
 				foreach($picklistValues as $order=>$pickListValue){
 					if($salt_value == trim($pickListValue)){
 						$chk_val = "selected";

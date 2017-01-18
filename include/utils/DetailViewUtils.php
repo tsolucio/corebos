@@ -558,10 +558,12 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 	}
 	elseif ($uitype == 28) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
-		$attachmentid = $adb->query_result($adb->pquery("select * from vtiger_seattachmentsrel where crmid = ?", array($col_fields['record_id'])), 0, 'attachmentsid');
+		$rs = $adb->pquery('select * from vtiger_seattachmentsrel where crmid = ?', array($col_fields['record_id']));
+		$attachmentid = $adb->query_result($rs, 0, 'attachmentsid');
 		if ($col_fields[$fieldname] == '' && $attachmentid != '') {
-			$attachquery = "select * from vtiger_attachments where attachmentsid=?";
-			$col_fields[$fieldname] = $adb->query_result($adb->pquery($attachquery, array($attachmentid)), 0, 'name');
+			$attachquery = 'select * from vtiger_attachments where attachmentsid=?';
+			$adb->pquery($attachquery, array($attachmentid));
+			$col_fields[$fieldname] = $adb->query_result($rs, 0, 'name');
 		}
 		$org_filename = $col_fields[$fieldname];
 		// For Backward Compatibility version < 5.0.4

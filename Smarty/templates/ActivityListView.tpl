@@ -418,7 +418,6 @@
 	    </table>
 
    </form>	
-{$SELECT_SCRIPT}
 	</div>
 	 </td></tr></table>
 	 </td></tr></table>

@@ -1910,7 +1910,7 @@ function QuickCreate($module) {
 	}
 	for ($i = 0, $j = 0; $i < count($qcreate_arr); $i = $i + 2, $j++) {
 		$key1 = $qcreate_arr[$i];
-		if (is_array($qcreate_arr[$i + 1])) {
+		if (isset($qcreate_arr[$i + 1]) and is_array($qcreate_arr[$i + 1])) {
 			$key2 = $qcreate_arr[$i + 1];
 		} else {
 			$key2 = array();

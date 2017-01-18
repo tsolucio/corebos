@@ -70,7 +70,7 @@ function chooseType(typeName){
 		document.getElementById('dashTypeRow').style.display="block";
 		document.getElementById('StuffTitleId').style.display="block";
 		document.getElementById('reportNameRow').style.display="none";
-        document.getElementById('reportTypeRow').style.display="none";
+		document.getElementById('reportTypeRow').style.display="none";
 		document.getElementById('homewidget').style.display="none";
 		//document.getElementById('homeURLField').style.display = "none";
 		jQuery.ajax({
@@ -633,7 +633,7 @@ function positionDivInAccord(targetDiv,stufftitle,stufftype){
 	}
 	var mainX = parseInt(document.getElementById("MainMatrix").style.width);
 	if(stufftitle != vtdashboard_defaultDashbaordWidgetTitle && stufftype != "DashBoard" && stufftype != "ReportCharts"){
-		var dx = mainX *  widgetWidth/ 100;
+		var dx = mainX * widgetWidth/ 100;
 	}else{
 		var dx = mainX * dashWidth / 100;
 	}
