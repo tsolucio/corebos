@@ -7,32 +7,30 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-	
 global $adb,$current_user, $mod_strings,$currentModule;
 require('user_privileges/user_privileges_'.$current_user->id.'.php');
 
-$modval=trim($_REQUEST['modname']);
-$dash=trim($_REQUEST['dash']);
-$home=trim($_REQUEST['home']);
+$modval = isset($_REQUEST['modname']) ? trim(vtlib_purify($_REQUEST['modname'])) : '';
+$dash   = isset($_REQUEST['dash']) ? trim(vtlib_purify($_REQUEST['dash'])) : '';
+$home   = isset($_REQUEST['home']) ? trim(vtlib_purify($_REQUEST['home'])) : '';
 
 if(!empty($modval)){
 	$tabid = getTabId($modval);
-	$ssql = "select vtiger_customview.*, vtiger_users.user_name from vtiger_customview inner join vtiger_tab on vtiger_tab.name = vtiger_customview.entitytype 
-				left join vtiger_users on vtiger_customview.userid = vtiger_users.id ";
-	$ssql .= " where vtiger_tab.tabid=?";
+	$ssql = 'select vtiger_customview.*, vtiger_users.user_name from vtiger_customview inner join vtiger_tab on vtiger_tab.name = vtiger_customview.entitytype
+			left join vtiger_users on vtiger_customview.userid = vtiger_users.id where vtiger_tab.tabid=?';
 	$sparams = array($tabid);
-	
+
 	if($is_admin == false){
 		$ssql .= " and (vtiger_customview.status=0 or vtiger_customview.userid = ? or vtiger_customview.status = 3 or vtiger_customview.userid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%'))";
 		array_push($sparams, $current_user->id);
 	}
 	$result = $adb->pquery($ssql, $sparams);
-	
+
 	if($adb->num_rows($result)==0){
-	  echo $mod_strings['MSG_NO_FILTERS'];
-	  die;
+		echo $mod_strings['MSG_NO_FILTERS'];
+		die;
 	}else{
-		$html = '<select id=selFilterid name=selFiltername onchange=setPrimaryFld(this) class="detailedViewTextBox" onfocus="this.className=\'detailedViewTextBoxOn\'" onblur="this.className=\'detailedViewTextBox\'"  style="width:60%">';
+		$html = '<select id=selFilterid name=selFiltername onchange=setPrimaryFld(this) class="detailedViewTextBox" onfocus="this.className=\'detailedViewTextBoxOn\'" onblur="this.className=\'detailedViewTextBox\'" style="width:60%">';
 		for($i=0;$i<$adb->num_rows($result);$i++){
 			if($adb->query_result($result,$i,"viewname")=='All'){
 				$html .= "<option value='".$adb->query_result($result,$i,'cvid')."'>".getTranslatedString('COMBO_ALL',$currentModule)."</option>";
@@ -50,39 +48,41 @@ if(!empty($modval)){
 if(!empty($dash)){
 	global $current_language;
 	$dashbd_strings = return_module_language($current_language, "Dashboard");
-	$graph_array = array("leadsource" => $dashbd_strings['leadsource'],
-					      "leadstatus" => $dashbd_strings['leadstatus'],
-					      "leadindustry" => $dashbd_strings['leadindustry'],
-					      "salesbyleadsource" => $dashbd_strings['salesbyleadsource'],
-					      "salesbyaccount" => $dashbd_strings['salesbyaccount'],
-						  "salesbyuser" => $dashbd_strings['salesbyuser'],
-						  "salesbyteam" => $dashbd_strings['salesbyteam'],
-				          "accountindustry" => $dashbd_strings['accountindustry'],
-				          "productcategory" => $dashbd_strings['productcategory'],
-						  "productbyqtyinstock" => $dashbd_strings['productbyqtyinstock'],
-						  "productbypo" => $dashbd_strings['productbypo'],
-						  "productbyquotes" => $dashbd_strings['productbyquotes'],
-						  "productbyinvoice" => $dashbd_strings['productbyinvoice'],
-				          "sobyaccounts" => $dashbd_strings['sobyaccounts'],
-				          "sobystatus" => $dashbd_strings['sobystatus'],
-				          "pobystatus" => $dashbd_strings['pobystatus'],
-				          "quotesbyaccounts" => $dashbd_strings['quotesbyaccounts'],
-				          "quotesbystage" => $dashbd_strings['quotesbystage'],
-				          "invoicebyacnts" => $dashbd_strings['invoicebyacnts'],
-				          "invoicebystatus" => $dashbd_strings['invoicebystatus'],
-				          "ticketsbystatus" => $dashbd_strings['ticketsbystatus'],
-				          "ticketsbypriority" => $dashbd_strings['ticketsbypriority'],
-						  "ticketsbycategory" => $dashbd_strings['ticketsbycategory'], 
-						  "ticketsbyuser" => $dashbd_strings['ticketsbyuser'],
-						  "ticketsbyteam" => $dashbd_strings['ticketsbyteam'],
-						  "ticketsbyproduct"=> $dashbd_strings['ticketsbyproduct'],
-						  "contactbycampaign"=> $dashbd_strings['contactbycampaign'],
-						  "ticketsbyaccount"=> $dashbd_strings['ticketsbyaccount'],
-						  "ticketsbycontact"=> $dashbd_strings['ticketsbycontact'],);
+	$graph_array = array(
+		'leadsource' => $dashbd_strings['leadsource'],
+		'leadstatus' => $dashbd_strings['leadstatus'],
+		'leadindustry' => $dashbd_strings['leadindustry'],
+		'salesbyleadsource' => $dashbd_strings['salesbyleadsource'],
+		'salesbyaccount' => $dashbd_strings['salesbyaccount'],
+		'salesbyuser' => $dashbd_strings['salesbyuser'],
+		'salesbyteam' => $dashbd_strings['salesbyteam'],
+		'accountindustry' => $dashbd_strings['accountindustry'],
+		'productcategory' => $dashbd_strings['productcategory'],
+		'productbyqtyinstock' => $dashbd_strings['productbyqtyinstock'],
+		'productbypo' => $dashbd_strings['productbypo'],
+		'productbyquotes' => $dashbd_strings['productbyquotes'],
+		'productbyinvoice' => $dashbd_strings['productbyinvoice'],
+		'sobyaccounts' => $dashbd_strings['sobyaccounts'],
+		'sobystatus' => $dashbd_strings['sobystatus'],
+		'pobystatus' => $dashbd_strings['pobystatus'],
+		'quotesbyaccounts' => $dashbd_strings['quotesbyaccounts'],
+		'quotesbystage' => $dashbd_strings['quotesbystage'],
+		'invoicebyacnts' => $dashbd_strings['invoicebyacnts'],
+		'invoicebystatus' => $dashbd_strings['invoicebystatus'],
+		'ticketsbystatus' => $dashbd_strings['ticketsbystatus'],
+		'ticketsbypriority' => $dashbd_strings['ticketsbypriority'],
+		'ticketsbycategory' => $dashbd_strings['ticketsbycategory'],
+		'ticketsbyuser' => $dashbd_strings['ticketsbyuser'],
+		'ticketsbyteam' => $dashbd_strings['ticketsbyteam'],
+		'ticketsbyproduct'=> $dashbd_strings['ticketsbyproduct'],
+		'contactbycampaign'=> $dashbd_strings['contactbycampaign'],
+		'ticketsbyaccount'=> $dashbd_strings['ticketsbyaccount'],
+		'ticketsbycontact'=> $dashbd_strings['ticketsbycontact'],
+	);
 
 	$html='<select name=seldashbd id=seldashbd_id class="detailedViewTextBox" onfocus="this.className=\'detailedViewTextBoxOn\'" onblur="this.className=\'detailedViewTextBox\'" style="width:60%">';
 	foreach($graph_array as $key=>$value){
-		$html .='<option value="'.$key.'">'.$value.'</option>';	
+		$html .='<option value="'.$key.'">'.$value.'</option>';
 	}
 	$html .= '</select>';
 	echo $html;
@@ -96,8 +96,8 @@ if(!empty($_REQUEST['primecvid'])){
 	global $current_language,$app_strings;
 	$fieldmod_strings = return_module_language($current_language, $fieldmodule);
 	if($adb->num_rows($result)==0){
-	  echo $mod_strings['MSG_NO_FIELDS'];
-	  die;
+		echo $mod_strings['MSG_NO_FIELDS'];
+		die;
 	}else{
 		$html = '<select id=selPrimeFldid name=PrimeFld multiple class="detailedViewTextBox" onfocus="this.className=\'detailedViewTextBoxOn\'" onblur="this.className=\'detailedViewTextBox\'" style="width:60%">';
 		for($i=0;$i<$adb->num_rows($result);$i++){
@@ -109,6 +109,8 @@ if(!empty($_REQUEST['primecvid'])){
 				$prifld = str_replace("_"," ",$priarr[1]);
 				if($is_admin == false){
 					$fld_permission = getFieldVisibilityPermission($fieldmodule,$current_user->id,$fieldname);
+				} else {
+					$fld_permission = '0';
 				}
 				if($fld_permission == 0){
 					$field_query = $adb->pquery("SELECT fieldlabel FROM vtiger_field WHERE fieldname = ? AND tablename = ? and vtiger_field.presence in (0,2)", array($fieldname,$prifldarr[0]));
@@ -120,7 +122,7 @@ if(!empty($_REQUEST['primecvid'])){
 		}
 		$html .= '</select>';
 	}
-	echo $html;	
+	echo $html;
 }
 
 if(!empty($_REQUEST['showmaxval']) && !empty($_REQUEST['sid'])){
@@ -146,7 +148,7 @@ if(!empty($_REQUEST['showmaxval']) && !empty($_REQUEST['sid'])){
 if(!empty($_REQUEST['dashVal'])){
 	$did=$_REQUEST['did'];
 	global $adb;
-	$qry="update vtiger_homedashbd set dashbdtype=? where stuffid=?";	
+	$qry='update vtiger_homedashbd set dashbdtype=? where stuffid=?';
 	$res=$adb->pquery($qry, array($_REQUEST['dashVal'], $did));
 	echo "loadStuff(".$did.",'DashBoard')";
 }
@@ -190,10 +192,10 @@ if(isset($_REQUEST['act']) && $_REQUEST['act'] =="hide"){
 //saving layout here
 if(!empty($_REQUEST['layout'])){
 	global $adb, $current_user;
-	
+
 	$sql = "delete from vtiger_home_layout where userid=?";
 	$result = $adb->pquery($sql, array($current_user->id));
-	
+
 	$sql = "insert into vtiger_home_layout values (?, ?)";
 	$result = $adb->pquery($sql, array($current_user->id, $_REQUEST['layout']));
 	if(!$result){
@@ -206,7 +208,7 @@ if(!empty($home)){
 	$UMOD = $mod_strings;
 	$focus = new Users();
 	$homeWidgets = $focus->getHomeStuffOrder($current_user->id);
-    if(!in_array("", $homeWidgets)){
+	if(!in_array("", $homeWidgets)){
 			$errorMsg="LBL_NO_WIDGETS_HIDDEN";
 	}
 	$html='<table border="0" cellpadding="5" cellspacing="0" ><tr>';
@@ -222,12 +224,11 @@ if(!empty($home)){
 			}
 		}
 	}
-	if ($errorMsg != ''){
+	if (!empty($errorMsg)) {
 		$html .= '<td align="center">'.getTranslatedString($errorMsg,"Home").'</td>';
 	}
 	$html .= '</tr></table>';
 	echo $html;
 }
-
 //layout save ends here
 ?>
