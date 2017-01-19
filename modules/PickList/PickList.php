@@ -47,17 +47,7 @@ if(!empty($_REQUEST['roleid'])) {
 	$roleid = 'H2';		//set default to CEO
 }
 
-if(!empty($_REQUEST['uitype'])) {
-	$uitype = vtlib_purify($_REQUEST['uitype']);
-}
-
 $smarty = new vtigerCRM_Smarty;
-
-if((sizeof($picklists_entries) %3) != 0) {
-	$value = (sizeof($picklists_entries) + 3 - (sizeof($picklists_entries))%3);
-}else {
-	$value = sizeof($picklists_entries);
-}
 
 if($fld_module == 'Events') {
 	$temp_module_strings = return_module_language($current_language, 'Calendar');
@@ -65,6 +55,11 @@ if($fld_module == 'Events') {
 	$temp_module_strings = return_module_language($current_language, $fld_module);
 }
 $picklists_entries = getUserFldArray($fld_module,$roleid);
+if((sizeof($picklists_entries) %3) != 0) {
+	$value = (sizeof($picklists_entries) + 3 - (sizeof($picklists_entries))%3);
+}else {
+	$value = sizeof($picklists_entries);
+}
 $available_module_picklist = array();
 $picklist_fields = array();
 if(!empty($picklists_entries)) {
@@ -87,10 +82,11 @@ $smarty->assign("TEMP_MOD", $temp_module_strings);	//the selected modules' langu
 $smarty->assign("MODULE",$fld_module);
 $smarty->assign("PICKLIST_VALUES",$picklist_fields);
 $smarty->assign("THEME",$theme);
+$uitype = (!empty($_REQUEST['uitype']) ? vtlib_purify($_REQUEST['uitype']) : '');
 $smarty->assign("UITYPE", $uitype);
 $smarty->assign("SEL_ROLEID",$roleid);
 
-if($_REQUEST['directmode'] != 'ajax') {
+if(empty($_REQUEST['directmode']) or $_REQUEST['directmode'] != 'ajax') {
 	$smarty->display("modules/PickList/PickList.tpl");
 }else {
 	$smarty->display("modules/PickList/PickListContents.tpl");

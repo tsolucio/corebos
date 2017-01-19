@@ -83,8 +83,8 @@ class Vtiger_DependencyPicklist {
 			$targetValues = $mapping['targetvalues'];
 			$serializedTargetValues = json_encode($targetValues);
 
-			$optionalsourcefield = $mapping['optionalsourcefield'];
-			$optionalsourcevalues = $mapping['optionalsourcevalues'];
+			$optionalsourcefield = (!empty($mapping['optionalsourcefield']) ? $mapping['optionalsourcefield'] : '');
+			$optionalsourcevalues = (!empty($mapping['optionalsourcevalues']) ? $mapping['optionalsourcevalues'] : '');
 
 			if(!empty($optionalsourcefield)) {
 				$criteria = array();
@@ -218,7 +218,6 @@ class Vtiger_DependencyPicklist {
 						AND vtiger_field.displaytype = 1
 						AND vtiger_field.presence in (0,2)
 					GROUP BY vtiger_field.tabid HAVING count(*) > 1';
-		// END
 		$result = $adb->pquery($query, array());
 		while($row = $adb->fetch_array($result)) {
 			$modules[$row['tablabel']] = $row['tabname'];

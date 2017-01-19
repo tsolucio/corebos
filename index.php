@@ -627,8 +627,8 @@ if(isset($_SESSION['vtiger_authenticated_user_theme']) && $_SESSION['vtiger_auth
 } else {
 	$theme = $default_theme;
 }
-$Ajx_module= $module;
-if($module == 'Events')
+$Ajx_module = (isset($_REQUEST['module']) ? vtlib_purify($_REQUEST['module']) : $module);
+if($Ajx_module == 'Events')
 	$Ajx_module = 'Calendar';
 if((!$viewAttachment) && (!$viewAttachment && $action != 'home_rss') && $action != $Ajx_module."Ajax" && $action != 'massdelete' && $action != "DashboardAjax" && $action != "ActivityAjax")
 {
@@ -649,7 +649,7 @@ if((!$viewAttachment) && (!$viewAttachment && $action != 'home_rss') && $action 
 	}
 	</style>";
 
-	if((!$skipFooters) && $action != "ChangePassword" && $action != "body" && $action != $module."Ajax" && $action!='Popup' && $action != 'ImportStep3' && $action != 'ActivityAjax' && $action != 'getListOfRecords') {
+	if((!$skipFooters) && $action != "ChangePassword" && $action != "body" && $action != $Ajx_module."Ajax" && $action!='Popup' && $action != 'ImportStep3' && $action != 'ActivityAjax' && $action != 'getListOfRecords') {
 		echo $copyrightstatement;
 		cbEventHandler::do_action('corebos.footer.prefooter');
 		$coreBOS_uiapp_name = GlobalVariable::getVariable('Application_UI_Name',$coreBOS_app_name);
@@ -685,7 +685,7 @@ if((!$viewAttachment) && (!$viewAttachment && $action != 'home_rss') && $action 
 		}
 	}
 
-	if((!$skipFooters) && ($action != "body") && ($action != $module."Ajax") && ($action != "ActivityAjax"))
+	if((!$skipFooters) && ($action != "body") && ($action != $Ajx_module."Ajax") && ($action != "ActivityAjax"))
 		include('modules/Vtiger/footer.php');
 }
 ?>

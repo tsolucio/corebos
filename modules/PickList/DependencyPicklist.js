@@ -13,7 +13,7 @@ function changeDependencyPicklistModule(){
 	document.getElementById("status").style.display="inline";
 	var oModulePick = document.getElementById('pickmodule');
 	var module=oModulePick.options[oModulePick.selectedIndex].value;
-	
+
 	jQuery.ajax({
 			method: 'POST',
 			url: 'index.php?action=PickListAjax&module=PickList&directmode=ajax&file=PickListDependencySetup&moduleName='+encodeURIComponent(module)
@@ -32,7 +32,7 @@ function addNewDependencyPicklist() {
 	}
 
 	document.getElementById("status").style.display="inline";
-	
+
 	jQuery.ajax({
 			method: 'POST',
 			url: 'index.php?action=PickListAjax&module=PickList&directmode=ajax&file=PickListDependencySetup&submode=editdependency&moduleName='+encodeURIComponent(selectedModule)
@@ -73,9 +73,9 @@ function editNewDependencyPicklist(module) {
 
 function editDependencyPicklist(module, sourceField, targetField) {
 	document.getElementById("status").style.display="inline";
-	
+
 	var urlstring = 'moduleName='+encodeURIComponent(module)+'&sourcefield='+sourceField+'&targetfield='+targetField;
-	
+
 	jQuery.ajax({
 			method: 'POST',
 			url: 'index.php?action=PickListAjax&module=PickList&directmode=ajax&file=PickListDependencySetup&submode=editdependency&'+urlstring
@@ -92,9 +92,9 @@ function editDependencyPicklist(module, sourceField, targetField) {
 function deleteDependencyPicklist(module, sourceField, targetField, msg) {
 	if(confirm(msg)) {
 		document.getElementById("status").style.display="inline";
-	
+
 		var urlstring = 'moduleName='+encodeURIComponent(module)+'&sourcefield='+sourceField+'&targetfield='+targetField;
-	
+
 		jQuery.ajax({
 			method: 'POST',
 			url: 'index.php?action=PickListAjax&module=PickList&directmode=ajax&file=PickListDependencySetup&submode=deletedependency&'+urlstring
@@ -110,15 +110,15 @@ function deleteDependencyPicklist(module, sourceField, targetField, msg) {
 
 function saveDependency(module) {
 	document.getElementById("status").style.display="inline";
-	
+
 	var dependencyMapping = serializeData();
 	if(dependencyMapping == false) {
 		document.getElementById("status").style.display="none";
 		return false;
 	}
-	
+
 	var urlstring = 'moduleName='+encodeURIComponent(module)+'&dependencymapping='+encodeURIComponent(dependencyMapping);
-	
+
 	jQuery.ajax({
 			method: 'POST',
 			url: 'index.php?action=PickListAjax&module=PickList&directmode=ajax&file=PickListDependencySetup&submode=savedependency&'+urlstring
@@ -129,14 +129,13 @@ function saveDependency(module) {
 		);
 }
 
-function serializeData() {	
+function serializeData() {
 	var sourceField = document.getElementById('sourcefield').options[document.getElementById('sourcefield').selectedIndex].value;
 	var targetField = document.getElementById('targetfield').options[document.getElementById('targetfield').selectedIndex].value;
-	
 	var maxMappingCount = modifiedMappingValues.length;
 	var valueMapping = [];
 
-	for(var i=0; i<maxMappingCount; ++i) {		
+	for(var i=0; i<maxMappingCount; ++i) {
 		var sourceValueId = modifiedMappingValues[i];
 		var sourceValue = document.getElementById(sourceValueId).value;
 		var mappingIndex = sourceValueId.replace(sourceField,'');
@@ -163,7 +162,7 @@ function serializeData() {
 			};
 		}
 	}
-	
+
 	var formData = {
 		"sourcefield": sourceField,
 		"targetfield": targetField,
@@ -189,9 +188,7 @@ function selectTargetValue(sourceIndex, targetValue) {
 }
 
 function unselectTargetValue(sourceIndex, targetValue) {
-	
 	var targetElements = jQuery(document.getElementsByName("valueMapping"+sourceIndex));
-	
 	targetElements.each(function(){
 		if(jQuery(this).val() == targetValue) {
 			unselectCell(jQuery(this).parent());
@@ -215,7 +212,6 @@ function unselectCell(element) {
 
 function loadMappingForSelectedValues() {
 	var sourceElements = jQuery('input[name="selectedSourceValues"]:checked');
-	
 	var classElements = jQuery(".picklistValueMapping");
 	classElements.hide();
 
@@ -224,11 +220,9 @@ function loadMappingForSelectedValues() {
 		var selectedElementCells = jQuery("."+selectedElementId);
 		selectedElementCells.show();
 	});
-
 }
 
 function handleCellClick(event, element) {
-	
 	if(element.tagName == 'TD') {
 		if(jQuery(element).hasClass('selectedCell')) {
 			unselectCell(element);
