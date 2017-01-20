@@ -602,13 +602,14 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 					$imageattachment = 'Attachment';
 				}
 				$query="select vtiger_attachments.*,vtiger_crmentity.setype
-				 from vtiger_attachments
-				 inner join vtiger_seattachmentsrel on vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
-				 inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_attachments.attachmentsid
-				 where vtiger_crmentity.setype='$module_name $imageattachment'
-				  and vtiger_attachments.name = ?
-				  and vtiger_seattachmentsrel.crmid=?";
-				$params = array($col_fields[$fieldname],$col_fields['record_id']);
+					from vtiger_attachments
+					inner join vtiger_seattachmentsrel on vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
+					inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_attachments.attachmentsid
+					where vtiger_crmentity.setype='$module_name $imageattachment'
+						and vtiger_attachments.name = ?
+						and vtiger_seattachmentsrel.crmid=?";
+				global $upload_badext;
+				$params = array(sanitizeUploadFileName($col_fields[$fieldname], $upload_badext),$col_fields['record_id']);
 			}
 			$result_image = $adb->pquery($query, $params);
 			for($image_iter=0;$image_iter < $adb->num_rows($result_image);$image_iter++) {
