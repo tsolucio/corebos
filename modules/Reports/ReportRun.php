@@ -1336,7 +1336,7 @@ class ReportRun extends CRMEntity {
 				if($selectedfields[0] == "vtiger_crmentity".$this->primarymodule)
 					$selectedfields[0] = "vtiger_crmentity";
 				if(stripos($selectedfields[1],'cf_')==0 && stristr($selectedfields[1],'cf_')==true){
-					$sqlvalue = "".$adb->sql_escape_string(decode_html($selectedfields[2]))." ".$sortorder;
+					$sqlvalue = "`".$adb->sql_escape_string(decode_html($selectedfields[2]))."` ".$sortorder;
 				} else {
 					$sqlvalue = "`".self::replaceSpecialChar($selectedfields[2])."` ".$sortorder;
 				}
