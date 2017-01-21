@@ -91,8 +91,8 @@ function indent($hrarray,$roleout,$role_det)
 		$roleid_arr=$role_det_arr[2];
 		$rolename = $role_det_arr[0];
 		$roledepth = $role_det_arr[1];
-		$roleout .= '<ul class="uil" id="'.$roleid.'" style="display:block;list-style-type:none;">';
-		$roleout .= '<li ><table border="0" cellpadding="0" cellspacing="0" onMouseOver="fnVisible(\'layer_'.$roleid.'\')" onMouseOut="fnInVisible(\'layer_'.$roleid.'\')">';
+		$roleout .= '<ul class="slds-tree" role="tree" id="'.$roleid.'">';
+		$roleout .= '<li role="treeitem" aria-level="'.$roledepth.'" aria-expanded="true"><div class="slds-tree__item"><table border="0" cellpadding="0" cellspacing="0" onMouseOver="fnVisible(\'layer_'.$roleid.'\')" onMouseOut="fnInVisible(\'layer_'.$roleid.'\')">';
 		$roleout.= '<tr><td nowrap>';
 		if(sizeof($value) >0 && $roledepth != 0)
 		{
@@ -120,7 +120,7 @@ function indent($hrarray,$roleout,$role_det)
 			{
 				$roleout .= '<a href="index.php?module=Settings&action=RoleDeleteStep1&roleid='.$roleid.'&parenttab=Settings"><img src="' . vtiger_imageurl('RolesDelete.gif', $theme) . '" align="absmiddle" border="0" alt="'.$mod_strings['LBL_DELETE_ROLE'].'" title="'.$mod_strings['LBL_DELETE_ROLE'].'"></a>';
 			}
-			$roleout .= '<a href="javascript:;" class="small" onClick="get_parent_ID(this,\'user_'.$roleid.'\')"><img src="' . vtiger_imageurl('RolesMove.gif', $theme) . '" align="absmiddle" border="0" alt="'.$mod_strings['LBL_MOVE_ROLE'].'" title="'.$mod_strings['LBL_MOVE_ROLE'].'"></a></div></td></tr></table>';
+			$roleout .= '<a href="javascript:;" class="small" onClick="get_parent_ID(this,\'user_'.$roleid.'\')"><img src="' . vtiger_imageurl('RolesMove.gif', $theme) . '" align="absmiddle" border="0" alt="'.$mod_strings['LBL_MOVE_ROLE'].'" title="'.$mod_strings['LBL_MOVE_ROLE'].'"></a></div></td></tr></table></div>';
 //			$roleout .=	'&nbsp;<a href="index.php?module=Users&action=createrole&parenttab=Settings&parent='.$roleid.'">Add</a> | <a href="index.php?module=Users&action=createrole&roleid='.$roleid.'&parenttab=Settings&mode=edit">Edit</a> | <a href="index.php?module=Users&action=RoleDeleteStep1&roleid='.$roleid.'&parenttab=Settings">Delete</a> | <a href="index.php?module=Users&action=RoleDetailView&parenttab=Settings&roleid='.$roleid.'">View</a>';
 		}
 		$roleout .= '</li>';
