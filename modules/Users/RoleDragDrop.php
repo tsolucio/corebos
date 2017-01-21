@@ -50,10 +50,8 @@ foreach($roleInfo as $mvRoleId=>$mvRoleInfo)
 	$adb->pquery($query, array($mvParString, $mvDepth, $mvRoleId));
 
 	// Invalidate any cached information
-	VTCacheUtils::clearRoleSubordinates($roleId);
+	VTCacheUtils::clearRoleSubordinates($mvRoleId);
 }
-
-
 
 header("Location: index.php?action=SettingsAjax&module=Settings&file=listroles&ajax=true");
 ?>

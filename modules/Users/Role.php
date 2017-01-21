@@ -116,7 +116,7 @@ class Vtiger_Role {
 
 		$targetParentRoleSequence = $role->getParentRole();
 		$parentRoleSequence = $this->getParentRole();
-		$roleInfoList = getRoleAndSubordinatesInformation($roleId);
+		$roleInfoList = getRoleAndSubordinatesInformation($role->getId());
 		foreach ($roleInfoList as $roleId => $roleInfo) {
 			// Invalidate any cached information
 			VTCacheUtils::clearRoleSubordinates($roleId);
