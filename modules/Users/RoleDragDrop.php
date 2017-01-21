@@ -6,13 +6,10 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
-
 require_once('include/utils/UserInfoUtil.php');
 $toid= vtlib_purify($_REQUEST['parentId']);
 $fromid= vtlib_purify($_REQUEST['childId']);
-
 
 global $adb,$mod_strings;
 $query = "select * from vtiger_role where roleid=?";
@@ -28,9 +25,8 @@ $parentRoles=explode('::',$parentRoleList);
 if(in_array($fromid,$parentRoles))
 {
 	echo $mod_strings['ROLE_DRAG_ERR_MSG'];
-        die;
+	die;
 }
-
 
 $roleInfo=getRoleAndSubordinatesInformation($fromid);
 
@@ -38,7 +34,6 @@ $fromRoleInfo=$roleInfo[$fromid];
 $replaceToStringArr=explode('::'.$fromid,$fromRoleInfo[1]);
 $replaceToString=$replaceToStringArr[0];
 //echo '<BR>to be replaced string '.$replaceToString;
-
 
 $stdDepth=$fromRoleInfo['2'];
 //echo '<BR> std depth '.$stdDepth;

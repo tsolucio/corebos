@@ -296,7 +296,7 @@ function getAllDefaultSharingAction()
 function createRole($roleName,$parentRoleId,$roleProfileArray)
 {
 	global $log,$adb;
-	$log->debug("Entering createRole(".$roleName.",".$parentRoleId.",".$roleProfileArray.") method ...");
+	$log->debug('Entering createRole('.$roleName.','.$parentRoleId.','.print_r($roleProfileArray,true).') method ...');
 	$parentRoleDetails=getRoleInformation($parentRoleId);
 	$parentRoleInfo=$parentRoleDetails[$parentRoleId];
 	$roleid_no=$adb->getUniqueId("vtiger_role");
@@ -332,7 +332,7 @@ function createRole($roleName,$parentRoleId,$roleProfileArray)
 function updateRole($roleId,$roleName,$roleProfileArray)
 {
 	global $log,$adb;
-	$log->debug("Entering updateRole(".$roleId.",".$roleName.",".$roleProfileArray.") method ...");
+	$log->debug('Entering updateRole('.$roleId.','.$roleName.','.print_r($roleProfileArray,true).') method ...');
 
 	// Invalidate any cached information
 	VTCacheUtils::clearRoleSubordinates($roleId);

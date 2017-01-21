@@ -6,12 +6,14 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset={$APP.LBL_CHARSET}">
+<title>{$CMOD.LBL_ROLES} - {$coreBOS_uiapp_name}</title>
+<link REL="SHORTCUT ICON" HREF="themes/images/blank.gif">
 <style type="text/css">@import url("themes/{$THEME}/style.css");</style>
 <style type="text/css">
 	a.x {ldelim}
@@ -39,7 +41,7 @@
 		margin-left:5px;
 	{rdelim}
 
-	ul {ldelim}color:black;{rdelim}	 
+	ul {ldelim}color:black;{rdelim}
 
 </style>
 <script type="text/javascript" src="include/js/general.js"></script>
@@ -63,7 +65,7 @@
           <tr>
             <td valign="top" align="center">
                 <div id="role_popup" >
-							{$ROLETREE}
+					{$ROLETREE}
 				</div>
                 <!-- END OF TREE MENU -->
             </td>
@@ -82,26 +84,25 @@ function showhide(argg,imgId)
 	var i;
 	for(i=0; i<harrlen; i++)
 	{ldelim}
-        	var x=document.getElementById(harray[i]).style;
-        	if (x.display=="none")
-        	{ldelim}
-            		x.display="block";
-					document.all[imgId].src = "themes/images/minus.gif";
-        	{rdelim}
-        	else
-			{ldelim}
-            			x.display="none";
-						document.all[imgId].src = "themes/images/plus.gif";
-            {rdelim}
+		var x=document.getElementById(harray[i]).style;
+		if (x.display=="none")
+		{ldelim}
+			x.display="block";
+			document.all[imgId].src = "themes/images/minus.gif";
+		{rdelim} else {ldelim}
+			x.display="none";
+			document.all[imgId].src = "themes/images/plus.gif";
+		{rdelim}
 	{rdelim}
 {rdelim}
 
 function loadValue(currObj,roleid)
 {ldelim}
-		window.opener.document.getElementById('role_name').value = convert_lt_gt(document.getElementById(currObj).innerHTML);
-		window.opener.document.getElementById('user_role').value = roleid;
-		window.close();
+	window.opener.document.getElementById('role_name').value = convert_lt_gt(document.getElementById(currObj).innerHTML);
+	window.opener.document.getElementById('user_role').value = roleid;
+	window.close();
 {rdelim}
+
 function convert_lt_gt(str)
 {ldelim}
 	str = str.replace(/(&lt;)/g,'<');
