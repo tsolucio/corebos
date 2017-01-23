@@ -1574,7 +1574,7 @@ datatable stats {
 /* Css for quick Create */
 #qcformpop {
 	position:absolute;
-	width:600px;
+	width:95%;
 	top:15px;
 	left:0px;
 	right: 0;
@@ -1582,7 +1582,7 @@ datatable stats {
 	overflow: scroll;
 	resize: both;
 	display: none;
-	z-index:100000;
+	z-index:10000001;
 	background-color:#ddd;
 	background-image:url(images/layerPopupBg.gif) ;
 	border:2px solid #000000;
