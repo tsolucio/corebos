@@ -118,8 +118,7 @@ function getReportFieldValue ($report, $picklistArray, $dbField, $valueArray, $f
 	} elseif( $fieldType == "datetime" && !empty($value)) {
 		$date = new DateTimeField($value);
 		$fieldvalue = $date->getDisplayDateTimeValue();
-	} elseif( $fieldType == 'time' && !empty($value) && $field->getFieldName()
-			!= 'duration_hours' && $field->getFieldName() != 'totaltime') {
+	} elseif( $fieldType == 'time' && !empty($value) && $field->getFieldName() != 'duration_hours' && $field->getFieldName() != 'totaltime') {
 		$date = new DateTimeField($value);
 		$fieldvalue = $date->getDisplayTime();
 	} elseif( $fieldType == "picklist" && !empty($value) ) {
@@ -139,13 +138,10 @@ function getReportFieldValue ($report, $picklistArray, $dbField, $valueArray, $f
 			$valueList = explode(' |##| ', $value);
 			$translatedValueList = array();
 			foreach ( $valueList as $value) {
-				if(is_array($picklistArray[1][$dbField->name]) && !in_array(
-						$value, $picklistArray[1][$dbField->name])) {
-					$translatedValueList[] =
-							$app_strings['LBL_NOT_ACCESSIBLE'];
+				if(is_array($picklistArray[1][$dbField->name]) && !in_array($value, $picklistArray[1][$dbField->name])) {
+					$translatedValueList[] = $app_strings['LBL_NOT_ACCESSIBLE'];
 				} else {
-					$translatedValueList[] = getTranslatedString($value,
-							$module);
+					$translatedValueList[] = getTranslatedString($value, $module);
 				}
 			}
 		}

@@ -27,11 +27,11 @@ function getMenuInfo(info){
 	showFormParts(info['mtype']);
 }
 
-
 function processTree(action){
 	document.getElementById("evvtmenudo").value = action;
 	document.getElementById("menuitemform").submit();
 }
+
 function clearForm(){
 	document.getElementById('evvtmenuid').value = '';
 	document.getElementById('mparent').value = '';
@@ -39,6 +39,7 @@ function clearForm(){
 	document.getElementById('mlabel').value = '';
 	document.getElementById('mpermission').value = '';
 }
+
 function showFormParts(mtype){
 	var element;
 	switch (mtype){
