@@ -204,7 +204,7 @@ function buildSelectStmt($sqlDump){
 	$deletedQuery = $meta->getEntityDeletedQuery();
 	$accessControlQuery = $meta->getEntityAccessControlQuery();
 	$this->query = $this->query.' '.$accessControlQuery;
-	if($sqlDump['where_condition']){
+	if (!empty($sqlDump['where_condition'])) {
 		if((sizeof($sqlDump['where_condition']['column_names']) == 
 		sizeof($sqlDump['where_condition']['column_values'])) && 
 		(sizeof($sqlDump['where_condition']['column_operators']) == sizeof($sqlDump['where_condition']['operators'])+1)){
@@ -280,7 +280,7 @@ function buildSelectStmt($sqlDump){
 	
 	$this->query = $this->query.' '.$deletedQuery;
 	
-	if($sqlDump['orderby']){
+	if (!empty($sqlDump['orderby'])) {
 		$i=0;
 		$this->query = $this->query.' ORDER BY ';
 		foreach($sqlDump['orderby'] as $ind=>$field){
@@ -295,7 +295,7 @@ function buildSelectStmt($sqlDump){
 			$this->query .= ' '.$sqlDump['sortOrder'];
 		}
 	}
-	if($sqlDump['limit']){
+	if (!empty($sqlDump['limit'])) {
 		$i=0;
 		$offset =false;
 		if(sizeof($sqlDump['limit'])>1){
@@ -1186,7 +1186,7 @@ $this->out['column_list'][] = 'count(*)';
 #line 1191 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
 #line 30 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
     function yy_r7(){
-if(!in_array("*", $this->out["column_list"]) && !in_array("count(*)", array_map(strtolower, $this->out["column_list"]))){
+if(!in_array("*", $this->out["column_list"]) && !in_array("count(*)", array_map('strtolower', $this->out["column_list"]))){
 if(!in_array("id",$this->out["column_list"])){
 	$this->out["column_list"][] = "id";
 }
@@ -1323,7 +1323,7 @@ $this->out['limit'][] = $this->yystack[$this->yyidx + 0]->minor;
 #line 151 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
     function yy_r41(){
 global $adb;
-if(!$this->out['meta']){
+if (empty($this->out['meta'])) {
 $module = $this->out['moduleName'];
 $handler = vtws_getModuleHandlerFromName($module,$this->user);
 $objectMeta = $handler->getMeta();
@@ -1333,7 +1333,7 @@ $fieldcol = $meta->getFieldColumnMapping();
 $columns = array();
 if(in_array('*', $this->out['column_list'])){
 $columns = array_values($fieldcol);
-}elseif( !in_array('count(*)', array_map(strtolower, $this->out['column_list']))){
+}elseif( !in_array('count(*)', array_map('strtolower', $this->out['column_list']))){
 foreach($this->out['column_list'] as $ind=>$field){
 $columns[] = $fieldcol[$field];
 }
@@ -1356,6 +1356,7 @@ array_push($tables,$tableName);
 $firstTable = $objectMeta->getEntityBaseTable();
 $tabNameIndex = $objectMeta->getEntityTableIndexList();
 $firstIndex = $tabNameIndex[$firstTable];
+$this->out['defaultJoinConditions'] = '';
 foreach($tables as $ind=>$table){
 if($firstTable!=$table){
 	if(!isset($tabNameIndex[$table]) && $table == "vtiger_crmentity"){

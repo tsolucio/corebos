@@ -60,7 +60,7 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 	$queryGenerator = new QueryGenerator($mainModule, $user);
 	$queryColumns = trim(substr($q,6,stripos($q,' from ')-5));
 	$queryColumns = explode(',',$queryColumns);
-	$queryColumns = array_map(trim, $queryColumns);
+	$queryColumns = array_map('trim', $queryColumns);
 	$countSelect = ($queryColumns == array('count(*)'));
 	$queryRelatedModules = array();
 	foreach ($queryColumns as $k => $field) {
@@ -103,8 +103,6 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 	// $obflds has the list of order by fields
 	// $limit is the full correct limit SQL part
 	// transform REST ids
-	$relatedCond = "/=\s*'*\d+x(\d+)'*/";
-	$afterwhere=preg_replace($relatedCond,' = $1 ',$afterwhere);
 	// where
 	if (strlen($queryConditions)>0) {
 		$queryGenerator->startGroup();
