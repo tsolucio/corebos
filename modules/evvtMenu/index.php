@@ -43,7 +43,6 @@ $smarty->assign('APP', $app_strings);
 $smarty->assign('MODULE', $currentModule);
 $smarty->assign('CATEGORY', $category);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
-$smarty->assign('MODE',$mode);
 
 $smarty->display(vtlib_getModuleTemplate($currentModule,'index.tpl'));
 ?>

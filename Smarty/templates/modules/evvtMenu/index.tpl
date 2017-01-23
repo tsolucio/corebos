@@ -65,9 +65,7 @@
 
         <button class="slds-button slds-button--brand" style="float:right;margin-right: 45px;margin-bottom: 15px;" onclick="saveTree();">{'LBL_SAVE_LABEL'|getTranslatedString:$MODULE}</button>
 
-        <div id="jstree">
-            {$MENUTREE}
-        </div>
+        <div id="jstree"></div>
 
   </div></div>
   <div class="evvtmenu-form">

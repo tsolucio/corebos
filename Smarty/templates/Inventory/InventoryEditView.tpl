@@ -93,7 +93,7 @@
 									   <!-- included to handle the edit fields based on ui types -->
 									   {foreach key=header item=data from=$BLOCKS}
 										<tr id="tbl{$header|replace:' ':''}Head">
-										{if $header== $MOD.LBL_ADDRESS_INFORMATION && ($MODULE == 'Accounts' || $MODULE == 'Contacts' || $MODULE == 'Quotes' || $MODULE == 'PurchaseOrder' || $MODULE == 'SalesOrder'|| $MODULE == 'Invoice')  && $SHOW_COPY_ADDRESS eq 'yes'}
+										{if isset($MOD.LBL_ADDRESS_INFORMATION) && $header==$MOD.LBL_ADDRESS_INFORMATION && ($MODULE == 'Accounts' || $MODULE == 'Contacts' || $MODULE == 'Quotes' || $MODULE == 'PurchaseOrder' || $MODULE == 'SalesOrder'|| $MODULE == 'Invoice') && $SHOW_COPY_ADDRESS eq 'yes'}
 											<td colspan=2 class="detailedViewHeader">
 											<b>{$header}</b></td>
 											<td class="detailedViewHeader">

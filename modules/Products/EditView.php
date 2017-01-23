@@ -13,7 +13,7 @@ require_once('include/FormValidationUtil.php');
 
 $focus = CRMEntity::getInstance($currentModule);
 
-$encode_val=vtlib_purify($_REQUEST['encode_val']);
+$encode_val = (!empty($_REQUEST['encode_val']) ? vtlib_purify($_REQUEST['encode_val']) : '');
 $decode_val=base64_decode($encode_val);
 
 $saveimage=isset($_REQUEST['saveimage'])?vtlib_purify($_REQUEST['saveimage']):"false";
@@ -21,10 +21,13 @@ $errormessage=isset($_REQUEST['error_msg'])?vtlib_purify($_REQUEST['error_msg'])
 $image_error=isset($_REQUEST['image_error'])?vtlib_purify($_REQUEST['image_error']):"false";
 
 $smarty = new vtigerCRM_Smarty();
+// Identify this module as custom module.
+$smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
+$smarty->assign('CONVERT_MODE', '');
 
 $category = getParentTab($currentModule);
-$record = vtlib_purify($_REQUEST['record']);
-$isduplicate = vtlib_purify($_REQUEST['isDuplicate']);
+$record = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : null;
+$isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : null;
 
 //added to fix the issue4600
 $searchurl = getBasic_Advance_SearchURL();
@@ -86,6 +89,7 @@ if (!empty($_REQUEST['save_error']) and $_REQUEST['save_error'] == "true") {
 						break;
 					case '33':
 					case '3313':
+					case '3314':
 						if (is_array($field_value)) {
 							$field_value = implode(' |##| ', $field_value);
 						}
@@ -102,6 +106,18 @@ if (!empty($_REQUEST['save_error']) and $_REQUEST['save_error'] == "true") {
 } elseif($focus->mode != 'edit'){
 	setObjectValuesFromRequest($focus);
 }
+$smarty->assign('MASS_EDIT','0');
+$disp_view = getView($focus->mode);
+$blocks = getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields);
+$smarty->assign('BLOCKS', $blocks);
+$basblocks = getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields, 'BAS');
+$smarty->assign('BASBLOCKS', $basblocks);
+$advblocks = getBlocks($currentModule,$disp_view,$focus->mode,$focus->column_fields,'ADV');
+$smarty->assign('ADVBLOCKS', $advblocks);
+
+$custom_blocks = getCustomBlocks($currentModule,$disp_view);
+$smarty->assign('CUSTOMBLOCKS', $custom_blocks);
+$smarty->assign('FIELDS',$focus->column_fields);
 
 //needed when creating a new product with a default vendor name passed
 if (isset($_REQUEST['name']) && is_null($focus->name)) {
@@ -111,10 +127,6 @@ if (isset($_REQUEST['vendorid']) && is_null($focus->vendorid)) {
 	$focus->vendorid = $_REQUEST['vendorid'];
 }
 
-$disp_view = getView($focus->mode);
-$smarty->assign('BLOCKS', getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields));
-$smarty->assign('BASBLOCKS', getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields, 'BAS'));
-$smarty->assign('ADVBLOCKS',getBlocks($currentModule,$disp_view,$focus->mode,$focus->column_fields,'ADV'));
 $smarty->assign('OP_MODE',$disp_view);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
