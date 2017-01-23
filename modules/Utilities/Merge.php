@@ -34,21 +34,19 @@ $handle = fopen($wordtemplatedownloadpath .$filename,"wb") ;
 fwrite($handle,base64_decode($fileContent),$filesize);
 fclose($handle);
 
-
 $query = "SELECT * FROM " .$adb->sql_escape_string($_REQUEST["module"]) ." WHERE id = ?";
 $result = $adb->pquery($query, array($_REQUEST['record']));
 
 $y=$adb->num_fields($result);
 
-for ($x=0; $x<$y; $x++)
-{
-    $columnNames[$x] = "CONTACT_".strtoupper($adb->field_name($result, $x));
-} 
+for ($x=0; $x<$y; $x++) {
+	$fld = $adb->field_name($result, $x);
+	$columnNames[$x] = 'CONTACT_'.strtoupper($fld->name);
+}
 
 $columnValues = $adb->fetch_array($result);
-for ($x=0; $x<$y; $x++)
-{
-    $columnValString[$x] = $columnValues[$x];
+for ($x=0; $x<$y; $x++) {
+	$columnValString[$x] = $columnValues[$x];
 }
 
 $columnString = implode(",",$columnNames);
