@@ -71,7 +71,6 @@ class installcbTermConditions extends cbupdaterWorker {
 						$field1 = new Vtiger_Field();
 						$field1->name = 'tandc';
 						$field1->label = 'Terms and Conditions';
-						$field1->table = 'vtiger_invoice';
 						$field1->column = 'tandc';
 						$field1->columntype = 'int(11)';
 						$field1->typeofdata = 'I~O';
