@@ -12,7 +12,6 @@
  * See the License for the specific language governing permissions and limitations under the
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
  ************************************************************************************/
-
 require_once("include/Webservices/Utils.php");
 
 /*
@@ -265,7 +264,7 @@ function __FQNExtendedQueryAddCondition($queryGenerator,$condition,$glue,$mainMo
 			$val = ltrim($val,'(');
 			$val = rtrim($val,')');
 			$val = explode(',', $val);
-			array_walk($val,function(&$elemento, $clave, $prefijo) { $elemento = trim($elemento,"'"); });
+			array_walk($val,function(&$elemento, $clave) { $elemento = trim($elemento,"'"); });
 			break;
 		case 'like':
 			if (substr($val,-1)=='%' and substr($val,0,1)=='%') {
@@ -329,7 +328,7 @@ function __FQNExtendedQueryAddCondition($queryGenerator,$condition,$glue,$mainMo
 	} else {
 		if ($field=='id') {
 			if (is_array($val)) {
-				array_walk($val,function(&$elemento, $clave, $prefijo) { $elemento = trim($elemento,"'");list($void,$elemento) = explode('x', $elemento); });
+				array_walk($val,function(&$elemento, $clave) { $elemento = trim($elemento,"'");list($void,$elemento) = explode('x', $elemento); });
 			} else {
 				list($void,$val) = explode('x', $val);
 			}
