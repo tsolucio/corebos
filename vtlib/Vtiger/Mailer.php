@@ -24,7 +24,7 @@ class Vtiger_Mailer extends PHPMailer {
 
 	/**
 	 * Constructor
-	 */	
+	 */
 	function __construct() {
 		$this->initialize();
 	}
@@ -92,8 +92,7 @@ class Vtiger_Mailer extends PHPMailer {
 	 */
 	function initFromTemplate($emailtemplate) {
 		global $adb;
-		$result = $adb->pquery("SELECT * from vtiger_emailtemplates WHERE templatename=? AND foldername=?", 
-			Array($emailtemplate, 'Public'));
+		$result = $adb->pquery("SELECT * from vtiger_emailtemplates WHERE templatename=? AND foldername=?", array($emailtemplate, 'Public'));
 		if($adb->num_rows($result)) {
 			$this->IsHTML(true);
 			$usesubject = $adb->query_result($result, 0, 'subject');
@@ -101,9 +100,9 @@ class Vtiger_Mailer extends PHPMailer {
 
 			$this->Subject = $usesubject;
 			$this->Body    = $usebody;
-			return true;			
+			return true;
 		}
-		return false;		
+		return false;
 	}
 	/**
 	*Adding signature to mail
@@ -113,7 +112,6 @@ class Vtiger_Mailer extends PHPMailer {
 		$sign = nl2br($adb->query_result($adb->pquery("select signature from vtiger_users where id=?", array($userId)),0,"signature"));
 		$this->Signature = $sign;
 	}
-
 
 	/**
 	 * Configure sender information
@@ -160,7 +158,7 @@ class Vtiger_Mailer extends PHPMailer {
 				Vtiger_Utils::CreateTable('vtiger_mailer_queue',
 					'(id INT NOT NULL PRIMARY KEY,
 					fromname VARCHAR(100), fromemail VARCHAR(100),
-					mailer VARCHAR(10), content_type VARCHAR(15), subject VARCHAR(999), body TEXT, relcrmid INT, 
+					mailer VARCHAR(10), content_type VARCHAR(15), subject VARCHAR(999), body TEXT, relcrmid INT,
 					failed INT(1) NOT NULL DEFAULT 0, failreason VARCHAR(255))',
 					true);
 			}
@@ -249,13 +247,12 @@ class Vtiger_Mailer extends PHPMailer {
 					else if($email_record[type] == 'BCC')$mailer->AddBCC($email_record[email], $email_record[name]);
 					else if($email_record[type] == 'RPLYTO')$mailer->AddReplyTo($email_record[email], $email_record[name]);
 				}
-				
+
 				$attachments = $adb->pquery('SELECT * FROM vtiger_mailer_queueattachments WHERE id=?', Array($queueid));
 				for($aidx = 0; $aidx < $adb->num_rows($attachments); ++$aidx) {
 					$attachment_record = $adb->fetch_array($attachments, $aidx);
 					if($attachment_record['path'] != '') {
-						$mailer->AddAttachment($attachment_record['path'], $attachment_record['name'],
-												$attachment_record['encoding'], $attachment_record['type']);
+						$mailer->AddAttachment($attachment_record['path'], $attachment_record['name'], $attachment_record['encoding'], $attachment_record['type']);
 					}
 				}
 				$sent = $mailer->Send(true);

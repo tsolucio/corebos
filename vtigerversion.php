@@ -7,8 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-$patch_version = '';
-$modified_database = '';
 $vtiger_current_version = '5.5.0';
 $coreBOS_app_version = '7.0';
 $coreBOS_app_name ='coreBOS';

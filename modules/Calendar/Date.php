@@ -437,12 +437,6 @@ class vt_DateTime {
 		$tmpDate['month'] = $this->month;
 		$tmpDate['year'] = $this->year;
 
-		if(is_array($arr) && !empty($arr)){
-			$tmpDate['year'] = $arr[0];
-			$tmpDate['month'] = $arr[1];
-			$tmpDate['day'] = $arr[2];
-		}
-
 		if($mode == 'increment'){
 			$month = $tmpDate['month'] + 1;
 			$year = $tmpDate['year'] ;

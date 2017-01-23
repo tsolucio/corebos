@@ -576,10 +576,11 @@ class Import_Data_Controller {
 
 	public static function runScheduledImport() {
 		require_once('modules/Emails/mail.php');
-		require_once('modules/Emails/Emails.php');		
-		global $current_user;
+		require_once('modules/Emails/Emails.php');
+		global $current_user,$coreBOS_app_name;
 		$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail','support@your_support_domain.tld','HelpDesk');
 		$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name','your-support name','HelpDesk');
+		$coreBOS_uiapp_name = GlobalVariable::getVariable('Application_UI_Name',$coreBOS_app_name);
 		$scheduledImports = self::getScheduledImport();
 
 		foreach ($scheduledImports as $scheduledId => $importDataController) {
@@ -591,15 +592,15 @@ class Import_Data_Controller {
 
 			$importStatusCount = $importDataController->getImportStatusCount();
 
-			$emailSubject = 'coreBOS - Scheduled Import Report for '.$importDataController->module;
+			$emailSubject = $coreBOS_uiapp_name . ' - Scheduled Import Report for '.$importDataController->module;
 			$viewer = new Import_UI_Viewer();
 			$viewer->assign('FOR_MODULE', $importDataController->module);
 			$viewer->assign('IMPORT_RESULT', $importStatusCount);
 			$importResult = $viewer->fetch('Import_Result_Details.tpl');
 			$importResult = str_replace('align="center"', '', $importResult);
-			$emailData = 'coreBOS has just completed your import process. <br/><br/>' .
+			$emailData = $coreBOS_uiapp_name . ' has just completed your import process. <br/><br/>' .
 							$importResult . '<br/><br/>'.
-							'We recommend you to login to the coreBOS and check few records to confirm that the import has been successful.';
+							'We recommend you to login and check a few records to confirm that the import has been successful.';
 
 			$userName = getFullNameFromArray('Users', $importDataController->user->column_fields);
 			$userEmail = $importDataController->user->email1;
@@ -608,7 +609,6 @@ class Import_Data_Controller {
 
 			$importDataController->finishImport();
 		}
-		Vtiger_Mailer::dispatchQueue(null);
 	}
 
 	public static function getScheduledImport() {

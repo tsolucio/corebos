@@ -682,7 +682,7 @@ class ListViewController {
 		//Appending view name while editing from ListView
 		$link = "index.php?module=$module&action=EditView&record=$recordId&return_module=$module".
 			"&return_action=$return_action&parenttab=$parent".$url."&return_viewname=".
-			(isset($_SESSION['lvs']) ? $_SESSION['lvs'][$module]["viewname"] : '');
+			((isset($_SESSION['lvs']) and isset($_SESSION['lvs'][$module])) ? $_SESSION['lvs'][$module]['viewname'] : '');
 
 		if($module == 'Calendar') {
 			if($activityType == 'Task') {
@@ -696,7 +696,7 @@ class ListViewController {
 
 	public function getListViewDeleteLink($module,$recordId) {
 		$parenttab = getParentTab();
-		$viewname = (isset($_SESSION['lvs']) ? $_SESSION['lvs'][$module]['viewname'] : '');
+		$viewname = ((isset($_SESSION['lvs']) and isset($_SESSION['lvs'][$module])) ? $_SESSION['lvs'][$module]['viewname'] : '');
 		//Added to fix 4600
 		$url = getBasic_Advance_SearchURL();
 		if($module == "Calendar")
