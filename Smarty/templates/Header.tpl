@@ -348,7 +348,7 @@
 			url:'index.php?module=Utilities&action=UtilitiesAjax&file=Clock'
 		}).done(function(response) {
 			jQuery("#clock_cont").html(response);
-			execJS(jQuery('#clock_cont'));
+			execJS(document.getElementById('clock_cont'));
 		});
 	}
 
@@ -358,7 +358,7 @@
 			url:'index.php?module=Utilities&action=UtilitiesAjax&file=Calculator'
 		}).done(function(response) {
 			jQuery("#calculator_cont").html(response);
-			execJS(jQuery('#calculator_cont'));
+			execJS(document.getElementById('calculator_cont'));
 		});
 	}
 
