@@ -4720,9 +4720,9 @@ function duplicate_record(module,record)
 
 function getITSMiniCal(url){
 	if(url == undefined)
-		url = 'module=Calendar4You&action=ActivityAjax&type=minical&ajax=true';
+		url = 'module=Calendar4You&action=ActivityAjax&file=ActivityAjax&type=minical&ajax=true';
 	else
-		url = 'module=Calendar4You&action=ActivityAjax&'+url+'&type=minical&ajax=true';
+		url = 'module=Calendar4You&action=ActivityAjax&file=ActivityAjax&'+url+'&type=minical&ajax=true';
 	jQuery.ajax({
 			method:"POST",
 			url:'index.php?'+ url

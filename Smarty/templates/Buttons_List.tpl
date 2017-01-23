@@ -63,7 +63,7 @@
 							{assign var="PTCATEGORY" value=$CATEGORY}
 						{/if}
 						{if $CHECK.Calendar eq 'yes'}
-							<td id="LB_CalButton" class="LB_Button" style="padding-right:0px;padding-left:10px;"><a href="javascript:;" onclick="fnvshobj(this,'miniCal');getITSMiniCal('parenttab={$PTCATEGORY}');"><img src="{'btnL3Calendar.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CALENDAR_ALT}" title="{$APP.LBL_CALENDAR_TITLE}" border=0></a></td>
+							<td id="LB_CalButton" class="LB_Button" style="padding-right:0px;padding-left:10px;"><a href="javascript:;" onclick="fnvshobj(this,'miniCal');getITSMiniCal('');"><img src="{'btnL3Calendar.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CALENDAR_ALT}" title="{$APP.LBL_CALENDAR_TITLE}" border=0></a></td>
 						{else}
 							<td id="LB_CalButtonFaded" class="LB_Button" style="padding-right:0px;padding-left:10px;"><img src="{'btnL3Calendar-Faded.gif'|@vtiger_imageurl:$THEME}"></td>
 						{/if}
