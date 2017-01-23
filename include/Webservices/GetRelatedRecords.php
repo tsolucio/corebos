@@ -226,7 +226,7 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 					switch($criteria) { // currently hard coded to all  ** TODO **
 						case 'All': $queryCriteria = ''; break;
 						case 'Last5': $queryCriteria = sprintf(" ORDER BY %s.%s DESC LIMIT 5", $entityInstance->table_name, $entityInstance->table_index); break;
-						case 'Mine': $queryCriteria = ' AND vtiger_crmentity.smownerid=' . $current_user->id; break;
+						case 'Mine': $queryCriteria = ' AND vtiger_crmentity.smcreatorid=' . $current_user->id; break;
 					}
 					$query = $entityInstance->getListQuery($moduleName, sprintf(" AND %s.related_to=$crmid", $entityInstance->table_name));
 					$query .= $queryCriteria;
