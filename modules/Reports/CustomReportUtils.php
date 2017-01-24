@@ -16,6 +16,9 @@ Class CustomReportUtils {
 	public static function getCustomReportsQuery($reportid, $filterlist=null) {
 		global $current_user;
 		$reportnew = new ReportRun($reportid);
+		$cachedInfo = VTCacheUtils::lookupReport_Info($current_user->id, $reportid);
+		if($cachedInfo === false)
+			return '';
 		$groupby = $reportnew->getGroupingList($reportid);
 		$showcharts = false;
 		if (!empty($groupby)) {
@@ -38,7 +41,9 @@ Class CustomReportUtils {
 			break;
 		}
 		$queryReports = self::getCustomReportsQuery($reportid);
-
+		if($queryReports == ''){
+			return array('error' => "<h4>".getTranslatedString('LBL_PERMISSION')."</h4>");
+		}
 		$queryResult = $adb->pquery($queryReports, array());
 		if ($chartType == 'horizontalbarchart') {
 			$Chart = ChartUtils::generateChartDataFromReports($queryResult, strtolower($module_field), $fieldDetails, $reportid);

@@ -98,7 +98,7 @@ class Reports extends CRMEntity{
 	 *  It sets primodule,secmodule,reporttype,reportname,reportdescription,folderid for the given vtiger_reportid
 	 */
 	function __construct($reportid="") {
-		global $adb,$current_user,$theme,$mod_strings;
+		global $adb,$current_user,$theme,$mod_strings,$app_strings;
 		$current_user_parent_role_seq='';
 		require('user_privileges/user_privileges_'.$current_user->id.'.php');
 		$this->initListOfModules();
@@ -167,7 +167,7 @@ class Reports extends CRMEntity{
 					$this->is_editable = 'true';
 				else
 					$this->is_editable = 'false';
-			} else {
+			} elseif($_REQUEST['module'] != 'Home') {
 				if($_REQUEST['mode'] != 'ajax')
 				{
 					include('modules/Vtiger/header.php');
@@ -177,7 +177,7 @@ class Reports extends CRMEntity{
 				<table border='0' cellpadding='5' cellspacing='0' width='98%'>
 				<tbody><tr>
 				<td rowspan='2' width='11%'><img src='". vtiger_imageurl('denied.gif', $theme) ."' ></td>
-				<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span class='genHeaderSmall'>".$app_strings['LBL_NO_PERMISSION']."</span></td>
+				<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span class='genHeaderSmall'>".$app_strings['LBL_PERMISSION']."</span></td>
 				</tr>
 				<tr>
 				<td class='small' align='right' nowrap='nowrap'>
