@@ -11,7 +11,7 @@ require_once 'modules/Reports/ReportRun.php';
 require_once 'include/utils/ChartUtils.php';
 require_once 'include/utils/CommonUtils.php';
 
-Class CustomReportUtils {
+class CustomReportUtils {
 
 	public static function getCustomReportsQuery($reportid, $filterlist=null) {
 		global $current_user;
@@ -56,6 +56,7 @@ Class CustomReportUtils {
 	}
 
 	public static function IsDateField($reportColDetails) {
+		if ($reportColDetails=='none') return false;
 		list($tablename, $colname, $module_field, $fieldname, $typeOfData) = explode(":", $reportColDetails);
 		if ($typeOfData == "D") {
 			return true;

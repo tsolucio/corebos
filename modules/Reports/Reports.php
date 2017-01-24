@@ -441,7 +441,7 @@ class Reports extends CRMEntity{
 	 */
 	function getPriModuleColumnsList($module)
 	{
-		if (!isset($module)) return;
+		if (empty($module)) return;
 		foreach($this->module_list[$module] as $key=>$value)
 		{
 			$temp = $this->getColumnsListbyBlock($module,$key);
@@ -1493,14 +1493,14 @@ function getEscapedColumns($selectedfields) {
 
 					$columntototalrow['fieldlabel'] = str_replace(" ","_",$columntototalrow['fieldlabel']);
 					$options []= getTranslatedString($columntototalrow['tablabel'],$columntototalrow['tablabel']).' - '.getTranslatedString($columntototalrow['fieldlabel'],$columntototalrow['tablabel']);
-					if($selectedcolumn1[2] == "cb:".$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel']."_SUM:2")
+					if(isset($selectedcolumn1[2]) and $selectedcolumn1[2] == "cb:".$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel']."_SUM:2")
 					{
 						$filters["checkboxes"][] = array("name"=>'cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_SUM:2',"checked"=>true);
 					}else
 					{
 						$filters["checkboxes"][] = array("name"=>'cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_SUM:2');
 					}
-					if($selectedcolumn1[3] == "cb:".$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel']."_AVG:3")
+					if(isset($selectedcolumn1[3]) and $selectedcolumn1[3] == "cb:".$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel']."_AVG:3")
 					{
 						$filters["checkboxes"][] = array('name' => 'cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_AVG:3','checked'=>true);
 					}else
@@ -1508,7 +1508,7 @@ function getEscapedColumns($selectedfields) {
 						$filters["checkboxes"][] = array('name'=>'cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_AVG:3');
 					}
 
-					if($selectedcolumn1[4] == "cb:".$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel']."_MIN:4")
+					if(isset($selectedcolumn1[4]) and $selectedcolumn1[4] == "cb:".$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel']."_MIN:4")
 					{
 						$filters["checkboxes"][] = array('name'=>'cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_MIN:4',"checked"=>true);
 					}else
@@ -1516,7 +1516,7 @@ function getEscapedColumns($selectedfields) {
 						$filters["checkboxes"][] = array('name'=>'cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_MIN:4');
 					}
 
-					if($selectedcolumn1[5] == "cb:".$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel']."_MAX:5")
+					if(isset($selectedcolumn1[5]) and $selectedcolumn1[5] == "cb:".$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel']."_MAX:5")
 					{
 						$filters["checkboxes"][] = array('name'=>'cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_MAX:5','checked'=>true);
 					}else

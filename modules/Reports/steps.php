@@ -620,24 +620,15 @@ function getPrimaryStdFilterHTML($module,$selected="") {
 
 	$ogReport->oCustomView=new CustomView();
 	$result = $ogReport->oCustomView->getStdCriteriaByModule($module);
-	$mod_strings = return_module_language($current_language,$module);
 	$filters = array();
 	if(isset($result))
 	{
 		foreach($result as $key=>$value)
 		{
-			if(isset($mod_strings[$value])) {
-				if($key == $selected)
-					$filters[] = array("selected"=>true,"value"=>$key,"label"=>getTranslatedString($module,$module)." - ".getTranslatedString($value,$secmodule[$i]));
-				else
-					$filters[] = array("value"=>$key,"label"=>getTranslatedString($module,$module)." - ".getTranslatedString($value,$secmodule[$i]));
-			}
-			else {
-				if($key == $selected)
-					$filters[] = array("selected"=>true,"value"=>$key,"label"=>getTranslatedString($module,$module)." - ".$value);
-				else
-					$filters[] = array("selected"=>true,"value"=>$key,"label"=>getTranslatedString($module,$module)." - ".$value);
-			}
+			if($key == $selected)
+				$filters[] = array("selected"=>true,"value"=>$key,"label"=>getTranslatedString($module,$module)." - ".getTranslatedString($value,$module));
+			else
+				$filters[] = array("value"=>$key,"label"=>getTranslatedString($module,$module)." - ".getTranslatedString($value,$module));
 		}
 	}
 	return $filters;
@@ -653,10 +644,10 @@ function getSecondaryStdFilterHTML($module,$selected="") {
 	global $current_language;
 	$ogReport = new Reports();
 	$ogReport->oCustomView=new CustomView();
+	$filters = array();
 	if($module != "")
 	{
 		$secmodule = explode(":",$module);
-		$filters = array();
 		for($i=0;$i < count($secmodule) ;$i++)
 		{
 			$result = $ogReport->oCustomView->getStdCriteriaByModule($secmodule[$i]);
@@ -681,7 +672,6 @@ function getSecondaryStdFilterHTML($module,$selected="") {
 			}
 		}
 	}
-
 	return $filters;
 }
 
@@ -698,7 +688,7 @@ function getPrimaryColumns_AdvFilterHTML($module,$selected="") {
 	$filters = array();
 	$ogReport->getPriModuleColumnsList($module);
 	foreach($ogReport->module_list[$module] as $key=>$value) {
-		if(isset($ogReport->pri_module_columnslist[$module][$value]) && !$block_listed[$value]) {
+		if(isset($ogReport->pri_module_columnslist[$module][$value]) && empty($block_listed[$value])) {
 			$block_listed[$value] = true;
 			$optgroup = array(
 				"label"=>getTranslatedString($module,$module)." ".getTranslatedString($value,$module),
@@ -864,6 +854,7 @@ function getVisibleCriteria($recordid='') {
  */
 function getShareInfo($recordid='') {
 	global $adb;
+	$member_data = array();
 	$member_query = $adb->pquery("SELECT vtiger_reportsharing.setype,vtiger_users.id,vtiger_users.user_name FROM vtiger_reportsharing INNER JOIN vtiger_users on vtiger_users.id = vtiger_reportsharing.shareid WHERE vtiger_reportsharing.setype='users' AND vtiger_reportsharing.reportid = ?",array($recordid));
 	$noofrows = $adb->num_rows($member_query);
 	if($noofrows > 0) {

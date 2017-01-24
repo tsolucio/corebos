@@ -4751,7 +4751,7 @@ function changeCalendarDayDate(year,month,date){
 
 function changeCalendarDate(year,month,date){
 	if (jQuery('#calendar_div').fullCalendar == undefined) return false;
-        var date1= year+'-'+month+'-'+date;
+	var date1= year+'-'+month+'-'+date;
 	jQuery('#calendar_div').fullCalendar( 'gotoDate',date1);
 }
 

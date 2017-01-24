@@ -97,10 +97,10 @@ $advft_criteria_groups = json_decode($advft_criteria_groups,true);
 //<<<<<<<advancedfilter>>>>>>>>
 
 //<<<<<<<scheduled report>>>>>>>>
-$isReportScheduled		= vtlib_purify($_REQUEST['isReportScheduled']);
-$selectedRecipients	= vtlib_purify($_REQUEST['selectedRecipientsString']);
-$scheduledFormat	= vtlib_purify($_REQUEST['scheduledReportFormat']);
-$scheduledInterval	= vtlib_purify($_REQUEST['scheduledIntervalString']);
+$isReportScheduled  = isset($_REQUEST['isReportScheduled']) ? vtlib_purify($_REQUEST['isReportScheduled']) : '';
+$selectedRecipients = isset($_REQUEST['selectedRecipientsString']) ? vtlib_purify($_REQUEST['selectedRecipientsString']) : '';
+$scheduledFormat    = isset($_REQUEST['scheduledReportFormat']) ? vtlib_purify($_REQUEST['scheduledReportFormat']) : '';
+$scheduledInterval  = isset($_REQUEST['scheduledIntervalString']) ? vtlib_purify($_REQUEST['scheduledIntervalString']) : '';
 //<<<<<<<scheduled report>>>>>>>>
 
 $saveas=vtlib_purify($_REQUEST['saveashidden']);
