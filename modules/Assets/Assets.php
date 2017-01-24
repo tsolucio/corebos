@@ -216,49 +216,6 @@ class Assets extends CRMEntity {
 	}
 
 	/**
-	 * Create query to export the records.
-	 */
-	function create_export_query($where)
-	{
-		global $current_user;
-		$thismodule = $_REQUEST['module'];
-
-		include("include/utils/ExportUtils.php");
-
-		//To get the Permitted fields query and the permitted fields list
-		$sql = getPermittedFieldsQuery($thismodule, "detail_view");
-
-		$fields_list = getFieldsListFromQuery($sql);
-
-		$query = "SELECT $fields_list, vtiger_users.user_name AS user_name 
-				FROM vtiger_crmentity INNER JOIN $this->table_name ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
-
-		if(!empty($this->customFieldTable)) {
-			$query .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
-				" = $this->table_name.$this->table_index";
-		}
-
-		$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
-		$query .= " LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id and vtiger_users.status='Active'";
-
-		$where_auto = " vtiger_crmentity.deleted=0";
-
-		if($where != '') $query .= " WHERE ($where) AND $where_auto";
-		else $query .= " WHERE $where_auto";
-
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
-		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
-
-		// Security Check for Field Access
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[getTabid('Assets')] == 3)
-		{
-			//Added security check to get the permitted records only
-			$query = $query." ".getListViewSecurityParameter($thismodule);
-		}
-		return $query;
-	}
-
-	/**
 	 * Handle saving related module information.
 	 * NOTE: This function has been added to CRMEntity (base class).
 	 * You can override the behavior by re-defining it here.

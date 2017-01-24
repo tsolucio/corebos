@@ -816,6 +816,7 @@ class Contacts extends CRMEntity {
 			FROM vtiger_contactdetails
 			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_contactdetails.contactid
 			LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid=vtiger_users.id and vtiger_users.status='Active'
+			LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'
 			LEFT JOIN vtiger_account on vtiger_contactdetails.accountid=vtiger_account.accountid
 			left join vtiger_contactaddress on vtiger_contactaddress.contactaddressid=vtiger_contactdetails.contactid
 			left join vtiger_contactsubdetails on vtiger_contactsubdetails.contactsubscriptionid=vtiger_contactdetails.contactid
