@@ -3094,7 +3094,7 @@ function getActivityType($id) {
 function getOwnerName($id) {
 	global $log;
 	$log->debug("Entering getOwnerName( $id ) method ...");
-	$oname = '';
+	$oname = $id;
 	if (is_numeric($id) and $id>0) {
 		$ownerList = getOwnerNameList(array($id));
 		if (isset($ownerList[$id])) {
