@@ -1060,4 +1060,11 @@
 	<classname>fixcbTermConditionsField</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add moreinfo field to Reports for External URLs, Direct SQL and other future enhancements</description>
+	<filename>build/changeSets/2017/addMoreInfoFieldToReports.php</filename>
+	<classname>addMoreInfoFieldToReports</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
