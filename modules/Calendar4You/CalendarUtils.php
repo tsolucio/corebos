@@ -50,12 +50,14 @@ function get_its_mini_calendar(& $cal) {
 	} else {
 		$rows = 6;
 	}
-	$minical = "";
+	$minical = '';
+	$mt = substr('0' . $cal['calendar']->date_time->month, -2);
+	$dy = substr('0' . $cal['calendar']->date_time->day, -2);
 	$minical .= "<table class='mailClient ' bgcolor='white' border='0' cellpadding='2' cellspacing='0' width='98%'>
 		<tr>
 			<td class='calHdr'>&nbsp;</td>
 			<td style='padding:5px' colspan='6' class='calHdr' align='center'>".get_previous_its_cal($cal)."&nbsp;";
-			$minical .= "<a style='text-decoration: none;' href='javascript:changeCalendarMonthDate(".$cal['calendar']->date_time->year.",".$cal['calendar']->date_time->month.",".$cal['calendar']->date_time->day.");'><b>".display_date($cal['view'],$cal['calendar']->date_time)."</b></a>&nbsp;".get_next_its_cal($cal)."</td>";
+			$minical .= "<a style='text-decoration: none;' href='javascript:changeCalendarMonthDate(\"".$cal['calendar']->date_time->year.'","'.$mt.'","'.$dy."\");'><b>".display_date($cal['view'],$cal['calendar']->date_time).'</b></a>&nbsp;'.get_next_its_cal($cal).'</td>';
 			//$minical .= "<a style='text-decoration: none;' href='index.php?module=Calendar&action=index&view=".$cal['view']."".$cal['calendar']->date_time->get_date_str()."&parenttab=".$category."'><b>".display_date($cal['view'],$cal['calendar']->date_time)."</b></a>&nbsp;".get_next_its_cal($cal)."</td>";
 			$minical .= "<td class='calHdr' align='right'><a href='javascript:ghide(\"miniCal\");'><img src='". vtiger_imageurl('close.gif', $theme). "' align='right' border='0'></a>
 		</td></tr>";
@@ -77,7 +79,9 @@ function get_its_mini_calendar(& $cal) {
 			$cal['slice'] = $cal['calendar']->month_array[$cal['calendar']->slices[$count]];
 			$class = dateCheck($cal['slice']->start_time->get_formatted_date());
 			if($j == 0){
-				$minical .= "<td style='text-align:center' ><a href='javascript:changeCalendarWeekDate(".$cal['slice']->start_time->year.",".$cal['slice']->start_time->month.",".$cal['slice']->start_time->day.");'>".$cal['slice']->start_time->week."</td>";
+				$mt = substr('0' . $cal['slice']->start_time->month, -2);
+				$dy = substr('0' . $cal['slice']->start_time->day, -2);
+				$minical .= "<td style='text-align:center' ><a href='javascript:changeCalendarWeekDate(\"".$cal['slice']->start_time->year.'","'.$mt.'","'.$dy."\");'>".$cal['slice']->start_time->week.'</td>';
 				//index.php?module=Calendar&action=index&view=week".$cal['slice']->start_time->get_date_str()."&parenttab=".$category
 			}
 
@@ -97,7 +101,9 @@ function get_its_mini_calendar(& $cal) {
 			//To display month dates
 			if ($cal['slice']->start_time->getMonth() == $cal['calendar']->date_time->getMonth()){
 				$minical .= "<td ".$class." style='text-align:center' >";
-				$minical .= "<a href='javascript:changeCalendarDayDate(".$cal['slice']->start_time->year.",".$cal['slice']->start_time->month.",".$cal['slice']->start_time->day.");'>";
+				$mt = substr('0' . $cal['slice']->start_time->month, -2);
+				$dy = substr('0' . $cal['slice']->start_time->day, -2);
+				$minical .= "<a href='javascript:changeCalendarDayDate(\"".$cal['slice']->start_time->year.'","'.$mt.'","'.$dy."\");'>";
 				//$minical .= "<a href='index.php?module=Calendar&action=index&view=".$cal['slice']->getView()."".$cal['slice']->start_time->get_date_str()."&parenttab=".$category."'>BBBBBB";
 				$minical .= $cal['slice']->start_time->get_Date()."</a></td>";
 			}else{
