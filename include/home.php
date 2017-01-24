@@ -161,6 +161,8 @@ class Homestuff{
 					$result= $adb->pquery($query,array($stuffid));
 					$reportId = $adb->query_result($result,0,'reportid');
 					$reportQuery = CustomReportUtils::getCustomReportsQuery($reportId);
+					if($reportQuery == '')
+						continue;
 					$reportResult= $adb->query($reportQuery);
 					$num_rows = $adb->num_rows($reportResult);
 					if($num_rows <=0 ){
