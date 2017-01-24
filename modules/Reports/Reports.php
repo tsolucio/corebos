@@ -408,16 +408,18 @@ class Reports extends CRMEntity{
 		if(count($report)>0) {
 			do {
 				$report_details = Array();
-				$report_details ['customizable'] = $report["customizable"];
-				$report_details ['reportid'] = $report["reportid"];
-				$report_details ['primarymodule'] = $report["primarymodule"];
-				$report_details ['secondarymodules'] = $report["secondarymodules"];
-				$report_details ['state'] = $report["state"];
-				$report_details ['description'] = $report["description"];
-				$report_details ['reportname'] = $report["reportname"];
-				$report_details ['sharingtype'] = $report["sharingtype"];
+				$report_details['customizable'] = $report["customizable"];
+				$report_details['reportid'] = $report["reportid"];
+				$report_details['primarymodule'] = $report["primarymodule"];
+				$report_details['secondarymodules'] = $report["secondarymodules"];
+				$report_details['state'] = $report["state"];
+				$report_details['description'] = $report["description"];
+				$report_details['reportname'] = $report["reportname"];
+				$report_details['sharingtype'] = $report["sharingtype"];
+				$report_details['reporttype'] = $report['reporttype'];
+				$report_details['moreinfo'] = $report['moreinfo'];
 				if($is_admin==true || in_array($report["owner"],$subordinate_users) || $report["owner"]==$current_user->id)
-					$report_details ['editable'] = 'true';
+					$report_details['editable'] = 'true';
 				else
 					$report_details['editable'] = 'false';
 
