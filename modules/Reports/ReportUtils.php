@@ -64,7 +64,12 @@ function getReportFieldValue ($report, $picklistArray, $dbField, $valueArray, $f
 	$db = PearDatabase::getInstance();
 	$value = $valueArray[$fieldName];
 	$fld_type = $dbField->type;
-	list($module, $fieldLabel) = explode('_', $dbField->name, 2);
+	if ($dbField->name=='LBL_ACTION') {
+		$module = 'Reports';
+		$fieldLabel = 'LBL_ACTION';
+	} else {
+		list($module, $fieldLabel) = explode('_', $dbField->name, 2);
+	}
 	$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
 	$fieldType = null;
 	$fieldvalue = $value;
