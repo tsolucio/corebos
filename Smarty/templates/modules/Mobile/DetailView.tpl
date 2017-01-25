@@ -11,8 +11,10 @@
 	<script type="text/javascript" src="resources/getScrollcontent.js"></script>
 	<link rel="stylesheet" href="resources/css/jquery.mobile.structure-1.4.5.min.css" >
 	<link rel="stylesheet" href="resources/css/theme.css" >
+	<link rel="stylesheet" href="resources/css/signature-pad.css">
 	<script type="text/javascript" src="resources/crmtogo.js"></script>
 	<script type="text/javascript" src="resources/lang/{$LANGUAGE}.lang.js"></script>
+	<script type="text/javascript" src="resources/signature_pad.js"></script>
 </head>
 <body>
 <div data-role="page" data-theme="b" id="detail_page">
@@ -42,6 +44,12 @@
 	</div>
 	{/if}
 	<div>
+	{if $_MODULE->name() eq "HelpDesk"}
+		<div data-role="collapsible" id="signatureCollapsible" data-collapsed="true" data-mini="true">
+			<h3>{'LBL_SIGNATURE'|@getTranslatedString:'Mobile'}</h3>
+			{include file="modules/Mobile/Signature.tpl"}
+		</div>
+	{/if}
 	{if $COMMENTDISPLAY eq true}
 		<div data-role="collapsible" data-collapsed="true" data-mini="true">
 			<h3>{$MOD.LBL_COMMENTS}</h3>

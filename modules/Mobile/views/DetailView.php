@@ -23,6 +23,7 @@ class crmtogo_UI_DetailView extends crmtogo_WS_FetchRecordDetails {
 	}
 	
 	function process(crmtogo_API_Request $request) {
+		global $adb;
 		$wsResponse = parent::process($request);
 		$modules_with_comments = $this->getConfigSettingsComments();
 		$current_user = $this->getActiveUser();
@@ -76,6 +77,29 @@ class crmtogo_UI_DetailView extends crmtogo_WS_FetchRecordDetails {
 			$viewer->assign('LANGUAGE', $current_language);
 			if (isset($wsResponseResult['comments'])) {
 				$viewer->assign('_COMMENTS', $wsResponseResult['comments']);
+			}
+			//Get signature if exist and ticketstatus
+			if($moduleObj->name() == "HelpDesk"){
+				$array_recordid = explode('x', $record->id());
+				$ticketid = $array_recordid[1];
+				$reshd = $adb->pquery("Select ticket_no,status From vtiger_troubletickets Where ticketid = ?",array($ticketid));
+				if($adb->num_rows($reshd) > 0){
+					$ticket_no = $adb->query_result($reshd,0,'ticket_no');
+					$ticketstatus = $adb->query_result($reshd,0,'status');
+					if($ticketstatus == 'Closed'){
+						$query_docs = "SELECT vtiger_attachments.path, vtiger_attachments.name, vtiger_attachments.attachmentsid
+								FROM vtiger_attachments
+								INNER JOIN vtiger_crmentity ON vtiger_attachments.attachmentsid=vtiger_crmentity.crmid
+								WHERE deleted=0 AND vtiger_attachments.name = ? ORDER BY vtiger_attachments.attachmentsid DESC";
+						$res_docs = $adb->pquery($query_docs,array("firma_".$ticket_no.".png"));
+						$doc_path = "";
+						if($adb->num_rows($res_docs) > 0){
+							$doc_path = $adb->query_result($res_docs, 0, "path") . $adb->query_result($res_docs, 0, "attachmentsid") . "_" . $adb->query_result($res_docs, 0, "name");
+						}
+						$viewer->assign('SIGNPATH',$doc_path);
+					}
+					$viewer->assign('TICKETSTATUS',$ticketstatus);
+				}
 			}
 			//Get PanelMenu data
 			$modules = $this->sessionGet('_MODULES');

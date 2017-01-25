@@ -99,7 +99,7 @@ $mod_strings = Array (
 	
 	//5.x special
 	'LBL_COMMENTS'=>'Comentarios',
-	
+	'LBL_SIGNATURE'=>'Firma',
 );
 
 ?>
