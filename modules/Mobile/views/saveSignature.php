@@ -19,7 +19,7 @@ class UI_saveSignature extends WS_saveSignature {
 		} 
 		else {
 			$wsResponseResult = $wsResponse->getResult();
-			$viewer = new crmtogo_UI_Viewer();global $log; $log->fatal($wsResponseResult);
+			$viewer = new crmtogo_UI_Viewer();
 			$viewer->assign('SIGNPATH',$wsResponseResult['signpath']);
 			$response = $viewer->process('Signature.tpl');
 			$response->setResult(json_encode(array('html' => $response->getResult())));
