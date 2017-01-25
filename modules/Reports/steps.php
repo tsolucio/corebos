@@ -123,7 +123,6 @@ if(isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 
 	elseif($step == 6) {
 		require_once('modules/CustomView/CustomView.php');
-		require_once('include/Zend/Json.php');
 
 		if(isset($recordid)) {
 			//added to fix the ticket #5117
@@ -160,7 +159,7 @@ if(isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 					"ENDDATE"=>$oReport->enddate,
 					"COLUMNS_BLOCK"=>$COLUMNS_BLOCK,
 					"FOPTION"=>$FILTER_OPTION,
-					"REL_FIELDS"=>Zend_Json::encode($rel_fields),
+					"REL_FIELDS"=>json_encode($rel_fields),
 					"CRITERIA_GROUPS" => $oReport->advft_criteria
 				)
 			);
@@ -183,7 +182,7 @@ if(isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 				"BLOCKJS"=>$BLOCK1,
 				"BLOCKCRITERIA"=>$BLOCKCRITERIA,
 				"COLUMNS_BLOCK"=>$COLUMNS_BLOCK,
-				"REL_FIELDS"=>Zend_Json::encode($rel_fields)
+				"REL_FIELDS"=>json_encode($rel_fields)
 				)
 			);
 		}

@@ -54,7 +54,7 @@ $smodule = vtlib_purify($_REQUEST["secondarymodule"]);
 $reportname = vtlib_purify($_REQUEST["reportName"]);
 $reportdescription = vtlib_purify($_REQUEST["reportDesc"]);
 $reporttype = vtlib_purify($_REQUEST["reportType"]);
-$folderid = vtlib_purify($_REQUEST["folder"]);
+$folderid = (!empty($_REQUEST['folder']) ? vtlib_purify($_REQUEST['folder']) : !empty($_REQUEST['reportfolder']) ? vtlib_purify($_REQUEST['reportfolder']) : 1);
 //<<<<<<<report>>>>>>>>>
 
 //<<<<<<<standarfilters>>>>>>>>>

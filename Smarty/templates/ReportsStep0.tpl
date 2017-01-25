@@ -266,7 +266,7 @@
 				save_as_button.html("save as");
 				var li = $("<li>",{"style":"display:none","id":"save_as_button"});
 				li.append(save_as_button);
-				$(".actions ul li:nth-child(3)").after(li);
+				$(".actions ul li:nth-child(1)").after(li);
 			}
 
 		},
