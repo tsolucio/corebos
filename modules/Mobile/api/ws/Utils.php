@@ -728,4 +728,26 @@ class crmtogo_WS_Utils {
 		return $user_lang;
 	}
 
+	static function updateRecord($id,$fields,$targetModule,$user) {
+		global $adb,$current_user,$log;
+		$current_user = $user;
+
+		$focus = CRMEntity::getInstance($targetModule);
+		$focus->retrieve_entity_info($id, $targetModule);
+		$focus->id = $id;
+		$focus->mode = 'edit';
+
+		foreach($fields as $field => $value) {
+			$focus->column_fields[$field] = $value;
+		}
+
+		$handler = vtws_getModuleHandlerFromName($targetModule, $current_user);
+		$meta = $handler->getMeta();
+		$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields,$meta);
+
+		$focus->save($targetModule);
+
+		return true;
+	}
+
 }

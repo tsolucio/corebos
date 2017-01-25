@@ -57,7 +57,8 @@ class crmtogo_Index_Controller {
 		'downloadFile'			  => array('file' => '/actions/getFileForDownload.php', 'class' => 'crmtogo_UI_DownLoadFile'),
 		'getRelatedFieldAjax'  	  => array('file' => '/actions/getRelatedFieldAjax.php', 'class' => 'crmtogo_UI_getRelatedFieldAjax' ), 
 		'getScrollcontent'        => array('file' => '/actions/getScrollContent.php', 'class' => 'crmtogo_UI_GetScrollRecords' ),
-		'changeGUISettings'         => array('file' => '/actions/changeGUISettings.php', 'class' => 'crmtogo_UI_ChangeSettings' ),
+		'changeGUISettings'       => array('file' => '/actions/changeGUISettings.php', 'class' => 'crmtogo_UI_ChangeSettings' ),
+		'saveSignature'			  => array('file' => '/views/saveSignature.php', 'class' => 'UI_saveSignature'),
 	);
 
 	static function process(crmtogo_API_Request $request) {
