@@ -1745,8 +1745,7 @@ function isPresentRelatedLists($module, $activity_mode='') {
 			if (empty($relatedTabId)) {
 				$retval[$relatedId] = $relationLabel;
 			} else {
-				$permitted = $tab_seq_array[$relatedTabId];
-				if ($permitted === 0) {
+				if (isset($tab_seq_array[$relatedTabId]) and $tab_seq_array[$relatedTabId] === 0) {
 					if ($is_admin || $profileTabsPermission[$relatedTabId] === 0) {
 						$retval[$relatedId] = $relationLabel;
 					}

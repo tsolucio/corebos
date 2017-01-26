@@ -24,7 +24,6 @@
 			<form action="index.php" onsubmit="VtigerJS_DialogBox.block();">
 			<input type="hidden" name="module" value="Settings">
 			<input type="hidden" name="action" value="CurrencyEditView">
-			<input type="hidden" name="parenttab" value="{$PARENTTAB}">
 			<tr>
 					<td width=50 rowspan=2 valign=top><img src="{'currency.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" width="48" height="48" border=0 title="{$MOD.LBL_USERS}"></td>
 				<td class="heading2" valign="bottom" ><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_CURRENCY_SETTINGS} </b></td>
