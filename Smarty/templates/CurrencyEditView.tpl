@@ -28,7 +28,7 @@
 				<td width=50 rowspan=2 valign=top><img src="{'currency.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" width="48" height="48" border=0 title="{$MOD.LBL_USERS}"></td>
 				<td class="heading2" valign="bottom" ><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > <a href="index.php?module=Settings&action=CurrencyListView&parenttab=Settings">{$MOD.LBL_CURRENCY_SETTINGS}</a> > 
 				{if $ID neq ''}
-					{$MOD.LBL_EDIT} &quot;{$CURRENCY_NAME}&quot; 
+					{$MOD.LBL_EDIT} &quot;{$CURRENCY_NAME}&quot;
 				{else}
 					{$MOD.LBL_NEW_CURRENCY}
 				{/if}
@@ -108,9 +108,9 @@
 			        	        {else}
 			        	        	<option value="{$header}" >{$header|@getTranslatedCurrencyString}({$currency.1})</option>
 			        	        {/if}
-   					{/foreach}
- 						</select>
- 					</td>
+					{/foreach}
+						</select>
+					</td>
 				</tr>
 				<tr valign="top">
 					<td nowrap class="small cellLabel"><font color="red">*</font><strong>{$MOD.LBL_CURRENCY_CODE}</strong></td>
@@ -137,7 +137,7 @@
 					<td class="small cellText">
 						<input type="hidden" value="{$CURRENCY_STATUS}" id="old_currency_status" />
 						<select name="currency_status" {$STATUS_DISABLE} class="importBox">
-							<option value="Active"  {$ACTSELECT}>{$MOD.LBL_ACTIVE}</option>
+							<option value="Active" {$ACTSELECT}>{$MOD.LBL_ACTIVE}</option>
 							<option value="Inactive" {$INACTSELECT}>{$MOD.LBL_INACTIVE}</option>
 						</select>
 					</td>
@@ -155,9 +155,6 @@
 				</td>
 				</tr>
 				</table>
-			
-			
-			
 			</td>
 			</tr>
 			</table>
@@ -165,7 +162,6 @@
 	</tr>
 	</form>
 	</table>
-		
 	</div>
 </td>
         <td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
@@ -192,8 +188,8 @@
 			{
 				if (getObj("CurrencyEditLay") != null) getObj("CurrencyEditLay").style.display = "block";
 				return false;
-			} 
-			else 
+			}
+			else
 			{
 				return true;
 			}

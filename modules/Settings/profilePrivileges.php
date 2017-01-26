@@ -25,7 +25,7 @@ if(!empty($profileId)) {
 	die(getTranslatedString('ERR_INVALID_PROFILE_ID', $currentModule));
 }
 
-$parentProfileId=vtlib_purify($_REQUEST['parentprofile']);
+$parentProfileId = isset($_REQUEST['parentprofile']) ? vtlib_purify($_REQUEST['parentprofile']) : '';
 if($_REQUEST['mode'] =='create' && $_REQUEST['radiobutton'] != 'baseprofile')
 	$parentProfileId = '';
 
@@ -41,7 +41,7 @@ else
 	$smarty->assign("SELECTED_MODULE", "field_Leads");
 
 $smarty->assign("PARENTPROFILEID", $parentProfileId);
-$smarty->assign("RADIOBUTTON", vtlib_purify($_REQUEST['radiobutton']));
+$smarty->assign('RADIOBUTTON', (isset($_REQUEST['radiobutton']) ? vtlib_purify($_REQUEST['radiobutton']) : ''));
 
 $secondaryModule='';
 $mode='';
