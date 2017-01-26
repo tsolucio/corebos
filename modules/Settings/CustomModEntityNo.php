@@ -14,15 +14,16 @@ global $app_strings, $mod_strings, $currentModule, $current_language, $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 
-$recprefix = vtlib_purify($_REQUEST['recprefix']);
-$mode = $_REQUEST['mode'];
+$recprefix = isset($_REQUEST['recprefix']) ? vtlib_purify($_REQUEST['recprefix']) : '';
+$mode = isset($_REQUEST['mode']) ? vtlib_purify($_REQUEST['mode']) : '';
+$STATUSMSG = '';
 $validInput = validateAlphaNumericInput($recprefix);
 if(!empty($recprefix) && ! $validInput) {
 	$recprefix = '';
 	$mode='';
 	$STATUSMSG = "<font color='red'>".$mod_strings['LBL_UPDATE']." ".$mod_strings['LBL_FAILED']."</font>";
 }
-$recnumber = vtlib_purify($_REQUEST['recnumber']);
+$recnumber = isset($_REQUEST['recnumber']) ? vtlib_purify($_REQUEST['recnumber']) : '';
 
 $module_array=getCRMSupportedModules();
 if(count($module_array) <= 0) {
@@ -42,7 +43,7 @@ if(count($module_array) <= 0) {
 uasort($module_array, function($a,$b) {return (strtolower(getTranslatedString($a,$a)) < strtolower(getTranslatedString($b,$b))) ? -1 : 1;});
 $modulesList = array_keys($module_array);
 
-$selectedModule = vtlib_purify($_REQUEST['selmodule']);
+$selectedModule = isset($_REQUEST['selmodule']) ? vtlib_purify($_REQUEST['selmodule']) : '';
 if($selectedModule == '') $selectedModule = $modulesList[0];
 
 if(in_array($selectedModule, $module_array)) {
@@ -93,8 +94,10 @@ $smarty->assign("MODNUM_PREFIX",$recprefix);
 $smarty->assign("MODNUM", $recnumber);
 $smarty->assign("STATUSMSG", $STATUSMSG);
 
-if($_REQUEST['ajax'] == 'true') $smarty->display('Settings/CustomModEntityNoInfo.tpl');
-else $smarty->display('Settings/CustomModEntityNo.tpl');
+if(isset($_REQUEST['ajax']) and $_REQUEST['ajax'] == 'true')
+	$smarty->display('Settings/CustomModEntityNoInfo.tpl');
+else
+	$smarty->display('Settings/CustomModEntityNo.tpl');
 
 function getCRMSupportedModules()
 {

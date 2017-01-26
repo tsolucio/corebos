@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('Smarty_setup.php');
 global $mod_strings,$app_strings,$adb,$theme,$default_charset;
 
@@ -18,12 +17,12 @@ $smarty=new vtigerCRM_Smarty;
 if(isset($_REQUEST['record']) && $_REQUEST['record'] != '' )
 {
 	$tempid = vtlib_purify($_REQUEST['record']);
-    $currency = '';
-	
+	$currency = '';
+
 	// Get all the currencies
-    $sql = "select * from vtiger_currency_info where deleted=0";
-    $result = $adb->pquery($sql, array());
-    // Check if the current currency status has to be disabled for the 
+	$sql = "select * from vtiger_currency_info where deleted=0";
+	$result = $adb->pquery($sql, array());
+	// Check if the current currency status has to be disabled for the
 	$sql1 = "select * from vtiger_users where currency_id=?";
 	$result1 = $adb->pquery($sql1, array($tempid));
 	$noofrows = $adb->num_rows($result1);
@@ -33,7 +32,7 @@ if(isset($_REQUEST['record']) && $_REQUEST['record'] != '' )
 	} else {
 		$disable_currency = "";
 	}
-	
+
 	$other_currencies_list = array();
 	while($currencyResult = $adb->fetch_array($result)) {
 		if ($currencyResult['id'] == $tempid) {
@@ -45,10 +44,13 @@ if(isset($_REQUEST['record']) && $_REQUEST['record'] != '' )
 			$smarty->assign("CONVERSION_RATE",$currencyResult['conversion_rate']);
 			$smarty->assign("CURRENCY_STATUS",$currencyResult['currency_status']);
 			$currency = $currencyResult['currency_name'];
-			if($currencyResult['currency_status'] == 'Active')
-				$smarty->assign("ACTSELECT","selected");	
-			else
-				$smarty->assign("INACTSELECT","selected");
+			if($currencyResult['currency_status'] == 'Active') {
+				$smarty->assign('ACTSELECT','selected');
+				$smarty->assign('INACTSELECT','');
+			} else {
+				$smarty->assign('ACTSELECT','');
+				$smarty->assign('INACTSELECT','selected');
+			}
 		} elseif($currencyResult['currency_status'] == 'Active') {
 			$cur_id = $currencyResult['id'];
 			$other_currencies_list[$cur_id] = $currencyResult['currency_name'];

@@ -8,6 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 global $app_strings, $mod_strings, $current_language, $currentModule, $theme;
+$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$currentModule);
 
 require_once('Smarty_setup.php');
 require_once('include/ListView/ListView.php');
@@ -16,7 +17,6 @@ require_once('modules/CustomView/CustomView.php');
 require_once('modules/RecycleBin/RecycleBinUtils.php');
 
 global $adb, $log, $current_user;
-$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$currentModule);
 
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
@@ -25,6 +25,8 @@ require_once('modules/Vtiger/layout_utils.php');
 require("user_privileges/user_privileges_".$current_user->id.".php");
 
 $smarty = new vtigerCRM_Smarty;
+// Identify this module as custom module.
+$smarty->assign('CUSTOM_MODULE', 'true');
 
 // Data from the below modules will not be allowed to restore
 $skip_modules = array('Webmails');
@@ -71,6 +73,8 @@ if(isset($_REQUEST['selected_module']) && $_REQUEST['selected_module'] != '') {
 }
 
 $focus = CRMEntity::getInstance($select_module);
+$sorder = $focus->getSortOrder();
+$order_by = $focus->getOrderBy();
 
 if(count($module_name) > 0)
 {
@@ -87,7 +91,7 @@ if(count($module_name) > 0)
 	}
 	// Enabling Module Search
 	$url_string = '';
-	if($_REQUEST['query'] == 'true') {
+	if(isset($_REQUEST['query']) and $_REQUEST['query'] == 'true') {
 		$queryGenerator->addUserSearchConditions($_REQUEST);
 		$ustring = getSearchURL($_REQUEST);
 		$url_string .= "&query=true$ustring";
@@ -153,7 +157,8 @@ if(strpos($moduleColumnName,','))
 }
 
 $query = "SELECT fieldname FROM vtiger_field WHERE tablename=? and columnname=?";
-$moduleFieldName = $adb->query_result($adb->pquery($query, array($moduleTableName,$moduleColumnName)),0,'fieldname');
+$rs = $adb->pquery($query, array($moduleTableName,$moduleColumnName));
+$moduleFieldName = $adb->query_result($rs,0,'fieldname');
 $indexField = $moduleFieldName;
 
 $alphabetical = AlphabeticalSearch($currentModule,'index',$indexField,'true','basic',"","","","",$viewid);
@@ -177,17 +182,16 @@ $smarty->assign("CATEGORY",$category);
 $smarty->assign("THEME",$theme);
 $smarty->assign("IMAGE_PATH",$image_path);
 // Pass on the authenticated user language
-global $current_language;
 $smarty->assign('LANGUAGE', $current_language);
 $smarty->assign("APP", $app_strings);
 $smarty->assign("CMOD", return_module_language($current_language,$select_module));
 $smarty->assign("lvEntries", $lvEntries);
-$smarty->assign("ALLSELECTEDIDS", vtlib_purify($_REQUEST['allselobjs']));
+$smarty->assign('ALLSELECTEDIDS', (isset($_REQUEST['allselobjs']) ? vtlib_purify($_REQUEST['allselobjs']) : ''));
 $smarty->assign("CURRENT_PAGE_BOXES", implode(array_keys($lvEntries),";"));
 
 $smarty->assign("IS_ADMIN", $is_admin);
 
-if($_REQUEST['mode'] != 'ajax') {
+if(empty($_REQUEST['mode']) or $_REQUEST['mode'] != 'ajax') {
 	$smarty->display(vtlib_getModuleTemplate($currentModule,'RecycleBin.tpl'));
 } else {
 	$smarty->display(vtlib_getModuleTemplate($currentModule,'RecycleBinContents.tpl'));
