@@ -1279,7 +1279,7 @@ function getProfileTabsPermission($profileid)
 	$num_rows = $adb->num_rows($result);
 	for($i=0; $i<$num_rows; $i++) {
 		$tab_id = $adb->query_result($result,$i,'tabid');
-		$per_id = $adb->query_result($result,$i,'permissions');
+		$per_id = (integer)$adb->query_result($result,$i,'permissions');
 		$copy[$tab_id] = $per_id;
 	}
 	// TODO This is temporarily required, till we provide a hook/entry point for Emails module.
@@ -3087,12 +3087,23 @@ function getSubordinateRoleAndUsers($roleId, $users = true)
 
 function getCurrentUserProfileList()
 {
-	global $log,$current_user;
+	global $adb,$log,$current_user;
 	$log->debug('Entering getCurrentUserProfileList() method ...');
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	$profList = array();
 	foreach ($current_user_profiles as $profid) {
-		array_push($profList, $profid);
+		$profilename = '';
+		$resprofile = $adb->pquery("SELECT profilename FROM vtiger_profile WHERE profileid = ?",array($profid));
+		$profilename = $adb->query_result($resprofile, 0, 'profilename');
+		if(strpos($profilename, 'Mobile::') !== false){
+			if(defined('COREBOS_INSIDE_MOBILE')){
+				array_push($profList, $profid);
+			}
+		}else{
+			if(!defined('COREBOS_INSIDE_MOBILE')){
+				array_push($profList, $profid);
+			}
+		}
 	}
 	$log->debug('Exiting getCurrentUserProfileList method ...');
 	return $profList;
@@ -3731,12 +3742,23 @@ function getModuleAccessArray() {
  */
 function getPermittedModuleNames()
 {
-	global $log;
+	global $log,$adb;
 	$log->debug("Entering getPermittedModuleNames() method ...");
 	global $current_user;
 	$permittedModules=Array();
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	include('tabdata.php');
+
+	if(defined('COREBOS_INSIDE_MOBILE')){
+		foreach ($current_user_profiles as $profid) {
+			$profilename = '';
+			$resprofile = $adb->pquery("SELECT profilename FROM vtiger_profile WHERE profileid = ?",array($profid));
+			$profilename = $adb->query_result($resprofile, 0, 'profilename');
+			if(strpos($profilename, 'Mobile::') !== false){
+				$profileTabsPermission=getProfileTabsPermission($profid);
+			}
+		}
+	}
 
 	if($is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1)
 	{
@@ -3771,6 +3793,17 @@ function getPermittedModuleIdList() {
 	$permittedModules=Array();
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	include('tabdata.php');
+
+	if(defined('COREBOS_INSIDE_MOBILE')){
+		foreach ($current_user_profiles as $profid) {
+			$profilename = '';
+			$resprofile = $adb->pquery("SELECT profilename FROM vtiger_profile WHERE profileid = ?",array($profid));
+			$profilename = $adb->query_result($resprofile, 0, 'profilename');
+			if(strpos($profilename, 'Mobile::') !== false){
+				$profileTabsPermission=getProfileTabsPermission($profid);
+			}
+		}
+	}
 
 	if($is_admin == false && $profileGlobalPermission[1] == 1 &&
 			$profileGlobalPermission[2] == 1) {

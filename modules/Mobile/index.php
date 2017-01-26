@@ -14,6 +14,7 @@ if ($_SERVER['QUERY_STRING']=='module=Mobile&action=index') {
 <?php
 die();
 }
+define('COREBOS_INSIDE_MOBILE',1);
 header('Content-Type: text/html;charset=utf-8');
 chdir (dirname(__FILE__) . '/../../');
 
