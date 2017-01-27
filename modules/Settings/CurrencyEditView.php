@@ -14,10 +14,10 @@ $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 $smarty=new vtigerCRM_Smarty;
 
+$currency = '';
 if(isset($_REQUEST['record']) && $_REQUEST['record'] != '' )
 {
 	$tempid = vtlib_purify($_REQUEST['record']);
-	$currency = '';
 
 	// Get all the currencies
 	$sql = "select * from vtiger_currency_info where deleted=0";
@@ -58,6 +58,17 @@ if(isset($_REQUEST['record']) && $_REQUEST['record'] != '' )
 	}
 	$smarty->assign("OTHER_CURRENCIES", $other_currencies_list);
 	$smarty->assign("ID",$tempid);
+} else {
+	$smarty->assign('ID','');
+	$smarty->assign('INACTSELECT','');
+	$smarty->assign('ACTSELECT','');
+	$smarty->assign('STATUS_DISABLE','');
+	$smarty->assign('CURRENCY_NAME','');
+	$smarty->assign('CURRENCY_CODE','');
+	$smarty->assign('CURRENCY_SYMBOL','');
+	$smarty->assign('CURRENCY_POSITION','');
+	$smarty->assign('CONVERSION_RATE',1);
+	$smarty->assign('CURRENCY_STATUS','Active');
 }
 
 $currencies_query = $adb->pquery("SELECT currency_name from vtiger_currency_info WHERE deleted=0 order by currency_name",array());

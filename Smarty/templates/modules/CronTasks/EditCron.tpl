@@ -10,7 +10,7 @@
 -->*}
 <div id="EditInv" class="layerPopup">
 <input id="min_freq" type="hidden" value="{$MIN_CRON_FREQUENCY}">
-<input id="desc" type="hidden" value="{'LBL_MINIMUM_FREQUENCY'|@getTranslatedString:$MODULE} {$MIN_CRON_FREQUENCY} {'LBL_MINUTES'|@getTranslatedString:$MODULE}" size="35" maxlength="40">
+<input id="desc" type="hidden" value="{'LBL_MINIMUM_FREQUENCY'|@getTranslatedString:'CronTasks'} {$MIN_CRON_FREQUENCY} {'LBL_MINUTES'|@getTranslatedString:'CronTasks'}" size="35" maxlength="40">
 <table border=0 cellspacing=0 cellpadding=5 width=100% class=layerHeadingULine>
 <tr>
 	<td class="layerPopupHeading" align="left">{$CRON_DETAILS.label}</td>

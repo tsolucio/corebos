@@ -59,7 +59,7 @@
 		<input type="hidden" name="module" value="Reports">
 		<input type="hidden" name="primarymodule" value="{$REP_MODULE}">
 		<input type="hidden" name="secondarymodule" value>
-		<input type="hidden" name="record" id="record" value="{$RECORDID}">
+		<input type="hidden" name="record" id="record" value="{if isset($RECORDID)}{$RECORDID}{/if}">
 		<input type="hidden" name='folder' value="{$FOLDERID}"/>
 		<input type="hidden" name='reload' value='true'/>
 		<input type="hidden" name="action" value="Save">

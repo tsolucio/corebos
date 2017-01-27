@@ -6,7 +6,6 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 <link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
@@ -28,7 +27,7 @@
 	<tr>
 		<td colspan="2" align="left" valign="top" style="height: 1px;">
 			<div id='std_filter_div_show' name='std_filter_div_show'>
-				<img border="0" align="absmiddle" src={'inactivate.gif'|@vtiger_imageurl:$THEME}  onclick="showHideDivs('std_filter_div','std_filter_div_show');" style="cursor:pointer;" />
+				<img border="0" align="absmiddle" src={'inactivate.gif'|@vtiger_imageurl:$THEME} onclick="showHideDivs('std_filter_div','std_filter_div_show');" style="cursor:pointer;" />
 				<b>{$MOD.LBL_SHOW_STANDARD_FILTERS}</b>
 			</div>
 		</td>
@@ -63,9 +62,9 @@
 							<img src="{$IMAGE_PATH}btnL3Calendar.gif" id="jscal_trigger_date_start" >
 							<font size="1"><em old="(yyyy-mm-dd)">({$DATEFORMAT})</em></font>
 							<script type="text/javascript">
-                                Calendar.setup ({ldelim}
-                                inputField : "jscal_field_date_start", ifFormat : "{$JS_DATEFORMAT}", showsTime : false, button : "jscal_trigger_date_start", singleClick : true, step : 1
-                                {rdelim})
+								Calendar.setup ({ldelim}
+									inputField : "jscal_field_date_start", ifFormat : "{$JS_DATEFORMAT}", showsTime : false, button : "jscal_trigger_date_start", singleClick : true, step : 1
+								{rdelim})
 							</script>
 						</td>
 						<td class="dvtCellInfo">

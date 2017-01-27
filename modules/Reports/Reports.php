@@ -1541,7 +1541,7 @@ function getEscapedColumns($selectedfields) {
 	}
 
 	/** Function to get the advanced filter criteria for an option
-	 *  This function accepts The option in the advenced filter as an argument
+	 *  This function accepts The option in the advanced filter as an argument
 	 *  This generate filter criteria for the advanced filter
 	 *  It returns a HTML string of combo values
 	 */

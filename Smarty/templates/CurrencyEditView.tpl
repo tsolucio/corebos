@@ -12,8 +12,8 @@
 <br>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tbody><tr>
-        <td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-        <td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
+	<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
+	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
 <br>
 	<div align=center>
 			{include file='SetMenu.tpl'}
@@ -38,29 +38,27 @@
 				<td valign=top class="small">{$MOD.LBL_CURRENCY_DESCRIPTION}</td>
 			</tr>
 			</table>
-				
 				<br>
 				<table border=0 cellspacing=0 cellpadding=10 width=100% >
 				<tr>
 				<td>
-				
 					<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 					<tr>
 						{if $ID neq ''}
-							<td class="big"><strong>{'LBL_SETTINGS'|@getTranslatedString} {$APP.LBL_FOR} &quot;{$CURRENCY_NAME|@getTranslatedCurrencyString}&quot;  </strong></td>
+							<td class="big"><strong>{'LBL_SETTINGS'|@getTranslatedString} {$APP.LBL_FOR} &quot;{$CURRENCY_NAME|@getTranslatedCurrencyString}&quot; </strong></td>
 						{else}
-							<td class="big"><strong>&quot;{$MOD.LBL_NEW_CURRENCY}&quot;  </strong></td>
+							<td class="big"><strong>&quot;{$MOD.LBL_NEW_CURRENCY}&quot; </strong></td>
 						{/if}
 						<td class="small" align=right>
 							<input title="{$APP.LBL_SAVE_BUTTON_LABEL}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmButton small save" onclick="this.form.action.value='SaveCurrencyInfo'; return validate()" type="submit" name="button" value="{$APP.LBL_SAVE_BUTTON_LABEL}" >&nbsp;&nbsp;
-							<div id="CurrencyEditLay"  class="layerPopup" style="display:none;width:25%;">
+							<div id="CurrencyEditLay" class="layerPopup" style="display:none;width:25%;">
 								<table width="100%" border="0" cellpadding="3" cellspacing="0" class="layerHeadingULine">
 								<tr>
-									<td class="layerPopupHeading"  align="left" width="60%">{$MOD.LBL_TRANSFER_CURRENCY}</td>
+									<td class="layerPopupHeading" align="left" width="60%">{$MOD.LBL_TRANSFER_CURRENCY}</td>
 									<td align="right" width="40%"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border=0 alt="{$APP.LBL_CLOSE}" title="{$APP.LBL_CLOSE}" style="cursor:pointer;" onClick="document.getElementById('CurrencyEditLay').style.display='none'";></td>
 								</tr>
 								<table>
-								<table border=0 cellspacing=0 cellpadding=5 width=95% align=center> 
+								<table border=0 cellspacing=0 cellpadding=5 width=95% align=center>
 									<tr>
 										<td class=small >
 											<table border=0 celspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
@@ -92,22 +90,21 @@
 						</td>
 					</tr>
 					</table>
-					
 			<table border=0 cellspacing=0 cellpadding=0 width=100% class="listRow">
 			<tr>
 				<td class="small" valign=top >
-				<table width="100%"  border="0" cellspacing="0" cellpadding="5">
+				<table width="100%" border="0" cellspacing="0" cellpadding="5">
 				<tr>
 					<td width="20%" nowrap class="small cellLabel"><font color="red">*</font><strong>{$MOD.LBL_CURRENCY_NAME}</strong></td>
 					<td width="80%" class="small cellText">
 						<!-- input type="hidden" class="detailedViewTextBox small" value="" name="currency_name" -->
 						<select name="currency_name" id="currency_name" class="small" onChange='updateSymbolAndCode();'>
 					{foreach key=header item=currency from=$CURRENCIES}
-			        	        {if $header eq $CURRENCY_NAME}
-			        	        	<option value="{$header}" selected>{$header|@getTranslatedCurrencyString}({$currency.1})</option>
-			        	        {else}
-			        	        	<option value="{$header}" >{$header|@getTranslatedCurrencyString}({$currency.1})</option>
-			        	        {/if}
+						{if $header eq $CURRENCY_NAME}
+							<option value="{$header}" selected>{$header|@getTranslatedCurrencyString}({$currency.1})</option>
+						{else}
+							<option value="{$header}" >{$header|@getTranslatedCurrencyString}({$currency.1})</option>
+						{/if}
 					{/foreach}
 						</select>
 					</td>
@@ -141,9 +138,8 @@
 							<option value="Inactive" {$INACTSELECT}>{$MOD.LBL_INACTIVE}</option>
 						</select>
 					</td>
-				</tr>	
-                       </table>
-						
+				</tr>
+						</table>
 						</td>
 					  </tr>
 					</table>
@@ -170,30 +166,30 @@
 </table>
 {literal}
 <script>
-        function validate() {
-			if (!emptyCheck("currency_name","Currency Name","text")) return false
-			if (!emptyCheck("currency_code","Currency Code","text")) return false
-			if (!emptyCheck("currency_symbol","Currency Symbol","text")) return false
-			if (!emptyCheck("conversion_rate","Conversion Rate","text")) return false
-			if (!emptyCheck("currency_status","Currency Status","text")) return false
-			if(isNaN(getObj("conversion_rate").value) || eval(getObj("conversion_rate").value) <= 0)
-			{
+function validate() {
+	if (!emptyCheck("currency_name","Currency Name","text")) return false
+	if (!emptyCheck("currency_code","Currency Code","text")) return false
+	if (!emptyCheck("currency_symbol","Currency Symbol","text")) return false
+	if (!emptyCheck("conversion_rate","Conversion Rate","text")) return false
+	if (!emptyCheck("currency_status","Currency Status","text")) return false
+	if(isNaN(getObj("conversion_rate").value) || eval(getObj("conversion_rate").value) <= 0)
+	{
 {/literal}
-            	alert("{$APP.ENTER_VALID_CONVERSION_RATE}")
-                return false
+		alert("{$APP.ENTER_VALID_CONVERSION_RATE}")
+		return false
 {literal}
-			}
-			if (getObj("currency_status") != null && getObj("currency_status").value == "Inactive" 
-					&& getObj("old_currency_status") != null && getObj("old_currency_status").value == "Active")
-			{
-				if (getObj("CurrencyEditLay") != null) getObj("CurrencyEditLay").style.display = "block";
-				return false;
-			}
-			else
-			{
-				return true;
-			}
-        }
+	}
+	if (getObj("currency_status") != null && getObj("currency_status").value == "Inactive"
+			&& getObj("old_currency_status") != null && getObj("old_currency_status").value == "Active")
+	{
+		if (getObj("CurrencyEditLay") != null) getObj("CurrencyEditLay").style.display = "block";
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
 {/literal}
 var currency_array = {$CURRENCIES_ARRAY}
 {literal}

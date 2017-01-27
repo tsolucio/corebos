@@ -63,7 +63,7 @@
 										</div>
 									</td>
 								</tr>
-								{if $ERROR_MESSAGE neq ''}
+								{if !empty($ERROR_MESSAGE)}
 								<tr><td>{include file='applicationmessage.tpl'}</td></tr>
 								{/if}
 								</table>
@@ -167,9 +167,9 @@ function validate_mail_server(form)
 	if(form.server.value =='')
 	{
 		{/literal}
-                alert("{$APP.SERVERNAME_CANNOT_BE_EMPTY}")
-                        return false;
-                {literal}
+		alert("{$APP.SERVERNAME_CANNOT_BE_EMPTY}")
+		return false;
+		{literal}
 	}
 	return true;
 }
