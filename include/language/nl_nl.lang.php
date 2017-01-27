@@ -652,6 +652,7 @@ $app_strings = array(
 	'LBL_ADDRESS_INF' => 'Adresinformatie',
 	'yes' => 'ja',
 	'no' => 'nee',
+	'LBL_WITH' => 'met',
 	'LBL_RENAMEPROFILE_BUTTON_LABEL' => 'Hernoemen',
 	'LBL_RENAME_PROFILE' => 'Nieuw profiel',
 	'LBL_PROFILE_NAME' => 'Profielnaam',

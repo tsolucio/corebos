@@ -14,11 +14,11 @@ $scannername = vtlib_purify(trim($_REQUEST['mailboxinfo_scannername']));
 if(!empty($scannername) && !validateAlphanumericInput($scannername)) {
 	$scannername = '';
 }
-$server     = vtlib_purify(trim($_REQUEST['mailboxinfo_server']));
+$server = vtlib_purify(trim($_REQUEST['mailboxinfo_server']));
 if(!empty($server) && !validateServerName($server)) {
 	$server = '';
 }
-$username   = vtlib_purify(trim($_REQUEST['mailboxinfo_username']));
+$username = vtlib_purify(trim($_REQUEST['mailboxinfo_username']));
 if(!empty($username) && !validateEmailId($username) && !validateAlphanumericInput($username)) {
 	$username = '';
 }
@@ -36,7 +36,7 @@ $newscannerinfo->markas     = vtlib_purify(trim($_REQUEST['mailboxinfo_markas'])
 $newscannerinfo->isvalid    =(vtlib_purify($_REQUEST['mailboxinfo_enable']) == 'true')? true : false;
 
 // Rescan all folders on next run?
-$rescanfolder = (vtlib_purify($_REQUEST['mailboxinfo_rescan_folders']) == 'true')? true : false;
+$rescanfolder = (isset($_REQUEST['mailboxinfo_rescan_folders']) and $_REQUEST['mailboxinfo_rescan_folders'] == 'true')? true : false;
 
 $isconnected = false;
 

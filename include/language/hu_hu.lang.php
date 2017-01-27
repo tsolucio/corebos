@@ -628,6 +628,7 @@ $app_strings = array(
 	'LBL_ADDRESS_INF' => 'Cím adatok',
 	'yes' => 'igen',
 	'no' => 'nem',
+	'LBL_WITH' => 'azzal a(z)',
 	'LBL_RENAMEPROFILE_BUTTON_LABEL' => 'Átnevez',
 	'LBL_RENAME_PROFILE' => 'Profil átnevezése',
 	'LBL_PROFILE_NAME' => 'Profil név',

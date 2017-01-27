@@ -157,8 +157,8 @@ class Vtiger_MailScannerInfo {
 				Array($scannedOn, $needRescan, $folderid));
 		} else {
 			$enabledForScan = 1; // Enable folder for scan by default
-			$adb->pquery("INSERT INTO vtiger_mailscanner_folders(scannerid, foldername, lastscan, rescan, enabled)
-			   VALUES(?,?,?,?,?)", Array($this->scannerid, $folderName, $scannedOn, $needRescan, $enabledForScan));
+			$adb->pquery('INSERT INTO vtiger_mailscanner_folders(scannerid, foldername, lastscan, rescan, enabled) VALUES(?,?,?,?,?)',
+				Array($this->scannerid, $folderName, $scannedOn, $needRescan, $enabledForScan));
 		}
 		if(!$this->lastscan) $this->lastscan = Array();
 		$this->lastscan[$folderName] = $scannedOn;
@@ -272,7 +272,7 @@ class Vtiger_MailScannerInfo {
 				for($index = 0; $index < $rulescount; ++$index) {
 					$ruleid = $adb->query_result($rulesres, $index, 'ruleid');
 					$scannerrule = new Vtiger_MailScannerRule($ruleid);
-					$scannerrule->debug = $this->debug;
+					//$scannerrule->debug = $this->debug;
 					$this->rules[] = $scannerrule;
 				}
 			}

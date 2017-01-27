@@ -630,6 +630,7 @@ $app_strings = array (
 'LBL_ADDRESS_INF' => 'Informação Endereço',
 'yes' => 'Sim',
 'no' => 'Nenhum',
+'LBL_WITH' => 'com',
 'LBL_RENAMEPROFILE_BUTTON_LABEL'=>'Renomear',
 'LBL_RENAME_PROFILE'=>'Renomear Perfil',
 'LBL_PROFILE_NAME'=>'Nome Perfil',
