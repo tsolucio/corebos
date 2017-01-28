@@ -3713,7 +3713,7 @@ function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $
 
 	$jsHandler = "return VT_disableFormSubmit(event);";
 	$output .= "<input class='small' name='pagenum' type='text' value='{$navigation_array['current']}'
-		style='width: 3em;margin-right: 0.7em;' onchange=\"loadRelatedListBlock('{$urldata}&start='+this.value+'','{$target}','{$imagesuffix}');\"
+		style='width: 3em;margin-right: 0.7em;' onchange=\"loadRelatedListBlock('{$urldata}&relstart='+this.value+'','{$target}','{$imagesuffix}');\"
 		onkeypress=\"$jsHandler\">";
 	$output .= "<span name='listViewCountContainerName' class='small' style='white-space: nowrap;'>";
 	$computeCount = isset($_REQUEST['withCount']) ? $_REQUEST['withCount'] : '';
@@ -3721,7 +3721,7 @@ function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $
 		$output .= $app_strings['LBL_LIST_OF'] . ' ' . $navigation_array['verylast'];
 	} else {
 		$output .= "<img src='" . vtiger_imageurl('windowRefresh.gif', $theme) . "' alt='" . $app_strings['LBL_HOME_COUNT'] . "'
-			onclick=\"loadRelatedListBlock('{$urldata}&withCount=true&start={$navigation_array['current']}','{$target}','{$imagesuffix}');\"
+			onclick=\"loadRelatedListBlock('{$urldata}&withCount=true&relstart={$navigation_array['current']}','{$target}','{$imagesuffix}');\"
 			align='absmiddle' name='" . $module . "_listViewCountRefreshIcon'/>
 			<img name='" . $module . "_listViewCountContainerBusy' src='" . vtiger_imageurl('vtbusy.gif', $theme) . "' style='display: none;'
 			align='absmiddle' alt='" . $app_strings['LBL_LOADING'] . "'>";
