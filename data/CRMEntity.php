@@ -2675,7 +2675,7 @@ class CRMEntity {
 			"Documents" => array("vtiger_senotesrel" => array("crmid", "notesid"),
 				$this->table_name => $this->table_index),
 		);
-		return $rel_tables[$secmodule];
+		return isset($rel_tables[$secmodule]) ? $rel_tables[$secmodule] : '';
 	}
 
 	/**

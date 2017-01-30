@@ -486,10 +486,9 @@
 		},
 
 		onFinished: function (event, currentIndex) {
-	        saveAndRunReport();
-	    }
+			saveAndRunReport();
+		}
 	});
-
 </script>
 {/literal}
 </html>

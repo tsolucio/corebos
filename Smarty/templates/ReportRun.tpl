@@ -144,7 +144,7 @@
 					</tr>
 					<tr>
 						<td align="right" style="padding-right:5px;" valign="top"><b>{$MOD.LBL_DESCRIPTION}: </b></td>
-						<td align="left" style="padding-left:5px;"><textarea name="newreportdescription"  id="newreportdescription" class="txtBox" rows="5">{$REPORTDESC}</textarea></td>
+						<td align="left" style="padding-left:5px;"><textarea name="newreportdescription" id="newreportdescription" class="txtBox" rows="5">{if isset($REPORTDESC)}{$REPORTDESC}{/if}</textarea></td>
 					</tr>
 				</table>
 			</td>

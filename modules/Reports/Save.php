@@ -21,17 +21,17 @@ $selectedcolumnstring = $_REQUEST["selectedColumnsString"];
 //<<<<<<<selectcolumn>>>>>>>>>
 
 //<<<<<<<reportsortcol>>>>>>>>>
-$sort_by1 = decode_html(vtlib_purify($_REQUEST["Group1"]));
-$sort_order1 = vtlib_purify($_REQUEST["Sort1"]);
-$sort_by2 =decode_html(vtlib_purify($_REQUEST["Group2"]));
-$sort_order2 = vtlib_purify($_REQUEST["Sort2"]);
-$sort_by3 = decode_html(vtlib_purify($_REQUEST["Group3"]));
-$sort_order3 = vtlib_purify($_REQUEST["Sort3"]);
+$sort_by1 = isset($_REQUEST['Group1']) ? decode_html(vtlib_purify($_REQUEST['Group1'])) : '';
+$sort_order1 = isset($_REQUEST['Sort1']) ? vtlib_purify($_REQUEST['Sort1']) : '';
+$sort_by2 = isset($_REQUEST['Group2']) ? decode_html(vtlib_purify($_REQUEST['Group2'])) : '';
+$sort_order2 = isset($_REQUEST['Sort2']) ? vtlib_purify($_REQUEST['Sort2']) : '';
+$sort_by3 = isset($_REQUEST['Group3']) ? decode_html(vtlib_purify($_REQUEST['Group3'])) : '';
+$sort_order3 = isset($_REQUEST['Sort3']) ? vtlib_purify($_REQUEST['Sort3']) : '';
 
 //<<<<<<<reportgrouptime>>>>>>>
-$groupTime1 = vtlib_purify($_REQUEST['groupbytime1']);
-$groupTime2 = vtlib_purify($_REQUEST['groupbytime2']);
-$groupTime3 = vtlib_purify($_REQUEST['groupbytime3']);
+$groupTime1 = isset($_REQUEST['groupbytime1']) ? vtlib_purify($_REQUEST['groupbytime1']) : '';
+$groupTime2 = isset($_REQUEST['groupbytime2']) ? vtlib_purify($_REQUEST['groupbytime2']) : '';
+$groupTime3 = isset($_REQUEST['groupbytime3']) ? vtlib_purify($_REQUEST['groupbytime3']) : '';
 //<<<<<<<reportgrouptime>>>>>>>
 
 //<<<<<<<reportsortcol>>>>>>>>>
@@ -79,6 +79,7 @@ $shared_entities = vtlib_purify($_REQUEST["selectedColumnsStr"]);
 //<<<<<<<shared entities>>>>>>>>>
 
 //<<<<<<<columnstototal>>>>>>>>>>
+$columnstototal = array();
 $allKeys = array_keys($_REQUEST);
 for ($i=0;$i<count($allKeys);$i++) {
 	$string = substr($allKeys[$i], 0, 3);
@@ -89,10 +90,10 @@ for ($i=0;$i<count($allKeys);$i++) {
 //<<<<<<<columnstototal>>>>>>>>>
 
 //<<<<<<<advancedfilter>>>>>>>>
-$advft_criteria = $_REQUEST['advft_criteria'];
+$advft_criteria = !empty($_REQUEST['advft_criteria']) ? $_REQUEST['advft_criteria'] : '[]';
 $advft_criteria = json_decode($advft_criteria,true);
 
-$advft_criteria_groups = $_REQUEST['advft_criteria_groups'];
+$advft_criteria_groups = !empty($_REQUEST['advft_criteria_groups']) ? $_REQUEST['advft_criteria_groups'] : '[]';
 $advft_criteria_groups = json_decode($advft_criteria_groups,true);
 //<<<<<<<advancedfilter>>>>>>>>
 

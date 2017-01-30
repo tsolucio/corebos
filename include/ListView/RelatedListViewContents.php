@@ -40,11 +40,8 @@ if($ajaxaction == "LOADRELATEDLIST") {
 		$smarty = new vtigerCRM_Smarty;
 		// vtlib customization: Related module could be disabled, check it
 		if(is_array($relatedListData)) {
-			if( ($relatedModule == "Contacts" || $relatedModule == "Leads" ||
-					$relatedModule == "Accounts") && $currentModule == 'Campaigns' && 
-					!$resetCookie) {
-				//TODO for 5.3 this should be COOKIE not REQUEST, change here else where
-				// this logic is used for listview checkbox selection propogation.
+			if( ($relatedModule == "Contacts" || $relatedModule == "Leads" || $relatedModule == "Accounts") && $currentModule == 'Campaigns' && !$resetCookie) {
+				// this logic is used for listview checkbox selection propagation.
 				$checkedRecordIdString = (empty($_REQUEST[$relatedModule.'_all']) ? $_COOKIE[$relatedModule.'_all'] : $_REQUEST[$relatedModule.'_all']);
 				$checkedRecordIdString = rtrim($checkedRecordIdString,';');
 				$checkedRecordIdList = explode(';', $checkedRecordIdString);

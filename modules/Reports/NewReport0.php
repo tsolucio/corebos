@@ -13,18 +13,17 @@ require_once('include/logging.php');
 require_once('include/utils/utils.php');
 require_once('modules/Reports/Reports.php');
 
-global $app_strings, $mod_strings;
+global $app_strings, $mod_strings, $current_language;
 $current_module_strings = return_module_language($current_language, 'Reports');
 $log = LoggerManager::getLogger('report_list');
 global $currentModule, $image_path, $theme;
-$recordid = vtlib_purify($_REQUEST['record']);
+$recordid = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : '';
 $report = new Reports();
 
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 $list_report_form = new vtigerCRM_Smarty;
 // Pass on the authenticated user language
-global $current_language;
 $list_report_form->assign('LANGUAGE', $current_language);
 $list_report_form->assign("MOD", $mod_strings);
 $list_report_form->assign("APP", $app_strings);
@@ -78,7 +77,6 @@ if($recordid!=''){
 	}
 	$list_report_form->assign("RESTRICTEDMODULES",$restrictedmod);
 	$list_report_form->assign("BACK",'true');
-
 }
 if(!empty($_REQUEST['reportmodule'])) {
 	if(vtlib_isModuleActive($_REQUEST['reportmodule'])==false || isPermitted($_REQUEST['reportmodule'],'index')!= "yes"){
@@ -129,7 +127,7 @@ $list_report_form->assign("AVAILABLE_GROUPS", $availableGroupsHTML);
 $list_report_form->assign("AVAILABLE_ROLES", $availableRolesHTML);
 $list_report_form->assign("AVAILABLE_ROLESANDSUB", $availableRolesAndSubHTML);
 
-$reportid = vtlib_purify($_REQUEST["record"]);
+$reportid = $recordid;
 $scheduledReport = new VTScheduledReport($adb, $current_user, $reportid);
 $scheduledReport->getReportScheduleInfo();
 
