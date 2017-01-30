@@ -88,8 +88,15 @@ switch ($do) {
 			$id = $ids[$i];
 			$parent = $parents[$i];
 			$position = $positions[$i];
+			$rs = $adb->pquery('select mseq from vtiger_evvtmenu WHERE evvtmenuid=?', array($id));
+			$currentseq = $adb->query_result($rs, 0, 0);
+			if ($currentseq<$position) {
+				$adb->pquery('update vtiger_evvtmenu set mseq = mseq - 1 WHERE mparent=? AND mseq <= ? AND evvtmenuid <> ?', array($parent, $position, $id));
+			}
 			$adb->pquery('update vtiger_evvtmenu set mparent=?, mseq=? WHERE evvtmenuid=?', array($parent, $position, $id));
-			$adb->pquery('update vtiger_evvtmenu set mseq = mseq + 1 WHERE mparent=? AND mseq >= ? AND evvtmenuid <> ?', array($parent, $position, $id));
+			if ($currentseq>$position) {
+				$adb->pquery('update vtiger_evvtmenu set mseq = mseq + 1 WHERE mparent=? AND mseq >= ? AND evvtmenuid <> ?', array($parent, $position, $id));
+			}
 		}
 		break;
 }
