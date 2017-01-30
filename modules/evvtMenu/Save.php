@@ -40,7 +40,7 @@ switch ($do) {
 		$mvalue = vtlib_purify($_REQUEST['mvalue']);
 		$evvtmenuid = vtlib_purify($_REQUEST['evvtmenuid']);
 		$mparent = vtlib_purify($_REQUEST['mparent']);
-		$mpermission = vtlib_purify($_REQUEST['mpermission']);
+		$mpermission = isset($_REQUEST['mpermission']) ? vtlib_purify($_REQUEST['mpermission']) : '';
 		if (empty($mpermission)) $mpermission = array();
 		if($mtype == 'menu') {
 			$pmenuidrs = $adb->query('select max(mseq) from vtiger_evvtmenu where mparent= 0');

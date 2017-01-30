@@ -2968,6 +2968,7 @@ function getRecordValues($id_array,$module) {
 					$value_pair['disp_value']=$ownername;
 				} elseif($ui_type ==57) {
 					$contact_id= $field_values[$j][$fld_name];
+					$contactname = '';
 					if($contact_id != '') {
 						$displayValueArray = getEntityName('Contacts', $contact_id);
 						if (!empty($displayValueArray)) {
@@ -3267,7 +3268,7 @@ function getDuplicateRecordsArr($module)
 		coreBOS_Session::set('dup_nav_start'.$module, 1);
 	else if(isset($_REQUEST["start"]) && $_REQUEST["start"] != "" && $_SESSION['dup_nav_start'.$module] != $_REQUEST["start"])
 		coreBOS_Session::set('dup_nav_start'.$module, ListViewSession::getRequestStartPage());
-	$start = ($_SESSION['dup_nav_start'.$module] != "")?$_SESSION['dup_nav_start'.$module]:1;
+	$start = (!empty($_SESSION['dup_nav_start'.$module]) ? $_SESSION['dup_nav_start'.$module] : 1);
 	$navigation_array = getNavigationValues($start, $no_of_rows, $list_max_entries_per_page);
 	$start_rec = $navigation_array['start'];
 	$end_rec = $navigation_array['end_val'];
@@ -4347,8 +4348,12 @@ function getRecordInfoFromID($id){
 		$setype = $adb->query_result($result, 0, "setype");
 		$data = getEntityName($setype, $id);
 	}
-	$data = array_values($data);
-	$data = $data[0];
+	if (count($data)>0) {
+		$data = array_values($data);
+		$data = $data[0];
+	} else {
+		$data = '';
+	}
 	return $data;
 }
 

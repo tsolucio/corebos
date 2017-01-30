@@ -1338,7 +1338,7 @@ foreach($this->out['column_list'] as $ind=>$field){
 $columns[] = $fieldcol[$field];
 }
 }
-if($this->out['where_condition']){
+if (!empty($this->out['where_condition'])) {
 foreach($this->out['where_condition']['column_names'] as $ind=>$field){
 $columns[] = $fieldcol[$field];
 }

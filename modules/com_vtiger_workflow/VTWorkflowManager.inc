@@ -272,8 +272,11 @@
 			$workflow->moduleName = $moduleName;
 			$workflow->executionCondition = self::$ON_EVERY_SAVE;
 			$workflow->type = 'basic';
+			$workflow->id = 0;
+			$workflow->description = '';
+			$workflow->schtypeid = 0;
+			$workflow->nexttrigger_time = '';
 			return $workflow;
-
 		}
 
 		/**

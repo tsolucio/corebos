@@ -49,17 +49,33 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 		}
 		$smarty->assign('ScheduledWorkflowsCount', $wfs->getScheduledWorkflowsCount());
 		$smarty->assign('MaxAllowedScheduledWorkflows', $wfs->getMaxAllowedScheduledWorkflows());
-		$smarty->assign('schdtime_12h',date('h:ia', strtotime(substr($workflow->schtime,0,strrpos($workflow->schtime, ':')))));
-		$schannualdates = json_decode($workflow->schannualdates);
-		if (count($schannualdates)>0) {
+		if (empty($workflow->schtime)) {
+			$smarty->assign('schdtime_12h',date('h:ia'));
+		} else {
+			$smarty->assign('schdtime_12h',date('h:ia', strtotime(substr($workflow->schtime,0,strrpos($workflow->schtime, ':')))));
+		}
+		if (!empty($workflow->schannualdates)) {
+			$schannualdates = json_decode($workflow->schannualdates);
 			$schannualdates = DateTimeField::convertToUserFormat($schannualdates[0]);
 		} else {
 			$schannualdates = '';
 		}
 		$smarty->assign('schdate',$schannualdates);
-		$smarty->assign('selected_days1_31',json_decode($workflow->schdayofmonth));
-		$smarty->assign('selected_minute_interval',json_decode($workflow->schminuteinterval));
-		$smarty->assign('dayOfWeek',json_decode($workflow->schdayofweek));
+		if (empty($workflow->schdayofmonth)) {
+			$smarty->assign('selected_days1_31','');
+		} else {
+			$smarty->assign('selected_days1_31',json_decode($workflow->schdayofmonth));
+		}
+		if (empty($workflow->schminuteinterval)) {
+			$smarty->assign('selected_minute_interval','');
+		} else {
+			$smarty->assign('selected_minute_interval',json_decode($workflow->schminuteinterval));
+		}
+		if (empty($workflow->schdayofweek)) {
+			$smarty->assign('dayOfWeek','');
+		} else {
+			$smarty->assign('dayOfWeek',json_decode($workflow->schdayofweek));
+		}
 	}
 
 	if($workflow==null){
@@ -67,9 +83,9 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 		$util->redirectTo($errorUrl, $mod['LBL_ERROR_NO_WORKFLOW']);
 		return;
 	}
-	$workflow->test = addslashes($workflow->test);
+	$workflow->test = !empty($workflow->test) ? addslashes($workflow->test) : '';
 	$tm = new VTTaskManager($adb);
-	$tasks = $tm->getTasksForWorkflow($workflow->id);
+	$tasks = !empty($workflow->id) ? $tm->getTasksForWorkflow($workflow->id) : array();
 	$smarty->assign("tasks", $tasks);
 	$taskTypes = $tm->getTaskTypes($workflow->moduleName);
 	$smarty->assign("taskTypes", $taskTypes);
@@ -80,9 +96,13 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 	for ($interval=5;$interval<=50;$interval+=5) $intervalrange[$interval]=$interval;
 	$smarty->assign('days1_31', $dayrange);
 	$smarty->assign('interval_range',$intervalrange);
-	$smarty->assign('wfnexttrigger_time',DateTimeField::convertToUserFormat($workflow->nexttrigger_time));
+	if (empty($workflow->nexttrigger_time)) {
+		$smarty->assign('wfnexttrigger_time','');
+	} else {
+		$smarty->assign('wfnexttrigger_time',DateTimeField::convertToUserFormat($workflow->nexttrigger_time));
+	}
 	$smarty->assign("dateFormat", parse_calendardate($current_user->date_format));
-	$smarty->assign("returnUrl", vtlib_purify($request["return_url"]));
+	$smarty->assign('returnUrl', isset($request['return_url']) ? vtlib_purify($request['return_url']) : '');
 	$smarty->assign("APP", $app_strings);
 	$smarty->assign("MOD", array_merge(
 	return_module_language($current_language,'Settings'),
