@@ -17,8 +17,8 @@
 <script type="text/javascript">
 var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 var image_pth = '{$IMAGE_PATH}';
-var product_default_units = '{$Product_Default_Units}';
-var service_default_units = '{$Service_Default_Units}';
+var product_default_units = '{if isset($Product_Default_Units)}{$Product_Default_Units}{else}1{/if}';
+var service_default_units = '{if isset($Service_Default_Units)}{$Service_Default_Units}{else}1{/if}';
 {literal}
 function QCreate(module,urlpop) {
 	if (module != 'none') {

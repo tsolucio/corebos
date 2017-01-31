@@ -35,7 +35,9 @@ $smarty->assign("CVMODULE", $cv_module);
 $smarty->assign("CUSTOMVIEWID",$recordid);
 $smarty->assign("DATEFORMAT",$current_user->date_format);
 $smarty->assign("JS_DATEFORMAT",parse_calendardate($app_strings['NTC_DATE_FORMAT']));
-
+$smarty->assign('CHECKED','');
+$smarty->assign('MCHECKED','');
+$smarty->assign('STATUS','');
 if($recordid == "") {
 	$oCustomView = new CustomView();
 	$modulecollist = $oCustomView->getModuleColumnsList($cv_module);
