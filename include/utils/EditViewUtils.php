@@ -1083,7 +1083,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	elseif($uitype == 71 || $uitype == 72) {
 		$currencyField = new CurrencyField($value);
 		// Some of the currency fields like Unit Price, Total, Sub-total etc of Inventory modules, do not need currency conversion
-		if($col_fields['record_id'] != '' && $uitype == 72) {
+		if(!empty($col_fields['record_id']) && $uitype == 72) {
 			if($fieldname == 'unit_price') {
 				$rate_symbol = getCurrencySymbolandCRate(getProductBaseCurrency($col_fields['record_id'],$module_name));
 				$currencySymbol = $rate_symbol['symbol'];

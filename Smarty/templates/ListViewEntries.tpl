@@ -9,7 +9,7 @@
 ********************************************************************************/
 -->*}
 {if isset($smarty.request.ajax) && $smarty.request.ajax neq ''}
-&#&#&#{$ERROR}&#&#&#
+&#&#&#{if isset($ERROR)}{$ERROR}{/if}&#&#&#
 {/if}
 <script type="text/javascript" src="include/js/ListView.js"></script>
 <form name="massdelete" method="POST" id="massdelete" onsubmit="VtigerJS_DialogBox.block();">

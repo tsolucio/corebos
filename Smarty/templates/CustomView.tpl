@@ -8,7 +8,6 @@
  ********************************************************************************/
 -->
 <link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
-{$DATE_JS}
 <script type="text/javascript" src="jscalendar/calendar.js"></script>
 <script type="text/javascript" src="jscalendar/lang/calendar-{$APP.LBL_JSCALENDAR_LANG}.js"></script>
 <script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
@@ -108,22 +107,22 @@ function mandatoryCheck()
 					<td class="dvtCellInfo" width="10%" align="right"><span class="style1">*</span>{$MOD.LBL_VIEW_NAME}
 					</td>
 					<td class="dvtCellInfo" width="30%">
-						<input class="detailedViewTextBox" type="text" name='viewName' value="{$VIEWNAME}" onfocus="this.className='detailedViewTextBoxOn'" onblur="this.className='detailedViewTextBox'" size="40"/>
-		 			</td>
-		 			<td class="dvtCellInfo" width="20%">
-		  			{if $CHECKED eq 'checked'}
-		      			<input type="checkbox" name="setDefault" value="1" checked/>{$MOD.LBL_SETDEFAULT}
-		  			{else}
-		      			<input type="checkbox" name="setDefault" value="0" />{$MOD.LBL_SETDEFAULT}
-		  			{/if}
-		 			</td>
-		 			<td class="dvtCellInfo" width="20%">
-		  			{if $MCHECKED eq 'checked'}
-		      			<input type="checkbox" name="setMetrics" value="1" checked/>{$MOD.LBL_LIST_IN_METRICS}
-		  			{else}
-		      			<input type="checkbox" name="setMetrics" value="0" />{$MOD.LBL_LIST_IN_METRICS}
-		  			{/if}
-		 			</td>
+						<input class="detailedViewTextBox" type="text" name='viewName' value="{if isset($VIEWNAME)}{$VIEWNAME}{/if}" onfocus="this.className='detailedViewTextBoxOn'" onblur="this.className='detailedViewTextBox'" size="40"/>
+					</td>
+					<td class="dvtCellInfo" width="20%">
+					{if $CHECKED eq 'checked'}
+						<input type="checkbox" name="setDefault" value="1" checked/>{$MOD.LBL_SETDEFAULT}
+					{else}
+						<input type="checkbox" name="setDefault" value="0" />{$MOD.LBL_SETDEFAULT}
+					{/if}
+					</td>
+					<td class="dvtCellInfo" width="20%">
+					{if $MCHECKED eq 'checked'}
+						<input type="checkbox" name="setMetrics" value="1" checked/>{$MOD.LBL_LIST_IN_METRICS}
+					{else}
+						<input type="checkbox" name="setMetrics" value="0" />{$MOD.LBL_LIST_IN_METRICS}
+					{/if}
+					</td>
 					<td class="dvtCellInfo" width="20%">
 					{if $STATUS eq '' || $STATUS eq 1}
 						<input type="checkbox" name="setStatus" value="1"/>
@@ -158,25 +157,7 @@ function mandatoryCheck()
 					{foreach item=text from=$filteroption}
 						{assign var=option_values value=$text.text}
 						<option {if $SELECTEDCOLUMN[$cvselected] eq $text.value}selected{/if} value={$text.value}>
-						{if $MOD.$option_values neq ''}
-							{if $DATATYPE.0.$option_values eq 'M'}
-								{$MOD.$option_values}   {$APP.LBL_REQUIRED_SYMBOL}
-							{else}
-								{$MOD.$option_values}
-							{/if}
-						{elseif $APP.$option_values neq ''}
-							{if $DATATYPE.0.$option_values eq 'M'}
-								{$APP.$option_values}   {$APP.LBL_REQUIRED_SYMBOL}
-							{else}
-								{$APP.$option_values}
-							{/if}
-						{else}
-							{if $DATATYPE.0.$option_values eq 'M'}
-								{$option_values}    {$APP.LBL_REQUIRED_SYMBOL}
-							{else}
-								{$option_values}
-							{/if}
-						{/if}
+						{$text.text}{if $DATATYPE.0.$option_values eq 'M'}   {$APP.LBL_REQUIRED_SYMBOL}{/if}
 						</option>
 					{/foreach}
 				{/foreach}

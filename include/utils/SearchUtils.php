@@ -199,7 +199,7 @@ function Search($module, $input = '')
 	if(isset($input['search_text']) && $input['search_text']!="") {
 		// search other characters like "|, ?, ?" by jagi
 		$search_string = $input['search_text'];
-		$stringConvert = function_exists(iconv) ? @iconv("UTF-8",$default_charset,$search_string) : $search_string;
+		$stringConvert = function_exists('iconv') ? @iconv('UTF-8',$default_charset,$search_string) : $search_string;
 		$search_string=trim($stringConvert);
 	}
 	if(isset($input['searchtype']) && $input['searchtype']!="") {
@@ -912,7 +912,7 @@ function getSearchURL($input) {
 		}
 	} else {
 		$value = vtlib_purify($input['search_text']);
-		$stringConvert = function_exists(iconv) ? @iconv("UTF-8",$default_charset,$value) : $value;
+		$stringConvert = function_exists('iconv') ? @iconv('UTF-8',$default_charset,$value) : $value;
 		$value=trim($stringConvert);
 		$field=vtlib_purify($input['search_field']);
 		$urlString = "&search_field=$field&search_text=".urlencode($value)."&searchtype=BasicSearch";

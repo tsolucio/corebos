@@ -47,7 +47,7 @@ $smarty->assign('MODE', $focus->mode);
 $smarty->assign('USE_ASTERISK', get_use_asterisk($current_user->id));
 
 $recordName = array_values(getEntityName($currentModule, $focus->id));
-$recordName = $recordName[0];
+$recordName = isset($recordName[0]) ? $recordName[0] : '';
 $smarty->assign('NAME', $recordName);
 $smarty->assign('UPDATEINFO',updateInfo($focus->id));
 
@@ -96,6 +96,7 @@ if($singlepane_view == 'true' or $isPresentRelatedListBlock) {
 	$open_related_modules = RelatedListViewSession::getRelatedModulesFromSession();
 	$smarty->assign("SELECTEDHEADERS", $open_related_modules);
 } else {
+	$smarty->assign('RELATEDLISTS', array());
 	$bmapname = $currentModule.'RelatedPanes';
 	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 	if ($cbMapid) {

@@ -1324,7 +1324,7 @@ class QueryGenerator {
 				}
 			}
 			$this->endGroup();
-		} elseif($input['type']=='dbrd') {
+		} elseif(isset($input['type']) and $input['type']=='dbrd') {
 			if($this->conditionInstanceCount > 0) {
 				$this->startGroup(self::$AND);
 			} else {
@@ -1368,8 +1368,7 @@ class QueryGenerator {
 			if(isset($input['search_text']) && $input['search_text']!="") {
 				// search other characters like "|, ?, ?" by jagi
 				$value = $input['search_text'];
-				$stringConvert = function_exists(iconv) ? @iconv("UTF-8",$default_charset,$value)
-						: $value;
+				$stringConvert = function_exists('iconv') ? @iconv('UTF-8',$default_charset,$value) : $value;
 				if(!$this->isStringType($type)) {
 					$value=trim($stringConvert);
 				}
@@ -1391,6 +1390,8 @@ class QueryGenerator {
 						$value = $currencyField->getDBInsertedValue();
 					}
 				}
+			} else {
+				$value = '';
 			}
 			if(!empty($input['operator'])) {
 				$operator = $input['operator'];

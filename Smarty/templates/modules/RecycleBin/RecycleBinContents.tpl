@@ -26,7 +26,7 @@
 				<input type="hidden" name="selected_module" id="selected_module" value="{$SELECTED_MODULE}">
 				<input type="hidden" name="selected_module_translated" id="selected_module_translated" value="{$SELECTED_MODULE|@getTranslatedString:$SELECTED_MODULE}">
 				<input class="crmbutton small edit" type="button" onclick ="massRestore();" value="{$MOD.LBL_MASS_RESTORE}">
-				if $IS_ADMIN eq 'true'}
+				{if $IS_ADMIN eq 'true'}
 				<input class="crmbutton small delete" type="button" onclick ="callEmptyRecyclebin();" value="{$MOD.LBL_EMPTY_RBMODULE}">
 				<input class="crmbutton small delete" type="button" onclick ="document.getElementById('rb_empty_conf_id').style.display = 'block';" value="{$MOD.LBL_EMPTY_RECYCLEBIN}">
 				{/if}

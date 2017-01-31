@@ -82,7 +82,7 @@
 						{assign var=fontval value=''}
 					{/if}
 				{/foreach}
-				<font color="{$fontval}">{if $APP.$keyval!=''}{$APP.$keyval}{elseif $MOD.$keyval!=''}{$MOD.$keyval}{else}{$keyval}{/if}</font>
+				<font color="{$fontval}">{$keyval|@getTranslatedString:$MODULE}</font>
 			</td>
 		{elseif $keyid eq '33' || $keyid eq '3313' || $keyid eq '3314'}
 			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;
@@ -106,7 +106,7 @@
 				<span id="dtlview_{$label}"><a href="skype:{$keyval}?call">{$keyval}</a></span>
 			</td>
 		{elseif $keyid eq '19' || $keyid eq '20'} <!--TextArea/Description-->
-			{if $label eq $MOD.LBL_ADD_COMMENT}
+			{if isset($MOD.LBL_ADD_COMMENT) && $label eq $MOD.LBL_ADD_COMMENT}
 				{assign var=keyval value=''}
 			{/if}
 			<td width=100% colspan="3" class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;

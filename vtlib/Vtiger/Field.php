@@ -54,8 +54,8 @@ class Vtiger_Field extends Vtiger_FieldBasic {
 			$adb->pquery("INSERT INTO vtiger_picklist (picklistid,name) VALUES(?,?)",Array($new_picklistid, $this->name));
 			self::log("Creating table $picklist_table ... DONE");
 		} else {
-			$new_picklistid = $adb->query_result(
-				$adb->pquery("SELECT picklistid FROM vtiger_picklist WHERE name=?", Array($this->name)), 0, 'picklistid');
+			$rs = $adb->pquery('SELECT picklistid FROM vtiger_picklist WHERE name=?', Array($this->name));
+			$new_picklistid = $adb->query_result($rs , 0, 'picklistid');
 		}
 
 		$specialNameSpacedPicklists = array(
