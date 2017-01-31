@@ -1363,7 +1363,7 @@ function getDetailAssociatedProducts($module, $focus) {
 			$productDiscount = $total * $discount_percent / 100;
 			$totalAfterDiscount = $total - $productDiscount;
 			//if discount is percent then show the percentage
-			$discount_info_message = "$discount_percent % of ".
+			$discount_info_message = "$discount_percent % " . $app_strings['LBL_LIST_OF'] . ' '.
 										CurrencyField::convertToUserFormat($total, null, true)." = ".
 										CurrencyField::convertToUserFormat($productDiscount, null, true);
 		} elseif ($discount_amount != 'NULL' && $discount_amount != '') {
@@ -1510,7 +1510,7 @@ function getDetailAssociatedProducts($module, $focus) {
 	//if($focus->column_fields['hdnDiscountPercent'] != '') - previously (before changing to prepared statement) the selected option (either percent or amount) will have value and the other remains empty. So we can find the non selected item by empty check. But now with prepared statement, the non selected option stored as 0
 	if ($focus->column_fields['hdnDiscountPercent'] != '0') {
 		$finalDiscount = ($netTotal * $focus->column_fields['hdnDiscountPercent'] / 100);
-		$final_discount_info = $focus->column_fields['hdnDiscountPercent'] . " % of ".CurrencyField::convertToUserFormat($netTotal, null, true).
+		$final_discount_info = $focus->column_fields['hdnDiscountPercent'] . ' % ' . $app_strings['LBL_LIST_OF'] . ' '.CurrencyField::convertToUserFormat($netTotal, null, true).
 											" = ". CurrencyField::convertToUserFormat($finalDiscount, null, true);
 	} elseif ($focus->column_fields['hdnDiscountAmount'] != '0') {
 		$finalDiscount = $focus->column_fields['hdnDiscountAmount'];
