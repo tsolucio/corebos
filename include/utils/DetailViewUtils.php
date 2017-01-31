@@ -1342,6 +1342,7 @@ function getDetailAssociatedProducts($module, $focus) {
 		$entitytype = $adb->query_result($result, $i - 1, 'entitytype');
 		$productname = $adb->query_result($result, $i - 1, 'productname');
 		$productname = '<a href="index.php?action=DetailView&record='.$productid.'&module='.$entitytype.'">'.$productname.'</a>';
+		$productname.= "<span type='vtlib_metainfo' vtrecordid='{$productid}' vtfieldname='".($entitytype=='Products' ? 'productname' : 'servicename')."' vtmodule='$entitytype' style='display:none;'></span>";
 		if ($subprodname_str != '')
 			$productname .= "<br/><span style='color:#C0C0C0;font-style:italic;'>" . $subprodname_str . "</span>";
 		$comment = $adb->query_result($result, $i - 1, 'comment');
@@ -1419,7 +1420,7 @@ function getDetailAssociatedProducts($module, $focus) {
 		//For Product Name
 		$output .= '
 			<tr valign="top" class="detailview_inventory_row">
-				<td class="crmTableRow small lineOnTop detailview_inventory_namecell">
+				<td class="crmTableRow small lineOnTop detailview_inventory_namecell" onmouseover="vtlib_listview.trigger(\'cell.onmouseover\', this);" onmouseout="vtlib_listview.trigger(\'cell.onmouseout\', this);">
 					' . $productname . '&nbsp;' . $sc_image_tag . '
 					<br>' . $comment . '
 				</td>';
