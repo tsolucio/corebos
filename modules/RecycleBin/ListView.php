@@ -168,6 +168,10 @@ $category = getParentTab();
 $check_button = Button_Check($_REQUEST['module']);
 $check_button['EditView'] = 'no';
 $check_button['CreateView'] = 'no';
+$check_button['Import'] = 'no';
+$check_button['Export'] = 'no';
+$check_button['Merge'] = 'no';
+$check_button['DuplicatesHandling'] = 'no';
 $smarty->assign("CHECK", $check_button);
 
 $smarty->assign("ALPHABETICAL", $alphabetical);
