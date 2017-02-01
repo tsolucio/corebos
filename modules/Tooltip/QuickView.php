@@ -24,7 +24,7 @@ if(!empty($_REQUEST['formodule'])){
 	$fld_module = vtlib_purify($_REQUEST['formodule']);
 }
 else{
-	echo "NO MODULES SELECTED";
+	echo getTranslatedString('LBL_NO_MODULES_TO_SELECT');
 	exit;
 }
 $smarty->assign("MODULE",$fld_module);

@@ -29,16 +29,16 @@ if($rfid != "")
 				header("Location: index.php?action=ReportsAjax&mode=ajax&file=ListView&module=Reports");
 			} else {
 				include('modules/Vtiger/header.php');
-				$errormessage = "<font color='red'><B>Error Message<ul>
-					<li><font color='red'>Error while deleting the reports of the folder</font>
-					</ul></B></font> <br>" ;
+				$errormessage = "<font color='red'><b>".getTranslatedString('Error Message','Settings')."<ul>
+					<li><font color='red'>".getTranslatedString('LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER','Reports')."</font>
+					</ul></b></font> <br>" ;
 				echo $errormessage;
 			}
 		} else {
 			include('modules/Vtiger/header.php');
-			$errormessage = "<font color='red'><B>Error Message<ul>
-				<li><font color='red'>Error while deleting the folder</font>
-				</ul></B></font> <br>" ;
+			$errormessage = "<font color='red'><b>".getTranslatedString('Error Message','Settings')."<ul>
+				<li><font color='red'>".getTranslatedString('LBL_ERROR_WHILE_DELETING_FOLDER','Reports')."</font>
+				</ul></b></font> <br>" ;
 			echo $errormessage;
 		}
 	}

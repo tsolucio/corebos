@@ -298,6 +298,8 @@ $mod_strings = Array(
 'LBL_AGG_COLUMN' => 'Columna de Agregación',
 'LBL_AGG_FUNCTION' => 'Función de Agregación',
 'LBL_COLUMNS_COUNT'=>'Contar',
+'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Error eliminando la carpeta.',
+'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Error eliminando los informes de la carpeta',
 );
 
 ?>

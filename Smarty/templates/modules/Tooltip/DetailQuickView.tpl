@@ -21,7 +21,7 @@
 			<tr>
 			<td valign=top width="25%" >
 			{if $COUNT eq 0}
-				No Fields Selected.
+				{'No Fields Selected'|@getTranslatedString:'Tooltip'}.
 			</td>
 			{else}
 				{foreach item=label from=$LABELS name=itr}
