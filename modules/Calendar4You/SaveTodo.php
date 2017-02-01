@@ -15,19 +15,19 @@ require_once('include/database/PearDatabase.php');
 
 global $mod_strings,$adb;
 
-$local_log =& LoggerManager::getLogger('index');
+$local_log = LoggerManager::getLogger('index');
 $focus = new Activity();
 $activity_mode = vtlib_purify($_REQUEST['activity_mode']);
 if($activity_mode == 'Task') {
-        $tab_type = 'Calendar';
-        $focus->column_fields["activitytype"] = 'Task';
+	$tab_type = 'Calendar';
+	$focus->column_fields["activitytype"] = 'Task';
 }
 
 if(isset($_REQUEST['record'])) {
-	        $focus->id = $_REQUEST['record'];
+	$focus->id = $_REQUEST['record'];
 }
 if(isset($_REQUEST['mode'])) {
-        $focus->mode = $_REQUEST['mode'];
+	$focus->mode = $_REQUEST['mode'];
 }
 foreach($focus->column_fields as $fieldname => $val) {
 	if(isset($_REQUEST[$fieldname])) {

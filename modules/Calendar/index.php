@@ -15,6 +15,6 @@ global $theme,$mod_strings;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 require_once('include/logging.php');
-$cal_log =& LoggerManager::getLogger('calendar');
+$cal_log = LoggerManager::getLogger('calendar');
 include ('modules/Calendar/ListView.php');
 ?>

@@ -14,7 +14,7 @@ require_once('include/database/PearDatabase.php');
 require_once('modules/Calendar/CalendarCommon.php');
 require_once 'modules/Calendar4You/CalendarUtils.php';
 global $adb,$theme,$mod_strings,$current_user;
-$local_log =& LoggerManager::getLogger('index');
+$local_log = LoggerManager::getLogger('index');
 $_REQUEST = vtlib_purify($_REQUEST);  // clean up ALL values
 
 if ($_REQUEST['mode'] == 'event_drop' || $_REQUEST['mode'] == 'event_resize') {

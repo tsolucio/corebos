@@ -13,7 +13,7 @@ require_once('include/logging.php');
 // Get the list of Invoice for which Recurring is enabled.
 
 global $adb, $log;
-$log =& LoggerManager::getLogger('RecurringInvoice');
+$log = LoggerManager::getLogger('RecurringInvoice');
 $log->debug("invoked RecurringInvoice");
 
 $sql="SELECT vtiger_salesorder.salesorderid, recurring_frequency, start_period, end_period, last_recurring_date,

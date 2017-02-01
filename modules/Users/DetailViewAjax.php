@@ -12,7 +12,7 @@ require_once('modules/Users/Users.php');
 require_once('include/database/PearDatabase.php');
 global $adb ,$mod_strings, $current_user;
 
-$local_log =& LoggerManager::getLogger('UsersAjax');
+$local_log = LoggerManager::getLogger('UsersAjax');
 $ajaxaction = vtlib_purify($_REQUEST["ajxaction"]);
 if($ajaxaction == "DETAILVIEW")
 {

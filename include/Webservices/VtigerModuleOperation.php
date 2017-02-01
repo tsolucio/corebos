@@ -250,7 +250,8 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$output = array();
 		for($i=0; $i<$noofrows; $i++){
 			$row = $this->pearDB->fetchByAssoc($result,$i);
-			if(!$meta->hasPermission(EntityMeta::$RETRIEVE,$row["crmid"])){
+			$rowcrmid = (isset($row['crmid']) ? $row['crmid'] : '');
+			if(!$meta->hasPermission(EntityMeta::$RETRIEVE,$rowcrmid)){
 				continue;
 			}
 			$newrow = DataTransform::sanitizeDataWithColumn($row,$meta);

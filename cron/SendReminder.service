@@ -30,7 +30,7 @@ if(empty($from)) {
 
 // Get the list of activity for which reminder needs to be sent
 global $adb, $log, $current_language;
-$log =& LoggerManager::getLogger('SendReminder');
+$log = LoggerManager::getLogger('SendReminder');
 $log->debug('invoked SendReminder');
 
 // retrieve the translated strings.

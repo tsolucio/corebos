@@ -13,7 +13,7 @@ require_once("config.php");
 require_once('include/database/PearDatabase.php');
 require_once('modules/Calendar/CalendarCommon.php');
 global $adb,$theme,$current_user;
-$local_log =& LoggerManager::getLogger('index');
+$local_log = LoggerManager::getLogger('index');
 $focus = new Activity();
 $activity_mode = vtlib_purify($_REQUEST['activity_mode']);
 $tab_type = 'Calendar';

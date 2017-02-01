@@ -1961,7 +1961,7 @@ function getGroupslist() {
 	} else {
 		$result = get_group_options();
 	}
-
+	$groups_combo = array();
 	if ($result)
 		$nameArray = $adb->fetch_array($result);
 	if (!empty($nameArray)) {

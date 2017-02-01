@@ -30,7 +30,7 @@ require_once('modules/Emails/Emails.php');
 require_once('include/logging.php');
 require_once('include/database/PearDatabase.php');
 
-$local_log =& LoggerManager::getLogger('index');
+$local_log = LoggerManager::getLogger('index');
 
 $focus = new Emails();
 
