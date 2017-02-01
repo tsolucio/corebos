@@ -117,7 +117,7 @@
 																		<td>
 																			<table>
 																				<tr>
-																					<td>{$APP.LBL_SELECT_FIELD_TYPE}
+																					<td>{$MOD.LBL_SELECT_FIELD_TYPE}
 																					</td>
 																				</tr>
 																				<tr>

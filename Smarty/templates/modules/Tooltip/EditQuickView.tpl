@@ -10,12 +10,12 @@
 			<input type="hidden" id="fieldid" name="fieldid" value="{$FIELDID}">
 			<input type="hidden" name="" value="">
 		</table>
-		
+
 		<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 		<tr>
 			<td class="small" align="left" nowrap>
 				<strong>
-					{$MOD.LBL_TOOLTIP_HELP_TEXT}
+					{$CMOD.LBL_TOOLTIP_HELP_TEXT}
 				</strong>
 			</td>
 			<td class="small" align="right" width="100%">
@@ -26,32 +26,30 @@
 			</td>
 		</tr>
 		</table>
-		
+
 		{foreach key=module item=info from=$FIELD_LISTS}
-			<div id="{$module}_fields" style="display:block">	
-		 	<table cellspacing=0 cellpadding=5 width=100% class="listTable small">
+			<div id="{$module}_fields" style="display:block">
+			<table cellspacing=0 cellpadding=5 width=100% class="listTable small">
 				<tr>
-	        	<td valign=top width="25%" >
-			     	<table border=0 cellspacing=0 cellpadding=5 width=100% class=small>
+				<td valign=top width="25%" >
+					<table border=0 cellspacing=0 cellpadding=5 width=100% class=small>
 					{foreach item=elements name=groupfields from=$info}
-                    	<tr>
+						<tr>
 						{foreach item=elementinfo name=curvalue from=$elements}
-                       		<td class="prvPrfTexture" style="width:20px">
-                       			&nbsp;
-                       		</td>
-                       		<td width="5%" id="{$smarty.foreach.groupfields.iteration}_{$smarty.foreach.curvalue.iteration}">
-                       			{$elementinfo.input}
-                       		</td>
-                       		<td width="25%" nowrap onMouseOver="this.className='prvPrfHoverOn',document.getElementById('{$smarty.foreach.groupfields.iteration}_{$smarty.foreach.curvalue.iteration}').className='prvPrfHoverOn'" onMouseOut="this.className='prvPrfHoverOff',document.getElementById('{$smarty.foreach.groupfields.iteration}_{$smarty.foreach.curvalue.iteration}').className='prvPrfHoverOff'">
-                       			{$elementinfo.fieldlabel}
-                       		</td>
+							<td class="prvPrfTexture" style="width:20px">&nbsp;</td>
+							<td width="5%" id="{$smarty.foreach.groupfields.iteration}_{$smarty.foreach.curvalue.iteration}">
+								{$elementinfo.input}
+							</td>
+							<td width="25%" nowrap onMouseOver="this.className='prvPrfHoverOn',document.getElementById('{$smarty.foreach.groupfields.iteration}_{$smarty.foreach.curvalue.iteration}').className='prvPrfHoverOn'" onMouseOut="this.className='prvPrfHoverOff',document.getElementById('{$smarty.foreach.groupfields.iteration}_{$smarty.foreach.curvalue.iteration}').className='prvPrfHoverOff'">
+								{$elementinfo.fieldlabel}
+							</td>
 						{/foreach}
-                     	</tr>
-	             	{/foreach}
-	             	</table>
+						</tr>
+					{/foreach}
+					</table>
 				</td>
-		        </tr>
-	        </table>
+				</tr>
+			</table>
 			</div>
 		{/foreach}
 		</form>

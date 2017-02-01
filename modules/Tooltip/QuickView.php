@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-* 
  ********************************************************************************/
 require_once 'Smarty_setup.php';
 require_once 'include/utils/utils.php';
@@ -33,8 +32,10 @@ $smarty->assign("MODULE",$fld_module);
 $fieldsDropDown = QuickViewFieldList($fld_module);
 $smarty->assign("FIELDNAMES",$fieldsDropDown);
 
-if($_REQUEST['mode'] != ''){
+if (!empty($_REQUEST['mode'])) {
 	$mode = $_REQUEST['mode'];
+} else {
+	$mode = '';
 }
 $smarty->assign("MODE", $mode);
 $smarty->assign("FORMODULE", $fld_module);
