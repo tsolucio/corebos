@@ -282,7 +282,21 @@ $mod_strings = Array(
 'LBL_SAVE_REPORT' => 'Opslaan',
 'LBL_SAVE_REPORT_AS' => 'Sla Rapport op als...',
 'Add ReportCharts' => 'Add Report Charts',
-
+'Choose Report Type' => 'Choose Report Type',
+'Application Report' => 'Application Report',
+'External Application' => 'External Application',
+'Direct SQL Statement' => 'Direct SQL Statement',
+'Cross Tab' => 'Cross Tab',
+'Pivot Table' => 'Pivot Table',
+'External Report URL' => 'External Report URL',
+'Add User Information' => 'Add User Information',
+'Select One Field of each' => 'You can only select one field from each module for this type of report',
+'Select Only One Module' => 'You can only select one module for this type of report',
+'LBL_AGG_FIELD' => 'Aggregation Field',
+'LBL_AGG_FUNCTION_CHOOSE' => 'Select Aggregation Column and Function',
+'LBL_AGG_COLUMN' => 'Aggregation Column',
+'LBL_AGG_FUNCTION' => 'Aggregation Function',
+'LBL_COLUMNS_COUNT'=>'Count',
 )
 
 ?>
