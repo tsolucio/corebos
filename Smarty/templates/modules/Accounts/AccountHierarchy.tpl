@@ -40,9 +40,9 @@
 					{/foreach}
 					</tr>
 				{elseif $header eq 'entries'}
-					{foreach key=header item=detail from=$detail}
+					{foreach key=header item=entriesfields from=$detail}
 					<tr bgcolor=white>
-						{foreach key=header item=listfields from=$detail}
+						{foreach key=header item=listfields from=$entriesfields}
 						<td>{$listfields}</td>
 						{/foreach}
 					</tr>
