@@ -505,10 +505,68 @@ function dtlviewModuleValidation(fieldLabel,module,uitype,tableName,fieldName,cr
 		}).done(function(data) { //Validation file exists
 				if (data == 'yes') {
 					// Create object which gets the values of all input, textarea, select and button elements from the form
-					var myFields = document.forms[formName].elements;
+					// var myFields = document.forms[formName].parentElement.querySelectorAll('input,select,textarea'); // this would send in all elements on screen
+					var myFields = document.forms[formName].elements; // elements in form
 					var sentForm = new Object();
 					for (f=0; f<myFields.length; f++){
 						sentForm[myFields[f].name] = myFields[f].value;
+					}
+					// field being edited
+					switch (uitype) {
+						case '33':
+						case 33:
+						case '3313':
+						case 3313:
+						case '3314':
+						case 3314:
+							var txtBox= "txtbox_"+ fieldLabel;
+							var oMulSelect = document.getElementById(txtBox);
+							var r = new Array();
+							var notaccess_label = new Array();
+							for (iter=0;iter < oMulSelect.options.length ; iter++) {
+								if (oMulSelect.options[iter].selected) {
+									r[r.length] = oMulSelect.options[iter].value;
+									notaccess_label[notaccess_label.length] = oMulSelect.options[iter].text;
+								}
+							}
+							sentForm[fieldName] = r;
+							break;
+						case '56':
+						case 56:
+							if (document.getElementById('txtbox_'+fieldName).checked == true) {
+								sentForm[fieldName] = 1;
+							} else {
+								sentForm[fieldName] = 0;
+							}
+							break;
+						case '53':
+						case 53:
+							var assigntype = document.getElementsByName('assigntype');
+							if(assigntype.length > 0) {
+								var assign_type_U = assigntype[0].checked;
+								if (assigntype[1]!=undefined) {
+									var assign_type_G = assigntype[1].checked;
+								} else {
+									var assign_type_G = false;
+								}
+							} else {
+								var assign_type_U = assigntype[0].checked;
+							}
+							if(assign_type_U == true)
+							{
+								var txtBox= 'txtbox_U'+fieldLabel;
+								sentForm['assign_type'] = 'U';
+							}
+							else if(assign_type_G == true)
+							{
+								var txtBox= 'txtbox_G'+fieldLabel;
+								sentForm['assign_type'] = 'T';
+							}
+							sentForm[fieldName] = document.getElementById(txtBox).value;
+							break;
+						default:
+							sentForm[fieldName] = document.getElementById('txtbox_'+fieldName).value;
+							break;
 					}
 					//JSONize form data
 					sentForm = JSON.stringify(sentForm);
