@@ -117,6 +117,12 @@ $smarty->assign('BLOCKS', $blocks);
 $custom_blocks = getCustomBlocks($currentModule,'detail_view');
 $smarty->assign('CUSTOMBLOCKS', $custom_blocks);
 $smarty->assign('FIELDS',$focus->column_fields);
+if (is_admin($current_user)) {
+	$smarty->assign('hdtxt_IsAdmin',1);
+} else {
+	$smarty->assign('hdtxt_IsAdmin',0);
+}
+
 $smarty->assign("BLOCKINITIALSTATUS",$_SESSION['BLOCKINITIALSTATUS']);
 // Gather the custom link information to display
 include_once('vtlib/Vtiger/Link.php');
