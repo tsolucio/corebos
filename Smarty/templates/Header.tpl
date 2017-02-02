@@ -14,7 +14,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset={$APP.LBL_CHARSET}">
 	<title>{$USER} - {$MODULE_NAME|@getTranslatedString:$MODULE_NAME} - {$coreBOS_app_name}</title>
 	<link REL="SHORTCUT ICON" HREF="{$FAVICON}">
-	<style type="text/css">@import url("themes/{$THEME}/style.css?v={$VERSION}");</style>
+	<style type="text/css">@import url("themes/{$THEME}/style.css");</style>
 	{if $PRELOAD_JSCALENDAR neq 'false'}<link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">{/if}
 	<link rel="stylesheet" href="include/print.css" type="text/css" media="print" />
 	<link rel="stylesheet" href="include/LD/assets/styles/salesforce-lightning-design-system.css" type="text/css" />
@@ -50,11 +50,11 @@
 	<script type="text/javascript" src="include/jquery/jquery-ui.js"></script>
 	<script type="text/javascript" src="include/js/meld.js"></script>
 	<script type="text/javascript" src="include/js/json.js"></script>
-	<script type="text/javascript" src="include/js/general.js?v={$VERSION}"></script>
+	<script type="text/javascript" src="include/js/general.js"></script>
 	<!-- vtlib customization: Javascript hook -->
-	<script type="text/javascript" src="include/js/vtlib.js?v={$VERSION}"></script>
+	<script type="text/javascript" src="include/js/vtlib.js"></script>
 	<!-- END -->
-	<script type="text/javascript" id="_current_language_" src="include/js/{$LANGUAGE}.lang.js?{$VERSION}"></script>
+	<script type="text/javascript" id="_current_language_" src="include/js/{$LANGUAGE}.lang.js"></script>
 	<script type="text/javascript" src="include/js/QuickCreate.js"></script>
 	{if $CALCULATOR_DISPLAY eq 'true'}
 	<script type="text/javascript" src="include/calculator/calc.js"></script>

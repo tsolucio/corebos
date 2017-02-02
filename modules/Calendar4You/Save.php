@@ -16,7 +16,7 @@ require_once("modules/Calendar4You/Calendar4You.php");
 require_once("modules/Calendar4You/CalendarUtils.php");
 
 global $adb,$theme,$current_user;
-$local_log =& LoggerManager::getLogger('index');
+$local_log = LoggerManager::getLogger('index');
 
 $Calendar4You = new Calendar4You();
 
@@ -135,8 +135,7 @@ if((isset($_REQUEST['change_status']) && $_REQUEST['change_status']) && ($_REQUE
 	$focus->column_fields[$dateField] = $date->getDBInsertDateValue();
 	$focus->column_fields[$fieldname] = $date->getDBInsertTimeValue();
 	if(empty($_REQUEST['time_end'])) {
-		$_REQUEST['time_end'] = date('H:i', strtotime('+10 minutes',
-												strtotime($focus->column_fields['date_start'].' '.$_REQUEST['time_start'])));
+		$_REQUEST['time_end'] = date('H:i', strtotime('+10 minutes', strtotime($focus->column_fields['date_start'].' '.$_REQUEST['time_start'])));
 	}
 	$dateField = 'due_date';
 	$fieldname = 'time_end';

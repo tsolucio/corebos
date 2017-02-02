@@ -124,7 +124,7 @@ function lang_changeEditTab(obj1, obj2, SelTab, unSelTab) {
 														<option value='rlnontranslated' {if $FILTER == 'rlnontranslated'}selected{/if}>{$UMOD.RLNotTranslated}</option>
 													</select>
 												</div>
-												{if count($TRANSLATION_LIST_STRING) > 0 or count($TRANSLATION_LIST_STRING2) > 0}
+												{if count($TRANSLATION_LIST_STRING) > 0}
 													{assign var = "has_multivalue_strings" value=true}
 												{else}
 													{assign var = "has_multivalue_strings" value=false}

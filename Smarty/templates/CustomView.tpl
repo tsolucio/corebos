@@ -153,11 +153,11 @@ function mandatoryCheck()
 			<select id="column{$cvcolumn}" name ="column{$cvcolumn}" onChange="checkDuplicate();" class="small">
 				<option value="">{$MOD.LBL_NONE}</option>
 				{foreach item=filteroption key=label from=$CHOOSECOLUMN}
-					<optgroup label="{$label}" class=\"select\" style=\"border:none\">
+					<optgroup label="{$label}" class="select" style="border:none">
 					{foreach item=text from=$filteroption}
 						{assign var=option_values value=$text.text}
-						<option {if $SELECTEDCOLUMN[$cvselected] eq $text.value}selected{/if} value={$text.value}>
-						{$text.text}{if $DATATYPE.0.$option_values eq 'M'}   {$APP.LBL_REQUIRED_SYMBOL}{/if}
+						<option {if isset($SELECTEDCOLUMN[$cvselected]) && $SELECTEDCOLUMN[$cvselected] eq $text.value}selected{/if} value="{$text.value}">
+						{$text.text}{if isset($DATATYPE.0.$option_values) && $DATATYPE.0.$option_values eq 'M'}   {$APP.LBL_REQUIRED_SYMBOL}{/if}
 						</option>
 					{/foreach}
 				{/foreach}
@@ -213,9 +213,9 @@ function mandatoryCheck()
 			     <td width="25%" class="dvtCellInfo">
 				<select name="stdDateFilterField" class="select small" onchange="standardFilterDisplay();">
 				{foreach item=stdfilter from=$STDFILTERCOLUMNS}
-					<option {$stdfilter.selected} value={$stdfilter.value}>{$stdfilter.text}</option>	
+					<option {$stdfilter.selected} value={$stdfilter.value}>{$stdfilter.text}</option>
 				{/foreach}
-                                </select>
+				</select>
 			  </tr>
 			  <tr>
 			     <td align="right" class="dvtCellLabel">{$MOD.Select_Duration} :</td>
@@ -236,8 +236,8 @@ function mandatoryCheck()
 			     {else}
 				{assign var=img_style value="visibility:hidden"}
 				{assign var=msg_style value="readonly"}
-			     {/if}	
-			     <input name="startdate" id="jscal_field_date_start" type="text" size="10" class="textField small" value="{$STARTDATE}" {$msg_style}>
+			     {/if}
+			     <input name="startdate" id="jscal_field_date_start" type="text" size="10" class="textField small" value="{if isset($STARTDATE)}{$STARTDATE}{/if}" {$msg_style}>
 			     <img src="{$IMAGE_PATH}btnL3Calendar.gif" id="jscal_trigger_date_start" style={$img_style}>
 			     <font size=1><em old="(yyyy-mm-dd)">({$DATEFORMAT})</em></font>
 			     <script type="text/javascript">
@@ -249,7 +249,7 @@ function mandatoryCheck()
 			  <tr>
 			     <td align="right" class="dvtCellLabel">{$MOD.End_Date} :</td> 
   			     <td width="25%" align=left class="dvtCellInfo">
-			     <input name="enddate" {$msg_style} id="jscal_field_date_end" type="text" size="10" class="textField small" value="{$ENDDATE}">
+			     <input name="enddate" {$msg_style} id="jscal_field_date_end" type="text" size="10" class="textField small" value="{if isset($ENDDATE)}{$ENDDATE}{/if}">
 			     <img src="{$IMAGE_PATH}btnL3Calendar.gif" id="jscal_trigger_date_end" style={$img_style}>
 			     <font size=1><em old="(yyyy-mm-dd)">({$DATEFORMAT})</em></font>
 			     <script type="text/javascript">
@@ -294,8 +294,8 @@ function mandatoryCheck()
 </table>
 </table>
 </table>
-{$STDFILTER_JAVASCRIPT}
-{$JAVASCRIPT}
+{if isset($STDFILTER_JAVASCRIPT)}{$STDFILTER_JAVASCRIPT}{/if}
+{if isset($JAVASCRIPT)}{$JAVASCRIPT}{/if}
 <!-- to show the mandatory fields while creating new customview -->
 <script type="text/javascript">
 var k;

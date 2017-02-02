@@ -41,8 +41,8 @@ $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $smarty->assign('CATEGORY', $category);
 $smarty->assign("THEME", $theme);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
-$smarty->assign('ID', $focus->id);
-$smarty->assign('MODE', $focus->mode);
+$smarty->assign('ID', '');
+$smarty->assign('MODE', '');
 
 $viewBox = 'hourview'; 
 $smarty->assign("CREATE_PERMISSION",($Calendar4You->CheckPermissions("CREATE") ? "permitted" : ''));

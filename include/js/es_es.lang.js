@@ -379,6 +379,8 @@ var alert_arr = {
 	'LBL_MORE_THAN_HOURS_LATER' : 'más de x horas después',
 	'LBL_EXISTS' : 'existe',
 	'MAXIMUM_OF_TWO_MODULES_PERMITTED' : 'Solo se permite relacionar con un máximo de dos módulos.',
+	'ONLY_ONE_MODULE_PERMITTED_FOR_REPORT' : 'Solo se permite relacionar con un módulo para este tipo de informe',
+	'MUST_SELECT_ONE_MODULE_FOR_REPORT' : 'Debes seleccionar un módulo relacionado para este tipo de informe',
 	'LBL_NEW_CONDITION' : 'Nueva condición',
 	'WF_UPDATE_MAP_ERROR' : '**ERROR**: Esta acción utiliza un campo que no está disponible: ',
 	'WF_UPDATE_MAP_ERROR_INFO' : 'Se cargará la acción con información INCORRECTA para que puedas arreglarla. NO ES CORRECTA!',

@@ -17,7 +17,7 @@
 <style type="text/css">@import url("themes/{$THEME}/style.css");</style>
 <script type="text/javascript" src="include/jquery/jquery.js"></script>
 <script type="text/javascript" src="include/js/general.js"></script>
-<script type="text/javascript" src="include/js/{$LANGUAGE}.lang.js?{$VERSION}"></script>
+<script type="text/javascript" src="include/js/{$LANGUAGE}.lang.js"></script>
 <script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
 <script type="text/javascript" src="modules/Products/multifile.js"></script>
 </head>

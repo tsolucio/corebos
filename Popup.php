@@ -24,15 +24,14 @@ $url = '';
 $popuptype = '';
 $popuptype = isset($_REQUEST['popuptype']) ? vtlib_purify($_REQUEST['popuptype']) : '';
 
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
 // Pass on the authenticated user language
 global $current_language;
 $smarty->assign('LANGUAGE', $current_language);
 $smarty->assign("MOD", $mod_strings);
 $smarty->assign("APP", $app_strings);
 $smarty->assign("THEME", $theme);
-$smarty->assign("THEME_PATH",$theme_path);
+$smarty->assign('THEME_PATH', "themes/$theme/");
+$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign("MODULE",$currentModule);
 $smarty->assign('coreBOS_uiapp_name', GlobalVariable::getVariable('Application_UI_Name',$coreBOS_app_name));
 // Gather the custom link information to display
@@ -80,6 +79,9 @@ if(isset($_REQUEST['popupmode']) && isset($_REQUEST['callback'])) {
 	$url = "&popupmode=".vtlib_purify($_REQUEST['popupmode'])."&callback=".vtlib_purify($_REQUEST['callback']);
 	$smarty->assign("POPUPMODE", vtlib_purify($_REQUEST['popupmode']));
 	$smarty->assign("CALLBACK", vtlib_purify($_REQUEST['callback']));
+} else {
+	$smarty->assign('POPUPMODE', '');
+	$smarty->assign('CALLBACK', '');
 }
 
 $focus = CRMEntity::getInstance($currentModule);

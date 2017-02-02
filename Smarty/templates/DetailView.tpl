@@ -255,6 +255,7 @@ function sendfile_email()
 															<!-- Command Buttons -->
 															<table border=0 cellspacing=0 cellpadding=0 width=100%>
 																<form action="index.php" method="post" name="DetailView" id="formDetailView">
+																	<input type="hidden" id="hdtxt_IsAdmin" value="{if isset($hdtxt_IsAdmin)}{$hdtxt_IsAdmin}{else}0{/if}">
 																	{include file='DetailViewHidden.tpl'}
 																	{foreach key=header item=detail from=$BLOCKS name=BLOCKS}
 																		<tr><td style="padding:5px">
@@ -343,30 +344,32 @@ function sendfile_email()
 																											{assign var=_readonly value=$data.readonly}
 
 																											{if $label ne ''}
+																												<td class="dvtCellLabel" align=right width=25%>
 																												{if $keycntimage ne ''}
-																													<td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$keycntimage}</td>
+																													{$keycntimage}
 																												{elseif $keyid eq '71' || $keyid eq '72'}<!-- Currency symbol -->
-																													<td class="dvtCellLabel" align=right width=25%>{$label}<input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input> ({$keycursymb})</td>
-																													{elseif $keyid eq '9'}
-																													<td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$label} {$APP.COVERED_PERCENTAGE}</td>
-																													{elseif $keyid eq '14'}
-																													<td class="dvtCellLabel" align=right width=25%>{$label}<input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input> {"LBL_TIMEFIELD"|@getTranslatedString} </td>
-																													{else}
-																													<td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$label}</td>
-																													{/if}
-																													{if $EDIT_PERMISSION eq 'yes' && $display_type neq '2' && $_readonly eq '0'}
-																														{* Performance Optimization Control *}
-																														{if !empty($DETAILVIEW_AJAX_EDIT) }
-																															{include file="DetailViewUI.tpl"}
-																														{else}
-																															{include file="DetailViewFields.tpl"}
-																														{/if}
-																														{* END *}
+																													{$label} ({$keycursymb})
+																												{elseif $keyid eq '9'}
+																													{$label} {$APP.COVERED_PERCENTAGE}
+																												{elseif $keyid eq '14'}
+																													{$label} {"LBL_TIMEFIELD"|@getTranslatedString}
+																												{else}
+																													{$label}
+																												{/if}
+																												</td>
+																												{if $EDIT_PERMISSION eq 'yes' && $display_type neq '2' && $_readonly eq '0'}
+																													{* Performance Optimization Control *}
+																													{if !empty($DETAILVIEW_AJAX_EDIT) }
+																														{include file="DetailViewUI.tpl"}
 																													{else}
 																														{include file="DetailViewFields.tpl"}
 																													{/if}
+																													{* END *}
+																												{else}
+																													{include file="DetailViewFields.tpl"}
 																												{/if}
-																											{/foreach}
+																											{/if}
+																										{/foreach}
 																									</tr>
 																								{/foreach}
 																							{/if}

@@ -17,6 +17,7 @@ $mod_strings = Array (
 'LBL_TOOLTIP_HELP_TEXT'=>'Selecione os campos que você gostaria que aparecessem na Dica Contexto',
 'LBL_FIELD'=>'Campo',
 'TooltipInfo' => 'This extension adds information hover tips on different fields on each module and is accessed in the settings of each module not directly, so you can eliminate it from the menu.',
+'No Fields Selected' => 'No Fields Selected',
 );
 
 ?>

@@ -39,7 +39,7 @@ $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 $smarty->assign("IMAGE_PATH", $image_path);
 $langid = vtlib_purify($_REQUEST['languageid']);
-$pmodule = vtlib_purify($_REQUEST['pick_module']);
+$pmodule = isset($_REQUEST['pick_module']) ? vtlib_purify($_REQUEST['pick_module']) : 'General';
 $smarty->assign("LANGUAGEID",$langid);
 $smarty->assign("MODULE",($pmodule!='')?$pmodule:'General');
 
@@ -62,12 +62,12 @@ $module_array['JavaScript']= $mod_strings['JavaScript'];
 
 //Get Modules and languages files
 if ($dh = opendir($modulesDirectory)) {
-	while (($folder = readdir($dh)) !== false) { 
+	while (($folder = readdir($dh)) !== false) {
 		if(is_dir($modulesDirectory.'/'.$folder)&&$folder!='..'&&$folder!='.'&&file_exists($modulesDirectory.'/'.$folder.'/language/'.$ref_language.'.lang.php')) {
-			if($app_strings[$folder]!=''){
+			if (!empty($app_strings[$folder])) {
 				$module_array[$folder]=$app_strings[$folder];
 			}
-			elseif($mod_strings[$folder]!=''){
+			elseif (!empty($mod_strings[$folder])) {
 				$module_array[$folder]=$mod_strings[$folder];
 			}else{
 				$module_array[$folder]=ucfirst($folder);
@@ -78,13 +78,13 @@ if ($dh = opendir($modulesDirectory)) {
 }
 asort($module_array);
 $smarty->assign("MODULES",$module_array);
-
+$tr_list = array();
 //General language strings
 if($pmodule=='' || $pmodule=='General'){
 	//Get Reference Strings
 	include 'include/language/'.$ref_language.'.lang.php';
 	$ref_app_strings = $app_strings;
-	
+
 	//Get translated Strings
 	if(!file_exists('include/language/'.$row['prefix'].'.lang.php')){
 		$handle=fopen('include/language/'.$row['prefix'].'.lang.php','w');
@@ -98,7 +98,7 @@ if($pmodule=='' || $pmodule=='General'){
 	$translated_string=0;
 	foreach($ref_app_strings As $key=>$tr_string){
 		$result2[$key][0]=htmlentities($tr_string, ENT_QUOTES, $ref_encoding);
-		$result2[$key][1]=htmlentities($app_strings[$key], ENT_QUOTES, $trans_encoding);
+		$result2[$key][1]=htmlentities((isset($app_strings[$key]) ? $app_strings[$key] : ''), ENT_QUOTES, $trans_encoding);
 		$result2[$key][2]=($key=='')?'#empty#':$key;
 		$result2[$key][3]='not_translated';
 		if(!isset($app_strings[$key])){
@@ -132,7 +132,7 @@ elseif($pmodule=='JavaScript'){
 		eval($jsfileContent);
 		$ref_app_strings = $app_strings;
 	}
-	
+
 	//Get your languague strings
 	$filename='include/js/'.$row['prefix'].'.lang.js';
 	$error=(is_writable($filename))?'':$mod_strings['ERROR_GENERAL_FILE_WRITE'];
@@ -145,7 +145,7 @@ elseif($pmodule=='JavaScript'){
 		$jsfileContent = preg_replace($patterns, $replacements, $jsfileContent);
 		eval($jsfileContent);
 	}
-	
+
 	//Merge the two languages stings in array and make some pour stats :)
 	$total_strings=0;
 	$translated_string=0;
@@ -170,7 +170,6 @@ else {
 	//Get Default Strings
 	include 'modules/'.$pmodule.'/language/'.$ref_language.'.lang.php';
 	$ref_mod_strings = $mod_strings;
-	$tr_list = array();
 
 	//Get your languague strings
 	if(!file_exists('modules/'.$pmodule.'/language/'.$row['prefix'].'.lang.php')){
@@ -252,8 +251,9 @@ else {
 			$total_strings++;
 	}
 }
-$filter=vtlib_purify($_REQUEST['filter_translate']);
+$filter = isset($_REQUEST['filter_translate']) ? vtlib_purify($_REQUEST['filter_translate']) : '';
 $hidden_fields = array();
+if (!empty($filter)) {
 foreach($result2 as $key=>$resulttrl) {
 	if ($filter=='not_translated') {
 		if($resulttrl[3]=='not_translated') {
@@ -348,6 +348,7 @@ foreach($result2 as $key=>$resulttrl) {
 		}
 	}
 }
+}
 
 if($filter=='not_translated' )
 	$smarty->assign("TRANSLATION_STRING",$resultnt);
@@ -368,6 +369,5 @@ $smarty->assign('FILTER',$filter);
 $smarty->assign("ERROR",$error);
 $smarty->assign("PERC_TRANSALTED",number_format($translated_string*100/$total_strings,2).'%');
 $smarty->assign("TRANSLATION_LIST_STRING",$tr_list);
-$smarty->assign("TRANSLATION_LIST_STRING2",$tr_list2);
 $smarty->display('Settings/LanguageEdit.tpl');
 ?>

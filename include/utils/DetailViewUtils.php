@@ -1342,6 +1342,7 @@ function getDetailAssociatedProducts($module, $focus) {
 		$entitytype = $adb->query_result($result, $i - 1, 'entitytype');
 		$productname = $adb->query_result($result, $i - 1, 'productname');
 		$productname = '<a href="index.php?action=DetailView&record='.$productid.'&module='.$entitytype.'">'.$productname.'</a>';
+		$productname.= "<span type='vtlib_metainfo' vtrecordid='{$productid}' vtfieldname='".($entitytype=='Products' ? 'productname' : 'servicename')."' vtmodule='$entitytype' style='display:none;'></span>";
 		if ($subprodname_str != '')
 			$productname .= "<br/><span style='color:#C0C0C0;font-style:italic;'>" . $subprodname_str . "</span>";
 		$comment = $adb->query_result($result, $i - 1, 'comment');
@@ -1362,7 +1363,7 @@ function getDetailAssociatedProducts($module, $focus) {
 			$productDiscount = $total * $discount_percent / 100;
 			$totalAfterDiscount = $total - $productDiscount;
 			//if discount is percent then show the percentage
-			$discount_info_message = "$discount_percent % of ".
+			$discount_info_message = "$discount_percent % " . $app_strings['LBL_LIST_OF'] . ' '.
 										CurrencyField::convertToUserFormat($total, null, true)." = ".
 										CurrencyField::convertToUserFormat($productDiscount, null, true);
 		} elseif ($discount_amount != 'NULL' && $discount_amount != '') {
@@ -1419,7 +1420,7 @@ function getDetailAssociatedProducts($module, $focus) {
 		//For Product Name
 		$output .= '
 			<tr valign="top" class="detailview_inventory_row">
-				<td class="crmTableRow small lineOnTop detailview_inventory_namecell">
+				<td class="crmTableRow small lineOnTop detailview_inventory_namecell" onmouseover="vtlib_listview.trigger(\'cell.onmouseover\', this);" onmouseout="vtlib_listview.trigger(\'cell.onmouseout\', this);">
 					' . $productname . '&nbsp;' . $sc_image_tag . '
 					<br>' . $comment . '
 				</td>';
@@ -1509,7 +1510,7 @@ function getDetailAssociatedProducts($module, $focus) {
 	//if($focus->column_fields['hdnDiscountPercent'] != '') - previously (before changing to prepared statement) the selected option (either percent or amount) will have value and the other remains empty. So we can find the non selected item by empty check. But now with prepared statement, the non selected option stored as 0
 	if ($focus->column_fields['hdnDiscountPercent'] != '0') {
 		$finalDiscount = ($netTotal * $focus->column_fields['hdnDiscountPercent'] / 100);
-		$final_discount_info = $focus->column_fields['hdnDiscountPercent'] . " % of ".CurrencyField::convertToUserFormat($netTotal, null, true).
+		$final_discount_info = $focus->column_fields['hdnDiscountPercent'] . ' % ' . $app_strings['LBL_LIST_OF'] . ' '.CurrencyField::convertToUserFormat($netTotal, null, true).
 											" = ". CurrencyField::convertToUserFormat($finalDiscount, null, true);
 	} elseif ($focus->column_fields['hdnDiscountAmount'] != '0') {
 		$finalDiscount = $focus->column_fields['hdnDiscountAmount'];

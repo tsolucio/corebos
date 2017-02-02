@@ -50,6 +50,7 @@
 							{if $CATEGORY eq 'Settings'}
 							<input type="hidden" name="parenttab" value="{$PARENTTAB}" style="margin:0px">
 							{/if}
+							<input type="hidden" id="hdtxt_IsAdmin" value="{if $IS_ADMIN eq 'true'}1{else}0{/if}">
 							{include file='applicationmessage.tpl'}
 							<table width="100%" border="0" cellpadding="0" cellspacing="0" >
 							<tr>
@@ -130,7 +131,7 @@
 										   {assign var=keyadmin value=$data.isadmin}
 
 										   {if $label ne ''}
-										   <td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$label}</td>
+										   <td class="dvtCellLabel" align=right width=25%>{$label}</td>
 											{include file="DetailViewUI.tpl"}
 										   {else}
 										   <td class="dvtCellLabel" align=right>&nbsp;</td>

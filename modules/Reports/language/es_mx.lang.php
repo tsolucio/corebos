@@ -283,7 +283,23 @@ $mod_strings = Array(
 'LBL_GROUPING_TIME' => 'Agrupar por Tiempo',
 'LBL_WIDGET_ADDED' => 'Widget Añadido Correctamente.',
 'Add ReportCharts' => 'Añadir Gráfico de Informe',
-
+'Choose Report Type' => 'Elige Tipo de Informe',
+'Application Report' => 'Informe de Aplicación',
+'External Application' => 'Aplicación Externa',
+'Direct SQL Statement' => 'Comando SQL',
+'Cross Tab' => 'Referencias Cruzadas',
+'Pivot Table' => 'Tabla Dinámica',
+'External Report URL' => 'URL del Informe Externo',
+'Add User Information' => 'Añadir Información del Usuario',
+'Select One Field of each' => 'Solo puedes seleccionar un campo de cada módulo para este tipo de informe',
+'Select Only One Module' => 'Solo puedes seleccionar un módulo para este tipo de informe',
+'LBL_AGG_FIELD' => 'Campo de Agregación',
+'LBL_AGG_FUNCTION_CHOOSE' => 'Selecciona Columna y Función de Agregación',
+'LBL_AGG_COLUMN' => 'Columna de Agregación',
+'LBL_AGG_FUNCTION' => 'Función de Agregación',
+'LBL_COLUMNS_COUNT'=>'Contar',
+'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Error eliminando la carpeta.',
+'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Error eliminando los informes de la carpeta',
 );
 
 ?>

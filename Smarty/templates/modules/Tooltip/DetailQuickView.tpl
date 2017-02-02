@@ -7,7 +7,7 @@
 	<div align=center>
 		<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 		</table>
-		
+
 		<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 		<tr>
 			<td class="small" align=right width="100%">
@@ -15,15 +15,15 @@
 			</td>
 		</tr>
 		</table>
-		
-		<div id="{$module}_fields" style="display:block">	
-	 	<table cellspacing=0 cellpadding=5 width=100% class="listTable small">
+
+		<div id="{$FORMODULE}_fields" style="display:block">
+		<table cellspacing=0 cellpadding=5 width=100% class="listTable small">
 			<tr>
-        	<td valign=top width="25%" >
-        	{if $COUNT eq 0}
-        		No Fields Selected.
-        		</td>
-        	{else}
+			<td valign=top width="25%" >
+			{if $COUNT eq 0}
+				{'No Fields Selected'|@getTranslatedString:'Tooltip'}.
+			</td>
+			{else}
 				{foreach item=label from=$LABELS name=itr}
 					{assign var=count value=$smarty.foreach.itr.iteration}
 					<table border=0 cellspacing=0 cellpadding=5 width=100% class=small>
@@ -51,8 +51,8 @@
 				{/foreach}
 			{/if}
 			</td>
-	        </tr>
-        </table>
+			</tr>
+		</table>
 		</div>
 		</form>
 		</div>

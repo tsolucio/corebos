@@ -205,8 +205,7 @@ function buildSelectStmt($sqlDump){
 	$accessControlQuery = $meta->getEntityAccessControlQuery();
 	$this->query = $this->query.' '.$accessControlQuery;
 	if (!empty($sqlDump['where_condition'])) {
-		if((sizeof($sqlDump['where_condition']['column_names']) == 
-		sizeof($sqlDump['where_condition']['column_values'])) && 
+		if ((sizeof($sqlDump['where_condition']['column_names']) == sizeof($sqlDump['where_condition']['column_values'])) &&
 		(sizeof($sqlDump['where_condition']['column_operators']) == sizeof($sqlDump['where_condition']['operators'])+1)){
 			$this->query = $this->query.' WHERE (';
 			$i=0;
@@ -1235,7 +1234,7 @@ $this->out['where_condition']['column_values'][sizeof($this->out['where_conditio
 #line 1240 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
 #line 82 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
     function yy_r17(){
-$length = sizeof($this->out['where_condition']['column_values']);
+$length = (isset($this->out['where_condition']) && isset($this->out['where_condition']['column_values'])) ? sizeof($this->out['where_condition']['column_values']) : 0;
 $pos = $length - 1;
 if($pos < 0){
 $pos = 0;

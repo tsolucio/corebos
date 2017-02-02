@@ -191,8 +191,12 @@ class VtigerCRMObjectMeta extends EntityMeta {
 	}
 
 	function hasPermission($operation,$webserviceId){
-		$idComponents = vtws_getIdComponents($webserviceId);
-		$id=$idComponents[1];
+		if (empty($webserviceId)) {
+			$id = '';
+		} else {
+			$idComponents = vtws_getIdComponents($webserviceId);
+			$id=$idComponents[1];
+		}
 		$permitted = isPermitted($this->getTabName(),$operation,$id);
 		if(strcmp($permitted,"yes")===0){
 			return true;

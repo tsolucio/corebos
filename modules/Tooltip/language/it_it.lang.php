@@ -16,6 +16,7 @@ $mod_strings = Array (
 'LBL_TOOLTIP_HELP_TEXT'=>'Selezionare i campi che si desidera visualizzare come tooltip',
 'LBL_FIELD'=>'Campo',
 'TooltipInfo' => 'This extension adds information hover tips on different fields on each module and is accessed in the settings of each module not directly, so you can eliminate it from the menu.',
+'No Fields Selected' => 'No Fields Selected',
 );
 
 ?>

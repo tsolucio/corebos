@@ -14,7 +14,7 @@ require_once("modules/Calendar/calendarLayout.php");
 require_once('include/utils/utils.php');
 require_once("modules/Calendar/Calendar.php");
 require_once('include/logging.php');
-$cal_log =& LoggerManager::getLogger('calendar');
+$cal_log = LoggerManager::getLogger('calendar');
 $cal_log->debug("In CalendarAjax file");
 $mysel = vtlib_purify($_REQUEST['view']);
 $calendar_arr = Array();

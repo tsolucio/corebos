@@ -254,6 +254,7 @@ function sendfile_email()
 					<table border=0 cellspacing=0 cellpadding=0 width=100%>
 							<!-- NOTE: We should avoid form-inside-form condition, which could happen when Singlepane view is enabled. -->
 							<form action="index.php" method="post" name="DetailView" id="form">
+							<input type="hidden" id="hdtxt_IsAdmin" value="{if isset($hdtxt_IsAdmin)}{$hdtxt_IsAdmin}{else}0{/if}">
 							{include file='DetailViewHidden.tpl'}
 							{foreach key=header item=detail from=$BLOCKS}
 
@@ -341,27 +342,29 @@ function sendfile_email()
 							   {assign var=keycntimage value=$data.cntimage}
 							   {assign var=keyadmin value=$data.isadmin}
 							   {assign var=display_type value=$data.displaytype}
-                           {if $label ne ''}
-	                        {if $keycntimage ne ''}
-				<td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$keycntimage}</td>
-				{elseif $keyid eq '71' || $keyid eq '72'}<!-- Currency symbol -->
-					<td class="dvtCellLabel" align=right width=25%>{$label}<input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input> ({$keycursymb})</td>
-				{else}
-					<td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$label}</td>
-				{/if}
-				{if $EDIT_PERMISSION eq 'yes' && $display_type neq '2'}
-					{* Performance Optimization Control *}
-					{if !empty($DETAILVIEW_AJAX_EDIT) }
-						{include file="DetailViewUI.tpl"}
-					{else}
-						{include file="DetailViewFields.tpl"}
-					{/if}
-					{* END *}
-				{else}
-					{include file="DetailViewFields.tpl"}
-				{/if}
-			{/if}
-		{/foreach}
+								{if $label ne ''}
+									<td class="dvtCellLabel" align=right width=25%>
+									{if $keycntimage ne ''}
+										{$keycntimage}
+									{elseif $keyid eq '71' || $keyid eq '72'}<!-- Currency symbol -->
+										({$keycursymb})
+									{else}
+										{$label}
+									{/if}
+									</td>
+									{if $EDIT_PERMISSION eq 'yes' && $display_type neq '2'}
+										{* Performance Optimization Control *}
+										{if !empty($DETAILVIEW_AJAX_EDIT) }
+											{include file="DetailViewUI.tpl"}
+										{else}
+											{include file="DetailViewFields.tpl"}
+										{/if}
+										{* END *}
+									{else}
+										{include file="DetailViewFields.tpl"}
+									{/if}
+								{/if}
+							{/foreach}
 						</tr>
 						{/foreach}
 						</table>

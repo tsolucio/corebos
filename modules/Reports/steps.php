@@ -170,10 +170,12 @@ if(isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 			$COLUMNS_BLOCK = getPrimaryColumns_AdvFilterHTML($primarymodule);
 
 			if(!empty($ogReport->related_modules[$primarymodule])) {
-				foreach($ogReport->related_modules[$primarymodule] as $key=>$value)
-					$BLOCK1 = array_merge((array)$BLOCK1,(array)getSecondaryStdFilterHTML($_REQUEST["secondarymodule_".$value] ));
-
-					$COLUMNS_BLOCK = array_merge((array)$COLUMNS_BLOCK, (array)getSecondaryColumns_AdvFilterHTML($_REQUEST["secondarymodule_".$value]));
+				foreach($ogReport->related_modules[$primarymodule] as $key=>$value) {
+					if (isset($_REQUEST['secondarymodule_'.$value])) {
+						$BLOCK1 = array_merge((array)$BLOCK1,(array)getSecondaryStdFilterHTML($_REQUEST["secondarymodule_".$value] ));
+						$COLUMNS_BLOCK = array_merge((array)$COLUMNS_BLOCK, (array)getSecondaryColumns_AdvFilterHTML($_REQUEST["secondarymodule_".$value]));
+					}
+				}
 			}
 			$BLOCKCRITERIA = $oReport->getSelectedStdFilterCriteria();
 			$rel_fields = getRelatedFieldColumns();
@@ -396,7 +398,7 @@ function getSecondaryColumnsHTML($module) {
 				$mod_strings = return_module_language($current_language,$secmodule[$i]);
 				$block_listed = array();
 				foreach($ogReport->module_list[$secmodule[$i]] as $key=>$value) {
-					if(isset($ogReport->sec_module_columnslist[$secmodule[$i]][$value]) && !$block_listed[$value]) {
+					if(isset($ogReport->sec_module_columnslist[$secmodule[$i]][$value]) && !isset($block_listed[$value])) {
 						$block_listed[$value] = true;
 						$optgroup = array();
 						foreach($ogReport->sec_module_columnslist[$secmodule[$i]][$value] as $field=>$fieldlabel) {
@@ -724,8 +726,7 @@ function getSecondaryColumns_AdvFilterHTML($module,$selected="") {
 				$block_listed = array();
 				$i18nModule = getTranslatedString($secmodule[$i],$secmodule[$i]);
 				foreach($ogReport->module_list[$secmodule[$i]] as $key=>$value) {
-					if(isset($ogReport->sec_module_columnslist[$secmodule[$i]][$value]) && !$block_listed[$value])
-					{
+					if(isset($ogReport->sec_module_columnslist[$secmodule[$i]][$value]) && empty($block_listed[$value])) {
 						$block_listed[$value] = true;
 						$optgroup = array(
 							"label"=>$i18nModule." ".getTranslatedString($value,$secmodule[$i]),

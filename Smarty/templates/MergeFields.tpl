@@ -31,7 +31,7 @@
 <script type="text/javascript" src="include/jquery/jquery-ui.js"></script>
 <script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <script src="include/js/general.js" type="text/javascript"></script>
-<script src="include/js/{$LANGUAGE}.lang.js?{$VERSION}" type="text/javascript"></script>
+<script src="include/js/{$LANGUAGE}.lang.js" type="text/javascript"></script>
 <form name="merge" method="POST" action="index.php" id="form" onsubmit="if(validate_merge('{$MODULENAME}')){ldelim}VtigerJS_DialogBox.block(); return true;{rdelim} else {ldelim} return false; {rdelim};">
 	<input type=hidden name="module" value="{$MODULENAME}">
 	<input type=hidden name="return_module" value="{$MODULENAME}">

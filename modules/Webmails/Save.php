@@ -20,7 +20,7 @@ require_once('modules/Documents/Documents.php');
 require_once('modules/Settings/MailScanner/core/MailAttachmentMIME.php');
 global $current_user;
 
-$local_log =& LoggerManager::getLogger('index');
+$local_log = LoggerManager::getLogger('index');
 $focus = new Emails();
 
 $to_address = explode(";",$_REQUEST['to_list']);
