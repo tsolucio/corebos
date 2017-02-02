@@ -32,7 +32,7 @@ if(isset($templateid) && $templateid !='')
 else
 {
 	$templateid = $db->getUniqueID('vtiger_emailtemplates');
-	$sql = "insert into vtiger_emailtemplates (foldername, templatename, subject, description, body, deleted, templateid, frommail) values (?,?,?,?,?,?,?,?)";
+	$sql = "insert into vtiger_emailtemplates (foldername, templatename, subject, description, body, deleted, templateid, sendemailfrom) values (?,?,?,?,?,?,?,?)";
 	$params = array($folderName, $templateName, $subject, $description, $body, 0, $templateid, $emailfrom);
 	$adb->pquery($sql, $params);
 
