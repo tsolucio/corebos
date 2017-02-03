@@ -12,6 +12,7 @@
 	<link rel="stylesheet" href="resources/css/jquery.mobile.structure-1.4.5.min.css" >
 	<link rel="stylesheet" href="resources/css/jquery.mobile.icons.min.css" >
 	<link rel="stylesheet" href="resources/css/theme.css" >
+	<script type="text/javascript" src="resources/jquery.blockUI.js" ></script>
 	<script type="text/javascript" src="resources/crmtogo.js"></script>
 	<script type="text/javascript" src="resources/lang/{$LANGUAGE}.lang.js"></script>
 	{if $_MODULE->name() eq 'Calendar'}
