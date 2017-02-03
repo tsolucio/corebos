@@ -14,6 +14,7 @@
 </script>
 <script type="text/javascript" src="resources/jquery.mobile-1.4.5.min.js"></script>
 <link rel="stylesheet" href="resources/css/jquery-ui.min.css">
+<script type="text/javascript" src="resources/jquery.blockUI.js" ></script>
 <script type="text/javascript" src="resources/crmtogo.js" ></script>
 <script type="text/javascript" src="resources/settings.js" ></script>
 <div data-role="page" data-theme="b" id="home_page">

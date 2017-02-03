@@ -12,6 +12,7 @@
 	<link rel="stylesheet" href="resources/css/jquery.mobile.structure-1.4.5.min.css" >
 	<link rel="stylesheet" href="resources/css/theme.css" >
 	<link rel="stylesheet" href="resources/css/signature-pad.css">
+	<script type="text/javascript" src="resources/jquery.blockUI.js" ></script>
 	<script type="text/javascript" src="resources/crmtogo.js"></script>
 	<script type="text/javascript" src="resources/lang/{$LANGUAGE}.lang.js"></script>
 	<script type="text/javascript" src="resources/signature_pad.js"></script>
@@ -121,7 +122,7 @@
 											{$MOD.LBL_NO}
 										{/if}
 									{else}
-										{if $_FIELD->name() eq 'phone' || $_FIELD->name() eq 'homephone'|| $_FIELD->name() eq 'mobile'|| $_FIELD->name() eq 'otherphone' }
+										{if $_FIELD->name() eq 'phone' || $_FIELD->name() eq 'homephone'|| $_FIELD->name() eq 'mobile'|| $_FIELD->name() eq 'otherphone' || $_FIELD->uitype() eq '11' }
 											{assign var=phoneinput value=$_FIELD->valueLabel()}	
 											<a href="tel:{$phoneinput|regex_replace:"/\A\+/":"00"|regex_replace:"/[^0-9]+/":""}">{$_FIELD->valueLabel()}</a>
 										{elseif $_FIELD->name() eq 'skype'}

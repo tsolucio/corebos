@@ -20,7 +20,27 @@ function pageIsSelectmenuDialog( page ) {
     });
     return isDialog;
 }
-
+function updateOnlineStatus(event){
+	var condition = navigator.onLine ? "online" : "offline";
+	if(condition == 'offline'){
+		jQuery.blockUI({ 
+			message: cbMobile_arr.status_offline,
+			css: { 
+				border: 'none', 
+				padding: '15px', 
+				backgroundColor: '#000', 
+				'-webkit-border-radius': '10px', 
+				'-moz-border-radius': '10px', 
+				opacity: .5, 
+				color: '#fff'
+			}
+		});
+	}else{
+		jQuery.unblockUI();
+	}
+}
+window.addEventListener('online',  updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
 $.mobile.document
     // Upon creation of the select menu, we want to make use of the fact that the ID of the
     // listview it generates starts with the ID of the select menu itself, plus the suffix "-menu".

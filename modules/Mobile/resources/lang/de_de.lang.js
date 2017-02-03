@@ -43,3 +43,6 @@ var cal_config_arr = {
 	txt_NumAbbrevRd: "",
 	txt_loading: "lade...",
 	};
+var cbMobile_arr = {
+		status_offline : "Du bist offline",
+	};

@@ -127,7 +127,7 @@
 					<td valign="top" class="genHeaderSmall" style="padding-left:10px;padding-top:3px;">
 						<span class="userName">{$USER}</span>
 					</td>
-					<td class="small" valign="bottom" nowrap style="padding-bottom: 1em;"><a href="index.php?module=Users&action=DetailView&record={$CURRENT_USER_ID}&modechk=prefview"><img src="{$IMAGEPATH}user.PNG" border=0 style="padding: 0px;padding-left:5px" title="{$APP.LBL_MY_PREFERENCES}" alt="{$APP.LBL_MY_PREFERENCES}"></a></td>
+					<td class="small" valign="bottom" nowrap style="padding-bottom: 1em;"><a id="headerUser" class="headerlink" href="index.php?module=Users&action=DetailView&record={$CURRENT_USER_ID}&modechk=prefview"><img src="{$IMAGEPATH}user.PNG" border=0 style="padding: 0px;padding-left:5px" title="{$APP.LBL_MY_PREFERENCES}" alt="{$APP.LBL_MY_PREFERENCES}"></a></td>
 					{* vtlib customization: Header links on the top panel *}
 					{if $HEADERLINKS}
 						<td valign="bottom" nowrap style="padding-bottom: 1em;" class="small" nowrap>
@@ -154,12 +154,12 @@
 						</td>
 					{/if}
 				{if $HELP_URL}
-				<td valign="bottom" nowrap style="padding-bottom: 1em;" class="small" nowrap><a href="{$HELP_URL}" target="_blank"><img src="{$IMAGEPATH}info.PNG" border=0 style="padding: 0px;padding-left:5px" title="{$APP.LNK_HELP}"></a></td>
+				<td valign="bottom" nowrap style="padding-bottom: 1em;" class="small" nowrap><a id="headerHelp" class="headerlink" href="{$HELP_URL}" target="_blank"><img src="{$IMAGEPATH}info.PNG" border=0 style="padding: 0px;padding-left:5px" title="{$APP.LNK_HELP}"></a></td>
 				{/if}
 				{if $ADMIN_LINK neq ''}
-					<td valign="bottom" nowrap style="padding-bottom: 1em;" class="small" onmouseout="fnHideDrop('mainsettings');" onmouseover="fnDropDown(this,'mainsettings');" nowrap><a href="index.php?module=Settings&action=index&parenttab=" id="settingslink"><img src="{$IMAGEPATH}mainSettings.PNG" border=0 style="padding: 0px;padding-left:5px"></a></td>
+					<td valign="bottom" nowrap style="padding-bottom: 1em;" class="small" onmouseout="fnHideDrop('mainsettings');" onmouseover="fnDropDown(this,'mainsettings');" nowrap><a id="headerSettings" class="headerlink" href="index.php?module=Settings&action=index&parenttab=" id="settingslink"><img src="{$IMAGEPATH}mainSettings.PNG" border=0 style="padding: 0px;padding-left:5px"></a></td>
 				{/if}
-				<td valign="bottom" nowrap style="padding-bottom: 1em;" class="small" nowrap><a href="index.php?module=Users&action=Logout"> <img src="themes/images/logout.png" border=0 style="padding: 0px;padding-left:5px " title="{$APP.LBL_LOGOUT}" alt="{$APP.LBL_LOGOUT}"></a></td>
+				<td valign="bottom" nowrap style="padding-bottom: 1em;" class="small" nowrap><a id="headerLogout" class="headerlink" href="index.php?module=Users&action=Logout"> <img src="themes/images/logout.png" border=0 style="padding: 0px;padding-left:5px " title="{$APP.LBL_LOGOUT}" alt="{$APP.LBL_LOGOUT}"></a></td>
 			</tr>
 			</table>
         </td>

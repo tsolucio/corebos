@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="resources/css/jquery.mobile.icons.min.css" >
 <link rel="stylesheet" href="resources/css/theme.css" >
 <script type="text/javascript" src="resources/lang/{$LANGUAGE}.lang.js"></script>
+<script type="text/javascript" src="resources/jquery.blockUI.js" ></script>
 {literal}
 	<!-- define the collapsible button size-->
 	<style>	
