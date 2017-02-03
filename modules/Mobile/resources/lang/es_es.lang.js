@@ -42,3 +42,6 @@ var cal_config_arr = {
 	txt_NumAbbrevRd: "º",
 	txt_loading: "cargando..."
 	};
+var cbMobile_arr = {
+		status_offline : "Estás sin conexión",
+	};
