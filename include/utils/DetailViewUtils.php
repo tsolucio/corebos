@@ -1904,7 +1904,7 @@ function VT_detailViewNavigation($smarty, $recordNavigationInfo, $currrentRecord
 				}
 				if ($index == count($recordIdList) - 1) {
 					$smarty->assign('nextrecordstart', $start + 1);
-					$smarty->assign('nextrecord', $recordNavigationInfo[$start + 1][0]);
+					$smarty->assign('nextrecord', isset($recordNavigationInfo[$start + 1]) ? $recordNavigationInfo[$start + 1][0] : 0);
 				} else {
 					$smarty->assign('nextrecordstart', $start);
 					$smarty->assign('nextrecord', $recordIdList[$index + 1]);

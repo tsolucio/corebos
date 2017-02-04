@@ -143,9 +143,7 @@ function return_name(&$row, $first_column, $last_column)
 
 /** Function to return language
   * @returns $languages -- languages:: Type string
-  *
 */
-
 function get_languages()
 {
 	global $log;
@@ -158,10 +156,7 @@ function get_languages()
 /** Function to return language
   * @param $key -- key:: Type string
   * @returns $languages -- languages:: Type string
-  *
 */
-
-//seems not used
 function get_language_display($key)
 {
 	global $log;
@@ -174,13 +169,12 @@ function get_language_display($key)
 /** Function returns the user array
  * @param $assigned_user_id -- assigned_user_id:: Type string
  * @returns $user_list -- user list:: Type array
- *
 */
-function get_assigned_user_name(&$assigned_user_id)
+function get_assigned_user_name($assigned_user_id)
 {
 	global $log;
 	$log->debug("Entering get_assigned_user_name(".$assigned_user_id.") method ...");
-	$user_list = &get_user_array(false,"");
+	$user_list = get_user_array(false,"");
 	if(isset($user_list[$assigned_user_id]))
 	{
 		$log->debug("Exiting get_assigned_user_name method ...");
@@ -197,10 +191,7 @@ function get_assigned_user_name(&$assigned_user_id)
   * @param $assigned_user -- user id:: Type string
   * @param $private -- sharing type:: Type string
   * @returns $user_array -- user array:: Type array
-  *
 */
-
-//used in module file
 function get_user_array($add_blank=true, $status="Active", $assigned_user="",$private="")
 {
 	global $log;
@@ -262,7 +253,7 @@ function get_user_array($add_blank=true, $status="Active", $assigned_user="",$pr
 			$temp_result[$row['id']] = getFullNameFromArray('Users', $row);
 		}
 
-		$user_array = &$temp_result;
+		$user_array = $temp_result;
 	}
 
 	$log->debug("Exiting get_user_array method ...");
@@ -331,7 +322,7 @@ function get_group_array($add_blank=true, $status="Active", $assigned_user="",$p
 			$temp_result[$row['groupid']] = $row['groupname'];
 		}
 
-		$group_array = &$temp_result;
+		$group_array = $temp_result;
 	}
 
 	$log->debug("Exiting get_group_array method ...");

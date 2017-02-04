@@ -47,7 +47,7 @@ function __construct(){
 		$this->records_per_page = $list_max_entries_per_page + 0;
 		$this->initialized = true;
 		$this->local_theme = $theme;
-		$this->local_app_strings = &$app_strings;
+		$this->local_app_strings = $app_strings;
 		$this->local_image_path = $image_path;
 		$this->local_current_module = $currentModule;
 

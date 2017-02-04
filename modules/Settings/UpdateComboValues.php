@@ -9,12 +9,12 @@
  ********************************************************************************/
 require_once('include/database/PearDatabase.php');
 require_once('include/ComboUtil.php');
-$fld_module=vtlib_purify($_REQUEST["fld_module"]);
-$tableName=vtlib_purify($_REQUEST["table_name"]);
-$fldPickList =  vtlib_purify($_REQUEST['listarea']);
-$roleid =  vtlib_purify($_REQUEST['roleid']);
+$fld_module = vtlib_purify($_REQUEST["fld_module"]);
+$tableName = vtlib_purify($_REQUEST["table_name"]);
+$fldPickList = vtlib_purify($_REQUEST['listarea']);
+$roleid = vtlib_purify($_REQUEST['roleid']);
 //changed by dingjianting on 2006-10-1 for picklist editor
-$fldPickList = utf8RawUrlDecode($fldPickList); 
+$fldPickList = utf8RawUrlDecode($fldPickList);
 $uitype = vtlib_purify($_REQUEST['uitype']);
 global $adb, $default_charset;
 
@@ -39,72 +39,63 @@ $count = count($pickArray);
 $tabname=explode('cf_',$tableName);
 
 if($tabname[1]!='')
-       	$custom=true;
+	$custom=true;
 
 /* ticket2369 fixed */
 $columnName = $tableName;
- for($i = 0; $i < $count; $i++)
- {
-	 $pickArray[$i] = trim(from_html($pickArray[$i]));
+for ($i = 0; $i < $count; $i++) {
+	$pickArray[$i] = trim(from_html($pickArray[$i]));
 
-	 //if UTF-8 character input given, when configuration is latin1, then avoid the entry which will cause mysql empty object exception in line 101
-	 $stringConvert = function_exists(iconv) ? @iconv("UTF-8",$default_charset,$pickArray[$i]) : $pickArray[$i];
-	 $pickArray[$i] = trim($stringConvert);
-	 
-	 if($pickArray[$i] != '')
-	 {
-		 $picklistcount=0;
-		 //This uitype is for non-editable  picklist
-		 $sql ="select $tableName from vtiger_$tableName";
-		 $res = $adb->pquery($sql, array());
-		 $numrow = $adb->num_rows($res);
-		 for($x=0;$x < $numrow ; $x++)
-		 {
-			 $picklistvalues = decode_html($adb->query_result($res,$x,$tableName));
+	//if UTF-8 character input given, when configuration is latin1, then avoid the entry which will cause mysql empty object exception in line 101
+	$stringConvert = function_exists('iconv') ? @iconv('UTF-8',$default_charset,$pickArray[$i]) : $pickArray[$i];
+	$pickArray[$i] = trim($stringConvert);
 
-			 // Fix For: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/5129
-			 global $current_language;
-			 if($current_language != 'en_us') {
-				 // Translate the value in database and compare with input.
-				 if($fld_module == 'Events') $temp_module_strings = return_module_language($current_language, 'Calendar');
-				 else $temp_module_strings = return_module_language($current_language, $fld_module);
+	if ($pickArray[$i] != '') {
+		$picklistcount=0;
+		//This uitype is for non-editable picklist
+		$sql ="select $tableName from vtiger_$tableName";
+		$res = $adb->pquery($sql, array());
+		$numrow = $adb->num_rows($res);
+		for ($x=0;$x < $numrow ; $x++) {
+			$picklistvalues = decode_html($adb->query_result($res,$x,$tableName));
 
-				 $mod_picklistvalue = trim($temp_module_strings[$picklistvalues]);
-				 if($mod_picklistvalue == $pickArray[$i]) {
-					 $pickArray[$i] = $picklistvalues;
-				 }
-			 }
-			 // End
-			 
-			 if($pickArray[$i] == $picklistvalues)
-			 {
-				 $picklistcount++;	
-			 }
+			// Fix For: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/5129
+			global $current_language;
+			if($current_language != 'en_us') {
+				// Translate the value in database and compare with input.
+				if($fld_module == 'Events') $temp_module_strings = return_module_language($current_language, 'Calendar');
+				else $temp_module_strings = return_module_language($current_language, $fld_module);
 
-		 }
+				$mod_picklistvalue = trim($temp_module_strings[$picklistvalues]);
+				if($mod_picklistvalue == $pickArray[$i]) {
+					$pickArray[$i] = $picklistvalues;
+				}
+			}
 
-		 if($picklistcount == 0)
-		 {	//Inserting a new pick list value to the corresponding picklist table
-			 $picklistvalue_id = getUniquePicklistID();
-			 $picklist_id = $adb->getUniqueID("vtiger_".$tableName);
-			 $query = "insert into vtiger_".$tableName." values(?,?,?,?)";		
-			 $params = array($picklist_id, $pickArray[$i], 1, $picklistvalue_id);
-	
-			 $adb->pquery($query, $params);
+			if ($pickArray[$i] == $picklistvalues) {
+				$picklistcount++;
+			}
+		}
 
-	 	}
-	 	$picklistcount =0;
+		if($picklistcount == 0) { //Inserting a new pick list value to the corresponding picklist table
+			$picklistvalue_id = getUniquePicklistID();
+			$picklist_id = $adb->getUniqueID("vtiger_".$tableName);
+			$query = "insert into vtiger_".$tableName." values(?,?,?,?)";
+			$params = array($picklist_id, $pickArray[$i], 1, $picklistvalue_id);
+			$adb->pquery($query, $params);
+		}
+		$picklistcount =0;
 		$sql = "select picklist_valueid from vtiger_$tableName where $tableName=?";
 		$pick_valueid = $adb->query_result($adb->pquery($sql, array($pickArray[$i])),0,'picklist_valueid');
-		
-		 //To get the max sortid for the non editable picklist and the inserting by increasing the sortid for editable values....
-		 $sql ="select max(sortid)+1 as sortid from vtiger_role2picklist left join vtiger_$tableName on vtiger_$tableName.picklist_valueid=vtiger_role2picklist.picklistvalueid where roleid=? and picklistid=?  and presence=0";
-		 $sortid = $adb->query_result($adb->pquery($sql, array($roleid, $picklistid)),0,'sortid');
 
-		 $sql = "insert into vtiger_role2picklist values(?,?,?,?)";
-		 $adb->pquery($sql, array($roleid, $pick_valueid, $picklistid, $sortid));
- 	}
-} 
+		//To get the max sortid for the non editable picklist and the inserting by increasing the sortid for editable values....
+		$sql ="select max(sortid)+1 as sortid from vtiger_role2picklist left join vtiger_$tableName on vtiger_$tableName.picklist_valueid=vtiger_role2picklist.picklistvalueid where roleid=? and picklistid=? and presence=0";
+		$sortid = $adb->query_result($adb->pquery($sql, array($roleid, $picklistid)),0,'sortid');
+
+		$sql = "insert into vtiger_role2picklist values(?,?,?,?)";
+		$adb->pquery($sql, array($roleid, $pick_valueid, $picklistid, $sortid));
+	}
+}
 
 header("Location:index.php?action=SettingsAjax&module=Settings&directmode=ajax&file=PickList&fld_module=".$fld_module."&roleid=".$roleid);
 ?>

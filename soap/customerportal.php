@@ -30,7 +30,7 @@ $userid = getPortalUserid();
 $user = new Users();
 $current_user = $user->retrieveCurrentUserInfoFromFile($userid);
 
-$log = &LoggerManager::getLogger('customerportal');
+$log = LoggerManager::getLogger('customerportal');
 
 error_reporting(0);
 

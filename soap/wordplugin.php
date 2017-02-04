@@ -6,15 +6,13 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
-
 require_once("config.php");
 require_once('include/logging.php');
 require_once('include/nusoap/nusoap.php');
 require_once('include/database/PearDatabase.php');
 
-$log = &LoggerManager::getLogger('wordplugin');
+$log = LoggerManager::getLogger('wordplugin');
 
 error_reporting(0);
 $NAMESPACE = 'http://www.vtiger.com/products/crm';

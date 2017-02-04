@@ -111,7 +111,6 @@ if(isPermitted('Calendar','index') == 'yes'){
 				$smarty->assign("cbrecord", $cbrecord);
 				$smarty->assign("cbstatus", $cbstatus);
 				$smarty->assign("cbcolor", $cbcolor);
-				$smarty->assign("cblinkdtl", $cblinkdtl);
 				$smarty->assign("activitytype", $cbactivitytype);
 				$smarty->display("ActivityReminderCallback.tpl");
 

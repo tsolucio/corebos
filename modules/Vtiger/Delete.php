@@ -14,7 +14,7 @@ $record = vtlib_purify($_REQUEST['record']);
 $module = vtlib_purify($_REQUEST['module']);
 $return_module = vtlib_purify($_REQUEST['return_module']);
 $return_action = vtlib_purify($_REQUEST['return_action']);
-$return_id = vtlib_purify($_REQUEST['return_id']);
+$return_id = isset($_REQUEST['return_id']) ? vtlib_purify($_REQUEST['return_id']) : '';
 $parenttab = getParentTab();
 $url = getBasic_Advance_SearchURL();
 if (!empty($_REQUEST['start']) and !empty($_REQUEST['return_viewname'])) {

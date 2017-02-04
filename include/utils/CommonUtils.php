@@ -126,9 +126,8 @@ function get_options_array_seperate_key(&$label_list, &$key_list, $selected_key,
  * The values are the display strings.
  */
 function get_select_options_with_id_separate_key(&$label_list, &$key_list, $selected_key, $advsearch = 'false') {
-	global $log;
-	$log->debug("Entering get_select_options_with_id_separate_key(" . $label_list . "," . $key_list . "," . $selected_key . "," . $advsearch . ") method ...");
-	global $app_strings;
+	global $log, $app_strings;
+	$log->debug("Entering get_select_options_with_id_separate_key() method ...");
 	if ($advsearch == 'true')
 		$select_options = "\n<OPTION value=''>--NA--</OPTION>";
 	else
