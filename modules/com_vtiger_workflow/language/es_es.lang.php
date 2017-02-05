@@ -140,6 +140,7 @@ $mod_strings = array(
 'LBL_CHOOSE_DATE' => 'Elige Fecha',
 'LBL_SELECT_MONTH_AND_DAY' => 'Selecciona Mes y Día',
 'LBL_SELECTED_DATES' => 'Fechas seleccionadas',
+'LBL_EXCEEDING_MAXIMUM_LIMIT' => 'Se ha excedido el límite máximo permtido',
 'LBL_NEXT_TRIGGER_TIME' => 'Próxima ejecución',
 'LBL_MESSAGE' => 'Mensaje',
 'UpdateInventoryProducts On Every Save' => 'Actualizar inventario de productos',
