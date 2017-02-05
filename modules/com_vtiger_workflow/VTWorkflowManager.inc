@@ -31,12 +31,12 @@
 
 		function save($workflow){
 			$adb=$this->adb;
-			if(isset($workflow->id)){
+			if(!empty($workflow->id)){
 				$wf=$workflow;
 				$adb->pquery("update com_vtiger_workflows set
 								module_name=?, summary=?, test=?, execution_condition=?, defaultworkflow=?,
 								schtypeid=?, schtime=?, schdayofmonth=?, schdayofweek=?, schannualdates=?,schminuteinterval=? where workflow_id=?",
-					array($wf->moduleName, $wf->description, $wf->test, $wf->executionCondition, $wf->defaultworkflow,
+					array($wf->moduleName, $wf->description, $wf->test, $wf->executionCondition, (isset($wf->defaultworkflow) ? $wf->defaultworkflow : 0),
 						$wf->schtypeid, $wf->schtime, $wf->schdayofmonth, $wf->schdayofweek, $wf->schannualdates, $wf->schminuteinterval,$wf->id));
 			}else{
 				$workflowId = $adb->getUniqueID("com_vtiger_workflows");
@@ -48,19 +48,18 @@
 					$adb->pquery("insert into com_vtiger_workflows
 									(workflow_id, module_name, summary, test, execution_condition, type, defaultworkflow,
 									schtypeid, schtime, schdayofmonth, schdayofweek, schannualdates,schminuteinterval) values (?,?,?,?,?,?,?,?,?,?,?,?,?)",
-						array($workflowId, $wf->moduleName, $wf->description, $wf->test,  $wf->executionCondition, $wf->type, $wf->defaultworkflow,
+						array($workflowId, $wf->moduleName, $wf->description, $wf->test,  $wf->executionCondition, $wf->type, (isset($wf->defaultworkflow) ? $wf->defaultworkflow : 0),
 							$wf->schtypeid, $wf->schtime, $wf->schdayofmonth, $wf->schdayofweek, $wf->schannualdates,$wf->schminuteinterval));
 				} else {
 					$adb->pquery("insert into com_vtiger_workflows
 									(workflow_id, module_name, summary, test, execution_condition, defaultworkflow,
 									schtypeid, schtime, schdayofmonth, schdayofweek, schannualdates,schminuteinterval) values (?,?,?,?,?,?,?,?,?,?,?,?)",
-						array($workflowId, $wf->moduleName, $wf->description, $wf->test,  $wf->executionCondition, $wf->defaultworkflow,
+						array($workflowId, $wf->moduleName, $wf->description, $wf->test,  $wf->executionCondition, (isset($wf->defaultworkflow) ? $wf->defaultworkflow : 0),
 							$wf->schtypeid, $wf->schtime, $wf->schdayofmonth, $wf->schdayofweek, $wf->schannualdates,$wf->schminuteinterval));
 				}
 			}
 			$this->updateNexTriggerTime($workflow);
 		}
-
 
 		function getWorkflows(){
 			$adb=$this->adb;
@@ -75,7 +74,6 @@
 									from com_vtiger_workflows");
 			}
 			return $this->getWorkflowsForResult($result);
-
 		}
 
 		/**
@@ -521,10 +519,10 @@
 
 			$scheduleType = $this->getWFScheduleType();
 			$scheduleMinute= $this->getScheduleMinute();
-			
-            if($scheduleType==Workflow::$SCHEDULED_BY_MINUTE){
-            	$nextTime=date("Y-m-d H:i:s",strtotime("+ $scheduleMinute minutes"));
-            }
+			$nextTime = date('Y-m-d H:i:s');
+			if($scheduleType==Workflow::$SCHEDULED_BY_MINUTE){
+				$nextTime=date("Y-m-d H:i:s",strtotime("+ $scheduleMinute minutes"));
+			}
 
 			if($scheduleType == Workflow::$SCHEDULED_HOURLY) {
 				$nextTime = date("Y-m-d H:i:s",strtotime("+1 hour"));

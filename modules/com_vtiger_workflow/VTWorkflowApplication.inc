@@ -43,6 +43,8 @@ class VTWorkflowApplication{
 	function editWorkflowUrl($id=null){
 		if($id!=null){
 			$idPart="&workflow_id=$id";
+		} else {
+			$idPart = '';
 		}
 		return "index.php?module={$this->name}&action=editworkflow$idPart&return_url=".urlencode($this->returnUrl());
 	}

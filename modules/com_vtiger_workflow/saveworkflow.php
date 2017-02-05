@@ -17,6 +17,7 @@ require_once 'modules/com_vtiger_workflow/VTTaskManager.inc';
 require_once 'modules/com_vtiger_workflow/tasks/VTCreateEventTask.inc';
 
 	function vtWorkflowSave($adb, $request){
+		global $current_language;
 		$util = new VTWorkflowUtils();
 		$module = new VTWorkflowApplication("saveworkflow");
 		$mod = return_module_language($current_language, $module->name);
@@ -30,7 +31,6 @@ require_once 'modules/com_vtiger_workflow/tasks/VTCreateEventTask.inc';
 		$description = from_html($request["description"]);
 		$moduleName = $request["module_name"];
 		$conditions = $request["conditions"];
-		$taskId = $request["task_id"];
 		$saveType=$request["save_type"];
 		$executionCondition = $request['execution_condition'];
 		$schdayofweek = array();
@@ -54,18 +54,17 @@ require_once 'modules/com_vtiger_workflow/tasks/VTCreateEventTask.inc';
 		$schannualdates = DateTimeField::convertToDBFormat($request['schdate']);
 		$schannualdates = json_encode(array($schannualdates));
 		$schminuteinterval=$request['schminuteinterval'];
-		
+
 		$wm = new VTWorkflowManager($adb);
 		if($saveType=='new'){
 			$wf = $wm->newWorkflow($moduleName);
 			$wf->description = $description;
 			$wf->test = $conditions;
-			$wf->taskId = $taskId;
 			$wf->executionConditionAsLabel($executionCondition);
 			$wf->schtypeid = $request['schtypeid'];
 			$wf->schtime = VTCreateEventTask::conv12to24hour($request['schtime']);
-			$wf->schdayofmonth = json_encode($request['schdayofmonth']);
-			$wf->schdayofweek = json_encode($schdayofweek);
+			$wf->schdayofmonth = isset($request['schdayofmonth']) ? json_encode($request['schdayofmonth']) : '';
+			$wf->schdayofweek = isset($schdayofweek) ? json_encode($schdayofweek) : '';
 			$wf->schannualdates = $schannualdates;
 			$wf->schminuteinterval=$schminuteinterval;
 			$wm->save($wf);
@@ -73,12 +72,11 @@ require_once 'modules/com_vtiger_workflow/tasks/VTCreateEventTask.inc';
 			$wf = $wm->retrieve($request["workflow_id"]);
 			$wf->description = $description;
 			$wf->test = $conditions;
-			$wf->taskId = $taskId;
 			$wf->executionConditionAsLabel($executionCondition);
 			$wf->schtypeid = $request['schtypeid'];
 			$wf->schtime = VTCreateEventTask::conv12to24hour($request['schtime']);
-			$wf->schdayofmonth = json_encode($request['schdayofmonth']);
-			$wf->schdayofweek = json_encode($schdayofweek);
+			$wf->schdayofmonth = isset($request['schdayofmonth']) ? json_encode($request['schdayofmonth']) : '';
+			$wf->schdayofweek = isset($schdayofweek) ? json_encode($schdayofweek) : '';
 			$wf->schannualdates = $schannualdates;
 			$wf->schminuteinterval=$schminuteinterval;
 			$wm->save($wf);
@@ -96,8 +94,7 @@ require_once 'modules/com_vtiger_workflow/tasks/VTCreateEventTask.inc';
 		</script>
 		<a href="<?php echo $returnUrl?>">Return</a>
 		<?php
-		
 	}
-	
+
 	vtWorkflowSave($adb, $_REQUEST);
 ?>

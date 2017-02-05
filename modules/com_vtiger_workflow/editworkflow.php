@@ -114,7 +114,7 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 	$smarty->assign("PAGE_TITLE", $mod['LBL_EDIT_WORKFLOW_TITLE']);
 
 	$smarty->assign("workflow", $workflow);
-	$smarty->assign("saveType", isset($workflow->id)?"edit":"new");
+	$smarty->assign("saveType", !empty($workflow->id)?"edit":"new");
 	$smarty->assign("module", $module);
 
 	$smarty->display("{$module->name}/EditWorkflow.tpl");
