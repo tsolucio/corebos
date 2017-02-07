@@ -33,11 +33,14 @@
 <table border=0 cellspacing=0 cellpadding=5 width=100% class="mailSubHeader">
 <tr>
 <td nowrap align=left>{$MOD.LBL_BOOKMARK_LIST} : </span></td>
-<td align=left width=90% >
+<td align=left width=90%>
 	<select id="urllist" name="urllist" style="width: 99%;" class="small" onChange="setSite(this);">
+	{if $DEFAULT_EMBED eq 0}
+		<option disabled selected value></option>
+	{/if}
 	{foreach item=portaldetails key=sno from=$PORTALS}
-	{if $portaldetails.set_def eq 1}
-		<option selected value="{$portaldetails.portalid}">{$portaldetails.portalname}</option>
+	{if $portaldetails.set_def eq 1 && $portadetails.embed eq 1}
+		<option selected value="{$portaldetails.portalid}">{$portaldetails.portalname}</option>-->
 	{else}
 		<option value="{$portaldetails.portalid}">{$portaldetails.portalname}</option>
 	{/if}
@@ -52,4 +55,3 @@
 	</td>
 </tr>
 </table>
-
