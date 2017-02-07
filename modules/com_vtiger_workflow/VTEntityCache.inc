@@ -28,6 +28,7 @@ class VTWorkflowEntity{
 		}
 		$this->data = $data;
 	}
+
 	/**
 	 * Get the data from the entity object as an array.
 	 *

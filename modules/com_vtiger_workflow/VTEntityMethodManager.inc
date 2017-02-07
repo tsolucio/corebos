@@ -8,21 +8,19 @@
  * All Rights Reserved.
  ******************************************************************************/
 require_once("include/events/SqlResultIterator.inc");
+
 class VTEntityMethodManager{
-	
+
 	function __construct($adb){
 		$this->adb = $adb;
 	}
-	
-	
+
 	function addEntityMethod($moduleName, $methodName, $functionPath, $functionName){
 		$adb = $this->adb;
 		$id = $adb->getUniqueId("com_vtiger_workflowtasks_entitymethod");
 		$adb->pquery("insert into com_vtiger_workflowtasks_entitymethod (workflowtasks_entitymethod_id, module_name, function_path, function_name, method_name) values (?,?,?,?,?)", array($id, $moduleName, $functionPath, $functionName, $methodName));
 	}
-	
-	
-	
+
 	function executeMethod($entityData, $methodName){
 		$adb = $this->adb;
 		$moduleName = $entityData->getModuleName();
@@ -35,7 +33,7 @@ class VTEntityMethodManager{
 			$functionName($entityData);
 		}
 	}
-	
+
 	function methodsForModule($moduleName){
 		$adb = $this->adb;
 		$result = $adb->pquery("select method_name from com_vtiger_workflowtasks_entitymethod where module_name=?", array($moduleName));
@@ -46,20 +44,9 @@ class VTEntityMethodManager{
 		}
 		return $methodNames;
 	}
-	/*
-	private function methodExists($object, $methodName){
-		$className = get_class($object);
-		$class = new ReflectionClass($className);
-		$methods = $class->getMethods();
-		foreach($methods as $method){
-			if($method->getName()==$methodName){
-				return true;
-			}
-		}
-		return false;
-	}*/
+
 	/**
-	 * Function to remove workflowtasks entity method 
+	 * Function to remove workflowtasks entity method
 	 * @param <String> Module Name
 	 * @param <String> Entity Method Name.
 	 */
