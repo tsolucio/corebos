@@ -177,7 +177,7 @@ class Vtiger_FieldBasic {
 				Vtiger_Utils::AddColumn($this->table, $this->column, $this->columntype);
 			}
 		}
-		if($result) {
+		if(!empty($result)) {
 			self::log("Creating Field $this->name ... DONE");
 			self::log("Module language mapping for $this->label ... CHECK");
 		} else {
