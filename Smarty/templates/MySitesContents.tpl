@@ -6,7 +6,6 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 <!-- BEGIN: main -->
@@ -16,11 +15,10 @@
 		<table border=0 cellspacing=0 cellpadding=5>
 		<tr>
 			<td align=left><a href="#" onclick="fetchContents('manage');"><img src="{'webmail_settings.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border=0 /></a></td>
-			<td class=small align=left><a href="#" onclick="fetchContents('manage');">{$MOD.LBL_MANAGE_SITES}</a>			     </td>
+			<td class=small align=left><a href="#" onclick="fetchContents('manage');">{$MOD.LBL_MANAGE_SITES}</a></td>
 			<td align="right"><input type="button" name="setdefault" value=" {$MOD.LBL_SET_DEFAULT_BUTTON}  " class="crmbutton small create" onClick="defaultMysites(this);"/>
 		</tr>
 		</table>
-			
 	</td>
 	<td align=right width=10%>
 		<table border=0 cellspacing=0 cellpadding=0>
@@ -40,13 +38,12 @@
 	{/if}
 	{foreach item=portaldetails key=sno from=$PORTALS}
 	{if $portaldetails.set_def eq 1 && $portadetails.embed eq 1}
-		<option selected value="{$portaldetails.portalid}">{$portaldetails.portalname}</option>-->
+		<option selected value="{$portaldetails.portalid}">{$portaldetails.portalname}</option>
 	{else}
 		<option value="{$portaldetails.portalid}">{$portaldetails.portalname}</option>
 	{/if}
-	<!--<option value="{$portaldetails.portalurl}">{$portaldetails.portalname}</option>-->
 	{/foreach}
-	</select>	
+	</select>
 </td>
 </tr>
 <tr>

@@ -1,15 +1,12 @@
 <?php
-
 /*********************************************************************************
-* The contents of this file are subject to the vtiger CRM Public License Version 1.0
-* ("License");
-You may not use this file except in compliance with the License
-* The Original Code is:  vtiger CRM Open Source
-* The Initial Developer of the Original Code is vtiger.
-* Portions created by vtiger are Copyright (C) vtiger.
-* All Rights Reserved.
-********************************************************************************/
-
+ ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
+ * All Rights Reserved.
+ ********************************************************************************/
 require_once('Smarty_setup.php');
 global $theme;
 $theme_path="themes/".$theme."/";
@@ -24,6 +21,7 @@ $result=$adb->pquery($query, array());
 $default_url = $adb->query_result($result,0,'portalurl');
 $no_of_portals=$adb->num_rows($result);
 $portal_info=array();
+$def_ault_embed = '';
 //added as an enhancement to set default
 ?>
 <script type="text/javascript">
@@ -59,9 +57,8 @@ for ($i=0 ; $i<$no_of_portals; $i++)
 ?>
 </script>
 <?php
-//this code is redundant to code in line 24
-//if(empty($def_ault))
-	//$def_ault = $adb->query_result($result,0,'portalurl');
+if(empty($def_ault))
+	$def_ault = $default_url;
 $smarty = new vtigerCRM_Smarty;
 $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH", $image_path);
