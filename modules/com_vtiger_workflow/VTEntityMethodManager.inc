@@ -17,8 +17,14 @@ class VTEntityMethodManager{
 
 	function addEntityMethod($moduleName, $methodName, $functionPath, $functionName){
 		$adb = $this->adb;
-		$id = $adb->getUniqueId("com_vtiger_workflowtasks_entitymethod");
-		$adb->pquery("insert into com_vtiger_workflowtasks_entitymethod (workflowtasks_entitymethod_id, module_name, function_path, function_name, method_name) values (?,?,?,?,?)", array($id, $moduleName, $functionPath, $functionName, $methodName));
+		$rs = $adb->pquery('select count(*)
+			from com_vtiger_workflowtasks_entitymethod
+			where module_name=? and function_path=? and function_name=? and method_name=?');
+		$cnt = $adb->query_result($rs,0,0);
+		if ($cnt==0) {
+			$id = $adb->getUniqueId("com_vtiger_workflowtasks_entitymethod");
+			$adb->pquery("insert into com_vtiger_workflowtasks_entitymethod (workflowtasks_entitymethod_id, module_name, function_path, function_name, method_name) values (?,?,?,?,?)", array($id, $moduleName, $functionPath, $functionName, $methodName));
+		}
 	}
 
 	function executeMethod($entityData, $methodName){
