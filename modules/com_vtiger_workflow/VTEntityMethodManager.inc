@@ -19,7 +19,8 @@ class VTEntityMethodManager{
 		$adb = $this->adb;
 		$rs = $adb->pquery('select count(*)
 			from com_vtiger_workflowtasks_entitymethod
-			where module_name=? and function_path=? and function_name=? and method_name=?');
+			where module_name=? and function_path=? and function_name=? and method_name=?',
+			array($moduleName, $functionPath, $functionName, $methodName));
 		$cnt = $adb->query_result($rs,0,0);
 		if ($cnt==0) {
 			$id = $adb->getUniqueId("com_vtiger_workflowtasks_entitymethod");
