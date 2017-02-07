@@ -79,12 +79,14 @@ function setSite(oUrllist) {
 	//var url = oUrllist.options[oUrllist.options.selectedIndex].value;
 	var id = oUrllist.options[oUrllist.options.selectedIndex].value;
 	var url = mysitesArray[id].url;
+	document.getElementById('mysites_noload_message').style.display = 'none';
 
 	//many sites do not allow embedded display
 	if (mysitesArray[id].embed == 1){
 		document.getElementById('locatesite').src = url;
 	} else {
 		document.getElementById('locatesite').src = '';
+		document.getElementById('mysites_noload_message').style.display = 'block';
 		window.open(url);
 	}
 }

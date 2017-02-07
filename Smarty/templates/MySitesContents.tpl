@@ -37,7 +37,7 @@
 		<option disabled selected value></option>
 	{/if}
 	{foreach item=portaldetails key=sno from=$PORTALS}
-	{if $portaldetails.set_def eq 1 && $portadetails.embed eq 1}
+	{if $portaldetails.set_def eq '1' && $portadetails.embed eq 1}
 		<option selected value="{$portaldetails.portalid}">{$portaldetails.portalname}</option>
 	{else}
 		<option value="{$portaldetails.portalid}">{$portaldetails.portalname}</option>
@@ -48,6 +48,11 @@
 </tr>
 <tr>
 	<td bgcolor="#ffffff" colspan=2>
+		<div id="mysites_noload_message" style="display: none;">
+		{assign var='ERROR_MESSAGE' value='ERR_NOT_PERMITTED_LOAD'|@getTranslatedString:'Portal'}
+		{assign var='ERROR_MESSAGE_CLASS' value='cb-alert-info'}
+		{include file="applicationmessage.tpl"}
+		</div>
 		<iframe id="locatesite" src="{$DEFAULT_URL}" frameborder="0" height="1100" scrolling="auto" width="100%"></iframe>
 	</td>
 </tr>
