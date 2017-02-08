@@ -73,6 +73,10 @@ if ($_REQUEST['mode'] == "event_drop" || $_REQUEST['mode'] == "event_resize") {
             if ($minute_drop != 0) $date->modify($m.abs($minute_drop).' minutes');
             $new_date_start = $date->format('Y-m-d');
             $new_time_start = $date->format('H:i:s');
+			if ($new_date_start.' '.$new_time_start>date('Y-m-d H:i:s')) {
+				// event in the future so we make sure the reminder is set to send
+				$adb->pquery('update vtiger_activity_reminder set reminder_sent=0 where activity_id=?',array($focus->id));
+			}
         }
         $new_time_start_time = $date->format('U');
         
