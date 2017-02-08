@@ -13,8 +13,10 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
-global $adb,$current_user,$singlepane_view;
+global $adb,$current_user;
 $formodule = vtlib_purify($_REQUEST['formodule']);
+$singlepane_view = GlobalVariable::getVariable('Application_Single_Pane_View', 0, $formodule);
+$singlepane_view = empty($singlepane_view) ? 'false' : 'true';
 if (file_exists('tabdata.php') && (filesize('tabdata.php') != 0)) {
 	include('tabdata.php');
 }
@@ -54,12 +56,14 @@ foreach ($rls as $relid => $relinfo) {
 				"'tbl_{$formodule}_{$labelnospace}','{$formodule}_{$labelnospace}');document.location='#tbl_".$formodule.'_'.$labelnospace.'\';"';
 		echo '<td><a title="'.$goto.'" href="javascript:;" '.$onclick.'>'.getTranslatedString($label,$module).'</a></td>';
 	} else {
-		echo '<td><a title="'.$goto.'" href="index.php?action=CallRelatedList&module='.$formodule.'&record='.$forrecord.'&selected_header='.$label.'&relation_id='.$relid.'">'.getTranslatedString($label,$module).'</a></td>';
+		echo '<td><a title="'.$goto.'" href="index.php?action=CallRelatedList&module='.$formodule.'&record='.$forrecord.'&selected_header='.$label.'&relation_id='.$relid.'#tbl_'.$formodule.'_'.$labelnospace.'">'.getTranslatedString($label,$module).'</a></td>';
 	}
 	if ($module=='Emails') {
 		echo '<td><img align="absmiddle" width="20px" title="'.$add.'" src="themes/softed/images/btnL3Add.gif" onclick="fnvshobj(this,\'sendmail_cont\');sendmail(\''.$formodule."',$forrecord);".'"></td>';
+	} elseif ($module=='Calendar') {
+		echo '<td><img align="absmiddle" width="20px" title="'.$add.'" src="themes/softed/images/btnL3Add.gif" onclick="document.location=\'index.php?module=Calendar4You&action=EventEditView&createmode=link&return_id='.$forrecord.'&return_action=DetailView&return_module='.$formodule.'&activity_mode=Task&cbfromid='.$forrecord.'\'"></td>';
 	} else {
-		echo '<td><img align="absmiddle" width="20px" title="'.$add.'" src="themes/softed/images/btnL3Add.gif" onclick="document.location=\'index.php?module='.$module.'&action=EditView&createmode=link&return_id='.$forrecord.'&return_module='.$formodule.'&cbfromid='.$forrecord.'\'"></td>';
+		echo '<td><img align="absmiddle" width="20px" title="'.$add.'" src="themes/softed/images/btnL3Add.gif" onclick="document.location=\'index.php?module='.$module.'&action=EditView&createmode=link&return_id='.$forrecord.'&return_action=DetailView&return_module='.$formodule.'&cbfromid='.$forrecord.'\'"></td>';
 	}
 	echo '</tr>';
 }
