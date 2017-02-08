@@ -2003,10 +2003,14 @@ class CRMEntity {
 			$relconds = array();
 			while ($depflds = $this->db->fetch_array($dependentFieldSql)) {
 			$dependentTable = $depflds['tablename'];
-			if(!is_array($other->related_tables)){
-				$otherRelatedTable = array($other->related_tables);
-			}else {
-				$otherRelatedTable = $other->related_tables;
+			if (isset($other->related_tables)) {
+				if(!is_array($other->related_tables)){
+					$otherRelatedTable = array($other->related_tables);
+				}else {
+					$otherRelatedTable = $other->related_tables;
+				}
+			} else {
+				$otherRelatedTable = '';
 			}
 			if ($dependentTable!=$other->table_name and !in_array($dependentTable, $otherRelatedTable)) {
 				$relidx = isset($other->tab_name_index[$dependentTable]) ? $other->tab_name_index[$dependentTable] : $other->table_index;

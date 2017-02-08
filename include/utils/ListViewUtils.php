@@ -1373,7 +1373,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 			else
 				$temp_val = "<font color='red'>" . $app_strings['LBL_NOT_ACCESSIBLE'] . "</font>";
 		}
-		$value = ($current_module_strings[$temp_val] != '') ? $current_module_strings[$temp_val] : (($app_strings[$temp_val] != '') ? ($app_strings[$temp_val]) : $temp_val);
+		$value = (!empty($current_module_strings[$temp_val])) ? $current_module_strings[$temp_val] : ((!empty($app_strings[$temp_val])) ? ($app_strings[$temp_val]) : $temp_val);
 		if ($value != "<font color='red'>" . $app_strings['LBL_NOT_ACCESSIBLE'] . "</font>") {
 			$value = textlength_check($value);
 		}

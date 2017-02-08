@@ -314,7 +314,7 @@ else
 		}
 	}elseif($currentModule == 'Products' && !empty($_REQUEST['record_id']) && ($popuptype == 'inventory_prod' || $popuptype == 'inventory_prod_po'))
 		$where_relquery .=" and vtiger_products.discontinued <> 0 AND (vtiger_products.productid IN (SELECT crmid FROM vtiger_seproductsrel WHERE setype='Products' AND productid=".$adb->sql_escape_string($_REQUEST['record_id'])."))";
-	elseif($currentModule == 'Products' && $_REQUEST['return_module'] != 'Products')
+	elseif($currentModule == 'Products' && (empty($_REQUEST['return_module']) || $_REQUEST['return_module'] != 'Products'))
 		$where_relquery .=" and vtiger_products.discontinued <> 0";
 
 	if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] == 'Products' && $currentModule == 'Products' && $_REQUEST['recordid']){
