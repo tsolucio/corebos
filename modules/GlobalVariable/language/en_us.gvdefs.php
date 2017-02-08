@@ -224,6 +224,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Number of rows per page in list views',
 ),
+'Application_ListView_Default_Sort_Order' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'string',
+	'category' => 'Application',
+	'values' => 'ASC | DESC',
+	'definition' => 'Initial sort order for records when clicking on list view header. The default is ASC',
+),
 'Application_Upload_MaxSize' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Integer',

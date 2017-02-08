@@ -147,13 +147,14 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 				//Avoid if and else check for every list field for arrow image and change order
 				$change_sorder = array('ASC' => 'DESC', 'DESC' => 'ASC');
 				$arrow_gif = array('ASC' => 'arrow_down.gif', 'DESC' => 'arrow_up.gif');
+				$default_sort_order = GlobalVariable::getVariable('Application_ListView_Default_Sort_Order','ASC',$module);
 				foreach ($focus->list_fields[$name] as $tab => $col) {
 					if (in_array($col, $focus->sortby_fields)) {
 						if ($order_by == $col) {
 							$temp_sorder = $change_sorder[$sorder];
 							$arrow = "&nbsp;<img src ='" . vtiger_imageurl($arrow_gif[$sorder], $theme) . "' border='0'>";
 						} else {
-							$temp_sorder = 'ASC';
+							$temp_sorder = $default_sort_order;
 						}
 						$lbl_name = getTranslatedString(decode_html($name), $module);
 						//added to display vtiger_currency symbol in listview header
