@@ -36,7 +36,6 @@ $mod_strings = Array(
 'LBL_MODULE_TITLE'=>'Verkoopkansen: Home',
 'LBL_SEARCH_FORM_TITLE'=>'Verkoopkansen zoeken',
 'LBL_LIST_FORM_TITLE'=>'Verkoopkansenlijst',
-'LBL_OPPORTUNITY_NAME'=>'Naam verkoopkans:',
 'LBL_OPPORTUNITY'=>'Verkoopkansen:',
 'LBL_NAME'=>'Naam verkoopkans',
 'LBL_INVITEE'=>'Contacten',
