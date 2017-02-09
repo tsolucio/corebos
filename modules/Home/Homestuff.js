@@ -818,3 +818,18 @@ function getRandomColor() {
 	});
 }
 
+function firsttime_login_welcome(popuplayer,popupcontent) {
+	popuplayer.style.zIndex = parseInt((+new Date())/1000)+5; // To ensure z-Index is higher than the popup block
+	popuplayer.style.display = 'block';
+	jQuery.ajax({
+		method: 'POST',
+		url: 'index.php?module=Home&action=HomeAjax&file=welcome'
+	}).done(function (response) {
+		if (response=='') {
+			popuplayer.style.display = 'none';
+		} else {
+			popupcontent.innerHTML = response;
+			vtlib_executeJavascriptInElement(popupcontent);
+		}
+	});
+}

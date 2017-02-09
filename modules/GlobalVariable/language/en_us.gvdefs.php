@@ -770,6 +770,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'LDAP | AD | SQL',
 	'definition' => 'Login authentication type. Use the default SQL to login using the passwords stored in the database',
 ),
+'Application_FirstTimeLogin_Template' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'User based template string',
+	'definition' => 'HTML current user based workflow template that will be shown to user on first successful login',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/en_us.gvdefs.*.php',GLOB_BRACE) as $tcode) {

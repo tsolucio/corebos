@@ -132,6 +132,7 @@ $mod_strings = Array(
 'LBL_NO_WIDGETS_HIDDEN'=>'No hay widgets escondidos',
 'UpdateExchangeRate' => 'Actualizar Cotización Moneda',
 'LBL_HOME_ADDWINDOW' => 'Añadir Ventana',
+'LBL_GETTING_STARTED' => 'Empezando',
 );
 
 ?>
