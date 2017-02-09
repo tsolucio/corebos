@@ -355,13 +355,14 @@ class VTScheduledReport extends Reports {
 	}
 
 	public static function runScheduledReports($adb) {
+		global $default_language;
 		require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 		$util = new VTWorkflowUtils();
 		$adminUser = $util->adminUser();
 
 		global $currentModule, $current_language;
 		if(empty($currentModule)) $currentModule = 'Reports';
-		if(empty($current_language)) $current_language = 'en_us';
+		if(empty($current_language)) $current_language = $default_language;
 
 		$scheduledReports = self::getScheduledReports($adb, $adminUser);
 		foreach($scheduledReports as $scheduledReport) {
