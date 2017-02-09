@@ -39,7 +39,7 @@ class VTSimpleTemplateOnData extends VTSimpleTemplate {
 	}
 
 	function get($fieldName){
-		return $this->data[$fieldName];
+		return isset($this->data[$fieldName]) ? $this->data[$fieldName] : '';
 	}
 
 	function getId(){
