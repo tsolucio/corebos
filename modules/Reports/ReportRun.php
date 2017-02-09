@@ -734,7 +734,14 @@ class ReportRun extends CRMEntity {
 								$fieldSqls[] = $columnSql.$comparatorValue;
 							}
 							$fieldvalue = ' ('. implode(' OR ', $fieldSqls).') ';
-							} else {
+						//Commented, on test works, but is not necessary (for translations on picklist Values)
+//						} elseif(isPicklistUIType($fieldInfo['uitype'])) {
+//							$cmp = $this->getAdvComparator($comparator,trim($value),$datatype);
+//							if(!isValueInPicklist($value,$fieldInfo['fieldname']))
+//								$fieldvalue = $fieldInfo['tablename'].'.'.$fieldInfo['columnname'].$cmp;
+//							else
+//								$fieldvalue = $fieldInfo['tablename'].'.'.$fieldInfo['columnname'].$cmp;
+						} else {
 							$fieldvalue = $selectedfields[0].".".$selectedfields[1].$this->getAdvComparator($comparator,trim($value),$datatype);
 						}
 
@@ -1826,6 +1833,7 @@ class ReportRun extends CRMEntity {
 		$stdfilterlist = $this->getStdFilterList($reportid);
 		$columnstotallist = $this->getColumnsTotal($reportid,$columnlist);
 		$advfiltersql = $this->getAdvFilterSql($reportid);
+
 
 		$this->totallist = $columnstotallist;
 		$tab_id = getTabid($this->primarymodule);

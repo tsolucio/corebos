@@ -48,6 +48,15 @@ function isReferenceUIType($uitype) {
 	return false;
 }
 
+function isPicklistUIType($uitype) {
+	static $options = array('15','16','1613','1614','33','3313','3314','1024');
+
+	if(in_array($uitype, $options)) {
+		return true;
+	}
+	return false;
+}
+
 /**
  *
  * @global Users $current_user
