@@ -259,6 +259,13 @@ function getSearchListViewHeader($focus, $module, $sort_qry = '', $sorder = '', 
 		'&forfield=' . (isset($_REQUEST['forfield']) ? vtlib_purify($_REQUEST['forfield']) : '').
 		'&srcmodule=' . (isset($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : '').
 		'&forrecord=' . (isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : '');
+	//Get custom paramaters to pass_url
+	if(isset($_REQUEST['cbcustompopupinfo']) && $_REQUEST['cbcustompopupinfo'] != ''){
+		$cbcustompopupinfo = explode(';',$_REQUEST['cbcustompopupinfo']);
+		foreach ($cbcustompopupinfo as $param_name) {
+			$pass_url .= '&'.$param_name.'=' . (isset($_REQUEST[$param_name]) ? vtlib_purify($_REQUEST[$param_name]) : '');
+		}
+	}
 
 	$bmapname = $module.'_ListColumns';
 	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
@@ -2878,6 +2885,13 @@ function AlphabeticalSearch($module, $action, $fieldname, $query, $type, $popupt
 		'&srcmodule=' . (isset($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : '').
 		'&forrecord=' . (isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : '');
 
+	//Get custom paramaters to returnvalue
+	if(isset($_REQUEST['cbcustompopupinfo']) && $_REQUEST['cbcustompopupinfo'] != ''){
+		$cbcustompopupinfo = explode(';',$_REQUEST['cbcustompopupinfo']);
+		foreach ($cbcustompopupinfo as $param_name) {
+			$returnvalue .= '&'.$param_name.'=' . (isset($_REQUEST[$param_name]) ? vtlib_purify($_REQUEST[$param_name]) : '');
+		}
+	}
 	$list = '';
 	for ($var = 'A', $i = 1; $i <= 26; $i++, $var++)
 		$list .= '<td class="searchAlph" id="alpha_' . $i . '" align="center" onClick=\'alphabetic("' . $module . '","gname=' . $groupid . '&query=' . $query . '&search_field=' . $fieldname . '&searchtype=BasicSearch&operator=s&type=alpbt&search_text=' . $var . $flag . $popuptypevalue . $returnvalue . $append_url . '","alpha_' . $i . '")\'>' . $var . '</td>';
@@ -3181,6 +3195,14 @@ function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $ac
 	}
 	if ($module == 'Calendar' && $action_val != 'index') //added for the All link from the homepage -- ticket 5211
 		$url_string .= isset($_REQUEST['from_homepage']) ? "&from_homepage=" . vtlib_purify($_REQUEST['from_homepage']) : '';
+
+	//Get custom paramaters to url_string
+	if(isset($_REQUEST['cbcustompopupinfo']) && $_REQUEST['cbcustompopupinfo'] != ''){
+		$cbcustompopupinfo = explode(';',$_REQUEST['cbcustompopupinfo']);
+		foreach ($cbcustompopupinfo as $param_name) {
+			$url_string .= '&'.$param_name.'=' . (isset($_REQUEST[$param_name]) ? vtlib_purify($_REQUEST[$param_name]) : '');
+		}
+	}
 
 	if (($navigation_array['prev']) != 0) {
 		if ($module == 'Calendar' && $action_val == 'index') {
@@ -4089,6 +4111,14 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '
 	}
 	if ($module == 'Calendar' && $action_val != 'index') //added for the All link from the homepage -- ticket 5211
 		$url_string .= isset($_REQUEST['from_homepage']) ? "&from_homepage=" . vtlib_purify($_REQUEST['from_homepage']) : '';
+
+	//Get custom paramaters to url_string
+	if(isset($_REQUEST['cbcustompopupinfo']) && $_REQUEST['cbcustompopupinfo'] != ''){
+		$cbcustompopupinfo = explode(';',$_REQUEST['cbcustompopupinfo']);
+		foreach ($cbcustompopupinfo as $param_name) {
+			$url_string .= '&'.$param_name.'=' . (isset($_REQUEST[$param_name]) ? vtlib_purify($_REQUEST[$param_name]) : '');
+		}
+	}
 
 	if (($navigation_array['prev']) != 0) {
 		if ($module == 'Calendar' && $action_val == 'index') {

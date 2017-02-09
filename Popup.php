@@ -488,6 +488,12 @@ $smarty->assign("VALIDATION_DATA_FIELDNAME",$validationArray['fieldname']);
 $smarty->assign("VALIDATION_DATA_FIELDDATATYPE",$validationArray['datatype']);
 $smarty->assign("VALIDATION_DATA_FIELDLABEL",$validationArray['fieldlabel']);
 
+if(isset($_REQUEST['cbcustompopupinfo'])){
+	$cbcustompopupinfo = explode(';', $_REQUEST['cbcustompopupinfo']);
+	$smarty->assign("CBCUSTOMPOPUPINFO_ARRAY",$cbcustompopupinfo);
+	$smarty->assign("CBCUSTOMPOPUPINFO",$_REQUEST['cbcustompopupinfo']);
+}
+
 if(isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '')
 	$smarty->display("PopupContents.tpl");
 else
