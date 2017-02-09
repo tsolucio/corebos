@@ -6,7 +6,6 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 <script type="text/javascript" src="include/js/smoothscroll.js"></script>
@@ -36,9 +35,9 @@ DIV.fixedLay {
 <br>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tbody><tr>
-        <td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-        <td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
-        <br>
+	<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
+	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
+	<br>
 
 	<div align=center>
 			{include file="SetMenu.tpl"}
@@ -57,9 +56,9 @@ DIV.fixedLay {
 				<br>
 				<div class='helpmessagebox' style='margin-bottom: 4px;'>
 					<b style='color: red;'>{$APP.NOTE}</b> {$MOD.LBL_SHARING_ACCESS_HELPNOTE}
-				</div>				
-			  	<!-- GLOBAL ACCESS MODULE -->
-		  		<div id="globaldiv">
+				</div>
+				<!-- GLOBAL ACCESS MODULE -->
+				<div id="globaldiv">
 				<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 				<form action="index.php" method="post" name="new" id="orgSharingform" onsubmit="VtigerJS_DialogBox.block();">
 				<input type="hidden" name="module" value="Users">
@@ -68,13 +67,13 @@ DIV.fixedLay {
 				<tr>
 					<td class="big"><strong>1. {$CMOD.LBL_GLOBAL_ACCESS_PRIVILEGES}</strong></td>
 					<td class="small" align=right>
-						<input class="crmButton small cancel" title="{$CMOD.LBL_RECALCULATE_BUTTON}"  type="button" name="recalculate" value="{$CMOD.LBL_RECALCULATE_BUTTON}" onclick="return freezeBackground();">	
+						<input class="crmButton small cancel" title="{$CMOD.LBL_RECALCULATE_BUTTON}"  type="button" name="recalculate" value="{$CMOD.LBL_RECALCULATE_BUTTON}" onclick="return freezeBackground();">
 	&nbsp;<input class="crmButton small edit" type="submit" name="Edit" value="{$CMOD.LBL_CHANGE} {$CMOD.LBL_PRIVILEGES}" ></td>
 					</td>
 				</tr>
 				</table>
 				<table cellspacing="0" cellpadding="5" class="listTable" width="100%">
-				{foreach item=module from=$DEFAULT_SHARING}	
+				{foreach item=module from=$DEFAULT_SHARING}
 				  {assign var="MODULELABEL" value=$module.0|getTranslatedString:$module.0}
                   <tr>
                     <td width="20%" class="colHeader small" nowrap>{$MODULELABEL}</td>
@@ -85,18 +84,17 @@ DIV.fixedLay {
 						<img src="{'private.gif'|@vtiger_imageurl:$THEME}" align="absmiddle">
 					{/if}
 						{$CMOD[$module.1]}
-		    		</td>
+					</td>
                     <td width="50%" class="listTableRow small" nowrap>{$module.2}</td>
                   </tr>
-		  		{/foreach}
-		</form>	
+				{/foreach}
+		</form>
               </table>
-		</div>	
+		</div>
 		  <!-- END OF GLOBAL -->
 				<br><br>
 		  <!-- Custom Access Module Display Table -->
 		  <div id="customdiv">
-			
 				<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 				<tr>
 					<td class="big"><strong>2. {$CMOD.LBL_CUSTOM_ACCESS_PRIVILEGES}</strong></td>
@@ -138,7 +136,7 @@ DIV.fixedLay {
 				<a href="javascript:void(0);" onClick="callEditDiv(this,'{$modulename}','edit','{$elements.0}')"><img src="{'editfield.gif'|@vtiger_imageurl:$THEME}" title='edit' align="absmiddle" border=0 style="padding-top:3px;"></a>&nbsp;|<a href='javascript:confirmdelete("index.php?module=Users&action=DeleteSharingRule&shareid={$elements.0}")'><img src="{'delete.gif'|@vtiger_imageurl:$THEME}" title='del' align="absmiddle" border=0></a></td>
                         </tr>
 
-                     {/foreach} 
+                     {/foreach}
                     </table>
 	<!-- End of Module Display -->
 	<!-- Start FOR NO DATA -->
@@ -158,38 +156,34 @@ DIV.fixedLay {
 			<table width="100%" cellpadding="5" cellspacing="0">
 			<tr>
 			<td colspan="2"  style="padding:20px ;" align="center" class="small">
-			   {$CMOD.LBL_CUSTOM_ACCESS_MESG} 
+			   {$CMOD.LBL_CUSTOM_ACCESS_MESG}
 			   <a href="javascript:void(0);" onClick="callEditDiv(this,'{$modulename}','create','')">{$CMOD.LNK_CLICK_HERE}</a>
 			   {$CMOD.LBL_CREATE_RULE_MESG}
 			</td>
 			</tr>
 		    </table>
-		    </table>	
+		    </table>
 			<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 			<tr><td>&nbsp;</td></tr>
 			</table>
 		    {/if}
-		    {/foreach}			
+		    {/foreach}
 		   </td></tr></table>
 				<br>
-		   </div>	
+		   </div>
 				<!-- Edit Button -->
 				<table border=0 cellspacing=0 cellpadding=5 width=100% >
-				<tr><td class="small" ><div align=right><a href="#top">{$MOD.LBL_SCROLL}</a></div></td></tr>				</table>
-		 </td>
-                  </tr>
-				
-                </table>
-			
-			
-			
+				<tr><td class="small" ><div align=right><a href="#top">{$MOD.LBL_SCROLL}</a></div></td></tr>
+				</table>
+		</td>
+		</tr>
+		</table>
 			</td>
 			</tr>
 			</table>
 		</td>
 	</tr>
 	</table>
-		
 	</div>
 </td>
         <td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
@@ -216,34 +210,31 @@ DIV.fixedLay {
 <div id="divId" class="veil_new" style="position:absolute;width:100%;display:none;top:0px;left:0px;">
 <table border="5" cellpadding="0" cellspacing="0" align="center" style="vertical-align:middle;width:100%;height:100%;">
 <tbody><tr>
-		<td class="big" align="center">
-		    <img src="{'plsWaitAnimated.gif'|@vtiger_imageurl:$THEME}">
-		</td>
-	</tr>
-</tbody>
+	<td class="big" align="center">
+		<img src="{'plsWaitAnimated.gif'|@vtiger_imageurl:$THEME}">
+	</td>
+</tr></tbody>
 </table>
 </div>
-
 
 <script>
 function callEditDiv(obj,modulename,mode,id)
 	{ldelim}
 		document.getElementById("status").style.display="inline";
 		jQuery.ajax({ldelim}
-				method: 'POST',
-				url: 'index.php?module=Settings&action=SettingsAjax&orgajax=true&mode='+mode+'&sharing_module='+modulename+'&shareid='+id,
-	{rdelim}).done(function (response) {ldelim}
-								document.getElementById("status").style.display="none";
-								document.getElementById("tempdiv").innerHTML=response;
-								fnvshobj(obj,"tempdiv");
-								if(mode == 'edit')
-								{ldelim}
-										setTimeout("",10000);
-										var related = document.getElementById('rel_module_lists').value;
-										fnwriteRules(modulename,related);
-								{rdelim}
-				{rdelim}
-			);
+			method: 'POST',
+			url: 'index.php?module=Settings&action=SettingsAjax&orgajax=true&mode='+mode+'&sharing_module='+modulename+'&shareid='+id,
+		{rdelim}).done(function (response) {ldelim}
+			document.getElementById("status").style.display="none";
+			document.getElementById("tempdiv").innerHTML=response;
+			fnvshobj(obj,"tempdiv");
+			if(mode == 'edit')
+			{ldelim}
+				setTimeout("",10000);
+				var related = document.getElementById('rel_module_lists').value;
+				fnwriteRules(modulename,related);
+			{rdelim}
+		{rdelim});
 	{rdelim}
 
 function fnwriteRules(module,related)
@@ -260,7 +251,7 @@ function fnwriteRules(module,related)
 			relatedtag = document.getElementById(modulename);
 			relatedselect = relatedtag.options[relatedtag.selectedIndex].text;
 			relatedstring += modulelists[i]+':'+relatedselect+' ';
-		{rdelim}	
+		{rdelim}
 		var tagName = document.getElementById(module+"_share");
 		var tagName2 = document.getElementById(module+"_access");
 		var tagName3 = document.getElementById('share_memberType');
@@ -272,13 +263,12 @@ function fnwriteRules(module,related)
 
 		if(module == '{$APP.Accounts}')
 		{ldelim}
-			module = '{$APP.Accounts} & {$APP.Contacts}';	
+			module = '{$APP.Accounts} & {$APP.Contacts}';
 		{rdelim}
 
 		soucre.innerHTML = module +" {$APP.LBL_LIST_OF} <b>\"" + select1 + "\"</b> {$CMOD.LBL_CAN_BE_ACCESSED} <b>\"" +select2 + "\"</b> {$CMOD.LBL_IN_PERMISSION} "+select3;
 		soucre1.innerHTML = "<b>{$CMOD.LBL_RELATED_MODULE_RIGHTS}</b> " + relatedstring;
 {rdelim}
-
 
 		function confirmdelete(url)
 		{ldelim}
@@ -287,12 +277,12 @@ function fnwriteRules(module,related)
 				document.location.href=url;
 			{rdelim}
 		{rdelim}
-	
+
 	function disableStyle(id)
 	{ldelim}
 			document.getElementById('orgSharingform').action.value = 'RecalculateSharingRules';
 			document.getElementById('orgSharingform').submit();
- 			document.getElementById(id).style.display = 'none';
+			document.getElementById(id).style.display = 'none';
 
 			if(browser_ie && (gBrowserAgent.indexOf("msie 7.")!=-1))//for IE 7
                         {ldelim}
