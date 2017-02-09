@@ -234,6 +234,7 @@ class LoginHistory {
 
 		if ($recordCount === 0) {
 			$firstTimeLoginStatus = true;
+			cbEventHandler::do_action('corebos.audit.firsttime.login',array($user_name, 'Users', 'FirstTimeLogin', $user_name, date("Y-m-d H:i:s")));
 		} else {
 			if ($recordCount == 1) { // Only first time?
 				$row = $adb->fetch_array($result);
