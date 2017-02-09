@@ -212,6 +212,14 @@ function set_focus() {ldelim}
 								<input name="forfield" id="forfield" type="hidden" value="{if isset($smarty.request.forfield)}{$smarty.request.forfield|@vtlib_purify}{/if}">
 								<input name="srcmodule" id="srcmodule" type="hidden" value="{if isset($smarty.request.srcmodule)}{$smarty.request.srcmodule|@vtlib_purify}{/if}">
 								<input name="forrecord" id="forrecord" type="hidden" value="{if isset($smarty.request.forrecord)}{$smarty.request.forrecord|@vtlib_purify}{/if}">
+								{if isset($CBCUSTOMPOPUPINFO_ARRAY)}
+									{foreach from=$CBCUSTOMPOPUPINFO_ARRAY item=param}
+										<input name="{$param}" id="{$param}" type="hidden" value="{if isset($smarty.request.$param)}{$smarty.request.$param|@vtlib_purify}{/if}">
+									{/foreach}
+									{if isset($CBCUSTOMPOPUPINFO)}
+										<input name="cbcustompopupinfo" id="cbcustompopupinfo" type="hidden" value="{$CBCUSTOMPOPUPINFO}">
+									{/if}
+								{/if}
 								{if !empty($smarty.request.currencyid)}
 									<input type="hidden" name="currencyid" id="currencyid" value="{$smarty.request.currencyid|@vtlib_purify}">
 								{/if}
@@ -385,6 +393,14 @@ function gethiddenelements()
 	if(document.getElementById('currencyid') != null && document.getElementById('currencyid').value != '')
 		urlstring +='&currencyid='+document.getElementById('currencyid').value;
 
+	if(document.getElementById('cbcustompopupinfo') != null && document.getElementById('cbcustompopupinfo').value != ''){ldelim}
+		var cbcustompopupinfo = document.getElementById('cbcustompopupinfo').value;
+		let arr = cbcustompopupinfo.split(";");
+		for(const value of arr){ldelim}
+			if(document.getElementById(value) != null && document.getElementById(value).value != '')
+				urlstring +='&'+value+'='+document.getElementById(value).value;
+		{rdelim}
+	{rdelim}
 	var return_module = document.getElementById('return_module').value;
 	if(return_module != '')
 		urlstring += '&return_module='+return_module;
@@ -439,6 +455,7 @@ function getListViewSorted_js(module,url)
 {ldelim}
 	gsorder=url;
 	var urlstring ="module="+module+"&action="+module+"Ajax&file=Popup&ajax=true"+url;
+	urlstring +=gethiddenelements();
 	record_id = document.basicSearch.record_id.value;
 	if(record_id!='')
 		urlstring += '&record_id='+record_id;
