@@ -289,7 +289,7 @@ function email_validate(oform,mode)
 	}
 	if(oform.subject.value.replace(/^\s+/g, '').replace(/\s+$/g, '').length==0)
 	{
-		if(email_sub = prompt('You did not specify a subject from this email. If you would like to provide one, please type it now','(no-Subject)'))
+		if(email_sub = prompt(alert_arr.ERR_EMAIL_WITH_NO_SUBJECT,alert_arr.EMAIL_SIN_ASUNTO))
 		{
 			oform.subject.value = email_sub;
 		}else

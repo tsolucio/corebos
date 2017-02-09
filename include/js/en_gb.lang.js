@@ -357,5 +357,7 @@ var alert_arr = {
 	'ERR_INVALID_YEAR'  :  'Please enter a valid 4 digit year.',
 	'ERR_INVALID_DATE'  :  'Please enter a valid date.',
 	'ERR_INVALID_HOUR'  :  'Please enter a valid hour.',
-	'ERR_INVALID_TIME'  :  'Please enter a valid time.'
+	'ERR_INVALID_TIME'  :  'Please enter a valid time.',
+	'ERR_EMAIL_WITH_NO_SUBJECT' : 'You did not specify a subject from this email. If you would like to provide one, please type it now',
+	'EMAIL_SIN_ASUNTO' : '(no-Subject)'
 };

@@ -396,5 +396,7 @@ var alert_arr = {
 	'ERR_INVALID_YEAR'  :  'Por favor, introduzca un año de 4 dígitos.',
 	'ERR_INVALID_DATE'  :  'Por favor, introduzca una fecha válida',
 	'ERR_INVALID_HOUR'  :  'Por favor, introduzca una hora válida',
-	'ERR_INVALID_TIME'  :  'Por favor, introduzca un tiempo válido'
+	'ERR_INVALID_TIME'  :  'Por favor, introduzca un tiempo válido',
+	'ERR_EMAIL_WITH_NO_SUBJECT' : 'No has introducido un asunto para este email. Puedes añadir uno ahora.',
+	'EMAIL_SIN_ASUNTO' : '(sin-asunto)'
 };
