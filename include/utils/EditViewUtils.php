@@ -568,8 +568,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 	}
 	elseif($uitype == 28){
-		if($col_fields['record_id'] != '')
-		{
+		if (!(empty($col_fields['record_id']))) {
 			$attachmentid=$adb->query_result($adb->pquery("select * from vtiger_seattachmentsrel where crmid = ?", array($col_fields['record_id'])),0,'attachmentsid');
 			if($col_fields[$fieldname] == '' && $attachmentid != '')
 			{
@@ -581,7 +580,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			$filename=' [ '.$value. ' ]';
 		elseif($value != '' && $module_name == 'Documents')
 			$filename= $value;
-		if($filename != '')
+		if (!empty($filename))
 			$fieldvalue[] = $filename;
 		if($value != '')
 			$fieldvalue[] = $value;
@@ -1320,8 +1319,10 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	elseif($uitype == 27){
 		if($value == 'E'){
 			$external_selected = "selected";
+			$internal_selected = '';
 			$filename = $col_fields['filename'];
 		} else {
+			$external_selected = '';
 			$internal_selected = "selected";
 			$filename = $col_fields['filename'];
 		}

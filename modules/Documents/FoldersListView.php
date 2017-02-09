@@ -20,6 +20,13 @@ $log = LoggerManager::getLogger('note_list');
 global $app_strings,$mod_strings,$currentModule,$image_path,$theme;
 $list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$currentModule);
 $category = getParentTab();
+
+$focus = new Documents();
+// Initialize sort by fields
+$focus->initSortbyField('Documents');
+$sorder = $focus->getSortOrder();
+$order_by = $focus->getOrderBy();
+
 if(empty($_SESSION['lvs'][$currentModule])) {
 	coreBOS_Session::delete('lvs');
 	$modObj = new ListViewSession();
@@ -37,10 +44,6 @@ $viewnamedesc = $oCustomView->getCustomViewByCvid($viewid);
 if (!isset($where)) $where = "";
 $url_string = ''; // assigning http url string
 
-$focus = new Documents();
-// Initialize sort by fields
-$focus->initSortbyField('Documents');
-
 $smarty = new vtigerCRM_Smarty;
 $other_text = Array();
 $smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
@@ -56,9 +59,6 @@ if(ListViewSession::hasViewChanged($currentModule,$viewid)) {
 	coreBOS_Session::set('NOTES_ORDER_BY', '');
 }
 //<<<<<<<<<<<<<<<<<<< sorting - stored in session >>>>>>>>>>>>>>>>>>>>
-$sorder = $focus->getSortOrder();
-$order_by = $focus->getOrderBy();
-
 if(empty($_REQUEST['folderid'])) {
 	coreBOS_Session::set('NOTES_ORDER_BY', $order_by);
 	coreBOS_Session::set('NOTES_SORT_ORDER', $sorder);

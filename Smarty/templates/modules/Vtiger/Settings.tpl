@@ -35,7 +35,7 @@
 								<tr>
 									{foreach key=mod_name item=mod_array from=$MENU_ARRAY name=itr}
 									<td width=25% valign=top>
-										{if $mod_array.label eq ''}
+										{if empty($mod_array.label)}
 											&nbsp;
 										{else}
 										<table border=0 cellspacing=0 cellpadding=5 width="100%">

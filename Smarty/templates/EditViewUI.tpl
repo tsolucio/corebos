@@ -26,7 +26,11 @@
 			{assign var="fldlabel_other" value=''}
 		{/if}
 		{assign var="fldname" value=$maindata[2][0]}
-		{assign var="fldvalue" value=$maindata[3][0]}
+		{if isset($maindata[3][0])}
+			{assign var="fldvalue" value=$maindata[3][0]}
+		{else}
+			{assign var="fldvalue" value=''}
+		{/if}
 		{if isset($maindata[3][1])}
 			{assign var="secondvalue" value=$maindata[3][1]}
 		{else}
