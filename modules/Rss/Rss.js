@@ -56,3 +56,90 @@ function display(url,id)
 	document.getElementById('rsstitle').innerHTML = document.getElementById(id).innerHTML;
 	document.getElementById('mysite').src = url;
 }
+function GetRssFeedList(id)
+{
+	document.getElementById("status").style.display="inline";
+		jQuery.ajax({
+				method:"POST",
+				url:'index.php?module=Rss&action=RssAjax&file=ListView&directmode=ajax&record='+id
+		}).done(function(response) {
+				document.getElementById("status").style.display="none";
+				document.getElementById("rssfeedscont").innerHTML=response;
+			}
+		);
+}
+
+function DeleteRssFeeds(id)
+{
+	if (id != '') {
+		if(confirm(i18n_DELETE_RSSFEED_CONFIRMATION)) {
+			show('status');
+			var feed = 'feed_'+id;
+			document.getElementById(feed).parentNode.removeChild(document.getElementById(feed));
+			jQuery.ajax({
+				method:"POST",
+				url:'index.php?module=Rss&return_module=Rss&action=RssAjax&file=Delete&directmode=ajax&record='+id,
+			}).done(function(response) {
+				document.getElementById("status").style.display="none";
+				document.getElementById("rssfeedscont").innerHTML=response;
+				document.getElementById("mysite").src = '';
+				document.getElementById("rsstitle").innerHTML = "&nbsp";
+			});
+		}
+	} else {
+		alert(alert_arr.LBL_NO_FEEDS_SELECTED);
+	}
+}
+function SaveRssFeeds()
+{
+	document.getElementById("status").style.display="inline";
+	var rssurl = document.getElementById('rssurl').value;
+	rssurl = rssurl.replace(/&/gi,"##amp##");
+	jQuery.ajax({
+		method:"POST",
+		url:'index.php?module=Rss&action=RssAjax&file=Popup&directmode=ajax&rssurl='+rssurl
+	}).done(function(response) {
+		document.getElementById("status").style.display="none";
+		if(isNaN(parseInt(response))) {
+			var rrt = response;
+			document.getElementById("temp_alert").innerHTML = rrt;
+			removeHTMLTags();
+			document.getElementById('rssurl').value = '';
+		} else {
+			GetRssFeedList(response);
+			getrssfolders();
+			document.getElementById('rssurl').value = '';
+			document.getElementById('PopupLay').style.display="none";
+		}
+	});
+}
+function makedefaultRss(id) {
+	if (id != '') {
+		document.getElementById("status").style.display="inline";
+		jQuery.ajax({
+			method:"POST",
+			url:'index.php?module=Rss&action=RssAjax&file=Popup&directmode=ajax&record='+id
+		}).done(function(response) {
+			document.getElementById("status").style.display="none";
+			getrssfolders();
+		});
+	}
+}
+function getrssfolders() {
+	jQuery.ajax({
+		method:"POST",
+		url:'index.php?module=Rss&action=RssAjax&file=ListView&folders=true'
+	}).done(function(response) {
+		document.getElementById("status").style.display="none";
+		document.getElementById("rssfolders").innerHTML=response;
+	});
+}
+
+function removeHTMLTags() {
+	if (document.getElementById && document.getElementById("temp_alert")) {
+		var strInputCode = document.getElementById("temp_alert").innerHTML;
+		var strTagStrippedText = strInputCode.replace(/<\/?[^>]+(>|$)/g, "");
+		alert("Output Message:\n" + strTagStrippedText);
+	}
+}
+
