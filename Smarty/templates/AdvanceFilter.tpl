@@ -40,8 +40,11 @@
 	{if $SOURCE neq 'reports'}
 		var BLOCKJS = "";
 		var BLOCKCRITERIA = "";
-	{if $SOURCE neq 'customview'}	var COL_BLOCK =  '{$COLUMNS_BLOCK}';
-        {else} var COL_BLOCK =  "{$COLUMNS_BLOCK}" {/if};
+		{if $SOURCE neq 'customview'}
+			var COL_BLOCK = '{$COLUMNS_BLOCK}';
+		{else}
+			var COL_BLOCK = "{$COLUMNS_BLOCK}";
+		{/if};
 		var FOPTION_ADV = "";
 		var MOMENT = "";
 	{/if}

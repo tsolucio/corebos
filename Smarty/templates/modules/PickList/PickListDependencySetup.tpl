@@ -31,7 +31,7 @@
 
 		<table border=0 cellspacing=0 cellpadding=10 width=100% >
 		<tr>
-			<td valign=top>			
+			<td valign=top>
 				<div id="picklist_datas">
 					{if $SUBMODE eq 'editdependency'}
 						{include file='modules/PickList/PickListDependencyContents.tpl'}

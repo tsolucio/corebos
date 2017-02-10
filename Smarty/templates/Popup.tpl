@@ -34,7 +34,7 @@ function QCreate(module,urlpop) {
 		}
 		jQuery.ajax({
 				method: 'POST',
-				url: 'index.php?module='+module+'&action='+module+'Ajax&file=QuickCreate'+urlstr,
+				url: 'index.php?module='+module+'&action='+module+'Ajax&file=QuickCreate'+urlstr
 				}).done(function(response) {
 					document.getElementById("status").style.display="none";
 					document.getElementById("qcformpop").style.display="inline";
