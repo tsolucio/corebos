@@ -28,7 +28,6 @@
 		right: 0;
 	}
 </style>
-<script src="include/js/json.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" src="include/js/advancefilter.js"></script>
 {if empty($JS_DATEFORMAT)}
 	{assign var="JS_DATEFORMAT" value=$APP.NTC_DATE_FORMAT|@parse_calendardate}

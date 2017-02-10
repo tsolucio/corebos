@@ -99,7 +99,6 @@ function redirectWhenNoRelatedRecordsFound()
 <script type="text/javascript" src="include/js/general.js"></script>
 <script type="text/javascript" src="include/js/QuickCreate.js"></script>
 <script type="text/javascript" src="include/js/Inventory.js"></script>
-<script type="text/javascript" src="include/js/json.js"></script>
 <script type="text/javascript" src="include/js/search.js"></script>
 <script type="text/javascript" src="include/js/vtlib.js"></script>
 <script type="text/javascript" src="modules/Tooltip/TooltipHeaderScript.js"></script>

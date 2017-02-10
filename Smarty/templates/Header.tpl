@@ -49,7 +49,6 @@
 	<script type="text/javascript" src="include/jquery/jquery.js"></script>
 	<script type="text/javascript" src="include/jquery/jquery-ui.js"></script>
 	<script type="text/javascript" src="include/js/meld.js"></script>
-	<script type="text/javascript" src="include/js/json.js"></script>
 	<script type="text/javascript" src="include/js/general.js"></script>
 	<!-- vtlib customization: Javascript hook -->
 	<script type="text/javascript" src="include/js/vtlib.js"></script>
