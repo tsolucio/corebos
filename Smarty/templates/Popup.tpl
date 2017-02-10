@@ -19,6 +19,24 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 var image_pth = '{$IMAGE_PATH}';
 var product_default_units = '{if isset($Product_Default_Units)}{$Product_Default_Units}{else}1{/if}';
 var service_default_units = '{if isset($Service_Default_Units)}{$Service_Default_Units}{else}1{/if}';
+var gPopupAlphaSearchUrl = '';
+var gsorder = '';
+var gstart = '';
+var gpopupReturnAction = '{$RETURN_ACTION}';
+var gpopupPopupMode = '{$POPUPMODE}';
+var gpopupCallback = '{$CALLBACK}';
+var product_labelarr = {ldelim}
+	CLEAR_COMMENT:'{$APP.LBL_CLEAR_COMMENT}',
+	DISCOUNT:'{$APP.LBL_DISCOUNT}',
+	TOTAL_AFTER_DISCOUNT:'{$APP.LBL_TOTAL_AFTER_DISCOUNT}',
+	TAX:'{$APP.LBL_TAX}',
+	ZERO_DISCOUNT:'{$APP.LBL_ZERO_DISCOUNT}',
+	PERCENT_OF_PRICE:'{$APP.LBL_OF_PRICE}',
+	DIRECT_PRICE_REDUCTION:'{$APP.LBL_DIRECT_PRICE_REDUCTION}'
+{rdelim};
+var fieldname = new Array({$VALIDATION_DATA_FIELDNAME});
+var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
+var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 {literal}
 function QCreate(module,urlpop) {
 	if (module != 'none') {
@@ -33,54 +51,24 @@ function QCreate(module,urlpop) {
 			var urlstr = '&from=popup&pop='+urlpop;
 		}
 		jQuery.ajax({
-				method: 'POST',
-				url: 'index.php?module='+module+'&action='+module+'Ajax&file=QuickCreate'+urlstr
-				}).done(function(response) {
-					document.getElementById("status").style.display="none";
-					document.getElementById("qcformpop").style.display="inline";
-					document.getElementById("qcformpop").innerHTML = response;
-					// Evaluate all the script tags in the response text.
-					var scriptTags = document.getElementById("qcformpop").getElementsByTagName("script");
-					for(var i = 0; i< scriptTags.length; i++){
-						var scriptTag = scriptTags[i];
-						eval(scriptTag.innerHTML);
-					}
-				}
-			);
+			method: 'POST',
+			url: 'index.php?module='+module+'&action='+module+'Ajax&file=QuickCreate'+urlstr
+		}).done(function(response) {
+			document.getElementById("status").style.display="none";
+			document.getElementById("qcformpop").style.display="inline";
+			document.getElementById("qcformpop").innerHTML = response;
+			// Evaluate all the script tags in the response text.
+			var scriptTags = document.getElementById("qcformpop").getElementsByTagName("script");
+			for (var i = 0; i< scriptTags.length; i++) {
+				var scriptTag = scriptTags[i];
+				eval(scriptTag.innerHTML);
+			}
+		});
 	} else {
 		hide('qcformpop');
 	}
 }
 {/literal}
-function showAllRecords()
-{ldelim}
-	modname = document.getElementById("relmod").name;
-	idname= document.getElementById("relrecord_id").name;
-	var locate = location.href;
-	url_arr = locate.split("?");
-	emp_url = url_arr[1].split("&");
-	for(i=0;i< emp_url.length;i++)
-	{ldelim}
-		if(emp_url[i] != '')
-		{ldelim}
-			split_value = emp_url[i].split("=");
-			if(split_value[0] == modname || split_value[0] == idname )
-				emp_url[i]='';
-			else if(split_value[0] == "fromPotential" || split_value[0] == "acc_id")
-				emp_url[i]='';
-			{rdelim}
-		{rdelim}
-		correctUrl =emp_url.join("&");
-		Url = "index.php?"+correctUrl;
-		return Url;
-{rdelim}
-
-//function added to get all the records when parent record doesn't relate with the selection module records while opening/loading popup.
-function redirectWhenNoRelatedRecordsFound()
-{ldelim}
-	var loadUrl = showAllRecords();
-	window.location.href = loadUrl;
-{rdelim}
 </script>
 <link rel="stylesheet" type="text/css" href="{$THEME_PATH}style.css">
 {* corebos customization: Inclusion of custom javascript and css as registered in popup *}
@@ -117,44 +105,6 @@ function redirectWhenNoRelatedRecordsFound()
 	{/foreach}
 	<!-- END -->
 {/if}
-{* END *}
-
-<script type="text/javascript">
-{literal}
-function add_data_to_relatedlist(entity_id,recordid,mod, popupmode, callback) {
-	var return_module = document.getElementById('return_module').value;
-	if (mod == 'Documents' && return_module == 'Emails') {
-		var attachment = document.getElementById('document_attachment_' + entity_id).value;
-		window.opener.addOption(entity_id, attachment);
-		if (document.getElementById("closewindow").value=="true") window.close();
-		return;
-	}
-	if(popupmode == 'ajax') {
-		VtigerJS_DialogBox.block();
-		jQuery.ajax({
-				method: 'POST',
-				url: "index.php?module="+return_module+"&action="+return_module+"Ajax&file=updateRelations&destination_module="+mod+"&entityid="+entity_id+"&parentid="+recordid+"&mode=Ajax",
-			}).done(function(response) {
-					VtigerJS_DialogBox.unblock();
-					var res = JSON.parse(response);
-					if(typeof callback == 'function') {
-						callback(res);
-					}
-			}
-		);
-		return false;
-	} else {
-		{/literal}
-		opener.document.location.href="index.php?module={$RETURN_MODULE}&action=updateRelations&destination_module="+mod+"&entityid="+entity_id+"&parentid="+recordid+"&return_module={$RETURN_MODULE}&return_action={$RETURN_ACTION}&parenttab={$CATEGORY}";
-		if (document.getElementById("closewindow").value=="true") window.close();
-		{literal}
-	}
-}
-{/literal}
-function set_focus() {ldelim}
-	document.getElementById('search_txt').focus();
-{rdelim}
-</script>
 </head>
 <body onload=set_focus() class="small" marginwidth=0 marginheight=0 leftmargin=0 topmargin=0 bottommargin=0 rightmargin=0>
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="mailClient mailClientBg">
@@ -282,205 +232,5 @@ function set_focus() {ldelim}
 		</td>
 	</tr>
 </table>
+<script type="text/javascript" src="include/js/popup.js"></script>
 </body>
-<script>
-var gPopupAlphaSearchUrl = '';
-var gsorder ='';
-var gstart ='';
-function callSearch(searchtype)
-{ldelim}
-	gstart='';
-	for(i=1;i<=26;i++)
-	{ldelim}
-		var data_td_id = 'alpha_'+ eval(i);
-		getObj(data_td_id).className = 'searchAlph';
-	{rdelim}
-	gPopupAlphaSearchUrl = '';
-	search_fld_val= document.basicSearch.search_field[document.basicSearch.search_field.selectedIndex].value;
-	search_txt_val= encodeURIComponent(document.basicSearch.search_text.value.replace(/\'/,"\\'"));
-	var urlstring = '';
-	if(searchtype == 'Basic')
-	{ldelim}
-	urlstring = 'search_field='+search_fld_val+'&searchtype=BasicSearch&search_text='+search_txt_val;
-	{rdelim}
-	else if(searchtype == 'Advanced')
-	{ldelim}
-		checkAdvancedFilter();
-		var advft_criteria = document.getElementById('advft_criteria').value;
-		var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
-		urlstring += '&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups+'&';
-		urlstring += 'searchtype=advance&'
-	{rdelim}
-	popuptype = document.getElementById('popup_type').value;
-	act_tab = document.getElementById('maintab').value;
-	urlstring += '&popuptype='+popuptype;
-	urlstring += '&maintab='+act_tab;
-	urlstring = urlstring +'&query=true&file=Popup&module={$MODULE}&action={$MODULE}Ajax&ajax=true&search=true';
-	urlstring +=gethiddenelements();
-	record_id = document.basicSearch.record_id.value;
-
-	//support for popupmode and callback
-	urlstring += "&popupmode={$POPUPMODE}";
-	urlstring += "&callback={$CALLBACK}";
-
-	if(record_id!='')
-		urlstring += '&record_id='+record_id;
-	document.getElementById("status").style.display="inline";
-	jQuery.ajax({ldelim}
-				method: 'POST',
-				url: 'index.php?'+urlstring,
-		{rdelim}).done(function (response) {ldelim}
-					document.getElementById("status").style.display="none";
-					document.getElementById("ListViewContents").innerHTML= response;
-			{rdelim}
-		);
-{rdelim}
-function alphabetic(module,url,dataid)
-{ldelim}
-	gstart='';
-	document.basicSearch.search_text.value = '';
-	for(i=1;i<=26;i++)
-	{ldelim}
-	var data_td_id = 'alpha_'+ eval(i);
-	getObj(data_td_id).className = 'searchAlph';
-	{rdelim}
-	getObj(dataid).className = 'searchAlphselected';
-	gPopupAlphaSearchUrl = '&'+url;
-	var urlstring ="module="+module+"&action="+module+"Ajax&file=Popup&ajax=true&search=true&"+url;
-	urlstring +=gethiddenelements();
-	record_id = document.basicSearch.record_id.value;
-	if(record_id!='')
-		urlstring += '&record_id='+record_id;
-	document.getElementById("status").style.display="inline";
-	jQuery.ajax({ldelim}
-				method: 'POST',
-				url: 'index.php?'+ urlstring,
-		{rdelim}).done(function (response) {ldelim}
-					document.getElementById("status").style.display="none";
-					document.getElementById("ListViewContents").innerHTML= response;
-				{rdelim}
-			);
-{rdelim}
-function gethiddenelements()
-{ldelim}
-	gstart='';
-	var urlstring='';
-	if(getObj('select_enable').value != '')
-		urlstring +='&select=enable';
-	if(document.getElementById('curr_row').value != '')
-		urlstring +='&curr_row='+document.getElementById('curr_row').value;
-	if(getObj('fldname_pb').value != '')
-		urlstring +='&fldname='+getObj('fldname_pb').value;
-	if(getObj('productid_pb').value != '')
-		urlstring +='&productid='+getObj('productid_pb').value;
-	if(getObj('recordid').value != '')
-		urlstring +='&recordid='+getObj('recordid').value;
-	if(getObj('relmod').value != '')
-		urlstring +='&'+getObj('relmod').name+'='+getObj('relmod').value;
-	if(getObj('relrecord_id').value != '')
-		urlstring +='&'+getObj('relrecord_id').name+'='+getObj('relrecord_id').value;
-	// vtlib customization: For uitype 10 popup during paging
-	if(document.getElementById('popupform'))
-		urlstring +='&form='+encodeURIComponent(getObj('popupform').value);
-	if(document.getElementById('forfield'))
-		urlstring +='&forfield='+encodeURIComponent(getObj('forfield').value);
-	if(document.getElementById('srcmodule'))
-		urlstring +='&srcmodule='+encodeURIComponent(getObj('srcmodule').value);
-	if(document.getElementById('forrecord'))
-		urlstring +='&forrecord='+encodeURIComponent(getObj('forrecord').value);
-	// END
-	if(document.getElementById('currencyid') != null && document.getElementById('currencyid').value != '')
-		urlstring +='&currencyid='+document.getElementById('currencyid').value;
-
-	if(document.getElementById('cbcustompopupinfo') != null && document.getElementById('cbcustompopupinfo').value != ''){ldelim}
-		var cbcustompopupinfo = document.getElementById('cbcustompopupinfo').value;
-		let arr = cbcustompopupinfo.split(";");
-		for(const value of arr){ldelim}
-			if(document.getElementById(value) != null && document.getElementById(value).value != '')
-				urlstring +='&'+value+'='+document.getElementById(value).value;
-		{rdelim}
-	{rdelim}
-	var return_module = document.getElementById('return_module').value;
-	if(return_module != '')
-		urlstring += '&return_module='+return_module;
-	return urlstring;
-{rdelim}
-function getListViewEntries_js(module,url)
-{ldelim}
-	gstart="&"+url;
-
-	popuptype = document.getElementById('popup_type').value;
-	var urlstring ="module="+module+"&action="+module+"Ajax&file=Popup&ajax=true&"+url;
-	urlstring +=gethiddenelements();
-	{if !$RECORD_ID}
-		search_fld_val= document.basicSearch.search_field[document.basicSearch.search_field.selectedIndex].value;
-		search_txt_val=document.basicSearch.search_text.value;
-		if(search_txt_val != '')
-			urlstring += '&query=true&search_field='+search_fld_val+'&searchtype=BasicSearch&search_text='+search_txt_val;
-	{/if}
-	if(gPopupAlphaSearchUrl != '')
-		urlstring += gPopupAlphaSearchUrl;
-	else
-		urlstring += '&popuptype='+popuptype;
-	record_id = document.basicSearch.record_id.value;
-	if(record_id!='')
-		urlstring += '&record_id='+record_id;
-
-		record_id = document.basicSearch.record_id.value;
-		if(record_id!='')
-			urlstring += '&record_id='+record_id;
-
-		urlstring += (gsorder !='') ? gsorder : '';
-		var return_module = document.getElementById('return_module').value;
-		if(module == 'Documents' && return_module == 'MailManager')
-	{ldelim}
-			urlstring += '&callback=MailManager.add_data_to_relatedlist';
-			urlstring += '&popupmode=ajax';
-			urlstring += '&srcmodule=MailManager';
-	{rdelim}
-
-		document.getElementById("status").style.display = "";
-		jQuery.ajax({ldelim}
-					method: 'POST',
-					url: 'index.php?'+ urlstring,
-			{rdelim}).done(function (response) {ldelim}
-						document.getElementById("ListViewContents").innerHTML= response;
-						document.getElementById("status").style.display = "none";
-			{rdelim}
-		);
-{rdelim}
-
-function getListViewSorted_js(module,url)
-{ldelim}
-	gsorder=url;
-	var urlstring ="module="+module+"&action="+module+"Ajax&file=Popup&ajax=true"+url;
-	urlstring +=gethiddenelements();
-	record_id = document.basicSearch.record_id.value;
-	if(record_id!='')
-		urlstring += '&record_id='+record_id;
-	urlstring += (gstart !='') ? gstart : '';
-	document.getElementById("status").style.display = "";
-	jQuery.ajax({ldelim}
-			method: 'POST',
-			url: 'index.php?'+ urlstring,
-	{rdelim}).done(function (response) {ldelim}
-			document.getElementById("ListViewContents").innerHTML= response;
-			document.getElementById("status").style.display = "none";
-	{rdelim}
-		);
-{rdelim}
-
-var product_labelarr = {ldelim}
-	CLEAR_COMMENT:'{$APP.LBL_CLEAR_COMMENT}',
-	DISCOUNT:'{$APP.LBL_DISCOUNT}',
-	TOTAL_AFTER_DISCOUNT:'{$APP.LBL_TOTAL_AFTER_DISCOUNT}',
-	TAX:'{$APP.LBL_TAX}',
-	ZERO_DISCOUNT:'{$APP.LBL_ZERO_DISCOUNT}',
-	PERCENT_OF_PRICE:'{$APP.LBL_OF_PRICE}',
-	DIRECT_PRICE_REDUCTION:'{$APP.LBL_DIRECT_PRICE_REDUCTION}'
-{rdelim};
-
-var fieldname = new Array({$VALIDATION_DATA_FIELDNAME});
-var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
-var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
-</script>
