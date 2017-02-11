@@ -300,67 +300,6 @@
 <div id="UnifiedSearch_moduleformwrapper" style="position:absolute;width:417px;z-index:100002;display:none;"></div>
 <script type='text/javascript'>
 {literal}
-	function UnifiedSearch_SelectModuleForm(obj) {
-		if(jQuery('#UnifiedSearch_moduleform').length) {
-			// If we have loaded the form already.
-			UnifiedSearch_SelectModuleFormCallback(obj);
-		} else {
-			jQuery('#status').show();
-			jQuery.ajax({
-				method:"POST",
-				url:'index.php?module=Home&action=HomeAjax&file=UnifiedSearchModules&ajax=true'
-			}).done(function(response) {
-				jQuery('#status').hide();
-				jQuery('#UnifiedSearch_moduleformwrapper').html(response);
-				UnifiedSearch_SelectModuleFormCallback(obj);
-			});
-		}
-	}
-	function UnifiedSearch_SelectModuleFormCallback(obj) {
-		fnvshobjsearch(obj, 'UnifiedSearch_moduleformwrapper');
-	}
-	function UnifiedSearch_SelectModuleToggle(flag) {
-		jQuery('#UnifiedSearch_moduleform input[type=checkbox]').each(function() {
-					this.checked = flag;
-				}
-		);
-	}
-	function UnifiedSearch_SelectModuleCancel() {
-		jQuery('#UnifiedSearch_moduleformwrapper').hide();
-	}
-	function UnifiedSearch_SelectModuleSave() {
-		var UnifiedSearch_form = document.forms.UnifiedSearch;
-		UnifiedSearch_form.search_onlyin.value = jQuery('#UnifiedSearch_moduleform').serialize().replace(/search_onlyin=/g, '').replace(/&/g,',');
-		jQuery.ajax({
-			method:"POST",
-			url:'index.php?module=Home&action=HomeAjax&file=UnifiedSearchModulesSave&search_onlyin=' + encodeURIComponent(UnifiedSearch_form.search_onlyin.value)
-		}).done(function(response) {
-					// continue
-				}
-		);
-		UnifiedSearch_SelectModuleCancel();
-	}
-
-	function fetch_clock() {
-		jQuery.ajax({
-			method:"POST",
-			url:'index.php?module=Utilities&action=UtilitiesAjax&file=Clock'
-		}).done(function(response) {
-			jQuery("#clock_cont").html(response);
-			execJS(document.getElementById('clock_cont'));
-		});
-	}
-
-	function fetch_calc() {
-		jQuery.ajax({
-			method:"POST",
-			url:'index.php?module=Utilities&action=UtilitiesAjax&file=Calculator'
-		}).done(function(response) {
-			jQuery("#calculator_cont").html(response);
-			execJS(document.getElementById('calculator_cont'));
-		});
-	}
-
 	function QCreate(qcoptions){
 		var module = qcoptions.options[qcoptions.options.selectedIndex].value;
 		if(module != 'none'){
@@ -417,10 +356,6 @@
 	</table>
 </div>
 
-<script>
-	jQuery('#tracker').draggable({ldelim} handle: "#Track_Handle" {rdelim});
-</script>
-
 <div id="mainsettings" class="drop_mnu_user" onmouseout="fnHideDrop('mainsettings');" onmouseover="fnvshNrm('mainsettings');" style="width:180px;">
 	<ul>
 		{foreach key=actionlabel item=actionlink from=$HEADERS}
@@ -438,134 +373,28 @@
 	</ul>
 </div>
 <script type="text/javascript">
-{literal}
-	jQuery(document).ready(function() {
-		var evvtmenu={/literal}{$MENU}{literal};
-
-		function buildMainMenu(object){ //main menu
-			for (var i in object) {
-				if(object[i].items != null) {
-					jQuery('#cbmenu').append('<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true"> \
-						<a href="javascript:void(0);" class="slds-context-bar__label-action" title="' + object[i].text + '">\
-						<span class="slds-truncate">' + object[i].text + '</span>\
-				</a>\
-				<div class="slds-context-bar__icon-action slds-p-left--none" tabindex="0">\
-					<svg aria-hidden="true" class="slds-button__icon">\
-					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevrondown"></use>\
-					</svg>\
-				</div>\
-				<div class="slds-dropdown slds-dropdown--right">\
-				<ul class="slds-dropdown__list" role="menu" id="menu' + i + '">\
-				</ul>\
-				</div>\
-				</li>');
-				} else {
-					jQuery('#cbmenu').append('<li class="slds-context-bar__item">\
-							<a href="'+object[i].url+ '" class="slds-context-bar__label-action" title="'+object[i].text+'">\
-							<span class="slds-truncate">'+object[i].text+'</span>\
-							</a>\
-							</li>');
-				}
-				if(object[i].items != null) {
-					buildSubMenu(object[i].items, i)
-				}
-			}
-		}
-
-		function buildSubMenu(object, index){ //submenu
-			var menuid = 'menu'+index;
-			for (var i in object){
-				if (object[i].type == 'sep') {
-					jQuery('#' + menuid).append('<li class="slds-dropdown__header slds-has-divider--top-space" role="separator"></li>');
-				} else if (object[i].type == 'headtop') {
-					jQuery('#' + menuid).append('<li class="slds-dropdown__header slds-has-divider--top-space" role="separator">\
-						<span class="slds-text-title--caps">' + object[i].text + '</span></li>');
-				} else if (object[i].type == 'headbottom') {
-					jQuery('#' + menuid).append('<li class="slds-dropdown__header slds-has-divider--bottom-space" role="separator">\
-						<span class="slds-text-title--caps">' + object[i].text + '</span></li>');
-				} else {
-					if (object[i].items === undefined || object[i].items === null) {
-						jQuery('#' + menuid).append('<li class="slds-dropdown__item" role="presentation">\
-							<a href="' + object[i].url + '" role="menuitem" tabindex="-1">\
-							<span class="slds-truncate">' + object[i].text + '</span>\
-							</a>\
-							</li>');
-					} else {
-						jQuery('#' + menuid).append('<li class="slds-dropdown__item" role="presentation">\
-							<a href="' + (object[i].url == undefined ? 'javascript:void(0);' : object[i].url) + '" role="menuitem" tabindex="-1">\
-							<span class="slds-truncate" style="padding-right:20px">' + object[i].text + '</span>\
-							<svg aria-hidden="true" class="slds-button__icon">\
-							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>\
-							</svg>\
-							</a>\
-							<ul class="moreMenu" id="submenu' + i + '-' + index+ '">\
-							</ul>\
-							</li>');
-						var pld = i + '-' + index;
-						buildMoreMenu(object[i].items, pld);//kallxom kur pe marron lvl3
-					}
-				}
-			}
-		}
-
-		function buildMoreMenu(object, index){ //pjest shtes qe duhen mmu shtu
-			var subMenuId = 'submenu' +index;
-			for (var i in object) {
-				if (object[i].items === undefined || object[i].items === null) {
-					jQuery('#' + subMenuId).append('<li class="slds-dropdown__item" role="presentation">\
-							<a href="' + object[i].url + '" role="menuitem" tabindex="-1">\
-							<span class="slds-truncate">' + object[i].text + '</span>\
-							</a>\
-							</li>');
-				} else {
-					jQuery('#' + subMenuId).append('<li class="slds-dropdown__item" role="presentation" id="test">\
-							<a href="' + object[i].url + '" role="menuitem" tabindex="-1" id="test">\
-							<span class="slds-truncate" style="padding-right:20px">' + object[i].text + '</span>\
-							<svg aria-hidden="true" class="slds-button__icon">\
-							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>\
-							</svg>\
-							<ul class="moreMenu2" id="submenu' + i + '-' + index + '">\
-							</ul>\
-							</a>\
-							</li>');
-					var pld = i + '-' + index;
-					buildMoreMenu(object[i].items, pld);
-				}
-			}
-		}
-		buildMainMenu(evvtmenu);
-
-		jQuery(function () {
-			jQuery(".slds-dropdown__item").hover(function () {
-				var id = jQuery(this).children('ul').attr('id');
-				if (id === undefined || id === null) {
-					id = jQuery(this).find('ul').attr('id');
-				}
-				jQuery(this).find('#' + id).toggle();
-			});
-		});
-	});
-{/literal}
+	jQuery('#tracker').draggable({ldelim} handle: "#Track_Handle" {rdelim});
+	var evvtmenu={$MENU};
 </script>
+<script type="text/javascript" src="modules/evvtMenu/evvtMenu.js"></script>
 </div>
 <!-- ActivityReminder Customization for callback -->
 <div class="lvtCol fixedLay1" id="ActivityRemindercallback" style="border: 0; right: 0px; bottom: 2px; display:none; padding: 2px; z-index: 10; font-weight: normal;" align="left">
 </div>
-<!-- End -->
 
 <!-- divs for asterisk integration -->
-<div class="lvtCol fixedLay1" id="notificationDiv" style="float: right;  padding-right: 5px; overflow: hidden; border-style: solid; right: 0px; border-color: rgb(141, 141, 141); bottom: 0px; display: none; padding: 2px; z-index: 10; font-weight: normal;" align="left">
+<div class="lvtCol fixedLay1" id="notificationDiv" style="float: right; padding-right: 5px; overflow: hidden; border-style: solid; right: 0px; border-color: rgb(141, 141, 141); bottom: 0px; display: none; padding: 2px; z-index: 10; font-weight: normal;" align="left">
 </div>
 
 <div id="OutgoingCall" style="display: none;position: absolute;z-index:200;" class="layerPopup">
-	<table  border='0' cellpadding='5' cellspacing='0' width='100%'>
+	<table border='0' cellpadding='5' cellspacing='0' width='100%'>
 		<tr style='cursor:move;' >
 			<td class='mailClientBg small' id='outgoing_handle'>
 				<b>{$APP.LBL_OUTGOING_CALL}</b>
 			</td>
 		</tr>
 	</table>
-	<table  border='0' cellpadding='0' cellspacing='0' width='100%' class='hdrNameBg'>
+	<table border='0' cellpadding='0' cellspacing='0' width='100%' class='hdrNameBg'>
 		</tr>
 		<tr><td style='padding:10px;' colspan='2'>
 			{$APP.LBL_OUTGOING_CALL_MESSAGE}

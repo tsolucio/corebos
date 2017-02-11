@@ -4755,3 +4755,66 @@ function changeCalendarDate(year,month,date){
 	jQuery('#calendar_div').fullCalendar( 'gotoDate',date1);
 }
 
+function fetch_clock() {
+	jQuery.ajax({
+		method:"POST",
+		url:'index.php?module=Utilities&action=UtilitiesAjax&file=Clock'
+	}).done(function(response) {
+		jQuery("#clock_cont").html(response);
+		execJS(document.getElementById('clock_cont'));
+	});
+}
+
+function fetch_calc() {
+	jQuery.ajax({
+		method:"POST",
+		url:'index.php?module=Utilities&action=UtilitiesAjax&file=Calculator'
+	}).done(function(response) {
+		jQuery("#calculator_cont").html(response);
+		execJS(document.getElementById('calculator_cont'));
+	});
+}
+
+function UnifiedSearch_SelectModuleForm(obj) {
+	if(jQuery('#UnifiedSearch_moduleform').length) {
+		// If we have loaded the form already.
+		UnifiedSearch_SelectModuleFormCallback(obj);
+	} else {
+		jQuery('#status').show();
+		jQuery.ajax({
+			method:"POST",
+			url:'index.php?module=Home&action=HomeAjax&file=UnifiedSearchModules&ajax=true'
+		}).done(function(response) {
+			jQuery('#status').hide();
+			jQuery('#UnifiedSearch_moduleformwrapper').html(response);
+			UnifiedSearch_SelectModuleFormCallback(obj);
+		});
+	}
+}
+
+function UnifiedSearch_SelectModuleFormCallback(obj) {
+	fnvshobjsearch(obj, 'UnifiedSearch_moduleformwrapper');
+}
+
+function UnifiedSearch_SelectModuleToggle(flag) {
+	jQuery('#UnifiedSearch_moduleform input[type=checkbox]').each(function() {
+		this.checked = flag;
+	});
+}
+
+function UnifiedSearch_SelectModuleCancel() {
+	jQuery('#UnifiedSearch_moduleformwrapper').hide();
+}
+
+function UnifiedSearch_SelectModuleSave() {
+	var UnifiedSearch_form = document.forms.UnifiedSearch;
+	UnifiedSearch_form.search_onlyin.value = jQuery('#UnifiedSearch_moduleform').serialize().replace(/search_onlyin=/g, '').replace(/&/g,',');
+	jQuery.ajax({
+		method:"POST",
+		url:'index.php?module=Home&action=HomeAjax&file=UnifiedSearchModulesSave&search_onlyin=' + encodeURIComponent(UnifiedSearch_form.search_onlyin.value)
+	}).done(function(response) {
+		// continue
+	});
+	UnifiedSearch_SelectModuleCancel();
+}
+
