@@ -66,7 +66,7 @@
 	<script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
 	<script type="text/javascript" src="jscalendar/lang/calendar-{$APP.LBL_JSCALENDAR_LANG}.js"></script>
 	{/if}
-    <!-- asterisk Integration -->
+<!-- asterisk Integration -->
 {if $USE_ASTERISK eq 'true'}
 	<script type="text/javascript" src="include/js/asterisk.js"></script>
 	<script type="text/javascript">
@@ -88,16 +88,14 @@
 	{/foreach}
 	<!-- END -->
 {/if}
-{* END *}
 
 	{* PREFECTHING IMAGE FOR BLOCKING SCREEN USING VtigerJS_DialogBox API *}
-    <img src="{'layerPopupBg.gif'|@vtiger_imageurl:$THEME}" style="display: none;"/>
-    {* END *}
+	<img src="{'layerPopupBg.gif'|@vtiger_imageurl:$THEME}" style="display: none;"/>
 
 <TABLE border=0 cellspacing=0 cellpadding=0 width=100% class="small">
 	<tr>
 		<td valign=top align=left><img src="test/logo/{$FRONTLOGO}" alt="{$COMPANY_DETAILS.name}" title="{$COMPANY_DETAILS.name}" border=0 style="width: 15em;height: 4.2em;"></td>
-		<td align="center" valign=bottom  >
+		<td align="center" valign=bottom>
 			<div align ="center" width ="50%" border='3' style="padding:5px;" class="noprint">
 				<table border=0 cellspacing=0 cellpadding=0 id="search" align="center">
 					<tr>
@@ -161,12 +159,12 @@
 				<td valign="bottom" nowrap style="padding-bottom: 1em;" class="small" nowrap><a id="headerLogout" class="headerlink" href="index.php?module=Users&action=Logout"> <img src="themes/images/logout.png" border=0 style="padding: 0px;padding-left:5px " title="{$APP.LBL_LOGOUT}" alt="{$APP.LBL_LOGOUT}"></a></td>
 			</tr>
 			</table>
-        </td>
+		</td>
 	</tr>
 </TABLE>
 {if $ANNOUNCEMENT}
 	<table width ="100%">
-		<tr  colspan="3" width="100%">
+		<tr colspan="3" width="100%">
 			<td width="90%" align=center>
 				<marquee id="rss" direction="left" scrolldelay="10" scrollamount="3" behavior="scroll" class="marStyle" onMouseOver="javascript:stop();" onMouseOut="javascript:start();">&nbsp;{$ANNOUNCEMENT}</marquee>
 			</td>
@@ -290,7 +288,6 @@
 </div>
 </td>
 
-
 <div id="calculator_cont" style="position:absolute; z-index:10000" ></div>
 {include file="Clock.tpl"}
 
@@ -317,25 +314,24 @@
 				method:"POST",
 				url:'index.php?module='+module+'&action='+module+'Ajax&file=QuickCreate'+urlstr
 			}).done(function(response) {
-						document.getElementById("status").style.display="none";
-						document.getElementById("qcform").style.display="inline";
-						document.getElementById("qcform").innerHTML = response;
-						jQuery("#qcform").draggable();
-						// Evaluate all the script tags in the response text.
-						var scriptTags = document.getElementById("qcform").getElementsByTagName("script");
-						for(var i = 0; i< scriptTags.length; i++){
-							var scriptTag = scriptTags[i];
-							eval(scriptTag.innerHTML);
-						}
-						posLay(qcoptions, "qcform");
-					}
-			);
+				document.getElementById("status").style.display="none";
+				document.getElementById("qcform").style.display="inline";
+				document.getElementById("qcform").innerHTML = response;
+				jQuery("#qcform").draggable();
+				// Evaluate all the script tags in the response text.
+				var scriptTags = document.getElementById("qcform").getElementsByTagName("script");
+				for(var i = 0; i< scriptTags.length; i++){
+					var scriptTag = scriptTags[i];
+					eval(scriptTag.innerHTML);
+				}
+				posLay(qcoptions, "qcform");
+			});
 		}else{
 			hide('qcform');
 		}
 	}
-</script>
 {/literal}
+</script>
 
 <div id="status" style="position:absolute;display:none;left:850px;top:95px;height:27px;white-space:nowrap;"><img src="{'status.gif'|@vtiger_imageurl:$THEME}"></div>
 
@@ -344,7 +340,7 @@
 		<tr style="cursor:move;">
 			<td colspan="2" class="mailClientBg small" id="Track_Handle"><strong>{$APP.LBL_LAST_VIEWED}</strong></td>
 			<td align="right" style="padding:5px;" class="mailClientBg small">
-				<a href="javascript:;"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0"  onClick="fninvsh('tracker')" hspace="5" align="absmiddle"></a>
+				<a href="javascript:;"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fninvsh('tracker')" hspace="5" align="absmiddle"></a>
 			</td></tr>
 	</table>
 	<table border="0" cellpadding="5" cellspacing="0" width="200" class="hdrNameBg">
