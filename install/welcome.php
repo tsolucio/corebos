@@ -19,27 +19,25 @@ $settings = array();
 
 require_once('config.inc.php');
 $install_permitted = false;
-if(!isset($dbconfig['db_hostname']) || $dbconfig['db_status']=='_DB_STAT_') {
+if (!isset($dbconfig['db_hostname']) || $dbconfig['db_status']=='_DB_STAT_') {
 	$install_permitted = true;
 }
 
-foreach($pieces as $val)
-{
-   preg_match("/<a name=\"module_([^<>]*)\">/", $val, $sub_key);
-   preg_match_all("/<tr[^>]*>
-									   <td[^>]*>(.*)<\/td>
-									   <td[^>]*>(.*)<\/td>/Ux", $val, $sub);
-   preg_match_all("/<tr[^>]*>
-									   <td[^>]*>(.*)<\/td>
-									   <td[^>]*>(.*)<\/td>
-									   <td[^>]*>(.*)<\/td>/Ux", $val, $sub_ext);
-   foreach($sub[0] as $key => $val) {
+foreach ($pieces as $val) {
+	preg_match("/<a name=\"module_([^<>]*)\">/", $val, $sub_key);
+	preg_match_all("/<tr[^>]*>
+		<td[^>]*>(.*)<\/td>
+		<td[^>]*>(.*)<\/td>/Ux", $val, $sub);
+	preg_match_all("/<tr[^>]*>
+		<td[^>]*>(.*)<\/td>
+		<td[^>]*>(.*)<\/td>
+		<td[^>]*>(.*)<\/td>/Ux", $val, $sub_ext);
+	foreach($sub[0] as $key => $val) {
 		if (preg_match("/Configuration File \(php.ini\) Path /", $val)) {
-	   		$val = preg_replace("/Configuration File \(php.ini\) Path /", '', $val);
+			$val = preg_replace("/Configuration File \(php.ini\) Path /", '', $val);
 			$phpini = strip_tags($val);
-	   	}
-   }
-
+		}
+	}
 }
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -63,7 +61,6 @@ foreach($pieces as $val)
 	<table border=0 cellspacing=0 cellpadding=0 width=80% align=center>
 		<tr>
 			<td background="include/install/images/topInnerShadow.gif" align=left><img height="10" src="include/install/images/topInnerShadow.gif" ></td>
-	
 		</tr>
 	</table>
 	<table border=0 cellspacing=0 cellpadding=10 width=80% align=center>
@@ -80,12 +77,12 @@ foreach($pieces as $val)
 										<br><hr noshade size=1>
 									</td>
 								</tr>
-		
+
 								<tr class='level3'>
 									<td valign=top align=left class="small contentDisplay fixedSmallHeight" style="padding-left:20px;" colspan=2>
 										<p style='text-align:center;font-weight:bold;'><?php echo $installationStrings['LBL_ABOUT_CONFIG_WIZARD'] . $coreBOS_app_version; ?>.</p>
 										<p><br><?php echo $installationStrings['LBL_ABOUT_VTIGER']; ?></p>
-							  		</td>
+									</td>
 								</tr>
 								<tr>
 									<td colspan=2></span></td>
@@ -94,30 +91,17 @@ foreach($pieces as $val)
 									<?php
 									if($install_permitted == true){
 									?>
-									<td align=right>
+									<td align=center colspan=2>
 										<form action="install.php" method="post" name="installform" id="form">
-								        <input type="hidden" name="file" value="LicenceAgreement.php" />	
-								        <input type="hidden" name="install" value="true" />	
+										<input type="hidden" name="file" value="LicenceAgreement.php" />
+										<input type="hidden" name="install" value="true" />
 										<input type="button" class="button" value='<?php echo $installationStrings['LBL_INSTALL']; ?>' alt="<?php echo $installationStrings['LBL_INSTALL']; ?>" title="<?php echo $installationStrings['LBL_INSTALL']; ?>" onClick="window.document.installform.submit();">
 										</form>
 									</td>
-									<td align=left>
-									<?php
-									}
-									else{
-									?>
-									<td align=center colspan=2>
 									<?php
 									}
 									?>
-										<form action="install.php" method="post" name="Migrateform" id="form">
-										<input type="hidden" name="filename" value="SetMigrationConfig.php" />
-										<input type="hidden" name="file" value="CheckSystem.php" />	
-								        <input type="hidden" name="migrate" value="true" />	
-										<input type="button" class="button" value='<?php echo $installationStrings['LBL_MIGRATE']; ?>' alt="<?php echo $installationStrings['LBL_MIGRATE']; ?>" title="<?php echo $installationStrings['LBL_MIGRATE']; ?>" onClick="window.document.Migrateform.submit();">
-										</form>
-									</td>
-								</tr>					
+								</tr>
 							</table>
 						</td>
 					</tr>
@@ -138,9 +122,9 @@ foreach($pieces as $val)
 		</tr>
 	</table>
 	<table border=0 cellspacing=0 cellpadding=0 width=80% align=center>
-      	<tr>
-        	<td class=small align=center> <a href="<?php echo $coreBOS_app_url; ?>" target="_blank"><?php echo $coreBOS_app_name; ?></a></td>
-      	</tr>
+		<tr>
+			<td class=small align=center> <a href="<?php echo $coreBOS_app_url; ?>" target="_blank"><?php echo $coreBOS_app_name; ?></a></td>
+		</tr>
 	</table>
 </body>
 </html>
