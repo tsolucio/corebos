@@ -16,18 +16,18 @@
 function vtws_retrievedocattachment($all_ids, $returnfile, $user) {
 	global $log,$adb;
 	$entities=array();
-	$docWSId=vtyiicpng_getWSEntityId('Documents');
+	$docWSId = vtws_getEntityId('Documents').'x';
 	$log->debug("Entering function vtws_retrievedocattachment");
-        $all_ids="(".str_replace($docWSId,'',$all_ids).")";
-        $query = "SELECT n.notesid, n.filename, n.filelocationtype
-                  FROM vtiger_notes n
-                  INNER JOIN vtiger_crmentity c ON c.crmid=n.notesid
-                  WHERE n.notesid in $all_ids and n.filelocationtype in ('I','E') and c.deleted=0";
+	$all_ids="(".str_replace($docWSId,'',$all_ids).")";
+	$query = "SELECT n.notesid, n.filename, n.filelocationtype
+		FROM vtiger_notes n
+		INNER JOIN vtiger_crmentity c ON c.crmid=n.notesid
+		WHERE n.notesid in $all_ids and n.filelocationtype in ('I','E') and c.deleted=0";
 	$result = $adb->query($query);
 	$nr=$adb->num_rows($result);
-    for($i=0;$i<$nr;$i++){
-        $id=$docWSId.$adb->query_result($result,$i,'notesid');
-        $webserviceObject = VtigerWebserviceObject::fromId($adb,$id);
+	for ($i=0;$i<$nr;$i++) {
+		$id=$docWSId.$adb->query_result($result,$i,'notesid');
+		$webserviceObject = VtigerWebserviceObject::fromId($adb,$id);
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();
 
@@ -126,18 +126,9 @@ function vtws_retrievedocattachment_get_attachment($fileid,$nr=false,$returnfile
 		$recordpdf["filesize"] = $filesize;
 		$recordpdf["attachment"] = base64_encode($fileContent);
 	}
-	
-	$log->debug("Leaving function vtws_retrievedocattachment_get_attachment($fileid)");
-    return $recordpdf;
-}
 
-if (!function_exists(vtyiicpng_getWSEntityId)) {
-	function vtyiicpng_getWSEntityId($entityName) {
-		global $adb;
-		$rs = $adb->query("select id from vtiger_ws_entity where name='$entityName'");
-		$wsid = @$adb->query_result($rs, 0, 'id').'x';
-		return $wsid;
-	}
+	$log->debug("Leaving function vtws_retrievedocattachment_get_attachment($fileid)");
+	return $recordpdf;
 }
 
 ?>
