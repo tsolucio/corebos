@@ -74,14 +74,14 @@ if ($argc==2 and !empty($argv[1])) {
 		$desc = '';
 	}
 	echo $desc.($desc!=''?"\n\n":'');
-	echo "**Name** : ".$def['name']."\n";
-	echo "**Type** : ".$def['type']."\n";
+	echo "**Name** : ".$def['name']."\n\n";
+	echo "**Type** : ".$def['type']."\n\n";
 	if (isset($def['properties'])) {
 		if (!empty($def['properties']['keywords'])) {
 			if (is_array($def['properties']['keywords'])) {
-				echo "**Keywords** : ".implode(',', $def['properties']['keywords'])."\n";
+				echo "**Keywords** : ".implode(',', $def['properties']['keywords'])."\n\n";
 			} else {
-				echo "**Keywords** : ".$def['properties']['keywords']."\n";
+				echo "**Keywords** : ".$def['properties']['keywords']."\n\n";
 			}
 		}
 		if (!empty($def['properties']['version']))
