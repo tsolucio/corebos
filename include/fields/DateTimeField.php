@@ -41,7 +41,7 @@ class DateTimeField {
 		}
 
 		$insert_time = '';
-		if ($value[1] != '') {
+		if (!empty($value[1])) {
 			$date = self::convertToDBTimeZone($this->datetime, $user);
 			$insert_date = $date->format('Y-m-d');
 		} else {
@@ -309,11 +309,17 @@ class DateTimeField {
 
 		// No need to modify dd-mm-yyyy nor yyyy-mm-dd because PHP knows how to resolve those correctly.
 		if($user->date_format == 'mm-dd-yyyy') {
-			list($date, $time) = explode(' ', $value);
+			if (strpos($value, ' ')>0)
+				list($date, $time) = explode(' ', $value);
+			else
+				$date = $value;
 			if(!empty($date)) {
 				list($m, $d, $y) = explode('-', $date);
 				if(strlen($m) < 3) {
-					$time = ' '.$time;
+					if (isset($time))
+						$time = ' '.$time;
+					else
+						$time = '';
 					$value = "$y-$m-$d".rtrim($time);
 				}
 			}

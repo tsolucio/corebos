@@ -47,11 +47,11 @@ function vtws_retrievedocattachment($all_ids, $returnfile, $user) {
 	if($entityName !== $webserviceObject->getEntityName()){
 		throw new WebServiceException(WebServiceErrorCode::$INVALIDID,"Id specified is incorrect");
 	}
-	
+
 	if(!$meta->hasPermission(EntityMeta::$RETRIEVE,$id)){
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to read given object ($id) is denied");
 	}
-	
+
 	$ids = vtws_getIdComponents($id);
 	if(!$meta->exists($ids[1])){
 		throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND,"Document Record you are trying to access is not found");
@@ -67,10 +67,10 @@ function vtws_retrievedocattachment($all_ids, $returnfile, $user) {
 		$entity["attachment"] = base64_encode('') ;
 	} elseif ($filetype=='I') {
 		$entity = vtws_retrievedocattachment_get_attachment($document_id,true,$returnfile);
-	}        
+	}
 	$entities[$id]=$entity;
 	VTWS_PreserveGlobal::flush();
-    } // end for ids
+	} // end for ids
 	$log->debug("Leaving function vtws_retrievedocattachment");
 	return $entities;
 }
@@ -79,7 +79,7 @@ function vtws_retrievedocattachment($all_ids, $returnfile, $user) {
 function vtws_retrievedocattachment_get_attachment($fileid,$nr=false,$returnfile=true) {
 	global $adb, $log, $default_charset;
 	$log->debug("Entering function vtws_retrievedocattachment_get_attachment($fileid)");
-	
+
 	$recordpdf=array();
 
 	$query = 'SELECT vtiger_attachments.attachmentsid,path,filename,filesize,filetype,name FROM vtiger_attachments
@@ -88,7 +88,7 @@ function vtws_retrievedocattachment_get_attachment($fileid,$nr=false,$returnfile
 	WHERE vtiger_notes.notesid = ?';
 	$result = $adb->pquery($query,array($fileid));
 	if ($adb->num_rows($result)==0 && $nr==false)
-	  throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND,"Attachment Record you are trying to access is not found ($fileid)");
+		throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND,"Attachment Record you are trying to access is not found ($fileid)");
 	if($adb->num_rows($result) == 1)
 	{
 		$fileType = @$adb->query_result($result, 0, "filetype");

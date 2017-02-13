@@ -189,7 +189,7 @@ function buildSelectStmt($sqlDump){
 	}else{
 		$i=0;
 		foreach($sqlDump['column_list'] as $ind=>$field){
-			if(!$fieldcol[$field]){
+			if (empty($fieldcol[$field])) {
 				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Permission to access '.$field.' attribute denied.");
 			}
 			if($i===0){
@@ -205,8 +205,11 @@ function buildSelectStmt($sqlDump){
 	$accessControlQuery = $meta->getEntityAccessControlQuery();
 	$this->query = $this->query.' '.$accessControlQuery;
 	if (!empty($sqlDump['where_condition'])) {
-		if ((sizeof($sqlDump['where_condition']['column_names']) == sizeof($sqlDump['where_condition']['column_values'])) &&
-		(sizeof($sqlDump['where_condition']['column_operators']) == sizeof($sqlDump['where_condition']['operators'])+1)){
+		$sofCN = isset($sqlDump['where_condition']['column_names']) ? sizeof($sqlDump['where_condition']['column_names']) : 0;
+		$sofCV = isset($sqlDump['where_condition']['column_values']) ? sizeof($sqlDump['where_condition']['column_values']) : 0;
+		$sofCO = isset($sqlDump['where_condition']['column_operators']) ? sizeof($sqlDump['where_condition']['column_operators']) : 0;
+		$sofOp = isset($sqlDump['where_condition']['operators']) ? sizeof($sqlDump['where_condition']['operators']) : 0;
+		if ($sofCN == $sofCV && $sofCO == ($sofOp+1)) {
 			$this->query = $this->query.' WHERE (';
 			$i=0;
 			$referenceFields = $meta->getReferenceFieldDetails();
@@ -655,7 +658,7 @@ static public $yy_action = array(
   'selectcolumn_exp',  'condition',     'expr_set',      'expr',        
   'logical_term',  'valuelist',     'valueref',      'value_exp',   
   'column_group',  'clause',        'column_list',   'column_exp',  
-  'limit_set',   
+  'limit_set',
     );
 
     /**
@@ -1153,15 +1156,15 @@ static public $yy_action = array(
     **  #line <lineno> <thisfile>
     */
 #line 5 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
-    function yy_r1(){ 
+    function yy_r1() {
 if($this->yystack[$this->yyidx + -7]->minor){
 $this->out['select'] = $this->yystack[$this->yyidx + -7]->minor;
 }
 if($this->yystack[$this->yyidx + -5]->minor){
 $this->out['from'] = $this->yystack[$this->yyidx + -5]->minor ;
 }
-if(SEMI){
-$this->out['semi_colon'] = SEMI;
+if ($this->yystack[$this->yyidx]->minor) {
+	$this->out['semi_colon'] = self::SEMICOLON;
 }
 if($this->out['select']){
 $this->buildSelectStmt($this->out);
@@ -1334,7 +1337,9 @@ if(in_array('*', $this->out['column_list'])){
 $columns = array_values($fieldcol);
 }elseif( !in_array('count(*)', array_map('strtolower', $this->out['column_list']))){
 foreach($this->out['column_list'] as $ind=>$field){
-$columns[] = $fieldcol[$field];
+	if (isset($fieldcol[$field])) {
+		$columns[] = $fieldcol[$field];
+	}
 }
 }
 if (!empty($this->out['where_condition'])) {

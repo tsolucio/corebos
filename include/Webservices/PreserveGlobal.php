@@ -30,7 +30,7 @@ class VTWS_PreserveGlobal{
 		//$name store the name of the global.
 		global ${$name};
 
-		if(is_array(VTWS_PreserveGlobal::$globalData[$name]) && count(VTWS_PreserveGlobal::$globalData[$name]) > 0){
+		if(isset(VTWS_PreserveGlobal::$globalData[$name]) && is_array(VTWS_PreserveGlobal::$globalData[$name]) && count(VTWS_PreserveGlobal::$globalData[$name]) > 0){
 			$$name = array_pop(VTWS_PreserveGlobal::$globalData[$name]);
 			unset(VTWS_PreserveGlobal::$globalData[$name]);
 		}

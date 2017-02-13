@@ -40,12 +40,11 @@ class VtigerWebserviceObject{
 				}
 			}
 		}
-		
-		$rowData = self::$_fromNameCache[$entityName];
-		
-		if($rowData) {
-			return new VtigerWebserviceObject($rowData['id'],$rowData['name'],
-						$rowData['handler_path'],$rowData['handler_class']);
+
+		$rowData = isset(self::$_fromNameCache[$entityName]) ? self::$_fromNameCache[$entityName] : false;
+
+		if ($rowData) {
+			return new VtigerWebserviceObject($rowData['id'],$rowData['name'], $rowData['handler_path'],$rowData['handler_class']);
 		}
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to perform the operation is denied for name");
 	}

@@ -1267,9 +1267,9 @@ class CustomView extends CRMEntity {
 			$value = $temp_value; // Hot fix: removed unbalanced closing bracket ")";
 		} elseif ($fieldname == "inventorymanager") {
 			$value = $tablename . "." . $fieldname . $this->getAdvComparator($comparator, getUserId_Ol($value), $datatype);
-		} elseif ($change_table_field[$fieldname] != '') {//Added to handle special cases
+		} elseif (!empty($change_table_field[$fieldname])) { //Added to handle special cases
 			$value = $change_table_field[$fieldname] . $this->getAdvComparator($comparator, $value, $datatype);
-		} elseif ($change_table_field[$tablename . "." . $fieldname] != '') {//Added to handle special cases
+		} elseif (!empty($change_table_field[$tablename . "." . $fieldname])) { //Added to handle special cases
 			$tmp_value = '';
 			if ((($comparator == 'e' || $comparator == 's' || $comparator == 'c') && trim($value) == '') || (($comparator == 'n' || $comparator == 'k') && trim($value) != '')) {
 				$tmp_value = $change_table_field[$tablename . "." . $fieldname] . ' IS NULL or ';

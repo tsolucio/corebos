@@ -432,6 +432,7 @@ class PearDatabase{
 	*/
 	function pquery($sql, $params, $dieOnError=false, $msg='') {
 		global $log, $default_charset;
+		if (!isset($params)) $params = array();
 		// Performance Tuning: Have we cached the result earlier?
 		if($this->isCacheEnabled()) {
 			$fromcache = $this->getCacheInstance()->getCacheResult($sql, $params);
@@ -720,6 +721,7 @@ class PearDatabase{
 			throw new Exception("not an array");
 		if (!count($a))
 			throw new Exception("empty arrays not allowed");
+		$l = '';
 		foreach($a as $walk => $cur)
 			$l .= ($l?',':'').$this->quote($cur);
 		return ' ( '.$l.' ) ';
@@ -1023,6 +1025,8 @@ class PearDatabase{
 		$this->checkConnection();
 		$adoflds = $this->database->MetaColumns($tablename);
 		$i=0;
+		$colNames = array();
+		if (is_array($adoflds))
 		foreach($adoflds as $fld) {
 			$colNames[$i] = $fld->name;
 			$i++;

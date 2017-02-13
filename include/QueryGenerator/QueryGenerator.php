@@ -830,7 +830,11 @@ class QueryGenerator {
 				if(empty($conditionInfo['value'])) {
 					$conditionInfo['value'] = '0';
 				}
-				$value = "'".$conditionInfo['value']."'";
+				if (!is_array($conditionInfo['value'])) {
+					$value = "'".$conditionInfo['value']."'";
+				} else {
+					$value = ''; // will get loaded below
+				}
 				switch($conditionInfo['operator']) {
 					case 'e': $sqlOperator = "=";
 						break;
@@ -923,13 +927,10 @@ class QueryGenerator {
 			$fieldSqlList[$index] = $fieldSql;
 		}
 		foreach ($this->manyToManyRelatedModuleConditions as $index=>$conditionInfo) {
-			$relatedModuleMeta = RelatedModuleMeta::getInstance($this->meta->getTabName(),
-					$conditionInfo['relatedModule']);
+			$relatedModuleMeta = RelatedModuleMeta::getInstance($this->meta->getTabName(), $conditionInfo['relatedModule']);
 			$relationInfo = $relatedModuleMeta->getRelationMeta();
 			$relatedModule = $this->meta->getTabName();
-			$fieldSql = "(".$relationInfo['relationTable'].'.'.
-			$relationInfo[$conditionInfo['column']].$conditionInfo['SQLOperator'].
-			$conditionInfo['value'].")";
+			$fieldSql = '('. $relationInfo['relationTable']. '.'. $relationInfo[$conditionInfo['column']]. $conditionInfo['SQLOperator']. $conditionInfo['value']. ')';
 			$fieldSqlList[$index] = $fieldSql;
 		}
 
@@ -941,7 +942,11 @@ class QueryGenerator {
 				$fieldName = $conditionInfo['fieldName'];
 				$fields = $meta->getModuleFields();
 				if ($fieldName=='id') {
-					$value = "'".$conditionInfo['value']."'";
+					if (!is_array($conditionInfo['value'])) {
+						$value = "'".$conditionInfo['value']."'";
+					} else {
+						$value = ''; // will get loaded below
+					}
 					switch($conditionInfo['SQLOperator']) {
 						case 'e': $sqlOperator = "=";
 							break;
@@ -1259,7 +1264,7 @@ class QueryGenerator {
 		if(is_string($value)) {
 			$value = trim($value);
 		} elseif(is_array($value)) {
-			$value = array_map(trim, $value);
+			$value = array_map('trim', $value);
 		}
 		return array('name'=>$fieldname,'value'=>$value,'operator'=>$operator);
 	}
