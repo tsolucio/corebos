@@ -31,6 +31,7 @@ if(isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 	else {
 		$oReport = new Reports();
 		$primarymodule = vtlib_purify($_REQUEST["primarymodule"]);
+		$oReport->primodule = $primarymodule;
 	}
 
 	if($step == 3) {
@@ -164,19 +165,25 @@ if(isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 				)
 			);
 		} else {
-			$ogReport = new Reports();
 			$BLOCK1 = getPrimaryStdFilterHTML($primarymodule);
 			// ADV FILTERS
 			$COLUMNS_BLOCK = getPrimaryColumns_AdvFilterHTML($primarymodule);
 
-			if(!empty($ogReport->related_modules[$primarymodule])) {
-				foreach($ogReport->related_modules[$primarymodule] as $key=>$value) {
+			if(!empty($oReport->related_modules[$primarymodule])) {
+				foreach($oReport->related_modules[$primarymodule] as $key=>$value) {
 					if (isset($_REQUEST['secondarymodule_'.$value])) {
 						$BLOCK1 = array_merge((array)$BLOCK1,(array)getSecondaryStdFilterHTML($_REQUEST["secondarymodule_".$value] ));
 						$COLUMNS_BLOCK = array_merge((array)$COLUMNS_BLOCK, (array)getSecondaryColumns_AdvFilterHTML($_REQUEST["secondarymodule_".$value]));
 					}
 				}
 			}
+
+			$secondarymodule = '';
+			$get_secondmodules = get_Secondmodules($oReport,$primarymodule);
+			$secondarymodule = $get_secondmodules[1];
+			if($secondarymodule!='')
+				$oReport->secmodule = $secondarymodule;
+
 			$BLOCKCRITERIA = $oReport->getSelectedStdFilterCriteria();
 			$rel_fields = getRelatedFieldColumns();
 			echo json_encode(
