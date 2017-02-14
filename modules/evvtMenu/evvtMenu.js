@@ -171,7 +171,10 @@ function buildMoreMenu(object, index){ //pjest shtes qe duhen mmu shtu
 }
 
 jQuery(document).ready(function() {
-	buildMainMenu(evvtmenu);
+	var numMenuElements = document.querySelectorAll('#cbmenu > li');
+	if (numMenuElements.length==0) {
+		buildMainMenu(evvtmenu);
+	}
 
 	jQuery(function () {
 		jQuery(".slds-dropdown__item").hover(function () {
