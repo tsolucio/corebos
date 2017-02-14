@@ -260,13 +260,14 @@ function add_grouping_criteria(grouping_criteria) {ldelim}
 					} else {
 						document.getElementById('fval'+advft_column_index_count).value = columnvalue;
 					}
-
-					if(document.getElementById('fcon'+key))
-						document.getElementById('fcon'+key).value = group_columns[key].column_condition;
+                                        var keyprev=key-1;
+					if(document.getElementById('fcon'+keyprev))
+						document.getElementById('fcon'+keyprev).value = group_columns[keyprev].column_condition;
 				}
 			}
-			if(document.getElementById('gpcon'+i))
-				document.getElementById('gpcon'+i).value = grouping_criteria[i].condition;
+                        var iprev=i-1;
+			if(document.getElementById('gpcon'+iprev))
+				document.getElementById('gpcon'+iprev).value = grouping_criteria[iprev].condition;
 		}
 	} else {
 		addNewConditionGroup('adv_filter_div');
