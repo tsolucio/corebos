@@ -7,12 +7,13 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
+global $app_strings, $mod_strings, $current_language, $currentModule, $theme, $adb;
 require_once('Smarty_setup.php');
 require_once('data/Tracker.php');
 require_once('include/CustomFieldUtil.php');
 require_once('include/utils/utils.php');
 
-global $log, $mod_strings, $app_strings, $theme, $currentModule, $current_user;
+global $log, $current_user;
 
 //added for contact image
 $encode_val = vtlib_purify($_REQUEST['encode_val']);
@@ -25,6 +26,8 @@ $image_error = isset($_REQUEST['image_error']) ? vtlib_purify($_REQUEST['image_e
 
 $focus = CRMEntity::getInstance($currentModule);
 $smarty = new vtigerCRM_Smarty;
+// Identify this module as custom module.
+$smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
 
 //added to fix the issue4600
 $searchurl = getBasic_Advance_SearchURL();
@@ -81,13 +84,21 @@ if (isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
 if ($focus->mode != 'edit') {
 	setObjectValuesFromRequest($focus);
 }
-$disp_view = getView($focus->mode);
 $smarty->assign('MASS_EDIT','0');
-$smarty->assign("BLOCKS", getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields));
+$disp_view = getView($focus->mode);
+$blocks = getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields);
+$smarty->assign('BLOCKS', $blocks);
+$basblocks = getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields, 'BAS');
+$smarty->assign('BASBLOCKS', $basblocks);
+$advblocks = getBlocks($currentModule,$disp_view,$focus->mode,$focus->column_fields,'ADV');
+$smarty->assign('ADVBLOCKS', $advblocks);
 
+$custom_blocks = getCustomBlocks($currentModule,$disp_view);
+$smarty->assign('CUSTOMBLOCKS', $custom_blocks);
+$smarty->assign('FIELDS',$focus->column_fields);
 $smarty->assign("OP_MODE", $disp_view);
 
-//needed when creating a new contact with a default vtiger_account value passed in
+//needed when creating a new contact with a default account value passed in
 if (isset($_REQUEST['account_name']) && is_null($focus->account_name)) {
 	$focus->account_name = $_REQUEST['account_name'];
 
@@ -191,12 +202,15 @@ if($focus->mode != 'edit' && $mod_seq_field != null) {
 		$smarty->assign("MOD_SEQ_ID",$autostr);
 	}
 } else {
-	$smarty->assign("MOD_SEQ_ID", $focus->column_fields[$mod_seq_field['name']]);
+	if (!empty($mod_seq_field) and !empty($mod_seq_field['name']) and !empty($focus->column_fields[$mod_seq_field['name']])) {
+		$smarty->assign('MOD_SEQ_ID', $focus->column_fields[$mod_seq_field['name']]);
+	} else {
+		$smarty->assign('MOD_SEQ_ID', '');
+	}
 }
-// END
+
 // Gather the help information associated with fields
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
-// END
 
 $picklistDependencyDatasource = Vtiger_DependencyPicklist::getPicklistDependencyDatasource($currentModule);
 $smarty->assign("PICKIST_DEPENDENCY_DATASOURCE", json_encode($picklistDependencyDatasource));

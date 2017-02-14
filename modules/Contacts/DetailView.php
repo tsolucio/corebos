@@ -59,9 +59,10 @@ $smarty->assign('THEME', $theme);
 $smarty->assign('ID', $focus->id);
 $smarty->assign('RECORDID', $focus->id);
 $smarty->assign('MODE', $focus->mode);
+$smarty->assign('USE_ASTERISK', get_use_asterisk($current_user->id));
 
 $recordName = array_values(getEntityName($currentModule, $focus->id));
-$recordName = $recordName[0];
+$recordName = isset($recordName[0]) ? $recordName[0] : '';
 $smarty->assign('NAME', $recordName);
 $smarty->assign('UPDATEINFO',updateInfo($focus->id));
 
@@ -88,6 +89,9 @@ $smarty->assign('CHECK', $tool_buttons);
 if(PerformancePrefs::getBoolean('DETAILVIEW_RECORD_NAVIGATION', true) && isset($_SESSION[$currentModule.'_listquery'])){
 	$recordNavigationInfo = ListViewSession::getListViewNavigation($focus->id);
 	VT_detailViewNavigation($smarty,$recordNavigationInfo,$focus->id);
+} else {
+	$smarty->assign('privrecord', '');
+	$smarty->assign('nextrecord', '');
 }
 
 if(useInternalMailer() == 1) 
@@ -137,7 +141,6 @@ if(isPermitted('Contacts','Merge','') == 'yes') {
 	$smarty->assign("TOPTIONS",$optionString);
 }
 
-$smarty->assign('USE_ASTERISK', get_use_asterisk($current_user->id));
 $sql = $adb->pquery('select accountid from vtiger_contactdetails where contactid=?', array($focus->id));
 $accountid = $adb->query_result($sql,0,'accountid');
 if($accountid == 0) $accountid='';
@@ -160,6 +163,7 @@ if($singlepane_view == 'true' or $isPresentRelatedListBlock) {
 	$open_related_modules = RelatedListViewSession::getRelatedModulesFromSession();
 	$smarty->assign("SELECTEDHEADERS", $open_related_modules);
 } else {
+	$smarty->assign('RELATEDLISTS', array());
 	$bmapname = $currentModule.'RelatedPanes';
 	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 	if ($cbMapid) {
@@ -180,6 +184,12 @@ $smarty->assign('BLOCKS', $blocks);
 $custom_blocks = getCustomBlocks($currentModule,'detail_view');
 $smarty->assign('CUSTOMBLOCKS', $custom_blocks);
 $smarty->assign('FIELDS',$focus->column_fields);
+if (is_admin($current_user)) {
+	$smarty->assign('hdtxt_IsAdmin',1);
+} else {
+	$smarty->assign('hdtxt_IsAdmin',0);
+}
+
 $smarty->assign("BLOCKINITIALSTATUS",$_SESSION['BLOCKINITIALSTATUS']);
 // Gather the custom link information to display
 include_once('vtlib/Vtiger/Link.php');
