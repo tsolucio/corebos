@@ -184,6 +184,32 @@ class CRMEntity {
 						$del_res2 = $adb->pquery('delete from vtiger_seattachmentsrel where attachmentsid=?', array($old_attachmentid));
 					}
 				}
+			} elseif (isset($_REQUEST[$fileindex.'_canvas_image_set']) and $_REQUEST[$fileindex.'_canvas_image_set']==1 and !empty($_REQUEST[$fileindex.'_canvas_image'])) {
+				$saveasfile = $module . '_' . $fileindex . '_' . date('YmdHis') . '.png';
+				$fh = fopen('cache/images/'.$saveasfile, 'wb');
+				$filecontent = $_REQUEST[$fileindex.'_canvas_image'];
+				if (substr($filecontent,0,strlen('data:image/png;base64,'))=='data:image/png;base64,') {
+					// Base64 Encoded HTML5 Canvas image
+					$filecontent = str_replace('data:image/png;base64,', '', $filecontent);
+					$filecontent = str_replace(' ', '+', $filecontent);
+				}
+				fwrite($fh, base64_decode($filecontent));
+				fclose($fh);
+				$fi = array(
+					'name' => $saveasfile,
+					'original_name' => $saveasfile,
+					'type' => 'image/png',
+					'tmp_name' => 'cache/images/' . $saveasfile,
+					'error' => 0,
+					'size' => 0
+				);
+				$file_saved = $this->uploadAndSaveFile($id,$module,$fi,'', true);
+				$result = $adb->pquery($sql, array($fileindex,$tabid));
+				$tblname = $adb->query_result($result, 0, 'tablename');
+				$colname = $adb->query_result($result, 0, 'columnname');
+				$fldname = $fileindex;
+				$upd = "update $tblname set $colname=? where ".$this->tab_name_index[$tblname].'=?';
+				$adb->pquery($upd, array($saveasfile,$this->id));
 			}
 		}
 		$log->debug("Exiting from insertIntoAttachment($id,$module) method.");

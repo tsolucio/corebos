@@ -4818,3 +4818,62 @@ function UnifiedSearch_SelectModuleSave() {
 	UnifiedSearch_SelectModuleCancel();
 }
 
+/**
+ * image pasting into canvas
+ * @param {string} canvas_id - canvas id
+ * @param {boolean} autoresize - if canvas will be resized
+ */
+function CLIPBOARD_CLASS(canvas_id, autoresize) {
+	var _self = this;
+	var canvas = document.getElementById(canvas_id);
+	var ctx = document.getElementById(canvas_id).getContext("2d");
+	var startImage = new Image();
+	startImage.onload = function () {
+		ctx.drawImage(startImage, 0, 0, 60, 60, 12, 12, 30, 30);
+	}
+	startImage.src = 'include/LD/assets/icons/utility/paste_60.png';
+	//handlers
+	document.addEventListener('paste', function (e) { _self.paste_auto(e); }, false);
+
+	//on paste
+	this.paste_auto = function (e) {
+		if (e.clipboardData && document.activeElement.id==canvas_id) {
+			var items = e.clipboardData.items;
+			if (!items) return;
+
+			//access data directly
+			for (var i = 0; i < items.length; i++) {
+				if (items[i].type.indexOf("image") !== -1) {
+					//image
+					var blob = items[i].getAsFile();
+					var URLObj = window.URL || window.webkitURL;
+					var source = URLObj.createObjectURL(blob);
+					this.paste_createImage(source);
+					e.preventDefault();
+					break;
+				}
+			}
+		}
+	};
+	//draw pasted image to canvas
+	this.paste_createImage = function (source) {
+		var pastedImage = new Image();
+		pastedImage.onload = function () {
+			if(autoresize == true){
+				//resize
+				canvas.width = pastedImage.width;
+				canvas.height = pastedImage.height;
+			}
+			else{
+				//clear canvas
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+			}
+			ctx.drawImage(pastedImage, 0, 0);
+			var cnv_img = document.getElementById(canvas_id+'_image');
+			var cnv_img_set = document.getElementById(canvas_id+'_image_set');
+			if (cnv_img) cnv_img.value = canvas.toDataURL('image/png');
+			if (cnv_img_set) cnv_img_set.value = '1';
+		};
+		pastedImage.src = source;
+	};
+}
