@@ -132,9 +132,6 @@ class HelpDesk extends CRMEntity {
 		//Inserting into Ticket Comment Table
 		$this->insertIntoTicketCommentTable();
 
-		//Inserting into vtiger_attachments
-		$this->insertIntoAttachment($this->id,$module);
-
 		//service contract update
 		$return_action = $_REQUEST['return_action'];
 		$for_module = $_REQUEST['return_module'];
@@ -178,30 +175,6 @@ class HelpDesk extends CRMEntity {
 			$adb->pquery("update vtiger_troubletickets set commentadded='1' where ticketid=?",array($this->id));
 			$this->column_fields['commentadded'] = '1';
 		}
-	}
-
-	/**
-	 * This function is used to add the vtiger_attachments. This will call the function uploadAndSaveFile which will upload the attachment into the server and save that attachment information in the database.
-	 * @param int $id - entity id to which the files to be uploaded
-	 * @param string $module - the current module name
-	*/
-	function insertIntoAttachment($id,$module, $direct_import=false)
-	{
-		global $log, $adb;
-		$log->debug("Entering into insertIntoAttachment($id,$module) method.");
-
-		$file_saved = false;
-
-		foreach($_FILES as $fileindex => $files)
-		{
-			if($files['name'] != '' && $files['size'] > 0)
-			{
-				$files['original_name'] = vtlib_purify($_REQUEST[$fileindex.'_hidden']);
-				$file_saved = $this->uploadAndSaveFile($id,$module,$files);
-			}
-		}
-
-		$log->debug("Exiting from insertIntoAttachment($id,$module) method.");
 	}
 
 	/** Function to form the query to get the list of activities
