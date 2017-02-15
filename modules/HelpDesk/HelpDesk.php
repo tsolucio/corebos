@@ -719,15 +719,15 @@ class HelpDesk extends CRMEntity {
 		$sql = "SELECT * FROM vtiger_ticketcf WHERE ticketid = ?";
 		$result = $adb->pquery($sql, array($entityId));
 		$cffields = $adb->getFieldsArray($result);
+		$sql = 'SELECT fieldlabel FROM vtiger_field WHERE columnname = ? and vtiger_field.presence in (0,2)';
 		foreach ($cffields as $cfOneField) {
 			if ($cfOneField != 'ticketid') {
 				$cfData = $adb->query_result($result, 0, $cfOneField);
-				$sql = "SELECT fieldlabel FROM vtiger_field WHERE columnname = ? and vtiger_field.presence in (0,2)";
-				$cfLabel = $adb->query_result($adb->pquery($sql, array($cfOneField)), 0, 'fieldlabel');
+				$rs = $adb->pquery($sql, array($cfOneField));
+				$cfLabel = $adb->query_result($rs, 0, 'fieldlabel');
 				$desc .= '<br><br>' . $cfLabel . ' : <br>' . $cfData;
 			}
 		}
-		// end of contribution
 		$desc .= '<br><br><br>';
 		$desc .= '<br>' . getTranslatedString("LBL_REGARDS", $moduleName) . ',<br>' . getTranslatedString("LBL_TEAM", $moduleName) . '.<br>';
 		return $desc;

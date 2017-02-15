@@ -159,8 +159,9 @@ function HelpDesk_notifyParentOnTicketChange($entityData) {
 
 			//Get the status of the vtiger_portal user. if the customer is active then send the vtiger_portal link in the mail
 			if($contact_mailid != '') {
-				$sql = "SELECT * FROM vtiger_portalinfo WHERE user_name=?";
-				$isPortalUser = $adb->query_result($adb->pquery($sql, array($contact_mailid)),0,'isactive');
+				$sql = 'SELECT * FROM vtiger_portalinfo WHERE user_name=?';
+				$rs = $adb->pquery($sql, array($contact_mailid));
+				$isPortalUser = $adb->query_result($rs,0,'isactive');
 			}
 		}
 		if($parent_module == 'Accounts') {
@@ -169,7 +170,7 @@ function HelpDesk_notifyParentOnTicketChange($entityData) {
 			$parent_email = $adb->query_result($result,0,'email1');
 			$parentname = $adb->query_result($result,0,'accountname');
 		}
-
+		$mail_status = '';
 		//added condition to check the emailoptout(this is for contacts and vtiger_accounts.)
 		if($emailoptout == 0) {
 
@@ -240,6 +241,7 @@ function HelpDesk_notifyOwnerOnTicketChange($entityData) {
 		if($ownerType == 'Groups') {
 			$to_email = implode(',', getDefaultAssigneeEmailIds($ownerId));
 		}
+		$mail_status = '';
 		if($to_email != '') {
 			if($isNew) {
 				$mail_status = send_mail('HelpDesk',$to_email,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID,$subject,$email_body);

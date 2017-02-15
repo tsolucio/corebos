@@ -611,6 +611,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 				$params = array(sanitizeUploadFileName($col_fields[$fieldname], $upload_badext),$col_fields['record_id']);
 			}
 			$result_image = $adb->pquery($query, $params);
+			$image_array = array();
 			for($image_iter=0;$image_iter < $adb->num_rows($result_image);$image_iter++) {
 				$image_id_array[] = $adb->query_result($result_image,$image_iter,'attachmentsid');
 
@@ -621,7 +622,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 
 				$image_path_array[] = $adb->query_result($result_image,$image_iter,'path');
 			}
-			if(is_array($image_array))
+			if(count($image_array)>0)
 				for($img_itr=0;$img_itr<count($image_array);$img_itr++) {
 					$fieldvalue[] = array('name'=>$image_array[$img_itr],'path'=>$image_path_array[$img_itr].$image_id_array[$img_itr]."_","orgname"=>$image_orgname_array[$img_itr]);
 				}

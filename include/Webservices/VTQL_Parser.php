@@ -1163,9 +1163,9 @@ $this->out['select'] = $this->yystack[$this->yyidx + -7]->minor;
 if($this->yystack[$this->yyidx + -5]->minor){
 $this->out['from'] = $this->yystack[$this->yyidx + -5]->minor ;
 }
-if ($this->yystack[$this->yyidx]->minor) {
-	$this->out['semi_colon'] = self::SEMICOLON;
-}
+// if ($this->yystack[$this->yyidx]->minor) {
+// 	$this->out['semi_colon'] = self::SEMICOLON;
+// }
 if($this->out['select']){
 $this->buildSelectStmt($this->out);
 }

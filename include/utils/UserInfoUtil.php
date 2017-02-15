@@ -1342,7 +1342,7 @@ function getProfileAllActionPermission($profileid)
 	$utilArr=getTabsUtilityActionPermission($profileid);
 	foreach($utilArr as $tabid=>$act_arr)
 	{
-		$act_tab_arr=$actionArr[$tabid];
+		$act_tab_arr = isset($actionArr[$tabid]) ? $actionArr[$tabid] : array();
 		foreach($act_arr as $utilid=>$util_perr)
 		{
 			$act_tab_arr[$utilid]=$util_perr;
