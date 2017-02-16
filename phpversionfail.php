@@ -36,7 +36,7 @@ include_once 'vtigerversion.php';
 	<table border=0 cellspacing=0 cellpadding=10 width=80% align=center>
 	<tr>
 		<td class="small" bgcolor="#FFFFFF" align=center>
-			A PHP version from 5.3.x to 5.6.x is required. Your current PHP version is
+			A PHP version from 5.3.x to 7.0.0 is required. Your current PHP version is
 			<?php
 				if(isset($serverPhpVersion)) {
 					echo $serverPhpVersion;
