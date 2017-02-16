@@ -46,6 +46,7 @@
 	<a name="top"></a>
 	<!-- header -->
 	<!-- header-vtiger crm name & RSS -->
+	<script type="text/javascript" src="include/sw-precache/service-worker-registration.js"></script>
 	<script type="text/javascript" src="include/jquery/jquery.js"></script>
 	<script type="text/javascript" src="include/jquery/jquery-ui.js"></script>
 	<script type="text/javascript" src="include/js/meld.js"></script>

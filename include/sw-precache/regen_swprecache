@@ -1,0 +1,1 @@
+sw-precache --config=include/sw-precache/sw-precache-config.js --verbose
