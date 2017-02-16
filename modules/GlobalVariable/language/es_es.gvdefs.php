@@ -705,7 +705,7 @@ $GlobalVariableDefinitons = array(
 	'status' => 'Implementado',
 	'valuetype' => 'Cadena de texto',
 	'category' => 'Funccionalidad module Mobile',
-	'values' => 'Calenar | HelpDesk | Contacts ...',
+	'values' => 'Calendar | HelpDesk | Contacts ...',
 	'definition' => 'Establecer el modulo por defecto a mostrar al entrar al modulo de Mobile.',
 ),
 );

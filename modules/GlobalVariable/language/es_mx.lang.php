@@ -33,14 +33,11 @@ $mod_strings = Array(
 	'LBL_MANDATORY_VALUE'=>'Solo se permite un valor <b>Obligatorio</b> por módulo y variable',
 	'LBL_MANDATORY_VALUEJS'=>'Solo se permite un valor "Obligatorio" por módulo y variable',
 
-	'preload_jscalendar' => 'Cargar jscalendar',
 	'System' => 'Sistema',
 	'User Interface' => 'Interfaz Usuario',
 	'Performance' => 'Rendimiento',
 	'Module Functionality' => 'Funcionalidad Módulo',
 	'Other' => 'Otro',
-	'product_service_default' => 'Productos o Servicios por defecto en las líneas de productos',
-	'Users_ReplyTo_SecondEmail' => 'Responder al Email Secundario del usuario',
 	'GVarDefinitions' => 'Definiciones de Variables',
 	'cbMap' => 'Mapa de Negocio',
 );

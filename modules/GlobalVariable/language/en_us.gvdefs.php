@@ -445,7 +445,7 @@ $GlobalVariableDefinitons = array(
 	'status' => 'Implemented',
 	'valuetype' => 'String',
 	'category' => 'Mobile Functionality',
-	'values' => 'Calenar | HelpDesk | Contacts ...',
+	'values' => 'Calendar | HelpDesk | Contacts ...',
 	'definition' => 'Set the default module to show when access to the Mobile module.',
 ),
 'Application_Storage_Directory' => array(
