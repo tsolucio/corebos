@@ -903,11 +903,11 @@ function deleteBlock() {
 function addCustomField() {
 	global $current_user,$log,$adb;
 
-	$fldmodule=vtlib_purify($_REQUEST['fld_module']);
-	$fldlabel=vtlib_purify(trim($_REQUEST['fldLabel']));
-	$fldType= vtlib_purify($_REQUEST['fieldType']);
-	$parenttab=vtlib_purify($_REQUEST['parenttab']);
-	$mode=vtlib_purify($_REQUEST['mode']);
+	$fldmodule = vtlib_purify($_REQUEST['fld_module']);
+	$fldlabel = vtlib_purify(trim($_REQUEST['fldLabel']));
+	$fldType = vtlib_purify($_REQUEST['fieldType']);
+	$parenttab = isset($_REQUEST['parenttab']) ? vtlib_purify($_REQUEST['parenttab']) : '';
+	$mode = isset($_REQUEST['mode']) ? vtlib_purify($_REQUEST['mode']) : '';
 	$blockid = vtlib_purify($_REQUEST['blockid']);
 
 	$tabid = getTabid($fldmodule);
@@ -1027,7 +1027,7 @@ function addCustomField() {
 		}
 
 		if(is_numeric($blockid)) {
-			if($_REQUEST['fieldid'] == '') {
+			if(empty($_REQUEST['fieldid'])) {
 				$max_fieldsequence = "select max(sequence) as maxsequence from vtiger_field where block = ? ";
 				$res = $adb->pquery($max_fieldsequence,array($blockid));
 				$max_seq = $adb->query_result($res,0,'maxsequence');
@@ -1070,7 +1070,7 @@ function addCustomField() {
 				if($fldType == 'Picklist' || $fldType == 'MultiSelectCombo') {
 					$columnName = $adb->sql_escape_string($columnName);
 					// Creating the PickList Table and Populating Values
-					if($_REQUEST['fieldid'] == '') {
+					if(empty($_REQUEST['fieldid'])) {
 						$qur = "CREATE TABLE vtiger_".$columnName." (
 							".$columnName."id int(19) NOT NULL auto_increment,
 							".$columnName." varchar(200) NOT NULL,

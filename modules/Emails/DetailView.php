@@ -38,7 +38,7 @@ if(isset($_REQUEST['record'])) {
 	$fmtdate = $dt->getDisplayDate($current_user);
 	$smarty->assign('DATE_START',$fmtdate);
 	$smarty->assign('TIME_START',$adb->query_result($result,0,'time_start'));
-	if($focus->column_fields['name'] != '')
+	if(!empty($focus->column_fields['name']))
 		$focus->name = $focus->column_fields['name'];
 	else
 		$focus->name = $focus->column_fields['subject'];
@@ -119,10 +119,9 @@ $smarty->assign("ID",$focus->id);
 $check_button = Button_Check($module);
 $smarty->assign("CHECK", $check_button);
 
-//Constructing the Related Lists from here
 $smarty->assign("MODULE",$currentModule);
-$smarty->assign("SENDER",$email_id);
-if($_REQUEST['mode'] != 'ajax')
+
+if(empty($_REQUEST['mode']) or $_REQUEST['mode'] != 'ajax')
 	$smarty->display("EmailDetailView.tpl");
 else
 	$smarty->display("EmailDetails.tpl")

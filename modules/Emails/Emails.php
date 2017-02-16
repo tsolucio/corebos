@@ -54,6 +54,9 @@ class Emails extends CRMEntity {
 	var $list_link_field = 'subject';
 	var $sortby_fields = Array('subject', 'date_start', 'saved_toid');
 
+	// For Alphabetical search
+	var $def_basicsearch_col = 'subject';
+
 	// Column value to use on detail view record text display
 	var $def_detailview_recname = 'subject';
 
@@ -336,7 +339,7 @@ class Emails extends CRMEntity {
 		if (isset($_REQUEST['sorder']))
 			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
 		else
-			$sorder = (($_SESSION['EMAILS_SORT_ORDER'] != '') ? ($_SESSION['EMAILS_SORT_ORDER']) : ($this->default_sort_order));
+			$sorder = (!empty($_SESSION['EMAILS_SORT_ORDER']) ? ($_SESSION['EMAILS_SORT_ORDER']) : ($this->default_sort_order));
 
 		$log->debug("Exiting getSortOrder method ...");
 		return $sorder;
@@ -359,7 +362,7 @@ class Emails extends CRMEntity {
 		if (isset($_REQUEST['order_by']))
 			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
 		else
-			$order_by = (($_SESSION['EMAILS_ORDER_BY'] != '') ? ($_SESSION['EMAILS_ORDER_BY']) : ($use_default_order_by));
+			$order_by = (!empty($_SESSION['EMAILS_ORDER_BY']) ? ($_SESSION['EMAILS_ORDER_BY']) : ($use_default_order_by));
 
 		$log->debug("Exiting getOrderBy method ...");
 		return $order_by;

@@ -168,7 +168,7 @@ class Reports extends CRMEntity{
 				else
 					$this->is_editable = 'false';
 			} elseif($_REQUEST['module'] != 'Home') {
-				if($_REQUEST['mode'] != 'ajax')
+				if(empty($_REQUEST['mode']) or $_REQUEST['mode'] != 'ajax')
 				{
 					include('modules/Vtiger/header.php');
 				}

@@ -503,7 +503,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 	} elseif ($uitype == 61) {
 		global $adb;
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
-
+		$custfldval = '';
 		if ($tabid == 10) {
 			$attach_result = $adb->pquery("select * from vtiger_seattachmentsrel where crmid = ?", array($col_fields['record_id']));
 			for ($ii = 0; $ii < $adb->num_rows($attach_result); $ii++) {
@@ -513,8 +513,6 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 					$attachmentsname = $adb->query_result($adb->pquery($attachquery, array($attachmentid)), 0, 'name');
 					if ($attachmentsname != '')
 						$custfldval = '<a href = "index.php?module=uploads&action=downloadfile&return_module=' . $col_fields['record_module'] . '&fileid=' . $attachmentid . '&entityid=' . $col_fields['record_id'] . '">' . $attachmentsname . '</a>';
-					else
-						$custfldval = '';
 				}
 				$label_fld['options'][] = $custfldval;
 			}
@@ -550,11 +548,10 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 					} else {
 						$custfldval = $col_fields[$fieldname];
 					}
-				} else
-					$custfldval = '';
+				}
 			}
-			$label_fld[] = $custfldval;
 		}
+		$label_fld[] = $custfldval;
 	}
 	elseif ($uitype == 28) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
@@ -1788,7 +1785,7 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 		$custfld = getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, $generatedtype, $tabid, $module);
 		if (is_array($custfld)) {
 			$extendedfieldinfo = '';
-			if ($custfld[2]==10) {
+			if (isset($custfld[2]) and $custfld[2]==10) {
 				$fldmod_result = $adb->pquery('SELECT relmodule, status FROM vtiger_fieldmodulerel WHERE fieldid=
 					(SELECT fieldid FROM vtiger_field, vtiger_tab WHERE vtiger_field.tabid=vtiger_tab.tabid AND fieldname=? AND name=? and vtiger_field.presence in (0,2)) order by sequence',
 					Array($fieldname, $module));
