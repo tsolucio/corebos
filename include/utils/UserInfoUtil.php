@@ -3091,6 +3091,7 @@ function getCurrentUserProfileList()
 	$log->debug('Entering getCurrentUserProfileList() method ...');
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	$profList = array();
+	$profListTypeNoMobile = array();
 	foreach ($current_user_profiles as $profid) {
 		$profilename = '';
 		$resprofile = $adb->pquery("SELECT profilename FROM vtiger_profile WHERE profileid = ?",array($profid));
@@ -3100,10 +3101,15 @@ function getCurrentUserProfileList()
 				array_push($profList, $profid);
 			}
 		}else{
+			array_push($profListTypeNoMobile, $profid);
 			if(!defined('COREBOS_INSIDE_MOBILE')){
 				array_push($profList, $profid);
 			}
 		}
+	}
+	//Check if profile list is empty, because not exist any profile with name Mobile::, to asign the normal profiles
+	if(defined('COREBOS_INSIDE_MOBILE') && empty($profList)){
+		$profList = $profListTypeNoMobile;
 	}
 	$log->debug('Exiting getCurrentUserProfileList method ...');
 	return $profList;
