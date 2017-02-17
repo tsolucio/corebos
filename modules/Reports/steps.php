@@ -21,12 +21,16 @@ header('Content-Type: application/json');
 if(isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 
 	$step = vtlib_purify($_REQUEST['step']);
-	if(isset($_REQUEST['record']) && !empty($_REQUEST['record'])) {
+	if(!empty($_REQUEST['record'])) {
 		$recordid = vtlib_purify($_REQUEST['record']);
 		// CREATE NEW REPORT OBJECT FROM REPORT ID
 		$oReport = new Reports($recordid);
 		$primarymodule = $oReport->primodule;
-
+		if ($oReport->reporttype=='crosstabsql') {
+			$rs = $adb->pquery('select moreinfo from vtiger_report where reportid=?',array($recordid));
+			$minfo = $adb->query_result($rs, 0, 0);
+			$minfo = unserialize($minfo);
+		}
 	}
 	else {
 		$oReport = new Reports();
@@ -68,8 +72,11 @@ if(isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 
 	//  ======== STEP 4 ==========
 	elseif($step == 4) {
+		if (isset($_REQUEST['cbreporttype']) and ($_REQUEST['cbreporttype']=='external' or $_REQUEST['cbreporttype']=='directsql')) {
+			echo json_encode(array('permission'=>1));
+			die();
+		}
 		if(isset($recordid)) {
-			$oRep = new Reports();
 			$get_secondmodules = get_Secondmodules($oReport,$primarymodule);
 			$reporttype = "tabular";
 			$secondarymodule = $get_secondmodules[1];
@@ -77,24 +84,45 @@ if(isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 
 			$oReport->secmodule = $secondarymodule;
 			$BLOCK1 = getPrimaryColumnsHTML($primarymodule,$secondarymodule);
-			$BLOCK1 = array_merge((array)$BLOCK1,(array)getSecondaryColumnsHTML($secondarymodule) );
+			$AGGFIELDS = $BLOCK1;
+			$SECMODFIELDS = (array)getSecondaryColumnsHTML($secondarymodule);
+			$BLOCK1 = array_merge((array)$BLOCK1,$SECMODFIELDS);
 
 			$BLOCK2 = $oReport->getSelectedColumnsList($recordid);
 			if($permission == false)
 				echo json_encode(array("permission"=>0));
 			else {
-				echo json_encode(array("permission"=>1,"BLOCK1"=>$BLOCK1,"BLOCK2"=>$BLOCK2));
+				if (isset($_REQUEST['cbreporttype']) and $_REQUEST['cbreporttype']=='crosstabsql') {
+					echo json_encode(array(
+						'permission'=>1,
+						'BLOCK1' => $SECMODFIELDS,
+						'BLOCK2' => $BLOCK2,
+						'AGGFIELDS' => $AGGFIELDS,
+						'pivotfield'=> $minfo['pivotfield'],
+						'aggfield' => $minfo['pivotfield'],
+						'crosstabaggfunction' => $minfo['crosstabaggfunction'],
+					));
+				} else {
+					echo json_encode(array("permission"=>1,"BLOCK1"=>$BLOCK1,"BLOCK2"=>$BLOCK2));
+				}
 			}
 		} else {
 			$get_secondmodules = get_Secondmodules($oReport,$primarymodule);
 			$permission = $get_secondmodules[0];
 			$secondarymodule = $get_secondmodules[1];
 			$BLOCK1 = getPrimaryColumnsHTML($primarymodule,$secondarymodule);
-			$BLOCK1 = array_merge((array)$BLOCK1,(array)getSecondaryColumnsHTML($secondarymodule) );
-			if($permission == false)
-				echo json_encode(array("permission"=>0));
-			else
-				echo json_encode(array("permission"=>1,"BLOCK1"=>$BLOCK1));
+			$AGGFIELDS = $BLOCK1;
+			$SECMODFIELDS = (array)getSecondaryColumnsHTML($secondarymodule);
+			$BLOCK1 = array_merge((array)$BLOCK1, $SECMODFIELDS);
+			if ($permission == false) {
+				echo json_encode(array('permission'=>0));
+			} else {
+				if (isset($_REQUEST['cbreporttype']) and $_REQUEST['cbreporttype']=='crosstabsql') {
+					echo json_encode(array('permission'=>1,'BLOCK1'=>$SECMODFIELDS,'AGGFIELDS'=>$AGGFIELDS));
+				} else {
+					echo json_encode(array('permission'=>1,'BLOCK1'=>$BLOCK1));
+				}
+			}
 		}
 	}
 
@@ -107,14 +135,23 @@ if(isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 
 			$oReport->secmodule = $secondarymodule;
 			$BLOCK1 = $oReport->sgetColumntoTotalSelected($oReport->primodule,$oReport->secmodule,$recordid);
-			echo json_encode(array("BLOCK1"=>$BLOCK1));
+			if (isset($_REQUEST['cbreporttype']) and $_REQUEST['cbreporttype']=='crosstabsql') {
+				echo json_encode(array(
+					'aggfield' => $minfo['aggfield'],
+					'crosstabaggfunction' => $minfo['crosstabaggfunction'],
+				));
+			} else {
+				echo json_encode(array("BLOCK1"=>$BLOCK1));
+			}
 		} else {
 			$oReport = new Reports();
 			$secondarymodule = Array();
 			$ogReport = new Reports();
 			if(!empty($ogReport->related_modules[$primarymodule])) {
 				foreach($ogReport->related_modules[$primarymodule] as $key=>$value){
-					$secondarymodule[] = vtlib_purify($_REQUEST['secondarymodule_'.$value]);
+					if (isset($_REQUEST['secondarymodule_'.$value])) {
+						$secondarymodule[] = vtlib_purify($_REQUEST['secondarymodule_'.$value]);
+					}
 				}
 			}
 			$BLOCK1 = $oReport->sgetColumntoTotal($primarymodule,$secondarymodule);

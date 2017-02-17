@@ -56,22 +56,38 @@
 		<td align="right"><a href="javascript:;" onClick="fninvsh('reportLay');"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0"></a></td>
 	</tr>
 	</table>
-	<table border=0 cellspacing=0 cellpadding=5 width=95% align=center>
+	<table border=0 cellspacing=0 cellpadding=5 width=96% align=center style="margin-top:4px;">
 	<tr>
-		<td class="small">
-			<table border=0 cellspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
-			<tr>
-				<td class="cellLabel small" align="right" nowrap><b>{$MOD.LBL_REPORT_MODULE} </b></td>
-				<td class="cellText small" align="left">
-					<select name="selectModuleElement" id="selectModuleElement" class="small" style="width:150px">
-					{foreach item=modulelabel key=modulename from=$REPT_MODULES}
-						<option value="{$modulename}">{$modulelabel}</option>
-					{/foreach}
-					</select>
-				</td>
-			</tr>
-			</table>
+		<td class="cellLabel small" nowrap><b>{$MOD.LBL_REPORT_MODULE}</b></td>
+	</tr>
+	<tr>
+		<td class="cellText small">
+			<select name="selectModuleElement" id="selectModuleElement" class="small" style="width:270px">
+				{foreach item=modulelabel key=modulename from=$REPT_MODULES}
+					<option value="{$modulename}">{$modulelabel}</option>
+				{/foreach}
+			</select>
 		</td>
+	</tr>
+	<tr>
+	<td class="cellLabel small"><b>{'Choose Report Type'|@getTranslatedString:'Reports'}</b></td>
+	</tr>
+	<tr>
+	<td class="small"><input type="radio" name="cbreporttype" value="corebos" checked>&nbsp;{'Application Report'|@getTranslatedString:'Reports'}</td>
+	</tr>
+	<tr>
+	<td class="small"><input type="radio" name="cbreporttype" value="external">&nbsp;{'External Application'|@getTranslatedString:'Reports'}</td>
+	</tr>
+	<tr>
+	<td class="small"><input type="radio" name="cbreporttype" value="crosstabsql">&nbsp;{'Cross Tab'|@getTranslatedString:'Reports'}</td>
+	</tr>
+<!--
+	<tr>
+	<td class="small"><input type="radio" name="cbreporttype" value="pivottable">&nbsp;{'Pivot Table'|@getTranslatedString:'Reports'}</td>
+	</tr>
+-->
+	<tr>
+	<td class="small"><input type="radio" name="cbreporttype" value="directsql">&nbsp;{'Direct SQL Statement'|@getTranslatedString:'Reports'}</td>
 	</tr>
 	</table>
 	<table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport">

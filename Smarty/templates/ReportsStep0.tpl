@@ -64,6 +64,7 @@
 		<input type="hidden" name="action" value="Save">
 		<input type="hidden" name='saveashidden' value='saveas'/>
 		<input type="hidden" name='newreportname' id='newreportname' value=''/>
+		<input type="hidden" name='cbreporttype' id='cbreporttype' value='{$REPORTTYPE}'/>
 		<div id="report-steps" class="jquery-steps">
 
 			<!-- STEP 1 -->
@@ -98,11 +99,32 @@
 						<td align="right" style="padding-right:5px;" valign="top"><b>{$MOD.LBL_DESCRIPTION}: </b></td>
 						<td align="left" style="padding-left:5px;"><textarea name="reportDesc" class="txtBox" rows="5">{$REPORTDESC}</textarea></td>
 					</tr>
+					{if $REPORTTYPE eq 'external'}
+						<tr>
+							<td colspan="2"><b>{'External Report URL'|@getTranslatedString:'Reports'} : </b></td>
+						</tr>
+						<tr>
+							<td colspan="2"><input type="text" name="externalurl" class="txtBox" value="{$REPORTMINFO}"></td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<input type="checkbox" name="adduserinfo" {$REPORTADDUSERINFO}>
+								<b>{'Add User Information'|@getTranslatedString:'Reports'}</b>
+							</td>
+						</tr>
+					{elseif $REPORTTYPE eq 'directsql'}
+						<tr>
+							<td colspan="2"><b>{'Direct SQL Statement'|@getTranslatedString:'Reports'} : </b></td>
+						</tr>
+						<tr>
+							<td colspan="2"><textarea name="directsqlcommand" class="txtBox" rows="5">{$REPORTMINFO}</textarea></td>
+						</tr>
+					{/if}
 					<tr>
 						<td align="center" colspan="2" height="30" class="step_error" id="step1_error" style="color:red;">&nbsp;</td>
 					</tr>
 					<tr>
-						<td colspan="2" height="310">&nbsp;</td>
+						<td colspan="2" height="210">&nbsp;</td>
 					</tr>
 				</table>
 			</section>
@@ -282,7 +304,8 @@
 
 			// Check for errors on step 3
 			if(currentIndex == 3 && newIndex == 4) {
-				if(selectedColumnsObj.options.length == 0) {
+				var cbreporttype = document.getElementById('cbreporttype').value;
+				if(selectedColumnsObj.options.length == 0 && cbreporttype != 'external' && cbreporttype != 'directsql') {
 					var $error_selector = $("#step4_error");
 					$error_selector.html(alert_arr.COLUMNS_CANNOT_BE_EMPTY);
 					return false;
@@ -290,7 +313,7 @@
 				if(new_steps_count > 0)
 					return true;
 			}
-
+			var cbreporttype = document.getElementById('cbreporttype').value;
 			if(currentIndex == 0 && newIndex == 1) {
 				var $error_selector = $("#step1_error");
 				var can_pass = false;
@@ -320,10 +343,8 @@
 				var $error_selector = $("#step2_error");
 				var modsselected = $('.secondarymodule:checkbox:checked').length;
 
-				if (modsselected<=2) {
+				if ((cbreporttype != 'crosstabsql' && modsselected<=2) || (cbreporttype == 'crosstabsql' && modsselected == 1)) {
 					var data = setStepData(3);
-
-					// Ajax Call
 					jQuery.ajax({
 						method: 'POST',
 						async: false,
@@ -332,9 +353,18 @@
 						dataType: "json",
 					}).done(function (response) {
 						can_pass = setReportType(response);
+						if (cbreporttype == 'crosstabsql') {
+							// Skip Report Type step
+						}
 					});
 				} else {
-					$error_selector.html(alert_arr.MAXIMUM_OF_TWO_MODULES_PERMITTED);
+					if (cbreporttype == 'crosstabsql' && modsselected == 0) {
+						$error_selector.html(alert_arr.MUST_SELECT_ONE_MODULE_FOR_REPORT);
+					} else if (cbreporttype == 'crosstabsql') {
+						$error_selector.html(alert_arr.ONLY_ONE_MODULE_PERMITTED_FOR_REPORT);
+					} else {
+						$error_selector.html(alert_arr.MAXIMUM_OF_TWO_MODULES_PERMITTED);
+					}
 					can_pass = false;
 				}
 
@@ -351,10 +381,13 @@
 					method: 'POST',
 					async: false,
 					data: data,
-					url: 'index.php?action=ReportsAjax&file=steps&module=Reports',
+					url: 'index.php?action=ReportsAjax&file=steps&module=Reports&cbreporttype='+cbreporttype,
 					dataType: "json",
 				}).done(function (response) {
 					can_pass = fillSelectedColumns(response);
+					if (cbreporttype == 'crosstabsql') {
+						document.getElementById("pivotfield").value = response.pivotfield;
+					}
 				});
 
 				return can_pass;
@@ -369,10 +402,20 @@
 					method: 'POST',
 					async: false,
 					data: data,
-					url: 'index.php?action=ReportsAjax&file=steps&module=Reports',
+					url: 'index.php?action=ReportsAjax&file=steps&module=Reports&cbreporttype='+cbreporttype,
 					dataType: "json",
 				}).done(function (response) {
-					fillReportColumnsTotal(response.BLOCK1);
+					if (cbreporttype == 'crosstabsql') {
+						document.getElementById("cbreptypenotctsubtitle").style.display = 'none';
+						document.getElementById("cbreptypectsubtitle").style.display = 'block';
+						document.getElementById("cbreptypenotcttrow").style.display = 'none';
+						document.getElementById("cbreptypecttrow").style.display = 'table-row';
+						document.getElementById("aggfield").value = response.aggfield;
+						console.log(response);
+						document.getElementById("crosstabaggfunction").value = response.crosstabaggfunction;
+					} else {
+						fillReportColumnsTotal(response.BLOCK1);
+					}
 					can_pass = true;
 				});
 
@@ -422,9 +465,20 @@
 		},
 
 		onStepChanged: function (event, currentIndex, priorIndex) {
+			var cbreporttype = document.getElementById('cbreporttype').value;
+			if (cbreporttype == 'crosstabsql') {
+				if (currentIndex == 2) {
+					wizard.steps("next");
+				}
+			}
+			if (cbreporttype == 'external' || cbreporttype == 'directsql') {
+				if (currentIndex >= 1 && currentIndex <= 6) {
+					wizard.steps("setStep", 6)
+				}
+			}
 
 			if(currentIndex == 3 && priorIndex == 2 ) {
-				if(document.NewReport.reportType.value =="summary") {
+				if(document.NewReport.reportType.value =="summary" && cbreporttype == 'summary') {
 					// Ajax Call
 					var data = setStepData("grouping");
 					jQuery.ajax({
@@ -488,6 +542,16 @@
 			saveAndRunReport();
 		}
 	});
+	jQuery.fn.steps.setStep = function (step) {
+		var currentIndex = $(this).steps('getCurrentIndex');
+		for(var i = 0; i < Math.abs(step - currentIndex); i++){
+			if(step > currentIndex) {
+				$(this).steps('next');
+			} else {
+				$(this).steps('previous');
+			}
+		}
+	};
 </script>
 {/literal}
 </html>

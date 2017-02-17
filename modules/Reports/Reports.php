@@ -417,7 +417,17 @@ class Reports extends CRMEntity{
 				$report_details['reportname'] = $report["reportname"];
 				$report_details['sharingtype'] = $report["sharingtype"];
 				$report_details['reporttype'] = $report['reporttype'];
-				$report_details['moreinfo'] = $report['moreinfo'];
+				if ($report['reporttype']=='external') {
+					$minfo = unserialize(decode_html($report['moreinfo']));
+					$report_details['moreinfo'] = $minfo['url'];
+					if ($minfo['adduserinfo']==1) {
+						$report_details['moreinfo'] = rtrim($report_details['moreinfo'],'/');
+						$report_details['moreinfo'] .= strpos($report_details['moreinfo'], '?') ? '&' : '?';
+						$report_details['moreinfo'] .= 'usrid='.$current_user->id.'&role='.$current_user_parent_role_seq.((isset($current_user_groups) && sizeof($current_user_groups)) > 0 ? '&grpid='.implode(",", $current_user_groups) : '');
+					}
+				} else {
+					$report_details['moreinfo'] = $report['moreinfo'];
+				}
 				if($is_admin==true || in_array($report["owner"],$subordinate_users) || $report["owner"]==$current_user->id)
 					$report_details['editable'] = 'true';
 				else

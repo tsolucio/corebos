@@ -13,11 +13,26 @@
 		<tr>
 			<td colspan="2">
 				<span class="genHeaderGray">{$MOD.LBL_CALCULATIONS}</span><br>
-				{$MOD.LBL_SELECT_COLUMNS_TO_TOTAL}
+				<span id="cbreptypenotctsubtitle">{$MOD.LBL_SELECT_COLUMNS_TO_TOTAL}</span>
+				<span id="cbreptypectsubtitle" style="display:none">{$MOD.LBL_AGG_FUNCTION_CHOOSE}</span>
 				<hr>
 			</td>
 		</tr>
-		<tr>
+		<tr id="cbreptypecttrow" style="display:none">
+		<td colspan="2"><div style="overflow:auto;height:448px">
+			<b>{$MOD.LBL_AGG_COLUMN}</b><br><br>
+			<select id="aggfield" name="aggfield" class="txtBox"></select><br><br>
+			<b>{$MOD.LBL_AGG_FUNCTION}</b><br><br>
+			<select name="crosstabaggfunction" id="crosstabaggfunction">
+			<option value="count">{$MOD.LBL_COLUMNS_COUNT}</option>
+			<option value="sum">{$MOD.LBL_COLUMNS_SUM}</option>
+			<option value="avg">{$MOD.LBL_COLUMNS_AVERAGE}</option>
+			<option value="min">{$MOD.LBL_COLUMNS_LOW_VALUE}</option>
+			<option value="max">{$MOD.LBL_COLUMNS_LARGE_VALUE}</option>
+			</select>
+		</div></td>
+		</tr>
+		<tr id="cbreptypenotcttrow">
 			<td colspan="2">
 				<div style="overflow:auto;height:448px">
 					<table style="background-color: rgb(204, 204, 204);" class="small" border="0" cellpadding="5" cellspacing="1" width="100%" valign="top">

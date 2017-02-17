@@ -1776,14 +1776,19 @@ class ReportRun extends CRMEntity {
 		return $query;
 	}
 
-	function sGetDirectSQL($reportid)
-	{
+	public static function sGetDirectSQL($reportid, $reporttype, $eliminatenewlines=true) {
 		global $log, $adb;
 		$rptrs = $adb->pquery('select moreinfo from vtiger_report where reportid=?',array($reportid));
 		if ($rptrs and $adb->num_rows($rptrs)>0) {
 			$minfo = $adb->query_result($rptrs, 0, 0);
 			if (!empty($minfo)) {
-				$minfo = preg_replace('#\R+#', ' ', $minfo);
+				if ($reporttype == 'crosstabsql') {
+					$minfo = unserialize($minfo);
+					$minfo = $minfo['sql'];
+				}
+				if ($eliminatenewlines) {
+					$minfo = preg_replace('#\R+#', ' ', $minfo);
+				}
 				return $minfo;
 			}
 		}
@@ -1800,9 +1805,9 @@ class ReportRun extends CRMEntity {
 	function sGetSQLforReport($reportid,$filtersql,$type='',$chartReport=false)
 	{
 		global $log;
-
-		if ($this->reporttype == 'directsql') {
-			$reportquery = $this->sGetDirectSQL($reportid);
+		$groupsquery = '';
+		if ($this->reporttype == 'directsql' or $this->reporttype == 'crosstabsql') {
+			$reportquery = self::sGetDirectSQL($reportid,$this->reporttype,true);
 			$columnstotalsql = '';
 			if (stripos($reportquery, ' order by ')) {
 				$groupsquery = substr($reportquery, stripos($reportquery, ' order by ')+10);
@@ -1925,7 +1930,7 @@ class ReportRun extends CRMEntity {
 				$totalsselectedcolumns = implode(', ',$totalsselectedcolumns);
 				$reportquery = "select ".$columnstotalsql.' from (select DISTINCT '.$totalsselectedcolumns.$_columnstotallistaddtoselect." ".$reportquery." ".$wheresql.') as summary_calcs';
 			}
-		} elseif ($this->reporttype != 'directsql') {
+		} elseif ($this->reporttype != 'directsql' and $this->reporttype != 'crosstabsql') {
 			if($selectedcolumns == '') { // Fix for: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/4758 - Prasad
 				$selectedcolumns = "''"; // "''" to get blank column name
 				$allColumnsRestricted = true;
@@ -2259,8 +2264,11 @@ class ReportRun extends CRMEntity {
 				if ($fld->name=='LBL_ACTION') {
 					$module = 'Reports';
 					$fieldLabel = 'LBL_ACTION';
-				} else {
+				} elseif (strpos($fld->name, '_')) {
 					list($module, $fieldLabel) = explode('_', $fld->name, 2);
+				} else {
+					$module = $this->primarymodule;
+					$fieldLabel = $fld->name;
 				}
 				$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
 				if(!empty($fieldInfo)) {
@@ -2364,8 +2372,11 @@ class ReportRun extends CRMEntity {
 					if ($fld->name=='LBL_ACTION') {
 						$module = 'Reports';
 						$fieldLabel = 'LBL_ACTION';
-					} else {
+					} elseif (strpos($fld->name, '_')) {
 						list($module, $fieldLabel) = explode('_', $fld->name, 2);
+					} else {
+						$module = $this->primarymodule;
+						$fieldLabel = $fld->name;
 					}
 					$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
 					if(!empty($fieldInfo)) {

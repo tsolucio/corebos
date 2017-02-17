@@ -17,6 +17,12 @@
 				<hr>
 			</td>
 		</tr>
+		<tr id="aggfieldtablerow" style="display:none">
+			<td colspan="2"><b>{$MOD.LBL_AGG_FIELD}</b></td>
+			<td colspan="2">
+				<select id="pivotfield" name="pivotfield" class="txtBox"></select>
+			</td>
+		</tr>
 		<tr>
 			<td colspan="2" height="26"><b>{$MOD.LBL_AVAILABLE_FIELDS}</b></td>
 			<td colspan="2"><b>{$MOD.LBL_SELECTED_FIELDS}</b></td>

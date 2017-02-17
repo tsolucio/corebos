@@ -27,6 +27,7 @@ $list_report_form = new vtigerCRM_Smarty;
 $list_report_form->assign('LANGUAGE', $current_language);
 $list_report_form->assign("MOD", $mod_strings);
 $list_report_form->assign("APP", $app_strings);
+$list_report_form->assign('REPORTTYPE',isset($_REQUEST['cbreporttype']) ? vtlib_purify($_REQUEST['cbreporttype']) : '');
 $repObj = new Reports ();
 $folderid = 0;
 if($recordid!=''){
@@ -64,8 +65,21 @@ if($recordid!=''){
 	$list_report_form->assign("RELATEDMODULES",getReportRelatedModules($oRep->primodule,$oRep));
 	$list_report_form->assign("RECORDID",$recordid);
 	$list_report_form->assign("REPORTNAME",$oRep->reportname);
+	$list_report_form->assign('REPORTTYPE',$oRep->reporttype);
 	$list_report_form->assign("REPORTDESC",$oRep->reportdescription);
 	$list_report_form->assign("REP_MODULE",$oRep->primodule);
+	if ($oRep->reporttype=='external') {
+		$rptrs = $adb->pquery('select moreinfo from vtiger_report where reportid=?',array($recordid));
+		if ($rptrs and $adb->num_rows($rptrs)>0) {
+			$minfo = $adb->query_result($rptrs, 0, 0);
+			$minfo = unserialize($minfo);
+			$reportquery = $minfo['url'];
+			$list_report_form->assign('REPORTADDUSERINFO',($minfo['adduserinfo']==1 ? 'checked' : ''));
+		}
+	} else {
+		$reportquery = ReportRun::sGetDirectSQL($recordid,$oRep->reporttype,false);
+	}
+	$list_report_form->assign('REPORTMINFO',$reportquery);
 	$folderid = $oRep->folderid;
 	if(!isset($_REQUEST['secondarymodule'])){
 		$list_report_form->assign("SEC_MODULE",$sec_module);
@@ -77,6 +91,14 @@ if($recordid!=''){
 	}
 	$list_report_form->assign("RESTRICTEDMODULES",$restrictedmod);
 	$list_report_form->assign("BACK",'true');
+} else {
+	$list_report_form->assign('RECORDID',$recordid);
+	$list_report_form->assign('REPORTNAME','');
+	$list_report_form->assign('REPORTDESC','');
+	$list_report_form->assign('REP_MODULE','');
+	$list_report_form->assign('REPORTMINFO','');
+	$list_report_form->assign('REPORTADDUSERINFO','');
+	$list_report_form->assign('RESTRICTEDMODULES','');
 }
 if(!empty($_REQUEST['reportmodule'])) {
 	if(vtlib_isModuleActive($_REQUEST['reportmodule'])==false || isPermitted($_REQUEST['reportmodule'],'index')!= "yes"){

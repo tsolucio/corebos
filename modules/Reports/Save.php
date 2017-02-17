@@ -53,7 +53,7 @@ $smodule = vtlib_purify($_REQUEST["secondarymodule"]);
 //<<<<<<<report>>>>>>>>>
 $reportname = vtlib_purify($_REQUEST["reportName"]);
 $reportdescription = vtlib_purify($_REQUEST["reportDesc"]);
-$reporttype = vtlib_purify($_REQUEST["reportType"]);
+$reporttype = (!empty($_REQUEST['cbreporttype']) ? vtlib_purify($_REQUEST['cbreporttype']) : vtlib_purify($_REQUEST["reportType"]));
 $folderid = (!empty($_REQUEST['folder']) ? vtlib_purify($_REQUEST['folder']) : !empty($_REQUEST['reportfolder']) ? vtlib_purify($_REQUEST['reportfolder']) : 1);
 //<<<<<<<report>>>>>>>>>
 
@@ -118,6 +118,7 @@ if($reportid == '' || ($reportid!='' && strstr($saveas,'saveas')!='' && $newrepo
 		for($in=0;$in<$adb->num_rows($reportdetails);$in++)
 		$selectedcolumns[]=$adb->query_result($reportdetails,$in,'columnname');
 	}
+	$pivotcolumns = '';
 	$genQueryId = $adb->getUniqueID("vtiger_selectquery");
 	if($genQueryId != "")
 	{
@@ -129,13 +130,17 @@ if($reportid == '' || ($reportid!='' && strstr($saveas,'saveas')!='' && $newrepo
 			//<<<<step2 vtiger_selectcolumn>>>>>>>>
 			if(!empty($selectedcolumns))
 			{
+				$pcols = array();
 				for($i=0 ;$i<count($selectedcolumns);$i++)
 				{
 					if(!empty($selectedcolumns[$i])){
 						$icolumnsql = "insert into vtiger_selectcolumn (QUERYID,COLUMNINDEX,COLUMNNAME) values (?,?,?)";
 						$icolumnsqlresult = $adb->pquery($icolumnsql, array($genQueryId,$i,(decode_html($selectedcolumns[$i]))));
+						$colinfo = explode(':', $selectedcolumns[$i]);
+						$pcols[] = $colinfo[0].'.'.$colinfo[1].' as '.$colinfo[2];
 					}
 				}
+				$pivotcolumns = implode(',', $pcols);
 			}
 			if($shared_entities != "")
 			{
@@ -157,8 +162,9 @@ if($reportid == '' || ($reportid!='' && strstr($saveas,'saveas')!='' && $newrepo
 			{
 				if($reportid!='')
 					$reportname=$newreportname;
-				$ireportsql = "insert into vtiger_report (REPORTID,FOLDERID,REPORTNAME,DESCRIPTION,REPORTTYPE,QUERYID,STATE,OWNER,SHARINGTYPE) values (?,?,?,?,?,?,?,?,?)";
-				$ireportparams = array($genQueryId, $folderid, $reportname, $reportdescription, $reporttype, $genQueryId,'CUSTOM',$current_user->id,$sharetype);
+				list($reporttype,$minfo) = report_getMoreInfoFromRequest($reporttype,$pmodule,$smodule,$pivotcolumns);
+				$ireportsql = 'insert into vtiger_report (REPORTID,FOLDERID,REPORTNAME,DESCRIPTION,REPORTTYPE,QUERYID,STATE,OWNER,SHARINGTYPE,moreinfo) values (?,?,?,?,?,?,?,?,?,?)';
+				$ireportparams = array($genQueryId, $folderid, $reportname, $reportdescription, $reporttype, $genQueryId,'CUSTOM',$current_user->id,$sharetype,$minfo);
 				$ireportresult = $adb->pquery($ireportsql, $ireportparams);
 				$log->info("Reports :: Save->Successfully saved vtiger_report");
 				if($ireportresult!=false)
@@ -320,19 +326,24 @@ if($reportid == '' || ($reportid!='' && strstr($saveas,'saveas')!='' && $newrepo
 {
 	if($reportid != "")
 	{
+		$pivotcolumns = '';
 		if(!empty($selectedcolumns))
 		{
 			$idelcolumnsql = "delete from vtiger_selectcolumn where queryid=?";
 			$idelcolumnsqlresult = $adb->pquery($idelcolumnsql, array($reportid));
 			if($idelcolumnsqlresult != false)
 			{
+				$pcols = array();
 				for($i=0 ;$i<count($selectedcolumns);$i++)
 				{
 					if(!empty($selectedcolumns[$i])){
 						$icolumnsql = "insert into vtiger_selectcolumn (QUERYID,COLUMNINDEX,COLUMNNAME) values (?,?,?)";
 						$icolumnsqlresult = $adb->pquery($icolumnsql, array($reportid,$i,(decode_html($selectedcolumns[$i]))));
+						$colinfo = explode(':', $selectedcolumns[$i]);
+						$pcols[] = $colinfo[0].'.'.$colinfo[1].' as '.$colinfo[2];
 					}
 				}
+				$pivotcolumns = implode(',', $pcols);
 			}
 		}
 		$delsharesqlresult = $adb->pquery("DELETE FROM vtiger_reportsharing WHERE reportid=?", array($reportid));
@@ -353,8 +364,9 @@ if($reportid == '' || ($reportid!='' && strstr($saveas,'saveas')!='' && $newrepo
 		$log->info("Reports :: Save->Successfully saved vtiger_reportmodules");
 		//<<<<reportmodules>>>>>>>
 
-		$ireportsql = "update vtiger_report set REPORTNAME=?, DESCRIPTION=?, REPORTTYPE=?, SHARINGTYPE=?, folderid=? where REPORTID=?";
-		$ireportparams = array($reportname, $reportdescription, $reporttype, $sharetype, $folderid, $reportid);
+		list($reporttype,$minfo) = report_getMoreInfoFromRequest($reporttype,$pmodule,$smodule,$pivotcolumns);
+		$ireportsql = "update vtiger_report set REPORTNAME=?, DESCRIPTION=?, REPORTTYPE=?, SHARINGTYPE=?, folderid=?, moreinfo=? where REPORTID=?";
+		$ireportparams = array($reportname, $reportdescription, $reporttype, $sharetype, $folderid, $minfo, $reportid);
 		$ireportresult = $adb->pquery($ireportsql, $ireportparams);
 		$log->info("Reports :: Save->Successfully saved vtiger_report");
 

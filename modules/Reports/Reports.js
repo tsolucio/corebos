@@ -305,6 +305,11 @@ function showSaveDialog()
 
 function saveAndRunReport()
 {
+	var cbreporttype = document.getElementById('cbreporttype').value;
+	if (cbreporttype == 'external' || cbreporttype == 'directsql') {
+		document.NewReport.submit();
+		return true;
+	}
 	if(selectedColumnsObj.options.length == 0)
 	{
 		alert(alert_arr.COLUMNS_CANNOT_BE_EMPTY);
@@ -316,18 +321,25 @@ function saveAndRunReport()
 }
 
 function saveas() {
+	var reportname = prompt(alert_arr.LBL_REPORT_NAME);
+	if (reportname != null) {
+		document.getElementById("newreportname").value = reportname;
+	} else {
+		alert(alert_arr.LBL_REPORT_NAME_ERROR);
+		return false;
+	}
+	var cbreporttype = document.getElementById('cbreporttype').value;
+	if (cbreporttype == 'external' || cbreporttype == 'directsql') {
+		document.NewReport.submit();
+		return true;
+	}
 	if(selectedColumnsObj.options.length == 0) {
 		alert(alert_arr.COLUMNS_CANNOT_BE_EMPTY);
 		return false;
 	}
 	formSelectedColumnString();
 	formSelectColumnString();
-	var reportname = prompt(alert_arr.LBL_REPORT_NAME);
-	if (reportname != null) {
-		document.getElementById("newreportname").value = reportname;
-		document.NewReport.submit();
-	} else
-		alert(alert_arr.LBL_REPORT_NAME_ERROR);
+	document.NewReport.submit();
 }
 
 function changeSteps1()
@@ -401,9 +413,10 @@ function changeSteps1()
 		}
 		saveAndRunReport();
 	} else {
+		var cbreporttype = document.getElementById('cbreporttype').value;
 		for (i = 0; i < divarray.length; i++) {
 			if (getObj(divarray[i]).style.display != 'none') {
-				if (i == 1 && selectedColumnsObj.options.length == 0) {
+				if (i == 1 && selectedColumnsObj.options.length == 0 && cbreporttype != 'external' && cbreporttype != 'directsql') {
 					alert(alert_arr.COLUMNS_CANNOT_BE_EMPTY);
 					return false;
 				}
@@ -507,7 +520,7 @@ function CreateReport(element)
 {
 	if(document.getElementById(element) == null) return;
 	var module = document.getElementById(element).value;
-	var arg ='index.php?module=Reports&action=ReportsAjax&file=NewReport0&folder='+gcurrepfolderid+'&reportmodule='+module;
+	var arg ='index.php?module=Reports&action=ReportsAjax&file=NewReport0&folder='+gcurrepfolderid+'&reportmodule='+module+'&cbreporttype='+document.querySelectorAll('input[name="cbreporttype"]:checked')[0].value;
 	fnPopupWin(arg);
 }
 function fnPopupWin(winName){
@@ -866,10 +879,9 @@ function fillList(block,element_id) {
  */
 function returnFullList(block) {
 
-	var block_length = block.length;
-	if( block_length > 0) {
+	if(block && block.length > 0) {
 		var $html = $("<select>");
-		for(i=0;i<block_length;i++) {
+		for(i=0;i<block.length;i++) {
 
 			var node = block[i];
 			var optgroup =  $("<optgroup>",{"class":node.class,"label":node.label,"style":block.style});
@@ -1031,6 +1043,11 @@ function fillSelectedColumns(response) {
 		fillFullList(response.BLOCK1, "availList");
 		if(response.hasOwnProperty('BLOCK2') && response.BLOCK2.length > 0)
 			fillList(response.BLOCK2,"selectedColumns");
+		if(response.hasOwnProperty('AGGFIELDS') && response.AGGFIELDS.length > 0) {
+			fillFullList(response.BLOCK1,"aggfield");
+			fillFullList(response.AGGFIELDS,"pivotfield");
+			document.getElementById("aggfieldtablerow").style.display = 'table-row';
+		}
 		setObjects();
 		return true;
 	}

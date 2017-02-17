@@ -76,8 +76,11 @@ function getReportFieldValue ($report, $picklistArray, $dbField, $valueArray, $f
 	if ($dbField->name=='LBL_ACTION') {
 		$module = 'Reports';
 		$fieldLabel = 'LBL_ACTION';
-	} else {
+	} elseif (strpos($dbField->name, '_')) {
 		list($module, $fieldLabel) = explode('_', $dbField->name, 2);
+	} else {
+		$module = $report->primarymodule;
+		$fieldLabel = $dbField->name;
 	}
 	$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
 	$fieldType = null;
@@ -184,4 +187,83 @@ function getReportFieldValue ($report, $picklistArray, $dbField, $valueArray, $f
 	return $fieldvalue;
 }
 
+function report_getMoreInfoFromRequest($reporttype,$pmodule,$smodule,$pivotcolumns) {
+	global $adb;
+	if ($_REQUEST['cbreporttype']=='external') {
+		if (isset($_REQUEST['adduserinfo']) and ($_REQUEST['adduserinfo'] == 'on' || $_REQUEST['adduserinfo'] == 1)) {
+			$aui = 1;
+		} else {
+			$aui = 0;
+		}
+		$minfo = serialize(array(
+			'url' => vtlib_purify($_REQUEST['externalurl']),
+			'adduserinfo' => $aui,
+		));
+		$reporttype = 'external';
+	} elseif ($_REQUEST['cbreporttype']=='directsql') {
+		$minfo = vtlib_purify($_REQUEST['directsqlcommand']);
+		$reporttype = 'directsql';
+	} elseif ($_REQUEST['cbreporttype']=='crosstabsql') {
+		require_once 'adodb/pivottable.inc.php';
+		$pmod = CRMEntity::getInstance($pmodule);
+		$smod = CRMEntity::getInstance($smodule);
+		$moduleInstance = Vtiger_Module::getInstance($pmodule);
+		$refs = $moduleInstance->getFieldsByType('reference');
+		$found = false;
+		foreach ($refs as $fname => $field) {
+			$rs = $adb->pquery('select relmodule from vtiger_fieldmodulerel where fieldid=?',array($field->id));
+			$relmod = $adb->query_result($rs,0,0);
+			if ($relmod==$smodule) {
+				$found = $field;
+				break;
+			}
+		}
+		$reljoin = $pmod->table_name . '.' . $found->column . ' = ' . $smod->table_name . '.' . $smod->table_index;
+		$colinfo = explode(':', $_REQUEST['pivotfield']);
+		$pivotfield = $colinfo[0].'.'.$colinfo[1];
+		$colinfo = explode(':', $_REQUEST['aggfield']);
+		$aggfield = $colinfo[0].'.'.$colinfo[1];
+		switch ($_REQUEST['crosstabaggfunction']) {
+			case 'sum':
+				$agglabel = getTranslatedString('LBL_COLUMNS_SUM','Reports');
+			break;
+			case 'avg':
+				$agglabel = getTranslatedString('LBL_COLUMNS_AVERAGE','Reports');
+			break;
+			case 'min':
+				$agglabel = getTranslatedString('LBL_COLUMNS_LOW_VALUE','Reports');
+			break;
+			case 'max':
+				$agglabel = getTranslatedString('LBL_COLUMNS_LARGE_VALUE','Reports');
+			break;
+			default:
+				$aggfield = false;
+				$agglabel = 'Sum';
+				$_REQUEST['crosstabaggfunction'] = 'sum';
+			break;
+		}
+		$sql = PivotTableSQL($adb->database, // adodb connection
+			$pmod->table_name.',vtiger_crmentity,'.$smod->table_name, // tables
+			$pivotcolumns, // rows (multiple fields allowed)
+			$pivotfield, // column to pivot on
+			$pmod->table_name.'.'.$pmod->table_index.'=vtiger_crmentity.crmid and vtiger_crmentity.deleted=0 and '.$reljoin, // joins/where
+			$aggfield,
+			$agglabel,
+			vtlib_purify($_REQUEST['crosstabaggfunction'])
+		);
+		$minfo = serialize(array(
+			'pivotfield' => vtlib_purify($_REQUEST['pivotfield']),
+			'aggfield' => vtlib_purify($_REQUEST['aggfield']),
+			'crosstabaggfunction' => vtlib_purify($_REQUEST['crosstabaggfunction']),
+			'sql' => $sql
+		));
+		$reporttype = 'crosstabsql';
+	} else {
+		$minfo = '';
+	}
+	return array(
+		$reporttype,
+		$minfo
+	);
+}
 ?>
