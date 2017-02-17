@@ -1067,4 +1067,11 @@
 	<classname>addMoreInfoFieldToReports</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Migrate biurl to moreinfo</description>
+	<filename>build/changeSets/2017/migratebiurl2moreinfo.php</filename>
+	<classname>migratebiurl2moreinfo</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
