@@ -26,7 +26,6 @@ class Vtiger_FieldBasic {
 	var $uitype = 1;
 	var $typeofdata = 'V~O';
 	var	$displaytype   = 1;
-
 	var $generatedtype = 1;
 	var	$readonly      = 1;
 	var	$presence      = 2;
@@ -36,7 +35,6 @@ class Vtiger_FieldBasic {
 	var	$quickcreate   = 1;
 	var	$quicksequence = false;
 	var	$info_type     = 'BAS';
-
 	var $block;
 
 	/**

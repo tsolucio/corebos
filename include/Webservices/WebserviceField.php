@@ -216,7 +216,7 @@ class WebserviceField{
 	public function setReferenceList($referenceList){
 		$this->referenceList = $referenceList;
 	}
-	
+
 	public function getTableFields(){
 		$tableFields = null;
 		if(isset(WebserviceField::$tableMeta[$this->getTableName()])){
@@ -224,15 +224,16 @@ class WebserviceField{
 		}else{
 			$dbMetaColumns = $this->pearDB->database->MetaColumns($this->getTableName());
 			$tableFields = array();
-                        if(is_array($dbMetaColumns)){
-                            foreach ($dbMetaColumns as $key => $dbField) {
-                                    $tableFields[$dbField->name] = $dbField;
-                            }
-                        }
+			if(is_array($dbMetaColumns)){
+				foreach ($dbMetaColumns as $key => $dbField) {
+					$tableFields[$dbField->name] = $dbField;
+				}
+			}
 			WebserviceField::$tableMeta[$this->getTableName()] = $tableFields;
 		}
 		return $tableFields;
 	}
+
 	public function fillColumnMeta(){
 		$tableFields = $this->getTableFields();
 		foreach ($tableFields as $fieldName => $dbField) {
