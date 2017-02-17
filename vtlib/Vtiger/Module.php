@@ -16,6 +16,14 @@ include_once('vtlib/Vtiger/ModuleBasic.php');
 class Vtiger_Module extends Vtiger_ModuleBasic {
 
 	/**
+	 * Function to get the Module/Tab id
+	 * @return <Number>
+	 */
+	public function getId() {
+		return $this->id;
+	}
+
+	/**
 	 * Get unique id for related list
 	 * @access private
 	 */

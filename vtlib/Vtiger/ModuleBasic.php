@@ -53,7 +53,6 @@ class Vtiger_ModuleBasic {
 	const EVENT_MODULE_PREUPDATE   = 'module.preupdate';
 	const EVENT_MODULE_POSTUPDATE  = 'module.postupdate';
 
-
 	/**
 	 * Constructor
 	 */
@@ -293,10 +292,15 @@ class Vtiger_ModuleBasic {
 			if(!$this->entityidfield) $this->entityidfield = $this->basetableid;
 			if(!$this->entityidcolumn)$this->entityidcolumn= $this->basetableid;
 		}
-		if($this->entityidfield && $this->entityidcolumn) {
-			$adb->pquery("INSERT INTO vtiger_entityname(tabid, modulename, tablename, fieldname, entityidfield, entityidcolumn) VALUES(?,?,?,?,?,?)",
-				Array($this->id, $this->name, $fieldInstance->table, $fieldInstance->name, $this->entityidfield, $this->entityidcolumn));
-			self::log("Setting entity identifier ... DONE");
+		if ($this->entityidfield && $this->entityidcolumn) {
+			$result = $adb->pquery("SELECT tabid FROM vtiger_entityname WHERE tablename=? AND tabid=?", array($fieldInstance->table, $this->id));
+			if ($adb->num_rows($result) == 0) {
+				$adb->pquery("INSERT INTO vtiger_entityname(tabid, modulename, tablename, fieldname, entityidfield, entityidcolumn) VALUES(?,?,?,?,?,?)", Array($this->id, $this->name, $fieldInstance->table, $fieldInstance->name, $this->entityidfield, $this->entityidcolumn));
+				self::log("Setting entity identifier ... DONE");
+			} else {
+				$adb->pquery("UPDATE vtiger_entityname SET fieldname=?,entityidfield=?,entityidcolumn=? WHERE tablename=? AND tabid=?", array($fieldInstance->name, $this->entityidfield, $this->entityidcolumn, $fieldInstance->table, $this->id));
+				self::log("Updating entity identifier ... DONE");
+			}
 		}
 	}
 
@@ -402,6 +406,58 @@ class Vtiger_ModuleBasic {
 		if($blockInstance) $fields = Vtiger_Field::getAllForBlock($blockInstance, $this);
 		else $fields = Vtiger_Field::getAllForModule($this);
 		return $fields;
+	}
+
+	/**
+	 * Function to get fields based on the type
+	 * @param <String> $type - field type
+	 * @return <Array of Vtiger_Field> - list of field models
+	 */
+	public function getFieldsByType($type) {
+		global $adb;
+		if(!is_array($type)) {
+			$type = array($type);
+		}
+		$fields = $this->getFields();
+		$fieldList = array();
+		foreach($fields as $field) {
+			$result = $adb->pquery('select fieldtype from vtiger_ws_fieldtype where uitype=?', array($field->uitype));
+			if ($result and $adb->num_rows($result)>0) {
+				$fieldType = $adb->query_result($result, 0, 'fieldtype');
+				if(in_array($fieldType,$type)) {
+					$fieldList[$field->name] = $field;
+				}
+			}
+		}
+		return $fieldList;
+	}
+
+	/**
+	 * Function to get array of fields indexed by fieldid
+	 * @return <Vtiger_Field> with fieldid as key
+	 */
+	public function getFieldsById() {
+		$fields = $this->getFields();
+		$fieldList = array();
+		foreach($fields as $field) {
+			$fieldId = $field->id;
+			$fieldList[$fieldId] = $field;
+		}
+		return $fieldList;
+	}
+
+	/**
+	 * Function to get array of fields indexed by label
+	 * @return <Vtiger_Field> with field label as key
+	 */
+	public function getFieldsByLabel() {
+		$fields = $this->getFields();
+		$fieldList = array();
+		foreach($fields as $field) {
+			$fieldLabel = $field->label;
+			$fieldList[$fieldLabel] = $field;
+		}
+		return $fieldList;
 	}
 
 	/**
