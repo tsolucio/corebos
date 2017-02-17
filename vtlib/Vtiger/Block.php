@@ -26,6 +26,9 @@ class Vtiger_Block {
 	var $ineditview = 0;
 	var $indetailview = 0;
 
+	var $display_status = 1;
+	var $iscustom = 0;
+
 	var $module;
 
 	/**
@@ -67,9 +70,13 @@ class Vtiger_Block {
 	 * @access private
 	 */
 	function initialize($valuemap, $moduleInstance=false) {
-		$this->id = $valuemap['blockid'];
-		$this->label= $valuemap['blocklabel'];
-		$this->module=$moduleInstance? $moduleInstance: Vtiger_Module::getInstance($valuemap['tabid']);
+		$this->id = isset($valuemap['blockid']) ? $valuemap['blockid'] : null;
+		$this->label= isset($valuemap['blocklabel']) ? $valuemap['blocklabel'] : null;
+		$this->display_status = isset($valuemap['display_status']) ? $valuemap['display_status'] : null;
+		$this->sequence = isset($valuemap['sequence']) ? $valuemap['sequence'] : null;
+		$this->iscustom = isset($valuemap['iscustom']) ? $valuemap['iscustom'] : null;
+		$tabid = isset($valuemap['tabid']) ? $valuemap['tabid'] : null;
+		$this->module = $moduleInstance ? $moduleInstance : Vtiger_Module::getInstance($tabid);
 	}
 
 	/**
@@ -81,15 +88,15 @@ class Vtiger_Block {
 		$error = false;
 		$this->module = $moduleInstance;
 		$checkres = $adb->pquery('SELECT 1 FROM vtiger_blocks WHERE tabid=? AND blocklabel=?',array($this->module->id, $this->label));
-		// If relation already exist continue
+		// If block already exist continue
 		if($adb->num_rows($checkres)) $error = true;
 		if (!$error) {
 			$this->id = $this->__getUniqueId();
 			if(!$this->sequence) $this->sequence = $this->__getNextSequence();
 
-			$result = $adb->pquery("INSERT INTO vtiger_blocks(blockid,tabid,blocklabel,sequence,show_title,visible,create_view,edit_view,detail_view) 
-				VALUES(?,?,?,?,?,?,?,?,?)", Array($this->id, $this->module->id, $this->label,$this->sequence,
-				$this->showtitle, $this->visible,$this->increateview, $this->ineditview, $this->indetailview));
+			$result = $adb->pquery("INSERT INTO vtiger_blocks(blockid,tabid,blocklabel,sequence,show_title,visible,create_view,edit_view,detail_view,iscustom)
+				VALUES(?,?,?,?,?,?,?,?,?,?)", Array($this->id, $this->module->id, $this->label,$this->sequence,
+				$this->showtitle, $this->visible,$this->increateview, $this->ineditview, $this->indetailview, $this->iscustom));
 			if($result) {
 				self::log("Creating Block $this->label ... DONE");
 				self::log("Module language entry for $this->label ... CHECK");
@@ -198,9 +205,9 @@ class Vtiger_Block {
 		global $adb;
 		$instances = false;
 
-		$query = "SELECT * FROM vtiger_blocks WHERE tabid=?";
+		$query = "SELECT * FROM vtiger_blocks WHERE tabid=? ORDER BY sequence";
 		$queryParams = Array($moduleInstance->id);
-		
+
 		$result = $adb->pquery($query, $queryParams);
 		for($index = 0; $index < $adb->num_rows($result); ++$index) {
 			$instance = new self();

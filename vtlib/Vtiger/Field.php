@@ -224,10 +224,10 @@ class Vtiger_Field extends Vtiger_FieldBasic {
 		$query = false;
 		$queryParams = false;
 		if($moduleInstance) {
-			$query = "SELECT * FROM vtiger_field WHERE block=? AND tabid=?";
+			$query = "SELECT * FROM vtiger_field WHERE block=? AND tabid=? ORDER BY sequence";
 			$queryParams = Array($blockInstance->id, $moduleInstance->id);
 		} else {
-			$query = "SELECT * FROM vtiger_field WHERE block=?";
+			$query = "SELECT * FROM vtiger_field WHERE block=? ORDER BY sequence";
 			$queryParams = Array($blockInstance->id);
 		}
 		$result = $adb->pquery($query, $queryParams);
@@ -247,7 +247,7 @@ class Vtiger_Field extends Vtiger_FieldBasic {
 		global $adb;
 		$instances = false;
 
-		$query = "SELECT * FROM vtiger_field WHERE tabid=?";
+		$query = "SELECT * FROM vtiger_field WHERE tabid=? ORDER BY block,sequence";
 		$queryParams = Array($moduleInstance->id);
 
 		$result = $adb->pquery($query, $queryParams);
