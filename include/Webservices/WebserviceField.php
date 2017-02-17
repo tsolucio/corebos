@@ -46,7 +46,10 @@ class WebserviceField{
 	private $genericUIType = 10;
 
 	private $readOnly = 0;
-	
+
+	const REFERENCE_TYPE = 'reference';
+	const OWNER_TYPE = 'owner';
+
 	private function __construct($adb,$row){
 		$this->uitype = (isset($row['uitype']))? $row['uitype'] : 0;
 		$this->blockId = (isset($row['block']))? $row['block'] : 0;
@@ -92,7 +95,17 @@ class WebserviceField{
 	public static function fromArray($adb,$row){
 		return new WebserviceField($adb,$row);
 	}
-	
+
+	public static function fromFieldId($adb,$fieldId) {
+		$rs = $adb->pquery('select * from vtiger_field where fieldid=?',array($fieldId));
+		if ($rs and $adb->num_rows($rs)==1) {
+			$row = $adb->fetch_array($rs);
+			return new WebserviceField($adb,$row);
+		} else {
+			return false;
+		}
+	}
+
 	public function getTableName(){
 		return $this->tableName;
 	}
@@ -112,7 +125,23 @@ class WebserviceField{
 	public function isMandatory(){
 		return $this->mandatory;
 	}
-	
+
+	public function isActiveField() {
+		return in_array($this->presence, array(0,2));
+	}
+
+	public function isMassEditable() {
+		return $this->massEditable;
+	}
+
+	public function isReferenceField() {
+		return ($this->getFieldDataType() == self::REFERENCE_TYPE) ? true : false;
+	}
+
+	public function isOwnerField() {
+		return ($this->getFieldDataType() == self::OWNER_TYPE) ? true : false;
+	}
+
 	public function getTypeOfData(){
 		return $this->typeOfData;
 	}
