@@ -2118,8 +2118,7 @@ a.drop_down:Hover{
     left: 0px;
     overflow: hidden;
     z-index: 10000;
-    Filter: Alpha(opacity = 70);
-    -moz-opacity: 0.7;
+    opacity: 0.7;
     text-align: center;
     vertical-align: middle;
     position: absolute;
@@ -2133,14 +2132,11 @@ a.drop_down:Hover{
     left: 0px;
     overflow: hidden;
     z-index: 50000;
-    Filter: Alpha(opacity = 70);
-    -moz-opacity: 0.7;
+    opacity: 0.7;
     text-align: center;
     vertical-align: middle;
     position: absolute;
 }
-
-
 
 .optioncontainer{
     vertical-align: middle;
