@@ -90,9 +90,9 @@
 			{if TRUE || $CHECK.Export eq 'yes'} {*<!-- temporarily deactivate this check: we need to add a ReportExport action on each module's preferences -->*}
 			<a href="javascript:void(0);" onclick="saveReportAs(this,'duplicateReportLayout');"><img src="{'saveas.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_SAVE_REPORT_AS}" title="{$MOD.LBL_SAVE_REPORT_AS}" border="0"></a>
 			&nbsp;
-			<a href="javascript:void(0);" onclick="goToURL(CrearEnlace('CreatePDF',{$REPORTID}));"><img src="{'pdf-file.jpg'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTPDF_BUTTON}" title="{$MOD.LBL_EXPORTPDF_BUTTON}" border="0"></a>
+			<a href="javascript:void(0);" onclick="gotourl(CrearEnlace('CreatePDF',{$REPORTID}));"><img src="{'pdf-file.jpg'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTPDF_BUTTON}" title="{$MOD.LBL_EXPORTPDF_BUTTON}" border="0"></a>
 			&nbsp;
-			<a href="javascript:void(0);" onclick="goToURL(CrearEnlace('CreateXL',{$REPORTID}));"><img src="{'xls-file.jpg'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTXL_BUTTON}" title="{$MOD.LBL_EXPORTXL_BUTTON}" border="0"></a>
+			<a href="javascript:void(0);" onclick="gotourl(CrearEnlace('CreateXL',{$REPORTID}));"><img src="{'xls-file.jpg'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTXL_BUTTON}" title="{$MOD.LBL_EXPORTXL_BUTTON}" border="0"></a>
 			&nbsp;
 			<a href="javascript:void(0);" onclick="gotourl(CrearEnlace('CreateCSV',{$REPORTID}));"><img src="{'csv.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTCSV}" title="{$MOD.LBL_EXPORTCSV}" border="0"></a>
 			&nbsp;
@@ -159,7 +159,6 @@
 		</tr>
 	</table>
 </div>
-{literal}
 <link rel="stylesheet" href="include/bunnyjs/css/svg-icons.css">
 <script src="include/bunnyjs/utils-dom.min.js"></script>
 <script src="include/bunnyjs/ajax.min.js"></script>
@@ -173,176 +172,17 @@
 <script src="include/bunnyjs/element.min.js"></script>
 <script src="include/bunnyjs/datatable.scrolltop.min.js"></script>
 <script type="text/javascript">
-Template.define('report_row_template', {});
-{/literal}
+var i18nLBL_PRINT_REPORT = "{$MOD.LBL_PRINT_REPORT}";
 Pagination._config.langFirst = "{$APP.LNK_LIST_START}";
 Pagination._config.langLast = "{$APP.LNK_LIST_END}";
 Pagination._config.langPrevious = "< {$APP.LNK_LIST_PREVIOUS}";
 Pagination._config.langNext = "{$APP.LNK_LIST_NEXT} >";
 {literal}
+Template.define('report_row_template', {});
 Pagination._config.langStats = "{from}-{to} {/literal}{$APP.LBL_LIST_OF}{literal} {total} ({/literal}{$APP.Page}{literal} {currentPage} {/literal}{$APP.LBL_LIST_OF}{literal} {lastPage})";
 DataTableConfig.loadingImg = 'themes/images/loading.svg';
 DataTable.onRedraw(document.getElementsByTagName('datatable')[0], (data) => {
 	if(document.getElementById('_reportrun_total')) document.getElementById('_reportrun_total').innerHTML=data.total;
 });
-
-function CrearEnlace(tipo,id){
-	if(!checkAdvancedFilter()) return false;
-	var advft_criteria = encodeURIComponent(document.getElementById('advft_criteria').value);
-	var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
-	return "index.php?module=Reports&action=ReportsAjax&file="+tipo+"&record="+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups;
-}
-
-function goToURL(url) {
-	document.location.href = url;
-}
-
-function saveReportAs(oLoc,divid) {
-	document.getElementById('newreportname').value = '';
-	document.getElementById('newreportdescription').value = '';
-	fnvshobj(oLoc,divid);
-}
-
-function duplicateReport(id) {
-
-	VtigerJS_DialogBox.block();
-	
-	var newreportname = document.getElementById('newreportname').value;
-	if (trim(newreportname) == "") {
-		VtigerJS_DialogBox.unblock();
-		alert(alert_arr.MISSING_REPORT_NAME);
-		return false;
-	} else {
-		jQuery.ajax({
-			method: 'POST',
-			url: 'index.php?action=ReportsAjax&mode=ajax&file=CheckReport&module=Reports&check=reportCheck&reportName='+encodeURIComponent(newreportname)
-		}).done(function (response) {
-					if(response != 0) {
-						VtigerJS_DialogBox.unblock();
-						alert(alert_arr.REPORT_NAME_EXISTS);
-						return false;
-					} else {
-						createDuplicateReport(id);
-					}
-				}
-		);
-	}
-}
-
-function createDuplicateReport(id) {
-	var newreportname = document.getElementById('newreportname').value;
-	var newreportdescription = document.getElementById('newreportdescription').value;
-	var newreportfolder = document.getElementById('reportfolder').value;
-
-	if(!checkAdvancedFilter()) return false;
-
-	var advft_criteria = document.getElementById('advft_criteria').value;
-	var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
-
-	jQuery.ajax({
-			method: 'POST',
-			url: 'index.php?action=ReportsAjax&file=DuplicateReport&mode=ajax&module=Reports&record='+id+'&newreportname='+encodeURIComponent(newreportname)+'&newreportdescription='+encodeURIComponent(newreportdescription)+'&newreportfolder='+newreportfolder+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups
-			}).done(function (response) {
-							var responseArray = JSON.parse(response);
-							if(trim(responseArray['errormessage']) != '') {
-								VtigerJS_DialogBox.unblock();
-								alert(resonseArray['errormessage']);
-							}
-							var reportid = responseArray['reportid'];
-							var folderid = responseArray['folderid'];
-							var url ='index.php?action=SaveAndRun&module=Reports&record='+reportid+'&folderid='+folderid;
-							goToURL(url);
-					}
-			);
-}
-
-function generateReport(id) {
-
-	if(!checkAdvancedFilter()) return false;
-	
-	VtigerJS_DialogBox.block();
-	
-	var advft_criteria = document.getElementById('advft_criteria').value;
-	var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
-
-	jQuery.ajax({
-			method: 'POST',
-			data : {'advft_criteria': advft_criteria, 'advft_criteria_groups': advft_criteria_groups},
-			url: 'index.php?action=ReportsAjax&file=SaveAndRun&mode=ajax&module=Reports&submode=generateReport&record='+id,
-	}).done(function (response) {
-							getObj('Generate').innerHTML = response;
-							vtlib_executeJavascriptInElement(getObj('Generate'));
-							Template.define('report_row_template', {});
-							DataTable.initAll();
-							DataTable.onRedraw(document.getElementsByTagName('datatable')[0], (data) => {
-								if(document.getElementById('_reportrun_total')) document.getElementById('_reportrun_total').innerHTML=data.total;
-							});
-							setTimeout(function(){
-								DataTable.changePage(document.getElementById('rptDatatable'),1);
-							}, 500);
-							VtigerJS_DialogBox.unblock();
-					}
-		);
-}
-
-function saveReportAdvFilter(id) {
-
-	if(!checkAdvancedFilter()) return false;
-	
-	VtigerJS_DialogBox.block();
-	
-	var advft_criteria = document.getElementById('advft_criteria').value;
-	var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
-
-	jQuery.ajax({
-			method: 'POST',
-			url: 'index.php?action=ReportsAjax&file=SaveAndRun&mode=ajax&module=Reports&submode=saveCriteria&record='+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups
-	}).done(function (response) {
-							getObj('Generate').innerHTML = response;
-							vtlib_executeJavascriptInElement(getObj('Generate'));
-							Template.define('report_row_template', {});
-							DataTable.initAll();
-							DataTable.onRedraw(document.getElementsByTagName('datatable')[0], (data) => {
-								if(document.getElementById('_reportrun_total')) document.getElementById('_reportrun_total').innerHTML=data.total;
-							});
-							VtigerJS_DialogBox.unblock();
-					}
-			);
-}
-
-function selectReport() {
-	var id = document.NewReport.another_report.options  [document.NewReport.another_report.selectedIndex].value;
-	var folderid = getObj('folderid').value;
-	url ='index.php?action=SaveAndRun&module=Reports&record='+id+'&folderid='+folderid;
-	goToURL(url);
-}
-
-function SaveAsReport(id) {
-	if(!checkAdvancedFilter()) return false;
-	var reportname = prompt(alert_arr.LBL_REPORT_NAME);
-	if (reportname !== null  && reportname !=='' && reportname!== undefined) {
-		document.getElementById("newreportname").value = reportname;
-		VtigerJS_DialogBox.block();
-		var advft_criteria = document.getElementById('advft_criteria').value;
-		var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
-		jQuery.ajax({
-				method: 'POST',
-				url: 'index.php?action=ReportsAjax&file=Save&mode=ajax&module=Reports&record='+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups+'&saveashidden=saveas&newreportname='+reportname
-		}).done(function (response) {
-					if(response.indexOf('Error')!=-1 ||response.indexOf('error')!=-1 )
-					getObj('Generate').innerHTML = response;
-					VtigerJS_DialogBox.unblock();
-				}
-		);
-	} else
-		alert(alert_arr.LBL_REPORT_NAME_ERROR);
-}
 {/literal}
-
-function goToPrintReport(id) {ldelim}
-	if(!checkAdvancedFilter()) return false;
-	var advft_criteria = document.getElementById('advft_criteria').value;
-	var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
-	window.open("index.php?module=Reports&action=ReportsAjax&file=PrintReport&record="+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups,"{$MOD.LBL_PRINT_REPORT}","width=800,height=650,resizable=1,scrollbars=1,left=100");
-{rdelim}
 </script>

@@ -93,12 +93,6 @@
 </table>
 <script type="text/javascript">
 {literal}
-function getRandomColor() {
-	return randomColor({
-		luminosity: 'dark',
-		hue: 'random'
-	});
-}
 let chartDataObject = {
 	labels: [{/literal}{foreach item=LABEL name=chartlabels from=$CHARTDATA.xaxisData}"{$LABEL}"{if not $smarty.foreach.chartlabels.last},{/if}{/foreach}{literal}],
 	datasets: [{

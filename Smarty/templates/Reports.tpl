@@ -109,7 +109,7 @@
 		<td align="right"><a href="javascript:;" onClick="closeEditReport();"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0"></a></td>
 	</tr>
 	</table>
-	<table border=0 cellspacing=0 cellpadding=5 width=95% align=center> 
+	<table border=0 cellspacing=0 cellpadding=5 width=95% align=center>
 	<tr>
 		<td class="small">
 			<table border=0 celspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
@@ -118,12 +118,12 @@
 				<td align="left">
 				<input id="folder_id" name="folderId" type="hidden" value=''>
 				<input id="fldrsave_mode" name="folderId" type="hidden" value='save'>
-				<input id="folder_name" name="folderName"  type="text" width="100%" solid="#666666" font-family="Arial, Helvetica,sans-serif" font-size="11px">
+				<input id="folder_name" name="folderName" type="text" width="100%" solid="#666666" font-family="Arial, Helvetica,sans-serif" font-size="11px">
 				</td>
 			</tr>
 			<tr>
 				<td class="cellLabel small" align="right" nowrap><b>{$MOD.LBL_REP_FOLDER_DESC} </b></td>
-				<td class="cellText small" align="left"><input id="folder_desc" name="folderDesc"  type="text" width="100%" solid="#666666" font-family="Arial, Helvetica,sans-serif" font-size="11px"></td>
+				<td class="cellText small" align="left"><input id="folder_desc" name="folderDesc" type="text" width="100%" solid="#666666" font-family="Arial, Helvetica,sans-serif" font-size="11px"></td>
 			</tr>
 			</table>
 		</td>
@@ -148,18 +148,11 @@ function createrepFolder(oLoc,divid)
 	{/literal}
 	document.getElementById('editfolder_info').innerHTML=' {$MOD.LBL_ADD_NEW_GROUP} ';
 	{literal}
-	getObj('fldrsave_mode').value = 'save';	
+	getObj('fldrsave_mode').value = 'save';
 	document.getElementById('folder_id').value = '';
 	document.getElementById('folder_name').value = '';
 	document.getElementById('folder_desc').value='';
 	fnvshobj(oLoc,divid);
-}
-function closeEditReport()
-{
-	document.getElementById('folder_id').value = '';
-	document.getElementById('folder_name').value = '';
-	document.getElementById('folder_desc').value='';
-	fninvsh('orgLay')
 }
 function DeleteFolder(id)
 {
@@ -173,13 +166,12 @@ function DeleteFolder(id)
 			method: 'POST',
 			url: 'index.php?action=ReportsAjax&mode=ajax&file=DeleteReportFolder&module=Reports&record='+id
 		}).done(function (response) {
-					var item = trim(response);
-					if(item.charAt(0)=='<')
-						getObj('customizedrep').innerHTML = item;
-					else
-						alert(item);
-				}
-			);
+			var item = trim(response);
+			if(item.charAt(0)=='<')
+				getObj('customizedrep').innerHTML = item;
+			else
+				alert(item);
+		});
 	}
 	else
 	{
@@ -192,22 +184,22 @@ function AddFolder()
 	if(getObj('folder_name').value.replace(/^\s+/g, '').replace(/\s+$/g, '').length==0)
 	{
 		{/literal}
-                alert('{$APP.FOLDERNAME_CANNOT_BE_EMPTY}');
-                return false;
-                {literal}
+		alert('{$APP.FOLDERNAME_CANNOT_BE_EMPTY}');
+		return false;
+		{literal}
 	}
 	else if(getObj('folder_name').value.replace(/^\s+/g, '').replace(/\s+$/g, '').length > 20 )
 	{
 		{/literal}
-                alert('{$APP.FOLDER_NAME_ALLOW_20CHARS}');
-                return false;
-                {literal}
+		alert('{$APP.FOLDER_NAME_ALLOW_20CHARS}');
+		return false;
+		{literal}
 	}
 	else if((getObj('folder_name').value).match(/['"<>/\+]/) || (getObj('folder_desc').value).match(/['"<>/\+]/))
-    {
-            alert(alert_arr.SPECIAL_CHARS+' '+alert_arr.NOT_ALLOWED+alert_arr.NAME_DESC);
-            return false;
-    }	
+	{
+		alert(alert_arr.SPECIAL_CHARS+' '+alert_arr.NOT_ALLOWED+alert_arr.NAME_DESC);
+		return false;
+	}
 	/*else if((!CharValidation(getObj('folder_name').value,'namespace')) || (!CharValidation(getObj('folder_desc').value,'namespace')))
 	{
 			alert(alert_arr.NO_SPECIAL +alert_arr.NAME_DESC);
@@ -220,61 +212,59 @@ function AddFolder()
 			method: 'POST',
 			url: 'index.php?action=ReportsAjax&mode=ajax&file=CheckReport&module=Reports&check=folderCheck&folderName='+foldername
 		}).done(function (response) {
-				var folderid = getObj('folder_id').value;
-				var resresult =response.split("::");
-				var mode = getObj('fldrsave_mode').value;
-				if(resresult[0] != 0 &&  mode =='save' && resresult[0] != 999)
+			var folderid = getObj('folder_id').value;
+			var resresult =response.split("::");
+			var mode = getObj('fldrsave_mode').value;
+			if(resresult[0] != 0 && mode =='save' && resresult[0] != 999)
+			{
+				{/literal}
+				alert("{$APP.FOLDER_NAME_ALREADY_EXISTS}");
+				return false;
+				{literal}
+			}
+			else if(((resresult[0] != 1 && resresult[0] != 0) || (resresult[0] == 1 && resresult[0] != 0 && resresult[1] != folderid )) && mode =='Edit' && resresult[0] != 999)
+			{
+				{/literal}
+				alert("{$APP.FOLDER_NAME_ALREADY_EXISTS}");
+				return false;
+				{literal}
+			}
+			else if(response == 999) // 999 check for special chars
+			{
+				{/literal}
+				alert("{$APP.SPECIAL_CHARS_NOT_ALLOWED}");
+				return false;
+				{literal}
+			}
+			else
+			{
+				fninvsh('orgLay');
+				var folderdesc = encodeURIComponent(getObj('folder_desc').value);
+				getObj('folder_name').value = '';
+				getObj('folder_desc').value = '';
+				foldername = foldername.replace(/^\s+/g, '').replace(/\s+$/g, '');
+				foldername = foldername.replace(/&/gi,'*amp*');
+				folderdesc = folderdesc.replace(/^\s+/g, '').replace(/\s+$/g, '');
+				folderdesc = folderdesc.replace(/&/gi,'*amp*');
+				if(mode == 'save')
 				{
-					{/literal}
-					alert("{$APP.FOLDER_NAME_ALREADY_EXISTS}");
-					return false;
-					{literal}
+					url ='&savemode=Save&foldername='+foldername+'&folderdesc='+folderdesc;
 				}
-				else if(((resresult[0] != 1 && resresult[0] != 0) || (resresult[0] == 1 && resresult[0] != 0 && resresult[1] != folderid )) &&  mode =='Edit' && resresult[0] != 999)
-					{
-						{/literal}
-                                                alert("{$APP.FOLDER_NAME_ALREADY_EXISTS}");
-                                                return false;
-                                                {literal}
-					}
-				else if(response == 999) // 999 check for special chars
-					{
-                                                {/literal}
-                                                alert("{$APP.SPECIAL_CHARS_NOT_ALLOWED}");
-                                                return false;
-                                                {literal}
-					}
 				else
-					{
-						fninvsh('orgLay');
-						var folderdesc = encodeURIComponent(getObj('folder_desc').value);
-						getObj('folder_name').value = '';
-						getObj('folder_desc').value = '';
-						foldername = foldername.replace(/^\s+/g, '').replace(/\s+$/g, '');
-                                                foldername = foldername.replace(/&/gi,'*amp*');
-                                                folderdesc = folderdesc.replace(/^\s+/g, '').replace(/\s+$/g, '');
-                                                folderdesc = folderdesc.replace(/&/gi,'*amp*');
-						if(mode == 'save')
-						{
-							url ='&savemode=Save&foldername='+foldername+'&folderdesc='+folderdesc;
-						}
-						else
-						{
-							var folderid = getObj('folder_id').value;
-							url ='&savemode=Edit&foldername='+foldername+'&folderdesc='+folderdesc+'&record='+folderid;
-						}
-						getObj('fldrsave_mode').value = 'save';
-						jQuery.ajax({
-								method: 'POST',
-								url: 'index.php?action=ReportsAjax&mode=ajax&file=SaveReportFolder&module=Reports'+url
-						}).done(function (response) {
-									var item = response;
-									getObj('reportContents').innerHTML = item;
-							}
-						);
-					}
+				{
+					var folderid = getObj('folder_id').value;
+					url ='&savemode=Edit&foldername='+foldername+'&folderdesc='+folderdesc+'&record='+folderid;
 				}
-			);
+				getObj('fldrsave_mode').value = 'save';
+				jQuery.ajax({
+					method: 'POST',
+					url: 'index.php?action=ReportsAjax&mode=ajax&file=SaveReportFolder&module=Reports'+url
+				}).done(function (response) {
+					var item = response;
+					getObj('reportContents').innerHTML = item;
+				});
+			}
+		});
 	}
 }
 
@@ -313,8 +303,7 @@ function massDeleteReport()
 						idstring = currep_id +':'+idstring;
 					}
 				}
-			}else
-			{	
+			} else {
 				if(getObj(selectopt_id).checked)
 				{
 					count++;
@@ -324,45 +313,42 @@ function massDeleteReport()
 		}
 	}
 	if(idstring != '')
-	{	{/literal}
-                if(confirm("{$APP.DELETE_CONFIRMATION}"+count+"{$APP.RECORDS}"))
-                {literal}
-				{
-				jQuery.ajax({
+	{
+		{/literal}
+		if(confirm("{$APP.DELETE_CONFIRMATION}"+count+"{$APP.RECORDS}"))
+		{literal}
+		{
+			jQuery.ajax({
 				method: 'POST',
 				url: 'index.php?action=ReportsAjax&mode=ajax&file=Delete&module=Reports&idlist='+idstring
-				}).done(function (response) {
-							var item = response;
-							getObj('customizedrep').innerHTML = item;
-						}
-					);
-				} else {
-					return false;
-				}
-			
+			}).done(function (response) {
+				var item = response;
+				getObj('customizedrep').innerHTML = item;
+			});
+		} else {
+			return false;
+		}
 	}else
 	{
 		{/literal}
-                alert('{$APP.SELECT_ATLEAST_ONE_REPORT}');
-                return false;
-                {literal}
+		alert('{$APP.SELECT_ATLEAST_ONE_REPORT}');
+		return false;
+		{literal}
 	}
 }
 function DeleteReport(id)
 {
 	{/literal}
-        if(confirm("{$APP.DELETE_REPORT_CONFIRMATION}"))
-        {literal}
+	if(confirm("{$APP.DELETE_REPORT_CONFIRMATION}"))
+	{literal}
 	{
 		jQuery.ajax({
 			method: 'POST',
 			url: 'index.php?action=ReportsAjax&file=Delete&module=Reports&record='+id
 		}).done(function (response) {
-					getObj('reportContents').innerHTML = response;
-				}
-			);
-	}else
-	{
+			getObj('reportContents').innerHTML = response;
+		});
+	} else {
 		return false;
 	}
 }
@@ -392,8 +378,7 @@ function MoveReport(id,foldername)
 						idstring = currep_id +':'+idstring;
 					}
 				}
-			}else
-			{	
+			} else {
 				if(getObj(selectopt_id).checked)
 				{
 					count++;
@@ -405,27 +390,25 @@ function MoveReport(id,foldername)
 	if(idstring != '')
 	{
 		{/literal}
-                if(confirm("{$APP.MOVE_REPORT_CONFIRMATION}"+foldername+"{$APP.FOLDER}"))
-                {literal}
-        	{
+		if(confirm("{$APP.MOVE_REPORT_CONFIRMATION}"+foldername+"{$APP.FOLDER}"))
+		{literal}
+		{
 			jQuery.ajax({
-					method: 'POST',
-					url: 'index.php?action=ReportsAjax&file=ChangeFolder&module=Reports&folderid='+id+'&idlist='+idstring
+				method: 'POST',
+				url: 'index.php?action=ReportsAjax&file=ChangeFolder&module=Reports&folderid='+id+'&idlist='+idstring
 			}).done(function (response) {
-						getObj('reportContents').innerHTML = response;
-				}
-			);
+				getObj('reportContents').innerHTML = response;
+			});
 		}else
 		{
 			return false;
 		}
-			
 	}else
 	{
 		{/literal}
-                alert('{$APP.SELECT_ATLEAST_ONE_REPORT}');
-                return false;
-                {literal}
+		alert('{$APP.SELECT_ATLEAST_ONE_REPORT}');
+		return false;
+		{literal}
 	}
 }
 </script>
