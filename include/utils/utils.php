@@ -83,6 +83,8 @@ function getBrowserVariables(&$smarty) {
 	} else {
 		$vars['userNumberOfDecimals'] = html_entity_decode($current_user->no_of_currency_decimals, ENT_QUOTES, $default_charset);
 	}
+	$swmd5file = file_get_contents('include/sw-precache/service-worker.md5');
+	$swmd5 = substr($swmd5file,0,strpos($swmd5file,' '));
 	if ($smarty) {
 		$smarty->assign('GVTMODULE',$vars['gVTModule']);
 		$smarty->assign('THEME', $vars['gVTTheme']);
@@ -94,6 +96,7 @@ function getBrowserVariables(&$smarty) {
 		$smarty->assign('USER_DECIMAL_FORMAT', $vars['userDecimalSeparator']);
 		$smarty->assign('USER_NUMBER_DECIMALS', $vars['userNumberOfDecimals']);
 		$smarty->assign('USER_LANGUAGE', $current_language);
+		$smarty->assign('SW_MD5', $swmd5);
 	}
 }
 
