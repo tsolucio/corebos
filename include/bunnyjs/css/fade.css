@@ -20,11 +20,11 @@ fade {
 }
 
 fade.show {
-    opacity: 1;
+    opacity: 0.5;
 }
 
 fade svg {
-    width: 4rem;
-    height: 4rem;
+    width: 8rem;
+    height: 8rem;
     margin-top: 1.5rem;
 }
