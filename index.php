@@ -617,7 +617,7 @@ else if(!vtlib_isModuleActive($currentModule)
 // END
 else
 {
-	include($currentModuleFile);
+	include_once($currentModuleFile);
 }
 
 //added to get the theme . This is a bad fix as we need to know where the problem lies yet
