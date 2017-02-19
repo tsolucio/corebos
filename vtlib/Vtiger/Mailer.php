@@ -120,8 +120,12 @@ class Vtiger_Mailer extends PHPMailer {
 		if(empty($fromname)) $fromname = $fromemail;
 
 		$this->From = $fromemail;
-		$this->FromName = $fromname;
-		$this->AddReplyTo($replyto);
+		if(isset($fromname)) {
+			$this->FromName = decode_html($fromname);
+		}
+		if(isset($replyto)) {
+			$this->AddReplyTo($replyto);
+		}
 	}
 
 	/**
