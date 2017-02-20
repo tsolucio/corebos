@@ -706,8 +706,10 @@ class CRMEntity {
 			$dbvals = $result = array();
 			foreach ($this->tab_name_index as $table_name => $index) {
 				$result = $adb->pquery("select * from $table_name where $index=?", array($this->id));
-				$flds = $adb->fetch_array($result);
-				$dbvals = array_merge($dbvals,$flds);
+				if ($result and $adb->num_rows($result)>0) {
+					$flds = $adb->fetch_array($result);
+					$dbvals = array_merge($dbvals,$flds);
+				}
 			}
 			self::$dbvalues = $dbvals;
 			$dbvalue = self::$dbvalues[$fieldname];
