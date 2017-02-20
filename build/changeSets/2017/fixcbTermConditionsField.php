@@ -31,9 +31,10 @@ class fixcbTermConditionsField extends cbupdaterWorker {
 				$field1 = Vtiger_Field::getInstance('tandc', $mod);
 				if ($field1) {
 					$this->ExecuteQuery('update vtiger_field set tablename=? where fieldid=?',array($table,$field1->id));
-					$this->ExecuteQuery("ALTER TABLE $table ADD `tandc` INT(11) NOT NULL");
+					$this->ExecuteQuery("ALTER TABLE $table ADD `tandc` INT(11) NULL");
 				}
 			}
+			$this->sendMsg('You can safely ignore any errors in this changeset');
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);
 		}
