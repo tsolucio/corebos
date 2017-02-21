@@ -6,27 +6,23 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
- ********************************************************************************/
+********************************************************************************/
 require_once('include/database/PearDatabase.php');
 require_once('config.php');
 require_once('include/utils/MergeUtils.php');
-global $app_strings;
-global $default_charset;
+global $app_strings, $default_charset;
 
 // Fix For: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/2107
 $randomfilename = "vt_" . str_replace(array("."," "), "", microtime());
 
 $templateid = $_REQUEST['mergefile'];
-
 if($templateid == "")
 {
 	die("Select Mail Merge Template");
 }
 //get the particular file from db and store it in the local hard disk.
-//store the path to the location where the file is stored and pass it  as parameter to the method 
+//store the path to the location where the file is stored and pass it  as parameter to the method
 $sql = "select filename,data,filesize from vtiger_wordtemplates where templateid=?";
-
 $result = $adb->pquery($sql, array($templateid));
 $temparray = $adb->fetch_array($result);
 
@@ -37,7 +33,7 @@ $extension=GetFileExtension($filename);
 $filename= $randomfilename . "_mmrg.$extension";
 
 $filesize=$temparray['filesize'];
-$wordtemplatedownloadpath =$root_directory ."/test/wordtemplatedownload/";
+$wordtemplatedownloadpath =$root_directory ."/cache/wordtemplatedownload/";
 
 $handle = fopen($wordtemplatedownloadpath.$filename,"wb");
 fwrite($handle,base64_decode($fileContent),$filesize);
@@ -49,28 +45,27 @@ echo "<html>
 <script>
 if (document.layers)
 {
-    document.write(\"This feature requires IE 5.5 or higher for Windows on Microsoft Windows 2000, Windows NT4 SP6, Windows XP.\");
-    document.write(\"<br><br>Click <a href='#' onclick='window.history.back();'>here</a> to return to the previous page\");
-}   
+	document.write(\"This feature requires IE 5.5 or higher for Windows on Microsoft Windows 2000, Windows NT4 SP6, Windows XP.\");
+	document.write(\"<br><br>Click <a href='#' onclick='window.history.back();'>here</a> to return to the previous page\");
+}
 else if (document.layers || (!document.all && document.getElementById))
 {
-    document.write(\"This feature requires IE 5.5 or higher for Windows on Microsoft Windows 2000, Windows NT4 SP6, Windows XP.\");
-    document.write(\"<br><br>Click <a href='#' onclick='window.history.back();'>here</a> to return to the previous page\"); 
+	document.write(\"This feature requires IE 5.5 or higher for Windows on Microsoft Windows 2000, Windows NT4 SP6, Windows XP.\");
+	document.write(\"<br><br>Click <a href='#' onclick='window.history.back();'>here</a> to return to the previous page\");
 }
 else if(document.all)
 {
-    document.write(\"<br><br>Click <a href='#' onclick='window.history.back();'>here</a> to return to the previous page\");
-    document.write(\"<OBJECT Name='vtigerCRM' codebase='modules/Settings/vtigerCRM.CAB#version=1,5,0,0' id='objMMPage' classid='clsid:0FC436C2-2E62-46EF-A3FB-E68E94705126' width=0 height=0></object>\");
+	document.write(\"<br><br>Click <a href='#' onclick='window.history.back();'>here</a> to return to the previous page\");
+	document.write(\"<OBJECT Name='vtigerCRM' codebase='modules/Settings/vtigerCRM.CAB#version=1,5,0,0' id='objMMPage' classid='clsid:0FC436C2-2E62-46EF-A3FB-E68E94705126' width=0 height=0></object>\");
 }
-</script>";    
+</script>";
 }
 
-//<<<<<<<<<<<<<<<<<<<<<<<<<<<for mass merge>>>>>>>>>>>>>>>>>>>>>>>>>>>
-$mass_merge = $_REQUEST['allselectedboxes'];
-$single_record = $_REQUEST['record'];
+//for mass merge
+$mass_merge = isset($_REQUEST['allselectedboxes']) ? $_REQUEST['allselectedboxes'] : '';
+$single_record = isset($_REQUEST['record']) ? $_REQUEST['record'] : 0;
 
-if($mass_merge != "")
-{	
+if ($mass_merge != "") {
 	$mass_merge = explode(";",$mass_merge);
 	$temp_mass_merge = $mass_merge;
 	if(array_pop($temp_mass_merge)=="")
@@ -78,18 +73,16 @@ if($mass_merge != "")
 	//$mass_merge = implode(",",$mass_merge);
 }else if($single_record != "")
 {
-	$mass_merge = $single_record;	
+	$mass_merge = $single_record;
 }else
 {
 	die("Record Id is not found, cannot merge the document");
 }
 
-//echo $mass_merge;
-//die;
 //for setting vtiger_accountid=0 for the contacts which are deleted
 $ct_query = "select crmid from vtiger_crmentity where setype='Contacts' and deleted=1";
 $result = $adb->pquery($ct_query, array());
-
+$deleted_id = array();
 while($row = $adb->fetch_array($result))
 {
 	$deleted_id[] = $row['crmid'];
@@ -100,7 +93,7 @@ if(count($deleted_id) > 0)
 	$update_query = "update vtiger_contactdetails set accountid = 0 where contactid in (". generateQuestionMarks($deleted_id) .")";
 	$result = $adb->pquery($update_query, array($deleted_id));
 }
-//End setting vtiger_accountid=0 for the contacts which are deleted
+//End setting accountid=0 for the contacts which are deleted
 
 //<<<<<<<<<<<<<<<<header for csv and select columns for query>>>>>>>>>>>>>>>>>>>>>>>>
 global $current_user;
@@ -117,16 +110,12 @@ else
 	$query1="select vtiger_tab.name,vtiger_field.tablename,vtiger_field.columnname,vtiger_field.fieldlabel from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid where vtiger_field.tabid in (6) and vtiger_field.uitype <> 61 and vtiger_field.block <> 75 AND vtiger_profile2field.visible=0 AND vtiger_def_org_field.visible=0 AND vtiger_profile2field.profileid IN (". generateQuestionMarks($profileList) .") and vtiger_field.presence in (0,2) and vtiger_field.tablename <> 'vtiger_campaignrelstatus' GROUP BY vtiger_field.fieldid order by vtiger_field.tablename";
 	$params1 = array($profileList);
 }
-
 $result = $adb->pquery($query1, $params1);
 $y=$adb->num_rows($result);
-$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>
-							'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-$contactUserNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'usersContacts.first_name', 'last_name' =>
-			'usersContacts.last_name'), 'Users');
-	
-for ($x=0; $x<$y; $x++)
-{ 
+$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+$contactUserNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'usersContacts.first_name', 'last_name' => 'usersContacts.last_name'), 'Users');
+
+for ($x=0; $x<$y; $x++) {
 	$tablename = $adb->query_result($result,$x,"tablename");
 	$columnname = $adb->query_result($result,$x,"columnname");
 	$modulename = $adb->query_result($result,$x,"name");
@@ -176,15 +165,14 @@ for ($x=0; $x<$y; $x++)
 	{
 		$field_label[$x] = "CONTACT_".strtoupper(str_replace(" ","",$adb->query_result($result,$x,"fieldlabel")));
 	}
-
 }
 
 // Ordena etiquetas más grandes primero para que no se sutituyan subcadenas en el documento
 // Por ejemplo, pongo LEAD_TIPOVIVIENDA delante de LEAD_TIPO, para que no se sustituya la subcadena LEAD_TIPO
 $labels_length=$field_label;
 function strlength($label,$clave) {
-    global $labels_length;
-    $labels_length[$clave] = strlen($label);
+	global $labels_length;
+	$labels_length[$clave] = strlen($label);
 }
 array_walk($labels_length,'strlength');
 array_multisort($labels_length, $field_label, $querycolumns);
@@ -193,7 +181,7 @@ $querycolumns=array_reverse($querycolumns);
 $labels_length=array_reverse($labels_length);
 $csvheader = implode(",",$field_label);
 //<<<<<<<<<<<<<<<<End>>>>>>>>>>>>>>>>>>>>>>>>
-	
+
 if(count($querycolumns) > 0)
 {
 	$selectcolumns = implode($querycolumns,",");
@@ -205,8 +193,7 @@ if(count($querycolumns) > 0)
 				inner join vtiger_accountscf on vtiger_account.accountid = vtiger_accountscf.accountid 
 				left join vtiger_account as vtiger_accountAccount on vtiger_accountAccount.accountid = vtiger_account.parentid
 				left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
-				LEFT JOIN vtiger_groups 
-					ON vtiger_groups.groupid = vtiger_crmentity.smownerid
+				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 				left join vtiger_contactdetails on vtiger_contactdetails.accountid=vtiger_account.accountid
 				left join vtiger_crmentity as vtiger_crmentityContacts on vtiger_crmentityContacts.crmid = vtiger_contactdetails.contactid 
 				left join vtiger_contactaddress on vtiger_contactdetails.contactid = vtiger_contactaddress.contactaddressid 
@@ -216,65 +203,50 @@ if(count($querycolumns) > 0)
 				left join vtiger_contactdetails as vtiger_contactdetailsContacts on vtiger_contactdetailsContacts.contactid = vtiger_contactdetails.reportsto
 				left join vtiger_account as vtiger_accountContacts on vtiger_accountContacts.accountid = vtiger_contactdetails.accountid 
 				left join vtiger_users as usersContacts on usersContacts.id = vtiger_crmentityContacts.smownerid
-				LEFT JOIN vtiger_groups as groupsContacts
-					ON groupsContacts.groupid = vtiger_crmentity.smownerid
+				LEFT JOIN vtiger_groups as groupsContacts ON groupsContacts.groupid = vtiger_crmentity.smownerid
 				where vtiger_crmentity.deleted=0 and (vtiger_crmentityContacts.deleted=0 || vtiger_crmentityContacts.deleted is null) and vtiger_account.accountid in(". generateQuestionMarks($mass_merge) .")";
-	//echo $query;
-	//die;	
 	$result = $adb->pquery($query, array($mass_merge));
-$avail_pick_arr = getAccessPickListValues('Accounts');	
-while($columnValues = $adb->fetch_array($result))
-{
-  $y=$adb->num_fields($result);
-  for($x=0; $x<$y; $x++)
-  {
-	  $value = $columnValues[$x];
-  	  foreach($columnValues as $key=>$val)
-	  {
-		if($val == $value && $value != '')
-		{
-		  if(array_key_exists($key,$avail_pick_arr))
-		  {
- 			if(!in_array($val,$avail_pick_arr[$key]))
-			{
-	 			$value = "Not Accessible";
-	 		}
-	 	  }
-	  	}
- 	  }
-  	//<<<<<<<<<<<<<<<for modifing default values>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  	if(trim($value) == "--None--" || trim($value) == "--none--")
-  	{
-  		$value = "";
-  	}
-	//<<<<<<<<<<<<<<<End>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-		$actual_values[$x] = $value;
-		$actual_values[$x] = str_replace('"'," ",$actual_values[$x]);
-		//if value contains any line feed or carriage return replace the value with ".value."
-		if (preg_match ("/(\r?\n)/", $actual_values[$x]))
-		{
-			// <<< pag 21-Sep-2011 >>>
-			
-			// Replacement see: php.net/manual/en/function.str-replace.php
-			// $str     = "Line 1\nLine 2\rLine 3\r\nLine 4\n";
-			$order   = array("\r\n", "\n", "\r"); // order of replacement matters
-			$replace = '!!'; // you choose your appropriate delimiters 
-			// They'll be replaced by an OO/LO macro once the resulting document has been downloaded
-			
-			// We now processes \r\n's first so they aren't converted twice.
-			// $newstr = str_replace($order, $replace, $str);
-			$actual_values[$x] = str_replace($order, $replace, $actual_values[$x]);
-			// <<< pag 21-Sep-2011 END >>>
-			
-			// not needed ??? // $actual_values[$x] = '"'.$actual_values[$x].'"';
+	$avail_pick_arr = getAccessPickListValues('Accounts');
+	while ($columnValues = $adb->fetch_array($result)) {
+		$y=$adb->num_fields($result);
+		for ($x=0; $x<$y; $x++) {
+			$value = $columnValues[$x];
+			foreach($columnValues as $key=>$val) {
+				if ($val == $value && $value != '') {
+					if (array_key_exists($key,$avail_pick_arr)) {
+						if (!in_array($val,$avail_pick_arr[$key])) {
+							$value = "Not Accessible";
+						}
+					}
+				}
+			}
+			//<<<<<<<<<<<<<<< For blank Fields >>>>>>>>>>>>>>>>>>>>>>>>>>>>
+			if(trim($value) == "--None--" || trim($value) == "--none--") {
+				$value = "";
+			}
+			//<<<<<<<<<<<<<<< End >>>>>>>>>>>>>>>>>>>>>>>>>>>>
+			$actual_values[$x] = $value;
+			$actual_values[$x] = str_replace('"'," ",$actual_values[$x]);
+			//if value contains any line feed or carriage return replace the value with ".value."
+			if (preg_match ("/(\r?\n)/", $actual_values[$x])) {
+				// <<< pag 21-Sep-2011 >>>
+				// Replacement see: php.net/manual/en/function.str-replace.php
+				// $str     = "Line 1\nLine 2\rLine 3\r\nLine 4\n";
+				$order   = array("\r\n", "\n", "\r"); // order of replacement matters
+				$replace = '!!'; // you choose your appropriate delimiters
+				// They'll be replaced by an OO/LO macro once the resulting document has been downloaded
+				// We now processes \r\n's first so they aren't converted twice.
+				// $newstr = str_replace($order, $replace, $str);
+				$actual_values[$x] = str_replace($order, $replace, $actual_values[$x]);
+				// <<< pag 21-Sep-2011 END >>>
+				// not needed ??? // $actual_values[$x] = '"'.$actual_values[$x].'"';
+			}
+			$actual_values[$x] = decode_html(str_replace(","," ",$actual_values[$x]));
 		}
-		$actual_values[$x] = decode_html(str_replace(","," ",$actual_values[$x]));
-  }
-	$mergevalue[] = implode($actual_values,",");  	
-}
+		$mergevalue[] = implode($actual_values,",");
+	}
 $csvdata = implode($mergevalue,"###");
-}else
-{
+} else {
 	die("No fields to do Merge");
 }
 echo "<br><br><br>";
@@ -283,7 +255,6 @@ if($extension == "doc")
 {
     // Fix for: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/2107
     $datafilename = $randomfilename . "_data.csv";
-
     $handle = fopen($wordtemplatedownloadpath.$datafilename,"wb");
     fwrite($handle,$csvheader."\r\n");
     fwrite($handle,str_replace("###","\r\n",$csvdata));
@@ -292,8 +263,7 @@ if($extension == "doc")
 else if($extension == "odt")
 {
     //delete old .odt files in the wordtemplatedownload directory
-    foreach (glob("$wordtemplatedownloadpath/*.odt") as $delefile) 
-    {
+    foreach (glob("$wordtemplatedownloadpath/*.odt") as $delefile) {
         unlink($delefile);
     }
     if (!is_array($mass_merge)) $mass_merge = array($mass_merge);
@@ -306,15 +276,18 @@ else if($extension == "odt")
         unlink($wordtemplatedownloadpath.$temp_dir.'/styles.xml');
         $new_filestyle=crmmerge($csvheader,$stycontent,$idx,'htmlspecialchars');
         packen($entityid.$filename,$wordtemplatedownloadpath,$temp_dir,$new_filecontent,$new_filestyle);
-
-        echo "&nbsp;&nbsp;<font size=+1><b><a href=test/wordtemplatedownload/$entityid$filename>".$app_strings['DownloadMergeFile']."</a></b></font><br>";
+        //Send Document to the Browser
+        //header("Content-Type: $mimetype");
+        //header("Content-Disposition: attachment; filename=$filename");
+        //echo file_get_contents($wordtemplatedownloadpath .$filename);
+        //readfile($root_directory .$wordtemplatedownloadpath .$filename);
+        echo "&nbsp;&nbsp;<font size=+1><b><a href=cache/wordtemplatedownload/$entityid$filename>".$app_strings['DownloadMergeFile']."</a></b></font><br>";
         remove_dir($wordtemplatedownloadpath.$temp_dir);
     }
 }
 else if($extension == "rtf")
 {
-    foreach (glob("$wordtemplatedownloadpath/*.rtf") as $delefile) 
-    {
+    foreach (glob("$wordtemplatedownloadpath/*.rtf") as $delefile) {
         unlink($delefile);
     }
     if (!is_array($mass_merge)) $mass_merge = array($mass_merge);
@@ -324,50 +297,50 @@ else if($extension == "rtf")
         $new_filecontent = crmmerge($csvheader,$filecontent,$idx,'utf8Unicode');
         fwrite($handle,$new_filecontent);
         fclose($handle);
-        echo "&nbsp;&nbsp;<font size=+1><b><a href=test/wordtemplatedownload/$entityid$filename>".$app_strings['DownloadMergeFile']."</a></b></font><br>";
+        echo "&nbsp;&nbsp;<font size=+1><b><a href=cache/wordtemplatedownload/$entityid$filename>".$app_strings['DownloadMergeFile']."</a></b></font><br>";
     }
 }
 else
 {
-    die("unknown file format");
+	die("unknown file format");
 }
 ?>
 <script>
-if (window.ActiveXObject){
-	try 
-	{
-  		ovtigerVM = eval("new ActiveXObject('vtigerCRM.ActiveX');");
-  		if(ovtigerVM)
-  		{
-        	var filename = "<?php echo $filename?>";
-        	if(filename != "")
-        	{
-        		if(objMMPage.bDLTempDoc("<?php echo $site_URL;?>/test/wordtemplatedownload/<?php echo $filename; ?>","MMTemplate.doc"))
-        		{
-        			try
-        			{
-        				if(objMMPage.Init())
-        				{
-        					objMMPage.vLTemplateDoc();
-							objMMPage.bBulkHDSrc("<?php echo $site_URL;?>/test/wordtemplatedownload/<?php echo $datafilename ?>");
-        					objMMPage.vBulkOpenDoc();
-        					objMMPage.UnInit()
-        					window.history.back();
-        				}		
-        			}catch(errorObject)
-        			{
-        				document.write("Error while processing mail merge operation");
-        			}
-        		}else
-        		{
-        			document.write("Cannot get template document");
-        		}
-        	}
-  		}
-		}
-	catch(e) {
-		document.write("Requires to download ActiveX Control from vtigerCRM. Please, ensure that you have administration privilage");
-	}
+if("<?php echo GetFileExtension($filename); ?>" == "doc") {
+	if (window.ActiveXObject){
+		try {
+            ovtigerVM = eval("new ActiveXObject('vtigerCRM.ActiveX');");
+            if(ovtigerVM)
+            {
+                var filename = "<?php echo $filename?>";
+                if(filename != "")
+                {
+                    if(objMMPage.bDLTempDoc("<?php echo $site_URL?>/cache/wordtemplatedownload/<?php echo $filename?>","MMTemplate.doc"))
+                    {
+                        try {
+                            if(objMMPage.Init())
+                            {
+                                objMMPage.vLTemplateDoc();
+                                objMMPage.bBulkHDSrc("<?php echo $site_URL;?>/cache/wordtemplatedownload/<?php echo $datafilename ?>");
+                                objMMPage.vBulkOpenDoc();
+                                objMMPage.UnInit()
+                                window.history.back();
+                            }
+                        }catch(errorObject)
+                        {
+                            document.write("Error while processing mail merge operation");
+                        }
+                    }else
+                    {
+                        document.write("Cannot get template document");
+                    }
+                }
+            }
+        }
+        catch(e) {
+            document.write("Requires to download ActiveX Control from vtigerCRM. Please, ensure that you have administration privilage");
+        }
+    }
 }
 </script>
 </body>
