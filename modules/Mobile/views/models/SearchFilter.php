@@ -23,16 +23,15 @@ class crmtogo_UI_SearchFilterModel extends crmtogo_WS_SearchFilterModel {
 			$viewid = $customView->getViewId($this->moduleName);
 			$customview_html = $customView->getCustomViewCombo($viewid);
 			$viewinfo = $customView->getCustomViewByCvid($viewid);
-		       
+
 			$userid = coreBOS_Session::get('_authenticated_user_id');
 			$current_user = CRMEntity::getInstance('Users');
 			$current_user = $current_user->retrieveCurrentUserInfoFromFile($userid);
-		
+
 			$queryGenerator = new QueryGenerator($this->moduleName, $current_user);
 			if ($viewid != "0") {
 				$queryGenerator->initForCustomViewById($viewid);
-			} 
-			else {
+			} else {
 				$queryGenerator->initForDefaultCustomView();
 			}
 			$selectClause = sprintf("SELECT %s", implode(',', $fieldnames).",vtiger_project.projectid");

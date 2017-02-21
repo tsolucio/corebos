@@ -1,6 +1,6 @@
 <div data-role="panel" id="panelmenu" data-position="left" data-display="overlay">
 	<div data-role="header" data-theme="{$COLOR_HEADER_FOOTER}" data-position="fixed" class="ui-grid-b ui-responsive">
-		<a href="index.php?_operation=logout" class="ui-btn ui-corner-all ui-icon-power ui-btn-icon-notext" >Logout</a>
+		<a href="index.php?_operation=logout" class="ui-btn ui-corner-all ui-icon-power ui-btn-icon-notext" >{'LBL_LOGOUT'|@getTranslatedString}</a>
 		<h4>{$MOD.LBL_MOD_LIST}</h4>
 		<a href="?_operation=configCRMTOGO" class="ui-btn ui-corner-all ui-icon-gear ui-btn-icon-notext" data-iconpos="right" data-transition="slidedown"></a>
 	</div><!-- /header -->
@@ -13,12 +13,12 @@
 		</script>
 		{/literal}
 		<form  name="form"  method="post" action="?_operation=globalsearch&module={$_MODULES[0]->name()}" target="_self">
-			<input type="hidden" name="parenttab" value="{$CATEGORY}" style="margin:0px">
-			<input type="hidden" name="search_onlyin" value="{$SEARCHIN}" style="margin:0px">
+			<input type="hidden" name="parenttab" value="{if isset($CATEGORY)}{$CATEGORY}{/if}" style="margin:0px">
+			<input type="hidden" name="search_onlyin" value="{if isset($SEARCHIN)}{$SEARCHIN}{/if}" style="margin:0px">
 			<table style="width:100%;padding-top:5px;">
 				<tr >
 					<td>
-						<input type="text" data-inline="true" name="query_string" value="{$QUERY_STRING}">
+						<input type="text" data-inline="true" name="query_string" value="{if isset($QUERY_STRING)}{$QUERY_STRING}{/if}">
 					</td>
 					<td>
 						<a href="#"  onclick="fn_submit();" target="_self"  class="ui-btn ui-btn-inline ui-icon-search ui-btn-icon-notext ui-corner-all ui-shadow"></a>

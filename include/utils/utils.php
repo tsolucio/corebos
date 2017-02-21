@@ -105,7 +105,6 @@ function getBrowserVariables(&$smarty) {
   * @param $first_column -- first column:: Type string
   * @param $last_column -- last column:: Type string
   * @returns $fullname -- fullname:: Type string
-  *
 */
 function return_name(&$row, $first_column, $last_column)
 {
@@ -217,16 +216,15 @@ function get_user_array($add_blank=true, $status="Active", $assigned_user="",$pr
 		if (empty($status)) {
 				$query = "SELECT id, user_name from vtiger_users";
 				$params = array();
-		}
-		else {
+		} else {
 				if($private == 'private')
 				{
 					$log->debug("Sharing is Private. Only the current user should be listed");
 					$query = "select id as id,user_name as user_name,first_name,last_name from vtiger_users where id=? and status='Active' union select vtiger_user2role.userid as id,vtiger_users.user_name as user_name ,
-							  vtiger_users.first_name as first_name ,vtiger_users.last_name as last_name
-							  from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like ? and status='Active' union
-							  select shareduserid as id,vtiger_users.user_name as user_name ,
-							  vtiger_users.first_name as first_name ,vtiger_users.last_name as last_name  from vtiger_tmp_write_user_sharing_per inner join vtiger_users on vtiger_users.id=vtiger_tmp_write_user_sharing_per.shareduserid where status='Active' and vtiger_tmp_write_user_sharing_per.userid=? and vtiger_tmp_write_user_sharing_per.tabid=?";
+						vtiger_users.first_name as first_name ,vtiger_users.last_name as last_name
+						from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like ? and status='Active' union
+						select shareduserid as id,vtiger_users.user_name as user_name ,
+						vtiger_users.first_name as first_name ,vtiger_users.last_name as last_name from vtiger_tmp_write_user_sharing_per inner join vtiger_users on vtiger_users.id=vtiger_tmp_write_user_sharing_per.shareduserid where status='Active' and vtiger_tmp_write_user_sharing_per.userid=? and vtiger_tmp_write_user_sharing_per.tabid=?";
 					$params = array($current_user->id, $current_user_parent_role_seq."::%", $current_user->id, getTabid($module));
 				}
 				else
@@ -237,8 +235,8 @@ function get_user_array($add_blank=true, $status="Active", $assigned_user="",$pr
 				}
 		}
 		if (!empty($assigned_user)) {
-			 $query .= " OR id=?";
-			 array_push($params, $assigned_user);
+			$query .= " OR id=?";
+			array_push($params, $assigned_user);
 		}
 
 		$query .= " order by user_name ASC";
@@ -308,7 +306,7 @@ function get_group_array($add_blank=true, $status="Active", $assigned_user="",$p
 			array_push($params, $current_user->id);
 
 			$query .= " and vtiger_tmp_write_group_sharing_per.tabid=?";
-			array_push($params,  getTabid($module));
+			array_push($params, getTabid($module));
 		}
 		$query .= " order by groupname ASC";
 
@@ -336,7 +334,6 @@ function get_group_array($add_blank=true, $status="Active", $assigned_user="",$p
   * @param $string -- string:: Type string
   * @param $maxlength -- maximun length:: Type integer
   * @returns $string -- escaped string:: Type string
-  *
 */
 function clean($string, $maxLength)
 {
@@ -551,7 +548,7 @@ function return_theme_language($language, $theme)
 
 
 
-/** If the session variable is defined and is not equal to "" then return it.  Otherwise, return the default value.
+/** If the session variable is defined and is not equal to "" then return it. Otherwise, return the default value.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
 */
@@ -570,11 +567,11 @@ function return_session_value_or_default($varname, $default)
 }
 
 /**
-  * Creates an array of where restrictions.  These are used to construct a where SQL statement on the query
-  * It looks for the variable in the $_REQUEST array.  If it is set and is not "" it will create a where clause out of it.
+  * Creates an array of where restrictions. These are used to construct a where SQL statement on the query
+  * It looks for the variable in the $_REQUEST array. If it is set and is not "" it will create a where clause out of it.
   * @param &$where_clauses - The array to append the clause to
   * @param $variable_name - The name of the variable to look for an add to the where clause if found
-  * @param $SQL_name - [Optional] If specified, this is the SQL column name that is used.  If not specified, the $variable_name is used as the SQL_name.
+  * @param $SQL_name - [Optional] If specified, this is the SQL column name that is used. If not specified, the $variable_name is used as the SQL_name.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
   */
@@ -766,7 +763,7 @@ function get_themes() {
 }
 
 /**
- * Very cool algorithm for sorting multi-dimensional arrays.  Found at http://us2.php.net/manual/en/function.array-multisort.php
+ * Very cool algorithm for sorting multi-dimensional arrays. Found at http://us2.php.net/manual/en/function.array-multisort.php
  * Syntax: $new_array = array_csort($array [, 'col1' [, SORT_FLAG [, SORT_FLAG]]]...);
  * Explanation: $array is the array you want to sort, 'col1' is the name of the column
  * you want to sort, SORT_FLAGS are : SORT_ASC, SORT_DESC, SORT_REGULAR, SORT_NUMERIC, SORT_STRING
@@ -875,7 +872,7 @@ function getTabname($tabid) {
 	$log->debug("Entering getTabname(".$tabid.") method ...");
 	$sql = "select tablabel from vtiger_tab where tabid=?";
 	$result = $adb->pquery($sql, array($tabid));
-	$tabname=  $adb->query_result($result,0,"tablabel");
+	$tabname = $adb->query_result($result,0,"tablabel");
 	$log->debug("Exiting getTabname method ...");
 	return $tabname;
 }
@@ -898,7 +895,7 @@ function getTabModuleName($tabid) {
 			if($tabname == false) {
 				$sql = "select name from vtiger_tab where tabid=?";
 				$result = $adb->pquery($sql, array($tabid));
-				$tabname=  $adb->query_result($result,0,"name");
+				$tabname = $adb->query_result($result,0,"name");
 			}
 
 			// Update information to cache for re-use
@@ -907,7 +904,7 @@ function getTabModuleName($tabid) {
 		} else {
 			$sql = "select name from vtiger_tab where tabid=?";
 			$result = $adb->pquery($sql, array($tabid));
-			$tabname=  $adb->query_result($result,0,"name");
+			$tabname = $adb->query_result($result,0,"name");
 
 			// Update information to cache for re-use
 			VTCacheUtils::updateTabidInfo($tabid, $tabname);
@@ -990,7 +987,7 @@ function getUserEmail($userid) {
 	return $email;
 }
 
-/** Function to get a userid for outlook  // outlook security
+/** Function to get a userid for outlook // outlook security
  * @param $username -- username :: Type string
  * @returns $user_id -- user id :: Type integer
 */
@@ -1009,7 +1006,7 @@ function getUserId_Ol($username) {
 	return $user_id;
 }
 
-/** Function to get a action id for a given action name  //outlook security
+/** Function to get a action id for a given action name //outlook security
  * @param $action -- action name :: Type string
  * @returns $actionid -- action id :: Type integer
 */
@@ -1120,7 +1117,7 @@ function insert_def_org_field() {
 	for($i=0; $i<$num_rows; $i++) {
 		$tab_id = $adb->query_result($fld_result,$i,'tabid');
 		$field_id = $adb->query_result($fld_result,$i,'fieldid');
-		 $params = array($tab_id, $field_id, 0, 0);
+		$params = array($tab_id, $field_id, 0, 0);
 		$adb->pquery("insert into vtiger_def_org_field values (?,?,?,?)", $params);
 	}
 	$log->debug("Exiting insert_def_org_field() method ...");
@@ -1371,7 +1368,7 @@ function upload_product_image_file($mode,$id) {
 			$ret_array["status"] = $upload_status;
 			$ret_array["file_name"] = $file_name;
 		} else {
-			$errorCode =  $_FILES['imagename']['error'];
+			$errorCode = $_FILES['imagename']['error'];
 			$upload_status = "no";
 			$ret_array["status"] = $upload_status;
 			$ret_array["errorcode"] = $errorCode;
@@ -1768,8 +1765,7 @@ function get_textcomboField($label,$name)
 	}
 	if($name == "activitytype")
 	{
-		$comboFieldNames = Array('activitytype'=>'activitytype_dom',
-			 'duration_minutes'=>'duration_minutes_dom');
+		$comboFieldNames = Array('activitytype'=>'activitytype_dom', 'duration_minutes'=>'duration_minutes_dom');
 		$comboFieldArray = getComboArray($comboFieldNames);
 		$form_field .='<td>';
 		$form_field .= $label.'<br>';
@@ -1833,7 +1829,7 @@ function get_textdateField($label,$name,$tid)
 		$form_field .= '<font color="red">*</font>';
 		$form_field .= $label.':<br>';
 		$form_field .='<font size="1"><em old="ntc_date_format">('.$current_user->date_format.')</em></font><br>';
-		$form_field .='<input name="'.$name.'"  size="12" maxlength="10" id="QCK_'.$name.'" type="text" value="">&nbsp';
+		$form_field .='<input name="'.$name.'" size="12" maxlength="10" id="QCK_'.$name.'" type="text" value="">&nbsp';
 		$form_field .='<img src="themes/'.$theme.'/images/btnL3Calendar.gif" id="jscal_trigger"></td>';
 		$log->debug("Exiting get_textdateField method ...");
 		return $form_field;
@@ -1887,8 +1883,7 @@ function get_textdurationField($label,$name,$tid)
 	$form_field='';
 	if($tid == 16)
 	{
-		$comboFieldNames = Array('activitytype'=>'activitytype_dom',
-			 'duration_minutes'=>'duration_minutes_dom');
+		$comboFieldNames = Array('activitytype'=>'activitytype_dom', 'duration_minutes'=>'duration_minutes_dom');
 		$comboFieldArray = getComboArray($comboFieldNames);
 
 		$form_field .='<td>';
@@ -2316,7 +2311,7 @@ function get_days_n_dates($st,$en)
 	$stdate_arr=explode("-",$st);
 	$endate_arr=explode("-",$en);
 
-	$dateDiff = mktime(0,0,0,$endate_arr[1],$endate_arr[2],$endate_arr[0]) - mktime(0,0,0,$stdate_arr[1],$stdate_arr[2],$stdate_arr[0]);//to get  dates difference
+	$dateDiff = mktime(0,0,0,$endate_arr[1],$endate_arr[2],$endate_arr[0]) - mktime(0,0,0,$stdate_arr[1],$stdate_arr[2],$stdate_arr[0]);//to get dates difference
 
 	$days = floor($dateDiff/60/60/24)+1; //to calculate no of. days
 	for($i=0;$i<$days;$i++) {
@@ -2364,7 +2359,7 @@ function start_end_dates($period)
 	} else if($period=="tmon") {
 		$period_type="month";
 		$width="840";
-		$st_date = date("Y-m-d",mktime(0, 0, 0, date("m"), "01",   date("Y")));
+		$st_date = date("Y-m-d",mktime(0, 0, 0, date("m"), "01", date("Y")));
 		$end_date = date("Y-m-t");
 	} else if($period=="lmon") {
 		$st_date=date("Y-m-d",mktime(0,0,0,date("n")-1,date("1"),date("Y")));
@@ -2500,40 +2495,39 @@ function useInternalMailer() {
 * added by dingjianting on 2006-10-1 for picklist editor
 */
 function utf8RawUrlDecode ($source) {
-    global $default_charset;
-    $decodedStr = "";
-    $pos = 0;
-    $len = strlen ($source);
-    while ($pos < $len) {
-        $charAt = substr ($source, $pos, 1);
-        if ($charAt == '%') {
-            $pos++;
-            $charAt = substr ($source, $pos, 1);
-            if ($charAt == 'u') {
-                // we got a unicode character
-                $pos++;
-                $unicodeHexVal = substr ($source, $pos, 4);
-                $unicode = hexdec ($unicodeHexVal);
-                $entity = "&#". $unicode . ';';
-                $decodedStr .= utf8_encode ($entity);
-                $pos += 4;
-            }
-            else {
-                // we have an escaped ascii character
-                $hexVal = substr ($source, $pos, 2);
-                $decodedStr .= chr (hexdec ($hexVal));
-                $pos += 2;
-            }
-        } else {
-            $decodedStr .= $charAt;
-            $pos++;
-        }
-    }
-    if($default_charset == 'UTF-8')
-	    return html_to_utf8($decodedStr);
-    else
-	    return $decodedStr;
-    //return html_to_utf8($decodedStr);
+	global $default_charset;
+	$decodedStr = "";
+	$pos = 0;
+	$len = strlen ($source);
+	while ($pos < $len) {
+		$charAt = substr ($source, $pos, 1);
+		if ($charAt == '%') {
+			$pos++;
+			$charAt = substr ($source, $pos, 1);
+			if ($charAt == 'u') {
+				// we got a unicode character
+				$pos++;
+				$unicodeHexVal = substr ($source, $pos, 4);
+				$unicode = hexdec ($unicodeHexVal);
+				$entity = "&#". $unicode . ';';
+				$decodedStr .= utf8_encode ($entity);
+				$pos += 4;
+			} else {
+				// we have an escaped ascii character
+				$hexVal = substr ($source, $pos, 2);
+				$decodedStr .= chr (hexdec ($hexVal));
+				$pos += 2;
+			}
+		} else {
+			$decodedStr .= $charAt;
+			$pos++;
+		}
+	}
+	if ($default_charset == 'UTF-8')
+		return html_to_utf8($decodedStr);
+	else
+		return $decodedStr;
+	//return html_to_utf8($decodedStr);
 }
 
 /**
@@ -2686,7 +2680,7 @@ function getCurrentModule($perform_set=false) {
 		$dir = @scandir($root_directory."modules");
 		$temp_arr = Array("CVS","Attic");
 		$res_arr = @array_intersect($dir,$temp_arr);
-		if(count($res_arr) == 0  && !preg_match("/[\/.]/",$module)) {
+		if(count($res_arr) == 0 && !preg_match("/[\/.]/",$module)) {
 			if(@in_array($module,$dir))
 				$is_module = true;
 		}
@@ -2916,7 +2910,7 @@ function getRecordValues($id_array,$module) {
 	global $adb,$current_user;
 	global $app_strings;
 	$tabid=getTabid($module);
-	$query="select fieldname,fieldlabel,uitype from vtiger_field where tabid=? and fieldname  not in ('createdtime','modifiedtime') and vtiger_field.presence in (0,2) and uitype not in('4')";
+	$query="select fieldname,fieldlabel,uitype from vtiger_field where tabid=? and fieldname not in ('createdtime','modifiedtime') and vtiger_field.presence in (0,2) and uitype not in('4')";
 	$result=$adb->pquery($query, array($tabid));
 	$no_rows=$adb->num_rows($result);
 
@@ -3129,7 +3123,7 @@ function getDuplicateQuery($module,$field_values,$ui_type_arr)
 						WHERE vtiger_crmentity.deleted=0 AND vtiger_leaddetails.converted = $val_conv $sec_parameter
 						GROUP BY $table_cols HAVING COUNT(*)>1) as temp
 				ON ".get_on_clause($field_values,$ui_type_arr,$module) ."
-				WHERE vtiger_crmentity.deleted=0  AND vtiger_leaddetails.converted = $val_conv $sec_parameter ORDER BY $table_cols,vtiger_leaddetails.leadid ASC";
+				WHERE vtiger_crmentity.deleted=0 AND vtiger_leaddetails.converted = $val_conv $sec_parameter ORDER BY $table_cols,vtiger_leaddetails.leadid ASC";
 
 	}
 	else if($module == 'Products')
@@ -3214,7 +3208,7 @@ function getDuplicateQuery($module,$field_values,$ui_type_arr)
 						WHERE vtiger_crmentity.deleted=0
 						GROUP BY ".$table_cols." HAVING COUNT(*)>1) as temp
 			ON ".get_on_clause($field_values,$ui_type_arr,$module) ."
-							WHERE vtiger_crmentity.deleted=0  ORDER BY $table_cols,vtiger_vendor.vendorid ASC";
+							WHERE vtiger_crmentity.deleted=0 ORDER BY $table_cols,vtiger_vendor.vendorid ASC";
 	} else {
 		$modObj = CRMEntity::getInstance($module);
 		if ($modObj != null && method_exists($modObj, 'getDuplicatesQuery')) {
@@ -3786,7 +3780,7 @@ function getCallerInfo($number){
 /**
  * this function returns the tablename and primarykeys for a given module in array format
  * @param object $adb - peardatabase type object
- * @param string $module - module name for  which you want the array
+ * @param string $module - module name for which you want the array
  * @return array(tablename1=>primarykey1,.....)
  */
 function get_tab_name_index($adb, $module){
@@ -4419,7 +4413,7 @@ function getValidDBInsertDateTimeValue($value) {
 			$dbTimeValue = $dbTimeValue.':';
 		}
 		$timeValueLength = strlen($dbTimeValue);
-		if(!empty($dbTimeValue) &&  strrpos($dbTimeValue, ':') == ($timeValueLength-1)) {
+		if(!empty($dbTimeValue) && strrpos($dbTimeValue, ':') == ($timeValueLength-1)) {
 			$dbTimeValue = $dbTimeValue.'00';
 		}
 		try {

@@ -50,8 +50,8 @@ class crmtogo_UI_ListModuleRecords extends crmtogo_WS_ListModuleRecords {
 		else {
 			$wsResponseResult = $wsResponse->getResult();
 			$tabid = getTabid($wsResponseResult['module']);
-         	$CATEGORY = getParentTabFromModule($wsResponseResult['module']);
-			if (($request->get('compact') !='true')) {		
+			$CATEGORY = getParentTabFromModule($wsResponseResult['module']);
+			if (($request->get('compact') !='true')) {
 				$customView = new CustomView($wsResponseResult['module']);
 				$id1=$request->get('viewName');
 				$id2=$request->get('view');
@@ -97,7 +97,7 @@ class crmtogo_UI_ListModuleRecords extends crmtogo_WS_ListModuleRecords {
 					}
 					//consider time zone
 					$date = new DateTimeField($cal_startdate.' '.$cal_endtime);
-					$end_datetime = $date->getDisplayDateTimeValue();	
+					$end_datetime = $date->getDisplayDateTimeValue();
 					$tmp_date_arr = explode(' ', $end_datetime);
 					$formated_date = $tmp_date_arr[0];
 					$userEndDate =date('Y-m-d', strtotime($tmp_date_arr[0])).'T'.$tmp_date_arr[1];
@@ -126,7 +126,7 @@ class crmtogo_UI_ListModuleRecords extends crmtogo_WS_ListModuleRecords {
 			
 			global $current_user;
 			
-			$current_user = $this->getActiveUser();	
+			$current_user = $this->getActiveUser();
 			$config = $this->getUserConfigSettings();
 			$viewer->assign('MOD', $this->getUsersLanguage());
 			$viewer->assign('COLOR_HEADER_FOOTER', $config['theme']);

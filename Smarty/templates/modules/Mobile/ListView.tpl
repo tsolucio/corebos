@@ -25,7 +25,7 @@
 	<input type="hidden" name="modulename" id="modulename" value="{$_MODULE->name()}">
 	<input type="hidden" name="pagerlimit" id="pagerlimit" value="{$PAGELIMIT}">
 	<input type="hidden" name="view" id="view" value="{$_VIEW}">
-	<input type="hidden" name="viewName" id="viewName" value="{$_VIEWNAME}">
+	<input type="hidden" name="viewName" id="viewName" value="{if isset($_VIEWNAME)}{$_VIEWNAME}{/if}">
 	<!-- Calendar Settings -->
 	{if $_MODULE->name() eq 'Calendar'}
 	<input type="hidden" name="calendarselect" id="calendarselect" value="{$CALENDARSELECT}">
@@ -35,7 +35,7 @@
 	<div data-role="header" data-theme="{$COLOR_HEADER_FOOTER}" data-position="fixed">
 		{if $_MODULE->name() eq 'Calendar'}
 			<div style="position: absolute;right: 35px;text-align: right;"> 
-				<select name="fliptoggle" id="fliptoggle" data-role="slider" data-mini='true'> 
+				<select name="fliptoggle" id="fliptoggle" data-role="slider" data-mini='true'>
 					<option value="off">{$MOD.LBL_OFF}</option> 
 					<option value="on">{$MOD.LBL_ON}</option> 
 				</select> 
