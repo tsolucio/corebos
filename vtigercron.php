@@ -20,7 +20,8 @@ $cronTasks = false;
 if (isset($_REQUEST['service']) or ($argc==2 and !empty($argv[1]))) {
 	// Run specific service
 	$srv = empty($argv[1]) ? $_REQUEST['service'] : $argv[1];
-	$srvcron = Vtiger_Cron::getInstance(vtlib_purify($srv));
+	$srv = vtlib_purify($srv);
+	$srvcron = Vtiger_Cron::getInstance($srv);
 	if ($srvcron !== false) {
 		$cronTasks = array($srvcron);
 	} else {

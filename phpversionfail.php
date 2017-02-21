@@ -8,6 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 include_once 'vtigerversion.php';
+include_once 'include/utils/utils.php';
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -36,10 +37,10 @@ include_once 'vtigerversion.php';
 	<table border=0 cellspacing=0 cellpadding=10 width=80% align=center>
 	<tr>
 		<td class="small" bgcolor="#FFFFFF" align=center>
-			A PHP version from 5.3.x to 7.0.0 is required. Your current PHP version is
+			A PHP version from 5.3.x (5.5.x minimum recommended) to 7.0.0 is required. Your current PHP version is
 			<?php
 				if(isset($serverPhpVersion)) {
-					echo $serverPhpVersion;
+					echo vtlib_purify($serverPhpVersion);
 				} else  {
 					echo '???';
 				}
