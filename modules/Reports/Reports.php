@@ -619,7 +619,7 @@ class Reports extends CRMEntity{
 			//Here we Changing the displaytype of the field. So that its criteria will be displayed correctly in Reports Advance Filter.
 			$fieldtypeofdata=ChangeTypeOfData_Filter($fieldtablename,$fieldcolname,$fieldtypeofdata);
 
-			if($uitype == 68 || $uitype == 59)
+			if($uitype == 59)
 			{
 				$fieldtypeofdata = 'V';
 			}

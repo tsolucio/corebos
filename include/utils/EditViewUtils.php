@@ -1014,56 +1014,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		}
 	}
 	//end of rdhital/Raju
-	elseif($uitype == 68)
-	{
-		if(empty($value) && isset($_REQUEST['parent_id']) && $_REQUEST['parent_id'] != '')
-			$value = vtlib_purify($_REQUEST['parent_id']);
-
-		$account_selected = $contact_selected = $parent_name = '';
-		if($value != '')
-		{
-			$parent_module = getSalesEntityType($value);
-			if($parent_module == "Contacts")
-			{
-				$displayValueArray = getEntityName($parent_module, $value);
-				if (!empty($displayValueArray)) {
-					foreach ($displayValueArray as $key => $field_value) {
-						$parent_name = $field_value;
-					}
-				}
-				$contact_selected = "selected";
-			}
-			elseif($parent_module == "Accounts")
-			{
-				$sql = "select * from vtiger_account where accountid=?";
-				$result = $adb->pquery($sql, array($value));
-				$parent_name = $adb->query_result($result,0,"accountname");
-				$account_selected = "selected";
-			}
-			else
-			{
-				$parent_name = "";
-				$value = "";
-			}
-		}
-
-		$editview_label[0] = array();
-		$editview_label[1] = array();
-		$editview_label[2] = array();
-
-		if(vtlib_isModuleActive('Accounts')) {
-			array_push($editview_label[0],$app_strings['COMBO_ACCOUNTS']);
-			array_push($editview_label[1],$account_selected);
-			array_push($editview_label[2],"Accounts");
-		}
-		if(vtlib_isModuleActive('Contacts')) {
-			array_push($editview_label[0],$app_strings['COMBO_CONTACTS']);
-			array_push($editview_label[1],$contact_selected);
-			array_push($editview_label[2],"Contacts");
-		}
-		$fieldvalue[] = $parent_name;
-		$fieldvalue[] = $value;
-	}
 	elseif ($uitype == 9 || $uitype == 7) {
 		$editview_label[] = getTranslatedString($fieldlabel, $module_name);
 		$fldrs = $adb->pquery('select typeofdata from vtiger_field

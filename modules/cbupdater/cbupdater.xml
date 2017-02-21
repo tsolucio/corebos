@@ -1074,4 +1074,11 @@
 	<classname>migratebiurl2moreinfo</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Change uitype 68 (helpdesk) to 10</description>
+	<filename>build/changeSets/2017/changeUitype68To10.php</filename>
+	<classname>changeUitype68To10</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

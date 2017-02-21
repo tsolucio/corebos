@@ -2616,7 +2616,7 @@ function generateQuestionMarks($items_list) {
 function is_uitype($uitype, $reqtype) {
 	$ui_type_arr = array(
 		'_date_' => array(5, 6, 23, 70),
-		'_picklist_' => array(15, 16, 52, 53, 54, 55, 59, 62, 63, 66, 68, 76, 77, 78, 80, 98, 101, 115, 357),
+		'_picklist_' => array(15, 16, 52, 53, 54, 55, 59, 62, 63, 66, 76, 77, 78, 80, 98, 101, 115, 357),
 		'_users_list_' => array(52),
 	);
 
@@ -2982,20 +2982,6 @@ function getRecordValues($id_array,$module) {
 					$user_id = $field_values[$j][$fld_name];
 					$user_name=getUserFullName($user_id);
 					$value_pair['disp_value']=$user_name;
-				} elseif($ui_type ==68) {
-					$parent_id = $field_values[$j][$fld_name];
-					$value_pair['disp_value'] = getAccountName($parent_id);
-					if($value_pair['disp_value'] == '' || $value_pair['disp_value'] == NULL) {
-						$displayValueArray = getEntityName('Contacts', $parent_id);
-						if (!empty($displayValueArray)) {
-							foreach ($displayValueArray as $key => $field_value) {
-								$contact_name = $field_value;
-							}
-						} else {
-							$contact_name='';
-						}
-						$value_pair['disp_value'] = $contact_name;
-					}
 				} elseif($ui_type ==59) {
 					$product_name=getProductName($field_values[$j][$fld_name]);
 					if($product_name != '')
@@ -3379,16 +3365,6 @@ function getDuplicateRecordsArr($module)
 					$result[$col_arr[$k]][] = getTranslatedString($picklistValue,$module);
 				}
 				$result[$col_arr[$k]] = implode(', ',$result[$col_arr[$k]]);
-			}
-			if($ui_type[$fld_arr[$k]] ==68)
-			{
-				$parent_id= $result[$col_arr[$k]];
-				if($parent_id != '')
-				{
-					$parentname=getParentName($parent_id);
-				}
-
-				$result[$col_arr[$k]]=$parentname;
 			}
 			if($ui_type[$fld_arr[$k]] ==53 || $ui_type[$fld_arr[$k]] ==52)
 			{

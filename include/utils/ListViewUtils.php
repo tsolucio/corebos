@@ -1565,32 +1565,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		else
 			$value = '';
 	}
-	elseif ($uitype == 68) {
-		$parentid = $adb->query_result($list_result, $list_result_count, "parent_id");
-		$parenttype = $adb->query_result($list_result, $list_result_count, "parent_type");
-
-		if ($parenttype == '' && $parentid != '')
-			$parenttype = getSalesEntityType($parentid);
-
-		if ($parenttype == "Contacts") {
-			$tablename = "vtiger_contactdetails";
-			$fieldname = "contactname";
-			$idname = "contactid";
-		}
-		if ($parenttype == "Accounts") {
-			$tablename = "vtiger_account";
-			$fieldname = "accountname";
-			$idname = "accountid";
-		}
-		if ($parentid != '') {
-			$sql = "SELECT * FROM $tablename WHERE $idname = ?";
-			$fieldvalue = $adb->query_result($adb->pquery($sql, array($parentid)), 0, $fieldname);
-
-			$value = '<a href=index.php?module=' . $parenttype . '&action=DetailView&record=' . $parentid . '&parenttab=' . urlencode($tabname) . '>' . textlength_check($fieldvalue) . '</a>';
-		}
-		else
-			$value = '';
-	}
 	elseif ($uitype == 78) {
 		if ($temp_val != '') {
 			$quote_name = getQuoteName($temp_val);

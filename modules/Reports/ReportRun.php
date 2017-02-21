@@ -515,7 +515,7 @@ class ReportRun extends CRMEntity {
 			else
 				$value = $adb->query_result($field_query,0,'tablename').$tr[0].".".$adb->query_result($field_query,0,'columnname');
 			*/
-			if($uitype == 68 || $uitype == 59)
+			if($uitype == 59)
 			{
 				$fieldtypeofdata = 'V';
 			}
