@@ -6,7 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- ************************************************************************************/	
+ ************************************************************************************/
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -55,8 +55,8 @@
 						<td align=left class="small paddingTop">
 							<span class="bigHeading"><?php echo $installationStrings['LBL_CONFIG_COMPLETED']; ?></span>
 							<br>
-					  		<hr noshade size=1>
-					  	</td>
+							<hr noshade size=1>
+						</td>
 					</tr>
 					<tr>
 						<td align=center class="small" style="height:250px;">
@@ -91,10 +91,10 @@ $ins_dir_renamed = $renameResult['install_directory_renamed'];
 						<li><?php echo $installationStrings['LBL_SET_OUTGOING_EMAIL_SERVER']; ?></li>
 						<li><?php echo $installationStrings['LBL_SETUP_BACKUP']; ?></li>
 						<li><?php echo $installationStrings['LBL_RENAME_HTACCESS_FILE']; ?>. <a href="javascript:void(0);" onclick="showhidediv();"><?php echo $installationStrings['LBL_MORE_INFORMATION']; ?></a>
-			   				<div id='htaccess_div' style="display:none"><br><br>
-				   				<?php echo $installationStrings['MSG_HTACCESS_DETAILS']; ?>
-			  			 	</div>
-			  			</li>
+							<div id='htaccess_div' style="display:none"><br><br>
+								<?php echo $installationStrings['MSG_HTACCESS_DETAILS']; ?>
+							</div>
+						</li>
 					</ul>
 					<br>
 					<strong><?php echo $installationStrings['LBL_DOCUMENTATION_TUTORIAL']; ?></strong>
@@ -136,17 +136,17 @@ $ins_dir_renamed = $renameResult['install_directory_renamed'];
 			</td>
 		</tr>
 	</table>
-	<br>	
+	<br>
 	<table border=0 cellspacing=0 cellpadding=10 width=100%>
 		<tr>
 			<td colspan=2 align="center">
 				<form action="index.php" method="get" name="form" id="form">
 					<input type="hidden" name="default_user_name" value="admin">
-			 		<input type="submit" class="button" value="<?php echo $installationStrings['LBL_FINISH']; ?>" title="<?php echo $installationStrings['LBL_FINISH']; ?>" />
+					<input type="submit" class="button" value="<?php echo $installationStrings['LBL_FINISH']; ?>" title="<?php echo $installationStrings['LBL_FINISH']; ?>" />
 				</form>
 			</td>
 		</tr>
-	</table>		
+	</table>
 </td>
 </tr>
 </table>
@@ -174,4 +174,4 @@ $ins_dir_renamed = $renameResult['install_directory_renamed'];
 	</tr>
 </table>
 </body>
-</html>	
+</html>
