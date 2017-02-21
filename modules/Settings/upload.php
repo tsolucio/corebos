@@ -17,24 +17,21 @@ $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 
 $smarty = new vtigerCRM_Smarty;
-if(isset($_REQUEST['flag']) && $_REQUEST['flag'] != '')
+$flag = !empty($_REQUEST['flag']) ? vtlib_purify($_REQUEST['flag']) : 0;
+switch($flag)
 {
-	$flag = vtlib_purify($_REQUEST['flag']);
-	switch($flag)
-	{
-		case 1:
-			$smarty->assign("ERRORFLAG","<font color='red'>".$mod_strings['LBL_DOC_MSWORD']."</B></font>");
-			break;
-		case 2:
-			$smarty->assign("ERRORFLAG","<font color='red'>".$mod_strings['LBL_NODOC']."</B></font>");
-			break;
-		default:
-			$smarty->assign("ERRORFLAG","");
-			break;
-	}
+	case 1:
+		$smarty->assign("ERRORFLAG","<font color='red'>".$mod_strings['LBL_DOC_MSWORD']."</B></font>");
+		break;
+	case 2:
+		$smarty->assign("ERRORFLAG","<font color='red'>".$mod_strings['LBL_NODOC']."</B></font>");
+		break;
+	default:
+		$smarty->assign("ERRORFLAG","");
+		break;
 }
 
-$tempModule= vtlib_purify($_REQUEST['tempModule']);
+$tempModule = isset($_REQUEST['tempModule']) ? vtlib_purify($_REQUEST['tempModule']) : '';
 $smarty->assign("MOD", return_module_language($current_language,'Settings'));
 $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH",$image_path);
@@ -50,8 +47,11 @@ $template = Array(
 	"Contacts"=>"CONTACTS_SELECTED",
 	"HelpDesk"=>"HELPDESK_SELECTED"
 );
-
-$smarty->assign($template[$tempModule],"selected");
+$smarty->assign('LEADS_SELECTED','');
+$smarty->assign('ACCOUNTS_SELECTED','');
+$smarty->assign('CONTACTS_SELECTED','');
+$smarty->assign('HELPDESK_SELECTED','');
+$smarty->assign(isset($template[$tempModule]) ? $template[$tempModule] : 'LEADS_SELECTED','selected');
 
 $smarty->display('CreateWordTemplate.tpl');
 ?>

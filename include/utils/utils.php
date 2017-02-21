@@ -2734,8 +2734,7 @@ function setCurrentLanguage($active_module=null) {
 **/
 function getAccessPickListValues($module)
 {
-	global $adb, $log;
-	global $current_user;
+	global $adb, $log, $current_user;
 	$log->debug("Entering into function getAccessPickListValues($module)");
 
 	$id = getTabid($module);
