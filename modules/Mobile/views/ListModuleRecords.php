@@ -116,8 +116,19 @@ class crmtogo_UI_ListModuleRecords extends crmtogo_WS_ListModuleRecords {
 				$viewer->assign('_ALL', 'ALL');
 			}
 			//for compact calendar start day
-			$startday = $current_user->dayoftheweek;
-			if ($startday =='Monday' ) {
+			if (isset($current_user->dayoftheweek)) {
+				$startday = $current_user->dayoftheweek;
+			} else {
+				global $adb;
+				$sql = 'SELECT dayoftheweek FROM its4you_calendar4you_settings WHERE userid=?';
+				$result = $adb->pquery($sql, array($current_user->id));
+				if ($adb and $adb->num_rows($result)>0) {
+					$startday = $adb->query_result($result, 0,0);
+				} else {
+					$startday = 'Monday';
+				}
+			}
+			if ($startday == 'Monday') {
 				$startday_code = 1;
 			}
 			else {

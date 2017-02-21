@@ -10,10 +10,10 @@
 include_once dirname(__FILE__) . '/../../api/ws/models/SearchFilter.php';
 
 class crmtogo_UI_SearchFilterModel extends crmtogo_WS_SearchFilterModel {
-	
-	function execute($fieldnames, $paging = false) {
+
+	function execute($fieldnames, $paging = false, $calwhere ='') {
 		global $current_user;
-		if ($this->moduleName == 'Project') {  
+		if ($this->moduleName == 'Project') {
 			// Custom View
 			include_once 'modules/CustomView/CustomView.php';
 			include_once 'include/QueryGenerator/QueryGenerator.php';

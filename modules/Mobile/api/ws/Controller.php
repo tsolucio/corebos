@@ -49,15 +49,15 @@ class crmtogo_WS_Controller  {
 		$user = $this->getActiveUser();
 		return ($user !== false);
 	}
-	
-	function sessionGet($key, $defvaule = '') {
+
+	public static function sessionGet($key, $defvalue = '') {
 		return coreBOS_Session::get($key, $defvalue);
 	}
-	
+
 	function sessionSet($key, $value) {
 		coreBOS_Session::set($key, $value);
 	}
-	
+
 	function getLanguage() {
 		//cache language
 		static $used_language = NULL;
@@ -84,9 +84,8 @@ class crmtogo_WS_Controller  {
 		}
 		return $crmtogoDefaultsConfigCache;
 	}
-	
-	function getUserConfigSettings() {
 
+	public static function getUserConfigSettings() {
 		//cache config information
 		static $crmtogoConfigCache = NULL;
 		if (is_null($crmtogoConfigCache)) {

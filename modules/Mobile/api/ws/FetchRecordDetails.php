@@ -59,7 +59,7 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 		$result = $response->getResult();
 		$operation = $request->getOperation();
 		$resultRecord = $result['record'];
-		$relatedlistcontent = $result['relatedlistcontent'];
+		$relatedlistcontent = isset($result['relatedlistcontent']) ? $result['relatedlistcontent'] : '';
 		$comments = $result['comments'];
 		$module = $this->detectModuleName($resultRecord['id']);
 		//set download pathinfo
