@@ -21,19 +21,13 @@ class changeUitype68To10 extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$ui68rs = $adb->pquery("select fieldid,name
-					from vtiger_field
-					inner join vtiger_tab on vtiger_tab.tabid=vtiger_field.tabid
-					where uitype = '68'");
-			while ($ui68 = $adb->fetch_array($ui68rs)) {
-				$this->ExecuteQuery("insert into vtiger_fieldmodulerel (fieldid,module,relmodule,status,sequence) values (?,?,'Accounts',null,0)",
-					array($ui68['fieldid'],$ui68['name']));
-				$this->ExecuteQuery("insert into vtiger_fieldmodulerel (fieldid,module,relmodule,status,sequence) values (?,?,'Contacts',null,1)",
-					array($ui68['fieldid'],$ui68['name']));
-			}
 			$this->ExecuteQuery("UPDATE vtiger_field SET uitype = '10' WHERE uitype = '68'");
+			$module = Vtiger_Module::getInstance("HelpDesk");
+			$field = Vtiger_Field::getInstance('parent_id',$module);
+			$field->setRelatedModules(array('Accounts','Contacts'));
+
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}
