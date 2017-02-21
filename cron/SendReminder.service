@@ -94,7 +94,7 @@ if($adb->num_rows($result) >= 1)
 		//code included for recurring events by jaguar ends
 		$date = new DateTimeField("$date_start $time_start");
 		$activity_time = strtotime($date->getDisplayDateTimeValue())/60;
-		if (($activity_time - $curr_time) > 0 && ($activity_time - $curr_time) <= $reminder_time) {
+		if (($activity_time - $curr_time) > -12 && ($activity_time - $curr_time) <= $reminder_time) {
 			$log->debug('Inside REMINDER');
 			// Retrieving the Subject and message from reminder table
 			$sql = 'select active,notificationsubject,notificationbody from vtiger_notificationscheduler where schedulednotificationid=8';
