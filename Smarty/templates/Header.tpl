@@ -245,6 +245,7 @@
 {/if}
 {$COREBOS_HEADER_PREMENU}
 <!-- header - master tabs -->
+<div class="noprint">
 <div class="slds-context-bar">
 	<div class="slds-context-bar__primary slds-context-bar__item--divider-right">
 		<div class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--click slds-no-hover">
@@ -286,6 +287,7 @@
 			</div>
 		</div>
 	</nav>
+</div>
 </div>
 </td>
 
