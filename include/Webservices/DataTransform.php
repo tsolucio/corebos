@@ -213,7 +213,7 @@ class DataTransform{
 					list($row['parent_id'], $fieldId) = explode('@', $row['parent_id']);
 				}
 			}
-			if($row[$field]){
+			if (isset($row[$field])) {
 				$found = false;
 				foreach ($typeList as $entity) {
 					$webserviceObject = VtigerWebserviceObject::fromName($adb,$entity);

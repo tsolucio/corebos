@@ -3757,6 +3757,7 @@ function getPermittedModuleNames()
 	include('tabdata.php');
 
 	if(defined('COREBOS_INSIDE_MOBILE')){
+		if (isset($current_user_profiles))
 		foreach ($current_user_profiles as $profid) {
 			$profilename = '';
 			$resprofile = $adb->pquery("SELECT profilename FROM vtiger_profile WHERE profileid = ?",array($profid));

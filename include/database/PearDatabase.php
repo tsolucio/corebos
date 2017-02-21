@@ -594,8 +594,11 @@ class PearDatabase{
 
 	function getRowCount(&$result){
 		global $log;
-		if(isset($result) && !empty($result))
-			$rows= $result->RecordCount();
+		if (isset($result) && !empty($result)) {
+			$rows = $result->RecordCount();
+		} else {
+			$rows = 0;
+		}
 		return $rows;
 	}
 

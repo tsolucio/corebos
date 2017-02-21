@@ -196,16 +196,15 @@ function get_assigned_user_name($assigned_user_id)
 */
 function get_user_array($add_blank=true, $status="Active", $assigned_user="",$private="")
 {
-	global $log;
+	global $log, $current_user;
 	$log->debug("Entering get_user_array(".$add_blank.",". $status.",".$assigned_user.",".$private.") method ...");
-	global $current_user;
 	if(isset($current_user) && $current_user->id != '')
 	{
 		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
 		require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	}
 	static $user_array = null;
-	$module=$_REQUEST['module'];
+	$module = isset($_REQUEST['module']) ? $_REQUEST['module'] : '';
 
 	if($user_array == null)
 	{
