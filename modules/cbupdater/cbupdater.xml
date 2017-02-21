@@ -1081,4 +1081,11 @@
 	<classname>changeUitype68To10</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>fix WordProcessor Merge Table for MySQL strict mode</description>
+	<filename>build/changeSets/2017/fixWordProcessorMergeTable.php</filename>
+	<classname>fixWordProcessorMergeTable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

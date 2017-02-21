@@ -2758,6 +2758,7 @@ function getAccessPickListValues($module)
 	for($i=0;$i < $adb->num_rows($result);$i++)
 	{
 		$fieldname = $adb->query_result($result,$i,"fieldname");
+		if ($fieldname == 'firstname') continue;
 		$fieldlabel = $adb->query_result($result,$i,"fieldlabel");
 		$columnname = $adb->query_result($result,$i,"columnname");
 		$tabid = $adb->query_result($result,$i,"tabid");
@@ -2767,14 +2768,13 @@ function getAccessPickListValues($module)
 		$fieldvalues = Array();
 		if (count($roleids) > 1)
 		{
-			$mulsel="select distinct $fieldname from vtiger_$fieldname inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$fieldname.picklist_valueid where roleid in (\"". implode($roleids,"\",\"") ."\") and picklistid in (select picklistid from vtiger_picklist) order by sortid asc";
+			$mulsel="select distinct $fieldname,sortid from vtiger_$fieldname inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$fieldname.picklist_valueid where roleid in (\"". implode($roleids,"\",\"") ."\") and picklistid in (select picklistid from vtiger_picklist) order by sortid asc";
 		}
 		else
 		{
-			$mulsel="select distinct $fieldname from vtiger_$fieldname inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$fieldname.picklist_valueid where roleid ='".$roleid."' and picklistid in (select picklistid from vtiger_picklist) order by sortid asc";
+			$mulsel="select distinct $fieldname,sortid from vtiger_$fieldname inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$fieldname.picklist_valueid where roleid ='".$roleid."' and picklistid in (select picklistid from vtiger_picklist) order by sortid asc";
 		}
-		if($fieldname != 'firstname')
-			$mulselresult = $adb->query($mulsel);
+		$mulselresult = $adb->query($mulsel);
 		for($j=0;$j < $adb->num_rows($mulselresult);$j++)
 		{
 			$fieldvalues[] = $adb->query_result($mulselresult,$j,$fieldname);
