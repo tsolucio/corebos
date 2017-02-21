@@ -18,7 +18,6 @@ class Vtiger_Zip {
 
 	public function __construct($filename) {
 		$this->filename  = $filename;
-		$this->overwrite = $overwrite;
 		$this->zipa = new ZipArchive();
 		if ($this->zipa->open($filename, ZipArchive::CREATE)!==TRUE) {
 			throw new Exception("cannot open <$filename>");

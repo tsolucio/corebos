@@ -276,7 +276,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 		$module = $this->getModuleNameFromZip($zipfile);
 		if($module != null) {
 
-			$unzip = new Vtiger_Unzip($zipfile, $overwrite);
+			$unzip = new Vtiger_Unzip($zipfile);
 
 			// Unzip selectively
 			$unzip->unzipAllEx( ".",
