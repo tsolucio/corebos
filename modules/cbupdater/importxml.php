@@ -53,7 +53,7 @@ function cbupd_import($zipfile) {
 	$unzip->unzipAll($cspath);
 	$filelist = $unzip->getList();
 	$csxmlfound = false;
-	echo getTranslatedString('Importing','cbupdater').' '.$zipfile.'<br>';
+	echo getTranslatedString('Importing','cbupdater').' '.vtlib_purify($zipfile).'<br>';
 	$processing = getTranslatedString('Processing','cbupdater').' ';
 	foreach($filelist as $filename=>$fileinfo) {
 		echo $processing.$filename.'<br>';

@@ -25,10 +25,16 @@ $ids = vtlib_purify($_REQUEST['idstring']);
 if (!empty($ids)) {
 	// Export as Zip
 	if ($todir == '') $todir = 'cache';
-	if ($xmlfilename == '') $xmlfilename = 'coreBOSUpdates.xml';
+	if (empty($xmlfilename)) {
+		$xmlfilename = 'coreBOSUpdates.xml';
+	} else {
+		$xmlfilename = basename($xmlfilename);
+	}
+	if (empty($xmlfilename) || $xmlfilename=='.' || $xmlfilename=='..') {
+		$xmlfilename = 'coreBOSUpdates.xml';
+	}
 	$xmlcfn = 'cache/'.$xmlfilename;
-	if ($zipfilename == '') $zipfilename = "cbupdates-" . date('YmdHis') . ".zip";
-	$zipfilename = "$todir/$zipfilename";
+	$zipfilename = "$todir/cbupdates-" . date('YmdHis') . ".zip";
 	$zip = new Vtiger_Zip($zipfilename);
 
 	$sql = 'select * from vtiger_cbupdater
