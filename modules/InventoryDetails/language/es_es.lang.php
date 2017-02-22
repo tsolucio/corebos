@@ -9,14 +9,15 @@
  ************************************************************************************/
 
 $mod_strings = Array(
-	'InventoryDetails' => 'Líneas de Detalle',
-	'SINGLE_InventoryDetails' => 'Líneas de Detalle',
-	'InventoryDetails ID' => 'Líneas de Detalle ID',
+	'InventoryDetails' => 'Detalle de Inventario',
+	'SINGLE_InventoryDetails' => 'Detalle de Inventario',
+	'InventoryDetails ID' => 'Detalle Inventario ID',
 
 	'LBL_CUSTOM_INFORMATION' => 'Información Personalizada',
-	'LBL_INVENTORYDETAILS_INFORMATION' => 'Información Líneas de Detalle',
+	'LBL_INVENTORYDETAILS_INFORMATION' => 'Información Detalle de Inventario',
 	'LBL_DESCRIPTION_INFORMATION' => 'Información Adicional',
-	
+
+	'Inventory Details No' => 'Nº Detalle Inventario',
 	'Related To' => 'Relacionado con',
 	'Sequence No' => 'Número de Secuencia',
 	'Line Item ID' => 'ID de la Línea',
@@ -35,6 +36,7 @@ $mod_strings = Array(
 	'Line Completed' => 'Línea Completada',
 	'Total Stock' => 'Total Stock',
 	'Description' => 'Descripción',
+
 );
 
 ?>
