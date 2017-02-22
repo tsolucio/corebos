@@ -26,23 +26,17 @@ $table_col_array=array('vtiger_account.accountname','vtiger_contactdetails.first
 */
 function getSearchListHeaderValues($focus, $module,$sort_qry='',$sorder='',$order_by='',$relatedlist='',$oCv='')
 {
-	global $log;
+	global $log, $adb, $theme, $app_strings, $mod_strings, $current_user;
 	$log->debug("Entering getSearchListHeaderValues(".(is_object($focus)? get_class($focus):'').",". $module.",".$sort_qry.",".$sorder.",".$order_by.",".$relatedlist.",".(is_object($oCv)? get_class($oCv):'').") method ...");
-        global $adb;
-        global $theme;
-        global $app_strings;
-        global $mod_strings,$current_user;
 
-        $arrow='';
-        $qry = getURLstring($focus);
-        $theme_path="themes/".$theme."/";
-        $image_path=$theme_path."images/";
-        $search_header = Array();
+	$arrow='';
+	$qry = getURLstring($focus);
+	$theme_path="themes/".$theme."/";
+	$image_path=$theme_path."images/";
+	$search_header = Array();
 
-        //Get the vtiger_tabid of the module
-        //require_once('include/utils/UserInfoUtil.php')
-        $tabid = getTabid($module);
-        //added for vtiger_customview 27/5
+	//Get the tabid of the module
+	$tabid = getTabid($module);
 	$bmapname = $module.'_ListColumns';
 	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 	if ($cbMapid) {
@@ -56,14 +50,12 @@ function getSearchListHeaderValues($focus, $module,$sort_qry='',$sorder='',$orde
 			$oCv->list_fields_name = $focus->list_fields_name;
 		}
 	}
-        if($oCv)
-        {
-                if(isset($oCv->list_fields))
-		{
-                        $focus->list_fields = $oCv->list_fields;
-                }
-        }
-	//Added to reduce the no. of queries logging for non-admin vtiger_users -- by Minnie-start
+	if ($oCv) {
+		if (isset($oCv->list_fields)) {
+			$focus->list_fields = $oCv->list_fields;
+		}
+	}
+	//Added to reduce the no. of queries logging for non-admin users
 	$field_list = array();
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	foreach($focus->list_fields as $name=>$tableinfo)
@@ -111,47 +103,35 @@ function getSearchListHeaderValues($focus, $module,$sort_qry='',$sorder='',$orde
 	// Remove fields which are made inactive
 	$focus->filterInactiveFields($module);
 
-	    //modified for vtiger_customview 27/5 - $app_strings change to $mod_strings
-        foreach($focus->list_fields as $name=>$tableinfo)
-        {
-                //added for vtiger_customview 27/5
-                if($oCv)
-                {
-                        if(isset($oCv->list_fields_name))
-			{
+	foreach($focus->list_fields as $name=>$tableinfo) {
+		if ($oCv) {
+			if (isset($oCv->list_fields_name)) {
 				if( $oCv->list_fields_name[$name] == '')
 					$fieldname = 'crmid';
 				else
 					$fieldname = $oCv->list_fields_name[$name];
-
-                        }else
-                        {
+			} else {
 				if( $focus->list_fields_name[$name] == '')
 					$fieldname = 'crmid';
 				else
 					$fieldname = $focus->list_fields_name[$name];
-
-                        }
+			}
 			if($fieldname == "lastname" && $module !="Leads" && $module !="Contacts")
 				$fieldname = "contact_id";
 			if($fieldname == "accountname" && $module !="Accounts")
 				$fieldname = "account_id";
 			if($fieldname == "productname" && $module =="Campaigns")
 				$fieldname = "product_id";
-
-
-                }
-		else
-                {
+		} else {
 			if( $focus->list_fields_name[$name] == '')
 				$fieldname = 'crmid';
 			else
 				$fieldname = $focus->list_fields_name[$name];
 
 			if($fieldname == "lastname" && $module !="Leads" && $module !="Contacts")
-                                $fieldname = "contact_id";
+				$fieldname = "contact_id";
 		}
-                if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] ==0 || in_array($fieldname,$field))
+		if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] ==0 || in_array($fieldname,$field))
 		{
 			if($fieldname!='parent_id')
 			{
@@ -169,20 +149,18 @@ function getSearchListHeaderValues($focus, $module,$sort_qry='',$sorder='',$orde
 		}
 		if($module == 'HelpDesk' && $fieldname == 'crmid')
 		{
-                        $fld_name=$fieldname;
-                        $search_header[$fld_name] = getTranslatedString($name);
-                }
+			$fld_name=$fieldname;
+			$search_header[$fld_name] = getTranslatedString($name);
+		}
 	}
 	$log->debug("Exiting getSearchListHeaderValues method ...");
-        return $search_header;
-
+	return $search_header;
 }
 
 /**This function is used to get the where condition for search listview query along with url_string
 *Param $module - module name
 *Returns the where conditions and url_string values in string format
 */
-
 function Search($module, $input = '')
 {
 	global $log,$default_charset;
@@ -198,7 +176,7 @@ function Search($module, $input = '')
 	}
 	if(isset($input['search_text']) && $input['search_text']!="") {
 		// search other characters like "|, ?, ?" by jagi
-		$search_string = $input['search_text'];
+		$search_string = vtlib_purify($input['search_text']);
 		$stringConvert = function_exists('iconv') ? @iconv('UTF-8',$default_charset,$search_string) : $search_string;
 		$search_string=trim($stringConvert);
 	}
@@ -218,32 +196,26 @@ function Search($module, $input = '')
 }
 
 /**This function is used to get user_id's for a given user_name during search
-*Param $table_name - vtiger_tablename
+*Param $table_name - tablename
 *Param $column_name - columnname
 *Param $search_string - searchstring value (username)
 *Returns the where conditions for list query in string format
 */
-
 function get_usersid($table_name,$column_name,$search_string)
 {
-
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering get_usersid(".$table_name.",".$column_name.",".$search_string.") method ...");
-	global $adb;
 	$concatSql = getSqlForNameInDisplayFormat(array('last_name'=>'vtiger_users.last_name', 'first_name'=>'vtiger_users.first_name'), 'Users');
-	$where.="(trim($concatSql) like '". formatForSqlLike($search_string) .
-			"' or vtiger_groups.groupname like '". formatForSqlLike($search_string) ."')";
+	$where.="(trim($concatSql) like '". formatForSqlLike($search_string)  . "' or vtiger_groups.groupname like '". formatForSqlLike($search_string) ."')";
 	$log->debug("Exiting get_usersid method ...");
 	return $where;
 }
 
-/**This function is used to get where conditions for a given vtiger_accountid or contactid during search for their respective names
+/**This function is used to get where conditions for a given accountid or contactid during search for their respective names
 *Param $column_name - columnname
 *Param $search_string - searchstring value (username)
 *Returns the where conditions for list query in string format
 */
-
-
 function getValuesforColumns($column_name,$search_string,$criteria='cts',$input='')
 {
 	global $log, $current_user, $column_array,$table_col_array;
@@ -302,7 +274,6 @@ function getValuesforColumns($column_name,$search_string,$criteria='cts',$input=
 *Param $search_string - searchstring value (username)
 *Returns the where conditions for list query in string format
 */
-
 function BasicSearch($module,$search_field,$search_string,$input=''){
 
 	global $log,$mod_strings,$current_user;
@@ -450,7 +421,7 @@ function BasicSearch($module,$search_field,$search_string,$input=''){
 					{
 						if(getFieldVisibilityPermission("Calendar", $current_user->id,'taskstatus') == '0' && ($table_name == "vtiger_activity" && ($column_name == "status" || $column_name == "eventstatus")))
 						{
-								$where="(vtiger_activity.status like '". formatForSqlLike($search_string) ."' or vtiger_activity.eventstatus like '". formatForSqlLike($search_string) ."')";
+							$where="(vtiger_activity.status like '". formatForSqlLike($search_string) ."' or vtiger_activity.eventstatus like '". formatForSqlLike($search_string) ."')";
 						}
 						else
 							$where="$table_name.$column_name like '". formatForSqlLike($search_string) ."'";
@@ -464,14 +435,13 @@ function BasicSearch($module,$search_field,$search_string,$input=''){
 			elseif($table_name == "vtiger_crmentity" && $column_name == "modifiedby")
 			{
 				$concatSql = getSqlForNameInDisplayFormat(array('last_name'=>'vtiger_users2.last_name', 'first_name'=>'vtiger_users2.first_name'), 'Users');
-				$where.="(trim($concatSql) like '". formatForSqlLike($search_string) .
-							"' or vtiger_groups2.groupname like '". formatForSqlLike($search_string) ."')";
+				$where .= "(trim($concatSql) like '". formatForSqlLike($search_string) . "' or vtiger_groups2.groupname like '". formatForSqlLike($search_string) ."')";
 			}
 			else if(in_array($column_name,$column_array))
 			{
 				$where = getValuesforColumns($column_name,$search_string,'cts',$input);
 			}
-			else if($input['type'] == 'entchar')
+			else if (isset($input['type']) and $input['type'] == 'entchar')
 			{
 				$where="$table_name.$column_name = '". $search_string ."'";
 			}
@@ -491,8 +461,8 @@ function BasicSearch($module,$search_field,$search_string,$input=''){
 			$where = "(".$where_cond0." or ".$where_cond1.")";
 	}
 	// commented to support searching "%" with the search string.
-	if($input['type'] == 'alpbt'){
-	        $where = str_replace_once("%", "", $where);
+	if (isset($input['type']) and $input['type'] == 'alpbt') {
+		$where = str_replace_once("%", "", $where);
 	}
 
 	//uitype 10 handling
@@ -580,7 +550,7 @@ function getAdvSearchfields($module)
 		$params = array();
 
 		if (count($profileList) > 0) {
-			$sql.= "  and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
+			$sql.= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
 			array_push($params, $profileList);
 		}
 
@@ -622,7 +592,7 @@ function getAdvSearchfields($module)
 		$fieldtype = $adb->query_result($result,$i,"typeofdata");
 		$fieldtype = explode("~",$fieldtype);
 		$fieldtypeofdata = $fieldtype[0];
-		if($fieldcolname == 'account_id' || $fieldcolname == 'accountid' || $fieldcolname == 'product_id' || $fieldcolname == 'vendor_id' || $fieldcolname == 'contact_id' || $fieldcolname == 'contactid' || $fieldcolname == 'vendorid' || $fieldcolname == 'potentialid' || $fieldcolname == 'salesorderid' || $fieldcolname == 'quoteid' || $fieldcolname == 'parentid' || $fieldcolname == "recurringtype" || $fieldcolname == "campaignid" || $fieldcolname == "inventorymanager" ||  $fieldcolname == "currency_id")
+		if($fieldcolname == 'account_id' || $fieldcolname == 'accountid' || $fieldcolname == 'product_id' || $fieldcolname == 'vendor_id' || $fieldcolname == 'contact_id' || $fieldcolname == 'contactid' || $fieldcolname == 'vendorid' || $fieldcolname == 'potentialid' || $fieldcolname == 'salesorderid' || $fieldcolname == 'quoteid' || $fieldcolname == 'parentid' || $fieldcolname == "recurringtype" || $fieldcolname == "campaignid" || $fieldcolname == "inventorymanager" || $fieldcolname == "currency_id")
 			$fieldtypeofdata = "V";
 		if($fieldcolname == "discontinued" || $fieldcolname == "active")
 			$fieldtypeofdata = "C";
@@ -641,7 +611,6 @@ function getAdvSearchfields($module)
 			$fieldlabel = "Start Date";
 			if($module == 'Activities' && $block == 19)
 				$module_columnlist['vtiger_activity:time_start::Activities_Start Time:I'] = 'Start Time';
-
 		}
 		//$fieldlabel1 = str_replace(" ","_",$fieldlabel); // Is not used anywhere
 		//Check added to search the lists by Inventory manager
@@ -704,7 +673,6 @@ function getAdvSearchfields($module)
 *takes no parameter
 *Returns the criteria option in html format
 */
-
 function getcriteria_options()
 {
 	global $log,$app_strings;
@@ -727,10 +695,9 @@ function getcriteria_options()
 /**This function is returns the where conditions for each search criteria option in Advance Search
 *Param $criteria - search criteria option
 *Param $searchstring - search string
-*Param $searchfield - vtiger_fieldname to be search for
+*Param $searchfield - fieldname to be search for
 *Returns the search criteria option (where condition) to be added in list query
 */
-
 function getSearch_criteria($criteria,$searchstring,$searchfield)
 {
 	global $log;
@@ -822,7 +789,6 @@ function getSearch_criteria($criteria,$searchstring,$searchfield)
 *Param $currentModule - module name
 *Returns the where condition to be added in list query in string format
 */
-
 function getWhereCondition($currentModule, $input = '')
 {
 	global $log,$default_charset,$adb, $column_array,$table_col_array,$mod_strings,$current_user;
@@ -844,7 +810,7 @@ function getWhereCondition($currentModule, $input = '')
 		if(!empty($adv_string)) $adv_string = '('.$adv_string.')';
 		$where = $adv_string.'#@@#'.'&advft_criteria='.$advft_criteria.'&advft_criteria_groups='.$advft_criteria_groups.'&searchtype=advance';
 	}
-	elseif($input['type']=='dbrd')
+	elseif (isset($input['type']) and $input['type']=='dbrd')
 	{
 		$where = getdashboardcondition($input);
 	}
@@ -861,9 +827,8 @@ function getSearchURL($input) {
 	$urlString='';
 	if(isset($input['searchtype']) and $input['searchtype']=='advance') {
 		$advft_criteria = vtlib_purify($input['advft_criteria']);
-		if(empty($advft_criteria))	return $urlString;
+		if (empty($advft_criteria)) return $urlString;
 		$advft_criteria_groups = vtlib_purify($input['advft_criteria_groups']);
-
 		$urlString .= '&advft_criteria='.urlencode($advft_criteria).'&advft_criteria_groups='.urlencode($advft_criteria_groups).'&searchtype=advance';
 
 	} elseif($input['type']=='dbrd'){
@@ -985,7 +950,7 @@ function getdashboardcondition($input = '')
 	if(isset($campaign) && $campaign != "")
 	{
 		array_push($where_clauses, "vtiger_campaigncontrel.campaignid = ".$campaign);
-                $url_string .= "&campaignid=".$campaign;
+		$url_string .= "&campaignid=".$campaign;
 	}
 	if(isset($quote) && $quote != "")
 	{
@@ -1209,7 +1174,7 @@ function generateAdvancedSearchSql($advfilterlist) {
 						$advfiltersql = "(".$columns[0].".".$columns[1]." between '".getValidDBInsertDateTimeValue(trim($valuearray[0]),$datatype)."' and '".getValidDBInsertDateTimeValue(trim($valuearray[1]),$datatype)."')";
 					}
 					else {
-						//Added for getting vtiger_activity Status -Jaguar
+						//Added for getting activity Status
 						if($currentModule == "Calendar" && ($columns[1] == "status" || $columns[1] == "eventstatus")) {
 							if(getFieldVisibilityPermission("Calendar", $current_user->id,'taskstatus') == '0') {
 								$advfiltersql = "case when (vtiger_activity.status not like '') then vtiger_activity.status else vtiger_activity.eventstatus end".getAdvancedSearchComparator($comparator,trim($value),$datatype);
@@ -1243,7 +1208,7 @@ function generateAdvancedSearchSql($advfilterlist) {
 			}
 
 			if (trim($advfiltergroupsql) != "") {
-				$advfiltergroupsql =  "( $advfiltergroupsql ) ";
+				$advfiltergroupsql = "( $advfiltergroupsql ) ";
 				if(!empty($groupcondition)) {
 					$advfiltergroupsql .= ' '. $groupcondition . ' ';
 				}
@@ -1348,7 +1313,6 @@ function getAdvancedSearchValue($tablename,$fieldname,$comparator,$value,$dataty
 		$contactid = getSqlForNameInDisplayFormat(array('lastname'=>'vtiger_contactdetails.lastname', 'firstname'=>'vtiger_contactdetails.firstname'), 'Contacts');
 	}
 	$change_table_field = Array(
-
 		"product_id"=>"vtiger_products.productname",
 		"contactid"=>$contactid,
 		"contact_id"=>$contactid,
@@ -1357,29 +1321,26 @@ function getAdvancedSearchValue($tablename,$fieldname,$comparator,$value,$dataty
 		"vendorid"=>"vtiger_vendor.vendorname",
 		"vendor_id"=>"vtiger_vendor.vendorname",
 		"potentialid"=>"vtiger_potential.potentialname",
-
 		"vtiger_account.parentid"=>"vtiger_account2.accountname",
 		"quoteid"=>"vtiger_quotes.subject",
 		"salesorderid"=>"vtiger_salesorder.subject",
 		"campaignid"=>"vtiger_campaign.campaignname",
 		"vtiger_contactdetails.reportsto"=> getSqlForNameInDisplayFormat(array('lastname'=>'vtiger_contactdetails2.lastname', 'firstname'=>'vtiger_contactdetails2.firstname'), 'Contacts'),
 		"vtiger_pricebook.currency_id"=>"vtiger_currency_info.currency_name",
-		);
-	if($fieldname == "smownerid" || $fieldname == 'modifiedby')
-    {
+	);
+	if ($fieldname == "smownerid" || $fieldname == 'modifiedby') {
 		if($fieldname == "smownerid") {
 			$tableNameSuffix = '';
 		} elseif($fieldname == "modifiedby") {
 			$tableNameSuffix = '2';
 		}
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users'.$tableNameSuffix.'.first_name', 'last_name'=>'vtiger_users'.$tableNameSuffix.'.last_name'), 'Users');
-        $temp_value = "( trim($userNameSql)".getAdvancedSearchComparator($comparator,$value,$datatype);
-        $temp_value.= " OR  vtiger_groups$tableNameSuffix.groupname".getAdvancedSearchComparator($comparator,$value,$datatype);
-        $value=$temp_value.")";
-	}elseif( $fieldname == "inventorymanager")
-            {
+		$temp_value = "( trim($userNameSql)".getAdvancedSearchComparator($comparator,$value,$datatype);
+		$temp_value.= " OR vtiger_groups$tableNameSuffix.groupname".getAdvancedSearchComparator($comparator,$value,$datatype);
+		$value=$temp_value.")";
+	} elseif( $fieldname == "inventorymanager") {
 		$value = $tablename.".".$fieldname.getAdvancedSearchComparator($comparator,getUserId_Ol($value),$datatype);
-            }
+	}
 	elseif($change_table_field[$fieldname] != '')//Added to handle special cases
 	{
 		$value = $change_table_field[$fieldname].getAdvancedSearchComparator($comparator,$value,$datatype);
@@ -1454,7 +1415,7 @@ function getAdvancedSearchParentEntityValue($comparator,$value,$datatype,$tablen
 			continue;
 		}
 		if($s != 0)
-             $value .= ' or ';
+			$value .= ' or ';
 		if($modulename == 'Accounts')
 		{
 			//By Pavani : Related to problem in calender, Ticket: 4284 and 4675
@@ -1561,7 +1522,7 @@ function getAdvancedSearchParentEntityValue($comparator,$value,$datatype,$tablen
 		$value .= getAdvancedSearchComparator($comparator,$adv_chk_value,$datatype);
 	}
 	$value .= ")";
-            $log->info("in getSalesRelatedName ".$comparator."==".$value."==".$datatype."==".$tablename."==".$fieldname);
+	$log->info("in getSalesRelatedName ".$comparator."==".$value."==".$datatype."==".$tablename."==".$fieldname);
 	return $value;
 }
 

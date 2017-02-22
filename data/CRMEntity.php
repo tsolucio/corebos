@@ -105,9 +105,7 @@ class CRMEntity {
 		$this->db->println("TRANS saveentity starts $module");
 		$this->db->startTransaction();
 
-
 		foreach ($this->tab_name as $table_name) {
-
 			if ($table_name == "vtiger_crmentity") {
 				$this->insertIntoCrmEntity($module, $fileid);
 			} else {
@@ -134,7 +132,6 @@ class CRMEntity {
 				relateEntities($on_focus, $for_module, $for_crmid, $with_module, $with_crmid);
 			}
 		}
-		// END
 	}
 
 	function insertIntoAttachment($id, $module, $direct_import=false) {
@@ -2601,8 +2598,7 @@ class CRMEntity {
 		$sharingRuleInfo = $$sharingRuleInfoVariable;
 		$sharedTabId = null;
 		$query = '';
-		if (!empty($sharingRuleInfo) && (count($sharingRuleInfo['ROLE']) > 0 ||
-				count($sharingRuleInfo['GROUP']) > 0)) {
+		if (!empty($sharingRuleInfo) && (count($sharingRuleInfo['ROLE']) > 0 || count($sharingRuleInfo['GROUP']) > 0)) {
 			$query = " (SELECT shareduserid FROM vtiger_tmp_read_user_sharing_per " .
 					"WHERE userid=$user->id AND tabid=$tabId) UNION (SELECT " .
 					"vtiger_tmp_read_group_sharing_per.sharedgroupid FROM " .

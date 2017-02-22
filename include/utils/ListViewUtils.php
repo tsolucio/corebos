@@ -3494,6 +3494,7 @@ function getRelCheckquery($currentmodule, $returnmodule, $recordid) {
 	$skip_id = Array();
 	$where_relquery = "";
 	$params = array();
+	$reltable = null;
 	if ($currentmodule == "Contacts" && $returnmodule == "Potentials") {
 		$reltable = 'vtiger_contpotentialrel';
 		$condition = 'WHERE potentialid = ?';
