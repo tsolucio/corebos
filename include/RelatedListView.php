@@ -14,8 +14,7 @@ require_once("include/ListView/RelatedListViewSession.php");
 require_once("include/DatabaseUtil.php");
 
 if(!function_exists('GetRelatedList')) {
-	function GetRelatedList($module,$relatedmodule,$focus,$query,$button,$returnset,$id='',
-			$edit_val='',$del_val='',$skipActions=false) {
+	function GetRelatedList($module,$relatedmodule,$focus,$query,$button,$returnset,$id='',$edit_val='',$del_val='',$skipActions=false) {
 		return GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $returnset, $id, $edit_val, $del_val, $skipActions);
 	}
 }
@@ -93,10 +92,10 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 	}
 
 	if(!empty($_REQUEST['order_by'])) {
-		if(method_exists($focus,getSortOrder))
-		$sorder = $focus->getSortOrder();
-		if(method_exists($focus,getOrderBy))
-		$order_by = $focus->getOrderBy();
+		if (method_exists($focus,'getSortOrder'))
+			$sorder = $focus->getSortOrder();
+		if (method_exists($focus,'getOrderBy'))
+			$order_by = $focus->getOrderBy();
 
 		if(isset($order_by) && $order_by != '') {
 			coreBOS_Session::set('rlvs^'.$module.'^'.$relatedmodule.'^sorder', $sorder);

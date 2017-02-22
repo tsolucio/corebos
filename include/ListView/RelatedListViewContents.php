@@ -42,7 +42,7 @@ if($ajaxaction == "LOADRELATEDLIST") {
 		if(is_array($relatedListData)) {
 			if( ($relatedModule == "Contacts" || $relatedModule == "Leads" || $relatedModule == "Accounts") && $currentModule == 'Campaigns' && !$resetCookie) {
 				// this logic is used for listview checkbox selection propagation.
-				$checkedRecordIdString = (empty($_REQUEST[$relatedModule.'_all']) ? $_COOKIE[$relatedModule.'_all'] : $_REQUEST[$relatedModule.'_all']);
+				$checkedRecordIdString = (empty($_REQUEST[$relatedModule.'_all']) ? (empty($_COOKIE[$relatedModule.'_all']) ? '' : $_COOKIE[$relatedModule.'_all']) : $_REQUEST[$relatedModule.'_all']);
 				$checkedRecordIdString = rtrim($checkedRecordIdString,';');
 				$checkedRecordIdList = explode(';', $checkedRecordIdString);
 				$relatedListData["checked"]=array();
