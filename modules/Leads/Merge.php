@@ -84,13 +84,24 @@ global $current_user;
 require('user_privileges/user_privileges_'.$current_user->id.'.php');
 if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0 || $module == "Users" || $module == "Emails")
 {
-	$query1="select tablename,columnname,fieldlabel from vtiger_field where tabid=7 and vtiger_field.presence in (0,2) order by tablename";
+	$query1="select vtiger_field.tablename,vtiger_field.columnname,vtiger_field.fieldlabel
+		from vtiger_field
+		where vtiger_field.tabid=7 and vtiger_field.presence in (0,2)
+		order by vtiger_field.tablename";
 	$params1 = array();
 }
 else
 {
 	$profileList = getCurrentUserProfileList();
-	$query1="select vtiger_field.tablename,vtiger_field.columnname,vtiger_field.fieldlabel from vtiger_field INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid where vtiger_field.tabid in (7) AND vtiger_profile2field.visible=0 AND vtiger_def_org_field.visible=0 AND vtiger_profile2field.profileid IN (". generateQuestionMarks($profileList) .") and vtiger_field.presence in (0,2) GROUP BY vtiger_field.fieldid order by vtiger_field.tablename";
+	$query1="select vtiger_field.tablename,vtiger_field.columnname,vtiger_field.fieldlabel
+		from vtiger_field
+		INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid
+		INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid
+		where vtiger_field.tabid in (7) AND vtiger_profile2field.visible=0 AND vtiger_def_org_field.visible=0
+			AND vtiger_profile2field.profileid IN (". generateQuestionMarks($profileList) .") and vtiger_field.presence in (0,2)
+			and vtiger_field.tablename <> 'vtiger_campaignrelstatus'
+		GROUP BY vtiger_field.fieldid
+		order by vtiger_field.tablename";
 	$params1 = array($profileList);
 }
 $result = $adb->pquery($query1, $params1);
