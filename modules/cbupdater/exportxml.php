@@ -43,7 +43,7 @@ if (!empty($ids)) {
 	if ($ids!='all') {
 		$ids = str_replace(';', ',', $ids);
 		$ids = trim($ids,',');
-		$sql .= " and cbupdaterid in ($ids)";
+		$sql .= $adb->sql_escape_string(" and cbupdaterid in ($ids)");
 	}
 	$rs = $adb->query($sql);
 	if ($rs and $adb->num_rows($rs)>0) {

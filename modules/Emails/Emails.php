@@ -167,11 +167,11 @@ class Emails extends CRMEntity {
 		if ($module == 'Emails' && isset($_REQUEST['doc_attachments']) && count($_REQUEST['doc_attachments']) > 0) {
 			$documentIds = $_REQUEST['doc_attachments'];
 			for ($i = 0; $i < count($documentIds); $i++) {
-				$query = "select attachmentsid from vtiger_seattachmentsrel where crmid={$documentIds[$i]}";
-				$res = $adb->query($query);
+				$query = 'select attachmentsid from vtiger_seattachmentsrel where crmid=?';
+				$res = $adb->pquery($query,array($documentIds[$i]));
 				$attachmentId = $adb->query_result($res, 0, 0);
-				$query = "insert into vtiger_seattachmentsrel values({$id}, {$attachmentId})";
-				$adb->query($query);
+				$query = 'insert into vtiger_seattachmentsrel values(?, ?)';
+				$adb->pquery($query,array($id,$attachmentId));
 			}
 		}
 		if (isset($_REQUEST['att_module']) and $_REQUEST['att_module'] == 'Webmails') {

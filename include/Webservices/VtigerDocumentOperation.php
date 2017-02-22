@@ -165,7 +165,7 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 
 	private function vtyiicpng_getWSEntityId($entityName) {
 		global $adb;
-		$rs = $adb->query("select id from vtiger_ws_entity where name='$entityName'");
+		$rs = $adb->pquery('select id from vtiger_ws_entity where name=?',array($entityName));
 		$wsid = @$adb->query_result($rs, 0, 'id').'x';
 		return $wsid;
 	}

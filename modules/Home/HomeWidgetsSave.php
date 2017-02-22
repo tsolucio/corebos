@@ -20,8 +20,8 @@ class HomeDefaultWidgets {
 		$userId = $current_user->id;
 		for($i = 0;$i < count($values);$i++) {
 			if($values[$i] != null){
-				$query=" update vtiger_homestuff,vtiger_homedefault set vtiger_homestuff.visible=0 where vtiger_homestuff.stuffid=vtiger_homedefault.stuffid and vtiger_homestuff.userid=".$userId." and vtiger_homedefault.hometype='".$values[$i]."'";//To show the default Homestuff on the the Home Page
-				$result=$adb->query($query);
+				$query = 'update vtiger_homestuff,vtiger_homedefault set vtiger_homestuff.visible=0 where vtiger_homestuff.stuffid=vtiger_homedefault.stuffid and vtiger_homestuff.userid=? and vtiger_homedefault.hometype=?';//To show the default Homestuff on the the Home Page
+				$result = $adb->pquery($query,array($userId,$values[$i]));
 			}
 		}
 	}

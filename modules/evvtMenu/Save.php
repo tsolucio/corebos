@@ -50,7 +50,7 @@ switch ($do) {
 		} else {
 			if($mparent == 0) $mparent = $evvtmenuid;
 			if($mtype=='module') $mvalue = vtlib_purify($_REQUEST['modname']);
-			$pmenuidrs = $adb->query('select max(mseq) from vtiger_evvtmenu where mparent='.$mparent);
+			$pmenuidrs = $adb->pquery('select max(mseq) from vtiger_evvtmenu where mparent=?',array($mparent));
 			$mseq = $adb->query_result($pmenuidrs,0,0) + 1;
 			$adb->pquery('insert into vtiger_evvtmenu (mtype,mvalue,mlabel,mparent,mseq,mvisible,mpermission) values (?,?,?,?,?,?,?)',
 				array($mtype,$mvalue,$mlabel,$mparent,$mseq,1,implode(',',$mpermission)));

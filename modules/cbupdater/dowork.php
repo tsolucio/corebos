@@ -55,7 +55,7 @@ if (!empty($ids)) {
 	} else {
 		$ids = str_replace(';', ',', $ids);
 		$ids = trim($ids,',');
-		$sql .= " cbupdaterid in ($ids)";
+		$sql .= $adb->sql_escape_string(" cbupdaterid in ($ids)");
 	}
 	$cbacc=$adb->getColumnNames('vtiger_cbupdater');
 	if (in_array('blocked', $cbacc)) {

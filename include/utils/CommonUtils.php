@@ -3335,19 +3335,19 @@ function getModuleSequenceNumber($module, $recordId) {
 	global $adb;
 	switch ($module) {
 		case "Invoice":
-			$res = $adb->query("SELECT invoice_no FROM vtiger_invoice WHERE invoiceid = $recordId");
+			$res = $adb->pquery('SELECT invoice_no FROM vtiger_invoice WHERE invoiceid = ?',array($recordId));
 			$moduleSeqNo = $adb->query_result($res, 0, 'invoice_no');
 			break;
 		case "PurchaseOrder":
-			$res = $adb->query("SELECT purchaseorder_no FROM vtiger_purchaseorder WHERE purchaseorderid = $recordId");
+			$res = $adb->pquery('SELECT purchaseorder_no FROM vtiger_purchaseorder WHERE purchaseorderid = ?',array($recordId));
 			$moduleSeqNo = $adb->query_result($res, 0, 'purchaseorder_no');
 			break;
 		case "Quotes":
-			$res = $adb->query("SELECT quote_no FROM vtiger_quotes WHERE quoteid = $recordId");
+			$res = $adb->pquery('SELECT quote_no FROM vtiger_quotes WHERE quoteid = ?',array($recordId));
 			$moduleSeqNo = $adb->query_result($res, 0, 'quote_no');
 			break;
 		case "SalesOrder":
-			$res = $adb->query("SELECT salesorder_no FROM vtiger_salesorder WHERE salesorderid = $recordId");
+			$res = $adb->pquery('SELECT salesorder_no FROM vtiger_salesorder WHERE salesorderid = ?',array($recordId));
 			$moduleSeqNo = $adb->query_result($res, 0, 'salesorder_no');
 			break;
 	}
@@ -3393,11 +3393,11 @@ function getReturnPath($host, $from_email) {
 function picklistHasDependency($keyfldname,$modulename) {
 	global $adb;
 	$tabid = getTabid($modulename);
-	$result = $adb->query("SELECT * FROM vtiger_picklist_dependency WHERE tabid ='".$tabid."' AND (sourcefield = '".$keyfldname."' OR targetfield = '".$keyfldname."')");
+	$result = $adb->pquery('SELECT * FROM vtiger_picklist_dependency WHERE tabid = ? AND (sourcefield = ? OR targetfield = ?)',array($tabid,$keyfldname,$keyfldname));
 	if($adb->num_rows($result) > 0)
 		return true;
 	else
-	return false;
+		return false;
 }
 
 function fetch_logo($type) {

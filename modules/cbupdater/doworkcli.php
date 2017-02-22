@@ -42,7 +42,7 @@ if (count($argv)!=3) {
 		} else {
 			$ids = str_replace(';', ',', $ids);
 			$ids = trim($ids,',');
-			$sql .= " cbupdaterid in ($ids)";
+			$sql .= $adb->sql_escape_string(" cbupdaterid in ($ids)");
 		}
 		// we do not process blocked changesets
 		$cbacc=$adb->getColumnNames('vtiger_cbupdater');

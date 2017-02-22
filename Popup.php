@@ -50,13 +50,13 @@ $suri=substr($suri,strpos($suri,'?')+1);
 $smarty->assign("POPUP", str_replace('&','-a;',$suri).'-a;popqc=true');
 
 if (!empty($_REQUEST['popqc']) and $_REQUEST['popqc'] = 'true' and empty($_REQUEST['advft_criteria']) and !empty($_REQUEST['record'])) {
-	$fldrs = $adb->query("SELECT vtiger_field.fieldlabel,vtiger_field.tablename,vtiger_field.columnname,vtiger_field.fieldname,vtiger_entityname.entityidfield
+	$fldrs = $adb->pquery('SELECT vtiger_field.fieldlabel,vtiger_field.tablename,vtiger_field.columnname,vtiger_field.fieldname,vtiger_entityname.entityidfield
 			FROM vtiger_field
-			INNER JOIN vtiger_entityname on vtiger_field.tabid=vtiger_entityname.tabid and modulename='$currentModule' WHERE uitype=4");
+			INNER JOIN vtiger_entityname on vtiger_field.tabid=vtiger_entityname.tabid and modulename=? WHERE uitype=4',array($currentModule));
 	$row = $adb->fetch_array($fldrs);
 	$fieldLabelEscaped = str_replace(" ","_",$row['fieldlabel']);
 	$optionvalue = $row['tablename'].":".$row['columnname'].":".$row['fieldname'].":".$currentModule."_".$fieldLabelEscaped.":V";
-	$fldvalrs = $adb->query('select '.$row['columnname'].' from '.$row['tablename'].' inner join vtiger_crmentity on crmid = '.$row['entityidfield'].' where '.$row['entityidfield'].'='.$_REQUEST['record'].' ORDER BY createdtime DESC LIMIT 1');
+	$fldvalrs = $adb->pquery('select '.$row['columnname'].' from '.$row['tablename'].' inner join vtiger_crmentity on crmid = '.$row['entityidfield'].' where '.$row['entityidfield'].'=? ORDER BY createdtime DESC LIMIT 1',array($_REQUEST['record']));
 	$fldval = $adb->query_result($fldvalrs,0,0);
 	$_REQUEST['searchtype']='advance';
 	$_REQUEST['query'] = 'true';
