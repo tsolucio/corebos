@@ -39,7 +39,7 @@ $handle = fopen($wordtemplatedownloadpath.$filename,"wb");
 fwrite($handle,base64_decode($fileContent),$filesize);
 fclose($handle);
 
-if (GetFileExtension($filename)=="doc") {
+if ($extension=="doc") {
 echo "<html>
 <body>
 <script>
@@ -284,7 +284,6 @@ $csvdata = implode($mergevalue,"###");
 	die("No fields to do Merge");
 }
 echo "<br><br><br>";
-$extension = GetFileExtension($filename);
 if($extension == "doc")
 {
     // Fix for: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/2107
@@ -340,22 +339,22 @@ else
 }
 ?>
 <script>
-if("<?php echo GetFileExtension($filename); ?>" == "doc") {
+if("<?php echo $extension; ?>" == "doc") {
 	if (window.ActiveXObject){
 		try {
             ovtigerVM = eval("new ActiveXObject('vtigerCRM.ActiveX');");
             if(ovtigerVM)
             {
-                var filename = "<?php echo $filename?>";
+                var filename = "<?php echo $filename; ?>";
                 if(filename != "")
                 {
-                    if(objMMPage.bDLTempDoc("<?php echo $site_URL?>/cache/wordtemplatedownload/<?php echo $filename?>","MMTemplate.doc"))
+                    if(objMMPage.bDLTempDoc("<?php echo $site_URL?>/cache/wordtemplatedownload/<?php echo $filename; ?>","MMTemplate.doc"))
                     {
                         try {
                             if(objMMPage.Init())
                             {
                                 objMMPage.vLTemplateDoc();
-                                objMMPage.bBulkHDSrc("<?php echo $site_URL;?>/cache/wordtemplatedownload/<?php echo $datafilename ?>");
+                                objMMPage.bBulkHDSrc("<?php echo $site_URL;?>/cache/wordtemplatedownload/<?php echo $datafilename; ?>");
                                 objMMPage.vBulkOpenDoc();
                                 objMMPage.UnInit()
                                 window.history.back();
