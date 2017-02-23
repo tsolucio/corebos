@@ -150,7 +150,7 @@ var alert_arr = {
 	'INVALID_QTY':'Cantidad Inválida',
 	'LBL_SEARCH_WITHOUTSEARCH_CURRENTPAGE':'You have used search option but you have not selected without search & currentpage options.\n You can click [ok]to export  current page data or You can click [cancel] and try again with some other export criteria.',
 	'LBL_SELECT_COLUMN':'Columna inválida.\nSelecciona columna.',
-	'LBL_NOT_ACCESSIBLE':'No Accesible',
+	'LBL_NOT_ACCESSIBLE':'Inaccesible',
 	'LBL_FILENAME_LENGTH_EXCEED_ERR':'El nombre del archivo no puede contener más de 255 caracteres.',
 	'LBL_DONT_HAVE_EMAIL_PERMISSION':'No tienes permiso para acceder al campo de email.',
 	'LBL_NO_FEEDS_SELECTED':'No se ha seleccionado una difusión',
