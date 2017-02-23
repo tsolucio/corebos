@@ -43,8 +43,8 @@ $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH",$image_path);
 $smarty->assign('CATEGORY',$category);
 
-$tabid = vtlib_purify($_REQUEST['tabid']);
-$status = vtlib_purify($_REQUEST['status']);
+$tabid = isset($_REQUEST['tabid']) ? vtlib_purify($_REQUEST['tabid']) : '';
+$status = isset($_REQUEST['status']) ? vtlib_purify($_REQUEST['status']) : '';
 
 if($status != '' && $tabid != ''){
 	ModTrackerUtils::modTrac_changeModuleVisibility($tabid, $status);
@@ -53,7 +53,7 @@ $infomodules = ModTrackerUtils::modTrac_getModuleinfo();
 $smarty->assign('INFOMODULES',$infomodules);
 $smarty->assign('MODULE',$module);
 
-if($_REQUEST['ajax'] != true) {
+if(empty($_REQUEST['ajax']) || $_REQUEST['ajax'] != true) {
 	$smarty->display(vtlib_getModuleTemplate($currentModule,'BasicSettings.tpl'));
 } else {
 	$smarty->display(vtlib_getModuleTemplate($currentModule,'BasicSettingsContents.tpl'));

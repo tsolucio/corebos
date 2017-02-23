@@ -18,7 +18,7 @@
 {if $PICKIST_DEPENDENCY_DATASOURCE neq ''}
 <script type="text/javascript">
 	jQuery(document).ready(function() {ldelim} (new FieldDependencies({$PICKIST_DEPENDENCY_DATASOURCE})).init() {rdelim});
-	var Inventory_ListPrice_ReadOnly = '{$Inventory_ListPrice_ReadOnly}';
+	var Inventory_ListPrice_ReadOnly = '{if isset($Inventory_ListPrice_ReadOnly)}{$Inventory_ListPrice_ReadOnly}{/if}';
 </script>
 {/if}
 

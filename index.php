@@ -43,20 +43,6 @@ if(get_magic_quotes_gpc() == 1){
 	$_GET = array_map('stripslashes_checkstrings', $_GET);
 }
 
-// Allow for the session information to be passed via the URL for printing.
-if(isset($_REQUEST['PHPSESSID']))
-{
-	session_id($_REQUEST['PHPSESSID']);
-	//Setting the same session id to Forums as in CRM
-	$sid=$_REQUEST['PHPSESSID'];
-}
-
-if(isset($_REQUEST['view'])) {
-	//setcookie("view",$_REQUEST['view']);
-	$view = $_REQUEST["view"];
-	coreBOS_Session::set('view', $view);
-}
-
 /** Function to set, character set in the header, as given in include/language/*_lang.php */
 function insert_charset_header()
 {
@@ -71,6 +57,11 @@ function insert_charset_header()
 insert_charset_header();
 // Create or reestablish the current session
 coreBOS_Session::init(true);
+
+if(isset($_REQUEST['view'])) {
+	$view = $_REQUEST["view"];
+	coreBOS_Session::set('view', $view);
+}
 
 if (!is_file('config.inc.php')) {
 	header("Location: install.php");

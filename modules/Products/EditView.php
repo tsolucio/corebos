@@ -205,14 +205,17 @@ if($focus->mode == 'edit')
 	$productid = $focus->id;
 	$tax_details = getTaxDetailsForProduct($productid,'available_associated');
 }
-elseif($_REQUEST['isDuplicate'] == 'true')
+elseif(isset($_REQUEST['isDuplicate']) and $_REQUEST['isDuplicate'] == 'true')
 {
 	$retrieve_taxes = true;
-	$productid = $_REQUEST['record'];
+	$productid = vtlib_purify($_REQUEST['record']);
 	$tax_details = getTaxDetailsForProduct($productid,'available_associated');
 }
-else
+else {
+	$retrieve_taxes = false;
+	$productid = 0;
 	$tax_details = getAllTaxes('available');
+}
 
 for($i=0;$i<count($tax_details);$i++)
 {
@@ -253,7 +256,7 @@ else
 	$is_parent = 0;
 $smarty->assign("IS_PARENT",$is_parent);
 
-if($_REQUEST['return_module']=='Products' && isset($_REQUEST['return_action'])){
+if(isset($_REQUEST['return_module']) && $_REQUEST['return_module']=='Products' && isset($_REQUEST['return_action'])){
 	$return_name = getProductName($_REQUEST['return_id']);
 	$smarty->assign("RETURN_NAME", $return_name);
 }

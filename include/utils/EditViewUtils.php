@@ -589,8 +589,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	elseif($uitype == 69)
 	{
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		if( $col_fields['record_id'] != "")
-		{
+		if (!empty($col_fields['record_id'])) {
 			if($module_name == 'Products') {
 				$query = 'select vtiger_attachments.path, vtiger_attachments.attachmentsid, vtiger_attachments.name ,vtiger_crmentity.setype from vtiger_products left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid=vtiger_products.productid inner join vtiger_attachments on vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_attachments.attachmentsid where vtiger_crmentity.setype="Products Image" and productid=?';
 				$params = array($col_fields['record_id']);
@@ -1059,8 +1058,11 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		}
 		elseif(isset($_REQUEST['vendor_id']) && $_REQUEST['vendor_id'] != '')
 		{
-			$value = $_REQUEST['vendor_id'];
+			$value = vtlib_purify($_REQUEST['vendor_id']);
 			$vendor_name = getVendorName($value);
+		} else {
+			$value = 0;
+			$vendor_name = '';
 		}
 		$pop_type = 'specific';
 		if($uitype == 81)
