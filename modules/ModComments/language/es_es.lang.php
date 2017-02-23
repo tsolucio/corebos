@@ -32,7 +32,7 @@ $mod_strings = Array (
 
 'LBL_ADD_COMMENT' => 'Añadir Comentario',
 'LBL_AUTHOR' => 'Autor',
-'LBL_ON' => 'en',
+'LBL_ON_DATE' => 'el',
 'LBL_MINE' => 'Mio',
 'LBL_LAST5'=> 'Ultimos 5',
 
