@@ -2431,7 +2431,7 @@ class CRMEntity {
 	 *
 	 * @var Array
 	 */
-	protected $__inactive_fields_filtered = false;
+	public $__inactive_fields_filtered = false;
 
 	/**
 	 * Filter in-active fields based on type

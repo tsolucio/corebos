@@ -45,6 +45,7 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 		$parentmodule = vtlib_purify($_REQUEST['module']);
 		$focus->list_fields = $cbMapLC->getListFieldsFor($parentmodule);
 		$focus->list_fields_name = $cbMapLC->getListFieldsNameFor($parentmodule);
+		$focus->list_link_field = $cbMapLC->getListLinkFor($parentmodule);
 		if ($parentmodule == 'Home' and $cbMapLC->issetListFieldsMappingFor('Home')) {
 			$oCv->list_fields = $focus->list_fields;
 			$oCv->list_fields_name = $focus->list_fields_name;
@@ -453,7 +454,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 	$tabid = getTabid($module);
 	$bmapname = $module.'_ListColumns';
 	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
-	if ($cbMapid) {
+	if ($cbMapid && !$focus->__inactive_fields_filtered) {
 		$cbMap = cbMap::getMapByID($cbMapid);
 		$cbMapLC = $cbMap->ListColumns();
 		$parentmodule = vtlib_purify($_REQUEST['module']);
