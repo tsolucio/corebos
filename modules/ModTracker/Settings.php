@@ -28,9 +28,9 @@ if(!is_admin($current_user)) {
 
 	// Few more configuration
 	$menu_array['CONFIGURATION']['location'] = 'index.php?module=ModTracker&action=BasicSettings&parenttab=Settings&formodule=ModTracker';
-	$menu_array['CONFIGURATION']['image_src']= 'themes/images/audit.gif';
+	$menu_array['CONFIGURATION']['image_src']= 'themes/images/toggleactive.png';
 	$menu_array['CONFIGURATION']['desc'] = getTranslatedString('LBL_CONFIGURATION_DESCRIPTION', $module);
-	$menu_array['CONFIGURATION']['label']= getTranslatedString('LBL_CONFIGURATION', 'Settings');
+	$menu_array['CONFIGURATION']['label']= getTranslatedString('LBL_ModTracker_SETTINGS', $module);
 
 	//add blanks for 3-column layout
 	$count = count($menu_array)%3;
