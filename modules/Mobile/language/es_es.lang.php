@@ -8,6 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 $mod_strings = Array (
+	'crmtogo' => 'CRM To Go',
 	'Mobile' => 'Móvil',
 	'LBL_BACK' => 'Atrás',
 	'LBL_EDIT' => 'Editar',
@@ -73,7 +74,7 @@ $mod_strings = Array (
 	'ship_address'=>'Dirección envío',
 	'LBL_INVALID_PASSWORD'=>'Contraseña incorrecta',
 	'LBL_AUTHOR'=>'Autor',
-	'LBL_ON_DATE'=>'on',
+	'LBL_ON_DATE'=>'el',
 	'LBL_NO_SEARCHRESULT'=>'no se encuentra',
 	'LBL_DETAILS'=>'Detalles',
 	'LBL_NO_RELATEDLIST'=>'No existen listas relacionadas para este registro.',
@@ -87,17 +88,15 @@ $mod_strings = Array (
 	'LBL_NOT_SUPPORTED'=>'Está acción no está soportada.',
 	'Faq' => 'Faq',
 	'LBL_CONFIG'=>'Configuración',
-	'LBL_COPYRIGHTS'=>'Copy Right',
+	'LBL_COPYRIGHTS'=>'Derechos de autor',
 	'LBL_SETTINGS_COMMENT'=>'Sal de la aplicación y vuelve a entrar despúes de hacer los cambios!',
 	'LBL_ACTIVE_MODULE'=>'Ordenar o deshabilitar módulos',
 	'LBL_THEME_SELECTION'=>'Selecciona el tema:',
 	'LBL_THEME_COLOR_A'=>'negro',
 	'LBL_THEME_COLOR_B'=>'azul',
 	'LBL_THEME_COLOR_C'=>'blanco',
-	'LBL_NAVI_SELECTION'=>'Scroll Limit:',
-	
-	
-	//5.x special
+	'LBL_NAVI_SELECTION'=>'Límite Desplazamiento:',
+
 	'LBL_COMMENTS'=>'Comentarios',
 	'LBL_SIGNATURE'=>'Firma',
 );
