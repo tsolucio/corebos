@@ -1343,6 +1343,9 @@ class CRMEntity {
 	function trash($module, $id) {
 		global $log, $current_user, $adb;
 
+		if (getSalesEntityType($id)!=$module) { // security
+			return false;
+		}
 		require_once("include/events/include.inc");
 		$em = new VTEventsManager($adb);
 
@@ -1373,6 +1376,9 @@ class CRMEntity {
 	function unlinkDependencies($module, $id) {
 		global $log;
 
+		if (getSalesEntityType($id)!=$module) { // security
+			return false;
+		}
 		$fieldRes = $this->db->pquery('SELECT tabid, tablename, columnname FROM vtiger_field WHERE fieldid IN (
 			SELECT fieldid FROM vtiger_fieldmodulerel WHERE relmodule=?)', array($module));
 		$numOfFields = $this->db->num_rows($fieldRes);
