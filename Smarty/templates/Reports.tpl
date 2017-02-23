@@ -168,7 +168,7 @@ function DeleteFolder(id)
 		}).done(function (response) {
 			var item = trim(response);
 			if(item.charAt(0)=='<')
-				getObj('customizedrep').innerHTML = item;
+				getObj('reportContents').innerHTML = item;
 			else
 				alert(item);
 		});
