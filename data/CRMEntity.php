@@ -1635,8 +1635,7 @@ class CRMEntity {
 			$fld_column = $adb->query_result($fieldinfo, 0, 'columnname');
 
 			if ($fld_table == $this->table_name) {
-				$records = $adb->query("SELECT $this->table_index AS recordid FROM $this->table_name " .
-						"WHERE $fld_column = '' OR $fld_column is NULL");
+				$records = $adb->query("SELECT $this->table_index AS recordid FROM $this->table_name WHERE $fld_column = '' OR $fld_column is NULL");
 
 				if ($records && $adb->num_rows($records)) {
 					$returninfo['totalrecords'] = $adb->num_rows($records);

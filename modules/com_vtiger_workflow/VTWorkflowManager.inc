@@ -65,13 +65,10 @@
 			$adb=$this->adb;
 
 			$result=$adb->getColumnNames("com_vtiger_workflows");
-			if(in_array("defaultworkflow",$result)){
-				$result = $adb->query("select workflow_id, module_name, summary, test, execution_condition,defaultworkflow, type
-									from com_vtiger_workflows ");
-			}else{
-
-				$result = $adb->query("select workflow_id, module_name, summary, test, execution_condition, type
-									from com_vtiger_workflows");
+			if (in_array("defaultworkflow",$result)) {
+				$result = $adb->query('select workflow_id, module_name, summary, test, execution_condition,defaultworkflow, type from com_vtiger_workflows');
+			} else {
+				$result = $adb->query('select workflow_id, module_name, summary, test, execution_condition, type from com_vtiger_workflows');
 			}
 			return $this->getWorkflowsForResult($result);
 		}

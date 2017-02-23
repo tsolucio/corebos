@@ -208,8 +208,6 @@ $skipHeaders=false;
 $skipFooters=false;
 $viewAttachment = false;
 $skipSecurityCheck= false;
-//echo $module;
-// echo $action;
 
 if(isset($action) && isset($module))
 {
