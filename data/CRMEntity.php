@@ -322,9 +322,7 @@ class CRMEntity {
 	 * @param $module -- module:: Type varchar
 	 */
 	function insertIntoCrmEntity($module, $fileid = '') {
-		global $adb;
-		global $current_user;
-		global $log;
+		global $adb, $current_user, $log;
 
 		if ($fileid != '') {
 			$this->id = $fileid;

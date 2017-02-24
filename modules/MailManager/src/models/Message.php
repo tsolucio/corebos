@@ -97,10 +97,10 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 		// PARAMETERS
 		// get all parameters, like charset, filenames of attachments, etc.
 		$params = array();
-		if ($p->parameters) {
+		if (!empty($p->parameters)) {
 			foreach ($p->parameters as $x) $params[ strtolower( $x->attribute ) ] = $x->value;
 		}
-		if ($p->dparameters) {
+		if (!empty($p->dparameters)) {
 			foreach ($p->dparameters as $x) $params[ strtolower( $x->attribute ) ] = $x->value;
 		}
 

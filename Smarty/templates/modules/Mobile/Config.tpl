@@ -54,13 +54,13 @@
 				<fieldset data-role="controlgroup" id="themecolor">
 					<legend>{$MOD.LBL_THEME_SELECTION}</legend>
 						{assign var=$COLOR_HEADER_FOOTER|cat:"theme" value='checked="checked"'}
-						<input type="radio" name="radio-choice-2" id="radio-choice-21" value="a" data-theme="c" {$atheme} />
+						<input type="radio" name="radio-choice-2" id="radio-choice-21" value="a" data-theme="c" {if isset($atheme)}{$atheme}{/if} />
 						<label for="radio-choice-21">{$MOD.LBL_THEME_COLOR_A}</label>
 
-						<input type="radio" name="radio-choice-2" id="radio-choice-22" value="b" data-theme="c" {$btheme} />
+						<input type="radio" name="radio-choice-2" id="radio-choice-22" value="b" data-theme="c" {if isset($btheme)}{$btheme}{/if} />
 						<label for="radio-choice-22">{$MOD.LBL_THEME_COLOR_B}</label>
 
-						<input type="radio" name="radio-choice-2" id="radio-choice-23" value="c" data-theme="c"{$ctheme} />
+						<input type="radio" name="radio-choice-2" id="radio-choice-23" value="c" data-theme="c" {if isset($ctheme)}{$ctheme}{/if} />
 						<label for="radio-choice-23">{$MOD.LBL_THEME_COLOR_C}</label>
 				</fieldset>
 			</div>		

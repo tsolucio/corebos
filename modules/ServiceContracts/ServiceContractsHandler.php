@@ -42,7 +42,7 @@ class ServiceContractsHandler extends VTEventHandler {
 		if($eventName == 'vtiger.entity.aftersave') {
 			$moduleName = $entityData->getModuleName();
 			// Update Used Units for the Service Contract, everytime the status of a ticket related to the Service Contract changes
-			if ($moduleName == 'HelpDesk' && $_REQUEST['return_module'] != 'ServiceContracts') {
+			if ($moduleName == 'HelpDesk' && (empty($_REQUEST['return_module']) || $_REQUEST['return_module'] != 'ServiceContracts')) {
 				$ticketId = $entityData->getId();
 				$data = $entityData->getData();
 				if($data['ticketstatus'] != $entityData->oldStatus) {

@@ -510,7 +510,8 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 				$attachmentid = $adb->query_result($attach_result, $ii, 'attachmentsid');
 				if ($attachmentid != '') {
 					$attachquery = "select * from vtiger_attachments where attachmentsid=?";
-					$attachmentsname = $adb->query_result($adb->pquery($attachquery, array($attachmentid)), 0, 'name');
+					$rs = $adb->pquery($attachquery, array($attachmentid));
+					$attachmentsname = $adb->query_result($rs, 0, 'name');
 					if ($attachmentsname != '')
 						$custfldval = '<a href = "index.php?module=uploads&action=downloadfile&return_module=' . $col_fields['record_module'] . '&fileid=' . $attachmentid . '&entityid=' . $col_fields['record_id'] . '">' . $attachmentsname . '</a>';
 				}

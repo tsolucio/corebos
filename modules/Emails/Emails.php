@@ -141,7 +141,7 @@ class Emails extends CRMEntity {
 		$file_saved = false;
 
 		//Added to send generated Invoice PDF with mail
-		$pdfAttached = $_REQUEST['pdf_attachment'];
+		$pdfAttached = isset($_REQUEST['pdf_attachment']) ? $_REQUEST['pdf_attachment'] : '';
 		//created Invoice pdf is attached with the mail
 		if (isset($_REQUEST['pdf_attachment']) && $_REQUEST['pdf_attachment'] != '') {
 			$file_saved = pdfAttach($this, $module, $pdfAttached, $id);
