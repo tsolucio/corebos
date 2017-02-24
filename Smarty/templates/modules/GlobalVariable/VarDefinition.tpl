@@ -1,8 +1,8 @@
 {literal}
 <script type="text/javascript" src="modules/GlobalVariable/tablesorter/jquery.tablesorter.min.js"></script>
 <style>
+	.gvdefstable {font: normal 12px/150% Arial, Helvetica, sans-serif; background: #fff; overflow: hidden; border: 1px solid #006699; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; margin: auto; margin-top: 10px;}
 	.gvdefstable table { border-collapse: collapse; text-align: left; width: 100%; }
-	.gvdefstable {font: normal 12px/150% Arial, Helvetica, sans-serif; background: #fff; overflow: hidden; border: 1px solid #006699; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; width: 96%; margin: auto; margin-top: 10px;}
 	.gvdefstable table td, .gvdefstable table th { padding: 3px 10px; }
 	.gvdefstable table thead th {background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #006699), color-stop(1, #00557F) );background:-moz-linear-gradient( center top, #006699 5%, #00557F 100% );filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#006699', endColorstr='#00557F');background-color:#006699; color:#ffffff; font-size: 15px; font-weight: bold; border-left: 1px solid #0070A8; }
 	.gvdefstable table thead th:first-child { border: none; }
