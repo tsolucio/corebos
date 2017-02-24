@@ -19,7 +19,7 @@
 *************************************************************************************************/
 
 //error_reporting(E_ALL); ini_set('display_errors', 'on');
-global $adb, $log, $mod_strings, $app_strings, $currentModule, $current_user, $theme, $singlepane_view;
+global $adb, $log, $mod_strings, $app_strings, $currentModule, $current_user, $theme, $root_directory;
 include_once 'modules/cbupdater/cbupdater.php';
 include_once 'modules/cbupdater/cbupdaterHelper.php';
 
@@ -40,6 +40,7 @@ if (count($cbupdate_files)>0) {
 	libxml_use_internal_errors(true);
 	foreach ($cbupdate_files as $cbupdate_file) {
 	$cbupdate_file = realpath($cbupdate_file);
+	if (strpos($cbupdate_file,$root_directory)!==0) continue; // if the update file is not inside the application tree we do not load it
 	$cbupdates= new DOMDocument();
 	if ($cbupdates->load($cbupdate_file)) {
 		if ($cbupdates->schemaValidate('modules/cbupdater/cbupdater.xsd')) {
