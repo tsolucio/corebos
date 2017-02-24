@@ -9,12 +9,10 @@
  ********************************************************************************/
 
 $mod_strings = array(
-
 'LBL_VENDOR_INFORMATION'=>'Vendor Information:',
 'LBL_CUSTOM_INFORMATION'=>'Custom Information',
 'LBL_VENDOR_ADDRESS_INFORMATION'=>'Address Information:',
 'LBL_DESCRIPTION_INFORMATION'=>'Description Name:',
-
 
 'Vendor Name'=>'Vendor Name',
 'Name'=>'Name',
@@ -33,8 +31,6 @@ $mod_strings = array(
 'Po Box'=>'PO Box',
 'Vendor'=>'Vendor',
 
-//Added for existing Picklist entries
-
 '300-Sales-Software'=>'300-Sales-Software',
 '301-Sales-Hardware'=>'301-Sales-Hardware',
 '302-Rental-Income'=>'302-Rental-Income',
@@ -45,29 +41,10 @@ $mod_strings = array(
 '307-Service-Hardware Labor'=>'307-Service-Hardware Labor',
 '308-Sales-Books'=>'308-Sales-Books',
 
-// Added/Updated for vtiger CRM 5.0.4
 'Created Time'=>'Created Time',
 'Modified Time'=>'Modified Time',
 
-// Added after 5.0.4 GA
-
-//added for find duplicate
-'LBL_DUPLICATE_DATA_IN'=>'Duplicate ',
-'LBL_DELETE'=>'Delete',
-'LBL_MERGE_SELECT'=>'Merge Select',
-'LBL_MERGE'=>'Merge',
-'LBL_MERGE_DATA_IN'=>'Merge Records In',
-'LBL_ACTION'=>'Action',
-'LBL_FIELDLISTS'=> 'List Of Fields',
-'LBL_RECORD'=>'Record #',
-
-// Module Sequence Numbering
 'Vendor No' => 'Vendor No',
-// END
-
-/*
- * 5.2.0 changes 
- */
 'LBL_MODULE_NAME'=>'Vendors',
 'Vendors ID'=>'Vendors ID',
 

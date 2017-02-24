@@ -23,8 +23,6 @@ $mod_strings = Array(
     'LBL_PROJECTS'=>'Proyectos',
     'LBL_PROJECT'=>'Proyecto',
 	'projectname' => 'Nombre Proyecto',
-    'projects' => 'Proyectos',
-    'project' => 'Proyectos',
     //added this to translate the module name in the main app menu
     'Project'=>'Proyectos',
     //
@@ -59,13 +57,8 @@ $mod_strings = Array(
     'archived' => 'Archivado',
     'completed' => 'Finalizado',
     'delivered'=>'Entregado',
-    'Created Time' => 'Fecha Creación',
-    'Modified Time' => 'Fecha Modificación',
-    'Description' => 'Descripción',
     'description' => 'Descripción',
     '--none--' => '--ninguno--',
-    'Deadline' => 'Entrega',
-    'Operation' => 'Actividad',
     'Project Name' => 'Nombre Proyecto',
     'LBL_RELATED_PROJECT_TASKS' => 'Actividades',
     'LBL_RELATED_PROJECT_MILESTONES' => 'Hitos',

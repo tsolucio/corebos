@@ -173,13 +173,5 @@ $mod_strings = array(
 	'Comment Added' => 'Comment Added',
 	'HelpDesk ID' => 'Kérés AZ',
 	'Projects' => 'Projektek',
-	'LBL_DUPLICATE_DATA_IN' => 'Duplikált adat ebben:',
-	'LBL_DELETE' => 'Törlés',
-	'LBL_MERGE_SELECT' => 'Válaszd ki az összefűzendő adatokat',
-	'LBL_MERGE_DATA_IN' => 'Adatok összefűzése ebben:',
-	'LBL_MERGE' => 'Összefűzés',
-	'LBL_ACTION' => 'Műveletek',
-	'LBL_FIELDLISTS' => 'Mezőlista',
-	'LBL_RECORD' => 'Rekord'
 );
 ?>

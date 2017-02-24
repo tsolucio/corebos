@@ -47,25 +47,8 @@ $mod_strings = array(
     'Created Time'=>'erzeugt',
     'Modified Time'=>'geändert',
 
-    // Added after 5.0.4 GA
-
-    //added for find duplicate
-    'LBL_DUPLICATE_DATA_IN'=>'Kopieren ',
-    'LBL_DELETE'=>'Löschen',
-    'LBL_MERGE_SELECT'=>'Auswahl',
-    'LBL_MERGE'=>'Zusammenführen',
-    'LBL_MERGE_DATA_IN'=>'führe Daten zusammen in',
-    'LBL_ACTION'=>'Aktion',
-    'LBL_FIELDLISTS'=> 'Feldliste',
-    'LBL_RECORD'=>'Datensatznummer',
-
     // Module Sequence Numbering
     'Vendor No' => 'Lieferanten Nummer',
-    // END
-
-    /*
-    * 5.2.0 changes 
-    */
     'LBL_MODULE_NAME'=>'Lieferanten',
     'Vendors ID'=>'Lierferanten-ID',
 );
