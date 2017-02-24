@@ -17,6 +17,7 @@ $mod_strings = array(
 	'SINGLE_PBXManager' => 'PBX Manager',
 	'Asterisk' => 'Asterisk',
 	'LBL_ASTERISK_INFORMATION' => 'ASTERISK Adatok',
+	'LBL_CALL_INFORMATION' => 'Call information',
 	'Call From' => 'Bejövő hívás',
 	'Call To' => 'Kimenő hívás',
 	'Time Of Call' => 'Hívás ideje',

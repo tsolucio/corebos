@@ -6,9 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
-
 
 $mod_strings = array (
   'LBL_VENDOR_INFORMATION' => 'Informazioni Fornitore:',
@@ -42,14 +40,6 @@ $mod_strings = array (
   '308-Sales-Books' => '308-Vendite-Libri',
   'Created Time' => 'Orario creazione',
   'Modified Time' => 'Orario modifica',
-'LBL_DUPLICATE_DATA_IN' => 'Duplicato ',
-'LBL_DELETE' => 'Elimina',
-'LBL_MERGE_SELECT' => 'Unisci Selezione',
-'LBL_MERGE' => 'Unisci',
-'LBL_MERGE_DATA_IN' => 'Unisci Record',
-'LBL_ACTION' => 'Azione',
-'LBL_FIELDLISTS' => 'Lista dei Campi',
-'LBL_RECORD' => 'Record #',
 'Vendor No' => 'Nr. Fornitore',
 'LBL_MODULE_NAME'=>'Fornitori',
 'Vendors ID'=>'ID Fornitori',

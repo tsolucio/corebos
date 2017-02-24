@@ -119,6 +119,7 @@ $mod_strings = Array(
   'Company' => 'Societ&agrave;',
   'Fax' => 'Fax',
   'Email' => 'Email',
+	'Secondary Email'=>'Mail Secondaria',
   'Lead Source' => 'Fonte Lead',
   'Website' => 'Sito Web',
   'Annual Revenue' => 'Fatturato',

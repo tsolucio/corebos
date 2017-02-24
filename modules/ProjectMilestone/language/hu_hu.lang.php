@@ -42,16 +42,6 @@ $mod_strings = array(
 	'Project Milestone Name' => 'Mérföldkő megnevezése',
 	'Project Milestone No' => 'Mérföldkő No.',
 	'ProjectMilestone ID' => 'Mérföldkő AZ',
-	'LBL_DEADLINES' => 'Határidők',
-	'LBL_DEADLINE' => 'Határidő',
-	'Deadline ID' => 'Határidő AZ',
-	'deadlinename' => 'Határidő neve',
-	'deadlines' => 'Határidők',
-	'Deadline' => 'Határidő',
-	'SINGLE_Deadline' => 'Mérföldkő',
-	'LBL_DEADLINE_INFORMATION' => 'Határidő adatai',
-	'deadlinedate' => 'Határidő dátum',
-	'deadlinetype' => 'Határidő típusa',
 	'LBL_MILESTOME' => 'Projekt Mérföldkő',
 	'--none--' => '--nincs--'
 );

@@ -13,7 +13,7 @@
 <tr>
 	<td width="4px"><input type="radio" name="_mlinkto" value="{$LINKEDTO.record}" disabled></td>
 	<td>{$LINKEDTO.detailviewlink}</td>
-	<td>{$LINKEDTO.module|getTranslatedString:$moduleName}</td>
+	<td>{$LINKEDTO.module|getTranslatedString:$LINKEDTO.module}</td>
 </tr>
 <tr>
 	<td align="center" colspan="3">
@@ -30,7 +30,7 @@
 </table>
 {/if}
 
-{if $LOOKUPS}
+{if isset($LOOKUPS)}
 {assign var="LOOKRECATLEASTONE" value=false}
 
 <table width="100%" cellpadding=3 cellspacing=0 border=0>

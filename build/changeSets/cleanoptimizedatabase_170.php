@@ -34,7 +34,7 @@ class cleanoptimizedatabase_170 extends cbupdaterWorker {
 			$this->ExecuteQuery('ALTER TABLE `vtiger_audit_trial` ADD INDEX(`module`)', array());
 			$this->ExecuteQuery('ALTER TABLE `vtiger_audit_trial` ADD INDEX(`recordid`)', array());
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}

@@ -91,7 +91,7 @@ class Documents extends CRMEntity {
 		$filetype_fieldname = $this->getFileTypeFieldName();
 		$filename_fieldname = $this->getFile_FieldName();
 		if($this->column_fields[$filetype_fieldname] == 'I' ){
-			if($_FILES[$filename_fieldname]['name'] != ''){
+			if (!empty($_FILES[$filename_fieldname]['name'])) {
 				$filedownloadcount = 0;
 				$errCode=$_FILES[$filename_fieldname]['error'];
 					if($errCode == 0){
@@ -288,8 +288,7 @@ class Documents extends CRMEntity {
 	function getSortOrderForFolder($folderId) {
 		if(isset($_REQUEST['sorder']) && $_REQUEST['folderid'] == $folderId) {
 			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
-		} elseif(is_array($_SESSION['NOTES_FOLDER_SORT_ORDER']) &&
-					!empty($_SESSION['NOTES_FOLDER_SORT_ORDER'][$folderId])) {
+		} elseif(isset($_SESSION['NOTES_FOLDER_SORT_ORDER']) && is_array($_SESSION['NOTES_FOLDER_SORT_ORDER']) && !empty($_SESSION['NOTES_FOLDER_SORT_ORDER'][$folderId])) {
 				$sorder = $_SESSION['NOTES_FOLDER_SORT_ORDER'][$folderId];
 		} else {
 			$sorder = $this->default_sort_order;

@@ -195,7 +195,7 @@ class MailManager_Model_DraftEmail {
 			$adb->pquery("delete from vtiger_seactivityrel where activityid=?",array($emailId)); //remove all previous relation
 		}
 		for ($i=0; $i<(count($myids)); $i++) {
-				$realid = explode("@",$myids[$i]);
+			$realid = explode('@',$myids[$i]);
 			if(!empty($realid[0]) && !empty($emailId)) {
 				// this is needed as we might save the mail in draft mode earlier
 				$result = $adb->pquery("SELECT * FROM vtiger_seactivityrel WHERE crmid=? AND activityid=?",array($realid[0], $emailId));

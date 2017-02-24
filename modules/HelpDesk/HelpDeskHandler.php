@@ -174,7 +174,7 @@ function HelpDesk_notifyParentOnTicketChange($entityData) {
 		//added condition to check the emailoptout(this is for contacts and vtiger_accounts.)
 		if($emailoptout == 0) {
 
-			if($isPortalUser == 1){
+			if (isset($isPortalUser) and $isPortalUser == 1) {
 				$PORTAL_URL = GlobalVariable::getVariable('Application_Customer_Portal_URL','http://your_support_domain.tld/customerportal');
 				$url = "<a href='".$PORTAL_URL."/index.php?module=HelpDesk&action=index&ticketid=".$entityId."&fun=detail'>".$mod_strings['LBL_TICKET_DETAILS']."</a>";
 				$email_body = $bodysubject.'<br><br>'.HelpDesk::getPortalTicketEmailContents($entityData);
@@ -194,7 +194,7 @@ function HelpDesk_notifyParentOnTicketChange($entityData) {
 					$mail_status = send_mail('HelpDesk',$parent_email,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID,$subject,$email_body);
 				}
 			}
-			$mail_status_str .= $parent_email."=".$mail_status."&&&";
+			$mail_status_str = $parent_email."=".$mail_status."&&&";
 
 		} else {
 			$adb->println("'".$parentname."' is not want to get the email about the ticket details as emailoptout is selected");

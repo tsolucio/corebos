@@ -156,8 +156,8 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 		$document = CRMEntity::getInstance('Documents');
 		$document->column_fields['notes_title']      = $info['title'];
 		$document->column_fields['filename']         = $info['filename'];
-        $document->column_fields['filesize']         = $info['size'];
-        $document->column_fields['filetype']         = $info['filetype'];
+		$document->column_fields['filesize']         = $info['size'];
+		$document->column_fields['filetype']         = $info['filetype'];
 		$document->column_fields['filestatus']       = 1;
 		$document->column_fields['filelocationtype'] = 'I';
 		$document->column_fields['folderid']         = 1; // Default Folder
@@ -201,8 +201,7 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
      * @return Array
      */
 	static function buildDetailViewLink($module, $record, $label) {
-		$detailViewLink = sprintf("<a target='_blank' href='index.php?module=%s&action=DetailView&record=%s'>%s</a>",
-                $module, $record, textlength_check($label));
+		$detailViewLink = sprintf("<a target='_blank' href='index.php?module=%s&action=DetailView&record=%s'>%s</a>", $module, $record, textlength_check($label));
 		return array('record'=>$record, 'module'=>$module, 'label'=>$label, 'detailviewlink'=> $detailViewLink);
 	}
 

@@ -221,7 +221,7 @@ class Vtiger_MailRecord {
 		$this->_from = $this->__getEmailIdList($mailheader->from);
 		$this->_to   = $this->__getEmailIdList($mailheader->to);
 		$this->_cc   = $this->__getEmailIdList(isset($mailheader->cc) ? $mailheader->cc : '');
-		$this->_bcc  = $this->__getEmailIdList($mailheader->bcc);
+		$this->_bcc  = $this->__getEmailIdList(isset($mailheader->bcc) ? $mailheader->bcc : '');
 
 		$this->_date = $mailheader->udate;
 

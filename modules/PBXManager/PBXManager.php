@@ -53,8 +53,8 @@ class PBXManager extends CRMEntity {
 	// Should contain field labels
 	var $detailview_links = Array();
 
-	// For alphabetical search
-	var $def_basicsearch_col = 'callid';
+	// Make the field link to detail view from list view (Fieldname)
+	var $list_link_field = 'callfrom';
 
 	// Column value to use on detail view record text display.
 	var $def_detailview_recname = '';
@@ -64,6 +64,9 @@ class PBXManager extends CRMEntity {
 
 	// Callback function list during Importing
 	var $special_functions = array();
+
+	// For Alphabetical search
+	var $def_basicsearch_col = 'callid';
 
 	var $default_order_by = 'timeofcall';
 	var $default_sort_order='DESC';
@@ -114,16 +117,16 @@ class PBXManager extends CRMEntity {
 		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1
 			&& $defaultOrgSharingPermission[$tabid] == 3) {
 
-				$sec_query .= " AND (vtiger_crmentity.smownerid in($current_user->id) OR vtiger_crmentity.smownerid IN 
+				$sec_query .= " AND (vtiger_crmentity.smownerid in($current_user->id) OR vtiger_crmentity.smownerid IN
 					(
-						SELECT vtiger_user2role.userid FROM vtiger_user2role 
-						INNER JOIN vtiger_users ON vtiger_users.id=vtiger_user2role.userid 
-						INNER JOIN vtiger_role ON vtiger_role.roleid=vtiger_user2role.roleid 
+						SELECT vtiger_user2role.userid FROM vtiger_user2role
+						INNER JOIN vtiger_users ON vtiger_users.id=vtiger_user2role.userid
+						INNER JOIN vtiger_role ON vtiger_role.roleid=vtiger_user2role.roleid
 						WHERE vtiger_role.parentrole LIKE '".$current_user_parent_role_seq."::%'
-					) 
-					OR vtiger_crmentity.smownerid IN 
+					)
+					OR vtiger_crmentity.smownerid IN
 					(
-						SELECT shareduserid FROM vtiger_tmp_read_user_sharing_per 
+						SELECT shareduserid FROM vtiger_tmp_read_user_sharing_per
 						WHERE userid=".$current_user->id." AND tabid=".$tabid."
 					)
 					OR ( vtiger_crmentity.smownerid in (0)";
@@ -135,9 +138,9 @@ class PBXManager extends CRMEntity {
 					if(sizeof($current_user_groups) > 0) {
 						$sec_query .= " vtiger_groups.groupid IN (". implode(",", $current_user_groups) .") OR ";
 					}
-					$sec_query .= " vtiger_groups.groupid IN 
+					$sec_query .= " vtiger_groups.groupid IN
 						(
-							SELECT vtiger_tmp_read_group_sharing_per.sharedgroupid 
+							SELECT vtiger_tmp_read_group_sharing_per.sharedgroupid
 							FROM vtiger_tmp_read_group_sharing_per
 							WHERE userid=".$current_user->id." and tabid=".$tabid."
 						)";

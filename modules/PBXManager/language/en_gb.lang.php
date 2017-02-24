@@ -14,6 +14,7 @@ $mod_strings = array(
 	'SINGLE_PBXManager' => 'PBX Manager',
 	'Asterisk' => 'Asterisk',
 	'LBL_ASTERISK_INFORMATION' => 'Asterisk Information',
+	'LBL_CALL_INFORMATION' => 'Call information',
 	'Call From' => 'Call from',
 	'Call To' => 'Call to',
 	'Time Of Call' => 'Time of call',

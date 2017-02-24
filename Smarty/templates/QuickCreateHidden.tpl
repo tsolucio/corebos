@@ -11,8 +11,8 @@
 
 <form name="QcEditView" onSubmit="return getFormValidate();" method="POST" action="index.php" ENCTYPE="multipart/form-data">
 
-{if $FROM eq 'popup'}
-	<input type="hidden" name="from"   value="{$FROM}">
+{if isset($FROM) && $FROM eq 'popup'}
+	<input type="hidden" name="from" value="{$FROM}">
 	<input type="hidden" name="return_action" value="Popup">
 	<input type="hidden" name="return_module" value="{$MODULE}">
 	<input type="hidden" name="search_url" value="{$URLPOPUP}">

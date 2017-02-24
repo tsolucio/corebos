@@ -93,7 +93,7 @@ $mod_strings = Array (
 	'LBL_THEME_COLOR_A'=>'black',
 	'LBL_THEME_COLOR_B'=>'blue',
 	'LBL_THEME_COLOR_C'=>'white',
-	'LBL_NAVI_SELECTION'=>'Scroll Fetch Limit:',
+	'LBL_NAVI_SELECTION'=>'Maximum Page Elements:',
 
 	'LBL_COMMENTS'=>'Comments',
 	'LBL_SIGNATURE'=>'Signature',

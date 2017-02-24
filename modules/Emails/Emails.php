@@ -111,22 +111,22 @@ class Emails extends CRMEntity {
 			}
 		} else {
 			if (isset($this->column_fields['parent_id']) && $this->column_fields['parent_id'] != '') {
-				$adb->pquery("DELETE FROM vtiger_seactivityrel WHERE crmid = ? AND activityid = ? ",
-						array($this->column_fields['parent_id'], $this->id));
+				$adb->pquery('DELETE FROM vtiger_seactivityrel WHERE crmid = ? AND activityid = ?', array($this->column_fields['parent_id'], $this->id));
 				//$this->insertIntoEntityTable('vtiger_seactivityrel', $module);
 				$sql = 'insert into vtiger_seactivityrel values(?,?)';
-				$params = array($this->column_fields['parent_id'], $this->id);
+				$realid = explode('@', $this->column_fields['parent_id']);
+				$mycrmid = $realid[0];
+				$params = array($mycrmid, $this->id);
 				$adb->pquery($sql, $params);
-			} elseif ($this->column_fields['parent_id'] == '' && $insertion_mode == "edit") {
+			} elseif ($this->column_fields['parent_id'] == '' && $this->mode == 'edit') {
 				$this->deleteRelation('vtiger_seactivityrel');
 			}
 		}
 
-
 		//Insert into cntactivity rel
 		if (isset($this->column_fields['contact_id']) && $this->column_fields['contact_id'] != '') {
 			$this->insertIntoEntityTable('vtiger_cntactivityrel', $module);
-		} elseif ($this->column_fields['contact_id'] == '' && $insertion_mode == "edit") {
+		} elseif (empty($this->column_fields['contact_id']) && $this->mode == 'edit') {
 			$this->deleteRelation('vtiger_cntactivityrel');
 		}
 
@@ -141,7 +141,7 @@ class Emails extends CRMEntity {
 		$file_saved = false;
 
 		//Added to send generated Invoice PDF with mail
-		$pdfAttached = $_REQUEST['pdf_attachment'];
+		$pdfAttached = isset($_REQUEST['pdf_attachment']) ? $_REQUEST['pdf_attachment'] : '';
 		//created Invoice pdf is attached with the mail
 		if (isset($_REQUEST['pdf_attachment']) && $_REQUEST['pdf_attachment'] != '') {
 			$file_saved = pdfAttach($this, $module, $pdfAttached, $id);

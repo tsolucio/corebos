@@ -44,7 +44,6 @@ $mod_strings = Array(
 'LBL_LEAD_NAME'=>'Nome Lead:',
 'LBL_LEAD_INFORMATION'=>'Informação Lead',
 'LBL_FIRST_NAME'=>'Nome:',
-'LBL_PHONE'=>'Fone:',
 'LBL_COMPANY'=>'Empresa:',
 'LBL_DESIGNATION'=>'Função:', //Contribuição de Neimar Hahmeier
 'LBL_PHONE'=>'Fone:',
