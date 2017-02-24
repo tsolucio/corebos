@@ -13,7 +13,7 @@ $mod_strings = Array(
 	'SINGLE_PBXManager' => 'PBX Manager',
 	'Asterisk' => 'Asterisk',
 	'LBL_ASTERISK_INFORMATION' => 'ASTERISK Information',
-	
+	'LBL_CALL_INFORMATION' => 'Anruf Informationen',
 	'Call From'=>'Anruf von',
 	'Call To'=>'Anruf zu',
 	'Time Of Call'=>'Anrufzeit',

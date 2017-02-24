@@ -11,7 +11,7 @@
 $mod_strings = Array(
 	'Asterisk' => 'Asterisk',
 	'LBL_ASTERISK_INFORMATION' => 'Informazioni su ASTERISK',
-	
+	'LBL_CALL_INFORMATION' => 'Informazioni chiamata',
 	'Call From'=>'Chiamata da',
 	'Call To'=>'Chiamata a',
 	'Time Of Call'=>'Durata della chiamata',
