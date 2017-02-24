@@ -33,6 +33,7 @@ $mod_strings = Array (
 	'LBL_MINUTES'=>'Minutes',
 	'LBL_MINUTES_AGO'=>'min(s) auparavant',
 	'LBL_HOURS'=>'Heures',
+        'LBL_DAILY'=>'Daily',
 	'LBL_HOURS_AGO'=>'heure(s) auparavant',
 	'LBL_DAYS'=>'Jours',
 	'LBL_DAYS_AGO'=>'jour(s) auparavant',

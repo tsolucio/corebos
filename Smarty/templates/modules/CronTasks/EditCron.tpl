@@ -37,14 +37,21 @@
 	</tr>
 	<tr>
 		<td align="right" class="cellLabel small"><b>{$MOD.LBL_FREQUENCY}</b></td>
-		<td align="left" class="cellText small" width="104px"><input class="txtBox" id="CronTime" name="CronTime" value="{$CRON_DETAILS.frequency}" style="width:25px;" type="text">
-		<select class="small" id="cron_time" name="cron_status">
-		{if $CRON_DETAILS.time eq 'min'}
-		<option value="min" selected>{$MOD.LBL_MINUTES}</option>
+		<td align="left" class="cellText small" width="104px"><input class="txtBox" id="CronTime" name="CronTime" value="{$CRON_DETAILS.frequency}" style="width:25px;{if $CRON_DETAILS.time eq 'daily'}display: none;{/if}" type="text">
+		<input class="txtBox" id="CronDay" name="CronDay" value="{if $CRON_DETAILS.time neq 'daily'}00:00{else}{$CRON_DETAILS.hourmin}{/if}" style="width:35px; {if $CRON_DETAILS.time neq 'daily'}display: none;{/if}" type="text">
+ 		<select class="small" id="cron_time" name="cron_status" onchange="change_input_time()">
+ 		{if $CRON_DETAILS.time eq 'daily'}
+ 		<option value="min">{$MOD.LBL_MINUTES}</option>
 		<option value="hours">{$MOD.LBL_HOURS}</option>
-		{else}
+                <option value="daily" selected>{$MOD.LBL_DAILY}</option>
+ 		{elseif $CRON_DETAILS.time eq 'hour'}
 		<option value="min" >{$MOD.LBL_MINUTES}</option>
 		<option value="hours" selected>{$MOD.LBL_HOURS}</option>
+                <option value="daily">{$MOD.LBL_DAILY}</option>
+ 		{else}
+ 		<option value="min" selected>{$MOD.LBL_MINUTES}</option>
+ 		<option value="hours">{$MOD.LBL_HOURS}</option>
+ 		<option value="daily">{$MOD.LBL_DAILY}</option>
 		{/if}
 		</td>
 	</tr>
