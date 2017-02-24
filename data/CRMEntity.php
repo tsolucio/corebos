@@ -332,6 +332,15 @@ class CRMEntity {
 		$date_var = date("Y-m-d H:i:s");
 
 		$ownerid = $this->column_fields['assigned_user_id'];
+		if (strpos($ownerid,'x')>0) { // we have a WSid
+			$usrWSid = vtws_getEntityId('Users');
+			list($inputWSid,$inputCRMid) = explode('x',$ownerid);
+			if ($usrWSid==$inputWSid) {
+				$ownerid = $inputCRMid;
+			} else {
+				die('Invalid user id!');
+			}
+		}
 
 		$sql = "select ownedby from vtiger_tab where name=?";
 		$res = $adb->pquery($sql, array($module));
