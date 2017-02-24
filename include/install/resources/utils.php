@@ -767,7 +767,6 @@ class Common_Install_Wizard_Utils {
 		'User Privileges Directory' => './user_privileges/',
 		'Smarty Cache Directory' => './Smarty/cache/',
 		'Smarty Compile Directory' => './Smarty/templates_c/',
-		'Email Templates Directory' => './modules/Emails/templates/',
 		'Modules Directory' => './modules/',
 		'Cron Modules Directory' => './cron/modules/',
 		'Vtlib Test Directory' => './test/vtlib/',

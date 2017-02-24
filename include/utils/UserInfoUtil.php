@@ -477,35 +477,11 @@ function fetchEmailTemplateInfo($templateName)
 /** Function to substitute the tokens in the specified file
  * @param $templateName -- Template Name:: Type varchar
  * @param $globals
+ * @deprecated
  */
 function substituteTokens($filename,$globals)
 {
-	global $log,$root_directory;
-	$log->debug("Entering substituteTokens(".$filename.",".$globals.") method ...");
-
-	if (!$filename) {
-		$filename = $this->filename;
-	}
-
-	if (!$dump = file($filename)) {
-		$log->debug("not able to create the file or get access to the file with filename ".$filename." so returning 0");
-		$log->debug("Exiting substituteTokens method ...");
-		return 0;
-	}
-
-	require_once($root_directory .'/modules/Emails/templates/testemailtemplateusage.php');
-	eval("global $globals;");
-	while (list($key,$val) = each($dump)) {
-		$replacedString ;
-		if (preg_match( "/\$/g",$val)) {
-			eval("\$val = \"$val\";");
-			$val = stripslashes ($val);
-			$replacedString .= $val;
-		}
-	}
-	$log->debug("the replacedString is ".$replacedString);
-	$log->debug("Exiting substituteTokens method ...");
-	return $replacedString;
+	return '';
 }
 
 /** Function to get the role name from the roleid
