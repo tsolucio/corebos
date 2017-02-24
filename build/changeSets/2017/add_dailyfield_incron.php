@@ -21,12 +21,11 @@ class add_dailyfield_incron extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			
+
 			$this->ExecuteQuery("ALTER TABLE vtiger_cron_task ADD `daily` VARCHAR(2) NOT NULL DEFAULT 0");
-			
-			$this->sendMsg('You can safely ignore any errors in this changeset');
+
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied(false);
+			$this->markApplied();
 		}
 		$this->finishExecution();
 	}

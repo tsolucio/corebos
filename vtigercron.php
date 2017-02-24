@@ -61,10 +61,10 @@ foreach ($cronTasks as $cronTask) {
 		$logbg->info('Execute: '.$cronTask->getHandlerFile());
 		require_once $cronTask->getHandlerFile();
 		$daily=$cronTask->getdaily();
-                $timestart=$cronTask->getLastStart();
+		$timestart=$cronTask->getLastStart();
 		// Mark the status - finished
 		$cronTask->markFinished($daily,$timestart);
-		
+
 	} catch (Exception $e) {
 		$msg = sprintf("[ERROR]: %s - cron task execution throwed exception.\n", $cronTask->getName());
 		$msg .= $e->getMessage();

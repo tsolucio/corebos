@@ -60,7 +60,7 @@ class Vtiger_Cron {
     function getdaily() {
         return intval($this->data['daily']);
     }
-    
+
     /**
      * Get the status
      */
@@ -217,14 +217,14 @@ class Vtiger_Cron {
     function updatedaily($d) {
         self::querySilent('UPDATE vtiger_cron_task SET daily=? WHERE id=?', array($d, $this->getId()));
     }
-    
+
      /*
-     * update daily
+     * update last start/end
     */
     function updatelaststartend($startend) {
         self::querySilent('UPDATE vtiger_cron_task SET lastend=?, laststart=? WHERE id=?', array($startend,$startend, $this->getId()));
     }
-    
+
     /**
      * Mark this instance as running.
      */
@@ -236,18 +236,15 @@ class Vtiger_Cron {
     /**
      * Mark this instance as finished.
      */
-    function markFinished($daily,$timestart) {
-        if($daily==1)
-        {    
-        $time=strtotime(" +1 days",$timestart);
-        }
-        else 
-        {
-        $time=time();
-        }
-        self::querySilent('UPDATE vtiger_cron_task SET status=?, lastend=? WHERE id=?', array(self::$STATUS_ENABLED, $time, $this->getId()));
-        return $this;
-    }
+	function markFinished($daily,$timestart) {
+		if ($daily==1) {
+			$time=strtotime(' +1 days',$timestart);
+		} else {
+			$time=time();
+		}
+		self::querySilent('UPDATE vtiger_cron_task SET status=?, lastend=? WHERE id=?', array(self::$STATUS_ENABLED, $time, $this->getId()));
+		return $this;
+	}
 
     /**
      * Set the bulkMode flag

@@ -21,16 +21,13 @@ if(isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 			$time = $_REQUEST['timevalue']*60*60;
 		}
 		$cronTask->updateFrequency($time);
-                if($_REQUEST['time']=='daily')
-                {
-                $cronTask->updateDaily(1);
-                $yestdate=strtotime(date("Y-m-d", strtotime("yesterday")).' '.$_REQUEST['dailytime'].':00');
-                $cronTask->updatelaststartend($yestdate);
-                }
-                else 
-                {
-                $cronTask->updateDaily(0);
-                }
+		if ($_REQUEST['time']=='daily') {
+			$cronTask->updateDaily(1);
+			$yestdate=strtotime(date("Y-m-d", strtotime("yesterday")).' '.$_REQUEST['dailytime'].':00');
+			$cronTask->updatelaststartend($yestdate);
+		} else {
+			$cronTask->updateDaily(0);
+		}
 	}
 }
 $loc = 'Location: index.php?action=CronTasksAjax&file=ListCronJobs&module=CronTasks&directmode=ajax';
