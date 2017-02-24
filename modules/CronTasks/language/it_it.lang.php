@@ -25,6 +25,7 @@ $mod_strings = Array (
 	'LBL_MINUTES'=>'Minuti',
 	'LBL_MINUTES_AGO'=>'minuti fa',
 	'LBL_HOURS'=>'Ore',
+        'LBL_DAILY'=>'Giornaliero',
 	'LBL_HOURS_AGO'=>'ore fa',
 	'LBL_DAYS'=>'Giorni',
 	'LBL_DAYS_AGO'=>'giorni fa',

@@ -31,6 +31,7 @@ $mod_strings = array(
 	'LBL_MINUTES'=>'Perc',
 	'LBL_MINUTES_AGO'=>'perccel ezelőtt',
 	'LBL_HOURS'=>'Orával',
+        'LBL_DAILY'=>'Daily',
 	'LBL_HOURS_AGO'=>'órával(s) ezelőtt',
 	'LBL_DAYS'=>'Nappal',
 	'LBL_DAYS_AGO'=>'nappal ezelőtt',

@@ -22,10 +22,19 @@ if(isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 	$label = getTranslatedString($cronTask->getName(),$cronTask->getModule());
 	$cron_status = $cronTask->getStatus();
 	$cron_freq =  $cronTask->getFrequency();
+        $cron_daily =  $cronTask->getdaily();
 	$cron_desc = $cronTask->getDescription();
+        $lastend = explode(" ",$cronTask->getLastEndDateTime());
+        $hourminsec = explode(":",$lastend[1]);
+        $hourmin = $hourminsec[0].':'.$hourminsec[1];
 	$cron = Array();
 	$cron['label'] = $label;
-	if($cron_freq/(60*60)>1){
+        if($cron_daily==1)
+        {
+                $cron['frequency']=(int)($cron_freq/(60*60));
+	        $cron['time'] = 'daily';
+        }
+	else if($cron_freq/(60*60)>1){
 		$cron['frequency']=(int)($cron_freq/(60*60));
 		$cron['time'] = 'hour';
 	} else {
@@ -35,6 +44,7 @@ if(isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 	$cron['status'] = $cron_status;
 	$cron['description'] = $cron_desc;
 	$cron['id']=$id;
+        $cron['hourmin']=$hourmin;
 	$smarty->assign('CRON_DETAILS',$cron);
 	$smarty->assign('MOD', return_module_language($current_language,'CronTasks'));
 	$smarty->assign('THEME', $theme);

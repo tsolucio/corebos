@@ -359,5 +359,6 @@ var alert_arr = {
 	'ERR_INVALID_HOUR'  :  'Please enter a valid hour.',
 	'ERR_INVALID_TIME'  :  'Please enter a valid time.',
 	'ERR_EMAIL_WITH_NO_SUBJECT' : 'You did not specify a subject from this email. If you would like to provide one, please type it now',
-	'EMAIL_SIN_ASUNTO' : '(no-Subject)'
+	'EMAIL_SIN_ASUNTO' : '(no-Subject)',
+        'INTEGERVALS':'Only Integer values are allowed'
 };

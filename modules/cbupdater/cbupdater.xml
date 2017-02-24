@@ -1088,4 +1088,11 @@
 	<classname>fixWordProcessorMergeTable</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>loridacito</author>
+	<description>add daily field in cron table</description>
+	<filename>build/changeSets/2017/add_dailyfield_incron.php</filename>
+	<classname>add_dailyfield_incron</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
