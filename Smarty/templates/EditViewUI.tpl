@@ -8,8 +8,16 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-		{assign var="uitype" value=$maindata[0][0]}
-		{assign var="fldlabel" value=$maindata[1][0]}
+		{if isset($maindata[0][0])}
+			{assign var="uitype" value=$maindata[0][0]}
+		{else}
+			{assign var="uitype" value=''}
+		{/if}
+		{if isset($maindata[1][0])}
+			{assign var="fldlabel" value=$maindata[1][0]}
+		{else}
+			{assign var="fldlabel" value=''}
+		{/if}
 		{if isset($maindata[1][1])}
 			{assign var="fldlabel_sel" value=$maindata[1][1]}
 		{else}
@@ -25,7 +33,11 @@
 		{else}
 			{assign var="fldlabel_other" value=''}
 		{/if}
-		{assign var="fldname" value=$maindata[2][0]}
+		{if isset($maindata[2][0])}
+			{assign var="fldname" value=$maindata[2][0]}
+		{else}
+			{assign var="fldname" value=''}
+		{/if}
 		{if isset($maindata[3][0])}
 			{assign var="fldvalue" value=$maindata[3][0]}
 		{else}
@@ -41,7 +53,11 @@
 		{else}
 			{assign var="thirdvalue" value=''}
 		{/if}
-		{assign var="typeofdata" value=$maindata[4]}
+		{if isset($maindata[4])}
+			{assign var="typeofdata" value=$maindata[4]}
+		{else}
+			{assign var="typeofdata" value=''}
+		{/if}
 		{if isset($maindata[5][0])}
 			{assign var="vt_tab" value=$maindata[5][0]}
 		{else}
@@ -992,6 +1008,6 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			{* just show field on screen *}
 			<td width=20% class="dvtCellLabel" align=right>{$fldlabel}</td>
 			<td width=30% align=left class="dvtCellInfo">
-				{if $fldname neq ''}<input type="hidden" name="{$fldname}" id="{$fldname}" value="{$fldvalue.fieldsavevalue}">{/if}{$fldvalue.fieldshowvalue}
+				{if $fldname neq ''}<input type="hidden" name="{$fldname}" id="{$fldname}" value="{$fldvalue.fieldsavevalue}">{/if}{if isset($fldvalue.fieldshowvalue)}{$fldvalue.fieldshowvalue}{/if}
 			</td>
 		{/if}

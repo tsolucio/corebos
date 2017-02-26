@@ -307,8 +307,7 @@ class Documents extends CRMEntity {
 		}
 		if (isset($_REQUEST['order_by']) && $_REQUEST['folderid'] == $folderId) {
 			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
-		} elseif(is_array($_SESSION['NOTES_FOLDER_ORDER_BY']) &&
-				!empty($_SESSION['NOTES_FOLDER_ORDER_BY'][$folderId])) {
+		} elseif(!empty($_SESSION['NOTES_FOLDER_ORDER_BY']) && is_array($_SESSION['NOTES_FOLDER_ORDER_BY']) && !empty($_SESSION['NOTES_FOLDER_ORDER_BY'][$folderId])) {
 			$order_by = $_SESSION['NOTES_FOLDER_ORDER_BY'][$folderId];
 		} else {
 			$order_by = ($use_default_order_by);
@@ -534,7 +533,7 @@ class Documents extends CRMEntity {
 		$currentModule='Documents';
 		if(isPermitted($related_module,4, '') == 'yes') {
 			$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module). "' class='crmbutton small edit' " .
-					" type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\"" .
+					" type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id','test','width=640,height=602,resizable=0,scrollbars=0');\"" .
 					" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 		}
 		$query = "select case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name,
@@ -570,7 +569,7 @@ class Documents extends CRMEntity {
 			$entries[] = $row['user_name'];
 			$entries_list[] = $entries;
 		}
-		$return_data = array('header'=>$header,'entries'=>$entries_list,'CUSTOM_BUTTON' => $button);
+		$return_data = array('header'=>$header,'entries'=>$entries_list,'CUSTOM_BUTTON' => $button,'navigation'=>array('',''));
 		$log->debug("Exiting getEntities method ...");
 		return $return_data;
 	}

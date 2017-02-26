@@ -54,6 +54,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			}
 			$valueTitle = getTranslatedString($parent_module,$parent_module);
 			$displayValueArray = getEntityName($parent_module, $parent_id);
+			$displayValue = '';
 			if (!empty($displayValueArray)) {
 				foreach ($displayValueArray as $key => $value) {
 					$displayValue = $value;
@@ -963,7 +964,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		if (isset($col_fields['time_end']) && $col_fields['time_end'] != '' && ($tabid == 9 || $tabid == 16) && $uitype == 23) {
 			$end_time = $col_fields['time_end'];
 		}
-		if ($dateValue == '0000-00-00' || empty($dateValue)) {
+		if (empty($dateValue) || $dateValue == '0000-00-00') {
 			$displayValue = '';
 		} else {
 			if (empty($end_time) && strpos($dateValue, ' ') == false) {
@@ -1764,6 +1765,7 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 						$valueType = getSalesEntityType($parent_id);
 					}
 					$displayValueArray = getEntityName($valueType, $parent_id);
+					$displayValue='';
 					if(!empty($displayValueArray)){
 						foreach($displayValueArray as $key=>$val){
 							$displayValue = $val;
@@ -1847,6 +1849,8 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 
 function VT_detailViewNavigation($smarty, $recordNavigationInfo, $currrentRecordId) {
 	$pageNumber = 0;
+	$smarty->assign('privrecord', '');
+	$smarty->assign('nextrecord', 0);
 	foreach ($recordNavigationInfo as $start => $recordIdList) {
 		$pageNumber++;
 		foreach ($recordIdList as $index => $recordId) {

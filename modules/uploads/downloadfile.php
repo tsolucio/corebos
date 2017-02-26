@@ -14,7 +14,6 @@ global $adb, $fileId, $default_charset, $app_strings;
 
 $attachmentsid = vtlib_purify($_REQUEST['fileid']);
 $entityid = vtlib_purify($_REQUEST['entityid']);
-$returnmodule= vtlib_purify($_REQUEST['return_module']);
 $deletecheck = false;
 if(!empty($entityid)) $deletecheck = $adb->pquery('SELECT deleted FROM vtiger_crmentity WHERE crmid=?', array($entityid));
 if(!empty($deletecheck) && $adb->query_result($deletecheck, 0, 'deleted') == 1) {

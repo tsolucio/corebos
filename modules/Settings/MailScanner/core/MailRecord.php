@@ -237,7 +237,7 @@ class Vtiger_MailRecord {
 		$this->_body = '';
 		$this->_isbodyhtml = false;
 
-		if($structure->parts) { /* multipart */
+		if (!empty($structure->parts)) { /* multipart */
 			foreach($structure->parts as $partno0=>$p) {
 				$this->__getpart($imap, $messageid, $p, $partno0+1);
 			}

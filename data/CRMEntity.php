@@ -716,7 +716,7 @@ class CRMEntity {
 				}
 			}
 			self::$dbvalues = $dbvals;
-			$dbvalue = self::$dbvalues[$fieldname];
+			$dbvalue = empty(self::$dbvalues[$fieldname]) ? 0 : self::$dbvalues[$fieldname];
 			$fldrs = $adb->pquery('select fieldname,typeofdata from vtiger_field
 				where vtiger_field.uitype in (7,9,71,72) and vtiger_field.tabid=?', array($tabid));
 			while ($fldinf = $adb->fetch_array($fldrs)) {

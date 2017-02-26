@@ -132,7 +132,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			$curr_time = '';
 		}
 		if (empty($disp_value)) $disp_value = '';
-		$fieldvalue[] = array($disp_value => $curr_time) ;
+		$fieldvalue[] = array($disp_value => $curr_time);
 		if($uitype == 5 || $uitype == 23)
 		{
 			if($module_name == 'Events' && $uitype == 23)

@@ -193,7 +193,7 @@ if($foldercount > 0 )
 		}
 		coreBOS_Session::set('NOTES_FOLDER_SORT_ORDER^'.$folder_id, $sorder);
 		$order_by = $focus->getOrderByForFolder($folder_id);
-		if(!is_array($_SESSION['NOTES_FOLDER_ORDER_BY'])) {
+		if(isset($_SESSION['NOTES_FOLDER_ORDER_BY']) && !is_array($_SESSION['NOTES_FOLDER_ORDER_BY'])) {
 			coreBOS_Session::set('NOTES_FOLDER_ORDER_BY', array());
 		}
 		coreBOS_Session::set('NOTES_FOLDER_ORDER_BY^'.$folder_id, $order_by);

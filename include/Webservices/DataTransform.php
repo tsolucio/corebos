@@ -116,7 +116,7 @@ class DataTransform{
 		}
 		$references = $meta->getReferenceFieldDetails();
 		foreach($references as $field=>$typeList){
-			if(strpos($row[$field],'x')!==false){
+			if(isset($row[$field]) and strpos($row[$field],'x')!==false){
 				$row[$field] = vtws_getIdComponents($row[$field]);
 				$row[$field] = $row[$field][1];
 			}

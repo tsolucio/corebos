@@ -45,7 +45,7 @@ if($_REQUEST['assigntype'] == 'U') {
 }
 
 //When changing the Account Address Information it should also change the related contact address - dina
-if($focus->mode == 'edit' && $_REQUEST['address_change'] == 'yes')
+if($focus->mode == 'edit' && isset($_REQUEST['address_change']) && $_REQUEST['address_change'] == 'yes')
 {
 	$query = 'update vtiger_contactaddress set mailingcity=?,mailingstreet=?,mailingcountry=?,mailingzip=?,mailingpobox=?,mailingstate=?,othercountry=?,othercity=?,otherstate=?,otherzip=?,otherstreet=?,otherpobox=? where contactaddressid in (select contactid from vtiger_contactdetails where accountid=?)';
 	$params = array($focus->column_fields['bill_city'], $focus->column_fields['bill_street'], $focus->column_fields['bill_country'],

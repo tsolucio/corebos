@@ -305,7 +305,7 @@ class MailManager_RelationController extends MailManager_Controller {
 		foreach($qcreate_array as $qc_array) {
 			$new_qc_array = array();
 			foreach($qc_array as $q_array) {
-				if(in_array($q_array[2][0], $defaultFieldValueMapKeys)) {
+				if(isset($q_array[2][0]) and in_array($q_array[2][0], $defaultFieldValueMapKeys)) {
 					if($q_array[2][0] == "lastname") {
 						$q_array[3][1] = $defaultFieldValueMap[$q_array[2][0]];
 					} else {

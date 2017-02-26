@@ -355,19 +355,18 @@ function massDelete(module) {
 			}
 
 			jQuery.ajax({
-					method: 'POST',
-					url: "index.php?module=Users&action=massdelete&return_module="+module+"&"+gstart+"&viewname="+viewid+"&idlist="+idstring+searchurl+url
+				method: 'POST',
+				url: "index.php?module=Users&action=massdelete&return_module="+module+"&"+gstart+"&viewname="+viewid+"&idlist="+idstring+searchurl+url
 			}).done(function (response) {
-						document.getElementById("status").style.display="none";
-						result = response.split('&#&#&#');
-						document.getElementById("ListViewContents").innerHTML= result[2];
-						if(result[1] != '')
-							alert(result[1]);
-						document.getElementById('basicsearchcolumns').innerHTML = '';
-						document.getElementById('allselectedboxes').value='';
-						document.getElementById('excludedRecords').value='';
-					}
-				);
+				document.getElementById("status").style.display="none";
+				result = response.split('&#&#&#');
+				document.getElementById("ListViewContents").innerHTML= result[2];
+				if(result[1] != '')
+					alert(result[1]);
+				document.getElementById('basicsearchcolumns').innerHTML = '';
+				document.getElementById('allselectedboxes').value='';
+				if (document.getElementById('excludedRecords')) document.getElementById('excludedRecords').value='';
+			});
 		} else {
 			return false;
 		}

@@ -107,9 +107,9 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 		// ATTACHMENT
 		// Any part with a filename is an attachment,
 		// so an attached text file (type 0) is not mistaken as the message.
-		if ($params['filename'] || $params['name']) {
+		if (!empty($params['filename']) || !empty($params['name'])) {
 			// filename may be given as 'Filename' or 'Name' or both
-			$filename = ($params['filename'])? $params['filename'] : $params['name'];
+			$filename = (!empty($params['filename'])) ? $params['filename'] : $params['name'];
 			// filename may be encoded, so see imap_mime_header_decode()
 			if(!$this->_attachments) $this->_attachments = Array();
 			$this->_attachments[$filename] = $data;  // TODO: this is a problem if two files have same name

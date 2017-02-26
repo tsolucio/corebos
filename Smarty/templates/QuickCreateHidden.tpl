@@ -19,7 +19,7 @@
 {/if}
 
 {if $MODULE eq 'Calendar' || $MODULE eq 'Events'}
-	<input type="hidden" name="activity_mode" value="{$ACTIVITY_MODE}">
+	<input type="hidden" name="activity_mode" value="{if isset($ACTIVITY_MODE)}{$ACTIVITY_MODE}{/if}">
 	<input type="hidden" name="module" value="Calendar4You">
 {else}
 	<input type="hidden" name="module" value="{$MODULE}">

@@ -831,7 +831,7 @@ function getSearchURL($input) {
 		$advft_criteria_groups = vtlib_purify($input['advft_criteria_groups']);
 		$urlString .= '&advft_criteria='.urlencode($advft_criteria).'&advft_criteria_groups='.urlencode($advft_criteria_groups).'&searchtype=advance';
 
-	} elseif($input['type']=='dbrd'){
+	} elseif (isset($input['type']) and $input['type']=='dbrd'){
 		if(isset($input['leadsource'])) {
 			$leadSource = vtlib_purify($input['leadsource']);
 			$urlString .= "&leadsource=".$leadSource;

@@ -1340,7 +1340,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 				$time = getSingleFieldValue('vtiger_activity', $timeField, 'activityid', $entity_id);
 			}
 		}
-		if ($temp_val == '0000-00-00' || empty($temp_val)) {
+		if (empty($temp_val) || $temp_val == '0000-00-00') {
 			$value = '';
 		} else {
 			if (empty($time) && strpos($temp_val, ' ') == false) {
