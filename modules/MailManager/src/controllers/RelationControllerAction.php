@@ -66,7 +66,7 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 		$emailid = $focus->id;
 
 		// TODO: Handle attachments of the mail (inline/file)
-		$this->__SaveAttachements($mailrecord, 'Emails', $focus);
+		$this->__SaveAttachements($mailrecord, 'Emails', $focus, $module, $linkfocus);
 
 		return $emailid;
 	}
@@ -79,7 +79,7 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
      * @param String $basemodule
      * @param CRMEntity $basefocus
      */
-	function __SaveAttachements($mailrecord, $basemodule, $basefocus) {
+	function __SaveAttachements($mailrecord, $basemodule, $basefocus, $relate2module='', $relate2focus='') {
 		global $adb, $root_directory;
 
 		// If there is no attachments return
@@ -135,6 +135,11 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 				// Link file attached to emails also, for it to appear on email's page
 				if(!empty($basefocus->id) && !empty($attachid)) {
 					$this->relateAttachment($basefocus->id, $attachid);
+				}
+
+				// Link document to related record
+				if(!empty($relate2focus) && !empty($relate2focus->id) && !empty($documentId)) {
+					$this->relatedDocument($relate2focus->id, $documentId);
 				}
 			}
 		}
