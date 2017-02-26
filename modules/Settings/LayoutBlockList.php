@@ -980,6 +980,10 @@ function addCustomField() {
 			$uichekdata='D~O';
 			$uitype = 5;
 			$type = "D"; // adodb type
+		}elseif($fldType == 'Datetime') {
+			$uichekdata='DT~O';
+			$uitype = 50;
+			$type = "T"; // adodb type
 		}elseif($fldType == 'Email') {
 			$uitype = 13;
 			$type = "C(50) default () "; //adodb type

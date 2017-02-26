@@ -515,7 +515,31 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 						inputField : "jscal_field_{$fldname}", ifFormat : "{$dateFormat}", showsTime : false, button : "jscal_trigger_{$fldname}", singleClick : true, step : 1
 					{rdelim})
 				</script>
+			</td>
+		{elseif $uitype eq 50}
+			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
+				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
+			</td>
+			<td width="30%" align=left class="dvtCellInfo">
+				{foreach key=date_value item=time_value from=$fldvalue}
+					{assign var=date_val value="$date_value"}
+					{assign var=time_val value="$time_value"}
+				{/foreach}
+				<input name="{$fldname}" tabindex="{$vt_tab}" id="jscal_field_{$fldname}" type="text" style="border:1px solid #bababa;" size="16" maxlength="16" value="{$date_val}">
+				<img src="{'btnL3Calendar.gif'|@vtiger_imageurl:$THEME}" id="jscal_trigger_{$fldname}">
 
+				{foreach key=date_format item=date_str from=$secondvalue}
+					{assign var=dateFormat value="$date_format"}
+					{assign var=dateStr value="$date_str"}
+				{/foreach}
+
+				<br><font size=1><em old="(yyyy-mm-dd)">({$dateStr})</em></font>
+
+				<script type="text/javascript" id='massedit_calendar_{$fldname}'>
+					Calendar.setup ({ldelim}
+						inputField : "jscal_field_{$fldname}", ifFormat : "{$dateFormat}", showsTime : true, button : "jscal_trigger_{$fldname}", singleClick : true, step : 1
+					{rdelim})
+				</script>
 			</td>
 
 		{elseif $uitype eq 63}

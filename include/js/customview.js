@@ -137,8 +137,8 @@ function validate(blockid) {
 	}
 	return true;
 }
-var fieldValueArr=new Array('Text','Number','Percent','Currency','Date','Email','Phone','Picklist','URL','Checkbox','TextArea','MultiSelectCombo','Skype','Time','Relation','Image');
-var fieldTypeArr=new Array('text','number','percent','currency','date','email','phone','picklist','url','checkbox','textarea','multiselectcombo','skype','time','relation','image');
+var fieldValueArr=new Array('Text','Number','Percent','Currency','Date','Email','Phone','Picklist','URL','Checkbox','TextArea','MultiSelectCombo','Skype','Time','Relation','Image','Datetime');
+var fieldTypeArr=new Array('text','number','percent','currency','date','email','phone','picklist','url','checkbox','textarea','multiselectcombo','skype','time','relation','image','datetime');
 var currFieldIdx=0,totFieldType;
 var focusFieldType;
 
@@ -193,7 +193,7 @@ function selFieldType(id,scrollLayer,bool,blockid) {
 		decimalLayer.style.display="none";
 		pickListLayer.style.display="none";
 		if (relationmodules!=undefined) relationmodules.style.display="none";
-	} else if (type=='date' || type=='percent' || type=='email' || type=='phone' || type=='url' || type=='checkbox' || type=='textarea' || type=='skype' || type=='time' || type=='image') {
+	} else if (type=='date' || type=='percent' || type=='email' || type=='phone' || type=='url' || type=='checkbox' || type=='textarea' || type=='skype' || type=='time' || type=='image' || type=='datetime') {
 		lengthLayer.style.display="none";
 		decimalLayer.style.display="none";
 		pickListLayer.style.display="none";

@@ -147,6 +147,31 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			$fieldvalue[] = array($date_format=>$current_user->date_format.' '.$app_strings['YEAR_MONTH_DATE']);
 		}
 	}
+	elseif($uitype == 50) {
+		if(empty($value)) {
+			if ($generatedtype != 2) {
+				$disp_value = getNewDisplayTime();
+			} else {
+				$disp_value = '';
+			}
+		} else {
+			$date = new DateTimeField($value);
+			$isodate = $date->getDBInsertDateTimeValue();
+			$date = new DateTimeField($isodate);
+			$disp_value = $date->getDisplayDateTimeValue();
+		}
+		$value = $disp_value;
+		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
+		$date_format = parse_calendardate($app_strings['NTC_DATE_FORMAT']).' '.($current_user->hour_format=='24' ? '%H' : '%I').':%M';
+		if(!empty($curr_time)) {
+			$curr_time = DateTimeField::convertToUserTimeZone($curr_time);
+			$curr_time = $curr_time->format('H:i');
+		} else {
+			$curr_time = '';
+		}
+		$fieldvalue[] = array($disp_value => $curr_time);
+		$fieldvalue[] = array($date_format=>$current_user->date_format.' '.$current_user->hour_format);
+	}
 	elseif($uitype == 16) {
 		require_once 'modules/PickList/PickListUtils.php';
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);

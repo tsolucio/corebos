@@ -979,6 +979,16 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			}
 		}
 		$label_fld[] = $displayValue;
+	} elseif ($uitype == 50) {
+		$label_fld[] = getTranslatedString($fieldlabel, $module);
+		$dateValue = $col_fields[$fieldname];
+		if (empty($dateValue) || $dateValue == '0000-00-00 00:00') {
+			$displayValue = '';
+		} else {
+			$date = new DateTimeField($col_fields[$fieldname]);
+			$displayValue = $date->getDisplayDateTimeValue();
+		}
+		$label_fld[] = $displayValue;
 	}
 	elseif ($uitype == 9 || $uitype == 7) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);

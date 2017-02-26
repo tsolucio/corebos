@@ -140,6 +140,7 @@
 																								<tr><td align="left"><a id="field13_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'time.PNG'|@vtiger_imageurl:$THEME});" onclick = "makeFieldSelected(this,13,{$entries.blockid});"> {$MOD.Time} </a></td></tr>
 																								<tr><td align="left"><a id="field14_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'createrelation.png'|@vtiger_imageurl:$THEME});" onclick = "makeFieldSelected(this,14,{$entries.blockid});"> {$MOD.Relation} </a></td></tr>
 																								<tr><td align="left"><a id="field15_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'pictureicon.png'|@vtiger_imageurl:$THEME});" onclick = "makeFieldSelected(this,15,{$entries.blockid});"> {$APP.Image} </a></td></tr>
+																								<tr><td align="left"><a id="field16_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'Cron.png'|@vtiger_imageurl:$THEME}); background-size: 20px 20px;" onclick = "makeFieldSelected(this,16,{$entries.blockid});"> {$MOD.Date} {$APP.AND} {$MOD.Time} </a></td></tr>
 																							</table>
 																						</div>
 																					</td>

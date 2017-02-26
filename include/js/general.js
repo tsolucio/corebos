@@ -200,6 +200,8 @@ function emptyCheck(fldName,fldLabel, fldType) {
 }
 
 function patternValidateObject(fldObject,fldLabel,type) {
+	fldObject.value = trim(fldObject.value);
+	let checkval = fldObject.value;
 	if (type.toUpperCase()=="EMAIL") //Email ID validation
 	{
 		var re=new RegExp(/^[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i);
@@ -226,14 +228,20 @@ function patternValidateObject(fldObject,fldLabel,type) {
 			case "dd-mm-yyyy" :
 				var re = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{4}$/;
 		}
+		if (checkval.indexOf(' ')>0) {
+			var dt = checkval.split(' ');
+			checkval = dt[0];
+		}
 	}
 
 	if (type.toUpperCase()=="TIME") {//TIME validation
 		var re = /^\d{1,2}\:\d{2}:\d{2}$|^\d{1,2}\:\d{2}$/;
+		if (checkval.indexOf(' ')>0) {
+			var dt = checkval.split(' ');
+			checkval = dt[1];
+		}
 	}
-	//Asha: Remove spaces on either side of a Email id before validating
-	if (type.toUpperCase()=="EMAIL" || type.toUpperCase() == "DATE") fldObject.value = trim(fldObject.value);
-	if (!re.test(fldObject.value)) {
+	if (!re.test(checkval)) {
 		alert(alert_arr.ENTER_VALID + fldLabel + " ("+type+")");
 		try {
 			fldObject.focus();
@@ -248,6 +256,8 @@ function patternValidateObject(fldObject,fldLabel,type) {
 
 function patternValidate(fldName,fldLabel,type) {
 	var currObj=getObj(fldName);
+	currObj.value = trim(currObj.value);
+	let checkval = currObj.value;
 
 	if (type.toUpperCase()=="EMAIL") //Email ID validation
 	{
@@ -275,14 +285,20 @@ function patternValidate(fldName,fldLabel,type) {
 			case "dd-mm-yyyy" :
 				var re = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{4}$/;
 		}
+		if (checkval.indexOf(' ')>0) {
+			var dt = checkval.split(' ');
+			checkval = dt[0];
+		}
 	}
 
 	if (type.toUpperCase()=="TIME") {//TIME validation
 		var re = /^\d{1,2}\:\d{2}:\d{2}$|^\d{1,2}\:\d{2}$/;
+		if (checkval.indexOf(' ')>0) {
+			var dt = checkval.split(' ');
+			checkval = dt[1];
+		}
 	}
-	//Asha: Remove spaces on either side of a Email id before validating
-	if (type.toUpperCase()=="EMAIL" || type.toUpperCase() == "DATE") currObj.value = trim(currObj.value);
-	if (typeof(re) != 'undefined' && !re.test(currObj.value)) {
+	if (typeof(re) != 'undefined' && !re.test(checkval)) {
 		alert(alert_arr.ENTER_VALID + fldLabel + " ("+type+")");
 		try {
 			currObj.focus();
@@ -365,8 +381,13 @@ function compareDates(date1,fldLabel1,date2,fldLabel2,type) {
 function dateTimeValidate(dateFldName,timeFldName,fldLabel,type) {
 	if(patternValidate(dateFldName,fldLabel,"DATE")==false)
 		return false;
-	dateval=getObj(dateFldName).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
+	let dateval = getObj(dateFldName).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
 
+	if (timeFldName==undefined) {
+		timeFldName = dateFldName;
+		let dt = dateval.split(' ');
+		dateval = dt[0];
+	}
 	var dateelements=splitDateVal(dateval);
 
 	dd=dateelements[0];
@@ -416,6 +437,10 @@ function dateTimeValidate(dateFldName,timeFldName,fldLabel,type) {
 		return false;
 
 	var timeval=getObj(timeFldName).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
+	if (timeval.indexOf(' ')>0) {
+		let dt = timeval.split(' ');
+		timeval = dt[1];
+	}
 	var hourval=parseInt(timeval.substring(0,timeval.indexOf(":")));
 	var minval=parseInt(timeval.substring(timeval.indexOf(":")+1,timeval.length));
 	var currObj=getObj(timeFldName);

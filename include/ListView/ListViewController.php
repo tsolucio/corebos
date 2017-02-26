@@ -373,13 +373,13 @@ class ListViewController {
 					}
 				}elseif($field->getFieldDataType() == 'date' ||
 						$field->getFieldDataType() == 'datetime') {
-					if($value != '' && $value != '0000-00-00') {
+					if(!empty($value) && $value != '0000-00-00' && $value != '0000-00-00 00:00') {
 						$date = new DateTimeField($value);
 						$value = $date->getDisplayDate();
 						if($field->getFieldDataType() == 'datetime') {
 							$value .= (' ' . $date->getDisplayTime());
 						}
-					} elseif ($value == '0000-00-00') {
+					} elseif (empty($value) || $value == '0000-00-00' || $value == '0000-00-00 00:00') {
 						$value = '';
 					}
 				} elseif($field->getFieldDataType() == 'currency') {

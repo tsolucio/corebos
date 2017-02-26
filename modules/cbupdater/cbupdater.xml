@@ -1095,4 +1095,11 @@
 	<classname>add_dailyfield_incron</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Set uitype 50 to DateTime in Webservice</description>
+	<filename>build/changeSets/2017/uitype50DateTimeinWebservice.php</filename>
+	<classname>uitype50DateTimeinWebservice</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
