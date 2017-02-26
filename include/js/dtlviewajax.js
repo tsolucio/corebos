@@ -395,7 +395,7 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 	else if(getObj(popupTxt))
 	{
 		var popObj = getObj(popupTxt);
-		if(uitype == '50' || uitype == '73' || uitype == '51')
+		if(uitype == '73' || uitype == '51')
 		{
 			getObj(dtlView).innerHTML = "<a href=\"index.php?module=Accounts&action=DetailView&record="+tagValue+"\">"+popObj.value+"&nbsp;</a>";
 		}

@@ -268,7 +268,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$label_fld[] = $col_fields[$fieldname];
 	}
-	elseif ($uitype == 51 || $uitype == 50 || $uitype == 73) {
+	elseif ($uitype == 51 || $uitype == 73) {
 		$account_id = $col_fields[$fieldname];
 		if ($account_id != '') {
 			$account_name = getAccountName($account_id);
