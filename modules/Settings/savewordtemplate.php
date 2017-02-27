@@ -96,7 +96,6 @@ if(isset($_FILES['binFile']['tmp_name']) and move_uploaded_file($_FILES['binFile
 	{
 		include('modules/Vtiger/header.php');
 		include "upload.php";
-		// $errormessage = "<B><font color='red'>Kindly give a valid file for upload!</font></B> <br>" ;
 		echo "<script>alert('".$mod_strings['SPECIFY_FILE_TO_MERGE']."')</script>";
 	}
 	else if($errorCode == 2) {

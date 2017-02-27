@@ -20,7 +20,7 @@ if(isset($_REQUEST["record"]))
 	global $adb;
 	$query = 'update vtiger_rss set starred=0';
 	$adb->pquery($query, array());
-	$query = 'update vtiger_rss set starred=1 where rssid =?'; 
+	$query = 'update vtiger_rss set starred=1 where rssid =?';
 	$adb->pquery($query, array($_REQUEST["record"]));
 	echo vtlib_purify($_REQUEST["record"]);
 }
@@ -32,7 +32,7 @@ elseif(isset($_REQUEST["rssurl"]))
 	if($oRss->setRSSUrl($newRssUrl)) {
 		$result = $oRss->saveRSSUrl($newRssUrl,$setstarred);
 		if($result == false) {
-			echo $mod_strings['UNABLE_TO_SAVE'] ;
+			echo $mod_strings['UNABLE_TO_SAVE'];
 		} else {
 			echo $result;
 		}

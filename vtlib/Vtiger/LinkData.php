@@ -27,7 +27,7 @@ class Vtiger_LinkData {
 	}
 
 	public function getInputParameter($name) {
-		return $this->input[$name];
+		return (isset($this->input[$name]) ? $this->input[$name] : '');
 	}
 
 	/**

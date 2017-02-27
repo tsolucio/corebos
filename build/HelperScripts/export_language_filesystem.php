@@ -19,7 +19,7 @@ $Vtiger_Utils_Log = false;
 
 include_once('vtlib/Vtiger/Module.php');
 global $current_user,$adb;
-$dl = vtlib_purify($_REQUEST['download']);
+$dl = isset($_REQUEST['download']) ? vtlib_purify($_REQUEST['download']) : '';
 $dl = !empty($dl);
 if (!$dl) {
 header('Content-Type: text/html; charset=UTF8');
