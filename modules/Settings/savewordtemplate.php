@@ -77,10 +77,10 @@ if(isset($_FILES['binFile']['tmp_name']) and move_uploaded_file($_FILES['binFile
 				header("Location: index.php?action=upload&module=Settings&parenttab=Settings&flag=".$error_flag."&description=".$strDescription."&tempModule=".$module);
 			} else {
 				include('modules/Vtiger/header.php');
-				$errormessage = "<font color='red'><B>Error Message<ul>
-				<li><font color='red'>Invalid file OR</font>
-				<li><font color='red'>File has no data</font>
-				</ul></B></font> <br>" ;
+				$errormessage = "<font color='red'><b>".getTranslatedString('Error Message','Settings')."<ul>
+				<li><font color='red'>".getTranslatedString('Invalid_file','Settings')."</font>
+				<li><font color='red'>".getTranslatedString('File_has_no_data','Settings').'/font>
+				</ul></b></font><br>';
 				echo $errormessage;
 				deleteFile($uploaddir,$filename);
 				include "upload.php";

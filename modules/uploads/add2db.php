@@ -105,34 +105,31 @@ $log->debug("In add2db.php");
 		}
 		else
 		{
-			$errormessage = "<font color='red'><B>Error Message<ul>
-				<li><font color='red'>Invalid file OR</font>
-				<li><font color='red'>File has no data</font>
-				</ul></B></font> <br>" ;
-			header("Location: index.php?module=uploads&action=uploadsAjax&msg=true&file=upload&errormessage=".$errormessage);
+			$errormessage = "<font color='red'><b>".getTranslatedString('Error Message','Settings')."<ul>
+				<li><font color='red'>".getTranslatedString('Invalid_file','Settings')."</font>
+				<li><font color='red'>".getTranslatedString('File_has_no_data','Settings').'/font>
+				</ul></b></font><br>';
+			header('Location: index.php?module=uploads&action=uploadsAjax&msg=true&file=upload&errormessage='.urlencode($errormessage));
 		}
-	}
-	else 
-	{
+	} else {
 		$errorCode =  $_FILES['binFile']['error'];
 		$errormessage = "";
 
 		if($errorCode == 4)
 		{
-			$errormessage = "<B><font color='red'>Kindly give a valid file for upload!</font></B> <br>" ;
+			$errormessage = "<b><font color='red'>".getTranslatedString('LBL_PLEASE_ATTACH','Emails').'</font></b><br>';
 		}
 		else if($errorCode == 2)
 		{
-			$upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize',3000000);
-			$errormessage = "<B><font color='red'>Sorry, the uploaded file exceeds the maximum filesize limit. Please try a file smaller than $upload_maxsize bytes</font></B> <br>";
+			$errormessage = "<b><font color='red'>".getTranslatedString('FILESIZE_EXCEEDS_INFO_CONFIG_INC','Settings').'</font></b><br>';
 		}
 		else if($errorCode == 6)
 		{
-			$errormessage = "<B>Please configure <font color='red'>upload_tmp_dir</font> variable in php.ini file.</B> <br>" ;
+			$errormessage = '<b>'.getTranslatedString('LBL_KINDLY_UPLOAD','Emails').'</b><br>';
 		}
 		else if($errorCode == 3 || $errorcode == '')
 		{
-			$errormessage = "<b><font color='red'>Problems in file upload. Please try again!</font></b><br>";
+			$errormessage = "<b><font color='red'>".getTranslatedString('PROBLEMS_IN_FILEUPLOAD','Settings').'</font></b><br>';
 		}
 
 		if($errormessage != '')
