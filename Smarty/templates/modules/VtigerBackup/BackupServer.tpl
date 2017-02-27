@@ -85,11 +85,10 @@
 										<div id='localbackup_fields' style="display:none;">
 									{/if}
 										<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr height='30px'>
-											<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_BACKUP_LOCATION}
-											</strong></td>
+											<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_BACKUP_LOCATION}</strong></td>
 											{if $LOCAL_SERVER_MODE eq 'edit'}
 												<td width="80%" colspan=3>&nbsp;<input type="text" size=80 class="detailedViewTextBox small" value="{$SERVER_BACKUP_PATH}" name="server_path" /></strong>
-													{if $ERROR_STR}<p style="padding:6px;margin-left:10px;">{$ERROR_STR}</p>{/if}
+													{if !empty($ERROR_STR)}<p style="padding:6px;margin-left:10px;">{$ERROR_STR}</p>{/if}
 												</td>
 											{else}
 												<td width="80%" class="small cellText">

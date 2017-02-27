@@ -7,18 +7,18 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-global $mod_strings,$adb,$root_directory;
+global $mod_strings, $adb;
 if (isPermitted('VtigerBackup','')=='yes') {
 
-checkFileAccessForInclusion($root_directory."include/database/PearDatabase.php");
-require_once($root_directory."include/database/PearDatabase.php");
+checkFileAccessForInclusion('include/database/PearDatabase.php');
+require_once('include/database/PearDatabase.php');
 
-$server=vtlib_purify($_REQUEST['server']);
+$server = isset($_REQUEST['server']) ? vtlib_purify($_REQUEST['server']) : '';
 $port=(empty($_REQUEST['port']) ? 0 : vtlib_purify($_REQUEST['port']));
-$server_username=vtlib_purify($_REQUEST['server_username']);
-$server_password=vtlib_purify($_REQUEST['server_password']);
-$server_type = vtlib_purify($_REQUEST['server_type']);
-$server_path = vtlib_purify($_REQUEST['server_path']);
+$server_username = isset($_REQUEST['server_username']) ? vtlib_purify($_REQUEST['server_username']) : '';
+$server_password = isset($_REQUEST['server_password']) ? vtlib_purify($_REQUEST['server_password']) : '';
+$server_type = isset($_REQUEST['server_type']) ? vtlib_purify($_REQUEST['server_type']) : '';
+$server_path = isset($_REQUEST['server_path']) ? vtlib_purify($_REQUEST['server_path']) : '';
 $from_email_field = '';
 $smtp_auth = '';
 $db_update = true;

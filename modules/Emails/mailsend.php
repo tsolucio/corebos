@@ -13,8 +13,8 @@ require_once("include/utils/UserInfoUtil.php");
 global $adb, $current_user;
 
 //set the return module and return action and set the return id based on return module and record
-$returnmodule = vtlib_purify($_REQUEST['return_module']);
-$returnaction = vtlib_purify($_REQUEST['return_action']);
+$returnmodule = isset($_REQUEST['return_module']) ? vtlib_purify($_REQUEST['return_module']) : '';
+$returnaction = isset($_REQUEST['return_action']) ? vtlib_purify($_REQUEST['return_action']) : '';
 if((($returnmodule != 'Emails') || ($returnmodule == 'Emails' && $_REQUEST['record'] == '')) && $_REQUEST['return_id'] != '')
 {
 	$returnid = vtlib_purify($_REQUEST['return_id']);

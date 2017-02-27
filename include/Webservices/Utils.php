@@ -527,15 +527,12 @@ function vtws_CreateCompanyLogoFile($fieldname) {
 	}
 	if($fileSize != 0) {
 		if(in_array($fileTypeValue, $allowedFileTypes)) {
-			move_uploaded_file($_FILES[$fieldname]["tmp_name"],
-					$uploaddir.$_FILES[$fieldname]["name"]);
+			move_uploaded_file($_FILES[$fieldname]['tmp_name'], $uploaddir.$binFile);
 			return $binFile;
 		}
-		throw new WebServiceException(WebServiceErrorCode::$INVALIDTOKEN,
-			"$fieldname wrong file type given for upload");
+		throw new WebServiceException(WebServiceErrorCode::$INVALIDTOKEN, "$fieldname wrong file type given for upload");
 	}
-	throw new WebServiceException(WebServiceErrorCode::$INVALIDTOKEN,
-			"$fieldname file upload failed");
+	throw new WebServiceException(WebServiceErrorCode::$INVALIDTOKEN, "$fieldname file upload failed");
 }
 
 function vtws_getActorEntityName ($name, $idList) {

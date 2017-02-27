@@ -13,7 +13,7 @@
 <script src="modules/{$module->name}/resources/parallelexecuter.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8">
     var moduleName = '{$entityName}';
-    {if $task->field_value_mapping}
+    {if isset($task->field_value_mapping)}
         var fieldvaluemapping = JSON.parse('{$task->field_value_mapping|escape:'quotes'}');
     {else}
         var fieldvaluemapping = null;

@@ -38,8 +38,7 @@ class Vtiger_LocalBackup extends Vtiger_Location{
 		$directoryPath = $this->getPath();
 		// initialize an iterator
 		// pass it the directory to be processed
-		$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directoryPath),
-				RecursiveIteratorIterator::SELF_FIRST);
+		$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directoryPath), RecursiveIteratorIterator::SELF_FIRST);
 
 		// iterate over the directory
 		// add each file found to the archive
@@ -47,8 +46,10 @@ class Vtiger_LocalBackup extends Vtiger_Location{
 			$file = realpath($file);
 			if (is_file($file) === true) {
 				$fileName = $this->getFileName($file);
-				$fileName = explode('-',$fileName);
-				$fileName = $fileName[1];
+				if (strpos($fileName,'-')!==false) {
+					$fileName = explode('-',$fileName);
+					$fileName = $fileName[1];
+				}
 				$date = substr($fileName, 0, strrpos($fileName,'.'));
 				$date = str_replace('_',':',$date);
 				if(strtotime($date) !== false) {
@@ -118,8 +119,7 @@ class Vtiger_LocalBackup extends Vtiger_Location{
 	}
 
 	public function addTrailingSlash($path) {
-		return (strrpos($path, DIRECTORY_SEPARATOR) !== strlen($path) - 1)?
-				$path.DIRECTORY_SEPARATOR:$path;
+		return (strrpos($path, DIRECTORY_SEPARATOR) !== strlen($path) - 1) ? $path.DIRECTORY_SEPARATOR : $path;
 	}
 
 	public function save($source) {

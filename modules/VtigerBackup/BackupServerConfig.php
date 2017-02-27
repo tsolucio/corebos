@@ -96,10 +96,10 @@ global $adb, $enable_backup;
 
 if((isset($_REQUEST['backupnow'])))
 {
-	define("dbserver", $dbconfig['db_hostname']);
-	define("dbuser", $dbconfig['db_username']);
-	define("dbpass", $dbconfig['db_password']);
-	define("dbname", $dbconfig['db_name']);
+	defined('dbserver') or define('dbserver', $dbconfig['db_hostname']);
+	defined('dbuser') or define('dbuser', $dbconfig['db_username']);
+	defined('dbpass') or define('dbpass', $dbconfig['db_password']);
+	defined('dbname') or define('dbname', $dbconfig['db_name']);
 
 	$path_query = $adb->pquery("SELECT * FROM vtiger_systems WHERE server_type = ?",array('local_backup'));
 	$path = $adb->query_result($path_query,0,'server_path');

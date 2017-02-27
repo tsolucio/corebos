@@ -65,7 +65,7 @@ class Vtiger_PDF_TCPDF extends TCPDF {
 		return ($lines * ($this->FontSize * $this->cell_height_ratio)) + 2;
 	}
 
-	function SetFont($family, $style='', $size='') {
+	function SetFont($family, $style='', $size=0, $fontfile='') {
 		if($family == '') {
 			$family = $this->FontFamily;
 		}

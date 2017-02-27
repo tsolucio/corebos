@@ -1955,19 +1955,19 @@ function OpenCompose(id,mode,crmid)
 			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&record='+id+'&reply=true';
 			break;
 		case 'Invoice':
-			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+i18n+'_'+id+'.pdf&invmodid='+crmid;
+			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&pmodule=Invoice&attachment='+i18n+'_'+id+'.pdf&invmodid='+crmid;
 			break;
 		case 'PurchaseOrder':
-			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+i18n+'_'+id+'.pdf&invmodid='+crmid;
+			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&pmodule=PurchaseOrder&attachment='+i18n+'_'+id+'.pdf&invmodid='+crmid;
 			break;
 		case 'SalesOrder':
-			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+i18n+'_'+id+'.pdf&invmodid='+crmid;
+			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&pmodule=SalesOrder&attachment='+i18n+'_'+id+'.pdf&invmodid='+crmid;
 			break;
 		case 'Quote':
-			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+i18n+'_'+id+'.pdf&invmodid='+crmid;
+			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&pmodule=Quotes&attachment='+i18n+'_'+id+'.pdf&invmodid='+crmid;
 			break;
 		case 'Documents':
-			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+id+'';
+			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&pmodule=Documents&attachment='+id+'';
 			break;
 		case 'print':
 			url = 'index.php?module=Emails&action=EmailsAjax&file=PrintEmail&record='+id+'&print=true';

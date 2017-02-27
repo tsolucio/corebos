@@ -125,18 +125,15 @@ class Vtiger_PDF_InventoryContentViewer extends Vtiger_PDF_ContentViewer {
 				$commentCellWidth = $this->cells['Name'];
 				$offsetX = $this->cells['Code'];
 				
-				$contentHeight = $pdf->GetStringHeight($commentContent, $commentCellWidth);			
+				$contentHeight = $pdf->GetStringHeight($commentContent, $commentCellWidth);
 				if(ceil($contentLineY + $contentHeight + $overflowOffsetH) > ceil($contentFrame->h+$contentFrame->y)) {
-					
 					$this->drawCellBorder($parent);
 					$parent->createPage();
 
 					$contentFrame = $parent->getContentFrame();
 					$contentLineX = $contentFrame->x; $contentLineY = $contentFrame->y;
-				}			
-				$pdf->MultiCell($commentCellWidth, $contentHeight, $model->get('Comment'), 0, 'L', 0, 1, $contentLineX+$offsetX,
-					 $contentLineY);
-					 
+				}
+				$pdf->MultiCell($commentCellWidth, $contentHeight, $model->get('Comment'), 0, 'L', 0, 1, $contentLineX+$offsetX, $contentLineY);
 				$contentLineY = $pdf->GetY();
 			}
 		}
@@ -147,7 +144,7 @@ class Vtiger_PDF_InventoryContentViewer extends Vtiger_PDF_ContentViewer {
 		if ($this->contentSummaryModel) {
 			$summaryCellKeys = $this->contentSummaryModel->keys(); $summaryCellCount = count($summaryCellKeys);
 		
-			$summaryCellLabelWidth = $this->cells['Quantity'] + $this->cells['Price'] + $this->cells['Discount'] + $this->cells['Tax'];
+			$summaryCellLabelWidth = $this->cells['Quantity'] + $this->cells['Price'] + $this->cells['Discount'] + (isset($this->cells['Tax']) ? $this->cells['Tax'] : 0);
 			$summaryCellHeight = $pdf->GetStringHeight("TEST", $summaryCellLabelWidth); // Pre-calculate cell height
 		
 			$summaryTotalHeight = ceil(($summaryCellHeight * $summaryCellCount));
@@ -155,12 +152,11 @@ class Vtiger_PDF_InventoryContentViewer extends Vtiger_PDF_ContentViewer {
 			if (($contentFrame->h+$contentFrame->y) - ($contentLineY+$overflowOffsetH)  < $summaryTotalHeight) { //$overflowOffsetH is added so that last Line Item is not overlapping
 				$this->drawCellBorder($parent);
 				$parent->createPage();
-					
 				$contentFrame = $parent->getContentFrame();
 				$contentLineX = $contentFrame->x; $contentLineY = $contentFrame->y;
 			}
-				
-			$summaryLineX = $contentLineX + $this->cells['Code'] + $this->cells['Name'];		
+
+			$summaryLineX = $contentLineX + $this->cells['Code'] + $this->cells['Name'];
 			$summaryLineY = ($contentFrame->h+$contentFrame->y-$this->headerRowHeight)-$summaryTotalHeight;
 		
 			foreach($summaryCellKeys as $key) {	

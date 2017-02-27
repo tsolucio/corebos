@@ -817,7 +817,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	//added by rdhital/Raju for better email support
 	elseif($uitype == 357)
 	{
-		$pmodule = $_REQUEST['pmodule'];
+		$pmodule = isset($_REQUEST['pmodule']) ? $_REQUEST['pmodule'] : null;
 		if(empty($pmodule))
 			$pmodule = $_REQUEST['par_module'];
 

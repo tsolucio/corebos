@@ -11,9 +11,7 @@
 require_once('config.php');
 require_once('include/database/PearDatabase.php');
 
-global $adb;
-global $fileId;
-global $current_user;
+global $adb, $fileId, $current_user;
 
 $fileid = vtlib_purify($_REQUEST['fileid']);
 $folderid = vtlib_purify($_REQUEST['folderid']);
@@ -30,7 +28,7 @@ if($adb->num_rows($result) == 1)
 	$name = html_entity_decode($name, ENT_QUOTES, $default_charset);
 	$pathQuery = $adb->pquery("select path from vtiger_attachments where attachmentsid = ?",array($fileid));
 	$filepath = $adb->query_result($pathQuery,0,'path');
-		
+
 	$saved_filename = $fileid."_".$name;
 	if(!$filepath.$saved_filename)
 	$saved_filename = $fileid."_".$name;

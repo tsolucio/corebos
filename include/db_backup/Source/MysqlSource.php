@@ -6,17 +6,11 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  *********************************************************************************/
 
 require_once 'include/db_backup/Source/BackupSource.php';
 require_once 'adodb/adodb-lib.inc.php';
 
-/**
- * Description of MysqlSource
- *
- * @author MAK
- */
 class MysqlSource extends BackupSource {
 
 	private $currentStage = -1;
@@ -38,7 +32,7 @@ class MysqlSource extends BackupSource {
 	}
 
 	private function setup() {
-		$this->connection = &NewADOConnection($this->dbConfig->getDBType());
+		$this->connection = NewADOConnection($this->dbConfig->getDBType());
 		$ok = $this->connection->NConnect($this->dbConfig->getHostName(),$this->dbConfig->getUserName(),
 			$this->dbConfig->getPassword(),$this->dbConfig->getDatabaseName());
 		if(!$ok){
@@ -130,8 +124,7 @@ class MysqlSource extends BackupSource {
 		if(empty($this->result)) {
 			$sql = "select * from $tableName";
 			$this->result = $this->connection->_Execute($sql,false);
-			$this->checkError($result,$sql.' '.$this->connection->ErrorMsg().' '.
-				$this->connection->ErrorNo());
+			$this->checkError($this->result,$sql.' '.$this->connection->ErrorMsg().' '. $this->connection->ErrorNo());
 			$this->start = 0;
 		}
 		$rowCount = $this->result->RecordCount();
@@ -295,47 +288,43 @@ class MysqlSource extends BackupSource {
 				if (is_null($arrFields[$upperfname])
 					|| (empty($arrFields[$upperfname]) && strlen($arrFields[$upperfname]) == 0)
 					|| $arrFields[$upperfname] === 'null') {
-                    switch ($force) {
-                        case 0: // we must always set null if missing
+					switch ($force) {
+						case 0: // we must always set null if missing
 							$bad = true;
 							break;
 
-                        case 1:
-                            $values  .= "null, ";
+						case 1:
+							$values  .= "null, ";
 							break;
 
-                        case 2:
-                            //Set empty
-                            $arrFields[$upperfname] = "";
-                            $values .= _adodb_column_sql($zthis, 'I', $type, $upperfname, $fnameq,
-									$arrFields, $magicq);
+						case 2:
+							//Set empty
+							$arrFields[$upperfname] = "";
+							$values .= _adodb_column_sql($zthis, 'I', $type, $upperfname, $fnameq, $arrFields, $magicq);
 							break;
 						default:
-                        case 3:
-                            //Set the value that was given in array, so you can give both null and
+						case 3:
+							//Set the value that was given in array, so you can give both null and
 							//empty values
 							if (is_null($arrFields[$upperfname]) || $arrFields[$upperfname] ===
 									'null') {
 								$values  .= "null, ";
 							} else {
-                        		$values .= _adodb_column_sql($zthis, 'I', $type, $upperfname,
-										$fnameq, $arrFields, $magicq);
-             				}
+								$values .= _adodb_column_sql($zthis, 'I', $type, $upperfname, $fnameq, $arrFields, $magicq);
+							}
 							break;
-             		} // switch
+					} // switch
 				} else {
 					//we do this so each driver can customize the sql for
 					//DB specific column types.
 					//Oracle needs BLOB types to be handled with a returning clause
 					//postgres has special needs as well
-					$values .= _adodb_column_sql($zthis, 'I', $type, $upperfname, $fnameq,
-												   $arrFields, $magicq);
+					$values .= _adodb_column_sql($zthis, 'I', $type, $upperfname, $fnameq, $arrFields, $magicq);
 				}
 
 				if ($bad) continue;
 				// Set the counter for the number of fields that will be inserted.
 				$fieldInsertedCount++;
-
 
 				// Get the name of the fields to insert
 				$fields .= $fnameq . ", ";
