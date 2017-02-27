@@ -517,7 +517,7 @@ function vtws_CreateCompanyLogoFile($fieldname) {
 	global $root_directory;
 	$uploaddir = $root_directory ."/test/logo/";
 	$allowedFileTypes = array("jpeg", "png", "jpg", "pjpeg" ,"x-png");
-	$binFile = $_FILES[$fieldname]['name'];
+	$binFile = basename($_FILES[$fieldname]['name']);
 	$fileType = $_FILES[$fieldname]['type'];
 	$fileSize = $_FILES[$fieldname]['size'];
 	$fileTypeArray = explode("/",$fileType);

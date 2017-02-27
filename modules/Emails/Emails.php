@@ -654,6 +654,7 @@ function pdfAttach($obj, $module, $file_name, $id) {
 	global $log, $adb, $current_user, $upload_badext;
 	$log->debug("Entering into pdfAttach() method.");
 
+	$file_name = basename($file_name);
 	$date_var = date('Y-m-d H:i:s');
 
 	$ownerid = $obj->column_fields['assigned_user_id'];
