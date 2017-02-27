@@ -144,6 +144,7 @@ class Vtiger_PackageExport {
 
 	static function packageFromFilesystem($moduleName, $mandatory=false, $directDownload=false) {
 		// first we check for the files
+		$moduleName = preg_replace('/[^a-zA-Z]/', '', $moduleName);
 		$wehavefiles = is_dir("modules/$moduleName");  // check for module directory
 		$wehavefiles = $wehavefiles and file_exists("modules/$moduleName/manifest.xml");  // check for manifest
 		$wehavefiles = $wehavefiles and is_dir("modules/$moduleName/language");  // check for language directory
@@ -175,7 +176,8 @@ class Vtiger_PackageExport {
 	static function languageFromFilesystem($languageCode, $languageName, $directDownload=false) {
 		// first we check for the files
 		$wehavefiles = file_exists("include/language/$languageCode.manifest.xml");  // check for manifest
-		if ($wehavefiles) {
+		if ($wehavefiles and preg_match('/^[a-z]{2}_[a-z]{2}$/',$languageCode)) {
+			$languageName = preg_replace('/[^a-zA-Z]/', '', $languageName);
 			// Export as Zip
 			if (file_exists('packages/optional/manifest.xml'))
 				@unlink('packages/optional/manifest.xml');

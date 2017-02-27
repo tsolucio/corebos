@@ -60,6 +60,7 @@ class Vtiger_Zip {
 	 * Push out the file content for download.
 	 */
 	function forceDownload($zipfileName) {
+		if (!$this->isInsideApplication($zipfileName)) return false; // if the file is not inside the application tree we do not send it
 		header("Pragma: public");
 		header("Expires: 0");
 		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
@@ -108,6 +109,7 @@ class Vtiger_Zip {
 	 * Copy the directory on the disk into zip file.
 	 */
 	function copyDirectoryFromDisk($dirname, $zipdirname=null, $excludeList=null, $basedirname=null) {
+		if (!$this->isInsideApplication($dirname)) return false;
 		$dir = opendir($dirname);
 		if(strripos($dirname, '/') != strlen($dirname)-1)
 			$dirname .= '/';
@@ -140,6 +142,7 @@ class Vtiger_Zip {
 	 * Copy the directory on the disk into zip file with no offset
 	 */
 	function copyDirectoryFromDiskNoOffset($dirname, $zipdirname=null, $excludeList=null, $basedirname=null) {
+		if (!$this->isInsideApplication($dirname)) return false;
 		$dir = opendir($dirname);
 		if(strripos($dirname, '/') != strlen($dirname)-1)
 			$dirname .= '/';
@@ -176,5 +179,15 @@ class Vtiger_Zip {
 		$zippath = $this->__fixDirSeparator($zippath);
 		$this->addFile("$path$file", "$zippath$file");
 	}
+
+	/**
+	 * path is inside the application tree
+	 */
+	function isInsideApplication($path2check) {
+		global $root_directory;
+		$rp = realpath($path2check);
+		return (strpos($rp,$root_directory)==0);
+	}
+
 }
 ?>
