@@ -54,6 +54,7 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 	if ($oCv) {
 		if (isset($oCv->list_fields)) {
 			$focus->list_fields = $oCv->list_fields;
+			$focus->list_fields_name = $oCv->list_fields_name;
 		}
 	}
 
@@ -3005,7 +3006,7 @@ function getRelatedTo($module, $list_result, $rset) {
 
 	$parent_module = $adb->query_result($evt_result, 0, 'setype');
 	$parent_id = $adb->query_result($evt_result, 0, 'crmid');
-
+	$parent_name = '';
 	if ($numrows > 1) {
 		$parent_module = 'Multiple';
 		$parent_name = $app_strings['LBL_MULTIPLE'];
@@ -3784,13 +3785,13 @@ function getListViewEditLink($module, $entity_id, $relatedlist, $returnset, $res
 
 	$edit_link .= "&parenttab=" . $tabname . $url;
 	//Appending view name while editing from ListView
-	$edit_link .= "&return_viewname=" . $_SESSION['lvs'][$module]["viewname"];
+	$edit_link .= '&return_viewname=' . (isset($_SESSION['lvs'][$module]['viewname']) ? $_SESSION['lvs'][$module]['viewname'] : '');
 	if ($module == 'Emails')
 		$edit_link = 'javascript:;" onclick="OpenCompose(\'' . $entity_id . '\',\'edit\');';
 	return $edit_link;
 }
 
-/** 	Function to get the Del link details for ListView and RelatedListView
+/** Function to get the Del link details for ListView and RelatedListView
  * 	@param string 	$module 	- module name
  * 	@param int 	$entity_id 	- record id
  * 	@param string 	$relatedlist 	- string "relatedlist" or may be empty. if empty means ListView else relatedlist

@@ -551,7 +551,7 @@ class ListViewController {
 					} else {
 						$parentModule = $this->typeList[$value];
 					}
-					if(!empty($value) && !empty($this->nameList[$fieldName]) && !empty($parentModule)) {
+					if(!empty($value) && !empty($this->nameList[$fieldName]) && !empty($this->nameList[$fieldName][$value]) && !empty($parentModule)) {
 						$parentMeta = $this->queryGenerator->getMeta($parentModule);
 						$value = textlength_check($this->nameList[$fieldName][$value]);
 						if ($parentMeta->isModuleEntity() && $parentModule != "Users") {

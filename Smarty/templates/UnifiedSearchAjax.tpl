@@ -36,11 +36,7 @@
 					<td>
 						<table border=0 cellspacing=0 cellpadding=2 width=100% class="small">
 							<tr>
-							{assign var="MODULELABEL" value=$MODULE}
-							{if $APP.$MODULE neq ''}
-								{assign var="MODULELABEL" value=$APP.$MODULE}
-							{/if}
-								<td style="padding-right:20px" nowrap ><b class=big>{$MODULELABEL}</b>{$SEARCH_CRITERIA}</td>
+								<td style="padding-right:20px" nowrap ><b class=big>{$MODULE|@getTranslatedString:$MODULE}</b>{$SEARCH_CRITERIA}</td>
 								<td style="padding-right:20px" class="small" align="right" nowrap>{$ModuleRecordCount.$MODULE.recordListRangeMessage}</td>
 								<td nowrap width="50%">
 									<table border=0 cellspacing=0 cellpadding=0 class="small">

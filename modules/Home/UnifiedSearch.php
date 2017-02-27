@@ -26,7 +26,7 @@ $total_record_count = 0;
 
 $query_string = trim($_REQUEST['query_string']);
 $curModule = vtlib_purify($_REQUEST['module']);
-$search_tag = vtlib_purify($_REQUEST['search_tag']);
+$search_tag = isset($_REQUEST['search_tag']) ? vtlib_purify($_REQUEST['search_tag']) : '';
 
 if(isset($query_string) && $query_string != ''){
 	// Was the search limited by user for specific modules?
@@ -47,7 +47,7 @@ if(isset($query_string) && $query_string != ''){
 	$image_path="themes/".$theme."/"."images/";
 
 	$search_val = $query_string;
-	$search_module = $_REQUEST['search_module'];
+	$search_module = isset($_REQUEST['search_module']) ? $_REQUEST['search_module'] : '';
 
 	if($curModule=='Home') {
 		getSearchModulesComboList($search_module);
@@ -69,7 +69,7 @@ if(isset($query_string) && $query_string != ''){
 				$smarty->assign("IMAGE_PATH",$image_path);
 				$smarty->assign("MODULE",$module);
 				$smarty->assign("TAG_SEARCH",$search_tag);
-				$smarty->assign("SEARCH_MODULE",vtlib_purify($_REQUEST['search_module']));
+				$smarty->assign('SEARCH_MODULE', $search_module);
 				$smarty->assign("SINGLE_MOD",$module);
 				$smarty->assign("SEARCH_STRING",htmlentities($search_val, ENT_QUOTES, $default_charset));
 
@@ -159,8 +159,8 @@ if(isset($query_string) && $query_string != ''){
 
 				$moduleRecordCount[$module]['recordListRangeMessage'] = getRecordRangeMessage($list_result, $limitStartRecord, $noofrows);
 
-				$info_message='&recordcount='.$_REQUEST['recordcount'].'&noofrows='.$_REQUEST['noofrows'].'&message='.$_REQUEST['message'].'&skipped_record_count='.$_REQUEST['skipped_record_count'];
-				$url_string = '&modulename='.$_REQUEST['modulename'].'&nav_module='.$module_name.$info_message;
+				$info_message='&recordcount='.(isset($_REQUEST['recordcount']) ? $_REQUEST['recordcount'] : 0).'&noofrows='.(isset($_REQUEST['noofrows']) ? $_REQUEST['noofrows'] : 0).'&message='.(isset($_REQUEST['message']) ? $_REQUEST['message'] : '').'&skipped_record_count='.(isset($_REQUEST['skipped_record_count']) ? $_REQUEST['skipped_record_count'] : 0);
+				$url_string = '&modulename='.(isset($_REQUEST['modulename']) ? $_REQUEST['modulename'] : '').'&nav_module='.$module.$info_message;
 				$viewid = '';
 
 				$navigationOutput = getTableHeaderSimpleNavigation($navigation_array, $url_string,$module,"UnifiedSearch",$viewid);
@@ -270,8 +270,7 @@ function getSearchModulesComboList($search_module){
 				?>
 				<?php if(isPermitted($module,"index") == "yes"){
 				?>
-				<?php $modulelabel = $module; if($app_strings[$module]) { $modulelabel = $app_strings[$module]; } ?>
-				<option value="<?php echo $module; ?>" <?php echo $selected; ?> ><?php echo $modulelabel; ?></option>
+				<option value="<?php echo $module; ?>" <?php echo $selected; ?> ><?php echo getTranslatedString($module,$module); ?></option>
 				<?php
 				}
 			}

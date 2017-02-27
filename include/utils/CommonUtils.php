@@ -516,7 +516,8 @@ function getSalesEntityType($crmid) {
 function getAccountName($account_id) {
 	global $log, $adb;
 	$log->debug("Entering getAccountName($account_id) method ...");
-	if ($account_id != '') {
+	$accountname = '';
+	if (empty($account_id)) {
 		$sql = 'select accountname from vtiger_account where accountid=?';
 		$result = $adb->pquery($sql, array($account_id));
 		$accountname = $adb->query_result($result, 0, 'accountname');
@@ -3207,6 +3208,11 @@ function getEntityFieldNames($module) {
 		if (!(strpos($fieldsName, ',') === false)) {
 			$fieldsName = explode(',', $fieldsName);
 		}
+	} else {
+		$fieldsName = '';
+		$tableName = '';
+		$entityIdField = '';
+		$moduleName = '';
 	}
 	$data = array("tablename" => $tableName, "modulename" => $moduleName, "fieldname" => $fieldsName, "entityidfield" => $entityIdField);
 	return $data;
