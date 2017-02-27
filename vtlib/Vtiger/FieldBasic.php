@@ -190,6 +190,22 @@ class Vtiger_FieldBasic {
 	 * @internal TODO
 	 */
 	function __update() {
+		$db = PearDatabase::getInstance();
+		$query = 'UPDATE vtiger_field SET typeofdata=?,presence=?,quickcreate=?,masseditable=?,defaultvalue=?';
+		$params = array($this->typeofdata, $this->presence, $this->quickcreate, $this->masseditable, $this->defaultvalue);
+
+		if (!empty($this->uitype)) {
+			$query .= ', uitype=?';
+			$params[] = $this->uitype;
+		}
+		if (!empty($this->label)) {
+			$query .= ', fieldlabel=?';
+			$params[] = decode_html($this->label);
+		}
+		$query .= ' WHERE fieldid=?';
+		$params[] = $this->id;
+
+		$db->pquery($query,$params);
 		self::log("Updating Field $this->name ... DONE");
 	}
 
