@@ -46,8 +46,6 @@ $mod_strings = Array(
     'LBL_PROJECT_TASK_INFORMATION' => 'Project Taak Informatie',
     'LBL_DESCRIPTION_INFORMATION' => 'Omschrijving',
     'Assigned To' => 'Toegewezen Aan',
-    //'linktoproject' => 'Link to Project',
-    'Related Project' => 'Gerelateerd Project',
     'Priority' => 'Prioriteit',
     'Progress' => 'Voortgang (%)',
 	'Open' => 'Open',
@@ -56,22 +54,19 @@ $mod_strings = Array(
     'Worked Hours'=>'Gewerkte Uren',
     'Start Date'=>'Startdatum',
     'End Date'=>'Einddatum',
-    'Related To' => 'Gerelateerd Aan',
-    'projectid' => 'Relatie ID',
+    'Related to' => 'Project',
     'administrative' => 'administratief',
     'operative' => 'operationeel',
     'other' => 'anders',
     'low' => 'laag',
     'normal' => 'normaal',
     'high' => 'hoog',
-    'Created Time' => 'Aangemaakt',
-    'Modified Time' => 'Gewijzigd',
-    'Description' => 'Omschrijving',
     'description' => 'Omschrijving',
     //added for related lists 
     'Project Task Name' => 'Taaknaam',
     'Project Task No' => 'Taak Nr',
     'Project Task Number' => 'Taakcode',
+	'Add Note' => 'Add Note',
 );
 
 ?>
