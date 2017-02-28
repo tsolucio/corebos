@@ -1164,20 +1164,20 @@ class CRMEntity {
 		$joinedTables[] = 'vtiger_users';
 		$joinedTables[] = 'vtiger_groups';
 
-		$linkedModulesQuery = $this->db->pquery("SELECT distinct fieldname, columnname, relmodule FROM vtiger_field" .
+		$linkedModulesQuery = $this->db->pquery("SELECT distinct tablename, columnname, relmodule FROM vtiger_field" .
 			" INNER JOIN vtiger_fieldmodulerel ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid" .
 			" WHERE uitype='10' AND vtiger_fieldmodulerel.module=?", array($module));
 		$linkedFieldsCount = $this->db->num_rows($linkedModulesQuery);
 
 		for($i=0; $i<$linkedFieldsCount; $i++) {
 			$related_module = $this->db->query_result($linkedModulesQuery, $i, 'relmodule');
-			$fieldname = $this->db->query_result($linkedModulesQuery, $i, 'fieldname');
+			$tablename = $this->db->query_result($linkedModulesQuery, $i, 'tablename');
 			$columnname = $this->db->query_result($linkedModulesQuery, $i, 'columnname');
 
 			$other = CRMEntity::getInstance($related_module);
 
 			if(!in_array($other->table_name, $joinedTables)) {
-				$query .= " LEFT JOIN $other->table_name ON $other->table_name.$other->table_index = $this->table_name.$columnname";
+				$query .= " LEFT JOIN $other->table_name ON $other->table_name.$other->table_index = $tablename.$columnname";
 				$joinedTables[] = $other->table_name;
 			}
 		}
