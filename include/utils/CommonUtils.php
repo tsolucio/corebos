@@ -517,7 +517,7 @@ function getAccountName($account_id) {
 	global $log, $adb;
 	$log->debug("Entering getAccountName($account_id) method ...");
 	$accountname = '';
-	if (empty($account_id)) {
+	if (!empty($account_id)) {
 		$sql = 'select accountname from vtiger_account where accountid=?';
 		$result = $adb->pquery($sql, array($account_id));
 		$accountname = $adb->query_result($result, 0, 'accountname');
