@@ -20,7 +20,6 @@ $access_privileges = array();
 $row=1;
 foreach($defSharingPermissionData as $tab_id => $def_perr)
 {
-
 	$entity_name = getTabname($tab_id);
 	if($tab_id == 6) {
 		$cont_name = getTabname(4);

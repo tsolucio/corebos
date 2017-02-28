@@ -9,11 +9,6 @@
  ********************************************************************************* */
 require_once 'include/events/SqlResultIterator.inc';
 
-/**
- * Description of EmailTemplateUtils
- *
- * @author mak
- */
 class EmailTemplate {
 
 	protected $module;
@@ -40,17 +35,18 @@ class EmailTemplate {
 		$this->templateFields = Array();
 		for($i=1;$i < count($templateVariablePair);$i+=2) {
 			list($module,$fieldName) = explode('-',$templateVariablePair[$i]);
-                        if($pos = strpos($fieldName,'_fullpath')){
-                            list($field,$fpath) = explode('_',$fieldName);
-                            $this->templateFields[$module][] = $field;
-                        }
+			if ($pos = strpos($fieldName,'_fullpath')) {
+				list($field,$fpath) = explode('_',$fieldName);
+				$this->templateFields[$module][] = $field;
+			}
 			$this->templateFields[$module][] = $fieldName;
 		}
 		$this->processed = false;
 	}
 
 	private function getTemplateVariableListForModule($module){
-		return $this->templateFields[strtolower($module)];
+		$mname = strtolower($module);
+		return isset($this->templateFields[$mname]) ? $this->templateFields[$mname] : array();
 	}
 
 	public function process(){
@@ -72,7 +68,6 @@ class EmailTemplate {
 				if(in_array($column,$allColumnList)){
 					$columnList[] = $column;
 					$columnList_full[] = $columnTableMapping[$column].'.'.$column;
-				
 				}
 			}
 

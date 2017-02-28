@@ -15,8 +15,7 @@ global $adb, $current_user;
 //set the return module and return action and set the return id based on return module and record
 $returnmodule = isset($_REQUEST['return_module']) ? vtlib_purify($_REQUEST['return_module']) : '';
 $returnaction = isset($_REQUEST['return_action']) ? vtlib_purify($_REQUEST['return_action']) : '';
-if((($returnmodule != 'Emails') || ($returnmodule == 'Emails' && $_REQUEST['record'] == '')) && $_REQUEST['return_id'] != '')
-{
+if ((($returnmodule != 'Emails') || ($returnmodule == 'Emails' && empty($_REQUEST['record']))) && !empty($_REQUEST['return_id'])) {
 	$returnid = vtlib_purify($_REQUEST['return_id']);
 }
 else
@@ -26,8 +25,7 @@ else
 
 $adb->println("\n\nMail Sending Process has been started.");
 //This function call is used to send mail to the assigned to user. In this mail CC and BCC addresses will be added.
-if($_REQUEST['assigntype' == 'T'] && $_REQUEST['assigned_group_id']!='')
-{
+if (isset($_REQUEST['assigntype']) && $_REQUEST['assigntype'] == 'T' && !empty($_REQUEST['assigned_group_id'])) {
 	$grp_obj = new GetGroupUsers();
 	$grp_obj->getAllUsersInGroup($_REQUEST['assigned_group_id']);
 	$users_list = constructList($grp_obj->group_users,'INTEGER');

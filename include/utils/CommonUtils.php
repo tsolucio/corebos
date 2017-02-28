@@ -2250,7 +2250,7 @@ function getMergedDescription($description, $id, $parent_type) {
 		$module = explode('-', $tokenDataPair[$i]);
 		$fields[$module[0]][] = $module[1];
 	}
-	if (is_array($fields['custom']) && count($fields['custom']) > 0) {
+	if (isset($fields['custom']) && is_array($fields['custom']) && count($fields['custom']) > 0) {
 		// Custom date & time fields
 		$description = getMergedDescriptionCustomVars($fields, $description);
 	}

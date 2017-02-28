@@ -109,7 +109,7 @@ DIV.fixedLay {
 					{assign var="xx" value=$APP.Contacts}
 					{assign var="mod_display" value=$mod_display|cat:" & $xx"}
 				{/if}
-				{if $details.0 neq ''}
+				{if !empty($details.0)}
 				<table width="100%" border="0" cellpadding="5" cellspacing="0" class="listTableTopButtons">
                   		<tr>
 		                    <td  style="padding-left:5px;" class="big"><img src="{'arrow.jpg'|@vtiger_imageurl:$THEME}" width="19" height="21" align="absmiddle" />&nbsp; <b>{$mod_display}</b>&nbsp; </td>
