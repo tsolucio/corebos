@@ -233,7 +233,6 @@ $mod_strings = Array(
 
 'NOTIFICATIONSCHEDULERS'=>'Sistema Agendamento Notificação',
 //currency status
-'LBL_ACTIVE'=>'Ativo',
 
 'LBL_INACTIVE'=>'Inativo',
 
@@ -257,8 +256,6 @@ $mod_strings = Array(
 'LBL_EMAIL_SETTINGS'=>'Configuração de E-mails:',
 
 'LBL_SECURITY_SETTINGS'=>'Configuração de Segurança:',
-
-
 
 //Added fields after RC1 - Release
 
@@ -1168,10 +1165,6 @@ $mod_strings = Array(
 
 //Added for: 5473
 'LBL_SHARING_ACCESS_HELPNOTE' => 'Depois que fizer modificações, pressione o botão Recalcular para aplicar as mudanças.',
-
-//for customer portal extension module
-'PORTAL_EXTENSION_DESCRIPTION'=>'Permite Configurar o Plugin do Portal do Cliente',
-'LBL_CUSTOMER_PORTAL'=> 'Portal do Cliente',
 
 'LBL_ADD_CUSTOMFIELD' => 'Adicionar Campo Customizado',
 

@@ -83,7 +83,6 @@ $mod_strings = Array(
 'LBL_PD'=>'Dependiente Plataforma',
 'LBL_PIND'=>'Independiente Plataforma',
 'ChoosePlatform'=>'Elija Plataforma',
-'LBL_ACTIVE'=>'Activo',
 'LBL_INACTIVE'=>'Inactivo',
 'LBL_UPLOAD_BUTTON'=>'Subir',
 'architecture'=>'Arquitectura',

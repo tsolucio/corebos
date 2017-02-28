@@ -116,7 +116,6 @@ $mod_strings = Array(
 'LBL_MAIL_MERGE'=>'Mail Merge',
 'NOTIFICATIONSCHEDULERS'=>'Notification Schedulers',
 //currency status
-'LBL_ACTIVE'=>'Active',
 'LBL_INACTIVE'=>'Inactive',
 'LBL_NOTIFICATION'=>'Notification',
 'LBL_DESCRIPTION'=>'Description',
@@ -920,10 +919,6 @@ $mod_strings = Array(
 
 //Added for: 5473
 'LBL_SHARING_ACCESS_HELPNOTE' => 'After making modifications, press Recalculate button to apply the changes.',
-
-//for customer portal extension module
-'PORTAL_EXTENSION_DESCRIPTION'=>'Allows you to Configure Customer Portal Plugin',
-'LBL_CUSTOMER_PORTAL'=> 'Customer Portal',
 
 'LBL_ADD_CUSTOMFIELD' => 'Add Custom Field',
 

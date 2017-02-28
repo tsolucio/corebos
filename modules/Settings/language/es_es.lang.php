@@ -110,7 +110,6 @@ $mod_strings = array (
       'WORDINTEGRATION' => 'Plantillas de Mailing',
       'LBL_MAIL_MERGE' => 'Mailings',
       'NOTIFICATIONSCHEDULERS' => 'Programador de Notificaciones',
-      'LBL_ACTIVE' => 'Activa',
       'LBL_INACTIVE' => 'Inactiva',
       'LBL_NOTIFICATION' => 'Notificación',
       'LBL_DESCRIPTION' => 'Descripción',
@@ -864,10 +863,6 @@ $mod_strings = array (
 
       //Added for: 5473
       'LBL_SHARING_ACCESS_HELPNOTE' => 'Trás las modificaciones, pulsa el botón de Recalcular para aplicar los cambios.',
-
-      //for customer portal extension module
-      'PORTAL_EXTENSION_DESCRIPTION'=>'Permite Configurar la Extensión Portal del Cliente',
-      'LBL_CUSTOMER_PORTAL'=> 'Portal Cliente',
 
       'LBL_ADD_CUSTOMFIELD' => 'Añadir Campo Personalizado',
 

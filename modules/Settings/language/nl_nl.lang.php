@@ -153,7 +153,6 @@ $mod_strings = Array(
 'LBL_MAIL_MERGE'=>'Samenvoegen',
 'NOTIFICATIONSCHEDULERS'=>'Notificatie planners',
 //currency status
-'LBL_ACTIVE'=>'Actief',
 'LBL_INACTIVE'=>'Inactief',
 'LBL_NOTIFICATION'=>'Notificatie',
 'LBL_DESCRIPTION'=>'Omschrijving',
@@ -972,15 +971,6 @@ $mod_strings = Array(
 //Added for: 5473
 'LBL_SHARING_ACCESS_HELPNOTE' => 'Na Wijzigingen: klik op de Herbereken knop om de wijzigen door te voeren.',
 
-//for customer portal extension module
-'PORTAL_EXTENSION_DESCRIPTION'=>'Configureer Klant Portaal Plugin',
-'LBL_CUSTOMER_PORTAL'=> 'Klant Portaal',
-
-//FieldFormulas
-'LBL_FIELDFORMULAS' => 'Veld Formules',
-'LBL_FIELDFORMULAS_DESCRIPTION' => 'Voeg maatwerk vergelijkingen toe aan maatwerk velden',
-
-// @todo since vtiger 5.3 by Vicus to be translated
 'LBL_ADD_CUSTOMFIELD' => 'Add Custom Field',
 
 'ERR_INVALID_PROFILE_ID' => 'Invalid Profile Id. Please specify valid Profile Id',

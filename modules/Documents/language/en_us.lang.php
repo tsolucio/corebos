@@ -75,7 +75,6 @@ $mod_strings = Array(
 'LBL_PD'=>'Platform Dependent',
 'LBL_PIND'=>'Platform Independent',
 'ChoosePlatform'=>'Choose Platform',
-'LBL_ACTIVE'=>'Active',
 'LBL_INACTIVE'=>'Inactive',
 'LBL_UPLOAD_BUTTON'=>'Upload',
 'architecture'=>'Architecture',
