@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
 include_once 'modules/Quotes/QuotePDFController.php';
 $controller = new Vtiger_QuotePDFController($currentModule);
@@ -18,9 +17,9 @@ if(isset($_REQUEST['savemode']) && $_REQUEST['savemode'] == 'file') {
 	$filepath='test/product/'.$quote_id.'_'.$moduleName.'_'.$quote_no.'.pdf';
 	//added file name to make it work in IE, also forces the download giving the user the option to save
 	$controller->Output($filepath,'F');
-} elseif($purpose == 'webservice') {
-   $log->debug("Switched to buffer. Purpose = ". $purpose);
-   $PDFBuffer = $controller->Output('','S'); // S means send the pdf output in buffer instead of file
+} elseif (isset($purpose) and $purpose == 'webservice') {
+	$log->debug('Switched to buffer. Purpose = '. $purpose);
+	$PDFBuffer = $controller->Output('','S'); // S means send the pdf output in buffer instead of file
 } else {
 	//added file name to make it work in IE, also forces the download giving the user the option to save
 	$controller->Output($moduleName.'_'.$quote_no.'.pdf', 'D');

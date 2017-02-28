@@ -63,6 +63,8 @@ else
 }
 $cc = $_REQUEST['ccmail'];
 $bcc = $_REQUEST['bccmail'];
+$errorheader1 = 0;
+$errorheader2 = 0;
 if($to_email == '' && $cc == '' && $bcc == '')
 {
 	$adb->println("Mail Error : send_mail function not called because To email id of assigned to user, CC and BCC are empty");
@@ -76,6 +78,7 @@ else
 	$val = $adb->query_result($res1,0,'email1');
 	$query = 'update vtiger_emaildetails set email_flag ="SENT",from_email =? where emailid=?';
 	$adb->pquery($query, array($val, $focus->id));
+	$mail_status_str = '';
 }
 
 $parentid= vtlib_purify($_REQUEST['parent_id']);
@@ -164,6 +167,8 @@ for ($i=0;$i<(count($myids)-1);$i++)
 				{
 					$description =str_replace('$logo$','<img src="cid:logo" />',$description);
 					$logo=1;
+				} else {
+					$logo = 0;
 				}
 				if(isPermitted($pmodule,'DetailView',$mycrmid) == 'yes')
 				{
