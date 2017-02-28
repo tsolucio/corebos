@@ -876,24 +876,15 @@ $mod_strings = array (
 
       'ERR_INVALID_PROFILE_ID' => 'Identificador perfil inválido. Por favor, indica un identificador válido',
 
-      // Customization
-      'LBL_PUBLISHER' => 'Publicado por',
-      'LBL_PUBLISHED_ON' => 'Publicado el',
-      'LBL_LICENSE'   => 'Licencia',
-      'LBL_EXTENSION_FILE_DOWNLOAD_FAILED' => 'No se ha podido descargar la extensión!',
       'LBL_ALREADY_EXISTS' => 'Ya Existe',
       'LBL_EXTENSION_INCOMPATIBLE' => 'Extensión Incompatible',
       'LBL_INSTALL' => 'Instalar',
-      'LBL_DEFAULT_SETTINGS_BUTTON_TITLE' => 'Reestablecer configuración por Defecto',
       'LBL_CONFIRM_DEFAULT_SETTINGS' => '¿Estás seguro que quiere cambiar los valores del servidor a sus valores por defecto?',
       'EXISTING_DEFAULT_VALUES' => 'Los valores del servidor ya están en sus valores por defecto',
       'LBL_NOTE' => 'Nota:',
       'LBL_HIDE' => 'Esconder Detalles',
       'LBL_SHOW' => 'Mostrar Detalles',
-      // END
-      'LBL_USER_ADDITION_INFO'=>"Para agregar un nuevo usuario, haga click en  
-      			   <span style='font-style:italic;color:blue;'>OD-Menú Configuración -> On Demand Admin -> Añadir / Invitar Usuario </span>",
-      
+
       'LBL_READ_ONLY_ACCESS_MSG' => 'Acceso Solo-Lectura',
       'LBL_READ_WRITE_ACCESS_MSG' => 'Acceso Lectura-Escritura',
       'LBL_DESCRIPTION_Public: Read Only'=>'Usuarios pueden Solo Leer otros usuarios ',
@@ -910,8 +901,6 @@ $mod_strings = array (
       'LBL_ERR_TAX_LABEL_ALREADY_EXISTS' => 'Este impuesto ya existe.',
       'LBL_ERR_SOME_TAX_LABELS_ALREADY_EXISTS' => 'Algunos impuestos tienen el nombre repetido y no han sido guardados.',
       'LBL_ERR_ADDTAX' => 'Se ha producido un error añadiendo el impuesto. Por favor inténtalo de nuevo',
-      'LBL_EDIT_COMPANY_INFO' => "Para editar la información de la empresa, haz click sobre
-                          <span style='font-style:italic;color:blue;'>Icono Configuración > Administrador > Empresa </span>",
 
       'Configuration Editor'=>'Editor de Configuración',
 

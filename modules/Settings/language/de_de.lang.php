@@ -978,23 +978,14 @@ $mod_strings = Array(
 
     'ERR_INVALID_PROFILE_ID' => 'Invalid Profile Id. Please specify valid Profile Id',
 
-    // Customization
-    'LBL_PUBLISHER' => 'Herausgeber',
-    'LBL_PUBLISHED_ON' => 'veröffentlicht am',
-    'LBL_LICENSE'   => 'Lizenz',
-    'LBL_EXTENSION_FILE_DOWNLOAD_FAILED' => 'Das Erweiterungs-Packet konnte nicht heruntergeladen werden!',
     'LBL_ALREADY_EXISTS' => 'Existiert bereits',
     'LBL_EXTENSION_INCOMPATIBLE' => 'Erweiterung nicht kompatibel',
     'LBL_INSTALL' => 'Installieren',
-    'LBL_DEFAULT_SETTINGS_BUTTON_TITLE' => 'Zum Standard zurücksetzen',
     'LBL_CONFIRM_DEFAULT_SETTINGS' => 'Sind Sie sicher, dass Sie die Server-Einstellungen zum Standard zurück setzen wollen?',
     'EXISTING_DEFAULT_VALUES' => 'Die Server-Einstellungen wurden bereits zum Standard zurückgesetzt.',
     'LBL_NOTE' => 'Hinweis:',
     'LBL_HIDE' => 'Verberge Details',
     'LBL_SHOW' => 'Zeige Details',
-    // END
-    'LBL_USER_ADDITION_INFO'=>"Um einen neuen Benutzer hinzuzufügen, klicken Sie bitte auf  
-                <span style='font-style:italic;color:blue;'>OD-Einstellungsmenü -> On Demand Admin -> Benutzer hinzufügen / einladen </span>",
 
     'LBL_READ_ONLY_ACCESS_MSG' => 'Lesezugriff',
     'LBL_READ_WRITE_ACCESS_MSG' => 'Lese- und Schreibzugriff',
@@ -1013,8 +1004,6 @@ $mod_strings = Array(
     'LBL_ERR_TAX_LABEL_ALREADY_EXISTS' => 'Diese Mwst. ist bereits vorhanden.',
     'LBL_ERR_SOME_TAX_LABELS_ALREADY_EXISTS' => 'Einige Mwst. Beschriftungen sind bereits vorhanden, deshalb kann es nicht gespeichert werden.',
 	'LBL_ERR_ADDTAX' => 'There may be some problem in adding the Tax type. Please try again',
-    'LBL_EDIT_COMPANY_INFO' => "To edit company details, please click on
-                <span style='font-style:italic;color:blue;'>Settings Icon > On Demand Admin > Company </span>",
 
     'Configuration Editor'=>'Konfiguration Editor',
 

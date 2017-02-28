@@ -929,21 +929,14 @@ $mod_strings = Array(
 
 'ERR_INVALID_PROFILE_ID' => 'Invalid Profile Id. Please specify valid Profile Id',
 
-// Customization
-'LBL_PUBLISHER' => 'Publisher',
-'LBL_PUBLISHED_ON' => 'Published On',
-'LBL_LICENSE'   => 'License',
-'LBL_EXTENSION_FILE_DOWNLOAD_FAILED' => 'Failed to download the extension package!',
 'LBL_ALREADY_EXISTS' => 'Already Exists',
 'LBL_EXTENSION_INCOMPATIBLE' => 'Extension Incompatible',
 'LBL_INSTALL' => 'Install',
-'LBL_DEFAULT_SETTINGS_BUTTON_TITLE' => 'Reset To Default',
 'LBL_CONFIRM_DEFAULT_SETTINGS' => 'Are you sure that you want to change the server details to the default server values',
 'EXISTING_DEFAULT_VALUES' => 'The server details are already set to the default values',
 'LBL_NOTE' => 'Note:',
 'LBL_HIDE' => 'Hide Details',
 'LBL_SHOW' => 'Show Details',
-'LBL_USER_ADDITION_INFO'=>"To add a new user, please click on <span style='font-style:italic;color:blue;'>Settings Icon -> On Demand Admin -> Add User </span>",
 
 'LBL_READ_ONLY_ACCESS_MSG' => 'Read-Only Access',
 'LBL_READ_WRITE_ACCESS_MSG' => 'Read-Write Access',
@@ -962,8 +955,6 @@ $mod_strings = Array(
 'LBL_ERR_TAX_LABEL_ALREADY_EXISTS' => 'This tax is already available.',
 'LBL_ERR_SOME_TAX_LABELS_ALREADY_EXISTS' => 'Some tax labels are already available, hence not saved.',
 'LBL_ERR_ADDTAX' => 'There may be some problem in adding the Tax type. Please try again',
-'LBL_EDIT_COMPANY_INFO' => "To edit company details, please click on
-			   <span style='font-style:italic;color:blue;'>Settings Icon > On Demand Admin > Company </span>",
 
 'Configuration Editor'=>'Configuration Editor',
 

@@ -1177,23 +1177,14 @@ $mod_strings = Array(
 
 'ERR_INVALID_PROFILE_ID' => 'ID Perfil Inválido. Por favor, especifique um ID do Perfil válido.',
 
-// Customization
-'LBL_PUBLISHER' => 'Editor',
-'LBL_PUBLISHED_ON' => 'Publicado em',
-'LBL_LICENSE'   => 'Licença',
-'LBL_EXTENSION_FILE_DOWNLOAD_FAILED' => 'Falha ao fazer o download do pacote de extensão!',
 'LBL_ALREADY_EXISTS' => 'Já Existe',
 'LBL_EXTENSION_INCOMPATIBLE' => 'Extensão Incompatível',
 'LBL_INSTALL' => 'Instalar',
-'LBL_DEFAULT_SETTINGS_BUTTON_TITLE' => 'Restaurar Padrão',
 'LBL_CONFIRM_DEFAULT_SETTINGS' => 'Tem certeza que deseja mudar os detalhes do Servidor para os valores padrões do Servidor',
 'EXISTING_DEFAULT_VALUES' => 'Os detalhes do Servidor já estão configurados para os valores padrões',
 'LBL_NOTE' => 'Nota:',
 'LBL_HIDE' => 'Ocultar Detalhes',
 'LBL_SHOW' => 'Mostrar Detalhes',
-// END
-'LBL_USER_ADDITION_INFO'=>"Para adicionar um novo Usuário, por favor clique sobre  
-			   <span style='font-style:italic;color:blue;'>Menu Configurações-OD -> Admin On Demand -> Adicionar / Convidar Usuário </span>",
 
 'LBL_READ_ONLY_ACCESS_MSG' => 'Acesso Somente Leitura',
 'LBL_READ_WRITE_ACCESS_MSG' => 'Acesso Leitura-Escrita',
@@ -1212,8 +1203,6 @@ $mod_strings = Array(
 'LBL_ERR_TAX_LABEL_ALREADY_EXISTS' => 'Este imposto já está disponível.',
 'LBL_ERR_SOME_TAX_LABELS_ALREADY_EXISTS' => 'Alguns rótulos de impostos já estão disponíveis, portanto não foram salvos.',
 'LBL_ERR_ADDTAX' => 'There may be some problem in adding the Tax type. Please try again',
-'LBL_EDIT_COMPANY_INFO' => "Para editar os detalhes da empresa, por favor, clique sobre o
-			   <span style='font-style:italic;color:blue;'>Ícone Configurações > Admin On Demand > Empresa </span>",
 
 'Configuration Editor'=>'Editor Configuração',
 

@@ -1016,11 +1016,7 @@ $app_strings = array (
       'Shipping & Handling Tax:' => 'Impuestos de Manejo y Transporte',
       'Quantity'=>'Cantidad',
       'Grand Total : (in )'=>'Gran Total : (en )',
-      'Issued Date' => 'Fecha Emisión',
 
-      // Added after 5.0.4 GA
-      
-      //Added to Fix i18N issue in Email Template
       'LBL_GENERAL_FIELDS'=>'Campos Generales', 
       //For Users fields
       'HomePhone'=>'Teléfono Casa',

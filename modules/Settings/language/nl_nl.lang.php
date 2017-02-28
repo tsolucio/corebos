@@ -985,24 +985,14 @@ $mod_strings = Array(
 
 'ERR_INVALID_PROFILE_ID' => 'Invalid Profile Id. Please specify valid Profile Id',
 
-// Customization
-// @todo Vicus vtiger 3.5 partly translated
-'LBL_PUBLISHER' => 'Publisher',
-'LBL_PUBLISHED_ON' => 'Published On',
-'LBL_LICENSE'   => 'Licentie',
-'LBL_EXTENSION_FILE_DOWNLOAD_FAILED' => 'Failed to download the extension package!',
 'LBL_ALREADY_EXISTS' => 'Bestaat al',
 'LBL_EXTENSION_INCOMPATIBLE' => 'Add-on is niet compatible',
 'LBL_INSTALL' => 'Installeren',
-'LBL_DEFAULT_SETTINGS_BUTTON_TITLE' => 'Reset naar Standaard',
 'LBL_CONFIRM_DEFAULT_SETTINGS' => 'Are you sure that you want to change the server details to the default server values',
 'EXISTING_DEFAULT_VALUES' => 'The server details are already set to the default values',
 'LBL_NOTE' => 'Note:',
 'LBL_HIDE' => 'Hide Details',
 'LBL_SHOW' => 'Show Details',
-// END
-'LBL_USER_ADDITION_INFO'=>"To add a new user, please click on  
-			   <span style='font-style:italic;color:blue;'>OD-Settings Menu -> On Demand Admin -> Add / Invite User </span>",
 
 'LBL_READ_ONLY_ACCESS_MSG' => 'Alleen-Lezen toegang',
 'LBL_READ_WRITE_ACCESS_MSG' => 'Lezen-Schrijven toegang',
