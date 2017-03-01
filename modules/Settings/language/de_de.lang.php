@@ -268,7 +268,6 @@ $mod_strings = Array(
     'LBL_BUSINESS_TYPE'=>'Geschäftsbeziehung',
     'LBL_CURRENCY_TYPE'=>'Währungstyp',
     'LBL_SALES_STAGE'=>'Verkaufsphase',
-    'LBL_PRIORITY'=>'Priorität',
     'LBL_STATUS'=>'Status',
     'LBL_CATEGORY'=>'Kategorie',
     'LBL_MANUFACTURER'=>'Hersteller',
@@ -296,7 +295,7 @@ $mod_strings = Array(
     'LBL_IMAP4'=>'IMAP4',
     'LBL_POP'=>'POP',
     'LBL_IMAP'=>'IMAP',
-    'LBL_MAIL_DISCLAIM'=>'Einträge mit einer <font color="red">*</font> Markierung sind Pflichtangaben<br>Einträge mit einer <font color="red">* *</font> Kennzeichnung werden nicht voll unterstützt',
+    'LBL_MAIL_DISCLAIM'=>'Einträge mit einer <font color="red">*</font> Markierung sind Pflichtangaben',
     'LBL_SSL_OPTIONS'=>'SSL Optionen',
     'LBL_TLS'=>'TLS',
     'LBL_NO_TLS'=>'Kein TLS',
@@ -715,11 +714,7 @@ $mod_strings = Array(
     'LBL_EXISTING_PICKLIST_VALUES'=>'vorhandene Listeneinträge',
     'LBL_SELECT_PICKLIST'=>'Liste auswählen',
 
-    // Added after 5.0.4 GA
-
     'LBL_GENERAL_FIELDS'=>'Allgmeine Felder',
-
-    'LBL_CANCEL_BUTTON'=>'Abbrechen',
 
     //Added fields for Inventory Number labels
     'LBL_CUSTOMIZE_INVENTORY_NUMBER'=>'Sequenz bearbeiten',
@@ -739,8 +734,6 @@ $mod_strings = Array(
     'LBL_CUSTOMPO_NUMBER'=>'Nummer',
     'LBL_PO_NUMBER_PREVIEW'=>'Vorschau',
     'LBL_PO_NUMBER_BUTTON'=>'Bestellnummer aktualisieren',
-
-    // Added after 5.0.4 GA
 
     // Added for Multi-Currency Support
     'LBL_TRANSFER_CURRENCY'=>'Währung übertragen',
@@ -794,7 +787,6 @@ $mod_strings = Array(
     'LBL_FROM'=>'Von',
     'LBL_TO'=>'An',
 
-    'LBL_ACTION'=>'Aktion',
     'LBL_CREATE'=>'erstelle',
     'LBL_TICKET'=>'Ticket',
     'LBL_PROJECT'=>'Project',

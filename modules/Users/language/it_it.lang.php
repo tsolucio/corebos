@@ -638,16 +638,13 @@
   'LBL_5_MIN' => '5 minuti',
   'LBL_EMAILS_PER_PAGE' => 'Email per pagina',
 
-
   'LBL_ENTER_PROFILE' => 'Inserisci il nome del profilo',
   'TITLE_USER_DOCUMENT' => 'Documento senza nome',
-  'TITLE_VTIGER_CRM_5' => 'CRM Open Source',
   'ROLE_DRAG_ERR_MSG' => 'Non puoi muovere un nodo padre sotto un nodo figlio',
 
   'LBL_NOTIFICATION_ACTIVITY' => 'Attivit&agrave; di notifica',
   'LBL_NOTIFICATION_EMAIL_INFO' => 'Informazioni email di notifica',
   'LBL_GOTO_LISTVIEW_BUTTON' => 'Vai a Vista per Lista',
-
 
   'LBL_SSL' => 'SSL',
 
@@ -658,26 +655,20 @@
   'LBL_TAGCLOUD_DISPLAY' => 'Tag Cloud Display',
   'INTERNAL_MAIL_COMPOSER' => 'Compositore Email interno',
 
-
   'User Login Details' => 'Dettagli Login Utente',
   'LBL_TO_LOGIN' => 'per Login',
-
-
 
 'LBL_USER_ADV_OPTIONS'=>'Utente Opzioni Avanzate',
 'Reminder Interval' => 'Intervallo Promemoria',
 'Webservice Access Key' => 'Access Key',
 
-
 'LBL_GROUPNAME_EXIST' => 'Esiste gi&agrave; un Gruppo col nome specificato!',
 'LBL_PROFILENAME_EXIST' => 'Esiste gi&agrave; un Utente col nome specificato!',
-
 
 'Asterisk Configuration' => 'Configurazione Asterisk',
 'Asterisk Extension' => 'Estensione Asterisk',
 'Receive Incoming Calls' => 'Ricevi chiamate in entrata',
 ' Receive Incoming Calls' => 'Ricevi chiamate in Entrata',
-
 
 'LBL_USER_CUSTOMFIELDS_DESCRIPTION' => 'Crea campi personalizzati utente',
 'LBL_USER_CUSTOMFIELDS' => 'Campi Personalizzati Utente',

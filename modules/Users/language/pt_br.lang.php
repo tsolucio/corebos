@@ -652,32 +652,24 @@ $mod_strings = Array(
 'LBL_4_MIN'=>'4 minutos',
 'LBL_5_MIN'=>'5 minutos',
 'LBL_EMAILS_PER_PAGE'=>'Email por Página',
-// Added for 5.0.3
 
 'LBL_ENTER_PROFILE'=>'Digite o Nome do Perfil',
 'TITLE_USER_DOCUMENT'=>'Documento sem título',
-'TITLE_VTIGER_CRM_5'=>'Gratuíto, Código Aberto e Uso Comercial',
 'ROLE_DRAG_ERR_MSG'=>'Você não pode mover um Nó Pai com um Nó Filho',
 
 'LBL_NOTIFICATION_ACTIVITY'=>'Atividade de Notificação',
 'LBL_NOTIFICATION_EMAIL_INFO'=>'Informação E-mail Notificação',
 'LBL_GOTO_LISTVIEW_BUTTON'=>'Ir para Lista',
 
-// Added/Updated for vtiger CRM 5.0.4
-
 'LBL_SSL' => 'SSL',
-//Added to fix the issue #4081
 'LBL_USERNAME_EXIST' => 'Nome Usuário já Existe!',
 'LBL_UNAUTHORIZED_ACCESS' => 'Acesso não autorizado para administração de Usuário',
 //Added to provide User based TagCloud
 'LBL_TAGCLOUD_DISPLAY'=>'Mostrar Tag Cloud',
 'INTERNAL_MAIL_COMPOSER'=>'Editor Interno de Mensagens',
 
-// Added for 5.0.4 to Support Email notication on User Creation
 'User Login Details'=>'Detalhes Acesso Usuário',
 'LBL_TO_LOGIN' => 'para Acesso',
-
-// Added after 5.0.4 GA
 
 'LBL_USER_ADV_OPTIONS'=>'Opções para Usuários Avançados',
 'Reminder Interval'=>'Intervalo Lembrete',

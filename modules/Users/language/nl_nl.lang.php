@@ -554,7 +554,6 @@ $mod_strings = array(
 	'LBL_EMAILS_PER_PAGE' => 'E-mail per pagina',
 	'LBL_ENTER_PROFILE' => 'Geef het profiel op',
 	'TITLE_USER_DOCUMENT' => 'Document zonder titel',
-	'TITLE_VTIGER_CRM_5' => 'gratis, commercieel gekwalificeerd Open Source CRM',
 	'ROLE_DRAG_ERR_MSG' => 'U kunt geen Ouder Node onderschikken aan een Kind Node',
 	'LBL_NOTIFICATION_ACTIVITY' => 'Notificatie Activiteit',
 	'LBL_NOTIFICATION_EMAIL_INFO' => 'Notificatie e-mail Informatie',

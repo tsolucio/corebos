@@ -220,7 +220,6 @@ $mod_strings = array (
       'LBL_BUSINESS_TYPE' => 'Tipo de Negocio',
       'LBL_CURRENCY_TYPE' => 'Tipo de Moneda',
       'LBL_SALES_STAGE' => 'Estado de Venta',
-      'LBL_PRIORITY' => 'Prioridad',
       'LBL_CATEGORY' => 'Categoría',
       'LBL_MANUFACTURER' => 'Fabricante',
       'LBL_PRODUCT_CATEGORY' => 'Categoría de Producto',
@@ -245,7 +244,7 @@ $mod_strings = array (
       'LBL_IMAP4' => 'IMAP4',
       'LBL_POP' => 'POP',
       'LBL_IMAP' => 'IMAP',
-      'LBL_MAIL_DISCLAIM' => 'Los elementos marcados con <font color="red">*</font> son obligatorios<br>Los elementos marcados con <font color="red">* *</font> no están completamente soportados',
+      'LBL_MAIL_DISCLAIM' => 'Los elementos marcados con <font color="red">*</font> son obligatorios',
       'LBL_SSL_OPTIONS' => 'Opciones SSL',
       'LBL_TLS' => 'TLS',
       'LBL_NO_TLS' => 'Sin TLS',
@@ -595,7 +594,6 @@ $mod_strings = array (
       'ERR_ALREADY_EXISTS' => 'ya existe.',
       'ERR_SPECIFY_DIFFERENT_LABEL' => 'Por favor introduzca una etiqueta distinta',
       'LBL_TOOLS_TO_BE_SHOWN'=>'Herramientas a mostrar',
-      'LBL_PICKLIST_GLOBAL_CHANGE'=>'Cambio Global',
       'LBL_PICKLIST_TRANSFER'=>'Transfiriendo los valores de ',
       'LBL_REPLACE_VALUE_WITH'=>'Sustituir valor con ',
       'LBL_EDIT_CUSTOM_RULE'=>'Editar Regla de Privilegio Personalizada',
@@ -611,11 +609,7 @@ $mod_strings = array (
       'LBL_LANGUAGES' => 'Editar Paquete de idioma',
       'LBL_LANGUAGES_DESCRIPTION' => 'Gestionar Paquetes de Idiomas',
 
-      // Added after 5.0.4 GA
-      
       'LBL_GENERAL_FIELDS'=>'Campos Generales',
-      
-      'LBL_CANCEL_BUTTON'=>'Cancelar',
       
       //Added fields for Inventory Number labels
       'LBL_CUSTOMIZE_INVENTORY_NUMBER'=>'Personalizar Secuencia de Inventario',
@@ -686,7 +680,6 @@ $mod_strings = array (
       'LBL_FROM'=>'De',
       'LBL_TO'=>'A',
     
-      'LBL_ACTION'=>'Acción',
       'LBL_CREATE'=>'Crear',
       'LBL_TICKET'=>'Ticket',
       'LBL_PROJECT'=>'Proyecto',

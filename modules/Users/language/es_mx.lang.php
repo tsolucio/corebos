@@ -628,7 +628,7 @@ $mod_strings = Array(
 'LBL_IMAP4'=>'IMAP4',
 'LBL_POP'=>'POP',
 'LBL_IMAP'=>'IMAP',
-'LBL_MAIL_DISCLAIM'=>'Los elementos señalados con <font color="red">*</font> son obligatorios<br>Los elementos señalados con <font color="red">* *</font> no están soportados completamente',
+'LBL_MAIL_DISCLAIM'=>'Los elementos señalados con <font color="red">*</font> son obligatorios',
 'LBL_SSL_OPTIONS'=>'Opciones de SSL',
 'LBL_TLS'=>'TLS',
 'LBL_NO_TLS'=>'No TLS',
@@ -658,7 +658,6 @@ $mod_strings = Array(
 
 'LBL_ENTER_PROFILE'=>'Introducir Nombre del Perfil',
 'TITLE_USER_DOCUMENT'=>'Documento sin Nombre',
-'TITLE_VTIGER_CRM_5'=>'Open Source CRM',
 'ROLE_DRAG_ERR_MSG'=>'No puedes mover un Nodo Padre bajo un Nodo Hijo',
 
 'LBL_NOTIFICATION_ACTIVITY'=>'Notificación de Actividad',

@@ -459,8 +459,6 @@ $mod_strings = Array(
 
 'LBL_SALES_STAGE'=>'Estágio Vendas',
 
-'LBL_PRIORITY'=>'Prioridade',
-
 'LBL_STATUS'=>'Status',
 
 'LBL_CATEGORY'=>'Categoria Ticket',
@@ -898,7 +896,6 @@ $mod_strings = Array(
 'ERR_ALREADY_EXISTS'=>' já existe.',
 'ERR_SPECIFY_DIFFERENT_LABEL'=>'Por gentileza, especifique um Rótulo diferente',
 'LBL_TOOLS_TO_BE_SHOWN'=>'Ferramentas a serem exibidas',
-'LBL_PICKLIST_GLOBAL_CHANGE'=>'Mudar Global',
 'LBL_PICKLIST_TRANSFER'=>'Transferindo os valores de ',
 'LBL_REPLACE_VALUE_WITH'=>'Substituir valor com ',
 'LBL_EDIT_CUSTOM_RULE'=>'Editar Customizar Regras Privilégio',
@@ -912,11 +909,7 @@ $mod_strings = Array(
 'LBL_EXISTING_PICKLIST_VALUES'=>'Valores Lista Opções Existente',
 'LBL_SELECT_PICKLIST'=>'Selecionar Lista Opções',
 
-// Added after 5.0.4 GA
-
 'LBL_GENERAL_FIELDS'=>'Campos Gerais',
-
-'LBL_CANCEL_BUTTON'=>'Cancelar',
 
 //Added fields for Inventory Number labels
 'LBL_CUSTOMIZE_INVENTORY_NUMBER'=>'Customizar Numeração',
@@ -936,8 +929,6 @@ $mod_strings = Array(
 'LBL_CUSTOMPO_NUMBER'=>'Customizar Número Pedido Compra',
 'LBL_PO_NUMBER_PREVIEW'=>'Visualização',
 'LBL_PO_NUMBER_BUTTON'=>'Atualizar Número Pedido Compra',
-
-// Added after 5.0.4 GA
 
 // Added for Multi-Currency Support
 'LBL_TRANSFER_CURRENCY'=>'Transferir Moeda',
@@ -991,7 +982,6 @@ $mod_strings = Array(
 'LBL_FROM'=>'De',
 'LBL_TO'=>'Para',
 
-'LBL_ACTION'=>'Ação',
 'LBL_CREATE'=>'Criar',
 'LBL_TICKET'=>'Ticket',
 'LBL_PROJECT'=>'Project',

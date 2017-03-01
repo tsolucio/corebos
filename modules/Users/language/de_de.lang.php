@@ -620,7 +620,7 @@ $mod_strings = Array(
     'LBL_IMAP4'=>'IMAP4',
     'LBL_POP'=>'POP',
     'LBL_IMAP'=>'IMAP',
-    'LBL_MAIL_DISCLAIM'=>'Angaben mit einer <font color="red">*</font> Markierung sind Pflichtfelder.<br>Angaben mit einer <font color="red">* *</font> Markierung werden nicht voll unterstützt.',
+    'LBL_MAIL_DISCLAIM'=>'Angaben mit einer <font color="red">*</font> Markierung sind Pflichtfelder.',
     'LBL_SSL_OPTIONS'=>'SSL Optionen',
     'LBL_TLS'=>'TLS',
     'LBL_NO_TLS'=>'Kein TLS',
@@ -646,21 +646,16 @@ $mod_strings = Array(
     'LBL_4_MIN'=>'4 Minuten',
     'LBL_5_MIN'=>'5 Minuten',
     'LBL_EMAILS_PER_PAGE'=>'E-Mails pro Seite',
-    // Added for 5.0.3
 
     'LBL_ENTER_PROFILE'=>'Profilnamen eingeben',
     'TITLE_USER_DOCUMENT'=>'Dokument ohne Namen',
-    'TITLE_VTIGER_CRM_5'=>'crm',
     'ROLE_DRAG_ERR_MSG'=>'Sie können keine übergeordnete Rolle unter eine untergeordnete Rolle verschieben.',
 
     'LBL_NOTIFICATION_ACTIVITY'=>'automatische Benachrichtigung',
     'LBL_NOTIFICATION_EMAIL_INFO'=>'E-Mail Information',
     'LBL_GOTO_LISTVIEW_BUTTON'=>'zur Listenansicht gehen',
 
-    // Added/Updated for vtiger CRM 5.0.4
-
     'LBL_SSL' => 'SSL',
-    //Added to fix the issue #4081
     'LBL_USERNAME_EXIST' => 'Dieser Benutzername existiert bereits!',
     'LBL_UNAUTHORIZED_ACCESS' => 'Sie haben keinen Zugang zur Administration!',
     //Added to provide User based TagCloud
@@ -670,8 +665,6 @@ $mod_strings = Array(
     // Added for 5.0.4 to Support Email notication on User Creation
     'User Login Details'=>'Benutzer Login Details',
     'LBL_TO_LOGIN' => 'zum Login',
-
-    // Added after 5.0.4 GA
 
     'LBL_USER_ADV_OPTIONS'=>'erweiterte Optionen',
     'Reminder Interval'=>'Erinnerungsintervall',

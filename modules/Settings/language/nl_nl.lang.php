@@ -278,7 +278,6 @@ $mod_strings = Array(
 'LBL_BUSINESS_TYPE'=>'Handel type',
 'LBL_CURRENCY_TYPE'=>'Valuta type',
 'LBL_SALES_STAGE'=>'Verkoop stadium',
-'LBL_PRIORITY'=>'Prioriteit',
 'LBL_STATUS'=>'Status',
 'LBL_CATEGORY'=>'Ticket categorie',
 'LBL_MANUFACTURER'=>'Fabrikant',
@@ -305,7 +304,7 @@ $mod_strings = Array(
 'LBL_IMAP4'=>'IMAP4',
 'LBL_POP'=>'POP',
 'LBL_IMAP'=>'IMAP',
-'LBL_MAIL_DISCLAIM'=>'Gemarkeerd met <font color="red">*</font> zijn verplicht<br>Gemarkeerd met <font color="red">* *</font> worden niet volledig ondersteund',
+'LBL_MAIL_DISCLAIM'=>'Gemarkeerd met <font color="red">*</font> zijn verplicht',
 'LBL_SSL_OPTIONS'=>'SSL opties',
 'LBL_TLS'=>'TLS',
 'LBL_NO_TLS'=>'Geen TLS',
@@ -475,11 +474,6 @@ $mod_strings = Array(
 'LBL_DEFAULT_MODULE_VIEW_DESC'=>'Standaard detail overzicht voor alle modules instellen',
 'LBL_ENABLE_SINGLEPANE_VIEW'=>'Enkelvoudig scherm aanzetten',
 'LBL_CLEAR_DATA'=>'Leegmaken',
-'LBL_LENGTHALERT'=>'Sorry, u kunt geen velden synchroniseren met verschillende karakters. Synchroniseer de data met dezelfde of meer karakters.',
-'LBL_DECIMALALERT'=>'Sorry, u kunt geen velden synchroniseren met verschillende decimale plaatsen. Synchroniseer de data met dezelfde of meerdere decimale plaatsen.',
-'LBL_TYPEALERT_1'=>'Sorry, u kunt niet synchroniseren',
-'LBL_WITH'=>'met',
-'LBL_TYPEALERT_2'=>'Data type. Synchroniseer dezelfde data types.',
 'LBL_FAQ_FIELD_ACCESS'=>'Toegang veld FAQ',
 'LBL_ADD_TAX_BUTTON'=>'BTW Toevoegen',
 'LBL_NO_TAXES_AVAILABLE'=>'Geen BTW beschikbaar',
@@ -717,11 +711,7 @@ $mod_strings = Array(
 'LBL_EXISTING_PICKLIST_VALUES'=>'Reeds bestaande Selectielijst Waarden',
 'LBL_SELECT_PICKLIST'=>'Selecteer Selectielijst',
 
-// Added after 5.0.4 GA
-
 'LBL_GENERAL_FIELDS'=>'Algemene Velden',
-
-'LBL_CANCEL_BUTTON'=>'Annuleer',
 
 //Added fields for Inventory Number labels
 'LBL_CUSTOMIZE_INVENTORY_NUMBER'=>'Maatwerk Voorraad Sequentie',
@@ -741,8 +731,6 @@ $mod_strings = Array(
 'LBL_CUSTOMPO_NUMBER'=>'Maatwerk Inkooporder Nummer',
 'LBL_PO_NUMBER_PREVIEW'=>'Preview',
 'LBL_PO_NUMBER_BUTTON'=>'Update Inkooporder Nummer',
-
-// Added after 5.0.4 GA
 
 // Added for Multi-Currency Support
 'LBL_TRANSFER_CURRENCY'=>'Transporteer Valuta',
@@ -796,7 +784,6 @@ $mod_strings = Array(
 'LBL_FROM'=>'van',
 'LBL_TO'=>'Aan',
 
-'LBL_ACTION'=>'Actie',
 'LBL_CREATE'=>'Maak',
 'LBL_TICKET'=>'Ticket',
 'LBL_PROJECT'=>'Project',
