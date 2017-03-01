@@ -504,7 +504,6 @@ $mod_strings = array(
 	'LBL_TEAM' => 'Csapat',
 	'LBL_CREDITS' => 'Készítők',
 	'LBL_THIRD_PARTY' => 'Harmadik Fél Csomagok',
-	'LBL_COMMUNITY' => 'És vtiger Közösség',
 	'LBL_ASSIGN_ROLE' => 'Munkakör Hozzáférés',
 	'LBL_ADD_MAIL_ACCOUNT' => 'Levelezési Account Hozzáadás',
 	'LBL_NEW_MAIL_ACCOUNT_TITLE' => 'Új Levelezési Account [Alt+M]',

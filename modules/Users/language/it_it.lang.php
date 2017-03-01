@@ -588,7 +588,6 @@
   'LBL_TEAM' => 'Team',
   'LBL_CREDITS' => 'Crediti',
   'LBL_THIRD_PARTY' => 'Paccheti di terze parti',
-  'LBL_COMMUNITY' => 'E la comunit&agrave; di vtiger',
 
   'LBL_ASSIGN_ROLE' => 'Assegna Ruolo',
 

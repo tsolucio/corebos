@@ -451,7 +451,6 @@ $app_strings = array (
 'LNK_NEW_FAQ' => 'New FAQ',
 'Vendor Name' => 'Vendor Name',
 'LNK_WEARE' => 'About Us',
-'LBL_ABOUTUS_TITLE' => 'vtiger CRM - About Us',
 'LBL_DISCUSS' => 'Discuss with other users',
 'Quote Stage' => 'Quote Stage',
 'Potential Name' => 'Opportunity Name',
@@ -667,7 +666,6 @@ $app_strings = array (
 
 'NO_DATA_AVAILABLE_WITH_SPECIFIED_PERIOD'=>'No data available with the specified time period',
 
-//Added for 5.0.3
 'Files_Maximum_6'=>'Files Maximum 6',
 'Files_Maximum'=>'Files Maximum ',
 'To'=>'To:',
@@ -677,8 +675,6 @@ $app_strings = array (
 'Visit_Link' => 'Kindly visit the link for more details on the activity',
 'Click here' => 'Click here',
 'Activity Reminder Notification' => 'Activity Reminder Notification',
-'This is a reminder notification for the Activity' => 'This is a reminder notification for the Activity',
-'Subject' => 'Subject',
 'Support_starting' => 'Support starting',
 'Congratulations' => 'Congratulations! Your support starts from today',
 'Hello_Support' => 'Hello! Support Starts for',

@@ -42,7 +42,7 @@
 						<td class="small" valign=top >
 							<table width="100%" border="0" cellspacing="0" cellpadding="0">
 								<tr height='30px'>
-									<td width="20%" class="cellLabel"><strong>{$MOD.LBL_ENABLE} {$MOD.LBL_BACKUP_SERVER_SETTINGS}({$MOD.LBL_LOCAL})</strong>
+									<td width="20%" class="cellLabel"><strong>{$MOD.LBL_ENABLE} {$MOD.LBL_BACKUP_SERVER_SETTINGS} ({$MOD.LBL_LOCAL})</strong>
 									</td>
 									<td width='60%' class="small cellText">
 										{if $LOCAL_BACKUP_STATUS eq 'enabled'}

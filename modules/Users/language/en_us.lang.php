@@ -572,8 +572,6 @@ $mod_strings = Array(
 'LBL_TRANSFER_ROLES_TO_PROFILE'=>'Transfer Roles to Profile',
 'LBL_PROFILE_TO_BE_DELETED'=>'Profile to be Deleted',
 
-//Added for disabling window Recalculate
-
 'LBL_RECALC_MSG'=>'Are you sure, you wish to Recalculate Sharing Access?',
 'LBL_YES'=>'Yes',
 'LBL_NO'=>'No',
@@ -581,19 +579,14 @@ $mod_strings = Array(
 'LBL_MANDATORY_MSG'=>'Mandatory Fields',
 'LBL_DISABLE_FIELD_MSG'=>'Fields Disabled from Global Field Access Settings',
 
-//Added for About Us
-
 'LBL_CONTACT_US'=>'Contact Us',
 'LBL_READ_LICENSE'=>'Read License',
 'LBL_VERSION'=>'Version',
 'LBL_TEAM'=>'Team',
 'LBL_CREDITS'=>'Credits',
 'LBL_THIRD_PARTY'=>'Third Party Packages',
-'LBL_COMMUNITY'=>'And vtiger Community',
 
 'LBL_ASSIGN_ROLE'=>'Assign Role',
-
-//Moved from Settings to here for Webmail client integration (for 5.0.3 release)
 
 'LBL_ADD_MAIL_ACCOUNT'=>'Add Mail Account',
 'LBL_NEW_MAIL_ACCOUNT_TITLE'=>'New Mail Account [Alt+M]',
@@ -683,6 +676,11 @@ $mod_strings = Array(
 'LBL_USER_CUSTOMFIELDS_DESCRIPTION' => 'Create Custom Fields for Users ',
 'LBL_USER_CUSTOMFIELDS' => 'Users Custom Fields',
 'LBL_CURRENCY_CONFIGURATION'=> 'Currency Configuration',
+'Digit Grouping Pattern' => 'Digit Grouping Pattern',
+'Decimal Separator' => 'Decimal Separator',
+'Digit Grouping Separator' => 'Digit Grouping Separator',
+'Symbol Placement' => 'Symbol Placement',
+'Number Of Currency Decimals'  => 'Number Of Currency Decimals',
 
 //Time zones-Dont change any value
 'Kwajalein' => '(UTC-12:00) International Date Line West',
@@ -804,7 +802,7 @@ $mod_strings = Array(
 'Min. 1 lowercase' => 'Minimum one lowercase character',
 'Min. 1 number' => 'Minimum one number',
 'Min. 1 special character' => 'Minimum one special character ! ? , ; - @ #',
-'Generate password' => 'Generar contraseña',
+'Generate password' => 'Generate password',
 
 // LDAP
 'LBL_QUERY' => 'Query',

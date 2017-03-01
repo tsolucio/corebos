@@ -585,8 +585,6 @@ $mod_strings = Array(
 'LBL_TRANSFER_ROLES_TO_PROFILE'=>'Transferir Roles al Perfil',
 'LBL_PROFILE_TO_BE_DELETED'=>'Perfil para Borrar',
 
-//Added for disabling window Recalculate
-
 'LBL_RECALC_MSG'=>'¿Seguro que quiere Modificar los accesos compartidos?',
 'LBL_YES'=>'Si',
 'LBL_NO'=>'No',
@@ -594,19 +592,14 @@ $mod_strings = Array(
 'LBL_MANDATORY_MSG'=>'Campos Obligatorios',
 'LBL_DISABLE_FIELD_MSG'=>'Campos Deshabilitados desde Configuración de Acceso Global',
 
-//Added for About Us
-
 'LBL_CONTACT_US'=>'Contacte',
 'LBL_READ_LICENSE'=>'Leer Licencia',
 'LBL_VERSION'=>'Versión',
 'LBL_TEAM'=>'Equipo',
 'LBL_CREDITS'=>'Créditos',
 'LBL_THIRD_PARTY'=>'Paquetes de Terceros',
-'LBL_COMMUNITY'=>'Y Comunidad VTIGER',
 
 'LBL_ASSIGN_ROLE'=>'Asignar Rol',
-
-//Moved from Settings to here for Webmail client integration (for 5.0.3 release)
 
 'LBL_ADD_MAIL_ACCOUNT'=>'Añadir Cuenta de Correo',
 'LBL_NEW_MAIL_ACCOUNT_TITLE'=>'Nueva Cuenta de Correo [Alt+M]',
@@ -815,7 +808,7 @@ $mod_strings = Array(
 'Decimal Separator' => 'Separador Decimal',
 'Digit Grouping Separator' => 'Separador de Grupo de dígitos',
 'Symbol Placement' => 'Posición de Símbolo',
-'Number Of Currency Decimals'  =>  'Number de Decimales',
+'Number Of Currency Decimals'  =>  'Número de Decimales',
 'PASSWORD REQUIREMENTS' => 'REQUISITOS CONTRASEÑA',
 'REQUIRED' => 'OBLIGATORIO',
 'Min. 8 characters' => 'Mínimo 8 caracteres',

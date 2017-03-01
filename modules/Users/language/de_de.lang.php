@@ -578,8 +578,6 @@ $mod_strings = Array(
     'LBL_TRANSFER_ROLES_TO_PROFILE'=>'Übertrage Rollen zu Profile',
     'LBL_PROFILE_TO_BE_DELETED'=>'zu löschende Profile',
 
-    //Added for disabling window Recalculate
-
     'LBL_RECALC_MSG'=>'Sind Sie sicher, dass Sie die Regeln neu berechnen lassen wollen? Das kann einige Zeit in Anspruch nehmen',
     'LBL_YES'=>'Ja',
     'LBL_NO'=>'Nein',
@@ -587,19 +585,14 @@ $mod_strings = Array(
     'LBL_MANDATORY_MSG'=>'Pflichtfelder',
     'LBL_DISABLE_FIELD_MSG'=>'Felder durch die Einstellungen in Globaler Rechtevergabe gesperrt.',
 
-    //Added for About Us
-
     'LBL_CONTACT_US'=>'Kontaktieren Sie uns',
     'LBL_READ_LICENSE'=>'Lizenz lesen',
     'LBL_VERSION'=>'Version',
     'LBL_TEAM'=>'Team',
     'LBL_CREDITS'=>'Beiträge von',
     'LBL_THIRD_PARTY'=>'3rd Party Pakete',
-    'LBL_COMMUNITY'=>'und die vtiger Community',
 
     'LBL_ASSIGN_ROLE'=>'Rolle zuweisen',
-
-    //Moved from Settings to here for Webmail client integration (for 5.0.3 release)
 
     'LBL_ADD_MAIL_ACCOUNT'=>'Erstelle E-Mail Konto',
     'LBL_NEW_MAIL_ACCOUNT_TITLE'=>'Neues E-Mail Konto [Alt+M]',
@@ -683,6 +676,10 @@ $mod_strings = Array(
     'LBL_USER_CUSTOMFIELDS_DESCRIPTION' => 'Erstellen Sie benutzerdefinierte Felder für Users ',
     'LBL_USER_CUSTOMFIELDS' => 'Benutzerdefinierte Felder für das Users-Modul',
     'LBL_CURRENCY_CONFIGURATION'=> 'Währungseinstellungen',
+	'Digit Grouping Pattern' => 'Digit Grouping Pattern',
+	'Decimal Separator' => 'Decimal Separator',
+	'Digit Grouping Separator' => 'Digit Grouping Separator',
+	'Symbol Placement' => 'Symbol Placement',
 	'Number Of Currency Decimals'  => 'Number Of Currency Decimals',
     //Time zones-Dont change any value
     'Kwajalein' => '(UTC-12:00) Internationale Datumsgrenze (Western)',

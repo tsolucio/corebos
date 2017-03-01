@@ -584,8 +584,6 @@ $mod_strings = Array(
 'LBL_TRANSFER_ROLES_TO_PROFILE'=>'Transferir Funções para o Perfil',
 'LBL_PROFILE_TO_BE_DELETED'=>'Perfil a ser Apagado',
 
-//Added for disabling window Recalculate
-
 'LBL_RECALC_MSG'=>'Você tem certeza que deseja recalcular Acesso Compatilhado?',
 'LBL_YES'=>'Sim',
 'LBL_NO'=>'Não',
@@ -593,19 +591,14 @@ $mod_strings = Array(
 'LBL_MANDATORY_MSG'=>'Campos Obrigatórios',
 'LBL_DISABLE_FIELD_MSG'=>'Campos das Configurações Gerais de Acesso Desabilitados',
 
-//Added for About Us
-
 'LBL_CONTACT_US'=>'Contacte-nos',
 'LBL_READ_LICENSE'=>'Ler Licença',
 'LBL_VERSION'=>'Versão',
 'LBL_TEAM'=>'Equipe',
 'LBL_CREDITS'=>'Créditos',
 'LBL_THIRD_PARTY'=>'Pacotes de Terceiros',
-'LBL_COMMUNITY'=>'E Comunidade vtiger',
 
 'LBL_ASSIGN_ROLE'=>'Atribuir Função',
-
-//Moved from Settings to here for Webmail client integration (for 5.0.3 release)
 
 'LBL_ADD_MAIL_ACCOUNT'=>'Adicionar Organização Correio',
 'LBL_NEW_MAIL_ACCOUNT_TITLE'=>'Nova Organização Correio [Alt+M]',

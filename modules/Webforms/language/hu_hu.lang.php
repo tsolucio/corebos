@@ -46,7 +46,6 @@ $mod_strings = array(
 	'LBL_CANCEL' => 'Mégse',
 	'LBL_SAVE' => 'Mentés',
 	'LBL_SELECT_VALUE' => '--Válassz értéket--',
-	'LBL_BASIC_INFORMATION' => 'Alapadatok',
 	'LBL_SELECT_USER' => 'Válassz egy felhasználót',
 	'LBL_DUPLICATE_NAME' => 'Ilyen nevű űrlap már létezik',
 	'ERR_CREATE_WEBFORM' => 'Űrlap létrehozási hiba'

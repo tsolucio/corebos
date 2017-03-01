@@ -37,7 +37,6 @@ $mod_strings = Array (
 'LBL_DELETE'=>'Eliminar',
 'LBL_SAVE'=>'Guardar',
 'LBL_SELECT_VALUE'=>'--Selecciona Valor--',
-'LBL_BASIC_INFORMATION'=>'Información Básica',
 'LBL_SELECT_USER'=>'Selecciona Usuario',
 );
 

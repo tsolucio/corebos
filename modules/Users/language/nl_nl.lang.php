@@ -505,7 +505,6 @@ $mod_strings = array(
 	'LBL_TEAM' => 'Team',
 	'LBL_CREDITS' => 'Credits',
 	'LBL_THIRD_PARTY' => 'Pakket derde partij',
-	'LBL_COMMUNITY' => 'en vtiger Community',
 	'LBL_ASSIGN_ROLE' => 'Rol toewijzen',
 	'LBL_ADD_MAIL_ACCOUNT' => 'Toevoegen e-mail Account',
 	'LBL_NEW_MAIL_ACCOUNT_TITLE' => 'Nieuwe e-mail Account [Alt+M]',

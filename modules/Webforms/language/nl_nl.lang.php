@@ -67,7 +67,6 @@ $mod_strings = Array (
 	'LBL_DELETE'=>'Verwijder',
 	'LBL_SAVE'=>'Opslaan',
 	'LBL_SELECT_VALUE'=>'--Selecteer Waarde --',
-	'LBL_BASIC_INFORMATION'=>'Basisinformatie',
 	'LBL_SELECT_USER'=>'Selecteer gebruiker',
 
 
