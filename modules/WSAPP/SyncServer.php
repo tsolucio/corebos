@@ -7,21 +7,24 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
+
 require_once 'modules/WSAPP/Utils.php';
 require_once 'include/database/PearDatabase.php';
+require_once 'include/Zend/Json.php';
 require_once 'include/utils/utils.php';
 
 class SyncServer {
-	private $appkey;
-	private $syncModule;
-	private $destHandler;
-	private $create = "create";
-	private $update = "update";
-	private $delete = "delete";
-	private $save = "save";
-	private $syncTypes = array("user","app");
+        private $appkey;
+        private $syncModule;
+        private $destHandler;
+        private $create = "create";
+        private $update = "update";
+        private $delete = "delete";
+        private $save = "save";
+        private $syncTypes = array("user","app","userandgroup");
 
-	/**
+        
+    /**
 	 * Lookup application id using the key provided.
 	 */
 	function appid_with_key($key) {
@@ -36,23 +39,23 @@ class SyncServer {
 	 * application and serverid
 	 */
 	function idmap_get_clientmap($appid, $serverids) {
-		if (!is_array($serverids)) $serverids = array($serverids);
-		$db = PearDatabase::getInstance();
+        if (!is_array($serverids)) $serverids = array($serverids);
+		$db = PearDatabase::getInstance(); 		;
 		$result = $db->pquery(sprintf(
 			"SELECT serverid, clientid,clientmodifiedtime,servermodifiedtime,id FROM vtiger_wsapp_recordmapping WHERE appid=? AND serverid IN ('%s')",
 			implode("','", $serverids)), array($appid));
-
+                 
 		$mapping = array();
 		if ($db->num_rows($result)) {
 			while ($row = $db->fetch_array($result)) {
 				$mapping[$row['serverid']] = array("clientid"=>$row['clientid'],"clientmodifiedtime"=>$row['clientmodifiedtime'],
-				"servermodifiedtime"=>$row['servermodifiedtime'],"id"=>$row['id']);
+                    "servermodifiedtime"=>$row['servermodifiedtime'],"id"=>$row['id']);
 			}
 		}
 		return $mapping;
 	}
 
-	 /**
+        /**
 	 * Retrieve serverid-clientid record map information for the given
 	 * application and client
 	 */
@@ -79,7 +82,7 @@ class SyncServer {
         $db = PearDatabase::getInstance();
         $params = array();
         $params[] = $syncServerId;
-        $params[] = json_encode($recordDetails);
+        $params[] = Zend_Json::encode($recordDetails);
         $params[] = $flag;
         $params[] = $appid;
         $db->pquery("INSERT INTO vtiger_wsapp_queuerecords(syncserverid,details,flag,appid) VALUES(?,?,?,?)",array($params));
@@ -241,6 +244,7 @@ class SyncServer {
 		return array ($name, $key);
 	}
 	
+	
 	/**
 	 * Handles Create/Update/Delete operations on record
 	 */
@@ -259,8 +263,10 @@ class SyncServer {
         $serverKey = wsapp_getAppKey("vtigerCRM");
         $serverAppId = $this->appid_with_key($serverKey);
         $handlerDetails  = $this->getDestinationHandleDetails();
+        $clientApplicationSyncType = wsapp_getAppSyncType($key);
         require_once $handlerDetails['handlerpath'];
         $this->destHandler = new $handlerDetails['handlerclass']($serverKey);
+        $this->destHandler->setClientSyncType($clientApplicationSyncType);
 
         $recordDetails = array();
 
@@ -295,6 +301,7 @@ class SyncServer {
                     $updateRecords[$clientRecordId] = $record['values'];
                     $updateRecords[$clientRecordId]['module'] = $record['module'];
                     $clientModifiedTimeList[$clientRecordId] = $record['values']['modifiedtime'];
+					
                 }
 			}
         }
@@ -302,7 +309,6 @@ class SyncServer {
        $recordDetails['created'] = $createRecords;
        $recordDetails['updated'] = $updateRecords;
        $recordDetails['deleted'] = $deleteRecords;
-
        $result = $this->destHandler->put($recordDetails,$user);
 	   
 	   $response= array();
@@ -363,8 +369,8 @@ class SyncServer {
 		}
 		$clientApplicationSyncType = wsapp_getAppSyncType($key);
         //hardcoded since the destination handler will be vtigerCRM
-        $serverKey = wsapp_getAppKey("vtigerCRM");
-        $handlerDetails  = wsapp_getHandler('vtigerCRM');
+		$serverKey = wsapp_getAppKey("vtigerCRM");
+        $handlerDetails  = $this->getDestinationHandleDetails();
         require_once $handlerDetails['handlerpath'];
         $this->destHandler = new $handlerDetails['handlerclass']($serverKey);
 		$this->destHandler->setClientSyncType($clientApplicationSyncType);
@@ -483,6 +489,40 @@ class SyncServer {
             $recordFormat['id'] = $record['id'];
             return $recordFormat;
         }
+    }
+  /**
+  * Retrieve serverid  of record   for the given
+  *  client
+  */
+    function idmap_get_serverId($clientid,$appId){
+		
+        $db = PearDatabase::getInstance();
+
+        $result = $db->pquery("SELECT serverid, clientid FROM vtiger_wsapp_recordmapping WHERE  clientid = ? and appid=?", array($clientid,$appId));
+        $mapping = array();
+        if($db->num_rows($result)){
+            while($row = $db->fetch_array($result)){
+                return $row['serverid'];
+            }
+        }
+        return false;
+    }
+  /**
+  * Retrieve clientid  of record   for the given
+  *  client
+  */
+    function idmap_get_clientId($serverid,$appId){
+		
+        $db = PearDatabase::getInstance();
+
+        $result = $db->pquery("SELECT serverid, clientid FROM vtiger_wsapp_recordmapping WHERE  serverid = ? and appid=?", array($serverid,$appId));
+        $mapping = array();
+        if($db->num_rows($result)){
+            while($row = $db->fetch_array($result)){
+                return $row['clientid'];
+            }
+        }
+        return false;
     }
 }
  

@@ -14,6 +14,9 @@
 		<input class="crmbutton small edit" type="button" value="{$button_label}" onclick="return change(this,'changeowner')"/>
 	{/if}
 {/foreach}
+{if $MODULE eq 'Contacts'}
+    <input class="crmbutton small edit" type="button" value="GoogleContacts{$MOD.Google_Contacts}" id="GoogleContactsButton" onclick="return googleSynch('{$MODULE}',this);"/>
+{/if}
 {include file='ListViewCustomButtons.tpl'}
 {if $MODULE eq 'Documents'}
 	{if $CHECK.EditView eq 'yes'}

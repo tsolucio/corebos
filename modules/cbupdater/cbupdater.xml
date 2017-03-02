@@ -1102,4 +1102,11 @@
 	<classname>uitype50DateTimeinWebservice</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>albanacelepija</author>
+	<description>GoogleContact Tables Param access</description>
+	<filename>build/changeSets/2017/GoogleContactChanges.php</filename>
+	<classname>GoogleContactChanges</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
