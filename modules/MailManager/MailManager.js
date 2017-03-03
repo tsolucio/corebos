@@ -817,7 +817,8 @@ if (typeof(MailManager) == 'undefined') {
                 addRemoveLinks: true,
                 createImageThumbnails: true,
                 dictRemoveFile: MailManager.i18n('JSLBL_Delete'),
-                uploadMultiple: false
+                uploadMultiple: false,
+                clickable: ['#file-uploader-message','#file-uploader']
             });
             uploader.on("success", function(file, response) {
             	var res = JSON.parse(response);
