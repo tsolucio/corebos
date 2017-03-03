@@ -11,8 +11,8 @@
 $mod_strings = array(
 	'Webforms' => 'Webforms',
 	'Allows you to manage Webforms' => 'Create and manage webforms which can be used to capture Leads',
-	'LBL_SUCCESS' => 'entry is added to vtiger CRM',
-	'LBL_FAILURE' => 'Failed to add entry to vtiger CRM',
+	'LBL_SUCCESS' => 'entry has been added to the application',
+	'LBL_FAILURE' => 'Failed to add entry in the application',
 	'LBL_ERROR_CODE' => 'Error Code',
 	'LBL_ERROR_MESSAGE' => 'Error Message',
 	'LBL_WEBFORM_NAME' => 'Webform Name',

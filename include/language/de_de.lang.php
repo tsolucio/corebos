@@ -564,7 +564,6 @@ $app_strings = array(
 'This Month'=>'Dieser Monat',
 'This Year'=>'Dieses Jahr',
 'LBL_PLEASE_CLICK'=>'Klicken Sie',
-'LBL_TO_CONFIGURE'=>'zur Konfiguration',
 'LBL_HERE'=>'hier',
 'LBL_RECORDS'=>'Datensätze',
 'LBL_SCROLL'=>'[Nach oben]',
@@ -1091,7 +1090,6 @@ $app_strings = array(
 'LBL_TABLE_CREATED'=>'Tabelle wurde erfolgreich erzeugt',
 'LBL_AVAILABLE_FIELDS'=>'vorhandene Felder',
 'LBL_SELECTED_FIELDS'=>' die zu untersuchenden Felder',
-'LBL_MERGE_SELECT'=>'Datensätze auswählen (max: 3)',
 'DuplicatesHandling' => 'Bearbeitung von Duplikaten',
 'LBL_DESC_FOR_MERGE_FIELDS' => 'Die primären Daten bleiben erhalten. Sie können eine Spalte dafür auswählen. Der andere Datensatz wird gelöscht, aber die ausgewählten Informationen bleiben erhalten.',
 'LBL_DUPLICATE_MERGING' => 'Duplikate Zusammenführen',
@@ -1240,13 +1238,9 @@ $app_strings = array(
 'Service Contracts' => 'Service Verträge',
 'ServiceContracts' => 'Serviceverträge',
 'Services' => 'Services',
-	'LBL_REFRESH' => 'Aktualisieren',
-	'LBL_Reminder' => 'Erinnerung',
-	'LBL_RESET_PASSWORD' => 'Password zurücksetzen',
-	'LBL_PHP_UPGRADE' => 'Wir haben Ihre PHP Version geändert. Durch die neue API zur Verschlüssleung
-		  ist Ihr Passwort nicht länger gültig. Bitte setzen Sie ein neues Passwort.',
-	'LBL_RESET_PASSWORD_DESCRIPTION' => 'Sie können das Passwort für alle Benutzer mit einem Skript zurücksetzten. Als Passwort wird der 
-              Benutzername verwendet',
+'LBL_REFRESH' => 'Aktualisieren',
+'LBL_Reminder' => 'Erinnerung',
+'LBL_RESET_PASSWORD' => 'Password zurücksetzen',
 
 'LBL_CRITERIA_AND'=>'und',
 'LBL_CRITERIA_OR'=>'oder',
@@ -1283,6 +1277,7 @@ $app_strings = array(
 'Quantity' => 'Menge',
 'Net Total' => 'Netto gesamt',
 'Send SMS' => 'Sende SMS',
+'Add Payment' => 'Add Payment',
 
 'LBL_MORE'=>'mehr',
 'LBL_CRM_SETTINGS' => 'CRM Einstellungen',
