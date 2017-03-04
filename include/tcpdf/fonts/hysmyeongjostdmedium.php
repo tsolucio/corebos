@@ -38,8 +38,11 @@ $cw = array(
 );
 $_cr = array(
 	//array(97, 97, 500),
-	array(8094, 8190, 500),
+	array(8094, 8190, 500)
 );
-foreach($_cr as $_r)
-	for($i = $_r[0]; $i <= $_r[1]; $i++)
+foreach($_cr as $_r) {
+	for($i = $_r[0]; $i <= $_r[1]; $i++) {
 		$cw[$i+31] = $_r[2];
+	}
+}
+// --- EOF ---
