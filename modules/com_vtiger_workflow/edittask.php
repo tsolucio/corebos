@@ -40,7 +40,7 @@ require_once("VTWorkflowUtils.php");
 			$workflowId=$task->workflowId;
 		}else{
 			$workflowId = $request["workflow_id"];
-			$taskClass = vtlib_purifyForSql($request["task_type"]);
+			$taskClass = $request['task_type'];
 			$task = $tm->createTask($taskClass, $workflowId);
 		}
 

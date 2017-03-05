@@ -649,11 +649,12 @@ function save_faq_comment($input_array)
 
 function get_tickets_list($input_array) {
 
+	global $adb,$log, $current_user;
 	//To avoid SQL injection we are type casting as well as bound the id variable.
 	$id = (int) vtlib_purify($input_array['id']);
 
 	$only_mine = $input_array['onlymine'];
-	$where = vtlib_purifyForSql($input_array['where']); //addslashes is already added with where condition fields in portal itself
+	$where = $adb->sql_escape_string($input_array['where']);
 	$match = $input_array['match'];
 	$sessionid = $input_array['sessionid'];
 
@@ -663,8 +664,6 @@ function get_tickets_list($input_array) {
 	require_once('modules/HelpDesk/HelpDesk.php');
 	require_once('include/utils/UserInfoUtil.php');
 
-	global $adb,$log;
-	global $current_user;
 	$log->debug("Entering customer portal function get_ticket_list");
 
 	$user = new Users();
