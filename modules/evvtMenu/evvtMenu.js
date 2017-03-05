@@ -80,6 +80,7 @@ function saveTree() {
 
 function buildMainMenu(object){ //main menu
 	for (var i in object) {
+		if (typeof object[i] !== 'object') continue;
 		if(object[i].items != null) {
 			jQuery('#cbmenu').append('<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true"> \
 				<a href="javascript:void(0);" class="slds-context-bar__label-action" title="' + object[i].text + '">\
@@ -111,6 +112,7 @@ function buildMainMenu(object){ //main menu
 function buildSubMenu(object, index){ //submenu
 	var menuid = 'menu'+index;
 	for (var i in object){
+		if (typeof object[i] !== 'object') continue;
 		if (object[i].type == 'sep') {
 			jQuery('#' + menuid).append('<li class="slds-dropdown__header slds-has-divider--top-space" role="separator"></li>');
 		} else if (object[i].type == 'headtop') {
@@ -147,6 +149,7 @@ function buildSubMenu(object, index){ //submenu
 function buildMoreMenu(object, index){ //pjest shtes qe duhen mmu shtu
 	var subMenuId = 'submenu' +index;
 	for (var i in object) {
+		if (typeof object[i] !== 'object') continue;
 		if (object[i].items === undefined || object[i].items === null) {
 			jQuery('#' + subMenuId).append('<li class="slds-dropdown__item" role="presentation">\
 					<a href="' + object[i].url + '" role="menuitem" tabindex="-1">\
@@ -182,7 +185,9 @@ jQuery(document).ready(function() {
 			if (id === undefined || id === null) {
 				id = jQuery(this).find('ul').attr('id');
 			}
-			jQuery(this).find('#' + id).toggle();
+			if (id !== undefined && id !== null) {
+				jQuery(this).find('#' + id).toggle();
+			}
 		});
 	});
 });
