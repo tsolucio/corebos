@@ -1102,4 +1102,11 @@
 	<classname>uitype50DateTimeinWebservice</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Database optimizations and cleanup</description>
+	<filename>build/changeSets/2017/cleanoptimizedatabase_190.php</filename>
+	<classname>cleanoptimizedatabase_190</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
