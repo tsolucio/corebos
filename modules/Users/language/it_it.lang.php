@@ -667,7 +667,6 @@
 'Asterisk Configuration' => 'Configurazione Asterisk',
 'Asterisk Extension' => 'Estensione Asterisk',
 'Receive Incoming Calls' => 'Ricevi chiamate in entrata',
-' Receive Incoming Calls' => 'Ricevi chiamate in Entrata',
 
 'LBL_USER_CUSTOMFIELDS_DESCRIPTION' => 'Crea campi personalizzati utente',
 'LBL_USER_CUSTOMFIELDS' => 'Campi Personalizzati Utente',
