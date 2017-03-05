@@ -9,9 +9,7 @@
  ********************************************************************************/
 require_once('Smarty_setup.php');
 require_once 'include/utils/utils.php';
-global $mod_strings;
-global $app_strings;
-global $theme, $adb;
+global $mod_strings, $app_strings, $theme, $adb;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 $tool_buttons = array(

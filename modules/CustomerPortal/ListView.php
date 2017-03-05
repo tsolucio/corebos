@@ -23,7 +23,7 @@ if (isPermitted('CustomerPortal','')!='yes') {
 	exit;
 }
 
-$mode = $_REQUEST['mode'];
+$mode = isset($_REQUEST['mode']) ? $_REQUEST['mode'] : '';
 if($mode !='' && $mode == 'save') {
 	cp_saveCustomerPortalSettings($_REQUEST);
 }
@@ -37,7 +37,7 @@ $smarty->assign('MOD', $mod_strings);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MODULE', $currentModule);
 $smarty->assign('CATEGORY', $category);
-$smarty->assign('BUTTONS', $list_buttons);
+include('modules/cbupdater/forcedButtons.php');
 $smarty->assign('CHECK', $tool_buttons);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('MODE',$mode);
@@ -46,7 +46,7 @@ $smarty->assign('GROUPS', cp_getUserGroups());
 $smarty->assign('USERID', cp_getCurrentUser());
 $smarty->assign('DEFAULTASSIGNEE', cp_getCurrentDefaultAssignee());
 
-if($_REQUEST['ajax'] != true) {
+if(empty($_REQUEST['ajax']) || $_REQUEST['ajax'] != true) {
 	$smarty->display(vtlib_getModuleTemplate($currentModule,'BasicSetttings.tpl'));
 }
 else {
