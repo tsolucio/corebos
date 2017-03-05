@@ -35,7 +35,7 @@ if($focus->is_authenticated())
 	cbEventHandler::do_action('corebos.audit.authenticate',array($focus->id, 'Users', 'Authenticate', $focus->id, date('Y-m-d H:i:s')));
 
 	// Recording the login info
-	$usip=$_SERVER['REMOTE_ADDR'];
+	$usip = Vtiger_Request::get_ip();
 	$intime=date("Y/m/d H:i:s");
 	require_once('modules/Users/LoginHistory.php');
 	$loghistory=new LoginHistory();

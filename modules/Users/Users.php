@@ -333,11 +333,12 @@ class Users extends CRMEntity {
 			$AdminLoginIPs = GlobalVariable::getVariable('Application_AdminLoginIPs','','Users');
 			if ($AdminLoginIPs != '') {
 				$admin_ip_addresses = explode(',',$AdminLoginIPs);
-				if (!in_array($_SERVER['REMOTE_ADDR'],$admin_ip_addresses)) {
+				$the_ip = Vtiger_Request::get_ip();
+				if (!in_array($the_ip,$admin_ip_addresses)) {
 					$row['status'] = 'Inactive';
 					$this->authenticated = false;
 					coreBOS_Session::set('login_error', getTranslatedString('ERR_INVALID_ADMINIPLOGIN','Users'));
-					$mailsubject = "[Security Alert]: Admin login attempt rejected for login: $usr_name from external IP: " . $_SERVER['REMOTE_ADDR'];
+					$mailsubject = "[Security Alert]: Admin login attempt rejected for login: $usr_name from external IP: $the_ip";
 					$this->log->warn($mailsubject);
 					// Send email with authentification error.
 					$mailto = GlobalVariable::getVariable('Debug_Send_AdminLoginIPAuth_Error','','Users');
