@@ -90,7 +90,6 @@ $mod_strings = Array(
     'on hold' => 'in de wacht',
     'archived' => 'gearchiveerd',
     'complete' => 'afgerond',
-    'description' => 'Omschrijving',
     '--none--' => '--geen--',
     'Project Name' => 'Project naam',
 

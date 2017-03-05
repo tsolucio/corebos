@@ -52,8 +52,6 @@
     'complete' => 'terminé',
     'Created Time' => 'Date de création',
     'Modified Time' => 'Dernière modification',
-    'Description' => 'Description',
-    'description' => 'Description',
     '--none--' => '--aucun--',
     'Deadline' => 'Deadline',
     'Operation' => 'Tâche',

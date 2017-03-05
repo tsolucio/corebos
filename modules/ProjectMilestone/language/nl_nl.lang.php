@@ -56,7 +56,6 @@ $mod_strings = Array(
     'operative' => 'operationeel',
     'other' => 'anders',
 	'--none--' => '--None--',
-    'description' => 'Omschrijving',
     //added for related lists 
     'Project Milestone Name' => 'Mijlpaal Naam',
     'Project Milestone No' => 'Mijlpaal Nr',

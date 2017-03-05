@@ -377,7 +377,7 @@
 <columnname>description</columnname>
 <tablename>vtiger_crmentity</tablename>
 <generatedtype>1</generatedtype>
-<fieldlabel>description</fieldlabel>
+<fieldlabel>Description</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
 <selected>0</selected>

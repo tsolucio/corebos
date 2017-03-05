@@ -36,7 +36,6 @@ $mod_strings = array(
 	'other' => 'egyéb',
 	'Created Time' => 'Létrehozva',
 	'Modified Time' => 'Módosítva',
-	'description' => 'Leírás:',
 	'Project Milestone Name' => 'Mérföldkő megnevezése',
 	'Project Milestone No' => 'Mérföldkő No.',
 	'ProjectMilestone ID' => 'Mérföldkő AZ',

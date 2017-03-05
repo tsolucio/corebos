@@ -27,13 +27,11 @@ $mod_strings = Array(
     'Assigned To' => 'Assegnata a',
     'deadlinedate' => 'Data Scadenza',
     'milestone' => 'Milestone',
-    'description' => 'Descrizione',
     'deadlinetype'=>'Tipologia Scadenza',
     'Related to' => 'Progetto Relativo',
     'administrative' => 'amministrativa',
     'operative' => 'operativa',
     'other' => 'altro',
-    'description' => 'Descrizione',
     '--none--' => 'nessuno',
     //added for related lists 
     'DeadlineName' => 'Nome Scadenza',

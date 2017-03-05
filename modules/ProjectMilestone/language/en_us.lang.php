@@ -32,7 +32,6 @@ $mod_strings = Array(
     'operative' => 'operative',
     'other' => 'other',
 	'--none--' => '--None--',
-    'description' => 'Description',
     //added for related lists 
     'Project Milestone Name' => 'Milestone Name',
     'Project Milestone No' => 'Milestone No',

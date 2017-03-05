@@ -44,10 +44,6 @@ $mod_strings = Array(
     'low' => 'низкий',
     'normal' => 'нормальный',
     'high' => 'высокий',
-    'Created Time' => 'Операция создана',
-    'Modified Time' => 'Операция изменена',
-    'Description' => 'Описание',
-    'description' => 'Описание',
     //added for related lists 
     'OperationName' => 'Наименование операции',
     '--none--' => '--ничего--',

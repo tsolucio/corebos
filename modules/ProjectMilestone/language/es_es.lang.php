@@ -29,7 +29,6 @@ $mod_strings = Array(
     'LBL_CUSTOM_INFORMATION' => 'Información Personalizada',
     'LBL_PROJECT_MILESTONE_INFORMATION' => 'Información Hito',
     'LBL_DESCRIPTION_INFORMATION' => 'Descripción',
-    'description' => 'Descripción',
     'Assigned To' => 'Asignado a',
     'Milestone' => 'Hito',
     'Type'=>'Tipo',

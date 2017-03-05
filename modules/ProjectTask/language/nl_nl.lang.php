@@ -61,7 +61,6 @@ $mod_strings = Array(
     'low' => 'laag',
     'normal' => 'normaal',
     'high' => 'hoog',
-    'description' => 'Omschrijving',
     //added for related lists 
     'Project Task Name' => 'Taaknaam',
     'Project Task No' => 'Taak Nr',

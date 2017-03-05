@@ -37,7 +37,6 @@ $mod_strings = array(
 	'low' => 'low',
 	'normal' => 'normal',
 	'high' => 'high',
-	'description' => 'Description',
 	'Project Task Name' => 'Task Name',
 	'Project Task No' => 'Task No.',
 	'Project Task Number' => 'Task Code',

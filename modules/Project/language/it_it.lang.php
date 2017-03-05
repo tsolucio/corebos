@@ -47,7 +47,6 @@ $mod_strings = Array(
     'on hold' => 'sospeso',
     'archived' => 'archiviato',
     'complete' => 'completato',
-    'description' => 'Descrizione',
     '--none--' => 'nessuno',
     'Project Name' => 'Nome Progetto',
     'Start Date' => 'Data di Inizio',

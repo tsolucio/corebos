@@ -29,7 +29,6 @@ $mod_strings = Array(
     'LBL_CUSTOM_INFORMATION' => 'Información Personalizada',
     'LBL_PROJECT_MILESTONE_INFORMATION' => 'Información Hito',
     'LBL_DESCRIPTION_INFORMATION' => 'Descripción',
-    'description' => 'Descripción',
     'Assigned To' => 'Asignado a',
     'Milestone' => 'Hito',
     'Type'=>'Tipo',
@@ -39,9 +38,6 @@ $mod_strings = Array(
     'operative' => 'operativo',
     'other' => 'otro',
     '--none--' => '--ninguno--',
-    'Created Time' => 'Fecha Creación',
-    'Modified Time' => 'Fecha Modificación',
-    'Description' => 'Descripción',
     //added for related lists 
     'Project Milestone Name' => 'Nombre Hito',
 	'Project Milestone No' => 'Nº Hito',

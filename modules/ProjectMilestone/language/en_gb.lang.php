@@ -30,7 +30,6 @@ $mod_strings = array(
 	'operative' => 'operative',
 	'other' => 'other',
 	'--none--' => '--None--',
-	'description' => 'Description',
 	'Project Milestone Name' => 'Milestone Name',
 	'Project Milestone No' => 'Milestone No.',
 	'ProjectMilestone ID' => 'ProjectMilestone ID',

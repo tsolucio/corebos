@@ -38,7 +38,6 @@ $mod_strings = Array(
     'low' => 'gering',
     'normal' => 'normal',
     'high' => 'hoch',
-    'description' => 'Beschreibung',
 	'Add Note' => 'Add Note',
     //added for related lists 
     'Project Task Name' => 'Aufgabenname',

@@ -57,7 +57,6 @@ $mod_strings = Array(
     'archived' => 'Archivado',
     'completed' => 'Finalizado',
     'delivered'=>'Entregado',
-    'description' => 'Descripción',
     '--none--' => '--ninguno--',
     'Project Name' => 'Nombre Proyecto',
     'LBL_RELATED_PROJECT_TASKS' => 'Actividades',

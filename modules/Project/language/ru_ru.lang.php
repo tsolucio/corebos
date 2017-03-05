@@ -50,7 +50,6 @@ $mod_strings = Array(
     'on hold' => 'в ожидании',
     'archived' => 'в архиве',
     'complete' => 'выполнен',
-    'description' => 'Описание',
     '--none--' => '--ничего--',
     'Project Name' => 'Наименование проекта',
 

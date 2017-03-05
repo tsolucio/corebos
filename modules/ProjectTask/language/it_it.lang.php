@@ -40,7 +40,6 @@ $mod_strings = Array(
 	'Open' => 'Aperto',
 	'Cancelled' => 'Annullato',
     'high' => 'alta',
-    'description' => 'Descrizione',
     '--none--' => 'nessuno',
 	'Add Note' => 'Add Note',
     //added for related lists 
