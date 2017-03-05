@@ -41,6 +41,9 @@ $mod_strings = Array(
 	'Call From'=>'Oproep van',
 	'Call To'=>'Oproep naar',
 	'Time Of Call'=>'Tijdstip van Oproep',
+	'ERR_Authenticate' => 'ERROR: authenticateUser. Error connecting with server.',
+	'ERR_Numbers' => 'From extension or Destination number is empty. Cannot proceed with the call.',
+	'ERR_Call' => 'ERROR: createcall. Error connecting with server.',
 );
 
 ?>

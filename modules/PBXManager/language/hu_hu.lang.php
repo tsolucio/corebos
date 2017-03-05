@@ -22,6 +22,9 @@ $mod_strings = array(
 	'Call To' => 'Kimenő hívás',
 	'Time Of Call' => 'Hívás ideje',
 	'PBXManager ID' => 'PBX menedzser AZ',
-	'Status' => 'Állapot'
+	'Status' => 'Állapot',
+	'ERR_Authenticate' => 'ERROR: authenticateUser. Error connecting with server.',
+	'ERR_Numbers' => 'From extension or Destination number is empty. Cannot proceed with the call.',
+	'ERR_Call' => 'ERROR: createcall. Error connecting with server.',
 );
 ?>

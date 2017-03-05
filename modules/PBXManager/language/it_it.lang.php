@@ -19,6 +19,9 @@ $mod_strings = Array(
 	'PBX Manager' => 'Gestore chiamate',
 	'PBXManager' => 'Gestore chiamate',
 	'SINGLE_PBXManager' => 'Gestore chiamate',
+	'ERR_Authenticate' => 'ERROR: authenticateUser. Error connecting with server.',
+	'ERR_Numbers' => 'From extension or Destination number is empty. Cannot proceed with the call.',
+	'ERR_Call' => 'ERROR: createcall. Error connecting with server.',
 );
 
 ?>

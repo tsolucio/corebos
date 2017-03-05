@@ -19,6 +19,9 @@ $mod_strings = Array(
 	'Call To'=>'Call To',
 	'Time Of Call'=>'Time Of Call',
 	'PBXManager ID'=>'PBX Manager ID',
+	'ERR_Authenticate' => 'ERROR: authenticateUser. Error connecting with server.',
+	'ERR_Numbers' => 'From extension or Destination number is empty. Cannot proceed with the call.',
+	'ERR_Call' => 'ERROR: createcall. Error connecting with server.',
 );
 
 ?>

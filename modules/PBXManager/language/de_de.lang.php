@@ -17,6 +17,9 @@ $mod_strings = Array(
 	'Call From'=>'Anruf von',
 	'Call To'=>'Anruf zu',
 	'Time Of Call'=>'Anrufzeit',
+	'ERR_Authenticate' => 'ERROR: authenticateUser. Error connecting with server.',
+	'ERR_Numbers' => 'From extension or Destination number is empty. Cannot proceed with the call.',
+	'ERR_Call' => 'ERROR: createcall. Error connecting with server.',
 );
 
 ?>
