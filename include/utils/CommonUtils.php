@@ -2640,8 +2640,7 @@ function getTagCloudView($id = "") {
  * * Added to provide User based Tagcloud
  * */
 function SaveTagCloudView($id = "") {
-	global $log;
-	global $adb;
+	global $log, $adb;
 	$log->debug("Entering in function SaveTagCloudView($id)");
 	$tag_cloud_status = vtlib_purify($_REQUEST['tagcloudview']);
 
@@ -2651,9 +2650,7 @@ function SaveTagCloudView($id = "") {
 		$tag_cloud_view = 1;
 	}
 
-	if ($id == '') {
-		$tag_cloud_view = 1;
-	} else {
+	if (!empty($id)) {
 		$query = "update vtiger_homestuff set visible = ? where userid=? and stufftype='Tag Cloud'";
 		$adb->pquery($query, array($tag_cloud_view, $id));
 	}

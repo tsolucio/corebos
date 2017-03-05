@@ -3747,7 +3747,7 @@ function getCallerName($from) {
 }
 
 /**
- * this function searches for a given number in vtiger and returns the callerInfo in an array format
+ * this function searches for a given number and returns the callerInfo in an array format
  * currently the search is made across only leads, accounts and contacts modules
  *
  * @param $number - the number whose information you want

@@ -6,7 +6,6 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 
@@ -16,10 +15,10 @@
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tbody>
 	<tr>
-        <td valign="top">
-        	<img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}">
-        </td>
-        <td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
+		<td valign="top">
+			<img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}">
+		</td>
+		<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
 			<form action="index.php" method="post" id="form">
 			<input type='hidden' name='module' value='Users'>
 			<input type='hidden' name='action' value='DefModuleView'>
@@ -31,7 +30,7 @@
 				{include file='SetMenu.tpl'}
 				<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 					<tr>
-						<td width=50 rowspan=3 valign=top><img src="{'Call.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_SOFTPHONE_SERVER_SETTINGS}" width="48" height="38" border=0 title="{$MOD.LBL_SOFTPHONE_SERVER_SETTINGS}"></td>
+						<td width=50 rowspan=3 valign=top><img src="include/LD/assets/icons/standard/call_60.png" alt="{$MOD.LBL_SOFTPHONE_SERVER_SETTINGS}" style="background-color: #f2cf5b;width:48px;" title="{$MOD.LBL_SOFTPHONE_SERVER_SETTINGS}"></td>
 						<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_SOFTPHONE_SERVER_SETTINGS}</b></td>
 					</tr>
 					<tr>
@@ -39,11 +38,13 @@
 					</tr>
 					<tr>
 						<td valign="top" class="small">
-							{$ERROR}
+						{if !empty($ERROR)}
+							{include file='applicationmessage.tpl' ERROR_MESSAGE=$ERROR}
+						{/if}
 						</td>
 					</tr>
 				</table>
-				
+
 				<br>
 				<table border=0 cellspacing=0 cellpadding=10 width=100% >
 					<tr>
@@ -66,54 +67,53 @@
 						<span id='AsteriskCustomization' style='display:block'>
 							<table border=0 cellspacing=0 cellpadding=0 width=100% class="listRow">
 								<tr>
-	         	    				<td class="small" valign=top >
-	         	    				<table width="100%"  border="0" cellspacing="0" cellpadding="5">
-                        			<tr>
-                            			<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.ASTERISK_SERVER_IP}</strong></td>
-                            			<td width="80%" class="small cellText">
+									<td class="small" valign=top >
+									<table width="100%" border="0" cellspacing="0" cellpadding="5">
+									<tr>
+										<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.ASTERISK_SERVER_IP}</strong></td>
+										<td width="80%" class="small cellText">
 											<input type="text" id="asterisk_server_ip" name="asterisk_server_ip" class="small" style="width:30%" value="{$ASTERISK_SERVER_IP}" title="{$MOD.ASTERISK_SERVER_IP_TITLE}"/>
 										</td>
-                        			</tr>
-			                        <tr>
+									</tr>
+									<tr>
 										<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.ASTERISK_PORT}</strong></td>
-                						<td width="80%" class="small cellText">
+										<td width="80%" class="small cellText">
 											<input type="text" id="asterisk_port" name="asterisk_port" class="small" style="width:30%" value="{$ASTERISK_PORT}" title="{$MOD.ASTERISK_PORT_TITLE}"/>
 										</td>
 									</tr>
-                        			<tr>
-                            			<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.ASTERISK_USERNAME}</strong></td>
-                            			<td width="80%" class="small cellText">
+									<tr>
+										<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.ASTERISK_USERNAME}</strong></td>
+										<td width="80%" class="small cellText">
 											<input type="text" id="asterisk_username" name="asterisk_username" class="small" style="width:30%" value="{$ASTERISK_USERNAME}" title="{$MOD.ASTERISK_USERNAME_TITLE}"/>
 										</td>
-                        			</tr>
-			                        <tr>
+									</tr>
+									<tr>
 										<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.ASTERISK_PASSWORD}</strong></td>
-                						<td width="80%" class="small cellText">
+										<td width="80%" class="small cellText">
 											<input type="password" id="asterisk_password" name="asterisk_password" class="small" style="width:30%" value="{$ASTERISK_PASSWORD}" title="{$MOD.ASTERISK_PASSWORD_TITLE}"/>
 										</td>
 									</tr>
 									<tr>
 										<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.ASTERISK_VERSION}</strong></td>
-                						<td width="80%" class="small cellText">
-                							<select name="asterisk_version" id="asterisk_version" title="{$MOD.ASTERISK_VERSION_TITLE}">                								
+										<td width="80%" class="small cellText">
+											<select name="asterisk_version" id="asterisk_version" title="{$MOD.ASTERISK_VERSION_TITLE}">
 												<option value="1.4" {if $ASTERISK_VERSION eq '1.4'} selected {/if}>1.4</option>
 												<option value="1.6" {if $ASTERISK_VERSION eq '1.6'} selected {/if}>1.6</option>
-                							</select>
+											</select>
 										</td>
 									</tr>
 									<tr>
 										<td width="20%" nowrap colspan="2" align ="center">
 											<input type="button" name="update" class="crmbutton small create" value="{$MOD.LBL_UPDATE_BUTTON}" onclick="validatefn1('asterisk');" />
-											<input type="button" name="cancel" class="crmbutton small cancel" value="{$MOD.LBL_CANCEL_BUTTON}"  onClick="window.history.back();"/>
-									    </td>
-                        			</tr>
-                        			</table>
+											<input type="button" name="cancel" class="crmbutton small cancel" value="{$MOD.LBL_CANCEL_BUTTON}" onClick="window.history.back();"/>
+										</td>
+									</tr>
+									</table>
 									</td>
-								</tr>                       
-                       		</table>
-      	        		</span>
-                		<!-- asterisk ends :: can add another <span> for another SIP, say asterisk -->
-                
+								</tr>
+							</table>
+						</span>
+						<!-- asterisk ends :: can add another <span> for another SIP, say asterisk -->
 						</td>
 					</tr>
 				</table>
@@ -136,7 +136,7 @@ function setSoftphoneDetails(module){
 	var asterisk_username = document.getElementById("asterisk_username").value;
 	var asterisk_password = document.getElementById("asterisk_password").value;
 	var asterisk_version = document.getElementById('asterisk_version').value;
-	
+
 	if(asterisk_port == ""){
 		//port not specified :: so set default
 		asterisk_port = "5038";
@@ -150,7 +150,7 @@ function setSoftphoneDetails(module){
 				alert(response);
 			}else{
 				window.history.back();	//successfully saved, so go back
-			}		
+			}
 			document.getElementById("status").style.display="none";
 		});
 }

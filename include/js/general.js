@@ -3787,16 +3787,15 @@ function startCall(number, recordid){
 
 	//var ASTERISK_DIV_TIMEOUT = 6000;
 	jQuery.ajax({
-			method: 'POST',
-			url: 'index.php?action=PBXManagerAjax&mode=ajax&file=StartCall&ajax=true&module=PBXManager&number='+encodeURIComponent(number)+'&recordid='+recordid
+		method: 'POST',
+		url: 'index.php?action=PBXManagerAjax&mode=ajax&file=StartCall&ajax=true&module=PBXManager&number='+encodeURIComponent(number)+'&recordid='+recordid
 	}).done(function (response) {
-				if(response == ''){
-				//successfully called
-				}else{
-					alert(response);
-				}
-			}
-		);
+		if (response == '') {
+			//successfully called
+		} else {
+			alert(response);
+		}
+	});
 }
 //asterisk integration :: ends
 
