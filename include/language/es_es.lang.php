@@ -274,7 +274,6 @@ $app_strings = array (
       'LBL_ADV_SEARCH_MSG_ALL' => 'Coincidir con todos los siguientes',
       'COMBO_ALL' => 'Todos',
       'LBL_OPEN_ACTIVITIES' => 'Abrir Actividades',
-      'LBL_HISTORY' => 'Histórico',
       'LBL_ACTIVITY_HISTORY' => 'Histórico de Eventos',
       'LBL_ATTACHMENTS' => 'Adjuntos',
       'LBL_ATTACHMENT' => 'Adjunto',

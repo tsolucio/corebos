@@ -275,7 +275,6 @@ $app_strings = array(
 	'LBL_ADV_SEARCH_MSG_ALL' => 'Voldoen aan minstens 1 voorwaarde..',
 	'COMBO_ALL' => 'Alle',
 	'LBL_OPEN_ACTIVITIES' => 'Open Activiteit',
-	'LBL_HISTORY' => 'Geschiedenis',
 	'LBL_ACTIVITY_HISTORY' => 'Geschiedenis Activiteiten',
 	'LBL_ATTACHMENTS' => 'Bijlagen',
 	'LBL_ATTACHMENT' => 'Bijlage',

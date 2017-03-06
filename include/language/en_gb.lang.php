@@ -262,7 +262,6 @@ $app_strings = array(
 	'LBL_ADV_SEARCH_MSG_ALL' => 'Match All of the Following',
 	'COMBO_ALL' => 'All',
 	'LBL_OPEN_ACTIVITIES' => 'Open Activities',
-	'LBL_HISTORY' => 'History',
 	'LBL_ACTIVITY_HISTORY' => 'Activity History',
 	'LBL_ATTACHMENTS' => 'File Name',
 	'LBL_ATTACHMENT' => 'Attachment',

@@ -47,5 +47,6 @@ $mod_strings = array(
 	'LBL_DELETED'=>'DELETED!',
 	'LBL_RESTORED'=>'RESTORED!',
 	'LBL_ModTracker_SETTINGS' => 'Activated Modules',
+	'LBL_NO_HISTORY_TITLE' => 'No History',
 );
 ?>

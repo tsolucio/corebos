@@ -265,7 +265,6 @@ $app_strings = array(
 	'LBL_ADV_SEARCH_MSG_ALL' => 'Minden feltételre illeszkedik',
 	'COMBO_ALL' => 'Mind',
 	'LBL_OPEN_ACTIVITIES' => 'Nyitott aktivitások',
-	'LBL_HISTORY' => 'Előzmények',
 	'LBL_ACTIVITY_HISTORY' => 'Lezárt aktivitások',
 	'LBL_ATTACHMENTS' => 'Fájlnév',
 	'LBL_ATTACHMENT' => 'Csatolmány',

@@ -264,7 +264,6 @@ $app_strings = array(
 'LBL_ADV_SEARCH_MSG_ALL'=>'Entspreche allen der folgenden Bedingungen',
 'COMBO_ALL'=>'Alle',
 'LBL_OPEN_ACTIVITIES'=>'Offene Aktivitäten',
-'LBL_HISTORY'=>'Historie',
 'LBL_ACTIVITY_HISTORY'=>'Aktivitätenhistorie',
 'LBL_ATTACHMENTS'=>'Anhänge',
 'LBL_ATTACHMENT'=>'Anhang',
