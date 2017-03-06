@@ -115,6 +115,7 @@ $mod_strings = Array(
 'ERR_REENTER_PASSWORDS'=>'Por favor entre novamente com sua senha.  Os valores \"nova senha\" e \"confirme senha\" não combinam.',
 'ERR_INVALID_PASSWORD'=>'Você deve especificar um nome de usuário e senha válidos',
 'ERR_INVALID_ADMINIPLOGIN' => 'O usuário Administrador deve fazer login a partir de dispositivos autorizados.',
+'ERR_INVALID_USERIPLOGIN' => 'Restricted access to authorized personnel only<br> You are connecting from an invalid IP',
 'ERR_PASSWORD_CHANGE_FAILED_1'=>'Mudança na senha do usuário falhou ',
 'ERR_PASSWORD_CHANGE_FAILED_2'=>' falhou. Nova senha deve ser definida.',
 'ERR_PASSWORD_INCORRECT_OLD'=>'Senha antiga incorreta para usuário especificado. Entre novamente com a informação de senha.',

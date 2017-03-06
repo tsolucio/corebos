@@ -110,6 +110,7 @@
   'ERR_REENTER_PASSWORDS' => 'Reinserisci la Password. I valori della  Nuova Password e  della Conferma della Password  non coincidono',
   'ERR_INVALID_PASSWORD' => 'Devi specificare un utente e una password validi.',
   'ERR_INVALID_ADMINIPLOGIN' => 'Administrator users must login from authorized devices.',
+  'ERR_INVALID_USERIPLOGIN' => 'Restricted access to authorized personnel only<br> You are connecting from an invalid IP',
   'ERR_PASSWORD_CHANGE_FAILED_1' => 'Impossibile modificare la password per',
   'ERR_PASSWORD_CHANGE_FAILED_2' => 'errore. La nuova password deve essere impostata.',
   'ERR_PASSWORD_INCORRECT_OLD' => 'Vecchia password sbagliata per questo nome utente. Reinserisci la password',

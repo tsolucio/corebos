@@ -29,6 +29,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Debug_Popup_Query',
 				'Debug_Send_VtigerCron_Error',
 				'Debug_Send_AdminLoginIPAuth_Error',
+				'Debug_Send_UserLoginIPAuth_Error',
 				'Debug_Calculate_Response_Time',
 
 				'Application_Global_Search_SelectedModules',
@@ -40,6 +41,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_MaxFailedLoginAttempts',
 				'Application_ExpirePasswordAfterDays',
 				'Application_AdminLoginIPs',
+				'Application_UserLoginIPs',
 				'Application_ListView_MaxColumns',
 				'Application_Action_Panel_Open',
 				'Application_Search_Panel_Open',
