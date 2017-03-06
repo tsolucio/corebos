@@ -198,22 +198,38 @@ class Vtiger_Request {
 	}
 
 	public static function get_ip() {
-		//Just get the headers if we can or else use the SERVER global
-		if (function_exists('apache_request_headers')) {
-			$headers = apache_request_headers();
-		} else {
-			$headers = $_SERVER;
+		$headers = $_SERVER;
+		// check for shared internet/ISP IP
+		if (!empty($headers['HTTP_CLIENT_IP']) && self::validate_ip($headers['HTTP_CLIENT_IP']))
+			return $headers['HTTP_CLIENT_IP'];
+
+		// check for IPs passing through proxies
+		if (!empty($headers['HTTP_X_FORWARDED_FOR'])) {
+			// check if multiple ips exist in var
+			$iplist = explode(',', $headers['HTTP_X_FORWARDED_FOR']);
+			foreach ($iplist as $ip) {
+				if (self::validate_ip($ip))
+					return $ip;
+			}
 		}
 
-		//Get the forwarded IP if it exists
-		if (array_key_exists( 'X-Forwarded-For', $headers) && filter_var($headers['X-Forwarded-For'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-			$the_ip = $headers['X-Forwarded-For'];
-		} elseif (array_key_exists( 'HTTP_X_FORWARDED_FOR', $headers) && filter_var($headers['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-			$the_ip = $headers['HTTP_X_FORWARDED_FOR'];
-		} else {
-			$the_ip = filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
-		}
-		return $the_ip;
+		if (!empty($headers['X-Forwarded-For']) && self::validate_ip($headers['X-Forwarded-For']))
+			return $headers['X-Forwarded-For'];
+		if (!empty($headers['HTTP_X_FORWARDED']) && self::validate_ip($headers['HTTP_X_FORWARDED']))
+			return $headers['HTTP_X_FORWARDED'];
+		if (!empty($headers['HTTP_X_CLUSTER_CLIENT_IP']) && self::validate_ip($headers['HTTP_X_CLUSTER_CLIENT_IP']))
+			return $headers['HTTP_X_CLUSTER_CLIENT_IP'];
+		if (!empty($headers['HTTP_FORWARDED_FOR']) && self::validate_ip($headers['HTTP_FORWARDED_FOR']))
+			return $headers['HTTP_FORWARDED_FOR'];
+		if (!empty($headers['HTTP_FORWARDED']) && self::validate_ip($headers['HTTP_FORWARDED']))
+			return $headers['HTTP_FORWARDED'];
+
+		// return unreliable ip since all else failed
+		return $headers['REMOTE_ADDR'];
+	}
+
+	public static function validate_ip($ip) {
+		return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE);
 	}
 
 	/**
