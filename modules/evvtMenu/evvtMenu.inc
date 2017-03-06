@@ -244,6 +244,21 @@ function getAdminevvtMenu() {
 
 function checkevvtMenuInstalled() {
 	global $log;
+	// first we make sure we have Global Variable
+	if(!vtlib_isModuleActive('GlobalVariable')) {
+		global $current_user;
+		$holduser = $current_user;
+		ob_start();
+		include 'modules/cbupdater/getupdatescli.php';
+		$rsup = $adb->query("select cbupdaterid from vtiger_cbupdater where classname='installglobalvars'");
+		$updid = $adb->query_result($rsup,0,0);
+		$argv[0] = 'doworkcli';
+		$argv[1] = 'apply';
+		$argv[2] = $updid;
+		include 'modules/cbupdater/doworkcli.php';
+		ob_end_clean();
+		$current_user = $holduser;
+	}
 	if(!vtlib_isModuleActive('evvtMenu')) {
 		global $current_user;
 		$holduser = $current_user;
