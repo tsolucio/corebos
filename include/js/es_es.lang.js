@@ -383,7 +383,7 @@ var alert_arr = {
 	'MUST_SELECT_ONE_MODULE_FOR_REPORT' : 'Debes seleccionar un módulo relacionado para este tipo de informe',
 	'LBL_NEW_CONDITION' : 'Nueva condición',
 	'WF_UPDATE_MAP_ERROR' : '**ERROR**: Esta acción utiliza un campo que no está disponible: ',
-	'WF_UPDATE_MAP_ERROR_INFO' : 'Se cargará la acción con información INCORRECTA para que puedas arreglarla. NO ES CORRECTA!',
+	'WF_UPDATE_MAP_ERROR_INFO' : 'Se cargará la acción con información INCORRECTA para que puedas arreglarla. La información mostrada NO ES CORRECTA!',
 	'MoveUp' : 'Mover Arriba',
 	'MoveDown' : 'Mover Abajo',
 	'Products' : 'Productos',
@@ -398,6 +398,6 @@ var alert_arr = {
 	'ERR_INVALID_HOUR'  :  'Por favor, introduzca una hora válida',
 	'ERR_INVALID_TIME'  :  'Por favor, introduzca un tiempo válido',
 	'ERR_EMAIL_WITH_NO_SUBJECT' : 'No has introducido un asunto para este email. Puedes añadir uno ahora.',
-	'EMAIL_SIN_ASUNTO' : '(sin-asunto)',
+	'EMAIL_WITH_NO_SUBJECT' : '(sin-asunto)',
 	'INTEGERVALS':'Solo están permitidos valores enteros'
 };

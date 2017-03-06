@@ -289,7 +289,7 @@ function email_validate(oform,mode)
 	}
 	if(oform.subject.value.replace(/^\s+/g, '').replace(/\s+$/g, '').length==0)
 	{
-		if(email_sub = prompt(alert_arr.ERR_EMAIL_WITH_NO_SUBJECT,alert_arr.EMAIL_SIN_ASUNTO))
+		if(email_sub = prompt(alert_arr.ERR_EMAIL_WITH_NO_SUBJECT,alert_arr.EMAIL_WITH_NO_SUBJECT))
 		{
 			oform.subject.value = email_sub;
 		}else

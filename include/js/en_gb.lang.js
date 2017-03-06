@@ -344,7 +344,7 @@ var alert_arr = {
 	'MUST_SELECT_ONE_MODULE_FOR_REPORT' : 'You must select one related module for this type of report',
 	'LBL_NEW_CONDITION' : 'New Condition',
 	'WF_UPDATE_MAP_ERROR' : '**ERROR**: This task uses a field that does not exist: ',
-	'WF_UPDATE_MAP_ERROR_INFO' : 'The task will load with INCORRECT settings to permit you to fix it. It is NOT CORRECT!!',
+	'WF_UPDATE_MAP_ERROR_INFO' : 'The task will load with INCORRECT settings to permit you to fix it. The values shown are NOT CORRECT!!',
 	'MoveUp' : 'Move Up',
 	'MoveDown' : 'Move Down',
 	'Products' : 'Products',
@@ -358,7 +358,7 @@ var alert_arr = {
 	'ERR_INVALID_DATE'  :  'Please enter a valid date.',
 	'ERR_INVALID_HOUR'  :  'Please enter a valid hour.',
 	'ERR_INVALID_TIME'  :  'Please enter a valid time.',
-	'ERR_EMAIL_WITH_NO_SUBJECT' : 'You did not specify a subject from this email. If you would like to provide one, please type it now',
-	'EMAIL_SIN_ASUNTO' : '(no-Subject)',
+	'ERR_EMAIL_WITH_NO_SUBJECT' : 'You did not specify a subject for this email. If you would like to provide one, please type it now',
+	'EMAIL_WITH_NO_SUBJECT' : '(no-Subject)',
         'INTEGERVALS':'Only Integer values are allowed'
 };
