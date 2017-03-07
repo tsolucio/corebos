@@ -148,7 +148,6 @@ $mod_strings = array(
 	'LBL_SO' => 'Verkooporder:',
 	'LBL_SUBJECT' => 'Onderwerp:',
 	'LBL_SALES_ORDER' => 'Verkooporder:',
-	'Invoice Id' => 'Factuurnummer',
 	'LBL_MY_TOP_INVOICE' => 'Mijn Openstaande facturen',
 	'LBL_INVOICE_NAME' => 'Factuurnaam:',
 	'Purchase Order' => 'Inkooporder',

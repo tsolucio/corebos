@@ -115,7 +115,6 @@ $mod_strings = Array(
 'LBL_TICKETS'=>'Tickets',
 'LBL_FAQ'=>'FAQ',
 'Product Name'=>'Product Name',
-'FAQ Id'=>'FAQ Id',
 'Add Comment'=>'Add Comment',
 'LBL_ADD_COMMENT'=>'Add Comment',//give the same value given to the above string 'Add Comment'
 'LBL_COMMENT_INFORMATION'=>'Comment Information',
@@ -134,7 +133,7 @@ $mod_strings = Array(
 'Reviewed'=>'Reviewed',
 'Published'=>'Published',
 'Obsolete'=>'Obsolete',
-			
+
 // Module Sequence Numbering
 'Faq No' => 'Faq No',
 // END

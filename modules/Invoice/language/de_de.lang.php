@@ -160,7 +160,6 @@ $mod_strings = Array(
     //Added in release 4.2
     'LBL_SUBJECT'=>'Gegenstand:',
     'LBL_SALES_ORDER'=>'Bestellung:',
-    'Invoice Id'=>'Rechnungsnummer',
     'LBL_MY_TOP_INVOICE'=>'meine top Rechnungen',
     'LBL_INVOICE_NAME'=>'Rechnung:',
     'Purchase Order'=>'Auftrag:',

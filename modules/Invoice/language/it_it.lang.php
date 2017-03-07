@@ -157,7 +157,6 @@ $mod_strings = array (
   'LBL_SO' => 'Ordine di Vendita:',
   'LBL_SUBJECT' => 'Soggetto:',
   'LBL_SALES_ORDER' => 'Ordini di vendita:',
-  'Invoice Id' => 'ID Fattura',
   'LBL_MY_TOP_INVOICE' => 'Mie principali Fatture Aperte',
   'LBL_INVOICE_NAME' => 'Nome Fattura:',
   'Purchase Order' => 'Ordini di Acquisto',

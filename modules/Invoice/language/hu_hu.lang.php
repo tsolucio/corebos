@@ -148,7 +148,6 @@ $mod_strings = array(
 	'LBL_SO' => 'Megrendelés:',
 	'LBL_SUBJECT' => 'Tárgy:',
 	'LBL_SALES_ORDER' => 'Megrendelés:',
-	'Invoice Id' => 'Díjbekérő No.',
 	'LBL_MY_TOP_INVOICE' => 'Legfontosabb ki nem egyenlített Díjbekérőim',
 	'LBL_INVOICE_NAME' => 'Díjbekérő neve:',
 	'Purchase Order' => 'Beszerzések',
