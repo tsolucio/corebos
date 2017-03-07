@@ -45,5 +45,6 @@ $mod_strings = array(
 	'LBL_ADD_BUTTON' => 'Ajouter valeur',
 	'LBL_EDIT_BUTTON' => 'Renommer valeur',
 	'LBL_DELETE_BUTTON' => 'Supprimer valeur',
+	'NTC_DELETE_CONFIRMATION'=>'Êtes vous sûr de vouloir supprimer cette liste dépendante?',
 );
 ?>

@@ -8,8 +8,8 @@
 ***********************************************************/
 
 $mod_strings = Array (
-	'Integration' => 'Integration',
-	'SINGLE_Integration' => 'Integration',
+	'Integration' => 'Intégration',
+	'SINGLE_Integration' => 'Intégration',
 	'LBL_HOW_TO_USE' => 'Comment l\'utiliser?',
 );
 ?>
