@@ -143,7 +143,7 @@ $smarty->assign("MODULE", 'Users');
 $smarty->assign("CURRENT_USERID", $current_user->id);
 $HomeValues = $focus->getHomeStuffOrder($focus->id);
 $smarty->assign("TAGCLOUDVIEW",$HomeValues['Tag Cloud']);
-$smarty->assign("SHOWTAGAS",$HomeValues['showtagas']);
+$smarty->assign('SHOWTAGAS',getTranslatedString($HomeValues['showtagas'],'Users'));
 unset($HomeValues['Tag Cloud']);
 unset($HomeValues['showtagas']);
 $smarty->assign("HOMEORDER",$HomeValues);

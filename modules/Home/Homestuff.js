@@ -359,7 +359,7 @@ function loadStuff(stuffid,stufftype){
 				if(stufftype=="Tag Cloud"){
 					TagCanvas.Start('tagcloudCanvas', '', {
 						shape: user_tag_showas,
-						lock: "x",
+						lock: ((user_tag_showas=='vcylinder' || user_tag_showas=='vring') ? "y" : "x"),
 						weight: true,
 						weightMode: 'both'
 					});
@@ -423,7 +423,7 @@ function loadAllWidgets(widgetInfoList, batchSize){
 						if (tagcloudfound) {
 							TagCanvas.Start('tagcloudCanvas', '', {
 								shape: user_tag_showas,
-								lock: "x",
+								lock: ((user_tag_showas=='vcylinder' || user_tag_showas=='vring') ? "y" : "x"),
 								weight: true,
 								weightMode: 'both'
 							});
