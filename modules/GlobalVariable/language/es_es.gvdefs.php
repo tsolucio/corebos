@@ -54,7 +54,7 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Boolean',
 	'category' => 'Debug',
 	'values' => '0 | 1',
-	'definition' => 'If set to 1 the SQL query being launched for a report will be shown on screen.',
+	'definition' => 'Si el valor de la variable es 1 se escribirá la consulta del informe en el fichero principal de log.',
 ),
 'Debug_ListView_Query' => array(
 	'status' => 'Implemented',

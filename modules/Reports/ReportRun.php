@@ -1966,7 +1966,8 @@ class ReportRun extends CRMEntity {
 		}
 		$log->info("ReportRun :: Successfully returned sGetSQLforReport".$reportid);
 		if (GlobalVariable::getVariable('Debug_Report_Query', '0')=='1') {
-			echo '<br>'.$reportquery.'<br>';
+			$log->fatal('Report Query for '.$this->reportname." ($reportid)");
+			$log->fatal($reportquery);
 		}
 		return $reportquery;
 	}
