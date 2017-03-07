@@ -10,8 +10,8 @@
 $mod_strings = Array (
 	'Webforms' => 'Formulaire Web',
 	'Allows you to manage Webforms' => 'Gérer les webforms pour acquérir des leads sur votre site web',
-	'LBL_SUCCESS' => 'ajouté à vtiger CRM.',
-	'LBL_FAILURE' => 'Erreur pendant l\'ajout à vtiger CRM.',
+	'LBL_SUCCESS' => 'ajouté à l\'application.',
+	'LBL_FAILURE' => 'Erreur pendant l\'ajout à l\'application.',
 	'LBL_ERROR_CODE' => 'Code d\'erreur',
 	'LBL_ERROR_MESSAGE' => 'Message d\'erreur',
 	'LBL_WEBFORM_NAME'=>'Nom du Formulaire Web',
@@ -23,7 +23,7 @@ $mod_strings = Array (
 	'LBL_EDIT'=>'editer',
 	'LBL_DELETE'=>'supprimer',
 	'LBL_SOURCE'=>'Afficher le formulaire',
-	'LBL_MODULE_INFORMATION'=>'Information du Formulaire Web',
+	'LBL_MODULE_INFORMATION'=>'Détails du Formulaire Web',
 	'LBL_FIELD_INFORMATION'=>'Information des champs',
 	'LBL_ENABLE'=>'Actif',
 	'LBL_ENABLED'=>'Activé',
@@ -42,7 +42,8 @@ $mod_strings = Array (
 	'LBL_DELETE'=>'Supprimer',
 	'LBL_SAVE'=>'Sauver',
 	'LBL_SELECT_VALUE'=>'--Choisir valeur--',
-	'LBL_BASIC_INFORMATION'=>'Informations',
+	'LBL_DUPLICATE_NAME' => 'Un formulaire web avec le même nom existe déjà',
+	'ERR_CREATE_WEBFORM' => 'La création du formulaire web a échoué',
 	'LBL_SELECT_USER'=>'Choix utilisataur',
 );
 ?>

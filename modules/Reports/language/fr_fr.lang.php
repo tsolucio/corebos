@@ -181,7 +181,7 @@ $mod_strings = array (
 	'AVG' => 'Moyenne',
 	'MAX' => 'Valeur max',
 	'MIN' => 'Valeur min',
-	'LBL_CUSTOM_REPORTS' => 'Rapports personnels',
+	'LBL_CUSTOM_REPORTS' => 'Rapports personnalisés',
 	'ticketid' => 'Ref',
 	'NO_COLUMN' => 'Aucune colonne disponible pour le total',
 	'LBL_REPORT_DELETED' => 'Le rapport que vous souhaitez visualiser a été supprimé.',
@@ -229,7 +229,7 @@ $mod_strings = array (
 	'Hourly'=>'Toutes les heures',
 	'Daily'=>'Tous les jours',
 	'Weekly'=>'Toutes les semaines',
-	'BiWeekly'=>'Tous els 15 jours',
+	'BiWeekly'=>'Tous les 15 jours',
 	'Monthly'=>'Tous les mois',
 	'Annually'=>'Tous les ans',
 	'LBL_SCHEDULE_REPORT'=>'Rapports planifiés',
@@ -245,7 +245,7 @@ $mod_strings = array (
 
 	'LBL_AUTO_GENERATED_REPORT_EMAIL' => 'Cet email automatique contient un rapport planifié depuis votre CRM.',
 	'LBL_TIME_FORMAT_MSG' => 'hh:mm (heure:minutes)',
-	'LBL_RELOAD_REPORT' => 'Reload Report',
+	'LBL_RELOAD_REPORT' => 'Recharger le Rapport',
 	'LBL_SAVE_REPORT' => 'Enregistrer',
 	'LBL_SAVE_REPORT_AS' => 'Enregistrer le rapport en tant que...',
 	
@@ -261,7 +261,7 @@ $mod_strings = array (
 	'LBL_GROUPING_TIME' => 'Grouper par date',
 	'LBL_WIDGET_ADDED' => 'Widget ajouté.',
 	'LBL_UNDEFINED' => 'Indéfini',
-	'Add ReportCharts' => 'Add Report Charts',
+	'Add ReportCharts' => 'Ajouter Graphiques Rapport',
 	'Choose Report Type' => 'Choose Report Type',
 	'Application Report' => 'Application Report',
 	'External Application' => 'External Application',
@@ -280,4 +280,5 @@ $mod_strings = array (
 	'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Erreur lors de la suppression du répertoire.',
 	'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Error while deleting the reports of the folder',
 );
+
 ?>

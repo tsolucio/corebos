@@ -167,7 +167,6 @@ $mod_strings = Array(
 //Added in release 4.2
 'LBL_SUBJECT'=>'Subject:',
 'LBL_SALES_ORDER'=>'Sales order:',
-'Invoice Id'=>'Invoice Id',
 'LBL_MY_TOP_INVOICE'=>'My Top Open Invoice',
 'LBL_INVOICE_NAME'=>'Invoice Name:',
 'Purchase Order'=>'Purchase Order',

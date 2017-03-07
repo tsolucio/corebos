@@ -403,8 +403,8 @@ $mod_strings = Array(
 'LBL_LIST_MAILSERVER_BUTTON_KEY'=>'L',
 'LBL_LIST_MAILSERVER_BUTTON_LABEL'=>'List Mail Server',
 //added for inventory terms and conditions
-'INV_TANDC'=>'Terms & Coditions',
-'INV_TERMSANDCONDITIONS'=>'Inventory Terms & Coditions',
+'INV_TANDC'=>'Terms & Conditions',
+'INV_TERMSANDCONDITIONS'=>'Inventory Terms & Conditions',
 'LBL_INV_TERMSANDCONDITIONS'=>'Inventory Management', 
 
 

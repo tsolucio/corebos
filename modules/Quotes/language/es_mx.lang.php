@@ -151,7 +151,6 @@ $mod_strings = Array(
 'LBL_TERMS_INFORMATION'=>'Condiciones Generales',
 'LBL_QUOTE'=>'Cotización:',
 
-//Added during 4.2 release
 'LBL_SUBJECT'=>'Referencia:',
 'LBL_POTENTIAL_NAME'=>'Oportunidad:',
 'LBL_ACCOUNT_NAME'=>'Nombre de la Cuenta:',
@@ -173,9 +172,8 @@ $mod_strings = Array(
 'USPS'=>'Seur',
 'DHL'=>'DHL',
 'BlueDart'=>'Correos',
-'Sales Tax'=>'Impuesto de Ventas',                 
+'Sales Tax'=>'Impuesto de Ventas',
 
-//Added for Reports (5.0.4)
 'Tax Type'=>'Impuesto',
 'Discount Percent'=>'Descuento %',
 'Discount Amount'=>'Descuento Importe',
@@ -183,8 +181,7 @@ $mod_strings = Array(
 'Adjustment'=>'Ajustes',
 'S&H Amount'=>'Importe Envío y Manejo',
 
-//Added after 5.0.4 GA
-'Quote No'=>'No Cotización',
+'Quote No'=>'Nº Cotización',
 'Add Service Contract'=>'Añadir Contrato de Servicio',
 'Quotes ID'=>'Id Cotización',
 );

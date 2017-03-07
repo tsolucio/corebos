@@ -171,16 +171,14 @@ $mod_strings = Array(
 'USPS'=>'USPS',
 'DHL'=>'DHL',
 'BlueDart'=>'BlueDart',
-'Sales Tax'=>'Sales Tax',                       
+'Sales Tax'=>'Sales Tax',
 
-//Added for Reports (5.0.4)
 'Tax Type'=>'Tax Type',
 'Discount Percent'=>'Discount Percent',
 'Discount Amount'=>'Discount Amount',
 'Adjustment'=>'Adjustment',
 'S&H Amount'=>'S&H Amount',
 
-//Added after 5.0.4 GA
 'Quote No'=>'Quote No',
 
 'SINGLE_Quotes'=>'Quote',

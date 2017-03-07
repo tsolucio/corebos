@@ -10,7 +10,7 @@
 $mod_strings = Array (
 	'ModComments' => 'Commentaires',
 	'SINGLE_ModComments' => 'Commentaire',
-	'LBL_MODCOMMENTS_INFORMATION' => 'Information Commentaire',
+	'LBL_MODCOMMENTS_INFORMATION' => 'Détails Commentaire',
 	'LBL_OTHER_INFORMATION' => 'Autres Informations',
 	'LBL_CUSTOM_INFORMATION' => 'Informations personnalisées',
 
@@ -23,15 +23,15 @@ $mod_strings = Array (
 	'Creator' => 'Créé par',
 	'Related To Comments' => 'Commentaires liés',
 
-	'LBL_ADD_COMMENT' => 'ajouter un commentaire',
+	'LBL_ADD_COMMENT' => 'Ajouter un commentaire',
 	'LBL_AUTHOR' => 'Auteur',
-	'LBL_ON' => 'De',
+	'LBL_ON_DATE' => 'le',
 	'LBL_MINE' => 'Les miens',
 	'LBL_LAST5'=> 'Les 5 derniers',
-	'ModComments ID' => 'Commentaire ID ',
-	'Related Assigned Email' => 'Related Assigned Email',
-	'LBL_CONFIGURATION_DESCRIPTION' => 'Activate/Deactivate the functionality for each module.',
-	'LBL_ModComments_SETTINGS' => 'Activated Modules',
+	'ModComments ID' => 'Commentaire ID',
+	'Related Assigned Email' => 'Email utilisateur lié',
+	'LBL_CONFIGURATION_DESCRIPTION' => 'Activater ou désactivater la functionalité pour chaque modules',
+	'LBL_ModComments_SETTINGS' => 'Modules activés',
 );
 
 ?>

@@ -8,18 +8,19 @@
 ***********************************************************/
 
 $mod_strings = Array(
-	'PBX Manager' => 'PBX Manager',
+	'PBX Manager' => 'Manager PBX',
 	'PBXManager' => 'PBX Manager',
-	'SINGLE_PBXManager' => 'PBX Manager',
+	'SINGLE_PBXManager' => 'Manager PBX',
 	'Asterisk' => 'Asterisk',
-	'LBL_ASTERISK_INFORMATION' => 'Information Asterisk',
+	'LBL_ASTERISK_INFORMATION' => 'Détails Asterisk',
 	'Call From' => 'Appel entrant de',
 	'Call To' => 'Appel sortant vers',
-	'Time Of Call' => 'Date et heure de l\'appel',
-	'PBXManager ID'=>'PBX ID',
-	'ERR_Authenticate' => 'ERROR: authenticateUser. Error connecting with server.',
-	'ERR_Numbers' => 'From extension or Destination number is empty. Cannot proceed with the call.',
-	'ERR_Call' => 'ERROR: createcall. Error connecting with server.',
+	'Time Of Call' => 'Durée d\'appel',
+	'PBXManager ID'=>'PBX Manager ID',
+	'LBL_CALL_INFORMATION' => 'Information d\'appel',
+	'ERR_Authenticate' => 'ERREUR: authenticateUser. Erreur de connexion au serveur.',
+	'ERR_Numbers' => 'L\'extention "De" ou le Numéro de destintaire est non-renseigné. L\'appel ne peut aboutir.',
+	'ERR_Call' => 'ERREUR: createcall. Erreur de connexion au serveur.',
 );
 
 ?>

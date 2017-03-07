@@ -15,7 +15,7 @@ $mod_strings = Array (
 	'LBL_TOOLTIP_HELP_TEXT'=>'Sélectionnez les champs pour lesquels vous voulez ajouter des infobulles',
 	'LBL_FIELD'=>'Champs',
 	'LBL_NOT_ASSETS'=>'Pas de ressources allouées.',
-	'TooltipInfo' => 'This extension adds information hover tips on different fields on each module and is accessed in the settings of each module not directly, so you can eliminate it from the menu.',
+	'TooltipInfo' => 'Cette extention affiche des bulles avec des informations supplémentaires lorsque le curseur de la souris est positionnée sur les différents champs d\'un module. Elle est accessible à partir de la configuration de chaque module et peut donc être retirée du menu.',
 	'No Fields Selected' => 'No Fields Selected',
 );
 
