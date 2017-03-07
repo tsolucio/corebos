@@ -77,7 +77,7 @@
 		{foreach item=data from=$lvdata}
 		<td >{$data}</td>
 		{/foreach}
-		<td class="small">{if $entity_id>0}<a href="javascript:;" onclick='restore({$entity_id},"{$SELECTED_MODULE}");'>{$MOD.LNK_RESTORE}</a>{/if}</td>
+		<td class="small">{if $entity_id>0}<a href="javascript:;" onclick='restore({$entity_id},"{$SELECTED_MODULE}");'>{$MOD.LNK_RESTORE}</a>&nbsp;|&nbsp;<a href='javascript:;' onclick='callEmptyRecyclebin("{$entity_id}");'>{$APP.LNK_DELETE}</a>{/if}</td>
 	</tr>
 	{foreachelse}
 	<tr>
