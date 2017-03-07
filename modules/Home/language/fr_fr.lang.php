@@ -106,6 +106,6 @@ $mod_strings = array (
 	'LBL_NO_WIDGETS_HIDDEN'=>'Aucun widget par défaut masqué',
 	'UpdateExchangeRate' => 'Mettre à jour taux de change',
 	'LBL_HOME_ADDWINDOW' => 'Ajouter Fenêtre',
-	'LBL_GETTING_STARTED' => 'Getting Started',
+	'LBL_GETTING_STARTED' => 'Démarrage...',
 );
 ?>
