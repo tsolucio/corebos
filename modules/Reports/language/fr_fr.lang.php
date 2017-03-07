@@ -262,6 +262,23 @@ $mod_strings = array (
 	'LBL_WIDGET_ADDED' => 'Widget ajouté.',
 	'LBL_UNDEFINED' => 'Indéfini',
 	'Add ReportCharts' => 'Ajouter Graphiques Rapport',
+	'Choose Report Type' => 'Choose Report Type',
+	'Application Report' => 'Application Report',
+	'External Application' => 'External Application',
+	'Direct SQL Statement' => 'Direct SQL Statement',
+	'Cross Tab' => 'Cross Tab',
+	'Pivot Table' => 'Pivot Table',
+	'External Report URL' => 'External Report URL',
+	'Add User Information' => 'Add User Information',
+	'Select One Field of each' => 'You can only select one field from each module for this type of report',
+	'Select Only One Module' => 'You can only select one module for this type of report',
+	'LBL_AGG_FIELD' => 'Aggregation Field',
+	'LBL_AGG_FUNCTION_CHOOSE' => 'Select Aggregation Column and Function',
+	'LBL_AGG_COLUMN' => 'Aggregation Column',
+	'LBL_AGG_FUNCTION' => 'Aggregation Function',
+	'LBL_COLUMNS_COUNT'=>'Count',
+	'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Erreur lors de la suppression du répertoire.',
+	'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Error while deleting the reports of the folder',
 );
 
 ?>
