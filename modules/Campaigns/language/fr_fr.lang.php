@@ -15,8 +15,8 @@ $mod_strings = array(
 	'Campaign Name' => 'Objet',
 	'Campaign Type' => 'Type',
 	'Campaign Status' => 'Statut',
-	'Campaign ID' => 'Ref',
-	'Expected Close Date' => 'Echéance',
+	'Campaign ID' => 'Campagne ID',
+	'Expected Close Date' => 'Échéance',
 	'Expected Revenue' => 'CA prévisionnel',
 	'Budget Cost' => 'Budget',
 	'Actual Cost' => 'Coût actuel',
@@ -38,7 +38,7 @@ $mod_strings = array(
 	'Actual ROI' => 'ROI',
 	'Select One' => 'Choisir',
 	'LBL_LOAD_LIST' => 'Charger une liste',
-	'LBL_EMPTY_LIST'=>'Empty List',
+	'LBL_EMPTY_LIST'=>'Vider liste',
 	'Conference' => 'Conférence',
 	'Webinar' => 'Séminaire',
 	'Trade Show' => 'Salon',
@@ -61,13 +61,13 @@ $mod_strings = array(
 	'Good' => 'Bon',
 	'Average' => 'Moyen',
 	'Poor' => 'Faible',
-	'Campaign No' => 'Campagne N°',
+	'Campaign No' => 'Campagne n°',
 	// 5.4.0
 	'--None--'=>'--Aucun--',
 	'Contacted - Successful' => 'Contacté - avec succès',
 	'Contacted - Unsuccessful' => 'Contacté - sans succès',
 	'Contacted - Never Contact Again' => 'Contacté - Ne pas recontacter',
-	'Campaigns ID' => 'Campagne ID',
+	'Campaigns ID' => 'Campagnes ID',
 );
 
 ?>

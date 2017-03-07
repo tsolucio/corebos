@@ -104,8 +104,7 @@ $mod_strings = array (
 	//added for Default Widgets
 	'LBL_DEFAULT_WIDGET'=>'Widgets par défaut',
 	'LBL_NO_WIDGETS_HIDDEN'=>'Aucun widget par défaut masqué',
-	'UpdateExchangeRate' => 'Update Exchange Rate',
-	'LBL_HOME_ADDWINDOW' => 'Add Window',
-	'LBL_GETTING_STARTED' => 'Getting Started',
+	'UpdateExchangeRate' => 'Mettre à jour taux de change',
+	'LBL_HOME_ADDWINDOW' => 'Ajouter Fenêtre',
 );
 ?>

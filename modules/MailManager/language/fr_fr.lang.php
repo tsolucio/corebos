@@ -113,12 +113,12 @@ $mod_strings = Array (
 	'LBL_Imap2'       => 'IMAP2',
 	'LBL_Imap4'       => 'IMAP4',
 	'LBL_SSL_Options' => 'Options SSL',
-	'LBL_No_TLS'      => 'No TLS',
+	'LBL_No_TLS'      => 'Sans TLS',
 	'LBL_TLS'         => 'TLS',
 	'LBL_SSL'         => 'SSL',
-	'LBL_Certificate_Validations' => 'Certificate Validations',
-	'LBL_Validate_Cert'           => 'Validate cert',
-	'LBL_Do_Not_Validate_Cert'    => 'Do not validate cert',
+	'LBL_Certificate_Validations' => 'Validations de Certificats',
+	'LBL_Validate_Cert'           => 'Valider certificat',
+	'LBL_Do_Not_Validate_Cert'    => 'Ne pas valider certificat',
 	'LBL_SELECT_ACCOUNT_TYPE'     => 'Choisir un type de compte',
 	
 	'LBL_FROM'        => 'De',
@@ -157,10 +157,17 @@ $mod_strings = Array (
     'LBL_MAILMANAGER_ADD_HelpDesk' => 'Ajouter Ticket',
     'LBL_MAILMANAGER_ADD_Emails' => 'Attacher le message',
     'LBL_MAILMANAGER_ADD_ModComments' => 'Ajouter Commentaire',
-    'LBL_MAILMANAGER_ADD_Potentials' => 'Add Potential',
-    'LBL_MAILMANAGER_ADD_Project' => 'Add Project',
-    'LBL_MAILMANAGER_ADD_ProjectTask' => 'Add Project Task',
-    'LBL_ADD' => 'Ajouter'
+    'LBL_MAILMANAGER_ADD_Potentials' => 'Add Potentiel',
+    'LBL_MAILMANAGER_ADD_Project' => 'Ajouter Projet',
+    'LBL_MAILMANAGER_ADD_ProjectTask' => 'Ajouter Tâche Projet',
+    'LBL_ADD' => 'Ajouter',
+	'JSLBL_SendWith_EmptyText' => 'Envoyer avec le corps vide?',
+	'LBL_ALLMAILS' => 'Tous les Emails',
+	'LBL_TO_CONTACTS' => 'Aux Contacts',
+	'LBL_TO_ACCOUNTS' => 'Aux Comptes',
+	'LBL_TO_LEADS' => 'Aux Prospects',
+	'LBL_TO_USERS' => 'Aux Utilisateurs',
+	'LBL_SENT_MAILS' => 'Emails Envoyés',
 );
 
 ?>

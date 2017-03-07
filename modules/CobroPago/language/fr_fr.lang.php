@@ -82,21 +82,21 @@ $mod_strings = Array(
 'Probability'=>'Probabilité (%)',
 'Description'=>'Description',
 'Created Time'=>'Heure de création',
-'Modified Time'=>'Heure de Modification',
-'cobropagoid'=>'Paiement Id',
+'Modified Time'=>'Heure de modification',
+'cobropagoid'=>'Paiement ID',
 'DueDate'=>'Date d\'échéance',
 'Comercial'=>'Utilisateur relatif',
 'Recibo'=>'Reçu',
 'Historico de Cobros y Pagos'=>'Historique paiement',
-'Payment Paid'=>'Paiement marqué Payé par ',
-'PaidOn'=>' on ',
+'Payment Paid'=>'Paiement marqué payé par ',
+'PaidOn'=>' le ',
 'RecieptOpen'=>'Reçu ouvert pour impression par ',
 'CyP No'=>'Paiement No',
 'PaymentDate'=>'Date de paiement',
 
 //Added for Existing Picklist Strings
 
-'Cash'=>'Cash',
+'Cash'=>'Liquide',
 'Check'=>'Chèque',
 'Credit card'=>'Carte de Crédit',
 'Infrastructure'=>'Infrastructure',
@@ -120,10 +120,10 @@ $mod_strings = Array(
 'ACH_ACCOUNT_TYPE_C' => 'Controle',
 'ACH_ACCOUNT_TYPE_S' => 'Sauver',
 
-'Receive BluePay Payment'=>'Recevoir BluePay Paiement',
+'Receive BluePay Payment'=>'Recevoir Paiement BluePay',
 
 'ERR_ALREADY_PAID' => "Ce paiement a déja été effectué.",
-'ERR_NO_ACCOUNT' => "pas de compte associé.",
+'ERR_NO_ACCOUNT' => "Pas de compte associé.",
 'ERR_NO_TOKEN' => "Aucun jeton pour ce compte.",
 );
 

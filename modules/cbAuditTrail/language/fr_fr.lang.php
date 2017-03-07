@@ -9,11 +9,11 @@
  ************************************************************************************/
 
 $mod_strings = Array(
-	'cbAuditTrail' => 'User Audit Trail',
-	'SINGLE_cbAuditTrail' => 'User Audit Trail',
-	'LBL_AUDIT_TRAIL'=>'Audit Trail',
-	'AuditTrailEnabled' => 'Audit Trail Enabled',
-	'AuditTrailDisabled' => 'Audit Trail Disabled',
+	'cbAuditTrail' => 'Journal d\'audit utilisateur',
+	'SINGLE_cbAuditTrail' => 'Journal d\'audit utilisateur',
+	'LBL_AUDIT_TRAIL' => 'Journal d\'audit',
+	'AuditTrailEnabled' => 'Audit Activé',
+	'AuditTrailDisabled' => 'Audit Désactivé',
 );
 
 ?>

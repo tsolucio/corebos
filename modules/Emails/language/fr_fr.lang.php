@@ -102,7 +102,7 @@ $mod_strings = array (
 	Vérifiez votre configuration dans Mes préférences -> Ma configuration email',
 	'LBL_ALLMAILS' => 'Tous',
 	'LBL_TO_USERS' => 'Collaborateur',
-	'LBL_TO' => 'pour :',
+	'LBL_TO' => 'Pour :',
 	'LBL_IN_SUBJECT' => 'dans objet',
 	'LBL_IN_SENDER' => 'dans expéditeur',
 	'LBL_IN_SUBJECT_OR_SENDER' => 'dans objet ou expéditeur',
@@ -113,7 +113,6 @@ $mod_strings = array (
 	'LBL_MAILSELECT_INFO2' => 'Sélectionnez les types d\'adresses à utiliser pour l\'expédition',
 	'LBL_MULTIPLE' => 'Multiple',
 	'LBL_COMPOSE_EMAIL' => 'Rédiger un message',
-	'LBL_VTIGER_EMAIL_CLIENT' => 'Messagerie',
 	'TITLE_VTIGERCRM_MAIL' => 'Gestion des mails',
 	'TITLE_COMPOSE_MAIL' => 'Rédiger un message',
 	'MESSAGE_MAIL_COULD_NOT_BE_SEND' => 'Le message ne peut être envoyé à l\'utilisateur.',
@@ -138,7 +137,7 @@ $mod_strings = array (
 	'LBL_MAILSELECT_INFO' => 'a déjà le mail suivant associé. Veuillez sélectionner celui où le mail devra être envoyé.',
 	'LBL_NO_RECORDS' => 'Aucun enregistrement trouvé',
 	'LBL_PRINT_EMAIL'=> 'Imprimer',
-	'LBL_ATTACH_DOCUMENTS' => 'Attach documents',
-	'Access Count' => 'Access Count',
+	'LBL_ATTACH_DOCUMENTS' => 'Attacher documents',
+	'Access Count' => 'Nombre d\'accés',
 );
 ?>

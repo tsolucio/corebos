@@ -103,7 +103,7 @@ $mod_strings = Array(
 	'Download Count'=>'Compteur de téléchargement',
 	'Platform'=>'Platforme',
 	'Assigned To'=>'Assigné à',
-	'Note No' => 'Document N°',
+	'Note No' => 'Document n°',
 
 	'LBL_EMPTY_FOLDERS' => 'Répertoires vides',
 	'LBL_VIEW_EMPTY_FOLDERS' => 'Voir les répertoires vides',
@@ -119,7 +119,7 @@ $mod_strings = Array(
 
 	'Documents' => 'Documents',
 	'Documents ID' => 'Documents ID',
-	'LBL_FILEUPLOAD_FAILED'=>'File failed to upload',
+	'LBL_FILEUPLOAD_FAILED'=>'Le fichier n\'a pas pu être uploader',
 );
 
 ?>
