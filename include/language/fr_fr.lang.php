@@ -162,9 +162,9 @@ $app_strings = array (
 	'LBL_REQUIRED_SYMBOL' => '*',
 	'LBL_CURRENCY_SYMBOL' => '€',
 	'LBL_THOUSANDS_SYMBOL' => 'K',
-	'NTC_DATE_FORMAT' => '(dd-mm-yyyy)',
+	'NTC_DATE_FORMAT' => '(jj-mm-aaaa)',
 	'NTC_TIME_FORMAT' => '(24:00)',
-	'NTC_DATE_TIME_FORMAT' => '(dd-mm-yyyy 24:00)',
+	'NTC_DATE_TIME_FORMAT' => '(jj-mm-aaaa 24:00)',
 	'NTC_DELETE_CONFIRMATION' => 'êtes-vous certain de vouloir supprimer cet enregistrement ?',
 	'NTC_ACCOUNT_DELETE_CONFIRMATION' => 'Supprimer ce compte entrainera la suppression des données en relation (affaires, devis, commandes, facture). Êtes-vous certain de vouloir faire cela ?',
 	'NTC_VENDOR_DELETE_CONFIRMATION' => 'Supprimer ce fournisseur entrainera la suppression des commandes fournisseur en relation. Êtes-vous certain de vouloir faire cela ?',
@@ -174,7 +174,7 @@ $app_strings = array (
 	'ERR_MISSING_REQUIRED_FIELDS' => 'Champs obligatoires non renseignés:',
 	'ERR_INVALID_EMAIL_ADDRESS' => 'adresse email incorrecte.',
 	'ERR_INVALID_SECONDARY_EMAIL_ADDRESS' => 'adresse secondaire invalide.',
-	'ERR_INVALID_DATE_FORMAT' => 'Le format de la date doit être: dd-mm-yyyy',
+	'ERR_INVALID_DATE_FORMAT' => 'Le format de la date doit être: jj-mm-aaaa',
 	'ERR_INVALID_MONTH' => 'Veuillez saisir un mois correct.',
 	'ERR_INVALID_DAY' => 'Veuillez saisir un jour correct.',
 	'ERR_INVALID_YEAR' => 'Veuillez saisir une année correcte sur 4 chiffres.',
@@ -1200,6 +1200,7 @@ $app_strings = array (
 	'SetReturnAddressTitle' => 'Adresse à utiliser',
 	'SetReturnAddressDescription' => 'Sélectionnez quelle adresse vous souhaitez remplacez, si tel est le cas',
 	'Subscribe' => 'Souscrire',
+	'View History' => 'Voir Historique',
 );
 
 // Translation for currency names

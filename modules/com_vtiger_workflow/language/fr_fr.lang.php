@@ -50,12 +50,12 @@ $mod_strings = array(
 	'LBL_EXPRESSION'=>'Expression',
 	'LBL_SET_EXPRESSION'=>'Définir une expression',
 	'LBL_MANUAL'=>'Système',
-	'LBL_RECORD_ACCESS_CONTROL' => 'Record Access Control',
+	'LBL_RECORD_ACCESS_CONTROL' => 'Contrôle d\'accès aux enregistrements',
 	'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL'=>'Nouveau groupe de condition',
 	'VTUpdateFieldsTask' => 'Mise à jour d\'un champ',
-	'LBL_ON_DELETE'=>'On Delete',
+	'LBL_ON_DELETE'=>'Lorsque l\'enregistrement est supprimé',
 
-	'LBL_VALIDATION_DUPLICATE_FIELDNAMES' => 'Les mêmes champs sont sélectionnées plusieurs fois.',
+	'LBL_VALIDATION_DUPLICATE_FIELDNAMES' => 'Les mêmes champs sont sélectionnés plusieurs fois.',
 	'LBL_VALIDATION_INVALID_FIELD_VALUES' => 'Valeurs de champs invalides',
 	'LBL_CREATE_ENTITY_NOTE_ORDER_MATTERS' => 'Note: Les expressions seront évaluées dans l\'ordre des champs définis.
 												Prévoir de fournir des valeurs de champ avant de les utiliser dans une exxpression.',
