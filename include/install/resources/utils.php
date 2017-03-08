@@ -773,7 +773,6 @@ class Common_Install_Wizard_Utils {
 		'Vtlib Test HTML Directory' => './test/vtlib/HTML',
 		'Backup Directory' => './backup/',
 		'Smarty Modules Directory' => './Smarty/templates/modules/',
-		'Mail Merge Template Directory' => './test/wordtemplatedownload/',
 		'Product Image Directory' => './test/product/',
 		'User Image Directory' => './test/user/',
 		'Contact Image Directory' => './test/contact/',
