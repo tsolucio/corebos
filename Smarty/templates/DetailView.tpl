@@ -450,7 +450,7 @@ function sendfile_email()
 																		{foreach key=index item=email from=$EMAILS}
 																			<input type="hidden" name="email_{$index}" value="{$email}"/>
 																		{/foreach}
-																		<a href="javascript:void(0);" class="webMnu" onclick="{$JS}"><img src="{'sendmail.png'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle"  border="0"/></a>&nbsp;
+																		<a href="javascript:void(0);" class="webMnu" onclick="{$JS}"><img src="{'sendmail.png'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle"  border="0"/></a>
 																		<a href="javascript:void(0);" class="webMnu" onclick="{$JS}">{$APP.LBL_SENDMAIL_BUTTON_LABEL}</a>
 																	</td>
 																</tr>
