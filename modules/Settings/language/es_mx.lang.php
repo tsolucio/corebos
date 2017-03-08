@@ -758,7 +758,9 @@ $mod_strings = array (
       // Module Sequence Numbering
       'LBL_CUSTOMIZE_MODENT_NUMBER'=>'Personaliza Numeración Registro',
       'LBL_CUSTOMIZE_MODENT_NUMBER_DESCRIPTION'=>'Personalización Número de Entidad',
-      // END
+	'ERR_CUSTOMIZE_MODENT_NUMBER_EMPTY' => 'La secuencia de inicio no puede quedar vacía!',
+	'ERR_CUSTOMIZE_MODENT_NUMBER_NUMERIC' => 'La secuencia de inicio debe ser numérica.',
+	// END
 
       //added for softphone integration
       'LBL_SOFTPHONE_SERVER_SETTINGS'=>'Configuración Servidor Telefonía IP',

@@ -819,6 +819,8 @@ $mod_strings = Array(
 // Module Sequence Numbering
 'LBL_CUSTOMIZE_MODENT_NUMBER'=>'Customize Record Numbering',
 'LBL_CUSTOMIZE_MODENT_NUMBER_DESCRIPTION'=>'Module Entity Number customization',
+'ERR_CUSTOMIZE_MODENT_NUMBER_EMPTY' => 'Start sequence cannot be empty!',
+'ERR_CUSTOMIZE_MODENT_NUMBER_NUMERIC' => 'Start sequence should be numeric.',
 
 //added for softphone integration
 'LBL_SOFTPHONE_SERVER_SETTINGS'=>'SoftPhone Server Settings',

@@ -31,12 +31,12 @@ function updateModEntityNoSetting(button, form) {
 	var mode = 'UPDATESETTINGS';
 
 	if(recnumber == '') {
-		alert("Start sequence cannot be empty!");
+		alert("{/literal}{$MOD.ERR_CUSTOMIZE_MODENT_NUMBER_EMPTY}{literal}");
 		return;
 	}
 
 	if(recnumber.match(/[^0-9]+/) != null) {
-		alert("Start sequence should be numeric.");
+		alert("{/literal}{$MOD.ERR_CUSTOMIZE_MODENT_NUMBER_NUMERIC}{literal}");
 		return;
 	}
 
@@ -63,12 +63,12 @@ function updateModEntityExisting(button, form) {
 	var mode = 'UPDATEBULKEXISTING';
 
 	if(recnumber == '') {
-		alert("Start sequence cannot be empty!");
+		alert("{/literal}{$MOD.ERR_CUSTOMIZE_MODENT_NUMBER_EMPTY}{literal}");
 		return;
 	}
 
 	if(recnumber.match(/[^0-9]+/) != null) {
-		alert("Start sequence should be numeric.");
+		alert("{/literal}{$MOD.ERR_CUSTOMIZE_MODENT_NUMBER_NUMERIC}{literal}");
 		return;
 	}
 

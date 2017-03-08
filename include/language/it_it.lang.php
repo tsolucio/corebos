@@ -1163,6 +1163,7 @@ $app_strings = array (
 'SetReturnAddressTitle' => 'Select Address To Use',
 'SetReturnAddressDescription' => 'Select which address you wish to overwrite, if any',
 'Subscribe' => 'Subscribe',
+'View History' => 'View History',
 );
 
 // Translation for currency names

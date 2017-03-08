@@ -1159,6 +1159,7 @@ $app_strings = array(
 	'SetReturnAddressTitle' => 'Kies adres om te gebruiken',
 	'SetReturnAddressDescription' => 'Kies welk adres overschreven moet worden. U kunt één van de adressen kiezen, allebei of geen adres.',
 	'Subscribe' => 'Subscribe',
+	'View History' => 'View History',
 );
 
 // Translation for currency names

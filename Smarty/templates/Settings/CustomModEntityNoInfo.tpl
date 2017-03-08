@@ -12,7 +12,7 @@
 
 <tr>
 	<td nowrap class="small cellLabel">
-		<strong>{$SELMODULE|@getTranslatedString} {$MOD.LBL_MODULE_NUMBERING}</strong>
+		<strong>{$SELMODULE|@getTranslatedString:$SELMODULE} {$MOD.LBL_MODULE_NUMBERING}</strong>
 	</td>
 	<td width="100%" class="small cellText">
 		 <b>{$STATUSMSG}</b>

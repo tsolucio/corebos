@@ -862,6 +862,8 @@ $mod_strings = Array(
     // Module Sequence Numbering
     'LBL_CUSTOMIZE_MODENT_NUMBER'=>'Anpassen der Nummerierung',
     'LBL_CUSTOMIZE_MODENT_NUMBER_DESCRIPTION'=>'Nummerieren Sie die Datensätze nach Ihren Vorlagen',
+	'ERR_CUSTOMIZE_MODENT_NUMBER_EMPTY' => 'Start sequence cannot be empty!',
+	'ERR_CUSTOMIZE_MODENT_NUMBER_NUMERIC' => 'Start sequence should be numeric.',
     // END
 
     //added for softphone integration
