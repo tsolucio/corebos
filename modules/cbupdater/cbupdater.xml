@@ -1109,4 +1109,11 @@
 	<classname>cleanoptimizedatabase_190</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>fix Asterisk Label on Users Module</description>
+	<filename>build/changeSets/2017/fixAsteriskLabelOnUsersModule.php</filename>
+	<classname>fixAsteriskLabelOnUsersModule</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

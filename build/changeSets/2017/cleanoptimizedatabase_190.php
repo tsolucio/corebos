@@ -55,22 +55,12 @@ class cleanoptimizedatabase_190 extends cbupdaterWorker {
 				$fieldModel->label = 'Description';
 				$fieldModel->__update();
 			}
-			$fieldId = getFieldid(getTabid('PBXManager'), 'use_asterisk');
-			if ($fieldId) {
-				$fieldModel = Vtiger_Field::getInstance($fieldId);
-				$fieldModel->label = 'Receive Incoming Calls';
-				$fieldModel->__update();
-			}
 
 			$columns = $adb->getColumnNames('vtiger_modcomments');
 			if (in_array('parent_comments', $columns)) {
 				$this->ExecuteQuery("UPDATE `vtiger_modcomments` SET `parent_comments`='0' WHERE `parent_comments` is null or `parent_comments` = ''",array());
 				$this->ExecuteQuery('ALTER TABLE vtiger_modcomments MODIFY parent_comments INT(19) DEFAULT 0',array());
 			}
-
-			$this->ExecuteQuery('ALTER TABLE vtiger_seattachmentsrel DROP PRIMARY KEY', array());
-			$this->ExecuteQuery('ALTER TABLE vtiger_seattachmentsrel ADD CONSTRAINT PRIMARY KEY (crmid,attachmentsid)', array());
-			$this->ExecuteQuery('ALTER TABLE vtiger_seattachmentsrel ADD CONSTRAINT fk_2_vtiger_seattachmentsrel FOREIGN KEY (crmid) REFERENCES vtiger_crmentity(crmid) ON DELETE CASCADE', array());
 
 			// Update Currency symbol for Egypt
 			$this->ExecuteQuery('UPDATE vtiger_currencies SET currency_symbol=? WHERE currency_name=?', array('E£', 'Egypt, Pounds'));
