@@ -61,9 +61,9 @@
 	<tr>
 	<td class="mailSubHeader" align="right"><font color="red">*</font><b>{$MOD.LBL_TO}</b></td>
 	<td class="cellText" style="padding: 5px;">
-		<input name="{$elements.2.0}" id="{$elements.2.0}" type="hidden" value="{$IDLISTS}">
-		<input type="hidden" name="saved_toid" value="{$TO_MAIL}">
-		<input id="parent_name" name="parent_name" readonly class="txtBox" type="text" value="{$TO_MAIL}" style="width: 525px;">&nbsp;
+		<input name="{$elements.2.0}" id="{$elements.2.0}" type="hidden" value="{if isset($IDLISTS)}{$IDLISTS}{/if}">
+		<input type="hidden" name="saved_toid" value="{if isset($TO_MAIL)}{$TO_MAIL}{/if}">
+		<input id="parent_name" name="parent_name" readonly class="txtBox" type="text" value="{if isset($TO_MAIL)}{$TO_MAIL}{/if}" style="width: 525px;">&nbsp;
 		<span class="mailClientCSSButton">
 			<img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
 		</span>

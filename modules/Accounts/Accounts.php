@@ -859,7 +859,7 @@ class Accounts extends CRMEntity {
 			"Documents" => array("vtiger_senotesrel"=>array("crmid","notesid"),"vtiger_account"=>"accountid"),
 			"Campaigns" => array("vtiger_campaignaccountrel"=>array("accountid","campaignid"),"vtiger_account"=>"accountid"),
 		);
-		return $rel_tables[$secmodule];
+		return isset($rel_tables[$secmodule]) ? $rel_tables[$secmodule] : '';
 	}
 
 	/*

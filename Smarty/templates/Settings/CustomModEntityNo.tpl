@@ -15,13 +15,12 @@ function getModuleEntityNoInfo(form) {
 
 	document.getElementById("status").style.display="inline";
 	jQuery.ajax({
-			method:"POST",
-			url:'index.php?module=Settings&action=SettingsAjax&file=CustomModEntityNo&ajax=true&selmodule=' + encodeURIComponent(module)
+		method:"POST",
+		url:'index.php?module=Settings&action=SettingsAjax&file=CustomModEntityNo&ajax=true&selmodule=' + encodeURIComponent(module)
 	}).done(function(response) {
-				document.getElementById("status").style.display="none";
-
-				var restext = response;
-				document.getElementById('customentity_infodiv').innerHTML = restext;
+		document.getElementById("status").style.display="none";
+		var restext = response;
+		document.getElementById('customentity_infodiv').innerHTML = restext;
 	});
 }
 function updateModEntityNoSetting(button, form) {
@@ -44,16 +43,13 @@ function updateModEntityNoSetting(button, form) {
 	button.disabled = true;
 
 	jQuery.ajax({
-			method:"POST",
-			url:'index.php?module=Settings&action=SettingsAjax&file=CustomModEntityNo&ajax=true' + 
-					'&selmodule=' + encodeURIComponent(module) +
-					'&recprefix=' + encodeURIComponent(recprefix) +
-					'&recnumber=' + encodeURIComponent(recnumber) +
-					'&mode=' + encodeURIComponent(mode)
+		method:"POST",
+		url:'index.php?module=Settings&action=SettingsAjax&file=CustomModEntityNo&ajax=true' + '&selmodule=' + encodeURIComponent(module) +
+			'&recprefix=' + encodeURIComponent(recprefix) + '&recnumber=' + encodeURIComponent(recnumber) + '&mode=' + encodeURIComponent(mode)
 	}).done(function(response) {
-				document.getElementById("status").style.display="none";
-				var restext = response;
-				document.getElementById('customentity_infodiv').innerHTML = restext;
+		document.getElementById("status").style.display="none";
+		var restext = response;
+		document.getElementById('customentity_infodiv').innerHTML = restext;
 	});
 }
 function updateModEntityExisting(button, form) {
@@ -76,14 +72,12 @@ function updateModEntityExisting(button, form) {
 	button.disabled = true;
 
 	jQuery.ajax({
-			method:"POST",
-			url:'index.php?module=Settings&action=SettingsAjax&file=CustomModEntityNo&ajax=true' + 
-					'&selmodule=' + encodeURIComponent(module) +
-					'&mode=' + encodeURIComponent(mode)
+		method:"POST",
+		url:'index.php?module=Settings&action=SettingsAjax&file=CustomModEntityNo&ajax=true' + '&selmodule=' + encodeURIComponent(module) + '&mode=' + encodeURIComponent(mode)
 	}).done(function(response) {
-				VtigerJS_DialogBox.hideprogress();
-				var restext = response;
-				document.getElementById('customentity_infodiv').innerHTML = restext;
+		VtigerJS_DialogBox.hideprogress();
+		var restext = response;
+		document.getElementById('customentity_infodiv').innerHTML = restext;
 	});
 }
 </script>
@@ -119,18 +113,18 @@ function updateModEntityExisting(button, form) {
 				<tr>
 					<td class="small" align="right">
 					{$MOD.LBL_SELECT_CF_TEXT}
-		            <select name="selmodule" class="small" onChange="getModuleEntityNoInfo(this.form)">
-                		{foreach key=sel_value item=value from=$MODULES}
-		                {if $SELMODULE eq $sel_value}
-                	    	{assign var = "selected_val" value="selected"}
-		                {else}
-                        	{assign var = "selected_val" value=""}
-                        {/if}
-                        {assign var="MODULE_LABEL" value=$value}
+					<select name="selmodule" class="small" onChange="getModuleEntityNoInfo(this.form)">
+					{foreach key=sel_value item=value from=$MODULES}
+						{if $SELMODULE eq $sel_value}
+							{assign var = "selected_val" value="selected"}
+						{else}
+							{assign var = "selected_val" value=""}
+						{/if}
+						{assign var="MODULE_LABEL" value=$value}
 						{assign var="MODULE_LABEL" value=$value|getTranslatedString:$value}
-	                    <option value="{$sel_value}" {$selected_val}>{$MODULE_LABEL}</option>
-        		        {/foreach}
-			        </select>
+						<option value="{$sel_value}" {$selected_val}>{$MODULE_LABEL}</option>
+					{/foreach}
+					</select>
 					</td>
 				</tr>
 				</table>
@@ -149,22 +143,19 @@ function updateModEntityExisting(button, form) {
 		</table>
 		</form>
 
-		<!-- End of Display -->
-		
 		</td>
-        </tr>
-        </table>
+		</tr>
+		</table>
 
-        </td>
-        </tr>
-        </table>
-        </div>
+		</td>
+		</tr>
+		</table>
+		</div>
 
-        </td>
-        <td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
-        </tr>
+		</td>
+		<td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
+		</tr>
 </tbody>
 </table>
 
 <br>
-

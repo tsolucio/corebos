@@ -552,7 +552,7 @@ class Campaigns extends CRMEntity {
 			"Calendar" => array("vtiger_seactivityrel"=>array("crmid","activityid"),"vtiger_campaign"=>"campaignid"),
 			"Products" => array("vtiger_campaign"=>array("campaignid","product_id")),
 		);
-		return $rel_tables[$secmodule];
+		return isset($rel_tables[$secmodule]) ? $rel_tables[$secmodule] : '';
 	}
 
 	// Function to unlink an entity with given Id from another entity

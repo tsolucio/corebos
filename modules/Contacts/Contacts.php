@@ -1076,7 +1076,7 @@ function get_contactsforol($user_name)
 			"Accounts" => array("vtiger_contactdetails"=>array("contactid","accountid")),
 			"Invoice" => array("vtiger_invoice"=>array("contactid","invoiceid"),"vtiger_contactdetails"=>"contactid"),
 		);
-		return $rel_tables[$secmodule];
+		return isset($rel_tables[$secmodule]) ? $rel_tables[$secmodule] : '';
 	}
 
 	// Function to unlink all the dependent entities of the given Entity by Id

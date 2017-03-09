@@ -401,7 +401,7 @@ class Quotes extends CRMEntity {
 			"Contacts" => array("vtiger_quotes"=>array("quoteid","contactid")),
 			"Potentials" => array("vtiger_quotes"=>array("quoteid","potentialid")),
 		);
-		return $rel_tables[$secmodule];
+		return isset($rel_tables[$secmodule]) ? $rel_tables[$secmodule] : '';
 	}
 
 	// Function to unlink an entity with given Id from another entity

@@ -394,7 +394,7 @@ class Invoice extends CRMEntity {
 			"Accounts" => array("vtiger_invoice"=>array("invoiceid","accountid")),
 			"Contacts" => array("vtiger_invoice"=>array("invoiceid","contactid")),
 		);
-		return $rel_tables[$secmodule];
+		return isset($rel_tables[$secmodule]) ? $rel_tables[$secmodule] : '';
 	}
 
 	// Function to unlink an entity with given Id from another entity

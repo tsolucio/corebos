@@ -36,7 +36,7 @@ if(isset($_REQUEST['dup_check']) && $_REQUEST['dup_check'] != '')
 		die;
 	}
 }
-if($_REQUEST['user_role'] != '' && !is_admin($current_user) && $_REQUEST['user_role'] != $current_user->roleid){
+if(!empty($_REQUEST['user_role']) && !is_admin($current_user) && $_REQUEST['user_role'] != $current_user->roleid){
 	$log->fatal("SECURITY:Non-Admin user:". $current_user->id . " attempted to change user role");
 	echo "<link rel='stylesheet' type='text/css' href='themes/$theme/style.css'>";
 	echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
@@ -159,7 +159,7 @@ $log->debug("Saved record with id of ".$return_id);
 
 // Check to see if the mode is User Creation and if yes, then sending the email notification to the User with Login details.
 $error_str = '';
-if($_REQUEST['mode'] == 'create') {
+if(isset($_REQUEST['mode']) and $_REQUEST['mode'] == 'create') {
 	global $app_strings, $mod_strings, $default_charset;
 	require_once('modules/Emails/mail.php');
 	$user_emailid = $focus->column_fields['email1'];
@@ -184,10 +184,6 @@ if($_REQUEST['mode'] == 'create') {
 	}
 }
 $location = "Location: index.php?action=".vtlib_purify($return_action)."&module=".vtlib_purify($return_module)."&record=".vtlib_purify($return_id);
-
-if(empty($_REQUEST['modechk']) || $_REQUEST['modechk'] != 'prefview') {
-	$location .= "&parenttab=".vtlib_purify($parenttab);
-}
 
 if ($error_str != '') {
 	$user = $focus->column_fields['user_name'];

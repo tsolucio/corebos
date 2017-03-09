@@ -1988,9 +1988,11 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						if (CheckFieldPermission('email1', $module) == "true") {
 							$emailaddress = $adb->query_result($list_result, $list_result_count, "email1");
 							$email_check = 1;
-						}
-						else
+						} else {
+							$emailaddress = '';
 							$email_check = 0;
+						}
+						$emailaddress2 = '';
 						if ($emailaddress == '') {
 							if (CheckFieldPermission('email2', $module) == 'true') {
 								$emailaddress2 = $adb->query_result($list_result, $list_result_count, "email2");
@@ -2018,9 +2020,10 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						if (CheckFieldPermission('email', $module) == "true") {
 							$emailaddress = $adb->query_result($list_result, $list_result_count, "email");
 							$email_check = 1;
-						}
-						else
+						} else {
+							$emailaddress = '';
 							$email_check = 0;
+						}
 						$querystr = "SELECT fieldid,fieldlabel,columnname FROM vtiger_field WHERE tabid=? and uitype=13 and vtiger_field.presence in (0,2)";
 						$queryres = $adb->pquery($querystr, array(getTabid($module)));
 						//Change this index 0 - to get the vtiger_fieldid based on email1 or email2
@@ -2035,9 +2038,11 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						if (CheckFieldPermission('email', $module) == "true") {
 							$emailaddress = $adb->query_result($list_result, $list_result_count, "email");
 							$email_check = 1;
-						}
-						else
+						} else {
+							$emailaddress = '';
 							$email_check = 0;
+						}
+						$emailaddress2 = '';
 						if ($emailaddress == '') {
 							if (CheckFieldPermission('secondaryemail', $module) == 'true') {
 								$emailaddress2 = $adb->query_result($list_result, $list_result_count, "secondaryemail");
@@ -2066,8 +2071,10 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						if (CheckFieldPermission ( 'email', $module ) == "true") {
 							$emailaddress = $adb->query_result ( $list_result, $list_result_count, "email" );
 							$email_check = 1;
-						} else
+						} else {
+							$emailaddress = '';
 							$email_check = 0;
+						}
 						$querystr = "SELECT fieldid,fieldlabel,columnname FROM vtiger_field WHERE tabid=? and uitype=13 and vtiger_field.presence in (0,2)";
 						$queryres = $adb->pquery( $querystr, array( getTabid ( $module ) ));
 						// Change this index 0 - to get the vtiger_fieldid based on email1 or email2
@@ -2081,8 +2088,10 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						if (CheckFieldPermission ( 'email', $module ) == "true") {
 							$emailaddress = $adb->query_result ( $list_result, $list_result_count, "email" );
 							$email_check = 1;
-						} else
+						} else {
+							$emailaddress = '';
 							$email_check = 0;
+						}
 						$querystr = "SELECT fieldid,fieldlabel,columnname FROM vtiger_field WHERE tabid=? and uitype=13 and vtiger_field.presence in (0,2)";
 						$queryres = $adb->pquery( $querystr, array( getTabid ( $module )));
 						// Change this index 0 - to get the vtiger_fieldid based on email1 or email2
@@ -2096,8 +2105,10 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						if (CheckFieldPermission ( 'email', $module ) == "true") {
 							$emailaddress = $adb->query_result ( $list_result, $list_result_count, "email" );
 							$email_check = 1;
-						} else
+						} else {
+							$emailaddress = '';
 							$email_check = 0;
+						}
 						$querystr = "SELECT fieldid,fieldlabel,columnname FROM vtiger_field WHERE tabid=? and uitype=13 and vtiger_field.presence in (0,2)";
 						$queryres = $adb->pquery( $querystr, array( getTabid( $module )));
 						// Change this index 0 - to get the vtiger_fieldid based on email1 or email2
@@ -2111,8 +2122,10 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						if (CheckFieldPermission ( 'email', $module ) == "true") {
 							$emailaddress = $adb->query_result ( $list_result, $list_result_count, "email" );
 							$email_check = 1;
-						} else
+						} else {
+							$emailaddress = '';
 							$email_check = 0;
+						}
 						$querystr = "SELECT fieldid,fieldlabel,columnname FROM vtiger_field WHERE tabid=? and uitype=13 and vtiger_field.presence in (0,2)";
 						$queryres = $adb->pquery( $querystr, array( getTabid( $module )));
 						// Change this index 0 - to get the vtiger_fieldid based on email1 or email2

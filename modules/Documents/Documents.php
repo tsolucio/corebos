@@ -417,7 +417,7 @@ class Documents extends CRMEntity {
 	 */
 	function setRelationTables($secmodule){
 		$rel_tables = array();
-		return $rel_tables[$secmodule];
+		return '';
 	}
 
 	// Function to unlink all the dependent entities of the given Entity by Id

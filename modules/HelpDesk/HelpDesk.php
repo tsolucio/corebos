@@ -659,7 +659,7 @@ class HelpDesk extends CRMEntity {
 			"Products" => array("vtiger_troubletickets"=>array("ticketid","product_id")),
 			"Services" => array("vtiger_crmentityrel"=>array("crmid","relcrmid"),"vtiger_troubletickets"=>"ticketid"),
 		);
-		return $rel_tables[$secmodule];
+		return isset($rel_tables[$secmodule]) ? $rel_tables[$secmodule] : '';
 	}
 
 	// Function to unlink an entity with given Id from another entity

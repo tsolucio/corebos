@@ -110,8 +110,8 @@
 </form><br>
 </div>
 {*<!-- Searching UI -->*}
- 
- <div id="mergeDup" style="z-index:1;display:none;position:relative;">
+
+<div id="mergeDup" style="z-index:1;display:none;position:relative;">
 	{include file="MergeColumns.tpl"}
 </div>
 	   <!-- PUBLIC CONTENTS STARTS-->

@@ -49,14 +49,6 @@ if($norows  > 0){
 }
 $smarty->assign("USERNODELETE",$userid);
 
-if(empty($_SESSION['lvs'][$currentModule])) {
-	coreBOS_Session::delete('lvs');
-	$modObj = new ListViewSession();
-	$modObj->sorder = $sorder;
-	$modObj->sortby = $order_by;
-	coreBOS_Session::set('lvs^'.$currentModule, get_object_vars($modObj));
-}
-
 if(!empty($_REQUEST['sorder']))
 	$sorder = $adb->sql_escape_string($_REQUEST['sorder']);
 else
@@ -68,6 +60,14 @@ if(!empty($_REQUEST['order_by']))
 else
 	$order_by = $focus->getOrderBy();
 coreBOS_Session::set('USERS_ORDER_BY', $order_by);
+
+if(empty($_SESSION['lvs'][$currentModule])) {
+	coreBOS_Session::delete('lvs');
+	$modObj = new ListViewSession();
+	$modObj->sorder = $sorder;
+	$modObj->sortby = $order_by;
+	coreBOS_Session::set('lvs^'.$currentModule, get_object_vars($modObj));
+}
 
 if(!empty($order_by)){
 	$list_query .= ' ORDER BY '.$order_by.' '.$sorder;

@@ -803,7 +803,7 @@ class Services extends CRMEntity {
 			"Documents" => array("vtiger_senotesrel"=>array("crmid","notesid"),"vtiger_service"=>"serviceid"),
 			"Contacts" => array("vtiger_crmentityrel"=>array("crmid","relcrmid"),"vtiger_service"=>"serviceid"),
 		);
-		return $rel_tables[$secmodule];
+		return isset($rel_tables[$secmodule]) ? $rel_tables[$secmodule] : '';
 	}
 
 	// Function to unlink all the dependent entities of the given Entity by Id

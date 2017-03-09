@@ -4621,7 +4621,7 @@ function getSelectedRecords($input,$module,$idstring,$excludedRecords) {
 
 	} else if($module == 'Documents' and GlobalVariable::getVariable('Document_Folder_View',1,'Documents')) {
 
-		if($input['selectallmode']=='true') {
+		if (isset($input['selectallmode']) and $input['selectallmode']=='true') {
 			$result = getSelectAllQuery($input,$module);
 			$storearray = array();
 			$focus = CRMEntity::getInstance($module);

@@ -302,7 +302,6 @@ $smarty->assign("APP", $app_strings);
 if (isset($focus->name)) $smarty->assign("NAME", $focus->name);
 else $smarty->assign("NAME", "");
 
-
 if($focus->mode == 'edit')
 {
 	$smarty->assign("UPDATEINFO",updateInfo($focus->id));
@@ -370,8 +369,6 @@ if(isset($ret_error) and $ret_error == 1) {
 }
 $check_button = Button_Check($module);
 $smarty->assign("CHECK", $check_button);
-$smarty->assign('LISTID',vtlib_purify($_REQUEST['idlist']));
 
 $smarty->display("ComposeEmail.tpl");
-
 ?>

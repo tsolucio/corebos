@@ -1218,7 +1218,7 @@ class Products extends CRMEntity {
 			"PriceBooks" => array("vtiger_pricebookproductrel"=>array("productid","pricebookid"),"vtiger_products"=>"productid"),
 			"Documents" => array("vtiger_senotesrel"=>array("crmid","notesid"),"vtiger_products"=>"productid"),
 		);
-		return $rel_tables[$secmodule];
+		return isset($rel_tables[$secmodule]) ? $rel_tables[$secmodule] : '';
 	}
 
 	function deleteProduct2ProductRelation($record,$return_id,$is_parent){

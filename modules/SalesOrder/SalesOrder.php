@@ -431,7 +431,7 @@ class SalesOrder extends CRMEntity {
 			"Accounts" => array("vtiger_salesorder"=>array("salesorderid","accountid")),
 			"Contacts" => array("vtiger_salesorder"=>array("salesorderid","contactid")),
 		);
-		return $rel_tables[$secmodule];
+		return isset($rel_tables[$secmodule]) ? $rel_tables[$secmodule] : '';
 	}
 
 	// Function to unlink an entity with given Id from another entity
