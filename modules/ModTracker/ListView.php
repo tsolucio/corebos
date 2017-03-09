@@ -125,7 +125,7 @@ $smarty->assign('export_where',to_html($where));
 
 // Sorting
 if(!empty($order_by)) {
-	if($order_by == 'smownerid') $list_query .= ' ORDER BY user_name '.$sorder;
+	if($order_by == 'smownerid') $list_query .= ' ORDER BY vtiger_users.user_name '.$sorder;
 	else {
 		$tablename = getTableNameForField($currentModule, $order_by);
 		$tablename = ($tablename != '')? ($tablename . '.') : '';
