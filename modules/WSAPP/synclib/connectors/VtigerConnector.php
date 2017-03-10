@@ -13,7 +13,7 @@ require_once 'modules/WSAPP/synclib/models/VtigerModel.php';
 require_once 'modules/WSAPP/synclib/models/PullResultModel.php';
 require_once 'modules/WSAPP/api/ws/Map.php';
 require_once 'modules/WSAPP/api/ws/Put.php';
-require_once 'include/Zend/Json.php';
+//require_once 'include/Zend/Json.php';
 require_once 'include/database/PearDatabase.php';
 require_once 'include/Webservices/Utils.php';
 
@@ -64,7 +64,7 @@ class WSAPP_VtigerConnector extends WSAPP_BaseConnector {
 			return $this->intialSync();
 		}
 		$rowData = $this->db->raw_query_result_rowdata($result);
-		$stateValues = Zend_Json::decode($rowData['stateencodedvalues']);
+		$stateValues = json_decode($rowData['stateencodedvalues'],true);
 		$model = WSAPP_SyncStateModel::getInstanceFromQueryResult($stateValues);
 		return $model;
 	}
@@ -90,7 +90,7 @@ class WSAPP_VtigerConnector extends WSAPP_BaseConnector {
 	}
 
 	function updateSyncState(WSAPP_SyncStateModel $syncStateModel) {
-		$encodedValues = Zend_Json::encode(array('synctrackerid' => $syncStateModel->getSyncTrackerId(), 'synctoken' => $syncStateModel->getSyncToken(), 'more' => $syncStateModel->get('more')));
+		$encodedValues = json_encode(array('synctrackerid' => $syncStateModel->getSyncTrackerId(), 'synctoken' => $syncStateModel->getSyncToken(), 'more' => $syncStateModel->get('more')));
 		$query = 'INSERT INTO vtiger_wsapp_sync_state(stateencodedvalues,name,userid) VALUES (?,?,?)';
 		$parameters = array($encodedValues, $this->getName(), $this->getSynchronizeController()->user->id);
 		if ($this->isSyncStateExists()) {

@@ -11,7 +11,7 @@
 
 require_once 'modules/WSAPP/Utils.php';
 require_once 'include/database/PearDatabase.php';
-require_once 'include/Zend/Json.php';
+//require_once 'include/Zend/Json.php';
 require_once 'include/utils/utils.php';
 
 class OutlookSyncServer extends SyncServer{

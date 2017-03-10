@@ -88,8 +88,6 @@ class Google_List_View  {
         $syncDirection = Google_Utils_Helper::getSyncDirectionForUser($user); 
         $records = $controller->synchronize(true,$syncDirection[0],$syncDirection[1]); 
         $syncRecords = $this->getSyncRecordsCount($records);
-        //var_dump($syncRecords);
-        //var_dump($controller->targetConnector);
         $syncRecords['vtiger']['more'] = $controller->targetConnector->moreRecordsExits();
         $syncRecords['google']['more'] = $controller->sourceConnector->moreRecordsExits();
         return $syncRecords;

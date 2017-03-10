@@ -10,7 +10,7 @@
 
 require_once 'modules/WSAPP/Utils.php';
 require_once 'include/database/PearDatabase.php';
-require_once 'include/Zend/Json.php';
+//require_once 'include/Zend/Json.php';
 require_once 'include/utils/utils.php';
 
 class SyncServer {
@@ -82,7 +82,7 @@ class SyncServer {
         $db = PearDatabase::getInstance();
         $params = array();
         $params[] = $syncServerId;
-        $params[] = Zend_Json::encode($recordDetails);
+        $params[] = json_encode($recordDetails);
         $params[] = $flag;
         $params[] = $appid;
         $db->pquery("INSERT INTO vtiger_wsapp_queuerecords(syncserverid,details,flag,appid) VALUES(?,?,?,?)",array($params));
@@ -362,6 +362,7 @@ class SyncServer {
 	 * Share the Create/Update/Delete state information
 	 */
 	function get($key, $module, $token, $user) {
+            global $log;
 		$db = PearDatabase::getInstance();
 		$appid = $this->appid_with_key($key);
 		if (empty($appid)) {
@@ -370,11 +371,12 @@ class SyncServer {
 		$clientApplicationSyncType = wsapp_getAppSyncType($key);
         //hardcoded since the destination handler will be vtigerCRM
 		$serverKey = wsapp_getAppKey("vtigerCRM");
-        $handlerDetails  = $this->getDestinationHandleDetails();
-        require_once $handlerDetails['handlerpath'];
-        $this->destHandler = new $handlerDetails['handlerclass']($serverKey);
+                $handlerDetails  = $this->getDestinationHandleDetails();
+                $log->debug('gettt');$log->debug($handlerDetails);
+                require_once $handlerDetails['handlerpath'];
+                $this->destHandler = new $handlerDetails['handlerclass']($serverKey);
 		$this->destHandler->setClientSyncType($clientApplicationSyncType);
-        $result = $this->destHandler->get($module, $token,$user);
+                $result = $this->destHandler->get($module, $token,$user);
         // Lookup Ids
 		$updatedIds = array(); $deletedIds = array();
 		foreach($result['updated'] as $u){

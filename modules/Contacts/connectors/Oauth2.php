@@ -194,7 +194,7 @@ class Google_Oauth2_Connector {
         $params = array($this->user_id, $this->service_name);
         $result = $this->db->pquery($query, $params);
         $data = $this->db->fetch_array($result);
-        $decodedAccessToken = json_decode(decode_html($data['access_token']),true);
+        $decodedAccessToken = json_decode(decode_html($data['synctoken']),true);
         $refreshToken = decode_html($data['refresh_token']);
         return array(
             'access_token' => $decodedAccessToken,

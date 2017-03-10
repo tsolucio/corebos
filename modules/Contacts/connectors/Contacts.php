@@ -300,7 +300,7 @@ Class Google_Contacts_Connector extends WSAPP_TargetConnector {
      */
     public function getContacts($SyncState) {
         global $current_user;
-        if(!$user) $user = $current_user;//Users_Record_Model::getCurrentUserModel(); 
+        $user = $current_user;//Users_Record_Model::getCurrentUserModel(); 
         $query = array( 
             'max-results' => $this->maxResults, 
             'start-index' => 1, 
@@ -607,7 +607,7 @@ Class Google_Contacts_Connector extends WSAPP_TargetConnector {
      * @return <Array> - pushedRecords
      */
     protected function pushChunk($records,$user) {
-        global $default_charset;
+        global $default_charset,$log;
         $atom = new SimpleXMLElement("<?xml version='1.0' encoding='UTF-8'?>
         <feed xmlns='http://www.w3.org/2005/Atom' xmlns:gContact='http://schemas.google.com/contact/2008'
               xmlns:gd='http://schemas.google.com/g/2005' xmlns:batch='http://schemas.google.com/gdata/batch' />");

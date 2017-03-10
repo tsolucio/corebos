@@ -16,9 +16,10 @@ class Google_Contacts_Controller extends WSAPP_SynchronizeController {
      * @return Google_Contacts_Connector
      */
     public function getTargetConnector() {
-        $oauth2Connector = new Google_Oauth2_Connector($this->getSourceType(),$this->user->id); 
+        global $current_user,$log;
+        $oauth2Connector = new Google_Oauth2_Connector($this->getSourceType(),$current_user->id); 
         $oauth2Connection = $oauth2Connector->authorize(); 
-        $connector = new Google_Contacts_Connector($oauth2Connection); 
+        $connector = new Google_Contacts_Connector($oauth2Connection);
         $connector->setSynchronizeController($this);
         return $connector;
     }
