@@ -16,11 +16,16 @@ include/prototype-1.4.0
 include/scriptaculous
 include/Zend
 Image
+install
+install.php
 modules/Migration"
 for f in $FILES
 do
-	echo "Deleting $f"
-	rm -rf $f
+	if [ -e $f ]
+	then
+		echo "Deleting $f"
+		rm -rf $f
+	fi
 done
 
 echo
