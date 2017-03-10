@@ -2339,6 +2339,9 @@ class ReportRun extends CRMEntity {
 					'current_page' => $this->page,
 					'error' => false,
 				);
+				if (GlobalVariable::getVariable('Debug_Report_Query', '0')=='1') {
+					$resp['sql'] = $sSQL;
+				}
 				if($outputformat == 'JSONPAGED') {
 					$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize',40);
 					$resp['per_page'] = $rowsperpage;
