@@ -380,7 +380,6 @@ $app_strings = array (
 	'Events' => 'Activités',
 	'Tasks' => 'Tâches',
 	'Todo' => 'Tâche en attente',
-	'Call' => 'Appel',
 	'Meeting' => 'Rencontre',
 	'PriceBook' => 'Grille tarifaire',
 	'Calendar' => 'Tâches Agenda',
