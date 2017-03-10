@@ -986,7 +986,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$displayValue = '';
 		} else {
 			$date = new DateTimeField($col_fields[$fieldname]);
-			$displayValue = $date->getDisplayDateTimeValue();
+			$displayValue = substr($date->getDisplayDateTimeValue(),0,16);
 		}
 		$label_fld[] = $displayValue;
 	}
