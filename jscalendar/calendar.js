@@ -1046,7 +1046,6 @@ Calendar._keyEvent = function(ev) {
  *  (RE)Initializes the calendar to the given date and firstDayOfWeek
  */
 Calendar.prototype._init = function (firstDayOfWeek, date) {
-	date.setHours(12); // Bugfix: Required for daylight saving!!!
 	var today = new Date();
 	this.table.style.visibility = "hidden";
 	var year = date.getFullYear();

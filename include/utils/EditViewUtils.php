@@ -158,7 +158,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			$date = new DateTimeField($value);
 			$isodate = $date->getDBInsertDateTimeValue();
 			$date = new DateTimeField($isodate);
-			$disp_value = $date->getDisplayDateTimeValue();
+			$disp_value = substr($date->getDisplayDateTimeValue(),0,16);
 		}
 		$value = $disp_value;
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
