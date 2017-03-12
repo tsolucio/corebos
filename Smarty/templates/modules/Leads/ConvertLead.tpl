@@ -73,7 +73,10 @@
 					<table border="0" cellspacing="0" cellpadding="0" width="95%" align="center" bgcolor="white">
 						<tr>
 							<td colspan="4" class="detailedViewHeader">
-								<input type="checkbox" onclick="javascript:showHideStatus('potential_block',null,null);"id="select_potential" name="entities[]" value="Potentials"></input>
+								<input type="checkbox" onclick="javascript:showHideStatus('potential_block',null,null);"id="select_potential" name="entities[]" value="Potentials" {if $LeadConvertOpportunitySelected neq 'false'}checked{/if}>
+								{if $LeadConvertOpportunitySelected neq 'false'}
+								<script type="text/javascript">showHideStatus('potential_block',null,null);</script>
+								{/if}
 								<b>{'SINGLE_Potentials'|@getTranslatedString:$MODULE}</b>
 							</td>
 						</tr>

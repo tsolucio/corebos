@@ -686,6 +686,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'false | true',
 	'definition' => 'If set to the string "true", Accounts will be selected as the destination to transfer related information when converting a Lead. By default the information will be transferred to the Contact.',
 ),
+'Lead_Convert_OpportunitySelected' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'false | true',
+	'definition' => 'If set to the string "true", the Opportunity section will be selected when converting a Lead. By default the section is not selected.',
+),
 'Product_Show_Subproducts_Popup' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
