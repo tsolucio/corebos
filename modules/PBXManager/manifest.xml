@@ -112,7 +112,7 @@
 </field>
 <field>
 <fieldname>status</fieldname>
-<uitype>2</uitype>
+<uitype>16</uitype>
 <columnname>status</columnname>
 <tablename>vtiger_pbxmanager</tablename>
 <generatedtype>1</generatedtype>

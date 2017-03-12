@@ -23,5 +23,13 @@ $mod_strings = array(
 	'ERR_Authenticate' => 'ERROR: authenticateUser. Error connecting with server.',
 	'ERR_Numbers' => 'From extension or Destination number is empty. Cannot proceed with the call.',
 	'ERR_Call' => 'ERROR: createcall. Error connecting with server.',
+	'outgoing' => 'Outgoing',
+	'outgoing-missed' => 'Outgoing-Missed',
+	'outgoing-received' => 'Outgoing-Received',
+	'incoming' => 'Incoming',
+	'incoming-missed' => 'Incoming-Missed',
+	'incoming-received' => 'Incoming-Received',
+	'missed' => 'Missed',
+	'received' => 'Received',
 );
 ?>
