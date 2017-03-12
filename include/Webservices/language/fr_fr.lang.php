@@ -13,7 +13,7 @@ $app_strings = array (
 	'DocumentFolders'=>'Dossiers Documents',
 	'Currency'=>'Devises',
 	'SINGLE_Groups'=>'Groupe',
-	'SINGLE_DocumentFolders'=>'Dossiers Document',
+	'SINGLE_DocumentFolders'=>'Dossier Document',
 	'SINGLE_Currency'=>'Devise',
 );
 
