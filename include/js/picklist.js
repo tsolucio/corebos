@@ -322,9 +322,14 @@ function validateEdit(fieldname, module){
  */
 function pickReplace(module, fieldname, newVal, oldVal){
 	document.getElementById("status").style.display="inline";
+	var data = {
+		'newValues' : encodeURIComponent(newVal),
+		'oldValues' : encodeURIComponent(oldVal)
+	};
 	jQuery.ajax({
 		method: 'POST',
-		url: 'index.php?action=PickListAjax&module=PickList&mode=edit&file=PickListAction&fld_module='+encodeURIComponent(module)+'&fieldname='+encodeURIComponent(fieldname)+'&newValues='+encodeURIComponent(newVal)+'&oldValues='+encodeURIComponent(oldVal)
+		url: 'index.php?action=PickListAjax&module=PickList&mode=edit&file=PickListAction&fld_module='+encodeURIComponent(module)+'&fieldname='+encodeURIComponent(fieldname),
+		data: data
 	}).done(function (response) {
 		var str = response;
 		if(str == "SUCCESS"){
