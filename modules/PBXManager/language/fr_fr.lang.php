@@ -21,14 +21,14 @@ $mod_strings = Array(
 	'ERR_Authenticate' => 'ERREUR: authenticateUser. Erreur de connexion au serveur.',
 	'ERR_Numbers' => 'L\'extention "De" ou le Numéro de destintaire est non-renseigné. L\'appel ne peut aboutir.',
 	'ERR_Call' => 'ERREUR: createcall. Erreur de connexion au serveur.',
-	'outgoing' => 'Outgoing',
-	'outgoing-missed' => 'Outgoing-Missed',
-	'outgoing-received' => 'Outgoing-Received',
-	'incoming' => 'Incoming',
-	'incoming-missed' => 'Incoming-Missed',
-	'incoming-received' => 'Incoming-Received',
-	'missed' => 'Missed',
-	'received' => 'Received',
+	'outgoing' => 'Sortant',
+	'outgoing-missed' => 'Sortant-Manqué',
+	'outgoing-received' => 'Sortant-Reçu',
+	'incoming' => 'Entrant',
+	'incoming-missed' => 'Entrant-Manqué',
+	'incoming-received' => 'Entrant-Reçu',
+	'missed' => 'Manqué',
+	'received' => 'Reçu',
 );
 
 ?>
