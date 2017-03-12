@@ -62,7 +62,7 @@ if($cvmodule != "") {
 
 	//<<<<<<<standardfilters>>>>>>>>>
 	$std_filter_list = array();
-	$stdfiltercolumn = $_REQUEST["stdDateFilterField"];
+	$stdfiltercolumn = isset($_REQUEST['stdDateFilterField']) ? $_REQUEST['stdDateFilterField'] : '';
 	$std_filter_list["columnname"] = $stdfiltercolumn;
 	$stdcriteria = $_REQUEST["stdDateFilter"];
 	$std_filter_list["stdfilter"] = $stdcriteria;

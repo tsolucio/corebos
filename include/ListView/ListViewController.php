@@ -362,7 +362,7 @@ class ListViewController {
 					}else {
 						$value = ' --';
 					}
-				}elseif ($field->getFieldDataType() == 'picklist') {
+				} elseif ($field->getFieldDataType() == 'picklist') {
 					if ($value != '' && !$is_admin && $this->picklistRoleMap[$fieldName] &&
 							!in_array($value, $this->picklistValueMap[$fieldName])) {
 						$value = "<font color='red'>".getTranslatedString('LBL_NOT_ACCESSIBLE',
@@ -371,9 +371,8 @@ class ListViewController {
 						$value = getTranslatedString($value,$module);
 						$value = textlength_check($value);
 					}
-				}elseif($field->getFieldDataType() == 'date' ||
-						$field->getFieldDataType() == 'datetime') {
-					if(!empty($value) && $value != '0000-00-00' && $value != '0000-00-00 00:00') {
+				} elseif ($field->getFieldDataType() == 'date' || $field->getFieldDataType() == 'datetime') {
+					if (!empty($value) && $value != '0000-00-00' && $value != '0000-00-00 00:00') {
 						$date = new DateTimeField($value);
 						$value = $date->getDisplayDate();
 						if($field->getFieldDataType() == 'datetime') {
@@ -382,8 +381,8 @@ class ListViewController {
 					} elseif (empty($value) || $value == '0000-00-00' || $value == '0000-00-00 00:00') {
 						$value = '';
 					}
-				} elseif($field->getFieldDataType() == 'currency') {
-					if($value != '') {
+				} elseif ($field->getFieldDataType() == 'currency') {
+					if ($value != '') {
 						if($field->getUIType() == 72) {
 							if($fieldName == 'unit_price') {
 								$currencyId = getProductBaseCurrency($recordId,$module);
@@ -394,7 +393,7 @@ class ListViewController {
 								$currencySymbol = $currencyInfo['currency_symbol'];
 							}
 							if (!isset($totals[$fieldName])) $totals[$fieldName]=0;
-							$totals[$fieldName] =  $totals[$fieldName] + $value;
+							$totals[$fieldName] = $totals[$fieldName] + $value;
 							$currencyValue = CurrencyField::convertToUserFormat($value, null, true);
 							$value = CurrencyField::appendCurrencySymbol($currencyValue, $currencySymbol);
 						} else {
@@ -481,7 +480,7 @@ class ListViewController {
 							$value = '';
 						}
 					}
-				} elseif($field->getFieldDataType() == 'multipicklist') {
+				} elseif ($field->getFieldDataType() == 'multipicklist') {
 					$value = ($value != "") ? str_replace(' |##| ',', ',$value) : "";
 					if(!$is_admin && $value != '') {
 						$valueArray = ($rawValue != "") ? explode(' |##| ',$rawValue) : array();
@@ -509,7 +508,7 @@ class ListViewController {
 						$value = implode(', ', $tmpArray);
 						$value = textlength_check($value);
 					}
-				} elseif($field->getUIType() == 1024) {
+				} elseif ($field->getUIType() == 1024) {
 					$content=array();
 					if ($value != '') {
 						$arr_evo_actions=explode(' |##| ',$value);
@@ -523,13 +522,13 @@ class ListViewController {
 				} elseif ($field->getFieldDataType() == 'skype') {
 					$value = ($value != "") ? "<a href='skype:$value?call'>".textlength_check($value)."</a>" : "";
 				} elseif ($field->getFieldDataType() == 'phone') {
-					if($useAsterisk == 'true') {
+					if ($useAsterisk == 'true') {
 						$value = "<a href='javascript:;' onclick='startCall(&quot;$value&quot;, ".
 							"&quot;$recordId&quot;)'>".textlength_check($value)."</a>";
 					} else {
 						$value = textlength_check($value);
 					}
-				} elseif($field->getFieldDataType() == 'reference') {
+				} elseif ($field->getFieldDataType() == 'reference') {
 					$referenceFieldInfoList = $this->queryGenerator->getReferenceFieldInfoList();
 					if (getTabid($currentModule)!=$field->getTabId()) {
 						$modrel=getTabModuleName($field->getTabId());
@@ -577,7 +576,7 @@ class ListViewController {
 						$temp_val = html_entity_decode($value,ENT_QUOTES,$default_charset);
 						$value = vt_suppressHTMLTags(implode(',',json_decode($temp_val,true)));
 					}
-				} elseif ( in_array($uitype,array(7,9,90)) ) {
+				} elseif (in_array($uitype,array(7,9,90))) {
 					$value = "<span align='right'>".textlength_check($value)."</div>";
 				} elseif ($field->getUIType() == 55) {
 					$value = getTranslatedString($value,$currentModule);
@@ -586,7 +585,7 @@ class ListViewController {
 				} else {
 					$value = textlength_check($value);
 				}
-				if($field->getFieldDataType() != 'reference') {
+				if ($field->getFieldDataType() != 'reference') {
 					$parenttab = getParentTab();
 					$nameFields = $this->queryGenerator->getModuleNameFields($module);
 					$nameFieldList = explode(',',$nameFields);

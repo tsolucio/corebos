@@ -453,10 +453,9 @@ class CustomView extends CRMEntity {
 	 * 			 $tablenamen:$columnnamen:$fieldnamen:$module_$fieldlabeln => $fieldlabeln)
 	 */
 	function getStdCriteriaByModule($module) {
-		global $adb;
+		global $adb, $current_user;
 		$tabid = getTabid($module);
 
-		global $current_user;
 		require('user_privileges/user_privileges_' . $current_user->id . '.php');
 
 		$module_info = $this->getCustomViewModuleInfo($module);
@@ -466,8 +465,7 @@ class CustomView extends CRMEntity {
 
 		if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
 			$sql = "select * from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid ";
-			$sql.= " where vtiger_field.tabid=? and vtiger_field.block in (" . generateQuestionMarks($blockids) . ")
-                        and vtiger_field.uitype in (5,6,23,70)";
+			$sql.= " where vtiger_field.tabid=? and vtiger_field.block in (" . generateQuestionMarks($blockids) . ") and vtiger_field.uitype in (5,6,23,70)";
 			$sql.= " and vtiger_field.presence in (0,2) order by vtiger_field.sequence";
 			$params = array($tabid, $blockids);
 		} else {
@@ -487,7 +485,7 @@ class CustomView extends CRMEntity {
 		}
 
 		$result = $adb->pquery($sql, $params);
-
+		$stdcriteria_list = array();
 		while ($criteriatyperow = $adb->fetch_array($result)) {
 			$fieldtablename = $criteriatyperow["tablename"];
 			$fieldcolname = $criteriatyperow["columnname"];
