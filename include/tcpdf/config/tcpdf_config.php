@@ -39,52 +39,52 @@
 // IMPORTANT:
 // If you define the constant K_TCPDF_EXTERNAL_CONFIG, all the following settings will be ignored.
 // If you use the tcpdf_autoconfig.php, then you can overwrite some values here.
-
+global $root_directory, $site_URL;
 
 /**
  * Installation path (/var/www/tcpdf/).
  * By default it is automatically calculated but you can also set it as a fixed string to improve performances.
  */
-//define ('K_PATH_MAIN', '');
+define ('K_PATH_MAIN', $root_directory."include/tcpdf/");
 
 /**
  * URL path to tcpdf installation folder (http://localhost/tcpdf/).
  * By default it is automatically set but you can also set it as a fixed string to improve performances.
  */
-//define ('K_PATH_URL', '');
+define ('K_PATH_URL', $site_URL."/include/tcpdf/");
 
 /**
  * Path for PDF fonts.
  * By default it is automatically set but you can also set it as a fixed string to improve performances.
  */
-//define ('K_PATH_FONTS', K_PATH_MAIN.'fonts/');
+define ('K_PATH_FONTS', K_PATH_MAIN.'fonts/');
 
 /**
  * Default images directory.
  * By default it is automatically set but you can also set it as a fixed string to improve performances.
  */
-//define ('K_PATH_IMAGES', '');
+define ('K_PATH_IMAGES', K_PATH_MAIN.'images/');
 
 /**
  * Deafult image logo used be the default Header() method.
  * Please set here your own logo or an empty string to disable it.
  */
-//define ('PDF_HEADER_LOGO', '');
+define ('PDF_HEADER_LOGO', 'tcpdf_logo.jpg');
 
 /**
  * Header logo image width in user units.
  */
-//define ('PDF_HEADER_LOGO_WIDTH', 0);
+define ('PDF_HEADER_LOGO_WIDTH', 20);
 
 /**
  * Cache directory for temporary files (full path).
  */
-//define ('K_PATH_CACHE', '/tmp/');
+define ('K_PATH_CACHE', K_PATH_MAIN.'cache/');
 
 /**
  * Generic name for a blank image.
  */
-define ('K_BLANK_IMAGE', '_blank.png');
+define ('K_BLANK_IMAGE', K_PATH_IMAGES.'_blank.png');
 
 /**
  * Page format.
@@ -124,27 +124,27 @@ define ('PDF_UNIT', 'mm');
 /**
  * Header margin.
  */
-define ('PDF_MARGIN_HEADER', 5);
+define ('PDF_MARGIN_HEADER', 20);
 
 /**
  * Footer margin.
  */
-define ('PDF_MARGIN_FOOTER', 10);
+define ('PDF_MARGIN_FOOTER', 40);
 
 /**
  * Top margin.
  */
-define ('PDF_MARGIN_TOP', 27);
+define ('PDF_MARGIN_TOP', 20);
 
 /**
  * Bottom margin.
  */
-define ('PDF_MARGIN_BOTTOM', 25);
+define ('PDF_MARGIN_BOTTOM', 30);
 
 /**
  * Left margin.
  */
-define ('PDF_MARGIN_LEFT', 15);
+define ('PDF_MARGIN_LEFT', 20);
 
 /**
  * Right margin.
@@ -179,7 +179,7 @@ define ('PDF_FONT_MONOSPACED', 'courier');
 /**
  * Ratio used to adjust the conversion of pixels to user units.
  */
-define ('PDF_IMAGE_SCALE_RATIO', 1.25);
+define ('PDF_IMAGE_SCALE_RATIO', 1);
 
 /**
  * Magnification factor for titles.
