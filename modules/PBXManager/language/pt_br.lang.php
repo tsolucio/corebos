@@ -6,30 +6,31 @@
 * The Initial Developer of the Original Code is vtiger.
 * Portions created by vtiger are Copyright (C) vtiger. All Rights Reserved.
 * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|30/12/2010|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+* Contributor(s): Ranieri/Translate terms eCRM web | 11/03/2017 |Sao Paulo/SP/Brasil.|www.ecrmweb.com.br
 ********************************************************************************/
 
 $mod_strings = Array(
-	'PBX Manager' => 'PBX Manager',
-	'PBXManager' => 'PBX Manager',
-	'SINGLE_PBXManager' => 'PBX Manager',
+	'PBX Manager' => 'Gerenciador iPBX',
+	'PBXManager' => 'Gerenciador iPBX',
+	'SINGLE_PBXManager' => 'Gerenciador iPBX',
 	'Asterisk' => 'Asterisk',
 	'LBL_ASTERISK_INFORMATION' => 'Informação ASTERISK',
-	'LBL_CALL_INFORMATION' => 'Call information',
+	'LBL_CALL_INFORMATION' => 'Informaço da Chamada',
 
 	'Call From'=>'Chamada de',
 	'Call To'=>'Chamada para',
-	'Time Of Call'=>'Tempo Chamada',
-	'ERR_Authenticate' => 'ERROR: authenticateUser. Error connecting with server.',
-	'ERR_Numbers' => 'From extension or Destination number is empty. Cannot proceed with the call.',
-	'ERR_Call' => 'ERROR: createcall. Error connecting with server.',
-	'outgoing' => 'Outgoing',
-	'outgoing-missed' => 'Outgoing-Missed',
-	'outgoing-received' => 'Outgoing-Received',
-	'incoming' => 'Incoming',
-	'incoming-missed' => 'Incoming-Missed',
-	'incoming-received' => 'Incoming-Received',
-	'missed' => 'Missed',
-	'received' => 'Received',
+	'Time Of Call'=>'Hora da Chamada',
+	'ERR_Authenticate' => 'ERRO: authenticateUser. Erro ao conectar com o servidor.',
+	'ERR_Numbers' => 'Da extensão ou o número de destino está vazio. Não é possível prosseguir com a chamada.',
+	'ERR_Call' => 'ERRO: createcall. Erro ao conectar com o servidor.',
+	'outgoing' => 'Discada',
+	'outgoing-missed' => 'Discada-Ausente',
+	'outgoing-received' => 'Discada-Atendida',
+	'incoming' => 'Recebida',
+	'incoming-missed' => 'Recebida-Perdida',
+	'incoming-received' => 'Recebida-Atendida',
+	'missed' => 'Perdida',
+	'received' => 'Recebida',
 );
 
 ?>
