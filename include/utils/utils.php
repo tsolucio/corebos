@@ -3845,12 +3845,12 @@ function addToCallHistory($userExtension, $callfrom, $callto, $status, $adb, $us
 	$sql = "insert into vtiger_crmentity values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	$params = array($crmID, $userID, $userID, 0, "PBXManager", "", $timeOfCall, $timeOfCall, NULL, NULL, 0, 1, 0);
 	$adb->pquery($sql, $params);
-
+	$unknownCaller = GlobalVariable::getVariable('PBX_Unknown_CallerID', 'Unknown', 'PBXManager');
 	if(empty($callfrom)){
-		$callfrom = "Unknown";
+		$callfrom = $unknownCaller;
 	}
 	if(empty($callto)){
-		$callto = "Unknown";
+		$callto = $unknownCaller;
 	}
 
 	if($status == 'outgoing'){
@@ -3864,7 +3864,7 @@ function addToCallHistory($userExtension, $callfrom, $callto, $status, $adb, $us
 
 		$receiver = $useCallerInfo;
 		if(empty($receiver)){
-			$receiver = "Unknown";
+			$receiver = $unknownCaller;
 		}else{
 			$receiver = "<a href='index.php?module=".$receiver['module']."&action=DetailView&record=".$receiver['id']."'>".$receiver['name']."</a>";
 		}
@@ -3878,7 +3878,7 @@ function addToCallHistory($userExtension, $callfrom, $callto, $status, $adb, $us
 		}
 		$callerName = $useCallerInfo;
 		if(empty($callerName)){
-			$callerName = "Unknown $callfrom";
+			$callerName = $unknownCaller.' '.$callfrom;
 		}else{
 			$callerName = "<a href='index.php?module=".$callerName['module']."&action=DetailView&record=".$callerName['id']."'>".decode_html($callerName['name'])."</a>";
 		}

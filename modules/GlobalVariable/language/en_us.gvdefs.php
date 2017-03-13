@@ -455,6 +455,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'The number the user has to dial to get a line. This will be prefixed to the number that has to be dialed.',
 ),
+'PBX_Unknown_CallerID' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'When calling or receiving a call to an unknown party this string will used as the record name identifier next to the number dialed. The default value is Unknown',
+),
 'Mobile_Module_by_default' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'String',

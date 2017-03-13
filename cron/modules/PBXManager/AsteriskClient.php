@@ -193,7 +193,8 @@ function asterisk_handleResponse3($mainresponse, $adb, $asterisk){
 		// TODO check the state of from_number in asterisk 1.6
 		$checkres = $adb->pquery("SELECT * FROM vtiger_asteriskincomingevents WHERE uid=? and (flag = 0 or flag = -1) and (from_number is NULL or from_number = 0)", array($uid));
 		if($adb->num_rows($checkres) > 0) {
-			if(empty($checkresrow['from_name'])) $checkresrow['from_name'] = "Unknown";
+			$unknownCaller = GlobalVariable::getVariable('PBX_Unknown_CallerID', 'Unknown', 'PBXManager');
+			if(empty($checkresrow['from_name'])) $checkresrow['from_name'] = $unknownCaller;
 
 			$checkresrow = $adb->fetch_array($checkres);
 			$sql = 'UPDATE vtiger_asteriskincomingevents SET from_number=?, to_number=?, timer=?, flag=? WHERE uid=?';
@@ -226,8 +227,8 @@ function asterisk_handleResponse3($mainresponse, $adb, $asterisk){
 			if($extensionCalled === false) {
 				$extensionCalled = $eventResultRow['to_number'];
 			}
-			// If we are not knowing the caller informatio (Asterisk 1.4, Event: Link not yet called)
-			if($callerNumber != 'Unknown' && $callerNumber != '0') {
+			// If we are not knowing the caller information (Asterisk 1.4, Event: Link not yet called)
+			if($callerNumber != $unknownCaller && $callerNumber != '0') {
 				$pbxrecordid = addToCallHistory($extensionCalled, $callerNumber,
 					$extensionCalled , "incoming-$status", $adb, $receiver_callerinfo);
 				$adb->pquery('UPDATE vtiger_asteriskincomingevents SET pbxrecordid = ? WHERE uid = ?', array($pbxrecordid, $uid));
