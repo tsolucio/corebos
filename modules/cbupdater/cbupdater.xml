@@ -1123,4 +1123,11 @@
 	<classname>addDatabaseIndex2PBXManager</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>set PBXManager timeofcall to uiyype 50 so it can be searched on filters and reports</description>
+	<filename>build/changeSets/2017/fixPBXManagerUITypes.php</filename>
+	<classname>fixPBXManagerUITypes</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
