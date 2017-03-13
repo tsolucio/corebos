@@ -175,7 +175,7 @@ function export($type){
 
 	if(isset($order_by) && $order_by != ''){
 		if($order_by == 'smownerid'){
-			$query .= ' ORDER BY user_name '.$sorder;
+			$query .= ' ORDER BY vtiger_users.user_name '.$sorder;
 		}elseif($order_by == 'lastname' && $type == 'Documents'){
 			$query .= ' ORDER BY vtiger_contactdetails.lastname '. $sorder;
 		}elseif($order_by == 'crmid' && $type == 'HelpDesk'){
