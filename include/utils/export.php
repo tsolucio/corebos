@@ -177,9 +177,9 @@ function export($type){
 		if($order_by == 'smownerid'){
 			$query .= ' ORDER BY user_name '.$sorder;
 		}elseif($order_by == 'lastname' && $type == 'Documents'){
-			$query .= ' ORDER BY vtiger_contactdetails.lastname  '. $sorder;
+			$query .= ' ORDER BY vtiger_contactdetails.lastname '. $sorder;
 		}elseif($order_by == 'crmid' && $type == 'HelpDesk'){
-			$query .= ' ORDER BY vtiger_troubletickets.ticketid  '. $sorder;
+			$query .= ' ORDER BY vtiger_troubletickets.ticketid '. $sorder;
 		}else{
 			$tablename = getTableNameForField($type,$order_by);
 			$tablename = (($tablename != '')?($tablename."."):'');
@@ -267,7 +267,6 @@ class ExportUtils{
 
 	function __init($module, $fields_array){
 		$infoArr = self::getInformationArray($module);
-		
 		//attach extra fields related information to the fields_array; this will be useful for processing the export data
 		foreach($infoArr as $fieldname=>$fieldinfo){
 			if(in_array($fieldinfo["fieldlabel"], $fields_array)){

@@ -21,6 +21,7 @@ $smarty = new vtigerCRM_Smarty();
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
+$smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $tool_buttons = Button_Check($currentModule);
 $smarty->assign('CHECK', $tool_buttons);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");

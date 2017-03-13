@@ -74,12 +74,11 @@
 			</td>
 		{elseif $keyid eq '15' || $keyid eq '16' || $keyid eq '1613' || $keyid eq '1614'} <!--ComboBox-->
 			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;
+				{assign var=fontval value=''}
 				{foreach item=arr from=$keyoptions}
 					{if $arr[0] eq $APP.LBL_NOT_ACCESSIBLE}
 						{assign var=keyval value=$APP.LBL_NOT_ACCESSIBLE}
 						{assign var=fontval value='red'}
-					{else}
-						{assign var=fontval value=''}
 					{/if}
 				{/foreach}
 				<font color="{$fontval}">{$keyval|@getTranslatedString:$MODULE}</font>
