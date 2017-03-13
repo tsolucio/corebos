@@ -9,14 +9,23 @@
  ************************************************************************************/
 require_once('Smarty_setup.php');
 
-global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
+global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log, $default_charset;
 
 $smarty = new vtigerCRM_Smarty();
 
 include('modules/cbupdater/forcedButtons.php');
 
 require_once 'modules/Vtiger/DetailView.php';
-
+$flabel = getTranslatedString('Call From','PBXManager');
+$idx = getFieldFromDetailViewBlockArray($blocks, $flabel);
+$value = html_entity_decode($blocks[$idx['block_label']][$idx['field_key']][$flabel]['value'],ENT_QUOTES,$default_charset);
+$blocks[$idx['block_label']][$idx['field_key']][$flabel]['value'] = $value;
+$flabel = getTranslatedString('Call To','PBXManager');
+$idx = getFieldFromDetailViewBlockArray($blocks, $flabel);
+$value = html_entity_decode($blocks[$idx['block_label']][$idx['field_key']][$flabel]['value'],ENT_QUOTES,$default_charset);
+$blocks[$idx['block_label']][$idx['field_key']][$flabel]['value'] = $value;
+$smarty->assign('BLOCKS', $blocks);
+$smarty->assign('NAME', html_entity_decode($recordName,ENT_QUOTES,$default_charset));
 $singlepane_view = 'true';
 $smarty->assign('SinglePane_View', $singlepane_view);
 $smarty->assign('TODO_PERMISSION','no');
