@@ -25,8 +25,6 @@
 						{include file='EditViewHidden.tpl'}
 						<input type="hidden" name="massedit_recordids">
 						<input type="hidden" name="massedit_module">
-						<input type="hidden" name="module" value="{$MODULE}">
-						<input type="hidden" name="action" value="MassEditSave">
 					</td>
 				</tr>
 					<tr>
