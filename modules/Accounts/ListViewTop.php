@@ -88,8 +88,6 @@ function getTopAccounts($maxval,$calCnt)
 	}
 	$values=Array('ModuleName'=>'Accounts','Title'=>$title,'Header'=>$header,'Entries'=>$entries);
 	$log->debug("Exiting getTopAccounts method ...");
-	$display_empty_home_blocks = GlobalVariable::getVariable('Home_Display_Empty_Blocks',0);
-	if (($display_empty_home_blocks && count($entries) == 0 ) || (count($entries)>0))
-		return $values;
+	return $values;
 }
 ?>

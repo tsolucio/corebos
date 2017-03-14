@@ -124,7 +124,6 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'HelpDesk_Support_EMail',
 				'HelpDesk_Support_Name',
 				'HelpDesk_Support_Reply_EMail',
-				'Home_Display_Empty_Blocks',
 				'Document_Folder_View',
 				'User_AuthenticationType',
 
@@ -176,6 +175,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'corebos_app_name',
 				'corebos_app_url',
 				'SOAP_Thunderbird_Enabled',
+				'Home_Display_Empty_Blocks',
 			);
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');
 			$field = Vtiger_Field::getInstance('gvname',$moduleInstance);

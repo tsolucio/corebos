@@ -272,13 +272,6 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'URL for customer portal (Example: http://your_support_domain.tld/portal). Used mostly for email template communications.',
 ),
-'Home_Display_Empty_Blocks' => array(
-	'status' => 'Implemented',
-	'valuetype' => 'Boolean',
-	'category' => 'Application',
-	'values' => '0 | 1',
-	'definition' => 'Option to hide empty home blocks if it contains no entries.',
-),
 'Debug_Calculate_Response_Time' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',

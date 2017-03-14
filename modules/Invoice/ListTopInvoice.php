@@ -137,9 +137,7 @@ function getTopInvoice($maxval,$calCnt)
 	$navigation_array, true);
 
 	$values=Array('ModuleName'=>'Invoice','Title'=>$title,'Header'=>$header,'Entries'=>$entries,'search_qry'=>$search_qry);
-	$display_empty_home_blocks = GlobalVariable::getVariable('Home_Display_Empty_Blocks',0);
-	if ( ($display_empty_home_blocks && $noofrows == 0 ) || ($noofrows>0) )
-		return $values;
+	return $values;
 }
 
 function getTopInvoiceSearch($output) {
