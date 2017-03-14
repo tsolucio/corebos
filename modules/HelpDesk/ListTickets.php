@@ -111,17 +111,15 @@ function getParentLink($parent_id)
 	}
 
 	$parent_module = getSalesEntityType($parent_id);
-
-	if($parent_module == 'Contacts')
-	{
+	$parent_name = '';
+	if ($parent_module == 'Contacts') {
 		$sql = "select firstname,lastname from vtiger_contactdetails where contactid=?";
 		$res = $adb->pquery($sql, array($parent_id));
 		$parentname = $adb->query_result($res,0,'firstname');
 		$parentname .= ' '.$adb->query_result($res,0,'lastname');
 		$parent_name = '<a href="index.php?action=DetailView&module='.$parent_module.'&record='.$parent_id.'">'.$parentname.'</a>';
 	}
-	if($parent_module == 'Accounts')
-	{
+	if ($parent_module == 'Accounts') {
 		$sql = "select accountname from vtiger_account where accountid=?";
 		$rsac = $adb->pquery($sql, array($parent_id));
 		$parentname = $adb->query_result($rsac,0,'accountname');

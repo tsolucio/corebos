@@ -26,7 +26,7 @@ class VTEmailTask extends VTTask{
 
 		$entityCache = new VTEntityCache($admin);
 
-		$from_name = $from_email = '';
+		$from_name = $from_email = $replyto = '';
 		if(!empty($this->fromname)){
 			$fnt = new VTEmailRecipientsTemplate($this->fromname);
 			$from_name = $fnt->render($entityCache,$entity->getId());
@@ -41,10 +41,18 @@ class VTEmailTask extends VTTask{
 		}
 		$et = new VTEmailRecipientsTemplate($this->recepient);
 		$to_email = $et->render($entityCache, $entity->getId());
-		$ecct = new VTEmailRecipientsTemplate($this->emailcc);
-		$cc = $ecct->render($entityCache, $entity->getId());
-		$ebcct = new VTEmailRecipientsTemplate($this->emailbcc);
-		$bcc = $ebcct->render($entityCache, $entity->getId());
+		if (empty($this->emailbcc)) {
+			$cc = '';
+		} else {
+			$ecct = new VTEmailRecipientsTemplate($this->emailcc);
+			$cc = $ecct->render($entityCache, $entity->getId());
+		}
+		if (empty($this->emailbcc)) {
+			$bcc = '';
+		} else {
+			$ebcct = new VTEmailRecipientsTemplate($this->emailbcc);
+			$bcc = $ebcct->render($entityCache, $entity->getId());
+		}
 		$mailto = GlobalVariable::getVariable('Workflow_Send_Email_ToCCBCC','');//For tests
 		if($mailto != ''){
 			$to_email = $mailto;

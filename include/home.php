@@ -490,7 +490,7 @@ class Homestuff{
 			return $home_values;
 		}
 		$return_value = Array('Maxentries'=>0,'Details'=>$details);
-		if(count($home_values) > 0){
+		if(!empty($home_values) and count($home_values) > 0){
 			$return_value=Array('Maxentries'=>$maxval,'Details'=>$home_values);
 		}
 		return $return_value;
