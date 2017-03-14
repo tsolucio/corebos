@@ -307,7 +307,6 @@ class GlobalVariable extends CRMEntity {
 								$value = $adb->query_result($query,$i,'description');
 							}
 						}
-						$value = ($isBusinessMapping ? $adb->query_result($query,$i,'bmapid') : $adb->query_result($query,$i,'value'));
 						$list_of_modules[$other_modules[$l]]=$value;
 					}
 				}
