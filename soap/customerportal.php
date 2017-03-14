@@ -16,8 +16,8 @@ require_once('modules/HelpDesk/language/en_us.lang.php');
 require_once('include/utils/CommonUtils.php');
 require_once('include/utils/VtlibUtils.php');
 require_once 'modules/Users/Users.php';
-
-if (!GlobalVariable::getVariable('SOAP_CustomerPortal_Enabled',1)) {
+$adminid = Users::getActiveAdminId();
+if (!GlobalVariable::getVariable('SOAP_CustomerPortal_Enabled',1,'Users',$adminid)) {
 	echo 'SOAP - Service is not active';
 	return;
 }
