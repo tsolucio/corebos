@@ -19,6 +19,7 @@ class VTEmailTask extends VTTask{
 		return array("fromname", "fromemail", "replyto", "subject", "content", "recepient", 'emailcc', 'emailbcc');
 	}
 	public function doTask(&$entity){
+		global $logbg;
 		$util = new VTWorkflowUtils();
 
 		$admin = $util->adminUser();
@@ -72,8 +73,8 @@ class VTEmailTask extends VTTask{
 		$ct = new VTSimpleTemplate($this->content);
 		$content = $ct->render($entityCache, $entity->getId());
 		$logo = (strpos($this->content, '(general : (__VtigerMeta__) logo)')===false) ? '' : '1';
-		send_mail($module,$to_email,$from_name,$from_email,$subject,$content, $cc, $bcc,'','',$logo,$replyto);
-
+		$rdo = send_mail($module,$to_email,$from_name,$from_email,$subject,$content, $cc, $bcc,'','',$logo,$replyto);
+		$logbg->debug("VTEmailTask\nTo: $to_email\nFromName: $from_name\nFromEmail: $from_email\nCC: $cc\nBCC: $bcc\nResult: $rdo");
 		$util->revertUser();
 	}
 }
