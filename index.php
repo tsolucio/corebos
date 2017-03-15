@@ -87,7 +87,7 @@ if(isset($default_timezone) && function_exists('date_default_timezone_set')) {
 
 require_once('include/logging.php');
 require_once('modules/Users/Users.php');
-$calculate_response_time = GlobalVariable::getVariable('Debug_Calculate_Response_Time',0);
+$calculate_response_time = GlobalVariable::getVariable('Debug_Calculate_Response_Time',0,'',Users::getActiveAdminId());
 if($calculate_response_time) $startTime = microtime(true);
 
 $log = LoggerManager::getLogger('index');
