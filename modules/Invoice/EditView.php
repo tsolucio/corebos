@@ -336,6 +336,7 @@ elseif (isset ($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') 
 }
 
 $cbMap = cbMap::getMapByName($currentModule.'InventoryDetails','MasterDetailLayout');
+$smarty->assign('moreinfofields','');
 if ($cbMap!=null) {
 	$cbMapFields = $cbMap->MasterDetailLayout();
 	$smarty->assign('moreinfofields', "'".implode("','",$cbMapFields['detailview']['fieldnames'])."'");

@@ -262,6 +262,11 @@ if($currentModule == 'PriceBooks' && isset($_REQUEST['productid']))
 	if (!empty($productid)) {
 		$query.= ' and vtiger_pricebookproductrel.productid='.$adb->sql_escape_string($productid);
 	}
+	$smarty->assign('recid_var_value', '');
+	$smarty->assign('mod_var_name', '');
+	$smarty->assign('mod_var_value', '');
+	$smarty->assign('recid_var_name', '');
+	$smarty->assign('recid_var_value', 0);
 }
 else
 {
