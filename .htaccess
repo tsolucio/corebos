@@ -1,0 +1,12 @@
+# Prevent Direct Access to files
+<FilesMatch "\.(tpl|ini|log|inc)">
+ Order deny,allow
+ Deny from all
+</FilesMatch>
+
+php_value max_execution_time 600
+php_flag display_errors on
+php_flag allow_call_time_pass_reference on
+php_value error_reporting "2 8 8192"
+php_flag log_errors off
+php_value short_open_tag 1
