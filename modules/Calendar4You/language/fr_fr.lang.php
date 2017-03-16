@@ -72,6 +72,6 @@ $mod_strings = Array (
 "LBL_GOOGLEURI"=>"URL de redirection (sync.php)",
 "LBL_CONNECT"=>"Authoriser et connecter",
 "LBL_GOOGLEINS"=>"Inserer de Google?",
-"LIST_MODULES" =>"List des Modules",
+"LIST_MODULES" =>"Liste des Modules",
 );
 ?>

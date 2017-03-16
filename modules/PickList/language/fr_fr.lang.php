@@ -41,7 +41,7 @@ $mod_strings = array(
 	'LBL_CONFIGURE_DEPENDENCY_HELP_1' => 'Seules les valeurs de listes mappées du champ d\'origine apparaitront ici (sauf la première fois)',
 	'LBL_CONFIGURE_DEPENDENCY_HELP_2' => "Si vous voulez voir ou modifier pour les autres valeurs du champ d'origine, <br/>
 										vous pouvez sélectionner les valeurs en cliquant sur la bouton <b>'Selectionner les valeurs d'origine'</b> à droite",
-	'LBL_CONFIGURE_DEPENDENCY_HELP_3' => 'les valeurs séléctionnées du champ de destination sont en surbrillance',
+	'LBL_CONFIGURE_DEPENDENCY_HELP_3' => 'Les valeurs séléctionnées du champ de destination sont en surbrillance',
 	'LBL_ADD_BUTTON' => 'Ajouter valeur',
 	'LBL_EDIT_BUTTON' => 'Renommer valeur',
 	'LBL_DELETE_BUTTON' => 'Supprimer valeur',

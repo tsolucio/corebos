@@ -436,7 +436,7 @@ $mod_strings = array (
 		'LBL_TRANSFER_USER_ROLE' => 'Changer le rôle du collaborateur',
 		'LBL_DELETE_ROLE' => 'Supprimer rôle',
 		'LBL_MORE_INFORMATION' => 'Informations complémentaires',
-		'LBL_USERLOGIN_ROLE' => 'Informations',
+		'LBL_USERLOGIN_ROLE' => 'Informations générales',
 		'LBL_USER_IMAGE_INFORMATION' => 'Ma photo',
 		'Role' => 'Rôle',
 		'Email' => 'Email',
@@ -571,11 +571,11 @@ $mod_strings = array (
 		// Added for Create Custom Fields 
 		'LBL_USER_CUSTOMFIELDS_DESCRIPTION' => 'Champs personnalisés pour les collaborateurs',
 		'LBL_USER_CUSTOMFIELDS' => 'Champs personnalisés des collaborateurs',
-		'LBL_CURRENCY_CONFIGURATION' => 'Configuration des devises et monnaies',
+		'LBL_CURRENCY_CONFIGURATION' => 'Configuration devises',
 		'Digit Grouping Pattern' => 'Format de groupe de chiffre',
 		'Decimal Separator' => 'Séparateur de décimales',
 		'Digit Grouping Separator' => 'Séparateur de groupe de chiffre',
-		'Symbol Placement' => 'Position du symbole monétaire',
+		'Symbol Placement' => 'Position du symbole',
 		'Number Of Currency Decimals'  =>  'Nombre de décimales',
 
 		//Time zones-Dont change any value

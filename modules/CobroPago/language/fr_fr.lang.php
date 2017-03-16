@@ -105,7 +105,7 @@ $mod_strings = Array(
 
 'Other'=>'Autre',
 
-'--None--'=>'--NON--',
+'--None--'=>'--Aucun--',
 'LBL_CHANGE'=>'Vendeur',
 
 'LBL_CARD_INFORMATION' => 'Information Carte Crédit',
