@@ -107,5 +107,6 @@ $mod_strings = array (
 	'UpdateExchangeRate' => 'Mettre à jour taux de change',
 	'LBL_HOME_ADDWINDOW' => 'Ajouter Fenêtre',
 	'LBL_GETTING_STARTED' => 'Démarrage...',
+	'ExpirePasswordAfterDays' => 'Expire Password After Days',
 );
 ?>
