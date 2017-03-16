@@ -111,8 +111,8 @@ $mod_strings = Array(
 	'LBL_DESCRIPTION' => 'Description',
 	'FILE_HAS_NO_DATA'=>'Le fichier sé est invalide ou vide',
 
-	'LBL_MAXIMUM_20'=>'Maximum 20',
-	'LBL_MAXIMUM_50'=>'Maximum 50',
+	'LBL_MAXIMUM_20'=>'Max. 20 caractères',
+	'LBL_MAXIMUM_50'=>'Max. 50 caractères',
 
 	'External' => 'Externe',
 	'Internal' => 'Interne',
