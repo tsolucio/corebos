@@ -179,6 +179,9 @@ class Documents extends CRMEntity {
 	 */
 	function preSaveCheck($request) {
 		global $adb,$log;
+		if (isset($_REQUEST['parentid']) && $_REQUEST['parentid'] != '') {
+			$this->parentid = vtlib_purify($_REQUEST['parentid']);
+		}
 		$saveerror = false;
 		$errmsg = '';
 		if ($this->mode=='' && $_REQUEST['filelocationtype'] == 'I' && $_REQUEST['action'] != 'DocumentsAjax') {
@@ -191,7 +194,11 @@ class Documents extends CRMEntity {
 				$errmsg = getTranslatedString('LBL_FILEUPLOAD_FAILED','Documents');
 			}
 		}
-		return array($saveerror,$errmsg,'EditView','');
+		if ($saveerror) {
+			return array($saveerror,$errmsg,'EditView','');
+		} else {
+			return parent::preSaveCheck($request);
+		}
 	}
 
 	/**
