@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once 'modules/MailManager/src/controllers/DraftController.php' ;
+require_once 'modules/MailManager/src/controllers/DraftController.php';
 require_once 'data/CRMEntity.php';
 
 $draft = new MailManager_Model_DraftEmail();

@@ -1164,15 +1164,13 @@ class Accounts extends CRMEntity {
 		if(!is_array($with_crmids)) $with_crmids = Array($with_crmids);
 		foreach($with_crmids as $with_crmid) {
 			if($with_module == 'Products') {
-				$checkResult = $adb->pquery('SELECT 1 FROM vtiger_seproductsrel WHERE productid = ? AND crmid = ?',
-												array($with_crmid, $crmid));
+				$checkResult = $adb->pquery('SELECT 1 FROM vtiger_seproductsrel WHERE productid = ? AND crmid = ?', array($with_crmid, $crmid));
 				if($checkResult && $adb->num_rows($checkResult) > 0) {
 					continue;
 				}
 				$adb->pquery("insert into vtiger_seproductsrel values(?,?,?)", array($crmid, $with_crmid, $module));
 			} elseif($with_module == 'Campaigns') {
-				$checkResult = $adb->pquery('SELECT 1 FROM vtiger_campaignaccountrel WHERE campaignid = ? AND accountid = ?',
-												array($with_crmid, $crmid));
+				$checkResult = $adb->pquery('SELECT 1 FROM vtiger_campaignaccountrel WHERE campaignid = ? AND accountid = ?', array($with_crmid, $crmid));
 				if($checkResult && $adb->num_rows($checkResult) > 0) {
 					continue;
 				}

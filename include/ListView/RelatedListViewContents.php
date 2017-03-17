@@ -38,6 +38,7 @@ if($ajaxaction == "LOADRELATEDLIST") {
 		$image_path=$theme_path."images/";
 
 		$smarty = new vtigerCRM_Smarty;
+		$smarty->assign('RESET_COOKIE', $resetCookie);
 		// vtlib customization: Related module could be disabled, check it
 		if(is_array($relatedListData)) {
 			if( ($relatedModule == "Contacts" || $relatedModule == "Leads" || $relatedModule == "Accounts") && $currentModule == 'Campaigns' && !$resetCookie) {
@@ -56,8 +57,6 @@ if($ajaxaction == "LOADRELATEDLIST") {
 					}
 				}
 				$smarty->assign("SELECTED_RECORD_LIST", $checkedRecordIdString);
-			} else {
-				$smarty->assign('RESET_COOKIE', $resetCookie);
 			}
 		}
 		// END

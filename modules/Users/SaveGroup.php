@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('include/database/PearDatabase.php');
 global $adb, $mod_strings;
 
@@ -21,14 +20,14 @@ if(isset($_REQUEST['dup_check']) && $_REQUEST['dup_check']!='') {
 		$params = array($groupName);
 	} else {
 		$groupid = vtlib_purify($_REQUEST['groupid']);
-		$query = 'select groupname from vtiger_groups  where groupname=? and groupid !=?';
+		$query = 'select groupname from vtiger_groups where groupname=? and groupid !=?';
 		$params = array($groupName, $groupid);
 	}
 	$result = $adb->pquery($query, $params);
-	
+
 	$user_query = "SELECT user_name FROM vtiger_users WHERE user_name =?";
 	$user_result = $adb->pquery($user_query, array($groupName));
-        
+
 	if($adb->num_rows($result) > 0) {
 		echo $mod_strings['LBL_GROUPNAME_EXIST'];
 		die;
@@ -41,16 +40,13 @@ if(isset($_REQUEST['dup_check']) && $_REQUEST['dup_check']!='') {
 	}
 }
 
-
-/** returns the group members in an formatted array  
+/** returns the group members in an formatted array
   * @param $member_array -- member_array:: Type varchar
   * @returns $groupMemberArray:: Type varchar
-  
-  	$groupMemberArray['groups'] -- gives the array of sub groups members ;
+	$groupMemberArray['groups'] -- gives the array of sub groups members ;
 	$groupMemberArray['roles'] -- gives the array of roles present in the group ;
 	$groupMemberArray['rs'] -- gives the array of roles & subordinates present in the group ;
 	$groupMemberArray['users'] -- gives the array of roles & subordinates present in the group;
-  *
  */
 function constructGroupMemberArray($member_array)
 {
@@ -67,19 +63,19 @@ function constructGroupMemberArray($member_array)
 		$memSubArray=explode('::',$member);
 		if($memSubArray[0] == 'groups')
 		{
-			$groupArray[]=$memSubArray[1];			
+			$groupArray[]=$memSubArray[1];
 		}
 		if($memSubArray[0] == 'roles')
 		{
-			$roleArray[]=$memSubArray[1];			
+			$roleArray[]=$memSubArray[1];
 		}
 		if($memSubArray[0] == 'rs')
 		{
-			$roleSubordinateArray[]=$memSubArray[1];			
+			$roleSubordinateArray[]=$memSubArray[1];
 		}
 		if($memSubArray[0] == 'users')
 		{
-			$userArray[]=$memSubArray[1];			
+			$userArray[]=$memSubArray[1];
 		}
 	}
 
