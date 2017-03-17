@@ -29,10 +29,10 @@ foreach($storearray as $id)
 }
 if(isset($_REQUEST['user_id']) && $_REQUEST['user_id'] != '')
 {
-	$record = $_REQUEST['record'];
+	$record = vtlib_purify($_REQUEST['record']);
 	$sql = "insert into vtiger_salesmanactivityrel values (?,?)";
 	$adb->pquery($sql, array($_REQUEST["user_id"], $record));
 }
 
-header("Location: index.php?action=CallRelatedList&module=Emails&record=".vtlib_purify($record));
+header('Location: index.php?action=CallRelatedList&module=Emails&record='.urlencode($record));
 ?>

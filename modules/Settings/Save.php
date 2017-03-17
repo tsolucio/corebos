@@ -43,9 +43,9 @@ $smtp_auth = vtlib_purify($_REQUEST['smtp_auth']);
 	$action = 'EmailConfig';
 	if($mail_status != 1) {
 		$action = 'EmailConfig&emailconfig_mode=edit&server_name='.
-			vtlib_purify($_REQUEST['server']).'&server_user='.
-			vtlib_purify($_REQUEST['server_username']).'&auth_check='.
-			vtlib_purify($_REQUEST['smtp_auth']);
+			urlencode(vtlib_purify($_REQUEST['server'])).'&server_user='.
+			urlencode(vtlib_purify($_REQUEST['server_username'])).'&auth_check='.
+			urlencode(vtlib_purify($_REQUEST['smtp_auth']));
 	} else {
 		$sql='select * from vtiger_systems where server_type = ?';
 		$idrs=$adb->pquery($sql, array($server_type));

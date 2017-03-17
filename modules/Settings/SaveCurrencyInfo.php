@@ -39,6 +39,5 @@ else
 	$params = array($db->getUniqueID("vtiger_currency_info"), $currency_name, $currency_code, $currency_symbol, $conversion_rate, $currency_status,'0','0', $currency_position);
 }
 $adb->pquery($sql, $params);
-$loc = "Location: index.php?module=Settings&action=CurrencyListView&parenttab=".vtlib_purify($_REQUEST['parenttab']);
-header($loc);
+header('Location: index.php?module=Settings&action=CurrencyListView');
 ?>

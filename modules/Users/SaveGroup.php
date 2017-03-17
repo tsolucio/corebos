@@ -94,7 +94,7 @@ function constructGroupMemberArray($member_array)
 
 	if(isset($_REQUEST['returnaction']) && $_REQUEST['returnaction'] != '')
 	{
-		$returnaction=$_REQUEST['returnaction'].'&roleid='.$_REQUEST['roleid'];
+		$returnaction = urlencode(vtlib_purify($_REQUEST['returnaction'])).'&roleid='.urlencode(vtlib_purify($_REQUEST['roleid']));
 	}
 	else
 	{
@@ -109,8 +109,6 @@ function constructGroupMemberArray($member_array)
 		$member_array = explode(';',$selected_col_string);
 		$groupMemberArray=constructGroupMemberArray($member_array);
 		updateGroup($groupId,$groupName,$groupMemberArray,$description);
-
-		$loc = "Location: index.php?action=".vtlib_purify($returnaction)."&module=Settings&parenttab=Settings&groupId=".vtlib_purify($groupId);
 	}
 	elseif(isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'create')
 	{
@@ -118,9 +116,7 @@ function constructGroupMemberArray($member_array)
 		$member_array = explode(';',$selected_col_string);
 		$groupMemberArray=constructGroupMemberArray($member_array);
 		$groupId=createGroup($groupName,$groupMemberArray,$description);
-		$loc = "Location: index.php?action=".vtlib_purify($returnaction)."&parenttab=Settings&module=Settings&groupId=".vtlib_purify($groupId); 	 
-
 	}
 
-	header($loc);
+	header("Location: index.php?action=$returnaction&module=Settings&groupId=".urlencode(vtlib_purify($groupId)));
 ?>

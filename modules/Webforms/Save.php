@@ -24,10 +24,10 @@ if ($_REQUEST['ajax'] == 'true') {
 	$webform = new Webforms_Model($_REQUEST);
 	try {
 		$webform->save();
-		$URL = 'index.php?module=Webforms&action=WebformsDetailView&id=' . $webform->getId();
+		$URL = 'WebformsDetailView&id=' . $webform->getId();
 	} catch (Exception $e) {
-		$URL = 'index.php?module=Webforms&action=Error&errormsg=' . $e->getMessage();
+		$URL = 'Error&errormsg=' . $e->getMessage();
 	}
-	header(sprintf("Location: %s", $URL));
+	header('Location: index.php?module=Webforms&action=' . $URL);
 }
 ?>

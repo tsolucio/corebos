@@ -7,9 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ******************************************************************************* */
-
 global $current_user, $currentModule, $theme, $app_strings,$log;
-$category = getParentTab();
 
 require_once 'include/Webservices/ConvertLead.php';
 require_once 'include/utils/VtlibUtils.php';
@@ -80,9 +78,9 @@ if(!empty($_REQUEST['entities']))
 }
 
 if (!empty($accountId)) {
-	header("Location: index.php?action=DetailView&module=Accounts&record=$accountId&parenttab=$category");
+	header("Location: index.php?action=DetailView&module=Accounts&record=$accountId");
 } elseif (!empty($contactId)) {
-	header("Location: index.php?action=DetailView&module=Contacts&record=$contactId&parenttab=$category");
+	header("Location: index.php?action=DetailView&module=Contacts&record=$contactId");
 } else {
 	showError($entityValues);
 }

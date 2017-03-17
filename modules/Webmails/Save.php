@@ -195,11 +195,9 @@ function view_part_detail($mail,$mailid,$part_no, &$transfer, &$msg_charset, &$c
 $_REQUEST['parent_id'] = $focus->column_fields['parent_id'];
 
 $return_id = vtlib_purify($_REQUEST["mailid"]);
-$return_module='Webmails';
-$return_action='ListView';
 
 if($_POST["ajax"] != "true")
-	header("Location: index.php?action=$return_action&module=$return_module&record=$return_id"); 
+	header('Location: index.php?action=ListView&module=Webmails&record='.urlencode($return_id));
 
 return;
 ?>

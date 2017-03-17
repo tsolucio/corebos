@@ -179,18 +179,17 @@ foreach($modArr as $fld_module => $fld_label)
 		$fieldname =  $adb->query_result($fieldListResult,$i,"fieldname");
 		$typeofdata = $adb->query_result($fieldListResult,$i,"typeofdata");
 		$fieldtype = explode("~",$typeofdata);
-       	if($fieldtype[1] == 'M')
-   		{
+		if ($fieldtype[1] == 'M') {
 			$visible_value = 0;
 		}
 		//Updating the database
 		$sql11="insert into vtiger_profile2field values(?,?,?,?,?)";
-        $adb->pquery($sql11, array($profileid, $tab_id, $fieldid, $visible_value,$readOnlyValue));
+		$adb->pquery($sql11, array($profileid, $tab_id, $fieldid, $visible_value,$readOnlyValue));
 	}
 }
-	$loc = "Location: index.php?action=ListProfiles&module=Settings&mode=view&parenttab=Settings&profileid=".vtlib_purify($profileid)."&selected_tab=".vtlib_purify($def_tab)."&selected_module=".vtlib_purify($def_module);
+	$loc = 'Location: index.php?action=ListProfiles&module=Settings&mode=view&parenttab=Settings&profileid='.urlencode(vtlib_purify($profileid)) .
+		'&selected_tab=' . urlencode(vtlib_purify($def_tab)) . '&selected_module=' . urlencode(vtlib_purify($def_module));
 	header($loc);
-
 
 /** returns value 0 if request permission is on else returns value 1
   * @param $req_per -- Request Permission:: Type varchar

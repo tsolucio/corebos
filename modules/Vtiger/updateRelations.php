@@ -40,5 +40,5 @@ if($mode == 'delete') {
 		relateEntities($focus, $currentModule, $forCRMRecord, $destinationModule, $ids);
 	}
 }
-header("Location: index.php?module=$currentModule&record=$forCRMRecord&action=$action");
+header('Location: index.php?module='.urlencode($currentModule).'&record='.urlencode($forCRMRecord)."&action=$action");
 ?>

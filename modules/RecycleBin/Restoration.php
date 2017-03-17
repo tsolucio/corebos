@@ -24,7 +24,5 @@ for($i=0;$i<count($idlists);$i++) {
 	}
 }
 
-$parenttab = getParentTab();
-
-header("Location: index.php?module=RecycleBin&action=RecycleBinAjax&file=index&parenttab=$parenttab&mode=ajax&selected_module=$selected_module");
+header('Location: index.php?module=RecycleBin&action=RecycleBinAjax&file=index&mode=ajax&selected_module='.urlencode($selected_module));
 ?>

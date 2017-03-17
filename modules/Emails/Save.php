@@ -88,7 +88,6 @@ if($file_name != '' && $_FILES['filename']['size'] == 0)
 	}
 }
 
-
 if(isset($_FILES['filename']) && $_FILES["filename"]["size"] == 0 && $_FILES["filename"]["name"] != '') {
 	$file_upload_error = true;
 	$_FILES = '';
@@ -197,7 +196,7 @@ if(isset($_REQUEST['send_mail']) && $_REQUEST['send_mail'] && $_REQUEST['parent_
 	include("modules/Emails/mailsend.php");
 
 if(isset($_REQUEST['return_action']) && $_REQUEST['return_action'] == 'mailbox')
-	header("Location: index.php?module=$return_module&action=index");
+	header('Location: index.php?action=index&module='.urlencode($return_module));
 else {
 	if($_REQUEST['return_viewname'] == '') $return_viewname='0';
 	if($_REQUEST['return_viewname'] != '')$return_viewname=vtlib_purify($_REQUEST['return_viewname']);
