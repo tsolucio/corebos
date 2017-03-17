@@ -10,12 +10,11 @@
 @include('user_privileges/default_module_view.php');
 
 global $currentModule;
-$idlist            = vtlib_purify($_REQUEST['idlist']);
+$idlist            = isset($_REQUEST['idlist']) ? vtlib_purify($_REQUEST['idlist']) : '';
 $destinationModule = vtlib_purify($_REQUEST['destination_module']);
-$parenttab         = getParentTab();
 
 $forCRMRecord = vtlib_purify($_REQUEST['parentid']);
-$mode = $_REQUEST['mode'];
+$mode = isset($_REQUEST['mode']) ? $_REQUEST['mode'] : '';
 if(isset($override_action))
 	$action = $override_action;
 elseif($singlepane_view == 'true' or isPresentRelatedListBlockWithModule($currentModule,$destinationModule))
@@ -32,8 +31,7 @@ if($mode == 'delete') {
 		$focus->delete_related_module($currentModule, $forCRMRecord, $destinationModule, $ids);
 	}
 } else {
-	if(!empty($_REQUEST['idlist'])) {
-		// Split the string of ids
+	if(!empty($idlist)) {
 		$ids = explode (';',trim($idlist,';'));
 	} else if(!empty($_REQUEST['entityid'])){
 		$ids = $_REQUEST['entityid'];
@@ -42,5 +40,5 @@ if($mode == 'delete') {
 		relateEntities($focus, $currentModule, $forCRMRecord, $destinationModule, $ids);
 	}
 }
-header("Location: index.php?module=$currentModule&record=$forCRMRecord&action=$action&parenttab=$parenttab");
+header("Location: index.php?module=$currentModule&record=$forCRMRecord&action=$action");
 ?>
