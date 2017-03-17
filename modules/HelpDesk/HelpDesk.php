@@ -120,7 +120,12 @@ class HelpDesk extends CRMEntity {
 			$adb->pquery("update vtiger_troubletickets set commentadded='0' where ticketid=?",array($this->id));
 		}
 		$this->column_fields['commentadded'] = '0';
+		$grp_name = isset($_REQUEST['assigned_group_id']) ? getGroupName($_REQUEST['assigned_group_id']) : '';
+		$fldvalue = $this->constructUpdateLog($this, $this->mode, $grp_name, $_REQUEST['assigntype']);
+		$fldvalue = from_html($fldvalue,($this->mode == 'edit')?true:false);
 		parent::save($module, $fileid);
+		//After save the record, we should update the log
+		$adb->pquery('update vtiger_troubletickets set update_log=? where ticketid=?', array($fldvalue,$this->id));
 	}
 
 	function save_module($module) {

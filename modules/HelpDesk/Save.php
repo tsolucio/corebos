@@ -67,15 +67,8 @@ if ($saveerror) { // there is an error so we go back to EditView.
 	header("location: index.php?action=$error_action&module=$error_module&record=$record&return_viewname=$return_viewname".$search.$return_action.$returnvalues."&error_msg=$errormessage&save_error=true&encode_val=$encode_field_values");
 	die();
 }
-$grp_name = getGroupName($_REQUEST['assigned_group_id']);
-$fldvalue = $focus->constructUpdateLog($focus, $mode, $grp_name, $_REQUEST['assigntype']);
-$fldvalue = from_html($fldvalue,($mode == 'edit')?true:false);
 
 $focus->save($currentModule);
-
-//After save the record, we should update the log
-$adb->pquery("update vtiger_troubletickets set update_log=? where ticketid=?", array($fldvalue,$focus->id));
-
 $return_id = $focus->id;
 
 $parenttab = getParentTab();
