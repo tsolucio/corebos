@@ -9,6 +9,6 @@
  ************************************************************************************/
 require_once 'modules/Vtiger/EditView.php';
 //Show or not the Header to copy address to left or right
-$smarty->assign('SHOW_COPY_ADDRESS', GlobalVariable::getVariable('Show_Copy_Adress_Header', 'yes', $currentModule, $current_user->id));
+$smarty->assign('SHOW_COPY_ADDRESS', GlobalVariable::getVariable('Application_Show_Copy_Address', 1, $currentModule, $current_user->id));
 $smarty->display('salesEditView.tpl');
 ?>

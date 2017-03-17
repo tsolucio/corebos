@@ -133,10 +133,9 @@ class DefineGlobalVariables extends cbupdaterWorker {
 
 				'Inventory_ListPrice_ReadOnly',
 
-				'Maximum_Scheduled_Workflows', // rename to Workflow_Maximum_Scheduled_Workflows
+				'Maximum_Scheduled_Workflows', // rename to Workflow_Maximum_Scheduled
 				'Billing_Address_Checked', // rename to Application_Billing_Address_Checked
 				'Shipping_Address_Checked', // rename to Application_Shipping_Address_Checked
-				'Show_Copy_Adress_Header', // rename to Application_Show_Copy_Adress_Header
 				'Tax_Type_Default', // rename to Inventory_Tax_Type_Default
 				'product_service_default', // rename to Inventory_ProductService_Default
 				'Product_Default_Units', // rename to Inventory_Product_Default_Units
@@ -144,6 +143,9 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'SalesOrderStatusOnInvoiceSave', // rename to SalesOrder_StatusOnInvoiceSave
 				'QuoteStatusOnSalesOrderSave',  // rename to Quote_StatusOnSalesOrderSave
 				'Report.Excel.Export.RowHeight', // rename to Report_Excel_Export_RowHeight
+
+				// due to backward compatibilty, we have to add these variables with the incorrect name and then rename them
+				'Show_Copy_Adress_Header', // renamed to Application_Show_Copy_Address
 			);
 			$delete_these = array(
 				'preload_prototype',
@@ -177,6 +179,21 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'SOAP_Thunderbird_Enabled',
 				'Home_Display_Empty_Blocks',
 			);
+			$rename_these = array(
+				'Show_Copy_Adress_Header' => array(
+					'to' => 'Application_Show_Copy_Address',
+					'change' => array(
+						array(
+							'not' => 'yes',
+							'to' => 0
+						),
+						array(
+							'from' => 'yes',
+							'to' => 1
+						),
+					)
+				),
+			);
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');
 			$field = Vtiger_Field::getInstance('gvname',$moduleInstance);
 			if ($field) {
@@ -192,6 +209,32 @@ class DefineGlobalVariables extends cbupdaterWorker {
 						$this->ExecuteQuery($sql, array($origPicklistID));
 						$sql = 'DELETE FROM vtiger_picklist_dependency WHERE sourcevalue=? AND sourcefield=? AND tabid=?';
 						$this->ExecuteQuery($sql, array($gvar, 'gvname', $moduleInstance->id));
+					}
+				}
+				foreach ($rename_these as $gvar => $change) {
+					$rschk = $adb->pquery('select count(*) from vtiger_gvname where gvname=?',array($gvar));
+					$check = $adb->query_result($rschk, 0, 0);
+					if ($check > 0) {
+						$sql = 'UPDATE vtiger_gvname SET gvname=? WHERE gvname=?';
+						$this->ExecuteQuery($sql, array($change['to'],$gvar));
+						$table_name = 'vtiger_globalvariable';
+						$columnName = 'gvname';
+						$sql = "update $table_name set $columnName=? where $columnName=?";
+						$this->ExecuteQuery($sql, array($change['to'],$gvar));
+						$sql = "UPDATE vtiger_picklist_dependency SET sourcevalue=? WHERE sourcevalue=? AND sourcefield='gvname' AND tabid=?";
+						$this->ExecuteQuery($sql, array($change['to'], $gvar, getTabid('GlobalVariable')));
+						if (isset($change['change'])) {
+							foreach ($change['change'] as $fromto) {
+								if (isset($fromto['not'])) {
+									$sql = 'update vtiger_globalvariable set value=? where gvname=? and value!=?';
+									$params = array($fromto['to'],$change['to'],$fromto['not']);
+								} else {
+									$sql = 'update vtiger_globalvariable set value=? where gvname=? and value=?';
+									$params = array($fromto['to'],$change['to'],$fromto['from']);
+								}
+								$this->ExecuteQuery($sql, $params);
+							}
+						}
 					}
 				}
 			}
