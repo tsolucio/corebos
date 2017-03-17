@@ -139,6 +139,7 @@ $mod_strings = Array(
 'UpdateExchangeRate' => 'Update Exchange Rate',
 'LBL_HOME_ADDWINDOW' => 'Add Window',
 'LBL_GETTING_STARTED' => 'Getting Started',
+'ExpirePasswordAfterDays' => 'Expire Password After Days',
 );
 
 ?>

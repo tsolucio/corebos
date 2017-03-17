@@ -22,8 +22,8 @@ $mod_strings = Array (
 	'LBL_SCHEDULER' => 'Planificateur',
 	'LBL_FREQUENCY'=> 'Fréquence ',
 	'LBL_HOURMIN' => '(H:m)',
-	'LAST_START'=>'Dernier Scan Démarré il y a',
-	'LAST_END'=>'Dernier Scan Terminé il y a',
+	'LAST_START'=>'Dernier scan démarré il y a',
+	'LAST_END'=>'Dernier scan terminé il y a',
 	'LBL_SEQUENCE'=>'Séquence',
 	'LBL_TOOLS' =>'Outils',
 	'LBL_RUNNING'=>'En cours d\'éxécution',
@@ -44,5 +44,6 @@ $mod_strings = Array (
 	'Allows you to Configure Cron Task' => 'Configurer les tâches crons',
 	'Scheduler' => 'Planificateur',
 	'Cron Job' => 'Tâche Cron',
+	'cronWatcherService' => 'Cron Watcher Service',
 );
 ?>

@@ -133,6 +133,7 @@ $mod_strings = Array(
 'UpdateExchangeRate' => 'Actualizar Cotización Moneda',
 'LBL_HOME_ADDWINDOW' => 'Añadir Ventana',
 'LBL_GETTING_STARTED' => 'Empezando',
+'ExpirePasswordAfterDays' => 'Invalida Contraseña Después de Días',
 );
 
 ?>

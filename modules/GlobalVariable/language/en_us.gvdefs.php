@@ -749,7 +749,7 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'When selecting an Account/Contact in the popup window, the application asks if it must fill in addresses. This variable sets the Shipping Address checkbox.',
 ),
-'Show_Copy_Adress_Header' => array(
+'Application_Show_Copy_Address' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
 	'category' => 'Application',

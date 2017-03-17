@@ -1130,4 +1130,11 @@
 	<classname>fixPBXManagerUITypes</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete Integration extension</description>
+	<filename>build/changeSets/2017/delIntegration.php</filename>
+	<classname>delIntegration</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

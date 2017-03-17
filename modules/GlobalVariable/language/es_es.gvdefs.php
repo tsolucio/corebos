@@ -638,7 +638,7 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => '',
 ),
-'Show_Copy_Adress_Header' => array(
+'Application_Show_Copy_Address' => array(
 	'status' => 'Implemented',
 	'valuetype' => '',
 	'category' => '',

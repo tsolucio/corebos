@@ -366,9 +366,9 @@ if(isset($action) && isset($module))
 
 $log->info("current page is $currentModuleFile current module is $currentModule ");
 
-$module = (isset($_REQUEST['module'])) ? vtlib_purify($_REQUEST['module']) : "";
-$action = (isset($_REQUEST['action'])) ? vtlib_purify($_REQUEST['action']) : "";
-$record = (isset($_REQUEST['record'])) ? vtlib_purify($_REQUEST['record']) : "";
+$module = (isset($_REQUEST['module']) ? vtlib_purify($_REQUEST['module']) : '');
+$action = (isset($_REQUEST['action']) ? vtlib_purify($_REQUEST['action']) : '');
+$record = (isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : (isset($_REQUEST['recordid']) ? vtlib_purify($_REQUEST['recordid']) : ''));
 
 $current_user = new Users();
 

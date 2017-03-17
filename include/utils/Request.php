@@ -91,7 +91,8 @@ class Vtiger_Request {
 	 */
 	public function getAll() {
 		$vals = array();
-		foreach ($this->valuemap as $k => $v) {
+		$keys = array_merge($this->defaultmap,$this->valuemap);
+		foreach ($keys as $k => $v) {
 			$vals[$k] = $this->get($k);
 		}
 		return $vals;
@@ -248,10 +249,10 @@ class Vtiger_Request {
 		$data = $this->getAll();
 		$returnURL = array();
 		foreach ($data as $key => $value) {
-			if (stripos($key, 'return_') === 0 && !empty($value) && $value != '/') {
+			if (stripos($key, 'return_') === 0 && isset($value) && $value != '/') {
 				$newKey = str_replace_once('return_','',$key);
 				$returnURL[strtolower($newKey)] = $value;
-			} elseif (stripos($key, 'return') === 0 && !empty($value) && $value != '/') {
+			} elseif (stripos($key, 'return') === 0 && isset($value) && $value != '/') {
 				$newKey = str_replace_once('return','',$key);
 				$returnURL[strtolower($newKey)] = $value;
 			}

@@ -25,7 +25,7 @@ $mod_strings = Array (
 	'LBL_MINUTES'=>'Minutes',
 	'LBL_MINUTES_AGO'=>'min(s) ago',
 	'LBL_HOURS'=>'Hours',
-        'LBL_DAILY'=>'Daily',
+	'LBL_DAILY'=>'Daily',
 	'LBL_HOURS_AGO'=>'hr(s) ago',
 	'LBL_DAYS'=>'Days',
 	'LBL_DAYS_AGO'=>'day(s) ago',
@@ -36,5 +36,6 @@ $mod_strings = Array (
 	'Allows you to Configure Cron Task' => 'Configure Cron Tasks',
 	'Scheduler' => 'Scheduler',
 	'Cron Job' => 'Cron Job',
+	'cronWatcherService' => 'Cron Watcher Service',
 );
 ?>
