@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-global $current_user, $currentModule, $mod_strings, $singlepane_view;
+global $current_user, $currentModule, $singlepane_view;
 
 checkFileAccessForInclusion("modules/$currentModule/$currentModule.php");
 require_once("modules/$currentModule/$currentModule.php");
@@ -71,35 +71,9 @@ if ($saveerror) { // there is an error so we go back to EditView.
 	header("location: index.php?action=$error_action&module=$error_module&record=$record&return_viewname=$return_viewname".$search.$return_action.$returnvalues."&error_msg=$errormessage&save_error=true&encode_val=$encode_field_values");
 	die();
 }
-if (empty($_REQUEST['register'])) {
-	$refDateValue = new DateTimeField();  // right now
-	$focus->column_fields['register'] = $refDateValue->getDisplayDate();
-}
-
-$update_after = false;
-if ($focus->column_fields['paid'] == 'on'){
-	if($focus->mode != 'edit'){
-		$update_after = true;
-		$update_log = $mod_strings['Payment Paid'].$current_user->user_name.$mod_strings['PaidOn'].date("l dS F Y h:i:s A").'--//--';
-	}else{
-		$SQL = "SELECT paid,update_log FROM vtiger_cobropago WHERE cobropagoid=?";
-		$result = $adb->pquery($SQL,array($focus->id));
-		$old_paid = $adb->query_result($result,0,'paid');
-		if ($old_paid == '0'){
-			$update_after = true;
-			$update_log = $adb->query_result($result,0,'update_log');
-			$update_log .= $mod_strings['Payment Paid'].$current_user->user_name.$mod_strings['PaidOn'].date("l dS F Y h:i:s A").'--//--';
-		}
-	}
-}
 
 $focus->save($currentModule);
 $return_id = $focus->id;
-
-if ($update_after){
-	$SQL_UPD = 'UPDATE vtiger_cobropago SET update_log=? WHERE cobropagoid=?';
-	$adb->pquery($SQL_UPD,array($update_log,$focus->id));
-}
 
 $parenttab = getParentTab();
 if(!empty($_REQUEST['return_module'])) {

@@ -23,18 +23,6 @@ if($ajaxaction == 'DETAILVIEW') {
 		if ($saveerror) { // there is an error so we report error
 			echo ':#:ERR'.$errormessage;
 		} else {
-			//Registro de historico
-			if ($modObj->column_fields['paid'] == "1"){
-				$SQL = "SELECT paid,update_log FROM vtiger_cobropago WHERE cobropagoid=?";
-				$result = $adb->pquery($SQL,array($modObj->id));
-				$old_paid = $adb->query_result($result,0,'paid');
-				if ($old_paid == "0"){
-					$update_log = $adb->query_result($result,0,'update_log');
-					$update_log .= getTranslatedString('Payment Paid',$currenModule).$current_user->user_name.getTranslatedString('PaidOn',$currenModule).date("l dS F Y h:i:s A").'--//--';
-					$SQL_UPD = "UPDATE vtiger_cobropago SET update_log=? WHERE cobropagoid=?";
-					$adb->pquery($SQL_UPD,array($update_log,$modObj->id));
-				}
-			}
 			$modObj->save($currentModule);
 			if ($modObj->id != '') {
 				echo ':#:SUCCESS';
