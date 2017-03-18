@@ -1137,4 +1137,11 @@
 	<classname>delIntegration</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete uitype 50 as reference from Webservice</description>
+	<filename>build/changeSets/2017/uitype50DateTimeinWebservice2.php</filename>
+	<classname>uitype50DateTimeinWebservice2</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
