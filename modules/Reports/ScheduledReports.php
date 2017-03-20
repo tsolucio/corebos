@@ -121,7 +121,7 @@ class VTScheduledReport extends Reports {
 		require_once('modules/Emails/mail.php');
 		require_once('modules/Emails/Emails.php');
 
-		global $currentModule;
+		global $currentModule,$root_directory;
 
 		$recipientEmails = $this->getRecipientEmails();
 		$emails_to = '';
@@ -145,9 +145,9 @@ class VTScheduledReport extends Reports {
 
 		if($reportFormat == 'pdf' || $reportFormat == 'both') {
 			$fileName = $baseFileName.'.pdf';
-			$filePath = 'storage/'.$fileName;
-			$attachments[$fileName] = $filePath;
-			$_REQUEST['filename_hidden_pdf'] = $filePath;
+			$filePath = $root_directory.'storage/'.$fileName;
+			$attachments[$fileName] = 'storage/'.$fileName;
+			$_REQUEST['filename_hidden_pdf'] = 'storage/'.$fileName;
 			$pdf = $oReportRun->getReportPDF(NULL);
 			$pdf->Output($filePath,'F');
 		}
