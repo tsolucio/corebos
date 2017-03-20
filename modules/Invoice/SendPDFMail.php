@@ -9,6 +9,8 @@
  ********************************************************************************/
 include_once 'modules/Invoice/InvoicePDFController.php';
 
+global $root_directory;
+
 $currentModule = vtlib_purify($_REQUEST['module']);
 $controller = new Vtiger_InvoicePDFController($currentModule);
 $controller->loadRecord(vtlib_purify($_REQUEST['record']));
@@ -17,7 +19,7 @@ $filenameid = vtlib_purify($_REQUEST['record']);
 $invoice_no = getModuleSequenceNumber($currentModule,vtlib_purify($_REQUEST['record']));
 $moduleName = str_replace(' ', '', getTranslatedString('SINGLE_Invoice', $currentModule));
 if(empty($filenameid)) $filenameid = time();
-$filepath='storage/'.$moduleName.'_'.$invoice_no.'.pdf';
+$filepath=$root_directory.'storage/'.$moduleName.'_'.$invoice_no.'.pdf';
 //added file name to make it work in IE, also forces the download giving the user the option to save
 $controller->Output($filepath,'F');
 
