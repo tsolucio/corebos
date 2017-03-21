@@ -503,22 +503,7 @@ class crmtogo_WS_Utils {
 	}
 	
 	static function fixReferenceIdByModule($module, $fieldid) {
-		if ($module =='Tickets') {
-			if ($fieldid=='parent_id') {
-				$fieldid='account_id';
-			}
-		}
-		elseif ($module =='HelpDesk') {
-			if ($fieldid=='parent_id') {
-				$fieldid='account_id';
-			}
-		}
-		elseif ($module =='Potentials') {
-			if ($fieldid=='related_to') {
-				$fieldid='account_id';
-			}
-		}
-		elseif ($module =='Assets') {
+		if ($module =='Assets') {
 			if ($fieldid=='account') {
 				$fieldid='account_id';
 			}
