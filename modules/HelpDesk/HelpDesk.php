@@ -121,7 +121,14 @@ class HelpDesk extends CRMEntity {
 		}
 		$this->column_fields['commentadded'] = '0';
 		$grp_name = isset($_REQUEST['assigned_group_id']) ? getGroupName($_REQUEST['assigned_group_id']) : '';
-		$fldvalue = $this->constructUpdateLog($this, $this->mode, $grp_name, $_REQUEST['assigntype']);
+		if (isset($_REQUEST['assigntype'])) {
+			$assigntype = $_REQUEST['assigntype'];
+		} elseif (!empty($this->id) and !empty($this->column_fields['assigned_user_id'])) {
+			$assigntype = (vtws_getOwnerType($this->column_fields['assigned_user_id'])=='Groups' ? 'T' : 'U');
+		} else {
+			$assigntype = 'U';
+		}
+		$fldvalue = $this->constructUpdateLog($this, $this->mode, $grp_name, $assigntype);
 		$fldvalue = from_html($fldvalue,($this->mode == 'edit')?true:false);
 		parent::save($module, $fileid);
 		//After save the record, we should update the log
