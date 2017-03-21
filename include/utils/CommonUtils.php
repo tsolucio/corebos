@@ -3148,9 +3148,7 @@ function getSettingsBlockId($label) {
 // and if the module is an entity module
 // and the module has a Settings.php file within it
 function isModuleSettingPermitted($module) {
-	if (file_exists("modules/$module/Settings.php") &&
-			isPermitted('Settings', 'index', '') == 'yes') {
-
+	if (file_exists("modules/$module/Settings.php") && isPermitted('Settings', 'index', '') == 'yes') {
 		return 'yes';
 	}
 	return 'no';

@@ -75,7 +75,7 @@ class Vtiger_Unzip {
 		 * )
 		 *
 		 * DEFAULT: If include is specified only files under the specified path will be included.
-		 * If exclude is specified folders or files will be excluded. 
+		 * If exclude is specified folders or files will be excluded.
 		 */
 		if($includeExclude === false) $includeExclude = Array();
 
@@ -83,17 +83,14 @@ class Vtiger_Unzip {
 		if(sizeof($lista)) {
 			foreach($lista as $fileName=>$trash){
 			// Should the file be ignored?
-			if(isset($includeExclude['include']) && $includeExclude['include'] && 
-				!$this->__checkPathInArray($fileName, $includeExclude['include'])) {
-					// Do not include something not specified in include
-					continue;
+			if(isset($includeExclude['include']) && $includeExclude['include'] && !$this->__checkPathInArray($fileName, $includeExclude['include'])) {
+				// Do not include something not specified in include
+				continue;
 			}
-			if(isset($includeExclude['exclude']) && $includeExclude['exclude'] && 
-				$this->__checkPathInArray($fileName, $includeExclude['exclude'])) {
-					// Do not include something not specified in include
-					continue;
+			if(isset($includeExclude['exclude']) && $includeExclude['exclude'] && $this->__checkPathInArray($fileName, $includeExclude['exclude'])) {
+				// Do not include something not specified in include
+				continue;
 			}
-			// END
 
 			$dirname  = dirname($fileName);
 
@@ -106,13 +103,12 @@ class Vtiger_Unzip {
 					}
 				}
 			}
-			// END
 
 			$outDN = "$targetDir/$dirname";
-			
+
 			if(substr($dirname, 0, strlen($baseDir)) != $baseDir)
 				continue;
-			
+
 			if(!is_dir($outDN) && $maintainStructure){
 				$str = "";
 				$folders = explode("/", $dirname);

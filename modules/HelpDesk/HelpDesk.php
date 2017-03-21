@@ -376,7 +376,7 @@ class HelpDesk extends CRMEntity {
 		$noofrows = $adb->num_rows($result);
 
 		//In ajax save we should not add this div
-		$list = '';
+		$list = $enddiv = '';
 		if($_REQUEST['action'] != 'HelpDeskAjax')
 		{
 			$list .= '<div id="comments_div" style="overflow: auto;height:200px;width:100%;">';
