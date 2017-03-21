@@ -137,7 +137,7 @@ class VTScheduledReport extends Reports {
 		$contents .= '<b>'.getTranslatedString('LBL_REPORT_NAME', $currentModule) .' :</b> '. $this->reportname .'<br/>';
 		$contents .= '<b>'.getTranslatedString('LBL_DESCRIPTION', $currentModule) .' :</b><br/>'. $this->reportdescription .'<br/><br/>';
 
-		$baseFileName = utf8_decode(preg_replace('/[^a-zA-Z0-9_-\s]/', '', $this->reportname).'_'. preg_replace('/[^a-zA-Z0-9_-\s]/', '', date('YmdHis')));
+		$baseFileName = utf8_decode(preg_replace('/[^a-zA-Z0-9_\s]/', '', $this->reportname).'_'. preg_replace('/[^a-zA-Z0-9_\s]/', '', date('YmdHis')));
 
 		$oReportRun = new ReportRun($this->id);
 		$reportFormat = $this->scheduledFormat;
