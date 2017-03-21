@@ -1,16 +1,19 @@
 ﻿<!DOCTYPE html>
 <head>
 <!-- the following header content gets only loaded with a direct http call-->
-<meta name="viewport" content="width=device-width, initial-scale=1"> 
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta charset="utf-8">
-<link REL="SHORTCUT ICON" HREF="resources/images/favicon.ico">	
+<link REL="SHORTCUT ICON" HREF="resources/images/favicon.ico">
+<link rel="stylesheet" href="resources/css/jquery.mobile-1.4.5.min.css">
 <script type="text/javascript" src="resources/jquery-1.11.2.min.js"></script>
 <script type="text/javascript" src="resources/jquery.mobile-1.4.5.min.js"></script>
 <script type="text/javascript" src="resources/getScrollcontent.js"></script>
+<link rel="stylesheet" href="resources/css/jquery.mobile.structure-1.4.5.min.css" >
 <link rel="stylesheet" href="resources/css/jquery.mobile.icons.min.css" >
 <link rel="stylesheet" href="resources/css/theme.css" >
-<script type="text/javascript" src="resources/lang/{$LANGUAGE}.lang.js"></script>
 <script type="text/javascript" src="resources/jquery.blockUI.js" ></script>
+<script type="text/javascript" src="resources/crmtogo.js"></script>
+<script type="text/javascript" src="resources/lang/{$LANGUAGE}.lang.js"></script>
 {literal}
 	<!-- define the collapsible button size-->
 	<style>	

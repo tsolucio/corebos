@@ -15,7 +15,7 @@ class crmtogo_WS_QueryWithGrouping extends crmtogo_WS_Query {
 	
 	private $queryModule;
 	
-	function processQueryResultRecord($record, $user) {
+	function processQueryResultRecord(&$record, $user) {
 		parent::processQueryResultRecord($record, $user);
 
 		if ($this->cachedDescribeInfo() === false) {
