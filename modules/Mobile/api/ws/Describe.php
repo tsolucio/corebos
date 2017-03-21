@@ -23,7 +23,7 @@ class crmtogo_WS_Describe extends crmtogo_WS_Controller {
 	}
 	
 	function process(crmtogo_API_Request $request) {
-		$current_user = $this->getActiveUser();
+		global $current_user;
 		$module = $request->get('module');
 		$newrecord = self::transformToBlocks($module);
 		$response = new crmtogo_API_Response();
@@ -33,10 +33,9 @@ class crmtogo_WS_Describe extends crmtogo_WS_Controller {
 	
 	
 	protected function transformToBlocks($module) {
-		global $current_language;
+		global $current_language,$current_user;
 		if(empty($current_language))
 			$current_language = crmtogo_WS_Controller::sessionGet('language');
-		$current_user = $this->getActiveUser();
 		$moduleFieldGroups = crmtogo_WS_Utils::gatherModuleFieldGroupInfo($module);
 		$describeInfo = vtws_describe($module, $current_user);
 		crmtogo_WS_Utils::fixDescribeFieldInfo($module, $describeInfo,$current_user);
