@@ -301,6 +301,13 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 			@rmdir("modules/$module/modules/");
 			@rmdir("Smarty/templates/modules/$module/templates");
 			@rmdir("cron/modules/$module/cron");
+			$dirs = glob("modules/$module/*",GLOB_ONLYDIR);
+			foreach ($dirs as $path) {
+				$dir = basename($path);
+				@rmdir("modules/$module/$dir/modules/$module/$dir");
+				@rmdir("modules/$module/$dir/modules/$module");
+				@rmdir("modules/$module/$dir/modules/");
+			}
 			if($unzip) $unzip->close();
 		}
 		return $module;
