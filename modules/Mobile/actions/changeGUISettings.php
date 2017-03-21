@@ -13,7 +13,8 @@ include_once dirname(__FILE__) . '/../api/ws/Controller.php';
 class crmtogo_UI_ChangeSettings extends crmtogo_WS_Controller{
 
 	function process(crmtogo_API_Request $request) {
-		$db = PearDatabase::getInstance();
+		global $current_user,$adb;
+		$adb = PearDatabase::getInstance();
 		$response = new crmtogo_API_Response();
 		$settings_operation = vtlib_purify($request->get('operation'));
 		$current_user = $this->getActiveUser();
@@ -24,7 +25,7 @@ class crmtogo_UI_ChangeSettings extends crmtogo_WS_Controller{
 			$query = "UPDATE berli_crmtogo_modules SET order_num = ? WHERE crmtogo_user = ? AND crmtogo_module = ?";
 			$k=0;
 			foreach ($idsInOrder as $modulename) {
-				$db->pquery($query, array($k, $current_user->id, $modulename));
+				$adb->pquery($query, array($k, $current_user->id, $modulename));
 				$k=$k+1;
 			}
 			$response->setResult(json_encode('OK'));
@@ -32,13 +33,13 @@ class crmtogo_UI_ChangeSettings extends crmtogo_WS_Controller{
 		elseif ($settings_operation == 'changenavi') {
 			$navi_limit = vtlib_purify($request->get('sliderVar'));
 			$query = "UPDATE berli_crmtogo_config SET navi_limit = ? where crmtogouser =?";
-			$db->pquery($query, array($navi_limit, $current_user->id));
+			$adb->pquery($query, array($navi_limit, $current_user->id));
 			$response->setResult(json_encode('OK'));
 		}
 		elseif ($settings_operation == 'changetheme') {
 			$theme = vtlib_purify($request->get('theme'));
 			$query = "UPDATE berli_crmtogo_config SET theme_color = ? where crmtogouser =?";
-			$db->pquery($query, array($theme,$current_user->id));
+			$adb->pquery($query, array($theme,$current_user->id));
 			$response->setResult(json_encode('OK'));
 		}
 		elseif ($settings_operation == 'changemodule') {
@@ -52,7 +53,7 @@ class crmtogo_UI_ChangeSettings extends crmtogo_WS_Controller{
 			}
 			$module_info = explode("_", $moduleid);
 			$query = "UPDATE berli_crmtogo_modules SET crmtogo_active = ? where crmtogo_module=? and crmtogo_user=?";
-			$db->pquery($query, array($moduleactive, $module_info[1], $current_user->id));
+			$adb->pquery($query, array($moduleactive, $module_info[1], $current_user->id));
 			$response->setResult(json_encode('OK'));
 		}
 		else {
