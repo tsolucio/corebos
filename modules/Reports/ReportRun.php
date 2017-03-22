@@ -3257,6 +3257,7 @@ class ReportRun extends CRMEntity {
 
 		if(isset($arr_val)) {
 			foreach($arr_val as $wkey=>$warray_value) {
+				$w_inner_array = array();
 				foreach($warray_value as $whd=>$wvalue) {
 					if(strlen($wvalue) < strlen($whd)) {
 						$w_inner_array[] = strlen($whd);
@@ -3267,7 +3268,7 @@ class ReportRun extends CRMEntity {
 				$warr_val[] = $w_inner_array;
 				unset($w_inner_array);
 			}
-
+			$farr_val = array();
 			foreach($warr_val[0] as $fkey=>$fvalue) {
 				foreach($warr_val as $wkey=>$wvalue) {
 					$f_inner_array[] = $warr_val[$wkey][$fkey];
@@ -3276,7 +3277,7 @@ class ReportRun extends CRMEntity {
 				$farr_val[] = $f_inner_array;
 				unset($f_inner_array);
 			}
-
+			$col_width = array();
 			foreach($farr_val as $skkey=>$skvalue) {
 				if($skvalue[count($arr_val)-1] == 1) {
 					$col_width[] = ($skvalue[count($arr_val)-1] * 35);
