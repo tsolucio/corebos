@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 require_once('modules/Reports/Reports.php');
 require_once('include/logging.php');
@@ -19,11 +18,11 @@ if(isset($_REQUEST['idlist']) && $_REQUEST['idlist']!= '')
 {
 	$id_array = Array();
 	$id_array = explode(':',$_REQUEST['idlist']);
-	
+
 	$query = $adb->pquery("select userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%'",array());
 	$subordinate_users = Array();
 	for($i=0;$i<$adb->num_rows($query);$i++){
-		$subordinate_users[] = $adb->query_result($query,$i,'userid'); 
+		$subordinate_users[] = $adb->query_result($query,$i,'userid');
 	}
 
 	for($i=0;$i<count($id_array)-1;$i++)
@@ -60,24 +59,20 @@ function DeleteReport($reportid)
 	$idelreportsqlresult = $adb->pquery($idelreportsql, array($reportid));
 
 	$ireportsql = "delete from vtiger_report where reportid=?";
-    $ireportsqlresult = $adb->pquery($ireportsql, array($reportid));
+	$ireportsqlresult = $adb->pquery($ireportsql, array($reportid));
 
 	$reportsql = 'DELETE FROM vtiger_scheduled_reports WHERE reportid=?';
 	$adb->pquery($reportsql, array($reportid));
 
-/******************** Mnolithic Phase 6 Customization****************/
-
-    $query = "SELECT * FROM vtiger_homereportchart WHERE reportid=?";
-    $result =$adb->pquery($query,array($reportid));
-    $num_rows = $adb->num_rows($result);
-    if($num_rows){
-        for($i=0;$i<$num_rows;$i++){
-            $stuffid = $adb->query_result($result,$i,'stuffid');
-            $delHomeSql="delete from vtiger_homestuff where stuffid=?";
-            $delResult=$adb->pquery($delHomeSql, array($stuffid));
-        }
-    }
-
-    /*================ End of Customization =========================*/
+	$query = "SELECT * FROM vtiger_homereportchart WHERE reportid=?";
+	$result =$adb->pquery($query,array($reportid));
+	$num_rows = $adb->num_rows($result);
+	if ($num_rows) {
+		for($i=0;$i<$num_rows;$i++){
+			$stuffid = $adb->query_result($result,$i,'stuffid');
+			$delHomeSql="delete from vtiger_homestuff where stuffid=?";
+			$delResult=$adb->pquery($delHomeSql, array($stuffid));
+		}
+	}
 }
 ?>
