@@ -120,7 +120,19 @@ class HelpDesk extends CRMEntity {
 			$adb->pquery("update vtiger_troubletickets set commentadded='0' where ticketid=?",array($this->id));
 		}
 		$this->column_fields['commentadded'] = '0';
+		$grp_name = isset($_REQUEST['assigned_group_id']) ? getGroupName($_REQUEST['assigned_group_id']) : '';
+		if (isset($_REQUEST['assigntype'])) {
+			$assigntype = $_REQUEST['assigntype'];
+		} elseif (!empty($this->id) and !empty($this->column_fields['assigned_user_id'])) {
+			$assigntype = (vtws_getOwnerType($this->column_fields['assigned_user_id'])=='Groups' ? 'T' : 'U');
+		} else {
+			$assigntype = 'U';
+		}
+		$fldvalue = $this->constructUpdateLog($this, $this->mode, $grp_name, $assigntype);
+		$fldvalue = from_html($fldvalue,($this->mode == 'edit')?true:false);
 		parent::save($module, $fileid);
+		//After save the record, we should update the log
+		$adb->pquery('update vtiger_troubletickets set update_log=? where ticketid=?', array($fldvalue,$this->id));
 	}
 
 	function save_module($module) {
@@ -371,7 +383,7 @@ class HelpDesk extends CRMEntity {
 		$noofrows = $adb->num_rows($result);
 
 		//In ajax save we should not add this div
-		$list = '';
+		$list = $enddiv = '';
 		if($_REQUEST['action'] != 'HelpDeskAjax')
 		{
 			$list .= '<div id="comments_div" style="overflow: auto;height:200px;width:100%;">';

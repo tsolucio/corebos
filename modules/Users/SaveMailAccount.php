@@ -54,5 +54,5 @@ if(empty($return_module)) $return_module = 'Webmails';
 $return_action = vtlib_purify($_REQUEST['return_action']);
 if(empty($return_action)) $return_action = 'index';
 
-header("Location:index.php?module=$return_module&action=$return_action&mailbox=INBOX&parenttab=My Home Page");
+header('Location:index.php?module=' . urlencode($return_module) . '&action=' . urlencode($return_action) . '&mailbox=INBOX');
 ?>

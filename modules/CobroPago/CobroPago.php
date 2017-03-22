@@ -104,6 +104,31 @@ class CobroPago extends CRMEntity {
 	// Refers to vtiger_field.fieldname values.
 	var $mandatory_fields = Array('createdtime', 'modifiedtime','cyp_no');
 
+	function save($module, $fileid = '') {
+		global $adb, $mod_strings, $current_user;
+		$update_after = false;
+		if ($this->column_fields['paid'] == 'on' or $this->column_fields['paid'] == '1'){
+			if($this->mode != 'edit'){
+				$update_after = true;
+				$update_log = $mod_strings['Payment Paid'].$current_user->user_name.$mod_strings['PaidOn'].date("l dS F Y h:i:s A").'--//--';
+			}else{
+				$SQL = 'SELECT paid,update_log FROM vtiger_cobropago WHERE cobropagoid=?';
+				$result = $adb->pquery($SQL,array($this->id));
+				$old_paid = $adb->query_result($result,0,'paid');
+				if ($old_paid == '0'){
+					$update_after = true;
+					$update_log = $adb->query_result($result,0,'update_log');
+					$update_log .= $mod_strings['Payment Paid'].$current_user->user_name.$mod_strings['PaidOn'].date("l dS F Y h:i:s A").'--//--';
+				}
+			}
+		}
+		parent::save($module, $fileid);
+		if ($update_after){
+			$SQL_UPD = 'UPDATE vtiger_cobropago SET update_log=? WHERE cobropagoid=?';
+			$adb->pquery($SQL_UPD,array($update_log,$this->id));
+		}
+	}
+
 	function save_module($module) {
 		global $current_user,$log,$adb;
 		if ($this->HasDirectImageField) {
@@ -112,6 +137,11 @@ class CobroPago extends CRMEntity {
 		$cypid = $this->id;
 		$data = $this->column_fields;
 		// Entity has been saved, take next action
+		if (empty($data['register']) and $this->mode=='') {
+			$refDateValue = new DateTimeField();  // right now
+			$this->column_fields['register'] = $refDateValue->getDisplayDate();
+			$adb->pquery('update vtiger_cobropago set register=? where cobropagoid=?',array($refDateValue->getDBInsertDateValue(),$cypid));
+		}
 		$currencyid=fetchCurrency($current_user->id);
 		$rate_symbol = getCurrencySymbolandCRate($currencyid);
 		$rate = $rate_symbol['rate'];
@@ -119,7 +149,7 @@ class CobroPago extends CRMEntity {
 		if(isset($data['amount']) and isset($data['cost'])) {
 			$value = CurrencyField::convertToDollar($data['amount']-$data['cost'],$rate);
 		}
-		$adb->query("update vtiger_cobropago set benefit='$value' where cobropagoid=".$cypid);
+		$adb->pquery('update vtiger_cobropago set benefit=? where cobropagoid=?',array($value,$cypid));
 
 		$relatedId = $this->column_fields['related_id'];
 		if (!empty($relatedId) and self::invoice_control_installed()) {

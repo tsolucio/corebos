@@ -194,6 +194,6 @@ if(isset($langid) && $langid !='' && $pmodule!='' ){
 		  }
 		}  // if no language prefix
 	}
-	header("Location:index.php?module=Settings&action=LanguageEdit&parenttab=Settings&pick_module=".$pmodule."&languageid=".$langid);
+	header('Location:index.php?module=Settings&action=LanguageEdit&parenttab=Settings&pick_module='.urlencode($pmodule).'&languageid='.urlencode($langid));
 }
 ?>

@@ -16,18 +16,18 @@ class crmtogo_WS_Utils {
 			$module = 'Calendar';
 		}
 	}
-	
+
 	static function getVtigerVersion() {
 		global $vtiger_current_version;
 		return $vtiger_current_version;
 	}
-	
+
 	static function getVersion() {
 		$db = PearDatabase::getInstance();
 		$versionResult = $db->pquery("SELECT version FROM vtiger_tab WHERE name='Mobile'", array());
 		return $db->query_result($versionResult, 0, 'version');
 	}
-	
+
 	static function array_replace($search, $replace, $array) {
 		$index = array_search($search, $array);
 		if($index !== false) {
@@ -35,16 +35,10 @@ class crmtogo_WS_Utils {
 		}
 		return $array;
 	}
-	
-	static function getModuleListQuery($moduleName, $where = '1=1') {
-		$module = CRMEntity::getInstance($moduleName);
-		return $module->create_list_query('', $where);
-	}
-	
+
 	static $moduleWSIdCache = array();
-	
+
 	static function getEntityModuleWSId($moduleName) {
-		
 		if (!isset(self::$moduleWSIdCache[$moduleName])) {
 			$db = PearDatabase::getInstance();
 			$result = $db->pquery("SELECT id FROM vtiger_ws_entity WHERE name=?", array($moduleName));
@@ -54,14 +48,14 @@ class crmtogo_WS_Utils {
 		}
 		return self::$moduleWSIdCache[$moduleName];
 	}
-	
+
 	static function getEntityModuleWSIds($ignoreNonModule = true) {
 		$db = PearDatabase::getInstance();
 		$modulewsids = array();
 		$result = false;
 		if($ignoreNonModule) {
 			$result = $db->pquery("SELECT id, name FROM vtiger_ws_entity WHERE ismodule=1", array());
-		} 
+		}
 		else {
 			$result = $db->pquery("SELECT id, name FROM vtiger_ws_entity", array());
 		}
@@ -70,7 +64,7 @@ class crmtogo_WS_Utils {
 		}
 		return $modulewsids;
 	}
-	
+
 	static function getEntityFieldnames($module) {
 		$db = PearDatabase::getInstance();
 		$result = $db->pquery("SELECT fieldname FROM vtiger_entityname WHERE modulename=?", array($module));
@@ -79,16 +73,16 @@ class crmtogo_WS_Utils {
 			$fieldnames = explode(',', $db->query_result($result, 0, 'fieldname'));
 		}
 		switch($module) {
-			case 'HelpDesk': 
-				$fieldnames = self::array_replace('title', 'ticket_title', $fieldnames); 
+			case 'HelpDesk':
+				$fieldnames = self::array_replace('title', 'ticket_title', $fieldnames);
 				break;
-			case 'Documents': 
-				$fieldnames = self::array_replace('title', 'notes_title', $fieldnames); 
+			case 'Documents':
+				$fieldnames = self::array_replace('title', 'notes_title', $fieldnames);
 				break;
 		}
 		return $fieldnames;
 	}
-	
+
 	static function getModuleColumnTableByFieldNames($module, $fieldnames) {
 		$db = PearDatabase::getInstance();
 		$result = $db->pquery("SELECT fieldname,columnname,tablename FROM vtiger_field WHERE tabid=? AND fieldname IN (".
@@ -102,7 +96,7 @@ class crmtogo_WS_Utils {
 		}
 		return $columnnames;
 	}
-	
+
 	static function detectModulenameFromRecordId($wsrecordid) {
 		$db = PearDatabase::getInstance();
 		$idComponents = vtws_getIdComponents($wsrecordid);
@@ -112,9 +106,9 @@ class crmtogo_WS_Utils {
 		}
 		return false;
 	}
-	
+
 	static $detectFieldnamesToResolveCache = array();
-	
+
 	static function detectFieldnamesToResolve($module) {
 		$db = PearDatabase::getInstance();
 		if(isset(self::$detectFieldnamesToResolveCache[$module])) {
@@ -122,15 +116,14 @@ class crmtogo_WS_Utils {
 		}
 		$resolveUITypes = array(10, 101, 116, 117, 26, 357, 50, 51, 52, 53, 57, 59, 66, 68, 73, 75, 76, 77, 78, 80, 81);
 		$result = $db->pquery(
-			"SELECT fieldname FROM vtiger_field WHERE uitype IN(". 
-			generateQuestionMarks($resolveUITypes) .") AND tabid=?", array($resolveUITypes, getTabid($module)) 
+			"SELECT fieldname FROM vtiger_field WHERE uitype IN(".generateQuestionMarks($resolveUITypes) .") AND tabid=?", array($resolveUITypes, getTabid($module))
 		);
 		$fieldnames = array();
 		while($resultrow = $db->fetch_array($result)) {
 			$fieldnames[] = $resultrow['fieldname'];
 		}
-		
-		// Cache information		
+
+		// Cache information
 		self::$detectFieldnamesToResolveCache[$module] = $fieldnames;
 		return $fieldnames;
 	}
@@ -148,14 +141,14 @@ class crmtogo_WS_Utils {
 		if ($module != 'Calendar') {
 			$result = $db->pquery(
 				"SELECT fieldname, fieldlabel, blocklabel, uitype, typeofdata, displaytype FROM vtiger_field INNER JOIN
-				vtiger_blocks ON vtiger_blocks.tabid=vtiger_field.tabid AND vtiger_blocks.blockid=vtiger_field.block 
+				vtiger_blocks ON vtiger_blocks.tabid=vtiger_field.tabid AND vtiger_blocks.blockid=vtiger_field.block
 				WHERE vtiger_field.tabid=? AND vtiger_field.presence != 1 AND vtiger_field.tablename !='vtiger_ticketcomments'  ORDER BY vtiger_blocks.sequence, vtiger_field.sequence", array(getTabid($module))
 			);
 		}
 		else {
 			$result = $db->pquery(
 				"SELECT fieldname, fieldlabel, blocklabel, uitype, typeofdata, displaytype FROM vtiger_field INNER JOIN
-				vtiger_blocks ON vtiger_blocks.tabid=vtiger_field.tabid AND vtiger_blocks.blockid=vtiger_field.block 
+				vtiger_blocks ON vtiger_blocks.tabid=vtiger_field.tabid AND vtiger_blocks.blockid=vtiger_field.block
 				WHERE vtiger_field.tabid=? AND vtiger_field.presence != 1 and fieldname != 'eventstatus' and fieldname !=  'activitytype' ORDER BY vtiger_blocks.sequence, vtiger_field.sequence", array(getTabid($module))
 			);
 		}
@@ -177,7 +170,7 @@ class crmtogo_WS_Utils {
 			if(!isset($fieldgroups[$blocklabel])) {
 				$fieldgroups[$blocklabel] = array();
 			}
-			$fieldgroups[$blocklabel][$resultrow['fieldname']] = 
+			$fieldgroups[$blocklabel][$resultrow['fieldname']] =
 				array(
 					'label' => $fieldlabel,
 					'uitype'=> self::fixUIType($module, $resultrow['fieldname'], $resultrow['uitype']),
@@ -186,12 +179,12 @@ class crmtogo_WS_Utils {
 					'mandatory'=>self::getMandatory ($resultrow['typeofdata'])
 				);
 		}
-		
+
 		// Cache information
 		self::$gatherModuleFieldGroupInfoCache[$module] = $fieldgroups;
 		return $fieldgroups;
 	}
-	
+
 	static function documentFoldersInfo() {
 		$db = PearDatabase::getInstance();
 		$folders = $db->pquery("SELECT folderid, foldername FROM vtiger_attachmentsfolder", array());
@@ -199,10 +192,10 @@ class crmtogo_WS_Utils {
 		while( $folderrow = $db->fetch_array($folders) ) {
 			$folderwsid = sprintf("%sx%s", self::getEntityModuleWSId('DocumentFolders'), $folderrow['folderid']);
 			$folderOptions[] = array( 'value' => $folderwsid, 'label' => $folderrow['foldername'] );
-		} 
+		}
 		return $folderOptions;
 	}
-	
+
 	static function salutationValues() {
 		$values = vtlib_getPicklistValues('salutationtype');
 		$options = array();
@@ -223,16 +216,16 @@ class crmtogo_WS_Utils {
 		else {
 			$assigned_user_id_ws = $assigned_user_id;
 		}
-	    if ($userObj->is_admin==false) {
+		if ($userObj->is_admin==false) {
 			$resultuser =get_user_array(FALSE, "Active", $assigned_user_id_ws,'private');
 		}
-		else { 
+		else {
 			$resultuser =get_user_array(FALSE, "Active", $assigned_user_id_ws);
 		}
 		//add prefix to key
 		$data = array_flip($resultuser);
-		foreach($data as $key => &$val) { 
-			$val = $recordprefix.'x'.$val; 
+		foreach($data as $key => &$val) {
+			$val = $recordprefix.'x'.$val;
 		}
 		$resultuser = array_flip($data);
 		foreach ($resultuser  as $userid=>$username) {
@@ -250,7 +243,7 @@ class crmtogo_WS_Utils {
 		$groups_combo = array();
 		if (count($resultgroups) > 0) {
 			$newgrouporder = array ();
-			foreach($resultgroups as $key => &$val) { 
+			foreach($resultgroups as $key => &$val) {
 				$newgrouporder[$val['id']] = $val['name'];
 			}
 			foreach ($newgrouporder  as $groupid=>$groupname) {
@@ -267,15 +260,15 @@ class crmtogo_WS_Utils {
 		$fieldvalue[] =$group_array;
 		return $fieldvalue;
 	}
-	
+
 	static function visibilityValues() {
 		$options = array();
 		// Avoid translation for these picklist values.
 		$options[] = array ('value' => 'Private', 'label' => 'Private');
-		$options[] = array ('value' => 'Public', 'label' => 'Public');		
+		$options[] = array ('value' => 'Public', 'label' => 'Public');
 		return $options;
 	}
-	
+
 	static function fixUIType($module, $fieldname, $uitype) {
 		if ($module == 'Contacts' || $module == 'Leads') {
 			if ($fieldname == 'salutationtype') {
@@ -290,7 +283,7 @@ class crmtogo_WS_Utils {
 		}
 		return $uitype;
 	}
-	
+
 	static function fixDescribeFieldInfo($module, &$describeInfo,$current_user) {
 		//assigned to field settings
 		foreach($describeInfo['fields'] as $index => $fieldInfo) {
@@ -312,7 +305,7 @@ class crmtogo_WS_Utils {
 					$describeInfo['fields'][$index] = $fieldInfo;
 				}
 			}
-		}		
+		}
 		else if ($module == 'Documents') {
 			foreach($describeInfo['fields'] as $index => $fieldInfo) {
 				if ($fieldInfo['name'] == 'folderid') {
@@ -321,21 +314,21 @@ class crmtogo_WS_Utils {
 					$describeInfo['fields'][$index] = $fieldInfo;
 				}
 			}
-		} 
+		}
 		else if($module == 'Calendar' || $module == 'Events') {
 			foreach($describeInfo['fields'] as $index => $fieldInfo) {
-				$fieldInfo['uitype'] = self::fixUIType($module, $fieldInfo['name'], $fieldInfo['uitype']); 				
+				$fieldInfo['uitype'] = self::fixUIType($module, $fieldInfo['name'], $fieldInfo['uitype']);
 				if ($fieldInfo['name'] == 'visibility') {
 					if (empty($fieldInfo['type']['picklistValues'])) {
 						$fieldInfo['type']['picklistValues'] = self::visibilityValues();
 						$fieldInfo['type']['defaultValue'] = $fieldInfo['type']['picklistValues'][0]['value'];
 					}
 				}
-				$describeInfo['fields'][$index] = $fieldInfo;				
+				$describeInfo['fields'][$index] = $fieldInfo;
 			}
 		}
 	}
-	
+
 	static function getRelatedFunctionHandler($sourceModule, $targetModule) {
 		$db = PearDatabase::getInstance();
 		$relationResult = $db->pquery("SELECT name FROM vtiger_relatedlists WHERE tabid=? and related_tabid=? and presence=0", array(getTabid($sourceModule), getTabid($targetModule)));
@@ -345,7 +338,7 @@ class crmtogo_WS_Utils {
 		}
 		return $functionName;
 	}
-	
+
 	/**
 	 * Security restriction (sharing privilege) query part
 	 */
@@ -357,28 +350,28 @@ class crmtogo_WS_Utils {
 		$tabid = getTabid($module);
 
 		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tabid] == 3) {
-			$querySuffix .= " AND (vtiger_crmentity.smownerid in($current_user->id) OR vtiger_crmentity.smownerid IN 
+			$querySuffix .= " AND (vtiger_crmentity.smownerid in($current_user->id) OR vtiger_crmentity.smownerid IN
 					(
-						SELECT vtiger_user2role.userid FROM vtiger_user2role 
-						INNER JOIN vtiger_users ON vtiger_users.id=vtiger_user2role.userid 
-						INNER JOIN vtiger_role ON vtiger_role.roleid=vtiger_user2role.roleid 
+						SELECT vtiger_user2role.userid FROM vtiger_user2role
+						INNER JOIN vtiger_users ON vtiger_users.id=vtiger_user2role.userid
+						INNER JOIN vtiger_role ON vtiger_role.roleid=vtiger_user2role.roleid
 						WHERE vtiger_role.parentrole LIKE '".$current_user_parent_role_seq."::%'
-					) 
-					OR vtiger_crmentity.smownerid IN 
+					)
+					OR vtiger_crmentity.smownerid IN
 					(
-						SELECT shareduserid FROM vtiger_tmp_read_user_sharing_per 
+						SELECT shareduserid FROM vtiger_tmp_read_user_sharing_per
 						WHERE userid=".$current_user->id." AND tabid=".$tabid."
-					) 
-					OR 
+					)
+					OR
 						(";
-		
+
 					// Build the query based on the group association of current user.
 			if(sizeof($current_user_groups) > 0) {
 				$querySuffix .= " vtiger_groups.groupid IN (". implode(",", $current_user_groups) .") OR ";
 			}
-			$querySuffix .= " vtiger_groups.groupid IN 
+			$querySuffix .= " vtiger_groups.groupid IN
 					(
-						SELECT vtiger_tmp_read_group_sharing_per.sharedgroupid 
+						SELECT vtiger_tmp_read_group_sharing_per.sharedgroupid
 						FROM vtiger_tmp_read_group_sharing_per
 						WHERE userid=".$current_user->id." and tabid=".$tabid."
 					)";
@@ -387,7 +380,7 @@ class crmtogo_WS_Utils {
 		}
 		return $querySuffix;
 	}
-	
+
 	static function getMandatory($typeofdata) {
 		$type_array = explode( '~', $typeofdata );
 		if ($type_array[1]=='M') {
@@ -397,28 +390,28 @@ class crmtogo_WS_Utils {
 			return '';
 		}
 	}
-	
+
 	/**     Function to get all the comments for a troubleticket
 	  *     @param int $ticketid -- troubleticket id
 	  *     return all the comments as a sequencial string which are related to this ticket
 	**/
 	static function getTicketComments($ticket) {
 		$db = PearDatabase::getInstance();
-        $commentlist = '';
-        $sql = "select * from vtiger_ticketcomments where ticketid=?";
+		$commentlist = '';
+		$sql = "select * from vtiger_ticketcomments where ticketid=?";
 		$recordid = vtws_getIdComponents($ticket['id']);
 		$recordid = $recordid[1];
-        $result = $db->pquery($sql, array($recordid));
+		$result = $db->pquery($sql, array($recordid));
 		$recordprefix= self::getEntityModuleWSId('Users') ;
-        for($i=0;$i<$db->num_rows($result);$i++) {
-                $comment = $db->query_result($result,$i,'comments');
-                if($comment != '') {
-                        $commentlist[$i]['commentcontent'] = $comment;
-                        $commentlist[$i]['assigned_user_id'] = $recordprefix.'x'.$db->query_result($result,$i,'ownerid');
-                        $commentlist[$i]['createdtime'] = $db->query_result($result,$i,'createdtime');
-                }
-        }
-        return $commentlist;
+		for($i=0;$i<$db->num_rows($result);$i++) {
+			$comment = $db->query_result($result,$i,'comments');
+			if($comment != '') {
+				$commentlist[$i]['commentcontent'] = $comment;
+				$commentlist[$i]['assigned_user_id'] = $recordprefix.'x'.$db->query_result($result,$i,'ownerid');
+				$commentlist[$i]['createdtime'] = $db->query_result($result,$i,'createdtime');
+			}
+		}
+		return $commentlist;
 	}
 	/**     Function to create a comment for a troubleticket
 	  *     @param int $ticketid -- troubleticket id, comments array
@@ -439,7 +432,7 @@ class crmtogo_WS_Utils {
 
 		return true;
 	}
-	
+
 	//     Function to find the related modulename by given fieldname
 
 	static function getEntityName($fieldname, $module='') {
@@ -501,24 +494,9 @@ class crmtogo_WS_Utils {
 		}
 		return $where;
 	}
-	
+
 	static function fixReferenceIdByModule($module, $fieldid) {
-		if ($module =='Tickets') {
-			if ($fieldid=='parent_id') {
-				$fieldid='account_id';
-			}
-		}
-		elseif ($module =='HelpDesk') {
-			if ($fieldid=='parent_id') {
-				$fieldid='account_id';
-			}
-		}
-		elseif ($module =='Potentials') {
-			if ($fieldid=='related_to') {
-				$fieldid='account_id';
-			}
-		}
-		elseif ($module =='Assets') {
+		if ($module =='Assets') {
 			if ($fieldid=='account') {
 				$fieldid='account_id';
 			}
@@ -531,7 +509,7 @@ class crmtogo_WS_Utils {
 		}
 		return $fieldid;
 	}
-	
+
 	static function getContactBase64Image($contactid) {
 		$contactid = explode ('x',$contactid);
 		$db = PearDatabase::getInstance();
@@ -550,7 +528,6 @@ class crmtogo_WS_Utils {
 			$data = file_get_contents($imgpath);
 			$str = "data:image/".$type.";base64,".base64_encode($data);
 			return $str ;
-			
 		}
 		else {
 			return '';
@@ -574,7 +551,6 @@ class crmtogo_WS_Utils {
 			$data = file_get_contents($imgpath);
 			$str = "data:image/".$type.";base64,".base64_encode($data);
 			return $str ;
-			
 		}
 		else {
 			return '';
@@ -590,7 +566,6 @@ class crmtogo_WS_Utils {
 		if ($noofrows >0) {
 			$taxpercentage = $db->query_result($result, 0, 'taxpercentage');
 			return $taxpercentage ;
-			
 		}
 		else {
 			return '';
@@ -602,7 +577,7 @@ class crmtogo_WS_Utils {
 		$sql = "SELECT filename,filetype,fileversion, filedownloadcount,notecontent,filesize, path, vtiger_attachments.attachmentsid FROM vtiger_notes
 					INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_notes.notesid
 					INNER JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.crmid = vtiger_notes.notesid
-					INNER JOIN vtiger_attachments ON vtiger_attachments.attachmentsid = vtiger_seattachmentsrel.attachmentsid 
+					INNER JOIN vtiger_attachments ON vtiger_attachments.attachmentsid = vtiger_seattachmentsrel.attachmentsid
 					WHERE vtiger_notes.notesid = ? and vtiger_crmentity.deleted = 0";
 		$result = $db->pquery($sql, array($documentid[1]));
 		$noofrows = $db->num_rows($result);
@@ -619,7 +594,7 @@ class crmtogo_WS_Utils {
 		}
 		return $documentrecord;
 	}
-	
+
 	static function getConfigDefaults() {
 		$db = PearDatabase::getInstance();
 		$sql = "SELECT * FROM berli_crmtogo_defaults";
@@ -638,7 +613,7 @@ class crmtogo_WS_Utils {
 		$config['company_logo'] = decode_html($db->query_result($res_orgdt,0,'logoname'));
 		return $config;
 	}
-	
+
 	static function getUserConfigSettings($userid) {
 		$db = PearDatabase::getInstance();
 		$sql = "SELECT * FROM berli_crmtogo_config  where crmtogouser = ? ";
@@ -669,7 +644,7 @@ class crmtogo_WS_Utils {
 		}
 		return $config;
 	}
-	
+
 	static function getUserConfigModuleSettings($userid) {
 		$config_module = array ();
 		$db = PearDatabase::getInstance();
@@ -705,7 +680,7 @@ class crmtogo_WS_Utils {
 		}
 		return $config_module;
 	}
-	
+
 	static function getConfigComments() {
 		//todo: find better way to identify modules with comments
 		$comments_module = array ();
@@ -722,7 +697,7 @@ class crmtogo_WS_Utils {
 		array_push($comments_module,'HelpDesk');
 		return $comments_module;
 	}
-	
+
 	static function getUsersLanguage($lang) {
 		$user_lang = return_module_language($lang, 'Mobile');
 		return $user_lang;

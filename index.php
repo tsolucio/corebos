@@ -205,7 +205,6 @@ if(isset($action) && isset($module))
 	$log->info("About to take action ".$action);
 	if(preg_match("/^Save/", $action) ||
 		preg_match("/^Delete/", $action) ||
-		preg_match("/^Choose/", $action) ||
 		preg_match("/^Popup/", $action) ||
 		preg_match("/^ChangePassword/", $action) ||
 		preg_match("/^Authenticate/", $action) ||

@@ -1014,16 +1014,16 @@ function getActionid($action) {
 	global $log, $adb;
 	$log->debug("Entering getActionid(".$action.") method ...");
 	$actionid = '';
-	if(file_exists('tabdata.php') && (filesize('tabdata.php') != 0)) {
+	if (file_exists('tabdata.php') && (filesize('tabdata.php') != 0)) {
 		include('tabdata.php');
-		$actionid= $action_id_array[$action];
-	} else {
+		$actionid = (isset($action_id_array[$action]) ? $action_id_array[$action] : '');
+	}
+	if ($actionid == '') {
 		$query="select * from vtiger_actionmapping where actionname=?";
 		$result =$adb->pquery($query, array($action));
 		$actionid=$adb->query_result($result,0,'actionid');
 	}
-	$log->info("action id selected is ".$actionid );
-	$log->debug("Exiting getActionid method ...");
+	$log->debug('Exiting getActionid method: id selected is '.$actionid);
 	return $actionid;
 }
 
@@ -1034,16 +1034,12 @@ function getActionid($action) {
 function getActionname($actionid) {
 	global $log, $adb;
 	$log->debug("Entering getActionname(".$actionid.") method ...");
-
 	$actionname='';
-
-	if (file_exists('tabdata.php') && (filesize('tabdata.php') != 0))
-	{
+	if (file_exists('tabdata.php') && (filesize('tabdata.php') != 0)) {
 		include('tabdata.php');
-		$actionname= $action_name_array[$actionid];
+		$actionname = (isset($action_name_array[$actionid]) ? $action_name_array[$actionid] : '');
 	}
-	else
-	{
+	if ($actionname == '') {
 		$query="select * from vtiger_actionmapping where actionid=? and securitycheck=0";
 		$result =$adb->pquery($query, array($actionid));
 		$actionname=$adb->query_result($result,0,"actionname");

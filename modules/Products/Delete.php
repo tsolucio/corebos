@@ -11,11 +11,10 @@ global $currentModule;
 $focus = CRMEntity::getInstance($currentModule);
 
 $record = vtlib_purify($_REQUEST['record']);
-$module = vtlib_purify($_REQUEST['module']);
+$module = urlencode(vtlib_purify($_REQUEST['module']));
 $return_module = vtlib_purify($_REQUEST['return_module']);
-$return_action = vtlib_purify($_REQUEST['return_action']);
-$return_id = vtlib_purify($_REQUEST['return_id']);
-$parenttab = getParentTab();
+$return_action = urlencode(vtlib_purify($_REQUEST['return_action']));
+$return_id = isset($_REQUEST['return_id']) ? vtlib_purify($_REQUEST['return_id']) : '';
 $url = getBasic_Advance_SearchURL();
 if (!empty($_REQUEST['start']) and !empty($_REQUEST['return_viewname'])) {
 	$start = vtlib_purify($_REQUEST['start']);
@@ -28,10 +27,10 @@ if($return_module!='Products' || ($return_module=='Products' && empty($return_id
 else
 	$focus->deleteProduct2ProductRelation($record, $return_id, $_REQUEST['is_parent']);
 if(isset($_REQUEST['activity_mode']))
-	$url .= '&activity_mode='.vtlib_purify($_REQUEST['activity_mode']);
+	$url .= '&activity_mode='.urlencode(vtlib_purify($_REQUEST['activity_mode']));
 if ($delerror) {
-	header("Location: index.php?module=$module&action=DetailView&record=$record&parenttab=$parenttab&error_msg=".urlencode($errormessage).$url);
+	header("Location: index.php?module=$module&action=DetailView&record=" . urlencode($record) . '&error_msg=' . urlencode($errormessage) . $url);
 } else {
-	header("Location: index.php?module=$return_module&action=$return_action&record=$return_id&parenttab=$parenttab&relmodule=$module".$url);
+	header('Location: index.php?module=' . urlencode($return_module) . "&action=$return_action&record=" . urlencode($return_id) . "&relmodule=$module" . $url);
 }
 ?>

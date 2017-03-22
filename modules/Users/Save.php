@@ -183,11 +183,11 @@ if(isset($_REQUEST['mode']) and $_REQUEST['mode'] == 'create') {
 		$error_str = getMailErrorString($mail_status_str);
 	}
 }
-$location = "Location: index.php?action=".vtlib_purify($return_action)."&module=".vtlib_purify($return_module)."&record=".vtlib_purify($return_id);
+$location = 'Location: index.php?action='.urlencode(vtlib_purify($return_action)).'&module='.urlencode(vtlib_purify($return_module)).'&record='.urlencode(vtlib_purify($return_id));
 
 if ($error_str != '') {
 	$user = $focus->column_fields['user_name'];
-	$location .= "&user=$user&$error_str";
+	$location .= '&user=' . urlencode($user) . '&' . $error_str;
 }
 
 header($location);

@@ -26,7 +26,7 @@ $db_update = true;
 $error_str = '';
 if($server_type == 'ftp_backup')
 {
-	$action = 'BackupServerConfig&bkp_server_mode=edit&server='.$server.'&server_user='.$server_username.'&password='.$server_password;
+	$action = 'BackupServerConfig&bkp_server_mode=edit&server='.urlencode($server).'&server_user='.urlencode($server_username).'&password='.urlencode($server_password);
 	if(!function_exists('ftp_connect')){
 		$error_str = '&error='.urlencode(getTranslatedString('FTP support is not enabled','VtigerBackup').'.');
 		$db_update = false;
@@ -57,7 +57,7 @@ if($server_type == 'ftp_backup')
 }
 if($server_type == 'local_backup')
 {
-	$action = 'BackupServerConfig&local_server_mode=edit&server_path="'.$server_path.'"';
+	$action = 'BackupServerConfig&local_server_mode=edit&server_path="'.urlencode($server_path).'"';
 	if(!is_dir($server_path)){
 		$error_str = '&error1='.urlencode(getTranslatedString('Incorrect Folder','VtigerBackup'));
 		$db_update = false;

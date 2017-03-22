@@ -18,6 +18,7 @@
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor(s): Ranieri/Translate terms | 21/03/2017 |Sao Paulo/SP/Brasil.|www.ecrmweb.com.br
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -223,8 +224,8 @@ $mod_strings = Array(
 'LBL_FLDR_NOT_EMPTY'=>'A Pasta que você está tentanto apagar não está vazia, Mova ou Apague os Relatórios existentes.',
 'NO_REL_MODULES'=>'Nenhum Módulo Relacionado para o Módulo Selecionado',
 'LBL_REPORT_GENERATION_FAILED'=>'Falha ao Gerar Relatório!',
-'ERR_TOO_MANY_ROWS' => 'This report has too many rows. Please add some filters and divide it into various smaller reports.',
-'ERR_INCORRECT_REPORTID' => 'Report cannot be found',
+'ERR_TOO_MANY_ROWS' => 'Esse relatório tem muitas linhas. Adicione alguns filtros e divida-os em vários relatórios menores.',
+'ERR_INCORRECT_REPORTID' => 'Não foi possível encontrar o relatório',
 'LBL_OR'=>'ou',
 'LBL_NEW_GROUP'=>'Novo Grupo',
 'LBL_DELETE_GROUP'=>'Apagar Grupo',
@@ -288,24 +289,27 @@ $mod_strings = Array(
 'LBL_GROUPING_TIME' => 'Grupo por Data',
 'LBL_WIDGET_ADDED' => 'Widget Adicionado com Sucesso.',
 'LBL_UNDEFINED' => 'Indefinido',
-'Add ReportCharts' => 'Add Report Charts',
-'Choose Report Type' => 'Choose Report Type',
-'Application Report' => 'Application Report',
-'External Application' => 'External Application',
-'Direct SQL Statement' => 'Direct SQL Statement',
-'Cross Tab' => 'Cross Tab',
-'Pivot Table' => 'Pivot Table',
-'External Report URL' => 'External Report URL',
-'Add User Information' => 'Add User Information',
-'Select One Field of each' => 'You can only select one field from each module for this type of report',
-'Select Only One Module' => 'You can only select one module for this type of report',
-'LBL_AGG_FIELD' => 'Aggregation Field',
-'LBL_AGG_FUNCTION_CHOOSE' => 'Select Aggregation Column and Function',
-'LBL_AGG_COLUMN' => 'Aggregation Column',
-'LBL_AGG_FUNCTION' => 'Aggregation Function',
-'LBL_COLUMNS_COUNT'=>'Count',
+'Add ReportCharts' => 'Adicionar Relatórios com Gráficos ',
+'Choose Report Type' => 'Selecionar tipo de relatório',
+'Application Report' => 'Relatório de Aplicação',
+'External Application' => 'Aplicação Externa',
+'Direct SQL Statement' => 'Através de Comando SQL',
+'Cross Tab' => 'Tabelas Cruzadas',
+'Pivot Table' => 'Pivot Tabela',
+'External Report URL' => 'URL do relatório externo',
+'Add User Information' => 'Adicionar Informações do Usuário',
+'Select One Field of each' => 'Só é possível selecionar um campo de cada módulo para este tipo de relatório',
+'Select Only One Module' => 'Você só pode selecionar um módulo para este tipo de relatório',
+'LBL_AGG_FIELD' => 'Campo de Agrupamento',
+'LBL_AGG_FUNCTION_CHOOSE' => 'Selecionar coluna e função de agrupamento',
+'LBL_AGG_COLUMN' => 'Coluna de agrupamento',
+'LBL_AGG_FUNCTION' => 'Função de Agrupamento',
+'LBL_COLUMNS_COUNT'=>'Contagem',
 'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Erro enquanto a Pasta era apagada.',
-'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Error while deleting the reports of the folder',
+'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Erro ao excluir os relatórios da pasta',
+'LBL_AUTO_GENERATED_REPORT_EMAIL' => 'Este é um E-mail gerado automaticamente, enviado por um agendamento de relatório.',
+'LBL_REPORT_NAME' => 'Nome do Relatório',
+'LBL_DESCRIPTION'=>'Descrição',
 )
 
 ?>

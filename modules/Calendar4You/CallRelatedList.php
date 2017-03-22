@@ -18,7 +18,7 @@ $action = vtlib_purify($_REQUEST['action']);
 $RECORD = vtlib_purify($_REQUEST['record']);
 $category = getParentTab();
 if($singlepane_view == 'true' && $action == 'CallRelatedList') {
-	echo "<script>document.location='index.php?action=EventDetailView&module=$currentmodule&record=$RECORD&parenttab=$category';</script>";
+	echo "<script>document.location='index.php?action=EventDetailView&module=".urlencode($currentModule).'&record='.urlencode($RECORD)."';</script>";
 	die();
 } else {
 	

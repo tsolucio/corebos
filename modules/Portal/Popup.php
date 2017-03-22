@@ -13,13 +13,17 @@ $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 if(isset($_REQUEST['record']) && $_REQUEST['record'] !='')
 {
-	$portalid = $_REQUEST['record'];
-	$query="select * from vtiger_portal where portalid =?";
+	$portalid = vtlib_purify($_REQUEST['record']);
+	$query = 'select * from vtiger_portal where portalid =?';
 	$result=$adb->pquery($query, array($portalid));
-	$portalname = $adb->query_result($result,0,'portalname');
-	$portalurl = $adb->query_result($result,0,'portalurl');
-	/* to remove http:// from portal url*/
-	$portalurl = preg_replace("/http:\/\//i","",$portalurl);
+	if ($result and $adb->num_rows($result)==1) {
+		$portalname = $adb->query_result($result,0,'portalname');
+		$portalurl = $adb->query_result($result,0,'portalurl');
+		/* to remove http:// from portal url*/
+		$portalurl = preg_replace("/http:\/\//i","",$portalurl);
+	} else {
+		$portalid = $portalname = $portalurl = '';
+	}
 } else {
 	$portalid = $portalname = $portalurl = '';
 }

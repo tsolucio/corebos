@@ -27,7 +27,7 @@ if($record) {
 	} else {
 		$rdo = $adb->pquery("update vtiger_cbupdater set blocked='0' where cbupdaterid=?",array($record));
 	}
-	header("Location: index.php?action=DetailView&module=cbupdater&record=$record");
+	header('Location: index.php?action=DetailView&module=cbupdater&record='.urlencode($record));
 } else {
 	header("Location: index.php?action=ListView&module=cbupdater");
 }

@@ -621,8 +621,7 @@ function _vtisPermitted($module,$actionname,$record_id='') {
 		}
 	}
 	//Checking for vtiger_tab permission
-	if($profileTabsPermission[$tabid] !=0)
-	{
+	if (!is_null($tabid) and $profileTabsPermission[$tabid] != 0) {
 		$permission = "no";
 		$log->debug("Exiting isPermitted method ...");
 		return $permission;
@@ -631,8 +630,7 @@ function _vtisPermitted($module,$actionname,$record_id='') {
 		return "no";
 	}
 	//Checking for Action Permission
-	if(strlen($profileActionPermission[$tabid][$actionid]) <  1 && $profileActionPermission[$tabid][$actionid] == '')
-	{
+	if (!isset($profileActionPermission[$tabid][$actionid]) || (strlen($profileActionPermission[$tabid][$actionid]) <  1 && $profileActionPermission[$tabid][$actionid] == '')) {
 		$permission = "yes";
 		$log->debug("Exiting isPermitted method ...");
 		return $permission;

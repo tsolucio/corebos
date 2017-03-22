@@ -649,7 +649,7 @@ function get_to_emailids($module) {
 	return $return_data;
 }
 
-//added for attach the generated pdf with email
+// attach the generated pdf with the email
 function pdfAttach($obj, $module, $file_name, $id) {
 	global $log, $adb, $current_user, $upload_badext;
 	$log->debug("Entering into pdfAttach() method.");

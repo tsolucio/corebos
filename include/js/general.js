@@ -1670,7 +1670,7 @@ function fnDown(obj){
 
 /*
 * javascript function to add field rows
-* @param option_values :: List of Field names
+* @deprecated: not used anymore
 */
 var count = 0;
 var rowCnt = 1;

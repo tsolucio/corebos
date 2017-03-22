@@ -353,5 +353,5 @@ if($cvmodule != "") {
 	}
 }
 
-header("Location: index.php?action=$return_action&parenttab=$parenttab&module=$cvmodule&viewname=$cvid");
+header('Location: index.php?action='.urlencode($return_action).'&module='.urlencode($cvmodule).'&viewname='.urlencode($cvid));
 ?>

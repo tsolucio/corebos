@@ -18,6 +18,7 @@ include/Zend
 Image
 install
 install.php
+modules/Users/authTypes/adldap_test.php
 modules/Migration"
 for f in $FILES
 do
