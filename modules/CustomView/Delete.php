@@ -13,14 +13,12 @@ global $adb;
 
 $cvid = vtlib_purify($_REQUEST["record"]);
 $module = vtlib_purify($_REQUEST["dmodule"]);
-$parenttab = getParentTab();
 
-if(isset($cvid) && $cvid != '')
-{
+if (isset($cvid) && $cvid != '') {
 	$deletesql = "delete from vtiger_customview where cvid =?";
 	$deleteresult = $adb->pquery($deletesql, array($cvid));
 	coreBOS_Session::set('lvs^'.$module.'^viewname', '');
 }
 
-header("Location: index.php?action=ListView&parenttab=$parenttab&module=$module");
+header('Location: index.php?action=ListView&module=' . urlencode($module));
 ?>
