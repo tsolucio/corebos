@@ -10,8 +10,6 @@
 require_once('include/logging.php');
 
 global $app_strings, $mod_strings, $currentModule, $theme;
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
 
 require 'modules/Dashboard/graphdefinitions.php';
 
@@ -37,8 +35,8 @@ if(isset($_REQUEST['type']) && $_REQUEST['type'] != '')
 			<td class=small>
 				<table border=0 cellspacing=0 cellpadding=5>
 				<tr>
-					<td style="padding-right:0px;padding-left:10px;"><img src="<?php echo vtiger_imageurl('btnL3Add-Faded.gif', $theme) ?>" border=0></td>
-					 <td style="padding-right:10px"><img src="<?php echo vtiger_imageurl('btnL3Search-Faded.gif', $theme) ?>" border=0></td>
+					<td style="padding-right:0px;padding-left:10px;"><img src="<?php echo vtiger_imageurl('btnL3Add-Faded.gif', $theme); ?>" border=0></td>
+					 <td style="padding-right:10px"><img src="<?php echo vtiger_imageurl('btnL3Search-Faded.gif', $theme); ?>" border=0></td>
 				</tr>
 				</table>
 	</td>
@@ -52,22 +50,22 @@ if(isset($_REQUEST['type']) && $_REQUEST['type'] != '')
 <?php
 if(GlobalVariable::getVariable('Application_Display_Mini_Calendar',1,$currentModule)) {
 ?>
-	<td style="padding-right:0px;padding-left:10px;"><a href="javascript:;" onClick='fnvshobj(this,"miniCal");getMiniCal("parenttab=My Home Page");'><img src="<?php echo $image_path;?>btnL3Calendar.gif" alt="<?php echo $app_strings['LBL_CALENDAR_ALT']; ?>" title="<?php echo $app_strings['LBL_CALENDAR_TITLE']; ?>" border=0></a></a></td>
+	<td style="padding-right:0px;padding-left:10px;"><a href="javascript:;" onClick='fnvshobj(this,"miniCal");getMiniCal("parenttab=My Home Page");'><img src="<?php echo vtiger_imageurl('btnL3Calendar.gif', $theme); ?>" alt="<?php echo $app_strings['LBL_CALENDAR_ALT']; ?>" title="<?php echo $app_strings['LBL_CALENDAR_TITLE']; ?>" border=0></a></a></td>
 <?php
 }
 if(GlobalVariable::getVariable('Application_Display_World_Clock',1,$currentModule)) {
 ?>
-	<td style="padding-right:0px"><a href="javascript:;"><img src="<?php echo $image_path;?>btnL3Clock.gif" alt="<?php echo $app_strings['LBL_CLOCK_ALT']; ?>" title="<?php echo $app_strings['LBL_CLOCK_TITLE']; ?>" border=0 onClick="fnvshobj(this,'wclock');"></a></a></td>
+	<td style="padding-right:0px"><a href="javascript:;"><img src="<?php echo vtiger_imageurl('btnL3Clock.gif', $theme); ?>" alt="<?php echo $app_strings['LBL_CLOCK_ALT']; ?>" title="<?php echo $app_strings['LBL_CLOCK_TITLE']; ?>" border=0 onClick="fnvshobj(this,'wclock');"></a></a></td>
 <?php
 }
 if(GlobalVariable::getVariable('Application_Display_Calculator',1,$currentModule)) {
 ?>
-	<td style="padding-right:0px"><a href="#"><img src="<?php echo $image_path;?>btnL3Calc.gif" alt="<?php echo $app_strings['LBL_CALCULATOR_ALT']; ?>" title="<?php echo $app_strings['LBL_CALCULATOR_TITLE']; ?>" border=0 onClick="fnvshobj(this,'calculator_cont');fetch_calc();"></a></td>
+	<td style="padding-right:0px"><a href="#"><img src="<?php echo vtiger_imageurl('btnL3Calc.gif', $theme); ?>" alt="<?php echo $app_strings['LBL_CALCULATOR_ALT']; ?>" title="<?php echo $app_strings['LBL_CALCULATOR_TITLE']; ?>" border=0 onClick="fnvshobj(this,'calculator_cont');fetch_calc();"></a></td>
 <?php
 }
 ?>
 </td>
-				<td style="padding-right: 10px;"><img src="<?php echo $image_path;?>btnL3Tracker.gif" alt="<?php echo $app_strings['LBL_LAST_VIEWED']; ?>" title="<?php echo $app_strings['LBL_LAST_VIEWED']; ?>" onclick="fnvshobj(this,'tracker');" style="cursor:pointer;" border="0"></td>
+				<td style="padding-right: 10px;"><img src="<?php echo vtiger_imageurl('btnL3Tracker.gif', $theme); ?>" alt="<?php echo $app_strings['LBL_LAST_VIEWED']; ?>" title="<?php echo $app_strings['LBL_LAST_VIEWED']; ?>" onclick="fnvshobj(this,'tracker');" style="cursor:pointer;" border="0"></td>
 			</tr>
 		</table>
 	</td>
@@ -156,7 +154,7 @@ if(GlobalVariable::getVariable('Application_Display_Calculator',1,$currentModule
 							<td width="90%" nowrap>
 							<?php echo $app_strings['Dashboard']; ?> &gt; <?php echo $app_strings['Home'];?> &gt; <span id="dashTitle_div"><?php echo $dash_board_title; ?></span>
 							</td>
-							<td align="right" width="10%"><img alt="<?php echo $mod_strings['NORMALVIEW'];?>" title="<?php echo $mod_strings['NORMALVIEW'];?>" style="cursor:pointer;" onClick="changeView('NORMAL');" src="<?php echo $image_path;?>dboardNormalView.gif" align="absmiddle" border="0">&nbsp;|&nbsp;<img alt="<?php echo $mod_strings['GRIDVIEW'];?>" title="<?php echo $mod_strings['GRIDVIEW'];?>" style="cursor:pointer;" onClick="changeView('MATRIX');" src="<?php echo $image_path;?>dboardMatrixView.gif" align="absmiddle" border="0"></td>
+							<td align="right" width="10%"><img alt="<?php echo $mod_strings['NORMALVIEW'];?>" title="<?php echo $mod_strings['NORMALVIEW'];?>" style="cursor:pointer;" onClick="changeView('NORMAL');" src="<?php echo vtiger_imageurl('dboardNormalView.gif', $theme); ?>" align="absmiddle" border="0">&nbsp;|&nbsp;<img alt="<?php echo $mod_strings['GRIDVIEW'];?>" title="<?php echo $mod_strings['GRIDVIEW'];?>" style="cursor:pointer;" onClick="changeView('MATRIX');" src="<?php echo vtiger_imageurl('dboardMatrixView.gif', $theme); ?>" align="absmiddle" border="0"></td>
 						</tr>
 						</table>
 						</td>

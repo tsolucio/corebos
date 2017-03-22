@@ -126,7 +126,7 @@ if(!empty($_REQUEST['primecvid'])){
 }
 
 if(!empty($_REQUEST['showmaxval']) && !empty($_REQUEST['sid'])){
-	$sid=$_REQUEST['sid'];
+	$sid = vtlib_purify($_REQUEST['sid']);
 	$maxval=$_REQUEST['showmaxval'];
 	global $adb;
 	$query="select stufftype from vtiger_homestuff where stuffid=?";
@@ -146,7 +146,7 @@ if(!empty($_REQUEST['showmaxval']) && !empty($_REQUEST['sid'])){
 }
 
 if(!empty($_REQUEST['dashVal'])){
-	$did=$_REQUEST['did'];
+	$did = vtlib_purify($_REQUEST['did']);
 	global $adb;
 	$qry='update vtiger_homedashbd set dashbdtype=? where stuffid=?';
 	$res=$adb->pquery($qry, array($_REQUEST['dashVal'], $did));
@@ -154,7 +154,7 @@ if(!empty($_REQUEST['dashVal'])){
 }
 
 if(!empty($_REQUEST['reportVal'])){
-	$stuffid=$_REQUEST['stuffid'];
+	$stuffid = vtlib_purify($_REQUEST['stuffid']);
 	global $adb;
 	$qry="update vtiger_homereportchart set reportcharttype=? where stuffid=?";
 	$res=$adb->pquery($qry, array($_REQUEST['reportVal'], $stuffid));
