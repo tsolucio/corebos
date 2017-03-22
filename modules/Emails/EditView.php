@@ -369,6 +369,7 @@ if(isset($ret_error) and $ret_error == 1) {
 }
 $check_button = Button_Check($module);
 $smarty->assign("CHECK", $check_button);
+$smarty->assign('LISTID',vtlib_purify($_REQUEST['idlist']));
 
 $smarty->display("ComposeEmail.tpl");
 ?>
