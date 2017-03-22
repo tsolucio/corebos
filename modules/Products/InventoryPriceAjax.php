@@ -6,15 +6,13 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
-
 global $theme, $log;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 
-$currencyid = $_REQUEST['currencyid'];
-$products_list = $_REQUEST['productsList'];
+$currencyid = vtlib_purify($_REQUEST['currencyid']);
+$products_list = vtlib_purify($_REQUEST['productsList']);
 
 $product_ids = explode("::", $products_list);
 
@@ -34,5 +32,4 @@ for ($i=0;$i<count($product_ids);++$i) {
 
 $price_values = implode("::", $price_list);
 echo "SUCCESS$".$price_values;
-
 ?>
