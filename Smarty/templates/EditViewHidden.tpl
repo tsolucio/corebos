@@ -28,11 +28,11 @@
 	<input type="hidden" name="filename" value="{$FILENAME}">
 
 {elseif $MODULE eq 'Contacts'}
-	<input type="hidden" name="activity_mode" value="{$ACTIVITY_MODE}">
-	<input type="hidden" name="opportunity_id" value="{$OPPORTUNITY_ID}">
+	<input type="hidden" name="activity_mode" value="{if isset($ACTIVITY_MODE)}{$ACTIVITY_MODE}{/if}">
+	<input type="hidden" name="opportunity_id" value="{if isset($OPPORTUNITY_ID)}{$OPPORTUNITY_ID}{/if}">
 	<input type="hidden" name="contact_role">
-	<input type="hidden" name="case_id" value="{$CASE_ID}">
-	<input type="hidden" name="campaignid" value="{$campaignid}">
+	<input type="hidden" name="case_id" value="{if isset($CASE_ID)}{$CASE_ID}{/if}">
+	<input type="hidden" name="campaignid" value="{if isset($campaignid)}{$campaignid}{/if}">
 
 {elseif $MODULE eq 'Potentials'}
 	<input type="hidden" name="contact_id" value="{$CONTACT_ID}">

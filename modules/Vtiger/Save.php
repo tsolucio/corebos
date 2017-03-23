@@ -56,7 +56,7 @@ if ($saveerror) { // there is an error so we go back to EditView.
 	if (isset($_REQUEST['return_id']) and $_REQUEST['return_id'] != '') {
 		$req->set('RETURN_ID',$_REQUEST['return_id']);
 	}
-	$field_values_passed.="";
+	$field_values_passed = '';
 	foreach($focus->column_fields as $fieldname => $val) {
 		if(isset($_REQUEST[$fieldname])) {
 			$field_values_passed.="&";
