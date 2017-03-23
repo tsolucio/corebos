@@ -37,6 +37,15 @@ $req->set('return_start',$_REQUEST['pagenumber']);
 $focus = new $currentModule();
 setObjectValuesFromRequest($focus);
 
+$mode = vtlib_purify($_REQUEST['mode']);
+$record=vtlib_purify($_REQUEST['record']);
+if($mode) $focus->mode = $mode;
+if($record)$focus->id  = $record;
+if (isset($_REQUEST['inventory_currency'])) {
+$focus->column_fields['currency_id'] = vtlib_purify($_REQUEST['inventory_currency']);
+$cur_sym_rate = getCurrencySymbolandCRate(vtlib_purify($_REQUEST['inventory_currency']));
+$focus->column_fields['conversion_rate'] = $cur_sym_rate['rate'];
+}
 if (!isset($_REQUEST['salutation']) or $_REQUEST['salutation'] == '--None--') $_REQUEST['salutation'] = '';
 if (!isset($_REQUEST['email_opt_out'])) $focus->email_opt_out = 'off';
 if (!isset($_REQUEST['do_not_call'])) $focus->do_not_call = 'off';

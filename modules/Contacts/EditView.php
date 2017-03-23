@@ -9,7 +9,7 @@
  ************************************************************************************/
 global $app_strings, $mod_strings, $current_language, $currentModule, $theme, $adb;
 require_once('Smarty_setup.php');
-global $log, $current_user;
+global $current_user;
 
 $focus = CRMEntity::getInstance($currentModule);
 $smarty = new vtigerCRM_Smarty();
@@ -33,22 +33,7 @@ if($record) {
 	$focus->lastname = $focus->column_fields['lastname'];
 }
 //added for contact image
-$encode_val = (isset($_REQUEST['encode_val']) ? vtlib_purify($_REQUEST['encode_val']) : '');
-$decode_val = base64_decode($encode_val);
-$saveimage = isset($_REQUEST['saveimage']) ? vtlib_purify($_REQUEST['saveimage']) : "false";
-$errormessage = isset($_REQUEST['error_msg']) ? vtlib_purify($_REQUEST['error_msg']) : "false";
-$image_error = isset($_REQUEST['image_error']) ? vtlib_purify($_REQUEST['image_error']) : "false";
-if ($image_error == "true") {
-	$explode_decode_val = explode("&", $decode_val);
-	for ($i = 1; $i < count($explode_decode_val); $i++) {
-		$test = $explode_decode_val[$i];
-		$values = explode("=", $test);
-		$field_name_val = $values[0];
-		$field_value = $values[1];
-		$focus->column_fields[$field_name_val] = $field_value;
-	}
-}
-
+$errormessage = isset($_REQUEST['error_msg']) ? vtlib_purify($_REQUEST['error_msg']) : '';
 if ($errormessage == 2) {
 	$errormessage = $mod_strings['LBL_MAXIMUM_LIMIT_ERROR'];
 } else if ($errormessage == 3) {
@@ -57,8 +42,6 @@ if ($errormessage == 2) {
 	$errormessage = $mod_strings['LBL_IMAGE_ERROR'];
 } else if ($errormessage == "invalid") {
 	$errormessage = $mod_strings['LBL_INVALID_IMAGE'];
-} else {
-	$errormessage = '';
 }
 if ($errormessage != '') {
 	$smarty->assign("ERROR_MESSAGE", $errormessage);
@@ -83,7 +66,6 @@ if (isset($_REQUEST['account_id']) && $_REQUEST['account_id'] != '' && $_REQUEST
 	$focus->column_fields['othercountry'] = $acct_focus->column_fields['ship_country'];
 	$focus->column_fields['mailingpobox'] = $acct_focus->column_fields['bill_pobox'];
 	$focus->column_fields['otherpobox'] = $acct_focus->column_fields['ship_pobox'];
-	$log->debug("Accountid Id from the request is " . $focus->column_fields['account_id']);
 }
 //needed when creating a new contact with a default account value passed in
 if (isset($_REQUEST['account_name']) && is_null($focus->account_name)) {

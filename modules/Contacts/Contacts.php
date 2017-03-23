@@ -961,7 +961,13 @@ function get_contactsforol($user_name)
 			$ferror = (isset($_FILES['error']) ? $_FILES['error'] : $_FILES['imagename']['error']);
 			if (!$dirpermission || ($ferror!=0 and $ferror!=4) || (!$upload and $ferror!=4)){
 				$saveerror = true;
-				$errmsg = getTranslatedString('LBL_FILEUPLOAD_FAILED','Documents');
+				if ($ferror == 2) {
+					$errmsg = getTranslatedString('LBL_MAXIMUM_LIMIT_ERROR','Contacts');
+				} else if ($ferror == 3) {
+					$errmsg = getTranslatedString('LBL_UPLOAD_ERROR','Contacts');
+				} else {
+					$errmsg = getTranslatedString('LBL_FILEUPLOAD_FAILED','Documents');
+				}
 			}
 		}
 		if ($saveerror) {
