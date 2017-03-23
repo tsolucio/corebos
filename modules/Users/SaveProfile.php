@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('include/utils/UserInfoUtil.php');
 require_once('include/utils/utils.php');
 global $adb;
@@ -20,19 +19,14 @@ $profile_id = $adb->getUniqueID("vtiger_profile");
 $sql1 = "insert into vtiger_profile(profileid, profilename, description) values(?,?,?)";
 $adb->pquery($sql1, array($profile_id,$profilename, $description));
 
-        //Retreiving the vtiger_profileid
-        $sql2 = "select max(profileid) as current_id from vtiger_profile";
-        $result2 = $adb->pquery($sql2, array());
-        $profileid = $adb->query_result($result2,0,'current_id');
+//Retreiving the vtiger_profileid
+$sql2 = "select max(profileid) as current_id from vtiger_profile";
+$result2 = $adb->pquery($sql2, array());
+$profileid = $adb->query_result($result2,0,'current_id');
 
-
-	//Retreiving the vtiger_tabs permission array
-	//
-
-	//Retreiving the first profileid
-	$prof_query="select profileid from vtiger_profile order by profileid ASC";
-	$prof_result = $adb->pquery($prof_query, array());
-	$first_prof_id = $adb->query_result($prof_result,0,'profileid');
+$prof_query="select profileid from vtiger_profile order by profileid ASC";
+$prof_result = $adb->pquery($prof_query, array());
+$first_prof_id = $adb->query_result($prof_result,0,'profileid');
 
 $tab_perr_result = $adb->pquery("select * from vtiger_profile2tab where profileid=?", array($first_prof_id));
 $act_perr_result = $adb->pquery("select * from vtiger_profile2standardpermissions where profileid=?", array($first_prof_id));
@@ -48,14 +42,12 @@ $num_act_util_per = $adb->num_rows($act_utility_result);
 	$edit_all_req= vtlib_purify($_REQUEST['edit_all']);
 	$edit_all = getPermissionValue($edit_all_req);
 
+	$sql4="insert into vtiger_profile2globalpermissions values(?,?,?)";
+	$adb->pquery($sql4, array($profileid,1, $view_all));
 
 	$sql4="insert into vtiger_profile2globalpermissions values(?,?,?)";
-    $adb->pquery($sql4, array($profileid,1, $view_all));
+	$adb->pquery($sql4, array($profileid,2, $edit_all));
 
-	$sql4="insert into vtiger_profile2globalpermissions values(?,?,?)";
-    $adb->pquery($sql4, array($profileid,2, $edit_all));
-
-	
 	//profile2tab permissions
 	for($i=0; $i<$num_tab_per; $i++)
 	{
@@ -73,16 +65,16 @@ $num_act_util_per = $adb->num_rows($act_utility_result);
 				$permission_value = 1;
 			}
 			$sql4="insert into vtiger_profile2tab values(?,?,?)";
-            $adb->pquery($sql4, array($profileid, $tab_id, $permission_value));
+			$adb->pquery($sql4, array($profileid, $tab_id, $permission_value));
 
 			if($tab_id ==9)
 			{
 				$sql4="insert into vtiger_profile2tab values(?,?,?)";
-                $adb->pquery($sql4, array($profileid,16, $permission_value));
+				$adb->pquery($sql4, array($profileid,16, $permission_value));
 			}
 		}
 	}
-	
+
 	//profile2standard permissions
 	for($i=0; $i<$num_act_per; $i++)
 	{
@@ -115,12 +107,12 @@ $num_act_util_per = $adb->num_rows($act_utility_result);
 			}
 
 			$sql7="insert into vtiger_profile2standardpermissions values(?,?,?,?)";
-            $adb->pquery($sql7, array($profileid, $tab_id, $action_id, $permission_value));
+			$adb->pquery($sql7, array($profileid, $tab_id, $action_id, $permission_value));
 
 			if($tab_id ==9)
 			{
 				$sql7="insert into vtiger_profile2standardpermissions values(?,?,?,?)";
-                $adb->pquery($sql7, array($profileid, 16, $action_id, $permission_value));
+				$adb->pquery($sql7, array($profileid, 16, $action_id, $permission_value));
 			}
 		}
 	}
@@ -146,13 +138,10 @@ $num_act_util_per = $adb->num_rows($act_utility_result);
 		}
 
 		$sql9="insert into vtiger_profile2utility values(?,?,?,?)";
-        $adb->pquery($sql9, array($profileid, $tab_id, $action_id, $permission_value));
-
+		$adb->pquery($sql9, array($profileid, $tab_id, $action_id, $permission_value));
 	}
 
-
 $modArr=getModuleAccessArray();
- 
 
 foreach($modArr as $fld_module => $fld_label)
 {
@@ -179,18 +168,17 @@ foreach($modArr as $fld_module => $fld_label)
 		$fieldname =  $adb->query_result($fieldListResult,$i,"fieldname");
 		$typeofdata = $adb->query_result($fieldListResult,$i,"typeofdata");
 		$fieldtype = explode("~",$typeofdata);
-       	if($fieldtype[1] == 'M')
-   		{
+		if ($fieldtype[1] == 'M') {
 			$visible_value = 0;
 		}
 		//Updating the database
 		$sql11="insert into vtiger_profile2field values(?,?,?,?,?)";
-        $adb->pquery($sql11, array($profileid, $tab_id, $fieldid, $visible_value,$readOnlyValue));
+		$adb->pquery($sql11, array($profileid, $tab_id, $fieldid, $visible_value,$readOnlyValue));
 	}
 }
-	$loc = "Location: index.php?action=ListProfiles&module=Settings&mode=view&parenttab=Settings&profileid=".vtlib_purify($profileid)."&selected_tab=".vtlib_purify($def_tab)."&selected_module=".vtlib_purify($def_module);
+	$loc = 'Location: index.php?action=ListProfiles&module=Settings&mode=view&parenttab=Settings&profileid='.urlencode(vtlib_purify($profileid)) .
+		'&selected_tab=' . urlencode(vtlib_purify($def_tab)) . '&selected_module=' . urlencode(vtlib_purify($def_module));
 	header($loc);
-
 
 /** returns value 0 if request permission is on else returns value 1
   * @param $req_per -- Request Permission:: Type varchar

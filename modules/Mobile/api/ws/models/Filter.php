@@ -9,7 +9,7 @@
  ************************************************************************************/
 include_once 'modules/CustomView/CustomView.php';
 
-class Mobile_WS_FilterModel {
+class crmtogo_WS_FilterModel {
 	
 	var $filterid, $moduleName;
 	var $user;
@@ -39,9 +39,8 @@ class Mobile_WS_FilterModel {
 	}
 	
 	static function modelWithId($moduleName, $filterid) {
-		$model = new Mobile_WS_FilterModel($moduleName);
+		$model = new crmtogo_WS_FilterModel($moduleName);
 		$model->filterid = $filterid;
 		return $model;
 	}
-	
 }

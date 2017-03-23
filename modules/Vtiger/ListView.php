@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-global $app_strings, $mod_strings, $current_language, $currentModule, $theme, $list_max_entries_per_page;
-
+global $app_strings, $mod_strings, $current_language, $currentModule, $theme;
+$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$currentModule);
 require_once('Smarty_setup.php');
 require_once('include/ListView/ListView.php');
 require_once('modules/CustomView/CustomView.php');
@@ -29,13 +29,13 @@ $focus->initSortbyField($currentModule);
 $list_buttons=$focus->getListButtons($app_strings,$mod_strings);
 
 if(ListViewSession::hasViewChanged($currentModule)) {
-	$_SESSION[$currentModule."_Order_By"] = '';
+	coreBOS_Session::set($currentModule.'_Order_By', '');
 }
 $sorder = $focus->getSortOrder();
 $order_by = $focus->getOrderBy();
 
-$_SESSION[$currentModule."_Order_By"] = $order_by;
-$_SESSION[$currentModule."_Sort_Order"]=$sorder;
+coreBOS_Session::set($currentModule.'_Order_By', $order_by);
+coreBOS_Session::set($currentModule.'_Sort_Order', $sorder);
 
 $smarty = new vtigerCRM_Smarty();
 
@@ -118,8 +118,8 @@ if(isset($_REQUEST['query']) and $_REQUEST['query'] == 'true') {
 	$queryGenerator->addUserSearchConditions($_REQUEST);
 	$ustring = getSearchURL($_REQUEST);
 	$url_string .= "&query=true$ustring";
-	$smarty->assign('SEARCH_URL', $url_string);
 }
+$smarty->assign('SEARCH_URL', $url_string);
 
 $queryGenerator = cbEventHandler::do_filter('corebos.filter.listview.querygenerator.before', $queryGenerator);
 $list_query = $queryGenerator->getQuery();
@@ -127,15 +127,15 @@ $queryGenerator = cbEventHandler::do_filter('corebos.filter.listview.querygenera
 $list_query = cbEventHandler::do_filter('corebos.filter.listview.querygenerator.query', $list_query);
 $where = $queryGenerator->getConditionalWhere();
 if(isset($where) && $where != '') {
-	$_SESSION['export_where'] = $where;
+	coreBOS_Session::set('export_where', $where);
 } else {
-	unset($_SESSION['export_where']);
+	coreBOS_Session::delete('export_where');
 }
 $smarty->assign('export_where',to_html($where));
 
 // Sorting
 if(!empty($order_by)) {
-	if($order_by == 'smownerid') $list_query .= ' ORDER BY user_name '.$sorder;
+	if($order_by == 'smownerid') $list_query .= ' ORDER BY vtiger_users.user_name '.$sorder;
 	else {
 		$tablename = getTableNameForField($currentModule, $order_by);
 		$tablename = ($tablename != '')? ($tablename . '.') : '';
@@ -188,6 +188,10 @@ $controller = new ListViewController($adb, $current_user, $queryGenerator);
 
 if(!isset($skipAction)){
 	$skipAction = false;
+}
+$smarty->assign('Document_Folder_View',0);
+if ($currentModule == 'Documents') {
+	include 'modules/Documents/ListViewCalculations.php';
 }
 
 $listview_header = $controller->getListViewHeader($focus,$currentModule,$url_string,$sorder,$order_by,$skipAction);

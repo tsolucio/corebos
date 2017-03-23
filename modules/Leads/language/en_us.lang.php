@@ -7,9 +7,19 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
- 
+
+if ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true')) {
+	$toggle_historicos = 'See Non Converted Leads';
+	$toggle_name = 'Converted Leads';
+} else {
+	$toggle_historicos = 'See Converted Leads';
+	$toggle_name = 'Leads';
+}
+
 $mod_strings = Array(
-'LBL_MODULE_NAME'=>'Leads',
+'LBL_TGL_HISTORICOS' => $toggle_historicos,
+'LBL_MODULE_NAME'=>$toggle_name,
+'Leads' => $toggle_name,
 'LBL_DIRECT_REPORTS_FORM_NAME'=>'Direct Reports',
 'LBL_MODULE_TITLE'=>'Leads: Home',
 'LBL_SEARCH_FORM_TITLE'=>'Lead Search',
@@ -33,7 +43,6 @@ $mod_strings = Array(
 'LBL_LEAD_NAME'=>'Lead Name:',
 'LBL_LEAD_INFORMATION'=>'Lead Information',
 'LBL_FIRST_NAME'=>'First Name:',
-'LBL_PHONE'=>'Phone:',
 'LBL_COMPANY'=>'Company:',
 'LBL_DESIGNATION'=>'Designation:',
 'LBL_PHONE'=>'Phone:',
@@ -121,6 +130,7 @@ $mod_strings = Array(
 'Company'=>'Company',
 'Fax'=>'Fax',
 'Email'=>'Email',
+'Secondary Email'=>'Secondary Email',
 'Lead Source'=>'Lead Source',
 'Website'=>'Website',
 'Annual Revenue'=>'Annual Revenue',

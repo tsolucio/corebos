@@ -73,7 +73,6 @@ $mod_strings = Array(
 'Last Ten Days'=>'Afgelopen 10 Dagen',
 
 // Added/Updated for vtiger CRM 5.0.4 
-'TITLE_AJAX_CSS_POPUP_CHAT'=>'Chatkanaal',
 'User List'=>'Gebruikerslijst',
 
 // Added after 5.0.4 GA
@@ -93,12 +92,13 @@ $mod_strings = Array(
 'LBL_HOME_HORIZONTAL_BARCHART'=>'Horizontale Staafdiagram',
 'LBL_HOME_VERTICAL_BARCHART'=>'Verticale Staafdiagram',
 'LBL_HOME_PIE_CHART'=>'Taart Diagram',
+'LBL_HOME_HORIZONTAL' => 'Horizontale',
+'LBL_HOME_VERTICAL' => 'Verticale',
+'LBL_HOME_PIE' => 'Taart',
+'Layout Saved' => 'Layout Saved',
 'LBL_HOME_ITEMS'=>'item(s)',
 'LBL_MORE'=>'Meer',
 'LBL_SCROLL'=>'Blader',
-
-// vtiger CRM News
-'LBL_NEWS_NO'=>'Geen nieuws',
 
 //added for home page changes
 'LBL_NOTEBOOK'=>'Aantekeningen',
@@ -137,6 +137,9 @@ $mod_strings = Array(
 'LBL_DEFAULT_WIDGET'=>'Standaard Widgets',
 'LBL_NO_WIDGETS_HIDDEN'=>'Er zijn Geen standaard widgets verborgen',
 'UpdateExchangeRate' => 'Update Exchange Rate',
+'LBL_HOME_ADDWINDOW' => 'Add Window',
+'LBL_GETTING_STARTED' => 'Getting Started',
+'ExpirePasswordAfterDays' => 'Expire Password After Days',
 );
 
 ?>

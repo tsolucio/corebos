@@ -46,10 +46,10 @@ class Import_Queue_Controller {
 				array($adb->getUniqueID('vtiger_import_queue'), 
 						$user->id,
 						getTabid($userInputObject->get('module')),
-						Zend_Json::encode($userInputObject->get('field_mapping')),
-						Zend_Json::encode($userInputObject->get('default_values')),
+						json_encode($userInputObject->get('field_mapping')),
+						json_encode($userInputObject->get('default_values')),
 						$userInputObject->get('merge_type'),
-						Zend_Json::encode($userInputObject->get('merge_fields')),
+						json_encode($userInputObject->get('merge_fields')),
 						$status));
 	}
 
@@ -135,10 +135,10 @@ class Import_Queue_Controller {
 		return array(
 			'id' => $rowData['importid'],
 			'module' => getTabModuleName($rowData['tabid']),
-			'field_mapping' => Zend_Json::decode($rowData['field_mapping']),
-			'default_values' => Zend_Json::decode($rowData['default_values']),
+			'field_mapping' => json_decode($rowData['field_mapping'],true),
+			'default_values' => json_decode($rowData['default_values'],true),
 			'merge_type' => $rowData['merge_type'],
-			'merge_fields' => Zend_Json::decode($rowData['merge_fields']),
+			'merge_fields' => json_decode($rowData['merge_fields'],true),
 			'user_id' => $rowData['userid'],
 			'status' => $rowData['status']
 		);
@@ -146,7 +146,6 @@ class Import_Queue_Controller {
 
 	static function updateStatus($importId, $status) {
 		$adb = PearDatabase::getInstance();
-
 		$adb->pquery('UPDATE vtiger_import_queue SET status=? WHERE importid=?', array($status, $importId));
 	}
 

@@ -210,6 +210,8 @@ $mod_strings = array (
 'LBL_FLDR_NOT_EMPTY' => 'La Cartella che stai per cancellare non e\' vuota, Sposta o Elimina i Report in essa.',
 'NO_REL_MODULES' => 'Nessun Modulo relazionato alla selezione',
 'LBL_REPORT_GENERATION_FAILED' => 'Generazione Report fallita!',
+'ERR_TOO_MANY_ROWS' => 'This report has too many rows. Please add some filters and divide it into various smaller reports.',
+'ERR_INCORRECT_REPORTID' => 'Report cannot be found',
 'LBL_OR'=>'o',
 'LBL_NEW_GROUP'=>'Nuovo Gruppo',
 'LBL_DELETE_GROUP'=>'Cancella Gruppo',
@@ -217,11 +219,13 @@ $mod_strings = array (
 'LBL_SHARING_TYPE'=>'Tipo di Condivisione',
 'LBL_SELECT_REPORT_TYPE_TO_CONTROL_ACCESS'=>'Seleziona il tipo di Condivisione per l\'accesso al Report', 
 'LBL_ACTION' => 'Azione',
+'LBL ACTION' => 'Azione',
 'ACTION' => 'Azione',
 'LBL_VIEW_DETAILS' => 'Vedi Dettagli',
 'LBL_SHOW_STANDARD_FILTERS' => 'Mostra Filtri Standard',
 'LBL_YEAR' => 'Anno',
 'LBL_MONTH'=> 'Mese',
+'LBL_DAY'=> 'Giorno',
 'LBL_QUARTER'=> 'Quadrimestre',
 'LBL_NONE'=> 'Nessuno',
 
@@ -255,7 +259,7 @@ $mod_strings = array (
 
 'LBL_AUTO_GENERATED_REPORT_EMAIL' => 'Questa mail viene generata automaticamente per accompagnare un report.',
 'LBL_TIME_FORMAT_MSG' => 'hh:mm (Formato 24 ore)',
-
+'LBL_RELOAD_REPORT' => 'Reload Report',
 'LBL_SAVE_REPORT' => 'Salva',
 'LBL_SAVE_REPORT_AS' => 'Salva report come...',
 
@@ -271,6 +275,24 @@ $mod_strings = array (
 'LBL_GROUPING_TIME' => 'Raggruppa per Ora',
 'LBL_WIDGET_ADDED' => 'Widget Aggiunto con Succssso.',
 'LBL_UNDEFINED' => 'Indefinito',
-)
+'Add ReportCharts' => 'Add Report Charts',
+'Choose Report Type' => 'Choose Report Type',
+'Application Report' => 'Application Report',
+'External Application' => 'External Application',
+'Direct SQL Statement' => 'Direct SQL Statement',
+'Cross Tab' => 'Cross Tab',
+'Pivot Table' => 'Pivot Table',
+'External Report URL' => 'External Report URL',
+'Add User Information' => 'Add User Information',
+'Select One Field of each' => 'You can only select one field from each module for this type of report',
+'Select Only One Module' => 'You can only select one module for this type of report',
+'LBL_AGG_FIELD' => 'Aggregation Field',
+'LBL_AGG_FUNCTION_CHOOSE' => 'Select Aggregation Column and Function',
+'LBL_AGG_COLUMN' => 'Aggregation Column',
+'LBL_AGG_FUNCTION' => 'Aggregation Function',
+'LBL_COLUMNS_COUNT'=>'Count',
+'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Errore mentre si eliminava la cartella.',
+'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Error while deleting the reports of the folder',
+);
 
 ?>

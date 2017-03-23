@@ -12,7 +12,7 @@ require_once('data/CRMEntity.php');
 require_once('include/utils/UserInfoUtil.php');
 require_once 'modules/Reports/ReportUtils.php';
 require_once 'modules/Reports/ReportRun.php';
-global $app_strings,$mod_strings, $app_list_strings, $modules, $blocks, $adv_filter_options;
+global $app_strings,$mod_strings, $modules, $blocks, $adv_filter_options;
 global $log, $report_modules, $related_modules, $old_related_modules;
 
 $adv_filter_options = array(
@@ -97,9 +97,9 @@ class Reports extends CRMEntity{
 	 *  This function accepts the vtiger_reportid as argument
 	 *  It sets primodule,secmodule,reporttype,reportname,reportdescription,folderid for the given vtiger_reportid
 	 */
-	function Reports($reportid="")
-	{
-		global $adb,$current_user,$theme,$mod_strings;
+	function __construct($reportid="") {
+		global $adb,$current_user,$theme,$mod_strings,$app_strings;
+		$current_user_parent_role_seq='';
 		require('user_privileges/user_privileges_'.$current_user->id.'.php');
 		$this->initListOfModules();
 		if($reportid != "")
@@ -117,6 +117,7 @@ class Reports extends CRMEntity{
 				$userGroups = new GetUserGroups();
 				$userGroups->getAllUserGroups($current_user->id);
 				$user_groups = $userGroups->user_groups;
+				$user_group_query = '';
 				if(!empty($user_groups) && $is_admin==false){
 					$user_group_query = " (shareid IN (".generateQuestionMarks($user_groups).") AND setype='groups') OR";
 					array_push($params, $user_groups);
@@ -166,50 +167,27 @@ class Reports extends CRMEntity{
 					$this->is_editable = 'true';
 				else
 					$this->is_editable = 'false';
-			} else {
-				if($_REQUEST['mode'] != 'ajax')
+			} elseif($_REQUEST['module'] != 'Home') {
+				if(empty($_REQUEST['mode']) or $_REQUEST['mode'] != 'ajax')
 				{
 					include('modules/Vtiger/header.php');
 				}
 				echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
 				echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 80%; position: relative; z-index: 10000000;'>
-
 				<table border='0' cellpadding='5' cellspacing='0' width='98%'>
 				<tbody><tr>
 				<td rowspan='2' width='11%'><img src='". vtiger_imageurl('denied.gif', $theme) ."' ></td>
-				<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span class='genHeaderSmall'>You are not allowed to View this Report </span></td>
+				<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span class='genHeaderSmall'>".$app_strings['LBL_PERMISSION']."</span></td>
 				</tr>
 				<tr>
 				<td class='small' align='right' nowrap='nowrap'>
-				<a href='javascript:window.history.back();'>$app_strings[LBL_GO_BACK]</a><br></td>
+				<a href='javascript:window.history.back();'>".$app_strings['LBL_GO_BACK'].'</a><br></td>
 				</tr>
 				</tbody></table>
-				</div>";
-				echo "</td></tr></table>";
+				</div>
+				</td></tr></table>';
 				exit;
 			}
-		}
-	}
-
-	// Update the module list for listing columns for report creation.
-	function updateModuleList($module) {
-		global $adb;
-		if (!isset($module)) return;
-		require_once('include/utils/utils.php');
-		$tabid = getTabid($module);
-		if ($module == 'Calendar') {
-			$tabid = array(9, 16);
-		}
-		$sql = "SELECT blockid, blocklabel FROM vtiger_blocks WHERE tabid IN (". generateQuestionMarks($tabid) .")";
-		$res = $adb->pquery($sql, array($tabid));
-		$noOfRows = $adb->num_rows($res);
-		if ($noOfRows <= 0) return;
-		for($index = 0; $index < $noOfRows; ++$index) {
-			$blockid = $adb->query_result($res,$index,'blockid');
-			if(in_array($blockid, $this->module_list[$module])) continue;
-			$blockid_list[] = $blockid;
-			$blocklabel = $adb->query_result($res,$index,'blocklabel');
-			$this->module_list[$module][$blocklabel] = $blockid;
 		}
 	}
 
@@ -356,11 +334,11 @@ class Reports extends CRMEntity{
 					$details = Array();
 					$details['state'] = $reportfldrow["state"];
 					$details['id'] = $reportfldrow["folderid"];
-					$details['name'] = ($mod_strings[$reportfldrow["foldername"]] == '' ) ? $reportfldrow["foldername"]:$mod_strings[$reportfldrow["foldername"]];
+					$details['name'] = getTranslatedString($reportfldrow["foldername"], 'Reports');
 					$details['description'] = $reportfldrow["description"];
 					$details['fname'] = popup_decode_html($details['name']);
 					$details['fdescription'] = popup_decode_html($reportfldrow["description"]);
-					$details['details'] = $reportsInAllFolders[$reportfldrow["folderid"]];
+					$details['details'] = isset($reportsInAllFolders[$reportfldrow["folderid"]]) ? $reportsInAllFolders[$reportfldrow["folderid"]] : array();
 					$returndata[] = $details;
 				}
 			} while($reportfldrow = $adb->fetch_array($result));
@@ -386,6 +364,7 @@ class Reports extends CRMEntity{
 	 */
 	function sgetRptsforFldr($rpt_fldr_id) {
 		global $adb, $log, $mod_strings,$current_user;
+		$current_user_parent_role_seq='';
 		$returndata = Array();
 
 		require_once('include/utils/UserInfoUtil.php');
@@ -406,6 +385,7 @@ class Reports extends CRMEntity{
 		$userGroups = new GetUserGroups();
 		$userGroups->getAllUserGroups($current_user->id);
 		$user_groups = $userGroups->user_groups;
+		$user_group_query = '';
 		if(!empty($user_groups) && $is_admin==false){
 			$user_group_query = " (shareid IN (".generateQuestionMarks($user_groups).") AND setype='groups') OR";
 			array_push($params, $user_groups);
@@ -428,16 +408,28 @@ class Reports extends CRMEntity{
 		if(count($report)>0) {
 			do {
 				$report_details = Array();
-				$report_details ['customizable'] = $report["customizable"];
-				$report_details ['reportid'] = $report["reportid"];
-				$report_details ['primarymodule'] = $report["primarymodule"];
-				$report_details ['secondarymodules'] = $report["secondarymodules"];
-				$report_details ['state'] = $report["state"];
-				$report_details ['description'] = $report["description"];
-				$report_details ['reportname'] = $report["reportname"];
-				$report_details ['sharingtype'] = $report["sharingtype"];
+				$report_details['customizable'] = $report["customizable"];
+				$report_details['reportid'] = $report["reportid"];
+				$report_details['primarymodule'] = $report["primarymodule"];
+				$report_details['secondarymodules'] = $report["secondarymodules"];
+				$report_details['state'] = $report["state"];
+				$report_details['description'] = $report["description"];
+				$report_details['reportname'] = $report["reportname"];
+				$report_details['sharingtype'] = $report["sharingtype"];
+				$report_details['reporttype'] = $report['reporttype'];
+				if ($report['reporttype']=='external') {
+					$minfo = unserialize(decode_html($report['moreinfo']));
+					$report_details['moreinfo'] = $minfo['url'];
+					if ($minfo['adduserinfo']==1) {
+						$report_details['moreinfo'] = rtrim($report_details['moreinfo'],'/');
+						$report_details['moreinfo'] .= strpos($report_details['moreinfo'], '?') ? '&' : '?';
+						$report_details['moreinfo'] .= 'usrid='.$current_user->id.'&role='.$current_user_parent_role_seq.((isset($current_user_groups) && sizeof($current_user_groups)) > 0 ? '&grpid='.implode(",", $current_user_groups) : '');
+					}
+				} else {
+					$report_details['moreinfo'] = $report['moreinfo'];
+				}
 				if($is_admin==true || in_array($report["owner"],$subordinate_users) || $report["owner"]==$current_user->id)
-					$report_details ['editable'] = 'true';
+					$report_details['editable'] = 'true';
 				else
 					$report_details['editable'] = 'false';
 
@@ -461,7 +453,7 @@ class Reports extends CRMEntity{
 	 */
 	function getPriModuleColumnsList($module)
 	{
-		//$this->updateModuleList($module);
+		if (empty($module)) return;
 		foreach($this->module_list[$module] as $key=>$value)
 		{
 			$temp = $this->getColumnsListbyBlock($module,$key);
@@ -498,7 +490,6 @@ class Reports extends CRMEntity{
 			$secmodule = explode(":",$module);
 			for($i=0;$i < count($secmodule) ;$i++)
 			{
-				//$this->updateModuleList($secmodule[$i]);
 				if($this->module_list[$secmodule[$i]]){
 					$this->sec_module_columnslist[$secmodule[$i]] = $this->getModuleFieldList(
 							$secmodule[$i]);
@@ -572,37 +563,45 @@ class Reports extends CRMEntity{
 		if ($module == 'Calendar') {
 			$tabid = array('9','16');
 		}
-		$params = array($tabid, $block);
 
 		require('user_privileges/user_privileges_'.$current_user->id.'.php');
 		//Security Check
 		if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] ==0)
 		{
-			$sql = "select * from vtiger_field where vtiger_field.tabid in (". generateQuestionMarks($tabid) .") and vtiger_field.block in (". generateQuestionMarks($block) .") and vtiger_field.displaytype in (1,2,3) and vtiger_field.presence in (0,2) AND tablename NOT IN (".generateQuestionMarks($skipTalbes).") ";
-
-			//fix for Ticket #4016
-			if($module == "Calendar")
-				$sql.=" group by vtiger_field.fieldlabel order by sequence";
-			else
-			$sql.=" order by sequence";
+			if($module == 'Calendar') {
+				// calendar is special because it is two modules and has many overlapping fields so we have to filter them
+				$sql = 'select * from vtiger_field where vtiger_field.block in ('. generateQuestionMarks($block) .') and vtiger_field.displaytype in (1,2,3) and vtiger_field.presence in (0,2) AND tablename NOT IN ('.generateQuestionMarks($skipTalbes).') ';
+				$sql.= ' and vtiger_field.fieldid in (select min(fieldid) from vtiger_field where vtiger_field.tabid in ('. generateQuestionMarks($tabid) .') group by fieldlabel) order by sequence';
+				$params = array($block, $skipTalbes, $tabid);
+			} else {
+				$sql = 'select * from vtiger_field where vtiger_field.tabid in ('. generateQuestionMarks($tabid) .') and vtiger_field.block in ('. generateQuestionMarks($block) .') and vtiger_field.displaytype in (1,2,3) and vtiger_field.presence in (0,2) AND tablename NOT IN ('.generateQuestionMarks($skipTalbes).') order by sequence';
+				$params = array($tabid, $block, $skipTalbes);
+			}
 		}
 		else
 		{
+			if($module == 'Calendar') {
+				// calendar is special because it is two modules and has many overlapping fields so we have to filter them
+				$sql = 'select distinct vtiger_field.* from vtiger_field inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid where vtiger_field.block in ('. generateQuestionMarks($block) .') and vtiger_field.displaytype in (1,2,3) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)';
+				$params = array($block);
+			} else {
+				$sql = 'select distinct vtiger_field.* from vtiger_field inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid where vtiger_field.tabid in ('. generateQuestionMarks($tabid) .') and vtiger_field.block in ('. generateQuestionMarks($block) .') and vtiger_field.displaytype in (1,2,3) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)';
+				$params = array($tabid, $block);
+			}
 			$profileList = getCurrentUserProfileList();
-			$sql = "select * from vtiger_field inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid where vtiger_field.tabid in (". generateQuestionMarks($tabid) .") and vtiger_field.block in (". generateQuestionMarks($block) .") and vtiger_field.displaytype in (1,2,3) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)";
 			if (count($profileList) > 0) {
 				$sql .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
 				array_push($params, $profileList);
 			}
 			$sql .= ' and tablename NOT IN ('.generateQuestionMarks($skipTalbes).') ';
-
-			//fix for Ticket #4016
-			if($module == "Calendar")
-				$sql.=" group by vtiger_field.fieldlabel order by sequence";
-			else
-				$sql.=" group by vtiger_field.fieldid order by sequence";
+			array_push($params, $skipTalbes);
+			if($module == 'Calendar') {
+				$sql.= ' and vtiger_field.fieldid in (select min(fieldid) from vtiger_field where vtiger_field.tabid in ('. generateQuestionMarks($tabid) .') group by fieldlabel) order by sequence';
+				array_push($params, $tabid);
+			} else {
+				$sql.= ' group by vtiger_field.fieldid order by sequence';
+			}
 		}
-		array_push($params, $skipTalbes);
 		$module_columnlist = array();
 		$result = $adb->pquery($sql, $params);
 		$noofrows = $adb->num_rows($result);
@@ -620,7 +619,7 @@ class Reports extends CRMEntity{
 			//Here we Changing the displaytype of the field. So that its criteria will be displayed correctly in Reports Advance Filter.
 			$fieldtypeofdata=ChangeTypeOfData_Filter($fieldtablename,$fieldcolname,$fieldtypeofdata);
 
-			if($uitype == 68 || $uitype == 59)
+			if($uitype == 59)
 			{
 				$fieldtypeofdata = 'V';
 			}
@@ -647,8 +646,28 @@ class Reports extends CRMEntity{
 			$fieldlabel1 = str_replace(' ','_',$fieldlabel);
 			$fieldlabel1 = ReportRun::replaceSpecialChar($fieldlabel1);
 			$optionvalue = $fieldtablename.":".$fieldcolname.":".$module."_".$fieldlabel1.":".$fieldname.":".$fieldtypeofdata;
-			$this->adv_rel_fields[$fieldtypeofdata][] = '$'.$module.'#'.$fieldname.'$'."::".getTranslatedString($module,$module)." ".getTranslatedString($fieldlabel,$module);
+			$comparefield = '$'.$module.'#'.$fieldname.'$'."::".getTranslatedString($module,$module)." ".getTranslatedString($fieldlabel,$module);
+			switch ($fieldtypeofdata) {
+				case 'NN':
+				case 'N':
+				case 'I':
+					$this->adv_rel_fields['NN'][] = $comparefield;
+					$this->adv_rel_fields['N'][] = $comparefield;
+					$this->adv_rel_fields['I'][] = $comparefield;
+					break;
+				default:
+					$this->adv_rel_fields[$fieldtypeofdata][] = $comparefield;
+					break;
+			}
 			$module_columnlist[$optionvalue] = $fieldlabel;
+		}
+		foreach ($this->adv_rel_fields as $ftypes => $flds) {
+			$uniq = array();
+			foreach($flds as $val) {
+				$uniq[$val] = true;
+			}
+			$uniq = array_keys($uniq);
+			$this->adv_rel_fields[$ftypes] = $uniq;
 		}
 		$blockname = getBlockName($block);
 		if($blockname == 'LBL_RELATED_PRODUCTS' && in_array($module,getInventoryModules())) {
@@ -713,7 +732,7 @@ class Reports extends CRMEntity{
 	function getSelectedStdFilterCriteria($selecteddatefilter = "")
 	{
 		global $mod_strings;
-
+		$options = array();
 		$datefiltervalue = Array("custom","prevfy","thisfy","nextfy","prevfq","thisfq","nextfq",
 				"yesterday","today","tomorrow","lastweek","thisweek","nextweek","lastmonth","thismonth",
 				"nextmonth","last7days","last30days", "last60days","last90days","last120days",
@@ -729,15 +748,12 @@ class Reports extends CRMEntity{
 		for($i=0;$i<count($datefiltervalue);$i++)
 		{
 			if($selecteddatefilter == $datefiltervalue[$i])
-			{
-				$sshtml .= "<option selected value='".$datefiltervalue[$i]."'>".$mod_strings[$datefilterdisplay[$i]]."</option>";
-			}else
-			{
-				$sshtml .= "<option value='".$datefiltervalue[$i]."'>".$mod_strings[$datefilterdisplay[$i]]."</option>";
-			}
+				$options[] = array("selected"=>true,"value"=>$datefiltervalue[$i],"label"=>$mod_strings[$datefilterdisplay[$i]]);
+			else
+				$options[] = array("value"=>$datefiltervalue[$i],"label"=>$mod_strings[$datefilterdisplay[$i]]);
 		}
 
-		return $sshtml;
+		return $options;
 	}
 
 	/** Function to get the selected standard filter columns
@@ -1180,6 +1196,7 @@ function getEscapedColumns($selectedfields) {
 
 		$inventory_fields = array('quantity','listprice','serviceid','productid','discount','comment');
 		$inventory_modules = getInventoryModules();
+		$options = array();
 		while($columnslistrow = $adb->fetch_array($result))
 		{
 			$fieldname ="";
@@ -1200,7 +1217,6 @@ function getEscapedColumns($selectedfields) {
 				{
 					$permitted_fields = $this->getaccesfield($module);
 				}
-				$querycolumns = $this->getEscapedColumns($selectedfields);
 				$fieldlabel = trim(str_replace($module," ",$module_field));
 				$mod_arr=explode('_',$fieldlabel);
 				$mod = ($mod_arr[0] == '')?$module:$mod_arr[0];
@@ -1209,24 +1225,21 @@ function getEscapedColumns($selectedfields) {
 				$mod_lbl = getTranslatedString($mod,$module); //module
 				$fld_lbl = getTranslatedString($fieldlabel,$module); //fieldlabel
 				$fieldlabel = $mod_lbl." ".$fld_lbl;
-				if(in_array($fieldname, $inventory_fields) and in_array($mod, $inventory_modules))
-					$shtml .= "<option permission='yes' value=\"".$fieldcolname."\">".$fieldlabel."</option>";
+				if(in_array($fieldname, $inventory_fields) and in_array($mod, $inventory_modules)) {
+					$options[] = array("permission"=>"yes","value"=>$fieldcolname,"label"=>$fieldlabel);
+				}
 				else
 				{
 					if(CheckFieldPermission($fieldname,$mod) != 'true' && $colname!="crmid")
-					{
-						$shtml .= "<option permission='no' value=\"".$fieldcolname."\" disabled = 'true'>".$fieldlabel."</option>";
-					}
+						$options[] = array("permission"=>"no","value"=>$fieldcolname,"label"=>$fieldlabel,"disabled"=>"true");
 					else
-					{
-						$shtml .= "<option permission='yes' value=\"".$fieldcolname."\">".$fieldlabel."</option>";
-					}
+						$options[] = array("permission"=>"yes","value"=>$fieldcolname,"label"=>$fieldlabel);
 				}
 			}
 			//end
 		}
 		$log->info("ReportRun :: Successfully returned getQueryColumnsList".$reportid);
-		return $shtml;
+		return $options;
 	}
 	function getAdvancedFilterList($reportid)
 	{
@@ -1467,9 +1480,9 @@ function getEscapedColumns($selectedfields) {
 			if(($typeofdata[0] == "N" || $typeofdata[0] == "NN" || $typeofdata[0] == "I" || $typeofdata[0] == "T" || $columntototalrow['columnname']=='totaltime') && ($columntototalrow['uitype']!=10 and $columntototalrow['uitype']!=101))
 			{
 				$options = Array();
-				if(!empty($_REQUEST['record'])) {
-					$options['label'][] = getTranslatedString($columntototalrow['tablabel'],$columntototalrow['tablabel']).' -'.getTranslatedString($columntototalrow['fieldlabel'],$columntototalrow['tablabel']);
-				}
+				$filters = Array();
+				$options['label'][] = getTranslatedString($columntototalrow['tablabel'],$columntototalrow['tablabel']).' -'.getTranslatedString($columntototalrow['fieldlabel'],$columntototalrow['tablabel']);
+				$filters['label'][] = getTranslatedString($columntototalrow['tablabel'],$columntototalrow['tablabel']).' -'.getTranslatedString($columntototalrow['fieldlabel'],$columntototalrow['tablabel']);
 				if(isset($this->columnssummary))
 				{
 					$selectedcolumn = "";
@@ -1492,45 +1505,44 @@ function getEscapedColumns($selectedfields) {
 
 					$columntototalrow['fieldlabel'] = str_replace(" ","_",$columntototalrow['fieldlabel']);
 					$options []= getTranslatedString($columntototalrow['tablabel'],$columntototalrow['tablabel']).' - '.getTranslatedString($columntototalrow['fieldlabel'],$columntototalrow['tablabel']);
-					if($selectedcolumn1[2] == "cb:".$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel']."_SUM:2")
+					if(isset($selectedcolumn1[2]) and $selectedcolumn1[2] == "cb:".$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel']."_SUM:2")
 					{
-						$options []= '<input checked name="cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_SUM:2" type="checkbox" value="">';
+						$filters["checkboxes"][] = array("name"=>'cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_SUM:2',"checked"=>true);
 					}else
 					{
-						$options []= '<input name="cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_SUM:2" type="checkbox" value="">';
+						$filters["checkboxes"][] = array("name"=>'cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_SUM:2');
 					}
-					if($selectedcolumn1[3] == "cb:".$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel']."_AVG:3")
+					if(isset($selectedcolumn1[3]) and $selectedcolumn1[3] == "cb:".$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel']."_AVG:3")
 					{
-						$options []= '<input checked name="cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_AVG:3" type="checkbox" value="">';
+						$filters["checkboxes"][] = array('name' => 'cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_AVG:3','checked'=>true);
 					}else
 					{
-						$options []= '<input name="cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_AVG:3" type="checkbox" value="">';
-					}
-
-					if($selectedcolumn1[4] == "cb:".$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel']."_MIN:4")
-					{
-						$options []= '<input checked name="cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_MIN:4" type="checkbox" value="">';
-					}else
-					{
-						$options []= '<input name="cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_MIN:4" type="checkbox" value="">';
+						$filters["checkboxes"][] = array('name'=>'cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_AVG:3');
 					}
 
-					if($selectedcolumn1[5] == "cb:".$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel']."_MAX:5")
+					if(isset($selectedcolumn1[4]) and $selectedcolumn1[4] == "cb:".$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel']."_MIN:4")
 					{
-						$options []= '<input checked name="cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_MAX:5" type="checkbox" value="">';
+						$filters["checkboxes"][] = array('name'=>'cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_MIN:4',"checked"=>true);
 					}else
 					{
-						$options []= '<input name="cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_MAX:5" type="checkbox" value="">';
+						$filters["checkboxes"][] = array('name'=>'cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_MIN:4');
+					}
+
+					if(isset($selectedcolumn1[5]) and $selectedcolumn1[5] == "cb:".$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel']."_MAX:5")
+					{
+						$filters["checkboxes"][] = array('name'=>'cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_MAX:5','checked'=>true);
+					}else
+					{
+						$filters["checkboxes"][] = array('name'=>'cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_MAX:5');
 					}
 				}else
 				{
-					$options []= getTranslatedString($columntototalrow['tablabel'],$columntototalrow['tablabel']).' - '.getTranslatedString($columntototalrow['fieldlabel'],$columntototalrow['tablabel']);
-					$options []= '<input name="cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_SUM:2" type="checkbox" value="">';
-					$options []= '<input name="cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_AVG:3" type="checkbox" value="" >';
-					$options []= '<input name="cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_MIN:4"type="checkbox" value="" >';
-					$options [] ='<input name="cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_MAX:5" type="checkbox" value="" >';
+					$filters["checkboxes"][] = array('name'=>'cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_SUM:2');
+					$filters["checkboxes"][] = array('name'=>'cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_AVG:3');
+					$filters["checkboxes"][] = array('name'=>'cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_MIN:4');
+					$filters["checkboxes"][] = array('name' => 'cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_MAX:5');
 				}
-				$options_list [] = $options;
+				$options_list [] = $filters;
 			}
 		}while($columntototalrow = $adb->fetch_array($result));
 
@@ -1539,21 +1551,21 @@ function getEscapedColumns($selectedfields) {
 	}
 
 	/** Function to get the advanced filter criteria for an option
-	 *  This function accepts The option in the advenced filter as an argument
+	 *  This function accepts The option in the advanced filter as an argument
 	 *  This generate filter criteria for the advanced filter
 	 *  It returns a HTML string of combo values
 	 */
 	public static function getAdvCriteriaHTML($selected="") {
 		global $adv_filter_options;
-
+		$shtml = '';
+		$filters = array();
 		foreach($adv_filter_options as $key=>$value) {
-			if($selected == $key) {
-				$shtml .= "<option selected value=\"".$key."\">".$value."</option>";
-			} else {
-				$shtml .= "<option value=\"".$key."\">".$value."</option>";
-			}
+			if($selected == $key)
+				$filters[] = array("selected"=>true,"value"=>$key,"label"=>$value);
+			else
+				$filters[] = array("value"=>$key,"label"=>$value);
 		}
-		return $shtml;
+		return $filters;
 	}
 }
 
@@ -1563,7 +1575,7 @@ function getEscapedColumns($selectedfields) {
  */
 function getReportsModuleList($focus)
 {
-	global $adb, $app_list_strings, $mod_strings;
+	global $adb, $mod_strings;
 	$modules = Array();
 	foreach($focus->module_list as $key=>$value) {
 		if(isPermitted($key,'index') == "yes") {
@@ -1581,7 +1593,7 @@ function getReportsModuleList($focus)
  */
 function getReportRelatedModules($module,$focus)
 {
-	global $app_list_strings, $related_modules, $mod_strings;
+	global $related_modules, $mod_strings;
 	$optionhtml = Array();
 	if(vtlib_isModuleActive($module)){
 		if(!empty($focus->related_modules[$module])) {
@@ -1630,7 +1642,7 @@ function updateAdvancedCriteria($reportid, $advft_criteria, $advft_criteria_grou
 			$field = WebserviceField::fromArray($adb, $fieldInfo);
 			$fieldType = $field->getFieldDataType();
 		}
-		if($fieldType == 'currency' or $fieldType == 'double') {
+		if(($fieldType == 'currency' or $fieldType == 'double') and (substr($adv_filter_value,0,1) != "$" and substr($adv_filter_value,-1,1) != "$")) {
 			$flduitype = $fieldInfo['uitype'];
 			if($flduitype == '72' or $flduitype == 9 or $flduitype ==7) {
 				$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value, null, true);

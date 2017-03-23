@@ -15,11 +15,21 @@ class MyProvider implements ISMSProvider {
 	private $_username;
 	private $_password;
 	private $_parameters = array();
+	public $helpURL = '';
+	public $helpLink = '';
 
 	const SERVICE_URI = 'http://localhost:9898';
 	private static $REQUIRED_PARAMETERS = array('app_id');
 
 	function __construct() {
+	}
+
+	/**
+	 * Function to get provider name
+	 * @return <String> provider name
+	 */
+	public function getName() {
+		return $this->helpLink;
 	}
 
 	public function setAuthParameters($username, $password) {
@@ -73,10 +83,10 @@ class MyProvider implements ISMSProvider {
 		$serviceURL = $this->getServiceURL(self::SERVICE_SEND);
 		$httpClient = new Vtiger_Net_Client($serviceURL);
 		$response = $httpClient->doPost($params);
-
 		$responseLines = explode("\n", $response);
 
 		$results = array();
+		$i=0;
 		foreach($responseLines as $responseLine) {
 			$responseLine = trim($responseLine);
 			if(empty($responseLine)) continue;
@@ -107,7 +117,6 @@ class MyProvider implements ISMSProvider {
 		$serviceURL = $this->getServiceURL(self::SERVICE_QUERY);
 		$httpClient = new Vtiger_Net_Client($serviceURL);
 		$response = $httpClient->doPost($params);
-
 		$response = trim($response);
 
 		$result = array( 'error' => false, 'needlookup' => 1 );

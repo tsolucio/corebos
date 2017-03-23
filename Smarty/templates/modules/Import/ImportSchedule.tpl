@@ -16,7 +16,7 @@
 			{'LBL_IMPORT_SCHEDULED'|@getTranslatedString:$MODULE} 
 		</td>
 	</tr>
-	{if $ERROR_MESSAGE neq ''}
+	{if !empty($ERROR_MESSAGE)}
 	<tr>
 		<td class="style1" align="left" colspan="2">
 			{$ERROR_MESSAGE}

@@ -153,7 +153,6 @@ $mod_strings = Array(
 'LBL_MAIL_MERGE'=>'Samenvoegen',
 'NOTIFICATIONSCHEDULERS'=>'Notificatie planners',
 //currency status
-'LBL_ACTIVE'=>'Actief',
 'LBL_INACTIVE'=>'Inactief',
 'LBL_NOTIFICATION'=>'Notificatie',
 'LBL_DESCRIPTION'=>'Omschrijving',
@@ -279,7 +278,6 @@ $mod_strings = Array(
 'LBL_BUSINESS_TYPE'=>'Handel type',
 'LBL_CURRENCY_TYPE'=>'Valuta type',
 'LBL_SALES_STAGE'=>'Verkoop stadium',
-'LBL_PRIORITY'=>'Prioriteit',
 'LBL_STATUS'=>'Status',
 'LBL_CATEGORY'=>'Ticket categorie',
 'LBL_MANUFACTURER'=>'Fabrikant',
@@ -306,7 +304,7 @@ $mod_strings = Array(
 'LBL_IMAP4'=>'IMAP4',
 'LBL_POP'=>'POP',
 'LBL_IMAP'=>'IMAP',
-'LBL_MAIL_DISCLAIM'=>'Gemarkeerd met <font color="red">*</font> zijn verplicht<br>Gemarkeerd met <font color="red">* *</font> worden niet volledig ondersteund',
+'LBL_MAIL_DISCLAIM'=>'Gemarkeerd met <font color="red">*</font> zijn verplicht',
 'LBL_SSL_OPTIONS'=>'SSL opties',
 'LBL_TLS'=>'TLS',
 'LBL_NO_TLS'=>'Geen TLS',
@@ -314,8 +312,6 @@ $mod_strings = Array(
 'LBL_INT_MAILER'=>'Gebruik de interne e-mail?',
 'LBL_INT_MAILER_USE'=>'Ja',
 'LBL_INT_MAILER_NOUSE'=>'Nee',
-'LBL_VAL_SSL_CERT'=>'Valideer SSL certificaat',
-'LBL_DONOT_VAL_SSL_CERT'=>'Niet valideren voor SSL cert',
 'LBL_WEB_MAIL_CONFIG'=>'Web e-mail configuratie',
 'LBL_CONFIGURE_WEB_MAIL'=>'Web e-mail instellen',
 'LBL_LIST_MAIL_ACCOUNT'=>'E-mail accountlijst',
@@ -478,11 +474,6 @@ $mod_strings = Array(
 'LBL_DEFAULT_MODULE_VIEW_DESC'=>'Standaard detail overzicht voor alle modules instellen',
 'LBL_ENABLE_SINGLEPANE_VIEW'=>'Enkelvoudig scherm aanzetten',
 'LBL_CLEAR_DATA'=>'Leegmaken',
-'LBL_LENGTHALERT'=>'Sorry, u kunt geen velden synchroniseren met verschillende karakters. Synchroniseer de data met dezelfde of meer karakters.',
-'LBL_DECIMALALERT'=>'Sorry, u kunt geen velden synchroniseren met verschillende decimale plaatsen. Synchroniseer de data met dezelfde of meerdere decimale plaatsen.',
-'LBL_TYPEALERT_1'=>'Sorry, u kunt niet synchroniseren',
-'LBL_WITH'=>'met',
-'LBL_TYPEALERT_2'=>'Data type. Synchroniseer dezelfde data types.',
 'LBL_FAQ_FIELD_ACCESS'=>'Toegang veld FAQ',
 'LBL_ADD_TAX_BUTTON'=>'BTW Toevoegen',
 'LBL_NO_TAXES_AVAILABLE'=>'Geen BTW beschikbaar',
@@ -720,11 +711,7 @@ $mod_strings = Array(
 'LBL_EXISTING_PICKLIST_VALUES'=>'Reeds bestaande Selectielijst Waarden',
 'LBL_SELECT_PICKLIST'=>'Selecteer Selectielijst',
 
-// Added after 5.0.4 GA
-
 'LBL_GENERAL_FIELDS'=>'Algemene Velden',
-
-'LBL_CANCEL_BUTTON'=>'Annuleer',
 
 //Added fields for Inventory Number labels
 'LBL_CUSTOMIZE_INVENTORY_NUMBER'=>'Maatwerk Voorraad Sequentie',
@@ -744,8 +731,6 @@ $mod_strings = Array(
 'LBL_CUSTOMPO_NUMBER'=>'Maatwerk Inkooporder Nummer',
 'LBL_PO_NUMBER_PREVIEW'=>'Preview',
 'LBL_PO_NUMBER_BUTTON'=>'Update Inkooporder Nummer',
-
-// Added after 5.0.4 GA
 
 // Added for Multi-Currency Support
 'LBL_TRANSFER_CURRENCY'=>'Transporteer Valuta',
@@ -787,7 +772,6 @@ $mod_strings = Array(
 'LBL_METHOD'=> 'Methode',
 'LBL_VAL_SSL_CERT'=>'Authentificeer SSL Certificaat',
 'LBL_DONOT_VAL_SSL_CERT'=>'Niet Authentificeren SSL Certificaat',
-'LBL_STATUS'=>'Status',
 'LBL_ENABLE'=>'Activeer',
 'LBL_DISABLE'=>'Deactiveer',
 'LBL_CONNECT'=>'Verbind',
@@ -800,9 +784,9 @@ $mod_strings = Array(
 'LBL_FROM'=>'van',
 'LBL_TO'=>'Aan',
 
-'LBL_ACTION'=>'Actie',
 'LBL_CREATE'=>'Maak',
 'LBL_TICKET'=>'Ticket',
+'LBL_PROJECT'=>'Project',
 'LBL_ADD'=>'Toevoegen',
 
 'LBL_CONTACT'=>'Contact',
@@ -875,6 +859,8 @@ $mod_strings = Array(
 // Module Sequence Numbering
 'LBL_CUSTOMIZE_MODENT_NUMBER'=>'Maatwerk Record Nummering',
 'LBL_CUSTOMIZE_MODENT_NUMBER_DESCRIPTION'=>'Op maat instellen van nummerschema\'s',
+'ERR_CUSTOMIZE_MODENT_NUMBER_EMPTY' => 'Start sequence cannot be empty!',
+'ERR_CUSTOMIZE_MODENT_NUMBER_NUMERIC' => 'Start sequence should be numeric.',
 // END
 
 //added for softphone integration
@@ -974,37 +960,18 @@ $mod_strings = Array(
 //Added for: 5473
 'LBL_SHARING_ACCESS_HELPNOTE' => 'Na Wijzigingen: klik op de Herbereken knop om de wijzigen door te voeren.',
 
-//for customer portal extension module
-'PORTAL_EXTENSION_DESCRIPTION'=>'Configureer Klant Portaal Plugin',
-'LBL_CUSTOMER_PORTAL'=> 'Klant Portaal',
-
-//FieldFormulas
-'LBL_FIELDFORMULAS' => 'Veld Formules',
-'LBL_FIELDFORMULAS_DESCRIPTION' => 'Voeg maatwerk vergelijkingen toe aan maatwerk velden',
-
-// @todo since vtiger 5.3 by Vicus to be translated
 'LBL_ADD_CUSTOMFIELD' => 'Add Custom Field',
 
 'ERR_INVALID_PROFILE_ID' => 'Invalid Profile Id. Please specify valid Profile Id',
 
-// Customization
-// @todo Vicus vtiger 3.5 partly translated
-'LBL_PUBLISHER' => 'Publisher',
-'LBL_PUBLISHED_ON' => 'Published On',
-'LBL_LICENSE'   => 'Licentie',
-'LBL_EXTENSION_FILE_DOWNLOAD_FAILED' => 'Failed to download the extension package!',
 'LBL_ALREADY_EXISTS' => 'Bestaat al',
 'LBL_EXTENSION_INCOMPATIBLE' => 'Add-on is niet compatible',
 'LBL_INSTALL' => 'Installeren',
-'LBL_DEFAULT_SETTINGS_BUTTON_TITLE' => 'Reset naar Standaard',
 'LBL_CONFIRM_DEFAULT_SETTINGS' => 'Are you sure that you want to change the server details to the default server values',
 'EXISTING_DEFAULT_VALUES' => 'The server details are already set to the default values',
 'LBL_NOTE' => 'Note:',
 'LBL_HIDE' => 'Hide Details',
 'LBL_SHOW' => 'Show Details',
-// END
-'LBL_USER_ADDITION_INFO'=>"To add a new user, please click on  
-			   <span style='font-style:italic;color:blue;'>OD-Settings Menu -> On Demand Admin -> Add / Invite User </span>",
 
 'LBL_READ_ONLY_ACCESS_MSG' => 'Alleen-Lezen toegang',
 'LBL_READ_WRITE_ACCESS_MSG' => 'Lezen-Schrijven toegang',

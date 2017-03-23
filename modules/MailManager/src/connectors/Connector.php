@@ -147,10 +147,10 @@ class MailManager_Connector {
 	 */
 	function folders($ref="{folder}") {
 		if ($this->mFolders) return $this->mFolders;
-		
+
 		$result = imap_getmailboxes($this->mBox, $ref, "*");
 		if ($this->isError()) return false;
-		
+
 		$folders = array();
 		foreach($result as $row) {
 			$folderName = str_replace($ref, "", $row->name);
@@ -167,7 +167,7 @@ class MailManager_Connector {
 	 * @param imap_stats flag $options
 	 */
 	function updateFolders($options=SA_UNSEEN) {
-		$this->folders(); // Initializes the folder Instance 
+		$this->folders(); // Initializes the folder Instance
 		foreach($this->mFolders as $folder) {
 			$this->updateFolder($folder, $options);
 		}
@@ -206,21 +206,19 @@ class MailManager_Connector {
 	 */
 	function folderMails($folder, $start, $maxLimit) {
 		$folderCheck = @imap_check($this->mBox);
-		if ($folderCheck->Nmsgs) {
-			
+		if (!empty($folderCheck->Nmsgs)) {
 			$reverse_start = $folderCheck->Nmsgs - ($start*$maxLimit);
 			$reverse_end = $reverse_start - $maxLimit + 1;
-			
+
 			if ($reverse_start < 1) $reverse_start = 1;
 			if ($reverse_end < 1) $reverse_end = 1;
-		
+
 			$sequence = sprintf("%s:%s", $reverse_start, $reverse_end);
-			
 			$records = imap_fetch_overview($this->mBox, $sequence);
 			$mails = array();
 			foreach($records as $result) {
 				array_unshift($mails, MailManager_Model_Message::parseOverview($result));
-			}		
+			}
 			$folder->setMails($mails);
 			$folder->setPaging($reverse_end, $reverse_start, $maxLimit, $folderCheck->Nmsgs, $start);
 		}
@@ -258,10 +256,9 @@ class MailManager_Connector {
 		}
 		if ($interval) {
 			MailManager_Model_Message::pruneOlderInDB($interval);
-			$_SESSION['mailmanager_clearDBCacheIntervalLast'] = $timenow;
+			coreBOS_Session::set('mailmanager_clearDBCacheIntervalLast', $timenow);
 		}
 	}
-
 
 	/**
 	 * Function which deletes the mails
@@ -274,7 +271,6 @@ class MailManager_Connector {
 			@imap_delete($this->mBox, $msgno[$i]);
 		}	
 	}
-
 
 	/**
 	 * Function which moves mail to another folder
@@ -358,12 +354,12 @@ class MailManager_Connector {
 		}
 	}
 
-	
 	/**
 	 * Returns list of Folder for the Mail Box
 	 * @return Array folder list
 	 */
 	function getFolderList() {
+		$folderList = array();
 		if(!empty($this->mBoxBaseUrl)) {
 			$list = @imap_list($this->mBox, $this->mBoxBaseUrl, '*');
 			if (is_array($list)) {
@@ -376,7 +372,7 @@ class MailManager_Connector {
 		return $folderList;
 	}
 
-	 function convertCharacterEncoding($value, $toCharset, $fromCharset) {
+	function convertCharacterEncoding($value, $toCharset, $fromCharset) {
 		if (function_exists('mb_convert_encoding')) {
 			$value = mb_convert_encoding($value, $toCharset, $fromCharset);
 		} else {

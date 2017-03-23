@@ -13,12 +13,12 @@ if($ajaxaction == "LOADRELATEDLIST") {
 	$relationId = vtlib_purify($_REQUEST['relation_id']);
 	if(!empty($relationId) && ((int)$relationId) > 0) {
 		$recordid = vtlib_purify($_REQUEST['record']);
-		if($_SESSION['rlvs'][$currentModule][$relationId]['currentRecord'] != $recordid) {
+		if(empty($_SESSION['rlvs'][$currentModule][$relationId]['currentRecord']) or $_SESSION['rlvs'][$currentModule][$relationId]['currentRecord'] != $recordid) {
 			$resetCookie = true;
 		} else {
 			$resetCookie = false;
 		}
-		$_SESSION['rlvs'][$currentModule][$relationId]['currentRecord'] = $recordid;
+		coreBOS_Session::set('rlvs^'.$currentModule.'^'.$relationId.'^currentRecord', $recordid);
 		$actions = vtlib_purify($_REQUEST['actions']);
 		$header = vtlib_purify($_REQUEST['header']);
 		$modObj->id = $recordid;
@@ -38,14 +38,12 @@ if($ajaxaction == "LOADRELATEDLIST") {
 		$image_path=$theme_path."images/";
 
 		$smarty = new vtigerCRM_Smarty;
+		$smarty->assign('RESET_COOKIE', $resetCookie);
 		// vtlib customization: Related module could be disabled, check it
 		if(is_array($relatedListData)) {
-			if( ($relatedModule == "Contacts" || $relatedModule == "Leads" ||
-					$relatedModule == "Accounts") && $currentModule == 'Campaigns' && 
-					!$resetCookie) {
-				//TODO for 5.3 this should be COOKIE not REQUEST, change here else where
-				// this logic is used for listview checkbox selection propogation.
-				$checkedRecordIdString = (empty($_REQUEST[$relatedModule.'_all']) ? $_COOKIE[$relatedModule.'_all'] : $_REQUEST[$relatedModule.'_all']);
+			if( ($relatedModule == "Contacts" || $relatedModule == "Leads" || $relatedModule == "Accounts") && $currentModule == 'Campaigns' && !$resetCookie) {
+				// this logic is used for listview checkbox selection propagation.
+				$checkedRecordIdString = (empty($_REQUEST[$relatedModule.'_all']) ? (empty($_COOKIE[$relatedModule.'_all']) ? '' : $_COOKIE[$relatedModule.'_all']) : $_REQUEST[$relatedModule.'_all']);
 				$checkedRecordIdString = rtrim($checkedRecordIdString,';');
 				$checkedRecordIdList = explode(';', $checkedRecordIdString);
 				$relatedListData["checked"]=array();
@@ -59,8 +57,6 @@ if($ajaxaction == "LOADRELATEDLIST") {
 					}
 				}
 				$smarty->assign("SELECTED_RECORD_LIST", $checkedRecordIdString);
-			} else {
-				$smarty->assign('RESET_COOKIE', $resetCookie);
 			}
 		}
 		// END

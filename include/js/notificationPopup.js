@@ -15,7 +15,7 @@ function _defPopup(){
 	parentDiv.appendChild(popupDiv);
 	popupDiv.id = randomID;
 	popupDiv.className = "lvtCol";
-	popupDiv.style.float="right"; 
+	popupDiv.style.float="right";
 	popupDiv.style.paddingRight="5px";
 	popupDiv.style.overflow="hidden";
 	popupDiv.style.right="0px";
@@ -28,7 +28,7 @@ function _defPopup(){
 	popupDiv.style.fontWeight="normal";
 	popupDiv.align="left";	//the popup to be displayed on screen
 	var node;
-	
+
 	/**
 	 * this function creates a popup div and displays in on the screen
 	 * after a timeinterval of time seconds the popup is hidden
@@ -42,61 +42,61 @@ function _defPopup(){
 		if(time != undefined && time != ""){
 			remainOnScreen = time * 1000;
 		}
-		popupDiv.innerHTML = node; 
+		popupDiv.innerHTML = node;
 		popupDiv.style.display = "block";
 		popupDiv.style.display = "";
 		var dimension = getDimension(popupDiv);
 		maxheight = dimension.y;
 		
 		popupDiv.style.height = "0px";
-		ShowPopup(); 
+		ShowPopup();
 	}
-	
+
 	/**
 	 * this function is used to display the popup on screen
 	 */
 	function ShowPopup(){
 		var height = popupDiv.style.height.substring(0,popupDiv.style.height.indexOf("px"));
-		if (parseInt(height) < maxheight) { 
+		if (parseInt(height) < maxheight) {
 			height = parseInt(height) + incrementHeight;
 			if(height > maxheight){
 				height = maxheight;
 			}
-			popupDiv.style.height = height + "px"; 
-			setTimeout(ShowPopup, 1); 
-		} else { 
-			popupDiv.style.height = maxheight + "px"; 
+			popupDiv.style.height = height + "px";
+			setTimeout(ShowPopup, 1);
+		} else {
+			popupDiv.style.height = maxheight + "px";
 			setTimeout(HidePopup, remainOnScreen);
-		} 
+		}
 	}
-	
+
 	/**
 	 * this function is used to hide the popup from screen
 	 */
 	function HidePopup(){
 		var height = popupDiv.style.height.substring(0,popupDiv.style.height.indexOf("px"));
-		if (parseInt(height) > 0) { 
+		if (parseInt(height) > 0) {
 			height = parseInt(height) - incrementHeight;
 			if(height<0){
 				height=0;
 			}
 			popupDiv.style.height = height+"px";
-			setTimeout(HidePopup, 1); 
-		} else { 
+			setTimeout(HidePopup, 1);
+		} else {
 			ResetPopup();
-		} 
+		}
 	}
-	
+
 	/**
 	 * this function is used to reset the popup
 	 */
 	function ResetPopup(){
 		popupDiv.innerHTML = "";
-		popupDiv.style.height = "0px"; 
+		popupDiv.style.height = "0px";
 		popupDiv.style.display = "none";
 		parentDiv.style.display = "none";
 	}
-	
+
 	return {
 		displayPopup: CreatePopup,
 		content: node

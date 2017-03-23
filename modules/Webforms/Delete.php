@@ -16,6 +16,6 @@ Webforms::checkAdminAccess($current_user);
 $webform=Webforms_Model::retrieveWithId(vtlib_purify($_REQUEST['id']));
 $webform->delete();
 
-$listURL='index.php?module=Webforms&action=WebformsListView&parenttab=Settings';
+$listURL='index.php?module=Webforms&action=WebformsListView';
 header(sprintf("Location: %s",$listURL));
 ?>

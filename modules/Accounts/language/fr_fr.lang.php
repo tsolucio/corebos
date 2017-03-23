@@ -24,9 +24,9 @@ $mod_strings = array (
 		'LBL_LIST_EMAIL_ADDRESS' => 'Adresse email',
 		'LBL_LIST_CONTACT_NAME' => 'Nom du contact',
 		'LBL_LIST_AMOUNT' => 'Total affaires',
-		'db_name' => LBL_LIST_ACCOUNT_NAME,
-		'db_website' => LBL_LIST_WEBSITE,
-		'db_billing_address_city' => LBL_LIST_CITY,
+		'db_name' => 'LBL_LIST_ACCOUNT_NAME',
+		'db_website' => 'LBL_LIST_WEBSITE',
+		'db_billing_address_city' => 'LBL_LIST_CITY',
 		'LBL_ACCOUNT' => 'Compte :',
 		'LBL_ACCOUNT_NAME' => 'Nom compte :',
 		'LBL_PHONE' => 'Téléphone :',
@@ -125,7 +125,7 @@ $mod_strings = array (
 		'Active' => 'Actif',
 		'Market Failed' => 'Perdu',
 		'Project Cancelled' => 'Projet abandonné',
-		'Shutdown' => 'Eteint',
+		'Shutdown' => 'Éteint',
 		'Apparel' => 'Habillement',
 		'Banking' => 'Banque',
 		'Biotechnology' => 'Biotechnologie',
@@ -168,8 +168,8 @@ $mod_strings = array (
 		'Reseller' => 'Revendeur',
 		'LBL_START_DATE' => 'Date de début',
 		'LBL_END_DATE' => 'Date de fin',
-		'LBL_ACCOUNT_EXIST' => 'Ce nom de compte est déjà utilisé',
-		'LBL_MAILER_EXPORT' => 'Mailer Export',
+		'LBL_ACCOUNT_EXIST' => 'Ce nom de compte est déjà utilisé!',
+		'LBL_MAILER_EXPORT' => 'Exportateur d\'email',
 		'LBL_MAILER_EXPORT_CONTACTS_TYPE' => 'Selectionner le contact :',
 		'LBL_MAILER_EXPORT_CONTACTS_DESCR' => 'Les contacts peuvent également être sélectionnés via "Champs personnalisés" et d\'autres champs standards.',
 		'LBL_MAILER_EXPORT_RESULTS_TYPE' => 'Sélectionnez un type d\'export',
@@ -182,7 +182,7 @@ $mod_strings = array (
 		'LBL_MAILER_EXPORT_CHECKED' => 'Sélectionné',
 		'LBL_MAILER_EXPORT_NOTCHECKED' => 'Non sélectionné',
 		//Module Sequence Numbering
-		'Account No'=>'Compte N°',
+		'Account No'=>'Compte n°',
 		// END
 
 		// Account Hierarchy

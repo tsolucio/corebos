@@ -6,12 +6,18 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 
-	{include file="Buttons_List1.tpl"}
-
+<script type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
+<table border=0 cellspacing=0 cellpadding=0 width=100% class=small>
+	<tr><td style="height:2px"></td></tr>
+	<tr>
+		{assign var="action" value="WebformsListView"}
+		{assign var="MODULELABEL" value=$MODULE|@getTranslatedString:$MODULE}
+		<td style="padding-left:10px;padding-right:50px" class="moduleName" nowrap><a class="hdrLink" href="#">{$MODULELABEL}</a></td>
+	</tr>
+</table>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tbody><tr>
         <td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
@@ -37,7 +43,7 @@
 							<td width=25% valign=top>
 							{if $data.name eq ''}
 								&nbsp;
-							{else}							
+							{else}
 							<table border=0 cellspacing=0 cellpadding=5 width=100%>
 								<tr>
 									{assign var=label value=$data.name|@getTranslatedString:$data.module}

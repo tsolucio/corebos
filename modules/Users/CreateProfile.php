@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('include/utils/utils.php');
 
 global $mod_strings;
@@ -15,21 +14,17 @@ $profilename=vtlib_purify($_REQUEST['profile_name']);
 
 if(isset($_REQUEST['dup_check']) && $_REQUEST['dup_check']!='')
 {
-        $query = 'select profilename from vtiger_profile where profilename=?';
-        $result = $adb->pquery($query, array($profilename));
+	$query = 'select profilename from vtiger_profile where profilename=?';
+	$result = $adb->pquery($query, array($profilename));
 
-        if($adb->num_rows($result) > 0)
-        {
-                echo $mod_strings['LBL_PROFILENAME_EXIST'];
-                die;
-        }else
-        {
-                echo 'SUCCESS';
-                die;
-        }
-
+	if ($adb->num_rows($result) > 0) {
+		echo $mod_strings['LBL_PROFILENAME_EXIST'];
+		die;
+	} else {
+		echo 'SUCCESS';
+		die;
+	}
 }
-
 
 global $theme;
 $theme_path="themes/".$theme."/";
@@ -62,7 +57,7 @@ do
 	$name=$temprow["profilename"];
 	$profileid=$temprow["profileid"];
 	$profilelist[] = array($name,$profileid); 
-}while($temprow = $adb->fetch_array($result));
+} while($temprow = $adb->fetch_array($result));
 $smarty->assign("PROFILE_LISTS", $profilelist);
 $smarty->display("CreateProfile.tpl");
 ?>

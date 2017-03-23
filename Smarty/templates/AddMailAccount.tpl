@@ -8,7 +8,6 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script type="text/javascript" src="include/js/menu.js"></script>
 
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 
@@ -93,8 +92,6 @@
        <tr>
            <td class="dvtCellLabel" align="right">{$MOD.LBL_MAIL_PROTOCOL}</td>
            <td class="dvtCellInfo">
-		<!-- <input type="radio" name="mailprotocol" value="pop3" {$POP3}/>&nbsp;{$MOD.LBL_POP} <font color="red">* *</font>&nbsp;
-		<input type="radio" name="mailprotocol" value="imap" {$IMAP}/>&nbsp;{$MOD.LBL_IMAP} <font color="red">* *</font>&nbsp; -->
 		<input type="radio" name="mailprotocol" value="imap2" {$IMAP2}/>&nbsp;{$MOD.LBL_IMAP2}
 		<input type="radio" name="mailprotocol" value="IMAP4" {$IMAP4}/>&nbsp;{$MOD.LBL_IMAP4}
 	   </td>	

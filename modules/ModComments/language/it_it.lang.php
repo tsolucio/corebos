@@ -27,7 +27,7 @@ $mod_strings = Array (
 
 'LBL_ADD_COMMENT' => 'Aggiungi Commento',
 'LBL_AUTHOR' => 'Autore',
-'LBL_ON' => 'on',
+'LBL_ON_DATE' => 'on',
 'LBL_MINE' => 'Miei',
 'LBL_LAST5'=> 'Ultimi 5',
 'Related Assigned Email' => 'Related Assigned Email',

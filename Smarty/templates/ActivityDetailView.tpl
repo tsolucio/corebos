@@ -9,7 +9,6 @@
  ********************************************************************************/
 -->*}
 <script type="text/javascript" src="modules/{$MODULE}/Calendar.js"></script>
-<script type="text/javascript" src="include/js/reflection.js"></script>
 <script type="text/javascript" src="include/js/dtlviewajax.js"></script>
 <span id="crmspanid" style="display:none;position:absolute;"  onmouseover="show('crmspanid');">
    <a class="link"  align="right" href="javascript:;">{$APP.LBL_EDIT_BUTTON}</a>
@@ -568,7 +567,6 @@ function DeleteTag(id,recordid)
                 </table>
 		{/if}
 	</table>
-	</form>
 	</td>
 	<td width=22% valign=top style="border-left:2px dashed #cccccc;padding:13px">
 						<!-- right side relevant info -->
@@ -642,7 +640,7 @@ function DeleteTag(id,recordid)
 				<td><div id="tagdiv" style="display:visible;"><form method="POST" action="javascript:void(0);" onsubmit="return tagvalidate();"><input class="textbox"  type="text" id="txtbox_tagfields" name="textbox_First Name" value="" style="width:100px;margin-left:5px;"></input>&nbsp;&nbsp;<input name="button_tagfileds" type="submit" class="crmbutton small save" value="{$APP.LBL_TAG_IT}" /></form></div></td>
 			</tr>
 			<tr>
-				<td class="tagCloudDisplay" valign=top> <span id="tagfields">{$ALL_TAG}</span></td>
+				<td class="tagCloudDisplay" valign=top> <span id="tagfields"></span></td>
 			</tr>
 		</table>
 		<!-- End Tag cloud display -->

@@ -45,7 +45,7 @@ abstract class Vtiger_BackupZip {
 
 	public static function getDefaultFileName($time = null) {
 		if(empty($time)) {
-			$time = gmmktime();
+			$time = time();
 		}
 		global $site_URL;
 		$archive_prefix=str_replace('http://','',$site_URL);

@@ -11,26 +11,23 @@
 		<table class="settingsSelUITopLine" border="0" cellpadding="5" cellspacing="0" width="100%">
 		<tbody>
 			<tr>
-				<td rowspan="2" valign="top" width="50"><img src="{'quickview.png'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" title="{$MOD.LBL_USERS}" border="0" height="48" width="48"></td>
+				<td rowspan="2" valign="top" width="50"><img src="{'quickview.png'|@vtiger_imageurl:$THEME}" alt="{$MOD.Tooltip}" title="{$MOD.Tooltip}" border="0" height="48" width="48"></td>
 				<td class="heading2" valign="bottom">
-				
 				<b><a href="index.php?module=Settings&action=ModuleManager&parenttab=Settings">{'VTLIB_LBL_MODULE_MANAGER'|@getTranslatedString:'Settings'}</a> > 
 			<a href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$FORMODULE}&parenttab=Settings">{$FORMODULE|@getTranslatedString:$FORMODULE}</a> > 
-				{$MOD.LBL_TOOLTIP_MANAGEMENT}			
+				{$MOD.LBL_TOOLTIP_MANAGEMENT}
 			</tr>
-	
 			<tr>
 				<td class="small" valign="top">{$MOD.LBL_TOOLTIP_MANAGEMENT_DESCRIPTION}</td>
 			</tr>
 		</tbody>
 		</table>
-		
 		<br>
 		<input type="hidden" id="pick_module" value="{$MODULE}">
 		<table border="0" cellpadding="10" cellspacing="0" width="100%">
 		<tbody>
 			<tr>
-			<td>	
+			<td>
 			<table class="tableHeading" border="0" cellpadding="5" cellspacing="0" width="100%">
 			<tbody><tr>
 				<td width='20%'>
@@ -42,23 +39,21 @@
 				</tr>
 			</tbody>
 			</table>
-			
-			
 			<div id="fieldList">
-		    </div>	
+			</div>
 			</td>
 			</tr>
 			</table>
 		</td>
-        </tr>
-        </table>
-    </td>
-    </tr>
-    </table>
-    </div>
+		</tr>
+		</table>
 	</td>
-    <td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
-    </tr>
+	</tr>
+	</table>
+	</div>
+	</td>
+	<td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
+	</tr>
 </tbody>
 </table>
 <br>

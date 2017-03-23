@@ -26,9 +26,19 @@
  * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
  * @license	vtiger CRM Public License Version 1.0 (by definition)
  ********************************************************************************/
- 
+
+if ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true')) {
+	$toggle_historicos = 'See Non Converted Leads';
+	$toggle_name = 'Converted Leads';
+} else {
+	$toggle_historicos = 'See Converted Leads';
+	$toggle_name = 'Leads';
+}
+
 $mod_strings = Array(
-'LBL_MODULE_NAME'=>'Leads',
+'LBL_TGL_HISTORICOS' => $toggle_historicos,
+'LBL_MODULE_NAME'=>$toggle_name,
+'Leads' => $toggle_name,
 'LBL_DIRECT_REPORTS_FORM_NAME'=>'Medewerkers',
 'LBL_MODULE_TITLE'=>'Leads: Home',
 'LBL_SEARCH_FORM_TITLE'=>'Zoek Lead',
@@ -52,7 +62,6 @@ $mod_strings = Array(
 'LBL_LEAD_NAME'=>'Lead naam:',
 'LBL_LEAD_INFORMATION'=>'Lead informatie',
 'LBL_FIRST_NAME'=>'Voornaam:',
-'LBL_PHONE'=>'Telefoon:',
 'LBL_COMPANY'=>'Bedrijf:',
 'LBL_DESIGNATION'=>'Functie:',
 'LBL_PHONE'=>'Telefoon:',
@@ -141,6 +150,7 @@ $mod_strings = Array(
 'Fax'=>'Fax',
 'Designation'=>'Functie',
 'Email'=>'E-mail',
+'Secondary Email' => 'Tweede E-mail',
 'Lead Source'=>'Bron lead',
 'Website'=>'Website',
 'Annual Revenue'=>'Jaaromzet',

@@ -7,16 +7,14 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *********************************************************************************/
-
 require_once('include/logging.php');
 require_once('include/database/PearDatabase.php');
-global $adb;
 
-$local_log =& LoggerManager::getLogger('EmailsAjax');
-global $currentModule;
+$local_log = LoggerManager::getLogger('EmailsAjax');
+global $adb, $currentModule;
 $modObj = CRMEntity::getInstance($currentModule);
 
-$ajaxaction = $_REQUEST["ajxaction"];
+$ajaxaction = isset($_REQUEST['ajxaction']) ? vtlib_purify($_REQUEST['ajxaction']) : '';
 if($ajaxaction == "DETAILVIEW")
 {
 	$crmid = $_REQUEST["recordid"];
@@ -36,7 +34,7 @@ if($ajaxaction == "DETAILVIEW")
 		}else
 		{
 			echo ":#:FAILURE";
-		}   
+		}
 	}else
 	{
 		echo ":#:FAILURE";
@@ -44,12 +42,12 @@ if($ajaxaction == "DETAILVIEW")
 } elseif($ajaxaction == "LOADRELATEDLIST" || $ajaxaction == "DISABLEMODULE") {
 	require_once 'include/ListView/RelatedListViewContents.php';
 }
-elseif($_REQUEST['ajaxmode'] == 'qcreate')
+elseif(isset($_REQUEST['ajaxmode']) and $_REQUEST['ajaxmode'] == 'qcreate')
 {
-        require_once('quickcreate.php');
+	require_once('quickcreate.php');
 }
 else
 {
-        require_once('include/Ajax/CommonAjax.php');
+	require_once('include/Ajax/CommonAjax.php');
 }
 ?>

@@ -9,7 +9,7 @@
  ********************************************************************************/
 require_once('include/utils/utils.php');
 require_once('include/utils/UserInfoUtil.php');
-global $mod_strings, $app_strings, $app_list_strings, $theme;
+global $mod_strings, $app_strings, $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 
@@ -20,7 +20,6 @@ $access_privileges = array();
 $row=1;
 foreach($defSharingPermissionData as $tab_id => $def_perr)
 {
-
 	$entity_name = getTabname($tab_id);
 	if($tab_id == 6) {
 		$cont_name = getTabname(4);
@@ -32,9 +31,9 @@ foreach($defSharingPermissionData as $tab_id => $def_perr)
 	$access_privileges[] = $entity_name;
 	$access_privileges[] = $entity_perr;
 	if($entity_perr != 'Private')
-		$access_privileges[] = $mod_strings['LBL_DESCRIPTION_'.$entity_perr] . $app_strings[$entity_name];
+		$access_privileges[] = $mod_strings['LBL_DESCRIPTION_'.$entity_perr] . getTranslatedString($entity_name, $entity_name);
 	else
-		$access_privileges[] = $mod_strings['LBL_USR_CANNOT_ACCESS'] . $app_strings[$entity_name];
+		$access_privileges[] = $mod_strings['LBL_USR_CANNOT_ACCESS'] . getTranslatedString($entity_name, $entity_name);
 	$row++;
 }
 $access_privileges=array_chunk($access_privileges,3);

@@ -20,19 +20,20 @@ class Import_Map {
 	}
 
 	public static function getInstanceFromDb($row, $user) {
+		global $default_charset;
 		$map = array();
 		foreach($row as $key=>$value) {
+			if (is_numeric($key)) continue;
 			if($key == 'content') {
 				$content = array();
-				$pairs = explode("&", $value);
+				$pairs = explode('&', html_entity_decode($value,ENT_QUOTES,$default_charset));
 				foreach($pairs as $pair) {
 					list($mappedName, $sequence) = explode("=", $pair);
 					$mappedName = str_replace('/eq/', '=', $mappedName);
 					$mappedName = str_replace('/amp/', '&', $mappedName);
-					$content["$mappedName"] = $sequence;
+					$content[$mappedName] = $sequence;
 				}
 				$map[$key] = $content;
-
 			} else {
 				$map[$key] = $value;
 			}
@@ -80,7 +81,7 @@ class Import_Map {
 		$columnNames = array_keys($map);
 		$columnValues = array_values($map);
 		if(count($map) > 0) {
-			$adb->pquery('INSERT INTO '.self::$tableName.' ('. implode(',',$columnNames).') VALUES ('. generateQuestionMarks($columnValues).')', array($columnValues));
+			$adb->pquery('INSERT INTO '.self::$tableName.' ('. implode(',',$columnNames).',date_entered) VALUES ('. generateQuestionMarks($columnValues).',now())', array($columnValues));
 			$adb->updateBlob(self::$tableName,"content","name='". $adb->sql_escape_string($this->getValue('name')).
 						"' AND module='".$adb->sql_escape_string($this->getValue('module'))."'",$this->getStringifiedContent());
 		}

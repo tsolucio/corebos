@@ -6,17 +6,16 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
 include_once 'modules/PurchaseOrder/PurchaseOrderPDFController.php';
 $controller = new Vtiger_PurchaseOrderPDFController($currentModule);
 $controller->loadRecord(vtlib_purify($_REQUEST['record']));
 $purchaseorder_no = getModuleSequenceNumber($currentModule,vtlib_purify($_REQUEST['record']));
 $moduleName = str_replace(' ', '', getTranslatedString('SINGLE_PurchaseOrder', $currentModule));
-if($purpose == 'webservice') {
-$PDFBuffer = $controller->Output('','S'); // S means send the pdf output in buffer instead of file
+if (isset($purpose) and $purpose == 'webservice') {
+	$PDFBuffer = $controller->Output('','S'); // S means send the pdf output in buffer instead of file
 } else {
-$controller->Output($moduleName.'_'.$purchaseorder_no.'.pdf', 'D');//added file name to make it work in IE, also forces the download giving the user the option to save
-exit();
+	$controller->Output($moduleName.'_'.$purchaseorder_no.'.pdf', 'D');//added file name to make it work in IE, also forces the download giving the user the option to save
+	exit();
 }
 ?>

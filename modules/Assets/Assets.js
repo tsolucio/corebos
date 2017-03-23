@@ -40,10 +40,6 @@ function set_return_formname_specific(formname,product_id, product_name) {
         window.opener.document.EditView1.product_name.value = product_name;
         window.opener.document.EditView1.product_id.value = product_id;
 }
-function add_data_to_relatedlist(entity_id,recordid) {
-
-        opener.document.location.href="index.php?module={RETURN_MODULE}&action=updateRelations&smodule={SMODULE}&destination_module=Products&entityid="+entity_id+"&parentid="+recordid;
-}
 
 function set_return_product(product_id, product_name) {
 	if(document.getElementById('from_link').value != '') {
@@ -63,8 +59,10 @@ function AssetssetValueFromCapture(recordid,value,target_fieldname) {
 			url: "index.php?"+url
 		}).done(function (response) {
 			var str = JSON.parse(response);
-			document.EditView.account.value = str["account_id"];
-			document.EditView.account_display.value = str["Accounts.accountname"];
+			if (document.EditView) {
+				if (document.EditView.account) document.EditView.account.value = str["account_id"];
+				if (document.EditView.account_display) document.EditView.account_display.value = str["Accounts.accountname"];
+			}
 		});
 	}
 }

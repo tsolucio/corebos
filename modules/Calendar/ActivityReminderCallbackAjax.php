@@ -16,14 +16,12 @@ require_once('include/utils/utils.php');
 require_once('modules/Calendar/Activity.php');
 
 $cur_time = time();
-$_SESSION['last_reminder_check_time'] = $cur_time;
-$_SESSION['next_reminder_interval'] = 60;
-if($_SESSION['next_reminder_time'] == 'None') {
+coreBOS_Session::set('last_reminder_check_time', $cur_time);
+coreBOS_Session::set('next_reminder_interval', 60);
+if(isset($_SESSION['next_reminder_time']) && $_SESSION['next_reminder_time'] == 'None') {
 	return;
-} elseif(isset($_SESSION['next_reminder_interval']) && (($_SESSION['next_reminder_time'] -
-		$_SESSION['next_reminder_interval']) > $cur_time)) {
-	echo "<script type='text/javascript' id='_vtiger_activityreminder_callback_interval_'>".
-		($_SESSION['next_reminder_interval'] * 1000)."</script>";
+} elseif(isset($_SESSION['next_reminder_interval']) && isset($_SESSION['next_reminder_time']) && (($_SESSION['next_reminder_time'] - $_SESSION['next_reminder_interval']) > $cur_time)) {
+	echo "<script type='text/javascript' id='_vtiger_activityreminder_callback_interval_'>".($_SESSION['next_reminder_interval'] * 1000)."</script>";
 	return;
 }
 $log = LoggerManager::getLogger('Activity_Reminder');
@@ -32,14 +30,14 @@ if(isPermitted('Calendar','index') == 'yes'){
 	$active = $adb->pquery("select * from vtiger_users where id=?",array($current_user->id));
 	$active_res = $adb->query_result($active,0,'reminder_interval');
 	if($active_res == 'None') {
-		$_SESSION['next_reminder_time'] = 'None';
+		coreBOS_Session::set('next_reminder_time', 'None');
 	}
 	if($active_res!='None'){
 		$interval=$adb->query_result($active,0,"reminder_interval");
 		$intervalInMinutes = ConvertToMinutes($interval);
 		// check for reminders every minute
 		$time = time();
-		$_SESSION['next_reminder_time'] = $time + ($intervalInMinutes * 60);
+		coreBOS_Session::set('next_reminder_time', $time + ($intervalInMinutes * 60));
 		$date = date('Y-m-d', strtotime("+$intervalInMinutes minutes", $time));
 		$time = date('H:i',   strtotime("+$intervalInMinutes minutes", $time));
 		$callback_query =
@@ -85,13 +83,14 @@ if(isPermitted('Calendar','index') == 'yes'){
 					$cbtime = $cbtimeArr['starthour'].':'.$cbtimeArr['startmin'].''.$cbtimeArr['startfmt'];
 				}
 
-				if($cbactivitytype=='Task')
-					$cbstatus   = $focus->column_fields["taskstatus"];
-				else
-					$cbstatus   = $focus->column_fields["eventstatus"];
+				if($cbactivitytype=='Task'){
+					$cbstatus = $focus->column_fields["taskstatus"];
+				} else {
+					$cbstatus = $focus->column_fields["eventstatus"];
 
 				$cbstatus = getTranslatedString($cbstatus, $currentModule);
-				$actType = $adb->query_result($adb->pquery('select activitytype from vtiger_activity where activityid=?', array($cbrecord)),0,'activitytype');
+				$atrs = $adb->pquery('select activitytype from vtiger_activity where activityid=?', array($cbrecord));
+				$actType = $adb->query_result($atrs,0,'activitytype');
 				$smarty->assign("activityimage", $actType);
 				$cbactivitytype = getTranslatedString($cbactivitytype, $currentModule);
 
@@ -112,7 +111,6 @@ if(isPermitted('Calendar','index') == 'yes'){
 				$smarty->assign("cbrecord", $cbrecord);
 				$smarty->assign("cbstatus", $cbstatus);
 				$smarty->assign("cbcolor", $cbcolor);
-				$smarty->assign("cblinkdtl", $cblinkdtl);
 				$smarty->assign("activitytype", $cbactivitytype);
 				$smarty->display("ActivityReminderCallback.tpl");
 
@@ -120,6 +118,7 @@ if(isPermitted('Calendar','index') == 'yes'){
 				$adb->pquery($mark_reminder_as_read, array($reminderid));
 				echo "<script type='text/javascript'>window.top.document.title= '".
 					$app_strings['LBL_NEW_BUTTON_LABEL'].$app_strings['LBL_Reminder']."';</script>";
+				}
 			}
 		} else {
 			$callback_query =
@@ -135,10 +134,9 @@ if(isPermitted('Calendar','index') == 'yes'){
 			foreach ($it as $row) {
 				$nextReminderTime = strtotime($row->date_start.' '.$row->time_start);
 			}
-			$_SESSION['next_reminder_time'] = $nextReminderTime - ($intervalInMinutes * 60);
+			coreBOS_Session::set('next_reminder_time', $nextReminderTime - ($intervalInMinutes * 60));
 		}
-		echo "<script type='text/javascript' id='_vtiger_activityreminder_callback_interval_'>".
-				($_SESSION['next_reminder_interval'] * 1000)."</script>";
+		echo "<script type='text/javascript' id='_vtiger_activityreminder_callback_interval_'>".($_SESSION['next_reminder_interval'] * 1000)."</script>";
 	}
 }
 

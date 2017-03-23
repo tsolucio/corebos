@@ -15,7 +15,7 @@ require_once('modules/Calendar/Activity.php');
 require_once('modules/Documents/Documents.php');
 require_once('modules/Emails/Emails.php');
 require_once('include/utils/utils.php');
-require_once('user_privileges/default_module_view.php');
+require('user_privileges/default_module_view.php');
 
 class Accounts extends CRMEntity {
 	var $db, $log; // Used in class functions of CRMEntity
@@ -27,11 +27,15 @@ class Accounts extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	var $IsCustomModule = false;
 	var $HasDirectImageField = false;
+
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
 	var $customFieldTable = Array('vtiger_accountscf', 'accountid');
-	var $entity_table = 'vtiger_crmentity';
+	var $related_tables = Array(
+		'vtiger_accountbillads' => Array ('accountaddressid', 'vtiger_account', 'accountid'),
+		'vtiger_accountshipads' => Array ('accountaddressid', 'vtiger_account', 'accountid'),
+	);
 
 	var $tab_name = Array('vtiger_crmentity','vtiger_account','vtiger_accountbillads','vtiger_accountshipads','vtiger_accountscf');
 	var $tab_name_index = Array('vtiger_crmentity'=>'crmid','vtiger_account'=>'accountid','vtiger_accountbillads'=>'accountaddressid','vtiger_accountshipads'=>'accountaddressid','vtiger_accountscf'=>'accountid');
@@ -51,8 +55,11 @@ class Accounts extends CRMEntity {
 		'Phone'=>'phone',
 		'Assigned To'=>'assigned_user_id'
 	);
-	var $list_link_field= 'accountname';
 
+	// Make the field link to detail view from list view (Fieldname)
+	var $list_link_field = 'accountname';
+
+	// For Popup listview and UI type support
 	var $search_fields = Array(
 		'Account Name'=>Array('vtiger_account'=>'accountname'),
 		'Billing City'=>Array('vtiger_accountbillads'=>'bill_city'),
@@ -105,7 +112,6 @@ class Accounts extends CRMEntity {
 		}
 	}
 
-	// Mike Crowe Mod --------------------------------------------------------Default ordering for us
 	/** Returns a list of the associated Campaigns
 	 * @param $id -- campaign id :: Type Integer
 	 * @returns list of campaigns in array format
@@ -118,7 +124,6 @@ class Accounts extends CRMEntity {
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once("modules/$related_module/$related_module.php");
 		$other = new $related_module();
-		vtlib_setup_modulevars($related_module, $other);
 		$singular_modname = vtlib_toSingular($related_module);
 
 		$parenttab = getParentTab();
@@ -169,7 +174,6 @@ class Accounts extends CRMEntity {
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once("modules/$related_module/$related_module.php");
 		$other = new $related_module();
-		vtlib_setup_modulevars($related_module, $other);
 		$singular_modname = vtlib_toSingular($related_module);
 
 		$parenttab = getParentTab();
@@ -225,7 +229,6 @@ class Accounts extends CRMEntity {
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once("modules/$related_module/$related_module.php");
 		$other = new $related_module();
-		vtlib_setup_modulevars($related_module, $other);
 		$singular_modname = vtlib_toSingular($related_module);
 
 		$parenttab = getParentTab();
@@ -243,7 +246,7 @@ class Accounts extends CRMEntity {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module). "' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module) ."'>&nbsp;";
 			}
 			if(in_array('ADD', $actions) && isPermitted($related_module,1, '') == 'yes') {
-				$button .= "<input title='".getTranslatedString('LBL_NEW'). " ". getTranslatedString($singular_modname) ."' class='crmbutton small create'" .
+				$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). " ". getTranslatedString($singular_modname) ."' class='crmbutton small create'" .
 					" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
 					" value='". getTranslatedString('LBL_ADD_NEW'). " " . getTranslatedString($singular_modname) ."'>&nbsp;";
 			}
@@ -286,7 +289,6 @@ class Accounts extends CRMEntity {
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once("modules/$related_module/Activity.php");
 		$other = new Activity();
-		vtlib_setup_modulevars($related_module, $other);
 		$singular_modname = vtlib_toSingular($related_module);
 
 		$parenttab = getParentTab();
@@ -304,12 +306,12 @@ class Accounts extends CRMEntity {
 			if(is_string($actions)) $actions = explode(',', strtoupper($actions));
 			if(in_array('ADD', $actions) && isPermitted($related_module,1, '') == 'yes') {
 				if(getFieldVisibilityPermission('Calendar',$current_user->id,'parent_id', 'readwrite') == '0') {
-					$button .= "<input title='".getTranslatedString('LBL_NEW'). " ". getTranslatedString('LBL_TODO', $related_module) ."' class='crmbutton small create'" .
+					$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). " ". getTranslatedString('LBL_TODO', $related_module) ."' class='crmbutton small create'" .
 						" onclick='this.form.action.value=\"EventEditView\";this.form.module.value=\"Calendar4You\";this.form.return_module.value=\"$this_module\";this.form.activity_mode.value=\"Task\";' type='submit' name='button'" .
 						" value='". getTranslatedString('LBL_ADD_NEW'). " " . getTranslatedString('LBL_TODO', $related_module) ."'>&nbsp;";
 				}
 				if(getFieldVisibilityPermission('Events',$current_user->id,'parent_id', 'readwrite') == '0') {
-					$button .= "<input title='".getTranslatedString('LBL_NEW'). " ". getTranslatedString('LBL_EVENT', $related_module) ."' class='crmbutton small create'" .
+					$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). " ". getTranslatedString('LBL_EVENT', $related_module) ."' class='crmbutton small create'" .
 						" onclick='this.form.action.value=\"EventEditView\";this.form.module.value=\"Calendar4You\";this.form.return_module.value=\"$this_module\";this.form.activity_mode.value=\"Events\";' type='submit' name='button'" .
 						" value='". getTranslatedString('LBL_ADD_NEW'). " " . getTranslatedString('LBL_EVENT', $related_module) ."'>";
 				}
@@ -386,7 +388,6 @@ class Accounts extends CRMEntity {
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once("modules/$related_module/$related_module.php");
 		$other = new $related_module();
-		vtlib_setup_modulevars($related_module, $other);
 		$singular_modname = vtlib_toSingular($related_module);
 
 		$parenttab = getParentTab();
@@ -400,6 +401,20 @@ class Accounts extends CRMEntity {
 
 		$button .= '<input type="hidden" name="email_directing_module"><input type="hidden" name="record">';
 
+		$accountContacts = $adb->pquery('SELECT contactid,firstname,lastname FROM vtiger_contactdetails
+										INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid
+										WHERE vtiger_contactdetails.accountid = ? AND vtiger_crmentity.deleted = 0 ORDER BY firstname,lastname',array($id));
+		$relid = $adb->run_query_field('select relation_id from vtiger_relatedlists where tabid='.$cur_tab_id.' and related_tabid='.$rel_tab_id,'relation_id');
+		$button .= '<select name="email_filter" class="small"
+		 onchange="loadRelatedListBlock(\'module=Accounts&action=AccountsAjax&file=DetailViewAjax&record='.$id.'&ajxaction=LOADRELATEDLIST&header=Emails&relation_id='.$relid.'&email_filter=\'+this.options[this.options.selectedIndex].value+\'&actions=add&parenttab=Support\',\'tbl_Accounts_Emails\',\'Accounts_Emails\');">
+		<option value="all">'.getTranslatedString('LBL_ALL').'</option>';
+		$accname = getEntityName('Accounts',$id);
+		$button .= '<option value="'.$id.'" '.((isset($_REQUEST['email_filter']) and $_REQUEST['email_filter']==$id) ? 'selected' : '').'>'.$accname[$id].'</option>';
+		while($cnt=$adb->fetch_array($accountContacts)) {
+			$button .= '<option value="'.$cnt['contactid'].'" '.((isset($_REQUEST['email_filter']) and $_REQUEST['email_filter']==$cnt['contactid']) ? 'selected' : '').'>'.$cnt['firstname'].' '.$cnt['lastname'].'</option>';
+		}
+		$button .= '</select>&nbsp;';
+
 		if($actions) {
 			if(is_string($actions)) $actions = explode(',', strtoupper($actions));
 			if(in_array('ADD', $actions) && isPermitted($related_module,1, '') == 'yes') {
@@ -407,33 +422,30 @@ class Accounts extends CRMEntity {
 			}
 		}
 
-		$entityIds = array($id);
-		$accountContacts = $adb->pquery('SELECT contactid FROM vtiger_contactdetails
-										INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid
-										WHERE vtiger_contactdetails.accountid = ? AND vtiger_crmentity.deleted = 0',
-										array($id));
-		$numOfContacts = $adb->num_rows($accountContacts);
-		if($accountContacts && $numOfContacts > 0) {
-			for($i=0; $i < $numOfContacts; ++ $i) {
-				array_push($entityIds, $adb->query_result($accountContacts, $i, 'contactid'));
+		if (empty($_REQUEST['email_filter']) or $_REQUEST['email_filter']=='all') {
+			$entityIds = array($id);
+			$numOfContacts = $adb->num_rows($accountContacts);
+			if($accountContacts && $numOfContacts > 0) {
+				for($i=0; $i < $numOfContacts; ++ $i) {
+					array_push($entityIds, $adb->query_result($accountContacts, $i, 'contactid'));
+				}
 			}
+		} else {
+			$entityIds = array(vtlib_purify($_REQUEST['email_filter']));
 		}
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>
-						'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 		$query = "SELECT case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,
-			vtiger_activity.activityid, vtiger_activity.subject, vtiger_emaildetails.*,
+			vtiger_activity.activityid, vtiger_activity.subject, vtiger_emaildetails.*, vtiger_email_track.access_count,
 			vtiger_activity.activitytype, vtiger_crmentity.modifiedtime,vtiger_activity.time_start,
 			vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_activity.date_start, vtiger_seactivityrel.crmid as parent_id
-			FROM vtiger_activity, vtiger_seactivityrel, vtiger_account, vtiger_emaildetails, vtiger_users, vtiger_crmentity
-			LEFT JOIN vtiger_groups ON vtiger_groups.groupid=vtiger_crmentity.smownerid
-			WHERE vtiger_seactivityrel.activityid = vtiger_activity.activityid
-				AND vtiger_seactivityrel.crmid IN (". implode(',', $entityIds) .")
-				AND vtiger_emaildetails.emailid = vtiger_activity.activityid
-				AND vtiger_users.id=vtiger_crmentity.smownerid
-				AND vtiger_crmentity.crmid = vtiger_activity.activityid
-				AND vtiger_account.accountid = ".$id."
-				AND vtiger_activity.activitytype='Emails'
-				AND vtiger_crmentity.deleted = 0";
+			from vtiger_activity
+			inner join vtiger_seactivityrel on vtiger_seactivityrel.activityid=vtiger_activity.activityid
+			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid
+			inner join vtiger_emaildetails on vtiger_emaildetails.emailid = vtiger_activity.activityid
+			left join vtiger_email_track on (vtiger_email_track.crmid=vtiger_seactivityrel.crmid AND vtiger_email_track.mailid=vtiger_activity.activityid)
+			left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
+			left join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid
+			WHERE vtiger_seactivityrel.crmid IN (". implode(',', $entityIds) .") AND vtiger_activity.activitytype='Emails' AND vtiger_crmentity.deleted = 0";
 		$return_value = GetRelatedList($this_module, $related_module, $other, $query, $button, $returnset);
 
 		if($return_value == null) $return_value = Array();
@@ -456,7 +468,6 @@ class Accounts extends CRMEntity {
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once("modules/$related_module/$related_module.php");
 		$other = new $related_module();
-		vtlib_setup_modulevars($related_module, $other);
 		$singular_modname = vtlib_toSingular($related_module);
 
 		$parenttab = getParentTab();
@@ -522,7 +533,6 @@ class Accounts extends CRMEntity {
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once("modules/$related_module/$related_module.php");
 		$other = new $related_module();
-		vtlib_setup_modulevars($related_module, $other);
 		$singular_modname = vtlib_toSingular($related_module);
 
 		$parenttab = getParentTab();
@@ -589,7 +599,6 @@ class Accounts extends CRMEntity {
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once("modules/$related_module/$related_module.php");
 		$other = new $related_module();
-		vtlib_setup_modulevars($related_module, $other);
 		$singular_modname = vtlib_toSingular($related_module);
 
 		$parenttab = getParentTab();
@@ -648,58 +657,10 @@ class Accounts extends CRMEntity {
 	* returns related Ticket record in array format
 	*/
 	function get_tickets($id, $cur_tab_id, $rel_tab_id, $actions=false) {
-		global $log, $singlepane_view,$currentModule,$current_user;
-		$log->debug("Entering get_tickets(".$id.") method ...");
-		$this_module = $currentModule;
-
-		$related_module = vtlib_getModuleNameById($rel_tab_id);
-		require_once("modules/$related_module/$related_module.php");
-		$other = new $related_module();
-		vtlib_setup_modulevars($related_module, $other);
-		$singular_modname = vtlib_toSingular($related_module);
-
-		$parenttab = getParentTab();
-
-		if($singlepane_view == 'true')
-			$returnset = '&return_module='.$this_module.'&return_action=DetailView&return_id='.$id;
-		else
-			$returnset = '&return_module='.$this_module.'&return_action=CallRelatedList&return_id='.$id;
-
-		$button = '';
-
-		if($actions && getFieldVisibilityPermission($related_module, $current_user->id, 'parent_id','readwrite') == '0') {
-			if(is_string($actions)) $actions = explode(',', strtoupper($actions));
-			if(in_array('SELECT', $actions) && isPermitted($related_module,4, '') == 'yes') {
-				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module). "' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module) ."'>&nbsp;";
-			}
-			if(in_array('ADD', $actions) && isPermitted($related_module,1, '') == 'yes') {
-				$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). " ". getTranslatedString($singular_modname) ."' class='crmbutton small create'" .
-					" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
-					" value='". getTranslatedString('LBL_ADD_NEW'). " " . getTranslatedString($singular_modname) ."'>&nbsp;";
-			}
-		}
-
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>
-						'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-		$query = "SELECT case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name, vtiger_users.id,
-			vtiger_troubletickets.*, vtiger_troubletickets.ticketid AS crmid, vtiger_ticketcf.*,
-			vtiger_crmentity.smownerid, vtiger_crmentity.modifiedtime, vtiger_crmentity.createdtime, vtiger_crmentity.description
-			FROM vtiger_troubletickets
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_troubletickets.ticketid
-			INNER JOIN vtiger_ticketcf ON vtiger_ticketcf.ticketid = vtiger_troubletickets.ticketid
-			LEFT JOIN vtiger_account ON vtiger_account.accountid = vtiger_troubletickets.parent_id
-			LEFT JOIN vtiger_contactdetails ON vtiger_contactdetails.contactid=vtiger_troubletickets.parent_id
-			LEFT JOIN vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid
-			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-			WHERE vtiger_crmentity.deleted = 0 and vtiger_troubletickets.parent_id=$id" ;
-		$return_value = GetRelatedList($this_module, $related_module, $other, $query, $button, $returnset);
-
-		if($return_value == null) $return_value = Array();
-		$return_value['CUSTOM_BUTTON'] = $button;
-
-		$log->debug("Exiting get_tickets method ...");
+		$return_value = parent::get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions);
 		return $return_value;
 	}
+
 	/**
 	* Function to get Account related Products
 	* @param  integer   $id      - accountid
@@ -713,7 +674,6 @@ class Accounts extends CRMEntity {
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once("modules/$related_module/$related_module.php");
 		$other = new $related_module();
-		vtlib_setup_modulevars($related_module, $other);
 		$singular_modname = vtlib_toSingular($related_module);
 
 		$parenttab = getParentTab();
@@ -775,13 +735,14 @@ class Accounts extends CRMEntity {
 		$fields_list = getFieldsListFromQuery($sql);
 
 		$query = "SELECT $fields_list,case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name
-				FROM ".$this->entity_table."
+				FROM vtiger_crmentity
 				INNER JOIN vtiger_account ON vtiger_account.accountid = vtiger_crmentity.crmid
 				LEFT JOIN vtiger_accountbillads ON vtiger_accountbillads.accountaddressid = vtiger_account.accountid
 				LEFT JOIN vtiger_accountshipads ON vtiger_accountshipads.accountaddressid = vtiger_account.accountid
 				LEFT JOIN vtiger_accountscf ON vtiger_accountscf.accountid = vtiger_account.accountid
 				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 				LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid and vtiger_users.status = 'Active'
+				LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'
 				LEFT JOIN vtiger_account vtiger_account2 ON vtiger_account2.accountid = vtiger_account.parentid
 				LEFT JOIN vtiger_account vtiger_accountaccount_id ON vtiger_account.parentid = vtiger_accountaccount_id.accountid";//vtiger_account2 is added to get the Member of account
 
@@ -898,7 +859,7 @@ class Accounts extends CRMEntity {
 			"Documents" => array("vtiger_senotesrel"=>array("crmid","notesid"),"vtiger_account"=>"accountid"),
 			"Campaigns" => array("vtiger_campaignaccountrel"=>array("accountid","campaignid"),"vtiger_account"=>"accountid"),
 		);
-		return $rel_tables[$secmodule];
+		return isset($rel_tables[$secmodule]) ? $rel_tables[$secmodule] : '';
 	}
 
 	/*
@@ -1203,15 +1164,13 @@ class Accounts extends CRMEntity {
 		if(!is_array($with_crmids)) $with_crmids = Array($with_crmids);
 		foreach($with_crmids as $with_crmid) {
 			if($with_module == 'Products') {
-				$checkResult = $adb->pquery('SELECT 1 FROM vtiger_seproductsrel WHERE productid = ? AND crmid = ?',
-												array($with_crmid, $crmid));
+				$checkResult = $adb->pquery('SELECT 1 FROM vtiger_seproductsrel WHERE productid = ? AND crmid = ?', array($with_crmid, $crmid));
 				if($checkResult && $adb->num_rows($checkResult) > 0) {
 					continue;
 				}
 				$adb->pquery("insert into vtiger_seproductsrel values(?,?,?)", array($crmid, $with_crmid, $module));
 			} elseif($with_module == 'Campaigns') {
-				$checkResult = $adb->pquery('SELECT 1 FROM vtiger_campaignaccountrel WHERE campaignid = ? AND accountid = ?',
-												array($with_crmid, $crmid));
+				$checkResult = $adb->pquery('SELECT 1 FROM vtiger_campaignaccountrel WHERE campaignid = ? AND accountid = ?', array($with_crmid, $crmid));
 				if($checkResult && $adb->num_rows($checkResult) > 0) {
 					continue;
 				}
@@ -1294,7 +1253,7 @@ class Accounts extends CRMEntity {
 	
 	function plugin_process_list_query($query)
 	{
-		global $log,$adb,$current_user;
+		global $log,$adb,$current_user, $currentModule;
 		$log->debug("Entering process_list_query1(".$query.") method ...");
 		$permitted_field_lists = Array();
 		require('user_privileges/user_privileges_'.$current_user->id.'.php');
@@ -1318,7 +1277,7 @@ class Accounts extends CRMEntity {
 			$permitted_field_lists[] = $adb->query_result($result1,$i,'columnname');
 		}
 
-		$result =& $this->db->query($query,true,"Error retrieving $this->object_name list: ");
+		$result = $this->db->query($query,true,"Error retrieving $currentModule list: ");
 		$list = Array();
 		$rows_found =  $this->db->getRowCount($result);
 		if($rows_found != 0)
@@ -1341,6 +1300,13 @@ class Accounts extends CRMEntity {
 		$response['previous_offset'] = $previous_offset;
 		$log->debug("Exiting process_list_query1 method ...");
 		return $response;
+	}
+	function getvtlib_open_popup_window_function($fieldname,$basemodule) {
+		if ($basemodule=='Issuecards') {
+			return 'set_return_shipbilladdress';
+		} else {
+			return 'vtlib_open_popup_window';
+		}
 	}
 }
 ?>

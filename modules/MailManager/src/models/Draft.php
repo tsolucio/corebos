@@ -69,7 +69,7 @@ class MailManager_Model_DraftEmail {
 			foreach($draftMails[$i] as $fieldname=>$fieldvalue) {
 				if($fieldname == "saved_toid" || $fieldname == "ccmail" || $fieldname == "bccmail") {
 					if(!empty($fieldvalue)) {
-						$value = implode(',',Zend_Json::decode($fieldvalue));
+						$value = implode(',',json_decode($fieldvalue),true);
 						if(strlen($value) > 45) {
 							$value = substr($value, 0, 45)."....";
 						}
@@ -195,7 +195,7 @@ class MailManager_Model_DraftEmail {
 			$adb->pquery("delete from vtiger_seactivityrel where activityid=?",array($emailId)); //remove all previous relation
 		}
 		for ($i=0; $i<(count($myids)); $i++) {
-				$realid = explode("@",$myids[$i]);
+			$realid = explode('@',$myids[$i]);
 			if(!empty($realid[0]) && !empty($emailId)) {
 				// this is needed as we might save the mail in draft mode earlier
 				$result = $adb->pquery("SELECT * FROM vtiger_seactivityrel WHERE crmid=? AND activityid=?",array($realid[0], $emailId));
@@ -260,9 +260,8 @@ class MailManager_Model_DraftEmail {
 	}
 
 	function handleUpload() {
-		global $upload_maxsize;
 		$allowedFileExtension = array();
-
+		$upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize',3000000,'Emails');
 		$uploadLimit = ConfigPrefs::get('MAXUPLOADLIMIT', $upload_maxsize);
 		$filePath = decideFilePath();
 

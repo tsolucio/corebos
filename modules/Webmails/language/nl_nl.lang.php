@@ -43,7 +43,6 @@ $mod_strings = Array(
 'LBL_LIST_RELATED_TO'=>'Gerelateerd aan',
 'LBL_LIST_DATE'=>'Verzenddatum',
 'LBL_LIST_TIME'=>'Tijd van verzenden',
-'LBL_MOVE_TO'=>'Verplaats naar',
 'LBL_DELETE'=>'Verwijder',
 
 'ERR_DELETE_RECORD'=>"Een veld moet zijn weergegeven om account te verwijderen.",

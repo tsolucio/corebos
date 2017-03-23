@@ -12,7 +12,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset={$LBL_CHARSET}">
-<title>{$APP.LBL_BROWSER_TITLE}</title>
+<title>{$coreBOS_uiapp_name}</title>
 <link REL="SHORTCUT ICON" HREF="{$COMPANY_DETAILS.favicon}">
 <style type="text/css">@import url("include/style.css");</style>
 <script type="text/javascript">

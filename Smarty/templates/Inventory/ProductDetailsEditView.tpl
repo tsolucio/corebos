@@ -107,22 +107,21 @@ function displayCoords(currObj,obj,mode,curr_row)
 		{/foreach}
 		</select>
 	</td>
-	
 	<td class="dvInnerHeader" align="center" colspan="2">
 		<b>{$APP.LBL_TAX_MODE}</b>&nbsp;&nbsp;
-		
+		{assign var="group_selected" value=""}
+		{assign var="individual_selected" value=""}
 		{if $ASSOCIATEDPRODUCTS.1.final_details.taxtype eq 'group'}
 			{assign var="group_selected" value="selected"}
 		{else}
 			{assign var="individual_selected" value="selected"}
 		{/if}
-
 		<select class="small" id="taxtype" name="taxtype" onchange="decideTaxDiv(); calcTotal();">
 			<OPTION value="individual" {$individual_selected}>{$APP.LBL_INDIVIDUAL}</OPTION>
 			<OPTION value="group" {$group_selected}>{$APP.LBL_GROUP}</OPTION>
 		</select>
 	</td>
-   </tr>
+	</tr>
 
    <!-- Header for the Product Details -->
    <tr valign="top">
@@ -186,7 +185,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 	<!-- column 2 - Product Name - starts -->
 	<td class="crmTableRow small lineOnTop">
 		<!-- Product Re-Ordering Feature Code Addition Starts -->
-		<input type="hidden" name="hidtax_row_no{$row_no}" id="hidtax_row_no{$row_no}" value="{$tax_row_no}"/>
+		<input type="hidden" name="hidtax_row_no{$row_no}" id="hidtax_row_no{$row_no}" value="{if isset($tax_row_no)}{$tax_row_no}{/if}"/>
 		<!-- Product Re-Ordering Feature Code Addition ends -->
 		<table width="100%"  border="0" cellspacing="0" cellpadding="1">
 			<tr>
@@ -220,12 +219,14 @@ function displayCoords(currObj,obj,mode,curr_row)
 
 	<!-- column 3 - Quantity in Stock - starts -->
 	<td class="crmTableRow small lineOnTop" valign="top">
-		{if ($MODULE eq 'Quotes' || $MODULE eq 'SalesOrder' || $MODULE eq 'Invoice')  && 'Products'|vtlib_isModuleActive}
+		{if ($MODULE eq 'Quotes' || $MODULE eq 'SalesOrder' || $MODULE eq 'Invoice' || $MODULE eq 'Issuecards')  && 'Products'|vtlib_isModuleActive}
 		{$APP.LBL_QTY_IN_STOCK}:&nbsp;<span id="{$qtyInStock}">{$data.$qtyInStock}</span><br>
 		{/if}
+		{if isset($data.$moreinfo)}
 		{foreach item=maindata from=$data.$moreinfo}
 			{include file='Inventory/EditViewUI.tpl'}
 		{/foreach}
+		{/if}
 	</td>
 	<!-- column 3 - Quantity in Stock - ends -->
 
@@ -244,30 +245,30 @@ function displayCoords(currObj,obj,mode,curr_row)
 		<table width="100%" cellpadding="0" cellspacing="0">
 		   <tr>
 			<td align="right">
-				<input id="{$listPrice}" name="{$listPrice}" value="{$data.$listPrice}" type="text" class="small " style="width:70px" onBlur="calcTotal(); setDiscount(this,'{$row_no}');callTaxCalc('{$row_no}');"/>&nbsp;{if 'PriceBooks'|vtlib_isModuleActive}<img src="{'pricebook.gif'|@vtiger_imageurl:$THEME}" onclick="priceBookPickList(this,'{$row_no}')">{/if}
+				<input id="{$listPrice}" name="{$listPrice}" value="{$data.$listPrice}" type="text" class="small" style="width:70px" onBlur="calcTotal(); setDiscount(this,'{$row_no}');callTaxCalc('{$row_no}');"{if $Inventory_ListPrice_ReadOnly} readonly{/if}/>&nbsp;{if 'PriceBooks'|vtlib_isModuleActive}<img src="{'pricebook.gif'|@vtiger_imageurl:$THEME}" onclick="priceBookPickList(this,'{$row_no}')">{/if}
 			</td>
 		   </tr>
 		   <tr>
 			<td align="right" style="padding:5px;" nowrap>
 				(-)&nbsp;<b><a href="javascript:doNothing();" onClick="displayCoords(this,'discount_div{$row_no}','discount','{$row_no}')" >{$APP.LBL_DISCOUNT}</a> : </b>
 				<div class="discountUI" id="discount_div{$row_no}">
-					<input type="hidden" id="discount_type{$row_no}" name="discount_type{$row_no}" value="{$data.$discount_type}">
+					<input type="hidden" id="discount_type{$row_no}" name="discount_type{$row_no}" value="{if isset($data.$discount_type)}{$data.$discount_type}{/if}">
 					<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small">
 					   <tr>
 						<td id="discount_div_title{$row_no}" nowrap align="left" ></td>
 						<td align="right"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fnHidePopDiv('discount_div{$row_no}')" style="cursor:pointer;"></td>
 					   </tr>
 					   <tr>
-						<td align="left" class="lineOnTop"><input type="radio" name="discount{$row_no}" {$data.$checked_discount_zero} onclick="setDiscount(this,'{$row_no}'); callTaxCalc('{$row_no}');calcTotal();">&nbsp; {$APP.LBL_ZERO_DISCOUNT}</td>
+						<td align="left" class="lineOnTop"><input type="radio" name="discount{$row_no}" {if isset($data.$checked_discount_zero)}{$data.$checked_discount_zero}{/if} onclick="setDiscount(this,'{$row_no}'); callTaxCalc('{$row_no}');calcTotal();">&nbsp; {$APP.LBL_ZERO_DISCOUNT}</td>
 						<td class="lineOnTop">&nbsp;</td>
 					   </tr>
 					   <tr>
-						<td align="left"><input type="radio" name="discount{$row_no}" onclick="setDiscount(this,'{$row_no}'); callTaxCalc('{$row_no}'); calcTotal();" {$data.$checked_discount_percent}>&nbsp; % {$APP.LBL_OF_PRICE}</td>
-						<td align="right"><input type="text" class="small" size="5" id="discount_percentage{$row_no}" name="discount_percentage{$row_no}" value="{$data.$discount_percent}" {$data.$style_discount_percent} onBlur="setDiscount(this,'{$row_no}'); callTaxCalc('{$row_no}'); calcTotal();">&nbsp;%</td>
+						<td align="left"><input type="radio" name="discount{$row_no}" onclick="setDiscount(this,'{$row_no}'); callTaxCalc('{$row_no}'); calcTotal();" {if isset($data.$checked_discount_percent)}{$data.$checked_discount_percent}{/if}>&nbsp; % {$APP.LBL_OF_PRICE}</td>
+						<td align="right"><input type="text" class="small" size="5" id="discount_percentage{$row_no}" name="discount_percentage{$row_no}" value="{$data.$discount_percent}" {if isset($data.$style_discount_percent)}{$data.$style_discount_percent}{/if} onBlur="setDiscount(this,'{$row_no}'); callTaxCalc('{$row_no}'); calcTotal();">&nbsp;%</td>
 					   </tr>
 					   <tr>
-						<td align="left" nowrap><input type="radio" name="discount{$row_no}" onclick="setDiscount(this,'{$row_no}'); callTaxCalc('{$row_no}'); calcTotal();" {$data.$checked_discount_amount}>&nbsp;{$APP.LBL_DIRECT_PRICE_REDUCTION}</td>
-						<td align="right"><input type="text" id="discount_amount{$row_no}" name="discount_amount{$row_no}" size="5" value="{$data.$discount_amount}" {$data.$style_discount_amount} onBlur="setDiscount(this,{$row_no}); callTaxCalc('{$row_no}'); calcTotal();"></td>
+						<td align="left" nowrap><input type="radio" name="discount{$row_no}" onclick="setDiscount(this,'{$row_no}'); callTaxCalc('{$row_no}'); calcTotal();" {if isset($data.$checked_discount_amount)}{$data.$checked_discount_amount}{/if}>&nbsp;{$APP.LBL_DIRECT_PRICE_REDUCTION}</td>
+						<td align="right"><input type="text" id="discount_amount{$row_no}" name="discount_amount{$row_no}" size="5" value="{$data.$discount_amount}" {if isset($data.$style_discount_amount)}{$data.$style_discount_amount}{/if} onBlur="setDiscount(this,{$row_no}); callTaxCalc('{$row_no}'); calcTotal();"></td>
 					   </tr>
 					</table>
 				</div>
@@ -289,10 +290,11 @@ function displayCoords(currObj,obj,mode,curr_row)
 						<td>&nbsp;</td>
 						<td align="right"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fnHidePopDiv('tax_div{$row_no}')" style="cursor:pointer;"></td>
 					   </tr>
-
+					{if isset($data.taxes)}
 					{foreach key=tax_row_no item=tax_data from=$data.taxes}
 					   {assign var="taxname" value=$tax_data.taxname|cat:"_percentage"|cat:$row_no}
-					   {assign var="tax_id_name" value="hidden_tax"|cat:$tax_row_no+1|cat:"_percentage"|cat:$row_no}
+					   {assign var="taxlinerowno" value=$tax_row_no+1}
+					   {assign var="tax_id_name" value="hidden_tax"|cat:$taxlinerowno|cat:"_percentage"|cat:$row_no}
 					   {assign var="taxlabel" value=$tax_data.taxlabel|cat:"_percentage"|cat:$row_no}
 					   {assign var="popup_tax_rowname" value="popup_tax_row"|cat:$row_no}
 					   <tr>
@@ -305,9 +307,8 @@ function displayCoords(currObj,obj,mode,curr_row)
 							<input type="text" class="small" size="6" name="{$popup_tax_rowname}" id="{$popup_tax_rowname}" style="cursor:pointer;" value="0.0" readonly>
 						</td>
 					   </tr>
-
 					{/foreach}
-
+					{/if}
 					</table>
 				</div>
 				<!-- This above div is added to display the tax informations -->
@@ -494,16 +495,17 @@ so we will get that array, parse that array and fill the details
 
 {foreach key=row_no item=data from=$ASSOCIATEDPRODUCTS}
 	<!-- This is added to call the function calcCurrentTax which will calculate the tax amount from percentage -->
+	{if isset($data.taxes)}
 	{foreach key=tax_row_no item=tax_data from=$data.taxes}
 		{assign var="taxname" value=$tax_data.taxname|cat:"_percentage"|cat:$row_no}
 			<script>calcCurrentTax('{$taxname}',{$row_no},{$tax_row_no});</script>
 	{/foreach}
+	{/if}
 	{assign var="entityIndentifier" value='entityType'|cat:$row_no}
 	{if $MODULE eq 'Invoice' && $data.$entityIndentifier neq 'Services'}
 		<script>stock_alert('{$row_no}');</script>
 	{/if}
 {/foreach}
-
 
 <!-- Added to calculate the tax and total values when page loads -->
 <script>
@@ -515,5 +517,4 @@ so we will get that array, parse that array and fill the details
  calcSHTax();
 </script>
 <!-- This above div is added to display the tax informations --> 
-
 

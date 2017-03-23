@@ -8,10 +8,6 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
-<script type="text/javascript" src="jscalendar/calendar.js"></script>
-<script type="text/javascript" src="jscalendar/lang/calendar-{$CALENDAR_LANG}.js"></script>
-<script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
 <script type="text/javascript" src="include/js/FieldDependencies.js"></script>
 {if $PICKIST_DEPENDENCY_DATASOURCE neq ''}
 <script type="text/javascript">
@@ -19,38 +15,7 @@
 </script>
 {/if}
 
-<!-- overriding the pre-defined #company to avoid clash with vtiger_field in the view -->
-{literal}
-<style type='text/css'>
-#company {
-	height: auto;
-	width: 90%;
-}
-</style>
-{/literal}
-
-<script type="text/javascript">
-var gVTModule = '{$smarty.request.module|@vtlib_purify}';
-function sensex_info()
-{ldelim}
-        var Ticker = document.getElementById('tickersymbol').value;
-        if(Ticker!='')
-        {ldelim}
-				document.getElementById("vtbusy_info").style.display="inline";
-				jQuery.ajax({ldelim}
-						method:"POST",
-						url:'index.php?module={$MODULE}&action=Tickerdetail&tickersymbol='+Ticker
-				{rdelim}).done(function(response) {ldelim}
-							document.getElementById('autocom').innerHTML = response;
-							document.getElementById('autocom').style.display="block";
-							document.getElementById("vtbusy_info").style.display="none";
-				{rdelim}
-			 );
-		{rdelim}
-{rdelim}
-</script>
-
-{include file='Buttons_List1.tpl'}
+{include file='Buttons_List.tpl'}
 
 {*<!-- Contents -->*}
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
@@ -60,10 +25,6 @@ function sensex_info()
 	<td class="showPanelBg" valign=top width=100%>
 		{*<!-- PUBLIC CONTENTS STARTS-->*}
 		<div class="small" style="padding:20px">
-			{* vtlib customization: use translated label if available *}
-			{assign var="SINGLE_MOD_LABEL" value=$SINGLE_MOD}
-			{if $APP.$SINGLE_MOD} {assign var="SINGLE_MOD_LABEL" value=$APP.SINGLE_MOD} {/if}
-				
 			{if $OP_MODE eq 'edit_view'}
 				{assign var="USE_ID_VALUE" value=$MOD_SEQ_ID}
 				{if $USE_ID_VALUE eq ''} {assign var="USE_ID_VALUE" value=$ID} {/if}
@@ -72,22 +33,15 @@ function sensex_info()
 			{/if}
 			{if $OP_MODE eq 'create_view'}
 				{if $DUPLICATE neq 'true'}
-					{assign var=create_new value="LBL_CREATING_NEW_"|cat:$SINGLE_MOD}
-					{* vtlib customization: use translation only if present *}
-					{assign var="create_newlabel" value=$APP.$create_new}
-					{if $create_newlabel neq ''}
-						<span class="lvtHeaderText">{$create_newlabel}</span> <br>
-					{else}
-						<span class="lvtHeaderText">{$APP.LBL_CREATING} {$APP.LBL_NEW} {$SINGLE_MOD|@getTranslatedString:$MODULE}</span> <br>
-					{/if}
+					<span class="lvtHeaderText">{$APP.LBL_CREATING} {$SINGLE_MOD|@getTranslatedString:$MODULE}</span> <br>
 				{else}
 					<span class="lvtHeaderText">{$APP.LBL_DUPLICATING} "{$NAME}" </span> <br>
 				{/if}
 			{/if}
 
 			<hr noshade size=1>
-			<br> 
-		
+			<br>
+
 			{include file='EditViewHidden.tpl'}
 
 			{*<!-- Account details tabs -->*}
@@ -114,21 +68,18 @@ function sensex_info()
 					
 							<table border=0 cellspacing=0 cellpadding=0 width=100%>
 							   <tr>
-								<td id ="autocom"></td>
-							   </tr>
-							   <tr>
 								<td style="padding:10px">
 									<!-- General details -->
-									<table border=0 cellspacing=0 cellpadding=0 width=100% class="small createview_table">
+									<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small createview_table">
 									   <tr>
 										<td  colspan=4 style="padding:5px">
 											<div align="center">
 												{if $MODULE eq 'Webmails'}
 													<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.action.value='Save';this.form.module.value='Webmails';this.form.send_mail.value='true';this.form.record.value='{$ID}'" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
 												{else}
-													<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmButton small save" onclick="this.form.action.value='Save'; displaydeleted(); return formValidate() " type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
+													<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmButton small save" onclick="this.form.action.value='Save'; displaydeleted(); return formValidate();" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
 												{/if}
-													<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="window.history.back()" type="button" name="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}  ">
+													<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="window.history.back()" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
 											</div>
 										</td>
 									   </tr>
@@ -137,11 +88,11 @@ function sensex_info()
 									   {foreach key=header item=data from=$BLOCKS}
 
 							<!-- This is added to display the existing comments -->
-							{if $header eq $MOD.LBL_COMMENTS || $header eq $MOD.LBL_COMMENT_INFORMATION}
+							{if $header eq $APP.LBL_COMMENTS || (isset($MOD.LBL_COMMENT_INFORMATION) && $header eq $MOD.LBL_COMMENT_INFORMATION)}
 							   <tr><td>&nbsp;</td></tr>
 							   <tr>
 								<td colspan=4 class="dvInnerHeader">
-							        	<b>{$MOD.LBL_COMMENT_INFORMATION}</b>
+									<b>{if isset($MOD.LBL_COMMENT_INFORMATION)}{$MOD.LBL_COMMENT_INFORMATION}{else}{$APP.LBL_COMMENTS}{/if}</b>
 								</td>
 							   </tr>
 							   <tr>
@@ -151,14 +102,14 @@ function sensex_info()
 							{/if}
 
 										<tr id="tbl{$header|replace:' ':''}Head">
-										{if $header== $MOD.LBL_ADDRESS_INFORMATION && ($MODULE == 'Accounts' || $MODULE == 'Quotes' || $MODULE == 'PurchaseOrder' || $MODULE == 'SalesOrder'|| $MODULE == 'Invoice') && $SHOW_COPY_ADDRESS eq 'yes'}
+										{if isset($MOD.LBL_ADDRESS_INFORMATION) && $header==$MOD.LBL_ADDRESS_INFORMATION && ($MODULE == 'Accounts' || $MODULE == 'Quotes' || $MODULE == 'PurchaseOrder' || $MODULE == 'SalesOrder'|| $MODULE == 'Invoice') && $SHOW_COPY_ADDRESS eq 1}
                                                                                 <td colspan=2 class="detailedViewHeader">
                                                                                 <b>{$header}</b></td>
                                                                                 <td class="detailedViewHeader">
                                                                                 <input name="cpy" onclick="return copyAddressLeft(EditView)" type="radio"><b>{$APP.LBL_RCPY_ADDRESS}</b></td>
                                                                                 <td class="detailedViewHeader">
                                                                                 <input name="cpy" onclick="return copyAddressRight(EditView)" type="radio"><b>{$APP.LBL_LCPY_ADDRESS}</b></td>
-										{elseif $header== $MOD.LBL_ADDRESS_INFORMATION && $MODULE == 'Contacts' && $SHOW_COPY_ADDRESS eq 'yes'}
+										{elseif isset($MOD.LBL_ADDRESS_INFORMATION) && $header== $MOD.LBL_ADDRESS_INFORMATION && $MODULE == 'Contacts' && $SHOW_COPY_ADDRESS eq 1}
 										<td colspan=2 class="detailedViewHeader">
                                                                                 <b>{$header}</b></td>
                                                                                 <td class="detailedViewHeader">
@@ -201,7 +152,7 @@ function sensex_info()
 										{if $MODULE eq 'Webmails'}
 										<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.action.value='Save';this.form.module.value='Webmails';this.form.send_mail.value='true';this.form.record.value='{$ID}'" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
 										{else}
-											<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.action.value='Save';  displaydeleted();return formValidate()" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
+											<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.action.value='Save';  displaydeleted();return formValidate();" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
 										{/if}
                                             <input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="window.history.back()" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
 											</div>
@@ -217,7 +168,7 @@ function sensex_info()
 				</td>
 			   </tr>
 			</table>
-		<div>
+		</div>
 	</td>
 	<td align=right valign=top><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
    </tr>
@@ -257,12 +208,6 @@ function sensex_info()
 </script>
 {/if}
 
-{if $MODULE eq 'Accounts'}
-<script>
-	ScrollEffect.limit = 201;
-	ScrollEffect.closelimit= 200;
-</script>
-{/if}
 <script>
 	var fieldname = new Array({$VALIDATION_DATA_FIELDNAME});
 	var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
@@ -270,12 +215,10 @@ function sensex_info()
 
 	var ProductImages=new Array();
 	var count=0;
-
 	function delRowEmt(imagename)
 	{ldelim}
 		ProductImages[count++]=imagename;
 	{rdelim}
-
 	function displaydeleted()
 	{ldelim}
 		var imagelists='';

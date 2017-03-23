@@ -8,7 +8,6 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script type="text/javascript" src="include/js/menu.js"></script>
 <script type="text/javascript" src="include/js/ColorPicker2.js"></script>
 <script type="text/javascript" src="include/js/smoothscroll.js"></script>
 
@@ -55,6 +54,60 @@ function check_duplicate()
 		alert(alert_arr.NO_SPECIAL+alert_arr.IN_USERNAME)
 {rdelim}
 
+	// sCommand = "LdapSearchUser" --> search a user which meets the name entered by the admin --> fill Drop Down box
+	// sCommand = "LdapSelectUser" --> retrieve the details of the user --> Fill all fields
+	function QueryLdap(sCommand)
+	{
+		sUser = document.getElementById(sCommand).value;
+
+		if (sCommand == "LdapSearchUser") // hide Drop-Down box
+			document.getElementById("LdapSelectUser").style.visibility="hidden";
+
+		jQuery.ajax({
+			method: 'POST',
+			url:'index.php?module=Users&action=UsersAjax&file=QueryLdap&command='+sCommand+'&user='+sUser
+			}).done(function (response) {
+				if (response.indexOf("Error=") == 0)
+				{
+					sError = response.substring(6);
+					alert (sError);
+				}
+				else if (response.indexOf("Options=") == 0)
+				{
+					sOptions = response.substring(8).split("\n");
+					var oSelBox = document.getElementById("LdapSelectUser");
+					oSelBox.innerHTML = "";
+					for (o=0; o<sOptions.length; o++)
+					{
+						sParts = sOptions[o].split("\t");
+						// Using DOM here because assigning innerHTML does not work on MSIE 6.0
+						var oOption = document.createElement("OPTION");
+						oOption.value = sParts[0];
+						oOption.text  = sParts[1];
+						if (sParts[0].length) oOption.text += " (" + sParts[0] + ")";
+						try
+						{
+							oSelBox.add(oOption, null); // Standard compliant
+						}
+						catch (ex)
+						{
+							oSelBox.add(oOption); // Internet Explorer
+						}
+					}
+					oSelBox.style.visibility="visible";
+				}
+				else if (response.indexOf("Values=") == 0)
+				{
+					sValues = response.substring(7).split("\n");
+					for (v=0; v<sValues.length; v++)
+					{
+						sParts = sValues[v].split("\t");
+						try { document.EditView[sParts[0]].value = sParts[1]; }
+						catch (ex) {}
+					}
+				}
+			});
+	}
 </script>
 
 <!-- vtlib customization: Help information assocaited with the fields -->
@@ -81,10 +134,9 @@ function check_duplicate()
 
 		<form name="EditView" method="POST" action="index.php" ENCTYPE="multipart/form-data" onsubmit="VtigerJS_DialogBox.block();">
 		<input type="hidden" name="module" value="Users">
-		<input type="hidden" name="record" value="{$ID}">
+		<input type="hidden" name="record" value="{if isset($ID)}{$ID}{/if}">
 		<input type="hidden" name="mode" value="{$MODE}">
 		<input type='hidden' name='parenttab' value='{$PARENTTAB}'>
-		<input type="hidden" name="activity_mode" value="{$ACTIVITYMODE}">
 		<input type="hidden" name="action">
 		<input type="hidden" name="return_module" value="{$RETURN_MODULE}">
 		<input type="hidden" name="return_id" value="{$RETURN_ID}">
@@ -106,7 +158,7 @@ function check_duplicate()
 			<td>
 				<span class="lvtHeaderText">
 				{if $PARENTTAB neq ''}
-				<b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString} </a> &gt; <a href="index.php?module=Administration&action=index&parenttab=Settings">{$MOD.LBL_USERS}</a> &gt; 
+				<b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString} </a> &gt; <a href="index.php?module=Users&action=index&parenttab=Settings">{$MOD.LBL_USERS}</a> &gt;
 					{if $MODE eq 'edit'}
 						{$UMOD.LBL_EDITING} "{$USERNAME}"
 					{else}
@@ -140,6 +192,11 @@ function check_duplicate()
 	<tr><td>&nbsp;</td></tr>
 	<tr>
 		<td nowrap align="right">
+			{if $LDAP_BUTTON neq ''}
+				<input type="text" id="LdapSearchUser" class="detailedViewTextBox" style="width:150px;" placeholder="{$UMOD.LBL_FORE_LASTNAME}">
+				<input type="button" class="crmbutton small create" value="{$UMOD.LBL_QUERY} {$LDAP_BUTTON}" onClick="QueryLdap('LdapSearchUser');">
+				<select id="LdapSelectUser" class="small" style="width:250px; visibility:hidden;" onChange="QueryLdap('LdapSelectUser');"></select>
+			{/if}
 			<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accesskey="{$APP.LBL_SAVE_BUTTON_KEY}" class="small crmbutton save" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  " onclick="this.form.action.value='Save'; return verify_data(EditView)" type="button" />
 			<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accesskey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="small crmbutton cancel" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  " onclick="window.history.back()" type="button" />
 		</td>

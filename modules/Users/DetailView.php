@@ -1,16 +1,12 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- ********************************************************************************/
+ ************************************************************************************/
 require_once('Smarty_setup.php');
 require_once('data/Tracker.php');
 require_once('modules/Users/Users.php');
@@ -18,8 +14,6 @@ require_once('include/utils/utils.php');
 require_once('include/utils/UserInfoUtil.php');
 require_once('include/utils/GetUserGroups.php');
 require_once('modules/Users/UserTimeZonesArray.php');
-//to check audittrail if enable or not
-require_once('user_privileges/audit_trail.php');
 global $current_user, $theme, $default_language, $adb, $currentModule, $app_strings, $mod_strings;
 
 $focus = new Users();
@@ -29,42 +23,15 @@ if(!empty($_REQUEST['record']))
 	$focus->retrieve_entity_info(vtlib_purify($_REQUEST['record']),'Users');
 	$focus->id = vtlib_purify($_REQUEST['record']);
 }
-else
-{
 
-    echo "
-        <script type='text/javascript'>
-            window.location = 'index.php?module=Users&action=ListView';
-        </script>
-        ";
+$smarty = new vtigerCRM_Smarty;
+
+if(empty($_REQUEST['record']) || $focus->user_name == '') {
+	$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-danger');
+	$smarty->assign('ERROR_MESSAGE', getTranslatedString('ERR_USER_DOESNOT_EXISTS','Users'));
+	$smarty->display('applicationmessage.tpl');
+	exit;
 }
-
-if( $focus->user_name == "" )
-{
-
-	if(is_admin($current_user))
-	{
-    echo "
-            <table>
-                <tr>
-                    <td>
-                        <b>User does not exist.</b>
-                    </td>
-		    </tr>";
-
-    echo "
-                <tr>
-                    <td>
-                        <a href='index.php?module=Users&action=ListView'>List Users</a>
-                    </td>
-                </tr>
-            </table>
-	    ";
-    exit;
-	}
-
-}
-
 
 if(isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
 	$focus->id = "";
@@ -78,8 +45,6 @@ $image_path=$theme_path."images/";
 $log->info("User detail view");
 
 $category = getParenttab();
-
-$smarty = new vtigerCRM_Smarty;
 
 $smarty->assign("UMOD", $mod_strings);
 global $current_language;
@@ -99,14 +64,17 @@ $smarty->assign("IMAGE_PATH", $image_path);
 $smarty->assign("ID", $focus->id);
 $smarty->assign("CATEGORY", $category);
 
-if(isset($_REQUEST['modechk']) && $_REQUEST['modechk'] != '' )
+if(!empty($_REQUEST['modechk']))
 {
 	$modepref = vtlib_purify($_REQUEST['modechk']);
-}
-	if($_REQUEST['modechk'] == 'prefview')
+	if($_REQUEST['modechk'] == 'prefview') {
 		$parenttab = '';
-	else
+	} else {
 		$parenttab = 'Settings';
+	}
+} else {
+	$parenttab = 'Settings';
+}
 
 $smarty->assign("PARENTTAB", $parenttab);
 
@@ -121,7 +89,19 @@ if ((is_admin($current_user) || $_REQUEST['record'] == $current_user->id)
 elseif (is_admin($current_user) || $_REQUEST['record'] == $current_user->id) {
 	$buttons = "<input title='".$app_strings['LBL_EDIT_BUTTON_TITLE']."' accessKey='".$app_strings['LBL_EDIT_BUTTON_KEY']."' class='crmButton small edit' onclick=\"this.form.return_module.value='Users'; this.form.return_action.value='DetailView'; this.form.return_id.value='$focus->id'; this.form.action.value='EditView';\" type='submit' name='Edit' value='  ".$app_strings['LBL_EDIT_BUTTON_LABEL']."  '>";
 	$smarty->assign('EDIT_BUTTON',$buttons);
-	$buttons = "<input title='".$mod_strings['LBL_CHANGE_PASSWORD_BUTTON_TITLE']."' accessKey='".$mod_strings['LBL_CHANGE_PASSWORD_BUTTON_KEY']."' class='crmButton password small' onclick='return window.open(\"index.php?module=Users&action=ChangePassword&form=DetailView\",\"test\",\"width=700,height=490,resizable=no,scrollbars=0, toolbar=no, titlebar=no, left=200, top=226, screenX=100, screenY=126\");' type='button' name='password' value='".$mod_strings['LBL_CHANGE_PASSWORD_BUTTON_LABEL']."'>";
+	$authType = GlobalVariable::getVariable('User_AuthenticationType', 'SQL');
+	if (is_admin($current_user)) $authType = 'SQL'; // admin users always login locally
+	switch (strtoupper($authType)) {
+	case 'AD':
+		$buttons = 'Active Directory';
+		break;
+	case 'LDAP':
+		$buttons = 'LDAP';
+		break;
+	default:
+		$buttons = "<input title='".$mod_strings['LBL_CHANGE_PASSWORD_BUTTON_TITLE']."' accessKey='".$mod_strings['LBL_CHANGE_PASSWORD_BUTTON_KEY']."' class='crmButton password small' onclick='return window.open(\"index.php?module=Users&action=ChangePassword&form=DetailView\",\"test\",\"width=700,height=490,resizable=no,scrollbars=0, toolbar=no, titlebar=no, left=200, top=226, screenX=100, screenY=126\");' type='button' name='password' value='".$mod_strings['LBL_CHANGE_PASSWORD_BUTTON_LABEL']."'>";
+		break;
+	}
 	$smarty->assign('CHANGE_PW_BUTTON',$buttons);
 }
 if (is_admin($current_user))
@@ -136,7 +116,7 @@ if (is_admin($current_user))
 		$smarty->assign('DELETE_BUTTON',$buttons);
 	}
 
-	if($_SESSION['authenticated_user_roleid'] == 'administrator')
+	if(isset($_SESSION['authenticated_user_roleid']) and $_SESSION['authenticated_user_roleid'] == 'administrator')
 	{
 		$buttons = "<input title='".$app_strings['LBL_LISTROLES_BUTTON_TITLE']."' accessKey='".$app_strings['LBL_LISTROLES_BUTTON_KEY']."' class='classBtn' onclick=\"this.form.return_module.value='Users'; this.form.return_action.value='TabCustomise'; this.form.action.value='listroles'; this.form.record.value= '". $current_user->id ."'\" type='submit' name='ListRoles' value=' ".$app_strings['LBL_LISTROLES_BUTTON_LABEL']." '>";
 		$smarty->assign('LISTROLES_BUTTON',$buttons);
@@ -163,7 +143,7 @@ $smarty->assign("MODULE", 'Users');
 $smarty->assign("CURRENT_USERID", $current_user->id);
 $HomeValues = $focus->getHomeStuffOrder($focus->id);
 $smarty->assign("TAGCLOUDVIEW",$HomeValues['Tag Cloud']);
-$smarty->assign("SHOWTAGAS",$HomeValues['showtagas']);
+$smarty->assign('SHOWTAGAS',getTranslatedString($HomeValues['showtagas'],'Users'));
 unset($HomeValues['Tag Cloud']);
 unset($HomeValues['showtagas']);
 $smarty->assign("HOMEORDER",$HomeValues);
@@ -171,8 +151,9 @@ $smarty->assign("BLOCKS", getBlocks($currentModule,"detail_view",'',$focus->colu
 $smarty->assign("USERNAME", getFullNameFromArray('Users', $focus->column_fields));
 $smarty->assign("HOUR_FORMAT",$focus->hour_format);
 $smarty->assign("START_HOUR",$focus->start_hour);
-$_SESSION['Users_FORM_TOKEN'] = rand(5, 2000) * rand(2, 7);
+coreBOS_Session::set('Users_FORM_TOKEN', rand(5, 2000) * rand(2, 7));
 $smarty->assign('FORM_TOKEN', $_SESSION['Users_FORM_TOKEN']);
+$smarty->assign("USE_ASTERISK", get_use_asterisk($current_user->id));
 
 if ($current_user->mustChangePassword()) {
 	$smarty->assign('ERROR_MESSAGE',getTranslatedString('ERR_MUST_CHANGE_PASSWORD','Users'));
@@ -180,9 +161,9 @@ if ($current_user->mustChangePassword()) {
 } else {
 	$smarty->assign('mustChangePassword',0);
 }
-
-//for check audittrail if it is enable or not
-$smarty->assign("AUDITTRAIL",$audit_trail);
+if (isset($_REQUEST['error_string'])) {
+	$smarty->assign('ERROR_MESSAGE',vtlib_purify($_REQUEST['error_string']));
+}
 
 $smarty->assign("view", null);
 $smarty->display("UserDetailView.tpl");

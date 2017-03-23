@@ -15,7 +15,6 @@ require_once("include/FormValidationUtil.php");
 global $mod_strings,$current_user;
 global $app_strings, $currentModule;
 global $adb;
-global $app_list_strings;
 global $theme;
 
 $theme_path="themes/".$theme."/";

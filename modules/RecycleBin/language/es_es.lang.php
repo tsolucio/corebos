@@ -19,9 +19,6 @@ $mod_strings = Array(
 'LBL_EMPTY_RBMODULE'=>'Vaciar Módulo',
 'LNK_RESTORE'=>'restaurar',
 'LBL_NO_PERMITTED_MODULES'=>'No hay modulos permitidos',
-'LBL_MANUALRESTORE'=>'Recuperación manual antes de restaurar el registro',
-'LBL_ALREADYEXISTS'=>'Ya existe en el CRM',
-'LBL_AUTOMATICRESTORE'=>'Recuperación automática al restaurar el registro.',
 );
 
 ?>

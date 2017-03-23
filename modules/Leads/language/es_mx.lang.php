@@ -16,8 +16,18 @@
 *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
  ********************************************************************************/
 
+if ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true')) {
+	$toggle_historicos = 'Ver Prospectos SIN Convertir';
+	$toggle_name = 'Prospectos Históricos';
+} else {
+	$toggle_historicos = 'Ver Prospectos Convertidos';
+	$toggle_name = 'Prospectos';
+}
+
 $mod_strings = Array(
-'LBL_MODULE_NAME'=>'Prospectos',
+'LBL_TGL_HISTORICOS' => $toggle_historicos,
+'LBL_MODULE_NAME'=>$toggle_name,
+'Leads' => $toggle_name,
 'LBL_DIRECT_REPORTS_FORM_NAME'=>'Informes Directos',
 'LBL_MODULE_TITLE'=>'Prospectos: Inicio',
 'LBL_SEARCH_FORM_TITLE'=>'Buscar Prospecto',
@@ -41,7 +51,6 @@ $mod_strings = Array(
 'LBL_LEAD_NAME'=>' Prospecto:',
 'LBL_LEAD_INFORMATION'=>'Infomación del Prospecto',
 'LBL_FIRST_NAME'=>'Nombre:',
-'LBL_PHONE'=>'Teléfono:',
 'LBL_COMPANY'=>'Cuenta:',
 'LBL_DESIGNATION'=>'Designación:',
 'LBL_PHONE'=>'Teléfono:',
@@ -129,6 +138,7 @@ $mod_strings = Array(
 'Company'=>'Empresa',
 'Fax'=>'Fax',
 'Email'=>'Email',
+'Secondary Email'=>'Email Secundario',
 'Lead Source'=>'Origen del Prospecto',
 'Website'=>'Página Web',
 'Annual Revenue'=>'Facturación Anual',
@@ -236,8 +246,8 @@ $mod_strings = Array(
 'LBL_FIELD_SETTINGS' => 'Configuración Campos',
 'Leads ID' => 'Id Prospecto',
 'LeadAlreadyConverted' => 'Este PreContacto no se puede convertir. O bien ya ha sido convertido, o te faltan permisos en uno de los módulos dependientes.',
-'Is Converted From Lead' => 'Convertido desde PreContacto',
-'Converted From Lead' => 'Convertido del PreContacto',
+'Is Converted From Lead' => 'Convertido desde Prospecto',
+'Converted From Lead' => 'Convertido del Prospecto',
 );
 
 ?>

@@ -115,9 +115,7 @@ $mod_strings = Array(
 'MESSAGE_ADD_USER_OR_CONTACT'=>'Bitte Nutzer oder Person hinzufügen...',
 'MESSAGE_MAIL_SENT_SUCCESSFULLY'=>' E-Mail(s) erfolgreich versendet!',
 
-// Added for web mail post 4.0.1 release
 'LBL_FETCH_WEBMAIL'=>'Fetch WebMail',
-//Added for 4.2 Release -- CustomView
 'LBL_ALL'=>'Alle',
 'MESSAGE_CONTACT_NOT_WANT_MAIL'=>'Dieser Kontakt möchte keine E-Mails empfangen.',
 'LBL_WEBMAILS_TITLE'=>'WebMails',
@@ -136,9 +134,7 @@ $mod_strings = Array(
 'LBL_MAILSELECT_INFO2'=>'Wählen Sie die E-Mail Adressen zu dem die E-Mail gesendet werden soll',
 'LBL_MULTIPLE'=>'mehrere',
 'LBL_COMPOSE_EMAIL'=>'neue E-Mail',
-'LBL_VTIGER_EMAIL_CLIENT'=>'E-Mail Client',
 
-//Added for 5.0.3
 'TITLE_VTIGERCRM_MAIL'=>'CRM Mail',
 'TITLE_COMPOSE_MAIL'=>'neue E-Mail',
 
@@ -169,6 +165,7 @@ $mod_strings = Array(
 'LBL_NO_RECORDS' => 'Keine Daten gefunden',
 'LBL_PRINT_EMAIL'=> 'Drucken',
 'LBL_ATTACH_DOCUMENTS' => 'Attach documents',
+'Access Count' => 'Access Count',
 );
 
 ?>

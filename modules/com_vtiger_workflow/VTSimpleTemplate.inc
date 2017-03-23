@@ -212,6 +212,25 @@ class VTSimpleTemplate{
 		return $retcm;
 	}
 
+	function getinvitedUsersList($recid) {
+		global $adb;
+		$modulename = $this->parent->getModuleName();
+		if ($modulename!='Events') return '';
+		list($wsid,$activity_id) = explode('x', $recid);
+		$query_user='SELECT vtiger_users.email1 FROM vtiger_salesmanactivityrel inner join vtiger_users on vtiger_users.id=vtiger_salesmanactivityrel.smid where vtiger_salesmanactivityrel.activityid=? and vtiger_users.deleted=0';
+		$user_result = $adb->pquery($query_user, array($activity_id));
+		$ulist = array();
+		while($user_result_row = $adb->fetch_array($user_result)) {
+			if (!in_array($user_result_row['email1'],$ulist)) {
+				$ulist[] = $user_result_row['email1'];
+			}
+		}
+		if (count($ulist)>0) {
+			return implode(',', $ulist);
+		}
+		return '';
+	}
+
 	function getGroupFieldList($groupref,$fieldname) {
 		require_once('include/utils/GetGroupUsers.php');
 		$groupId = getGrpId($groupref);
@@ -268,7 +287,7 @@ class VTSimpleTemplate{
 
 	function getMetaValue($fieldname){
 		require_once 'config.inc.php';
-		global $site_URL, $PORTAL_URL, $current_user, $HELPDESK_SUPPORT_NAME, $HELPDESK_SUPPORT_EMAIL_ID;
+		global $site_URL, $current_user;
 		if (substr($fieldname,0,14)=='groupEmailList') {
 			$groupname = trim(str_replace('_', ' ', substr($fieldname, 14)));
 			$fieldname = 'groupEmailList';
@@ -326,18 +345,20 @@ class VTSimpleTemplate{
 											if($moduleName == 'HelpDesk') $recorIdName = 'ticketid';
 											if($moduleName == 'Faq') $recorIdName = 'faqid';
 											if($moduleName == 'Products') $recorIdName = 'productid';
+											$PORTAL_URL = GlobalVariable::getVariable('Application_Customer_Portal_URL','http://your_support_domain.tld/customerportal');
 											return $PORTAL_URL.'/index.php?module='.$moduleName.'&action=index&'.$recorIdName.'='.$recordId.'&fun=detail';
 			case 'siteurl'				: return $site_URL;
-			case 'portalurl'			: return $PORTAL_URL;
+			case 'portalurl'			: return GlobalVariable::getVariable('Application_Customer_Portal_URL','http://your_support_domain.tld/customerportal');
 			case 'logo'					: return '<img src="cid:logo" />';
 
 			case 'recordId'				: list($moduleId, $recordId) = vtws_getIdComponents($this->parent->getId());
 										  return $recordId;
 
-			case 'supportName'			: return $HELPDESK_SUPPORT_NAME;
-			case 'supportEmailId'		: return $HELPDESK_SUPPORT_EMAIL_ID;
+			case 'supportName'			: return GlobalVariable::getVariable('HelpDesk_Support_Name','your-support name','HelpDesk');
+			case 'supportEmailId'		: return GlobalVariable::getVariable('HelpDesk_Support_EMail','support@your_support_domain.tld','HelpDesk');
 			case 'comments'				: return $this->getComments($numcomm,$srtcomm,$fmtcomm,$fldcomm);
 			case 'groupEmailList'		: return $this->getGroupFieldList($groupname,'email1');
+			case 'Events_Users_Invited'	: return $this->getinvitedUsersList($this->parent->getId());
 			default: '';
 		}
 	}

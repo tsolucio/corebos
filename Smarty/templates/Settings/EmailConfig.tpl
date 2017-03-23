@@ -6,11 +6,9 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 <script type="text/javascript" src="include/js/smoothscroll.js"></script>
-<script type="text/javascript" src="include/js/menu.js"></script>
 <br>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 	<tbody>
@@ -65,10 +63,8 @@
 										</div>
 									</td>
 								</tr>
-								{if $ERROR_MSG neq ''}
-								<tr>
-								{$ERROR_MSG}
-								</tr>
+								{if !empty($ERROR_MESSAGE)}
+								<tr><td>{include file='applicationmessage.tpl'}</td></tr>
 								{/if}
 								</table>
 
@@ -104,7 +100,7 @@
 												</tr>
 												<tr>
 													<td nowrap class="small cellLabel"><strong>{$MOD.LBL_REQUIRES_AUTHENT}</strong></td>
-													<td class="small cellText">{if $SMTP_AUTH=='true'}{$MOD.LBL_YES}{elseif $SMTP_AUTH=='false'}{$MOD.LBL_NO}{else}{$SMTP_AUTH}{/if}</td>
+													<td class="small cellText">{if $SMTP_AUTH=='true'}{$MOD.LBL_YES}{elseif $SMTP_AUTH=='false'}{$MOD.LBL_NO}{else}{$SMTP_AUTH_SHOW}{/if}</td>
 													<input type="hidden" value={$SMTP_AUTH} id="smtp_auth">
 												</tr>
 										</table>
@@ -171,9 +167,9 @@ function validate_mail_server(form)
 	if(form.server.value =='')
 	{
 		{/literal}
-                alert("{$APP.SERVERNAME_CANNOT_BE_EMPTY}")
-                        return false;
-                {literal}
+		alert("{$APP.SERVERNAME_CANNOT_BE_EMPTY}")
+		return false;
+		{literal}
 	}
 	return true;
 }

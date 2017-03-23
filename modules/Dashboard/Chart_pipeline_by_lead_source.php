@@ -1,29 +1,16 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the 
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  returns HTML for client-side image map.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
 require_once('include/utils/utils.php');
 require_once('include/logging.php');
-require_once("modules/Potentials/Charts.php");
-global $current_language, $ids, $tmp_dir;
+global $current_language, $ids;
+require_once("modules/Dashboard/DashboardCharts.php");
 $current_module_strings = return_module_language($current_language, 'Dashboard');
 require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
 require('user_privileges/user_privileges_'.$current_user->id.'.php');
@@ -32,14 +19,13 @@ require('user_privileges/user_privileges_'.$current_user->id.'.php');
 $comboFieldNames = Array('leadsource'=>'lead_source_dom');
 $comboFieldArray = getComboArray($comboFieldNames);
 
-$log = LoggerManager::getLogger('CSIM_pipeline_by_lead_source');
+$log = LoggerManager::getLogger('pipeline_by_lead_source');
 
 if (isset($_REQUEST['pbls_refresh'])) { $refresh = $_REQUEST['pbls_refresh']; }
 else { $refresh = false; }
 
 // added for auto refresh
 $refresh = true;
-//
 
 $tempx = array();
 $datax = array();
@@ -67,12 +53,14 @@ if (count($tempx) > 0) {
 else {
 	$datax = $comboFieldArray['lead_source_dom'];
 }
-$log->debug("datax is:");
-$log->debug($datax);
 
 $ids = array();
 //get list of user ids for which to display data
-if (isset($_SESSION['pbls_ids']) && count($_SESSION['pbls_ids']) != 0 && !isset($_REQUEST['pbls_ids'])) {
+if (isset($_REQUEST['showmypipeline'])) {
+	$ids = array($current_user->id);
+} elseif (isset($_REQUEST['showpipelineof']) and is_numeric($_REQUEST['showpipelineof'])) {
+	$ids = array($_REQUEST['showpipelineof']);
+} elseif (isset($_SESSION['pbls_ids']) && count($_SESSION['pbls_ids']) != 0 && !isset($_REQUEST['pbls_ids'])) {
 	$ids = $_SESSION['pbls_ids'];
 	$log->debug("_SESSION['pbls_ids'] is:");
 	$log->debug($_SESSION['pbls_ids']);
@@ -90,31 +78,17 @@ else {
 	$ids = array_keys($ids);
 }
 
-//create unique prefix based on selected users for image files
-$id_hash = '';
-if (isset($ids)) {
-	sort($ids);
-	$id_hash = crc32(implode('',$ids));
-}
-$log->debug("ids is:");
-$log->debug($ids);
-
-$cache_file_name = $id_hash."_pipeline_by_lead_source_".$current_language."_".crc32(implode('',$datax)).".png";
-$log->debug("cache file name is: $cache_file_name");
-
 if(isPermitted('Potentials','index')=="yes")
 {
-$draw_this = new jpgraph();
-$width = 850;
-$height = 500;
+$width = 1100;
+$height = 600;
 if(isset($_REQUEST['display_view']) && $_REQUEST['display_view'] == 'MATRIX')
 {
-	$width = 350;
-	$height = 250;
+	$width = 500;
+	$height = 300;
 }
 
-
-echo $draw_this->pipeline_by_lead_source($datax, $ids, $tmp_dir.$cache_file_name, $refresh,$width,$height);
+echo DashboardCharts::pipeline_by_lead_source($datax, $date_start, $date_end, $ids, $width, $height);
 echo "<P><font size='1'><em>".$current_module_strings['LBL_LEAD_SOURCE_FORM_DESC']."</em></font></P>";
 if (isset($_REQUEST['pbls_edit']) && $_REQUEST['pbls_edit'] == 'true') {
 ?>
@@ -140,23 +114,15 @@ if (isset($_REQUEST['pbls_edit']) && $_REQUEST['pbls_edit'] == 'true') {
 </form>
 <?php } 
 else {
-	if (file_exists($tmp_dir.$cache_file_name)) {
-		$date = new DateTimeField(date('Y-m-d H:i', filemtime($tmp_dir.$cache_file_name)));
-		$file_date = $date->getDBInsertDateValue();
-	}
-	else {
-		$file_date = '';
-	}
 ?>
 <div align=right><FONT size='1'>
-<em><?php  echo $current_module_strings['LBL_CREATED_ON'].' '.$file_date; ?> 
-</em>[<a href="javascript:void(0)" onClick="changeView('<?php echo vtlib_purify($_REQUEST['display_view']);?>');"><?php echo $current_module_strings['LBL_REFRESH'];?></a>]
-[<a href="index.php?module=<?php echo $currentModule;?>&action=index&pbls_edit=true&display_view=<?php echo vtlib_purify($_REQUEST['display_view']);?>"><?php echo $current_module_strings['LBL_EDIT'];?></a>]
+[<a href="javascript:void(0)" onClick="changeView('<?php echo isset($_REQUEST['display_view']) ? vtlib_purify($_REQUEST['display_view']) : '';?>');"><?php echo $current_module_strings['LBL_REFRESH'];?></a>]
+[<a href="index.php?module=<?php echo $currentModule;?>&action=index&pbls_edit=true&display_view=<?php echo isset($_REQUEST['display_view']) ? vtlib_purify($_REQUEST['display_view']) : '';?>"><?php echo $current_module_strings['LBL_EDIT'];?></a>]
 </FONT></div>
-<?php } 
+<?php }
 }
 else
 {
-        echo $mod_strings['LBL_NO_PERMISSION'];
+	echo $mod_strings['LBL_NO_PERMISSION'];
 }
 ?>

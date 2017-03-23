@@ -1,16 +1,11 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -55,7 +50,6 @@ $mod_strings = Array(
     'Last Ten Days'=>'letzte 10 Tage',
 
     // Added/Updated for vtiger CRM 5.0.4
-    'TITLE_AJAX_CSS_POPUP_CHAT'=>'Chat',
     'User List'=>'Benutzerliste',
 
     // Added after 5.0.4 GA
@@ -75,12 +69,13 @@ $mod_strings = Array(
     'LBL_HOME_HORIZONTAL_BARCHART'=>'horizontales Balkendiagramm',
     'LBL_HOME_VERTICAL_BARCHART'=>'vertikales Balkendiagramm',
     'LBL_HOME_PIE_CHART'=>'Tortendiagramm',
+    'LBL_HOME_HORIZONTAL'=>'horizontales',
+    'LBL_HOME_VERTICAL'=>'vertikales',
+    'LBL_HOME_PIE_'=>'Torten',
+    'Layout Saved' => 'Layout Saved',
     'LBL_HOME_ITEMS'=>'Einträge',
     'LBL_MORE'=>'mehr',
     'LBL_SCROLL'=>'scrollen',
-
-    // vtiger CRM News
-    'LBL_NEWS_NO'=>'keine neuen Nachrichten',
 
     //added for home page changes
     'LBL_NOTEBOOK'=>'Notizblock',
@@ -93,7 +88,6 @@ $mod_strings = Array(
     'LBL_TWO_COLUMN'=>'2 Spalten',
     'LBL_THREE_COLUMN'=>'3 Spalten',
     'LBL_FOUR_COLUMN'=>'4 Spalten',
-    // END
 
     // Default home page widget's title
     'Top Accounts'=>'Top Organisationen',
@@ -125,6 +119,9 @@ $mod_strings = Array(
     'LBL_DEFAULT_WIDGET'=>'Standardfenster',
     'LBL_NO_WIDGETS_HIDDEN'=>'Keine versteckten Standardfenster',
     'UpdateExchangeRate' => 'Update Exchange Rate',
+	'LBL_HOME_ADDWINDOW' => 'Add Window',
+	'LBL_GETTING_STARTED' => 'Getting Started',
+	'ExpirePasswordAfterDays' => 'Expire Password After Days',
 );
 
 ?>

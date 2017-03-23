@@ -27,7 +27,7 @@ if(getMigrationCharsetFlag() != MIG_CHARSET_PHP_UTF8_DB_UTF8 && !isset($_REQUEST
 
 include("modules/Migration/versions.php");
 require_once('Smarty_setup.php');
-global $app_strings,$app_list_strings,$mod_strings,$theme,$currentModule;
+global $app_strings,$mod_strings,$theme,$currentModule;
 include("vtigerversion.php");
 //Check the current version before starting migration. If the current versin is latest, then we wont allow to do 5.x migration. But here we must allow for 4.x migration. Because 4.x migration can be done with out changing the current database. -Shahul
 $status=true;
@@ -50,58 +50,6 @@ if(!$adb->isPostgres()) {
 		}
 	}
 }	
-
-//Added to check config variables($CALENDAR_DISPLAY = 'true',$CHAT_DISPLAY = 'true';) is present or Not 
-global $CALENDAR_DISPLAY,$CHAT_DISPLAY;
-$cal_status  =false;
-$chat_status =false;
-$final_status =false;
-$disp_msg = '';
-
-if(isset($CALENDAR_DISPLAY))
-	$cal_status = true;	
-if(isset($CHAT_DISPLAY))
-	$chat_status = true;
-
-if($cal_status == false && $chat_status == true)
-{
-	$final_status = false;
-	$disp_msg = 'The $CALENDAR_DISPLAY variable not available in the config.inc.php file .<br> Please add the following line at the end of the file config.inc.php before starting migration.<br> ';
-	$disp_msg .= ' $CALENDAR_DISPLAY = '."'true'; ";
-}
-else if($cal_status == true && $chat_status == false)
-{
-	$final_status = false;
-	$disp_msg = 'The $CHAT_DISPLAY variable not available in the config.inc.php file .<br> Please add the following line at the end of the file config.inc.php before starting migration.<br> ';
-	$disp_msg .= '$CHAT_DISPLAY ='." 'true'; ";
-}	
-else if($cal_status == false && $chat_status == false)
-{
-	$final_status = false;
-	$disp_msg = 'The $CALENDAR_DISPLAY, $CHAT_DISPLAY variables are not available in the config.inc.php file .<br> Please add the following lines at the end of the file config.inc.php before starting migration.<br> ';
-	$disp_msg .= ' $CALENDAR_DISPLAY = '."'true';<br>".'$CHAT_DISPLAY = '." 'true'; ";
-}
-else if($cal_status == true && $chat_status == true)
-	$final_status = true;
-
-if(!$final_status)
-{
-	echo '<br>
-		<table border="1" cellpadding="3" cellspacing="0" height="100%" width="80%" align="center">
-		<tr>
-			<td colspan="2" align="center">';
-	echo ' <font color ="red"> ';
-	echo $disp_msg;		
-	echo '<b><br><br>Kindly do the necessary changes in config.inc.php and click on the "Proceed" button to proceed with the Migration.</b> </font> ';
-	echo '<br><br><form name="html_to_utf" method="post" action="index.php">
-				<input type="hidden" name="module" value="Migration">
-				<input type="hidden" name="action" value="index">
-				<input type="hidden" name="parenttab" value="Settings">
-				<input type="submit" name="close" value=" &nbsp;Proceed &nbsp; " class="crmbutton small save" /><form/> </td></tr></table>';
-	exit;
-
-}
-
 
 $smarty = new vtigerCRM_Smarty();
 

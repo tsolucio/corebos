@@ -16,6 +16,14 @@ include_once('vtlib/Vtiger/ModuleBasic.php');
 class Vtiger_Module extends Vtiger_ModuleBasic {
 
 	/**
+	 * Function to get the Module/Tab id
+	 * @return <Number>
+	 */
+	public function getId() {
+		return $this->id;
+	}
+
+	/**
 	 * Get unique id for related list
 	 * @access private
 	 */
@@ -73,9 +81,9 @@ class Vtiger_Module extends Vtiger_ModuleBasic {
 
 		// Add column to vtiger_relatedlists to save extended actions
 		Vtiger_Utils::AddColumn('vtiger_relatedlists', 'actions', 'VARCHAR(50)');
-
-		$relchk = $adb->query_result($adb->pquery("SELECT count(*) from vtiger_relatedlists where tabid=? and related_tabid=? and name=? and label=?",
-			Array($this->id,$moduleInstance->id,$function_name,$label)),0,0);
+		$rs = $adb->pquery('SELECT count(*) from vtiger_relatedlists where tabid=? and related_tabid=? and name=? and label=?',
+			array($this->id,$moduleInstance->id,$function_name,$label));
+		$relchk = $adb->query_result($rs,0,0);
 		if ($relchk == 0) {
 		$adb->pquery("INSERT INTO vtiger_relatedlists(relation_id,tabid,related_tabid,name,sequence,label,presence,actions) VALUES(?,?,?,?,?,?,?,?)",
 			Array($relation_id,$this->id,$moduleInstance->id,$function_name,$sequence,$label,$presence,$useactions_text));
@@ -113,8 +121,8 @@ class Vtiger_Module extends Vtiger_ModuleBasic {
 	 * NOTE: $url can have variables like $MODULE (module for which link is associated),
 	 * $RECORD (record on which link is dispalyed)
 	 */
-	function addLink($type, $label, $url, $iconpath='', $sequence=0, $handlerInfo=null) {
-		Vtiger_Link::addLink($this->id, $type, $label, $url, $iconpath, $sequence, $handlerInfo);
+	function addLink($type, $label, $url, $iconpath='', $sequence=0, $handlerInfo=null, $onlyonmymodule=false) {
+		Vtiger_Link::addLink($this->id, $type, $label, $url, $iconpath, $sequence, $handlerInfo, $onlyonmymodule);
 	}
 
 	/**

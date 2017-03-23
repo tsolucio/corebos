@@ -794,4 +794,354 @@
 	<classname>changeEMailAccessCountToInteger</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Set number of decimals to uitype 9, percent values</description>
+	<filename>build/changeSets/changeTypeOfDataUitype9.php</filename>
+	<classname>changeTypeOfDataUitype9</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Database changes for mysql strict NO_ZERO_IN_DATE</description>
+	<filename>build/changeSets/mysqlstrictNO_ZERO_IN_DATE.php</filename>
+	<classname>mysqlstrictNO_ZERO_IN_DATE</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>FIX:: Set number of decimals to uitype 9, percent values</description>
+	<filename>build/changeSets/changeTypeOfDataUitype9FIX.php</filename>
+	<classname>changeTypeOfDataUitype9FIX</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Database changes for mysql strict. Fix update_log for cobropago. Not permit null and we save with null value</description>
+	<filename>build/changeSets/mysqlstrictCobroPagoUpdateLog.php</filename>
+	<classname>mysqlstrictCobroPagoUpdateLog</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Database changes for mysql strict. Uitype 101 need a number by default, not accpet empty value</description>
+	<filename>build/changeSets/mysqlstrict_Uitype101NotAcceptEmptyValue.php</filename>
+	<classname>mysqlstrict_Uitype101NotAcceptEmptyValue</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete Settings Backup and Announcements</description>
+	<filename>build/changeSets/delSettingsBackupAnnouncements.php</filename>
+	<classname>delSettingsBackupAnnouncements</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete Customer Portal and Webforms from Settings</description>
+	<filename>build/changeSets/delSettingsCPortalWebform.php</filename>
+	<classname>delSettingsCPortalWebform</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Update Packing Slip module if is installed </description>
+	<filename>build/changeSets/updateIssuecardsModule.php</filename>
+	<classname>updateIssuecardsModule</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete Single Pane View and Configuration Editor from Settings (global variables)</description>
+	<filename>build/changeSets/delSettingsSinglePaneViewConfigEditor.php</filename>
+	<classname>delSettingsSinglePaneViewConfigEditor</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Change uitype 58 (campaign) to 10</description>
+	<filename>build/changeSets/changeUitype58To10.php</filename>
+	<classname>changeUitype58To10</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Activate Document fields for mass edit</description>
+	<filename>build/changeSets/activateMassEditOnDocumentFields.php</filename>
+	<classname>activateMassEditOnDocumentFields</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>On Delete event in workflows</description>
+	<filename>build/changeSets/WorkflowOnDelete.php</filename>
+	<classname>WorkflowOnDelete</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Is Related List Block</description>
+	<filename>build/changeSets/addIsRelatedListBlock.php</filename>
+	<classname>addIsRelatedListBlock</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Fix Packing Slip module, currency fields are on incorrect block and for this not appear on filter columns </description>
+	<filename>build/changeSets/fixIssuecardsCurrencyFieldsBlock.php</filename>
+	<classname>fixIssuecardsCurrencyFieldsBlock</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Divisible checkbox to product and service</description>
+	<filename>build/changeSets/addPdoSrvDivisible.php</filename>
+	<classname>addPdoSrvDivisible</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete Administration directory (obsolete code)</description>
+	<filename>build/changeSets/delAdministration.php</filename>
+	<classname>delAdministration</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete Settings Notifications (moved to workflow)</description>
+	<filename>build/changeSets/delSettingsNotifications.php</filename>
+	<classname>delSettingsNotifications</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete chat functionality tables</description>
+	<filename>build/changeSets/delvtChatTables.php</filename>
+	<classname>delvtChatTables</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>kikojover</author>
+	<description>Add Indexes on Inventorydetail table</description>
+	<filename>build/changeSets/add_Indexes_InvDetails.php</filename>
+	<classname>add_Indexes_InvDetails</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>vtlib Header Links Load Only On their Module</description>
+	<filename>build/changeSets/vtlibLinkLoadOnlyOnMyModule.php</filename>
+	<classname>vtlibLinkLoadOnlyOnMyModule</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Header Dropzone CSS and javascript</description>
+	<filename>build/changeSets/dropzonecssandjs.php</filename>
+	<classname>dropzonecssandjs</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>mysql strict Mail Manager record table</description>
+	<filename>build/changeSets/mysqlstrictMailManager.php</filename>
+	<classname>mysqlstrictMailManager</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Add UIType 1024 Webservice Field Type</description>
+	<filename>build/changeSets/addUIType1024WebserviceFieldType.php</filename>
+	<classname>addUIType1024WebserviceFieldType</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Fix Calendar Start and End Date On Reports Filters, error with ampersand</description>
+	<filename>build/changeSets/fixCalendarStartEndDateOnReportsFilters.php</filename>
+	<classname>fixCalendarStartEndDateOnReportsFilters</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Created-By Field to all modules</description>
+	<filename>build/changeSets/addCreatedByField.php</filename>
+	<classname>addCreatedByField</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Update Mobile Module</description>
+	<filename>build/changeSets/updateMobileModuleToCrmNow2.php</filename>
+	<classname>updateMobileModuleToCrmNow2</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Make ModComments Shareable</description>
+	<filename>build/changeSets/makeModCommentsShareable.php</filename>
+	<classname>makeModCommentsShareable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>loridacito</author>
+	<description>Add files on header for calendar4you</description>
+	<filename>build/changeSets/addlinksforcalendar.php</filename>
+	<classname>addlinksforcalendar</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>kikojover</author>
+	<description>Set Activity subject field to 250 chars</description>
+	<filename>build/changeSets/grow_activity_subject.php</filename>
+	<classname>grow_activity_subject</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>shpend</author>
+	<description>Lightning design evvtmenu</description>
+	<filename>build/changeSets/ldMenu.php</filename>
+	<classname>ldMenu</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete Audit Trail and Login History from Settings: use cbAuditTrail and cbLoginHistory</description>
+	<filename>build/changeSets/delSettingsAuditLogin.php</filename>
+	<classname>delSettingsAuditLogin</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>kevinduqi</author>
+	<description>Install Terms and Conditions Module</description>
+	<filename>build/changeSets/installcbTermConditions.php</filename>
+	<classname>installcbTermConditions</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>albertxhani</author>
+	<description>Remove Calendar4You Link for moment.mn.js</description>
+	<filename>build/changeSets/RemoveMomentjs.php</filename>
+	<classname>RemoveMomentLink</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Feature: See Converted Leads</description>
+	<filename>build/changeSets/FeatureSeeConvertedLeads.php</filename>
+	<classname>FeatureSeeConvertedLeads</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Increment module Name/Label size and add missing indexes on SMS</description>
+	<filename>build/changeSets/cleanoptimizedatabase_170.php</filename>
+	<classname>cleanoptimizedatabase_170</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Change GlobalVariable Module-List UIType to 3314</description>
+	<filename>build/changeSets/2017/GlobalVarUITypeModuleList3314.php</filename>
+	<classname>GlobalVarUITypeModuleList3314</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add database indexes while studying MySQL queries with no index for a few hours</description>
+	<filename>build/changeSets/2017/cleanoptimizedatabase_180.php</filename>
+	<classname>cleanoptimizedatabase_180</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Fix Term and Conditions Field table on inventory modules</description>
+	<filename>build/changeSets/2017/fixcbTermConditionsField.php</filename>
+	<classname>fixcbTermConditionsField</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add moreinfo field to Reports for External URLs, Direct SQL and other future enhancements</description>
+	<filename>build/changeSets/2017/addMoreInfoFieldToReports.php</filename>
+	<classname>addMoreInfoFieldToReports</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Migrate biurl to moreinfo</description>
+	<filename>build/changeSets/2017/migratebiurl2moreinfo.php</filename>
+	<classname>migratebiurl2moreinfo</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Change uitype 68 (helpdesk) to 10</description>
+	<filename>build/changeSets/2017/changeUitype68To10.php</filename>
+	<classname>changeUitype68To10</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>fix WordProcessor Merge Table for MySQL strict mode</description>
+	<filename>build/changeSets/2017/fixWordProcessorMergeTable.php</filename>
+	<classname>fixWordProcessorMergeTable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>loridacito</author>
+	<description>add daily field in cron table</description>
+	<filename>build/changeSets/2017/add_dailyfield_incron.php</filename>
+	<classname>add_dailyfield_incron</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Set uitype 50 to DateTime in Webservice</description>
+	<filename>build/changeSets/2017/uitype50DateTimeinWebservice.php</filename>
+	<classname>uitype50DateTimeinWebservice</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Database optimizations and cleanup</description>
+	<filename>build/changeSets/2017/cleanoptimizedatabase_190.php</filename>
+	<classname>cleanoptimizedatabase_190</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>fix Asterisk Label on Users Module</description>
+	<filename>build/changeSets/2017/fixAsteriskLabelOnUsersModule.php</filename>
+	<classname>fixAsteriskLabelOnUsersModule</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add database index to PBXManager</description>
+	<filename>build/changeSets/2017/addDatabaseIndex2PBXManager.php</filename>
+	<classname>addDatabaseIndex2PBXManager</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>set PBXManager timeofcall to uiyype 50 so it can be searched on filters and reports</description>
+	<filename>build/changeSets/2017/fixPBXManagerUITypes.php</filename>
+	<classname>fixPBXManagerUITypes</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete Integration extension</description>
+	<filename>build/changeSets/2017/delIntegration.php</filename>
+	<classname>delIntegration</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete uitype 50 as reference from Webservice</description>
+	<filename>build/changeSets/2017/uitype50DateTimeinWebservice2.php</filename>
+	<classname>uitype50DateTimeinWebservice2</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

@@ -216,7 +216,8 @@ $mod_strings = Array(
     'LBL_FLDR_NOT_EMPTY'=>'Das Verzeichnis, was Sie löschen wollen ist nicht leer.  Leeren Sie das Verzeichnis zuerst.',
     'NO_REL_MODULES'=>'Für das ausgewählte Modul gibt es keine bezogene Module',
     'LBL_REPORT_GENERATION_FAILED'=>'Fehler bei der Berichtserstellung!',
-
+	'ERR_TOO_MANY_ROWS' => 'This report has too many rows. Please add some filters and divide it into various smaller reports.',
+	'ERR_INCORRECT_REPORTID' => 'Report cannot be found',
     'LBL_OR'=>'oder',
     'LBL_NEW_GROUP'=>'neue Gruppe',
     'LBL_DELETE_GROUP'=>'Gruppe löschen',
@@ -224,12 +225,14 @@ $mod_strings = Array(
     'LBL_SHARING_TYPE'=>'Berichtstyp',
     'LBL_SELECT_REPORT_TYPE_TO_CONTROL_ACCESS'=>'Wählen Sie einen Berichtstyp um die Zugangsrechte zum Bericht zu setzen.', 
     'LBL_ACTION' => 'Aktion',
+    'LBL ACTION' => 'Aktion',
     'ACTION' => 'Aktion',
     'LBL_VIEW_DETAILS' => 'Details ansehen',
     'LBL_SHOW_STANDARD_FILTERS' => 'zeige Standardfilter',
 
     'LBL_YEAR' => 'Jahr',
     'LBL_MONTH'=> 'Monat',
+    'LBL_DAY'=> 'Tag',
     'LBL_QUARTER'=> 'Quartal',
     'LBL_NONE'=> 'Keine',
 
@@ -263,7 +266,7 @@ $mod_strings = Array(
 
     'LBL_AUTO_GENERATED_REPORT_EMAIL' => 'Dies ist eine automatisch generierte E-Mail aufgrund eines Bericht-Zeitplans.',
     'LBL_TIME_FORMAT_MSG' => 'hh:mm (24 Stunden Format)',
-
+	'LBL_RELOAD_REPORT' => 'Reload Report',
     'LBL_SAVE_REPORT' => 'Speichern',
     'LBL_SAVE_REPORT_AS' => 'Bericht Speichern als...',
 
@@ -278,6 +281,24 @@ $mod_strings = Array(
     'LBL_HOME_WINDOW_TITLE' => 'Fenstername',
     'LBL_GROUPING_TIME' => 'Gruppier nach Zeit',
     'LBL_WIDGET_ADDED' => 'Fenster erfolgreich hinzugefügt.',
+	'Add ReportCharts' => 'Add Report Charts',
+	'Choose Report Type' => 'Choose Report Type',
+	'Application Report' => 'Application Report',
+	'External Application' => 'External Application',
+	'Direct SQL Statement' => 'Direct SQL Statement',
+	'Cross Tab' => 'Cross Tab',
+	'Pivot Table' => 'Pivot Table',
+	'External Report URL' => 'External Report URL',
+	'Add User Information' => 'Add User Information',
+	'Select One Field of each' => 'You can only select one field from each module for this type of report',
+	'Select Only One Module' => 'You can only select one module for this type of report',
+	'LBL_AGG_FIELD' => 'Aggregation Field',
+	'LBL_AGG_FUNCTION_CHOOSE' => 'Select Aggregation Column and Function',
+	'LBL_AGG_COLUMN' => 'Aggregation Column',
+	'LBL_AGG_FUNCTION' => 'Aggregation Function',
+	'LBL_COLUMNS_COUNT'=>'Count',
+	'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Es gabe einen Fehler beim Löschen des Verzeichnisses.',
+	'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Error while deleting the reports of the folder',
 );
 
 ?>

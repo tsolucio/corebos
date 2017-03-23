@@ -6,26 +6,21 @@
   * The Initial Developer of the Original Code is vtiger.
   * Portions created by vtiger are Copyright (C) vtiger.
   * All Rights Reserved.
-  *
   ********************************************************************************/
-$ajaxaction = $_REQUEST["ajxaction"];
-global $current_user;
-global $default_charset;
+$ajaxaction = vtlib_purify($_REQUEST['ajxaction']);
+global $current_user, $default_charset;
 
 $crmid = vtlib_purify($_REQUEST["recordid"]);
 $module = vtlib_purify($_REQUEST["module"]);
 $userid = $current_user->id;
 if($ajaxaction == "SAVETAG")
 {
-	
-	require_once('include/freetag/freetag.class.php');
-	$tagfields=function_exists(iconv) ? @iconv("UTF-8",$default_charset,$_REQUEST['tagfields']) : $_REQUEST['tagfields'];
-	$tagfields =str_replace(array("'",'"'),'',$tagfields);
-	if($tagfields != "")
-	{
-    		$freetag = new freetag();
-		if (isset($_REQUEST["tagfields"]) && trim($_REQUEST["tagfields"]) != "")
-		{
+	if (isset($_REQUEST['tagfields']) && trim($_REQUEST['tagfields']) != '') {
+		require_once('include/freetag/freetag.class.php');
+		$tagfields = function_exists('iconv') ? @iconv("UTF-8",$default_charset,$_REQUEST['tagfields']) : $_REQUEST['tagfields'];
+		$tagfields = str_replace(array("'",'"'),'',$tagfields);
+		if($tagfields != '') {
+			$freetag = new freetag();
 			$freetag->tag_object($userid,$crmid,$tagfields,$module);
 			$tagcloud = $freetag->get_tag_cloud_html($module,$userid,$crmid);
 			echo $tagcloud;

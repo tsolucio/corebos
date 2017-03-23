@@ -46,7 +46,7 @@
 <table>
 <name>vtiger_servicecontracts</name>
 <sql><![CDATA[CREATE TABLE `vtiger_servicecontracts` (
-  `servicecontractsid` int(11) default NULL,
+  `servicecontractsid` int(11) NOT NULL,
   `start_date` date default NULL,
   `end_date` date default NULL,
   `sc_related_to` int(11) default NULL,
@@ -61,7 +61,8 @@
   `priority` varchar(200) default NULL,
   `contract_type` varchar(200) default NULL,
   `progress` decimal(5,2) default NULL,
-  `contract_no` varchar(100) default NULL
+  `contract_no` varchar(100) default NULL,
+  PRIMARY KEY  (`servicecontractsid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
 </table>
 <table>

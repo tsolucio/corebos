@@ -28,10 +28,10 @@
 		 */
 		public function saveTask($task){
 			$adb = $this->adb;
-			if(is_numeric($task->id)){//How do I check whether a member exists in php?
+			if(!empty($task->id)){
 				$taskId = $task->id;
 				$adb->pquery("update com_vtiger_workflowtasks set summary=?, task=? where task_id=?",
-							array($task->summary, serialize($task), $taskId));
+					array($task->summary, serialize($task), $taskId));
 				return $taskId;
 			}else{
 				$taskId = $adb->getUniqueID("com_vtiger_workflowtasks");
@@ -174,7 +174,11 @@
 			$AM_PM = array('am', 'pm');
 			if (in_array(strtolower(substr($time, -2)),$AM_PM))
 				return $time; // ya tiene el formato correcto, devolverlo sin más
-			list($h, $m, $s) = explode(':', $time);
+			if (substr_count($time, ':')==1) {
+				list($h, $m) = explode(':', $time);
+			} else {
+				list($h, $m, $s) = explode(':', $time);
+			}
 			$mn = str_pad($m - $m % 15, 2, 0, STR_PAD_LEFT);
 			return str_pad(($h%12), 2, 0, STR_PAD_LEFT).':'.$mn.$AM_PM[($h/12)%2];
 		}
@@ -203,6 +207,7 @@
 				'LBL_HELPDESK_SUPPORT_EMAILID' => '(general : (__VtigerMeta__) supportEmailId)',
 				'Comments' => '(general : (__VtigerMeta__) comments)',
 				'groupEmailList' => '(general : (__VtigerMeta__) groupEmailList_Put_Group_Name_Here)',
+				'invitedUsers' => '(general : (__VtigerMeta__) Events_Users_Invited)',
 			);
 		}
 
@@ -232,7 +237,7 @@ class VTTaskType {
 
 	public static function registerTaskType($taskType) {
 		$adb = PearDatabase::getInstance();
-		$modules = Zend_Json::encode($taskType['modules']);
+		$modules = json_encode($taskType['modules']);
 
 		$exists = $adb->pquery('select count(*) from com_vtiger_workflow_tasktypes
 				where tasktypename=? and label=? and classname=? and classpath=? and
@@ -259,7 +264,7 @@ class VTTaskType {
 			$taskName = $rawData['tasktypename'];
 			$moduleslist = $rawData['modules'];
 			$sourceModule = $rawData['sourcemodule'];
-			$modules = Zend_Json::decode($moduleslist);
+			$modules = json_decode($moduleslist,true);
 			$includeModules = $modules['include'];
 			$excludeModules = $modules['exclude'];
 

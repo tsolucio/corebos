@@ -19,6 +19,7 @@ class VTEmailTask extends VTTask{
 		return array("fromname", "fromemail", "replyto", "subject", "content", "recepient", 'emailcc', 'emailbcc');
 	}
 	public function doTask(&$entity){
+		global $logbg;
 		$util = new VTWorkflowUtils();
 
 		$admin = $util->adminUser();
@@ -26,7 +27,7 @@ class VTEmailTask extends VTTask{
 
 		$entityCache = new VTEntityCache($admin);
 
-		$from_name = $from_email = '';
+		$from_name = $from_email = $replyto = '';
 		if(!empty($this->fromname)){
 			$fnt = new VTEmailRecipientsTemplate($this->fromname);
 			$from_name = $fnt->render($entityCache,$entity->getId());
@@ -41,10 +42,18 @@ class VTEmailTask extends VTTask{
 		}
 		$et = new VTEmailRecipientsTemplate($this->recepient);
 		$to_email = $et->render($entityCache, $entity->getId());
-		$ecct = new VTEmailRecipientsTemplate($this->emailcc);
-		$cc = $ecct->render($entityCache, $entity->getId());
-		$ebcct = new VTEmailRecipientsTemplate($this->emailbcc);
-		$bcc = $ebcct->render($entityCache, $entity->getId());
+		if (empty($this->emailbcc)) {
+			$cc = '';
+		} else {
+			$ecct = new VTEmailRecipientsTemplate($this->emailcc);
+			$cc = $ecct->render($entityCache, $entity->getId());
+		}
+		if (empty($this->emailbcc)) {
+			$bcc = '';
+		} else {
+			$ebcct = new VTEmailRecipientsTemplate($this->emailbcc);
+			$bcc = $ebcct->render($entityCache, $entity->getId());
+		}
 		$mailto = GlobalVariable::getVariable('Workflow_Send_Email_ToCCBCC','');//For tests
 		if($mailto != ''){
 			$to_email = $mailto;
@@ -64,8 +73,8 @@ class VTEmailTask extends VTTask{
 		$ct = new VTSimpleTemplate($this->content);
 		$content = $ct->render($entityCache, $entity->getId());
 		$logo = (strpos($this->content, '(general : (__VtigerMeta__) logo)')===false) ? '' : '1';
-		send_mail($module,$to_email,$from_name,$from_email,$subject,$content, $cc, $bcc,'','',$logo,$replyto);
-
+		$rdo = send_mail($module,$to_email,$from_name,$from_email,$subject,$content, $cc, $bcc,'','',$logo,$replyto);
+		$logbg->debug("VTEmailTask\nTo: $to_email\nFromName: $from_name\nFromEmail: $from_email\nCC: $cc\nBCC: $bcc\nResult: $rdo");
 		$util->revertUser();
 	}
 }

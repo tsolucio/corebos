@@ -9,13 +9,12 @@
  *************************************************************************************/
 
 class VtigerCRMObject{
-	
-	private $moduleName ;
-	private $moduleId ;
-	private $instance ;
-	
-	function VtigerCRMObject($moduleCredential, $isId=false){
-		
+
+	private $moduleName;
+	private $moduleId;
+	private $instance;
+
+	function __construct($moduleCredential, $isId=false){
 		if($isId){
 			$this->moduleId = $moduleCredential;
 			$this->moduleName = $this->getObjectTypeName($this->moduleId);
@@ -99,12 +98,11 @@ class VtigerCRMObject{
 		return $this->moduleName;
 	}
 	
-	public function read($id){
+	public function read($id,$deleted=false){
 		global $adb;
-		
 		$error = false;
 		$adb->startTransaction();
-		$this->instance->retrieve_entity_info($id,$this->moduleName);
+		$this->instance->retrieve_entity_info($id,$this->moduleName,$deleted);
 		$error = $adb->hasFailedTransaction();
 		$adb->completeTransaction();
 		return !$error;

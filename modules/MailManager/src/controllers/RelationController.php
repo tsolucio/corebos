@@ -52,7 +52,7 @@ class MailManager_RelationController extends MailManager_Controller {
 
 		if ('find' == $request->getOperationArg()) {
 			$this->skipConnection = true; // No need to connect to mailbox here, improves performance
-			
+
 			// Check if the message is already linked.
 			//$linkedto = MailManager_RelationControllerAction::associatedLink($request->get('_msguid'));
 			// If the message was not linked, lookup for matching records, using FROM address
@@ -64,42 +64,39 @@ class MailManager_RelationController extends MailManager_Controller {
 				foreach (self::$MODULES as $MODULE) {
 					if(!in_array($MODULE, $allowedModules)) continue;
 
-                    $from = $request->get('_mfrom');
-                    if(empty($from)) continue;
+					$from = $request->get('_mfrom');
+					if(empty($from)) continue;
 
-                    $results[$MODULE] = $this->lookupModuleRecordsWithEmail($MODULE, $from, $msguid);
-                    $describe = $this->ws_describe($MODULE);
+					$results[$MODULE] = $this->lookupModuleRecordsWithEmail($MODULE, $from, $msguid);
+					$describe = $this->ws_describe($MODULE);
 					$modules[$MODULE] = array('label' => $describe['label'], 'name' => textlength_check($describe['name']), 'id' => $describe['idPrefix'] );
-					
+
 					// If look is found in a module, skip rest. - for performance
 					//if (!empty($results[$MODULE])) break;
 				}
 				$viewer->assign('LOOKUPS', $results);
 				$viewer->assign('MODULES', $modules);
 			//} else {
-			//	$viewer->assign('LINKEDTO', $linkedto);
+				$viewer->assign('LINKEDTO', array());
 			//}
 
 			$viewer->assign('LinkToAvailableActions', $this->linkToAvailableActions());
 			$viewer->assign('AllowedModules', $allowedModules);
 			$viewer->assign('MSGNO', $request->get('_msgno'));
 			$viewer->assign('FOLDER', $request->get('_folder'));
-			
 			$response->setResult( array( 'ui' => $viewer->fetch( $this->getModuleTpl('Relationship.tpl') ) ) );
-			
 		} else if ('link' == $request->getOperationArg()) {
 
 			$linkto = $request->get('_mlinkto');
 			$foldername = $request->get('_folder');
 			$connector = $this->getConnector($foldername);
 
-            // This is to handle larger uploads
-            $memory_limit = ConfigPrefs::get('MEMORY_LIMIT');
-            ini_set('memory_limit', $memory_limit);
+			// This is to handle larger uploads
+			$memory_limit = ConfigPrefs::get('MEMORY_LIMIT');
+			ini_set('memory_limit', $memory_limit);
 
 			$mail = $connector->openMail($request->get('_msgno'));
 			$mail->attachments(); // Initialize attachments
-			
 			$linkedto = MailManager_RelationControllerAction::associate($mail, $linkto);
 
 			$viewer->assign('LinkToAvailableActions', $this->linkToAvailableActions());
@@ -140,6 +137,7 @@ class MailManager_RelationController extends MailManager_Controller {
 			$viewer->assign("VALIDATION_DATA_FIELDNAME",$data['fieldname']);
 			$viewer->assign("VALIDATION_DATA_FIELDDATATYPE",$data['datatype']);
 			$viewer->assign("VALIDATION_DATA_FIELDLABEL",$data['fieldlabel']);
+			$viewer->assign('MASS_EDIT','0');
 			$viewer->display( $this->getModuleTpl('Relationship.CreateWizard.tpl') );
 			$response = false;
 		
@@ -148,15 +146,15 @@ class MailManager_RelationController extends MailManager_Controller {
 			$parent =  $request->get('_mlinkto');
 
 			$focus = CRMEntity::getInstance($linkModule);
-            
-            // This is added as ModComments module has a bug that will not initialize column_fields
-            // Basically $currentModule is set to MailManager, so the fields are not set properly.
-            if(empty($focus->column_fields)) {
-                $focus->column_fields = getColumnFields($linkModule);
-            }
-            
+
+			// This is added as ModComments module has a bug that will not initialize column_fields
+			// Basically $currentModule is set to MailManager, so the fields are not set properly.
+			if(empty($focus->column_fields)) {
+				$focus->column_fields = getColumnFields($linkModule);
+			}
+
 			setObjectValuesFromRequest($focus);
-            
+
 			if($request->get('assigntype') == 'U') {
 				$focus->column_fields['assigned_user_id'] = $request->get('assigned_user_id');
 			} elseif($request->get('assigntype') == 'T') {
@@ -228,7 +226,7 @@ class MailManager_RelationController extends MailManager_Controller {
 				$viewer->assign('LINKEDTO', $linkedto);
 				$viewer->assign('AllowedModules', $this->getCurrentUserMailManagerAllowedModules());
 				$viewer->assign('LinkToAvailableActions', $this->linkToAvailableActions());
-                $viewer->assign('FOLDER', $foldername);
+				$viewer->assign('FOLDER', $foldername);
 
 				$response->setResult( array( 'ui' => $viewer->fetch( $this->getModuleTpl('Relationship.tpl') ) ) );
 			} catch(Exception $e) {
@@ -307,7 +305,7 @@ class MailManager_RelationController extends MailManager_Controller {
 		foreach($qcreate_array as $qc_array) {
 			$new_qc_array = array();
 			foreach($qc_array as $q_array) {
-				if(in_array($q_array[2][0], $defaultFieldValueMapKeys)) {
+				if(isset($q_array[2][0]) and in_array($q_array[2][0], $defaultFieldValueMapKeys)) {
 					if($q_array[2][0] == "lastname") {
 						$q_array[3][1] = $defaultFieldValueMap[$q_array[2][0]];
 					} else {

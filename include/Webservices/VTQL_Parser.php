@@ -189,7 +189,7 @@ function buildSelectStmt($sqlDump){
 	}else{
 		$i=0;
 		foreach($sqlDump['column_list'] as $ind=>$field){
-			if(!$fieldcol[$field]){
+			if (empty($fieldcol[$field])) {
 				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Permission to access '.$field.' attribute denied.");
 			}
 			if($i===0){
@@ -204,10 +204,12 @@ function buildSelectStmt($sqlDump){
 	$deletedQuery = $meta->getEntityDeletedQuery();
 	$accessControlQuery = $meta->getEntityAccessControlQuery();
 	$this->query = $this->query.' '.$accessControlQuery;
-	if($sqlDump['where_condition']){
-		if((sizeof($sqlDump['where_condition']['column_names']) == 
-		sizeof($sqlDump['where_condition']['column_values'])) && 
-		(sizeof($sqlDump['where_condition']['column_operators']) == sizeof($sqlDump['where_condition']['operators'])+1)){
+	if (!empty($sqlDump['where_condition'])) {
+		$sofCN = isset($sqlDump['where_condition']['column_names']) ? sizeof($sqlDump['where_condition']['column_names']) : 0;
+		$sofCV = isset($sqlDump['where_condition']['column_values']) ? sizeof($sqlDump['where_condition']['column_values']) : 0;
+		$sofCO = isset($sqlDump['where_condition']['column_operators']) ? sizeof($sqlDump['where_condition']['column_operators']) : 0;
+		$sofOp = isset($sqlDump['where_condition']['operators']) ? sizeof($sqlDump['where_condition']['operators']) : 0;
+		if ($sofCN == $sofCV && $sofCO == ($sofOp+1)) {
 			$this->query = $this->query.' WHERE (';
 			$i=0;
 			$referenceFields = $meta->getReferenceFieldDetails();
@@ -280,7 +282,7 @@ function buildSelectStmt($sqlDump){
 	
 	$this->query = $this->query.' '.$deletedQuery;
 	
-	if($sqlDump['orderby']){
+	if (!empty($sqlDump['orderby'])) {
 		$i=0;
 		$this->query = $this->query.' ORDER BY ';
 		foreach($sqlDump['orderby'] as $ind=>$field){
@@ -295,7 +297,7 @@ function buildSelectStmt($sqlDump){
 			$this->query .= ' '.$sqlDump['sortOrder'];
 		}
 	}
-	if($sqlDump['limit']){
+	if (!empty($sqlDump['limit'])) {
 		$i=0;
 		$offset =false;
 		if(sizeof($sqlDump['limit'])>1){
@@ -656,7 +658,7 @@ static public $yy_action = array(
   'selectcolumn_exp',  'condition',     'expr_set',      'expr',        
   'logical_term',  'valuelist',     'valueref',      'value_exp',   
   'column_group',  'clause',        'column_list',   'column_exp',  
-  'limit_set',   
+  'limit_set',
     );
 
     /**
@@ -1154,16 +1156,16 @@ static public $yy_action = array(
     **  #line <lineno> <thisfile>
     */
 #line 5 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
-    function yy_r1(){ 
+    function yy_r1() {
 if($this->yystack[$this->yyidx + -7]->minor){
 $this->out['select'] = $this->yystack[$this->yyidx + -7]->minor;
 }
 if($this->yystack[$this->yyidx + -5]->minor){
 $this->out['from'] = $this->yystack[$this->yyidx + -5]->minor ;
 }
-if(SEMI){
-$this->out['semi_colon'] = SEMI;
-}
+// if ($this->yystack[$this->yyidx]->minor) {
+// 	$this->out['semi_colon'] = self::SEMICOLON;
+// }
 if($this->out['select']){
 $this->buildSelectStmt($this->out);
 }
@@ -1186,7 +1188,7 @@ $this->out['column_list'][] = 'count(*)';
 #line 1191 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
 #line 30 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
     function yy_r7(){
-if(!in_array("*", $this->out["column_list"]) && !in_array("count(*)", array_map(strtolower, $this->out["column_list"]))){
+if(!in_array("*", $this->out["column_list"]) && !in_array("count(*)", array_map('strtolower', $this->out["column_list"]))){
 if(!in_array("id",$this->out["column_list"])){
 	$this->out["column_list"][] = "id";
 }
@@ -1235,7 +1237,7 @@ $this->out['where_condition']['column_values'][sizeof($this->out['where_conditio
 #line 1240 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
 #line 82 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
     function yy_r17(){
-$length = sizeof($this->out['where_condition']['column_values']);
+$length = (isset($this->out['where_condition']) && isset($this->out['where_condition']['column_values'])) ? sizeof($this->out['where_condition']['column_values']) : 0;
 $pos = $length - 1;
 if($pos < 0){
 $pos = 0;
@@ -1323,7 +1325,7 @@ $this->out['limit'][] = $this->yystack[$this->yyidx + 0]->minor;
 #line 151 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
     function yy_r41(){
 global $adb;
-if(!$this->out['meta']){
+if (empty($this->out['meta'])) {
 $module = $this->out['moduleName'];
 $handler = vtws_getModuleHandlerFromName($module,$this->user);
 $objectMeta = $handler->getMeta();
@@ -1333,12 +1335,14 @@ $fieldcol = $meta->getFieldColumnMapping();
 $columns = array();
 if(in_array('*', $this->out['column_list'])){
 $columns = array_values($fieldcol);
-}elseif( !in_array('count(*)', array_map(strtolower, $this->out['column_list']))){
+}elseif( !in_array('count(*)', array_map('strtolower', $this->out['column_list']))){
 foreach($this->out['column_list'] as $ind=>$field){
-$columns[] = $fieldcol[$field];
+	if (isset($fieldcol[$field])) {
+		$columns[] = $fieldcol[$field];
+	}
 }
 }
-if($this->out['where_condition']){
+if (!empty($this->out['where_condition'])) {
 foreach($this->out['where_condition']['column_names'] as $ind=>$field){
 $columns[] = $fieldcol[$field];
 }
@@ -1356,6 +1360,7 @@ array_push($tables,$tableName);
 $firstTable = $objectMeta->getEntityBaseTable();
 $tabNameIndex = $objectMeta->getEntityTableIndexList();
 $firstIndex = $tabNameIndex[$firstTable];
+$this->out['defaultJoinConditions'] = '';
 foreach($tables as $ind=>$table){
 if($firstTable!=$table){
 	if(!isset($tabNameIndex[$table]) && $table == "vtiger_crmentity"){

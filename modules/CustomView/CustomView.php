@@ -7,8 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * ****************************************************************************** */
-
-global $app_strings, $mod_strings, $app_list_strings, $theme;
+global $app_strings, $mod_strings, $theme;
 $theme_path = "themes/" . $theme . "/";
 $image_path = $theme_path . "images/";
 require_once('include/utils/utils.php');
@@ -53,7 +52,7 @@ class CustomView extends CRMEntity {
 	 * @param $module -- The module Name:: Type String(optional)
 	 * @returns  nothing
 	 */
-	function CustomView($module = "") {
+	function __construct($module = "") {
 		global $current_user, $adb;
 		$this->customviewmodule = $module;
 		$this->escapemodule[] = $module . "_";
@@ -86,7 +85,7 @@ class CustomView extends CRMEntity {
 	 */
 	function getViewId($module) {
 		global $adb, $current_user;
-		$now_action = vtlib_purify($_REQUEST['action']);
+		$now_action = isset($_REQUEST['action']) ? vtlib_purify($_REQUEST['action']) : '';
 		if (empty($_REQUEST['viewname'])) {
 			if (isset($_SESSION['lvs'][$module]["viewname"]) && $_SESSION['lvs'][$module]["viewname"] != '') {
 				$viewid = $_SESSION['lvs'][$module]["viewname"];
@@ -122,10 +121,17 @@ class CustomView extends CRMEntity {
 			} else {
 				$viewid = $viewname;
 			}
-			if ($this->isPermittedCustomView($viewid, $now_action, $this->customviewmodule) != 'yes')
-				$viewid = 0;
+			if ($this->isPermittedCustomView($viewid, $now_action, $this->customviewmodule) != 'yes') {
+				if ($this->customviewmodule=='Calendar') {
+					if ($this->isPermittedCustomView($viewid, $now_action, 'Calendar4You') != 'yes') {
+						$viewid = 0;
+					}
+				} else {
+					$viewid = 0;
+				}
+			}
 		}
-		$_SESSION['lvs'][$module]["viewname"] = $viewid;
+		coreBOS_Session::set('lvs^'.$module.'^viewname', $viewid);
 		return $viewid;
 	}
 
@@ -305,8 +311,9 @@ class CustomView extends CRMEntity {
 		} else {
 			$tab_ids = explode(",", $tabid);
 			$profileList = getCurrentUserProfileList();
-			$sql = "select * from vtiger_field inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid ";
-			$sql.= " where vtiger_field.tabid in (" . generateQuestionMarks($tab_ids) . ") and vtiger_field.block in (" . generateQuestionMarks($block_ids) . ") and";
+			$uniqueFieldsRestriction = 'vtiger_field.fieldid IN (select min(vtiger_field.fieldid) from vtiger_field where vtiger_field.tabid in ('. generateQuestionMarks($tab_ids) .') GROUP BY vtiger_field.columnname)';
+			$sql = "select distinct vtiger_field.* from vtiger_field inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid ";
+			$sql.= " where $uniqueFieldsRestriction and vtiger_field.block in (" . generateQuestionMarks($block_ids) . ") and";
 			$sql.= "$display_type and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)";
 
 			$params = array($tab_ids, $block_ids);
@@ -319,7 +326,7 @@ class CustomView extends CRMEntity {
 				$sql.= " and vtiger_field.fieldname not in('notime','duration_minutes','duration_hours')";
 			}
 
-			$sql.= " group by columnname order by sequence";
+			$sql.= ' order by sequence';
 		}
 		if ($tabid == '9,16')
 			$tabid = "9";
@@ -341,8 +348,7 @@ class CustomView extends CRMEntity {
 			$fieldtype = explode("~", $fieldtype);
 			$fieldtypeofdata = $fieldtype[0];
 			$fieldlabel = $adb->query_result($result, $i, "fieldlabel");
-			$field = $moduleFieldList[$fieldname];
-			if (!empty($field) && $field->getFieldDataType() == 'reference') {
+			if (!empty($moduleFieldList[$fieldname]) && $moduleFieldList[$fieldname]->getFieldDataType() == 'reference') {
 				$fieldtypeofdata = 'V';
 			} else {
 				//Here we Changing the displaytype of the field. So that its criteria will be
@@ -447,10 +453,9 @@ class CustomView extends CRMEntity {
 	 * 			 $tablenamen:$columnnamen:$fieldnamen:$module_$fieldlabeln => $fieldlabeln)
 	 */
 	function getStdCriteriaByModule($module) {
-		global $adb;
+		global $adb, $current_user;
 		$tabid = getTabid($module);
 
-		global $current_user;
 		require('user_privileges/user_privileges_' . $current_user->id . '.php');
 
 		$module_info = $this->getCustomViewModuleInfo($module);
@@ -460,14 +465,13 @@ class CustomView extends CRMEntity {
 
 		if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
 			$sql = "select * from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid ";
-			$sql.= " where vtiger_field.tabid=? and vtiger_field.block in (" . generateQuestionMarks($blockids) . ")
-                        and vtiger_field.uitype in (5,6,23,70)";
+			$sql.= " where vtiger_field.tabid=? and vtiger_field.block in (" . generateQuestionMarks($blockids) . ") and vtiger_field.uitype in (5,6,23,70,50)";
 			$sql.= " and vtiger_field.presence in (0,2) order by vtiger_field.sequence";
 			$params = array($tabid, $blockids);
 		} else {
 			$profileList = getCurrentUserProfileList();
 			$sql = "select * from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid inner join  vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid ";
-			$sql.= " where vtiger_field.tabid=? and vtiger_field.block in (" . generateQuestionMarks($blockids) . ") and vtiger_field.uitype in (5,6,23,70)";
+			$sql.= " where vtiger_field.tabid=? and vtiger_field.block in (" . generateQuestionMarks($blockids) . ") and vtiger_field.uitype in (5,6,23,70,50)";
 			$sql.= " and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)";
 
 			$params = array($tabid, $blockids);
@@ -481,7 +485,7 @@ class CustomView extends CRMEntity {
 		}
 
 		$result = $adb->pquery($sql, $params);
-
+		$stdcriteria_list = array();
 		while ($criteriatyperow = $adb->fetch_array($result)) {
 			$fieldtablename = $criteriatyperow["tablename"];
 			$fieldcolname = $criteriatyperow["columnname"];
@@ -848,10 +852,14 @@ class CustomView extends CRMEntity {
 			if ($stdfilterrow["startdate"] != "0000-00-00" && $stdfilterrow["startdate"] != "") {
 				$startDateTime = new DateTimeField($stdfilterrow["startdate"] . ' ' . date('H:i:s'));
 				$stdfilterlist["startdate"] = $startDateTime->getDisplayDate();
+			} else {
+				$stdfilterlist['startdate'] = '';
 			}
 			if ($stdfilterrow["enddate"] != "0000-00-00" && $stdfilterrow["enddate"] != "") {
 				$endDateTime = new DateTimeField($stdfilterrow["enddate"] . ' ' . date('H:i:s'));
 				$stdfilterlist["enddate"] = $endDateTime->getDisplayDate();
+			} else {
+				$stdfilterlist['enddate'] = '';
 			}
 		} else { //if it is not custom get the date according to the selected duration
 			$datefilter = $this->getDateforStdFilterBytype($stdfilterrow["stdfilter"]);
@@ -1069,7 +1077,7 @@ class CustomView extends CRMEntity {
 		}
 
 		if (isset($stdfilterlist)) {
-
+			$startDateTime = $endDateTime = '';
 			foreach ($stdfilterlist as $columnname => $value) {
 
 				if ($columnname == "columnname") {
@@ -1257,9 +1265,9 @@ class CustomView extends CRMEntity {
 			$value = $temp_value; // Hot fix: removed unbalanced closing bracket ")";
 		} elseif ($fieldname == "inventorymanager") {
 			$value = $tablename . "." . $fieldname . $this->getAdvComparator($comparator, getUserId_Ol($value), $datatype);
-		} elseif ($change_table_field[$fieldname] != '') {//Added to handle special cases
+		} elseif (!empty($change_table_field[$fieldname])) { //Added to handle special cases
 			$value = $change_table_field[$fieldname] . $this->getAdvComparator($comparator, $value, $datatype);
-		} elseif ($change_table_field[$tablename . "." . $fieldname] != '') {//Added to handle special cases
+		} elseif (!empty($change_table_field[$tablename . "." . $fieldname])) { //Added to handle special cases
 			$tmp_value = '';
 			if ((($comparator == 'e' || $comparator == 's' || $comparator == 'c') && trim($value) == '') || (($comparator == 'n' || $comparator == 'k') && trim($value) != '')) {
 				$tmp_value = $change_table_field[$tablename . "." . $fieldname] . ' IS NULL or ';

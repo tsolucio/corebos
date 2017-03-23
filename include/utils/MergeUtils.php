@@ -32,9 +32,9 @@ function crmmerge($csvheader,$content,$index_in_csvdata,$function_name='') {
 }
 
 function entpack($filename,$wordtemplatedownloadpath,$filecontent) {
-	//global $filename, $wordtemplatedownloadpath;
+	@mkdir($wordtemplatedownloadpath,0777);
 	$temp_dir = time();
-	mkdir($root_directory .$wordtemplatedownloadpath .$temp_dir,0777);
+	mkdir($wordtemplatedownloadpath .$temp_dir,0777);
 	$handle = fopen($wordtemplatedownloadpath.'/'.$filename,"wb");
 	$filecontent = base64_decode($filecontent);
 	fwrite($handle,$filecontent);

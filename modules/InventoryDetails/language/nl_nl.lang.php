@@ -33,12 +33,6 @@ $mod_strings = array(
 	'Line Completed' => 'Regel verwerkt',
 	'Description' => 'Beschrijving',
 	'Inventory Details No' => 'Voorraad details nummer',
-	'Products' => 'Producten',
-	'Accounts' => 'Klanten',
-	'Contacts' => 'Contacten',
-	'Vendors' => 'Leveranciers',
-	'Assigned To' => 'Toegewezen aan',
-	'Created Time' => 'Gemaakt op',
-	'Modified Time' => 'Gewijzigd op',
+	'Total Stock' => 'Total Stock',
 );
 ?>

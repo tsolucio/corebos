@@ -159,10 +159,10 @@ class Vtiger_Utils {
 		$adb->dieOnError = false;
 
 		$tablename = Vtiger_Utils::SQLEscape($tablename);
-		$tablecheck = $adb->pquery("SELECT 1 FROM $tablename LIMIT 1", array());
+		$tablecheck = $adb->pquery("SHOW TABLES LIKE ?", array($tablename));
 
 		$tablePresent = true;
-		if(empty($tablecheck))
+		if(empty($tablecheck) || $adb->num_rows($tablecheck) === 0)
 			$tablePresent = false;
 
 		$adb->dieOnError = $old_dieOnError;
@@ -205,7 +205,7 @@ class Vtiger_Utils {
 	 */
 	static function AlterTable($tablename, $criteria) {
 		global $adb;
-		$adb->pquery("ALTER TABLE " . $tablename . $criteria, array());
+		$adb->query("ALTER TABLE " . $tablename . $criteria);
 	}
 
 	/**

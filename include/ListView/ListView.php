@@ -38,16 +38,16 @@ class ListView {
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
 */
-function ListView(){
+function __construct(){
 	global $log;
 	$log->debug("Entering ListView() method ...");
 	if(!$this->initialized){
-		global $list_max_entries_per_page;
+		global $theme, $app_strings, $image_path, $currentModule;
+		$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$currentModule);
 		$this->records_per_page = $list_max_entries_per_page + 0;
 		$this->initialized = true;
-		global $theme, $app_strings, $image_path, $currentModule;
 		$this->local_theme = $theme;
-		$this->local_app_strings = &$app_strings;
+		$this->local_app_strings = $app_strings;
 		$this->local_image_path = $image_path;
 		$this->local_current_module = $currentModule;
 
@@ -211,7 +211,7 @@ function setCurrentModule($currentModule){
 function setSessionVariable($localVarName,$varName, $value){
 	global $log;
 	$log->debug("Entering setSessionVariable(".$localVarName.",".$varName.",". $value.") method ...");
-	$_SESSION[$this->local_current_module."_".$localVarName."_".$varName] = $value;
+	coreBOS_Session::set($this->local_current_module.'_'.$localVarName.'_'.$varName, $value);
 	$log->debug("Exiting setSessionVariable method ...");
 }
 
@@ -235,7 +235,7 @@ function getSessionVariable($localVarName,$varName){
 	}
 	if(isset($_SESSION[$this->getSessionVariableName($localVarName, $varName)])){
 		$log->debug("Exiting getSessionVariable method ...");
-		return $_SESSION[$this->getSessionVariableName($localVarName, $varName)];
+		return coreBOS_Session::get($this->getSessionVariableName($localVarName, $varName));
 	}
 	$log->debug("Exiting getSessionVariable method ...");
 	return "";

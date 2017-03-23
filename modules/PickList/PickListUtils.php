@@ -109,10 +109,9 @@ function getAllPickListValues($fieldName,$lang = Array() ){
 	$arr = array();
 	for($i=0;$i<$count;$i++){
 		$pick_val = $adb->query_result($result, $i, $fieldName);
-		if($lang[$pick_val] != ''){
+		if (!empty($lang[$pick_val])) {
 			$arr[$pick_val] = $lang[$pick_val];
-		}
-		else{
+		} else {
 			$arr[$pick_val] = $pick_val;
 		}
 	}
@@ -233,18 +232,109 @@ function getAssignedPicklistValues($tableName, $roleid, $adb, $lang=array()){
  * It gets all the allowed entities to be shown in a picklist uitype 1613. 1633 and return an array in the following format
  * $modules = Array($index=>$tabname,$index1=>$tabname1)
  */
-function getAllowedPicklistModules() {
+function getAllowedPicklistModules($allowNonEntities=0) {
 	global $adb;
 	//get All the modules the current user is permitted to Access.
 	$allAllowedModules=getPermittedModuleNames();
 	$allEntities = array();
-	$entityQuery = "SELECT name FROM vtiger_tab
-			WHERE isentitytype=1 and name NOT IN ('Rss','Webmails','Recyclebin','Events')";
+	$entitycondition = ($allowNonEntities ? '' : 'isentitytype=1 and ');
+	$entityQuery = "SELECT name FROM vtiger_tab WHERE $entitycondition name NOT IN ('Rss','Webmails','Recyclebin','Events')";
 	$result = $adb->pquery($entityQuery, array());
 	while($result && $row = $adb->fetch_array($result)){
 		$allEntities[] = $row['name'];
 	}
 	$allowedEntities=array_intersect($allAllowedModules, $allEntities);
 	return $allowedEntities;
+}
+
+function getPicklistValuesSpecialUitypes($uitype,$fieldname,$value,$action='EditView'){
+	global $adb,$log,$current_user, $default_charset;
+
+	$fieldname = $adb->sql_escape_string($fieldname);
+	if ($uitype == '1614') {
+		$uitype = '1613';
+		$allowNonEntities = 1;
+	} elseif ($uitype == '3314') {
+		$uitype = '3313';
+		$allowNonEntities = 1;
+	} else {
+		$allowNonEntities = 0;
+	}
+	$picklistValues = getAllowedPicklistModules($allowNonEntities);
+	$options = array();
+	$pickcount = 0;
+	if($uitype == "1613"){
+		$found = false;
+		foreach ($picklistValues as $pKey=>$pValue) {
+			$value = decode_html($value);
+			$pickListValue = decode_html($pValue);
+			if($value == trim($pickListValue)) {
+				$chk_val = "selected";
+				$pickcount++;
+				$found = true;
+			}
+			else {
+				$chk_val = '';
+			}
+			$pickListValue = to_html($pickListValue);
+			if(isset($_REQUEST['file']) && $_REQUEST['file'] == 'QuickCreate')
+				$options[] = array(htmlentities(getTranslatedString($pickListValue, $pickListValue),ENT_QUOTES,$default_charset),$pickListValue,$chk_val);
+			else
+				$options[] = array(getTranslatedString($pickListValue, $pickListValue),$pickListValue,$chk_val);
+		}
+	}elseif($uitype == "3313"){
+		$valueArr = explode("|##|", $value);
+		foreach ($valueArr as $key => $value) {
+			$valueArr[$key] = trim(html_entity_decode($value, ENT_QUOTES, $default_charset));
+		}
+		if(!empty($picklistValues)){
+			foreach($picklistValues as $order=>$pickListValue){
+				if(in_array(trim($pickListValue),$valueArr)){
+					$chk_val = "selected";
+					$pickcount++;
+				}else{
+					$chk_val = '';
+				}
+				if(isset($_REQUEST['file']) && $_REQUEST['file'] == 'QuickCreate'){
+					$options[] = array(htmlentities(getTranslatedString($pickListValue, $pickListValue),ENT_QUOTES,$default_charset),$pickListValue,$chk_val );
+				}else{
+					$options[] = array(getTranslatedString($pickListValue, $pickListValue),$pickListValue,$chk_val );
+				}
+			}
+
+			if($pickcount == 0 && !empty($value)){
+				$options[] = array($app_strings['LBL_NOT_ACCESSIBLE'],$value,'selected');
+			}
+		}
+	}elseif($uitype == "1024"){
+		$arr_evo=explode(' |##| ',$value);
+		if($action != 'DetailView'){
+			$roleid = $current_user->roleid;
+			$subrole = getRoleSubordinates($roleid);
+			$uservalues = array_merge($subrole,array($roleid));
+			for($i=0;$i<sizeof($uservalues);$i++) {
+				$currentValId=$uservalues[$i];
+				$currentValName= getRoleName($currentValId);
+				if(in_array(trim($currentValId),$arr_evo)){
+					$chk_val = 'selected';
+				}else{
+					$chk_val = '';
+				}
+				$options[] = array($currentValName,$currentValId,$chk_val);
+			}
+		}else{
+			for($i=0;$i<sizeof($arr_evo);$i++) {
+				$roleid=$arr_evo[$i];
+				$rolename=getRoleName($roleid);
+				if((is_admin($current_user))) {
+					$options[$i]='<a href="index.php?module=Settings&action=RoleDetailView&parenttab=Settings&roleid='.$roleid.'">'.$rolename.'</a>';
+				} else {
+					$options[$i]=$rolename;
+				}
+			}
+		}
+	}
+	uasort($options, function($a,$b) {return (strtolower($a[0]) < strtolower($b[0])) ? -1 : 1;});
+	return $options;
 }
 ?>

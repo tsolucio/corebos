@@ -233,16 +233,18 @@ $mod_strings = Array(
 'LBL_FLDR_NOT_EMPTY'=>'De map die u wilt wijzigen is niet leeg, eerst leegmaken.',
 'NO_REL_MODULES'=>'Er zijn modules om mee te combineren',
 'LBL_REPORT_GENERATION_FAILED'=>'Het rapport kan niet worden gemaakt!',
-
-// since vtiger CRM 5.3 by Vicus
+'ERR_TOO_MANY_ROWS' => 'This report has too many rows. Please add some filters and divide it into various smaller reports.',
+'ERR_INCORRECT_REPORTID' => 'Report cannot be found',
 'LBL_SHARING_TYPE'=>'Deel Type',
 'LBL_SELECT_REPORT_TYPE_TO_CONTROL_ACCESS'=>'Selecteer Type om toegang tot het rapport te regelen',
 'LBL_ACTION' => 'Actie',
+'LBL ACTION' => 'Actie',
 'ACTION' => 'Actie',
 'LBL_VIEW_DETAILS' => 'Toon Details',
 'LBL_SHOW_STANDARD_FILTERS' => 'Toon Standaard Filters',
 'LBL_YEAR' => 'Jaar',
 'LBL_MONTH'=> 'Maand',
+'LBL_DAY'=> 'Day',
 'LBL_QUARTER'=> 'Kwartaal',
 'LBL_NONE'=> 'Geen',
 
@@ -276,10 +278,27 @@ $mod_strings = Array(
 
 'LBL_AUTO_GENERATED_REPORT_EMAIL' => 'Dit is een automatisch gegenereerde e-mail die is verzonden middels een gepland rapport.',
 'LBL_TIME_FORMAT_MSG' => 'hh:mm (24 uurs formaat)',
-
+'LBL_RELOAD_REPORT' => 'Reload Report',
 'LBL_SAVE_REPORT' => 'Opslaan',
 'LBL_SAVE_REPORT_AS' => 'Sla Rapport op als...',
-
+'Add ReportCharts' => 'Add Report Charts',
+'Choose Report Type' => 'Choose Report Type',
+'Application Report' => 'Application Report',
+'External Application' => 'External Application',
+'Direct SQL Statement' => 'Direct SQL Statement',
+'Cross Tab' => 'Cross Tab',
+'Pivot Table' => 'Pivot Table',
+'External Report URL' => 'External Report URL',
+'Add User Information' => 'Add User Information',
+'Select One Field of each' => 'You can only select one field from each module for this type of report',
+'Select Only One Module' => 'You can only select one module for this type of report',
+'LBL_AGG_FIELD' => 'Aggregation Field',
+'LBL_AGG_FUNCTION_CHOOSE' => 'Select Aggregation Column and Function',
+'LBL_AGG_COLUMN' => 'Aggregation Column',
+'LBL_AGG_FUNCTION' => 'Aggregation Function',
+'LBL_COLUMNS_COUNT'=>'Count',
+'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Fout bij het wissen van de map.',
+'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Error while deleting the reports of the folder',
 )
 
 ?>

@@ -1,0 +1,78 @@
+#view-calendar .ui-content {
+	overflow:hidden;
+}
+
+.jq-calendar-wrapper {
+	padding: 0;
+	margin: -17px;
+	display: block;
+}
+
+.jq-calendar-wrapper table {
+	margin: 0;
+	width: 100%;
+	color: #333;
+	border-collapse: collapse;
+	table-layout: fixed;
+}
+
+.jq-calendar-wrapper .ui-listview {
+	margin: 0;
+}
+
+.jq-calendar-wrapper th {
+	padding: .2em 0;
+	text-align: center;
+}
+
+.jq-calendar-wrapper th.header {
+	line-height: 33px;
+}
+
+.jq-calendar-wrapper .previous-btn {
+	float: left;
+	margin: .2em .5em;
+}
+
+.jq-calendar-wrapper .next-btn {
+	float: right;
+	margin: .2em .5em;
+}
+
+.jq-calendar-wrapper td {
+	text-align: center;
+	background-color: #fff;
+	line-height: 0;
+	padding: 1px 0;
+}
+
+.jq-calendar-wrapper td.hidden,.jq-calendar-wrapper span.hidden {
+	opacity: 0.3;
+}
+
+.jq-calendar-wrapper td a,.jq-calendar-wrapper td button {
+	margin: 0;
+	border: 0;
+	border-radius: 20px;
+	width: 40px;
+	height: 40px;
+	padding: 0;
+	display: inline-block;
+	line-height: 40px;
+}
+
+.jq-calendar-wrapper td span {
+	position: absolute;
+	top: 12px;
+	left: 0;
+	width: 100%;
+	text-align: center;
+}
+
+#view-calendar .ui-listview li {
+	font-weight: bold;
+}
+
+.jq-calendar-wrapper .importance-1:not(.ui-btn-active) { background-image: -webkit-gradient(linear, left top, left bottom, from( #FFFFc7   ), to( #d3c190  )); background-image: -webkit-linear-gradient( #FFFFc7, #d3c190  ); background-image: -moz-linear-gradient( #FFFFc7 , #d3c190  ); background-image: -ms-linear-gradient( #FFFFc7 , #d3c190  ); background-image: -o-linear-gradient( #FFFFc7 , #d3c190  ); background-image: linear-gradient( #FFFFc7 , #d3c190  ); }
+.jq-calendar-wrapper .importance-2:not(.ui-btn-active) { background-image: -webkit-gradient(linear, left top, left bottom, from( #FFd4a2), to( #e0ad85)); background-image: -webkit-linear-gradient( #FFd4a2, #e0ad85); background-image: -moz-linear-gradient( #FFd4a2, #e0ad85); background-image: -ms-linear-gradient( #FFd4a2, #e0ad85); background-image: -o-linear-gradient( #FFd4a2, #e0ad85); background-image: linear-gradient( #FFd4a2, #e0ad85); } 
+.jq-calendar-wrapper .ui-btn-today { background-image: -webkit-gradient(linear, left top, left bottom, from( #fd8255), to( #d46d46)); background-image: -webkit-linear-gradient( #fd8255, #d46d46); background-image: -moz-linear-gradient( #fd8255, #d46d46); background-image: -ms-linear-gradient( #fd8255, #d46d46); background-image: -o-linear-gradient( #fd8255, #d46d46); background-image: linear-gradient( #fd8255, #d46d46); color: #fff; text-shadow: 0 1px 0 #000; }

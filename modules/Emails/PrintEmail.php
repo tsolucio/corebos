@@ -14,32 +14,31 @@ require_once('include/utils/utils.php');
 require_once('include/utils/UserInfoUtil.php');
 require_once('modules/Webmails/MailBox.php');
 require_once('modules/Webmails/Webmails.php');
-require_once("include/Zend/Json.php");
 
 global $mod_strings, $app_strings, $theme;
 
 $focus = new Emails();
 $smarty = new vtigerCRM_Smarty();
-$json = new Zend_Json();
+$smarty->assign('APP',$app_strings);
 $smarty->assign('MOD',$mod_strings);
 $smarty->assign('THEME',$theme);
 
-if(isset($_REQUEST['record']) && $_REQUEST['record'] !='' && $_REQUEST['mailbox'] == '') {
+if(isset($_REQUEST['record']) && $_REQUEST['record'] !='' && empty($_REQUEST['mailbox'])) {
 	$focus->id = $_REQUEST['record'];
 	$focus->mode = 'edit';
 	$focus->retrieve_entity_info($_REQUEST['record'],"Emails");
 
-	$focus->name=$focus->column_fields['name'];
+	$focus->name = isset($focus->column_fields['name']) ? $focus->column_fields['name'] : $focus->column_fields['subject'];
 	if(isset($_REQUEST['print']) && $_REQUEST['print'] !='')
 	{
 		$query = 'select idlists,from_email,to_email,cc_email,bcc_email from vtiger_emaildetails where emailid =?';
 		$result = $adb->pquery($query, array($focus->id));
 		$smarty->assign('FROM_MAIL',$adb->query_result($result,0,'from_email'));
-		$to_email = vt_suppressHTMLTags(implode(',',$json->decode($adb->query_result($result,0,'to_email'))));
+		$to_email = vt_suppressHTMLTags(implode(',',json_decode($adb->query_result($result,0,'to_email'),true)));
 		$smarty->assign('TO_MAIL',$to_email);
-		$cc_add = vt_suppressHTMLTags(implode(',',$json->decode($adb->query_result($result,0,'cc_email'))));
+		$cc_add = vt_suppressHTMLTags(implode(',',json_decode($adb->query_result($result,0,'cc_email'),true)));
 		$smarty->assign('CC_MAIL',$cc_add);
-		$bcc_add = vt_suppressHTMLTags(implode(',',$json->decode($adb->query_result($result,0,'bcc_email'))));
+		$bcc_add = vt_suppressHTMLTags(implode(',',json_decode($adb->query_result($result,0,'bcc_email'),true)));
 		$smarty->assign('BCC_MAIL',$bcc_add);
 		$smarty->assign('SUBJECT',$focus->column_fields['subject']);
 		$smarty->assign('DESCRIPTION',$focus->column_fields['description']);

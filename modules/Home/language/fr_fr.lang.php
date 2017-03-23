@@ -40,7 +40,6 @@ $mod_strings = array (
 	'Last 2 Days' => 'Les 2 derniers jours',
 	'Last Ten Days' => 'Les 10 derniers jours',
 	
-	'TITLE_AJAX_CSS_POPUP_CHAT' => 'Chat en ligne',
 	'User List' => 'Liste des utilisateurs',
 	
 	'LBL_HOME_MODULE' => 'Module',
@@ -59,13 +58,13 @@ $mod_strings = array (
 	'LBL_HOME_HORIZONTAL_BARCHART' => 'Graphique avec barre horizontale',
 	'LBL_HOME_VERTICAL_BARCHART' => 'Graphique avec barre verticale',
 	'LBL_HOME_PIE_CHART' => 'Graphique en camembert',
+	'LBL_HOME_HORIZONTAL' => 'Horizontale',
+	'LBL_HOME_VERTICAL' => 'Verticale',
+	'LBL_HOME_PIE' => 'Camembert',
+	'Layout Saved' => 'Layout Saved',
 	'LBL_HOME_ITEMS' => 'objet(s)',
-	'LBL_NEWS_NO' => 'N° news',
 	'LBL_MORE'=>'Plus',
 	'LBL_SCROLL'=>'Défiler',
-
-	// vtiger CRM News
-	'LBL_NEWS_NO'=>'Aucune news',
 
 	//added for home page changes
 	'LBL_NOTEBOOK'=>'Bloc note',
@@ -105,6 +104,9 @@ $mod_strings = array (
 	//added for Default Widgets
 	'LBL_DEFAULT_WIDGET'=>'Widgets par défaut',
 	'LBL_NO_WIDGETS_HIDDEN'=>'Aucun widget par défaut masqué',
-	'UpdateExchangeRate' => 'Update Exchange Rate',
+	'UpdateExchangeRate' => 'Mettre à jour taux de change',
+	'LBL_HOME_ADDWINDOW' => 'Ajouter Fenêtre',
+	'LBL_GETTING_STARTED' => 'Démarrage...',
+	'ExpirePasswordAfterDays' => 'Expire Password After Days',
 );
 ?>

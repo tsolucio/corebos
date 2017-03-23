@@ -205,6 +205,11 @@ $mod_strings = Array(
 'Net 60 days' => '60 DD',
 'SalesOrder ID' => 'ID Pedido Venda',
 
+'Daily' => 'Daily',
+'Weekly' => 'Weekly',
+'Monthly' => 'Monthly',
+'Quarterly' => 'Quarterly',
+'Yearly' => 'Yearly',
 'half-year'=>'Half Year',
 '2years' => '2 Years',
 '3years' => '3 Years',

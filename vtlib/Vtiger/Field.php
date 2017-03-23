@@ -54,11 +54,11 @@ class Vtiger_Field extends Vtiger_FieldBasic {
 			$adb->pquery("INSERT INTO vtiger_picklist (picklistid,name) VALUES(?,?)",Array($new_picklistid, $this->name));
 			self::log("Creating table $picklist_table ... DONE");
 		} else {
-			$new_picklistid = $adb->query_result(
-				$adb->pquery("SELECT picklistid FROM vtiger_picklist WHERE name=?", Array($this->name)), 0, 'picklistid');
+			$rs = $adb->pquery('SELECT picklistid FROM vtiger_picklist WHERE name=?', Array($this->name));
+			$new_picklistid = $adb->query_result($rs , 0, 'picklistid');
 		}
 
-		$specialNameSpacedPicklists  = array(
+		$specialNameSpacedPicklists = array(
 			'opportunity_type'=>'opptypeid',
 			'duration_minutes'=>'minutesid',
 			'recurringtype'=>'recurringeventid'
@@ -102,12 +102,12 @@ class Vtiger_Field extends Vtiger_FieldBasic {
 		global $adb;
 
 		$special_pl = array('recurring_frequency');
-                $picklist_table = 'vtiger_'.$this->name;
-                if(in_array($this->name, $special_pl)){
-                    $picklist_idcol = $this->name.'_id';
-                }else{
-                    $picklist_idcol = $this->name.'id';
-                }
+		$picklist_table = 'vtiger_'.$this->name;
+		if(in_array($this->name, $special_pl)){
+			$picklist_idcol = $this->name.'_id';
+		}else{
+			$picklist_idcol = $this->name.'id';
+		}
 
 		if(!Vtiger_Utils::CheckTable($picklist_table)) {
 			Vtiger_Utils::CreateTable(
@@ -150,11 +150,10 @@ class Vtiger_Field extends Vtiger_FieldBasic {
 				true
 			);
 		}
-		// END
 
 		global $adb;
-		$nextseq = $adb->query_result($adb->pquery('SELECT max(sequence) FROM vtiger_fieldmodulerel WHERE fieldid=? AND module=?',
-			Array($this->id, $this->getModuleName())),0,0);
+		$rs = $adb->pquery('SELECT max(sequence) FROM vtiger_fieldmodulerel WHERE fieldid=? AND module=?', array($this->id, $this->getModuleName()));
+		$nextseq = $adb->query_result($rs,0,0);
 		if (empty($nextseq)) $nextseq=0;
 		foreach($moduleNames as $relmodule) {
 			$checkres = $adb->pquery('SELECT * FROM vtiger_fieldmodulerel WHERE fieldid=? AND module=? AND relmodule=?',
@@ -225,10 +224,10 @@ class Vtiger_Field extends Vtiger_FieldBasic {
 		$query = false;
 		$queryParams = false;
 		if($moduleInstance) {
-			$query = "SELECT * FROM vtiger_field WHERE block=? AND tabid=?";
+			$query = "SELECT * FROM vtiger_field WHERE block=? AND tabid=? ORDER BY sequence";
 			$queryParams = Array($blockInstance->id, $moduleInstance->id);
 		} else {
-			$query = "SELECT * FROM vtiger_field WHERE block=?";
+			$query = "SELECT * FROM vtiger_field WHERE block=? ORDER BY sequence";
 			$queryParams = Array($blockInstance->id);
 		}
 		$result = $adb->pquery($query, $queryParams);
@@ -248,7 +247,7 @@ class Vtiger_Field extends Vtiger_FieldBasic {
 		global $adb;
 		$instances = false;
 
-		$query = "SELECT * FROM vtiger_field WHERE tabid=?";
+		$query = "SELECT * FROM vtiger_field WHERE tabid=? ORDER BY block,sequence";
 		$queryParams = Array($moduleInstance->id);
 
 		$result = $adb->pquery($query, $queryParams);

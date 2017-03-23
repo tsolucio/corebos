@@ -20,7 +20,7 @@
 		static $ONCE = 2;
 		static $ON_EVERY_SAVE = 3;
 		static $ON_MODIFY = 4;
-		static $ON_DELETE = 5; // Not supported yet
+		static $ON_DELETE = 5;
 		static $ON_SCHEDULE=6;
 		static $MANUAL = 7;
 		static $RECORD_ACCESS_CONTROL = 8;
@@ -31,12 +31,12 @@
 
 		function save($workflow){
 			$adb=$this->adb;
-			if(isset($workflow->id)){
+			if(!empty($workflow->id)){
 				$wf=$workflow;
 				$adb->pquery("update com_vtiger_workflows set
 								module_name=?, summary=?, test=?, execution_condition=?, defaultworkflow=?,
 								schtypeid=?, schtime=?, schdayofmonth=?, schdayofweek=?, schannualdates=?,schminuteinterval=? where workflow_id=?",
-					array($wf->moduleName, $wf->description, $wf->test, $wf->executionCondition, $wf->defaultworkflow,
+					array($wf->moduleName, $wf->description, $wf->test, $wf->executionCondition, (isset($wf->defaultworkflow) ? $wf->defaultworkflow : 0),
 						$wf->schtypeid, $wf->schtime, $wf->schdayofmonth, $wf->schdayofweek, $wf->schannualdates, $wf->schminuteinterval,$wf->id));
 			}else{
 				$workflowId = $adb->getUniqueID("com_vtiger_workflows");
@@ -48,34 +48,29 @@
 					$adb->pquery("insert into com_vtiger_workflows
 									(workflow_id, module_name, summary, test, execution_condition, type, defaultworkflow,
 									schtypeid, schtime, schdayofmonth, schdayofweek, schannualdates,schminuteinterval) values (?,?,?,?,?,?,?,?,?,?,?,?,?)",
-						array($workflowId, $wf->moduleName, $wf->description, $wf->test,  $wf->executionCondition, $wf->type, $wf->defaultworkflow,
+						array($workflowId, $wf->moduleName, $wf->description, $wf->test,  $wf->executionCondition, $wf->type, (isset($wf->defaultworkflow) ? $wf->defaultworkflow : 0),
 							$wf->schtypeid, $wf->schtime, $wf->schdayofmonth, $wf->schdayofweek, $wf->schannualdates,$wf->schminuteinterval));
 				} else {
 					$adb->pquery("insert into com_vtiger_workflows
 									(workflow_id, module_name, summary, test, execution_condition, defaultworkflow,
 									schtypeid, schtime, schdayofmonth, schdayofweek, schannualdates,schminuteinterval) values (?,?,?,?,?,?,?,?,?,?,?,?)",
-						array($workflowId, $wf->moduleName, $wf->description, $wf->test,  $wf->executionCondition, $wf->defaultworkflow,
+						array($workflowId, $wf->moduleName, $wf->description, $wf->test,  $wf->executionCondition, (isset($wf->defaultworkflow) ? $wf->defaultworkflow : 0),
 							$wf->schtypeid, $wf->schtime, $wf->schdayofmonth, $wf->schdayofweek, $wf->schannualdates,$wf->schminuteinterval));
 				}
 			}
 			$this->updateNexTriggerTime($workflow);
 		}
 
-
 		function getWorkflows(){
 			$adb=$this->adb;
 
 			$result=$adb->getColumnNames("com_vtiger_workflows");
-			if(in_array("defaultworkflow",$result)){
-				$result = $adb->query("select workflow_id, module_name, summary, test, execution_condition,defaultworkflow, type
-									from com_vtiger_workflows ");
-			}else{
-
-				$result = $adb->query("select workflow_id, module_name, summary, test, execution_condition, type
-									from com_vtiger_workflows");
+			if (in_array("defaultworkflow",$result)) {
+				$result = $adb->query('select workflow_id, module_name, summary, test, execution_condition,defaultworkflow, type from com_vtiger_workflows');
+			} else {
+				$result = $adb->query('select workflow_id, module_name, summary, test, execution_condition, type from com_vtiger_workflows');
 			}
 			return $this->getWorkflowsForResult($result);
-
 		}
 
 		/**
@@ -272,10 +267,12 @@
 			$workflow->moduleName = $moduleName;
 			$workflow->executionCondition = self::$ON_EVERY_SAVE;
 			$workflow->type = 'basic';
+			$workflow->id = 0;
+			$workflow->description = '';
+			$workflow->schtypeid = 0;
+			$workflow->nexttrigger_time = '';
 			return $workflow;
-
 		}
-
 
 		/**
 		 * Export a workflow as a json encoded string
@@ -302,7 +299,7 @@
 				unset($task->workflowId);
 				$exp['tasks'][] = serialize($task);
 			}
-			return  Zend_Json::encode($exp);
+			return  json_encode($exp);
 		}
 
 		/**
@@ -311,7 +308,7 @@
 		 * @return The Workflow instance representing the imported workflow.
 		 */
 		public function deserializeWorkflow($str){
-			$data =  Zend_Json::decode($str);
+			$data =  json_decode($str,true);
 			$workflow = $this->newWorkflow($data['moduleName']);
 			$workflow->description = $data['description'];
 			$workflow->test = $data['test'];
@@ -426,7 +423,8 @@
 
 			foreach($tasks as $task){
 				if(is_object($task) and $task->active) {
-					$trigger = $task->trigger;
+					$logbg->debug($task->summary);
+					$trigger = (empty($task->trigger) ? null : $task->trigger);
 					if($trigger != null){
 						$delay = strtotime($data[$trigger['field']])+$trigger['days']*86400;
 					}else{
@@ -518,10 +516,10 @@
 
 			$scheduleType = $this->getWFScheduleType();
 			$scheduleMinute= $this->getScheduleMinute();
-			
-            if($scheduleType==Workflow::$SCHEDULED_BY_MINUTE){
-            	$nextTime=date("Y-m-d H:i:s",strtotime("+ $scheduleMinute minutes"));
-            }
+			$nextTime = date('Y-m-d H:i:s');
+			if($scheduleType==Workflow::$SCHEDULED_BY_MINUTE){
+				$nextTime=date("Y-m-d H:i:s",strtotime("+ $scheduleMinute minutes"));
+			}
 
 			if($scheduleType == Workflow::$SCHEDULED_HOURLY) {
 				$nextTime = date("Y-m-d H:i:s",strtotime("+1 hour"));
@@ -629,7 +627,7 @@
 		function getNextTriggerTimeForMonthlyByDate($scheduledDayOfMonth, $scheduledTime){
 			$currentDayOfMonth = date('j', time());
 			if($scheduledDayOfMonth) {
-				$scheduledDaysOfMonth = Zend_Json::decode($scheduledDayOfMonth);
+				$scheduledDaysOfMonth = json_decode($scheduledDayOfMonth,true);
 				if(is_array($scheduledDaysOfMonth)) {
 					// algorithm :
 					//1. First sort all the days in ascending order and find the closest day which is greater than currentDayOfMonth
@@ -697,7 +695,7 @@
 		function getNextTriggerTimeForAnnualDates($annualDates, $scheduledTime){
 			if($annualDates) {
 				$today = date('Y-m-d');
-				$annualDates = Zend_Json::decode($annualDates);
+				$annualDates = json_decode($annualDates);
 				$nextTriggerDay = null;
 				// sort the dates
 				sort($annualDates);

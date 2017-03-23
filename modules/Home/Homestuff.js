@@ -70,7 +70,7 @@ function chooseType(typeName){
 		document.getElementById('dashTypeRow').style.display="block";
 		document.getElementById('StuffTitleId').style.display="block";
 		document.getElementById('reportNameRow').style.display="none";
-        document.getElementById('reportTypeRow').style.display="none";
+		document.getElementById('reportTypeRow').style.display="none";
 		document.getElementById('homewidget').style.display="none";
 		//document.getElementById('homeURLField').style.display = "none";
 		jQuery.ajax({
@@ -330,6 +330,7 @@ function loadStuff(stuffid,stufftype){
 	}).done(function (response) {
 				var responseVal=response;
 				document.getElementById('stuffcont_'+stuffid).innerHTML=response;
+				vtlib_executeJavascriptInElement(document.getElementById('stuffcont_'+stuffid));
 				if(stufftype=="Module"){
 					if(document.getElementById('more_'+stuffid).value != null && document.getElementById('more_'+stuffid).value != '')
 						document.getElementById('a_'+stuffid).href = "index.php?module="+document.getElementById('more_'+stuffid).value+"&action=ListView&viewname="+document.getElementById('cvid_'+stuffid).value;
@@ -343,7 +344,7 @@ function loadStuff(stuffid,stufftype){
 						}
 						document.getElementById('a_'+stuffid).href = url;
 					}else{
-						document.getElementById('a_'+stuffid).style.display = 'none';
+						if (document.getElementById('a_'+stuffid)) document.getElementById('a_'+stuffid).display = 'none';
 					}
 				}
 				if(stufftype=="RSS"){
@@ -358,7 +359,7 @@ function loadStuff(stuffid,stufftype){
 				if(stufftype=="Tag Cloud"){
 					TagCanvas.Start('tagcloudCanvas', '', {
 						shape: user_tag_showas,
-						lock: "x",
+						lock: ((user_tag_showas=='vcylinder' || user_tag_showas=='vring') ? "y" : "x"),
 						weight: true,
 						weightMode: 'both'
 					});
@@ -422,7 +423,7 @@ function loadAllWidgets(widgetInfoList, batchSize){
 						if (tagcloudfound) {
 							TagCanvas.Start('tagcloudCanvas', '', {
 								shape: user_tag_showas,
-								lock: "x",
+								lock: ((user_tag_showas=='vcylinder' || user_tag_showas=='vring') ? "y" : "x"),
 								weight: true,
 								weightMode: 'both'
 							});
@@ -632,7 +633,7 @@ function positionDivInAccord(targetDiv,stufftitle,stufftype){
 	}
 	var mainX = parseInt(document.getElementById("MainMatrix").style.width);
 	if(stufftitle != vtdashboard_defaultDashbaordWidgetTitle && stufftype != "DashBoard" && stufftype != "ReportCharts"){
-		var dx = mainX *  widgetWidth/ 100;
+		var dx = mainX * widgetWidth/ 100;
 	}else{
 		var dx = mainX * dashWidth / 100;
 	}
@@ -657,8 +658,8 @@ function fetch_homeDB(stuffid){
 		method: 'POST',
 		url: 'index.php?module=Dashboard&action=DashboardAjax&file=HomepageDB'
 	}).done(function (response) {
-				document.getElementById('stuffcont_'+stuffid).style.display = 'none';
 				document.getElementById('stuffcont_'+stuffid).innerHTML=response;
+				vtlib_executeJavascriptInElement(document.getElementById('stuffcont_'+stuffid));
 				document.getElementById('refresh_'+stuffid).innerHTML='';
 				jQuery('#stuffcont_'+stuffid).fadeIn();
 			}
@@ -777,18 +778,58 @@ function saveEditReportCharts(dashRowId){
 	var reportVal='';
 	var iter=0;
 	for(iter=0;iter<3;iter++){
-		if(document.getElementById('reportradio_'+iter).checked){
-			reportVal=document.getElementById('reportradio_'+iter).value;
+		if(document.getElementById('reportradio_'+dashRowId+'_'+iter).checked){
+			reportVal=document.getElementById('reportradio_'+dashRowId+'_'+iter).value;
 		}
 	}
-	stuffid=dashRowId;
 	jQuery.ajax({
 			method: 'POST',
-			url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&reportVal='+reportVal+'&stuffid='+stuffid
+			url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&reportVal='+reportVal+'&stuffid='+dashRowId
 	}).done(function (response) {
 				var responseVal=response;
 				eval(response);
-				document.getElementById('refresh_'+stuffid).innerHTML='';
+				document.getElementById('refresh_'+dashRowId).innerHTML='';
 			}
 	);
+}
+
+function changeGraphType(chartid,type) {
+	let ctype = 'pie';
+	switch (trim(type)) {
+	case 'piechart':
+		ctype = 'pie';
+		break;
+	case 'verticalbarchart':
+		ctype = 'bar';
+		break;
+	case 'horizontalbarchart':
+		ctype = 'horizontalBar';
+		break;
+	}
+	let chart_object = window['schart'+chartid];
+	chart_object.destroy();
+	window['doChart'+chartid](ctype);
+}
+
+function getRandomColor() {
+	return randomColor({
+		luminosity: 'dark',
+		hue: 'random'
+	});
+}
+
+function firsttime_login_welcome(popuplayer,popupcontent) {
+	popuplayer.style.zIndex = parseInt((+new Date())/1000)+5; // To ensure z-Index is higher than the popup block
+	popuplayer.style.display = 'block';
+	jQuery.ajax({
+		method: 'POST',
+		url: 'index.php?module=Home&action=HomeAjax&file=welcome'
+	}).done(function (response) {
+		if (response=='') {
+			popuplayer.style.display = 'none';
+		} else {
+			popupcontent.innerHTML = response;
+			vtlib_executeJavascriptInElement(popupcontent);
+		}
+	});
 }

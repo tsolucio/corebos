@@ -53,12 +53,12 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		return DataTransform::filterAndSanitize($crmObject->getFields(),$this->meta);
 	}
 	
-	public function retrieve($id){
+	public function retrieve($id,$deleted=false){
 		$ids = vtws_getIdComponents($id);
 		$elemid = $ids[1];
 		
 		$crmObject = new VtigerCRMObject($this->tabId, true);
-		$error = $crmObject->read($elemid);
+		$error = $crmObject->read($elemid,$deleted);
 		if(!$error){
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR,
 					vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
@@ -250,7 +250,8 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$output = array();
 		for($i=0; $i<$noofrows; $i++){
 			$row = $this->pearDB->fetchByAssoc($result,$i);
-			if(!$meta->hasPermission(EntityMeta::$RETRIEVE,$row["crmid"])){
+			$rowcrmid = (isset($row['crmid']) ? $row['crmid'] : '');
+			if(!$meta->hasPermission(EntityMeta::$RETRIEVE,$rowcrmid)){
 				continue;
 			}
 			$newrow = DataTransform::sanitizeDataWithColumn($row,$meta);
@@ -336,7 +337,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$describeArray = array('name'=>$webserviceField->getFieldName(),'label'=>$fieldLabel,'mandatory'=>
 			$webserviceField->isMandatory(),'type'=>$typeDetails,'nullable'=>$webserviceField->isNullable(),
 			"editable"=>$editable,'uitype'=>$webserviceField->getUIType(),'typeofdata'=>$webserviceField->getTypeOfData(),
-			'sequence'=>$webserviceField->getFieldSequence(),
+			'sequence'=>$webserviceField->getFieldSequence(),'quickcreate'=>$webserviceField->getQuickCreate(),'displaytype'=>$webserviceField->getDisplayType(),
 			'block'=>array('blockid'=>$webserviceField->getBlockId(),'blocksequence'=>$webserviceField->getBlockSequence(),
 				'blocklabel'=>$blkname,'blockname'=>getTranslatedString($blkname,$this->meta->getTabName())));
 		if($webserviceField->hasDefault()){

@@ -108,10 +108,12 @@ $mod_strings = Array(
 'ERR_REENTER_PASSWORDS'=>'Please re-enter passwords.  The \"new password\" and \"confirm password\" values do not match.',
 'ERR_INVALID_PASSWORD'=>'You must specify a valid username and password.',
 'ERR_INVALID_ADMINIPLOGIN' => 'Administrator users must login from authorized devices.',
+'ERR_INVALID_USERIPLOGIN' => 'Restricted access to authorized personnel only<br> You are connecting from an invalid IP',
 'ERR_PASSWORD_CHANGE_FAILED_1'=>'User password change failed for ',
 'ERR_PASSWORD_CHANGE_FAILED_2'=>' failed.  The new password must be set.',
 'ERR_PASSWORD_INCORRECT_OLD'=>'Incorrect old password specified. Re-enter password information.',
 'ERR_PASSWORD_NOT_CHANGED' => 'Old and New Passwords are the same. Please use a different password.',
+'ERR_USER_DOESNOT_EXISTS'=>'User does not exist.',
 'ERR_USER_NAME_EXISTS_1'=>'The user name ',
 'ERR_USER_NAME_EXISTS_2'=>' already exists.  Duplicate user names are not allowed.<br>Change the user name to be unique.',
 'ERR_LAST_ADMIN_1'=>'The user name ',
@@ -401,8 +403,8 @@ $mod_strings = Array(
 'LBL_LIST_MAILSERVER_BUTTON_KEY'=>'L',
 'LBL_LIST_MAILSERVER_BUTTON_LABEL'=>'List Mail Server',
 //added for inventory terms and conditions
-'INV_TANDC'=>'Terms & Coditions',
-'INV_TERMSANDCONDITIONS'=>'Inventory Terms & Coditions',
+'INV_TANDC'=>'Terms & Conditions',
+'INV_TERMSANDCONDITIONS'=>'Inventory Terms & Conditions',
 'LBL_INV_TERMSANDCONDITIONS'=>'Inventory Management', 
 
 
@@ -571,8 +573,6 @@ $mod_strings = Array(
 'LBL_TRANSFER_ROLES_TO_PROFILE'=>'Transfer Roles to Profile',
 'LBL_PROFILE_TO_BE_DELETED'=>'Profile to be Deleted',
 
-//Added for disabling window Recalculate
-
 'LBL_RECALC_MSG'=>'Are you sure, you wish to Recalculate Sharing Access?',
 'LBL_YES'=>'Yes',
 'LBL_NO'=>'No',
@@ -580,19 +580,14 @@ $mod_strings = Array(
 'LBL_MANDATORY_MSG'=>'Mandatory Fields',
 'LBL_DISABLE_FIELD_MSG'=>'Fields Disabled from Global Field Access Settings',
 
-//Added for About Us
-
 'LBL_CONTACT_US'=>'Contact Us',
 'LBL_READ_LICENSE'=>'Read License',
 'LBL_VERSION'=>'Version',
 'LBL_TEAM'=>'Team',
 'LBL_CREDITS'=>'Credits',
 'LBL_THIRD_PARTY'=>'Third Party Packages',
-'LBL_COMMUNITY'=>'And vtiger Community',
 
 'LBL_ASSIGN_ROLE'=>'Assign Role',
-
-//Moved from Settings to here for Webmail client integration (for 5.0.3 release)
 
 'LBL_ADD_MAIL_ACCOUNT'=>'Add Mail Account',
 'LBL_NEW_MAIL_ACCOUNT_TITLE'=>'New Mail Account [Alt+M]',
@@ -676,12 +671,17 @@ $mod_strings = Array(
 //Fixed For Asterisk Configration
 'Asterisk Configuration' => 'Asterisk Configuration',
 'Asterisk Extension' => 'Asterisk Extension',
-' Receive Incoming Calls' => 'Use Asterisk',
+'Receive Incoming Calls' => 'Use Asterisk',
 
 // Added for Create Custom Fields 
 'LBL_USER_CUSTOMFIELDS_DESCRIPTION' => 'Create Custom Fields for Users ',
 'LBL_USER_CUSTOMFIELDS' => 'Users Custom Fields',
 'LBL_CURRENCY_CONFIGURATION'=> 'Currency Configuration',
+'Digit Grouping Pattern' => 'Digit Grouping Pattern',
+'Decimal Separator' => 'Decimal Separator',
+'Digit Grouping Separator' => 'Digit Grouping Separator',
+'Symbol Placement' => 'Symbol Placement',
+'Number Of Currency Decimals'  => 'Number Of Currency Decimals',
 
 //Time zones-Dont change any value
 'Kwajalein' => '(UTC-12:00) International Date Line West',
@@ -803,7 +803,12 @@ $mod_strings = Array(
 'Min. 1 lowercase' => 'Minimum one lowercase character',
 'Min. 1 number' => 'Minimum one number',
 'Min. 1 special character' => 'Minimum one special character ! ? , ; - @ #',
-'Generate password' => 'Generar contraseña',
+'Generate password' => 'Generate password',
+
+// LDAP
+'LBL_QUERY' => 'Query',
+'LBL_FORE_LASTNAME' => 'First or Last name',
+'LBL_NO_LDAP_MATCHES' => 'No matches found on the LDAP server!',
 
 );
 

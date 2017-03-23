@@ -22,8 +22,7 @@ function homepage_getUpcomingActivities($maxval,$calCnt){
 	require_once("data/Tracker.php");
 	require_once('include/utils/utils.php');
 
-	global $adb;
-	global $current_user;
+	global $adb, $current_user;
 
 	$dbStartDateTime = new DateTimeField(date('Y-m-d H:i:s'));
 	$userStartDate = $dbStartDateTime->getDisplayDate();
@@ -48,7 +47,7 @@ function homepage_getUpcomingActivities($maxval,$calCnt){
 	"('Completed','Deferred')) and  (  vtiger_activity.eventstatus is NULL OR ".
 	"vtiger_activity.eventstatus not in ('Held','Not Held') )".$upcoming_condition;
 
-	$list_query.= " GROUP BY vtiger_activity.activityid";
+	$list_query.= ' GROUP BY vtiger_activity.activityid,vtiger_recurringevents.recurringdate';
 	$list_query.= " ORDER BY date_start,time_start ASC";
 	$list_query.= " limit $maxval";
 
@@ -136,12 +135,11 @@ function getActivityEntries($open_activity_list){
 		}
 		$values = array('noofactivities'=>count($open_activity_list),'Header'=>$header,'Entries'=>$entries);
 	}else{
-		$values = array('noofactivities'=>count($open_activity_list), 'Entries'=>
+		$values = array('noofactivities'=>count($open_activity_list),'Header'=>'', 'Entries'=>
 			'<div class="componentName">'.$app_strings['LBL_NO_DATA'].'</div>');
 	}
 	return $values;
 }
-
 
 /**
  * function to get pending activities for today
@@ -154,8 +152,7 @@ function homepage_getPendingActivities($maxval,$calCnt){
 	require_once("include/utils/utils.php");
 	require_once('include/utils/CommonUtils.php');
 
-	global $adb;
-	global $current_user;
+	global $adb, $current_user;
 
 	$dbStartDateTime = new DateTimeField(date('Y-m-d H:i:s'));
 	$userStartDate = $dbStartDateTime->getDisplayDate();
@@ -166,20 +163,20 @@ function homepage_getPendingActivities($maxval,$calCnt){
 	$endDateTime = $userEndDateTime->getDBInsertDateTimeValue();
 
 	$pending_condition = " AND (CAST((CONCAT(date_start,' ',time_start)) AS DATETIME) BETWEEN '$startDateTime' AND '$endDateTime'
-									OR CAST((CONCAT(vtiger_recurringevents.recurringdate,' ',time_start)) AS DATETIME) BETWEEN '$startDateTime' AND '$endDateTime')";
+							OR CAST((CONCAT(vtiger_recurringevents.recurringdate,' ',time_start)) AS DATETIME) BETWEEN '$startDateTime' AND '$endDateTime')";
 
 	$list_query = "select vtiger_crmentity.crmid,vtiger_crmentity.smownerid,vtiger_crmentity.".
 	"setype, vtiger_recurringevents.recurringdate, vtiger_activity.* from vtiger_activity ".
 	"inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid LEFT ".
 	"JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid left outer join ".
-	"vtiger_recurringevents on vtiger_recurringevents.activityid=vtiger_activity.activityid".
+	"vtiger_recurringevents on vtiger_recurringevents.activityid=vtiger_activity.activityid";
 	$list_query .= getNonAdminAccessControlQuery('Calendar',$current_user);
 	$list_query .= "WHERE vtiger_crmentity.deleted=0 and (vtiger_activity.activitytype not in ".
 	"('Emails')) AND (vtiger_activity.status is NULL OR vtiger_activity.status not in ".
 	"('Completed','Deferred')) and (vtiger_activity.eventstatus is NULL OR  vtiger_activity.".
 	"eventstatus not in ('Held','Not Held')) ".$pending_condition;
 
-	$list_query.= " GROUP BY vtiger_activity.activityid";
+	$list_query.= ' GROUP BY vtiger_activity.activityid,vtiger_recurringevents.recurringdate';
 	$list_query.= " ORDER BY date_start,time_start ASC";
 	$list_query.= " limit $maxval";
 
@@ -221,7 +218,6 @@ function homepage_getPendingActivities($maxval,$calCnt){
 
 	return $values;
 }
-
 
 /**
  * this function returns the number of columns in the home page for the current user.

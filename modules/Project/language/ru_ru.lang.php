@@ -19,8 +19,6 @@ $mod_strings = Array(
     'LBL_PROJECTS'=>'Проекты',
     'LBL_PROJECT'=>'Проект',
 	'projectname' => 'Наименование проекта',
-    'projects' => 'Проекты',
-    'project' => 'Проект',
     //added this to translate the module name in the main app menu
     'Project'=>'Проекты',
     //
@@ -37,12 +35,10 @@ $mod_strings = Array(
     'actualenddate' => 'Реальная дата окончания',
     'projectstatus'=>'Статус',
     'projecttype'=>'Тип',
-    'linktoaccountscontacts'=>'Связан с',
     'targetbudget'=>'Планируемый бюджет',
     'projecturl'=>'URL проекта',
     'projectpriority'=>'Приоритет проекта',
     'progress'=>'Ход выполнения',
-    'linktopotentials'=>'Связан с',
     'Related To' => 'Относится к',
     'administrative' => 'административный',
     'operative' => 'оперативный',
@@ -51,21 +47,11 @@ $mod_strings = Array(
     'normal' => 'нормальный',
     'high' => 'высокий',
     'in progress' => 'выполняется',
-    'in planning' => 'планируется',
     'on hold' => 'в ожидании',
     'archived' => 'в архиве',
     'complete' => 'выполнен',
-    'Created Time' => 'Проект создан',
-    'Modified Time' => 'Проект изменен',
-    'Description' => 'Описание',
-    'description' => 'Описание',
     '--none--' => '--ничего--',
-    'Deadline' => 'Критический срок',
-    'Operation' => 'Операция',
     'Project Name' => 'Наименование проекта',
-    'LBL_RELATED_OPERATIONS' => 'Операции проекта',
-    'LBL_RELATED_DEADLINES' => 'Критические сроки проекта',
-    
 
 );
 

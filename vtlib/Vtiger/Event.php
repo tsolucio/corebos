@@ -56,7 +56,7 @@ class Vtiger_Event {
 	 * @param String File path which has Handler class definition
 	 * @param String Condition for the event to trigger (default blank)
 	 */
-	static function register($moduleInstance, $eventname, $classname, $filename, $condition='') {		
+	static function register($moduleInstance, $eventname, $classname, $filename, $condition='') {
 		// Security check on fileaccess, don't die if it fails
 		if(Vtiger_Utils::checkFileAccess($filename, false)) {
 			global $adb;

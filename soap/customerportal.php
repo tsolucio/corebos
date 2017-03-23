@@ -6,9 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
-
 require_once("config.php");
 require_once('include/logging.php');
 require_once('include/nusoap/nusoap.php');
@@ -18,7 +16,11 @@ require_once('modules/HelpDesk/language/en_us.lang.php');
 require_once('include/utils/CommonUtils.php');
 require_once('include/utils/VtlibUtils.php');
 require_once 'modules/Users/Users.php';
-
+$adminid = Users::getActiveAdminId();
+if (!GlobalVariable::getVariable('SOAP_CustomerPortal_Enabled',1,'Users',$adminid)) {
+	echo 'SOAP - Service is not active';
+	return;
+}
 
 /** Configure language for server response translation */
 global $default_language, $current_language;
@@ -28,8 +30,7 @@ $userid = getPortalUserid();
 $user = new Users();
 $current_user = $user->retrieveCurrentUserInfoFromFile($userid);
 
-
-$log = &LoggerManager::getLogger('customerportal');
+$log = LoggerManager::getLogger('customerportal');
 
 error_reporting(0);
 
@@ -43,6 +44,7 @@ $server->wsdl->addComplexType(
 	'complexType',
 	'array',
 	'',
+	'SOAP-ENC:Array',
 	array(
 		'fieldname' => array('name'=>'fieldname','type'=>'xsd:string'),
 	)
@@ -66,6 +68,7 @@ $server->wsdl->addComplexType(
     'complexType',
     'array',
     '',
+	'SOAP-ENC:Array',
 	array(
     	'salutation' => array('name'=>'salutation','type'=>'xsd:string'),
         'firstname' => array('name'=>'firstname','type'=>'xsd:string'),
@@ -82,6 +85,7 @@ $server->wsdl->addComplexType(
 	'complexType',
     'array',
     '',
+	'SOAP-ENC:Array',
 	array(
     	'fieldlabel' => array('name'=>'fieldlabel','type'=>'xsd:string'),
         'fieldvalue' => array('name'=>'fieldvalue','type'=>'xsd:string'),
@@ -92,6 +96,7 @@ $server->wsdl->addComplexType(
     'complexType',
     'array',
     '',
+	'SOAP-ENC:Array',
 	array(
     	'fielddata' => array('name'=>'fielddata','type'=>'xsd:string'),
 	)
@@ -102,6 +107,7 @@ $server->wsdl->addComplexType(
 	'complexType',
 	'array',
 	'',
+	'SOAP-ENC:Array',
 	array(
 		'productid' => array('name'=>'productid','type'=>'xsd:string'),
 		'productname' => array('name'=>'productname','type'=>'xsd:string'),
@@ -118,6 +124,7 @@ $server->wsdl->addComplexType(
     'complexType',
     'array',
     '',
+	'SOAP-ENC:Array',
 	array(
     	'files' => array(
 			'fileid'=>'xsd:string','type'=>'tns:xsd:string',
@@ -642,11 +649,12 @@ function save_faq_comment($input_array)
 
 function get_tickets_list($input_array) {
 
+	global $adb,$log, $current_user;
 	//To avoid SQL injection we are type casting as well as bound the id variable.
 	$id = (int) vtlib_purify($input_array['id']);
 
 	$only_mine = $input_array['onlymine'];
-	$where = vtlib_purifyForSql($input_array['where']); //addslashes is already added with where condition fields in portal itself
+	$where = $adb->sql_escape_string($input_array['where']);
 	$match = $input_array['match'];
 	$sessionid = $input_array['sessionid'];
 
@@ -656,8 +664,6 @@ function get_tickets_list($input_array) {
 	require_once('modules/HelpDesk/HelpDesk.php');
 	require_once('include/utils/UserInfoUtil.php');
 
-	global $adb,$log;
-	global $current_user;
 	$log->debug("Entering customer portal function get_ticket_list");
 
 	$user = new Users();
@@ -705,6 +711,14 @@ function get_tickets_list($input_array) {
 
 	$focus = new HelpDesk();
 	$focus->filterInactiveFields('HelpDesk');
+	$bmapname = 'HelpDesk_ListColumns';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapLC = $cbMap->ListColumns();
+		$focus->list_fields = $cbMapLC->getListFieldsFor('CustomerPortal');
+		$focus->list_fields_name = $cbMapLC->getListFieldsNameFor('CustomerPortal');
+	}
 	foreach ($focus->list_fields as $fieldlabel => $values){
 		foreach($values as $table => $fieldname){
 			$fields_list[$fieldlabel] = $fieldname;
@@ -890,6 +904,7 @@ function update_ticket_comment($input_array)
 		$ticket->column_fields = array_map(decode_html, $ticket->column_fields);
 		$ticket->column_fields['comments'] = $comments;
 		$ticket->column_fields['from_portal'] = 1;
+		$ticket->column_fields['__portal_contact'] = $ownerid;
 		$ticket->save('HelpDesk');
 	}
 }
@@ -908,7 +923,6 @@ function close_current_ticket($input_array)
 	$adb->println("Inside customer portal function close_current_ticket");
 	$adb->println($input_array);
 
-	//foreach($input_array as $fieldname => $fieldvalue)$input_array[$fieldname] = mysql_real_escape_string($fieldvalue);
 	$userid = getPortalUserid();
 
 	$current_user->id = $userid;
@@ -1364,7 +1378,7 @@ function add_ticket_attachment($input_array)
 	//Now store this file information in db and relate with the ticket
 	$date_var = $adb->formatDate(date('Y-m-d H:i:s'), true);
 
-	$crmquery = "insert into vtiger_crmentity (crmid,setype,description,createdtime) values(?,?,?,?)";
+	$crmquery = 'insert into vtiger_crmentity (crmid,setype,description,createdtime,modifiedtime) values(?,?,?,?,NOW())';
 	$crmresult = $adb->pquery($crmquery, array($attachmentid, 'HelpDesk Attachment', $description, $date_var));
 
 	$attachmentquery = "insert into vtiger_attachments(attachmentsid,name,description,type,path) values(?,?,?,?,?)";
@@ -1557,6 +1571,14 @@ function get_list_values($id,$module,$sessionid,$only_mine='true')
 	$current_user = $user->retrieveCurrentUserInfoFromFile($userid);
 	$focus = new $module();
 	$focus->filterInactiveFields($module);
+	$bmapname = $module.'_ListColumns';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapLC = $cbMap->ListColumns();
+		$focus->list_fields = $cbMapLC->getListFieldsFor('CustomerPortal');
+		$focus->list_fields_name = $cbMapLC->getListFieldsNameFor('CustomerPortal');
+	}
 	foreach ($focus->list_fields as $fieldlabel => $values){
 		foreach($values as $table => $fieldname){
 			$fields_list[$fieldlabel] = $fieldname;
@@ -1913,7 +1935,7 @@ function get_pdf($id,$block,$customerid,$sessionid)
 {
 	global $adb;
 	global $current_user,$log,$default_language;
-	global $currentModule,$mod_strings,$app_strings,$app_list_strings;
+	global $currentModule,$mod_strings,$app_strings;
 	$log->debug("Entering customer portal function get_pdf");
 	$isPermitted = check_permission($customerid,$block,$id);
 	if($isPermitted == false) {
@@ -1929,7 +1951,6 @@ function get_pdf($id,$block,$customerid,$sessionid)
 	$currentModule = $block;
 	$current_language = $default_language;
 	$app_strings = return_application_language($current_language);
-	$app_list_strings = return_app_list_strings_language($current_language);
 	$mod_strings = return_module_language($current_language, $currentModule);
 
 	$_REQUEST['record']= $id;
@@ -2127,6 +2148,14 @@ function get_product_list_values($id,$modulename,$sessionid,$only_mine='true')
 
 	$focus = new Products();
 	$focus->filterInactiveFields('Products');
+	$bmapname = 'Products_ListColumns';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapLC = $cbMap->ListColumns();
+		$focus->list_fields = $cbMapLC->getListFieldsFor('CustomerPortal');
+		$focus->list_fields_name = $cbMapLC->getListFieldsNameFor('CustomerPortal');
+	}
 	foreach ($focus->list_fields as $fieldlabel => $values){
 		foreach($values as $table => $fieldname){
 			$fields_list[$fieldlabel] = $fieldname;
@@ -2855,7 +2884,14 @@ function get_project_components($id,$module,$customerid,$sessionid) {
 	$focus->filterInactiveFields($module);
 	$componentfieldVisibilityByColumn = array();
 	$fields_list = array();
-
+	$bmapname = $module.'_ListColumns';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapLC = $cbMap->ListColumns();
+		$focus->list_fields = $cbMapLC->getListFieldsFor('CustomerPortal');
+		$focus->list_fields_name = $cbMapLC->getListFieldsNameFor('CustomerPortal');
+	}
 	foreach ($focus->list_fields as $fieldlabel => $values){
 		foreach($values as $table => $fieldname){
 			$fields_list[$fieldlabel] = $fieldname;
@@ -2925,6 +2961,14 @@ function get_project_tickets($id,$module,$customerid,$sessionid) {
 	$focus->filterInactiveFields('HelpDesk');
 	$TicketsfieldVisibilityByColumn = array();
 	$fields_list = array();
+	$bmapname = 'HelpDesk_ListColumns';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapLC = $cbMap->ListColumns();
+		$focus->list_fields = $cbMapLC->getListFieldsFor('CustomerPortal');
+		$focus->list_fields_name = $cbMapLC->getListFieldsNameFor('CustomerPortal');
+	}
 	foreach ($focus->list_fields as $fieldlabel => $values){
 		foreach($values as $table => $fieldname){
 			$fields_list[$fieldlabel] = $fieldname;
@@ -3027,6 +3071,14 @@ function get_service_list_values($id,$modulename,$sessionid,$only_mine='true')
 
 	$focus = new Services();
 	$focus->filterInactiveFields('Services');
+	$bmapname = 'Services_ListColumns';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapLC = $cbMap->ListColumns();
+		$focus->list_fields = $cbMapLC->getListFieldsFor('CustomerPortal');
+		$focus->list_fields_name = $cbMapLC->getListFieldsNameFor('CustomerPortal');
+	}
 	foreach ($focus->list_fields as $fieldlabel => $values){
 		foreach($values as $table => $fieldname){
 			$fields_list[$fieldlabel] = $fieldname;

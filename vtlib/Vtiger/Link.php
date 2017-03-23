@@ -27,9 +27,10 @@ class Vtiger_Link {
 	var $handler_path;
 	var $handler_class;
 	var $handler;
+	var $onlyonmymodule = false;
 
 	// Ignore module while selection
-	const IGNORE_MODULE = -1; 
+	const IGNORE_MODULE = -1;
 
 	/**
 	 * Constructor
@@ -41,17 +42,18 @@ class Vtiger_Link {
 	 * Initialize this instance.
 	 */
 	function initialize($valuemap) {
-		$this->tabid  = $valuemap['tabid'];
-		$this->linkid = $valuemap['linkid'];
-		$this->linktype=$valuemap['linktype'];
-		$this->linklabel=$valuemap['linklabel'];
-		$this->linkurl  =decode_html($valuemap['linkurl']);
-		$this->linkicon =decode_html($valuemap['linkicon']);
-		$this->sequence =$valuemap['sequence'];
-		$this->status   =(isset($valuemap['status']) ? $valuemap['status'] : false);
-		$this->handler_path	=$valuemap['handler_path'];
-		$this->handler_class=$valuemap['handler_class'];
-		$this->handler		=$valuemap['handler'];
+		$this->tabid          = $valuemap['tabid'];
+		$this->linkid         = $valuemap['linkid'];
+		$this->linktype       = $valuemap['linktype'];
+		$this->linklabel      = $valuemap['linklabel'];
+		$this->linkurl        = decode_html($valuemap['linkurl']);
+		$this->linkicon       = decode_html($valuemap['linkicon']);
+		$this->sequence       = $valuemap['sequence'];
+		$this->status         = (isset($valuemap['status']) ? $valuemap['status'] : false);
+		$this->handler_path   = $valuemap['handler_path'];
+		$this->handler_class  = $valuemap['handler_class'];
+		$this->handler        = $valuemap['handler'];
+		$this->onlyonmymodule = $valuemap['onlyonmymodule'];
 	}
 
 	/**
@@ -91,6 +93,11 @@ class Vtiger_Link {
 			}
 			self::$__cacheSchemaChanges['vtiger_links'] = true;
 		}
+		global $adb;
+		$lns=$adb->getColumnNames('vtiger_links');
+		if (!in_array('onlyonmymodule', $lns)) {
+			$adb->query('ALTER TABLE `vtiger_links` ADD `onlyonmymodule` BOOLEAN NOT NULL DEFAULT FALSE');
+		}
 	}
 
 	/**
@@ -102,23 +109,23 @@ class Vtiger_Link {
 	 * @param String ICON to use on the display
 	 * @param Integer Order or sequence of displaying the link
 	 */
-	static function addLink($tabid, $type, $label, $url, $iconpath='',$sequence=0, $handlerInfo=null) {
+	static function addLink($tabid, $type, $label, $url, $iconpath='',$sequence=0, $handlerInfo=null, $onlyonmymodule=false) {
 		global $adb;
 		self::__initSchema();
 		$checkres = $adb->pquery('SELECT linkid FROM vtiger_links WHERE tabid=? AND linktype=? AND linkurl=? AND linkicon=? AND linklabel=?',
 			Array($tabid, $type, $url, $iconpath, $label));
 		if(!$adb->num_rows($checkres)) {
 			$uniqueid = self::__getUniqueId();
-			$sql = 'INSERT INTO vtiger_links (linkid,tabid,linktype,linklabel,linkurl,linkicon,'.
-			'sequence';
-			$params = Array($uniqueid, $tabid, $type, $label, $url, $iconpath, $sequence);
+			$sql = 'INSERT INTO vtiger_links (linkid,tabid,linktype,linklabel,linkurl,linkicon,sequence';
+			$params = Array($uniqueid, $tabid, $type, $label, $url, $iconpath, intval($sequence));
 			if(!empty($handlerInfo)) {
 				$sql .= (', handler_path, handler_class, handler');
-				$params[] = $handlerInfo['path'];
-				$params[] = $handlerInfo['class'];
-				$params[] = $handlerInfo['method'];
+				$params[] = (isset($handlerInfo['path']) ? $handlerInfo['path'] : '');
+				$params[] = (isset($handlerInfo['class']) ? $handlerInfo['class'] : '');
+				$params[] = (isset($handlerInfo['method']) ? $handlerInfo['method'] : '');
 			}
-			$sql .= (') VALUES ('.generateQuestionMarks($params).')');
+			$params[] = $onlyonmymodule;
+			$sql .= (', onlyonmymodule) VALUES ('.generateQuestionMarks($params).')');
 			$adb->pquery($sql, $params);
 			self::log("Adding Link ($type - $label) ... DONE");
 		}
@@ -130,7 +137,7 @@ class Vtiger_Link {
 	 * @param String Link Type (like DETAILVIEW). Useful for grouping based on pages.
 	 * @param String Display label
 	 * @param String URL of link to lookup while deleting
-	 */ 
+	 */
 	static function deleteLink($tabid, $type, $label, $url=false) {
 		global $adb;
 		self::__initSchema();
@@ -167,18 +174,18 @@ class Vtiger_Link {
 	/**
 	 * Get all the link related to module based on type
 	 * @param Integer Module ID
-	 * @param mixed String or List of types to select 
+	 * @param mixed String or List of types to select
 	 * @param Map Key-Value pair to use for formating the link url
 	 */
 	static function getAllByType($tabid, $type=false, $parameters=false) {
-		global $adb, $current_user;
+		global $adb, $current_user, $currentModule;
 		self::__initSchema();
 
 		$multitype = false;
 		$orderby = ' order by linktype,sequence'; //MSL
 		if($type) {
 			// Multiple link type selection?
-			if(is_array($type)) { 
+			if(is_array($type)) {
 				$multitype = true;
 				if($tabid === self::IGNORE_MODULE) {
 					$sql = 'SELECT * FROM vtiger_links WHERE linktype IN ('.
@@ -189,6 +196,10 @@ class Vtiger_Link {
 						$sql .= ' and tabid IN ('.
 							Vtiger_Utils::implodestr('?', count($permittedTabIdList), ',').')';
 						$params[] = $permittedTabIdList;
+					}
+					if (!empty($currentModule)) {
+						$sql .= ' and ((onlyonmymodule and tabid=?) or !onlyonmymodule) ';
+						$params[] = getTabid($currentModule);
 					}
 					$result = $adb->pquery($sql . $orderby, Array($adb->flatten_array($params)));
 				} else {
@@ -201,7 +212,7 @@ class Vtiger_Link {
 				if($tabid === self::IGNORE_MODULE) {
 					$result = $adb->pquery('SELECT * FROM vtiger_links WHERE linktype=?' . $orderby, Array($type));
 				} else {
-					$result = $adb->pquery('SELECT * FROM vtiger_links WHERE tabid=? AND linktype=?' . $orderby, Array($tabid, $type));				
+					$result = $adb->pquery('SELECT * FROM vtiger_links WHERE tabid=? AND linktype=?' . $orderby, Array($tabid, $type));
 				}
 			}
 		} else {

@@ -96,7 +96,7 @@ class MailManager_Model_Mailbox {
 	}
 	
 	function refreshTimeOut() {
-		return $this->mRefreshTimeOut;
+		return (empty($this->mRefreshTimeOut) ? 0 : $this->mRefreshTimeOut);
 	}
 
 	function delete() {
@@ -104,9 +104,9 @@ class MailManager_Model_Mailbox {
 		$adb->pquery("DELETE FROM vtiger_mail_accounts WHERE user_id = ? AND account_id = ?", array($current_user->id, $this->mId));
 	}
 	
-	function save() {	
-		global $adb, $current_user, $list_max_entries_per_page;
-		
+	function save() {
+		global $adb, $current_user;
+		$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,'Emails');
 		$account_id = 1;
 		$maxresult = $adb->pquery("SELECT max(account_id) as max_account_id FROM vtiger_mail_accounts", array());
 		if ($adb->num_rows($maxresult)) $account_id += intval($adb->query_result($maxresult, 0, 'max_account_id'));
@@ -132,8 +132,7 @@ class MailManager_Model_Mailbox {
 			$this->mId = $account_id;
 		}
 	}
-	
-	
+
 	static function activeInstance() {
 		global $adb, $current_user;
 		$instance = new MailManager_Model_Mailbox();

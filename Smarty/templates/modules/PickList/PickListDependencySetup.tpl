@@ -6,12 +6,9 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 <script type="text/javascript" src="include/js/smoothscroll.js"></script>
-<script type="text/javascript" src="include/js/menu.js"></script>
-<script type="text/javascript" src="include/js/json.js"></script>
 <script type="text/javascript" src="modules/PickList/DependencyPicklist.js"></script>
 <br>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
@@ -34,7 +31,7 @@
 
 		<table border=0 cellspacing=0 cellpadding=10 width=100% >
 		<tr>
-			<td valign=top>			
+			<td valign=top>
 				<div id="picklist_datas">
 					{if $SUBMODE eq 'editdependency'}
 						{include file='modules/PickList/PickListDependencyContents.tpl'}

@@ -11,8 +11,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<title>{$APP.$MODULE_NAME} - {$APP.LBL_BROWSER_TITLE}</title>
-	<link REL="SHORTCUT ICON" HREF="themes/images/favicon.ico">	
+	<title>{$USER} - {$MODULENAME|@getTranslatedString:$MODULENAME} - {$coreBOS_app_name}</title>
+	<link REL="SHORTCUT ICON" HREF="{$FAVICON}">
 	<style type="text/css">@import url("themes/{$THEME}/style.css");</style>
 	<!-- ActivityReminder customization for callback -->
 	{literal}
@@ -27,10 +27,11 @@
 <body leftmargin=0 topmargin=0 marginheight=0 marginwidth=0 class=small>
 
 {if $EDIT_DUPLICATE eq 'permitted'}
+<script type="text/javascript" src="include/jquery/jquery.js"></script>
+<script type="text/javascript" src="include/jquery/jquery-ui.js"></script>
 <script type="text/javascript" src="include/js/smoothscroll.js"></script>
-<script type="text/javascript" src="include/js/menu.js"></script>
 <script src="include/js/general.js" type="text/javascript"></script>
-<script src="include/js/{$LANGUAGE}.lang.js?{$VERSION}" type="text/javascript"></script>
+<script src="include/js/{$LANGUAGE}.lang.js" type="text/javascript"></script>
 <form name="merge" method="POST" action="index.php" id="form" onsubmit="if(validate_merge('{$MODULENAME}')){ldelim}VtigerJS_DialogBox.block(); return true;{rdelim} else {ldelim} return false; {rdelim};">
 	<input type=hidden name="module" value="{$MODULENAME}">
 	<input type=hidden name="return_module" value="{$MODULENAME}">
@@ -39,16 +40,11 @@
 	<input type="hidden" name="parent" value="{$PARENT_TAB}">
 	<input type="hidden" name="pass_rec" value="{$IDSTRING}">
 	<input type="hidden" name="return_action" value="FindDuplicateRecords">
-	
 	<div style='margin: 0 5px;'>
-		<table class="small" border="0" cellspacing=0 cellpadding=4 width="98%">	
+		<table class="small" border="0" cellspacing=0 cellpadding=4 width="98%">
 		<tr>
 			<td align="left" colspan="2" class="moduleName" nowrap="nowrap">
-			{assign var="MODULELABEL" value=$MODULENAME}
-			{if $APP.$MODULENAME neq ''}
-				{assign var="MODULELABEL" value=$APP.$MODULENAME}
-			{/if}	
-			{$APP.LBL_MERGE_DATA_IN} &gt; <span class="hdrLink">{$MODULELABEL}</span>
+			{$APP.LBL_MERGE_DATA_IN} &gt; <span class="hdrLink">{$MODULENAME|getTranslatedString:$MODULENAME}</span>
 			</td>
 		</tr>
 		<tr>
@@ -56,7 +52,6 @@
 		</tr>
 		</table>
 	</div>
-	
 	<div style='margin: 0 5px;'>
 		<table class="lvt small" border="0" cellpadding="3" cellspacing="1" width="98%">
 		<tr >
@@ -64,7 +59,7 @@
 			{assign var=count value=1}
 			{assign var=cnt_rec value=0}
 			{if $NO_EXISTING eq 1}
-				{foreach key=cnt item=record from=$ID_ARRAY}	
+				{foreach key=cnt item=record from=$ID_ARRAY}
 					<td  class="lvtCol" >
 						<b>{$APP.LBL_RECORD}{$count}</b>
 						{if $count eq 1}
@@ -77,12 +72,12 @@
 					{assign var=count value=$count+1}
 				{/foreach}
 			{else}
-				{foreach key=cnt item=record from=$ID_ARRAY}	
+				{foreach key=cnt item=record from=$ID_ARRAY}
 					<td  class="lvtCol" >
 						<b>{$APP.LBL_RECORD}{$count}</b>
 					{assign var=found value=0}
 					{foreach item=child key=k from=$IMPORTED_RECORDS}
-						{if $record eq $child}	
+						{if $record eq $child}
 							{assign var=found value=1}
 						{/if}
 					{/foreach}
@@ -102,8 +97,7 @@
 			{foreach item=data key=cnt from=$ALLVALUES}
 			{foreach item=fld_array key=label from=$data}
 		<tr class="IvtColdata" onmouseover="this.className='lvtColDataHover';" onmouseout="this.className='lvtColData';" bgcolor="white">
-					
-					<td ><b>{$label|@getTranslatedString:$MODULE}</b>
+					<td ><b>{$label|@getTranslatedString:$MODULENAME}</b>
 					</td>
 					{foreach item=fld_value key=cnt2 from=$fld_array}
 						{if $fld_value.disp_value neq ''}
@@ -121,18 +115,19 @@
 						{/if}
 					{/foreach}
 		</tr>
-				{/foreach}	
-				{/foreach}	
+				{/foreach}
+				{/foreach}
 		</table>
 	</div>
-	
 	<div style='margin: 0 5px;'>
-		<table border=0 class="lvtColData"  width="100%" cellspacing=0 cellpadding="0px">	
+		<table border=0 class="lvtColData"  width="100%" cellspacing=0 cellpadding="0px">
 		<tr>
-				<td align="center" >
-				<input title="{$APP.LBL_MERGE_BUTTON_TITLE}" class="crmbutton small save" type="submit" name="button" value="  {$APP.LBL_MERGE_BUTTON_LABEL}  " >	
-				</td>
-			</tr>	
+			<td align="center" >
+			<br>
+			<input title="{$APP.LBL_MERGE_BUTTON_TITLE}" class="crmbutton small save" type="submit" name="button" value="  {$APP.LBL_MERGE_BUTTON_LABEL}  " >
+			<br><br>
+			</td>
+		</tr>
 		</table>
 	</div>
 </form>
@@ -140,7 +135,6 @@
 {else}
 	<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>
 	<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
-
 		<table border='0' cellpadding='5' cellspacing='0' width='98%'>
 		<tbody><tr>
 		<td rowspan='2' width='11%'><img src='{'denied.gif'|@vtiger_imageurl:$THEME}' ></td>
@@ -155,7 +149,6 @@
 		</tbody></table>
 	</div>
 	</td></tr></table>
-				
 {/if}
 </body>
-</html>			
+</html>

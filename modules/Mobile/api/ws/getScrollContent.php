@@ -7,33 +7,22 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-include_once dirname(__FILE__) . '/models/Alert.php';
 include_once dirname(__FILE__) . '/models/SearchFilter.php';
-include_once dirname(__FILE__) . '/models/Paging.php';
 
-class Mobile_WS_getScrollContent extends Mobile_WS_Controller {
+class crmtogo_WS_getScrollContent extends crmtogo_WS_Controller {
 	
-	function isCalendarModule($module) {
-		return ($module == 'Events' || $module == 'Calendar');
-	}
-	
-	function getPagingModel(Mobile_API_Request $request) {
-		$page = $request->get('page', 0);
-		return Mobile_WS_PagingModel::modelWithPageStart($page);
-	}
-	
-	function process(Mobile_API_Request $request) {
+	function process(crmtogo_API_Request $request) {
 		return $this->getContent($request);
 	}
 	
-	function getContent(Mobile_API_Request $request) {
-		global $current_user,$adb;
+	function getContent(crmtogo_API_Request $request) {
+		$db = PearDatabase::getInstance();
 		$current_user = $this->getActiveUser();	
 		
 		$module = $request->get('module');
 		$limit = $request->get('number');
 		$offset = $request->get('offset');
-		$search = (isset($_REQUEST['src_str'])) ? $request->get('src_str') : '';
+		$search =  trim($request->get('src_str'));
 		$customView = new CustomView($module);
 		
 		if(!empty($_REQUEST['view'])) {
@@ -54,9 +43,9 @@ class Mobile_WS_getScrollContent extends Mobile_WS_Controller {
 
 		//get entity fields for each module
 		$entity_sql="select fieldname,tablename,entityidfield from vtiger_entityname where modulename =?";
-		$ws_entity=$adb->pquery($entity_sql, array($module));
-		$fieldname= $adb->query_result($ws_entity,0,'fieldname');
-		$tablename= $adb->query_result($ws_entity,0,'tablename');
+		$ws_entity=$db->pquery($entity_sql, array($module));
+		$fieldname= $db->query_result($ws_entity,0,'fieldname');
+		$tablename= $db->query_result($ws_entity,0,'tablename');
 		
 		//set the list and content order
 		if ($module =='Contacts' || $module =='Leads') {
@@ -67,29 +56,16 @@ class Mobile_WS_getScrollContent extends Mobile_WS_Controller {
 		}
 		//special handling for calendar (currently display tasks only)
 		elseif ($module =='Calendar' || $module =='Events') {
-			$calendarview_selected = $request->get('viewName');
 			$list_query .= " AND vtiger_activity.activitytype!='Emails'";
-			if ($calendarview_selected=='week') {
-				$list_query .= " AND week(date_start) = week(NOW()) AND year(date_start) = year(NOW())";
-			}
-			elseif ($calendarview_selected=='month') {
-				$list_query .= " AND month(date_start) = month(NOW()) AND year(date_start) = year(NOW())";
-			}
-			elseif ($calendarview_selected=='year') {
-				$list_query .= " AND year(date_start) = year(NOW())";
-			}
-			elseif ($calendarview_selected=='today') {
-				$list_query .= " AND DATE(date_start) = DATE(NOW())";
-			}
 			$list_query .= " AND subject LIKE '%$search%' ORDER BY date_start DESC";
 		}
 		else  {
 			$list_query .= " AND ".$tablename.".".$fieldname." LIKE '%$search%' ORDER BY ".$tablename.".".$fieldname;
 		}
 		$list_query .= " LIMIT $offset, $limit;";
-		$listview_entries = $adb->pquery($list_query ,array());
+		$listview_entries = $db->pquery($list_query ,array());
 		
-		$response = new Mobile_API_Response();
+		$response = new crmtogo_API_Response();
 		$response->setResult(array('records'=>$listview_entries, 'module'=>$module));
 		
 		return $response;

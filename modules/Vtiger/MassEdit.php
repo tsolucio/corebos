@@ -30,6 +30,9 @@ $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $storearray = getSelectedRecords($_REQUEST, $currentModule, vtlib_purify($_REQUEST['idstring']),$excludedRecords);
 $idstringval=implode(';',$storearray);
 $smarty->assign("IDS",$idstringval);
+$smarty->assign('ID', 0);
+$smarty->assign('MODE', $focus->mode);
+$smarty->assign('CREATEMODE', '');
 $smarty->assign('MASS_EDIT','1');
 $smarty->assign('BLOCKS',getBlocks($currentModule,$disp_view,$mode,$focus->column_fields));
 if ($currentModule=='Products') {
@@ -41,6 +44,9 @@ if ($currentModule=='Products') {
 	$smarty->assign("TAX_DETAILS", $tax_details);
 }
 $smarty->assign("CATEGORY",getParentTab());
+$upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize',3000000,$currentModule);
+$smarty->assign("UPLOADSIZE", $upload_maxsize/1000000); //Convert to MB
+$smarty->assign("UPLOAD_MAXSIZE",$upload_maxsize);
 
 // Field Validation Information
 $tabid = getTabid($currentModule);

@@ -17,14 +17,14 @@ include_once('vtlib/Vtiger/Cron.php');
  * @package vtlib
  */
 class Vtiger_PackageExport {
-	var $_export_tmpdir = 'test/vtlib';
+	var $_export_tmpdir = 'cache';
 	var $_export_modulexml_filename = null;
 	var $_export_modulexml_file = null;
 
 	/**
 	 * Constructor
 	 */
-	function Vtiger_PackageExport() {
+	function __construct() {
 		if(is_dir($this->_export_tmpdir) === FALSE) {
 			mkdir($this->_export_tmpdir);
 		}
@@ -88,10 +88,10 @@ class Vtiger_PackageExport {
 		}
 	}
 
-    /**
+	/**
 	 * Clean up the temporary files created.
 	 * @access private
-     */
+	 */
 	function __cleanupExport() {
 		if(!empty($this->_export_modulexml_filename)) {
 			unlink($this->__getManifestFilePath());
@@ -144,6 +144,7 @@ class Vtiger_PackageExport {
 
 	static function packageFromFilesystem($moduleName, $mandatory=false, $directDownload=false) {
 		// first we check for the files
+		$moduleName = preg_replace('/[^a-zA-Z]/', '', $moduleName);
 		$wehavefiles = is_dir("modules/$moduleName");  // check for module directory
 		$wehavefiles = $wehavefiles and file_exists("modules/$moduleName/manifest.xml");  // check for manifest
 		$wehavefiles = $wehavefiles and is_dir("modules/$moduleName/language");  // check for language directory
@@ -175,7 +176,8 @@ class Vtiger_PackageExport {
 	static function languageFromFilesystem($languageCode, $languageName, $directDownload=false) {
 		// first we check for the files
 		$wehavefiles = file_exists("include/language/$languageCode.manifest.xml");  // check for manifest
-		if ($wehavefiles) {
+		if ($wehavefiles and preg_match('/^[a-z]{2}_[a-z]{2}$/',$languageCode)) {
+			$languageName = preg_replace('/[^a-zA-Z]/', '', $languageName);
 			// Export as Zip
 			if (file_exists('packages/optional/manifest.xml'))
 				@unlink('packages/optional/manifest.xml');
@@ -300,9 +302,9 @@ class Vtiger_PackageExport {
 		$this->export_CustomLinks($moduleInstance);
 
 		//Export cronTasks
-        $this->export_CronTasks($moduleInstance);
+		$this->export_CronTasks($moduleInstance);
 
-        $this->closeNode('module');
+		$this->closeNode('module');
 	}
 
 	/**
@@ -319,9 +321,6 @@ class Vtiger_PackageExport {
 
 		if($moduleInstance->isentitytype) {
 			$focus = CRMEntity::getInstance($modulename);
-
-			// Setup required module variables which is need for vtlib API's
-			vtlib_setup_modulevars($modulename, $focus);
 
 			$tables = Array ($focus->table_name);
 			if(!empty($focus->groupTable)) $tables[] = $focus->groupTable[0];
@@ -724,22 +723,22 @@ class Vtiger_PackageExport {
 	/**
 	 * Export cron tasks for the module.
 	 * @access private
-	 */        
+	 */
 	function export_CronTasks($moduleInstance){
-        $cronTasks = Vtiger_Cron::listAllInstancesByModule($moduleInstance->name);
-        $this->openNode('crons');
-        foreach($cronTasks as $cronTask){
-            $this->openNode('cron');
-            $this->outputNode($cronTask->getName(),'name');
-            $this->outputNode($cronTask->getFrequency(),'frequency');
-            $this->outputNode($cronTask->getStatus(),'status');
-            $this->outputNode($cronTask->getHandlerFile(),'handler');
-            $this->outputNode($cronTask->getSequence(),'sequence');
-            $this->outputNode($cronTask->getDescription(),'description');
-            $this->closeNode('cron');
-        }
-      $this->closeNode('crons');
-    }
+		$cronTasks = Vtiger_Cron::listAllInstancesByModule($moduleInstance->name);
+		$this->openNode('crons');
+		foreach($cronTasks as $cronTask){
+			$this->openNode('cron');
+			$this->outputNode($cronTask->getName(),'name');
+			$this->outputNode($cronTask->getFrequency(),'frequency');
+			$this->outputNode($cronTask->getStatus(),'status');
+			$this->outputNode($cronTask->getHandlerFile(),'handler');
+			$this->outputNode($cronTask->getSequence(),'sequence');
+			$this->outputNode($cronTask->getDescription(),'description');
+			$this->closeNode('cron');
+		}
+		$this->closeNode('crons');
+	}
 
 	/**
 	 * Helper function to log messages

@@ -20,13 +20,15 @@ function getTopSalesOrder($maxval,$calCnt)
 	require_once('include/utils/utils.php');
 	require_once('modules/CustomView/CustomView.php');
 
-	global $current_language,$current_user,$list_max_entries_per_page,$theme,$adb;
+	global $current_language,$current_user,$theme,$adb;
+	$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,'SalesOrder');
 	$current_module_strings = return_module_language($current_language, 'SalesOrder');
 
 	$log = LoggerManager::getLogger('so_list');
 
 	$url_string = '';
 	$sorder = '';
+	$order_by = '';
 	$oCustomView = new CustomView("SalesOrder");
 	$customviewcombo_html = $oCustomView->getCustomViewCombo();
 	if(isset($_REQUEST['viewname']) == false || $_REQUEST['viewname']=='')
@@ -109,7 +111,6 @@ function getTopSalesOrder($maxval,$calCnt)
 		{
 			$end_rec = $noofrows;
 		}
-
 	}
 	else
 	{
@@ -133,12 +134,10 @@ function getTopSalesOrder($maxval,$calCnt)
 	$controller->setHeaderSorting(false);
 	$header = $controller->getListViewHeader($focus,$currentModule,$url_string,$sorder,$order_by, true);
 
-	$entries = $controller->getListViewEntries($focus,$currentModule,$list_result,
-	$navigation_array, true);
+	$entries = $controller->getListViewEntries($focus,$currentModule,$list_result,$navigation_array, true);
 
 	$values=Array('ModuleName'=>'SalesOrder','Title'=>$title,'Header'=>$header,'Entries'=>$entries,'search_qry'=>$search_qry);
-	if ( ($display_empty_home_blocks && $noofrows == 0 ) || ($noofrows>0) )
-		return $values;
+	return $values;
 }
 
 function getTopSalesOrderSearch($output) {
@@ -151,23 +150,23 @@ function getTopSalesOrderSearch($output) {
 	$advft_criteria_groups = array('1' => array('groupcondition' => null));
 	$advft_criteria = array(
 		array (
-            'groupid' => 1,
-            'columnname' => 'vtiger_salesorder:duedate:duedate:SalesOrder_Due_Date:D',
-            'comparator' => 'h',
-            'value' => $currentDateTime->getDisplayDate(),
-            'columncondition' => 'and'
-        ),
+			'groupid' => 1,
+			'columnname' => 'vtiger_salesorder:duedate:duedate:SalesOrder_Due_Date:D',
+			'comparator' => 'h',
+			'value' => $currentDateTime->getDisplayDate(),
+			'columncondition' => 'and'
+		),
 		array (
-            'groupid' => 1,
-            'columnname' => 'vtiger_crmentity:smownerid:assigned_user_id:SalesOrder_Assigned_To:V',
-            'comparator' => 'e',
-            'value' => getFullNameFromArray('Users', $current_user->column_fields),
-            'columncondition' => null
-        )
+			'groupid' => 1,
+			'columnname' => 'vtiger_crmentity:smownerid:assigned_user_id:SalesOrder_Assigned_To:V',
+			'comparator' => 'e',
+			'value' => getFullNameFromArray('Users', $current_user->column_fields),
+			'columncondition' => null
+		)
 	);
 
-	$output['advft_criteria'] = Zend_Json::encode($advft_criteria);
-	$output['advft_criteria_groups'] = Zend_Json::encode($advft_criteria_groups);
+	$output['advft_criteria'] = json_encode($advft_criteria);
+	$output['advft_criteria_groups'] = json_encode($advft_criteria_groups);
 
 	return $output;
 }

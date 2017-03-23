@@ -183,7 +183,7 @@ if (is_array($list)) {
 			$_REQUEST["mailbox"] = 'INBOX';
 
 			$box = imap_status($MailBox->mbox, "{".$MailBox->imapServerAddress."}".$tmpval, SA_ALL);
-			$_SESSION["mailboxes"][$tmpval] = $box->unseen;
+			coreBOS_Session::set('mailboxes^'.$tmpval, $box->unseen);
 			if($tmpval[0] != ".")
 			{
 				if($box->messages==0) {$num=$box->messages;} else {$num=($box->messages-1);}
@@ -195,7 +195,7 @@ if (is_array($list)) {
 					$folders .='</span></li>';
 			}
 	}
-        $boxes .= '</select>';
+	$boxes .= '</select>';
 }
 imap_close($MailBox->mbox);
 $smarty = new vtigerCRM_Smarty;

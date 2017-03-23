@@ -125,6 +125,11 @@ switch ($functiontocall) {
 			$ret = '';
 		}
 		break;
+	case 'getEmailTemplateVariables':
+		$module = vtlib_purify($_REQUEST['module_from']);
+		$allOptions=getEmailTemplateVariables(array($module,'Accounts'));
+		$ret = array_merge($allOptions[0],$allOptions[1],$allOptions[2]);
+		break;
 	case 'ismoduleactive':
 	default:
 		$mod = vtlib_purify($_REQUEST['checkmodule']);

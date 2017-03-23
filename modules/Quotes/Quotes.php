@@ -10,7 +10,7 @@
 require_once('data/CRMEntity.php');
 require_once('data/Tracker.php');
 require_once('include/RelatedListView.php');
-require_once('user_privileges/default_module_view.php');
+require('user_privileges/default_module_view.php');
 require_once('modules/InventoryDetails/InventoryDetails.php');
 
 class Quotes extends CRMEntity {
@@ -29,9 +29,8 @@ class Quotes extends CRMEntity {
 	 * Mandatory table for supporting custom fields.
 	 */
 	var $customFieldTable = Array('vtiger_quotescf', 'quoteid');
-	var $entity_table = 'vtiger_crmentity';
-
-	var $object_name = 'Quote';
+	// Uncomment the line below to support custom field columns on related lists
+	var $related_tables = Array('vtiger_account'=>array('accountid'));
 
 	var $sortby_fields = Array('subject','crmid','smownerid','accountname','lastname');
 
@@ -48,7 +47,6 @@ class Quotes extends CRMEntity {
 		'Total'=>Array('quotes'=> 'total'),
 		'Assigned To'=>Array('crmentity'=>'smownerid')
 	);
-
 	var $list_fields_name = Array(
 		'Quote No'=>'quote_no',
 		'Subject'=>'subject',
@@ -58,8 +56,11 @@ class Quotes extends CRMEntity {
 		'Total'=>'hdnGrandTotal',
 		'Assigned To'=>'assigned_user_id'
 	);
-	var $list_link_field= 'subject';
 
+	// Make the field link to detail view from list view (Fieldname)
+	var $list_link_field = 'subject';
+
+	// For Popup listview and UI type support
 	var $search_fields = Array(
 		'Quote No'=>Array('quotes'=>'quote_no'),
 		'Subject'=>Array('quotes'=>'subject'),
@@ -73,6 +74,9 @@ class Quotes extends CRMEntity {
 		'Account Name'=>'account_id',
 		'Quote Stage'=>'quotestage',
 	);
+
+	// For Popup window record selection
+	var $popup_fields = Array('subject');
 
 	// For Alphabetical search
 	var $def_basicsearch_col = 'subject';
@@ -136,14 +140,14 @@ class Quotes extends CRMEntity {
 	function registerInventoryHistory() {
 		global $app_strings;
 		if ($_REQUEST['ajxaction'] == 'DETAILVIEW') { //if we use ajax edit
-			if (GlobalVariable::getVariable('B2B', '1')) {
+			if (GlobalVariable::getVariable('Application_B2B', '1')) {
 				$relatedname = getAccountName($this->column_fields['account_id']);
 			} else {
 				$relatedname = getContactName($this->column_fields['contact_id']);
 			}
 			$total = $this->column_fields['hdnGrandTotal'];
 		} else { //using edit button and save
-			if (GlobalVariable::getVariable('B2B', '1')) {
+			if (GlobalVariable::getVariable('Application_B2B', '1')) {
 				$relatedname = $_REQUEST["account_name"];
 			} else {
 				$relatedname = $_REQUEST["contact_name"];
@@ -209,7 +213,6 @@ class Quotes extends CRMEntity {
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once("modules/$related_module/Activity.php");
 		$other = new Activity();
-		vtlib_setup_modulevars($related_module, $other);
 		$singular_modname = vtlib_toSingular($related_module);
 
 		$parenttab = getParentTab();
@@ -227,7 +230,7 @@ class Quotes extends CRMEntity {
 			if(is_string($actions)) $actions = explode(',', strtoupper($actions));
 			if(in_array('ADD', $actions) && isPermitted($related_module,1, '') == 'yes') {
 				if(getFieldVisibilityPermission('Calendar',$current_user->id,'parent_id', 'readwrite') == '0') {
-					$button .= "<input title='".getTranslatedString('LBL_NEW'). " ". getTranslatedString('LBL_TODO', $related_module) ."' class='crmbutton small create'" .
+					$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). " ". getTranslatedString('LBL_TODO', $related_module) ."' class='crmbutton small create'" .
 						" onclick='this.form.action.value=\"EventEditView\";this.form.module.value=\"Calendar4You\";this.form.return_module.value=\"$this_module\";this.form.activity_mode.value=\"Task\";' type='submit' name='button'" .
 						" value='". getTranslatedString('LBL_ADD_NEW'). " " . getTranslatedString('LBL_TODO', $related_module) ."'>&nbsp;";
 				}
@@ -370,8 +373,14 @@ class Quotes extends CRMEntity {
 			left join vtiger_quotesshipads on vtiger_quotes.quoteid=vtiger_quotesshipads.quoteshipaddressid
 			left join vtiger_currency_info as vtiger_currency_info$secmodule on vtiger_currency_info$secmodule.id = vtiger_quotes.currency_id ";
 		if(($type !== 'COLUMNSTOTOTAL') || ($type == 'COLUMNSTOTOTAL' && $where_condition == 'add')) {
-			$query .= " left join vtiger_inventoryproductrel as vtiger_inventoryproductrelQuotes on vtiger_quotes.quoteid = vtiger_inventoryproductrelQuotes.id
-			left join vtiger_products as vtiger_productsQuotes on vtiger_productsQuotes.productid = vtiger_inventoryproductrelQuotes.productid
+			if($module == 'Products'){
+				$query .= " left join vtiger_inventoryproductrel as vtiger_inventoryproductrelQuotes on vtiger_quotes.quoteid = vtiger_inventoryproductrelQuotes.id and vtiger_inventoryproductrelQuotes.productid=vtiger_products.productid ";
+			}elseif($module == 'Services'){
+				$query .= " left join vtiger_inventoryproductrel as vtiger_inventoryproductrelQuotes on vtiger_quotes.quoteid = vtiger_inventoryproductrelQuotes.id and vtiger_inventoryproductrelQuotes.productid=vtiger_service.serviceid ";
+			}else{
+				$query .= " left join vtiger_inventoryproductrel as vtiger_inventoryproductrelQuotes on vtiger_quotes.quoteid = vtiger_inventoryproductrelQuotes.id ";
+			}
+			$query .= " left join vtiger_products as vtiger_productsQuotes on vtiger_productsQuotes.productid = vtiger_inventoryproductrelQuotes.productid
 			left join vtiger_service as vtiger_serviceQuotes on vtiger_serviceQuotes.serviceid = vtiger_inventoryproductrelQuotes.productid ";
 		}
 		$query .= " left join vtiger_groups as vtiger_groupsQuotes on vtiger_groupsQuotes.groupid = vtiger_crmentityQuotes.smownerid
@@ -398,7 +407,7 @@ class Quotes extends CRMEntity {
 			"Contacts" => array("vtiger_quotes"=>array("quoteid","contactid")),
 			"Potentials" => array("vtiger_quotes"=>array("quoteid","potentialid")),
 		);
-		return $rel_tables[$secmodule];
+		return isset($rel_tables[$secmodule]) ? $rel_tables[$secmodule] : '';
 	}
 
 	// Function to unlink an entity with given Id from another entity
@@ -462,7 +471,7 @@ class Quotes extends CRMEntity {
 		$fields_list .= getInventoryFieldsForExport($this->table_name);
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 
-		$query = "SELECT $fields_list FROM ".$this->entity_table."
+		$query = "SELECT $fields_list FROM vtiger_crmentity
 			INNER JOIN vtiger_quotes ON vtiger_quotes.quoteid = vtiger_crmentity.crmid
 			LEFT JOIN vtiger_quotescf ON vtiger_quotescf.quoteid = vtiger_quotes.quoteid
 			LEFT JOIN vtiger_quotesbillads ON vtiger_quotesbillads.quotebilladdressid = vtiger_quotes.quoteid
@@ -476,6 +485,7 @@ class Quotes extends CRMEntity {
 			LEFT JOIN vtiger_currency_info ON vtiger_currency_info.id = vtiger_quotes.currency_id
 			LEFT JOIN vtiger_users AS vtiger_inventoryManager ON vtiger_inventoryManager.id = vtiger_quotes.inventorymanager
 			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
+			LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'
 			LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
 
 		$query .= $this->getNonAdminAccessControlQuery('Quotes',$current_user);

@@ -6,14 +6,13 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 require_once('include/logging.php');
 require_once('include/database/PearDatabase.php');
 
 global $adb,$mod_strings;
 
-$local_log =& LoggerManager::getLogger('index');
+$local_log = LoggerManager::getLogger('index');
 $rfid = vtlib_purify($_REQUEST['record']);
 if($rfid != "")
 {
@@ -23,28 +22,26 @@ if($rfid != "")
 	} else {
 		$sql .= "delete from vtiger_reportfolder where folderid=?";
 		$result = $adb->pquery($sql, array($rfid));
-		if($result!=false)
-        {
-                $pquery = "delete from vtiger_report where folderid=?";
-                $res = $adb->pquery($pquery, array($rfid));
-                if ($res != "")
-                        header("Location: index.php?action=ReportsAjax&mode=ajax&file=ListView&module=Reports");
-                else {
-                        include('modules/Vtiger/header.php');
-                        $errormessage = "<font color='red'><B>Error Message<ul>
-                        <li><font color='red'>Error while deleting the reports of the folder</font>
-                        </ul></B></font> <br>" ;
-                        echo $errormessage;
-                }
-        }else
-        {
-                include('modules/Vtiger/header.php');
-                $errormessage = "<font color='red'><B>Error Message<ul>
-                <li><font color='red'>Error while deleting the folder</font>
-                </ul></B></font> <br>" ;
-                echo $errormessage;
-        }
+		if($result!=false) {
+			$pquery = "delete from vtiger_report where folderid=?";
+			$res = $adb->pquery($pquery, array($rfid));
+			if ($res != '') {
+				header("Location: index.php?action=ReportsAjax&mode=ajax&file=ListView&module=Reports");
+			} else {
+				include('modules/Vtiger/header.php');
+				$errormessage = "<font color='red'><b>".getTranslatedString('Error Message','Settings')."<ul>
+					<li><font color='red'>".getTranslatedString('LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER','Reports')."</font>
+					</ul></b></font> <br>" ;
+				echo $errormessage;
+			}
+		} else {
+			include('modules/Vtiger/header.php');
+			$errormessage = "<font color='red'><b>".getTranslatedString('Error Message','Settings')."<ul>
+				<li><font color='red'>".getTranslatedString('LBL_ERROR_WHILE_DELETING_FOLDER','Reports')."</font>
+				</ul></b></font> <br>" ;
+			echo $errormessage;
+		}
 	}
 }
-  	
+
 ?>

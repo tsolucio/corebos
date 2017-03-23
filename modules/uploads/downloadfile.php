@@ -14,15 +14,14 @@ global $adb, $fileId, $default_charset, $app_strings;
 
 $attachmentsid = vtlib_purify($_REQUEST['fileid']);
 $entityid = vtlib_purify($_REQUEST['entityid']);
-$returnmodule= vtlib_purify($_REQUEST['return_module']);
 $deletecheck = false;
 if(!empty($entityid)) $deletecheck = $adb->pquery('SELECT deleted FROM vtiger_crmentity WHERE crmid=?', array($entityid));
 if(!empty($deletecheck) && $adb->query_result($deletecheck, 0, 'deleted') == 1) {
 	echo $app_strings['LBL_RECORD_DELETE'];
 } else {
 	$dbQuery = 'SELECT * FROM vtiger_attachments WHERE attachmentsid = ?' ;
-	$result = $adb->pquery($dbQuery, array($attachmentsid)) or die('Could not get file list');
-	if($adb->num_rows($result) == 1) {
+	$result = $adb->pquery($dbQuery, array($attachmentsid));
+	if($result and $adb->num_rows($result) == 1) {
 		$fileType = @$adb->query_result($result, 0, 'type');
 		$name = @$adb->query_result($result, 0, 'name');
 		$filepath = @$adb->query_result($result, 0, 'path');

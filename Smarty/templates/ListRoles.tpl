@@ -6,7 +6,6 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 
@@ -19,15 +18,15 @@ a.x {ldelim}
 		padding:5px;
 		font-weight:bold;
 {rdelim}
-	
+
 a.x:hover {ldelim}
 		color:#333333;
 		text-decoration:underline;
 		font-weight:bold;
 {rdelim}
 
-ul {ldelim}color:black;{rdelim}	 
-	
+ul {ldelim}color:black;{rdelim}
+
 .drag_Element{ldelim}
 	position:relative;
 	left:0px;
@@ -52,46 +51,43 @@ ul {ldelim}color:black;{rdelim}
 {rdelim}
 </style>
 <script>
- if(typeof(e) != 'undefined')
-  window.captureEvents(Event.MOUSEMOVE);
+if(typeof(e) != 'undefined')
+	window.captureEvents(Event.MOUSEMOVE);
 
 //  window.onmousemove= displayCoords;
 //  window.onclick = fnRevert;
-  
-   function displayCoords(event) 
-	 {ldelim}
-				var move_Element = document.getElementById('Drag_content').style;
-				if(!event){ldelim}
-						move_Element.left = e.pageX +'px' ;
-						move_Element.top = e.pageY+10 + 'px';	
-				{rdelim}
-				else{ldelim}
-						move_Element.left = event.clientX +'px' ;
-					    move_Element.top = event.clientY+10 + 'px';	
-				{rdelim}
+
+	function displayCoords(event) {ldelim}
+		var move_Element = document.getElementById('Drag_content').style;
+		if(!event){ldelim}
+			move_Element.left = e.pageX +'px' ;
+			move_Element.top = e.pageY+10 + 'px';
+		{rdelim}
+		else{ldelim}
+			move_Element.left = event.clientX +'px' ;
+			move_Element.top = event.clientY+10 + 'px';
+		{rdelim}
 	{rdelim}
-  
-	  function fnRevert(e)
-	  {ldelim}
-		  	if(e.button == 2){ldelim}
-				document.getElementById('Drag_content').style.display = 'none';
-				hideAll = false;
-				parentId = "Head";
-	    		parentName = "DEPARTMENTS";
-			    childId ="NULL";
-	    		childName = "NULL";
-			{rdelim}
+
+	function fnRevert(e) {ldelim}
+		if (e.button == 2) {ldelim}
+			document.getElementById('Drag_content').style.display = 'none';
+			hideAll = false;
+			parentId = "Head";
+			parentName = "DEPARTMENTS";
+			childId ="NULL";
+			childName = "NULL";
+		{rdelim}
 	{rdelim}
 </script>
 
 <br>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tbody><tr>
-        <td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-        <td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
-	<div align=center>
-<br>
-	
+	<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
+	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
+		<div align=center>
+		<br>
 				{include file="SetMenu.tpl"}
 				<!-- DISPLAY -->
 				<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
@@ -103,22 +99,20 @@ ul {ldelim}color:black;{rdelim}
 					<td valign=top class="small">{$MOD.LBL_ROLE_DESCRIPTION}</td>
 				</tr>
 				</table>
-				
 				<br>
 				<table border=0 cellspacing=0 cellpadding=10 width=100% >
 				<tr>
 				<td>
-				
 					<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 					<tr>
-						<td class="big"><strong>{$MOD.LBL_ROLE_HIERARCHY_TREE}</strong></td>
+						<td><h4 class="slds-text-title--caps" id="role_treeheading">{$MOD.LBL_ROLE_HIERARCHY_TREE}</h4></td>
 						<td class="small" align=right>&nbsp;</td>
 					</tr>
 					</table>
 
-					<div id='RoleTreeFull'  onMouseMove="displayCoords(event)"> 
-                			        {include file='RoleTree.tpl'}
-		                	</div>
+					<div id='RoleTreeFull' onMouseMove="displayCoords(event)">
+						{include file='RoleTree.tpl'}
+					</div>
 
 {*					<table border=0 cellspacing=0 cellpadding=20 width=100% >
 					<tr>
@@ -137,31 +131,22 @@ ul {ldelim}color:black;{rdelim}
 						</td>
 					</tr>
 					</table> *}
-					
-					
-					
-					
 					<table border=0 cellspacing=0 cellpadding=5 width=100% >
 					<tr><td class="small" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td></tr>
 					</table>
 				</td>
 				</tr>
 				</table>
-			
-			
-			
 			</td>
 			</tr>
 			</table>
 		</td>
 	</tr>
 	</table>
-		
 	</div>
-
 </td>
-        <td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
-   </tr>
+<td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
+</tr>
 </tbody>
 </table>
 	<div id="Drag_content">&nbsp;</div>
@@ -173,22 +158,20 @@ ul {ldelim}color:black;{rdelim}
 	var childId ="NULL";
 	var childName = "NULL";
 
-		
-	
-	 function get_parent_ID(obj,currObj)
-	 {ldelim}
+	function get_parent_ID(obj,currObj)
+	{ldelim}
 			var leftSide = findPosX(obj);
-    			var topSide = findPosY(obj);
+			var topSide = findPosY(obj);
 			var move_Element = document.getElementById('Drag_content');
-		 	childName  = document.getElementById(currObj).innerHTML;
+			childName  = document.getElementById(currObj).innerHTML;
 			childId = currObj;
 			move_Element.innerHTML = childName;
 			move_Element.style.left = leftSide + 15 + 'px';
 			move_Element.style.top = topSide + 15+ 'px';
 			move_Element.style.display = 'block';
-			hideAll = true;	
+			hideAll = true;
 	{rdelim}
-	
+
 	function put_child_ID(currObj)
 	{ldelim}
 		var move_Element = document.getElementById('Drag_content');
@@ -237,30 +220,24 @@ ul {ldelim}color:black;{rdelim}
 		document.getElementById(Obj).style.visibility = 'hidden';
 	{rdelim}
 
-	
-
-
 function showhide(argg,imgId)
 {ldelim}
 	var harray=argg.split(",");
-	var harrlen = harray.length;	
+	var harrlen = harray.length;
 	var i;
 	for(i=0; i<harrlen; i++)
 	{ldelim}
 		var x=document.getElementById(harray[i]).style;
-        	if (x.display=="none")
-        	{ldelim}
-           		x.display="block";
+		if (x.display=="none")
+		{ldelim}
+			x.display="block";
 			document.getElementById(imgId).src="{'minus.gif'|@vtiger_imageurl:$THEME}";
-         	{rdelim}
-        	else
+		{rdelim}
+		else
 		{ldelim}
 			x.display="none";
 			document.getElementById(imgId).src="{'plus.gif'|@vtiger_imageurl:$THEME}";
 		{rdelim}
 	{rdelim}
 {rdelim}
-
-
-
 </script>

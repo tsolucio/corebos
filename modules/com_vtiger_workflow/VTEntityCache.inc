@@ -10,11 +10,17 @@
 require_once 'data/VTEntityDelta.php';
 
 class VTWorkflowEntity{
-	function __construct($user, $id){
+	private $isDeleted = false;
+
+	function __construct($user, $id, $deleted=false){
 		$this->moduleName = null;
 		$this->id = $id;
 		$this->user = $user;
-		$data = vtws_retrieve($id, $user);
+		$this->isDeleted=$deleted;
+		if ($deleted)
+			$data = vtws_retrieve_deleted($id, $user);
+		else
+			$data = vtws_retrieve($id, $user);
 		foreach($data as $key => $value){
 			if(is_string($value)){
 				$data[$key] = html_entity_decode($value, ENT_QUOTES, 'utf-8');
@@ -22,6 +28,7 @@ class VTWorkflowEntity{
 		}
 		$this->data = $data;
 	}
+
 	/**
 	 * Get the data from the entity object as an array.
 	 *
@@ -84,6 +91,9 @@ class VTWorkflowEntity{
 		}
 	}
 
+	function isDeleted(){
+		return $this->isDeleted;
+	}
 }
 
 class VTEntityCache{
@@ -94,7 +104,8 @@ class VTEntityCache{
 
 	function forId($id){
 		if(!isset($this->cache[$id]) or $this->cache[$id]==null){
-			$data  = new VTWorkflowEntity($this->user, $id);
+			$deleted=!isRecordExists($id);
+			$data  = new VTWorkflowEntity($this->user, $id, $deleted);
 			$this->cache[$id] = $data;
 		}
 		return $this->cache[$id];

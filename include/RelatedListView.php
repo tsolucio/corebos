@@ -14,8 +14,7 @@ require_once("include/ListView/RelatedListViewSession.php");
 require_once("include/DatabaseUtil.php");
 
 if(!function_exists('GetRelatedList')) {
-	function GetRelatedList($module,$relatedmodule,$focus,$query,$button,$returnset,$id='',
-			$edit_val='',$del_val='',$skipActions=false) {
+	function GetRelatedList($module,$relatedmodule,$focus,$query,$button,$returnset,$id='',$edit_val='',$del_val='',$skipActions=false) {
 		return GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $returnset, $id, $edit_val, $del_val, $skipActions);
 	}
 }
@@ -46,7 +45,8 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 
 	$current_module_strings = return_module_language($current_language, $module);
 
-	global $list_max_entries_per_page, $urlPrefix, $currentModule, $theme, $theme_path, $theme_path, $mod_strings;
+	global $currentModule, $theme, $theme_path, $theme_path, $mod_strings;
+	$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$currentModule);
 	$smarty = new vtigerCRM_Smarty;
 	if (!isset($where)) $where = "";
 
@@ -74,7 +74,8 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 		}
 	}
 	if($relatedmodule == 'Leads') {
-		$query .= " AND vtiger_leaddetails.converted = 0";
+		$val_conv = ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true') ? 1 : 0);
+		$query .= " AND vtiger_leaddetails.converted = $val_conv";
 	}
 
 	if(isset($where) && $where != '')
@@ -82,23 +83,23 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 		$query .= ' and '.$where;
 	}
 
-	if(!$_SESSION['rlvs'][$module][$relatedmodule])
+	if(empty($_SESSION['rlvs'][$module][$relatedmodule]))
 	{
 		$modObj = new ListViewSession();
 		$modObj->sortby = $focus->default_order_by;
 		$modObj->sorder = $focus->default_sort_order;
-		$_SESSION['rlvs'][$module][$relatedmodule] = get_object_vars($modObj);
+		coreBOS_Session::set('rlvs^'.$module.'^'.$relatedmodule, get_object_vars($modObj));
 	}
 
 	if(!empty($_REQUEST['order_by'])) {
-		if(method_exists($focus,getSortOrder))
-		$sorder = $focus->getSortOrder();
-		if(method_exists($focus,getOrderBy))
-		$order_by = $focus->getOrderBy();
+		if (method_exists($focus,'getSortOrder'))
+			$sorder = $focus->getSortOrder();
+		if (method_exists($focus,'getOrderBy'))
+			$order_by = $focus->getOrderBy();
 
 		if(isset($order_by) && $order_by != '') {
-			$_SESSION['rlvs'][$module][$relatedmodule]['sorder'] = $sorder;
-			$_SESSION['rlvs'][$module][$relatedmodule]['sortby'] = $order_by;
+			coreBOS_Session::set('rlvs^'.$module.'^'.$relatedmodule.'^sorder', $sorder);
+			coreBOS_Session::set('rlvs^'.$module.'^'.$relatedmodule.'^sortby', $order_by);
 		}
 
 	} elseif($_SESSION['rlvs'][$module][$relatedmodule]) {
@@ -128,7 +129,7 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 		$mod_listquery = "activity_listquery";
 	else
 		$mod_listquery = strtolower($relatedmodule)."_listquery";
-	$_SESSION[$mod_listquery] = $query;
+	coreBOS_Session::set($mod_listquery, $query);
 
 	$url_qry ="&order_by=".$order_by."&sorder=".$sorder;
 	$computeCount = isset($_REQUEST['withCount']) ? $_REQUEST['withCount'] : '';
@@ -176,7 +177,7 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 	$relcv = new CustomView();
 	$relviewId = $relcv->getViewId($relatedmodule);
 	ListViewSession::setSessionQuery($relatedmodule,$query,$relviewId);
-	$_SESSION['lvs'][$relatedmodule][$relviewId]['start'] = $start;
+	coreBOS_Session::set('lvs^'.$relatedmodule.'^'.$relviewId.'^start', $start);
 
 	//Retreive the List View Table Header
 	$id = vtlib_purify($_REQUEST['record']);
@@ -210,184 +211,6 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 
 	$log->debug("Exiting GetRelatedList method ...");
 	return $related_entries;
-}
-
-/** Function to get related list entries in detailed array format
-  * @param $parentmodule -- parentmodulename:: Type string
-  * @param $query -- query:: Type string
-  * @param $id -- id:: Type string
-  * @returns $entries_list -- entries list:: Type string array
-  */
-function getAttachmentsAndNotes($parentmodule,$query,$id,$sid='')
-{
-	global $log, $theme;
-	$log->debug("Entering getAttachmentsAndNotes(".$parentmodule.",".$query.",".$id.",".$sid.") method ...");
-
-	$list = '<script>
-		function confirmdelete(url)
-		{
-			if(confirm("'.$app_strings['ARE_YOU_SURE'].'"))
-			{
-				document.location.href=url;
-			}
-		}
-	</script>';
-
-	$theme_path="themes/".$theme."/";
-	$image_path=$theme_path."images/";
-
-	global $adb,$current_user;
-	global $mod_strings;
-	global $app_strings, $listview_max_textlength;
-
-	$result=$adb->query($query);
-	$noofrows = $adb->num_rows($result);
-
-	$_SESSION['Documents_listquery'] = $query;
-	$header[] = $app_strings['LBL_TITLE'];
-	$header[] = $app_strings['LBL_DESCRIPTION'];
-	$header[] = $app_strings['LBL_ATTACHMENTS'];
-	$header[] = $app_strings['LBL_ASSIGNED_TO'];
-	$header[] = $app_strings['LBL_ACTION'];
-
-	if($result)
-	{
-		while($row = $adb->fetch_array($result))
-		{
-			if($row['activitytype'] == 'Attachments') {
-				$query1="select setype,createdtime from vtiger_crmentity where crmid=?";
-				$params1 = array($row['attachmentsid']);
-			} else {
-				$query1="select setype,createdtime from vtiger_crmentity where crmid=?";
-				$params1 = array($row['crmid']);
-			}
-
-			$query1 .=" order by createdtime desc";
-			$res=$adb->pquery($query1, $params1);
-			$num_rows = $adb->num_rows($res);
-			for($i=0; $i<$num_rows; $i++)
-			{
-				$setype = $adb->query_result($res,$i,'setype');
-				$createdtime = $adb->query_result($res,$i,'createdtime');
-			}
-
-			if(($setype != "Products Image") && ($setype != "Contacts Image"))
-			{
-				$entries = Array();
-				if(trim($row['activitytype']) == 'Documents')
-				{
-					$module = 'Documents';
-					$editaction = 'EditView';
-					$deleteaction = 'Delete';
-				}
-				elseif($row['activitytype'] == 'Attachments')
-				{
-					$module = 'uploads';
-					$editaction = 'upload';
-					$deleteaction = 'deleteattachments';
-				}
-				if($module == 'Documents')
-				{
-					$entries[] = '<a href="index.php?module='.$module.'&action=DetailView&return_module='.$parentmodule.'&return_action='.$return_action.'&record='.$row["crmid"].'&filename='.$row['filename'].'&fileid='.$row['attachmentsid'].'&return_id='.vtlib_purify($_REQUEST["record"]).'&parenttab='.vtlib_purify($_REQUEST["parenttab"]).'">'.textlength_check($row['title']).'</a>';
-				}
-				elseif($module == 'uploads')
-				{
-					$entries[] = $row['title'];
-				}
-				if((getFieldVisibilityPermission('Documents', $current_user->id, 'notecontent') == '0') || $row['activitytype'] == 'Documents')
-				{
-					$row['description'] = preg_replace("/(<\/?)(\w+)([^>]*>)/i","",$row['description']);
-					if($listview_max_textlength && (strlen($row['description']) > $listview_max_textlength))
-					{
-						$row['description'] = substr($row['description'],0,$listview_max_textlength).'...';
-					}
-					$entries[] = nl2br($row['description']);
-				}
-				else
-					$entries[] = " <font color ='red' >" .$app_strings['LBL_NOT_ACCESSIBLE']."</font>";
-
-				$attachmentname = $row['filename'];//explode('_',$row['filename'],2);
-
-				if((getFieldVisibilityPermission('Documents', $current_user->id, 'filename') == 0))
-				{
-					global $adb;
-
-					$prof_id = fetchUserProfileId($current_user->id);
-					$modulepermissionQuery = "select permissions from vtiger_profile2tab where tabid=8 and profileid= ?";
-					$modulepermissionresult = $adb->pquery($modulepermissionQuery,array($prof_id));
-					$moduleviewpermission = $adb->query_result($modulepermissionresult,0,'permissions');
-
-					$folderQuery = 'select folderid,filelocationtype,filestatus,filename from vtiger_notes where notesid = ?';
-					$folderresult = $adb->pquery($folderQuery,array($row["crmid"]));
-					$folder_id = $adb->query_result($folderresult,0,'folderid');
-					$download_type = $adb->query_result($folderresult,0,'filelocationtype');
-					$filestatus = $adb->query_result($folderresult,0,'filestatus');
-					$filename = $adb->query_result($folderresult,0,'filename');
-
-					$fileQuery = $adb->pquery("select attachmentsid from vtiger_seattachmentsrel where crmid = ?",array($row['crmid']));
-					$fileid = $adb->query_result($fileQuery,0,'attachmentsid');
-					if($moduleviewpermission == 0)
-					{
-						if($download_type == 'I' )
-						{
-							if($filestatus == 1 )
-								$entries[] = '<a href="index.php?module=Documents&action=DownloadFile&fileid='.$fileid.'&folderid='.$folder_id.'">'.textlength_check($attachmentname).'</a>';
-							elseif(isset($attachmentname) && $attachmentname != '')
-								$entries[] = textlength_check($attachmentname);
-							else
-								$entries[] = ' --';
-						}
-						elseif($download_type == 'E' )
-						{
-							if($filestatus == 1)
-								$entries[] = '<a target="_blank" href="'.$filename.'" onClick="javascript:dldCntIncrease('.$row['crmid'].');">'.textlength_check($attachmentname).'</a>';
-							elseif(isset($attachmentname) && $attachmentname != '')
-								$entries[] = textlength_check($attachmentname);
-							else
-								$entries[] = ' --';
-						}
-						else{
-								$entries[] = ' --';
-						}
-					}
-					else
-					{
-						if(isset($attachmentname))
-							$entries[] = textlength_check($attachmentname);
-						else
-							$entries[] = ' --';
-					}
-				}
-				else
-					$entries[]='';
-
-				$assignedToQuery = $adb->pquery('SELECT smownerid FROM vtiger_crmentity WHERE crmid = ?',array($row['crmid']));
-				$assignedTo = $adb->query_result($assignedToQuery,0,'smownerid');
-				if($assignedTo != '' ){
-					$entries[] = $assignedTo;
-				}
-				$del_param = 'index.php?module='.$module.'&action='.$deleteaction.'&return_module='.$parentmodule.'&return_action='.vtlib_purify($_REQUEST['action']).'&record='.$row["crmid"].'&return_id='.vtlib_purify($_REQUEST["record"]).'&parenttab='.vtlib_purify($_REQUEST["parenttab"]);
-
-				if($module == 'Documents')
-				{
-					$edit_param = 'index.php?module='.$module.'&action='.$editaction.'&return_module='.$parentmodule.'&return_action='.vtlib_purify($_REQUEST['action']).'&record='.$row["crmid"].'&filename='.$row['filename'].'&fileid='.$row['attachmentsid'].'&return_id='.vtlib_purify($_REQUEST["record"]).'&parenttab='.vtlib_purify($_REQUEST["parenttab"]);
-
-					$entries[] .= '<a href="'.$edit_param.'">'.$app_strings['LNK_EDIT'].'</a> | <a href=\'javascript:confirmdelete("'.$del_param.'")\'>'.$app_strings['LNK_DELETE'].'</a>';
-				}
-				else
-				{
-					$entries[] = '<a href=\'javascript:confirmdelete("'.$del_param.'")\'>'.$app_strings['LNK_DELETE'].'</a>';
-				}
-				$entries_list[] = $entries;
-			}
-		}
-	}
-
-	if($entries_list != '')
-		$return_data = array('header'=>$header,'entries'=>$entries_list);
-	$log->debug("Exiting getAttachmentsAndNotes method ...");
-	return $return_data;
-
 }
 
 /** Function to get related list entries in detailed array format
@@ -508,25 +331,18 @@ function getPriceBookRelatedProducts($query,$focus,$returnset='')
 	global $log;
 	$log->debug("Entering getPriceBookRelatedProducts(".$query.",".get_class($focus).",".$returnset.") method ...");
 
-	global $adb;
-	global $app_strings;
-	global $mod_strings;
-	global $current_language,$current_user;
+	global $adb, $app_strings, $mod_strings, $current_language,$current_user, $theme;
 	$current_module_strings = return_module_language($current_language, 'PriceBook');
-
-	global $list_max_entries_per_page;
-	global $urlPrefix;
-
-	global $theme;
+	$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,'PriceBook');
 	$pricebook_id = vtlib_purify($_REQUEST['record']);
 	$theme_path="themes/".$theme."/";
 	$image_path=$theme_path."images/";
 
-	$computeCount = $_REQUEST['withCount'];
-	if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true ||
-			((boolean) $computeCount) == true){
-		$noofrows = $adb->query_result($adb->query(mkCountQuery($query)),0,'count');
-	}else{
+	$computeCount = (isset($_REQUEST['withCount']) ? $_REQUEST['withCount'] : false);
+	if (PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true || ((boolean) $computeCount) == true) {
+		$rs = $adb->query(mkCountQuery($query));
+		$noofrows = $adb->query_result($rs,0,'count');
+	} else {
 		$noofrows = null;
 	}
 
@@ -537,7 +353,7 @@ function getPriceBookRelatedProducts($query,$focus,$returnset='')
 		$modObj = new ListViewSession();
 		$modObj->sortby = $focus->default_order_by;
 		$modObj->sorder = $focus->default_sort_order;
-		$_SESSION['rlvs'][$module][$relatedmodule] = get_object_vars($modObj);
+		coreBOS_Session::set('rlvs^'.$module.'^'.$relatedmodule, get_object_vars($modObj));
 	}
 
 

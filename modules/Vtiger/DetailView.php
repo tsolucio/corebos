@@ -25,6 +25,10 @@ if($record != '') {
 	$focus->name=$focus->column_fields[$focus->list_link_field];
 }
 if($isduplicate == 'true') $focus->id = '';
+$errormessageclass = isset($_REQUEST['error_msgclass']) ? vtlib_purify($_REQUEST['error_msgclass']) : '';
+$errormessage = isset($_REQUEST['error_msg']) ? vtlib_purify($_REQUEST['error_msg']) : '';
+$smarty->assign('ERROR_MESSAGE_CLASS', $errormessageclass);
+$smarty->assign('ERROR_MESSAGE', $errormessage);
 $focus->preViewCheck($_REQUEST, $smarty);
 
 // Identify this module as custom module.
@@ -33,7 +37,6 @@ $smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
-// TODO: Update Single Module Instance name here.
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $smarty->assign('CATEGORY', $category);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
@@ -41,9 +44,10 @@ $smarty->assign('THEME', $theme);
 $smarty->assign('ID', $focus->id);
 $smarty->assign('RECORDID', $focus->id);
 $smarty->assign('MODE', $focus->mode);
+$smarty->assign('USE_ASTERISK', get_use_asterisk($current_user->id));
 
 $recordName = array_values(getEntityName($currentModule, $focus->id));
-$recordName = $recordName[0];
+$recordName = isset($recordName[0]) ? $recordName[0] : '';
 $smarty->assign('NAME', $recordName);
 $smarty->assign('UPDATEINFO',updateInfo($focus->id));
 
@@ -69,12 +73,19 @@ $smarty->assign('CHECK', $tool_buttons);
 if(PerformancePrefs::getBoolean('DETAILVIEW_RECORD_NAVIGATION', true) && isset($_SESSION[$currentModule.'_listquery'])){
 	$recordNavigationInfo = ListViewSession::getListViewNavigation($focus->id);
 	VT_detailViewNavigation($smarty,$recordNavigationInfo,$focus->id);
+} else {
+	$smarty->assign('privrecord', '');
+	$smarty->assign('nextrecord', '');
 }
 
 $smarty->assign('IS_REL_LIST', isPresentRelatedLists($currentModule));
+$isPresentRelatedListBlock = isPresentRelatedListBlock($currentModule);
+$smarty->assign('IS_RELBLOCK_LIST', $isPresentRelatedListBlock);
+$singlepane_view = GlobalVariable::getVariable('Application_Single_Pane_View', 0, $currentModule);
+$singlepane_view = empty($singlepane_view) ? 'false' : 'true';
 $smarty->assign('SinglePane_View', $singlepane_view);
-
-if($singlepane_view == 'true') {
+$smarty->assign('HASRELATEDPANES', 'false');
+if($singlepane_view == 'true' or $isPresentRelatedListBlock) {
 	$related_array = getRelatedLists($currentModule,$focus);
 	$smarty->assign("RELATEDLISTS", $related_array);
 
@@ -84,6 +95,16 @@ if($singlepane_view == 'true') {
 	}
 	$open_related_modules = RelatedListViewSession::getRelatedModulesFromSession();
 	$smarty->assign("SELECTEDHEADERS", $open_related_modules);
+} else {
+	$smarty->assign('RELATEDLISTS', array());
+	$bmapname = $currentModule.'RelatedPanes';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$rltabs = $cbMap->RelatedPanes($focus->id);
+		$smarty->assign('RLTabs', $rltabs['panes']);
+		$smarty->assign('HASRELATEDPANES', 'true');
+	}
 }
 
 if(isPermitted($currentModule, 'CreateView', $record) == 'yes')
@@ -96,11 +117,31 @@ $smarty->assign('BLOCKS', $blocks);
 $custom_blocks = getCustomBlocks($currentModule,'detail_view');
 $smarty->assign('CUSTOMBLOCKS', $custom_blocks);
 $smarty->assign('FIELDS',$focus->column_fields);
+if (is_admin($current_user)) {
+	$smarty->assign('hdtxt_IsAdmin',1);
+} else {
+	$smarty->assign('hdtxt_IsAdmin',0);
+}
+
 $smarty->assign("BLOCKINITIALSTATUS",$_SESSION['BLOCKINITIALSTATUS']);
 // Gather the custom link information to display
 include_once('vtlib/Vtiger/Link.php');
 $customlink_params = Array('MODULE'=>$currentModule, 'RECORD'=>$focus->id, 'ACTION'=>vtlib_purify($_REQUEST['action']));
 $smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), Array('DETAILVIEWBASIC','DETAILVIEW','DETAILVIEWWIDGET'), $customlink_params));
+if($isPresentRelatedListBlock) {
+	$related_list_block = array();
+	foreach ($blocks as $blabel => $binfo) {
+		if (!empty($binfo['relatedlist'])) {
+			foreach ($related_array as $rlabel => $rinfo) {
+				if ($rinfo['relationId']==$binfo['relatedlist']) {
+					$related_list_block[$binfo['relatedlist']] = array($rlabel=>$rinfo);
+					break;
+				}
+			}
+		}
+	}
+	$smarty->assign('RELATEDLISTBLOCK', $related_list_block);
+}
 
 // Hide Action Panel
 $DEFAULT_ACTION_PANEL_STATUS = GlobalVariable::getVariable('Application_Action_Panel_Open',1);

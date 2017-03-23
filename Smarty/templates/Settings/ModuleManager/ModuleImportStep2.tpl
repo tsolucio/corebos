@@ -3,8 +3,8 @@
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tr>
 	<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-    <td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
-    <br>
+	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
+	<br>
 
 	<div align=center>
 		{include file='SetMenu.tpl'}
@@ -19,17 +19,17 @@
 			<td class="small" valign="top">{$MOD.VTLIB_LBL_MODULE_MANAGER_DESCRIPTION}</td>
 		</tr>
 		</table>
-				
+
 		<br>
 		<table border="0" cellpadding="10" cellspacing="0" width="100%">
 		<tr>
 			<td>
 				<div id="vtlib_modulemanager_import_div">
-                	<form method="POST" action="index.php">
+					<form method="POST" action="index.php">
 						{if $MODULEIMPORT_FAILED neq ''}
 							<table class='tableHeading' cellpadding=5 cellspacing=0 border=0 width=100%>
 							<tr>
-								<td class='big' colspan=2><b>{$MOD.VTlIB_LBL_IMPORT_FAILURE}</b></td>
+								<td class='big' colspan=2><b>{$MOD.VTLIB_LBL_IMPORT_FAILURE}</b></td>
 							</tr>
 							</table>
 							<table cellpadding=5 cellspacing=0 border=0 width=80%>
@@ -48,7 +48,7 @@
 								<td class='cellText small' colspan=2 align=right>
 									<input type="hidden" name="module" value="Settings">
 									<input type="hidden" name="action" value="ModuleManager">
-									<input type="hidden" name="parenttab" value="Settings">						
+									<input type="hidden" name="parenttab" value="Settings">
 									<input type="submit" class="crmbutton small edit" value="{$APP.LBL_FINISH}">
 								</td>
 							</tr>
@@ -76,9 +76,9 @@
 								</td>
 								<td class='cellText small'>
 									{$MODULEIMPORT_DIR}
-									{if $MODULEIMPORT_DIR_EXISTS eq 'true'} <font color=red><b>{$MOD.VTLIB_LBL_EXISTS}</b></font> 
+									{if $MODULEIMPORT_DIR_EXISTS eq 'true'} <font color=red><b>{$MOD.VTLIB_LBL_EXISTS}</b></font>
 										{* -- Avoiding File Overwrite
-										 <br> Overwrite existing files? <input type="checkbox" name="module_dir_overwrite" value="true"> 
+										 <br> Overwrite existing files? <input type="checkbox" name="module_dir_overwrite" value="true">
 										-- *}
 									{/if}
 								</td>
@@ -102,7 +102,7 @@
 									<b>{$MOD.VTLIB_LBL_LICENSE}</b>
 								</td>
 								<td class='cellText small'>
-									<textarea readonly class='small' style="background-color: #F5F5F5; border: 0; height: 150px; font: 10px 'Lucida Console', 'Courier New', Arial, sans-serif;">{$MODULEIMPORT_LICENSE}</textarea><br>
+									<textarea readonly class='small' style="background-color: #F5F5F5; border: 0; height: 250px; font: 10px 'Lucida Console', 'Courier New', Arial, sans-serif;">{$MODULEIMPORT_LICENSE}</textarea><br>
 									{literal}
 									<input type="checkbox" onclick="if(this.form.yesbutton){if(this.checked){this.form.yesbutton.disabled=false;}else{this.form.yesbutton.disabled=true;}}"> {/literal} {$MOD.VTLIB_LBL_LICENSE_ACCEPT_AGREEMENT}
 								</td>
@@ -120,37 +120,34 @@
 									<input type="hidden" name="module_import" value="Step3">
 									<input type="hidden" name="module_import_cancel" value="false">
 
-									{if $MODULEIMPORT_EXISTS eq 'true' || $MODULEIMPORT_DIR_EXISTS eq 'true'}										
-										<input type="submit" class="crmbutton small delete" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" 
-												onclick="this.form.module_import.value=''; this.form.module_import_cancel.value='true';">
+									{if $MODULEIMPORT_EXISTS eq 'true' || $MODULEIMPORT_DIR_EXISTS eq 'true'}
+										<input type="submit" class="crmbutton small delete" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" onclick="this.form.module_import.value=''; this.form.module_import_cancel.value='true';">
 									{else}
 										{$MOD.VTLIB_LBL_PROCEED_WITH_IMPORT}
-										<input type="submit" class="crmbutton small edit" value="{$MOD.LBL_YES}" 
-											{if $need_license_agreement eq 'true'} disabled=true {/if}	name="yesbutton">
-										<input type="submit" class="crmbutton small delete" value="{$MOD.LBL_NO}" 
-												onclick="this.form.module_import.value=''; this.form.module_import_cancel.value='true';">
+										<input type="submit" class="crmbutton small edit" value="{$MOD.LBL_YES}" {if $need_license_agreement eq 'true'} disabled=true {/if} name="yesbutton">
+										<input type="submit" class="crmbutton small delete" value="{$MOD.LBL_NO}" onclick="this.form.module_import.value=''; this.form.module_import_cancel.value='true';">
 									{/if}
 								</td>
 							</tr>
 							</table>
 						{/if}
 					</form>
-                </div>
+				</div>
 			</td>
 		</tr>
 		</table>
 		<!-- End of Display -->
 		
 		</td>
-        </tr>
-        </table>
-        </td>
-        </tr>
-        </table>
-   </div>
+		</tr>
+		</table>
+		</td>
+		</tr>
+		</table>
+	</div>
 
-        </td>
-        <td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
+		</td>
+		<td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
 	</tr>
 </table>
 <br>

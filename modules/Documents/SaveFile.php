@@ -32,7 +32,7 @@ if(isset($_REQUEST['act']) && $_REQUEST['act'] == 'checkFileIntegrityDetailView'
 		$fileid = $adb->query_result($fileidResult,0,'attachmentsid');
 		$folderid = $adb->query_result($result,0,'folderid');
 		$name = $adb->query_result($result,0,'filename');
-
+		$filepath = '';
 		if($download_type == 'I'){
 			$saved_filename = $fileid.'_'.$name;
 			$pathQuery = $adb->pquery('select path from vtiger_attachments where attachmentsid = ?',array($fileid));
@@ -74,7 +74,7 @@ if(isset($_REQUEST['act']) && $_REQUEST['act'] == 'massDldCnt')
 			foreach ($files as $file) {
 				if ($file) {
 					$dbQuery = 'SELECT * FROM vtiger_attachments JOIN vtiger_seattachmentsrel ON vtiger_attachments.attachmentsid = vtiger_seattachmentsrel.attachmentsid WHERE crmid = ?' ;
-					$result = $adb->pquery($dbQuery, array($file)) or die('Could not get file list ');
+					$result = $adb->pquery($dbQuery, array($file));
 					if($adb->num_rows($result) == 1) {
 						$pname = @$adb->query_result($result, 0, 'attachmentsid');
 						$name = @$adb->query_result($result, 0, 'name');

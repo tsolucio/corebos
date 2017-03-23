@@ -233,7 +233,6 @@ $mod_strings = Array(
 
 'NOTIFICATIONSCHEDULERS'=>'Sistema Agendamento Notificação',
 //currency status
-'LBL_ACTIVE'=>'Ativo',
 
 'LBL_INACTIVE'=>'Inativo',
 
@@ -257,8 +256,6 @@ $mod_strings = Array(
 'LBL_EMAIL_SETTINGS'=>'Configuração de E-mails:',
 
 'LBL_SECURITY_SETTINGS'=>'Configuração de Segurança:',
-
-
 
 //Added fields after RC1 - Release
 
@@ -462,8 +459,6 @@ $mod_strings = Array(
 
 'LBL_SALES_STAGE'=>'Estágio Vendas',
 
-'LBL_PRIORITY'=>'Prioridade',
-
 'LBL_STATUS'=>'Status',
 
 'LBL_CATEGORY'=>'Categoria Ticket',
@@ -504,8 +499,6 @@ $mod_strings = Array(
 'LBL_INT_MAILER'=>'Usar Sistema envio E-mail Interno?',
 'LBL_INT_MAILER_USE'=>'Sim',
 'LBL_INT_MAILER_NOUSE'=>'não',
-'LBL_VAL_SSL_CERT'=>'Validar SSL',
-'LBL_DONOT_VAL_SSL_CERT'=>'não Validar SSL',
 'LBL_WEB_MAIL_CONFIG'=>'Configuração Web Mail',
 'LBL_CONFIGURE_WEB_MAIL'=>' - Configurar Web Mail',
 'LBL_LIST_MAIL_ACCOUNT'=>'  Listar Contas Correio',
@@ -903,7 +896,6 @@ $mod_strings = Array(
 'ERR_ALREADY_EXISTS'=>' já existe.',
 'ERR_SPECIFY_DIFFERENT_LABEL'=>'Por gentileza, especifique um Rótulo diferente',
 'LBL_TOOLS_TO_BE_SHOWN'=>'Ferramentas a serem exibidas',
-'LBL_PICKLIST_GLOBAL_CHANGE'=>'Mudar Global',
 'LBL_PICKLIST_TRANSFER'=>'Transferindo os valores de ',
 'LBL_REPLACE_VALUE_WITH'=>'Substituir valor com ',
 'LBL_EDIT_CUSTOM_RULE'=>'Editar Customizar Regras Privilégio',
@@ -917,11 +909,7 @@ $mod_strings = Array(
 'LBL_EXISTING_PICKLIST_VALUES'=>'Valores Lista Opções Existente',
 'LBL_SELECT_PICKLIST'=>'Selecionar Lista Opções',
 
-// Added after 5.0.4 GA
-
 'LBL_GENERAL_FIELDS'=>'Campos Gerais',
-
-'LBL_CANCEL_BUTTON'=>'Cancelar',
 
 //Added fields for Inventory Number labels
 'LBL_CUSTOMIZE_INVENTORY_NUMBER'=>'Customizar Numeração',
@@ -941,8 +929,6 @@ $mod_strings = Array(
 'LBL_CUSTOMPO_NUMBER'=>'Customizar Número Pedido Compra',
 'LBL_PO_NUMBER_PREVIEW'=>'Visualização',
 'LBL_PO_NUMBER_BUTTON'=>'Atualizar Número Pedido Compra',
-
-// Added after 5.0.4 GA
 
 // Added for Multi-Currency Support
 'LBL_TRANSFER_CURRENCY'=>'Transferir Moeda',
@@ -984,7 +970,6 @@ $mod_strings = Array(
 'LBL_METHOD'=> 'Método',
 'LBL_VAL_SSL_CERT'=>'Validar Certificado SSL',
 'LBL_DONOT_VAL_SSL_CERT'=>'não Validar Certificado SSL',
-'LBL_STATUS'=>'Status',
 'LBL_ENABLE'=>'Habilitar',
 'LBL_DISABLE'=>'Desabilitar',
 'LBL_CONNECT'=>'Conectar',
@@ -997,9 +982,9 @@ $mod_strings = Array(
 'LBL_FROM'=>'De',
 'LBL_TO'=>'Para',
 
-'LBL_ACTION'=>'Ação',
 'LBL_CREATE'=>'Criar',
 'LBL_TICKET'=>'Ticket',
+'LBL_PROJECT'=>'Project',
 'LBL_ADD'=>'Adicionar',
 
 'LBL_CONTACT'=>'Contato',
@@ -1072,6 +1057,8 @@ $mod_strings = Array(
 // Module Sequence Numbering
 'LBL_CUSTOMIZE_MODENT_NUMBER'=>'Customizar Numeração Registros',
 'LBL_CUSTOMIZE_MODENT_NUMBER_DESCRIPTION'=>'Customizar Número Entidade do Módulo',
+'ERR_CUSTOMIZE_MODENT_NUMBER_EMPTY' => 'Start sequence cannot be empty!',
+'ERR_CUSTOMIZE_MODENT_NUMBER_NUMERIC' => 'Start sequence should be numeric.',
 // END
 
 //added for softphone integration
@@ -1171,31 +1158,18 @@ $mod_strings = Array(
 //Added for: 5473
 'LBL_SHARING_ACCESS_HELPNOTE' => 'Depois que fizer modificações, pressione o botão Recalcular para aplicar as mudanças.',
 
-//for customer portal extension module
-'PORTAL_EXTENSION_DESCRIPTION'=>'Permite Configurar o Plugin do Portal do Cliente',
-'LBL_CUSTOMER_PORTAL'=> 'Portal do Cliente',
-
 'LBL_ADD_CUSTOMFIELD' => 'Adicionar Campo Customizado',
 
 'ERR_INVALID_PROFILE_ID' => 'ID Perfil Inválido. Por favor, especifique um ID do Perfil válido.',
 
-// Customization
-'LBL_PUBLISHER' => 'Editor',
-'LBL_PUBLISHED_ON' => 'Publicado em',
-'LBL_LICENSE'   => 'Licença',
-'LBL_EXTENSION_FILE_DOWNLOAD_FAILED' => 'Falha ao fazer o download do pacote de extensão!',
 'LBL_ALREADY_EXISTS' => 'Já Existe',
 'LBL_EXTENSION_INCOMPATIBLE' => 'Extensão Incompatível',
 'LBL_INSTALL' => 'Instalar',
-'LBL_DEFAULT_SETTINGS_BUTTON_TITLE' => 'Restaurar Padrão',
 'LBL_CONFIRM_DEFAULT_SETTINGS' => 'Tem certeza que deseja mudar os detalhes do Servidor para os valores padrões do Servidor',
 'EXISTING_DEFAULT_VALUES' => 'Os detalhes do Servidor já estão configurados para os valores padrões',
 'LBL_NOTE' => 'Nota:',
 'LBL_HIDE' => 'Ocultar Detalhes',
 'LBL_SHOW' => 'Mostrar Detalhes',
-// END
-'LBL_USER_ADDITION_INFO'=>"Para adicionar um novo Usuário, por favor clique sobre  
-			   <span style='font-style:italic;color:blue;'>Menu Configurações-OD -> Admin On Demand -> Adicionar / Convidar Usuário </span>",
 
 'LBL_READ_ONLY_ACCESS_MSG' => 'Acesso Somente Leitura',
 'LBL_READ_WRITE_ACCESS_MSG' => 'Acesso Leitura-Escrita',
@@ -1214,8 +1188,6 @@ $mod_strings = Array(
 'LBL_ERR_TAX_LABEL_ALREADY_EXISTS' => 'Este imposto já está disponível.',
 'LBL_ERR_SOME_TAX_LABELS_ALREADY_EXISTS' => 'Alguns rótulos de impostos já estão disponíveis, portanto não foram salvos.',
 'LBL_ERR_ADDTAX' => 'There may be some problem in adding the Tax type. Please try again',
-'LBL_EDIT_COMPANY_INFO' => "Para editar os detalhes da empresa, por favor, clique sobre o
-			   <span style='font-style:italic;color:blue;'>Ícone Configurações > Admin On Demand > Empresa </span>",
 
 'Configuration Editor'=>'Editor Configuração',
 

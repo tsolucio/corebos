@@ -14,7 +14,7 @@ require_once('include/utils/utils.php');
 $module = vtlib_purify($_REQUEST['module']);
 $focus = CRMEntity::getInstance($module);
 
-global $mod_strings, $app_strings, $app_list_strings;
+global $mod_strings, $app_strings;
 global $current_language, $currentModule, $theme, $adb;
 
 $theme_path="themes/".$theme."/";
@@ -24,7 +24,6 @@ $mode = vtlib_purify($_REQUEST['mergemode']);
 
 if ($mode == 'mergesave') {
 	$return_module = vtlib_purify($_REQUEST['return_module']);
-	$action        = vtlib_purify($_REQUEST['action']);
 	$return_action = vtlib_purify($_REQUEST['return_action']);
 	$parenttab     = vtlib_purify($_REQUEST['parent']);
 	$merge_id      = vtlib_purify($_REQUEST['record']);
@@ -36,6 +35,7 @@ if ($mode == 'mergesave') {
 	if($count > 0) {
 		// First, save the primary record
 		$focus->mode="edit";
+		$focus->id = $merge_id;
 		setObjectValuesFromRequest($focus);
 		$focus->save($module);
 		$rec_values=$focus->column_fields;
@@ -101,6 +101,16 @@ if ($mode == 'mergesave') {
 	}
 
 	$no_existing = ($record_count == $count ? 1 : 0);
+
+	$sql='select faviconlogo from vtiger_organizationdetails limit 1';
+	$result = $adb->pquery($sql, array());
+	$favicon = decode_html($adb->query_result($result,0,'faviconlogo'));
+	if($favicon=='') $favicon='themes/images/favicon.ico';
+	else $favicon='test/logo/'.$favicon;
+	$smarty->assign('FAVICON',$favicon);
+	$userName = getFullNameFromArray('Users', $current_user->column_fields);
+	$smarty->assign('USER',$userName);
+	$smarty->assign('coreBOS_app_name', GlobalVariable::getVariable('Application_UI_Name','coreBOS'));
 
 	// Pass on the authenticated user language
 	global $current_language;

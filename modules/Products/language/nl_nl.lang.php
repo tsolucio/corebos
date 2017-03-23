@@ -112,7 +112,7 @@ $mod_strings = Array(
 'Qty/Unit'=>'Hoeveelheid / Eenheid',
 'Unit Price'=>'Prijs per Eenheid',
 'Cost Price' => 'Cost Price',
-'Manufacturer'=>'Producent',
+'Manufacturer'=>'Fabrikant',
 'Product Category'=>'Product categorie',
 'Support Start Date'=>'Ondersteuning startdatum',
 'Support Expiry Date'=>'Ondersteuning einddatum',
@@ -128,8 +128,8 @@ $mod_strings = Array(
 'Currency'=>'Valuta',
 'Reorder Level'=>'Nabestellingsniveau',
 'Tax Class'=>'Belastingklasse',
-'Mfr PartNo'=>'Artikelnummer',
-'Vendor PartNo'=>'Leveranciersnummer',
+'Mfr PartNo'=>'Artikelnummer fabrikant',
+'Vendor PartNo'=>'Artikelnummer leverancier',
 'Serial No'=>'Serienummer',
 'Qty In Stock'=>'Aantal op voorraad',
 'Product Sheet'=>'Productinformatie',
@@ -242,6 +242,9 @@ $mod_strings = Array(
 'LBL_NO_TAXES_ASSOCIATED'=>'Er is geen BTW-tarief aan dit product gekoppeld',
 
 'Parent Product' => 'Hoofdproduct',
+'Divisible' => 'Deelbaar',
+'DIVISIBLE_WARNING' => 'kan alleen in veelvouden van een verkocht worden',
+'DIVISIBLE_WARNING_PURCHASE' => 'kan alleen in veelvouden van een ingekocht worden'
 );
 
 ?>

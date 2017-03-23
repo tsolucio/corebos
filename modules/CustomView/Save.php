@@ -12,8 +12,7 @@ require_once('include/utils/utils.php');
 global $adb, $log, $current_user;
 
 $cvid = (int) vtlib_purify($_REQUEST["record"]);
-$buttonname = vtlib_purify($_REQUEST["newsave"]);
-if ($buttonname) unset($cvid);
+if (!empty($_REQUEST['newsave'])) unset($cvid);
 $cvmodule = vtlib_purify($_REQUEST["cvmodule"]);
 $parenttab = getParentTab();
 $return_action = vtlib_purify($_REQUEST["return_action"]);
@@ -63,7 +62,7 @@ if($cvmodule != "") {
 
 	//<<<<<<<standardfilters>>>>>>>>>
 	$std_filter_list = array();
-	$stdfiltercolumn = $_REQUEST["stdDateFilterField"];
+	$stdfiltercolumn = isset($_REQUEST['stdDateFilterField']) ? $_REQUEST['stdDateFilterField'] : '';
 	$std_filter_list["columnname"] = $stdfiltercolumn;
 	$stdcriteria = $_REQUEST["stdDateFilter"];
 	$std_filter_list["stdfilter"] = $stdcriteria;
@@ -81,19 +80,17 @@ if($cvmodule != "") {
 	//<<<<<<<standardfilters>>>>>>>>>
 
 	//<<<<<<<advancedfilter>>>>>>>>>
-	$json = new Zend_Json();
-
 	$advft_criteria = $_REQUEST['advft_criteria'];
-	$advft_criteria = $json->decode($advft_criteria);
+	$advft_criteria = json_decode($advft_criteria,true);
 
 	$advft_criteria_groups = $_REQUEST['advft_criteria_groups'];
-	$advft_criteria_groups = $json->decode($advft_criteria_groups);
+	$advft_criteria_groups = json_decode($advft_criteria_groups,true);
 	//<<<<<<<advancedfilter>>>>>>>>
 
 	$moduleHandler = vtws_getModuleHandlerFromName($cvmodule,$current_user);
 	$moduleMeta = $moduleHandler->getMeta();
 	$moduleFields = $moduleMeta->getModuleFields();
-	if(!$cvid) {
+	if (empty($cvid)) {
 		$genCVid = $adb->getUniqueID("vtiger_customview");
 		if($genCVid != "") {
 			$customviewsql = "INSERT INTO vtiger_customview(cvid, viewname, setdefault, setmetrics, entitytype, status, userid)
@@ -129,7 +126,7 @@ if($cvmodule != "") {
 						$columnresult = $adb->pquery($columnsql, $columnparams);
 					}
 					$log->info("CustomView :: Save :: vtiger_cvcolumnlist created successfully");
-					if($std_filter_list["columnname"] !="") {
+					if (!empty($std_filter_list['columnname'])) {
 						$stdfiltersql = "INSERT INTO vtiger_cvstdfilter(cvid,columnname,stdfilter,startdate,enddate) VALUES (?,?,?,?,?)";
 						$stdfilterparams = array($genCVid, $std_filter_list["columnname"], $std_filter_list["stdfilter"], $adb->formatDate($std_filter_list["startdate"], true), $adb->formatDate($std_filter_list["enddate"], true));
 						$stdfilterresult = $adb->pquery($stdfiltersql, $stdfilterparams);
@@ -218,7 +215,7 @@ if($cvmodule != "") {
 			$cvid = $genCVid;
 		}
 	} else {
-		if($is_admin == true || $current_user->id) {
+		if(is_admin($current_user) || $current_user->id) {
 			$updatecvsql = "UPDATE vtiger_customview
 					SET viewname = ?, setmetrics = ?, status = ? WHERE cvid = ?";
 			$updatecvparams = array($viewname, $setmetrics, $status, $cvid);
@@ -255,7 +252,7 @@ if($cvmodule != "") {
 			$deletesql = "DELETE FROM vtiger_cvadvfilter_grouping WHERE cvid = ?";
 			$deleteresult = $adb->pquery($deletesql, array($cvid));
 
-			$log->info("CustomView :: Save :: vtiger_cvcolumnlist,cvstdfilter,cvadvfilter,cvadvfilter_grouping deleted successfully before update".$genCVid);
+			$log->info("CustomView :: Save :: vtiger_cvcolumnlist,cvstdfilter,cvadvfilter,cvadvfilter_grouping deleted successfully before update".$cvid);
 
 			$genCVid = $cvid;
 			if($updatecvresult) {
@@ -266,7 +263,7 @@ if($cvmodule != "") {
 						$columnresult = $adb->pquery($columnsql, $columnparams);
 					}
 					$log->info("CustomView :: Save :: vtiger_cvcolumnlist update successfully".$genCVid);
-					if($std_filter_list["columnname"] !="") {
+					if (!empty($std_filter_list['columnname'])) {
 						$stdfiltersql = "INSERT INTO vtiger_cvstdfilter (cvid,columnname,stdfilter,startdate,enddate) VALUES (?,?,?,?,?)";
 						$stdfilterparams = array($genCVid, $std_filter_list["columnname"], $std_filter_list["stdfilter"], $adb->formatDate($std_filter_list["startdate"], true), $adb->formatDate($std_filter_list["enddate"], true));
 						$stdfilterresult = $adb->pquery($stdfiltersql, $stdfilterparams);
@@ -356,5 +353,5 @@ if($cvmodule != "") {
 	}
 }
 
-header("Location: index.php?action=$return_action&parenttab=$parenttab&module=$cvmodule&viewname=$cvid");
+header('Location: index.php?action='.urlencode($return_action).'&module='.urlencode($cvmodule).'&viewname='.urlencode($cvid));
 ?>

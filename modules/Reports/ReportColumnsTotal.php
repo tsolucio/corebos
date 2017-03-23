@@ -13,12 +13,12 @@ require_once('include/logging.php');
 require_once('include/utils/utils.php');
 require_once('modules/Reports/Reports.php');
 
-global $app_strings, $app_list_strings, $mod_strings;
+global $app_strings, $mod_strings;
 $current_module_strings = return_module_language($current_language, 'Reports');
 
 $log = LoggerManager::getLogger('report_type');
 
-global $list_max_entries_per_page, $urlPrefix, $currentModule, $image_path, $theme;
+global $currentModule, $image_path, $theme;
 $report_column_tot=new vtigerCRM_Smarty;
 $report_column_tot->assign('MOD', $mod_strings);
 $report_column_tot->assign('APP', $app_strings);

@@ -7,9 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-include_once dirname(__FILE__) . '/../../../include/Zend/Json.php';
 
-class Mobile_API_Response {
+class crmtogo_API_Response {
 	private $error = NULL;
 	private $result = NULL;
 	
@@ -51,11 +50,13 @@ class Mobile_API_Response {
 	}
 	
 	function emitJSON() {
-		return Zend_Json::encode($this->prepareResponse());
+		return json_encode($this->prepareResponse());
 	}
 	
 	function emitHTML() {
-		if($this->result === NULL) return (is_string($this->error))? $this->error : var_export($this->error, true);
+		if($this->result === NULL) {
+			return (is_string($this->error))? $this->error : var_export($this->error, true);
+		}
 		return $this->result;
 	}
 	

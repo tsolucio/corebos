@@ -75,13 +75,12 @@ class ModComments_DetailViewBlockCommentWidget {
 			switch($criteria) {
 				case 'All': $queryCriteria = sprintf(" ORDER BY %s.%s DESC ", $entityInstance->table_name, $entityInstance->table_index); break;
 				case 'Last5': $queryCriteria =  sprintf(" ORDER BY %s.%s DESC LIMIT 5", $entityInstance->table_name, $entityInstance->table_index) ;break;
-				case 'Mine': $queryCriteria = ' AND vtiger_crmentity.smownerid=' . $current_user->id.sprintf(" ORDER BY %s.%s DESC ", $entityInstance->table_name, $entityInstance->table_index); break;
+				case 'Mine': $queryCriteria = ' AND vtiger_crmentity.smcreatorid=' . $current_user->id.sprintf(" ORDER BY %s.%s DESC ", $entityInstance->table_name, $entityInstance->table_index); break;
 			}
 			list($void,$queryCriteria) = cbEventHandler::do_filter('corebos.filter.ModComments.queryCriteria', array($parentRecordId, $queryCriteria));
 			$query = $entityInstance->getListQuery($moduleName, sprintf(" AND %s.related_to=?", $entityInstance->table_name));
 			$query .= $queryCriteria;
 			$result = $adb->pquery($query, array($parentRecordId));
-		
 			$instances = array();
 			if($adb->num_rows($result)) {
 				while($resultrow = $adb->fetch_array($result)) {

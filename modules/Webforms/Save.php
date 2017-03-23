@@ -9,15 +9,14 @@
  ********************************************************************************/
 require_once('modules/Webforms/Webforms.php');
 require_once('modules/Webforms/model/WebformsModel.php');
-include_once 'include/Zend/Json.php';
 
 global $current_user, $theme;
 
 if ($_REQUEST['ajax'] == 'true') {
 	if(Webforms_Model::existWebformWithName(vtlib_purify($_REQUEST['name']))){
-		print_r(Zend_Json::encode(array('success' => false, 'result' => false)));
+		print_r(json_encode(array('success' => false, 'result' => false)));
 	}else{
-		print_r(Zend_Json::encode(array('success' => true, 'result' => true)));
+		print_r(json_encode(array('success' => true, 'result' => true)));
 	}
 } else {
 	Webforms::checkAdminAccess($current_user);
@@ -25,10 +24,10 @@ if ($_REQUEST['ajax'] == 'true') {
 	$webform = new Webforms_Model($_REQUEST);
 	try {
 		$webform->save();
-		$URL = 'index.php?module=Webforms&action=WebformsDetailView&parenttab=Settings&id=' . $webform->getId();
+		$URL = 'WebformsDetailView&id=' . $webform->getId();
 	} catch (Exception $e) {
-		$URL = 'index.php?module=Webforms&action=Error&parenttab=Settings&errormsg=' . $e->getMessage();
+		$URL = 'Error&errormsg=' . $e->getMessage();
 	}
-	header(sprintf("Location: %s", $URL));
+	header('Location: index.php?module=Webforms&action=' . $URL);
 }
 ?>

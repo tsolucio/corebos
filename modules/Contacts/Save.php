@@ -7,65 +7,48 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-global $current_user, $currentModule, $log, $adb;
+global $current_user, $currentModule, $adb, $singlepane_view;
 
 checkFileAccessForInclusion("modules/$currentModule/$currentModule.php");
 require_once("modules/$currentModule/$currentModule.php");
 require_once('modules/Emails/mail.php');
 
-$search = vtlib_purify($_REQUEST['search_url']);
+$search = isset($_REQUEST['search_url']) ? urlencode(vtlib_purify($_REQUEST['search_url'])) : '';
+$req = new Vtiger_Request();
+$req->setDefault('return_module',$currentModule);
+if(!empty($_REQUEST['return_module'])) {
+	$req->set('return_module',$_REQUEST['return_module']);
+}
+$req->setDefault('return_action','DetailView');
+if(!empty($_REQUEST['return_action'])) {
+	$req->set('return_action',$_REQUEST['return_action']);
+}
+//code added for returning back to the current view after edit from list view
+if(empty($_REQUEST['return_viewname']) or $singlepane_view == 'true') {
+	$req->set('return_viewname','0');
+} else {
+	$req->set('return_viewname',$_REQUEST['return_viewname']);
+}
+if(isset($_REQUEST['activity_mode'])) {
+	$req->set('return_activity_mode',$_REQUEST['activity_mode']);
+}
+$req->set('return_start',$_REQUEST['pagenumber']);
 
 $focus = new $currentModule();
 setObjectValuesFromRequest($focus);
 
-if($_REQUEST['salutation'] == '--None--')	$_REQUEST['salutation'] = '';
+$mode = vtlib_purify($_REQUEST['mode']);
+$record=vtlib_purify($_REQUEST['record']);
+if($mode) $focus->mode = $mode;
+if($record)$focus->id  = $record;
+if (isset($_REQUEST['inventory_currency'])) {
+$focus->column_fields['currency_id'] = vtlib_purify($_REQUEST['inventory_currency']);
+$cur_sym_rate = getCurrencySymbolandCRate(vtlib_purify($_REQUEST['inventory_currency']));
+$focus->column_fields['conversion_rate'] = $cur_sym_rate['rate'];
+}
+if (!isset($_REQUEST['salutation']) or $_REQUEST['salutation'] == '--None--') $_REQUEST['salutation'] = '';
 if (!isset($_REQUEST['email_opt_out'])) $focus->email_opt_out = 'off';
 if (!isset($_REQUEST['do_not_call'])) $focus->do_not_call = 'off';
-
-//Checking If image is given or not
-//$image_upload_array=SaveImage($_FILES,'contact',$focus->id,$focus->mode);
-$image_name_val=$image_upload_array['imagename'];
-$image_error="false";
-$errormessage=$image_upload_array['errormessage'];
-$saveimage=$image_upload_array['saveimage'];
-
-if($image_error=="true") //If there is any error in the file upload then moving all the data to EditView.
-{
-	//re diverting the page and reassigning the same values as image error occurs
-	if($_REQUEST['activity_mode'] != '')$activity_mode=vtlib_purify($_REQUEST['activity_mode']);
-	if($_REQUEST['return_module'] != '')$return_module=vtlib_purify($_REQUEST['return_module']);
-	if($_REQUEST['return_action'] != '')$return_action=vtlib_purify($_REQUEST['return_action']);
-	if($_REQUEST['return_id'] != '')$return_id=vtlib_purify($_REQUEST['return_id']);
-
-	$log->debug("There is an error during the upload of contact image.");
-	$field_values_passed.="";
-	foreach($focus->column_fields as $fieldname => $val) {
-		if(isset($_REQUEST[$fieldname])) {
-			$log->debug("Assigning the previous values given for the contact to respective vtiger_fields ");
-			$field_values_passed.="&";
-			$value = $_REQUEST[$fieldname];
-			$focus->column_fields[$fieldname] = $value;
-			$field_values_passed.=$fieldname."=".$value;
-		}
-	}
-	$values_pass=$field_values_passed;
-	$encode_field_values=base64_encode($values_pass);
-
-	$error_module = "Contacts";
-	$error_action = "EditView";
-
-	$return_action .= '&activity_mode='.vtlib_purify($_request['activity_mode']);
-
-	if($mode=="edit") {
-		$return_id=vtlib_purify($_REQUEST['record']);
-	}
-	header("location: index.php?action=$error_action&module=$error_module&record=$return_id&return_id=$return_id&return_action=$return_action&return_module=$return_module&activity_mode=$activity_mode&return_viewname=$return_viewname".$search."&saveimage=$saveimage&error_msg=$errormessage&image_error=$image_error&encode_val=$encode_field_values");
-}
-if($saveimage=="true")
-{
-	$focus->column_fields['imagename']=$image_name_val;
-	$log->debug("Assign the Image name to the vtiger_field name ");
-}
 
 //if image added then we have to set that $_FILES['name'] in imagename field then only the image will be displayed
 if($_FILES['imagename']['name'] != '')
@@ -87,48 +70,43 @@ if($_REQUEST['assigntype'] == 'U') {
 } elseif($_REQUEST['assigntype'] == 'T') {
 	$focus->column_fields['assigned_user_id'] = $_REQUEST['assigned_group_id'];
 }
-//Saving the contact
-if($image_error=="false")
-{
-	$focus->save("Contacts");
-	$return_id = $focus->id;
-
-	if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] != "") $return_module = vtlib_purify($_REQUEST['return_module']);
-	else $return_module = "Contacts";
-	if(isset($_REQUEST['return_action']) && $_REQUEST['return_action'] != "") $return_action = vtlib_purify($_REQUEST['return_action']);
-	else $return_action = "DetailView";
-	if(isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != "") $return_id = vtlib_purify($_REQUEST['return_id']);
-
-	$activitymode = (empty($_REQUEST['activity_mode']) ? '' : vtlib_purify($_REQUEST['activity_mode']));
-
-	if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] == "Campaigns")
-	{
-		if(isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != "")
-		{
-			$campContStatusResult = $adb->pquery("select campaignrelstatusid from vtiger_campaigncontrel where campaignid=? AND contactid=?",array($_REQUEST['return_id'], $focus->id));
-			$contactStatus = $adb->query_result($campContStatusResult,0,'campaignrelstatusid');
-			$sql = "delete from vtiger_campaigncontrel where contactid = ?";
-			$adb->pquery($sql, array($focus->id));
-			if(isset($contactStatus) && $contactStatus!=''){
-				$sql = "insert into vtiger_campaigncontrel values (?,?,?)";
-				$adb->pquery($sql, array($_REQUEST['return_id'], $focus->id,$contactStatus));
+list($saveerror,$errormessage,$error_action,$returnvalues) = $focus->preSaveCheck($_REQUEST);
+if ($saveerror) { // there is an error so we go back to EditView.
+	$return_module=$return_id=$return_action='';
+	if (isset($_REQUEST['return_id']) and $_REQUEST['return_id'] != '') {
+		$req->set('RETURN_ID',$_REQUEST['return_id']);
+	}
+	$field_values_passed = '';
+	foreach($focus->column_fields as $fieldname => $val) {
+		if(isset($_REQUEST[$fieldname])) {
+			$field_values_passed.="&";
+			if($fieldname == 'assigned_user_id') { // assigned_user_id already set correctly above
+				$value = vtlib_purify($focus->column_fields['assigned_user_id']);
+			} else {
+				$value = vtlib_purify($_REQUEST[$fieldname]);
 			}
-			else
-			{
-				$sql = "insert into vtiger_campaigncontrel values (?,?,1)";
-				$adb->pquery($sql, array($_REQUEST['return_id'], $focus->id));
-			}
+			if (is_array($value)) $value = implode(' |##| ',$value); // for multipicklists
+			$field_values_passed.=$fieldname."=".urlencode($value);
 		}
 	}
+	$encode_field_values=base64_encode($field_values_passed);
+	$req->set('return_module',$currentModule);
+	$error_action = (empty($error_action) ? 'EditView' : $error_action);
+	$req->set('return_action',$error_action);
+	$req->set('return_record',$record);
+	$errormessage = urlencode($errormessage);
+	header('Location: index.php?' . $req->getReturnURL() . $search . $returnvalues . "&error_msg=$errormessage&save_error=true&encode_val=$encode_field_values");
+	die();
+}
 
-	$log->info("This Page is redirected to : ".$return_module." / ".$return_action."& return id =".$return_id);
+$focus->save($currentModule);
+$return_id = $focus->id;
+$req->set('return_record',$return_id);
+if(isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != '') {
+	$req->set('return_record',$_REQUEST['return_id']);
+}
 
-	//code added for returning back to the current view after edit from list view
-	if($_REQUEST['return_viewname'] == '') $return_viewname='0';
-	if($_REQUEST['return_viewname'] != '')$return_viewname=vtlib_purify($_REQUEST['return_viewname']);
-
-	$parenttab = getParentTab();
-
-	header("Location: index.php?action=$return_action&module=$return_module&parenttab=$parenttab&record=$return_id&activity_mode=$activitymode&viewname=$return_viewname&start=".vtlib_purify($_REQUEST['pagenumber']).$search);
+if (!isset($__cbSaveSendHeader) || $__cbSaveSendHeader) {
+	header('Location: index.php?' . $req->getReturnURL() . $search);
 }
 ?>

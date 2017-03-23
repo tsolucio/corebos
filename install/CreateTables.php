@@ -39,9 +39,6 @@ if (isset($_SESSION['installation_info']['currency_code'])) $currency_code = $_S
 if (isset($_SESSION['installation_info']['currency_symbol'])) $currency_symbol = $_SESSION['installation_info']['currency_symbol'];
 if (isset($_SESSION['installation_info']['selected_optional_modules'])) $selected_optional_modules = $_SESSION['installation_info']['selected_optional_modules'];
 
-if (isset($_SESSION['installation_info']['db_populate'])) 
-	$db_populate = $_SESSION['installation_info']['db_populate'];
-
 //require_once('install/CreateTables.inc.php');
 include 'install/InitSchema.php';
 global $adb;
@@ -106,11 +103,11 @@ session_destroy();
 								<td align=left class="small paddingTop">
 									<span class="bigHeading"><?php echo $installationStrings['LBL_CONFIG_COMPLETED']; ?></span>
 									<br />
-							  		<hr noshade size=1>
-							  	</td>
+									<hr noshade size=1>
+								</td>
 							</tr>
 							<tr>
-								<td align=center class="small" style="height:250px;"> 
+								<td align=center class="small" style="height:250px;">
 									<table border=0 cellspacing=0 cellpadding=5 align="center" width="80%" class="contentDisplay">
 										<tr>
 											<td align=center class=small>
@@ -120,20 +117,8 @@ session_destroy();
 												<div class="fixedSmallHeight textCenter fontBold">
 													<div style="padding-top:50px;width:100%;">
 														<?php echo $installationStrings['APP_NAME'].' - '.$coreBOS_app_version. ' - ' . $installationStrings['LBL_SUCCESSFULLY_INSTALLED']; ?></b><br /><br />
-														<?php if ($db_populate == 'true') { echo $installationStrings['LBL_DEMO_DATA_IN_PROGRESS'] . '...'; } ?><br /><br />
-														
-														<script type="text/javascript"> 
-														<?php if ($db_populate == 'true') { ?>
-															jQuery.ajax({
-																	method:"POST",
-																	url:"install.php?file=PopulateSeedData.php"
-															}).done(function(response) {
-																window.document.finishform.submit();
-																}
-															);
-														<?php } else { ?>
+														<script type="text/javascript">
 															window.document.finishform.submit();
-														<?php } ?>
 														</script>
 														<img src="themes/images/plsWaitAnimated.gif" alt="<?php echo $installationStrings['LBL_PLEASE_WAIT']; ?>" title="<?php echo $installationStrings['LBL_PLEASE_WAIT']; ?>"/>
 													</div>

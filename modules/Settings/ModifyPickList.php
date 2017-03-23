@@ -12,7 +12,7 @@
 	require_once('Smarty_setup.php');
 	global $mod_strings;
 	global $app_strings;
-	global $app_list_strings, $current_language,$adb,$log;
+	global $current_language,$adb,$log;
 	global $theme;
 	$theme_path="themes/".$theme."/";
 	$image_path=$theme_path."images/";

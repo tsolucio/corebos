@@ -116,7 +116,7 @@ class Vtiger_Role {
 
 		$targetParentRoleSequence = $role->getParentRole();
 		$parentRoleSequence = $this->getParentRole();
-		$roleInfoList = getRoleAndSubordinatesInformation($roleId);
+		$roleInfoList = getRoleAndSubordinatesInformation($role->getId());
 		foreach ($roleInfoList as $roleId => $roleInfo) {
 			// Invalidate any cached information
 			VTCacheUtils::clearRoleSubordinates($roleId);
@@ -124,13 +124,11 @@ class Vtiger_Role {
 				continue;
 			}
 			$currentParentRoleSequence = $roleInfo[1];
-			$currentParentRoleSequence = str_replace($parentRoleSequence,$targetParentRoleSequence,
-					$currentParentRoleSequence);
+			$currentParentRoleSequence = str_replace($parentRoleSequence,$targetParentRoleSequence,$currentParentRoleSequence);
 			$subDepth = count(explode('::', $currentParentRoleSequence))-1;
 			$query="update vtiger_role set parentrole=?,depth=? where roleid=?";
 			$db->pquery($query, array($currentParentRoleSequence, $subDepth, $roleId));
 		}
-
 	}
 
 }

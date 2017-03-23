@@ -11,8 +11,7 @@ require_once("Smarty_setup.php");
 require_once("include/utils/CommonUtils.php");
 require_once("include/FormValidationUtil.php");
 
-global $mod_strings,$current_user, $app_strings, $currentModule;
-global $adb, $app_list_strings, $theme, $upload_maxsize;
+global $mod_strings,$current_user, $app_strings, $currentModule, $theme;
 
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
@@ -27,9 +26,10 @@ $smarty->assign("APP",$app_strings);
 $smarty->assign("MOD",$mod_strings);
 $smarty->assign("THEME",$theme);
 $smarty->assign("IMAGE_PATH",$image_path);
-$smarty->assign("ACTIVITY_MODE", vtlib_purify($_REQUEST['activity_mode']));
-$smarty->assign("FROM", vtlib_purify($_REQUEST['from']));
-$smarty->assign("URLPOPUP", str_replace('-a;', '&', $_REQUEST['pop']));
+$smarty->assign('ACTIVITY_MODE', (isset($_REQUEST['activity_mode']) ? vtlib_purify($_REQUEST['activity_mode']) : ''));
+$smarty->assign('FROM', (isset($_REQUEST['from']) ? vtlib_purify($_REQUEST['from']) : ''));
+$smarty->assign('URLPOPUP', (isset($_REQUEST['pop']) ? str_replace('-a;', '&', $_REQUEST['pop']) : ''));
+$smarty->assign('MASS_EDIT','0');
 if($module == 'Calendar')
 	$smarty->assign("QCMODULE", getTranslatedString('Todo', 'Calendar'));
 elseif($module == "HelpDesk")
@@ -44,5 +44,4 @@ $smarty->assign("MODULE", $currentModule);
 $smarty->assign("CATEGORY",$category);
 
 $smarty->display("QuickCreate.tpl");
-
 ?>

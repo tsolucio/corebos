@@ -25,29 +25,35 @@ class vtigerCRM_Smarty extends Smarty{
 	/** This function sets the smarty directory path for the member variables */
 	function __construct()
 	{
-		global $CALENDAR_DISPLAY, $WORLD_CLOCK_DISPLAY, $CALCULATOR_DISPLAY, $CHAT_DISPLAY, $current_user;
+		global $current_user, $currentModule;
 
-		$this->Smarty();
-		$this->template_dir = 'Smarty/templates';
-		$this->compile_dir = 'Smarty/templates_c';
-		$this->config_dir = 'Smarty/configs';
-		$this->cache_dir = 'Smarty/cache';
+		parent::__construct();
+		$this->setTemplateDir('Smarty/templates');
+		$this->setCompileDir('Smarty/templates_c');
+		$this->setConfigDir('Smarty/configs');
+		$this->setCacheDir('Smarty/cache');
+		$this->setPluginsDir('Smarty/libs/plugins');
 
 		//$this->caching = true;
-		//$this->assign('app_name', 'Login');
+		$CALENDAR_DISPLAY = GlobalVariable::getVariable('Application_Display_Mini_Calendar',1,$currentModule);
+		$CALENDAR_DISPLAY = empty($CALENDAR_DISPLAY) ? 'false' : 'true';
+		$WORLD_CLOCK_DISPLAY = GlobalVariable::getVariable('Application_Display_World_Clock',1,$currentModule);
+		$WORLD_CLOCK_DISPLAY = empty($WORLD_CLOCK_DISPLAY) ? 'false' : 'true';
+		$CALCULATOR_DISPLAY = GlobalVariable::getVariable('Application_Display_Calculator',1,$currentModule);
+		$CALCULATOR_DISPLAY = empty($CALCULATOR_DISPLAY) ? 'false' : 'true';
 		$this->assign('CALENDAR_DISPLAY', $CALENDAR_DISPLAY);
 		$this->assign('WORLD_CLOCK_DISPLAY', $WORLD_CLOCK_DISPLAY);
 		$this->assign('CALCULATOR_DISPLAY', $CALCULATOR_DISPLAY);
-		$this->assign('CHAT_DISPLAY', $CHAT_DISPLAY);
 		$this->assign('CURRENT_USER_ID',(isset($current_user) ? $current_user->id : 0));
+		$this->assign('PRELOAD_JSCALENDAR', GlobalVariable::getVariable('preload_jscalendar','true',$currentModule));
 
 		// Query For TagCloud only when required
 		if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'DetailView') {
 			//Added to provide User based Tagcloud
 			$this->assign('TAG_CLOUD_DISPLAY', self::lookupTagCloudView($current_user->id) );
 		}
-		$this->load_filter('output', 'trimwhitespace');
-		$this->register_function('process_widget', 'smarty_function_process_widget');
+		$this->loadFilter('output', 'trimwhitespace');
+		$this->registerPlugin('function', 'process_widget', 'smarty_function_process_widget');
 	}
 }
 

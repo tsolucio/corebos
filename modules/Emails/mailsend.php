@@ -13,10 +13,9 @@ require_once("include/utils/UserInfoUtil.php");
 global $adb, $current_user;
 
 //set the return module and return action and set the return id based on return module and record
-$returnmodule = vtlib_purify($_REQUEST['return_module']);
-$returnaction = vtlib_purify($_REQUEST['return_action']);
-if((($returnmodule != 'Emails') || ($returnmodule == 'Emails' && $_REQUEST['record'] == '')) && $_REQUEST['return_id'] != '')
-{
+$returnmodule = isset($_REQUEST['return_module']) ? vtlib_purify($_REQUEST['return_module']) : '';
+$returnaction = isset($_REQUEST['return_action']) ? vtlib_purify($_REQUEST['return_action']) : '';
+if ((($returnmodule != 'Emails') || ($returnmodule == 'Emails' && empty($_REQUEST['record']))) && !empty($_REQUEST['return_id'])) {
 	$returnid = vtlib_purify($_REQUEST['return_id']);
 }
 else
@@ -26,8 +25,7 @@ else
 
 $adb->println("\n\nMail Sending Process has been started.");
 //This function call is used to send mail to the assigned to user. In this mail CC and BCC addresses will be added.
-if($_REQUEST['assigntype' == 'T'] && $_REQUEST['assigned_group_id']!='')
-{
+if (isset($_REQUEST['assigntype']) && $_REQUEST['assigntype'] == 'T' && !empty($_REQUEST['assigned_group_id'])) {
 	$grp_obj = new GetGroupUsers();
 	$grp_obj->getAllUsersInGroup($_REQUEST['assigned_group_id']);
 	$users_list = constructList($grp_obj->group_users,'INTEGER');
@@ -65,6 +63,8 @@ else
 }
 $cc = $_REQUEST['ccmail'];
 $bcc = $_REQUEST['bccmail'];
+$errorheader1 = 0;
+$errorheader2 = 0;
 if($to_email == '' && $cc == '' && $bcc == '')
 {
 	$adb->println("Mail Error : send_mail function not called because To email id of assigned to user, CC and BCC are empty");
@@ -78,6 +78,7 @@ else
 	$val = $adb->query_result($res1,0,'email1');
 	$query = 'update vtiger_emaildetails set email_flag ="SENT",from_email =? where emailid=?';
 	$adb->pquery($query, array($val, $focus->id));
+	$mail_status_str = '';
 }
 
 $parentid= vtlib_purify($_REQUEST['parent_id']);
@@ -150,12 +151,12 @@ for ($i=0;$i<(count($myids)-1);$i++)
 			//This is to convert the html encoded string to original html entities so that in mail description contents will be displayed correctly
 			//$focus->column_fields['description'] = from_html($focus->column_fields['description']);
 
-			if($emailadd != '')
-			{
+			if($emailadd != '') {
 				$description = getMergedDescription($_REQUEST['description'],$mycrmid,$pmodule);
-				//Email Open Tracking
-				global $site_URL, $application_unique_key, $disable_stats_tracking;
-				if (!$disable_stats_tracking) {
+				//Email Open/Stat Tracking
+				global $site_URL, $application_unique_key;
+				$EMail_OpenTrackingEnabled = GlobalVariable::getVariable('EMail_OpenTrackingEnabled',1,'Emails');
+				if ($EMail_OpenTrackingEnabled) {
 					$emailid = $focus->id;
 					$track_URL = "$site_URL/modules/Emails/TrackAccess.php?record=$mycrmid&mailid=$emailid&app_key=$application_unique_key";
 					$description = "$description<img src='$track_URL' alt='' width='1' height='1'>";
@@ -166,6 +167,8 @@ for ($i=0;$i<(count($myids)-1);$i++)
 				{
 					$description =str_replace('$logo$','<img src="cid:logo" />',$description);
 					$logo=1;
+				} else {
+					$logo = 0;
 				}
 				if(isPermitted($pmodule,'DetailView',$mycrmid) == 'yes')
 				{

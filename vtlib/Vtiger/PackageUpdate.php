@@ -20,7 +20,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
     /**
      * Constructor
      */
-    function Vtiger_PackageUpdate() {
+    function __construct() {
         parent::__construct();
     }
 
@@ -37,7 +37,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
         }
 
         if($module != null) {
-            $unzip = new Vtiger_Unzip($zipfile, $overwrite);
+            $unzip = new Vtiger_Unzip($zipfile);
 
             // Unzip selectively
             $unzip->unzipAllEx( ".",

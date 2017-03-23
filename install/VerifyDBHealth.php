@@ -22,7 +22,7 @@ $configFileInfo = $_SESSION['config_file_info'];
 
 require_once('adodb/adodb.inc.php');
 
-$db = &NewADOConnection($configFileInfo['db_type']);
+$db = NewADOConnection($configFileInfo['db_type']);
 $db->NConnect($configFileInfo['db_hostname'], $configFileInfo['db_username'], $configFileInfo['db_password'], $configFileInfo['db_name']);
 
 require_once('include/utils/DBHealthCheck.php');
@@ -32,12 +32,12 @@ $dbName = $dbHealthCheck->dbName;
 if(!empty($_REQUEST['forceDbCheck']) || $_SESSION[$dbName.'_'.$dbHostName.'_HealthApproved'] != true) {
 	
 	if($_REQUEST['updateTableEngine'] == true) {
-		 if(!empty($_REQUEST['updateEngineForTable'])) {
-		 	$dbHealthCheck->updateTableEngineType(htmlentities($_REQUEST['updateEngineForTable']));
-		 }
-		 elseif($_REQUEST['updateEngineForAllTables'] == true) {
-		 	$dbHealthCheck->updateAllTablesEngineType();
-		 }
+		if(!empty($_REQUEST['updateEngineForTable'])) {
+			$dbHealthCheck->updateTableEngineType(htmlentities($_REQUEST['updateEngineForTable']));
+		}
+		elseif($_REQUEST['updateEngineForAllTables'] == true) {
+			$dbHealthCheck->updateAllTablesEngineType();
+		}
 	}
 
 	$unHealthyTablesList = $dbHealthCheck->getUnhealthyTablesList();
@@ -47,7 +47,7 @@ if(!empty($_REQUEST['forceDbCheck']) || $_SESSION[$dbName.'_'.$dbHostName.'_Heal
 		if($_REQUEST['ajax'] == true) {
 			echo "TABLE_TYPE_FIXED";
 		}
-	} else {		
+	} else {
 		$_SESSION[$dbName.'_'.$dbHostName.'_HealthApproved'] = false;
 	}
 }

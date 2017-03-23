@@ -22,8 +22,6 @@ function c_toggleAssignType(currType){
 	}
 }
 
-var gValidationCall='';
-
 if (document.all)
 	var browser_ie=true;
 
@@ -73,6 +71,10 @@ function getObj(n,d) {
 		// IE7 was returning form element with name = n (if there was multiple instance)
 		// But not firefox, so we are making a double check
 		if(x && x.id != n) x = false;
+	}
+
+	if (!x && d.getElementById) {
+		x=d.getElementById('txtbox_'+n); // for detail view edit fields
 	}
 
 	for(i=0;!x && i<d.forms.length;i++) {
@@ -198,6 +200,8 @@ function emptyCheck(fldName,fldLabel, fldType) {
 }
 
 function patternValidateObject(fldObject,fldLabel,type) {
+	fldObject.value = trim(fldObject.value);
+	let checkval = fldObject.value;
 	if (type.toUpperCase()=="EMAIL") //Email ID validation
 	{
 		var re=new RegExp(/^[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i);
@@ -224,14 +228,20 @@ function patternValidateObject(fldObject,fldLabel,type) {
 			case "dd-mm-yyyy" :
 				var re = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{4}$/;
 		}
+		if (checkval.indexOf(' ')>0) {
+			var dt = checkval.split(' ');
+			checkval = dt[0];
+		}
 	}
 
 	if (type.toUpperCase()=="TIME") {//TIME validation
 		var re = /^\d{1,2}\:\d{2}:\d{2}$|^\d{1,2}\:\d{2}$/;
+		if (checkval.indexOf(' ')>0) {
+			var dt = checkval.split(' ');
+			checkval = dt[1];
+		}
 	}
-	//Asha: Remove spaces on either side of a Email id before validating
-	if (type.toUpperCase()=="EMAIL" || type.toUpperCase() == "DATE") fldObject.value = trim(fldObject.value);
-	if (!re.test(fldObject.value)) {
+	if (!re.test(checkval)) {
 		alert(alert_arr.ENTER_VALID + fldLabel + " ("+type+")");
 		try {
 			fldObject.focus();
@@ -246,6 +256,8 @@ function patternValidateObject(fldObject,fldLabel,type) {
 
 function patternValidate(fldName,fldLabel,type) {
 	var currObj=getObj(fldName);
+	currObj.value = trim(currObj.value);
+	let checkval = currObj.value;
 
 	if (type.toUpperCase()=="EMAIL") //Email ID validation
 	{
@@ -273,14 +285,20 @@ function patternValidate(fldName,fldLabel,type) {
 			case "dd-mm-yyyy" :
 				var re = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{4}$/;
 		}
+		if (checkval.indexOf(' ')>0) {
+			var dt = checkval.split(' ');
+			checkval = dt[0];
+		}
 	}
 
 	if (type.toUpperCase()=="TIME") {//TIME validation
 		var re = /^\d{1,2}\:\d{2}:\d{2}$|^\d{1,2}\:\d{2}$/;
+		if (checkval.indexOf(' ')>0) {
+			var dt = checkval.split(' ');
+			checkval = dt[1];
+		}
 	}
-	//Asha: Remove spaces on either side of a Email id before validating
-	if (type.toUpperCase()=="EMAIL" || type.toUpperCase() == "DATE") currObj.value = trim(currObj.value);
-	if (!re.test(currObj.value)) {
+	if (typeof(re) != 'undefined' && !re.test(checkval)) {
 		alert(alert_arr.ENTER_VALID + fldLabel + " ("+type+")");
 		try {
 			currObj.focus();
@@ -363,8 +381,13 @@ function compareDates(date1,fldLabel1,date2,fldLabel2,type) {
 function dateTimeValidate(dateFldName,timeFldName,fldLabel,type) {
 	if(patternValidate(dateFldName,fldLabel,"DATE")==false)
 		return false;
-	dateval=getObj(dateFldName).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
+	let dateval = getObj(dateFldName).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
 
+	if (timeFldName==undefined) {
+		timeFldName = dateFldName;
+		let dt = dateval.split(' ');
+		dateval = dt[0];
+	}
 	var dateelements=splitDateVal(dateval);
 
 	dd=dateelements[0];
@@ -414,6 +437,10 @@ function dateTimeValidate(dateFldName,timeFldName,fldLabel,type) {
 		return false;
 
 	var timeval=getObj(timeFldName).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
+	if (timeval.indexOf(' ')>0) {
+		let dt = timeval.split(' ');
+		timeval = dt[1];
+	}
 	var hourval=parseInt(timeval.substring(0,timeval.indexOf(":")));
 	var minval=parseInt(timeval.substring(timeval.indexOf(":")+1,timeval.length));
 	var currObj=getObj(timeFldName);
@@ -993,84 +1020,92 @@ function doModuleValidation(edit_type,editForm,callback) {
 	} else {
 		var formName = editForm;
 	}
-	if((formName == 'QcEditView' && QCformValidate()) || (doformValidation(edit_type))) { //base function which validates form data
-		VtigerJS_DialogBox.block();
-		if (edit_type=='mass_edit') {
-			var action = 'MassEditSave';
-		} else {
-			var action = 'Save';
-		}
-		//Testing if a Validation file exists
-		jQuery.ajax({
-			url: "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationExists&valmodule="+gVTModule,
-			type:'get',
-			error: function() { //Validation file does not exist
-				if (typeof callback == 'function') {
-					callback('submit');
-				} else {
-					submitFormForAction(formName, action);
-				}
-			},
-			success: function(data) { //Validation file exists
-				if (data == 'yes') {
-					// Create object which gets the values of all input, textarea, select and button elements from the form
-					var myFields = document.forms[formName].elements;
-					var sentForm = new Object();
-					for (f=0; f<myFields.length; f++){
-						sentForm[myFields[f].name] = myFields[f].value;
-					}
-					//JSONize form data
-					sentForm = JSON.stringify(sentForm);
-					jQuery.ajax({
-						type : 'post',
-						data : {structure: sentForm},
-						url : "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule="+gVTModule,
-						success : function(msg) {  //Validation file answers
-							if (msg.search("%%%CONFIRM%%%") > -1) { //Allow to use confirm alert
-								//message to display
-								var display = msg.split("%%%CONFIRM%%%");
-								if(confirm(display[1])) { //If you click on OK
-									if (typeof callback == 'function') {
-										callback('submit');
-									} else {
-										submitFormForAction(formName, action);
-									}
-								} else {
-									VtigerJS_DialogBox.unblock();
-								}
-							} else if (msg.search("%%%OK%%%") > -1) { //No error
-								if (typeof callback == 'function') {
-									callback('submit');
-								} else {
-									submitFormForAction(formName, action);
-								}
-							} else { //Error
-								alert(msg);
-								VtigerJS_DialogBox.unblock();
-							}
-						},
-						error : function() {  //Error while asking file
-							alert('Error with AJAX');
-							VtigerJS_DialogBox.unblock();
-						}
-					});
-				} else { // no validation we send form
-					if (typeof callback == 'function') {
-						callback('submit');
-					} else {
-						submitFormForAction(formName, action);
-					}
-				}
-			}
-		});
+	if (formName == 'QcEditView') {
+		var isvalid = QCformValidate();
+	} else {
+		var isvalid = doformValidation(edit_type);
+	}
+	if (isvalid) {
+		doServerValidation(edit_type,formName,callback);
 	}
 	return false;
 }
 
+function doServerValidation(edit_type,formName,callback) {
+	VtigerJS_DialogBox.block();
+	if (edit_type=='mass_edit') {
+		var action = 'MassEditSave';
+	} else {
+		var action = 'Save';
+	}
+	//Testing if a Validation file exists
+	jQuery.ajax({
+		url: "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationExists&valmodule="+gVTModule,
+		type:'get'
+	}).fail(function (jqXHR, textStatus) { //Validation file does not exist
+		if (typeof callback == 'function') {
+			callback('submit');
+		} else {
+			submitFormForAction(formName, action);
+		}
+	}).done(function(data) { //Validation file exists
+		if (data == 'yes') {
+			// Create object which gets the values of all input, textarea, select and button elements from the form
+			var myFields = document.forms[formName].elements;
+			var sentForm = new Object();
+			for (f=0; f<myFields.length; f++){
+				if(myFields[f].type=='checkbox')
+					sentForm[myFields[f].name] = myFields[f].checked;
+				else
+					sentForm[myFields[f].name] = myFields[f].value;
+			}
+			//JSONize form data
+			sentForm = JSON.stringify(sentForm);
+			jQuery.ajax({
+				type : 'post',
+				data : {structure: sentForm},
+				url : "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule="+gVTModule
+			}).done(function(msg) {  //Validation file answers
+					if (msg.search("%%%CONFIRM%%%") > -1) { //Allow to use confirm alert
+						//message to display
+						var display = msg.split("%%%CONFIRM%%%");
+						if(confirm(display[1])) { //If you click on OK
+							if (typeof callback == 'function') {
+								callback('submit');
+							} else {
+								submitFormForAction(formName, action);
+							}
+						} else {
+							VtigerJS_DialogBox.unblock();
+						}
+					} else if (msg.search("%%%OK%%%") > -1) { //No error
+						if (typeof callback == 'function') {
+							callback('submit');
+						} else {
+							submitFormForAction(formName, action);
+						}
+					} else { //Error
+						alert(msg);
+						VtigerJS_DialogBox.unblock();
+					}
+			}).fail(function() {  //Error while asking file
+					alert('Error with AJAX');
+					VtigerJS_DialogBox.unblock();
+			});
+		} else { // no validation we send form
+			if (typeof callback == 'function') {
+				callback('submit');
+			} else {
+				submitFormForAction(formName, action);
+			}
+		}
+	});
+	return false;
+}
+
 function doformValidation(edit_type) {
-	//Validation for Portal User
-	if(gVTModule == 'Contacts' && gValidationCall != 'tabchange')
-	{
+	if(gVTModule == 'Contacts') {
+		//Validation for Portal User
 		//if existing portal value = 0, portal checkbox = checked, ( email field is not available OR  email is empty ) then we should not allow -- OR --
 		//if existing portal value = 1, portal checkbox = checked, ( email field is available     AND email is empty ) then we should not allow
 		if(edit_type=='')
@@ -1152,7 +1187,7 @@ function doformValidation(edit_type) {
 					if (getObj(fieldname[i]) != null && getObj(fieldname[i]).value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0)
 					{
 						if (type[1]=="M")
-							if (!emptyCheck(fieldname[2],fieldlabel[i],getObj(type[2]).type))
+							if (!emptyCheck(fieldname[2],fieldlabel[i],(type[2]!=undefined ? getObj(type[2]).type :'')))
 								return false;
 
 						if(typeof(type[3])=="undefined") var currdatechk="OTH";
@@ -1592,44 +1627,6 @@ function fnhide(divId) {
 	id.style.display = 'none';
 }
 
-function fnLoadValues(obj1,obj2,SelTab,unSelTab,moduletype,module){
-	var oform = document.forms['EditView'];
-	oform.action.value='Save';
-	//global variable to check the validation calling function to avoid validating when tab change
-	gValidationCall = 'tabchange';
-
-	/*var tabName1 = document.getElementById(obj1);
-	var tabName2 = document.getElementById(obj2);
-	var tagName1 = document.getElementById(SelTab);
-	var tagName2 = document.getElementById(unSelTab);
-	if(tabName1.className == "dvtUnSelectedCell")
-		tabName1.className = "dvtSelectedCell";
-	if(tabName2.className == "dvtSelectedCell")
-		tabName2.className = "dvtUnSelectedCell";
-
-	tagName1.style.display='block';
-	tagName2.style.display='none';*/
-	gValidationCall = 'tabchange';
-
-	// if((moduletype == 'inventory' && validateInventory(module)) ||(moduletype == 'normal') && formValidate())
-	// if(formValidate())
-	// {
-	var tabName1 = document.getElementById(obj1);
-	var tabName2 = document.getElementById(obj2);
-	var tagName1 = document.getElementById(SelTab);
-	var tagName2 = document.getElementById(unSelTab);
-	if(tabName1.className == "dvtUnSelectedCell")
-		tabName1.className = "dvtSelectedCell";
-
-	if(tabName2.className == "dvtSelectedCell")
-		tabName2.className = "dvtUnSelectedCell";
-
-	tagName1.style.display='block';
-	tagName2.style.display='none';
-	// }
-	gValidationCall = '';
-}
-
 function fnCopy(source,design){
 	document.getElementById(source).value=document.getElementById(design).value;
 	document.getElementById(source).disabled=true;
@@ -1673,7 +1670,7 @@ function fnDown(obj){
 
 /*
 * javascript function to add field rows
-* @param option_values :: List of Field names
+* @deprecated: not used anymore
 */
 var count = 0;
 var rowCnt = 1;
@@ -1893,54 +1890,6 @@ function ActivateCheckBox()
 	}
 }
 
-//wipe for Convert Lead
-
-function fnSlide2(obj,inner)
-{
-	var buff = document.getElementById(obj).height;
-	closeLimit = buff.substring(0,buff.length);
-	menu_max = eval(closeLimit);
-	var tagName = document.getElementById(inner);
-	document.getElementById(obj).style.height=0 + "px";
-	menu_i=0;
-	if (tagName.style.display == 'none')
-		fnexpanLay2(obj,inner);
-	else
-		fncloseLay2(obj,inner);
-}
-
-function fnexpanLay2(obj,inner)
-{
-	// document.getElementById(obj).style.display = 'run-in';
-	var setText = eval(closeLimit) - 1;
-	if (menu_i<=eval(closeLimit))
-	{
-		if (menu_i>setText){
-			document.getElementById(inner).style.display='block';
-		}
-		document.getElementById(obj).style.height=menu_i + "px";
-		setTimeout(function() {
-			fnexpanLay2(obj,inner);
-		},5);
-		menu_i=menu_i+5;
-	}
-}
-
-function fncloseLay2(obj,inner)
-{
-	if (menu_max >= eval(openLimit))
-	{
-		if (menu_max<eval(closeLimit)){
-			document.getElementById(inner).style.display='none';
-		}
-		document.getElementById(obj).style.height=menu_max +"px";
-		setTimeout(function() {
-			fncloseLay2(obj,inner);
-		}, 5);
-		menu_max = menu_max -5;
-	}
-}
-
 function addOnloadEvent(fnc){
 	if ( typeof window.addEventListener != "undefined" )
 		window.addEventListener( "load", fnc, false );
@@ -2006,19 +1955,19 @@ function OpenCompose(id,mode,crmid)
 			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&record='+id+'&reply=true';
 			break;
 		case 'Invoice':
-			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+i18n+'_'+id+'.pdf&invmodid='+crmid;
+			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&pmodule=Invoice&attachment='+i18n+'_'+id+'.pdf&invmodid='+crmid;
 			break;
 		case 'PurchaseOrder':
-			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+i18n+'_'+id+'.pdf&invmodid='+crmid;
+			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&pmodule=PurchaseOrder&attachment='+i18n+'_'+id+'.pdf&invmodid='+crmid;
 			break;
 		case 'SalesOrder':
-			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+i18n+'_'+id+'.pdf&invmodid='+crmid;
+			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&pmodule=SalesOrder&attachment='+i18n+'_'+id+'.pdf&invmodid='+crmid;
 			break;
 		case 'Quote':
-			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+i18n+'_'+id+'.pdf&invmodid='+crmid;
+			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&pmodule=Quotes&attachment='+i18n+'_'+id+'.pdf&invmodid='+crmid;
 			break;
 		case 'Documents':
-			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+id+'';
+			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&pmodule=Documents&attachment='+id+'';
 			break;
 		case 'print':
 			url = 'index.php?module=Emails&action=EmailsAjax&file=PrintEmail&record='+id+'&print=true';
@@ -2219,11 +2168,11 @@ function fnDropDown(obj,Lay){
 	if(getVal > document.body.clientWidth ){
 		leftSide = eval(leftSide) - eval(widthM);
 		tagName.style.left = leftSide + 34 + 'px';
-	}
-	else
+	} else {
 		tagName.style.left= leftSide + 'px';
-		tagName.style.top= topSide + obj.clientHeight +'px';
-		tagName.style.display = 'block';
+	}
+	tagName.style.top= topSide + obj.clientHeight +'px';
+	tagName.style.display = 'block';
 }
 
 function fnShowDrop(obj){
@@ -2895,7 +2844,7 @@ function toggleSelect_ListView(state,relCheckName,groupParentElementId) {
 			}
 		}
 	}
-	if(document.getElementById('curmodule') != undefined && document.getElementById('curmodule').value == 'Documents') {
+	if(document.getElementById('curmodule') != undefined && document.getElementById('curmodule').value == 'Documents' && Document_Folder_View) {
 		if(state==true) {
 			var count = document.getElementById('numOfRows_'+groupParentElementId).value;
 			if(count == '') {
@@ -3838,16 +3787,15 @@ function startCall(number, recordid){
 
 	//var ASTERISK_DIV_TIMEOUT = 6000;
 	jQuery.ajax({
-			method: 'POST',
-			url: 'index.php?action=PBXManagerAjax&mode=ajax&file=StartCall&ajax=true&module=PBXManager&number='+encodeURIComponent(number)+'&recordid='+recordid
+		method: 'POST',
+		url: 'index.php?action=PBXManagerAjax&mode=ajax&file=StartCall&ajax=true&module=PBXManager&number='+encodeURIComponent(number)+'&recordid='+recordid
 	}).done(function (response) {
-				if(response == ''){
-				//successfully called
-				}else{
-					alert(response);
-				}
-			}
-		);
+		if (response == '') {
+			//successfully called
+		} else {
+			alert(response);
+		}
+	});
 }
 //asterisk integration :: ends
 
@@ -4529,7 +4477,7 @@ function getNoOfRows(id){
 	var searchurl = document.getElementById('search_url').value;
 	var viewid = getviewId();
 	var url = "module="+module+"&action="+module+"Ajax&file=ListViewCount&viewname="+viewid+searchurl;
-	if(module == 'Documents') {
+	if(module != undefined && module == 'Documents' && Document_Folder_View) {
 		var folderid = document.getElementById('folderid_'+id).value;
 		url = url+"&folderidstring="+folderid;
 	}
@@ -4537,7 +4485,7 @@ function getNoOfRows(id){
 			method: 'POST',
 			url: "index.php?"+url
 	}).done(function (response) {
-				if(module != 'Documents') {
+				if(module != 'Documents' || Document_Folder_View == 0) {
 					document.getElementById('numOfRows').value = response;
 					document.getElementById('count').innerHTML = response;
 					if(parseInt(document.getElementById('maxrecords').value) < parseInt(response)){
@@ -4792,4 +4740,164 @@ function duplicate_record(module,record)
 			window.location = "index.php?module=" + response.module + "&action=DetailView&record=" + response.record_id;
 		}
 	});
+}
+
+function getITSMiniCal(url){
+	if(url == undefined)
+		url = 'module=Calendar4You&action=ActivityAjax&file=ActivityAjax&type=minical&ajax=true';
+	else
+		url = 'module=Calendar4You&action=ActivityAjax&file=ActivityAjax&'+url+'&type=minical&ajax=true';
+	jQuery.ajax({
+			method:"POST",
+			url:'index.php?'+ url
+	}).done(function(response) {
+			document.getElementById("miniCal").innerHTML = response;
+	});
+}
+
+function changeCalendarMonthDate(year,month,date){
+	if (jQuery('#calendar_div').fullCalendar == undefined) return false;
+	changeCalendarDate(year,month,date);
+	jQuery('#calendar_div').fullCalendar( 'changeView', 'month' );
+}
+
+function changeCalendarWeekDate(year,month,date){
+	if (jQuery('#calendar_div').fullCalendar == undefined) return false;
+	changeCalendarDate(year,month,date);
+	jQuery('#calendar_div').fullCalendar( 'changeView', 'agendaWeek' );
+}
+
+function changeCalendarDayDate(year,month,date){
+	if (jQuery('#calendar_div').fullCalendar == undefined) return false;
+	changeCalendarDate(year,month,date);
+	jQuery('#calendar_div').fullCalendar( 'changeView', 'agendaDay' );
+}
+
+function changeCalendarDate(year,month,date){
+	if (jQuery('#calendar_div').fullCalendar == undefined) return false;
+	var date1= year+'-'+month+'-'+date;
+	jQuery('#calendar_div').fullCalendar( 'gotoDate',date1);
+}
+
+function fetch_clock() {
+	jQuery.ajax({
+		method:"POST",
+		url:'index.php?module=Utilities&action=UtilitiesAjax&file=Clock'
+	}).done(function(response) {
+		jQuery("#clock_cont").html(response);
+		execJS(document.getElementById('clock_cont'));
+	});
+}
+
+function fetch_calc() {
+	jQuery.ajax({
+		method:"POST",
+		url:'index.php?module=Utilities&action=UtilitiesAjax&file=Calculator'
+	}).done(function(response) {
+		jQuery("#calculator_cont").html(response);
+		execJS(document.getElementById('calculator_cont'));
+	});
+}
+
+function UnifiedSearch_SelectModuleForm(obj) {
+	if(jQuery('#UnifiedSearch_moduleform').length) {
+		// If we have loaded the form already.
+		UnifiedSearch_SelectModuleFormCallback(obj);
+	} else {
+		jQuery('#status').show();
+		jQuery.ajax({
+			method:"POST",
+			url:'index.php?module=Home&action=HomeAjax&file=UnifiedSearchModules&ajax=true'
+		}).done(function(response) {
+			jQuery('#status').hide();
+			jQuery('#UnifiedSearch_moduleformwrapper').html(response);
+			UnifiedSearch_SelectModuleFormCallback(obj);
+		});
+	}
+}
+
+function UnifiedSearch_SelectModuleFormCallback(obj) {
+	fnvshobjsearch(obj, 'UnifiedSearch_moduleformwrapper');
+}
+
+function UnifiedSearch_SelectModuleToggle(flag) {
+	jQuery('#UnifiedSearch_moduleform input[type=checkbox]').each(function() {
+		this.checked = flag;
+	});
+}
+
+function UnifiedSearch_SelectModuleCancel() {
+	jQuery('#UnifiedSearch_moduleformwrapper').hide();
+}
+
+function UnifiedSearch_SelectModuleSave() {
+	var UnifiedSearch_form = document.forms.UnifiedSearch;
+	UnifiedSearch_form.search_onlyin.value = jQuery('#UnifiedSearch_moduleform').serialize().replace(/search_onlyin=/g, '').replace(/&/g,',');
+	jQuery.ajax({
+		method:"POST",
+		url:'index.php?module=Home&action=HomeAjax&file=UnifiedSearchModulesSave&search_onlyin=' + encodeURIComponent(UnifiedSearch_form.search_onlyin.value)
+	}).done(function(response) {
+		// continue
+	});
+	UnifiedSearch_SelectModuleCancel();
+}
+
+/**
+ * image pasting into canvas
+ * @param {string} canvas_id - canvas id
+ * @param {boolean} autoresize - if canvas will be resized
+ */
+function CLIPBOARD_CLASS(canvas_id, autoresize) {
+	var _self = this;
+	var canvas = document.getElementById(canvas_id);
+	var ctx = document.getElementById(canvas_id).getContext("2d");
+	var startImage = new Image();
+	startImage.onload = function () {
+		ctx.drawImage(startImage, 0, 0, 60, 60, 12, 12, 30, 30);
+	}
+	startImage.src = 'include/LD/assets/icons/utility/paste_60.png';
+	//handlers
+	document.addEventListener('paste', function (e) { _self.paste_auto(e); }, false);
+
+	//on paste
+	this.paste_auto = function (e) {
+		if (e.clipboardData && document.activeElement.id==canvas_id) {
+			var items = e.clipboardData.items;
+			if (!items) return;
+
+			//access data directly
+			for (var i = 0; i < items.length; i++) {
+				if (items[i].type.indexOf("image") !== -1) {
+					//image
+					var blob = items[i].getAsFile();
+					var URLObj = window.URL || window.webkitURL;
+					var source = URLObj.createObjectURL(blob);
+					this.paste_createImage(source);
+					e.preventDefault();
+					break;
+				}
+			}
+		}
+	};
+	//draw pasted image to canvas
+	this.paste_createImage = function (source) {
+		var pastedImage = new Image();
+		pastedImage.onload = function () {
+			if(autoresize == true){
+				//resize
+				canvas.width = pastedImage.width;
+				canvas.height = pastedImage.height;
+			}
+			else{
+				//clear canvas
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+			}
+			ctx.drawImage(pastedImage, 0, 0);
+			var cnv_img = document.getElementById(canvas_id+'_image');
+			var cnv_img_set = document.getElementById(canvas_id+'_image_set');
+			if (cnv_img) cnv_img.value = canvas.toDataURL('image/png');
+			if (cnv_img_set) cnv_img_set.value = '1';
+		};
+		pastedImage.src = source;
+	};
 }

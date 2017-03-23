@@ -110,10 +110,12 @@
   'ERR_REENTER_PASSWORDS' => 'Reinserisci la Password. I valori della  Nuova Password e  della Conferma della Password  non coincidono',
   'ERR_INVALID_PASSWORD' => 'Devi specificare un utente e una password validi.',
   'ERR_INVALID_ADMINIPLOGIN' => 'Administrator users must login from authorized devices.',
+  'ERR_INVALID_USERIPLOGIN' => 'Restricted access to authorized personnel only<br> You are connecting from an invalid IP',
   'ERR_PASSWORD_CHANGE_FAILED_1' => 'Impossibile modificare la password per',
   'ERR_PASSWORD_CHANGE_FAILED_2' => 'errore. La nuova password deve essere impostata.',
   'ERR_PASSWORD_INCORRECT_OLD' => 'Vecchia password sbagliata per questo nome utente. Reinserisci la password',
   'ERR_PASSWORD_NOT_CHANGED' => 'Old and New Passwords are the same. Please use a different password.',
+	'ERR_USER_DOESNOT_EXISTS'=>'User does not exist.',
   'ERR_USER_NAME_EXISTS_1' => 'Il Nome Utente',
   'ERR_USER_NAME_EXISTS_2' => 'esiste gi&agrave; . Utenti duplicati non sono consentiti. Cambia il nome utente per essere unico',
   'ERR_LAST_ADMIN_1' => 'Il Nome Utente',
@@ -587,7 +589,6 @@
   'LBL_TEAM' => 'Team',
   'LBL_CREDITS' => 'Crediti',
   'LBL_THIRD_PARTY' => 'Paccheti di terze parti',
-  'LBL_COMMUNITY' => 'E la comunit&agrave; di vtiger',
 
   'LBL_ASSIGN_ROLE' => 'Assegna Ruolo',
 
@@ -637,16 +638,13 @@
   'LBL_5_MIN' => '5 minuti',
   'LBL_EMAILS_PER_PAGE' => 'Email per pagina',
 
-
   'LBL_ENTER_PROFILE' => 'Inserisci il nome del profilo',
   'TITLE_USER_DOCUMENT' => 'Documento senza nome',
-  'TITLE_VTIGER_CRM_5' => 'CRM Open Source',
   'ROLE_DRAG_ERR_MSG' => 'Non puoi muovere un nodo padre sotto un nodo figlio',
 
   'LBL_NOTIFICATION_ACTIVITY' => 'Attivit&agrave; di notifica',
   'LBL_NOTIFICATION_EMAIL_INFO' => 'Informazioni email di notifica',
   'LBL_GOTO_LISTVIEW_BUTTON' => 'Vai a Vista per Lista',
-
 
   'LBL_SSL' => 'SSL',
 
@@ -657,26 +655,19 @@
   'LBL_TAGCLOUD_DISPLAY' => 'Tag Cloud Display',
   'INTERNAL_MAIL_COMPOSER' => 'Compositore Email interno',
 
-
   'User Login Details' => 'Dettagli Login Utente',
   'LBL_TO_LOGIN' => 'per Login',
-
-
 
 'LBL_USER_ADV_OPTIONS'=>'Utente Opzioni Avanzate',
 'Reminder Interval' => 'Intervallo Promemoria',
 'Webservice Access Key' => 'Access Key',
 
-
 'LBL_GROUPNAME_EXIST' => 'Esiste gi&agrave; un Gruppo col nome specificato!',
 'LBL_PROFILENAME_EXIST' => 'Esiste gi&agrave; un Utente col nome specificato!',
-
 
 'Asterisk Configuration' => 'Configurazione Asterisk',
 'Asterisk Extension' => 'Estensione Asterisk',
 'Receive Incoming Calls' => 'Ricevi chiamate in entrata',
-' Receive Incoming Calls' => 'Ricevi chiamate in Entrata',
-
 
 'LBL_USER_CUSTOMFIELDS_DESCRIPTION' => 'Crea campi personalizzati utente',
 'LBL_USER_CUSTOMFIELDS' => 'Campi Personalizzati Utente',
@@ -796,6 +787,10 @@
 'Min. 1 number' => 'Minimo un numero',
 'Min. 1 special character' => 'Minimo un carattere speciale ! ? , ; - @ #',
 'Generate password' => 'Generate password',
-);
+// LDAP
+'LBL_QUERY' => 'Query',
+'LBL_FORE_LASTNAME' => 'First or Last name',
+'LBL_NO_LDAP_MATCHES' => 'No matches found on the LDAP server!',
+ );
 
 ?>

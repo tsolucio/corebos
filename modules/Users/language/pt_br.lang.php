@@ -115,10 +115,12 @@ $mod_strings = Array(
 'ERR_REENTER_PASSWORDS'=>'Por favor entre novamente com sua senha.  Os valores \"nova senha\" e \"confirme senha\" não combinam.',
 'ERR_INVALID_PASSWORD'=>'Você deve especificar um nome de usuário e senha válidos',
 'ERR_INVALID_ADMINIPLOGIN' => 'O usuário Administrador deve fazer login a partir de dispositivos autorizados.',
+'ERR_INVALID_USERIPLOGIN' => 'Restricted access to authorized personnel only<br> You are connecting from an invalid IP',
 'ERR_PASSWORD_CHANGE_FAILED_1'=>'Mudança na senha do usuário falhou ',
 'ERR_PASSWORD_CHANGE_FAILED_2'=>' falhou. Nova senha deve ser definida.',
 'ERR_PASSWORD_INCORRECT_OLD'=>'Senha antiga incorreta para usuário especificado. Entre novamente com a informação de senha.',
 'ERR_PASSWORD_NOT_CHANGED' => 'Antiga e Nova Senha são iguais. Por favor, use senhas diferentes.',
+'ERR_USER_DOESNOT_EXISTS'=>'User does not exist.',
 'ERR_USER_NAME_EXISTS_1'=>'O nome de usuário',
 'ERR_USER_NAME_EXISTS_2'=>' já existe.  Nomes de usuários duplicados não são permitidos.<br>Mude o nome de usuário de forma que seja único.',
 'ERR_LAST_ADMIN_1'=>'O nome de usuário',
@@ -583,8 +585,6 @@ $mod_strings = Array(
 'LBL_TRANSFER_ROLES_TO_PROFILE'=>'Transferir Funções para o Perfil',
 'LBL_PROFILE_TO_BE_DELETED'=>'Perfil a ser Apagado',
 
-//Added for disabling window Recalculate
-
 'LBL_RECALC_MSG'=>'Você tem certeza que deseja recalcular Acesso Compatilhado?',
 'LBL_YES'=>'Sim',
 'LBL_NO'=>'Não',
@@ -592,19 +592,14 @@ $mod_strings = Array(
 'LBL_MANDATORY_MSG'=>'Campos Obrigatórios',
 'LBL_DISABLE_FIELD_MSG'=>'Campos das Configurações Gerais de Acesso Desabilitados',
 
-//Added for About Us
-
 'LBL_CONTACT_US'=>'Contacte-nos',
 'LBL_READ_LICENSE'=>'Ler Licença',
 'LBL_VERSION'=>'Versão',
 'LBL_TEAM'=>'Equipe',
 'LBL_CREDITS'=>'Créditos',
 'LBL_THIRD_PARTY'=>'Pacotes de Terceiros',
-'LBL_COMMUNITY'=>'E Comunidade vtiger',
 
 'LBL_ASSIGN_ROLE'=>'Atribuir Função',
-
-//Moved from Settings to here for Webmail client integration (for 5.0.3 release)
 
 'LBL_ADD_MAIL_ACCOUNT'=>'Adicionar Organização Correio',
 'LBL_NEW_MAIL_ACCOUNT_TITLE'=>'Nova Organização Correio [Alt+M]',
@@ -651,32 +646,24 @@ $mod_strings = Array(
 'LBL_4_MIN'=>'4 minutos',
 'LBL_5_MIN'=>'5 minutos',
 'LBL_EMAILS_PER_PAGE'=>'Email por Página',
-// Added for 5.0.3
 
 'LBL_ENTER_PROFILE'=>'Digite o Nome do Perfil',
 'TITLE_USER_DOCUMENT'=>'Documento sem título',
-'TITLE_VTIGER_CRM_5'=>'Gratuíto, Código Aberto e Uso Comercial',
 'ROLE_DRAG_ERR_MSG'=>'Você não pode mover um Nó Pai com um Nó Filho',
 
 'LBL_NOTIFICATION_ACTIVITY'=>'Atividade de Notificação',
 'LBL_NOTIFICATION_EMAIL_INFO'=>'Informação E-mail Notificação',
 'LBL_GOTO_LISTVIEW_BUTTON'=>'Ir para Lista',
 
-// Added/Updated for vtiger CRM 5.0.4
-
 'LBL_SSL' => 'SSL',
-//Added to fix the issue #4081
 'LBL_USERNAME_EXIST' => 'Nome Usuário já Existe!',
 'LBL_UNAUTHORIZED_ACCESS' => 'Acesso não autorizado para administração de Usuário',
 //Added to provide User based TagCloud
 'LBL_TAGCLOUD_DISPLAY'=>'Mostrar Tag Cloud',
 'INTERNAL_MAIL_COMPOSER'=>'Editor Interno de Mensagens',
 
-// Added for 5.0.4 to Support Email notication on User Creation
 'User Login Details'=>'Detalhes Acesso Usuário',
 'LBL_TO_LOGIN' => 'para Acesso',
-
-// Added after 5.0.4 GA
 
 'LBL_USER_ADV_OPTIONS'=>'Opções para Usuários Avançados',
 'Reminder Interval'=>'Intervalo Lembrete',
@@ -689,7 +676,7 @@ $mod_strings = Array(
 //Fixed For Asterisk Configration
 'Asterisk Configuration' => 'Configuração Asterisk',
 'Asterisk Extension' => 'Extensão Asterisk',
-' Receive Incoming Calls' => 'Receber Chamadas',
+'Receive Incoming Calls' => 'Receber Chamadas',
 
 // Added for Create Custom Fields 
 'LBL_USER_CUSTOMFIELDS_DESCRIPTION' => 'Criar Campos Customizados para Usuários',
@@ -825,6 +812,10 @@ $mod_strings = Array(
 'Min. 1 number' => 'Min. 1 número',
 'Min. 1 special character' => 'Min. 1 caracter especial , ! ? , ; - @ #',
 'Generate password' => 'Gerar senha',
+// LDAP
+'LBL_QUERY' => 'Query',
+'LBL_FORE_LASTNAME' => 'First or Last name',
+'LBL_NO_LDAP_MATCHES' => 'No matches found on the LDAP server!',
 );
 
 ?>

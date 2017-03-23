@@ -109,18 +109,6 @@ if(isset($langid) && $langid !='' && $pmodule!='' ){
 					}
 				}
 			}
-			fwrite($fd, ');'.$line_break.'$app_list_strings = array('.$line_break);
-			if(is_array($_REQUEST['translate_list_value2'])) $_REQUEST['translate_list_value2'] = array_map("quote_replace", $_REQUEST['translate_list_value2']);
-			foreach($_REQUEST['translate_list_value2'] as $key1=>$arr){
-				if(is_array($arr)){
-					fwrite($fd,"	'$key1' => array(".$line_break);
-					foreach($arr as $key2=>$value){
-						$_key = ($key2=='#empty#')?'':$key2;
-						fwrite($fd,"		'$_key' => '".iconv("UTF-8", $langencoding, $value)."',".$line_break);
-					}
-					fwrite($fd,'	),'.$line_break);
-				}
-			}
 			// Translation for currency names :: $app_currency_strings
 			fwrite($fd, ');'.$line_break.'// Translation for currency names'.$line_break.'$app_currency_strings = array('.$line_break);
 			foreach($app_currency_strings as $key1=>$value){
@@ -206,6 +194,6 @@ if(isset($langid) && $langid !='' && $pmodule!='' ){
 		  }
 		}  // if no language prefix
 	}
-	header("Location:index.php?module=Settings&action=LanguageEdit&parenttab=Settings&pick_module=".$pmodule."&languageid=".$langid);
+	header('Location:index.php?module=Settings&action=LanguageEdit&parenttab=Settings&pick_module='.urlencode($pmodule).'&languageid='.urlencode($langid));
 }
 ?>

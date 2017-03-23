@@ -8,9 +8,19 @@
  * All Rights Reserved.
  ********************************************************************************/
 
+if ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true')) {
+	$toggle_historicos = 'See Non Converted Leads';
+	$toggle_name = 'Converted Leads';
+} else {
+	$toggle_historicos = 'See Converted Leads';
+	$toggle_name = 'Leads';
+}
+
 $mod_strings = Array(
-    'LBL_MODULE_NAME'=>'Leads',
-    'LBL_DIRECT_REPORTS_FORM_NAME'=>'Vorgesetzter',
+	'LBL_TGL_HISTORICOS' => $toggle_historicos,
+	'LBL_MODULE_NAME'=>$toggle_name,
+	'Leads' => $toggle_name,
+	'LBL_DIRECT_REPORTS_FORM_NAME'=>'Vorgesetzter',
     'LBL_MODULE_TITLE'=>'Leads: Home',
     'LBL_SEARCH_FORM_TITLE'=>'Lead suchen',
     'LBL_LIST_FORM_TITLE'=>'Leads',
@@ -33,7 +43,6 @@ $mod_strings = Array(
     'LBL_LEAD_NAME'=>'Lead Name:',
     'LBL_LEAD_INFORMATION'=>'Lead',
     'LBL_FIRST_NAME'=>'Vorname:',
-    'LBL_PHONE'=>'Telefon:',
     'LBL_COMPANY'=>'Organisation:',
     'LBL_DESIGNATION'=>'Kennzeichnung:',
     'LBL_PHONE'=>'Telefon:',
@@ -121,6 +130,7 @@ $mod_strings = Array(
     'Company'=>'Organisation',
     'Fax'=>'Fax',
     'Email'=>'E-Mail',
+	'Secondary Email'=>'weitere Email',
     'Lead Source'=>'Leadquelle',
     'Website'=>'Webseite',
     'Annual Revenue'=>'Jahresumsatz',

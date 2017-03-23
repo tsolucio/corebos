@@ -22,14 +22,11 @@ ins { text-decoration: none; background-color: #FDFF00; }
 	<td class="layerPopupHeading" align="left" width="70%">
 		{$TRACKRECORD->getDisplayName()}
 
-		{* Disabling highlighting triggers *}
-		{* START
 		{if $smarty.request.highlight eq 'true'}
 		<img src="{'public.gif'|@vtiger_imageurl:$THEME}" border=0> <a href='javascript:void(0);' style='display: inline' onclick="ModTrackerCommon.showdiff({$TRACKRECORD->id}, {$ATPOINT}, false);">{'LBL_TURN_OFF_HIGHLIGHTING'|@getTranslatedString:$MODULE}</a>
 		{else}
 		<img src="{'onstar.gif'|@vtiger_imageurl:$THEME}" border=0> <a href='javascript:void(0);' style='display: inline' onclick="ModTrackerCommon.showdiff({$TRACKRECORD->id}, {$ATPOINT}, true);">{'LBL_TURN_ON_HIGHLIGHTING'|@getTranslatedString:$MODULE}</a>
 		{/if}
-		END *}
 	</td>
 	<td align="right" width="2%" valign="top">
 		<a href='javascript:void(0);'><img src="{'close.gif'|@vtiger_imageurl:$THEME}" onclick="ModTrackerCommon.hide();" align="right" border="0"></a>
@@ -72,8 +69,8 @@ ins { text-decoration: none; background-color: #FDFF00; }
 			<td class='lvtColData'>{$DETAIL->getDisplayLabelForPreValue()}</td>
 			<td class='lvtColData'>{if $smarty.request.highlight eq 'true'}{$DETAIL->diffHighlight()}{else}{$DETAIL->getDisplayLabelForPostValue()}{/if}</td>
 		</tr>
-        {foreachelse}
-        <tr>
+		{foreachelse}
+		<tr>
 			<td colspan="3" align="center">
 				{if $TRACKRECORD->status eq 1}
 				<b>{'LBL_DELETED'|@getTranslatedString:$MODULE}</b>

@@ -15,8 +15,6 @@ $mod_strings = Array(
     'LBL_PROJECTS'=>'Projetos',
     'LBL_PROJECT'=>'Projeto',
     'projectname' => 'Nome do Projeto',
-    'projects' => 'Projetos',
-    'project' => 'Projetos',
     //added this to translate the module name in the main app menu
     'Project'=>'Projetos',
     //
@@ -33,12 +31,10 @@ $mod_strings = Array(
     'actualenddate' => 'Data de conclusão real',
     'projectstatus'=>'Status',
     'projecttype'=>'Tipo',
-    'linktoaccountscontacts'=>'Relacionado à',
     'targetbudget'=>'Custo previsto',
     'projecturl'=>'URL do projeto',
     'projectpriority'=>'Prioridade do projeto',
     'progress'=>'Andamento',
-    'linktopotentials'=>'Relacionado à',
     'Related To' => 'Relacionado à',
     'administrative' => 'administrativo',
     'operative' => 'operacional',
@@ -47,21 +43,11 @@ $mod_strings = Array(
     'normal' => 'normal',
     'high' => 'alta',
     'in progress' => 'em andamento',
-    'in planning' => 'em planejamento',
     'on hold' => 'aguardando',
     'archived' => 'arquivado',
     'complete' => 'concluído',
-    'Created Time' => 'Data Criação',
-    'Modified Time' => 'Data Modificação',
-    'Description' => 'Descrição',
-    'description' => 'Descrição',
     '--none--' => '----',
-    'Deadline' => 'Deadline',
-    'Operation' => 'Atividade',
     'Project Name' => 'Nome do Projeto',
-    'LBL_RELATED_OPERATIONS' => 'Tarefas do Projeto',
-    'LBL_RELATED_DEADLINES' => 'Projeto Dealines',
-    
 
 );
 

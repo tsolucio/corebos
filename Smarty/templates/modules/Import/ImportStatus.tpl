@@ -35,7 +35,7 @@ jQuery(document).ready(function() {
 			<span class="style1">{'LBL_RUNNING'|@getTranslatedString:$MODULE} ... </span>
 		</td>
 	</tr>
-	{if $ERROR_MESSAGE neq ''}
+	{if !empty($ERROR_MESSAGE)}
 	<tr>
 		<td class="style1" align="left" colspan="2">
 			{$ERROR_MESSAGE}

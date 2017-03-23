@@ -7,10 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
-global $mod_strings;
-global $app_strings;
-global $theme;
+global $mod_strings, $app_strings, $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 
@@ -30,7 +27,6 @@ else
 	$return_action = "CallRelatedList";
 	$return_id = vtlib_purify($_REQUEST['pricebook_id']);
 }
-$output='';
 $output ='<div id="roleLay" style="display:block;" class="layerPopup">
 	<table border=0 cellspacing=0 cellpadding=5 width=100% class=layerHeadingULine>
 	<tr>
@@ -61,5 +57,4 @@ $output ='<div id="roleLay" style="display:block;" class="layerPopup">
 </div>';
 
 echo $output;
-
 ?>

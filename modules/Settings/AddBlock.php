@@ -7,11 +7,10 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
- 
 require_once('include/CustomFieldUtil.php');
 require_once('Smarty_setup.php');
 
-global $mod_strings,$app_strings,$app_list_strings,$theme,$adb,$log;
+global $mod_strings,$app_strings,$theme,$adb,$log;
 
 $theme_path="themes/".$theme."/";
 

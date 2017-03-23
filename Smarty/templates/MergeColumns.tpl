@@ -8,87 +8,10 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
+<script type="text/javascript" src="include/jquery/jquery.js"></script>
+<script type="text/javascript" src="include/jquery/jquery-ui.js"></script>
 <script type="text/javascript" src="include/js/smoothscroll.js"></script>
-<script type="text/JavaScript">
-        var moveupLinkObj,moveupDisabledObj,movedownLinkObj,movedownDisabledObj;
-        function setObjects() 
-        {ldelim}
-            availListObj=getObj("availList")
-            selectedColumnsObj=getObj("selectedColumns")
-
-        {rdelim}
-
-        function addColumn() 
-        {ldelim}
-        setObjects();
-            for (i=0;i<selectedColumnsObj.length;i++) 
-            {ldelim}
-                selectedColumnsObj.options[i].selected=false
-            {rdelim}
-
-            for (i=0;i<availListObj.length;i++) 
-            {ldelim}
-                if (availListObj.options[i].selected==true) 
-                {ldelim}            	
-                	var rowFound=false;
-                	var existingObj=null;
-                    for (j=0;j<selectedColumnsObj.length;j++) 
-                    {ldelim}
-                        if (selectedColumnsObj.options[j].value==availListObj.options[i].value) 
-                        {ldelim}
-                            rowFound=true
-                            existingObj=selectedColumnsObj.options[j]
-                            break
-                        {rdelim}
-                    {rdelim}
-
-                    if (rowFound!=true) 
-                    {ldelim}
-                        var newColObj=document.createElement("OPTION")
-                        newColObj.value=availListObj.options[i].value
-                        if (browser_ie) newColObj.innerText=availListObj.options[i].innerText
-                        else if (browser_nn4 || browser_nn6) newColObj.text=availListObj.options[i].text
-                        selectedColumnsObj.appendChild(newColObj)
-                        availListObj.options[i].selected=false
-                        newColObj.selected=true
-                        rowFound=false
-                    {rdelim} 
-                    else 
-                    {ldelim}
-                        if(existingObj != null) existingObj.selected=true
-                    {rdelim}
-                {rdelim}
-            {rdelim}
-        {rdelim}
-
-        function delColumn() 
-        {ldelim}
-        setObjects();
-            for (i=selectedColumnsObj.options.length;i>0;i--) 
-            {ldelim}
-                if (selectedColumnsObj.options.selectedIndex>=0)
-                selectedColumnsObj.remove(selectedColumnsObj.options.selectedIndex)
-            {rdelim}
-        {rdelim}
-        
-        function formSelectColumnString()
-        {ldelim}
-            var selectedColStr = "";
-            setObjects();
-            for (i=0;i<selectedColumnsObj.options.length;i++) 
-            {ldelim}
-                selectedColStr += selectedColumnsObj.options[i].value + ",";
-            {rdelim}
-            if (selectedColStr == "")
-            {ldelim}
-            	alert('{$APP.LBL_MERGE_SHOULDHAVE_INFO}');
-            	return false;
-            {rdelim}
-            document.mergeDuplicates.selectedColumnsString.value = selectedColStr;
-            return;
-        {rdelim}
-	setObjects();
-</script>
+<script type="text/javaScript" src="include/js/dedup.js"></script>
 
 <form enctype="multipart/form-data" name="mergeDuplicates" method="post" action="index.php?module={$MODULE}&action=FindDuplicateRecords" onsubmit="VtigerJS_DialogBox.block();">
 	<input type="hidden" name="module" value="{$MODULE}">
@@ -105,8 +28,8 @@
 						<span>&nbsp;</span>
 						<span align="right" onClick="mergeshowhide('mergeDup')" onmouseover="this.style.cursor='pointer';"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0"></span><br>
 					</td>
-			   </tr>
-			   <tr><td colspan="3"></td></tr>
+				</tr>
+				<tr><td colspan="3"></td></tr>
 				<tr>
 					<td><b>{$APP.LBL_AVAILABLE_FIELDS}</b></td>
 					<td></td>

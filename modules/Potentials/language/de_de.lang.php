@@ -18,7 +18,6 @@ $mod_strings = Array(
     'LBL_MODULE_TITLE'=>'Verkaufspotentiale: Home',
     'LBL_SEARCH_FORM_TITLE'=>'Verkaufspotentiale suchen',
     'LBL_LIST_FORM_TITLE'=>'Verkaufspotentiale',
-    'LBL_OPPORTUNITY_NAME'=>'Bezeichnung:',
     'LBL_OPPORTUNITY'=>'Verkaufspotential:',
     'LBL_NAME'=>'Bezeichnung',
     'LBL_INVITEE'=>'Personen',

@@ -7,17 +7,60 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('vtlib/thirdparty/dZip.inc.php');
 
 /**
- * Wrapper class over dZip.
+ * Zip creation class
  * @package vtlib
  */
-class Vtiger_Zip extends dZip {
+class Vtiger_Zip {
+	public $filename;
+	private $zipa;
+
+	public function __construct($filename) {
+		$this->filename  = $filename;
+		$this->zipa = new ZipArchive();
+		if ($this->zipa->open($filename, ZipArchive::CREATE)!==TRUE) {
+			throw new Exception("cannot open <$filename>");
+		}
+	}
+
+	public function addDir($dirname) {
+		$dirname = rtrim($dirname,'/');
+		$this->zipa->addEmptyDir($dirname);
+	}
+
+	public function addFile($filename, $cfilename, $fileComments='', $data=false){
+		// $filename can be a local file OR the data which will be compressed
+		if(substr($cfilename, -1)=='/'){
+			$data = '';
+			$this->zipa->addFromString($cfilename, $data);
+		}
+		elseif(file_exists($filename)){
+			$data = file_get_contents($filename);
+			$this->zipa->addFile($filename, $cfilename);
+		}
+		elseif($filename){
+			throw new Exception("Cannot add $filename. File not found");
+			return false;
+		}
+		else{
+			// DATA is given
+			$this->zipa->addFromString($cfilename, $data);
+		}
+	}
+
+	public function save($zipComments=''){
+		if ($zipComments!='') {
+			$this->zipa->setArchiveComment($zipComments);
+		}
+		$this->zipa->close();
+	}
+
 	/**
 	 * Push out the file content for download.
 	 */
 	function forceDownload($zipfileName) {
+		if (!$this->isInsideApplication($zipfileName)) return false; // if the file is not inside the application tree we do not send it
 		header("Pragma: public");
 		header("Expires: 0");
 		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
@@ -66,6 +109,7 @@ class Vtiger_Zip extends dZip {
 	 * Copy the directory on the disk into zip file.
 	 */
 	function copyDirectoryFromDisk($dirname, $zipdirname=null, $excludeList=null, $basedirname=null) {
+		if (!$this->isInsideApplication($dirname)) return false;
 		$dir = opendir($dirname);
 		if(strripos($dirname, '/') != strlen($dirname)-1)
 			$dirname .= '/';
@@ -98,6 +142,7 @@ class Vtiger_Zip extends dZip {
 	 * Copy the directory on the disk into zip file with no offset
 	 */
 	function copyDirectoryFromDiskNoOffset($dirname, $zipdirname=null, $excludeList=null, $basedirname=null) {
+		if (!$this->isInsideApplication($dirname)) return false;
 		$dir = opendir($dirname);
 		if(strripos($dirname, '/') != strlen($dirname)-1)
 			$dirname .= '/';
@@ -134,5 +179,15 @@ class Vtiger_Zip extends dZip {
 		$zippath = $this->__fixDirSeparator($zippath);
 		$this->addFile("$path$file", "$zippath$file");
 	}
+
+	/**
+	 * path is inside the application tree
+	 */
+	function isInsideApplication($path2check) {
+		global $root_directory;
+		$rp = realpath($path2check);
+		return (strpos($rp,$root_directory)==0);
+	}
+
 }
 ?>

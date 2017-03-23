@@ -474,17 +474,6 @@ a:hover {
     vertical-align:top;
 }
 
-#company{
-    position:relative;
-    width:100%;
-    height:200px;
-    display:block;
-    background-color:#FFFFFF;
-    white-space:nowrap;
-    overflow:auto;
-    border:1px solid #CCCCCC;
-}
-
 #user{position:relative;left:0px;top:0px;width:100%;display:block;}
 
 #communication{position:relative;left:0px;top:0px;width:100%;display:block;}
@@ -1532,13 +1521,26 @@ level2Sel{
     border-left: 1px solid #DDDDDD;
     border-bottom: 1px solid #DDDDDD;
     border-top: 1px solid #DDDDDD;
+	border-spacing: 0;
+	border-collapse: collapse;
+	width: 98%;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	font-size: 0.8rem;
+	font-weight: normal;
+	line-height: 1.5;
+}
+.rptContainer {
+	margin: auto;
+	width: 100%;
+	padding: 10px;
 }
 
 .rptTitle, .rptHead, .rptData, .rptGrpHead{
     font-family: Verdana, Arial, Helvetica, Sans-serif;
-    font-size: 11px;
+	font-size: 0.8rem;
     text-align:left;
     font-weight: normal;
+	line-height: 1.5;
     height: 20px;
     padding: 4px;
     border-right: 1px solid #DDDDDD;
@@ -1546,9 +1548,47 @@ level2Sel{
     background: #DDDDDD;
 }
 
+footer {
+	display: block;
+	width: 98%;
+}
+
+.page-item {
+	display: inline;
+}
+
+.page-item:first-child .page-link {
+	margin-left: 0;
+	border-bottom-left-radius: 0.25rem;
+	border-top-left-radius: 0.25rem;
+}
+
+.page-link {
+	position: relative;
+	float: left;
+	padding: 0.5rem 0.75rem;
+	margin-left: -1px;
+	color: #0275d8;
+	text-decoration: none;
+	background-color: #fff;
+	border: 1px solid #ddd;
+}
+
+datatable stats {
+	float: right;
+	line-height: 2rem;
+	color: #999;
+}
+
+.disabled {
+  cursor: not-allowed;
+  opacity: .65;
+  pointer-events: none;
+}
+
 .rptGrp1Total, .rptGrp2Total, .rptTotal {
     font-family: Verdana, Arial, Helvetica, Sans-serif;
-    font-size: 11px;
+	font-size: 0.8rem;
     text-align:center;
     font-weight: normal;
     background: #FFF;
@@ -1568,6 +1608,7 @@ level2Sel{
 .rptData {
     background: #FFF;
     font-weight: normal;
+    color: black;
 }
 
 .rptEmptyGrp {
@@ -1611,7 +1652,7 @@ level2Sel{
 /* Css for quick Create */
 #qcformpop {
 	position:absolute;
-	width:600px;
+	width:95%;
 	top:15px;
 	left:0px;
 	right: 0;
@@ -1875,16 +1916,24 @@ ul {
     font-weight:bold;
 }
 
-.save{
+.save, .ajax_save_detailview {
     background-color:#ddccaa;
     color:#333333;
     font-weight:bold;
 }
 
-.cancel {
+.cancel, .ajax_cancelsave_detailview {
     background-color:#8F8C74;
     color:#ffffff;
     font-weight:bold;
+}
+
+.detailview_ajaxbutton {
+	padding: 5px;
+	margin: 2px;
+	display: inline-block;
+	border-radius: 5px;
+	text-decoration: none !important;
 }
 
 .inactive{
@@ -2138,8 +2187,7 @@ a.drop_down:Hover{
 	left: 0px;
 	overflow: hidden;
 	z-index: 10000;
-	Filter: Alpha(opacity = 70);
-	-moz-opacity: 0.7;
+	opacity: 0.7;
 	text-align: center;
 	vertical-align: middle;
 	position: absolute;
@@ -2153,8 +2201,7 @@ a.drop_down:Hover{
     left: 0px;
     overflow: hidden;
     z-index: 50000;
-    Filter: Alpha(opacity = 70);
-    -moz-opacity: 0.7;
+    opacity: 0.7;
     text-align: center;
     vertical-align: middle;
     position: absolute;
@@ -2730,4 +2777,107 @@ a.drop_down_usersettings_name{
 	background-color: #dff0d8;
 	border-color: #d6e9c6;
 	color: #3c763d;
+}
+#LB_TaskIcon img {
+	background-color: #4bc076;
+	width: 28px;
+	border-radius: 4px;
+}
+.detailview_utils_table_top, .detailview_utils_table_bottom {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+}
+
+.detailview_utils_table_tabactionsep {
+	display: flex;
+	flex-grow: 1;
+}
+
+.detailview_utils_table_tabactionsep_top, .detailview_utils_table_actions_top {
+	border-bottom:1px solid #e0dddd;
+}
+
+.detailview_utils_table_tabactionsep_bottom, .detailview_utils_table_actions_bottom {
+	border-top:1px solid #e0dddd;
+	padding-top: 5px;
+}
+
+.detailview_utils_table_actions {
+	justify-content: flex-end;
+}
+
+.detailview_utils_table_tabs {
+	display: flex;
+	flex-direction: row;
+}
+
+.detailview_utils_table_tab {
+	white-space: nowrap;
+	text-align: center;
+}
+
+.detailview_utils_table_tab_selected {
+	border-left:1px solid #e0dddd;
+	border-top:1px solid #e0dddd;
+	border-bottom:0px solid #e0dddd;
+	border-right:1px solid #e0dddd;
+	padding-left:20px;
+	padding-right:20px;
+	font-weight:bold;
+	color: black;
+	line-height:20px;
+}
+
+.detailview_utils_table_tab_selected_top {
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	background:#ffffff url(images/tab.gif) top repeat-x;
+}
+
+.detailview_utils_table_tab_selected_bottom {
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+	border-top:0px solid #e0dddd;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	background:#ffffff url(images/tab.gif) bottom repeat-x;
+}
+
+.detailview_utils_table_tab_unselected {
+	border-left:1px solid #dedede;
+	border-top:1px solid #e0dddd;
+	border-right:1px solid #e0dddd;
+	border-bottom:1px solid #e0dddd;
+	padding-left:20px;
+	padding-right:20px;
+	background: #FFF ;
+	cursor:pointer;
+	color: black;
+}
+
+.detailview_utils_table_tab_unselected_top {
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	padding-top: 8px;
+	padding-bottom: 4px;
+}
+
+.detailview_utils_table_tab_unselected_bottom {
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+	padding-top: 8px;
+	padding-bottom: 4px;
+}
+
+.listview_row_total, .listview_row_sigma {
+	font-weight: bold;
+}
+
+.listview_row_sigma {
+	text-align: center;
+	width: 100%;
+	display: block;
 }

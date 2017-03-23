@@ -39,8 +39,6 @@ $mod_strings = Array(
     'LBL_PROJECTS'=>'Projecten',
     'LBL_PROJECT'=>'Project',
 	'projectname' => 'Project naam',
-    'projects' => 'Projecten',
-    'project' => 'Projecten',
     //added this to translate the module name in the main app menu
     'Project'=>'Projecten',
     //
@@ -63,7 +61,6 @@ $mod_strings = Array(
 
     'projectstatus'=>'Status',
     'projecttype'=>'Type',
-    'linktoaccountscontacts'=>'Link aan',
     'targetbudget'=>'Doel Budget',
     'projecturl'=>'Project url',
     
@@ -80,7 +77,6 @@ $mod_strings = Array(
     'Priority'=>'Prioriteit',
     'Progress'=>'Voortgang (%)',
     
-    'linktopotentials'=>'Link naar',
     'Related To' => 'Gerelateerd aan',
 
     'administrative' => 'administratief',
@@ -91,21 +87,12 @@ $mod_strings = Array(
     'high' => 'hoog',
     'prospecting' => 'voorbereiding',
     'in progress' => 'in behandeling',
-    'in planning' => 'in planning',
     'on hold' => 'in de wacht',
     'archived' => 'gearchiveerd',
     'complete' => 'afgerond',
-    'Created Time' => 'Aangemaakt',
-    'Modified Time' => 'Gewijzigd',
-    'Description' => 'Omschrijving',
-    'description' => 'Omschrijving',
     '--none--' => '--geen--',
-    'Deadline' => 'Deadline',
-    'Operation' => 'Taak',
     'Project Name' => 'Project naam',
-    'LBL_RELATED_OPERATIONS' => 'Project Taken',
-    'LBL_RELATED_DEADLINES' => 'Project Dealines',
-    
+
     'Charts' => 'Grafieken',
 	'LBL_PROGRESS_CHART' => 'Voortgangs Grafiek',
 	'Project No' => 'Project Nr',

@@ -54,6 +54,7 @@ $mod_strings = array(
 'LBL_WORKFLOW_LIST'=>'Werkstroom Lijst',
 'LBL_AVAILABLE_WORKLIST_LIST'=>'Beschikbare Werkstromen',
 'LBL_LOADING'=>'Laden...',
+'LBL_REEVALCONDITIONS' => 'Evaluate conditions on execution',
 'LBL_VALIDATION_ERROR'=>'Validatie Fout',
 'LBL_SELECT_OPTION_DOTDOTDOT'=>'Selecteer Optie...',
 'LBL_WORKFLOW_NOTE_CRON_CONFIG'=>'NOTE: U moet het Werkstroom cron script geconfigureerd hebben.',
@@ -78,6 +79,7 @@ $mod_strings = array(
 'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL'=>'Nieuwe Conditiegroep',
 
 'VTUpdateFieldsTask' => 'Bijwerken velden',
+'LBL_ON_DELETE'=>'On Delete',
 
 'LBL_VALIDATION_DUPLICATE_FIELDNAMES' => 'Zelfde veld is meer dan eens gekozen.',
 'LBL_VALIDATION_INVALID_FIELD_VALUES' => 'Ongeldige veldwaarden',
@@ -157,7 +159,7 @@ $mod_strings = array(
 'UpdateInventoryProducts On Every Save' => 'Update Product Inventory',
 'Send Email to user when Notifyowner is True' => 'Send Email to user when Notifyowner is True',
 'Send Email to user when Portal User is True' => 'Send Email to user when Portal User is True',
-'Send Email to users on Potential creation' => 'Send Email to users on Potential creation',
+'Send Email to users on Potential creation' => 'Send Email to user on Opportunity creation',
 'Workflow for Contact Creation or Modification' => 'Send Email to Contact with Portal Login information',
 'Workflow for Ticket Created from Portal' => 'Workflow for Ticket Created from Portal',
 'Workflow for Ticket Updated from Portal' => 'Workflow for Ticket Updated from Portal',

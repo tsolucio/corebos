@@ -13,19 +13,15 @@
 	<td valign=top><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 	<td valign="top" width="50%" style="padding: 10px;border-right:1px dashed #CCCCCC">
 	<!-- Reports Table Starts Here  -->
+	{assign var=poscount value=0}
 	{foreach item=reportfolder from=$REPT_FLDR}
+	{assign var=poscount value=$poscount+1}
 	<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="reportsListTable">
 		<tr>
 		<td class="mailSubHeader"><b>
-		<span id='folder{$reportfolder.id}'>{if $MOD[$reportfolder.name] neq ''}{$MOD[$reportfolder.name]}{else}{$reportfolder.name}{/if}</span>
+		<span id='folder{$reportfolder.id}'>{$reportfolder.name|@getTranslatedString:$MODULE}</span>
 		</b>
-		<i><font color='#C0C0C0'>
-			{if $MOD[$reportfolder.description] neq ''}
-				 - {$MOD[$reportfolder.description]}
-			{else}
-				 - {$reportfolder.description}
-			{/if}
-		</font></i>
+		<i><font color='#C0C0C0'> - {$reportfolder.description|@getTranslatedString:$MODULE}</font></i>
 		</td>
 		</tr>
 		<tr>
@@ -58,24 +54,17 @@
 			{foreach name=reportdtls item=reportdetails from=$reportfolder.details}
 				<tr class="lvtColData" onmouseover="this.className='lvtColDataHover'" onmouseout="this.className='lvtColData'" bgcolor="white">
 				<td>{$smarty.foreach.reportdtls.iteration}</td>
-				{if $MOD[$reportdetails.reportname] neq ''}
-					<td><a href="index.php?module=Reports&action=SaveAndRun&record={$reportdetails.reportid}&folderid={$reportfolder.id}">{$MOD[$reportdetails.reportname]}</a>
-					{if $reportdetails.sharingtype eq 'Shared'}
-						<img src="{'Meetings.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border=0 height=12 width=12 />
-					{/if}
-					</td>
+				<td>
+				{if $reportdetails.reporttype eq 'external'}
+					<a href="{$reportdetails.moreinfo}" target="_blank">{$reportdetails.reportname|@getTranslatedString:$MODULE}</a>
 				{else}
-					<td><a href="index.php?module=Reports&action=SaveAndRun&record={$reportdetails.reportid}&folderid={$reportfolder.id}">{$reportdetails.reportname}</a>
-					{if $reportdetails.sharingtype eq 'Shared'}
-						<img src="{'Meetings.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border=0 height=12 width=12 />
-					{/if}
-					</td>
+					<a href="index.php?module=Reports&action=SaveAndRun&record={$reportdetails.reportid}&folderid={$reportfolder.id}">{$reportdetails.reportname|@getTranslatedString:$MODULE}</a>
 				{/if}
-				{if $MOD[$reportdetails.description] neq ''}
-					<td>{$MOD[$reportdetails.description]}</td>
-				{else}
-					<td>{$reportdetails.description}</td>
+				{if $reportdetails.sharingtype eq 'Shared'}
+					<img src="{'Meetings.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border=0 height=12 width=12 />
 				{/if}
+				</td>
+				<td>{$reportdetails.description|@getTranslatedString:$MODULE}</td>
 				<td align="center" nowrap>
 					{if $reportdetails.customizable eq '1' && $reportdetails.editable eq 'true'}
 						<a href="javascript:;" onClick="editReport('{$reportdetails.reportid}');"><img src="{'editfield.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" title="{$MOD.LBL_CUSTOMIZE_BUTTON}..." border="0"></a>
@@ -83,13 +72,14 @@
 					{if $ISADMIN || ($reportdetails.state neq 'SAVED' && $reportdetails.editable eq 'true')}
 						&nbsp;|&nbsp;<a href="javascript:;" onclick="DeleteReport('{$reportdetails.reportid}');"><img src="{'delete.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" title="{$MOD.LBL_DELETE}..." border="0"></a>
 					{/if}
+					{if $reportdetails.reporttype neq 'external'}
 					&nbsp;|&nbsp;<a href="javascript:void(0);" onclick="gotourl('index.php?module=Reports&action=ReportsAjax&file=CreateCSV&record={$reportdetails.reportid}');"><img src="{'csv_text.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTCSV}" title="{$MOD.LBL_EXPORTCSV}" border="0"></a>
 					&nbsp;|&nbsp;<a href="javascript:void(0);" onclick="gotourl('index.php?module=Reports&action=CreateXL&record={$reportdetails.reportid}');"><img src="{'excel.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTXL_BUTTON}" title="{$MOD.LBL_EXPORTXL_BUTTON}" border="0"></a>
 					&nbsp;|&nbsp;<a href="javascript:void(0);" onclick="gotourl('index.php?module=Reports&action=CreatePDF&record={$reportdetails.reportid}');"><img src="{'pdf.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTPDF_BUTTON}" title="{$MOD.LBL_EXPORTPDF_BUTTON}" border="0"></a>
+					{/if}
 				</td>
 				</tr>
 			{/foreach}
-
 			</tbody>
 		</table>
 		</td>
@@ -111,4 +101,3 @@
 	</tr>
 	</tbody>
 </table>
-

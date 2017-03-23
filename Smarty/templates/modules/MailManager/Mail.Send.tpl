@@ -57,14 +57,17 @@
 			</tr>
 			<tr>
 				<td valign="top" align="right">
-					{'LBL_ATTACHMENTS'|getTranslatedString}
+					<a href="javascript:jQuery('#file-uploader').toggle();">{'LBL_ATTACHMENTS'|getTranslatedString}</a>
 				</td>
 				<td width="80%">
-					<div id="file-uploader"></div>
-					<div id="file_list"></div>
+					<div id="file-uploader" class="dropzone mm-dz-div" style="display: none;">
+						<span class="dz-message mmdzmessage"><img alt="{'Drag attachment here or click to upload'|@getTranslatedString}" src="include/dropzone/upload_32.png"></span>
+						<span class="dz-message mmdzmessage" id="file-uploader-message">&nbsp;{'Drag attachment here or click to upload'|@getTranslatedString}</span>
+					</div>
 				</td>
 				<td valign="top" align="left" style="white-space:nowrap;">
-					<button onclick="MailManager.getDocuments();" class="crmbutton small edit">{'LBL_SELECT_DOCUMENTS'|@getTranslatedString}</button>
+					<button onclick="MailManager.getDocuments();" class="crmbutton small edit">{'LBL_SELECT_DOCUMENTS'|@getTranslatedString}</button><br>
+					<button onclick="jQuery('#file-uploader').toggle();" class="crmbutton small edit">{'LBL_Attachments'|@getTranslatedString:'MailManager'}</button>
 				</td>
 			</tr>
 			<tr><td colspan="3"><br></td></tr>

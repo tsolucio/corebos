@@ -11,15 +11,15 @@
 
 <form name="QcEditView" onSubmit="return getFormValidate();" method="POST" action="index.php" ENCTYPE="multipart/form-data">
 
-{if $FROM eq 'popup'}
-	<input type="hidden" name="from"   value="{$FROM}">
+{if isset($FROM) && $FROM eq 'popup'}
+	<input type="hidden" name="from" value="{$FROM}">
 	<input type="hidden" name="return_action" value="Popup">
 	<input type="hidden" name="return_module" value="{$MODULE}">
 	<input type="hidden" name="search_url" value="{$URLPOPUP}">
 {/if}
 
 {if $MODULE eq 'Calendar' || $MODULE eq 'Events'}
-	<input type="hidden" name="activity_mode" value="{$ACTIVITY_MODE}">
+	<input type="hidden" name="activity_mode" value="{if isset($ACTIVITY_MODE)}{$ACTIVITY_MODE}{/if}">
 	<input type="hidden" name="module" value="Calendar4You">
 {else}
 	<input type="hidden" name="module" value="{$MODULE}">

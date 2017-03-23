@@ -218,6 +218,8 @@ $mod_strings = Array(
 'LBL_FLDR_NOT_EMPTY'=>'La carpeta que intentas eliminar no esta vacía, Mueve o Elimina los Informes que contiene.',
 'NO_REL_MODULES'=>'No hay módulos relacionados con el módulo seleccionado',
 'LBL_REPORT_GENERATION_FAILED'=>'Error generando informe!',
+'ERR_TOO_MANY_ROWS' => 'Este informe contiene demasiadas filas para mostrar en el navegador. Por favor añade algunos filtros y divídelo en varios informes más pequeños.',
+'ERR_INCORRECT_REPORTID' => 'No se ha podido encontrar el informe',
 'LBL_OR'=>'o',
 'LBL_NEW_GROUP'=>'Agregar Grupo',
 'LBL_DELETE_GROUP'=>'Eliminar Grupo',
@@ -225,11 +227,13 @@ $mod_strings = Array(
 'LBL_SHARING_TYPE'=>'Compartir',
 'LBL_SELECT_REPORT_TYPE_TO_CONTROL_ACCESS'=>'Selecciona el método de compartir para controlar el acceso al Informe', 
 'LBL_ACTION' => 'Acción',
+'LBL ACTION' => 'Acción',
 'ACTION' => 'Acción',
 'LBL_VIEW_DETAILS' => 'Ver Detalles',
 'LBL_SHOW_STANDARD_FILTERS' => 'Mostrar Filtros Estándar',
 'LBL_YEAR' => 'Año',
 'LBL_MONTH'=> 'Mes',
+'LBL_DAY'=> 'Día',
 'LBL_QUARTER'=> 'Trimestre',
 'LBL_NONE'=> 'Ninguno',
 
@@ -263,7 +267,7 @@ $mod_strings = Array(
 
 'LBL_AUTO_GENERATED_REPORT_EMAIL' => 'Email auto-generado para entregar informe.',
 'LBL_TIME_FORMAT_MSG' => 'hh:mm (formato 24 horas)',
-
+'LBL_RELOAD_REPORT' => 'Actualizar Informe',
 'LBL_SAVE_REPORT' => 'Guardar',
 'LBL_SAVE_REPORT_AS' => 'Guardar como...',
 
@@ -278,7 +282,24 @@ $mod_strings = Array(
 'LBL_HOME_WINDOW_TITLE' => 'Título de Ventana',
 'LBL_GROUPING_TIME' => 'Agrupar por Tiempo',
 'LBL_WIDGET_ADDED' => 'Widget Añadido Correctamente.',
-
-)
+'Add ReportCharts' => 'Añadir Gráfico de Informe',
+'Choose Report Type' => 'Elige Tipo de Informe',
+'Application Report' => 'Informe de Aplicación',
+'External Application' => 'Aplicación Externa',
+'Direct SQL Statement' => 'Comando SQL',
+'Cross Tab' => 'Referencias Cruzadas',
+'Pivot Table' => 'Tabla Dinámica',
+'External Report URL' => 'URL del Informe Externo',
+'Add User Information' => 'Añadir Información del Usuario',
+'Select One Field of each' => 'Solo puedes seleccionar un campo de cada módulo para este tipo de informe',
+'Select Only One Module' => 'Solo puedes seleccionar un módulo para este tipo de informe',
+'LBL_AGG_FIELD' => 'Campo de Agregación',
+'LBL_AGG_FUNCTION_CHOOSE' => 'Selecciona Columna y Función de Agregación',
+'LBL_AGG_COLUMN' => 'Columna de Agregación',
+'LBL_AGG_FUNCTION' => 'Función de Agregación',
+'LBL_COLUMNS_COUNT'=>'Contar',
+'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Error eliminando la carpeta.',
+'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Error eliminando los informes de la carpeta',
+);
 
 ?>

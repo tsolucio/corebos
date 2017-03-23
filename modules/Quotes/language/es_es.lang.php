@@ -149,7 +149,6 @@ $mod_strings = Array(
 'LBL_TERMS_INFORMATION'=>'Condiciones Generales',
 'LBL_QUOTE'=>'Presupuesto:',
 
-//Added during 4.2 release
 'LBL_SUBJECT'=>'Referencia:',
 'LBL_POTENTIAL_NAME'=>'Oportunidad:',
 'LBL_ACCOUNT_NAME'=>'Nombre de la Cuenta:',
@@ -159,7 +158,6 @@ $mod_strings = Array(
 'Quote'=>'Presupuesto',
 
 //Added for existing Picklist Entries
-
 'Created'=>'Creado',
 'Delivered'=>'Enviado',
 'Reviewed'=>'Revisado',
@@ -171,9 +169,8 @@ $mod_strings = Array(
 'USPS'=>'Seur',
 'DHL'=>'DHL',
 'BlueDart'=>'Correos',
-'Sales Tax'=>'Impuesto de Ventas',                 
+'Sales Tax'=>'Impuesto de Ventas',
 
-//Added for Reports (5.0.4)
 'Tax Type'=>'Impuesto',
 'Discount Percent'=>'Descuento %',
 'Discount Amount'=>'Descuento Importe',
@@ -181,8 +178,7 @@ $mod_strings = Array(
 'Adjustment'=>'Ajustes',
 'S&H Amount'=>'Importe Envío y Manipulado',
 
-//Added after 5.0.4 GA
-'Quote No'=>'No Presupuesto',
+'Quote No'=>'Nº Presupuesto',
 'Add Service Contract'=>'Añadir Contrato Servicio',
 'Quotes ID'=>'Id Presupuesto',
 );

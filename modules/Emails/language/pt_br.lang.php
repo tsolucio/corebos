@@ -171,6 +171,7 @@ por uma atualização!',
 'LBL_NO_RECORDS' => 'Nenhum Registro encontrado',
 'LBL_PRINT_EMAIL'=> 'Imprimir',
 'LBL_ATTACH_DOCUMENTS' => 'Attach documents',
+'Access Count' => 'Access Count',
 );
 
 ?>

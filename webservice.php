@@ -16,22 +16,25 @@
 	}
 
 	require_once("config.inc.php");
-	require_once("include/HTTP_Session/Session.php");
 	require_once("include/utils/Session.php");
 	require_once 'include/Webservices/Utils.php';
 	require_once("include/Webservices/State.php");
 	require_once("include/Webservices/OperationManager.php");
 	require_once("include/Webservices/SessionManager.php");
-	require_once("include/Zend/Json.php");
 	require_once('include/logging.php');
 	checkFileAccessForInclusion("include/language/$default_language.lang.php");
 	require_once "include/language/$default_language.lang.php";
 
 	$API_VERSION = "0.22";
-
+	$adminid = Users::getActiveAdminId();
+	if (!GlobalVariable::getVariable('Webservice_Enabled',1,'Users',$adminid)) {
+		echo 'Webservice - Service is not active';
+		return;
+	}
 	// Full CORS support: preflight options call support
 	// Access-Control headers are received during OPTIONS requests
 	if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+		$cors_enabled_domains = GlobalVariable::getVariable('Webservice_CORS_Enabled_Domains','','Users',$adminid);
 		if (isset($_SERVER['HTTP_ORIGIN']) && !empty($cors_enabled_domains)) {
 			$parse = parse_url($_SERVER['HTTP_ORIGIN']);
 			if ($cors_enabled_domains=='*' or !(strpos($cors_enabled_domains,$parse['host'])===false)) {
@@ -47,8 +50,8 @@
 	}
 
 	global $seclog,$log;
-	$seclog =& LoggerManager::getLogger('SECURITY');
-	$log =& LoggerManager::getLogger('webservice');
+	$seclog = LoggerManager::getLogger('SECURITY');
+	$log = LoggerManager::getLogger('webservice');
 
 	function getRequestParamsArrayForOperation($operation){
 		global $operationInput;
@@ -94,18 +97,6 @@
 		if (is_object($data) and !empty($data->operation)) {
 			$_POST = get_object_vars($data);  // only post is affected by this
 			$_REQUEST = $_POST;
-		}
-	}
-	// php 5.6.x codifies application/json format in one empty entry where the key are the values, so we process that
-	if (count($_REQUEST)==1) {
-		foreach ($_REQUEST as $key => $value) {
-			if (empty($value)) {
-				$data = json_decode($key);
-				if (is_object($data) and !empty($data->operation)) {
-					$_POST = get_object_vars($data);  // only post is affected by this
-					$_REQUEST = $_POST;
-				}
-			}
 		}
 	}
 	$operation = vtws_getParameter($_REQUEST, "operation");

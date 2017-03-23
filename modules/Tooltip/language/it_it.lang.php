@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-* 
  ********************************************************************************/
 
 $mod_strings = Array (
@@ -16,7 +15,8 @@ $mod_strings = Array (
 'LBL_FIELDS_IN'=>'Campi in',
 'LBL_TOOLTIP_HELP_TEXT'=>'Selezionare i campi che si desidera visualizzare come tooltip',
 'LBL_FIELD'=>'Campo',
-
+'TooltipInfo' => 'This extension adds information hover tips on different fields on each module and is accessed in the settings of each module not directly, so you can eliminate it from the menu.',
+'No Fields Selected' => 'No Fields Selected',
 );
 
 ?>

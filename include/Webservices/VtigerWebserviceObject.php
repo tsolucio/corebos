@@ -9,22 +9,22 @@
  *************************************************************************************/
 
 class VtigerWebserviceObject{
-	
+
 	private $id;
 	private $name;
 	private $handlerPath;
 	private $handlerClass;
-	
-	private function VtigerWebserviceObject($entityId,$entityName,$handler_path,$handler_class){
+
+	private function __construct($entityId,$entityName,$handler_path,$handler_class){
 		$this->id = $entityId;
 		$this->name = $entityName;
 		$this->handlerPath = $handler_path;
 		$this->handlerClass = $handler_class;
 	}
-	
+
 	// Cache variables to enable result re-use
 	private static $_fromNameCache = array();
-		
+
 	static function fromName($adb,$entityName){
 		
 		$rowData = false;
@@ -40,12 +40,11 @@ class VtigerWebserviceObject{
 				}
 			}
 		}
-		
-		$rowData = self::$_fromNameCache[$entityName];
-		
-		if($rowData) {
-			return new VtigerWebserviceObject($rowData['id'],$rowData['name'],
-						$rowData['handler_path'],$rowData['handler_class']);
+
+		$rowData = isset(self::$_fromNameCache[$entityName]) ? self::$_fromNameCache[$entityName] : false;
+
+		if ($rowData) {
+			return new VtigerWebserviceObject($rowData['id'],$rowData['name'], $rowData['handler_path'],$rowData['handler_class']);
 		}
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to perform the operation is denied for name");
 	}

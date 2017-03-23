@@ -7,13 +7,13 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-global $app_strings, $mod_strings, $current_language, $currentModule, $theme, $adb, $upload_maxsize;
+global $app_strings, $mod_strings, $current_language, $currentModule, $theme, $adb;
 require_once('Smarty_setup.php');
 require_once('include/FormValidationUtil.php');
 
 $focus = CRMEntity::getInstance($currentModule);
 
-$encode_val=vtlib_purify($_REQUEST['encode_val']);
+$encode_val = (!empty($_REQUEST['encode_val']) ? vtlib_purify($_REQUEST['encode_val']) : '');
 $decode_val=base64_decode($encode_val);
 
 $saveimage=isset($_REQUEST['saveimage'])?vtlib_purify($_REQUEST['saveimage']):"false";
@@ -21,10 +21,13 @@ $errormessage=isset($_REQUEST['error_msg'])?vtlib_purify($_REQUEST['error_msg'])
 $image_error=isset($_REQUEST['image_error'])?vtlib_purify($_REQUEST['image_error']):"false";
 
 $smarty = new vtigerCRM_Smarty();
+// Identify this module as custom module.
+$smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
+$smarty->assign('CONVERT_MODE', '');
 
 $category = getParentTab($currentModule);
-$record = vtlib_purify($_REQUEST['record']);
-$isduplicate = vtlib_purify($_REQUEST['isDuplicate']);
+$record = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : null;
+$isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : null;
 
 //added to fix the issue4600
 $searchurl = getBasic_Advance_SearchURL();
@@ -86,6 +89,7 @@ if (!empty($_REQUEST['save_error']) and $_REQUEST['save_error'] == "true") {
 						break;
 					case '33':
 					case '3313':
+					case '3314':
 						if (is_array($field_value)) {
 							$field_value = implode(' |##| ', $field_value);
 						}
@@ -102,6 +106,18 @@ if (!empty($_REQUEST['save_error']) and $_REQUEST['save_error'] == "true") {
 } elseif($focus->mode != 'edit'){
 	setObjectValuesFromRequest($focus);
 }
+$smarty->assign('MASS_EDIT','0');
+$disp_view = getView($focus->mode);
+$blocks = getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields);
+$smarty->assign('BLOCKS', $blocks);
+$basblocks = getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields, 'BAS');
+$smarty->assign('BASBLOCKS', $basblocks);
+$advblocks = getBlocks($currentModule,$disp_view,$focus->mode,$focus->column_fields,'ADV');
+$smarty->assign('ADVBLOCKS', $advblocks);
+
+$custom_blocks = getCustomBlocks($currentModule,$disp_view);
+$smarty->assign('CUSTOMBLOCKS', $custom_blocks);
+$smarty->assign('FIELDS',$focus->column_fields);
 
 //needed when creating a new product with a default vendor name passed
 if (isset($_REQUEST['name']) && is_null($focus->name)) {
@@ -111,15 +127,10 @@ if (isset($_REQUEST['vendorid']) && is_null($focus->vendorid)) {
 	$focus->vendorid = $_REQUEST['vendorid'];
 }
 
-$disp_view = getView($focus->mode);
-$smarty->assign('BLOCKS', getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields));
-$smarty->assign('BASBLOCKS', getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields, 'BAS'));
-$smarty->assign('ADVBLOCKS',getBlocks($currentModule,$disp_view,$focus->mode,$focus->column_fields,'ADV'));
 $smarty->assign('OP_MODE',$disp_view);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
-// TODO: Update Single Module Instance name here.
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $smarty->assign('CATEGORY', $category);
 $smarty->assign("THEME", $theme);
@@ -131,7 +142,7 @@ $smarty->assign('CREATEMODE', isset($_REQUEST['createmode']) ? vtlib_purify($_RE
 $smarty->assign('CHECK', Button_Check($currentModule));
 $smarty->assign('DUPLICATE', $isduplicate);
 
-if($focus->mode == 'edit' || $isduplicate) {
+if($focus->mode == 'edit' || $isduplicate == 'true') {
 	$recordName = array_values(getEntityName($currentModule, $record));
 	$recordName = $recordName[0];
 	$smarty->assign('NAME', $recordName);
@@ -142,6 +153,7 @@ if(isset($_REQUEST['return_module']))    $smarty->assign("RETURN_MODULE", vtlib_
 if(isset($_REQUEST['return_action']))    $smarty->assign("RETURN_ACTION", vtlib_purify($_REQUEST['return_action']));
 if(isset($_REQUEST['return_id']))        $smarty->assign("RETURN_ID", vtlib_purify($_REQUEST['return_id']));
 if (isset($_REQUEST['return_viewname'])) $smarty->assign("RETURN_VIEWNAME", vtlib_purify($_REQUEST['return_viewname']));
+$upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize',3000000,$currentModule);
 $smarty->assign("UPLOADSIZE", $upload_maxsize/1000000); //Convert to MB
 $smarty->assign("UPLOAD_MAXSIZE",$upload_maxsize);
 
@@ -193,14 +205,17 @@ if($focus->mode == 'edit')
 	$productid = $focus->id;
 	$tax_details = getTaxDetailsForProduct($productid,'available_associated');
 }
-elseif($_REQUEST['isDuplicate'] == 'true')
+elseif(isset($_REQUEST['isDuplicate']) and $_REQUEST['isDuplicate'] == 'true')
 {
 	$retrieve_taxes = true;
-	$productid = $_REQUEST['record'];
+	$productid = vtlib_purify($_REQUEST['record']);
 	$tax_details = getTaxDetailsForProduct($productid,'available_associated');
 }
-else
+else {
+	$retrieve_taxes = false;
+	$productid = 0;
 	$tax_details = getAllTaxes('available');
+}
 
 for($i=0;$i<count($tax_details);$i++)
 {
@@ -241,7 +256,7 @@ else
 	$is_parent = 0;
 $smarty->assign("IS_PARENT",$is_parent);
 
-if($_REQUEST['return_module']=='Products' && isset($_REQUEST['return_action'])){
+if(isset($_REQUEST['return_module']) && $_REQUEST['return_module']=='Products' && isset($_REQUEST['return_action'])){
 	$return_name = getProductName($_REQUEST['return_id']);
 	$smarty->assign("RETURN_NAME", $return_name);
 }
@@ -282,7 +297,7 @@ $smarty->assign('Product_Maximum_Number_Images',GlobalVariable::getVariable('Pro
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
 
 $picklistDependencyDatasource = Vtiger_DependencyPicklist::getPicklistDependencyDatasource($currentModule);
-$smarty->assign("PICKIST_DEPENDENCY_DATASOURCE", Zend_Json::encode($picklistDependencyDatasource));
+$smarty->assign("PICKIST_DEPENDENCY_DATASOURCE", json_encode($picklistDependencyDatasource));
 
 if($focus->mode == 'edit') {
 	$smarty->display('Inventory/InventoryEditView.tpl');

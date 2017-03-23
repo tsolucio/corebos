@@ -21,6 +21,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
+			global $adb;
 			$global_variables = array(
 				'Debug_Record_Not_Found',
 				'Debug_Report_Query',
@@ -28,6 +29,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Debug_Popup_Query',
 				'Debug_Send_VtigerCron_Error',
 				'Debug_Send_AdminLoginIPAuth_Error',
+				'Debug_Send_UserLoginIPAuth_Error',
+				'Debug_Calculate_Response_Time',
 
 				'Application_Global_Search_SelectedModules',
 				'Application_Storage_Directory',
@@ -38,10 +41,33 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_MaxFailedLoginAttempts',
 				'Application_ExpirePasswordAfterDays',
 				'Application_AdminLoginIPs',
+				'Application_UserLoginIPs',
 				'Application_ListView_MaxColumns',
 				'Application_Action_Panel_Open',
 				'Application_Search_Panel_Open',
 				'Application_TrackerMaxHistory',
+				'Application_Announcement',
+				'Application_Display_World_Clock',
+				'Application_Display_Calculator',
+				'Application_Display_Mini_Calendar',
+				'Application_Use_RTE',
+				'Application_Default_Action',
+				'Application_Default_Module',
+				'Application_Allow_Exports',
+				'Application_ListView_Max_Text_Length',
+				'Application_ListView_PageSize',
+				'Application_ListView_Default_Sort_Order',
+				'Application_Upload_MaxSize',
+				'Application_Single_Pane_View',
+				'Application_Minimum_Cron_Frequency',
+				'Application_Customer_Portal_URL',
+				'Application_Help_URL',
+				'Application_UI_Name',
+				'Application_UI_Version',
+				'Application_UI_URL',
+				'Application_Group_Selection_Permitted',
+				'Application_B2B',
+				'Application_FirstTimeLogin_Template',
 
 				'Calendar_Modules_Panel_Visible',
 				'Calendar_Default_Reminder_Minutes',
@@ -56,7 +82,17 @@ class DefineGlobalVariables extends cbupdaterWorker {
 
 				'BusinessMapping_SalesOrder2Invoice',
 				'BusinessMapping_PotentialOnCampaignRelation',
+				'BusinessMapping_Quotes2Invoice',
+				'BusinessMapping_Quotes2SalesOrder',
+
+				'Mobile_Module_by_default',
+
 				'Webservice_showUserAdvancedBlock',
+				'Webservice_CORS_Enabled_Domains',
+				'Webservice_Enabled',
+				'WebService_Session_Life_Span',
+				'WebService_Session_Idle_Time',
+				'SOAP_CustomerPortal_Enabled',
 
 				'Users_ReplyTo_SecondEmail',
 				'Users_Default_Send_Email_Template',
@@ -67,7 +103,12 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'GoogleCalendarSync_BaseUpdateMonths',
 				'GoogleCalendarSync_BaseCreateMonths',
 				'Import_Full_CSV',
+				'Import_Batch_Limit',
+				'Import_Scheduled_Limit',
 				'Lead_Convert_TransferToAccount',
+				'Lead_Convert_OpportunitySelected',
+				'PBX_Get_Line_Prefix',
+				'PBX_Unknown_CallerID',
 				'Product_Copy_Bundle_OnDuplicate',
 				'Product_Show_Subproducts_Popup',
 				'Product_Permit_Relate_Bundle_Parent',
@@ -77,13 +118,24 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Workflow_GeoDistance_Country_Default',
 				'ModComments_DefaultCriteria',
 				'ModComments_DefaultBlockStatus',
+				'EMail_OpenTrackingEnabled',
+				'Email_Attachments_Folder',
+				'ToolTip_MaxFieldValueLength',
+				'HelpDesk_Support_EMail',
+				'HelpDesk_Support_Name',
+				'HelpDesk_Support_Reply_EMail',
+				'Document_Folder_View',
+				'User_AuthenticationType',
 
 				'Report_Send_Scheduled_ifEmpty',
+				'Report_ListView_PageSize',
+				'Report_MaxRows_OnScreen',
 
-				'Maximum_Scheduled_Workflows', // rename to Workflow_Maximum_Scheduled_Workflows
+				'Inventory_ListPrice_ReadOnly',
+
+				'Maximum_Scheduled_Workflows', // rename to Workflow_Maximum_Scheduled
 				'Billing_Address_Checked', // rename to Application_Billing_Address_Checked
 				'Shipping_Address_Checked', // rename to Application_Shipping_Address_Checked
-				'Show_Copy_Adress_Header', // rename to Application_Show_Copy_Adress_Header
 				'Tax_Type_Default', // rename to Inventory_Tax_Type_Default
 				'product_service_default', // rename to Inventory_ProductService_Default
 				'Product_Default_Units', // rename to Inventory_Product_Default_Units
@@ -91,12 +143,110 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'SalesOrderStatusOnInvoiceSave', // rename to SalesOrder_StatusOnInvoiceSave
 				'QuoteStatusOnSalesOrderSave',  // rename to Quote_StatusOnSalesOrderSave
 				'Report.Excel.Export.RowHeight', // rename to Report_Excel_Export_RowHeight
+
 			);
-			
+			$delete_these = array(
+				'preload_prototype',
+				'preload_jquery',
+				'first_day_of_week',
+				'calendar_display',
+				'world_clock_display',
+				'calculator_display',
+				'history_max_viewed',
+				'default_module',
+				'default_action',
+				'allow_exports',
+				'listview_max_textlength',
+				'list_max_entries_per_page',
+				'upload_maxsize',
+				'helpdesk_support_email_id',
+				'helpdesk_support_email_reply_id',
+				'limitpage_navigation',
+				'default_timezone',
+				'import_dir',
+				'upload_dir',
+				'upload_badext',
+				'default_theme',
+				'currency_name',
+				'minimum_cron_frequency',
+				'maxWebServiceSessionLifeSpan',
+				'maxWebServiceSessionIdleTime',
+				'default_language',
+				'corebos_app_name',
+				'corebos_app_url',
+				'SOAP_Thunderbird_Enabled',
+				'Home_Display_Empty_Blocks',
+			);
+			$rename_these = array(
+				'Show_Copy_Adress_Header' => array(
+					'to' => 'Application_Show_Copy_Address',
+					'change' => array(
+						array(
+							'not' => 'yes',
+							'to' => 0
+						),
+						array(
+							'from' => 'yes',
+							'to' => 1
+						),
+					)
+				),
+			);
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');
 			$field = Vtiger_Field::getInstance('gvname',$moduleInstance);
 			if ($field) {
+				foreach ($rename_these as $gvar => $change) {
+					$rschk = $adb->pquery('select count(*) from vtiger_gvname where gvname=?',array($gvar));
+					$checkold = $adb->query_result($rschk, 0, 0);
+					$rschk = $adb->pquery('select count(*) from vtiger_gvname where gvname=?',array($change['to']));
+					$checknew = $adb->query_result($rschk, 0, 0);
+					if ($checkold > 0) {
+						if ($checknew > 0) {
+							$delete_these[] = $gvar;
+						} else { // rename
+							$sql = 'UPDATE vtiger_gvname SET gvname=? WHERE gvname=?';
+							$this->ExecuteQuery($sql, array($change['to'],$gvar));
+							$table_name = 'vtiger_globalvariable';
+							$columnName = 'gvname';
+							$sql = "update $table_name set $columnName=? where $columnName=?";
+							$this->ExecuteQuery($sql, array($change['to'],$gvar));
+							$sql = "UPDATE vtiger_picklist_dependency SET sourcevalue=? WHERE sourcevalue=? AND sourcefield='gvname' AND tabid=?";
+							$this->ExecuteQuery($sql, array($change['to'], $gvar, getTabid('GlobalVariable')));
+							if (isset($change['change'])) {
+								foreach ($change['change'] as $fromto) {
+									if (isset($fromto['not'])) {
+										$sql = 'update vtiger_globalvariable set value=? where gvname=? and value!=?';
+										$params = array($fromto['to'],$change['to'],$fromto['not']);
+									} else {
+										$sql = 'update vtiger_globalvariable set value=? where gvname=? and value=?';
+										$params = array($fromto['to'],$change['to'],$fromto['from']);
+									}
+									$this->ExecuteQuery($sql, $params);
+								}
+							}
+						}
+					} else {
+						if ($checknew > 0) {
+							// all ok => do nothing
+						} else {
+							$global_variables[] = $change['to'];
+						}
+					}
+				}
 				$field->setPicklistValues($global_variables);
+				foreach ($delete_these as $gvar) {
+					$sql = 'select * from vtiger_gvname where gvname=?';
+					$result = $adb->pquery($sql, array($gvar));
+					if ($adb->num_rows($result)>0) {
+						$origPicklistID = $adb->query_result($result, 0, 'picklist_valueid');
+						$sql = 'delete from vtiger_gvname where gvname=?';
+						$this->ExecuteQuery($sql, array($gvar));
+						$sql = 'delete from vtiger_role2picklist where picklistvalueid=?';
+						$this->ExecuteQuery($sql, array($origPicklistID));
+						$sql = 'DELETE FROM vtiger_picklist_dependency WHERE sourcevalue=? AND sourcefield=? AND tabid=?';
+						$this->ExecuteQuery($sql, array($gvar, 'gvname', $moduleInstance->id));
+					}
+				}
 			}
 			$this->ExecuteQuery("ALTER TABLE `vtiger_globalvariable` CHANGE `value` `value` VARCHAR(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;");
 			$this->sendMsg('Changeset '.get_class($this).' applied!');

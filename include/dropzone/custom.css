@@ -1,5 +1,5 @@
 .dropzone {
-  width: 200px;
+  width: 100%;
   font-family: "Roboto Condensed", sans-serif;
   font-size: 16px;
   text-align: center;
@@ -13,8 +13,17 @@
   padding: 0 20px;
   color: inherit;
   cursor: pointer;
+  font-size: 4em;
+  display: inline-block;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
 }
 .dropzone .dz-message span {
   display: block;
   font-size: 0.3em;
+}
+.mmdzmessage {
+	font-size: 1.2em !important;
 }

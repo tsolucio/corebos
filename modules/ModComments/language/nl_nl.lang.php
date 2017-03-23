@@ -47,7 +47,7 @@ $mod_strings = Array (
 
 'LBL_ADD_COMMENT' => 'Voeg Opmerking Toe',
 'LBL_AUTHOR' => 'Auteur',
-'LBL_ON' => 'op',
+'LBL_ON_DATE' => 'op',
 'LBL_MINE' => 'Mijn',
 'LBL_LAST5'=> 'Laatste 5',
 'Related Assigned Email' => 'Related Assigned Email',

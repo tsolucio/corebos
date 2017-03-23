@@ -293,7 +293,6 @@ vtiger_help_controller = function() {
         var m = q.match(/([^-]+)/);
         switch (m[1]) {
             case 'Home': case 'Settings':
-            case 'Administration':
                 break;
             default:
                 // For other modules pull generic & specific help-topics
@@ -608,18 +607,6 @@ function vtiger_help_getElementsByClassName(obj,className,tagName){
     return returnList;
 }
 
-function vtiger_help_welcome(obj, container) {
-    VtigerJS_DialogBox.block();
-    obj.style.zIndex = parseInt((+new Date())/1000)+5; // To ensure z-Index is higher than the popup block
-    vtiger_help_controller_singleton.get().helpMeNow(container, '', '?module=Home&action=welcome', true, function(){
-        obj.style.display = 'block';
-    // NOTE: Google translate handle works one-per page
-    // Need more investigation on the failure on other helpmenow page if this is enabled.
-    /*
-        vtiger_help_controller_singleton.get().translate('vtigerHelpWelcomeGTranslateEl');
-        */
-    });
-}
 /**
  * Trigger init of help controller on page load.
  */

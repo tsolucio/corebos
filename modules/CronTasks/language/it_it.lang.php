@@ -1,5 +1,12 @@
 <?php
-/** YOUR LICENSE TEXT HERE **/
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
+ * All Rights Reserved.
+ ************************************************************************************/
 $mod_strings = Array (
 	'LBL_ACTIVE' => 'Attivo',
 	'LBL_INACTIVE' => 'Inattivo',
@@ -18,6 +25,7 @@ $mod_strings = Array (
 	'LBL_MINUTES'=>'Minuti',
 	'LBL_MINUTES_AGO'=>'minuti fa',
 	'LBL_HOURS'=>'Ore',
+	'LBL_DAILY'=>'Giornaliero',
 	'LBL_HOURS_AGO'=>'ore fa',
 	'LBL_DAYS'=>'Giorni',
 	'LBL_DAYS_AGO'=>'giorni fa',
@@ -28,5 +36,6 @@ $mod_strings = Array (
 	'Allows you to Configure Cron Task' => 'Configure Cron Tasks',
 	'Scheduler' => 'Programmazione',
 	'Cron Job' => 'Cron Job',
+	'cronWatcherService' => 'Cron Watcher Service',
 );
 ?>

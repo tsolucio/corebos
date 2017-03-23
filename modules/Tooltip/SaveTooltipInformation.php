@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
- 
+
 /**
  * Created on 09-Oct-08
  * this file saves the tooltip information
@@ -18,13 +18,11 @@ $sequence = 1;
 deleteOldInfo($fieldid);
 echo SaveTooltipInformation($fieldid, $sequence);
 
-
-
 /**
  * this function saves the tooltip information
  * @param integer $fieldid - the fieldid of the field
  * @param integer $view - the current view :: 1 by default
- * @param integer $sequence - the starting sequence 
+ * @param integer $sequence - the starting sequence
  */
 function SaveTooltipInformation($fieldid, $sequence, $view=1){
 	global $adb;
@@ -67,18 +65,22 @@ function deleteOldInfo($fieldid, $view=1){
  */
 function getDetailViewForTooltip($fieldid, $checkedFields){
 	require_once('Smarty_setup.php');
-	global $app_strings;
+	global $app_strings, $theme;
 	$labels = array();
 	if(!empty($checkedFields)){
 		$labels = getFieldLabels($checkedFields);
 	}
+	$module = getModuleForField($fieldid);
 	$smarty = new vtigerCRM_Smarty;
 	$smarty->assign("FIELDID", $fieldid);
+	$smarty->assign('FORMODULE', $module);
 	$smarty->assign("APP",$app_strings);
 	$smarty->assign("IMAGES", "themes/images/");
+	$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
+	$smarty->assign('THEME', $theme);
 	$smarty->assign("LABELS", $labels);
 	$smarty->assign("COUNT", count($labels));
-	
+
 	$data = $smarty->fetch("modules/Tooltip/DetailQuickView.tpl");
 	return $data;
 }
@@ -91,13 +93,12 @@ function getDetailViewForTooltip($fieldid, $checkedFields){
 function getFieldLabels($checkedFields){
 	global $adb;
 	$data = array();
-	
+
 	$sql = "select * from vtiger_field where fieldid in (".generateQuestionMarks($checkedFields).") and vtiger_field.presence in (0,2)";
 	$result = $adb->pquery($sql,array($checkedFields));
 	$count = $adb->num_rows($result);
 /**
  * to fix the localization of strings
- *  
  */
 	$tabid = $adb->query_result($result, 0, "tabid");
 	$module = getTabModuleName($tabid);

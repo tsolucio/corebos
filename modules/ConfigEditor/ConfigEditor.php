@@ -9,7 +9,7 @@
  ************************************************************************************/
 
 class ConfigEditor {
-	
+
 	/**
 	 * Invoked when special actions are performed on the module.
 	 * @param String Module name
@@ -33,23 +33,6 @@ class ConfigEditor {
 			return;
 		} else if($event_type == 'module.postupdate') {
 			return;
-		}
-		
-		$displayLabel = 'Configuration Editor';
-		
-		global $adb;
-		if ($registerLink) {
-			$blockid = $adb->query_result( 
-				$adb->pquery("SELECT blockid FROM vtiger_settings_blocks WHERE label='LBL_OTHER_SETTINGS'",array()),
-				0, 'blockid');
-			$sequence = (int)$adb->query_result(
-				$adb->pquery("SELECT max(sequence) as sequence FROM vtiger_settings_field WHERE blockid=?",array($blockid)),
-				0, 'sequence') + 1;
-			$fieldid = $adb->getUniqueId('vtiger_settings_field');
-			$adb->pquery("INSERT INTO vtiger_settings_field (fieldid,blockid,sequence,name,iconpath,description,linkto)
-				VALUES (?,?,?,?,?,?,?)", array($fieldid, $blockid,$sequence,$displayLabel,'migrate.gif','Update configuration file of the application', 'index.php?module=ConfigEditor&action=index'));
-		} else {
-			$adb->pquery("DELETE FROM vtiger_settings_field WHERE name=?", array($displayLabel));
 		}
 	}
 }

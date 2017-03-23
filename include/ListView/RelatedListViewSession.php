@@ -19,7 +19,7 @@ class RelatedListViewSession {
 	var $sortby = null;
 	var $page_view = null;
 
-	function RelatedListViewSession() {
+	function __construct() {
 		global $log,$currentModule;
 		$log->debug("Entering RelatedListViewSession() method ...");
 		$this->module = $currentModule;
@@ -28,21 +28,21 @@ class RelatedListViewSession {
 
 	public static function addRelatedModuleToSession($relationId, $header) {
 		global $currentModule;
-		$_SESSION['relatedlist'][$currentModule][$relationId] = $header;
+		coreBOS_Session::set('relatedlist^'.$currentModule.'^'.$relationId, $header);
 		$relstart = RelatedListViewSession::getRequestStartPage();
 		RelatedListViewSession::saveRelatedModuleStartPage($relationId, $relstart);
 	}
 
 	public static function removeRelatedModuleFromSession($relationId, $header) {
 		global $currentModule;
-		unset($_SESSION['relatedlist'][$currentModule][$relationId]);
+		coreBOS_Session::delete('relatedlist^'.$currentModule.'^'.$relationId);
 	}
 
 	public static function getRelatedModulesFromSession() {
 		global $currentModule;
 		$allRelatedModuleList = isPresentRelatedLists($currentModule);
 		$moduleList = array();
-		if(is_array($_SESSION['relatedlist'][$currentModule])){
+		if(isset($_SESSION['relatedlist']) and isset($_SESSION['relatedlist'][$currentModule]) and is_array($_SESSION['relatedlist'][$currentModule])){
 			foreach ($allRelatedModuleList as $relationId=>$label) {
 				if(array_key_exists($relationId, $_SESSION['relatedlist'][$currentModule])){
 					$moduleList[] = $_SESSION['relatedlist'][$currentModule][$relationId];
@@ -54,7 +54,7 @@ class RelatedListViewSession {
 
 	public static function saveRelatedModuleStartPage($relationId, $relstart) {
 		global $currentModule;
-		$_SESSION['rlvs'][$currentModule][$relationId]['relstart'] = $relstart;
+		coreBOS_Session::set('rlvs^'.$currentModule.'^'.$relationId.'^relstart', $relstart);
 	}
 
 	public static function getCurrentPage($relationId) {
@@ -66,7 +66,7 @@ class RelatedListViewSession {
 	}
 
 	public static function getRequestStartPage(){
-		$relstart = $_REQUEST['relstart'];
+		$relstart = isset($_REQUEST['relstart']) ? $_REQUEST['relstart'] : 1;
 		if(!is_numeric($relstart)){
 			$relstart = 1;
 		}
@@ -78,7 +78,8 @@ class RelatedListViewSession {
 	}
 
 	public static function getRequestCurrentPage($relationId, $query) {
-		global $list_max_entries_per_page, $adb,$log;
+		global $adb,$log,$currentModule;
+		$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$currentModule);
 		$relstart = 1;
 		if(!empty($_REQUEST['relstart'])){
 			$relstart = $_REQUEST['relstart'];

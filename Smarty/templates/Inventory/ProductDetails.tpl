@@ -146,8 +146,8 @@ function displayCoords(currObj,obj,mode,curr_row)
 		<table width="100%"  border="0" cellspacing="0" cellpadding="1">
 			<tr>
 			<td class="small" valign="top">
-				<input type="text" id="productName1" name="productName1" class="small" style="width:70%" value="{$PRODUCT_NAME}" readonly />
-				<input type="hidden" id="hdnProductId1" name="hdnProductId1" value="{$PRODUCT_ID}" />
+				<input type="text" id="productName1" name="productName1" class="small" style="width:70%" value="{if isset($PRODUCT_NAME)}{$PRODUCT_NAME}{/if}" readonly />
+				<input type="hidden" id="hdnProductId1" name="hdnProductId1" value="{if isset($PRODUCT_ID)}{$PRODUCT_ID}{/if}" />
 				{if $PRODUCT_OR_SERVICE eq 'Services'}
 					<input type="hidden" id="lineItemType1" name="lineItemType1" value="Services" />
 					&nbsp;<img id="searchIcon1" title="Services" src="{'services.gif'|@vtiger_imageurl:$THEME}" style="cursor: pointer;" align="absmiddle" onclick="servicePickList(this,'{$MODULE}',1)" />
@@ -175,13 +175,15 @@ function displayCoords(currObj,obj,mode,curr_row)
 
 	<!-- column 3 - Quantity in Stock - starts -->
 	<td class="crmTableRow small lineOnTop" valign="top">
-		{if ($MODULE eq 'Quotes' || $MODULE eq 'SalesOrder' || $MODULE eq 'Invoice')  && 'Products'|vtlib_isModuleActive}
-		{$APP.LBL_QTY_IN_STOCK}:&nbsp;<span id="qtyInStock1">{$QTY_IN_STOCK}</span><br>
+		{if ($MODULE eq 'Quotes' || $MODULE eq 'SalesOrder' || $MODULE eq 'Invoice' || $MODULE eq 'Issuecards')  && 'Products'|vtlib_isModuleActive}
+		{$APP.LBL_QTY_IN_STOCK}:&nbsp;<span id="qtyInStock1">{if isset($QTY_IN_STOCK)}{$QTY_IN_STOCK}{/if}</span><br>
 		{/if}
+		{if isset($ASSOCIATEDPRODUCTS.moreinfo)}
 		{foreach item=maindata from=$ASSOCIATEDPRODUCTS.moreinfo}
 			{assign var="row_no" value="1"}
 			{include file='Inventory/EditViewUI.tpl'}
 		{/foreach}
+		{/if}
 	</td>
 	<!-- column 3 - Quantity in Stock - ends -->
 
@@ -200,7 +202,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 		<table width="100%" cellpadding="0" cellspacing="0">
 		   <tr>
 			<td align="right">
-				<input id="listPrice1" name="listPrice1" value="{$UNIT_PRICE}" type="text" class="small " style="width:70px" onBlur="calcTotal(); setDiscount(this,'1');callTaxCalc(1);calcTotal();"/>&nbsp;{if 'PriceBooks'|vtlib_isModuleActive}<img src="{'pricebook.gif'|@vtiger_imageurl:$THEME}" onclick="priceBookPickList(this,1)">{/if}
+				<input id="listPrice1" name="listPrice1" value="{if isset($UNIT_PRICE)}{$UNIT_PRICE}{/if}" type="text" class="small" style="width:70px" onBlur="calcTotal(); setDiscount(this,'1');callTaxCalc(1);calcTotal();"{if $Inventory_ListPrice_ReadOnly} readonly{/if}/>&nbsp;{if 'PriceBooks'|vtlib_isModuleActive}<img src="{'pricebook.gif'|@vtiger_imageurl:$THEME}" onclick="priceBookPickList(this,1)">{/if}
 			</td>
 		   </tr>
 		   <tr>

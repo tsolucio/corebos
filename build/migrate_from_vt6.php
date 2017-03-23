@@ -126,6 +126,15 @@ ExecuteQuery("DELETE FROM vtiger_def_org_share WHERE vtiger_def_org_share.tabid 
 ExecuteQuery("update vtiger_users set theme='softed'");
 ExecuteQuery("update vtiger_version set old_version='5.4.0', current_version='5.5.0' where id=1");
 ExecuteQuery("DELETE FROM vtiger_field WHERE tablename = 'vtiger_inventoryproductrel'");
+$package = new Vtiger_Package();
+ob_start();
+$rdo = $package->importManifest("modules/cbupdater/manifest.xml");
+$out = ob_get_contents();
+ob_end_clean();
+putMsg($out);
+if ($rdo) putMsg("$module installed: <a href='index.php?module=cbupdater&action=getupdates'>proceed to the rest of the updates by clicking here</a>");
+else putMsg("ERROR installing $module!");
+
 // Recalculate permissions  RecalculateSharingRules
 RecalculateSharingRules();
 

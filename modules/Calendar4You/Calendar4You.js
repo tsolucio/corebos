@@ -141,38 +141,6 @@ function gITSshow(argg1,type,startdate,enddate,starthr,startmin,startfmt,endhr,e
 	}
 }
 
-function getITSMiniCal(url){
-	if(url == undefined)
-		url = 'module=Calendar4You&action=ActivityAjax&type=minical&ajax=true';
-	else
-		url = 'module=Calendar4You&action=ActivityAjax&'+url+'&type=minical&ajax=true';
-	jQuery.ajax({
-			method:"POST",
-			url:'index.php?'+ url
-	}).done(function(response) {
-			document.getElementById("miniCal").innerHTML = response;
-	});
-}
-
-function changeCalendarMonthDate(year,month,date){
-	changeCalendarDate(year,month,date);
-	jQuery('#calendar_div').fullCalendar( 'changeView', 'month' );
-}
-
-function changeCalendarWeekDate(year,month,date){
-	changeCalendarDate(year,month,date);
-	jQuery('#calendar_div').fullCalendar( 'changeView', 'agendaWeek' );
-}
-
-function changeCalendarDayDate(year,month,date){
-	changeCalendarDate(year,month,date);
-	jQuery('#calendar_div').fullCalendar( 'changeView', 'agendaDay' );
-}
-
-function changeCalendarDate(year,month,date){
-	jQuery('#calendar_div').fullCalendar( 'gotoDate', year, month - 1, date);
-}
-
 function getITSCalSettings(){
 	url = getITSCalURL();
 	jQuery.ajax({
@@ -197,12 +165,12 @@ function getITSCalURL(){
 	var view_val = jQuery('#calendar_div').fullCalendar( 'getView' );
 	url += "&view="+view_val.name;
 	var cal_date = jQuery('#calendar_div').fullCalendar('getDate');
-	var year_val = cal_date.getFullYear();
+	var year_val = new Date(cal_date).getFullYear();
 	url += "&year="+year_val;
-	var month_val = cal_date.getMonth();
+	var month_val = new Date(cal_date).getMonth();
 	month_val = (month_val * 1) + 1 ;
 	url += "&month="+month_val;
-	var day_val = cal_date.getDate();
+	var day_val = new Date(cal_date).getDate();
 	url += "&day="+day_val;
 	return url;
 }

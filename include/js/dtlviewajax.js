@@ -27,7 +27,7 @@ function hndCancel(valuespanid,textareapanid,fieldlabel)
 			getObj(globaltxtboxid).checked = true;
 		else
 			getObj(globaltxtboxid).checked = false;
-	} else if(globaluitype != '53' && globaluitype != '33' && globaluitype != '3313')
+	} else if(globaluitype != '53' && globaluitype != '33' && globaluitype != '3313' && globaluitype != '3314')
 		getObj(globaltxtboxid).value = globaltempvalue;
 	globaltempvalue = '';
 	itsonview=false;
@@ -54,9 +54,14 @@ function hndMouseOver(uitype,fieldLabel)
 	globaleditareaspanid="editarea_"+ fieldLabel;//textareapanid;
 	globalfieldlabel = fieldLabel;
 	if(globaluitype == 53) {
-		if(typeof(document.DetailView.assigntype[0]) != 'undefined') {
-			var assign_type_U = document.DetailView.assigntype[0].checked;
-			var assign_type_G = document.DetailView.assigntype[1].checked;
+		var assigntype = document.getElementsByName('assigntype');
+		if(assigntype.length > 0) {
+			var assign_type_U = assigntype[0].checked;
+			if (assigntype[1]!=undefined) {
+				var assign_type_G = assigntype[1].checked;
+			} else {
+				var assign_type_G = false;
+			}
 			if(assign_type_U == true)
 				globaltxtboxid= 'txtbox_U'+fieldLabel;
 			else if(assign_type_G == true)
@@ -83,7 +88,8 @@ function handleEdit(event)
 {
 	show(globaleditareaspanid);
 	fnhide(globaldtlviewspanid);
-	if(globaluitype != 53) {
+	if( ((globaluitype == 15 || globaluitype == 16 || globaluitype == 1613 || globaluitype == 1614) && globaltempvalue == '') ||
+		 (globaluitype != 53 && globaluitype != 15 && globaluitype != 16 && globaluitype != 1613 && globaluitype != 1614) ) {
 		globaltempvalue = getObj(globaltxtboxid).value;
 		if(getObj(globaltxtboxid).type != 'hidden')
 			getObj(globaltxtboxid).focus();
@@ -154,13 +160,16 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 
 	if(globaluitype == 53)
 	{
-		if(typeof(document.DetailView.assigntype[0]) != 'undefined')
-		{
-			var assign_type_U = document.DetailView.assigntype[0].checked;
-			var assign_type_G = document.DetailView.assigntype[1].checked;
-		}else
-		{
-			var assign_type_U = document.DetailView.assigntype.checked;
+		var assigntype = document.getElementsByName('assigntype');
+		if(assigntype.length > 0) {
+			var assign_type_U = assigntype[0].checked;
+			if (assigntype[1]!=undefined) {
+				var assign_type_G = assigntype[1].checked;
+			} else {
+				var assign_type_G = false;
+			}
+		} else {
+			var assign_type_U = assigntype[0].checked;
 		}
 		if(assign_type_U == true)
 		{
@@ -173,7 +182,7 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 			var groupurl = "&assigned_group_id="+group_id+"&assigntype=T";
 		}
 	}
-	else if(uitype == 15 || uitype == 16 || uitype == 1613)
+	else if(uitype == 15 || uitype == 16 || uitype == 1613 || uitype == 1614)
 	{
 		var txtBox= "txtbox_"+ fieldLabel;
 		var not_access =document.getElementById(txtBox);
@@ -185,7 +194,7 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 			return false;
 		}
 	}
-	else if(globaluitype == 33 || globaluitype == 3313)
+	else if(globaluitype == 33 || globaluitype == 3313 || globaluitype == 3314)
 	{
 		var txtBox= "txtbox_"+ fieldLabel;
 		var oMulSelect = document.getElementById(txtBox);
@@ -240,7 +249,7 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 		{
 			tagValue = "off";
 		}
-	}else if(uitype == '33' || uitype == '3313')
+	}else if(uitype == '33' || uitype == '3313' || uitype == '3314')
 	{
 		tagValue = r.join(" |##| ");
 	}else if(uitype == '24' || uitype == '21')
@@ -337,13 +346,16 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 	}else if(uitype == '53')
 	{
 		var hdObj = getObj(hdTxt);
-		if(typeof(document.DetailView.assigntype[0]) != 'undefined')
-		{
-			var assign_type_U = document.DetailView.assigntype[0].checked;
-			var assign_type_G = document.DetailView.assigntype[1].checked;
-		}else
-		{
-			var assign_type_U = document.DetailView.assigntype.checked;
+		var assigntype = document.getElementsByName('assigntype');
+		if(assigntype.length > 0) {
+			var assign_type_U = assigntype[0].checked;
+			if (assigntype[1]!=undefined) {
+				var assign_type_G = assigntype[1].checked;
+			} else {
+				var assign_type_G = false;
+			}
+		} else {
+			var assign_type_U = assigntype[0].checked;
 		}
 		if(isAdmin == "0")
 		{
@@ -383,7 +395,7 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 	else if(getObj(popupTxt))
 	{
 		var popObj = getObj(popupTxt);
-		if(uitype == '50' || uitype == '73' || uitype == '51')
+		if(uitype == '73' || uitype == '51')
 		{
 			getObj(dtlView).innerHTML = "<a href=\"index.php?module=Accounts&action=DetailView&record="+tagValue+"\">"+popObj.value+"&nbsp;</a>";
 		}
@@ -446,7 +458,7 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 		else
 			getObj(dtlView).innerHTML = get_converted_html(tagValue);
 	}
-	else if(uitype == '33' || uitype == '3313')
+	else if(uitype == '33' || uitype == '3313' || uitype == '3314')
 	{
 		/* Wordwrap a long list of multi-select combo box items at the item separator string */
 		var DETAILVIEW_WORDWRAP_WIDTH = "70"; // must match value in DetailViewUI.tpl.
@@ -487,25 +499,82 @@ function dtlviewModuleValidation(fieldLabel,module,uitype,tableName,fieldName,cr
 		//Testing if a Validation file exists
 		jQuery.ajax({
 			url: "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationExists&valmodule="+gVTModule,
-			type:'get',
-			error: function() { //Validation file does not exist
+			type:'get'
+		}).fail(function() { //Validation file does not exist
 				dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmId);
-			},
-			success: function(data) { //Validation file exists
+		}).done(function(data) { //Validation file exists
 				if (data == 'yes') {
 					// Create object which gets the values of all input, textarea, select and button elements from the form
-					var myFields = document.forms[formName].elements;
+					// var myFields = document.forms[formName].parentElement.querySelectorAll('input,select,textarea'); // this would send in all elements on screen
+					var myFields = document.forms[formName].elements; // elements in form
 					var sentForm = new Object();
 					for (f=0; f<myFields.length; f++){
 						sentForm[myFields[f].name] = myFields[f].value;
+					}
+					// field being edited
+					switch (uitype) {
+						case '33':
+						case 33:
+						case '3313':
+						case 3313:
+						case '3314':
+						case 3314:
+							var txtBox= "txtbox_"+ fieldLabel;
+							var oMulSelect = document.getElementById(txtBox);
+							var r = new Array();
+							var notaccess_label = new Array();
+							for (iter=0;iter < oMulSelect.options.length ; iter++) {
+								if (oMulSelect.options[iter].selected) {
+									r[r.length] = oMulSelect.options[iter].value;
+									notaccess_label[notaccess_label.length] = oMulSelect.options[iter].text;
+								}
+							}
+							sentForm[fieldName] = r;
+							break;
+						case '56':
+						case 56:
+							if (document.getElementById('txtbox_'+fieldName).checked == true) {
+								sentForm[fieldName] = 1;
+							} else {
+								sentForm[fieldName] = 0;
+							}
+							break;
+						case '53':
+						case 53:
+							var assigntype = document.getElementsByName('assigntype');
+							if(assigntype.length > 0) {
+								var assign_type_U = assigntype[0].checked;
+								if (assigntype[1]!=undefined) {
+									var assign_type_G = assigntype[1].checked;
+								} else {
+									var assign_type_G = false;
+								}
+							} else {
+								var assign_type_U = assigntype[0].checked;
+							}
+							if(assign_type_U == true)
+							{
+								var txtBox= 'txtbox_U'+fieldLabel;
+								sentForm['assign_type'] = 'U';
+							}
+							else if(assign_type_G == true)
+							{
+								var txtBox= 'txtbox_G'+fieldLabel;
+								sentForm['assign_type'] = 'T';
+							}
+							sentForm[fieldName] = document.getElementById(txtBox).value;
+							break;
+						default:
+							sentForm[fieldName] = document.getElementById('txtbox_'+fieldName).value;
+							break;
 					}
 					//JSONize form data
 					sentForm = JSON.stringify(sentForm);
 					jQuery.ajax({
 						type : 'post',
 						data : {structure: sentForm},
-						url : "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule="+gVTModule,
-						success : function(msg) {  //Validation file answers
+						url : "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule="+gVTModule
+					}).done(function(msg) {  //Validation file answers
 							VtigerJS_DialogBox.unblock();
 							if (msg.search("%%%CONFIRM%%%") > -1) { //Allow to use confirm alert
 								//message to display
@@ -518,16 +587,13 @@ function dtlviewModuleValidation(fieldLabel,module,uitype,tableName,fieldName,cr
 							} else { //Error
 								alert(msg);
 							}
-						},
-						error : function() {  //Error while asking file
+					}).fail(function() {  //Error while asking file
 							VtigerJS_DialogBox.unblock();
 							alert('Error with AJAX');
-						}
 					});
 				} else { // no validation we send form
 					dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 				}
-			}
 		});
 	}
 	return false;
@@ -557,10 +623,14 @@ function setSelectValue(fieldLabel)
 {
 	if(globaluitype == 53)
 	{
-		if(typeof(document.DetailView.assigntype[0]) != 'undefined')
-		{
-			var assign_type_U = document.DetailView.assigntype[0].checked;
-			var assign_type_G = document.DetailView.assigntype[1].checked;
+		var assigntype = document.getElementsByName('assigntype');
+		if(assigntype.length > 0) {
+			var assign_type_U = assigntype[0].checked;
+			if (assigntype[1]!=undefined) {
+				var assign_type_G = assigntype[1].checked;
+			} else {
+				var assign_type_G = false;
+			}
 			if(assign_type_U == true)
 				var selCombo= 'txtbox_U'+fieldLabel;
 			else if(assign_type_G == true)

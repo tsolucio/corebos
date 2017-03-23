@@ -15,7 +15,7 @@ set_time_limit(0);
 ini_set('memory_limit','1024M');
 $current_user = Users::getActiveAdminUser();
 
-$recs = $adb->query('SELECT crmid,setype FROM `vtiger_crmentity` where deleted=0 group by setype');
+$recs = $adb->query('SELECT max(crmid),setype FROM `vtiger_crmentity` where deleted=0 group by setype');
 echo "<table border=1 width='80%' align='center'><tr><th>EntityID</th><th>Related Account</th><th>Related Contact</th></tr>";
 while ($rec = $adb->fetch_row($recs)) {
 	echo "<tr>";

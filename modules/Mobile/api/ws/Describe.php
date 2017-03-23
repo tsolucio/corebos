@@ -11,7 +11,7 @@
 include_once 'include/Webservices/DescribeObject.php';
 include_once dirname(__FILE__) . '/Utils.php';
 
-class Mobile_WS_Describe extends Mobile_WS_Controller {
+class crmtogo_WS_Describe extends crmtogo_WS_Controller {
 	protected function cacheDescribeInfo($describeInfo) {
 		$this->_cachedDescribeInfo = $describeInfo;
 		$this->_cachedDescribeFieldInfo = array();
@@ -22,22 +22,23 @@ class Mobile_WS_Describe extends Mobile_WS_Controller {
 		}
 	}
 	
-	function process(Mobile_API_Request $request) {
-		$current_user = $this->getActiveUser();
-		
+	function process(crmtogo_API_Request $request) {
+		global $current_user;
 		$module = $request->get('module');
 		$newrecord = self::transformToBlocks($module);
-		$response = new Mobile_API_Response();
+		$response = new crmtogo_API_Response();
 		$response->setResult(array('record' => $newrecord));
 		return $response;
 	}
 	
 	
 	protected function transformToBlocks($module) {
-		$current_user = $this->getActiveUser();
-		$moduleFieldGroups = Mobile_WS_Utils::gatherModuleFieldGroupInfo($module);
+		global $current_language,$current_user;
+		if(empty($current_language))
+			$current_language = crmtogo_WS_Controller::sessionGet('language');
+		$moduleFieldGroups = crmtogo_WS_Utils::gatherModuleFieldGroupInfo($module);
 		$describeInfo = vtws_describe($module, $current_user);
-		Mobile_WS_Utils::fixDescribeFieldInfo($module, $describeInfo,$current_user);
+		crmtogo_WS_Utils::fixDescribeFieldInfo($module, $describeInfo,$current_user);
 		$modifiedResult = array();
 		$blocks = array(); 
 		$labelFields = false;
@@ -56,10 +57,14 @@ class Mobile_WS_Describe extends Mobile_WS_Controller {
 							$picklistValues = $describeField['type']['picklistValues'];
 							$field['type']['value'] = array ('value' =>$picklistValues,'name' => $fieldname);
 						}
+						if (isset($describeField['type']) && $describeField['type']!='') {
+							$field['quickcreate'] = $describeField['quickcreate'];
+							$field['displaytype'] = $describeField['displaytype'];
+						}
 					}
 				}
 				if($field['uitype'] == '51' || $field['uitype'] == '59' || $field['uitype'] == '10'){
-						$field['relatedmodule'] = Mobile_WS_Utils::getEntityName($field['name'], $module);
+						$field['relatedmodule'] = crmtogo_WS_Utils::getEntityName($field['name'], $module);
 				}
 				$fields[] = $field;
 			}

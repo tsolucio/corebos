@@ -7,16 +7,14 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('include/utils/utils.php');
 require_once('include/logging.php');
-global $log;
-global $current_user, $upload_badext;
+global $log, $current_user, $upload_badext;
 $vtigerpath = $_SERVER['REQUEST_URI'];
 $vtigerpath = str_replace("/index.php?module=uploads&action=add2db", "", $vtigerpath);
 
 $crmid = vtlib_purify($_REQUEST['return_id']);
-$log->debug("DEBUG In add2db.php");
+$log->debug("In add2db.php");
 
 	if(isset($_REQUEST['filename_hidden'])) {
 		$file = vtlib_purify($_REQUEST['filename_hidden']);
@@ -30,27 +28,24 @@ $log->debug("DEBUG In add2db.php");
 	$upload_filepath = decideFilePath();
 
 	$current_id = $adb->getUniqueID("vtiger_crmentity");
-	
-	if(move_uploaded_file($_FILES["filename"]["tmp_name"],$upload_filepath.$current_id."_".$_FILES["filename"]["name"])) 
-	{
-		$filename = ltrim(basename(" ".$binFile)); //allowed filename like UTF-8 characters 
+
+	if (move_uploaded_file($_FILES['filename']['tmp_name'],$upload_filepath.$current_id.'_'.$_FILES['filename']['name'])) {
+		$filename = ltrim(basename(' '.$binFile)); //allowed filename like UTF-8 characters
 		$filetype= $_FILES['filename']['type'];
 		$filesize = $_FILES['filename']['size'];
 
-		if($filesize != 0)	
-		{
+		if ($filesize != 0) {
 			$desc = vtlib_purify($_REQUEST['txtDescription']);
 			$subject = vtlib_purify($_REQUEST['uploadsubject']);
-			$date_var = $adb->formatDate(date('Y-m-d H:i:s'), true);	
+			$date_var = $adb->formatDate(date('Y-m-d H:i:s'), true);
 			$current_date = getdate();
-			$current_date = $adb->formatDate(date('Y-m-d H:i:s'), true);	
+			$current_date = $adb->formatDate(date('Y-m-d H:i:s'), true);
 			$query = "insert into vtiger_crmentity (crmid,smcreatorid,smownerid,setype,description,createdtime,modifiedtime) values(?,?,?,?,?,?,?)";
-			$params = array($current_id, $current_user->id, $current_user->id, vtlib_purify($_REQUEST['return_module']).' Attachment', $desc, $date_var, $current_date);	
+			$params = array($current_id, $current_user->id, $current_user->id, vtlib_purify($_REQUEST['return_module']).' Attachment', $desc, $date_var, $current_date);
 			$result = $adb->pquery($query, $params);
 
-			# Added by DG 26 Oct 2005
 			# Attachments added to contacts are also added to their accounts
-			$log->debug("DEBUG return_module: ".$_REQUEST['return_module']);
+			$log->debug("return_module: ".$_REQUEST['return_module']);
 			if ($_REQUEST['return_module'] == 'Contacts')
 			{
 				$crmid = vtlib_purify($_REQUEST['return_id']);
@@ -58,23 +53,23 @@ $log->debug("DEBUG In add2db.php");
 				$result = $adb->pquery($query, array($crmid));
 				if($adb->num_rows($result) != 0)
 				{
-					$log->debug("DEBUG Returned a row");
+					$log->debug("Returned a row");
 					$associated_account = $adb->query_result($result,0,"accountid");
 					# Now make sure that we haven't already got this attachment associated to this account
 					# Hmmm... if this works, should we NOT upload the attachment again, and just set the relation for the contact too?
-					$log->debug("DEBUG Associated Account: ".$associated_account);
+					$log->debug("Associated Account: ".$associated_account);
 					$query = "select attachmentsid, name, path from vtiger_attachments where name=?";
 					$result = $adb->pquery($query, array($filename));
 					if($adb->num_rows($result) != 0)
 					{
-						$log->debug("DEBUG Matched a row");
+						$log->debug("Matched a row");
 						# Whoops! We matched the name. Is it the same size?
 						$fname = $adb->query_result($result,0,"name");
 						$fpath = $adb->query_result($result,0,"path");
 						$fid = $adb->query_result($result,0,"attachmentsid");
 						$dg_size = filesize($fpath . "/".$fid."_". $fname);
 						//$dg_size = $adb->query_result($result,0,"attachmentsize");
-						$log->debug("DEBUG: These should be the same size: ".$dg_size." ".$filesize);
+						$log->debug("These should be the same size: ".$dg_size." ".$filesize);
 						if ($dg_size == $filesize)
 						{
 							# Yup, it is probably the same file
@@ -100,7 +95,7 @@ $log->debug("DEBUG In add2db.php");
 			# Attachments added to contacts are also added to their accounts
 			if ($associated_account)
 			{
-				$log->debug("DEBUG: inserting into vtiger_seattachmentsrel from add2db 2");
+				$log->debug("inserting into vtiger_seattachmentsrel from add2db 2");
 				$sql1 = "insert into vtiger_seattachmentsrel values(?,?)";
 				$params1 = array($associated_account, $current_id);
 				$result = $adb->pquery($sql1, $params1);
@@ -110,33 +105,31 @@ $log->debug("DEBUG In add2db.php");
 		}
 		else
 		{
-			$errormessage = "<font color='red'><B>Error Message<ul>
-				<li><font color='red'>Invalid file OR</font>
-				<li><font color='red'>File has no data</font>
-				</ul></B></font> <br>" ;
-			header("Location: index.php?module=uploads&action=uploadsAjax&msg=true&file=upload&errormessage=".$errormessage);
-		}			
-	} 
-	else 
-	{
+			$errormessage = "<font color='red'><b>".getTranslatedString('Error Message','Settings')."<ul>
+				<li><font color='red'>".getTranslatedString('Invalid_file','Settings')."</font>
+				<li><font color='red'>".getTranslatedString('File_has_no_data','Settings').'/font>
+				</ul></b></font><br>';
+			header('Location: index.php?module=uploads&action=uploadsAjax&msg=true&file=upload&errormessage='.urlencode($errormessage));
+		}
+	} else {
 		$errorCode =  $_FILES['binFile']['error'];
 		$errormessage = "";
 
 		if($errorCode == 4)
 		{
-			$errormessage = "<B><font color='red'>Kindly give a valid file for upload!</font></B> <br>" ;
+			$errormessage = "<b><font color='red'>".getTranslatedString('LBL_PLEASE_ATTACH','Emails').'</font></b><br>';
 		}
 		else if($errorCode == 2)
 		{
-			$errormessage = "<B><font color='red'>Sorry, the uploaded file exceeds the maximum filesize limit. Please try a file smaller than $upload_maxsize bytes</font></B> <br>";
+			$errormessage = "<b><font color='red'>".getTranslatedString('FILESIZE_EXCEEDS_INFO_CONFIG_INC','Settings').'</font></b><br>';
 		}
 		else if($errorCode == 6)
 		{
-			$errormessage = "<B>Please configure <font color='red'>upload_tmp_dir</font> variable in php.ini file.</B> <br>" ;
+			$errormessage = '<b>'.getTranslatedString('LBL_KINDLY_UPLOAD','Emails').'</b><br>';
 		}
 		else if($errorCode == 3 || $errorcode == '')
 		{
-			$errormessage = "<b><font color='red'>Problems in file upload. Please try again!</font></b><br>";
+			$errormessage = "<b><font color='red'>".getTranslatedString('PROBLEMS_IN_FILEUPLOAD','Settings').'</font></b><br>';
 		}
 
 		if($errormessage != '')

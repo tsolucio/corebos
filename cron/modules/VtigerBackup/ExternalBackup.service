@@ -44,7 +44,7 @@ if($dbconfig['db_password']!=''){
 	$pass = str_replace('#','\#',$pass);
 	$passwordopt='--password='.$pass;
 }
-if(ereg("win",strtolower($_ENV["OS"]))){
+if(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN'){
 	exec("mysqldump.exe --user=".$dbconfig['db_username']." ".$passwordopt." --opt ".$dbconfig['db_name'].' > backup/'.$dumpname);
 } else {
 	passthru("mysqldump --user=".$dbconfig['db_username']." ".$passwordopt." --opt ".$dbconfig['db_name'].' > backup/'.$dumpname);

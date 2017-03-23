@@ -109,10 +109,12 @@ $mod_strings = Array(
     'ERR_REENTER_PASSWORDS'=>'Bitte Passwörter nochmals eingeben.  Die \"new password\" und \"confirm password\" Werte stimmen nicht überein.',
     'ERR_INVALID_PASSWORD'=>'Falscher Benutzername oder falsches Passwort',
 	'ERR_INVALID_ADMINIPLOGIN' => 'Administrator users must login from authorized devices.',
+	'ERR_INVALID_USERIPLOGIN' => 'Restricted access to authorized personnel only<br> You are connecting from an invalid IP',
     'ERR_PASSWORD_CHANGE_FAILED_1'=>'Passwortänderung für Benutzer ',
     'ERR_PASSWORD_CHANGE_FAILED_2'=>' nicht erfolgreich.  Ein neues Passwort muss gesetzt werden.',
     'ERR_PASSWORD_INCORRECT_OLD'=>'Altes Passwort für Benutzer $this->user_name. Bitte nochmals eingeben..',
     'ERR_PASSWORD_NOT_CHANGED' => 'Old and New Passwords are the same. Please use a different password.',
+	'ERR_USER_DOESNOT_EXISTS'=>'User does not exist.',
     'ERR_USER_NAME_EXISTS_1'=>'Benutzername ',
     'ERR_USER_NAME_EXISTS_2'=>' existiert bereits.  Doppelte Benutzernamen sind nicht möglich.<br>Wechseln Sie den Benutzernamen.',
     'ERR_LAST_ADMIN_1'=>'Benutzername ',
@@ -577,8 +579,6 @@ $mod_strings = Array(
     'LBL_TRANSFER_ROLES_TO_PROFILE'=>'Übertrage Rollen zu Profile',
     'LBL_PROFILE_TO_BE_DELETED'=>'zu löschende Profile',
 
-    //Added for disabling window Recalculate
-
     'LBL_RECALC_MSG'=>'Sind Sie sicher, dass Sie die Regeln neu berechnen lassen wollen? Das kann einige Zeit in Anspruch nehmen',
     'LBL_YES'=>'Ja',
     'LBL_NO'=>'Nein',
@@ -586,19 +586,14 @@ $mod_strings = Array(
     'LBL_MANDATORY_MSG'=>'Pflichtfelder',
     'LBL_DISABLE_FIELD_MSG'=>'Felder durch die Einstellungen in Globaler Rechtevergabe gesperrt.',
 
-    //Added for About Us
-
     'LBL_CONTACT_US'=>'Kontaktieren Sie uns',
     'LBL_READ_LICENSE'=>'Lizenz lesen',
     'LBL_VERSION'=>'Version',
     'LBL_TEAM'=>'Team',
     'LBL_CREDITS'=>'Beiträge von',
     'LBL_THIRD_PARTY'=>'3rd Party Pakete',
-    'LBL_COMMUNITY'=>'und die vtiger Community',
 
     'LBL_ASSIGN_ROLE'=>'Rolle zuweisen',
-
-    //Moved from Settings to here for Webmail client integration (for 5.0.3 release)
 
     'LBL_ADD_MAIL_ACCOUNT'=>'Erstelle E-Mail Konto',
     'LBL_NEW_MAIL_ACCOUNT_TITLE'=>'Neues E-Mail Konto [Alt+M]',
@@ -619,7 +614,7 @@ $mod_strings = Array(
     'LBL_IMAP4'=>'IMAP4',
     'LBL_POP'=>'POP',
     'LBL_IMAP'=>'IMAP',
-    'LBL_MAIL_DISCLAIM'=>'Angaben mit einer <font color="red">*</font> Markierung sind Pflichtfelder.<br>Angaben mit einer <font color="red">* *</font> Markierung werden nicht voll unterstützt.',
+    'LBL_MAIL_DISCLAIM'=>'Angaben mit einer <font color="red">*</font> Markierung sind Pflichtfelder.',
     'LBL_SSL_OPTIONS'=>'SSL Optionen',
     'LBL_TLS'=>'TLS',
     'LBL_NO_TLS'=>'Kein TLS',
@@ -645,21 +640,16 @@ $mod_strings = Array(
     'LBL_4_MIN'=>'4 Minuten',
     'LBL_5_MIN'=>'5 Minuten',
     'LBL_EMAILS_PER_PAGE'=>'E-Mails pro Seite',
-    // Added for 5.0.3
 
     'LBL_ENTER_PROFILE'=>'Profilnamen eingeben',
     'TITLE_USER_DOCUMENT'=>'Dokument ohne Namen',
-    'TITLE_VTIGER_CRM_5'=>'crm',
     'ROLE_DRAG_ERR_MSG'=>'Sie können keine übergeordnete Rolle unter eine untergeordnete Rolle verschieben.',
 
     'LBL_NOTIFICATION_ACTIVITY'=>'automatische Benachrichtigung',
     'LBL_NOTIFICATION_EMAIL_INFO'=>'E-Mail Information',
     'LBL_GOTO_LISTVIEW_BUTTON'=>'zur Listenansicht gehen',
 
-    // Added/Updated for vtiger CRM 5.0.4
-
     'LBL_SSL' => 'SSL',
-    //Added to fix the issue #4081
     'LBL_USERNAME_EXIST' => 'Dieser Benutzername existiert bereits!',
     'LBL_UNAUTHORIZED_ACCESS' => 'Sie haben keinen Zugang zur Administration!',
     //Added to provide User based TagCloud
@@ -669,8 +659,6 @@ $mod_strings = Array(
     // Added for 5.0.4 to Support Email notication on User Creation
     'User Login Details'=>'Benutzer Login Details',
     'LBL_TO_LOGIN' => 'zum Login',
-
-    // Added after 5.0.4 GA
 
     'LBL_USER_ADV_OPTIONS'=>'erweiterte Optionen',
     'Reminder Interval'=>'Erinnerungsintervall',
@@ -683,12 +671,16 @@ $mod_strings = Array(
     //Fixed For Asterisk Configration
     'Asterisk Configuration' => 'Asterisk Konfiguration',
     'Asterisk Extension' => 'Asterisk Erweiterung',
-    ' Receive Incoming Calls' => 'empfange eingehende Anrufe',
+    'Receive Incoming Calls' => 'empfange eingehende Anrufe',
 
     // Added for Create Custom Fields 
     'LBL_USER_CUSTOMFIELDS_DESCRIPTION' => 'Erstellen Sie benutzerdefinierte Felder für Users ',
     'LBL_USER_CUSTOMFIELDS' => 'Benutzerdefinierte Felder für das Users-Modul',
     'LBL_CURRENCY_CONFIGURATION'=> 'Währungseinstellungen',
+	'Digit Grouping Pattern' => 'Digit Grouping Pattern',
+	'Decimal Separator' => 'Decimal Separator',
+	'Digit Grouping Separator' => 'Digit Grouping Separator',
+	'Symbol Placement' => 'Symbol Placement',
 	'Number Of Currency Decimals'  => 'Number Of Currency Decimals',
     //Time zones-Dont change any value
     'Kwajalein' => '(UTC-12:00) Internationale Datumsgrenze (Western)',
@@ -811,5 +803,9 @@ $mod_strings = Array(
 	'Min. 1 number' => 'Min. 1 Number',
 	'Min. 1 special character' => 'Min. 1 special character , ! ? , ; - @ #',
 	'Generate password' => 'Generate password',
+	// LDAP
+	'LBL_QUERY' => 'Query',
+	'LBL_FORE_LASTNAME' => 'First or Last name',
+	'LBL_NO_LDAP_MATCHES' => 'No matches found on the LDAP server!',
 );
 ?>

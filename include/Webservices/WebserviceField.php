@@ -28,6 +28,7 @@ class WebserviceField{
 	private $massEditable;
 	private $tabid;
 	private $presence;
+	private $quickCreate;
 	/**
 	 *
 	 * @var PearDatabase
@@ -45,7 +46,10 @@ class WebserviceField{
 	private $genericUIType = 10;
 
 	private $readOnly = 0;
-	
+
+	const REFERENCE_TYPE = 'reference';
+	const OWNER_TYPE = 'owner';
+
 	private function __construct($adb,$row){
 		$this->uitype = (isset($row['uitype']))? $row['uitype'] : 0;
 		$this->blockId = (isset($row['block']))? $row['block'] : 0;
@@ -60,6 +64,7 @@ class WebserviceField{
 		$this->massEditable = isset($row['masseditable']) ? ($row['masseditable'] === '1')? true: false: false;
 		$typeOfData = (isset($row['typeofdata']))? $row['typeofdata'] : '';
 		$this->presence = (isset($row['presence']))? $row['presence'] : -1;
+		$this->quickCreate = isset($row['quickcreate']) ? ($row['quickcreate'] === '0' || $row['quickcreate'] === '2')? true: false: false;
 		$this->typeOfData = $typeOfData;
 		$typeOfData = explode("~",$typeOfData);
 		$this->mandatory = isset($typeOfData[1]) ? ($typeOfData[1] == 'M')? true: false: false;
@@ -90,7 +95,17 @@ class WebserviceField{
 	public static function fromArray($adb,$row){
 		return new WebserviceField($adb,$row);
 	}
-	
+
+	public static function fromFieldId($adb,$fieldId) {
+		$rs = $adb->pquery('select * from vtiger_field where fieldid=?',array($fieldId));
+		if ($rs and $adb->num_rows($rs)==1) {
+			$row = $adb->fetch_array($rs);
+			return new WebserviceField($adb,$row);
+		} else {
+			return false;
+		}
+	}
+
 	public function getTableName(){
 		return $this->tableName;
 	}
@@ -110,7 +125,23 @@ class WebserviceField{
 	public function isMandatory(){
 		return $this->mandatory;
 	}
-	
+
+	public function isActiveField() {
+		return in_array($this->presence, array(0,2));
+	}
+
+	public function isMassEditable() {
+		return $this->massEditable;
+	}
+
+	public function isReferenceField() {
+		return ($this->getFieldDataType() == self::REFERENCE_TYPE) ? true : false;
+	}
+
+	public function isOwnerField() {
+		return ($this->getFieldDataType() == self::OWNER_TYPE) ? true : false;
+	}
+
 	public function getTypeOfData(){
 		return $this->typeOfData;
 	}
@@ -166,6 +197,10 @@ class WebserviceField{
 		return $this->fieldSequence;
 	}
 
+	public function getQuickCreate(){
+		return $this->quickCreate;
+	}
+
 	public function getTabId(){
 		return $this->tabid;
 	}
@@ -210,7 +245,7 @@ class WebserviceField{
 	public function setReferenceList($referenceList){
 		$this->referenceList = $referenceList;
 	}
-	
+
 	public function getTableFields(){
 		$tableFields = null;
 		if(isset(WebserviceField::$tableMeta[$this->getTableName()])){
@@ -218,15 +253,16 @@ class WebserviceField{
 		}else{
 			$dbMetaColumns = $this->pearDB->database->MetaColumns($this->getTableName());
 			$tableFields = array();
-                        if(is_array($dbMetaColumns)){
-                            foreach ($dbMetaColumns as $key => $dbField) {
-                                    $tableFields[$dbField->name] = $dbField;
-                            }
-                        }
+			if(is_array($dbMetaColumns)){
+				foreach ($dbMetaColumns as $key => $dbField) {
+					$tableFields[$dbField->name] = $dbField;
+				}
+			}
 			WebserviceField::$tableMeta[$this->getTableName()] = $tableFields;
 		}
 		return $tableFields;
 	}
+
 	public function fillColumnMeta(){
 		$tableFields = $this->getTableFields();
 		foreach ($tableFields as $fieldName => $dbField) {
@@ -373,7 +409,19 @@ class WebserviceField{
 		if(in_array(strtolower($this->getFieldName()),$hardCodedPickListNames)){
 			return $hardCodedPickListValues[strtolower($this->getFieldName())];
 		}
-		return $this->getPickListOptions($this->getFieldName());
+		$uitype = $this->getUIType();
+		switch ($uitype) {
+			case '1613':
+			case '1614':
+			case '3313':
+			case '3314':
+			case '1024':
+				return $this->getPickListOptionsSpecialUitypes($uitype);
+				break;
+			default: // 15 and 33
+				return $this->getPickListOptions($this->getFieldName());
+				break;
+		}
 	}
 
 	function getPickListOptions(){
@@ -400,7 +448,7 @@ class WebserviceField{
 				$elem = array();
 				$picklistValue = $this->pearDB->query_result($result,$i,$fieldName);
 				$picklistValue = decode_html($picklistValue);
-				$trans_str = ($temp_mod_strings[$picklistValue] != '') ? $temp_mod_strings[$picklistValue] : (($app_strings[$picklistValue] != '') ? $app_strings[$picklistValue] : $picklistValue);
+				$trans_str = (!empty($temp_mod_strings[$picklistValue])) ? $temp_mod_strings[$picklistValue] : ((!empty($app_strings[$picklistValue])) ? $app_strings[$picklistValue] : $picklistValue);
 				while ($trans_str != preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str)) $trans_str = preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str);
 				$elem["label"] = $trans_str;
 				$elem["value"] = $picklistValue;
@@ -412,7 +460,7 @@ class WebserviceField{
 			for($i=0;$i<sizeof($details);++$i){
 				$elem = array();
 				$picklistValue = decode_html($details[$i]);
-				$trans_str = ($temp_mod_strings[$picklistValue] != '') ? $temp_mod_strings[$picklistValue] : (($app_strings[$picklistValue] != '') ? $app_strings[$picklistValue] : $picklistValue);
+				$trans_str = (!empty($temp_mod_strings[$picklistValue])) ? $temp_mod_strings[$picklistValue] : ((!empty($app_strings[$picklistValue])) ? $app_strings[$picklistValue] : $picklistValue);
 				while ($trans_str != preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str)) $trans_str = preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str);
 				$elem["label"] = $trans_str;
 				$elem["value"] = $picklistValue;
@@ -427,6 +475,29 @@ class WebserviceField{
 		return $this->presence;
 	}
 
+	function getPickListOptionsSpecialUitypes($uitype){
+		global $log, $current_language;
+		require_once 'modules/PickList/PickListUtils.php';
+		static $purified_plcache = array();
+		$fieldName = $this->getFieldName();
+
+		$moduleName = getTabModuleName($this->getTabId());
+		if($moduleName == 'Events') $moduleName = 'Calendar';
+
+		if (array_key_exists($moduleName.$fieldName, $purified_plcache)) {
+			return $purified_plcache[$moduleName.$fieldName];
+		}
+		$options = array();
+		$list_options = getPicklistValuesSpecialUitypes($uitype,$fieldName,'');
+		foreach ($list_options as $key => $value) {
+				$elem = array();
+				$elem["label"] = $value[0];
+				$elem["value"] = $value[1];
+				array_push($options,$elem);
+		}
+		$purified_plcache[$moduleName.$fieldName] = $options;
+		return $options;
+	}
 }
 
 ?>

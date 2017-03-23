@@ -6,24 +6,19 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
-
 require_once('include/database/PearDatabase.php');
-global $default_charset;
-global $adb;
-$conv_sub = function_exists(iconv) ? @iconv("UTF-8",$default_charset, $_REQUEST['notifysubject']) : $_REQUEST['notifysubject'];
-$conv_body = function_exists(iconv) ? @iconv("UTF-8",$default_charset, $_REQUEST['notifybody']) : $_REQUEST['notifybody'];
+global $default_charset, $adb;
+$conv_sub = function_exists('iconv') ? @iconv('UTF-8',$default_charset, $_REQUEST['notifysubject']) : $_REQUEST['notifysubject'];
+$conv_body = function_exists('iconv') ? @iconv('UTF-8',$default_charset, $_REQUEST['notifybody']) : $_REQUEST['notifybody'];
 $notifysubject =str_replace(array("'",'"'),'',$conv_sub);
 $notifybody =str_replace(array("'",'"'),'',$conv_body);
 
-if($notifysubject != '' && $notifybody != '')
-{
-	if(isset($_REQUEST['record']) && $_REQUEST['record']!='')
-	{	
+if($notifysubject != '' && $notifybody != '') {
+	if (isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 		$query="UPDATE vtiger_notificationscheduler set notificationsubject=?, notificationbody=?, active =? where schedulednotificationid=?";
 		$params = array($notifysubject, $notifybody, vtlib_purify($_REQUEST['active']), vtlib_purify($_REQUEST['record']));
-		$adb->pquery($query, $params);	
+		$adb->pquery($query, $params);
 	}
 	$loc = "Location: index.php?action=SettingsAjax&file=listnotificationschedulers&module=Settings&directmode=ajax";
 	header($loc);
@@ -32,5 +27,4 @@ else
 {
 	echo ":#:FAILURE";
 }
-
 ?>

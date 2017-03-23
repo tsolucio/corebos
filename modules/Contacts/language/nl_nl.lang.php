@@ -193,7 +193,6 @@ $mod_strings = array(
 	'Note :' => 'Notitie :',
 	'We suggest you to change your password after logging in first time' => 'Wij stellen u voor om het wachtwoord na de eerste keer inloggen te wijzigen.',
 	'Support Team' => 'Ondersteuningsteam',
-	'TITLE_AJAX_CSS_POPUP_CHAT' => 'Chatkanaal',
 	'Contact Id' => 'Contact Nr',
 	'Secondary Email' => 'Tweede E-mail',
 	'Contacts ID' => 'ID Contact ID',

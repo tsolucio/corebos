@@ -80,7 +80,7 @@ function getFieldsListFromQuery($query)
 
 	$result = $adb->query($query);
 	$num_rows = $adb->num_rows($result);
-
+	$fields = '';
 	for($i=0; $i < $num_rows;$i++)
 	{
 		$columnName = $adb->query_result($result,$i,"columnname");
@@ -92,6 +92,10 @@ function getFieldsListFromQuery($query)
 		if($columnName == 'smownerid')//for all assigned to user name
 		{
 			$fields .= "case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as '".$fieldlabel."',";
+		}
+		elseif($columnName == 'smcreatorid')
+		{
+			$fields .= "vtigerCreatedBy.user_name as '".$fieldlabel."',";
 		}
 		elseif($tablename == 'vtiger_account' && $columnName == 'parentid')//Account - Member Of
 		{

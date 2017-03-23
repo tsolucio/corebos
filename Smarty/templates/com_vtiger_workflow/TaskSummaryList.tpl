@@ -33,15 +33,15 @@
 		{/if}
 		</td>
 		<td class="listTableRow small">{$task->summary|@to_html}</td>
-		<td class="listTableRow small">{if $task->active}{'Active'|@getTranslatedString:$MODULE}{else}{'Inactive'|@getTranslatedString:$MODULE}{/if}</td>
+		<td class="listTableRow small">{if $task->active}{'Active'|@getTranslatedString:$MODULE_NAME}{else}{'Inactive'|@getTranslatedString:$MODULE_NAME}{/if}</td>
 		<td class="listTableRow small">
 			<a href="{$module->editTaskUrl($task->id)}">
-				<img border="0" title="{'LBL_EDIT_BUTTON'|@getTranslatedString:$MODULE}" alt="{'LBL_EDIT_BUTTON'|@getTranslatedString:$MODULE}" \
+				<img border="0" title="{'LBL_EDIT_BUTTON'|@getTranslatedString:$MODULE_NAME}" alt="{'LBL_EDIT_BUTTON'|@getTranslatedString:$MODULE_NAME}" \
 					style="cursor: pointer;" id="expressionlist_editlink_{$task->id}" \
 					src="{'editfield.gif'|@vtiger_imageurl:$THEME}"/>
 			</a>
 			<a href="{$module->deleteTaskUrl($task->id)}" onclick="return confirm('{$APP.SURE_TO_DELETE}');">
-				<img border="0" title="{'LBL_DELETE_BUTTON'|@getTranslatedString:$MODULE}" alt="{'LBL_DELETE_BUTTON'|@getTranslatedString:$MODULE}"\
+				<img border="0" title="{'LBL_DELETE_BUTTON'|@getTranslatedString:$MODULE_NAME}" alt="{'LBL_DELETE_BUTTON'|@getTranslatedString:$MODULE_NAME}"\
 					src="{'delete.gif'|@vtiger_imageurl:$THEME}" \
 					style="cursor: pointer;" id="expressionlist_deletelink_{$task->id}"/>
 			</a>

@@ -25,7 +25,6 @@ $mod_strings = Array(
 'LBL_MODULE_TITLE'=>'Oportunidades: Inicio',
 'LBL_SEARCH_FORM_TITLE'=>'Buscar Oportunidades',
 'LBL_LIST_FORM_TITLE'=>'Lista de Oportunidades',
-'LBL_OPPORTUNITY_NAME'=>'Oportunidad:',
 'LBL_OPPORTUNITY'=>'Oportunidad:',
 'LBL_NAME'=>'Oportunidad',
 'LBL_INVITEE'=>'Contactos',
@@ -36,7 +35,7 @@ $mod_strings = Array(
 'LBL_LIST_DATE_CLOSED'=>'Fecha estimada de cierre',
 'LBL_LIST_SALES_STAGE'=>'Fase de Venta',
 
-'LBL_OPPORTUNITY_NAME'=>'Oportunidad:',
+'LBL_OPPORTUNITY_NAME'=>'Nombre Oportunidad:',
 'LBL_ACCOUNT_NAME'=>'Cuenta:',
 'LBL_AMOUNT'=>'Importe:',
 'LBL_DATE_CLOSED'=>'Fecha estimada de cierre:',

@@ -1,14 +1,10 @@
 <?php
 /*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+** The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
 require_once('config.php');
@@ -39,7 +35,7 @@ coreBOS_Session::init();
 // Set the current language and the language strings, if not already set.
 setCurrentLanguage();
 
-global $allow_exports,$app_strings;
+global $app_strings;
 
 $current_user = new Users();
 
@@ -52,9 +48,9 @@ if(isset($_SESSION['authenticated_user_id']))
 		header("Location: index.php?action=Login&module=Users");
 		exit;
 	}
-
 }
 
+$allow_exports = GlobalVariable::getVariable('Application_Allow_Exports','all');
 //Security Check
 if(isPermitted($_REQUEST['module'],"Export") == "no")
 {
@@ -90,7 +86,7 @@ function br2nl_vt($str)
  * Return type text
  */
 function export($type){
-	global $log, $list_max_entries_per_page, $adb;
+	global $log, $adb;
 	$log->debug("Entering export(".$type.") method ...");
 
 	$focus = 0;
@@ -114,6 +110,8 @@ function export($type){
 
 	if(isset($_SESSION['export_where']) && $_SESSION['export_where']!='' && $search_type == 'includesearch'){
 		$where =$_SESSION['export_where'];
+	} else {
+		$where = '';
 	}
 
 	$query = $focus->create_export_query($where);
@@ -174,14 +172,14 @@ function export($type){
 			// END
 		}
 	}
-	
+
 	if(isset($order_by) && $order_by != ''){
 		if($order_by == 'smownerid'){
-			$query .= ' ORDER BY user_name '.$sorder;
+			$query .= ' ORDER BY vtiger_users.user_name '.$sorder;
 		}elseif($order_by == 'lastname' && $type == 'Documents'){
-			$query .= ' ORDER BY vtiger_contactdetails.lastname  '. $sorder;
+			$query .= ' ORDER BY vtiger_contactdetails.lastname '. $sorder;
 		}elseif($order_by == 'crmid' && $type == 'HelpDesk'){
-			$query .= ' ORDER BY vtiger_troubletickets.ticketid  '. $sorder;
+			$query .= ' ORDER BY vtiger_troubletickets.ticketid '. $sorder;
 		}else{
 			$tablename = getTableNameForField($type,$order_by);
 			$tablename = (($tablename != '')?($tablename."."):'');
@@ -190,6 +188,7 @@ function export($type){
 	}
 
 	if($export_data == 'currentpage'){
+		$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$type);
 		$current_page = ListViewSession::getCurrentPage($type,$viewid);
 		$limit_start_rec = ($current_page - 1) * $list_max_entries_per_page;
 		if ($limit_start_rec < 0) $limit_start_rec = 0;
@@ -262,13 +261,12 @@ class ExportUtils{
 	var $fieldsArr = array();
 	var $picklistValues = array();
 
-	function ExportUtils($module, $fields_array){
+	function __construct($module, $fields_array){
 		self::__init($module, $fields_array);
 	}
 
 	function __init($module, $fields_array){
 		$infoArr = self::getInformationArray($module);
-		
 		//attach extra fields related information to the fields_array; this will be useful for processing the export data
 		foreach($infoArr as $fieldname=>$fieldinfo){
 			if(in_array($fieldinfo["fieldlabel"], $fields_array)){
@@ -287,6 +285,7 @@ class ExportUtils{
 		$decimal = $current_user->currency_decimal_separator;
 		$numsep = $current_user->currency_grouping_separator;
 		foreach($arr as $fieldlabel=>&$value){
+			if (empty($this->fieldsArr[$fieldlabel])) continue;
 			$fieldInfo = $this->fieldsArr[$fieldlabel];
 
 			$uitype = $fieldInfo['uitype'];

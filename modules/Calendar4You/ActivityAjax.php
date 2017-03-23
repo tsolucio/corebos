@@ -16,10 +16,10 @@ require_once("modules/Calendar4You/CalendarUtils.php");
 require_once('include/utils/utils.php');
 require_once("modules/Calendar/Calendar.php");
 require_once('include/logging.php');
-$cal_log =& LoggerManager::getLogger('calendar');
+$cal_log = LoggerManager::getLogger('calendar');
 $cal_log->debug("In Calendar4YouAjax file");
 
-$mysel = vtlib_purify($_REQUEST['view']);
+$mysel = isset($_REQUEST['view']) ? vtlib_purify($_REQUEST['view']) : 'day';
 $calendar_arr = Array();
 $calendar_arr['IMAGE_PATH'] = $image_path;
 $date_data = array();

@@ -6,11 +6,9 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 
-class vt_DateTime
-{
+class vt_DateTime {
 	var $second = 0;
 	var $minute = 0;
 	var $hour = 0;
@@ -39,7 +37,7 @@ class vt_DateTime
 	 * @param array  $timearr - collection of string
 	 * @param string $check   - check string
 	 */
-	function vt_DateTime(&$timearr,$check)
+	function __construct(&$timearr,$check)
 	{
 		if (! isset( $timearr) || count($timearr) == 0 )
 		{
@@ -438,12 +436,6 @@ class vt_DateTime
 		$tmpDate['day'] = $this->day;
 		$tmpDate['month'] = $this->month;
 		$tmpDate['year'] = $this->year;
-
-		if(is_array($arr) && !empty($arr)){
-			$tmpDate['year'] = $arr[0];
-			$tmpDate['month'] = $arr[1];
-			$tmpDate['day'] = $arr[2];
-		}
 
 		if($mode == 'increment'){
 			$month = $tmpDate['month'] + 1;

@@ -16,13 +16,15 @@ function getTopInvoice($maxval,$calCnt)
 	require_once('include/utils/utils.php');
 	require_once('modules/CustomView/CustomView.php');
 
-	global $app_strings,$current_language,$current_user,$adb,$list_max_entries_per_page,$theme;
+	global $app_strings,$current_language,$current_user,$adb,$theme;
+	$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,'Invoice');
 	$current_module_strings = return_module_language($current_language, 'Invoice');
 
 	$log = LoggerManager::getLogger('invoice_list');
 
 	$url_string = '';
 	$sorder = '';
+	$order_by = '';
 	$oCustomView = new CustomView("Invoice");
 	$customviewcombo_html = $oCustomView->getCustomViewCombo();
 	if(isset($_REQUEST['viewname']) == false || $_REQUEST['viewname']=='')
@@ -135,37 +137,35 @@ function getTopInvoice($maxval,$calCnt)
 	$navigation_array, true);
 
 	$values=Array('ModuleName'=>'Invoice','Title'=>$title,'Header'=>$header,'Entries'=>$entries,'search_qry'=>$search_qry);
-
-	if ( ($noofrows == 0 ) || ($noofrows>0) )
-		return $values;
+	return $values;
 }
 
 function getTopInvoiceSearch($output) {
 	global $current_user;
-	
+
 	$output['query'] = 'true';
 	$output['searchtype'] = 'advance';
 
 	$advft_criteria_groups = array('1' => array('groupcondition' => null));
 	$advft_criteria = array(
 		array (
-            'groupid' => 1,
-            'columnname' => 'vtiger_invoice:invoicestatus:invoicestatus:Invoice_Status:V',
-            'comparator' => 'n',
-            'value' => 'Paid',
-            'columncondition' => 'and'
-        ),
+			'groupid' => 1,
+			'columnname' => 'vtiger_invoice:invoicestatus:invoicestatus:Invoice_Status:V',
+			'comparator' => 'n',
+			'value' => 'Paid',
+			'columncondition' => 'and'
+		),
 		array (
-            'groupid' => 1,
-            'columnname' => 'vtiger_crmentity:smownerid:assigned_user_id:Invoice_Assigned_To:V',
-            'comparator' => 'e',
-            'value' => getFullNameFromArray('Users', $current_user->column_fields),
-            'columncondition' => null
-        )
+			'groupid' => 1,
+			'columnname' => 'vtiger_crmentity:smownerid:assigned_user_id:Invoice_Assigned_To:V',
+			'comparator' => 'e',
+			'value' => getFullNameFromArray('Users', $current_user->column_fields),
+			'columncondition' => null
+		)
 	);
 
-	$output['advft_criteria'] = Zend_Json::encode($advft_criteria);
-	$output['advft_criteria_groups'] = Zend_Json::encode($advft_criteria_groups);
+	$output['advft_criteria'] = json_encode($advft_criteria);
+	$output['advft_criteria_groups'] = json_encode($advft_criteria_groups);
 
 	return $output;
 }

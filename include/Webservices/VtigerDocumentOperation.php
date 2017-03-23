@@ -20,7 +20,7 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 	protected $tabId;
 	protected $isEntity = true;
 
-	public function VtigerDocumentOperation($webserviceObject,$user,$adb,$log){
+	public function __construct($webserviceObject,$user,$adb,$log){
 		parent::__construct($webserviceObject,$user,$adb,$log);
 		$this->tabId = $this->meta->getTabId();
 	}
@@ -45,12 +45,24 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 
 		if ($element['filelocationtype']=='I' and !empty($element['filename'])) {
 			$file = $element['filename'];
-			$element['filesize']=$file['size'];
 			$file['assigned_user_id'] = $element['assigned_user_id'];
 			$file['setype'] = "Documents Attachment";
 			$attachid = SaveAttachmentDB($file);
 			$element['filetype']=$file['type'];
 			$element['filename']=$filename = str_replace(array(' ','/'), '_',$file['name']);  // no spaces nor slashes
+			$element['filesize']=$file['size'];
+			if ($element['filesize']==0) {
+				$dbQuery = 'SELECT * FROM vtiger_attachments WHERE attachmentsid = ?' ;
+				$result = $adb->pquery($dbQuery, array($attachid));
+				if($result and $adb->num_rows($result) == 1) {
+					$name = @$adb->query_result($result, 0, 'name');
+					$filepath = @$adb->query_result($result, 0, 'path');
+					$name = html_entity_decode($name, ENT_QUOTES, $default_charset);
+					$saved_filename = $attachid."_".$name;
+					$disk_file_size = filesize($filepath.$saved_filename);
+					$element['filesize']=$file['size']=$disk_file_size;
+				}
+			}
 		}
 
 		$element = DataTransform::sanitizeForInsert($element,$this->meta);
@@ -76,11 +88,11 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 		return DataTransform::filterAndSanitize($crmObject->getFields(),$this->meta);
 	}
 
-	public function retrieve($id){
+	public function retrieve($id,$deleted=false){
 		global $adb,$default_charset,$site_URL;
 		$ids = vtws_getIdComponents($id);
 		$elemid = $ids[1];
-		$doc = parent::retrieve($id);
+		$doc = parent::retrieve($id,$deleted);
 		// Add relations
 		$relsrs=$adb->pquery("SELECT crmid FROM vtiger_senotesrel where notesid=?",Array($elemid));
 		$rels=array();
@@ -153,7 +165,7 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 
 	private function vtyiicpng_getWSEntityId($entityName) {
 		global $adb;
-		$rs = $adb->query("select id from vtiger_ws_entity where name='$entityName'");
+		$rs = $adb->pquery('select id from vtiger_ws_entity where name=?',array($entityName));
 		$wsid = @$adb->query_result($rs, 0, 'id').'x';
 		return $wsid;
 	}

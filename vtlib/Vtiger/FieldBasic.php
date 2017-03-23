@@ -26,7 +26,6 @@ class Vtiger_FieldBasic {
 	var $uitype = 1;
 	var $typeofdata = 'V~O';
 	var	$displaytype   = 1;
-
 	var $generatedtype = 1;
 	var	$readonly      = 1;
 	var	$presence      = 2;
@@ -36,7 +35,6 @@ class Vtiger_FieldBasic {
 	var	$quickcreate   = 1;
 	var	$quicksequence = false;
 	var	$info_type     = 'BAS';
-
 	var $block;
 
 	/**
@@ -156,14 +154,14 @@ class Vtiger_FieldBasic {
 
 		if(!$this->label) $this->label = $this->name;
 
-		$chkrs = $adb->pquery('select 1 from vtiger_field where tabid=? and columnname=? limit 1',
-			array($this->getModuleId(), $this->column));
+		$chkrs = $adb->pquery('select 1 from vtiger_field where tabid=? and (columnname=? or fieldlabel=?) limit 1',
+			array($this->getModuleId(), $this->column, $this->label));
 		if ($adb->num_rows($chkrs)==0) {
 			$result = $adb->pquery("INSERT INTO vtiger_field (tabid, fieldid, columnname, tablename, generatedtype,
 				uitype, fieldname, fieldlabel, readonly, presence, defaultvalue, maximumlength, sequence,
 				block, displaytype, typeofdata, quickcreate, quickcreatesequence, info_type, helpinfo)
 				VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-					Array($this->getModuleId(), $this->id, $this->column, $this->table, $this->generatedtype,
+					Array($this->getModuleId(), $this->id, $this->column, $this->table, intval($this->generatedtype),
 					$this->uitype, $this->name, $this->label, $this->readonly, $this->presence, $this->defaultvalue,
 					$this->maximumlength, $this->sequence, $this->getBlockId(), $this->displaytype, $this->typeofdata,
 					$this->quickcreate, $this->quicksequence, $this->info_type, $this->helpinfo));
@@ -177,11 +175,11 @@ class Vtiger_FieldBasic {
 				Vtiger_Utils::AddColumn($this->table, $this->column, $this->columntype);
 			}
 		}
-		if($result) {
+		if(!empty($result)) {
 			self::log("Creating Field $this->name ... DONE");
 			self::log("Module language mapping for $this->label ... CHECK");
 		} else {
-			self::log("Creating Field $this->name ... <span style='color:red'>**ERROR**</span>");
+			self::log("Creating Field $this->name on $moduleInstance->name ... <span style='color:red'>**ERROR**</span>");
 			self::log("Module language mapping for $this->label ... <span style='color:red'>**ERROR**</span>");
 		}
 	}
@@ -192,6 +190,22 @@ class Vtiger_FieldBasic {
 	 * @internal TODO
 	 */
 	function __update() {
+		$db = PearDatabase::getInstance();
+		$query = 'UPDATE vtiger_field SET typeofdata=?,presence=?,quickcreate=?,masseditable=?,defaultvalue=?';
+		$params = array($this->typeofdata, $this->presence, $this->quickcreate, $this->masseditable, $this->defaultvalue);
+
+		if (!empty($this->uitype)) {
+			$query .= ', uitype=?';
+			$params[] = $this->uitype;
+		}
+		if (!empty($this->label)) {
+			$query .= ', fieldlabel=?';
+			$params[] = decode_html($this->label);
+		}
+		$query .= ' WHERE fieldid=?';
+		$params[] = $this->id;
+
+		$db->pquery($query,$params);
 		self::log("Updating Field $this->name ... DONE");
 	}
 

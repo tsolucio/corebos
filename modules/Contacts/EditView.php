@@ -1,75 +1,57 @@
 <?php
-/*+*******************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
- * ****************************************************************************** */
-/* * *******************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Contacts/EditView.php,v 1.21 2005/03/24 16:18:38 samk Exp $
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- * ****************************************************************************** */
-
+ ************************************************************************************/
+global $app_strings, $mod_strings, $current_language, $currentModule, $theme, $adb;
 require_once('Smarty_setup.php');
-require_once('data/Tracker.php');
-require_once('include/CustomFieldUtil.php');
-require_once('include/utils/utils.php');
-
-global $log, $mod_strings, $app_strings, $theme, $currentModule, $current_user, $upload_maxsize;
-
-//added for contact image
-$encode_val = vtlib_purify($_REQUEST['encode_val']);
-$decode_val = base64_decode($encode_val);
-
-$saveimage = isset($_REQUEST['saveimage']) ? vtlib_purify($_REQUEST['saveimage']) : "false";
-$errormessage = isset($_REQUEST['error_msg']) ? vtlib_purify($_REQUEST['error_msg']) : "false";
-$image_error = isset($_REQUEST['image_error']) ? vtlib_purify($_REQUEST['image_error']) : "false";
-//end
+global $current_user;
 
 $focus = CRMEntity::getInstance($currentModule);
-$smarty = new vtigerCRM_Smarty;
+$smarty = new vtigerCRM_Smarty();
+// Identify this module as custom module.
+$smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
+
+$category = getParentTab($currentModule);
+$record = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : null;
+$isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : null;
 
 //added to fix the issue4600
 $searchurl = getBasic_Advance_SearchURL();
 $smarty->assign("SEARCH", $searchurl);
 //4600 ends
 
-if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
-    $focus->id = $_REQUEST['record'];
-    $focus->mode = 'edit';
-	$focus->retrieve_entity_info($_REQUEST['record'], "Contacts");
-    $log->info("Entity info successfully retrieved for EditView.");
+if($record) {
+	$focus->id = $record;
+	$focus->mode = 'edit';
+	$focus->retrieve_entity_info($record, $currentModule);
 	$focus->firstname = $focus->column_fields['firstname'];
 	$focus->lastname = $focus->column_fields['lastname'];
 }
-$smarty->assign("UPLOADSIZE", $upload_maxsize/1000000); //Convert to MB
-$smarty->assign("UPLOAD_MAXSIZE",$upload_maxsize);
-if ($image_error == "true") {
-	$explode_decode_val = explode("&", $decode_val);
-	for ($i = 1; $i < count($explode_decode_val); $i++) {
-		$test = $explode_decode_val[$i];
-		$values = explode("=", $test);
-		$field_name_val = $values[0];
-		$field_value = $values[1];
-		$focus->column_fields[$field_name_val] = $field_value;
-        }
+//added for contact image
+$errormessage = isset($_REQUEST['error_msg']) ? vtlib_purify($_REQUEST['error_msg']) : '';
+if ($errormessage == 2) {
+	$errormessage = $mod_strings['LBL_MAXIMUM_LIMIT_ERROR'];
+} else if ($errormessage == 3) {
+	$errormessage = $mod_strings['LBL_UPLOAD_ERROR'];
+} else if ($errormessage == "image") {
+	$errormessage = $mod_strings['LBL_IMAGE_ERROR'];
+} else if ($errormessage == "invalid") {
+	$errormessage = $mod_strings['LBL_INVALID_IMAGE'];
+}
+if ($errormessage != '') {
+	$smarty->assign("ERROR_MESSAGE", $errormessage);
 }
 
 if (isset($_REQUEST['account_id']) && $_REQUEST['account_id'] != '' && $_REQUEST['record'] == '') {
-        require_once('modules/Accounts/Accounts.php');
-        $focus->column_fields['account_id'] = $_REQUEST['account_id'];
-        $acct_focus = new Accounts();
-	$acct_focus->retrieve_entity_info($_REQUEST['account_id'], "Accounts");
+	require_once('modules/Accounts/Accounts.php');
+	$focus->column_fields['account_id'] = vtlib_purify($_REQUEST['account_id']);
+	$acct_focus = new Accounts();
+	$acct_focus->retrieve_entity_info($focus->column_fields['account_id'], 'Accounts');
 	$focus->column_fields['fax'] = $acct_focus->column_fields['fax'];
 	$focus->column_fields['otherphone'] = $acct_focus->column_fields['phone'];
 	$focus->column_fields['mailingcity'] = $acct_focus->column_fields['bill_city'];
@@ -84,112 +66,125 @@ if (isset($_REQUEST['account_id']) && $_REQUEST['account_id'] != '' && $_REQUEST
 	$focus->column_fields['othercountry'] = $acct_focus->column_fields['ship_country'];
 	$focus->column_fields['mailingpobox'] = $acct_focus->column_fields['bill_pobox'];
 	$focus->column_fields['otherpobox'] = $acct_focus->column_fields['ship_pobox'];
-
-	$log->debug("Accountid Id from the request is " . $_REQUEST['account_id']);
 }
-if (isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
-        $focus->id = "";
-        $focus->mode = "";
-}
-if ($focus->mode != 'edit') {
-        setObjectValuesFromRequest($focus);
-}
-$disp_view = getView($focus->mode);
-
-$smarty->assign("BLOCKS", getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields));
-
-$smarty->assign("OP_MODE", $disp_view);
-
-//needed when creating a new contact with a default vtiger_account value passed in
+//needed when creating a new contact with a default account value passed in
 if (isset($_REQUEST['account_name']) && is_null($focus->account_name)) {
-      $focus->account_name = $_REQUEST['account_name'];
-
-
+	$focus->account_name = vtlib_purify($_REQUEST['account_name']);
 }
 if (isset($_REQUEST['account_id']) && is_null($focus->account_id)) {
-      $focus->account_id = $_REQUEST['account_id'];
+	$focus->account_id = vtlib_purify($_REQUEST['account_id']);
 }
+if (isset($_REQUEST['campaignid']))
+	$smarty->assign('campaignid', vtlib_purify($_REQUEST['campaignid']));
 
-$theme_path = "themes/" . $theme . "/";
-$image_path = $theme_path . "images/";
-
-$log->info("Contact detail view");
-
-$smarty->assign("MOD", $mod_strings);
-$smarty->assign("THEME", $theme);
-$smarty->assign("APP", $app_strings);
-$contact_name = $focus->lastname;
+$contact_name = (isset($focus->lastname) ? $focus->lastname : '');
 if (getFieldVisibilityPermission($currentModule, $current_user->id, 'firstname') == '0') {
-	$contact_name .= ' ' . $focus->firstname;
+	$contact_name .= ' ' . (isset($focus->firstname) ? $focus->firstname : '');
 }
-$smarty->assign("NAME", $contact_name);
-if (isset($cust_fld)) {
-        $smarty->assign("CUSTOMFIELD", $cust_fld);
+
+if($isduplicate == 'true') {
+	$focus->id = '';
+	$focus->mode = '';
 }
-$smarty->assign("ID", $focus->id);
-$smarty->assign("MODULE", $currentModule);
-$smarty->assign("SINGLE_MOD", 'Contact');
-
-if ($focus->mode == 'edit') {
-	$smarty->assign("UPDATEINFO", updateInfo($focus->id));
-	$smarty->assign("MODE", $focus->mode);
+$focus->preEditCheck($_REQUEST,$smarty);
+if (!empty($_REQUEST['save_error']) and $_REQUEST['save_error'] == "true") {
+	if (!empty($_REQUEST['encode_val'])) {
+		global $current_user;
+		$encode_val = vtlib_purify($_REQUEST['encode_val']);
+		$decode_val = base64_decode($encode_val);
+		$explode_decode_val = explode('&', trim($decode_val,'&'));
+		$tabid = getTabid($currentModule);
+		foreach ($explode_decode_val as $fieldvalue) {
+			$value = explode("=", $fieldvalue);
+			$field_name_val = $value[0];
+			$field_value =urldecode($value[1]);
+			$finfo = VTCacheUtils::lookupFieldInfo($tabid, $field_name_val);
+			if ($finfo !== false) {
+				switch ($finfo['uitype']) {
+					case '56':
+						$field_value = $field_value=='on' ? '1' : '0';
+						break;
+					case '7':
+					case '9':
+					case '72':
+						$field_value = CurrencyField::convertToDBFormat($field_value, null, true);
+						break;
+					case '71':
+						$field_value = CurrencyField::convertToDBFormat($field_value);
+						break;
+					case '33':
+					case '3313':
+					case '3314':
+						if (is_array($field_value)) {
+							$field_value = implode(' |##| ', $field_value);
+						}
+						break;
+				}
+			}
+			$focus->column_fields[$field_name_val] = $field_value;
+		}
+	}
+	$errormessageclass = isset($_REQUEST['error_msgclass']) ? vtlib_purify($_REQUEST['error_msgclass']) : '';
+	$errormessage = isset($_REQUEST['error_msg']) ? vtlib_purify($_REQUEST['error_msg']) : '';
+	$smarty->assign('ERROR_MESSAGE_CLASS', $errormessageclass);
+	$smarty->assign('ERROR_MESSAGE', $errormessage);
+} elseif($focus->mode != 'edit'){
+	setObjectValuesFromRequest($focus);
 }
-$smarty->assign('CREATEMODE', vtlib_purify($_REQUEST['createmode']));
+$smarty->assign('MASS_EDIT','0');
+$disp_view = getView($focus->mode);
+$blocks = getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields);
+$smarty->assign('BLOCKS', $blocks);
+$basblocks = getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields, 'BAS');
+$smarty->assign('BASBLOCKS', $basblocks);
+$advblocks = getBlocks($currentModule,$disp_view,$focus->mode,$focus->column_fields,'ADV');
+$smarty->assign('ADVBLOCKS', $advblocks);
 
-if (isset($_REQUEST['activity_mode']) && $_REQUEST['activity_mode'] != '')
-	$smarty->assign("ACTIVITYMODE", vtlib_purify($_REQUEST['activity_mode']));
+$custom_blocks = getCustomBlocks($currentModule,$disp_view);
+$smarty->assign('CUSTOMBLOCKS', $custom_blocks);
+$smarty->assign('FIELDS',$focus->column_fields);
 
-// Unimplemented until jscalendar language files are fixed
+$smarty->assign('OP_MODE',$disp_view);
+$smarty->assign('APP', $app_strings);
+$smarty->assign('MOD', $mod_strings);
+$smarty->assign('MODULE', $currentModule);
+$smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
+$smarty->assign('CATEGORY', $category);
+$smarty->assign("THEME", $theme);
+$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
+$smarty->assign('ID', $focus->id);
+$smarty->assign('MODE', $focus->mode);
+$smarty->assign('CREATEMODE', isset($_REQUEST['createmode']) ? vtlib_purify($_REQUEST['createmode']) : '');
+
+$smarty->assign('CHECK', Button_Check($currentModule));
+$smarty->assign('DUPLICATE', $isduplicate);
+
+$smarty->assign('NAME', $contact_name);
+if($focus->mode == 'edit' || $isduplicate == 'true') {
+	$smarty->assign('UPDATEINFO',updateInfo($record));
+}
+
+if(isset($_REQUEST['return_module']))    $smarty->assign("RETURN_MODULE", vtlib_purify($_REQUEST['return_module']));
+if(isset($_REQUEST['return_action']))    $smarty->assign("RETURN_ACTION", vtlib_purify($_REQUEST['return_action']));
+if(isset($_REQUEST['return_id']))        $smarty->assign("RETURN_ID", vtlib_purify($_REQUEST['return_id']));
+if (isset($_REQUEST['return_viewname'])) $smarty->assign("RETURN_VIEWNAME", vtlib_purify($_REQUEST['return_viewname']));
+$upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize',3000000,$currentModule);
+$smarty->assign("UPLOADSIZE", $upload_maxsize/1000000); //Convert to MB
+$smarty->assign("UPLOAD_MAXSIZE",$upload_maxsize);
+
+// Field Validation Information
+$tabid = getTabid($currentModule);
+$validationData = getDBValidationData($focus->tab_name,$tabid);
+$validationArray = split_validationdataArray($validationData);
+
+$smarty->assign("VALIDATION_DATA_FIELDNAME",$validationArray['fieldname']);
+$smarty->assign("VALIDATION_DATA_FIELDDATATYPE",$validationArray['datatype']);
+$smarty->assign("VALIDATION_DATA_FIELDLABEL",$validationArray['fieldlabel']);
+
+// In case you have a date field
 $smarty->assign("CALENDAR_LANG", $app_strings['LBL_JSCALENDAR_LANG']);
 $smarty->assign("CALENDAR_DATEFORMAT", parse_calendardate($app_strings['NTC_DATE_FORMAT']));
 
-if (isset($_REQUEST['campaignid']))
-	$smarty->assign("campaignid", vtlib_purify($_REQUEST['campaignid']));
-if (isset($_REQUEST['return_module']))
- 	$smarty->assign("RETURN_MODULE", vtlib_purify($_REQUEST['return_module']));
-if (isset($_REQUEST['return_action']))
- 	$smarty->assign("RETURN_ACTION", vtlib_purify($_REQUEST['return_action']));
-if (isset($_REQUEST['return_id']))
- 	$smarty->assign("RETURN_ID", vtlib_purify($_REQUEST['return_id']));
-if (isset($_REQUEST['return_viewname']))
- 	$smarty->assign("RETURN_VIEWNAME", vtlib_purify($_REQUEST['return_viewname']));
-$smarty->assign("THEME", $theme);
-$smarty->assign("IMAGE_PATH", $image_path);
-
-$tabid = getTabid("Contacts");
-$validationData = getDBValidationData($focus->tab_name, $tabid);
-$data = split_validationdataArray($validationData);
-
-$smarty->assign("VALIDATION_DATA_FIELDNAME", $data['fieldname']);
-$smarty->assign("VALIDATION_DATA_FIELDDATATYPE", $data['datatype']);
-$smarty->assign("VALIDATION_DATA_FIELDLABEL", $data['fieldlabel']);
-$category = getParentTab();
-$smarty->assign("CATEGORY", $category);
-
-if ($errormessage == 2) {
-	$msg = $mod_strings['LBL_MAXIMUM_LIMIT_ERROR'];
-	$errormessage = "<B><font color='red'>" . $msg . "</font></B> <br><br>";
-} else if ($errormessage == 3) {
- 	        $msg = $mod_strings['LBL_UPLOAD_ERROR'];
-	$errormessage = "<B><font color='red'>" . $msg . "</font></B> <br><br>";
-} else if ($errormessage == "image") {
-	 	        $msg = $mod_strings['LBL_IMAGE_ERROR'];
-	$errormessage = "<B><font color='red'>" . $msg . "</font></B> <br><br>";
-} else if ($errormessage == "invalid") {
-	 	        $msg = $mod_strings['LBL_INVALID_IMAGE'];
-	$errormessage = "<B><font color='red'>" . $msg . "</font></B> <br><br>";
-} else {
-	$errormessage = "";
-}
-if ($errormessage != "") {
-	$smarty->assign("ERROR_MESSAGE", $errormessage);
-}
-
-$check_button = Button_Check($module);
-$smarty->assign("CHECK", $check_button);
-$smarty->assign("DUPLICATE", vtlib_purify($_REQUEST['isDuplicate']));
-
-global $adb;
 // Module Sequence Numbering
 $mod_seq_field = getModuleSequenceField($currentModule);
 if($focus->mode != 'edit' && $mod_seq_field != null) {
@@ -209,17 +204,20 @@ if($focus->mode != 'edit' && $mod_seq_field != null) {
 		$smarty->assign("MOD_SEQ_ID",$autostr);
 	}
 } else {
-	$smarty->assign("MOD_SEQ_ID", $focus->column_fields[$mod_seq_field['name']]);
+	if (!empty($mod_seq_field) and !empty($mod_seq_field['name']) and !empty($focus->column_fields[$mod_seq_field['name']])) {
+		$smarty->assign('MOD_SEQ_ID', $focus->column_fields[$mod_seq_field['name']]);
+	} else {
+		$smarty->assign('MOD_SEQ_ID', '');
+	}
 }
-// END
+
 // Gather the help information associated with fields
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
-// END
 
 $picklistDependencyDatasource = Vtiger_DependencyPicklist::getPicklistDependencyDatasource($currentModule);
-$smarty->assign("PICKIST_DEPENDENCY_DATASOURCE", Zend_Json::encode($picklistDependencyDatasource));
+$smarty->assign("PICKIST_DEPENDENCY_DATASOURCE", json_encode($picklistDependencyDatasource));
 //Show or not the Header to copy address to left or right
-$smarty->assign('SHOW_COPY_ADDRESS', GlobalVariable::getVariable('Show_Copy_Adress_Header', 'yes', $currentModule, $current_user->id));
+$smarty->assign('SHOW_COPY_ADDRESS', GlobalVariable::getVariable('Application_Show_Copy_Address', 1, $currentModule, $current_user->id));
 
 $smarty->display("salesEditView.tpl");
 

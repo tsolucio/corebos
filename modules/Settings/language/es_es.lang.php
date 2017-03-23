@@ -110,7 +110,6 @@ $mod_strings = array (
       'WORDINTEGRATION' => 'Plantillas de Mailing',
       'LBL_MAIL_MERGE' => 'Mailings',
       'NOTIFICATIONSCHEDULERS' => 'Programador de Notificaciones',
-      'LBL_ACTIVE' => 'Activa',
       'LBL_INACTIVE' => 'Inactiva',
       'LBL_NOTIFICATION' => 'Notificación',
       'LBL_DESCRIPTION' => 'Descripción',
@@ -221,8 +220,6 @@ $mod_strings = array (
       'LBL_BUSINESS_TYPE' => 'Tipo de Negocio',
       'LBL_CURRENCY_TYPE' => 'Tipo de Moneda',
       'LBL_SALES_STAGE' => 'Estado de Venta',
-      'LBL_PRIORITY' => 'Prioridad',
-      'LBL_STATUS' => 'Estado',
       'LBL_CATEGORY' => 'Categoría',
       'LBL_MANUFACTURER' => 'Fabricante',
       'LBL_PRODUCT_CATEGORY' => 'Categoría de Producto',
@@ -247,7 +244,7 @@ $mod_strings = array (
       'LBL_IMAP4' => 'IMAP4',
       'LBL_POP' => 'POP',
       'LBL_IMAP' => 'IMAP',
-      'LBL_MAIL_DISCLAIM' => 'Los elementos marcados con <font color="red">*</font> son obligatorios<br>Los elementos marcados con <font color="red">* *</font> no están completamente soportados',
+      'LBL_MAIL_DISCLAIM' => 'Los elementos marcados con <font color="red">*</font> son obligatorios',
       'LBL_SSL_OPTIONS' => 'Opciones SSL',
       'LBL_TLS' => 'TLS',
       'LBL_NO_TLS' => 'Sin TLS',
@@ -597,7 +594,6 @@ $mod_strings = array (
       'ERR_ALREADY_EXISTS' => 'ya existe.',
       'ERR_SPECIFY_DIFFERENT_LABEL' => 'Por favor introduzca una etiqueta distinta',
       'LBL_TOOLS_TO_BE_SHOWN'=>'Herramientas a mostrar',
-      'LBL_PICKLIST_GLOBAL_CHANGE'=>'Cambio Global',
       'LBL_PICKLIST_TRANSFER'=>'Transfiriendo los valores de ',
       'LBL_REPLACE_VALUE_WITH'=>'Sustituir valor con ',
       'LBL_EDIT_CUSTOM_RULE'=>'Editar Regla de Privilegio Personalizada',
@@ -613,11 +609,7 @@ $mod_strings = array (
       'LBL_LANGUAGES' => 'Editar Paquete de idioma',
       'LBL_LANGUAGES_DESCRIPTION' => 'Gestionar Paquetes de Idiomas',
 
-      // Added after 5.0.4 GA
-      
       'LBL_GENERAL_FIELDS'=>'Campos Generales',
-      
-      'LBL_CANCEL_BUTTON'=>'Cancelar',
       
       //Added fields for Inventory Number labels
       'LBL_CUSTOMIZE_INVENTORY_NUMBER'=>'Personalizar Secuencia de Inventario',
@@ -675,8 +667,6 @@ $mod_strings = array (
       'LBL_TYPE' => 'Tipo',
       'LBL_SSL' => 'SSL',
       'LBL_METHOD'=> 'Método',
-      'LBL_VAL_SSL_CERT'=>'Validar Certificado SSL',
-      'LBL_DONOT_VAL_SSL_CERT'=>'No Validar Certificado SSL',
       'LBL_STATUS'=>'Estado',
       'LBL_ENABLE'=>'Habilita',
       'LBL_DISABLE'=>'Deshabilita',
@@ -690,9 +680,9 @@ $mod_strings = array (
       'LBL_FROM'=>'De',
       'LBL_TO'=>'A',
     
-      'LBL_ACTION'=>'Acción',
       'LBL_CREATE'=>'Crear',
       'LBL_TICKET'=>'Ticket',
+      'LBL_PROJECT'=>'Proyecto',
       'LBL_ADD'=>'Añadir',
     
       'LBL_CONTACT'=>'Contacto',
@@ -767,7 +757,9 @@ $mod_strings = array (
       // Module Sequence Numbering
       'LBL_CUSTOMIZE_MODENT_NUMBER'=>'Personaliza Numeración Registro',
       'LBL_CUSTOMIZE_MODENT_NUMBER_DESCRIPTION'=>'Personalización Número de Entidad',
-      // END
+	'ERR_CUSTOMIZE_MODENT_NUMBER_EMPTY' => 'La secuencia de inicio no puede quedar vacía!',
+	'ERR_CUSTOMIZE_MODENT_NUMBER_NUMERIC' => 'La secuencia de inicio debe ser numérica.',
+	// END
 
       //added for softphone integration
       'LBL_SOFTPHONE_SERVER_SETTINGS'=>'Configuración Servidor Telefonía IP',
@@ -786,6 +778,7 @@ $mod_strings = array (
       'ASTERISK_CONFIGURATION'=>'Configuración Asterisk',
       //softphone integration ends
 
+	'LBL_SELECT_FIELD_TO_MOVE' => 'Selecciona el campo a mover',
       'VTLIB_LBL_SELECT_PACKAGE_FILE'=>'Selecciona el Módulo Empaquetado',
       'VTLIB_LBL_FILE_LOCATION'=>'Cargar fichero:',
       'VTLIB_LBL_PACKAGE_URL' => 'Instalar desde URL:',
@@ -866,32 +859,20 @@ $mod_strings = array (
       //Added for: 5473
       'LBL_SHARING_ACCESS_HELPNOTE' => 'Trás las modificaciones, pulsa el botón de Recalcular para aplicar los cambios.',
 
-      //for customer portal extension module
-      'PORTAL_EXTENSION_DESCRIPTION'=>'Permite Configurar la Extensión Portal del Cliente',
-      'LBL_CUSTOMER_PORTAL'=> 'Portal Cliente',
-
       'LBL_ADD_CUSTOMFIELD' => 'Añadir Campo Personalizado',
 
       'ERR_INVALID_PROFILE_ID' => 'Identificador perfil inválido. Por favor, indica un identificador válido',
 
       // Customization
-      'LBL_PUBLISHER' => 'Publicado por',
-      'LBL_PUBLISHED_ON' => 'Publicado el',
-      'LBL_LICENSE'   => 'Licencia',
-      'LBL_EXTENSION_FILE_DOWNLOAD_FAILED' => 'No se ha podido descargar la extensión!',
       'LBL_ALREADY_EXISTS' => 'Ya Existe',
       'LBL_EXTENSION_INCOMPATIBLE' => 'Extensión Incompatible',
       'LBL_INSTALL' => 'Instalar',
-      'LBL_DEFAULT_SETTINGS_BUTTON_TITLE' => 'Reestablecer al Defecto',
       'LBL_CONFIRM_DEFAULT_SETTINGS' => '¿Estás seguro que quieres cambiar los valores del servidor a sus valores por defecto?',
       'EXISTING_DEFAULT_VALUES' => 'Los valores del servidor ya están en sus valores por defecto',
       'LBL_NOTE' => 'Nota:',
       'LBL_HIDE' => 'Esconder Detalles',
       'LBL_SHOW' => 'Mostrar Detalles',
-      // END
-      'LBL_USER_ADDITION_INFO'=>"Para añadir un nuevo usuario, haz click en  
-      			   <span style='font-style:italic;color:blue;'>OD-Menú Configuración -> On Demand Admin -> Añadir / Invitar Usuario </span>",
-      
+
       'LBL_READ_ONLY_ACCESS_MSG' => 'Acceso Solo-Lectura',
       'LBL_READ_WRITE_ACCESS_MSG' => 'Acceso Lectura-Escritura',
       'LBL_DESCRIPTION_Public: Read Only'=>'Usuarios pueden Solo Leer otros usuarios ',
@@ -908,8 +889,6 @@ $mod_strings = array (
       'LBL_ERR_TAX_LABEL_ALREADY_EXISTS' => 'Este impuesto ya existe.',
       'LBL_ERR_SOME_TAX_LABELS_ALREADY_EXISTS' => 'Algunos impuestos tienen el nombre repetido y no han sido guardados.',
       'LBL_ERR_ADDTAX' => 'Se ha producido un error añadiendo el impuesto. Por favor inténtalo de nuevo',
-      'LBL_EDIT_COMPANY_INFO' => "Para editar la información de la empresa, haz click sobre
-                          <span style='font-style:italic;color:blue;'>Icono Configuración > Administrador > Empresa </span>",
 
       'Configuration Editor'=>'Editor de Configuración',
 

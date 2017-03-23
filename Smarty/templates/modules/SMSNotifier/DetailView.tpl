@@ -12,7 +12,6 @@
 <script type="text/javascript" src="jscalendar/calendar.js"></script>
 <script type="text/javascript" src="jscalendar/lang/calendar-en.js"></script>
 <script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
-<script type="text/javascript" src="include/js/reflection.js"></script>
 <script type="text/javascript" src="include/js/dtlviewajax.js"></script>
 <span id="crmspanid" style="display:none;position:absolute;"  onmouseover="show('crmspanid');">
    <a class="link"  align="right" href="javascript:;">{$APP.LBL_EDIT_BUTTON}</a>
@@ -21,7 +20,6 @@
 <div id="convertleaddiv" style="display:block;position:absolute;left:225px;top:150px;"></div>
 <script>
 {literal}
-var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 function callConvertLeadDiv(id)
 {
 		jQuery.ajax({
@@ -190,8 +188,8 @@ function sendfile_email()
 			</td></tr>
 		</table>
 		<br>
-
-		<!-- Account details tabs -->
+		{include file='applicationmessage.tpl'}
+		<!-- Entity and More information tabs -->
 		<table border=0 cellspacing=0 cellpadding=0 width=95% align=center>
 		<tr>
 			<td>
@@ -236,6 +234,7 @@ function sendfile_email()
 						{else}
 						<img align="absmiddle" title="{$APP.LNK_LIST_NEXT}" src="{'rec_next_disabled.gif'|@vtiger_imageurl:$THEME}">&nbsp;
 						{/if}
+						<span class="detailview_utils_toggleactions"><img align="absmiddle" title="{$APP.TOGGLE_ACTIONS}" src="{'menu-icon.png'|@vtiger_imageurl:$THEME}" width="16px;" onclick="{literal}if (document.getElementById('actioncolumn').style.display=='none') {document.getElementById('actioncolumn').style.display='table-cell';}else{document.getElementById('actioncolumn').style.display='none';}window.dispatchEvent(new Event('resize'));{/literal}"></span>&nbsp;
 					</td>
 				</tr>
 				</table>
@@ -255,6 +254,7 @@ function sendfile_email()
 					<table border=0 cellspacing=0 cellpadding=0 width=100%>
 							<!-- NOTE: We should avoid form-inside-form condition, which could happen when Singlepane view is enabled. -->
 							<form action="index.php" method="post" name="DetailView" id="form">
+							<input type="hidden" id="hdtxt_IsAdmin" value="{if isset($hdtxt_IsAdmin)}{$hdtxt_IsAdmin}{else}0{/if}">
 							{include file='DetailViewHidden.tpl'}
 							{foreach key=header item=detail from=$BLOCKS}
 
@@ -295,9 +295,13 @@ function sendfile_email()
 							<td colspan=4 class="dvInnerHeader">
 							<div style="float:left;font-weight:bold;"><div style="float:left;"><a href="javascript:showHideStatus('tbl{$header|replace:' ':''}','aid{$header|replace:' ':''}','{$IMAGE_PATH}');">
 							{if $BLOCKINITIALSTATUS[$header] eq 1}
-								<img id="aid{$header|replace:' ':''}" src="{'activate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;" alt="Hide" title="Hide"/>
+								<span class="exp_coll_block inactivate">
+								<img id="aid{$header|replace:' ':''}" src="{'activate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;" alt="{'LBL_Hide'|@getTranslatedString:'Settings'}" title="{'LBL_Hide'|@getTranslatedString:'Settings'}"/>
+								</span>
 							{else}
-							<img id="aid{$header|replace:' ':''}" src="{'inactivate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;" alt="Display" title="Display"/>
+							<span class="exp_coll_block activate">
+							<img id="aid{$header|replace:' ':''}" src="{'inactivate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;" alt="{'LBL_Show'|@getTranslatedString:'Settings'}" title="{'LBL_Show'|@getTranslatedString:'Settings'}"/>
+							</span>
 							{/if}
 								</a></div><b>&nbsp;
 								{$header}
@@ -321,9 +325,9 @@ function sendfile_email()
 							{/if}
 							{/if}
 							<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small">
-							{foreach item=detail from=$detail}
-							<tr style="height:25px">
-							{foreach key=label item=data from=$detail}
+							{foreach item=detailInfo from=$detail}
+							<tr style="height:25px" class="detailview_row">
+							{foreach key=label item=data from=$detailInfo}
 							   {assign var=keyid value=$data.ui}
 							   {assign var=keyval value=$data.value}
 							   {assign var=keytblname value=$data.tablename}
@@ -338,27 +342,29 @@ function sendfile_email()
 							   {assign var=keycntimage value=$data.cntimage}
 							   {assign var=keyadmin value=$data.isadmin}
 							   {assign var=display_type value=$data.displaytype}
-                           {if $label ne ''}
-	                        {if $keycntimage ne ''}
-				<td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$keycntimage}</td>
-				{elseif $keyid eq '71' || $keyid eq '72'}<!-- Currency symbol -->
-					<td class="dvtCellLabel" align=right width=25%>{$label}<input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input> ({$keycursymb})</td>
-				{else}
-					<td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$label}</td>
-				{/if}
-				{if $EDIT_PERMISSION eq 'yes' && $display_type neq '2'}
-					{* Performance Optimization Control *}
-					{if !empty($DETAILVIEW_AJAX_EDIT) }
-						{include file="DetailViewUI.tpl"}
-					{else}
-						{include file="DetailViewFields.tpl"}
-					{/if}
-					{* END *}
-				{else}
-					{include file="DetailViewFields.tpl"}
-				{/if}
-			{/if}
-		{/foreach}
+								{if $label ne ''}
+									<td class="dvtCellLabel" align=right width=25%>
+									{if $keycntimage ne ''}
+										{$keycntimage}
+									{elseif $keyid eq '71' || $keyid eq '72'}<!-- Currency symbol -->
+										({$keycursymb})
+									{else}
+										{$label}
+									{/if}
+									</td>
+									{if $EDIT_PERMISSION eq 'yes' && $display_type neq '2'}
+										{* Performance Optimization Control *}
+										{if !empty($DETAILVIEW_AJAX_EDIT) }
+											{include file="DetailViewUI.tpl"}
+										{else}
+											{include file="DetailViewFields.tpl"}
+										{/if}
+										{* END *}
+									{else}
+										{include file="DetailViewFields.tpl"}
+									{/if}
+								{/if}
+							{/foreach}
 						</tr>
 						{/foreach}
 						</table>
@@ -436,7 +442,7 @@ function sendfile_email()
 						<td align="left" style="padding-left:10px;">
 							<input type="hidden" name="pri_email" value="{$EMAIL1}"/>
 							<input type="hidden" name="sec_email" value="{$EMAIL2}"/>
-							<a href="javascript:void(0);" class="webMnu" onclick="if(LTrim('{$EMAIL1}') !='' || LTrim('{$EMAIL2}') !=''){ldelim}fnvshobj(this,'sendmail_cont');sendmail('{$MODULE}',{$ID}){rdelim}else{ldelim}OpenCompose('','create'){rdelim}"><img src="{'sendmail.png'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle"  border="0"/></a>&nbsp;
+							<a href="javascript:void(0);" class="webMnu" onclick="if(LTrim('{$EMAIL1}') !='' || LTrim('{$EMAIL2}') !=''){ldelim}fnvshobj(this,'sendmail_cont');sendmail('{$MODULE}',{$ID}){rdelim}else{ldelim}OpenCompose('','create'){rdelim}"><img src="{'sendmail.png'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle"  border="0"/></a>
 							<a href="javascript:void(0);" class="webMnu" onclick="if(LTrim('{$EMAIL1}') !='' || LTrim('{$EMAIL2}') !=''){ldelim}fnvshobj(this,'sendmail_cont');sendmail('{$MODULE}',{$ID}){rdelim}else{ldelim}OpenCompose('','create'){rdelim}">{$APP.LBL_SENDMAIL_BUTTON_LABEL}</a>
 						</td>
 					</tr>
@@ -589,7 +595,7 @@ function sendfile_email()
 			<td><div id="tagdiv" style="display:visible;"><form method="POST" action="javascript:void(0);" onsubmit="return tagvalidate();"><input class="textbox"  type="text" id="txtbox_tagfields" name="textbox_First Name" value="" style="width:100px;margin-left:5px;"></input>&nbsp;&nbsp;<input name="button_tagfileds" type="submit" class="crmbutton small save" value="{$APP.LBL_TAG_IT}" /></form></div></td>
 		</tr>
 		<tr>
-			<td class="tagCloudDisplay" valign=top> <span id="tagfields">{$ALL_TAG}</span></td>
+			<td class="tagCloudDisplay" valign=top> <span id="tagfields"></span></td>
 		</tr>
 		</table>
 		<!-- End Tag cloud display -->
@@ -679,7 +685,7 @@ function sendfile_email()
 							<input title="{$APP.LBL_DELETE_BUTTON_TITLE}" accessKey="{$APP.LBL_DELETE_BUTTON_KEY}" class="crmbutton small delete" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='index'; {if $MODULE eq 'Accounts'} var confirmMsg = '{$APP.NTC_ACCOUNT_DELETE_CONFIRMATION}' {else} var confirmMsg = '{$APP.NTC_DELETE_CONFIRMATION}' {/if}; submitFormForActionWithConfirmation('DetailView', 'Delete', confirmMsg);" type="button" name="Delete" value="{$APP.LBL_DELETE_BUTTON_LABEL}">&nbsp;
 						{/if}
 						{if $privrecord neq ''}
-						<img align="absmiddle" title="{$APP.LNK_LIST_PREVIOUS}" accessKey="{$APP.LNK_LIST_PREVIOUS}" onclick="location.href='index.php?module={$MODULE}&viewtype={$VIEWTYPE}&action=DetailView&record={$privrecord}&parenttab={$CATEGORY}'" name="privrecord" value="{$APP.LNK_LIST_PREVIOUS}" src="{'rec_prev.gif'|@vtiger_imageurl:$THEME}">&nbsp;
+						<img align="absmiddle" title="{$APP.LNK_LIST_PREVIOUS}" accessKey="{$APP.LNK_LIST_PREVIOUS}" onclick="location.href='index.php?module={$MODULE}&viewtype={if isset($VIEWTYPE)}{$VIEWTYPE}{/if}&action=DetailView&record={$privrecord}&parenttab={$CATEGORY}'" name="privrecord" value="{$APP.LNK_LIST_PREVIOUS}" src="{'rec_prev.gif'|@vtiger_imageurl:$THEME}">&nbsp;
 						{else}
 						<img align="absmiddle" title="{$APP.LNK_LIST_PREVIOUS}" src="{'rec_prev_disabled.gif'|@vtiger_imageurl:$THEME}">
 						{/if}
@@ -687,10 +693,11 @@ function sendfile_email()
 						<img align="absmiddle" title="{$APP.LBL_JUMP_BTN}" accessKey="{$APP.LBL_JUMP_BTN}" onclick="var obj = this;var lhref = getListOfRecords(obj, '{$MODULE}',{$ID},'{$CATEGORY}');" name="jumpBtnIdBottom" id="jumpBtnIdBottom" src="{'rec_jump.gif'|@vtiger_imageurl:$THEME}">&nbsp;
 						{/if}
 						{if $nextrecord neq ''}
-						<img align="absmiddle" title="{$APP.LNK_LIST_NEXT}" accessKey="{$APP.LNK_LIST_NEXT}" onclick="location.href='index.php?module={$MODULE}&viewtype={$VIEWTYPE}&action=DetailView&record={$nextrecord}&parenttab={$CATEGORY}'" name="nextrecord" src="{'rec_next.gif'|@vtiger_imageurl:$THEME}">&nbsp;
+						<img align="absmiddle" title="{$APP.LNK_LIST_NEXT}" accessKey="{$APP.LNK_LIST_NEXT}" onclick="location.href='index.php?module={$MODULE}&viewtype={if isset($VIEWTYPE)}{$VIEWTYPE}{/if}&action=DetailView&record={$nextrecord}&parenttab={$CATEGORY}'" name="nextrecord" src="{'rec_next.gif'|@vtiger_imageurl:$THEME}">&nbsp;
 						{else}
 						<img align="absmiddle" title="{$APP.LNK_LIST_NEXT}" src="{'rec_next_disabled.gif'|@vtiger_imageurl:$THEME}">&nbsp;
 						{/if}
+						<span class="detailview_utils_toggleactions"><img align="absmiddle" title="{$APP.TOGGLE_ACTIONS}" src="{'menu-icon.png'|@vtiger_imageurl:$THEME}" width="16px;" onclick="{literal}if (document.getElementById('actioncolumn').style.display=='none') {document.getElementById('actioncolumn').style.display='table-cell';}else{document.getElementById('actioncolumn').style.display='none';}window.dispatchEvent(new Event('resize'));{/literal}"></span>&nbsp;
 					</td>
 				</tr>
 			</table>

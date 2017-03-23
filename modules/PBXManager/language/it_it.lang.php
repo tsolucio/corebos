@@ -11,7 +11,7 @@
 $mod_strings = Array(
 	'Asterisk' => 'Asterisk',
 	'LBL_ASTERISK_INFORMATION' => 'Informazioni su ASTERISK',
-	
+	'LBL_CALL_INFORMATION' => 'Informazioni chiamata',
 	'Call From'=>'Chiamata da',
 	'Call To'=>'Chiamata a',
 	'Time Of Call'=>'Durata della chiamata',
@@ -19,6 +19,17 @@ $mod_strings = Array(
 	'PBX Manager' => 'Gestore chiamate',
 	'PBXManager' => 'Gestore chiamate',
 	'SINGLE_PBXManager' => 'Gestore chiamate',
+	'ERR_Authenticate' => 'ERROR: authenticateUser. Error connecting with server.',
+	'ERR_Numbers' => 'From extension or Destination number is empty. Cannot proceed with the call.',
+	'ERR_Call' => 'ERROR: createcall. Error connecting with server.',
+	'outgoing' => 'Outgoing',
+	'outgoing-missed' => 'Outgoing-Missed',
+	'outgoing-received' => 'Outgoing-Received',
+	'incoming' => 'Incoming',
+	'incoming-missed' => 'Incoming-Missed',
+	'incoming-received' => 'Incoming-Received',
+	'missed' => 'Missed',
+	'received' => 'Received',
 );
 
 ?>

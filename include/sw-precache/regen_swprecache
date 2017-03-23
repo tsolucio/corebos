@@ -1,0 +1,2 @@
+sw-precache --config=include/sw-precache/sw-precache-config.js --verbose
+md5sum service-worker.js > include/sw-precache/service-worker.md5

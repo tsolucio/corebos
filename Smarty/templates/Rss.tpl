@@ -10,72 +10,7 @@
 -->*}
 <script type="text/javascript" src="modules/Rss/Rss.js"></script>
 <script>
-{literal}
-
-function GetRssFeedList(id)
-{
-	document.getElementById("status").style.display="inline";
-		jQuery.ajax({
-				method:"POST",
-				url:'index.php?module=Rss&action=RssAjax&file=ListView&directmode=ajax&record='+id
-		}).done(function(response) {
-				document.getElementById("status").style.display="none";
-				document.getElementById("rssfeedscont").innerHTML=response;
-			}
-		);
-}
-
-function DeleteRssFeeds(id)
-{
-   if(id != '')	
-   {
-	{/literal}
-		if(confirm('{$APP.DELETE_RSSFEED_CONFIRMATION}'))
-		{literal}
-	{	
-		show('status');	
-		var feed = 'feed_'+id;
-		document.getElementById(feed).parentNode.removeChild(document.getElementById(feed));
-		jQuery.ajax({
-				method:"POST",
-				url:'index.php?module=Rss&return_module=Rss&action=RssAjax&file=Delete&directmode=ajax&record='+id,
-		}).done(function(response) {
-				document.getElementById("status").style.display="none";
-				document.getElementById("rssfeedscont").innerHTML=response;
-				document.getElementById("mysite").src = '';
-				document.getElementById("rsstitle").innerHTML = "&nbsp";
-				}
-			);
-		}
-	}
-	else
-	alert(alert_arr.LBL_NO_FEEDS_SELECTED);	     	
-}
-function SaveRssFeeds()
-{
-	document.getElementById("status").style.display="inline";
-	var rssurl = document.getElementById('rssurl').value;
-	rssurl = rssurl.replace(/&/gi,"##amp##");
-	jQuery.ajax({
-				method:"POST",
-				url:'index.php?module=Rss&action=RssAjax&file=Popup&directmode=ajax&rssurl='+rssurl
-	}).done(function(response) {
-				document.getElementById("status").style.display="none";
-				if(isNaN(parseInt(response))) {
-						var rrt = response;
-						document.getElementById("temp_alert").innerHTML = rrt;
-						removeHTMLTags();	
-						document.getElementById('rssurl').value = '';
-				} else {
-						GetRssFeedList(response);
-						getrssfolders();
-						document.getElementById('rssurl').value = '';
-						document.getElementById('PopupLay').style.display="none";
-				}
-			}
-		);
-}
-{/literal}
+var i18n_DELETE_RSSFEED_CONFIRMATION = '{$APP.DELETE_RSSFEED_CONFIRMATION}';
 </script>
 
 <!-- Contents -->
@@ -84,17 +19,15 @@ function SaveRssFeeds()
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
 <tr>
 	<td valign=top align=right width=8><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-	<td class="showPanelBg" valign="top" width="100%" align=center >	
-		
+	<td class="showPanelBg" valign="top" width="100%" align=center >
 			<!-- RSS Reader UI Starts here--><br>
-				<table width="100%"  border="0" cellspacing="0" cellpadding="5" class="mailClient mailClientBg">
+				<table width="100%" border="0" cellspacing="0" cellpadding="5" class="mailClient mailClientBg">
 				<tr>
 					<td align=left>
-					
-						<table width="100%"  border="0" cellspacing="0" cellpadding="0">
+						<table width="100%" border="0" cellspacing="0" cellpadding="0">
 						<tr>
 							<td width=95% align=left><img src='{'rssroot.gif'|@vtiger_imageurl:$THEME}' align='absmiddle'/><a href="javascript:;" onClick="fnvshobj(this,'PopupLay');document.getElementById('rssurl').focus();" title='{$APP.LBL_ADD_RSS_FEEDS}'>{$MOD.LBL_ADD_RSS_FEED}</a></td>
-							<td  class="componentName" nowrap>{$MOD.LBL_VTIGER_RSS_READER}</td>
+							<td class="componentName" nowrap>{$MOD.LBL_VTIGER_RSS_READER}</td>
 						</tr>
 						<tr>
 							<td colspan="2">
@@ -113,7 +46,7 @@ function SaveRssFeeds()
 										<table border=0 cellspacing=0 cellpadding=0 width=100%>
 										<tr>
 											<td><div id="rssfeedscont">
-											{include file='RssFeeds.tpl'}	
+											{include file='RssFeeds.tpl'}
 											</div>
 											</td>
 										</tr>
@@ -121,16 +54,14 @@ function SaveRssFeeds()
 									</td>
 								</tr>
 								</table>
-								
 							</td>
 						</tr>
-						<tr>		
+						<tr>
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
 							<td height="5"></td>
 						</tr>
 						<tr>
-							
 							<td colspan="3" class="mailSubHeader" id="rsstitle">&nbsp;</td>
 						</tr>
 						<tr>
@@ -145,26 +76,22 @@ function SaveRssFeeds()
 				</table>
 			<!-- RSS Reader UI ends here -->
 	</td>
-	<td valign=top align=right width=8><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>			
+	<td valign=top align=right width=8><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
 	</tr>
 	</table>
-	
-	
-	
+
 	<div id="PopupLay" class="layerPopup">
 	<form onSubmit="SaveRssFeeds(); return false;">
 	<table width="100%" border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine">
 	<tr>
 	<td class="layerPopupHeading" align="left"><img src="{'rssroot.gif'|@vtiger_imageurl:$THEME}" width="24" height="22" align="absmiddle" />&nbsp;{$MOD.LBL_ADD_RSS_FEED}</td>
-	<td align="right"><a href="javascript:fninvsh('PopupLay');"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0"  align="absmiddle" /></a></td>
+	<td align="right"><a href="javascript:fninvsh('PopupLay');"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" /></a></td>
 	</tr>
 	</table>
-	<table border=0 cellspacing=0 cellpadding=5 width=95% align=center> 
+	<table border=0 cellspacing=0 cellpadding=5 width=95% align=center>
 	<tr>
 		<td class=small >
-		
 			<!-- popup specific content fill in starts -->
-
 			<table border=0 celspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
 				<tr>
 					<td align="right" width="25%"><b>{$MOD.LBL_FEED}</b></td>
@@ -172,7 +99,6 @@ function SaveRssFeeds()
 				</tr>
 			</table>
 			<!-- popup specific content fill in ends -->
-		
 		</td>
 	</tr>
 	</table>
@@ -185,45 +111,3 @@ function SaveRssFeeds()
 	</table>
 	</form>
 	</div>
-
-<script type="text/javascript">
-function makedefaultRss(id)
-{ldelim}
-	if(id != '')
-	{ldelim}
-		document.getElementById("status").style.display="inline";
-		jQuery.ajax({ldelim}
-				method:"POST",
-				url:'index.php?module=Rss&action=RssAjax&file=Popup&directmode=ajax&record='+id
-		{rdelim}).done(function(response) {ldelim}
-					document.getElementById("status").style.display="none";
-					getrssfolders();
-				{rdelim}
-			);
-	{rdelim}
-{rdelim}
-function getrssfolders()
-{ldelim}
-	jQuery.ajax({ldelim}
-			method:"POST",
-			url:'index.php?module=Rss&action=RssAjax&file=ListView&folders=true'
-	{rdelim}).done(function(response) {ldelim}
-				document.getElementById("status").style.display="none";
-				document.getElementById("rssfolders").innerHTML=response;
-			{rdelim}
-		);
-{rdelim}
-
-
-function removeHTMLTags()
-{ldelim}
- 	if(document.getElementById && document.getElementById("temp_alert"))
-	{ldelim}
- 		var strInputCode = document.getElementById("temp_alert").innerHTML;
- 		var strTagStrippedText = strInputCode.replace(/<\/?[^>]+(>|$)/g, "");
- 		alert("Output Message:\n" + strTagStrippedText);	
- 	{rdelim}	
-{rdelim}
-
-
-</script>

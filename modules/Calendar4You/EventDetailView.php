@@ -38,12 +38,7 @@ if(!$detail_permissions) {
 if( $_SESSION['mail_send_error']!="") {
 	echo '<b><font color=red>'. $mod_strings{"LBL_NOTIFICATION_ERROR"}.'</font></b><br>';
 }
-//MSL
-if (function_exists('session_unregister')) {
-	session_unregister('mail_send_error');
-} else {
-	unset($_SESSION['mail_send_error']);
-}//----------
+coreBOS_Session::delete('mail_send_error');
 
 $c_mod_strings = return_specified_module_language($current_language, "Calendar");
 

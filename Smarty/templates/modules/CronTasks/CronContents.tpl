@@ -23,7 +23,7 @@
 	<tr>
 	<td class="listTableRow small">{$smarty.foreach.cronlist.iteration}</td>
 	<td class="listTableRow small">{$elements.cronname}</td>
-	<td class="listTableRow small">{$elements.days} {$elements.hours}:{$elements.mins}</td>
+	<td class="listTableRow small">{$elements.hours}:{$elements.mins}</td>
 	{if $elements.status eq 'Active'|@getTranslatedString:'CronTasks'}
 	<td class="listTableRow small active">{$elements.status}</td>
 	{elseif $elements.status eq 'LBL_RUNNING'|@getTranslatedString:'CronTasks'}

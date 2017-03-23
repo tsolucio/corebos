@@ -27,7 +27,9 @@ function vtlib_setvalue_from_popup(recordid,value,target_fieldname,formname) {
     }
     if (ret) {
         var domnode_id = wodform[target_fieldname];
+        if (!domnode_id) domnode_id = window.opener.document.getElementById("txtbox_"+ target_fieldname);
         var domnode_display = wodform[target_fieldname+'_display'];
+        if (!domnode_display) domnode_display = window.opener.document.getElementById(target_fieldname+'_display');
         if(domnode_id) domnode_id.value = recordid;
         if(domnode_display) domnode_display.value = value;
     }
@@ -43,12 +45,28 @@ function vtlib_setvalue_from_popup(recordid,value,target_fieldname,formname) {
  * Generic uitype popup open action
  */
 function vtlib_open_popup_window(fromlink,fldname,MODULE,ID) {
+	var modfld = document.getElementById(fldname+'_type');
+	if (modfld) {
+		var mod = modfld.value;
+	} else {
+		if (fromlink == 'qcreate')
+			modfld = document.QcEditView[fldname+'_type'];
+		else if (fromlink != '')
+			modfld = document.forms[fromlink][fldname+'_type'];
+		else
+			modfld = document.EditView[fldname+'_type'];
+		if (modfld) {
+			var mod = modfld.value;
+		} else {
+			var mod = '';
+		}
+	}
 	if (fromlink == 'qcreate')
-		window.open("index.php?module="+ document.QcEditView[fldname+'_type'].value +"&action=Popup&html=Popup_picker&form=vtlibPopupView&forfield="+fldname+"&srcmodule="+MODULE+"&forrecord="+ID,"vtlibui10qc","width=680,height=602,resizable=0,scrollbars=0,top=150,left=200");
+		window.open("index.php?module="+ mod +"&action=Popup&html=Popup_picker&form=vtlibPopupView&forfield="+fldname+"&srcmodule="+MODULE+"&forrecord="+ID,"vtlibui10qc","width=680,height=602,resizable=0,scrollbars=0,top=150,left=200");
 	else if (fromlink != '')
-		window.open("index.php?module="+ document.forms[fromlink][fldname+'_type'].value +"&action=Popup&html=Popup_picker&form="+fromlink+"&forfield="+fldname+"&srcmodule="+MODULE+"&forrecord="+ID,"vtlibui10","width=680,height=602,resizable=0,scrollbars=0,top=150,left=200");
+		window.open("index.php?module="+ mod +"&action=Popup&html=Popup_picker&form="+fromlink+"&forfield="+fldname+"&srcmodule="+MODULE+"&forrecord="+ID,"vtlibui10","width=680,height=602,resizable=0,scrollbars=0,top=150,left=200");
 	else
-		window.open("index.php?module="+ document.EditView[fldname+'_type'].value +"&action=Popup&html=Popup_picker&form=vtlibPopupView&forfield="+fldname+"&srcmodule="+MODULE+"&forrecord="+ID,"vtlibui10","width=680,height=602,resizable=0,scrollbars=0,top=150,left=200");
+		window.open("index.php?module="+ mod +"&action=Popup&html=Popup_picker&form=vtlibPopupView&forfield="+fldname+"&srcmodule="+MODULE+"&forrecord="+ID,"vtlibui10","width=680,height=602,resizable=0,scrollbars=0,top=150,left=200");
 	return true;
 }
 
@@ -323,7 +341,7 @@ function ExecuteFunctions(functiontocall,checkModule) {
 	return new Promise(function(resolve, reject) {
 		var url = baseurl+'&functiontocall='+functiontocall+'&checkmodule='+checkModule;
 		var req = new XMLHttpRequest();
-		req.open('GET', url);
+		req.open('GET', url, true);  // make call asynchronous
 
 		req.onload = function() {
 			// check the status

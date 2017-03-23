@@ -7,8 +7,18 @@
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
 
-$mod_strings = array (
-	'LBL_MODULE_NAME' => 'Prospects',
+if ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true')) {
+	$toggle_historicos = 'Voir Prospects Non Convertis';
+	$toggle_name = 'Prospects Convertis';
+} else {
+	$toggle_historicos = 'Voir Prospects Convertis';
+	$toggle_name = 'Prospects';
+}
+
+$mod_strings = Array(
+	'LBL_TGL_HISTORICOS' => $toggle_historicos,
+	'LBL_MODULE_NAME'=>$toggle_name,
+	'Leads' => $toggle_name,
 	'LBL_DIRECT_REPORTS_FORM_NAME' => 'Supérieur hiérarchique',
 	'LBL_MODULE_TITLE' => 'Prospects : accueil',
 	'LBL_SEARCH_FORM_TITLE' => 'Recherche prospects',
@@ -58,7 +68,7 @@ $mod_strings = array (
 	'LBL_CONVERT_LEAD_INFORMATION' => 'Détail conversion',
 	'LBL_ACCOUNT_NAME' => 'Nom compte',
 	'LBL_POTENTIAL_NAME' => 'Nom affaire',
-	'LBL_POTENTIAL_CLOSE_DATE' => 'Echéance',
+	'LBL_POTENTIAL_CLOSE_DATE' => 'Échéance',
 	'LBL_POTENTIAL_AMOUNT' => 'Montant',
 	'LBL_POTENTIAL_SALES_STAGE' => 'Phase de vente',
 	'NTC_DELETE_CONFIRMATION' => 'Etes-vous certain de vouloir supprimer cet enregistrement ?',
@@ -114,7 +124,7 @@ $mod_strings = array (
 	'Rating' => 'Note',
 	'No Of Employees' => 'Effectif',
 	'Assigned To' => 'Assigné à',
-	'Yahoo Id' => 'Yahoo ID',
+	'Yahoo Id' => 'Yahoo Id',
 	'Created Time' => 'Créé le',
 	'Modified Time' => 'Modifié le',
 	'Street' => 'Adresse',
@@ -192,16 +202,8 @@ $mod_strings = array (
 	'Qualified' => 'Qualifié',
 	'Warm' => 'Brûlant',
 	'Designation' => 'Titre',
-	'LBL_DUPLICATE_DATA_IN' => 'Dupliquer ',
-	'LBL_DELETE' => 'Supprimer',
-	'LBL_MERGE_SELECT' => 'Fusionner la sélection',
-	'LBL_MERGE' => 'Fusionner',
-	'LBL_ACTION' => 'Action',
-	'LBL_MERGE_DATA_IN' => 'Fusionner les enregistrements',
-	'LBL_FIELDLISTS' => 'Liste des champs',
-	'LBL_RECORD' => 'Enregistrement #',
-	'Lead No' => 'Prospect N°',
-	'Secondary Email' => 'Email alternatif',
+	'Lead No' => 'Prospect n°',
+	'Secondary Email' => 'Email secondaire',
 	
 	'LBL_TRANSFER_RELATED_RECORDS_TO' => 'Transférer les enregistrements relatifs à',
 	'LBL_FOLLOWING_ARE_POSSIBLE_REASONS' => 'Voici les raisons possibles',
@@ -210,7 +212,7 @@ $mod_strings = array (
 	'LBL_LEADS_FIELD_MAPPING' => 'Mapping des champs du module prospects',
 	'LBL_FIELD_SETTINGS' => 'Réglages des champs',
 	'Leads ID' => 'Prospect ID',
-	'LeadAlreadyConverted' => 'Lead cannot be converted. Either it has already been converted or you lack permission on one or more of the destination modules.',
+	'LeadAlreadyConverted' => 'Le propect ne peut être converti. Il a soit déjà été converti, soit vous n\'avez pas les autorisations nécessaires sur un ou plusieurs modules destinataires.',
 	'Is Converted From Lead' => 'Est converti de prospect',
 	'Converted From Lead' => 'Converti de prospect',
 );

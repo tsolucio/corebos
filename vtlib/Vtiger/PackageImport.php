@@ -40,7 +40,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 	/**
 	 * Constructor
 	 */
-	function Vtiger_PackageImport() {
+	function __construct() {
 		parent::__construct();
 	}
 
@@ -276,7 +276,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 		$module = $this->getModuleNameFromZip($zipfile);
 		if($module != null) {
 
-			$unzip = new Vtiger_Unzip($zipfile, $overwrite);
+			$unzip = new Vtiger_Unzip($zipfile);
 
 			// Unzip selectively
 			$unzip->unzipAllEx( ".",
@@ -295,8 +295,19 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 				)
 			);
 
-
 			@rename('manifest.xml',"modules/$module/manifest.xml");
+			// eliminate temporary directories
+			@rmdir("modules/$module/modules/$module");
+			@rmdir("modules/$module/modules/");
+			@rmdir("Smarty/templates/modules/$module/templates");
+			@rmdir("cron/modules/$module/cron");
+			$dirs = glob("modules/$module/*",GLOB_ONLYDIR);
+			foreach ($dirs as $path) {
+				$dir = basename($path);
+				@rmdir("modules/$module/$dir/modules/$module/$dir");
+				@rmdir("modules/$module/$dir/modules/$module");
+				@rmdir("modules/$module/$dir/modules/");
+			}
 			if($unzip) $unzip->close();
 		}
 		return $module;
@@ -578,7 +589,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 		$fieldInstance->readonly     = $fieldnode->readonly;
 		$fieldInstance->presence     = $fieldnode->presence;
 		$fieldInstance->defaultvalue = $fieldnode->defaultvalue;
-		$fieldInstance->maximumlength= $fieldnode->maximumlength;
+		$fieldInstance->maximumlength= (empty($fieldnode->maximumlength) ? 100 : $fieldnode->maximumlength);
 		$fieldInstance->sequence     = $fieldnode->sequence;
 		$fieldInstance->quicksequence= $fieldnode->quickcreatesequence;
 		$fieldInstance->typeofdata   = $fieldnode->typeofdata;

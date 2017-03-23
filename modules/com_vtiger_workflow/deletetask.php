@@ -9,7 +9,6 @@
  ************************************************************************************/
 require_once("include/utils/CommonUtils.php");
 require_once("include/events/SqlResultIterator.inc");
-require_once("include/Zend/Json.php");
 require_once("VTWorkflowApplication.inc");
 require_once("VTTaskManager.inc");
 require_once('VTWorkflowUtils.php');

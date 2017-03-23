@@ -6,9 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
-
 require_once('modules/Settings/MailScanner/core/MailScannerInfo.php');
 require_once('Smarty_setup.php');
 require_once('vtlib/Vtiger/Cron.php');
@@ -30,5 +28,4 @@ $smarty->assign("APP_KEY", $application_unique_key);
 $smarty->assign("CRON_TASK", Vtiger_Cron::getInstance('MailScanner'));
 
 $smarty->display('MailScanner/MailScannerInfo.tpl');
-
 ?>

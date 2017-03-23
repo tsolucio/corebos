@@ -13,7 +13,7 @@ require_once('include/database/PearDatabase.php');
 require_once('include/nusoap/nusoap.php');
 require_once('include/language/en_us.lang.php');
 
-$log = &LoggerManager::getLogger('vtigerolservice');
+$log = LoggerManager::getLogger('vtigerolservice');
 
 error_reporting(0);
 
@@ -503,7 +503,7 @@ function AddEmailAttachment($emailid,$filedata,$filename,$filesize,$filetype,$us
 	global $adb, $upload_badext;
 	require_once('modules/Users/Users.php');
 	require_once('include/utils/utils.php');
-	$filename = vtlib_purifyForSql(sanitizeUploadFileName(str_replace('..','_',$filename), $upload_badext)); // Avoid relative file path attacks.
+	$filename = sanitizeUploadFileName(str_replace('..','_',$filename), $upload_badext); // Avoid relative file path attacks.
 	$date_var = date('Y-m-d H:i:s');
 
 	$seed_user = new Users();

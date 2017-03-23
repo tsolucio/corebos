@@ -6,19 +6,8 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
-{*
-/*********************************************************************************
-** The contents of this file are subject to the vtiger CRM Public License Version 1.0
- * ("License"); You may not use this file except in compliance with the License
- * The Original Code is:  vtiger CRM Open Source
- * The Initial Developer of the Original Code is vtiger.
- * Portions created by vtiger are Copyright (C) vtiger.
- * All Rights Reserved.
-*
- ********************************************************************************/ *}
 {literal}
 <script type="text/javascript">
 function getModuleEntityNoInfo(form) {
@@ -26,28 +15,27 @@ function getModuleEntityNoInfo(form) {
 
 	document.getElementById("status").style.display="inline";
 	jQuery.ajax({
-			method:"POST",
-			url:'index.php?module=Settings&action=SettingsAjax&file=CustomModEntityNo&ajax=true&selmodule=' + encodeURIComponent(module)
+		method:"POST",
+		url:'index.php?module=Settings&action=SettingsAjax&file=CustomModEntityNo&ajax=true&selmodule=' + encodeURIComponent(module)
 	}).done(function(response) {
-				document.getElementById("status").style.display="none";
-
-				var restext = response;
-				document.getElementById('customentity_infodiv').innerHTML = restext;
+		document.getElementById("status").style.display="none";
+		var restext = response;
+		document.getElementById('customentity_infodiv').innerHTML = restext;
 	});
 }
 function updateModEntityNoSetting(button, form) {
 	var module = form.selmodule.value;
 	var recprefix = form.recprefix.value;
-    var recnumber = form.recnumber.value;
+	var recnumber = form.recnumber.value;
 	var mode = 'UPDATESETTINGS';
 
 	if(recnumber == '') {
-		alert("Start sequence cannot be empty!");
+		alert("{/literal}{$MOD.ERR_CUSTOMIZE_MODENT_NUMBER_EMPTY}{literal}");
 		return;
 	}
 
 	if(recnumber.match(/[^0-9]+/) != null) {
-		alert("Start sequence should be numeric.");
+		alert("{/literal}{$MOD.ERR_CUSTOMIZE_MODENT_NUMBER_NUMERIC}{literal}");
 		return;
 	}
 
@@ -55,31 +43,28 @@ function updateModEntityNoSetting(button, form) {
 	button.disabled = true;
 
 	jQuery.ajax({
-			method:"POST",
-			url:'index.php?module=Settings&action=SettingsAjax&file=CustomModEntityNo&ajax=true' + 
-					'&selmodule=' + encodeURIComponent(module) +
-					'&recprefix=' + encodeURIComponent(recprefix) +
-					'&recnumber=' + encodeURIComponent(recnumber) +
-					'&mode=' + encodeURIComponent(mode)
+		method:"POST",
+		url:'index.php?module=Settings&action=SettingsAjax&file=CustomModEntityNo&ajax=true' + '&selmodule=' + encodeURIComponent(module) +
+			'&recprefix=' + encodeURIComponent(recprefix) + '&recnumber=' + encodeURIComponent(recnumber) + '&mode=' + encodeURIComponent(mode)
 	}).done(function(response) {
-				document.getElementById("status").style.display="none";
-				var restext = response;
-				document.getElementById('customentity_infodiv').innerHTML = restext;
+		document.getElementById("status").style.display="none";
+		var restext = response;
+		document.getElementById('customentity_infodiv').innerHTML = restext;
 	});
 }
 function updateModEntityExisting(button, form) {
 	var module = form.selmodule.value;
 	var recprefix = form.recprefix.value;
-    var recnumber = form.recnumber.value;
+	var recnumber = form.recnumber.value;
 	var mode = 'UPDATEBULKEXISTING';
 
 	if(recnumber == '') {
-		alert("Start sequence cannot be empty!");
+		alert("{/literal}{$MOD.ERR_CUSTOMIZE_MODENT_NUMBER_EMPTY}{literal}");
 		return;
 	}
 
 	if(recnumber.match(/[^0-9]+/) != null) {
-		alert("Start sequence should be numeric.");
+		alert("{/literal}{$MOD.ERR_CUSTOMIZE_MODENT_NUMBER_NUMERIC}{literal}");
 		return;
 	}
 
@@ -87,14 +72,12 @@ function updateModEntityExisting(button, form) {
 	button.disabled = true;
 
 	jQuery.ajax({
-			method:"POST",
-			url:'index.php?module=Settings&action=SettingsAjax&file=CustomModEntityNo&ajax=true' + 
-					'&selmodule=' + encodeURIComponent(module) +
-					'&mode=' + encodeURIComponent(mode)
+		method:"POST",
+		url:'index.php?module=Settings&action=SettingsAjax&file=CustomModEntityNo&ajax=true' + '&selmodule=' + encodeURIComponent(module) + '&mode=' + encodeURIComponent(mode)
 	}).done(function(response) {
-				VtigerJS_DialogBox.hideprogress();
-				var restext = response;
-				document.getElementById('customentity_infodiv').innerHTML = restext;
+		VtigerJS_DialogBox.hideprogress();
+		var restext = response;
+		document.getElementById('customentity_infodiv').innerHTML = restext;
 	});
 }
 </script>
@@ -106,8 +89,8 @@ function updateModEntityExisting(button, form) {
 <tbody>
 <tr>
 	<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-    <td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
-    <br>
+	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
+	<br>
 
 	<div align=center>
 		{include file='SetMenu.tpl'}
@@ -120,7 +103,7 @@ function updateModEntityExisting(button, form) {
 		<tr>
 			<td valign=top class="small">{$MOD.LBL_CUSTOMIZE_MODENT_NUMBER_DESCRIPTION}</td>
 		</tr>
-		</table>				
+		</table>
 		<br>
 		<form method="POST" action="javascript:;" onsubmit="VtigerJS_DialogBox.block();">
 		<table border="0" cellpadding="10" cellspacing="0" width="100%">
@@ -130,24 +113,24 @@ function updateModEntityExisting(button, form) {
 				<tr>
 					<td class="small" align="right">
 					{$MOD.LBL_SELECT_CF_TEXT}
-		            <select name="selmodule" class="small" onChange="getModuleEntityNoInfo(this.form)">
-                		{foreach key=sel_value item=value from=$MODULES}
-		                {if $SELMODULE eq $sel_value}
-                	    	{assign var = "selected_val" value="selected"}
-		                {else}
-                        	{assign var = "selected_val" value=""}
-                        {/if}
-                        {assign var="MODULE_LABEL" value=$value}
+					<select name="selmodule" class="small" onChange="getModuleEntityNoInfo(this.form)">
+					{foreach key=sel_value item=value from=$MODULES}
+						{if $SELMODULE eq $sel_value}
+							{assign var = "selected_val" value="selected"}
+						{else}
+							{assign var = "selected_val" value=""}
+						{/if}
+						{assign var="MODULE_LABEL" value=$value}
 						{assign var="MODULE_LABEL" value=$value|getTranslatedString:$value}
-	                    <option value="{$sel_value}" {$selected_val}>{$MODULE_LABEL}</option>
-        		        {/foreach}
-			        </select>
+						<option value="{$sel_value}" {$selected_val}>{$MODULE_LABEL}</option>
+					{/foreach}
+					</select>
 					</td>
 				</tr>
 				</table>
 
 				<div id='customentity_infodiv' class="listRow">
-					{include file='Settings/CustomModEntityNoInfo.tpl'}				
+					{include file='Settings/CustomModEntityNoInfo.tpl'}
 				</div>
 
 			<table border="0" cellpadding="5" cellspacing="0" width="100%">
@@ -160,22 +143,19 @@ function updateModEntityExisting(button, form) {
 		</table>
 		</form>
 
-		<!-- End of Display -->
-		
 		</td>
-        </tr>
-        </table>
+		</tr>
+		</table>
 
-        </td>
-        </tr>
-        </table>
-        </div>
+		</td>
+		</tr>
+		</table>
+		</div>
 
-        </td>
-        <td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
-        </tr>
+		</td>
+		<td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
+		</tr>
 </tbody>
 </table>
 
 <br>
-

@@ -6,16 +6,9 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  *********************************************************************************/
 
-/**
- * @author MAK
- */
-
-global $mod_strings;
-global $app_strings;
-global $theme;
+global $mod_strings, $app_strings, $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 
@@ -25,9 +18,7 @@ require_once('include/freetag/freetag.class.php');
 
 $homeObj=new Homestuff;
 
-Zend_Json::$useBuiltinEncoderDecoder = true;
-$widgetInfoList = Zend_Json::decode($_REQUEST['widgetInfoList']);
-$widgetInfoList = Zend_Json::decode($_REQUEST['widgetInfoList']);
+$widgetInfoList = json_decode($_REQUEST['widgetInfoList'],true);
 $widgetHTML = array();
 $smarty=new vtigerCRM_Smarty;
 $smarty->assign("MOD",$mod_strings);
@@ -38,6 +29,7 @@ $smarty->assign("IMAGE_PATH",$image_path);
 foreach ($widgetInfoList as $widgetInfo) {
 	$widgetType = $widgetInfo['widgetType'];
 	$widgetId = $widgetInfo['widgetId'];
+	$homestuff_values = '';
 	if($widgetType=='Tag Cloud'){
 		$freetag = new freetag();
 		$smarty->assign("ALL_TAG",$freetag->get_tag_cloud_html("",$current_user->id));
@@ -74,5 +66,5 @@ foreach ($widgetInfoList as $widgetInfo) {
 	$html .= $smarty->fetch("Home/HomeBlock.tpl");
 	$widgetHTML[$widgetId] = $html;
 }
-echo Zend_JSON::encode($widgetHTML);
+echo json_encode($widgetHTML);
 ?>

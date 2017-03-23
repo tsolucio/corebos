@@ -81,4 +81,28 @@
 		VTWS_PreserveGlobal::flush();
 		return $entity;
 	}
+
+	function vtws_retrieve_deleted($id, $user) {
+		global $log,$adb;
+
+		// First we look if it has been totally eliminated
+		$parts = explode('x', $id);
+		$result = $adb->pquery("SELECT count(*) as cnt FROM vtiger_crmentity WHERE crmid=?", array($parts[1]));
+		if($adb->query_result($result,0,"cnt") == 1) {  // If not we can "almost" continue normally
+			$webserviceObject = VtigerWebserviceObject::fromId($adb,$id);
+			$handlerPath = $webserviceObject->getHandlerPath();
+			$handlerClass = $webserviceObject->getHandlerClass();
+			require_once $handlerPath;
+			$handler = new $handlerClass($webserviceObject,$user,$adb,$log);
+			$meta = $handler->getMeta();
+			$entityName = $meta->getObjectEntityNameDeleted($id);
+			$entity = $handler->retrieve($id,true);
+			VTWS_PreserveGlobal::flush();
+		} else {  // if it has been eliminated we have to mock up object and return with nothing
+			// here we should return a mock object with empty values.
+			$entity = null;  // I am being lazy
+		}
+		return $entity;
+	}
+
 ?>

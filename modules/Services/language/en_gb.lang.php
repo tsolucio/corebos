@@ -57,5 +57,6 @@ $mod_strings = array(
 	'Customization' => 'Customisation',
 	'Training' => 'Training',
 	'Services ID' => 'Services ID',
+	'Divisible'=>'Divisible',
 );
 ?>

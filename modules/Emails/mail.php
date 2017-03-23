@@ -24,7 +24,9 @@ require_once 'include/utils/CommonUtils.php';
   */
 function send_mail($module,$to_email,$from_name,$from_email,$subject,$contents,$cc='',$bcc='',$attachment='',$emailid='',$logo='',$replyto='')
 {
-	global $adb, $log, $root_directory, $HELPDESK_SUPPORT_EMAIL_ID, $HELPDESK_SUPPORT_NAME;
+	global $adb, $log, $root_directory;
+	$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail','support@your_support_domain.tld','HelpDesk');
+	$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name','your-support name','HelpDesk');
 
 	$uploaddir = $root_directory ."/test/upload/";
 
@@ -100,8 +102,8 @@ function send_mail($module,$to_email,$from_name,$from_email,$subject,$contents,$
 		$mail->AddReplyTo($replyToEmail);
 	}
 
-	// vtmailscanner customization: If Support Reply to is defined use it.
-	global $HELPDESK_SUPPORT_EMAIL_REPLY_ID;
+	// mailscanner customization: If Support Reply To is defined use it.
+	$HELPDESK_SUPPORT_EMAIL_REPLY_ID = GlobalVariable::getVariable('HelpDesk_Support_Reply_EMail',$HELPDESK_SUPPORT_EMAIL_ID,'HelpDesk');
 	if($HELPDESK_SUPPORT_EMAIL_REPLY_ID && $HELPDESK_SUPPORT_EMAIL_ID != $HELPDESK_SUPPORT_EMAIL_REPLY_ID) {
 		$mail->AddReplyTo($HELPDESK_SUPPORT_EMAIL_REPLY_ID);
 	}
@@ -265,6 +267,14 @@ function setMailerProperties($mail,$subject,$contents,$from_email,$from_name,$to
 		}
 	}
 
+        //If we send attachments from MarketingDashboard
+	if(is_array($attachment))
+	{
+            foreach($attachment as $file){
+			addAttachment($mail,$file,$emailid);
+            }
+	}
+
 	$mail->IsHTML(true);		// set email format to HTML
 	$mail->AllowEmpty = true; //allow sent empty body.
 	return;
@@ -302,6 +312,16 @@ function setMailServerProperties($mail)
 	if ("false" != $smtp_auth) {
 		$mail->SMTPAuth = true;
 		if ("true" != $smtp_auth) {
+			if ($smtp_auth == 'sslnc' or $smtp_auth == 'tlsnc') {
+				$mail->SMTPOptions = array(
+						'ssl' => array(
+							'verify_peer' => false,
+							'verify_peer_name' => false,
+							'allow_self_signed' => true
+						)
+				);
+				$smtp_auth = substr($smtp_auth,0,3);
+			}
 			$mail->SMTPSecure = $smtp_auth;
 		}
 	}
@@ -401,7 +421,7 @@ function MailSend($mail)
 		$log->debug("Error in Mail Sending : Error log = '".$mail->ErrorInfo."'");
 		return $mail->ErrorInfo;
 	} else {
-		$log->info("Mail has been sent from the vtigerCRM system : Status : '".$mail->ErrorInfo."'");
+		$log->info("Mail has been sent from the application : Status : '".$mail->ErrorInfo."'");
 		return 1;
 	}
 }
@@ -495,7 +515,7 @@ function getMailErrorString($mail_status_str)
 	$mail_status_str = trim($mail_status_str,"&&&");
 	$mail_status_array = explode("&&&",$mail_status_str);
 	$adb->println("All Mail status ==>\n".$mail_status_str."\n");
-
+	$mail_error_str = '';
 	foreach($mail_status_array as $key => $val)
 	{
 		$list = explode("=",$val);
@@ -568,7 +588,8 @@ function parseEmailErrorString($mail_error_str)
 }
 
 function isUserInitiated() {
-	return (($_REQUEST['module'] == 'Emails' || $_REQUEST['module'] == 'Webmails') &&
+	return (isset($_REQUEST['module']) && isset($_REQUEST['action']) &&
+			($_REQUEST['module'] == 'Emails' || $_REQUEST['module'] == 'Webmails') &&
 			($_REQUEST['action'] == 'mailsend' || $_REQUEST['action'] == 'webmailsend' || $_REQUEST['action'] == 'Save'));
 }
 

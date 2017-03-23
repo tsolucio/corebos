@@ -60,6 +60,7 @@ $mod_strings = Array(
 'Migration'=>'Migrazione',
 'Customization'=>'Personalizzazione',
 'Training'=>'Formazione',
+'Divisible'=>'Divisible',
 );
 
 ?>

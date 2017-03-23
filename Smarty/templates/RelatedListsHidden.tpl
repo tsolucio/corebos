@@ -8,15 +8,18 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<form border="0" action="index.php" method="post" name="form" id="form">
+{if empty($RELLISTID)}
+	{assign var='RELLISTID' value=''}
+{/if}
+<form border="0" action="index.php" method="post" name="form{$RELLISTID}" id="form{$RELLISTID}">
 <input type="hidden" name="module">
-<input name="maxrecords" type="hidden" value="{$MAX_RECORDS}" id='maxrecords'>
-<input id="recordid" type="hidden" value="{$RECORDID}">
+<input name="maxrecords" type="hidden" value="{if isset($MAX_RECORDS)}{$MAX_RECORDS}{/if}" id='maxrecords'>
+<input id="recordid" type="hidden" value="{if isset($RECORDID)}{$RECORDID}{/if}">
 <input type="hidden" name="mode">
 <input type="hidden" name="return_module" id="return_module" value="{$MODULE}">
 <input type="hidden" name="RLreturn_module" id="RLreturn_module" value="{$MODULE}">
 <input type="hidden" name="allselectedboxes"  id="allselectedboxes">
-{if $SinglePane_View eq 'true'}
+{if (isset($SinglePane_View) && $SinglePane_View eq 'true')|| (isset($IS_RELBLOCK_LIST) && $IS_RELBLOCK_LIST)}
 	<input type="hidden" name="return_action" value="DetailView">
 {else}
 	<input type="hidden" name="return_action" value="CallRelatedList">
@@ -33,18 +36,17 @@
 	<input type="hidden" name="record" value="{$ID}">
 {elseif $MODULE eq 'Accounts'}
 	<input type="hidden" name="account_id" value="{$ID}">
-	{$HIDDEN_PARENTS_LIST}
 {elseif $MODULE eq 'Contacts'}
 	<input type="hidden" name="contact_id" value="{$ID}">
 	<input type="hidden" name="account_id" value="{$accountid}">
-	<input type="hidden" name="campaignid" value="{$campaignid}">
-	{$HIDDEN_PARENTS_LIST}
+	<input type="hidden" name="campaignid" value="{if isset($campaignid)}{$campaignid}{/if}">
+	{if isset($HIDDEN_PARENTS_LIST)}{$HIDDEN_PARENTS_LIST}{/if}
 {elseif $MODULE eq 'Campaigns'}
 	<input type="hidden" name="campaignid" value="{$ID}">
 {elseif $MODULE eq 'Leads'}
 	<input type="hidden" name="lead_id" value="{$ID}">
-	<input type="hidden" name="campaignid" value="{$campaignid}">
-	{$HIDDEN_PARENTS_LIST}
+	<input type="hidden" name="campaignid" value="{if isset($campaignid)}{$campaignid}{/if}">
+	{if isset($HIDDEN_PARENTS_LIST)}{$HIDDEN_PARENTS_LIST}{/if}
 {elseif $MODULE eq 'Potentials'}
 	<input type="hidden" name="potential_id" value="{$ID}">
 {elseif $MODULE eq 'Quotes'}

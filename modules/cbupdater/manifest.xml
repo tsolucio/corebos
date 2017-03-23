@@ -35,7 +35,7 @@
 <table>
 <name>vtiger_cbupdater</name>
 <sql><![CDATA[CREATE TABLE `vtiger_cbupdater` (
-  `cbupdaterid` int(11) default NULL,
+  `cbupdaterid` int(11) NOT NULL,
   `cbupd_no` varchar(26) default NULL,
   `author` varchar(83) default NULL,
   `filename` varchar(218) default NULL,

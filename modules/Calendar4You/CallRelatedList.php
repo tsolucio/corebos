@@ -8,17 +8,17 @@
  * All Rights Reserved.
  ************************************************************************************/
 require_once('Smarty_setup.php');
-require_once('user_privileges/default_module_view.php');
+require('user_privileges/default_module_view.php');
 require_once("modules/Calendar4You/Calendar4You.php");
 require_once("modules/Calendar4You/CalendarUtils.php");
 
-global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $singlepane_view;
+global $mod_strings, $app_strings, $currentModule, $current_user, $theme;
 $currentmodule = vtlib_purify($_REQUEST['module']);
 $action = vtlib_purify($_REQUEST['action']);
 $RECORD = vtlib_purify($_REQUEST['record']);
 $category = getParentTab();
 if($singlepane_view == 'true' && $action == 'CallRelatedList') {
-	echo "<script>document.location='index.php?action=EventDetailView&module=$currentmodule&record=$RECORD&parenttab=$category';</script>";
+	echo "<script>document.location='index.php?action=EventDetailView&module=".urlencode($currentModule).'&record='.urlencode($RECORD)."';</script>";
 	die();
 } else {
 	
@@ -61,9 +61,9 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	if(isset($_REQUEST['mode']) && $_REQUEST['mode'] != ' ') {
 		$smarty->assign("OP_MODE",vtlib_purify($_REQUEST['mode']));
 	}
-	if(!$_SESSION['rlvs'][$module]) {
-		unset($_SESSION['rlvs']);
-	}	
+	if(empty($_SESSION['rlvs'][$module])) {
+		coreBOS_Session::delete('rlvs');
+	}
 
 	// Module Sequence Numbering
 	$mod_seq_field = getModuleSequenceField($currentModule);

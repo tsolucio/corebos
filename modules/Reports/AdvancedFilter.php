@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('include/Zend/Json.php');
 if(isset($_REQUEST["record"]) && $_REQUEST['record']!='')
 {
 	$reportid = vtlib_purify($_REQUEST["record"]);
@@ -34,7 +33,7 @@ if(isset($_REQUEST["record"]) && $_REQUEST['record']!='')
 	$FILTER_OPTION = Reports::getAdvCriteriaHTML();
 	$report_std_filter->assign("FOPTION",$FILTER_OPTION);
 	$rel_fields = getRelatedFieldColumns();
-	$report_std_filter->assign("REL_FIELDS",Zend_Json::encode($rel_fields));
+	$report_std_filter->assign("REL_FIELDS",json_encode($rel_fields));
 	$report_std_filter->assign("CRITERIA_GROUPS",$oReport->advft_criteria);
 } else {
 	$primarymodule = $_REQUEST["primarymodule"];
@@ -48,7 +47,7 @@ if(isset($_REQUEST["record"]) && $_REQUEST['record']!='')
 	}
 	$report_std_filter->assign("COLUMNS_BLOCK", $COLUMNS_BLOCK);
 	$rel_fields = getRelatedFieldColumns();
-	$report_std_filter->assign("REL_FIELDS",Zend_Json::encode($rel_fields));
+	$report_std_filter->assign("REL_FIELDS",json_encode($rel_fields));
 }
 
 /** Function to get primary columns for an advanced filter
@@ -58,13 +57,14 @@ if(isset($_REQUEST["record"]) && $_REQUEST['record']!='')
  */
 function getPrimaryColumns_AdvFilterHTML($module,$selected="")
 {
-	global $ogReport, $app_list_strings;
+	global $ogReport;
 	$selected = decode_html($selected);
 	$block_listed = array();
+	$i18nModule = getTranslatedString($module,$module);
 	foreach($ogReport->module_list[$module] as $key=>$value) {
 		if(isset($ogReport->pri_module_columnslist[$module][$value]) && !$block_listed[$value]) {
 			$block_listed[$value] = true;
-			$shtml .= "<optgroup label=\"".$app_list_strings['moduleList'][$module]." ".getTranslatedString($value)."\" class=\"select\" style=\"border:none\">";
+			$shtml .= "<optgroup label=\"".$i18nModule." ".getTranslatedString($value)."\" class=\"select\" style=\"border:none\">";
 			foreach($ogReport->pri_module_columnslist[$module][$value] as $field=>$fieldlabel)
 			{
 				$field = decode_html($field);
@@ -83,17 +83,18 @@ function getPrimaryColumns_AdvFilterHTML($module,$selected="")
  */
 function getSecondaryColumns_AdvFilterHTML($module,$selected="")
 {
-	global $ogReport, $app_list_strings;
+	global $ogReport;
 	if($module != '') {
 		$secmodule = explode(":",$module);
 		for($i=0;$i < count($secmodule) ;$i++) {
 			if(vtlib_isModuleActive($secmodule[$i])){
 				$block_listed = array();
+				$i18nModule = getTranslatedString($secmodule[$i],$secmodule[$i]);
 				foreach($ogReport->module_list[$secmodule[$i]] as $key=>$value) {
 					if(isset($ogReport->sec_module_columnslist[$secmodule[$i]][$value]) && !$block_listed[$value])
 					{
 						$block_listed[$value] = true;
-						$shtml .= "<optgroup label=\"".$app_list_strings['moduleList'][$secmodule[$i]]." ".getTranslatedString($value,$secmodule[$i])."\" class=\"select\" style=\"border:none\">";
+						$shtml .= "<optgroup label=\"".$i18nModule." ".getTranslatedString($value,$secmodule[$i])."\" class=\"select\" style=\"border:none\">";
 						foreach($ogReport->sec_module_columnslist[$secmodule[$i]][$value] as $field=>$fieldlabel) {
 							$fldlbl = str_replace(array("\n","\r"),'',getTranslatedString($fieldlabel,$secmodule[$i]));
 							$field = decode_html($field);

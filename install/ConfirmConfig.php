@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-
 require_once('modules/Utilities/Currencies.php');
 
 session_start();
@@ -31,17 +30,17 @@ if (isset($_REQUEST['root_password'])) $_SESSION['installation_info']['root_pass
 if (isset($_REQUEST['admin_email'])) $_SESSION['installation_info']['admin_email']= $admin_email = $_REQUEST['admin_email'];
 if (isset($_REQUEST['admin_password'])) $_SESSION['installation_info']['admin_password'] = $admin_password = $_REQUEST['admin_password'];
 
-if (isset($_REQUEST['create_utf8_db'])) 
+if (isset($_REQUEST['create_utf8_db']))
 	$_SESSION['installation_info']['create_utf8_db'] = $create_utf8_db = 'true';
-else 
+else
 	$_SESSION['installation_info']['create_utf8_db'] = $create_utf8_db = 'false';
 
-if (isset($_REQUEST['db_populate'])) 
+if (isset($_REQUEST['db_populate']))
 	$_SESSION['installation_info']['db_populate'] = $db_populate = 'true';
 else
 	$_SESSION['installation_info']['db_populate'] = $db_populate = 'false';
 
-if(isset($currency_name)){
+if (isset($currency_name)) {
 	$_SESSION['installation_info']['currency_code'] = $currencies[$currency_name][0];
 	$_SESSION['installation_info']['currency_symbol'] = $currencies[$currency_name][1];
 }
@@ -51,8 +50,8 @@ if(isset($_REQUEST['check_createdb']) && $_REQUEST['check_createdb'] == 'on') $c
 
 $dbCheckResult = Installation_Utils::checkDbConnection($db_type, $db_hostname, $db_username, $db_password, $db_name, $create_db, $create_utf8_db, $root_user, $root_password);
 $next = $dbCheckResult['flag'];
-$error_msg = $dbCheckResult['error_msg'];
-$error_msg_info = $dbCheckResult['error_msg_info'];
+$error_msg = isset($dbCheckResult['error_msg']) ? $dbCheckResult['error_msg'] : '';
+$error_msg_info = isset($dbCheckResult['error_msg_info']) ? $dbCheckResult['error_msg_info'] : '';
 $db_utf8_support = $dbCheckResult['db_utf8_support'];
 $vt_charset = ($db_utf8_support)? "UTF-8" : "ISO-8859-1";
 $_SESSION['config_file_info']['vt_charset']= $vt_charset;
@@ -63,6 +62,9 @@ if (!$configFileUtils->createConfigFile()) {
 	die("<strong class='big'><font color='red'>{$installationStrings['ERR_CANNOT_WRITE_CONFIG_FILE']}</font></strong>");
 }
 
+if($next == true) {
+	$_SESSION['authentication_key'] = md5(microtime());
+}
 require_once('include/utils/utils.php');  // Required - Especially to create adb instance in global scope.
 
 $mode = $_REQUEST['mode'];
@@ -72,10 +74,6 @@ if($mode == 'migration') {
 } else {
 	$prev_file_name = 'SetInstallationConfig.php';
 	$file_name = 'CreateTables.php';
-}
-
-if($next == true) {
-	$_SESSION['authentication_key'] = md5(microtime());
 }
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -116,9 +114,9 @@ if($next == true) {
 									<td align=left colspan=2 class="small paddingTop">
 										<span class="bigHeading"><?php echo $installationStrings['LBL_CONFIRM_CONFIG_SETTINGS']; ?></span>
 										<br>
-						  				<hr noshade size=1>
-						  			</td>
-						  		</tr>
+										<hr noshade size=1>
+									</td>
+								</tr>
 								<?php if($error_msg) : ?>
 								<tr>
 									<td align=left class="small" colspan=2 width=50% style="padding-left:10px">
@@ -195,7 +193,6 @@ if($next == true) {
 													<input type="submit" class="button" value="&#139;&#139;&nbsp;<?php echo $installationStrings['LBL_CHANGE']; ?>" title="<?php echo $installationStrings['LBL_CHANGE']; ?>" />
 												</form>
 												</td>
-				
 												<?php if($next) : ?>
 												<td align="right" valign="bottom">
 												<form action="install.php" method="post" name="form" id="form">
@@ -230,11 +227,11 @@ if($next == true) {
 		</tr>
 	</table>
 	<table border=0 cellspacing=0 cellpadding=0 width=80% align=center>
-      	<tr>
-        	<td class=small align=center> <a href="<?php echo $coreBOS_app_url; ?>" target="_blank"><?php echo $coreBOS_app_name; ?></a></td>
-      	</tr>
+		<tr>
+			<td class=small align=center> <a href="<?php echo $coreBOS_app_url; ?>" target="_blank"><?php echo $coreBOS_app_name; ?></a></td>
+		</tr>
 	</table>
-	<!-- Prefetch image to display later for Screen blocker -->	
+	<!-- Prefetch image to display later for Screen blocker -->
 	<img style="display: none;" src="include/install/images/loading.gif">
 	<img src="themes/softed/images/layerPopupBg.gif" style="display: none;"/>
 </body>

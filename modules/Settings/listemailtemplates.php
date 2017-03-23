@@ -1,5 +1,4 @@
 <?php
-
 /*********************************************************************************
 ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
@@ -7,21 +6,18 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
-
-require_once('Smarty_setup.php'); 
+require_once('Smarty_setup.php');
 require_once('include/database/PearDatabase.php');
 
-global $adb;
-global $log;
+global $adb, $log;
 
 $log->info("Inside Email Templates List View");
 
-   $sql = "select * from vtiger_emailtemplates order by templateid DESC";
-   $result = $adb->pquery($sql, array());
-   $temprow = $adb->fetch_array($result);
-   
+$sql = "select * from vtiger_emailtemplates order by templateid DESC";
+$result = $adb->pquery($sql, array());
+$temprow = $adb->fetch_array($result);
+
 $edit="Edit  ";
 $del="Del  ";
 $bar="  | ";
@@ -29,7 +25,6 @@ $cnt=1;
 
 require_once('include/utils/UserInfoUtil.php');
 global $app_strings;
-global $app_list_strings;
 global $mod_strings;
 global $theme,$default_charset;
 $theme_path="themes/".$theme."/";

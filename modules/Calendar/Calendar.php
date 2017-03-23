@@ -29,12 +29,12 @@ class Calendar
 	constructor
 	*/
 	//var $groupTable = Array('vtiger_activitygrouprelation','activityid');
-	function Calendar($view='',$data=Array())
-	{
+	function __construct($view='',$data=Array()) {
 		$this->view = $view;
 		$this->date_time = new vt_DateTime($data,true);
 		$this->constructLayout();
 	}
+
 	/**
 	 * Function to get calendarview Label
 	 * @param string  $view   - calendarview
@@ -42,8 +42,7 @@ class Calendar
 	*/
 	function getCalendarView($view)
 	{
-		switch($view)
-                {
+		switch($view) {
 			case 'day':
 				return "DAY";
 			case 'week':
@@ -244,30 +243,27 @@ class Calendar
 	}
 }
 
-class Layout
-{
+class Layout {
 	var $view = 'day';
 	var $start_time;
-    var $end_time;
+	var $end_time;
 	var $activities = Array();
-	
+
 	/**
 	* Constructor for Layout class
 	* @param  string   $view - calendarview
 	* @param  string   $time - time string 
 	*/
-
-	function Layout($view,$time)
-        {
-                $this->view = $view;
-                $this->start_time = $time;
+	function __construct($view,$time) {
+		$this->view = $view;
+		$this->start_time = $time;
 		if ( $view == 'month')
-			 $this->end_time = $this->start_time->getMonthendtime();
-                if ( $view == 'day')
-                        $this->end_time = $this->start_time->getDayendtime();
-                if ( $view == 'hour')
-                        $this->end_time = $this->start_time->getHourendtime();
-        }
+			$this->end_time = $this->start_time->getMonthendtime();
+		if ( $view == 'day')
+			$this->end_time = $this->start_time->getDayendtime();
+		if ( $view == 'hour')
+			$this->end_time = $this->start_time->getHourendtime();
+	}
 
 	/**
 	* Function to get view 

@@ -109,7 +109,6 @@ $mod_strings = array (
   'LBL_TICKETS' => 'Ticket',
   'LBL_FAQ' => 'FAQ',
   'Product Name' => 'Nome Prodotto',
-  'FAQ Id' => 'FAQ Id',
   'Add Comment' => 'Aggiungi commento',
   'LBL_ADD_COMMENT' => 'Aggiungi commento',
   'LBL_COMMENT_INFORMATION' => 'Informazioni Commento',

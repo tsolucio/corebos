@@ -108,7 +108,7 @@ if (isset($_FILES) and isset($_FILES['binFaviconFile']) and !empty($_FILES['binF
 		$favicon_filename = sanitizeUploadFileName(vtlib_purify($_REQUEST['binFaviconFile_hidden']), $upload_badext);
 	} else {
 		$binFaviconFile = sanitizeUploadFileName($binFaviconFile, $upload_badext);
-	$favicon_filename = ltrim(basename(" " . $binFaviconFile));
+		$favicon_filename = ltrim(basename(" " . $binFaviconFile));
 	}
 	$favicon_filetype = $_FILES['binFaviconFile']['type'];
 	$favicon_filesize = $_FILES['binFaviconFile']['size'];

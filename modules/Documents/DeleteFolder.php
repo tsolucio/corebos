@@ -19,7 +19,7 @@ if($current_user->is_admin != 'on')
 }
 else
 {	
-	$local_log =& LoggerManager::getLogger('index');
+	$local_log = LoggerManager::getLogger('index');
 	if(isset($_REQUEST['folderid']) && $_REQUEST['folderid'] != '')
 		$folderId = $_REQUEST['folderid'];
 	else
@@ -37,7 +37,7 @@ else
 		}
 		else
 		{
-			header("Location: index.php?action=DocumentsAjax&file=ListView&mode=ajax&module=Documents");
+			header("Location: index.php?action=DocumentsAjax&file=ListView&mode=ajax&ajax=true&module=Documents");
 			exit;
 		}
 	}
@@ -45,7 +45,7 @@ else
 	{
 		$sql="delete from vtiger_attachmentsfolder where (folderid=? and folderid != 1)";
 		$adb->pquery($sql,array($folderId));
-		header("Location: index.php?action=DocumentsAjax&file=ListView&mode=ajax&module=Documents");
+		header("Location: index.php?action=DocumentsAjax&file=ListView&mode=ajax&ajax=true&module=Documents");
 		exit;
 	}
 }

@@ -62,7 +62,6 @@ $mod_strings = Array(
 'Last 2 Days'=>'Últimos 2 días',
 'Last Ten Days'=>'Últimos 10 días',
 // Added/Updated for vtiger CRM 5.0.4 
-'TITLE_AJAX_CSS_POPUP_CHAT'=>'Chat',
 'User List'=>'Lista de Usuarios',
 
 // Added after 5.0.4 GA
@@ -82,12 +81,13 @@ $mod_strings = Array(
 'LBL_HOME_HORIZONTAL_BARCHART'=>'Gráfico Barras Horizontal',
 'LBL_HOME_VERTICAL_BARCHART'=>'Gráfico Barras Vertical',
 'LBL_HOME_PIE_CHART'=>'Gráfico Circular',
+'LBL_HOME_HORIZONTAL' => 'Horizontal',
+'LBL_HOME_VERTICAL' => 'Vertical',
+'LBL_HOME_PIE' => 'Circular',
+'Layout Saved' => 'Disposición Guardada',
 'LBL_HOME_ITEMS'=>'elemento(s)',
 'LBL_MORE'=>'Más',
 'LBL_SCROLL'=>'Desplazar',
-
-// vtiger CRM News
-'LBL_NEWS_NO'=>'Sín Noticias',
 
 //added for home page changes
 'LBL_NOTEBOOK'=>'Notas',
@@ -132,6 +132,9 @@ $mod_strings = Array(
 'LBL_DEFAULT_WIDGET'=>'Widgets por Defecto',
 'LBL_NO_WIDGETS_HIDDEN'=>'No hay widgets ocultos',
 'UpdateExchangeRate' => 'Actualizar Cotización Moneda',
+'LBL_HOME_ADDWINDOW' => 'Añadir Ventana',
+'LBL_GETTING_STARTED' => 'Empezando',
+'ExpirePasswordAfterDays' => 'Invalida Contraseña Después de Días',
 );
 
 ?>

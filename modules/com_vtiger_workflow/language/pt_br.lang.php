@@ -32,6 +32,7 @@ $mod_strings = array(
 'LBL_WORKFLOW_LIST'=>'Lista Workflow',
 'LBL_AVAILABLE_WORKLIST_LIST'=>'Workflows Disponíveis',
 'LBL_LOADING'=>'Carregando...',
+'LBL_REEVALCONDITIONS' => 'Evaluate conditions on execution',
 'LBL_VALIDATION_ERROR'=>'Erro Validação',
 'LBL_SELECT_OPTION_DOTDOTDOT'=>'Selecionar Opção...',
 'LBL_WORKFLOW_NOTE_CRON_CONFIG'=>'NOTA: Você deve ter um script Cron configurado para o Workflow.',
@@ -54,7 +55,7 @@ $mod_strings = array(
 'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL'=>'Novo Grupo Condição',
 
 'VTUpdateFieldsTask' => 'Atualizar Campos',
-
+'LBL_ON_DELETE'=>'On Delete',
 
 'LBL_VALIDATION_DUPLICATE_FIELDNAMES' => 'Mesmo campo selecionado mais de uma vez.',
 'LBL_VALIDATION_INVALID_FIELD_VALUES' => 'Valores de campo inválidos',
@@ -135,7 +136,7 @@ $mod_strings = array(
 'UpdateInventoryProducts On Every Save' => 'Update Product Inventory',
 'Send Email to user when Notifyowner is True' => 'Send Email to user when Notifyowner is True',
 'Send Email to user when Portal User is True' => 'Send Email to user when Portal User is True',
-'Send Email to users on Potential creation' => 'Send Email to users on Potential creation',
+'Send Email to users on Potential creation' => 'Send Email to user on Opportunity creation',
 'Workflow for Contact Creation or Modification' => 'Send Email to Contact with Portal Login information',
 'Workflow for Ticket Created from Portal' => 'Workflow for Ticket Created from Portal',
 'Workflow for Ticket Updated from Portal' => 'Workflow for Ticket Updated from Portal',

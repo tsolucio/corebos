@@ -23,9 +23,9 @@ $Calendar4You = new Calendar4You();
 $Calendar4You->GetDefPermission($current_user->id);
 
 if(isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
-	$edit_permissions = $Calendar4You->CheckPermissions('EDIT',$_REQUEST['record']);
+	$edit_permissions = $Calendar4You->CheckPermissions('EDIT',vtlib_purify($_REQUEST['record']));
 } else {
-	$edit_permissions = $Calendar4You->CheckPermissions('CREATE',$_REQUEST['record']);
+	$edit_permissions = $Calendar4You->CheckPermissions('CREATE');
 }
 
 if(!$edit_permissions) {
@@ -36,6 +36,9 @@ $c_mod_strings = return_specified_module_language($current_language, "Calendar")
 
 $focus = CRMEntity::getInstance("Calendar");
 $smarty =  new vtigerCRM_Smarty();
+// Identify this module as custom module.
+$smarty->assign('CUSTOM_MODULE', false);
+$smarty->assign('ADD_ONMOUSEOVER', '');
 //added to fix the issue4600
 $searchurl = getBasic_Advance_SearchURL();
 $smarty->assign("SEARCH", $searchurl);
@@ -116,6 +119,7 @@ if(isset($_REQUEST['record']) && $_REQUEST['record']!='') {
     }
 
 }else {
+	$focus->mode = '';
 	if (!empty($_REQUEST['parent_id']) && empty($_REQUEST['contact_id'])) {
 		$pid = vtlib_purify($_REQUEST['parent_id']);
 		$sepid = getSalesEntityType($pid);
@@ -163,11 +167,17 @@ if(isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 		
 		$account_id = vtlib_purify($_REQUEST['account_id']);
 		$account_name = getAccountName($account_id);
+		if (strlen($account_name) > 0) {
+			$fldlabel_sel['parent_id'][1]='selected';
+			$secondvalue['parent_id'] = $account_id;
+			$value['parent_id'] = $account_name;
+		}
 	}
 }
-if(isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
+$isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : null;
+if($isduplicate == 'true') {
 	$focus->id = "";
-    	$focus->mode = '';
+	$focus->mode = '';
 }
 if($focus->mode != 'edit'){
 	$_REQUEST['assigned_user_id'] = empty($_REQUEST['assigned_user_id']) ? $current_user->id : $_REQUEST['assigned_user_id'];
@@ -179,7 +189,7 @@ if($focus->mode != 'edit'){
 $userDetails=getOtherUserName($current_user->id);
 $to_email = getUserEmailId('id',$current_user->id);
 $smarty->assign("CURRENTUSERID",$current_user->id);
-
+$smarty->assign('MASS_EDIT','0');
 $disp_view = getView($focus->mode);
 if($disp_view == 'edit_view') {
 	$act_data = getBlocks($tab_type,$disp_view,$focus->mode,$focus->column_fields);
@@ -190,21 +200,16 @@ $smarty->assign("BLOCKS",$act_data);
 foreach($act_data as $header=>$blockitem) {
 	foreach($blockitem as $row=>$data) {
 		foreach($data as $key=>$maindata) {
-			$uitype[$maindata[2][0]] = $maindata[0][0];
-			$fldlabel[$maindata[2][0]] = $maindata[1][0];
-			$fldlabel_sel[$maindata[2][0]] = $maindata[1][1];
-			$fldlabel_combo[$maindata[2][0]] = $maindata[1][2];
-			$value[$maindata[2][0]] = $maindata[3][0];
-			$secondvalue[$maindata[2][0]] = $maindata[3][1];
-			$thirdvalue[$maindata[2][0]] = $maindata[3][2];
+			if (count($maindata)==0) continue;
+			$uitype[$maindata[2][0]] = isset($maindata[0][0]) ? $maindata[0][0] : '';
+			$fldlabel[$maindata[2][0]] = isset($maindata[1][0]) ? $maindata[1][0] : '';
+			$fldlabel_sel[$maindata[2][0]] = isset($maindata[1][1]) ? $maindata[1][1] : '';
+			$fldlabel_combo[$maindata[2][0]] = isset($maindata[1][2]) ? $maindata[1][2] : '';
+			$value[$maindata[2][0]] = isset($maindata[3][0]) ? $maindata[3][0] : '';
+			$secondvalue[$maindata[2][0]] = isset($maindata[3][1]) ? $maindata[3][1] : '';
+			$thirdvalue[$maindata[2][0]] = isset($maindata[3][2]) ? $maindata[3][2] : '';
 		}
 	}
-}
-// jread.topik. patch account_id for create contact
-if (strlen($account_name) > 0) {
-	$fldlabel_sel['parent_id'][1]='selected';
-	$secondvalue['parent_id'] = $account_id;
-	$value['parent_id'] = $account_name;
 }
 
 $format = ($current_user->hour_format == '')?'am/pm':$current_user->hour_format;
@@ -225,7 +230,8 @@ $smarty->assign("FOLLOWUP",getTimeCombo($format,'followup_start',$time_arr['endh
 
 if ($Calendar4You->view_all && $Calendar4You->edit_all) {
 	$assigned_user_id = $focus->column_fields["assigned_user_id"];
-	$value["assigned_user_id"] = get_select_options_array(get_user_array(FALSE, "Active", $assigned_user_id), $assigned_user_id);
+	$ua = get_user_array(FALSE, 'Active', $assigned_user_id);
+	$value['assigned_user_id'] = get_select_options_array($ua, $assigned_user_id);
 }
 
 $smarty->assign("ACTIVITYDATA",$value);
@@ -257,10 +263,8 @@ $smarty->assign("NAME", $focus->name);
 else
 $smarty->assign("NAME", "");
 
-if($focus->mode == 'edit') {
-	$smarty->assign("MODE", $focus->mode);
-}
-$smarty->assign('CREATEMODE', vtlib_purify($_REQUEST['createmode']));
+$smarty->assign("MODE", $focus->mode);
+$smarty->assign('CREATEMODE', (isset($_REQUEST['createmode']) ? vtlib_purify($_REQUEST['createmode']) : ''));
 
 $category = getParentTab();
 $smarty->assign("CATEGORY",$category);
@@ -308,13 +312,13 @@ $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH", $image_path);
 $smarty->assign("ID", $focus->id);
 
- $tabid = getTabid($tab_type);
- $validationData = getDBValidationData($focus->tab_name,$tabid);
- $data = split_validationdataArray($validationData);
+$tabid = getTabid($tab_type);
+$validationData = getDBValidationData($focus->tab_name,$tabid);
+$data = split_validationdataArray($validationData);
 
 $check_button = Button_Check($module);
 $smarty->assign("CHECK", $check_button);
-$smarty->assign("DUPLICATE",vtlib_purify($_REQUEST['isDuplicate']));
+$smarty->assign('DUPLICATE',$isduplicate);
 
 if ($activity_mode == 'Task') {
 	$custom_fields_data = getCalendarCustomFields(getTabid('Calendar'),'edit',$focus->column_fields);
@@ -326,7 +330,7 @@ $smarty->assign("CUSTOM_FIELDS_DATA", $custom_fields_data);
 $smarty->assign("REPEAT_LIMIT_DATEFORMAT", parse_calendardate($app_strings['NTC_DATE_FORMAT']));
 
 $picklistDependencyDatasource = Vtiger_DependencyPicklist::getPicklistDependencyDatasource($tab_type);
-$smarty->assign("PICKIST_DEPENDENCY_DATASOURCE", Zend_Json::encode($picklistDependencyDatasource));
+$smarty->assign("PICKIST_DEPENDENCY_DATASOURCE", json_encode($picklistDependencyDatasource));
 
 // Gather the help information associated with fields
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));

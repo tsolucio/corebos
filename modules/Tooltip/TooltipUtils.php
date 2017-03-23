@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once 'include/Webservices/DescribeObject.php';
 require_once 'include/Webservices/Utils.php';
 require_once 'include/Webservices/Query.php';
@@ -23,10 +22,6 @@ function getFieldList($module_name, $field_name = "") {
 
 	$query = "select * from vtiger_field where tabid = ?";
 	$params = array($tabid);
-	if (!empty ($field_name)) {
-		$query .= " and fieldname not like ?";
-		$params = array($tabid,$field_name);
-	}
 	$query.= " and columnname not like 'imagename' and uitype not in (61, 122) and vtiger_field.presence in (0,2)";
 	$result = $adb->pquery($query, $params);
 	while ($fieldinfo = $adb->fetch_array($result)) {
@@ -127,8 +122,9 @@ function getToolTipText($view,$fieldname,$module,$value){
 			if(empty($fieldvalue)) {
 				$fieldvalue = '&nbsp;';
 			}
-			if(strlen($fieldvalue)>35){
-				$fieldvalue = substr($fieldvalue,0,35).'...';
+			$ttMaxFieldValueLength = GlobalVariable::getVariable('ToolTip_MaxFieldValueLength',35,$module);
+			if(strlen($fieldvalue)>$ttMaxFieldValueLength){
+				$fieldvalue = substr($fieldvalue,0,$ttMaxFieldValueLength).'...';
 			}
 			$text[$label] = $fieldvalue;
 		}
@@ -234,7 +230,6 @@ function vttooltip_processResult($result, $descObj){
 	}
 	return $result;
 }
-
 
 /**
  * this function returns the fields for a given module in a select dropdown format

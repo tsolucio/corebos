@@ -47,7 +47,7 @@ function trimfValues(value) {
 
 function updatefOptions(sel, opSelName) {
 	var selObj = document.getElementById(opSelName);
-	var fieldtype = null ;
+	var fieldtype = null;
 	var currOption = selObj.options[selObj.selectedIndex];
 	var currField = sel.options[sel.selectedIndex];
 
@@ -61,7 +61,7 @@ function updatefOptions(sel, opSelName) {
 			for(nLoop = 0; nLoop < nMaxVal; nLoop++) {
 				selObj.remove(0);
 			}
-			selObj.options[0] = new Option ('None', '');
+			selObj.options[0] = new Option('None', '');
 			if (currField.value == '') {
 				selObj.options[0].selected = true;
 			}
@@ -69,7 +69,7 @@ function updatefOptions(sel, opSelName) {
 			for (var i = 0; i < ops.length; i++) {
 				var label = fLabels[ops[i]];
 				if (label == null) continue;
-				var option = new Option (fLabels[ops[i]], ops[i]);
+				var option = new Option(fLabels[ops[i]], ops[i]);
 				selObj.options[i + off] = option;
 				if (currOption != null && currOption.value == option.value) {
 					option.selected = true;
@@ -77,6 +77,12 @@ function updatefOptions(sel, opSelName) {
 			}
 		}
 	} else {
+		var nMaxVal = selObj.length;
+		for (nLoop = 0; nLoop < nMaxVal; nLoop++)
+		{
+			selObj.remove(0);
+		}
+		selObj.options[0] = new Option('None', '');
 		if (currField.value == '') {
 			selObj.options[0].selected = true;
 		}
@@ -378,11 +384,15 @@ function checkAdvancedFilter() {
 						return false;
 				}
 			} else if(col[4] == 'I') {
+				if (specifiedValue.charAt(0) != "$" && specifiedValue.charAt(specifiedValue.length-1) != "$"){
 				if(!intValidate(valueId,selectedColumnLabel+" (Integer Criteria)"+i))
 					return false;
+				}
 			} else if(col[4] == 'N' || col[4] == 'NN') {
+				if (specifiedValue.charAt(0) != "$" && specifiedValue.charAt(specifiedValue.length-1) != "$"){
 				if (!numValidate(valueId,selectedColumnLabel+" (Number) ","any",(col[4] == 'NN')))
 					return false;
+				}
 			} else if(col[4] == 'E') {
 				if ((comparatorValue=='e' || comparatorValue=='n') && !patternValidate(valueId,selectedColumnLabel+" (Email Id)","EMAIL"))
 					return false;

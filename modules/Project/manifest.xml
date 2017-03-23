@@ -23,7 +23,7 @@
 <table>
 <name>vtiger_project</name>
 <sql><![CDATA[CREATE TABLE `vtiger_project` (
-  `projectid` int(11) default NULL,
+  `projectid` int(11) NOT NULL,
   `projectname` varchar(255) default NULL,
   `project_no` varchar(100) default NULL,
   `startdate` date default NULL,
@@ -35,7 +35,8 @@
   `projectpriority` varchar(100) default NULL,
   `projecttype` varchar(100) default NULL,
   `progress` varchar(100) default NULL,
-  `linktoaccountscontacts` varchar(100) default NULL
+  `linktoaccountscontacts` varchar(100) default NULL,
+  PRIMARY KEY (`projectid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
 </table>
 <table>

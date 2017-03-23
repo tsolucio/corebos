@@ -12,6 +12,9 @@
 <TABLE id="LB_buttonlist" border=0 cellspacing=0 cellpadding=0 width=100% class=small>
 <tr><td style="height:2px"></td></tr>
 <tr>
+	{if empty($CATEGORY)}
+		{assign var="CATEGORY" value=""}
+	{/if}
 	{if $CATEGORY eq 'Settings' || $MODULE eq 'Calendar4You'}
 	{assign var="action" value="index"}
 	{else}
@@ -50,7 +53,7 @@
 		</td>
 		<td style="width:20px;" class="LB_Divider">&nbsp;</td>
 		<td class="small">
-			<!-- Calendar Clock Calculator and Chat -->
+			<!-- Calendar, Clock and Calculator -->
 				<table border=0 cellspacing=0 cellpadding=5>
 				<tr>
 					{if $CALENDAR_DISPLAY eq 'true'}
@@ -60,7 +63,7 @@
 							{assign var="PTCATEGORY" value=$CATEGORY}
 						{/if}
 						{if $CHECK.Calendar eq 'yes'}
-							<td id="LB_CalButton" class="LB_Button" style="padding-right:0px;padding-left:10px;"><a href="javascript:;" onclick="fnvshobj(this,'miniCal');getITSMiniCal('parenttab={$PTCATEGORY}');"><img src="{'btnL3Calendar.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CALENDAR_ALT}" title="{$APP.LBL_CALENDAR_TITLE}" border=0></a></td>
+							<td id="LB_CalButton" class="LB_Button" style="padding-right:0px;padding-left:10px;"><a href="javascript:;" onclick="fnvshobj(this,'miniCal');getITSMiniCal('');"><img src="{'btnL3Calendar.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CALENDAR_ALT}" title="{$APP.LBL_CALENDAR_TITLE}" border=0></a></td>
 						{else}
 							<td id="LB_CalButtonFaded" class="LB_Button" style="padding-right:0px;padding-left:10px;"><img src="{'btnL3Calendar-Faded.gif'|@vtiger_imageurl:$THEME}"></td>
 						{/if}
@@ -70,9 +73,6 @@
 					{/if}
 					{if $CALCULATOR_DISPLAY eq 'true'}
 						<td id="LB_CalcButton" class="LB_Button" style="padding-right:0px"><a href="#"><img src="{$IMAGE_PATH}btnL3Calc.gif" alt="{$APP.LBL_CALCULATOR_ALT}" title="{$APP.LBL_CALCULATOR_TITLE}" border=0 onClick="fnvshobj(this,'calculator_cont');fetch_calc();"></a></td>
-					{/if}
-					{if $CHAT_DISPLAY eq 'true'}
-						<td id="LB_ChatButton" class="LB_Button" style="padding-right:10px"><a href="javascript:;" onClick='return window.open("index.php?module=Home&action=vtchat","Chat","width=600,height=450,resizable=1,scrollbars=1");'><img src="{$IMAGE_PATH}tbarChat.gif" alt="{$APP.LBL_CHAT_ALT}" title="{$APP.LBL_CHAT_TITLE}" border=0></a></td>
 					{/if}
 					<td id="LB_TrackButton" class="LB_Button" style="padding-right:10px"><img src="{$IMAGE_PATH}btnL3Tracker.gif" alt="{$APP.LBL_LAST_VIEWED}" title="{$APP.LBL_LAST_VIEWED}" border=0 onClick="fnvshobj(this,'tracker');"></td>
 				</tr>
@@ -97,12 +97,8 @@
 			{else}
 				<td id="LB_ExportButtonFaded" class="LB_Button" style="padding-right:10px"><img src="{'tbarExport-Faded.gif'|@vtiger_imageurl:$THEME}" border="0"></td>
 			{/if}
-			{if $MODULE eq 'Contacts' || $MODULE eq 'Leads' || $MODULE eq 'Accounts'|| $MODULE eq 'Products'|| $MODULE eq 'Potentials'|| $MODULE eq 'HelpDesk'|| $MODULE eq 'Vendors' || $MODULE eq 'Campaigns' || $CUSTOM_MODULE eq 'true'}
-				{if $CHECK.DuplicatesHandling eq 'yes' && ($smarty.request.action eq 'ListView' || $smarty.request.action eq 'index')}
-					<td id="LB_FindDuplButton" class="LB_Button" style="padding-right:10px"><a href="javascript:;" onClick="moveMe('mergeDup');mergeshowhide('mergeDup');searchhide('searchAcc','advSearch');"><img src="{'findduplicates.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_FIND_DUPLICATES}" title="{$APP.LBL_FIND_DUPLICATES}" border="0"></a></td>
-				{else}
-					<td id="LB_FindDuplButtonFaded" class="LB_Button" style="padding-right:10px"><img src="{'FindDuplicates-Faded.gif'|@vtiger_imageurl:$THEME}" border="0"></td>
-				{/if}
+			{if $CHECK.DuplicatesHandling eq 'yes' && ($smarty.request.action eq 'ListView' || $smarty.request.action eq 'index')}
+				<td id="LB_FindDuplButton" class="LB_Button" style="padding-right:10px"><a href="javascript:;" onClick="moveMe('mergeDup');mergeshowhide('mergeDup');searchhide('searchAcc','advSearch');"><img src="{'findduplicates.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_FIND_DUPLICATES}" title="{$APP.LBL_FIND_DUPLICATES}" border="0"></a></td>
 			{else}
 				<td id="LB_FindDuplButtonFaded" class="LB_Button" style="padding-right:10px"><img src="{'FindDuplicates-Faded.gif'|@vtiger_imageurl:$THEME}" border="0"></td>
 			{/if}

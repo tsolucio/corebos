@@ -398,12 +398,9 @@ $mod_strings = array (
   'End date and time' => 'Data orario di fine',
   'End Date and Time' => 'Data orario di fine',
   'End date' => 'Data fine',
-  'LBL_SET_DATE' => 'Imposta data...',
   'Recurrence'=>'Ricorrenza',
 
-
   'INVITATION' => 'Invito',
-
 
   'LBL_YEAR_BUTTON_TITLE' => 'Anno [Alt+Y]',
   'LBL_SELECT_CONTACT' => 'Seleziona Contatto',

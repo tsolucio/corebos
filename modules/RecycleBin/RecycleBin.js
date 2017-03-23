@@ -192,7 +192,7 @@ function emptyRecyclebin(id) {
 	VtigerJS_DialogBox.progress();
 	jQuery.ajax({
 			method: 'POST',
-			url: "index.phpmodule=RecycleBin&action=RecycleBinAjax&file=EmptyRecyclebin&mode=ajax&ajax=true&selected_module=&allrec=1"
+			url: "index.php?module=RecycleBin&action=RecycleBinAjax&file=EmptyRecyclebin&mode=ajax&ajax=true&selected_module=&allrec=1"
 	}).done(function (response) {
 			document.getElementById("status").style.display="none";
 			document.getElementById("modules_datas").innerHTML= response;
@@ -203,9 +203,11 @@ function emptyRecyclebin(id) {
 	);
 }
 
-function callEmptyRecyclebin() {
+function callEmptyRecyclebin(id) {
 	var excludedRecords = document.getElementById('excludedRecords').value;
+        if(id==''|| id==null)
 	var select_options  =  document.getElementById('allselectedboxes').value;
+        else select_options = id;
 	var recbutton  =  document.getElementById('selectCurrentPageRec');
 	var allrec;
 	var searchurl = document.getElementById('search_url').value;
@@ -229,6 +231,7 @@ function callEmptyRecyclebin() {
 	} else {
 		var x = select_options.split(";");
 		var count=x.length;
+                if(id==''|| id==null){
 		if (count > 1){
 			document.getElementById('idlist').value=select_options;
 			idstring = select_options;
@@ -237,6 +240,12 @@ function callEmptyRecyclebin() {
 			count = ++numOfRows;
 		}
 		count = count-1;
+                }
+                else {
+                document.getElementById('idlist').value=select_options;
+	        idstring = select_options;
+                count=1;
+                }
 	}
 	if(count > getMaxMassOperationLimit()) {
 		var confirm_str = alert_arr.MORE_THAN_500;

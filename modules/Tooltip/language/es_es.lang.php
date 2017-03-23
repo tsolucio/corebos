@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * Portions created by jpl tsolucio,s.l. are Copyright (C) jpl tsolucio, s.l.
  * All Rights Reserved.
-* 
  ********************************************************************************/
 
 $mod_strings = Array (
@@ -19,6 +18,8 @@ $mod_strings = Array (
 'LBL_FIELDS_IN'=>'Campos en',
 'LBL_FIELD'=>'Campo',
 'LBL_NOT_ASSETS'=>'No hay Recursos asignados',
+'TooltipInfo' => 'Esta extensión añade información adicional en forma de popup al pasar el ratón por encima de los campos de un módulo. Se accede en la confguración de cada módulo no directamente, así que puedes eliminarlo del menu.',
+'No Fields Selected' => 'No hay ningún campo seleccionado',
 );
 
 ?>

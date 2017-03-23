@@ -14,6 +14,10 @@
 <script type="text/javascript" src="include/js/dtlviewajax.js"></script>
 <script type="text/javascript" src="include/js/FieldDependencies.js"></script>
 <script type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
+{if !isset($Document_Folder_View)}
+	{assign var=Document_Folder_View value=1}
+{/if}
+<script>var Document_Folder_View={$Document_Folder_View};</script>
 		{include file='Buttons_List.tpl'}
                                 <div id="searchingUI" style="display:none;">
                                         <table border=0 cellspacing=0 cellpadding=0 width=100%>
@@ -106,8 +110,8 @@
 </form><br>
 </div>
 {*<!-- Searching UI -->*}
- 
- <div id="mergeDup" style="z-index:1;display:none;position:relative;">
+
+<div id="mergeDup" style="z-index:1;display:none;position:relative;">
 	{include file="MergeColumns.tpl"}
 </div>
 	   <!-- PUBLIC CONTENTS STARTS-->
@@ -119,47 +123,4 @@
    </tr>
 </table>
 
-<!-- Add new Folder UI for Documents module starts -->
 <script type="text/javascript" src="modules/Documents/Documents.js"></script>
-<div id="orgLay" style="display:none;width:350px;" class="layerPopup" >
-        <table border=0 cellspacing=0 cellpadding=5 width=100% class=layerHeadingULine>
-	        <tr>
-				<td class="genHeaderSmall" nowrap align="left" width="30%" id="editfolder_info">{$MOD.LBL_ADD_NEW_FOLDER}
-				</td>
-				<td align="right"><a href="javascript:;" onClick="closeFolderCreate();"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0"></a>
-				</td>
-	        </tr>
-        </table>
-        <table border=0 cellspacing=0 cellpadding=5 width=95% align=center>
-        <tr>
-			<td class="small">
-				<table border=0 cellspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
-				<tr>
-					<td align="right" nowrap class="cellLabel small"><font color='red'>*</font>&nbsp;<b>{$MOD.LBL_FOLDER_NAME}</b></td>
-					<td align="left" class="cellText small">
-					<input id="folder_id" name="folderId" type="hidden" value=''>
-					<input id="fldrsave_mode" name="folderId" type="hidden" value='save'>
-					<input id="folder_name" name="folderName" class="txtBox" type="text"> &nbsp;&nbsp;{$MOD.LBL_MAXIMUM_20}
-					</td>
-				</tr>
-				<tr>
-					<td class="cellLabel small" align="right" nowrap><b>{$MOD.LBL_FOLDER_DESC}</b>
-					</td>
- 					<td class="cellText small" align="left"><input id="folder_desc" name="folderDesc" class="txtBox" type="text"> &nbsp;&nbsp;{$MOD.LBL_MAXIMUM_50}
-					</td>
-				 </tr>
-				</table>
-			</td>
-        </tr>
- 	</table>
-	<table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport">
-        <tr>
-			<td class="small" align="center">
-                <input name="save" value=" &nbsp;{$APP.LBL_SAVE_BUTTON_LABEL}&nbsp; " class="crmbutton small save" onClick="AddFolder();" type="button">&nbsp;&nbsp;
-                <input name="cancel" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="crmbutton small cancel" onclick="closeFolderCreate();" type="button">
-			</td>
-        </tr>
-	</table>
-</div>
-
-<!-- Add new folder UI for Documents module ends -->

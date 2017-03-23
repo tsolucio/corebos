@@ -1,24 +1,18 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
- * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Home/index.php,v 1.28 2005/04/20 06:57:47 samk Exp $
- * Description:  Main file for the Home module.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
+/*************************************************************************************************
+ * Copyright 2016 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
+ * file except in compliance with the License. You can redistribute it and/or modify it
+ * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
+ * granted by the License. coreBOS distributed by JPL TSolucio S.L. is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. Unless required by
+ * applicable law or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT ANY WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language governing
+ * permissions and limitations under the License. You may obtain a copy of the License
+ * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
+ *************************************************************************************************/
 require_once('include/home.php');
 require_once('Smarty_setup.php');
 require_once('modules/Home/HomeBlock.php');
@@ -28,10 +22,8 @@ require_once('include/utils/CommonUtils.php');
 require_once('include/freetag/freetag.class.php');
 require_once 'modules/Home/HomeUtils.php';
 
-global $app_strings, $app_list_strings, $mod_strings;
-global $adb, $current_user;
-global $theme;
-global $current_language;
+global $app_strings, $mod_strings;
+global $adb, $current_user, $theme, $current_language;
 
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
@@ -111,8 +103,6 @@ $smarty->assign('widgetBlockSize', $widgetBlockSize);
 include_once 'modules/Users/LoginHistory.php';
 $accept_login_delay_seconds = 5*60; // (use..5*60 for 5 min) to overcome redirection post authentication
 $smarty->assign('FIRST_TIME_LOGIN', LoginHistory::firstTimeLoggedIn($current_user->user_name, $accept_login_delay_seconds));
-// End
 
 $smarty->display("Home/Homestuff.tpl");
-
 ?>

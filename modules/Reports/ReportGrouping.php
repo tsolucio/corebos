@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 require_once('Smarty_setup.php');
 require_once("data/Tracker.php");
@@ -14,10 +13,8 @@ require_once('include/logging.php');
 require_once('include/utils/utils.php');
 require_once('modules/Reports/Reports.php');
 
-global $app_strings, $app_list_strings, $mod_strings;
+global $app_strings, $mod_strings;
 $current_module_strings = return_module_language($current_language, 'Reports');
-
-global $list_max_entries_per_page, $urlPrefix;
 
 $log = LoggerManager::getLogger('report_type');
 
@@ -101,18 +98,17 @@ if(isset($_REQUEST["record"]) && $_REQUEST['record']!='')
 
 function getPrimaryColumns_GroupingHTML($module,$selected="")
 {
-	global $ogReport, $app_list_strings, $current_language;
+	global $ogReport, $current_language;
 	$id_added=false;
 	$mod_strings = return_module_language($current_language,$module);
 
 	$block_listed = array();
- 	$selected = decode_html($selected);
-    foreach($ogReport->module_list[$module] as $key=>$value)
-    {
-        if(isset($ogReport->pri_module_columnslist[$module][$value]) && !$block_listed[$value])
-        {
+	$selected = decode_html($selected);
+	$i18nModule = getTranslatedString($module,$module);
+	foreach($ogReport->module_list[$module] as $key=>$value) {
+		if(isset($ogReport->pri_module_columnslist[$module][$value]) && !$block_listed[$value]) {
 			$block_listed[$value] = true;
-			$shtml .= "<optgroup label=\"".$app_list_strings['moduleList'][$module]." ".getTranslatedString($value, $module)."\" class=\"select\" style=\"border:none\">";
+			$shtml .= "<optgroup label=\"".$i18nModule." ".getTranslatedString($value, $module)."\" class=\"select\" style=\"border:none\">";
 			if($id_added==false){
 				$is_selected ='';
 				if($selected == "vtiger_crmentity:crmid:".$module."_ID:crmid:I"){
@@ -143,12 +139,11 @@ function getPrimaryColumns_GroupingHTML($module,$selected="")
 					{
 						$shtml .= "<option value=\"".$field."\">".$fieldlabel."</option>";
 					}
-
 				}
 			}
-       }
-    }
-    return $shtml;
+		}
+	}
+	return $shtml;
 }
 
 	/** Function to get the combo values for the Secondary module Columns
@@ -159,24 +154,23 @@ function getPrimaryColumns_GroupingHTML($module,$selected="")
 	 */
 function getSecondaryColumns_GroupingHTML($module,$selected="")
 {
-	global $ogReport;
-	global $app_list_strings;
-	global $current_language;
+	global $ogReport, $current_language;
 
- 	$selected = decode_html($selected);
+	$selected = decode_html($selected);
 	if($module != "")
 	{
 		$secmodule = explode(":",$module);
 		for($i=0;$i < count($secmodule) ;$i++)
 		{
-			$mod_strings = return_module_language($current_language,$secmodule[$i]);
 			if(vtlib_isModuleActive($secmodule[$i])){
+				$mod_strings = return_module_language($current_language,$secmodule[$i]);
 				$block_listed = array();
+				$i18nModule = getTranslatedString($secmodule[$i],$secmodule[$i]);
 				foreach($ogReport->module_list[$secmodule[$i]] as $key=>$value)
 				{
 					if(isset($ogReport->sec_module_columnslist[$secmodule[$i]][$value]) && !$block_listed[$value]) {
 						$block_listed[$value] = true;
-						$shtml .= "<optgroup label=\"".$app_list_strings['moduleList'][$secmodule[$i]]." ".getTranslatedString($value)."\" class=\"select\" style=\"border:none\">";
+						$shtml .= "<optgroup label=\"".$i18nModule." ".getTranslatedString($value)."\" class=\"select\" style=\"border:none\">";
 						foreach($ogReport->sec_module_columnslist[$secmodule[$i]][$value] as $field=>$fieldlabel)
 						{
 							if(isset($mod_strings[$fieldlabel])) {
@@ -223,6 +217,9 @@ function getGroupByTimeDiv($sortid,$reportid=''){
 		else if($selected_groupby == 'Quarter'){
 			$quarterselected = 'selected';
 		}
+		else if($selected_groupby == 'Day'){
+			$dayselected = 'selected';
+		}
 		else if(strtolower($selected_groupby)=='none'){
 			$noneselected='selected';
 		}
@@ -240,6 +237,7 @@ function getGroupByTimeDiv($sortid,$reportid=''){
 	$div .= "<option value='Year' $yearselected>".$mod_strings['LBL_YEAR']."</option>";
 	$div .= "<option value='Month' $monthselected>".$mod_strings['LBL_MONTH']."</option>";
 	$div .= "<option value='Quarter' $quarterselected>".$mod_strings['LBL_QUARTER']."</option>";
+	$div .= "<option value='Day' $dayselected>".$mod_strings['LBL_DAY']."</option>";
 	$div .= "</select></div>";
 	return $div;
 }

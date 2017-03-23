@@ -20,7 +20,8 @@ $cronTasks = false;
 if (isset($_REQUEST['service']) or ($argc==2 and !empty($argv[1]))) {
 	// Run specific service
 	$srv = empty($argv[1]) ? $_REQUEST['service'] : $argv[1];
-	$srvcron = Vtiger_Cron::getInstance(vtlib_purify($srv));
+	$srv = vtlib_purify($srv);
+	$srvcron = Vtiger_Cron::getInstance($srv);
 	if ($srvcron !== false) {
 		$cronTasks = array($srvcron);
 	} else {
@@ -59,10 +60,11 @@ foreach ($cronTasks as $cronTask) {
 		checkFileAccess($cronTask->getHandlerFile());
 		$logbg->info('Execute: '.$cronTask->getHandlerFile());
 		require_once $cronTask->getHandlerFile();
-		
+		$daily=$cronTask->getdaily();
+		$timestart=$cronTask->getLastStart();
 		// Mark the status - finished
-		$cronTask->markFinished();
-		
+		$cronTask->markFinished($daily,$timestart);
+
 	} catch (Exception $e) {
 		$msg = sprintf("[ERROR]: %s - cron task execution throwed exception.\n", $cronTask->getName());
 		$msg .= $e->getMessage();
@@ -74,14 +76,11 @@ foreach ($cronTasks as $cronTask) {
 		if ($mailto != '') {
 			require_once('modules/Emails/mail.php');
 			require_once('modules/Emails/Emails.php');
-			global $HELPDESK_SUPPORT_EMAIL_ID,$HELPDESK_SUPPORT_NAME;
-			
-			$from_name = $HELPDESK_SUPPORT_NAME;
-			$form_mail = $HELPDESK_SUPPORT_EMAIL_ID;
+			$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail','support@your_support_domain.tld','HelpDesk');
+			$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name','your-support name','HelpDesk');
 			$mailsubject = "[ERROR]: ".$cronTask->getName()." - cron task execution throwed exception.";
 			$mailcontent = '<pre>'.$e.'</pre>';
-			
-			send_mail('Emails',$mailto,$from_name,$form_mail,$mailsubject,$mailcontent);
+			send_mail('Emails',$mailto,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID,$mailsubject,$mailcontent);
 		}
 	}
 }

@@ -8,13 +8,11 @@
  * All Rights Reserved.
  ************************************************************************************/
 require_once('Smarty_setup.php');
-require_once('user_privileges/default_module_view.php');
 
-global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log, $singlepane_view;
+global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
 
 $smarty = new vtigerCRM_Smarty();
 
-$smarty->assign('USE_ASTERISK', get_use_asterisk($current_user->id));
 if(useInternalMailer() == 1)
 	$smarty->assign('INT_MAILER','true');
 
@@ -45,8 +43,8 @@ if(isPermitted('Accounts','Merge','') == 'yes') {
 	$wordTemplateResult = fetchWordTemplateList('Accounts');
 	$tempCount = $adb->num_rows($wordTemplateResult);
 	$tempVal = $adb->fetch_array($wordTemplateResult);
-	for($templateCount=0;$templateCount<$tempCount;$templateCount++)
-	{
+	$optionString = array();
+	for($templateCount=0;$templateCount<$tempCount;$templateCount++) {
 		$optionString[$tempVal['templateid']]=$tempVal['filename'];
 		$tempVal = $adb->fetch_array($wordTemplateResult);
 	}

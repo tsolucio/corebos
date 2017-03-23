@@ -158,6 +158,7 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 	<!--script type="text/javascript" src="include/js/ListView.js"></script-->
 	<div class="calAddITSEvent layerPopup" style="display:none;width:650px;left:200px;top:150px;z-index:10000;background-color:#ffffff" id="addITSEvent" align=center>
 	<form id="EditView" name="EditView" method="POST" action="index.php">
+	<input type="hidden" name="action" value="SaveEvent">
 	<input type="hidden" name="module" value="Calendar4You">
 	<input type="hidden" name="return_action" value="index">
 	<input type="hidden" name="return_module" value="Calendar4You">
@@ -1085,14 +1086,14 @@ $picklistDependencyDSCalendar = Vtiger_DependencyPicklist::getPicklistDependency
 <script type="text/javascript">
 	jQuery(document).ready(function(){
 		<?php if(!empty($picklistDependencyDSEvents)){ ?>
-		(new FieldDependencies(<?php echo Zend_Json::encode($picklistDependencyDSEvents) ?>)).init();
+		(new FieldDependencies(<?php echo json_encode($picklistDependencyDSEvents) ?>)).init();
 		<?php } ?>
 		<?php if(!empty($picklistDependencyDSCalendar)){ ?>
-		(new FieldDependencies(<?php echo Zend_Json::encode($picklistDependencyDSCalendar) ?>)).init(document.forms['createTodo']);
+		(new FieldDependencies(<?php echo json_encode($picklistDependencyDSCalendar) ?>)).init(document.forms['createTodo']);
 		<?php } ?>
+		getSelectedStatus(); // Call status onchange function in case default status is Held
 	});
-</script>
-<script type="text/javascript">
+
 function triggerOnChangeHandler(elementName, formName){
 	if(typeof(formName) == 'undefined') {
 		formName = document.forms['EditView'];
@@ -1107,21 +1108,21 @@ function c4y_eventsave() {
 	jQuery.ajax({
 		type: frm1.attr('method'),
 		url: "index.php?module=Calendar4You&action=Calendar4YouAjax&file=SaveEvent",
-		data: frm1r.serialize(),
-		success: function (data){
+		data: frm1r.serialize()
+	})
+	.done(function (data){
 			jQuery('#EditView')[0].reset();
 			var return_data = data.split("-");
 			jQuery('#calendar_div').fullCalendar( 'refetchEvents' );
 			ghide('addITSEvent');
 			VtigerJS_DialogBox.unblock();
 			if (return_data[0] != "undefined" && return_data[1] != "undefined" && return_data[2] != "undefined"){
-				go_to_month = (return_data[1] * 1) - 1;
-				jQuery('#calendar_div').fullCalendar('gotoDate', return_data[0] * 1, go_to_month, return_data[2] * 1);
+				var date=return_data[0]+'-'+return_data[1]+'-'+return_data[2];
+				jQuery('#calendar_div').fullCalendar('gotoDate', date);
 				alert(return_data[3]);
 			} else {
 				alert(data);
 			}
-		}
 	});
 	return false;
 };
@@ -1139,21 +1140,21 @@ function c4y_todosave(val_result) {
 	jQuery.ajax({
 		type: frm2.attr('method'),
 		url: "index.php?module=Calendar4You&action=Calendar4YouAjax&file=SaveTodo",
-		data: frm2r.serialize(),
-		success: function (data) {
+		data: frm2r.serialize()
+	})
+	.done(function (data) {
 			jQuery('#createTodoID')[0].reset();
 			var return_data = data.split("-");
 			jQuery('#calendar_div').fullCalendar( 'refetchEvents' );
 			ghide('createTodo');
 			VtigerJS_DialogBox.unblock();
 			if (return_data[0] != "undefined" && return_data[1] != "undefined" && return_data[2] != "undefined"){
-				go_to_month = (return_data[1] * 1) - 1;
-				jQuery('#calendar_div').fullCalendar('gotoDate', return_data[0] * 1, go_to_month, return_data[2] * 1);
+				var date=return_data[0]+'-'+return_data[1]+'-'+return_data[2];
+				jQuery('#calendar_div').fullCalendar('gotoDate',date);
 				alert(return_data[3]);
 			} else {
 				alert("error:"+data);
 			}
-		}
 	});
 }
 frm2.submit(function (){

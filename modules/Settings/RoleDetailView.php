@@ -7,14 +7,11 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('include/utils/UserInfoUtil.php');
 require_once('include/utils/utils.php');
 
 global $mod_strings;
 global $app_strings;
-global $app_list_strings;
-
 global $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
@@ -22,10 +19,9 @@ $image_path=$theme_path."images/";
 $smarty = new vtigerCRM_Smarty;
 $roleid= vtlib_purify($_REQUEST['roleid']);
 
-/** gives the role info, role profile info and role user info details in an array  for the specified role id
+/** gives the role info, role profile info and role user info details in an array for the specified role id
   * @param $roleid -- role id:: Type integer
   * @returns $return_data -- array contains role info, role profile info and role user info. This array is used to construct the detail view for the specified role id :: Type varchar
-  *
  */
 function getStdOutput($roleid)
 {
@@ -36,6 +32,7 @@ function getStdOutput($roleid)
 
 	//Constructing the Profile list
 	$profileinfo = Array();
+	$profileList = '';
 	foreach($roleProfileArr as $profileId=>$profileName)
 	{
 		$profileinfo[]=$profileId;
@@ -43,9 +40,10 @@ function getStdOutput($roleid)
 		$profileList .= '<a href="index.php?module=Settings&action=profilePrivileges&profileid='.$profileId.'">'.$profileName.'</a>';
 	}
 	$profileinfo=array_chunk($profileinfo,2);
-	
+
 	//Constructing the Users List
 	$userinfo = Array();
+	$userList = '';
 	foreach($roleUserArr as $userId=>$userName)
 	{
 		$userinfo[]= $userId;
@@ -53,7 +51,7 @@ function getStdOutput($roleid)
 		$userList .= '<a href="index.php?module=Settings&action=DetailView&record='.$userId.'">'.$userName.'</a>';
 	}
 	$userinfo=array_chunk($userinfo,2);
-	
+
 	//Check for Current User
 	global $current_user;
 	$current_role = fetchUserRole($current_user->id);
@@ -62,13 +60,12 @@ function getStdOutput($roleid)
 }
 
 if(isset($_REQUEST['roleid']) && $_REQUEST['roleid'] != '')
-{	
+{
 	$roleid= vtlib_purify($_REQUEST['roleid']);
-	$mode = vtlib_purify($_REQUEST['mode']);
 	$roleInfo=getRoleInformation($roleid);
 	$thisRoleDet=$roleInfo[$roleid];
-	$rolename = $thisRoleDet[0]; 
-	$parent = $thisRoleDet[3]; 
+	$rolename = $thisRoleDet[0];
+	$parent = $thisRoleDet[3];
 	//retreiving the vtiger_profileid
 	$roleRelatedProfiles=getRoleRelatedProfiles($roleid);
 

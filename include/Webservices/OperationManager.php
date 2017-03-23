@@ -8,19 +8,15 @@
  * All Rights Reserved.
  *************************************************************************************/
 	
-	function setBuiltIn($json){
-		$json->useBuiltinEncoderDecoder = true;
-	}
-	
 	class OperationManager{
 		private $format;
 		private $formatsData=array(
 			"json"=>array(
-				"includePath"=>"include/Zend/Json.php",
-				"class"=>"Zend_Json",
+				"includePath"=>'include/Webservices/OperationManagerEnDecode.php',
+				"class"=>'OperationManagerEnDecode',
 				"encodeMethod"=>"encode",
 				"decodeMethod"=>"decode",
-				"postCreate"=>"setBuiltIn"
+				"postCreate"=>''
 			)
 		);
 		private $operationMeta = null;
@@ -36,8 +32,7 @@
 		private $operationId;
 		private $operationParams;
 		
-		function OperationManager($adb,$operationName,$format, $sessionManager){
-			
+		function __construct($adb,$operationName,$format, $sessionManager){
 			$this->format = strtolower($format);
 			$this->sessionManager = $sessionManager;
 			$this->formatObjects = array();
@@ -129,7 +124,7 @@
 			$result;
 			$value = stripslashes($value);
 			$type = strtolower($type);
-			if($this->inParamProcess[$type]){
+			if(!empty($this->inParamProcess[$type])){
 				$result = call_user_func($this->inParamProcess[$type],$value);
 			}else{
 				$result = $value;
@@ -175,7 +170,6 @@
 			array_push($includes,$this->handlerPath);
 			return $includes;
 		}
-		
 	}
 	
 ?>

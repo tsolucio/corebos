@@ -11,9 +11,8 @@ global $currentModule;
 $modObj = CRMEntity::getInstance($currentModule);
 $ajaxaction = $_REQUEST["ajxaction"];
 if($ajaxaction == 'DETAILVIEW') {
-	$crmid = $_REQUEST['recordid'];
-	$tablename = $_REQUEST['tableName'];
-	$fieldname = $_REQUEST['fldName'];
+	$crmid = vtlib_purify($_REQUEST['recordid']);
+	$fieldname = vtlib_purify($_REQUEST['fldName']);
 	$fieldvalue = utf8RawUrlDecode($_REQUEST['fieldValue']);
 	if($crmid != '') {
 		$modObj->retrieve_entity_info($crmid, $currentModule);
@@ -29,17 +28,7 @@ if($ajaxaction == 'DETAILVIEW') {
 		if ($saveerror) { // there is an error so we report error
 			echo ':#:ERR'.$errormessage;
 		} else {
-			//Added to construct the update log for Ticket history
-			$assigned_group_name = getGroupName($_REQUEST['assigned_group_id']);
-			$assigntype = $_REQUEST['assigntype'];
-
-			$fldvalue = $modObj->constructUpdateLog($modObj, $modObj->mode, $assigned_group_name, $assigntype);
-			$fldvalue = from_html($fldvalue,($modObj->mode == 'edit')?true:false);
-
 			$modObj->save($currentModule);
-
-			//update the log information for ticket history
-			$adb->pquery("update vtiger_troubletickets set update_log=? where ticketid=?", array($fldvalue, $modObj->id));
 			if ($modObj->id != '') {
 				if($fieldname == 'comments'){
 					$comments = $modObj->getCommentInformation($modObj->id);

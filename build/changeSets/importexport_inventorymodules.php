@@ -25,7 +25,7 @@ class importexport_inventorymodules extends cbupdaterWorker {
 			$imods = getInventoryModules();
 			foreach ($imods as $mod) {
 				$module = Vtiger_Module::getInstance($mod);
-				$module->enableTools(Array('Import', 'Export'));
+				if ($module) $module->enableTools(Array('Import', 'Export'));
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();

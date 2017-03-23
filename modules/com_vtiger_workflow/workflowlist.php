@@ -35,7 +35,7 @@ function vtDisplayWorkflowList($adb, $request, $requestUrl, $app_strings, $curre
 	$smarty->assign("moduleNames", $util->vtGetModules($adb));
 	$smarty->assign("returnUrl", $requestUrl);
 
-	$listModule =$request['list_module'];
+	$listModule = isset($request['list_module']) ? $request['list_module'] : '';
 	$smarty->assign("listModule", $listModule);
 	if($listModule==null || strtolower($listModule)=="all"){
 		$smarty->assign("workflows", $wfs->getWorkflows());

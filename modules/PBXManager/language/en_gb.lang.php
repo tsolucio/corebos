@@ -14,10 +14,22 @@ $mod_strings = array(
 	'SINGLE_PBXManager' => 'PBX Manager',
 	'Asterisk' => 'Asterisk',
 	'LBL_ASTERISK_INFORMATION' => 'Asterisk Information',
+	'LBL_CALL_INFORMATION' => 'Call information',
 	'Call From' => 'Call from',
 	'Call To' => 'Call to',
 	'Time Of Call' => 'Time of call',
 	'PBXManager ID' => 'PBX Manager ID',
-	'Status' => 'Status'
+	'Status' => 'Status',
+	'ERR_Authenticate' => 'ERROR: authenticateUser. Error connecting with server.',
+	'ERR_Numbers' => 'From extension or Destination number is empty. Cannot proceed with the call.',
+	'ERR_Call' => 'ERROR: createcall. Error connecting with server.',
+	'outgoing' => 'Outgoing',
+	'outgoing-missed' => 'Outgoing-Missed',
+	'outgoing-received' => 'Outgoing-Received',
+	'incoming' => 'Incoming',
+	'incoming-missed' => 'Incoming-Missed',
+	'incoming-received' => 'Incoming-Received',
+	'missed' => 'Missed',
+	'received' => 'Received',
 );
 ?>

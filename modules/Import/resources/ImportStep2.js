@@ -13,11 +13,10 @@ function getImportSavedMap(impoptions)
 		url: 'index.php?module=Import&mapping=' + mapping + '&action=ImportAjax',
 	}).done(function (response) {
 		document.getElementById("importmapform").innerHTML = response;
-	}
-	);
+	});
 }
-function deleteMapping()
-{
+
+function deleteMapping() {
 	var options_collection = document.getElementById("saved_source").options;
 	var mapid = options_collection[options_collection.selectedIndex].value;
 
@@ -26,13 +25,11 @@ function deleteMapping()
 		url: 'index.php?module=Import&mapping=' + mapid + '&action=ImportAjax&delete_map=' + mapid
 	}).done(function (response) {
 		document.getElementById("importmapform").innerHTML = response;
-	}
-	);
-
+	});
 	//we have emptied the map name from the select list
 	document.getElementById("saved_source").options[options_collection.selectedIndex] = null;
 	document.getElementById("delete_mapping").style.visibility = "hidden";
-	alert("{$APP.MAP_DELETED_INFO}");
+	alert(alert_arr.MAP_DELETED_INFO);
 }
 
 function check_submit() {
@@ -44,9 +41,7 @@ function check_submit() {
 			selectedColStr += selectedColumnsObj.options[i].value + ",";
 		if (selectedColStr == "")
 		{
-
-			alert('{$APP.LBL_MERGE_SHOULDHAVE_INFO}');
-
+			alert(alert_arr.LBL_MERGE_SHOULDHAVE_INFO);
 			return false;
 		}
 		document.Import.selectedColumnsString.value = selectedColStr;
@@ -63,14 +58,10 @@ function check_submit() {
 				if (response == 'true')
 					document.Import.submit();
 				else
-				if (confirm("{$APP.MAP_NAME_EXISTS}"))
+				if (confirm(alert_arr.MAP_NAME_EXISTS))
 					document.Import.submit();
 				document.getElementById("status").style.display = "none";
-
-			}
-			);
-
-
+			});
 		}
 		else
 			document.Import.submit();
@@ -110,7 +101,6 @@ function setObjects()
 {
 	availListObj = getObj("availList")
 	selectedColumnsObj = getObj("selectedColumns")
-
 }
 
 function addColumn()
@@ -179,7 +169,7 @@ function formSelectColumnString()
 	}
 	if (selectedColStr == "")
 	{
-		alert('{$APP.LBL_MERGE_SHOULDHAVE_INFO}');
+		alert(alert_arr.LBL_MERGE_SHOULDHAVE_INFO);
 		return false;
 	}
 	document.Import.selectedColumnsString.value = selectedColStr;

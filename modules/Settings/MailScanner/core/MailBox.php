@@ -44,17 +44,17 @@ class Vtiger_MailBox {
 		$this->_scannerinfo = $scannerinfo;
 		$this->_mailboxsettings = $scannerinfo->getAsMap();
 
-		if($this->_mailboxsettings[ssltype] == '')  $this->_mailboxsettings[ssltype] = 'notls';
-		if($this->_mailboxsettings[sslmethod]== '') $this->_mailboxsettings[sslmethod] = 'novalidate-cert';
+		if($this->_mailboxsettings['ssltype'] == '')  $this->_mailboxsettings['ssltype'] = 'notls';
+		if($this->_mailboxsettings['sslmethod']== '') $this->_mailboxsettings['sslmethod'] = 'novalidate-cert';
 
-		if($this->_mailboxsettings[protocol] == 'pop3') { $port = '110'; }
+		if($this->_mailboxsettings['protocol'] == 'pop3') { $port = '110'; }
 		else {
-			if($this->_mailboxsettings[ssltype] == 'tls' || $this->_mailboxsettings[ssltype] == 'ssl') {
+			if($this->_mailboxsettings['ssltype'] == 'tls' || $this->_mailboxsettings['ssltype'] == 'ssl') {
 				$port = '993';
 			}
 			else $port = '143';
 		}
-		$this->_mailboxsettings[port] = $port;
+		$this->_mailboxsettings['port'] = $port;
 	}
 
 	/**

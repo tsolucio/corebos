@@ -20,12 +20,12 @@ $parenttab = getParentTab();
 
 $newblocklabel = vtlib_purify(trim($_REQUEST['blocklabel']));
 $after_block = vtlib_purify($_REQUEST['after_blockid']);
-	
+
 $tabid = getTabid($fldmodule);
 $flag = 0;
-$dup_check_query = $adb->pquery("SELECT blocklabel from vtiger_blocks WHERE tabid = ?",array($tabid));	
+$dup_check_query = $adb->pquery("SELECT blocklabel from vtiger_blocks WHERE tabid = ?",array($tabid));
 for($i=0;$i<$adb->num_rows($dup_check_query);$i++){
-	$blklbl = $adb->query_result($dup_check_query,$i,'blocklabel'); 
+	$blklbl = $adb->query_result($dup_check_query,$i,'blocklabel');
 	$blklbl = getTranslatedString($blklbl);
 	if($blklbl == $newblocklabel){
 		$flag = 1;
@@ -33,25 +33,23 @@ for($i=0;$i<$adb->num_rows($dup_check_query);$i++){
 	}
 }
 if($flag!=1) {
-    $sql_seq="select sequence from vtiger_blocks where blockid=?";
+	$sql_seq="select sequence from vtiger_blocks where blockid=?";
 	$res_seq= $adb->pquery($sql_seq, array($after_block));
-    $row_seq=$adb->fetch_array($res_seq);
+	$row_seq=$adb->fetch_array($res_seq);
 	$block_sequence=$row_seq['sequence'];
 	$newblock_sequence=$block_sequence+1;
-	
 	$sql_up="update vtiger_blocks set sequence=sequence+1 where tabid=? and sequence > ?";
 	$adb->pquery($sql_up, array($tabid,$block_sequence));
-	
 	$sql='select max(blockid) as max_id from vtiger_blocks';
 	$res=$adb->query($sql);
 	$row=$adb->fetch_array($res);
 	$max_blockid=$row['max_id']+1;
 
-	$sql="INSERT INTO vtiger_blocks (tabid, blockid, sequence, blocklabel) values (?,?,?,?)";	
+	$sql="INSERT INTO vtiger_blocks (tabid, blockid, sequence, blocklabel) values (?,?,?,?)";
 	$params = array($tabid,$max_blockid,$newblock_sequence,$newblocklabel);
 		$adb->pquery($sql,$params);
-} else
+} else {
 	$duplicate='yes';
-  
+}
 header("Location:index.php?module=Settings&action=LayoutBlockList&fld_module=".$fldmodule."&duplicate=".$duplicate."&parenttab=".$parenttab."&mode".$mode);
 ?>

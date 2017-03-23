@@ -11,7 +11,7 @@
 <table class="layerHeadingULine" border="0" cellpadding="5" cellspacing="0" width="100%">
 <tr>
 	<td class="layerPopupHeading" align="left" nowrap="nowrap" width="70%">
-		{'LBL_NO'|@getTranslatedString} {'LBL_HISTORY'|@getTranslatedString}
+		{'LBL_NO_HISTORY_TITLE'|@getTranslatedString:$MODULE}
 	</td>
 	<td align="right" width="2%">
 		<a href='javascript:void(0);'><img src="{'close.gif'|@vtiger_imageurl:$THEME}" onclick="ModTrackerCommon.hide();" align="right" border="0"></a>

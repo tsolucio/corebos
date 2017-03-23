@@ -6,11 +6,10 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 <!-- BEGIN: main -->
-<div id="roleLay" style="z-index:12;display:block;width:400px;" class="layerPopup">
+<div id="roleLay" style="z-index:12;display:inline-table;width:400px;" class="layerPopup">
 	<input name="excludedRecords" type="hidden" id="excludedRecords" value="{$EXE_REC}">
 	<input name='search_url' id="search_url" type='hidden' value='{$SEARCH_URL}'>
 	<input name='viewid' id="viewid" type='hidden' value='{$VIEWID}'>
@@ -28,7 +27,7 @@
 			</td>
 		</tr>
 	</table>
-	<table border=0 cellspacing=0 cellpadding=5 width=95% align=center> 
+	<table border=0 cellspacing=0 cellpadding=5 width=95% align=center>
 		<tr><td class="small">
 			<table border=0 cellspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
 				<tr>
@@ -42,25 +41,25 @@
 							<table border="0" cellpadding="5" cellspacing="0" width="90%">
 								{foreach name=emailids key=fieldid item=elements from=$MAILINFO}
 								<tr>
-									{if $smarty.foreach.emailids.iteration eq 1}	
+									{if $smarty.foreach.emailids.iteration eq 1}
 									<td align="center"><input type="checkbox" checked value="{$fieldid}" name="semail" /></td>
 									{else}
-									<td align="center"><input type="checkbox" value="{$fieldid}" name="semail"  /></td>
+									<td align="center"><input type="checkbox" value="{$fieldid}" name="semail" /></td>
 									{/if}
 									{if $PERMIT eq '0'}
-									{if $ONE_RECORD eq 'true'}	
+									{if $ONE_RECORD eq 'true'}
 									<td align="left"><b>{$elements.0}</b><br>{$MAILDATA[$smarty.foreach.emailids.index]}</td>
 									{else}
 									<td align="left"><b>{$elements.0}</b></td>
 									{/if}
 									{else}
-                                                                        <td align="left"><b>{$elements.0}</b><br>{$MAILDATA[$smarty.foreach.emailids.index]}</td>
-                                                                        {/if}
+									<td align="left"><b>{$elements.0}</b><br>{$MAILDATA[$smarty.foreach.emailids.index]}</td>
+									{/if}
 								</tr>
 								{/foreach}
 							</table>
 						</div>
-					</td>	
+					</td>
 				</tr>
 			</table>
 		</td></tr>

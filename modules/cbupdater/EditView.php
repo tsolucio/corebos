@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 global $currentModule;
-
+$_REQUEST['action'] = 'DetailView';
 checkFileAccessForInclusion("modules/$currentModule/DetailView.php");
 include_once("modules/$currentModule/DetailView.php");
 ?>

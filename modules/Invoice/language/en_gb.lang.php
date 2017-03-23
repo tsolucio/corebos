@@ -136,7 +136,6 @@ $mod_strings = array(
 	'LBL_SO' => 'Sales Order:',
 	'LBL_SUBJECT' => 'Subject:',
 	'LBL_SALES_ORDER' => 'Sales order:',
-	'Invoice Id' => 'Invoice ID',
 	'LBL_MY_TOP_INVOICE' => 'My Top Open Invoice',
 	'LBL_INVOICE_NAME' => 'Invoice Name:',
 	'Purchase Order' => 'Purchase Order',

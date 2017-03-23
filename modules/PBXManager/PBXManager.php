@@ -17,6 +17,9 @@ class PBXManager extends CRMEntity {
 	var $table_index= 'pbxmanagerid';
 	var $column_fields = Array();
 
+	/** Indicator if this is a custom module or standard module */
+	var $IsCustomModule = false;
+	var $HasDirectImageField = false;
 	// Mandatory for function getGroupName
 	// Array(groupTableName, groupColumnId)
 	// groupTableName should have (groupname column)
@@ -50,8 +53,8 @@ class PBXManager extends CRMEntity {
 	// Should contain field labels
 	var $detailview_links = Array();
 
-	// For alphabetical search
-	var $def_basicsearch_col = 'callid';
+	// Make the field link to detail view from list view (Fieldname)
+	var $list_link_field = 'callfrom';
 
 	// Column value to use on detail view record text display.
 	var $def_detailview_recname = '';
@@ -61,6 +64,9 @@ class PBXManager extends CRMEntity {
 
 	// Callback function list during Importing
 	var $special_functions = array();
+
+	// For Alphabetical search
+	var $def_basicsearch_col = 'callid';
 
 	var $default_order_by = 'timeofcall';
 	var $default_sort_order='DESC';
@@ -78,7 +84,7 @@ class PBXManager extends CRMEntity {
 	/**
 	 * Get list view query.
 	 */
-	function getListQuery($module) {
+	function getListQuery($module, $usewhere='') {
 		$query = "SELECT $this->table_name.*, vtiger_crmentity.*";
 		$query .= " FROM $this->table_name";
 
@@ -111,16 +117,16 @@ class PBXManager extends CRMEntity {
 		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1
 			&& $defaultOrgSharingPermission[$tabid] == 3) {
 
-				$sec_query .= " AND (vtiger_crmentity.smownerid in($current_user->id) OR vtiger_crmentity.smownerid IN 
+				$sec_query .= " AND (vtiger_crmentity.smownerid in($current_user->id) OR vtiger_crmentity.smownerid IN
 					(
-						SELECT vtiger_user2role.userid FROM vtiger_user2role 
-						INNER JOIN vtiger_users ON vtiger_users.id=vtiger_user2role.userid 
-						INNER JOIN vtiger_role ON vtiger_role.roleid=vtiger_user2role.roleid 
+						SELECT vtiger_user2role.userid FROM vtiger_user2role
+						INNER JOIN vtiger_users ON vtiger_users.id=vtiger_user2role.userid
+						INNER JOIN vtiger_role ON vtiger_role.roleid=vtiger_user2role.roleid
 						WHERE vtiger_role.parentrole LIKE '".$current_user_parent_role_seq."::%'
-					) 
-					OR vtiger_crmentity.smownerid IN 
+					)
+					OR vtiger_crmentity.smownerid IN
 					(
-						SELECT shareduserid FROM vtiger_tmp_read_user_sharing_per 
+						SELECT shareduserid FROM vtiger_tmp_read_user_sharing_per
 						WHERE userid=".$current_user->id." AND tabid=".$tabid."
 					)
 					OR ( vtiger_crmentity.smownerid in (0)";
@@ -132,9 +138,9 @@ class PBXManager extends CRMEntity {
 					if(sizeof($current_user_groups) > 0) {
 						$sec_query .= " vtiger_groups.groupid IN (". implode(",", $current_user_groups) .") OR ";
 					}
-					$sec_query .= " vtiger_groups.groupid IN 
+					$sec_query .= " vtiger_groups.groupid IN
 						(
-							SELECT vtiger_tmp_read_group_sharing_per.sharedgroupid 
+							SELECT vtiger_tmp_read_group_sharing_per.sharedgroupid
 							FROM vtiger_tmp_read_group_sharing_per
 							WHERE userid=".$current_user->id." and tabid=".$tabid."
 						)";
@@ -166,14 +172,14 @@ class PBXManager extends CRMEntity {
 				AS user_name FROM vtiger_crmentity INNER JOIN $this->table_name ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
 
 		if(!empty($this->customFieldTable)) {
-			$query .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
-				" = $this->table_name.$this->table_index";
+			$query .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] . " = $this->table_name.$this->table_index";
 		}
 
 		$query .=
 			//"LEFT JOIN " . $this->groupTable[0] . " ON " . $this->groupTable[0].'.'.$this->groupTable[1] . " = $this->table_name.$this->table_index
 			"LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
 		$query .= " LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id and vtiger_users.status='Active'";
+		$query .= " LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'";
 
 		$where_auto = " vtiger_crmentity.deleted=0";
 
@@ -229,7 +235,7 @@ class PBXManager extends CRMEntity {
 			$adb->query("insert into vtiger_field(tabid,fieldid,columnname,tablename,generatedtype,uitype,fieldname,fieldlabel,readonly," .
 					" presence,defaultvalue,maximumlength,sequence,block,displaytype,typeofdata,quickcreate,quickcreatesequence,info_type) " .
 					" values ($tabid,".$adb->getUniqueID('vtiger_field').",'use_asterisk','vtiger_asteriskextensions',1,56,'use_asterisk'," .
-					"' Receive Incoming Calls',1,0,0,30,2,$blockid,1,'C~O',1,NULL,'BAS')");
+					"'Receive Incoming Calls',1,0,0,30,2,$blockid,1,'C~O',1,NULL,'BAS')");
 
 			// Mark the module as Standard module
 			$adb->pquery('UPDATE vtiger_tab SET customized=0 WHERE name=?', array($moduleName));
@@ -252,7 +258,7 @@ class PBXManager extends CRMEntity {
 
 	function getListButtons($app_strings) {
 		$list_buttons = Array();
-		if(isPermitted('PBXManager','Delete','') == 'yes') $list_buttons['del'] = $app_strings[LBL_MASS_DELETE];
+		if(isPermitted('PBXManager','Delete','') == 'yes') $list_buttons['del'] = $app_strings['LBL_MASS_DELETE'];
 		return $list_buttons;
 	}
 

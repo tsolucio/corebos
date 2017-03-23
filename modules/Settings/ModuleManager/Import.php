@@ -64,7 +64,7 @@ if($module_import_step == 'Step2') {
 				break;
 			}
 			$newEntryName = substr($entryName, $firstSlash + 1);
-			if ($newEntryName !== false) {
+			if (!empty($newEntryName)) {
 				$za->renameIndex($i, $newEntryName);
 			} else {
 				$za->deleteIndex($i);
@@ -79,6 +79,8 @@ if($module_import_step == 'Step2') {
 			$smarty->assign("MODULEIMPORT_FAILED", "true");
 			$smarty->assign("MODULEIMPORT_FILE_INVALID", "true");
 		} else {
+			$smarty->assign('MODULEIMPORT_FAILED', '');
+			$smarty->assign('MODULEIMPORT_FILE_INVALID', '');
 
 			if(!$package->isLanguageType() && !$package->isModuleBundle()) {
 				$moduleInstance = Vtiger_Module::getInstance($moduleimport_name);
@@ -116,14 +118,12 @@ if($module_import_step == 'Step2') {
 		$package = new Vtiger_Package();
 	}
 	$Vtiger_Utils_Log = true;
-	// NOTE: Import function will be called from Smarty to capture the log cleanly.
-	//$package->import($uploadfilename, $overwritedir);
-	//unlink($uploadfilename);
-	$smarty->assign("MODULEIMPORT_PACKAGE", $package);
-	$smarty->assign("MODULEIMPORT_DIR_OVERWRITE", $overwritedir);
-	$smarty->assign("MODULEIMPORT_PACKAGE_FILE", $uploadfilename);
+	ob_start();
+	$package->import($uploadfilename, $overwritedir);
+	unlink($uploadfilename);
+	$importinfo = ob_get_clean();
+	$smarty->assign('MODULEIMPORT_INFO', $importinfo);
 }
 
 $smarty->display("Settings/ModuleManager/ModuleImport$module_import_step.tpl");
-
 ?>

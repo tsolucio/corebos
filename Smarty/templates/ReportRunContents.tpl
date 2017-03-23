@@ -9,14 +9,6 @@
  ********************************************************************************/
 -->*}
 <br>
-<table align="center" border="0" cellpadding="5" cellspacing="0" width="100%" class="mailSubHeader">
-	<tbody><tr>
-	{if $SHOWCHARTS eq 'true'}
-		<td align="right"  width="100%"><input class="crmbutton small create" style="background:#E85313" id="viewcharts1" name="viewcharts1" value="{'LBL_VIEW_CHARTS'|@getTranslatedString:$MODULE}" type="button" onClick="window.location.href = '#viewcharts'" title="{'LBL_VIEW_CHARTS'|@getTranslatedString:$MODULE}"></td>
-	{/if}
-	</tr>
-	</tbody>
-</table>
 
 <table style="border: 1px solid rgb(0, 0, 0);" align="center" cellpadding="0" cellspacing="0" width="100%">
 	<tbody><tr>
@@ -25,51 +17,52 @@
 	<table cellpadding="0" cellspacing="0" width="100%">
 		<tbody><tr>
 		<td align="left" width="75%">
-		<span class="genHeaderGray">
-		{if $MOD.$REPORTNAME neq ''}
-			{$MOD.$REPORTNAME}
-		{else}
-			{$REPORTNAME}
-		{/if}
-		</span><br>
+		<span class="genHeaderGray">{$REPORTNAME|@getTranslatedString:'Reports'}</span><br>
 		</td>
 		<td align="right" width="25%">
-		<span class="genHeaderGray">{$APP.LBL_TOTAL} : <span id='_reportrun_total'>{$REPORTHTML.1}</span>  {$APP.LBL_RECORDS}</span>
+		<span class="genHeaderGray">{$APP.LBL_TOTAL} : <span id='_reportrun_total'></span>  {$APP.LBL_RECORDS}</span>
 		</td>
 		</tr>
 		<tr><td id="report_info" align="left" colspan="2">&nbsp;</td></tr>
 		<tr><td colspan="2">&nbsp;</td></tr>
 		<tr>
 		<td colspan="2">
-		{* Performance Optimization: Direct result output *}
-		{if $DIRECT_OUTPUT eq true}
-			{if isset($__REPORT_RUN_INSTANCE)}
-				{php}
-					$__oReportRun = $this->_tpl_vars['__REPORT_RUN_INSTANCE'];
-					$__filterSql = $this->_tpl_vars['__REPORT_RUN_FILTER_SQL'];
-					$__oReportRunReturnValue = $__oReportRun->GenerateReport("HTML", $__filterSql, true);
-				{/php}
-			{/if}
-		{elseif $ERROR_MSG eq ''}
-			{$REPORTHTML.0}
+		{if empty($ERROR_MSG)}
+			<div class="rptContainer">
+				<datatable id="rptDatatable" url="index.php?module=Reports&action=ReportsAjax&file=getJSON&record={$REPORTID}" template="report_row_template">
+					<footer>
+						<pagination limit="12" outer></pagination>
+						<stats></stats>
+					</footer>
+					<table class="rptTable">
+						<tr>
+						{foreach item=dtheader from=$TABLEHEADERS}
+							<th class="rptCellLabel">{$dtheader}</th>
+						{/foreach}
+						</tr>
+					</table>
+				</datatable>
+			</div>
+			<table id="report_row_template" hidden>
+				<tr>
+					{foreach item=dtheader from=$JSONHEADERS}
+						{if $dtheader eq 'reportrowaction'}
+						<td class="rptData"><a av="href:reportrowaction">{'LBL_VIEW_DETAILS'|@getTranslatedString:'Reports'}</a></td>
+						{else}
+						<td v="{$dtheader}" class="rptData"></td>
+						{/if}
+					{/foreach}
+				</tr>
+			</table>
 		{else}
 			{$ERROR_MSG}
 		{/if}
-		{* END *}
 		</td>
 		</tr>
 		<tr><td colspan="2">&nbsp;</td></tr>
 		<tr><td colspan="2">&nbsp;</td></tr>
 		<tr><td colspan="2">
-		{* Performance Optimization: Direct result output *}
-		{if $DIRECT_OUTPUT eq true}
-			{php}
-				if(is_array($__oReportRunReturnValue)) { $__oReportRun->GenerateReport("TOTALHTML", $__filterSql, true); }
-			{/php}
-		{else}
 			{$REPORTTOTHTML}
-		{/if}
-		{* END *}
 		</td></tr>
 		<tr><td colspan="2">&nbsp;</td></tr>
 		</tbody>
@@ -89,8 +82,8 @@
 			<td>
 				<table border=0 cellspacing=1 cellpadding=0 width="100%" class="lvtBg">
 					<tr>
-						<td> {$PIECHART} </td>
-						<td> {$BARCHART} </td>
+						<td><canvas id="rptpiechart" style="width:400px;height:400px;margin:auto;padding:10px;"></canvas></td>
+						<td><canvas id="rptbarchart" style="width:400px;height:400px;margin:auto;padding:10px;"></canvas></td>
 					</tr>
 				</table>
 			</td>
@@ -98,12 +91,80 @@
 		</tr>
 	</tbody>
 </table>
+<script type="text/javascript">
+{literal}
+let chartDataObject = {
+	labels: [{/literal}{foreach item=LABEL name=chartlabels from=$CHARTDATA.xaxisData}"{$LABEL}"{if not $smarty.foreach.chartlabels.last},{/if}{/foreach}{literal}],
+	datasets: [{
+		data: [{/literal}{foreach item=CVALUE name=chartvalues from=$CHARTDATA.yaxisData}"{$CVALUE}"{if not $smarty.foreach.chartvalues.last},{/if}{/foreach}{literal}],
+		backgroundColor: [{/literal}{foreach item=CVALUE name=chartvalues from=$CHARTDATA.yaxisData}getRandomColor(){if not $smarty.foreach.chartvalues.last},{/if}{/foreach}{literal}]
+	}]
+};
+let rptpiechart = document.getElementById('rptpiechart');
+let rptbarchart = document.getElementById('rptbarchart');
+let pchart = new Chart(rptpiechart,{
+	type: 'pie',
+	data: chartDataObject,
+	options: {
+		responsive: false,
+		legend: {
+			position: "right",
+			labels: {
+				fontSize: 11,
+				boxWidth: 18
+			}
+		}
+	}
+});
+let barchar = new Chart(rptbarchart,{
+	type: 'horizontalBar',
+	data: chartDataObject,
+	options: {
+		responsive: false,
+		legend: {
+			display: false,
+			labels: {
+				fontSize: 11
+			}
+		}
+	}
+});
+rptpiechart.addEventListener('click',pieclick);
+function pieclick(evt) {
+	let activePoint = pchart.getElementAtEvent(evt);
+	let clickzone = {
+		{/literal}{foreach item=CLICKVALUE key=CLICKINDEX name=clickvalues from=$CHARTDATA.targetLink}{$CLICKINDEX}:"{$CLICKVALUE}"{if not $smarty.foreach.clickvalues.last},{/if}{/foreach}{literal}
+	};
+	let a = document.createElement("a");
+	a.target = "_blank";
+	a.href = clickzone[activePoint[0]._index];
+	document.body.appendChild(a);
+	a.click();
+}
+rptbarchart.addEventListener('click',barclick);
+function barclick(evt) {
+	let activePoint = barchar.getElementAtEvent(evt);
+	let clickzone = {
+		{/literal}{foreach item=CLICKVALUE key=CLICKINDEX name=clickvalues from=$CHARTDATA.targetLink}{$CLICKINDEX}:"{$CLICKVALUE}"{if not $smarty.foreach.clickvalues.last},{/if}{/foreach}{literal}
+	};
+	let a = document.createElement("a");
+	a.target = "_blank";
+	a.href = clickzone[activePoint[0]._index];
+	document.body.appendChild(a);
+	a.click();
+}
+{/literal}
+</script>
 </div>
 {/if}
 <table align="center" border="0" cellpadding="5" cellspacing="0" width="100%" class="mailSubHeader">
 	<tbody><tr>
 	{if $SHOWCHARTS eq 'true'}
-		<td align="right" width="100%"><input class="crmbutton small create" style="background:#E85313" id="addChartstodashboard" name="addChartstodashboard" value="{'LBL_ADD_CHARTS'|@getTranslatedString:$MODULE}" type="button" onClick="showAddChartPopup();" title="{'LBL_ADD_CHARTS'|@getTranslatedString:$MODULE}"></td>
+		<td align="right" width="100%">
+			<a href="javascript:void(0);" onclick="showAddChartPopup();"><img src="{'dashboard_60.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{'LBL_ADD_CHARTS'|@getTranslatedString:$MODULE}" title="{'LBL_ADD_CHARTS'|@getTranslatedString:$MODULE}" style="background:#E85313;border:0;width:24px;" id="addChartstodashboard" name="addChartstodashboard"></a>
+			&nbsp;
+			<a href="javascript:void(0);" onclick="window.location.href = '#rpttop'"><img src="{'jump_to_top_60.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{'LBL_JUMP_To'|@getTranslatedString:$MODULE}" title="{'LBL_JUMP_To'|@getTranslatedString:$MODULE}" border="0" width="24px"></a>
+		</td>
 	{/if}
 	</tr>
 	</tbody>
@@ -112,7 +173,7 @@
 <div id="addcharttoHomepage"  class="layerPopup" style="z-index:2000; display:none; width: 400px;">
 <table width="100%" border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine">
     <tr>
-        <td align="left" id="divHeader" class="layerPopupHeading" width="80%"><b>Add ReportCharts</b></td>
+        <td align="left" id="divHeader" class="layerPopupHeading" width="80%"><b>{'Add ReportCharts'|@getTranslatedString:$MODULE}</b></td>
         <td align="right">
                 <a onclick="fnhide('addcharttoHomepage');" href="javascript:;">
                 <img border="0" align="absmiddle" src="{'close.gif'|@vtiger_imageurl:$THEME}"></a>

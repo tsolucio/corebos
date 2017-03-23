@@ -14,7 +14,7 @@ class Vtiger_PDF_TCPDF extends TCPDF {
 
 	protected $FontFamily;
 
-	public function __construct($orientation='P', $unit='mm', $format='A4', $unicode=true, $encoding='UTF-8') {
+	public function __construct($orientation='P', $unit='mm', $format='A4', $unicode=true, $encoding='UTF-8', $diskcache=false, $pdfa=false) {
 		parent::__construct($orientation, $unit, $format, $unicode, $encoding);
 		$this->SetFont('','',10);
 		$this->setFontFamily('times');
@@ -28,7 +28,7 @@ class Vtiger_PDF_TCPDF extends TCPDF {
 		$this->FontFamily = $family;
 	}
 
-	function GetStringHeight($sa,$w) {
+	function GetStringHeight($sa,$w, $reseth=false, $autopadding=true, $cellpadding='', $border=0) {
 		if(empty($sa)) return 0;
 		
 		$sa = str_replace("\r","",$sa);
@@ -37,7 +37,8 @@ class Vtiger_PDF_TCPDF extends TCPDF {
 		$sa = substr($sa,0,-1);
 
 		$blocks = explode("\n",$sa);
-		$wmax = $w - (2 * $this->cMargin);
+		$cMargin = $this->getCellPaddings();
+		$wmax = $w - (2 * $cMargin['R']);
 
 		$lines = 0;
 		$spacesize = $this->GetCharWidth(32);
@@ -65,7 +66,7 @@ class Vtiger_PDF_TCPDF extends TCPDF {
 		return ($lines * ($this->FontSize * $this->cell_height_ratio)) + 2;
 	}
 
-	function SetFont($family, $style='', $size='') {
+	public function SetFont($family, $style='', $size=null, $fontfile='', $subset='default', $out=true) {
 		if($family == '') {
 			$family = $this->FontFamily;
 		}

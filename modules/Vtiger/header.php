@@ -13,16 +13,15 @@ require_once("data/Tracker.php");
 require_once("include/utils/utils.php");
 require_once("include/calculator/Calc.php");
 
-global $currentModule,$default_charset;
-global $app_strings;
-global $app_list_strings;
-global $moduleList;
-global $theme;
+global $currentModule, $default_charset, $app_strings, $moduleList, $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 $userName = getFullNameFromArray('Users', $current_user->column_fields);
 $smarty = new vtigerCRM_Smarty;
-$header_array = getHeaderArray();
+require_once('modules/evvtMenu/evvtMenu.inc');
+$smarty->assign('MENU', getMenuJSON(getMenuArray(0)));
+$header_array = getAdminevvtMenu();
+$smarty->assign('evvtAdminMenu', $header_array);
 $smarty->assign("HEADERS",$header_array);
 $smarty->assign("THEME",$theme);
 $smarty->assign("IMAGEPATH",$image_path);
@@ -42,10 +41,8 @@ $smarty->assign("DATE", $date->getDisplayDateTimeValue());
 $smarty->assign("CURRENT_USER_MAIL", $current_user->email1);
 $smarty->assign("CURRENT_USER", $current_user->user_name);
 $smarty->assign("CURRENT_USER_ID", $current_user->id);
-$smarty->assign("MODULELISTS",$app_list_strings['moduleList']);
 $smarty->assign("CATEGORY",getParentTab());
 $smarty->assign("CALC",get_calc($image_path));
-$smarty->assign("MENUSTRUCTURE",getMenuStructure($currentModule));
 $smarty->assign("ANNOUNCEMENT",get_announcements());
 $smarty->assign("USE_ASTERISK", get_use_asterisk($current_user->id));
 
@@ -71,20 +68,14 @@ $COMMONHDRLINKS = Vtiger_Link::getAllByType(Vtiger_Link::IGNORE_MODULE, Array('H
 $smarty->assign('HEADERLINKS', $COMMONHDRLINKS['HEADERLINK']);
 $smarty->assign('HEADERSCRIPTS', $COMMONHDRLINKS['HEADERSCRIPT']);
 $smarty->assign('HEADERCSS', $COMMONHDRLINKS['HEADERCSS']);
-// END
 
-// Pass on the version information
-global $vtiger_current_version;
-$smarty->assign('VERSION', $vtiger_current_version);
-// END
 // Pass on the authenticated user language
 global $current_language;
 $smarty->assign('LANGUAGE', $current_language);
-// END
-// Pass on the coreBOS app name
-global $coreBOS_app_name;
-$smarty->assign('coreBOS_app_name', $coreBOS_app_name);
-// END
+
+// Pass on the Application Name
+$smarty->assign('coreBOS_app_name', GlobalVariable::getVariable('Application_UI_Name','coreBOS'));
+
 global $application_unique_key;
 $smarty->assign('application_unique_key', $application_unique_key);
 // We check if we have the two new logo fields > if not we create them
@@ -92,7 +83,7 @@ $cnorg=$adb->getColumnNames('vtiger_organizationdetails');
 if (!in_array('faviconlogo', $cnorg)) {
 	$adb->query('ALTER TABLE `vtiger_organizationdetails` ADD `frontlogo` VARCHAR(150) NOT NULL, ADD `faviconlogo` VARCHAR(150) NOT NULL');
 }
-$sql="select * from vtiger_organizationdetails";
+$sql='select * from vtiger_organizationdetails limit 1';
 $result = $adb->pquery($sql, array());
 //Handle for allowed organization logo/logoname likes UTF-8 Character
 // $organization_logo = decode_html($adb->query_result($result,0,'logoname'));
@@ -108,9 +99,10 @@ $smarty->assign("FRONTLOGO",$frontlogo);
 $companyDetails = array();
 $companyDetails['name'] = $adb->query_result($result,0,'organizationname');
 $companyDetails['website'] = $adb->query_result($result,0,'website');
-$companyDetails['logo'] = $organization_logo;
+//$companyDetails['logo'] = $organization_logo;
 
 $smarty->assign("COMPANY_DETAILS",$companyDetails);
+$smarty->assign('HELP_URL',GlobalVariable::getVariable('Application_Help_URL','http://corebos.org/documentation'));
 ob_start();
 cbEventHandler::do_action('corebos.header.premenu');
 $smarty->assign("COREBOS_HEADER_PREMENU",ob_get_clean());

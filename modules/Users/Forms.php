@@ -13,7 +13,6 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
-require_once('include/Zend/Json.php');
 /**
  * this function checks if the asterisk server details are set in the database or not
  * returns string "true" on success :: "false" on failure
@@ -78,15 +77,13 @@ $lbl_currency_separators_incorrect = getTranslatedString('LBL_CURRENCY_SEPARATOR
 
 //check asteriskdetails start
 $checkAsteriskDetails = checkAsteriskDetails();
-// Fix : 6362
-$record = ($_REQUEST['record'])?$_REQUEST['record']:'false';// used to check the asterisk extension in edit mode
- $mode = ($_REQUEST['isDuplicate'] == 'true')?'true':'false';
- $extensions = getAsteriskExtensions();
-$extensions_list = Zend_Json::encode($extensions);
+$record = (isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : 'false'); // used to check the asterisk extension in edit mode
+$mode = (isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true')?'true':'false';
+$extensions = getAsteriskExtensions();
+$extensions_list = json_encode($extensions);
 //check asteriskdetails end
 
-$the_script  = <<<EOQ
-<script type="text/javascript" src="include/js/json.js"></script>
+$the_script = <<<EOQ
 <script type="text/javascript">
 function set_fieldfocus(errorMessage,oMiss_field){
 	alert("$err_missing_required_fields" + errorMessage);

@@ -17,7 +17,7 @@
 *  Version      : 5.5.0
 *  Author       : JPL TSolucio, S. L.
 *************************************************************************************************/
-require_once('vtlib/thirdparty/dUnzip2.inc.php');
+require_once('vtlib/Vtiger/Unzip.php');
 
 global $adb;
 $cspath = 'build/changeSets/imported';
@@ -49,11 +49,11 @@ function cbupd_getfile() {
 
 function cbupd_import($zipfile) {
 	global $cspath;
-	$unzip = new dUnzip2($zipfile);
+	$unzip = new Vtiger_Unzip($zipfile);
 	$unzip->unzipAll($cspath);
 	$filelist = $unzip->getList();
 	$csxmlfound = false;
-	echo getTranslatedString('Importing','cbupdater').' '.$zipfile.'<br>';
+	echo getTranslatedString('Importing','cbupdater').' '.vtlib_purify($zipfile).'<br>';
 	$processing = getTranslatedString('Processing','cbupdater').' ';
 	foreach($filelist as $filename=>$fileinfo) {
 		echo $processing.$filename.'<br>';

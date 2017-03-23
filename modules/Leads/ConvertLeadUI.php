@@ -11,7 +11,6 @@
 /*
  * class to manage all the UI related info
  */
-
 class ConvertLeadUI {
 
 	var $current_user;
@@ -54,7 +53,7 @@ class ConvertLeadUI {
 	function isActive($field, $mod) {
 		global $adb;
 		$tabid = getTabid($mod);
-		$query = 'select * from vtiger_field where fieldname = ?  and tabid = ? and presence in (0,2)';
+		$query = 'select * from vtiger_field where fieldname = ? and tabid = ? and presence in (0,2)';
 		$res = $adb->pquery($query, array($field, $tabid));
 		$rows = $adb->num_rows($res);
 		if ($rows > 0) {
@@ -188,7 +187,6 @@ class ConvertLeadUI {
 	 * 		[<user/group>name]=>
 	 * )
 	 */
-
 	function getOwnerList($type) {
 		$private = self::checkOwnership($this->current_user);
 		if ($type === 'user')

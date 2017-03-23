@@ -121,8 +121,8 @@ $mod_strings = array(
 	'Description' => 'Omschrijving',
 	'Billing Po Box' => 'P Postbus',
 	'Shipping Po Box' => 'B Postbus',
-	'Email Opt Out' => 'E-mail optie uit',
-	'LBL_EMAIL_OPT_OUT' => 'E-mail optie uit:',
+	'Email Opt Out' => 'Niet e-mailen',
+	'LBL_EMAIL_OPT_OUT' => 'Niet e-mailen',
 	'Notify Owner' => 'Notificatie aan eigenaar',
 	'--None--' => '--Geen--',
 	'Acquired' => 'Overname',
@@ -208,5 +208,9 @@ $mod_strings = array(
 	'Projects' => 'Projecten',
 	'Timecontrol' => 'Urenregistratie',
 	'InventoryDetails' => 'Voorraad Details',
+	'Exact VAT Code for Account' => 'BTW code voor klant',
+	'Is Converted From Lead' => 'Is gemaakt vanuit lead',
+	'Converted From Lead' => 'Gemaakt vanuit lead',
+	'Exact Payment Condition for Account' => 'Exact betalingsconditie voor klant',
 );
 ?>

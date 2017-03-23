@@ -13,9 +13,7 @@ require_once('modules/Settings/Forms.php');
 
 global $mod_strings;
 global $app_strings;
-global $app_list_strings;
 global $current_user;
-
 global $adb;
 global $theme;
 $theme_path="themes/".$theme."/";

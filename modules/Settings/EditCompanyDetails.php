@@ -7,11 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('Smarty_setup.php');
-global $mod_strings;
-global $app_strings;
-global $app_list_strings;
+global $mod_strings, $app_strings;
 
 $smarty = new vtigerCRM_Smarty;
 //error handling
@@ -34,11 +31,9 @@ if(isset($_REQUEST['flag']) && $_REQUEST['flag'] != '')
 			break;
 		default:
 			$smarty->assign("ERRORFLAG","");
-		
 	}
 }
-global $adb;
-global $theme;
+global $adb, $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 

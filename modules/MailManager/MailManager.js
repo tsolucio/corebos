@@ -7,7 +7,12 @@
  * All Rights Reserved.
  ************************************************************************************/
 if (typeof(MailManager) == 'undefined') {
-    /*
+	if (typeof(Dropzone) != 'undefined') {
+		// Disable auto discover for all elements:
+		Dropzone.autoDiscover = false;
+	}
+
+	/*
 	 * Namespaced javascript class for MailManager
 	 */
     MailManager = {
@@ -769,7 +774,6 @@ if (typeof(MailManager) == 'undefined') {
             jQuery("#_mail_replyfrm_bcc_").val('');
             jQuery("#_mail_replyfrm_subject_").val('');
             jQuery("#emailid").val('');
-            jQuery('.qq-upload-list').children().remove();
             jQuery('#attachments').children().remove();
             jQuery('#attachmentCount').val('');
 			if (MailManager.mail_reply_rteinstance) {
@@ -777,7 +781,12 @@ if (typeof(MailManager) == 'undefined') {
                 MailManager.mail_reply_rteinstance = false;
             }
             MailManager.mail_reply_rteinit('');
-            MailManager.createUploader();
+            var dzelem = jQuery('#file-uploader');
+            if (dzelem.dropzone && dzelem[0].dropzone != undefined) {
+            	dzelem[0].dropzone.removeAllFiles();
+            } else {
+            	var dz = MailManager.createUploader();
+            }
 
             // Update the seleted folders to highlight them.
             MailManager.updateSelectedFolder('mm_compose');
@@ -801,44 +810,25 @@ if (typeof(MailManager) == 'undefined') {
         },
 
         createUploader : function (){
-            var uploader = new qq.FileUploader({
-                element: document.getElementById('file-uploader'),
-                action : 'index.php?module=MailManager&action=MailManagerAjax&file=index&mode=ajax&_operation=relation&_operationarg=saveattachment',
-
-                template: '<div class="qq-uploader">' +
-                '<div class="qq-upload-drop-area"><span>'+MailManager.i18n('JSLBL_UPLOAD_DROPFILES')+'</span></div>' +
-                '<div class="qq-upload-button">'+MailManager.i18n('JSLBL_UPLOAD_FILE')+'</div>' +
-                '<ul class="qq-upload-list"></ul>' +
-                '</div>',
-
-                // template for one item in file list
-                fileTemplate: '<li>' +
-                '<span class="qq-upload-file small"></span>' +
-                '<span class="qq-upload-spinner small"></span>' +
-                '<span class="qq-upload-size small"></span>' +
-                '<a class="qq-upload-cancel small" href="#">'+MailManager.i18n('JSLBL_UPLOAD_CANCEL')+'</a>' +
-                '<a class="qq-upload-deleteupload small" href="#">\n\
-									<img height="12" border="0" width="12" title='+MailManager.i18n('JSLBL_Delete')+' src="themes/images/no.gif"></a>' +
-                '<span class="qq-upload-failed-text small">'+MailManager.i18n('JSLBL_UPLOAD_FAILED')+'</span>' +
-                '</li>',
-                multiple: false,
-                classes: {
-                    // used to get elements from templates
-                    button: 'qq-upload-button',
-                    drop: 'qq-upload-drop-area',
-                    dropActive: 'qq-upload-drop-area-active',
-                    list: 'qq-upload-list',
-
-                    file: 'qq-upload-file',
-                    spinner: 'qq-upload-spinner',
-                    size: 'qq-upload-size',
-                    cancel: 'qq-upload-cancel',
-                    deleteupload: 'qq-upload-deleteupload',
-                    // added to list item when upload completes
-                    // used in css to hide progress spinner
-                    success: 'qq-upload-success',
-                    fail: 'qq-upload-fail'
-                }
+            var uploader = new Dropzone('#file-uploader',{
+                url : function() { return 'index.php?module=MailManager&action=MailManagerAjax&file=index&mode=ajax&_operation=relation&_operationarg=saveattachment&emailid='+jQuery('#emailid').val();},
+                paramName: 'qqfile',
+                parallelUploads: 1,
+                addRemoveLinks: true,
+                createImageThumbnails: true,
+                dictRemoveFile: MailManager.i18n('JSLBL_Delete'),
+                uploadMultiple: false,
+                clickable: ['#file-uploader-message','#file-uploader']
+            });
+            uploader.on("success", function(file, response) {
+            	var res = JSON.parse(response);
+                file.docid = res.result.docid;
+                file.attachid = res.result.attachid;
+                file.emailid = res.result.emailid;
+                jQuery("#emailid").val(res.result.emailid);
+            });
+            uploader.on("removedfile", function(file) {
+            	MailManager.deleteAttachment(file.emailid, file.docid, this);
             });
             return uploader;
         },
@@ -852,7 +842,6 @@ if (typeof(MailManager) == 'undefined') {
 				method: 'POST',
 				url: 'index.php?'+ MailManager._baseurl() + "_operation=mail&_operationarg=getdraftmail&id="+ encodeURIComponent(id)
              }).done(function (response) {
-                    jQuery('.qq-upload-list').children().remove();
                     MailManager.progress_hide();
                     jQuery('#_replydiv_').show();
                     var responseJSON = JSON.parse(response);
@@ -864,19 +853,15 @@ if (typeof(MailManager) == 'undefined') {
                     jQuery("#_mail_replyfrm_bcc_").val(JSON.parse(responseJSON['result'][0][0]['bccmail']));
                     jQuery("#_mail_replyfrm_subject_").val(responseJSON['result'][0][0]['subject']);
                     jQuery("#emailid").val(responseJSON['result'][0][0]['id']);
-
+                    var dzelem = document.getElementById('file-uploader');
                     var attachments = responseJSON['result'][0]['attachments'];
                     if(attachments != null) {
-                        var attachmentsHTML = "";
                         for(i=0; i<attachments.length;i++) {
-                            attachmentsHTML  += "<li class='qq-upload-success small'><span class='qq-upload-file small'>"+attachments[i]['name']+"</span>\n\
-											<span class='qq-upload-size small' style='display: inline;'>"+attachments[i]['size']+"</span>\n\
-											<a class='qq-upload-deleteupload small' onclick='MailManager.deleteAttachment(\""+ id +"\", \""+attachments[i]['docid']+"\", this);' href='#'>\n\
-											<img height='12' border='0' width='12' title="+MailManager.i18n('JSLBL_Delete')+" src='themes/images/no.gif'></a></li>";
+                        	var fsize = MailManager.computeFileSizeToBytes(attachments[i]['size']);
+                        	dzelem.dropzone.emit('addedfile',{name:attachments[i]['name'],size:fsize,emailid:id,docid:attachments[i]['docid']});
                         }
                     }
                     jQuery('#attachmentCount').val(attachments.length);
-                    jQuery('.qq-upload-list').append(attachmentsHTML);
                     jQuery('#upload_target').children().remove();
 
                     // Updated to highlight selected folder
@@ -898,11 +883,8 @@ if (typeof(MailManager) == 'undefined') {
                     var responseJSON = JSON.parse(response);
                     if(responseJSON.result.success == true) {
                         MailManager.progress_hide();
-                        jQuery(ele).parent().fadeTo('slow', 0.0, function(){
-                            var count = jQuery('#attachmentCount').val();
-                            jQuery('#attachmentCount').val(--count);
-                            jQuery(ele).parent().remove();
-                        });
+                        var count = jQuery('#attachmentCount').val();
+                        jQuery('#attachmentCount').val(--count);
                     } else {
                         MailManager.show_error(MailManager.i18n('JSLBL_ATTACHMENT_NOT_DELETED'));
                     }
@@ -938,7 +920,13 @@ if (typeof(MailManager) == 'undefined') {
             jQuery("#emailid").val('');
             jQuery("#attachmentCount").val('');
             MailManager.mail_reply_rteinit(replyBody);
-            MailManager.createUploader();
+            var dzelem = jQuery('#file-uploader');
+            if (dzelem.dropzone && dzelem[0].dropzone != undefined) {
+            	dzelem[0].dropzone.removeAllFiles(true);
+            } else {
+            	var dz = MailManager.createUploader();
+            }
+            dzelem.hide();
 
             // Update the seleted folders to highlight them.
             MailManager.updateSelectedFolder('mm_compose');
@@ -1020,7 +1008,13 @@ if (typeof(MailManager) == 'undefined') {
             replyfrm.emailid.value = '';
             replyfrm.attachmentCount.value = '';
             MailManager.mail_reply_rteinit(replyfrm.body.value);
-            MailManager.createUploader();
+            var dzelem = jQuery('#file-uploader');
+            if (dzelem.dropzone && dzelem[0].dropzone != undefined) {
+            	dzelem[0].dropzone.removeAllFiles(true);
+            } else {
+            	var dz = MailManager.createUploader();
+            }
+            dzelem.hide();
 
             var folder = jQuery('input[name=_folder]').val();
 
@@ -1164,7 +1158,12 @@ if (typeof(MailManager) == 'undefined') {
                 var response = MailManager.removeHidElement(transport);
                 jQuery('#_contentdiv_').html(response);
                 // Initialize upload
-                MailManager.createUploader();
+                var dzelem = jQuery('#file-uploader');
+                if (dzelem.dropzone && dzelem[0].dropzone != undefined) {
+                	dzelem[0].dropzone.removeAllFiles();
+                } else {
+                	var dz = MailManager.createUploader();
+                }
 
                 MailManager.bindEnterKeyForSearch();
 
@@ -1411,41 +1410,22 @@ if (typeof(MailManager) == 'undefined') {
         },
 
         add_data_to_relatedlist: function(res){
-            var fileSize, attachContent, element;
-            fileSize = MailManager.computeDisplayableFileSize(res['size']);
             if(res.error != undefined) {
-                attachContent = "<li class='qq-upload-success small'><span class='qq-upload-file small'>"+res['name']+"</span>\n\
-								<span class='qq-upload-size small' style='display: inline;'>"+fileSize+"</span>\n\
-								<span class='qq-upload-failed-text small' style='display: inline;'>Failed</span>";
-                element = jQuery(window.opener.document).find('.qq-upload-list');
-                jQuery(element[0]).append(attachContent);
+            	alert('error');
                 window.close();
                 return false;
             }
-			
-            attachContent = "<li class='qq-upload-success small'><span class='qq-upload-file small'>"+res['name']+"</span>\n\
-							<span class='qq-upload-size small' style='display: inline;'>"+fileSize+"</span>\n\
-							<a class='qq-upload-deleteupload small' onclick='MailManager.deleteAttachment(\""+res['emailid']+"\", \""+res['docid']+"\", this);' href='#'>\n\
-							<img height='12' border='0' width='12' title='Delete' src='themes/images/no.gif'></a></li>";
-			
-            try
-            {
-                element = jQuery(window.opener.document).find('.qq-upload-list');
-			
-                if(element[0]) {
-                    jQuery(element[0]).append(attachContent);
-                } else {
-                    element = jQuery.find('.qq-upload-list');
-                    jQuery(element[0]).append(attachContent);
-                }
-                window.close();
-            } catch(e) {
-                element = jQuery.find('.qq-upload-list');
-                jQuery(element[0]).append(attachContent);
-            }
+        	if (window.opener) {
+        		var dzelem = window.opener.document.getElementById('file-uploader');
+        	} else {
+        		var dzelem = document.getElementById('file-uploader');
+        	}
+        	if (dzelem.dropzone) {
+        		dzelem.dropzone.emit('addedfile',{name:res.name,size:res.size,emailid:res.emailid,docid:res.docid});
+        	}
             // Update the attachment counter
             MailManager.uploadCountUpdater();
-
+            if (window.opener) window.close();
         },
 
         computeDisplayableFileSize : function(size) {
@@ -1461,7 +1441,20 @@ if (typeof(MailManager) == 'undefined') {
             }
             return fileSize;
         },
-		
+        computeFileSizeToBytes : function(size) {
+            var fileSize;
+            if(size.slice(-1) == 'b') {
+                fileSize = size.substring(0, size.length - 1)*1;
+            } else if(size.slice(-2) == 'kB') {
+                fileSize = (Math.round(size.substring(0, size.length - 2)*1024));
+            } else if(size.slice(-2) == 'MB') {
+                fileSize = (Math.round(size.substring(0, size.length - 2)*(1024*1024)));
+            } else {
+                fileSize = size;
+            }
+            return fileSize;
+        },
+
         validateEmailFields :  function(to, cc, bcc) {
             if(to != "") {
                 if(!MailManager.mail_validate(to)) {

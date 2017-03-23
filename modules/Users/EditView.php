@@ -1,25 +1,12 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Users/EditView.php,v 1.16 2005/04/19 14:44:02 ray Exp $
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
+ ************************************************************************************/
 require_once('Smarty_setup.php');
 require_once('data/Tracker.php');
 require_once('modules/Users/Users.php');
@@ -28,11 +15,7 @@ require_once('modules/Users/Forms.php');
 require_once('include/database/PearDatabase.php');
 require_once('modules/Leads/ListViewTop.php');
 
-global $app_strings;
-global $app_list_strings;
-global $mod_strings;
-global $currentModule,$default_charset;
-
+global $app_strings, $mod_strings, $currentModule, $default_charset;
 
 $smarty=new vtigerCRM_Smarty;
 $focus = new Users();
@@ -41,7 +24,7 @@ if(isset($_REQUEST['record']) && isset($_REQUEST['record'])) {
 	$smarty->assign("ID",vtlib_purify($_REQUEST['record']));
 	$mode='edit';
 	if (!is_admin($current_user) && $_REQUEST['record'] != $current_user->id) die ("Unauthorized access to user administration.");
-    $focus->retrieve_entity_info(vtlib_purify($_REQUEST['record']),'Users');
+	$focus->retrieve_entity_info(vtlib_purify($_REQUEST['record']),'Users');
 	$smarty->assign("USERNAME", getFullNameFromArray('Users', $focus->column_fields));
 }else
 {
@@ -69,7 +52,6 @@ $image_path=$theme_path."images/";
 
 $log->info("User edit view");
 
-
 $smarty->assign("JAVASCRIPT", get_validate_record_js());
 $smarty->assign("UMOD", $mod_strings);
 global $current_language;
@@ -81,36 +63,40 @@ $smarty->assign("APP", $app_strings);
 if (isset($_REQUEST['error_string'])) $smarty->assign("ERROR_STRING", "<font class='error'>Error: ".vtlib_purify($_REQUEST['error_string'])."</font>");
 if (isset($_REQUEST['return_module']))
 {
-        $smarty->assign("RETURN_MODULE", vtlib_purify($_REQUEST['return_module']));
-        $RETURN_MODULE=vtlib_purify($_REQUEST['return_module']);
+	$smarty->assign("RETURN_MODULE", vtlib_purify($_REQUEST['return_module']));
+	$RETURN_MODULE=vtlib_purify($_REQUEST['return_module']);
 }
 if (isset($_REQUEST['return_action']))
 {
-        $smarty->assign("RETURN_ACTION", vtlib_purify($_REQUEST['return_action']));
-        $RETURN_ACTION = vtlib_purify($_REQUEST['return_action']);
+	$smarty->assign("RETURN_ACTION", vtlib_purify($_REQUEST['return_action']));
+	$RETURN_ACTION = vtlib_purify($_REQUEST['return_action']);
 }
-if ($_REQUEST['isDuplicate'] != 'true' && isset($_REQUEST['return_id']))
+if ((empty($_REQUEST['isDuplicate']) || $_REQUEST['isDuplicate'] != 'true') && isset($_REQUEST['return_id']))
 {
-        $smarty->assign("RETURN_ID", vtlib_purify($_REQUEST['return_id']));
-        $RETURN_ID = vtlib_purify($_REQUEST['return_id']);
+	$smarty->assign("RETURN_ID", vtlib_purify($_REQUEST['return_id']));
+	$RETURN_ID = vtlib_purify($_REQUEST['return_id']);
+} else {
+	$smarty->assign('RETURN_ID', 0);
 }
 $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH", $image_path);
 $focus->mode = $mode;
+$smarty->assign('MASS_EDIT','0');
 $disp_view = getView($focus->mode);
-$smarty->assign("IMAGENAME",$focus->imagename);
-$smarty->assign("BLOCKS",getBlocks($currentModule,$disp_view,$mode,$focus->column_fields));
+$smarty->assign('IMAGENAME',isset($focus->imagename) ? $focus->imagename : '');
+$smarty->assign('MASS_EDIT','0');
+$blocks = getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields);
+$smarty->assign('BLOCKS', $blocks);
 $smarty->assign("MODULE", 'Settings');
 $smarty->assign("MODE",$focus->mode);
-$smarty->assign("HOUR_FORMAT",$focus->hour_format);
-$smarty->assign("START_HOUR",$focus->start_hour);
-if ($_REQUEST['Edit'] == ' Edit ')
+$smarty->assign('HOUR_FORMAT',isset($focus->imagename) ? $focus->hour_format : '');
+$smarty->assign('START_HOUR',isset($focus->imagename) ? $focus->start_hour : '');
+if (isset($_REQUEST['Edit']) && $_REQUEST['Edit'] == ' Edit ')
 {
 	$smarty->assign("READONLY", "readonly");
 	$smarty->assign("USERNAME_READONLY", "readonly");
-
 }
-if(isset($_REQUEST['record']) && $_REQUEST['isDuplicate'] != 'true')
+if ((empty($_REQUEST['isDuplicate']) || $_REQUEST['isDuplicate'] != 'true') && isset($_REQUEST['record']))
 {
 	$smarty->assign("USERNAME_READONLY", "readonly");
 }
@@ -128,15 +114,30 @@ $smarty->assign("tagshow_options", array(
  "hcylinder" => $mod_strings['hcylinder'],
  "vcylinder" => $mod_strings['vcylinder'],
 ));
-$smarty->assign("DUPLICATE",vtlib_purify($_REQUEST['isDuplicate']));
+$smarty->assign('DUPLICATE',(isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : ''));
 $smarty->assign("USER_MODE",$mode);
 $smarty->assign('PARENTTAB', getParentTab());
-$_SESSION['Users_FORM_TOKEN'] = rand(5, 2000) * rand(2, 7);
+coreBOS_Session::set('Users_FORM_TOKEN', rand(5, 2000) * rand(2, 7));
 $smarty->assign('FORM_TOKEN', $_SESSION['Users_FORM_TOKEN']);
 
 // Gather the help information associated with fields
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
-// END
-$smarty->display('UserEditView.tpl');
 
+// When creating a new user with LDAP or AD access, add a button in the template which allows to load
+// full name, email address, telephone, etc from the LDAP server, so the admin doesn't have to enter this information manually
+$LdapBtnText = '';
+if ($mode == 'create') {
+	$authType = GlobalVariable::getVariable('User_AuthenticationType', 'SQL');
+	switch (strtoupper($authType)) {
+		case 'LDAP':
+			$LdapBtnText = 'LDAP';
+			break;
+		case 'AD':
+			$LdapBtnText = 'Active Dir.';
+			break;
+	}
+}
+$smarty->assign('LDAP_BUTTON', $LdapBtnText);
+
+$smarty->display('UserEditView.tpl');
 ?>

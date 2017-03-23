@@ -16,7 +16,7 @@
 
 // Product line support
 if ($elementType != 'PurchaseOrder') {
-	if (GlobalVariable::getVariable('B2B', '1')=='1') {
+	if (GlobalVariable::getVariable('Application_B2B', '1')=='1') {
 		$acvid = $element['account_id'];
 	} else {
 		$acvid = $element['contact_id'];
@@ -33,7 +33,7 @@ $i = 0;
 $pdoInformation=$element['pdoInformation'];
 foreach ($pdoInformation as $pdoline) {
 	$i++;
-	$_REQUEST['deleted'.$i]=0;
+	$_REQUEST['deleted'.$i]=(isset($pdoline['deleted']) ? $pdoline['deleted'] : 0);
 	$_REQUEST['comment'.$i]=$pdoline['comment'];
 	if (strpos($pdoline['productid'], 'x')>0) { // product is in webservice ID format
 		list($void,$pdoline['productid']) = explode('x', $pdoline['productid']);
@@ -42,13 +42,13 @@ foreach ($pdoInformation as $pdoline) {
 	$qty=$pdoline['qty'];
 	$_REQUEST['qty'.$i]=$qty;
 	$setype=getSalesEntityType($pdoline['productid']);
-	$_REQUEST['listPrice'.$i]=$pdoline['listprice']; // getUnitPrice($pdoline['productid'],$setype);
+	$_REQUEST['listPrice'.$i] = CurrencyField::convertToDBFormat($pdoline['listprice']);
 	$discount=0;
 	if (!empty($pdoline['discount'])) {
 		$_REQUEST["discount$i"]="on";
 		$_REQUEST["discount_type$i"]=$pdoline['discount_type'];
 		if ($pdoline['discount_type']=='amount') {
-			$_REQUEST["discount_amount$i"]=$pdoline['discount_amount'];
+			$_REQUEST["discount_amount$i"] = CurrencyField::convertToDBFormat($pdoline['discount_amount']);
 			$discount=$pdoline['discount_amount'];
 		} else {
 			$_REQUEST["discount_percentage$i"]=$pdoline['discount_percentage'];
@@ -66,6 +66,15 @@ foreach ($pdoInformation as $pdoline) {
 			$totalwithtax += ($qty * $_REQUEST['listPrice'.$i]) * ($tax_val/100);
 		}
 	}
+        $cbMap = cbMap::getMapByName($elementType.'InventoryDetails','MasterDetailLayout');
+        if ($cbMap!=null) {
+                $cbMapFields = $cbMap->MasterDetailLayout();
+                    foreach ($cbMapFields['detailview']['fieldnames'] as $mdfield) {
+                        if(!is_null($pdoline[$mdfield])){
+                            $_REQUEST[$mdfield.$i] = $pdoline[$mdfield];
+                        }
+                    }
+        }
 }
 $_REQUEST['totalProductCount']=$i;
 $_REQUEST['subtotal']=round($subtotal + $totalwithtax,2);

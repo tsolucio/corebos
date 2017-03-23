@@ -40,8 +40,6 @@ $mod_strings = array (
 'Po Box'=>'Apdo. de Correos',
 'Vendor'=>'Proveedor',
 
-//Added for existing Picklist entries
-
 '300-Sales-Software'=>'300-Ventas-Software',
 '301-Sales-Hardware'=>'301-Ventas-Hardware',
 '302-Rental-Income'=>'302-Ingreso-Alquiler',
@@ -52,30 +50,11 @@ $mod_strings = array (
 '307-Service-Hardware Labor'=>'307-Instalación de Hardware-Ventas',
 '308-Sales-Books'=>'308-Ventas-Libros',
 
-// Added/Updated for vtiger CRM 5.0.4
 'Created Time'=>'Creado',
 'Modified Time'=>'Modificado Time',
 
-// Added after 5.0.4 GA
-
-//added for find duplicate
-'LBL_DUPLICATE_DATA_IN'=>'Duplicar ',
-'LBL_DELETE'=>'Eliminar',
-'LBL_MERGE_SELECT'=>'Combinar Selección',
-'LBL_MERGE_DATA_IN'=>'Combinar Registro',
-'LBL_MERGE'=>'Combinar',
-'LBL_ACTION'=>'Acción',
-'LBL_FIELDLISTS'=> 'Lista de Campos',
-'LBL_RECORD'=>'Registro #',
-
-// Module Sequence Numbering
 'Vendor No' => 'Núm. Proveedor',
 'Vendors ID'=>'Id Proveedor',
-// END
-
-/*
- * 5.2.0 changes 
- */
 'LBL_MODULE_NAME'=>'Proveedores',
 
 );

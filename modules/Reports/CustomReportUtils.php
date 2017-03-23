@@ -7,16 +7,18 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-
 require_once 'modules/Reports/ReportRun.php';
-require_once 'include/ChartUtils.php';
+require_once 'include/utils/ChartUtils.php';
 require_once 'include/utils/CommonUtils.php';
 
-Class CustomReportUtils {
+class CustomReportUtils {
 
 	public static function getCustomReportsQuery($reportid, $filterlist=null) {
 		global $current_user;
 		$reportnew = new ReportRun($reportid);
+		$cachedInfo = VTCacheUtils::lookupReport_Info($current_user->id, $reportid);
+		if($cachedInfo === false)
+			return '';
 		$groupby = $reportnew->getGroupingList($reportid);
 		$showcharts = false;
 		if (!empty($groupby)) {
@@ -39,20 +41,22 @@ Class CustomReportUtils {
 			break;
 		}
 		$queryReports = self::getCustomReportsQuery($reportid);
-
+		if($queryReports == ''){
+			return array('error' => "<h4>".getTranslatedString('LBL_PERMISSION')."</h4>");
+		}
 		$queryResult = $adb->pquery($queryReports, array());
-		//ChartUtils::generateChartDataFromReports($queryResult, strtolower($groupByNew[1]));
 		if ($chartType == 'horizontalbarchart') {
-			$Chart = ChartUtils::getReportBarChart($queryResult, strtolower($module_field), $fieldDetails, $reportid);
+			$Chart = ChartUtils::generateChartDataFromReports($queryResult, strtolower($module_field), $fieldDetails, $reportid);
 		} else if ($chartType == 'verticalbarchart') {
-			$Chart = ChartUtils::getReportBarChart($queryResult, strtolower($module_field), $fieldDetails, $reportid, 'vertical');
+			$Chart = ChartUtils::generateChartDataFromReports($queryResult, strtolower($module_field), $fieldDetails, $reportid);
 		} else if ($chartType == 'piechart') {
-			$Chart = ChartUtils::getReportPieChart($queryResult, strtolower($module_field), $fieldDetails, $reportid);
+			$Chart = ChartUtils::generateChartDataFromReports($queryResult, strtolower($module_field), $fieldDetails, $reportid);
 		}
 		return $Chart;
 	}
 
 	public static function IsDateField($reportColDetails) {
+		if ($reportColDetails=='none') return false;
 		list($tablename, $colname, $module_field, $fieldname, $typeOfData) = explode(":", $reportColDetails);
 		if ($typeOfData == "D") {
 			return true;
@@ -68,11 +72,10 @@ Class CustomReportUtils {
 		$grteqCondition = 'h';
 		$eqCondition = 'e';
 		$lessCondititon = 'l';
-		$json = new Zend_Json();
 		$advft_criteria_groups = array('1' => array('groupcondition' => null));
 		$advft_criteria = array();
 		if (empty($fieldvalue)) {
-			$condition = 'query=true&searchtype=advance&advft_criteria=' . $json->encode($advft_criteria) . '&advft_criteria_groups=' . $json->encode($advft_criteria_groups);
+			$condition = 'query=true&searchtype=advance&advft_criteria=' . json_encode($advft_criteria) . '&advft_criteria_groups=' . json_encode($advft_criteria_groups);
 			return $condition;
 		}
 		if (strtolower($criteria) == 'year') {
@@ -94,8 +97,8 @@ Class CustomReportUtils {
 					'columncondition' => 'and'
 				)
 			);
-			$conditionJson = urlencode($json->encode($condition));
-			$condition = "query=true&searchtype=advance&advft_criteria=" . $conditionJson . "&advft_criteria_groups=" . urlencode($json->encode($advft_criteria_groups));
+			$conditionJson = urlencode(json_encode($condition));
+			$condition = "query=true&searchtype=advance&advft_criteria=" . $conditionJson . "&advft_criteria_groups=" . urlencode(json_encode($advft_criteria_groups));
 		} else if (strtolower($criteria) == 'month') {
 			$date = DateTimeField::convertToUserFormat($year . "-" . $month);
 			$endMonth = $month + 1;
@@ -119,8 +122,8 @@ Class CustomReportUtils {
 					'columncondition' => 'and'
 				)
 			);
-			$conditionJson = urlencode($json->encode($condition));
-			$condition = "query=true&searchtype=advance&advft_criteria=" . $conditionJson . "&advft_criteria_groups=" . urlencode($json->encode($advft_criteria_groups));
+			$conditionJson = urlencode(json_encode($condition));
+			$condition = "query=true&searchtype=advance&advft_criteria=" . $conditionJson . "&advft_criteria_groups=" . urlencode(json_encode($advft_criteria_groups));
 		} else if (strtolower($criteria) == 'quarter') {
 			$condition = "";
 			$quraterNum = $month / 3;
@@ -153,8 +156,8 @@ Class CustomReportUtils {
 					'columncondition' => 'and'
 				)
 			);
-			$conditionJson = urlencode($json->encode($condition));
-			$condition = "query=true&searchtype=advance&advft_criteria=" . $conditionJson . "&advft_criteria_groups=" . urlencode($json->encode($advft_criteria_groups));
+			$conditionJson = urlencode(json_encode($condition));
+			$condition = "query=true&searchtype=advance&advft_criteria=" . $conditionJson . "&advft_criteria_groups=" . urlencode(json_encode($advft_criteria_groups));
 		} elseif (strtolower($criteria) == 'none') {
 			$date = DateTimeField::convertToUserFormat($fieldvalue);
 			$condition = array(
@@ -166,8 +169,8 @@ Class CustomReportUtils {
 					'columncondition' => 'and'
 				)
 			);
-			$conditionJson = urlencode($json->encode($condition));
-			$condition = "query=true&searchtype=advance&advft_criteria=" . $conditionJson . "&advft_criteria_groups=" . urlencode($json->encode($advft_criteria_groups));
+			$conditionJson = urlencode(json_encode($condition));
+			$condition = "query=true&searchtype=advance&advft_criteria=" . $conditionJson . "&advft_criteria_groups=" . urlencode(json_encode($advft_criteria_groups));
 		}
 		return $condition;
 	}

@@ -227,6 +227,11 @@ $mod_strings = Array(
 'Net 45 days' => 'Netto 45 dagen',
 'Net 60 days' => 'Netto 60 dagen',
 
+'Daily' => 'Daily',
+'Weekly' => 'Weekly',
+'Monthly' => 'Monthly',
+'Quarterly' => 'Quarterly',
+'Yearly' => 'Yearly',
 'half-year'=>'Half Year',
 '2years' => '2 Years',
 '3years' => '3 Years',

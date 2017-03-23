@@ -58,7 +58,6 @@ $mod_strings = array (
   'Last 2 Days' => 'Ultimi Due Giorni',
   'Last Ten Days' => 'Ultimi Dieci Giorni',
 
-  'TITLE_AJAX_CSS_POPUP_CHAT' => 'Chat (ajax popup)',
   'User List' => 'Lista Utenti',
 
 'LBL_HOME_MODULE' => 'Modulo',
@@ -75,11 +74,13 @@ $mod_strings = array (
 'LBL_HOME_HORIZONTAL_BARCHART' => 'Grafico a Barre Orizzontali',
 'LBL_HOME_VERTICAL_BARCHART' => 'Grafico a Barre Verticali',
 'LBL_HOME_PIE_CHART' => 'Grafico a Torta',
+'LBL_HOME_HORIZONTAL' => 'Orizzontali',
+'LBL_HOME_VERTICAL' => 'Verticali',
+'LBL_HOME_PIE' => 'Torta',
+'Layout Saved' => 'Layout Saved',
 'LBL_HOME_ITEMS' => 'oggetto/i',
 'LBL_MORE' => 'Di Pi&ugrave;',
 'LBL_SCROLL' => 'Scorri',
-
-'LBL_NEWS_NO' => 'Nessuna news',
 
 'LBL_NOTEBOOK' => 'Appunti',
 'LBL_NOTEBOOK_TITLE' => 'Doppio-click per modificare.',
@@ -117,6 +118,9 @@ $mod_strings = array (
 'LBL_DEFAULT_WIDGET'=>'Widget Predefiniti',
 'LBL_NO_WIDGETS_HIDDEN'=>'Non ci sono Widget predefiniti nascosti',
 'UpdateExchangeRate' => 'Update Exchange Rate',
+'LBL_HOME_ADDWINDOW' => 'Add Window',
+'LBL_GETTING_STARTED' => 'Getting Started',
+'ExpirePasswordAfterDays' => 'Expire Password After Days',
 );
 
 ?>

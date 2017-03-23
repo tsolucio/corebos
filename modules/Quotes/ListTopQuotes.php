@@ -21,13 +21,15 @@ function getTopQuotes($maxval,$calCnt)
 	require_once('modules/CustomView/CustomView.php');
 
 	global $app_strings,$current_language,$current_user;
+	$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,'Quotes');
 	$current_module_strings = return_module_language($current_language, 'Quotes');
 
-	global $list_max_entries_per_page,$adb,$theme,$mod_strings;
+	global $adb,$theme,$mod_strings;
 	$log = LoggerManager::getLogger('quote_list');
 
 	$url_string = '';
 	$sorder = '';
+	$order_by = '';
 	$oCustomView = new CustomView("Quotes");
 	$customviewcombo_html = $oCustomView->getCustomViewCombo();
 	if(isset($_REQUEST['viewname']) == false || $_REQUEST['viewname']=='')
@@ -137,9 +139,7 @@ function getTopQuotes($maxval,$calCnt)
 	$entries = $controller->getListViewEntries($focus,$currentModule,$list_result,$navigation_array, true);
 
 	$values=Array('ModuleName'=>'Quotes','Title'=>$title,'Header'=>$header,'Entries'=>$entries,'search_qry'=>$search_qry);
-
-	if ( ($noofrows == 0 ) || ($noofrows>0) )
-		return $values;
+	return $values;
 }
 
 function getTopQuotesSearch($output) {
@@ -152,51 +152,51 @@ function getTopQuotesSearch($output) {
 	$advft_criteria_groups = array('1' => array('groupcondition' => null));
 	$advft_criteria = array(
 		array (
-            'groupid' => 1,
-            'columnname' => 'vtiger_quotes:quotestage:quotestage:Quotes_Quote_Stage:V',
-            'comparator' => 'n',
-            'value' => 'Accepted',
-            'columncondition' => 'and'
-        ),
+			'groupid' => 1,
+			'columnname' => 'vtiger_quotes:quotestage:quotestage:Quotes_Quote_Stage:V',
+			'comparator' => 'n',
+			'value' => 'Accepted',
+			'columncondition' => 'and'
+		),
 		array (
-            'groupid' => 1,
-            'columnname' => 'vtiger_quotes:quotestage:quotestage:Quotes_Quote_Stage:V',
-            'comparator' => 'n',
-            'value' => 'Rejected',
-            'columncondition' => 'and'
-        ),
+			'groupid' => 1,
+			'columnname' => 'vtiger_quotes:quotestage:quotestage:Quotes_Quote_Stage:V',
+			'comparator' => 'n',
+			'value' => 'Rejected',
+			'columncondition' => 'and'
+		),
 		array (
-            'groupid' => 1,
-            'columnname' => 'vtiger_quotes:quotestage:quotestage:Quotes_Quote_Stage:V',
-            'comparator' => 'n',
-            'value' => getTranslatedString('Accepted', 'Quotes'),
-            'columncondition' => 'and'
-        ),
+			'groupid' => 1,
+			'columnname' => 'vtiger_quotes:quotestage:quotestage:Quotes_Quote_Stage:V',
+			'comparator' => 'n',
+			'value' => getTranslatedString('Accepted', 'Quotes'),
+			'columncondition' => 'and'
+		),
 		array (
-            'groupid' => 1,
-            'columnname' => 'vtiger_quotes:quotestage:quotestage:Quotes_Quote_Stage:V',
-            'comparator' => 'n',
-            'value' => getTranslatedString('Rejected', 'Quotes'),
-            'columncondition' => 'and'
-        ),
+			'groupid' => 1,
+			'columnname' => 'vtiger_quotes:quotestage:quotestage:Quotes_Quote_Stage:V',
+			'comparator' => 'n',
+			'value' => getTranslatedString('Rejected', 'Quotes'),
+			'columncondition' => 'and'
+		),
 		array (
-            'groupid' => 1,
-            'columnname' => 'vtiger_quotes:validtill:validtill:Quotes_Valid_Till:D',
-            'comparator' => 'h',
-            'value' => $currentDateTime->getDisplayDate(),
-            'columncondition' => 'and'
-        ),
+			'groupid' => 1,
+			'columnname' => 'vtiger_quotes:validtill:validtill:Quotes_Valid_Till:D',
+			'comparator' => 'h',
+			'value' => $currentDateTime->getDisplayDate(),
+			'columncondition' => 'and'
+		),
 		array (
-            'groupid' => 1,
-            'columnname' => 'vtiger_crmentity:smownerid:assigned_user_id:Quotes_Assigned_To:V',
-            'comparator' => 'e',
-            'value' => getFullNameFromArray('Users', $current_user->column_fields),
-            'columncondition' => null
-        )
+			'groupid' => 1,
+			'columnname' => 'vtiger_crmentity:smownerid:assigned_user_id:Quotes_Assigned_To:V',
+			'comparator' => 'e',
+			'value' => getFullNameFromArray('Users', $current_user->column_fields),
+			'columncondition' => null
+		)
 	);
 
-	$output['advft_criteria'] = Zend_Json::encode($advft_criteria);
-	$output['advft_criteria_groups'] = Zend_Json::encode($advft_criteria_groups);
+	$output['advft_criteria'] = json_encode($advft_criteria);
+	$output['advft_criteria_groups'] = json_encode($advft_criteria_groups);
 
 	return $output;
 }

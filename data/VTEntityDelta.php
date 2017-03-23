@@ -12,8 +12,8 @@ require_once 'include/events/VTEntityData.inc';
 class VTEntityDelta extends VTEventHandler {
 	private static $oldEntity;
 	private static $newEntity;
-	private static $oldEntity_pimages;
-	private static $newEntity_pimages;
+	private static $oldEntity_pimages = array();
+	private static $newEntity_pimages = array();
 	private static $entityDelta;
 
 	function __construct() {

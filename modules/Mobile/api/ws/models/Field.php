@@ -9,7 +9,7 @@
  * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
 
-class Mobile_UI_FieldModel {
+class crmtogo_UI_FieldModel {
 	private $data; 
 	
 	function initData($fieldData) {
@@ -20,42 +20,32 @@ class Mobile_UI_FieldModel {
 		return $this->data['uitype'];
 	}
 	
-	
 	function name() {
 		return $this->data['name'];
 	}
 	
-	
 	function value() {
-			
-		if ($this->data['uitype'] == '15' || $this->data['uitype'] == '33')
-		{  
+		if ($this->data['uitype'] == '15' || $this->data['uitype'] == '33') {  
 			$rawValue = $this->data['type']['value'];
-			
 			if (is_array($rawValue)) {           
 				return $rawValue['value'];
 			}
 		    return $rawValue;
 		}
-		else if($this->data['uitype'] == '53')
-		{
-		     $rawValue = $this->data['type']['value'];
-			 
+		else if($this->data['uitype'] == '53') {
+		    $rawValue = $this->data['type']['value'];
 			if (is_array($rawValue)) {
 				return $rawValue['value'];
 			}
-		
 		}
 		
-		else
-		{ 
+		else { 
      		$rawValue = $this->data['value'];
 			if (is_array($rawValue)) {
 				return $rawValue['value'];
 			}
 			return $rawValue;
 		}	
-		
 	}
 	
 	function valueLabel() {
@@ -72,8 +62,8 @@ class Mobile_UI_FieldModel {
 	}
 	
 	function isReferenceType() {
-		static $options = array('101', '116', '117', '26', '357',
-			'50', '51', '52', '53', '57', '58', '59', '66',
+		static $options = array('101', '116', '117', '357',
+			'50', '51', '52', '53', '57', '59', '66',
 			'73', '75', '76', '77', '78', '80', '81'
 		);
 		if (isset($this->data['uitype'])) {
@@ -81,7 +71,8 @@ class Mobile_UI_FieldModel {
 			if (in_array($uitype, $options)) {
 				return true;
 			}
-		} else if(isset($this->data['type'])) {
+		} 
+		else if(isset($this->data['type'])) {
 			switch($this->data['type']['name']) {
 				case 'reference':
 				case 'owner':
@@ -93,7 +84,6 @@ class Mobile_UI_FieldModel {
 	
 	function isMultiReferenceType() {
 		static $options = array('10', '68');
-		
 		$uitype = $this->data['uitype'];
 		if (in_array($uitype, $options)) {
 			return true;
@@ -103,7 +93,6 @@ class Mobile_UI_FieldModel {
 	
 	static function buildModelsFromResponse($fields) {
 		$instances = array();
-
 		foreach($fields as $fieldData) {
 			$instance = new self();
 			$instance->initData($fieldData);
@@ -116,4 +105,15 @@ class Mobile_UI_FieldModel {
 		return $this->data['typeofdata'];
 	}
 	
+	function ismandatory() {
+		return $this->data['mandatory'];
+	}
+
+	function quickcreate() {
+		return $this->data['quickcreate'];
+	}
+
+	function displaytype() {
+		return $this->data['displaytype'];
+	}
 }

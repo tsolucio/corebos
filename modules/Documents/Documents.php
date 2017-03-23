@@ -20,7 +20,6 @@ class Documents extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	var $IsCustomModule = false;
 	var $HasDirectImageField = false;
-	var $default_note_name_dom = array('Meeting vtiger_notes', 'Reminder');
 
 	var $tab_name = Array('vtiger_crmentity','vtiger_notes','vtiger_notescf');
 	var $tab_name_index = Array('vtiger_crmentity'=>'crmid','vtiger_notes'=>'notesid','vtiger_notescf'=>'notesid','vtiger_senotesrel'=>'notesid');
@@ -92,7 +91,7 @@ class Documents extends CRMEntity {
 		$filetype_fieldname = $this->getFileTypeFieldName();
 		$filename_fieldname = $this->getFile_FieldName();
 		if($this->column_fields[$filetype_fieldname] == 'I' ){
-			if($_FILES[$filename_fieldname]['name'] != ''){
+			if (!empty($_FILES[$filename_fieldname]['name'])) {
 				$filedownloadcount = 0;
 				$errCode=$_FILES[$filename_fieldname]['error'];
 					if($errCode == 0){
@@ -180,18 +179,26 @@ class Documents extends CRMEntity {
 	 */
 	function preSaveCheck($request) {
 		global $adb,$log;
+		if (isset($_REQUEST['parentid']) && $_REQUEST['parentid'] != '') {
+			$this->parentid = vtlib_purify($_REQUEST['parentid']);
+		}
 		$saveerror = false;
 		$errmsg = '';
 		if ($this->mode=='' && $_REQUEST['filelocationtype'] == 'I' && $_REQUEST['action'] != 'DocumentsAjax') {
 			$upload_file_path = decideFilePath();
 			$dirpermission = is_writable($upload_file_path);
 			$upload = is_uploaded_file($_FILES['filename']['tmp_name']);
-			if (!$dirpermission || ($_FILES['error']!=0 and $_FILES['error']!=4) || (!$upload and $_FILES['error']!=4)){
+			$ferror = (isset($_FILES['error']) ? $_FILES['error'] : $_FILES['filename']['error']);
+			if (!$dirpermission || ($ferror!=0 and $ferror!=4) || (!$upload and $ferror!=4)){
 				$saveerror = true;
 				$errmsg = getTranslatedString('LBL_FILEUPLOAD_FAILED','Documents');
 			}
 		}
-		return array($saveerror,$errmsg,'EditView','');
+		if ($saveerror) {
+			return array($saveerror,$errmsg,'EditView','');
+		} else {
+			return parent::preSaveCheck($request);
+		}
 	}
 
 	/**
@@ -253,7 +260,7 @@ class Documents extends CRMEntity {
 		if(isset($_REQUEST['sorder']))
 			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
 		else
-			$sorder = (($_SESSION['NOTES_SORT_ORDER'] != '')?($_SESSION['NOTES_SORT_ORDER']):($this->default_sort_order));
+			$sorder = (!empty($_SESSION['NOTES_SORT_ORDER']) ? $_SESSION['NOTES_SORT_ORDER'] : $this->default_sort_order);
 		$log->debug("Exiting getSortOrder() method ...");
 		return $sorder;
 	}
@@ -263,18 +270,20 @@ class Documents extends CRMEntity {
 	*/
 	function getOrderBy()
 	{
-		global $log;
+		global $currentModule,$log;
 		$log->debug("Entering getOrderBy() method ...");
 
 		$use_default_order_by = '';
 		if(PerformancePrefs::getBoolean('LISTVIEW_DEFAULT_SORTING', true)) {
 			$use_default_order_by = $this->default_order_by;
 		}
-
+		$orderby = $use_default_order_by;
 		if (isset($_REQUEST['order_by']))
 			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
+		else if(isset($_SESSION[$currentModule.'_Order_By']))
+			$order_by = $_SESSION[$currentModule.'_Order_By'];
 		else
-			$order_by = (($_SESSION['NOTES_ORDER_BY'] != '')?($_SESSION['NOTES_ORDER_BY']):($use_default_order_by));
+			$order_by = (!empty($_SESSION['NOTES_ORDER_BY']) ? $_SESSION['NOTES_ORDER_BY'] : $use_default_order_by);
 		$log->debug("Exiting getOrderBy method ...");
 		return $order_by;
 	}
@@ -286,8 +295,7 @@ class Documents extends CRMEntity {
 	function getSortOrderForFolder($folderId) {
 		if(isset($_REQUEST['sorder']) && $_REQUEST['folderid'] == $folderId) {
 			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
-		} elseif(is_array($_SESSION['NOTES_FOLDER_SORT_ORDER']) &&
-					!empty($_SESSION['NOTES_FOLDER_SORT_ORDER'][$folderId])) {
+		} elseif(isset($_SESSION['NOTES_FOLDER_SORT_ORDER']) && is_array($_SESSION['NOTES_FOLDER_SORT_ORDER']) && !empty($_SESSION['NOTES_FOLDER_SORT_ORDER'][$folderId])) {
 				$sorder = $_SESSION['NOTES_FOLDER_SORT_ORDER'][$folderId];
 		} else {
 			$sorder = $this->default_sort_order;
@@ -306,8 +314,7 @@ class Documents extends CRMEntity {
 		}
 		if (isset($_REQUEST['order_by']) && $_REQUEST['folderid'] == $folderId) {
 			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
-		} elseif(is_array($_SESSION['NOTES_FOLDER_ORDER_BY']) &&
-				!empty($_SESSION['NOTES_FOLDER_ORDER_BY'][$folderId])) {
+		} elseif(!empty($_SESSION['NOTES_FOLDER_ORDER_BY']) && is_array($_SESSION['NOTES_FOLDER_ORDER_BY']) && !empty($_SESSION['NOTES_FOLDER_ORDER_BY'][$folderId])) {
 			$order_by = $_SESSION['NOTES_FOLDER_ORDER_BY'][$folderId];
 		} else {
 			$order_by = ($use_default_order_by);
@@ -331,7 +338,7 @@ class Documents extends CRMEntity {
 
 		$query = "SELECT $fields_list, foldername, filename,
 					concat(path,vtiger_attachments.attachmentsid,'_',filename) as storagename,
-					concat(account_no,' ',accountname) as account, concat(contact_no,' ',firstname,' ',lastname) as contact
+					concat(account_no,' ',accountname) as account, concat(contact_no,' ',firstname,' ',lastname) as contact,vtiger_senotesrel.crmid as relatedid
 				FROM vtiger_notes
 				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_notes.notesid
 				left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid=vtiger_notes.notesid
@@ -341,6 +348,7 @@ class Documents extends CRMEntity {
 				LEFT JOIN vtiger_account ON vtiger_account.accountid=vtiger_senotesrel.crmid
 				LEFT JOIN vtiger_contactdetails ON vtiger_contactdetails.contactid=vtiger_senotesrel.crmid
 				LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid=vtiger_users.id
+				LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'
 				LEFT JOIN vtiger_groups ON vtiger_crmentity.smownerid=vtiger_groups.groupid ";
 		$query .= getNonAdminAccessControlQuery('Documents',$current_user);
 		$where_auto=" vtiger_crmentity.deleted=0";
@@ -348,7 +356,6 @@ class Documents extends CRMEntity {
 			$query .= " WHERE ($where) AND ".$where_auto;
 		else
 			$query .= " WHERE ".$where_auto;
-		$query.=' group by vtiger_notes.notesid';
 		$log->debug("Exiting create_export_query method ...");
 		return $query;
 	}
@@ -417,7 +424,7 @@ class Documents extends CRMEntity {
 	 */
 	function setRelationTables($secmodule){
 		$rel_tables = array();
-		return $rel_tables[$secmodule];
+		return '';
 	}
 
 	// Function to unlink all the dependent entities of the given Entity by Id
@@ -533,7 +540,7 @@ class Documents extends CRMEntity {
 		$currentModule='Documents';
 		if(isPermitted($related_module,4, '') == 'yes') {
 			$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module). "' class='crmbutton small edit' " .
-					" type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\"" .
+					" type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id','test','width=640,height=602,resizable=0,scrollbars=0');\"" .
 					" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 		}
 		$query = "select case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name,
@@ -569,7 +576,7 @@ class Documents extends CRMEntity {
 			$entries[] = $row['user_name'];
 			$entries_list[] = $entries;
 		}
-		$return_data = array('header'=>$header,'entries'=>$entries_list,'CUSTOM_BUTTON' => $button);
+		$return_data = array('header'=>$header,'entries'=>$entries_list,'CUSTOM_BUTTON' => $button,'navigation'=>array('',''));
 		$log->debug("Exiting getEntities method ...");
 		return $return_data;
 	}

@@ -276,11 +276,11 @@ function __cb_getLongitude($address) {
 function __cb_getGEODistance($arr){
 	$from = decode_html($arr[0]);
 	$to = decode_html($arr[1]);
-	$coo1 = __cb_getLatitude($from).",".__cb_getLongitude($from);
-	$coo2 = __cb_getLatitude($to).",".__cb_getLongitude($to);
-	$distance = file_get_contents("http://router.project-osrm.org/viaroute?loc=$coo1&loc=$coo2");
+	$coo1 = __cb_getLongitude($from).",".__cb_getLatitude($from);
+	$coo2 = __cb_getLongitude($to).",".__cb_getLatitude($to);
+	$distance = file_get_contents("http://router.project-osrm.org/route/v1/driving/$coo1;$coo2?overview=false");
 	$dis = json_decode($distance);
-	$total_distance = $dis->route_summary->total_distance/1000;
+	$total_distance = $dis->routes[0]->distance/1000;
 	return $total_distance." km";
 }
 
@@ -967,7 +967,7 @@ class VTFieldExpressionEvaluater{
 				$rsfld = $adb->pquery('select * from vtiger_field where fieldid=?',array($field->id));
 				$field = WebserviceField::fromQueryResult($adb, $rsfld, 0);
 				$fieldType = $field->getFieldDataType();
-				if ($fieldType=='reference') {
+				if ($fieldType=='reference' or $fieldType=='owner') {
 					preg_match("/([0-9]+)x([0-9]+)/", $val, $results);
 					if (count($results)>0) {  // if it has the form of a webserviceid
 						$query = 'select name from vtiger_ws_entity where id = ?';

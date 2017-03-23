@@ -12,12 +12,11 @@ require_once('modules/Users/Users.php');
 require_once('include/database/PearDatabase.php');
 global $adb ,$mod_strings, $current_user;
 
-$local_log =& LoggerManager::getLogger('UsersAjax');
+$local_log = LoggerManager::getLogger('UsersAjax');
 $ajaxaction = vtlib_purify($_REQUEST["ajxaction"]);
 if($ajaxaction == "DETAILVIEW")
 {
 	$userid = vtlib_purify($_REQUEST["recordid"]);
-	$tablename = vtlib_purify($_REQUEST["tableName"]);
 	$fieldname = vtlib_purify($_REQUEST["fldName"]);
 	$fieldvalue = utf8RawUrlDecode(vtlib_purify($_REQUEST["fieldValue"])); 
 	if(empty($_SESSION['Users_FORM_TOKEN']) || $_SESSION['Users_FORM_TOKEN'] !== (int)$_REQUEST['form_token'] ||
@@ -52,7 +51,7 @@ if($ajaxaction == "DETAILVIEW")
 		}
 		if($fieldname == 'internal_mailer'){
 			if(isset($_SESSION['internal_mailer']) && $_SESSION['internal_mailer'] != $userObj->column_fields['internal_mailer'])
-				$_SESSION['internal_mailer'] = $userObj->column_fields['internal_mailer'];
+				coreBOS_Session::set('internal_mailer', $userObj->column_fields['internal_mailer']);
 		}
 		$userObj->id = $userid;
 		$userObj->mode = "edit";

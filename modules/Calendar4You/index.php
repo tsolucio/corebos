@@ -6,5 +6,9 @@
  * Portions created by IT-Solutions4You s.r.o. are Copyright(C) IT-Solutions4You s.r.o.
  * All Rights Reserved.
  ********************************************************************************/
-include('modules/Calendar4You/CalendarView.php');
+if (isset($_REQUEST['searchtype']) and isset($_REQUEST['ajax'])) {
+	include('modules/Calendar4You/ListView.php');
+} else {
+	include('modules/Calendar4You/CalendarView.php');
+}
 ?>

@@ -427,7 +427,6 @@ $mod_strings = Array(
 'End Date and Time'=>'Einddatum & tijd',
 //this is for task
 'End date'=>'Einddatum',
-'LBL_SET_DATE'=>'Datum instellen',
 'Recurrence'=>'Herhaling',
 
 //added to send invitation mail Subject.

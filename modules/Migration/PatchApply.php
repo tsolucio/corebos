@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
 ********************************************************************************/
 
 _phpset_memorylimit_MB(32);
@@ -20,7 +19,7 @@ if($current_user->is_admin != 'on')
 }
 
 include("modules/Migration/versions.php");
-$migrationlog =& LoggerManager::getLogger('MIGRATION');
+$migrationlog = LoggerManager::getLogger('MIGRATION');
 
 //global $vtiger_current_version;
 if($_REQUEST['source_version'] != '')

@@ -34,7 +34,7 @@ abstract class EntityMeta{
 	protected $ownerFields;
 	protected $moduleFields;
 	
-	protected function EntityMeta($webserviceObject,$user){
+	protected function __construct($webserviceObject,$user){
 		$this->webserviceObject = $webserviceObject;
 		$this->objectName = $this->webserviceObject->getEntityName();
 		$this->objectId = $this->webserviceObject->getEntityId();
@@ -232,7 +232,8 @@ abstract class EntityMeta{
 
 	public function getEntityDeletedQuery(){
 		if($this->getEntityName() == 'Leads') {
-			return "vtiger_crmentity.deleted=0 and vtiger_leaddetails.converted=0";
+			$val_conv = ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true') ? 1 : 0);
+			return "vtiger_crmentity.deleted=0 and vtiger_leaddetails.converted=$val_conv";
 		}
 		if($this->getEntityName() != "Users"){
 			return "vtiger_crmentity.deleted=0";

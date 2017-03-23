@@ -124,7 +124,7 @@ function lang_changeEditTab(obj1, obj2, SelTab, unSelTab) {
 														<option value='rlnontranslated' {if $FILTER == 'rlnontranslated'}selected{/if}>{$UMOD.RLNotTranslated}</option>
 													</select>
 												</div>
-												{if count($TRANSLATION_LIST_STRING) > 0 or count($TRANSLATION_LIST_STRING2) > 0}
+												{if count($TRANSLATION_LIST_STRING) > 0}
 													{assign var = "has_multivalue_strings" value=true}
 												{else}
 													{assign var = "has_multivalue_strings" value=false}
@@ -225,33 +225,6 @@ function lang_changeEditTab(obj1, obj2, SelTab, unSelTab) {
 																<textarea style="width:100%" name="translate_list_value[{$list}][{$string[2]}]" class="small">{if $string[3] eq 'new'}{$string[0]}{else}{$string[1]}{/if}</textarea>
 																{else}
 																<input type="text" name="translate_list_value[{$list}][{$string[2]}]" value="{if $string[3] eq 'new'}{$string[0]}{else}{$string[1]}{/if}" class="small" style="width:100%">
-																{/if}
-															</td>
-														</tr>
-														{/foreach}
-														{/foreach}
-														{foreach key=list item=list_tab from=$TRANSLATION_LIST_STRING2}
-														<tr style="background-color:#CCC;"><td colspan="2"><strong>{$list}</strong></td></tr>
-														{foreach key=key_val item=string from=$list_tab}
-														{if $string[3] eq 'new'}
-															{assign var = "color" value="#ffc4c4"}
-														{elseif $string[3] eq 'not_translated'}
-															{assign var = "color" value="#DADADA"}
-														{else}
-															{assign var = "color" value="#FFF"}
-														{/if}
-														<tr style="background-color:{$color};">
-															<td valign="top" class="listTableRow small">
-																<span style="width:100%" >{$key_val}</span>
-															</td>
-															<td class="listTableRow small">
-																<span style="width:100%" >{$string[0]}</span>
-															</td>
-															<td class="listTableRow small" valign=top>
-																{if $string[1]|count_paragraphs != 1 || $string[0]|count_characters:true > 50 || $string[1]|count_characters:true > 50}
-																<textarea style="width:100%" name="translate_list_value2[{$list}][{$string[2]}]" class="small">{if $string[3] eq 'new'}{$string[0]}{else}{$string[1]}{/if}</textarea>
-																{else}
-																<input type="text" name="translate_list_value2[{$list}][{$string[2]}]" value="{if $string[3] eq 'new'}{$string[0]}{else}{$string[1]}{/if}" class="small" style="width:100%">
 																{/if}
 															</td>
 														</tr>

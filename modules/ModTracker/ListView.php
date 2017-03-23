@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 global $app_strings, $mod_strings, $current_language, $currentModule, $theme;
-global $list_max_entries_per_page;
+$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$currentModule);
 
 require_once('Smarty_setup.php');
 require_once('include/ListView/ListView.php');
@@ -36,8 +36,8 @@ $focus->initSortbyField($currentModule);
 $sorder = $focus->getSortOrder();
 $order_by = $focus->getOrderBy();
 
-$_SESSION[$currentModule."_Order_By"] = $order_by;
-$_SESSION[$currentModule."_Sort_Order"]=$sorder;
+coreBOS_Session::set($currentModule.'_Order_By', $order_by);
+coreBOS_Session::set($currentModule.'_Sort_Order', $sorder);
 
 $smarty = new vtigerCRM_Smarty();
 
@@ -117,15 +117,15 @@ if($_REQUEST['query'] == 'true') {
 $list_query = $queryGenerator->getQuery();
 $where = $queryGenerator->getConditionalWhere();
 if(isset($where) && $where != '') {
-	$_SESSION['export_where'] = $where;
+	coreBOS_Session::set('export_where', $where);
 } else {
-	unset($_SESSION['export_where']);
+	coreBOS_Session::delete('export_where');
 }
 $smarty->assign('export_where',to_html($where));
 
 // Sorting
 if(!empty($order_by)) {
-	if($order_by == 'smownerid') $list_query .= ' ORDER BY user_name '.$sorder;
+	if($order_by == 'smownerid') $list_query .= ' ORDER BY vtiger_users.user_name '.$sorder;
 	else {
 		$tablename = getTableNameForField($currentModule, $order_by);
 		$tablename = ($tablename != '')? ($tablename . '.') : '';
@@ -182,7 +182,7 @@ $smarty->assign("FIELDS_TO_MERGE", getMergeFields($currentModule,"fileds_to_merg
 $smarty->assign("SELECTEDIDS", vtlib_purify($_REQUEST['selobjs']));
 $smarty->assign("ALLSELECTEDIDS", vtlib_purify($_REQUEST['allselobjs']));
 $smarty->assign("CURRENT_PAGE_BOXES", implode(array_keys($listview_entries),";"));
-$_SESSION[$currentModule.'_listquery'] = $list_query;
+coreBOS_Session::set($currentModule.'_listquery', $list_query);
 
 // Gather the custom link information to display
 include_once('vtlib/Vtiger/Link.php');

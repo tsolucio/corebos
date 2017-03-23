@@ -8,9 +8,8 @@
  * All Rights Reserved.
  ************************************************************************************/
 require_once('Smarty_setup.php');
-require_once('user_privileges/default_module_view.php');
 
-global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log, $singlepane_view;
+global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
 
 $smarty = new vtigerCRM_Smarty();
 
@@ -45,6 +44,7 @@ if (isPermitted('Leads', 'Merge', '') == 'yes') {
 	$wordTemplateResult = fetchWordTemplateList('Leads');
 	$tempCount = $adb->num_rows($wordTemplateResult);
 	$tempVal = $adb->fetch_array($wordTemplateResult);
+	$optionString = array();
 	for ($templateCount = 0; $templateCount < $tempCount; $templateCount++) {
 		$optionString[$tempVal['templateid']] = $tempVal['filename'];
 		$tempVal = $adb->fetch_array($wordTemplateResult);
@@ -59,7 +59,6 @@ if (isPermitted('Leads', 'Merge', '') == 'yes') {
 	$smarty->assign('TOPTIONS', $optionString);
 }
 
-$smarty->assign('USE_ASTERISK', get_use_asterisk($current_user->id));
 if (useInternalMailer() == 1)
 	$smarty->assign('INT_MAILER', 'true');
 

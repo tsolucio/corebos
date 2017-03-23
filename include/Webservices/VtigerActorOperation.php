@@ -254,22 +254,19 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 				"deleteable"=>$deleteable,"retrieveable"=>$retrieveable,"fields"=>$fields,
 				"idPrefix"=>$this->meta->getEntityId(),'isEntity'=>$this->isEntity,'labelFields'=>$this->meta->getNameFields());
 	}
-	
+
 	function getModuleFields(){
-		$app_strings = VTWS_PreserveGlobal::getGlobal('app_strings');
 		if($this->moduleFields === null){
 			$fields = array();
 			$moduleFields = $this->meta->getModuleFields();
 			foreach ($moduleFields as $fieldName=>$webserviceField) {
 				array_push($fields,$this->getDescribeFieldArray($webserviceField));
 			}
-			$label = ($app_strings[$this->meta->getObectIndexColumn()])? $app_strings[$this->meta->getObectIndexColumn()]:
-				$this->meta->getObectIndexColumn();
 			$this->moduleFields = $fields;
 		}
 		return $this->moduleFields;
 	}
-	
+
 	function getDescribeFieldArray($webserviceField){
 		$app_strings = VTWS_PreserveGlobal::getGlobal('app_strings');
 		$fieldLabel = $webserviceField->getFieldLabelKey();

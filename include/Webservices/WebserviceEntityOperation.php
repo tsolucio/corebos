@@ -18,10 +18,10 @@ abstract class WebserviceEntityOperation{
 	 * @var PearDatabase
 	 */
 	protected $pearDB;
-	
+
 	protected static $metaCache = array();
-	
-	protected function WebserviceEntityOperation($webserviceObject,$user,$adb,$log){
+
+	protected function __construct($webserviceObject,$user,$adb,$log){
 		$this->user = $user;
 		$this->log = $log;
 		$this->webserviceObject = $webserviceObject;
@@ -64,7 +64,6 @@ abstract class WebserviceEntityOperation{
 	}
 	
 	function getFieldTypeDetails($webserviceField){
-		global $upload_maxsize;
 		$typeDetails = array();
 		switch($webserviceField->getFieldDataType()){
 			case 'reference': $typeDetails['refersTo'] = $webserviceField->getReferenceList();
@@ -82,6 +81,7 @@ abstract class WebserviceEntityOperation{
 					$maxUploadSize = 0;
 				}
 				$maxUploadSize = $maxUploadSize * 1000000;
+				$upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize',3000000);
 				if($upload_maxsize > $maxUploadSize){
 					$maxUploadSize = $upload_maxsize;
 				}

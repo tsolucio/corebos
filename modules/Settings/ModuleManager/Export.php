@@ -9,7 +9,26 @@
  ********************************************************************************/
 
 $module_export = vtlib_purify($_REQUEST['module_export']);
-
+$fail = false;
+if (empty($current_user)) {
+	if (isset($_SESSION['authenticated_user_id']) && (isset($_SESSION['app_unique_key']) && $_SESSION['app_unique_key'] == $application_unique_key)) {
+		$current_user = new Users();
+		$result = $current_user->retrieveCurrentUserInfoFromFile($_SESSION['authenticated_user_id']);
+		if ($result == null) {
+			$fail = true;
+		} elseif (!is_admin($current_user)) {
+			$fail = true;
+		}
+	} else {
+		$fail = true;
+	}
+} elseif (!is_admin($current_user)) {
+	$fail = true;
+}
+if ($fail) {
+	coreBOS_Session::destroy();
+	header("Location: index.php?action=Login&module=Users");
+}
 require_once("vtlib/Vtiger/Package.php");
 require_once("vtlib/Vtiger/Module.php");
 

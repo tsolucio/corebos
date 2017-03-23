@@ -19,9 +19,9 @@
 		</td>
 {elseif $HOME_STUFFTYPE eq "DashBoard"}
 		<td  valign="top" align='center' class="homePageMatrixHdr" style="height:28px;" width=60%>
-			<input type="radio" id="dashradio_0" name="dashradio_{$HOME_STUFFID}" value="horizontalbarchart" {if $DASHDETAILS.$HOME_STUFFID.Chart eq 'horizontalbarchart'}checked{/if}>Horizontal
-			<input type="radio" id="dashradio_1" name="dashradio_{$HOME_STUFFID}" value="verticalbarchart"{if $DASHDETAILS.$HOME_STUFFID.Chart eq 'verticalbarchart'}checked{/if}>Vertical
-			<input type="radio" id="dashradio_2" name="dashradio_{$HOME_STUFFID}" value="piechart" {if $DASHDETAILS.$HOME_STUFFID.Chart eq 'piechart'}checked{/if}>Pie
+			<input type="radio" id="dashradio_0" name="dashradio_{$HOME_STUFFID}" value="horizontalbarchart" {if $DASHDETAILS.$HOME_STUFFID.Chart eq 'horizontalbarchart'}checked{/if}>{'LBL_HOME_HORIZONTAL'|@getTranslatedString:'Home'}
+			<input type="radio" id="dashradio_1" name="dashradio_{$HOME_STUFFID}" value="verticalbarchart"{if $DASHDETAILS.$HOME_STUFFID.Chart eq 'verticalbarchart'}checked{/if}>{'LBL_HOME_VERTICAL'|@getTranslatedString:'Home'}
+			<input type="radio" id="dashradio_2" name="dashradio_{$HOME_STUFFID}" value="piechart" {if $DASHDETAILS.$HOME_STUFFID.Chart eq 'piechart'}checked{/if}>{'LBL_HOME_PIE'|@getTranslatedString:'Home'}
 		</td>
 		</tr>
 		<tr>
@@ -32,9 +32,9 @@
 		</tr>
 {elseif $HOME_STUFFTYPE eq "ReportCharts"}
 		<td  valign="top" align='center' class="homePageMatrixHdr" style="height:28px;" width=60%>
-			<input type="radio" id="reportradio_0" name="reportradio_{$HOME_STUFFID}" value="horizontalbarchart" {if $DASHDETAILS.$HOME_STUFFID.Chart eq 'horizontalbarchart'}checked{/if}>Horizontal
-			<input type="radio" id="reportradio_1" name="reportradio_{$HOME_STUFFID}" value="verticalbarchart"{if $DASHDETAILS.$HOME_STUFFID.Chart eq 'verticalbarchart'}checked{/if}>Vertical
-			<input type="radio" id="reportradio_2" name="reportradio_{$HOME_STUFFID}" value="piechart" {if $DASHDETAILS.$HOME_STUFFID.Chart eq 'piechart'}checked{/if}>Pie
+			<input type="radio" id="reportradio_{$HOME_STUFFID}_0" name="reportradio_{$HOME_STUFFID}" value="horizontalbarchart" {if $DASHDETAILS.$HOME_STUFFID.Chart eq 'horizontalbarchart'}checked{/if} onclick="changeGraphType({$HOME_STUFFID},'horizontalbarchart');">{'LBL_HOME_HORIZONTAL'|@getTranslatedString:'Home'}
+			<input type="radio" id="reportradio_{$HOME_STUFFID}_1" name="reportradio_{$HOME_STUFFID}" value="verticalbarchart"{if $DASHDETAILS.$HOME_STUFFID.Chart eq 'verticalbarchart'}checked{/if} onclick="changeGraphType({$HOME_STUFFID},'verticalbarchart');">{'LBL_HOME_VERTICAL'|@getTranslatedString:'Home'}
+			<input type="radio" id="reportradio_{$HOME_STUFFID}_2" name="reportradio_{$HOME_STUFFID}" value="piechart" {if $DASHDETAILS.$HOME_STUFFID.Chart eq 'piechart'}checked{/if} onclick="changeGraphType({$HOME_STUFFID},'piechart');">{'LBL_HOME_PIE'|@getTranslatedString:'Home'}
 		</td>
 	</tr>
 	<tr>
@@ -85,32 +85,34 @@
 	</table>
 
 {elseif $HOME_STUFFTYPE eq "Default"}
-	<input type=hidden id=more_{$HOME_STUFFID} value="{$HOME_STUFF.Details.ModuleName}"/>
-	<table border=0 cellspacing=0 cellpadding=2 width=100%>
-	<tr>
-		<td width=5%>&nbsp;</td>
-	{foreach item=header from=$HOME_STUFF.Details.Header}
-		<td align="left"><b>{$header}</b></td>
-	{/foreach}
-	</tr>
+	<input type=hidden id=more_{$HOME_STUFFID} value="{if isset($HOME_STUFF.Details.ModuleName)}{$HOME_STUFF.Details.ModuleName}{/if}"/>
 	{if $HOME_STUFF.Details.Entries|@count > 0}
-		{foreach item=row key=crmid from=$HOME_STUFF.Details.Entries}
-	<tr>
-		<td>
-			{if $HOME_STUFF.Details.Title.1 eq "My Sites"}
-			<img src="{'bookMark.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0" alt="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}" title="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}"/>
-			{elseif $HOME_STUFF.Details.Title.1 neq "Key Metrics" && $HOME_STUFF.Details.Title.1 neq "My Group Allocation"}
-			<img src="{'bookMark.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0" alt="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}" title="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}"/>
-			{elseif $HOME_STUFF.Details.Title.1 eq "Key Metrics"}
-			<img src="{'bookMark.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0" alt="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}" title="{$APP.LBL_MORE} {$APP.LBL_INFORMATION} "/>
-			{elseif $HOME_STUFF.Details.Title.1 eq "My Group Allocation"}
-			<img src="{'bookMark.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0" alt="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}" title="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}"/>
-			{/if}
-		</td>
-			{foreach item=element from=$row}
-		<td align="left"/> {$element}</td>
+		<table border=0 cellspacing=0 cellpadding=2 width=100%>
+		<tr>
+			<td width=5%>&nbsp;</td>
+			{foreach item=header from=$HOME_STUFF.Details.Header}
+				<td align="left"><b>{$header}</b></td>
 			{/foreach}
-	</tr>
+		</tr>
+		{foreach item=row key=crmid from=$HOME_STUFF.Details.Entries}
+			{if isset($HOME_STUFF.Details.Title)}
+			<tr>
+				<td>
+					{if $HOME_STUFF.Details.Title.1 eq "My Sites"}
+					<img src="{'bookMark.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0" alt="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}" title="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}"/>
+					{elseif $HOME_STUFF.Details.Title.1 neq "Key Metrics" && $HOME_STUFF.Details.Title.1 neq "My Group Allocation"}
+					<img src="{'bookMark.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0" alt="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}" title="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}"/>
+					{elseif $HOME_STUFF.Details.Title.1 eq "Key Metrics"}
+					<img src="{'bookMark.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0" alt="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}" title="{$APP.LBL_MORE} {$APP.LBL_INFORMATION} "/>
+					{elseif $HOME_STUFF.Details.Title.1 eq "My Group Allocation"}
+					<img src="{'bookMark.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0" alt="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}" title="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}"/>
+					{/if}
+				</td>
+				{foreach item=element from=$row}
+				<td align="left"/> {$element}</td>
+				{/foreach}
+			</tr>
+			{/if}
 		{/foreach}
 	{else}
 		<div class="componentName">{$APP.LBL_NO_DATA}</div>
@@ -139,13 +141,65 @@
 		</tr>
 	</table>
 {elseif $HOME_STUFFTYPE eq "ReportCharts"}
-        <input type=hidden id=more_{$HOME_STUFFID} value="{$DASHDETAILS[$HOME_STUFFID].ReportId}"/>
+	<input type=hidden id=more_{$HOME_STUFFID} value="{$DASHDETAILS[$HOME_STUFFID].ReportId}"/>
 	<table border=0 cellspacing=0 cellpadding=5 width=100%>
 		<tr>
-			<td align="left">{$HOME_STUFF}</td>
+			<td align="left">
+			<canvas id="homechart{$HOME_STUFFID}" style="width:500px;height:250px;margin:auto;padding:10px;"></canvas>
+<script type="text/javascript">
+window.doChart{$HOME_STUFFID} = function(charttype) {ldelim}
+	let stuffchart = document.getElementById('homechart{$HOME_STUFFID}');
+	let stuffcontext = stuffchart.getContext('2d');
+	stuffcontext.clearRect(0, 0, stuffchart.width, stuffchart.height);
+{literal}
+	let chartDataObject = {
+		labels: [{/literal}{foreach item=LABEL name=chartlabels from=$HOME_STUFF.xaxisData}"{$LABEL}"{if not $smarty.foreach.chartlabels.last},{/if}{/foreach}{literal}],
+		datasets: [{
+			data: [{/literal}{foreach item=CVALUE name=chartvalues from=$HOME_STUFF.yaxisData}"{$CVALUE}"{if not $smarty.foreach.chartvalues.last},{/if}{/foreach}{literal}],
+			backgroundColor: [{/literal}{foreach item=CVALUE name=chartvalues from=$HOME_STUFF.yaxisData}getRandomColor(){if not $smarty.foreach.chartvalues.last},{/if}{/foreach}{literal}]
+		}]
+	};
+	window.schart{/literal}{$HOME_STUFFID}{literal} = new Chart(stuffchart,{
+		type: charttype,
+		data: chartDataObject,
+		options: {
+			responsive: true,
+			legend: {
+				position: "right",
+				display: (charttype=='pie'),
+				labels: {
+					fontSize: 11,
+					boxWidth: 18
+				}
+			}
+		}
+	});
+	stuffchart.addEventListener('click',function(evt) {
+		let activePoint = schart{/literal}{$HOME_STUFFID}{literal}.getElementAtEvent(evt);
+		let clickzone = {
+			{/literal}{foreach item=CLICKVALUE key=CLICKINDEX name=clickvalues from=$HOME_STUFF.targetLink}{$CLICKINDEX}:"{$CLICKVALUE}"{if not $smarty.foreach.clickvalues.last},{/if}{/foreach}{literal}
+		};
+		let a = document.createElement("a");
+		a.target = "_blank";
+		a.href = clickzone[activePoint[0]._index];
+		document.body.appendChild(a);
+		a.click();
+	});
+}
+{/literal}
+{if $DASHDETAILS.$HOME_STUFFID.Chart eq 'horizontalbarchart'}
+let charttype = 'horizontalBar';
+{elseif $DASHDETAILS.$HOME_STUFFID.Chart eq 'verticalbarchart'}
+let charttype = 'bar';
+{elseif $DASHDETAILS.$HOME_STUFFID.Chart eq 'piechart'}
+let charttype = 'pie';
+{/if}
+doChart{$HOME_STUFFID}(charttype);
+</script>
+			</td>
 		</tr>
 	</table>
 {/if}
 {if isset($HOME_STUFF.Details) && $HOME_STUFF.Details|@is_array == 'true'}
-<input id='search_qry_{$HOME_STUFFID}' name='search_qry_{$HOME_STUFFID}' type='hidden' value='{$HOME_STUFF.Details.search_qry}' />
+<input id='search_qry_{$HOME_STUFFID}' name='search_qry_{$HOME_STUFFID}' type='hidden' value='{if isset($HOME_STUFF.Details.search_qry)}{$HOME_STUFF.Details.search_qry}{/if}' />
 {/if}

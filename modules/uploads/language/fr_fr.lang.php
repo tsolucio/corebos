@@ -11,12 +11,12 @@
 
 
 $mod_strings = Array(
-		'LBL_ATTACH_FILE' => 'Pièces jointes',
+		'LBL_ATTACH_FILE' => 'Pièce jointe',
 		'LBL_ATTACH' => 'Ajouter',
 		'LBL_CANCEL' => 'Annuler',
-		'LBL_STEP_SELECT_FILE' => 'Etape 1 : sélectionnez un fichier',
+		'LBL_STEP_SELECT_FILE' => 'Étape 1 : sélectionnez un fichier',
 		'LBL_BROWSE_FILES' => 'Cliquez sur le bouton \"Parcourir\" pour sélectionner un fichier',
-		'LBL_DESCRIPTION' => 'Etape 2 : saisissez une description',
+		'LBL_DESCRIPTION' => 'Étape 2 : rédigez une description',
 		'LBL_OPTIONAL' => '(optionnel)',
 );
 

@@ -87,7 +87,6 @@ $mod_strings = array(
 	'LBL_IMPORT_MODULE_NO_DIRECTORY_END' => ' nem létezik vagy írásvédett',
 	'LBL_IMPORT_MODULE_ERROR_NO_UPLOAD' => 'Nem sikerült feltölteni a fájlt, próbáld meg újra',
 	'LBL_IMPORT_MODULE_ERROR_LARGE_FILE' => 'A fájl túl nagy. Max:',
-	'LBL_IMPORT_MODULE_ERROR_LARGE_FILE_END' => 'Bájt. Növeld meg a $upload_maxsize értékét a config.inc.php fájlban.',
 	'LBL_TRY_AGAIN' => 'Próbáld újra',
 	'ERR_MULTIPLE' => 'Több oszlopot is ugyanazzal a mezőnévvel kötöttél össze.',
 	'ERR_MISSING_REQUIRED_FIELDS' => 'Kötelező mező hiányzik:',
@@ -233,5 +232,6 @@ $mod_strings = array(
 	'LBL_IMPORT_CHANGE_UPLOAD_SIZE' => ') may be incremented in your PHP configuration',
 	'LBL_IMPORT_DIRECTORY_NOT_WRITABLE' => 'Import Directory is not writable',
 	'LBL_IMPORT_FILE_COPY_FAILED' => 'Error copying file to import. Check file system permissions',
+	'ImportInfo' => 'This extension adds import functionality to the application and is accessed via the icon on each module not directly, so you can eliminate it from the menu.',
 );
 ?>

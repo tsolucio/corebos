@@ -12,10 +12,8 @@ require_once("data/Tracker.php");
 require_once('include/logging.php');
 require_once('include/utils/utils.php');
 require_once('modules/Reports/Reports.php');
-global $app_strings, $app_list_strings, $mod_strings;
+global $app_strings, $mod_strings;
 $current_module_strings = return_module_language($current_language, 'Reports');
-
-global $list_max_entries_per_page, $urlPrefix;
 
 $log = LoggerManager::getLogger('report_type');
 
@@ -66,7 +64,7 @@ if(isset($_REQUEST["record"]) && $_REQUEST['record']!='')
  */
 function getPrimaryColumnsHTML($module)
 {
-	global $ogReport, $app_list_strings, $app_strings, $current_language;
+	global $ogReport, $current_language;
 	$id_added=false;
 	$mod_strings = return_module_language($current_language,$module);
 	$block_listed = array();
@@ -102,7 +100,7 @@ function getPrimaryColumnsHTML($module)
  */
 function getSecondaryColumnsHTML($module)
 {
-	global $ogReport, $app_list_strings, $app_strings, $current_language;
+	global $ogReport, $current_language;
 
 	if($module != "")
 	{
@@ -112,12 +110,13 @@ function getSecondaryColumnsHTML($module)
 			$mod_strings = return_module_language($current_language,$secmodule[$i]);
 			if(vtlib_isModuleActive($secmodule[$i])){
 				$block_listed = array();
+				$i18nModule = getTranslatedString($secmodule[$i],$secmodule[$i]);
 				foreach($ogReport->module_list[$secmodule[$i]] as $key=>$value)
 				{
 					if(isset($ogReport->sec_module_columnslist[$secmodule[$i]][$value]) && !$block_listed[$value])
 					{
 						$block_listed[$value] = true;
-						$shtml .= "<optgroup label=\"".$app_list_strings['moduleList'][$secmodule[$i]]." ".getTranslatedString($value)."\" class=\"select\" style=\"border:none\">";
+						$shtml .= "<optgroup label=\"".$i18nModule." ".getTranslatedString($value)."\" class=\"select\" style=\"border:none\">";
 						foreach($ogReport->sec_module_columnslist[$secmodule[$i]][$value] as $field=>$fieldlabel)
 						{
 							if(isset($mod_strings[$fieldlabel]))

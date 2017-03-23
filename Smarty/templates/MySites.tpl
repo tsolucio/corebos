@@ -15,30 +15,28 @@
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
 <tr>
 	<td valign=top align=right width=8><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-	<td class="showPanelBg" valign="top" width="100%" align=center >	
+	<td class="showPanelBg" valign="top" width="100%" align=center >
 
 	<!-- MySites UI Starts -->
 	<br>
 	<table border="0" cellpadding="0" cellspacing="0" width="98%" align="center" class="mailClient mailClientBg">
 	<tbody>
-	
+
 	<tr>
 	<td colspan="4">
-	
-	
+
 	<!-- BOOKMARK PAGE -->
 	<div id="portalcont" style="padding:0px 10px 10px 10px; overflow: hidden; width: 98%;">
 		{include file="MySitesContents.tpl"}
 	</div>
-	
-	
+
 	</td>
 	</tr>
 	</tbody></table>
 	<br><br>
 	<div id="editportal_cont" style="z-index:100001;position:absolute;width:510px;"></div>
-	
+
 	</td>
-	<td valign=top align=right width=8><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>			
+	<td valign=top align=right width=8><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
 	</tr>
 	</table>

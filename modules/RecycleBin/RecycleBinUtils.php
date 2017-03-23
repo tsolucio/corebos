@@ -18,7 +18,7 @@ function getValuesforRBColumns($column_name,$search_string) {
 	global $rb_column_array,$rb_table_col_array;
 	$sql = "select concat(tablename,':',fieldname) as tablename from vtiger_entityname where entityidfield=? or entityidcolumn=?";
 	$result = $adb->pquery($sql, array($column_name));
-	$tablename  = $adb->query_result($result,0,'tablename');
+	$tablename = $adb->query_result($result,0,'tablename');
 	$num_rows = $adb->num_rows($result);
 	if($num_rows >= 1) {
 		$val = $tablename;
@@ -28,7 +28,6 @@ function getValuesforRBColumns($column_name,$search_string) {
 			$main_tablename = explode(':',$explode_column[0]);
 			$where=" $explode_column[0] like '". formatForSqlLike($search_string) ."' or $main_tablename[0]$main_tablename[1] like '".formatForSqlLike($search_string) ."'";
 		}
-	
 	}
 	$log->debug("Exiting getValuesforRBColumns method ...");
 	return $where;
@@ -36,7 +35,7 @@ function getValuesforRBColumns($column_name,$search_string) {
 function RBSearch($module) {
 	global $log;
 	$log->debug("Entering RBSearch(".$module.") method ...");
-	$url_string='';	
+	$url_string='';
 	if(isset($_REQUEST['search_field']) && $_REQUEST['search_field'] !="") {
 		$search_column=vtlib_purify($_REQUEST['search_field']);
 	}
@@ -61,17 +60,15 @@ function RBSearch($module) {
 
 function basicRBsearch($module,$search_field,$search_string)
 {
-	 global $log;
-         $log->debug("Entering basicRBsearch(".$module.",".$search_field.",".$search_string.") method ...");
-	global $adb;
-	global $rb_column_array,$rb_table_col_array;
+	global $log, $adb, $rb_column_array,$rb_table_col_array;
+	$log->debug("Entering basicRBsearch(".$module.",".$search_field.",".$search_string.") method ...");
 	if($search_field =='crmid')
 	{
 		$column_name='crmid';
 		$table_name='vtiger_entity';
-		$where="$table_name.$column_name like '".formatForSqlLike($search_string)."'";	
+		$where="$table_name.$column_name like '".formatForSqlLike($search_string)."'";
 	}else
-	{	
+	{
 		//Check added for tickets by accounts/contacts in dashboard
 		$search_field_first = $search_field;
 		if($module=='HelpDesk' && ($search_field == 'contactid' || $search_field == 'account_id'))
@@ -79,7 +76,7 @@ function basicRBsearch($module,$search_field,$search_string)
 			$search_field = "parent_id";
 		}
 		//Check ends
-		
+
 		$tabid = getTabid($module);
 		$qry="select vtiger_field.columnname,tablename from vtiger_field where tabid=? and (fieldname=? or columnname=?) and vtiger_field.presence in (0,2)";
 		$result = $adb->pquery($qry, array($tabid,$search_field,$search_field));
@@ -89,8 +86,7 @@ function basicRBsearch($module,$search_field,$search_string)
 			$column_name=$adb->query_result($result,0,'columnname');
 
 			//Check added for tickets by accounts/contacts in dashboard
-			if ($column_name == 'parent_id')
-		        {
+			if ($column_name == 'parent_id') {
 				if ($search_field_first	== 'account_id') $search_field_first = 'accountid';
 				if ($search_field_first	== 'contactid') $search_field_first = 'contact_id';
 				$column_name = $search_field_first;
@@ -125,13 +121,13 @@ function basicRBsearch($module,$search_field,$search_string)
 			{
 				$where="$table_name.$column_name like '%".$search_string."%' or vtiger_activity.eventstatus like '".formatForSqlLike($search_string)."'";
 			}
-			$sql = "select concat(tablename,':',fieldname) as tablename from vtiger_entityname where entityidfield='$column_name' or entityidcolumn='$column_name'"; 
+			$sql = "select concat(tablename,':',fieldname) as tablename from vtiger_entityname where entityidfield='$column_name' or entityidcolumn='$column_name'";
 			$no_of_rows = $adb->num_rows($adb->query($sql));
 			if($no_of_rows >= 1)
 			{
 				$where = getValuesforRBColumns($column_name,$search_string);
 			}
-			else if(($column_name != "status" || $table_name !='vtiger_activity')  && ($table_name != 'vtiger_crmentity' || $column_name != 'smownerid' ) && ($table_name != 'vtiger_pricebook' || $column_name != 'active') )
+			else if(($column_name != "status" || $table_name !='vtiger_activity') && ($table_name != 'vtiger_crmentity' || $column_name != 'smownerid' ) && ($table_name != 'vtiger_pricebook' || $column_name != 'active') )
 			{
 				$tableName=explode(":",$table_name);
 				$where="$table_name.$column_name like '".formatForSqlLike($search_string) ."'";
@@ -146,18 +142,16 @@ function basicRBsearch($module,$search_field,$search_string)
 	}
 	if($_REQUEST['type'] == 'alpbt')
 	{
-	        $where = str_replace_once("%", "", $where);
+		$where = str_replace_once("%", "", $where);
 	}
 	$log->debug("Exiting basicRBsearch method ...");
 	return $where;
 
 }
 function getSelectedRecordIds($input,$module,$idstring,$excludedRecords){
-
-    global $current_user, $adb;
+	global $current_user, $adb;
 
 	if($idstring=='all'){
-
 		$queryGenerator = new QueryGenerator($module, $current_user);
 
 		if($input['query'] == 'true') {
@@ -176,10 +170,9 @@ function getSelectedRecordIds($input,$module,$idstring,$excludedRecords){
 
 		$excludedRecords=explode(';',$excludedRecords);
 		$storearray=array_merge(array_diff($storearray,$excludedRecords));
-        
-    } else {
-        $storearray = explode(";",$idstring);
-    }
-    return $storearray;
+	} else {
+		$storearray = explode(";",$idstring);
+	}
+	return $storearray;
 }
 ?>

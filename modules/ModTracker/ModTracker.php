@@ -20,6 +20,9 @@ class ModTracker {
 	public static $CREATED = '2';
 	public static $RESTORED = '3';
 
+	// cache variable
+	public static $__cache_modtracker = array();
+
 	/* Entry point will invoke this function no need to act on */
 	function track_view($user_id, $current_module,$id='') {}
 
@@ -86,9 +89,6 @@ class ModTracker {
 		}
 		return $modules;
 	}
-
-	// cache variable
-	static $__cache_modtracker = array();
 
 	/**
 	 *Invoked to disable tracking for the module.
@@ -216,12 +216,10 @@ class ModTracker {
 	 * @param Integer $tabid
 	 */
 	static function getVisibilityForModule($tabid){
-		for($i=0;$i<count(self::$__cache_modtracker);$i++) {
-			if(isset(self::$__cache_modtracker[$tabid])) {
-				return $__cache_modtracker[$i]['visible'];
-			}
-			return false;
+		if(isset(self::$__cache_modtracker[$tabid])) {
+			return self::$__cache_modtracker[$tabid]['visible'];
 		}
+		return false;
 	}
 
 	/**

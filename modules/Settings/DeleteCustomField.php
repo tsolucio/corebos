@@ -91,7 +91,7 @@ if($uitype == 15)
 	$deltablequery_seq = 'drop table vtiger_'.$adb->sql_escape_string($colName).'_seq';
 	$adb->pquery($deltablequery_seq, array());
 	//Remove picklist dependencies
-	$adb->query("DELETE FROM vtiger_picklist_dependency WHERE vtiger_picklist_dependency.targetfield = '".$colName."'");
+	$adb->pquery('DELETE FROM vtiger_picklist_dependency WHERE vtiger_picklist_dependency.targetfield = ?',array($colName));
 }
 
 header("Location:index.php?module=Settings&action=CustomFieldList&fld_module=".$fld_module."&parenttab=Settings");

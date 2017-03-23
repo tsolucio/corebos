@@ -8,7 +8,6 @@
  ********************************************************************************/
 -->
 <link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
-{$DATE_JS}
 <script type="text/javascript" src="jscalendar/calendar.js"></script>
 <script type="text/javascript" src="jscalendar/lang/calendar-{$APP.LBL_JSCALENDAR_LANG}.js"></script>
 <script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
@@ -108,22 +107,22 @@ function mandatoryCheck()
 					<td class="dvtCellInfo" width="10%" align="right"><span class="style1">*</span>{$MOD.LBL_VIEW_NAME}
 					</td>
 					<td class="dvtCellInfo" width="30%">
-						<input class="detailedViewTextBox" type="text" name='viewName' value="{$VIEWNAME}" onfocus="this.className='detailedViewTextBoxOn'" onblur="this.className='detailedViewTextBox'" size="40"/>
-		 			</td>
-		 			<td class="dvtCellInfo" width="20%">
-		  			{if $CHECKED eq 'checked'}
-		      			<input type="checkbox" name="setDefault" value="1" checked/>{$MOD.LBL_SETDEFAULT}
-		  			{else}
-		      			<input type="checkbox" name="setDefault" value="0" />{$MOD.LBL_SETDEFAULT}
-		  			{/if}
-		 			</td>
-		 			<td class="dvtCellInfo" width="20%">
-		  			{if $MCHECKED eq 'checked'}
-		      			<input type="checkbox" name="setMetrics" value="1" checked/>{$MOD.LBL_LIST_IN_METRICS}
-		  			{else}
-		      			<input type="checkbox" name="setMetrics" value="0" />{$MOD.LBL_LIST_IN_METRICS}
-		  			{/if}
-		 			</td>
+						<input class="detailedViewTextBox" type="text" name='viewName' value="{if isset($VIEWNAME)}{$VIEWNAME}{/if}" onfocus="this.className='detailedViewTextBoxOn'" onblur="this.className='detailedViewTextBox'" size="40"/>
+					</td>
+					<td class="dvtCellInfo" width="20%">
+					{if $CHECKED eq 'checked'}
+						<input type="checkbox" name="setDefault" value="1" checked/>{$MOD.LBL_SETDEFAULT}
+					{else}
+						<input type="checkbox" name="setDefault" value="0" />{$MOD.LBL_SETDEFAULT}
+					{/if}
+					</td>
+					<td class="dvtCellInfo" width="20%">
+					{if $MCHECKED eq 'checked'}
+						<input type="checkbox" name="setMetrics" value="1" checked/>{$MOD.LBL_LIST_IN_METRICS}
+					{else}
+						<input type="checkbox" name="setMetrics" value="0" />{$MOD.LBL_LIST_IN_METRICS}
+					{/if}
+					</td>
 					<td class="dvtCellInfo" width="20%">
 					{if $STATUS eq '' || $STATUS eq 1}
 						<input type="checkbox" name="setStatus" value="1"/>
@@ -154,29 +153,11 @@ function mandatoryCheck()
 			<select id="column{$cvcolumn}" name ="column{$cvcolumn}" onChange="checkDuplicate();" class="small">
 				<option value="">{$MOD.LBL_NONE}</option>
 				{foreach item=filteroption key=label from=$CHOOSECOLUMN}
-					<optgroup label="{$label}" class=\"select\" style=\"border:none\">
+					<optgroup label="{$label}" class="select" style="border:none">
 					{foreach item=text from=$filteroption}
 						{assign var=option_values value=$text.text}
-						<option {if $SELECTEDCOLUMN[$cvselected] eq $text.value}selected{/if} value={$text.value}>
-						{if $MOD.$option_values neq ''}
-							{if $DATATYPE.0.$option_values eq 'M'}
-								{$MOD.$option_values}   {$APP.LBL_REQUIRED_SYMBOL}
-							{else}
-								{$MOD.$option_values}
-							{/if}
-						{elseif $APP.$option_values neq ''}
-							{if $DATATYPE.0.$option_values eq 'M'}
-								{$APP.$option_values}   {$APP.LBL_REQUIRED_SYMBOL}
-							{else}
-								{$APP.$option_values}
-							{/if}
-						{else}
-							{if $DATATYPE.0.$option_values eq 'M'}
-								{$option_values}    {$APP.LBL_REQUIRED_SYMBOL}
-							{else}
-								{$option_values}
-							{/if}
-						{/if}
+						<option {if isset($SELECTEDCOLUMN[$cvselected]) && $SELECTEDCOLUMN[$cvselected] eq $text.value}selected{/if} value="{$text.value}">
+						{$text.text}{if isset($DATATYPE.0.$option_values) && $DATATYPE.0.$option_values eq 'M'}   {$APP.LBL_REQUIRED_SYMBOL}{/if}
 						</option>
 					{/foreach}
 				{/foreach}
@@ -232,9 +213,9 @@ function mandatoryCheck()
 			     <td width="25%" class="dvtCellInfo">
 				<select name="stdDateFilterField" class="select small" onchange="standardFilterDisplay();">
 				{foreach item=stdfilter from=$STDFILTERCOLUMNS}
-					<option {$stdfilter.selected} value={$stdfilter.value}>{$stdfilter.text}</option>	
+					<option {$stdfilter.selected} value={$stdfilter.value}>{$stdfilter.text}</option>
 				{/foreach}
-                                </select>
+				</select>
 			  </tr>
 			  <tr>
 			     <td align="right" class="dvtCellLabel">{$MOD.Select_Duration} :</td>
@@ -255,8 +236,8 @@ function mandatoryCheck()
 			     {else}
 				{assign var=img_style value="visibility:hidden"}
 				{assign var=msg_style value="readonly"}
-			     {/if}	
-			     <input name="startdate" id="jscal_field_date_start" type="text" size="10" class="textField small" value="{$STARTDATE}" {$msg_style}>
+			     {/if}
+			     <input name="startdate" id="jscal_field_date_start" type="text" size="10" class="textField small" value="{if isset($STARTDATE)}{$STARTDATE}{/if}" {$msg_style}>
 			     <img src="{$IMAGE_PATH}btnL3Calendar.gif" id="jscal_trigger_date_start" style={$img_style}>
 			     <font size=1><em old="(yyyy-mm-dd)">({$DATEFORMAT})</em></font>
 			     <script type="text/javascript">
@@ -268,7 +249,7 @@ function mandatoryCheck()
 			  <tr>
 			     <td align="right" class="dvtCellLabel">{$MOD.End_Date} :</td> 
   			     <td width="25%" align=left class="dvtCellInfo">
-			     <input name="enddate" {$msg_style} id="jscal_field_date_end" type="text" size="10" class="textField small" value="{$ENDDATE}">
+			     <input name="enddate" {$msg_style} id="jscal_field_date_end" type="text" size="10" class="textField small" value="{if isset($ENDDATE)}{$ENDDATE}{/if}">
 			     <img src="{$IMAGE_PATH}btnL3Calendar.gif" id="jscal_trigger_date_end" style={$img_style}>
 			     <font size=1><em old="(yyyy-mm-dd)">({$DATEFORMAT})</em></font>
 			     <script type="text/javascript">
@@ -304,17 +285,17 @@ function mandatoryCheck()
   <tr><td colspan="4">&nbsp;</td></tr>
   <tr><td colspan="4" style="padding: 5px;">
 	<div align="center">
-	  <input title="{$APP.LBL_SAVE_BUTTON_LABEL} [Alt+S]" accesskey="S" class="crmbutton small save"  name="button2" value="{$APP.LBL_SAVE_BUTTON_LABEL}" type="submit" onClick="return validateCV();"/>
-	  <input title="{$APP.LBL_NEW_BUTTON_TITLE} [Alt+N]" accesskey="N" class="crmbutton small create" name="newsave" value="{$APP.LBL_NEW_BUTTON_LABEL}" type="submit" onClick="return validateCV();"/>
-	  <input title="{$APP.LBL_CANCEL_BUTTON_LABEL} [Alt+X]" accesskey="X" class="crmbutton small cancel" name="button2" onclick='window.history.back()' value="{$APP.LBL_CANCEL_BUTTON_LABEL}" type="button" />
+	  <input title="{$APP.LBL_SAVE_BUTTON_LABEL}" accesskey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save"  name="button2" value="{$APP.LBL_SAVE_BUTTON_LABEL}" type="submit" onClick="return validateCV();"/>
+	  <input title="{$APP.LBL_NEW_BUTTON_TITLE}" accesskey="{$APP.LBL_NEW_BUTTON_KEY}" class="crmbutton small create" name="newsave" value="{$APP.LBL_NEW_BUTTON_LABEL}" type="submit" onClick="return validateCV();"/>
+	  <input title="{$APP.LBL_CANCEL_BUTTON_LABEL}" accesskey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" name="button2" onclick='window.history.back()' value="{$APP.LBL_CANCEL_BUTTON_LABEL}" type="button" />
 	</div>
   </td></tr>
   <tr><td colspan="4">&nbsp;</td></tr>
 </table>
 </table>
 </table>
-{$STDFILTER_JAVASCRIPT}
-{$JAVASCRIPT}
+{if isset($STDFILTER_JAVASCRIPT)}{$STDFILTER_JAVASCRIPT}{/if}
+{if isset($JAVASCRIPT)}{$JAVASCRIPT}{/if}
 <!-- to show the mandatory fields while creating new customview -->
 <script type="text/javascript">
 var k;

@@ -7,14 +7,11 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('include/utils/UserInfoUtil.php');
 require_once('include/utils/utils.php');
 
 global $mod_strings;
 global $app_strings;
-global $app_list_strings;
-
 global $adb;
 global $theme;
 $theme_path="themes/".$theme."/";

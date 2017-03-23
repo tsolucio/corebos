@@ -13,147 +13,6 @@
 <script type="text/javascript" src="include/js/general.js"></script>
 <script type="text/javascript" src="include/js/ListView.js"></script>
 <script type="text/javascript" src="include/js/search.js"></script>
-<script type="text/javascript">
-var typeofdata = new Array();
-typeofdata['E'] = ['e','n','s','ew','c','k'];
-typeofdata['V'] = ['e','n','s','ew','c','k'];
-typeofdata['N'] = ['e','n','l','g','m','h'];
-typeofdata['NN'] = ['e','n','l','g','m','h'];
-typeofdata['T'] = ['e','n','l','g','m','h'];
-typeofdata['I'] = ['e','n','l','g','m','h'];
-typeofdata['C'] = ['e','n'];
-typeofdata['DT'] = ['e','n','l','g','m','h'];
-typeofdata['D'] = ['e','n','l','g','m','h'];
-var fLabels = new Array();
-fLabels['e'] = "{$APP.is}";
-fLabels['n'] = "{$APP.is_not}";
-fLabels['s'] = "{$APP.begins_with}";
-fLabels['ew'] = "{$APP.ends_with}";
-fLabels['c'] = "{$APP.contains}";
-fLabels['k'] = "{$APP.does_not_contains}";
-fLabels['l'] = "{$APP.less_than}";
-fLabels['g'] = "{$APP.greater_than}";
-fLabels['m'] = "{$APP.less_or_equal}";
-fLabels['h'] = "{$APP.greater_or_equal}";
-var noneLabel;
-{literal}
-function trimfValues(value){
-	var string_array;
-	string_array = value.split(":");
-	return string_array[4];
-}
-
-function updatefOptions(sel, opSelName){
-    var selObj = document.getElementById(opSelName);
-    var fieldtype = null ;
-
-    var currOption = selObj.options[selObj.selectedIndex];
-    var currField = sel.options[sel.selectedIndex];
-    
-    var fld = currField.value.split(":");
-    var tod = fld[4];
-    if(currField.value != null && currField.value.length != 0)
-    {
-    	fieldtype = trimfValues(currField.value);
-    	fieldtype = fieldtype.replace(/\\'/g,'');
-    	ops = typeofdata[fieldtype];
-    	var off = 0;
-    	if(ops != null)	{
-    
-    		var nMaxVal = selObj.length;
-    		for(nLoop = 0; nLoop < nMaxVal; nLoop++){
-    			selObj.remove(0);
-    		}                                     
-    		for (var i = 0; i < ops.length; i++){
-    			var label = fLabels[ops[i]];
-    			if (label == null) continue;
-    			var option = new Option (fLabels[ops[i]], ops[i]);
-    			selObj.options[i] = option;
-    			if (currOption != null && currOption.value == option.value){
-    				option.selected = true;
-    			}
-    		}
-    	}
-    } else {
-    	var nMaxVal = selObj.length;
-    	for(nLoop = 0; nLoop < nMaxVal; nLoop++){
-    		selObj.remove(0);
-    	}
-    	selObj.options[0] = new Option ('None', '');
-    	if (currField.value == ''){
-    		selObj.options[0].selected = true;
-    	}
-    }
-}
-{/literal}
-
-function checkgroup()
-{ldelim}
-  if(document.change_ownerform_name.user_lead_owner[1].checked) {ldelim}
-          document.change_ownerform_name.lead_group_owner.style.display = "block";
-          document.change_ownerform_name.lead_owner.style.display = "none";
-  {rdelim} else {ldelim}
-          document.change_ownerform_name.lead_owner.style.display = "block";
-          document.change_ownerform_name.lead_group_owner.style.display = "none";
-  {rdelim} 
-{rdelim}
-
-function callSearch(searchtype) {ldelim}
-	for(i=1;i<=26;i++) {ldelim}
-        	var data_td_id = 'alpha_'+ eval(i);
-        	getObj(data_td_id).className = 'searchAlph';
-    {rdelim}
-   	gPopupAlphaSearchUrl = '';
-	search_fld_val= document.basicSearch.search_field[document.basicSearch.search_field.selectedIndex].value;
-	search_txt_val=encodeURIComponent(document.basicSearch.search_text.value);
-        var urlstring = '';
-        if(searchtype == 'Basic') {ldelim}
-                urlstring = 'search_field='+search_fld_val+'&searchtype=BasicSearch&search_text='+search_txt_val+'&';
-        {rdelim} else if(searchtype == 'Advanced') {ldelim}
-        		checkAdvancedFilter();
-				var advft_criteria = document.getElementById('advft_criteria').value;
-				var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
-				urlstring += '&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups+'&';
-				urlstring += 'searchtype=advance&'
-        {rdelim}
-    document.getElementById("status").style.display="inline";
-	jQuery.ajax({ldelim}
-			method:"POST",
-			url:'index.php?'+urlstring +'query=true&file=ListView&module={$MODULE}&action={$MODULE}Ajax&ajax=true&search=true'
-	{rdelim}).done(function(response) {ldelim}
-				document.getElementById("status").style.display="none";
-				result = response.split('&#&#&#');
-				document.getElementById("ListViewContents").innerHTML= result[2];
-				if(result[1] != '')
-						alert(result[1]);
-				document.getElementById('basicsearchcolumns').innerHTML = '';
-		{rdelim}
-		);
-	return false;
-{rdelim}
-
-function alphabetic(module,url,dataid) {ldelim}
-        for(i=1;i<=26;i++)
-        {ldelim}
-                var data_td_id = 'alpha_'+ eval(i);
-                getObj(data_td_id).className = 'searchAlph';
-        {rdelim}
-        getObj(dataid).className = 'searchAlphselected';
-	document.getElementById("status").style.display="inline";
-	jQuery.ajax({ldelim}
-			method:"POST",
-			url:'index.php?module='+module+'&action='+module+'Ajax&file=ListView&ajax=true&search=true&'+url
-	{rdelim}).done(function(response) {ldelim}
-				document.getElementById("status").style.display="none";
-				result = response.split('&#&#&#');
-				document.getElementById("ListViewContents").innerHTML= result[2];
-				if(result[1] != '')
-					alert(result[1]);
-				document.getElementById('basicsearchcolumns').innerHTML = '';
-		{rdelim}
-	);
-{rdelim}
-</script>
 		{include file='Buttons_List.tpl'}
                                 <div id="searchingUI" style="display:none;">
                                         <table border=0 cellspacing=0 cellpadding=0 width=100%>
@@ -284,7 +143,7 @@ function alphabetic(module,url,dataid) {ldelim}
      <input name="change_status" type="hidden">
 	 <input name="numOfRows" id="numOfRows" type="hidden" value="{$NUMOFROWS}">
 	 <input name="excludedRecords" type="hidden" id="excludedRecords" value="{$excludedRecords}">
-     <input name="allids" type="hidden" value="{$ALLIDS}">
+     <input name="allids" id="allids" type="hidden" value="{if isset($ALLIDS)}{$ALLIDS}{/if}">
      <input name="selectedboxes" id="selectedboxes" type="hidden" value="{$SELECTEDIDS}">
      <input name="allselectedboxes" id="allselectedboxes" type="hidden" value="{$ALLSELECTEDIDS}">
      <input name="current_page_boxes" id="current_page_boxes" type="hidden" value="{$CURRENT_PAGE_BOXES}">
@@ -545,7 +404,6 @@ function alphabetic(module,url,dataid) {ldelim}
 	    </table>
 
    </form>
-{$SELECT_SCRIPT}
 	</div>
 	 </td></tr></table>
 	 </td></tr></table>

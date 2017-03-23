@@ -8,8 +8,9 @@
 * All Rights Reserved.
 ********************************************************************************/
 -->
-*} <script type="text/javascript" src="include/js/smoothscroll.js"></script>
-<script type="text/javascript" src="include/js/menu.js"></script>
+*}
+<script type="text/javascript" src="include/js/smoothscroll.js"></script>
+<script type="text/javascript" src="modules/SMSNotifier/SMSConfigServer.js"></script>
 {literal}
 <style>
 	DIV.fixedLay {
@@ -22,16 +23,6 @@
 		display: block;
 	}
 </style>
-{/literal}
-{literal}
-<!--[if lte IE 6]>
-<STYLE type=text/css>
-DIV.fixedLay {
-POSITION: absolute;
-}
-</STYLE>
-<![endif]-->
-
 {/literal}
 <br>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
@@ -58,7 +49,7 @@ POSITION: absolute;
 			<br/>
 			<table width="100%" border="0" cellpadding="5" cellspacing="0" class="tableHeading">
 				<tr>
-					<td style="padding-left:5px;" class="big">{$MOD.SMS_SERVER_CONFIGURATION}</td>
+					<td style="padding-left:5px;" class="big">{$CMOD.SERVER_CONFIGURATION_DESCRIPTION}</td>
 					<td valign=top class="small" align="right">
 					<input id="_smsserver_add_button_" type="button" class="small create" value="{$CMOD.LBL_ADDNEW}" onclick="_SMSConfigServerFetchEdit('');fnvshobj(this,'editdiv');">
 					</td>
@@ -95,81 +86,3 @@ POSITION: absolute;
 <form method="POST" action="javascript:void(0);">
 	<div id="editdiv" class="fixedlay" style="display:none;position:absolute;width:450px;"></div>
 </form>
-
-{literal}
-<script type="text/javascript">
-	function _SMSCongiServerShowReqParams(selectBox) {
-		var providers = selectBox.options;
-		for (var index = 0; index < providers.length; ++index) {
-			var provideropt = providers[index];
-
-			if (document.getElementById('paramrows_' + provideropt.value)) {
-				if (provideropt.selected) {
-					document.getElementById('paramrows_' + provideropt.value).style.display = "block";
-				} else {
-					document.getElementById('paramrows_' + provideropt.value).style.display = "none";
-				}
-			}
-		}
-	}
-
-	function _SMSConfigServerSaveForm(form) {
-
-		if (form.smsserver_provider.value == '') {
-			form.smsserver_provider.style.background = '#FFF4BF';
-			return false;
-		} else {
-			form.smsserver_provider.style.background = '#FFFFFF';
-		}
-
-		if (form.smsserver_username.value == '') {
-			form.smsserver_username.className = 'detailedViewTextBoxOn';
-			form.smsserver_username.focus();
-			return false;
-		}
-
-		if (form.smsserver_password.value == '') {
-			form.smsserver_password.className = 'detailedViewTextBoxOn';
-			form.smsserver_password.focus();
-			return false;
-		}
-
-		document.getElementById("editdiv").style.display = "none";
-		var frmvalues = jQuery(form).serialize();
-
-		document.getElementById("status").style.display = "inline";
-		jQuery.ajax({
-			method:"POST",
-			url:'index.php?action=SMSNotifierAjax&module=SMSNotifier&file=SMSConfigServer&mode=Save&' + frmvalues
-		}).done(function(response) {
-			document.getElementById("status").style.display = "none";
-			document.getElementById("_smsservers_").innerHTML = response;
-		});
-	}
-
-	function _SMSConfigServerDelete(id) {
-		document.getElementById("editdiv").style.display = "none";
-		document.getElementById("status").style.display = "inline";
-		jQuery.ajax({
-			method:"POST",
-			url:'index.php?action=SMSNotifierAjax&module=SMSNotifier&file=SMSConfigServer&ajax=true&mode=Delete&record=' + id
-		}).done(function(response) {
-			document.getElementById("status").style.display = "none";
-			document.getElementById("_smsservers_").innerHTML = response;
-		});
-	}
-
-	function _SMSConfigServerFetchEdit(id) {
-		document.getElementById("status").style.display = "inline";
-		jQuery.ajax({
-			method:"POST",
-			url:'index.php?action=SMSNotifierAjax&module=SMSNotifier&file=SMSConfigServer&ajax=true&mode=Edit&record=' + id
-		}).done(function(response) {
-			document.getElementById("status").style.display = "none";
-			document.getElementById("editdiv").innerHTML = response;
-			document.getElementById("editdiv").style.display = "block";
-		});
-	}
-
-</script>
-{/literal}

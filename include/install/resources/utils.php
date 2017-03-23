@@ -28,9 +28,7 @@ class Installation_Utils {
 
 	static function getDbOptions() {
 		$dbOptions = array();
-		if(function_exists('mysql_connect')) {
-			$dbOptions['mysql'] = 'MySQL';
-		}
+		$dbOptions['mysqli'] = 'MySQL';
 		return $dbOptions;
 	}
 
@@ -49,7 +47,7 @@ class Installation_Utils {
 
 		//Checking for database connection parameters
 		if($db_type) {
-			$conn = &NewADOConnection($db_type);
+			$conn = NewADOConnection($db_type);
 			$db_type_status = true;
 			if(@$conn->Connect($db_hostname,$db_username,$db_password)) {
 				$db_server_status = true;
@@ -59,7 +57,7 @@ class Installation_Utils {
 				}
 				if($create_db) {
 					// drop the current database if it exists
-					$dropdb_conn = &NewADOConnection($db_type);
+					$dropdb_conn = NewADOConnection($db_type);
 					if(@$dropdb_conn->Connect($db_hostname, $root_user, $root_password, $db_name)) {
 						$query = "drop database ".$db_name;
 						$dropdb_conn->Execute($query);
@@ -68,7 +66,7 @@ class Installation_Utils {
 
 					// create the new database
 					$db_creation_failed = true;
-					$createdb_conn = &NewADOConnection($db_type);
+					$createdb_conn = NewADOConnection($db_type);
 					if(@$createdb_conn->Connect($db_hostname, $root_user, $root_password)) {
 						$query = "create database ".$db_name;
 						if($create_utf8_db == 'true') {
@@ -106,7 +104,7 @@ class Installation_Utils {
 					-  '.$installationStrings['MSG_DB_PARAMETERS_INVALID'].'.<BR>
 					-  '.$installationStrings['MSG_DB_USER_NOT_AUTHORIZED'];
 		}
-		elseif(Common_Install_Wizard_Utils::isMySQL($db_type) && $mysql_server_version < '4.1') {
+		elseif(Common_Install_Wizard_Utils::isMySQL($db_type) && version_compare($mysql_server_version,'4.1','<')) {
 			$error_msg = $mysql_server_version.' -> '.$installationStrings['ERR_INVALID_MYSQL_VERSION'];
 		}
 		elseif($db_creation_failed) {
@@ -188,7 +186,7 @@ class Migration_Utils {
 		require_once('include/DatabaseUtil.php');
 		//Checking for database connection parameters and copying old database into new database
 		if($db_type) {
-			$conn = &NewADOConnection($db_type);
+			$conn = NewADOConnection($db_type);
 			$db_type_status = true;
 			if(@$conn->Connect($db_hostname,$db_username,$db_password)) {
 				$db_server_status = true;
@@ -198,7 +196,7 @@ class Migration_Utils {
 				}
 
 				// test the connection to the old database
-				$olddb_conn = &NewADOConnection($db_type);
+				$olddb_conn = NewADOConnection($db_type);
 				if(@$olddb_conn->Connect($db_hostname, $db_username, $db_password, $old_db_name))
 				{
 					$old_db_exist_status = true;
@@ -237,7 +235,7 @@ class Migration_Utils {
 				}
 
 				// test the connection to the new database
-				$newdb_conn = &NewADOConnection($db_type);
+				$newdb_conn = NewADOConnection($db_type);
 				if(@$newdb_conn->Connect($db_hostname, $db_username, $db_password, $new_db_name))
 				{
 					$new_db_exist_status = true;
@@ -313,10 +311,7 @@ class Migration_Utils {
 
 	static function copyRequiredFiles($sourceDirectory, $destinationDirectory) {
 		if (realpath($sourceDirectory) == realpath($destinationDirectory)) return;
-		@Migration_Utils::getFilesFromFolder($sourceDirectory."user_privileges/",$destinationDirectory."user_privileges/",
-								// Force copy these files - Overwrite if they exist in destination directory.
-								array($sourceDirectory."user_privileges/default_module_view.php")
-							);
+		@Migration_Utils::getFilesFromFolder($sourceDirectory."user_privileges/",$destinationDirectory."user_privileges/");
 		@Migration_Utils::getFilesFromFolder($sourceDirectory."storage/",$destinationDirectory."storage/");
 		@Migration_Utils::getFilesFromFolder($sourceDirectory."test/contact/",$destinationDirectory."test/contact/");
 		@Migration_Utils::getFilesFromFolder($sourceDirectory."test/logo/",$destinationDirectory."test/logo/");
@@ -472,7 +467,7 @@ class Migration_Utils {
 			require_once($source_directory.'user_privileges/CustomInvoiceNo.php');
 		}
 
-		$migrationlog =& LoggerManager::getLogger('MIGRATION');
+		$migrationlog = LoggerManager::getLogger('MIGRATION');
 		if (isset($migrationInfo['old_version'])) $source_version = $migrationInfo['old_version'];
 		if(!isset($source_version) || empty($source_version)) {
 			//If source version is not set then we cannot proceed
@@ -648,7 +643,7 @@ class ConfigFile_Utils {
 	private $currencyName;
 	private $adminEmail;
 
-	function ConfigFile_Utils($configFileParameters) {
+	function __construct($configFileParameters) {
 		if (isset($configFileParameters['root_directory']))
 			$this->rootDirectory = $configFileParameters['root_directory'];
 
@@ -729,9 +724,6 @@ class ConfigFile_Utils {
 					/* replace the application unique key variable */
 					$buffer = str_replace( "_VT_APP_UNIQKEY_", md5((time() + rand(1,9999999)) . $this->rootDirectory) , $buffer);
 
-					/* replace support email variable */
-					$buffer = str_replace( "_USER_SUPPORT_EMAIL_", $this->adminEmail, $buffer);
-
 					fwrite($includeHandle, $buffer);
 				}
 				fclose($includeHandle);
@@ -767,7 +759,6 @@ class Common_Install_Wizard_Utils {
 		'Configuration File' => './config.inc.php',
 		'Tabdata File' => './tabdata.php',
 		'Installation File' => './install.php',
-		'Parent Tabdata File' => './parent_tabdata.php',
 		'Cache Directory' => './cache/',
 		'Image Cache Directory' => './cache/images/',
 		'Import Cache Directory' => './cache/import/',
@@ -776,14 +767,12 @@ class Common_Install_Wizard_Utils {
 		'User Privileges Directory' => './user_privileges/',
 		'Smarty Cache Directory' => './Smarty/cache/',
 		'Smarty Compile Directory' => './Smarty/templates_c/',
-		'Email Templates Directory' => './modules/Emails/templates/',
 		'Modules Directory' => './modules/',
 		'Cron Modules Directory' => './cron/modules/',
 		'Vtlib Test Directory' => './test/vtlib/',
 		'Vtlib Test HTML Directory' => './test/vtlib/HTML',
 		'Backup Directory' => './backup/',
 		'Smarty Modules Directory' => './Smarty/templates/modules/',
-		'Mail Merge Template Directory' => './test/wordtemplatedownload/',
 		'Product Image Directory' => './test/product/',
 		'User Image Directory' => './test/user/',
 		'Contact Image Directory' => './test/contact/',
@@ -970,7 +959,7 @@ class Common_Install_Wizard_Utils {
 	}
 	// Fix for ticket 6605 : detect mysql extension during installation
 	static function check_mysql_extension() {
-		if(function_exists('mysql_connect')) {
+		if(function_exists('mysql_connect') or function_exists('mysqli_connect')) {
 			$mysql_extension = true;
 		}
 		else {
@@ -1266,6 +1255,17 @@ class Common_Install_Wizard_Utils {
 		if(!@rename("install/", $renamefile."install/")) {
 			if (@copy ("install/", $renamefile."install/")) {
 				if(!@unlink("install/")) {
+					$ins_dir_renamed = false;
+				}
+			} else {
+				$ins_dir_renamed = false;
+			}
+		}
+
+		$ins_dir_renamed = true;
+		if(!@rename("modules/Migration/", $renamefile."Migration/")) {
+			if (@copy ("modules/Migration/", $renamefile."Migration/")) {
+				if(!@unlink("modules/Migration/")) {
 					$ins_dir_renamed = false;
 				}
 			} else {

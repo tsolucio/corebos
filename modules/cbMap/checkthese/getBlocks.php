@@ -21,7 +21,6 @@ global $log,$mod_strings, $app_strings,$adb;
 include_once('modules/cbMap/cbMap.php');
 require_once('data/CRMEntity.php');
 require_once('include/utils/utils.php');
-require_once('database/DatabaseConnection.php');
 require_once('include/database/PearDatabase.php');
 require_once('Smarty_setup.php');
 require_once('include/utils/utils.php');

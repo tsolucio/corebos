@@ -328,6 +328,9 @@ var alert_arr = {
 	'ERR_MAP_NAME_ALREADY_EXISTS' : 'O nome do mapeamento já existe. Por favor, dê um nome diferente',
 	'ERR_MAP_NAME_CANNOT_BE_EMPTY' : 'O nome do mapeamento não pode estar vazio',
 	'ERR_FIELDS_MAPPED_MORE_THAN_ONCE' : 'Os seguintes campos estão mapeados mais de um vez. Por favor, verifique o mapeamento.',
+	'LBL_MERGE_SHOULDHAVE_INFO' : 'Selecionar pelo menos um campo para o critério de mesclagem',
+	'MAP_NAME_EXISTS' : 'Este nome de mapa já existe. \n Você quer sobrescrever?',
+	'MAP_DELETED_INFO' : 'Este mapa foi deletado. Você não pode utilizar este map novamente',
 
 	//arror messages for lead conversion
 	'ERR_SELECT_EITHER':'Selecione uma Organização ou Contato para converter o Lead',
@@ -377,11 +380,25 @@ var alert_arr = {
 	'LBL_MORE_THAN_HOURS_LATER' : 'more than hours later',
 	'LBL_EXISTS' : 'exists',
 	'MAXIMUM_OF_TWO_MODULES_PERMITTED' : 'A maximum of two modules is permitted.',
+	'ONLY_ONE_MODULE_PERMITTED_FOR_REPORT' : 'You can select only one related module for this type of report',
+	'MUST_SELECT_ONE_MODULE_FOR_REPORT' : 'You must select one related module for this type of report',
 	'LBL_NEW_CONDITION' : 'Nova Condição',
 	'WF_UPDATE_MAP_ERROR' : '**ERROR**: This task uses a field that does not exist: ',
-	'WF_UPDATE_MAP_ERROR_INFO' : 'The task will load with INCORRECT settings to permit you to fix it. It is NOT CORRECT!!',
+	'WF_UPDATE_MAP_ERROR_INFO' : 'The task will load with INCORRECT settings to permit you to fix it. The values shown are NOT CORRECT!!',
 	'MoveUp' : 'Move Up',
 	'MoveDown' : 'Move Down',
 	'Products' : 'Products',
-	'Services' : 'Services'
+	'Services' : 'Services',
+	'LBL_Hide' : 'Ocultar',
+	'LBL_Show' : 'Mostrar',
+	'ERR_INVALID_DATE_FORMAT' : 'O formato de data deve ser: yyyy-mm-dd',
+	'ERR_INVALID_MONTH' : 'Por favor entre com um mês válido.',
+	'ERR_INVALID_DAY' : 'Por favor entre com um dia válido.',
+	'ERR_INVALID_YEAR' : 'Por favor entre com 4 dígitos válidos para ano.',
+	'ERR_INVALID_DATE' : 'Por favor entre com uma data válida.',
+	'ERR_INVALID_HOUR' : 'Por favor entre com uma hora válida.',
+	'ERR_INVALID_TIME' : 'Por favor entre com horário válido.',
+	'ERR_EMAIL_WITH_NO_SUBJECT' : 'You did not specify a subject for this email. If you would like to provide one, please type it now',
+	'EMAIL_WITH_NO_SUBJECT' : '(no-Subject)',
+        'INTEGERVALS':'Only Integer values are allowed'
 };

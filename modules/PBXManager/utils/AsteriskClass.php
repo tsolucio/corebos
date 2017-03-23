@@ -26,7 +26,7 @@ class Asterisk {
 	 * @param string $server - the asterisk server address
 	 * @param integer $port - the port number where to connect to the asterisk server
 	 */
-	function Asterisk ( $sock, $server, $port){
+	function __construct( $sock, $server, $port) {
 		$this->sock = $sock;
 		$this->address = $server;
 		$this->port = $port;
@@ -49,14 +49,14 @@ class Asterisk {
 	 * this function authenticates the user
 	 * @return - true on success else false
 	 */
-    function authenticateUser(){
+	function authenticateUser(){
 		$request = "Action: Login\r\n".
 					"Username: ".$this->userName."\r\n".
 					"Secret: ".$this->password.
 					"\r\n\r\n";
 		if( !fwrite($this->sock, $request) ) {
-			echo "in function authenticateUser() Socket error.Cannot send.(function: fwrite)";
-			$this->log->debug("in function authenticateUser() Socket error.Cannot send.(function: fwrite)");
+			echo getTranslatedString('ERR_Authenticate','PBXManager');
+			$this->log->debug('in function authenticateUser() Socket error.Cannot send.(function: fwrite)');
 			exit(0);
 		}
 		sleep(1);	//wait for the response to come
@@ -80,8 +80,8 @@ class Asterisk {
 	function transfer($from,$to){
 		$this->log->debug("in function transfer($from, $to)");
 		if(empty($from) || empty($to)) {
-			echo "Not sufficient parameters to create the call";
-			$this->log->debug("Not sufficient parameters to create the call");
+			echo getTranslatedString('ERR_Numbers','PBXManager');
+			$this->log->debug('Not sufficient parameters to create the call');
 			return false;
 		}
 
@@ -126,8 +126,8 @@ class Asterisk {
 					"Callerid: $arr[1]\r\n".
 					"Async: yes\r\n\r\n";
 		if( !fwrite($this->sock, $request) ) {
-			echo "in function createcall() Socket error.Cannot send.(function: fwrite)";
-			$this->log->debug("in function authenticateUser() Socket error.Cannot send.(function: fwrite)");
+			echo getTranslatedString('ERR_Numbers','PBXManager');
+			$this->log->debug('in function createcall() Socket error.Cannot send.(function: fwrite)');
 			exit(0);
 		}
 	}

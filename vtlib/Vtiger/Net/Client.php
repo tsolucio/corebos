@@ -7,7 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
-include 'vtlib/thirdparty/network/Request.php';
+ini_set('include_path',ini_get('include_path'). PATH_SEPARATOR . 'vtlib/thirdparty/network/');
+include 'vtlib/thirdparty/network/Request2.php';
 
 /**
  * Provides API to work with HTTP Connection.
@@ -17,12 +18,15 @@ class Vtiger_Net_Client {
 	var $client;
 	var $url;
 	var $response;
+	var $request_response;
+	var $error = false;
+	var $errormsg = '';
 
 	/**
 	 * Constructor
 	 * @param String URL of the site
 	 * Example: 
-	 * $client = new Vtiger_New_Client('http://www.vtiger.com');
+	 * $client = new Vtiger_Net_Client('http://www.vtiger.com');
 	 */
 	function __construct($url) {
 		$this->setURL($url);
@@ -34,8 +38,16 @@ class Vtiger_Net_Client {
 	 */
 	function setURL($url) {
 		$this->url = $url;
-		$this->client = new HTTP_Request();
+		$this->client = new HTTP_Request2();
 		$this->response = false;
+	}
+
+	/**
+	 * Set the body of the request
+	 * $param String body to be sent
+	 */
+	function setBody($body) {
+		$this->client->setBody($body);
 	}
 
 	/**
@@ -44,7 +56,7 @@ class Vtiger_Net_Client {
 	 */
 	function setHeaders($values) {
 		foreach($values as $key=>$value) {
-			$this->client->addHeader($key, $value);
+			$this->client->setHeader($key, $value);
 		}
 	}
 
@@ -54,20 +66,28 @@ class Vtiger_Net_Client {
 	 * @param Integer timeout value
 	 */
 	function doGet($params=false, $timeout=null) {
-		if($timeout) $this->client->_timeout = $timeout;
+		if($timeout) $this->client->setConfig('connect_timeout', $timeout);
+		$this->client->setConfig('adapter', 'HTTP_Request2_Adapter_Curl');
 		$this->client->setURL($this->url);
-		$this->client->setMethod(HTTP_REQUEST_METHOD_GET);
+		$this->client->setMethod(HTTP_Request2::METHOD_GET);
 
 		if($params) {
-			foreach($params as $key=>$value) 
-				$this->client->addQueryString($key, $value);
+			$url = $this->client->getUrl();
+			foreach($params as $key=>$value) {
+				$url->setQueryVariable($key, $value);
+			}
 		}
-		$this->response = $this->client->sendRequest();
-
-		$content = false;
-		if(!$this->wasError()) {
-			$content = $this->client->getResponseBody();
+		try {
+			$this->request_response = $this->client->send();
+			$content = $this->request_response->getBody();
+			$this->error = false;
+			$this->errormsg = '';
+		} catch (Exception $e) {
+			$content = false;
+			$this->error = true;
+			$this->errormsg = $e->getMessage();
 		}
+		$this->response = !$this->error;
 		$this->disconnect();
 		return $content;
 	}
@@ -78,23 +98,31 @@ class Vtiger_Net_Client {
 	 * @param Integer timeout value
 	 */
 	function doPost($params=false, $timeout=null) {
-		if($timeout) $this->client->_timeout = $timeout;
+		if($timeout) $this->client->setConfig('connect_timeout', $timeout);
+		$this->client->setConfig('adapter', 'HTTP_Request2_Adapter_Curl');
 		$this->client->setURL($this->url);
-		$this->client->setMethod(HTTP_REQUEST_METHOD_POST);
+		$this->client->setMethod(HTTP_Request2::METHOD_POST);
 
 		if($params) {
-			if(is_string($params)) $this->client->addRawPostData($params);
-			else {
-				foreach($params as $key=>$value)
-					$this->client->addPostData($key, $value);
+			if(is_string($params)) {
+				$this->client->setBody($params);
+			} else {
+				foreach($params as $key=>$value) {
+					$this->client->addPostParameter($key, $value);
+				}
 			}
 		}
-		$this->response = $this->client->sendRequest();
-
-		$content = false;
-		if(!$this->wasError()) {
-			$content = $this->client->getResponseBody();
+		try {
+			$this->request_response = $this->client->send();
+			$content = $this->request_response->getBody();
+			$this->error = false;
+			$this->errormsg = '';
+		} catch (Exception $e) {
+			$content = false;
+			$this->error = true;
+			$this->errormsg = $e->getMessage();
 		}
+		$this->response = !$this->error;
 		$this->disconnect();
 
 		return $content;
@@ -104,14 +132,21 @@ class Vtiger_Net_Client {
 	 * Did last request resulted in error?
 	 */
 	function wasError() {
-		return PEAR::isError($this->response);
+		return $this->error;
+	}
+
+	/**
+	 * get last request error message
+	 */
+	function getErrorMessage() {
+		return $this->errormsg;
 	}
 
 	/**
 	 * Disconnect this instance
 	 */
 	function disconnect() {
-		$this->client->disconnect();
+		//$this->client->disconnect();
 	}
 }
 ?>

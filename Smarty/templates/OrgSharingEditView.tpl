@@ -6,16 +6,15 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 <script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <br>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tbody><tr>
-        <td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-        <td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
-        <br>
+	<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
+	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
+	<br>
 
 	<div align=center>
 			{include file="SetMenu.tpl"}
@@ -46,13 +45,12 @@
 				</tr>
 				</table>
 
-	
 				<table cellspacing="0" cellpadding="5" class="listTable" width="100%">
 				{foreach item=elements from=$ORGINFO}	
 				{assign var="MODULELABEL" value=$elements.0|getTranslatedString:$elements.0}
 				<tr>
-                    		    <td width="30%" class="colHeader small" nowrap>{$MODULELABEL}</td>
-				    <td width="70%" class="listTable small">{$elements.2}</td>
+					<td width="30%" class="colHeader small" nowrap>{$MODULELABEL}</td>
+					<td width="70%" class="listTable small">{$elements.2}</td>
 				<tr>
 				{/foreach}
 				</table>
@@ -60,23 +58,17 @@
 	</table>
 
 				<table border=0 cellspacing=0 cellpadding=5 width=100% >
-				<tr><td class="small" ><div align=right><a href="#top">{$MOD.LBL_SCROLL}</a></div></td></tr>				</table>
-		 </td>
-                  </tr>
-				
-                </table>
-			
-			
-			
+				<tr><td class="small" ><div align=right><a href="#top">{$MOD.LBL_SCROLL}</a></div></td></tr>
+				</table>
+		</td>
+	</tr>
+</table>
 			</td>
 			</tr>
 			</table>
 		</td>
 	</tr>
 	</table>
-		
-
-
 </td>
         <td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
    </tr>
@@ -94,9 +86,6 @@ function checkAccessPermission(share_value)
 		document.getElementById('20_perm_combo').options[3].selected=true
 		document.getElementById('22_perm_combo').options[3].selected=true
 		document.getElementById('23_perm_combo').options[3].selected=true
-
 	{rdelim}
 {rdelim}
 </script>
-
-

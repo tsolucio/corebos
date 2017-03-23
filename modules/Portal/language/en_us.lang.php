@@ -6,12 +6,9 @@
 * The Initial Developer of the Original Code is vtiger.
 * Portions created by vtiger are Copyright (C) vtiger.
 * All Rights Reserved.
-*
 ********************************************************************************/
 
-
 $mod_strings = Array(
-// added for 5.0 beta
 'LBL_BOOKMARKED_URL'=>"BookMarked URL's",
 'LBL_MANAGE_BOOKMARKS'=>'Manage Bookmarks',
 'LBL_BOOKMARK_LIST'=>'Bookmark List',
@@ -27,8 +24,7 @@ $mod_strings = Array(
 'LBL_MANAGE_SITES'=>'Manage Sites',
 'LBL_MY_SITES'=>'Sites',
 
-// Added/Updated for vtiger CRM 5.0.4
-//added as an enhancement
 'LBL_SET_DEFAULT_BUTTON'=>'Set As Default',
+'ERR_NOT_PERMITTED_LOAD' => 'The website you have indicated has blocked loading inside another webpage so it has been opened in another tab.',
 );
 ?>

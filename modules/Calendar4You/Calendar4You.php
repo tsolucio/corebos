@@ -357,11 +357,9 @@ public function setgoogleaccessparams($userid){
         global $adb,$current_user;
     
         $Settings = array();
-        
         $Settings["hour_format"] = $current_user->hour_format;
-        
-        $Settings["start_hour"] = round($current_user->start_hour);
-
+        $Settings["start_hour"] = round($current_user->start_hour).":00:00";
+        $Settings["end_hour"] = round(24).":00:00";
         $Settings["dayoftheweek"] = "Sunday";
         $Settings["number_dayoftheweek"] = "0";
         
@@ -568,8 +566,8 @@ public function setgoogleaccessparams($userid){
     
     	return $Data;
     }
-    
-    //Function Call for Related List -- Start
+
+	//Function Call for Related List -- Start
 	/**
 	 * Function to get Activity related Contacts
 	 * @param  integer   $id      - activityid
@@ -580,38 +578,34 @@ public function setgoogleaccessparams($userid){
 		$log->debug("Entering get_contacts(".$id.") method ...");
 		$this_module = $currentModule;
 
-        $related_module = vtlib_getModuleNameById($rel_tab_id);
+		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once("modules/$related_module/$related_module.php");
 		$other = new $related_module();
-        vtlib_setup_modulevars($related_module, $other);		
 		$singular_modname = vtlib_toSingular($related_module);
-		
+
 		$parenttab = getParentTab();
-		
+
 		$returnset = '&return_module='.$this_module.'&return_action=DetailView&activity_mode=Events&return_id='.$id;
-		
+
 		$search_string = '';
 		$button = '';
-				
+
 		if($actions) {
 			if(is_string($actions)) $actions = explode(',', strtoupper($actions));
 			if(in_array('SELECT', $actions) && isPermitted($related_module,4, '') == 'yes') {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module). "' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab$search_string','test','width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module) ."'>&nbsp;";
 			}
 		}
-		
+
 		$query = 'select vtiger_users.user_name,vtiger_contactdetails.accountid,vtiger_contactdetails.contactid, vtiger_contactdetails.firstname,vtiger_contactdetails.lastname, vtiger_contactdetails.department, vtiger_contactdetails.title, vtiger_contactdetails.email, vtiger_contactdetails.phone, vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_crmentity.modifiedtime from vtiger_contactdetails inner join vtiger_cntactivityrel on vtiger_cntactivityrel.contactid=vtiger_contactdetails.contactid inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid where vtiger_cntactivityrel.activityid='.$id.' and vtiger_crmentity.deleted=0';
-				
 		$return_value = GetRelatedList($this_module, $related_module, $other, $query, $button, $returnset); 
-		
 		if($return_value == null) $return_value = Array();
 		$return_value['CUSTOM_BUTTON'] = $button;
-		
 		$log->debug("Exiting get_contacts method ...");
 		return $return_value;
 	}
-    
-    /**
+
+	/**
 	 * Function to get Activity related Users
 	 * @param  integer   $id      - activityid
 	 * returns related Users record in array format

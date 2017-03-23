@@ -40,7 +40,7 @@ require_once("VTWorkflowUtils.php");
 			$workflowId=$task->workflowId;
 		}else{
 			$workflowId = $request["workflow_id"];
-			$taskClass = vtlib_purifyForSql($request["task_type"]);
+			$taskClass = $request['task_type'];
 			$task = $tm->createTask($taskClass, $workflowId);
 		}
 
@@ -62,7 +62,7 @@ require_once("VTWorkflowUtils.php");
 		$smarty->assign("returnUrl", $request["return_url"]);
 		$smarty->assign("task", $task);
 		$smarty->assign("taskType", $taskClass);
-		$smarty->assign("saveType", $request['save_type']);
+		$smarty->assign('saveType', isset($request['save_type']) ? $request['save_type'] : '');
 
 		$taskTypeInstance = VTTaskType::getInstanceFromTaskType($taskClass);
 		$taskTemplateClass = $tm->retrieveTemplatePath($module->name, $taskTypeInstance);
@@ -71,9 +71,9 @@ require_once("VTWorkflowUtils.php");
 		$smarty->assign("entityType", $et);
 		$smarty->assign('entityName', $workflow->moduleName);
 		$smarty->assign("fieldNames", $et->getFieldNames());
-		$repeat_date = $task->calendar_repeat_limit_date;
-		if(!empty ($repeat_date)){
-		    $repeat_date = DateTimeField::convertToUserFormat($repeat_date);
+		$repeat_date = isset($task->calendar_repeat_limit_date) ? $task->calendar_repeat_limit_date : '';
+		if(!empty($repeat_date)){
+			$repeat_date = DateTimeField::convertToUserFormat($repeat_date);
 		}
 		$smarty->assign('REPEAT_DATE',$repeat_date);
 		$dateFields = array();
@@ -87,7 +87,7 @@ require_once("VTWorkflowUtils.php");
 
 		$smarty->assign('dateFields', $dateFields);
 
-		if($task->trigger!=null){
+		if(isset($task->trigger) and $task->trigger!=null){
 			$trigger = $task->trigger;
 			$days = $trigger['days'];
 			if ($days < 0){
@@ -96,15 +96,13 @@ require_once("VTWorkflowUtils.php");
 			}else{
 				$direction = 'after';
 			}
-			$smarty->assign('trigger', array('days'=>$days, 'direction'=>$direction,
-			  'field'=>$trigger['field']));
+			$smarty->assign('trigger', array('days'=>$days, 'direction'=>$direction,  'field'=>$trigger['field']));
 		}
 		$metaVariables = $task->getMetaVariables();
 
 		$date = new DateTimeField(null);
 		$time = substr($date->getDisplayTime(), 0, 5);
 		$smarty->assign("META_VARIABLES",$metaVariables);
-		$smarty->assign("SYSTEM_TIMEZONE",$db_timezone);
 		$smarty->assign("USER_TIME",$task->formatTimeForTimePicker($time));
 		$smarty->assign("USER_DATE", $date->getDisplayDate());
 		$smarty->assign("MOD", array_merge(

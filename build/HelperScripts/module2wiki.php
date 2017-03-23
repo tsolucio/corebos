@@ -35,6 +35,8 @@ $uitypes = array(
 	'14'=>'time',
 	'15'=>'picklist',
 	'16'=>'picklist',
+	'1613'=>'module picklist',
+	'1614'=>'all module picklist',
 	'17'=>'url',
 	'19'=>'text',
 	'20'=>'text',
@@ -45,6 +47,7 @@ $uitypes = array(
 	'26'=>'documents folder',
 	'33'=>'multipicklist',
 	'3313'=>'module multi-list',
+	'3314'=>'all module multi-list',
 	'51'=>'relation (account)',
 	'53'=>'assigned to',
 	'56'=>'checkbox',
@@ -189,7 +192,7 @@ if ($argc==2 and !empty($argv[1])) {
 	exit(0);
 } else {
 	echo "\nmodule2wiki converts a module manifest.xml and composer.json file into a dokuwiki page with a Data Entry\n";
-	echo "\n\n  php module2wiki.php [module_directoty]\n\n";
-	echo "Where module_directoty is a directory which contains a valid coreBOS module structure.\n\n";
+	echo "\n\n  php module2wiki.php [module_directory]\n\n";
+	echo "Where module_directory is a directory which contains a valid coreBOS module structure.\n\n";
 }
 ?>
