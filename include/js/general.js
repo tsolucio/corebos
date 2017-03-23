@@ -1187,7 +1187,7 @@ function doformValidation(edit_type) {
 					if (getObj(fieldname[i]) != null && getObj(fieldname[i]).value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0)
 					{
 						if (type[1]=="M")
-							if (!emptyCheck(fieldname[2],fieldlabel[i],getObj(type[2]).type))
+							if (!emptyCheck(fieldname[2],fieldlabel[i],(type[2]!=undefined ? getObj(type[2]).type :'')))
 								return false;
 
 						if(typeof(type[3])=="undefined") var currdatechk="OTH";

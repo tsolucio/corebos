@@ -251,9 +251,9 @@ class CRMEntity {
 
 		//upload the file in server
 		if ($direct_import or !is_uploaded_file($filetmp_name)) {
-			$upload_status = copy($filetmp_name, $upload_file_path . $current_id . "_" . $binFile);
+			$upload_status = @copy($filetmp_name, $upload_file_path . $current_id . "_" . $binFile);
 		} else {
-			$upload_status = move_uploaded_file($filetmp_name, $upload_file_path . $current_id . "_" . $binFile);
+			$upload_status = @move_uploaded_file($filetmp_name, $upload_file_path . $current_id . "_" . $binFile);
 		}
 		if ($upload_status) {
 			$description_val = empty($this->column_fields['description']) ? '' : $this->column_fields['description'];
@@ -2662,7 +2662,7 @@ class CRMEntity {
 		require('user_privileges/sharing_privileges_' . $user->id . '.php');
 		$query = ' ';
 		$tabId = getTabid($module);
-		if ($is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tabId] == 3) {
+		if ($is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && isset($defaultOrgSharingPermission[$tabId]) && $defaultOrgSharingPermission[$tabId] == 3) {
 			$tableName = 'vt_tmp_u' . $user->id;
 			$sharingRuleInfoVariable = $module . '_share_read_permission';
 			$sharingRuleInfo = $$sharingRuleInfoVariable;

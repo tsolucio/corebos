@@ -1495,6 +1495,7 @@ function getProductImages($id) {
  * This function is used to save the Images
  * It acceps the File lists,modulename,id and the mode as arguments
  * It returns the array details of the upload
+ * Note: this is not used anywhere. deprecated?
  */
 function SaveImage($files, $module, $id, $mode) {
 	global $log, $root_directory;
@@ -2115,12 +2116,12 @@ function decideFilePath() {
 
 	if (!is_dir($filepath . $year)) {
 		//create new folder
-		mkdir($filepath . $year);
+		@mkdir($filepath . $year);
 	}
 
 	if (!is_dir($filepath . $year . "/" . $month)) {
 		//create new folder
-		mkdir($filepath . "$year/$month");
+		@mkdir($filepath . "$year/$month");
 	}
 
 	if ($day > 0 && $day <= 7)
@@ -2136,12 +2137,12 @@ function decideFilePath() {
 
 	if (!is_dir($filepath . $year . "/" . $month . "/" . $week)) {
 		//create new folder
-		mkdir($filepath . "$year/$month/$week");
+		@mkdir($filepath . "$year/$month/$week");
 	}
 
 	$filepath = $filepath . $year . "/" . $month . "/" . $week . "/";
 	$log->debug("Year=$year & Month=$month & week=$week && filepath=\"$filepath\"");
-			break;
+		break;
 	}
 
 	$log->debug("Exiting from decideFilePath() method ...");
@@ -3148,9 +3149,7 @@ function getSettingsBlockId($label) {
 // and if the module is an entity module
 // and the module has a Settings.php file within it
 function isModuleSettingPermitted($module) {
-	if (file_exists("modules/$module/Settings.php") &&
-			isPermitted('Settings', 'index', '') == 'yes') {
-
+	if (file_exists("modules/$module/Settings.php") && isPermitted('Settings', 'index', '') == 'yes') {
 		return 'yes';
 	}
 	return 'no';

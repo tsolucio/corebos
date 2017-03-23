@@ -297,7 +297,8 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		} else {
 			$label_fld[] = $user_name;
 		}
-		if ($is_admin == false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid($module)] == 3 or $defaultOrgSharingPermission[getTabid($module)] == 0)) {
+		$tabidmodule = getTabid($module);
+		if ($is_admin == false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[$tabidmodule] == 3 or $defaultOrgSharingPermission[$tabidmodule] == 0)) {
 			$ua = get_user_array(FALSE, "Active", $assigned_user_id, 'private');
 			$users_combo = get_select_options_array($ua, $assigned_user_id);
 		} else {
@@ -334,8 +335,9 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		}
 
 		//Security Checks
-		if ($fieldname == 'assigned_user_id' && $is_admin == false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid($module_name)] == 3 or $defaultOrgSharingPermission[getTabid($module_name)] == 0)) {
-			$result = get_current_user_access_groups($module_name);
+		$tabidmodule = getTabid($module);
+		if ($fieldname == 'assigned_user_id' && $is_admin == false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[$tabidmodule] == 3 or $defaultOrgSharingPermission[$tabidmodule] == 0)) {
+			$result = get_current_user_access_groups($module);
 		} else {
 			$result = get_group_options();
 		}

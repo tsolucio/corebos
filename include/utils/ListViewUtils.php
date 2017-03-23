@@ -3611,7 +3611,7 @@ function getRelCheckquery($currentmodule, $returnmodule, $recordid) {
 		$field = $selectfield = 'vendorid';
 		$table = 'vtiger_vendor';
 	}
-	//end
+	$query = '';
 	if ($reltable != null) {
 		$query = "SELECT " . $selectfield . " FROM " . $reltable . " " . $condition;
 	} elseif ($currentmodule != $returnmodule && $returnmodule != "") { // If none of the above relation matches, then the relation is assumed to be stored in vtiger_crmentityrel

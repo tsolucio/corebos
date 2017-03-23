@@ -58,7 +58,7 @@ function vtJsonDependentModules($adb, $request) {
 		$tabModuleName = getTabModuleName($tabId);
 		if (in_array($tabModuleName, $filterModules))
 			continue;
-		if ($referenceModule == $moduleName && $tabModuleName != $moduleName) {
+		if ($referenceModule == $moduleName) {
 			if(!vtlib_isModuleActive($tabModuleName))continue;
 			$dependentFields[$tabModuleName] = array('fieldname' => $fieldName, 'modulelabel' => getTranslatedString($tabModuleName, $tabModuleName));
 		} else {

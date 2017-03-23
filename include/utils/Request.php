@@ -226,7 +226,12 @@ class Vtiger_Request {
 			return $headers['HTTP_FORWARDED'];
 
 		// return unreliable ip since all else failed
-		return $headers['REMOTE_ADDR'];
+		$iplist = explode(',', $headers['REMOTE_ADDR']);
+		foreach ($iplist as $ip) {
+			if (self::validate_ip($ip))
+				return $ip;
+		}
+		return $iplist[0];
 	}
 
 	public static function validate_ip($ip) {

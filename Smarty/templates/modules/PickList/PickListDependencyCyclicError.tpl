@@ -6,11 +6,10 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
 -->*}
 
-<div>	
+<div>
 	<table border="0" cellspacing="0" cellpadding="5" width="100%" height="450px">
 		<tr>
 			<td align="center">

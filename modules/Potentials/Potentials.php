@@ -165,43 +165,6 @@ class Potentials extends CRMEntity {
 		}
 	}
 
-	/** Function to create list query
-	* @param reference variable - where condition is passed when the query is executed
-	* Returns Query.
-	*/
-	function create_list_query($order_by, $where)
-	{
-		global $log,$current_user;
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
-		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
-		$tab_id = getTabid("Potentials");
-		$log->debug("Entering create_list_query(".$order_by.",". $where.") method ...");
-		// Determine if the vtiger_account name is present in the where clause.
-		$account_required = preg_match("/accounts\.name/", $where);
-
-		if($account_required)
-		{
-			$query = "SELECT vtiger_potential.potentialid, vtiger_potential.potentialname, vtiger_potential.dateclosed FROM vtiger_potential, vtiger_account ";
-			$where_auto = "account.accountid = vtiger_potential.related_to AND vtiger_crmentity.deleted=0 ";
-		}
-		else
-		{
-			$query = 'SELECT vtiger_potential.potentialid, vtiger_potential.potentialname, vtiger_crmentity.smcreatorid, vtiger_potential.closingdate FROM vtiger_potential inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_potential.potentialid LEFT JOIN vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid ';
-			$where_auto = ' AND vtiger_crmentity.deleted=0';
-		}
-
-		$query .= $this->getNonAdminAccessControlQuery('Potentials',$current_user);
-		if($where != "")
-			$query .= " where $where ".$where_auto;
-		else
-			$query .= " where ".$where_auto;
-		if($order_by != "")
-			$query .= " ORDER BY $order_by";
-
-		$log->debug("Exiting create_list_query method ...");
-		return $query;
-	}
-
 	/** Function to export the Opportunities records in CSV Format
 	* @param reference variable - order by is passed when the query is executed
 	* @param reference variable - where condition is passed when the query is executed

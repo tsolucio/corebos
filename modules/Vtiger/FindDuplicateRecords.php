@@ -59,7 +59,7 @@ if(isset($_REQUEST['del_rec'])) {
 			<tbody><tr>
 			<td rowspan='2' width='11%'><img src='themes/$theme/images/denied.gif'></td>
 			<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'>
-				<span class='genHeaderSmall'>".$app_strings['LBL_DUP_PERMISSION']." $req_module $errormsg</span></td>
+				<span class='genHeaderSmall'>".$app_strings['LBL_DUP_PERMISSION'].' '.urlencode($req_module).' '.urlencode(vtlib_purify($errormsg))."</span></td>
 			</tr>
 			<tr>
 			<td class='small' align='right' nowrap='nowrap'>

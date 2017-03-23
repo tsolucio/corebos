@@ -10,12 +10,11 @@
 require_once('Smarty_setup.php');
 require('user_privileges/default_module_view.php');
 
-global $mod_strings, $app_strings, $currentModule, $current_user, $theme;
+global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
 
-$category = getParentTab();
 $action = vtlib_purify($_REQUEST['action']);
 $record = vtlib_purify($_REQUEST['record']);
-$isduplicate = vtlib_purify($_REQUEST['isDuplicate']);
+$isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : false;
 
 	$tool_buttons = Button_Check($currentModule);
 
@@ -36,7 +35,7 @@ $isduplicate = vtlib_purify($_REQUEST['isDuplicate']);
 	$smarty->assign('MOD', $mod_strings);
 	$smarty->assign('MODULE', $currentModule);
 	$smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule, $currentModule));
-	$smarty->assign('CATEGORY', $category);
+	$smarty->assign('CATEGORY', getParentTab());
 	$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 	$smarty->assign('THEME', $theme);
 	$smarty->assign('ID', $focus->id);

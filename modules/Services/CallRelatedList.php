@@ -12,13 +12,12 @@ require('user_privileges/default_module_view.php');
 
 global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
 
-$category = getParentTab();
 $action = vtlib_purify($_REQUEST['action']);
 $record = vtlib_purify($_REQUEST['record']);
 $isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : false;
 
 if($singlepane_view == 'true' && $action == 'CallRelatedList') {
-	echo "<script>document.location='index.php?action=DetailView&module=$currentModule&record=$record&parenttab=$category';</script>";
+	echo "<script>document.location='index.php?action=DetailView&module=".urlencode($currentModule).'&record='.urlencode($record)."';</script>";
 	die();
 } else {
 
@@ -46,7 +45,7 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	$smarty->assign('MOD', $mod_strings);
 	$smarty->assign('MODULE', $currentModule);
 	$smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule, $currentModule));
-	$smarty->assign('CATEGORY', $category);
+	$smarty->assign('CATEGORY', getParentTab());
 	$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 	$smarty->assign('THEME', $theme);
 	$smarty->assign('ID', $focus->id);

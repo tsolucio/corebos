@@ -51,16 +51,16 @@ function DelImage($id)
 	}
 }
 
-function DelAttachment($id)
-{
+function DelAttachment($id) {
 	global $adb;
-	$selresult = $adb->pquery("select name,path from vtiger_attachments where attachmentsid=?", array($id));
-	unlink($adb->query_result($selresult,0,'path').$id."_".$adb->query_result($selresult,0,'name'));
-	$query="delete from vtiger_seattachmentsrel where attachmentsid=?";
-	$adb->pquery($query, array($id));
-	$query="delete from vtiger_attachments where attachmentsid=?";
-	$adb->pquery($query, array($id));
-
+	$selresult = $adb->pquery('select name,path from vtiger_attachments where attachmentsid=?', array($id));
+	if ($selresult and $adb->num_rows($selresult)==1) {
+		unlink($adb->query_result($selresult,0,'path').$id."_".$adb->query_result($selresult,0,'name'));
+		$query="delete from vtiger_seattachmentsrel where attachmentsid=?";
+		$adb->pquery($query, array($id));
+		$query="delete from vtiger_attachments where attachmentsid=?";
+		$adb->pquery($query, array($id));
+	}
 }
 $id = vtlib_purify($_REQUEST["recordid"]);
 if(isset($_REQUEST["attachmodule"]) && $_REQUEST["attachmodule"]=='Emails')

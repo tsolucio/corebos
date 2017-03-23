@@ -39,28 +39,6 @@ $handle = fopen($wordtemplatedownloadpath.$filename,"wb");
 fwrite($handle,base64_decode($fileContent),$filesize);
 fclose($handle);
 
-if ($extension=="doc") {
-echo "<html>
-<body>
-<script>
-if (document.layers)
-{
-	document.write(\"This feature requires IE 5.5 or higher for Windows on Microsoft Windows 2000, Windows NT4 SP6, Windows XP.\");
-	document.write(\"<br><br>Click <a href='#' onclick='window.history.back();'>here</a> to return to the previous page\");
-}
-else if (document.layers || (!document.all && document.getElementById))
-{
-	document.write(\"This feature requires IE 5.5 or higher for Windows on Microsoft Windows 2000, Windows NT4 SP6, Windows XP.\");
-	document.write(\"<br><br>Click <a href='#' onclick='window.history.back();'>here</a> to return to the previous page\");
-}
-else if(document.all)
-{
-	document.write(\"<br><br>Click <a href='#' onclick='window.history.back();'>here</a> to return to the previous page\");
-	document.write(\"<OBJECT Name='vtigerCRM' codebase='modules/Settings/vtigerCRM.CAB#version=1,5,0,0' id='objMMPage' classid='clsid:0FC436C2-2E62-46EF-A3FB-E68E94705126' width=0 height=0></object>\");
-}
-</script>";
-}
-
 //for mass merge
 $mass_merge = isset($_REQUEST['allselectedboxes']) ? $_REQUEST['allselectedboxes'] : '';
 $single_record = isset($_REQUEST['record']) ? $_REQUEST['record'] : 0;
@@ -317,43 +295,3 @@ else
 	die("unknown file format");
 }
 ?>
-<script>
-if("<?php echo $extension; ?>" == "doc") {
-	if (window.ActiveXObject){
-		try {
-            ovtigerVM = eval("new ActiveXObject('vtigerCRM.ActiveX');");
-            if(ovtigerVM)
-            {
-                var filename = "<?php echo $filename; ?>";
-                if(filename != "")
-                {
-                    if(objMMPage.bDLTempDoc("<?php echo $site_URL?>/cache/wordtemplatedownload/<?php echo $filename; ?>","MMTemplate.doc"))
-                    {
-                        try {
-                            if(objMMPage.Init())
-                            {
-                                objMMPage.vLTemplateDoc();
-                                objMMPage.bBulkHDSrc("<?php echo $site_URL;?>/cache/wordtemplatedownload/<?php echo $datafilename; ?>");
-                                objMMPage.vBulkOpenDoc();
-                                objMMPage.UnInit()
-                                window.history.back();
-                            }
-                        }catch(errorObject)
-                        {
-                            document.write("Error while processing mail merge operation");
-                        }
-                    }else
-                    {
-                        document.write("Cannot get template document");
-                    }
-                }
-            }
-        }
-        catch(e) {
-            document.write("Requires to download ActiveX Control from vtigerCRM. Please, ensure that you have administration privilage");
-        }
-    }
-}
-</script>
-</body>
-</html>

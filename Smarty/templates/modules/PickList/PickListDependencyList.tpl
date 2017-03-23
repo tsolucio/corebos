@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
 -->*}
 <div id="pickListDependencyList">
@@ -28,7 +27,7 @@
 			</td>
 		</tr>
 	</table>
-						
+
 	<table border=0 cellspacing=0 cellpadding=5 width=100% class="listTable">
 		<tr>
 			<td class="colHeader small" valign=top width=5%>#</td>
@@ -45,10 +44,10 @@
 			<td class="listTableRow small" valign=top>{$dependencyvalues.sourcefieldlabel|@getTranslatedString:$FIELD_MODULE}</td>
 			<td class="listTableRow small" valign=top>{$dependencyvalues.targetfieldlabel|@getTranslatedString:$FIELD_MODULE}</td>
 			<td class="listTableRow small" valign=top nowrap>
-	  			<a href="javascript:void(0);" onclick="editDependencyPicklist('{$FIELD_MODULE}','{$dependencyvalues.sourcefield}','{$dependencyvalues.targetfield}');"><img src="{'editfield.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_EDIT}" title="{$APP.LBL_EDIT}" border="0" align="absmiddle"></a>&nbsp;|
+				<a href="javascript:void(0);" onclick="editDependencyPicklist('{$FIELD_MODULE}','{$dependencyvalues.sourcefield}','{$dependencyvalues.targetfield}');"><img src="{'editfield.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_EDIT}" title="{$APP.LBL_EDIT}" border="0" align="absmiddle"></a>&nbsp;|&nbsp;
 				<a href="javascript:void(0);" onClick="deleteDependencyPicklist('{$FIELD_MODULE}','{$dependencyvalues.sourcefield}','{$dependencyvalues.targetfield}','{'NTC_DELETE_CONFIRMATION'|@getTranslatedString}');"><img src="{'delete.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_DELETE}" title="{$APP.LBL_DELETE}" border="0" align="absmiddle"></a>
 			</td>
-  		</tr>
+		</tr>
 		{/foreach}
 	</table>
 </div>

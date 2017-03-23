@@ -176,35 +176,34 @@ function VTCreateEntityTask($, fieldvaluemapping){
 				map(function (e){return '<option value="'+e.value+'">'+e.label+'</option>';},
 					opType['picklistValues'])
 			);
-			value.replaceWith('<select id="save_fieldvalues_'+mappingno+'_value" class="expressionvalue">'+
-												options+'</select>');
+			value.replaceWith('<select id="save_fieldvalues_'+mappingno+'_value" class="expressionvalue">' + options + '</select>');
 			$("#save_fieldvalues_"+mappingno+"_value_type").val("rawtext");
-
 			$("#save_fieldvalues_"+mappingno+"_modulename").val($('#entity_type').val());
 			$("#save_fieldvalues_"+mappingno+"_modulename").prop("disabled", "true");
 		}
-		var functions = {
-			string:function(opType, mappingno){
-				var value = $(format("#save_fieldvalues_%s_value", mappingno));
-				value.replaceWith(format('<input type="text" id="save_fieldvalues_%s_value" '+
-													'value="" class="expressionvalue" readonly />', mappingno));
+		function forString(opType, mappingno) {
+			var value = $(format("#save_fieldvalues_%s_value", mappingno));
+			value.replaceWith(format('<input type="text" id="save_fieldvalues_%s_value" '+
+				'value="" class="expressionvalue" readonly />', mappingno));
 
-				$("#save_fieldvalues_"+mappingno+"_modulename").prop("disabled", "");
-				var fv = $(format("#save_fieldvalues_%s_value", mappingno));
-				fv.bind("focus", function() {
-					editpopupobj.setModule($(format("#save_fieldvalues_%s_modulename", mappingno)).val());
-					editFieldExpression($(this), opType);
-				});
-				fv.bind("click", function() {
-					editpopupobj.setModule($(format("#save_fieldvalues_%s_modulename", mappingno)).val());
-					editFieldExpression($(this), opType);
-				});
-				fv.bind("keypress", function() {
-					editpopupobj.setModule($(format("#save_fieldvalues_%s_modulename", mappingno)).val());
-					editFieldExpression($(this), opType);
-				});
-			},
-			picklist:forPicklist,
+			$("#save_fieldvalues_"+mappingno+"_modulename").prop("disabled", "");
+			var fv = $(format("#save_fieldvalues_%s_value", mappingno));
+			fv.bind("focus", function() {
+				editpopupobj.setModule($(format("#save_fieldvalues_%s_modulename", mappingno)).val());
+				editFieldExpression($(this), opType);
+			});
+			fv.bind("click", function() {
+				editpopupobj.setModule($(format("#save_fieldvalues_%s_modulename", mappingno)).val());
+				editFieldExpression($(this), opType);
+			});
+			fv.bind("keypress", function() {
+				editpopupobj.setModule($(format("#save_fieldvalues_%s_modulename", mappingno)).val());
+				editFieldExpression($(this), opType);
+			});
+		}
+		var functions = {
+			string: forString,
+			picklist: forString,
 			multipicklist:forPicklist
 		};
 		var ret = functions[fieldType];

@@ -27,12 +27,6 @@ $tabid = getTabid($currentModule);
 $category = getParentTab($currentModule);
 
 if($record != '') {
-	//Display the error message
-	if(isset($_SESSION['image_type_error']) and $_SESSION['image_type_error'] != '') {
-		echo '<font color="red">'.$_SESSION['image_type_error'].'</font>';
-		coreBOS_Session::delete('image_type_error');
-	}
-
 	$focus->id = $record;
 	$focus->retrieve_entity_info($record, $currentModule);
 	$focus->name=$focus->column_fields[$focus->list_link_field];
