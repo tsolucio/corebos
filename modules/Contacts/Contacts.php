@@ -26,6 +26,7 @@ class Contacts extends CRMEntity {
 
 	/** Indicator if this is a custom module or standard module */
 	var $IsCustomModule = false;
+	var $HasDirectImageField = true;
 
 	/**
 	 * Mandatory table for supporting custom fields.
@@ -117,15 +118,6 @@ class Contacts extends CRMEntity {
 	// Refers to vtiger_field.fieldname values.
 	var $mandatory_fields = Array('assigned_user_id','lastname','createdtime' ,'modifiedtime');
 
-	function __construct() {
-		global $log;
-		$this_module = get_class($this);
-		$this->column_fields = getColumnFields($this_module);
-		$this->db = PearDatabase::getInstance();
-		$this->log = $log;
-	}
-
-	// Mike Crowe Mod --------------------------------------------------------Default ordering for us
 	/** Function to get the number of Contacts assigned to a particular User.
 	*  @param varchar $user name - Assigned to User
 	*  Returns the count of contacts assigned to user.
@@ -950,43 +942,33 @@ function get_contactsforol($user_name)
 		$this->insertIntoAttachment($this->id,$module);
 	}
 
-	/**
-	 * This function is used to add the vtiger_attachments. This will call the function uploadAndSaveFile which will upload the attachment into the server and save that attachment information in the database.
-	 * @param int $id  - entity id to which the files to be uploaded
-	 * @param string $module  - the current module name
-	*/
-	function insertIntoAttachment($id,$module, $direct_import=false)
-	{
-		global $log, $adb;
-		$log->debug("Entering into insertIntoAttachment($id,$module) method.");
-
-		$file_saved = false;
-		//This is to added to store the existing attachment id of the contact where we should delete this when we give new image
-		$old_attachmentid = $adb->query_result($adb->pquery("select vtiger_crmentity.crmid from vtiger_seattachmentsrel inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_seattachmentsrel.attachmentsid where vtiger_seattachmentsrel.crmid=?", array($id)),0,'crmid');
-		foreach($_FILES as $fileindex => $files)
-		{
-			if($files['name'] != '' && $files['size'] > 0)
-			{
-				$files['original_name'] = vtlib_purify($_REQUEST[$fileindex.'_hidden']);
-				$file_saved = $this->uploadAndSaveFile($id,$module,$files);
+	/* Validate values trying to be saved.
+	 * @param array $_REQUEST input values. Note: column_fields array is already loaded
+	 * @return array
+	 *   saveerror: true if error false if not
+	 *   errormessage: message to return to user if error, empty otherwise
+	 *   error_action: action to redirect to inside the same module in case of error. if redirected to EditView (default action)
+	 *                 all values introduced by the user will be preloaded
+	 */
+	function preSaveCheck($request) {
+		global $adb,$log;
+		$saveerror = false;
+		$errmsg = '';
+		if ($_REQUEST['action'] != 'ContactsAjax') {
+			$upload_file_path = decideFilePath();
+			$dirpermission = is_writable($upload_file_path);
+			$upload = is_uploaded_file($_FILES['imagename']['tmp_name']);
+			$ferror = (isset($_FILES['error']) ? $_FILES['error'] : $_FILES['imagename']['error']);
+			if (!$dirpermission || ($ferror!=0 and $ferror!=4) || (!$upload and $ferror!=4)){
+				$saveerror = true;
+				$errmsg = getTranslatedString('LBL_FILEUPLOAD_FAILED','Documents');
 			}
 		}
-
-		//This is to handle the delete image for contacts
-		if($module == 'Contacts' && $file_saved)
-		{
-			if($old_attachmentid != '')
-			{
-				$setype = $adb->query_result($adb->pquery("select setype from vtiger_crmentity where crmid=?", array($old_attachmentid)),0,'setype');
-				if($setype == 'Contacts Image')
-				{
-					$del_res1 = $adb->pquery("delete from vtiger_attachments where attachmentsid=?", array($old_attachmentid));
-					$del_res2 = $adb->pquery("delete from vtiger_seattachmentsrel where attachmentsid=?", array($old_attachmentid));
-				}
-			}
+		if ($saveerror) {
+			return array($saveerror,$errmsg,'EditView','');
+		} else {
+			return parent::preSaveCheck($request);
 		}
-
-		$log->debug("Exiting from insertIntoAttachment($id,$module) method.");
 	}
 
 	/**
