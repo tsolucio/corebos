@@ -169,7 +169,7 @@ class MailManager_Model_DraftEmail {
 		$email->column_fields['subject'] =  (!empty($subject)) ? $subject : "No Subject";
 		$email->column_fields['description'] = $request->get('body');
 		$email->column_fields['activitytype'] = 'Emails';
-		$email->column_fields['from_email'] = $fromEmail;
+		$email->column_fields['from_email'] = $this->getFromEmailAddress();
 		$email->column_fields['saved_toid'] = (!empty($to_string)) ? $to_string : "SAVED";
 		$email->column_fields['ccmail'] = $cc_string;
 		$email->column_fields['bccmail'] = $bcc_string;
@@ -210,11 +210,9 @@ class MailManager_Model_DraftEmail {
 	function getFromEmailAddress() {
 		global $adb, $current_user;
 		$fromEmail = false;
-		if (Vtiger_Version::check('5.2.0', '>=')) {
-			$smtpFromResult = $adb->pquery('SELECT from_email_field FROM vtiger_systems WHERE server_type=?', array('email'));
-			if ($adb->num_rows($smtpFromResult)) {
-				$fromEmail = decode_html($adb->query_result($smtpFromResult, 0, 'from_email_field'));
-			}
+		$smtpFromResult = $adb->pquery('SELECT from_email_field FROM vtiger_systems WHERE server_type=?', array('email'));
+		if ($smtpFromResult and $adb->num_rows($smtpFromResult)) {
+			$fromEmail = decode_html($adb->query_result($smtpFromResult, 0, 'from_email_field'));
 		}
 		if (empty($fromEmail)) $fromEmail = $current_user->column_fields['email1'];
 		return $fromEmail;
