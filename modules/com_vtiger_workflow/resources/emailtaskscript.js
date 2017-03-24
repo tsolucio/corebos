@@ -228,6 +228,11 @@ function VTEmailTask($){
 					textarea.insertHtml(value);
 					});
 
+					fillSelectBox('attfieldnames', modules, moduleName);
+					$('#attfieldnames').change(function(){
+						// todo
+					});
+
 					fillSelectBox('task-emailfieldsfrmname', modules, moduleName, function(e){return (e['name'] == 'user_name');});
 					$('#task-emailfieldsfrmname-busyicon').hide();
 					$('#task-emailfieldsfrmname').show();
@@ -324,3 +329,119 @@ function VTEmailTask($){
 	});
 }
 vtEmailTask = VTEmailTask(jQuery);
+//document.onreadystatechange = function () {
+/*
+ * Namespaced javascript class for attachmentManager
+ */
+var attachmentManager = {
+	UploadLimit : 6,
+	createUploader : function (){
+		Dropzone.autoDiscover = false;
+		var uploader = new Dropzone('#file-uploader',{
+			url : 'index.php?' + attachmentManager._baseurl() + '&_operation=relation&_operationarg=saveattachment&emailid=0',
+			paramName: 'qqfile',
+			parallelUploads: 1,
+			addRemoveLinks: true,
+			createImageThumbnails: true,
+			dictRemoveFile: attachmentManager.i18n('JSLBL_Delete'),
+			uploadMultiple: false,
+			clickable: ['#file-uploader-message','#file-uploader']
+		});
+		uploader.on("success", function(file, response) {
+			var res = JSON.parse(response);
+			file.docid = res.result.docid;
+			file.attachid = res.result.attachid;
+		});
+		uploader.on("removedfile", function(file) {
+			attachmentManager.deleteAttachment(file.docid, this);
+		});
+		return uploader;
+	},
+	deleteAttachment : function(docid, ele) {
+		attachmentManager.progress_show(attachmentManager.i18n('JSLBL_Loading'), ' ...');
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?'+ attachmentManager._baseurl() + "_operation=mail&_operationarg=deleteAttachment&emailid=0"
+				+"&docid="+ encodeURIComponent(docid)
+		}).done(function(response){
+			attachmentManager.progress_hide();
+			var responseJSON = JSON.parse(response);
+			if(responseJSON.result.success == true) {
+				attachmentManager.progress_hide();
+				var count = jQuery('#attachmentCount').val();
+				jQuery('#attachmentCount').val(--count);
+			} else {
+				attachmentManager.show_error(attachmentManager.i18n('JSLBL_ATTACHMENT_NOT_DELETED'));
+			}
+		});
+	},
+	progress_show: function(msg, suffix){
+		if (typeof(suffix) == 'undefined')
+			suffix = '';
+		VtigerJS_DialogBox.block();
+		if (typeof(msg) != 'undefined')
+			jQuery('#_progressmsg_').html(msg + suffix.toString());
+		jQuery('#_progress_').show();
+	},
+	progress_hide: function(){
+		VtigerJS_DialogBox.unblock();
+		jQuery('#_progressmsg_').html('');
+		jQuery('#_progress_').hide();
+	},
+	show_error: function(message){
+		var errordiv = jQuery('#_messagediv_');
+		if (message == '') {
+			errordiv.text('').hide();
+		} else {
+			errordiv.html('<p>' + message + '</p>').css('display','block').addClass('mm_error').removeClass('mm_message');
+			attachmentManager.placeAtCenter(errordiv);
+		}
+		attachmentManager.hide_error();
+	},
+	hide_error: function() {
+		setTimeout( function() {
+			jQuery('#_messagediv_').hide();
+		}, 5000);
+	},
+	show_message: function(message){
+		var errordiv = jQuery('#_messagediv_');
+		if (message == '') {
+			errordiv.text('').hide();
+		} else {
+			errordiv.html('<p>' + message + '</p>').css('display','block').removeClass('mm_error').addClass('mm_message');
+			attachmentManager.placeAtCenter(errordiv);
+		}
+		attachmentManager.hide_error();
+	},
+	/* Base url for any ajax actions */
+	_baseurl: function(){
+		return "module=MailManager&action=MailManagerAjax&file=index&mode=ajax&";
+	},
+	i18n: function(key){
+		if (typeof(alert_arr) != 'undefined' && alert_arr[key])
+			return alert_arr[key];
+		return key;
+	},
+	placeAtCenter : function(element) {
+		element.css("position","absolute");
+		element.css("top", ((jQuery(window).height() - element.outerHeight()) / 2) + jQuery(window).scrollTop() + "px");
+		element.css("left", ((jQuery(window).width() - element.outerWidth()) / 2) + jQuery(window).scrollLeft() + "px");
+	},
+	getDocuments : function() {
+		if (!attachmentManager.checkUploadCount()) {
+			return false;
+		}
+		window.open('index.php?module=Documents&return_module=MailManager&action=Popup&popuptype=detailview&form=EditView&form_submit=false&recordid=&forrecord=&srcmodule=MailManager&popupmode=ajax&RLreturn_module=MailManager&callback=MailManager.add_data_to_relatedlist','test','width=640,height=602,resizable=0,scrollbars=0');
+	},
+	checkUploadCount : function() {
+		var CurrentUploadCount = jQuery("#attachmentCount").val();
+		if (CurrentUploadCount >= attachmentManager.UploadLimit) {
+			attachmentManager.show_error(attachmentManager.i18n('JSLBL_FILEUPLOAD_LIMIT_EXCEEDED'));
+			return false;
+		}
+		return true;
+	}
+};
+jQuery( document ).ready(function() {
+	attachmentManager.createUploader();
+});

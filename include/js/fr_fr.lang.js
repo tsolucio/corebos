@@ -391,5 +391,9 @@ var alert_arr = {
 	'ERR_INVALID_TIME' : 'Veuillez saisir un horaire correct.',
 	'ERR_EMAIL_WITH_NO_SUBJECT' : 'Vous n\'avez pas fourni de sujet pour cet email. Si vous voulez en fournir un, vous pouvez le faire maintenant',
 	'EMAIL_WITH_NO_SUBJECT' : '(sans-subjet)',
-	'INTEGERVALS':'Seul des nombres entiers sont autorisés'
+	'INTEGERVALS':'Seul des nombres entiers sont autorisés',
+	'JSLBL_Delete': 'Supprimer',
+	'JSLBL_Loading': 'Chargement',
+	'JSLBL_ATTACHMENT_NOT_DELETED': 'Le fichier joint ne peut être supprimé',
+	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'Taille limite de fichier dépassée!!'
 };

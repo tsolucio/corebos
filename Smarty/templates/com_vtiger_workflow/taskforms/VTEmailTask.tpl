@@ -1,8 +1,15 @@
+<link rel="stylesheet" type="text/css" href="include/dropzone/dropzone.css">
+<link rel="stylesheet" type="text/css" href="include/dropzone/custom.css">
 <script src="modules/com_vtiger_workflow/resources/vtigerwebservices.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" src="include/dropzone/dropzone.js"></script>
 <script type="text/javascript" charset="utf-8">
+Dropzone.autoDiscover = false;
 var moduleName = '{$entityName}';
 </script>
 <script src="modules/com_vtiger_workflow/resources/emailtaskscript.js" type="text/javascript" charset="utf-8"></script>
+<div id='_progress_' style='float: right; display: none; position: absolute; right: 35px; font-weight: bold;'>
+<span id='_progressmsg_'>...</span><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border='0' align='absmiddle'>
+</div>
 
 <table border="0" cellpadding="5" cellspacing="0" width="100%" class="small">
 	<tr>
@@ -71,6 +78,23 @@ var moduleName = '{$entityName}';
 			<span class="helpmessagebox" style="font-style: italic;">{$MOD.LBL_WORKFLOW_NOTE_CRON_CONFIG}</span>
 		</td>
 	</tr>
+	<tr>
+		<td colspan="4">
+			<span id="_messagediv_"></span>
+			<div id="file-uploader" class="dropzone mm-dz-div" style="display: none;">
+				<span class="dz-message mmdzmessage"><img alt="{'Drag attachment here or click to upload'|@getTranslatedString}" src="include/dropzone/upload_32.png"></span>
+				<span class="dz-message mmdzmessage" id="file-uploader-message">&nbsp;{'Drag attachment here or click to upload'|@getTranslatedString}</span>
+			</div>
+		</td>
+		<td valign="top" align="left" style="white-space:nowrap;">
+			<input type="hidden" id="attachmentCount" value="<!-- {$smarty.foreach.attach.total} -->" >
+			<input type="hidden" id="attachmentIDs" value="<!-- {$smarty.foreach.attach.total} -->" >
+			<button onclick="jQuery('#file-uploader').show();attachmentManager.getDocuments();return false;" class="crmbutton small edit">{'LBL_SELECT_DOCUMENTS'|@getTranslatedString:'MailManager'}</button><br>
+			<button onclick="jQuery('#file-uploader').toggle();return false;" class="crmbutton small edit">{'LBL_Attachments'|@getTranslatedString:'MailManager'}</button><br>
+			<select id='attfieldnames' class="small" style="display: none;"><option value=''>{$MOD.LBL_SELECT_OPTION_DOTDOTDOT}</option></select><br>
+			<div id="fieldattachments"></div>
+		</td>
+	</tr>
 </table>
 <table>
 	<tr>
@@ -82,7 +106,7 @@ var moduleName = '{$entityName}';
 </table>
 <script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
 <p style="border:1px solid black;">
-	<textarea  style="width:90%;height:200px;" name="content" rows="55" cols="40" id="save_content" class="detailedViewTextBox"> {$task->content} </textarea>
+	<textarea style="width:90%;height:200px;" name="content" rows="55" cols="40" id="save_content" class="detailedViewTextBox"> {$task->content} </textarea>
 </p>
 <script type="text/javascript" defer="1">
 	var textAreaName = 'save_content';
