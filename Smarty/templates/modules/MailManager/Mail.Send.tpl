@@ -66,7 +66,7 @@
 					</div>
 				</td>
 				<td valign="top" align="left" style="white-space:nowrap;">
-					<button onclick="MailManager.getDocuments();" class="crmbutton small edit">{'LBL_SELECT_DOCUMENTS'|@getTranslatedString}</button><br>
+					<button onclick="jQuery('#file-uploader').show();MailManager.getDocuments();" class="crmbutton small edit">{'LBL_SELECT_DOCUMENTS'|@getTranslatedString}</button><br>
 					<button onclick="jQuery('#file-uploader').toggle();" class="crmbutton small edit">{'LBL_Attachments'|@getTranslatedString:'MailManager'}</button>
 				</td>
 			</tr>
