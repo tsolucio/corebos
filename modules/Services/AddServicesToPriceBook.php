@@ -14,32 +14,32 @@ require_once('include/utils/utils.php');
 global $app_strings,$mod_strings,$current_language,$theme,$log,$current_user,$default_charset,$adb;
 $current_module_strings = return_module_language($current_language, 'Services');
 
-$pricebook_id = $_REQUEST['pricebook_id'];
-$currency_id = $_REQUEST['currency_id'];
+$pricebook_id = vtlib_purify($_REQUEST['pricebook_id']);
+$currency_id = vtlib_purify($_REQUEST['currency_id']);
 if ($currency_id == null) $currency_id = fetchCurrency($current_user->id);
-$parenttab = htmlspecialchars($_REQUEST['parenttab'],ENT_QUOTES,$default_charset);
+$parenttab = getParentTab();
 
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 require_once('modules/Vtiger/layout_utils.php');
 
-if(getFieldVisibilityPermission('Services',$current_user->id,'unit_price') != '0'){
+if (getFieldVisibilityPermission('Services',$current_user->id,'unit_price') != '0') {
+	$theme = vtlib_purify($theme);
 	echo "<link rel='stylesheet' type='text/css' href='themes/$theme/style.css'>";
 	echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
 	echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
-
 		<table border='0' cellpadding='5' cellspacing='0' width='98%'>
 		<tbody><tr>
-		<td rowspan='2' width='11%'><img src='themes/$theme/images/denied.gif' ></td>
-		<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span class='genHeaderSmall'>$app_strings[LBL_UNIT_PRICE_NOT_PERMITTED]</span></td>
+		<td rowspan='2' width='11%'><img src='". vtiger_imageurl('denied.gif', $theme) ."' ></td>
+		<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span class='genHeaderSmall'>".$app_strings['LBL_UNIT_PRICE_NOT_PERMITTED']."</span></td>
 		</tr>
 		<tr>
 		<td class='small' align='right' nowrap='nowrap'>
-		<a href='javascript:window.history.back();'>$app_strings[LBL_GO_BACK]</a><br>								   						     </td>
+		<a href='javascript:window.history.back();'>".$app_strings['LBL_GO_BACK']."</a><br></td>
 		</tr>
 		</tbody></table>
-		</div>";
-	echo "</td></tr></table>";
+		</div>
+		</td></tr></table>";
 	exit();
 }
 

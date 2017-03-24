@@ -50,6 +50,11 @@ foreach ($rls as $relid => $relinfo) {
 	$actions = $relinfo['actions'];
 	$labelnospace = str_replace(' ', '', $label);
 	echo '<tr>';
+	$formodule = urlencode($formodule);
+	$forrecord = urlencode($forrecord);
+	$labelnospace = urlencode($labelnospace);
+	$label = urlencode($label);
+	$actions = urlencode($actions);
 	if ($singlepane_view=='true') {
 		$onclick = "onclick=\"javascript:loadRelatedListBlock(".
 				"'module=$formodule&action={$formodule}Ajax&file=DetailViewAjax&record={$forrecord}&ajxaction=LOADRELATEDLIST&header={$label}&relation_id={$relid}&actions={$actions}',".
@@ -63,7 +68,7 @@ foreach ($rls as $relid => $relinfo) {
 	} elseif ($module=='Calendar') {
 		echo '<td><img align="absmiddle" width="20px" title="'.$add.'" src="themes/softed/images/btnL3Add.gif" onclick="document.location=\'index.php?module=Calendar4You&action=EventEditView&createmode=link&return_id='.$forrecord.'&return_action=DetailView&return_module='.$formodule.'&activity_mode=Task&cbfromid='.$forrecord.'\'"></td>';
 	} else {
-		echo '<td><img align="absmiddle" width="20px" title="'.$add.'" src="themes/softed/images/btnL3Add.gif" onclick="document.location=\'index.php?module='.$module.'&action=EditView&createmode=link&return_id='.$forrecord.'&return_action=DetailView&return_module='.$formodule.'&cbfromid='.$forrecord.'\'"></td>';
+		echo '<td><img align="absmiddle" width="20px" title="'.$add.'" src="themes/softed/images/btnL3Add.gif" onclick="document.location=\'index.php?module='.urlencode($module).'&action=EditView&createmode=link&return_id='.$forrecord.'&return_action=DetailView&return_module='.$formodule.'&cbfromid='.$forrecord.'\'"></td>';
 	}
 	echo '</tr>';
 }

@@ -109,7 +109,7 @@ if(isset($app_strings['LBL_CHARSET']))
 {
 	$charset = $app_strings['LBL_CHARSET'];
 }
-
+$theme = vtlib_purify($theme);
 $out  = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">';
 $out .=	'<HTML><HEAD>';
 $out .=	'<meta http-equiv="Content-Type" content="text/html; charset='.$charset.'">';
