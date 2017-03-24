@@ -32,7 +32,7 @@ if ($isCreate) {
 }
 
 $category = getParentTab();
-$targetModules = array('Leads');
+$targetModules = array('Leads','Contacts','Accounts','Potentials','HelpDesk');
 
 $usersList = get_user_array(false);
 $groupsList = get_group_array(false);

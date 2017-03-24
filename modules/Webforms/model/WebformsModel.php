@@ -70,6 +70,10 @@ class Webforms_Model {
 		$this->data["returnurl"] = $returnurl;
 	}
 
+	function setWebDomain($web_domain) {
+		$this->data["web_domain"] = $web_domain;
+	}
+
 	function setOwnerId($ownerid) {
 		$this->data["ownerid"];
 	}
@@ -81,7 +85,7 @@ class Webforms_Model {
 			$fieldModel = new Webforms_Field_Model();
 			$fieldModel->setFieldName($fieldname);
 			$fieldModel->setNeutralizedField($fieldname, $fieldInfo['label']);
-			$field = Webforms::getFieldInfo('Leads', $fieldname);
+			$field = Webforms::getFieldInfo($this->getTargetModule(), $fieldname);
 			if (($field['type']['name'] == 'date')) {
 				$defaultvalue = DateTimeField::convertToDBFormat($value[$fieldname]);
 			}else if (($field['type']['name'] == 'boolean')){
@@ -136,6 +140,10 @@ class Webforms_Model {
 		return (isset($this->data['returnurl']) ? vtlib_purify($this->data['returnurl']) : '');
 	}
 
+	function getWebDomain() {
+		return (isset($this->data['web_domain']) ? vtlib_purify($this->data['web_domain']) : '');
+	}
+
 	function getOwnerId() {
 		require_once 'modules/Users/Users.php';
 		$return = (isset($this->data['ownerid']) ? vtlib_purify($this->data['ownerid']) : '');
@@ -172,13 +180,13 @@ class Webforms_Model {
 				throw new Exception(getTranslatedString('LBL_DUPLICATE_NAME','Webforms'));
 			}
 			$this->setPublicId($this->generatePublicId($this->getName()));
-			$insertSQL = "INSERT INTO vtiger_webforms(name, targetmodule, publicid, enabled, description,ownerid,returnurl) VALUES(?,?,?,?,?,?,?)";
-			$result = $adb->pquery($insertSQL, array($this->getName(), $this->getTargetModule(), $this->getPublicid(), $this->getEnabled(), $this->getDescription(), $this->getOwnerId(), $this->getReturnUrl()));
+			$insertSQL = "INSERT INTO vtiger_webforms(name, targetmodule, publicid, enabled, description,ownerid,returnurl,web_domain) VALUES(?,?,?,?,?,?,?,?)";
+			$result = $adb->pquery($insertSQL, array($this->getName(), $this->getTargetModule(), $this->getPublicid(), $this->getEnabled(), $this->getDescription(), $this->getOwnerId(), $this->getReturnUrl(), $this->getWebDomain()));
 			$this->setId($adb->getLastInsertID());
 		} else {
 			// Udpate
-			$updateSQL = "UPDATE vtiger_webforms SET description=? ,returnurl=?,ownerid=?,enabled=? WHERE id=?";
-			$result = $adb->pquery($updateSQL, array($this->getDescription(), $this->getReturnUrl(), $this->getOwnerId(), $this->getEnabled(), $this->getId()));
+			$updateSQL = "UPDATE vtiger_webforms SET description=? ,returnurl=?,ownerid=?,enabled=?,web_domain=? WHERE id=?";
+			$result = $adb->pquery($updateSQL, array($this->getDescription(), $this->getReturnUrl(), $this->getOwnerId(), $this->getEnabled(), $this->getWebDomain(), $this->getId()));
 		}
 
 		// Delete fields and re-add enabled once
@@ -280,8 +288,11 @@ class Webforms_Model {
 		$result = $adb->pquery($sql, array($webformid, $fieldname));
 		$defaultvalue = false;
 		if ($adb->num_rows($result)) {
+			$sql = "SELECT targetmodule FROM vtiger_webforms WHERE id=?";
+			$res_module = $adb->pquery($sql, array($webformid));
+			$targetmodule = $adb->query_result($res_module, 0, "targetmodule");
 			$defaultvalue = $adb->query_result($result, 0, "defaultvalue");
-			$field = Webforms::getFieldInfo('Leads', $fieldname);
+			$field = Webforms::getFieldInfo($targetmodule, $fieldname);
 			if (($field['type']['name'] == 'date') && !empty($defaultvalue)) {
 				$defaultvalue = DateTimeField::convertToUserFormat($defaultvalue);
 			}

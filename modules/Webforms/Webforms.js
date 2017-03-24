@@ -40,7 +40,8 @@ var Webforms ={
 		var name=document.getElementById('name').value;
 		var ownerid=document.getElementById('ownerid').value;
 		var module=document.getElementById('targetmodule').value;
-		if((name=="")||(name==null)||(ownerid=="")||(ownerid==null)||(module=="")||(module==null)){
+		var web_domain=document.getElementById('web_domain').value;
+		if((name=="")||(name==null)||(ownerid=="")||(ownerid==null)||(module=="")||(module==null)||(web_domain=="")||(web_domain==null)){
 			if (typeof webforms_alert_arr != 'undefined') {
 				alert(getTranslatedString('LBL_MADATORY_FIELDS', webforms_alert_arr));
 			} else {

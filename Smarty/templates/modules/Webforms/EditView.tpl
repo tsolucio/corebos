@@ -168,6 +168,24 @@
 													</td>
 												</tr>
 												{/if}
+												<tr style="height:25px">
+													<td class="dvtCellLabel" align="right" >
+														<font color="red">*</font>{'LBL_WEB_DOMAIN'|@getTranslatedString:$MODULE}
+													</td>
+													<td class="dvtCellInfo" align="left" >
+														<input type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="web_domain" name="web_domain" value="{$WEBFORM->getWebDomain()}">
+													</td>
+												</tr>
+												<!--Cell Information end-->
+												<tr style="height:25px">
+													<td>&nbsp;</td>
+												</tr>
+												<!--Cell Description Information-->
+												<tr>
+													<td colspan="4" class="detailedViewHeader">
+														<b>{'LBL_DESCRIPTION'|@getTranslatedString:$MODULE}</b>
+													</td>
+												</tr>
 												<tr>
 													<td class="dvtCellLabel" align="right" colspan="1">
 														{'LBL_DESCRIPTION'|@getTranslatedString:$MODULE}

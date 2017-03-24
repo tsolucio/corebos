@@ -155,12 +155,29 @@
 														{$ACTIONPATH}
 													</td>
 												</tr>
-
+												<tr style="height:25px">
+													<td class="dvtCellLabel" align="right" >
+														<font color="red">*</font>{'LBL_WEB_DOMAIN'|@getTranslatedString:$MODULE}
+													</td>
+													<td class="dvtCellInfo" align="left" >
+														{$WEBFORMMODEL->getWebDomain()}
+													</td>
+												</tr>
+												<!--Cell Information end-->
+												<tr style="height:25px">
+													<td>&nbsp;</td>
+												</tr>
+												<!--Cell Information Description-->
+												<tr>
+													<td colspan="4" class="detailedViewHeader">
+														<b>{'LBL_DESCRIPTION'|@getTranslatedString:$MODULE}</b>
+													</td>
+												</tr>
 												<tr>
 													<td class="dvtCellLabel" align="right" style="height:25px;">
 														{'LBL_DESCRIPTION'|@getTranslatedString:$MODULE}
 													</td>
-													<td class="dvtCellInfo" align="left" >
+													<td colspan=3 class="dvtCellInfo" align="left" >
 														{$WEBFORMMODEL->getDescription()}
 													</td>
 												</tr>

@@ -38,6 +38,7 @@ $mod_strings = Array (
 'LBL_SAVE'=>'Guardar',
 'LBL_SELECT_VALUE'=>'--Selecciona Valor--',
 'LBL_SELECT_USER'=>'Selecciona Usuario',
+'LBL_WEB_DOMAIN' => 'Web Domain',
 );
 
 ?>

@@ -19,7 +19,8 @@ include_once 'include/QueryGenerator/QueryGenerator.php';
 
 class Webform_Capture {
 
-	function captureNow($request) {
+	function captureNow($request,$server) {
+		global $adb;
 		$returnURL = false;
 		try {
 
@@ -30,6 +31,9 @@ class Webform_Capture {
 			
 			$returnURL = $webform->getReturnUrl();
 
+			$webDomain = $webform->getWebDomain();
+			$incomingOrigin = parse_url($server['HTTP_REFERER']);
+			if(!empty($webDomain) and stripos($incomingOrigin['host'],$webDomain) === FALSE) throw new Exception("The domain of the form does not match with the webform");
 			// Retrieve user information
 			$user = CRMEntity::getInstance('Users');
 			$user->id=$user->getActiveAdminId();
@@ -53,12 +57,43 @@ class Webform_Capture {
 					if(empty($parameters[$webformField->getFieldName()]))  throw new Exception("Required fields not filled");
 				}
 			}
-
+			switch ($webform->getTargetModule())
+			{
+				case 'Potentials':
+					if (isset($request['related_to']) && $request['related_to'] != NULL) {
+						$setype = getSalesEntityType($request['related_to']);
+						$result = $adb->pquery("SELECT id FROM vtiger_ws_entity WHERE name = ?",array($setype));
+						$wsid = $adb->query_result($result,0,'id');
+						$parameters['related_to'] = $wsid.'x'.$request['related_to'];
+					} else {
+						throw new Exception("Required field Related To not filled");
+					}
+					if (isset($request['campaignid']) && $request['campaignid'] != NULL) {
+						$result = $adb->pquery("SELECT id FROM vtiger_ws_entity WHERE name = ?",array('Campaigns'));
+						$wsid = $adb->query_result($result,0,'id');
+						$parameters['campaignid'] = $wsid.'x'.$request['campaignid'];
+					}
+					break;
+				case 'HelpDesk':
+					if (isset($request['product_id']) && $request['product_id'] != NULL) {
+						$setype = getSalesEntityType($request['product_id']);
+						$result = $adb->pquery("SELECT id FROM vtiger_ws_entity WHERE name = ?",array($setype));
+						$wsid = $adb->query_result($result,0,'id');
+						$parameters['product_id'] = $wsid.'x'.$request['product_id'];
+					}
+					if (isset($request['parent_id']) && $request['parent_id'] != NULL) {
+						$setype = getSalesEntityType($request['parent_id']);
+						$result = $adb->pquery("SELECT id FROM vtiger_ws_entity WHERE name = ?",array($setype));
+						$wsid = $adb->query_result($result,0,'id');
+						$parameters['parent_id'] = $wsid.'x'.$request['parent_id'];
+					}
+					break;
+			}
 			$parameters['assigned_user_id'] = vtws_getWebserviceEntityId('Users', $webform->getOwnerId());
 			// Create the record
-			
+
 			$record=vtws_create($webform->getTargetModule(), $parameters, $user);
-			
+
 			$this->sendResponse($returnURL, 'ok');
 			return;
 
@@ -88,5 +123,5 @@ class Webform_Capture {
 
 // NOTE: Take care of stripping slashes...
 $webformCapture = new Webform_Capture();
-$webformCapture->captureNow($_REQUEST);
+$webformCapture->captureNow($_REQUEST,$_SERVER);
 ?>
