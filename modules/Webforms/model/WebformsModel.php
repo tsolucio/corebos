@@ -28,7 +28,7 @@ class Webforms_Model {
 			$this->setFields(vtlib_purify($data["fields"]), vtlib_purify($data["required"]), vtlib_purify($data["value"]));
 		}
 		if (isset($data['id'])) {
-			if (($data['enabled'] == 'on') || ($data['enabled'] == 1)) {
+			if (isset($data['enabled']) and ($data['enabled'] == 'on') || ($data['enabled'] == 1)) {
 				$this->setEnabled(1);
 			} else {
 				$this->setEnabled(0);
@@ -109,36 +109,36 @@ class Webforms_Model {
 	}
 
 	function getId() {
-		return vtlib_purify($this->data["id"]);
+		return (isset($this->data['id']) ? vtlib_purify($this->data['id']) : '');
 	}
 
 	function getName() {
-		return html_entity_decode(vtlib_purify($this->data["name"]));
+		return (isset($this->data['name']) ? html_entity_decode(vtlib_purify($this->data['name'])) : '');
 	}
 
 	function getTargetModule() {
-		return vtlib_purify($this->data["targetmodule"]);
+		return (isset($this->data['targetmodule']) ? vtlib_purify($this->data['targetmodule']) : '');
 	}
 
 	function getPublicId() {
-		return vtlib_purify($this->data["publicid"]);
+		return (isset($this->data['publicid']) ? vtlib_purify($this->data['publicid']) : '');
 	}
 
 	function getEnabled() {
-		return vtlib_purify($this->data["enabled"]);
+		return (isset($this->data['enabled']) ? vtlib_purify($this->data['enabled']) : '');
 	}
 
 	function getDescription() {
-		return vtlib_purify($this->data["description"]);
+		return (isset($this->data['description']) ? vtlib_purify($this->data['description']) : '');
 	}
 
 	function getReturnUrl() {
-		return vtlib_purify($this->data["returnurl"]);
+		return (isset($this->data['returnurl']) ? vtlib_purify($this->data['returnurl']) : '');
 	}
 
 	function getOwnerId() {
 		require_once 'modules/Users/Users.php';
-		$return = vtlib_purify($this->data['ownerid']);
+		$return = (isset($this->data['ownerid']) ? vtlib_purify($this->data['ownerid']) : '');
 		return (empty($return) ? Users::getActiveAdminId() : $return);
 	}
 
@@ -169,7 +169,7 @@ class Webforms_Model {
 		// Create?
 		if ($isNew) {
 			if (self::existWebformWithName($this->getName())) {
-				throw new Exception('LBL_DUPLICATE_NAME');
+				throw new Exception(getTranslatedString('LBL_DUPLICATE_NAME','Webforms'));
 			}
 			$this->setPublicId($this->generatePublicId($this->getName()));
 			$insertSQL = "INSERT INTO vtiger_webforms(name, targetmodule, publicid, enabled, description,ownerid,returnurl) VALUES(?,?,?,?,?,?,?)";
@@ -242,7 +242,6 @@ class Webforms_Model {
 			$webform = new Webforms_Model($adb->fetch_array($result));
 			$webforms[] = $webform;
 		}
-
 
 		return $webforms;
 	}
