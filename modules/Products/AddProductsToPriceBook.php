@@ -66,10 +66,10 @@ $list_query = getListQuery("Products");
 
 if(isset($order_by) && $order_by != '')
 {
-	$list_query .= ' and vtiger_products.discontinued<>0  ORDER BY '.$order_by.' '.$sorder;
+	$list_query .= ' and vtiger_products.discontinued<>0 ORDER BY '.$order_by.' '.$sorder;
 }
 
-$list_query .=  " and vtiger_products.discontinued<>0 group by vtiger_crmentity.crmid";
+$list_query .= ' and vtiger_products.discontinued<>0 group by vtiger_crmentity.crmid';
 $list_result = $adb->query($list_query);
 $num_rows = $adb->num_rows($list_result);
 
@@ -88,7 +88,6 @@ for($i=0; $i<$num_prod_rows; $i++)
 	$prod_array[$prodid] = $prodid;
 }
 
-
 //Buttons Add To PriceBook and Cancel
 $other_text = '
 	<table width="95%" border="0" cellpadding="1" cellspacing="0" align="center">
@@ -102,9 +101,9 @@ $other_text = '
 
 	//we should not display the Add to PriceBook button if there is no products to associate
 	if($num_rows != $num_prod_rows && $num_rows > 0)
-		$other_text .='<input class="crmbutton small save" type="submit" value="'.$mod_strings[LBL_ADD_PRICEBOOK_BUTTON_LABEL].'" onclick="return addtopricebook()"/>';
+		$other_text .='<input class="crmbutton small save" type="submit" value="'.$mod_strings['LBL_ADD_PRICEBOOK_BUTTON_LABEL'].'" onclick="return addtopricebook()"/>';
 
-$other_text .='&nbsp;<input title="'.$app_strings[LBL_CANCEL_BUTTON_TITLE].'" accessKey="'.$app_strings[LBL_CANCEL_BUTTON_KEY].'" class="crmbutton small cancel" onclick="window.history.back()" type="button" name="button" value="'.$app_strings[LBL_CANCEL_BUTTON_LABEL].'"></td>';
+$other_text .='&nbsp;<input title="'.$app_strings['LBL_CANCEL_BUTTON_TITLE'].'" accessKey="'.$app_strings['LBL_CANCEL_BUTTON_KEY'].'" class="crmbutton small cancel" onclick="window.history.back()" type="button" name="button" value="'.$app_strings['LBL_CANCEL_BUTTON_LABEL'].'"></td>';
 
 $other_text .='
 	   </tr>
@@ -127,7 +126,6 @@ $list_header .= '</tr>';
 
 $smarty->assign("LISTHEADER", $list_header);
 
-
 //if the product is not associated already then we should display that products
 $new_prod_array = array();
 $unit_price_array=array();
@@ -149,8 +147,7 @@ for($i=0; $i<count($new_prod_array); $i++)
 {
 	$log->info("Products :: Showing the List of products to be added in price book");
 	$entity_id = $new_prod_array[$i];
-	if(isPermitted('Products','EditView',$entity_id) == 'yes') {
-		
+	if (isPermitted('Products','EditView',$entity_id) == 'yes') {
 		$list_body .= '<tr class="lvtColData" onmouseover="this.className=\'lvtColDataHover\'" onmouseout="this.className=\'lvtColData\'" bgcolor="white">';
 		$unit_price = $prod_price_list[$entity_id];
 		$field_name = $entity_id."_listprice";
@@ -186,5 +183,4 @@ $smarty->assign("LISTENTITY", $list_body);
 $smarty->assign("CATEGORY", $parenttab);
 
 $smarty->display("AddProductsToPriceBook.tpl");
-
 ?>

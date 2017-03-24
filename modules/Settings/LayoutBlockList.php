@@ -344,8 +344,9 @@ function getFieldListEntries($module) {
 			$fields = $adb->pquery($query_fields_not_in_block,$params);
 			$row_field= $adb->fetch_array($fields);
 
+			$movefields = array();
+			$cflist[$i]['movefieldcount'] = 0;
 			if($row_field != '') {
-				$movefields = array();
 				$movefieldcount = 0;
 				do {
 					$movefields[$movefieldcount]['fieldid'] =  $row_field['fieldid'];
@@ -353,9 +354,6 @@ function getFieldListEntries($module) {
 					$movefieldcount++;
 				}while($row_field = $adb->fetch_array($fields));
 				$cflist[$i]['movefieldcount'] = $movefieldcount;
-			}
-			else {
-				$cflist[$i]['movefieldcount'] = 0 ;
 			}
 
 			$cflist[$i]['field']= $cf_element;

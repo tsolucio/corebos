@@ -22,21 +22,20 @@
 require_once('include/logging.php');
 global $app_strings;
 
-$log = LoggerManager::getLogger('layout_utils');	
+$log = LoggerManager::getLogger('layout_utils');
 
 /**
  * Create HTML to display formatted form title of a form in the left pane
  * param $left_title - the string to display as the title in the header
  */
-function get_left_form_header ($left_title) 
-{
+function get_left_form_header ($left_title) {
 global $image_path;
 
 $the_header = <<<EOQ
-       <table width="100%" cellpadding="0" cellspacing="0" border="0"><tbody><tr>
-	   	<td width="4" height="20"><img src="themes/images/head_start.gif"></td>	
-        <td class="leftFormHeader" vAlign="middle" align="left" noWrap height="20">$left_title</td>
-		<td width="4" height="20"><img src="themes/images/head_end.gif"></td>	
+	<table width="100%" cellpadding="0" cellspacing="0" border="0"><tbody><tr>
+		<td width="4" height="20"><img src="themes/images/head_start.gif"></td>
+		<td class="leftFormHeader" vAlign="middle" align="left" noWrap height="20">$left_title</td>
+		<td width="4" height="20"><img src="themes/images/head_end.gif"></td>
 		</tr></tbody></table>
 		<table width="100%" cellpadding="3" cellspacing="0" border="0" class="formOuterBorder"><tbody><tr><td align="left">
 EOQ;
@@ -84,7 +83,7 @@ global $app_strings;
 $the_title = "<table width='100%' cellpadding='0' cellspacing='0' border='0'><tbody><tr><td>\n";
 $the_title .= "<table cellpadding='0' cellspacing='0' border='0'><tbody><tr>\n";
 $the_title .= "<td vAlign='middle' align='center'>\n";
-		
+
 if (is_file($image_path.$module.".gif")) {
 	$the_title .= "<IMG src='".$image_path.$module.".gif' border='0'>\n";
 }

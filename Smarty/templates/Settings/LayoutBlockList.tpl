@@ -34,7 +34,7 @@ function getCustomFieldList(customField)
 	{rdelim}).done(function(response) {ldelim}
 				document.getElementById("cfList").innerHTML=response;
 	{rdelim}
-	);	
+	);
 {rdelim}
 
 function changeFieldorder(what_to_do,fieldid,blockid,modulename)
@@ -47,7 +47,7 @@ function changeFieldorder(what_to_do,fieldid,blockid,modulename)
 				document.getElementById("cfList").innerHTML=response;
 				document.getElementById('vtbusy_info').style.display = "none";
 	{rdelim}
-	);	
+	);
 {rdelim}
 
 function changeShowstatus(tabid,blockid,modulename)
@@ -107,7 +107,7 @@ function deleteCustomBlock(module,blockid,no){
 			}).done(function(response) {
 					document.getElementById("cfList").innerHTML=response;
 					document.getElementById('vtbusy_info').style.display = "none";
-			});	
+			});
 		}
 	}
 }
@@ -184,7 +184,7 @@ function saveFieldInfo(fieldid,module,sub_mode,typeofdata){
 		}
 		urlstring = urlstring + '&defaultvalue=' + encodeURIComponent(defaultvalue);
 	}
-	
+
 	document.getElementById('vtbusy_info').style.display = "block";
 	jQuery.ajax({
 			method:"POST",
@@ -224,7 +224,7 @@ function getCreateCustomFieldForm(modulename,blockid,mode) {
 		return false;
 	var type = document.getElementById("fieldType_"+blockid).value;
 	var label = document.getElementById("fldLabel_"+blockid).value;
-	var fldLength = document.getElementById("fldLength_"+blockid).value;  
+	var fldLength = document.getElementById("fldLength_"+blockid).value;
 	var fldDecimal = document.getElementById("fldDecimal_"+blockid).value;
 	var fldPickList = encodeURIComponent(document.getElementById("fldPickList_"+blockid).value);
 	var selrelationmodules=document.getElementById("fldRelMods_"+blockid).selectedOptions;
@@ -301,7 +301,7 @@ function changeRelatedListorder(what_to_do,tabid,sequence,id,module)
 			document.getElementById("relatedlistdiv").innerHTML=response;
 			document.getElementById('vtbusy_info').style.display = "none";
 	});
-}	
+}
 
 function deleteRelatedList(tabid,sequence,id,module) {
 	document.getElementById('vtbusy_info').style.display = "block";

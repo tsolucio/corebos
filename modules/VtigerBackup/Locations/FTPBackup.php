@@ -6,16 +6,9 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  *********************************************************************************/
-
 require_once 'modules/VtigerBackup/Locations/Location.php';
 
-/**
- * Description of FTPBackup
- *
- * @author MAK
- */
 class Vtiger_FTPBackup extends Vtiger_Location{
 
 	protected $server;
