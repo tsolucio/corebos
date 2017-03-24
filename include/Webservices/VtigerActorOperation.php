@@ -309,15 +309,14 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 
 		if($error){
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR,
-					vtws_getWebserviceTranslatedString('LBL_'.
-							WebServiceErrorCode::$DATABASEQUERYERROR));
+				vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
 		}
 
 		$noofrows = $this->pearDB->num_rows($result);
 		$output = array();
-		for($i=0; $i<$noofrows; $i++){
+		for ($i=0; $i<$noofrows; $i++) {
 			$row = $this->pearDB->fetchByAssoc($result,$i);
-			if(!$meta->hasPermission(EntityMeta::$RETRIEVE,$row["crmid"])){
+			if (!$meta->hasPermission(EntityMeta::$RETRIEVE,(isset($row['crmid']) ? $row['crmid'] : ''))) {
 				continue;
 			}
 			$output[] = DataTransform::sanitizeDataWithColumn($row,$meta);

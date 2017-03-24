@@ -47,7 +47,7 @@ class MailManager_Model_DraftEmail {
 				$clause .=  $fields[$i]." LIKE '%".$query."%' OR ";
 			}
 		}
-        return $clause;
+		return $clause;
 	}
 
 	function getDrafts($page, $limit, $folder, $where = null) {
@@ -244,6 +244,7 @@ class MailManager_Model_DraftEmail {
 
 	function getParentFromEmails($to_string) {
 		global $current_user;
+		$parentIds = '';
 		if (!empty($to_string)) {
 			$toArray = explode(',', $to_string);
 			foreach($toArray as $to) {

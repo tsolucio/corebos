@@ -760,7 +760,6 @@ if (typeof(MailManager) == 'undefined') {
             element.css("position","absolute");
             element.css("top", ((jQuery(window).height() - element.outerHeight()) / 2) + jQuery(window).scrollTop() + "px");
             element.css("left", ((jQuery(window).width() - element.outerWidth()) / 2) + jQuery(window).scrollLeft() + "px");
-
         },
 
         /* Compose new mail */

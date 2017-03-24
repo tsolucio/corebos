@@ -63,8 +63,7 @@ class VTEmailTask extends VTTask{
 		$to_email = preg_replace('/,,+/', ',', $to_email);
 		$cc = preg_replace('/,,+/', ',', $cc);
 		$bcc = preg_replace('/,,+/', ',', $bcc);
-		if(strlen(trim($to_email, " \t\n,")) == 0 && strlen(trim($cc, " \t\n,")) == 0 &&
-				strlen(trim($bcc, " \t\n,")) == 0) {
+		if (strlen(trim($to_email, " \t\n,")) == 0 && strlen(trim($cc, " \t\n,")) == 0 && strlen(trim($bcc, " \t\n,")) == 0) {
 			return ;
 		}
 
