@@ -35,12 +35,11 @@ $num_act_util_per = $adb->num_rows($act_utility_result);
 	$edit_all_req= vtlib_purify($_REQUEST['edit_all']);
 	$edit_all = getPermissionValue($edit_all_req);
 
-	$update_query = "update  vtiger_profile2globalpermissions set globalactionpermission=? where globalactionid=1 and profileid=?";
+	$update_query = "update vtiger_profile2globalpermissions set globalactionpermission=? where globalactionid=1 and profileid=?";
 	$adb->pquery($update_query, array($view_all, $profileid));
-	$update_query = "update  vtiger_profile2globalpermissions set globalactionpermission=? where globalactionid=2 and profileid=?";
+	$update_query = "update vtiger_profile2globalpermissions set globalactionpermission=? where globalactionid=2 and profileid=?";
 	$adb->pquery($update_query, array($edit_all, $profileid));
 
-	
 	//profile2tab permissions
 	for($i=0; $i<$num_tab_per; $i++)
 	{
@@ -66,7 +65,7 @@ $num_act_util_per = $adb->num_rows($act_utility_result);
 			}
 		}
 	}
-	
+
 	//profile2standard permissions
 	for($i=0; $i<$num_act_per; $i++)
 	{
@@ -116,7 +115,6 @@ $num_act_util_per = $adb->num_rows($act_utility_result);
 		$action_name = getActionname($action_id);
 		$request_var = $tab_id.'_'.$action_name;
 
-
 		$permission = $_REQUEST[$request_var];
 		if($permission == 'on')
 		{
@@ -129,12 +127,9 @@ $num_act_util_per = $adb->num_rows($act_utility_result);
 
 		$update_query = "update vtiger_profile2utility set permission=? where tabid=? and activityid=? and profileid=?";
 		$adb->pquery($update_query, array($permission_value, $tab_id, $action_id, $profileid));
-
-
 	}
 
-
-$modArr=getModuleAccessArray(); 
+$modArr = getModuleAccessArray();
 
 foreach($modArr as $fld_module => $fld_label)
 {
@@ -143,7 +138,7 @@ foreach($modArr as $fld_module => $fld_label)
 	$tab_id = getTabid($fld_module);
 	for($i=0; $i<$noofrows; $i++)
 	{
-		$fieldid =  $adb->query_result($fieldListResult,$i,"fieldid");
+		$fieldid = $adb->query_result($fieldListResult,$i,"fieldid");
 		$visible = $_REQUEST[$fieldid];
 		if($visible == 'on')
 		{
@@ -157,12 +152,11 @@ foreach($modArr as $fld_module => $fld_label)
 		$readOnlyValue = $_REQUEST[$readonlyfieldid];
 		//Updating the Mandatory vtiger_fields
 		$uitype = $adb->query_result($fieldListResult,$i,"uitype");
-		$displaytype =  $adb->query_result($fieldListResult,$i,"displaytype");
-		$fieldname =  $adb->query_result($fieldListResult,$i,"fieldname");
+		$displaytype = $adb->query_result($fieldListResult,$i,"displaytype");
+		$fieldname = $adb->query_result($fieldListResult,$i,"fieldname");
 		$typeofdata = $adb->query_result($fieldListResult,$i,"typeofdata");
 		$fieldtype = explode("~",$typeofdata);
-		if($fieldtype[1] == 'M')
-   		{
+		if ($fieldtype[1] == 'M') {
 			$visible_value = 0;
 		}
 		//Updating the database
@@ -181,11 +175,10 @@ foreach($modArr as $fld_module => $fld_label)
 	}
 	header($loc);
 
- /** returns value 0 if request permission is on else returns value 1
-  * @param $req_per -- Request Permission:: Type varchar
-  * @returns $permission - can have value 0 or 1:: Type integer
-  *
- */
+/** returns value 0 if request permission is on else returns value 1
+ * @param $req_per -- Request Permission:: Type varchar
+ * @returns $permission - can have value 0 or 1:: Type integer
+*/
 function getPermissionValue($req_per)
 {
 	if($req_per == 'on')

@@ -71,7 +71,7 @@ $lbl_user_image=$mod_strings['User Image'];
 $the_emailid = $app_strings['THE_EMAILID'];
 $email_field_is = $app_strings['EMAIL_FILED_IS'].$err_invalid_email_address;
 $other_email_field_is = $app_strings['OTHER_EMAIL_FILED_IS'].$err_invalid_email_address;
-$secondary_email_field_is = $app_strings['SECONDARY_EMAIL_FILED_IS'].$err_invalid_secondary_email_address; 
+$secondary_email_field_is = $app_strings['SECONDARY_EMAIL_FILED_IS'].$err_invalid_secondary_email_address;
 $lbl_asterisk_details_not_set = $app_strings['LBL_ASTERISK_SET_ERROR'];
 $lbl_currency_separators_incorrect = getTranslatedString('LBL_CURRENCY_SEPARATORS_INCORRECT','Users');
 
@@ -93,7 +93,7 @@ function set_fieldfocus(errorMessage,oMiss_field){
 function verify_data(form) {
 	var isError = false;
 	var errorMessage = "";
-	
+
 	//check if asterisk server details are set or not
 	if(trim(form.asterisk_extension.value)!="" && "$checkAsteriskDetails" == "false"){
 		errorMessage = "$lbl_asterisk_details_not_set";
@@ -101,19 +101,19 @@ function verify_data(form) {
 		return false;
 	}
 	var extensions = $extensions_list;
-        if(form.asterisk_extension.value != "") {
-            for(var userid in extensions){
-                if(trim(form.asterisk_extension.value) == extensions[userid]) {
-                    if(userid == $record && $mode == false) {
-                    } else {
-                        alert("This extension has already been configured for another user. Please use another extension.");
-                        return false;
-                    }
-                }
-            }
-        }
+	if (form.asterisk_extension.value != "") {
+		for (var userid in extensions) {
+			if(trim(form.asterisk_extension.value) == extensions[userid]) {
+				if (userid == $record && $mode == false) {
+				} else {
+					alert("This extension has already been configured for another user. Please use another extension.");
+					return false;
+				}
+			}
+		}
+	}
 	//asterisk check ends
-	
+
 	if (trim(form.email1.value) == "") {
 		isError = true;
 		errorMessage += "\\n$lbl_user_email1";
@@ -165,7 +165,7 @@ function verify_data(form) {
 		form.email2.focus();
 		return false;
 	}
-	form.secondaryemail.value = trim(form.secondaryemail.value); 
+	form.secondaryemail.value = trim(form.secondaryemail.value);
 	if (form.secondaryemail.value != "" && !/^[a-zA-Z0-9]+([!"#$%&'()*+,./:;<=>?@\^_`{|}~-]?[a-zA-Z0-9])*@[a-zA-Z0-9]+([\_\-\.]?[a-zA-Z0-9]+)*\.([\-\_]?[a-zA-Z0-9])+(\.?[a-zA-Z0-9]+)?$/.test(form.secondaryemail.value)){
 		alert("$the_emailid"+form.secondaryemail.value+"$secondary_email_field_is");
 		form.secondaryemail.focus();

@@ -445,8 +445,6 @@ function getUserModuleSharingObjects($module,$userid,$def_org_share,$current_use
 
 		}
 
-
-
 		//Retreiving from role to rs
 		$parRoleList = array();
 		foreach($parent_roles as $par_role_id)
@@ -553,7 +551,6 @@ function getUserModuleSharingObjects($module,$userid,$def_org_share,$current_use
 			}
 		}
 
-
 		//Retreiving from rs to vtiger_role
 		$query="select vtiger_datashare_rs2role.* from vtiger_datashare_rs2role inner join vtiger_datashare_module_rel on vtiger_datashare_module_rel.shareid=vtiger_datashare_rs2role.shareid where vtiger_datashare_module_rel.tabid=? and vtiger_datashare_rs2role.to_roleid=?";
 		$result=$adb->pquery($query, array($mod_tabid, $current_user_roles));
@@ -601,7 +598,6 @@ function getUserModuleSharingObjects($module,$userid,$def_org_share,$current_use
 			$share_id_members[$shareid]=$share_id_role_members;
 
 		}
-
 
 		//Retreiving from rs to rs
 		$parRoleList = array();
@@ -707,8 +703,6 @@ function getUserModuleSharingObjects($module,$userid,$def_org_share,$current_use
 			}
 			$share_id_role_members['ROLE']=$share_id_roles;
 			$share_id_members[$shareid]=$share_id_role_members;
-
-
 
 		}
 		$mod_share_read_permission['ROLE']=$role_read_per;
@@ -1402,8 +1396,8 @@ function populateSharingtmptables($userid)
 
 	foreach($sharingArray as $module)
 	{
-		$module_sharing_read_permvar    = $module.'_share_read_permission';
-		$module_sharing_write_permvar   = $module.'_share_write_permission';
+		$module_sharing_read_permvar  = $module.'_share_read_permission';
+		$module_sharing_write_permvar = $module.'_share_write_permission';
 		populateSharingPrivileges('USER',$userid,$module,'read',   $$module_sharing_read_permvar );
 		populateSharingPrivileges('USER',$userid,$module,'write',  $$module_sharing_write_permvar );
 		populateSharingPrivileges('GROUP',$userid,$module,'read',  $$module_sharing_read_permvar );
@@ -1416,8 +1410,8 @@ function populateSharingtmptables($userid)
 		foreach($tabid_arr as $taid)
 		{
 			$tab_name=getTabname($taid);
-			$relmodule_sharing_read_permvar    = $tab_name.'_'.$rel_tab_name.'_share_read_permission';
-			$relmodule_sharing_write_permvar   = $tab_name.'_'.$rel_tab_name.'_share_write_permission';
+			$relmodule_sharing_read_permvar  = $tab_name.'_'.$rel_tab_name.'_share_read_permission';
+			$relmodule_sharing_write_permvar = $tab_name.'_'.$rel_tab_name.'_share_write_permission';
 			populateRelatedSharingPrivileges('USER',$userid,$tab_name,$rel_tab_name,'read', $$relmodule_sharing_read_permvar);
 			populateRelatedSharingPrivileges('USER',$userid,$tab_name,$rel_tab_name,'write', $$relmodule_sharing_write_permvar);
 			populateRelatedSharingPrivileges('GROUP',$userid,$tab_name,$rel_tab_name,'read', $$relmodule_sharing_read_permvar);
@@ -1488,7 +1482,6 @@ function populateSharingPrivileges($enttype,$userid,$module,$pertype, $var_name_
 				}
 			}
 		}
-
 
 	}
 	elseif($enttype=='GROUP')

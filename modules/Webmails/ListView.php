@@ -161,9 +161,9 @@ if($_POST["command"] == "check_mbox") {
 <script type="text/javascript">
 // Pass our PHP variables to js.
 <?php if($degraded_service == 'true')
-				{
-					echo 'var degraded_service="true";';
-				}
+{
+	echo 'var degraded_service="true";';
+}
 else
 {
 	echo 'var degraded_service="false";';

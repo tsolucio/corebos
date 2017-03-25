@@ -142,20 +142,17 @@ while ($tmp = array_pop($content['attachtab']))
 	{
 		$exploded = explode('/', $tmp['mime']);
 		$img_type = array_pop($exploded);
-		if (preg_match("/JPEG/i", $img_type) || preg_match("/JPG/i", $img_type) || preg_match("/GIF/i", $img_type) || preg_match ('/PNG/g', $img_type))
-                        {
+		if (preg_match("/JPEG/i", $img_type) || preg_match("/JPG/i", $img_type) || preg_match("/GIF/i", $img_type) || preg_match ('/PNG/g', $img_type)) {
 			echo '<hr />';
 			echo '<center>';
 			echo '<img src="index.php?module=Webmails&action=get_img&mail=' . $mailid.'&mailbox='.$mailbox.'&num=' . $tmp['number'] . '&mime=' . $img_type . '&transfer=' . $tmp['transfer'] . '" />';
 			echo '</center>';
-	}                
-}                    
+		}
+	}
 }
-
 
 echo '</div>';
 //test ended by Richie
 
 imap_close($MailBox->mbox);
-
 ?>

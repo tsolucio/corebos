@@ -49,7 +49,7 @@ if(isset($_REQUEST['owner_id']) && $_REQUEST['owner_id']!='')
 						$result = $adb->pquery($insert, array($idval, $id));
 					}
 				}
-			}	
+			}
 			//Now we have to update the smownerid
 			$sql = "update vtiger_crmentity set modifiedby=?, smownerid=?, modifiedtime=? where crmid=?";
 			$result = $adb->pquery($sql, array($current_user->id, $idval, $adb->formatDate($date_var, true), $id));
@@ -62,7 +62,6 @@ if(isset($_REQUEST['owner_id']) && $_REQUEST['owner_id']!='')
 }
 elseif(isset($_REQUEST['leadval']) && $_REQUEST['leadval']!='')
 {
-
 	foreach($storearray as $id)
 	{
 		if(isPermitted($return_module,'EditView',$id) == 'yes')

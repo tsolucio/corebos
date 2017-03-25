@@ -1,5 +1,4 @@
 <?php
-
 /*********************************************************************************
 ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
@@ -23,23 +22,20 @@ $theme_path="themes/".$theme."/";
   <link type="text/css" rel="stylesheet" href="<?php echo $theme_path ?>/style.css"/>
 </head>
 <body>
-            <form action="index.php" onsubmit="VtigerJS_DialogBox.block();">
-	     <div class="lvtHeaderText"><?php echo $mod_strings['LBL_EMAIL_TEMPLATES']; ?></div>
+	<form action="index.php" onsubmit="VtigerJS_DialogBox.block();">
+		<div class="lvtHeaderText"><?php echo $mod_strings['LBL_EMAIL_TEMPLATES']; ?></div>
 		<hr noshade="noshade" size="1">
-		
-             <input type="hidden" name="module" value="Users">
+		<input type="hidden" name="module" value="Users">
 		<table style="background-color: rgb(204, 204, 204);" class="small" border="0" cellpadding="5" cellspacing="1" width="100%">
 		<tr>
 		<th width="35%" class="lvtCol"><b><?php echo $mod_strings['LBL_TEMPLATE_NAME']; ?></b></th>
-                <th width="65%" class="lvtCol"><b><?php echo $mod_strings['LBL_DESCRIPTION']; ?></b></td>
-                </tr>
+		<th width="65%" class="lvtCol"><b><?php echo $mod_strings['LBL_DESCRIPTION']; ?></b></td>
+		</tr>
 <?php
-   $sql = "select * from vtiger_emailtemplates order by templateid desc";
-   $result = $adb->pquery($sql, array());
-   $temprow = $adb->fetch_array($result);
-   
+$sql = 'select * from vtiger_emailtemplates order by templateid desc';
+$result = $adb->pquery($sql, array());
+$temprow = $adb->fetch_array($result);
 $cnt=1;
-
 require_once('include/utils/UserInfoUtil.php');
 checkFileAccessForInclusion('user_privileges/user_privileges_'.$current_user->id.'.php');
 require('user_privileges/user_privileges_'.$current_user->id.'.php');
@@ -61,10 +57,9 @@ do
 		printf("<tr class='lvtColData' onmouseover=\"this.className='lvtColDataHover'\" onmouseout=\"this.className='lvtColData'\" bgcolor='white'> <td height='25'>");
 		echo "<a href='javascript:submittemplate(".$temprow['templateid'].");'>".$temprow["templatename"]."</a></td>";
 		printf("<td height='25'>%s</td>",$temprow["description"]);
-	}	
-        $cnt++;
-
-}while($temprow = $adb->fetch_array($result));
+	}
+	$cnt++;
+} while ($temprow = $adb->fetch_array($result));
 ?>
 </table>
 </body>
