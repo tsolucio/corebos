@@ -6,12 +6,11 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
-
 require_once('include/utils/utils.php');
 
 global $theme,$current_user;
+$theme = basename(vtlib_purify($theme));
 $theme_path="themes/".$theme."/";
 ?>
 

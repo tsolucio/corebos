@@ -46,35 +46,34 @@ if(!$_REQUEST['fullview'])
 	$class_str = 'class="tableHeadBg"';
 else
 	$class_str = 'style="font-size:15px"';
-	
 ?>
 <script src="modules/Webmails/Webmails.js" type="text/javascript"></script>
 <script src="include/js/general.js" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" href="themes/<?php echo vtlib_purify($_REQUEST['theme']);?>/webmail.css">
 <!-- Table to display the Header details (From, To, Subject and date) - Starts -->
-					
-                                        <table <?php echo $class_str;?> width="100%" border="0" cellpadding="0" cellspacing="0">
-                                                <tr align="left"><td width="100%" align="left">&nbsp;<b><?php echo $mod_strings['LBL_FROM'];?></b><?php echo $from;?></td></tr>
-                                                <tr><td  width="100%" align="left">&nbsp;<b><?php echo $mod_strings['LBL_TO'];?></b><?php echo $to;?></td></tr>
-<tr><td width="100%" align="left">&nbsp;<b><?php echo $mod_strings['LBL_CC'];?></b><?php echo $cc;?></td></tr>
 
-                                                <tr><td align="left" width="100%">&nbsp;<b><?php echo $mod_strings['LBL_SUBJECT'];?></b><?php echo $subject;?></td></tr>
-	<tr><td align="left" width="100%">&nbsp;<b><?php echo $mod_strings['LBL_DATE'];?></b><?php echo substr($date,0,25);?>
+                                        <table <?php echo $class_str;?> width="100%" border="0" cellpadding="0" cellspacing="0">
+                                                <tr align="left"><td width="100%" align="left">&nbsp;<b><?php echo $mod_strings['LBL_FROM'];?></b><?php echo vtlib_purify($from);?></td></tr>
+                                                <tr><td  width="100%" align="left">&nbsp;<b><?php echo $mod_strings['LBL_TO'];?></b><?php echo vtlib_purify($to);?></td></tr>
+<tr><td width="100%" align="left">&nbsp;<b><?php echo $mod_strings['LBL_CC'];?></b><?php echo vtlib_purify($cc);?></td></tr>
+
+                                                <tr><td align="left" width="100%">&nbsp;<b><?php echo $mod_strings['LBL_SUBJECT'];?></b><?php echo vtlib_purify($subject);?></td></tr>
+	<tr><td align="left" width="100%">&nbsp;<b><?php echo $mod_strings['LBL_DATE'];?></b><?php echo vtlib_purify(substr($date,0,25));?>
         <?php if(!$_REQUEST['fullview']) {?>
-        <span style="float:right"  colspan="2"><a href="javascript:;" onclick="OpenComposer('<?php echo $mailid;?>','full_view')"><?php echo $mod_strings['LBL_FULL_EMAIL_VIEW'] ?></a></span>
+        <span style="float:right"  colspan="2"><a href="javascript:;" onclick="OpenComposer('<?php echo vtlib_purify($mailid);?>','full_view')"><?php echo $mod_strings['LBL_FULL_EMAIL_VIEW'] ?></a></span>
         <?php } ?>
 	</td>
 	</tr>
 	<?php if(isset($_REQUEST['fullview']) && $attachment_links != '') {?>
 	<tr>
-		<td align="left">&nbsp;<b><?php echo $mod_strings['LBL_ATTACHMENT'];?>:</b><?php echo $attachment_links;?></td>
+		<td align="left">&nbsp;<b><?php echo $mod_strings['LBL_ATTACHMENT'];?>:</b><?php echo vtlib_purify($attachment_links);?></td>
 	</tr>
 	<?php } ?>
 	
                                                 <tr><td align="left" style="border-bottom:1px solid #666666;" colspan="3">&nbsp;</td></tr>
                                         </table>
                                         <!-- Table to display the Header details (From, To, Subject and date) - Ends -->
-					
+
 <script type="text/javascript">
 mailbox = "<?php echo $mailbox;?>";
 function show_inline(num) {

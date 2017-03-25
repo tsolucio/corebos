@@ -7,16 +7,17 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('include/utils/UserInfoUtil.php');
 require_once('include/utils/utils.php');
 global $adb,$log;
 $profileid = vtlib_purify($_REQUEST['profileid']);
-$def_module = vtlib_purify($_REQUEST['selected_module']);
-$def_tab = vtlib_purify($_REQUEST['selected_tab']);
+$profileid = preg_replace('/[^0-9]/', '', $profileid);
+if (empty($profileid)) die();
+$def_module = urlencode(vtlib_purify($_REQUEST['selected_module']));
+$def_tab = urlencode(vtlib_purify($_REQUEST['selected_tab']));
 
 if(isset($_REQUEST['return_action']) && $_REQUEST['return_action']!= '')
-	$return_action =vtlib_purify($_REQUEST['return_action']);
+	$return_action = urlencode(vtlib_purify($_REQUEST['return_action']));
 else
 	$return_action = 'ListProfiles';
 

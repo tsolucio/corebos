@@ -21,6 +21,8 @@ require_once('include/utils/GetGroupUsers.php');
 function createUserPrivilegesfile($userid)
 {
 	global $root_directory;
+	$userid = preg_replace('/[^0-9]/', '', $userid);
+	if (empty($userid)) return false;
 	$handle=@fopen($root_directory.'user_privileges/user_privileges_'.$userid.'.php',"w+");
 
 	if($handle)
@@ -105,6 +107,8 @@ function createUserPrivilegesfile($userid)
 function createUserSharingPrivilegesfile($userid)
 {
 	global $adb, $root_directory;
+	$userid = preg_replace('/[^0-9]/', '', $userid);
+	if (empty($userid)) return false;
 	checkFileAccessForInclusion('user_privileges/user_privileges_'.$userid.'.php');
 	require('user_privileges/user_privileges_'.$userid.'.php');
 	$handle=@fopen($root_directory.'user_privileges/sharing_privileges_'.$userid.'.php',"w+");

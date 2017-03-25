@@ -11,9 +11,9 @@ require_once('include/database/PearDatabase.php');
 require_once('include/utils/UserInfoUtil.php');
 require_once('include/utils/CommonUtils.php');
 $idlist = vtlib_purify($_REQUEST['idlist']);
-$viewid = vtlib_purify($_REQUEST['viewname']);
+$viewid = urlencode(vtlib_purify($_REQUEST['viewname']));
 $returnmodule = vtlib_purify($_REQUEST['return_module']);
-$return_action = isset($_REQUEST['return_action']) ? vtlib_purify($_REQUEST['return_action']) : '';
+$return_action = isset($_REQUEST['return_action']) ? urlencode(vtlib_purify($_REQUEST['return_action'])) : '';
 $excludedRecords=vtlib_purify($_REQUEST['excludedRecords']);
 $rstart='';
 //Added to fix 4600
@@ -37,19 +37,20 @@ if(count($ids_list) > 0) {
 	$ret = getEntityName($returnmodule,$ids_list);
 	if(count($ret) > 0)
 	{
-		$errormsg = implode(',',$ret);
+		$errormsg = urlencode(implode(',',$ret));
 	}
 }
 
 if(isset($_REQUEST['start']) && ($_REQUEST['start']!=''))
 {
-	$rstart = "&start=".vtlib_purify($_REQUEST['start']);
+	$rstart = "&start=".urlencode(vtlib_purify($_REQUEST['start']));
 }
+$returnmodule = urlencode($returnmodule);
 if($returnmodule == 'Emails')
 {
 	if(isset($_REQUEST['folderid']) && $_REQUEST['folderid'] != '')
 	{
-		$folderid = vtlib_purify($_REQUEST['folderid']);
+		$folderid = urlencode(vtlib_purify($_REQUEST['folderid']));
 	}else
 	{
 		$folderid = 1;
@@ -58,8 +59,17 @@ if($returnmodule == 'Emails')
 }
 elseif($return_action == 'ActivityAjax')
 {
-	$subtab = vtlib_purify($_REQUEST['subtab']);
-	header("Location: index.php?module=".$returnmodule."&action=".$return_action."".$rstart."&view=".vtlib_purify($_REQUEST['view'])."&hour=".vtlib_purify($_REQUEST['hour'])."&day=".vtlib_purify($_REQUEST['day'])."&month=".vtlib_purify($_REQUEST['month'])."&year=".vtlib_purify($_REQUEST['year'])."&type=".vtlib_purify($_REQUEST['type'])."&viewOption=".vtlib_purify($_REQUEST['viewOption'])."&subtab=".$subtab."&onlyforuser=".vtlib_purify($_REQUEST['onlyforuser']).$url);
+	$req = new Vtiger_Request();
+	$req->set('return_view',   $_REQUEST['view']);
+	$req->set('return_hour',   $_REQUEST['hour']);
+	$req->set('return_day',   $_REQUEST['day']);
+	$req->set('return_month',$_REQUEST['month']);
+	$req->set('return_year',   $_REQUEST['year']);
+	$req->set('return_type',   $_REQUEST['type']);
+	$req->set('return_subtab',   $_REQUEST['subtab']);
+	$req->set('return_onlyforuser',$_REQUEST['onlyforuser']);
+	$urlpart = $req->getReturnURL();
+	header('Location: index.php?module='.$returnmodule.'&action='.$return_action.$rstart.$urlpart.'&viewOption='.urlencode(vtlib_purify($_REQUEST['viewOption'])).$url);
 }
 elseif($returnmodule!='Faq')
 {
