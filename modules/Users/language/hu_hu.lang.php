@@ -555,7 +555,6 @@ $mod_strings = array(
 	'TITLE_USER_DOCUMENT' => 'Jelöletlen Dokumentum',
 	'ROLE_DRAG_ERR_MSG' => 'Nem mozgathatsz szülő elemet, gyerek elem alá',
 	'LBL_NOTIFICATION_ACTIVITY' => 'Értesítési Tevékenységek',
-	'LBL_NOTIFICATION_EMAIL_INFO' => 'Értesítési Email Információ',
 	'LBL_GOTO_LISTVIEW_BUTTON' => 'Listanézet',
 	'LBL_SSL' => 'SSL',
 	'LBL_USERNAME_EXIST' => 'A Felhasználó a meghatározott nével már létezik!',

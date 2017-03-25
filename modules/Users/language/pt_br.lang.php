@@ -652,7 +652,6 @@ $mod_strings = Array(
 'ROLE_DRAG_ERR_MSG'=>'Você não pode mover um Nó Pai com um Nó Filho',
 
 'LBL_NOTIFICATION_ACTIVITY'=>'Atividade de Notificação',
-'LBL_NOTIFICATION_EMAIL_INFO'=>'Informação E-mail Notificação',
 'LBL_GOTO_LISTVIEW_BUTTON'=>'Ir para Lista',
 
 'LBL_SSL' => 'SSL',

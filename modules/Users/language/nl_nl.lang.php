@@ -555,7 +555,6 @@ $mod_strings = array(
 	'TITLE_USER_DOCUMENT' => 'Document zonder titel',
 	'ROLE_DRAG_ERR_MSG' => 'U kunt geen Ouder Node onderschikken aan een Kind Node',
 	'LBL_NOTIFICATION_ACTIVITY' => 'Notificatie Activiteit',
-	'LBL_NOTIFICATION_EMAIL_INFO' => 'Notificatie e-mail Informatie',
 	'LBL_GOTO_LISTVIEW_BUTTON' => 'Ga naar ListView',
 	'LBL_TAGCLOUD_DISPLAY' => 'Toon Tag Cloud',
 	'INTERNAL_MAIL_COMPOSER' => 'Interne e-mail Composer',

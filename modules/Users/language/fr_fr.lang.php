@@ -546,7 +546,6 @@ $mod_strings = array (
 		'TITLE_USER_DOCUMENT' => 'Document sans titre',
 		'ROLE_DRAG_ERR_MSG' => 'Vous ne pouvez pas déplacer un noeud parent dans un noeud enfant',
 		'LBL_NOTIFICATION_ACTIVITY' => 'Notification activité',
-		'LBL_NOTIFICATION_EMAIL_INFO' => 'Information de notification email',
 		'LBL_GOTO_LISTVIEW_BUTTON' => 'Aller à la liste',
 		'LBL_SSL' => 'SSL',
 		'LBL_USERNAME_EXIST' => 'Nom d\'utilisateur déjà existant',
