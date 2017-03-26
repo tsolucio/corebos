@@ -69,6 +69,7 @@ $mod_strings = array(
 	'LBL_EMAIL_FROMNAME' => 'From Name',
 	'LBL_EMAIL_FROMEMAIL' => 'From Email',
 	'LBL_EMAIL_REPLYTO' => 'Reply To',
+	'LBL_AttachmentInField' => 'Attachment In Field',
 	'LBL_WORKFLOW_NOTE_EVENT_TASK_TIMEZONE' => 'Megjegyzés: Minden dátumot, időpontot és az ismétlődéssel kapcsolatos információt beállítottuk az eseményhez,											és ezt a config.inc.php-ben megadott alapértelmezett időzónához viszonyítva fogjuk használni.',
 	'Select Meta Variables' => 'Válassz Meta váltózókat',
 	'Current Date' => 'Aktuális dátum',

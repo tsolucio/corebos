@@ -72,7 +72,7 @@ $mod_strings = array(
     'LBL_EMAIL_FROMNAME' => 'From Name',
     'LBL_EMAIL_FROMEMAIL' => 'From Email',
     'LBL_EMAIL_REPLYTO' => 'Antwort an',
-
+	'LBL_AttachmentInField' => 'Attachment In Field',
     'LBL_WORKFLOW_NOTE_EVENT_TASK_TIMEZONE' => 'Hinweis: alle Datums-, Zeit- und wiederkehrende Informatione, die für Aktivitäten konfiguriert wurden
                                                         berücksichtigen die in der Konfigurationsdatei "config.inc.php" gesetzte Zeitzone',
 

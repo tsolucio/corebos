@@ -14,9 +14,29 @@ require_once('modules/Emails/mail.php');
 class VTEmailTask extends VTTask{
 	// Sending email takes more time, this should be handled via queue all the time.
 	public $executeImmediately = false;
+	public $attachmentsinfo = array();
 
 	public function getFieldNames(){
-		return array("fromname", "fromemail", "replyto", "subject", "content", "recepient", 'emailcc', 'emailbcc');
+		return array("fromname", "fromemail", "replyto", "subject", "content", "recepient", 'emailcc', 'emailbcc', 'attfieldnames', 'attachmentids');
+	}
+	public function after_retrieve() {
+		global $adb;
+		$this->attachmentsinfo = array();
+		if (!empty($this->attachmentids)) {
+			$aids = explode(',', $this->attachmentids);
+			$query = 'select filename,filesize from vtiger_notes inner join vtiger_crmentity on crmid = notesid where deleted=0 and notesid=?';
+			foreach ($aids as $docid) {
+				if (empty($docid)) continue;
+				$docrs = $adb->pquery($query,array($docid));
+				if ($docrs and $adb->num_rows($docrs)==1) {
+					$this->attachmentsinfo[] = array(
+						'docid' => $docid,
+						'name' => $adb->query_result($docrs, 0, 'filename'),
+						'size' => $adb->query_result($docrs, 0, 'filesize'),
+					);
+				}
+			}
+		}
 	}
 	public function doTask(&$entity){
 		global $logbg;

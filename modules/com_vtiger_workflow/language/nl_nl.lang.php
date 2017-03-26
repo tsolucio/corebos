@@ -94,7 +94,7 @@ $mod_strings = array(
 'LBL_EMAIL_FROMNAME' => 'From Name',
 'LBL_EMAIL_FROMEMAIL' => 'From Email',
 'LBL_EMAIL_REPLYTO' => 'Reply To',
-
+'LBL_AttachmentInField' => 'Attachment In Field',
 'LBL_WORKFLOW_NOTE_EVENT_TASK_TIMEZONE' => 'Opmerking: Alle datum, tijd en herhaalinformatie zoals voor het event ingesteld werken conform de standaard tijdzone, zoals geconfigureerd in config.inc.php',
 
 

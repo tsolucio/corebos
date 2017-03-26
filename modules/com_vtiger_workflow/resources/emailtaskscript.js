@@ -229,9 +229,7 @@ function VTEmailTask($){
 					});
 
 					fillSelectBox('attfieldnames', modules, moduleName);
-					$('#attfieldnames').change(function(){
-						// todo
-					});
+					$('#attfieldnames').val(__attfieldnames);
 
 					fillSelectBox('task-emailfieldsfrmname', modules, moduleName, function(e){return (e['name'] == 'user_name');});
 					$('#task-emailfieldsfrmname-busyicon').hide();
@@ -329,7 +327,6 @@ function VTEmailTask($){
 	});
 }
 vtEmailTask = VTEmailTask(jQuery);
-//document.onreadystatechange = function () {
 /*
  * Namespaced javascript class for attachmentManager
  */
@@ -338,7 +335,7 @@ var attachmentManager = {
 	createUploader : function (){
 		Dropzone.autoDiscover = false;
 		var uploader = new Dropzone('#file-uploader',{
-			url : 'index.php?' + attachmentManager._baseurl() + '&_operation=relation&_operationarg=saveattachment&emailid=0',
+			url : 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&mode=ajax&functiontocall=saveAttachment',
 			paramName: 'qqfile',
 			parallelUploads: 1,
 			addRemoveLinks: true,
@@ -349,31 +346,33 @@ var attachmentManager = {
 		});
 		uploader.on("success", function(file, response) {
 			var res = JSON.parse(response);
-			file.docid = res.result.docid;
-			file.attachid = res.result.attachid;
+			file.docid = res.docid;
+			file.attachid = res.attachid;
+			attachmentManager.addAttachment(file.docid, this);
+			var attcnt = document.getElementById('attachmentCount');
+			attcnt.value = parseInt(attcnt.value) + 1;
 		});
 		uploader.on("removedfile", function(file) {
 			attachmentManager.deleteAttachment(file.docid, this);
 		});
-		return uploader;
-	},
-	deleteAttachment : function(docid, ele) {
-		attachmentManager.progress_show(attachmentManager.i18n('JSLBL_Loading'), ' ...');
-		jQuery.ajax({
-			method: 'POST',
-			url: 'index.php?'+ attachmentManager._baseurl() + "_operation=mail&_operationarg=deleteAttachment&emailid=0"
-				+"&docid="+ encodeURIComponent(docid)
-		}).done(function(response){
-			attachmentManager.progress_hide();
-			var responseJSON = JSON.parse(response);
-			if(responseJSON.result.success == true) {
-				attachmentManager.progress_hide();
-				var count = jQuery('#attachmentCount').val();
-				jQuery('#attachmentCount').val(--count);
-			} else {
-				attachmentManager.show_error(attachmentManager.i18n('JSLBL_ATTACHMENT_NOT_DELETED'));
+		uploader.on("addedfile", function(file) {
+			if (file.docid!=undefined) {
+				attachmentManager.addAttachment(file.docid, this);
 			}
 		});
+		return uploader;
+	},
+	addAttachment : function(docid, ele) {
+		var attids = document.getElementById('attachmentids');
+		if (attids.value.indexOf(docid) == -1) {
+			attids.value = attids.value + docid + ',';
+		}
+	},
+	deleteAttachment : function(docid, ele) {
+		var attids = document.getElementById('attachmentids');
+		attids.value = attids.value.replace(docid+',', '');
+		var attcnt = document.getElementById('attachmentCount');
+		attcnt.value = attcnt.value-1;
 	},
 	progress_show: function(msg, suffix){
 		if (typeof(suffix) == 'undefined')
@@ -413,10 +412,6 @@ var attachmentManager = {
 		}
 		attachmentManager.hide_error();
 	},
-	/* Base url for any ajax actions */
-	_baseurl: function(){
-		return "module=MailManager&action=MailManagerAjax&file=index&mode=ajax&";
-	},
 	i18n: function(key){
 		if (typeof(alert_arr) != 'undefined' && alert_arr[key])
 			return alert_arr[key];
@@ -444,4 +439,10 @@ var attachmentManager = {
 };
 jQuery( document ).ready(function() {
 	attachmentManager.createUploader();
+	if (__attinfo.length>0) {
+		var dzelem = document.getElementById('file-uploader');
+		for(i=0; i<__attinfo.length;i++) {
+			dzelem.dropzone.emit('addedfile',{name:__attinfo[i]['name'],size:__attinfo[i]['size'],docid:__attinfo[i]['docid']});
+		}
+	}
 });
