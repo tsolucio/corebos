@@ -425,6 +425,7 @@ else
 		$theme = $default_theme;
 	}
 }
+$theme = basename(vtlib_purify($theme));
 $log->debug('Current theme is: '.$theme);
 
 //Used for current record focus
@@ -498,18 +499,6 @@ if(!$skipHeaders) {
 		$vartpl->display('BrowserVariables.tpl');
 	}*/
 	$log->debug("skipping headers");
-}
-
-//fetch the permission set from session and search it for the requisite data
-if(isset($_SESSION['vtiger_authenticated_user_theme']) && $_SESSION['vtiger_authenticated_user_theme'] != '')
-{
-	$theme = $_SESSION['vtiger_authenticated_user_theme'];
-} else {
-	if(!empty($current_user->theme)) {
-		$theme = $current_user->theme;
-	} else {
-		$theme = $default_theme;
-	}
 }
 
 //logging the security Information
@@ -602,6 +591,7 @@ if(isset($_SESSION['vtiger_authenticated_user_theme']) && $_SESSION['vtiger_auth
 } else {
 	$theme = $default_theme;
 }
+$theme = basename(vtlib_purify($theme));
 $Ajx_module = (isset($_REQUEST['module']) ? vtlib_purify($_REQUEST['module']) : $module);
 if($Ajx_module == 'Events')
 	$Ajx_module = 'Calendar';
