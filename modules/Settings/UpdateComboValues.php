@@ -96,5 +96,5 @@ for ($i = 0; $i < $count; $i++) {
 	}
 }
 
-header("Location:index.php?action=SettingsAjax&module=Settings&directmode=ajax&file=PickList&fld_module=".$fld_module."&roleid=".$roleid);
+header('Location:index.php?action=SettingsAjax&module=Settings&directmode=ajax&file=PickList&fld_module='.urlencode($fld_module).'&roleid='.urlencode($roleid));
 ?>

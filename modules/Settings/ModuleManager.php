@@ -29,7 +29,7 @@ else{
 		require_once('modules/Settings/ModuleManager/Update.php');
 		exit;
 	} else if(isset($_REQUEST['module_import_cancel']) and $_REQUEST['module_import_cancel'] == 'true') {
-		$uploadfile = vtlib_purify($_REQUEST['module_import_file']);
+		$uploadfile = basename(vtlib_purify($_REQUEST['module_import_file']));
 		$uploadfilename = "$modulemanager_uploaddir/$uploadfile";
 		checkFileAccess($uploadfilename);
 		if(file_exists($uploadfilename)) unlink($uploadfilename);

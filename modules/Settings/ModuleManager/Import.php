@@ -104,7 +104,7 @@ if($module_import_step == 'Step2') {
 		}
 	}
 } else if($module_import_step == 'Step3') {
-	$uploadfile = $_REQUEST['module_import_file'];
+	$uploadfile = basename(vtlib_purify($_REQUEST['module_import_file']));
 	$uploadfilename = "$modulemanager_uploaddir/$uploadfile";
 	checkFileAccess($uploadfilename);
 

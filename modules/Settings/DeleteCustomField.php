@@ -92,5 +92,5 @@ if($uitype == 15)
 	$adb->pquery('DELETE FROM vtiger_picklist_dependency WHERE vtiger_picklist_dependency.targetfield = ?',array($colName));
 }
 
-header("Location:index.php?module=Settings&action=CustomFieldList&fld_module=".$fld_module."&parenttab=Settings");
+header('Location:index.php?module=Settings&action=CustomFieldList&fld_module='.urlencode($fld_module));
 ?>

@@ -38,16 +38,14 @@ foreach($field_module as $fld_module=>$fld_name)
 		$fieldtype = explode("~",$typeofdata);
 		if(($fieldname == "salutationtype" && $uitype == 55) || $fieldtype[1] == "M" || $uitype == 111  || $displaytype == 3|| $fieldname == "activitytype")
 		{
-			$visible_value = 0; 
+			$visible_value = 0;
 		}
 		//Updating the database
 		$update_query = "update vtiger_def_org_field set visible=? where fieldid=? and tabid=?";
 		$update_params = array($visible_value, $fieldid, $tab_id);
 		$adb->pquery($update_query, $update_params);
-
 	}
 }
-$loc = "Location: index.php?action=DefaultFieldPermissions&module=Settings&parenttab=Settings&fld_module=".vtlib_purify($_REQUEST['fld_module']);
+$loc = 'Location: index.php?action=DefaultFieldPermissions&module=Settings&parenttab=Settings&fld_module='.urlencode(vtlib_purify($_REQUEST['fld_module']));
 header($loc);
-
 ?>

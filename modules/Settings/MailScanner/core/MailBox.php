@@ -34,7 +34,7 @@ class Vtiger_MailBox {
 	function log($message, $force=false) {
 		global $log;
 		if($log && ($force || $this->debug)) { $log->debug($message); }
-		else if( ($force || $this->debug) ) echo "$message\n";
+		else if( ($force || $this->debug) ) echo vtlib_purify($message) . "\n";
 	}
 
 	/**
