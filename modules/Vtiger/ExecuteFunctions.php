@@ -130,6 +130,19 @@ switch ($functiontocall) {
 		$allOptions=getEmailTemplateVariables(array($module,'Accounts'));
 		$ret = array_merge($allOptions[0],$allOptions[1],$allOptions[2]);
 		break;
+	case 'saveAttachment':
+		include_once 'modules/Settings/MailScanner/core/MailAttachmentMIME.php';
+		include_once 'modules/MailManager/src/controllers/UploadController.php';
+		$allowedFileExtension = array();
+		$upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize',3000000,'Emails');
+		$upload = new MailManager_Uploader($allowedFileExtension, $upload_maxsize);
+		if ($upload) {
+			$filePath = decideFilePath();
+			$ret = $upload->handleUpload($filePath, false);
+		} else {
+			$ret = '';
+		}
+		break;
 	case 'ismoduleactive':
 	default:
 		$mod = vtlib_purify($_REQUEST['checkmodule']);
