@@ -13,7 +13,7 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
-global $entityDel, $display, $category;
+global $entityDel, $display;
 
 if(version_compare(phpversion(), '5.2.0') < 0 or version_compare(phpversion(), '7.1.0') >= 0) {
 	insert_charset_header();
@@ -487,16 +487,7 @@ if($_REQUEST['module'] == 'Documents' && $action == 'DownloadFile')
 //skip headers for popups, deleting, saving, importing and other actions
 if(!$skipHeaders) {
 	$log->debug("including headers");
-	if($use_current_login)
-	{
-		if(isset($_REQUEST['category']) && $_REQUEST['category'] !='')
-		{
-			$category = vtlib_purify($_REQUEST['category']);
-		}
-		else
-		{
-			$category = getParentTabFromModule($currentModule);
-		}
+	if ($use_current_login) {
 		include('modules/Vtiger/header.php');
 	}
 } else {
@@ -600,7 +591,6 @@ else if(!vtlib_isModuleActive($currentModule)
 		</div>
 		</td></tr></table>";
 }
-// END
 else
 {
 	include_once($currentModuleFile);
