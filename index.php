@@ -279,8 +279,6 @@ if(isset($action) && isset($module))
 		(preg_match("/^Webmails/",$module) && preg_match("/^get_img/",$action)) ||
 		preg_match("/^download/",$action) ||
 		preg_match("/^getListOfRecords/", $action) ||
-		preg_match("/^AddBlockFieldToDB/", $action) ||
-		preg_match("/^AddBlockToDB/", $action) ||
 		preg_match("/^MassEditSave/", $action) ||
 		preg_match("/^iCalExport/",$action)
 		)
@@ -533,7 +531,7 @@ if(!$skipSecurityCheck && $use_current_login)
 		if(isset($_REQUEST['ajxaction']) and $_REQUEST['ajxaction'] == 'LOADRELATEDLIST'){
 			$now_action = 'DetailView';
 		} else {
-			$now_action=vtlib_purify($_REQUEST['file']);
+			$now_action = (isset($_REQUEST['file']) ? vtlib_purify($_REQUEST['file']) : (isset($_REQUEST['orgajax']) ? vtlib_purify($_REQUEST['orgajax']) : $action));
 		}
 	} else {
 		$now_action=$action;

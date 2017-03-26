@@ -10,8 +10,7 @@
 require_once('include/CustomFieldUtil.php');
 require_once('Smarty_setup.php');
 
-global $mod_strings,$app_strings,$theme,$adb;
-global $log;
+global $mod_strings,$app_strings,$theme,$adb, $log;
 
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
@@ -27,22 +26,21 @@ if(empty($fieldModule) || empyt($fieldId)) {
 	exit;
 }
 
-$output  .= '<div class="layerPopup" style="position:relative; display:block">' .
-		'	<form action="index.php" method="post" name="fieldinfoform" onsubmit="VtigerJS_DialogBox.block();"> 
+$output = '<div class="layerPopup" style="position:relative; display:block">
+			<form action="index.php" method="post" name="fieldinfoform" onsubmit="VtigerJS_DialogBox.block();">
 			<input type="hidden" name="module" value="Settings">
-	  		<input type="hidden" name="action" value="SettingsAjax">
-	  		<input type="hidden" name="fld_module" value="'.$fieldModule.'">
-	  		<input type="hidden" name="parenttab" value="Settings">
-          	<input type="hidden" name="file" value="UpdateMandatoryFields">
- 			<input type="hidden" name="fieldid" value="'.$fieldId.'">
- 			<table width="100%" border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine">
+			<input type="hidden" name="action" value="SettingsAjax">
+			<input type="hidden" name="fld_module" value="'.$fieldModule.'">
+			<input type="hidden" name="parenttab" value="Settings">
+			<input type="hidden" name="file" value="UpdateMandatoryFields">
+			<input type="hidden" name="fieldid" value="'.$fieldId.'">
+			<table width="100%" border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine">
 				<tr>
 					<td width="95%" align="left" class="layerPopupHeading">'.$label.'</td>
-			
 					<td width="5%" align="right"><a href="javascript:fninvsh(\'fieldInfo\');"><img src="'. vtiger_imageurl('editfield.gif', $theme) .'" border="0"  align="absmiddle" /></a></td>
 				</tr>
 			</table>
-			<table border=0 cellspacing=0 cellpadding="5" width=99%> 
+			<table border=0 cellspacing=0 cellpadding="5" width=99%>
 				<tr>
 					<td valign="top">
 						<input name="mandatory"  type="checkbox" '.$visible.'  '.$disable.' >
@@ -63,6 +61,5 @@ $output  .= '<div class="layerPopup" style="position:relative; display:block">' 
 			</tr>
 			</table>
 		</form></div>';
-		
-		echo $output;
+echo $output;
 ?>
