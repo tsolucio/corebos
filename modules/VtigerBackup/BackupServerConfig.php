@@ -27,6 +27,12 @@ if(!empty($_REQUEST['error'])) {
 if(!empty($_REQUEST['error1'])) {
 	$smarty->assign("ERROR_STR",'<b><font color="red">'.vtlib_purify($_REQUEST["error1"]).'</font></b>');
 }
+if (!is_writable('user_privileges/enable_backup.php')) {
+	echo '<br>';
+	$smarty->assign('ERROR_MESSAGE', 'user_privileges/enable_backup.php '.getTranslatedString('VTLIB_LBL_NOT_WRITEABLE','Settings'));
+	$smarty->display('applicationmessage.tpl');
+	$smarty->assign('ERROR_MESSAGE','');
+}
 $sql="select * from vtiger_systems where server_type = ?";
 $result = $adb->pquery($sql, array('ftp_backup'));
 $server = $adb->query_result($result,0,'server');
