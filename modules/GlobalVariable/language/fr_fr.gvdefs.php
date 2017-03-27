@@ -427,7 +427,7 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Nombre de lignes autorisées dans un rapport complet au format HTML. La valeur par defaut est (5000) lignes.',
 ),
-'Maximum_Scheduled_Workflows' => array(
+'Workflow_Maximum_Scheduled' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Entier',
 	'category' => 'Flux de travail',
@@ -728,7 +728,7 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Example:<br>Spain',
 	'definition' => 'Calcule la GeoDistance des fonctions des flux de travail. Cette variable permet de fixer le pays de référence à utiliser si auncun nom de pays n\'est fourni. Utile pour les entreprises ayant une zone d\'influence.',
 ),
-'Billing_Address_Checked' => array(
+'Application_Billing_Address_Checked' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Booléen',
 	'category' => 'Application',

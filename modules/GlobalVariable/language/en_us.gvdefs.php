@@ -427,7 +427,7 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Maximum number of rows permitted for a full length HTML report. The default value is 5000.',
 ),
-'Maximum_Scheduled_Workflows' => array(
+'Workflow_Maximum_Scheduled' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Integer',
 	'category' => 'Workflows',
@@ -735,7 +735,7 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'For GeoDistance calculation workflow functions, this variable sets the default country to use if none is given. Useful when the company has a local area of influence.',
 ),
-'Billing_Address_Checked' => array(
+'Application_Billing_Address_Checked' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
 	'category' => 'Application',

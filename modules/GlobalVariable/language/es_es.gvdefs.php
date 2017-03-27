@@ -617,14 +617,14 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => '',
 ),
-'Maximum_Scheduled_Workflows' => array(
+'Workflow_Maximum_Scheduled' => array(
 	'status' => 'Implemented',
 	'valuetype' => '',
 	'category' => '',
 	'values' => '',
 	'definition' => '',
 ),
-'Billing_Address_Checked' => array(
+'Application_Billing_Address_Checked' => array(
 	'status' => 'Implemented',
 	'valuetype' => '',
 	'category' => '',

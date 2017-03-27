@@ -133,8 +133,6 @@ class DefineGlobalVariables extends cbupdaterWorker {
 
 				'Inventory_ListPrice_ReadOnly',
 
-				'Maximum_Scheduled_Workflows', // rename to Workflow_Maximum_Scheduled
-				'Billing_Address_Checked', // rename to Application_Billing_Address_Checked
 				'Shipping_Address_Checked', // rename to Application_Shipping_Address_Checked
 				'Tax_Type_Default', // rename to Inventory_Tax_Type_Default
 				'product_service_default', // rename to Inventory_ProductService_Default
@@ -187,6 +185,22 @@ class DefineGlobalVariables extends cbupdaterWorker {
 						),
 						array(
 							'from' => 'yes',
+							'to' => 1
+						),
+					)
+				),
+				'Maximum_Scheduled_Workflows' => array(
+					'to' => 'Workflow_Maximum_Scheduled',
+				),
+				'Billing_Address_Checked' => array(
+					'to' => 'Application_Billing_Address_Checked',
+					'change' => array(
+						array(
+							'not' => 'true',
+							'to' => 0
+						),
+						array(
+							'from' => 'true',
 							'to' => 1
 						),
 					)

@@ -107,7 +107,7 @@
 		 * @return int
 		 */
 		function getMaxAllowedScheduledWorkflows() {
-			return GlobalVariable::getVariable('Maximum_Scheduled_Workflows', 10);
+			return GlobalVariable::getVariable('Workflow_Maximum_Scheduled', 10);
 		}
 
 		function getWorkflowsForModule($moduleName){

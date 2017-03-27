@@ -38,7 +38,7 @@
 					<div style="height:120px;overflow-y:auto;overflow-x:hidden;" align="center">
 						<table border="0" cellpadding="5" cellspacing="0" width="90%">
 							<tr>
-								<td align="center"><input type="checkbox" {if $BillAddressChecked eq 'true'}checked {/if}name="sva_bill" id="sva_bill" /></td>
+								<td align="center"><input type="checkbox" {if $BillAddressChecked eq 1}checked {/if}name="sva_bill" id="sva_bill" /></td>
 								<td align="left"><b>{'Billing Address'|@getTranslatedString}</b></td>
 							</tr>
 							<tr>
