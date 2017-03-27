@@ -121,7 +121,7 @@ class SalesOrder extends CRMEntity {
 		$updateInventoryProductRel_deduct_stock = true;
 		//Checking if quote_id is present and updating the quote status
 		if($this->column_fields['quote_id'] != '') {
-			$newStatus = GlobalVariable::getVariable('QuoteStatusOnSalesOrderSave', 'Accepted');
+			$newStatus = GlobalVariable::getVariable('Quote_StatusOnSalesOrderSave', 'Accepted');
 			if ($newStatus!='DoNotChange') {
 				$qt_id = $this->column_fields['quote_id'];
 				$query1 = 'update vtiger_quotes set quotestage=? where quoteid=?';

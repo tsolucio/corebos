@@ -133,15 +133,6 @@ class DefineGlobalVariables extends cbupdaterWorker {
 
 				'Inventory_ListPrice_ReadOnly',
 
-				'Shipping_Address_Checked', // rename to Application_Shipping_Address_Checked
-				'Tax_Type_Default', // rename to Inventory_Tax_Type_Default
-				'product_service_default', // rename to Inventory_ProductService_Default
-				'Product_Default_Units', // rename to Inventory_Product_Default_Units
-				'Service_Default_Units', // rename to Inventory_Service_Default_Units
-				'SalesOrderStatusOnInvoiceSave', // rename to SalesOrder_StatusOnInvoiceSave
-				'QuoteStatusOnSalesOrderSave',  // rename to Quote_StatusOnSalesOrderSave
-				'Report.Excel.Export.RowHeight', // rename to Report_Excel_Export_RowHeight
-
 			);
 			$delete_these = array(
 				'preload_prototype',
@@ -204,6 +195,40 @@ class DefineGlobalVariables extends cbupdaterWorker {
 							'to' => 1
 						),
 					)
+				),
+				'Shipping_Address_Checked' => array(
+					'to' => 'Application_Shipping_Address_Checked',
+					'change' => array(
+						array(
+							'not' => 'false',
+							'to' => 0
+						),
+						array(
+							'from' => 'false',
+							'to' => 1
+						),
+					)
+				),
+				//'Tax_Type_Default' => array(
+				//	'to' => 'Inventory_Tax_Type_Default',
+				//),
+				'product_service_default' => array(
+					'to' => 'Inventory_ProductService_Default',
+				),
+				'Product_Default_Units' => array(
+					'to' => 'Inventory_Product_Default_Units',
+				),
+				'Service_Default_Units' => array(
+					'to' => 'Inventory_Service_Default_Units',
+				),
+				'SalesOrderStatusOnInvoiceSave' => array(
+					'to' => 'SalesOrder_StatusOnInvoiceSave',
+				),
+				//'QuoteStatusOnSalesOrderSave' => array(
+				//	'to' => 'Quote_StatusOnSalesOrderSave',
+				//),
+				'Report.Excel.Export.RowHeight' => array(
+					'to' => 'Report_Excel_Export_RowHeight',
 				),
 			);
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');
