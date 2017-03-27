@@ -954,7 +954,7 @@ function get_contactsforol($user_name)
 		global $adb,$log;
 		$saveerror = false;
 		$errmsg = '';
-		if ($_REQUEST['action'] != 'ContactsAjax') {
+		if ($_REQUEST['action'] != 'ContactsAjax' && !empty($_FILES)) {
 			$upload_file_path = decideFilePath();
 			$dirpermission = is_writable($upload_file_path);
 			$upload = is_uploaded_file($_FILES['imagename']['tmp_name']);
