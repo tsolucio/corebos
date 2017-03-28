@@ -1752,7 +1752,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 				$netPrice = $netPrice+$taxTotal;
 			}
 		} else {
-			$taxtype = GlobalVariable::getVariable('Tax_Type_Default', 'individual', $currentModule);
+			$taxtype = GlobalVariable::getVariable('Inventory_Tax_Type_Default', 'individual', $currentModule);
 		}
 		$product_Detail[$i]['netPrice'.$i] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($netPrice, null, true), null, true);
 
@@ -1788,7 +1788,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 
 	//set the taxtype
 	if (!isset($taxtype)) {
-		$taxtype = GlobalVariable::getVariable('Tax_Type_Default', 'individual', $currentModule);
+		$taxtype = GlobalVariable::getVariable('Inventory_Tax_Type_Default', 'individual', $currentModule);
 	}
 	$product_Detail[1]['final_details']['taxtype'] = $taxtype;
 
