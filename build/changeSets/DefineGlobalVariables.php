@@ -209,9 +209,9 @@ class DefineGlobalVariables extends cbupdaterWorker {
 						),
 					)
 				),
-				//'Tax_Type_Default' => array(
-				//	'to' => 'Inventory_Tax_Type_Default',
-				//),
+				'Tax_Type_Default' => array(
+					'to' => 'Inventory_Tax_Type_Default',
+				),
 				'product_service_default' => array(
 					'to' => 'Inventory_ProductService_Default',
 				),
@@ -224,9 +224,9 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'SalesOrderStatusOnInvoiceSave' => array(
 					'to' => 'SalesOrder_StatusOnInvoiceSave',
 				),
-				//'QuoteStatusOnSalesOrderSave' => array(
-				//	'to' => 'Quote_StatusOnSalesOrderSave',
-				//),
+				'QuoteStatusOnSalesOrderSave' => array(
+					'to' => 'Quote_StatusOnSalesOrderSave',
+				),
 				'Report.Excel.Export.RowHeight' => array(
 					'to' => 'Report_Excel_Export_RowHeight',
 				),
