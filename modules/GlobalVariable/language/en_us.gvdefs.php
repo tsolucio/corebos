@@ -364,7 +364,7 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Show Documents list view as separate folders or as a normal listview. Default is 1 = Folder view.',
 ),
-'Tax_Type_Default' => array(
+'Inventory_Tax_Type_Default' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'String',
 	'category' => 'Application',
@@ -385,21 +385,21 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'If set to true all the related bundle products will be copied to the new product on duplicate. In other words, when you duplicate a product, its bundle is also duplicated.',
 ),
-'Product_Default_Units' => array(
+'Inventory_Product_Default_Units' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Decimal',
 	'category' => 'Application',
 	'values' => '',
 	'definition' => 'Number of units that is set when creating a new product line in inventory modules. Default value is 1.',
 ),
-'Service_Default_Units' => array(
+'Inventory_Service_Default_Units' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Decimal',
 	'category' => 'Application',
 	'values' => '',
 	'definition' => 'Number of units that is set when creating a new product line in inventory modules. Default value is 1.',
 ),
-'product_service_default' => array(
+'Inventory_ProductService_Default' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'String',
 	'category' => 'Application',
@@ -511,14 +511,14 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Number of days after which the user will be forced to change his password. To switch on this feature you must activate the Expire Password scheduled task.',
 ),
-'SalesOrderStatusOnInvoiceSave' => array(
+'SalesOrder_StatusOnInvoiceSave' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'string',
 	'category' => 'Application',
 	'values' => 'Valid SalesOrder status picklist values',
 	'definition' => 'When saving an Invoice related to a SalesOrder, the status of the salesorder will be set to the value contained in this variable. The special value "DoNotChange" will deactivate this functionality and no change will be done.',
 ),
-'QuoteStatusOnSalesOrderSave' => array(
+'Quote_StatusOnSalesOrderSave' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'string',
 	'category' => 'Application',
@@ -742,7 +742,7 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'When selecting an Account/Contact in the popup window, the application asks if it must fill in addresses. This variable sets the Billing Address checkbox.',
 ),
-'Shipping_Address_Checked' => array(
+'Application_Shipping_Address_Checked' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
@@ -756,7 +756,7 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'This variable activates or deactivates the "Copy Address" functionality present on Accounts, Contacts and Inventory modules. Useful when one of the addresses is hidden due to business requirements.',
 ),
-'Report.Excel.Export.RowHeight' => array(
+'Report_Excel_Export_RowHeight' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Integer',
 	'category' => 'Application',

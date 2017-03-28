@@ -120,7 +120,7 @@ class Invoice extends CRMEntity {
 		}
 		//Checking if salesorderid is present and updating the SO status
 		if(!empty($this->column_fields['salesorder_id'])) {
-			$newStatus = GlobalVariable::getVariable('SalesOrderStatusOnInvoiceSave', 'Approved');
+			$newStatus = GlobalVariable::getVariable('SalesOrder_StatusOnInvoiceSave', 'Approved');
 			if ($newStatus!='DoNotChange') {
 				$so_id = $this->column_fields['salesorder_id'];
 				$query1 = 'update vtiger_salesorder set sostatus=? where salesorderid=?';

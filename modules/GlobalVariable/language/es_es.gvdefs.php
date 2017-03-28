@@ -631,7 +631,7 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => '',
 ),
-'Shipping_Address_Checked' => array(
+'Application_Shipping_Address_Checked' => array(
 	'status' => 'Implemented',
 	'valuetype' => '',
 	'category' => '',
@@ -645,49 +645,49 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => '',
 ),
-'Tax_Type_Default' => array(
+'Inventory_Tax_Type_Default' => array(
 	'status' => 'Implemented',
 	'valuetype' => '',
 	'category' => '',
 	'values' => '',
 	'definition' => '',
 ),
-'product_service_default' => array(
+'Inventory_ProductService_Default' => array(
 	'status' => 'Implemented',
 	'valuetype' => '',
 	'category' => '',
 	'values' => '',
 	'definition' => '',
 ),
-'Product_Default_Units' => array(
+'Inventory_Product_Default_Units' => array(
 	'status' => 'Implemented',
 	'valuetype' => '',
 	'category' => '',
 	'values' => '',
 	'definition' => '',
 ),
-'Service_Default_Units' => array(
+'Inventory_Service_Default_Units' => array(
 	'status' => 'Implemented',
 	'valuetype' => '',
 	'category' => '',
 	'values' => '',
 	'definition' => '',
 ),
-'SalesOrderStatusOnInvoiceSave' => array(
+'SalesOrder_StatusOnInvoiceSave' => array(
 	'status' => 'Implemented',
 	'valuetype' => '',
 	'category' => '',
 	'values' => '',
 	'definition' => '',
 ),
-'QuoteStatusOnSalesOrderSave' => array(
+'Quote_StatusOnSalesOrderSave' => array(
 	'status' => 'Implemented',
 	'valuetype' => '',
 	'category' => '',
 	'values' => '',
 	'definition' => '',
 ),
-'Report.Excel.Export.RowHeight' => array(
+'Report_Excel_Export_RowHeight' => array(
 	'status' => 'Implemented',
 	'valuetype' => '',
 	'category' => '',

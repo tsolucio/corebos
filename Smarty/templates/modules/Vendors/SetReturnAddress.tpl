@@ -42,7 +42,7 @@
 								<td align="left"><b>{'Billing Address'|@getTranslatedString}</b></td>
 							</tr>
 							<tr>
-								<td align="center"><input type="checkbox" {if $ShipAddressChecked eq 'true'}checked {/if}name="sva_ship" id="sva_ship" /></td>
+								<td align="center"><input type="checkbox" {if $ShipAddressChecked eq 1}checked {/if}name="sva_ship" id="sva_ship" /></td>
 								<td align="left"><b>{'Shipping Address'|@getTranslatedString}</b></td>
 							</tr>
 						</table>

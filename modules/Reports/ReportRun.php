@@ -3370,7 +3370,7 @@ class ReportRun extends CRMEntity {
 		$mod_strings = return_module_language($current_language, $currentModule);
 
 		require_once('include/PHPExcel/PHPExcel.php');
-		$xlsrowheight = GlobalVariable::getVariable('Report.Excel.Export.RowHeight', 20);
+		$xlsrowheight = GlobalVariable::getVariable('Report_Excel_Export_RowHeight', 20);
 		$workbook = new PHPExcel();
 		$worksheet = $workbook->setActiveSheetIndex(0);
 		$fieldinfo = array();
