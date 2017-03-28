@@ -45,7 +45,7 @@ class vtigerCRM_Smarty extends Smarty{
 		$this->assign('WORLD_CLOCK_DISPLAY', $WORLD_CLOCK_DISPLAY);
 		$this->assign('CALCULATOR_DISPLAY', $CALCULATOR_DISPLAY);
 		$this->assign('CURRENT_USER_ID',(isset($current_user) ? $current_user->id : 0));
-		$this->assign('PRELOAD_JSCALENDAR', GlobalVariable::getVariable('preload_jscalendar','true',$currentModule));
+		$this->assign('Application_JSCalendar_Load', GlobalVariable::getVariable('Application_JSCalendar_Load',1,$currentModule));
 
 		// Query For TagCloud only when required
 		if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'DetailView') {

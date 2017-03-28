@@ -133,7 +133,7 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Text to show',
 	'definition' => 'Shows a scrolling header text as a system wide announcement',
 ),
-'preload_jscalendar' => array(
+'Application_JSCalendar_Load' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'String',
 	'category' => 'Development',
@@ -456,21 +456,21 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => '',
 ),
-'calendar_call_default_duration' => array(
+'Calendar_call_default_duration' => array(
 	'status' => 'Implemented',
 	'valuetype' => '',
 	'category' => '',
 	'values' => '',
 	'definition' => '',
 ),
-'calendar_other_default_duration' => array(
+'Calendar_other_default_duration' => array(
 	'status' => 'Implemented',
 	'valuetype' => '',
 	'category' => '',
 	'values' => '',
 	'definition' => '',
 ),
-'calendar_sort_users_by' => array(
+'Calendar_sort_users_by' => array(
 	'status' => 'Implemented',
 	'valuetype' => '',
 	'category' => '',

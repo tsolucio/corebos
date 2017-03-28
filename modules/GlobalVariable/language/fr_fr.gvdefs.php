@@ -147,7 +147,7 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Annonce générale sous forme de texte défilant',
 ),
-'preload_jscalendar' => array(
+'Application_JSCalendar_Load' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Chaîne',
 	'category' => 'Dévelopement',
@@ -602,21 +602,21 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Permet d\'afficher (1) ou non (0) les événement dans l\'Agenda assignés à un Groupe. Par défaut (1) les événement assignés à un Groupe sont affichés.',
 ),
-'calendar_call_default_duration' => array(
+'Calendar_call_default_duration' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Entier:<br>Minute(s)',
 	'category' => 'Application',
 	'values' => '',
 	'definition' => 'Permet d\'assigner un temps prédéfini en minutes lors de la création d\'un Appel. La valeur par défaut est (15) minutes.',
 ),
-'calendar_other_default_duration' => array(
+'Calendar_other_default_duration' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Entier:<br>Minute(s)',
 	'category' => 'Application',
 	'values' => '',
 	'definition' => 'Permet d\'assigner un temps prédéfini en minutes lors de la création d\'une tâche. La valeur par défaut est de (15) minutes.',
 ),
-'calendar_sort_users_by' => array(
+'Calendar_sort_users_by' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Liste CSV',
 	'category' => 'Application',
