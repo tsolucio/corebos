@@ -1151,4 +1151,11 @@
 	<classname>addWebdomainWebFormscb</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Install Calendar remake module</description>
+	<filename>build/changeSets/2017/installcbcalendar.php</filename>
+	<classname>installcbcalendar</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
