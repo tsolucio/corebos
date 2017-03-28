@@ -45,6 +45,6 @@ $mod_strings = Array (
 	'LBL_DUPLICATE_NAME' => 'Un formulaire web avec le même nom existe déjà',
 	'ERR_CREATE_WEBFORM' => 'La création du formulaire web a échoué',
 	'LBL_SELECT_USER'=>'Choix utilisataur',
-	'LBL_WEB_DOMAIN' => 'Web Domain',
+	'LBL_WEB_DOMAIN' => 'Domaine Web',
 );
 ?>
