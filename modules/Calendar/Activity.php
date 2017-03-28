@@ -142,6 +142,14 @@ class Activity extends CRMEntity {
 		//Inserting into sales man activity rel
 		$this->insertIntoSmActivityRel($module);
 		$this->insertIntoActivityReminderPopup($module);
+		$upd = "update vtiger_activity set rel_id=?,cto_id=?,eventstatus=?,
+			`dtstart`= str_to_date(concat(date_format(`date_start`,'%Y/%m/%d'),' ',`time_start`),'%Y/%m/%d %H:%i:%s'),
+			`dtend` = str_to_date(concat(date_format(`due_date`,'%Y/%m/%d'),' ',`time_end`),'%Y/%m/%d %H:%i:%s')
+			where activityid=?";
+		$adb->pquery($upd,array(
+			(empty($this->column_fields['parent_id']) ? 0 : $this->column_fields['parent_id']),
+			(empty($this->column_fields['contact_id']) ? 0 : $this->column_fields['contact_id']),
+			$this->column_fields['eventstatus'],$this->id));
 	}
 
 	/** Function to insert values in vtiger_activity_reminder_popup table for the specified module
