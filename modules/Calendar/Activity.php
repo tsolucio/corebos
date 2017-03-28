@@ -146,10 +146,16 @@ class Activity extends CRMEntity {
 			`dtstart`= str_to_date(concat(date_format(`date_start`,'%Y/%m/%d'),' ',`time_start`),'%Y/%m/%d %H:%i:%s'),
 			`dtend` = str_to_date(concat(date_format(`due_date`,'%Y/%m/%d'),' ',`time_end`),'%Y/%m/%d %H:%i:%s')
 			where activityid=?";
+		if (empty($this->column_fields['contact_id'])) {
+			$ctoid = 0;
+		} elseif (strpos($this->column_fields['contact_id'], ';')>0) { // for webservice direct multi-relation
+			$ctoid = substr($this->column_fields['contact_id'], 0, strpos($this->column_fields['contact_id'], ';'));
+		} else {
+			$ctoid = $this->column_fields['contact_id']; // just one contact
+		}
 		$adb->pquery($upd,array(
 			(empty($this->column_fields['parent_id']) ? 0 : $this->column_fields['parent_id']),
-			(empty($this->column_fields['contact_id']) ? 0 : $this->column_fields['contact_id']),
-			$this->column_fields['eventstatus'],$this->id));
+			$ctoid,$this->column_fields['eventstatus'],$this->id));
 	}
 
 	/** Function to insert values in vtiger_activity_reminder_popup table for the specified module
