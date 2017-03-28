@@ -150,7 +150,7 @@ if(isset($_REQUEST['module']))
 	}
 	if(!$is_action)
 	{
-		die("Action name is missing or incorrect. Please check the action name.");
+		die('Action name is missing or incorrect. Please check the action name: '.vtlib_purify($action));
 	}
 }
 
