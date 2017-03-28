@@ -142,7 +142,7 @@ public function setgoogleaccessparams($userid){
 			} else {
 				$sqllshowinactiveusers = "and status='Active'";
 			}
-			$sortusersby = GlobalVariable::getVariable('calendar_sort_users_by','first_name, last_name');
+			$sortusersby = GlobalVariable::getVariable('Calendar_sort_users_by','first_name, last_name');
 			$query = "SELECT * FROM vtiger_users WHERE deleted=0 $sqllshowinactiveusers ORDER BY $sortusersby";
 			$params = array();
 		} else {

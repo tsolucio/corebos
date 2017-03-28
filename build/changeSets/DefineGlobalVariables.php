@@ -74,9 +74,6 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Calendar_Slot_Minutes',
 				'Calendar_Show_Inactive_Users',
 				'Calendar_Show_Group_Events',
-				'calendar_call_default_duration',
-				'calendar_other_default_duration',
-				'calendar_sort_users_by',
 
 				'CronTasks_cronWatcher_mailto',
 
@@ -201,11 +198,11 @@ class DefineGlobalVariables extends cbupdaterWorker {
 					'change' => array(
 						array(
 							'not' => 'false',
-							'to' => 0
+							'to' => 1
 						),
 						array(
 							'from' => 'false',
-							'to' => 1
+							'to' => 0
 						),
 					)
 				),
@@ -229,6 +226,28 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				),
 				'Report.Excel.Export.RowHeight' => array(
 					'to' => 'Report_Excel_Export_RowHeight',
+				),
+				'calendar_call_default_duration' => array(
+					'to' => 'Calendar_call_default_duration',
+				),
+				'calendar_other_default_duration' => array(
+					'to' => 'Calendar_other_default_duration',
+				),
+				'calendar_sort_users_by' => array(
+					'to' => 'Calendar_sort_users_by',
+				),
+				'preload_jscalendar' => array(
+					'to' => 'Application_JSCalendar_Load',
+					'change' => array(
+						array(
+							'not' => 'true',
+							'to' => 0
+						),
+						array(
+							'from' => 'true',
+							'to' => 1
+						),
+					)
 				),
 			);
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');
