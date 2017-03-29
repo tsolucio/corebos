@@ -1151,4 +1151,11 @@
 	<classname>addWebdomainWebFormscb</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>coreBOS Message Queue and Task Manager database tables</description>
+	<filename>build/changeSets/2017/cbmqtmdbdistributortables.php</filename>
+	<classname>cbmqtmdbdistributortables</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
