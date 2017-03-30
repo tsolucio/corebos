@@ -16,28 +16,19 @@
  *  Module       : coreBOS Message Queue Loader
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
-/*
- * CREATE TABLE `cbmqtm_config` ( `cbmqtm_key` VARCHAR(200) NOT NULL , `cbmqtm_value` VARCHAR(500) NOT NULL , PRIMARY KEY (`cbmqtm_key`)) ENGINE = InnoDB;
- */
+
 class coreBOS_MQTM {
 	static protected $instance = null;
 
 	static public function getInstance() {
 
 		if (null === static::$instance) {
-			$adb = PearDatabase::getInstance();
-			$cbmqtmrs = $adb->pquery('select cbmqtm_value from cbmqtm_config where cbmqtm_key=?',array('cbmqtm_classfile'));
-			if ($cbmqtmrs and $adb->num_rows($cbmqtmrs)==1) {
-				$filename = $adb->query_result($cbmqtmrs, 0, 0);
-				if (file_exists($filename)) {
-					include_once $filename;
-					$cbmqtmrs = $adb->pquery('select cbmqtm_value from cbmqtm_config where cbmqtm_key=?',array('cbmqtm_classname'));
-					if ($cbmqtmrs and $adb->num_rows($cbmqtmrs)==1) {
-						$cbmqtm_classname = $adb->query_result($cbmqtmrs, 0, 0);
-						if (class_exists($cbmqtm_classname)) {
-							static::$instance = $cbmqtm_classname::getInstance();
-						}
-					}
+			$filename = coreBOS_Settings::getSetting('cbmqtm_classfile');
+			if (!empty($filename) and file_exists($filename)) {
+				include_once $filename;
+				$cbmqtm_classname = coreBOS_Settings::getSetting('cbmqtm_classname');
+				if (class_exists($cbmqtm_classname)) {
+					static::$instance = $cbmqtm_classname::getInstance();
 				}
 			}
 		}
