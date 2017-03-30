@@ -254,21 +254,21 @@ class DefineGlobalVariables extends cbupdaterWorker {
 			$field = Vtiger_Field::getInstance('gvname',$moduleInstance);
 			if ($field) {
 				foreach ($rename_these as $gvar => $change) {
-					$rschk = $adb->pquery('select count(*) from vtiger_gvname where gvname=?',array($gvar));
+					$rschk = $adb->pquery('select count(*) from vtiger_gvname where BINARY gvname=?',array($gvar));
 					$checkold = $adb->query_result($rschk, 0, 0);
-					$rschk = $adb->pquery('select count(*) from vtiger_gvname where gvname=?',array($change['to']));
+					$rschk = $adb->pquery('select count(*) from vtiger_gvname where BINARY gvname=?',array($change['to']));
 					$checknew = $adb->query_result($rschk, 0, 0);
 					if ($checkold > 0) {
 						if ($checknew > 0) {
 							$delete_these[] = $gvar;
 						} else { // rename
-							$sql = 'UPDATE vtiger_gvname SET gvname=? WHERE gvname=?';
+							$sql = 'UPDATE vtiger_gvname SET gvname=? WHERE BINARY gvname=?';
 							$this->ExecuteQuery($sql, array($change['to'],$gvar));
 							$table_name = 'vtiger_globalvariable';
 							$columnName = 'gvname';
-							$sql = "update $table_name set $columnName=? where $columnName=?";
+							$sql = "update $table_name set $columnName=? where BINARY $columnName=?";
 							$this->ExecuteQuery($sql, array($change['to'],$gvar));
-							$sql = "UPDATE vtiger_picklist_dependency SET sourcevalue=? WHERE sourcevalue=? AND sourcefield='gvname' AND tabid=?";
+							$sql = "UPDATE vtiger_picklist_dependency SET sourcevalue=? WHERE BINARY sourcevalue=? AND sourcefield='gvname' AND tabid=?";
 							$this->ExecuteQuery($sql, array($change['to'], $gvar, getTabid('GlobalVariable')));
 							if (isset($change['change'])) {
 								foreach ($change['change'] as $fromto) {
