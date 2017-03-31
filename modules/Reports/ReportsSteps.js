@@ -239,7 +239,7 @@ wizard.steps({
 		}
 
 		if(currentIndex == 3 && priorIndex == 2 ) {
-			if(document.NewReport.reportType.value =="summary" && cbreporttype == 'summary') {
+			if(document.NewReport.reportType.value =="summary") {
 				// Ajax Call
 				var data = setStepData("grouping");
 				jQuery.ajax({
