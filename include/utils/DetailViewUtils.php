@@ -1005,7 +1005,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$decimals = CurrencyField::getDecimalsFromTypeOfData($typeofdata);
 			$currencyField->initialize($current_user);
 			$currencyField->setNumberofDecimals(min($decimals,$currencyField->getCurrencyDecimalPlaces()));
-			$label_fld[] = $currencyField->getDisplayValue(null,false,true);
+			$label_fld[] = $currencyField->getDisplayValue(null,true,true);
 		}
 	}
 	elseif ($uitype == 71 || $uitype == 72) {
