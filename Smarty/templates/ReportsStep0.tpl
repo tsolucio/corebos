@@ -241,7 +241,7 @@
 	// Labels
 	var LBL_NONE = "{$MOD.LBL_NONE}";
 	var NO_COLUMN = "{$MOD.NO_COLUMN}";
-	var LBL_NO_PERMISSION = "{$MOD.LBL_NO_PERMISSION}"}
+	var LBL_NO_PERMISSION = "{$MOD.LBL_NO_PERMISSION}";
 	var LBL_SPECIFY_GROUPING = "{$MOD.LBL_SPECIFY_GROUPING}";
 </script>
 <script type="text/javascript" src="modules/Reports/ReportsSteps.js"></script>
