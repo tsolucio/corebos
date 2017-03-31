@@ -12,7 +12,7 @@
 <script type="text/javascript" src="include/js/{$LANGUAGE}.lang.js"></script>
 <script type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
 
-{include file='Buttons_List1.tpl'}
+{include file='Buttons_List.tpl'}
 		</td>
 	</tr>
 </table>

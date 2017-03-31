@@ -29,7 +29,7 @@ function validateFile(form)
 	{rdelim}
 </script>
 <!-- header - level 2 tabs -->
-{include file='Buttons_List1.tpl'}	
+{include file='Buttons_List.tpl'}
 
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%" class="small">
    <tr>
@@ -61,11 +61,11 @@ function validateFile(form)
 					<td colspan="2" align="left" valign="top" style="padding-left:40px;">
 					<br>
 						{if $MODULE eq 'Accounts' || $MODULE eq 'Contacts' || $MODULE eq 'Leads' || $MODULE eq 'Products' || $MODULE eq 'Potentials' || $MODULE eq 'HelpDesk' || $MODULE eq 'Vendors' }	
-							<span class="genHeaderGray">{$MOD.LBL_STEP_1_4}</span>&nbsp; 
+							<span class="genHeaderGray">{$MOD.LBL_STEP_1_4}</span>&nbsp;
 						{else}
 							<span class="genHeaderGray">{$MOD.LBL_STEP_1}</span>&nbsp;
 						{/if}
-						<span class="genHeaderSmall">{$MOD.LBL_STEP_1_TITLE}</span> 
+						<span class="genHeaderSmall">{$MOD.LBL_STEP_1_TITLE}</span>
 					</td>
 				   </tr>
 				   <tr >
@@ -100,9 +100,8 @@ function validateFile(form)
 								<input type="text"  class="importBox"  />&nbsp;
 							</td>
 						   </tr>
-					
 						   <tr >
-							<td align="right" valign="top" class="small" >	
+							<td align="right" valign="top" class="small" >
 								<b>Use Data Source :</b>
 							</td>
 								<td align="left" valign="top" class="small" >
@@ -111,7 +110,7 @@ function validateFile(form)
 						   </tr>
 						   <tr >
 							<td align="right" valign="top">&nbsp;</td>
-							<td align="left" valign="top"><input name="custom" type="radio" value="" class="small" /> 
+							<td align="left" valign="top"><input name="custom" type="radio" value="" class="small" />
 								Pre - Defined 
 							</td>
 				   </tr>*}

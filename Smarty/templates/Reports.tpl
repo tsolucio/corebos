@@ -20,7 +20,7 @@
 
 	<table border=0 cellspacing=0 cellpadding=0>
 	<tr>
-	<td>{include file="Buttons_List1.tpl"}</td>
+	<td>{include file="Buttons_List.tpl"}</td>
 	<td style="width:20px">&nbsp;</td>
 	<td>
 		<table border=0 cellspacing=0 cellpadding=0>
