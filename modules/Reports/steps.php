@@ -295,22 +295,22 @@ if(isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 			$secondarymodule = $get_secondmodules[1];
 			$oReport->secmodule = $secondarymodule;
 
-			$BLOCK1 = getPrimaryColumns_GroupingHTML($primarymodule,$list_array[0]);
-			$BLOCK1 = array_merge( (array)$BLOCK1, (array)getSecondaryColumns_GroupingHTML($oReport->secmodule,$list_array[0]) );
+			$BLOCK1 = getPrimaryColumns_GroupingHTML($primarymodule,(isset($list_array[0]) ? $list_array[0] : ''));
+			$BLOCK1 = array_merge( (array)$BLOCK1, (array)getSecondaryColumns_GroupingHTML($oReport->secmodule,(isset($list_array[0]) ? $list_array[0] : '')) );
 			$GROUPBYTIME1 = getGroupByTimeDiv(1,$recordid);
 
-			$BLOCK2 = getPrimaryColumns_GroupingHTML($primarymodule,$list_array[1]);
-			$BLOCK2 = array_merge( (array)$BLOCK2, (array)getSecondaryColumns_GroupingHTML($oReport->secmodule,$list_array[1]) );
+			$BLOCK2 = getPrimaryColumns_GroupingHTML($primarymodule,(isset($list_array[1]) ? $list_array[1] : ''));
+			$BLOCK2 = array_merge( (array)$BLOCK2, (array)getSecondaryColumns_GroupingHTML($oReport->secmodule,(isset($list_array[1]) ? $list_array[1] : '')) );
 			$GROUPBYTIME2 = getGroupByTimeDiv(2,$recordid);
 
-			$BLOCK3 = getPrimaryColumns_GroupingHTML($primarymodule,$list_array[2]);
-			$BLOCK3 = array_merge( (array)$BLOCK3, (array)getSecondaryColumns_GroupingHTML($oReport->secmodule,$list_array[2]) );
+			$BLOCK3 = getPrimaryColumns_GroupingHTML($primarymodule,(isset($list_array[2]) ? $list_array[2] : ''));
+			$BLOCK3 = array_merge( (array)$BLOCK3, (array)getSecondaryColumns_GroupingHTML($oReport->secmodule,(isset($list_array[2]) ? $list_array[2] : '')) );
 			$GROUPBYTIME3 = getGroupByTimeDiv(3,$recordid);
 
 			$sortorder = $oReport->ascdescorder;
-			$ASCDESC1 = getOrderGrouping($sortorder[0]);
-			$ASCDESC2 = getOrderGrouping($sortorder[1]);
-			$ASCDESC3 = getOrderGrouping($sortorder[2]);
+			$ASCDESC1 = getOrderGrouping((isset($sortorder[0]) ? $sortorder[0] : ''));
+			$ASCDESC2 = getOrderGrouping((isset($sortorder[1]) ? $sortorder[1] : ''));
+			$ASCDESC3 = getOrderGrouping((isset($sortorder[2]) ? $sortorder[2] : ''));
 			header('Content-Type: application/json');
 			echo json_encode(
 					array(

@@ -336,7 +336,7 @@ if($reportid == '' || ($reportid!='' && strstr($saveas,'saveas')!='' && $newrepo
 				$pcols = array();
 				for($i=0 ;$i<count($selectedcolumns);$i++)
 				{
-					if(!empty($selectedcolumns[$i])){
+					if (!empty($selectedcolumns[$i]) and strpos($selectedcolumns[$i],':')>0) {
 						$icolumnsql = "insert into vtiger_selectcolumn (QUERYID,COLUMNINDEX,COLUMNNAME) values (?,?,?)";
 						$icolumnsqlresult = $adb->pquery($icolumnsql, array($reportid,$i,(decode_html($selectedcolumns[$i]))));
 						$colinfo = explode(':', $selectedcolumns[$i]);
