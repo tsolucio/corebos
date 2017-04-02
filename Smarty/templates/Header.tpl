@@ -92,7 +92,7 @@
 
 	{* PREFECTHING IMAGE FOR BLOCKING SCREEN USING VtigerJS_DialogBox API *}
 	<img src="{'layerPopupBg.gif'|@vtiger_imageurl:$THEME}" style="display: none;"/>
-
+{if empty($Module_Popup_Edit)}
 <TABLE border=0 cellspacing=0 cellpadding=0 width=100% class="small">
 	<tr>
 		<td valign=top align=left><img src="test/logo/{$FRONTLOGO}" alt="{$COMPANY_DETAILS.name}" title="{$COMPANY_DETAILS.name}" border=0 style="width: 15em;height: 4.2em;"></td>
@@ -401,3 +401,4 @@
 	</table>
 </div>
 <!-- divs for asterisk integration :: end-->
+{/if}
