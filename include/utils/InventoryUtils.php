@@ -168,7 +168,7 @@ function getProductTaxPercentage($type,$productid,$default='')
 function addInventoryHistory($module, $id, $relatedname, $total, $history_fldval)
 {
 	global $log, $adb;
-	$log->debug("Entering into function addInventoryHistory($module, $id, $relatedname, $total, $history_fieldvalue)");
+	$log->debug("Entering into function addInventoryHistory($module, $id, $relatedname, $total, $history_fldval)");
 
 	$history_table_array = Array(
 		"PurchaseOrder"=>"vtiger_postatushistory",

@@ -198,7 +198,7 @@ class Services extends CRMEntity {
 			$cur_valuename = 'curname' . $curid;
 			$base_currency_check = 'base_currency' . $curid;
 			$requestPrice = CurrencyField::convertToDBFormat($_REQUEST['unit_price'], null, true);
-			$actualPrice = CurrencyField::convertToDBFormat($_REQUEST[$cur_valuename], null, true);
+			$actualPrice = CurrencyField::convertToDBFormat((isset($_REQUEST[$cur_valuename]) ? $_REQUEST[$cur_valuename] : 0), null, true);
 			if (isset($_REQUEST[$cur_checkname]) && ($_REQUEST[$cur_checkname] == 'on' || $_REQUEST[$cur_checkname] == 1)) {
 				$conversion_rate = $currency_details[$i]['conversionrate'];
 				$actual_conversion_rate = $service_base_conv_rate * $conversion_rate;
