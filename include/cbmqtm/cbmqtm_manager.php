@@ -33,10 +33,10 @@ abstract class cbmqtm_manager {
 
 	protected function __clone() {}
 
-	public abstract function sendMessage($channel, $producer, $consumer, $type, $share, $sequence, $expires, $userid, $information);
+	public abstract function sendMessage($channel, $producer, $consumer, $type, $share, $sequence, $expires, $deliverafter, $userid, $information);
 	public abstract function getMessage($channel, $consumer, $producer='*', $userid='*');
 	public abstract function isMessageWaiting($channel, $consumer, $producer='*', $userid='*');
-	public abstract function rejectMessage($channel, $producer, $consumer, $type, $share, $sequence, $senton, $expires, $userid, $information, $invalidreason);
+	public abstract function rejectMessage($channel, $producer, $consumer, $type, $share, $sequence, $senton, $expires, $deliverafter, $userid, $information, $invalidreason);
 	public abstract function subscribeToChannel($channel, $producer, $consumer, $callback);
 	public abstract function unsubscribeToChannel($channel, $producer, $consumer, $callback);
 }

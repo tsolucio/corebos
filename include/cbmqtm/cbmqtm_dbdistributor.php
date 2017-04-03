@@ -33,34 +33,39 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 		static::$db = new PearDatabase();
 	}
 
-	public function sendMessage($channel, $producer, $consumer, $type, $share, $sequence, $expires, $userid, $information) {
+	public function sendMessage($channel, $producer, $consumer, $type, $share, $sequence, $expires, $deliverafter, $userid, $information) {
 		if ($share != '1:M' and $share != 'P:S') {
 			$share = '1:M';
 		}
 		if ($share == '1:M' or !$this->subscriptionExist($channel, $producer, $consumer)) {
-			$this->insertMsg($channel, $producer, $consumer, $type, $share, $sequence, $expires, $userid, $information);
+			$this->insertMsg($channel, $producer, $consumer, $type, $share, $sequence, $expires, $deliverafter, $userid, $information);
 		} else {
 			self::setDB();
 			$subrs = static::$db->pquery('select * from cb_mqsubscriptions where channel=?',array($channel));
 			while ($subscriber = static::$db->fetch_array($subrs)) {
-				$this->insertMsg($channel, $producer, $subscriber['consumer'], $type, $share, $sequence, $expires, $userid, $information);
+				$this->insertMsg($channel, $producer, $subscriber['consumer'], $type, $share, $sequence, $expires, $deliverafter, $userid, $information);
 			}
 		}
 	}
 
-	private function insertMsg($channel, $producer, $consumer, $type, $share, $sequence, $expires, $userid, $information) {
+	private function insertMsg($channel, $producer, $consumer, $type, $share, $sequence, $expires, $deliverafter, $userid, $information) {
+		$rightnow = time();
+		if (empty($deliverafter)) {
+			$deliverafter = 0;
+		}
 		self::setDB();
 		static::$db->pquery('insert into cb_messagequeue
-			(channel, producer, consumer, type, share, sequence, senton, expires, version, invalid, invalidreason, userid, information)
-			values (?,?,?,?,?,?,?,?,?,?,?,?,?)',array(
+			(channel, producer, consumer, type, share, sequence, senton, deliverafter, expires, version, invalid, invalidreason, userid, information)
+			values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',array(
 				'channel' => $channel,
 				'producer' => $producer,
 				'consumer' => $consumer,
 				'type' => $type,
 				'share' => $share,
 				'sequence' => $sequence,
-				'senton' => date('Y-m-d H:i:s'),
-				'expires' => date('Y-m-d H:i:s', time() + $expires),
+				'senton' => date('Y-m-d H:i:s', $rightnow),
+				'deliverafter' => date('Y-m-d H:i:s', $rightnow + $deliverafter),
+				'expires' => date('Y-m-d H:i:s', $rightnow + $deliverafter + $expires),
 				'version' => $this->version,
 				'invalid' => 0,
 				'invalidreason' => '',
@@ -71,8 +76,8 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 
 	public function getMessage($channel, $consumer, $producer='*', $userid='*') {
 		self::setDB();
-		$sql = 'select * from cb_messagequeue where channel=? and consumer=?';
-		$params = array($channel, $consumer);
+		$sql = 'select * from cb_messagequeue where deliverafter<=? and channel=? and consumer=?';
+		$params = array(date('Y-m-d H:i:s', time()), $channel, $consumer);
 		if ($producer != '*') {
 			$sql .= ' and producer=?';
 			$params[] = $producer;
@@ -94,6 +99,7 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 				'share' => $msg['share'],
 				'sequence' => $msg['sequence'],
 				'senton' => $msg['senton'],
+				'deliverafter' => $msg['deliverafter'],
 				'expires' => $msg['expires'],
 				'version' => $this->version,
 				'invalid' => $msg['invalid'],
@@ -108,8 +114,8 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 
 	public function isMessageWaiting($channel, $consumer, $producer='*', $userid='*') {
 		self::setDB();
-		$sql = 'select count(*) from cb_messagequeue where channel=? and consumer=?';
-		$params = array($channel, $consumer);
+		$sql = 'select count(*) from cb_messagequeue where deliverafter<=? and channel=? and consumer=?';
+		$params = array(date('Y-m-d H:i:s', time()), $channel, $consumer);
 		if ($producer != '*') {
 			$sql .= ' and producer=?';
 			$params[] = $producer;
@@ -122,14 +128,14 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 		return ($msgrs and static::$db->query_result($msgrs,0,0) > 0);
 	}
 
-	public function rejectMessage($channel, $producer, $consumer, $type, $share, $sequence, $senton, $expires, $userid, $information, $invalidreason) {
+	public function rejectMessage($channel, $producer, $consumer, $type, $share, $sequence, $senton, $expires, $deliverafter, $userid, $information, $invalidreason) {
 		self::setDB();
 		if ($share != '1:M' and $share != 'P:S') {
 			$share = '1:M';
 		}
 		static::$db->pquery('insert into cb_messagequeue
-			(channel, producer, consumer, type, share, sequence, senton, expires, version, invalid, invalidreason, userid, information)
-			values (?,?,?,?,?,?,?,?,?,?,?,?,?)',array(
+			(channel, producer, consumer, type, share, sequence, senton, deliverafter, expires, version, invalid, invalidreason, userid, information)
+			values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',array(
 				'channel' => 'cbINVALID',
 				'producer' => $producer,
 				'consumer' => $consumer,
@@ -137,6 +143,7 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 				'share' => $share,
 				'sequence' => $sequence,
 				'senton' => $senton,
+				'deliverafter' => $deliverafter,
 				'expires' => $expires,
 				'version' => $this->version,
 				'invalid' => 1,
@@ -210,6 +217,7 @@ CREATE TABLE `cb_messagequeue` (
  `share` VARCHAR(20) NOT NULL ,
  `sequence` INT NOT NULL ,
  `senton` DATETIME NOT NULL ,
+ `deliverafter` DATETIME NOT NULL ,
  `expires` DATETIME NOT NULL ,
  `version` VARCHAR(20) NOT NULL ,
  `invalid` TINYINT NOT NULL ,
@@ -221,6 +229,7 @@ CREATE TABLE `cb_messagequeue` (
  INDEX `cbmqproducer` (`producer`),
  INDEX `cbmqconsumer` (`consumer`),
  INDEX `cbmqexpires` (`expires`),
+ INDEX `cbmqdeliver` (`deliverafter`),
  INDEX `cbmquserid` (`userid`),
  INDEX `cbmqchannel` (`channel`, `sequence`)
 ) ENGINE = InnoDB;
