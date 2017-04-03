@@ -506,10 +506,9 @@ class CRMEntity {
 		}
 
 		// Attempt to re-use the query-result to avoid reading for every save operation
-		// TODO Need careful analysis on impact ... MEMORY requirement might be more
 		static $_privatecache = array();
 
-		$cachekey = "{$insertion_mode}-" . implode(',', $params);
+		$cachekey = md5($insertion_mode . serialize($params));
 
 		if (!isset($_privatecache[$cachekey])) {
 			$result = $adb->pquery($sql, $params);
