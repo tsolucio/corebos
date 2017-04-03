@@ -34,7 +34,7 @@ if(isset($query_string) && $query_string != ''){
 	if(!empty($search_onlyin) && $search_onlyin != '--USESELECTED--') {
 		$search_onlyin = explode(',', $search_onlyin);
 	} else if($search_onlyin == '--USESELECTED--') {
-		$search_onlyin = $_SESSION['__UnifiedSearch_SelectedModules__'];
+		$search_onlyin = (isset($_SESSION['__UnifiedSearch_SelectedModules__']) ? $_SESSION['__UnifiedSearch_SelectedModules__'] : array());
 	} else {
 		$search_onlyin = array();
 	}

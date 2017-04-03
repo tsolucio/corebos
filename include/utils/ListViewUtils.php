@@ -1289,9 +1289,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		$parent_id = $field_val;
 		if (!empty($parent_id)) {
 			$parent_module = getSalesEntityType($parent_id);
-			$valueTitle = $parent_module;
-			if ($app_strings[$valueTitle])
-				$valueTitle = $app_strings[$valueTitle];
+			$valueTitle = getTranslatedString($parent_module,$parent_module);
 
 			$displayValueArray = getEntityName($parent_module, $parent_id);
 			if (!empty($displayValueArray)) {

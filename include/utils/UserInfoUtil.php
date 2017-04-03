@@ -1051,7 +1051,7 @@ function isReadWritePermittedBySharing($module,$tabid,$actionid,$record_id)
 		}
 	}
 	//Checking for the Related Sharing Permission
-	$relatedModuleArray=$related_module_share[$tabid];
+	$relatedModuleArray = (isset($related_module_share[$tabid]) ? $related_module_share[$tabid] : null);
 	if(is_array($relatedModuleArray))
 	{
 		foreach($relatedModuleArray as $parModId)

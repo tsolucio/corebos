@@ -782,7 +782,8 @@ class Users extends CRMEntity {
 			}
 			if ($columname == 'is_admin' and !is_admin($current_user)) {// only admin users can change admin field
 				if ($insertion_mode == 'edit') {// we force the same value that is currently set in database
-					$fldvalue = $adb->query_result($adb->pquery('select is_admin from vtiger_users where id=?', array($this->id)), 0, 0);
+					$rs = $adb->pquery('select is_admin from vtiger_users where id=?', array($this->id));
+					$fldvalue = $adb->query_result($rs, 0, 0);
 				}
 			}
 			if ($insertion_mode == 'edit') {

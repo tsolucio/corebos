@@ -298,7 +298,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$label_fld[] = $user_name;
 		}
 		$tabidmodule = getTabid($module);
-		if ($is_admin == false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[$tabidmodule] == 3 or $defaultOrgSharingPermission[$tabidmodule] == 0)) {
+		if ($is_admin == false && $profileGlobalPermission[2] == 1 && isset($defaultOrgSharingPermission[$tabidmodule]) && ($defaultOrgSharingPermission[$tabidmodule] == 3 or $defaultOrgSharingPermission[$tabidmodule] == 0)) {
 			$ua = get_user_array(FALSE, "Active", $assigned_user_id, 'private');
 			$users_combo = get_select_options_array($ua, $assigned_user_id);
 		} else {
