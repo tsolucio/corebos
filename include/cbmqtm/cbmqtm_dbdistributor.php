@@ -86,7 +86,7 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 			$sql .= ' and userid=?';
 			$params[] = $userid;
 		}
-		$sql .= ' order by sequence asc limit 1';
+		$sql .= ' order by deliverafter,sequence asc limit 1';
 		$msgrs = static::$db->pquery($sql,$params);
 		if ($msgrs and static::$db->num_rows($msgrs)==1) {
 			$msg = static::$db->fetch_array($msgrs);
