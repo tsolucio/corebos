@@ -128,29 +128,15 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 		return ($msgrs and static::$db->query_result($msgrs,0,0) > 0);
 	}
 
-	public function rejectMessage($channel, $producer, $consumer, $type, $share, $sequence, $senton, $expires, $deliverafter, $userid, $information, $invalidreason) {
+	public function rejectMessage($message, $invalidreason) {
 		self::setDB();
-		if ($share != '1:M' and $share != 'P:S') {
-			$share = '1:M';
-		}
+		$channel = $message['channel'];
+		$message['channel'] = 'cbINVALID';
+		$message['invalid'] = 1;
+		$message['invalidreason'] = $channel.'::'.$invalidreason;
 		static::$db->pquery('insert into cb_messagequeue
 			(channel, producer, consumer, type, share, sequence, senton, deliverafter, expires, version, invalid, invalidreason, userid, information)
-			values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',array(
-				'channel' => 'cbINVALID',
-				'producer' => $producer,
-				'consumer' => $consumer,
-				'type' => $type,
-				'share' => $share,
-				'sequence' => $sequence,
-				'senton' => $senton,
-				'deliverafter' => $deliverafter,
-				'expires' => $expires,
-				'version' => $this->version,
-				'invalid' => 1,
-				'invalidreason' => $channel.'::'.$invalidreason,
-				'userid' => $userid,
-				'information' => $information
-			));
+			values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',$message);
 	}
 
 	public function subscribeToChannel($channel, $producer, $consumer, $callback) {
