@@ -29,9 +29,20 @@ $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
-$smarty->assign('CATEGORY', $category);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('THEME', $theme);
+$tool_buttons = array(
+	'EditView' => 'no',
+	'CreateView' => 'no',
+	'index' => 'yes',
+	'Import' => 'no',
+	'Export' => 'no',
+	'Merge' => 'no',
+	'DuplicatesHandling' => 'no',
+	'Calendar' => 'no',
+	'moduleSettings' => 'no',
+);
+$smarty->assign('CHECK', $tool_buttons);
 
 if (empty($_REQUEST['record'])) {
 	$smarty->assign('ERROR_MESSAGE', 'Missing Map ID (record)');
