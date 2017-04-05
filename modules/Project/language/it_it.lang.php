@@ -9,12 +9,12 @@
  ************************************************************************************/
 $mod_strings = Array(
 
-  	'LBL_MODULE_NAME'=>'Progetti',
-  	'LBL_MODULE_TITLE'=>'Progetti',
+    'LBL_MODULE_NAME'=>'Progetti',
+    'LBL_MODULE_TITLE'=>'Progetti',
     'LBL_NEW_PROJECT'=>'Nuovo Progetto',
     'LBL_PROJECTS'=>'Progetti',
     'LBL_PROJECT'=>'Progetti',
-	'projectname' => 'Nome Progetto',
+    'projectname' => 'Nome Progetto',
     //added this to translate the module name in the main app menu
     'Project'=>'Progetti',
     //
@@ -33,6 +33,7 @@ $mod_strings = Array(
     'projecttype'=>'Tipo',
     'targetbudget'=>'Budget',
     'projecturl'=>'Url del Progetto',
+    'description'=>'Descrizione',
     'projectpriority'=>'Priorit&agrave;',
     'progress'=>'Progresso',
     'additionalinformation'=>'Informazioni Aggiuntive',
@@ -50,22 +51,20 @@ $mod_strings = Array(
     '--none--' => 'nessuno',
     'Project Name' => 'Nome Progetto',
     'Start Date' => 'Data di Inizio',
-
- 	'Target End Date' => 'Data di Fine Prevista',
-	'Project No' => 'Numero Progetto',
-	'Actual End Date' => 'Data di Fine Effettiva',
-	'Project Url'=>'Url del Progetto',
-	'Target Budget'=>'Budget',
-	'Progress'=>'Progresso',
-
+    'Target End Date' => 'Data di Fine Prevista',
+    'Project No' => 'Numero Progetto',
+    'Actual End Date' => 'Data di Fine Effettiva',
+    'Project Url'=>'Url del Progetto',
+    'Target Budget'=>'Budget',
+    'Progress'=>'Progresso',
+    'Add Note' => 'Aggiungi Nota',
+    'Add Project Task' => 'Aggiungi Operazione',
     'Charts' => 'Grafico',
-	'LBL_PROGRESS_CHART' => 'Progresso Grafico',
-	'Project No' => 'Nr Progetto',
-	
-	'Project Milestones' => 'Scadenze',
-	'Project Tasks' => 'Operazioni',
-	'Project Team' => 'Team di Progetto',
-
+    'LBL_PROGRESS_CHART' => 'Progresso Grafico',
+    'Project No' => 'Nr Progetto',	
+    'Project Milestones' => 'Scadenze',
+    'Project Tasks' => 'Operazioni',
+    'Project Team' => 'Team di Progetto',
 );
 
 ?>

@@ -119,8 +119,8 @@ $mod_strings = array (
 'LBL_NO_WIDGETS_HIDDEN'=>'Non ci sono Widget predefiniti nascosti',
 'UpdateExchangeRate' => 'Update Exchange Rate',
 'LBL_HOME_ADDWINDOW' => 'Add Window',
-'LBL_GETTING_STARTED' => 'Getting Started',
-'ExpirePasswordAfterDays' => 'Expire Password After Days',
+'LBL_GETTING_STARTED' => 'Iniziare',
+'ExpirePasswordAfterDays' => 'Fai scadere password dopo giorni',
 );
 
 ?>
