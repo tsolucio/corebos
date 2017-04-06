@@ -1165,4 +1165,11 @@
 	<classname>corebossettingstable</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>mysqlStrict support for product field in Assets module</description>
+	<filename>build/changeSets/2017/mysqlstrictAssets.php</filename>
+	<classname>mysqlstrictAssets</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
