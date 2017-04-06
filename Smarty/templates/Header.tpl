@@ -271,6 +271,31 @@
 	</div>
 	<nav class="slds-context-bar__secondary" role="navigation">
 		<ul class="slds-grid" id="cbmenu">
+		{foreach from=$MENU2 item=maintab key=key name=maintabloop}
+			<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true">
+				<a href="javascript:void(0);" class="slds-context-bar__label-action" title="{$maintab.mlabel}">
+					<span class="slds-truncate">{$maintab.mlabel}</span>
+				</a>
+				<div class="slds-context-bar__icon-action slds-p-left--none" tabindex="0">
+					<svg aria-hidden="true" class="slds-button__icon">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevrondown"></use>
+					</svg>
+				</div>
+				{if !empty($maintab.submenu)}
+				<div class="slds-dropdown slds-dropdown--right">
+					<ul class="slds-dropdown__list" role="menu" id="menu0">
+					{foreach from=$maintab.submenu item=subitem key=key name=subitemloop}
+						<li class="slds-dropdown__item" role="presentation">
+							<a href="index.php?action=index&amp;module={$subitem.mvalue}" role="menuitem" tabindex="-1">
+								<span class="slds-truncate">{$subitem.mlabel}</span>
+							</a>
+						</li>
+					{/foreach}						
+					</ul>
+				</div>
+				{/if}
+			</li>
+		{/foreach}
 		</ul>
 		<div class="slds-context-bar__tertiary" style="float:left; margin-top:auto; margin-bottom:auto;">
 			<div class="slds-form-element">
@@ -373,7 +398,7 @@
 </div>
 <script type="text/javascript">
 	jQuery('#tracker').draggable({ldelim} handle: "#Track_Handle" {rdelim});
-	var evvtmenu={$MENU};
+	// var evvtmenu={$MENU};
 </script>
 <script type="text/javascript" src="modules/evvtMenu/evvtMenu.js"></script>
 </div>
