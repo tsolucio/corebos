@@ -24,7 +24,17 @@ class GoogleContactChanges extends cbupdaterWorker {
 		} else {
 			// Indexes after studying MySQL queries with no index
 			$this->ExecuteQuery("ALTER TABLE `its4you_googlesync4you_access` ADD `service` varchar(255)  NULL ;");
-			$this->sendMsg('Changeset '.get_class($this).' applied!');
+			$this->ExecuteQuery("CREATE TABLE vtiger_google_sync_settings (user int(11) DEFAULT NULL, 
+                                            module varchar(50) DEFAULT NULL , clientgroup varchar(255) DEFAULT NULL, 
+                                            direction varchar(50) DEFAULT NULL)");
+                        $this->ExecuteQuery("CREATE TABLE vtiger_google_sync_fieldmapping ( vtiger_field varchar(255) DEFAULT NULL,
+                                            google_field varchar(255) DEFAULT NULL, google_field_type varchar(255) DEFAULT NULL,
+                                            google_custom_label varchar(255) DEFAULT NULL, user int(11) DEFAULT NULL)");
+                        //WSApp methods
+                        $this->ExecuteQuery("INSERT INTO `vtiger_wsapp_handlerdetails` (`type`, `handlerclass`, `handlerpath`) VALUES ('vtigerSyncLib', 'WSAPP_VtigerSyncEventHandler', 'modules/WSAPP/synclib/handlers/VtigerSyncEventHandler.php');");
+                        $this->ExecuteQuery("INSERT INTO `vtiger_wsapp_handlerdetails` (`type`, `handlerclass`, `handlerpath`) VALUES ('Google_vtigerHandler', 'Google_Vtiger_Handler', 'modules/Contacts/handlers/Vtiger.php');");
+                        $this->ExecuteQuery("INSERT INTO `vtiger_wsapp_handlerdetails` (`type`, `handlerclass`, `handlerpath`) VALUES ('Google_vtigerSyncHandler', 'Google_VtigerSync_Handler', 'modules/Contacts/handlers/VtigerSync.php');");
+                        $this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);
 		}
 		$this->finishExecution();
