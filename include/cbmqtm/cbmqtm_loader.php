@@ -23,10 +23,10 @@ class coreBOS_MQTM {
 	static public function getInstance() {
 
 		if (null === static::$instance) {
-			$filename = coreBOS_Settings::getSetting('cbmqtm_classfile');
+			$filename = coreBOS_Settings::getSetting('cbmqtm_classfile',null);
 			if (!empty($filename) and file_exists($filename)) {
 				include_once $filename;
-				$cbmqtm_classname = coreBOS_Settings::getSetting('cbmqtm_classname');
+				$cbmqtm_classname = coreBOS_Settings::getSetting('cbmqtm_classname','');
 				if (class_exists($cbmqtm_classname)) {
 					static::$instance = $cbmqtm_classname::getInstance();
 				}
