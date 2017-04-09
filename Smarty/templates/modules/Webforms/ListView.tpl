@@ -71,6 +71,7 @@
 					<td class="lvtCol">{'LBL_MODULE'|@getTranslatedString:$MODULE}</a></td>
 					<td class="lvtCol">{'LBL_PUBLICID'|@getTranslatedString:$MODULE}</td>
 					<td class="lvtCol">{'LBL_RETURNURL'|@getTranslatedString:$MODULE}</td>
+					<td class="lvtCol">{'LBL_WEB_DOMAIN'|@getTranslatedString:$MODULE}</td>
 					<td class="lvtCol" width="2%">{'LBL_STATUS'|@getTranslatedString:$MODULE}</td>
 					<td class="lvtCol">{'LBL_ACTION'|@getTranslatedString:$MODULE}</td>
 				</tr>
@@ -109,6 +110,7 @@
 					<td onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">{$webform->getTargetModule()|@getTranslatedString}</td>
 					<td onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">{$webform->getPublicId()}</td>
 					<td onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">{$webform->getReturnUrl()}</td>
+					<td onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">{$webform->getWebDomain()}</td>
 					<td onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)" align="center"> {if $webform->getEnabled() eq 1}<img src="themes/images/prvPrfSelectedTick.gif">{else}<img src="themes/images/no.gif">{/if}</td>
 					<td onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)"><a onclick='javascript:document.getElementById("webform_popup_header").innerHTML="{$webform->getName()}";Webforms.getHTMLSource({$webform->getId()});' style="cursor:pointer;">{'LBL_SOURCE'|@getTranslatedString:$MODULE}</a> | <a href="index.php?module=Webforms&amp;action=WebformsEditView&amp;id={$webform->getId()}&amp;parenttab=Settings&amp;operation=edit">{'LBL_EDIT'|@getTranslatedString:$MODULE}</a>  | <a onclick="Webforms.deleteForm('form{$webform->getId()}',{$webform->getId()})" style="cursor:pointer;">{'LBL_DELETE'|@getTranslatedString:$MODULE}</a> </td>
 				</tr>

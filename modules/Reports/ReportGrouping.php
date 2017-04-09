@@ -65,8 +65,7 @@ if(isset($_REQUEST["record"]) && $_REQUEST['record']!='')
 
 	$sortorder = $oReport->ascdescorder;
 
-}else
-{
+} else {
 	$primarymodule = vtlib_purify($_REQUEST["primarymodule"]);
 	$BLOCK1 = getPrimaryColumns_GroupingHTML($primarymodule);
 	$ogReport =  new Reports();
@@ -88,16 +87,13 @@ if(isset($_REQUEST["record"]) && $_REQUEST['record']!='')
 	$report_group->assign("GROUPBYTIME3",$GROUPBYTIME3);
 }
 
-
-	/** Function to get the combo values for the Primary module Columns
-	 *  @ param $module(module name) :: Type String
-	 *  @ param $selected (<selected or ''>) :: Type String
-	 *  This function generates the combo values for the columns  for the given module
-	 *  and return a HTML string
-	 */
-
-function getPrimaryColumns_GroupingHTML($module,$selected="")
-{
+/** Function to get the combo values for the Primary module Columns
+ *  @ param $module(module name) :: Type String
+ *  @ param $selected (<selected or ''>) :: Type String
+ *  This function generates the combo values for the columns  for the given module
+ *  and return a HTML string
+ */
+function getPrimaryColumns_GroupingHTML($module,$selected='') {
 	global $ogReport, $current_language;
 	$id_added=false;
 	$mod_strings = return_module_language($current_language,$module);
@@ -146,14 +142,13 @@ function getPrimaryColumns_GroupingHTML($module,$selected="")
 	return $shtml;
 }
 
-	/** Function to get the combo values for the Secondary module Columns
-	 *  @ param $module(module name) :: Type String
-	 *  @ param $selected (<selected or ''>) :: Type String
-	 *  This function generates the combo values for the columns for the given module
-	 *  and return a HTML string
-	 */
-function getSecondaryColumns_GroupingHTML($module,$selected="")
-{
+/** Function to get the combo values for the Secondary module Columns
+ *  @ param $module(module name) :: Type String
+ *  @ param $selected (<selected or ''>) :: Type String
+ *  This function generates the combo values for the columns for the given module
+ *  and return a HTML string
+ */
+function getSecondaryColumns_GroupingHTML($module,$selected='') {
 	global $ogReport, $current_language;
 
 	$selected = decode_html($selected);
@@ -204,7 +199,7 @@ function getGroupByTimeDiv($sortid,$reportid=''){
 	$yearselected = '';
 	$monthselected = '';
 	$quarterselected = '';
-    $noneselected='';
+	$noneselected='';
 	if($rows > 0){
 		$displaystyle = 'inline';
 		$selected_groupby = $adb->query_result($result,0,'dategroupbycriteria');
@@ -274,5 +269,4 @@ $shtml =  "<option value='Ascending'>".$app_strings['Ascending']."</option>
 }
 $report_group->assign("ASCDESC3",$shtml);
 $report_group->display("ReportGrouping.tpl");
-
 ?>

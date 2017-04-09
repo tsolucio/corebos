@@ -1162,7 +1162,7 @@ function getEscapedColumns($selectedfields) {
 
 		$result = $adb->pquery($sreportsortsql, array($reportid));
 		$noofrows = $adb->num_rows($result);
-
+		$array_list = array();
 		for($i=0; $i<$noofrows; $i++)
 		{
 			$fieldcolname = $adb->query_result($result,$i,"columnname");

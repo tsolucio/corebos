@@ -13,7 +13,7 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
-global $entityDel, $display, $category;
+global $entityDel, $display;
 
 if(version_compare(phpversion(), '5.2.0') < 0 or version_compare(phpversion(), '7.1.0') >= 0) {
 	insert_charset_header();
@@ -150,7 +150,7 @@ if(isset($_REQUEST['module']))
 	}
 	if(!$is_action)
 	{
-		die("Action name is missing or incorrect. Please check the action name.");
+		die('Action name is missing or incorrect. Please check the action name: '.vtlib_purify($action));
 	}
 }
 
@@ -279,8 +279,6 @@ if(isset($action) && isset($module))
 		(preg_match("/^Webmails/",$module) && preg_match("/^get_img/",$action)) ||
 		preg_match("/^download/",$action) ||
 		preg_match("/^getListOfRecords/", $action) ||
-		preg_match("/^AddBlockFieldToDB/", $action) ||
-		preg_match("/^AddBlockToDB/", $action) ||
 		preg_match("/^MassEditSave/", $action) ||
 		preg_match("/^iCalExport/",$action)
 		)
@@ -427,6 +425,7 @@ else
 		$theme = $default_theme;
 	}
 }
+$theme = basename(vtlib_purify($theme));
 $log->debug('Current theme is: '.$theme);
 
 //Used for current record focus
@@ -489,16 +488,7 @@ if($_REQUEST['module'] == 'Documents' && $action == 'DownloadFile')
 //skip headers for popups, deleting, saving, importing and other actions
 if(!$skipHeaders) {
 	$log->debug("including headers");
-	if($use_current_login)
-	{
-		if(isset($_REQUEST['category']) && $_REQUEST['category'] !='')
-		{
-			$category = vtlib_purify($_REQUEST['category']);
-		}
-		else
-		{
-			$category = getParentTabFromModule($currentModule);
-		}
+	if ($use_current_login) {
 		include('modules/Vtiger/header.php');
 	}
 } else {
@@ -511,18 +501,6 @@ if(!$skipHeaders) {
 	$log->debug("skipping headers");
 }
 
-//fetch the permission set from session and search it for the requisite data
-if(isset($_SESSION['vtiger_authenticated_user_theme']) && $_SESSION['vtiger_authenticated_user_theme'] != '')
-{
-	$theme = $_SESSION['vtiger_authenticated_user_theme'];
-} else {
-	if(!empty($current_user->theme)) {
-		$theme = $current_user->theme;
-	} else {
-		$theme = $default_theme;
-	}
-}
-
 //logging the security Information
 $seclog->debug('########  Module -->  '.$module.'  :: Action --> '.$action.' ::  UserID --> '.$current_user->id.' :: RecordID --> '.$record.' #######');
 
@@ -533,7 +511,7 @@ if(!$skipSecurityCheck && $use_current_login)
 		if(isset($_REQUEST['ajxaction']) and $_REQUEST['ajxaction'] == 'LOADRELATEDLIST'){
 			$now_action = 'DetailView';
 		} else {
-			$now_action=vtlib_purify($_REQUEST['file']);
+			$now_action = (isset($_REQUEST['file']) ? vtlib_purify($_REQUEST['file']) : (isset($_REQUEST['orgajax']) ? vtlib_purify($_REQUEST['orgajax']) : $action));
 		}
 	} else {
 		$now_action=$action;
@@ -602,7 +580,6 @@ else if(!vtlib_isModuleActive($currentModule)
 		</div>
 		</td></tr></table>";
 }
-// END
 else
 {
 	include_once($currentModuleFile);
@@ -614,6 +591,7 @@ if(isset($_SESSION['vtiger_authenticated_user_theme']) && $_SESSION['vtiger_auth
 } else {
 	$theme = $default_theme;
 }
+$theme = basename(vtlib_purify($theme));
 $Ajx_module = (isset($_REQUEST['module']) ? vtlib_purify($_REQUEST['module']) : $module);
 if($Ajx_module == 'Events')
 	$Ajx_module = 'Calendar';

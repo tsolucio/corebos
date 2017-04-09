@@ -9,7 +9,6 @@
  ************************************************************************************/
 global $app_strings, $mod_strings, $currentModule, $theme, $adb, $current_language, $default_charset;
 $image_path="themes/$theme/images/";
-$category = htmlspecialchars($_REQUEST['parenttab'],ENT_QUOTES,$default_charset);
 
 //Function added to convert line breaks to space in description during export
 function br2nl_int($str) {
@@ -19,8 +18,10 @@ function br2nl_int($str) {
 
 if (isset($_SESSION['export_where']))
 	$exportWhere = $_SESSION['export_where'];
-else
+elseif (isset($_POST['exportwhere']))
 	$exportWhere = stripslashes(htmlspecialchars_decode(vtlib_purify($_POST['exportwhere'])));
+else
+	$exportWhere = '';
 
 $step = vtlib_purify($_REQUEST['step']);
 $export_type = isset($_POST['export_type']) ? vtlib_purify($_POST['export_type']) : '';
@@ -46,6 +47,12 @@ function getStdContactFlds($queryFields, $adb, $valueArray) {
 if ($step == 'ask') {
 	require_once('Smarty_setup.php');
 	$smarty = new vtigerCRM_Smarty;
+	if(isset($tool_buttons)==false) {
+		$tool_buttons = Button_Check($currentModule);
+	}
+	$smarty->assign('CHECK', $tool_buttons);
+	$smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule));
+	$smarty->assign('THEME', $theme);
 	$valueArray = Array(
 		'' => $mod_strings['LBL_MAILER_EXPORT_IGNORE'],
 		'0' => $mod_strings['LBL_MAILER_EXPORT_NOTCHECKED'],
@@ -101,7 +108,6 @@ if ($step == 'ask') {
 	}
 	$smarty->assign('TYPELIST',$typeList);
 	$smarty->assign('QUERYFIELDS',$queryFields);
-	$smarty->assign('CATEGORY',$category);
 	$smarty->display('MailerExport.tpl');
 }
 else

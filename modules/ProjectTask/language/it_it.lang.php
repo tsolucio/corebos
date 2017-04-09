@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 $mod_strings = Array(
-
+   
     'LBL_MODULE_NAME'=>'Operazioni',
     'LBL_MODULE_TITLE'=>'Operazioni',
     'LBL_NEW_OPERATION'=>'Nuova Operazione',
@@ -19,7 +19,7 @@ $mod_strings = Array(
     'operations' => 'Operazioni',
     //added this to translate the module name in the main app menu
     'Operation'=>'Operazioni',
-    'SINGLE_Operation' => 'Operazione',
+    'SINGLE_ProjectTask' => 'Operazione',
     'LBL_CUSTOM_INFORMATION' => 'Informazioni Addizionali',
     'LBL_OPERATION_INFORMATION' => 'Informazioni Operazione',
     'LBL_DESCRIPTION_INFORMATION' => 'Informazioni Descrizione',
@@ -28,6 +28,7 @@ $mod_strings = Array(
     'operationpriority' => 'Priorit&agrave;',
     'operationprogress' => 'Progresso',
     'operationtype'=>'Tipo',
+    'description'=>'Descrizione',
     'operationhours'=>'Ore Lavorate',
     'startdate'=>'Data di Inizio',
     'enddate'=>'Data di Fine',
@@ -37,21 +38,21 @@ $mod_strings = Array(
     'other' => 'altro',
     'low' => 'bassa',
     'normal' => 'normale',
-	'Open' => 'Aperto',
-	'Cancelled' => 'Annullato',
+    'Open' => 'Aperto',
+    'Cancelled' => 'Annullato',
     'high' => 'alta',
     '--none--' => 'nessuno',
-	'Add Note' => 'Add Note',
+    'Add Note' => 'Aggiungi Nota',
     //added for related lists 
     'OperationName' => 'Nome Operazione',
     'projectname' => 'Nome Progetto',
     'operationnumber' => 'Codice Operazione',
 	
     'LBL_PROJECT_TASK_INFORMATION'=> 'Informazioni Operazione',
-	'Project Task Name' => 'Nome Operazione',
+    'Project Task Name' => 'Nome Operazione',
     'Project Task No' => 'Numero Operazione',
     'Project Task Number' => 'Codice Operazione',
-	'Worked Hours'=>'Ore lavorate',
+    'Worked Hours'=>'Ore lavorate',
     'Progress' => 'Progresso',
 );
 

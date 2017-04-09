@@ -110,7 +110,7 @@ class VTUpdateFieldsTask extends VTTask {
 				$entity->data[$fieldName] = $fieldValue;
 			}
 			$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields,$handlerMeta);
-			$hold_ajxaction = $_REQUEST['ajxaction'];
+			$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
 			$_REQUEST['ajxaction'] = 'Workflow';
 			$logbg->debug('field values presave: '.print_r($focus->column_fields,true));
 			$focus->saveentity($moduleName);

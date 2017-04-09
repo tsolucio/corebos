@@ -36,6 +36,6 @@ $mod_strings = Array (
 	'Allows you to Configure Cron Task' => 'Configure Cron Tasks',
 	'Scheduler' => 'Programmazione',
 	'Cron Job' => 'Cron Job',
-	'cronWatcherService' => 'Cron Watcher Service',
+	'cronWatcherService' => 'Servizio di Controllo Cron',
 );
 ?>

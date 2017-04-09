@@ -68,8 +68,7 @@ $mod_strings = Array (
 	'LBL_SAVE'=>'Opslaan',
 	'LBL_SELECT_VALUE'=>'--Selecteer Waarde --',
 	'LBL_SELECT_USER'=>'Selecteer gebruiker',
-
-
+	'LBL_WEB_DOMAIN' => 'Web Domain',
 );
 
 ?>

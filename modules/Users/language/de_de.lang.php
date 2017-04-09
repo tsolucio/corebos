@@ -646,7 +646,6 @@ $mod_strings = Array(
     'ROLE_DRAG_ERR_MSG'=>'Sie können keine übergeordnete Rolle unter eine untergeordnete Rolle verschieben.',
 
     'LBL_NOTIFICATION_ACTIVITY'=>'automatische Benachrichtigung',
-    'LBL_NOTIFICATION_EMAIL_INFO'=>'E-Mail Information',
     'LBL_GOTO_LISTVIEW_BUTTON'=>'zur Listenansicht gehen',
 
     'LBL_SSL' => 'SSL',

@@ -506,10 +506,9 @@ class CRMEntity {
 		}
 
 		// Attempt to re-use the query-result to avoid reading for every save operation
-		// TODO Need careful analysis on impact ... MEMORY requirement might be more
 		static $_privatecache = array();
 
-		$cachekey = "{$insertion_mode}-" . implode(',', $params);
+		$cachekey = md5($insertion_mode . serialize($params));
 
 		if (!isset($_privatecache[$cachekey])) {
 			$result = $adb->pquery($sql, $params);
@@ -1586,8 +1585,8 @@ class CRMEntity {
 		} else if ($mode == "increment") {
 			list($mode, $module, $req_str, $req_no, $result, $returnResult) = cbEventHandler::do_filter('corebos.filter.ModuleSeqNumber.increment', array($mode, $module, $req_str, $req_no, '', false));
 			if ($returnResult) return $result;
-			//when we save new invoice we will increment the invoice id and write
-			$check = $adb->pquery("select cur_id,prefix from vtiger_modentity_num where semodule=? and active = 1", array($module));
+			//when we save new record we will increment the autonumber field
+			$check = $adb->pquery('select cur_id,prefix from vtiger_modentity_num where semodule=? and active = 1 FOR UPDATE', array($module));
 			$prefix = $adb->query_result($check, 0, 'prefix');
 			$curid = $adb->query_result($check, 0, 'cur_id');
 			$prev_inv_no = $prefix . $curid;

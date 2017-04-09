@@ -29,7 +29,6 @@ if(isset($_REQUEST['id'])){
 		list($username) = getGroupName($webformModel->getOwnerId());
 	}
 
-
 	$smarty->assign('WEBFORMMODEL',$webformModel);
 	$smarty->assign('WEBFORM',$webform);
 	$smarty->assign('OWNER',$username);
@@ -37,6 +36,10 @@ if(isset($_REQUEST['id'])){
 	$smarty->assign('MOD', $mod_strings);
 	$smarty->assign('APP', $app_strings);
 	$smarty->assign('MODULE', $currentModule);
+	if(isset($tool_buttons)==false) {
+		$tool_buttons = Button_Check($currentModule);
+	}
+	$smarty->assign('CHECK', $tool_buttons);
 	$smarty->assign('CATEGORY', $category);
 	$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 	$smarty->assign('WEBFORMFIELDS', Webforms::getFieldInfos($webformModel->getTargetModule()));

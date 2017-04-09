@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 include('config.php');
 require_once('include/utils/UserInfoUtil.php');
 require_once('include/utils/utils.php');
@@ -38,8 +37,9 @@ echo "<tr><td><table border=0 cellspacing=0 cellpadding=0 width=100% class='mail
 if(count($email->attname) <= 0)
 	echo "<tr align='center'><td nowrap>".$mod_strings['LBL_NO_ATTACHMENTS']."</td></tr>";
 else{
+	$attachment_links = '';
 	for($i=0;$i<count($email->attname);$i++){
-        	$attachment_links .= "&nbsp;&nbsp;&nbsp;&nbsp;".$email->anchor_arr[$i].$email->attname[$i]."</a></br>";
+		$attachment_links .= "&nbsp;&nbsp;&nbsp;&nbsp;".$email->anchor_arr[$i].$email->attname[$i]."</a></br>";
 	}
 	echo "<tr><td><table class='small' width='100%' cellspacing='1' cellpadding='0' border='0' style='font-size:13px'><tr><td width='90%'>".$mod_strings['LBL_THERE_ARE']." ".count($email->attname)." ".$mod_strings['LBL_ATTACHMENTS_TO_CHOOSE'].":</td></tr><br>";
 	echo "<tr><td width='100%'>".$attachment_links."</div></td></tr>";
@@ -47,5 +47,4 @@ else{
 }
 
 echo "</table>";
-
 ?>

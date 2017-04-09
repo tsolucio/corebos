@@ -612,7 +612,7 @@ function getLeadName($lead_id) {
  */
 function getFullNameFromQResult($result, $row_count, $module) {
 	global $log, $adb, $current_user;
-	$log->info("In getFullNameFromQResult(" . print_r($result, true) . " - " . $row_count . "-" . $module . ") method ...");
+	$log->info('In getFullNameFromQResult(');
 
 	$rowdata = $adb->query_result_rowdata($result, $row_count);
 	$entity_field_info = getEntityFieldNames($module);

@@ -14,7 +14,7 @@ var i18n_DELETE_RSSFEED_CONFIRMATION = '{$APP.DELETE_RSSFEED_CONFIRMATION}';
 </script>
 
 <!-- Contents -->
-{include file="Buttons_List1.tpl"}
+{include file="Buttons_List.tpl"}
 <div id="temp_alert" style="display:none"></div>
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
 <tr>

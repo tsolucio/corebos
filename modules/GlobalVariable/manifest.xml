@@ -83,7 +83,6 @@
 <masseditable>1</masseditable>
 <picklistvalues>
 <picklistvalue>--none--</picklistvalue>
-<picklistvalue>preload_jscalendar</picklistvalue>
 </picklistvalues>
 </field>
 <field>

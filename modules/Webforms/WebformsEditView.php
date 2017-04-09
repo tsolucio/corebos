@@ -26,20 +26,20 @@ if ($isCreate) {
 	$smarty->assign('usr_selected',1);
 } else {
 	$webform = Webforms_Model::retrieveWithId(vtlib_purify($_REQUEST['id']));
-	getUserFullName($userid);
 	$rscnt = $adb->pquery('select count(*) as cnt from vtiger_users where id =?',array($webform->getOwnerId()));
 	$cnt = $adb->query_result($rscnt,0,0);
 	$smarty->assign('usr_selected',$cnt);
 }
 
-
-
 $category = getParentTab();
-$targetModules = array('Leads');
+$targetModules = array('Leads','Contacts','Accounts','Potentials','HelpDesk');
 
 $usersList = get_user_array(false);
 $groupsList = get_group_array(false);
-
+if(isset($tool_buttons)==false) {
+	$tool_buttons = Button_Check($currentModule);
+}
+$smarty->assign('CHECK', $tool_buttons);
 $smarty->assign('WEBFORM',$webform);
 $smarty->assign('USERS',$usersList);
 $smarty->assign('GROUPS',$groupsList);
@@ -58,7 +58,6 @@ if ($webform->hasId()) {
 	$smarty->assign('WEBFORMFIELDS', Webforms::getFieldInfos($webform->getTargetModule()));
 	$smarty->assign('ACTIONPATH',$site_URL.'/modules/Webforms/capture.php');
 	$smarty->assign('WEBFORMID',$webform->getId());
-
 }
 $smarty->display(vtlib_getModuleTemplate($currentModule,'EditView.tpl'));
 ?>

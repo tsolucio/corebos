@@ -146,6 +146,7 @@ if($isPresentRelatedListBlock) {
 // Hide Action Panel
 $DEFAULT_ACTION_PANEL_STATUS = GlobalVariable::getVariable('Application_Action_Panel_Open',1);
 $smarty->assign('DEFAULT_ACTION_PANEL_STATUS',($DEFAULT_ACTION_PANEL_STATUS ? '' : 'display:none'));
+$smarty->assign('Module_Popup_Edit',isset($_REQUEST['Module_Popup_Edit']) ? vtlib_purify($_REQUEST['Module_Popup_Edit']) : 0);
 
 // Record Change Notification
 $focus->markAsViewed($current_user->id);

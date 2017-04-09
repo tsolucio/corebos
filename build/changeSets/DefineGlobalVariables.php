@@ -74,9 +74,6 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Calendar_Slot_Minutes',
 				'Calendar_Show_Inactive_Users',
 				'Calendar_Show_Group_Events',
-				'calendar_call_default_duration',
-				'calendar_other_default_duration',
-				'calendar_sort_users_by',
 
 				'CronTasks_cronWatcher_mailto',
 
@@ -133,17 +130,6 @@ class DefineGlobalVariables extends cbupdaterWorker {
 
 				'Inventory_ListPrice_ReadOnly',
 
-				'Maximum_Scheduled_Workflows', // rename to Workflow_Maximum_Scheduled
-				'Billing_Address_Checked', // rename to Application_Billing_Address_Checked
-				'Shipping_Address_Checked', // rename to Application_Shipping_Address_Checked
-				'Tax_Type_Default', // rename to Inventory_Tax_Type_Default
-				'product_service_default', // rename to Inventory_ProductService_Default
-				'Product_Default_Units', // rename to Inventory_Product_Default_Units
-				'Service_Default_Units', // rename to Inventory_Service_Default_Units
-				'SalesOrderStatusOnInvoiceSave', // rename to SalesOrder_StatusOnInvoiceSave
-				'QuoteStatusOnSalesOrderSave',  // rename to Quote_StatusOnSalesOrderSave
-				'Report.Excel.Export.RowHeight', // rename to Report_Excel_Export_RowHeight
-
 			);
 			$delete_these = array(
 				'preload_prototype',
@@ -191,26 +177,98 @@ class DefineGlobalVariables extends cbupdaterWorker {
 						),
 					)
 				),
+				'Maximum_Scheduled_Workflows' => array(
+					'to' => 'Workflow_Maximum_Scheduled',
+				),
+				'Billing_Address_Checked' => array(
+					'to' => 'Application_Billing_Address_Checked',
+					'change' => array(
+						array(
+							'not' => 'true',
+							'to' => 0
+						),
+						array(
+							'from' => 'true',
+							'to' => 1
+						),
+					)
+				),
+				'Shipping_Address_Checked' => array(
+					'to' => 'Application_Shipping_Address_Checked',
+					'change' => array(
+						array(
+							'not' => 'false',
+							'to' => 1
+						),
+						array(
+							'from' => 'false',
+							'to' => 0
+						),
+					)
+				),
+				'Tax_Type_Default' => array(
+					'to' => 'Inventory_Tax_Type_Default',
+				),
+				'product_service_default' => array(
+					'to' => 'Inventory_ProductService_Default',
+				),
+				'Product_Default_Units' => array(
+					'to' => 'Inventory_Product_Default_Units',
+				),
+				'Service_Default_Units' => array(
+					'to' => 'Inventory_Service_Default_Units',
+				),
+				'SalesOrderStatusOnInvoiceSave' => array(
+					'to' => 'SalesOrder_StatusOnInvoiceSave',
+				),
+				'QuoteStatusOnSalesOrderSave' => array(
+					'to' => 'Quote_StatusOnSalesOrderSave',
+				),
+				'Report.Excel.Export.RowHeight' => array(
+					'to' => 'Report_Excel_Export_RowHeight',
+				),
+				'calendar_call_default_duration' => array(
+					'to' => 'Calendar_call_default_duration',
+				),
+				'calendar_other_default_duration' => array(
+					'to' => 'Calendar_other_default_duration',
+				),
+				'calendar_sort_users_by' => array(
+					'to' => 'Calendar_sort_users_by',
+				),
+				'preload_jscalendar' => array(
+					'to' => 'Application_JSCalendar_Load',
+					'change' => array(
+						array(
+							'not' => 'true',
+							'to' => 0
+						),
+						array(
+							'from' => 'true',
+							'to' => 1
+						),
+					)
+				),
 			);
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');
 			$field = Vtiger_Field::getInstance('gvname',$moduleInstance);
 			if ($field) {
 				foreach ($rename_these as $gvar => $change) {
-					$rschk = $adb->pquery('select count(*) from vtiger_gvname where gvname=?',array($gvar));
+					$rschk = $adb->pquery('select count(*) from vtiger_gvname where BINARY gvname=?',array($gvar));
 					$checkold = $adb->query_result($rschk, 0, 0);
-					$rschk = $adb->pquery('select count(*) from vtiger_gvname where gvname=?',array($change['to']));
+					$rschk = $adb->pquery('select count(*) from vtiger_gvname where BINARY gvname=?',array($change['to']));
 					$checknew = $adb->query_result($rschk, 0, 0);
 					if ($checkold > 0) {
 						if ($checknew > 0) {
 							$delete_these[] = $gvar;
 						} else { // rename
-							$sql = 'UPDATE vtiger_gvname SET gvname=? WHERE gvname=?';
+							$sql = 'UPDATE vtiger_gvname SET gvname=? WHERE BINARY gvname=?';
 							$this->ExecuteQuery($sql, array($change['to'],$gvar));
 							$table_name = 'vtiger_globalvariable';
 							$columnName = 'gvname';
-							$sql = "update $table_name set $columnName=? where $columnName=?";
+							$sql = "update $table_name set $columnName=? where BINARY $columnName=?";
 							$this->ExecuteQuery($sql, array($change['to'],$gvar));
-							$sql = "UPDATE vtiger_picklist_dependency SET sourcevalue=? WHERE sourcevalue=? AND sourcefield='gvname' AND tabid=?";
+							$sql = "UPDATE vtiger_picklist_dependency SET sourcevalue=? WHERE BINARY sourcevalue=? AND sourcefield='gvname' AND tabid=?";
 							$this->ExecuteQuery($sql, array($change['to'], $gvar, getTabid('GlobalVariable')));
 							if (isset($change['change'])) {
 								foreach ($change['change'] as $fromto) {

@@ -6,11 +6,10 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 <!--  USER  SETTINGS PAGE STARTS HERE -->
-                {include file='Buttons_List1.tpl'} 
+{include file='Buttons_List.tpl'}
 <link rel="stylesheet" type="text/css" href="themes/{$THEME}/webmail.css">
 <table width="100%" border="0" cellpadding="0" cellspacing="0" height="100%">
    <tr>
@@ -50,7 +49,7 @@
 					</td>
 				   </tr>
 				   <tr>
-					<td colspan=2> 
+					<td colspan=2>
 						<table border=0 width="100%" cellspacing=0 cellspacing=0>
 						<tr>
 						<td rowspan=6 valign=top class="MatrixLayer1">
@@ -105,18 +104,18 @@
 						</td>
 						</tr>
 						</table>
-						</td>	
+						</td>
 						<td width="1%">&nbsp;</td>
-					        <td rowspan=3 valign="top">
-						 <table border=0 width="100%" cellspacing=0 cellspacing=0 class="MatrixLayer1">
-					 	 <tr>
+						<td rowspan=3 valign="top">
+						<table border=0 width="100%" cellspacing=0 cellspacing=0 class="MatrixLayer1">
+						<tr>
 							<td width="79%" class="big mailSubHeader"><div id="nav"><span style="float:left">{$ACCOUNT} &gt; {$MAILBOX} {if $NUM_EMAILS neq 0}
-						 {if $NUM_EMAILS neq 1}
+						{if $NUM_EMAILS neq 1}
 							({$NUM_EMAILS} {$MOD.LBL_MESSAGES})
-						 {else}
+						{else}
 							({$NUM_EMAILS} {$MOD.LBL_MESSAGE})
-						 {/if}
-					 {/if}
+						{/if}
+					{/if}
 						</span> <span style="float:right">{$NAVIGATION}</span></div></td>
 						 </tr>
 						 <tr>	

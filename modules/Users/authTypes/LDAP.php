@@ -91,7 +91,7 @@ function ldapSearchUserAccountAndName($user)
 	$fldclass   = strtolower($AUTH_LDAP_CFG['ldap_objclass']);
 
 	$usrfilter  = explode("|", $AUTH_LDAP_CFG['ldap_userfilter']);
-
+	$user = preg_replace('/[^A-Za-z0-9 ]/', '', $user); // for security
 	$required   = array($fldaccount,$fldname,$fldclass);
 	$ldapArray  = ldapSearchUser("$fldname=*$user*", $required);
 

@@ -22,7 +22,6 @@ $smarty = new vtigerCRM_Smarty();
 
 $category = getParentTab();
 $smarty->assign('WEBFORMS',$webforms);
-$smarty->assign('ENABLED',$enabled);
 $smarty->assign('ACTION','list');
 $smarty->assign("THEME", $theme);
 $smarty->assign('MOD', $mod_strings);
@@ -31,6 +30,10 @@ $smarty->assign('MODULE', $currentModule);
 $smarty->assign('CATEGORY', $category);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('LANGUAGE',$current_language);
+if(isset($tool_buttons)==false) {
+	$tool_buttons = Button_Check($currentModule);
+}
+$smarty->assign('CHECK', $tool_buttons);
 
 $smarty->display(vtlib_getModuleTemplate($currentModule,'ListView.tpl'));
 ?>

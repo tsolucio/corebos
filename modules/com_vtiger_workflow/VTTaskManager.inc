@@ -86,6 +86,9 @@
 			foreach ($timeFieldList as $field) {
 				$task->$field = $task->formatTimeForTimePicker($task->$field);
 			}
+			if (method_exists($task, 'after_retrieve')) {
+				$task->after_retrieve();
+			}
 			return $task;
 		}
 
@@ -168,6 +171,9 @@
 
 		public function getTimeFieldList() {
 			return array();
+		}
+
+		public function after_retrieve() {
 		}
 
 		public function formatTimeForTimePicker($time) {

@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('include/database/PearDatabase.php');
 
 $fld_module = vtlib_purify($_REQUEST["fld_module"]);
@@ -29,21 +28,21 @@ $adb->pquery($query, array($id));
 
 //Drop the column in the corresponding module table
 $delete_module_tables = Array(
-				"Leads"=>"vtiger_leadscf",
-				"Accounts"=>"vtiger_accountscf",
-				"Contacts"=>"vtiger_contactscf",
-				"Potentials"=>"vtiger_potentialscf",
-				"HelpDesk"=>"vtiger_ticketcf",
-				"Products"=>"vtiger_productcf",
-				"Vendors"=>"vtiger_vendorcf",
-				"PriceBooks"=>"vtiger_pricebookcf",
-				"PurchaseOrder"=>"vtiger_purchaseordercf",
-				"SalesOrder"=>"vtiger_salesordercf",
-				"Quotes"=>"vtiger_quotescf",
-				"Invoice"=>"vtiger_invoicecf",
-				"Campaigns"=>"vtiger_campaignscf",
-				"Calendar"=>"vtiger_activitycf",
-			     );
+	'Leads'=>'vtiger_leadscf',
+	'Accounts'=>'vtiger_accountscf',
+	'Contacts'=>'vtiger_contactscf',
+	'Potentials'=>'vtiger_potentialscf',
+	'HelpDesk'=>'vtiger_ticketcf',
+	'Products'=>'vtiger_productcf',
+	'Vendors'=>'vtiger_vendorcf',
+	'PriceBooks'=>'vtiger_pricebookcf',
+	'PurchaseOrder'=>'vtiger_purchaseordercf',
+	'SalesOrder'=>'vtiger_salesordercf',
+	'Quotes'=>'vtiger_quotescf',
+	'Invoice'=>'vtiger_invoicecf',
+	'Campaigns'=>'vtiger_campaignscf',
+	'Calendar'=>'vtiger_activitycf',
+);
 
 // vtlib customization: Hook added to allow action for custom modules too
 $cftablename = $delete_module_tables[$fld_module];
@@ -69,7 +68,6 @@ $adb->pquery("delete from vtiger_reportsortcol where columnname like ?", array('
 $adb->pquery("delete from vtiger_reportdatefilter where datecolumnname like ?", array('%'.$colName.'%'));
 $adb->pquery("delete from vtiger_reportsummary where columnname like ?", array('%'.$colName.'%'));
 
-
 //Deleting from convert lead mapping vtiger_table- Jaguar
 if($fld_module=="Leads")
 {
@@ -94,5 +92,5 @@ if($uitype == 15)
 	$adb->pquery('DELETE FROM vtiger_picklist_dependency WHERE vtiger_picklist_dependency.targetfield = ?',array($colName));
 }
 
-header("Location:index.php?module=Settings&action=CustomFieldList&fld_module=".$fld_module."&parenttab=Settings");
+header('Location:index.php?module=Settings&action=CustomFieldList&fld_module='.urlencode($fld_module));
 ?>

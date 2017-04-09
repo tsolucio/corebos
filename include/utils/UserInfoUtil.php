@@ -1051,7 +1051,7 @@ function isReadWritePermittedBySharing($module,$tabid,$actionid,$record_id)
 		}
 	}
 	//Checking for the Related Sharing Permission
-	$relatedModuleArray=$related_module_share[$tabid];
+	$relatedModuleArray = (isset($related_module_share[$tabid]) ? $related_module_share[$tabid] : null);
 	if(is_array($relatedModuleArray))
 	{
 		foreach($relatedModuleArray as $parModId)
@@ -3220,6 +3220,7 @@ function getListViewSecurityParameter($module)
 		require('user_privileges/user_privileges_'.$current_user->id.'.php');
 		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
 	}
+	$sec_query = '';
 	if($module == 'Leads') {
 		$sec_query .= " and (
 						vtiger_crmentity.smownerid in($current_user->id)
@@ -3281,7 +3282,7 @@ function getListViewSecurityParameter($module)
 		if(isset($shared_ids) && $shared_ids != '')
 			$condition = " or (vtiger_crmentity.smownerid in($shared_ids) and vtiger_activity.visibility = 'Public')";
 		else
-			$condition = null;
+			$condition = '';
 		$sec_query .= " and (vtiger_crmentity.smownerid in($current_user->id) $condition or vtiger_crmentity.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%')";
 
 		if(sizeof($current_user_groups) > 0)

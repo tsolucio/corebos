@@ -23,9 +23,9 @@
 		<td class="showPanelBg" valign="top" width="100%">
 			<div class="small" style="padding:20px">
 				{if $WEBFORM->hasId()}
-					<span class="lvtHeaderText">Edit : {$WEBFORM->getName()}</span> <br>
+					<span class="lvtHeaderText">{'LBL_EDIT'|@getTranslatedString} : {$WEBFORM->getName()}</span> <br>
 				{else}
-					<span class="lvtHeaderText">Creating New {$MODULE}</span> <br>
+					<span class="lvtHeaderText">{'LBL_CREATE'|@getTranslatedString} {$MODULE}</span> <br>
 				{/if}
 				<hr noshade="noshade" size="1">
 				<br>
@@ -118,27 +118,29 @@
 													<td class="dvtCellInfo" align="left" >
 														{if $usr_selected eq 1}
 															{assign var=select_user value='checked'}
+															{assign var=select_group value=''}
 															{assign var=style_user value='display:block'}
 															{assign var=style_group value='display:none'}
 														{else}
+															{assign var=select_user value=''}
 															{assign var=select_group value='checked'}
 															{assign var=style_user value='display:none'}
 															{assign var=style_group value='display:block'}
 														{/if}
-														<input type="radio" tabindex="{$vt_tab}" name="assigntype" {$select_user} value="U" onclick="toggleAssignType(this.value);jQuery('#ownerid').val(jQuery('#assigned_user_id').val());" >&nbsp;{$APP.LBL_USER}
+														<input type="radio" name="assigntype" {$select_user} value="U" onclick="toggleAssignType(this.value);jQuery('#ownerid').val(jQuery('#assigned_user_id').val());" >&nbsp;{$APP.LBL_USER}
 														<input type="radio" name="assigntype" {$select_group} value="T" onclick="toggleAssignType(this.value);jQuery('#ownerid').val(jQuery('#assigned_group_id').val());">&nbsp;{$APP.LBL_GROUP}
 														<input type="hidden" name="ownerid" id="ownerid" value="{$WEBFORM->getOwnerId()}">
 														<span id="assign_user" style="{$style_user}">
 															<select name="assigned_user_id" id="assigned_user_id" class="small" onchange="jQuery('#ownerid').val(jQuery('#assigned_user_id').val());">
 															{foreach key=userid item=username name=assigned_user from=$USERS}
-																<option value="{$userid}" {if $WEBFORMID && $userid eq $WEBFORM->getOwnerId()} selected {/if}>{$username}</option>
+																<option value="{$userid}" {if !empty($WEBFORMID) && $userid eq $WEBFORM->getOwnerId()} selected {/if}>{$username}</option>
 															{/foreach}
 															</select>
 														</span>
 														<span id="assign_team" style="{$style_group}">
 															<select name="assigned_group_id" id="assigned_group_id" class="small" onchange="jQuery('#ownerid').val(jQuery('#assigned_group_id').val());">
 															{foreach key=userid item=username name=assigned_user from=$GROUPS}
-																<option value="{$userid}" {if $WEBFORMID && $userid eq $WEBFORM->getOwnerId()} selected {/if}>{$username}</option>
+																<option value="{$userid}" {if !empty($WEBFORMID) && $userid eq $WEBFORM->getOwnerId()} selected {/if}>{$username}</option>
 															{/foreach}
 															</select>
 														</span>
@@ -166,12 +168,30 @@
 													</td>
 												</tr>
 												{/if}
+												<tr style="height:25px">
+													<td class="dvtCellLabel" align="right" >
+														<font color="red">*</font>{'LBL_WEB_DOMAIN'|@getTranslatedString:$MODULE}
+													</td>
+													<td class="dvtCellInfo" align="left" >
+														<input type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="web_domain" name="web_domain" value="{$WEBFORM->getWebDomain()}">
+													</td>
+												</tr>
+												<!--Cell Information end-->
+												<tr style="height:25px">
+													<td>&nbsp;</td>
+												</tr>
+												<!--Cell Description Information-->
+												<tr>
+													<td colspan="4" class="detailedViewHeader">
+														<b>{'LBL_DESCRIPTION'|@getTranslatedString:$MODULE}</b>
+													</td>
+												</tr>
 												<tr>
 													<td class="dvtCellLabel" align="right" colspan="1">
 														{'LBL_DESCRIPTION'|@getTranslatedString:$MODULE}
 													</td>
 													<td colspan="3">
-														<textarea onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" rows="8" cols="90" onblur="this.className='detailedViewTextBox'" name="description" id="description" onfocus="this.className='detailedViewTextBoxOn'" tabindex="" class="detailedViewTextBox" >{if $WEBFORM->hasId()}{$WEBFORM->getDescription()}{/if}</textarea>
+														<textarea onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" rows="8" cols="90" onblur="this.className='detailedViewTextBox'" name="description" id="description" onfocus="this.className='detailedViewTextBoxOn'" class="detailedViewTextBox" >{if $WEBFORM->hasId()}{$WEBFORM->getDescription()}{/if}</textarea>
 													</td>
 												</tr>
 												<!--Cell Information end-->

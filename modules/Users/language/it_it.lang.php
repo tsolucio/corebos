@@ -643,7 +643,6 @@
   'ROLE_DRAG_ERR_MSG' => 'Non puoi muovere un nodo padre sotto un nodo figlio',
 
   'LBL_NOTIFICATION_ACTIVITY' => 'Attivit&agrave; di notifica',
-  'LBL_NOTIFICATION_EMAIL_INFO' => 'Informazioni email di notifica',
   'LBL_GOTO_LISTVIEW_BUTTON' => 'Vai a Vista per Lista',
 
   'LBL_SSL' => 'SSL',

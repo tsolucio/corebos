@@ -655,7 +655,6 @@ $mod_strings = Array(
 'ROLE_DRAG_ERR_MSG'=>'No puedes mover un Nodo Padre bajo un Nodo Hijo',
 
 'LBL_NOTIFICATION_ACTIVITY'=>'Notificación de Actividad',
-'LBL_NOTIFICATION_EMAIL_INFO'=>'Notificación de Información de Email',
 'LBL_GOTO_LISTVIEW_BUTTON'=>'Ir a vista de lista',
 
 // Added/Updated for vtiger CRM 5.0.4

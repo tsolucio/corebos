@@ -18,7 +18,7 @@
 -->*}
 <script type="text/javascript" charset="utf-8">
 	var moduleName = '{$entityName}';
-	var selectedEntityType = '{$task->relmodule}';
+	var selectedEntityType = '{if isset($task->relmodule)}{$task->relmodule}{/if}';
 {literal}
 	var vtinst = new VtigerWebservices('webservice.php');
 	function errorDialog(message){
@@ -78,5 +78,5 @@
 <h2>{'LBL_SELECT_MODULE'|@getTranslatedString:'Settings'}</h2>
 <span id="entity_type-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
 <select id="relmodule" name="relmodule" style="display:none;">
-	<option value=''>{'LBL_SELECT_ENTITY_TYPE'|@getTranslatedString:$MODULE}</option>
+	<option value=''>{'LBL_SELECT_ENTITY_TYPE'|@getTranslatedString:'com_vtiger_workflow'}</option>
 </select>

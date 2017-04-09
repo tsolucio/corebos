@@ -1051,7 +1051,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			$decimals = CurrencyField::getDecimalsFromTypeOfData($typeofdata);
 			$currencyField->initialize($current_user);
 			$currencyField->setNumberofDecimals(min($decimals,$currencyField->getCurrencyDecimalPlaces()));
-			$fieldvalue[] = $currencyField->getDisplayValue(null,false,true);
+			$fieldvalue[] = $currencyField->getDisplayValue(null,true,true);
 		}
 	}
 	elseif($uitype == 71 || $uitype == 72) {
@@ -1752,7 +1752,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 				$netPrice = $netPrice+$taxTotal;
 			}
 		} else {
-			$taxtype = GlobalVariable::getVariable('Tax_Type_Default', 'individual', $currentModule);
+			$taxtype = GlobalVariable::getVariable('Inventory_Tax_Type_Default', 'individual', $currentModule);
 		}
 		$product_Detail[$i]['netPrice'.$i] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($netPrice, null, true), null, true);
 
@@ -1788,7 +1788,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 
 	//set the taxtype
 	if (!isset($taxtype)) {
-		$taxtype = GlobalVariable::getVariable('Tax_Type_Default', 'individual', $currentModule);
+		$taxtype = GlobalVariable::getVariable('Inventory_Tax_Type_Default', 'individual', $currentModule);
 	}
 	$product_Detail[1]['final_details']['taxtype'] = $taxtype;
 

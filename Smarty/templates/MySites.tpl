@@ -10,7 +10,7 @@
 -->*}
 <script type="text/javascript" src="modules/Portal/Portal.js"></script>
 
-{include file="Buttons_List1.tpl"}
+{include file="Buttons_List.tpl"}
 
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
 <tr>

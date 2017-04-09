@@ -147,7 +147,7 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Annonce générale sous forme de texte défilant',
 ),
-'preload_jscalendar' => array(
+'Application_JSCalendar_Load' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Chaîne',
 	'category' => 'Dévelopement',
@@ -364,7 +364,7 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Dans le module "Documents", les documents sont affichés sous forme de liste (0) ou par répertoire (1). La valeur par défaut est (1).',
 ),
-'Tax_Type_Default' => array(
+'Inventory_Tax_Type_Default' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Chaîne',
 	'category' => 'Application',
@@ -385,21 +385,21 @@ $GlobalVariableDefinitons = array(
 	'values' => 'true | false',
 	'definition' => 'Lors de la duplication d\'un produit, cette variable permet (true) ou non (false) de dupliquer aussi les Lots de Produits rattachés au produit. La valeur par défaut est (false).',
 ),
-'Product_Default_Units' => array(
+'Inventory_Product_Default_Units' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Decimal',
 	'category' => 'Application',
 	'values' => '',
 	'definition' => 'Nombre d\'unités prédéfinies lors de la création d\'une nouvelle ligne de produit dans les modules Commande Fournisseur, Bon de Commande, Devis, Facture et "Issuecards". La valeur par défaut est (1).',
 ),
-'Service_Default_Units' => array(
+'Inventory_Service_Default_Units' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Decimal',
 	'category' => 'Application',
 	'values' => '',
 	'definition' => 'Nombre d\'unités prédéfinies lors de la création d\'une nouvelle ligne de service dans les modules Commande Fournisseur, Bon de Commande, Devis, Facture et "Issuecards". La valeur par défaut est (1).',
 ),
-'product_service_default' => array(
+'Inventory_ProductService_Default' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Chaîne',
 	'category' => 'Application',
@@ -427,7 +427,7 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Nombre de lignes autorisées dans un rapport complet au format HTML. La valeur par defaut est (5000) lignes.',
 ),
-'Maximum_Scheduled_Workflows' => array(
+'Workflow_Maximum_Scheduled' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Entier',
 	'category' => 'Flux de travail',
@@ -504,14 +504,14 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Nombre de jours après lesquels les utilisateurs seront forcés de changer leur mot de passer. Pour activer cette variable il est nécessaire d\'activer la tâche programmée "Expiration Mot de Passe" sous Configuration CRM > Planificateur.',
 ),
-'SalesOrderStatusOnInvoiceSave' => array(
+'SalesOrder_StatusOnInvoiceSave' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Chaîne',
 	'category' => 'Application',
 	'values' => 'Valeur du champ "Statut"<br>Module Bon de Commande',
 	'definition' => 'Lors de la sauvegarde d\'une facture liée à un Bon de Commande, le statut du Bon de commande sera fixé avec la valeur de cette variable. La valeur spéciale "DoNotChange" désactive cette variable et aucun chagement n\'est effectué.',
 ),
-'QuoteStatusOnSalesOrderSave' => array(
+'Quote_StatusOnSalesOrderSave' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Chaîne',
 	'category' => 'Application',
@@ -602,21 +602,21 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Permet d\'afficher (1) ou non (0) les événement dans l\'Agenda assignés à un Groupe. Par défaut (1) les événement assignés à un Groupe sont affichés.',
 ),
-'calendar_call_default_duration' => array(
+'Calendar_call_default_duration' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Entier:<br>Minute(s)',
 	'category' => 'Application',
 	'values' => '',
 	'definition' => 'Permet d\'assigner un temps prédéfini en minutes lors de la création d\'un Appel. La valeur par défaut est (15) minutes.',
 ),
-'calendar_other_default_duration' => array(
+'Calendar_other_default_duration' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Entier:<br>Minute(s)',
 	'category' => 'Application',
 	'values' => '',
 	'definition' => 'Permet d\'assigner un temps prédéfini en minutes lors de la création d\'une tâche. La valeur par défaut est de (15) minutes.',
 ),
-'calendar_sort_users_by' => array(
+'Calendar_sort_users_by' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Liste CSV',
 	'category' => 'Application',
@@ -728,14 +728,14 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Example:<br>Spain',
 	'definition' => 'Calcule la GeoDistance des fonctions des flux de travail. Cette variable permet de fixer le pays de référence à utiliser si auncun nom de pays n\'est fourni. Utile pour les entreprises ayant une zone d\'influence.',
 ),
-'Billing_Address_Checked' => array(
+'Application_Billing_Address_Checked' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Booléen',
 	'category' => 'Application',
 	'values' => '0 | 1',
 	'definition' => 'Lors de la sélection d\'un Compte ou d\'un Contact dans une fenêtre popup, l\'application demande l\'adresse à utiliser. Cette variable présélectionne (1) l\'adresse de facturation.',
 ),
-'Shipping_Address_Checked' => array(
+'Application_Shipping_Address_Checked' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Booléen',
 	'category' => 'Application',
@@ -749,7 +749,7 @@ $GlobalVariableDefinitons = array(
 	'values' => 'true | false',
 	'definition' => 'Variable permettrant d\'activer (1) ou de désactiver (0) la fonction "Copier autre adresse" et "Copier adresse postale" dans les modules suivants: Contactes, Comptes, Commande Fournisseur, Bon de Commande, Devis, Facture et "Issuecards"',
 ),
-'Report.Excel.Export.RowHeight' => array(
+'Report_Excel_Export_RowHeight' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Entier',
 	'category' => 'Application',

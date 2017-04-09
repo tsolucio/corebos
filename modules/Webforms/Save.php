@@ -12,7 +12,7 @@ require_once('modules/Webforms/model/WebformsModel.php');
 
 global $current_user, $theme;
 
-if ($_REQUEST['ajax'] == 'true') {
+if (isset($_REQUEST['ajax']) and $_REQUEST['ajax'] == 'true') {
 	if(Webforms_Model::existWebformWithName(vtlib_purify($_REQUEST['name']))){
 		print_r(json_encode(array('success' => false, 'result' => false)));
 	}else{

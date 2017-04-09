@@ -161,9 +161,9 @@ if($_POST["command"] == "check_mbox") {
 <script type="text/javascript">
 // Pass our PHP variables to js.
 <?php if($degraded_service == 'true')
-				{
-					echo 'var degraded_service="true";';
-				}
+{
+	echo 'var degraded_service="true";';
+}
 else
 {
 	echo 'var degraded_service="false";';
@@ -178,7 +178,7 @@ var command;
 var id;
 var preview_id='';
 var move_mail,change_box,mvmbox;
-var theme = "<?php echo $theme;?>";
+var theme = "<?php echo vtlib_purify($theme);?>";
 addOnloadEvent(function() {
 		window.setTimeout("periodic_event()",box_refresh);
 	}
@@ -206,7 +206,7 @@ if($_POST["command"] == "move_msg" && $_POST["ajax"] == "true") {
         $start_page = ceil($num_mails/$MailBox->mails_per_page);
         imap_close($MailBox->mbox);
         echo "start=".$start_page.";";
-        echo "id=".$mailid.";";
+        echo 'id='.vtlib_purify($mailid).';';
 	flush();
 	exit();
 }

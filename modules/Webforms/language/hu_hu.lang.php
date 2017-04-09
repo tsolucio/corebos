@@ -48,6 +48,7 @@ $mod_strings = array(
 	'LBL_SELECT_VALUE' => '--Válassz értéket--',
 	'LBL_SELECT_USER' => 'Válassz egy felhasználót',
 	'LBL_DUPLICATE_NAME' => 'Ilyen nevű űrlap már létezik',
-	'ERR_CREATE_WEBFORM' => 'Űrlap létrehozási hiba'
+	'ERR_CREATE_WEBFORM' => 'Űrlap létrehozási hiba',
+	'LBL_WEB_DOMAIN' => 'Web Domain',
 );
 ?>

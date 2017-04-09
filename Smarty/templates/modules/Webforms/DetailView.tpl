@@ -69,7 +69,7 @@
 						<table class="small" border="0" cellpadding="3" cellspacing="0" width="100%">
 							<tr>
 								<td class="dvtTabCache" style="width:10px" nowrap="nowrap">&nbsp;</td>
-								<td class="dvtSelectedCell" nowrap="nowrap" align="center">Basic Information</td>
+								<td class="dvtSelectedCell" nowrap="nowrap" align="center">{'LBL_MODULE_INFORMATION'|@getTranslatedString:$MODULE}</td>
 								<td class="dvtTabCache" style="width:55%">&nbsp;</td>
 								<td align="right">
 									<input type="button" id="edit_form" name="edit_form" value="{'LBL_EDIT_BUTTON_LABEL'|@getTranslatedString:$MODULE} " class="crmbutton small edit" onclick="Webforms.editForm({$WEBFORMMODEL->getId()})"></input>
@@ -155,12 +155,29 @@
 														{$ACTIONPATH}
 													</td>
 												</tr>
-
+												<tr style="height:25px">
+													<td class="dvtCellLabel" align="right" >
+														<font color="red">*</font>{'LBL_WEB_DOMAIN'|@getTranslatedString:$MODULE}
+													</td>
+													<td class="dvtCellInfo" align="left" >
+														{$WEBFORMMODEL->getWebDomain()}
+													</td>
+												</tr>
+												<!--Cell Information end-->
+												<tr style="height:25px">
+													<td>&nbsp;</td>
+												</tr>
+												<!--Cell Information Description-->
+												<tr>
+													<td colspan="4" class="detailedViewHeader">
+														<b>{'LBL_DESCRIPTION'|@getTranslatedString:$MODULE}</b>
+													</td>
+												</tr>
 												<tr>
 													<td class="dvtCellLabel" align="right" style="height:25px;">
 														{'LBL_DESCRIPTION'|@getTranslatedString:$MODULE}
 													</td>
-													<td class="dvtCellInfo" align="left" >
+													<td colspan=3 class="dvtCellInfo" align="left" >
 														{$WEBFORMMODEL->getDescription()}
 													</td>
 												</tr>
@@ -168,13 +185,6 @@
 												<tr style="height:25px">
 													<td>&nbsp;</td>
 												</tr>
-												<!--Block Head-->
-												<tr>
-													<td colspan="3" class="detailedViewHeader">
-														<b>{'LBL_FIELD_INFORMATION'|@getTranslatedString:$MODULE}</b>
-													</td>
-												</tr>
-												<tr><td>&nbsp;</td></tr>
 	<!-- Cell information for fields -->
 												<tr>
 													<td class="detailedViewHeader" colspan="4">

@@ -546,7 +546,6 @@ $mod_strings = array(
 	'TITLE_USER_DOCUMENT' => 'Untitled Document',
 	'ROLE_DRAG_ERR_MSG' => 'You cannot move a parent node under a child node',
 	'LBL_NOTIFICATION_ACTIVITY' => 'Notification Activity',
-	'LBL_NOTIFICATION_EMAIL_INFO' => 'Notification Email Information',
 	'LBL_GOTO_LISTVIEW_BUTTON' => 'Goto ListView',
 	'LBL_SSL' => 'SSL',
 	'LBL_USERNAME_EXIST' => 'A User with the specified name already exists',

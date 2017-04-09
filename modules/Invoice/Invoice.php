@@ -120,7 +120,7 @@ class Invoice extends CRMEntity {
 		}
 		//Checking if salesorderid is present and updating the SO status
 		if(!empty($this->column_fields['salesorder_id'])) {
-			$newStatus = GlobalVariable::getVariable('SalesOrderStatusOnInvoiceSave', 'Approved');
+			$newStatus = GlobalVariable::getVariable('SalesOrder_StatusOnInvoiceSave', 'Approved');
 			if ($newStatus!='DoNotChange') {
 				$so_id = $this->column_fields['salesorder_id'];
 				$query1 = 'update vtiger_salesorder set sostatus=? where salesorderid=?';
@@ -155,7 +155,7 @@ class Invoice extends CRMEntity {
 
 	function registerInventoryHistory() {
 		global $app_strings;
-		if ($_REQUEST['ajxaction'] == 'DETAILVIEW') { //if we use ajax edit
+		if (isset($_REQUEST['ajxaction']) and $_REQUEST['ajxaction'] == 'DETAILVIEW') { //if we use ajax edit
 			if (GlobalVariable::getVariable('Application_B2B', '1')) {
 				$relatedname = getAccountName($this->column_fields['account_id']);
 			} else {

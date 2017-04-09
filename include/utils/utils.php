@@ -10,6 +10,8 @@
 require_once('include/utils/Session.php');
 require_once('include/utils/Request.php');
 require_once('include/database/PearDatabase.php');
+require_once('include/utils/cbSettings.php');
+require_once('include/cbmqtm/cbmqtm_loader.php');
 require_once('include/events/include.inc');
 require_once('modules/com_vtiger_workflow/VTWorkflowManager.inc');
 require_once 'modules/GlobalVariable/GlobalVariable.php';

@@ -16,7 +16,7 @@ $roleid = vtlib_purify($_REQUEST['roleid']);
 //changed by dingjianting on 2006-10-1 for picklist editor
 $fldPickList = utf8RawUrlDecode($fldPickList);
 $uitype = vtlib_purify($_REQUEST['uitype']);
-global $adb, $default_charset;
+global $adb, $default_charset, $current_language;
 
 $sql = "select picklistid from vtiger_picklist where name=?";
 $picklistid = $adb->query_result($adb->pquery($sql, array($tableName)),0,'picklistid');
@@ -60,7 +60,6 @@ for ($i = 0; $i < $count; $i++) {
 			$picklistvalues = decode_html($adb->query_result($res,$x,$tableName));
 
 			// Fix For: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/5129
-			global $current_language;
 			if($current_language != 'en_us') {
 				// Translate the value in database and compare with input.
 				if($fld_module == 'Events') $temp_module_strings = return_module_language($current_language, 'Calendar');
@@ -97,5 +96,5 @@ for ($i = 0; $i < $count; $i++) {
 	}
 }
 
-header("Location:index.php?action=SettingsAjax&module=Settings&directmode=ajax&file=PickList&fld_module=".$fld_module."&roleid=".$roleid);
+header('Location:index.php?action=SettingsAjax&module=Settings&directmode=ajax&file=PickList&fld_module='.urlencode($fld_module).'&roleid='.urlencode($roleid));
 ?>

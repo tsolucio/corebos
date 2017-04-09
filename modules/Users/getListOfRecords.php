@@ -113,8 +113,7 @@ if(count($recordList) > 0){
 			$output .= '<tr><td style="text-align:left;font-weight:bold;">'.$recordNameMapping[$id].'</td></tr>';
 		}else{
 			$output .= '<tr><td style="text-align:left;"><a href="index.php?module='.$sModule.
-				'&action=DetailView&parenttab='.vtlib_purify($_REQUEST['CurParentTab']).'&record='.$id.
-				'&start='.$recordPageMapping[$id].'">'.$recordNameMapping[$id].'</a></td></tr>';
+				'&action=DetailView&record='.$id.'&start='.$recordPageMapping[$id].'">'.$recordNameMapping[$id].'</a></td></tr>';
 		}
 	}
 }
