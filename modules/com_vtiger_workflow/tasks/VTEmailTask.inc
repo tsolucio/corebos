@@ -24,16 +24,16 @@ class VTEmailTask extends VTTask{
 		$this->attachmentsinfo = array();
 		if (!empty($this->attachmentids)) {
 			$aids = explode(',', $this->attachmentids);
-			$query = 'select filename,filesize from vtiger_notes inner join vtiger_crmentity on crmid = notesid where deleted=0 and notesid=?';
+			$query = 'SELECT vtiger_attachments.path, vtiger_attachments.name, vtiger_attachments.attachmentsid
+					FROM vtiger_attachments
+					INNER JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
+					INNER JOIN vtiger_crmentity ON vtiger_attachments.attachmentsid=vtiger_crmentity.crmid
+					WHERE deleted=0 AND vtiger_seattachmentsrel.crmid = ?';
 			foreach ($aids as $docid) {
 				if (empty($docid)) continue;
 				$docrs = $adb->pquery($query,array($docid));
 				if ($docrs and $adb->num_rows($docrs)==1) {
-					$this->attachmentsinfo[] = array(
-						'docid' => $docid,
-						'name' => $adb->query_result($docrs, 0, 'filename'),
-						'size' => $adb->query_result($docrs, 0, 'filesize'),
-					);
+					$this->attachmentsinfo[] = $adb->query_result($docrs, 0, 'path').$adb->query_result($docrs, 0, 'attachmentsid').'_'.$adb->query_result($docrs, 0, 'name');
 				}
 			}
 		}
@@ -86,13 +86,22 @@ class VTEmailTask extends VTTask{
 		if (strlen(trim($to_email, " \t\n,")) == 0 && strlen(trim($cc, " \t\n,")) == 0 && strlen(trim($bcc, " \t\n,")) == 0) {
 			return ;
 		}
-
+		if (!empty($this->attachmentsinfo)) {
+			$this->after_retrieve();
+		} else {
+			$this->attachmentsinfo = '';
+		}
+		if(!empty($this->attfieldnames)){
+			$attfield = new VTSimpleTemplate('$'.$this->attfieldnames);
+			$pathattfield = $attfield->render($entityCache,$entity->getId());
+			$this->attachmentsinfo[] = $pathattfield;
+		}
 		$st = new VTSimpleTemplate($this->subject);
 		$subject = $st->render($entityCache, $entity->getId());
 		$ct = new VTSimpleTemplate($this->content);
 		$content = $ct->render($entityCache, $entity->getId());
 		$logo = (strpos($this->content, '(general : (__VtigerMeta__) logo)')===false) ? '' : '1';
-		$rdo = send_mail($module,$to_email,$from_name,$from_email,$subject,$content, $cc, $bcc,'','',$logo,$replyto);
+		$rdo = send_mail($module,$to_email,$from_name,$from_email,$subject,$content, $cc, $bcc,$this->attachmentsinfo,'',$logo,$replyto);
 		$logbg->debug("VTEmailTask\nTo: $to_email\nFromName: $from_name\nFromEmail: $from_email\nCC: $cc\nBCC: $bcc\nResult: $rdo");
 		$util->revertUser();
 	}
