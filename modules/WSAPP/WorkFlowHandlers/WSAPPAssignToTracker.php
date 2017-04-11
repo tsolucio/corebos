@@ -14,7 +14,8 @@ require_once 'include/Webservices/DataTransform.php';
 require_once 'modules/WSAPP/SyncServer.php';
 
 class WSAPPAssignToTracker extends VTEventHandler{
-	 function  __construct() {
+
+	function __construct() {
 
 	}
 
@@ -22,13 +23,12 @@ class WSAPPAssignToTracker extends VTEventHandler{
 		global $current_user;
 		$db = PearDatabase::getInstance();
 		$moduleName = $entityData->getModuleName();
-		
+
 		//Specific to VAS
-		if ($moduleName == 'Users') { 
-			return; 
-		}	 
-		//END
-		
+		if ($moduleName == 'Users') {
+			return;
+		}
+
 		$recordId = $entityData->getId();
 		$vtEntityDelta = new VTEntityDelta ();
 		$newEntityData = $vtEntityDelta->getNewEntity($moduleName,$recordId);
@@ -38,9 +38,8 @@ class WSAPPAssignToTracker extends VTEventHandler{
 			return;
 		}
 		$wsModuleName = $this->getWsModuleName($moduleName);
-		if($wsModuleName =="Calendar")
-		{
-				$wsModuleName = vtws_getCalendarEntityType($recordId);
+		if ($wsModuleName =="Calendar") {
+			$wsModuleName = vtws_getCalendarEntityType($recordId);
 		}
 		$handler = vtws_getModuleHandlerFromName($wsModuleName, $current_user);
 		$meta = $handler->getMeta();

@@ -9,7 +9,9 @@
  *************************************************************************************/
 require_once 'modules/WSAPP/Handlers/vtigerCRMHandler.php';
 require_once 'include/Webservices/Utils.php';
+
 class Google_Vtiger_Handler extends vtigerCRMHandler {
+
 	public function put($recordDetails, $user) {
         global $current_user;
         $current_user = $user;
@@ -47,7 +49,7 @@ class Google_Vtiger_Handler extends vtigerCRMHandler {
         if ($this->isClientUserSyncType()|| $this->isClientUserAndGroupSyncType()) {
             $assignedRecordIds = wsapp_checkIfRecordsAssignToUser($crmIds, $this->user->id);
 			// To check if the record assigned to group
-            if($this->isClientUserAndGroupSyncType()){                
+            if ($this->isClientUserAndGroupSyncType()) {
                 $groupIds = $this->getGroupIds($this->user->id);
                 foreach ($groupIds as $group) {
                     $groupRecordId = wsapp_checkIfRecordsAssignToUser($crmIds, $group);
@@ -86,7 +88,7 @@ class Google_Vtiger_Handler extends vtigerCRMHandler {
             $deletedCrmIds[] = $recordIdComp[1];
         }
         $assignedDeletedRecordIds = wsapp_checkIfRecordsAssignToUser($deletedCrmIds, $this->user->id);
-        
+
         // To get record id's assigned to group of the current user
         if($this->isClientUserAndGroupSyncType()){
            foreach ($groupIds as $group) {
@@ -94,8 +96,7 @@ class Google_Vtiger_Handler extends vtigerCRMHandler {
                    $assignedDeletedRecordIds = array_merge($assignedDeletedRecordIds, $groupRecordId);
            }
         }
-        // End
-        
+
         foreach ($deletedRecords as $index => $record) {
             $idComp = vtws_getIdComponents($record);
             if (empty($hasDeleteAccess)) {

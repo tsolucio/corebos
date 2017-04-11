@@ -144,39 +144,4 @@
 {if $MODULE eq 'Leads' or $MODULE eq 'Contacts' or $MODULE eq 'Accounts' or $MODULE eq 'Vendors' or $MODULE eq 'Potentials' or $MODULE eq 'HelpDesk' or $MODULE eq 'Project'}
 <form name="SendMail"><div id="sendmail_cont" style="z-index:100001;position:absolute;"></div></form>
 {/if}
-{if $MODULE eq 'Contacts'}
-    <form name="GoogleContacts">
-        <div id="GoogleContacts" style="z-index:12;display:inline-table;width:200px;display: none;" class="layerPopup">
-            <table border=0 cellspacing=0 cellpadding=5 width=100% class=layerHeadingULine>
-                    <tr>
-                            <td width="90%" align="left" class="genHeaderSmall">
-                                GOOGLE_CONTACTS{$MOD.GOOGLE_CONTACTS}
-                                    &nbsp;
-                            </td>
-                            <td width="10%" align="right">
-                                    <a href="javascript:fninvsh('GoogleContacts');"><img title="{$APP.LBL_CLOSE}" alt="{$APP.LBL_CLOSE}" src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0"  align="absmiddle" /></a>
-                            </td>
-                    </tr>
-            </table>
-            <table border=0 cellspacing=0 cellpadding=5 width=95% align=center>
-                    <tr><td class="small">
-                            <table border=0 cellspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
-                                    <tr>
-                                            <td align="left">
-                                                <div style="height:80px;overflow-y:auto;overflow-x:hidden;" align="center">
-                                                        <input type="button" name="SYNCH{$APP.SYNCH_NOW}" value=" SYNCH{$APP.SYNCH_NOW} " class="crmbutton small create" onClick="googleContactsSynch('{$MODULE}',this);"/>&nbsp;&nbsp;
-                                                </div>
-                                            </td>
-                                    </tr>
-                            </table>
-                    </td></tr>
-            </table>
-            <table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport">
-                    <tr><td align=center class="small">
-                            <input type="button" name="{$APP.LBL_CANCEL_BUTTON_LABEL}" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="crmbutton small cancel" onclick="fninvsh('GoogleContacts');" />
-                    </td></tr>
-            </table>
-    </div>
-    </form>
-{/if}
 

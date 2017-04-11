@@ -1177,6 +1177,6 @@
 	<description>GoogleContact Tables Param access</description>
 	<filename>build/changeSets/2017/GoogleContactChanges.php</filename>
 	<classname>GoogleContactChanges</classname>
-	<systemupdate>true</systemupdate>
+	<systemupdate>false</systemupdate>
 </changeSet>
 </updatesChangeLog>

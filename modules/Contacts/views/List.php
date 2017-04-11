@@ -13,7 +13,7 @@ class Google_List_View  {
     protected $noRecords = false;
 
     public function __construct() {
-        
+
     }
 
     function process($request) {
@@ -32,8 +32,8 @@ class Google_List_View  {
     function renderWidgetUI(Vtiger_Request $request) {
         $sourceModule = $request->get('sourcemodule');
         $viewer = new vtigerCRM_Smarty();
-        $oauth2 = new Google_Oauth2_Connector($sourceModule); 
-        $firstime = $oauth2->hasStoredToken(); 
+        $oauth2 = new Google_Oauth2_Connector($sourceModule);
+        $firstime = $oauth2->hasStoredToken();
         $viewer->assign('MODULE_NAME', $request->getModule());
         $viewer->assign('FIRSTTIME', $firstime);
         $viewer->assign('STATE', 'home');
@@ -46,7 +46,7 @@ class Google_List_View  {
     function renderSyncUI( $request) {
         $viewer = new vtigerCRM_Smarty();
         $sourceModule = $request['sourcemodule'];
-        $oauth2 = new Google_Oauth2_Connector($sourceModule); 
+        $oauth2 = new Google_Oauth2_Connector($sourceModule);
         $oauth2->authorize();
         if (!empty($sourceModule)) {
             try {
@@ -62,7 +62,7 @@ class Google_List_View  {
                 }
             }
         }
-//        $firstime = $oauth2->hasStoredToken(); 
+//        $firstime = $oauth2->hasStoredToken();
 //        $viewer->assign('MODULE_NAME', $request->getModule());
 //        $viewer->assign('FIRSTTIME', $firstime);
 //        $viewer->assign('RECORDS', $records);
@@ -78,15 +78,15 @@ class Google_List_View  {
     }
 
     /**
-     * Sync Contacts Records 
+     * Sync Contacts Records
      * @return <array> Count of Contacts Records
      */
     public function Contacts() {
         global $current_user;
         $user = $current_user;
         $controller = new Google_Contacts_Controller($user);
-        $syncDirection = Google_Utils_Helper::getSyncDirectionForUser($user); 
-        $records = $controller->synchronize(true,$syncDirection[0],$syncDirection[1]); 
+        $syncDirection = Google_Utils_Helper::getSyncDirectionForUser($user);
+        $records = $controller->synchronize(true,$syncDirection[0],$syncDirection[1]);
         $syncRecords = $this->getSyncRecordsCount($records);
         $syncRecords['vtiger']['more'] = $controller->targetConnector->moreRecordsExits();
         $syncRecords['google']['more'] = $controller->sourceConnector->moreRecordsExits();
@@ -94,7 +94,7 @@ class Google_List_View  {
     }
 
     /**
-     * Sync Calendar Records 
+     * Sync Calendar Records
      * @return <array> Count of Calendar Records
      */
     public function Calendar($userId = false) {
@@ -112,7 +112,7 @@ class Google_List_View  {
         $syncRecords['google']['more'] = $controller->sourceConnector->moreRecordsExits();
         return $syncRecords;
     }
-    
+
     /**
      * Removes Synchronization
      */
@@ -121,7 +121,7 @@ class Google_List_View  {
         $userModel = Users_Record_Model::getCurrentUserModel();
         Google_Module_Model::removeSync($sourceModule, $userModel->getId());
     }
-    
+
     function deleteSync($request) {
         $sourceModule = $request->get('sourcemodule');
         $userModel = Users_Record_Model::getCurrentUserModel();
@@ -180,20 +180,19 @@ class Google_List_View  {
         }
         return $countRecords;
     }
-    
-    /**
+
+	/**
 	 * Function to get the list of Script models to be included
 	 * @param Vtiger_Request $request
 	 * @return <Array> - List of Vtiger_JsScript_Model instances
 	 */
-    public function getHeaderScripts(Vtiger_Request $request) {
-        $moduleName = $request->getModule();
+	public function getHeaderScripts(Vtiger_Request $request) {
+		$moduleName = $request->getModule();
 		return $this->checkAndConvertJsScripts(array("~libraries/bootstrap/js/bootstrap-popover.js","modules.$moduleName.resources.List"));
-        
-    }
-    
-    public function validateRequest(Vtiger_Request $request) {
-        //don't do validation because there is a redirection from google
-    }
+	}
+
+	public function validateRequest(Vtiger_Request $request) {
+		//don't do validation because there is a redirection from google
+	}
 }
 

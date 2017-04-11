@@ -9,18 +9,18 @@
  * *********************************************************************************** */
 
 class Google_Setting_View extends Vtiger_PopupAjax_View {
-    
+
     public function __construct() {
         $this->exposeMethod('emitContactSyncSettingUI');
     }
-    
+
     public function process(Vtiger_Request $request) {
         switch ($request->get('sourcemodule')) {
             case "Contacts" : $this->emitContactsSyncSettingUI($request);
                 break;
         }
     }
-    
+
     public function emitContactsSyncSettingUI(Vtiger_Request $request) {
         $user = Users_Record_Model::getCurrentUserModel();
         $connector = new Google_Contacts_Connector(FALSE);
@@ -54,7 +54,7 @@ class Google_Setting_View extends Vtiger_PopupAjax_View {
             if($contactFieldModel->isViewable() && !in_array($contactFieldModel->getFieldName(),array_merge($mandatoryMapFields,$skipFields))) {
                 if($contactFieldModel->getFieldDataType() == 'email')
                     $emailFields[$contactFieldModel->getFieldName()] = $contactFieldModel->get('label');
-                else if($contactFieldModel->getFieldDataType() == 'phone') 
+                else if($contactFieldModel->getFieldDataType() == 'phone')
                     $phoneFields[$contactFieldModel->getFieldName()] = $contactFieldModel->get('label');
                 else if($contactFieldModel->getFieldDataType() == 'url')
                     $urlFields[$contactFieldModel->getFieldName()] = $contactFieldModel->get('label');
@@ -77,7 +77,7 @@ class Google_Setting_View extends Vtiger_PopupAjax_View {
         $viewer->assign('VTIGER_OTHER_FIELDS',$otherFields);
         echo $viewer->view('ContactsSyncSettings.tpl', $request->getModule(), true);
     }
-    
+
 }
 
 ?>

@@ -77,7 +77,6 @@ Class OutlookHandler extends SyncHandler {
 
             $record['duration_hours'] = date('H',(strtotime($endTime)-strtotime($startTime)));
             $record['duration_minutes'] = date('i',(strtotime($endTime)-strtotime($startTime)));
-	
         }
         $record['modifiedtime'] = $record['utclastmodifiedtime'];
         return $record;
@@ -105,7 +104,7 @@ Class OutlookHandler extends SyncHandler {
         }
         return $record;
     }
-    
+
     private function convertMapRecordsToSyncFormat($elements){
         $syncMapFormatElements = array();
         $syncMapFormatElements['create'] = array();
@@ -134,10 +133,6 @@ Class OutlookHandler extends SyncHandler {
             }
         }
     }
-
-
-
-
 
 }
 

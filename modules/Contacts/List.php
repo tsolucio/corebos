@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * *********************************************************************************** */
-
 require 'modules/Contacts/views/List.php';
 require_once 'modules/Contacts/connectors/Oauth2.php';
 require_once 'modules/Contacts/connectors/Config.php';
@@ -19,7 +18,6 @@ require_once 'modules/Contacts/helpers/Utils.php';
 require_once('Smarty_setup.php');
 
 global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
-
 
 $listFocus=new Google_List_View();
 $listFocus->process($_REQUEST);

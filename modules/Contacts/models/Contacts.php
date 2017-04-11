@@ -16,19 +16,19 @@ class Google_Contacts_Model extends WSAPP_SyncRecordModel {
      * @return <string> id
      */
     public function getId() {
-        return $this->data['entity']['id']['$t']; 
+        return $this->data['entity']['id']['$t'];
     }
 
     /**
      * return modified time of Google Record
-     * @return <date> modified time 
+     * @return <date> modified time
      */
     public function getModifiedTime() {
-        return $this->vtigerFormat($this->data['entity']['updated']['$t']); 
-    } 
+        return $this->vtigerFormat($this->data['entity']['updated']['$t']);
+    }
 
-    function getNamePrefix() { 
-        $namePrefix = $this->data['entity']['gd$name']['gd$namePrefix']['$t']; 
+    function getNamePrefix() {
+        $namePrefix = $this->data['entity']['gd$name']['gd$namePrefix']['$t'];
         return $namePrefix;
     }
 
@@ -37,7 +37,7 @@ class Google_Contacts_Model extends WSAPP_SyncRecordModel {
      * @return <string> $first name
      */
     function getFirstName() {
-        $fname = $this->data['entity']['gd$name']['gd$givenName']['$t']; 
+        $fname = $this->data['entity']['gd$name']['gd$givenName']['$t'];
         return $fname;
     }
 
@@ -46,7 +46,7 @@ class Google_Contacts_Model extends WSAPP_SyncRecordModel {
      * @return <string> Last name
      */
     function getLastName() {
-        $lname = $this->data['entity']['gd$name']['gd$familyName']['$t']; 
+        $lname = $this->data['entity']['gd$name']['gd$familyName']['$t'];
         return $lname;
     }
 
@@ -55,18 +55,18 @@ class Google_Contacts_Model extends WSAPP_SyncRecordModel {
      * @return <array> emails
      */
     function getEmails() {
-        $arr = $this->data['entity']['gd$email']; 
-        $emails = array(); 
-        if (is_array($arr)) { 
-            foreach ($arr as $email) { 
-                if(isset($email['rel'])) 
-                    $labelEmail = parse_url($email['rel'], PHP_URL_FRAGMENT); 
-                else 
-                    $labelEmail = $email['label']; 
-                $emails[$labelEmail] = $email['address']; 
-            } 
-        } 
-        return $emails; 
+        $arr = $this->data['entity']['gd$email'];
+        $emails = array();
+        if (is_array($arr)) {
+            foreach ($arr as $email) {
+                if(isset($email['rel']))
+                    $labelEmail = parse_url($email['rel'], PHP_URL_FRAGMENT);
+                else
+                    $labelEmail = $email['label'];
+                $emails[$labelEmail] = $email['address'];
+            }
+        }
+        return $emails;
     }
 
     /**
@@ -75,19 +75,19 @@ class Google_Contacts_Model extends WSAPP_SyncRecordModel {
      */
     function getPhones() {
 
-        $arr = $this->data['entity']['gd$phoneNumber']; 
-        $phones = array(); 
-        if(is_array($arr)) { 
-            foreach ($arr as $phone) { 
-                $phoneNo = $phone['$t']; 
-                if(isset($phone['rel'])) 
-                    $labelPhone = parse_url($phone['rel'], PHP_URL_FRAGMENT); 
-                else 
-                    $labelPhone = $phone['label']; 
-                $phones[$labelPhone] = $phoneNo; 
-            } 
-        } 
-        return $phones; 
+        $arr = $this->data['entity']['gd$phoneNumber'];
+        $phones = array();
+        if(is_array($arr)) {
+            foreach ($arr as $phone) {
+                $phoneNo = $phone['$t'];
+                if(isset($phone['rel']))
+                    $labelPhone = parse_url($phone['rel'], PHP_URL_FRAGMENT);
+                else
+                    $labelPhone = $phone['label'];
+                $phones[$labelPhone] = $phoneNo;
+            }
+        }
+        return $phones;
     }
 
     /**
@@ -117,7 +117,7 @@ class Google_Contacts_Model extends WSAPP_SyncRecordModel {
         }
         return $addresses;
     }
-    
+
     function getUserDefineFieldsValues() {
         $fieldValues = array();
         $userDefinedFields = $this->data['entity']['gContact$userDefinedField'];
@@ -129,14 +129,14 @@ class Google_Contacts_Model extends WSAPP_SyncRecordModel {
         }
         return $fieldValues;
     }
-    
+
     function getUrlFields() {
         $websiteFields = $this->data['entity']['gContact$website'];
         $urls = array();
         if(is_array($websiteFields)) {
             foreach($websiteFields as $website) {
                 $url = $website['href'];
-                if(isset($website['rel'])) 
+                if(isset($website['rel']))
                     $fieldName = $website['rel'];
                 else
                     $fieldName = $website['label'];
@@ -145,22 +145,22 @@ class Google_Contacts_Model extends WSAPP_SyncRecordModel {
         }
         return $urls;
     }
-    
+
     function getBirthday() {
         return $this->data['entity']['gContact$birthday']['when'];
     }
-    
+
     function getTitle() {
-        return $this->data['entity']['gd$organization'][0]['gd$orgTitle']['$t']; 
+        return $this->data['entity']['gd$organization'][0]['gd$orgTitle']['$t'];
     }
-    
+
     function getAccountName() {
-        $orgName = $this->data['entity']['gd$organization'][0]['gd$orgName']['$t']; 
+        $orgName = $this->data['entity']['gd$organization'][0]['gd$orgName']['$t'];
         return $orgName;
     }
-    
-    function getDescription() { 
-        return $this->data['entity']['content']['$t']; 
+
+    function getDescription() {
+        return $this->data['entity']['content']['$t'];
     }
 
     /**
@@ -174,14 +174,13 @@ class Google_Contacts_Model extends WSAPP_SyncRecordModel {
     }
 
     /**
-     * converts the Google Format date to 
+     * converts the Google Format date to
      * @param <date> $date Google Date
      * @return <date> Vtiger date Format
      */
     public function vtigerFormat($date) {
         list($date, $timestring) = explode('T', $date);
         list($time, $tz) = explode('.', $timestring);
-
         return $date . " " . $time;
     }
 

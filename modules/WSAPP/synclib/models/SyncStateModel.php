@@ -64,7 +64,7 @@ class WSAPP_SyncStateModel extends WSAPP_BaseModel{
 		$model = new self();
 		return $model->setData($rowData);
 	}
-	
+
 }
 
 ?>

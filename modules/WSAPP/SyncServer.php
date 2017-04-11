@@ -23,7 +23,6 @@ class SyncServer {
         private $save = "save";
         private $syncTypes = array("user","app","userandgroup");
 
-        
     /**
 	 * Lookup application id using the key provided.
 	 */
@@ -33,23 +32,23 @@ class SyncServer {
 		if ($db->num_rows($appidresult)) return $db->query_result($appidresult, 0, 'appid');
 		return false;
 	}
-	
+
 	/**
-	 * Retrieve serverid-clientid record map information for the given 
+	 * Retrieve serverid-clientid record map information for the given
 	 * application and serverid
 	 */
 	function idmap_get_clientmap($appid, $serverids) {
-        if (!is_array($serverids)) $serverids = array($serverids);
-		$db = PearDatabase::getInstance(); 		;
+		if (!is_array($serverids)) $serverids = array($serverids);
+		$db = PearDatabase::getInstance();
 		$result = $db->pquery(sprintf(
 			"SELECT serverid, clientid,clientmodifiedtime,servermodifiedtime,id FROM vtiger_wsapp_recordmapping WHERE appid=? AND serverid IN ('%s')",
 			implode("','", $serverids)), array($appid));
-                 
+
 		$mapping = array();
 		if ($db->num_rows($result)) {
 			while ($row = $db->fetch_array($result)) {
 				$mapping[$row['serverid']] = array("clientid"=>$row['clientid'],"clientmodifiedtime"=>$row['clientmodifiedtime'],
-                    "servermodifiedtime"=>$row['servermodifiedtime'],"id"=>$row['id']);
+					"servermodifiedtime"=>$row['servermodifiedtime'],"id"=>$row['id']);
 			}
 		}
 		return $mapping;
@@ -135,7 +134,7 @@ class SyncServer {
 	 * Create serverid-clientid record map for the application
 	 */
 	function idmap_put($appid, $serverid, $clientid,$clientModifiedTime,$serverModifiedTime,$serverAppId,$mode="save") {
-		$db = PearDatabase::getInstance(); 
+		$db = PearDatabase::getInstance();
         if($mode == $this->create)
             $this->idmap_create($appid, $serverid, $clientid,$clientModifiedTime,$serverModifiedTime,$serverAppId);
         else if ($mode == $this->update)
@@ -305,17 +304,17 @@ class SyncServer {
                 }
 			}
         }
-        
+
        $recordDetails['created'] = $createRecords;
        $recordDetails['updated'] = $updateRecords;
        $recordDetails['deleted'] = $deleteRecords;
        $result = $this->destHandler->put($recordDetails,$user);
-	   
+
 	   $response= array();
 	   $response['created'] = array();
 	   $response['updated'] = array();
 	   $response['deleted'] = array();
-	   
+
        $nextSyncDeleteRecords = $this->destHandler->getAssignToChangedRecords();
        foreach($result['created'] as $clientRecordId=>$record){
            $this->idmap_put($appid, $record['id'], $clientRecordId,$clientModifiedTimeList[$clientRecordId],$record['modifiedtime'],$serverAppId,$this->create);
@@ -527,5 +526,5 @@ class SyncServer {
         return false;
     }
 }
- 
+
 ?>

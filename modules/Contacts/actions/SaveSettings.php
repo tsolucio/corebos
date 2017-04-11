@@ -1,5 +1,4 @@
 <?php
-
 /* +***********************************************************************************
  * The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
@@ -21,7 +20,7 @@ class Google_SaveSettings_Action extends Vtiger_BasicAjax_Action {
         $response->setResult($result);
         $response->emit();
     }
-    
+
 }
 
 ?>

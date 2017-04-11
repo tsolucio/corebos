@@ -13,10 +13,8 @@ require_once 'modules/WSAPP/synclib/models/VtigerModel.php';
 require_once 'modules/WSAPP/synclib/models/PullResultModel.php';
 require_once 'modules/WSAPP/api/ws/Map.php';
 require_once 'modules/WSAPP/api/ws/Put.php';
-//require_once 'include/Zend/Json.php';
 require_once 'include/database/PearDatabase.php';
 require_once 'include/Webservices/Utils.php';
-
 
 class WSAPP_VtigerConnector extends WSAPP_BaseConnector {
 
@@ -232,7 +230,7 @@ class WSAPP_VtigerConnector extends WSAPP_BaseConnector {
 		$transformedRecords = array();
 		foreach ($recordLists as $record) {
 			foreach ($mandatoryFields as $fieldName) {
-				// ignore owner fields 
+				// ignore owner fields
 				if (in_array($fieldName, $ownerFields)) {
 					continue;
 				}

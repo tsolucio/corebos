@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
-
 require_once 'include/database/PearDatabase.php';
 require_once 'include/utils/utils.php';
 
@@ -38,7 +37,7 @@ function wsapp_getApplicationName($key){
 function wsapp_getRecordEntityNameIds($entityNames,$modules,$user){
     $entityMetaList = array();
     $db = PearDatabase::getInstance();
-    
+
     if(empty($entityNames)) return;
 
     if(!is_array($entityNames))
@@ -73,10 +72,10 @@ function wsapp_getRecordEntityNameIds($entityNames,$modules,$user){
     }
     return $entityNameIds;
 }
+
 /***
  * Converts default time zone to specifiedTimeZone
  */
-
 function wsapp_convertDateTimeToTimeZone($dateTime,$toTimeZone){
     global $log,$default_timezone;
     $time_zone = $default_timezone;
@@ -110,7 +109,7 @@ function wsapp_checkIfRecordsAssignToUser($recordsIds,$userIds){
     }
     $queryResult = $db->pquery($query,$params);
     $num_rows = $db->num_rows($queryResult);
-    
+
     for($i=0;$i<$num_rows;$i++){
         $assignedRecordIds[] = $db->query_result($queryResult,$i,"crmid");
     }

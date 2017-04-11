@@ -9,14 +9,14 @@
  * *********************************************************************************** */
 
 class Google_Utils_Helper {
-    
-    const settings_table_name = 'vtiger_google_sync_settings'; 
-    const fieldmapping_table_name = 'vtiger_google_sync_fieldmapping'; 
+
+    const settings_table_name = 'vtiger_google_sync_settings';
+    const fieldmapping_table_name = 'vtiger_google_sync_fieldmapping';
 
     /**
      * Updates the database with syncronization times
      * @param <sting> $sourceModule module to which sync time should be stored
-     * @param <date> $modifiedTime Max modified time of record that are sync 
+     * @param <date> $modifiedTime Max modified time of record that are sync
      */
     public static function updateSyncTime($sourceModule, $modifiedTime = false) {
         $db = PearDatabase::getInstance();
@@ -48,7 +48,7 @@ class Google_Utils_Helper {
     /**
      *  Gets the max Modified time of last sync records
      *  @param <sting> $sourceModule modulename to which sync time should return
-     *  @return <date> max Modified time of last sync records OR <boolean> false when date not present  
+     *  @return <date> max Modified time of last sync records OR <boolean> false when date not present
      */
     public static function getSyncTime($sourceModule) {
         global $current_user;
@@ -66,9 +66,9 @@ class Google_Utils_Helper {
     }
 
     /**
-     *  Gets the last syncronazation time 
+     *  Gets the last syncronazation time
      *  @param <sting> $sourceModule modulename to which sync time should return
-     *  @return <date> last syncronazation time OR <boolean> false when date not present  
+     *  @return <date> last syncronazation time OR <boolean> false when date not present
      */
     public static function getLastSyncTime($sourceModule) {
         $db = PearDatabase::getInstance();
@@ -101,7 +101,7 @@ class Google_Utils_Helper {
         }
         return $callback;
     }
-    
+
     static function hasSettingsForUser($userId) {
         $db = PearDatabase::getInstance();
         $sql = 'SELECT 1 FROM ' . self::settings_table_name . ' WHERE user = ?';
@@ -131,7 +131,7 @@ class Google_Utils_Helper {
             $db->pquery($sql, $params);
         }
     }
-    
+
     static function saveFieldMappings($sourceModule, $fieldMappings) {
         $db = PearDatabase::getInstance();
 //        $user = Users_Record_Model::getCurrentUserModel();
@@ -158,10 +158,10 @@ class Google_Utils_Helper {
         $sql = rtrim($sql,', ');
         $db->pquery($sql,$sqlParams);
     }
-    
+
     static function getSelectedContactGroupForUser($user = false) {
         global $current_user;
-        
+
         if(!$user) $user = $current_user;
         $userId = $user->getId();
         if(!Google_Utils_Helper::hasSettingsForUser($userId)) {
@@ -173,7 +173,7 @@ class Google_Utils_Helper {
             return $db->query_result($result, 0, 'clientgroup');
         }
     }
-    
+
     static function getSyncDirectionForUser($user = false) {
         global $current_user;
         if(!$user) $user = $current_user;
@@ -186,7 +186,7 @@ class Google_Utils_Helper {
             return $db->query_result($result, 0, 'direction');
         }
     }
-    
+
     static function getFieldMappingForUser($user = false) {
         global $current_user;
         $user = $current_user;
@@ -262,11 +262,11 @@ class Google_Utils_Helper {
                 'google_field_name' => 'content',
                 'google_field_type' => '',
                 'google_custom_label' => ''
-            )  
+            )
         );
         $sql = 'SELECT vtiger_field,google_field,google_field_type,google_custom_label FROM ' . self::fieldmapping_table_name . ' WHERE user = ?';
         $result = $db->pquery($sql,array($user->getId()));
-        for($i=0;$i<$db->num_rows($result);$i++) {  
+        for($i=0;$i<$db->num_rows($result);$i++) {
             $row = $db->fetch_row($result);
             $fieldmapping[$row['vtiger_field']] = array(
                 'google_field_name' => $row['google_field'],

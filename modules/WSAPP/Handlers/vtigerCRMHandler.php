@@ -1,5 +1,4 @@
 <?php
-
 /* +***********************************************************************************
  * The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
@@ -8,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * *********************************************************************************** */
-
 require_once 'modules/WSAPP/WSAPP.php';
 require_once 'include/Webservices/Utils.php';
 require_once 'include/database/PearDatabase.php';
@@ -77,7 +75,7 @@ class vtigerCRMHandler extends SyncHandler {
         if ($this->isClientUserSyncType()|| $this->isClientUserAndGroupSyncType()) {
             $assignedRecordIds = wsapp_checkIfRecordsAssignToUser($crmIds, $this->user->id);
         // To check if the record assigned to group
-            if($this->isClientUserAndGroupSyncType()){                
+            if ($this->isClientUserAndGroupSyncType()) {
                 $groupIds = $this->getGroupIds($this->user->id);
                 foreach ($groupIds as $group) {
                     $groupRecordId = wsapp_checkIfRecordsAssignToUser($crmIds, $group);
@@ -109,7 +107,7 @@ class vtigerCRMHandler extends SyncHandler {
             $deletedCrmIds[] = $recordIdComp[1];
         }
         $assignedDeletedRecordIds = wsapp_checkIfRecordsAssignToUser($deletedCrmIds, $this->user->id);
-        
+
         // To get record id's assigned to group of the current user
         if($this->isClientUserAndGroupSyncType()){
            foreach ($groupIds as $group) {
@@ -117,8 +115,7 @@ class vtigerCRMHandler extends SyncHandler {
                    $assignedDeletedRecordIds = array_merge($assignedDeletedRecordIds, $groupRecordId);
            }
         }
-        // End
-        
+
         foreach ($deletedRecords as $index => $record) {
             $idComp = vtws_getIdComponents($record);
             if (empty($hasDeleteAccess)) {
@@ -184,9 +181,9 @@ class vtigerCRMHandler extends SyncHandler {
                 $entityNameIds = wsapp_getRecordEntityNameIds(array_values($recordReferenceFieldNames), $referenceModuleDetails, $user);
                 foreach ($records as $index => $recordInfo) {
                     if(array_key_exists($referenceFieldName, $recordInfo)){
-                        $array = explode('x',$record[$referenceFieldName]); 
-                        if(is_numeric($array[0]) && is_numeric($array[1])){ 
-                            $recordInfo[$referenceFieldName] = $recordInfo[$referenceFieldName]; 
+                        $array = explode('x',$record[$referenceFieldName]);
+                        if(is_numeric($array[0]) && is_numeric($array[1])){
+                            $recordInfo[$referenceFieldName] = $recordInfo[$referenceFieldName];
                         }elseif (!empty($entityNameIds[$recordInfo[$referenceFieldName]])) {
                             $recordInfo[$referenceFieldName] = $entityNameIds[$recordInfo[$referenceFieldName]];
                         } else {
@@ -295,7 +292,7 @@ class vtigerCRMHandler extends SyncHandler {
             $mandatoryFields = $meta->getMandatoryFields();
             $ownerFields = $meta->getOwnerFields();
             foreach ($mandatoryFields as $fieldName) {
-                // ignore owner fields 
+                // ignore owner fields
                 if (in_array($fieldName, $ownerFields)) {
                     continue;
                 }
@@ -388,11 +385,10 @@ class vtigerCRMHandler extends SyncHandler {
     public function isClientUserSyncType() {
         return ($this->clientSyncType == 'user') ? true : false;
     }
-    
+
     public function isClientUserAndGroupSyncType() {
         return ($this->clientSyncType == 'userandgroup') ? true : false;
     }
-
 
 }
 

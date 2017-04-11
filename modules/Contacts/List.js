@@ -5,8 +5,9 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *************************************************************************************/  
+ *************************************************************************************/
 jQuery.Class("Contact",{
+
     _init:function(){
         if(jQuery('#sync_button')){
             jQuery('#sync_button').on('click',function(){
@@ -18,9 +19,9 @@ jQuery.Class("Contact",{
                 var url = jQuery('#sync_button').data('url');
                 if(jQuery('#firsttime').val() == 'yes'){
                      var win=window.open(url,'','height=600,width=600,channelmode=1');
-                     //http://stackoverflow.com/questions/1777864/how-to-run-function-of-parent-window-when-child-window-closes 
+                     //http://stackoverflow.com/questions/1777864/how-to-run-function-of-parent-window-when-child-window-closes
                      window.sync = function() {
-                        jQuery('#sync_details').html('<img src='+imagePath+' style="margin-left:40px"/>'); 
+                        jQuery('#sync_details').html('<img src='+imagePath+' style="margin-left:40px"/>');
                         AppConnector.request(url).then(
                            function(data) {
                                jQuery('#sync_button b').text(app.vtranslate('LBL_SYNC_BUTTON'));
@@ -35,15 +36,11 @@ jQuery.Class("Contact",{
                            }
                            );
                      }
-                     
-                     
                      win.onunload = function(){
                          jQuery('#sync_button b').text(app.vtranslate('LBL_SYNC_BUTTON'));
                          jQuery('#sync_button').removeAttr("disabled");
                          jQuery('#sync_details').html(app.vtranslate('LBL_NOT_SYNCRONIZED'));
                      }
-                         
-                     
                 } else {
                     AppConnector.request(url).then(
 						function(data) {
@@ -51,13 +48,11 @@ jQuery.Class("Contact",{
                             try {
                                 response = JSON.parse(data);
                             } catch (e) {
-                                
                             }
                             if(response && response.error.code == '401') {
                                 jQuery('#firsttime').val('yes');
                                 jQuery('#removeSyncBlock').hide();
                                 jQuery('#sync_button').click();
-                                
                             } else {
                             jQuery('#sync_button b').text(app.vtranslate('LBL_SYNC_BUTTON'));
                             jQuery('#sync_button').removeAttr("disabled");
@@ -69,7 +64,6 @@ jQuery.Class("Contact",{
                         }
                     });
                 }
-                
             });
             jQuery('#remove_sync').on('click',function(){
                 var url = jQuery('#remove_sync').data('url');
@@ -86,7 +80,6 @@ jQuery.Class("Contact",{
                             Vtiger_Helper_Js.showPnotify(params);
                         }
                         );
-                
             });
         }
 		var data=jQuery('#mappingTable').html();
@@ -95,23 +88,19 @@ jQuery.Class("Contact",{
 			'content': data,
 			'title':app.vtranslate('FIELD_MAPPING')
 		});
-        
-        jQuery('#removePop').popover({
+		jQuery('#removePop').popover({
 			'html':true,
 			'content': app.vtranslate('REMOVE_SYNCHRONIZATION_MESSAGE'),
 			'title': app.vtranslate('REMOVE_SYNCHRONIZATION')
 		});
-		
     },
-    
+
     _showMessage : function(){
-       
     },
     _exit:function(){
-        
     }
 },{
-    
+
     packFieldmappingsForSubmit : function(container) {
         var rows = container.find('div#googlesyncfieldmapping > table > tbody > tr');
         var mapping = {};
@@ -138,16 +127,14 @@ jQuery.Class("Contact",{
         });
         return JSON.stringify(mapping);
     },
-    
+
     validateFieldMappings : function(container) {
         var aDeferred = jQuery.Deferred();
-        
         var customMapElements = jQuery('select.vtiger_field_name');
         var mappedCustomFields = [];
         jQuery.each(customMapElements,function(i,elem) {
             mappedCustomFields.push(jQuery(elem).val());
         });
-        
         var customFieldLabels = jQuery('input.google-custom-label',container).filter('input:text[value=""]').filter(function() {
             return jQuery(this).css('visibility') == 'visible';
         });
@@ -158,7 +145,7 @@ jQuery.Class("Contact",{
         }
         return aDeferred.promise();
     },
-    
+
     registerSaveSettingsEvent : function(container) {
         var thisInstance = this;
         container.find('button#save_syncsetting').on('click',function() {
@@ -178,7 +165,7 @@ jQuery.Class("Contact",{
             });
         });
     },
-    
+
     registerAddCustomFieldMappingEvent : function(container) {
         var thisInstance = this;
         jQuery('.addCustomFieldMapping',container).on('click',function(e) {
@@ -186,13 +173,11 @@ jQuery.Class("Contact",{
             var googleFields = JSON.parse(container.find('input#google_fields').val());
             var selectionType = currentSelectionElement.data('type');
             var vtigerFields = currentSelectionElement.data('vtigerfields');
-            
             var vtigerFieldSelectElement = '<select class="vtiger_field_name" style="width:200px" data-category="'+selectionType+'">';
             if(!Object.keys(vtigerFields).length) {
                 alert(app.vtranslate('JS_SUITABLE_VTIGER_FIELD_NOT_AVAILABLE_FOR_MAPPING'));
                 return;
             }
-            
             var customMapElements = jQuery('select.vtiger_field_name[data-category="'+selectionType+'"]');
             var mappedCustomFields = [];
             jQuery.each(customMapElements,function(i,elem) {
@@ -210,13 +195,11 @@ jQuery.Class("Contact",{
                 alert(app.vtranslate('JS_SUITABLE_VTIGER_FIELD_NOT_AVAILABLE_FOR_MAPPING'));
                 return;
             }
-            
             vtigerFieldSelectElement += '</select>';
             var googleTypeSelectElement = '';
             if(selectionType != 'custom') {
                 googleTypeSelectElement = '<input type="hidden" class="google_field_name" value="'+ googleFields[selectionType]['name'] +'" />\n\
                                                <select class="google-type" style="width:200px;" data-category="'+selectionType+'">';
-                
                 var allCategorizedSelects = jQuery('select.google-type[data-category="'+selectionType+'"]');
                 var selectedValues = [];
 
@@ -254,7 +237,7 @@ jQuery.Class("Contact",{
             app.showScrollBar(jQuery('div#googlesyncfieldmapping'),{'height': '350px','scroll':1000000,'railVisible': true});
         });
     },
-    
+
     registerDeleteCustomFieldMappingEvent : function(container) {
         jQuery('.deleteCustomMapping',container).on('click',function() {
             var currentRow = jQuery(this).closest('tr');
@@ -264,7 +247,7 @@ jQuery.Class("Contact",{
             jQuery('select.google-type[data-category="'+currentCategory+'"]').trigger('change');
         });
     },
-    
+
     updateSelectElement : function(allValuesMap, selectedValues, element) {
         var prevSelectedValues = element.val();
         element.html('');
@@ -281,8 +264,8 @@ jQuery.Class("Contact",{
             element.select2("val", prevSelectedValues);
         }
    },
-    
-    removeOptionFromSelectList : function(selectElement,optionValue,category) {
+
+   removeOptionFromSelectList : function(selectElement,optionValue,category) {
         var sourceSelectElement = jQuery(selectElement);
         var categorisedSelectElements = jQuery('select.vtiger_field_name[data-category="'+category+'"]');
         jQuery.each(categorisedSelectElements,function(index,categorisedSelectElement) {
@@ -296,23 +279,20 @@ jQuery.Class("Contact",{
             }
         });
     },
-    
+
     registerVtigerFieldSelectOnChangeEvent : function(container,selectElement) {
         var thisInstance = this;
         if(typeof selectElement === 'undefined') {
-            selectElement = jQuery('select.vtiger_field_name',container);   
+            selectElement = jQuery('select.vtiger_field_name',container);
         }
         selectElement.on('change', function(e){
             var element = jQuery(e.currentTarget);
             var category = element.data('category');
-            
             var allCategorizedSelects = jQuery('select.vtiger_field_name[data-category="'+category+'"]');
             var selectedValues = [];
-            
             jQuery.each(allCategorizedSelects, function(i, selectElement){
                 selectedValues.push($(selectElement).val());
             });
-            
             jQuery.each(allCategorizedSelects, function(i, selectElement){
                 if(e.currentTarget !== selectElement || allCategorizedSelects.length == 1) {
                     var allCategoryFieldLabelValues = jQuery('li.addCustomFieldMapping[data-type="'+category+'"]').data('vtigerfields');
@@ -321,10 +301,9 @@ jQuery.Class("Contact",{
             });
         });
     },
-    
+
     registerGoogleTypeChangeEvent : function(container,selectElement) {
         var thisInstance = this;
-        
         if(typeof selectElement === 'undefined') {
             selectElement = jQuery('select.google-type',container);
         }
@@ -332,7 +311,6 @@ jQuery.Class("Contact",{
         selectElement.on('change',function(e) {
             var element = jQuery(e.currentTarget);
             var category = element.data('category');
-            
             var currentTarget = element;
             var val = currentTarget.val();
             if(val == 'custom') {
@@ -340,10 +318,8 @@ jQuery.Class("Contact",{
             } else {
                 currentTarget.closest('td').find('input.google-custom-label').css('visibility','hidden');
             }
-            
             var allCategorizedSelects = jQuery('select.google-type[data-category="'+category+'"]');
             var selectedValues = [];
-            
             jQuery.each(allCategorizedSelects, function(i, selectElement){
                 if(jQuery(selectElement).val() !== 'custom') {
                     selectedValues.push(jQuery(selectElement).val());
@@ -355,15 +331,13 @@ jQuery.Class("Contact",{
             jQuery.each(googleFields[category]['types'],function(index,value) {
                 allValues[value] = app.vtranslate(category)+' ('+app.vtranslate(value)+')';
             });
-            
             jQuery.each(allCategorizedSelects, function(i, selectElement){
                 var allCategoryFieldLabelValues = allValues;
                 thisInstance.updateSelectElement(allCategoryFieldLabelValues, selectedValues, jQuery(selectElement));
             });
         });
-        
     },
-    
+
     registerPostSettingRenderEvents : function(container) {
         jQuery('form[name="contactsyncsettings"]',container).validationEngine(app.validationEngineOptions);
         this.registerAddCustomFieldMappingEvent(container);
@@ -375,7 +349,7 @@ jQuery.Class("Contact",{
         jQuery('select.vtiger_field_name',container).trigger('change');
         jQuery('select.google-type',container).trigger('change');
     },
-    
+
     registerSyncSettingClickEvent : function() {
         var thisInstance = this;
         if(jQuery('a#syncSetting').length) {
@@ -396,17 +370,16 @@ jQuery.Class("Contact",{
             });
         }
     },
-    
+
     registerEvents : function() {
         this.registerSyncSettingClickEvent();
     }
-    
 });
 
 jQuery('document').ready(function(){
 	jQuery('#mappingTable').hide();
-  Contact._init();
-    var instance = new Contact;
-    instance.registerEvents();
+	Contact._init();
+	var instance = new Contact;
+	instance.registerEvents();
 });
 

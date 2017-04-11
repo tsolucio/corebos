@@ -1,5 +1,4 @@
 <?php
-
 /*+***********************************************************************************
  * The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
@@ -8,26 +7,25 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
-
 require_once 'modules/WSAPP/Utils.php';
 require_once 'include/database/PearDatabase.php';
 //require_once 'include/Zend/Json.php';
 require_once 'include/utils/utils.php';
 
 class OutlookSyncServer extends SyncServer{
-    
+
     private $destHandler;
     private $create = "create";
     private $update = "update";
-    private $delete = "delete"; 
-    
+    private $delete = "delete";
+
     function getDestinationHandleDetails(){
         return array('handlerclass' => 'OutlookVtigerCRMHandler',
             'handlerpath' => 'modules/WSAPP/Handlers/OutlookVtigerCRMHandler.php');
 	}
-    
+
     /*
-     * Function overrided to deal duplication handling 
+     * Function overrided to deal duplication handling
      */
      function put($key, $element, $user) {
         global $log;
