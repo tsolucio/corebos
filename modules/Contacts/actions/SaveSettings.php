@@ -10,16 +10,12 @@
 
 class Google_SaveSettings_Action extends Vtiger_BasicAjax_Action {
 
-    public function process(Vtiger_Request $request) {
-        $sourceModule = $request->get('sourcemodule');
-        $fieldMapping = $request->get('fieldmapping');
-        Google_Utils_Helper::saveSettings($request);
-        Google_Utils_Helper::saveFieldMappings($sourceModule, $fieldMapping);
-        $response = new Vtiger_Response;
-        $result = array('settingssaved' => true);
-        $response->setResult($result);
-        $response->emit();
-    }
+	public function process(Vtiger_Request $request) {
+		$sourceModule = $request->get('sourcemodule');
+		$fieldMapping = $request->get('fieldmapping');
+		Google_Utils_Helper::saveSettings($request);
+		Google_Utils_Helper::saveFieldMappings($sourceModule, $fieldMapping);
+	}
 
 }
 
