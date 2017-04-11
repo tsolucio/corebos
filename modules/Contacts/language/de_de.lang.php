@@ -225,8 +225,9 @@ $mod_strings = Array(
     // END
 
     'Contacts ID'=>'Contacts ID',
-'LBL_SHOW_CONTACT_HIERARCHY' => 'Show Contact Hierarchy',
-'LBL_CONTACT_HIERARCHY' => 'Contact Hierarchy',
+	'LBL_SHOW_CONTACT_HIERARCHY' => 'Show Contact Hierarchy',
+	'LBL_CONTACT_HIERARCHY' => 'Contact Hierarchy',
+	'GOOGLE_CONTACTS' => 'Google Contacts',
 );
 
 ?>

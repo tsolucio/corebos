@@ -220,5 +220,6 @@ $mod_strings = array(
 	'Timecontrol' => 'Urenregistratie',
 	'Vendors' => 'Leveranciers',
 	'InventoryDetails' => 'Voorraad Details',
+	'GOOGLE_CONTACTS' => 'Google Contacts',
 );
 ?>

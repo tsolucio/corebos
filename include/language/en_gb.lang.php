@@ -1147,6 +1147,7 @@ $app_strings = array(
 	'SetReturnAddressDescription' => 'Select which address you wish to overwrite, if any',
 	'Subscribe' => 'Subscribe',
 	'View History' => 'View History',
+	'SYNCH_NOW' => 'Sync Now',
 );
 
 $app_currency_strings = array(

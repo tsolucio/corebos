@@ -202,7 +202,8 @@ $mod_strings = array(
 	'Service Places' => 'Szolgáltatási helyek',
 	'Address Inherit' => 'Származtatott cím',
 	'Phone' => 'Telefon',
-'LBL_SHOW_CONTACT_HIERARCHY' => 'Show Contact Hierarchy',
-'LBL_CONTACT_HIERARCHY' => 'Contact Hierarchy',
+	'LBL_SHOW_CONTACT_HIERARCHY' => 'Show Contact Hierarchy',
+	'LBL_CONTACT_HIERARCHY' => 'Contact Hierarchy',
+	'GOOGLE_CONTACTS' => 'Google Contacts',
 );
 ?>

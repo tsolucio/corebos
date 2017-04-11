@@ -35,7 +35,7 @@ class GoogleContactChanges extends cbupdaterWorker {
 			$this->ExecuteQuery("INSERT INTO `vtiger_wsapp_handlerdetails` (`type`, `handlerclass`, `handlerpath`) VALUES ('Google_vtigerSyncHandler', 'Google_VtigerSync_Handler', 'modules/Contacts/handlers/VtigerSync.php');");
 			// Button on List View
 			$contactsModuleInstance = Vtiger_Module::getInstance('Contacts');
-			$contactsModuleInstance->addLink('LISTVIEWBASIC', 'Google_Contacts', "return googleSynch('\$MODULE\$',this);");
+			$contactsModuleInstance->addLink('LISTVIEWBASIC', 'GOOGLE_CONTACTS', "return googleSynch('\$MODULE\$',this);");
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);
 		}
@@ -55,7 +55,7 @@ class GoogleContactChanges extends cbupdaterWorker {
 				$this->ExecuteQuery("DELETE FROM `vtiger_wsapp_handlerdetails` where `type`='Google_vtigerSyncHandler' and `handlerclass`='Google_VtigerSync_Handler' and `handlerpath`='modules/Contacts/handlers/VtigerSync.php';");
 				// Button on List View
 				$contactsModuleInstance = Vtiger_Module::getInstance('Contacts');
-				$contactsModuleInstance->deleteLink('LISTVIEWBASIC', 'Google_Contacts');
+				$contactsModuleInstance->deleteLink('LISTVIEWBASIC', 'GOOGLE_CONTACTS');
 				$this->sendMsg('Changeset '.get_class($this).' undone!');
 				$this->markUndone();
 			} else {

@@ -1259,6 +1259,7 @@ $app_strings = array (
 	'SetReturnAddressDescription' => 'Selecciona que dirección quieres sobrescribir, si procede',
 	'Subscribe' => 'Suscribir',
 	'View History' => 'Ver Histórico',
+	'SYNCH_NOW' => 'Sincroniza Ahora',
 );
 
 // Translation for currency names

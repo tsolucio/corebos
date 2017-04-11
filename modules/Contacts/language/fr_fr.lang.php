@@ -193,5 +193,6 @@ $mod_strings = Array (
 		'Contacts ID'=>'Contact ID',
 		'LBL_SHOW_CONTACT_HIERARCHY' => 'Montrer Hiérarchie Contact',
 		'LBL_CONTACT_HIERARCHY' => 'Hiérarchie Contact',
+		'GOOGLE_CONTACTS' => 'Google Contacts',
 );
 ?>

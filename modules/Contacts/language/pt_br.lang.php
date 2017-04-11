@@ -232,6 +232,7 @@ $mod_strings = Array(
 'LBL_SHOW_CONTACT_HIERARCHY' => 'Exibir Hierarquia do Contato',
 'LBL_CONTACT_HIERARCHY' => 'Hierarquia do Contato',
 
+'GOOGLE_CONTACTS' => 'Google Contacts',
 );
 
 ?>

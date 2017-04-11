@@ -1197,6 +1197,7 @@ $app_strings = array (
 	'SetReturnAddressDescription' => 'Sélectionnez quelle adresse vous souhaitez remplacez, si tel est le cas',
 	'Subscribe' => 'Souscrire',
 	'View History' => 'Voir Historique',
+	'SYNCH_NOW' => 'Sync Now',
 );
 
 // Translation for currency names
