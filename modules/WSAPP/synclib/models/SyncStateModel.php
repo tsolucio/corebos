@@ -62,7 +62,7 @@ class WSAPP_SyncStateModel extends WSAPP_BaseModel{
 
 	public function getInstanceFromQueryResult($rowData){
 		$model = new self();
-		return $model->setSyncTrackerId($rowData['synctrackerid'])->setSyncToken($rowData['synctoken']);
+		return $model->setData($rowData);
 	}
 	
 }

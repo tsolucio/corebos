@@ -7,9 +7,10 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-$mod_strings = Array (
-'WSAPP' => 'WSAPP',
+require_once 'modules/WSAPP/SyncServer.php';
 
-);
-
-?>
+class Google_SyncServer_Controller extends SyncServer{
+	function getDestinationHandleDetails(){
+		return wsapp_getHandler('Google_vtigerHandler');
+	}
+}

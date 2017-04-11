@@ -20,9 +20,10 @@ class WSAPP {
 	function vtlib_handler($modulename, $event_type) {
 		if($event_type == 'module.postinstall') {
 			$this->initCustomWebserviceOperations();
-            $this->registerHandlers();
-            $this->registerVtigerCRMApp();
+                        $this->registerHandlers();
+                        $this->registerVtigerCRMApp();
 			$this->registerWsappWorkflowhandler();
+                        $this->registerSynclibEventHandler();
 		} else if($event_type == 'module.disabled') {
 			// TODO Handle actions when this module is disabled.
 			return;

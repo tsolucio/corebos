@@ -37,7 +37,7 @@ class WSAPP_VtigerSyncEventHandler extends SyncHandler{
 
 	 public function put($element,$user){
 		$this->user = $user;
-		$this->storeClientIdAndSynkeyMapping($element);
+        $this->storeClientIdAndSynkeyMapping($element);
 	    $values = $this->syncServer->put($this->key,$element,$user);
 		$nativeForamtElementList = $values;
         $nativeForamtElementList['created'] = $this->syncToNativeFormat($values['created']);
@@ -72,11 +72,11 @@ class WSAPP_VtigerSyncEventHandler extends SyncHandler{
 
 	 public function convertedDeletedRecordToNativeFormat($deletedRecords){
 		 $nativeDeletedRecordFormat = array();
-		 foreach($deletedRecords as $deletedRecord){
+         foreach($deletedRecords as $deletedRecord){
 			 $deletedRecordResponse = array();
 			 $deletedRecordResponse['_id'] = $deletedRecord;
 			 $deletedRecordResponse['_syncidentificationkey'] = $this->putOperationClientIdAndSyncKeyMapping[$deletedRecord];
-			 $nativeDeletedRecordFormat[] = $deletedRecord;
+			 $nativeDeletedRecordFormat[] = $deletedRecordResponse;
 		 }
 		 return $nativeDeletedRecordFormat;
 	 }
@@ -86,8 +86,13 @@ class WSAPP_VtigerSyncEventHandler extends SyncHandler{
 	  */
 	 public function storeClientIdAndSynkeyMapping($records){
 		 foreach($records as $record){
-			 $this->putOperationClientIdAndSyncKeyMapping[$record['id']] = $record['values']['_syncidentificationkey'];
+             if(!empty($record['values'])){
+                $this->putOperationClientIdAndSyncKeyMapping[$record['id']] = $record['values']['_syncidentificationkey'];
+             } else{
+                $this->putOperationClientIdAndSyncKeyMapping[$record['id']] = $record['_syncidentificationkey']; 
+             }
 		 }
 	 }
 }
 ?>
+

@@ -319,3 +319,23 @@ function setReturnAddressShip() {
 			window.opener.document.EditView.pais.value = country;
 	}
 }
+
+function googleSynch(module,oButton) {
+	fnvshobj(oButton,'GoogleContacts');
+}
+
+function googleContactsSynch(module,oButton) {
+        var url="index.php?module="+module+"&action="+module+"Ajax&file=List&operation=sync&sourcemodule=Contacts";
+        var opts = "menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=yes";
+        openPopUp('GoogleContacts',oButton,url,'createemailWin',830,662,opts);
+//        jQuery.ajax({
+//                method: 'POST',
+//                url: "index.php?module="+module+"&action="+module+"Ajax&file=List&operation=sync&sourcemodule=Contacts"
+//	}).done(function (response) {
+//            //window.open(response);
+//            var url=response;
+//            var opts = "menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=yes";
+//            openPopUp('GoogleContacts',oButton,url,'createemailWin',830,662,opts);
+//		//getObj('GoogleContacts').innerHTML = response;
+//	});
+}
