@@ -17,11 +17,11 @@ abstract class WSAPP_BaseConnector {
 		
 	}
 	
-	public function pull(){
+	public function pull(WSAPP_SyncStateModel $syncStateModel){
 		return false;
 	}
 
-	public function push(){
+	public function push($recordList, $syncStateModel){
 		return false;
 	}
 
@@ -38,7 +38,8 @@ abstract class WSAPP_BaseConnector {
 	function getSyncState(){
 		return new WSAPP_SyncStateModel();
 	}
-	function updateSyncState(){
+
+	function updateSyncState(WSAPP_SyncStateModel $syncStateModel) {
 
 	}
 
@@ -54,8 +55,7 @@ abstract class WSAPP_BaseConnector {
 	 * This will performs basic transformation between two records
 	 * <params>
 	 *		The sourece records refers to record which has data
-	 *			Target record refers to record to which data has to be copied
-	 *
+	 *		Target record refers to record to which data has to be copied
 	 */
 	public function performBasicTransformations(WSAPP_SyncRecordModel $sourceRecord,WSAPP_SyncRecordModel $targetRecord){
 		$targetRecord->setType($sourceRecord->getType())
