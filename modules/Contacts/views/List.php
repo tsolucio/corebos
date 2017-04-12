@@ -10,24 +10,27 @@
 
 class Google_List_View  {
 
-    protected $noRecords = false;
+	protected $noRecords = false;
 
-    public function __construct() {
+	public function __construct() {
 
-    }
+	}
 
-    function process($request) {
-        switch ($request['operation']) {
-            case "sync" : return $this->renderSyncUI($request);
-                break;
-            case "removeSync" : if($request->validateWriteAccess()){
-                                    $this->deleteSync($request);
-                                }
-                break;
-            default: $this->renderWidgetUI($request);
-                break;
-        }
-    }
+	function process($request) {
+		switch ($request['operation']) {
+			case 'sync' :
+				return $this->renderSyncUI($request);
+				break;
+			case 'removeSync' :
+				if($request->validateWriteAccess()){
+					$this->deleteSync($request);
+				}
+				break;
+			default :
+				$this->renderWidgetUI($request);
+				break;
+		}
+	}
 
     function renderWidgetUI(Vtiger_Request $request) {
         $sourceModule = $request->get('sourcemodule');

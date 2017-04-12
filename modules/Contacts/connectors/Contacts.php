@@ -272,8 +272,9 @@ Class Google_Contacts_Connector extends WSAPP_TargetConnector {
     }
 
     function fetchContactsFeed($query) {
-        $query['alt'] = 'json';
-        if($this->apiConnection->isTokenExpired()) $this->apiConnection->refreshToken();
+		if (empty($this->apiConnection)) return false;
+		$query['alt'] = 'json';
+		if ($this->apiConnection->isTokenExpired()) $this->apiConnection->refreshToken();
         $headers = array(
             'GData-Version' => $this->apiVersion,
             'Authorization' => $this->apiConnection->token['access_token']['token_type'] . ' ' .
