@@ -10,9 +10,22 @@
 *  Module       : Utilities
 *  Language     : Español
 *  Version      : 504
-*  Created Date : 2007-03-30 Last change : 2007-10-10
+*  Created Date : 2007-03-30
  ********************************************************************************/
 
 $mod_strings = array(
+	'SUCCESSFUL_REGISTRATION_TITLE' => 'Authentification correct',
+	'SUCCESSFUL_REGISTRATION_MESSAGE' => 'You have correctly established authentification credentials with %s. You can now start using the functionality.',
+	'UNSUCCESSFUL_REGISTRATION_TITLE' => 'Authentification Incorrect',
+	'UNSUCCESSFUL_REGISTRATION_MESSAGE' => 'You have NOT established authentification credentials with %s. You will have to repeat the process if you want to start using the functionality.',
+	'IntegrationAuthorizationClick' => 'Pulsa sobre este enlace para establecer la autoización con %s',
+	'HubSpot Activation' => 'Activación HubSpot',
+	'hubspot_pollFrequency' => 'Frecuencia de Sondeo a HubSpot',
+	'hubspot_relateDealWith' => 'Relacionar Oportunidades con',
+	'GContacts Activation' => 'Activación Contactos de Google',
+	'_active' => 'Integración Activa',
+	'_apiurl' => 'URL API',
+	'_clientId' => 'ID Cliente',
+	'_clientSecret' => 'Clave Acceso API',
 );
 ?>

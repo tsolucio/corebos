@@ -30,7 +30,7 @@
 					<tr>
 						<td align="left">
 							<div style="height:80px;overflow-y:auto;overflow-x:hidden;" align="center">
-								<input type="button" name="SYNCH{$APP.SYNCH_NOW}" value=" SYNCH{$APP.SYNCH_NOW} " class="crmbutton small create" onClick="googleContactsSynch('{$MODULE}',this);"/>&nbsp;&nbsp;
+								<input type="button" name="SYNCH{$APP.SYNCH_NOW}" value=" {$APP.SYNCH_NOW} " class="crmbutton small create" onClick="googleContactsSynch('{$MODULE}',this);"/>&nbsp;&nbsp;
 							</div>
 						</td>
 					</tr>

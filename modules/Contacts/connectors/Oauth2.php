@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
-
+include_once 'include/integrations/GContacts/GContacts.php';
 require_once 'vtlib/Vtiger/Net/Client.php';
 
 class Google_Oauth2_Connector {
@@ -58,8 +58,10 @@ class Google_Oauth2_Connector {
         $this->source_module = $module;
         if($userId) $this->user_id = $userId;
         $this->service_name = $this->service_provider . $module;
-        $this->client_id = Google_Config_Connector::$clientId;
-        $this->client_secret = Google_Config_Connector::$clientSecret;
+        $gc = new corebos_gcontacts();
+        $settings = $gc->getSettings();
+        $this->client_id = $settings['clientId'];
+        $this->client_secret = $settings['clientSecret'];
         $this->redirect_uri = rtrim($site_URL, '/') . '/index.php?module=Contacts&action=ContactsAjax&file=List&operation=sync&sourcemodule=' . $this->source_module . '&service=' . $this->service_name;
         $this->scope = $this->scopes[$this->source_module];
     }
