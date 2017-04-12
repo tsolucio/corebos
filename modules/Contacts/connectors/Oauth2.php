@@ -247,7 +247,7 @@ class Google_Oauth2_Connector {
                 $authCode = $_REQUEST['code'];
                 $token = $this->exchangeCodeForToken($authCode);
                 $this->storeToken($token);
-                echo '<script>window.opener.googleContactsSynch("Contacts",window.opener.document.getElementById("GoogleContactsButton"));window.close();</script>'; exit;
+                echo '<script>window.opener.googleContactsSynch("Contacts",window.opener.document.getElementById("LISTVIEWBASIC_GOOGLE_CONTACTS"));window.close();</script>'; exit;
             } else if(!empty($_REQUEST['service']) and $_REQUEST['service']) {
                 echo '<script>window.close();</script>'; exit;
             } else {
