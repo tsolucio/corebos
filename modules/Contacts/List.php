@@ -9,7 +9,6 @@
  * *********************************************************************************** */
 require 'modules/Contacts/views/List.php';
 require_once 'modules/Contacts/connectors/Oauth2.php';
-require_once 'modules/Contacts/connectors/Config.php';
 require_once 'modules/Contacts/controllers/Contacts.php';
 require_once 'modules/Contacts/connectors/Contacts.php';
 require_once 'modules/Contacts/connectors/Vtiger.php';
