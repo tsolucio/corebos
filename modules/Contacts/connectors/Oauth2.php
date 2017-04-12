@@ -181,8 +181,7 @@ class Google_Oauth2_Connector {
         $decodedToken['created'] = time();
         $accessToken = json_encode($decodedToken);
         $params = array($this->service_name,$accessToken,$refresh_token,$this->user_id);
-        $sql = 'INSERT INTO ' . $this->table_name . '(service,synctoken,refresh_token,userid)'
-                . ' VALUES (' . generateQuestionMarks($params) . ')';
+        $sql = 'INSERT INTO ' . $this->table_name . '(service,synctoken,refresh_token,userid) VALUES (' . generateQuestionMarks($params) . ')';
         $this->db->pquery($sql,$params);
     }
 

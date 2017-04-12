@@ -60,7 +60,7 @@ class WSAPP_SyncStateModel extends WSAPP_BaseModel{
 		return $model->setLastSyncTime($syncResult['lastModifiedTime'])->setMoreRecords($syncResult['more']);
 	}
 
-	public function getInstanceFromQueryResult($rowData){
+	public static function getInstanceFromQueryResult($rowData){
 		$model = new self();
 		return $model->setData($rowData);
 	}
