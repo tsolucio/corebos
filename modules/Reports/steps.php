@@ -334,7 +334,9 @@ if(isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 			$oReport->secmodule = $secondarymodule;
 
 			$BLOCK1 = getPrimaryColumns_GroupingHTML($primarymodule);
-			$BLOCK1 = array_merge( (array)$BLOCK1, (array)getSecondaryColumns_GroupingHTML($oReport->secmodule,$list_array[0]) );
+			if (!empty($oReport->secmodule)) {
+				$BLOCK1 = array_merge( (array)$BLOCK1, (array)getSecondaryColumns_GroupingHTML($oReport->secmodule,'') );
+			}
 			$ASCDESC = getOrderGrouping();
 			$GROUPBYTIME1 = getGroupByTimeDiv(1);
 			$GROUPBYTIME2 = getGroupByTimeDiv(2);

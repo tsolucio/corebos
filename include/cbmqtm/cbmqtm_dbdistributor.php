@@ -89,6 +89,7 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 		$sql .= ' order by deliverafter,sequence asc limit 1';
 		$msgrs = static::$db->pquery($sql,$params);
 		if ($msgrs and static::$db->num_rows($msgrs)==1) {
+			global $default_charset;
 			$msg = static::$db->fetch_array($msgrs);
 			static::$db->pquery('delete from cb_messagequeue where idx=?',array($msg['idx']));
 			return array(
@@ -105,7 +106,7 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 				'invalid' => $msg['invalid'],
 				'invalidreason' => $msg['invalidreason'],
 				'userid' => $msg['userid'],
-				'information' => $msg['information']
+				'information' => html_entity_decode($msg['information'],ENT_QUOTES,$default_charset),
 			);
 		} else {
 			return false;

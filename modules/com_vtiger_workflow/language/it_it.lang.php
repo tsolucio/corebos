@@ -68,7 +68,7 @@ $mod_strings = array(
 'LBL_EMAIL_BCC' => 'BCC',
 'LBL_EMAIL_SUBJECT' => 'Oggetto',
 'LBL_EMAIL_REPLYTO' => 'Rispondere a',
-
+'LBL_AttachmentInField' => 'Attachment In Field',
 'LBL_WORKFLOW_NOTE_EVENT_TASK_TIMEZONE' => 'Nota: tutte le date, gli orari e le informazioni ricorrenti per gli eventi,
 													saranno relativi alla Timezone di default, specificata nel file config.inc.php',
 

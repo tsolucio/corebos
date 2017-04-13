@@ -21,9 +21,9 @@ class coreBOS_Settings {
 	private static $cached_values = array();
 
 	/*
-	 * @return null if not found
+	 * @return $default if not found
 	 */
-	public static function getSetting($skey) {
+	public static function getSetting($skey,$default) {
 		global $adb;
 		if (isset(self::$cached_values[$skey])) {
 			return self::$cached_values[$skey];
@@ -33,7 +33,7 @@ class coreBOS_Settings {
 				$value = $adb->query_result($cbstrs, 0, 0);
 				self::$cached_values[$skey] = $value;
 			} else {
-				$value = null;
+				$value = $default;
 			}
 			return $value;
 		}

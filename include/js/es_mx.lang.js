@@ -399,5 +399,9 @@ var alert_arr = {
 	'ERR_INVALID_TIME'  :  'Por favor, introduzca un tiempo válido',
 	'ERR_EMAIL_WITH_NO_SUBJECT' : 'No has introducido un asunto para este email. Puedes añadir uno ahora.',
 	'EMAIL_WITH_NO_SUBJECT' : '(sin-asunto)',
-	'INTEGERVALS':'Solo están permitidos valores enteros'
+	'INTEGERVALS':'Solo están permitidos valores enteros',
+	'JSLBL_Delete': 'Eliminar',
+	'JSLBL_Loading': 'Cargando',
+	'JSLBL_ATTACHMENT_NOT_DELETED': 'No se ha podido eliminar el adjunto',
+	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'Límite de carga excedida!!'
 };

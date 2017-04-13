@@ -14,16 +14,14 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 
-class mysqlstrictCobroPagoUpdateLog extends cbupdaterWorker {
+class mysqlstrictAssets extends cbupdaterWorker {
 
 	function applyChange() {
 		if ($this->hasError()) $this->sendError();
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$this->ExecuteQuery("ALTER TABLE `vtiger_cobropago` CHANGE `update_log` `update_log` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL");
-			if(vtlib_isModuleActive("cbControlIngresoGasto"))
-				$this->ExecuteQuery("ALTER TABLE `vtiger_cbcontrolingresogasto` CHANGE `update_log` `update_log` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL");
+			$this->ExecuteQuery("ALTER TABLE `vtiger_assets` CHANGE `product` `product` INT( 19 ) NULL");
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}

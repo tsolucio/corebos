@@ -3385,6 +3385,10 @@ class ReportRun extends CRMEntity {
 		if(isset($arr_val)) {
 			$FieldDataTypes = array();
 			foreach($arr_val[0] as $hdr=>$value) {
+				if (!isset($fieldinfo[$hdr])) {
+					$FieldDataTypes[$hdr] = 'string';
+					continue;
+				}
 				$FieldDataTypes[$hdr] = $fieldinfo[$hdr]->getFieldDataType();
 				if ($fieldinfo[$hdr]->getColumnName()=='totaltime') $FieldDataTypes[$hdr] = 'time';
 				if ($fieldinfo[$hdr]->getColumnName()=='totaldaytime') $FieldDataTypes[$hdr] = 'time';
