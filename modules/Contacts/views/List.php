@@ -18,6 +18,8 @@ class Google_List_View  {
 
     function process($request) {
         switch ($request['operation']) {
+            case "signin" : return $this->signin($request);
+                break;
             case "sync" : return $this->renderSyncUI($request);
                 break;
             case "removeSync" : if($request->validateWriteAccess()){
@@ -43,6 +45,12 @@ class Google_List_View  {
         $viewer->view('Contents.tpl', $request->getModule());
     }
 
+    function signin( $request) {
+        $viewer = new vtigerCRM_Smarty();
+        $sourceModule = $request['sourcemodule'];
+        $oauth2 = new Google_Oauth2_Connector($sourceModule);
+        $oauth2->authorize();
+    }
     function renderSyncUI( $request) {
         $viewer = new vtigerCRM_Smarty();
         $sourceModule = $request['sourcemodule'];
@@ -62,19 +70,24 @@ class Google_List_View  {
                 }
             }
         }
-//        $firstime = $oauth2->hasStoredToken();
-//        $viewer->assign('MODULE_NAME', $request->getModule());
-//        $viewer->assign('FIRSTTIME', $firstime);
-//        $viewer->assign('RECORDS', $records);
-//        $viewer->assign('NORECORDS', $this->noRecords);
-//        $viewer->assign('SYNCTIME', Google_Utils_Helper::getLastSyncTime($sourceModule));
-//        $viewer->assign('STATE', $request->get('operation'));
-//        $viewer->assign('SOURCEMODULE', $request->get('sourcemodule'));
-//        if (!$firstime) {
-//            $viewer->view('Contents.tpl', $request->getModule());
-//        } else {
-//            echo $viewer->view('ContentDetails.tpl', $request->getModule(), true);
-//        }
+        $firstime = $oauth2->hasStoredToken();
+        $viewer->assign('MODULE_NAME', 'Contacts');
+        $viewer->assign('FIRSTTIME', $firstime);
+        $viewer->assign('RECORDS', $records);
+        $viewer->assign('NORECORDS', $this->noRecords);
+        global $mod_strings;
+        $viewer->assign('MOD', $mod_strings);
+        //$viewer->assign('SYNCTIME', Google_Utils_Helper::getLastSyncTime($sourceModule));
+        //$viewer->assign('STATE', $request->get('operation'));
+        $viewer->assign('SOURCEMODULE', 'Contacts');
+        if (!$firstime) {
+            $viewer->display("modules/Contacts/Contents.tpl");
+            //$viewer->display('Contents.tpl', $request->getModule());
+        } else {
+            $viewer->display("modules/Contacts/ContentDetails.tpl");
+//            $viewer->fetch(vtlib_getModuleTemplate("Contacts","ContentDetails.tpl"));
+            //echo $viewer->view('ContentDetails.tpl', $request->getModule(), true);
+        }
     }
 
     /**

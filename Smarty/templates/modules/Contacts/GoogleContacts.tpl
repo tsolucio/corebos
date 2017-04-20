@@ -29,9 +29,15 @@
 				<table border=0 cellspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
 					<tr>
 						<td align="left">
+                                                    {if $hasToken eq true}
 							<div style="height:80px;overflow-y:auto;overflow-x:hidden;" align="center">
 								<input type="button" name="SYNCH{$APP.SYNCH_NOW}" value=" {$APP.SYNCH_NOW} " class="crmbutton small create" onClick="googleContactsSynch('{$MODULE}',this);"/>&nbsp;&nbsp;
 							</div>
+                                                    {else}
+                                                        <div style="height:80px;overflow-y:auto;overflow-x:hidden;" align="center">
+                                                                <input type="button" name="{$MOD.SIGN_IN}" value=" {$MOD.SIGN_IN} " class="crmbutton small create" onClick="googleContactsSynch('{$MODULE}',this);"/>&nbsp;&nbsp;
+                                                        </div>
+                                                    {/if}
 						</td>
 					</tr>
 				</table>

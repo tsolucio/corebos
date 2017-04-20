@@ -340,7 +340,8 @@ Class Google_Contacts_Connector extends WSAPP_TargetConnector {
                 if($this->selectedGroup != '' && $this->selectedGroup != 'all') {
                     $query['group'] = $this->selectedGroup;
                 }
-                $query['max-results'] = (5000);
+                $max_results=GlobalVariable::getVariable('GContacts_Max_Results', '');
+                $query['max-results'] = $max_results;
                 $query['updated-max'] = $this->googleFormat($maxModifiedTime);
                 $extendedFeed = $this->getContactListFeed($query);
                 if(is_array($extendedFeed['entry'])) {
