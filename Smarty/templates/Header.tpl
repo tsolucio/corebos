@@ -271,7 +271,7 @@
 	</div>
 	<nav class="slds-context-bar__secondary" role="navigation">
 		<ul class="slds-grid" id="cbmenu">
-		{foreach from=$MENU2 item=maintab key=key name=maintabloop}
+		{foreach from=$MENU item=maintab key=key name=maintabloop}
 			<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true">
 				<a href="javascript:void(0);" class="slds-context-bar__label-action" title="{$maintab.mlabel}">
 					<span class="slds-truncate">{$maintab.mlabel}</span>
@@ -398,9 +398,7 @@
 </div>
 <script type="text/javascript">
 	jQuery('#tracker').draggable({ldelim} handle: "#Track_Handle" {rdelim});
-	// var evvtmenu={$MENU};
 </script>
-<script type="text/javascript" src="modules/evvtMenu/evvtMenu.js"></script>
 </div>
 <!-- ActivityReminder Customization for callback -->
 <div class="lvtCol fixedLay1" id="ActivityRemindercallback" style="border: 0; right: 0px; bottom: 2px; display:none; padding: 2px; z-index: 10; font-weight: normal;" align="left">
