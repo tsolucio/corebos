@@ -20,7 +20,6 @@ class vtigerCRM_Smarty extends Smarty{
 		}
 		return self::$_tagcloud_display_cache[$userid];
 	}
-	/** END */
 
 	/** This function sets the smarty directory path for the member variables */
 	function __construct()
@@ -50,7 +49,7 @@ class vtigerCRM_Smarty extends Smarty{
 		// Query For TagCloud only when required
 		if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'DetailView') {
 			//Added to provide User based Tagcloud
-			$this->assign('TAG_CLOUD_DISPLAY', self::lookupTagCloudView($current_user->id) );
+			$this->assign('TAG_CLOUD_DISPLAY', self::lookupTagCloudView((isset($current_user) ? $current_user->id : '')));
 		}
 		$this->loadFilter('output', 'trimwhitespace');
 		$this->registerPlugin('function', 'process_widget', 'smarty_function_process_widget');
