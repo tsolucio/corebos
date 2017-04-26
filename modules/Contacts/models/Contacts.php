@@ -27,10 +27,14 @@ class Google_Contacts_Model extends WSAPP_SyncRecordModel {
         return $this->vtigerFormat($this->data['entity']['updated']['$t']);
     }
 
-    function getNamePrefix() {
-        $namePrefix = $this->data['entity']['gd$name']['gd$namePrefix']['$t'];
-        return $namePrefix;
-    }
+	function getNamePrefix() {
+		if (isset($this->data['entity']) and isset($this->data['entity']['gd$name']) and isset($this->data['entity']['gd$name']['gd$namePrefix']) and isset($this->data['entity']['gd$name']['gd$namePrefix']['$t'])) {
+			$namePrefix = $this->data['entity']['gd$name']['gd$namePrefix']['$t'];
+		} else {
+			$namePrefix = '';
+		}
+		return $namePrefix;
+	}
 
     /**
      * return first name of Google Record
@@ -178,7 +182,7 @@ class Google_Contacts_Model extends WSAPP_SyncRecordModel {
      * @param <date> $date Google Date
      * @return <date> Vtiger date Format
      */
-    public function vtigerFormat($date) {
+    public static function vtigerFormat($date) {
         list($date, $timestring) = explode('T', $date);
         list($time, $tz) = explode('.', $timestring);
         return $date . " " . $time;

@@ -1172,4 +1172,11 @@
 	<classname>mysqlstrictAssets</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>mysqlStrict support for google calendar and contacts authorization</description>
+	<filename>build/changeSets/2017/mysqlstrictGoogleSync.php</filename>
+	<classname>mysqlstrictGoogleSync</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

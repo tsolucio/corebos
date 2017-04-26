@@ -180,19 +180,18 @@ Class Google_Contacts_Connector extends WSAPP_TargetConnector {
     public function transformToSourceRecord($targetRecords) {
         $entity = array();
         $contacts = array();
-        global $current_uer;
+        global $current_user;
 
         if(!isset($this->fieldMapping)) {
-            $this->fieldMapping = Google_Utils_Helper::getFieldMappingForUser($user);
+            $this->fieldMapping = Google_Utils_Helper::getFieldMappingForUser($current_user);
         }
 
         foreach ($targetRecords as $googleRecord) {
             if ($googleRecord->getMode() != WSAPP_SyncRecordModel::WSAPP_DELETE_MODE) {
-                if(!$user) $user = $current_uer;//Users_Record_Model::getCurrentUserModel();
 
-                $entity['assigned_user_id'] = vtws_getWebserviceEntityId('Users', $user->id);
+                $entity['assigned_user_id'] = vtws_getWebserviceEntityId('Users', $current_user->id);
                 foreach($this->fieldMapping as $vtFieldName => $googleFieldDetails) {
-                    $googleFieldValue = $this->getGoogleFieldValue($googleFieldDetails, $googleRecord, $user);
+                    $googleFieldValue = $this->getGoogleFieldValue($googleFieldDetails, $googleRecord, $current_user);
                     if($vtFieldName == 'mailingaddress') {
                         $address = $googleFieldValue;
                         $entity['mailingstreet'] = $address['street'];
@@ -329,7 +328,7 @@ Class Google_Contacts_Connector extends WSAPP_TargetConnector {
 
         $this->totalRecords = $feed['openSearch$totalResults']['$t'];
         $contactRecords = array();
-        if (count($feed['entry']) > 0) {
+        if (isset($feed['entry']) and count($feed['entry']) > 0) {
             $lastEntry = end($feed['entry']);
             $maxModifiedTime = date('Y-m-d H:i:s', strtotime(Google_Contacts_Model::vtigerFormat($lastEntry['updated']['$t'])) + 1);
             if ($this->totalRecords > $this->maxResults) {
