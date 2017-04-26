@@ -53,8 +53,8 @@ $smarty->assign('CATEGORY',$category);
 if(!is_admin($current_user)) {
 	$smarty->display(vtlib_getModuleTemplate('Vtiger','OperationNotPermitted.tpl'));
 } else {
-	$tabid = vtlib_purify($_REQUEST['tabid']);
-	$status = vtlib_purify($_REQUEST['status']);
+	$tabid = (isset($_REQUEST['tabid']) ? vtlib_purify($_REQUEST['tabid']) : '');
+	$status = (isset($_REQUEST['status']) ? vtlib_purify($_REQUEST['status']) : '');
 	if($status != '' && $tabid != ''){
 		$mname = getTabModuleName($tabid);
 		modcomms_changeModuleVisibility($mname, $status);
@@ -62,7 +62,7 @@ if(!is_admin($current_user)) {
 	$infomodules = modcomms_getModuleinfo();
 	$smarty->assign('INFOMODULES',$infomodules);
 	$smarty->assign('MODULE',$module);
-	if($_REQUEST['ajax'] != true) {
+	if(empty($_REQUEST['ajax']) || $_REQUEST['ajax'] != true) {
 		$smarty->display(vtlib_getModuleTemplate($currentModule,'BasicSettings.tpl'));
 	} else {
 		$smarty->display(vtlib_getModuleTemplate($currentModule,'BasicSettingsContents.tpl'));
