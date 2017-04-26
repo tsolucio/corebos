@@ -780,9 +780,8 @@ function getUserName($userid) {
  * Get the user full name by giving the user id.   This method expects the user id
  */
 function getUserFullName($userid) {
-	global $log;
-	$log->debug("Entering getUserFullName(" . $userid . ") method ...");
-	global $adb;
+	global $log, $adb;
+	$log->debug("Entering getUserFullName($userid) method ...");
 	if ($userid != '') {
 		if (strpos($userid,'x')) list($wsid,$userid) = explode('x', $userid);
 		$displayValueArray = getEntityName('Users', $userid);
@@ -791,8 +790,10 @@ function getUserFullName($userid) {
 				$user_name = $value;
 			}
 		}
+	} else {
+		$user_name = '';
 	}
-	$log->debug("Exiting getUserFullName method ...");
+	$log->debug('Exiting getUserFullName method ...');
 	return $user_name;
 }
 
