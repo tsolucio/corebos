@@ -10,7 +10,7 @@
  ********************************************************************************/
 -->*}
 
-<div id="{$popupid}" style="float: right; border-style: solid; border-color: rgb(141, 141, 141); border-width: 1px 3px 3px 1px; overflow: hidden; padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 10px; margin-left: 2px; font-weight: normal; height: 75px;">
+<div id="{$popupid}" style="float: right; border-style: solid; border-color: rgb(141, 141, 141); border-width: 1px 3px 3px 1px; overflow: hidden; padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 10px; margin-left: 2px; font-weight: normal; height: 85px;">
 
 <table border='0' cellpadding='2' cellspacing='0'>
 	<tr>
@@ -22,7 +22,7 @@
 	</tr>
 
 	<tr>
-		<td colspan='3'><hr></td>
+		<td colspan='3'><hr style="margin:0;"></td>
 	</tr>
 
 	<tr>
