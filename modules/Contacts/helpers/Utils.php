@@ -163,8 +163,8 @@ class Google_Utils_Helper {
     static function getSelectedContactGroupForUser($user = false) {
         global $current_user;
 
-        if(!$user) $user = $current_user;
-        $userId = $user->getId();
+        $user = $current_user;
+        $userId = $user->id;
         if(!Google_Utils_Helper::hasSettingsForUser($userId)) {
             return ''; // defaults to all - other contacts groups
         } else {
@@ -177,13 +177,13 @@ class Google_Utils_Helper {
 
     static function getSyncDirectionForUser($user = false) {
         global $current_user;
-        if(!$user) $user = $current_user;
-        if(!Google_Utils_Helper::hasSettingsForUser($user->getId())) {
+        $user = $current_user;
+        if(!Google_Utils_Helper::hasSettingsForUser($user->id)) {
             return '11'; // defaults to bi-directional sync
         } else {
             $db = PearDatabase::getInstance();
             $sql = 'SELECT direction FROM ' . self::settings_table_name . ' WHERE user = ?';
-            $result = $db->pquery($sql, array($user->getId()));
+            $result = $db->pquery($sql, array($user->id));
             return $db->query_result($result, 0, 'direction');
         }
     }
@@ -191,7 +191,6 @@ class Google_Utils_Helper {
     static function getFieldMappingForUser($user = false) {
         global $current_user;
         $user = $current_user;
-        if(!$user) $user = $user;//Users_Record_Model::getCurrentUserModel();
         $db = PearDatabase::getInstance();
         $fieldmapping = array(
             'salutationtype' => array(
@@ -266,7 +265,7 @@ class Google_Utils_Helper {
             )
         );
         $sql = 'SELECT vtiger_field,google_field,google_field_type,google_custom_label FROM ' . self::fieldmapping_table_name . ' WHERE user = ?';
-        $result = $db->pquery($sql,array($user->getId()));
+        $result = $db->pquery($sql,array($user->id));
         for($i=0;$i<$db->num_rows($result);$i++) {
             $row = $db->fetch_row($result);
             $fieldmapping[$row['vtiger_field']] = array(
