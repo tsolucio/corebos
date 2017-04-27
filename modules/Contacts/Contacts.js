@@ -324,11 +324,30 @@ function googleSynch(module,oButton) {
 	fnvshobj(oButton,'GoogleContacts');
 }
 
-function googleContactsSynch(module,oButton) {
+function googleContactsSynch(module,oButton,type) {
 	var url="index.php?module="+module+"&action="+module+"Ajax&file=List&operation=sync&sourcemodule=Contacts";
 	var opts = "menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=yes";
-        fninvsh('GoogleContacts');
-	openPopUp('GoogleContacts',oButton,url,'createemailWin',830,662,opts);
+        
+        if(type==='signin'){
+            fninvsh('GoogleContacts');
+            openPopUp('GoogleContacts',oButton,url,'createemailWin',830,662,opts);
+        }
+        else{
+            document.getElementById('synchronize').disabled=true;
+            document.getElementById('synchronizespan').innerHTML='Synchronizing...';
+            document.getElementById('syncimage').style.display='block';
+            jQuery.ajax({
+                    method: 'POST',
+                    url: url
+            }).done(function (response) {
+                    fninvsh('GoogleContacts');
+                    document.getElementById('GoogleContactsSettings').innerHTML=response;
+                    fnvshobj(oButton,'GoogleContactsSettings');
+                    document.getElementById('synchronize').disabled=false;
+                    document.getElementById('synchronizespan').innerHTML='Sync';
+                    document.getElementById('syncimage').style.display='none';
+            });
+        }
 }
 
 function googleContactsSettings(module,oButton) {

@@ -318,6 +318,7 @@ $mod_strings = Array(
 'SYNC_NOW_TITLE'=>'Start the Sync with Google according to the User Settings',
 'SIGN_IN_TITLE'=>'Sign In to the google account to authorize the Sync Process',
 'SYNC_SETT_TITLE'=>'Set default user parameters for the Sync Process',
+'SYNC_RESULTS'=>'Sync Results',
 );
 
 ?>

@@ -213,12 +213,15 @@ button.close {
 					<tr>
 						<td align="left">
                                                     {if $hasToken eq true}
-							<div style="height:30px;overflow-y:auto;overflow-x:hidden;" align="center">
-								<input type="button" name="SYNCH{$APP.SYNCH_NOW}" value=" {$APP.SYNCH_NOW} " class="crmbutton small create" onClick="googleContactsSynch('{$MODULE}',this);" title="{$MOD.SYNC_NOW_TITLE}"/>&nbsp;&nbsp;
+							<div style="height:50px;overflow-y:auto;overflow-x:hidden;" align="center">
+                                                            <img src="themes/softed/images/vtbusy.gif" height="15" width="15" id="syncimage" style="vertical-align: middle;display:none"/>
+                                                            <button name="SYNCH{$APP.SYNCH_NOW}" id="synchronize" value=" {$APP.SYNCH_NOW} " class="crmbutton small create" onClick="googleContactsSynch('{$MODULE}',this,'sync');" title="{$MOD.SYNC_NOW_TITLE}" style="vertical-align: middle;"> 
+                                                                <span id="synchronizespan" style="display: inline-block;vertical-align: middle;">{$APP.SYNCH_NOW}</span>
+                                                            </button>
 							</div>
                                                     {else}
                                                         <div style="height:30px;overflow-y:auto;overflow-x:hidden;" align="center">
-                                                                <input type="button" name="{$MOD.LBL_SIGN_IN_WITH_GOOGLE}" value=" {$MOD.LBL_SIGN_IN_WITH_GOOGLE} " class="crmbutton small create" onClick="googleContactsSynch('{$MODULE}',this);" title="{$MOD.SIGN_IN_TITLE}"/>&nbsp;&nbsp;
+                                                                <input type="button" name="{$MOD.LBL_SIGN_IN_WITH_GOOGLE}" value=" {$MOD.LBL_SIGN_IN_WITH_GOOGLE} " class="crmbutton small create" onClick="googleContactsSynch('{$MODULE}',this,'signin');" title="{$MOD.SIGN_IN_TITLE}"/>&nbsp;&nbsp;
                                                         </div>
                                                     {/if}
 						</td>
