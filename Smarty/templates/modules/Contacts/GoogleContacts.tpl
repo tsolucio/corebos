@@ -240,7 +240,9 @@ button.close {
 		</table>
 	</div>
                         
-        <div class="edit-profile-block"  id="GoogleContactsSettings" style="display: none;">
-		
-	</div>
+        
 </form>
+
+<div class="edit-profile-block"  id="GoogleContactsSettings" style="display: none;">
+
+</div>

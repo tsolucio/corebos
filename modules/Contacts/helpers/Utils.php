@@ -138,13 +138,14 @@ class Google_Utils_Helper {
         global $current_user;
         $user = $current_user;
         $sql = 'SELECT 1 FROM ' . self::fieldmapping_table_name . ' WHERE user = ?';
-        $res = $db->pquery($sql,array($user->getId()));
+        $res = $db->pquery($sql,array($user->id));
         $sqlParams = array();
         if($db->num_rows($res)) {
             $sql = 'DELETE FROM ' . self::fieldmapping_table_name . ' WHERE user = ?';
-            $db->pquery($sql,array($user->getId()));
+            $db->pquery($sql,array($user->id));
         }
         $sql = 'INSERT INTO ' . self::fieldmapping_table_name . ' (vtiger_field,google_field,google_field_type,google_custom_label,user) VALUES ';
+        $fieldMappings= json_decode($fieldMappings,true);
         foreach($fieldMappings as $fieldMap) {
             $fieldMap['user'] = $user->id;
             $values = '(' . generateQuestionMarks($fieldMap) . '), ';

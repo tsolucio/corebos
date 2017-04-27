@@ -19,10 +19,12 @@
 include_once 'modules/Contacts/actions/SaveSettings.php';
 include_once 'modules/Contacts/helpers/Utils.php';
 
-global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
+global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log,$site_URL;
 
 $listFocus=new Google_SaveSettings_Action();
 $listFocus->process($_REQUEST);
-header('Location: index.php?action=index&module=Contacts');
-
+$req = new Vtiger_Request();
+$req->setDefault('return_module','Contacts');
+$req->set('return_action','index');
+header('Location: index.php?' . $req->getReturnURL() );
 ?>

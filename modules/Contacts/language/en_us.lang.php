@@ -299,6 +299,20 @@ $mod_strings = Array(
 'LBL_CANCEL'=>'Cancel',
 'APPTITLE'=>'CoreBOS CRM',
 'EXTENTIONNAME'=>'Google',
+'Name_Prefix' => 'Name Prefix',
+'First_Name' => 'First Name',
+'Last_Name' => 'Last Name',
+'Job_Title' => 'Job Title',
+'Organization_Name' => 'Organization Name',
+'Date_of_Birth'=>'Date of Birth',
+'Secondary_Email'=>'Secondary email',
+'Mobile_Phone'=>'Mobile Phone',
+'Office_Phone'=>'Office Phone',
+    
+'Home_Phone' => 'Home Phone',
+'Mailing_Address' => 'Mailing Address',
+'Other_Address' => 'Other Address',
+'Note' => 'Note',
 );
 
 ?>

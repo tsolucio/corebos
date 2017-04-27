@@ -343,20 +343,28 @@ function googleContactsSettings(module,oButton) {
         });
 }
 
-function saveSettings(){alert('ketu');
+function saveSettings(){
+    return doSaveSettings();
+}
+
+function doSaveSettings(){
     var container = jQuery('.googleSettings');
     var form = container.find('form[name="contactsyncsettings"]');
     var fieldMapping = packFieldmappingsForSubmit(container);
     form.find('#user_field_mapping').val(fieldMapping);
-    var serializedFormData = form.serialize();
-    jQuery.ajax({
-            type : 'post',
-            data :  serializedFormData,
-            url : "index.php?module=Contacts&action=ContactsAjax&file=GSaveSyncSettings"
-    }).done(function(msg) { 
-        alert('sdfsfdsf');
-    });
-    return false;
+//    var serializedFormData = JSON.stringify(form);
+    var form = document.forms['contactsyncsettings'];
+    form.action.value = 'GSaveSyncSettings';
+    form.module.value = 'Contacts';
+    form.submit();
+//    jQuery.ajax({
+//            type : 'post',
+//            data :  serializedFormData,
+//            url : "index.php?module=Contacts&action=ContactsAjax&file=GSaveSyncSettings"
+//    }).done(function(msg) { 
+//        alert('sdfsfdsf');
+//    });
+    return true;
 }
 
 function packFieldmappingsForSubmit(container) {
