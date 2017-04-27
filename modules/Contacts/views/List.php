@@ -22,9 +22,8 @@ class Google_List_View  {
                 break;
             case "sync" : return $this->renderSyncUI($request);
                 break;
-            case "removeSync" : if($request->validateWriteAccess()){
-                                    $this->deleteSync($request);
-                                }
+            case "removeSync" : 
+                return $this->deleteSync($request);
                 break;
             default: $this->renderWidgetUI($request);
                 break;
@@ -111,13 +110,8 @@ class Google_List_View  {
      * @return <array> Count of Calendar Records
      */
     public function Calendar($userId = false) {
-        if(!$userId){
-            $user = Users_Record_Model::getCurrentUserModel();
-        } else {
-            $user = new Users();
-            $user = $user->retrieve_entity_info($userId, 'Users');
-            $user = Users_Record_Model::getInstanceFromUserObject($user);
-        }
+        global $current_user;
+        $user = $current_user;
         $controller = new Google_Calendar_Controller($user);
         $records = $controller->synchronize();
         $syncRecords = $this->getSyncRecordsCount($records);
@@ -130,15 +124,17 @@ class Google_List_View  {
      * Removes Synchronization
      */
     function removeSynchronization($request) {
-        $sourceModule = $request->get('sourcemodule');
-        $userModel = Users_Record_Model::getCurrentUserModel();
-        Google_Module_Model::removeSync($sourceModule, $userModel->getId());
+        global $current_user;
+        $user = $current_user;
+        $sourceModule = $request['sourcemodule'];
+        Google_Module_Model::removeSync($sourceModule, $user->id);
     }
 
     function deleteSync($request) {
-        $sourceModule = $request->get('sourcemodule');
-        $userModel = Users_Record_Model::getCurrentUserModel();
-        Google_Module_Model::deleteSync($sourceModule, $userModel->getId());
+        global $current_user;
+        $user = $current_user;
+        $sourceModule = $request['sourcemodule'];
+        Google_Module_Model::deleteSync($sourceModule, $user->id);
     }
 
     /**

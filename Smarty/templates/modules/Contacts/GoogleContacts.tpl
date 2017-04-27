@@ -214,20 +214,31 @@ button.close {
 						<td align="left">
                                                     {if $hasToken eq true}
 							<div style="height:30px;overflow-y:auto;overflow-x:hidden;" align="center">
-								<input type="button" name="SYNCH{$APP.SYNCH_NOW}" value=" {$APP.SYNCH_NOW} " class="crmbutton small create" onClick="googleContactsSynch('{$MODULE}',this);"/>&nbsp;&nbsp;
+								<input type="button" name="SYNCH{$APP.SYNCH_NOW}" value=" {$APP.SYNCH_NOW} " class="crmbutton small create" onClick="googleContactsSynch('{$MODULE}',this);" title="{$MOD.SYNC_NOW_TITLE}"/>&nbsp;&nbsp;
 							</div>
                                                     {else}
                                                         <div style="height:30px;overflow-y:auto;overflow-x:hidden;" align="center">
-                                                                <input type="button" name="{$MOD.LBL_SIGN_IN_WITH_GOOGLE}" value=" {$MOD.LBL_SIGN_IN_WITH_GOOGLE} " class="crmbutton small create" onClick="googleContactsSynch('{$MODULE}',this);"/>&nbsp;&nbsp;
+                                                                <input type="button" name="{$MOD.LBL_SIGN_IN_WITH_GOOGLE}" value=" {$MOD.LBL_SIGN_IN_WITH_GOOGLE} " class="crmbutton small create" onClick="googleContactsSynch('{$MODULE}',this);" title="{$MOD.SIGN_IN_TITLE}"/>&nbsp;&nbsp;
                                                         </div>
                                                     {/if}
 						</td>
 					</tr>
                                         <tr>
 						<td align="left">
-                                                    <div style="height:30px;overflow-y:auto;overflow-x:hidden;" align="center">
-                                                            <input type="button" name="{$MOD.SYNC_SETTINGS}" value=" {$MOD.SYNC_SETTINGS} " class="crmbutton small create" onClick="googleContactsSettings('{$MODULE}',this);"/>&nbsp;&nbsp;
+                                                    <div style="height:30px;overflow-y:auto;overflow-x:hidden;" align="center" >
+                                                        <button type="button" name="{$MOD.SYNC_SETTINGS}" class="crmbutton small" onClick="googleContactsSettings('{$MODULE}',this);" title="{$MOD.SYNC_SETT_TITLE}" style="vertical-align: middle;"> 
+                                                            <img src="themes/softed/images/mainSettings.PNG" height="15" width="15" style="vertical-align: middle;"/><span style="display: inline-block;vertical-align: middle;">{$MOD.SYNC_SETTINGS}</span>
+                                                        </button>
                                                     </div>
+						</td>
+					</tr>
+                                        <tr>
+						<td align="left">
+                                                    {if $hasToken eq true}
+                                                        <div style="height:30px;overflow-y:auto;overflow-x:hidden;" align="center">
+                                                                <input type="button" name="{$MOD.LOGOUT_GOOGLE}" value=" {$MOD.LOGOUT_GOOGLE} " class="crmbutton small delete" onClick="googleContactsLogOut('{$MODULE}');" title="{$MOD.LOGOUT_GOOGLE_TITLE}"/>&nbsp;&nbsp;
+                                                        </div>
+                                                    {/if}
 						</td>
 					</tr>
 				</table>

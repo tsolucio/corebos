@@ -239,7 +239,7 @@ $mod_strings = Array(
 'LBL_NOT_SYNCRONIZED'	=>	"You have not synchronized yet",
 'LBL_SYNC_BUTTON'	=>	"Synchronize Now",
 'LBL_REMOVE_SYNC'	=>	"Remove Sync",
-'LBL_MORE_VTIGER'	=>	"There are more records to be synchronized in vtiger",
+'LBL_MORE_VTIGER'	=>	"There are more records to be synchronized in coreBOS",
 'LBL_MORE_GOOGLE'	=>	"There are more records to be synchronized in Google",
 'Contact Name'	=>	"Contact Name",
 'Email'	=>	"Email",
@@ -252,7 +252,7 @@ $mod_strings = Array(
 'Office Phone' => 'Office Phone',
 'Work Phone' => 'Work Phone',
 'Home Phone' => 'Home Phone',
-'SYNC_SETTINGS' => 'Contacts Sync Settings',
+'SYNC_SETTINGS' => 'Sync Settings',
 'LBL_SELECT_GOOGLE_GROUP_TO_SYNC' => 'Select Google Group',
 'LBL_ADD_CUSTOM_FIELD_MAPPING' => 'Add Custom Mapping',
 'LBL_EMAIL' => 'Email',
@@ -313,6 +313,11 @@ $mod_strings = Array(
 'Mailing_Address' => 'Mailing Address',
 'Other_Address' => 'Other Address',
 'Note' => 'Note',
+'LOGOUT_GOOGLE_TITLE'=>'Change the default google account authorization in order to sign in with a new account',
+'LOGOUT_GOOGLE'=>'Log Out from Google',
+'SYNC_NOW_TITLE'=>'Start the Sync with Google according to the User Settings',
+'SIGN_IN_TITLE'=>'Sign In to the google account to authorize the Sync Process',
+'SYNC_SETT_TITLE'=>'Set default user parameters for the Sync Process',
 );
 
 ?>

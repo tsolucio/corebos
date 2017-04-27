@@ -393,3 +393,12 @@ function packFieldmappingsForSubmit(container) {
     });
     return JSON.stringify(mapping);
 }
+
+function googleContactsLogOut(module){
+    jQuery.ajax({
+            type : 'post',
+            url : "index.php?module="+module+"&action="+module+"Ajax&file=List&operation=removeSync&sourcemodule=Contacts"
+    }).done(function(msg) { 
+        window.location.reload();
+    });
+}
