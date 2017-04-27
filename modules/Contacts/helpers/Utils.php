@@ -117,10 +117,10 @@ class Google_Utils_Helper {
 //        $user = Users_Record_Model::getCurrentUserModel();
         global $current_user;
         $user = $current_user;
-        $userId = $user->getId();
-        $source_module = $request->get('sourcemodule');
-        $google_group = $request->get('google_group');
-        $sync_direction = $request->get('sync_direction');
+        $userId = $user->id;
+        $source_module = $request['sourcemodule'];
+        $google_group = $request['google_group'];
+        $sync_direction = $request['sync_direction'];
         if(Google_Utils_Helper::hasSettingsForUser($userId)) {
             $sql = 'UPDATE ' . self::settings_table_name . ' SET clientgroup = ?, direction = ?';
             $params = array($google_group,$sync_direction);
@@ -146,7 +146,7 @@ class Google_Utils_Helper {
         }
         $sql = 'INSERT INTO ' . self::fieldmapping_table_name . ' (vtiger_field,google_field,google_field_type,google_custom_label,user) VALUES ';
         foreach($fieldMappings as $fieldMap) {
-            $fieldMap['user'] = $user->getId();
+            $fieldMap['user'] = $user->id;
             $values = '(' . generateQuestionMarks($fieldMap) . '), ';
             $params = array();
             foreach($fieldMap as $field) {

@@ -261,8 +261,8 @@ $mod_strings = Array(
 'LBL_CUSTOM' => 'Custom',
 'LBL_SELECT_SYNC_DIRECTION' => 'Select Sync Direction',
 'LBL_BI_DIRECTIONAL_SYNC' => 'Sync both ways',
-'LBL_ONLY_SYNC_FROM_GOOGLE_TO_VTIGER' => 'From Google to Vtiger only',
-'LBL_ONLY_SYNC_FROM_VTIGER_TO_GOOGLE' => 'From Vtiger to Google only',
+'LBL_ONLY_SYNC_FROM_GOOGLE_TO_VTIGER' => 'From Google to coreBOS only',
+'LBL_ONLY_SYNC_FROM_VTIGER_TO_GOOGLE' => 'From coreBOS to Google only',
 'Job Title' => 'Title',
 'Company' => 'Company',
 'Birthday' => 'Birthday',
@@ -295,7 +295,10 @@ $mod_strings = Array(
 'url' => 'Url',
 'LBL_SAVE_AND_IMPORT' => 'Save and Import',
 'LBL_IMPORT_RESULTS_GOOGLE' => 'Google Import results',
-'SIGN_IN'=>'Sign In Google',
+'LBL_SAVE'=>'Save',
+'LBL_CANCEL'=>'Cancel',
+'APPTITLE'=>'CoreBOS CRM',
+'EXTENTIONNAME'=>'Google',
 );
 
 ?>

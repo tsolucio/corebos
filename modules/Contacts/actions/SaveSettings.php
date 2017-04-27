@@ -8,12 +8,12 @@
  * All Rights Reserved.
  * *********************************************************************************** */
 
-class Google_SaveSettings_Action extends Vtiger_BasicAjax_Action {
+class Google_SaveSettings_Action  {
 
-	public function process(Vtiger_Request $request) {
-		$sourceModule = $request->get('sourcemodule');
-		$fieldMapping = $request->get('fieldmapping');
-		Google_Utils_Helper::saveSettings($request);
+	public function process( $request) {
+		$sourceModule = $request['sourcemodule'];
+		$fieldMapping = $request['fieldmapping'];
+		Google_Utils_Helper::saveSettings($request); 
 		Google_Utils_Helper::saveFieldMappings($sourceModule, $fieldMapping);
 	}
 

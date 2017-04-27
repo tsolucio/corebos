@@ -9,141 +9,145 @@
  *********************************************************************************/
 -->*}
 {strip}
-<div class="modelContainer" style="min-width: 800px;">
-    <div class="modal-header contentsBackground">
-        <button class="close" aria-hidden="true" data-dismiss="modal" type="button" title="{vtranslate('LBL_CLOSE')}">x</button>
-        <h3>{vtranslate('SYNC_SETTINGS', $MODULENAME)}</h3>
-    </div>
-    <form class="form-horizontal" name="contactsyncsettings">
+<div class="content googleSettings" style="min-width: 800px;">
+    <table border=0 cellspacing=0 cellpadding=5 width=100% class=layerHeadingULine>
+            <tr>
+                    <td width="90%" align="left" class="genHeaderSmall">{$MOD.SYNC_SETTINGS}&nbsp;</td>
+                    <td width="10%" align="right">
+                            <a href="javascript:fninvsh('GoogleContactsSettings');"><img title="{$APP.LBL_CLOSE}" alt="{$APP.LBL_CLOSE}" src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" /></a>
+                    </td>
+            </tr>
+    </table>
+    <form class="form-horizontal" name="contactsyncsettings" id="contactsyncsettings" action="GSaveSyncSettings.php" onsubmit="VtigerJS_DialogBox.block();" method="POST">
         <input type="hidden" name="module" value="{$MODULENAME}" />
-        <input type="hidden" name="action" value="SaveSettings" />
+        <input type="hidden" name="action" value="GSaveSyncSettings" />
         <input type="hidden" name="sourcemodule" value="{$SOURCE_MODULE}" />
         <input id="user_field_mapping" type="hidden" name="fieldmapping" value="fieldmappings" />
-        <input id="google_fields" type="hidden" value='{Zend_Json::encode($GOOGLE_FIELDS)}' />
+        <input id="google_fields" type="hidden" value='{$GOOGLE_FIELDS|@json_encode}' />
         <div class="modal-body">
-            <div class="sync-settings">
+            <div class="sync-settings" style="display: flex;flex-direction: row;">
             <div class="row-fluid">
                 <div class="control-group">
-                    <label class="control-label">{vtranslate('LBL_SELECT_GOOGLE_GROUP_TO_SYNC',$MODULENAME)}&nbsp;</label>
+                    <label class="control-label">{$MOD.LBL_SELECT_GOOGLE_GROUP_TO_SYNC}&nbsp;</label>
                     <div class="controls">
                         <select class="select2 stretched" name="google_group" style="width:250px;">
-                            <option value="all">{vtranslate('LBL_ALL',$MODULENAME)}</option>
+                            <option value="all">{$MOD.LBL_ALL}</option>
                             {assign var=IS_GROUP_DELETED value=1}
                             {foreach item=ENTRY from=$GOOGLE_GROUPS['entry']}
                                 <option value="{$ENTRY['id']}" {if $ENTRY['id'] eq $SELECTED_GROUP} {assign var=IS_GROUP_DELETED value=0} selected {/if}>{$ENTRY['title']}</option>
                             {/foreach}
                             {if $IS_GROUP_DELETED && $SELECTED_GROUP != 'all'}
-                                {if $SELECTED_GROUP != ''}<option value="none" selected>{vtranslate('LBL_NONE',$MODULENAME)}</option>{/if}
+                                {if $SELECTED_GROUP != ''}<option value="none" selected>{$MOD.LBL_NONE}</option>{/if}
                             {/if}
                         </select>
                     </div>
                 </div>
             </div>
             <div class="pull-right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div class="btn-group pull-right">
+            {*<div class="btn-group pull-right">
                 <button id="googlesync_addcustommapping" class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-                    <span class="caret"></span>&nbsp;{vtranslate('LBL_ADD_CUSTOM_FIELD_MAPPING',$MODULENAME)}
+                    <span class="caret"></span>&nbsp;{$MOD.LBL_ADD_CUSTOM_FIELD_MAPPING}
                 </button>
                 <ul class="dropdown-menu dropdown-menu-left" role="menu">
-                    <li class="addCustomFieldMapping" data-type="email" data-vtigerfields='{Zend_Json::encode($VTIGER_EMAIL_FIELDS)}'><a>{vtranslate('LBL_EMAIL',$MODULENAME)}</a></li>
-                    <li class="addCustomFieldMapping" data-type="phone" data-vtigerfields='{Zend_Json::encode($VTIGER_PHONE_FIELDS)}'><a>{vtranslate('LBL_PHONE',$MODULENAME)}</a></li>
-                    <li class="addCustomFieldMapping" data-type="url" data-vtigerfields='{Zend_Json::encode($VTIGER_URL_FIELDS)}'><a>{vtranslate('LBL_URL',$MODULENAME)}</a></li>
+                    <li class="addCustomFieldMapping" data-type="email" data-vtigerfields='{$VTIGER_EMAIL_FIELDS|@json_encode}'><a>{$MOD.LBL_EMAIL}</a></li>
+                    <li class="addCustomFieldMapping" data-type="phone" data-vtigerfields='{$VTIGER_PHONE_FIELDS|@json_encode}'><a>{$MOD.LBL_PHONE}</a></li>
+                    <li class="addCustomFieldMapping" data-type="url" data-vtigerfields='{$VTIGER_URL_FIELDS|@json_encode}'><a>{$MOD.LBL_URL}</a></li>
                     <li class="divider"></li>
-                    <li class="addCustomFieldMapping" data-type="custom" data-vtigerfields='{Zend_Json::encode($VTIGER_OTHER_FIELDS)}'><a>{vtranslate('LBL_CUSTOM',$MODULENAME)}</a></li>
+                    <li class="addCustomFieldMapping" data-type="custom" data-vtigerfields='{$VTIGER_OTHER_FIELDS|@json_encode}'><a>{$MOD.LBL_CUSTOM}</a></li>
                 </ul>
-            </div>
+            </div>*}
             <div class="row-fluid">
                 <div class="control-group">
-                    <label class="control-label">{vtranslate('LBL_SELECT_SYNC_DIRECTION',$MODULENAME)}</label>
+                    <label class="control-label">{$MOD.LBL_SELECT_SYNC_DIRECTION}</label>
                     <div class="controls">
                         <select class="select2 stretched" name="sync_direction" style="width:250px;">
-                            <option value="11" {if $SYNC_DIRECTION eq '11'}selected{/if}>{vtranslate('LBL_BI_DIRECTIONAL_SYNC',$MODULENAME)}</option>
-                            <option value="10" {if $SYNC_DIRECTION eq '10'}selected{/if}>{vtranslate('LBL_ONLY_SYNC_FROM_GOOGLE_TO_VTIGER',$MODULENAME)}</option> 
-                            <option value="01" {if $SYNC_DIRECTION eq '01'}selected{/if}>{vtranslate('LBL_ONLY_SYNC_FROM_VTIGER_TO_GOOGLE',$MODULENAME)}</option>
+                            <option value="11" {if $SYNC_DIRECTION eq '11'}selected{/if}>{$MOD.LBL_BI_DIRECTIONAL_SYNC}</option>
+                            <option value="10" {if $SYNC_DIRECTION eq '10'}selected{/if}>{$MOD.LBL_ONLY_SYNC_FROM_GOOGLE_TO_VTIGER}</option> 
+                            <option value="01" {if $SYNC_DIRECTION eq '01'}selected{/if}>{$MOD.LBL_ONLY_SYNC_FROM_VTIGER_TO_GOOGLE}</option>
                         </select>
                     </div>
                 </div>
             </div>
             </div>
             <div id="googlesyncfieldmapping" style="margin:15px;">
-                <table  class="table table-bordered">
+                <table  class="table table-bordered" cellpadding="10">
                     <thead>
-                        <tr>
-                            <td><b>{vtranslate('APPTITLE',$MODULENAME)}</b></td>
-                            <td><b>{vtranslate('EXTENTIONNAME',$MODULENAME)}</b></td>
+                        <tr align="center">
+                            <td><b>{$MOD.APPTITLE}</b></td>
+                            <td><b>{$MOD.EXTENTIONNAME}</b></td>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             {assign var=FLDNAME value="salutationtype"}
                             <td>
-                                {vtranslate('Salutation',$SOURCE_MODULE)}
+                                {$MOD.Salutation}
                                 <input type="hidden" class="vtiger_field_name" value="{$FLDNAME}" />
                             </td>
                             <td>
-                                {vtranslate('Name Prefix',$MODULENAME)}
+                                {$MOD.Name_Prefix}
                                 <input type="hidden" class="google_field_name" value="{$GOOGLE_FIELDS[$FLDNAME]['name']}" />
                             </td>
                         </tr>
                         <tr>
                             {assign var=FLDNAME value="firstname"}
                             <td>
-                                {vtranslate('First Name',$SOURCE_MODULE)}
+                                {$MOD.First_Name}
                                 <input type="hidden" class="vtiger_field_name" value="{$FLDNAME}" />
                             </td>
                             <td>
-                                {vtranslate('First Name',$MODULENAME)}
+                                {$MOD.First_Name}
                                 <input type="hidden" class="google_field_name" value="{$GOOGLE_FIELDS[$FLDNAME]['name']}" />
                             </td>
                         </tr>
                         <tr>
                             {assign var=FLDNAME value="lastname"}
                             <td>
-                                {vtranslate('Last Name',$SOURCE_MODULE)}
+                                {$MOD.Last_Name}
                                 <input type="hidden" class="vtiger_field_name" value="{$FLDNAME}" />
                             </td>
                             <td>
-                                {vtranslate('Last Name',$MODULENAME)}
+                                {$MOD.Last_Name}
                                 <input type="hidden" class="google_field_name" value="{$GOOGLE_FIELDS[$FLDNAME]['name']}" />
                             </td>
                         </tr>
                         <tr>
                             {assign var=FLDNAME value="title"}
                             <td>
-                                {vtranslate('Title',$SOURCE_MODULE)}
+                                {$MOD.Title}
                                 <input type="hidden" class="vtiger_field_name" value="{$FLDNAME}" />
                             </td>
                             <td>
-                                {vtranslate('Job Title',$MODULENAME)}
+                                {$MOD.Job_Title}
                                 <input type="hidden" class="google_field_name" value="{$GOOGLE_FIELDS[$FLDNAME]['name']}" />
                             </td>
                         </tr>
                         <tr>
                             {assign var=FLDNAME value="account_id"}
                             <td>
-                                {vtranslate('Organization Name',$SOURCE_MODULE)}
+                                {$MOD.Organization_Name}
                                 <input type="hidden" class="vtiger_field_name" value="{$FLDNAME}" />
                             </td>
                             <td>
-                                {vtranslate('Company',$MODULENAME)}
+                                {$MOD.Company}
                                 <input type="hidden" class="google_field_name" value="{$GOOGLE_FIELDS['organizationname']['name']}" />
                             </td>
                         </tr>
                         <tr>
                             {assign var=FLDNAME value="birthday"}
                             <td>
-                                {vtranslate('Date of Birth',$SOURCE_MODULE)}
+                                {$MOD.Date_of_Birth}
                                 <input type="hidden" class="vtiger_field_name" value="{$FLDNAME}" />
                             </td>
                             <td>
-                                {vtranslate('Birthday',$MODULENAME)}
+                                {$MOD.Birthday}
                                 <input type="hidden" class="google_field_name" value="{$GOOGLE_FIELDS[$FLDNAME]['name']}" />
                             </td>
                         </tr>
                         <tr>
                             {assign var=FLDNAME value="email"}
                             <td>
-                                {vtranslate('Email',$SOURCE_MODULE)}
+                                {$MOD.Email}
                                 <input type="hidden" class="vtiger_field_name" value="{$FLDNAME}" />
                             </td>
                             <td>
@@ -151,7 +155,7 @@
                                 {assign var="GOOGLE_TYPES" value=$GOOGLE_FIELDS[$FLDNAME]['types']}
                                 <select class="select2 google-type" style="width:200px;" data-category="email">
                                     {foreach item=TYPE from=$GOOGLE_TYPES}
-                                        <option value="{$TYPE}" {if $FIELD_MAPPING[{$FLDNAME}]['google_field_type'] eq $TYPE}selected{/if}>{vtranslate('Email',$MODULENAME)} ({vtranslate($TYPE,$MODULENAME)})</option>
+                                        <option value="{$TYPE}" {if $FIELD_MAPPING[{$FLDNAME}]['google_field_type'] eq $TYPE}selected{/if}>{$MOD.Email} ({$MOD.$TYPE})</option>
                                     {/foreach}
                                 </select>&nbsp;&nbsp;
                                 <input type="text" class="google-custom-label" style="visibility:{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] neq 'custom'}hidden{else}visible{/if};width:190px;" 
@@ -162,7 +166,7 @@
                         <tr>
                             {assign var=FLDNAME value="secondaryemail"}
                             <td>
-                                {vtranslate('Secondary Email',$SOURCE_MODULE)}
+                                {$MOD.Secondary_Email}
                                 <input type="hidden" class="vtiger_field_name" value="{$FLDNAME}" />
                             </td>
                             <td>
@@ -170,7 +174,7 @@
                                 {assign var=GOOGLE_TYPES value=$GOOGLE_FIELDS['email']['types']}
                                 <select class="select2 google-type" style="width:200px;" data-category="email">
                                     {foreach item=TYPE from=$GOOGLE_TYPES}
-                                        <option value="{$TYPE}" {if $FIELD_MAPPING['secondaryemail']['google_field_type'] eq $TYPE}selected{/if}>{vtranslate('Email',$MODULENAME)} ({vtranslate($TYPE,$MODULENAME)})</option>
+                                        <option value="{$TYPE}" {if $FIELD_MAPPING['secondaryemail']['google_field_type'] eq $TYPE}selected{/if}>{$MOD.Email} ({$MOD.$TYPE})</option>
                                     {/foreach}
                                 </select>&nbsp;&nbsp;
                                 <input type="text" class="google-custom-label" style="visibility:{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] neq 'custom'}hidden{else}visible{/if};width:190px;" 
@@ -181,7 +185,7 @@
                         <tr>
                             {assign var=FLDNAME value="mobile"}
                             <td>
-                                {vtranslate('Mobile Phone',$SOURCE_MODULE)}
+                                {$MOD.Mobile_Phone}
                                 <input type="hidden" class="vtiger_field_name" value="{$FLDNAME}" />
                             </td>
                             <td>
@@ -189,7 +193,7 @@
                                 {assign var=GOOGLE_TYPES value=$GOOGLE_FIELDS['phone']['types']}
                                 <select class="select2 stretched google-type" style="width:200px;" data-category="phone">
                                     {foreach item=TYPE from=$GOOGLE_TYPES}
-                                        <option value="{$TYPE}" {if $FIELD_MAPPING[$FLDNAME]['google_field_type'] eq $TYPE}selected{/if}>{vtranslate('Phone',$MODULENAME)} ({vtranslate($TYPE,$MODULENAME)})</option>
+                                        <option value="{$TYPE}" {if $FIELD_MAPPING[$FLDNAME]['google_field_type'] eq $TYPE}selected{/if}>{$MOD.Phone} ({$MOD.$TYPE})</option>
                                     {/foreach}
                                 </select>&nbsp;&nbsp;
                                 <input type="text" class="google-custom-label" style="visibility:{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] neq 'custom'}hidden{else}visible{/if};width:190px;" 
@@ -200,7 +204,7 @@
                         <tr>
                             {assign var=FLDNAME value="phone"}
                             <td>
-                                {vtranslate('Office Phone',$SOURCE_MODULE)}
+                                {$MOD.Office_Phone}
                                 <input type="hidden" class="vtiger_field_name" value="{$FLDNAME}" />
                             </td>
                             <td>
@@ -208,7 +212,7 @@
                                 {assign var=GOOGLE_TYPES value=$GOOGLE_FIELDS['phone']['types']}
                                 <select class="select2 stretched google-type" style="width:200px;" data-category="phone">
                                     {foreach item=TYPE from=$GOOGLE_TYPES}
-                                        <option value="{$TYPE}" {if $FIELD_MAPPING[$FLDNAME]['google_field_type'] eq $TYPE}selected{/if}>{vtranslate('Phone',$MODULENAME)} ({vtranslate($TYPE,$MODULENAME)})</option>
+                                        <option value="{$TYPE}" {if $FIELD_MAPPING[$FLDNAME]['google_field_type'] eq $TYPE}selected{/if}>{$MOD.Phone} ({$MOD.$TYPE})</option>
                                     {/foreach}
                                 </select>&nbsp;&nbsp;
                                 <input type="text" class="google-custom-label" style="visibility:{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] neq 'custom'}hidden{else}visible{/if};width:190px;" 
@@ -219,7 +223,7 @@
                         <tr>
                             {assign var=FLDNAME value="homephone"}
                             <td>
-                                {vtranslate('Home Phone',$SOURCE_MODULE)}
+                                {$MOD.Home_Phone}
                                 <input type="hidden" class="vtiger_field_name" value="{$FLDNAME}" />
                             </td>
                             <td>
@@ -227,7 +231,7 @@
                                 {assign var=GOOGLE_TYPES value=$GOOGLE_FIELDS['phone']['types']}
                                 <select class="select2 stretched google-type" style="width:200px;" data-category="phone">
                                     {foreach item=TYPE from=$GOOGLE_TYPES}
-                                        <option value="{$TYPE}" {if $FIELD_MAPPING[$FLDNAME]['google_field_type'] eq $TYPE}selected{/if}>{vtranslate('Phone',$MODULENAME)} ({vtranslate($TYPE,$MODULENAME)})</option>
+                                        <option value="{$TYPE}" {if $FIELD_MAPPING[$FLDNAME]['google_field_type'] eq $TYPE}selected{/if}>{$MOD.Phone} ({$MOD.$TYPE})</option>
                                     {/foreach}
                                 </select>&nbsp;&nbsp;
                                 <input type="text" class="google-custom-label" style="visibility:{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] neq 'custom'}hidden{else}visible{/if};width:190px;" 
@@ -238,7 +242,7 @@
                         <tr>
                             {assign var=FLDNAME value="mailingaddress"}
                             <td>
-                                {vtranslate('Mailing Address',$SOURCE_MODULE)}
+                                {$MOD.Mailing_Address}
                                 <input type="hidden" class="vtiger_field_name" value="{$FLDNAME}">
                             </td>
                             <td>
@@ -246,7 +250,7 @@
                                 {assign var=GOOGLE_TYPES value=$GOOGLE_FIELDS['address']['types']}
                                 <select class="select2 stretched google-type" style="width:200px;" data-category="address">
                                     {foreach item=TYPE from=$GOOGLE_TYPES}
-                                        <option value="{$TYPE}" {if $FIELD_MAPPING[$FLDNAME]['google_field_type'] eq $TYPE}selected{/if}>{vtranslate('Address',$MODULENAME)} ({vtranslate($TYPE,$MODULENAME)})</option>
+                                        <option value="{$TYPE}" {if $FIELD_MAPPING[$FLDNAME]['google_field_type'] eq $TYPE}selected{/if}>{$MOD.Address} ({$MOD.$TYPE})</option>
                                     {/foreach}
                                 </select>&nbsp;&nbsp;
                                 <input type="text" class="google-custom-label" style="visibility:{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] neq 'custom'}hidden{else}visible{/if};width:190px;" 
@@ -257,7 +261,7 @@
                         <tr>
                             {assign var=FLDNAME value="otheraddress"}
                             <td>
-                                {vtranslate('Other Address',$SOURCE_MODULE)}
+                                {$MOD.Other_Address}
                                 <input type="hidden" class="vtiger_field_name" value="{$FLDNAME}">
                             </td>
                             <td>
@@ -265,7 +269,7 @@
                                 {assign var=GOOGLE_TYPES value=$GOOGLE_FIELDS['address']['types']}
                                 <select class="select2 stretched google-type" style="width:200px;" data-category="address">
                                     {foreach item=TYPE from=$GOOGLE_TYPES}
-                                        <option value="{$TYPE}" {if $FIELD_MAPPING[$FLDNAME]['google_field_type'] eq $TYPE}selected{/if}>{vtranslate('Address',$MODULENAME)} ({vtranslate($TYPE,$MODULENAME)})</option>
+                                        <option value="{$TYPE}" {if $FIELD_MAPPING[$FLDNAME]['google_field_type'] eq $TYPE}selected{/if}>{$MOD.Address} ({$MOD.$TYPE})</option>
                                     {/foreach}
                                 </select>&nbsp;&nbsp;
                                 <input type="text" class="google-custom-label" style="visibility:{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] neq 'custom'}hidden{else}visible{/if};width:190px;" 
@@ -276,11 +280,11 @@
                         <tr>
                             {assign var=FLDNAME value="description"}
                             <td>
-                                {vtranslate('Description',$SOURCE_MODULE)}
+                                {$MOD.Description}
                                 <input type="hidden" class="vtiger_field_name" value="{$FLDNAME}">
                             </td>
                             <td>
-                                {vtranslate('Note',$MODULENAME)}
+                                {$MOD.Note}
                                 <input type="hidden" class="google_field_name" value="{$GOOGLE_FIELDS[$FLDNAME]['name']}" />
                             </td>
                         </tr>
@@ -290,25 +294,25 @@
                                     {if $CUSTOM_FIELD_MAP['google_field_name'] eq 'gd:email'}
                                         <select class="select2 stretched vtiger_field_name" style="width:200px;" data-category="email">
                                             {foreach key=EMAIL_FIELD_NAME item=EMAIL_FIELD_LABEL from=$VTIGER_EMAIL_FIELDS}
-                                                <option value="{$EMAIL_FIELD_NAME}" {if $VTIGER_FIELD_NAME eq $EMAIL_FIELD_NAME}selected{/if}>{vtranslate($EMAIL_FIELD_LABEL,$SOURCE_MODULE)}</option>
+                                                <option value="{$EMAIL_FIELD_NAME}" {if $VTIGER_FIELD_NAME eq $EMAIL_FIELD_NAME}selected{/if}>{$MOD.$EMAIL_FIELD_LABEL}</option>
                                             {/foreach}
                                         </select>
                                     {else if $CUSTOM_FIELD_MAP['google_field_name'] eq 'gd:phoneNumber'}
                                         <select class="select2 stretched vtiger_field_name" style="width:200px;" data-category="phone">
                                             {foreach key=PHONE_FIELD_NAME item=PHONE_FIELD_LABEL from=$VTIGER_PHONE_FIELDS}
-                                                <option value="{$PHONE_FIELD_NAME}" {if $VTIGER_FIELD_NAME eq $PHONE_FIELD_NAME}selected{/if}>{vtranslate($PHONE_FIELD_LABEL,$SOURCE_MODULE)}</option>
+                                                <option value="{$PHONE_FIELD_NAME}" {if $VTIGER_FIELD_NAME eq $PHONE_FIELD_NAME}selected{/if}>{$MOD.$PHONE_FIELD_LABEL}</option>
                                             {/foreach}
                                         </select>
                                     {else if $CUSTOM_FIELD_MAP['google_field_name'] eq 'gContact:userDefinedField'}
                                         <select class="select2 stretched vtiger_field_name" style="width:200px;" data-category="custom">
                                             {foreach key=OTHER_FIELD_NAME item=OTHER_FIELD_LABEL from=$VTIGER_OTHER_FIELDS}
-                                                <option value="{$OTHER_FIELD_NAME}" {if $VTIGER_FIELD_NAME eq $OTHER_FIELD_NAME}selected{/if}>{vtranslate($OTHER_FIELD_LABEL,$SOURCE_MODULE)}</option>
+                                                <option value="{$OTHER_FIELD_NAME}" {if $VTIGER_FIELD_NAME eq $OTHER_FIELD_NAME}selected{/if}>{$MOD.$OTHER_FIELD_LABEL}</option>
                                             {/foreach}
                                         </select>
                                     {else if $CUSTOM_FIELD_MAP['google_field_name'] eq 'gContact:website'}
                                         <select class="select2 stretched vtiger_field_name" style="width:200px;" data-category="url">
                                             {foreach key=URL_FIELD_NAME item=URL_FIELD_LABEL from=$VTIGER_URL_FIELDS}
-                                                <option value="{$URL_FIELD_NAME}" {if $VTIGER_FIELD_NAME eq $URL_FIELD_NAME}selected{/if}>{vtranslate($URL_FIELD_LABEL,$SOURCE_MODULE)}</option>
+                                                <option value="{$URL_FIELD_NAME}" {if $VTIGER_FIELD_NAME eq $URL_FIELD_NAME}selected{/if}>{$MOD.$URL_FIELD_LABEL}</option>
                                             {/foreach}
                                         </select>
                                     {/if}
@@ -319,7 +323,7 @@
                                         {assign var=GOOGLE_TYPES value=$GOOGLE_FIELDS['email']['types']}
                                         <select class="select2 google-type" style="width:200px;" data-category="email">
                                             {foreach item=TYPE from=$GOOGLE_TYPES}
-                                                <option value="{$TYPE}" {if $CUSTOM_FIELD_MAP['google_field_type'] eq $TYPE}selected{/if}>{vtranslate('Email',$MODULENAME)} ({vtranslate($TYPE,$MODULENAME)})</option>
+                                                <option value="{$TYPE}" {if $CUSTOM_FIELD_MAP['google_field_type'] eq $TYPE}selected{/if}>{$MOD.Email} ({$MOD.$TYPE})</option>
                                             {/foreach}
                                         </select>&nbsp;&nbsp;
                                         <input type="text" class="google-custom-label" style="visibility:{if $CUSTOM_FIELD_MAP['google_field_type'] neq 'custom'}hidden{else}visible{/if};width:190px;" 
@@ -328,7 +332,7 @@
                                         {assign var=GOOGLE_TYPES value=$GOOGLE_FIELDS['phone']['types']}
                                         <select class="select2 google-type" style="width:200px;" data-category="phone">
                                             {foreach item=TYPE from=$GOOGLE_TYPES}
-                                                <option value="{$TYPE}" {if $CUSTOM_FIELD_MAP['google_field_type'] eq $TYPE}selected{/if}>{vtranslate('Phone',$MODULENAME)} ({vtranslate($TYPE,$MODULENAME)})</option>
+                                                <option value="{$TYPE}" {if $CUSTOM_FIELD_MAP['google_field_type'] eq $TYPE}selected{/if}>{$MOD.Phone} ({$MOD.$TYPE})</option>
                                             {/foreach}
                                         </select>&nbsp;&nbsp;
                                         <input type="text" class="google-custom-label" style="visibility:{if $CUSTOM_FIELD_MAP['google_field_type'] neq 'custom'}hidden{else}visible{/if};width:190px;" 
@@ -340,7 +344,7 @@
                                         {assign var=GOOGLE_TYPES value=$GOOGLE_FIELDS['url']['types']}
                                         <select class="select2 google-type" style="width:200px;" data-category="url">
                                             {foreach item=TYPE from=$GOOGLE_TYPES}
-                                                <option value="{$TYPE}" {if $CUSTOM_FIELD_MAP['google_field_type'] eq $TYPE}selected{/if}>{vtranslate('URL',$MODULENAME)} ({vtranslate($TYPE,$MODULENAME)})</option>
+                                                <option value="{$TYPE}" {if $CUSTOM_FIELD_MAP['google_field_type'] eq $TYPE}selected{/if}>{$MOD.URL} ({$MOD.$TYPE})</option>
                                             {/foreach}
                                         </select>&nbsp;&nbsp;
                                         <input type="text" class="google-custom-label" style="visibility:{if $CUSTOM_FIELD_MAP['google_field_type'] neq 'custom'}hidden{else}visible{/if};width:190px;" 
@@ -357,11 +361,13 @@
             </div>            
         </div>
     </form>
-    <div class="modal-footer">
-        <div class="pull-right cancelLinkContainer" style="margin-top:0px;">
-            <a class="cancelLink" type="reset" data-dismiss="modal">{vtranslate('LBL_CANCEL', $MODULE)}</a>
-        </div>
-        <button id="save_syncsetting" class="btn btn-success"><strong>{vtranslate('LBL_SAVE', $MODULE)}</strong></button>
-    </div>
+    <table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport">
+            <tr>
+                <td align=center class="small">
+                    <input name="{$MOD.LBL_SAVE}" value=" {$MOD.LBL_SAVE} "id="save_syncsetting" class="crmbutton small save" onclick="this.form.action.value='GSaveSyncSettings'; return saveSettings();" type="submit" /> 
+                    <input type="button" name="{$MOD.LBL_CANCEL}" value=" {$MOD.LBL_CANCEL} " class="crmbutton small cancel" onclick="fninvsh('GoogleContactsSettings');" />
+                </td>
+            </tr>
+    </table>
 </div>
 {/strip}

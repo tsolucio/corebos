@@ -327,5 +327,61 @@ function googleSynch(module,oButton) {
 function googleContactsSynch(module,oButton) {
 	var url="index.php?module="+module+"&action="+module+"Ajax&file=List&operation=sync&sourcemodule=Contacts";
 	var opts = "menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=yes";
+        fninvsh('GoogleContacts');
 	openPopUp('GoogleContacts',oButton,url,'createemailWin',830,662,opts);
+}
+
+function googleContactsSettings(module,oButton) {
+        fninvsh('GoogleContacts');
+        var url="index.php?module="+module+"&action="+module+"Ajax&file=GSyncSettings&operation=getconfiggsyncsettings&sourcemodule=Contacts";
+        jQuery.ajax({
+                method: 'POST',
+                url: url
+        }).done(function (response) {
+                document.getElementById('GoogleContactsSettings').innerHTML=response;
+                fnvshobj(oButton,'GoogleContactsSettings');
+        });
+}
+
+function saveSettings(){alert('ketu');
+    var container = jQuery('.googleSettings');
+    var form = container.find('form[name="contactsyncsettings"]');
+    var fieldMapping = packFieldmappingsForSubmit(container);
+    form.find('#user_field_mapping').val(fieldMapping);
+    var serializedFormData = form.serialize();
+    jQuery.ajax({
+            type : 'post',
+            data :  serializedFormData,
+            url : "index.php?module=Contacts&action=ContactsAjax&file=GSaveSyncSettings"
+    }).done(function(msg) { 
+        alert('sdfsfdsf');
+    });
+    return false;
+}
+
+function packFieldmappingsForSubmit(container) {
+    var rows = container.find('div#googlesyncfieldmapping').find('table > tbody > tr');
+    var mapping = {};
+    jQuery.each(rows,function(index,row) {
+        var tr = jQuery(row);
+        var vtiger_field_name = tr.find('.vtiger_field_name').not('.select2-container').val();
+        var google_field_name = tr.find('.google_field_name').val();
+        var googleTypeElement = tr.find('.google-type').not('.select2-container');
+        var google_field_type = '';
+        var google_custom_label = '';
+        if(googleTypeElement.length) {
+            google_field_type = googleTypeElement.val();
+            var customLabelElement = tr.find('.google-custom-label');
+            if(google_field_type == 'custom' && customLabelElement.length) {
+                google_custom_label = customLabelElement.val();
+            }
+        }
+        var map = {};
+        map['vtiger_field_name'] = vtiger_field_name;
+        map['google_field_name'] = google_field_name;
+        map['google_field_type'] = google_field_type;
+        map['google_custom_label'] = google_custom_label;
+        mapping[index] = map;
+    });
+    return JSON.stringify(mapping);
 }

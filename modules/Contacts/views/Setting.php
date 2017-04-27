@@ -8,24 +8,24 @@
  * All Rights Reserved.
  * *********************************************************************************** */
 
-class Google_Setting_View extends Vtiger_PopupAjax_View {
+class Google_Setting_View {
 
     public function __construct() {
-        $this->exposeMethod('emitContactSyncSettingUI');
     }
 
-    public function process(Vtiger_Request $request) {
-        switch ($request->get('sourcemodule')) {
+    public function process($request) {
+        switch ($request['sourcemodule']) {
             case "Contacts" : $this->emitContactsSyncSettingUI($request);
                 break;
         }
     }
 
-    public function emitContactsSyncSettingUI(Vtiger_Request $request) {
-        $user = Users_Record_Model::getCurrentUserModel();
+    public function emitContactsSyncSettingUI( $request) {
+        global $current_user,$currentModule,$mod_strings;
+        $user = $current_user;
         $connector = new Google_Contacts_Connector(FALSE);
         $fieldMappping = Google_Utils_Helper::getFieldMappingForUser();
-        $oauth2 = new Google_Oauth2_Connector($request->get('sourcemodule'));
+        $oauth2 = new Google_Oauth2_Connector($request['sourcemodule']);
         if($oauth2->hasStoredToken()) {
             $controller = new Google_Contacts_Controller($user);
             $connector = $controller->getTargetConnector();
@@ -34,7 +34,7 @@ class Google_Setting_View extends Vtiger_PopupAjax_View {
         $targetFields = $connector->getFields();
         $selectedGroup = Google_Utils_Helper::getSelectedContactGroupForUser();
         $syncDirection = Google_Utils_Helper::getSyncDirectionForUser($user);
-        $contactsModuleModel = Vtiger_Module_Model::getInstance($request->get('sourcemodule'));
+        $contactsModuleModel = CRMEntity::getInstance($request['sourcemodule']);
         $mandatoryMapFields = array('salutationtype','firstname','lastname','title','account_id','birthday',
             'email','secondaryemail','mobile','phone','homephone','mailingstreet','otherstreet','mailingpobox',
             'otherpobox','mailingcity','othercity','mailingstate','otherstate','mailingzip','otherzip','mailingcountry',
@@ -62,9 +62,10 @@ class Google_Setting_View extends Vtiger_PopupAjax_View {
                     $otherFields[$contactFieldModel->getFieldName()] = $contactFieldModel->get('label');
             }
         }
-        $viewer = $this->getViewer($request);
-        $viewer->assign('MODULENAME', $request->getModule());
-        $viewer->assign('SOURCE_MODULE', $request->get('sourcemodule'));
+        $viewer = new vtigerCRM_Smarty();
+        $viewer->assign('MOD', $mod_strings);
+        $viewer->assign('MODULENAME', $request['sourcemodule']);
+        $viewer->assign('SOURCE_MODULE', $request['sourcemodule']);
         $viewer->assign('SELECTED_GROUP', $selectedGroup);
         $viewer->assign('SYNC_DIRECTION', $syncDirection);
         $viewer->assign('GOOGLE_GROUPS', $groups);
@@ -75,7 +76,7 @@ class Google_Setting_View extends Vtiger_PopupAjax_View {
         $viewer->assign('VTIGER_PHONE_FIELDS',$phoneFields);
         $viewer->assign('VTIGER_URL_FIELDS',$urlFields);
         $viewer->assign('VTIGER_OTHER_FIELDS',$otherFields);
-        echo $viewer->view('ContactsSyncSettings.tpl', $request->getModule(), true);
+        $viewer->display('modules/Contacts/ContactsSyncSettings.tpl');
     }
 
 }

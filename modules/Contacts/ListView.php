@@ -14,10 +14,7 @@ global $current_user;
 $oauth2 = new Google_Oauth2_Connector('Contacts');
 $hasToken=false;
 if($oauth2->hasStoredToken()) {
-    $token = $oauth2->retreiveToken();
-    $oauth2->setToken($token);
-    if($oauth2->isTokenExpired()) $oauth2->refreshToken();
-    $hasToken=true;
+   $hasToken=true;
 } 
 $smarty->assign('hasToken',$hasToken);                
 $smarty->display('modules/Contacts/GoogleContacts.tpl');

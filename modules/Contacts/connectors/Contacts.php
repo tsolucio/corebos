@@ -535,8 +535,8 @@ Class Google_Contacts_Connector extends WSAPP_TargetConnector {
         $category->addAttribute("scheme","http://schemas.google.com/g/2005#kind");
         $category->addAttribute("term","http://schemas.google.com/g/2008#contact");
         $entry->addChild('id',$entryId);
-        global $current_uer;
-        if(!$user) $user = $current_uer;//Users_Record_Model::getCurrentUserModel ();
+        global $current_user;
+        if(!$user) $user = $current_user;
 
         if(!isset($this->selectedGroup))
             $this->selectedGroup = Google_Utils_Helper::getSelectedContactGroupForUser($user);
