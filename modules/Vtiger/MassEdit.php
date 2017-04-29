@@ -56,7 +56,8 @@ $validationArray = split_validationdataArray($validationData);
 $smarty->assign("VALIDATION_DATA_FIELDNAME",$validationArray['fieldname']);
 $smarty->assign("VALIDATION_DATA_FIELDDATATYPE",$validationArray['datatype']);
 $smarty->assign("VALIDATION_DATA_FIELDLABEL",$validationArray['fieldlabel']);
-
+$picklistDependencyDatasource = Vtiger_DependencyPicklist::getPicklistDependencyDatasource($currentModule);
+$smarty->assign('PICKIST_DEPENDENCY_DATASOURCE', json_encode($picklistDependencyDatasource));
+$smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
 $smarty->display('MassEditForm.tpl');
-
 ?>
