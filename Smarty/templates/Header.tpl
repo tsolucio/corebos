@@ -269,9 +269,9 @@
 			</span>
 		</div>
 	</div>
+	{function cbmenu i=0 ii=0 depth=0}
 	<nav class="slds-context-bar__secondary" role="navigation">	
-		<ul class="slds-grid" id="cbmenu">
-		{function cbmenu i=0 ii=0 depth=0}
+		<ul class="slds-grid" id="cbmenu">		
 			{foreach $menu as $menuitem}
 				{if $depth == 0}
 				{* Main items *}
@@ -324,10 +324,10 @@
 				</li>
 				{$i = $i+1}
 			{/foreach}
-		{/function}
-		{cbmenu menu=$MENU}
 		</ul>
 	</nav>
+	{/function}
+	{cbmenu menu=$MENU}
 </div>
 </div>
 </td>
