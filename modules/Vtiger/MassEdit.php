@@ -34,7 +34,7 @@ $smarty->assign('MODE', $focus->mode);
 $smarty->assign('CREATEMODE', '');
 $smarty->assign('MASS_EDIT','1');
 $smarty->assign('BLOCKS',getBlocks($currentModule,$disp_view,$mode,$focus->column_fields));
-if ($currentModule=='Products') {
+if ($currentModule=='Products' || $currentModule=='Services') {
 	$tax_details = getAllTaxes('available');
 	for($i=0;$i<count($tax_details);$i++) {
 		$tax_details[$i]['check_name'] = $tax_details[$i]['taxname'].'_check';
