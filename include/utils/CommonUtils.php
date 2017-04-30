@@ -2255,8 +2255,7 @@ function getMergedDescription($description, $id, $parent_type) {
 		// Custom date & time fields
 		$description = getMergedDescriptionCustomVars($fields, $description);
 	}
-	if($parent_type == 'Users' && is_array($fields["users"]))
-	{
+	if ($parent_type == 'Users' && isset($fields['users']) && is_array($fields['users'])) {
 		$columnfields = implode(',',$fields["users"]);
 		$query = "select $columnfields from vtiger_users where id=?";
 		$result = $adb->pquery($query, array($id));
