@@ -110,7 +110,9 @@ class Vtiger_Zip {
 	 */
 	function copyDirectoryFromDisk($dirname, $zipdirname=null, $excludeList=null, $basedirname=null) {
 		if (!$this->isInsideApplication($dirname)) return false;
+		if (!is_dir($dirname)) return false;
 		$dir = opendir($dirname);
+		if ($dir===false) return false;
 		if(strripos($dirname, '/') != strlen($dirname)-1)
 			$dirname .= '/';
 
