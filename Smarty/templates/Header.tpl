@@ -271,9 +271,10 @@
 	</div>
 	<nav class="slds-context-bar__secondary" role="navigation">	
 		<ul class="slds-grid" id="cbmenu">
-		{function cbmenu i=0 depth=0}
+		{function cbmenu i=0 ii=0 depth=0}
 			{foreach $menu as $menuitem}
 				{if $depth == 0}
+				{* Main items *}
 				<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true">
 					<a href="javascript:void(0);" class="slds-context-bar__label-action" title="{$menitem.mlabel}">
 						<span class="slds-truncate">{$menuitem.mlabel}</span>
@@ -285,15 +286,36 @@
 					</div>
 					{if !empty($menuitem.submenu)}{cbmenu depth=1 i=$i menu=$menuitem.submenu}{/if}
 				{elseif $depth == 1}
+				{* First level submenus *}
 					{if $menuitem@first}
 					<div class="slds-dropdown slds-dropdown--right">
 						<ul class="slds-dropdown__list" role="menu" id="menu{$i}">
 					{/if}
+						{if empty($menuitem.submenu)}
 						<li class="slds-dropdown__item" role="presentation">
 							<a href="index.php?action=index&amp;module={$menuitem.mvalue}" role="menuitem" tabindex="-1">
 								<span class="slds-truncate">{$menuitem.mlabel}</span>
 							</a>
-						</li>					
+						</li>
+						{else}
+						<li class="slds-dropdown__item" role="presentation">
+							<a href="index.php?action=index&amp;module={$menuitem.mvalue}" role="menuitem" tabindex="-1">
+								<span class="slds-truncate" style="padding-right: 20px;">{$menuitem.mlabel}</span>
+								<svg aria-hidden="true" class="slds-button__icon">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
+								</svg>
+							</a>
+							<ul id="submenu{$i}-" class="moreMenu" style="display: none;">
+							{foreach $menuitem.submenu as $submenu_item}
+								<li class="slds-dropdown__item" role="presentation">
+									<a href="index.php?action=index&amp;module={$submenu_item.mvalue}" role="menuitem" tabindex="-1">
+										<span class="slds-truncate">{$submenu_item.mlabel}</span>
+									</a>
+								</li>
+							{/foreach}
+							</ul>
+						</li>						
+						{/if}					
 					{if $menuitem@last}
 						</ul>
 					</div>
@@ -306,49 +328,6 @@
 		{cbmenu menu=$MENU}
 		</ul>
 	</nav>
-{* 	<nav class="slds-context-bar__secondary" role="navigation">
-		<ul class="slds-grid" id="cbmenu">
-		{foreach from=$MENU item=maintab key=key name=maintabloop}
-			<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true">
-				<a href="javascript:void(0);" class="slds-context-bar__label-action" title="{$maintab.mlabel}">
-					<span class="slds-truncate">{$maintab.mlabel}</span>
-				</a>
-				<div class="slds-context-bar__icon-action slds-p-left--none" tabindex="0">
-					<svg aria-hidden="true" class="slds-button__icon">
-						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevrondown"></use>
-					</svg>
-				</div>
-				{if !empty($maintab.submenu)}
-				<div class="slds-dropdown slds-dropdown--right">
-					<ul class="slds-dropdown__list" role="menu" id="menu0">
-					{foreach from=$maintab.submenu item=subitem key=key name=subitemloop}
-						<li class="slds-dropdown__item" role="presentation">
-							<a href="index.php?action=index&amp;module={$subitem.mvalue}" role="menuitem" tabindex="-1">
-								<span class="slds-truncate">{$subitem.mlabel}</span>
-							</a>
-						</li>
-					{/foreach}						
-					</ul>
-				</div>
-				{/if}
-			</li>
-		{/foreach}
-		</ul>
-		<div class="slds-context-bar__tertiary" style="float:left; margin-top:auto; margin-bottom:auto;">
-			<div class="slds-form-element">
-				<div class="slds-form-element__control">
-					<div class="slds-select_container">
-						<select id="qccombo" class="slds-select" onchange="QCreate(this);">
-							<option value="none">{$APP.LBL_QUICK_CREATE}...</option>
-							{foreach item=detail from=$QCMODULE}
-								<option value="{$detail.1}">{$APP.NEW}&nbsp;{$detail.0}</option>
-							{/foreach}
-						</select>
-					</div>
-				</div>
-			</div>
-		</div>
-	</nav> *}
 </div>
 </div>
 </td>
