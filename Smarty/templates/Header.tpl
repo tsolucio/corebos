@@ -415,6 +415,7 @@
 <script type="text/javascript">
 	jQuery('#tracker').draggable({ldelim} handle: "#Track_Handle" {rdelim});
 </script>
+<script type="text/javascript" src="modules/evvtMenu/evvtMenu.js"></script>
 </div>
 <!-- ActivityReminder Customization for callback -->
 <div class="lvtCol fixedLay1" id="ActivityRemindercallback" style="border: 0; right: 0px; bottom: 2px; display:none; padding: 2px; z-index: 10; font-weight: normal;" align="left">
