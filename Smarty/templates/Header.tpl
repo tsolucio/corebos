@@ -269,7 +269,44 @@
 			</span>
 		</div>
 	</div>
-	<nav class="slds-context-bar__secondary" role="navigation">
+	<nav class="slds-context-bar__secondary" role="navigation">	
+		<ul class="slds-grid" id="cbmenu">
+		{function cbmenu i=0 depth=0}
+			{foreach $menu as $menuitem}
+				{if $depth == 0}
+				<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true">
+					<a href="javascript:void(0);" class="slds-context-bar__label-action" title="{$menitem.mlabel}">
+						<span class="slds-truncate">{$menuitem.mlabel}</span>
+					</a>
+					<div class="slds-context-bar__icon-action slds-p-left--none" tabindex="0">
+						<svg aria-hidden="true" class="slds-button__icon">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevrondown"></use>
+						</svg>
+					</div>
+					{if !empty($menuitem.submenu)}{cbmenu depth=1 i=$i menu=$menuitem.submenu}{/if}
+				{elseif $depth == 1}
+					{if $menuitem@first}
+					<div class="slds-dropdown slds-dropdown--right">
+						<ul class="slds-dropdown__list" role="menu" id="menu{$i}">
+					{/if}
+						<li class="slds-dropdown__item" role="presentation">
+							<a href="index.php?action=index&amp;module={$menuitem.mvalue}" role="menuitem" tabindex="-1">
+								<span class="slds-truncate">{$menuitem.mlabel}</span>
+							</a>
+						</li>					
+					{if $menuitem@last}
+						</ul>
+					</div>
+					{/if}
+				{/if}
+				</li>
+				{$i = $i+1}
+			{/foreach}
+		{/function}
+		{cbmenu menu=$MENU}
+		</ul>
+	</nav>
+{* 	<nav class="slds-context-bar__secondary" role="navigation">
 		<ul class="slds-grid" id="cbmenu">
 		{foreach from=$MENU item=maintab key=key name=maintabloop}
 			<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true">
@@ -311,7 +348,7 @@
 				</div>
 			</div>
 		</div>
-	</nav>
+	</nav> *}
 </div>
 </div>
 </td>
