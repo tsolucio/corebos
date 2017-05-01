@@ -269,9 +269,11 @@
 			</span>
 		</div>
 	</div>
-	{function cbmenu i=0 ii=0 depth=0}
+	{function cbmenu i=0 ii=0 depth=0 startnav=true}
+	{if $startnav == true}
 	<nav class="slds-context-bar__secondary" role="navigation">	
-		<ul class="slds-grid" id="cbmenu">		
+		<ul class="slds-grid" id="cbmenu">
+	{/if}	
 			{foreach $menu as $menuitem}
 				{if $depth == 0}
 				{* Main items *}
@@ -284,7 +286,7 @@
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevrondown"></use>
 						</svg>
 					</div>
-					{if !empty($menuitem.submenu)}{cbmenu depth=1 i=$i menu=$menuitem.submenu}{/if}
+					{if !empty($menuitem.submenu)}{cbmenu depth=1 i=$i menu=$menuitem.submenu startnav=false}{/if}
 				{elseif $depth == 1}
 				{* First level submenus *}
 					{if $menuitem@first}
@@ -324,8 +326,24 @@
 				</li>
 				{$i = $i+1}
 			{/foreach}
+	{if $startnav == true}
+			<div class="slds-context-bar__tertiary" style="float:left; margin-top:auto; margin-bottom:auto;">
+				<div class="slds-form-element">
+					<div class="slds-form-element__control">
+						<div class="slds-select_container">
+						<select id="qccombo" class="slds-select" onchange="QCreate(this);">
+							<option value="none">{$APP.LBL_QUICK_CREATE}...</option>
+							{foreach item=detail from=$QCMODULE}
+								<option value="{$detail.1}">{$APP.NEW}&nbsp;{$detail.0}</option>
+							{/foreach}
+						</select>
+						</div>
+					</div> 
+				</div>
+			</div>		
 		</ul>
 	</nav>
+	{/if}
 	{/function}
 	{cbmenu menu=$MENU}
 </div>
