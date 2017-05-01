@@ -117,10 +117,10 @@ class Google_Utils_Helper {
 //        $user = Users_Record_Model::getCurrentUserModel();
         global $current_user;
         $user = $current_user;
-        $userId = $user->getId();
-        $source_module = $request->get('sourcemodule');
-        $google_group = $request->get('google_group');
-        $sync_direction = $request->get('sync_direction');
+        $userId = $user->id;
+        $source_module = $request['sourcemodule'];
+        $google_group = $request['google_group'];
+        $sync_direction = $request['sync_direction'];
         if(Google_Utils_Helper::hasSettingsForUser($userId)) {
             $sql = 'UPDATE ' . self::settings_table_name . ' SET clientgroup = ?, direction = ?';
             $params = array($google_group,$sync_direction);
@@ -138,15 +138,16 @@ class Google_Utils_Helper {
         global $current_user;
         $user = $current_user;
         $sql = 'SELECT 1 FROM ' . self::fieldmapping_table_name . ' WHERE user = ?';
-        $res = $db->pquery($sql,array($user->getId()));
+        $res = $db->pquery($sql,array($user->id));
         $sqlParams = array();
         if($db->num_rows($res)) {
             $sql = 'DELETE FROM ' . self::fieldmapping_table_name . ' WHERE user = ?';
-            $db->pquery($sql,array($user->getId()));
+            $db->pquery($sql,array($user->id));
         }
         $sql = 'INSERT INTO ' . self::fieldmapping_table_name . ' (vtiger_field,google_field,google_field_type,google_custom_label,user) VALUES ';
+        $fieldMappings= json_decode($fieldMappings,true);
         foreach($fieldMappings as $fieldMap) {
-            $fieldMap['user'] = $user->getId();
+            $fieldMap['user'] = $user->id;
             $values = '(' . generateQuestionMarks($fieldMap) . '), ';
             $params = array();
             foreach($fieldMap as $field) {
@@ -162,8 +163,8 @@ class Google_Utils_Helper {
     static function getSelectedContactGroupForUser($user = false) {
         global $current_user;
 
-        if(!$user) $user = $current_user;
-        $userId = $user->getId();
+        $user = $current_user;
+        $userId = $user->id;
         if(!Google_Utils_Helper::hasSettingsForUser($userId)) {
             return ''; // defaults to all - other contacts groups
         } else {
@@ -176,13 +177,13 @@ class Google_Utils_Helper {
 
     static function getSyncDirectionForUser($user = false) {
         global $current_user;
-        if(!$user) $user = $current_user;
-        if(!Google_Utils_Helper::hasSettingsForUser($user->getId())) {
+        $user = $current_user;
+        if(!Google_Utils_Helper::hasSettingsForUser($user->id)) {
             return '11'; // defaults to bi-directional sync
         } else {
             $db = PearDatabase::getInstance();
             $sql = 'SELECT direction FROM ' . self::settings_table_name . ' WHERE user = ?';
-            $result = $db->pquery($sql, array($user->getId()));
+            $result = $db->pquery($sql, array($user->id));
             return $db->query_result($result, 0, 'direction');
         }
     }
@@ -190,7 +191,6 @@ class Google_Utils_Helper {
     static function getFieldMappingForUser($user = false) {
         global $current_user;
         $user = $current_user;
-        if(!$user) $user = $user;//Users_Record_Model::getCurrentUserModel();
         $db = PearDatabase::getInstance();
         $fieldmapping = array(
             'salutationtype' => array(
@@ -265,7 +265,7 @@ class Google_Utils_Helper {
             )
         );
         $sql = 'SELECT vtiger_field,google_field,google_field_type,google_custom_label FROM ' . self::fieldmapping_table_name . ' WHERE user = ?';
-        $result = $db->pquery($sql,array($user->getId()));
+        $result = $db->pquery($sql,array($user->id));
         for($i=0;$i<$db->num_rows($result);$i++) {
             $row = $db->fetch_row($result);
             $fieldmapping[$row['vtiger_field']] = array(

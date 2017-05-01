@@ -12,35 +12,35 @@ require_once 'vtlib/Vtiger/Net/Client.php';
 
 class Google_Oauth2_Connector {
 
-    protected $service_provider = 'Google';
+    public $service_provider = 'Google';
 
-    protected $source_module;
+    public $source_module;
 
-    protected $user_id;
+    public $user_id;
 
-    protected $db;
+    public $db;
 
-    protected $table_name = 'its4you_googlesync4you_access';
+    public $table_name = 'its4you_googlesync4you_access';
 
-    protected $service_name;
+    public $service_name;
 
-    protected $client_id;
+    public $client_id;
 
-    protected $client_secret;
+    public $client_secret;
 
-    protected $redirect_uri;
+    public $redirect_uri;
 
-    protected $scope;
+    public $scope;
 
-    protected $state;
+    public $state;
 
-    protected $response_type = 'code';
+    public $response_type = 'code';
 
-    protected $access_type = 'offline';
+    public $access_type = 'offline';
 
-    protected $approval_prompt = 'force';
+    public $approval_prompt = 'force';
 
-    protected $scopes = array(
+    public $scopes = array(
         'Contacts' => 'https://www.google.com/m8/feeds',
         'Calendar' => 'https://www.googleapis.com/auth/calendar',
     );
@@ -94,7 +94,7 @@ class Google_Oauth2_Connector {
         return json_encode($this->token['access_token']);
     }
 
-    protected function getAuthUrl() {
+    public function getAuthUrl() {
         $params = array(
             'response_type='.  urlencode($this->response_type),
             'redirect_uri=' . urlencode($this->redirect_uri),
@@ -129,15 +129,15 @@ class Google_Oauth2_Connector {
         return $state;
     }
 
-    protected function setState() {
+    public function setState() {
         $this->state = $this->getState($this->service_name);
     }
 
-    protected function showConsentScreen() {
+    public function showConsentScreen() {
         header('Location: ' . $this->getAuthUrl());
     }
 
-    protected function decryptAuthCode($cipherText) {
+    public function decryptAuthCode($cipherText) {
         $publicKey = VtigerConfig::getOD('OAUTHREDIR_PUBK');
         $pubkey_res = openssl_get_publickey($publicKey);
         $base64Decoded = base64_decode($cipherText);
@@ -145,7 +145,7 @@ class Google_Oauth2_Connector {
         return $decipheredText;
     }
 
-    protected function fireRequest($url,$headers,$params=array(),$method='POST') {
+    public function fireRequest($url,$headers,$params=array(),$method='POST') {
         $httpClient = new Vtiger_Net_Client($url);
         if(count($headers)) $httpClient->setHeaders($headers);
         switch ($method) {
@@ -159,7 +159,7 @@ class Google_Oauth2_Connector {
         return $response;
     }
 
-    protected function exchangeCodeForToken($code) {
+    public function exchangeCodeForToken($code) {
         $params = array(
             'grant_type' => 'authorization_code',
             'code' => $code,
@@ -171,7 +171,7 @@ class Google_Oauth2_Connector {
         return $response;
     }
 
-    protected function storeToken($token) {
+    public function storeToken($token) {
         global $current_user;
         if(!isset($this->user_id)) $this->user_id = $current_user->id;
         if(!isset($this->db)) $this->db = PearDatabase::getInstance();
@@ -185,7 +185,7 @@ class Google_Oauth2_Connector {
         $this->db->pquery($sql,$params);
     }
 
-    protected function retreiveToken() {
+    public function retreiveToken() {
         if(!$this->user_id) $this->user_id = Users_Record_Model::getCurrentUserModel()->getId();
         $query = 'SELECT synctoken,refresh_token FROM ' . $this->table_name . ' WHERE userid=? AND service =?';
         $params = array($this->user_id, $this->service_name);
@@ -199,7 +199,7 @@ class Google_Oauth2_Connector {
         );
     }
 
-    protected function setToken($token) {
+    public function setToken($token) {
         $this->token = $token;
     }
 
@@ -211,7 +211,7 @@ class Google_Oauth2_Connector {
         return $expired;
     }
 
-    protected function updateAccessToken($accesstoken,$refreshtoken) {
+    public function updateAccessToken($accesstoken,$refreshtoken) {
         if(!isset($this->db)) $this->db = PearDatabase::getInstance();
         $sql = 'UPDATE ' . $this->table_name . ' SET synctoken = ? WHERE refresh_token = ? AND service = ?';
         $params = array($accesstoken,$refreshtoken,$this->service_name);
