@@ -269,7 +269,7 @@
 			</span>
 		</div>
 	</div>
-	{function cbmenu i=0 ii=0 depth=0 startnav=true}
+	{function cbmenu i=0 depth=0 startnav=true}
 	{if $startnav == true}
 	<nav class="slds-context-bar__secondary" role="navigation">	
 		<ul class="slds-grid" id="cbmenu">
@@ -307,7 +307,7 @@
 									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
 								</svg>
 							</a>
-							<ul id="submenu{$i}-" class="moreMenu" style="display: none;">
+							<ul id="submenu{$i}-0" class="moreMenu" style="display: none;">
 							{foreach $menuitem.submenu as $submenu_item}
 								<li class="slds-dropdown__item" role="presentation">
 									<a href="index.php?action=index&amp;module={$submenu_item.mvalue}" role="menuitem" tabindex="-1">
@@ -316,7 +316,7 @@
 								</li>
 							{/foreach}
 							</ul>
-						</li>						
+						</li>
 						{/if}					
 					{if $menuitem@last}
 						</ul>
