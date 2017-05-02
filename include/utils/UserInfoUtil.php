@@ -1251,6 +1251,7 @@ function getProfileTabsPermission($profileid)
 	$sql = 'select * from vtiger_profile2tab where profileid=?';
 	$result = $adb->pquery($sql, array($profileid));
 	$num_rows = $adb->num_rows($result);
+	$copy=Array();
 	for($i=0; $i<$num_rows; $i++) {
 		$tab_id = $adb->query_result($result,$i,'tabid');
 		$per_id = (integer)$adb->query_result($result,$i,'permissions');

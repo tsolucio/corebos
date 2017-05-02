@@ -4669,7 +4669,7 @@ function getSelectAllQuery($input,$module) {
 		$oCustomView = new CustomView($module);
 		$query = $oCustomView->getModifiedCvListQuery($viewid,$listquery,$module);
 		$where = '';
-		if($input['query'] == 'true') {
+		if (isset($input['query']) and $input['query'] == 'true') {
 			list($where, $ustring) = explode("#@@#",getWhereCondition($module, $input));
 			if(isset($where) && $where != '') {
 				$query .= " AND " .$where;
@@ -4679,7 +4679,7 @@ function getSelectAllQuery($input,$module) {
 		$queryGenerator = new QueryGenerator($module, $current_user);
 		$queryGenerator->initForCustomViewById($viewid);
 
-		if($input['query'] == 'true') {
+		if (isset($input['query']) and $input['query'] == 'true') {
 			$queryGenerator->addUserSearchConditions($input);
 		}
 		$queryGenerator->setFields(array('id'));

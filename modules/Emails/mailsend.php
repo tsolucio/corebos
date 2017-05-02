@@ -109,7 +109,7 @@ for ($i=0;$i<(count($myids)-1);$i++)
 		$all_to_emailids []= $emailadd;
 		$mail_status_str .= $emailadd."=".$mail_status."&&&";
 	} else {
-		//Send mail to vtiger_account or lead or contact based on their ids
+		//Send mail to account, lead or contact based on their ids
 		$pmodule=getSalesEntityType($mycrmid);
 		for ($j=1;$j<$nemail;$j++) {
 			$temp=$realid[$j];
