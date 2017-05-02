@@ -21,7 +21,7 @@
             <tr>
                     <td width="90%" align="left" class="genHeaderSmall">{$MOD.SYNC_RESULTS}&nbsp;</td>
                     <td width="10%" align="right">
-                            <a href="javascript:fninvsh('GoogleContactsSettings');"><img title="{$APP.LBL_CLOSE}" alt="{$APP.LBL_CLOSE}" src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" /></a>
+                            <a href="javascript:fninvsh('GoogleContactsSettings');"><img title="{$MOD.LBL_CLOSE}" alt="{$MOD.LBL_CLOSE}" src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" /></a>
                     </td>
             </tr>
     </table>

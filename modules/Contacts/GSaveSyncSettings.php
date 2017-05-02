@@ -26,5 +26,5 @@ $listFocus->process($_REQUEST);
 $req = new Vtiger_Request();
 $req->setDefault('return_module','Contacts');
 $req->set('return_action','index');
-header('Location: index.php?' . $req->getReturnURL() );
+//header('Location: index.php?' . $req->getReturnURL() );
 ?>

@@ -21,7 +21,7 @@ class Google_Setting_View {
     }
 
     public function emitContactsSyncSettingUI( $request) {
-        global $current_user,$currentModule,$mod_strings;
+        global $current_user,$currentModule,$mod_strings,$theme;
         $user = $current_user;
         $connector = new Google_Contacts_Connector(FALSE);
         $fieldMappping = Google_Utils_Helper::getFieldMappingForUser();
@@ -35,14 +35,17 @@ class Google_Setting_View {
         $selectedGroup = Google_Utils_Helper::getSelectedContactGroupForUser();
         $syncDirection = Google_Utils_Helper::getSyncDirectionForUser($user);
         $contactsModuleModel = CRMEntity::getInstance($request['sourcemodule']);
+        $handler = vtws_getModuleHandlerFromName($request['sourcemodule'], $current_user);
+        $meta = $handler->getMeta();
+        $moduleFields = $meta->getModuleFields();
         $mandatoryMapFields = array('salutationtype','firstname','lastname','title','account_id','birthday',
             'email','secondaryemail','mobile','phone','homephone','mailingstreet','otherstreet','mailingpobox',
             'otherpobox','mailingcity','othercity','mailingstate','otherstate','mailingzip','otherzip','mailingcountry',
             'othercountry','otheraddress','description','mailingaddress','otheraddress');
         $customFieldMapping = array();
-        $contactsFields = $contactsModuleModel->getFields();
+        $contactsFields = $contactsModuleModel->column_fields;
         foreach($fieldMappping as $vtFieldName => $googleFieldDetails) {
-            if(!in_array($vtFieldName, $mandatoryMapFields) && $contactsFields[$vtFieldName]->isViewable())
+            if(!in_array($vtFieldName, $mandatoryMapFields) )
                 $customFieldMapping[$vtFieldName] = $googleFieldDetails;
         }
         $skipFields = array('reference','contact_id','leadsource','assigned_user_id','donotcall','notify_owner',
@@ -50,20 +53,22 @@ class Google_Setting_View {
             'portal','support_start_date','support_end_date','imagename');
         $emailFields = $phoneFields = $urlFields = $otherFields = array();
         $disAllowedFieldTypes = array('reference','picklist','multipicklist');
-        foreach($contactsFields as $contactFieldModel) {
-            if($contactFieldModel->isViewable() && !in_array($contactFieldModel->getFieldName(),array_merge($mandatoryMapFields,$skipFields))) {
+        foreach($contactsFields as $contactField=>$fieldValue) {
+            if(!in_array($contactField,array_merge($mandatoryMapFields,$skipFields)) && array_key_exists($contactField, $moduleFields)) {
+                $contactFieldModel=$moduleFields["$contactField"];
                 if($contactFieldModel->getFieldDataType() == 'email')
-                    $emailFields[$contactFieldModel->getFieldName()] = $contactFieldModel->get('label');
+                    $emailFields[$contactField] = $contactFieldModel->getFieldLabelKey();
                 else if($contactFieldModel->getFieldDataType() == 'phone')
-                    $phoneFields[$contactFieldModel->getFieldName()] = $contactFieldModel->get('label');
+                    $phoneFields[$contactField] = $contactFieldModel->getFieldLabelKey();
                 else if($contactFieldModel->getFieldDataType() == 'url')
-                    $urlFields[$contactFieldModel->getFieldName()] = $contactFieldModel->get('label');
+                    $urlFields[$contactField] = $contactFieldModel->getFieldLabelKey();
                 else if(!in_array ($contactFieldModel->getFieldDataType(), $disAllowedFieldTypes))
-                    $otherFields[$contactFieldModel->getFieldName()] = $contactFieldModel->get('label');
+                    $otherFields[$contactField] = $contactFieldModel->getFieldLabelKey();
             }
         }
         $viewer = new vtigerCRM_Smarty();
         $viewer->assign('MOD', $mod_strings);
+        $viewer->assign("THEME", $theme);
         $viewer->assign('MODULENAME', $request['sourcemodule']);
         $viewer->assign('SOURCE_MODULE', $request['sourcemodule']);
         $viewer->assign('SELECTED_GROUP', $selectedGroup);

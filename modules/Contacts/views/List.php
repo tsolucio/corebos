@@ -51,6 +51,7 @@ class Google_List_View  {
         $oauth2->authorize();
     }
     function renderSyncUI( $request) {
+        global $theme;
         $viewer = new vtigerCRM_Smarty();
         $sourceModule = $request['sourcemodule'];
         $oauth2 = new Google_Oauth2_Connector($sourceModule);
@@ -72,6 +73,7 @@ class Google_List_View  {
         $firstime = $oauth2->hasStoredToken();
         $viewer->assign('MODULE_NAME', 'Contacts');
         $viewer->assign('FIRSTTIME', $firstime);
+        $viewer->assign('THEME', $theme);
         $viewer->assign('RECORDS', $records);
         $viewer->assign('NORECORDS', $this->noRecords);
         global $mod_strings;
@@ -79,14 +81,9 @@ class Google_List_View  {
         //$viewer->assign('SYNCTIME', Google_Utils_Helper::getLastSyncTime($sourceModule));
         //$viewer->assign('STATE', $request->get('operation'));
         $viewer->assign('SOURCEMODULE', 'Contacts');
-        if (!$firstime) {
-            $viewer->display("modules/Contacts/Contents.tpl");
-            //$viewer->display('Contents.tpl', $request->getModule());
-        } else {
-            $viewer->display("modules/Contacts/ContentDetails.tpl");
+        $viewer->display("modules/Contacts/ContentDetails.tpl");
 //            $viewer->fetch(vtlib_getModuleTemplate("Contacts","ContentDetails.tpl"));
             //echo $viewer->view('ContentDetails.tpl', $request->getModule(), true);
-        }
     }
 
     /**
@@ -144,9 +141,10 @@ class Google_List_View  {
      */
     public function getSyncRecordsCount($syncRecords) {
         $countRecords = array('vtiger' => array('update' => 0, 'create' => 0, 'delete' => 0), 'google' => array('update' => 0, 'create' => 0, 'delete' => 0));
+        $pushRecord = false;
+        $pullRecord = false;
         foreach ($syncRecords as $key => $records) {
             if ($key == 'push') {
-                $pushRecord = false;
                 if (count($records) == 0) {
                     $pushRecord = true;
                 }
@@ -164,7 +162,6 @@ class Google_List_View  {
                     }
                 }
             } else if ($key == 'pull') {
-                $pullRecord = false;
                 if (count($records) == 0) {
                     $pullRecord = true;
                 }
