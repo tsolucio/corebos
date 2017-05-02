@@ -275,7 +275,7 @@
 		<ul class="slds-grid" id="cbmenu">
 	{/if}	
 			{foreach $menu as $menuitem}
-				{if $depth == 0}
+				{if $depth == 0 && $menuitem.mtype != 'sep' && $menuitem.mtype != 'headtop'}
 				{* Main items *}
 				<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true">
 					<a href="javascript:void(0);" class="slds-context-bar__label-action" title="{$menitem.mlabel}">
@@ -287,7 +287,7 @@
 						</svg>
 					</div>
 					{if !empty($menuitem.submenu)}{cbmenu depth=1 i=$i menu=$menuitem.submenu startnav=false}{/if}
-				{elseif $depth == 1}
+				{elseif $depth == 1 && $menuitem.mtype != 'sep' && $menuitem.mtype != 'headtop'}
 				{* First level submenus *}
 					{if $menuitem@first}
 					<div class="slds-dropdown slds-dropdown--right">
@@ -322,6 +322,11 @@
 						</ul>
 					</div>
 					{/if}
+				{elseif $menuitem.mtype == 'sep'}
+				<li class="slds-dropdown__header slds-has-divider--top-space" role="separator">
+				{elseif $menuitem.mtype == 'headtop'}
+				<li class="slds-dropdown__header slds-has-divider--top-space" role="separator">
+					<span class="slds-text-title--caps">{$menuitem.mlabel}</span>
 				{/if}
 				</li>
 				{$i = $i+1}
