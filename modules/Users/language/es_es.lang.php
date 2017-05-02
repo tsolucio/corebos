@@ -153,7 +153,7 @@ $mod_strings = Array(
 'LBL_CONTACTS'=>'Contactos',
 'LBL_OPPURTUNITIES'=>'Oportunidades',
 'LBL_TASKS'=>'Tareas',
-'LBL_CASES'=>'Tickets',
+'LBL_CASES'=>'Incidencias',
 'LBL_EMAILS'=>'Emails',
 'LBL_NOTES'=>'Documentos',
 'LBL_MEETINGS'=>'Reuniones',
@@ -491,7 +491,6 @@ $mod_strings = Array(
 'UA'=>'Próximas Actividades',
 'PA'=>'Actividades Pendientes',
 
-//Added for 5.0 alpha
 'LBL_GROUP_NAME_ERROR'=>'¡El nombre del grupo ya existe!',
 'MNL'=>'Últimos Pre-contactos',
 'LBL_LEAD_VIEW'=>'Vista por defecto de Pre-contactos',
@@ -515,9 +514,7 @@ $mod_strings = Array(
 'LBL_CHANGE_PHOTO'=>'Cambiar Foto...',
 'LBL_CHANGE'=>'Cambiar',
 
-
 //Added for Access Privileges
-
 'LBL_GLOBAL_FIELDS_MANAGER'=>'Gestor de Privilegios de Acceso Globales',
 'LBL_GLOBAL_ACCESS_PRIVILEGES'=>'Privilegios de Acceso Globales',
 'LBL_CUSTOM_ACCESS_PRIVILEGES'=>'Privilegios de Acceso Personalizados',
