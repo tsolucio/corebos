@@ -361,7 +361,7 @@ class SyncServer {
 	 * Share the Create/Update/Delete state information
 	 */
 	function get($key, $module, $token, $user) {
-            global $log;
+		global $log;
 		$db = PearDatabase::getInstance();
 		$appid = $this->appid_with_key($key);
 		if (empty($appid)) {

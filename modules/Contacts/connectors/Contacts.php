@@ -315,7 +315,6 @@ Class Google_Contacts_Connector extends WSAPP_TargetConnector {
         );
         if(!isset($this->selectedGroup))
             $this->selectedGroup = Google_Utils_Helper::getSelectedContactGroupForUser($user);
-
         if($this->selectedGroup != '' && $this->selectedGroup != 'all') {
             if($this->selectedGroup == 'none') return array();
             if(!isset($this->groups)) {

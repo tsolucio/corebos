@@ -34,7 +34,7 @@
                 <div class="row-fluid"><span class="span7 "> {$MOD.LBL_DELETED} :</span> <span class='span5 '>{$RECORD['delete']} </span></div>
                 {if $RECORD['more']}
 					<div class="row-fluid"><span style='background:#FFFBCF;' class="span11" title="{$MOD.LBL_MORE_VTIGER}">{$MOD.LBL_MORE_VTIGER}</span>
-                {/if}    
+                {/if}
             </div>
          {else}
             <br>
@@ -47,7 +47,7 @@
 					<div class="row-fluid"><span style='background:#FFFBCF;' class="span11" title="{$MOD.LBL_MORE_GOOGLE}">{$MOD.LBL_MORE_GOOGLE}</span>
                 {/if}
             </div>
-         {/if}   
+         {/if}
     {/foreach}
     {*<div class='row-fluid'>
         {if $SYNCTIME}<p class="muted span12"><small title="{Vtiger_Util_Helper::formatDateTimeIntoDayString($SYNCTIME)}">{$MOD.LBL_SYNCRONIZED} : {Vtiger_Util_Helper::formatDateDiffInStrings($SYNCTIME)}</small></p>{/if}

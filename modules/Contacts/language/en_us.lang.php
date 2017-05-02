@@ -100,9 +100,6 @@ $mod_strings = Array(
 //Added for search heading
 'LBL_GENERAL_INFORMATION'=>'General Information',
 
-
-
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'New Opportunity',
 'LBL_POTENTIAL_TITLE'=>'Opportunities',
 
@@ -117,7 +114,6 @@ $mod_strings = Array(
 'LBL_NEW_NOTE'=>'New Document',
 'LBL_NOTE_TITLE'=>'Documents',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Contact Tools',
 
 'Salutation'=>'Salutation',
@@ -300,7 +296,6 @@ $mod_strings = Array(
 'Secondary_Email'=>'Secondary email',
 'Mobile_Phone'=>'Mobile Phone',
 'Office_Phone'=>'Office Phone',
-    
 'Home_Phone' => 'Home Phone',
 'Mailing_Address' => 'Mailing Address',
 'Other_Address' => 'Other Address',
