@@ -319,6 +319,7 @@ $mod_strings = Array(
 'SIGN_IN_TITLE'=>'Sign In to the google account to authorize the Sync Process',
 'SYNC_SETT_TITLE'=>'Set default user parameters for the Sync Process',
 'SYNC_RESULTS'=>'Sync Results',
+'LBL_CLOSE'=>'Close',
 );
 
 ?>

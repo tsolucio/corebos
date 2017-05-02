@@ -113,9 +113,12 @@ Class Google_Contacts_Connector extends WSAPP_TargetConnector {
      */
     public function getMappedValue($valueSet,$mapping) {
     $key = $mapping['google_field_type'];
+    $return='';
         if($key == 'custom')
             $key = $mapping['google_custom_label'];
-        return $valueSet[decode_html($key)];
+        if(isset($valueSet[decode_html($key)]))
+            $return=$valueSet[decode_html($key)];
+        return $return;
     }
 
     /**
@@ -194,25 +197,25 @@ Class Google_Contacts_Connector extends WSAPP_TargetConnector {
                     $googleFieldValue = $this->getGoogleFieldValue($googleFieldDetails, $googleRecord, $current_user);
                     if($vtFieldName == 'mailingaddress') {
                         $address = $googleFieldValue;
-                        $entity['mailingstreet'] = $address['street'];
-                        $entity['mailingpobox'] = $address['pobox'];
-                        $entity['mailingcity'] = $address['city'];
-                        $entity['mailingstate'] = $address['region'];
-                        $entity['mailingzip'] = $address['postcode'];
-                        $entity['mailingcountry'] = $address['country'];
+                        $entity['mailingstreet'] = (isset($address['street']) ? $address['street'] : '');
+                        $entity['mailingpobox'] = (isset($address['pobox']) ? $address['pobox']: '');
+                        $entity['mailingcity'] = (isset($address['city']) ? $address['city']: '');
+                        $entity['mailingstate'] = (isset($address['region']) ? $address['region']: '');
+                        $entity['mailingzip'] = (isset($address['postcode']) ? $address['postcode']: '');
+                        $entity['mailingcountry'] = (isset($address['country']) ?$address['country']: '');
                         if(empty($entity['mailingstreet'])) {
-                            $entity['mailingstreet'] = $address['formattedAddress'];
+                            $entity['mailingstreet'] = (isset($address['formattedAddress']) ?$address['formattedAddress']: '');
                         }
                     } else if($vtFieldName == 'otheraddress') {
                         $address = $googleFieldValue;
-                        $entity['otherstreet'] = $address['street'];
-                        $entity['otherpobox'] = $address['pobox'];
-                        $entity['othercity'] = $address['city'];
-                        $entity['otherstate'] = $address['region'];
-                        $entity['otherzip'] = $address['postcode'];
-                        $entity['othercountry'] = $address['country'];
+                        $entity['otherstreet'] = (isset($address['street']) ? $address['street']: '');
+                        $entity['otherpobox'] = (isset($address['pobox']) ? $address['pobox']: '');
+                        $entity['othercity'] = (isset($address['city']) ? $address['city']: '');
+                        $entity['otherstate'] = (isset($address['region']) ? $address['region']: '');
+                        $entity['otherzip'] = (isset($address['postcode']) ? $address['postcode']: '');
+                        $entity['othercountry'] = (isset($address['country']) ? $address['country']: '');
                         if(empty($entity['otherstreet'])) {
-                            $entity['otherstreet'] = $address['formattedAddress'];
+                            $entity['otherstreet'] = (isset($address['formattedAddress']) ? $address['formattedAddress']: '');
                         }
                     } else {
                     $entity[$vtFieldName] = $googleFieldValue;
@@ -286,8 +289,11 @@ Class Google_Contacts_Connector extends WSAPP_TargetConnector {
 
     function getContactListFeed($query) {
         $feed = $this->fetchContactsFeed($query);
+        $ret=array();
         $decoded_feed = json_decode($feed,true);
-        return $decoded_feed['feed'];
+        if(isset($decoded_feed['feed']))
+            $ret=$decoded_feed['feed'];
+        return $ret;
     }
 
     function googleFormat($date) {
@@ -344,9 +350,12 @@ Class Google_Contacts_Connector extends WSAPP_TargetConnector {
                 $query['max-results'] = $max_results;
                 $query['updated-max'] = $this->googleFormat($maxModifiedTime);
                 $extendedFeed = $this->getContactListFeed($query);
-                if(is_array($extendedFeed['entry'])) {
-                    $contactRecords = array_merge($feed['entry'], $extendedFeed['entry']);
-                } else {
+                if(isset($extendedFeed['entry'])){
+                    if(is_array($extendedFeed['entry'])) {
+                        $contactRecords = array_merge($feed['entry'], $extendedFeed['entry']);
+                    } 
+                }
+                else {
                     $contactRecords = $feed['entry'];
                 }
             } else {

@@ -41,6 +41,8 @@ class Google_Contacts_Model extends WSAPP_SyncRecordModel {
      * @return <string> $first name
      */
     function getFirstName() {
+        $fname='';
+        if(isset($this->data['entity']) && isset($this->data['entity']['gd$name']) && isset($this->data['entity']['gd$name']['gd$givenName']) && isset($this->data['entity']['gd$name']['gd$givenName']['$t']))
         $fname = $this->data['entity']['gd$name']['gd$givenName']['$t'];
         return $fname;
     }
@@ -50,7 +52,9 @@ class Google_Contacts_Model extends WSAPP_SyncRecordModel {
      * @return <string> Last name
      */
     function getLastName() {
-        $lname = $this->data['entity']['gd$name']['gd$familyName']['$t'];
+        $lname='';
+        if(isset($this->data['entity']) && isset($this->data['entity']['gd$name']) && isset($this->data['entity']['gd$name']['gd$familyName']) && isset($this->data['entity']['gd$name']['gd$familyName']['$t']))
+            $lname = $this->data['entity']['gd$name']['gd$familyName']['$t'];
         return $lname;
     }
 
@@ -59,7 +63,9 @@ class Google_Contacts_Model extends WSAPP_SyncRecordModel {
      * @return <array> emails
      */
     function getEmails() {
-        $arr = $this->data['entity']['gd$email'];
+        $arr=array();
+        if(isset($this->data['entity']) && isset($this->data['entity']['gd$email']))
+            $arr = $this->data['entity']['gd$email'];
         $emails = array();
         if (is_array($arr)) {
             foreach ($arr as $email) {
@@ -79,7 +85,9 @@ class Google_Contacts_Model extends WSAPP_SyncRecordModel {
      */
     function getPhones() {
 
-        $arr = $this->data['entity']['gd$phoneNumber'];
+        $arr=array();
+        if(isset($this->data['entity']) && isset($this->data['entity']['gd$phoneNumber']))
+            $arr = $this->data['entity']['gd$phoneNumber'];
         $phones = array();
         if(is_array($arr)) {
             foreach ($arr as $phone) {
@@ -99,18 +107,20 @@ class Google_Contacts_Model extends WSAPP_SyncRecordModel {
      * @return <array> Addresses
      */
     function getAddresses() {
+        $arr=array();
+        if(isset($this->data['entity']) && isset($this->data['entity']['gd$structuredPostalAddress']))
         $arr = $this->data['entity']['gd$structuredPostalAddress'];
         $addresses = array();
         if(is_array($arr)) {
             foreach ($arr as $address) {
                 $structuredAddress = array(
-                    'street' => $address['gd$street']['$t'],
-                    'pobox' => $address['gd$pobox']['$t'],
-                    'postcode' => $address['gd$postcode']['$t'],
-                    'city' => $address['gd$city']['$t'],
-                    'region' => $address['gd$region']['$t'],
-                    'country' => $address['gd$country']['$t'],
-                    'formattedAddress' => $address['gd$formattedAddress']['$t']
+                    'street' => ((isset($address['gd$street']) && isset($address['gd$street']['$t'])) ? $address['gd$street']['$t'] : '' ),
+                    'pobox' => ((isset($address['gd$pobox']['$t']) && isset($address['gd$pobox'])) ? $address['gd$pobox']['$t']: '' ),
+                    'postcode' => ((isset($address['gd$postcode']) && isset($address['gd$postcode']['$t'])) ? $address['gd$postcode']['$t'] : '' ),
+                    'city' => ((isset($address['gd$city']) && isset($address['gd$city']['$t'])) ? $address['gd$city']['$t']: '' ),
+                    'region' => ((isset($address['gd$region']) && isset($address['gd$region']['$t'])) ? $address['gd$region']['$t']: '' ),
+                    'country' => ((isset($address['gd$country']) && isset($address['gd$country']['$t'])) ? $address['gd$country']['$t']: '' ),
+                    'formattedAddress' => ((isset($address['gd$formattedAddress']) && isset($address['gd$formattedAddress']['$t'])) ? $address['gd$formattedAddress']['$t']: '' )
                 );
                 if(isset($address['rel']))
                     $labelAddress = parse_url($address['rel'], PHP_URL_FRAGMENT);
@@ -124,7 +134,9 @@ class Google_Contacts_Model extends WSAPP_SyncRecordModel {
 
     function getUserDefineFieldsValues() {
         $fieldValues = array();
-        $userDefinedFields = $this->data['entity']['gContact$userDefinedField'];
+        $userDefinedFields=array();
+        if(isset($this->data['entity']) && isset($this->data['entity']['gContact$userDefinedField']))
+            $userDefinedFields = $this->data['entity']['gContact$userDefinedField'];
         if(is_array($userDefinedFields) && count($userDefinedFields)) {
             foreach($userDefinedFields as $userDefinedField) {
                 $fieldName = $userDefinedField['key'];
@@ -135,7 +147,9 @@ class Google_Contacts_Model extends WSAPP_SyncRecordModel {
     }
 
     function getUrlFields() {
-        $websiteFields = $this->data['entity']['gContact$website'];
+        $websiteFields=array();
+        if(isset($this->data['entity']) && isset($this->data['entity']['gContact$website']))
+            $websiteFields = $this->data['entity']['gContact$website'];
         $urls = array();
         if(is_array($websiteFields)) {
             foreach($websiteFields as $website) {
@@ -151,20 +165,31 @@ class Google_Contacts_Model extends WSAPP_SyncRecordModel {
     }
 
     function getBirthday() {
-        return $this->data['entity']['gContact$birthday']['when'];
+        $birth='';
+        if(isset($this->data['entity']) && isset($this->data['entity']['gContact$birthday']) && isset($this->data['entity']['gContact$birthday']['when']))
+            $birth=$this->data['entity']['gContact$birthday']['when'];
+        return $birth;
     }
 
     function getTitle() {
-        return $this->data['entity']['gd$organization'][0]['gd$orgTitle']['$t'];
+        $title='';
+        if(isset($this->data['entity']) && isset($this->data['entity']['gd$organization']) && isset($this->data['entity']['gd$organization'][0]) && isset($this->data['entity']['gd$organization'][0]['gd$orgTitle']) && isset($this->data['entity']['gd$organization'][0]['gd$orgTitle']['$t']))
+            $title=$this->data['entity']['gd$organization'][0]['gd$orgTitle']['$t'];
+        return $title;
     }
 
     function getAccountName() {
-        $orgName = $this->data['entity']['gd$organization'][0]['gd$orgName']['$t'];
+        $orgName='';
+        if(isset($this->data['entity']) && isset($this->data['entity']['gd$organization']) && isset($this->data['entity']['gd$organization'][0]) && isset($this->data['entity']['gd$organization'][0]['gd$orgName']) && isset($this->data['entity']['gd$organization'][0]['gd$orgName']['$t']))
+            $orgName = $this->data['entity']['gd$organization'][0]['gd$orgName']['$t'];
         return $orgName;
     }
 
     function getDescription() {
-        return $this->data['entity']['content']['$t'];
+        $desc='';
+        if(isset($this->data['entity']) && isset($this->data['entity']['content']) && isset($this->data['entity']['content']['$t']))
+            $desc=$this->data['entity']['content']['$t'];
+        return $desc;
     }
 
     /**

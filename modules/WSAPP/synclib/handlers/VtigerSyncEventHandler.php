@@ -59,12 +59,16 @@ class WSAPP_VtigerSyncEventHandler extends SyncHandler{
 		foreach($recordList as $record){
 			$nativeRecord = $record;
 			$nativeRecord['id'] = $record['_id'];
-			$nativeRecord['_id'] = $record['id'];
+			
 			$nativeRecord['modifiedtime'] = $record['_modifiedtime'];
 			$nativeRecord['_modifiedtime'] = $record['modifiedtime'];
 			//restoring the synckey which will help synchronize controller to identify the record
-			$nativeRecord['_syncidentificationkey'] = $this->putOperationClientIdAndSyncKeyMapping[$nativeRecord['_id']];
-			$nativeFormatRecordList[] = $nativeRecord;
+                        if(isset($record['id'])){
+                            $nativeRecord['_id'] = $record['id'];
+                            $nativeRecord['_syncidentificationkey'] = $this->putOperationClientIdAndSyncKeyMapping[$nativeRecord['_id']];
+                            $nativeFormatRecordList[] = $nativeRecord;
+                        }
+			
 		}
 		return $nativeFormatRecordList;
 	}

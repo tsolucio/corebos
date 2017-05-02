@@ -84,7 +84,8 @@ class WSAPP_VtigerConnector extends WSAPP_BaseConnector {
 	}
 
 	function registerWithTracker() {
-		return wsapp_register($this->getSyncTrackerHandlerName(), $this->getSynchronizeController()->getSyncType(), $this->user);
+            global $current_user;
+		return wsapp_register($this->getSyncTrackerHandlerName(), $this->getSynchronizeController()->getSyncType(), $current_user);
 	}
 
 	function updateSyncState(WSAPP_SyncStateModel $syncStateModel) {
