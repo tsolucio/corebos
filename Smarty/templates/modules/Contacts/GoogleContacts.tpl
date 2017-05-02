@@ -249,12 +249,10 @@ button.close {
 		</table>
 		<table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport">
 			<tr><td align=center class="small">
-				<input type="button" name="{$APP.LBL_CANCEL_BUTTON_LABEL}" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="crmbutton small cancel" onclick="fninvsh('GoogleContacts');" />
+				<input type="button" name="cancel_syncsetting" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="crmbutton small cancel" onclick="fninvsh('GoogleContacts');" />
 			</td></tr>
 		</table>
 	</div>
-                        
-        
 </form>
 
 <div class="edit-profile-block"  id="GoogleContactsSettings" style="display: none;">

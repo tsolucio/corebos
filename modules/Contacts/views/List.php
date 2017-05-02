@@ -41,6 +41,9 @@ class Google_List_View  {
         $viewer->assign('SYNCTIME', Google_Utils_Helper::getLastSyncTime($sourceModule));
         $viewer->assign('SOURCEMODULE', $request->get('sourcemodule'));
         $viewer->assign('SCRIPTS',$this->getHeaderScripts($request));
+        global $coreBOS_app_name;
+        $coreBOS_uiapp_name = GlobalVariable::getVariable('Application_UI_Name',$coreBOS_app_name);
+        $viewer->assign('coreBOS_uiapp_name',$coreBOS_uiapp_name);
         $viewer->view('Contents.tpl', $request->getModule());
     }
 
@@ -76,7 +79,8 @@ class Google_List_View  {
         $viewer->assign('THEME', $theme);
         $viewer->assign('RECORDS', $records);
         $viewer->assign('NORECORDS', $this->noRecords);
-        global $mod_strings;
+        global $mod_strings, $app_strings;
+        $viewer->assign('APP', $app_strings);
         $viewer->assign('MOD', $mod_strings);
         //$viewer->assign('SYNCTIME', Google_Utils_Helper::getLastSyncTime($sourceModule));
         //$viewer->assign('STATE', $request->get('operation'));

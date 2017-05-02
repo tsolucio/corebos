@@ -21,7 +21,7 @@
             <tr>
                     <td width="90%" align="left" class="genHeaderSmall">{$MOD.SYNC_RESULTS}&nbsp;</td>
                     <td width="10%" align="right">
-                            <a href="javascript:fninvsh('GoogleContactsSettings');"><img title="{$MOD.LBL_CLOSE}" alt="{$MOD.LBL_CLOSE}" src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" /></a>
+                            <a href="javascript:fninvsh('GoogleContactsSettings');"><img title="{$APP.LBL_CLOSE}" alt="{$APP.LBL_CLOSE}" src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" /></a>
                     </td>
             </tr>
     </table>
@@ -58,10 +58,8 @@
     <table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport">
             <tr>
                 <td align=center class="small">
-                    <input type="button" name="{$MOD.LBL_CANCEL}" value=" {$MOD.LBL_CANCEL} " class="crmbutton small cancel" onclick="fninvsh('GoogleContactsSettings');" />
+                    <input type="button" name="cancel_syncsetting" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="crmbutton small cancel" onclick="fninvsh('GoogleContactsSettings');" />
                 </td>
             </tr>
     </table>
 </div>
-      
-    

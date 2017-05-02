@@ -56,7 +56,7 @@
         <table  class="table table-condensed table-striped table-bordered " >
             <thead>
                 <tr>
-                    <td><b>{vtranslate('APPTITLE',$MODULE_NAME)}</b></td>
+                    <td><b>{$coreBOS_uiapp_name}</b></td>
                     <td><b>{vtranslate('EXTENTIONNAME',$MODULE_NAME)}</b></td>
                 </tr>
             </thead>

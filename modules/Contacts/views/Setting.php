@@ -21,7 +21,7 @@ class Google_Setting_View {
     }
 
     public function emitContactsSyncSettingUI( $request) {
-        global $current_user,$currentModule,$mod_strings,$theme;
+        global $current_user,$currentModule,$app_strings,$mod_strings,$theme;
         $user = $current_user;
         $connector = new Google_Contacts_Connector(FALSE);
         $fieldMappping = Google_Utils_Helper::getFieldMappingForUser();
@@ -67,6 +67,7 @@ class Google_Setting_View {
             }
         }
         $viewer = new vtigerCRM_Smarty();
+        $viewer->assign('APP', $app_strings);
         $viewer->assign('MOD', $mod_strings);
         $viewer->assign("THEME", $theme);
         $viewer->assign('MODULENAME', $request['sourcemodule']);
@@ -81,6 +82,9 @@ class Google_Setting_View {
         $viewer->assign('VTIGER_PHONE_FIELDS',$phoneFields);
         $viewer->assign('VTIGER_URL_FIELDS',$urlFields);
         $viewer->assign('VTIGER_OTHER_FIELDS',$otherFields);
+        global $coreBOS_app_name;
+        $coreBOS_uiapp_name = GlobalVariable::getVariable('Application_UI_Name',$coreBOS_app_name);
+        $viewer->assign('coreBOS_uiapp_name',$coreBOS_uiapp_name);
         $viewer->display('modules/Contacts/ContactsSyncSettings.tpl');
     }
 
