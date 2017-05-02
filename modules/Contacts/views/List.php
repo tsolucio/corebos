@@ -66,9 +66,9 @@ class Google_List_View  {
                 $errorCode = $e->getResponse()->getStatus();
                 if($errorCode == 401) {
                     $this->removeSynchronization($request);
-                    $response = new Vtiger_Response();
-                    $response->setError(401);
-                    $response->emit();
+					$viewer->assign('ERROR_MESSAGE_CLASS', 'cb-alert-danger');
+					$viewer->assign('ERROR_MESSAGE', getTranslatedString('ERR_GContactsSync','Contacts'));
+					$viewer->display('applicationmessage.tpl');
                     return false;
                 }
             }
