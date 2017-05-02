@@ -372,10 +372,8 @@ function doSaveSettings(){
     var fieldMapping = packFieldmappingsForSubmit(container);
     form.find('#user_field_mapping').val(fieldMapping);
 //    var serializedFormData = JSON.stringify(form);
-    var form = document.forms['contactsyncsettings'];
-    form.action.value = 'GSaveSyncSettings';
-    form.module.value = 'Contacts';
-    form.submit();
+//    var form = document.forms['contactsyncsettings'];
+//    form.submit();
 //    jQuery.ajax({
 //            type : 'post',
 //            data :  serializedFormData,

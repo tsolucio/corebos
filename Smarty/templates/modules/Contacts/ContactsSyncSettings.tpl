@@ -18,9 +18,10 @@
                     </td>
             </tr>
     </table>
-    <form class="form-horizontal" name="contactsyncsettings" id="contactsyncsettings" action="index.php?module=Contacts&action=index" onsubmit="VtigerJS_DialogBox.block();" method="POST">
+    <form class="form-horizontal" name="contactsyncsettings" id="contactsyncsettings" onsubmit="VtigerJS_DialogBox.block();" method="POST">
         <input type="hidden" name="module" value="{$MODULENAME}" />
-        <input type="hidden" name="action" value="index" />
+        <input type="hidden" name="action" value="{$MODULENAME}Ajax" />
+        <input type="hidden" name="file" value="GSaveSyncSettings" />
         <input type="hidden" name="sourcemodule" value="{$SOURCE_MODULE}" />
         <input id="user_field_mapping" type="hidden" name="fieldmapping" value="fieldmappings" />
         <input id="google_fields" type="hidden" value='{$GOOGLE_FIELDS|@json_encode}' />
@@ -358,13 +359,13 @@
                 </table>
                 <br>
                 <br><br>
-            </div>            
+            </div>
         </div>
     
     <table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport">
             <tr>
                 <td align=center class="small">
-                    <input name="{$MOD.LBL_SAVE}" value=" {$MOD.LBL_SAVE} "id="save_syncsetting" class="crmbutton small save" onclick="this.form.action.value='GSaveSyncSettings'; return saveSettings()" type="submit" /> 
+                    <input name="{$MOD.LBL_SAVE}" value=" {$MOD.LBL_SAVE} "id="save_syncsetting" class="crmbutton small save" onclick="return saveSettings()" type="submit" />
                     <input type="button" name="{$MOD.LBL_CANCEL}" value=" {$MOD.LBL_CANCEL} " class="crmbutton small cancel" onclick="fninvsh('GoogleContactsSettings');" />
                 </td>
             </tr>
