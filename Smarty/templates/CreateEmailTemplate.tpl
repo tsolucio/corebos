@@ -46,15 +46,12 @@
              {assign var="optioncount" value=$optioncount+1}
 				options[{$optioncount}] = new Option('{$detail.0}', '{$detail.1}');
 			{/foreach}      
-			 {assign var="alloptioncount" value=$alloptioncount+1}     
+			 {assign var="alloptioncount" value=$alloptioncount+1}
              allOpts[{$alloptioncount}] = options;
 	    {/foreach}
-        setAllOptions(allOpts);	    
+        setAllOptions(allOpts);
     }
-	
-	
 
-	
 {literal}
 	function cancelForm(frm)
 	{
