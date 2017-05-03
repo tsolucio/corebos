@@ -401,18 +401,19 @@ class CRMEntity {
 			// Customization
 			$created_date_var = $adb->formatDate($date_var, true);
 			$modified_date_var = $adb->formatDate($date_var, true);
-
+			$createdbyuser = $current_user->id;
 			// Preserve the timestamp
 			if (self::isBulkSaveMode()) {
 				if (!empty($this->column_fields['createdtime']))
 					$created_date_var = $adb->formatDate($this->column_fields['createdtime'], true);
+				if (!empty($this->column_fields['creator']))
+					$createdbyuser = $this->column_fields['creator'];
 				//NOTE : modifiedtime ignored to support vtws_sync API track changes.
 			}
-			// END
 
 			$description_val = empty($this->column_fields['description']) ? '' : from_html($this->column_fields['description']);
 			$sql = "insert into vtiger_crmentity (crmid,smcreatorid,smownerid,setype,description,modifiedby,createdtime,modifiedtime) values(?,?,?,?,?,?,?,?)";
-			$params = array($current_id, $current_user->id, $ownerid, $module, $description_val, $current_user->id, $created_date_var, $modified_date_var);
+			$params = array($current_id, $createdbyuser, $ownerid, $module, $description_val, $current_user->id, $created_date_var, $modified_date_var);
 			$adb->pquery($sql, $params);
 			$this->id = $current_id;
 		}
