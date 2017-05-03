@@ -14,6 +14,7 @@
 <nav class="slds-context-bar__secondary" role="navigation">	
 	<ul class="slds-grid" id="cbmenu">
 	{foreach $menu as $menuitem}
+		{if $menuitem.mtype == 'menu'}
 		<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true">
 			<a href="javascript:void(0);" class="slds-context-bar__label-action" title="{$menitem.mlabel}">
 				<span class="slds-truncate">{$menuitem.mlabel}</span>
@@ -27,6 +28,13 @@
 			{call cbsubmenu submenu=$menuitem.submenu i=$i}	
 			{/if}
 		</li>
+		{elseif $menuitem.mtype == 'module'}
+		<li class="slds-context-bar__item">
+			<a href="index.php?action=index&amp;module={$menuitem.mvalue}" class="slds-context-bar__label-action" title="{$menuitem.mlabel}">
+				<span class="slds-truncate">{$menuitem.mlabel}</span>
+			</a>
+		</li>		
+		{/if}
 		{$i = $i+1}
 	{/foreach}
 	</ul>
