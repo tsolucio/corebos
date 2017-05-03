@@ -545,22 +545,24 @@ class ListViewController {
 							$this->nameList[$fieldName][$value] = $en[$value];
 						}
 					}
-					if(count($moduleList) == 1) {
-						$parentModule = $moduleList[0];
-					} else {
-						$parentModule = $this->typeList[$value];
-					}
-					if(!empty($value) && !empty($this->nameList[$fieldName]) && !empty($this->nameList[$fieldName][$value]) && !empty($parentModule)) {
-						$parentMeta = $this->queryGenerator->getMeta($parentModule);
-						$value = textlength_check($this->nameList[$fieldName][$value]);
-						if ($parentMeta->isModuleEntity() && $parentModule != "Users") {
-							$value = "<a href='index.php?module=$parentModule&action=DetailView&".
-								"record=$rawValue' title='".getTranslatedString($parentModule, $parentModule)."'>$value</a>";
-							$modMetaInfo=getEntityFieldNames($parentModule);
-							$fieldName=(is_array($modMetaInfo['fieldname']) ? $modMetaInfo['fieldname'][0] : $modMetaInfo['fieldname']);
-							// vtlib customization: For listview javascript triggers
-							$value = "$value <span type='vtlib_metainfo' vtrecordid='{$rawValue}' vtfieldname=".
-							"'{$fieldName}' vtmodule='$parentModule' style='display:none;'></span>";
+					if (!empty($value) && !empty($this->nameList[$fieldName]) && !empty($this->nameList[$fieldName][$value])) {
+						if (count($moduleList) == 1) {
+							$parentModule = $moduleList[0];
+						} else {
+							$parentModule = $this->typeList[$value];
+						}
+						if (!empty($parentModule)) {
+							$parentMeta = $this->queryGenerator->getMeta($parentModule);
+							$value = textlength_check($this->nameList[$fieldName][$value]);
+							if ($parentMeta->isModuleEntity() && $parentModule != "Users") {
+								$value = "<a href='index.php?module=$parentModule&action=DetailView&".
+									"record=$rawValue' title='".getTranslatedString($parentModule, $parentModule)."'>$value</a>";
+								$modMetaInfo=getEntityFieldNames($parentModule);
+								$fieldName=(is_array($modMetaInfo['fieldname']) ? $modMetaInfo['fieldname'][0] : $modMetaInfo['fieldname']);
+								// vtlib customization: For listview javascript triggers
+								$value = "$value <span type='vtlib_metainfo' vtrecordid='{$rawValue}' vtfieldname=".
+								"'{$fieldName}' vtmodule='$parentModule' style='display:none;'></span>";
+							}
 						}
 					} else {
 						$value = '--';
