@@ -78,7 +78,7 @@
 		</li>	
 		{elseif $menuitem.mtype == 'menu' && !empty($menuitem.submenu)}
 		<li class="slds-dropdown__item" role="presentation">
-			<a href="javascript:void(0)" role="menuitem" tabindex="-1">
+			<a href="javascript:void(0);" role="menuitem" tabindex="-1">
 				<span class="slds-truncate" style="padding-right: 20px;">{$menuitem.mlabel}</span>
 				<svg aria-hidden="true" class="slds-button__icon">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
