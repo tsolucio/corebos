@@ -169,19 +169,19 @@
 			          </div></td>
 			          <td class="small cellLabel" width="40%"><p>{$MODULELABEL}</p></td>
 			          <td class="small cellText" width="10%">&nbsp;<div align="center">
-					{$STANDARD_PRIV[$tabid][4]}
+					{if !empty($STANDARD_PRIV[$tabid][4])}{$STANDARD_PRIV[$tabid][4]}{/if}
 			          </div></td>
 			          <td class="small cellText" width="10%">&nbsp;<div align="center">
-					{$STANDARD_PRIV[$tabid][1]}
+					{if !empty($STANDARD_PRIV[$tabid][1])}{$STANDARD_PRIV[$tabid][1]}{/if}
 			          </div></td>
 			          <td class="small cellText" width="10%">&nbsp;<div align="center">
-					{$STANDARD_PRIV[$tabid][3]}
+					{if !empty($STANDARD_PRIV[$tabid][3])}{$STANDARD_PRIV[$tabid][3]}{/if}
 			          </div></td>
 			          <td class="small cellText" width="10%">&nbsp;<div align="center">
-					{$STANDARD_PRIV[$tabid][2]}
+					{if !empty($STANDARD_PRIV[$tabid][2])}{$STANDARD_PRIV[$tabid][2]}{/if}
         			  </div></td>
 			          <td class="small cellText" width="17%">&nbsp;<div align="center">
-				{if $FIELD_PRIVILEGES[$tabid] neq NULL}
+				{if !empty($FIELD_PRIVILEGES[$tabid])}
 				<img src="{'showDown.gif'|@vtiger_imageurl:$THEME}" id="img_{$tabid}" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" onclick="fnToggleVIew('{$tabid}_view')" border="0" height="16" width="40" style="display:block;">
 				{/if}
 				</div></td>
@@ -190,7 +190,7 @@
 				          <td colspan="7" class="small settingsSelectedUI">
 						<table class="small" border="0" cellpadding="2" cellspacing="0" width="100%">
 			        	    	<tbody>
-						{if $FIELD_PRIVILEGES[$tabid] neq ''}
+						{if !empty($FIELD_PRIVILEGES[$tabid])}
 						<tr>
 							{if $modulename eq 'Calendar'}
 								<td class="small colHeader" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN} ({$APP.Tasks})</td>
@@ -198,7 +198,6 @@
 								<td class="small colHeader" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN}</td>
 							{/if}
 					        </tr>
-						{/if}
 						{foreach item=row_values from=$FIELD_PRIVILEGES[$tabid]}
 				            	<tr>
 						      {foreach item=element from=$row_values}
@@ -207,6 +206,7 @@
 						      {/foreach}
 				                </tr>
 						{/foreach}
+						{/if}
 						{if $modulename eq 'Calendar'}
 						<tr>
 							<td class="small colHeader" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN} ({$APP.Events})</td>
@@ -220,11 +220,10 @@
 				                </tr>
 						{/foreach}
 						{/if}
-						{if $UTILITIES_PRIV[$tabid] neq ''}
+						{if !empty($UTILITIES_PRIV[$tabid])}
 					        <tr>
 					              <td colspan="7" class="small colHeader" valign="top">{$CMOD.LBL_TOOLS_TO_BE_SHOWN}</td>
 						</tr>
-						{/if}
 						{foreach item=util_value from=$UTILITIES_PRIV[$tabid]}
 							<tr>
 							{foreach item=util_elements from=$util_value}
@@ -233,6 +232,7 @@
 							{/foreach}
 				                	</tr>
 						{/foreach}
+						{/if}
 					        </tbody>
 						</table>
 					</td>
