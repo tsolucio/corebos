@@ -75,7 +75,25 @@
 				</li>
 			{/foreach}
 			</ul>
-		</li>		
+		</li>	
+		{elseif $menuitem.mtype == 'menu' && !empty($menuitem.submenu)}
+		<li class="slds-dropdown__item" role="presentation">
+			<a href="javascript:void(0)" role="menuitem" tabindex="-1">
+				<span class="slds-truncate" style="padding-right: 20px;">{$menuitem.mlabel}</span>
+				<svg aria-hidden="true" class="slds-button__icon">
+					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
+				</svg>
+			</a>
+			<ul id="submenu{$i}-0" class="moreMenu" style="display: none;">
+			{foreach $menuitem.submenu as $submenu_item}
+				<li class="slds-dropdown__item" role="presentation">
+					<a href="index.php?action=index&amp;module={$submenu_item.mvalue}" role="menuitem" tabindex="-1">
+						<span class="slds-truncate">{$submenu_item.mlabel}</span>
+					</a>
+				</li>
+			{/foreach}
+			</ul>
+		</li>
 		{elseif $menuitem.mtype == 'headtop'}
 		<li class="slds-dropdown__header slds-has-divider--top-space" role="separator">
 			<span class="slds-text-title--caps">{$menuitem.mlabel}</span>
