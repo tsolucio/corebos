@@ -66,7 +66,7 @@
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
 				</svg>
 			</a>
-			<ul id="submenu{$i}-0" class="moreMenu" style="display: none;">
+			<ul id="submenu{$i}-0" class="moreMenu">
 			{foreach $menuitem.submenu as $submenu_item}
 				<li class="slds-dropdown__item" role="presentation">
 					<a href="index.php?action=index&amp;module={$submenu_item.mvalue}" role="menuitem" tabindex="-1">
@@ -84,7 +84,7 @@
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
 				</svg>
 			</a>
-			<ul id="submenu{$i}-0" class="moreMenu" style="display: none;">
+			<ul id="submenu{$i}-0" class="moreMenu">
 			{foreach $menuitem.submenu as $submenu_item}
 				<li class="slds-dropdown__item" role="presentation">
 					<a href="index.php?action=index&amp;module={$submenu_item.mvalue}" role="menuitem" tabindex="-1">

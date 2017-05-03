@@ -77,17 +77,3 @@ function saveTree() {
 	document.getElementById("treePositions").value = positions;
 	document.getElementById("menuitemform").submit();
 }
-
-jQuery(document).ready(function() {
-	jQuery(function () {
-		jQuery(".slds-dropdown__item").hover(function () {
-			var id = jQuery(this).children('ul').attr('id');
-			if (id === undefined || id === null) {
-				id = jQuery(this).find('ul').attr('id');
-			}
-			if (id !== undefined && id !== null) {
-				jQuery(this).find('#' + id).toggle();
-			}
-		});
-	});
-});
