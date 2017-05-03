@@ -2902,7 +2902,7 @@ function getEmailTemplateVariables($modules_list = null) {
 	global $adb;
 
 	if (is_null($modules_list)) {
-		$modules_list = array('Accounts', 'Contacts', 'Leads', 'Users');
+		$modules_list = array('Accounts', 'Contacts', 'Leads', 'Users', 'HelpDesk');
 	}
 
 	foreach ($modules_list as $index => $module) {

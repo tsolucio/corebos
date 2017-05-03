@@ -451,6 +451,7 @@ $mod_strings = array(
 	'LBL_CONTACT_FIELDS' => 'Kapcsolat mezők',
 	'LBL_LEAD_FIELDS' => 'Jelölt mezők',
 	'LBL_USER_FIELDS' => 'Felhasználó mezők',
+	'LBL_HELPDESK_FIELDS'=>'Ticket Fields',
 	'LNK_SAMPLE_EMAIL' => 'Az email minta megtekintése',
 	'LBL_TEMPLATE_FILE' => 'Sablon fájl',
 	'LBL_MODULENAMES' => 'Modul',

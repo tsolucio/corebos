@@ -436,6 +436,7 @@ $mod_strings = array (
       'LBL_CONTACT_FIELDS' => 'Campos de Contacto',
       'LBL_LEAD_FIELDS' => 'Campos de Prospecto',
       'LBL_USER_FIELDS' => 'Campos de Usuario',
+		'LBL_HELPDESK_FIELDS'=>'Campos de Incidencia',
       'LNK_SAMPLE_EMAIL' => 'Ver Email de ejemplo',
       'LBL_TEMPLATE_FILE' => 'Archivo de plantilla',
       'LBL_MODULENAMES' => 'Módulo',
