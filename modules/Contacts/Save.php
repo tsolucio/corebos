@@ -32,7 +32,7 @@ if(empty($_REQUEST['return_viewname']) or $singlepane_view == 'true') {
 if(isset($_REQUEST['activity_mode'])) {
 	$req->set('return_activity_mode',$_REQUEST['activity_mode']);
 }
-$req->set('return_start',$_REQUEST['pagenumber']);
+$req->set('return_start',(isset($_REQUEST['pagenumber']) ? $_REQUEST['pagenumber'] : ''));
 
 $focus = new $currentModule();
 setObjectValuesFromRequest($focus);
@@ -107,6 +107,10 @@ if(isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != '') {
 }
 
 if (!isset($__cbSaveSendHeader) || $__cbSaveSendHeader) {
-	header('Location: index.php?' . $req->getReturnURL() . $search);
+	if (isset($_REQUEST['Module_Popup_Edit']) and $_REQUEST['Module_Popup_Edit']==1) {
+		echo "<script>window.close();</script>";
+	} else {
+		header('Location: index.php?' . $req->getReturnURL() . $search);
+	}
 }
 ?>
