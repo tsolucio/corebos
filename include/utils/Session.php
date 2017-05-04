@@ -212,7 +212,7 @@ class coreBOS_Session {
 		} else {
 			$key = substr($key, strpos($key,'^')+1);
 			if (is_null($sespos)) {
-				if (!is_array($_SESSION[$keyparts[0]])) return false; // this should be an exception
+				if (!isset($_SESSION[$keyparts[0]]) or !is_array($_SESSION[$keyparts[0]])) return false; // this should be an exception
 				self::delete($key, $_SESSION[$keyparts[0]]);
 			} else {
 				self::delete($key, $sespos[$keyparts[0]]);

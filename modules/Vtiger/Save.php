@@ -31,7 +31,7 @@ if(empty($_REQUEST['return_viewname']) or $singlepane_view == 'true') {
 if(isset($_REQUEST['activity_mode'])) {
 	$req->set('return_activity_mode',$_REQUEST['activity_mode']);
 }
-$req->set('return_start',$_REQUEST['pagenumber']);
+$req->set('return_start',(isset($_REQUEST['pagenumber']) ? $_REQUEST['pagenumber'] : ''));
 
 $focus = new $currentModule();
 setObjectValuesFromRequest($focus);
