@@ -22,7 +22,7 @@ require_once('modules/PickList/PickListUtils.php');
  * Param $tabid - vtiger_tab id to which the Field belongs to (default is "")
  * Return type is an array
  */
-function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, $generatedtype, $tabid='', $module='') {
+function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, $generatedtype, $tabid='', $module='', $cbMapFI=array()) {
 	global $log, $adb, $mod_strings, $app_strings, $current_user, $theme, $default_charset;
 	$log->debug("Entering getDetailViewOutputHtml(" . $uitype . "," . $fieldname . "," . $fieldlabel . "," . print_r($col_fields,true) . "," . $generatedtype . "," . $tabid . ") method ...");
 	$theme_path = "themes/" . $theme . "/";
@@ -1744,6 +1744,14 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 	$log->debug("Entering getDetailBlockInformation(" . $module . "," . $result . "," . print_r($col_fields,true) . "," . $tabid . "," . print_r($block_label,true) . ") method ...");
 	$label_data = Array();
 
+	$bmapname = $module.'_FieldInfo';
+	$cbMapFI = array();
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapFI = $cbMap->FieldInfo();
+		$cbMapFI = $cbMapFI['fields'];
+	}
 	$noofrows = $adb->num_rows($result);
 	for ($i = 0; $i < $noofrows; $i++) {
 		$fieldtablename = $adb->query_result($result, $i, "tablename");
@@ -1758,7 +1766,11 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 		$tabid = $adb->query_result($result, $i, "tabid");
 		$displaytype = $adb->query_result($result, $i, 'displaytype');
 		$readonly = $adb->query_result($result, $i, 'readonly');
-		$custfld = getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, $generatedtype, $tabid, $module);
+		if (isset($cbMapFI[$fieldname])) {
+			$custfld = getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, $generatedtype, $tabid, $module, $cbMapFI[$fieldname]);
+		} else {
+			$custfld = getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, $generatedtype, $tabid, $module);
+		}
 		if (is_array($custfld)) {
 			$extendedfieldinfo = '';
 			if (isset($custfld[2]) and $custfld[2]==10) {
@@ -1789,6 +1801,13 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 					$parent_id='';
 				}
 				$extendedfieldinfo = Array('options'=>$entityTypes, 'selected'=>$valueType, 'displayvalue'=>$displayValue, 'entityid'=>$parent_id);
+			}
+			if (isset($cbMapFI[$fieldname])) {
+				if (is_array($extendedfieldinfo)) {
+					$extendedfieldinfo = array_merge($cbMapFI[$fieldname],$extendedfieldinfo);
+				} else {
+					$extendedfieldinfo = $cbMapFI[$fieldname];
+				}
 			}
 			$label_data[$block][] = array($custfld[0] => array(
 				'value' => $custfld[1], "ui" => $custfld[2], 'options' => isset($custfld['options']) ? $custfld['options'] : '',

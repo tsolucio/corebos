@@ -22,7 +22,7 @@ require_once 'modules/PickList/DependentPickListUtils.php';
   * Param $module_name - module name
   * Return type is an array
   */
-function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields,$generatedtype,$module_name,$mode='', $typeofdata=null)
+function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields,$generatedtype,$module_name,$mode='', $typeofdata=null, $cbMapFI=array())
 {
 	global $log,$app_strings, $adb,$default_charset, $theme, $mod_strings, $current_user;
 	$log->debug("Entering getOutputHtml(".$uitype.",". $fieldname.",". $fieldlabel.",". $maxlength.",". print_r($col_fields,true).",".$generatedtype.",".$module_name.") method ...");
@@ -1966,6 +1966,14 @@ function getBlockInformation($module, $result, $col_fields,$tabid,$block_label,$
 	$isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : false;
 	$editview_arr = Array();
 
+	$bmapname = $module.'_FieldInfo';
+	$cbMapFI = array();
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapFI = $cbMap->FieldInfo();
+		$cbMapFI = $cbMapFI['fields'];
+	}
 	$noofrows = $adb->num_rows($result);
 	for($i=0; $i<$noofrows; $i++) {
 		$fieldtablename = $adb->query_result($result,$i,"tablename");
@@ -1981,7 +1989,12 @@ function getBlockInformation($module, $result, $col_fields,$tabid,$block_label,$
 		if(($mode == '' or $mode == 'create') && empty($col_fields[$fieldname]) && !$isduplicate) {
 			$col_fields[$fieldname] = $defaultvalue;
 		}
-		$custfld = getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields,$generatedtype,$module,$mode,$typeofdata);
+		if (isset($cbMapFI[$fieldname])) {
+			$custfld = getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields,$generatedtype,$module,$mode,$typeofdata,$cbMapFI[$fieldname]);
+			$custfld['extendedfieldinfo'] = $cbMapFI[$fieldname];
+		} else {
+			$custfld = getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields,$generatedtype,$module,$mode,$typeofdata);
+		}
 		$editview_arr[$block][]=$custfld;
 	}
 	foreach($editview_arr as $headerid=>$editview_value)
