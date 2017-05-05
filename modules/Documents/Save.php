@@ -11,7 +11,7 @@ if ($_REQUEST['mode'] != 'edit' and $_REQUEST['filelocationtype'] == 'I' and $_F
 	$_REQUEST['filelocationtype'] = 'E';
 }
 if (isset($_REQUEST['notecontent']) and $_REQUEST['notecontent'] != '') {
-	$_REQUEST['notecontent'] = fck_from_html($_REQUEST['notecontent']);
+	$_REQUEST['notecontent'] = vtlib_purify($_REQUEST['notecontent']);
 }
 require_once('modules/Vtiger/Save.php');
 ?>

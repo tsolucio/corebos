@@ -206,27 +206,18 @@ function parse_calendardate($local_format) {
 
 /**
  * Decodes the given set of special character
- * input values $string - string to be converted, $encode - flag to decode
+ * input values $string - string to be converted
+ * $encode - NOT USED flag to decode
  * returns the decoded value in string fromat
  */
 function from_html($string, $encode = true) {
-	global $log;
-	//$log->debug("Entering from_html(".$string.",".$encode.") method ...");
-	//if($encode && is_string($string))$string = html_entity_decode($string, ENT_QUOTES);
-	if (is_string($string)) {
-		if (preg_match('/(script).*(\/script)/i', $string))
-			$string = preg_replace(array('/</', '/>/', '/"/'), array('&lt;', '&gt;', '&quot;'), $string);
-	}
-	//$log->debug("Exiting from_html method ...");
-	return $string;
+// 		if (preg_match('/(script).*(\/script)/i', $string))
+// 			$string = preg_replace(array('/</', '/>/', '/"/'), array('&lt;', '&gt;', '&quot;'), $string);
+	return vtlib_purify($string);
 }
 
 function fck_from_html($string) {
-	if (is_string($string)) {
-		if (preg_match('/(script).*(\/script)/i', $string))
-			$string = str_replace('script', '', $string);
-	}
-	return $string;
+	return vtlib_purify($string);
 }
 
 /**

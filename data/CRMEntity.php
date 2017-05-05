@@ -356,8 +356,8 @@ class CRMEntity {
 		if ($module == 'Events') {
 			$module = 'Calendar';
 		}
+		$description_val = (empty($this->column_fields['description']) ? '' : vtlib_purify($this->column_fields['description']));
 		if ($this->mode == 'edit') {
-			$description_val = from_html($this->column_fields['description']);
 
 			checkFileAccessForInclusion('user_privileges/user_privileges_' . $current_user->id . '.php');
 			require('user_privileges/user_privileges_' . $current_user->id . '.php');
@@ -397,7 +397,6 @@ class CRMEntity {
 			if ($current_user->id == '')
 				$current_user->id = 0;
 
-
 			// Customization
 			$created_date_var = $adb->formatDate($date_var, true);
 			$modified_date_var = $adb->formatDate($date_var, true);
@@ -411,7 +410,6 @@ class CRMEntity {
 				//NOTE : modifiedtime ignored to support vtws_sync API track changes.
 			}
 
-			$description_val = empty($this->column_fields['description']) ? '' : from_html($this->column_fields['description']);
 			$sql = "insert into vtiger_crmentity (crmid,smcreatorid,smownerid,setype,description,modifiedby,createdtime,modifiedtime) values(?,?,?,?,?,?,?,?)";
 			$params = array($current_id, $createdbyuser, $ownerid, $module, $description_val, $current_user->id, $created_date_var, $modified_date_var);
 			$adb->pquery($sql, $params);
