@@ -594,11 +594,12 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	}
 	elseif($uitype == 28){
 		if (!(empty($col_fields['record_id']))) {
-			$attachmentid=$adb->query_result($adb->pquery("select * from vtiger_seattachmentsrel where crmid = ?", array($col_fields['record_id'])),0,'attachmentsid');
-			if($col_fields[$fieldname] == '' && $attachmentid != '')
-			{
+			$attrs = $adb->pquery('select * from vtiger_seattachmentsrel where crmid = ?', array($col_fields['record_id']));
+			$attachmentid=$adb->query_result($attrs,0,'attachmentsid');
+			if ($col_fields[$fieldname] == '' && $attachmentid != '') {
 				$attachquery = "select * from vtiger_attachments where attachmentsid=?";
-				$value = $adb->query_result($adb->pquery($attachquery, array($attachmentid)),0,'name');
+				$attqrs = $adb->pquery($attachquery, array($attachmentid));
+				$value = $adb->query_result($attqrs,0,'name');
 			}
 		}
 		if($value!='' && $module_name != 'Documents')
