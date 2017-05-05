@@ -156,10 +156,10 @@ class crmtogo_WS_Utils {
 		$fieldgroups = array();
 		while($resultrow = $db->fetch_array($result)) {
 			if (array_key_exists ($resultrow['blocklabel'], $current_module_strings)) {
-				$blocklabel = $current_module_strings[$resultrow['blocklabel']];
+				$blocklabel = $resultrow['blocklabel'];
 			}
 			else {
-				$blocklabel = getTranslatedString($resultrow['blocklabel']);
+				$blocklabel = $resultrow['blocklabel'];
 			}
 			if (array_key_exists ($resultrow['fieldlabel'], $current_module_strings)) {
 				$fieldlabel = $current_module_strings[$resultrow['fieldlabel']];
