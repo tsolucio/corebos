@@ -149,6 +149,27 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				{if $fldlabel eq $i18nSolution}
 				<input type="hidden" name="helpdesk_solution" id="helpdesk_solution" value='{$fldvalue}'>
 				{/if}
+				{if ($fldname eq 'notecontent') || (isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['RTE']) && $maindata['extendedfieldinfo']['RTE'] && vt_hasRTE())}
+				<script>
+					CKEDITOR.replace('{$fldname}',
+					{ldelim}
+						extraPlugins : 'uicolor',
+						uiColor: '#dfdff1',
+							on : {ldelim}
+								instanceReady : function( ev ) {ldelim}
+									 this.dataProcessor.writer.setRules( 'p',  {ldelim}
+										indent : false,
+										breakBeforeOpen : false,
+										breakAfterOpen : false,
+										breakBeforeClose : false,
+										breakAfterClose : false
+								{rdelim});
+							{rdelim}
+						{rdelim}
+					{rdelim});
+					var oCKeditor{$fldname} = CKEDITOR.instances[{$fldname}];
+				</script>
+				{/if}
 			</td>
 		{elseif $uitype eq 21 || $uitype eq 24}
 			<td width=20% class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>

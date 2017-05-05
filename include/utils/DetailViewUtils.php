@@ -254,14 +254,14 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$label_fld[] = '';
 		}
 	} elseif ($uitype == 19) {
-		if ($fieldname == 'notecontent' or $module=='Timecontrol' or $module=='Emails')
+		if ($fieldname == 'notecontent' or $module=='Emails' or (isset($cbMapFI['RTE']) and $cbMapFI['RTE'] and vt_hasRTE()))
 			$col_fields[$fieldname] = decode_html($col_fields[$fieldname]);
 		else
 			$col_fields[$fieldname] = str_replace("&lt;br /&gt;", "<br>", $col_fields[$fieldname]);
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$label_fld[] = $col_fields[$fieldname];
 	}
-	elseif ($uitype == 20 || $uitype == 21 || $uitype == 22 || $uitype == 24) { // Armando LC<scher 11.08.2005 -> B'descriptionSpan -> Desc: removed $uitype == 19 and made an aditional elseif above
+	elseif ($uitype == 20 || $uitype == 21 || $uitype == 22 || $uitype == 24) {
 		if ($uitype == 20)//Fix the issue #4680
 			$col_fields[$fieldname] = $col_fields[$fieldname];
 		else

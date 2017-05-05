@@ -3271,10 +3271,8 @@ function vt_suppressHTMLTags($string) {
 }
 
 function vt_hasRTE() {
-	global $FCKEDITOR_DISPLAY, $currentModule;
-	$USE_RTE = GlobalVariable::getVariable('Application_Use_RTE',1,$currentModule);
-	$USE_RTE = empty($USE_RTE) ? 'false' : 'true';
-	return ((!empty($FCKEDITOR_DISPLAY) && $FCKEDITOR_DISPLAY == 'true') || (!empty($USE_RTE) && $USE_RTE == 'true'));
+	$USE_RTE = GlobalVariable::getVariable('Application_Use_RTE',1);
+	return $USE_RTE;
 }
 
 function getNameInDisplayFormat($input, $dispFormat = "lf") {

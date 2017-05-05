@@ -180,10 +180,6 @@ $smarty->assign("UPLOADSIZE", $upload_maxsize/1000000); //Convert to MB
 $smarty->assign("UPLOAD_MAXSIZE",$upload_maxsize);
 $smarty->assign('MAX_FILE_SIZE', $upload_maxsize);
 
-$USE_RTE = vt_hasRTE();
-if(getFieldVisibilityPermission('Documents',$current_user->id,'notecontent') != '0')
-	$USE_RTE = false;
-$smarty->assign('USE_RTE',$USE_RTE);
 if (isset($_REQUEST['email_id']))
 	$smarty->assign('EMAILID', vtlib_purify($_REQUEST['email_id']));
 if (isset($_REQUEST['ticket_id'])) $smarty->assign("TICKETID", vtlib_purify($_REQUEST['ticket_id']));
