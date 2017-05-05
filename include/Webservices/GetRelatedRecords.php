@@ -379,7 +379,7 @@ function __getRLQueryFields($meta,$cols='*') {
 	foreach($fieldcol as $field=>$col){
 		$cl = $col;
 		if ($col=='smownerid') $cl = 'smownerid as assigned_user_id,vtiger_crmentity.smownerid';
-		if ($col=='smcreatorid') $cl = 'smcreatorid as creator,vtiger_crmentity.smcreatorid';
+		if ($col=='smcreatorid') $cl = 'smcreatorid as creator,vtiger_crmentity.smcreatorid,vtiger_users.first_name as creator_firstname, vtiger_users.last_name as creator_lastname';
 		$qfields .= $columnTable[$col].".$cl,";
 	}
 	$qfields = trim($qfields,',');  // eliminate last comma
