@@ -923,11 +923,9 @@ function isReadPermittedBySharing($module,$tabid,$actionid,$record_id)
 		}
 	}
 	//Checking for the Related Sharing Permission
-	$relatedModuleArray=$related_module_share[$tabid];
-	if(is_array($relatedModuleArray))
-	{
-		foreach($relatedModuleArray as $parModId)
-		{
+	$relatedModuleArray = (isset($related_module_share[$tabid]) ? $related_module_share[$tabid] : '');
+	if (is_array($relatedModuleArray)) {
+		foreach ($relatedModuleArray as $parModId) {
 			$parRecordOwner=getParentRecordOwner($tabid,$parModId,$record_id);
 			if(sizeof($parRecordOwner) > 0)
 			{
@@ -3810,14 +3808,13 @@ function getPermittedModuleIdList() {
 	return $permittedModules;
 }
 
-/** Function to recalculate the Sharing Rules for all the vtiger_users
+/** Function to recalculate the Sharing Rules for all the users
   * This function will recalculate all the sharing rules for all the users in the Organization and will write them in flat files
  */
 function RecalculateSharingRules()
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering RecalculateSharingRules() method ...");
-	global $adb;
 	require_once('modules/Users/CreateUserPrivilegeFile.php');
 	$query="select id from vtiger_users where deleted=0";
 	$result=$adb->pquery($query, array());
@@ -3829,7 +3826,6 @@ function RecalculateSharingRules()
 		createUserSharingPrivilegesfile($id);
 	}
 	$log->debug("Exiting RecalculateSharingRules method ...");
-
 }
 
 /** Function to get the list of module for which the user defined sharing rules can be defined
