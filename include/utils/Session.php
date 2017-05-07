@@ -126,9 +126,10 @@ class coreBOS_Session {
 			}
 		} else {
 			if (is_null($sespos)) {
-				if (!is_array($_SESSION[$keyparts[0]])) return false;
+				if (!isset($_SESSION[$keyparts[0]]) or !is_array($_SESSION[$keyparts[0]])) return false;
 				$sespos = $_SESSION[$keyparts[0]];
 			} else {
+				if (!isset($sespos[$keyparts[0]]) or !is_array($sespos[$keyparts[0]])) return false;
 				$sespos = $sespos[$keyparts[0]];
 			}
 			$key = substr($key, strpos($key,'^')+1);
