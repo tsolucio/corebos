@@ -3853,7 +3853,9 @@ function ToolTipManager(){
 		var div = document.getElementById(divName);
 		if(typeof div != 'undefined' && div != null ){
 			if(typeof nodelay != 'undefined' && nodelay != null){
-				div.style.display = "none";
+				setTimeout(function(){
+					div.style.display = "none";
+				}, 700);
 			}else{
 				setTimeout(function(){
 					if(!state){
