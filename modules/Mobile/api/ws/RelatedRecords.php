@@ -12,16 +12,16 @@
 include_once dirname(__FILE__) . '/QueryWithGrouping.php';
 
 class crmtogo_WS_RelatedRecords extends crmtogo_WS_QueryWithGrouping {
-	
+
 	function process(crmtogo_API_Request $request) {
 		global $current_user, $adb, $currentModule;
 		$current_user = $this->getActiveUser();
-		
+
 		$response = new crmtogo_API_Response();
 
 		$record = $request->get('record');
 		$currentPage = $request->get('page', 0);
-		
+
 		// Input validation
 		if (empty($record)) {
 			$response->setError(1001, 'Record id is empty');
@@ -29,11 +29,11 @@ class crmtogo_WS_RelatedRecords extends crmtogo_WS_QueryWithGrouping {
 		}
 		$recordid = vtws_getIdComponents($record);
 		$recordid = $recordid[1];
-		
+
 		$module = crmtogo_WS_Utils::detectModulenameFromRecordId($record);
 		// Initialize global variable
 		$currentModule = $module;
-		
+
 		//related module currently supported
 		$relatedmodule = Array ('Contacts','Potentials','HelpDesk','Documents');
 		$activemodule = $this->sessionGet('_MODULES');
