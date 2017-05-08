@@ -4679,9 +4679,11 @@ function getSelectAllQuery($input,$module) {
 		$queryGenerator = new QueryGenerator($module, $current_user);
 		$queryGenerator->initForCustomViewById($viewid);
 
-		if($input['query'] == 'true') {
-			$queryGenerator->addUserSearchConditions($input);
-		}
+                if(isset($input['query'])){
+                    if($input['query'] == 'true') {
+                            $queryGenerator->addUserSearchConditions($input);
+                    }
+                }
 		$queryGenerator->setFields(array('id'));
 		$query = $queryGenerator->getQuery();
 
