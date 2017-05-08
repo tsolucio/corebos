@@ -15,7 +15,7 @@ Class Google_Contacts_Connector extends WSAPP_TargetConnector {
     protected $apiConnection;
     protected $totalRecords;
     protected $createdRecords;
-    protected $maxResults = 100;
+    protected $maxResults;
 
     const CONTACTS_URI = 'https://www.google.com/m8/feeds/contacts/default/full';
 
@@ -37,7 +37,7 @@ Class Google_Contacts_Connector extends WSAPP_TargetConnector {
 
     private $fieldMapping = null;
 
-    private $maxBatchSize = 100;
+    private $maxBatchSize;
 
     protected $fields = array(
         'salutationtype' => array(
@@ -88,6 +88,8 @@ Class Google_Contacts_Connector extends WSAPP_TargetConnector {
 
     public function __construct($oauth2Connection) {
         $this->apiConnection = $oauth2Connection;
+        $this->maxResults=GlobalVariable::getVariable('GContacts_Max_Results', 200);
+        $this->maxBatchSize=GlobalVariable::getVariable('GContacts_Max_Results', 200);
     }
     /**
      * Get the name of the Google Connector
@@ -345,7 +347,7 @@ Class Google_Contacts_Connector extends WSAPP_TargetConnector {
                 if($this->selectedGroup != '' && $this->selectedGroup != 'all') {
                     $query['group'] = $this->selectedGroup;
                 }
-                $max_results=GlobalVariable::getVariable('GContacts_Max_Results', '');
+                $max_results=GlobalVariable::getVariable('GContacts_Max_Results',200);
                 $query['max-results'] = $max_results;
                 $query['updated-max'] = $this->googleFormat($maxModifiedTime);
                 $extendedFeed = $this->getContactListFeed($query);
@@ -398,7 +400,7 @@ Class Google_Contacts_Connector extends WSAPP_TargetConnector {
             'Authorization' => $this->apiConnection->token['access_token']['token_type'] . ' ' .
                                $this->apiConnection->token['access_token']['access_token'],
             'If-Match' => '*',
-            'Content-Type' => 'application/atom+xml',
+           // 'Content-Type' => 'application/atom+xml',
         );
         $response = $this->fireRequest(self::CONTACTS_BATCH_URI, $headers, $batchFeed);
         return $response;

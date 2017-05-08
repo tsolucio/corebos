@@ -100,9 +100,6 @@ $mod_strings = Array(
 //Added for search heading
 'LBL_GENERAL_INFORMATION'=>'General Information',
 
-
-
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'New Opportunity',
 'LBL_POTENTIAL_TITLE'=>'Opportunities',
 
@@ -117,7 +114,6 @@ $mod_strings = Array(
 'LBL_NEW_NOTE'=>'New Document',
 'LBL_NOTE_TITLE'=>'Documents',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Contact Tools',
 
 'Salutation'=>'Salutation',
@@ -239,31 +235,18 @@ $mod_strings = Array(
 'LBL_NOT_SYNCRONIZED'	=>	"You have not synchronized yet",
 'LBL_SYNC_BUTTON'	=>	"Synchronize Now",
 'LBL_REMOVE_SYNC'	=>	"Remove Sync",
-'LBL_MORE_VTIGER'	=>	"There are more records to be synchronized in coreBOS",
-'LBL_MORE_GOOGLE'	=>	"There are more records to be synchronized in Google",
-'Contact Name'	=>	"Contact Name",
-'Email'	=>	"Email",
-'Mobile Phone'	=>	"Mobile Phone",
-'Address'	=>	"Address",
-'Event Title'	=>	"Event Title",
-'Start Date'	=>	"Start Date",
-'Until Date'	=>	"Until Date",
-'Description'	=>	"Description",
-'Office Phone' => 'Office Phone',
-'Work Phone' => 'Work Phone',
-'Home Phone' => 'Home Phone',
+'LBL_MORE_VTIGER'	=>	"There are more records to be synchronized in the application",
+'LBL_MORE_GOOGLE'	=>	"There are more records to be synchronized in Google Contacts",
 'SYNC_SETTINGS' => 'Sync Settings',
 'LBL_SELECT_GOOGLE_GROUP_TO_SYNC' => 'Select Google Group',
 'LBL_ADD_CUSTOM_FIELD_MAPPING' => 'Add Custom Mapping',
 'LBL_EMAIL' => 'Email',
-'LBL_PHONE' => 'Phone',
 'LBL_URL' => 'Url',
 'LBL_CUSTOM' => 'Custom',
 'LBL_SELECT_SYNC_DIRECTION' => 'Select Sync Direction',
 'LBL_BI_DIRECTIONAL_SYNC' => 'Sync both ways',
-'LBL_ONLY_SYNC_FROM_GOOGLE_TO_VTIGER' => 'From Google to coreBOS only',
-'LBL_ONLY_SYNC_FROM_VTIGER_TO_GOOGLE' => 'From coreBOS to Google only',
-'Job Title' => 'Title',
+'LBL_ONLY_SYNC_FROM_GOOGLE_TO_VTIGER' => 'From Google to Application only',
+'LBL_ONLY_SYNC_FROM_VTIGER_TO_GOOGLE' => 'From Application to Google only',
 'Company' => 'Company',
 'Birthday' => 'Birthday',
 'Phone' => 'Phone',
@@ -283,8 +266,8 @@ $mod_strings = Array(
 'LBL_SELECT_GOOGLE_CALENDAR_TO_SYNC' => 'Select Google Calendar',
 'LBL_SAVE_AND_START_SYNC' => 'Save and Start Sync',
 'LBL_PRIMARY' => 'Primary',
-'LBL_SYNC_FROM_GOOGLE_TO_VTIGER' => 'Sync from google to vtiger',
-'LBL_SYNC_FROM_VTIGER_TO_GOOGLE' => 'Sync from vtiger to google',
+'LBL_SYNC_FROM_GOOGLE_TO_VTIGER' => 'Sync from Google to Application',
+'LBL_SYNC_FROM_VTIGER_TO_GOOGLE' => 'Sync from Application to Google',
 'LBL_GOOGLE_CONNECT_MSG' => 'Connect to a Google account to fetch',
 'LBL_SIGN_IN_WITH_GOOGLE' => 'Sign in with Google',
 'LBL_GOOGLE_ACCOUNT_DETAILS' => 'Google Account Details',
@@ -295,9 +278,6 @@ $mod_strings = Array(
 'url' => 'Url',
 'LBL_SAVE_AND_IMPORT' => 'Save and Import',
 'LBL_IMPORT_RESULTS_GOOGLE' => 'Google Import results',
-'LBL_SAVE'=>'Save',
-'LBL_CANCEL'=>'Cancel',
-'APPTITLE'=>'CoreBOS CRM',
 'EXTENTIONNAME'=>'Google',
 'Name_Prefix' => 'Name Prefix',
 'First_Name' => 'First Name',
@@ -308,7 +288,6 @@ $mod_strings = Array(
 'Secondary_Email'=>'Secondary email',
 'Mobile_Phone'=>'Mobile Phone',
 'Office_Phone'=>'Office Phone',
-    
 'Home_Phone' => 'Home Phone',
 'Mailing_Address' => 'Mailing Address',
 'Other_Address' => 'Other Address',
@@ -319,6 +298,7 @@ $mod_strings = Array(
 'SIGN_IN_TITLE'=>'Sign In to the google account to authorize the Sync Process',
 'SYNC_SETT_TITLE'=>'Set default user parameters for the Sync Process',
 'SYNC_RESULTS'=>'Sync Results',
+'ERR_GContactsSync'=>'There has been an error accessing Google. The settings have been deleted, please configure the access again.',
 );
 
 ?>
