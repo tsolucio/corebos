@@ -39,40 +39,26 @@ class crmtogo_WS_RelatedRecords extends crmtogo_WS_QueryWithGrouping {
 		$activemodule = $this->sessionGet('_MODULES');
 		foreach($activemodule as $amodule) {
 			if (in_array($amodule->name(), $relatedmodule)) {
-				if ($currentModule == 'HelpDesk') {
-					if ($amodule->name() != 'Contacts' AND $amodule->name() != 'Potentials') {
-						$active_related_module[] = $amodule->name();
+				if ($amodule->name() != $module) {
+					$functionHandler = crmtogo_WS_Utils::getRelatedFunctionHandler($module, $amodule->name());
+					$fieldmodel = new crmtogo_UI_FieldModel();
+					if ($functionHandler) {
+						$sourceFocus = CRMEntity::getInstance($module);
+						$relationResult = call_user_func_array(	array($sourceFocus, $functionHandler), array($recordid, getTabid($module), getTabid($amodule->name())) );
+						if ($relationResult['entries']) {
+							$relatedRecords[$amodule->name()] = array_keys ($relationResult['entries']);
+						}
+						else {
+							$relatedRecords[$amodule->name()] = array();
+						}
+
 					}
 				}
 				else {
-					$active_related_module[] = $amodule->name();
+					$relatedRecords[$amodule->name()] = array();
 				}
+				$response->setResult($relatedRecords);
 			}
-		}
-
-		foreach ($active_related_module as $relmod) {
-			if ($relmod != $module) {
-				$functionHandler = crmtogo_WS_Utils::getRelatedFunctionHandler($module, $relmod); 
-				$fieldmodel = new crmtogo_UI_FieldModel();
-				if ($functionHandler) {
-					$sourceFocus = CRMEntity::getInstance($module);
-					$relationResult = call_user_func_array(	array($sourceFocus, $functionHandler), array($recordid, getTabid($module), getTabid($relmod)) );
-					if ($relationResult['entries']) {
-						$relatedRecords[$relmod] = array_keys ($relationResult['entries']);
-					}
-					else {
-						$relatedRecords[$relmod] = array();
-					}
-
-				}
-				else {
-					$response->setError(1018, 'Function Handler for module '.$module.' for related Module '.$relmod.'  not found.');
-				}
-			}
-			else {
-				$relatedRecords[$relmod] = array();
-			}
-			$response->setResult($relatedRecords);
 		}
 		return $response;
 	}
