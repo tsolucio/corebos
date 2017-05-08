@@ -706,6 +706,6 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Cadena de texto',
 	'category' => 'Funccionalidad module Mobile',
 	'values' => 'Contacts,Potentials,HelpDesk,Documents',
-	'definition' => 'Activar aquellos módulos que queramos que tengan listas relacionadas o que aparezcan en estas.<br> Se debe indicar el nombre de cada módulo separado por comas.<br> El valor <b>por defecto</b> que hay es: <b>Contacts,Potentials,HelpDesk,Documents</b>. <br>Por lo que se recomienda pegar estos valores y añadir los módulos nuevos después. <br><b>Por ejemplo:</b> Contacts,Potentials,HelpDesk,Documents<b>,Assets</b>',
+	'definition' => 'Activar aquellos módulos que queramos que tengan listas relacionadas o que aparezcan en estas.<br> Se debe indicar el nombre de cada módulo separado por comas.<br> El valor <b>por defecto</b> que hay es: <b>Contacts,Potentials,HelpDesk,Documents,Timecontrol</b>. <br>Por lo que se recomienda pegar estos valores y añadir los módulos nuevos después. <br><b>Por ejemplo:</b> Contacts,Potentials,HelpDesk,Documents,Timecontrol<b>,Assets</b>',
 ),
 );
