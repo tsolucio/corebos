@@ -79,6 +79,9 @@ class crmtogo_WS_Utils {
 			case 'Documents':
 				$fieldnames = self::array_replace('title', 'notes_title', $fieldnames);
 				break;
+			case 'Timecontrol':
+				$fieldnames = array('title','product_id','totaltime','tcunits');
+				break;
 		}
 		return $fieldnames;
 	}

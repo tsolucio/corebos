@@ -701,4 +701,11 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Calendar | HelpDesk | Contacts ...',
 	'definition' => 'Establecer el modulo por defecto a mostrar al entrar al modulo de Mobile.',
 ),
+'Mobile_Related_Modules' => array(
+	'status' => 'Implementado',
+	'valuetype' => 'Cadena de texto',
+	'category' => 'Funccionalidad module Mobile',
+	'values' => 'Contacts,Potentials,HelpDesk,Documents',
+	'definition' => 'Activar aquellos módulos que queramos que tengan listas relacionadas o que aparezcan en estas.<br> Se debe indicar el nombre de cada módulo separado por comas.<br> El valor <b>por defecto</b> que hay es: <b>Contacts,Potentials,HelpDesk,Documents,Timecontrol</b>. <br>Por lo que se recomienda pegar estos valores y añadir los módulos nuevos después. <br><b>Por ejemplo:</b> Contacts,Potentials,HelpDesk,Documents,Timecontrol<b>,Assets</b>',
+),
 );

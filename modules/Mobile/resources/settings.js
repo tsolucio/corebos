@@ -65,7 +65,7 @@ var crmtogo_Settings_Js = {
 			});
         console.log(moduleid + " has been changed! " + checkvalue);
     }
-	console.log($('[id*=flip_]'));
+	//console.log($('[id*=flip_]'));
 	$('[id*=flip_]').on("change", flipChanged);
 
 		$('#navislider').bind('change', function () {

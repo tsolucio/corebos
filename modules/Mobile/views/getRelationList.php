@@ -47,10 +47,12 @@ class crmtogo_UI_GetRelatedLists extends crmtogo_WS_RelatedRecords {
 			$response = new crmtogo_API_Response();
 			$config = $this->getUserConfigSettings();
 			$viewer = new crmtogo_UI_Viewer();
+			$viewer->assign('RECORDID',$request->get('record'));
 			$viewer->assign('MOD', $this->getUsersLanguage());
 			$viewer->assign('COLOR_HEADER_FOOTER', $config['theme']);
 			$viewer->assign('LANGUAGE', $current_language);
 			$viewer->assign('_MODULE', $module);
+			$viewer->assign('_PARENT_MODULE', $request->get('module'));
 			$viewer->assign('_RECORDS', $relatedresponse);
 			//Get PanelMenu data
 			$modules = $this->sessionGet('_MODULES');

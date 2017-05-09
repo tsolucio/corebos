@@ -798,6 +798,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'User based template string',
 	'definition' => 'HTML current user based workflow template that will be shown to user on first successful login',
 ),
+'Mobile_Related_Modules' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Mobile module functionality',
+	'values' => 'Contacts,Potentials,HelpDesk,Documents',
+	'definition' => '<b>Comma separeted module list</b> to indicate the modules that we want to show their related lists or to appear like a related list.<br> Now <b> Default value is: Contacts,Potentials,HelpDesk,Documents,Timecontrol</b>. <br>So, we recomend that first you copy this value and on the end of the string you add your new modules.<br><b>For example:</b> Contacts,Potentials,HelpDesk,Documents,Timecontrol<b>,Assets</b>',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/en_us.gvdefs.*.php',GLOB_BRACE) as $tcode) {
