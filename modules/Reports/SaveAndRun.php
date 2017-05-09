@@ -40,10 +40,7 @@ $numOfRows = $adb->num_rows($res);
 
 if($numOfRows > 0) {
 
-	global $primarymodule,$secondarymodule,$orderbylistsql,$orderbylistcolumns,$ogReport;
-	//added to fix the ticket #5117
-	global $current_user;
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
+	global $primarymodule,$secondarymodule,$orderbylistsql,$orderbylistcolumns,$ogReport, $current_user;
 
 	$ogReport = new Reports($reportid);
 	$primarymodule = $ogReport->primodule;

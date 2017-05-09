@@ -108,7 +108,7 @@ function getMenuElements(){
 
 function getMenuArray($mparent) {
 	global $adb,$current_user;
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
+	$is_admin = is_admin($current_user);
 	$menustructure = array();
 	$menurs = $adb->query("select * from vtiger_evvtmenu where mparent = $mparent and mvisible=1 order by mseq");
 	if ($menurs and $adb->num_rows($menurs)>0) {

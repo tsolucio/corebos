@@ -38,7 +38,7 @@ $body_html_id    = (isset($_REQUEST['body_id']) ? vtlib_purify($_REQUEST['body_i
 $cnt=1;
 
 require_once('include/utils/UserInfoUtil.php');
-require('user_privileges/user_privileges_'.$current_user->id.'.php');
+$is_admin = is_admin($current_user);
 do
 {
 	$templatename = $temprow["templatename"];

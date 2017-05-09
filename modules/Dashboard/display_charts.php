@@ -745,7 +745,6 @@ function picklist_check($module,$graph_by)
 {
 	global $current_user,$adb;
 	$pick_query = '';
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	$roleid=$current_user->roleid;
 	$subrole = getRoleSubordinates($roleid);
 	if(count($subrole)> 0)

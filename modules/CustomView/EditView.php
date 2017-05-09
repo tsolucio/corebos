@@ -233,7 +233,6 @@ function getByModule_ColumnsList($mod,$columnslist,$selected="") {
 function getStdFilterHTML($module,$selected="")
 {
 	global $current_language, $app_strings, $current_user, $oCustomView;
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	$stdfilter = array();
 	$result = $oCustomView->getStdCriteriaByModule($module);
 	$mod_strings = return_module_language($current_language,$module);
@@ -278,7 +277,7 @@ function getStdFilterHTML($module,$selected="")
 			}
 			$stdfilter[]=$filter;
 			//added to fix ticket #5117. If a user doesn't have permission for a field and it has been used to fileter a custom view, it should be get displayed to him as Not Accessible.
-			if(!$is_admin && $selected != '' && $filter['selected'] == '')
+			if (!is_admin($current_user) && $selected != '' && $filter['selected'] == '')
 			{
 				$keys = explode(":",$selected);
 				if(getFieldVisibilityPermission($module,$current_user->id,$keys[2]) != '0')

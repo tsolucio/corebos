@@ -214,7 +214,7 @@ function get_user_array($add_blank=true, $status="Active", $assigned_user="",$pr
 		require_once('include/database/PearDatabase.php');
 		$db = PearDatabase::getInstance();
 		$temp_result = Array();
-		// Including deleted vtiger_users for now.
+		// Including deleted users for now.
 		if (empty($status)) {
 				$query = "SELECT id, user_name from vtiger_users";
 				$params = array();

@@ -563,11 +563,10 @@ class CobroPago extends CRMEntity {
 		global $log,$current_user,$adb;
 		$log->debug("Entering permissiontoedit() method ...");
 
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
 		$res = $adb->pquery("select block_paid from vtiger_cobropagoconfig",array());
 		$Block_paid = $adb->query_result($res,0,'block_paid');
 
-		if ($is_admin or $Block_paid!='on') return true;
+		if (is_admin($current_user) or $Block_paid!='on') return true;
 
 		if($this->column_fields['paid'] == 1)
 			$permiso = false;

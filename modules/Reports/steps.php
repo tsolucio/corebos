@@ -165,7 +165,6 @@ if(isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 		if(isset($recordid)) {
 			//added to fix the ticket #5117
 			global $current_user;
-			require('user_privileges/user_privileges_'.$current_user->id.'.php');
 
 			$oReport->getSelectedStandardCriteria($recordid);
 			$oReport->getAdvancedFilterList($recordid);
@@ -179,7 +178,7 @@ if(isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 			$BLOCK1 =array_merge((array)$BLOCK1,(array)getSecondaryStdFilterHTML($oReport->secmodule,$oReport->stdselectedcolumn));
 			//added to fix the ticket #5117
 			$selectedcolumnvalue = '"'. $oReport->stdselectedcolumn . '"';
-			if (!$is_admin && isset($oReport->stdselectedcolumn) && strpos($BLOCK1, $selectedcolumnvalue) === false)
+			if (!is_admin($current_user) && isset($oReport->stdselectedcolumn) && strpos($BLOCK1, $selectedcolumnvalue) === false)
 				$BLOCK1 = array_merge((array)$BLOCK1,array("selected"=>true,"value"=>"Not Accessible","label"=>$app_strings['LBL_NOT_ACCESSIBLE']));
 
 			$BLOCKCRITERIA = $oReport->getSelectedStdFilterCriteria($oReport->stdselectedfilter);

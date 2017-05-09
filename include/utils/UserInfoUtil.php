@@ -563,7 +563,7 @@ function _vtisPermitted($module,$actionname,$record_id='') {
 	//Checking the Access for the Settings Module
 	if($module == 'Settings' || $parenttab == 'Settings')
 	{
-		if(! $is_admin)
+		if (!$is_admin)
 		{
 			$permission = "no";
 		}
@@ -576,7 +576,7 @@ function _vtisPermitted($module,$actionname,$record_id='') {
 	}
 
 	//Checking whether the user is admin
-	if($is_admin)
+	if ($is_admin)
 	{
 		$permission ="yes";
 		$log->debug("Exiting isPermitted method ...");

@@ -2044,8 +2044,7 @@ function getEntityName($module, $ids_list) {
  */
 
 function getAllParenttabmoduleslist() {
-	global $adb;
-	global $current_user;
+	global $adb, $current_user;
 	$resultant_array = Array();
 
 	//$query = 'select name,tablabel,parenttab_label,vtiger_tab.tabid from vtiger_parenttabrel inner join vtiger_tab on vtiger_parenttabrel.tabid = vtiger_tab.tabid inner join vtiger_parenttab on vtiger_parenttabrel.parenttabid = vtiger_parenttab.parenttabid and vtiger_tab.presence order by vtiger_parenttab.sequence, vtiger_parenttabrel.sequence';

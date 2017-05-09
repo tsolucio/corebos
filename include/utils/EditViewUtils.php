@@ -506,7 +506,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	{
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue[] = $value;
-		$fieldvalue[] = $is_admin;
+		$fieldvalue[] = is_admin($current_user);
 	}
 	elseif($uitype == 56)
 	{
@@ -1215,7 +1215,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			$options[] = array(getTranslatedString($pickListValue),$pickListValue,$chk_val );
 		}
 		$fieldvalue [] = $options;
-		$fieldvalue [] = $is_admin;
+		$fieldvalue [] = is_admin($current_user);
 	}
 	elseif($uitype == 116 || $uitype == 117)
 	{
@@ -1243,14 +1243,14 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			$options[$currency_id] = array($pickListValue=>$chk_val );
 		}
 		$fieldvalue [] = $options;
-		$fieldvalue [] = $is_admin;
+		$fieldvalue [] = is_admin($current_user);
 	}
 	elseif($uitype ==98)
 	{
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue[]=$value;
 		$fieldvalue[]=getRoleName($value);
-		$fieldvalue[]=$is_admin;
+		$fieldvalue[]=is_admin($current_user);
 	}
 	elseif($uitype == 105)
 	{

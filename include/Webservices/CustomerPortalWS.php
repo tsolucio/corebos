@@ -396,7 +396,7 @@ function getSearchingListViewEntries($focus, $module,$list_result,$navigation_ar
 		array_push($field_list, $fieldname);
 	}
 	$field=Array();
-	if($is_admin==false)
+	if (!is_admin($current_user))
 	{
 		if($module == 'Emails')
 		{

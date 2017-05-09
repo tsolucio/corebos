@@ -82,7 +82,7 @@ class Appointment
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>
 							'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 		
-        	$q= "select vtiger_activity.*, vtiger_crmentity.*,
+		$q= "select vtiger_activity.*, vtiger_crmentity.*,
 					case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name
 					FROM vtiger_activity
 						inner join vtiger_crmentity on vtiger_activity.activityid = vtiger_crmentity.crmid
@@ -100,8 +100,7 @@ class Appointment
 		if(empty($m)) {
 			$m = '00';
 		}
-		$startDate = new DateTimeField($from_datetime->year."-".$from_datetime->z_month."-".
-				$from_datetime->z_day." $h:$m");
+		$startDate = new DateTimeField($from_datetime->year."-".$from_datetime->z_month."-".$from_datetime->z_day." $h:$m");
 		$h = '23';
 		$m = '59';
 		$endDate = new DateTimeField($to_datetime->year."-".$to_datetime->z_month."-".
@@ -167,18 +166,18 @@ class Appointment
 			}
 			$a++;
 			
-        }
+		}
 		//Get Recurring events
 		$q = "SELECT vtiger_activity.*, vtiger_crmentity.*, case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name , vtiger_recurringevents.recurringid, vtiger_recurringevents.recurringdate as date_start ,vtiger_recurringevents.recurringtype,vtiger_groups.groupname from vtiger_activity inner join vtiger_crmentity on vtiger_activity.activityid = vtiger_crmentity.crmid inner join vtiger_recurringevents on vtiger_activity.activityid=vtiger_recurringevents.activityid left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
 		$q .= getNonAdminAccessControlQuery('Calendar',$current_user);
-        $q.=" where vtiger_crmentity.deleted = 0 and vtiger_activity.activitytype not in ('Emails','Task') AND (cast(concat(recurringdate, ' ', time_start) as datetime) between ? and ?) ";
+		$q.=" where vtiger_crmentity.deleted = 0 and vtiger_activity.activitytype not in ('Emails','Task') AND (cast(concat(recurringdate, ' ', time_start) as datetime) between ? and ?) ";
 		
 		// User Select Customization
 		$q .= $query_filter_prefix;
 		// END
 
 		$params = array($startDate->getDBInsertDateTimeValue(), $endDate->getDBInsertDateTimeValue());
-													
+
         $q .= " ORDER by vtiger_recurringevents.recurringid";
 		$r = $adb->pquery($q, $params);
         $n = $adb->getRowCount($r);

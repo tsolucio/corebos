@@ -1382,20 +1382,19 @@ function getEventList(& $calendar,$start_date,$end_date,$info='')
 
 	$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>
 							'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-	$query = "SELECT vtiger_groups.groupname, $userNameSql as user_name,vtiger_crmentity.smownerid, vtiger_crmentity.crmid,
-       		vtiger_activity.* FROM vtiger_activity
+	$query = "SELECT vtiger_groups.groupname, $userNameSql as user_name,vtiger_crmentity.smownerid, vtiger_crmentity.crmid,vtiger_activity.* FROM vtiger_activity
 		INNER JOIN vtiger_crmentity
 			ON vtiger_crmentity.crmid = vtiger_activity.activityid
 		LEFT JOIN vtiger_groups
 			ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 		LEFT JOIN vtiger_users
-	       		ON vtiger_users.id = vtiger_crmentity.smownerid 
+			ON vtiger_users.id = vtiger_crmentity.smownerid
 		LEFT OUTER JOIN vtiger_recurringevents
 			ON vtiger_recurringevents.activityid = vtiger_activity.activityid
 		WHERE vtiger_crmentity.deleted = 0
 			AND (vtiger_activity.activitytype not in ('Emails','Task')) $and ";
 
-        $list_query = $query." AND vtiger_crmentity.smownerid = "  . $current_user->id;
+	$list_query = $query." AND vtiger_crmentity.smownerid = "  . $current_user->id;
 
 	// User Select Customization: Changes should made also in (Appointment::readAppointment)
 	$query_filter_prefix = calendarview_getSelectedUserFilterQuerySuffix();
@@ -1465,8 +1464,7 @@ function getEventList(& $calendar,$start_date,$end_date,$info='')
 	$queryMode = (isset($_REQUEST['query']) && $_REQUEST['query'] == 'true');
 	//$viewid is used as a key for cache query and other info so pass the dates as viewid
 	$viewid = $start_date.$end_date;
-	$start = ListViewSession::getRequestCurrentPage($currentModule, $adb->convert2sql($query,
-			$params), $viewid, $queryMode);
+	$start = ListViewSession::getRequestCurrentPage($currentModule, $adb->convert2sql($query,$params), $viewid, $queryMode);
 
 	$navigation_array = VT_getSimpleNavigationValues($start,$list_max_entries_per_page,$noofrows);
 
@@ -1531,8 +1529,8 @@ function getEventList(& $calendar,$start_date,$end_date,$info='')
 				
 
 		}
-                if($listview_max_textlength && (strlen($subject)>$listview_max_textlength))
-	                $subject = substr($subject,0,$listview_max_textlength)."...";
+		if ($listview_max_textlength && (strlen($subject) > $listview_max_textlength))
+			$subject = substr($subject,0,$listview_max_textlength)."...";
 		if($contact_id != '')
 		{
 			$displayValueArray = getEntityName('Contacts', $contact_id);
@@ -1551,7 +1549,7 @@ function getEventList(& $calendar,$start_date,$end_date,$info='')
 			$image_tag = "<img src='" . vtiger_imageurl('Meetings.gif', $theme). "' align='middle'>&nbsp;".$app_strings['Meeting'];
 		else
 			$image_tag = "&nbsp;".getTranslatedString($type);
-        	$element['eventtype'] = $image_tag;
+		$element['eventtype'] = $image_tag;
 		$element['eventdetail'] = $contact_data." ".$subject."&nbsp;".$more_link;
 		/*if(getFieldVisibilityPermission('Events',$current_user->id,'parent_id') == '0')
 		{
@@ -1569,7 +1567,7 @@ function getEventList(& $calendar,$start_date,$end_date,$info='')
 		}
 		if(getFieldVisibilityPermission('Events',$current_user->id,'eventstatus') == '0')
 		{
-			if(!$is_admin && $eventstatus != '')
+			if (!is_admin($current_user) && $eventstatus != '')
 			{
 				$roleid=$current_user->roleid;
 				$roleids = Array();
@@ -1622,12 +1620,10 @@ function getEventList(& $calendar,$start_date,$end_date,$info='')
 function getTodoList(& $calendar,$start_date,$end_date,$info='')
 {
 	global $log,$app_strings,$theme;
-        $Entries = Array();
+	$Entries = Array();
 	$category = getParentTab();
 	global $adb,$current_user,$mod_strings,$cal_log,$list_max_entries_per_page;
 	$cal_log->debug("Entering getTodoList() method...");
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
-	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
 
 	$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>
 							'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
@@ -1743,7 +1739,7 @@ function getTodoList(& $calendar,$start_date,$end_date,$info='')
 		{
 			$taskstatus = $adb->query_result($result,$i,"status");
 
-			if(!$is_admin && $taskstatus != '')
+			if (!is_admin($current_user) && $taskstatus != '')
 			{
 				$roleid=$current_user->roleid;
 				$roleids = Array();

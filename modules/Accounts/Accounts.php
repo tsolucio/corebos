@@ -889,7 +889,6 @@ class Accounts extends CRMEntity {
 	function getAccountHierarchy($id) {
 		global $log, $adb, $current_user;
 		$log->debug("Entering getAccountHierarchy(".$id.") method ...");
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
 
 		$tabname = getParentTab();
 		$listview_header = Array();

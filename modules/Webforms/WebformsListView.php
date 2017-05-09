@@ -10,7 +10,6 @@
 global $app_strings, $mod_strings, $current_language, $currentModule, $theme,$current_user,$adb,$log;
 
 require_once('Smarty_setup.php');
-require('user_privileges/user_privileges_'.$current_user->id.'.php');
 require_once('modules/Webforms/Webforms.php');
 require_once('modules/Webforms/model/WebformsModel.php');
 

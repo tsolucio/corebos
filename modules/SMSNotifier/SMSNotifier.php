@@ -71,7 +71,6 @@ class SMSNotifier extends SMSNotifierBase {
 	 * Detect the related modules based on the entity relation information for this instance.
 	 */
 	function detectRelatedModules() {
-
 		global $adb, $current_user;
 
 		// Pick the distinct modulenames based on related records.

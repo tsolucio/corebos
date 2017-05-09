@@ -107,7 +107,7 @@ if(!empty($_REQUEST['primecvid'])){
 				$fieldname = $prifldarr[2];
 				$priarr=explode("_",$prifldarr[3],2); //getting field label
 				$prifld = str_replace("_"," ",$priarr[1]);
-				if($is_admin == false){
+				if (!is_admin($current_user)){
 					$fld_permission = getFieldVisibilityPermission($fieldmodule,$current_user->id,$fieldname);
 				} else {
 					$fld_permission = '0';

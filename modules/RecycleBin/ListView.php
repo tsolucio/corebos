@@ -193,7 +193,7 @@ $smarty->assign("lvEntries", $lvEntries);
 $smarty->assign('ALLSELECTEDIDS', (isset($_REQUEST['allselobjs']) ? vtlib_purify($_REQUEST['allselobjs']) : ''));
 $smarty->assign("CURRENT_PAGE_BOXES", implode(array_keys($lvEntries),";"));
 
-$smarty->assign("IS_ADMIN", $is_admin);
+$smarty->assign("IS_ADMIN", is_admin($current_user));
 
 if(empty($_REQUEST['mode']) or $_REQUEST['mode'] != 'ajax') {
 	$smarty->display(vtlib_getModuleTemplate($currentModule,'RecycleBin.tpl'));

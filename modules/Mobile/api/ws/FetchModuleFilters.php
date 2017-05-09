@@ -16,7 +16,7 @@ class crmtogo_WS_FetchModuleFilters extends crmtogo_WS_Controller {
 		$current_user = $this->getActiveUser();
 		
 		$result = array();
-		
+
 		$filters = $this->getModuleFilters($module, $current_user);
 		$yours = array();
 		$others= array();

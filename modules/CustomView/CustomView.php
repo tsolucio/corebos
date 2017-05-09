@@ -1838,11 +1838,9 @@ class CustomView extends CRMEntity {
 
 	//Function to check if the current user is able to see the customView
 	function isPermittedCustomView($record_id, $action, $module) {
-		global $log, $adb;
-		global $current_user;
+		global $log, $adb, $current_user;
 		$log->debug("Entering isPermittedCustomView($record_id,$action,$module) method....");
 
-		require('user_privileges/user_privileges_' . $current_user->id . '.php');
 		$permission = "yes";
 
 		if ($record_id != '') {
@@ -1860,7 +1858,7 @@ class CustomView extends CRMEntity {
 					else
 						$permission = "no";
 				}
-				elseif ($is_admin) {
+				elseif (is_admin($current_user)) {
 					$permission = 'yes';
 				} elseif ($action != 'ChangeStatus') {
 					if ($userid == $current_user->id) {
@@ -1918,14 +1916,13 @@ class CustomView extends CRMEntity {
 		global $current_user, $log, $current_language;
 		$custom_strings = return_module_language($current_language, "CustomView");
 		$log->debug("Entering isPermittedChangeStatus($status) method...");
-		require('user_privileges/user_privileges_' . $current_user->id . '.php');
 		$changed_status = $status_label = '';
 		$status_details = Array('Status' => CV_STATUS_DEFAULT, 'ChangedStatus' => $changed_status, 'Label' => $status_label);
 		if ($viewid>0) {
 			$cuserroles = getSubordinateUsersList($current_user->column_fields['roleid']);
 			$status_userid_info = $this->getStatusAndUserid($viewid);
 		}
-		if ($is_admin or ($viewid>0 and in_array($status_userid_info['userid'], $cuserroles))) {
+		if (is_admin($current_user) or ($viewid>0 and in_array($status_userid_info['userid'], $cuserroles))) {
 			if ($status == CV_STATUS_PENDING) {
 				$changed_status = CV_STATUS_PUBLIC;
 				$status_label = $custom_strings['LBL_STATUS_PUBLIC_APPROVE'];
