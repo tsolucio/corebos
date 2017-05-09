@@ -760,7 +760,7 @@ class ListViewController {
 				$field = $this->queryGenerator->getReferenceField($fieldName,false);
 				if (is_null($field)) continue;
 			}
-
+			$fieldLabel = $field->getFieldLabelKey();
 			if(in_array($field->getColumnName(),$focus->sortby_fields)) {
 				if($orderBy == $field->getColumnName()) {
 					$temp_sorder = $change_sorder[$sorder];
@@ -768,11 +768,10 @@ class ListViewController {
 				} else {
 					$temp_sorder = $default_sort_order;
 				}
-				$label = getTranslatedString($field->getFieldLabelKey(), $module);
-				//added to display vtiger_currency symbol in listview header
-				if($label =='Amount') {
-					$label .=' ('.getTranslatedString('LBL_IN', $module).' '.
-							$user_info['currency_symbol'].')';
+				$label = getTranslatedString($fieldLabel, $module);
+				//added to display currency symbol in listview header
+				if ($fieldLabel == 'Amount') {
+					$label .= ' ('.getTranslatedString('LBL_IN', $module).' '.$current_user->column_fields['currency_symbol'].')';
 				}
 				if($field->getUIType() == '9') {
 					$label .=' (%)';
@@ -794,13 +793,8 @@ class ListViewController {
 				}
 				$arrow = '';
 			} else {
-				$name = getTranslatedString($field->getFieldLabelKey(), getTabModuleName($field->getTabId()));
+				$name = getTranslatedString($fieldLabel, getTabModuleName($field->getTabId()));
 			}
-			//added to display vtiger_currency symbol in related listview header
-			if($name =='Amount') {
-				$name .=' ('.getTranslatedString('LBL_IN').' '.$user_info['currency_symbol'].')';
-			}
-
 			$header[]=$name;
 		}
 
