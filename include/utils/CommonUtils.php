@@ -211,9 +211,15 @@ function parse_calendardate($local_format) {
  * returns the decoded value in string fromat
  */
 function from_html($string, $encode = true) {
-// 		if (preg_match('/(script).*(\/script)/i', $string))
-// 			$string = preg_replace(array('/</', '/>/', '/"/'), array('&lt;', '&gt;', '&quot;'), $string);
-	return vtlib_purify($string);
+	global $log;
+	//$log->debug("Entering from_html(".$string.",".$encode.") method ...");
+	//if($encode && is_string($string))$string = html_entity_decode($string, ENT_QUOTES);
+	if (is_string($string)) {
+			if (preg_match('/(script).*(\/script)/i', $string))
+		$string = preg_replace(array('/</', '/>/', '/"/'), array('&lt;', '&gt;', '&quot;'), $string);
+	}
+	//$log->debug("Exiting from_html method ...");
+	return $string;
 }
 
 function fck_from_html($string) {
