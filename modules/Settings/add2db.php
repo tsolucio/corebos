@@ -22,6 +22,7 @@ $binFile = '';
 $binFrontFile = '';
 $binFaviconFile = '';
 $image_extensions_allowed = array('jpeg', 'png', 'jpg', 'pjpeg', 'x-png');
+$filename = '';
 if (isset($_FILES) and isset($_FILES['binFile']) and !empty($_FILES['binFile']['name'])) {
 	$binFile = $_FILES['binFile']['name'];
 	if (isset($_REQUEST['binFile_hidden'])) {
@@ -63,6 +64,7 @@ if (isset($_FILES) and isset($_FILES['binFile']) and !empty($_FILES['binFile']['
 		$nologo_specified = "false";
 	}
 }
+$front_filename = '';
 if (isset($_FILES) and isset($_FILES['binFrontFile']) and !empty($_FILES['binFrontFile']['name'])) {
 	$binFrontFile = $_FILES['binFrontFile']['name'];
 	if (isset($_REQUEST['binFrontFile_hidden'])) {
@@ -102,6 +104,7 @@ if (isset($_FILES) and isset($_FILES['binFrontFile']) and !empty($_FILES['binFro
 		$nologo_specified = "false";
 	}
 }
+$favicon_filename = '';
 if (isset($_FILES) and isset($_FILES['binFaviconFile']) and !empty($_FILES['binFaviconFile']['name'])) {
 	$binFaviconFile = $_FILES['binFaviconFile']['name'];
 	if (isset($_REQUEST['binFaviconFile_hidden'])) {

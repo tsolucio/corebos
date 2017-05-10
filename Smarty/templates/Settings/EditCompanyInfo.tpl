@@ -31,16 +31,16 @@
 					<td valign=top class="small">{$MOD.LBL_COMPANY_DESC}</td>
 				</tr>
 				</table>
-				
+
 				<br>
 				<table border=0 cellspacing=0 cellpadding=10 width=100% >
 				<tr>
 				<td>
-				
+
 					<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 					<tr>
 						<td class="big"><strong>{$MOD.LBL_COMPANY_DETAILS} </strong>
-						{$ERRORFLAG}<br>
+						{if isset($ERRORFLAG)}{$ERRORFLAG}{/if}<br>
 						</td>
 						<td class="small" align=right>
 							<input title="{$APP.LBL_SAVE_BUTTON_LABEL}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmButton small save" type="submit" name="button" value="{$APP.LBL_SAVE_BUTTON_LABEL}" onclick="return verify_data(form,'{$MOD.LBL_ORGANIZATION_NAME}');" >
