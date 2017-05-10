@@ -128,7 +128,7 @@ class Vtiger_InventoryPDFController {
 			$totaltaxes += $tax;
 			$totaltaxes = number_format($totaltaxes, 2,'.',''); //Convert to 2 decimals
 			$discountPercentage = $productLineItem["discount_percent{$productLineItemIndex}"];
-			$productName = $productLineItem["productName{$productLineItemIndex}"];
+			$productName = decode_html($productLineItem["productName{$productLineItemIndex}"]);
 			//get the sub product
             $subProducts = $productLineItem["subProductArray{$productLineItemIndex}"];
             if($subProducts != ''){
@@ -295,8 +295,8 @@ class Vtiger_InventoryPDFController {
 
 	function buildFooterModel() {
 		$footerModel = new Vtiger_PDF_Model();
-		$footerModel->set(Vtiger_PDF_InventoryFooterViewer::$DESCRIPTION_DATA_KEY, from_html($this->focusColumnValue('description')));
-		$footerModel->set(Vtiger_PDF_InventoryFooterViewer::$TERMSANDCONDITION_DATA_KEY, from_html($this->focusColumnValue('terms_conditions')));
+		$footerModel->set(Vtiger_PDF_InventoryFooterViewer::$DESCRIPTION_DATA_KEY, $this->focusColumnValue('description'));
+		$footerModel->set(Vtiger_PDF_InventoryFooterViewer::$TERMSANDCONDITION_DATA_KEY, $this->focusColumnValue('terms_conditions'));
 		return $footerModel;
 	}
 

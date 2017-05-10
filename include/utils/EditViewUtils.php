@@ -32,7 +32,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 
 	$theme_path="themes/".$theme."/";
 	$image_path=$theme_path."images/";
-	$fieldlabel = from_html($fieldlabel);
 	$fieldvalue = Array();
 	$final_arr = Array();
 	$value = $col_fields[$fieldname];
@@ -1664,12 +1663,12 @@ function getAssociatedProducts($module,$focus,$seid='')
 
 		$product_Detail[$i]['subProductArray'.$i] = $subProductArray;
 		$product_Detail[$i]['hdnProductId'.$i] = $hdnProductId;
-		$product_Detail[$i]['productName'.$i]= from_html($productname);
+		$product_Detail[$i]['productName'.$i]= $productname;
 		/* Added to fix the issue Product Pop-up name display*/
 		if($_REQUEST['action'] == 'CreateSOPDF' || $_REQUEST['action'] == 'CreatePDF' || $_REQUEST['action'] == 'SendPDFMail')
 			$product_Detail[$i]['productName'.$i]= htmlspecialchars($product_Detail[$i]['productName'.$i]);
 		$product_Detail[$i]['hdnProductcode'.$i] = $hdnProductcode;
-		$product_Detail[$i]['productDescription'.$i]= from_html($productdescription);
+		$product_Detail[$i]['productDescription'.$i]= $productdescription;
 		if($module == 'Potentials' || $module == 'Products' || $module == 'Services') {
 			$product_Detail[$i]['comment'.$i]= $productdescription;
 		}else {

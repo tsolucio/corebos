@@ -27,7 +27,6 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 	$log->debug("Entering getDetailViewOutputHtml(" . $uitype . "," . $fieldname . "," . $fieldlabel . "," . print_r($col_fields,true) . "," . $generatedtype . "," . $tabid . ") method ...");
 	$theme_path = "themes/" . $theme . "/";
 	$image_path = $theme_path . "images/";
-	$fieldlabel = from_html($fieldlabel);
 	$custfld = '';
 	$value = '';
 	$arr_data = Array();
@@ -254,10 +253,14 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$label_fld[] = '';
 		}
 	} elseif ($uitype == 19) {
-		if ($fieldname == 'notecontent' or $module=='Emails' or (isset($cbMapFI['RTE']) and $cbMapFI['RTE'] and vt_hasRTE()))
-			$col_fields[$fieldname] = decode_html($col_fields[$fieldname]);
-		else
-			$col_fields[$fieldname] = str_replace("&lt;br /&gt;", "<br>", $col_fields[$fieldname]);
+		$col_fields[$fieldname] = decode_html($col_fields[$fieldname]); // undo database encoding
+		if ($fieldname == 'notecontent' or $module=='Emails' or (isset($cbMapFI['RTE']) and $cbMapFI['RTE'] and vt_hasRTE())) {
+			//$col_fields[$fieldname] = htmlentities($col_fields[$fieldname]); // prepare for output
+			$col_fields[$fieldname] = from_html($col_fields[$fieldname]);
+		} else {
+			//$col_fields[$fieldname] = preg_replace(array('/</', '/>/', '/"/'), array('&lt;', '&gt;', '&quot;'), $col_fields[$fieldname]);
+			$col_fields[$fieldname] = htmlentities($col_fields[$fieldname]); // prepare for output
+		}
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$label_fld[] = $col_fields[$fieldname];
 	}

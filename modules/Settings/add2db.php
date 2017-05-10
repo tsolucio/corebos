@@ -156,14 +156,14 @@ if ($error_flag == "") {
 	}
 		$organization_name = vtlib_purify($_REQUEST['organization_name']);
 		$org_name = $_REQUEST['org_name'];
-		$organization_address = from_html($_REQUEST['organization_address']);
-		$organization_city = from_html($_REQUEST['organization_city']);
-		$organization_state = from_html($_REQUEST['organization_state']);
-		$organization_code = from_html($_REQUEST['organization_code']);
-		$organization_country = from_html($_REQUEST['organization_country']);
-		$organization_phone = from_html($_REQUEST['organization_phone']);
-		$organization_fax = from_html($_REQUEST['organization_fax']);
-		$organization_website = from_html($_REQUEST['organization_website']);
+		$organization_address = vtlib_purify($_REQUEST['organization_address']);
+		$organization_city = vtlib_purify($_REQUEST['organization_city']);
+		$organization_state = vtlib_purify($_REQUEST['organization_state']);
+		$organization_code = vtlib_purify($_REQUEST['organization_code']);
+		$organization_country = vtlib_purify($_REQUEST['organization_country']);
+		$organization_phone = vtlib_purify($_REQUEST['organization_phone']);
+		$organization_fax = vtlib_purify($_REQUEST['organization_fax']);
+		$organization_website = vtlib_purify($_REQUEST['organization_website']);
 
 		$organization_logoname = $filename;
 		$front_logoname = $front_filename;

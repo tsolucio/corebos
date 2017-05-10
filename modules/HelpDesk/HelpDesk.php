@@ -129,7 +129,6 @@ class HelpDesk extends CRMEntity {
 			$assigntype = 'U';
 		}
 		$fldvalue = $this->constructUpdateLog($this, $this->mode, $grp_name, $assigntype);
-		$fldvalue = from_html($fldvalue,($this->mode == 'edit')?true:false);
 		parent::save($module, $fileid);
 		//After save the record, we should update the log
 		$adb->pquery('update vtiger_troubletickets set update_log=? where ticketid=?', array($fldvalue,$this->id));
@@ -182,7 +181,7 @@ class HelpDesk extends CRMEntity {
 		$comment = $this->column_fields['comments'];
 		if ($comment != '') {
 			$sql = "insert into vtiger_ticketcomments (ticketid,comments,ownerid,ownertype,createdtime) values(?,?,?,?,?)";
-			$params = array($this->id, from_html($comment), $ownerId, $ownertype, $current_time);
+			$params = array($this->id, $comment, $ownerId, $ownertype, $current_time);
 			$adb->pquery($sql, $params);
 			$adb->pquery("update vtiger_troubletickets set commentadded='1' where ticketid=?",array($this->id));
 			$this->column_fields['commentadded'] = '1';

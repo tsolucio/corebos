@@ -28,7 +28,7 @@ require_once 'modules/com_vtiger_workflow/tasks/VTCreateEventTask.inc';
 			return;
 		}
 
-		$description = from_html($request["description"]);
+		$description = $request['description'];
 		$moduleName = $request["module_name"];
 		$conditions = $request["conditions"];
 		$saveType=$request["save_type"];

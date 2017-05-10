@@ -743,8 +743,6 @@ class Users extends CRMEntity {
 					$fldvalue = $this->column_fields[$fieldname];
 					$fldvalue = stripslashes($fldvalue);
 				}
-				$fldvalue = from_html($fldvalue, ($insertion_mode == 'edit') ? true : false);
-
 			} else {
 				$fldvalue = '';
 			}

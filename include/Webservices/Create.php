@@ -92,7 +92,6 @@ function vtws_create($elementType, $element, $user) {
 			$grp_name = fetchGroupName($colflds['assigned_user_id']);
 			$assigntype = ($grp_name != '') ? 'T' : 'U';
 			$updlog = HelpDesk::getUpdateLogCreateMessage($colflds, $grp_name, $assigntype);
-			$updlog = from_html($updlog,false);
 		}
         $entity = $handler->create($elementType, $element);
 		if ($elementType == 'HelpDesk') {

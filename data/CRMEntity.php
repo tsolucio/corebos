@@ -356,7 +356,7 @@ class CRMEntity {
 		if ($module == 'Events') {
 			$module = 'Calendar';
 		}
-		$description_val = (empty($this->column_fields['description']) ? '' : vtlib_purify($this->column_fields['description']));
+		$description_val = (empty($this->column_fields['description']) ? '' : $this->column_fields['description']);
 		if ($this->mode == 'edit') {
 
 			checkFileAccessForInclusion('user_privileges/user_privileges_' . $current_user->id . '.php');
@@ -667,8 +667,6 @@ class CRMEntity {
 				} else {
 					$fldvalue = $this->column_fields[$fieldname];
 				}
-				if ($uitype != 33 && $uitype != 8)
-					$fldvalue = from_html($fldvalue, ($insertion_mode == 'edit') ? true : false);
 			}
 			else {
 				$fldvalue = '';
