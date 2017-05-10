@@ -45,10 +45,14 @@ $focus->column_fields['currency_id'] = vtlib_purify($_REQUEST['inventory_currenc
 $cur_sym_rate = getCurrencySymbolandCRate(vtlib_purify($_REQUEST['inventory_currency']));
 $focus->column_fields['conversion_rate'] = $cur_sym_rate['rate'];
 }
-if($_REQUEST['assigntype'] == 'U') {
-	$focus->column_fields['assigned_user_id'] = $_REQUEST['assigned_user_id'];
-} elseif($_REQUEST['assigntype'] == 'T') {
-	$focus->column_fields['assigned_user_id'] = $_REQUEST['assigned_group_id'];
+if (empty($_REQUEST['assigned_user_id']) and empty($_REQUEST['assigned_group_id'])) {
+	$focus->column_fields['assigned_user_id'] = $current_user->id;
+} else {
+	if($_REQUEST['assigntype'] == 'U') {
+		$focus->column_fields['assigned_user_id'] = $_REQUEST['assigned_user_id'];
+	} elseif($_REQUEST['assigntype'] == 'T') {
+		$focus->column_fields['assigned_user_id'] = $_REQUEST['assigned_group_id'];
+	}
 }
 list($saveerror,$errormessage,$error_action,$returnvalues) = $focus->preSaveCheck($_REQUEST);
 if ($saveerror) { // there is an error so we go back to EditView.
