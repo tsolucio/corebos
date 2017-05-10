@@ -277,10 +277,9 @@ class HelpDesk extends CRMEntity {
 
 		$header[] = $adb->query_result($result,0,"title");
 
-		$return_value = Array('header'=>$header,'entries'=>$splitval);
+		$return_value = Array('header'=>$header,'entries'=>$splitval,'navigation'=>array('',''));
 
 		$log->debug("Exiting from get_ticket_history($ticketid) method ...");
-
 		return $return_value;
 	}
 

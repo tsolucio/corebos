@@ -374,7 +374,6 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$team_style = 'display:none';
 		}
 
-
 		if ($fieldname == 'assigned_user_id' && $is_admin == false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid($module)] == 3 or $defaultOrgSharingPermission[getTabid($module)] == 0)) {
 			$user_array = get_user_array(FALSE, "Active", $current_user->id, 'private');
 		} else {
@@ -573,6 +572,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$start_idx = $filename_pos + strlen($col_fields['record_id'] . '_');
 			$org_filename = substr($org_filename, $start_idx);
 		}
+		$custfldval = '';
 		if ($org_filename != '') {
 			if ($col_fields['filelocationtype'] == 'E') {
 				if ($col_fields['filestatus'] == 1) {//&& strlen($col_fields['filename']) > 7  ){
@@ -586,8 +586,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 				} else {
 					$custfldval = $col_fields[$fieldname];
 				}
-			} else
-				$custfldval = '';
+			}
 		}
 		$label_fld[] = $custfldval;
 	}

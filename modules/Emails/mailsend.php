@@ -148,9 +148,6 @@ for ($i=0;$i<(count($myids)-1);$i++)
 			$fldname=$adb->query_result($fresult,0,"columnname");
 			$emailadd=br2nl($myfocus->column_fields[$fldname]);
 
-			//This is to convert the html encoded string to original html entities so that in mail description contents will be displayed correctly
-			//$focus->column_fields['description'] = from_html($focus->column_fields['description']);
-
 			if($emailadd != '') {
 				$description = getMergedDescription($_REQUEST['description'],$mycrmid,$pmodule);
 				//Email Open/Stat Tracking
