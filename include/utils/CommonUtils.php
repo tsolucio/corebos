@@ -205,20 +205,17 @@ function parse_calendardate($local_format) {
 }
 
 /**
- * Decodes the given set of special character
- * input values $string - string to be converted
- * $encode - NOT USED flag to decode
- * returns the decoded value in string fromat
+ * Rudimentary/Trusted input clean up for XSS
+ * input values $string - string to be cleaned
+ * returns the cleaned value in string fromat
  */
-function from_html($string, $encode = true) {
-	global $log;
-	//$log->debug("Entering from_html(".$string.",".$encode.") method ...");
-	//if($encode && is_string($string))$string = html_entity_decode($string, ENT_QUOTES);
+function from_html($string) {
 	if (is_string($string)) {
-			if (preg_match('/(script).*(\/script)/i', $string))
-		$string = preg_replace(array('/</', '/>/', '/"/'), array('&lt;', '&gt;', '&quot;'), $string);
+		if (preg_match('/(script).*(\/script)/i', $string)) {
+			$string = preg_replace(array('/<\s*script/', '/<\/\s*script\s*>/'), array('&lt;script', '&lt;/script&gt;', '&quot;'), $string);
+			$string = str_replace('"', '&quot;', $string);
+		}
 	}
-	//$log->debug("Exiting from_html method ...");
 	return $string;
 }
 
