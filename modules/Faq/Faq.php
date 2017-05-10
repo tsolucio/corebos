@@ -144,7 +144,8 @@ class Faq extends CRMEntity {
 		$result = $this->db->pquery($sql, array($faqid));
 		$noofrows = $this->db->num_rows($result);
 		$list = '';
-		//In ajax save we should not add this div
+		$enddiv = '';
+		// In ajax save we should not add this div
 		if($_REQUEST['action'] != 'FaqAjax')
 		{
 			$list = '<div id="comments_div" style="overflow: auto;height:200px;width:100%;">';

@@ -1939,7 +1939,7 @@ function getAllGroupInfo()
 function createGroup($groupName,$groupMemberArray,$description)
 {
 	global $log, $adb;
-	$log->debug("Entering createGroup(".$groupName.",".$groupMemberArray.",".$description.") method ...");
+	$log->debug("Entering createGroup(".$groupName.",".print_r($groupMemberArray,true).",".$description.") method ...");
 	$groupId=$adb->getUniqueId("vtiger_users");
 	//Insert into group vtiger_table
 	$query = 'insert into vtiger_groups values(?,?,?)';
@@ -2197,7 +2197,7 @@ function getGroupRelatedUsers($groupId)
 function updateGroup($groupId,$groupName,$groupMemberArray,$description)
 {
 	global $log, $adb;
-	$log->debug("Entering updateGroup(".$groupId.",".$groupName.",".$groupMemberArray.",".$description.") method ...");
+	$log->debug("Entering updateGroup(".$groupId.",".$groupName.",".print_r($groupMemberArray,true).",".$description.") method ...");
 	$query="update vtiger_groups set groupname=?, description=? where groupid=?";
 	$adb->pquery($query, array($groupName, $description, $groupId));
 
