@@ -13,15 +13,15 @@ require_once('include/utils/utils.php');
 global $app_strings, $mod_strings, $current_user, $currentModule, $adb, $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
-$profileId=vtlib_purify($_REQUEST['profileid']);
+$profileId = (isset($_REQUEST['profileid']) ? vtlib_purify($_REQUEST['profileid']) : 0);
 $profileName='';
 $profileDescription='';
 
-if(!empty($profileId)) {
+if (!empty($profileId)) {
 	if(!profileExists($profileId) || !is_numeric($profileId)) {
 		die(getTranslatedString('ERR_INVALID_PROFILE_ID', $currentModule));
 	}
-} elseif($_REQUEST['mode'] !='create') {
+} elseif ($_REQUEST['mode'] != 'create' || vtlib_purify($_REQUEST['profile_name']) == '') {
 	die(getTranslatedString('ERR_INVALID_PROFILE_ID', $currentModule));
 }
 
@@ -52,8 +52,7 @@ $smarty->assign("MOD", return_module_language($current_language,'Settings'));
 $smarty->assign("APP", $app_strings);
 $smarty->assign("THEME", $theme);
 $smarty->assign("CMOD", $mod_strings);
-if(isset($_REQUEST['return_action']) && vtlib_purify($_REQUEST['return_action']) != '')
-	$smarty->assign("RETURN_ACTION", vtlib_purify($_REQUEST['return_action']));
+$smarty->assign('RETURN_ACTION', (isset($_REQUEST['return_action']) ? vtlib_purify($_REQUEST['return_action']) : ''));
 
 if(isset($_REQUEST['profile_name']) && vtlib_purify($_REQUEST['profile_name']) != '' && $_REQUEST['mode'] == 'create')
 {
@@ -65,8 +64,6 @@ else
 	$profileName=getProfileName($profileId);
 	$smarty->assign("PROFILE_NAME", $profileName);
 }
-
-//$smarty->assign("PROFILE_NAME", to_html($profileName));
 
 if(isset($_REQUEST['profile_description']) && vtlib_purify($_REQUEST['profile_description']) != '' && $_REQUEST['mode'] == 'create')
 	$profileDescription = vtlib_purify($_REQUEST['profile_description']);
@@ -566,8 +563,7 @@ elseif($mode=='create')
 
 				$fieldAccessMandatory = false;
 				$fieldAccessRestricted = false;
-				if($fieldtype[1] == "M")
-				{
+				if (isset($fieldtype[1]) and $fieldtype[1] == "M") {
 					$mandatory = '<font color="red">*</font>';
 					$readonly = 'disabled';
 					$fieldAccessMandatory = true;
