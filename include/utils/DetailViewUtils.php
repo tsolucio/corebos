@@ -1770,6 +1770,9 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 		$readonly = $adb->query_result($result, $i, 'readonly');
 		if (isset($cbMapFI[$fieldname])) {
 			$custfld = getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, $generatedtype, $tabid, $module, $cbMapFI[$fieldname]);
+			if (isset($cbMapFI[$fieldname]['RTE']) and $cbMapFI[$fieldname]['RTE'] and vt_hasRTE()) {
+				$readonly = '1'; // no inline edit for RTE edit fields
+			}
 		} else {
 			$custfld = getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, $generatedtype, $tabid, $module);
 		}
