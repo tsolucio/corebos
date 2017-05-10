@@ -11,7 +11,6 @@ require_once('include/database/PearDatabase.php');
 global $adb, $mod_strings;
 
 $groupName = from_html(trim($_REQUEST['groupName']));
-$description = from_html($_REQUEST['description']);
 $mode = vtlib_purify($_REQUEST['mode']);
 
 if(isset($_REQUEST['dup_check']) && $_REQUEST['dup_check']!='') {
@@ -96,6 +95,7 @@ function constructGroupMemberArray($member_array)
 		$returnaction='GroupDetailView';
 	}
 
+	$description = from_html($_REQUEST['description']);
 	//Inserting values into Role Table
 	if(isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'edit')
 	{

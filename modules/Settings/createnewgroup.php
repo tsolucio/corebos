@@ -9,12 +9,10 @@
  ********************************************************************************/
 require_once('include/utils/utils.php');
 
-global $adb;
-global $theme;
+global $adb, $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 $smarty = new vtigerCRM_Smarty;
-$Err_msg;
 $parentGroupArray=Array();
 if(isset($_REQUEST['groupId']) && $_REQUEST['groupId'] != '')
 {
@@ -30,6 +28,8 @@ if(isset($_REQUEST['groupId']) && $_REQUEST['groupId'] != '')
 else
 {
 	$mode = 'create';
+	$groupId = 0;
+	$groupInfo = array(0=>'',1=>'');
 	if(isset($_REQUEST['error']) && ($_REQUEST['error']=='true'))
 	{
 		$Err_msg = "<center><font color='red'><b>".$mod_strings['LBL_GROUP_NAME_ERROR']."</b></font></center>";
@@ -99,9 +99,9 @@ foreach($grpDetails as $grpId=>$grpName)
 		$m++;
 	}
 }
+$member = array();
 if($mode == 'edit')
 {
-	$member=array();
 	$groupMemberArr=$groupInfo[2];
 	foreach($groupMemberArr as $memberType=>$memberValue)
 	{
@@ -132,8 +132,11 @@ if($mode == 'edit')
 		}
 	}
 	$smarty->assign("MEMBER", array_chunk($member,2));
+} else {
+	$smarty->assign('MEMBER', $member);
 }
 $smarty->assign("MOD", return_module_language($current_language,'Settings'));
+$smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH",$image_path);
 $smarty->assign("APP", $app_strings);
 $smarty->assign("CMOD", $mod_strings);
@@ -143,7 +146,7 @@ $smarty->assign("USERIDSTR",$userIdStr);
 $smarty->assign("USERNAMESTR",$userNameStr);
 $smarty->assign("GROUPIDSTR",$grpIdStr);
 $smarty->assign("GROUPNAMESTR",$grpNameStr);
-$smarty->assign("RETURN_ACTION",vtlib_purify($_REQUEST['returnaction']));
+$smarty->assign('RETURN_ACTION', (isset($_REQUEST['returnaction']) ? vtlib_purify($_REQUEST['returnaction']) : ''));
 $smarty->assign("GROUPID",$groupId);
 $smarty->assign("MODE",$mode);
 $smarty->assign("GROUPNAME",$groupInfo[0]);
