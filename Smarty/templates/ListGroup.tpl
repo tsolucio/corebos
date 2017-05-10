@@ -6,7 +6,6 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 <script type="text/javascript" src="include/js/smoothscroll.js"></script>
@@ -14,9 +13,9 @@
 <br>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tbody><tr>
-        <td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-        <td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
-        <br>
+	<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
+	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
+	<br>
 
 	<div align=center>
 			{include file='SetMenu.tpl'}
@@ -80,14 +79,9 @@
 					<table border=0 cellspacing=0 cellpadding=5 width=100% >
 					<tr><td class="small" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td></tr>
 					</table>
-					
-					
 				</td>
 				</tr>
 				</table>
-			
-			
-			
 			</td>
 			</tr>
 			</table>
@@ -95,7 +89,7 @@
 	</tr>
 	</form>
 	</table>
-		
+
 	</div>
 </td>
         <td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>

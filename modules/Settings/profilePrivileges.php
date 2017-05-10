@@ -85,7 +85,7 @@ if(isset($_REQUEST['mode']) && vtlib_purify($_REQUEST['mode']) != '') {
 	$smarty->assign("MODE", $mode);
 }
 
-//Initially setting the secondary selected vtiger_tab
+//Initially setting the secondary selected tab
 if($mode == 'create')
 {
 	$smarty->assign("ACTION",'SaveProfile');

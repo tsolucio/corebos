@@ -60,7 +60,7 @@ foreach($roleDetails as $roleId=>$roleInfo)
 		}
 		$roleName=$roleInfo[0];
 		$roleIdStr .= "'".$roleId."'";
-		$roleNameStr .= "'".addslashes(decode_html($roleName))."'"; 
+		$roleNameStr .= "'".addslashes(decode_html($roleName))."'";
 	}
 	$i++;
 }

@@ -85,7 +85,6 @@ function constructGroupMemberArray($member_array)
 	$groupMemberArray['users']=$userArray;
 
 	return $groupMemberArray;
-
 }
 
 	if(isset($_REQUEST['returnaction']) && $_REQUEST['returnaction'] != '')
