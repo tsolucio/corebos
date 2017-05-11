@@ -35,10 +35,14 @@ function fetchUserRole($userid)
 {
 	global $log, $adb;
 	$log->debug("Entering fetchUserRole(".$userid.") method ...");
-	$sql = "select roleid from vtiger_user2role where userid=?";
+	$key = 'fetchUserRole' . $userid;
+	list($roleid,$cached) = VTCacheUtils::lookupCachedInformation($key);
+	if ($cached) return $roleid;
+	$sql = 'select roleid from vtiger_user2role where userid=?';
 	$result = $adb->pquery($sql, array($userid));
-	$roleid=  $adb->query_result($result,0,"roleid");
-	$log->debug("Exiting fetchUserRole method ...");
+	$roleid = $adb->query_result($result,0,'roleid');
+	VTCacheUtils::updateCachedInformation($key, $roleid);
+	$log->debug('Exiting fetchUserRole method ...');
 	return $roleid;
 }
 
@@ -2845,6 +2849,9 @@ function getUserProfile($userId)
 {
 	global $log, $adb;
 	$log->debug("Entering getUserProfile(".$userId.") method ...");
+	$key = 'getUserProfile' . $userId;
+	list($profArr,$cached) = VTCacheUtils::lookupCachedInformation($key);
+	if ($cached) return $profArr;
 	$roleId=fetchUserRole($userId);
 	$profArr=Array();
 	$sql1 = "select profileid from vtiger_role2profile where roleid=?";
@@ -2854,6 +2861,7 @@ function getUserProfile($userId)
 		$profileid=  $adb->query_result($result1,$i,"profileid");
 		$profArr[]=$profileid;
 	}
+	VTCacheUtils::updateCachedInformation($key, $profArr);
 	$log->debug("Exiting getUserProfile method ...");
 	return $profArr;
 }
@@ -2981,6 +2989,9 @@ function getParentRole($roleId)
 {
 	global $log;
 	$log->debug("Entering getParentRole(".$roleId.") method ...");
+	$key = 'getParentRole' . $roleId;
+	list($parentRoleArr,$cached) = VTCacheUtils::lookupCachedInformation($key);
+	if ($cached) return $parentRoleArr;
 	$roleInfo=getRoleInformation($roleId);
 	$parentRole=$roleInfo[$roleId][1];
 	$tempParentRoleArr=explode('::',$parentRole);
@@ -2992,6 +3003,7 @@ function getParentRole($roleId)
 			$parentRoleArr[]=$role_id;
 		}
 	}
+	VTCacheUtils::updateCachedInformation($key, $parentRoleArr);
 	$log->debug("Exiting getParentRole method ...");
 	return $parentRoleArr;
 }
