@@ -129,7 +129,7 @@ class cbMap extends CRMEntity {
 				$field = new Vtiger_Field();
 				$field->name = 'bmapid';
 				$field->label= 'cbMap';
-				$field->table = $module->basetable;
+				$field->table = $modGV->basetable;
 				$field->column = 'bmapid';
 				$field->columntype = 'INT(11)';
 				$field->uitype = 10;

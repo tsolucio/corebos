@@ -59,7 +59,7 @@ class addFieldsToCyP extends cbupdaterWorker {
                             $focus = CRMEntity::getInstance($modname);
                             $focus->setModuleSeqNumber('configure',$modname,'PAY-','0000001');
                             $focus->updateMissingSeqNumber($modname);
-                        }elseif(!is_null($fld_ui4_colname)){
+                        }elseif(!empty($fld_ui4_colname)){
                             $this->ExecuteQuery("UPDATE vtiger_cobropago SET cyp_no=$fld_ui4_colname");
                             //Workflow, copy CyP No to Reference
                             $vtWorkFlow = new VTWorkflowManager($adb);

@@ -53,7 +53,7 @@ class delSettingsNotifications extends cbupdaterWorker {
 						$task->active = false;
 					}
 					$subject = $adb->query_result($result_main, 0, 'notificationsubject');
-					$subject = getTranslatedString('Reminder','Calendar').getTranslatedString($result_set['activitytype'],'Calendar').' @ $date_start $time_start'.
+					$subject = getTranslatedString('Reminder','Calendar').' $activitytype @ $date_start $time_start'.
 						'] ($(general : (__VtigerMeta__) dbtimezone)) '.getTranslatedString($adb->query_result($result_main,0,'notificationsubject'),'Calendar');
 					$content = nl2br(getTranslatedString($adb->query_result($result_main,0,'notificationbody'),'Calendar')) ."\n\n ".
 						getTranslatedString('Subject','Calendar').' : $subject'."\n ".
@@ -63,7 +63,7 @@ class delSettingsNotifications extends cbupdaterWorker {
 					$task->active = false;
 				}
 				if (empty($subject)) {
-					$subject = getTranslatedString('Reminder','Calendar').getTranslatedString($result_set['activitytype'],'Calendar').' @ @$date_start $time_start'.
+					$subject = getTranslatedString('Reminder','Calendar').' $activitytype @ @$date_start $time_start'.
 						'] ($(general : (__VtigerMeta__) dbtimezone)) ';
 				}
 				if (empty($content)) {

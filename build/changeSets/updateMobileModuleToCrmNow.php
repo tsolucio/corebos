@@ -31,7 +31,7 @@ class updateMobileModuleToCrmNow extends cbupdaterWorker {
 				$package->loadManifestFromFile('modules/'.$module.'/manifest.xml');
 				$rdo = $package->update_Module($moduleInstance);
 				global $adb;
-				$Mobilers = $adb->pquery("SELECT version FROM vtiger_tab WHERE name = 'Mobile'");
+				$Mobilers = $adb->query("SELECT version FROM vtiger_tab WHERE name = 'Mobile'");
 				$version = $adb->query_result($Mobilers, 0, 'version');
 				if($version == '2.1'){
 					//delete unused table
