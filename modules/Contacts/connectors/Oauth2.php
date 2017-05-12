@@ -176,6 +176,15 @@ class Google_Oauth2_Connector {
         if(!isset($this->user_id)) $this->user_id = $current_user->id;
         if(!isset($this->db)) $this->db = PearDatabase::getInstance();
         $decodedToken = json_decode($token,true);
+        if (!empty($decodedToken['error'])) {
+        	echo '<script>window.close();window.opener.location.href="index.php?module=Utilities&action=integration&integration=GoogleContacts&_op=Error&error_description='.
+        	urlencode($decodedToken['error']).'&error_code=";</script>';
+        	exit;
+        }
+        if (empty($decodedToken['refresh_token'])) {
+        	echo '<script>window.close();window.opener.location.href="index.php?module=Utilities&action=integration&_op=Error&integration=GoogleContacts&error_description=No Refresh Token&error_code=";</script>';
+        	exit;
+        }
         $refresh_token = $decodedToken['refresh_token'];
         unset($decodedToken['refresh_token']);
         $decodedToken['created'] = time();
