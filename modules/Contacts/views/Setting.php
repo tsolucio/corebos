@@ -74,7 +74,7 @@ class Google_Setting_View {
         $viewer->assign('SOURCE_MODULE', $request['sourcemodule']);
         $viewer->assign('SELECTED_GROUP', $selectedGroup);
         $viewer->assign('SYNC_DIRECTION', $syncDirection);
-        $viewer->assign('GOOGLE_GROUPS', $groups);
+        $viewer->assign('GOOGLE_GROUPS', (empty($groups) ? '' : $groups));
         $viewer->assign('GOOGLE_FIELDS',$targetFields);
         $viewer->assign('FIELD_MAPPING',$fieldMappping);
         $viewer->assign('CUSTOM_FIELD_MAPPING',$customFieldMapping);

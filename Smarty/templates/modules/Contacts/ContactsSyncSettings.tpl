@@ -34,9 +34,11 @@
                         <select class="select2 stretched" name="google_group" style="width:250px;">
                             <option value="all">{$MOD.LBL_ALL}</option>
                             {assign var=IS_GROUP_DELETED value=1}
+                            {if !empty($GOOGLE_GROUPS['entry'])}
                             {foreach item=ENTRY from=$GOOGLE_GROUPS['entry']}
                                 <option value="{$ENTRY['id']}" {if $ENTRY['id'] eq $SELECTED_GROUP} {assign var=IS_GROUP_DELETED value=0} selected {/if}>{$ENTRY['title']}</option>
                             {/foreach}
+                            {/if}
                             {if $IS_GROUP_DELETED && $SELECTED_GROUP != 'all'}
                                 {if $SELECTED_GROUP != ''}<option value="none" selected>{$MOD.LBL_NONE}</option>{/if}
                             {/if}
@@ -63,7 +65,7 @@
                     <div class="controls">
                         <select class="select2 stretched" name="sync_direction" style="width:250px;">
                             <option value="11" {if $SYNC_DIRECTION eq '11'}selected{/if}>{$MOD.LBL_BI_DIRECTIONAL_SYNC}</option>
-                            <option value="10" {if $SYNC_DIRECTION eq '10'}selected{/if}>{$MOD.LBL_ONLY_SYNC_FROM_GOOGLE_TO_VTIGER}</option> 
+                            <option value="10" {if $SYNC_DIRECTION eq '10'}selected{/if}>{$MOD.LBL_ONLY_SYNC_FROM_GOOGLE_TO_VTIGER}</option>
                             <option value="01" {if $SYNC_DIRECTION eq '01'}selected{/if}>{$MOD.LBL_ONLY_SYNC_FROM_VTIGER_TO_GOOGLE}</option>
                         </select>
                     </div>
@@ -159,8 +161,8 @@
                                         <option value="{$TYPE}" {if $FIELD_MAPPING[{$FLDNAME}]['google_field_type'] eq $TYPE}selected{/if}>{$MOD.Email} ({$MOD.$TYPE})</option>
                                     {/foreach}
                                 </select>&nbsp;&nbsp;
-                                <input type="text" class="google-custom-label" style="visibility:{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] neq 'custom'}hidden{else}visible{/if};width:190px;" 
-                                       value="{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] eq 'custom'}{$FIELD_MAPPING[$FLDNAME]['google_custom_label']}{/if}" 
+                                <input type="text" class="google-custom-label" style="visibility:{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] neq 'custom'}hidden{else}visible{/if};width:190px;"
+                                       value="{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] eq 'custom'}{$FIELD_MAPPING[$FLDNAME]['google_custom_label']}{/if}"
                                        data-validation-engine="validate[required,funcCall[Vtiger_Base_Validator_Js.invokeValidation]]" />
                             </td>
                         </tr>
@@ -178,8 +180,8 @@
                                         <option value="{$TYPE}" {if $FIELD_MAPPING['secondaryemail']['google_field_type'] eq $TYPE}selected{/if}>{$MOD.Email} ({$MOD.$TYPE})</option>
                                     {/foreach}
                                 </select>&nbsp;&nbsp;
-                                <input type="text" class="google-custom-label" style="visibility:{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] neq 'custom'}hidden{else}visible{/if};width:190px;" 
-                                       value="{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] eq 'custom'}{$FIELD_MAPPING[$FLDNAME]['google_custom_label']}{/if}" 
+                                <input type="text" class="google-custom-label" style="visibility:{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] neq 'custom'}hidden{else}visible{/if};width:190px;"
+                                       value="{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] eq 'custom'}{$FIELD_MAPPING[$FLDNAME]['google_custom_label']}{/if}"
                                        data-validation-engine="validate[required,funcCall[Vtiger_Base_Validator_Js.invokeValidation]]"/>
                             </td>
                         </tr>
@@ -197,8 +199,8 @@
                                         <option value="{$TYPE}" {if $FIELD_MAPPING[$FLDNAME]['google_field_type'] eq $TYPE}selected{/if}>{$MOD.Phone} ({$MOD.$TYPE})</option>
                                     {/foreach}
                                 </select>&nbsp;&nbsp;
-                                <input type="text" class="google-custom-label" style="visibility:{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] neq 'custom'}hidden{else}visible{/if};width:190px;" 
-                                       value="{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] eq 'custom'}{$FIELD_MAPPING[$FLDNAME]['google_custom_label']}{/if}" 
+                                <input type="text" class="google-custom-label" style="visibility:{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] neq 'custom'}hidden{else}visible{/if};width:190px;"
+                                       value="{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] eq 'custom'}{$FIELD_MAPPING[$FLDNAME]['google_custom_label']}{/if}"
                                        data-validation-engine="validate[required,funcCall[Vtiger_Base_Validator_Js.invokeValidation]]"/>
                             </td>
                         </tr>
@@ -216,7 +218,7 @@
                                         <option value="{$TYPE}" {if $FIELD_MAPPING[$FLDNAME]['google_field_type'] eq $TYPE}selected{/if}>{$MOD.Phone} ({$MOD.$TYPE})</option>
                                     {/foreach}
                                 </select>&nbsp;&nbsp;
-                                <input type="text" class="google-custom-label" style="visibility:{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] neq 'custom'}hidden{else}visible{/if};width:190px;" 
+                                <input type="text" class="google-custom-label" style="visibility:{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] neq 'custom'}hidden{else}visible{/if};width:190px;"
                                        value="{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] eq 'custom'}{$FIELD_MAPPING[$FLDNAME]['google_custom_label']}{/if}"
                                        data-validation-engine="validate[required,funcCall[Vtiger_Base_Validator_Js.invokeValidation]]"/>
                             </td>
@@ -235,8 +237,8 @@
                                         <option value="{$TYPE}" {if $FIELD_MAPPING[$FLDNAME]['google_field_type'] eq $TYPE}selected{/if}>{$MOD.Phone} ({$MOD.$TYPE})</option>
                                     {/foreach}
                                 </select>&nbsp;&nbsp;
-                                <input type="text" class="google-custom-label" style="visibility:{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] neq 'custom'}hidden{else}visible{/if};width:190px;" 
-                                       value="{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] eq 'custom'}{$FIELD_MAPPING[$FLDNAME]['google_custom_label']}{/if}" 
+                                <input type="text" class="google-custom-label" style="visibility:{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] neq 'custom'}hidden{else}visible{/if};width:190px;"
+                                       value="{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] eq 'custom'}{$FIELD_MAPPING[$FLDNAME]['google_custom_label']}{/if}"
                                        data-validation-engine="validate[required,funcCall[Vtiger_Base_Validator_Js.invokeValidation]]"/>
                             </td>
                         </tr>
@@ -251,11 +253,11 @@
                                 {assign var=GOOGLE_TYPES value=$GOOGLE_FIELDS['address']['types']}
                                 <select class="select2 stretched google-type" style="width:200px;" data-category="address">
                                     {foreach item=TYPE from=$GOOGLE_TYPES}
-                                        <option value="{$TYPE}" {if $FIELD_MAPPING[$FLDNAME]['google_field_type'] eq $TYPE}selected{/if}>{$MOD.Address} ({$MOD.$TYPE})</option>
+                                        <option value="{$TYPE}" {if $FIELD_MAPPING[$FLDNAME]['google_field_type'] eq $TYPE}selected{/if}>{$MOD.Mailing_Address} ({$MOD.$TYPE})</option>
                                     {/foreach}
                                 </select>&nbsp;&nbsp;
-                                <input type="text" class="google-custom-label" style="visibility:{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] neq 'custom'}hidden{else}visible{/if};width:190px;" 
-                                       value="{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] eq 'custom'}{$FIELD_MAPPING[$FLDNAME]['google_custom_label']}{/if}" 
+                                <input type="text" class="google-custom-label" style="visibility:{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] neq 'custom'}hidden{else}visible{/if};width:190px;"
+                                       value="{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] eq 'custom'}{$FIELD_MAPPING[$FLDNAME]['google_custom_label']}{/if}"
                                        data-validation-engine="validate[required,funcCall[Vtiger_Base_Validator_Js.invokeValidation]]"/>
                             </td>
                         </tr>
@@ -270,11 +272,11 @@
                                 {assign var=GOOGLE_TYPES value=$GOOGLE_FIELDS['address']['types']}
                                 <select class="select2 stretched google-type" style="width:200px;" data-category="address">
                                     {foreach item=TYPE from=$GOOGLE_TYPES}
-                                        <option value="{$TYPE}" {if $FIELD_MAPPING[$FLDNAME]['google_field_type'] eq $TYPE}selected{/if}>{$MOD.Address} ({$MOD.$TYPE})</option>
+                                        <option value="{$TYPE}" {if $FIELD_MAPPING[$FLDNAME]['google_field_type'] eq $TYPE}selected{/if}>{$MOD.Other_Address} ({$MOD.$TYPE})</option>
                                     {/foreach}
                                 </select>&nbsp;&nbsp;
-                                <input type="text" class="google-custom-label" style="visibility:{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] neq 'custom'}hidden{else}visible{/if};width:190px;" 
-                                       value="{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] eq 'custom'}{$FIELD_MAPPING[$FLDNAME]['google_custom_label']}{/if}" 
+                                <input type="text" class="google-custom-label" style="visibility:{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] neq 'custom'}hidden{else}visible{/if};width:190px;"
+                                       value="{if $FIELD_MAPPING[$FLDNAME]['google_field_type'] eq 'custom'}{$FIELD_MAPPING[$FLDNAME]['google_custom_label']}{/if}"
                                        data-validation-engine="validate[required,funcCall[Vtiger_Base_Validator_Js.invokeValidation]]"/>
                             </td>
                         </tr>
@@ -327,7 +329,7 @@
                                                 <option value="{$TYPE}" {if $CUSTOM_FIELD_MAP['google_field_type'] eq $TYPE}selected{/if}>{$MOD.Email} ({$MOD.$TYPE})</option>
                                             {/foreach}
                                         </select>&nbsp;&nbsp;
-                                        <input type="text" class="google-custom-label" style="visibility:{if $CUSTOM_FIELD_MAP['google_field_type'] neq 'custom'}hidden{else}visible{/if};width:190px;" 
+                                        <input type="text" class="google-custom-label" style="visibility:{if $CUSTOM_FIELD_MAP['google_field_type'] neq 'custom'}hidden{else}visible{/if};width:190px;"
                                                value="{if $CUSTOM_FIELD_MAP['google_field_type'] eq 'custom'}{$CUSTOM_FIELD_MAP['google_custom_label']}{/if}" data-validation-engine="validate[required,funcCall[Vtiger_Base_Validator_Js.invokeValidation]]"/>
                                     {else if $CUSTOM_FIELD_MAP['google_field_name'] eq 'gd:phoneNumber'}
                                         {assign var=GOOGLE_TYPES value=$GOOGLE_FIELDS['phone']['types']}
@@ -336,7 +338,7 @@
                                                 <option value="{$TYPE}" {if $CUSTOM_FIELD_MAP['google_field_type'] eq $TYPE}selected{/if}>{$MOD.Phone} ({$MOD.$TYPE})</option>
                                             {/foreach}
                                         </select>&nbsp;&nbsp;
-                                        <input type="text" class="google-custom-label" style="visibility:{if $CUSTOM_FIELD_MAP['google_field_type'] neq 'custom'}hidden{else}visible{/if};width:190px;" 
+                                        <input type="text" class="google-custom-label" style="visibility:{if $CUSTOM_FIELD_MAP['google_field_type'] neq 'custom'}hidden{else}visible{/if};width:190px;"
                                                value="{if $CUSTOM_FIELD_MAP['google_field_type'] eq 'custom'}{$CUSTOM_FIELD_MAP['google_custom_label']}{/if}" data-validation-engine="validate[required,funcCall[Vtiger_Base_Validator_Js.invokeValidation]]"/>
                                     {else if $CUSTOM_FIELD_MAP['google_field_name'] eq 'gContact:userDefinedField'}
                                         <input type="hidden" class="google-type" value="{$CUSTOM_FIELD_MAP['google_field_type']}">
@@ -348,7 +350,7 @@
                                                 <option value="{$TYPE}" {if $CUSTOM_FIELD_MAP['google_field_type'] eq $TYPE}selected{/if}>{$MOD.URL} ({$MOD.$TYPE})</option>
                                             {/foreach}
                                         </select>&nbsp;&nbsp;
-                                        <input type="text" class="google-custom-label" style="visibility:{if $CUSTOM_FIELD_MAP['google_field_type'] neq 'custom'}hidden{else}visible{/if};width:190px;" 
+                                        <input type="text" class="google-custom-label" style="visibility:{if $CUSTOM_FIELD_MAP['google_field_type'] neq 'custom'}hidden{else}visible{/if};width:190px;"
                                                value="{if $CUSTOM_FIELD_MAP['google_field_type'] eq 'custom'}{$CUSTOM_FIELD_MAP['google_custom_label']}{/if}" data-validation-engine="validate[required,funcCall[Vtiger_Base_Validator_Js.invokeValidation]]"/>
                                     {/if}
                                     <a class="deleteCustomMapping pull-right"><i title="Delete" class="icon-trash"></i></a>
@@ -361,7 +363,7 @@
                 <br><br>
             </div>
         </div>
-    
+
     <table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport">
             <tr>
                 <td align=center class="small">

@@ -215,8 +215,7 @@ class Google_Oauth2_Connector {
     public function isTokenExpired() {
         if (null == $this->token || null == $this->token['access_token']) return true;
         // If the token is set to expire in the next 30 seconds.
-        $expired = ($this->token['access_token']['created']
-            + ($this->token['access_token']['expires_in'] - 30)) < time();
+        $expired = ($this->token['access_token']['created'] + ($this->token['access_token']['expires_in'] - 30)) < time();
         return $expired;
     }
 
@@ -251,7 +250,7 @@ class Google_Oauth2_Connector {
             if($this->isTokenExpired()) $this->refreshToken();
             return $this;
         } else {
-            if($_REQUEST['service'] && $_REQUEST['code']) {
+            if(!empty($_REQUEST['service']) && $_REQUEST['service'] && !empty($_REQUEST['code']) && $_REQUEST['code']) {
                 $authCode = $_REQUEST['code'];
                 $token = $this->exchangeCodeForToken($authCode);
                 $this->storeToken($token);

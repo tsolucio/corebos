@@ -334,7 +334,7 @@ Class Google_Contacts_Connector extends WSAPP_TargetConnector {
 
         $feed = $this->getContactListFeed($query);
 
-        $this->totalRecords = $feed['openSearch$totalResults']['$t'];
+        $this->totalRecords = ((isset($feed['openSearch$totalResults']) and isset($feed['openSearch$totalResults']['$t'])) ? $feed['openSearch$totalResults']['$t'] : 0);
         $contactRecords = array();
         if (isset($feed['entry']) and count($feed['entry']) > 0) {
             $lastEntry = end($feed['entry']);

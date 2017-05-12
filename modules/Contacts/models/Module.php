@@ -21,7 +21,7 @@ class Google_Module_Model   {
      * @param <string> $module - Module Name
      * @param <integer> $user - User Id
      */
-    public function deleteSync($module, $user) {
+    public static function deleteSync($module, $user) {
         if($module == 'Contacts' || $module == 'Calendar') {
             $name = 'Vtiger_Google'.$module;
         }
