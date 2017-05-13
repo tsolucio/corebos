@@ -104,7 +104,7 @@ class corebos_gcontacts {
 		$adb->query("DELETE FROM `vtiger_wsapp_handlerdetails` where `type`='vtigerSyncLib' and `handlerclass`='WSAPP_VtigerSyncEventHandler' and `handlerpath`='modules/WSAPP/synclib/handlers/VtigerSyncEventHandler.php';");
 		$adb->query("DELETE FROM `vtiger_wsapp_handlerdetails` where `type`='Google_vtigerHandler' and `handlerclass`='Google_Vtiger_Handler' and `handlerpath`='modules/Contacts/handlers/Vtiger.php';");
 		$adb->query("DELETE FROM `vtiger_wsapp_handlerdetails` where `type`='Google_vtigerSyncHandler' and `handlerclass`='Google_VtigerSync_Handler' and `handlerpath`='modules/Contacts/handlers/VtigerSync.php';");
-$adb->query("DELETE FROM `vtiger_wsapp_sync_state`;");
+                $adb->query("DELETE FROM `vtiger_wsapp_sync_state`;");
 		$adb->query("DELETE FROM `vtiger_wsapp`;");
 		// Button on List View
 		$contactsModuleInstance = Vtiger_Module::getInstance('Contacts');
