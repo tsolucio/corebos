@@ -800,10 +800,11 @@ function getWhereCondition($currentModule, $input = '')
 
 	if($input['searchtype']=='advance')
 	{
+		$advft_criteria_decoded = $advft_criteria_groups_decoded = array();
 		$advft_criteria = $input['advft_criteria'];
-		if(!empty($advft_criteria))	$advft_criteria_decoded = json_decode($advft_criteria,true);
-		$advft_criteria_groups = $input['advft_criteria_groups'];
-		if(!empty($advft_criteria_groups))	$advft_criteria_groups_decoded = json_decode($advft_criteria_groups,true);
+		if (!empty($advft_criteria)) $advft_criteria_decoded = json_decode($advft_criteria,true);
+		$advft_criteria_groups = (isset($input['advft_criteria_groups']) ? $input['advft_criteria_groups'] : '');
+		if (!empty($advft_criteria_groups)) $advft_criteria_groups_decoded = json_decode($advft_criteria_groups,true);
 
 		$advfilterlist = getAdvancedSearchCriteriaList($advft_criteria_decoded, $advft_criteria_groups_decoded, $currentModule);
 		$adv_string = generateAdvancedSearchSql($advfilterlist);
@@ -1141,7 +1142,7 @@ function generateAdvancedSearchSql($advfilterlist) {
 	$advfiltersql = $advcvsql = '';
 
 	foreach($advfilterlist as $groupindex => $groupinfo) {
-		$groupcondition = $groupinfo['condition'];
+		$groupcondition = (isset($groupinfo['condition']) ? $groupinfo['condition'] : '');
 		$groupcolumns = $groupinfo['columns'];
 
 		if(count($groupcolumns) > 0) {
@@ -1341,11 +1342,11 @@ function getAdvancedSearchValue($tablename,$fieldname,$comparator,$value,$dataty
 	} elseif( $fieldname == "inventorymanager") {
 		$value = $tablename.".".$fieldname.getAdvancedSearchComparator($comparator,getUserId_Ol($value),$datatype);
 	}
-	elseif($change_table_field[$fieldname] != '')//Added to handle special cases
+	elseif (!empty($change_table_field[$fieldname])) //Added to handle special cases
 	{
 		$value = $change_table_field[$fieldname].getAdvancedSearchComparator($comparator,$value,$datatype);
 	}
-	elseif($change_table_field[$tablename.".".$fieldname] != '')//Added to handle special cases
+	elseif (!empty($change_table_field[$tablename.'.'.$fieldname])) //Added to handle special cases
 	{
 		$tmp_value = '';
 		if((($comparator == 'e' || $comparator == 's' || $comparator == 'c') && trim($value) == '') || (($comparator == 'n' || $comparator == 'k') && trim($value) != ''))

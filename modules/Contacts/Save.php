@@ -42,7 +42,7 @@ $req->set('return_start',(isset($_REQUEST['pagenumber']) ? $_REQUEST['pagenumber
 $focus = new $currentModule();
 setObjectValuesFromRequest($focus);
 
-$mode = vtlib_purify($_REQUEST['mode']);
+$mode = (isset($_REQUEST['mode']) ? vtlib_purify($_REQUEST['mode']) : '');
 $record=vtlib_purify($_REQUEST['record']);
 if($mode) $focus->mode = $mode;
 if($record)$focus->id  = $record;
@@ -56,8 +56,7 @@ if (!isset($_REQUEST['email_opt_out'])) $focus->email_opt_out = 'off';
 if (!isset($_REQUEST['do_not_call'])) $focus->do_not_call = 'off';
 
 //if image added then we have to set that $_FILES['name'] in imagename field then only the image will be displayed
-if($_FILES['imagename']['name'] != '')
-{
+if (!empty($_FILES['imagename']['name'])) {
 	if(isset($_REQUEST['imagename_hidden'])) {
 		$focus->column_fields['imagename'] = vtlib_purify($_REQUEST['imagename_hidden']);
 	} else {
