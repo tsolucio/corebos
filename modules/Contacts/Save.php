@@ -13,7 +13,12 @@ checkFileAccessForInclusion("modules/$currentModule/$currentModule.php");
 require_once("modules/$currentModule/$currentModule.php");
 require_once('modules/Emails/mail.php');
 
-$search = isset($_REQUEST['search_url']) ? urlencode(vtlib_purify($_REQUEST['search_url'])) : '';
+if (isset($_REQUEST['search_url'])) {
+	$search = vtlib_purify($_REQUEST['search_url']);
+	if (substr($search, 0, 1) != '&') $search = '&' . $search;
+} else {
+	$search = '';
+}
 $req = new Vtiger_Request();
 $req->setDefault('return_module',$currentModule);
 if(!empty($_REQUEST['return_module'])) {
