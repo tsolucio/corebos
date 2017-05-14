@@ -125,14 +125,14 @@ function getKeyMetrics($maxval,$calCnt)
 function getMetricList()
 {
 	global $adb, $current_user;
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
+	$userprivs = $current_user->getPrivileges();
 
 	$ssql = "select vtiger_customview.* from vtiger_customview inner join vtiger_tab on vtiger_tab.name = vtiger_customview.entitytype";
 	$ssql .= " where vtiger_customview.setmetrics = 1 ";
 	$sparams = array();
 
-	if($is_admin == false){
-		$ssql .= " and (vtiger_customview.status=0 or vtiger_customview.userid = ? or vtiger_customview.status =3 or vtiger_customview.userid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%'))";
+	if(!$userprivs->isAdmin()){
+		$ssql .= " and (vtiger_customview.status=0 or vtiger_customview.userid = ? or vtiger_customview.status =3 or vtiger_customview.userid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$userprivs->getParentRoleSequence()."::%'))";
 		array_push($sparams, $current_user->id);
 	}
 	$ssql .= " order by vtiger_customview.entitytype";

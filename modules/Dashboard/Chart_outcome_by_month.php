@@ -10,10 +10,9 @@
 require_once('include/utils/utils.php');
 require_once('include/logging.php');
 require_once("modules/Dashboard/DashboardCharts.php");
-global $current_language, $currentModule, $action, $theme;
+global $current_language, $currentModule, $action, $theme, $current_user;
 $current_module_strings = return_module_language($current_language, 'Dashboard');
-require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
-require('user_privileges/user_privileges_'.$current_user->id.'.php');
+$userprivs = $current_user->getPrivileges();
 
 $log = LoggerManager::getLogger('outcome_by_month');
 
@@ -133,7 +132,7 @@ if (isset($_REQUEST['obm_edit']) && $_REQUEST['obm_edit'] == 'true') {
 <td valign='top' ><input class="text" name="obm_date_end" size='12' maxlength='10' id='date_end' value='<?php if (isset($_SESSION['obm_date_end'])) echo vtlib_purify($_SESSION['obm_date_end']);?>'> <img src="<?php echo vtiger_imageurl('calendar.gif', $theme) ?>" id="date_end_trigger"> </td>
 </tr><tr>
 <td nowrap><?php echo $current_module_strings['LBL_USERS'];?></td>
-<?php if($is_admin==false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid('Potentials')] == 3 or $defaultOrgSharingPermission[getTabid('Potentials')] == 0)) { ?>
+<?php if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing(getTabid('Potentials'))) { ?>
 	<td valign='top' ><select name="obm_ids[]" multiple size='3'><?php echo get_select_options_with_id(get_user_array(FALSE, "Active", $current_user->id,'private'),$_SESSION['obm_ids']); ?></select></td>
 <?php } else { ?>
 	<td valign='top' ><select name="obm_ids[]" multiple size='3'><?php echo get_select_options_with_id(get_user_array(FALSE, "Active",$current_user->id),$_SESSION['obm_ids']); ?></select></td>

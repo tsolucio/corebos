@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 global $adb,$current_user, $mod_strings,$currentModule;
-require('user_privileges/user_privileges_'.$current_user->id.'.php');
+$userprivs = $current_user->getPrivileges();
 
 $modval = isset($_REQUEST['modname']) ? trim(vtlib_purify($_REQUEST['modname'])) : '';
 $dash   = isset($_REQUEST['dash']) ? trim(vtlib_purify($_REQUEST['dash'])) : '';
@@ -20,8 +20,8 @@ if(!empty($modval)){
 			left join vtiger_users on vtiger_customview.userid = vtiger_users.id where vtiger_tab.tabid=?';
 	$sparams = array($tabid);
 
-	if($is_admin == false){
-		$ssql .= " and (vtiger_customview.status=0 or vtiger_customview.userid = ? or vtiger_customview.status = 3 or vtiger_customview.userid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%'))";
+	if (!is_admin($current_user)){
+		$ssql .= " and (vtiger_customview.status=0 or vtiger_customview.userid = ? or vtiger_customview.status = 3 or vtiger_customview.userid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$userprivs->getParentRoleSequence()."::%'))";
 		array_push($sparams, $current_user->id);
 	}
 	$result = $adb->pquery($ssql, $sparams);

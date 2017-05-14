@@ -651,10 +651,9 @@ function AddContacts($username,$session,$cntdtls)
 
 	$contact = new Contacts();
 
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
-	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+	$userprivs = $current_user->getPrivileges();
 
-	if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
+	if ($userprivs->hasGlobalReadPermission()) {
 		$sql1 = "select fieldname,columnname from vtiger_field where tabid=4 and vtiger_field.presence in (0,2)";
 		$params1 = array();
 	} else {
@@ -737,16 +736,15 @@ function UpdateContacts($username,$session,$cntdtls)
 	$current_user->retrieve_entity_info($user_id,"Users");
 
 	$contact = new Contacts();
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
-	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+	$userprivs = $current_user->getPrivileges();
 
-	if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
-    	$sql1 = "select fieldname,columnname from vtiger_field where tabid=4 and vtiger_field.presence in (0,2)";
-  		$params1 = array();
+	if ($userprivs->hasGlobalReadPermission()) {
+		$sql1 = "select fieldname,columnname from vtiger_field where tabid=4 and vtiger_field.presence in (0,2)";
+		$params1 = array();
 	} else {
-    	$profileList = getCurrentUserProfileList();
-    	$sql1 = "select fieldname,columnname from vtiger_field inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid where vtiger_field.tabid=4 and vtiger_field.displaytype in (1,2,4,3) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)";
-  		$params1 = array();
+		$profileList = getCurrentUserProfileList();
+		$sql1 = "select fieldname,columnname from vtiger_field inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid where vtiger_field.tabid=4 and vtiger_field.displaytype in (1,2,4,3) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)";
+		$params1 = array();
 		if (count($profileList) > 0) {
 			$sql1 .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
 			array_push($params1, $profileList);
@@ -962,15 +960,14 @@ function AddTasks($username,$session,$taskdtls)
 	$current_user = $seed_user;
 	$current_user->retrieve_entity_info($user_id,"Users");
 
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
-	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+	$userprivs = $current_user->getPrivileges();
 
-	if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
-    	$sql1 = "select fieldname,columnname from vtiger_field where tabid=9 and vtiger_field.presence in (0,2)";
+	if ($userprivs->hasGlobalReadPermission()) {
+		$sql1 = "select fieldname,columnname from vtiger_field where tabid=9 and vtiger_field.presence in (0,2)";
 		$params1 = array();
 	} else {
-    	$profileList = getCurrentUserProfileList();
-    	$sql1 = "select fieldname,columnname from vtiger_field inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid where vtiger_field.tabid=9 and vtiger_field.displaytype in (1,2,4,3) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)";
+		$profileList = getCurrentUserProfileList();
+		$sql1 = "select fieldname,columnname from vtiger_field inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid where vtiger_field.tabid=9 and vtiger_field.displaytype in (1,2,4,3) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)";
 		$params1 = array();
 		if (count($profileList) > 0) {
 			$sql1 .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
@@ -1050,10 +1047,9 @@ function UpdateTasks($username,$session,$taskdtls)
 	$current_user = $seed_user;
 	$current_user->retrieve_entity_info($user_id,"Users");
 
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
-	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+	$userprivs = $current_user->getPrivileges();
 
-	if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
+	if ($userprivs->hasGlobalReadPermission()) {
 		$sql1 = "select fieldname,columnname from vtiger_field where tabid=9 and vtiger_field.presence in (0,2)";
 		$params1 = array();
 	} else {
@@ -1223,15 +1219,14 @@ function AddClndr($username,$session,$clndrdtls)
 	$current_user = $seed_user;
 	$current_user->retrieve_entity_info($user_id,"Users");
 
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
-	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+	$userprivs = $current_user->getPrivileges();
 
-	if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
-    	$sql1 = "select fieldname,columnname from vtiger_field where tabid=16 and vtiger_field.presence in (0,2)";
+	if ($userprivs->hasGlobalReadPermission()) {
+		$sql1 = "select fieldname,columnname from vtiger_field where tabid=16 and vtiger_field.presence in (0,2)";
 		$params1 = array();
 	} else {
-    	$profileList = getCurrentUserProfileList();
-    	$sql1 = "select fieldname,columnname from vtiger_field inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid where vtiger_field.tabid=16 and vtiger_field.displaytype in (1,2,4,3) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)";
+		$profileList = getCurrentUserProfileList();
+		$sql1 = "select fieldname,columnname from vtiger_field inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid where vtiger_field.tabid=16 and vtiger_field.displaytype in (1,2,4,3) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)";
 		$params1 = array();
 		if (count($profileList) > 0) {
 			$sql1 .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
@@ -1296,15 +1291,14 @@ function UpdateClndr($username,$session,$clndrdtls)
 	$current_user = $seed_user;
 	$current_user->retrieve_entity_info($user_id,"Users");
 
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
-	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+	$userprivs = $current_user->getPrivileges();
 
-	if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
-    	$sql1 = "select fieldname,columnname from vtiger_field where tabid=16 and vtiger_field.presence in (0,2)";
+	if ($userprivs->hasGlobalReadPermission()) {
+		$sql1 = "select fieldname,columnname from vtiger_field where tabid=16 and vtiger_field.presence in (0,2)";
 		$params1 = array();
 	} else {
-    	$profileList = getCurrentUserProfileList();
-    	$sql1 = "select fieldname,columnname from vtiger_field inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid where vtiger_field.tabid=16 and vtiger_field.displaytype in (1,2,4,3) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)";
+		$profileList = getCurrentUserProfileList();
+		$sql1 = "select fieldname,columnname from vtiger_field inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid where vtiger_field.tabid=16 and vtiger_field.displaytype in (1,2,4,3) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)";
 		$params1 = array();
 		if (count($profileList) > 0) {
 			$sql1 .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";

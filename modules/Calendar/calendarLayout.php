@@ -1358,8 +1358,7 @@ function getEventList(& $calendar,$start_date,$end_date,$info='')
 	$Entries = Array();
 	$category = getParentTab();
 	global $adb,$current_user,$mod_strings,$app_strings,$cal_log,$listview_max_textlength,$list_max_entries_per_page;
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
-        require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+	$userprivs = $current_user->getPrivileges();
 	$cal_log->debug("Entering getEventList() method...");
 
 	$and = "AND (
@@ -1441,7 +1440,7 @@ function getEventList(& $calendar,$start_date,$end_date,$info='')
 		$cal_log->debug("Exiting getEventList() method...");
 		return Array('totalevent'=>$total,'pendingevent'=>$pending_rows);
 	}
-	if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[16] == 3)
+	if (!$userprivs->hasGlobalReadPermission() && !$userprivs->hasModuleReadSharing(getTabid('Events')))
 	{
 		$sec_parameter=getCalendarViewSecurityParameter();
 		$query .= $sec_parameter;
@@ -2153,19 +2152,18 @@ function constructTodoListView($todo_list,$cal,$subtab,$navigation_array='')
 function getCalendarViewSecurityParameter()
 {
 		global $current_user;
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
-		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+		$userprivs = $current_user->getPrivileges();
 		require_once('modules/Calendar/CalendarCommon.php');
 		$shared_ids = getSharedCalendarId($current_user->id);
 		if(isset($shared_ids) && $shared_ids != '')
 			$condition = " or (vtiger_crmentity.smownerid in($shared_ids)) or (vtiger_crmentity.smownerid NOT LIKE ($current_user->id))";// and vtiger_activity.visibility = 'Public')";
 		else
 			$condition = "or (vtiger_crmentity.smownerid NOT LIKE ($current_user->id))";
-		$sec_query .= " and (vtiger_crmentity.smownerid in($current_user->id) $condition or vtiger_crmentity.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%')";
+		$sec_query .= " and (vtiger_crmentity.smownerid in($current_user->id) $condition or vtiger_crmentity.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$userprivs->getParentRoleSequence()."::%')";
 
-		if(sizeof($current_user_groups) > 0)
+		if ($userprivs->hasGroups())
 		{
-			$sec_query .= " or (vtiger_groups.groupid in (". implode(",", $current_user_groups) ."))";
+			$sec_query .= " or (vtiger_groups.groupid in (". implode(",", $userprivs->getGroups()) ."))";
 		}
 		$sec_query .= ")";
 		return $sec_query;

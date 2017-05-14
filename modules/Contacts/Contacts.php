@@ -142,8 +142,8 @@ class Contacts extends CRMEntity {
 		global $log, $adb, $current_user,$currentModule;
 		$log->debug("Entering plugin_process_list_query(" . $query . ") method ...");
 		$permitted_field_lists = Array();
-		require ('user_privileges/user_privileges_' . $current_user->id . '.php');
-		if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
+		$userprivs = $current_user->getPrivileges();
+		if ($userprivs->hasGlobalReadPermission()) {
 			$sql1 = 'select columnname from vtiger_field where tabid=4 and block <> 75 and vtiger_field.presence in (0,2)';
 			$params1 = array();
 		} else {
@@ -795,8 +795,8 @@ function getColumnNames()
 {
 	global $log, $current_user;
 	$log->debug("Entering getColumnNames() method ...");
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
-	if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0)
+	$userprivs = $current_user->getPrivileges();
+	if ($userprivs->hasGlobalReadPermission())
 	{
 		$sql1 = "select fieldlabel from vtiger_field where tabid=4 and block <> 75 and vtiger_field.presence in (0,2)";
 		$params1 = array();
@@ -887,10 +887,9 @@ function get_contactsforol($user_name)
 	$user_id=$seed_user->retrieve_user_id($user_name);
 	$current_user=$seed_user;
 	$current_user->retrieve_entity_info($user_id, 'Users');
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
-	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+	$userprivs = $current_user->getPrivileges();
 
-	if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
+	if ($userprivs->hasGlobalReadPermission()) {
 		$sql1 = "select tablename,columnname from vtiger_field where tabid=4 and vtiger_field.presence in (0,2)";
 		$params1 = array();
 	} else {

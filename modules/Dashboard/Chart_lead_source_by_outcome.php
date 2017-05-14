@@ -10,10 +10,9 @@
 require_once('include/utils/utils.php');
 require_once('include/logging.php');
 require_once("modules/Dashboard/DashboardCharts.php");
-global $current_language, $currentModule, $action;
+global $current_language, $currentModule, $action, $current_user;
 $current_module_strings = return_module_language($current_language, 'Dashboard');
-require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
-require('user_privileges/user_privileges_'.$current_user->id.'.php');
+$userprivs = $current_user->getPrivileges();
 
 // Get _dom arrays from Database
 $comboFieldNames = Array('leadsource'=>'lead_source_dom');
@@ -103,7 +102,7 @@ if (isset($_REQUEST['lsbo_edit']) && $_REQUEST['lsbo_edit'] == 'true') {
 <td valign='top'><select name="lsbo_lead_sources[]" multiple size='3'><?php echo get_select_options_with_id($comboFieldArray['lead_source_dom'],$_SESSION['lsbo_lead_sources']); ?></select></td>
 </tr><tr>
 <td valign='top' nowrap><?php echo $current_module_strings['LBL_USERS'];?></td>
-<?php if($is_admin==false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid('Potentials')] == 3 or $defaultOrgSharingPermission[getTabid('Potentials')] == 0)) { ?>
+<?php if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing(getTabid('Potentials'))) { ?>
 	<td valign='top'><select name="lsbo_ids[]" multiple size='3'><?php echo get_select_options_with_id(get_user_array(FALSE, "Active", $current_user->id,'private'),$_SESSION['lsbo_ids']); ?></select></td>
 <?php } else { ?>
 	<td valign='top' ><select name="lsbo_ids[]" multiple size='3'><?php echo get_select_options_with_id(get_user_array(FALSE, "Active",$current_user->id),$_SESSION['lsbo_ids']); ?></select></td>

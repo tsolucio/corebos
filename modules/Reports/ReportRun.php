@@ -90,7 +90,8 @@ class ReportRun extends CRMEntity {
 		$ssql .= " order by vtiger_selectcolumn.columnindex";
 		$result = $adb->pquery($ssql, array($reportid));
 		$permitted_fields = Array();
-
+		$userprivs = $current_user->getPrivileges();
+		$hasGlobalReadPermission = $userprivs->hasGlobalReadPermission();
 		while($columnslistrow = $adb->fetch_array($result))
 		{
 			$fieldname = '';
@@ -101,8 +102,7 @@ class ReportRun extends CRMEntity {
 			list($module,$field) = explode("_",$module_field,2);
 			$inventory_fields = array('quantity','listprice','serviceid','productid','discount','comment');
 			$inventory_modules = getInventoryModules();
-			require('user_privileges/user_privileges_'.$current_user->id.'.php');
-			if((!isset($permitted_fields[$module]) || sizeof($permitted_fields[$module]) == 0) && $is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1)
+			if ((!isset($permitted_fields[$module]) || sizeof($permitted_fields[$module]) == 0) && !$userprivs->hasGlobalReadPermission())
 			{
 				$permitted_fields[$module] = $this->getaccesfield($module);
 			}
@@ -110,8 +110,7 @@ class ReportRun extends CRMEntity {
 				$permitted_fields[$module] = array_merge($permitted_fields[$module],$inventory_fields);
 			}
 			$selectedfields = explode(":",$fieldcolname);
-			if($is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1
-					&& !in_array($selectedfields[3], $permitted_fields[$module])) {
+			if (!$hasGlobalReadPermission && !in_array($selectedfields[3], $permitted_fields[$module])) {
 				//user has no access to this field, skip it.
 				continue;
 			}
@@ -1988,7 +1987,7 @@ class ReportRun extends CRMEntity {
 	{
 		global $adb,$current_user,$php_max_execution_time;
 		global $modules,$app_strings, $mod_strings,$current_language;
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
+		$userprivs = $current_user->getPrivileges();
 		$picklistarray = array();
 		$modules_selected = array();
 		$modules_selected[] = $this->primarymodule;
@@ -2035,7 +2034,7 @@ class ReportRun extends CRMEntity {
 				echo '<table cellpadding="5" cellspacing="0" align="center" class="rptTable"><tr>';
 			}
 
-			if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1) {
+			if (!$userprivs->hasGlobalReadPermission()) {
 				$picklistarray = $this->getAccessPickListValues();
 			}
 			if($result)
@@ -2318,7 +2317,7 @@ class ReportRun extends CRMEntity {
 				return json_encode($resp);
 			}
 
-			if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1) {
+			if (!$userprivs->hasGlobalReadPermission()) {
 				$picklistarray = $this->getAccessPickListValues();
 			}
 			if($result)
@@ -2433,9 +2432,9 @@ class ReportRun extends CRMEntity {
 		{
 			$sSQL = $this->sGetSQLforReport($this->reportid,$filtersql);
 			$result = $adb->pquery($sSQL,array());
-			if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1)
-			$picklistarray = $this->getAccessPickListValues();
-
+			if (!$userprivs->hasGlobalReadPermission()) {
+				$picklistarray = $this->getAccessPickListValues();
+			}
 			if($result)
 			{
 				$y=$adb->num_fields($result);
@@ -2750,9 +2749,9 @@ class ReportRun extends CRMEntity {
 		{
 			$sSQL = $this->sGetSQLforReport($this->reportid,$filtersql);
 			$result = $adb->query($sSQL);
-			if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1)
-			$picklistarray = $this->getAccessPickListValues();
-
+			if (!$userprivs->hasGlobalReadPermission()) {
+				$picklistarray = $this->getAccessPickListValues();
+			}
 			if($result)
 			{
 				$noofrows = $adb->num_rows($result);

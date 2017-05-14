@@ -132,13 +132,10 @@ class Import_Utils {
 
 	public static function getAssignedToUserList($module) {
 		global $current_user;
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
-		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+		$userprivs = $current_user->getPrivileges();
 		$tabId = getTabid($module);
 
-		if(!is_admin($current_user) && $profileGlobalPermission[2] == 1
-				&& ($defaultOrgSharingPermission[$tabId] == 3 or $defaultOrgSharingPermission[$tabId] == 0)) {
-
+		if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing($tabid)) {
 			return get_user_array(FALSE, "Active", $current_user->id,'private');
 		} else {
 			return get_user_array(FALSE, "Active", $current_user->id);
@@ -147,12 +144,10 @@ class Import_Utils {
 
 	public static function getAssignedToGroupList($module) {
 		global $current_user;
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
-		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+		$userprivs = $current_user->getPrivileges();
 		$tabId = getTabid($module);
 
-		if(!is_admin($current_user) && $profileGlobalPermission[2] == 1
-				&& ($defaultOrgSharingPermission[$tabId] == 3 or $defaultOrgSharingPermission[$tabId] == 0)) {
+		if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing($tabid)) {
 			return get_group_array(FALSE, "Active", $current_user->id,'private');
 		} else {
 			return get_group_array(FALSE, "Active", $current_user->id);

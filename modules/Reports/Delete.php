@@ -11,15 +11,15 @@ require_once('modules/Reports/Reports.php');
 require_once('include/logging.php');
 require_once('include/database/PearDatabase.php');
 
-require("user_privileges/user_privileges_".$current_user->id.".php");
-global $current_user,$adb,$is_admin;
+global $current_user,$adb;
 
 if(isset($_REQUEST['idlist']) && $_REQUEST['idlist']!= '')
 {
 	$id_array = Array();
 	$id_array = explode(':',$_REQUEST['idlist']);
 
-	$query = $adb->pquery("select userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%'",array());
+	$userprivs = $current_user->getPrivileges();
+	$query = $adb->pquery("select userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$userprivs->getParentRoleSequence()."::%'",array());
 	$subordinate_users = Array();
 	for($i=0;$i<$adb->num_rows($query);$i++){
 		$subordinate_users[] = $adb->query_result($query,$i,'userid');
@@ -29,7 +29,7 @@ if(isset($_REQUEST['idlist']) && $_REQUEST['idlist']!= '')
 	{
 		$own_query = $adb->pquery("SELECT reportname,owner FROM vtiger_report WHERE reportid=?",array($id_array[$i]));
 		$owner = $adb->query_result($own_query,0,"owner");
-		if($is_admin==true || in_array($owner,$subordinate_users) || $owner==$current_user->id){
+		if(is_admin($current_user) || in_array($owner,$subordinate_users) || $owner==$current_user->id){
 			DeleteReport($id_array[$i]);
 		} else {
 			$del_failed []= $adb->query_result($own_query,0,"reportname");

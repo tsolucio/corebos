@@ -246,13 +246,13 @@ function getCalendarCustomFields($tabid,$mode='edit',$col_fields='') {
 	global $adb, $log, $current_user;
 	$log->debug("Entering getCalendarCustomFields($tabid, $mode, " . print_r($col_fields,true) . ')');
 
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
+	$userprivs = $current_user->getPrivileges();
 	$isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : null;
 	$calmode = vtlib_purify($_REQUEST['action']);
 	$block = getBlockId($tabid,"LBL_CUSTOM_INFORMATION");
 	$custparams = array($block, $tabid);
 
-	if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
+	if ($userprivs->hasGlobalReadPermission()) {
 		$custquery = "select * from vtiger_field where block=? AND vtiger_field.tabid=? ORDER BY fieldid";
 	} else {
 		$profileList = getCurrentUserProfileList();

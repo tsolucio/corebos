@@ -552,8 +552,8 @@ function _vtisPermitted($module,$actionname,$record_id='') {
 	if (strpos($record_id,'x')>0) { // is webserviceid
 		list($void,$record_id) = explode('x', $record_id);
 	}
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
-	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+	$userprivs = $current_user->getPrivileges();
+	$is_admin = is_admin($current_user);
 	$parenttab = empty($_REQUEST['parenttab']) ? '' : vtlib_purify($_REQUEST['parenttab']);
 	$permission = "no";
 	if(($module == 'Users' || $module == 'Home' || $module == 'uploads') && $parenttab != 'Settings')
@@ -592,7 +592,7 @@ function _vtisPermitted($module,$actionname,$record_id='') {
 	//If no actionid, then allow action is vtiger_tab permission is available
 	if($actionid === '')
 	{
-		if($profileTabsPermission[$tabid] ==0) {
+		if ($userprivs->hasModuleAccess($tabid)) {
 			$permission = "yes";
 			$log->debug("Exiting isPermitted method ...");
 		}
@@ -605,7 +605,7 @@ function _vtisPermitted($module,$actionname,$record_id='') {
 
 	$action = getActionname($actionid);
 	//Checking for view all permission
-	if($profileGlobalPermission[1] ==0 || $profileGlobalPermission[2] ==0)
+	if ($userprivs->hasGlobalReadPermission())
 	{
 		if($actionid == 3 || $actionid == 4)
 		{
@@ -615,7 +615,7 @@ function _vtisPermitted($module,$actionname,$record_id='') {
 		}
 	}
 	//Checking for edit all permission
-	if($profileGlobalPermission[2] ==0)
+	if ($userprivs->hasGlobalWritePermission())
 	{
 		if($actionid == 3 || $actionid == 4 || $actionid ==0 || $actionid ==1)
 		{
@@ -624,23 +624,24 @@ function _vtisPermitted($module,$actionname,$record_id='') {
 			return $permission;
 		}
 	}
-	//Checking for vtiger_tab permission
-	if (!is_null($tabid) and $profileTabsPermission[$tabid] != 0) {
+	//Checking for tab permission
+	if (!is_null($tabid) and !$userprivs->hasModuleAccess($tabid)) {
 		$permission = "no";
 		$log->debug("Exiting isPermitted method ...");
 		return $permission;
 	}
-	if (!isset($profileActionPermission[$tabid][$actionid]) && ($action == 'Export' || $action == 'Import')) {
+	$ternary = $userprivs->getModulePermission($tabid, $actionid);
+	if (is_null($ternary) && ($action == 'Export' || $action == 'Import')) {
 		return "no";
 	}
 	//Checking for Action Permission
-	if (!isset($profileActionPermission[$tabid][$actionid]) || (strlen($profileActionPermission[$tabid][$actionid]) <  1 && $profileActionPermission[$tabid][$actionid] == '')) {
+	if (is_null($ternary) || (strlen($ternary) < 1 && $ternary == '')) {
 		$permission = "yes";
 		$log->debug("Exiting isPermitted method ...");
 		return $permission;
 	}
 
-	if($profileActionPermission[$tabid][$actionid] != 0 && $profileActionPermission[$tabid][$actionid] != '')
+	if ($ternary != 0 && $ternary != '')
 	{
 		$permission = "no";
 		$log->debug("Exiting isPermitted method ...");
@@ -675,7 +676,7 @@ function _vtisPermitted($module,$actionname,$record_id='') {
 		$recOwnId=$id;
 	}
 	//Retreiving the default Organisation sharing Access
-	$others_permission_id = $defaultOrgSharingPermission[$tabid];
+	$others_permission_id = $userprivs->getModuleSharingPermission($tabid);
 
 	if($recOwnType == 'Users')
 	{
@@ -693,7 +694,7 @@ function _vtisPermitted($module,$actionname,$record_id='') {
 			return $permission;
 		}
 		//Checking if the Record Owner is the Subordinate User
-		foreach($subordinate_roles_users as $roleid=>$userids)
+		foreach ($userprivs->getSubordinateRoles2Users() as $roleid=>$userids)
 		{
 			if(in_array($recOwnId,$userids))
 			{
@@ -710,7 +711,7 @@ function _vtisPermitted($module,$actionname,$record_id='') {
 	elseif($recOwnType == 'Groups')
 	{
 		//Checking if the record owner is the current user's group
-		if(in_array($recOwnId,$current_user_groups))
+		if (in_array($recOwnId,$userprivs->getGroups()))
 		{
 			$wfs = new VTWorkflowManager($adb);
 			$racbr = $wfs->getRACRuleForRecord($module, $record_id);
@@ -725,7 +726,7 @@ function _vtisPermitted($module,$actionname,$record_id='') {
 	}
 
 	//Checking for Default Org Sharing permission
-	if($others_permission_id == 0)
+	if($others_permission_id == UserPrivileges::SHARING_READONLY)
 	{
 		if($actionid == 1 || $actionid == 0)
 		{
@@ -760,7 +761,7 @@ function _vtisPermitted($module,$actionname,$record_id='') {
 			return $permission;
 		}
 	}
-	elseif($others_permission_id == 1)
+	elseif($others_permission_id == UserPrivileges::SHARING_READWRITE)
 	{
 		if($actionid == 2)
 		{
@@ -775,7 +776,7 @@ function _vtisPermitted($module,$actionname,$record_id='') {
 			return $permission;
 		}
 	}
-	elseif($others_permission_id == 2)
+	elseif($others_permission_id == UserPrivileges::SHARING_READWRITEDELETE)
 	{
 		$wfs = new VTWorkflowManager($adb);
 		$racbr = $wfs->getRACRuleForRecord($module, $record_id);
@@ -785,7 +786,7 @@ function _vtisPermitted($module,$actionname,$record_id='') {
 			return $permission;
 		}
 	}
-	elseif($others_permission_id == 3)
+	elseif($others_permission_id == UserPrivileges::SHARING_PRIVATE)
 	{
 		if($actionid == 3 || $actionid == 4)
 		{
@@ -870,7 +871,7 @@ function isReadPermittedBySharing($module,$tabid,$actionid,$record_id)
 {
 	global $log, $adb, $current_user;
 	$log->debug("Entering isReadPermittedBySharing(".$module.",".$tabid.",".$actionid.",".$record_id.") method ...");
-	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+	$userprivs = $current_user->getPrivileges();
 	$ownertype='';
 	$ownerid='';
 	$sharePer='no';
@@ -889,8 +890,7 @@ function isReadPermittedBySharing($module,$tabid,$actionid,$record_id)
 		$ownerid=$id;
 	}
 
-	$varname=$module."_share_read_permission";
-	$read_per_arr=$$varname;
+	$read_per_arr = $userprivs->getModuleSharingRules($module, 'read');
 	if($ownertype == 'Users')
 	{
 		//Checking the Read Sharing Permission Array in Role Users
@@ -927,15 +927,14 @@ function isReadPermittedBySharing($module,$tabid,$actionid,$record_id)
 		}
 	}
 	//Checking for the Related Sharing Permission
-	$relatedModuleArray = (isset($related_module_share[$tabid]) ? $related_module_share[$tabid] : '');
+	$relatedModuleArray = $userprivs->getRelatedSharedModules($tabid);
 	if (is_array($relatedModuleArray)) {
 		foreach ($relatedModuleArray as $parModId) {
 			$parRecordOwner=getParentRecordOwner($tabid,$parModId,$record_id);
 			if(sizeof($parRecordOwner) > 0)
 			{
 				$parModName=getTabname($parModId);
-				$rel_var=$parModName."_".$module."_share_read_permission";
-				$read_related_per_arr=$$rel_var;
+				$read_related_per_arr = $userprivs->getRelatedModuleSharingRules($parModName, $module, 'read');
 				$rel_owner_type='';
 				$rel_owner_id='';
 				foreach($parRecordOwner as $rel_type=>$rel_id)
@@ -996,7 +995,7 @@ function isReadWritePermittedBySharing($module,$tabid,$actionid,$record_id)
 {
 	global $log, $adb, $current_user;
 	$log->debug("Entering isReadWritePermittedBySharing(".$module.",".$tabid.",".$actionid.",".$record_id.") method ...");
-	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+	$userprivs = $current_user->getPrivileges();
 	$ownertype='';
 	$ownerid='';
 	$sharePer='no';
@@ -1014,8 +1013,7 @@ function isReadWritePermittedBySharing($module,$tabid,$actionid,$record_id)
 		$ownerid=$id;
 	}
 
-	$varname=$module."_share_write_permission";
-	$write_per_arr=$$varname;
+	$write_per_arr = $userprivs->getModuleSharingRules($module, 'write');
 
 	if($ownertype == 'Users')
 	{
@@ -1053,7 +1051,7 @@ function isReadWritePermittedBySharing($module,$tabid,$actionid,$record_id)
 		}
 	}
 	//Checking for the Related Sharing Permission
-	$relatedModuleArray = (isset($related_module_share[$tabid]) ? $related_module_share[$tabid] : null);
+	$relatedModuleArray = $userprivs->getRelatedSharedModules($tabid);
 	if(is_array($relatedModuleArray))
 	{
 		foreach($relatedModuleArray as $parModId)
@@ -1062,8 +1060,7 @@ function isReadWritePermittedBySharing($module,$tabid,$actionid,$record_id)
 			if(sizeof($parRecordOwner) > 0)
 			{
 				$parModName=getTabname($parModId);
-				$rel_var=$parModName."_".$module."_share_write_permission";
-				$write_related_per_arr=$$rel_var;
+				$write_related_per_arr = $userprivs->getRelatedModuleSharingRules($parModName, $module, 'write');
 				$rel_owner_type='';
 				$rel_owner_id='';
 				foreach($parRecordOwner as $rel_type=>$rel_id)
@@ -1161,7 +1158,7 @@ function isAllowed_Outlook($module,$action,$user_id,$record_id)
 				{
 					if($rec_owner_id != $current_user->id)
 					{
-						if($others_permission_id == 0)
+						if($others_permission_id == UserPrivileges::SHARING_READONLY)
 						{
 							if($action == 'EditView' || $action == 'CreateView' || $action == 'Delete')
 							{
@@ -1172,7 +1169,7 @@ function isAllowed_Outlook($module,$action,$user_id,$record_id)
 								$permission = "yes";
 							}
 						}
-						elseif($others_permission_id == 1)
+						elseif($others_permission_id == UserPrivileges::SHARING_READWRITE)
 						{
 							if($action == 'Delete')
 							{
@@ -1183,11 +1180,11 @@ function isAllowed_Outlook($module,$action,$user_id,$record_id)
 								$permission = "yes";
 							}
 						}
-						elseif($others_permission_id == 2)
+						elseif($others_permission_id == UserPrivileges::SHARING_READWRITEDELETE)
 						{
 							$permission = "yes";
 						}
-						elseif($others_permission_id == 3)
+						elseif($others_permission_id == UserPrivileges::SHARING_PRIVATE)
 						{
 							if($action == 'DetailView' || $action == 'EditView' || $action == 'CreateView' || $action == 'Delete')
 							{
@@ -3074,10 +3071,10 @@ function getCurrentUserProfileList()
 {
 	global $adb,$log,$current_user;
 	$log->debug('Entering getCurrentUserProfileList() method ...');
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
+	$userprivs = $current_user->getPrivileges();
 	$profList = array();
 	$profListTypeNoMobile = array();
-	foreach ($current_user_profiles as $profid) {
+	foreach ($userprivs->getProfiles() as $profid) {
 		$profilename = '';
 		$resprofile = $adb->pquery("SELECT profilename FROM vtiger_profile WHERE profileid = ?",array($profid));
 		$profilename = $adb->query_result($resprofile, 0, 'profilename');
@@ -3102,18 +3099,9 @@ function getCurrentUserProfileList()
 
 function getCurrentUserGroupList()
 {
-	global $log,$current_user;
-	$log->debug('Entering getCurrentUserGroupList() method ...');
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
-	$grpList= array();
-	if(sizeof($current_user_groups) > 0)
-	{
-		foreach ($current_user_groups as $grpid) {
-			array_push($grpList, $grpid);
-		}
-	}
-	$log->debug('Exiting getCurrentUserGroupList method ...');
-	return $grpList;
+	global $current_user;
+	$userprivs = $current_user->getPrivileges();
+	return $userprivs->getGroups();
 }
 
 function getSubordinateUsersList()
@@ -3121,15 +3109,12 @@ function getSubordinateUsersList()
 	global $log, $current_user;
 	$log->debug("Entering getSubordinateUsersList() method ...");
 	$user_array=Array();
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
+	$userprivs = $current_user->getPrivileges();
 
-	if(isset($subordinate_roles_users) and sizeof($subordinate_roles_users) > 0)
-	{
-		foreach ($subordinate_roles_users as $roleid => $userArray) {
-			foreach($userArray as $userid) {
-				if(! in_array($userid,$user_array)) {
-					$user_array[]=$userid;
-				}
+	foreach ($userprivs->getSubordinateRoles2Users() as $roleid => $userArray) {
+		foreach($userArray as $userid) {
+			if(! in_array($userid,$user_array)) {
+				$user_array[]=$userid;
 			}
 		}
 	}
@@ -3228,8 +3213,12 @@ function getListViewSecurityParameter($module)
 	$tabid=getTabid($module);
 	if($current_user)
 	{
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
-		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+		$userprivs = $current_user->getPrivileges();
+		$current_user_parent_role_seq = $userprivs->getParentRoleSequence();
+		$current_user_groups = $userprivs->getGroups();
+	} else {
+		$current_user_parent_role_seq = '';
+		$current_user_groups = array();
 	}
 	$sec_query = '';
 	if($module == 'Leads') {
@@ -3386,8 +3375,12 @@ function getSecListViewSecurityParameter($module)
 
 	$tabid=getTabid($module);
 	if($current_user) {
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
-		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+		$userprivs = $current_user->getPrivileges();
+		$current_user_parent_role_seq = $userprivs->getParentRoleSequence();
+		$current_user_groups = $userprivs->getGroups();
+	} else {
+		$current_user_parent_role_seq = '';
+		$current_user_groups = array();
 	}
 
 	if($module == 'Leads') {
@@ -3625,10 +3618,10 @@ function getFieldVisibilityPermission($fld_module, $userid, $fieldname, $accessm
 	}
 
 	if (empty($userid)) $userid = $current_user->id;
-	require('user_privileges/user_privileges_'.$userid.'.php');
+	$userprivs = new UserPrivileges($userid);
 
-	/* Asha: Fix for ticket #4508. Users with View all and Edit all permission will also have visibility permission for all fields */
-	if($is_admin || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] ==0)
+	/* Users with View all and Edit all permission will also have visibility permission for all fields */
+	if ($userprivs->hasGlobalReadPermission())
 	{
 		$log->debug("Exiting getFieldVisibilityPermission method ...");
 		return '0';
@@ -3636,10 +3629,7 @@ function getFieldVisibilityPermission($fld_module, $userid, $fieldname, $accessm
 	else
 	{
 		//get profile list using userid
-		$profilelist = array();
-		foreach ($current_user_profiles as $profid) {
-			array_push($profilelist, $profid);
-		}
+		$profilelist = $userprivs->getProfiles();
 
 		//get tabid
 		$tabid = getTabid($fld_module);
@@ -3735,16 +3725,15 @@ function getModuleAccessArray() {
  */
 function getPermittedModuleNames()
 {
-	global $log,$adb;
+	global $log, $adb, $current_user;
 	$log->debug("Entering getPermittedModuleNames() method ...");
-	global $current_user;
 	$permittedModules=Array();
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
+	$userprivs = $current_user->getPrivileges();
+	$profileTabsPermission = $userprivs->getprofileTabsPermission();
 	include('tabdata.php');
 
 	if(defined('COREBOS_INSIDE_MOBILE')){
-		if (isset($current_user_profiles))
-		foreach ($current_user_profiles as $profid) {
+		foreach ($userprivs->getProfiles() as $profid) {
 			$profilename = '';
 			$resprofile = $adb->pquery("SELECT profilename FROM vtiger_profile WHERE profileid = ?",array($profid));
 			$profilename = $adb->query_result($resprofile, 0, 'profilename');
@@ -3754,11 +3743,11 @@ function getPermittedModuleNames()
 		}
 	}
 
-	if($is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1)
+	if (!$userprivs->hasGlobalReadPermission())
 	{
 		foreach($tab_seq_array as $tabid=>$seq_value)
 		{
-			if($seq_value === 0 && isset($profileTabsPermission[$tabid]) && $profileTabsPermission[$tabid] === 0)
+			if ($seq_value === 0 && isset($profileTabsPermission[$tabid]) && $profileTabsPermission[$tabid] === 0)
 			{
 				$permittedModules[]=getTabModuleName($tabid);
 			}
@@ -3785,11 +3774,12 @@ function getPermittedModuleNames()
 function getPermittedModuleIdList() {
 	global $current_user;
 	$permittedModules=Array();
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
+	$userprivs = $current_user->getPrivileges();
+	$profileTabsPermission = $userprivs->getprofileTabsPermission();
 	include('tabdata.php');
 
 	if(defined('COREBOS_INSIDE_MOBILE')){
-		foreach ($current_user_profiles as $profid) {
+		foreach ($userprivs->getProfiles() as $profid) {
 			$profilename = '';
 			$resprofile = $adb->pquery("SELECT profilename FROM vtiger_profile WHERE profileid = ?",array($profid));
 			$profilename = $adb->query_result($resprofile, 0, 'profilename');
@@ -3799,8 +3789,7 @@ function getPermittedModuleIdList() {
 		}
 	}
 
-	if($is_admin == false && $profileGlobalPermission[1] == 1 &&
-			$profileGlobalPermission[2] == 1) {
+	if (!$userprivs->hasGlobalReadPermission()) {
 		foreach($tab_seq_array as $tabid=>$seq_value) {
 			if($seq_value === 0 && isset($profileTabsPermission[$tabid]) && $profileTabsPermission[$tabid] === 0) {
 				$permittedModules[]=($tabid);

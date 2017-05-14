@@ -385,13 +385,11 @@ class Leads extends CRMEntity {
 	{
 		global $log,$current_user;
 		$log->debug("Entering getColumnNames_Lead() method ...");
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
-		if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0)
-		{
+		$userprivs = $current_user->getPrivileges();
+		if ($userprivs->hasGlobalReadPermission()) {
 			$sql1 = "select fieldlabel from vtiger_field where tabid=7 and vtiger_field.presence in (0,2)";
 			$params1 = array();
-		}else
-		{
+		} else {
 			$profileList = getCurrentUserProfileList();
 			$sql1 = "select vtiger_field.fieldid,fieldlabel from vtiger_field inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid where vtiger_field.tabid=7 and vtiger_field.displaytype in (1,2,3,4) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)";
 			$params1 = array();
@@ -540,19 +538,18 @@ class Leads extends CRMEntity {
 	function get_searchbyemailid($username,$emailaddress)
 	{
 		//crm-now added $adb to provide db access
-		global $log, $adb;
-		global $current_user;
+		global $log, $adb, $current_user;
 		require_once("modules/Users/Users.php");
 		$seed_user=new Users();
 		$user_id=$seed_user->retrieve_user_id($username);
 		$current_user=$seed_user;
 		$current_user->retrieve_entity_info($user_id, 'Users');
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
-		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+		$userprivs = $current_user->getPrivileges();
 		$log->debug("Entering get_searchbyemailid(".$username.",".$emailaddress.") Leads method ...");
 		//get users group ID's
 		$gquery = 'SELECT groupid FROM vtiger_users2group WHERE userid=?';
 		$gresult = $adb->pquery($gquery, array($user_id));
+		$groupidlist = '';
 		for($j=0;$j < $adb->num_rows($gresult);$j++) {
 			$groupidlist.=",".$adb->query_result($gresult,$j,'groupid');
 		}
@@ -571,30 +568,27 @@ class Leads extends CRMEntity {
 					$query .= " AND ((vtiger_leaddetails.email like '". formatForSqlLike($emailaddress) ."') or vtiger_leaddetails.lastname REGEXP REPLACE('".$emailaddress."',' ','|') or vtiger_leaddetails.firstname REGEXP REPLACE('".$emailaddress."',' ','|'))  and vtiger_leaddetails.email != ''";
 				else
 					$query .= " AND (vtiger_leaddetails.email like '". formatForSqlLike($emailaddress) ."' and vtiger_leaddetails.email != '')";
-				if (isset($groupidlist))
+				if ($groupidlist != '')
 					$query .= " AND (vtiger_users.user_name='".$username."' OR vtiger_crmentity.smownerid IN (".substr($groupidlist,1)."))";
 				else
 					$query .= " AND vtiger_users.user_name='".$username."'";
 
 		$tab_id = getTabid("Leads");
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tab_id] == 3)
-		{
-					$sec_parameter=getListViewSecurityParameter("Leads");
-					$query .= $sec_parameter;
-
+		if (!$userprivs->hasGlobalReadPermission() && !$userprivs->hasModuleReadSharing($tabid)) {
+			$sec_parameter=getListViewSecurityParameter("Leads");
+			$query .= $sec_parameter;
 		}
-		
 		$log->debug("Exiting get_searchbyemailid method ...");
 		return $this->plugin_process_list_query($query);
 	}
-	
+
 	function plugin_process_list_query($query)
 	{
 		global $log,$adb,$current_user;
 		$log->debug("Entering process_list_query1(".$query.") method ...");
 		$permitted_field_lists = Array();
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
-		if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0)
+		$userprivs = $current_user->getPrivileges();
+		if ($userprivs->hasGlobalReadPermission())
 		{
 			$sql1 = "select columnname from vtiger_field where tabid=7 and block <> 75 and vtiger_field.presence in (0,2)";
 			$params1 = array();

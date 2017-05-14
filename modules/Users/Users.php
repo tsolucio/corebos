@@ -9,6 +9,7 @@
  ************************************************************************************/
 require_once ('include/logging.php');
 require_once ('include/database/PearDatabase.php');
+require_once ('UserPrivileges.php');
 require_once ('include/utils/UserInfoUtil.php');
 require_once 'data/CRMEntity.php';
 require_once ('modules/Calendar/Activity.php');
@@ -68,6 +69,11 @@ class Users extends CRMEntity {
 
 	var $DEFAULT_PASSWORD_CRYPT_TYPE;
 	//'BLOWFISH', /* before PHP5.3*/ MD5;
+
+	/**
+	 * @var UserPrivileges
+	 */
+	private $privileges;
 
 	/** constructor function for the main user class
 	 instantiates the Logger class and PearDatabase Class
@@ -592,15 +598,15 @@ class Users extends CRMEntity {
 	 *
 	 */
 	function retrieveCurrentUserInfoFromFile($userid) {
-		checkFileAccessForInclusion('user_privileges/user_privileges_' . $userid . '.php');
-		require ('user_privileges/user_privileges_' . $userid . '.php');
+		$this->id = $userid;
+		$userprivs = $this->getPrivileges();
+		$user_info = $userprivs->getUserInfo();
 		foreach ($this->column_fields as $field => $value_iter) {
 			if (isset($user_info[$field])) {
 				$this->$field = $user_info[$field];
 				$this->column_fields[$field] = $user_info[$field];
 			}
 		}
-		$this->id = $userid;
 		return $this;
 	}
 
@@ -1339,6 +1345,16 @@ class Users extends CRMEntity {
 		$user = new Users();
 		$user->retrieveCurrentUserInfoFromFile($adminId);
 		return $user;
+	}
+
+	/**
+	 * @return UserPrivileges
+	 */
+	public function getPrivileges() {
+		if (!$this->privileges) {
+			$this->privileges = new UserPrivileges($this->id);
+		}
+		return $this->privileges;
 	}
 
 }

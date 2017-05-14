@@ -57,7 +57,7 @@ function getSearchListHeaderValues($focus, $module,$sort_qry='',$sorder='',$orde
 	}
 	//Added to reduce the no. of queries logging for non-admin users
 	$field_list = array();
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
+	$userprivs = $current_user->getPrivileges();
 	foreach($focus->list_fields as $name=>$tableinfo)
 	{
 		$fieldname = $focus->list_fields_name[$name];
@@ -131,7 +131,7 @@ function getSearchListHeaderValues($focus, $module,$sort_qry='',$sorder='',$orde
 			if($fieldname == "lastname" && $module !="Leads" && $module !="Contacts")
 				$fieldname = "contact_id";
 		}
-		if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] ==0 || in_array($fieldname,$field))
+		if ($userprivs->hasGlobalReadPermission() || in_array($fieldname,$field))
 		{
 			if($fieldname!='parent_id')
 			{
@@ -508,13 +508,13 @@ function getAdvSearchfields($module)
 {
 	global $log, $adb, $current_user, $mod_strings,$app_strings;
 	$log->debug("Entering getAdvSearchfields(".$module.") method ...");
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
+	$userprivs = $current_user->getPrivileges();
 
 	$tabid = getTabid($module);
 	if($tabid==9)
 		$tabid='9,16';
 
-	if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0)
+	if ($userprivs->hasGlobalReadPermission())
 	{
 		$sql = 'select vtiger_field.* from vtiger_field where vtiger_field.displaytype in (1,2,3) and vtiger_field.presence in (0,2)';
 		if($tabid == 13 || $tabid == 15)
@@ -1012,10 +1012,10 @@ function str_replace_once($needle, $replace, $haystack)
  */
 function getUnifiedWhere($listquery,$module,$search_val){
 	global $adb, $current_user;
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
+	$userprivs = $current_user->getPrivileges();
 
 	$search_val = $adb->sql_escape_string($search_val);
-	if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] ==0){
+	if ($userprivs->hasGlobalReadPermission()) {
 		$query = "SELECT columnname, tablename FROM vtiger_field WHERE tabid = ? and vtiger_field.presence in (0,2)";
 		$qparams = array(getTabid($module));
 	}else{

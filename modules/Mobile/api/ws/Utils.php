@@ -346,40 +346,37 @@ class crmtogo_WS_Utils {
 	 * Security restriction (sharing privilege) query part
 	 */
 	static function querySecurityFromSuffix($module, $current_user) {
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
-		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+		$userprivs = $current_user->getPrivileges();
 
 		$querySuffix = '';
 		$tabid = getTabid($module);
 
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tabid] == 3) {
+		if (!$userprivs->hasGlobalReadPermission() && !$userprivs->hasModuleReadSharing($tabid)) {
 			$querySuffix .= " AND (vtiger_crmentity.smownerid in($current_user->id) OR vtiger_crmentity.smownerid IN
 					(
 						SELECT vtiger_user2role.userid FROM vtiger_user2role
 						INNER JOIN vtiger_users ON vtiger_users.id=vtiger_user2role.userid
 						INNER JOIN vtiger_role ON vtiger_role.roleid=vtiger_user2role.roleid
-						WHERE vtiger_role.parentrole LIKE '".$current_user_parent_role_seq."::%'
+						WHERE vtiger_role.parentrole LIKE '".$userprivs->getParentRoleSequence()."::%'
 					)
 					OR vtiger_crmentity.smownerid IN
 					(
 						SELECT shareduserid FROM vtiger_tmp_read_user_sharing_per
 						WHERE userid=".$current_user->id." AND tabid=".$tabid."
 					)
-					OR
-						(";
+					OR (";
 
-					// Build the query based on the group association of current user.
-			if(sizeof($current_user_groups) > 0) {
-				$querySuffix .= " vtiger_groups.groupid IN (". implode(",", $current_user_groups) .") OR ";
+			// Build the query based on the group association of current user.
+			if ($userprivs->hasGroups()) {
+				$querySuffix .= " vtiger_groups.groupid IN (". implode(",", $userprivs->getGroups()) .") OR ";
 			}
 			$querySuffix .= " vtiger_groups.groupid IN
 					(
 						SELECT vtiger_tmp_read_group_sharing_per.sharedgroupid
 						FROM vtiger_tmp_read_group_sharing_per
 						WHERE userid=".$current_user->id." and tabid=".$tabid."
-					)";
-			$querySuffix .= ")
-				)";
+					)
+			))";
 		}
 		return $querySuffix;
 	}
@@ -461,10 +458,10 @@ class crmtogo_WS_Utils {
 	 */
 	static function getUnifiedWhere($listquery,$module,$search_val,$current_user){
 		$db = PearDatabase::getInstance();
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
+		$userprivs = $current_user->getPrivileges();
 
 		$search_val = $db->sql_escape_string($search_val);
-		if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] ==0){
+		if ($userprivs->hasGlobalReadPermission()) {
 			$query = "SELECT columnname, tablename FROM vtiger_field WHERE tabid = ? and vtiger_field.presence in (0,2)";
 			$qparams = array(getTabid($module));
 		}else{

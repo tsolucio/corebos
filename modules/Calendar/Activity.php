@@ -553,40 +553,36 @@ function insertIntoRecurringTable(& $recurObj)
 	*/
 	function get_tasksforol($username)
 	{
-		global $log,$adb;
+		global $log,$adb,$current_user;
 		$log->debug("Entering get_tasksforol(".$username.") method ...");
-		global $current_user;
 		require_once("modules/Users/Users.php");
 		$seed_user=new Users();
 		$user_id=$seed_user->retrieve_user_id($username);
 		$current_user=$seed_user;
 		$current_user->retrieve_entity_info($user_id, 'Users');
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
-		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+		$userprivs = $current_user->getPrivileges();
 
-		if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0)
-		{
+		if ($userprivs->hasGlobalReadPermission()) {
 			$sql1 = "select tablename,columnname from vtiger_field where tabid=9 and tablename <> 'vtiger_recurringevents' and tablename <> 'vtiger_activity_reminder' and vtiger_field.presence in (0,2)";
 			$params1 = array();
-		}else{
-		$profileList = getCurrentUserProfileList();
-		$sql1 = "select tablename,columnname from vtiger_field inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid where vtiger_field.tabid=9 and tablename <> 'vtiger_recurringevents' and tablename <> 'vtiger_activity_reminder' and vtiger_field.displaytype in (1,2,4,3) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)";
-		$params1 = array();
-		if (count($profileList) > 0) {
-			$sql1 .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
-			array_push($params1, $profileList);
+		} else {
+			$profileList = getCurrentUserProfileList();
+			$sql1 = "select tablename,columnname from vtiger_field inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid where vtiger_field.tabid=9 and tablename <> 'vtiger_recurringevents' and tablename <> 'vtiger_activity_reminder' and vtiger_field.displaytype in (1,2,4,3) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)";
+			$params1 = array();
+			if (count($profileList) > 0) {
+				$sql1 .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
+				array_push($params1, $profileList);
+			}
 		}
-	}
-	$result1 = $adb->pquery($sql1,$params1);
-	for($i=0;$i < $adb->num_rows($result1);$i++)
-	{
-		$permitted_lists[] = $adb->query_result($result1,$i,'tablename');
-		$permitted_lists[] = $adb->query_result($result1,$i,'columnname');
-		/*if($adb->query_result($result1,$i,'columnname') == "parentid")
-		{
-			$permitted_lists[] = 'vtiger_account';
-			$permitted_lists[] = 'accountname';
-		}*/
+		$result1 = $adb->pquery($sql1,$params1);
+		for ($i=0;$i < $adb->num_rows($result1);$i++) {
+			$permitted_lists[] = $adb->query_result($result1,$i,'tablename');
+			$permitted_lists[] = $adb->query_result($result1,$i,'columnname');
+			/*if($adb->query_result($result1,$i,'columnname') == "parentid")
+			{
+				$permitted_lists[] = 'vtiger_account';
+				$permitted_lists[] = 'accountname';
+			}*/
 		}
 		$permitted_lists = array_chunk($permitted_lists,2);
 		$column_table_lists = array();
@@ -619,8 +615,7 @@ function insertIntoRecurringTable(& $recurObj)
 		$user_id=$seed_user->retrieve_user_id($user_name);
 		$current_user=$seed_user;
 		$current_user->retrieve_entity_info($user_id, 'Users');
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
-		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+		$userprivs = $current_user->getPrivileges();
 		//get users group ID's
 		$gquery = 'SELECT groupid FROM vtiger_users2group WHERE userid=?';
 		$gresult = $adb->pquery($gquery, array($user_id));
@@ -628,7 +623,7 @@ function insertIntoRecurringTable(& $recurObj)
 			$groupidlist.=",".$adb->query_result($gresult,$j,'groupid');
 		}
 
-		if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0)
+		if($userprivs->hasGlobalReadPermission())
 		{
 			$sql1 = "select tablename,columnname from vtiger_field where tabid=9 and tablename <> 'vtiger_recurringevents' and tablename <> 'vtiger_activity_reminder' and vtiger_field.presence in (0,2)";
 			$params1 = array();
@@ -778,16 +773,15 @@ function insertIntoRecurringTable(& $recurObj)
 	}
 
 	public function getNonAdminAccessControlQuery($module, $user,$scope='') {
-		require('user_privileges/user_privileges_'.$user->id.'.php');
-		require('user_privileges/sharing_privileges_'.$user->id.'.php');
+		$userprivs = new UserPrivileges($user->id);
 		$query = ' ';
 		$tabId = getTabid($module);
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tabId] == 3) {
+		if (!$userprivs->hasGlobalReadPermission() && !$userprivs->hasModuleReadSharing($tabId)) {
 			$tableName = 'vt_tmp_u'.$user->id.'_t'.$tabId;
 			//$sharingRuleInfoVariable = $module.'_share_read_permission';
 			//$sharingRuleInfo = $$sharingRuleInfoVariable;
 			$sharedTabId = null;
-			$this->setupTemporaryTable($tableName, $sharedTabId, $user, $current_user_parent_role_seq, $current_user_groups);
+			$this->setupTemporaryTable($tableName, $sharedTabId, $user, $userprivs->getParentRoleSequence(), $userprivs->getGroups());
 			$query = " INNER JOIN $tableName $tableName$scope ON ($tableName$scope.id = vtiger_crmentity$scope.smownerid and $tableName$scope.shared=0) ";
 			$sharedIds = getSharedCalendarId($user->id);
 			if(!empty($sharedIds)){

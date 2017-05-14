@@ -20,7 +20,8 @@ $singlepane_view = empty($singlepane_view) ? 'false' : 'true';
 if (file_exists('tabdata.php') && (filesize('tabdata.php') != 0)) {
 	include('tabdata.php');
 }
-require('user_privileges/user_privileges_' . $current_user->id . '.php');
+$userprivs = $current_user->getPrivileges();
+$is_admin = $userprivs->isAdmin();
 $fortabid = getTabid($formodule);
 $forrecord = vtlib_purify($_REQUEST['forrecord']);
 $rls = array();
@@ -36,7 +37,7 @@ while ($rel = $adb->fetch_array($result)) {
 	//check for disabled module.
 	$permitted = $tab_seq_array[$relatedTabId];
 	if ($permitted === 0 || empty($relatedTabId)) {
-		if ($is_admin || $profileTabsPermission[$relatedTabId] === 0 || empty($relatedTabId)) {
+		if ($is_admin || $userprivs->hasModuleAccess($relatedTabId) || empty($relatedTabId)) {
 			$rls[$relatedId] = array('label'=>$relationLabel,'tabid'=>$relatedTabId,'module'=>$rel['name'],'actions'=>$rel['actions']);
 		}
 	}

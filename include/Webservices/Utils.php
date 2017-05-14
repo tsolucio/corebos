@@ -76,11 +76,9 @@ function vtws_getVtigerVersion(){
 
 function vtws_getUserAccessibleGroups($moduleId, $user){
 	global $adb;
-	require('user_privileges/user_privileges_'.$user->id.'.php');
-	require('user_privileges/sharing_privileges_'.$user->id.'.php');
+	$userprivs = new UserPrivileges($user->id);
 	$tabName = getTabname($moduleId);
-	if($is_admin==false && $profileGlobalPermission[2] == 1 &&
-			($defaultOrgSharingPermission[$moduleId] == 3 or $defaultOrgSharingPermission[$moduleId] == 0)){
+	if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing($moduleId)) {
 		$result=get_current_user_access_groups($tabName);
 	}else{
 		$result = get_group_options();

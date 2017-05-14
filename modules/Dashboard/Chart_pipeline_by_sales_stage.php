@@ -10,10 +10,9 @@
 require_once('include/utils/utils.php');
 require_once('include/logging.php');
 require_once("modules/Dashboard/DashboardCharts.php");
-global $current_language, $currentModule, $action;
+global $current_language, $currentModule, $action, $current_user;
 $current_module_strings = return_module_language($current_language, 'Dashboard');
-require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
-require('user_privileges/user_privileges_'.$current_user->id.'.php');
+$userprivs = $current_user->getPrivileges();
 $log = LoggerManager::getLogger('pipeline_by_sales_stage');
 
 if (isset($_REQUEST['pbss_refresh'])) { $refresh = $_REQUEST['pbss_refresh']; }
@@ -167,7 +166,7 @@ if (isset($_REQUEST['pbss_edit']) && $_REQUEST['pbss_edit'] == 'true') {
 <td valign='top' ><select name="pbss_sales_stages[]" multiple size='3'><?php echo get_select_options_with_id($comboFieldArray['sales_stage_dom'],$_SESSION['pbss_sales_stages']); ?></select></td>
 </tr><tr>
 <td valign='top' nowrap><?php echo $current_module_strings['LBL_USERS'];?></td>
-<?php if($is_admin==false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid('Potentials')] == 3 or $defaultOrgSharingPermission[getTabid('Potentials')] == 0)) { ?>
+<?php if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing(getTabid('Potentials'))) { ?>
 	<td valign='top'><select name="pbss_ids[]" multiple size='3'><?php echo get_select_options_with_id(get_user_array(FALSE, "Active", $current_user->id,'private'),$_SESSION['pbss_ids']); ?></select></td>
 	<?php } else { ?>
 	<td valign='top'><select name="pbss_ids[]" multiple size='3'><?php echo get_select_options_with_id(get_user_array(FALSE,"Active",$current_user->id),$_SESSION['pbss_ids']); ?></select></td>	

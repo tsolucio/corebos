@@ -96,10 +96,9 @@ function vtws_getAssignedUserList($module,$user) {
 	$log->debug("Entering getAssignedUserList function with parameter modulename: ".$module);
 	$hcuser = $current_user;
 	$current_user = $user;
-	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
+	$userprivs = $current_user->getPrivileges();
 	$tabid=getTabid($module);
-	if(!is_admin($user) && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[$tabid] == 3 or $defaultOrgSharingPermission[$tabid] == 0)) {
+	if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing($tabid)) {
 		$users = get_user_array(FALSE, "Active", $user->id,'private');
 	} else {
 		$users = get_user_array(FALSE, "Active", $user->id);
@@ -371,7 +370,7 @@ function getSearchingListViewEntries($focus, $module,$list_result,$navigation_ar
 
 	//Added to reduce the no. of queries logging for non-admin user -- by minnie-start
 	$field_list = array();
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
+	$userprivs = $current_user->getPrivileges();
 	foreach($focus->list_fields as $name=>$tableinfo)
 	{
 		$fieldname = $focus->list_fields_name[$name];
@@ -508,7 +507,7 @@ function getSearchingListViewEntries($focus, $module,$list_result,$navigation_ar
 						$fieldname = 'product_id';
 					}
 				}
-				if($is_admin==true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] ==0 || in_array($fieldname,$field) || $fieldname == '' || ($name=='Close' && $module=='Calendar')) {
+				if ($userprivs->hasGlobalReadPermission() || in_array($fieldname,$field) || $fieldname == '' || ($name=='Close' && $module=='Calendar')) {
 					if($fieldname == '') {
 						$table_name = '';
 						$column_name = '';

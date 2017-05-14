@@ -63,7 +63,7 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 
 	//Added to reduce the no. of queries logging for non-admin user -- by Minnie-start
 	$field_list = array();
-	require('user_privileges/user_privileges_' . $current_user->id . '.php');
+	$userprivs = $current_user->getPrivileges();
 	foreach ($focus->list_fields as $name => $tableinfo) {
 		$fieldname = $focus->list_fields_name[$name];
 		if ($oCv) {
@@ -116,6 +116,7 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 			$field[] = $adb->query_result($result, $k, "fieldname");
 		}
 	}
+	$hasGlobalReadPermission = $userprivs->hasGlobalReadPermission();
 	foreach ($focus->list_fields as $name => $tableinfo) {
 		if ($oCv) {
 			if (isset($oCv->list_fields_name)) {
@@ -144,7 +145,7 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 				$fieldname = 'product_id';
 			}
 		}
-		if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0 || in_array($fieldname, $field) || $fieldname == '' || ($name == 'Close' && $module == 'Calendar')) {
+		if ($hasGlobalReadPermission || in_array($fieldname, $field) || $fieldname == '' || ($name == 'Close' && $module == 'Calendar')) {
 			if (isset($focus->sortby_fields) && $focus->sortby_fields != '' && $name != 'Close') {
 				//Avoid if and else check for every list field for arrow image and change order
 				$change_sorder = array('ASC' => 'DESC', 'DESC' => 'ASC');
@@ -273,9 +274,9 @@ function getSearchListViewHeader($focus, $module, $sort_qry = '', $sorder = '', 
 		$focus->search_fields_name = $cbMap->ListColumns()->getSearchFieldsName();
 	}
 	$field_list = array_values($focus->search_fields_name);
-	require('user_privileges/user_privileges_' . $current_user->id . '.php');
+	$userprivs = $current_user->getPrivileges();
 	$field = Array();
-	if ($is_admin == false && $module != 'Users') {
+	if (!is_admin($current_user) && $module != 'Users') {
 		if ($module == 'Emails') {
 			$query = "SELECT fieldname FROM vtiger_field WHERE tabid = ? and vtiger_field.presence in (0,2)";
 			$params = array($tabid);
@@ -304,14 +305,12 @@ function getSearchListViewHeader($focus, $module, $sort_qry = '', $sorder = '', 
 	$image_path = $theme_path . "images/";
 
 	$focus->filterInactiveFields($module);
-
+	$hasGlobalReadPermission = $userprivs->hasGlobalReadPermission();
 	foreach ($focus->search_fields as $name => $tableinfo) {
 		$fieldname = $focus->search_fields_name[$name];
 		$tabid = getTabid($module);
 
-		global $current_user;
-		require('user_privileges/user_privileges_' . $current_user->id . '.php');
-		if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0 || in_array($fieldname, $field) || $module == 'Users') {
+		if ($hasGlobalReadPermission || in_array($fieldname, $field) || $module == 'Users') {
 
 			if (isset($focus->sortby_fields) && $focus->sortby_fields != '') {
 				foreach ($focus->search_fields[$name] as $tab => $col) {
@@ -477,7 +476,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 
 	//Added to reduce the no. of queries logging for non-admin user -- by minnie-start
 	$field_list = array();
-	require('user_privileges/user_privileges_' . $current_user->id . '.php');
+	$userprivs = $current_user->getPrivileges();
 	foreach ($focus->list_fields as $name => $tableinfo) {
 		$fieldname = $focus->list_fields_name[$name];
 		if ($oCv) {
@@ -567,6 +566,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 	$wfs = new VTWorkflowManager($adb);
 	if ($navigation_array['start'] != 0)
 		$totals = array();
+	$hasGlobalReadPermission = $userprivs->hasGlobalReadPermission();
 		for ($i = 1; $i <= $noofrows; $i++) {
 			$list_header = Array();
 			//Getting the entityid
@@ -605,7 +605,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 						$fieldname = 'product_id';
 					}
 				}
-				if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0 || in_array($fieldname, $field) || $fieldname == '' || ($name == 'Close' && $module == 'Calendar')) {
+				if ($hasGlobalReadPermission || in_array($fieldname, $field) || $fieldname == '' || ($name == 'Close' && $module == 'Calendar')) {
 					if ($fieldname == '') {
 						$table_name = '';
 						$column_name = '';
@@ -1008,7 +1008,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 
 	//getting the vtiger_fieldtable entries from database
 	$tabid = getTabid($module);
-	require('user_privileges/user_privileges_' . $current_user->id . '.php');
+	$userprivs = $current_user->getPrivileges();
 
 	$bmapname = $module.'_ListColumns';
 	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
@@ -1068,6 +1068,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 	}
 
 	if ($navigation_array['end_val'] > 0) {
+		$hasGlobalReadPermission = $userprivs->hasGlobalReadPermission();
 		for ($i = 1; $i <= $noofrows; $i++) {
 
 			//Getting the entityid
@@ -1082,7 +1083,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 			foreach ($focus->search_fields as $name => $tableinfo) {
 				$fieldname = $focus->search_fields_name[$name];
 
-				if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0 || in_array($fieldname, $field) || $module == 'Users') {
+				if ($hasGlobalReadPermission || in_array($fieldname, $field) || $module == 'Users') {
 					if ($fieldname == '') {
 						$table_name = '';
 						$column_name = '';
@@ -1258,7 +1259,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 	$log->debug("Entering getValue(" . print_r($field_result,true) . "," . $list_result . "," . $fieldname . "," . get_class($focus) . "," . $module . "," . $entity_id . "," . $list_result_count . "," . $mode . "," . $popuptype . "," . $returnset . "," . $viewid . ") method ...");
 	global $adb, $current_user, $default_charset;
 
-	require('user_privileges/user_privileges_' . $current_user->id . '.php');
+	$userprivs = $current_user->getPrivileges();
 	$tabname = getParentTab();
 	$tabid = getTabid($module);
 	$current_module_strings = return_module_language($current_language, $module);
@@ -1358,7 +1359,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		}
 	} elseif ($uitype == 15 || ($uitype == 55 && $fieldname == "salutationtype")) {
 		$temp_val = decode_html_force($adb->query_result($list_result, $list_result_count, $colname));
-		if (($is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1) && $temp_val != '') {
+		if (!$userprivs->hasGlobalReadPermission() && $temp_val != '') {
 			$temp_acttype = $adb->query_result($list_result, $list_result_count, 'activitytype');
 			if (($temp_acttype != 'Task') && $fieldname == "taskstatus")
 				$temptable = "eventstatus";

@@ -206,12 +206,12 @@ class ConvertLeadUI {
 	static function checkOwnership($user) {
 		$private = '';
 		if ($user->id != 1) {
-			include 'user_privileges/sharing_privileges_' . $user->id . '.php';
+			$userprivs = $user->getPrivileges();
 			$Acc_tabid = getTabid('Accounts');
 			$con_tabid = getTabid('Contacts');
-			if ($defaultOrgSharingPermission[$Acc_tabid] === 0 || $defaultOrgSharingPermission[$Acc_tabid] == 3) {
+			if ($userprivs->getModuleSharingPermission($Acc_tabid) === 0 || $userprivs->getModuleSharingPermission($Acc_tabid) == 3) {
 				$private = 'private';
-			} elseif ($defaultOrgSharingPermission[$con_tabid] === 0 || $defaultOrgSharingPermission[$con_tabid] == 3) {
+			} elseif ($userprivs->getModuleSharingPermission($con_tabid) === 0 || $userprivs->getModuleSharingPermission($con_tabid) == 3) {
 				$private = 'private';
 			}
 		}

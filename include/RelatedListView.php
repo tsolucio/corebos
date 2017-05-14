@@ -237,10 +237,9 @@ function getHistory($parentmodule,$query,$id)
 	$rel_tab_id = getTabid("Calendar");
 
 	global $current_user;
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
-	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+	$userprivs = $current_user->getPrivileges();
 	$tab_id = getTabid('Calendar');
-	if($is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tab_id] == 3)
+	if (!$userprivs->hasGlobalReadPermission() && !$userprivs->hasModuleReadSharing($tab_id))
 	{
 		$sec_parameter=getListViewSecurityParameter('Calendar');
 		$query .= ' '.$sec_parameter;

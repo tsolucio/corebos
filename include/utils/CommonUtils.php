@@ -1255,13 +1255,13 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 	}
 
 	// Retrieve the profile list from database
-	require('user_privileges/user_privileges_' . $current_user->id . '.php');
+	$userprivs = $current_user->getPrivileges();
 	if ($disp_view == "detail_view") {
-		if ($is_admin == true || $profileGlobalPermission[2] == 0 || $module == "Users" || $module == "Emails") {
+		if ($userprivs->hasGlobalWritePermission() || $module == "Users" || $module == "Emails") {
 			$uniqueFieldsRestriction = 'vtiger_field.fieldid IN (select max(vtiger_field.fieldid) from vtiger_field where vtiger_field.tabid=? GROUP BY vtiger_field.columnname)';
 			$sql = "SELECT distinct vtiger_field.*, '0' as readonly FROM vtiger_field WHERE $uniqueFieldsRestriction AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ") AND vtiger_field.displaytype IN (1,2,4) and vtiger_field.presence in (0,2) ORDER BY block,sequence";
 			$params = array($tabid, $blockid_list);
-		} elseif ($profileGlobalPermission[1] == 0) { // view all
+		} elseif ($userprivs->hasGlobalViewPermission()) { // view all
 			$profileList = getCurrentUserProfileList();
 			$sql = "SELECT distinct vtiger_field.*, vtiger_profile2field.readonly FROM vtiger_field INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid WHERE vtiger_field.tabid=? AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ") AND vtiger_field.displaytype IN (1,2,4) and vtiger_field.presence in (0,2) AND vtiger_profile2field.profileid IN (" . generateQuestionMarks($profileList) . ") ORDER BY block,sequence";
 			$params = array($tabid, $blockid_list, $profileList);
@@ -1279,7 +1279,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 	}
 	else {
 		if ($info_type != '') {
-			if ($is_admin == true || $profileGlobalPermission[2] == 0 || $module == 'Users' || $module == "Emails") {
+			if ($userprivs->hasGlobalWritePermission() || $module == 'Users' || $module == "Emails") {
 				$sql = "SELECT vtiger_field.* FROM vtiger_field WHERE vtiger_field.tabid=? AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ") AND $display_type_check AND info_type = ? and vtiger_field.presence in (0,2) ORDER BY block,sequence";
 				$params = array($tabid, $blockid_list, $info_type);
 			} else {
@@ -1289,7 +1289,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 			}
 		}
 		else {
-			if ($is_admin == true || $profileGlobalPermission[2] == 0 || $module == 'Users' || $module == "Emails") {
+			if ($userprivs->hasGlobalWritePermission() || $module == 'Users' || $module == "Emails") {
 				$sql = "SELECT vtiger_field.* FROM vtiger_field WHERE vtiger_field.tabid=? AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ") AND $display_type_check and vtiger_field.presence in (0,2) ORDER BY block,sequence";
 				$params = array($tabid, $blockid_list);
 			} else {
@@ -1868,8 +1868,8 @@ function QuickCreate($module) {
 	$tabid = getTabid($module);
 
 	//Adding Security Check
-	require('user_privileges/user_privileges_' . $current_user->id . '.php');
-	if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
+	$userprivs = $current_user->getPrivileges();
+	if ($userprivs->hasGlobalReadPermission()) {
 		$quickcreate_query = "select * from vtiger_field where (quickcreate in (0,2) or typeofdata like '%M%') and tabid = ? and vtiger_field.presence in (0,2) and displaytype != 2 order by quickcreatesequence";
 		$params = array($tabid);
 	} else {
@@ -1922,10 +1922,9 @@ function QuickCreate($module) {
 function getUserslist($setdefval = true) {
 	global $log, $current_user, $module, $adb, $assigned_user_id;
 	$log->debug("Entering getUserslist() method ...");
-	require('user_privileges/user_privileges_' . $current_user->id . '.php');
-	require('user_privileges/sharing_privileges_' . $current_user->id . '.php');
+	$userprivs = $current_user->getPrivileges();
 
-	if ($is_admin == false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid($module)] == 3 or $defaultOrgSharingPermission[getTabid($module)] == 0)) {
+	if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing(getTabid($module))) {
 		$user_array = get_user_array(FALSE, "Active", $current_user->id, 'private');
 	} else {
 		$user_array = get_user_array(FALSE, "Active", $current_user->id);
@@ -1948,11 +1947,10 @@ function getUserslist($setdefval = true) {
 function getGroupslist() {
 	global $log, $adb, $module, $current_user;
 	$log->debug("Entering getGroupslist() method ...");
-	require('user_privileges/user_privileges_' . $current_user->id . '.php');
-	require('user_privileges/sharing_privileges_' . $current_user->id . '.php');
+	$userprivs = $current_user->getPrivileges();
 
 	//Commented to avoid security check for groups
-	if ($is_admin == false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid($module)] == 3 or $defaultOrgSharingPermission[getTabid($module)] == 0)) {
+	if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing(getTabid($module))) {
 		$result = get_current_user_access_groups($module);
 	} else {
 		$result = get_group_options();
@@ -1961,7 +1959,7 @@ function getGroupslist() {
 	if ($result)
 		$nameArray = $adb->fetch_array($result);
 	if (!empty($nameArray)) {
-		if ($is_admin == false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid($module)] == 3 or $defaultOrgSharingPermission[getTabid($module)] == 0)) {
+		if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing(getTabid($module))) {
 			$group_array = get_group_array(FALSE, "Active", $current_user->id, 'private');
 		} else {
 			$group_array = get_group_array(FALSE, "Active", $current_user->id);
@@ -2056,20 +2054,18 @@ function getAllParenttabmoduleslist() {
 	// END
 
 	$result = $adb->pquery($query, array());
-	require('user_privileges/user_privileges_' . $current_user->id . '.php');
+	$userprivs = $current_user->getPrivileges();
 	for ($i = 0; $i < $adb->num_rows($result); $i++) {
 		$parenttabname = $adb->query_result($result, $i, 'parenttab_label');
 		$modulename = $adb->query_result($result, $i, 'name');
 		$tablabel = $adb->query_result($result, $i, 'tablabel');
 		$tabid = $adb->query_result($result, $i, 'tabid');
-		if ($is_admin) {
-			$resultant_array[$parenttabname][] = Array($modulename, $tablabel);
-		} elseif ($profileGlobalPermission[2] == 0 || $profileGlobalPermission[1] == 0 || $profileTabsPermission[$tabid] === 0) {
+		if ($userprivs->hasGlobalReadPermission() || $userprivs->hasModuleAccess($tabid)) {
 			$resultant_array[$parenttabname][] = Array($modulename, $tablabel);
 		}
 	}
 
-	if ($is_admin) {
+	if ($userprivs->isAdmin()) {
 		$resultant_array['Settings'][] = Array('Settings', 'Settings');
 		$resultant_array['Settings'][] = Array('Settings', getTranslatedString('VTLIB_LBL_MODULE_MANAGER', 'Settings'), 'ModuleManager');
 	}

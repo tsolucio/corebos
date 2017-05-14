@@ -359,10 +359,9 @@ class CRMEntity {
 		$description_val = (empty($this->column_fields['description']) ? '' : $this->column_fields['description']);
 		if ($this->mode == 'edit') {
 
-			checkFileAccessForInclusion('user_privileges/user_privileges_' . $current_user->id . '.php');
-			require('user_privileges/user_privileges_' . $current_user->id . '.php');
+			$userprivs = $current_user->getPrivileges();
 			$tabid = getTabid($module);
-			if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
+			if ($userprivs->hasGlobalReadPermission()) {
 				$sql = "update vtiger_crmentity set smownerid=?,modifiedby=?,description=?, modifiedtime=? where crmid=?";
 				$params = array($ownerid, $current_user->id, $description_val, $adb->formatDate($date_var, true), $this->id);
 			} else {
@@ -457,12 +456,11 @@ class CRMEntity {
 		if ($insertion_mode == 'edit') {
 			$update = array();
 			$update_params = array();
-			checkFileAccessForInclusion('user_privileges/user_privileges_' . $current_user->id . '.php');
-			require('user_privileges/user_privileges_' . $current_user->id . '.php');
+			$userprivs = $current_user->getPrivileges();
 			if (isset($from_wf) && $from_wf) {
 				$sql = "select * from vtiger_field where $uniqueFieldsRestriction and tablename=? and displaytype in (1,3,4) and presence in (0,2)";
 				$params = array($tabid, $table_name);
-			} elseif ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
+			} elseif ($userprivs->hasGlobalReadPermission()) {
 				$sql = "select * from vtiger_field where $uniqueFieldsRestriction and tablename=? and displaytype in (1,3) and presence in (0,2)";
 				$params = array($tabid, $table_name);
 			} else {
@@ -2291,23 +2289,22 @@ class CRMEntity {
 	function getListViewSecurityParameter($module) {
 		global $current_user;
 		if ($current_user) {
-			require('user_privileges/user_privileges_' . $current_user->id . '.php');
-			require('user_privileges/sharing_privileges_' . $current_user->id . '.php');
+			$userprivs = $current_user->getPrivileges();
 		} else {
 			return '';
 		}
 		$sec_query = '';
 		$tabid = getTabid($module);
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tabid] == 3) {
+		if (!$userprivs->hasGlobalReadPermission() && !$userprivs->hasModuleReadSharing($tabId)) {
 			$sec_query .= " and (vtiger_crmentity.smownerid in ($current_user->id)
 				or
-				vtiger_crmentity.smownerid in (select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '" . $current_user_parent_role_seq . "::%')
+				vtiger_crmentity.smownerid in (select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '" . $userprivs->getParentRoleSequence() . "::%')
 				or
 				vtiger_crmentity.smownerid in (select shareduserid from vtiger_tmp_read_user_sharing_per where userid=" . $current_user->id . " and tabid=" . $tabid . ")
 				or (";
 
-			if (sizeof($current_user_groups) > 0) {
-				$sec_query .= " vtiger_groups.groupid in (" . implode(",", $current_user_groups) . ") or ";
+			if ($userprivs->hasGroups()) {
+				$sec_query .= ' vtiger_groups.groupid in (' . implode(',', $userprivs->getGroups()) . ') or ';
 			}
 			$sec_query .= " vtiger_groups.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=" . $current_user->id . " and tabid=" . $tabid . ")))";
 		}
@@ -2323,13 +2320,12 @@ class CRMEntity {
 		$tabid = getTabid($module);
 		global $current_user;
 		if ($current_user) {
-			require('user_privileges/user_privileges_' . $current_user->id . '.php');
-			require('user_privileges/sharing_privileges_' . $current_user->id . '.php');
+			$userprivs = $current_user->getPrivileges();
 		}
-		$sec_query .= " and (vtiger_crmentity$module.smownerid in($current_user->id) or vtiger_crmentity$module.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '" . $current_user_parent_role_seq . "::%') or vtiger_crmentity$module.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=" . $current_user->id . " and tabid=" . $tabid . ") or (";
+		$sec_query .= " and (vtiger_crmentity$module.smownerid in($current_user->id) or vtiger_crmentity$module.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '" . $userprivs->getParentRoleSequence() . "::%') or vtiger_crmentity$module.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=" . $current_user->id . " and tabid=" . $tabid . ") or (";
 
-		if (sizeof($current_user_groups) > 0) {
-			$sec_query .= " vtiger_groups$module.groupid in (" . implode(",", $current_user_groups) . ") or ";
+		if ($userprivs->hasGroups()) {
+			$sec_query .= " vtiger_groups$module.groupid in (" . implode(",", $userprivs->getGroups()) . ") or ";
 		}
 		$sec_query .= " vtiger_groups$module.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=" . $current_user->id . " and tabid=" . $tabid . "))) ";
 		return $sec_query;
@@ -2620,10 +2616,9 @@ class CRMEntity {
 	 * @param <type> $user
 	 */
 	function getNonAdminModuleAccessQuery($module, $user) {
-		require('user_privileges/sharing_privileges_' . $user->id . '.php');
+		$userprivs = new UserPrivileges($user->id);
 		$tabId = getTabid($module);
-		$sharingRuleInfoVariable = $module . '_share_read_permission';
-		$sharingRuleInfo = $$sharingRuleInfoVariable;
+		$sharingRuleInfo = $userprivs->getModuleSharingRules($module, 'read');
 		$sharedTabId = null;
 		$query = '';
 		if (!empty($sharingRuleInfo) && (count($sharingRuleInfo['ROLE']) > 0 || count($sharingRuleInfo['GROUP']) > 0)) {
@@ -2664,14 +2659,12 @@ class CRMEntity {
 	 * @return String Access control Query for the user.
 	 */
 	function getNonAdminAccessControlQuery($module, $user, $scope = '') {
-		require('user_privileges/user_privileges_' . $user->id . '.php');
-		require('user_privileges/sharing_privileges_' . $user->id . '.php');
+		$userprivs = new UserPrivileges($user->id);
 		$query = ' ';
 		$tabId = getTabid($module);
-		if ($is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && isset($defaultOrgSharingPermission[$tabId]) && $defaultOrgSharingPermission[$tabId] == 3) {
+		if (!$userprivs->hasGlobalReadPermission() && !$userprivs->hasModuleReadSharing($tabId)) {
 			$tableName = 'vt_tmp_u' . $user->id;
-			$sharingRuleInfoVariable = $module . '_share_read_permission';
-			$sharingRuleInfo = $$sharingRuleInfoVariable;
+			$sharingRuleInfo = $userprivs->getModuleSharingRules($module, 'read');
 			$sharedTabId = null;
 			if (!empty($sharingRuleInfo) && (count($sharingRuleInfo['ROLE']) > 0 || count($sharingRuleInfo['GROUP']) > 0)) {
 				$tableName = $tableName . '_t' . $tabId;
@@ -2682,12 +2675,12 @@ class CRMEntity {
 			list($tsSpecialAccessQuery, $typeOfPermissionOverride, $unused1, $unused2) = cbEventHandler::do_filter('corebos.permissions.accessquery', array(' ', 'none', $module, $user));
 			if ($typeOfPermissionOverride=='fullOverride') {
 				// create the default temporary table in case it is needed
-				$this->setupTemporaryTable($tableName, $sharedTabId, $user, $current_user_parent_role_seq, $current_user_groups);
+				$this->setupTemporaryTable($tableName, $sharedTabId, $user, $userprivs->getParentRoleSequence(), $userprivs->getGroups());
 				VTCacheUtils::updateCachedInformation('SpecialPermissionWithDuplicateRows', true);
 				return $tsSpecialAccessQuery;
 			}
 			if ($typeOfPermissionOverride=='none' or trim($tsSpecialAccessQuery)=='') {
-				$this->setupTemporaryTable($tableName, $sharedTabId, $user, $current_user_parent_role_seq, $current_user_groups);
+				$this->setupTemporaryTable($tableName, $sharedTabId, $user, $userprivs->getParentRoleSequence(), $userprivs->getGroups());
 				$query = " INNER JOIN $tableName $tableName$scope ON $tableName$scope.id = vtiger_crmentity$scope.smownerid ";
 			} else {
 				global $adb;
@@ -2695,7 +2688,7 @@ class CRMEntity {
 				$tsTableName = "tsolucio_tmp_u{$user->id}";
 				$adb->query("drop table if exists {$tsTableName}");
 				if ($typeOfPermissionOverride=='addToUserPermission') {
-					$query = $this->getNonAdminAccessQuery($module, $user, $current_user_parent_role_seq, $current_user_groups);
+					$query = $this->getNonAdminAccessQuery($module, $user, $userprivs->getParentRoleSequence(), $userprivs->getGroups());
 					$tsSpecialAccessQuery = "$query UNION ($tsSpecialAccessQuery) ";
 				}
 				$adb->query("create temporary table {$tsTableName} (id int primary key) as {$tsSpecialAccessQuery}");

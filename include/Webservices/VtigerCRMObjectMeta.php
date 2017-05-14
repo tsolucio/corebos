@@ -84,8 +84,8 @@ class VtigerCRMObjectMeta extends EntityMeta {
 			return;
 		}
 
-		require('user_privileges/user_privileges_'.$this->user->id.'.php');
-		if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0){
+		$userprivs = new UserPrivileges($this->user->id);
+		if ($userprivs->hasGlobalReadPermission()) {
 			$this->hasAccess = true;
 			$this->hasReadAccess = true;
 			$this->hasWriteAccess = true;
@@ -377,8 +377,8 @@ class VtigerCRMObjectMeta extends EntityMeta {
 			$condition = "($uniqueFieldsRestriction or vtiger_field.tablename='vtiger_activitycf')";
 		else
 			$condition = $uniqueFieldsRestriction;
-		require('user_privileges/user_privileges_'.$this->user->id.'.php');
-		if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] ==0){
+		$userprivs = new UserPrivileges($this->user->id);
+		if ($userprivs->hasGlobalReadPermission()) {
 			$sql = "select *, '0' as readonly from vtiger_field where ".$condition." and block in (".generateQuestionMarks($block).") and displaytype in (1,2,3,4)";
 			$params = array($tabid, $block);
 		}else{

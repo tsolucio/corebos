@@ -108,46 +108,37 @@ class PBXManager extends CRMEntity {
 	 */
 	function getListViewSecurityParameter($module) {
 		global $current_user;
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
-		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+		$userprivs = $current_user->getPrivileges();
 
 		$sec_query = '';
 		$tabid = getTabid($module);
 
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1
-			&& $defaultOrgSharingPermission[$tabid] == 3) {
-
+		if(!$userprivs->hasGlobalReadPermission() && !$userprivs->hasModuleReadSharing($tabid)) {
 				$sec_query .= " AND (vtiger_crmentity.smownerid in($current_user->id) OR vtiger_crmentity.smownerid IN
 					(
 						SELECT vtiger_user2role.userid FROM vtiger_user2role
 						INNER JOIN vtiger_users ON vtiger_users.id=vtiger_user2role.userid
 						INNER JOIN vtiger_role ON vtiger_role.roleid=vtiger_user2role.roleid
-						WHERE vtiger_role.parentrole LIKE '".$current_user_parent_role_seq."::%'
+						WHERE vtiger_role.parentrole LIKE '".$userprivs->getParentRoleSequence()."::%'
 					)
 					OR vtiger_crmentity.smownerid IN
 					(
 						SELECT shareduserid FROM vtiger_tmp_read_user_sharing_per
 						WHERE userid=".$current_user->id." AND tabid=".$tabid."
 					)
-					OR ( vtiger_crmentity.smownerid in (0)";
+					OR (";
 
-				if(!empty($this->groupTable)) {
-					$sec_query .= ' AND (';
-
-					// Build the query based on the group association of current user.
-					if(sizeof($current_user_groups) > 0) {
-						$sec_query .= " vtiger_groups.groupid IN (". implode(",", $current_user_groups) .") OR ";
-					}
-					$sec_query .= " vtiger_groups.groupid IN
-						(
-							SELECT vtiger_tmp_read_group_sharing_per.sharedgroupid
-							FROM vtiger_tmp_read_group_sharing_per
-							WHERE userid=".$current_user->id." and tabid=".$tabid."
-						)";
-					$sec_query .= ") ";
+				// Build the query based on the group association of current user.
+				if($userprivs->hasGroups()) {
+					$sec_query .= ' vtiger_groups.groupid IN ('. implode(",", $userprivs->getGroups()) .') OR ';
 				}
-				$sec_query .= ")
-				)";
+				$sec_query .= ' vtiger_groups.groupid IN
+					(
+						SELECT vtiger_tmp_read_group_sharing_per.sharedgroupid
+						FROM vtiger_tmp_read_group_sharing_per
+						WHERE userid='.$current_user->id.' and tabid='.$tabid.'
+					)
+				))';
 		}
 		return $sec_query;
 	}
@@ -186,11 +177,10 @@ class PBXManager extends CRMEntity {
 		if($where != '') $query .= " WHERE ($where) AND $where_auto";
 		else $query .= " WHERE $where_auto";
 
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
-		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+		$userprivs = $current_user->getPrivileges();
 
 		// Security Check for Field Access
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[7] == 3)
+		if (!$userprivs->hasGlobalReadPermission() && !$userprivs->hasModuleReadSharing(getTabid('Leads')))
 		{
 			//Added security check to get the permitted records only
 			$query = $query." ".getListViewSecurityParameter($thismodule);
