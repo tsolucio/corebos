@@ -34,10 +34,10 @@ abstract class WSAPP_SynchronizeController {
 	abstract function getSyncType();
 
 	function __construct($user) {
+		$this->user = $user;
 		$this->targetConnector = $this->getTargetConnector();
 		$this->sourceConnector = $this->getSourceConnector();
 		$this->db = PearDatabase::getInstance();
-		$this->user = $user;
 	}
 
 	function getSourceConnector() {

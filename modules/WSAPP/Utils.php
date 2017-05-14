@@ -151,6 +151,14 @@ function wsapp_RegisterHandler($type,$handlerClass,$handlerPath){
 		$saveQuery = "INSERT INTO vtiger_wsapp_handlerdetails VALUES(?,?,?)";
 		$parameters = array($type,$handlerClass,$handlerPath);
 	}
-	$db->pquery($saveQuery,$parameters);}
+	$db->pquery($saveQuery,$parameters);
+}
+
+function wsapp_DeleteHandler($type){
+	if(!is_array($type)) $type = array($type);
+	$db = PearDatabase::getInstance();
+	$query = 'DELETE FROM vtiger_wsapp_handlerdetails WHERE type IN('.  generateQuestionMarks($type).')';
+	$db->pquery($query,$type);
+}
 
 ?>
