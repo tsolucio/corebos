@@ -674,8 +674,8 @@ Class Google_Contacts_Connector extends WSAPP_TargetConnector {
      * @return <array> pushed records
      */
     public function push($records, $user = false) {
-        global $current_uer;
-        if(!$user) $user = $current_uer;//Users_Record_Model::getCurrentUserModel();
+        global $current_user;
+        if (!$user) $user = $current_user;//Users_Record_Model::getCurrentUserModel();
 
         if(!isset($this->selectedGroup))
             $this->selectedGroup = Google_Utils_Helper::getSelectedContactGroupForUser($user);
