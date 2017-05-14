@@ -733,14 +733,14 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Booléen',
 	'category' => 'Application',
 	'values' => '0 | 1',
-	'definition' => 'Lors de la sélection d\'un Compte ou d\'un Contact dans une fenêtre popup, l\'application demande l\'adresse à utiliser. Cette variable présélectionne (1) l\'adresse de facturation.',
+	'definition' => 'Lors de la sélection d\'un Compte, d\'un Fournisseur ou d\'un Contact dans une fenêtre popup, l\'application demande l\'adresse à utiliser. Cette variable présélectionne (1) l\'adresse de facturation.',
 ),
 'Application_Shipping_Address_Checked' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Booléen',
 	'category' => 'Application',
 	'values' => 'true | false',
-	'definition' => ' Lors de la sélection d\'un Compte ou d\'un Contact dans une fenêtre popup, l\'application demande l\'adresse à utiliser. Cette variable présélectionne (1) l\'adresse de livraise.',
+	'definition' => ' Lors de la sélection d\'un Compte, d\'un Fournisseur ou d\'un Contact dans une fenêtre popup, l\'application demande l\'adresse à utiliser. Cette variable présélectionne (1) l\'adresse de livraise.',
 ),
 'Application_Show_Copy_Address' => array(
 	'status' => 'Implémenté',
