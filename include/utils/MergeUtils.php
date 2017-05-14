@@ -26,6 +26,8 @@ function crmmerge($csvheader,$content,$index_in_csvdata,$function_name='') {
 	$Values = explode (",",$Temp[$index_in_csvdata]);
 	$numfields = count($Values);
 	for($i=0;$i<$numfields;$i++) {
+		// if field is RTE, which is defined by FieldInfo Business Map, we have to decode_html() it here, like the line below:
+		// if ($Header[$i]=='TICKET_SOLUTION') $Values[$i] = decode_html($Values[$i]);
 		$content = str_replace($Header[$i], call_user_func($f,$Values[$i]), $content);
 	}
 	return $content;
