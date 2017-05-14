@@ -283,7 +283,7 @@ EOF;
 		}
 		if ($withquotes) {
 			$vals = array_map(function($v) {
-				return '"'.urldecode($v).'"';
+				return '"'.urldecode(vtlib_purify($v)).'"';
 			}, $vals);
 		}
 		return $vals;
