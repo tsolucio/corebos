@@ -400,7 +400,7 @@ class SyncServer {
 				} else if (empty($updatedLookupIds[$u['id']])) {
 					$u['_id'] = $u['id'];// Rename the id key
 					$u['_modifiedtime'] = $u['modifiedtime'];
-					unset($u['id']);
+					//unset($u['id']);
 					$filteredCreates[] = $u;
 				}
 			}
