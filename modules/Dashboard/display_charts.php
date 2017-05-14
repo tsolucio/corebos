@@ -773,5 +773,5 @@ function picklist_check($module,$graph_by)
 }
 ?>
 <script id="dash_script">
-	var gdash_display_type = '<?php echo vtlib_purify($_REQUEST['display_view']);?>';
+	var gdash_display_type = '<?php echo (isset($_REQUEST['display_view']) ? vtlib_purify($_REQUEST['display_view']) : '');?>';
 </script>

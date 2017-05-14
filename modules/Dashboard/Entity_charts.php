@@ -176,7 +176,7 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 	$test_target_val="";
 	$urlstring = '';
 	$mod_graph_date = '';
-	$max_label_length = GlobalVariable::getVariable('Application_ListView_Max_Text_Length',40,$currentModule);
+	$max_label_length = GlobalVariable::getVariable('Application_ListView_Max_Text_Length',40);
 	if($no_of_rows!=0)
 	{
 		while($row = $adb->fetch_array($result))

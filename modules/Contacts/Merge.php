@@ -160,7 +160,7 @@ $labels_length=array_reverse($labels_length);
 $csvheader = implode(",",$field_label);
 //<<<<<<<<<<<<<<<<End>>>>>>>>>>>>>>>>>>>>>>>>
 
-// check if custom field CONTACT_MAILINGADDRESS exists and is not empty 
+// check if custom field CONTACT_MAILINGADDRESS exists and is not empty
 // if not empty remove all other relevant address fields fom $csvheader & query
 
 if(count($querycolumns) > 0)
@@ -168,24 +168,24 @@ if(count($querycolumns) > 0)
 	$selectcolumns = implode($querycolumns,",");
 
 	$query = "select $selectcolumns from vtiger_contactdetails
-				inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid 
-				inner join vtiger_contactaddress on vtiger_contactdetails.contactid = vtiger_contactaddress.contactaddressid 
-				inner join vtiger_contactsubdetails on vtiger_contactdetails.contactid = vtiger_contactsubdetails.contactsubscriptionid 
-				inner join vtiger_contactscf on vtiger_contactdetails.contactid = vtiger_contactscf.contactid 
-				inner join vtiger_customerdetails on vtiger_contactdetails.contactid = vtiger_customerdetails.customerid 
-				left join vtiger_contactdetails as contactdetailsContacts on contactdetailsContacts.contactid = vtiger_contactdetails.reportsto
-				left join vtiger_account as accountContacts on accountContacts.accountid = vtiger_contactdetails.accountid 
-				left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
-				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-				left join vtiger_account on vtiger_account.accountid = vtiger_contactdetails.accountid
-				left join vtiger_crmentity as crmentityAccounts on crmentityAccounts.crmid=vtiger_account.accountid
-				left join vtiger_accountbillads on vtiger_account.accountid=vtiger_accountbillads.accountaddressid
-				left join vtiger_accountshipads on vtiger_account.accountid=vtiger_accountshipads.accountaddressid
-				left join vtiger_accountscf on vtiger_account.accountid = vtiger_accountscf.accountid
-				left join vtiger_account as accountAccounts on accountAccounts.accountid = vtiger_account.parentid
-				left join vtiger_users as usersAccounts on usersAccounts.id = crmentityAccounts.smownerid 
-				LEFT JOIN vtiger_groups as groupsAccounts ON groupsAccounts.groupid = vtiger_crmentity.smownerid
-				where vtiger_crmentity.deleted=0 and (crmentityAccounts.deleted is NULL or crmentityAccounts.deleted <> 1) and vtiger_contactdetails.contactid in(". generateQuestionMarks($mass_merge) .")";
+		inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
+		inner join vtiger_contactaddress on vtiger_contactdetails.contactid = vtiger_contactaddress.contactaddressid
+		inner join vtiger_contactsubdetails on vtiger_contactdetails.contactid = vtiger_contactsubdetails.contactsubscriptionid
+		inner join vtiger_contactscf on vtiger_contactdetails.contactid = vtiger_contactscf.contactid
+		inner join vtiger_customerdetails on vtiger_contactdetails.contactid = vtiger_customerdetails.customerid
+		left join vtiger_contactdetails as contactdetailsContacts on contactdetailsContacts.contactid = vtiger_contactdetails.reportsto
+		left join vtiger_account as accountContacts on accountContacts.accountid = vtiger_contactdetails.accountid
+		left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
+		LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
+		left join vtiger_account on vtiger_account.accountid = vtiger_contactdetails.accountid
+		left join vtiger_crmentity as crmentityAccounts on crmentityAccounts.crmid=vtiger_account.accountid
+		left join vtiger_accountbillads on vtiger_account.accountid=vtiger_accountbillads.accountaddressid
+		left join vtiger_accountshipads on vtiger_account.accountid=vtiger_accountshipads.accountaddressid
+		left join vtiger_accountscf on vtiger_account.accountid = vtiger_accountscf.accountid
+		left join vtiger_account as accountAccounts on accountAccounts.accountid = vtiger_account.parentid
+		left join vtiger_users as usersAccounts on usersAccounts.id = crmentityAccounts.smownerid
+		LEFT JOIN vtiger_groups as groupsAccounts ON groupsAccounts.groupid = vtiger_crmentity.smownerid
+		where vtiger_crmentity.deleted=0 and (crmentityAccounts.deleted is NULL or crmentityAccounts.deleted <> 1) and vtiger_contactdetails.contactid in(". generateQuestionMarks($mass_merge) .")";
 	$result = $adb->pquery($query, array($mass_merge));
 	$avail_pick_arr = getAccessPickListValues('Contacts');
 	while ($columnValues = $adb->fetch_array($result)) {
