@@ -140,6 +140,9 @@ switch ($focus->column_fields['maptype']) {
 	case 'Search and Update':
 		$mapinfo = $focus->read_map();
 		break;
+	case 'FieldInfo':
+		$mapinfo = $focus->FieldInfo();
+		break;
 	case 'FieldDependency':
 		$mapinfo = $focus->FieldDependency()->getCompleteMapping();
 		$mapinfo['TargetModule'] = $focus->FieldDependency()->getMapTargetModule();

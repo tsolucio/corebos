@@ -16,7 +16,7 @@ $mod_strings = Array(
 	'LBL_CUSTOM_INFORMATION' => 'Informazione Personalizzata',
 	'LBL_MAP_INFORMATION' => 'Informazione Blocco Mappa',
 	'LBL_CREATE_BUTTON_KEY'=>'Genera Mappa',
-
+        'LBL_DESCRIPTION_INFORMATION'=>'Descrizione',
 	'Map Name' => 'Map Name',
 	'Map Number' => 'Map Number',
 	'Map Type' => 'Map Type',

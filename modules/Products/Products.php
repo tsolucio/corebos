@@ -278,9 +278,8 @@ class Products extends CRMEntity {
 			}
 		}
 
-		//Remove the deleted vtiger_attachments from db - Products
-		if($module == 'Products' && $_REQUEST['del_file_list'] != '')
-		{
+		// Remove the deleted attachments from db - Products
+		if ($module == 'Products' && !empty($_REQUEST['del_file_list'])) {
 			$del_file_list = explode("###",trim($_REQUEST['del_file_list'],"###"));
 			foreach($del_file_list as $del_file_name)
 			{
@@ -294,8 +293,6 @@ class Products extends CRMEntity {
 
 		$log->debug("Exiting from insertIntoAttachment($id,$module) method.");
 	}
-
-
 
 	/**	function used to get the list of leads which are related to the product
 	 *	@param int $id - product id

@@ -66,7 +66,7 @@ class VTWorkflowEntity{
 	}
 
 	function get($fieldName){
-		return $this->data[$fieldName];
+		return (isset($this->data[$fieldName]) ? $this->data[$fieldName] : null);
 	}
 
 	function set($fieldName, $value){

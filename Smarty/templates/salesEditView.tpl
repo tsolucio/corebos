@@ -14,6 +14,9 @@
 	jQuery(document).ready(function() {ldelim} (new FieldDependencies({$PICKIST_DEPENDENCY_DATASOURCE})).init() {rdelim});
 </script>
 {/if}
+{if vt_hasRTE()}
+<script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
+{/if}
 
 {include file='Buttons_List.tpl'}
 
@@ -154,7 +157,7 @@
 										{else}
 											<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.action.value='Save';  displaydeleted();return formValidate();" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
 										{/if}
-                                            <input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="window.history.back()" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
+										<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="window.history.back()" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
 											</div>
 										</td>
 									   </tr>
@@ -176,37 +179,6 @@
 <!--added to fix 4600-->
 <input name='search_url' id="search_url" type='hidden' value='{$SEARCH}'>
 </form>
-
-{if ($MODULE eq 'Emails' || $MODULE eq 'Documents' || $MODULE eq 'Timecontrol') and ($USE_RTE eq 'true')}
-	<script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
-<script type="text/javascript" defer="1">
-	var textAreaName = null;
-	{if $MODULE eq 'Documents'}
-		textAreaName = "notecontent";
-	{else}
-		textAreaName = 'description';
-	{/if}
-
-	<!-- Solution for ticket #6756-->
-	CKEDITOR.replace( textAreaName,
-	{ldelim}
-		extraPlugins : 'uicolor',
-		uiColor: '#dfdff1',
-			on : {ldelim}
-				instanceReady : function( ev ) {ldelim}
-					 this.dataProcessor.writer.setRules( 'p',  {ldelim}
-						indent : false,
-						breakBeforeOpen : false,
-						breakAfterOpen : false,
-						breakBeforeClose : false,
-						breakAfterClose : false
-				{rdelim});
-			{rdelim}
-		{rdelim}
-	{rdelim});
-	var oCKeditor = CKEDITOR.instances[textAreaName];
-</script>
-{/if}
 
 <script>
 	var fieldname = new Array({$VALIDATION_DATA_FIELDNAME});

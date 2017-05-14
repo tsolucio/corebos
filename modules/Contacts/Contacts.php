@@ -836,12 +836,11 @@ function get_searchbyemailid($username,$emailaddress)
 	$user_id=$seed_user->retrieve_user_id($username);
 	$current_user=$seed_user;
 	$current_user->retrieve_entity_info($user_id, 'Users');
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
-	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
 	$log->debug("Entering get_searchbyemailid(".$username.",".$emailaddress.") method ...");
 	//get users group ID's
 	$gquery = 'SELECT groupid FROM vtiger_users2group WHERE userid=?';
 	$gresult = $adb->pquery($gquery, array($user_id));
+	$groupidlist = '';
 	for($j=0;$j < $adb->num_rows($gresult);$j++) {
 		$groupidlist.=",".$adb->query_result($gresult,$j,'groupid');
 	}
@@ -866,7 +865,7 @@ function get_searchbyemailid($username,$emailaddress)
 	} else {
 		$query .= " and (vtiger_contactdetails.email like '". formatForSqlLike($emailaddress) .
 		"' and vtiger_contactdetails.email != '')";
-		if (isset($groupidlist))
+		if (!empty($groupidlist))
 			$query .= " and (vtiger_users.user_name='".$username."' OR vtiger_crmentity.smownerid IN (".substr($groupidlist,1)."))";
 		else
 			$query .= " and vtiger_users.user_name='".$username."'";
@@ -1274,7 +1273,6 @@ function get_contactsforol($user_name)
 	function getContactHierarchy($id) {
 		global $log, $adb, $current_user;
 		$log->debug("Entering getContactHierarchy($id) method ...");
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
 		$tabname = getParentTab();
 		$listview_header = Array();
 		$listview_entries = array();

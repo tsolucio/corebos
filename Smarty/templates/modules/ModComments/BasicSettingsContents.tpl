@@ -15,16 +15,16 @@
 	</tr>
 	{foreach item=module key=tabid from=$INFOMODULES}
 	<tr onmouseover="this.className='prvPrfHoverOn'" onmouseout="this.className='prvPrfHoverOff'">
-		<td class="listTableRow small" width="50%">{$module.name}</td>
+		<td class="listTableRow small" width="50%">{$module.name|@getTranslatedString:$module.name}</td>
 		<td class="listTableRow cellText small" align="center">
 		<div id="status" style="position:absolute;left:850px;top:5px;height:27px;white-space:nowrap;display:none"><img src="themes/softed/images/status.gif"></div>
 		{if $module.active eq '1'}
 			<a href="javascript:void(0);" onclick="toggleModule_mod('{$tabid}', 'module_disable');">
-			 <img src="{'enabled.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$MOD.LBL_DISABLE} {$module.name}" title="{$MOD.LBL_DISABLE} {$module.name}">
+			 <img src="{'enabled.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{'LBL_DISABLE'|@getTranslatedString:'ModTracker'} {$module.name|@getTranslatedString:$module.name}}" title="{'LBL_DISABLE'|@getTranslatedString:'ModTracker'} {$module.name|@getTranslatedString:$module.name}">
 			</a>
 		{else}
 			<a href="javascript:void(0);" onclick="toggleModule_mod('{$tabid}', 'module_enable');">
-			<img src="{'disabled.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$MOD.LBL_ENABLE} {$module.name}" title="{$MOD.LBL_ENABLE} {$module.name}">
+			<img src="{'disabled.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{'LBL_ENABLE'|@getTranslatedString:'ModTracker'} {$module.name|@getTranslatedString:$module.name}" title="{'LBL_ENABLE'|@getTranslatedString:'ModTracker'} {$module.name|@getTranslatedString:$module.name}">
 			</a>
 		{/if}
 		</td>

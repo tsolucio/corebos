@@ -90,7 +90,6 @@
 			$colflds = $element;
 			list($void,$colflds['assigned_user_id']) = explode('x', $colflds['assigned_user_id']);
 			$updlog = HelpDesk::getUpdateLogEditMessage($idList[1], $colflds);
-			$updlog = from_html($updlog,true);
 		}
 		$entity = $handler->update($element);
 		if ($entityName == 'HelpDesk') {

@@ -22,7 +22,7 @@ require_once 'modules/PickList/DependentPickListUtils.php';
   * Param $module_name - module name
   * Return type is an array
   */
-function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields,$generatedtype,$module_name,$mode='', $typeofdata=null)
+function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields,$generatedtype,$module_name,$mode='', $typeofdata=null, $cbMapFI=array())
 {
 	global $log,$app_strings, $adb,$default_charset, $theme, $mod_strings, $current_user;
 	$log->debug("Entering getOutputHtml(".$uitype.",". $fieldname.",". $fieldlabel.",". $maxlength.",". print_r($col_fields,true).",".$generatedtype.",".$module_name.") method ...");
@@ -32,7 +32,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 
 	$theme_path="themes/".$theme."/";
 	$image_path=$theme_path."images/";
-	$fieldlabel = from_html($fieldlabel);
 	$fieldvalue = Array();
 	$final_arr = Array();
 	$value = $col_fields[$fieldname];
@@ -506,7 +505,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	{
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue[] = $value;
-		$fieldvalue[] = $is_admin;
+		$fieldvalue[] = is_admin($current_user);
 	}
 	elseif($uitype == 56)
 	{
@@ -594,11 +593,12 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	}
 	elseif($uitype == 28){
 		if (!(empty($col_fields['record_id']))) {
-			$attachmentid=$adb->query_result($adb->pquery("select * from vtiger_seattachmentsrel where crmid = ?", array($col_fields['record_id'])),0,'attachmentsid');
-			if($col_fields[$fieldname] == '' && $attachmentid != '')
-			{
+			$attrs = $adb->pquery('select * from vtiger_seattachmentsrel where crmid = ?', array($col_fields['record_id']));
+			$attachmentid=$adb->query_result($attrs,0,'attachmentsid');
+			if ($col_fields[$fieldname] == '' && $attachmentid != '') {
 				$attachquery = "select * from vtiger_attachments where attachmentsid=?";
-				$value = $adb->query_result($adb->pquery($attachquery, array($attachmentid)),0,'name');
+				$attqrs = $adb->pquery($attachquery, array($attachmentid));
+				$value = $adb->query_result($attqrs,0,'name');
 			}
 		}
 		if($value!='' && $module_name != 'Documents')
@@ -1214,7 +1214,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			$options[] = array(getTranslatedString($pickListValue),$pickListValue,$chk_val );
 		}
 		$fieldvalue [] = $options;
-		$fieldvalue [] = $is_admin;
+		$fieldvalue [] = is_admin($current_user);
 	}
 	elseif($uitype == 116 || $uitype == 117)
 	{
@@ -1242,14 +1242,14 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			$options[$currency_id] = array($pickListValue=>$chk_val );
 		}
 		$fieldvalue [] = $options;
-		$fieldvalue [] = $is_admin;
+		$fieldvalue [] = is_admin($current_user);
 	}
 	elseif($uitype ==98)
 	{
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue[]=$value;
 		$fieldvalue[]=getRoleName($value);
-		$fieldvalue[]=$is_admin;
+		$fieldvalue[]=is_admin($current_user);
 	}
 	elseif($uitype == 105)
 	{
@@ -1663,12 +1663,12 @@ function getAssociatedProducts($module,$focus,$seid='')
 
 		$product_Detail[$i]['subProductArray'.$i] = $subProductArray;
 		$product_Detail[$i]['hdnProductId'.$i] = $hdnProductId;
-		$product_Detail[$i]['productName'.$i]= from_html($productname);
+		$product_Detail[$i]['productName'.$i]= $productname;
 		/* Added to fix the issue Product Pop-up name display*/
 		if($_REQUEST['action'] == 'CreateSOPDF' || $_REQUEST['action'] == 'CreatePDF' || $_REQUEST['action'] == 'SendPDFMail')
 			$product_Detail[$i]['productName'.$i]= htmlspecialchars($product_Detail[$i]['productName'.$i]);
 		$product_Detail[$i]['hdnProductcode'.$i] = $hdnProductcode;
-		$product_Detail[$i]['productDescription'.$i]= from_html($productdescription);
+		$product_Detail[$i]['productDescription'.$i]= $productdescription;
 		if($module == 'Potentials' || $module == 'Products' || $module == 'Services') {
 			$product_Detail[$i]['comment'.$i]= $productdescription;
 		}else {
@@ -1966,6 +1966,14 @@ function getBlockInformation($module, $result, $col_fields,$tabid,$block_label,$
 	$isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : false;
 	$editview_arr = Array();
 
+	$bmapname = $module.'_FieldInfo';
+	$cbMapFI = array();
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapFI = $cbMap->FieldInfo();
+		$cbMapFI = $cbMapFI['fields'];
+	}
 	$noofrows = $adb->num_rows($result);
 	for($i=0; $i<$noofrows; $i++) {
 		$fieldtablename = $adb->query_result($result,$i,"tablename");
@@ -1981,7 +1989,12 @@ function getBlockInformation($module, $result, $col_fields,$tabid,$block_label,$
 		if(($mode == '' or $mode == 'create') && empty($col_fields[$fieldname]) && !$isduplicate) {
 			$col_fields[$fieldname] = $defaultvalue;
 		}
-		$custfld = getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields,$generatedtype,$module,$mode,$typeofdata);
+		if (isset($cbMapFI[$fieldname])) {
+			$custfld = getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields,$generatedtype,$module,$mode,$typeofdata,$cbMapFI[$fieldname]);
+			$custfld['extendedfieldinfo'] = $cbMapFI[$fieldname];
+		} else {
+			$custfld = getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields,$generatedtype,$module,$mode,$typeofdata);
+		}
 		$editview_arr[$block][]=$custfld;
 	}
 	foreach($editview_arr as $headerid=>$editview_value)

@@ -201,6 +201,7 @@ class Vtiger_Field extends Vtiger_FieldBasic {
 			$query = "SELECT * FROM vtiger_field WHERE fieldid=?";
 			$queryParams = Array($value);
 		} else {
+			if (empty($moduleInstance)) return false;
 			$query = "SELECT * FROM vtiger_field WHERE fieldname=? AND tabid=?";
 			$queryParams = Array($value, $moduleInstance->id);
 		}

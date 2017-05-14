@@ -73,7 +73,7 @@ function vtRunTaskJob($adb){
 		if (empty($task->test)
 				or (isset($task->reevaluate) and $task->reevaluate==0)
 				or ((!isset($task->reevaluate) or $task->reevaluate==1) and $task->evaluate($entityCache, $entity->getId()))) {
-			$logbg->debug("WF Cron:: Task ".$taskId." will be call function doTask with entityId: ".$entityId);
+			$logbg->debug("WF Cron:: Task ".$taskId." will call function doTask with entityId: ".$entityId);
 			$task->doTask($entity);
 			$logbg->debug("WF Cron:: Task ".$taskId." executed with success the function doTask with entityId: ".$entityId);
 		} else {

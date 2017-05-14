@@ -478,12 +478,13 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 		/* Join items with item separator string (which must match string in DetailViewUI.tpl, EditViewUtils.php and CRMEntity.php)!! */
 		getObj(dtlView).innerHTML = notaccess_label.join(", ");
 	}else if(uitype == '19'){
-		var desc = tagValue.replace(/(^|[\n ])([\w]+?:\/\/.*?[^ \"\n\r\t<]*)/g, "$1<a href=\"$2\" target=\"_blank\">$2</a>");
+		var desc = trim(document.getElementById(txtBox).value);
+		desc = desc.replace(/(^|[\n ])([\w]+?:\/\/.*?[^ \"\n\r\t<]*)/g, "$1<a href=\"$2\" target=\"_blank\">$2</a>");
 		desc = desc.replace(/(^|[\n ])((www|ftp)\.[\w\-]+\.[\w\-.\~]+(?:\/[^ \"\t\n\r<]*)?)/g, "$1<a href=\"http://$2\" target=\"_blank\">$2</a>");
 		desc = desc.replace(/(^|[\n ])([a-z0-9&\-_.]+?)@([\w\-]+\.([\w\-\.]+\.)*[\w]+)/i, "$1<a href=\"mailto:$2@$3\">$2@$3</a>");
 		desc = desc.replace(/,\"|\.\"|\)\"|\)\.\"|\.\)\"/, "\"");
-		desc = desc.replace(/[\n\r]/g, "<br>&nbsp;");
-		getObj(dtlView).innerHTML = desc;
+		//desc = desc.replace(/[\n\r]/g, "<br>&nbsp;");
+		getObj(dtlView).textContent = desc;
 	}
 	else
 	{

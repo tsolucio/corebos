@@ -42,18 +42,19 @@ require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
 require_once 'modules/com_vtiger_workflow/include.inc';
 require_once('modules/com_vtiger_workflow/WorkFlowScheduler.php');
-/////////////////////////////////////////////////////
-// PARAMETERS TO SET
- $workflowid_to_evaluate = $_REQUEST['workflowid'];
- $crm_record_to_evaluate = $_REQUEST['crmid'];
-/////////////////////////////////////////////////////
-if (empty($workflowid_to_evaluate) or empty($crm_record_to_evaluate)) {
+
+if (empty($_REQUEST['workflowid']) or empty($_REQUEST['crmid'])) {
 	echo "<h2>Parameters required:</h2>";
 	echo "<b>workflowid</b>: ID of the workflow to evaluate. For example: 19<br>";
 	echo "<b>crmid</b>: webservice enhanced ID of the record to evaluate the workflow against. For example: 12x57<br>";
 	echo "?workflowid=19&crmid=12x57";
 	die();
 }
+/////////////////////////////////////////////////////
+// PARAMETERS TO SET
+ $workflowid_to_evaluate = $_REQUEST['workflowid'];
+ $crm_record_to_evaluate = $_REQUEST['crmid'];
+/////////////////////////////////////////////////////
 
 global $currentModule, $adb;
 
@@ -111,7 +112,6 @@ global $currentModule, $adb;
 		);
 	}
 
-
 list($wsmod,$crmid) = explode('x', $crm_record_to_evaluate);
 $wsrs = $adb->pquery('select name FROM vtiger_ws_entity where id=?',array($wsmod));
 if (!$wsrs or $adb->num_rows($wsrs)==0) {
@@ -158,6 +158,7 @@ if ($workflows[$workflowid_to_evaluate]->executionCondition==VTWorkflowManager::
 	$test = json_decode($workflow->test,true);
 	$haschanged = false;
 	$newtest = array();
+	if (is_array($test))
 	foreach($test as $tst) {
 		if (substr($tst['operation'],0,11)=='has changed') {
 			$haschanged = true;

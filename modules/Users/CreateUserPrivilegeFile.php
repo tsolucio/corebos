@@ -48,9 +48,6 @@ function createUserPrivilegesfile($userid)
 			$newbuf .= "\$user_info=".constructSingleStringKeyValueArray($userInfo).";\n";
 			$newbuf .= "\n";
 			$newbuf .= "?>";
-			fputs($handle, $newbuf);
-			fclose($handle);
-			return;
 		}
 		else
 		{
@@ -92,11 +89,10 @@ function createUserPrivilegesfile($userid)
 			$newbuf .= "\$subordinate_roles_users=".constructTwoDimensionalCharIntSingleArray($subRoleAndUsers).";\n";
 			$newbuf .="\n";
 			$newbuf .= "\$user_info=".constructSingleStringKeyValueArray($userInfo).";\n";
-
 			$newbuf .= "?>";
-			fputs($handle, $newbuf);
-			fclose($handle);
 		}
+		fputs($handle, $newbuf);
+		fclose($handle);
 	}
 }
 

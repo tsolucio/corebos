@@ -27,7 +27,6 @@ $response_array = array();
 
 if($numOfRows > 0) {
 	global $current_user;
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 
 	$ogReport = new Reports($reportid);
 	$primarymodule = $ogReport->primodule;

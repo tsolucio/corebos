@@ -10,8 +10,7 @@
 require_once('include/database/PearDatabase.php');
 global $adb, $mod_strings;
 
-$groupName = from_html(trim($_REQUEST['groupName']));
-$description = from_html($_REQUEST['description']);
+$groupName = vtlib_purify(trim($_REQUEST['groupName']));
 $mode = vtlib_purify($_REQUEST['mode']);
 
 if(isset($_REQUEST['dup_check']) && $_REQUEST['dup_check']!='') {
@@ -85,7 +84,6 @@ function constructGroupMemberArray($member_array)
 	$groupMemberArray['users']=$userArray;
 
 	return $groupMemberArray;
-
 }
 
 	if(isset($_REQUEST['returnaction']) && $_REQUEST['returnaction'] != '')
@@ -97,6 +95,7 @@ function constructGroupMemberArray($member_array)
 		$returnaction='GroupDetailView';
 	}
 
+	$description = vtlib_purify($_REQUEST['description']);
 	//Inserting values into Role Table
 	if(isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'edit')
 	{

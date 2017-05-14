@@ -62,7 +62,7 @@ class VTEmailTask extends VTTask{
 		}
 		$et = new VTEmailRecipientsTemplate($this->recepient);
 		$to_email = $et->render($entityCache, $entity->getId());
-		if (empty($this->emailbcc)) {
+		if (empty($this->emailcc)) {
 			$cc = '';
 		} else {
 			$ecct = new VTEmailRecipientsTemplate($this->emailcc);

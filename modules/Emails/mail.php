@@ -118,7 +118,7 @@ function send_mail($module,$to_email,$from_name,$from_email,$subject,$contents,$
 
 	if($mail_status != 1)
 	{
-		$mail_error = getMailError($mail,$mail_status,$mailto);
+		$mail_error = getMailError($mail,$mail_status);
 	}
 	else
 	{
@@ -464,10 +464,9 @@ function getParentMailId($parentmodule,$parentid)
 /**	Function to parse and get the mail error
   *	$mail -- reference of the mail object
   *	$mail_status -- status of the mail which is sent or not
-  *	$to -- the email address to whom we sent the mail and failes
   *	return -- Mail error occured during the mail sending process
   */
-function getMailError($mail,$mail_status,$to)
+function getMailError($mail,$mail_status)
 {
 	//Error types in class.phpmailer.php
 	/*
@@ -495,8 +494,7 @@ function getMailError($mail,$mail_status,$to)
 	}
 	else
 	{
-		$adb->println("Mail error is not as connect_host or from_failed or recipients_failed");
-		//$error_msg = $msg;
+		$error_msg = 'Mail error is not connect_host, from_failed nor recipients_failed';
 	}
 
 	$adb->println("return error => ".$error_msg);

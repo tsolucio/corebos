@@ -31,9 +31,6 @@ $res = $adb->pquery($sql, array($reportid));
 if($res and $adb->num_rows($res) > 0) {
 	$reporttype = $adb->query_result($res,0,'reporttype');
 
-	global $current_user;
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
-
 	$ogReport = new Reports($reportid);
 	$primarymodule = $ogReport->primodule;
 	$restrictedmodules = array();

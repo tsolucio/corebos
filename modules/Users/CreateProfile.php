@@ -10,7 +10,7 @@
 require_once('include/utils/utils.php');
 
 global $mod_strings;
-$profilename=vtlib_purify($_REQUEST['profile_name']);
+$profilename = (isset($_REQUEST['profile_name']) ? vtlib_purify($_REQUEST['profile_name']) : '');
 
 if(isset($_REQUEST['dup_check']) && $_REQUEST['dup_check']!='')
 {
@@ -31,17 +31,11 @@ $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 $smarty = new vtigerCRM_Smarty;
 
-if(isset($_REQUEST['parent_profile']) && $_REQUEST['parent_profile'] != '')
-	$smarty->assign("PARENT_PROFILE",vtlib_purify($_REQUEST['parent_profile']));
-if(isset($_REQUEST['radio_button']) && $_REQUEST['radio_button'] != '')
-	$smarty->assign("RADIO_BUTTON",vtlib_purify($_REQUEST['radio_button']));
-if(isset($_REQUEST['profile_name']) && $_REQUEST['profile_name'] != '')
-	$smarty->assign("PROFILE_NAME",vtlib_purify($_REQUEST['profile_name']));
-if(isset($_REQUEST['profile_description']) && $_REQUEST['profile_description'] != '')
-	$smarty->assign("PROFILE_DESCRIPTION",vtlib_purify($_REQUEST['profile_description']));
-if(isset($_REQUEST['mode']) && $_REQUEST['mode'] != '')
-	$smarty->assign("MODE",vtlib_purify($_REQUEST['mode']));
-
+$smarty->assign('PARENT_PROFILE', (isset($_REQUEST['parent_profile']) ? vtlib_purify($_REQUEST['parent_profile']) : ''));
+$smarty->assign('RADIO_BUTTON', (isset($_REQUEST['radio_button']) ? vtlib_purify($_REQUEST['radio_button']) : ''));
+$smarty->assign('PROFILE_NAME', (isset($_REQUEST['profile_name']) ? vtlib_purify($_REQUEST['profile_name']) : ''));
+$smarty->assign('PROFILE_DESCRIPTION', (isset($_REQUEST['profile_description']) ? vtlib_purify($_REQUEST['profile_description']) : ''));
+$smarty->assign('MODE', (isset($_REQUEST['mode']) ? vtlib_purify($_REQUEST['mode']) : ''));
 $smarty->assign("MOD", return_module_language($current_language,'Settings'));
 $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH",$image_path);

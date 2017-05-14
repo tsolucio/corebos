@@ -176,7 +176,7 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 	$test_target_val="";
 	$urlstring = '';
 	$mod_graph_date = '';
-	$max_label_length = GlobalVariable::getVariable('Application_ListView_Max_Text_Length',40,$currentModule);
+	$max_label_length = GlobalVariable::getVariable('Application_ListView_Max_Text_Length',40);
 	if($no_of_rows!=0)
 	{
 		while($row = $adb->fetch_array($result))
@@ -455,7 +455,7 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 					else if($module == "Contacts" || ($module=="Products" && ($graph_for == "quoteid" || $graph_for == "invoiceid" || $graph_for == "purchaseorderid")))
 						$link_val="index.php?module=".$module."&action=ListView&from_dashboard=true&type=dbrd&query=true&".$searchField."=".$id_name."&viewname=".$cvid;
 					else {
-						$esc_search_str = urlencode($search_str);
+						$esc_search_str = urlencode(vtlib_purify($search_str));
 						//$esc_search_str = htmlentities($search_str, ENT_QUOTES, $default_charset);
 						$link_val="index.php?module=".$module."&action=index&from_dashboard=true&search_text=".$esc_search_str."&search_field=".$searchField."&searchtype=BasicSearch&query=true&type=entchar&operator=e&viewname=".$cvid;
 					}

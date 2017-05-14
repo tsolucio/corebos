@@ -214,7 +214,7 @@ function get_user_array($add_blank=true, $status="Active", $assigned_user="",$pr
 		require_once('include/database/PearDatabase.php');
 		$db = PearDatabase::getInstance();
 		$temp_result = Array();
-		// Including deleted vtiger_users for now.
+		// Including deleted users for now.
 		if (empty($status)) {
 				$query = "SELECT id, user_name from vtiger_users";
 				$params = array();
@@ -1250,7 +1250,7 @@ function getProfile2ModuleFieldPermissionList($fld_module, $profileid) {
  */
 function getProfile2AllFieldList($mod_array,$profileid) {
 	global $log, $adb;
-	$log->debug("Entering getProfile2AllFieldList(".$mod_array.",".$profileid.") method ...");
+	$log->debug("Entering getProfile2AllFieldList({modules}, $profileid) method ...");
 	$profilelist=array();
 	for($i=0;$i<count($mod_array);$i++) {
 		$profilelist[key($mod_array)]=getProfile2ModuleFieldPermissionList(key($mod_array), $profileid);
@@ -4669,7 +4669,7 @@ function getSelectAllQuery($input,$module) {
 		$oCustomView = new CustomView($module);
 		$query = $oCustomView->getModifiedCvListQuery($viewid,$listquery,$module);
 		$where = '';
-		if($input['query'] == 'true') {
+		if (isset($input['query']) and $input['query'] == 'true') {
 			list($where, $ustring) = explode("#@@#",getWhereCondition($module, $input));
 			if(isset($where) && $where != '') {
 				$query .= " AND " .$where;
@@ -4679,11 +4679,9 @@ function getSelectAllQuery($input,$module) {
 		$queryGenerator = new QueryGenerator($module, $current_user);
 		$queryGenerator->initForCustomViewById($viewid);
 
-                if(isset($input['query'])){
-                    if($input['query'] == 'true') {
-                            $queryGenerator->addUserSearchConditions($input);
-                    }
-                }
+		if (isset($input['query']) and $input['query'] == 'true') {
+			$queryGenerator->addUserSearchConditions($input);
+		}
 		$queryGenerator->setFields(array('id'));
 		$query = $queryGenerator->getQuery();
 

@@ -1,4 +1,4 @@
-<div data-role="panel" id="panelmenu" data-position="left" data-display="overlay">
+<div data-role="panel" id="panelmenu" data-position="right" data-display="overlay">
 	<div data-role="header" data-theme="{$COLOR_HEADER_FOOTER}" data-position="fixed" class="ui-grid-b ui-responsive">
 		<a href="index.php?_operation=logout" class="ui-btn ui-corner-all ui-icon-power ui-btn-icon-notext" >{'LBL_LOGOUT'|@getTranslatedString}</a>
 		<h4>{$MOD.LBL_MOD_LIST}</h4>

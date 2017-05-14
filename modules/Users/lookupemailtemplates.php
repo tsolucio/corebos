@@ -36,12 +36,10 @@ $result = $adb->pquery($sql, array());
 $temprow = $adb->fetch_array($result);
 $cnt=1;
 require_once('include/utils/UserInfoUtil.php');
-checkFileAccessForInclusion('user_privileges/user_privileges_'.$current_user->id.'.php');
-require('user_privileges/user_privileges_'.$current_user->id.'.php');
 do
 {
 	$templatename = $temprow["templatename"];
-	if($is_admin == false)
+	if (!is_admin($current_user))
 	{
 		$folderName = $temprow['foldername'];
 		if($folderName != 'Personal')

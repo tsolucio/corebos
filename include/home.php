@@ -12,7 +12,6 @@ require_once('include/utils/ListViewUtils.php');
 require_once('modules/CustomView/CustomView.php');
 require_once('include/DatabaseUtil.php');
 require_once('include/utils/CommonUtils.php');
-require('user_privileges/user_privileges_'.$current_user->id.'.php');
 
 class Homestuff{
 	var $userid;
@@ -116,8 +115,7 @@ class Homestuff{
 	 * @return array(stuffid=>"id", stufftype=>"type", stufftitle=>"title")
 	 */
 	function getHomePageFrame(){
-		global $adb;
-		global $current_user;
+		global $adb, $current_user;
 		$querystuff ="select vtiger_homestuff.stuffid,stufftype,stufftitle,setype from vtiger_homestuff
 						left join vtiger_homedefault on vtiger_homedefault.stuffid=vtiger_homestuff.stuffid
 						where visible=0 and userid=? order by stuffsequence desc";
@@ -206,8 +204,7 @@ class Homestuff{
 	 * @return array(stuffid=>"id", stufftype=>"type", stufftitle=>"title")
 	 */
 	function getSelectedStuff($sid,$stuffType){
-		global $adb;
-		global $current_user;
+		global $adb, $current_user;
 		$querystuff="select stufftitle from vtiger_homestuff where visible=0 and stuffid=?";
 		$resultstuff=$adb->pquery($querystuff, array($sid));
 		$homeval=Array('Stuffid'=>$sid,'Stufftype'=>$stuffType,'Stufftitle'=>$adb->query_result($resultstuff,0,'stufftitle'));
@@ -290,6 +287,7 @@ class Homestuff{
 				$list_result = $adb->query($query. " LIMIT 0,".$maxval);
 
 				if($modname == "Calendar"){
+					$is_admin = is_admin($current_user);
 					for($l=0;$l < $column_count;$l++){
 						$fieldinfo = $adb->query_result($resultcvid,$l,"fieldname");
 						list($tabname,$colname,$fldname,$fieldmodlabel) = explode(":",$fieldinfo);

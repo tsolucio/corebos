@@ -121,7 +121,7 @@ $mod_strings = Array(
 'ERR_INVALID_USERIPLOGIN' => 'Acceso restringido a personal autorizado.<br> Estás conectando desde una IP inválida.',
 'ERR_PASSWORD_CHANGE_FAILED_1'=>'El Cambio de contraseña ha fallado para ',
 'ERR_PASSWORD_CHANGE_FAILED_2'=>' Error. La nueva contraseña debe ser fijada.',
-'ERR_PASSWORD_INCORRECT_OLD'=>'Contraseña actual incorrecta para el usuario $this->user_name. Vuelva a introducir la información de las contraseñas.',
+'ERR_PASSWORD_INCORRECT_OLD'=>'Contraseña actual incorrecta para el usuario. Vuelva a introducir la información de las contraseñas.',
 'ERR_PASSWORD_NOT_CHANGED' => 'La contraseña anterior y la nueva son iguales. Por favor utiliza una contraseña nueva distinta.',
 'ERR_USER_DOESNOT_EXISTS'=>'No existe ningún usuario con este identificador.',
 'ERR_USER_NAME_EXISTS_1'=>'El nombre de usuario ',
@@ -492,7 +492,6 @@ $mod_strings = Array(
 'UA'=>'Próximas Actividades',
 'PA'=>'Actividades Pendientes',
 
-//Added for 5.0 alpha
 'LBL_GROUP_NAME_ERROR'=>'¡El nombre del grupo ya existe!',
 'MNL'=>'Últimos Prospectos',
 'LBL_LEAD_VIEW'=>'Vista por defecto de Prospectos',
@@ -516,9 +515,7 @@ $mod_strings = Array(
 'LBL_CHANGE_PHOTO'=>'Cambiar Foto...',
 'LBL_CHANGE'=>'Cambiar',
 
-
 //Added for Access Privileges
-
 'LBL_GLOBAL_FIELDS_MANAGER'=>'Gestor de Privilegios de Acceso Globales',
 'LBL_GLOBAL_ACCESS_PRIVILEGES'=>'Privilegios de Acceso Globales',
 'LBL_CUSTOM_ACCESS_PRIVILEGES'=>'Privilegios de Acceso Personalizados',

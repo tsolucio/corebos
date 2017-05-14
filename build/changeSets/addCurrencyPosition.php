@@ -25,7 +25,7 @@ class addCurrencyPosition extends cbupdaterWorker {
 			$this->ExecuteQuery("UPDATE `vtiger_currency_info` SET `currency_position` = '$1.0';");
 			$this->ExecuteQuery("UPDATE `vtiger_currency_info` SET `currency_position` = '1.0$' where currency_name='Euro';");
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}

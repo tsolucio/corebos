@@ -130,17 +130,19 @@ class EmailReports extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
+
 	function isApplied() {
 		if (parent::isApplied()) return true;
 		global $adb;
-		$emfld = $adb->query_result($adb->query("SELECT count(*) FROM vtiger_reportfolder WHERE FOLDERNAME='Email Reports'"),0,0);
+		$rse = $adb->query("SELECT count(*) FROM vtiger_reportfolder WHERE FOLDERNAME='Email Reports'");
+		$emfld = $adb->query_result($rse,0,0);
 		if ($emfld>0) return true;
-		$emrpt = $adb->query_result($adb->query("SELECT count(*) FROM vtiger_report WHERE REPORTNAME in ('Contacts Email Report','Accounts Email Report','Leads Email Report','Vendors Email Report')"),0,0);
+		$rse = $adb->query("SELECT count(*) FROM vtiger_report WHERE REPORTNAME in ('Contacts Email Report','Accounts Email Report','Leads Email Report','Vendors Email Report')");
+		$emrpt = $adb->query_result($rse,0,0);
 		if ($emrpt>0) return true;
 		return false;
 	}
-	
+
 	function insertSelectQuery() {
 		global $adb;
 		$genQueryId = $adb->getUniqueID("vtiger_selectquery");

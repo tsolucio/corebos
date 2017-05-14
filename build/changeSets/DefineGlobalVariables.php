@@ -83,6 +83,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'BusinessMapping_Quotes2SalesOrder',
 
 				'Mobile_Module_by_default',
+				'Mobile_Related_Modules',
 
 				'Webservice_showUserAdvancedBlock',
 				'Webservice_CORS_Enabled_Domains',

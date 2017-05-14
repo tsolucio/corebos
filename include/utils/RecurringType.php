@@ -98,25 +98,25 @@ class RecurringType {
 		$requestArray['enddate'] = $endDate = $endDateObj->format('Y-m-d');
 		$requestArray['endtime'] = $endTime = $endDateObj->format('H:i');
 
-		if ($requestArray['sun_flag']) {
+		if (isset($requestArray['sun_flag'])) {
 			$requestArray['dayofweek_to_repeat'][] = 0;
 		}
-		if ($requestArray['mon_flag']) {
+		if (isset($requestArray['mon_flag'])) {
 			$requestArray['dayofweek_to_repeat'][] = 1;
 		}
-		if ($requestArray['tue_flag']) {
+		if (isset($requestArray['tue_flag'])) {
 			$requestArray['dayofweek_to_repeat'][] = 2;
 		}
-		if ($requestArray['wed_flag']) {
+		if (isset($requestArray['wed_flag'])) {
 			$requestArray['dayofweek_to_repeat'][] = 3;
 		}
-		if ($requestArray['thu_flag']) {
+		if (isset($requestArray['thu_flag'])) {
 			$requestArray['dayofweek_to_repeat'][] = 4;
 		}
-		if ($requestArray['fri_flag']) {
+		if (isset($requestArray['fri_flag'])) {
 			$requestArray['dayofweek_to_repeat'][] = 5;
 		}
-		if ($requestArray['sat_flag']) {
+		if (isset($requestArray['sat_flag'])) {
 			$requestArray['dayofweek_to_repeat'][] = 6;
 		}
 

@@ -66,15 +66,15 @@ foreach ($pdoInformation as $pdoline) {
 			$totalwithtax += ($qty * $_REQUEST['listPrice'.$i]) * ($tax_val/100);
 		}
 	}
-        $cbMap = cbMap::getMapByName($elementType.'InventoryDetails','MasterDetailLayout');
-        if ($cbMap!=null) {
-                $cbMapFields = $cbMap->MasterDetailLayout();
-                    foreach ($cbMapFields['detailview']['fieldnames'] as $mdfield) {
-                        if(!is_null($pdoline[$mdfield])){
-                            $_REQUEST[$mdfield.$i] = $pdoline[$mdfield];
-                        }
-                    }
-        }
+	$cbMap = cbMap::getMapByName($elementType.'InventoryDetails','MasterDetailLayout');
+	if ($cbMap!=null) {
+		$cbMapFields = $cbMap->MasterDetailLayout();
+		foreach ($cbMapFields['detailview']['fieldnames'] as $mdfield) {
+			if (!is_null($pdoline[$mdfield])) {
+				$_REQUEST[$mdfield.$i] = $pdoline[$mdfield];
+			}
+		}
+	}
 }
 $_REQUEST['totalProductCount']=$i;
 $_REQUEST['subtotal']=round($subtotal + $totalwithtax,2);
@@ -93,6 +93,7 @@ if($taxtype == "individual") {
 		$totaldoc=$totaldoc-($totaldoc*$element['hdnDiscountPercent']/100);
 	}
 	$all_available_taxes = getAllTaxes('available','');
+	$tax_val = 0;
 	for($tax_count=0;$tax_count<count($all_available_taxes);$tax_count++) {
 		$tax_val += $all_available_taxes[$tax_count]['percentage'];
 	}

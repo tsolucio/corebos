@@ -79,7 +79,7 @@ define ('PDF_HEADER_LOGO_WIDTH', 20);
 /**
  * Cache directory for temporary files (full path).
  */
-define ('K_PATH_CACHE', K_PATH_MAIN.'cache/');
+define ('K_PATH_CACHE', 'cache/');
 
 /**
  * Generic name for a blank image.

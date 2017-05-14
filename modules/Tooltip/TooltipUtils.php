@@ -106,7 +106,7 @@ function getToolTipText($view,$fieldname,$module,$value){
 	//getting the quickview list here
 	$fieldlabel = Array();
 	$fieldid = getFieldid(getTabid($module), $fieldname);
-	$quickview = 'select fieldname,fieldlabel from vtiger_quickview inner join vtiger_field on vtiger_quickview.related_fieldid=vtiger_field.fieldid where vtiger_quickview.fieldid = ? and currentview= ? and vtiger_field.presence in (0,2) order by vtiger_quickview.sequence';
+	$quickview = 'select fieldname,fieldlabel,uitype from vtiger_quickview inner join vtiger_field on vtiger_quickview.related_fieldid=vtiger_field.fieldid where vtiger_quickview.fieldid = ? and currentview= ? and vtiger_field.presence in (0,2) order by vtiger_quickview.sequence';
 	$result = $adb->pquery($quickview,array($fieldid,$view));
 	$count = $adb->num_rows($result);
 	
@@ -125,6 +125,9 @@ function getToolTipText($view,$fieldname,$module,$value){
 			$ttMaxFieldValueLength = GlobalVariable::getVariable('ToolTip_MaxFieldValueLength',35,$module);
 			if(strlen($fieldvalue)>$ttMaxFieldValueLength){
 				$fieldvalue = substr($fieldvalue,0,$ttMaxFieldValueLength).'...';
+			}
+			if ($adb->query_result($result,$i,'uitype')==17) { // website
+				$fieldvalue = '<a href="//'.$value[0][$fieldname].'" target=_blank>'.$fieldvalue.'</a>';
 			}
 			$text[$label] = $fieldvalue;
 		}

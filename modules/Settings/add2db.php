@@ -22,6 +22,7 @@ $binFile = '';
 $binFrontFile = '';
 $binFaviconFile = '';
 $image_extensions_allowed = array('jpeg', 'png', 'jpg', 'pjpeg', 'x-png');
+$filename = '';
 if (isset($_FILES) and isset($_FILES['binFile']) and !empty($_FILES['binFile']['name'])) {
 	$binFile = $_FILES['binFile']['name'];
 	if (isset($_REQUEST['binFile_hidden'])) {
@@ -63,6 +64,7 @@ if (isset($_FILES) and isset($_FILES['binFile']) and !empty($_FILES['binFile']['
 		$nologo_specified = "false";
 	}
 }
+$front_filename = '';
 if (isset($_FILES) and isset($_FILES['binFrontFile']) and !empty($_FILES['binFrontFile']['name'])) {
 	$binFrontFile = $_FILES['binFrontFile']['name'];
 	if (isset($_REQUEST['binFrontFile_hidden'])) {
@@ -102,6 +104,7 @@ if (isset($_FILES) and isset($_FILES['binFrontFile']) and !empty($_FILES['binFro
 		$nologo_specified = "false";
 	}
 }
+$favicon_filename = '';
 if (isset($_FILES) and isset($_FILES['binFaviconFile']) and !empty($_FILES['binFaviconFile']['name'])) {
 	$binFaviconFile = $_FILES['binFaviconFile']['name'];
 	if (isset($_REQUEST['binFaviconFile_hidden'])) {
@@ -153,14 +156,14 @@ if ($error_flag == "") {
 	}
 		$organization_name = vtlib_purify($_REQUEST['organization_name']);
 		$org_name = $_REQUEST['org_name'];
-		$organization_address = from_html($_REQUEST['organization_address']);
-		$organization_city = from_html($_REQUEST['organization_city']);
-		$organization_state = from_html($_REQUEST['organization_state']);
-		$organization_code = from_html($_REQUEST['organization_code']);
-		$organization_country = from_html($_REQUEST['organization_country']);
-		$organization_phone = from_html($_REQUEST['organization_phone']);
-		$organization_fax = from_html($_REQUEST['organization_fax']);
-		$organization_website = from_html($_REQUEST['organization_website']);
+		$organization_address = vtlib_purify($_REQUEST['organization_address']);
+		$organization_city = vtlib_purify($_REQUEST['organization_city']);
+		$organization_state = vtlib_purify($_REQUEST['organization_state']);
+		$organization_code = vtlib_purify($_REQUEST['organization_code']);
+		$organization_country = vtlib_purify($_REQUEST['organization_country']);
+		$organization_phone = vtlib_purify($_REQUEST['organization_phone']);
+		$organization_fax = vtlib_purify($_REQUEST['organization_fax']);
+		$organization_website = vtlib_purify($_REQUEST['organization_website']);
 
 		$organization_logoname = $filename;
 		$front_logoname = $front_filename;

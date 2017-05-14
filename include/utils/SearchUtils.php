@@ -84,7 +84,7 @@ function getSearchListHeaderValues($focus, $module,$sort_qry='',$sorder='',$orde
 		array_push($field_list, $fieldname);
 	}
 	//Getting the Entries from Profile2field table
-	if($is_admin == false)
+	if (!is_admin($current_user))
 	{
 		$profileList = getCurrentUserProfileList();
 		$query  = "SELECT vtiger_field.fieldname FROM vtiger_field INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid WHERE vtiger_field.tabid=? AND vtiger_profile2field.visible=0 AND vtiger_def_org_field.visible=0 AND vtiger_profile2field.profileid IN (". generateQuestionMarks($profileList) .") AND vtiger_field.fieldname IN (". generateQuestionMarks($field_list) .") and vtiger_field.presence in (0,2) GROUP BY vtiger_field.fieldid";
@@ -800,10 +800,11 @@ function getWhereCondition($currentModule, $input = '')
 
 	if($input['searchtype']=='advance')
 	{
+		$advft_criteria_decoded = $advft_criteria_groups_decoded = array();
 		$advft_criteria = $input['advft_criteria'];
-		if(!empty($advft_criteria))	$advft_criteria_decoded = json_decode($advft_criteria,true);
-		$advft_criteria_groups = $input['advft_criteria_groups'];
-		if(!empty($advft_criteria_groups))	$advft_criteria_groups_decoded = json_decode($advft_criteria_groups,true);
+		if (!empty($advft_criteria)) $advft_criteria_decoded = json_decode($advft_criteria,true);
+		$advft_criteria_groups = (isset($input['advft_criteria_groups']) ? $input['advft_criteria_groups'] : '');
+		if (!empty($advft_criteria_groups)) $advft_criteria_groups_decoded = json_decode($advft_criteria_groups,true);
 
 		$advfilterlist = getAdvancedSearchCriteriaList($advft_criteria_decoded, $advft_criteria_groups_decoded, $currentModule);
 		$adv_string = generateAdvancedSearchSql($advfilterlist);
@@ -1141,7 +1142,7 @@ function generateAdvancedSearchSql($advfilterlist) {
 	$advfiltersql = $advcvsql = '';
 
 	foreach($advfilterlist as $groupindex => $groupinfo) {
-		$groupcondition = $groupinfo['condition'];
+		$groupcondition = (isset($groupinfo['condition']) ? $groupinfo['condition'] : '');
 		$groupcolumns = $groupinfo['columns'];
 
 		if(count($groupcolumns) > 0) {
@@ -1341,11 +1342,11 @@ function getAdvancedSearchValue($tablename,$fieldname,$comparator,$value,$dataty
 	} elseif( $fieldname == "inventorymanager") {
 		$value = $tablename.".".$fieldname.getAdvancedSearchComparator($comparator,getUserId_Ol($value),$datatype);
 	}
-	elseif($change_table_field[$fieldname] != '')//Added to handle special cases
+	elseif (!empty($change_table_field[$fieldname])) //Added to handle special cases
 	{
 		$value = $change_table_field[$fieldname].getAdvancedSearchComparator($comparator,$value,$datatype);
 	}
-	elseif($change_table_field[$tablename.".".$fieldname] != '')//Added to handle special cases
+	elseif (!empty($change_table_field[$tablename.'.'.$fieldname])) //Added to handle special cases
 	{
 		$tmp_value = '';
 		if((($comparator == 'e' || $comparator == 's' || $comparator == 'c') && trim($value) == '') || (($comparator == 'n' || $comparator == 'k') && trim($value) != ''))

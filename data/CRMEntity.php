@@ -356,8 +356,8 @@ class CRMEntity {
 		if ($module == 'Events') {
 			$module = 'Calendar';
 		}
+		$description_val = (empty($this->column_fields['description']) ? '' : $this->column_fields['description']);
 		if ($this->mode == 'edit') {
-			$description_val = from_html($this->column_fields['description']);
 
 			checkFileAccessForInclusion('user_privileges/user_privileges_' . $current_user->id . '.php');
 			require('user_privileges/user_privileges_' . $current_user->id . '.php');
@@ -397,22 +397,21 @@ class CRMEntity {
 			if ($current_user->id == '')
 				$current_user->id = 0;
 
-
 			// Customization
 			$created_date_var = $adb->formatDate($date_var, true);
 			$modified_date_var = $adb->formatDate($date_var, true);
-
+			$createdbyuser = $current_user->id;
 			// Preserve the timestamp
 			if (self::isBulkSaveMode()) {
 				if (!empty($this->column_fields['createdtime']))
 					$created_date_var = $adb->formatDate($this->column_fields['createdtime'], true);
+				if (!empty($this->column_fields['creator']))
+					$createdbyuser = $this->column_fields['creator'];
 				//NOTE : modifiedtime ignored to support vtws_sync API track changes.
 			}
-			// END
 
-			$description_val = empty($this->column_fields['description']) ? '' : from_html($this->column_fields['description']);
 			$sql = "insert into vtiger_crmentity (crmid,smcreatorid,smownerid,setype,description,modifiedby,createdtime,modifiedtime) values(?,?,?,?,?,?,?,?)";
-			$params = array($current_id, $current_user->id, $ownerid, $module, $description_val, $current_user->id, $created_date_var, $modified_date_var);
+			$params = array($current_id, $createdbyuser, $ownerid, $module, $description_val, $current_user->id, $created_date_var, $modified_date_var);
 			$adb->pquery($sql, $params);
 			$this->id = $current_id;
 		}
@@ -668,8 +667,6 @@ class CRMEntity {
 				} else {
 					$fldvalue = $this->column_fields[$fieldname];
 				}
-				if ($uitype != 33 && $uitype != 8)
-					$fldvalue = from_html($fldvalue, ($insertion_mode == 'edit') ? true : false);
 			}
 			else {
 				$fldvalue = '';
@@ -2292,18 +2289,28 @@ class CRMEntity {
 	 * returns the query string formed on fetching the related data for report for security of the module
 	 */
 	function getListViewSecurityParameter($module) {
-		$tabid = getTabid($module);
 		global $current_user;
 		if ($current_user) {
 			require('user_privileges/user_privileges_' . $current_user->id . '.php');
 			require('user_privileges/sharing_privileges_' . $current_user->id . '.php');
+		} else {
+			return '';
 		}
-		$sec_query .= " and (vtiger_crmentity.smownerid in($current_user->id) or vtiger_crmentity.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '" . $current_user_parent_role_seq . "::%') or vtiger_crmentity.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=" . $current_user->id . " and tabid=" . $tabid . ") or (";
+		$sec_query = '';
+		$tabid = getTabid($module);
+		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tabid] == 3) {
+			$sec_query .= " and (vtiger_crmentity.smownerid in ($current_user->id)
+				or
+				vtiger_crmentity.smownerid in (select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '" . $current_user_parent_role_seq . "::%')
+				or
+				vtiger_crmentity.smownerid in (select shareduserid from vtiger_tmp_read_user_sharing_per where userid=" . $current_user->id . " and tabid=" . $tabid . ")
+				or (";
 
-		if (sizeof($current_user_groups) > 0) {
-			$sec_query .= " vtiger_groups.groupid in (" . implode(",", $current_user_groups) . ") or ";
+			if (sizeof($current_user_groups) > 0) {
+				$sec_query .= " vtiger_groups.groupid in (" . implode(",", $current_user_groups) . ") or ";
+			}
+			$sec_query .= " vtiger_groups.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=" . $current_user->id . " and tabid=" . $tabid . ")))";
 		}
-		$sec_query .= " vtiger_groups.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=" . $current_user->id . " and tabid=" . $tabid . "))) ";
 		return $sec_query;
 	}
 

@@ -17,7 +17,6 @@
 *  Author       : JPL TSolucio, S. L.
 *************************************************************************************************/
 global $app_strings, $mod_strings, $current_language, $currentModule, $theme, $current_user;
-require('user_privileges/user_privileges_'.$current_user->id.'.php');
 
 require_once('Smarty_setup.php');
 require_once('modules/evvtMenu/evvtMenu.inc');

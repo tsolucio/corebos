@@ -116,17 +116,19 @@ function saveDependency(module) {
 		document.getElementById("status").style.display="none";
 		return false;
 	}
-
-	var urlstring = 'moduleName='+encodeURIComponent(module)+'&dependencymapping='+encodeURIComponent(dependencyMapping);
+	var data = {
+		"moduleName" : module,
+		"dependencymapping" : dependencyMapping
+	};
 
 	jQuery.ajax({
-			method: 'POST',
-			url: 'index.php?action=PickListAjax&module=PickList&directmode=ajax&file=PickListDependencySetup&submode=savedependency&'+urlstring
+		method: 'POST',
+		url: 'index.php?action=PickListAjax&module=PickList&directmode=ajax&file=PickListDependencySetup&submode=savedependency',
+		data : data
 	}).done(function (response) {
-				document.getElementById("status").style.display="none";
-				document.getElementById("picklist_datas").innerHTML=response;
-			}
-		);
+		document.getElementById("status").style.display="none";
+		document.getElementById("picklist_datas").innerHTML=response;
+	});
 }
 
 function serializeData() {

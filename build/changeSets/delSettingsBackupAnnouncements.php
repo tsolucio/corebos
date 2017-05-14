@@ -32,7 +32,7 @@ class delSettingsBackupAnnouncements extends cbupdaterWorker {
 			$sql.=" AND vtiger_users.is_admin='on' AND vtiger_users.status='Active' AND vtiger_users.deleted = 0";
 			$result = $adb->pquery($sql, array());
 			if ($adb->num_rows($result)>0) {
-				$announcement=$adb->query_result($result, $i, 'announcement');
+				$announcement=$adb->query_result($result, 0, 'announcement');
 				if ($announcement != '') {
 					$announcement=html_entity_decode($announcement, ENT_QUOTES, $default_charset);
 					include_once 'include/Webservices/Create.php';

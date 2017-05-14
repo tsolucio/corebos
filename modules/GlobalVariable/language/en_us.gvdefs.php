@@ -740,14 +740,14 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
 	'values' => '0 | 1',
-	'definition' => 'When selecting an Account/Contact in the popup window, the application asks if it must fill in addresses. This variable sets the Billing Address checkbox.',
+	'definition' => 'When selecting an Account/Contact/Vendor in the popup window, the application asks if it must fill in addresses. This variable sets the Billing Address checkbox.',
 ),
 'Application_Shipping_Address_Checked' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
 	'values' => '0 | 1',
-	'definition' => 'When selecting an Account/Contact in the popup window, the application asks if it must fill in addresses. This variable sets the Shipping Address checkbox.',
+	'definition' => 'When selecting an Account/Contact/Vendor in the popup window, the application asks if it must fill in addresses. This variable sets the Shipping Address checkbox.',
 ),
 'Application_Show_Copy_Address' => array(
 	'status' => 'Implemented',
@@ -797,6 +797,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => 'User based template string',
 	'definition' => 'HTML current user based workflow template that will be shown to user on first successful login',
+),
+'Mobile_Related_Modules' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Mobile module functionality',
+	'values' => 'Contacts,Potentials,HelpDesk,Documents',
+	'definition' => '<b>Comma separeted module list</b> to indicate the modules that we want to show their related lists or to appear like a related list.<br> Now <b> Default value is: Contacts,Potentials,HelpDesk,Documents,Timecontrol</b>. <br>So, we recomend that first you copy this value and on the end of the string you add your new modules.<br><b>For example:</b> Contacts,Potentials,HelpDesk,Documents,Timecontrol<b>,Assets</b>',
 ),
 );
 

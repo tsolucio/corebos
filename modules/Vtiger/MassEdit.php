@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-
 global $mod_strings,$app_strings,$theme,$currentModule,$current_user;
 
 require_once('Smarty_setup.php');
@@ -35,7 +34,7 @@ $smarty->assign('MODE', $focus->mode);
 $smarty->assign('CREATEMODE', '');
 $smarty->assign('MASS_EDIT','1');
 $smarty->assign('BLOCKS',getBlocks($currentModule,$disp_view,$mode,$focus->column_fields));
-if ($currentModule=='Products') {
+if ($currentModule=='Products' || $currentModule=='Services') {
 	$tax_details = getAllTaxes('available');
 	for($i=0;$i<count($tax_details);$i++) {
 		$tax_details[$i]['check_name'] = $tax_details[$i]['taxname'].'_check';
@@ -56,7 +55,8 @@ $validationArray = split_validationdataArray($validationData);
 $smarty->assign("VALIDATION_DATA_FIELDNAME",$validationArray['fieldname']);
 $smarty->assign("VALIDATION_DATA_FIELDDATATYPE",$validationArray['datatype']);
 $smarty->assign("VALIDATION_DATA_FIELDLABEL",$validationArray['fieldlabel']);
-
+$picklistDependencyDatasource = Vtiger_DependencyPicklist::getPicklistDependencyDatasource($currentModule);
+$smarty->assign('PICKIST_DEPENDENCY_DATASOURCE', json_encode($picklistDependencyDatasource));
+$smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
 $smarty->display('MassEditForm.tpl');
-
 ?>

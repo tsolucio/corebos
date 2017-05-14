@@ -20,6 +20,7 @@
 <body>
 <div data-role="page" data-theme="b" id="detail_page">
 	<input type="hidden" name="recordid" id="recordid" value="{$_RECORD->id()}">
+	<input type="hidden" name="module" id="module" value="{$_MODULE->name()}">
 	{if $_MODULE->name() neq 'Accounts' && $_MODULE->name() neq 'Contacts'&& $_MODULE->name() neq 'Potentials' && $_MODULE->name() neq 'HelpDesk' && $_MODULE->name() neq 'Assets'}
 	<div  data-role="header" data-theme="{$COLOR_HEADER_FOOTER}" data-position="fixed">
 		{if $_MODULE->name() neq 'Quotes' AND  $_MODULE->name() neq 'SalesOrder' AND  $_MODULE->name() neq 'Invoice' AND  $_MODULE->name() neq 'PurchaseOrder' AND  $_MODULE->name() neq 'Documents' AND  $_MODULE->name() neq 'Products'}
@@ -67,9 +68,10 @@
 	{/if}
 		{foreach item=_BLOCK key=_BLOCKLABEL from=$_RECORD->blocks()}
 			{assign var=_FIELDS value=$_BLOCK->fields()}	
-			<div data-role="collapsible" data-collapsed="false" data-mini="true">
+			<div data-role="collapsible" id="{$_BLOCKLABEL}" data-collapsed="false" data-mini="true">
 				<h3>{$_BLOCKLABEL|@getTranslatedString:$_MODULE->name()}</h3>
 				{foreach item=_FIELD from=$_FIELDS}
+					<input type="hidden" name="{$_FIELD->name()}" id="{$_FIELD->name()}" value="{$_FIELD->valueLabel()}">
 					<div class="ui-grid-a">
 						<div class="ui-block-a">
 							{if $_MODULE->name() eq 'Calendar' || $_MODULE->name() eq 'Events'}
@@ -158,6 +160,9 @@
 	</div>
 	<div data-role="footer" data-theme="{$COLOR_HEADER_FOOTER}" data-position="fixed">
 		<a href="?_operation=deleteConfirmation&module={$_MODULE->name()}&record={$_RECORD->id()}&&lang={$LANGUAGE}" class="ui-btn ui-corner-all ui-icon-delete ui-btn-icon-notext" data-rel="dialog" data-iconpos="left" data-prefetch>{$MOD.LBL_DELETE}</a>
+		{if $_MODULE->name() eq "HelpDesk" && 'Timecontrol'|vtlib_isModuleActive}
+		<a href="?_operation=create&module=Timecontrol&record=''&relatedto={$_RECORD->id()}" class="ui-btn ui-btn-right ui-corner-all ui-icon-clock ui-btn-icon-notext" data-transition="turn" data-iconpos="right">{$MOD.LBL_NEW}</a>
+		{/if}
 	</div>
 	{include file="modules/Mobile/PanelMenu.tpl"}
 </div>

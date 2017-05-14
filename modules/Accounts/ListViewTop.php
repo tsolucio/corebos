@@ -22,9 +22,6 @@ function getTopAccounts($maxval,$calCnt)
 	global $app_strings, $adb, $current_language, $current_user;
 	$current_module_strings = return_module_language($current_language, "Accounts");
 
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
-	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
-
 	$list_query = "select vtiger_account.accountid, vtiger_account.accountname, ".
 	'sum(vtiger_potential.amount) as amount from vtiger_potential '.
 	"inner join vtiger_crmentity on (vtiger_potential.potentialid=vtiger_crmentity.crmid) ".

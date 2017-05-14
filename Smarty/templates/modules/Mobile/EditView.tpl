@@ -62,7 +62,7 @@
 			{/if}
 			{foreach item=_BLOCK key=_BLOCKLABEL from=$_RECORD->blocks()}
 			{assign var=_FIELDS value=$_BLOCK->fields()}
-				<div data-role="collapsible" data-collapsed="false" data-mini="true"  >
+				<div data-role="collapsible" id="{$_BLOCKLABEL}" data-collapsed="false" data-mini="true"  >
 					<h3>{$_BLOCKLABEL|@getTranslatedString:$_MODULE->name()}</h3>
 					<p>
 					{foreach item=_FIELD from=$_FIELDS}
@@ -100,7 +100,7 @@
 											<input type="time" name="time_start" id="time_start" value="{$_FIELD->value()}" class="required" />
 											<div id="format_note_{$_FIELD->name()}" style="margin-bottom:25px;font-style:italic;font-size:10px;display:none;">Format: HH:MM (24 H)</div>
 										{/if}
-										{if $_FIELD->uitype() eq '252' && $_FIELD->name() eq 'time_end' && $ORIGMODULE eq 'Events'}
+										{if $_FIELD->uitype() eq '252' && $_FIELD->name() eq 'time_end' && ($ORIGMODULE eq 'Events' || $ORIGMODULE eq 'Timecontrol')}
 											<label for="{$_FIELD->name()}">{$_FIELD->label()|@getTranslatedString:$_MODULE->name()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
 											<input type="time" name="time_end" id="time_end" value="{$_FIELD->value()}" />
 											<div id="format_note_time_end" style="margin-bottom:25px;font-style:italic;font-size:10px;display:none;">Format: HH:MM (24 H)</div>

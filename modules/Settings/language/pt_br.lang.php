@@ -709,6 +709,7 @@ $mod_strings = Array(
 'LBL_CONTACT_FIELDS'=>'Campos Contato',
 'LBL_LEAD_FIELDS'=>'Campos Lead',
 'LBL_USER_FIELDS'=>'Campos do Usuário',
+'LBL_HELPDESK_FIELDS'=>'Ticket Fields',
 'LNK_SAMPLE_EMAIL'=>'Visualizar Exemplo Email',
 //Added while moving Mail Merge templates from Users to Settings
 'LBL_TEMPLATE_FILE'=>'Arquivo do Modelo',

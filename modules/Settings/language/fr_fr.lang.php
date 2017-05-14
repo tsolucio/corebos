@@ -436,6 +436,7 @@ $mod_strings = array (
 		'LBL_CONTACT_FIELDS' => 'Champs contacts',
 		'LBL_LEAD_FIELDS' => 'Champs prospects',
 		'LBL_USER_FIELDS' => 'Champs utilisateurs',
+		'LBL_HELPDESK_FIELDS'=>'Ticket Fields',
 		'LNK_SAMPLE_EMAIL' => 'Afficher',
 		'LBL_TEMPLATE_FILE' => 'Fichier du modèle',
 		'LBL_MODULENAMES' => 'Module',

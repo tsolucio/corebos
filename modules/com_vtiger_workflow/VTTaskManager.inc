@@ -65,8 +65,16 @@
 			$this->requireTask($taskClass, $taskTypeInstance);
 			$task = new $taskClass();
 			$task->workflowId=$workflowId;
-			$task->summary = "";
+			$task->summary = '';
 			$task->active=true;
+			$fields = $task->getFieldNames();
+			if (is_array($fields)) {
+				foreach ($fields as $field) {
+					if (!isset($task->{$field})) {
+						$task->{$field} = '';
+					}
+				}
+			}
 			return $task;
 		}
 

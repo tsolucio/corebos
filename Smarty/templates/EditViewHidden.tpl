@@ -42,7 +42,7 @@
 	<input type="hidden" name="product_id" value="{$PRODUCTID}">
 
 {elseif $MODULE eq 'Leads'}
-	<input type="hidden" name="campaignid" value="{$campaignid}">
+	<input type="hidden" name="campaignid" value="{if isset($campaignid)}{$campaignid}{/if}">
 
 {elseif $MODULE eq 'Documents'}
 	<input type="hidden" name="max_file_size" value="{$MAX_FILE_SIZE}">

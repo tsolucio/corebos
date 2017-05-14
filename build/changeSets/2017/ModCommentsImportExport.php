@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2014 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Copyright 2017 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
 * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
 * file except in compliance with the License. You can redistribute it and/or modify it
 * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
@@ -14,29 +14,22 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 
-class moveDVBtoEnd extends cbupdaterWorker {
-	
+class ModCommentsImportExport extends cbupdaterWorker {
+
 	function applyChange() {
-		if ($this->isBlocked()) return true;
+		global $adb;
 		if ($this->hasError()) $this->sendError();
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			global $adb;
-			$rs = $adb->query("select * from vtiger_links where linktype='DETAILVIEWWIDGET' and linkurl like 'block://%' order by tabid,sequence");
-			$tabid = 0;
-			while ($link = $adb->fetch_array($rs)) {
-				if ($link['tabid']!=$tabid) {
-					$tabid = $link['tabid'];
-					$rsseq = $adb->pquery('select max(sequence) from vtiger_blocks where tabid=?',array($tabid));
-					$cnt = $adb->query_result($rsseq,0,0)+1;
-				}
-				$this->ExecuteQuery('update vtiger_links set sequence=? where linkid=?',array($cnt,$link['linkid']));
-				$cnt++;
-			}
+			$mcInstance = Vtiger_Module::getInstance('ModComments');
+			$mcInstance->enableTools(array('Import','Export','DuplicatesHandling'));
+
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied(); // this should not be done if changeset is Continuous
+			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
+
 }

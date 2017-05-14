@@ -116,7 +116,6 @@ if(isPermitted('Emails','CreateView','') == 'yes') {
 }
 
 if(isPermitted('Contacts','Merge','') == 'yes') {
-	require("user_privileges/user_privileges_".$current_user->id.".php");
 	require_once('include/utils/UserInfoUtil.php');
 	$wordTemplateResult = fetchWordTemplateList("Contacts");
 	$tempCount = $adb->num_rows($wordTemplateResult);
@@ -126,7 +125,7 @@ if(isPermitted('Contacts','Merge','') == 'yes') {
 		$optionString[$tempVal["templateid"]]=$tempVal["filename"];
 		$tempVal = $adb->fetch_array($wordTemplateResult);
 	}
-	if($is_admin)
+	if (is_admin($current_user))
 		$smarty->assign("MERGEBUTTON","permitted");
 	elseif($tempCount >0)
 		$smarty->assign("MERGEBUTTON","permitted");

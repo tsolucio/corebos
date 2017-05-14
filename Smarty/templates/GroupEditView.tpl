@@ -19,7 +19,7 @@ function dup_validation()
 	if(mode == 'edit')
 		var reminstr = '&mode='+mode+'&groupName='+groupname+'&groupid='+groupid;
 	else
-		var reminstr = '&groupName='+groupname;
+		var reminstr = '&mode=&groupName='+groupname;
 	VtigerJS_DialogBox.block();
 	//var status = CharValidation(groupname,'namespace');
 	//if(status)

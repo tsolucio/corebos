@@ -13,15 +13,15 @@ require_once('include/utils/utils.php');
 global $app_strings, $mod_strings, $current_user, $currentModule, $adb, $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
-$profileId=vtlib_purify($_REQUEST['profileid']);
+$profileId = (isset($_REQUEST['profileid']) ? vtlib_purify($_REQUEST['profileid']) : 0);
 $profileName='';
 $profileDescription='';
 
-if(!empty($profileId)) {
+if (!empty($profileId)) {
 	if(!profileExists($profileId) || !is_numeric($profileId)) {
 		die(getTranslatedString('ERR_INVALID_PROFILE_ID', $currentModule));
 	}
-} elseif($_REQUEST['mode'] !='create') {
+} elseif ($_REQUEST['mode'] != 'create' || vtlib_purify($_REQUEST['profile_name']) == '') {
 	die(getTranslatedString('ERR_INVALID_PROFILE_ID', $currentModule));
 }
 
@@ -52,8 +52,7 @@ $smarty->assign("MOD", return_module_language($current_language,'Settings'));
 $smarty->assign("APP", $app_strings);
 $smarty->assign("THEME", $theme);
 $smarty->assign("CMOD", $mod_strings);
-if(isset($_REQUEST['return_action']) && vtlib_purify($_REQUEST['return_action']) != '')
-	$smarty->assign("RETURN_ACTION", vtlib_purify($_REQUEST['return_action']));
+$smarty->assign('RETURN_ACTION', (isset($_REQUEST['return_action']) ? vtlib_purify($_REQUEST['return_action']) : ''));
 
 if(isset($_REQUEST['profile_name']) && vtlib_purify($_REQUEST['profile_name']) != '' && $_REQUEST['mode'] == 'create')
 {
@@ -65,8 +64,6 @@ else
 	$profileName=getProfileName($profileId);
 	$smarty->assign("PROFILE_NAME", $profileName);
 }
-
-//$smarty->assign("PROFILE_NAME", to_html($profileName));
 
 if(isset($_REQUEST['profile_description']) && vtlib_purify($_REQUEST['profile_description']) != '' && $_REQUEST['mode'] == 'create')
 	$profileDescription = vtlib_purify($_REQUEST['profile_description']);
@@ -85,7 +82,7 @@ if(isset($_REQUEST['mode']) && vtlib_purify($_REQUEST['mode']) != '') {
 	$smarty->assign("MODE", $mode);
 }
 
-//Initially setting the secondary selected vtiger_tab
+//Initially setting the secondary selected tab
 if($mode == 'create')
 {
 	$smarty->assign("ACTION",'SaveProfile');
@@ -442,7 +439,6 @@ if($mode=='view')
 		$field_module=array();
 		$module_name=key($fieldListResult);
 		$module_id = getTabid($module_name);
-		$language_strings = return_module_language($current_language,$module_name);
 		for($j=0; $j<count($fieldListResult[$module_name]); $j++)
 		{
 			$field=array();
@@ -463,10 +459,7 @@ if($mode=='view')
 			{
 				$visible = "<img src='".vtiger_imageurl('no.gif', $theme)."'>";
 			}
-			if($language_strings[$fieldListResult[$module_name][$j][0]] != '')
-				$field[]=$language_strings[$fieldListResult[$module_name][$j][0]];
-			else
-				$field[]=$fieldListResult[$module_name][$j][0];
+			$field[] = getTranslatedString($fieldListResult[$module_name][$j][0],$module_name);
 			$field[]=$visible;
 			$field_module[]=$field;
 		}
@@ -482,7 +475,6 @@ elseif($mode=='edit')
 		$field_module=array();
 		$module_name=key($fieldListResult);
 		$module_id = getTabid($module_name);
-		$language_strings = return_module_language($current_language,$module_name);
 		for($j=0; $j<count($fieldListResult[$module_name]); $j++)
 		{
 			$fldLabel= $fieldListResult[$module_name][$j][0];
@@ -503,8 +495,7 @@ elseif($mode=='edit')
 			{
 				$visible = "";
 			}
-			if($fieldtype[1] == "M")
-			{
+			if (isset($fieldtype[1]) and $fieldtype[1] == 'M') {
 				$mandatory = '<font color="red">*</font>';
 				$readonly = 'disabled';
 				$visible = "checked";
@@ -518,10 +509,7 @@ elseif($mode=='edit')
 				$fieldAccessRestricted = true;
 			}
 
-			if($language_strings[$fldLabel] != '')
-				$field[]=$mandatory.' '.$language_strings[$fldLabel];
-			else
-				$field[]=$mandatory.' '.$fldLabel;
+			$field[] = $mandatory.' '.getTranslatedString($fldLabel,$module_name);
 
 			$field[]='<input id="'.$module_id.'_field_'.$fieldListResult[$module_name][$j][4].'" onClick="selectUnselect(this);" type="checkbox" name="'.$fieldListResult[$module_name][$j][4].'" '.$visible.' '.$readonly.'>';
 
@@ -562,7 +550,6 @@ elseif($mode=='create')
 			$field_module=array();
 			$module_name=key($fieldListResult);
 			$module_id = getTabid($module_name);
-			$language_strings = return_module_language($current_language,$module_name);
 			for($j=0; $j<count($fieldListResult[$module_name]); $j++)
 			{
 				$fldLabel= $fieldListResult[$module_name][$j][0];
@@ -576,8 +563,7 @@ elseif($mode=='create')
 
 				$fieldAccessMandatory = false;
 				$fieldAccessRestricted = false;
-				if($fieldtype[1] == "M")
-				{
+				if (isset($fieldtype[1]) and $fieldtype[1] == "M") {
 					$mandatory = '<font color="red">*</font>';
 					$readonly = 'disabled';
 					$fieldAccessMandatory = true;
@@ -597,10 +583,8 @@ elseif($mode=='create')
 					$visible = "";
 					$fieldAccessRestricted = true;
 				}
-				if($language_strings[$fldLabel] != '')
-					$field[]=$mandatory.' '.$language_strings[$fldLabel];
-				else
-					$field[]=$mandatory.' '.$fldLabel;
+				$field[] = $mandatory.' '.getTranslatedString($fldLabel,$module_name);
+
 				$field[]='<input type="checkbox" id="'.$module_id.'_field_'.$fieldListResult[$module_name][$j][4].'" onClick="selectUnselect(this);" name="'.$fieldListResult[$module_name][$j][4].'" '.$visible.' '.$readonly.'>';
 
 				// Check for Read-Only or Read-Write Access for the field.
@@ -638,7 +622,6 @@ elseif($mode=='create')
 			$field_module=array();
 			$module_name=key($fieldListResult);
 			$module_id = getTabid($module_name);
-			$language_strings = return_module_language($current_language,$module_name);
 			for($j=0; $j<count($fieldListResult[$module_name]); $j++)
 			{
 				$fldLabel= $fieldListResult[$module_name][$j][0];
@@ -669,10 +652,7 @@ elseif($mode=='create')
 				{
 					$visible = "checked";
 				}
-				if($language_strings[$fldLabel] != '')
-					$field[]=$mandatory.' '.$language_strings[$fldLabel];
-				else
-					$field[]=$mandatory.' '.$fldLabel;
+				$field[] = $mandatory.' '.getTranslatedString($fldLabel,$module_name);
 				$field[]='<input type="checkbox" id="'.$module_id.'_field_'.$fieldListResult[$module_name][$j][4].'" onClick="selectUnselect(this);" name="'.$fieldListResult[$module_name][$j][4].'" '.$visible.' '.$readonly.'>';
 
 				// Check for Read-Only or Read-Write Access for the field.
@@ -716,8 +696,8 @@ else
  * @param $id -- Role Name:: Type varchar
  * @returns $value -- html image code:: Type varcha:w
  */
-function getGlobalDisplayValue($id,$actionid)
-{
+function getGlobalDisplayValue($id,$actionid) {
+	global $theme;
 	if($id == '')
 	{
 		$value = '&nbsp;';
@@ -771,8 +751,8 @@ function getGlobalDisplayOutput($id,$actionid)
  * @param $id -- Role Name:: Type varchar
  * @returns $value -- html image code:: Type varcha:w
  */
-function getDisplayValue($id)
-{
+function getDisplayValue($id) {
+	global $theme;
 	if($id == '')
 	{
 		$value = '&nbsp;';
