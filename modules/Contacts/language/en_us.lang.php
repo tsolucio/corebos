@@ -266,22 +266,10 @@ $mod_strings = Array(
 'profile' => 'Profile',
 'blog' => 'Blog',
 'home-page' => 'Homepage',
-'CALENDAR_SYNC_SETTINGS' => 'Calendar Sync Settings',
-'LBL_SELECT_GOOGLE_CALENDAR_TO_SYNC' => 'Select Google Calendar',
-'LBL_SAVE_AND_START_SYNC' => 'Save and Start Sync',
-'LBL_PRIMARY' => 'Primary',
-'LBL_SYNC_FROM_GOOGLE_TO_VTIGER' => 'Sync from Google to Application',
-'LBL_SYNC_FROM_VTIGER_TO_GOOGLE' => 'Sync from Application to Google',
-'LBL_GOOGLE_CONNECT_MSG' => 'Connect to a Google account to fetch',
 'LBL_SIGN_IN_WITH_GOOGLE' => 'Sign in with Google',
-'LBL_GOOGLE_ACCOUNT_DETAILS' => 'Google Account Details',
-'LBL_GOOGLE_ACCOUNT_SYNCED_WITH' => 'Google Account Synced with',
-'LBL_CHANGE_USER' => 'Change User',
 'phone' => 'Phone',
 'email' => 'Email',
 'url' => 'Url',
-'LBL_SAVE_AND_IMPORT' => 'Save and Import',
-'LBL_IMPORT_RESULTS_GOOGLE' => 'Google Import results',
 'EXTENTIONNAME'=>'Google',
 'Name_Prefix' => 'Name Prefix',
 'First_Name' => 'First Name',
@@ -303,7 +291,6 @@ $mod_strings = Array(
 'SYNC_SETT_TITLE'=>'Set default user parameters for the Sync Process',
 'SYNC_RESULTS'=>'Sync Results',
 'ERR_GContactsSync'=>'There has been an error accessing Google. The settings have been deleted, please configure the access again.',
-
 );
 
 ?>
