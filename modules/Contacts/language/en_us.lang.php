@@ -100,6 +100,9 @@ $mod_strings = Array(
 //Added for search heading
 'LBL_GENERAL_INFORMATION'=>'General Information',
 
+
+
+//for v4 release added
 'LBL_NEW_POTENTIAL'=>'New Opportunity',
 'LBL_POTENTIAL_TITLE'=>'Opportunities',
 
@@ -114,6 +117,7 @@ $mod_strings = Array(
 'LBL_NEW_NOTE'=>'New Document',
 'LBL_NOTE_TITLE'=>'Documents',
 
+// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Contact Tools',
 
 'Salutation'=>'Salutation',
@@ -299,6 +303,7 @@ $mod_strings = Array(
 'SYNC_SETT_TITLE'=>'Set default user parameters for the Sync Process',
 'SYNC_RESULTS'=>'Sync Results',
 'ERR_GContactsSync'=>'There has been an error accessing Google. The settings have been deleted, please configure the access again.',
+
 );
 
 ?>
