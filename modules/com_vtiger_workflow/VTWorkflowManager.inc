@@ -35,6 +35,7 @@
 			if (!isset($workflow->schdayofmonth)) $workflow->schdayofmonth = '';
 			if (!isset($workflow->schdayofweek)) $workflow->schdayofweek = '';
 			if (!isset($workflow->schannualdates)) $workflow->schannualdates = '';
+			if (!isset($workflow->schminuteinterval)) $workflow->schminuteinterval = '';
 			$wf=$workflow;
 			if(!empty($workflow->id)){
 				$adb->pquery("update com_vtiger_workflows set
