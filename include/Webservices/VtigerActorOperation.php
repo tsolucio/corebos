@@ -7,16 +7,16 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
-
 require_once 'include/Webservices/VtigerCRMActorMeta.php';
+
 class VtigerActorOperation extends WebserviceEntityOperation {
 	protected $entityTableName;
 	protected $moduleFields;
 	protected $isEntity = false;
 	protected $element;
 	protected $id;
-	
-	public function  __construct($webserviceObject,$user,$adb,$log){
+
+	public function __construct($webserviceObject,$user,$adb,$log) {
 		parent::__construct($webserviceObject,$user,$adb,$log);
 		$this->entityTableName = $this->getActorTables();
 		if($this->entityTableName === null){
@@ -28,17 +28,17 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 		$this->id = null;
 	}
 
-	protected function getMetaInstance(){
+	protected function getMetaInstance() {
 		if(empty(WebserviceEntityOperation::$metaCache[$this->webserviceObject->getEntityName()][$this->user->id])){
-			WebserviceEntityOperation::$metaCache[$this->webserviceObject->getEntityName()][$this->user->id]  
-					= new VtigerCRMActorMeta($this->entityTableName,$this->webserviceObject,$this->pearDB,$this->user);
+			WebserviceEntityOperation::$metaCache[$this->webserviceObject->getEntityName()][$this->user->id]
+				= new VtigerCRMActorMeta($this->entityTableName,$this->webserviceObject,$this->pearDB,$this->user);
 		}
 		return WebserviceEntityOperation::$metaCache[$this->webserviceObject->getEntityName()][$this->user->id];
 	}
-	
+
 	protected function getActorTables(){
 		static $actorTables = array();
-		
+
 		if(isset($actorTables[$this->webserviceObject->getEntityName()])){
 			return $actorTables[$this->webserviceObject->getEntityName()];
 		}
@@ -56,17 +56,16 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 		}
 		return $tableName;
 	}
-	
-	public function getMeta(){
+
+	public function getMeta() {
 		return $this->meta;
 	}
 
-	protected function getNextId($elementType,$element){
+	protected function getNextId($elementType,$element) {
 		if(strcasecmp($elementType,'Groups') === 0){
 			$tableName="vtiger_users";
 		}else{
 			$tableName = $this->entityTableName;
-
 		}
 		$meta = $this->getMeta();
 		if(strcasecmp($elementType,'Groups') !== 0 && strcasecmp($elementType,'Users') !== 0) {
@@ -83,12 +82,11 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 		$db = PearDatabase::getInstance();
 
 		$this->id=$this->getNextId($elementType, $element);
-		
+
 		$element[$this->meta->getObectIndexColumn()] = $this->id;
 
 		//Insert into group vtiger_table
-		$query = "insert into {$this->entityTableName}(".implode(',',array_keys($element)).
-				") values(".generateQuestionMarks(array_keys($element)).")";
+		$query = "insert into {$this->entityTableName}(".implode(',',array_keys($element)).') values('.generateQuestionMarks(array_keys($element)).')';
 		$result = null;
 		$transactionSuccessful = vtws_runQueryAsTransaction($query, array_values($element),
 				$result);
@@ -99,16 +97,15 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 		$element = DataTransform::sanitizeForInsert($element,$this->meta);
 
 		$element = $this->restrictFields($element);
-		
+
 		$success = $this->__create($elementType,$element);
 		if(!$success){
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR,
-				vtws_getWebserviceTranslatedString('LBL_'.
-							WebServiceErrorCode::$DATABASEQUERYERROR));
+				vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
 		}
 		return $this->retrieve(vtws_getId($this->meta->getEntityId(),$this->id));
 	}
-	
+
 	protected function restrictFields($element, $selectedOnly = false){
 		$fields = $this->getModuleFields();
 		$newElement = array();
@@ -121,7 +118,7 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 		}
 		return $newElement;
 	}
-	
+
 	public function __retrieve($id){
 		$query = "select * from {$this->entityTableName} where {$this->meta->getObectIndexColumn()}=?";
 		$transactionSuccessful = vtws_runQueryAsTransaction($query,array($id),$result);
@@ -140,7 +137,7 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 		}
 		return false;
 	}
-	
+
 	public function retrieve($id){
 
 		$ids = vtws_getIdComponents($id);
@@ -154,11 +151,10 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 
 		return DataTransform::filterAndSanitize($element,$this->meta);
 	}
-	
+
 	public function __update($element,$id){
 		$columnStr = 'set '.implode('=?,',array_keys($element)).' =? ';
-		$query = 'update '.$this->entityTableName.' '.$columnStr.'where '.
-				$this->meta->getObectIndexColumn().'=?';
+		$query = 'update '.$this->entityTableName.' '.$columnStr.'where '. $this->meta->getObectIndexColumn().'=?';
 		$params = array_values($element);
 		array_push($params,$id);
 		$result = null;
@@ -170,7 +166,7 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 		$ids = vtws_getIdComponents($element["id"]);
 		$element = DataTransform::sanitizeForInsert($element,$this->meta);
 		$element = $this->restrictFields($element);
-		
+
 		$success = $this->__update($element,$ids[1]);
 		if(!$success){
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR,
@@ -179,7 +175,7 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 		}
 		return $this->retrieve(vtws_getId($this->meta->getEntityId(),$ids[1]));
 	}
-	
+
 	public function __revise($element,$id){
 		$columnStr = 'set '.implode('=?,',array_keys($element)).' =? ';
 		$query = 'update '.$this->entityTableName.' '.$columnStr.'where '.
@@ -199,8 +195,7 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 
 		$success = $this->__retrieve($ids[1]);
 		if(!$success){
-			throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND,
-				"Record not found");
+			throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, "Record not found");
 		}
 
 		$allDetails = $this->getElement();
@@ -212,17 +207,15 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 		$success = $this->__revise($element,$ids[1]);
 		if(!$success){
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR,
-				vtws_getWebserviceTranslatedString('LBL_'.
-							WebServiceErrorCode::$DATABASEQUERYERROR));
+				vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
 		}
 
 		return $this->retrieve(vtws_getId($this->meta->getEntityId(),$ids[1]));
 	}
-	
+
 	public function __delete($elemId){
 		$result = null;
-		$query = 'delete from '.$this->entityTableName.' where '.
-				$this->meta->getObectIndexColumn().'=?';
+		$query = 'delete from '.$this->entityTableName.' where '. $this->meta->getObectIndexColumn().'=?';
 		$transactionSuccessful = vtws_runQueryAsTransaction($query,array($elemId),$result);
 		return $transactionSuccessful;
 	}
@@ -230,18 +223,16 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 	public function delete($id){
 		$ids = vtws_getIdComponents($id);
 		$elemId = $ids[1];
-		
+
 		$success = $this->__delete($elemId);
 		if(!$success){
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR,
-				vtws_getWebserviceTranslatedString('LBL_'.
-							WebServiceErrorCode::$DATABASEQUERYERROR));
+				vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
 		}
 		return array("status"=>"successful");
 	}
-	
-	public function describe($elementType){
-		
+
+	public function describe($elementType) {
 		$app_strings = VTWS_PreserveGlobal::getGlobal('app_strings');
 		$current_user = vtws_preserveGlobal('current_user',$this->user);;
 		$label = (isset($app_strings[$elementType]))? $app_strings[$elementType]:$elementType;
@@ -276,13 +267,13 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 		if(strcasecmp($webserviceField->getFieldName(),$this->meta->getObectIndexColumn()) === 0){
 			return $this->getIdField($fieldLabel);
 		}
-		
+
 		$typeDetails = $this->getFieldTypeDetails($webserviceField);
-		
+
 		//set type name, in the type details array.
 		$typeDetails['name'] = $webserviceField->getFieldDataType();
 		$editable = $this->isEditable($webserviceField);
-		
+
 		$describeArray = array('name'=>$webserviceField->getFieldName(),'label'=>$fieldLabel,'mandatory'=>
 			$webserviceField->isMandatory(),'type'=>$typeDetails,'nullable'=>$webserviceField->isNullable(),
 			"editable"=>$editable);
@@ -291,8 +282,8 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 		}
 		return $describeArray;
 	}
-	public function query($q){
 
+	public function query($q) {
 		$parser = new Parser($this->user, $q);
 		$error = $parser->parse();
 

@@ -25,79 +25,72 @@ class VtigerCRMObject{
 		$this->instance = null;
 		$this->getInstance();
 	}
-	
+
 	public function getModuleName(){
 		return $this->moduleName;
 	}
-	
+
 	public function getModuleId(){
 		return $this->moduleId;
 	}
-	
+
 	public function getInstance(){
 		if($this->instance == null){
 			$this->instance = $this->getModuleClassInstance($this->moduleName);
 		}
 		return $this->instance;
 	}
-	
+
 	public function getObjectId(){
 		if($this->instance==null){
 			$this->getInstance();
 		}
 		return $this->instance->id;
 	}
-	
+
 	public function setObjectId($id){
 		if($this->instance==null){
 			$this->getInstance();
 		}
 		$this->instance->id = $id;
 	}
-	
+
 	private function titleCase($str){
 		$first = substr($str, 0, 1);
 		return strtoupper($first).substr($str,1);
 	}
-	
+
 	private function getObjectTypeId($objectName){
-		
 		// Use getTabid API
 		$tid = getTabid($objectName);
 
 		if($tid === false) {
 			global $adb;
-		
+
 			$sql = "select * from vtiger_tab where name=?;";
 			$params = array($objectName);
 			$result = $adb->pquery($sql, $params);
 			$data1 = $adb->fetchByAssoc($result,1,false);
-		
 			$tid = $data1["tabid"];
 		}
-		// END
-		
 		return $tid;
-		
 	}
-	
+
 	private function getModuleClassInstance($moduleName){
 		return CRMEntity::getInstance($moduleName);
 	}
-	
+
 	private function getObjectTypeName($moduleId){
-		
 		return getTabModuleName($moduleId);
-		
 	}
-	
+
 	private function getTabName(){
 		if($this->moduleName == 'Events'){
 			return 'Calendar';
 		}
 		return $this->moduleName;
 	}
-	
+
 	public function read($id,$deleted=false){
 		global $adb;
 		$error = false;
@@ -107,31 +100,30 @@ class VtigerCRMObject{
 		$adb->completeTransaction();
 		return !$error;
 	}
-	
+
 	public function create($element){
 		global $adb;
-		
+
 		$error = false;
 		foreach($element as $k=>$v){
 			$this->instance->column_fields[$k] = $v;
 		}
-		
+
 		$adb->startTransaction();
 		$this->instance->Save($this->getTabName());
 		$error = $adb->hasFailedTransaction();
 		$adb->completeTransaction();
 		return !$error;
 	}
-	
+
 	public function update($element){
-		
 		global $adb;
 		$error = false;
-		
+
 		foreach($element as $k=>$v){
 			$this->instance->column_fields[$k] = $v;
 		}
-		
+
 		$adb->startTransaction();
 		$this->instance->mode = "edit";
 		$this->instance->Save($this->getTabName());
@@ -139,7 +131,7 @@ class VtigerCRMObject{
 		$adb->completeTransaction();
 		return !$error;
 	}
-	
+
 	public function revise($element){
 		global $adb;
 		$error = false;
@@ -158,7 +150,7 @@ class VtigerCRMObject{
 			$this->instance->column_fields[$key] = decode_html($value);
 		}
 
-                $adb->startTransaction();
+		$adb->startTransaction();
 		$this->instance->mode = "edit";
 		$this->instance->Save($this->getTabName());
 		$error = $adb->hasFailedTransaction();
@@ -175,14 +167,14 @@ class VtigerCRMObject{
 		$adb->completeTransaction();
 		return !$error;
 	}
-	
+
 	public function getFields(){
 		return $this->instance->column_fields;
 	}
-	
+
 	function exists($id){
 		global $adb;
-		
+
 		$exists = false;
 		$sql = "select * from vtiger_crmentity where crmid=? and deleted=0";
 		$result = $adb->pquery($sql , array($id));
@@ -193,10 +185,10 @@ class VtigerCRMObject{
 		}
 		return $exists;
 	}
-	
+
 	function getSEType($id){
 		global $adb;
-		
+
 		$seType = null;
 		$sql = "select * from vtiger_crmentity where crmid=? and deleted=0";
 		$result = $adb->pquery($sql , array($id));
@@ -207,7 +199,7 @@ class VtigerCRMObject{
 		}
 		return $seType;
 	}
-	
+
 }
 
 ?>
