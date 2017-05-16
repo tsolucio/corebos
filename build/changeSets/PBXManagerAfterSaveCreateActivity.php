@@ -14,7 +14,7 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 
-class PBXManagerAfterSaveCreateActivity extends cbupdaterWorker {
+class cbupdPBXManagerAfterSaveCreateActivity extends cbupdaterWorker {
 
 	function applyChange() {
 		global $adb;

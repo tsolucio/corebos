@@ -461,7 +461,7 @@
 	<author>joebordes</author>
 	<description>Create and relate call activity when creating new record from call</description>
 	<filename>build/changeSets/PBXManagerAfterSaveCreateActivity.php</filename>
-	<classname>PBXManagerAfterSaveCreateActivity</classname>
+	<classname>cbupdPBXManagerAfterSaveCreateActivity</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
