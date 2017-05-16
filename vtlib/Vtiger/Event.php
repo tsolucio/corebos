@@ -27,7 +27,7 @@ class Vtiger_Event {
 
 	/** Internal caching */
 	static $is_supported = '';
-	
+
 	/**
 	 * Helper function to log messages
 	 * @param String Message to log
@@ -96,7 +96,7 @@ class Vtiger_Event {
 				$em = new VTEventsManager($adb);
 				$em->triggerEvent($eventname, VTEntityData::fromCRMEntity($moduleInstance));
 			}
-		}		
+		}
 	}
 
 	/**
@@ -108,20 +108,20 @@ class Vtiger_Event {
 		$events = false;
 		if(self::hasSupport()) {
 			// Get all events related to module
-			$records = $adb->pquery("SELECT * FROM vtiger_eventhandlers WHERE handler_class IN 
-				(SELECT handler_class FROM vtiger_eventhandler_module WHERE module_name=?)", Array($moduleInstance->name)); 
+			$records = $adb->pquery("SELECT * FROM vtiger_eventhandlers WHERE handler_class IN
+				(SELECT handler_class FROM vtiger_eventhandler_module WHERE module_name=?)", Array($moduleInstance->name));
 			if($records) {
 				while($record = $adb->fetch_array($records)) {
-					$event = new Vtiger_Event();					
+					$event = new Vtiger_Event();
 					$event->eventname = $record['event_name'];
-					$event->classname = $record['handler_class']; 
+					$event->classname = $record['handler_class'];
 					$event->filename  = $record['handler_path'];
-					$event->condition = $record['condition'];
+					$event->condition = (isset($record['condition']) ? $record['condition'] : null);
 					$events[] = $event;
 				}
 			}
 		}
 		return $events;
-	}		
+	}
 }
 ?>
