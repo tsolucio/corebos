@@ -22,8 +22,10 @@ ExecuteQuery("ALTER TABLE vtiger_portalinfo DROP cryptmode");
 
 // regenerate portal users password
 $portalinfo_hasmore = true;
+$page = 0;
 do {
-	$result = $adb->pquery('SELECT id FROM vtiger_portalinfo limit 1000', array());
+	$result = $adb->pquery("SELECT id FROM vtiger_portalinfo order by id limit $page,1000", array());
+	$page = $page + 1000;
 	$portalinfo_hasmore = false; // assume we are done.
 	while ($row = $adb->fetch_array($result)) {
 		$portalinfo_hasmore = true; // we found at least one so there could be more.
@@ -55,5 +57,21 @@ ExecuteQuery("update vtiger_settings_field set linkto='index.php?module=Settings
 ExecuteQuery("update vtiger_settings_field set linkto='index.php?module=Settings&action=MailScanner&parenttab=Settings' where name='LBL_MAIL_SCANNER'");
 ExecuteQuery("update vtiger_settings_field set linkto='index.php?module=com_vtiger_workflow&action=workflowlist&parenttab=Settings' where name='LBL_LIST_WORKFLOWS'");
 ExecuteQuery("update vtiger_settings_field set linkto='index.php?module=Settings&action=MenuEditor&parenttab=Settings' where name='LBL_MENU_EDITOR'");
+ExecuteQuery("DELETE FROM `vtiger_settings_field` WHERE `vtiger_settings_field`.`name` = 'Automated Backup'");
+
+$delmods = array(
+	'AutomatedBackup','EEMassMap'
+);
+
+foreach ($delmods as $module) {
+	$mod = Vtiger_Module::getInstance($module);
+	if ($mod) {
+		$mod->deleteRelatedLists();
+		$mod->deleteLinks();
+		$mod->deinitWebservice();
+		$mod->delete();
+		echo "<b>Module $module EXTERMINATED!</b><br>";
+	}
+}
 
 ExecuteQuery("update vtiger_version set old_version='6.3.0', current_version='6.4.0' where id=1");
