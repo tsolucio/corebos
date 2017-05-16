@@ -1161,7 +1161,7 @@ $app_strings = array (
 'SetReturnAddressDescription' => 'Seleziona quale indirizzo vorresti sovrascrivere, se esiste almeno uno',
 'Subscribe' => 'Subscribe',
 'View History' => 'Visualizza Storico',
-'SYNCH_NOW' => 'Sync Now',
+'SYNCH_NOW' => 'Sincronizza ora',
 );
 
 // Translation for currency names
