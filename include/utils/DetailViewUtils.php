@@ -1038,45 +1038,35 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 	} elseif ($uitype == 75 || $uitype == 81) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$vendor_id = $col_fields[$fieldname];
-		if ($vendor_id != '') {
-			$vendor_name = getVendorName($vendor_id);
-		}
+		$vendor_name = (empty($vendor_id) ? '' : getVendorName($vendor_id));
 		$label_fld[] = $vendor_name;
 		$label_fld["secid"] = $vendor_id;
 		$label_fld["link"] = "index.php?module=Vendors&action=DetailView&record=" . $vendor_id;
 	} elseif ($uitype == 76) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$potential_id = $col_fields[$fieldname];
-		if ($potential_id != '') {
-			$potential_name = getPotentialName($potential_id);
-		}
+		$potential_name = (empty($potential_id) ? '' : getPotentialName($potential_id));
 		$label_fld[] = $potential_name;
 		$label_fld["secid"] = $potential_id;
 		$label_fld["link"] = "index.php?module=Potentials&action=DetailView&record=" . $potential_id;
 	} elseif ($uitype == 78) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$quote_id = $col_fields[$fieldname];
-		if ($quote_id != '') {
-			$quote_name = getQuoteName($quote_id);
-		}
+		$quote_name = (empty($quote_id) ? '' : getQuoteName($quote_id));
 		$label_fld[] = $quote_name;
 		$label_fld["secid"] = $quote_id;
 		$label_fld["link"] = "index.php?module=Quotes&action=DetailView&record=" . $quote_id;
 	} elseif ($uitype == 79) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$purchaseorder_id = $col_fields[$fieldname];
-		if ($purchaseorder_id != '') {
-			$purchaseorder_name = getPoName($purchaseorder_id);
-		}
+		$purchaseorder_name = (empty($purchaseorder_id) ? '' : getPoName($purchaseorder_id));
 		$label_fld[] = $purchaseorder_name;
 		$label_fld["secid"] = $purchaseorder_id;
 		$label_fld["link"] = "index.php?module=PurchaseOrder&action=DetailView&record=" . $purchaseorder_id;
 	} elseif ($uitype == 80) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$salesorder_id = $col_fields[$fieldname];
-		if ($salesorder_id != '') {
-			$salesorder_name = getSoName($salesorder_id);
-		}
+		$salesorder_name = (empty($salesorder_id) ? '' : getSoName($salesorder_id));
 		$label_fld[] = $salesorder_name;
 		$label_fld["secid"] = $salesorder_id;
 		$label_fld["link"] = "index.php?module=SalesOrder&action=DetailView&record=" . $salesorder_id;
