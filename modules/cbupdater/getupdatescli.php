@@ -45,7 +45,7 @@ $cbupdatesfound = array();
 $cbupdate_files = array();
 $cbupdate_ids = '';
 
-if (count($argv)==2) {
+if (isset($argv) and count($argv)==2) {
 	$cbupdate_files[] = vtlib_purify($argv[1]);
 } else {
 	$cbupdate_files[] = 'modules/cbupdater/cbupdater.xml';
