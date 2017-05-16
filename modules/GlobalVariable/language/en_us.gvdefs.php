@@ -805,6 +805,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Contacts,Potentials,HelpDesk,Documents',
 	'definition' => '<b>Comma separeted module list</b> to indicate the modules that we want to show their related lists or to appear like a related list.<br> Now <b> Default value is: Contacts,Potentials,HelpDesk,Documents,Timecontrol</b>. <br>So, we recomend that first you copy this value and on the end of the string you add your new modules.<br><b>For example:</b> Contacts,Potentials,HelpDesk,Documents,Timecontrol<b>,Assets</b>',
 ),
+'GContacts_Max_Results'  => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Integration',
+	'values' => '',
+	'definition' => 'Maximum number of records that will be synchronized in one batch when sending or receiving information from Google Contacts. The default value is 200 records.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/en_us.gvdefs.*.php',GLOB_BRACE) as $tcode) {

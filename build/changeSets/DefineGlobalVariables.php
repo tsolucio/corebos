@@ -130,7 +130,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Report_MaxRows_OnScreen',
 
 				'Inventory_ListPrice_ReadOnly',
-                                'GContacts_Max_Results',
+				'GContacts_Max_Results',
 
 			);
 			$delete_these = array(
