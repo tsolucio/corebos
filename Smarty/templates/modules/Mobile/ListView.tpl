@@ -40,7 +40,13 @@
 					<option value="off">{$MOD.LBL_OFF}</option> 
 					<option value="on">{$MOD.LBL_ON}</option> 
 				</select> 
-			</div> 
+			</div>
+			<div style="position: absolute;left: 35px;text-align: right;">
+				<select id="scopetoggle" name="scopetoggle" data-mini="true" class="select" data-native-menu="false">
+					<option value="month" >{$MOD.LBL_MONTH}</option>
+					<option value="week" >{$MOD.LBL_WEEK}</option>
+				</select>
+			</div>
 		{/if}
 		{if $_MODULE->name() neq 'Calendar' AND $_MODULE->name() neq 'Quotes' AND  $_MODULE->name() neq 'SalesOrder' AND  $_MODULE->name() neq 'Invoice' AND  $_MODULE->name() neq 'PurchaseOrder' AND  $_MODULE->name() neq 'Products'}
 			<a href="?_operation=create&module={$_MODULE->name()}&record=''" class="ui-btn ui-corner-all ui-icon-plus ui-btn-icon-notext" data-transition="turn">{$MOD.LBL_NEW}</a>

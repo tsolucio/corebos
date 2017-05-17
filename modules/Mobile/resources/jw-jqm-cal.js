@@ -428,7 +428,13 @@
          refresh(date);
 	});
 
-	init();
+       $element.bind('changeScope', function(event, showWeek) {
+           plugin.settings.showWeek=showWeek;
+           refresh();
+       });
+
+
+       init();
    };
 
    $.fn.jqmCalendar = function(options) {

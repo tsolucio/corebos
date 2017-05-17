@@ -188,6 +188,12 @@ var crmtogo_Index_Js = {
 					$('#viewname').css('display','block');
 				}
 			});
+
+            $("#scopetoggle").on("change", function(e){
+                var myswitch = $(this);
+                var showWeek = myswitch[0].selectedIndex == 1 ? true:false;
+                $("#calendarcontainer").trigger("changeScope", showWeek);
+            });
 			
 			function fillcalendar(data) {
 				var calobj = jQuery.parseJSON(data);
