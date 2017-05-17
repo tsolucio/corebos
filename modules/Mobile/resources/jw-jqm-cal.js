@@ -1,11 +1,13 @@
 (function($) {
    $.jqmCalendar = function(element, options) {
-      
+
       var defaults = {
          // Array of events
          events : [],
          // Event handler,
          eventHandler : {
+             nextButtonHandler : nextButtonHandler,
+             previousButtonHandler : previousButtonHandler,
            // getImportanceOfDay (date, callback).  callback should be called
            // with importance as an argument. Currently, 0 (no events), 1 (e.g.
            // one event) and 2 (more than one event) are supported.
@@ -58,88 +60,95 @@
       function init() {
          plugin.settings = $.extend({}, defaults, options);
          plugin.settings.theme = $.mobile.getInheritedTheme($element, plugin.settings.theme);
-         
+
          $table = $("<table/>");
-         
+
          // Build the header
          var $thead = $("<thead/>").appendTo($table),
             $tr = $("<tr/>").appendTo($thead),
             $th = $("<th class='ui-bar-" + plugin.settings.theme + " header' colspan='7'/>");
-         
-         $("<a style='position: relative; left: 13px;' href='#' data-role='button' data-icon='arrow-l' data-iconpos='notext' class='previous-btn'>Previous</a>").click(function() {
-            refresh(new Date(plugin.settings.date.getFullYear(), plugin.settings.date.getMonth() - 1, 
-                plugin.settings.date.getDate()<=_daysInMonth(new Date(plugin.settings.date.getFullYear(), plugin.settings.date.getMonth() - 1))?plugin.settings.date.getDate():_daysInMonth(new Date(plugin.settings.date.getFullYear(), plugin.settings.date.getMonth() - 1))
-                             
-            ));
-         }).appendTo($th);
-	 
+
+          $("<a style='position: relative; left: 13px;' href='#' data-role='button' data-icon='arrow-l' data-iconpos='notext' class='previous-btn'>Previous</a>")
+              .click(plugin.settings.eventHandler.previousButtonHandler)
+              .appendTo($th);
+
 	 if (plugin.settings.yearArrow) {
 	     $("<a href='#' data-role='button' data-icon='arrow-d' data-iconpos='notext' class='previous-btn'>Previous</a>").click(function() {
-		refresh(new Date(plugin.settings.date.getFullYear(), plugin.settings.date.getMonth() - 12, 
-                   plugin.settings.date.getDate()<=_daysInMonth(new Date(plugin.settings.date.getFullYear(), plugin.settings.date.getMonth() -12))?plugin.settings.date.getDate():_daysInMonth(new Date(plugin.settings.date.getFullYear(), plugin.settings.date.getMonth() -12)) 
-                                 
+		refresh(new Date(plugin.settings.date.getFullYear(), plugin.settings.date.getMonth() - 12,
+                   plugin.settings.date.getDate()<=_daysInMonth(new Date(plugin.settings.date.getFullYear(), plugin.settings.date.getMonth() -12))?plugin.settings.date.getDate():_daysInMonth(new Date(plugin.settings.date.getFullYear(), plugin.settings.date.getMonth() -12))
+
                 ));
 	     }).appendTo($th);
 	 }
-         
+
          $header = $("<span/>").appendTo($th);
-         
-         $("<a style='position: relative; right: 15px;' href='#' data-role='button' data-icon='arrow-r' data-iconpos='notext' class='next-btn'>Next</a>").click(function() {
-            var newDay= plugin.settings.date.getDate();
-            var maxDay=_daysInMonth(new Date(plugin.settings.date.getFullYear(), plugin.settings.date.getMonth() + 1),0);
-            if (newDay>maxDay) {newDay=maxDay;}            
-            refresh(new Date(plugin.settings.date.getFullYear(), plugin.settings.date.getMonth() + 1, newDay));
-         }).appendTo($th);
-         
+
+          $("<a style='position: relative; right: 15px;' href='#' data-role='button' data-icon='arrow-r' data-iconpos='notext' class='next-btn'>Next</a>")
+              .click(plugin.settings.eventHandler.nextButtonHandler)
+              .appendTo($th);
+
 	 if (plugin.settings.yearArrow) {
 	      $("<a href='#' data-role='button' data-icon='arrow-u' data-iconpos='notext' class='next-btn'>Next</a>").click(function() {
-		refresh(new Date(plugin.settings.date.getFullYear(), plugin.settings.date.getMonth() + 12, 
+		refresh(new Date(plugin.settings.date.getFullYear(), plugin.settings.date.getMonth() + 12,
                     plugin.settings.date.getDate()<=_daysInMonth(new Date(plugin.settings.date.getFullYear(), plugin.settings.date.getMonth() + 12))?plugin.settings.date.getDate():_daysInMonth(new Date(plugin.settings.date.getFullYear(), plugin.settings.date.getMonth() + 12))
-                                 
+
                 ));
 	     }).appendTo($th);
 	 }
-	 
+
          $th.appendTo($tr);
-         
+
          $tr = $("<tr/>").appendTo($thead);
-         
+
          // The way of determing the labels for the days is a bit awkward, but works.
          for ( var i = 0, days = [].concat(plugin.settings.days, plugin.settings.days).splice(plugin.settings.startOfWeek, 7); i < 7; i++ ) {
             $tr.append("<th class='ui-bar-" + plugin.settings.theme + "'><span id='nameday"+i+"' class='darker'>"  + days[i] + "</span></th>"); //lp20150515
          }
-         
+
          $tbody = $("<tbody/>").appendTo($table);
-         
+
          $table.appendTo($element);
          $listview = $("<ul data-role='listview'/>").insertAfter($table);
-         
+
          // Call refresh to fill the calendar with dates
-         refresh(plugin.settings.date);      
+         refresh(plugin.settings.date);
       }
-      
+
+       function nextButtonHandler(){
+               var newDay= plugin.settings.date.getDate();
+               var maxDay=_daysInMonth(new Date(plugin.settings.date.getFullYear(), plugin.settings.date.getMonth() + 1),0);
+               if (newDay>maxDay) {newDay=maxDay;}
+               refresh(new Date(plugin.settings.date.getFullYear(), plugin.settings.date.getMonth() + 1, newDay));
+       }
+
+       function previousButtonHandler(){
+               refresh(new Date(plugin.settings.date.getFullYear(), plugin.settings.date.getMonth() - 1,
+                   plugin.settings.date.getDate()<=_daysInMonth(new Date(plugin.settings.date.getFullYear(), plugin.settings.date.getMonth() - 1))?plugin.settings.date.getDate():_daysInMonth(new Date(plugin.settings.date.getFullYear(), plugin.settings.date.getMonth() - 1))
+               ));
+       }
+
       function _firstDayOfMonth(date) {
          // [0-6] Sunday is 0, Monday is 1, and so on.
          return ( new Date(date.getFullYear(), date.getMonth(), 1) ).getDay();
       }
-      
+
       function _daysBefore(date, fim) {
           // Returns [0-6], 0 when firstDayOfMonth is equal to startOfWeek, else the amount of days of the previous month included in the week.
          var firstDayInMonth = ( fim || _firstDayOfMonth(date) ),
              diff = firstDayInMonth - plugin.settings.startOfWeek;
          return ( diff > 0 ) ? diff : ( 7 + diff );
       }
-      
+
       function _daysInMonth(date) {
          // [1-31]
          return ( new Date ( date.getFullYear(), date.getMonth() + 1, 0 )).getDate();
       }
-            
+
       function _weeksInMonth(date, dim, db) {
          // Returns [5-6];
          return ( plugin.settings.weeksInMonth ) ? plugin.settings.weeksInMonth : Math.ceil( ( ( dim || _daysInMonth(date) ) + ( db || _daysBefore(date)) ) / 7 );
       }
-      
+
       function getImportanceOfDay(date, callback) {
          var importance = 0;
 
@@ -157,10 +166,10 @@
          }
          callback(importance,bg);
       }
-      
+
       function getEventsOnDay(begin, end, callback) {
          // Find events for this date
-         // Callback is called for each event and once at the end without an event. 
+         // Callback is called for each event and once at the end without an event.
          var ret_list = [];
          for ( var i = 0, event; event = plugin.settings.events[i]; i++ ) {
             if ( event[plugin.settings.end] >= begin && event[plugin.settings.begin] < end ) {
@@ -182,11 +191,11 @@
                   .appendTo($td);
 
          if ( selected ) $a.click();
-         
+
          if ( darker ) {
              $td.addClass("darker");
          }
-         
+
          $a.attr("disabled", isDisabled(date));
 
          plugin.settings.eventHandler.getImportanceOfDay(date,
@@ -196,7 +205,7 @@
 				}
 				if ( date.getFullYear() === today.getFullYear() && date.getMonth() === today.getMonth() && date.getDate() === today.getDate() ) {
 					$a.addClass("ui-btn-today");
-				} 
+				}
 				else {
 					if (bg) {/* 2014113: added bg definition based on event "bg"
 						  if bg specified in one event it will prevail on "importance-?" class
@@ -204,40 +213,40 @@
 						  There can be more than one event per day. Which one drives the color of the day?
 						  As per actual implementation it's the first event.
 					   */
-					  
+
 					  $a.addClass(bg);
-					} 
+					}
 					else {
 						$a.addClass("importance-" + importance.toString());
 					}
 				}
 			});
 	}
-      
+
     function cellTapholdHandler() {
          var $this = $(this),
 	 date = $this.data('date');
          $tbody.find("button.ui-btn-active").removeClass("ui-btn-active");
          $this.addClass("ui-btn-active");
-         
+
          if ( date.getMonth() !== plugin.settings.date.getMonth() ) {
             // Go to previous/next month
             refresh(date);
-         } 
+         }
 	 // Select new date
 	 $element.trigger('change', date);
 	 $element.trigger('taphold', date);
-         
+
          plugin.settings.date = date ;
       }
-      
-      
+
+
       function cellClickHandler() {
          var $this = $(this),
          date = $this.data('date');
          $tbody.find("button.ui-btn-active").removeClass("ui-btn-active");
          $this.addClass("ui-btn-active");
-         
+
          if ( date.getMonth() !== plugin.settings.date.getMonth() ) {
             // Go to previous/next month
             refresh(date);
@@ -247,14 +256,14 @@
          }
          plugin.settings.date = date ;
       }
-      
+
       function isDisabled(date){
                 if ( (plugin.settings.disableDates==-1 && dateOnly(date) < dateOnly(new Date())) || (plugin.settings.disableDates==1 && dateOnly(date) > dateOnly(new Date()) ) ) {
           return true;
         }
         return false;
       }
-      
+
       function dateOnly(date) {
         var day = padd(date.getDate(),2);
         var month = padd(date.getMonth() + 1,2);
@@ -262,14 +271,14 @@
         var resultDate= "" + year + month + day;
         return parseInt(resultDate,10);
       }
-      
+
       function padd(n, width, z) {
         z = z || '0';
         n = n + '';
         return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
       }
-      
-      
+
+
       function refresh(date) {
          plugin.settings.date = date = date ||  plugin.settings.date || new Date();
 
@@ -281,33 +290,33 @@
 
          if (((daysInMonth + daysBefore) / 7 ) - weeksInMonth === 0)
              weeksInMonth++;
-         
+
          // Empty the table body, we start all over...
          $tbody.empty();
          // Change the header to match the current month
          $header.html( plugin.settings.months[month] + " " + year.toString() );
-      
+
          for (    var   weekIndex = 0,
                   daysInMonthCount = 1,
                   daysAfterCount = 1; weekIndex < weeksInMonth; weekIndex++ ) {
-                     
+
             var daysInWeekCount = 0,
                row = $("<tr/>").appendTo($tbody);
-            
+
             // Previous month
             while ( daysBefore > 0 ) {
                addCell(row, new Date(year, month, 1 - daysBefore), true);
                daysBefore--;
                daysInWeekCount++;
             }
-            
+
             // Current month
             while ( daysInWeekCount < 7 && daysInMonthCount <= daysInMonth ) {
                addCell(row, new Date(year, month, daysInMonthCount), false, daysInMonthCount === date.getDate() );
                daysInWeekCount++;
                daysInMonthCount++;
             }
-            
+
             // Next month
             while ( daysInMonthCount > daysInMonth && daysInWeekCount < 7 ) {
                addCell(row, new Date(year, month, daysInMonth + daysAfterCount), true);
@@ -315,13 +324,13 @@
                daysAfterCount++;
             }
          }
-         
+
          //lp20150515
          for ( var i = 0, days = [].concat(plugin.settings.days, plugin.settings.days).splice(plugin.settings.startOfWeek, 7); i < 7; i++ ) {
 	    document.getElementById('nameday'+i).innerHTML=days[i];
          }
-         
-         
+
+
          $element.trigger('create');
       }
 
@@ -344,14 +353,14 @@
             $listview.trigger('create').filter(".ui-listview").listview('refresh');
          });
       });
-      
+
 	function listItemFormatter($listItem, timeString, summary, event) {
 		var text = ( ( timeString != "00:00-00:00" ) ? timeString : plugin.settings.allDayTimeString ) + " " + summary;
 		$listItem.addClass("ui-group-theme-c");
 		$('<a></a>').text( text ).attr( 'href', '?_operation=fetchRecord&record='+event[plugin.settings.id] ).appendTo($listItem);
-         
+
 	}
-      
+
 	$element.bind('refresh', function(event, date) {
          refresh(date);
 	});
