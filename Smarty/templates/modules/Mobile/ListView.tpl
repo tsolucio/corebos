@@ -14,6 +14,7 @@
 	<link rel="stylesheet" href="resources/css/theme.css" >
 	<script type="text/javascript" src="resources/jquery.blockUI.js" ></script>
 	<script type="text/javascript" src="resources/crmtogo.js"></script>
+	<script type="text/javascript" src="resources/xdate.js"></script>
 	<script type="text/javascript" src="resources/lang/{$LANGUAGE}.lang.js"></script>
 	{if $_MODULE->name() eq 'Calendar'}
 		<link rel="stylesheet" href="resources/css/jw-jqm-cal.css" >

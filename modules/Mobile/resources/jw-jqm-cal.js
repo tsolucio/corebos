@@ -347,7 +347,54 @@
       }
 
        function refreshByWeek(date) {
+           firstDateOfWeek = new XDate(plugin.settings.date).setHours(0).setMinutes(0).setSeconds(0);
+           // next line : +6%7 is for monday as first day of week (instead of sunday as assumed by getDay() )
+           firstDateOfWeek.setDate(firstDateOfWeek.getDate()-(firstDateOfWeek.getDay()+6)%7);
+           lastDateOfWeek = new XDate(firstDateOfWeek).addDays(6);
 
+           // Empty the table body, we start all over...
+           $tbody.empty();
+
+           // Change the header to match the current week
+           $header.html( firstDateOfWeek.getDate() + " " + plugin.settings.months[firstDateOfWeek.getMonth()] + " - "
+               + lastDateOfWeek.getDate() + " " + plugin.settings.months[lastDateOfWeek.getMonth()] + " " + lastDateOfWeek.getFullYear());
+
+           row = $("<tr/>").appendTo($tbody);
+           var incDate = new XDate(firstDateOfWeek);
+           for(var d=0 ; d<7 ; d++){
+               addCell(row, incDate.toDate(), false, (incDate.getDate()===plugin.settings.date.getDate()));
+               incDate.addDays(1);
+           }
+
+           eventsRow = $("<tr/>").appendTo($tbody);
+           incDate = new XDate(firstDateOfWeek);
+           var nbDisplayedEvents = 0;
+           for(var endDate, d=0 ; d<7 ; d++){
+               var $td = $("<td class='ui-bar-" + plugin.settings.theme + "'/>").prop('title',incDate.toString()).appendTo(eventsRow);
+               endDate = new XDate(incDate).addDays(1);
+               for ( var event, eventLabel, i = 0 ; event = plugin.settings.events[i] ; i++ ) {
+                   if ( event[plugin.settings.end] >= incDate && event[plugin.settings.begin] < endDate ) {
+                       eventLabel = "<small>"+event[plugin.settings.begin].toLocaleTimeString().substr(0, 5)+"</small><br/>"+event[plugin.settings.summary]+"";
+                       $a = $("<li class='ui-btn ui-btn-up-" + plugin.settings.theme + "'/>")
+                           .html(eventLabel)
+                           .data('date', event[plugin.settings.begin])
+                           .click(cellClickHandler)
+                           .taphold(cellTapholdHandler)
+                           .appendTo($td);
+                       nbDisplayedEvents++;
+                   }
+               }
+               incDate.addDays(1);
+           }
+           if(nbDisplayedEvents==0){
+               messageRow = $("<tr/>").appendTo($tbody);
+               $("<td colspan='7'/>").html(cal_config_arr.txt_noEvents).appendTo(messageRow);
+           }
+
+           //lp20150515
+           for ( var i = 0, days = [].concat(plugin.settings.days, plugin.settings.days).splice(plugin.settings.startOfWeek, 7); i < 7; i++ ) {
+               document.getElementById('nameday'+i).innerHTML=days[i];
+           }
        }
 
       $element.bind('change', function(originalEvent, begin) {
