@@ -217,6 +217,12 @@ var crmtogo_Index_Js = {
 						});
 					}
 				});
+
+                // sort events by begin date
+                caljson.sort(function(a,b){
+                    return a['begin'] > b['begin'];
+                });
+                
 				$("#calendarcontainer").jqmCalendar({
 					events : caljson,
 					months : cal_config_arr.monthNames,
