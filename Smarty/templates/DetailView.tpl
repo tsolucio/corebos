@@ -166,7 +166,7 @@ function sendfile_email()
 	<tr>
 		<td class="detailview_wrapper_cell">
 
-			{include file='Buttons_List1.tpl'}
+			{include file='Buttons_List.tpl'}
 
 			<!-- Contents -->
 			<table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
@@ -277,7 +277,7 @@ function sendfile_email()
 																					</tr>
 
 																					<!-- This is added to display the existing comments -->
-																					{if $header eq $APP.LBL_COMMENTS || (isset($MOD.LBL_COMMENT_INFORMATION) && $header eq $MOD.LBL_COMMENT_INFORMATION)}
+																					{if $header eq $APP.LBL_COMMENTS || (isset($MOD.LBL_COMMENTS) && $header eq $MOD.LBL_COMMENTS) || (isset($MOD.LBL_COMMENT_INFORMATION) && $header eq $MOD.LBL_COMMENT_INFORMATION)}
 																						<tr>
 																							<td colspan=4 class="dvInnerHeader">
 																								<b>{if isset($MOD.LBL_COMMENT_INFORMATION)}{$MOD.LBL_COMMENT_INFORMATION}{else}{$APP.LBL_COMMENTS}{/if}</b>

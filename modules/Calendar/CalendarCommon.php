@@ -227,7 +227,6 @@ function getTimeCombo($format,$bimode,$hour='',$min='',$fmt='',$todocheck=false)
  */
 function getActFieldCombo($fieldname,$tablename,$follow_activitytype = false) {
 	global $adb, $mod_strings,$current_user;
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	$combo = '';
 	$js_fn = '';
 	if($fieldname == 'eventstatus')
@@ -236,7 +235,7 @@ function getActFieldCombo($fieldname,$tablename,$follow_activitytype = false) {
 		$combo .= '<select name="follow_'.$fieldname.'" id="follow_'.$fieldname.'" class=small '.$js_fn.'>';
 	else
 		$combo .= '<select name="'.$fieldname.'" id="'.$fieldname.'" class=small '.$js_fn.'>';
-	if($is_admin)
+	if (is_admin($current_user))
 		$q = "select * from ".$tablename;
 	else
 	{

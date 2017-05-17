@@ -133,7 +133,7 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Text to show',
 	'definition' => 'Shows a scrolling header text as a system wide announcement',
 ),
-'preload_jscalendar' => array(
+'Application_JSCalendar_Load' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'String',
 	'category' => 'Development',
@@ -456,21 +456,21 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => '',
 ),
-'calendar_call_default_duration' => array(
+'Calendar_call_default_duration' => array(
 	'status' => 'Implemented',
 	'valuetype' => '',
 	'category' => '',
 	'values' => '',
 	'definition' => '',
 ),
-'calendar_other_default_duration' => array(
+'Calendar_other_default_duration' => array(
 	'status' => 'Implemented',
 	'valuetype' => '',
 	'category' => '',
 	'values' => '',
 	'definition' => '',
 ),
-'calendar_sort_users_by' => array(
+'Calendar_sort_users_by' => array(
 	'status' => 'Implemented',
 	'valuetype' => '',
 	'category' => '',
@@ -700,5 +700,12 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Funccionalidad module Mobile',
 	'values' => 'Calendar | HelpDesk | Contacts ...',
 	'definition' => 'Establecer el modulo por defecto a mostrar al entrar al modulo de Mobile.',
+),
+'Mobile_Related_Modules' => array(
+	'status' => 'Implementado',
+	'valuetype' => 'Cadena de texto',
+	'category' => 'Funccionalidad module Mobile',
+	'values' => 'Contacts,Potentials,HelpDesk,Documents',
+	'definition' => 'Activar aquellos módulos que queramos que tengan listas relacionadas o que aparezcan en estas.<br> Se debe indicar el nombre de cada módulo separado por comas.<br> El valor <b>por defecto</b> que hay es: <b>Contacts,Potentials,HelpDesk,Documents,Timecontrol</b>. <br>Por lo que se recomienda pegar estos valores y añadir los módulos nuevos después. <br><b>Por ejemplo:</b> Contacts,Potentials,HelpDesk,Documents,Timecontrol<b>,Assets</b>',
 ),
 );

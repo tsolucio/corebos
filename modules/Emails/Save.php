@@ -36,7 +36,7 @@ $focus = new Emails();
 
 global $current_user,$mod_strings,$app_strings;
 if(isset($_REQUEST['description']) && $_REQUEST['description'] !='')
-	$_REQUEST['description'] = fck_from_html($_REQUEST['description']);
+	$_REQUEST['description'] = vtlib_purify($_REQUEST['description']);
 
 $all_to_ids = $_REQUEST["hidden_toid"];
 $all_to_ids .= $_REQUEST["saved_toid"];

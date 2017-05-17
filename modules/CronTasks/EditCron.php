@@ -25,6 +25,7 @@ if(isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 	$cron_daily =  $cronTask->getdaily();
 	$cron_desc = $cronTask->getDescription();
 	$lastend = explode(" ",$cronTask->getLastEndDateTime());
+	if (!isset($lastend[1])) $lastend[1] = '00:00';
 	$hourminsec = explode(":",$lastend[1]);
 	$hourmin = $hourminsec[0].':'.$hourminsec[1];
 	$cron = Array();

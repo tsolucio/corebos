@@ -86,12 +86,17 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 		$blocks = array(); 
 		$labelFields = false;
 
-		if($module == 'Events' || $module == 'Calendar') {
+		if($module == 'Events' || $module == 'Calendar' || $module == 'Timecontrol') {
 			// sets times & dates to local time zone and format
 			$date = new DateTimeField($resultRecord['date_start'].' '.$resultRecord['time_start']);
 			$startDateTime = $date->getDisplayDateTimeValue();	
 			$startDateTimeArray = explode(' ', $startDateTime);
-			$date = new DateTimeField($resultRecord['due_date']." ".$resultRecord['time_end']);
+			if($module == 'Timecontrol'){
+				$endDname = 'date_end';
+			}else{
+				$endDname = 'due_date';
+			}
+			$date = new DateTimeField($resultRecord[$endDname]." ".$resultRecord['time_end']);
 			$endDateTime = $date->getDisplayDateTimeValue();	
 			$endDateTimeArray = explode(' ', $endDateTime);
 			if ($operation =='edit') {
@@ -114,7 +119,7 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 				else {
 					$formated_date =$endDateTimeArray[0];
 				}
-				$resultRecord['due_date'] = date("Y-m-d",strtotime($formated_date));
+				$resultRecord[$endDname] = date("Y-m-d",strtotime($formated_date));
 				//remove trailing seconds
 				$time_arr = explode(':', $endDateTimeArray[1]);
 				$resultRecord['time_end'] = $time_arr[0].':'.$time_arr[1];
@@ -124,7 +129,7 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 				$time_arr = explode(':', $startDateTimeArray[1]);
 				$resultRecord['time_start'] =  $time_arr[0].':'.$time_arr[1];
 				// format end times to local timezone and hour format
-				$resultRecord['due_date'] = $endDateTimeArray[0];
+				$resultRecord[$endDname] = $endDateTimeArray[0];
 				$time_arr = explode(':', $endDateTimeArray[1]);
 				$resultRecord['time_end'] = $time_arr[0].':'.$time_arr[1];
 				if ($current_user->hour_format == '12') {

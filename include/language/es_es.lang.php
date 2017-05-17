@@ -241,7 +241,7 @@ $app_strings = array (
       'LBL_ENTITY_NAME' => 'Nombre de la Entidad',
       'LBL_GROUP_NAME' => 'Grupo',
       'LBL_ENTITY_TYPE' => 'Tipo',
-      'LBL_NEW_TICKET' => 'Código del Ticket',
+      'LBL_NEW_TICKET' => 'Código de la Incidencia',
       'LBL_TITLE' => 'Título',
       'LBL_PRIORITY' => 'Prioridad',
       'LBL_STATUS' => 'Estado',
@@ -409,7 +409,7 @@ $app_strings = array (
       'Portal' => 'Webs Favoritas',
       'Webmails' => 'Webmail',
       'Activity History' => 'Histórico de eventos',
-      'Ticket History' => 'Histórico de tickets',
+      'Ticket History' => 'Histórico de incidencias',
       'Purchase Order' => 'Ordenes de Compra',
       'Sales Stage History' => 'Histórico de ventas',
       'Users' => 'Usuarios',
@@ -418,7 +418,7 @@ $app_strings = array (
       'SalesOrder Status History' => 'Histórico de Ordenes de Venta',
       'Quote Stage History' => 'Histórico de Presupuestos',
       'Invoice Status History' => 'Histórico de Facturas',
-      'LBL_TROUBLE_TICKET' => 'Ticket de Problema',
+      'LBL_TROUBLE_TICKET' => 'Incidencia',
       'My Home Page' => 'Portada',
       'Marketing' => 'Marketing',
       'Sales' => 'Comercial',
@@ -1012,7 +1012,7 @@ $app_strings = array (
       'Quantity'=>'Cantidad',
       'Grand Total : (in €)'=>'Total : (en €)',
 
-      'LBL_GENERAL_FIELDS'=>'Campos Generales', 
+      'LBL_GENERAL_FIELDS'=>'Campos Generales',
       //For Users fields
       'HomePhone'=>'Teléfono Casa',
       'Signature'=>'Firma',
@@ -1023,16 +1023,16 @@ $app_strings = array (
       //For General fields
       'Current Date'=>'Fecha Actual',
       'Current Time'=>'Hora Actual',
-      
+
       //Added for Role based Custom filters
       'LBL_PUBLIC'=>'Publico',
       'LBL_PENDING'=>'Pendiente',
       'LBL_OTHERS'=>'Otros',
-      
+
       //For Configuring/Using PurchaseOrder number
       'PO Number'=>'Nº Orden Compra',
       'MSG_AUTO_GEN_ON_SAVE'=>'GEN-AUTO AL GUARDAR',
-      
+
       //For Duplicate merging feature
       'LBL_MERGE' => 'Combinar',
       'LBL_MERGE_BUTTON_TITLE' => 'Combinar',
@@ -1059,7 +1059,7 @@ $app_strings = array (
       'LBL_BACKEDUPSUCCESSFULLY_TO_FILE' => 'Copia seguridad a fichero correcta',//BACKUP
       'APP.LBL_NOW'=>'Ahora',//BACKUP
       'LBL_NOW'=>'Ahora',//BACKUP
-      
+
       // Multi-Currency Customization
       'LBL_MORE_CURRENCIES'=>'más monedas',
       'LBL_BASE_CURRENCY'=>'Moneda Base',
@@ -1070,7 +1070,7 @@ $app_strings = array (
       'LBL_RESET_PRICE'=>'Restaurar Precio',
       'LBL_RESET'=>'Restaurar',
       'LBL_UNIT_PRICE_NOT_PERMITTED'=>'Acceso al Precio Unitario no esta Permitido. No se puede seleccionar productos.',
-      
+
       // Documents module
       'SINGLE_Documents' => 'Documento',
       'LBL_NEW_NOTE' => 'Nuevo Documento',
@@ -1089,10 +1089,10 @@ $app_strings = array (
       // Mass Edit Feature
       'LBL_MASS_EDIT'=>'Edición Masiva',
       'LBL_MASSEDIT_FORM_HEADER'=>'Edición Masiva - Registros Campos',
-    
+
       // Product Bundles
       'Product Bundles'=>'Productos Compuestos',
-    
+
       // vtlib customization: Language strings
       'VTLIB_MOD_NOT_ACTIVE' => ' módulo no está activado!',
 
@@ -1116,7 +1116,7 @@ $app_strings = array (
      // Module Sequence Numbering
      'LBL_DUPLICATE' => 'Duplicar',
      'LBL_CLICK' => 'Clic',
-     'LBL_TO_CONFIGURE' => 'para Configurar el', 
+     'LBL_TO_CONFIGURE' => 'para Configurar el',
 
      // For Privacy Policy
      'LNK_PRIVACY_POLICY'=>'Política de Privacidad',
@@ -1259,6 +1259,7 @@ $app_strings = array (
 	'SetReturnAddressDescription' => 'Selecciona que dirección quieres sobrescribir, si procede',
 	'Subscribe' => 'Suscribir',
 	'View History' => 'Ver Histórico',
+	'SYNCH_NOW' => 'Sincroniza Ahora',
 );
 
 // Translation for currency names

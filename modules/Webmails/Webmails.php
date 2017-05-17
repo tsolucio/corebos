@@ -244,7 +244,7 @@ class Webmails extends CRMEntity {
 		$numRows = $this->db->num_rows($res);
 		if($numRows > 0) {
 				foreach ($fieldList as $field) {
-						$value = from_html($this->db->query_result($res,0,$field->getColumnName()));
+						$value = $this->db->query_result($res,0,$field->getColumnName());
 						if($value == trim($this->reply_to[0])) {
 								$found = true;
 								$fieldId = $field->getFieldId();

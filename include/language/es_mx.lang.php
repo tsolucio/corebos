@@ -997,14 +997,13 @@ $app_strings = array (
       'Price'=>'Precio',
       'Discount'=>'Descuento',
       'LBL_ADD_BUTTON' => 'Agregar',
-      //PDF VERSION 5.2
       'Net Total' => 'Neto Total',
       'Shipping & Handling Charges' => 'Gastos de Manejo y Transporte',
       'Shipping & Handling Tax:' => 'Impuestos de Manejo y Transporte',
       'Quantity'=>'Cantidad',
       'Grand Total : (in )'=>'Gran Total : (en )',
 
-      'LBL_GENERAL_FIELDS'=>'Campos Generales', 
+      'LBL_GENERAL_FIELDS'=>'Campos Generales',
       //For Users fields
       'HomePhone'=>'Teléfono Casa',
       'Signature'=>'Firma',
@@ -1015,16 +1014,16 @@ $app_strings = array (
       //For General fields
       'Current Date'=>'Fecha Actual',
       'Current Time'=>'Hora Actual',
-      
+
       //Added for Role based Custom filters
       'LBL_PUBLIC'=>'Publico',
       'LBL_PENDING'=>'Pendiente',
       'LBL_OTHERS'=>'Otros',
-      
+
       //For Configuring/Using PurchaseOrder number
       'PO Number'=>'Nº Orden Compra',
       'MSG_AUTO_GEN_ON_SAVE'=>'AUTO-GENERADO AL GUARDAR',
-      
+
       //For Duplicate merging feature
       'LBL_MERGE' => 'Combinar',
       'LBL_MERGE_BUTTON_TITLE' => 'Combinar',
@@ -1051,7 +1050,7 @@ $app_strings = array (
       'LBL_BACKEDUPSUCCESSFULLY_TO_FILE' => 'Copia de seguridad a archivo correcta',//BACKUP
       'APP.LBL_NOW'=>'Ahora',//BACKUP
       'LBL_NOW'=>'Ahora',//BACKUP
-      
+
       // Multi-Currency Customization
       'LBL_MORE_CURRENCIES'=>'más monedas',
       'LBL_BASE_CURRENCY'=>'Moneda Base',
@@ -1062,7 +1061,7 @@ $app_strings = array (
       'LBL_RESET_PRICE'=>'Restaurar Precio',
       'LBL_RESET'=>'Restaurar',
       'LBL_UNIT_PRICE_NOT_PERMITTED'=>'Acceso al Precio Unitario no esta Permitido. No se puede seleccionar productos.',
-      
+
       // Documents module
       'SINGLE_Documents' => 'Documento',
       'LBL_NEW_NOTE' => 'Nuevo Documento',
@@ -1081,10 +1080,10 @@ $app_strings = array (
       // Mass Edit Feature
       'LBL_MASS_EDIT'=>'Edición Masiva',
       'LBL_MASSEDIT_FORM_HEADER'=>'Edición Masiva - Registros Campos',
-    
+
       // Product Bundles
       'Product Bundles'=>'Productos Compuestos',
-    
+
       // vtlib customization: Language strings
       'VTLIB_MOD_NOT_ACTIVE' => ' módulo no está activado!',
 
@@ -1250,6 +1249,7 @@ $app_strings = array (
 	'SetReturnAddressDescription' => 'Selecciona que dirección quieres sobrescribir, si procede',
 	'Subscribe' => 'Suscribir',
 	'View History' => 'Ver Histórico',
+	'SYNCH_NOW' => 'Sincroniza Ahora',
 );
 
 // Translation for currency names

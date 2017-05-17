@@ -31,8 +31,13 @@
 
 		function save($workflow){
 			$adb=$this->adb;
+			if (!isset($workflow->schtime)) $workflow->schtime = '';
+			if (!isset($workflow->schdayofmonth)) $workflow->schdayofmonth = '';
+			if (!isset($workflow->schdayofweek)) $workflow->schdayofweek = '';
+			if (!isset($workflow->schannualdates)) $workflow->schannualdates = '';
+			if (!isset($workflow->schminuteinterval)) $workflow->schminuteinterval = '';
+			$wf=$workflow;
 			if(!empty($workflow->id)){
-				$wf=$workflow;
 				$adb->pquery("update com_vtiger_workflows set
 								module_name=?, summary=?, test=?, execution_condition=?, defaultworkflow=?,
 								schtypeid=?, schtime=?, schdayofmonth=?, schdayofweek=?, schannualdates=?,schminuteinterval=? where workflow_id=?",
@@ -41,7 +46,6 @@
 			}else{
 				$workflowId = $adb->getUniqueID("com_vtiger_workflows");
 				$workflow->id = $workflowId;
-				$wf=$workflow;
 
 				$result=$adb->getColumnNames("com_vtiger_workflows");
 				if(in_array("type",$result)) {

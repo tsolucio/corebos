@@ -7,10 +7,9 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-global $app_strings, $mod_strings, $current_language, $currentModule, $theme,$current_user;
+global $app_strings, $mod_strings, $current_language, $currentModule, $theme;
 require_once('Smarty_setup.php');
 require_once('modules/CustomerPortal/PortalUtils.php');
-require('user_privileges/user_privileges_'.$current_user->id.'.php');
 
 $smarty = new vtigerCRM_Smarty();
 if (isPermitted('CustomerPortal','')!='yes') {

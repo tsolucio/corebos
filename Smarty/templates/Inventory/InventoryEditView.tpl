@@ -21,6 +21,9 @@
 	var Inventory_ListPrice_ReadOnly = '{if isset($Inventory_ListPrice_ReadOnly)}{$Inventory_ListPrice_ReadOnly}{/if}';
 </script>
 {/if}
+{if vt_hasRTE()}
+<script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
+{/if}
 
 {include file='Buttons_List.tpl'}
 

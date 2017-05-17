@@ -439,6 +439,7 @@ $mod_strings = array(
 	'LBL_CONTACT_FIELDS' => 'Contact Fields',
 	'LBL_LEAD_FIELDS' => 'Lead Fields',
 	'LBL_USER_FIELDS' => 'User Fields',
+	'LBL_HELPDESK_FIELDS'=>'Ticket Fields',
 	'LNK_SAMPLE_EMAIL' => 'View Sample Email',
 	'LBL_TEMPLATE_FILE' => 'Template File',
 	'LBL_MODULENAMES' => 'Module',

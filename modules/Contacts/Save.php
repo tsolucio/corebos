@@ -13,7 +13,12 @@ checkFileAccessForInclusion("modules/$currentModule/$currentModule.php");
 require_once("modules/$currentModule/$currentModule.php");
 require_once('modules/Emails/mail.php');
 
-$search = isset($_REQUEST['search_url']) ? urlencode(vtlib_purify($_REQUEST['search_url'])) : '';
+if (isset($_REQUEST['search_url'])) {
+	$search = vtlib_purify($_REQUEST['search_url']);
+	if (substr($search, 0, 1) != '&') $search = '&' . $search;
+} else {
+	$search = '';
+}
 $req = new Vtiger_Request();
 $req->setDefault('return_module',$currentModule);
 if(!empty($_REQUEST['return_module'])) {
@@ -32,12 +37,12 @@ if(empty($_REQUEST['return_viewname']) or $singlepane_view == 'true') {
 if(isset($_REQUEST['activity_mode'])) {
 	$req->set('return_activity_mode',$_REQUEST['activity_mode']);
 }
-$req->set('return_start',$_REQUEST['pagenumber']);
+$req->set('return_start',(isset($_REQUEST['pagenumber']) ? $_REQUEST['pagenumber'] : ''));
 
 $focus = new $currentModule();
 setObjectValuesFromRequest($focus);
 
-$mode = vtlib_purify($_REQUEST['mode']);
+$mode = (isset($_REQUEST['mode']) ? vtlib_purify($_REQUEST['mode']) : '');
 $record=vtlib_purify($_REQUEST['record']);
 if($mode) $focus->mode = $mode;
 if($record)$focus->id  = $record;
@@ -51,8 +56,7 @@ if (!isset($_REQUEST['email_opt_out'])) $focus->email_opt_out = 'off';
 if (!isset($_REQUEST['do_not_call'])) $focus->do_not_call = 'off';
 
 //if image added then we have to set that $_FILES['name'] in imagename field then only the image will be displayed
-if($_FILES['imagename']['name'] != '')
-{
+if (!empty($_FILES['imagename']['name'])) {
 	if(isset($_REQUEST['imagename_hidden'])) {
 		$focus->column_fields['imagename'] = vtlib_purify($_REQUEST['imagename_hidden']);
 	} else {
@@ -107,6 +111,10 @@ if(isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != '') {
 }
 
 if (!isset($__cbSaveSendHeader) || $__cbSaveSendHeader) {
-	header('Location: index.php?' . $req->getReturnURL() . $search);
+	if (isset($_REQUEST['Module_Popup_Edit']) and $_REQUEST['Module_Popup_Edit']==1) {
+		echo "<script>window.close();</script>";
+	} else {
+		header('Location: index.php?' . $req->getReturnURL() . $search);
+	}
 }
 ?>

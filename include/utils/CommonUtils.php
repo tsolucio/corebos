@@ -205,28 +205,22 @@ function parse_calendardate($local_format) {
 }
 
 /**
- * Decodes the given set of special character
- * input values $string - string to be converted, $encode - flag to decode
- * returns the decoded value in string fromat
+ * Rudimentary/Trusted input clean up for XSS
+ * input values $string - string to be cleaned
+ * returns the cleaned value in string fromat
  */
-function from_html($string, $encode = true) {
-	global $log;
-	//$log->debug("Entering from_html(".$string.",".$encode.") method ...");
-	//if($encode && is_string($string))$string = html_entity_decode($string, ENT_QUOTES);
+function from_html($string) {
 	if (is_string($string)) {
-		if (preg_match('/(script).*(\/script)/i', $string))
-			$string = preg_replace(array('/</', '/>/', '/"/'), array('&lt;', '&gt;', '&quot;'), $string);
+		if (preg_match('/(script).*(\/script)/i', $string)) {
+			$string = preg_replace(array('/<\s*script/', '/<\/\s*script\s*>/'), array('&lt;script', '&lt;/script&gt;', '&quot;'), $string);
+			$string = str_replace('"', '&quot;', $string);
+		}
 	}
-	//$log->debug("Exiting from_html method ...");
 	return $string;
 }
 
 function fck_from_html($string) {
-	if (is_string($string)) {
-		if (preg_match('/(script).*(\/script)/i', $string))
-			$string = str_replace('script', '', $string);
-	}
-	return $string;
+	return vtlib_purify($string);
 }
 
 /**
@@ -612,7 +606,7 @@ function getLeadName($lead_id) {
  */
 function getFullNameFromQResult($result, $row_count, $module) {
 	global $log, $adb, $current_user;
-	$log->info("In getFullNameFromQResult(" . print_r($result, true) . " - " . $row_count . "-" . $module . ") method ...");
+	$log->info('In getFullNameFromQResult(');
 
 	$rowdata = $adb->query_result_rowdata($result, $row_count);
 	$entity_field_info = getEntityFieldNames($module);
@@ -780,9 +774,8 @@ function getUserName($userid) {
  * Get the user full name by giving the user id.   This method expects the user id
  */
 function getUserFullName($userid) {
-	global $log;
-	$log->debug("Entering getUserFullName(" . $userid . ") method ...");
-	global $adb;
+	global $log, $adb;
+	$log->debug("Entering getUserFullName($userid) method ...");
 	if ($userid != '') {
 		if (strpos($userid,'x')) list($wsid,$userid) = explode('x', $userid);
 		$displayValueArray = getEntityName('Users', $userid);
@@ -791,8 +784,10 @@ function getUserFullName($userid) {
 				$user_name = $value;
 			}
 		}
+	} else {
+		$user_name = '';
 	}
-	$log->debug("Exiting getUserFullName method ...");
+	$log->debug('Exiting getUserFullName method ...');
 	return $user_name;
 }
 
@@ -2052,8 +2047,7 @@ function getEntityName($module, $ids_list) {
  */
 
 function getAllParenttabmoduleslist() {
-	global $adb;
-	global $current_user;
+	global $adb, $current_user;
 	$resultant_array = Array();
 
 	//$query = 'select name,tablabel,parenttab_label,vtiger_tab.tabid from vtiger_parenttabrel inner join vtiger_tab on vtiger_parenttabrel.tabid = vtiger_tab.tabid inner join vtiger_parenttab on vtiger_parenttabrel.parenttabid = vtiger_parenttab.parenttabid and vtiger_tab.presence order by vtiger_parenttab.sequence, vtiger_parenttabrel.sequence';
@@ -2254,8 +2248,7 @@ function getMergedDescription($description, $id, $parent_type) {
 		// Custom date & time fields
 		$description = getMergedDescriptionCustomVars($fields, $description);
 	}
-	if($parent_type == 'Users' && is_array($fields["users"]))
-	{
+	if ($parent_type == 'Users' && isset($fields['users']) && is_array($fields['users'])) {
 		$columnfields = implode(',',$fields["users"]);
 		$query = "select $columnfields from vtiger_users where id=?";
 		$result = $adb->pquery($query, array($id));
@@ -2902,7 +2895,7 @@ function getEmailTemplateVariables($modules_list = null) {
 	global $adb;
 
 	if (is_null($modules_list)) {
-		$modules_list = array('Accounts', 'Contacts', 'Leads', 'Users');
+		$modules_list = array('Accounts', 'Contacts', 'Leads', 'Users', 'HelpDesk');
 	}
 
 	foreach ($modules_list as $index => $module) {
@@ -3280,10 +3273,8 @@ function vt_suppressHTMLTags($string) {
 }
 
 function vt_hasRTE() {
-	global $FCKEDITOR_DISPLAY, $currentModule;
-	$USE_RTE = GlobalVariable::getVariable('Application_Use_RTE',1,$currentModule);
-	$USE_RTE = empty($USE_RTE) ? 'false' : 'true';
-	return ((!empty($FCKEDITOR_DISPLAY) && $FCKEDITOR_DISPLAY == 'true') || (!empty($USE_RTE) && $USE_RTE == 'true'));
+	$USE_RTE = GlobalVariable::getVariable('Application_Use_RTE',1);
+	return $USE_RTE;
 }
 
 function getNameInDisplayFormat($input, $dispFormat = "lf") {

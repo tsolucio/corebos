@@ -32,6 +32,7 @@ class CustomReportUtils {
 		global $log, $adb;
 		$oReportRun = new ReportRun($reportid);
 		$groupBy = $oReportRun->getGroupingList($reportid);
+		$module_field = $fieldDetails = '';
 		foreach ($groupBy as $key => $value) {
 			// $groupByConditon = explode(" ",$value);
 			//$groupByNew = explode("'",$groupByConditon[0]);

@@ -125,7 +125,7 @@ class Faq extends CRMEntity {
 
 		if($comment != '')
 		{
-			$params = array($this->id, from_html($comment), $current_time);
+			$params = array($this->id, $comment, $current_time);
 			$sql = "insert into vtiger_faqcomments (faqid, comments, createdtime) values(?, ?, ?)";
 			$adb->pquery($sql, $params);
 		}
@@ -144,7 +144,8 @@ class Faq extends CRMEntity {
 		$result = $this->db->pquery($sql, array($faqid));
 		$noofrows = $this->db->num_rows($result);
 		$list = '';
-		//In ajax save we should not add this div
+		$enddiv = '';
+		// In ajax save we should not add this div
 		if($_REQUEST['action'] != 'FaqAjax')
 		{
 			$list = '<div id="comments_div" style="overflow: auto;height:200px;width:100%;">';

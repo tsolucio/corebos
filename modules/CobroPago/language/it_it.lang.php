@@ -110,20 +110,20 @@ $mod_strings = Array(
 '--None--'=>'--Nessuno--',
 'LBLLINKTOACCOUNTS'=>'Azienda relazionata',
 
-'LBL_CARD_INFORMATION' => 'Card Information',
-'CARD_ACCOUNT' => 'Card Number:',
+'LBL_CARD_INFORMATION' => 'Informazione Carta',
+'CARD_ACCOUNT' => 'Numero Carta:',
 'CARD_CVV' => 'CVV2:',
-'CARD_EXPIRY_DATE' => 'Expiry Date (MMYY):',
-'CARD_SUBMIT' => 'Send',
-'ACH_ACCOUNT_TYPE' => 'Account Type:',
-'ACH_ACCOUNT_NUMBER' => 'Account Number:',
-'ACH_ROUTING_NUMBER' => 'Routing Number:',
+'CARD_EXPIRY_DATE' => 'Data di Scadenza (MMYY):',
+'CARD_SUBMIT' => 'Invia',
+'ACH_ACCOUNT_TYPE' => 'Tipo Account:',
+'ACH_ACCOUNT_NUMBER' => 'Numero Account:',
+'ACH_ROUTING_NUMBER' => 'Numero Routing:',
 'ACH_SUBMIT' => 'Send',
-'Receive BluePay Payment'=>'Receive BluePay Payment',
+'Receive BluePay Payment'=>'Ricevi Pagamento BluePay',
 
-'ERR_ALREADY_PAID' => "This payment has been already paid.",
-'ERR_NO_ACCOUNT' => "There's no related account.",
-'ERR_NO_TOKEN' => "No token for this account.",
+'ERR_ALREADY_PAID' => "Questo pagamento è già stato effettuato",
+'ERR_NO_ACCOUNT' => "Non ci sono account relazionati.",
+'ERR_NO_TOKEN' => "Non esiste un token per questo account.",
 );
 
 ?>

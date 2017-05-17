@@ -12,7 +12,7 @@
 <script type="text/javascript" src="include/js/general.js"></script>
 
 <!-- header - level 2 tabs -->
-{include file='Buttons_List1.tpl'}
+{include file='Buttons_List.tpl'}
 
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 	<tr>

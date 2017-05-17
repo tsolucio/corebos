@@ -756,7 +756,7 @@ function UpdateContacts($username,$session,$cntdtls)
 
 	for($i=0;$i < $adb->num_rows($result1);$i++)
 	{
-      $permitted_lists[] = $adb->query_result($result1,$i,'fieldname');
+		$permitted_lists[] = $adb->query_result($result1,$i,'fieldname');
 	}
 
 	foreach($cntdtls as $cntrow)
@@ -981,7 +981,7 @@ function AddTasks($username,$session,$taskdtls)
 
 	for($i=0;$i < $adb->num_rows($result1);$i++)
 	{
-      $permitted_lists[] = $adb->query_result($result1,$i,'fieldname');
+		$permitted_lists[] = $adb->query_result($result1,$i,'fieldname');
 	}
 
 	$task = new Activity();
@@ -1242,7 +1242,7 @@ function AddClndr($username,$session,$clndrdtls)
 
 	for($i=0;$i < $adb->num_rows($result1);$i++)
 	{
-      $permitted_lists[] = $adb->query_result($result1,$i,'fieldname');
+		$permitted_lists[] = $adb->query_result($result1,$i,'fieldname');
 	}
 
 	$clndr = new Activity();
@@ -1315,7 +1315,7 @@ function UpdateClndr($username,$session,$clndrdtls)
 
 	for($i=0;$i < $adb->num_rows($result1);$i++)
 	{
-      $permitted_lists[] = $adb->query_result($result1,$i,'fieldname');
+		$permitted_lists[] = $adb->query_result($result1,$i,'fieldname');
 	}
 
 	$clndr = new Activity();

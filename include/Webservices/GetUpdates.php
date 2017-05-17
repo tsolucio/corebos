@@ -13,7 +13,7 @@ require_once 'include/utils/CommonUtils.php';
 
 	function vtws_sync($mtime,$elementType,$syncType='',$user=''){
 		global $adb, $recordString,$modifiedTimeString;
-        
+
 		$numRecordsLimit = 100;
 		$ignoreModules = array("Users");
 		$typed = true;
@@ -110,14 +110,11 @@ require_once 'include/utils/CommonUtils.php';
 		for($i=0;$i<$adb->num_rows($result);$i++){
 			$modTime[] = $adb->query_result($result,$i,'modifiedtime');
 		}
-		if(!empty($modTime)){
+		if (!empty($modTime)) {
 			$maxModifiedTime = max($modTime);
-		}
-		if(!$maxModifiedTime){
+		} else {
 			$maxModifiedTime = $datetime;
 		}
-
-
 
 		foreach($accessableModules as $elementType){
 			$handler = vtws_getModuleHandlerFromName($elementType, $user);

@@ -11,9 +11,12 @@ require_once 'include/Webservices/GetUpdates.php';
 require_once 'modules/WSAPP/Utils.php';
 
 function wsapp_get ($key, $module, $token, $user) {
-        $name = wsapp_getApplicationName($key);
-        $handlerDetails  = wsapp_getHandler($name);
-        require_once $handlerDetails['handlerpath'];
-        $handler = new $handlerDetails['handlerclass']($key);
-        return $handler->get($module,$token,$user);
+	$name = wsapp_getApplicationName($key);
+	if ($name) {
+		$handlerDetails = wsapp_getHandler($name);
+		require_once $handlerDetails['handlerpath'];
+		$handler = new $handlerDetails['handlerclass']($key);
+		return $handler->get($module,$token,$user);
+	}
+	return array();
 }

@@ -142,7 +142,7 @@ class Mapping extends processcbMap {
 					$util->revertUser();
 				} else {
 					$fieldname = array_pop($fieldinfo);
-					$value.= $ofields[$fieldname].$delim;
+					$value.= (isset($ofields[$fieldname]) ? $ofields[$fieldname] : '').$delim;
 				}
 			}
 			$value = rtrim($value,$delim);

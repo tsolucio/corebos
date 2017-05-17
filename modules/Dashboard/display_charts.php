@@ -745,7 +745,6 @@ function picklist_check($module,$graph_by)
 {
 	global $current_user,$adb;
 	$pick_query = '';
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	$roleid=$current_user->roleid;
 	$subrole = getRoleSubordinates($roleid);
 	if(count($subrole)> 0)
@@ -774,5 +773,5 @@ function picklist_check($module,$graph_by)
 }
 ?>
 <script id="dash_script">
-	var gdash_display_type = '<?php echo vtlib_purify($_REQUEST['display_view']);?>';
+	var gdash_display_type = '<?php echo (isset($_REQUEST['display_view']) ? vtlib_purify($_REQUEST['display_view']) : '');?>';
 </script>

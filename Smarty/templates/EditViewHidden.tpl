@@ -42,7 +42,7 @@
 	<input type="hidden" name="product_id" value="{$PRODUCTID}">
 
 {elseif $MODULE eq 'Leads'}
-	<input type="hidden" name="campaignid" value="{$campaignid}">
+	<input type="hidden" name="campaignid" value="{if isset($campaignid)}{$campaignid}{/if}">
 
 {elseif $MODULE eq 'Documents'}
 	<input type="hidden" name="max_file_size" value="{$MAX_FILE_SIZE}">
@@ -69,4 +69,5 @@
 <input type="hidden" name="createmode" value="{$CREATEMODE}" />
 <input type="hidden" name="cbcustominfo1" value="{if isset($smarty.request.cbcustominfo1)}{$smarty.request.cbcustominfo1|@urlencode}{/if}" />
 <input type="hidden" name="cbcustominfo2" value="{if isset($smarty.request.cbcustominfo2)}{$smarty.request.cbcustominfo2|@urlencode}{/if}" />
+<input type="hidden" name="Module_Popup_Edit" value="{if isset($smarty.request.Module_Popup_Edit)}{$smarty.request.Module_Popup_Edit|@urlencode}{/if}" />
 

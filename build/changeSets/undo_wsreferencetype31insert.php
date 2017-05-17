@@ -15,7 +15,7 @@
 *************************************************************************************************/
 
 class undo_wsreferencetype31insert extends cbupdaterWorker {
-	
+
 	function applyChange() {
 		if ($this->hasError()) $this->sendError();
 		if ($this->isApplied()) {
@@ -27,7 +27,8 @@ class undo_wsreferencetype31insert extends cbupdaterWorker {
 			// related to uitype 66 calendar related to
 			// we also add vendors to uitype 66 because we added support for this a few commits back
 			$this->ExecuteQuery('DELETE FROM vtiger_ws_referencetype where fieldtypeid=? and type=?', array(31,'Campaigns'));
-			$ftype = $adb->query_result($adb->query("select fieldtypeid from vtiger_ws_fieldtype where uitype=66"),0,0);
+			$rsft = $adb->query('select fieldtypeid from vtiger_ws_fieldtype where uitype=66');
+			$ftype = $adb->query_result($rsft,0,0);
 			$wscmp = $adb->query("select * from vtiger_ws_referencetype where fieldtypeid=$ftype and type='Campaigns'");
 			if (!($wscmp and $adb->num_rows($wscmp)==1)) {
 				$this->ExecuteQuery('INSERT INTO vtiger_ws_referencetype VALUES (?,?)', array($ftype,'Campaigns'));
@@ -41,5 +42,5 @@ class undo_wsreferencetype31insert extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
+
 }

@@ -20,7 +20,7 @@
  	<input type="hidden" name="parenttab" value="Settings">
     	<input type="hidden" name="return_action" value="OrganizationConfig">
 	<div align=center>
-			{include file="SetMenu.tpl"}	
+			{include file="SetMenu.tpl"}
 				<!-- DISPLAY -->
 				<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 				<tr>
@@ -31,16 +31,16 @@
 					<td valign=top class="small">{$MOD.LBL_COMPANY_DESC}</td>
 				</tr>
 				</table>
-				
+
 				<br>
 				<table border=0 cellspacing=0 cellpadding=10 width=100% >
 				<tr>
 				<td>
-				
+
 					<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 					<tr>
 						<td class="big"><strong>{$MOD.LBL_COMPANY_DETAILS} </strong>
-						{$ERRORFLAG}<br>
+						{if isset($ERRORFLAG)}{$ERRORFLAG}{/if}<br>
 						</td>
 						<td class="small" align=right>
 							<input title="{$APP.LBL_SAVE_BUTTON_LABEL}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmButton small save" type="submit" name="button" value="{$APP.LBL_SAVE_BUTTON_LABEL}" onclick="return verify_data(form,'{$MOD.LBL_ORGANIZATION_NAME}');" >
@@ -48,7 +48,7 @@
 						</td>
 					</tr>
 					</table>
-					
+
 					<table border=0 cellspacing=0 cellpadding=0 width=100% class="listRow">
 					<tr>
 						<td class="small" valign=top ><table width="100%"  border="0" cellspacing="0" cellpadding="5">
@@ -61,45 +61,45 @@
                           </tr>
                           <tr valign="top">
                             <td class="small cellLabel"><strong>{$MOD.LBL_ORGANIZATION_LOGO}</strong></td>
-			    {if $ORGANIZATIONLOGONAME neq ''}	
+			    {if $ORGANIZATIONLOGONAME neq ''}
                             <td class="small cellText" style="background-image: url(test/logo/{$ORGANIZATIONLOGONAME}); background-position: left; background-repeat: no-repeat;" width="48" height="48" border="0" >
 			    {else}
                             <td class="small cellText" style="background-image: url(include/images/noimage.gif); background-position: left; background-repeat: no-repeat;" width="48" height="48" border="0" >
-			     {/if}	
+			     {/if}
 				<br><br><br><br>
-                             {$MOD.LBL_SELECT_LOGO} 
+                             {$MOD.LBL_SELECT_LOGO}
 				<INPUT TYPE="HIDDEN" NAME="MAX_FILE_SIZE" VALUE="800000">
-		                <INPUT TYPE="HIDDEN" NAME="PREV_FILE" VALUE="{$ORGANIZATIONLOGONAME}">	 
+		                <INPUT TYPE="HIDDEN" NAME="PREV_FILE" VALUE="{$ORGANIZATIONLOGONAME}">
                                 <input type="file" name="binFile" class="small" value="{$ORGANIZATIONLOGONAME}" onchange="validateFilename(this);">[{$ORGANIZATIONLOGONAME}]
                                 <input type="hidden" name="binFile_hidden" value="{$ORGANIZATIONLOGONAME}" />
 			      </td>
                           </tr>
                            <tr valign="top">
                             <td class="small cellLabel"><strong>{$MOD.LBL_FRONT_LOGO}</strong></td>
-			    {if $FORNTLOGONAME neq ''}	
+			    {if $FORNTLOGONAME neq ''}
                             <td class="small cellText" style="background-image: url(test/logo/{$FORNTLOGONAME}); background-position: left; background-repeat: no-repeat;" width="48" height="48" border="0" >
 			    {else}
                             <td class="small cellText" style="background-image: url(include/images/noimage.gif); background-position: left; background-repeat: no-repeat;" width="48" height="48" border="0" >
-			     {/if}	
+			     {/if}
 				<br><br><br><br>
-                             {$MOD.LBL_SELECT_LOGO} 
+                             {$MOD.LBL_SELECT_LOGO}
 				<INPUT TYPE="HIDDEN" NAME="MAX_FILE_SIZE" VALUE="800000">
-		                <INPUT TYPE="HIDDEN" NAME="PREV_FRONT_FILE" VALUE="{$FORNTLOGONAME}">	 
+		                <INPUT TYPE="HIDDEN" NAME="PREV_FRONT_FILE" VALUE="{$FORNTLOGONAME}">
                                 <input type="file" name="binFrontFile" class="small" value="{$FORNTLOGONAME}" onchange="validateFilename(this);">[{$FORNTLOGONAME}]
                                 <input type="hidden" name="binFrontFile_hidden" value="{$FORNTLOGONAME}" />
 			      </td>
                           </tr>
                           <tr valign="top">
                             <td class="small cellLabel"><strong>{$MOD.LBL_FAVICON_LOGO}</strong></td>
-			    {if $FAVICONLOGONAME neq ''}	
+			    {if $FAVICONLOGONAME neq ''}
                             <td class="small cellText" style="background-image: url(test/logo/{$FAVICONLOGONAME}); background-position: left; background-repeat: no-repeat;" width="48" height="48" border="0" >
 			    {else}
                             <td class="small cellText" style="background-image: url(include/images/noimage.gif); background-position: left; background-repeat: no-repeat;" width="48" height="48" border="0" >
-			     {/if}	
+			     {/if}
 				<br><br><br><br>
-                             {$MOD.LBL_SELECT_LOGO} 
+                             {$MOD.LBL_SELECT_LOGO}
 				<INPUT TYPE="HIDDEN" NAME="MAX_FILE_SIZE" VALUE="800000">
-		                <INPUT TYPE="HIDDEN" NAME="PREV_FAVICON_FILE" VALUE="{$FAVICONLOGONAME}">	 
+		                <INPUT TYPE="HIDDEN" NAME="PREV_FAVICON_FILE" VALUE="{$FAVICONLOGONAME}">
                                 <input type="file" name="binFaviconFile" class="small" value="{$FAVICONLOGONAME}" onchange="validateFilename(this);">[{$FAVICONLOGONAME}]
                                 <input type="hidden" name="binFaviconFile_hidden" value="{$FAVICONLOGONAME}" />
 			      </td>
@@ -108,7 +108,7 @@
                             <td class="small cellLabel"><strong>{$MOD.LBL_ORGANIZATION_ADDRESS}</strong></td>
                             <td class="small cellText"><input type="text" name="organization_address" class="detailedViewTextBox small" value="{$ORGANIZATIONADDRESS}"></td>
                           </tr>
-                          <tr> 
+                          <tr>
                             <td class="small cellLabel"><strong>{$MOD.LBL_ORGANIZATION_CITY}</strong></td>
                             <td class="small cellText"><input type="text" name="organization_city" class="detailedViewTextBox small" value="{$ORGANIZATIONCITY}"></td>
                           </tr>
@@ -138,7 +138,6 @@
                             <td class="small cellText"><input type="text" name="organization_website" class="detailedViewTextBox small" value="{$ORGANIZATIONWEBSITE}"></td>
                           </tr>
                         </table>
-						
 						</td>
 					  </tr>
 					</table>
@@ -150,9 +149,6 @@
 				</td>
 				</tr>
 				</table>
-			
-			
-			
 			</td>
 			</tr>
 			</table>
@@ -160,7 +156,7 @@
 	</tr>
 	</table>
 	</div>
-	</form>		
+	</form>
 </td>
         <td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
    </tr>
@@ -186,7 +182,7 @@ function verify_data(form,company_name)
                 return false;
                 {literal}
 	}
-else if (! upload_filter("binFile","png|jpg|jpeg|JPG|JPEG"))        
+else if (! upload_filter("binFile","png|jpg|jpeg|JPG|JPEG"))
 {
                 form.binFile.focus();
                 return false;

@@ -6,7 +6,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************}
-{include file='Buttons_List1.tpl'}
+{include file='Buttons_List.tpl'}
 <script type='text/javascript' src='include/ckeditor/ckeditor.js'></script>
 <script type='text/javascript' src='modules/MailManager/resources/jquery.tokeninput.js'></script>
 <link rel='stylesheet' type='text/css' href='modules/MailManager/resources/token-input-facebook.css'>

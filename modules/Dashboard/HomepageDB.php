@@ -9,9 +9,8 @@
  ********************************************************************************/
 require_once("modules/Dashboard/Entity_charts.php");
 require_once("include/utils/ChartUtils.php");
-require('user_privileges/user_privileges_'.$current_user->id.'.php');
 
-global $current_user,$user_id,$date_start,$end_date,$tmp_dir,$mod_strings,$app_strings;
+global $current_user, $mod_strings;
 $type='recordsforuser';
 
 $graph_details = module_Chart_HomePageDashboard($current_user);

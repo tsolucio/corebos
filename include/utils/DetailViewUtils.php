@@ -22,12 +22,11 @@ require_once('modules/PickList/PickListUtils.php');
  * Param $tabid - vtiger_tab id to which the Field belongs to (default is "")
  * Return type is an array
  */
-function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, $generatedtype, $tabid='', $module='') {
+function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, $generatedtype, $tabid='', $module='', $cbMapFI=array()) {
 	global $log, $adb, $mod_strings, $app_strings, $current_user, $theme, $default_charset;
 	$log->debug("Entering getDetailViewOutputHtml(" . $uitype . "," . $fieldname . "," . $fieldlabel . "," . print_r($col_fields,true) . "," . $generatedtype . "," . $tabid . ") method ...");
 	$theme_path = "themes/" . $theme . "/";
 	$image_path = $theme_path . "images/";
-	$fieldlabel = from_html($fieldlabel);
 	$custfld = '';
 	$value = '';
 	$arr_data = Array();
@@ -254,14 +253,18 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$label_fld[] = '';
 		}
 	} elseif ($uitype == 19) {
-		if ($fieldname == 'notecontent' or $module=='Timecontrol' or $module=='Emails')
-			$col_fields[$fieldname] = decode_html($col_fields[$fieldname]);
-		else
-			$col_fields[$fieldname] = str_replace("&lt;br /&gt;", "<br>", $col_fields[$fieldname]);
+		$col_fields[$fieldname] = decode_html($col_fields[$fieldname]); // undo database encoding
+		if ($fieldname == 'notecontent' or $module=='Emails' or (isset($cbMapFI['RTE']) and $cbMapFI['RTE'] and vt_hasRTE())) {
+			//$col_fields[$fieldname] = htmlentities($col_fields[$fieldname]); // prepare for output
+			$col_fields[$fieldname] = from_html($col_fields[$fieldname]);
+		} else {
+			//$col_fields[$fieldname] = preg_replace(array('/</', '/>/', '/"/'), array('&lt;', '&gt;', '&quot;'), $col_fields[$fieldname]);
+			$col_fields[$fieldname] = htmlentities($col_fields[$fieldname]); // prepare for output
+		}
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$label_fld[] = $col_fields[$fieldname];
 	}
-	elseif ($uitype == 20 || $uitype == 21 || $uitype == 22 || $uitype == 24) { // Armando LC<scher 11.08.2005 -> B'descriptionSpan -> Desc: removed $uitype == 19 and made an aditional elseif above
+	elseif ($uitype == 20 || $uitype == 21 || $uitype == 22 || $uitype == 24) {
 		if ($uitype == 20)//Fix the issue #4680
 			$col_fields[$fieldname] = $col_fields[$fieldname];
 		else
@@ -298,7 +301,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$label_fld[] = $user_name;
 		}
 		$tabidmodule = getTabid($module);
-		if ($is_admin == false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[$tabidmodule] == 3 or $defaultOrgSharingPermission[$tabidmodule] == 0)) {
+		if ($is_admin == false && $profileGlobalPermission[2] == 1 && isset($defaultOrgSharingPermission[$tabidmodule]) && ($defaultOrgSharingPermission[$tabidmodule] == 3 or $defaultOrgSharingPermission[$tabidmodule] == 0)) {
 			$ua = get_user_array(FALSE, "Active", $assigned_user_id, 'private');
 			$users_combo = get_select_options_array($ua, $assigned_user_id);
 		} else {
@@ -373,7 +376,6 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$user_style = 'display:block';
 			$team_style = 'display:none';
 		}
-
 
 		if ($fieldname == 'assigned_user_id' && $is_admin == false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid($module)] == 3 or $defaultOrgSharingPermission[getTabid($module)] == 0)) {
 			$user_array = get_user_array(FALSE, "Active", $current_user->id, 'private');
@@ -573,6 +575,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$start_idx = $filename_pos + strlen($col_fields['record_id'] . '_');
 			$org_filename = substr($org_filename, $start_idx);
 		}
+		$custfldval = '';
 		if ($org_filename != '') {
 			if ($col_fields['filelocationtype'] == 'E') {
 				if ($col_fields['filestatus'] == 1) {//&& strlen($col_fields['filename']) > 7  ){
@@ -586,8 +589,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 				} else {
 					$custfldval = $col_fields[$fieldname];
 				}
-			} else
-				$custfldval = '';
+			}
 		}
 		$label_fld[] = $custfldval;
 	}
@@ -1005,7 +1007,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$decimals = CurrencyField::getDecimalsFromTypeOfData($typeofdata);
 			$currencyField->initialize($current_user);
 			$currencyField->setNumberofDecimals(min($decimals,$currencyField->getCurrencyDecimalPlaces()));
-			$label_fld[] = $currencyField->getDisplayValue(null,false,true);
+			$label_fld[] = $currencyField->getDisplayValue(null,true,true);
 		}
 	}
 	elseif ($uitype == 71 || $uitype == 72) {
@@ -1036,45 +1038,35 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 	} elseif ($uitype == 75 || $uitype == 81) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$vendor_id = $col_fields[$fieldname];
-		if ($vendor_id != '') {
-			$vendor_name = getVendorName($vendor_id);
-		}
+		$vendor_name = (empty($vendor_id) ? '' : getVendorName($vendor_id));
 		$label_fld[] = $vendor_name;
 		$label_fld["secid"] = $vendor_id;
 		$label_fld["link"] = "index.php?module=Vendors&action=DetailView&record=" . $vendor_id;
 	} elseif ($uitype == 76) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$potential_id = $col_fields[$fieldname];
-		if ($potential_id != '') {
-			$potential_name = getPotentialName($potential_id);
-		}
+		$potential_name = (empty($potential_id) ? '' : getPotentialName($potential_id));
 		$label_fld[] = $potential_name;
 		$label_fld["secid"] = $potential_id;
 		$label_fld["link"] = "index.php?module=Potentials&action=DetailView&record=" . $potential_id;
 	} elseif ($uitype == 78) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$quote_id = $col_fields[$fieldname];
-		if ($quote_id != '') {
-			$quote_name = getQuoteName($quote_id);
-		}
+		$quote_name = (empty($quote_id) ? '' : getQuoteName($quote_id));
 		$label_fld[] = $quote_name;
 		$label_fld["secid"] = $quote_id;
 		$label_fld["link"] = "index.php?module=Quotes&action=DetailView&record=" . $quote_id;
 	} elseif ($uitype == 79) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$purchaseorder_id = $col_fields[$fieldname];
-		if ($purchaseorder_id != '') {
-			$purchaseorder_name = getPoName($purchaseorder_id);
-		}
+		$purchaseorder_name = (empty($purchaseorder_id) ? '' : getPoName($purchaseorder_id));
 		$label_fld[] = $purchaseorder_name;
 		$label_fld["secid"] = $purchaseorder_id;
 		$label_fld["link"] = "index.php?module=PurchaseOrder&action=DetailView&record=" . $purchaseorder_id;
 	} elseif ($uitype == 80) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$salesorder_id = $col_fields[$fieldname];
-		if ($salesorder_id != '') {
-			$salesorder_name = getSoName($salesorder_id);
-		}
+		$salesorder_name = (empty($salesorder_id) ? '' : getSoName($salesorder_id));
 		$label_fld[] = $salesorder_name;
 		$label_fld["secid"] = $salesorder_id;
 		$label_fld["link"] = "index.php?module=SalesOrder&action=DetailView&record=" . $salesorder_id;
@@ -1744,6 +1736,14 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 	$log->debug("Entering getDetailBlockInformation(" . $module . "," . $result . "," . print_r($col_fields,true) . "," . $tabid . "," . print_r($block_label,true) . ") method ...");
 	$label_data = Array();
 
+	$bmapname = $module.'_FieldInfo';
+	$cbMapFI = array();
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapFI = $cbMap->FieldInfo();
+		$cbMapFI = $cbMapFI['fields'];
+	}
 	$noofrows = $adb->num_rows($result);
 	for ($i = 0; $i < $noofrows; $i++) {
 		$fieldtablename = $adb->query_result($result, $i, "tablename");
@@ -1758,7 +1758,14 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 		$tabid = $adb->query_result($result, $i, "tabid");
 		$displaytype = $adb->query_result($result, $i, 'displaytype');
 		$readonly = $adb->query_result($result, $i, 'readonly');
-		$custfld = getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, $generatedtype, $tabid, $module);
+		if (isset($cbMapFI[$fieldname])) {
+			$custfld = getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, $generatedtype, $tabid, $module, $cbMapFI[$fieldname]);
+			if (isset($cbMapFI[$fieldname]['RTE']) and $cbMapFI[$fieldname]['RTE'] and vt_hasRTE()) {
+				$readonly = '1'; // no inline edit for RTE edit fields
+			}
+		} else {
+			$custfld = getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, $generatedtype, $tabid, $module);
+		}
 		if (is_array($custfld)) {
 			$extendedfieldinfo = '';
 			if (isset($custfld[2]) and $custfld[2]==10) {
@@ -1789,6 +1796,13 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 					$parent_id='';
 				}
 				$extendedfieldinfo = Array('options'=>$entityTypes, 'selected'=>$valueType, 'displayvalue'=>$displayValue, 'entityid'=>$parent_id);
+			}
+			if (isset($cbMapFI[$fieldname])) {
+				if (is_array($extendedfieldinfo)) {
+					$extendedfieldinfo = array_merge($cbMapFI[$fieldname],$extendedfieldinfo);
+				} else {
+					$extendedfieldinfo = $cbMapFI[$fieldname];
+				}
 			}
 			$label_data[$block][] = array($custfld[0] => array(
 				'value' => $custfld[1], "ui" => $custfld[2], 'options' => isset($custfld['options']) ? $custfld['options'] : '',

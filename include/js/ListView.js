@@ -15,7 +15,6 @@ function massedit_togglediv(curTabId,total){
 	tagName.style.display = 'none';
 	tagName1.className = 'dvtUnSelectedCell';
 	}
-
 	tagName = document.getElementById('massedit_div'+curTabId);
 	tagName.style.display = 'block';
 	tagName1 = document.getElementById('tab'+curTabId);
@@ -149,9 +148,9 @@ function mass_edit_save() {
 	var searchurl = document.getElementById("search_url").value;
 
 	var urlstring =
-			"module=" + encodeURIComponent(module) + "&action=" + encodeURIComponent(module + 'Ajax') +
-			"&return_module=" + encodeURIComponent(module) + "&return_action=ListView" +
-			"&mode=ajax&file=MassEditSave&viewname=" + viewid;//+"&"+ searchurl;
+		"module=" + encodeURIComponent(module) + "&action=" + encodeURIComponent(module + 'Ajax') +
+		"&return_module=" + encodeURIComponent(module) + "&return_action=ListView" +
+		"&mode=ajax&file=MassEditSave&viewname=" + viewid;//+"&"+ searchurl;
 
 	fninvsh("massedit");
 
@@ -608,24 +607,23 @@ function update_selected_checkbox()
 function ChangeCustomViewStatus(viewid, now_status, changed_status, module, parenttab)
 {
 	document.getElementById('status').style.display = 'block';
-		jQuery.ajax({
-			method: 'POST',
-			url: 'index.php?module=CustomView&action=CustomViewAjax&file=ChangeStatus&dmodule=' + module + '&record=' + viewid + '&status=' + changed_status
-		}).done(function (response) {
-				var responseVal = response;
-				if (responseVal.indexOf(':#:FAILURE') > -1) {
-					alert('Failed');
-				} else if (responseVal.indexOf(':#:SUCCESS') > -1) {
-					var values = responseVal.split(':#:');
-					var module_name = values[2];
-					var customview_ele = document.getElementById('viewname');
-					showDefaultCustomView(customview_ele, module_name, parenttab);
-				} else {
-					document.getElementById('ListViewContents').innerHTML = responseVal;
-				}
-				document.getElementById('status').style.display = 'none';
-			}
-		);
+	jQuery.ajax({
+		method: 'POST',
+		url: 'index.php?module=CustomView&action=CustomViewAjax&file=ChangeStatus&dmodule=' + module + '&record=' + viewid + '&status=' + changed_status
+	}).done(function (response) {
+		var responseVal = response;
+		if (responseVal.indexOf(':#:FAILURE') > -1) {
+			alert('Failed');
+		} else if (responseVal.indexOf(':#:SUCCESS') > -1) {
+			var values = responseVal.split(':#:');
+			var module_name = values[2];
+			var customview_ele = document.getElementById('viewname');
+			showDefaultCustomView(customview_ele, module_name, parenttab);
+		} else {
+			document.getElementById('ListViewContents').innerHTML = responseVal;
+		}
+		document.getElementById('status').style.display = 'none';
+	});
 }
 
 function getListViewCount(module,element,parentElement,url){
@@ -670,24 +668,23 @@ function getListViewCount(module,element,parentElement,url){
 		searchURL += gPopupAlphaSearchUrl;
 
 	jQuery.ajax({
-			method: 'POST',
-			url: "index.php?module="+module+"&action="+module+"Ajax&file=ListViewPagging&ajax=true"+searchURL
-		}).done(function (response) {
-					var elementList = document.getElementsByName(module+'_listViewCountContainerBusy');
-					for(var i=0;i<elementList.length;++i){
-						elementList[i].style.display = 'none';
-					}
-					elementList = document.getElementsByName(module+'_listViewCountRefreshIcon');
-					if(module != 'Documents' && typeof parentElement != 'undefined' && elementList.length !=0){
-						for(i=0;i<=elementList.length;){
-							//No need to increment the count, as the element will be eliminated in the next step.
-							elementList[i].parentNode.innerHTML = response;
-						}
-					}else{
-						parentElement.innerHTML = response;
-					}
+		method: 'POST',
+		url: "index.php?module="+module+"&action="+module+"Ajax&file=ListViewPagging&ajax=true"+searchURL
+	}).done(function (response) {
+		var elementList = document.getElementsByName(module+'_listViewCountContainerBusy');
+		for(var i=0;i<elementList.length;++i){
+			elementList[i].style.display = 'none';
+		}
+		elementList = document.getElementsByName(module+'_listViewCountRefreshIcon');
+		if(module != 'Documents' && typeof parentElement != 'undefined' && elementList.length !=0){
+			for(i=0;i<=elementList.length;){
+				//No need to increment the count, as the element will be eliminated in the next step.
+				elementList[i].parentNode.innerHTML = response;
 			}
-	);
+		}else{
+			parentElement.innerHTML = response;
+		}
+	});
 }
 
 function VT_disableFormSubmit(evt) {
@@ -711,20 +708,18 @@ function updateCampaignRelationStatus(relatedmodule, campaignid, crmid, campaign
 	document.getElementById('campaignstatus_popup_' + crmid).style.display = 'none';
 	var data = "action=updateRelationsAjax&module=Campaigns&relatedmodule=" + relatedmodule + "&campaignid=" + campaignid + "&crmid=" + crmid + "&campaignrelstatusid=" + campaignrelstatusid;
 	jQuery.ajax({
-			method: 'POST',
-			url: "index.php?"+data
+		method: 'POST',
+		url: "index.php?"+data
 	}).done(function (response) {
-				if(response.indexOf(":#:FAILURE")>-1)
-				{
-					alert(alert_arr.ERROR_WHILE_EDITING);
-				}
-				else if(response.indexOf(":#:SUCCESS")>-1)
-				{
-					document.getElementById('campaignstatus_' + crmid).innerHTML = campaignrelstatus;
-					document.getElementById("vtbusy_info").style.display="none";
-				}
-			}
-	);
+		if (response.indexOf(":#:FAILURE")>-1) {
+			alert(alert_arr.ERROR_WHILE_EDITING);
+		}
+		else if(response.indexOf(":#:SUCCESS")>-1)
+		{
+			document.getElementById('campaignstatus_' + crmid).innerHTML = campaignrelstatus;
+			document.getElementById("vtbusy_info").style.display="none";
+		}
+	});
 }
 
 function loadCvList(type,id) {
@@ -868,19 +863,14 @@ function ajaxChangeStatus(statusname)
 	}
 	else if (statusname == 'owner')
 	{
-		if (document.getElementById("user_checkbox").checked)
-		{
+		if (document.getElementById("user_checkbox").checked) {
 			fninvsh('changeowner');
 			var url = '&owner_id=' + document.getElementById('lead_owner').options[document.getElementById('lead_owner').options.selectedIndex].value;
-
 			var urlstring = "module=Users&action=updateLeadDBStatus&return_module=" + gVTModule + tplstart + url + "&viewname=" + viewid + "&idlist=" + idstring + searchurl;
-
 		} else {
 			fninvsh('changeowner');
 			var url = '&owner_id=' + document.getElementById('lead_group_owner').options[document.getElementById('lead_group_owner').options.selectedIndex].value;
-
 			var urlstring = "module=Users&action=updateLeadDBStatus&return_module=" + gVTModule + tplstart + url + "&viewname=" + viewid + "&idlist=" + idstring + searchurl;
-
 		}
 	}
 	jQuery.ajax({

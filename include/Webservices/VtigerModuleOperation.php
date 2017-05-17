@@ -11,31 +11,31 @@
 class VtigerModuleOperation extends WebserviceEntityOperation {
 	protected $tabId;
 	protected $isEntity = true;
-	
+
 	public function __construct($webserviceObject,$user,$adb,$log){
 		parent::__construct($webserviceObject,$user,$adb,$log);
 		$this->meta = $this->getMetaInstance();
 		$this->tabId = $this->meta->getTabId();
 	}
-	
+
 	protected function getMetaInstance(){
 		if(empty(WebserviceEntityOperation::$metaCache[$this->webserviceObject->getEntityName()][$this->user->id])){
-			WebserviceEntityOperation::$metaCache[$this->webserviceObject->getEntityName()][$this->user->id]  = new VtigerCRMObjectMeta($this->webserviceObject,$this->user);
+			WebserviceEntityOperation::$metaCache[$this->webserviceObject->getEntityName()][$this->user->id] = new VtigerCRMObjectMeta($this->webserviceObject,$this->user);
 		}
 		return WebserviceEntityOperation::$metaCache[$this->webserviceObject->getEntityName()][$this->user->id];
 	}
-	
+
 	public function create($elementType,$element){
 		$crmObject = new VtigerCRMObject($elementType, false);
-		
+
 		$element = DataTransform::sanitizeForInsert($element,$this->meta);
-		
+
 		$error = $crmObject->create($element);
 		if(!$error){
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR,
 					vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
 		}
-		
+
 		$id = $crmObject->getObjectId();
 
 		// Bulk Save Mode
@@ -43,20 +43,20 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			// Avoiding complete read, as during bulk save mode, $result['id'] is enough
 			return array('id' => vtws_getId($this->meta->getEntityId(), $id) );
 		}
-		
+
 		$error = $crmObject->read($id);
 		if(!$error){
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR,
 				vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
 		}
-		
+
 		return DataTransform::filterAndSanitize($crmObject->getFields(),$this->meta);
 	}
-	
+
 	public function retrieve($id,$deleted=false){
 		$ids = vtws_getIdComponents($id);
 		$elemid = $ids[1];
-		
+
 		$crmObject = new VtigerCRMObject($this->tabId, true);
 		$error = $crmObject->read($elemid,$deleted);
 		if(!$error){
@@ -65,11 +65,11 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		}
 		return DataTransform::filterAndSanitize($crmObject->getFields(),$this->meta);
 	}
-	
+
 	public function update($element){
 		$ids = vtws_getIdComponents($element["id"]);
 		$element = DataTransform::sanitizeForInsert($element,$this->meta);
-		
+
 		$crmObject = new VtigerCRMObject($this->tabId, true);
 		$crmObject->setObjectId($ids[1]);
 		$error = $crmObject->read($crmObject->getObjectId());
@@ -85,18 +85,18 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR,
 					vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
 		}
-		
+
 		$id = $crmObject->getObjectId();
-		
+
 		$error = $crmObject->read($id);
 		if(!$error){
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR,
 				vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
 		}
-		
+
 		return DataTransform::filterAndSanitize($crmObject->getFields(),$this->meta);
 	}
-	
+
 	public function revise($element){
 		$ids = vtws_getIdComponents($element["id"]);
 		$element = DataTransform::sanitizeForInsert($element,$this->meta);
@@ -131,7 +131,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		}
 		return array("status"=>"successful");
 	}
-	
+
 	public function wsVTQL2SQL($q,&$meta,&$queryRelatedModules){
 		require_once 'include/Webservices/GetExtendedQuery.php';
 		if (__FQNExtendedQueryIsRelatedQuery($q)) { // related query
@@ -240,7 +240,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$result = $this->pearDB->pquery($mysql_query, array());
 		$error = $this->pearDB->hasFailedTransaction();
 		$this->pearDB->completeTransaction();
-		
+
 		if($error){
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR,
 				vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
@@ -279,7 +279,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		}
 		return $output;
 	}
-	
+
 	public function describe($elementType){
 		$app_strings = VTWS_PreserveGlobal::getGlobal('app_strings');
 		$current_user = vtws_preserveGlobal('current_user',$this->user);
@@ -294,7 +294,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 				"deleteable"=>$deleteable,"retrieveable"=>$retrieveable,"fields"=>$fields,
 				"idPrefix"=>$this->meta->getEntityId(),'isEntity'=>$this->isEntity,'labelFields'=>$this->meta->getNameFields());
 	}
-	
+
 	function getModuleFields(){
 		static $purified_mfcache = array();
 		$mfkey = $this->meta->getTabName();
@@ -346,15 +346,15 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$purified_dfcache[$dfkey] = $describeArray;
 		return $describeArray;
 	}
-	
-	function getMeta(){
+
+	function getMeta() {
 		return $this->meta;
 	}
-	
-	function getField($fieldName){
+
+	function getField($fieldName) {
 		$moduleFields = $this->meta->getModuleFields();
 		return $this->getDescribeFieldArray($moduleFields[$fieldName]);
 	}
-	
+
 }
 ?>

@@ -28,9 +28,7 @@ if(isset($_REQUEST["record"]) == false || $_REQUEST["record"]=='')
 
 }elseif(isset($_REQUEST["record"]) == true)
 {
-	//added to fix the ticket #5117
 	global $current_user;
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 
     $reportid = vtlib_purify($_REQUEST["record"]);
     $oReport = new Reports($reportid);
@@ -54,7 +52,7 @@ if(isset($_REQUEST["record"]) == false || $_REQUEST["record"]=='')
 	$BLOCK1 .= getSecondaryStdFilterHTML($oReport->secmodule,$oReport->stdselectedcolumn);
 	//added to fix the ticket #5117
 	$selectedcolumnvalue = '"'. $oReport->stdselectedcolumn . '"';
-	if (!$is_admin && isset($oReport->stdselectedcolumn) && strpos($BLOCK1, $selectedcolumnvalue) === false)
+	if (!is_admin($current_user) && isset($oReport->stdselectedcolumn) && strpos($BLOCK1, $selectedcolumnvalue) === false)
 		$BLOCK1 .= "<option selected value='Not Accessible'>".$app_strings['LBL_NOT_ACCESSIBLE']."</option>";
 
 	$report_std_filter->assign("BLOCK1_STD",$BLOCK1);

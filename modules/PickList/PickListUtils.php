@@ -118,7 +118,6 @@ function getAllPickListValues($fieldName,$lang = Array() ){
 	return $arr;
 }
 
-
 /**
  * this function accepts the fieldname and the language string array and returns all the editable picklist values for that fieldname
  * @param string $fieldName - the name of the picklist
@@ -133,13 +132,12 @@ function getEditablePicklistValues($fieldName, $lang= array(), $adb){
 	$res = $adb->query($sql);
 	$RowCount = $adb->num_rows($res);
 	if($RowCount > 0){
+		$frs = $adb->pquery('select fieldid from vtiger_field where fieldname=? limit 1',array($fieldName));
+		$fieldid = $adb->query_result($frs,0,0);
+		$module = getModuleForField($fieldid);
 		for($i=0;$i<$RowCount;$i++){
 			$pick_val = $adb->query_result($res,$i,$fieldName);
-			if($lang[$pick_val] != ''){
-				$values[$pick_val]=$lang[$pick_val];
-			}else{
-				$values[$pick_val]=$pick_val;
-			}
+			$values[$pick_val] = getTranslatedString($pick_val,$module);
 		}
 	}
 	return $values;

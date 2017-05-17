@@ -63,7 +63,7 @@ if (!empty($_REQUEST['popqc']) and $_REQUEST['popqc'] = 'true' and empty($_REQUE
 	$_REQUEST['advft_criteria'] = '[{"groupid":"1","columnname":"'.$optionvalue.'","comparator":"e","value":"'.$fldval.'","columncondition":""}]';
 }
 
-$form = vtlib_purify($_REQUEST['form']);
+$form = isset($_REQUEST['form']) ? vtlib_purify($_REQUEST['form']) : '';
 //added to get relatedto field value for todo, while selecting from the popup list, after done the alphabet or basic search.
 if(isset($_REQUEST['maintab']) && $_REQUEST['maintab'] != '')
 {

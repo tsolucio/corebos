@@ -132,7 +132,7 @@ class PurchaseOrder extends CRMEntity {
 
 	function registerInventoryHistory() {
 		global $app_strings;
-		if ($_REQUEST['ajxaction'] == 'DETAILVIEW') { //if we use ajax edit
+		if (isset($_REQUEST['ajxaction']) and $_REQUEST['ajxaction'] == 'DETAILVIEW') { //if we use ajax edit
 			$relatedname = getVendorName($this->column_fields['vendor_id']);
 			$total = $this->column_fields['hdnGrandTotal'];
 		} else { //using edit button and save

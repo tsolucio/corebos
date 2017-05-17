@@ -388,5 +388,9 @@ var alert_arr = {
 	'ERR_INVALID_TIME' : 'Prego inserire un tempo valido.',
 	'ERR_EMAIL_WITH_NO_SUBJECT' : 'You did not specify a subject for this email. If you would like to provide one, please type it now',
 	'EMAIL_WITH_NO_SUBJECT' : '(no-Subject)',
-        'INTEGERVALS':'Sono permessi soltanto valori Integer'
+	'INTEGERVALS':'Sono permessi soltanto valori Integer',
+	'JSLBL_Delete': 'Delete',
+	'JSLBL_Loading': 'Loading',
+	'JSLBL_ATTACHMENT_NOT_DELETED': 'Attachment could not be deleted',
+	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'File Upload Limit exceeded!!'
 };

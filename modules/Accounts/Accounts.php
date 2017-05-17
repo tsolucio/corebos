@@ -40,13 +40,13 @@ class Accounts extends CRMEntity {
 	var $tab_name = Array('vtiger_crmentity','vtiger_account','vtiger_accountbillads','vtiger_accountshipads','vtiger_accountscf');
 	var $tab_name_index = Array('vtiger_crmentity'=>'crmid','vtiger_account'=>'accountid','vtiger_accountbillads'=>'accountaddressid','vtiger_accountshipads'=>'accountaddressid','vtiger_accountscf'=>'accountid');
 
-	// This is the list of vtiger_fields that are in the lists.
+	// This is the list of fields that are in the lists.
 	var $list_fields = Array(
-		'Account Name'=>Array('vtiger_account'=>'accountname'),
-		'Billing City'=>Array('vtiger_accountbillads'=>'bill_city'),
-		'Website'=>Array('vtiger_account'=>'website'),
-		'Phone'=>Array('vtiger_account'=> 'phone'),
-		'Assigned To'=>Array('vtiger_crmentity'=>'smownerid')
+		'Account Name' => Array('account'=>'accountname'),
+		'Billing City' => Array('accountbillads'=>'bill_city'),
+		'Website' => Array('account'=>'website'),
+		'Phone' => Array('account'=> 'phone'),
+		'Assigned To' => Array('crmentity'=>'smownerid')
 	);
 	var $list_fields_name = Array(
 		'Account Name'=>'accountname',
@@ -61,9 +61,9 @@ class Accounts extends CRMEntity {
 
 	// For Popup listview and UI type support
 	var $search_fields = Array(
-		'Account Name'=>Array('vtiger_account'=>'accountname'),
-		'Billing City'=>Array('vtiger_accountbillads'=>'bill_city'),
-		'Assigned To'=>Array('vtiger_crmentity'=>'smownerid'),
+		'Account Name' => Array('account'=>'accountname'),
+		'Billing City' => Array('accountbillads'=>'bill_city'),
+		'Assigned To'  => Array('crmentity'=>'smownerid'),
 	);
 	var $search_fields_name = Array(
 		'Account Name'=>'accountname',
@@ -889,7 +889,6 @@ class Accounts extends CRMEntity {
 	function getAccountHierarchy($id) {
 		global $log, $adb, $current_user;
 		$log->debug("Entering getAccountHierarchy(".$id.") method ...");
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
 
 		$tabname = getParentTab();
 		$listview_header = Array();

@@ -15,7 +15,8 @@ require_once("VTWorkflowUtils.php");
 require_once("VTWorkflowApplication.inc");
 
 	function vtSaveTask($adb, $request){
-	$util = new VTWorkflowUtils();
+		global $current_language;
+		$util = new VTWorkflowUtils();
 		$module = new VTWorkflowApplication("savetask");
 		$mod = return_module_language($current_language, $module->name);
 		$request = vtlib_purify($request);  // this cleans all values of the array

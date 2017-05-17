@@ -142,7 +142,7 @@ public function setgoogleaccessparams($userid){
 			} else {
 				$sqllshowinactiveusers = "and status='Active'";
 			}
-			$sortusersby = GlobalVariable::getVariable('calendar_sort_users_by','first_name, last_name');
+			$sortusersby = GlobalVariable::getVariable('Calendar_sort_users_by','first_name, last_name');
 			$query = "SELECT * FROM vtiger_users WHERE deleted=0 $sqllshowinactiveusers ORDER BY $sortusersby";
 			$params = array();
 		} else {
@@ -197,60 +197,12 @@ public function setgoogleaccessparams($userid){
     public function CheckUserPermissions($userid) {
         return true;
     }    
-    
-	public function DeleteAllRefLinks() {
-		require_once('vtlib/Vtiger/Link.php');
-		$link_res = $this->db->query("SELECT tabid FROM vtiger_tab");
-		while($link_row = $this->db->fetchByAssoc($link_res)) {
-			Vtiger_Link::deleteLink($link_row["tabid"], "DETAILVIEWWIDGET", "XMLExport4You");
-			Vtiger_Link::deleteLink($link_row["tabid"], "LISTVIEWBASIC", "XMLExport4You", 'getPDFListViewPopup2(this,\'$MODULE$\');');
-		}
-	}
-
-	public function AddLinks($modulename) {
-		require_once('vtlib/Vtiger/Module.php');
-		$link_module = Vtiger_Module::getInstance($modulename);
-		$link_module->addLink('DETAILVIEWWIDGET','XMLExport4You','module=XMLExport4You&action=XMLExport4YouAjax&file=getPDFActions&record=$RECORD$');
-		$link_module->addLink('LISTVIEWBASIC','XMLExport4You','getPDFListViewPopup2(this,\'$MODULE$\');');
-		// remove non-standardly created links (difference in linkicon column makes the links twice when updating from previous version)
-		global $adb;
-		$tabid = getTabId($modulename);
-		$res = $adb->pquery("SELECT * FROM vtiger_links WHERE tabid=? AND linktype=? AND linklabel=? AND linkurl=? ORDER BY linkid DESC",array($tabid, 'DETAILVIEWWIDGET','XMLExport4You','module=XMLExport4You&action=XMLExport4YouAjax&file=getPDFActions&record=$RECORD$'));
-		$i=0;
-		while($row = $adb->fetchByAssoc($res)){
-			$i++;
-			if($i>1)
-				$adb->pquery("DELETE FROM vtiger_links WHERE linkid=?",array($row['linkid']));
-		}
-		$res = $adb->pquery("SELECT * FROM vtiger_links WHERE tabid=? AND linktype=? AND linklabel=? AND linkurl=? ORDER BY linkid DESC",array($tabid, 'LISTVIEWBASIC','XMLExport4You','getPDFListViewPopup2(this,\'$MODULE$\');'));
-		$i=0;
-		while($row = $adb->fetchByAssoc($res)){
-			$i++;
-			if($i>1)
-				$adb->pquery("DELETE FROM vtiger_links WHERE linkid=?",array($row['linkid']));
-		}
-	}
-
-	public function AddHeaderLinks() {
-		require_once('vtlib/Vtiger/Module.php');
-		$link_module = Vtiger_Module::getInstance("XMLExport4You");
-		$link_module->addLink('HEADERSCRIPT','XMLExport4YouJS','modules/XMLExport4You/XMLExport4YouActions.js', "", "1");
-	}
-
-	public function removeLinks() {
-		require_once('vtlib/Vtiger/Link.php');
-
-		$tabid = getTabId("XMLExport4You");
-		Vtiger_Link::deleteAll($tabid);
-		$this->DeleteAllRefLinks();
-	}
 
     /**
      * Handle module events
      * @param string $modulename
      * @param type $event_type
      */
-
     function vtlib_handler($modulename, $event_type) {
         if ($modulename == '')
             $modulename = self::MODULE_NAME;
@@ -298,25 +250,19 @@ public function setgoogleaccessparams($userid){
             if ($num_rows2 == 0)  $adb->pquery("INSERT INTO vtiger_org_share_action2tab(share_action_id,tabid) VALUES(?,?)", Array($actionid, $this->tabid));
 		}
     }
-    
-    function actualizeRegister() {
-        Vtiger_Event::register(
-        'Calendar4You','vtiger.entity.aftersave',
-        'GoogleSync4YouHandler','modules/Calendar4You/GoogleSync4YouHandler.php'
-        );
-        
-        Vtiger_Event::register(
-        'Calendar4You','vtiger.entity.beforedelete',
-        'GoogleSync4YouHandler','modules/Calendar4You/GoogleSync4YouHandler.php'
-        );
-    }
-    
+
+	function actualizeRegister() {
+		$moduleInstance = Vtiger_Module::getInstance('Calendar4You');
+		Vtiger_Event::register($moduleInstance,'vtiger.entity.aftersave','GoogleSync4YouHandler','modules/Calendar4You/GoogleSync4YouHandler.php');
+		Vtiger_Event::register($moduleInstance,'vtiger.entity.beforedelete','GoogleSync4YouHandler','modules/Calendar4You/GoogleSync4YouHandler.php');
+	}
+
     function deleteRegister() {
         global $adb;
         $sql = "DELETE FROM vtiger_eventhandlers WHERE handler_path = ?";
         $adb->pquery($sql,array('modules/Calendar4You/GoogleSync4YouHandler.php'));
     }
-    
+
     function actualizeDocRel() {
         global $adb;
         

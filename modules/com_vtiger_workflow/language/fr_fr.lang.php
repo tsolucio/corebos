@@ -69,7 +69,7 @@ $mod_strings = array(
 	'LBL_EMAIL_FROMNAME' => 'From Name',
 	'LBL_EMAIL_FROMEMAIL' => 'From Email',
 	'LBL_EMAIL_REPLYTO' => 'Répond à',
-	
+	'LBL_AttachmentInField' => 'Attachment In Field',
 	'LBL_WORKFLOW_NOTE_EVENT_TASK_TIMEZONE' => 'Note: Toutes les informations de date et temps configuré pour cet évènement seront basé sur le fuseau horaire configuré dans config.inc.php',
 	'Select Meta Variables' => 'Choix des meta variables',
 	'Current Date' => 'Date courante',

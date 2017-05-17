@@ -115,8 +115,8 @@ function vtws_retrievedocattachment_get_attachment($fileid,$nr=false,$returnfile
 		if($fileContent != '')
 		{
 			$log->debug('About to update download count');
-			$sql = "select filedownloadcount from vtiger_notes where notesid= ?";
-			$download_count = $adb->query_result($adb->pquery($sql,array($fileid)),0,'filedownloadcount') + 1;
+			$rsn = $adb->pquery('select filedownloadcount from vtiger_notes where notesid= ?',array($fileid));
+			$download_count = $adb->query_result($rsn,0,'filedownloadcount') + 1;
 			$sql="update vtiger_notes set filedownloadcount= ? where notesid= ?";
 			$res=$adb->pquery($sql,array($download_count,$fileid));
 		}

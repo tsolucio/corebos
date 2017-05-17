@@ -509,6 +509,7 @@ $mod_strings = Array(
 'LBL_CONTACT_FIELDS'=>'Contact velden',
 'LBL_LEAD_FIELDS'=>'Lead velden',
 'LBL_USER_FIELDS'=>'Gebruikers velden',
+'LBL_HELPDESK_FIELDS'=>'Ticket Fields',
 'LNK_SAMPLE_EMAIL'=>'Bekijk e-mail voorbeeld',
 //Added while moving Mail Merge templates from Users to Settings
 'LBL_TEMPLATE_FILE'=>'Sjabloon bestand',

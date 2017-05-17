@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
-
 require_once 'include/database/PearDatabase.php';
 require_once 'include/utils/utils.php';
 
@@ -38,7 +37,7 @@ function wsapp_getApplicationName($key){
 function wsapp_getRecordEntityNameIds($entityNames,$modules,$user){
     $entityMetaList = array();
     $db = PearDatabase::getInstance();
-    
+
     if(empty($entityNames)) return;
 
     if(!is_array($entityNames))
@@ -62,21 +61,21 @@ function wsapp_getRecordEntityNameIds($entityNames,$modules,$user){
         else
             $nameFields = $nameFieldsArray[0];
 
-        $query = "SELECT ".$meta->getObectIndexColumn()." as id,$nameFields as entityname FROM ".$meta->getEntityBaseTable()." WHERE $nameFields IN(".generateQuestionMarks($entityNames).")";
+        $query = "SELECT ".$meta->getObectIndexColumn()." as id,$nameFields as entityname FROM ".$meta->getEntityBaseTable()." as moduleentity INNER JOIN vtiger_crmentity as crmentity WHERE $nameFields IN(".generateQuestionMarks($entityNames).") AND crmentity.deleted=0 AND crmentity.crmid = moduleentity.".$meta->getObectIndexColumn()."";
         $result = $db->pquery($query,$entityNames);
         $num_rows = $db->num_rows($result);
         for($i=0;$i<$num_rows;$i++){
             $id = $db->query_result($result, $i,'id');
-            $entityName = $entityNames[$i];
-            $entityNameIds[$entityName] = vtws_getWebserviceEntityId($moduleName, $id);
+            $entityName = $db->query_result($result, $i,'entityname');
+            $entityNameIds[decode_html($entityName)] = vtws_getWebserviceEntityId($moduleName, $id);
         }
     }
     return $entityNameIds;
 }
+
 /***
  * Converts default time zone to specifiedTimeZone
  */
-
 function wsapp_convertDateTimeToTimeZone($dateTime,$toTimeZone){
     global $log,$default_timezone;
     $time_zone = $default_timezone;
@@ -91,22 +90,26 @@ function wsapp_convertDateTimeToTimeZone($dateTime,$toTimeZone){
     return $display_time;
 }
 
-function wsapp_checkIfRecordsAssignToUser($recordsIds,$userid){
+function wsapp_checkIfRecordsAssignToUser($recordsIds,$userIds){
     $assignedRecordIds = array();
     if(!is_array($recordsIds))
         $recordsIds = array($recordsIds);
     if(count($recordsIds)<=0)
         return $assignedRecordIds;
+    if(!is_array($userIds))
+        $userIds = array($userIds);
     $db = PearDatabase::getInstance();
-    $query = "SELECT * FROM vtiger_crmentity where crmid IN (".generateQuestionMarks($recordsIds).") and smownerid=?";
+    $query = "SELECT * FROM vtiger_crmentity where crmid IN (".generateQuestionMarks($recordsIds).") and smownerid in (".generateQuestionMarks($userIds).")";
     $params = array();
     foreach($recordsIds as $id){
         $params[] = $id;
     }
-    $params[] = $userid;
+    foreach($userIds as $userId){
+        $params[] = $userId;
+    }
     $queryResult = $db->pquery($query,$params);
     $num_rows = $db->num_rows($queryResult);
-    
+
     for($i=0;$i<$num_rows;$i++){
         $assignedRecordIds[] = $db->query_result($queryResult,$i,"crmid");
     }
@@ -148,6 +151,14 @@ function wsapp_RegisterHandler($type,$handlerClass,$handlerPath){
 		$saveQuery = "INSERT INTO vtiger_wsapp_handlerdetails VALUES(?,?,?)";
 		$parameters = array($type,$handlerClass,$handlerPath);
 	}
-	$db->pquery($saveQuery,$parameters);}
+	$db->pquery($saveQuery,$parameters);
+}
+
+function wsapp_DeleteHandler($type){
+	if(!is_array($type)) $type = array($type);
+	$db = PearDatabase::getInstance();
+	$query = 'DELETE FROM vtiger_wsapp_handlerdetails WHERE type IN('.  generateQuestionMarks($type).')';
+	$db->pquery($query,$type);
+}
 
 ?>

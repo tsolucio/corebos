@@ -332,8 +332,6 @@ $smarty->assign("IMAGE_PATH", $image_path);
 $smarty->assign("ID", $focus->id);
 $smarty->assign('ENTITY_ID', isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : '');
 $smarty->assign('ENTITY_TYPE', isset($_REQUEST['email_directing_module']) ? vtlib_purify($_REQUEST['email_directing_module']) : '');
-$USE_RTE = vt_hasRTE();
-$smarty->assign("USE_RTE",$USE_RTE);
 
 if(empty($focus->filename))
 {

@@ -168,7 +168,7 @@ function getProductTaxPercentage($type,$productid,$default='')
 function addInventoryHistory($module, $id, $relatedname, $total, $history_fldval)
 {
 	global $log, $adb;
-	$log->debug("Entering into function addInventoryHistory($module, $id, $relatedname, $total, $history_fieldvalue)");
+	$log->debug("Entering into function addInventoryHistory($module, $id, $relatedname, $total, $history_fldval)");
 
 	$history_table_array = Array(
 		"PurchaseOrder"=>"vtiger_postatushistory",
@@ -523,7 +523,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 			$lineitem_id = $adb->getLastInsertID();
 		}
 
-		$sub_prod_str = $_REQUEST['subproduct_ids'.$i];
+		$sub_prod_str = (isset($_REQUEST['subproduct_ids'.$i]) ? $_REQUEST['subproduct_ids'.$i] : '');
 		if (!empty($sub_prod_str)) {
 			$sub_prod = explode(":",$sub_prod_str);
 			for($j=0;$j<count($sub_prod);$j++){
@@ -539,13 +539,11 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 		$updateparams = array();
 
 		//set the discount percentage or discount amount in update query, then set the tax values
-		if($_REQUEST['discount_type'.$i] == 'percentage')
-		{
+		if (isset($_REQUEST['discount_type'.$i]) and $_REQUEST['discount_type'.$i] == 'percentage') {
 			$updatequery .= " discount_percent=?,";
 			array_push($updateparams, floatval($_REQUEST['discount_percentage'.$i]));
 		}
-		elseif($_REQUEST['discount_type'.$i] == 'amount')
-		{
+		elseif (isset($_REQUEST['discount_type'.$i]) and $_REQUEST['discount_type'.$i] == 'amount') {
 			$updatequery .= " discount_amount=?,";
 			$discount_amount = $_REQUEST['discount_amount'.$i];
 			array_push($updateparams, floatval($discount_amount));
@@ -597,13 +595,11 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 	array_push($updateparams, vtlib_purify($_REQUEST['taxtype']));
 
 	//for discount percentage or discount amount
-	if($_REQUEST['discount_type_final'] == 'percentage')
-	{
+	if (isset($_REQUEST['discount_type_final']) and $_REQUEST['discount_type_final'] == 'percentage') {
 		$updatequery .= " discount_percent=?,";
 		array_push($updateparams, floatval(vtlib_purify($_REQUEST['discount_percentage_final'])));
 	}
-	elseif($_REQUEST['discount_type_final'] == 'amount')
-	{
+	elseif (isset($_REQUEST['discount_type_final']) and $_REQUEST['discount_type_final'] == 'amount') {
 		$discount_amount_final = vtlib_purify($_REQUEST['discount_amount_final']);
 		$updatequery .= " discount_amount=?,";
 		array_push($updateparams, floatval($discount_amount_final));
@@ -615,7 +611,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 
 	//if the user gave - sign in adjustment then add with the value
 	$adjustmentType = '';
-	if($_REQUEST['adjustmentType'] == '-')
+	if (isset($_REQUEST['adjustmentType']) and $_REQUEST['adjustmentType'] == '-')
 		$adjustmentType = vtlib_purify($_REQUEST['adjustmentType']);
 
 	$adjustment = vtlib_purify($_REQUEST['adjustment']);
@@ -641,7 +637,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 	$sh_query_params = array($focus->id);
 	for($i=0;$i<count($sh_tax_details);$i++) {
 		$tax_name = $sh_tax_details[$i]['taxname']."_sh_percent";
-		if($_REQUEST[$tax_name] != '' and in_array($sh_tax_details[$i]['taxname'], $isr_cols)) {
+		if (isset($_REQUEST[$tax_name]) and $_REQUEST[$tax_name] != '' and in_array($sh_tax_details[$i]['taxname'], $isr_cols)) {
 			$sh_query_fields .= $sh_tax_details[$i]['taxname'].",";
 			$sh_query_values .= "?,";
 			array_push($sh_query_params, floatval(vtlib_purify($_REQUEST[$tax_name])));

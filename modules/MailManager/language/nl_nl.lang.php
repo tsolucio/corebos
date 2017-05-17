@@ -167,5 +167,11 @@ $mod_strings = array(
 	'LBL_MAILMANAGER_ADD_Project' => 'Voeg project toe',
 	'LBL_MAILMANAGER_ADD_ProjectTask' => 'Voeg project taak toe',
 	'LBL_ADD' => 'Toevoegen',
+	'LBL_SENT_MAILS' => 'Verzonden berichten',
+	'LBL_ALLMAILS' => 'Alle berichten',
+	'LBL_TO_CONTACTS' => 'Naar contacten',
+	'LBL_TO_ACCOUNTS' => 'Naar accounts',
+	'LBL_TO_LEADS' => 'Naar leads',
+	'LBL_TO_USERS' => 'Naar gebruikers',
 );
 ?>

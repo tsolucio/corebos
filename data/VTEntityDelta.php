@@ -124,7 +124,7 @@ class VTEntityDelta extends VTEventHandler {
 
 	function getOldValue($moduleName, $recordId, $fieldName) {
 		$entityDelta = self::$entityDelta[$moduleName][$recordId];
-		return $entityDelta[$fieldName]['oldValue'];
+		return (isset($entityDelta[$fieldName]) ? $entityDelta[$fieldName]['oldValue'] : '');
 	}
 
 	function getCurrentValue($moduleName, $recordId, $fieldName) {

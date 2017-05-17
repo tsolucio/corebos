@@ -62,7 +62,8 @@ function DelAttachment($id) {
 		$adb->pquery($query, array($id));
 	}
 }
-$id = vtlib_purify($_REQUEST["recordid"]);
+$id = vtlib_purify($_REQUEST['recordid']);
+$id = preg_replace('/[^0-9]/', '', $id);
 if(isset($_REQUEST["attachmodule"]) && $_REQUEST["attachmodule"]=='Emails')
 {
 	DelAttachment($id);

@@ -461,7 +461,7 @@
 	<author>joebordes</author>
 	<description>Create and relate call activity when creating new record from call</description>
 	<filename>build/changeSets/PBXManagerAfterSaveCreateActivity.php</filename>
-	<classname>PBXManagerAfterSaveCreateActivity</classname>
+	<classname>cbupdPBXManagerAfterSaveCreateActivity</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
@@ -1149,6 +1149,41 @@
 	<description>Add WebForm Domain validation field</description>
 	<filename>build/changeSets/2017/addWebdomainWebFormscb.php</filename>
 	<classname>addWebdomainWebFormscb</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>coreBOS Message Queue and Task Manager database tables</description>
+	<filename>build/changeSets/2017/cbmqtmdbdistributortables.php</filename>
+	<classname>cbmqtmdbdistributortables</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Generic coreBOS Settings and Configuration database table</description>
+	<filename>build/changeSets/2017/corebossettingstable.php</filename>
+	<classname>corebossettingstable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>mysqlStrict support for product field in Assets module</description>
+	<filename>build/changeSets/2017/mysqlstrictAssets.php</filename>
+	<classname>mysqlstrictAssets</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Support for Import, Export and Deduplication on ModComments</description>
+	<filename>build/changeSets/2017/ModCommentsImportExport.php</filename>
+	<classname>ModCommentsImportExport</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>mysqlStrict support for google calendar and contacts authorization</description>
+	<filename>build/changeSets/2017/mysqlstrictGoogleSync.php</filename>
+	<classname>mysqlstrictGoogleSync</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>

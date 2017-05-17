@@ -6,14 +6,9 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  *********************************************************************************/
 require_once 'include/Webservices/VtigerActorOperation.php';
-/**
- * Description of VtigerCompanyDetails
- *
- * @author MAK
- */
+
 class VtigerCompanyDetails extends VtigerActorOperation {
 	public function create($elementType, $element) {
 		$db = PearDatabase::getInstance();

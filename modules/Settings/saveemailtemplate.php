@@ -16,7 +16,7 @@ $templateName = vtlib_purify($_REQUEST["templatename"]);
 $templateid = vtlib_purify($_REQUEST["templateid"]);
 $description = vtlib_purify($_REQUEST["description"]);
 $subject = vtlib_purify($_REQUEST["subject"]);
-$body = fck_from_html($_REQUEST["body"]);
+$body = vtlib_purify($_REQUEST["body"]);
 $emailfrom = vtlib_purify($_REQUEST["emailfrom"]);
 
 if (isset($templateid) && $templateid !='')

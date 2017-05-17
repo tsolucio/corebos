@@ -8,4 +8,14 @@
  * All Rights Reserved.
  ************************************************************************************/
 include_once('modules/Vtiger/ListView.php');
+require_once 'modules/Contacts/connectors/Oauth2.php';
+global $current_user;
+
+$oauth2 = new Google_Oauth2_Connector('Contacts');
+$hasToken=false;
+if($oauth2->hasStoredToken()) {
+   $hasToken=true;
+} 
+$smarty->assign('hasToken',$hasToken);                
+$smarty->display('modules/Contacts/GoogleContacts.tpl');
 ?>

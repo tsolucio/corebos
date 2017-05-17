@@ -56,45 +56,39 @@ if (isset($organization_logo))
 $path = "test/logo";
 $dir_handle = @opendir($path);
 
+$organization_logopath = '';
+$logo_name = '';
+$front_logopath = '';
+$front_logo_name = '';
+$favicon_logopath = '';
+$favicon_logo_name = '';
 while ($file = readdir($dir_handle))
 {
-     $filetyp =str_replace(".",'',strtolower(substr($file, -4)));
-   if($organization_logoname==$file || $front_logoname==$file || $favicon_logoname==$file )
-   {    
-        if ($filetyp == 'jpeg' OR $filetyp == 'jpg' OR $filetyp == 'png')
-        {
-		if($file!="." && $file!="..")
-		{
-		     $organization_logopath= $path;
-		     if($organization_logoname==$file){
-                         $organization_logopath= $path;
-                         $logo_name=$file;
-                     }
-                     if($front_logoname==$file){
-                         $front_logopath= $path;
-                         $font_logo_name=$file;
-                     }
-                     if($favicon_logoname==$file){
-                         $favicon_logopath= $path;
-                         $favicon_logo_name=$file;
-                     }
+	$filetyp =str_replace(".",'',strtolower(substr($file, -4)));
+	if ($organization_logoname==$file || $front_logoname==$file || $favicon_logoname==$file ) {
+		if (($filetyp == 'jpeg' OR $filetyp == 'jpg' OR $filetyp == 'png') and ($file!='.' && $file!='..')) {
+			if ($organization_logoname==$file) {
+				$organization_logopath= $path;
+				$logo_name=$file;
+			}
+			if($front_logoname==$file){
+				$front_logopath= $path;
+				$front_logo_name=$file;
+			}
+			if($favicon_logoname==$file){
+				$favicon_logopath= $path;
+				$favicon_logo_name=$file;
+			}
 		}
-        }
-   }
+	}
 }
 
-if (isset($organization_logopath))
-	$smarty->assign("ORGANIZATIONLOGOPATH",$path);
-if (isset($organization_logopath))
-	$smarty->assign("FRONTLOGOPATH",$front_logopath);
-if (isset($organization_logopath))
+$smarty->assign("ORGANIZATIONLOGOPATH",$organization_logopath);
+$smarty->assign("FRONTLOGOPATH",$front_logopath);
 $smarty->assign("FAVICONLOGOPATH",$favicon_logopath);
-if (isset($organization_logoname))
-	$smarty->assign("ORGANIZATIONLOGONAME",$logo_name);
-if (isset($organization_logoname))
-	$smarty->assign("FRONTLOGONAME",$font_logo_name);
-if (isset($organization_logoname))
-$smarty->assign("FAVICONLOGONAME",$favicon_logoname);
+$smarty->assign("ORGANIZATIONLOGONAME",$organization_logoname);
+$smarty->assign("FRONTLOGONAME",$front_logo_name);
+$smarty->assign("FAVICONLOGONAME",$favicon_logo_name);
 closedir($dir_handle);
 
 $smarty->assign("MOD", return_module_language($current_language,'Settings'));

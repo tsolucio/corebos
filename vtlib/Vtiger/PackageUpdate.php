@@ -161,7 +161,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
      * @access private
      */
     function parse_Migration($modulenode) {
-        if(!$this->_migrations) {
+        if (empty($this->_migrations)) {
             $this->_migrations = Array();
             if(!empty($modulenode->migrations) &&
                     !empty($modulenode->migrations->migration)) {

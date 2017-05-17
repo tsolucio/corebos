@@ -10,8 +10,8 @@
 require_once('include/utils/UserInfoUtil.php');
 require_once('include/utils/utils.php');
 global $adb;
-$profilename = from_html(decode_html($_REQUEST['profile_name']));
-$description= from_html(decode_html($_REQUEST['profile_description']));
+$profilename = vtlib_purify($_REQUEST['profile_name']);
+$description = vtlib_purify($_REQUEST['profile_description']);
 $def_module = vtlib_purify($_REQUEST['selected_module']);
 $def_tab = vtlib_purify($_REQUEST['selected_tab']);
 $profile_id = $adb->getUniqueID("vtiger_profile");

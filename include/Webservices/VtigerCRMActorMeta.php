@@ -17,22 +17,22 @@ class VtigerCRMActorMeta extends EntityMeta {
 		$this->baseTable = $tableName;
 		$this->idColumn = null;
 		$this->pearDB = $adb;
-		
+
 		$fieldList = $this->getTableFieldList($tableName);
 		$this->moduleFields = array();
 		foreach ($fieldList as $field) {
 			$this->moduleFields[$field->getFieldName()] = $field;
 		}
-		
+
 		$this->pearDB = $adb;
 		$this->tableList = array($this->baseTable);
 		$this->tableIndexList = array($this->baseTable=>$this->idColumn);
 		$this->defaultTableList = array();
 	}
-	
+
 	protected function getTableFieldList($tableName){
 		$tableFieldList = array();
-		
+
 		$factory = WebserviceField::fromArray($this->pearDB,array('tablename'=>$tableName));
 		$dbTableFields = $factory->getTableFields();
 		foreach ($dbTableFields as $dbField) {
@@ -58,7 +58,7 @@ class VtigerCRMActorMeta extends EntityMeta {
 		}
 		return $tableFieldList;
 	}
-	
+
 	protected function getFieldArrayFromDBField($dbField,$tableName){
 		$field = array();
 		$field['fieldname'] = $dbField->name;
@@ -86,7 +86,7 @@ class VtigerCRMActorMeta extends EntityMeta {
 		$field['presence'] = '0';
 		return $field;
 	}
-	
+
 	protected function getReferenceList($dbField, $tableName){
 		static $referenceList = array();
 		if(isset($referenceList[$dbField->name])){
@@ -106,9 +106,8 @@ class VtigerCRMActorMeta extends EntityMeta {
 		$referenceList[$dbField->name] = $referenceTypes;
 		return $referenceTypes;
 	}
-	
+
 	protected function getFieldType($dbField,$tableName){
-		
 		if(isset(VtigerCRMActorMeta::$fieldTypeMapping[$tableName][$dbField->name])){
 			if(VtigerCRMActorMeta::$fieldTypeMapping[$tableName][$dbField->name] === 'null'){
 				return null;
@@ -128,7 +127,7 @@ class VtigerCRMActorMeta extends EntityMeta {
 			return null;
 		}
 	}
-	
+
 	protected function getTypeOfDataForType($type){
 		switch($type){
 			case 'email': return 'E';
@@ -145,7 +144,7 @@ class VtigerCRMActorMeta extends EntityMeta {
 			default: return 'V';
 		}
 	}
-	
+
 	protected function getFieldDataTypeFromDBType($type){
 		switch($type){
 			case 'date': return 'date';
@@ -161,7 +160,7 @@ class VtigerCRMActorMeta extends EntityMeta {
 			default: return $type;
 		}
 	}
-	
+
 	public function hasPermission($operation,$webserviceId){
 		if(is_admin($this->user)){
 			return true;
@@ -172,7 +171,7 @@ class VtigerCRMActorMeta extends EntityMeta {
 			return false;
 		}
 	}
-	
+
 	public function hasAssignPrivilege($ownerWebserviceId){
 		if(is_admin($this->user)){
 			return true;
@@ -185,7 +184,7 @@ class VtigerCRMActorMeta extends EntityMeta {
 			return false;
 		}
 	}
-	
+
 	public function hasDeleteAccess(){
 		if(is_admin($this->user)){
 			return true;
@@ -193,15 +192,15 @@ class VtigerCRMActorMeta extends EntityMeta {
 			return false;
 		}
 	}
-	
+
 	public function hasAccess(){
 		return true;
 	}
-	
+
 	public function hasReadAccess(){
 		return true;
 	}
-	
+
 	public function hasWriteAccess(){
 		if(is_admin($this->user)){
 			return true;
@@ -209,16 +208,15 @@ class VtigerCRMActorMeta extends EntityMeta {
 			return false;
 		}
 	}
-	
+
 	public function getEntityName(){
 		return $this->webserviceObject->getEntityName();
 	}
 	public function getEntityId(){
 		return $this->webserviceObject->getEntityId();
 	}
-	
-	function getObjectEntityName($webserviceId){
-		
+
+	function getObjectEntityName($webserviceId) {
 		$idComponents = vtws_getIdComponents($webserviceId);
 		$id=$idComponents[1];
 
@@ -227,7 +225,7 @@ class VtigerCRMActorMeta extends EntityMeta {
 		}
 		return null;
 	}
-	
+
 	function exists($recordId){
 		$exists = false;
 		$sql = 'select * from '.$this->baseTable.' where '.$this->getObectIndexColumn().'=?';
@@ -239,7 +237,7 @@ class VtigerCRMActorMeta extends EntityMeta {
 		}
 		return $exists;
 	}
-	
+
 	public function getNameFields(){
 		$query = "select name_fields from vtiger_ws_entity_name where entity_id = ?";
 		$result = $this->pearDB->pquery($query, array($this->objectId));
@@ -252,13 +250,11 @@ class VtigerCRMActorMeta extends EntityMeta {
 		}
 		return $fieldNames;
 	}
-	
-	public function getName($webserviceId){
-		
+
+	public function getName($webserviceId) {
 		$idComponents = vtws_getIdComponents($webserviceId);
 		$entityId = $idComponents[0];
 		$id=$idComponents[1];
-		
 		$nameList = vtws_getActorEntityNameById($entityId, array($id));
 		return $nameList[$id];
 	}

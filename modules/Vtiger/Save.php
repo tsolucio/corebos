@@ -12,7 +12,12 @@ global $current_user, $currentModule, $singlepane_view;
 checkFileAccessForInclusion("modules/$currentModule/$currentModule.php");
 require_once("modules/$currentModule/$currentModule.php");
 
-$search = isset($_REQUEST['search_url']) ? urlencode(vtlib_purify($_REQUEST['search_url'])) : '';
+if (isset($_REQUEST['search_url'])) {
+	$search = vtlib_purify($_REQUEST['search_url']);
+	if (substr($search, 0, 1) != '&') $search = '&' . $search;
+} else {
+	$search = '';
+}
 $req = new Vtiger_Request();
 $req->setDefault('return_module',$currentModule);
 if(!empty($_REQUEST['return_module'])) {
@@ -31,12 +36,12 @@ if(empty($_REQUEST['return_viewname']) or $singlepane_view == 'true') {
 if(isset($_REQUEST['activity_mode'])) {
 	$req->set('return_activity_mode',$_REQUEST['activity_mode']);
 }
-$req->set('return_start',$_REQUEST['pagenumber']);
+$req->set('return_start',(isset($_REQUEST['pagenumber']) ? $_REQUEST['pagenumber'] : ''));
 
 $focus = new $currentModule();
 setObjectValuesFromRequest($focus);
 
-$mode = vtlib_purify($_REQUEST['mode']);
+$mode = (isset($_REQUEST['mode']) ? vtlib_purify($_REQUEST['mode']) : '');
 $record=vtlib_purify($_REQUEST['record']);
 if($mode) $focus->mode = $mode;
 if($record)$focus->id  = $record;
@@ -45,10 +50,14 @@ $focus->column_fields['currency_id'] = vtlib_purify($_REQUEST['inventory_currenc
 $cur_sym_rate = getCurrencySymbolandCRate(vtlib_purify($_REQUEST['inventory_currency']));
 $focus->column_fields['conversion_rate'] = $cur_sym_rate['rate'];
 }
-if($_REQUEST['assigntype'] == 'U') {
-	$focus->column_fields['assigned_user_id'] = $_REQUEST['assigned_user_id'];
-} elseif($_REQUEST['assigntype'] == 'T') {
-	$focus->column_fields['assigned_user_id'] = $_REQUEST['assigned_group_id'];
+if (empty($_REQUEST['assigned_user_id']) and empty($_REQUEST['assigned_group_id'])) {
+	$focus->column_fields['assigned_user_id'] = $current_user->id;
+} else {
+	if($_REQUEST['assigntype'] == 'U') {
+		$focus->column_fields['assigned_user_id'] = $_REQUEST['assigned_user_id'];
+	} elseif($_REQUEST['assigntype'] == 'T') {
+		$focus->column_fields['assigned_user_id'] = $_REQUEST['assigned_group_id'];
+	}
 }
 list($saveerror,$errormessage,$error_action,$returnvalues) = $focus->preSaveCheck($_REQUEST);
 if ($saveerror) { // there is an error so we go back to EditView.
@@ -87,6 +96,10 @@ if(isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != '') {
 }
 
 if (!isset($__cbSaveSendHeader) || $__cbSaveSendHeader) {
-	header('Location: index.php?' . $req->getReturnURL() . $search);
+	if (isset($_REQUEST['Module_Popup_Edit']) and $_REQUEST['Module_Popup_Edit']==1) {
+		echo "<script>window.close();</script>";
+	} else {
+		header('Location: index.php?' . $req->getReturnURL() . $search);
+	}
 }
 ?>

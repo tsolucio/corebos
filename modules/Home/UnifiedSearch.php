@@ -30,11 +30,11 @@ $search_tag = isset($_REQUEST['search_tag']) ? vtlib_purify($_REQUEST['search_ta
 
 if(isset($query_string) && $query_string != ''){
 	// Was the search limited by user for specific modules?
-	$search_onlyin = $_REQUEST['search_onlyin'];
+	$search_onlyin = isset($_REQUEST['search_onlyin']) ? vtlib_purify($_REQUEST['search_onlyin']) : '';
 	if(!empty($search_onlyin) && $search_onlyin != '--USESELECTED--') {
 		$search_onlyin = explode(',', $search_onlyin);
 	} else if($search_onlyin == '--USESELECTED--') {
-		$search_onlyin = $_SESSION['__UnifiedSearch_SelectedModules__'];
+		$search_onlyin = (isset($_SESSION['__UnifiedSearch_SelectedModules__']) ? $_SESSION['__UnifiedSearch_SelectedModules__'] : array());
 	} else {
 		$search_onlyin = array();
 	}

@@ -83,7 +83,7 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 		array_push($field_list, $fieldname);
 	}
 	$field = Array();
-	if ($is_admin == false) {
+	if (!is_admin($current_user)) {
 		if ($module == 'Emails') {
 			$query = "SELECT fieldname FROM vtiger_field WHERE tabid = ? and vtiger_field.presence in (0,2)";
 			$params = array($tabid);
@@ -159,9 +159,9 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 							$temp_sorder = $default_sort_order;
 						}
 						$lbl_name = getTranslatedString(decode_html($name), $module);
-						//added to display vtiger_currency symbol in listview header
-						if ($lbl_name == 'Amount') {
-							$lbl_name .=' (' . $app_strings['LBL_IN'] . ' ' . $user_info['currency_symbol'] . ')';
+						//added to display currency symbol in listview header
+						if ($name == 'Amount') {
+							$lbl_name .=' (' . $app_strings['LBL_IN'] . ' ' . $current_user->column_fields['currency_symbol'] . ')';
 						}
 						if ($relatedlist != '' && $relatedlist != 'global') {
 							$relationURL = '';
@@ -196,10 +196,6 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 						$name = getTranslatedString($name, $module);
 					}
 				}
-			}
-			//added to display vtiger_currency symbol in related listview header
-			if ($name == 'Amount' && $relatedlist != '') {
-				$name .=' (' . $app_strings['LBL_IN'] . ' ' . $user_info['currency_symbol'] . ')';
 			}
 
 			if ($module == "Calendar" && $name == 'Close') {
@@ -501,7 +497,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 		array_push($field_list, $fieldname);
 	}
 	$field = Array();
-	if ($is_admin == false) {
+	if (!is_admin($current_user)) {
 		if ($module == 'Emails') {
 			$query = "SELECT fieldname FROM vtiger_field WHERE tabid = ? and vtiger_field.presence in (0,2)";
 			$params = array($tabid);
@@ -1027,7 +1023,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 	$field_list = array_values($focus->search_fields_name);
 
 	$field = Array();
-	if ($is_admin == false && $module != 'Users') {
+	if (!is_admin($current_user) && $module != 'Users') {
 		if ($module == 'Emails') {
 			$query = "SELECT fieldname FROM vtiger_field WHERE tabid = ? and vtiger_field.presence in (0,2)";
 			$params = array($tabid);
@@ -1157,7 +1153,6 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 
 			if ($module == 'Products' && ($focus->popup_type == 'inventory_prod' || $focus->popup_type == 'inventory_prod_po')) {
 				global $default_charset;
-				require('user_privileges/user_privileges_' . $current_user->id . '.php');
 				$row_id = $_REQUEST['curr_row'];
 
 				//To get all the tax types and values and pass it to product details
@@ -1167,7 +1162,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 					$tax_str .= $tax_details[$tax_count]['taxname'] . '=' . $tax_details[$tax_count]['percentage'] . ',';
 				}
 				$tax_str = trim($tax_str, ',');
-				$rate = $user_info['conv_rate'];
+				$rate = $current_user->column_fields['conv_rate'];
 				if (getFieldVisibilityPermission($module, $current_user->id, 'unit_price') == '0') {
 					$unitprice = $adb->query_result($list_result, $list_result_count, 'unit_price');
 					if ($_REQUEST['currencyid'] != null) {
@@ -1211,7 +1206,6 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 
 			if ($module == 'Services' && $focus->popup_type == 'inventory_service') {
 				global $default_charset;
-				require('user_privileges/user_privileges_' . $current_user->id . '.php');
 				$row_id = $_REQUEST['curr_row'];
 
 				//To get all the tax types and values and pass it to product details
@@ -1221,7 +1215,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 					$tax_str .= $tax_details[$tax_count]['taxname'] . '=' . $tax_details[$tax_count]['percentage'] . ',';
 				}
 				$tax_str = trim($tax_str, ',');
-				$rate = $user_info['conv_rate'];
+				$rate = $current_user->column_fields['conv_rate'];
 				if (getFieldVisibilityPermission($module, $current_user->id, 'unit_price') == '0') {
 					$unitprice = $adb->query_result($list_result, $list_result_count, 'unit_price');
 					if ($_REQUEST['currencyid'] != null) {
@@ -1289,9 +1283,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		$parent_id = $field_val;
 		if (!empty($parent_id)) {
 			$parent_module = getSalesEntityType($parent_id);
-			$valueTitle = $parent_module;
-			if ($app_strings[$valueTitle])
-				$valueTitle = $app_strings[$valueTitle];
+			$valueTitle = getTranslatedString($parent_module,$parent_module);
 
 			$displayValueArray = getEntityName($parent_module, $parent_id);
 			if (!empty($displayValueArray)) {
@@ -1413,7 +1405,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 				$currencyValue = CurrencyField::convertToUserFormat($temp_val, null, true);
 				$value = CurrencyField::appendCurrencySymbol($currencyValue, $currency_symbol);
 			} else {
-				//changes made to remove vtiger_currency symbol infront of each vtiger_potential amount
+				//changes made to remove currency symbol in front of each potential amount
 				if ($temp_val != 0)
 					$value = CurrencyField::convertToUserFormat($temp_val);
 				else
@@ -1611,7 +1603,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		$value = '<a href="index.php?action=RoleDetailView&module=Settings&parenttab=Settings&roleid=' . $temp_val . '">' . textlength_check(getRoleName($temp_val)) . '</a>';
 	} elseif ($uitype == 33) {
 		$value = ($temp_val != "") ? str_ireplace(' |##| ', ', ', $temp_val) : "";
-		if (!$is_admin && $value != '') {
+		if (!is_admin($current_user) && $value != '') {
 			$value = ($field_val != "") ? str_ireplace(' |##| ', ', ', $field_val) : "";
 			if ($value != '') {
 				$value_arr = explode(',', trim($value));
@@ -1771,7 +1763,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						$tax_str .= $tax_details[$tax_count]['taxname'] . '=' . $tax_details[$tax_count]['percentage'] . ',';
 					}
 					$tax_str = trim($tax_str, ',');
-					$rate = $user_info['conv_rate'];
+					$rate = $current_user->column_fields['conv_rate'];
 					if (getFieldVisibilityPermission('Products', $current_user->id, 'unit_price') == '0') {
 						$unitprice = $adb->query_result($list_result, $list_result_count, 'unit_price');
 						if ($_REQUEST['currencyid'] != null) {
@@ -1819,7 +1811,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						$tax_str .= $tax_details[$tax_count]['taxname'] . '=' . $tax_details[$tax_count]['percentage'] . ',';
 					}
 					$tax_str = trim($tax_str, ',');
-					$rate = $user_info['conv_rate'];
+					$rate = $current_user->column_fields['conv_rate'];
 
 					if (getFieldVisibilityPermission($module, $current_user->id, 'unit_price') == '0') {
 						$unitprice = $adb->query_result($list_result, $list_result_count, 'unit_price');
@@ -1851,7 +1843,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$slashes_temp_desc = decode_html(htmlspecialchars($description, ENT_QUOTES, $default_charset));
 
 					$slashes_desc = str_replace(array("\r", "\n"), array('\r', '\n'), $slashes_temp_desc);
-					$tmp_arr = array("entityid" => $entity_id, "prodname" => "" . stripslashes(decode_html(nl2br($slashes_temp_val))) . "", "unitprice" => "$unitprice", "qtyinstk" => "$qty_stock", "taxstring" => "$tax_str", "rowid" => "$row_id", "desc" => "$slashes_desc", "subprod_ids" => "$sub_det");
+					$tmp_arr = array("entityid" => $entity_id, "prodname" => "" . stripslashes(decode_html(nl2br($slashes_temp_val))) . "", "unitprice" => "$unitprice", "qtyinstk" => "0", "taxstring" => "$tax_str", "rowid" => "$row_id", "desc" => "$slashes_desc", "subprod_ids" => "$sub_det");
 					$prod_arr = json_encode($tmp_arr);
 					$value = '<a href="javascript:window.close();" id=\'popup_product_' . $entity_id . '\' onclick=\'set_return_inventory_po("' . $entity_id . '", "' . decode_html(nl2br($slashes_temp_val)) . '", "' . $unitprice . '", "' . $tax_str . '","' . $row_id . '","' . $slashes_desc . '","' . $sub_det . '"); \' vt_prod_arr=\'' . $prod_arr . '\' >' . textlength_check($temp_val) . '</a>';
 				}
@@ -1865,7 +1857,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						$tax_str .= $tax_details[$tax_count]['taxname'] . '=' . $tax_details[$tax_count]['percentage'] . ',';
 					}
 					$tax_str = trim($tax_str, ',');
-					$rate = $user_info['conv_rate'];
+					$rate = $current_user->column_fields['conv_rate'];
 					if (getFieldVisibilityPermission('Services', $current_user->id, 'unit_price') == '0') {
 						$unitprice = $adb->query_result($list_result, $list_result_count, 'unit_price');
 						if ($_REQUEST['currencyid'] != null) {
@@ -2259,15 +2251,11 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
  * @returns $query -- query:: Type query
  */
 function getListQuery($module, $where = '') {
-	global $log;
+	global $log, $current_user;
 	$log->debug("Entering getListQuery(" . $module . "," . $where . ") method ...");
 
-	global $current_user;
-	require('user_privileges/user_privileges_' . $current_user->id . '.php');
-	require('user_privileges/sharing_privileges_' . $current_user->id . '.php');
 	$tab_id = getTabid($module);
-	$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' =>
-				'vtiger_users.last_name'), 'Users');
+	$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 	switch ($module) {
 		Case "HelpDesk":
 			$query = "SELECT vtiger_crmentity.crmid, vtiger_crmentity.smownerid,
@@ -2735,11 +2723,8 @@ function getListQuery($module, $where = '') {
  * Returns a database query - type string
  */
 function getReadEntityIds($module) {
-	global $log;
+	global $log, $current_user;
 	$log->debug("Entering getReadEntityIds(" . $module . ") method ...");
-	global $current_user;
-	require('user_privileges/user_privileges_' . $current_user->id . '.php');
-	require('user_privileges/sharing_privileges_' . $current_user->id . '.php');
 	$tab_id = getTabid($module);
 
 	if ($module == "Leads") {
@@ -3981,13 +3966,13 @@ function getMergeFields($module, $str) {
 	for ($i = 0; $i < $num_rows_org; $i++)
 		$permitted_org_list[$i] = $adb->query_result($result_def_org, $i, 'fieldid');
 
-	require('user_privileges/user_privileges_' . $current_user->id . '.php');
+	$is_admin = is_admin($current_user);
 	$fields = '';
 	for ($i = 0; $i < $num_rows; $i++) {
 		$field_id = $adb->query_result($result, $i, "fieldid");
 		foreach ($permitted_list as $field => $data)
 			if ($data[4] == $field_id and $data[1] == 0) {
-				if ($is_admin == 'true' || (in_array($field_id, $permitted_org_list))) {
+				if ($is_admin || (in_array($field_id, $permitted_org_list))) {
 					$field = "<option value=\"" . $field_id . "\">" . getTranslatedString($data[0], $module) . "</option>";
 					$fields.=$field;
 					break;

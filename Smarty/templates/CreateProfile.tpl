@@ -72,12 +72,12 @@
 						<td align="right" width="25%" style="padding-right:10px;">
 						<b style="color:#FF0000;font-size:16px;">{$APP.LBL_REQUIRED_SYMBOL}</b>&nbsp;<b>{$CMOD.LBL_NEW_PROFILE_NAME} : </b></td>
 						<td width="75%" align="left" style="padding-left:10px;">
-						<input type="text" name="profile_name" id="pobox" value="{$PROFILENAME}" class="txtBox" /></td>
+						<input type="text" name="profile_name" id="pobox" value="{$PROFILE_NAME}" class="txtBox" /></td>
 					</tr>
 					<tr><td colspan="2">&nbsp;</td></tr>
 					<tr>
 						<td align="right" style="padding-right:10px;" valign="top"><b>{$CMOD.LBL_DESCRIPTION} : </b></td>
-						<td align="left" style="padding-left:10px;"><textarea name="profile_description" class="txtBox">{$PROFILEDESC}</textarea></td>
+						<td align="left" style="padding-left:10px;"><textarea name="profile_description" class="txtBox">{$PROFILE_DESCRIPTION}</textarea></td>
 					</tr>
 					<tr><td colspan="2" style="border-bottom:1px dashed #CCCCCC;" height="75">&nbsp;</td></tr>
 					<tr>

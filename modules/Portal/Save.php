@@ -13,8 +13,8 @@ global $default_charset,$adb;
 $conv_pname = function_exists('iconv') ? @iconv('UTF-8',$default_charset, $_REQUEST['portalname']) : $_REQUEST['portalname'];
 $conv_purl = function_exists('iconv') ? @iconv('UTF-8',$default_charset, $_REQUEST['portalurl']) : $_REQUEST['portalurl'];
 $portlurl =str_replace(array("'",'"'),'',$conv_purl);
-$portlname = from_html($conv_pname);
-$portlurl = from_html($portlurl);
+$portlname = vtlib_purify($conv_pname);
+$portlurl = vtlib_purify($portlurl);
 //added as an enhancement to set default value
 if(isset($_REQUEST['check']) && $_REQUEST['check'] =='true')
 {

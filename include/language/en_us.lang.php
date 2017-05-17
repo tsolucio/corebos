@@ -1,17 +1,13 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-$app_strings = array (
+$app_strings = array(
 'LBL_BROWSER_TITLE' => 'coreBOS',
 'LBL_MY_ACCOUNT' => 'My Organization',
 'LBL_MY_PREFERENCES' => 'My Preferences',
@@ -491,7 +487,7 @@ $app_strings = array (
 'LBL_NEW_SORDER_BUTTON_KEY' => 'E',
 'LBL_NEW_SORDER_BUTTON' => 'New Sales Order',
 'LBL_PRODUCT_DETAILS' => 'Product Details',
-'LBL_QTY_IN_STOCK' => 'Qty In Stock',
+'LBL_QTY_IN_STOCK' => 'Qty. In Stock',
 'LBL_QTY' => 'Qty',
 'LBL_UNIT_PRICE' => 'Unit Price',
 'LBL_LIST_PRICE' => 'List Price',
@@ -715,7 +711,7 @@ $app_strings = array (
 'SHOULDNOTBE_EQUAL' => ' should not be equal to ',
 'PORTAL_PROVIDE_EMAILID' => 'Portal user should provide email Id for portal login',
 'ADD_CONFIRMATION' => 'Are you sure you want to add the selected ',
-'ACCOUNTNAME_CANNOT_EMPTY' => 'OrganizationName Cannot be Empty',
+'ACCOUNTNAME_CANNOT_EMPTY' => 'Organization Name Cannot be Empty',
 'CANT_SELECT_CONTACTS' => "You can\'t select related contacts from Lead",
 'LBL_THIS' => 'This ',
 'DOESNOT_HAVE_MAILIDS' => " doesn\'t have any mail ids",
@@ -1042,7 +1038,7 @@ $app_strings = array (
 // Added after 5.0.4 GA
 
 //Added to Fix i18N issue in Email Template
-'LBL_GENERAL_FIELDS'=>'General Fields', 
+'LBL_GENERAL_FIELDS'=>'General Fields',
 //For Users fields
 'HomePhone'=>'HomePhone',
 'Signature'=>'Signature',
@@ -1152,7 +1148,7 @@ $app_strings = array (
 // For Privacy Policy
 'LNK_PRIVACY_POLICY'=>'Privacy Policy',
 'LBL_MOVE_BLOCK_FIELD' => 'Move Fields',
- 
+
 //added for find duplicate
 'LBL_DUPLICATE_DATA_IN'=>'Duplicate ',
 'LBL_MERGE_SELECT'=>'Merge Select',
@@ -1200,7 +1196,7 @@ $app_strings = array (
 
 // Unified Search extended support
 'LBL_SELECT_MODULES_FOR_SEARCH' => 'Select modules to search in',
-'LBL_SELECT_ALL' => 'Select All', 
+'LBL_SELECT_ALL' => 'Select All',
 'LBL_UNSELECT_ALL' => 'UnSelect All',
 'LBL_FIELD_FOR_COMPARISION' => 'Field for Comparision',
 'LBL_DONE' => ' Done ',
@@ -1212,7 +1208,7 @@ $app_strings = array (
 // For note link on the detailview
 'LBL_ADD_NOTE'=>'Add Note',
 
-// For Layout Editor 
+// For Layout Editor
 'LBL_UNHIDE_FIELDS'=>'Unhide Fields',
 
 // For Mass Edit
@@ -1276,6 +1272,7 @@ $app_strings = array (
 'SetReturnAddressDescription' => 'Select which address you wish to overwrite, if any',
 'Subscribe' => 'Subscribe',
 'View History' => 'View History',
+'SYNCH_NOW' => 'Sync Now',
 );
 
 // Translation for currency names

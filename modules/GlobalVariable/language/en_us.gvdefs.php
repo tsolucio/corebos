@@ -147,7 +147,7 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Text to show',
 	'definition' => 'Shows a scrolling header text as a system wide announcement',
 ),
-'preload_jscalendar' => array(
+'Application_JSCalendar_Load' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'String',
 	'category' => 'Development',
@@ -609,21 +609,21 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Whether or not to show events assigned to the users groups.',
 ),
-'calendar_call_default_duration' => array(
+'Calendar_call_default_duration' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Integer: minutes',
 	'category' => 'Application',
 	'values' => '',
 	'definition' => 'Initial number of minutes assigned to a call when creating. The default is 15 minutes.',
 ),
-'calendar_other_default_duration' => array(
+'Calendar_other_default_duration' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Integer: minutes',
 	'category' => 'Application',
 	'values' => '',
 	'definition' => 'Initial number of minutes assigned to a call when creating. The default is 15 minutes.',
 ),
-'calendar_sort_users_by' => array(
+'Calendar_sort_users_by' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'String: CSV of column names',
 	'category' => 'Application',
@@ -740,14 +740,14 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
 	'values' => '0 | 1',
-	'definition' => 'When selecting an Account/Contact in the popup window, the application asks if it must fill in addresses. This variable sets the Billing Address checkbox.',
+	'definition' => 'When selecting an Account/Contact/Vendor in the popup window, the application asks if it must fill in addresses. This variable sets the Billing Address checkbox.',
 ),
 'Application_Shipping_Address_Checked' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
 	'values' => '0 | 1',
-	'definition' => 'When selecting an Account/Contact in the popup window, the application asks if it must fill in addresses. This variable sets the Shipping Address checkbox.',
+	'definition' => 'When selecting an Account/Contact/Vendor in the popup window, the application asks if it must fill in addresses. This variable sets the Shipping Address checkbox.',
 ),
 'Application_Show_Copy_Address' => array(
 	'status' => 'Implemented',
@@ -797,6 +797,20 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => 'User based template string',
 	'definition' => 'HTML current user based workflow template that will be shown to user on first successful login',
+),
+'Mobile_Related_Modules' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Mobile module functionality',
+	'values' => 'Contacts,Potentials,HelpDesk,Documents',
+	'definition' => '<b>Comma separeted module list</b> to indicate the modules that we want to show their related lists or to appear like a related list.<br> Now <b> Default value is: Contacts,Potentials,HelpDesk,Documents,Timecontrol</b>. <br>So, we recomend that first you copy this value and on the end of the string you add your new modules.<br><b>For example:</b> Contacts,Potentials,HelpDesk,Documents,Timecontrol<b>,Assets</b>',
+),
+'GContacts_Max_Results'  => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Integration',
+	'values' => '',
+	'definition' => 'Maximum number of records that will be synchronized in one batch when sending or receiving information from Google Contacts. The default value is 200 records.',
 ),
 );
 

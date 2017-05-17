@@ -95,7 +95,7 @@ class Users extends CRMEntity {
 		if (isset($_REQUEST['sorder']))
 			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
 		else
-			$sorder = (($_SESSION['USERS_SORT_ORDER'] != '') ? ($_SESSION['USERS_SORT_ORDER']) : ($this->default_sort_order));
+			$sorder = (!empty($_SESSION['USERS_SORT_ORDER']) ? ($_SESSION['USERS_SORT_ORDER']) : ($this->default_sort_order));
 		$log->debug("Exiting getSortOrder method ...");
 		return $sorder;
 	}
@@ -116,7 +116,7 @@ class Users extends CRMEntity {
 		if (isset($_REQUEST['order_by']))
 			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
 		else
-			$order_by = (($_SESSION['USERS_ORDER_BY'] != '') ? ($_SESSION['USERS_ORDER_BY']) : ($use_default_order_by));
+			$order_by = (!empty($_SESSION['USERS_ORDER_BY']) ? ($_SESSION['USERS_ORDER_BY']) : ($use_default_order_by));
 		$log->debug("Exiting getOrderBy method ...");
 		return $order_by;
 	}
@@ -743,8 +743,6 @@ class Users extends CRMEntity {
 					$fldvalue = $this->column_fields[$fieldname];
 					$fldvalue = stripslashes($fldvalue);
 				}
-				$fldvalue = from_html($fldvalue, ($insertion_mode == 'edit') ? true : false);
-
 			} else {
 				$fldvalue = '';
 			}
@@ -782,7 +780,8 @@ class Users extends CRMEntity {
 			}
 			if ($columname == 'is_admin' and !is_admin($current_user)) {// only admin users can change admin field
 				if ($insertion_mode == 'edit') {// we force the same value that is currently set in database
-					$fldvalue = $adb->query_result($adb->pquery('select is_admin from vtiger_users where id=?', array($this->id)), 0, 0);
+					$rs = $adb->pquery('select is_admin from vtiger_users where id=?', array($this->id));
+					$fldvalue = $adb->query_result($rs, 0, 0);
 				}
 			}
 			if ($insertion_mode == 'edit') {

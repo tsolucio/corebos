@@ -10,10 +10,7 @@
 require_once('include/database/PearDatabase.php');
 require_once('include/utils/UserInfoUtil.php');
 
-global $mod_strings;
-global $app_strings;
-global $adb;
-global $theme;
+global $mod_strings, $app_strings, $adb, $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 
@@ -28,26 +25,23 @@ $list_entries = array($mod_strings['LBL_LIST_NO'],$mod_strings['LBL_LIST_TOOLS']
   * @param $noofrows -- no of rows in the $profileListResult:: Type integer 
   * @param $mod_strings -- i18n mod_strings array:: Type array 
   * @returns $return_date -- profile list info array:: Type array
-  *
  */
 function getStdOutput($profileListResult, $noofrows, $mod_strings)
 {
-	global $adb;
-	$return_data = array();		
-	for($i=0; $i<$noofrows; $i++)
-	{
+	global $adb, $current_user;
+	$return_data = array();
+	for ($i=0; $i<$noofrows; $i++) {
 		$standCustFld = array();
 		$profile_name = $adb->query_result($profileListResult,$i,"profilename");
 		$profile_id = $adb->query_result($profileListResult,$i,"profileid");
 		$description = $adb->query_result($profileListResult,$i,"description");
-		global $current_user;
-        $current_profile = fetchUserProfileId($current_user->id);
-        if($profile_id != 1  && $profile_id != $current_profile)
+		$current_profile = fetchUserProfileId($current_user->id);
+		if($profile_id != 1  && $profile_id != $current_profile)
 			$standCustFld['del_permission']='yes';
 		else
 			$standCustFld['del_permission']='no';
 
-		$standCustFld['profileid']= $profile_id;	
+		$standCustFld['profileid']= $profile_id;
 		$standCustFld['profilename']= $profile_name;
 		$standCustFld['description']= $description;
 		$return_data[]=$standCustFld;
@@ -58,7 +52,6 @@ function getStdOutput($profileListResult, $noofrows, $mod_strings)
 $smarty->assign("LIST_HEADER",$list_entries);
 $smarty->assign("LIST_ENTRIES",getStdOutput($profileListResult, $noofrows, $mod_strings));
 $smarty->assign("MOD", return_module_language($current_language,'Settings'));
-$smarty->assign("PROFILES", $standCustFld);
 $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH",$image_path);
 $smarty->assign("COUNT",$noofrows);
