@@ -231,12 +231,12 @@
          $tbody.find("button.ui-btn-active").removeClass("ui-btn-active");
          $this.addClass("ui-btn-active");
 
-         if ( date.getMonth() !== plugin.settings.date.getMonth() ) {
+        if ( ( date.getMonth() !== plugin.settings.date.getMonth() ) && plugin.settings.showWeek===false ) {
             // Go to previous/next month
             refresh(date);
          }
 	 // Select new date
-	 $element.trigger('change', date);
+	 $element.trigger('change', [date, plugin.settings.showWeek]);
 	 $element.trigger('taphold', date);
 
          plugin.settings.date = date ;
@@ -249,12 +249,12 @@
          $tbody.find("button.ui-btn-active").removeClass("ui-btn-active");
          $this.addClass("ui-btn-active");
 
-         if ( date.getMonth() !== plugin.settings.date.getMonth() ) {
+          if ( ( date.getMonth() !== plugin.settings.date.getMonth() ) && plugin.settings.showWeek===false )  {
             // Go to previous/next month
             refresh(date);
          } else {
             // Select new date
-            $element.trigger('change', date);
+            $element.trigger('change', [date, plugin.settings.showWeek]);
          }
          plugin.settings.date = date ;
       }

@@ -225,11 +225,11 @@ var crmtogo_Index_Js = {
 				});
 				$("#calendarcontainer").trigger('refresh');
 			}
-			$("#calendarcontainer").bind('change', function(event, date) {
+            $("#calendarcontainer").bind('change', function(event, date, inWeek) {
 				//get all calendar entries for the selected month
 				//make sure it is called only once
 				if (date.getTime() != tmp_date.getTime()) {
-					$.get('index.php?_operation=listModuleRecords&module=Calendar&compact=true&datetime='+date, fillcalendar);
+                    $.get('index.php?_operation=listModuleRecords&module=Calendar&compact=true&datetime='+date+((inWeek===true)?"&inweek=true":""), fillcalendar);
 				}
 				tmp_date = date;
 			});
