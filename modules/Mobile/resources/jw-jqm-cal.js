@@ -2,6 +2,8 @@
    $.jqmCalendar = function(element, options) {
 
       var defaults = {
+          // Display single week instead of month
+          showWeek : false,
          // Array of events
          events : [],
          // Event handler,
@@ -280,6 +282,16 @@
 
 
       function refresh(date) {
+          plugin.settings.date = date = date ||  plugin.settings.date || new Date();
+          if(plugin.settings.showWeek===false){
+              refreshByMonth(date);
+          }else{
+              refreshByWeek(date);
+          }
+          $element.trigger('create');
+      }
+
+      function refreshByMonth(date) {
          plugin.settings.date = date = date ||  plugin.settings.date || new Date();
 
          var year = date.getFullYear(),
@@ -333,6 +345,10 @@
 
          $element.trigger('create');
       }
+
+       function refreshByWeek(date) {
+
+       }
 
       $element.bind('change', function(originalEvent, begin) {
          var end = new Date(begin.getFullYear(), begin.getMonth(), begin.getDate() + 1, 0,0,0,0);
