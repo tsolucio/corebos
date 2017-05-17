@@ -302,7 +302,6 @@
       }
 
       function refreshByMonth(date) {
-         plugin.settings.date = date = date ||  plugin.settings.date || new Date();
 
          var year = date.getFullYear(),
             month = date.getMonth(),
@@ -351,9 +350,6 @@
          for ( var i = 0, days = [].concat(plugin.settings.days, plugin.settings.days).splice(plugin.settings.startOfWeek, 7); i < 7; i++ ) {
 	    document.getElementById('nameday'+i).innerHTML=days[i];
          }
-
-
-         $element.trigger('create');
       }
 
        function refreshByWeek(date) {
