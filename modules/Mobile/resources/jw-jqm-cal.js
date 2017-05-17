@@ -117,16 +117,26 @@
       }
 
        function nextButtonHandler(){
+           if(plugin.settings.showWeek===false){
                var newDay= plugin.settings.date.getDate();
                var maxDay=_daysInMonth(new Date(plugin.settings.date.getFullYear(), plugin.settings.date.getMonth() + 1),0);
                if (newDay>maxDay) {newDay=maxDay;}
                refresh(new Date(plugin.settings.date.getFullYear(), plugin.settings.date.getMonth() + 1, newDay));
+           }else{
+               var newDate = new XDate(plugin.settings.date).addDays(7);
+               refresh(newDate);
+           }
        }
 
        function previousButtonHandler(){
+           if(plugin.settings.showWeek===false){
                refresh(new Date(plugin.settings.date.getFullYear(), plugin.settings.date.getMonth() - 1,
                    plugin.settings.date.getDate()<=_daysInMonth(new Date(plugin.settings.date.getFullYear(), plugin.settings.date.getMonth() - 1))?plugin.settings.date.getDate():_daysInMonth(new Date(plugin.settings.date.getFullYear(), plugin.settings.date.getMonth() - 1))
                ));
+           }else{
+               var newDate = new XDate(plugin.settings.date).addDays(-7);
+               refresh(newDate);
+           }
        }
 
       function _firstDayOfMonth(date) {

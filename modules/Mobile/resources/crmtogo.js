@@ -222,7 +222,7 @@ var crmtogo_Index_Js = {
                 caljson.sort(function(a,b){
                     return a['begin'] > b['begin'];
                 });
-                
+
 				$("#calendarcontainer").jqmCalendar({
 					events : caljson,
 					months : cal_config_arr.monthNames,
