@@ -54,8 +54,8 @@ if($mode == 'add'){
 	}
 	echo "SUCCESS";
 }elseif($mode == 'edit'){
-	$newValues = json_decode($_REQUEST['newValues'],true);
-	$oldValues = json_decode($_REQUEST['oldValues'],true);
+	$newValues = json_decode(urldecode($_REQUEST['newValues']),true);
+	$oldValues = json_decode(urldecode($_REQUEST['oldValues']),true);
 	if(count($newValues) != count($oldValues)){
 		echo "Some error occured";
 		exit;

@@ -174,7 +174,8 @@ function Search($module, $input = '')
 	if(isset($input['search_field']) && $input['search_field'] !="") {
 		$search_column=vtlib_purify($input['search_field']);
 	}
-	if(isset($input['search_text']) && $input['search_text']!="") {
+	$search_string = '';
+	if (isset($input['search_text']) && $input['search_text']!='') {
 		// search other characters like "|, ?, ?" by jagi
 		$search_string = vtlib_purify($input['search_text']);
 		$stringConvert = function_exists('iconv') ? @iconv('UTF-8',$default_charset,$search_string) : $search_string;
