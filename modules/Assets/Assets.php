@@ -119,6 +119,7 @@ class Assets extends CRMEntity {
 		// $srcrecord could be empty
 		global $adb,$log;
 		//$query_relation = ' INNER JOIN vtiger_crmentityrel ON (vtiger_crmentityrel.relcrmid = vtiger_crmentity.crmid OR vtiger_crmentityrel.crmid = vtiger_crmentity.crmid) ';
+		$query_relation = '';
 		$wherepos = stripos($query, 'where'); // there is always a where
 		$query_body = substr($query, 0, $wherepos-1);
 		$query_cond = substr($query, $wherepos+5);
