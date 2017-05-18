@@ -770,6 +770,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		if(!empty($_REQUEST['parent_id'])) {
 			$value = vtlib_purify($_REQUEST['parent_id']);
 		}
+		$parent_module = '';
 		if(!empty($value)) {
 			$parent_module = getSalesEntityType($value);
 			if($parent_module != "Contacts") {
@@ -780,7 +781,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 				$fieldvalue[] = $value;
 			}
 		}
-		// Check for vtiger_activity type if task orders to be added in select option
 		$act_mode = $_REQUEST['activity_mode'];
 
 		$parentModulesList = array(
@@ -817,9 +817,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	//added by rdhital/Raju for better email support
 	elseif($uitype == 357)
 	{
-		$pmodule = isset($_REQUEST['pmodule']) ? $_REQUEST['pmodule'] : null;
-		if(empty($pmodule))
-			$pmodule = $_REQUEST['par_module'];
+		$pmodule = isset($_REQUEST['pmodule']) ? $_REQUEST['pmodule'] : (isset($_REQUEST['par_module']) ? $_REQUEST['par_module'] : null);
 
 		if($pmodule == 'Contacts')
 		{

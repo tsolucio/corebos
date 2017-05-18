@@ -847,12 +847,15 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 				$result = $adb->pquery($sql, array($value));
 				$vendor_name = $adb->query_result($result, 0, "vendorname");
 				$label_fld[] = '<a href="index.php?module=' . $parent_module . '&action=DetailView&record=' . $value . '">' . $vendor_name . '</a>';
-			} //MSL -------------------------------------------
+			} else {
+				$label_fld[] = '';
+				$label_fld[] = '';
+			}
 			// vtlib customization: For listview javascript triggers
 			$modMetaInfo=getEntityFieldNames($parent_module);
 			$modEName=(is_array($modMetaInfo['fieldname']) ? $modMetaInfo['fieldname'][0] : $modMetaInfo['fieldname']);
 			$vtlib_metainfo = "<span type='vtlib_metainfo' vtrecordid='$value' vtfieldname='$modEName' vtmodule='$parent_module' style='display:none;'></span>";
-			// END
+
 			$last_lbl_fld = count($label_fld) - 1;
 			$label_fld[$last_lbl_fld] .= $vtlib_metainfo;
 		} else {

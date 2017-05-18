@@ -158,7 +158,7 @@ function getNonEditablePicklistValues($fieldName, $lang=array(), $adb){
 	$count = $adb->num_rows($result);
 	for($i=0;$i<$count;$i++){
 		$non_val = $adb->query_result($result,$i,$fieldName);
-		if($lang[$non_val] != ''){
+		if (!empty($lang[$non_val])) {
 			$values[]=$lang[$non_val];
 		}else{
 			$values[]=$non_val;
