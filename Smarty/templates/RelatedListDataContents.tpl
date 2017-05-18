@@ -55,7 +55,7 @@
 	</tr>
 	{/if}
 	{foreach key=_RECORD_ID item=_RECORD from=$RELATEDLISTDATA.entries}
-		<tr bgcolor=white class="rel_mod_data_row">
+		<tr bgcolor=white class="rel_mod_data_row" id="row_{$_RECORD_ID}">
 			{if $MODULE eq 'Campaigns' && ($RELATED_MODULE eq 'Contacts' || $RELATED_MODULE eq 'Leads' || $RELATED_MODULE eq 'Accounts')}
 			<td><input name="{$MODULE}_{$RELATED_MODULE}_selected_id" id="{$_RECORD_ID}" value="{$_RECORD_ID}" onclick="rel_check_object(this,'{$RELATED_MODULE}');" type="checkbox" {if isset($RELATEDLISTDATA.checked)}{$RELATEDLISTDATA.checked.$_RECORD_ID}{/if}></td>
 			{/if}
