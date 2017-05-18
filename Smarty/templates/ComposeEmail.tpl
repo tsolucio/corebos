@@ -51,7 +51,7 @@
 	<tr>
 	<td class="mailSubHeader" align="right"><font color="red">*</font><b>{$MOD.LBL_FROM}</b></td>
 	<td class="cellText" style="padding: 5px;">
-		<input name="from_email" id="from_email" class="txtBox" type="text" value="{if isset($EMAIL_FROM)}{$EMAIL_FROM}{/if}" style="width: 525px;" placeholder="{'LeaveEmptyForUserEmail'|@getTranslatedString:'Settings'}">
+		<input name="from_email" id="from_email" class="txtBox" type="text" value="{if isset($FROM_MAIL)}{$FROM_MAIL}{/if}" style="width: 525px;" placeholder="{'LeaveEmptyForUserEmail'|@getTranslatedString:'Settings'}">
 	</td>
 	<td class="cellText" style="padding: 5px;" align="left" nowrap></td>
 	</tr>
