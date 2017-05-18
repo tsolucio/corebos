@@ -113,6 +113,10 @@ function loadRelatedListBlock(urldata,target,imagesuffix) {
 						}
 						updateParentCheckbox(obj,imagesuffix);
 					}
+					if (typeof RLColorizerList === "function") {
+						var rlModule = imagesuffix.replace(document.getElementById('return_module').value + '_','');
+						RLColorizerList(rlModule);
+					}
 			}
 	);
 }
