@@ -218,7 +218,7 @@ class Import_Data_Controller {
 								$comparisonValue = trim($referenceFileValueComponents[1]);
 							}
 						}
-						$queryGenerator->addCondition($mergeField, $comparisonValue, 'e');
+						$queryGenerator->addCondition($mergeField, $comparisonValue, 'e', QueryGenerator::$AND);
 					}
 					$query = $queryGenerator->getQuery();
 					$duplicatesResult = $adb->query($query);
