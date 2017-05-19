@@ -806,6 +806,10 @@ class QueryGenerator {
 		return $sql;
 	}
 
+	public function hasWhereConditions() {
+		return (count($this->conditionals)>0);
+	}
+
 	public function getWhereClause() {
 		global $current_user;
 		if(!empty($this->query) || !empty($this->whereClause)) {
