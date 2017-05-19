@@ -82,8 +82,9 @@ class Import_Utils {
 		return $userImportTablePrefix . $user->id;
 	}
 
-	public static function showErrorPage($errorMessage, $errorDetails=false, $customActions=false) {
+	public static function showErrorPage($errorMessage, $errorDetails=false, $customActions=false, $moduleName='') {
 		$viewer = new Import_UI_Viewer();
+		$viewer->assign('FOR_MODULE', $moduleName);
 		$viewer->assign('ERROR_MESSAGE', $errorMessage);
 		$viewer->assign('ERROR_DETAILS', $errorDetails);
 		$viewer->assign('CUSTOM_ACTIONS', $customActions);
@@ -105,7 +106,7 @@ class Import_Utils {
 		$errorMessage = getTranslatedString('ERR_UNIMPORTED_RECORDS_EXIST', 'Import');
 		$customActions = array('LBL_CLEAR_DATA' => "location.href='index.php?module={$moduleName}&action=Import&mode=clear_corrupted_data'");
 
-		self::showErrorPage($errorMessage, '', $customActions);
+		self::showErrorPage($errorMessage, '', $customActions, $moduleName);
 	}
 
 	public static function isUserImportBlocked($user) {
