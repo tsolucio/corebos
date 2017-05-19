@@ -19,8 +19,7 @@ $subject = vtlib_purify($_REQUEST["subject"]);
 $body = vtlib_purify($_REQUEST["body"]);
 $emailfrom = vtlib_purify($_REQUEST["emailfrom"]);
 
-if (isset($templateid) && $templateid !='')
-{
+if (!empty($templateid)) {
 	$log->info("the templateid is set");
 	$sql = "update vtiger_emailtemplates set foldername =?, templatename =?, subject =?, description =?, body =?, sendemailfrom=? where templateid =?";
 	$params = array($folderName, $templateName, $subject, $description, $body, $emailfrom, $templateid);
