@@ -1047,7 +1047,7 @@ class QueryGenerator {
 					// $valueArray[$key] = ltrim($value, ' |##| ');
 				// }
 			// }
-		} elseif(is_string($value)) {
+		} elseif (is_string($value) and $operator!='e') {
 			$valueArray = explode(',' , $value);
 		} elseif(is_array($value)) {
 			$valueArray = $value;
