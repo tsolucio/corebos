@@ -25,11 +25,11 @@ class ModuleClass extends CRMEntity {
 	 */
 	var $customFieldTable = Array('vtiger_payslipcf', 'payslipid');
 	// related_tables variable should define the association (relation) between dependent tables
-	// FORMAT: related_tablename => Array ( related_tablename_column[, base_tablename, base_tablename_column] )
+	// FORMAT: related_tablename => Array ( related_tablename_column[, base_tablename, base_tablename_column[, related_module]] )
 	// Here base_tablename_column should establish relation with related_tablename_column
 	// NOTE: If base_tablename and base_tablename_column are not specified, it will default to modules (table_name, related_tablename_column)
 	// Uncomment the line below to support custom field columns on related lists
-	// var $related_tables = Array('vtiger_payslipcf'=>array('payslipid','vtiger_payslip', 'payslipid'));
+	// var $related_tables = Array('vtiger_payslipcf'=>array('payslipid','vtiger_payslip', 'payslipid', 'PaySlip'));
 
 	/**
 	 * Mandatory for Saving, Include tables related to this module.

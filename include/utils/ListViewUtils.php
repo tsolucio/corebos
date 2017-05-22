@@ -541,8 +541,19 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 	if ($module == "Calendar")
 		$query .=" WHERE vtiger_field.tabid in (9,16) and vtiger_field.presence in (0,2)";
 	else {
-		$query .=" WHERE vtiger_field.tabid = ? and vtiger_field.presence in (0,2)";
-		array_push($params, $tabid);
+		$tabids = array($tabid);
+		if (isset($focus->related_tables)) {
+			foreach ($focus->related_tables as $reltable => $reltableinfo) {
+				if (isset($reltableinfo[3]) and is_string($reltableinfo[3])) {
+					$tid = getTabid($reltableinfo[3]);
+					if (is_numeric($tid) and $tid>0) {
+						array_push($tabids, $tid);
+					}
+				}
+			}
+		}
+		$query .= ' WHERE vtiger_field.tabid in (' . generateQuestionMarks($tabids) . ') and vtiger_field.presence in (0,2)';
+		$params = $tabids;
 	}
 	$query .= " AND fieldname IN (" . generateQuestionMarks($field_list) . ") ";
 	array_push($params, $field_list);
