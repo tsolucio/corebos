@@ -887,7 +887,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 						} else {
 							$list_result_count = $i - 1;
 							$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, "list", "", $returnset, (is_object($oCv) ? $oCv->setdefaultviewid : ''));
-							$uicolarr = $ui_col_array[$fieldname];
+							$uicolarr = isset($ui_col_array[$fieldname]) ? $ui_col_array[$fieldname] : array('1'=>$fieldname);
 							foreach ($uicolarr as $key => $val) {
 								$uitype = $key;
 								$colname = $val;
@@ -1262,7 +1262,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 	$tabname = getParentTab();
 	$tabid = getTabid($module);
 	$current_module_strings = return_module_language($current_language, $module);
-	$uicolarr = $field_result[$fieldname];
+	$uicolarr = isset($field_result[$fieldname]) ? $field_result[$fieldname] : array('1'=>$fieldname);
 	foreach ($uicolarr as $key => $value) {
 		$uitype = $key;
 		$colname = $value;
