@@ -806,6 +806,10 @@ class QueryGenerator {
 		return $sql;
 	}
 
+	public function hasWhereConditions() {
+		return (count($this->conditionals)>0);
+	}
+
 	public function getWhereClause() {
 		global $current_user;
 		if(!empty($this->query) || !empty($this->whereClause)) {
@@ -1043,7 +1047,7 @@ class QueryGenerator {
 					// $valueArray[$key] = ltrim($value, ' |##| ');
 				// }
 			// }
-		} elseif(is_string($value)) {
+		} elseif (is_string($value) and $operator!='e') {
 			$valueArray = explode(',' , $value);
 		} elseif(is_array($value)) {
 			$valueArray = $value;

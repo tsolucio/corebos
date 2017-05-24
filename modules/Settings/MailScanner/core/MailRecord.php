@@ -22,6 +22,8 @@ class Vtiger_MailRecord {
 	var $_cc;
 	// BCC address(es) list
 	var $_bcc;
+	// Reply To address(es) list
+	var $_reply_to;
 	// DATE
 	var $_date;
 	// SUBJECT
@@ -222,6 +224,7 @@ class Vtiger_MailRecord {
 		$this->_to   = $this->__getEmailIdList($mailheader->to);
 		$this->_cc   = $this->__getEmailIdList(isset($mailheader->cc) ? $mailheader->cc : '');
 		$this->_bcc  = $this->__getEmailIdList(isset($mailheader->bcc) ? $mailheader->bcc : '');
+		$this->_reply_to  = $this->__getEmailIdList(isset($mailheader->reply_to) ? $mailheader->reply_to : '');
 
 		$this->_date = $mailheader->udate;
 

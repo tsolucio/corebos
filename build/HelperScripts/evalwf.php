@@ -165,8 +165,8 @@ if ($workflows[$workflowid_to_evaluate]->executionCondition==VTWorkflowManager::
 		} else {
 			$newtest[] = $tst;
 		}
-		echo $tst['fieldname'].'('.$data[$tst['fieldname']].') '.$tst['operation'].' '.$tst['value'].' ('.$tst['valuetype'].')<br>';
-		echo $tst['joincondition'].'<br>';
+		echo $tst['fieldname'].'('.$data[$tst['fieldname']].') '.$tst['operation'].' '.$tst['value'].' ('.(isset($tst['valuetype']) ? $tst['valuetype'] : '').')<br>';
+		echo (isset($tst['joincondition']) ? $tst['joincondition'] : '').'<br>';
 	}
 	if ($haschanged) {
 		echo "<br><b>** has changed condition being ignored **</b><br>";
@@ -174,7 +174,7 @@ if ($workflows[$workflowid_to_evaluate]->executionCondition==VTWorkflowManager::
 	}
 	echo '<b>** RESULT:</b><br>';
 	$eval = $workflow->evaluate($entityCache, $crm_record_to_evaluate);
-	var_dump($eval);
+	var_export($eval);
 	echo '</span>';
 }
 $tm = new VTTaskManager($adb);

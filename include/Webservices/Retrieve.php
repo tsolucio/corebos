@@ -44,6 +44,8 @@
 		$entity = $handler->retrieve($id);
 		//return product lines
 		if($entityName == 'Quotes' || $entityName == 'PurchaseOrder' || $entityName == 'SalesOrder' || $entityName == 'Invoice') {
+			$pdowsid = vtws_getEntityId('Products').'x';
+			$srvwsid = vtws_getEntityId('Services').'x';
 			list($wsid,$recordid) = explode('x',$id);
 			$result = $adb->pquery('select * from vtiger_inventoryproductrel where id=?',array($recordid));
 			while ($row=$adb->getNextRow($result, false)) {
@@ -64,9 +66,11 @@
 					$discount_percent = $row['discount_percent'];
 					$discount_type = 'percentage';
 				}
-
+				$ltype = getSalesEntityType($row['productid']);
 				$onlyPrd = Array(
 					"productid"=>$row['productid'],
+					'wsproductid' => ($ltype=='Products' ? $pdowsid : $srvwsid).$row['productid'],
+					'linetype' => $ltype,
 					"comment"=>$row['comment'],
 					"qty"=>$row['quantity'],
 					"listprice"=>$row['listprice'],

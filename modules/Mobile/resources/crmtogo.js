@@ -188,6 +188,12 @@ var crmtogo_Index_Js = {
 					$('#viewname').css('display','block');
 				}
 			});
+
+            $("#scopetoggle").on("change", function(e){
+                var myswitch = $(this);
+                var showWeek = myswitch[0].selectedIndex == 1 ? true:false;
+                $("#calendarcontainer").trigger("changeScope", showWeek);
+            });
 			
 			function fillcalendar(data) {
 				var calobj = jQuery.parseJSON(data);
@@ -211,6 +217,12 @@ var crmtogo_Index_Js = {
 						});
 					}
 				});
+
+                // sort events by begin date
+                caljson.sort(function(a,b){
+                    return a['begin'] > b['begin'];
+                });
+
 				$("#calendarcontainer").jqmCalendar({
 					events : caljson,
 					months : cal_config_arr.monthNames,
@@ -219,11 +231,11 @@ var crmtogo_Index_Js = {
 				});
 				$("#calendarcontainer").trigger('refresh');
 			}
-			$("#calendarcontainer").bind('change', function(event, date) {
+            $("#calendarcontainer").bind('change', function(event, date, inWeek) {
 				//get all calendar entries for the selected month
 				//make sure it is called only once
 				if (date.getTime() != tmp_date.getTime()) {
-					$.get('index.php?_operation=listModuleRecords&module=Calendar&compact=true&datetime='+date, fillcalendar);
+                    $.get('index.php?_operation=listModuleRecords&module=Calendar&compact=true&datetime='+date+((inWeek===true)?"&inweek=true":""), fillcalendar);
 				}
 				tmp_date = date;
 			});
