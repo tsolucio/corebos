@@ -300,7 +300,7 @@ class vt_DateTime {
 	 * @param integer   $ts  - Time stamp
 	 */
 	function setDateTime($ts){
-		global $mod_strings;
+		global $current_language;
 		if (empty($ts)){
 			$ts = time();
 		}
@@ -310,11 +310,11 @@ class vt_DateTime {
 		$date_string = date('i::G::H::j::d::t::N::z::L::W::n::m::Y::Z::T::s',$ts);
 		
 		list($this->minute,$this->hour,$this->z_hour,$this->day,$this->z_day,$this->daysinmonth,$this->dayofweek,$this->dayofyear,$is_leap,$this->week,$this->month,$this->z_month,$this->year,$this->offset,$this->tz,$this->second) = explode('::',$date_string);
-
-		$this->dayofweek_inshort =$mod_strings['cal_weekdays_short'][$this->dayofweek-1];
-		$this->dayofweek_inlong=$mod_strings['cal_weekdays_long'][$this->dayofweek-1];
-		$this->month_inshort=$mod_strings['cal_month_short'][$this->month];
-		$this->month_inlong=$mod_strings['cal_month_long'][$this->month];
+		$cal_strings = return_module_language($current_language, 'Calendar');
+		$this->dayofweek_inshort = $cal_strings['cal_weekdays_short'][$this->dayofweek-1];
+		$this->dayofweek_inlong = $cal_strings['cal_weekdays_long'][$this->dayofweek-1];
+		$this->month_inshort = $cal_strings['cal_month_short'][$this->month];
+		$this->month_inlong = $cal_strings['cal_month_long'][$this->month];
 
 		$this->daysinyear = 365;
 

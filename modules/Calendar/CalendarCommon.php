@@ -291,22 +291,23 @@ function getAssignedTo($tabid)
 
 	if($is_admin==false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[$tabid] == 3 or $defaultOrgSharingPermission[$tabid] == 0))
 	{
-		$users_combo = get_select_options_array(get_user_array(FALSE, "Active", $assigned_user_id,'private'), $assigned_user_id);
+		$user_array = get_user_array(FALSE, 'Active', $assigned_user_id,'private');
 	}
 	else
 	{
-		$users_combo = get_select_options_array(get_user_array(FALSE, "Active", $assigned_user_id), $assigned_user_id);
+		$user_array = get_user_array(FALSE, 'Active', $assigned_user_id);
 	}
-	if($noof_group_rows!=0)
-	{
+	$users_combo = get_select_options_array($user_array, $assigned_user_id);
+	$group_option = array();
+	if ($noof_group_rows!=0) {
 		do
 		{
 			$groupname=$nameArray["groupname"];
-			$group_option[] = array($groupname=>$selected);
+			$group_option[] = array($groupname=>false);
 
 		}while($nameArray = $adb->fetch_array($result));
 	}
-	$fieldvalue[]=$users_combo;
+	$fieldvalue[] = $users_combo;
 	$fieldvalue[] = $group_option;
 	return $fieldvalue;
 }
@@ -375,9 +376,13 @@ function twoDigit( $no ){
 
 function timeString($datetime,$fmt){
 	if (is_object($datetime)) {
-		$dateStr = $datetime->year."-".twoDigit($datetime->month)."-".twoDigit($datetime->day);
+		$dateStr = (isset($datetime->year) ? $datetime->year : date('Y')) . '-';
+		$dateStr.= (isset($datetime->month) ? twoDigit($datetime->month) : twoDigit(date('m'))) . '-';
+		$dateStr.= (isset($datetime->day) ? twoDigit($datetime->day) : twoDigit(date('d')));
 	} else {
-		$dateStr = $datetime['year']."-".twoDigit($datetime['month'])."-".twoDigit($datetime['day']);
+		$dateStr = (isset($datetime['year']) ? $datetime['year'] : date('Y')) . '-';
+		$dateStr.= (isset($datetime['month']) ? twoDigit($datetime['month']) : twoDigit(date('m'))) . '-';
+		$dateStr.= (isset($datetime['day']) ? twoDigit($datetime['day']) : twoDigit(date('d')));
 	}
 	$timeStr = formatUserTimeString($datetime, $fmt);
 	$date = new DateTimeField($dateStr." ".$timeStr);

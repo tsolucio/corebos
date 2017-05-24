@@ -25,6 +25,8 @@ class Calendar
 	var $day_start_hour=0;
 	var $day_end_hour=23;
 	var $sharedusers=Array();
+	var $list_link_field = 'subject';
+	var $table_name = 'vtiger_activity';
 	/*
 	constructor
 	*/
