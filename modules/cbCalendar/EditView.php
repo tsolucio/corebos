@@ -42,9 +42,9 @@ if(isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 	$smarty->assign('USERSLIST',$userDetails);
 
 	$query = 'SELECT vtiger_recurringevents.*, vtiger_activity.date_start, vtiger_activity.time_start, vtiger_activity.due_date, vtiger_activity.time_end
-				FROM vtiger_recurringevents
-				INNER JOIN vtiger_activity ON vtiger_activity.activityid = vtiger_recurringevents.activityid
-				WHERE vtiger_recurringevents.activityid = ?';
+		FROM vtiger_recurringevents
+		INNER JOIN vtiger_activity ON vtiger_activity.activityid = vtiger_recurringevents.activityid
+		WHERE vtiger_recurringevents.activityid = ?';
 	$res = $adb->pquery($query, array($focus->id));
 	$rows = $adb->num_rows($res);
 	if ($rows > 0) {
@@ -72,6 +72,10 @@ if(isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 		}
 	} else {
 		$value['recurringcheck'] = 'No';
+		$value['repeatMonth'] = $value['repeatMonth_daytype'] = $value['repeatMonth_day'] = $value['repeat_frequency'] = $value['eventrecurringtype'] = $value['repeatMonth_date'] = '';
+		for ($i = 0; $i < 7; ++$i) {
+			$value['week'.$i] = '';
+		}
 	}
 	$smarty->assign("ACTIVITYDATA",$value);
 	$smarty->assign("LABEL",$fldlabel);

@@ -43,8 +43,8 @@ if (empty($current_user->hour_format))
 	$format = 'am/pm';
 else
 	$format = $current_user->hour_format;
-list($stdate,$sttime) = explode(' ',$finaldata['date_start']);
-list($enddate,$endtime) = explode(' ',$finaldata['due_date']);
+list($stdate,$sttime) = explode(' ',$finaldata['date_start'].' ');
+list($enddate,$endtime) = explode(' ',$finaldata['due_date'].' ');
 $time_arr = getaddEventPopupTime($sttime,$endtime,$format);
 $data = array();
 $data['starthr'] = $time_arr['starthour'];
@@ -62,8 +62,8 @@ $data['subject'] = $finaldata['subject'];
 $data['date_start'] = $stdate;
 $data['due_date'] = $enddate;
 $data['assigned_user_id'] = $finaldata['assigned_user_id'];
-$data['visibility'] = $finaldata['visibility'];
-$data['activitytype'] = $finaldata['activitytype'];
+$data['visibility'] = (isset($finaldata['visibility']) ? $finaldata['visibility'] : '');
+$data['activitytype'] = (isset($finaldata['activitytype']) ? $finaldata['activitytype'] : $activitytype);
 $data['location'] = $finaldata['location'];
 //Calculating reminder time
 $rem_days = 0;
@@ -104,4 +104,5 @@ $smarty->assign("LABEL", $fldlabel);
 $smarty->assign("ACTIVITYDATA", $data);
 
 $smarty->display('DetailView.tpl');
+}
 ?>
