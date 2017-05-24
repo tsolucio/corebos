@@ -26,7 +26,7 @@ $to_email = getUserEmailId('id',$current_user->id);
 $date_format = parse_calendardate($app_strings['NTC_DATE_FORMAT']);
 $taskassignedto = getAssignedTo(9);
 $eventassignedto = getAssignedTo(16);
-$mysel= vtlib_purify($_REQUEST['view']);
+$mysel = (isset($_REQUEST['view']) ? vtlib_purify($_REQUEST['view']) : '');
 $calendar_arr = Array();
 $calendar_arr['IMAGE_PATH'] = $image_path;
 if(empty($mysel)){
@@ -102,9 +102,11 @@ function getAssignedToHTML($assignedto,$toggletype)
 	}
 	if($check == 0) {
 		$select_user='checked';
+		$select_group='';
 		$style_user='display:block';
 		$style_group='display:none';
 	} else {
+		$select_user='';
 		$select_group='checked';
 		$style_user='display:none';
 		$style_group='display:block';
@@ -346,6 +348,8 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 				$theme_path="themes/".$theme."/";
 				$image_path=$theme_path."images/";
 				$smarty2->assign("IMAGE_PATH", $image_path);
+				$smarty2->assign('THEME', $theme);
+				$smarty2->assign('MASS_EDIT','0');
 				if (count($custom_fields_data) > 0){ ?>
 					<hr noshade size=1>
 					<table>
@@ -360,7 +364,6 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 							for($i=0; $i<count($custom_fields_data); $i++) {
 								$maindata = $custom_fields_data[$i];
 								$smarty2->assign("maindata",$maindata);
-								$smarty2->assign("THEME", $theme);
 								$smarty2->display('EditViewUI.tpl');
 								if (($i+1)%2 == 0) {
 									echo "</tr><tr>";
@@ -887,6 +890,8 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 	$theme_path="themes/".$theme."/";
 	$image_path=$theme_path."images/";
 	$smarty2->assign("IMAGE_PATH", $image_path);
+	$smarty2->assign('THEME', $theme);
+	$smarty2->assign('MASS_EDIT','0');
 	if (count($custom_fields_data) > 0){ ?>
 		<hr noshade size=1>
 		<table>
@@ -900,7 +905,6 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 				for($i=0; $i<count($custom_fields_data); $i++) {
 					$maindata = $custom_fields_data[$i];
 					$smarty2->assign("maindata",$maindata);
-					$smarty2->assign("THEME", $theme);
 					$smarty2->display('EditViewUI.tpl');
 					if (($i+1)%2 == 0) {
 						echo "</tr><tr>";

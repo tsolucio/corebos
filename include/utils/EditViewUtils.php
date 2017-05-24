@@ -1358,8 +1358,12 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	$final_arr[]=$editview_label;
 	$final_arr[]=$editview_fldname;
 	$final_arr[]=$fieldvalue;
-	$type_of_data = explode('~',$typeofdata);
-	$final_arr[]=$type_of_data[1];
+	if (!empty($typeofdata)) {
+		$type_of_data = explode('~',$typeofdata);
+		$final_arr[] = $type_of_data[1];
+	} else {
+		$final_arr[] = 'O';
+	}
 	$log->debug('Exiting getOutputHtml method ...');
 	return $final_arr;
 }

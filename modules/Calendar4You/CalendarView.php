@@ -85,7 +85,7 @@ $smarty->assign("CREATE_PERMISSION",($Calendar4You->CheckPermissions("CREATE") ?
 		$eventlists_array .= '"'.html_entity_decode(html_entity_decode($actname,ENT_QUOTES,$default_charset),ENT_QUOTES, $default_charset).'",';
 	}
 
-	$add_javascript = "onMouseOver='fnAddITSEvent(this,\"addButtonDropDown\",\"".$temp_date."\",\"".$temp_date."\",\"".$time_arr['starthour']."\",\"".$time_arr['startmin']."\",\"".$time_arr['startfmt']."\",\"".$time_arr['endhour']."\",\"".$time_arr['endmin']."\",\"".$time_arr['endfmt']."\",\"".$viewBox."\",\"".$subtab."\",\"".$eventlist."\");'";
+	$add_javascript = "onMouseOver='fnAddITSEvent(this,\"addButtonDropDown\",\"".$temp_date."\",\"".$temp_date."\",\"".$time_arr['starthour']."\",\"".$time_arr['startmin']."\",\"".$time_arr['startfmt']."\",\"".$time_arr['endhour']."\",\"".$time_arr['endmin']."\",\"".$time_arr['endfmt']."\",\"".$viewBox."\",\"".(isset($subtab) ? $subtab : '')."\",\"".$eventlist."\");'";
 	$smarty->assign('ADD_ONMOUSEOVER', $add_javascript);
 
 	$smarty->assign('EVENTLIST', trim($eventlists_array,","));
@@ -134,9 +134,10 @@ $Activity_Types["task"] = array(
 );
 
 $ActTypes = getActTypesForCalendar();
+if (!$load_ch || $Ch_Views["1"]["invite"]) $invite_checked = true; else $invite_checked = false;
 
 foreach ($ActTypes AS $act_id => $act_name) {
-	if (!$load_ch || $Ch_Views["1"][$act_id]) $event_checked = true; else $event_checked = false;
+	if (!$load_ch || !empty($Ch_Views["1"][$act_id])) $event_checked = true; else $event_checked = false;
 
 	$Colors = getEColors("type",$act_id);   
 	$Colors_Palete = $colorHarmony->Monochromatic($Colors["bg"]);
@@ -169,8 +170,6 @@ foreach ($ActTypes AS $act_id => $act_name) {
 
 $Invite_Colors = getEColors("type","invite");
 $Invite_Colors_Palette = $colorHarmony->Monochromatic($Invite_Colors["bg"]);
-
-if (!$load_ch || $Ch_Views["1"]["invite"]) $invite_checked = true; else $invite_checked = false;
 
 $Activity_Types["invite"] = array(
 	"typename"=>"Invite",

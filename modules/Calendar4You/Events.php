@@ -65,7 +65,7 @@ require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
 $ParentUsers = array();
 
 $u_query = "select vtiger_user2role.userid as id from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like ?";
-$u_params = array($current_user_parent_role_seq."::%");
+$u_params = array((isset($current_user_parent_role_seq) ? $current_user_parent_role_seq : '').'::%');
 $u_result = $adb->pquery($u_query,$u_params);
 
 while($u_row = $adb->fetchByAssoc($u_result)) {
@@ -317,7 +317,7 @@ foreach($Users_Ids AS $userid) {
 			}
 			$title = "<font style='font-size:12px'>".$into_title."</font>";
 			if ($add_more_info) {
-				if (count($Event_Info[$event]) > 0) {
+				if (isset($Event_Info[$event]) and count($Event_Info[$event]) > 0) {
 					foreach($Event_Info[$event] AS $CD) {
 						$title .= transferForAddIntoTitle(2,$row,$CD);
 					}
