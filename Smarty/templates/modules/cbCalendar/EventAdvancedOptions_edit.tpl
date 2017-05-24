@@ -162,8 +162,9 @@
 									{assign var=rptweekstyle value='style="display:none"'}
 									<input type="checkbox" name="recurringcheck" onClick="showhide('repeatOptions')">
 								{/if}
+								&nbsp;&nbsp;{$MOD.LBL_ENABLE_REPEAT}
 								</td>
-								<td>{$MOD.LBL_ENABLE_REPEAT}<td>
+								<td>&nbsp;<td>
 							</tr>
 							<tr>
 								<td colspan=2>
@@ -203,7 +204,7 @@
 										});
 									</script>
 								</td>
-							</tr>
+								</tr>
 							</table>
 							<div id="repeatWeekUI" {$rptweekstyle}>
 								<table border=0 cellspacing=0 cellpadding=2>
@@ -224,7 +225,10 @@
 									<td>
 										<table border=0 cellspacing=0 cellpadding=2>
 										<tr>
-										<td><input type="radio" checked name="repeatMonth" {if $ACTIVITYDATA.repeatMonth eq 'date'} checked {/if} value="date"></td><td>on</td><td><input type="text" class=textbox style="width:20px" value="{$ACTIVITYDATA.repeatMonth_date}" name="repeatMonth_date" ></td><td>day of the month</td>
+										<td><input type="radio" checked name="repeatMonth" {if $ACTIVITYDATA.repeatMonth eq 'date'} checked {/if} value="date"></td>
+										<td>{$MOD.on}</td>
+										<td><input type="text" class=textbox style="width:20px" value="{$ACTIVITYDATA.repeatMonth_date}" name="repeatMonth_date" ></td>
+										<td>{$MOD['day of the month']}</td>
 										</tr>
 										</table>
 									</td>
@@ -232,9 +236,9 @@
 								<tr>
 									<td>
 										<table border=0 cellspacing=0 cellpadding=2>
-										<tr><td>
-										<input type="radio" name="repeatMonth" {if $ACTIVITYDATA.repeatMonth eq 'day'} checked {/if} value="day"></td>
-										<td>on</td>
+										<tr>
+										<td><input type="radio" name="repeatMonth" {if $ACTIVITYDATA.repeatMonth eq 'day'} checked {/if} value="day"></td>
+										<td>{$MOD.on}</td>
 										<td>
 										<select name="repeatMonth_daytype">
 											<option value="first" {if $ACTIVITYDATA.repeatMonth_daytype eq 'first'} selected {/if}>{$MOD.First}</option>
