@@ -797,5 +797,17 @@ class cbCalendar extends CRMEntity {
 	 * You can override the behavior by re-defining it here.
 	 */
 	//function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
+
+	public static function getCalendarActivityType($record) {
+		if (empty($record) or !is_numeric($record)) return 'Call';
+		global $adb;
+		$cbcrs = $adb->pquery('select activitytype from vtiger_activity where activityid=?',array($record));
+		if ($cbcrs and $adb->num_rows($cbcrs)==1) {
+			$atype = $adb->query_result($cbcrs, 0, 0);
+		} else {
+			$atype = 'Call';
+		}
+		return $atype;
+	}
 }
 ?>

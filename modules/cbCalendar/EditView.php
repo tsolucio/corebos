@@ -7,9 +7,41 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
+
+$record = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : null;
+$focus = CRMEntity::getInstance($currentModule);
+$smarty = new vtigerCRM_Smarty();
+if ($record and cbCalendar::getCalendarActivityType($record)=='Emails') {
+	$tool_buttons = Button_Check($currentModule);
+	$smarty->assign('CHECK', $tool_buttons);
+	$smarty->assign('APP', $app_strings);
+	$smarty->assign('MOD', $mod_strings);
+	$smarty->assign('MODULE', $currentModule);
+	$smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
+	$smarty->assign('CATEGORY', '');
+	$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
+	$smarty->assign('THEME', $theme);
+	$smarty->assign('ID', $record);
+	$smarty->assign('RECORDID', $record);
+	$smarty->assign('MODE', '');
+	$_REQUEST['return_action'] = 'DetailView';
+	$_REQUEST['return_module'] = 'cbCalendar';
+	$smarty->display('Buttons_List.tpl');
+	echo '<script type="text/javascript" src="modules/Emails/Emails.js"></script><br>';
+	$currentModule = 'Emails';
+	$emailStrings = return_module_language($current_language, $currentModule);
+	$mod_strings = array_merge($mod_strings,$emailStrings);
+	include 'modules/Emails/EditView.php';
+} else {
+
 require_once 'modules/Vtiger/EditView.php';
 
 if(isset($_REQUEST['record']) && $_REQUEST['record']!='') {
+	$activitytype = cbCalendar::getCalendarActivityType($record);
+	$_REQUEST['activity_mode'] = $activitytype;
+	list($focus->column_fields['date_start'],$focus->column_fields['time_start']) = explode(' ', $focus->column_fields['dtstart'].' ');
+	list($focus->column_fields['due_date'],$focus->column_fields['time_end']) = explode(' ', $focus->column_fields['dtend'].' ');
+	$focus->column_fields['parent_id'] = $_REQUEST['parent_id'] = $focus->column_fields['rel_id'];
 	$act_data = getBlocks('Events','edit_view','edit',$focus->column_fields);
 	foreach($act_data as $header=>$blockitem) {
 		foreach($blockitem as $row=>$data) {
@@ -83,4 +115,5 @@ if(isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 
 $smarty->assign("REPEAT_LIMIT_DATEFORMAT", parse_calendardate($app_strings['NTC_DATE_FORMAT']));
 $smarty->display('salesEditView.tpl');
+}
 ?>

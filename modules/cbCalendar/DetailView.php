@@ -7,13 +7,42 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
+
 require_once('Smarty_setup.php');
 
 global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
 
 $smarty = new vtigerCRM_Smarty();
 
+$record = vtlib_purify($_REQUEST['record']);
+$activitytype = cbCalendar::getCalendarActivityType($record);
+if ($activitytype == 'Emails') {
+	$tool_buttons = Button_Check($currentModule);
+	$smarty->assign('CHECK', $tool_buttons);
+	$smarty->assign('APP', $app_strings);
+	$smarty->assign('MOD', $mod_strings);
+	$smarty->assign('MODULE', $currentModule);
+	$smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
+	$smarty->assign('CATEGORY', '');
+	$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
+	$smarty->assign('THEME', $theme);
+	$smarty->assign('ID', $record);
+	$smarty->assign('RECORDID', $record);
+	$smarty->assign('MODE', '');
+	$smarty->display('Buttons_List.tpl');
+	echo '<script type="text/javascript" src="modules/Emails/Emails.js"></script><br>';
+	$currentModule = 'Emails';
+	$emailStrings = return_module_language($current_language, $currentModule);
+	$mod_strings = array_merge($mod_strings,$emailStrings);
+	$_REQUEST['mode'] = 'ajax';
+	include 'modules/Emails/DetailView.php';
+} else {
+
 require_once 'modules/Vtiger/DetailView.php';
+
+list($focus->column_fields['date_start'],$focus->column_fields['time_start']) = explode(' ', $focus->column_fields['dtstart'].' ');
+list($focus->column_fields['due_date'],$focus->column_fields['time_end']) = explode(' ', $focus->column_fields['dtend'].' ');
+$focus->column_fields['parent_id'] = $focus->column_fields['rel_id'];
 
 $act_data = getBlocks('Events','detail_view','',$focus->column_fields);
 $finaldata = $fldlabel = array();
