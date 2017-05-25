@@ -765,40 +765,9 @@ function get_themes() {
 }
 
 /**
- * Very cool algorithm for sorting multi-dimensional arrays. Found at http://us2.php.net/manual/en/function.array-multisort.php
- * Syntax: $new_array = array_csort($array [, 'col1' [, SORT_FLAG [, SORT_FLAG]]]...);
- * Explanation: $array is the array you want to sort, 'col1' is the name of the column
- * you want to sort, SORT_FLAGS are : SORT_ASC, SORT_DESC, SORT_REGULAR, SORT_NUMERIC, SORT_STRING
- * you can repeat the 'col',FLAG,FLAG, as often you want, the highest prioritiy is given to
- * the first - so the array is sorted by the last given column first, then the one before ...
- * Example: $array = array_csort($array,'town','age',SORT_DESC,'name');
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
+ * @deprecated
  */
 function array_csort() {
-	global $log;
-	$log->debug("Entering array_csort() method ...");
-	$args = func_get_args();
-	$marray = array_shift($args);
-	$i = 0;
-
-	$msortline = "return(array_multisort(";
-	foreach ($args as $arg) {
-		$i++;
-		if (is_string($arg)) {
-			foreach ($marray as $row) {
-				$sortarr[$i][] = $row[$arg];
-			}
-		} else {
-			$sortarr[$i] = $arg;
-		}
-		$msortline .= "\$sortarr[".$i."],";
-	}
-	$msortline .= "\$marray));";
-
-	eval($msortline);
-	$log->debug("Exiting array_csort method ...");
-	return $marray;
 }
 
 /** Function to set default varibles on to the global variable
