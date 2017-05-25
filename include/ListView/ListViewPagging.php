@@ -30,13 +30,13 @@ if(!is_string($_SESSION[$currentModule.'_listquery']) || !empty($_REQUEST['globa
 	}else{
 		$list_query = getListQuery($currentModule);
 	}
-    // Enabling Module Search
+	// Enabling Module Search
 	$url_string = '';
 	if($_REQUEST['query'] == 'true') {
-        if(!empty($_REQUEST['tagSearchText'])){
-            $searchValue = vtlib_purify($_REQUEST['globalSearchText']);
+		if(!empty($_REQUEST['tagSearchText'])){
+			$searchValue = vtlib_purify($_REQUEST['globalSearchText']);
 			$where = '(' . getTagWhere($searchValue, $current_user->id) . ')';
-        } else if(!empty($_REQUEST['globalSearch'])){
+		} else if(!empty($_REQUEST['globalSearch'])){
 			$searchValue = vtlib_purify($_REQUEST['globalSearchText']);
 			$where = '(' . getUnifiedWhere($list_query,$currentModule,$searchValue) . ')';
 			$url_string .= '&query=true&globalSearch=true&globalSearchText='.$searchValue;
@@ -45,7 +45,6 @@ if(!is_string($_SESSION[$currentModule.'_listquery']) || !empty($_REQUEST['globa
 			$url_string .= "&query=true$ustring";
 		}
 	}
-	//print_r($where);
 	if($where != '') {
 		$list_query = "$list_query AND $where";
 		coreBOS_Session::set('export_where', $where);

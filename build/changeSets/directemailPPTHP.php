@@ -96,7 +96,7 @@ class directemailPPTHP extends cbupdaterWorker {
 				$field->displaytype = 2;
 				$block->addField($field);
 			}
-			
+
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}

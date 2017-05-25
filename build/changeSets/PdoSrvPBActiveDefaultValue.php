@@ -15,7 +15,7 @@
 *************************************************************************************************/
 
 class PdoSrvPBActiveDefaultValue extends cbupdaterWorker {
-	
+
 	function applyChange() {
 		global $adb;
 		if ($this->hasError()) $this->sendError();

@@ -111,16 +111,16 @@ $check_mysql_extension = Common_Install_Wizard_Utils::check_mysql_extension();
 																<table cellpadding="2" cellspacing="1" align=right width="100%" border="0" class="level1">
 																	<tr class='level1'>
 																		<td valign=top ><?php echo $installationStrings['LBL_PHP_VERSION_GT_5']; ?></td>
-																		<td  valign=top><?php $php_version = phpversion(); 
+																		<td  valign=top><?php $php_version = phpversion();
 																							echo (version_compare($php_version, '5.2.0') == -1) ?
-																								"<strong><font color=\"Red\">{$installationStrings['LBL_NO']}</strong></font>" : 
+																								"<strong><font color=\"Red\">{$installationStrings['LBL_NO']}</strong></font>" :
 																								"<strong><font color=\"#46882B\">$php_version</strong></font>";
 																						?>
 																		</td>
 																	</tr>
 																	<tr class='level1'>
 																		<td valign=top ><?php echo $installationStrings['LBL_IMAP_SUPPORT']; ?></td>
-										        						<td valign=top><?php echo function_exists('imap_open') ? 
+																		<td valign=top><?php echo function_exists('imap_open') ?
 																							"<strong><font color=\"#46882B\">{$installationStrings['LBL_YES']}</strong></font>" :
 																							"<strong><font color=\"#FF0000\">{$installationStrings['LBL_NO']}</strong></font>";
 																						?>
@@ -128,7 +128,7 @@ $check_mysql_extension = Common_Install_Wizard_Utils::check_mysql_extension();
 																	</tr>
 																	<tr class='level1'>
 																		<td valign=top ><?php echo $installationStrings['LBL_ZLIB_SUPPORT']; ?></td>
-										        						<td valign=top><?php echo function_exists('gzinflate') ? 
+																		<td valign=top><?php echo function_exists('gzinflate') ?
 																						"<strong><font color=\"#46882B\">{$installationStrings['LBL_YES']}</strong></font>" :
 																						"<strong><font color=\"#FF0000\">{$installationStrings['LBL_NO']}</strong></font>";
 																					?>
@@ -167,7 +167,7 @@ $check_mysql_extension = Common_Install_Wizard_Utils::check_mysql_extension();
 																		?>
 																		</td>
 																	</tr>
-																</table>  
+																</table>
 															</td>
 														</tr>
 														<tr><td class="small" colspan=2><br></td></tr>
@@ -178,7 +178,7 @@ $check_mysql_extension = Common_Install_Wizard_Utils::check_mysql_extension();
 															$all_directive_recommended_value = false;
 														?>
 														<tr><td align=left width=100%>
-							   	   							<!-- Recommended Settings -->
+															<!-- Recommended Settings -->
 															<table cellpadding="2" cellspacing="1"  width="100%" border="0" class="level1">
 										    					<tr>
 										    						<td valign=top ><strong><?php echo $installationStrings['LBL_DIRECTIVE']; ?></strong></td>

@@ -15,7 +15,7 @@
 *************************************************************************************************/
 
 class UserHourStartFieldsPL16 extends cbupdaterWorker {
-	
+
 	// on some installs the fields are present but not the picklist so I force the picklist creation for those
 	function applyChange() {
 		global $adb;
