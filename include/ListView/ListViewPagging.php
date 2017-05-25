@@ -52,9 +52,12 @@ if(!is_string($_SESSION[$currentModule.'_listquery']) || !empty($_REQUEST['globa
 		coreBOS_Session::delete('export_where');
 	}
 	// Sorting
-	if($order_by) {
+	$modFocus = CRMEntity::getInstance($currentModule);
+	$order_by = $modFocus->getOrderBy();
+	if (!empty($order_by)) {
+		$sorder = $modFocus->getSortOrder();
 		if($order_by == 'smownerid'){
-			$list_query .= ' ORDER BY user_name '.$sorder;
+			$list_query .= ' ORDER BY vtiger_users.user_name '.$sorder;
 		}else {
 			$tablename = getTableNameForField($currentModule, $order_by);
 			$tablename = ($tablename != '')? ($tablename . '.') : '';
