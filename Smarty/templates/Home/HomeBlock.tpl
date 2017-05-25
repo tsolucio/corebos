@@ -193,6 +193,8 @@ let charttype = 'horizontalBar';
 let charttype = 'bar';
 {elseif $DASHDETAILS.$HOME_STUFFID.Chart eq 'piechart'}
 let charttype = 'pie';
+{else}
+let charttype = 'verticalbarchart';
 {/if}
 doChart{$HOME_STUFFID}(charttype);
 </script>
