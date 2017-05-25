@@ -66,7 +66,7 @@ class installcbTermConditions extends cbupdaterWorker {
 					$modblock = Vtiger_Block::getInstance('LBL_TERMS_INFORMATION', $mod);
 					$field1 = Vtiger_Field::getInstance('tandc', $mod);
 					if ($field1) {
-						$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid='.$field1->id);
+						$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?',array($field1->id));
 					} else {
 						$field1 = new Vtiger_Field();
 						$field1->name = 'tandc';

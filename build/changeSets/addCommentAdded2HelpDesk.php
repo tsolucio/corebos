@@ -25,7 +25,7 @@ class addCommentAdded2HelpDesk extends cbupdaterWorker {
 			$block = Vtiger_Block::getInstance('LBL_TICKET_INFORMATION', $module);
 			$field = Vtiger_Field::getInstance('commentadded',$module);
 			if ($field) {
-				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid='.$field->id);
+				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?',array($field->id));
 			} else {
 				$fieldInstance = new Vtiger_Field();
 				$fieldInstance->name = 'commentadded';

@@ -25,7 +25,7 @@ class addStatus2ProjectTask extends cbupdaterWorker {
 			$block = Vtiger_Block::getInstance('LBL_PROJECT_TASK_INFORMATION', $module);
 			$field = Vtiger_Field::getInstance('projecttaskstatus',$module);
 			if ($field) {
-				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid='.$field->id);
+				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?',array($field->id));
 			} else {
 				$fieldInstance = new Vtiger_Field();
 				$fieldInstance->name = 'projecttaskstatus';
@@ -52,7 +52,7 @@ class addStatus2ProjectTask extends cbupdaterWorker {
 			$moduleInstance=Vtiger_Module::getInstance('ProjectTask');
 			$field = Vtiger_Field::getInstance('projecttaskstatus',$moduleInstance);
 			if ($field) {
-				$this->ExecuteQuery('update vtiger_field set presence=1 where fieldid='.$field->id);
+				$this->ExecuteQuery('update vtiger_field set presence=1 where fieldid=?',array($field->id));
 			}
 			$this->sendMsg('Changeset '.get_class($this).' undone!');
 			$this->markUndone();
