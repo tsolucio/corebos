@@ -47,7 +47,6 @@ if (isset ($_REQUEST['filename'])) {
 }
 
 $failed_permissions = Common_Install_Wizard_Utils::getFailedPermissionsFiles();
-$gd_info_alternate = Common_Install_Wizard_Utils::$gdInfoAlternate;
 $directive_recommended = Common_Install_Wizard_Utils::getRecommendedDirectives();
 $directive_array = Common_Install_Wizard_Utils::getCurrentDirectiveValue();
 $check_mysql_extension = Common_Install_Wizard_Utils::check_mysql_extension();
@@ -142,16 +141,15 @@ $check_mysql_extension = Common_Install_Wizard_Utils::check_mysql_extension();
 																			echo "<strong><font size=-1 color=\"#FF0000\">{$installationStrings['LBL_NOT_CONFIGURED']}.</strong></font>";
 																			} else {
 																				if (!function_exists('gd_info')) {
-																				eval ($gd_info_alternate);
-																			}
-																			$gd_info = gd_info();
-																			
-																			if (isset ($gd_info['GD Version'])) {
-																			$gd_version = $gd_info['GD Version'];
-																			$gd_version = preg_replace('%[^0-9.]%', '', $gd_version);
-																			echo "<strong><font color=\"#46882B\">{$installationStrings['LBL_YES']}</strong></font>";
-																			} else {
-																				echo "<strong><font size=-1 color=\"#FF0000\">{$installationStrings['LBL_NO']}</font>";
+																					include_once 'include/install/resources/gdinfo.php';
+																				}
+																				$gd_info = gd_info();
+																				if (isset ($gd_info['GD Version'])) {
+																					$gd_version = $gd_info['GD Version'];
+																					$gd_version = preg_replace('%[^0-9.]%', '', $gd_version);
+																					echo "<strong><font color=\"#46882B\">{$installationStrings['LBL_YES']}</strong></font>";
+																				} else {
+																					echo "<strong><font size=-1 color=\"#FF0000\">{$installationStrings['LBL_NO']}</font>";
 																				}
 																			}
 																		?>
