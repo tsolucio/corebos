@@ -269,11 +269,8 @@ class PearDatabase{
 			foreach ($bt as $t) {
 				$ut[] = array('file'=>$t['file'],'line'=>$t['line'],'function'=>$t['function']);
 			}
-			echo '<pre>';
-			var_export($ut);
-			echo '</pre>';
 			$this->println("ADODB error ".$msg."->[".$this->database->ErrorNo()."]".$this->database->ErrorMsg());
-			die ($msg."ADODB error ".$msg."->".$this->database->ErrorMsg());
+			die($msg."ADODB error ".$msg."->".$this->database->ErrorMsg());
 		} else {
 			$this->println("ADODB error ".$msg."->[".$this->database->ErrorNo()."]".$this->database->ErrorMsg());
 		}

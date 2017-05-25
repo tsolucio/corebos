@@ -558,7 +558,7 @@ class Migration_Utils {
 			if(!is_object($updateResult)) {
 				$_SESSION['migration_info']['user_messages'][] = array(
 					'status' => "<span style='color: red;font-weight: bold'>Failed: </span>",
-					'msg' => "$sql<br />".var_export(array($encryptedPassword, $userId))
+					'msg' => "$sql<br /> $userId<br />"
 				);
 			}
 		}
