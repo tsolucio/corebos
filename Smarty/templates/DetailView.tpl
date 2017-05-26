@@ -295,7 +295,7 @@ function sendfile_email()
 																							<td colspan=4 class="dvInnerHeader">
 
 																								<div style="float:left;font-weight:bold;"><div style="float:left;"><a href="javascript:showHideStatus('tbl{$header|replace:' ':''}','aid{$header|replace:' ':''}','{$IMAGE_PATH}');">
-																											{if $BLOCKINITIALSTATUS[$header] eq 1}
+																											{if isset($BLOCKINITIALSTATUS[$header]) && $BLOCKINITIALSTATUS[$header] eq 1}
 																												<span class="exp_coll_block inactivate">
 																												<img id="aid{$header|replace:' ':''}" src="{'activate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;" alt="{'LBL_Hide'|@getTranslatedString:'Settings'}" title="{'LBL_Hide'|@getTranslatedString:'Settings'}"/>
 																												</span>
@@ -312,13 +312,13 @@ function sendfile_email()
 																					{/if}
 																				</table>
 																				{if $header neq 'Comments'}
-																					{if $BLOCKINITIALSTATUS[$header] eq 1 || !empty($BLOCKS.$header.relatedlist)}
+																					{if (isset($BLOCKINITIALSTATUS[$header]) && $BLOCKINITIALSTATUS[$header] eq 1) || !empty($BLOCKS.$header.relatedlist)}
 																						<div style="width:auto;display:block;" id="tbl{$header|replace:' ':''}" >
 																						{else}
 																						<div style="width:auto;display:none;" id="tbl{$header|replace:' ':''}" >
 																						{/if}
 																							<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small detailview_table">
-																							{if $CUSTOMBLOCKS.$header.custom}
+																							{if !empty($CUSTOMBLOCKS.$header.custom)}
 																								{include file=$CUSTOMBLOCKS.$header.tpl}
 																							{elseif isset($BLOCKS.$header.relatedlist) && $IS_REL_LIST|@count > 0}
 																								{assign var='RELBINDEX' value=$BLOCKS.$header.relatedlist}

@@ -221,7 +221,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			$valueArr[$key] = trim(html_entity_decode($value, ENT_QUOTES, $default_charset));
 		}
 		$pickcount = 0;
-
+		$options = array();
 		if(!empty($picklistValues)){
 			foreach($picklistValues as $order=>$pickListValue){
 				if(in_array(trim($pickListValue),$valueArr)){
@@ -242,7 +242,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			}
 		}
 		$editview_label[]=getTranslatedString($fieldlabel,$module_name,$value);
-		$fieldvalue [] = $options;
+		$fieldvalue[] = $options;
 	} elseif($uitype == 3313 || $uitype == 3314){
 		require_once 'modules/PickList/PickListUtils.php';
 		$editview_label[]=getTranslatedString($fieldlabel,$module_name);
