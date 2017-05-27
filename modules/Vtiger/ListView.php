@@ -247,6 +247,10 @@ $smarty->assign('DEFAULT_SEARCH_PANEL_STATUS',($DEFAULT_SEARCH_PANEL_STATUS ? 'd
 if(isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '')
 	$smarty->display("ListViewEntries.tpl");
 else
-	$smarty->display('ListView.tpl');
+	if (isset($custom_list_template) && $custom_list_template != '') {
+		$smarty->display($custom_list_template);
+	} else {
+		$smarty->display('ListView.tpl');		
+	}
 
 ?>
