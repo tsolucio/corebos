@@ -115,12 +115,12 @@ class EmailReports extends cbupdaterWorker {
 			// undo your magic here
 			$emrpts = $adb->query("SELECT REPORTID FROM vtiger_report WHERE REPORTNAME in ('Contacts Email Report','Accounts Email Report','Leads Email Report','Vendors Email Report')");
 			while ($rpt = $adb->fetch_array($emrpts)) {
-				$this->ExecuteQuery('delete from vtiger_relcriteria_grouping where QUERYID='.$rpt['REPORTID']);
-				$this->ExecuteQuery('delete from vtiger_relcriteria where QUERYID='.$rpt['REPORTID']);
-				$this->ExecuteQuery('delete from vtiger_reportmodules where REPORTMODULESID='.$rpt['REPORTID']);
-				$this->ExecuteQuery('delete from vtiger_selectcolumn where QUERYID='.$rpt['REPORTID']);
-				$this->ExecuteQuery('delete from vtiger_report where REPORTID='.$rpt['REPORTID']);
-				$this->ExecuteQuery('delete from vtiger_selectquery where QUERYID='.$rpt['REPORTID']);
+				$this->ExecuteQuery('delete from vtiger_relcriteria_grouping where QUERYID=?',array($rpt['REPORTID']));
+				$this->ExecuteQuery('delete from vtiger_relcriteria where QUERYID=?',array($rpt['REPORTID']));
+				$this->ExecuteQuery('delete from vtiger_reportmodules where REPORTMODULESID=?',array($rpt['REPORTID']));
+				$this->ExecuteQuery('delete from vtiger_selectcolumn where QUERYID=?',array($rpt['REPORTID']));
+				$this->ExecuteQuery('delete from vtiger_report where REPORTID=?',array($rpt['REPORTID']));
+				$this->ExecuteQuery('delete from vtiger_selectquery where QUERYID=?',array($rpt['REPORTID']));
 			}
 			$this->ExecuteQuery("delete from vtiger_reportfolder where FOLDERNAME='Email Reports'");
 			$this->sendMsg('Changeset '.get_class($this).' undone!');

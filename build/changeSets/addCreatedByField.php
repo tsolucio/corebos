@@ -36,7 +36,7 @@ class addCreatedByField extends cbupdaterWorker {
 						$blockInstance = Vtiger_Block::getInstance($block, $moduleInstance);
 						$field = Vtiger_Field::getInstance('created_user_id',$moduleInstance);
 						if ($field) {
-							$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid='.$field->id);
+							$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?',array($field->id));
 						} else {
 						$field = new Vtiger_Field ();
 						$field->name = 'created_user_id';

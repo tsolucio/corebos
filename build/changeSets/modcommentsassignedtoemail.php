@@ -15,7 +15,7 @@
 *************************************************************************************************/
 
 class modcommentsassignedtoemail extends cbupdaterWorker {
-	
+
 	function applyChange() {
 		global $adb;
 		if ($this->hasError()) $this->sendError();
@@ -27,7 +27,7 @@ class modcommentsassignedtoemail extends cbupdaterWorker {
 			$block = Vtiger_Block::getInstance('LBL_OTHER_INFORMATION', $moduleInstance);
 			$field = Vtiger_Field::getInstance('relatedassignedemail',$moduleInstance);
 			if ($field) {
-				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid='.$field->id);
+				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?',array($field->id));
 			} else {
 				$modfield = new Vtiger_Field();
 				$modfield->name = 'relatedassignedemail';

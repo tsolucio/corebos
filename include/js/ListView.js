@@ -677,7 +677,7 @@ function getListViewCount(module,element,parentElement,url){
 		}
 		elementList = document.getElementsByName(module+'_listViewCountRefreshIcon');
 		if(module != 'Documents' && typeof parentElement != 'undefined' && elementList.length !=0){
-			for(i=0;i<=elementList.length;){
+			for(i=0;i<elementList.length;){
 				//No need to increment the count, as the element will be eliminated in the next step.
 				elementList[i].parentNode.innerHTML = response;
 			}

@@ -181,39 +181,6 @@ function getMenuPicklist($mparent,$level) {
 	return $menustructure;
 }
 
-function getMenuJSON($marray) {
-	$menubranch = '[';
-	foreach ($marray as $item) {
-		switch ($item['mtype']) {
-			case 'menu':
-				$menubranch.= '{text:"'.decode_html($item['mlabel']).'"';
-				break;
-			case 'module':
-				$menubranch.= '{text:"'.decode_html($item['mlabel']).'",';
-				$menubranch.= 'url:"index.php?action=index&module='.$item['mvalue'].'"';
-				break;
-			case 'url':
-				$menubranch.= '{text:"'.decode_html($item['mlabel']).'",';
-				$menubranch.= 'url:"'.$item['mvalue'].'"';
-				break;
-			case 'sep':
-				$menubranch.= '{text:"<hr/>",encoded:false';
-				break;
-			case 'headtop':
-			case 'headbottom':
-				$menubranch.= '{text:"'.decode_html($item['mlabel']).'"';
-				break;
-		}
-		$menubranch .= ',type:"' . $item['mtype'] . '"';
-		if (!empty($item['submenu']) and count($item['submenu'])>0) {
-			$menubranch.= ',items:';
-			$menubranch.= getMenuJSON($item['submenu']);
-		}
-		$menubranch.= '},';
-	}
-	return rtrim($menubranch,',').']';
-}
-
 function getAdminevvtMenu() {
 	global $adb;
 	$rdo = array();

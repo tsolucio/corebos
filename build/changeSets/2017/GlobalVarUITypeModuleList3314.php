@@ -25,7 +25,7 @@ class GlobalVarUITypeModuleList3314 extends cbupdaterWorker {
 			// change uitype
 			$field = Vtiger_Field::getInstance('module_list',$moduleInstance);
 			if ($field) {
-				$this->ExecuteQuery("update vtiger_field set uitype=3314 where fieldid=".$field->id);
+				$this->ExecuteQuery('update vtiger_field set uitype=3314 where fieldid=?',array($field->id));
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();

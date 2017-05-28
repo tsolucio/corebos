@@ -26,7 +26,7 @@ class GlobalVarUITypeModuleListFixEntityID extends cbupdaterWorker {
 			// change uitype and label
 			$field = Vtiger_Field::getInstance('module_list',$moduleInstance);
 			if ($field) {
-				$this->ExecuteQuery("update vtiger_field set uitype=3313,fieldlabel='Module List' where fieldid=".$field->id);
+				$this->ExecuteQuery("update vtiger_field set uitype=3313,fieldlabel='Module List' where fieldid=?",array($field->id));
 			}
 			// convert all existing records to new format
 			$gvrs = $adb->pquery('select globalvariableid,module_list from vtiger_globalvariable', array());

@@ -15,7 +15,7 @@
 *************************************************************************************************/
 
 class PotentialForecastAmount extends cbupdaterWorker {
-	
+
 	function applyChange() {
 		global $adb;
 		if ($this->hasError()) $this->sendError();
@@ -29,7 +29,7 @@ class PotentialForecastAmount extends cbupdaterWorker {
 			$block = Vtiger_Block::getInstance('LBL_OPPORTUNITY_INFORMATION', $moduleInstance);
 			$field = Vtiger_Field::getInstance('forecast_amount',$moduleInstance);
 			if ($field) {
-				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid='.$field->id);
+				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?',array($field->id));
 			} else {
 				$forecast_field = new Vtiger_Field();
 				$forecast_field->name = 'forecast_amount';
@@ -79,7 +79,7 @@ class PotentialForecastAmount extends cbupdaterWorker {
 			$moduleInstance=Vtiger_Module::getInstance('Potentials');
 			$field = Vtiger_Field::getInstance('forecast_amount',$moduleInstance);
 			if ($field) {
-				$this->ExecuteQuery('update vtiger_field set presence=1 where fieldid='.$field->id);
+				$this->ExecuteQuery('update vtiger_field set presence=1 where fieldid=?',array($field->id));
 			}
 			global $adb;
 			$wfrs = $adb->query("SELECT workflow_id FROM com_vtiger_workflows WHERE summary='Calculate or Update forecast amount'");

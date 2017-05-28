@@ -15,7 +15,7 @@
 *************************************************************************************************/
 
 class UserHourStartFields extends cbupdaterWorker {
-	
+
 	function applyChange() {
 		global $adb;
 		if ($this->hasError()) $this->sendError();
@@ -33,7 +33,7 @@ class UserHourStartFields extends cbupdaterWorker {
 			}
 			$field = Vtiger_Field::getInstance('hour_format',$moduleInstance);
 			if ($field) {
-				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid='.$field->id);
+				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?',array($field->id));
 			} else {
 				$field = new Vtiger_Field();
 				$field->name = 'hour_format';
@@ -49,7 +49,7 @@ class UserHourStartFields extends cbupdaterWorker {
 			}
 			$field = Vtiger_Field::getInstance('start_hour',$moduleInstance);
 			if ($field) {
-				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid='.$field->id);
+				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?',array($field->id));
 			} else {
 				$start_hour = new Vtiger_Field();
 				$start_hour->name = 'start_hour';

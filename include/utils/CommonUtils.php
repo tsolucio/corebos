@@ -174,7 +174,6 @@ function get_select_options_with_value_separate_key(&$label_list, &$key_list, $s
 		}
 
 		$html_value = $option_key;
-
 		$select_options .= "\n<OPTION " . $selected_string . "value='$label_list[$option_key]'>$label_list[$option_key]</OPTION>";
 	}
 	$select_options = preg_replace($pattern, $replacement, $select_options);
@@ -184,15 +183,10 @@ function get_select_options_with_value_separate_key(&$label_list, &$key_list, $s
 
 /**
  * Converts localized date format string to jscalendar format
- * Example: $array = array_csort($array,'town','age',SORT_DESC,'name');
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
  */
 function parse_calendardate($local_format) {
-	global $log;
+	global $log, $current_user;
 	$log->debug("Entering parse_calendardate(" . $local_format . ") method ...");
-	global $current_user;
 	if ($current_user->date_format == 'dd-mm-yyyy') {
 		$dt_popup_fmt = "%d-%m-%Y";
 	} elseif ($current_user->date_format == 'mm-dd-yyyy') {

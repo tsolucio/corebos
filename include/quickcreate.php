@@ -9,7 +9,6 @@
  *********************************************************************************/
 require_once("Smarty_setup.php");
 require_once("include/utils/CommonUtils.php");
-require_once("include/FormValidationUtil.php");
 
 global $mod_strings,$current_user, $app_strings, $currentModule, $theme;
 

@@ -85,35 +85,31 @@
                 	<a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
                 </div>
 				<div id="internal_mailer_{$keyfldname}" style="display: none;">{$keyfldid}####{$smarty.session.internal_mailer}</div>
-                                                  </td>
-	 {elseif ($keyid eq '15' || $keyid eq '16' || $keyid eq '1613' || $keyid eq '1614') && !picklistHasDependency($keyfldname,$MODULE)} <!--ComboBox-->
-						{foreach item=arr from=$keyoptions}
-							{if $arr[0] eq $APP.LBL_NOT_ACCESSIBLE && $arr[2] eq 'selected'}
-								{assign var=keyval value=$APP.LBL_NOT_ACCESSIBLE}
-								{assign var=fontval value='red'}
-							{else}
-                                                                {assign var=fontval value=''}
-							{/if}
-						{/foreach}
-							<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'><span id="dtlview_{$keyfldname}"><font color="{$fontval}">{$keyval|@getTranslatedString:$MODULE}</font></span>
-                                              		<div id="editarea_{$keyfldname}" style="display:none;">
-                    							   <select id="txtbox_{$keyfldname}" name="{$keyfldname}" class="small" style="width:280px;">
-                    								{foreach item=arr from=$keyoptions}
-											{if $arr[0] eq $APP.LBL_NOT_ACCESSIBLE}
-                    									<option value="{$arr[0]}" {$arr[2]}>{$arr[0]}</option>
-											{else}
-        							                                <option value="{$arr[1]}" {$arr[2]}>
-							                                                {$arr[0]}
-								                                </option>
-							                                {/if}
-
-										{/foreach}
-                    							   </select>
-                    							   <br><a class="detailview_ajaxbutton ajax_save_detailview" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
-                                              		   <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
-                    							</div>
-               							</td>
-                                          {elseif $keyid eq '33' || $keyid eq '3313' || $keyid eq '3314'}<!--Multi Select Combo box-->
+			</td>
+	{elseif ($keyid eq '15' || $keyid eq '16' || $keyid eq '1613' || $keyid eq '1614') && !picklistHasDependency($keyfldname,$MODULE)} <!--ComboBox-->
+		{assign var=fontval value=''}
+		{foreach item=arr from=$keyoptions}
+			{if $arr[0] eq $APP.LBL_NOT_ACCESSIBLE && $arr[2] eq 'selected'}
+				{assign var=keyval value=$APP.LBL_NOT_ACCESSIBLE}
+				{assign var=fontval value='red'}
+			{/if}
+		{/foreach}
+		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'><span id="dtlview_{$keyfldname}"><font color="{$fontval}">{$keyval|@getTranslatedString:$MODULE}</font></span>
+			<div id="editarea_{$keyfldname}" style="display:none;">
+				<select id="txtbox_{$keyfldname}" name="{$keyfldname}" class="small" style="width:280px;">
+					{foreach item=arr from=$keyoptions}
+						{if $arr[0] eq $APP.LBL_NOT_ACCESSIBLE}
+							<option value="{$arr[0]}" {$arr[2]}>{$arr[0]}</option>
+						{else}
+							<option value="{$arr[1]}" {$arr[2]}>{$arr[0]}</option>
+						{/if}
+					{/foreach}
+				</select>
+				<br><a class="detailview_ajaxbutton ajax_save_detailview" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
+					<a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
+			</div>
+		</td>
+	{elseif $keyid eq '33' || $keyid eq '3313' || $keyid eq '3314'}<!--Multi Select Combo box-->
 						<!--{assign var="MULTISELECT_COMBO_BOX_ITEM_SEPARATOR_STRING" value=", "}  {* Separates Multi-Select Combo Box items *}
 						{assign var="DETAILVIEW_WORDWRAP_WIDTH" value="70"} {* No. of chars for word wrapping long lines of Multi-Select Combo Box items *}-->
                                           <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}">

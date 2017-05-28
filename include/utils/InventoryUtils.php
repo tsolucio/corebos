@@ -1072,8 +1072,9 @@ function createRecords($obj) {
 
 	$tableName = Import_Utils::getDbTableName($obj->user);
 	$sql = 'SELECT subject FROM ' . $tableName . ' WHERE status = '. Import_Data_Controller::$IMPORT_RECORD_NONE .' GROUP BY subject';
-	if($obj->batchImport) {
+	if ($obj->batchImport) {
 		$importBatchLimit = GlobalVariable::getVariable('Import_Batch_Limit', 100);
+		if (!is_numeric($importBatchLimit)) $importBatchLimit = 100;
 		$sql .= ' LIMIT '. $importBatchLimit;
 	}
 	$result = $adb->query($sql);

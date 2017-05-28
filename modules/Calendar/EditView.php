@@ -11,7 +11,6 @@ require_once('Smarty_setup.php');
 require_once('data/Tracker.php');
 require_once('include/CustomFieldUtil.php');
 require_once('include/utils/utils.php');
-require_once('include/FormValidationUtil.php');
 require_once('modules/Calendar/calendarLayout.php');
 require_once("modules/Emails/mail.php");
 include_once 'modules/Calendar/header.php';

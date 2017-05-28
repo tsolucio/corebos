@@ -15,7 +15,7 @@
 *************************************************************************************************/
 
 class makeVendorShareable extends cbupdaterWorker {
-	
+
 	function applyChange() {
 		global $adb;
 		if ($this->hasError()) $this->sendError();
@@ -27,7 +27,7 @@ class makeVendorShareable extends cbupdaterWorker {
 			$blockInstance = Vtiger_Block::getInstance('LBL_VENDOR_INFORMATION', $vendorsInstance);
 			$field = Vtiger_Field::getInstance('assigned_user_id',$vendorsInstance);
 			if ($field) {
-				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid='.$field->id);
+				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?',array($field->id));
 			} else {
 				$field = new Vtiger_Field();
 				$field->name = 'assigned_user_id';

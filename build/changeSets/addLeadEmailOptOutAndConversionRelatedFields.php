@@ -26,7 +26,7 @@ class addLeadEmailOptOutAndConversionRelatedFields extends cbupdaterWorker {
 			$block = Vtiger_Block::getInstance('LBL_LEAD_INFORMATION', $module);
 			$field = Vtiger_Field::getInstance('emailoptout',$module);
 			if ($field) {
-				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid='.$field->id);
+				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?',array($field->id));
 			} else {
 				$leadsOptOutField = new Vtiger_Field();
 				$leadsOptOutField->name = 'emailoptout';

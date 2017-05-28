@@ -8,7 +8,7 @@
  * All Rights Reserved.
  *********************************************************************************/
 global $app_strings, $mod_strings, $current_language, $currentModule, $theme;
-global $list_max_entries_per_page;
+$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$currentModule);
 
 require_once('Smarty_setup.php');
 require_once('include/ListView/ListView.php');
@@ -30,13 +30,13 @@ if(!is_string($_SESSION[$currentModule.'_listquery']) || !empty($_REQUEST['globa
 	}else{
 		$list_query = getListQuery($currentModule);
 	}
-    // Enabling Module Search
+	// Enabling Module Search
 	$url_string = '';
 	if($_REQUEST['query'] == 'true') {
-        if(!empty($_REQUEST['tagSearchText'])){
-            $searchValue = vtlib_purify($_REQUEST['globalSearchText']);
+		if(!empty($_REQUEST['tagSearchText'])){
+			$searchValue = vtlib_purify($_REQUEST['globalSearchText']);
 			$where = '(' . getTagWhere($searchValue, $current_user->id) . ')';
-        } else if(!empty($_REQUEST['globalSearch'])){
+		} else if(!empty($_REQUEST['globalSearch'])){
 			$searchValue = vtlib_purify($_REQUEST['globalSearchText']);
 			$where = '(' . getUnifiedWhere($list_query,$currentModule,$searchValue) . ')';
 			$url_string .= '&query=true&globalSearch=true&globalSearchText='.$searchValue;
@@ -45,7 +45,6 @@ if(!is_string($_SESSION[$currentModule.'_listquery']) || !empty($_REQUEST['globa
 			$url_string .= "&query=true$ustring";
 		}
 	}
-	//print_r($where);
 	if($where != '') {
 		$list_query = "$list_query AND $where";
 		coreBOS_Session::set('export_where', $where);
@@ -53,9 +52,12 @@ if(!is_string($_SESSION[$currentModule.'_listquery']) || !empty($_REQUEST['globa
 		coreBOS_Session::delete('export_where');
 	}
 	// Sorting
-	if($order_by) {
+	$modFocus = CRMEntity::getInstance($currentModule);
+	$order_by = $modFocus->getOrderBy();
+	if (!empty($order_by)) {
+		$sorder = $modFocus->getSortOrder();
 		if($order_by == 'smownerid'){
-			$list_query .= ' ORDER BY user_name '.$sorder;
+			$list_query .= ' ORDER BY vtiger_users.user_name '.$sorder;
 		}else {
 			$tablename = getTableNameForField($currentModule, $order_by);
 			$tablename = ($tablename != '')? ($tablename . '.') : '';

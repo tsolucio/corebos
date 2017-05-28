@@ -12,12 +12,12 @@ require_once('include/ComboUtil.php');
 require_once('include/utils/CommonUtils.php');
 require_once 'modules/PickList/DependentPickListUtils.php';
 
-/** This function returns the vtiger_field details for a given vtiger_fieldname.
-  * Param $uitype - UI type of the vtiger_field
-  * Param $fieldname - Form vtiger_field name
-  * Param $fieldlabel - Form vtiger_field label name
-  * Param $maxlength - maximum length of the vtiger_field
-  * Param $col_fields - array contains the vtiger_fieldname and values
+/** This function returns the field details for a given fieldname.
+  * Param $uitype - UI type of the field
+  * Param $fieldname - Form field name
+  * Param $fieldlabel - Form field label name
+  * Param $maxlength - maximum length of the field
+  * Param $col_fields - array contains the fieldname and values
   * Param $generatedtype - Field generated type (default is 1)
   * Param $module_name - module name
   * Return type is an array
@@ -221,7 +221,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			$valueArr[$key] = trim(html_entity_decode($value, ENT_QUOTES, $default_charset));
 		}
 		$pickcount = 0;
-
+		$options = array();
 		if(!empty($picklistValues)){
 			foreach($picklistValues as $order=>$pickListValue){
 				if(in_array(trim($pickListValue),$valueArr)){
@@ -242,7 +242,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			}
 		}
 		$editview_label[]=getTranslatedString($fieldlabel,$module_name,$value);
-		$fieldvalue [] = $options;
+		$fieldvalue[] = $options;
 	} elseif($uitype == 3313 || $uitype == 3314){
 		require_once 'modules/PickList/PickListUtils.php';
 		$editview_label[]=getTranslatedString($fieldlabel,$module_name);
@@ -1368,7 +1368,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	return $final_arr;
 }
 
-/** This function returns the vtiger_invoice object populated with the details from sales order object.
+/** This function returns the invoice object populated with the details from sales order object.
 * Param $focus - Invoice object
 * Param $so_focus - Sales order focus
 * Param $soid - sales order id
@@ -1419,7 +1419,7 @@ function getConvertSoToInvoice($focus,$so_focus,$soid) {
 	return $focus;
 }
 
-/** This function returns the vtiger_invoice object populated with the details from quote object.
+/** This function returns the invoice object populated with the details from quote object.
 * Param $focus - Invoice object
 * Param $quote_focus - Quote order focus
 * Param $quoteid - quote id
@@ -1514,7 +1514,7 @@ function getConvertQuoteToSoObject($focus,$quote_focus,$quoteid)
 	return $focus;
 }
 
-/** This function returns the detailed list of vtiger_products associated to a given entity or a record.
+/** This function returns the detailed list of products associated to a given entity or a record.
 * Param $module - module name
 * Param $focus - module object
 * Param $seid - sales entity id
@@ -1906,7 +1906,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 	return $product_Detail;
 }
 
-/** This function returns the no of vtiger_products associated to the given entity or a record.
+/** This function returns the no of products associated to the given entity or a record.
 * Param $module - module name
 * Param $focus - module object
 * Param $seid - sales entity id
@@ -1957,8 +1957,8 @@ function getNoOfAssocProducts($module,$focus,$seid='')
 * Param $module - module name
 * Param $block - block name
 * Param $mode - view type (detail/edit/create)
-* Param $col_fields - vtiger_fields array
-* Param $tabid - vtiger_tab id
+* Param $col_fields - fields array
+* Param $tabid - tab id
 * Param $info_type - information type (basic/advance) default ""
 * Return type is an object array
 */
@@ -2051,8 +2051,8 @@ function getBlockInformation($module, $result, $col_fields,$tabid,$block_label,$
 	return $returndata;
 }
 
-/** This function returns the data type of the vtiger_fields, with vtiger_field label, which is used for javascript validation.
-* Param $validationData - array of vtiger_fieldnames with datatype
+/** This function returns the data type of the fields, with field label, which is used for javascript validation.
+* Param $validationData - array of fieldnames with datatype
 * Return type array
 */
 function split_validationdataArray($validationData)
@@ -2100,4 +2100,26 @@ function split_validationdataArray($validationData)
 	return $data;
 }
 
+/**
+ * Get field validation information
+ */
+function getDBValidationData($tablearray, $tabid='') {
+	if($tabid != '') {
+		global $adb, $mod_strings, $default_charset;
+		$fieldModuleName = getTabModuleName($tabid);
+		$fieldres = $adb->pquery(
+			"SELECT fieldlabel,fieldname,typeofdata FROM vtiger_field
+			WHERE displaytype IN (1,3) AND presence in (0,2) AND tabid=?", Array($tabid));
+		$fieldinfos = Array();
+		while($fieldrow = $adb->fetch_array($fieldres)) {
+			$fieldlabel = getTranslatedString(html_entity_decode($fieldrow['fieldlabel'], ENT_QUOTES, $default_charset), $fieldModuleName);
+			$fieldname = $fieldrow['fieldname'];
+			$typeofdata= $fieldrow['typeofdata'];
+			$fieldinfos[$fieldname] = Array($fieldlabel => $typeofdata);
+		}
+		return $fieldinfos;
+	} else {
+		return array();
+	}
+}
 ?>

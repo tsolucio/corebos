@@ -24,7 +24,7 @@ class correctProjectTargetBudgetType extends cbupdaterWorker {
 			$moduleInstance = Vtiger_Module::getInstance('Project');
 			$field = Vtiger_Field::getInstance('targetbudget',$moduleInstance);
 			if ($field) {
-				$this->ExecuteQuery("update vtiger_field set typeofdata='N~O' where fieldid=".$field->id);
+				$this->ExecuteQuery("update vtiger_field set typeofdata='N~O' where fieldid=?",array($field->id));
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
