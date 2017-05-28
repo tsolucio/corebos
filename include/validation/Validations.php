@@ -98,7 +98,7 @@ function validate_notDuplicate($field, $fieldval, $params, $fields) {
 	$queryGenerator->setFields(array('id'));
 	$queryGenerator->addCondition($field, $fieldval, 'e');
 	if(isset($crmid) && $crmid !='') {
-		$queryGenerator->addCondition('id',$crmid,'ne','and');
+		$queryGenerator->addCondition('id',$crmid,'n','and');
 	}
 	$query = $queryGenerator->getQuery();
 	$result = $adb->pquery($query, array());
