@@ -203,9 +203,9 @@ class Validations extends processcbMap {
 						break;
 				}
 			}
-			if(!$v->validate()) {
-				$validations[$valfield] = $v->errors();
-			}
+		}
+		if(!$v->validate()) {
+			$validations = $v->errors();
 		}
 		if (count($validations)==0) {
 			return true;
