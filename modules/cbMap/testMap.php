@@ -134,8 +134,8 @@ switch ($focus->column_fields['maptype']) {
 		$mapinfo['OriginModule'] = $focus->getMapOriginModule();
 		break;
 	case 'IOMap':
-	        $mapinfo['InputFields'] = $focus->IOMap()->readInputFields();
-               $mapinfo['OutputFields'] = $focus->IOMap()->readOutputFields();
+		$mapinfo['InputFields'] = $focus->IOMap()->readInputFields();
+		$mapinfo['OutputFields'] = $focus->IOMap()->readOutputFields();
 		break;
 	case 'Search and Update':
 		$mapinfo = $focus->read_map();
@@ -147,6 +147,14 @@ switch ($focus->column_fields['maptype']) {
 		$mapinfo = $focus->FieldDependency()->getCompleteMapping();
 		$mapinfo['TargetModule'] = $focus->FieldDependency()->getMapTargetModule();
 		$mapinfo['OriginModule'] = $focus->FieldDependency()->getMapOriginModule();
+		break;
+	case 'Validations':
+		$mapinfo = $focus->Validations(array(
+			'accountname' => 'Chemex',
+			'industry' => 'Banking',
+			'email1' => 'sdsdsd',
+		),
+		74);
 		break;
 	default:
 

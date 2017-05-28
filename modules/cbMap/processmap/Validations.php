@@ -107,20 +107,14 @@
 	EU_VAT - validate EU VAT number
 		restrictions: none
 	notDuplicate - checks that no other record with the same value exists on the given fieldname
-		restrictions: fieldname
+		restrictions: none
+	custom - launch custom function that can be found in the indicated file
+		restrictions: file name, validation test name, function name and label to show on error (will be translated)
  *************************************************************************************************/
 
-require_once('modules/com_vtiger_workflow/include.inc');
-require_once('modules/com_vtiger_workflow/tasks/VTEntityMethodTask.inc');
-require_once('modules/com_vtiger_workflow/VTEntityMethodManager.inc');
-require_once('modules/com_vtiger_workflow/VTSimpleTemplate.inc');
-require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
-require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
-require_once('modules/com_vtiger_workflow/expression_engine/include.inc');
-require_once 'include/Webservices/Retrieve.php';
 include_once 'include/validation/load_validations.php';
 
-class Mapping extends processcbMap {
+class Validations extends processcbMap {
 
 	/*
 	 * $arguments[0] array with all the values to validate, the fieldname as the index of the array
@@ -193,7 +187,16 @@ class Mapping extends processcbMap {
 						}
 						break;
 					case 'notDuplicate':
-						$v->rule($rule, $valfield, $restrictions[0], $mapping['origin'], $arguments[1])->label($i18n);
+						$v->rule($rule, $valfield, $mapping['origin'], $arguments[1])->label($i18n);
+						break;
+					case 'custom':
+						if (file_exists($restrictions[0])) {
+							@include $restrictions[0];
+							if (function_exists($restrictions[2])) {
+								$v->addRule($restrictions[1], $restrictions[2], (isset($restrictions[3]) ? getTranslatedString($restrictions[3]) : getTranslatedString('INVALID')));
+								$v->rule($restrictions[1], $valfield)->label($i18n);
+							}
+						}
 						break;
 					default:
 						continue;
@@ -204,7 +207,11 @@ class Mapping extends processcbMap {
 				$validations[$valfield] = $v->errors();
 			}
 		}
-		return $validations;
+		if (count($validations)==0) {
+			return true;
+		} else {
+			return $validations;
+		}
 	}
 
 	function convertMap2Array() {
@@ -226,7 +233,7 @@ class Mapping extends processcbMap {
 				}
 				$allvals[$rule]=$rst;
 			}
-			$val_fields[$fieldname]['validations']=$allvals;
+			$val_fields[$fieldname] = $allvals;
 		}
 		$mapping['fields'] = $val_fields;
 		return $mapping;
