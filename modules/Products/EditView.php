@@ -9,7 +9,6 @@
  ************************************************************************************/
 global $app_strings, $mod_strings, $current_language, $currentModule, $theme, $adb;
 require_once('Smarty_setup.php');
-require_once('include/FormValidationUtil.php');
 
 $focus = CRMEntity::getInstance($currentModule);
 

@@ -2100,4 +2100,26 @@ function split_validationdataArray($validationData)
 	return $data;
 }
 
+/**
+ * Get field validation information
+ */
+function getDBValidationData($tablearray, $tabid='') {
+	if($tabid != '') {
+		global $adb, $mod_strings, $default_charset;
+		$fieldModuleName = getTabModuleName($tabid);
+		$fieldres = $adb->pquery(
+			"SELECT fieldlabel,fieldname,typeofdata FROM vtiger_field
+			WHERE displaytype IN (1,3) AND presence in (0,2) AND tabid=?", Array($tabid));
+		$fieldinfos = Array();
+		while($fieldrow = $adb->fetch_array($fieldres)) {
+			$fieldlabel = getTranslatedString(html_entity_decode($fieldrow['fieldlabel'], ENT_QUOTES, $default_charset), $fieldModuleName);
+			$fieldname = $fieldrow['fieldname'];
+			$typeofdata= $fieldrow['typeofdata'];
+			$fieldinfos[$fieldname] = Array($fieldlabel => $typeofdata);
+		}
+		return $fieldinfos;
+	} else {
+		return array();
+	}
+}
 ?>
