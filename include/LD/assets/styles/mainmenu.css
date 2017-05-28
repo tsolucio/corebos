@@ -37,8 +37,3 @@
     -o-transform: translateX(-3px);
     transform: translateX(-3px);
 }
-<li class="slds-context-bar__item">
-    <a href="index.php?action=index&amp;module=Accounts" class="slds-context-bar__label-action" title="Accounts">
-        <span class="slds-truncate">Accounts</span>
-    </a>
-</li>

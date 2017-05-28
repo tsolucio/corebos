@@ -11,12 +11,12 @@
 
 {* Creates the main menu *}
 {function cbmenu i=0}
-<nav class="slds-context-bar__secondary" role="navigation">	
+<nav class="slds-context-bar__secondary" role="navigation">
 	<ul class="slds-grid" id="cbmenu">
 	{foreach $menu as $menuitem}
 		{if $menuitem.mtype == 'menu'}
 		<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true">
-			<a href="javascript:void(0);" class="slds-context-bar__label-action" title="{$menitem.mlabel}">
+			<a href="javascript:void(0);" class="slds-context-bar__label-action" title="{$menuitem.mlabel}">
 				<span class="slds-truncate">{$menuitem.mlabel}</span>
 			</a>
 			{if !empty($menuitem.submenu)}
@@ -25,7 +25,7 @@
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevrondown"></use>
 				</svg>
 			</div>
-			{call cbsubmenu submenu=$menuitem.submenu i=$i}	
+			{call cbsubmenu submenu=$menuitem.submenu i=$i}
 			{/if}
 		</li>
 		{elseif $menuitem.mtype == 'module'}
@@ -33,7 +33,7 @@
 			<a href="index.php?action=index&amp;module={$menuitem.mvalue}" class="slds-context-bar__label-action" title="{$menuitem.mlabel}">
 				<span class="slds-truncate">{$menuitem.mlabel}</span>
 			</a>
-		</li>		
+		</li>
 		{/if}
 		{$i = $i+1}
 	{/foreach}
@@ -49,9 +49,9 @@
 					{/foreach}
 				</select>
 				</div>
-			</div> 
+			</div>
 		</div>
-	</div>	
+	</div>
 </nav>
 {/function}
 
@@ -83,7 +83,7 @@
 				</li>
 			{/foreach}
 			</ul>
-		</li>	
+		</li>
 		{elseif $menuitem.mtype == 'menu' && !empty($menuitem.submenu)}
 		<li class="slds-dropdown__item" role="presentation">
 			<a href="javascript:void(0);" role="menuitem" tabindex="-1">
@@ -109,7 +109,7 @@
 		{elseif $menuitem.mtype == 'headbottom'}
 		<li class="slds-dropdown__header slds-has-divider--bottom-space" role="separator">
 			<span class="slds-text-title--caps">{$menuitem.mlabel}</span>
-		</li>		
+		</li>
 		{elseif $menuitem.mtype == 'sep'}
 		<li class="slds-dropdown__header slds-has-divider--top-space" role="separator">
 		{elseif $menuitem.mtype == 'url'}
@@ -117,7 +117,7 @@
 			<a href="{$menuitem.mvalue}" role="menuitem" tabindex="-1">
 				<span class="slds-truncate">{$menuitem.mlabel}</span>
 			</a>
-		</li>		
+		</li>
 		{/if}
 	{/foreach}
 	</ul>
