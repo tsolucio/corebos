@@ -104,12 +104,25 @@ switch ($functiontocall) {
 		if (file_exists("modules/{$valmod}/{$valmod}Validation.php")) {
 			echo 'yes';
 		} else {
-			echo 'no';
+			include_once 'modules/cbMap/processmap/Validations.php';
+			if (Validations::ValidationsExist($valmod)) {
+				echo 'yes';
+			} else {
+				echo 'no';
+			}
 		}
 		die();
 		break;
 	case 'ValidationLoad':
 		$valmod = vtlib_purify($_REQUEST['valmodule']);
+		include_once 'modules/cbMap/processmap/Validations.php';
+		if (Validations::ValidationsExist($valmod)) {
+			$validation = Validations::processAllValidationsFor($valmod);
+			if ($validation!==true) {
+				echo Validations::formatValidationErrors($validation,$valmod);
+				die();
+			}
+		}
 		if (file_exists("modules/{$valmod}/{$valmod}Validation.php")) {
 			include "modules/{$valmod}/{$valmod}Validation.php";
 		} else {

@@ -243,5 +243,62 @@ class Validations extends processcbMap {
 		return $mapping;
 	}
 
+	public static function ValidationsExist($module) {
+		global $adb;
+		$q = 'select 1 from vtiger_cbmap
+			inner join vtiger_crmentity on crmid=cbmapid
+			where deleted=0 and maptype=? and targetname=? limit 1';
+		$rs = $adb->pquery($q,array('Validations',$module));
+		return ($rs and $adb->num_rows($rs)==1);
+	}
+
+	public static function processAllValidationsFor($module) {
+		global $adb;
+		$screen_values = json_decode($_REQUEST['structure'],true);
+		if (in_array($module, getInventoryModules())) {
+			$products = array();
+			foreach ($screen_values as $sv_name => $sv) {
+				if (strpos($sv_name, 'hdnProductId') !== false) {
+					$i = substr($sv_name, -1);
+					$qty_i = 'qty'.$i;
+					$name_i = 'productName'.$i;
+					$type_i = 'lineItemType'.$i;
+					$products[$i]['crmid'] = $sv;
+					$products[$i]['qty'] = $screen_values[$qty_i];
+					$products[$i]['name'] = $screen_values[$name_i];
+					$products[$i]['type'] = $screen_values[$type_i];
+				}
+			}
+			$screen_values['pdoInformation'] = $products;
+		}
+		$record = (isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : 0);
+		$q = 'select cbmapid from vtiger_cbmap
+			inner join vtiger_crmentity on crmid=cbmapid
+			where deleted=0 and maptype=? and targetname=?';
+		$rs = $adb->pquery($q,array('Validations',$module));
+		$focus = new cbMap();
+		$focus->mode = '';
+		$validation = true;
+		while ($val = $adb->fetch_array($rs)) {
+			$focus->id = $val['cbmapid'];
+			$focus->retrieve_entity_info($val['cbmapid'], 'cbMap');
+			$validation = $focus->Validations($screen_values,$record);
+			if ($validation!==true) {
+				break;
+			}
+		}
+		return $validation;
+	}
+
+	public static function formatValidationErrors($errors,$module) {
+		$error = '';
+		foreach ($errors as $field => $errs) {
+			foreach ($errs as $err) {
+				$error.= $err . "\n";
+			}
+		}
+		return $error;
+	}
+
 }
 ?>
