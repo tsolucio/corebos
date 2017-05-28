@@ -249,13 +249,13 @@ $smarty->assign("PRICE_DETAILS", $price_details);
 $base_currency = 'curname' . $product_base_currency;
 $smarty->assign("BASE_CURRENCY", $base_currency);
 
-if(isset($focus->id) && $_REQUEST['isDuplicate'] != 'true')
+if (isset($focus->id) && (empty($_REQUEST['isDuplicate']) || $_REQUEST['isDuplicate'] != 'true'))
 	$is_parent = $focus->isparent_check();
 else
 	$is_parent = 0;
 $smarty->assign("IS_PARENT",$is_parent);
 
-if(isset($_REQUEST['return_module']) && $_REQUEST['return_module']=='Products' && isset($_REQUEST['return_action'])){
+if(isset($_REQUEST['return_module']) && $_REQUEST['return_module']=='Products' && isset($_REQUEST['return_action']) && isset($_REQUEST['return_id'])){
 	$return_name = getProductName($_REQUEST['return_id']);
 	$smarty->assign("RETURN_NAME", $return_name);
 }
