@@ -134,6 +134,10 @@ class Validations extends processcbMap {
 				switch ($rule) {
 					case 'required':
 					case 'accepted':
+						if (isset($screen_values[$valfield])) {
+							$v->rule($rule, $valfield)->label($i18n);
+						}
+						break;
 					case 'numeric':
 					case 'integer':
 					case 'array':
