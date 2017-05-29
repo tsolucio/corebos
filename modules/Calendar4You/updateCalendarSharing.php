@@ -58,17 +58,17 @@ if ($num_rows2 > 0) {
     $sql3 = "INSERT INTO its4you_calendar4you_settings (userid, dayoftheweek, show_weekends, user_view) VALUES  (?,?,?,?)";
     $adb->pquery($sql3, array($current_user->id, $dayoftheweek, $show_weekends, $user_view));
 }
-    
+
 $update_google_account = $_REQUEST["update_google_account"];
- 
+
 if ($update_google_account == "1") {
-    $google_login = $_REQUEST["google_login"];
-   // $google_password = $_REQUEST["google_password"];
-    $google_apikey= $_REQUEST["google_apikey"];
-    $google_keyfile = $_REQUEST["google_keyfile"];
-    $google_clientid = $_REQUEST["google_clientid"];
-    $googleinsert1 = $_REQUEST["googleinsert"];
-   
+	$google_login = vtlib_purify($_REQUEST['google_login']);
+	// $google_password = vtlib_purify($_REQUEST['google_password']);
+	$google_apikey= vtlib_purify($_REQUEST['google_apikey']);
+	$google_keyfile = vtlib_purify($_REQUEST['google_keyfile']);
+	$google_clientid = vtlib_purify($_REQUEST['google_clientid']);
+	$googleinsert1 = (isset($_REQUEST['googleinsert']) ? vtlib_purify($_REQUEST['googleinsert']) : '');
+
     $us=$adb->query("select * from vtiger_users where deleted=0");
     for($i=0;$i<$adb->num_rows($us);$i++){
     $userid=$adb->query_result($us,$i,'id');

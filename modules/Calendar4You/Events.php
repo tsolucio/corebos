@@ -23,7 +23,7 @@ $typeids = vtlib_purify($_REQUEST['typeids']);
 $Type_Ids = explode(',',$typeids);
 
 $user_view_type = vtlib_purify($_REQUEST['user_view_type']);
-$save = vtlib_purify($_REQUEST['save']);
+$save = (isset($_REQUEST['save']) ? vtlib_purify($_REQUEST['save']) : '');
 $full_calendar_view = vtlib_purify($_REQUEST['view']);
 if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') $record = $_REQUEST['record'];
 
@@ -40,13 +40,13 @@ if (!empty($_REQUEST['usersids'])) {
 }
 
 $Load_Event_Status = array();
-$event_status = vtlib_purify($_REQUEST["event_status"]);
+$event_status = (isset($_REQUEST['event_status']) ? vtlib_purify($_REQUEST['event_status']) : '');
 if ($event_status != "") { 
 	$Load_Event_Status = explode(",",$event_status);
 }
 
 $Load_Task_Status = array();
-$task_status = vtlib_purify($_REQUEST["task_status"]);
+$task_status = (isset($_REQUEST['task_status']) ? vtlib_purify($_REQUEST['task_status']) : '');
 if ($task_status != "") {
 	$Load_Task_Status = explode(",",$task_status);
 }
