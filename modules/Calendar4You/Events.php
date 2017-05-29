@@ -266,24 +266,20 @@ foreach($Users_Ids AS $userid) {
 					$editable = true;
 				}
 			}
-			if ($activitytypeid == "task" or in_array($activitytypeid,$tasklabel)){
-				$activity_mode = "Task";
-			} else {
-				$activity_mode = "Events";
-			}
+			$activity_mode = "Events";
 			if ($record != "") {
 				$Actions = array();
 				if ($visibility == "public") {
 					if(in_array($activitytypeid,$tasklabel))
 					$Actions[] = "<a target='_new' href='index.php?action=DetailView&module=".$activitytypeid."&record=".$record."'>".$mod['LBL_DETAIL']."</a>";
 					else
-					$Actions[] = "<a target='_new' href='index.php?action=EventDetailView&module=Calendar4You&record=".$record."&activity_mode=$activity_mode&parenttab=Tools'>".$mod['LBL_DETAIL']."</a>";
+					$Actions[] = "<a target='_new' href='index.php?action=DetailView&module=cbCalendar&record=".$record."&activity_mode=$activity_mode'>".$mod['LBL_DETAIL']."</a>";
 				}
 				if($Calendar4You->CheckPermissions("EDIT",$record)) {
 					if(in_array($activitytypeid,$tasklabel))
 						$Actions[] = "<a target='_new' href='index.php?action=EditView&module=".$activitytypeid."&record=".$record."'>".$app['LNK_EDIT']."</a>";
 					else
-						$Actions[] = "<a target='_new' href='index.php?action=EventEditView&module=Calendar4You&record=".$record."&activity_mode=$activity_mode&parenttab=Tools'>".$app['LNK_EDIT']."</a>";
+						$Actions[] = "<a target='_new' href='index.php?action=EditView&module=cbCalendar&record=".$record."&activity_mode=$activity_mode'>".$app['LNK_EDIT']."</a>";
 				}
 				if (vtlib_isModuleActive('Timecontrol') and !in_array($activitytypeid,$tasklabel)) {
 					$Actions[] = "<a target='_newtc' href='index.php?action=EditView&module=Timecontrol&calendarrecord=$record&activity_mode=$activity_mode'>".getTranslatedString('LBL_TIME_TAKEN').'</a>';
