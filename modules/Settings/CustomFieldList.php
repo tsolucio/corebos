@@ -52,9 +52,9 @@ $cftextcombo = Array($mod_strings['Text'],
 $smarty->assign("MODULES", $module_array);
 $smarty->assign("CFTEXTCOMBO", $cftextcombo);
 $smarty->assign("CFIMAGECOMBO", $cfimagecombo);
-if ($_REQUEST['fld_module'] != '')
+if (!empty($_REQUEST['fld_module']))
 	$fld_module = vtlib_purify($_REQUEST['fld_module']);
-elseif ($_REQUEST['formodule'] != '') {
+elseif (!empty($_REQUEST['formodule'])) {
 	$fld_module = vtlib_purify($_REQUEST['formodule']);
 }
 else
@@ -64,13 +64,17 @@ $smarty->assign("CFENTRIES", getCFLeadMapping($fld_module));
 if (isset($_REQUEST["duplicate"]) && $_REQUEST["duplicate"] == "yes") {
 	$error = getTranslatedString('ERR_CUSTOM_FIELD_WITH_NAME', 'Settings') . vtlib_purify($_REQUEST["fldlabel"]) . ' ' . getTranslatedString('ERR_ALREADY_EXISTS', 'Settings') . ' ' . getTranslatedString('ERR_SPECIFY_DIFFERENT_LABEL', 'Settings');
 	$smarty->assign("DUPLICATE_ERROR", $error);
+} else {
+	$smarty->assign('DUPLICATE_ERROR', '');
 }
 
-if ($_REQUEST['mode'] != '')
+if (!empty($_REQUEST['mode']))
 	$mode = vtlib_purify($_REQUEST['mode']);
+else
+	$mode = '';
 $smarty->assign("MODE", $mode);
 
-if ($_REQUEST['ajax'] != 'true')
+if (empty($_REQUEST['ajax']) or $_REQUEST['ajax'] != 'true')
 	$smarty->display(vtlib_getModuleTemplate('Vtiger', 'CustomFieldList.tpl'));
 else
 	$smarty->display(vtlib_getModuleTemplate('Vtiger', 'CustomFieldEntries.tpl'));
