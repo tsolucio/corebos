@@ -452,11 +452,11 @@ function transferForAddIntoTitle($type, $row, $CD) {
 		$CD["uitype"] = "1";   
 	}
 	if ($CD['module']=='Calendar' or $CD['module']=='Events') {
-		$Cal_Data = getDetailViewOutputHtml($CD['uitype'], $CD['fieldname'], $CD['fieldlabel'], $Col_Field, '2', $calendar_tabid, 'Calendar');
+		$Cal_Data = getDetailViewOutputHtml($CD['uitype'], $CD['fieldname'], $CD['fieldlabel'], $Col_Field, '2', getTabid('Calendar'), 'Calendar');
 		$trmodule = 'Calendar';
 	} else {
 		$queryGenerator = new QueryGenerator($CD['module'], $current_user);
-		$queryGenerator->setFields(array($CD['columnname']));
+		$queryGenerator->setFields(array($CD['fieldname']));
 		$queryGenerator->addCondition('id',$row['parent_id'],'e',$queryGenerator::$AND);
 		$rec_query = $queryGenerator->getQuery();
 		$recinfo = $adb->pquery($rec_query,array());
