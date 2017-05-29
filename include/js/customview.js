@@ -348,6 +348,7 @@ function gotourl(url)
 
 function validateTypeforCFMapping(leadtype,leadtypeofdata,type,typeofdata,field_name,cf_form)
 {
+	if (type=='' && typeofdata=='') return true;
 	var alertmessage = new Array(alert_arr.LBL_TYPEALERT_1,alert_arr.LBL_WITH,alert_arr.LBL_TYPEALERT_2,alert_arr.LBL_LENGTHALERT,alert_arr.LBL_DECIMALALERT,alert_arr.LBL_MAPPEDALERT);
 	var combo_val = cf_form.options[cf_form.selectedIndex].value;
 	if(combo_val != '')
@@ -484,7 +485,7 @@ function validateMapping(id,chngSelect,field_id){
 	contactType=contactf.options[contactf.selectedIndex].getAttribute('fieldtype');
 	potentialType=potentialf.options[potentialf.selectedIndex].getAttribute('fieldtype');
 
-	if(chngSelect.options[chngSelect.selectedIndex].value!=''){
+	if(chngSelect.options[chngSelect.selectedIndex].value!='0'){
 		switch(chngSelect.getAttribute('module')){
 
 			case 'Accounts':
@@ -494,7 +495,7 @@ function validateMapping(id,chngSelect,field_id){
 					}
 					if(document.getElementById('map['+i+'][Accounts]').options[document.getElementById('map['+i+'][Accounts]').selectedIndex].value==document.getElementById('map['+id+'][Accounts]').options[document.getElementById('map['+id+'][Accounts]').selectedIndex].value){
 						alert(alertmessage[5]);
-						document.getElementById('map['+id+'][Accounts]').value='';
+						document.getElementById('map['+id+'][Accounts]').value='0';
 						return false;
 					}
 				}
@@ -506,7 +507,7 @@ function validateMapping(id,chngSelect,field_id){
 					}
 					if(document.getElementById('map['+i+'][Contacts]').options[document.getElementById('map['+i+'][Contacts]').selectedIndex].value==document.getElementById('map['+id+'][Contacts]').options[document.getElementById('map['+id+'][Contacts]').selectedIndex].value){
 						alert(alertmessage[5]);
-						document.getElementById('map['+id+'][Contacts]').value='';
+						document.getElementById('map['+id+'][Contacts]').value='0';
 						return false;
 					}
 				}
@@ -518,7 +519,7 @@ function validateMapping(id,chngSelect,field_id){
 					}
 					if(document.getElementById('map['+i+'][Potentials]').options[document.getElementById('map['+i+'][Potentials]').selectedIndex].value==document.getElementById('map['+id+'][Potentials]').options[document.getElementById('map['+id+'][Potentials]').selectedIndex].value){
 						alert(alertmessage[5]);
-						document.getElementById('map['+id+'][Potentials]').value='';
+						document.getElementById('map['+id+'][Potentials]').value='0';
 						return false;
 					}
 				}
