@@ -71,7 +71,7 @@ var TEXTTYPE = '{$TEXTTYPE}';
 								</td>
 								<td>
 									<select class="small" name=map[{$CNT}][Accounts] id=map[{$CNT}][Accounts] module="Accounts" {if $map.editable neq 1}disabled="disabled"{/if} onChange='return validateMapping("{$CNT}",this,"map[{$CNT}][Accounts]")'>
-											<option value=''>{'LBL_NONE'|@getTranslatedString:$MODULE}</option>
+											<option value='0' typeofdata="" fieldtype="">{'LBL_NONE'|@getTranslatedString:$MODULE}</option>
 										{foreach item=acc_cf key=acc_cf_index from=$map.account}
 											<option value="{$acc_cf.fieldid}" typeofdata="{$acc_cf.typeofdata}" fieldtype="{$acc_cf.fieldtype}" {$acc_cf.selected}>{$acc_cf.fieldlabel|@getTranslatedString:$MODULE}</option>
 										{/foreach}
@@ -79,7 +79,7 @@ var TEXTTYPE = '{$TEXTTYPE}';
 								</td>
 								<td>
 									<select class="small" name=map[{$CNT}][Contacts] id=map[{$CNT}][Contacts] module="Contacts" {if $map.editable neq 1}disabled="disabled"{/if} onChange='return validateMapping("{$CNT}",this,"map[{$CNT}][Contacts]")'>
-										<option value=''>{'LBL_NONE'|@getTranslatedString:$MODULE}</option>
+										<option value='0' typeofdata="" fieldtype="">{'LBL_NONE'|@getTranslatedString:$MODULE}</option>
 										{foreach item=con_cf key=con_cf_index from=$map.contact}
 											<option value="{$con_cf.fieldid}" typeofdata="{$con_cf.typeofdata}" fieldtype="{$con_cf.fieldtype}" {$con_cf.selected}>{$con_cf.fieldlabel|@getTranslatedString:$MODULE}</option>
 										{/foreach}
@@ -87,7 +87,7 @@ var TEXTTYPE = '{$TEXTTYPE}';
 								</td>
 								<td>
 									<select class="small" name=map[{$CNT}][Potentials] id=map[{$CNT}][Potentials] module="Potentials" {if $map.editable neq 1}disabled="disabled"{/if} onChange='return validateMapping("{$CNT}",this,"map[{$CNT}][Potentials]")'>
-										<option value=''>{'LBL_NONE'|@getTranslatedString:$MODULE}</option>
+										<option value='0' typeofdata="" fieldtype="">{'LBL_NONE'|@getTranslatedString:$MODULE}</option>
 										{foreach item=pot_cf key=pot_cf_index from=$map.potential}
 											<option value="{$pot_cf.fieldid}" typeofdata="{$pot_cf.typeofdata}" fieldtype="{$pot_cf.fieldtype}" {$pot_cf.selected}>{$pot_cf.fieldlabel|@getTranslatedString:$MODULE}</option>
 										{/foreach}
@@ -101,7 +101,7 @@ var TEXTTYPE = '{$TEXTTYPE}';
 								<td>
 									<div id="leadCloneDiv">
 										<select id="leadClone" name="leadClone" id="leadClone" class="small" module="Leads" onChange='return validateMapping("incId",this,"leadClone")'>
-											<option value=''>{'LBL_NONE'|@getTranslatedString:$MODULE}</option>
+											<option value='0' typeofdata="" fieldtype="">{'LBL_NONE'|@getTranslatedString:$MODULE}</option>
 											{foreach item=field key=field_index from=$CUSTOMFIELDMAPPING[0].lead}
 													<option value="{$field.fieldid}" typeofdata="{$field.typeofdata}" fieldtype="{$field.fieldtype}">{$field.fieldlabel|@getTranslatedString:$MODULE}</option>
 											{/foreach}
@@ -111,7 +111,7 @@ var TEXTTYPE = '{$TEXTTYPE}';
 								<td >
 									<div id="accountCloneDiv">
 										<select id="accountClone" name="accountClone" id="accountClone" class="small" module="Accounts" onChange='return validateMapping("incId",this,"accountClone")'>
-												<option value=''>{'LBL_NONE'|@getTranslatedString:$MODULE}</option>
+												<option value='0' typeofdata="" fieldtype="">{'LBL_NONE'|@getTranslatedString:$MODULE}</option>
 											{foreach item=field key=field_index from=$CUSTOMFIELDMAPPING[0].account}
 													<option value="{$field.fieldid}" typeofdata="{$field.typeofdata}" fieldtype="{$field.fieldtype}">{$field.fieldlabel|@getTranslatedString:$MODULE}</option>
 											{/foreach}
@@ -121,7 +121,7 @@ var TEXTTYPE = '{$TEXTTYPE}';
 								<td>
 									<div id="contactCloneDiv">
 										<select id="contactClone" name="contactClone" id="contactClone" class="small" module="Contacts" onChange='return validateMapping("incId",this,"contactClone")'>
-												<option value=''>{'LBL_NONE'|@getTranslatedString:$MODULE}</option>
+												<option value='0' typeofdata="" fieldtype="">{'LBL_NONE'|@getTranslatedString:$MODULE}</option>
 											{foreach item=field key=field_index from=$CUSTOMFIELDMAPPING[0].contact}
 													<option value="{$field.fieldid}" typeofdata="{$field.typeofdata}" fieldtype="{$field.fieldtype}">{$field.fieldlabel|@getTranslatedString:$MODULE}</option>
 											{/foreach}
@@ -131,7 +131,7 @@ var TEXTTYPE = '{$TEXTTYPE}';
 								<td>
 									<div id="potentialCloneDiv">
 										<select id="potentialClone" name="potentialClone" id="potentialClone" class="small" module="Potentials" onChange='return validateMapping("incId",this,"potentialClone")'>
-												<option value=''>{'LBL_NONE'|@getTranslatedString:$MODULE}</option>
+												<option value='0' typeofdata="" fieldtype="">{'LBL_NONE'|@getTranslatedString:$MODULE}</option>
 											{foreach item=field key=field_index from=$CUSTOMFIELDMAPPING[0].potential}
 													<option value="{$field.fieldid}" typeofdata="{$field.typeofdata}" fieldtype="{$field.fieldtype}">{$field.fieldlabel|@getTranslatedString:$MODULE}</option>
 											{/foreach}
