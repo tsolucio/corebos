@@ -123,15 +123,6 @@ $Task_Colors_Palete = $colorHarmony->Monochromatic($Task_Colors["bg"]);
 if (!$load_ch || $Ch_Views["1"]["task"]) $task_checked = true; else $task_checked = false;
 
 $Activity_Types = $Module_Types = array();
-$Activity_Types["task"] = array(
-	"typename"=>"Tasks",
-	"label"=>$c_mod_strings["LBL_TASK"],
-	"act_type"=>"task",
-	"title_color"=>$Task_Colors_Palete[0],
-	"color"=>$Task_Colors_Palete[1],
-	"textColor"=>$Task_Colors["text"],
-	"checked"=>$task_checked
-);
 
 $ActTypes = getActTypesForCalendar();
 if (!$load_ch || $Ch_Views["1"]["invite"]) $invite_checked = true; else $invite_checked = false;

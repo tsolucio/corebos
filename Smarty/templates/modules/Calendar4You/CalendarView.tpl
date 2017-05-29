@@ -267,7 +267,6 @@ jQuery(document).ready(function(){
         	for(var i=0;i<(eventlist.length);i++){
                 document.getElementById("add"+eventlist[i].toLowerCase()).href="javascript:gITSshow('addITSEvent','"+eventlist[i]+"','"+startdate+"','"+enddate+"','"+starthr+"','"+startmin+"','"+startfmt+"','"+endhr+"','"+endmin+"','"+endfmt+"','"+viewOption+"','"+subtab+"');fnRemoveITSEvent();";
         	}
-        	document.getElementById("addtodo").href="javascript:gITSshow('createTodo','todo','"+startdate+"','"+enddate+"','"+starthr+"','"+startmin+"','"+startfmt+"','"+endhr+"','"+endmin+"','"+endfmt+"','"+viewOption+"','"+subtab+"');fnRemoveITSEvent();";
 			for(var i=0;i<(timemodulearr.length);i++){
 				var tmmod = timemodulearr[i];
 				if (startfmt=='am' || startfmt=='') {

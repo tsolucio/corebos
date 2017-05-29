@@ -26,7 +26,6 @@ function fnAddITSEvent(obj,CurrObj,start_date,end_date,start_hr,start_min,start_
 	for(var i=0;i<(eventlist.length-1);i++){
 		document.getElementById("add"+eventlist[i].toLowerCase()).href="javascript:gITSshow('addITSEvent','"+eventlist[i]+"','"+start_date+"','"+end_date+"','"+start_hr+"','"+start_min+"','"+start_fmt+"','"+end_hr+"','"+end_min+"','"+end_fmt+"','"+viewOption+"','"+subtab+"','');fnRemoveITSEvent();";
 	}
-	document.getElementById("addtodo").href="javascript:gITSshow('createTodo','todo','"+start_date+"','"+end_date+"','"+start_hr+"','"+start_min+"','"+start_fmt+"','"+end_hr+"','"+end_min+"','"+end_fmt+"','"+viewOption+"','"+subtab+"','');fnRemoveITSEvent();";
 }
 
 function fnRemoveITSEvent(){

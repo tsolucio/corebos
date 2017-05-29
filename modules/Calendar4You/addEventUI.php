@@ -741,9 +741,6 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 	<tr><td><a href='' id="add<?php echo strtolower($eventlist);?>" class='drop_down'><?php echo $actname; ?></a></td></tr>
 <?php
 	}
-?>
-	<tr><td><a href='' id="addtodo" class='drop_down'><?php echo $c_mod_strings['LBL_ADDTODO']?></a></td></tr>
-<?php
 	$timeModules = getAllModulesWithDateTimeFields();
 	foreach ($timeModules as $tmid => $tmmod) {
 		$tmline = getTranslatedString($tmmod,$tmmod);
@@ -773,7 +770,6 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 		$actname = getTranslatedString($eventlist,'Calendar');
 		echo '<tr><td><a href="javascript:gITSshow(\'addITSEvent\',\''.$eventlist."','".$temp_date."','".$temp_date."','".$time_arr["starthour"]."','".$time_arr["startmin"]."','".$time_arr["startfmt"]."','".$time_arr["endhour"]."','".$time_arr["endmin"]."','".$time_arr["endfmt"].'\',\'hourview\',\'\');fnRemoveITSEvent();" class="drop_down">'.$actname.'</a></td></tr>';
 	}
-	echo '<tr><td><a href="javascript:gITSshow(\'createTodo\',\'todo\',\''.$temp_date."','".$temp_date."','".$time_arr["starthour"]."','".$time_arr["startmin"]."','".$time_arr["startfmt"]."','".$time_arr["endhour"]."','".$time_arr["endmin"]."','".$time_arr["endfmt"].'\',\'hourview\',\'\');fnRemoveITSEvent();" class="drop_down">'.$c_mod_strings['LBL_ADDTODO'].'</a></td></tr>';
 ?>
 </table>
 </div>
