@@ -305,6 +305,7 @@
 <picklistvalue>Call</picklistvalue>
 <picklistvalue>Meeting</picklistvalue>
 <picklistvalue>Emails</picklistvalue>
+<picklistvalue>Task</picklistvalue>
 </picklistvalues>
 </field>
 <field>
