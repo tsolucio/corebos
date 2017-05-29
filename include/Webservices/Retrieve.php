@@ -10,7 +10,10 @@
 
 	function vtws_retrieve($id, $user){
 		global $log,$adb;
-
+		list($wsid,$crmid) = explode('x', $id);
+		if ((vtws_getEntityId('Calendar')==$wsid or vtws_getEntityId('Events')==$wsid) and getSalesEntityType($crmid)=='cbCalendar') {
+			$id = vtws_getEntityId('cbCalendar') . 'x' . $crmid;
+		}
 		$webserviceObject = VtigerWebserviceObject::fromId($adb,$id);
 		$handlerPath = $webserviceObject->getHandlerPath();
 		$handlerClass = $webserviceObject->getHandlerClass();
