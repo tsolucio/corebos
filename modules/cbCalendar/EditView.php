@@ -36,6 +36,7 @@ if ($record and cbCalendar::getCalendarActivityType($record)=='Emails') {
 
 require_once 'modules/Vtiger/EditView.php';
 
+$value = array();
 if(isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 	$activitytype = cbCalendar::getCalendarActivityType($record);
 	$_REQUEST['activity_mode'] = $activitytype;
@@ -70,8 +71,6 @@ if(isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 		$invited_users[$userid]=$username;
 	}
 	$smarty->assign('INVITEDUSERS',$invited_users);
-	$userDetails = getOtherUserName($current_user->id);
-	$smarty->assign('USERSLIST',$userDetails);
 
 	$query = 'SELECT vtiger_recurringevents.*, vtiger_activity.date_start, vtiger_activity.time_start, vtiger_activity.due_date, vtiger_activity.time_end
 		FROM vtiger_recurringevents
@@ -109,9 +108,28 @@ if(isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 			$value['week'.$i] = '';
 		}
 	}
-	$smarty->assign("ACTIVITYDATA",$value);
-	$smarty->assign("LABEL",$fldlabel);
+} else {
+	$fldlabel['reminder_time'] = 'Send Reminder';
+	$fldlabel['recurringtype'] = 'Recurrence';
+	$smarty->assign('INVITEDUSERS',array());
+	$value['recurringcheck'] = 'No';
+	$value['repeatMonth'] = $value['repeatMonth_daytype'] = $value['repeatMonth_day'] = $value['repeat_frequency'] = $value['eventrecurringtype'] = $value['repeatMonth_date'] = '';
+	for ($i = 0; $i < 7; ++$i) {
+		$value['week'.$i] = '';
+	}
+	$default_calendar_reminder = GlobalVariable::getVariable('Calendar_Default_Reminder_Minutes', 0);
+	$rem_days = floor($default_calendar_reminder/(24*60));
+	$rem_hrs = floor(($default_calendar_reminder-$rem_days*24*60)/60);
+	$rem_min = ($default_calendar_reminder-$rem_days*24*60)%60;
+	$secondvalue = array('reminder_time'=>array('',getTranslatedString('LBL_YES'),getTranslatedString('LBL_NO')));
+	$value['reminder_time'] = array(array(0,32,'remdays',getTranslatedString('LBL_DAYS','Calendar'),$rem_days),array(0,24,'remhrs',getTranslatedString('LBL_HOURS','Calendar'),$rem_hrs),array(10,60,'remmin',getTranslatedString('LBL_MINUTES','Calendar').'&nbsp;&nbsp;'.getTranslatedString('LBL_BEFORE_EVENT','Calendar'),$rem_min));
+	$smarty->assign('secondvalue',$secondvalue);
+	$smarty->assign('thirdvalue',array());
 }
+$smarty->assign('ACTIVITYDATA',$value);
+$smarty->assign('LABEL',$fldlabel);
+$userDetails = getOtherUserName($current_user->id);
+$smarty->assign('USERSLIST',$userDetails);
 
 $smarty->assign("REPEAT_LIMIT_DATEFORMAT", parse_calendardate($app_strings['NTC_DATE_FORMAT']));
 $smarty->display('salesEditView.tpl');

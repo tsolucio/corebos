@@ -460,8 +460,16 @@ class cbCalendar extends CRMEntity {
 		$mail_data['user_id'] = $this->column_fields['assigned_user_id'];
 		$mail_data['subject'] = $this->column_fields['subject'];
 		$mail_data['status'] = $this->column_fields['eventstatus'];
-		//$mail_data['activity_mode'] = $this->column_fields['activity_mode'];
+		$mail_data['activity_mode'] = 'Events';
 		$mail_data['taskpriority'] = $this->column_fields['taskpriority'];
+		if (empty($this->column_fields['parent_name'])) {
+			if (empty($this->column_fields['rel_id'])) {
+				$this->column_fields['parent_name'] = '';
+			} else {
+				$relinfo = getEntityName(getSalesEntityType($this->column_fields['rel_id']), $this->column_fields['rel_id']);
+				$this->column_fields['parent_name'] = $relinfo[$this->column_fields['rel_id']];
+			}
+		}
 		$mail_data['relatedto'] = $this->column_fields['parent_name'];
 		$mail_data['contact_name'] = $cont_name;
 		$mail_data['description'] = $this->column_fields['description'];
