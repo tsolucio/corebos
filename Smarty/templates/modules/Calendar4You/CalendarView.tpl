@@ -174,29 +174,29 @@ jQuery(document).ready(function(){
 	var y = date.getFullYear();
 
     var config = {
-        
+
         fixedWeekCount :false,
         theme: true,
-        defaultView: '{/literal}{$DEFAULTVIEW}{literal}',     
+        defaultView: '{/literal}{$DEFAULTVIEW}{literal}',
         allDayText: {/literal}'{$MOD.LBL_ALL_DAY}'{literal},
-        
+
         weekends: {/literal}{$CALENDAR_SETTINGS.show_weekends}{literal},
-        minTime:  "{/literal}{$CALENDAR_SETTINGS.start_hour}{literal}",   
+        minTime:  "{/literal}{$CALENDAR_SETTINGS.start_hour}{literal}",
         maxTime:  "{/literal}{$CALENDAR_SETTINGS.end_hour}{literal}", 
         slotDuration: "{/literal}{$Calendar_Slot_Minutes}{literal}",
-        
+
         header: {
 			left: 'prev,next today ',
 			center: 'title',
 			right: 'agendaDay,agendaWeek,month'
 		},
 		editable: false,
-        
-        {/literal} 
-        
+
+        {/literal}
+
         {if $IS_24 eq "true"}
             timeFormat: 'H:mm',
-            slotLabelFormat: 'H(:mm)', 
+            slotLabelFormat: 'H(:mm)',
         {else}
             timeFormat: 'h:mma',
             slotLabelFormat: 'h(:mm)a',
@@ -217,8 +217,8 @@ jQuery(document).ready(function(){
             week: '{$CMOD.LBL_WEEK|escape}',
             day: '{$CMOD.LBL_DAY|escape}',
             list: '{$MOD.LBL_LIST|escape}'
-        {rdelim},     
-        
+        {rdelim},
+
         eventSources: [Calendar_Event_Types],
         {literal}
 		loading: function(bool) {
@@ -241,23 +241,19 @@ jQuery(document).ready(function(){
             {if $IS_24 eq "true"}
             starthr = date.format('HH');
             startfmt = '';
-            
             endhr = date.format('HH');
             endfmt =  '';
             {else}
             starthr = date.format('hh');
             startfmt = date.format('a');
-            
             endhr = date.format('hh');
             endfmt = date.format('a');
             {/if}
             startmin = date.format('mm');
             endmin = date.format('mm');
-            
             var viewOption = 'hourview';
             var subtab = '';
-           
-            var startdate = formated_date;  
+            var startdate = formated_date;
             var enddate = formated_date;
 
 			eventlist = new Array({$EVENTLIST});
@@ -356,7 +352,7 @@ jQuery(document).ready(function(){
                 jQuery(this).css('cursor', 'default');
             }
         },
-        
+
         eventDragStart: function( event, jsEvent, ui, view ) {
             hideITSEventInfo();
         },
@@ -381,11 +377,11 @@ jQuery(document).ready(function(){
                 revertFunc();
             }
         },
-        
+
         eventResizeStart: function( event, jsEvent, ui, view ) {
             hideITSEventInfo();
         },
-        
+
         eventResize: function(event,dayDelta,revertFunc) {
 
             if (confirm("{/literal}{$MOD.RESIZE_EVENT_QUESTION}{literal}")){
@@ -419,7 +415,7 @@ jQuery(document).ready(function(){
                     window.location.href = "index.php?action=EventDetailView&module=Calendar4You&record="+ event.id + "&activity_mode="+ event.activity_mode + "&parenttab={/literal}{$CATEGORY}{literal}";
                 }
             });
-        },     
+        },
  }
 
     jQuery('#calendar_div').fullCalendar(config);

@@ -344,24 +344,22 @@ public function setgoogleaccessparams($userid){
         }
         
         return $Colors;
-    } 
-    
+    }
+
     public function getEventColor($mode,$entity) {
         global $adb,$current_user;
-  
         $sql1 = "SELECT * FROM its4you_calendar4you_colors WHERE userid=? AND mode=? AND entity=?";
         $result1 = $adb->pquery($sql1, array($current_user->id, $mode, $entity));
         $num_rows1 = $adb->num_rows($result1);
-        
+        $Colors = array();
         if ($num_rows1 > 0) {
             while($row = $adb->fetchByAssoc($result1)) {
             	$Colors[$row['type']] = $row['color'];
             }
         }
-        
         return $Colors;
     }
-    
+
     public function getDayNumber($day) {
         switch($day) {
             case "Sunday": $dn = "0"; break;

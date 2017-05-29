@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ******************************************************************************* */
-
 require_once('Smarty_setup.php');
 require_once('include/database/PearDatabase.php');
 require_once('include/CustomFieldUtil.php');
@@ -49,7 +48,6 @@ $cftextcombo = Array($mod_strings['Text'],
 	$mod_strings['LBL_TEXT_AREA'],
 	$mod_strings['LBL_MULTISELECT_COMBO']
 );
-
 
 $smarty->assign("MODULES", $module_array);
 $smarty->assign("CFTEXTCOMBO", $cftextcombo);
