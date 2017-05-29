@@ -43,102 +43,41 @@ function fnShowITSButton(){
 }
 
 function gITSshow(argg1,type,startdate,enddate,starthr,startmin,startfmt,endhr,endmin,endfmt,viewOption,subtab,skipconvertendtime){
-	document.EditView.subject.value = '';
-	document.EditView.description.value = '';
-	document.EditView.location.value = '';
-	document.EditView.geventid.value = '';
-	document.EditView.gevent_type.value = '';
-	document.EditView.gevent_userid.value = '';
-	document.createTodo.task_subject.value = '';
-	document.createTodo.task_description.value = '';
-	document.createTodo.geventid.value = '';
-	document.createTodo.gevent_type.value = '';
-	document.createTodo.gevent_userid.value = '';
+	let url = 'index.php?action=EditView&module=cbCalendar&Module_Popup_Edit=1';
+	shr = parseInt(starthr,10);
 	smin = parseInt(startmin,10);
 	smin = smin - (smin%5);
-	var y=document.getElementById(argg1).style;
+	smin = _2digit(smin);
+	if (startfmt=='pm') shr = shr + 12;
+	shr = _2digit(shr);
+	ehr = parseInt(endhr,10);
+	emin = parseInt(endmin,10);
+	emin = emin - (emin%5);
+	if (endfmt=='pm') ehr = ehr + 12;
+	ehr = _2digit(ehr);
+	emin = _2digit(emin);
+	url = url + '&dtstart=' + startdate + ' ' + shr + ':' + smin;
+	url = url + '&dtend=' + enddate + ' ' + ehr + ':' + emin;
+	url = url + '&activitytype=' + type;
+	var w = window,
+	d = document,
+	e = d.documentElement,
+	g = d.getElementsByTagName('body')[0],
+	x = w.innerWidth || e.clientWidth || g.clientWidth,
+	y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+	window.open(url, null, "scrollbars=yes,resizable=yes,dependent=yes,width=" + (x-100), true);
+}
 
-	if(type != 'todo' && type!=''){
-		fieldname = new Array();
-		for(var i=0;;i++){
-			if( document.EditView.activitytype[i].value == type){
-				document.EditView.activitytype[i].selected='yes';
-				triggerOnChangeHandler(('activitytype'));
-				break;
-			}
-		}
-		smin = _2digit(smin);
-		document.EditView.date_start.value = startdate;
-		document.EditView.starthr.value = starthr;
-		document.EditView.startmin.value = smin;
-		document.EditView.startfmt.value = startfmt;
-		document.EditView.viewOption.value = viewOption;
-		document.EditView.subtab.value = subtab;
-		document.EditView.parent_id.value = "";
-		document.EditView.parent_name.value = "";
-		if(typeof(document.EditView.contactidlist) != 'undefined') {
-		document.EditView.contactidlist.value = "";
-		document.EditView.deletecntlist.value = "";
-
-		while (document.EditView.contactlist.options.length > 0){
-			document.EditView.contactlist.remove(0);
-		}
-		}
-		if (Calendar_Default_Reminder_Minutes>0) {
-			document.getElementById('set_reminder1').checked = true;
-			document.getElementById('set_reminder2').checked = false;
-			show('reminderOptions');
-		} else {
-			document.getElementById('set_reminder1').checked = false;
-			document.getElementById('set_reminder2').checked = true;
-			fnhide('reminderOptions');
-		}
-		document.EditView.recurringcheck.checked = false;
-		document.getElementById('repeatOptions').style.display="none";
-		while (document.EditView.selectedusers.options.length > 0){
-			document.EditView.selectedusers.remove(0);
-		}
-		if (skipconvertendtime == 'skip'){
-			ehr = parseInt(endhr,10);
-			emin = parseInt(endmin,10);
-			emin = emin - (emin%5);
-			ehr = _2digit(ehr);
-			emin = _2digit(emin);
-			document.EditView.due_date.value = enddate;
-			document.EditView.endhr.value = ehr;
-			document.EditView.endmin.value = emin;
-			document.EditView.endfmt.value = endfmt;
-			document.EditView.followup_date.value = enddate;
-			document.EditView.followup_starthr.value = ehr;
-			document.EditView.followup_startmin.value = emin;
-			document.EditView.followup_startfmt.value = endfmt;
-			document.EditView.calendar_repeat_limit_date.value = enddate;
-		} else {
-			calDuedatetime(type);
-		}
-	}
-	if(type == 'todo'){
-		fieldname = taskfieldname;
-		smin = _2digit(smin);
-		document.createTodo.task_date_start.value = startdate;
-		document.createTodo.task_due_date.value = enddate;
-		document.createTodo.starthr.value = starthr;
-		document.createTodo.startmin.value = smin;
-		document.createTodo.startfmt.value = startfmt;
-		document.createTodo.viewOption.value = viewOption;
-		document.createTodo.subtab.value = subtab;
-		document.createTodo.task_sendnotification.checked = false;
-		document.createTodo.task_parent_id.value = "";
-		document.createTodo.task_parent_name.value = "";
-		if(typeof(document.createTodo.task_contact_id) != 'undefined') {
-		document.createTodo.task_contact_id.value = "";
-		document.createTodo.task_contact_name.value = "";
-		document.createTodo.deletecntlist.value = "";
-		}
-	}
-	if (y.display=="none"){
-		y.display="block";
-	}
+function graphicalCalendarRefresh() {
+	jQuery('#calendar_div').fullCalendar( 'refetchEvents' );
+	VtigerJS_DialogBox.unblock();
+//	if (return_data[0] != "undefined" && return_data[1] != "undefined" && return_data[2] != "undefined"){
+//		var date=return_data[0]+'-'+return_data[1]+'-'+return_data[2];
+//		jQuery('#calendar_div').fullCalendar('gotoDate',date);
+//		alert(return_data[3]);
+//	} else {
+//		alert("error:"+data);
+//	}
 }
 
 function getITSCalSettings(){

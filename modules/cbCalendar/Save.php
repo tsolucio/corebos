@@ -7,5 +7,14 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
+
+$__cbSaveSendHeader = false;
 require_once('modules/Vtiger/Save.php');
+
+if (isset($_REQUEST['Module_Popup_Edit']) and $_REQUEST['Module_Popup_Edit']==1) {
+	echo "<script>if (typeof window.opener.graphicalCalendarRefresh == 'function') window.opener.graphicalCalendarRefresh();window.close();</script>";
+} else {
+	header('Location: index.php?' . $req->getReturnURL() . $search);
+}
+
 ?>
