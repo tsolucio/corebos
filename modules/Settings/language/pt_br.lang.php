@@ -104,17 +104,8 @@ $mod_strings = Array(
 'EDITQUOTEPICKLISTVALUES'=>'Edita Lista Opções Cotação',
 'EDITINVOICEPICKLISTVALUES'=>'Edita Lista Opções Fatura',
 
-
-// Added for Release vtigerCRM 3.2 PATCH 1.0
-
 //Settings/index.php
-
-
 'LBL_PICKLIST_FIELD_SETTINGS'=>'Configurações Campos Lista de Opções:',
-
-
-
-//SETTINGS/CustomFieldList.php,ComboFieldList.php,CreateCustomField.php
 
 'Leads'=>'Lead',
 

@@ -82,13 +82,10 @@ $mod_strings = Array(
 'EDITQUOTEPICKLISTVALUES'=>'Verander offerte selectielijst',
 'EDITINVOICEPICKLISTVALUES'=>'Verander factuur selectielijst',
 
-// Added for Release vtigerCRM 3.2 PATCH 1.0
-
 //Settings/index.php
 
 'LBL_PICKLIST_FIELD_SETTINGS'=>'Selectie veld instellingen:',
 
-//SETTINGS/CustomFieldList.php,ComboFieldList.php,CreateCustomField.php
 'Leads'=>'Lead',
 'Accounts'=>'Accounts',
 'Contacts'=>'Contacten',

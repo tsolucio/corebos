@@ -215,7 +215,6 @@ if(isset($action) && isset($module))
 		preg_match("/^downloadfile/", $action) ||
 		preg_match("/^massdelete/", $action) ||
 		preg_match("/^updateLeadDBStatus/",$action) ||
-		preg_match("/^AddCustomFieldToDB/", $action) ||
 		preg_match("/^updateRole/",$action) ||
 		preg_match("/^UserInfoUtil/",$action) ||
 		preg_match("/^deleteRole/",$action) ||
