@@ -166,16 +166,18 @@ function getActTypesForCalendar() {
 			$roleids = $roleid;
 		}
 
-		$q = 'select distinct activitytypeid, activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where  activitytype!=? and roleid';
+		$q = 'select activitytypeid, activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where  activitytype!=? and roleid';
 		$q.= ' in ('. generateQuestionMarks($roleids) .') and picklistid in (select picklistid from vtiger_picklist) order by sortid asc';
-		$params = array('Emails') + $roleids;
+		$params = array_merge(array('Emails') , (is_array($roleids) ? $roleids : array($roleids)));
 	}
 	$Res = $adb->pquery($q,$params);
 	$noofrows = $adb->num_rows($Res);
-
+	$previousValue = '';
 	for($i = 0; $i < $noofrows; $i++) {
-		$id = $adb->query_result($Res,$i,"activitytypeid");
 		$value = $adb->query_result($Res,$i,"activitytype");
+		if ($previousValue == $value) continue;
+		$previousValue = $value;
+		$id = $adb->query_result($Res,$i,"activitytypeid");
 		$ActTypes[$id] = $value;
 	}
 
@@ -523,16 +525,18 @@ function getITSActFieldCombo($fieldname,$tablename,$from_module = '',$follow_act
 			$roleids = $roleid;
 		}
 		if (count($roleids) > 1) {
-			$q="select distinct $fieldname from  $tablename inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = $tablename.picklist_valueid where roleid in (\"". implode($roleids,"\",\"") ."\") and picklistid in (select picklistid from $tablename) order by sortid asc";
+			$q="select $fieldname from  $tablename inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = $tablename.picklist_valueid where roleid in (\"". implode($roleids,"\",\"") ."\") and picklistid in (select picklistid from $tablename) order by sortid asc";
 		} else {
-			$q="select distinct $fieldname from $tablename inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = $tablename.picklist_valueid where roleid ='".$roleid."' and picklistid in (select picklistid from $tablename) order by sortid asc";
+			$q="select $fieldname from $tablename inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = $tablename.picklist_valueid where roleid ='".$roleid."' and picklistid in (select picklistid from $tablename) order by sortid asc";
 		}
 	}
 	$Res = $adb->query($q);
 	$noofrows = $adb->num_rows($Res);
-
+	$previousValue = '';
 	for($i = 0; $i < $noofrows; $i++) {
 		$value = $adb->query_result($Res,$i,$fieldname);
+		if ($previousValue == $value) continue;
+		$previousValue = $value;
 		$value = html_entity_decode($value,ENT_QUOTES,$default_charset);
 		$label = getTranslatedString($value,'Calendar');
 		if ($value == $def) $selected = " selected"; else $selected = "";
@@ -599,6 +603,7 @@ function getAllModulesWithDateFields() {
 			$params = array($profileList);
 		}
 	}
+	$sqlmods .= " and vtiger_tab.name not in ('cbCalendar','Calendar','Events')";
 	$rsmwd = $adb->pquery($sqlmods,$params);
 	$modswithdates = array();
 	while ($mod = $adb->fetch_array($rsmwd)) {
@@ -647,6 +652,7 @@ function getAllModulesWithDateTimeFields() {
 			$params = array($profileList);
 		}
 	}
+	$sqlmods .= " and vtiger_tab.name not in ('cbCalendar','Calendar','Events')";
 	$rsmwd = $adb->pquery($sqlmods,$params);
 	$modswithdt = array();
 	while ($mod = $adb->fetch_array($rsmwd)) {

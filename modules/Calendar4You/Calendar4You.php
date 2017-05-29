@@ -484,34 +484,33 @@ public function setgoogleaccessparams($userid){
     		} else {	
     			$roleids = $roleid;
     		}
-    
-    		if (count($roleids) > 1) {
-    			$q="select distinct $fieldname, picklist_valueid from  $tablename inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = $tablename.picklist_valueid where roleid in (\"". implode($roleids,"\",\"") ."\") and picklistid in (select picklistid from $tablename) order by sortid asc";
-    		} else {
-    			$q="select distinct $fieldname, picklist_valueid from $tablename inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = $tablename.picklist_valueid where roleid ='".$roleid."' and picklistid in (select picklistid from $tablename) order by sortid asc";
-    		}
-    	}
-        
-    	$Res = $adb->query($q);
-    	$noofrows = $adb->num_rows($Res);
-    
-    	for($i = 0; $i < $noofrows; $i++) {
-    		$checked = true;
-            $valueid = $adb->query_result($Res,$i,"picklist_valueid");
-            $value = $adb->query_result($Res,$i,$fieldname);
-            $value = html_entity_decode($value,ENT_QUOTES,$default_charset);
-            $label = getTranslatedString($value,'Calendar');
-            
-            if ($type != "" || $load_ch ) {
-                if (!empty($this->View[$type][$valueid])) 
-                    $checked = false; 
-            }
-            
-            $Data[$value] = array("id"=>$valueid,"value"=>$value,"label"=>$label,"checked"=>$checked);
-    	}
-    
-    	return $Data;
-    }
+
+			if (count($roleids) > 1) {
+				$q="select $fieldname, picklist_valueid from  $tablename inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = $tablename.picklist_valueid where roleid in (\"". implode($roleids,"\",\"") ."\") and picklistid in (select picklistid from $tablename) order by sortid asc";
+			} else {
+				$q="select $fieldname, picklist_valueid from $tablename inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = $tablename.picklist_valueid where roleid ='".$roleid."' and picklistid in (select picklistid from $tablename) order by sortid asc";
+			}
+		}
+
+		$Res = $adb->query($q);
+		$noofrows = $adb->num_rows($Res);
+		$previousValue = '';
+		for ($i = 0; $i < $noofrows; $i++) {
+			$value = $adb->query_result($Res,$i,$fieldname);
+			if ($previousValue == $value) continue;
+			$previousValue = $value;
+			$value = html_entity_decode($value,ENT_QUOTES,$default_charset);
+			$checked = true;
+			$valueid = $adb->query_result($Res,$i,"picklist_valueid");
+			$label = getTranslatedString($value,'Calendar');
+			if ($type != "" || $load_ch ) {
+				if (!empty($this->View[$type][$valueid]))
+					$checked = false;
+			}
+			$Data[$value] = array("id"=>$valueid,"value"=>$value,"label"=>$label,"checked"=>$checked);
+		}
+		return $Data;
+	}
 
 	//Function Call for Related List -- Start
 	/**

@@ -724,15 +724,17 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 		}
 
 		if (count($roleids) > 1) {
-			$Res=$adb->pquery("select distinct activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where activitytype!=? and roleid in (". generateQuestionMarks($roleids) .") and picklistid in (select picklistid from vtiger_picklist) order by sortid asc",array('Emails',$roleids));
+			$Res=$adb->pquery("select activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where activitytype!=? and roleid in (". generateQuestionMarks($roleids) .") and picklistid in (select picklistid from vtiger_picklist) order by sortid asc",array('Emails',$roleids));
 		} else {
-			$Res=$adb->pquery("select distinct activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where activitytype!=? and roleid = ? and picklistid in (select picklistid from vtiger_picklist) order by sortid asc",array('Emails',$role_id));
+			$Res=$adb->pquery("select activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where activitytype!=? and roleid = ? and picklistid in (select picklistid from vtiger_picklist) order by sortid asc",array('Emails',$role_id));
 		}
 	}
 	$eventlist='';
-	for($i=0; $i<$adb->num_rows($Res);$i++)
-	{
+	$previousValue = '';
+	for ($i=0; $i<$adb->num_rows($Res);$i++) {
 		$eventlist = $adb->query_result($Res,$i,'activitytype');
+		if ($previousValue == $eventlist) continue;
+		$previousValue = $eventlist;
 		$eventlist = html_entity_decode($eventlist,ENT_QUOTES,$default_charset);
 		$actname = getTranslatedString($eventlist,'Calendar');
 ?>
@@ -762,9 +764,11 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 	$time_arr = getaddITSEventPopupTime($hour_startat,$hour_endat,$Calendar_Settings["hour_format"]);
 	$tdate = new DateTimeField(null);
 	$temp_date = $tdate->getDisplayDate();
-	for($i=0; $i<$adb->num_rows($Res);$i++)
-	{
+	$previousValue = '';
+	for ($i=0; $i<$adb->num_rows($Res);$i++) {
 		$eventlist = $adb->query_result($Res,$i,'activitytype');
+		if ($previousValue == $eventlist) continue;
+		$previousValue = $eventlist;
 		$eventlist = html_entity_decode($eventlist,ENT_QUOTES,$default_charset);
 		$actname = getTranslatedString($eventlist,'Calendar');
 		echo '<tr><td><a href="javascript:gITSshow(\'addITSEvent\',\''.$eventlist."','".$temp_date."','".$temp_date."','".$time_arr["starthour"]."','".$time_arr["startmin"]."','".$time_arr["startfmt"]."','".$time_arr["endhour"]."','".$time_arr["endmin"]."','".$time_arr["endfmt"].'\',\'hourview\',\'\');fnRemoveITSEvent();" class="drop_down">'.$actname.'</a></td></tr>';
