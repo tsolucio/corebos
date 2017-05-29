@@ -151,12 +151,12 @@ function getActTypeForCalendar($activitytypeid, $translate = true) {
 
 function getActTypesForCalendar() {
 	global $adb,$mod_strings,$current_user;
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 
-	$ActTypes = array();
-	if($is_admin)
-		$q = "select * from vtiger_activitytype";
-	else {
+	$ActTypes = $params = array();
+	if (is_admin($current_user)) {
+		$q = 'select * from vtiger_activitytype where activitytype!=?';
+		$params = array('Emails');
+	} else {
 		$roleid=$current_user->roleid;
 		$subrole = getRoleSubordinates($roleid);
 		if(count($subrole)> 0) {
@@ -166,15 +166,11 @@ function getActTypesForCalendar() {
 			$roleids = $roleid;
 		}
 
-		$q = "select distinct activitytypeid, activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where roleid";
-
-		if (count($roleids) > 1) {
-			$q .= " in (\"". implode($roleids,"\",\"") ."\") and picklistid in (select picklistid from vtiger_picklist) order by sortid asc";
-		} else {
-			$q .= " ='".$roleid."' and picklistid in (select picklistid from vtiger_picklist) order by sortid asc";
-		}
+		$q = 'select distinct activitytypeid, activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where  activitytype!=? and roleid';
+		$q.= ' in ('. generateQuestionMarks($roleids) .') and picklistid in (select picklistid from vtiger_picklist) order by sortid asc';
+		$params = array('Emails') + $roleids;
 	}
-	$Res = $adb->query($q);
+	$Res = $adb->pquery($q,$params);
 	$noofrows = $adb->num_rows($Res);
 
 	for($i = 0; $i < $noofrows; $i++) {
