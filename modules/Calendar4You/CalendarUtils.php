@@ -8,6 +8,7 @@
  ********************************************************************************/
 
 function getaddITSEventPopupTime($starttime,$endtime,$format) {
+	if (empty($format)) $format = '24';
 	$timearr = Array();
 	list($sthr,$stmin) = explode(":",$starttime);
 	list($edhr,$edmin)  = explode(":",$endtime);
