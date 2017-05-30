@@ -34,6 +34,20 @@ if ($record and cbCalendar::getCalendarActivityType($record)=='Emails') {
 	include 'modules/Emails/EditView.php';
 } else {
 
+if (empty($record)) {
+	if (empty($_REQUEST['dtend'])) {
+		if (isset($_REQUEST['activitytype'])) {
+			if ($_REQUEST['activitytype']=='Call') {
+				$duration = GlobalVariable::getVariable('Calendar_call_default_duration', 5, 'Calendar4You');
+			} else {
+				$duration = GlobalVariable::getVariable('Calendar_other_default_duration', 1, 'Calendar4You') * 60;
+			}
+			$date = new DateTimeField(date('Y-m-d H:i:s',mktime(date('H'),date('i')+$duration)));
+			$_REQUEST['dtend'] = substr($date->getDisplayDateTimeValue(),0,16);
+		}
+	}
+}
+
 require_once 'modules/Vtiger/EditView.php';
 
 $value = array();
@@ -109,19 +123,19 @@ if(isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 		}
 	}
 } else {
-	$fldlabel['reminder_time'] = 'Send Reminder';
-	$fldlabel['recurringtype'] = 'Recurrence';
+	$fldlabel['reminder_time'] = getTranslatedString('Send Reminder');
+	$fldlabel['recurringtype'] = getTranslatedString('Recurrence');
 	$smarty->assign('INVITEDUSERS',array());
 	$value['recurringcheck'] = 'No';
 	$value['repeatMonth'] = $value['repeatMonth_daytype'] = $value['repeatMonth_day'] = $value['repeat_frequency'] = $value['eventrecurringtype'] = $value['repeatMonth_date'] = '';
 	for ($i = 0; $i < 7; ++$i) {
 		$value['week'.$i] = '';
 	}
-	$default_calendar_reminder = GlobalVariable::getVariable('Calendar_Default_Reminder_Minutes', 0);
+	$default_calendar_reminder = GlobalVariable::getVariable('Calendar_Default_Reminder_Minutes', 0, 'Calendar4You');
 	$rem_days = floor($default_calendar_reminder/(24*60));
 	$rem_hrs = floor(($default_calendar_reminder-$rem_days*24*60)/60);
 	$rem_min = ($default_calendar_reminder-$rem_days*24*60)%60;
-	$secondvalue = array('reminder_time'=>array('',getTranslatedString('LBL_YES'),getTranslatedString('LBL_NO')));
+	$secondvalue = array('reminder_time'=>array(($default_calendar_reminder>0 ? 'CHECKED' : ''),getTranslatedString('LBL_YES'),getTranslatedString('LBL_NO')));
 	$value['reminder_time'] = array(array(0,32,'remdays',getTranslatedString('LBL_DAYS','Calendar'),$rem_days),array(0,24,'remhrs',getTranslatedString('LBL_HOURS','Calendar'),$rem_hrs),array(10,60,'remmin',getTranslatedString('LBL_MINUTES','Calendar').'&nbsp;&nbsp;'.getTranslatedString('LBL_BEFORE_EVENT','Calendar'),$rem_min));
 	$smarty->assign('secondvalue',$secondvalue);
 	$smarty->assign('thirdvalue',array());
