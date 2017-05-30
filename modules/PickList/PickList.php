@@ -14,22 +14,11 @@ require_once 'modules/PickList/PickListUtils.php';
 
 global $app_strings, $current_language, $currentModule, $theme, $current_user;
 
-if(!is_admin($current_user)) {
-	echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
-	echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
-			<table border='0' cellpadding='5' cellspacing='0' width='98%'>
-				<tr>
-					<td rowspan='2' width='11%'><img src='". vtiger_imageurl('denied.gif', $theme) . "' ></td>
-					<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span class='genHeaderSmall'>".$app_strings['LBL_PERMISSION']."</span></td>
-				</tr>
-				<tr>
-					<td class='small' align='right' nowrap='nowrap'>
-						<a href='javascript:window.history.back();'>".$app_strings['LBL_GO_BACK']."</a><br>
-					</td>
-				</tr>
-			</table>
-		</div>
-	</td></tr></table>";
+$smarty = new vtigerCRM_Smarty;
+$smarty->assign("APP", $app_strings);
+
+if (!is_admin($current_user)) {
+	$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
 	die;
 }
 
@@ -46,8 +35,6 @@ if(!empty($_REQUEST['roleid'])) {
 }else {
 	$roleid = 'H2';		//set default to CEO
 }
-
-$smarty = new vtigerCRM_Smarty;
 
 if($fld_module == 'Events') {
 	$temp_module_strings = return_module_language($current_language, 'Calendar');
@@ -74,7 +61,6 @@ $smarty->assign("MODULE_LISTS",$mods);
 $smarty->assign("ROLE_LISTS",getrole2picklist());
 $smarty->assign("ALL_LISTS",$available_module_picklist);
 
-$smarty->assign("APP", $app_strings);		//the include language files
 $smarty->assign("MOD", return_module_language($current_language,'Settings'));	//the settings module language file
 $smarty->assign("MOD_PICKLIST", return_module_language($current_language,'PickList'));	//the picklist module language files
 $smarty->assign("TEMP_MOD", $temp_module_strings);	//the selected modules' language file

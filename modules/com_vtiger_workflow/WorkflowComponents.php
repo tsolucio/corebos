@@ -39,12 +39,12 @@ function vtJsonRelatedModules($adb, $request) {
 
 function vtJsonDependentModules($adb, $request) {
 	$moduleName = $request['modulename'];
-	$result = $adb->pquery("SELECT fieldname, tabid, typeofdata, vtiger_ws_referencetype.type as reference_module FROM vtiger_field
-									INNER JOIN vtiger_ws_fieldtype ON vtiger_field.uitype = vtiger_ws_fieldtype.uitype
-									INNER JOIN vtiger_ws_referencetype ON vtiger_ws_fieldtype.fieldtypeid = vtiger_ws_referencetype.fieldtypeid
+	$result = $adb->pquery('SELECT fieldname, tabid, typeofdata, vtiger_ws_referencetype.type as reference_module FROM vtiger_field
+								INNER JOIN vtiger_ws_fieldtype ON vtiger_field.uitype = vtiger_ws_fieldtype.uitype
+								INNER JOIN vtiger_ws_referencetype ON vtiger_ws_fieldtype.fieldtypeid = vtiger_ws_referencetype.fieldtypeid
 							UNION
 							SELECT fieldname, tabid, typeofdata, relmodule as reference_module FROM vtiger_field
-									INNER JOIN vtiger_fieldmodulerel ON vtiger_field.fieldid = vtiger_fieldmodulerel.fieldid", array());
+								INNER JOIN vtiger_fieldmodulerel ON vtiger_field.fieldid = vtiger_fieldmodulerel.fieldid', array());
 	$noOfFields = $adb->num_rows($result);
 	$dependentFields = array();
 	// List of modules which will not be supported by 'Create Entity' workflow task
@@ -69,6 +69,7 @@ function vtJsonDependentModules($adb, $request) {
 		}
 	}
 	foreach ($skipFieldsList as $tabModuleName => $fieldInfo) {
+		if (!isset($dependentFields[$tabModuleName])) continue;
 		$dependentFieldInfo = $dependentFields[$tabModuleName];
 		if ($dependentFieldInfo['fieldname'] != $fieldInfo['fieldname']) {
 			unset($dependentFields[$tabModuleName]);
@@ -88,7 +89,6 @@ function vtJsonOwnersList($adb) {
 	foreach ($allGroupsList as $groupId => $groupName) {
 		$ownersList[] = array('label' => $groupName, 'value' => $groupName, 'id' => $groupId);
 	}
-
 	echo json_encode($ownersList);
 }
 
