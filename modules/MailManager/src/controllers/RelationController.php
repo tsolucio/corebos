@@ -19,10 +19,10 @@ require_once dirname(__FILE__) . '/RelationControllerAction.php';
  */
 class MailManager_RelationController extends MailManager_Controller {
 
-    /**
-     * Used to check the MailBox connection
-     * @var Boolean
-     */
+	/**
+	* Used to check the MailBox connection
+	* @var Boolean
+	*/
 	protected $skipConnection = false;
 
 	/** To avoid working with mailbox */
@@ -31,20 +31,20 @@ class MailManager_RelationController extends MailManager_Controller {
 		return parent::getMailboxModel();
 	}
 
-    /**
-     * List of modules used to match the Email address
-     * @var Array
-     */
+	/**
+	* List of modules used to match the Email address
+	* @var Array
+	*/
 	static $MODULES = array ( 'Contacts', 'Accounts', 'Leads', 'HelpDesk', 'Project', 'Potentials', 'ProjectTask');
 
-    /**
-     * Process the request to perform relationship operations
-     * @global Users Instance $current_user
-     * @global PearDataBase Instance $adb
-     * @global String $currentModule
-     * @param MailManager_Request $request
-     * @return boolean
-     */
+	/**
+	* Process the request to perform relationship operations
+	* @global Users Instance $current_user
+	* @global PearDataBase Instance $adb
+	* @global String $currentModule
+	* @param MailManager_Request $request
+	* @return boolean
+	*/
 	function process(MailManager_Request $request) {
 		global $current_user, $adb;
 		$response = new MailManager_Response(true);
@@ -105,11 +105,10 @@ class MailManager_RelationController extends MailManager_Controller {
 			$viewer->assign('MSGNO', $request->get('_msgno'));
 			$viewer->assign('FOLDER', $foldername);
 			$response->setResult( array( 'ui' => $viewer->fetch( $this->getModuleTpl('Relationship.tpl') ) ) );
-		
 		} else if ('create_wizard' == $request->getOperationArg()) {
 			global $currentModule;
 			$moduleName = $request->get('_mlinktotype');
-			$parent =  $request->get('_mlinkto');
+			$parent = $request->get('_mlinkto');
 			$foldername = $request->get('_folder');
 
 			$connector = $this->getConnector($foldername);
@@ -120,9 +119,7 @@ class MailManager_RelationController extends MailManager_Controller {
 			$data = split_validationdataArray($validationData);
 
 			$qcreate_array['form'] = $this->processFormData($qcreate_array['form'], $mail);
-			
 			$viewer->assign("QUICKCREATE", $qcreate_array['form']);
-			
 			if($moduleName == 'Calendar')
 				$viewer->assign("QCMODULE", getTranslatedString('Todo', 'Calendar'));
 			elseif($moduleName == "HelpDesk")
@@ -140,10 +137,9 @@ class MailManager_RelationController extends MailManager_Controller {
 			$viewer->assign('MASS_EDIT','0');
 			$viewer->display( $this->getModuleTpl('Relationship.CreateWizard.tpl') );
 			$response = false;
-		
 		} else if ('create' == $request->getOperationArg()) {
 			$linkModule = $request->get('_mlinktotype');
-			$parent =  $request->get('_mlinkto');
+			$parent = $request->get('_mlinkto');
 
 			$focus = CRMEntity::getInstance($linkModule);
 
@@ -163,64 +159,67 @@ class MailManager_RelationController extends MailManager_Controller {
 
 			$foldername = $request->get('_folder');
 
-            if(!empty($foldername)) {
-                // This is to handle larger uploads
-                $memory_limit = ConfigPrefs::get('MEMORY_LIMIT');
-                ini_set('memory_limit', $memory_limit);
+			if(!empty($foldername)) {
+				// This is to handle larger uploads
+				$memory_limit = ConfigPrefs::get('MEMORY_LIMIT');
+				ini_set('memory_limit', $memory_limit);
 
-                $connector = $this->getConnector($foldername);
-                $mail = $connector->openMail($request->get('_msgno'));
-                $attachments = $mail->attachments(); // Initialize attachments
-            }
-            
+				$connector = $this->getConnector($foldername);
+				$mail = $connector->openMail($request->get('_msgno'));
+				$attachments = $mail->attachments(); // Initialize attachments
+			}
+
 			$linkedto = MailManager_RelationControllerAction::getSalesEntityInfo($parent);
-            
+
 			switch ($linkModule) {
-				case 'Calendar' :   if (empty($focus->column_fields['activitytype'])) {
-                                        $focus->column_fields['activitytype'] = 'Task';
-                                    }
+				case 'Calendar' :
+					if (empty($focus->column_fields['activitytype'])) {
+						$focus->column_fields['activitytype'] = 'Task';
+					}
 
-                                    if (empty($focus->column_fields['due_date'])) {
-                                        if(!empty($focus->column_fields['date_start'])) {
-                                            $dateStart = getValidDBInsertDateValue($focus->column_fields['date_start']);
-                                            $focus->column_fields['due_date'] = date("Y-m-d", strtotime(date("Y-m-d", strtotime($dateStart)) . " +1 day"));
-                                        } else {
-                                            $focus->column_fields['due_date'] = date('Y-m-d', strtotime("+1 day"));
-                                        }
-                                    }
-                                    if(!empty($parent)) {
-                                        if($linkedto['module'] == 'Contacts') {
-                                            $focus->column_fields['contact_id'] = $parent;
-                                        } else {
-                                            $focus->column_fields['parent_id'] = $parent;
-                                        }
-                                    }
-                                    break;
+					if (empty($focus->column_fields['due_date'])) {
+						if(!empty($focus->column_fields['date_start'])) {
+							$dateStart = getValidDBInsertDateValue($focus->column_fields['date_start']);
+							$focus->column_fields['due_date'] = date("Y-m-d", strtotime(date("Y-m-d", strtotime($dateStart)) . " +1 day"));
+						} else {
+							$focus->column_fields['due_date'] = date('Y-m-d', strtotime("+1 day"));
+						}
+					}
+					if(!empty($parent)) {
+						if($linkedto['module'] == 'Contacts') {
+							$focus->column_fields['contact_id'] = $parent;
+						} else {
+							$focus->column_fields['parent_id'] = $parent;
+						}
+					}
+					break;
 
-				case 'HelpDesk' :   $from = $mail->from();
-                                    $focus->column_fields['parent_id'] = $this->setParentForHelpDesk($parent, $from);
-                                    break;
+				case 'HelpDesk' :
+					$from = $mail->from();
+					$focus->column_fields['parent_id'] = $this->setParentForHelpDesk($parent, $from);
+					break;
 
-                case 'ModComments': $focus->column_fields['assigned_user_id'] = $current_user->id;
-                                    $focus->column_fields['creator'] = $current_user->id;
-                                    $focus->column_fields['related_to'] = $parent;
-                                    break;
+				case 'ModComments':
+					$focus->column_fields['assigned_user_id'] = $current_user->id;
+					$focus->column_fields['creator'] = $current_user->id;
+					$focus->column_fields['related_to'] = $parent;
+					break;
 			}
 
 			try {
 				$focus->save($linkModule);
 
-                // This condition is added so that emails are not created for Todo without Parent,
-                // as there is no way to relate them
+				// This condition is added so that emails are not created for Todo without Parent,
+				// as there is no way to relate them
 				if(empty($parent) && $linkModule != 'Calendar') {
 					$linkedto = MailManager_RelationControllerAction::associate($mail, $focus->id);
 				}
 
-                // add attachments to the tickets as Documents
-                if(in_array($linkModule,array('HelpDesk','Potentials','Project','ProjectTask')) && !empty($attachments)) {
-                    $relationController = new MailManager_RelationControllerAction();
-                    $relationController->__SaveAttachements($mail, $linkModule, $focus);
-                }
+				// add attachments to the tickets as Documents
+				if(in_array($linkModule,array('HelpDesk','Potentials','Project','ProjectTask')) && !empty($attachments)) {
+					$relationController = new MailManager_RelationControllerAction();
+					$relationController->__SaveAttachements($mail, $linkModule, $focus);
+				}
 
 				$viewer->assign('MSGNO', $request->get('_msgno'));
 				$viewer->assign('LINKEDTO', $linkedto);
@@ -232,7 +231,6 @@ class MailManager_RelationController extends MailManager_Controller {
 			} catch(Exception $e) {
 				$response->setResult( array( 'ui' => '', 'error' => $e ));
 			}
-			
 		} else if ('savedraft' == $request->getOperationArg()) {
 			$connector = $this->getConnector('__vt_drafts');
 			$draftResponse = $connector->saveDraft($request);
@@ -242,23 +240,23 @@ class MailManager_RelationController extends MailManager_Controller {
 			$uploadResponse = $connector->saveAttachment($request);
 			$response->setResult($uploadResponse);
 		} else if ('commentwidget' == $request->getOperationArg()) {
-            $viewer->assign('LINKMODULE', $request->get('_mlinktotype'));
-            $viewer->assign('PARENT', $request->get('_mlinkto'));
-            $viewer->assign('MSGNO', $request->get('_msgno'));
-            $viewer->assign('FOLDER', $request->get('_folder'));
-            $viewer->display( $this->getModuleTpl('MailManager.CommentWidget.tpl') );
+			$viewer->assign('LINKMODULE', $request->get('_mlinktotype'));
+			$viewer->assign('PARENT', $request->get('_mlinkto'));
+			$viewer->assign('MSGNO', $request->get('_msgno'));
+			$viewer->assign('FOLDER', $request->get('_folder'));
+			$viewer->display( $this->getModuleTpl('MailManager.CommentWidget.tpl') );
 			$response = false;
-        }
+		}
 		return $response;
 	}
 
-    /**
-     * Returns the Parent for Tickets module
-     * @global Users Instance $current_user
-     * @param Integer $parent - crmid of Parent
-     * @param Email Address $from - Email Address of the received mail
-     * @return Integer - Parent(crmid)
-     */
+	/**
+	* Returns the Parent for Tickets module
+	* @global Users Instance $current_user
+	* @param Integer $parent - crmid of Parent
+	* @param Email Address $from - Email Address of the received mail
+	* @return Integer - Parent(crmid)
+	*/
 	public function setParentForHelpDesk($parent, $from) {
 		global $current_user;
 		if(empty($parent)) {
@@ -275,25 +273,23 @@ class MailManager_RelationController extends MailManager_Controller {
 	}
 
 
-    /**
-     * Function used to set the record fields with the information from mail.
-     * @param Array $qcreate_array
-     * @param MailManager_Model_Message $mail
-     * @return Array
-     */
-	 function processFormData($qcreate_array, $mail) {
+	/**
+	* Function used to set the record fields with the information from mail.
+	* @param Array $qcreate_array
+	* @param MailManager_Model_Message $mail
+	* @return Array
+	*/
+	function processFormData($qcreate_array, $mail) {
 		$subject = $mail->subject();
 		$from = $mail->from();
-		
 		if(!empty($from)) $mail_fromAddress = implode(',', $from);
 		if(!empty($mail_fromAddress)) $name = explode('@', $mail_fromAddress);
 		if(!empty($name[1])) $companyName = explode('.', $name[1]);
-		
-		$defaultFieldValueMap =  array( 'lastname'	=>	$name[0],
+		$defaultFieldValueMap = array( 'lastname'	=>	$name[0],
 				'email'			=>	$mail_fromAddress,
 				'email1'		=>	$mail_fromAddress,
 				'accountname'	=> $companyName[0],
-				'company'		=> $companyName[0], 
+				'company'		=> $companyName[0],
 				'ticket_title'	=> $subject,
 				'subject'		=> $subject,
 				'potentialname'	=> $subject,
@@ -301,7 +297,6 @@ class MailManager_RelationController extends MailManager_Controller {
 				'projecttaskname' => $subject,
 		);
 		$defaultFieldValueMapKeys = array_keys($defaultFieldValueMap);
-		
 		foreach($qcreate_array as $qc_array) {
 			$new_qc_array = array();
 			foreach($qc_array as $q_array) {
@@ -317,42 +312,40 @@ class MailManager_RelationController extends MailManager_Controller {
 			$new_qcreate_array[] = $new_qc_array;
 		}
 		return $new_qcreate_array;
-	 }
+	}
 
-     /**
-      * Returns the available List of accessible modules for Mail Manager
-      * @return Array
-      */
-	 public function getCurrentUserMailManagerAllowedModules() {
-		 $moduleListForCreateRecordFromMail = array('Contacts', 'Accounts', 'Leads', 'HelpDesk', 'Calendar','Potentials','Project','ProjectTask');
-		 
-		 foreach($moduleListForCreateRecordFromMail as $module) {
+	/**
+	* Returns the available List of accessible modules for Mail Manager
+	* @return Array
+	*/
+	public function getCurrentUserMailManagerAllowedModules() {
+		$moduleListForCreateRecordFromMail = array('Contacts', 'Accounts', 'Leads', 'HelpDesk', 'Calendar','Potentials','Project','ProjectTask');
+		foreach ($moduleListForCreateRecordFromMail as $module) {
 			if(MailManager::checkModuleWriteAccessForCurrentUser($module)) {
 				$mailManagerAllowedModules[] = $module;
 			}
-		 }
-		 return $mailManagerAllowedModules;
-	 }
+		}
+		return $mailManagerAllowedModules;
+	}
 
-     /**
-      * Returns the list of accessible modules on which Actions(Relationship) can be taken.
-      * @return string 
-      */
-	 public function linkToAvailableActions() {
-		 $moduleListForLinkTo = array('Calendar','HelpDesk','ModComments','Emails','Potentials','Project','ProjectTask');
-		 
-		 foreach($moduleListForLinkTo as $module) {
-			 if(MailManager::checkModuleWriteAccessForCurrentUser($module)) {
-				 $mailManagerAllowedModules[] = $module;
-			 }
-		 }
-		 return $mailManagerAllowedModules;
-	 }
-	 
+	/**
+	* Returns the list of accessible modules on which Actions(Relationship) can be taken.
+	* @return string
+	*/
+	public function linkToAvailableActions() {
+		$moduleListForLinkTo = array('Calendar','HelpDesk','ModComments','Emails','Potentials','Project','ProjectTask');
+		foreach ($moduleListForLinkTo as $module) {
+			if(MailManager::checkModuleWriteAccessForCurrentUser($module)) {
+				$mailManagerAllowedModules[] = $module;
+			}
+		}
+		return $mailManagerAllowedModules;
+	}
+
 	/**
 	 * Helper function to scan for relations
 	 */
-	protected $wsDescribeCache = array();	
+	protected $wsDescribeCache = array();
 	function ws_describe($module) {
 		global $current_user;
 		if (!isset($this->wsDescribeCache[$module])) {
@@ -361,13 +354,13 @@ class MailManager_RelationController extends MailManager_Controller {
 		return $this->wsDescribeCache[$module];
 	}
 
-    /**
-     * Funtion used to build Web services query
-     * @param String $module - Name of the module
-     * @param String $text - Search String
-     * @param String $type - Tyoe of fields Phone, Email etc
-     * @return String
-     */
+	/**
+	* Funtion used to build Web services query
+	* @param String $module - Name of the module
+	* @param String $text - Search String
+	* @param String $type - Tyoe of fields Phone, Email etc
+	* @return String
+	*/
 	function buildSearchQuery($module, $text, $type) {
 		$describe = $this->ws_describe($module);
 		$labelFields = $describe['labelFields'];
@@ -384,13 +377,13 @@ class MailManager_RelationController extends MailManager_Controller {
 		return sprintf( "SELECT %s FROM %s WHERE %s order by createdtime desc limit 0,6;", $labelFields, $module, rtrim($whereClause, 'OR') );
 	}
 
-    /**
-     * Returns the List of Matching records with the Email Address
-     * @global Users Instance $current_user
-     * @param String $module
-     * @param Email Address $email
-     * @return Array
-     */
+	/**
+	* Returns the List of Matching records with the Email Address
+	* @global Users Instance $current_user
+	* @param String $module
+	* @param Email Address $email
+	* @return Array
+	*/
 	function lookupModuleRecordsWithEmail($module, $email, $msguid) {
 		global $current_user;
 		$query = $this->buildSearchQuery($module, $email, 'EMAIL');
@@ -406,12 +399,12 @@ class MailManager_RelationController extends MailManager_Controller {
 		foreach($qresults as $qresult) {
 			$labelValues = array();
 			foreach($labelFields as $fieldname) {
-				if(isset($qresult[$fieldname])) $labelValues[] = $qresult[$fieldname]; 
+				if(isset($qresult[$fieldname])) $labelValues[] = $qresult[$fieldname];
 			}
 			$ids = vtws_getIdComponents($qresult['id']);
 			$linkedto = MailManager::isEMailAssociatedWithCRMID($msguid, $ids[1]);
 			$results[] = array('wsid' => $qresult['id'], 'id' => $ids[1], 'label' => implode(' ', $labelValues), 'linked'=>$linkedto);
-		}	
+		}
 		return $results;
 	}
 }
