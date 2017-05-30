@@ -203,14 +203,15 @@ $skipSecurityCheck= false;
 if(isset($action) && isset($module))
 {
 	$log->info("About to take action ".$action);
-	if(preg_match("/^Save/", $action) ||
+	if (preg_match("/^Popup/", $action) ||
+		preg_match("/^".$module."Ajax/",$action) ||
+		preg_match("/^Save/", $action) ||
+		preg_match("/^MassEditSave/", $action) ||
 		preg_match("/^Delete/", $action) ||
-		preg_match("/^Popup/", $action) ||
 		preg_match("/^ChangePassword/", $action) ||
 		preg_match("/^Authenticate/", $action) ||
 		preg_match("/^Logout/", $action) ||
 		preg_match("/^add2db/", $action) ||
-		preg_match("/^result/", $action) ||
 		preg_match("/^LeadConvertToEntities/", $action) ||
 		preg_match("/^downloadfile/", $action) ||
 		preg_match("/^massdelete/", $action) ||
@@ -221,10 +222,8 @@ if(isset($action) && isset($module))
 		preg_match("/^deleteRole/",$action) ||
 		preg_match("/^UpdateComboValues/",$action) ||
 		preg_match("/^fieldtypes/",$action) ||
-		preg_match("/^app_ins/",$action) ||
 		preg_match("/^minical/",$action) ||
 		preg_match("/^minitimer/",$action) ||
-		preg_match("/^app_del/",$action) ||
 		preg_match("/^send_mail/",$action) ||
 		preg_match("/^populatetemplate/",$action) ||
 		preg_match("/^TemplateMerge/",$action) ||
@@ -265,7 +264,6 @@ if(isset($action) && isset($module))
 		preg_match("/^savetermsandconditions/",$action) ||
 		preg_match("/^home_rss/",$action) ||
 		preg_match("/^ConvertAsFAQ/",$action) ||
-		preg_match("/^".$module."Ajax/",$action) ||
 		preg_match("/^ActivityAjax/",$action) ||
 		preg_match("/^updateCalendarSharing/",$action) ||
 		preg_match("/^disable_sharing/",$action) ||
@@ -279,20 +277,20 @@ if(isset($action) && isset($module))
 		(preg_match("/^Webmails/",$module) && preg_match("/^get_img/",$action)) ||
 		preg_match("/^download/",$action) ||
 		preg_match("/^getListOfRecords/", $action) ||
-		preg_match("/^MassEditSave/", $action) ||
 		preg_match("/^iCalExport/",$action)
 		)
 	{
 		$skipHeaders=true;
 		//skip headers for all these invocations as they are mostly popups
 		if(preg_match("/^Popup/", $action) ||
+			preg_match("/^".$module."Ajax/",$action) ||
+			preg_match("/^MassEditSave/", $action) ||
 			preg_match("/^ChangePassword/", $action) ||
 			//preg_match("/^Export/", $action) ||
 			preg_match("/^downloadfile/", $action) ||
 			preg_match("/^fieldtypes/",$action) ||
 			preg_match("/^lookupemailtemplate/",$action) ||
 			preg_match("/^home_rss/",$action) ||
-			preg_match("/^".$module."Ajax/",$action) ||
 			preg_match("/^massdelete/", $action) ||
 			preg_match("/^mailmergedownloadfile/",$action) ||
 			preg_match("/^get_img/",$action) ||
@@ -301,7 +299,6 @@ if(isset($action) && isset($module))
 			preg_match("/^lastImport/", $action ) ||
 			preg_match("/^massdelete/", $action ) ||
 			preg_match("/^getListOfRecords/", $action) ||
-			preg_match("/^MassEditSave/", $action) ||
 			preg_match("/^iCalExport/",$action)
 			)
 			$skipFooters=true;
