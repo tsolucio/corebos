@@ -256,7 +256,7 @@ foreach($Users_Ids AS $userid) {
 			$event = $activitytypeid;
 			$into_title = isset($row["subject"]) ? $row["subject"] : (isset($row[$subject]) ? $row[$subject] : getTranslatedString('LBL_NONE'));
 			if ($detailview_permissions) {
-				if (($Calendar4You->view_all && $Calendar4You->edit_all) || ($userid == $current_user->id || $row["visibility"] == "Public" || in_array($userid,$ParentUsers) || $activitytypeid == "invite")) {
+				if (($Calendar4You->view_all && $Calendar4You->edit_all) || ($userid == $current_user->id || (isset($row['visibility']) and $row['visibility'] == 'Public') || in_array($userid,$ParentUsers) || $activitytypeid == "invite")) {
 					if (isset($Showed_Field[$event]))
 						$into_title = transferForAddIntoTitle(1,$row,$Showed_Field[$event]);
 					$add_more_info = true;
