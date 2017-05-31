@@ -277,19 +277,14 @@ else
 		$url_string .='&recordid='.vtlib_purify($_REQUEST['recordid']);
 		$where_relquery = getRelCheckquery($currentModule,$_REQUEST['return_module'],$_REQUEST['recordid']);
 	}
-	if(isset($_REQUEST['relmod_id']) || isset($_REQUEST['fromPotential']))
-	{
-		if($_REQUEST['relmod_id'] !='')
-		{
+	if (isset($_REQUEST['relmod_id']) || isset($_REQUEST['fromPotential'])) {
+		if (isset($_REQUEST['relmod_id'])) {
 			$mod = vtlib_purify($_REQUEST['parent_module']);
 			$id = vtlib_purify($_REQUEST['relmod_id']);
-		}
-		else if($_REQUEST['fromPotential'] != '')
-		{
+		} else { // $_REQUEST['fromPotential'] != ''
 			$mod = "Accounts";
 			$id= vtlib_purify($_REQUEST['acc_id']);
 		}
-
 		$smarty->assign("mod_var_name", "parent_module");
 		$smarty->assign("mod_var_value", $mod);
 		$smarty->assign("recid_var_name", "relmod_id");

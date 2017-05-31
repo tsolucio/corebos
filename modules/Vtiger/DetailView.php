@@ -107,10 +107,16 @@ if($singlepane_view == 'true' or $isPresentRelatedListBlock) {
 	}
 }
 
-if(isPermitted($currentModule, 'CreateView', $record) == 'yes')
+if (isPermitted($currentModule, 'CreateView', $record) == 'yes') {
 	$smarty->assign('CREATE_PERMISSION', 'permitted');
-if(isPermitted($currentModule, 'Delete', $record) == 'yes')
+} else {
+	$smarty->assign('CREATE_PERMISSION', '');
+}
+if (isPermitted($currentModule, 'Delete', $record) == 'yes') {
 	$smarty->assign('DELETE', 'permitted');
+} else {
+	$smarty->assign('DELETE', '');
+}
 
 $blocks = getBlocks($currentModule,'detail_view','',$focus->column_fields);
 $smarty->assign('BLOCKS', $blocks);

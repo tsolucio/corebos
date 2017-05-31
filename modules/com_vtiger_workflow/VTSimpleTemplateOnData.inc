@@ -26,7 +26,7 @@ require_once('modules/com_vtiger_workflow/VTSimpleTemplate.inc');
  */
 class VTSimpleTemplateOnData extends VTSimpleTemplate {
 
-	function render($entityCache, $modulename, $data){
+	function render($entityCache, $modulename, $data=array()) {
 		$this->cache = $entityCache;
 		$this->parent = $this;
 		$this->data = $data;
