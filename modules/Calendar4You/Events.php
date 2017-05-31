@@ -348,7 +348,7 @@ foreach($Users_Ids AS $userid) {
 				'visibility' => $visibility,
 				'editable' => $editable,
 				'activity_mode' => $activity_mode,
-				'title' => $title . (isset($row['description']) ? '<br>' . textlength_check($row['description']) : ''),
+				'title' => vtlib_purify($title) . (isset($row['description']) ? '<br>' . textlength_check(vtlib_purify($row['description'])) : ''),
 				'start' => $user_date_start,
 				'end' => $user_due_date,
 				'allDay' => $allDay,
