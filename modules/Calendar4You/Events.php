@@ -309,7 +309,7 @@ foreach($Users_Ids AS $userid) {
 					}
 					$into_title = implode(' -- ', $descvals);
 				}
-				$into_title = $app['LBL_ACTION'].": ".$actions."<hr>".nl2br($into_title);
+				$into_title = '<div class="slds-border_bottom" style="border-bottom: 1px solid #d8dde6">'.$app['LBL_ACTION'].": ".$actions."</div>".nl2br($into_title);
 			}
 			$title = "<font style='font-size:12px'>".$into_title."</font>";
 			if ($add_more_info) {
