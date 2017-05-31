@@ -279,9 +279,9 @@ if($focus->mode == 'edit' || $isduplicate == 'true') {
 	$smarty->assign('UPDATEINFO',updateInfo($record));
 }
 
-if (isset ($_REQUEST['convertmode']) && ($_REQUEST['convertmode'] == 'quotetoso' || $_REQUEST['convertmode'] == 'update_quote_val')) {
-	$txtTax = (($quote_focus->column_fields['txtTax'] != '') ? $quote_focus->column_fields['txtTax'] : '0.000');
-	$txtAdj = (($quote_focus->column_fields['txtAdjustment'] != '') ? $quote_focus->column_fields['txtAdjustment'] : '0.000');
+if (isset($_REQUEST['convertmode']) && ($_REQUEST['convertmode'] == 'quotetoso' || $_REQUEST['convertmode'] == 'update_quote_val')) {
+	$txtTax = (!empty($quote_focus->column_fields['txtTax']) ? $quote_focus->column_fields['txtTax'] : '0.000');
+	$txtAdj = (!empty($quote_focus->column_fields['txtAdjustment']) ? $quote_focus->column_fields['txtAdjustment'] : '0.000');
 	$associated_prod = getAssociatedProducts('Quotes', $quote_focus);
 	$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
 	$smarty->assign('MODE', $focus->mode);
