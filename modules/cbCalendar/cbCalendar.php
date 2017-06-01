@@ -180,6 +180,24 @@ class cbCalendar extends CRMEntity {
 					$this->insertIntoRecurringTable($recur_data);
 			}
 		}
+		//Insert into cntactivity rel
+		if (!empty($this->column_fields['contact_id'])) {
+			$ctovalue = $this->column_fields['contact_id'];
+			$listofctos = explode(';',$this->column_fields['contact_id']);
+			foreach ($listofctos as $cto) {
+				if (!empty($cto)) {
+					if (strpos($cto, 'x')) list($wsid,$cto) = explode('x', $cto);
+					$chkrs = $adb->pquery('select count(*) from vtiger_cntactivityrel where contactid = ? and activityid = ?',array($cto,$this->id));
+					if ($chkrs and $adb->query_result($chkrs, 0, 0) == 0) {
+						$adb->pquery('insert into vtiger_cntactivityrel(contactid,activityid) values(?,?)',array($cto,$this->id));
+					}
+				}
+				if (empty($this->column_fields['cto_id'])) {
+					$this->column_fields['cto_id'] = $cto;
+					$adb->pquery('update vtiger_activity set cto_id = ? where activityid = ?',array($cto,$this->id));
+				}
+			}
+		}
 	}
 
 	/** Function to insert values in vtiger_recurringevents table for the specified tablename,module
@@ -579,7 +597,7 @@ class cbCalendar extends CRMEntity {
 					$racbr = $wfs->getRACRuleForRecord($currentModule, $id);
 					if (!$racbr or $racbr->hasRelatedListPermissionTo('select',$related_module)) {
 						$button .= "<input title='" . getTranslatedString('LBL_SELECT') . " " . getTranslatedString($related_module) . "' class='crmbutton small edit' " .
-								" type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\"" .
+								" type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id','test','width=640,height=602,resizable=0,scrollbars=0');\"" .
 								" value='" . getTranslatedString('LBL_SELECT') . " " . getTranslatedString($related_module, $related_module) . "'>&nbsp;";
 					}
 				}

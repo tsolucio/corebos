@@ -17,44 +17,41 @@ $currentmodule = vtlib_purify($_REQUEST['module']);
 $action = vtlib_purify($_REQUEST['action']);
 $RECORD = vtlib_purify($_REQUEST['record']);
 $category = getParentTab();
-if($singlepane_view == 'true' && $action == 'CallRelatedList') {
-	echo "<script>document.location='index.php?action=EventDetailView&module=".urlencode($currentModule).'&record='.urlencode($RECORD)."';</script>";
+if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
+	echo "<script>document.location='index.php?action=DetailView&module=cbCalendar&record=".urlencode($RECORD)."';</script>";
 	die();
 } else {
-	
-    $c_mod_strings = return_specified_module_language($current_language, "Calendar");
+	$c_mod_strings = return_specified_module_language($current_language, "Calendar");
 
-    $focus = CRMEntity::getInstance("Calendar");
-	if(isset($_REQUEST['record']) && $_REQUEST['record']!='') {
-	    $focus->retrieve_entity_info($RECORD,"Calendar");
-	    $focus->id = $RECORD;
-	    $focus->name=$focus->column_fields['subject'];	
-		$log->debug("id is ".$focus->id);		
-		$log->debug("name is ".$focus->name);
+	$focus = CRMEntity::getInstance("Calendar");
+	if (isset($_REQUEST['record']) && $_REQUEST['record']!='') {
+		$focus->retrieve_entity_info($RECORD,"Calendar");
+		$focus->id = $RECORD;
+		$focus->name=$focus->column_fields['subject'];
 	}
 
 	$theme_path="themes/".$theme."/";
 	$image_path=$theme_path."images/";
-	
+
 	$smarty = new vtigerCRM_Smarty;
 
-    $activity_mode = vtlib_purify($_REQUEST['activity_mode']);
+	$activity_mode = vtlib_purify($_REQUEST['activity_mode']);
 
-    if($activity_mode =='' || strlen($activity_mode) < 1) {
-        $activity_mode = getEventActivityMode($record);		
-    }	
+	if ($activity_mode =='' || strlen($activity_mode) < 1) {
+		$activity_mode = getEventActivityMode($record);
+	}
 
-    if($activity_mode == 'Task') {
-        $tab_type = 'Calendar';
-        $rel_tab_type = 'Calendar4You';
-    	$smarty->assign("SINGLE_MOD",$c_mod_strings['LBL_TODO']);
-    } elseif($activity_mode == 'Events') {
-        $rel_tab_type = $tab_type = 'Events';
-    	$smarty->assign("SINGLE_MOD",$c_mod_strings['LBL_EVENT']);
-    }
+	if ($activity_mode == 'Task') {
+		$tab_type = 'Calendar';
+		$rel_tab_type = 'Calendar4You';
+		$smarty->assign("SINGLE_MOD",$c_mod_strings['LBL_TODO']);
+	} elseif ($activity_mode == 'Events') {
+		$rel_tab_type = $tab_type = 'Events';
+		$smarty->assign("SINGLE_MOD",$c_mod_strings['LBL_EVENT']);
+	}
 
-    $tab_id=getTabid($rel_tab_type);
-    
+	$tab_id=getTabid($rel_tab_type);
+
 	if(isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
 		$focus->id = "";
 	}
@@ -73,7 +70,7 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 		$mod_seq_id = $focus->id;
 	}
 	$smarty->assign('MOD_SEQ_ID', $mod_seq_id);
-	
+
 	$smarty->assign("TODO_PERMISSION",CheckFieldPermission('parent_id','Calendar'));
 	$smarty->assign("EVENT_PERMISSION",CheckFieldPermission('parent_id','Events'));
 	$smarty->assign("CATEGORY",$category);
@@ -90,16 +87,16 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	$smarty->assign("RELATEDLISTS", $related_array);
 	$smarty->assign("ID",$focus->id);
 	$smarty->assign("MODULE",$currentmodule);
-    $smarty->assign("TABTYPE",$tab_type);
+	$smarty->assign("TABTYPE",$tab_type);
 	$smarty->assign("MOD",$mod_strings);
 	$smarty->assign("APP",$app_strings);
 	$smarty->assign("THEME", $theme);
 	$smarty->assign("IMAGE_PATH", $image_path);
-    $smarty->assign('MODE', 'RelatedList');
+	$smarty->assign('MODE', 'RelatedList');
 	$check_button = Button_Check($module);
-	
+
 	$smarty->assign("CHECK", $check_button);
-	
+
 	$smarty->display("modules/Calendar4You/RelatedLists.tpl");
 }
 ?>
