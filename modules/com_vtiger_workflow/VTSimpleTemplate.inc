@@ -13,7 +13,7 @@ class VTSimpleTemplate{
 		$this->template = $templateString;
 	}
 
-	function render($entityCache, $entityId){
+	function render($entityCache, $entityId, $void=array()) {
 		$this->cache = $entityCache;
 		$this->parent = $this->cache->forId($entityId);
 		return $this->parseTemplate();

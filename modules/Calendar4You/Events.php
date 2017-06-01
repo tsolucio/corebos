@@ -256,7 +256,7 @@ foreach($Users_Ids AS $userid) {
 			$event = $activitytypeid;
 			$into_title = isset($row["subject"]) ? $row["subject"] : (isset($row[$subject]) ? $row[$subject] : getTranslatedString('LBL_NONE'));
 			if ($detailview_permissions) {
-				if (($Calendar4You->view_all && $Calendar4You->edit_all) || ($userid == $current_user->id || $row["visibility"] == "Public" || in_array($userid,$ParentUsers) || $activitytypeid == "invite")) {
+				if (($Calendar4You->view_all && $Calendar4You->edit_all) || ($userid == $current_user->id || (isset($row['visibility']) and $row['visibility'] == 'Public') || in_array($userid,$ParentUsers) || $activitytypeid == "invite")) {
 					if (isset($Showed_Field[$event]))
 						$into_title = transferForAddIntoTitle(1,$row,$Showed_Field[$event]);
 					$add_more_info = true;
@@ -309,7 +309,7 @@ foreach($Users_Ids AS $userid) {
 					}
 					$into_title = implode(' -- ', $descvals);
 				}
-				$into_title = $app['LBL_ACTION'].": ".$actions."<hr>".nl2br($into_title);
+				$into_title = '<div class="slds-border_bottom" style="border-bottom: 1px solid #d8dde6">'.$app['LBL_ACTION'].": ".$actions."</div>".nl2br($into_title);
 			}
 			$title = "<font style='font-size:12px'>".$into_title."</font>";
 			if ($add_more_info) {
@@ -348,7 +348,7 @@ foreach($Users_Ids AS $userid) {
 				'visibility' => $visibility,
 				'editable' => $editable,
 				'activity_mode' => $activity_mode,
-				'title' => $title . (isset($row['description']) ? '<br>' . textlength_check($row['description']) : ''),
+				'title' => vtlib_purify($title) . (isset($row['description']) ? '<br>' . textlength_check(vtlib_purify($row['description'])) : ''),
 				'start' => $user_date_start,
 				'end' => $user_due_date,
 				'allDay' => $allDay,

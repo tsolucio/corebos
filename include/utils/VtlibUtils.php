@@ -450,6 +450,7 @@ function vtlib_purify($input, $ignore=false) {
 			$config = HTMLPurifier_Config::createDefault();
 			$config->set('Core.Encoding', $use_charset);
 			$config->set('Cache.SerializerPath', "$use_root_directory/test/vtlib");
+			$config->set('Attr.AllowedFrameTargets', array('_blank', '_self', '_parent', '_top','_new','_newtc'));
 
 			$__htmlpurifier_instance = new HTMLPurifier($config);
 		}

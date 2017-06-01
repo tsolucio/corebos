@@ -667,6 +667,13 @@ class cbCalendar extends CRMEntity {
 			$result = $adb->pquery("INSERT INTO vtiger_blocks
 				(blockid,tabid,blocklabel,sequence,show_title,visible,create_view,edit_view,detail_view,display_status,iscustom,isrelatedlist)
 				VALUES(?,?,?,?,?,?,?,?,?,?,?,?)", Array($bck, $tabid, 'Contacts', 2, 0, 0, 0, 0, 0, 1, 1, $rl));
+			// Fill Follow up type picklist
+			$rs = $adb->query('select activitytype from vtiger_activitytype');
+			$module = Vtiger_Module::getInstance($modulename);
+			$field = Vtiger_Field::getInstance('followuptype',$module);
+			while ($act = $adb->fetch_array($rs)) {
+				$field->setPicklistValues(array($act['activitytype']));
+			}
 			// workflows
 			$workflowManager = new VTWorkflowManager($adb);
 			$taskManager = new VTTaskManager($adb);
@@ -714,7 +721,6 @@ class cbCalendar extends CRMEntity {
 			$taskManager->saveTask($task);
 			// custom fields
 			$frs = $adb->query("select * from vtiger_field where tablename='vtiger_activitycf'");
-			$module = Vtiger_Module::getInstance($modulename);
 			$block = Vtiger_Block::getInstance('LBL_CUSTOM_INFORMATION', $module);
 			while ($fldrow = $adb->fetch_array($frs)) {
 				$field1 = new Vtiger_Field();
@@ -737,6 +743,10 @@ class cbCalendar extends CRMEntity {
 				$field1->helpinfo = $fldrow['helpinfo'];
 				$block->addField($field1);
 			}
+			require_once('include/events/include.inc');
+			$em = new VTEventsManager($adb);
+			$em->registerHandler('corebos.permissions.accessquery', 'modules/cbCalendar/PublicInvitePermission.php', 'PublicInvitePermissionHandler');
+			echo "<h4>Permission Event accessquery registered.</h4>";
 		} else if($event_type == 'module.disabled') {
 			// TODO Handle actions when this module is disabled.
 		} else if($event_type == 'module.enabled') {

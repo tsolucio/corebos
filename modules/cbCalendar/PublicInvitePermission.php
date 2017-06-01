@@ -13,49 +13,28 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************
- *  Version      : 1.0
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
-require_once('modules/com_vtiger_workflow/VTSimpleTemplate.inc');
 
-/**
- * This class renders a text template with data passed in as an array
- * It is identical to VTSimpleTemplate except that it does not expect a record to exist,
- * it just uses the information it has.
- * if one of the fields is a reference field it will search for that record.
- */
-class VTSimpleTemplateOnData extends VTSimpleTemplate {
+class PublicInvitePermissionHandler extends VTEventHandler {
 
-	function render($entityCache, $modulename, $data=array()) {
-		$this->cache = $entityCache;
-		$this->parent = $this;
-		$this->data = $data;
-		$this->moduleName = $modulename;
-		return $this->parseTemplate();
+	public function handleEvent($handlerType, $entityData) {
 	}
 
-	function getData(){
-		return $this->data;
-	}
-
-	function get($fieldName){
-		return isset($this->data[$fieldName]) ? $this->data[$fieldName] : '';
-	}
-
-	function getId(){
-		if (isset($this->data['record_id']) and is_numeric($this->data['record_id'])) {
-			$id = $this->data['record_id'];
-		} elseif (isset($this->data['id']) and is_numeric($this->data['id'])) {
-			$id = $this->data['id'];
-		} else {
-			$id = 0;
+	public function handleFilter($handlerType, $parameter) {
+		if ($handlerType == 'corebos.permissions.accessquery' and $parameter[2] == 'cbCalendar') {
+			$user = $parameter[3];
+			$parameter[1] = 'addToUserPermission';
+			// all the tickets the user can access plus those related to
+			//  accounts or products assigned to him
+			$parameter[0] = "select vtiger_activity.activityid as id
+				from vtiger_activity
+				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid
+				where deleted=0 and visibility='Public' and smownerid in (select userid from vtiger_sharedcalendar where sharedid=".$user->id."))
+				UNION
+				(select vtiger_invitees.activityid as id from vtiger_invitees where inviteeid=".$user->id;
 		}
-		return $id;
-	}
-
-	function getModuleName(){
-		return $this->moduleName;
+		return $parameter;
 	}
 
 }
-?>

@@ -120,7 +120,7 @@ $Task_Colors = getEColors("type","task");
 
 $Task_Colors_Palete = $colorHarmony->Monochromatic($Task_Colors["bg"]);
 
-if (!$load_ch || $Ch_Views["1"]["task"]) $task_checked = true; else $task_checked = false;
+if (!$load_ch || !empty($Ch_Views["1"]["task"])) $task_checked = true; else $task_checked = false;
 
 $Activity_Types = $Module_Types = array();
 

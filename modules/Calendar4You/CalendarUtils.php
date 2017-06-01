@@ -451,7 +451,10 @@ function transferForAddIntoTitle($type, $row, $CD) {
 		$CD["uitype"] = "1";   
 	}
 	if ($CD['module']=='Calendar' or $CD['module']=='Events') {
-		$Cal_Data = getDetailViewOutputHtml($CD['uitype'], $CD['fieldname'], $CD['fieldlabel'], $Col_Field, '2', getTabid('Calendar'), 'Calendar');
+		$Cal_Data = getDetailViewOutputHtml($CD['uitype'], $CD['fieldname'], $CD['fieldlabel'], $Col_Field, '2', getTabid('cbCalendar'), 'cbCalendar');
+		if (strpos($Cal_Data[1], 'vtlib_metainfo')===false) {
+			$Cal_Data[1] .= "<span type='vtlib_metainfo' vtrecordid='".$row["crmid"]."' vtfieldname='".$CD["fieldname"]."' vtmodule='cbCalendar' style='display:none;'></span>";
+		}
 		$trmodule = 'Calendar';
 	} else {
 		$queryGenerator = new QueryGenerator($CD['module'], $current_user);

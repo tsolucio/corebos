@@ -603,7 +603,8 @@
 <picklistvalues>
 <picklistvalue>Call</picklistvalue>
 <picklistvalue>Meeting</picklistvalue>
-<picklistvalue>EMail</picklistvalue>
+<picklistvalue>Emails</picklistvalue>
+<picklistvalue>Task</picklistvalue>
 </picklistvalues>
 </field>
 <field>
