@@ -412,7 +412,7 @@ jQuery(document).ready(function(){
             element.bind('dblclick', function(){
                 if (event.visibility == "public" && event.id.substr(0,1) != "g"){
                     fnHideDrop('event_info');
-                    window.location.href = "index.php?action=EventDetailView&module=Calendar4You&record="+ event.id + "&activity_mode="+ event.activity_mode + "&parenttab={/literal}{$CATEGORY}{literal}";
+                    window.location.href = "index.php?action=DetailView&module=cbCalendar&record="+ event.id + "&activity_mode="+ event.activity_mode + "&parenttab={/literal}{$CATEGORY}{literal}";
                 }
             });
         },

@@ -288,7 +288,7 @@ function getHistory($parentmodule,$query,$id)
 			$typeofactivity = getTranslatedString($typeofactivity, 'Calendar');
 			$entries[] = $typeofactivity;
 
-			$activity = '<a href="index.php?module=Calendar4You&action=EventDetailView&return_module='.$parentmodule.'&return_action=DetailView&record='.$row["activityid"] .'&activity_mode='.$activitymode.'&return_id='.vtlib_purify($_REQUEST['record']).'&parenttab='.vtlib_purify($_REQUEST['parenttab']).'">'.$row['subject'].'</a></td>';
+			$activity = '<a href="index.php?module=cbCalendar&action=DetailView&return_module='.$parentmodule.'&return_action=DetailView&record='.$row["activityid"] .'&activity_mode='.$activitymode.'&return_id='.vtlib_purify($_REQUEST['record']).'&parenttab='.vtlib_purify($_REQUEST['parenttab']).'">'.$row['subject'].'</a></td>';
 			$entries[] = $activity;
 
 			$parentname = getRelatedTo('Calendar',$result,$i-1);

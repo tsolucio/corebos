@@ -328,12 +328,8 @@ class VTSimpleTemplate{
 											$parts = explode('x', $wsId);
 											$recordId = $parts[1];
 											$moduleName = $this->parent->getModuleName();
-											if($moduleName == 'Events' || $moduleName == 'Calendar')
-											{
-												if($moduleName == 'Events')
-													return $site_URL.'/index.php?action=EventDetailView&module=Calendar4You&record='.$recordId.'&activity_mode=Events';
-												elseif($moduleName == 'Calendar')
-													return $site_URL.'/index.php?action=EventDetailView&module=Calendar4You&record='.$recordId.'&activity_mode=Task';
+											if ($moduleName == 'Events' || $moduleName == 'Calendar') {
+												return $site_URL.'/index.php?action=DetailView&module=cbCalendar&record='.$recordId;
 											}
 											else
 												return $site_URL.'/index.php?action=DetailView&module='.$moduleName.'&record='.$recordId;

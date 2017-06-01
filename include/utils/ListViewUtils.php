@@ -2202,10 +2202,10 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$actvity_type = ($actvity_type != '') ? $actvity_type : $adb->query_result($list_result, $list_result_count, 'type');
 					if ($actvity_type == "Task") {
 						$count = counterValue();
-						$value = '<a href="index.php?action=EventDetailView&module=Calendar4You&record=' . $entity_id . '&activity_mode=Task&parenttab=' . $tabname . '" id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+						$value = '<a href="index.php?action=DetailView&module=cbCalendar&record=' . $entity_id . '&activity_mode=Task&parenttab=' . $tabname . '" id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
 					} else {
 						$count = counterValue();
-						$value = '<a href="index.php?action=EventDetailView&module=Calendar4You&record=' . $entity_id . '&activity_mode=Events&parenttab=' . $tabname . '" id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+						$value = '<a href="index.php?action=DetailView&module=cbCalendar&record=' . $entity_id . '&activity_mode=Events&parenttab=' . $tabname . '" id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
 					}
 				} elseif ($module == 'Emails') {
 					$value = $temp_val;
