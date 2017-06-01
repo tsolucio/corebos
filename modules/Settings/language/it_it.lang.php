@@ -864,5 +864,7 @@ $mod_strings = array (
 // language translation strings
 'SendEmailFrom' => 'Invia Email Da',
 'LeaveEmptyForUserEmail' => 'Lascia vuoto per usare il tuo indirizzo mail',
+'LBL_OPENSSL_SUPPORT' => 'Supporto OpenSSL',
+'LBL_IMAP_SUPPORT' => 'Supporto IMAP',
 );
 ?>

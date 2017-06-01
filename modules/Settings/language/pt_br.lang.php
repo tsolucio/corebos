@@ -1228,5 +1228,7 @@ $mod_strings = Array(
 // language translation strings
 'SendEmailFrom' => 'Send Email From',
 'LeaveEmptyForUserEmail' => 'Leave empty to use your user email',
+'LBL_OPENSSL_SUPPORT' => 'Suporte OpenSSL',
+'LBL_IMAP_SUPPORT' => 'Suporte IMAP',
 );
 ?>
