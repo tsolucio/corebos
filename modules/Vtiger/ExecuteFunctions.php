@@ -59,8 +59,6 @@ switch ($functiontocall) {
 	case 'getReferenceAutocomplete':
 		include_once 'include/Webservices/CustomerPortalWS.php';
 		$searchinmodule = vtlib_purify($_REQUEST['searchinmodule']);
-		$fields = vtlib_purify($_REQUEST['fields']);
-		$returnfields = vtlib_purify($_REQUEST['returnfields']);
 		$limit = vtlib_purify($_REQUEST['limit']);
 		$filter = vtlib_purify($_REQUEST['filter']);
 		if (is_array($filter)) {
