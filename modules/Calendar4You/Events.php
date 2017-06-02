@@ -309,14 +309,16 @@ foreach($Users_Ids AS $userid) {
 					}
 					$into_title = implode(' -- ', $descvals);
 				}
-				$into_title = '<div class="slds-border_bottom" style="border-bottom: 1px solid #d8dde6">'.$app['LBL_ACTION'].": ".$actions."</div>".nl2br($into_title);
+				$into_title = '<div class="slds-border_bottom" style="border-bottom: 1px solid #d8dde6">'.$app['LBL_ACTION'].": ".$actions."</div>".nl2br(vtlib_purify($into_title));
 			}
 			$title = "<font style='font-size:12px'>".$into_title."</font>";
 			if ($add_more_info) {
 				if (isset($Event_Info[$event]) and count($Event_Info[$event]) > 0) {
+					$titlemi = '';
 					foreach($Event_Info[$event] AS $CD) {
-						$title .= transferForAddIntoTitle(2,$row,$CD);
+						$titlemi .= transferForAddIntoTitle(2,$row,$CD);
 					}
+					$title .= vtlib_purify($titlemi);
 				}
 			}
 			if(in_array($activitytypeid,$tasklabel)){
@@ -348,7 +350,7 @@ foreach($Users_Ids AS $userid) {
 				'visibility' => $visibility,
 				'editable' => $editable,
 				'activity_mode' => $activity_mode,
-				'title' => vtlib_purify($title) . (isset($row['description']) ? '<br>' . textlength_check(vtlib_purify($row['description'])) : ''),
+				'title' => $title . (isset($row['description']) ? '<br>' . textlength_check(vtlib_purify($row['description'])) : ''),
 				'start' => $user_date_start,
 				'end' => $user_due_date,
 				'allDay' => $allDay,
