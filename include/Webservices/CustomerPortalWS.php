@@ -944,7 +944,7 @@ function getFieldAutocomplete($term, $filter, $searchinmodule, $fields, $returnf
 	$flds = array_unique(array_merge($rfields,$sfields,array('id')));
 	$queryGenerator->setFields($flds);
 	foreach ($sfields as $sfld) {
-		$queryGenerator->addCondition($sfld,$term,$op);
+		$queryGenerator->addCondition($sfld,$term,$op,$queryGenerator::$OR);
 	}
 	$query = $queryGenerator->getQuery();
 	$rsemp=$adb->query($query);
