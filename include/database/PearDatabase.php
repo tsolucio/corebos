@@ -14,8 +14,8 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 require_once('include/logging.php');
-include('adodb/adodb.inc.php');
-require_once("adodb/adodb-xmlschema.inc.php");
+include('include/adodb/adodb.inc.php');
+require_once("include/adodb/adodb-xmlschema.inc.php");
 
 $log = LoggerManager::getLogger('VT');
 $logsqltm = LoggerManager::getLogger('SQLTIME');

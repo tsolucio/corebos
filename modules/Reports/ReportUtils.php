@@ -201,7 +201,7 @@ function report_getMoreInfoFromRequest($reporttype,$pmodule,$smodule,$pivotcolum
 		$minfo = vtlib_purify($_REQUEST['directsqlcommand']);
 		$reporttype = 'directsql';
 	} elseif ($_REQUEST['cbreporttype']=='crosstabsql') {
-		require_once 'adodb/pivottable.inc.php';
+		require_once 'include/adodb/pivottable.inc.php';
 		$pmod = CRMEntity::getInstance($pmodule);
 		$smod = CRMEntity::getInstance($smodule);
 		$moduleInstance = Vtiger_Module::getInstance($pmodule);

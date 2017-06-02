@@ -9,7 +9,7 @@
  *********************************************************************************/
 
 require_once 'include/db_backup/Source/BackupSource.php';
-require_once 'adodb/adodb-lib.inc.php';
+require_once 'include/adodb/adodb-lib.inc.php';
 
 class MysqlSource extends BackupSource {
 
