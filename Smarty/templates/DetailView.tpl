@@ -718,12 +718,6 @@ function sendfile_email()
 							</tr>
 						</table>
 
-
-{if $MODULE eq 'Products'}
-<script type="text/javascript" src="modules/Products/Productsslide.js"></script>
-<script type="text/javascript">Carousel();</script>
-{/if}
-
 <script>
 
 function getTagCloud()
