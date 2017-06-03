@@ -431,7 +431,7 @@ class ListViewController {
 				} elseif($field->getUIType() == 98) {
 					$value = '<a href="index.php?action=RoleDetailView&module=Settings&parenttab='.
 						'Settings&roleid='.$value.'">'.textlength_check(getRoleName($value)).'</a>';
-				} elseif($field->getUIType() == 69) {
+				} elseif ($field->getUIType() == '69m') {
 					if ($module == 'Products') {
 						$queryPrdt = 'SELECT vtiger_attachments.path,vtiger_attachments.attachmentsid,vtiger_attachments.`name`
 							FROM vtiger_attachments
@@ -447,8 +447,9 @@ class ListViewController {
 						} else {
 							$value = '';
 						}
-					} else {
-						if ($module == 'Contacts') {
+					}
+				} elseif ($field->getUIType() == 69) {
+						if ($module == 'Contacts' and $field->getColumnName()=='imagename') {
 							$imageattachment = 'Image';
 						} else {
 							$imageattachment = 'Attachment';
@@ -479,7 +480,6 @@ class ListViewController {
 						} else {
 							$value = '';
 						}
-					}
 				} elseif ($field->getFieldDataType() == 'multipicklist') {
 					$value = ($value != "") ? str_replace(' |##| ',', ',$value) : "";
 					if(!$is_admin && $value != '') {

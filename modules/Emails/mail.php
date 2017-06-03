@@ -115,7 +115,6 @@ function send_mail($module,$to_email,$from_name,$from_email,$subject,$contents,$
 	}
 
 	$mail_status = MailSend($mail);
-
 	if($mail_status != 1)
 	{
 		$mail_error = getMailError($mail,$mail_status);
@@ -270,9 +269,16 @@ function setMailerProperties($mail,$subject,$contents,$from_email,$from_name,$to
         //If we send attachments from MarketingDashboard
 	if(is_array($attachment))
 	{
+		if(array_key_exists('direct', $attachment) && $attachment['direct']){
+			//We are sending attachments with direct content, the files are'nt stored
+            foreach($attachment['files'] as $file){
+			addStringAttachment($mail,$file['name'],$file['content']);
+            }
+		}else{
             foreach($attachment as $file){
 			addAttachment($mail,$file,$emailid);
             }
+        }
 	}
 
 	$mail->IsHTML(true);		// set email format to HTML
@@ -346,6 +352,19 @@ function addAttachment($mail,$filename,$record)
 	if(is_file($root_directory.$filename) && ($root_directory.$filename) != '') {
 		$mail->AddAttachment($root_directory.$filename);
 	}
+}
+
+/**	Function to add the file as attachment with the mail object
+  *	$mail -- reference of the mail object
+  *	$filename -- filename which is going to added with the mail
+  *	$data -- file contents to attach
+  */
+function addStringAttachment($mail,$filename,$data)
+{
+	global $adb, $root_directory;
+	$adb->println("Inside the function addStringAttachment. The file name is => '".$filename."'");
+
+		$mail->AddStringAttachment($data,$filename);
 }
 
 /**     Function to add all the files as attachment with the mail object

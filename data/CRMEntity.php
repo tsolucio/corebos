@@ -171,7 +171,7 @@ class CRMEntity {
 				$upd = "update $tblname set $colname=? where ".$this->tab_name_index[$tblname].'=?';
 				$adb->pquery($upd, array($files['original_name'],$this->id));
 				$this->column_fields[$fldname] = $files['original_name'];
-				$file_saved = $this->uploadAndSaveFile($id,$module,$files,$attachmentname, $direct_import);
+				$file_saved = $this->uploadAndSaveFile($id,$module,$files,$attachmentname, $direct_import, $fldname);
 				// Remove the deleted attachments from db
 				if($file_saved && !empty($old_attachmentid)) {
 					$setypers = $adb->pquery('select setype from vtiger_crmentity where crmid=?', array($old_attachmentid));
@@ -200,7 +200,7 @@ class CRMEntity {
 					'error' => 0,
 					'size' => 0
 				);
-				$file_saved = $this->uploadAndSaveFile($id,$module,$fi,'', true);
+				$file_saved = $this->uploadAndSaveFile($id,$module,$fi,'', true,$fileindex);
 				$result = $adb->pquery($sql, array($fileindex,$tabid));
 				$tblname = $adb->query_result($result, 0, 'tablename');
 				$colname = $adb->query_result($result, 0, 'columnname');
@@ -219,7 +219,7 @@ class CRMEntity {
 	 * @param array $file_details  - array which contains the file information(name, type, size, tmp_name and error)
 	 * return void
 	 */
-	function uploadAndSaveFile($id, $module, $file_details, $attachmentname='', $direct_import=false) {
+	function uploadAndSaveFile($id, $module, $file_details, $attachmentname='', $direct_import=false, $forfield='') {
 		global $log, $adb, $current_user, $upload_badext;
 		$fparams = print_r($file_details,true);
 		$log->debug("Entering into uploadAndSaveFile($id,$module,$fparams) method.");
@@ -257,7 +257,7 @@ class CRMEntity {
 		}
 		if ($upload_status) {
 			$description_val = empty($this->column_fields['description']) ? '' : $this->column_fields['description'];
-			if ($module == 'Contacts' || $module == 'Products') {
+			if (($module == 'Contacts' || $module == 'Products') and $forfield=='imagename') {
 				$sql1 = "insert into vtiger_crmentity (crmid,smcreatorid,smownerid,setype,description,createdtime,modifiedtime) values(?, ?, ?, ?, ?, ?, ?)";
 				$params1 = array($current_id, $current_user->id, $ownerid, $module . " Image", $description_val, $adb->formatDate($date_var, true), $adb->formatDate($date_var, true));
 			} else {

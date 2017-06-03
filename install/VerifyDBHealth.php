@@ -20,7 +20,7 @@ if($_REQUEST['ajax'] == true) {
 
 $configFileInfo = $_SESSION['config_file_info'];
 
-require_once('adodb/adodb.inc.php');
+require_once('include/adodb/adodb.inc.php');
 
 $db = NewADOConnection($configFileInfo['db_type']);
 $db->NConnect($configFileInfo['db_hostname'], $configFileInfo['db_username'], $configFileInfo['db_password'], $configFileInfo['db_name']);
