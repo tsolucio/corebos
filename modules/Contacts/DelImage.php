@@ -12,8 +12,9 @@ function DelImage($id)
 {
 	global $adb;
 	$imgmod = vtlib_purify($_REQUEST['ImageModule']);
+	$fname = vtlib_purify($_REQUEST['fieldname']);
 	if (empty($imgmod)) $imgmod = 'Contacts';
-	if ($imgmod == 'Contacts') {
+	if ($imgmod == 'Contacts' and $fname=='imagename') {
 		$imageattachment = 'Image';
 	} else {
 		$imageattachment = 'Attachment';
@@ -38,7 +39,6 @@ function DelImage($id)
 		$sql = 'SELECT tablename,columnname,fieldname FROM vtiger_field
 		 WHERE uitype=69 and vtiger_field.tabid = ? and fieldname = ?';
 		$tabid = getTabid($imgmod);
-		$fname = vtlib_purify($_REQUEST['fieldname']);
 		$result = $adb->pquery($sql, array($tabid,$fname));
 		if ($result and $adb->num_rows($result)==1) {
 			include_once "modules/$imgmod/$imgmod.php";

@@ -264,25 +264,23 @@ class Products extends CRMEntity {
 		$log->debug("Entering into insertIntoAttachment($id,$module) method.");
 
 		$file_saved = false;
-
-		foreach($_FILES as $fileindex => $files)
-		{
-			if($files['name'] != '' && $files['size'] > 0)
-			{
+		foreach ($_FILES as $fileindex => $files) {
+			if (substr($fileindex,0,5)!='file_' and !($fileindex=='file' and $_REQUEST['action']=='ProductsAjax' and $_REQUEST['file']=='UploadImage')) continue;
+			if ($files['name'] != '' && $files['size'] > 0) {
 				if($_REQUEST[$fileindex.'_hidden'] != '')
 					$files['original_name'] = vtlib_purify($_REQUEST[$fileindex.'_hidden']);
 				else
 					$files['original_name'] = stripslashes($files['name']);
 				$files['original_name'] = str_replace('"','',$files['original_name']);
-				$file_saved = $this->uploadAndSaveFile($id,$module,$files);
+				$file_saved = $this->uploadAndSaveFile($id,$module,$files,'',false,'imagename');
 			}
+			unset($_FILES[$fileindex]);
 		}
 
-		// Remove the deleted attachments from db - Products
-		if ($module == 'Products' && !empty($_REQUEST['del_file_list'])) {
+		// Remove the deleted attachments from db
+		if (!empty($_REQUEST['del_file_list'])) {
 			$del_file_list = explode("###",trim($_REQUEST['del_file_list'],"###"));
-			foreach($del_file_list as $del_file_name)
-			{
+			foreach ($del_file_list as $del_file_name) {
 				$attach_res = $adb->pquery("select vtiger_attachments.attachmentsid from vtiger_attachments inner join vtiger_seattachmentsrel on vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid where crmid=? and name=?", array($id,$del_file_name));
 				$attachments_id = $adb->query_result($attach_res,0,'attachmentsid');
 
@@ -291,6 +289,9 @@ class Products extends CRMEntity {
 			}
 		}
 
+		if (count($_FILES)>0) {
+			parent::insertIntoAttachment($id, $module, $direct_import);
+		}
 		$log->debug("Exiting from insertIntoAttachment($id,$module) method.");
 	}
 
