@@ -43,8 +43,8 @@ function DelImage($id)
 		if ($result and $adb->num_rows($result)==1) {
 			include_once "modules/$imgmod/$imgmod.php";
 			$crmmod = new $imgmod();
-			$tblname = $adb->query_result($result, $fnum, 'tablename');
-			$colname = $adb->query_result($result, $fnum, 'columnname');
+			$tblname = $adb->query_result($result, 0, 'tablename');
+			$colname = $adb->query_result($result, 0, 'columnname');
 			$upd = "update $tblname set $colname='' where ".$crmmod->tab_name_index[$tblname].'=?';
 			$adb->pquery($upd, array($id));
 		}

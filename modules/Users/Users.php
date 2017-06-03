@@ -909,16 +909,13 @@ class Users extends CRMEntity {
 	 * @param $module -- module name:: Type varchar
 	 * @param $file_details -- file details array:: Type array
 	 */
-	function uploadAndSaveFile($id, $module, $file_details, $attachmentname='', $direct_import=false) {
-		global $log;
-		$log->debug("Entering into uploadAndSaveFile($id,$module,$file_details) method.");
-
-		global $current_user, $upload_badext;
+	function uploadAndSaveFile($id, $module, $file_details, $attachmentname='', $direct_import=false, $forfield='') {
+		global $log, $current_user, $upload_badext;
 
 		$date_var = date('Y-m-d H:i:s');
 
 		//to get the owner id
-		$ownerid = $this->column_fields['assigned_user_id'];
+		$ownerid = (isset($this->column_fields['assigned_user_id']) ? $this->column_fields['assigned_user_id'] : $current_user->id);
 		if (!isset($ownerid) || $ownerid == '')
 			$ownerid = $current_user->id;
 
@@ -966,8 +963,6 @@ class Users extends CRMEntity {
 		} else {
 			$log->debug("Skip the save attachment process.");
 		}
-		$log->debug("Exiting from uploadAndSaveFile($id,$module,$file_details) method.");
-
 		return;
 	}
 

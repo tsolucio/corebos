@@ -1800,8 +1800,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$sub_det = $sub_products . "::" . str_replace(":", "<br>", $sub_prod);
 					$qty_stock = $adb->query_result($list_result, $list_result_count, 'qtyinstock');
 
-					//fix for T6943
-
 					$slashes_temp_val = popup_from_html($field_val);
 					$slashes_temp_val = htmlspecialchars($slashes_temp_val, ENT_QUOTES, $default_charset);
 					$description = popup_from_html($adb->query_result($list_result, $list_result_count, 'description'));
