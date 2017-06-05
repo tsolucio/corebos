@@ -108,7 +108,7 @@
 <defaultvalue></defaultvalue>
 <sequence>5</sequence>
 <maximumlength>100</maximumlength>
-<typeofdata>D~M~OTH~GE~dtstart~Start Date Time</typeofdata>
+<typeofdata>D~M</typeofdata>
 <quickcreate>1</quickcreate>
 <quickcreatesequence></quickcreatesequence>
 <displaytype>1</displaytype>
