@@ -1279,6 +1279,9 @@ class QueryGenerator {
 	}
 
 	public function startGroup($groupType='') {
+		if ($this->groupInfo == '') {
+			$groupType=''; // first grouping cannot have glue
+		}
 		$this->groupInfo .= " $groupType (";
 	}
 
