@@ -114,6 +114,11 @@ if(isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 				$value['repeatMonth_daytype'] = $recurringInfo['repeatmonth_daytype'];
 				$value['repeatMonth_day'] = $recurringInfo['dayofweek_to_repeat'][0];
 			}
+		} else {
+			$value['repeatMonth'] = $value['repeatMonth_daytype'] = $value['repeatMonth_day'] = $value['repeat_frequency'] = $value['repeatMonth_date'] = '';
+			for ($i = 0; $i < 7; ++$i) {
+				$value['week'.$i] = '';
+			}
 		}
 	} else {
 		$value['recurringcheck'] = 'No';

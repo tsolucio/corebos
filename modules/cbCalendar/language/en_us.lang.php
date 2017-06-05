@@ -85,6 +85,11 @@ $mod_strings = Array(
 	'Tipo Seguimiento' => 'Follow up Type',
 	'Fecha Seguimiento' => 'Follow up Date',
 	'INVITATION'=>' Invitation ',
+	'LBL_REPEATEVENT'=>'Repeat once in every',
+	'Daily'=>'Day(s)',
+	'Weekly'=>'Week(s)',
+	'Monthly'=>'Month(s)',
+	'Yearly'=>'Year',
 );
 
 ?>

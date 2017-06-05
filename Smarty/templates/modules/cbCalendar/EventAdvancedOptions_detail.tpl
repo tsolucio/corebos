@@ -56,11 +56,13 @@
 					<td width="30%" align=right><b>{$MOD.LBL_ENABLE_REPEAT}</b></td>
 					<td width="70%" align=left>{$ACTIVITYDATA.recurringcheck}</td>
 				</tr>
-				{if $ACTIVITYDATA.repeat_str neq ''}
+				{if $ACTIVITYDATA.repeat_frequency neq ''}
 				<tr>
 					<td width="30%" align=right>&nbsp;</td>
 					<td>{$MOD.LBL_REPEATEVENT}&nbsp;{$ACTIVITYDATA.repeat_frequency}&nbsp;{$MOD[$ACTIVITYDATA.recurringtype]}</td>
 				</tr>
+				{/if}
+				{if $ACTIVITYDATA.repeat_str neq ''}
 				<tr>
 					<td width="30%" align=right>&nbsp;</td>
 					<td>{$ACTIVITYDATA.repeat_str}</td>

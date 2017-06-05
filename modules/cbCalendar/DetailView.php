@@ -116,7 +116,7 @@ if($rows > 0) {
 	$data = array_merge($data, $recurringInfoDisplayData);
 } else {
 	$data['recurringcheck'] = getTranslatedString('LBL_NO', $currentModule);
-	$data['repeat_str'] = '';
+	$data['repeat_str'] = $data['repeat_frequency'] = '';
 }
 $sql = 'select vtiger_users.*,vtiger_invitees.* from vtiger_invitees left join vtiger_users on vtiger_invitees.inviteeid=vtiger_users.id where activityid=?';
 $result = $adb->pquery($sql, array($focus->id));
