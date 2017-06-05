@@ -161,10 +161,10 @@ class cbupdaterWorker {
 		$adb->pquery('update vtiger_cbupdater set execstate=?,execdate=NULL where cbupdaterid=?', array('Pending',$this->cbupdid));
 		$this->execstate = 'Pending';
 	}
-	
+
 	function ExecuteQuery($query,$params=array()) {
 		global $adb,$log;
-	
+		$paramstring = (count($params)>0 ? '&nbsp;&nbsp;'.print_r($params,true) : '');
 		$status = $adb->pquery($query,$params);
 		$this->query_count++;
 		if(is_object($status)) {
@@ -172,7 +172,7 @@ class cbupdaterWorker {
 		<tr width="100%">
 		<td width="10%">'.get_class($status).'</td>
 		<td width="10%"><span style="color:green"> S </span></td>
-		<td width="80%">'.$query.(count($params)>0?'&nbsp;&nbsp;'.print_r($params,true):'').'</td>
+		<td width="80%">'.$query.$paramstring.'</td>
 		</tr>';
 			$success_query_array[$this->success_query_count++] = $query;
 			$log->debug("Query Success ==> $query");
@@ -181,14 +181,14 @@ class cbupdaterWorker {
 		<tr width="100%">
 		<td width="25%">'.$status.'</td>
 		<td width="5%"><span style="color:red"> F </span></td>
-		<td width="70%">'.$query.'</td>
+		<td width="70%">'.$query.$paramstring.'</td>
 		</tr>';
-			$this->failure_query_array[$this->failure_query_count++] = $query;
+			$this->failure_query_array[$this->failure_query_count++] = $query.$paramstring;
 			$this->updError = true;
 			$log->debug("Query Failed ==> $query \n Error is ==> [".$adb->database->ErrorNo()."]".$adb->database->ErrorMsg());
 		}
 	}
-	
+
 	function deleteWorkflow($wfid) {
 		$this->ExecuteQuery("DELETE FROM com_vtiger_workflowtasks WHERE workflow_id=?",array($wfid));
 		$this->ExecuteQuery("DELETE FROM com_vtiger_workflows WHERE workflow_id=?", array($wfid));
