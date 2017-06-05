@@ -22,6 +22,7 @@ $mod_strings = Array(
 	'Time Start' => 'Hora Inicio',
 	'End Time' => 'Hora Fin',
 	'Due Date' => 'Fecha Vencimiento',
+	'Related with' => 'Evento Relacionado',
 	'Related To' => 'Relacionado con',
 	'Contact Name' => 'Nombre Contacto',
 	'Status' => 'Estado',

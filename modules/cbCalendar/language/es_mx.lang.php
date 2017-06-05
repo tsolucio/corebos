@@ -23,6 +23,7 @@ $mod_strings = Array(
 	'End Time' => 'Hora Fin',
 	'Due Date' => 'Fecha Vencimiento',
 	'Related To' => 'Relacionado con',
+	'Related with' => 'Evento Relacionado',
 	'Contact Name' => 'Nombre Contacto',
 	'Status' => 'Estado',
 	'Priority' => 'Prioridad',
