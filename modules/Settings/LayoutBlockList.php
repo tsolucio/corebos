@@ -392,6 +392,7 @@ function insertDetailViewBlockWidgets($cfentries,$fld_module) {
 						checkFileAccessForInclusion($widgetControllerClassFile);
 						include_once $widgetControllerClassFile;
 					}
+					$lbl = '';
 					if (class_exists($widgetControllerClass)) {
 						$widgetControllerInstance = new $widgetControllerClass;
 						if(property_exists($widgetControllerClass,'isSortable'))

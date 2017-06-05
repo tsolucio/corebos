@@ -66,7 +66,7 @@ class cbupdaterWorker {
 	var $failure_query_count=0;
 	var $success_query_array=array();
 	var $failure_query_array=array();
-	
+
 	function __construct() {
 		global $adb,$log,$current_user;
 		echo "<table width=80% align=center border=1>";
@@ -91,7 +91,7 @@ class cbupdaterWorker {
 			$this->sendError();
 		}
 	}
-	
+
 	function applyChange() {
 		if ($this->isBlocked()) return true;
 		if ($this->hasError()) $this->sendError();
@@ -104,7 +104,7 @@ class cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
+
 	function undoChange() {
 		if ($this->isBlocked()) return true;
 		if ($this->hasError()) $this->sendError();
@@ -121,7 +121,7 @@ class cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
+
 	function isApplied() {
 		return ($this->execstate=='Executed');
 	}
@@ -133,15 +133,15 @@ class cbupdaterWorker {
 	function isBlocked() {
 		return $this->blocked;
 	}
-	
+
 	function isContinuous() {
 		return ($this->execstate=='Continuous');
 	}
-	
+
 	function hasError() {
 		return ($this->updError or empty($this->cbupdid));
 	}
-	
+
 	function markApplied($stoponerror=true) {
 		if ($this->isBlocked()) return true;
 		if ($this->hasError() and $stoponerror) $this->sendError();
@@ -153,7 +153,7 @@ class cbupdaterWorker {
 		}
 		$this->execstate = 'Executed';
 	}
-	
+
 	function markUndone($stoponerror=true) {
 		if ($this->isBlocked() or $this->isContinuous()) return true;
 		if ($this->hasError() and $stoponerror) $this->sendError();
@@ -266,13 +266,13 @@ class cbupdaterWorker {
 		if ($rdo) $this->sendMsg("$module installed!");
 		else $this->sendMsgError("ERROR installing $module!");
 	}
-	
+
 	function isModuleInstalled($module) {
 		global $adb;
 		$tabrs = $adb->pquery('select count(*) from vtiger_tab where name=?',array($module));
 		return ($tabrs and $adb->query_result($tabrs, 0,0)==1);
 	}
-	
+
 	function sendMsg($msg) {
 		echo '<tr width="100%"><td colspan=3>'.$msg.'</td></tr>';
 	}
@@ -281,13 +281,13 @@ class cbupdaterWorker {
 		echo '<tr width="100%"><td colspan=3><span style="color:red">'.$msg.'</span></td></tr>';
 		$this->updError = true;
 	}
-	
+
 	function sendError() {
 		$this->updError = true;
 		echo '<tr width="100%"><td colspan=3<span style="color:red">ERROR: Class called without update record in application!!</span></td></tr></table>';
 		die();
 	}
-	
+
 	function finishExecution() {
 		echo '</table>';
 		if (count($this->failure_query_array)>0) {
