@@ -843,6 +843,13 @@ class cbCalendar extends CRMEntity {
 					$taskManager->saveTask($tasktoedit);
 				}
 			}
+
+			//Migrate Calendar/Events filters to cbCalendar.
+			$adb->pquery("UPDATE vtiger_customview SET entitytype = 'cbCalendar' WHERE entitytype IN ('Calendar','Events') AND viewname <> 'All'",array());
+			$adb->pquery("UPDATE vtiger_cvcolumnlist SET columnname = REPLACE(columnname,'Calendar_','cbCalendar_') WHERE columnname LIKE '%:Calendar_%'",array());
+			$adb->pquery("UPDATE vtiger_cvadvfilter SET columnname = REPLACE(columnname,'Calendar_','cbCalendar_') WHERE columnname LIKE '%:Calendar_%'",array());
+			$adb->pquery("UPDATE vtiger_cvstdfilter SET columnname = REPLACE(columnname,'Calendar_','cbCalendar_') WHERE columnname LIKE '%:Calendar_%'",array());
+
 		} else if($event_type == 'module.disabled') {
 			// TODO Handle actions when this module is disabled.
 		} else if($event_type == 'module.enabled') {
