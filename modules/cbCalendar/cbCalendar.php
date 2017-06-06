@@ -765,6 +765,35 @@ class cbCalendar extends CRMEntity {
 			$em = new VTEventsManager($adb);
 			$em->registerHandler('corebos.permissions.accessquery', 'modules/cbCalendar/PublicInvitePermission.php', 'PublicInvitePermissionHandler');
 			echo "<h4>Permission Event accessquery registered.</h4>";
+
+			//Date Start & Time and Date End & Time are needed on workflows conditions and templates.p
+			$evtabid = getTabid('Events');
+			$fd_migrate = array('date_start','time_start','due_date','time_end');
+			$module = Vtiger_Module::getInstance($modulename);
+			foreach ($fd_migrate as $fieldname) {
+				$frs = $adb->pquery("select * from vtiger_field where fieldname=? and tabid=?",array($fieldname,$evtabid));
+				$block = Vtiger_Block::getInstance('LBL_TASK_INFORMATION', $module);
+				while ($fldrow = $adb->fetch_array($frs)) {
+					$field1 = new Vtiger_Field();
+					$field1->name = $fldrow['fieldname'];
+					$field1->label= $fldrow['fieldlabel'];
+					$field1->column = $fldrow['columnname'];
+					$field1->table = $fldrow['tablename'];
+					$field1->uitype = $fldrow['uitype'];
+					$field1->typeofdata = $fldrow['typeofdata'];
+					$field1->displaytype = 3;
+					$field1->generatedtype = $fldrow['generatedtype'];
+					$field1->defaultvalue = $fldrow['defaultvalue'];
+					$field1->sequence = $fldrow['sequence'];
+					$field1->presence = $fldrow['presence'];
+					$field1->readonly = $fldrow['readonly'];
+					$field1->quickcreate = $fldrow['quickcreate'];
+					$field1->quickcreatesequence = $fldrow['quickcreatesequence'];
+					$field1->masseditable = $fldrow['masseditable'];
+					$field1->helpinfo = $fldrow['helpinfo'];
+					$block->addField($field1);
+				}
+			}
 		} else if($event_type == 'module.disabled') {
 			// TODO Handle actions when this module is disabled.
 		} else if($event_type == 'module.enabled') {
