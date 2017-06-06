@@ -124,7 +124,8 @@ class Validations extends processcbMap {
 		global $adb, $current_user;
 		$mapping=$this->convertMap2Array();
 		$tabid = getTabid($mapping['origin']);
-		$v = new cbValidator($arguments[0]);
+		$screen_values = $arguments[0];
+		$v = new cbValidator($screen_values);
 		$validations = array();
 		foreach ($mapping['fields'] as $valfield => $vals) {
 			$fl = $adb->pquery('select fieldlabel from vtiger_field where tabid=? and columnname=?', array($tabid,$valfield));
@@ -164,7 +165,12 @@ class Validations extends processcbMap {
 					case 'dateBefore':
 					case 'dateAfter':
 					case 'contains':
-						$v->rule($rule, $valfield, $restrictions[0])->label($i18n);
+						if (substr($restrictions[0], 0, 2)=='{{' and substr($restrictions[0], -2)=='}}' and isset($screen_values[substr($restrictions[0], 2, strlen($restrictions[0])-4)])) {
+							$rulevalue = $screen_values[substr($restrictions[0], 2, strlen($restrictions[0])-4)];
+						} else {
+							$rulevalue = $restrictions[0];
+						}
+						$v->rule($rule, $valfield, $rulevalue)->label($i18n);
 						break;
 					case 'lengthBetween':
 						if ($restrictions[0]<$restrictions[1]) {
