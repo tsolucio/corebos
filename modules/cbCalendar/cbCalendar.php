@@ -795,7 +795,7 @@ class cbCalendar extends CRMEntity {
 				}
 			}
 
-			// Migrate al the Events/Calendar workflows to cbCalendar
+			// Migrate all the Events/Calendar workflows to cbCalendar
 			$rescalwf = $adb->pquery("SELECT * FROM com_vtiger_workflows WHERE module_name IN ('Events','Calendar')",array());
 			$workflowManager = new VTWorkflowManager($adb);
 			$taskManager = new VTTaskManager($adb);
@@ -817,7 +817,7 @@ class cbCalendar extends CRMEntity {
 				$calendarWorkflow->schannualdates = $calwf['schannualdates'];
 				$calendarWorkflow->schminuteinterval = $calwf['schminuteinterval'];
 				$workflowManager->save($calendarWorkflow);
-				$adb->pquery("UPDATE com_vtiger_workflows SET nexttrigger_time=? WHERE workflow_id=?", array($calwf['nexttriger_time'], $calendarWorkflow->id));
+				$adb->pquery("UPDATE com_vtiger_workflows SET nexttrigger_time=? WHERE workflow_id=?", array((isset($calwf['nexttriger_time']) ? $calwf['nexttriger_time'] : null), $calendarWorkflow->id));
 				// get workflow tasks.
 				$rescaltk = $adb->pquery("SELECT * FROM com_vtiger_workflowtasks WHERE workflow_id = ?",array($calwf['workflow_id']));
 				while ($caltk = $adb->getNextRow($rescaltk, false)) {
