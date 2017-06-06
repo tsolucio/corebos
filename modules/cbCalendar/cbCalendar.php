@@ -794,6 +794,55 @@ class cbCalendar extends CRMEntity {
 					$block->addField($field1);
 				}
 			}
+
+			// Migrate al the Events/Calendar workflows to cbCalendar
+			$rescalwf = $adb->pquery("SELECT * FROM com_vtiger_workflows WHERE module_name IN ('Events','Calendar')",array());
+			$workflowManager = new VTWorkflowManager($adb);
+			$taskManager = new VTTaskManager($adb);
+
+			while ($calwf = $adb->getNextRow($rescalwf, false)) {
+				$calwf['test'] = str_replace('parent_id','rel_id', $calwf['test']);
+				$calwf['test'] = str_replace('contact_id','cto_id', $calwf['test']);
+				$calwf['test'] = str_replace('taskstatus','eventstatus', $calwf['test']);
+				$calendarWorkflow = $workflowManager->newWorkFlow("cbCalendar");
+				$calendarWorkflow->test = $calwf['test'];
+				$calendarWorkflow->description = $calwf['summary'];
+				$calendarWorkflow->executionCondition = $calwf['execution_condition'];
+				$calendarWorkflow->defaultworkflow = $calwf['defaultworkflow'];
+				$calendarWorkflow->type = $calwf['type'];
+				$calendarWorkflow->schtypeid = $calwf['schtypeid'];
+				$calendarWorkflow->schtime = $calwf['schtime'];
+				$calendarWorkflow->schdayofmonth = $calwf['schdayofmonth'];
+				$calendarWorkflow->schdayofweek = $calwf['schdayofweek'];
+				$calendarWorkflow->schannualdates = $calwf['schannualdates'];
+				$calendarWorkflow->schminuteinterval = $calwf['schminuteinterval'];
+				$workflowManager->save($calendarWorkflow);
+				$adb->pquery("UPDATE com_vtiger_workflows SET nexttrigger_time=? WHERE workflow_id=?", array($calwf['nexttriger_time'], $calendarWorkflow->id));
+				// get workflow tasks.
+				$rescaltk = $adb->pquery("SELECT * FROM com_vtiger_workflowtasks WHERE workflow_id = ?",array($calwf['workflow_id']));
+				while ($caltk = $adb->getNextRow($rescaltk, false)) {
+					$task = $taskManager->createTask('VTEmailTask', $calendarWorkflow->id);
+					$task->active = true;
+					$task->summary = $caltk['summary'];
+					$task->entity_type = "cbCalendar";
+					$task->recepient = "\$(assigned_user_id : (Users) email1)";
+					$task->subject = "empty taskManager";
+					$task->content = 'empty task';
+					$task->test = '';
+					$task->reevaluate = 1;
+					$taskId = $taskManager->saveTask($task);
+					//Retreive original to replace the old fieldnames and update the new task with it
+					$tasktoedit = $taskManager->retrieveTask($caltk['task_id']);
+					$tasktoedit->workflowId = $calendarWorkflow->id;
+					$tasktoedit->id = $taskId;
+					foreach ($tasktoedit as $key => $value) {
+						$tasktoedit->$key = str_replace('parent_id','rel_id', $tasktoedit->$key);
+						$tasktoedit->$key = str_replace('contact_id','cto_id', $tasktoedit->$key);
+						$tasktoedit->$key = str_replace('taskstatus','eventstatus', $tasktoedit->$key);
+					}
+					$taskManager->saveTask($tasktoedit);
+				}
+			}
 		} else if($event_type == 'module.disabled') {
 			// TODO Handle actions when this module is disabled.
 		} else if($event_type == 'module.enabled') {
