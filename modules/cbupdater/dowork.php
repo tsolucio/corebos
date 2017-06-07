@@ -101,7 +101,7 @@ if (!empty($ids)) {
 		} else {
 			$error = true;
 			$errmsg = getTranslatedString('err_noupdatefile',$currentModule);
-			cbupdater_show_error($errmsg);
+			cbupdater_show_error($errmsg. ' : ' . $upd['pathfilename']);
 		}
 	}
 } else {
