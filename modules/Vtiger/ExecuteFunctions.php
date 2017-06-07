@@ -71,19 +71,22 @@ switch ($functiontocall) {
 		$ret = getReferenceAutocomplete($term, $op, $searchinmodule, $limit, $current_user);
 		break;
 	case 'getFieldValuesFromRecord':
+		$ret = array();
 		$crmid = vtlib_purify($_REQUEST['getFieldValuesFrom']);
-		$module = getSalesEntityType($crmid);
-		$fields = vtlib_purify($_REQUEST['getTheseFields']);
-		$fields = explode(',',$fields);
-		$queryGenerator = new QueryGenerator($module, $current_user);
-		$queryGenerator->setFields($fields);
-		$queryGenerator->addCondition('id',$crmid,'e');
-		$query = $queryGenerator->getQuery();
-		$queryres=$adb->pquery($query,array());
-		if ($adb->num_rows($queryres)>0) {
-			$col=0;
-			foreach ($fields as $field) {
-				$ret[$field]=$adb->query_result($queryres,0,$col++);
+		if (!empty($crmid)) {
+			$module = getSalesEntityType($crmid);
+			$fields = vtlib_purify($_REQUEST['getTheseFields']);
+			$fields = explode(',',$fields);
+			$queryGenerator = new QueryGenerator($module, $current_user);
+			$queryGenerator->setFields($fields);
+			$queryGenerator->addCondition('id',$crmid,'e');
+			$query = $queryGenerator->getQuery();
+			$queryres=$adb->pquery($query,array());
+			if ($adb->num_rows($queryres)>0) {
+				$col=0;
+				foreach ($fields as $field) {
+					$ret[$field]=$adb->query_result($queryres,0,$col++);
+				}
 			}
 		}
 		break;
