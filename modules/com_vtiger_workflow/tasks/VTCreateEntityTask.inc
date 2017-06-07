@@ -115,20 +115,20 @@ class VTCreateEntityTask extends VTTask {
 				$newEntity->column_fields['parent_id'] = $focus->column_fields['vendor_id'];
 			}
 
-                        $cbfromid = $recordId;
-                        $cbfrommodule = getSalesEntityType($cbfromid);
-                        $bmapname = $cbfrommodule.'2'.$entityType;
-                        $cbfrom = CRMEntity::getInstance($cbfrommodule);
-                        $cbfrom->retrieve_entity_info($cbfromid, $cbfrommodule);
-                        $cbMapidFromid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
-                        if ($cbMapidFromid) $cbMapid = $cbMapidFromid;
-                        if ($cbMapid) {
-                                $cbMap = cbMap::getMapByID($cbMapid);
-                                $newEntity->column_fields = $cbMap->Mapping($cbfrom->column_fields,$newEntity->column_fields);
-                        }
-                        
-                        $newEntity->column_fields = DataTransform::sanitizeRetrieveEntityInfo($newEntity->column_fields,$handlerMeta);
-             $logbg->debug($newEntity->column_fields);
+			$cbfromid = $recordId;
+			$cbfrommodule = getSalesEntityType($cbfromid);
+			$bmapname = $cbfrommodule.'2'.$entityType;
+			$cbfrom = CRMEntity::getInstance($cbfrommodule);
+			$cbfrom->retrieve_entity_info($cbfromid, $cbfrommodule);
+			$cbMapidFromid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+			if ($cbMapidFromid) $cbMapid = $cbMapidFromid;
+			if ($cbMapid) {
+				$cbMap = cbMap::getMapByID($cbMapid);
+				$newEntity->column_fields = $cbMap->Mapping($cbfrom->column_fields,$newEntity->column_fields);
+			}
+
+			$newEntity->column_fields = DataTransform::sanitizeRetrieveEntityInfo($newEntity->column_fields,$handlerMeta);
+			$logbg->debug($newEntity->column_fields);
 			$newEntity->save($entityType);
 			relateEntities($focus, $moduleName, $recordId, $entityType, $newEntity->id);
 		} else {
@@ -136,7 +136,7 @@ class VTCreateEntityTask extends VTTask {
 			$logbg->debug($entityType);
 			$logbg->debug($fieldValueMapping);
 		}
-                $from_wf = false;
+		$from_wf = false;
 		$util->revertUser();
 	}
 

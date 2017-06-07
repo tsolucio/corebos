@@ -57,8 +57,7 @@ class VTWorkflowEntity{
 			global $adb;
 			$wsId = $this->data['id'];
 			$parts = explode('x', $wsId);
-			$result = $adb->pquery('select name from vtiger_ws_entity where id=?',
-						 array($parts[0]));
+			$result = $adb->pquery('select name from vtiger_ws_entity where id=?', array($parts[0]));
 			$rowData = $adb->raw_query_result_rowdata($result, 0);
 			$this->moduleName = $rowData['name'];
 		}
@@ -70,7 +69,6 @@ class VTWorkflowEntity{
 	}
 
 	function set($fieldName, $value){
-
 		$this->data[$fieldName] = $value;
 	}
 
