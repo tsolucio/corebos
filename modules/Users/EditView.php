@@ -89,8 +89,8 @@ $blocks = getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fie
 $smarty->assign('BLOCKS', $blocks);
 $smarty->assign("MODULE", 'Settings');
 $smarty->assign("MODE",$focus->mode);
-$smarty->assign('HOUR_FORMAT',isset($focus->imagename) ? $focus->hour_format : '');
-$smarty->assign('START_HOUR',isset($focus->imagename) ? $focus->start_hour : '');
+$smarty->assign('HOUR_FORMAT',isset($focus->hour_format) ? $focus->hour_format : '');
+$smarty->assign('START_HOUR',isset($focus->start_hour) ? $focus->start_hour : '');
 if (isset($_REQUEST['Edit']) && $_REQUEST['Edit'] == ' Edit ')
 {
 	$smarty->assign("READONLY", "readonly");
