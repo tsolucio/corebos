@@ -847,6 +847,28 @@ function __cb_getGEODistanceFromCoordinates($arr){
 	$array = array($from, $to);
 	return __cb_getGEODistance($array);
 }
+
+function __getCurrentUserID() {
+	$user = VTWorkflowUtils::previousUser();
+	if ($user) {
+		return vtws_getEntityId('Users').'x'.$user->id;
+	} else {
+		global $current_user;
+		return vtws_getEntityId('Users').'x'.$current_user->id;
+	}
+}
+
+function __getCurrentUserName($arr) {
+	global $current_user;
+	$user = VTWorkflowUtils::previousUser();
+	$userid = ($user ? $user->id : $current_user->id);
+	if (isset($arr[0]) and strtolower($arr[0])=='full') {
+		return trim(getUserFullName($userid));
+	} else {
+		return trim(getUserName($userid));
+	}
+}
+
 /** END * */
 class VTFieldExpressionEvaluater{
 	function __construct($expr){
@@ -882,6 +904,8 @@ class VTFieldExpressionEvaluater{
 				'round' => '__vt_round',
 				'ceil' => '__vt_ceil',
 				'floor' => '__vt_floor',
+				'getCurrentUserID' => '__getCurrentUserID',
+				'getCurrentUserName' => '__getCurrentUserName',
 				'getLatitude' => '__cb_getLatitude',
 				'getLongitude' => '__cb_getLongitude',
 				'getGEODistance' => '__cb_getGEODistance',

@@ -43,6 +43,7 @@ class VTExpressionsManager{
 			'today' => "get_date('today')", 'tomorrow' => "get_date('tomorrow')", 'yesterday' => "get_date('yesterday')",'time' => "get_date('time')", 'format_date' => 'format_date(date,format)', 'substring' => 'substring(stringfield,start,end)',
 			'uppercase'=>'uppercase(stringfield)', 'lowercase'=>'lowercase(stringfield)', 'uppercasefirst'=>'uppercasefirst(stringfield)', 'uppercasewords'=>'uppercasewords(stringfield)', 'round' => 'round(numericfield,decimals)',
 			'ceil' => 'ceil(numericfield)', 'floor' => 'floor(numericfield)',
+			'getCurrentUserID' => 'getCurrentUserID()','getCurrentUserName' => 'getCurrentUserName({full})',
 			'getLatitude' => 'getLatitude(address)', 'getLongitude' => 'getLongitude(address)',
 			'getGEODistance' => 'getGEODistance(address_from,address_to)',
 			'getGEODistanceFromCompanyAddress' => 'getGEODistanceFromCompanyAddress(address)',
