@@ -839,7 +839,7 @@ function alphabetic(module, url, dataid)
 		result = response.split('&#&#&#');
 		document.getElementById("ListViewContents").innerHTML = result[2];
 		if (result[1] != '')
-			salert(result[1]);
+			alert(result[1]);
 		document.getElementById('basicsearchcolumns').innerHTML = '';
 	}
 	);
