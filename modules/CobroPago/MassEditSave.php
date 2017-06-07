@@ -12,7 +12,7 @@ global $currentModule, $rstart;
 $focus = CRMEntity::getInstance($currentModule);
 
 $idlist= vtlib_purify($_REQUEST['massedit_recordids']);
-$viewid = vtlib_purify($_REQUEST['viewname']);
+$viewid = isset($_REQUEST['viewname']) ? vtlib_purify($_REQUEST['viewname']) : '';
 $return_module = urlencode(vtlib_purify($_REQUEST['massedit_module']));
 $return_action = 'index';
 
@@ -34,27 +34,26 @@ if(isset($idlist)) {
 			$focus->mode = 'edit';
 			$focus->id = $recordid;
 			if($focus->permissiontoedit()) {
-				foreach($focus->column_fields as $fieldname => $val) {
-					if(isset($_REQUEST[$fieldname."_mass_edit_check"])) {
-						if($fieldname == 'assigned_user_id'){
-							if($_REQUEST['assigntype'] == 'U') {
-								$value = vtlib_purify($_REQUEST['assigned_user_id']);
-							} elseif($_REQUEST['assigntype'] == 'T') {
-								$value = vtlib_purify($_REQUEST['assigned_group_id']);
-							}
-						} else {
-							if(is_array($_REQUEST[$fieldname]))
-								$value = vtlib_purify($_REQUEST[$fieldname]);
-							else
-								$value = trim(vtlib_purify($_REQUEST[$fieldname]));
+			foreach($focus->column_fields as $fieldname => $val) {
+				if(isset($_REQUEST[$fieldname."_mass_edit_check"])) {
+					if($fieldname == 'assigned_user_id'){
+						if($_REQUEST['assigntype'] == 'U') {
+							$value = vtlib_purify($_REQUEST['assigned_user_id']);
+						} elseif($_REQUEST['assigntype'] == 'T') {
+							$value = vtlib_purify($_REQUEST['assigned_group_id']);
 						}
-						$focus->column_fields[$fieldname] = $value;
+					} else {
+						if(is_array($_REQUEST[$fieldname]))
+							$value = vtlib_purify($_REQUEST[$fieldname]);
+						else
+							$value = trim(vtlib_purify($_REQUEST[$fieldname]));
 					}
-					else {
-						$focus->column_fields[$fieldname] = decode_html($focus->column_fields[$fieldname]);
-					}
+					$focus->column_fields[$fieldname] = $value;
+				} else {
+					$focus->column_fields[$fieldname] = decode_html($focus->column_fields[$fieldname]);
 				}
-				$focus->save($currentModule);
+			}
+			$focus->save($currentModule);
 			}
 		}
 	}

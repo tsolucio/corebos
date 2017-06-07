@@ -12,7 +12,7 @@ global $currentModule, $rstart;
 $focus = CRMEntity::getInstance($currentModule);
 
 $idlist= vtlib_purify($_REQUEST['massedit_recordids']);
-$viewid = vtlib_purify($_REQUEST['viewname']);
+$viewid = isset($_REQUEST['viewname']) ? vtlib_purify($_REQUEST['viewname']) : '';
 $return_module = urlencode(vtlib_purify($_REQUEST['massedit_module']));
 $return_action = 'index';
 
