@@ -134,7 +134,7 @@ class VTExpressionParser{
 					throw new Exception("Was expecting a closing bracket");
 				}
 			}else{
-				$this->consume('CLOSE_BRACKET', new Symbol(')'));
+				$this->consume('CLOSE_BRACKET', new VTExpressionSymbol(')'));
 			}
 			$nsym = $this->la(1);
 			if ($nsym->label == 'OPERATOR') {
