@@ -86,6 +86,7 @@ class VTExpressionParser{
 			case "FLOAT":
 				return $token->value;
 			case "SYMBOL":
+			case "REFERENCE":
 				return $token->value;
 			case "OPEN_BRACKET":
 				$val = $this->expression();
@@ -120,7 +121,7 @@ class VTExpressionParser{
 		$la2 = $this->la(2);
 		if($this->checkSymbol($la1, 'if')){
 			return $this->ifCondition();
-		}else if($la1->label=='SYMBOL' && $la2->label=='OPEN_BRACKET'){
+		}else if(($la1->label=='SYMBOL' || $la1->label=='REFERENCE') && $la2->label=='OPEN_BRACKET'){
 			$arr = array($this->nextToken()->value);
 			$this->nextToken();
 			if($this->la()->label != 'CLOSE_BRACKET'){

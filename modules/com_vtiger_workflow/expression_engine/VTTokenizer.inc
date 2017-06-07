@@ -37,7 +37,8 @@ class VTExpressionTokenizer{
 				// NOTE: Any new Operator added should be updated in VTParser.inc::$precedence and operation at VTExpressionEvaluater
 				'OPEN_BRACKET' => array('[(]', '_vt_processtoken_symbol'),
 				'CLOSE_BRACKET' => array('[)]', '_vt_processtoken_symbol'),
-				'COMMA' => array('[,]', '_vt_processtoken_symbol')
+				'COMMA' => array('[,]', '_vt_processtoken_symbol'),
+				"REFERENCE" => array('\$\((\w+) : \(([_\w]+)\) (\w+)\)', '_vt_processtoken_symbol'),
 		);
 		$tokenReArr = array();
 		$tokenNames = array();

@@ -8,6 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 require_once 'data/VTEntityDelta.php';
+require_once('modules/com_vtiger_workflow/VTSimpleTemplate.inc');
 
 class VTWorkflowEntity{
 	private $isDeleted = false;
@@ -65,6 +66,14 @@ class VTWorkflowEntity{
 	}
 
 	function get($fieldName){
+		preg_match('/\((\w+) : \(([_\w]+)\) (\w+)\)/', $fieldName, $matches);
+		if (count($matches)>0) {
+			global $current_user;
+			$ct = new VTSimpleTemplate($fieldName);
+			$entityCache = new VTEntityCache($current_user);
+			$info = $ct->render($entityCache, $this->getId());
+			return $info;
+		}
 		return (isset($this->data[$fieldName]) ? $this->data[$fieldName] : null);
 	}
 
