@@ -74,10 +74,13 @@ class VTWorkflowUtils {
 	}
 
 	/**
-	 * Get the current user
+	 * Get the previous user
 	 */
-	function currentUser() {
-		return $current_user;
+	public static function previousUser() {
+		if (count(self::$userStack)>0) {
+			return self::$userStack[count(self::$userStack)-1];
+		}
+		return false;
 	}
 
 	/**
