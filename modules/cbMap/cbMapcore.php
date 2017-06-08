@@ -54,7 +54,7 @@ class cbMapcore {
 
 	public function getXMLContent() {
 		global $log;
-		$xmlcontent=html_entity_decode($this->Map->column_fields['content']);
+		$xmlcontent=html_entity_decode($this->Map->column_fields['content'],ENT_QUOTES,'UTF-8');
 		if(self::isXML($xmlcontent)){
 			$xml=simplexml_load_string($xmlcontent);
 			return $xml;
