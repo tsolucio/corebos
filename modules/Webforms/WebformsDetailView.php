@@ -36,6 +36,7 @@ if(isset($_REQUEST['id'])){
 	$smarty->assign('MOD', $mod_strings);
 	$smarty->assign('APP', $app_strings);
 	$smarty->assign('MODULE', $currentModule);
+	$smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 	if(isset($tool_buttons)==false) {
 		$tool_buttons = Button_Check($currentModule);
 	}
