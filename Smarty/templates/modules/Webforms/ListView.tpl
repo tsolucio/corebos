@@ -91,8 +91,8 @@
 									</td>
 								</tr>
 								<tr>
-									<td nowrap="nowrap" align="left" class="small">You can Create a Webform Now. Click the link below:<br>
-										&nbsp;&nbsp;- <b><a href="index.php?module=Webforms&action=WebformsEditView&parenttab=Settings">{'LBL_CREATE_WEBFORM'|@getTranslatedString:$MODULE}</a></b><br>
+									<td nowrap="nowrap" align="left" class="small">{'LBL_CREATENEW'|@getTranslatedString:$MODULE}:<br>
+										&nbsp;&nbsp;- <b><a href="index.php?module=Webforms&action=WebformsEditView">{'LBL_CREATE_WEBFORM'|@getTranslatedString:$MODULE}</a></b><br>
 									</td>
 								</tr>
 							</table>
@@ -105,14 +105,14 @@
 					<input type="hidden" name="id" value="{$webform->getId()}"></input>
 				</form>
 				<tr bgcolor="white" onmouseover="this.className='lvtColDataHover'" onmouseout="this.className='lvtColData'" id="row_99" class="lvtColData">
-					<td onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)"><a href="index.php?module=Webforms&amp;action=WebformsDetailView&amp;id={$webform->getId()}&amp;parenttab=Settings&amp;operation=detail" id="{$webform->getId()}">{$webform->getName()}</a></td>
+					<td onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)"><a href="index.php?module=Webforms&amp;action=WebformsDetailView&amp;id={$webform->getId()}&amp;operation=detail" id="{$webform->getId()}">{$webform->getName()}</a></td>
 					<td onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">{$webform->getDescription()}</td>
 					<td onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">{$webform->getTargetModule()|@getTranslatedString}</td>
 					<td onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">{$webform->getPublicId()}</td>
 					<td onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">{$webform->getReturnUrl()}</td>
 					<td onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">{$webform->getWebDomain()}</td>
 					<td onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)" align="center"> {if $webform->getEnabled() eq 1}<img src="themes/images/prvPrfSelectedTick.gif">{else}<img src="themes/images/no.gif">{/if}</td>
-					<td onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)"><a onclick='javascript:document.getElementById("webform_popup_header").innerHTML="{$webform->getName()}";Webforms.getHTMLSource({$webform->getId()});' style="cursor:pointer;">{'LBL_SOURCE'|@getTranslatedString:$MODULE}</a> | <a href="index.php?module=Webforms&amp;action=WebformsEditView&amp;id={$webform->getId()}&amp;parenttab=Settings&amp;operation=edit">{'LBL_EDIT'|@getTranslatedString:$MODULE}</a>  | <a onclick="Webforms.deleteForm('form{$webform->getId()}',{$webform->getId()})" style="cursor:pointer;">{'LBL_DELETE'|@getTranslatedString:$MODULE}</a> </td>
+					<td onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)"><a onclick='javascript:document.getElementById("webform_popup_header").innerHTML="{$webform->getName()}";Webforms.getHTMLSource({$webform->getId()});' style="cursor:pointer;">{'LBL_SOURCE'|@getTranslatedString:$MODULE}</a> | <a href="index.php?module=Webforms&amp;action=WebformsEditView&amp;id={$webform->getId()}&amp;operation=edit">{'LBL_EDIT'|@getTranslatedString:$MODULE}</a>  | <a onclick="Webforms.deleteForm('form{$webform->getId()}',{$webform->getId()})" style="cursor:pointer;">{'LBL_DELETE'|@getTranslatedString:$MODULE}</a> </td>
 				</tr>
 				{/foreach}
 			</table>

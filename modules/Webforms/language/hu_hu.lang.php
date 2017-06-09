@@ -50,5 +50,6 @@ $mod_strings = array(
 	'LBL_DUPLICATE_NAME' => 'Ilyen nevű űrlap már létezik',
 	'ERR_CREATE_WEBFORM' => 'Űrlap létrehozási hiba',
 	'LBL_WEB_DOMAIN' => 'Web Domain',
+	'LBL_CREATENEW' => 'You can Create a Webform Now. Click the link below',
 );
 ?>

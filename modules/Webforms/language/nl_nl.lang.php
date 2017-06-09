@@ -69,6 +69,7 @@ $mod_strings = Array (
 	'LBL_SELECT_VALUE'=>'--Selecteer Waarde --',
 	'LBL_SELECT_USER'=>'Selecteer gebruiker',
 	'LBL_WEB_DOMAIN' => 'Web Domain',
+	'LBL_CREATENEW' => 'You can Create a Webform Now. Click the link below',
 );
 
 ?>

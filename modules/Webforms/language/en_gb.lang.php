@@ -45,5 +45,6 @@ $mod_strings = array(
 	'LBL_DUPLICATE_NAME' => 'Webform with same name exists',
 	'ERR_CREATE_WEBFORM' => 'Webform creation failed',
 	'LBL_WEB_DOMAIN' => 'Web Domain',
+	'LBL_CREATENEW' => 'You can Create a Webform Now. Click the link below',
 );
 ?>

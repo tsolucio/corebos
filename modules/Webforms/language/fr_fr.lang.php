@@ -46,5 +46,6 @@ $mod_strings = Array (
 	'ERR_CREATE_WEBFORM' => 'La création du formulaire web a échoué',
 	'LBL_SELECT_USER'=>'Choix utilisataur',
 	'LBL_WEB_DOMAIN' => 'Domaine Web',
+	'LBL_CREATENEW' => 'You can Create a Webform Now. Click the link below',
 );
 ?>

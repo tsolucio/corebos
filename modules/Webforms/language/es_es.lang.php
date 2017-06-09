@@ -1,7 +1,8 @@
 <?php
 /** YOUR LICENSE TEXT HERE **/
 $mod_strings = Array (
-'Webforms' => 'Formulario Web',
+'Webforms' => 'Formularios Web',
+'SINGLE_Webforms' => 'Formulario Web',
 'Allows you to manage Webforms' => 'Crea y administra formularios web para capturar oportunidades de negocio',
 'LBL_SUCCESS' => 'ha sido añadido a la aplicación.',
 'LBL_FAILURE' => 'No se ha podido añadir la entrada en la aplicación.',
@@ -39,6 +40,7 @@ $mod_strings = Array (
 'LBL_DUPLICATE_NAME' => 'Un formulario con ese nombre ya existe',
 'ERR_CREATE_WEBFORM' => 'No se ha podido crear el formulario',
 'LBL_WEB_DOMAIN' => 'Web Domain',
+'LBL_CREATENEW' => 'Pulsa el siguiente enlace para crear un formulatio web',
 );
 
 ?>

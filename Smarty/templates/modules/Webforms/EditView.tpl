@@ -103,7 +103,7 @@
 															<input type="hidden" value="{$WEBFORM->getTargetModule()}" name="targetmodule" id="targetmodule"></input>
 														{else}
 															<select id="targetmodule" name="targetmodule" onchange='javascript:Webforms.fetchFieldsView(this.value);' class="small">
-																<option value="">--module--</option>
+																<option value="">--{'LBL_MODULE'|@getTranslatedString}--</option>
 																 {foreach item=module from=$WEBFORMMODULES name=moduleloop}
 																	<option value="{$module}">{$module|@getTranslatedString:$module}</option>
 																{/foreach}
