@@ -164,7 +164,6 @@ if(isset($_REQUEST['mode']) and $_REQUEST['mode'] == 'create') {
 	global $app_strings, $mod_strings, $default_charset;
 	require_once('modules/Emails/mail.php');
 	$user_emailid = $focus->column_fields['email1'];
-	// send email on Create user only if NOTIFY_OWNER_EMAILS is set to true
 
 	$subject = $mod_strings['User Login Details'];
 	$email_body = $app_strings['MSG_DEAR']." ". $focus->column_fields['last_name'] .",<br><br>";

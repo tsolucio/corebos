@@ -227,7 +227,7 @@ function HelpDesk_notifyOwnerOnTicketChange($entityData) {
 						.' : '.$entityId.' ] '.$reply.$entityData->get('ticket_title');
 
 	$email_body = HelpDesk::getTicketEmailContents($entityData);
-	if(PerformancePrefs::getBoolean('NOTIFY_OWNER_EMAILS', true) === true){
+	if (GlobalVariable::getVariable('HelpDesk_Notify_Owner_EMail', 1, 'HelpDesk')) {
 		//send mail to the assigned to user and the parent to whom this ticket is assigned
 		require_once('modules/Emails/mail.php');
 		$wsAssignedUserId = $entityData->get('assigned_user_id');

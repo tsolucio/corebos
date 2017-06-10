@@ -301,6 +301,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => '"Reply To" email address for emails going out from the HelpDesk support module (and some other system emails). It will only be used if it is different from HelpDesk_Support_EMail',
 ),
+'HelpDesk_Notify_Owner_EMail' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Performance',
+	'values' => '0 | 1',
+	'definition' => 'If set to 1 and email will be sent to the owner of the HelpDesk Ticket when it changes, if set to 0 no email will be sent to the owner. This can be overriden with workflows, it only applies to the default workflows. The default value is 1.',
+),
 'Application_Single_Pane_View' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
