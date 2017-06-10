@@ -1193,4 +1193,11 @@
 	<classname>supportForImageFieldsonProducts</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Migrate config.performance.php variables to Global Variables module.</description>
+	<filename>build/changeSets/2017/delConfigPerformance.php</filename>
+	<classname>delConfigPerformance</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
