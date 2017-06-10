@@ -33,6 +33,10 @@ $dbconfig['db_hostname'] = $dbconfig['db_server'].$dbconfig['db_port'];
 // log_sql default value = false
 $dbconfig['log_sql'] = false;
 
+// Should the caller information be captured in SQL Logging?
+// Adds a little overhead for performance but will be useful for debugging
+$SQL_LOG_INCLUDE_CALLER = false;
+
 // persistent default value = true
 $dbconfigoption['persistent'] = true;
 
@@ -125,6 +129,9 @@ $default_timezone = 'UTC';
 if(isset($default_timezone) && function_exists('date_default_timezone_set')) {
 	@date_default_timezone_set($default_timezone);
 }
+
+// Enable log4php debugging only if requried
+$LOG4PHP_DEBUG = false;
 
 // Override with developer settings
 if(file_exists('config-dev.inc.php')){

@@ -16,9 +16,7 @@
 require_once('config.php');
 
 // Performance Optimization: Configure the log folder
-@include_once('config.performance.php');
-global $PERFORMANCE_CONFIG;
-if(isset($PERFORMANCE_CONFIG) && isset($PERFORMANCE_CONFIG['LOG4PHP_DEBUG']) && $PERFORMANCE_CONFIG['LOG4PHP_DEBUG']) {
+if (!empty($LOG4PHP_DEBUG)) {
 	define('LOG4PHP_DIR', 'log4php.debug');
 	require_once(LOG4PHP_DIR.'/Logger.php');
 	Logger::configure('log4php.properties');

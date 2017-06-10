@@ -160,10 +160,10 @@ class PearDatabase{
 	var $avoidPreparedSql = false;
 
 	/**
-	 * Performance tunning parameters (can be configured through performance.prefs.php)
+	 * Performance tunning parameters
 	 * See the constructor for initialization
 	 */
-	var $isdb_default_utf8_charset = false;
+	var $isdb_default_utf8_charset = true;
 	var $enableCache = false;
 
 	var $_cacheinstance = false; // Will be auto-matically initialized if $enableCache is true
@@ -296,10 +296,10 @@ class PearDatabase{
 	 * Put out the SQL timing information
 	 */
 	function logSqlTiming($startat, $endat, $sql, $params=false) {
-		global $logsqltm;
+		global $logsqltm, $SQL_LOG_INCLUDE_CALLER;
 		// Specifically for timing the SQL execution, you need to enable DEBUG in log4php.properties
 		if($logsqltm->isDebugEnabled()){
-			if(PerformancePrefs::getBoolean('SQL_LOG_INCLUDE_CALLER', false)) {
+			if (!empty($SQL_LOG_INCLUDE_CALLER)) {
 				$callers = debug_backtrace();
 				$callerscount = count($callers);
 				$callerfunc = '';
@@ -907,7 +907,6 @@ class PearDatabase{
 		$this->resetSettings($dbtype,$host,$dbname,$username,$passwd);
 
 		// Initialize performance parameters
-		$this->isdb_default_utf8_charset = PerformancePrefs::getBoolean('DB_DEFAULT_CHARSET_UTF8');
 		$this->enableCache = PerformancePrefs::getBoolean('CACHE_QUERY_RESULT', false);
 
 		if(!isset($this->dbType)) {
