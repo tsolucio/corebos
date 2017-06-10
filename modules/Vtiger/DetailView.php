@@ -157,5 +157,5 @@ $smarty->assign('Module_Popup_Edit',isset($_REQUEST['Module_Popup_Edit']) ? vtli
 // Record Change Notification
 $focus->markAsViewed($current_user->id);
 
-$smarty->assign('DETAILVIEW_AJAX_EDIT', PerformancePrefs::getBoolean('DETAILVIEW_AJAX_EDIT', true));
+$smarty->assign('DETAILVIEW_AJAX_EDIT', GlobalVariable::getVariable('Application_DetailView_Inline_Edit', 1));
 ?>

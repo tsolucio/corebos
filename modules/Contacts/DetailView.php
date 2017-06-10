@@ -210,7 +210,7 @@ $smarty->assign('DEFAULT_ACTION_PANEL_STATUS',($DEFAULT_ACTION_PANEL_STATUS ? ''
 // Record Change Notification
 $focus->markAsViewed($current_user->id);
 
-$smarty->assign('DETAILVIEW_AJAX_EDIT', PerformancePrefs::getBoolean('DETAILVIEW_AJAX_EDIT', true));
+$smarty->assign('DETAILVIEW_AJAX_EDIT', GlobalVariable::getVariable('Application_DetailView_Inline_Edit', 1));
 
 $smarty->display('DetailView.tpl');
 ?>
