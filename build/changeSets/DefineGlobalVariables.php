@@ -43,6 +43,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_AdminLoginIPs',
 				'Application_UserLoginIPs',
 				'Application_Action_Panel_Open',
+				'Application_DetailView_Record_Navigation',
 				'Application_Search_Panel_Open',
 				'Application_TrackerMaxHistory',
 				'Application_Announcement',

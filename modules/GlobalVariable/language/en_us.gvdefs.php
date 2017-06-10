@@ -266,6 +266,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Compute list view record count while loading listview. The default is 0',
 ),
+'Application_DetailView_Record_Navigation' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Performance',
+	'values' => '0 | 1',
+	'definition' => 'Saves information to permit navigating on DetailView, respecting the current ListView selection. The default is 1',
+),
 'Application_Upload_MaxSize' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Integer',

@@ -276,7 +276,7 @@ $smarty->assign("VALIDATION_DATA_FIELDLABEL",$data2['fieldlabel']);
 
 $smarty->assign("MODULE",$currentModule);
 
-if(PerformancePrefs::getBoolean('DETAILVIEW_RECORD_NAVIGATION', true) && isset($_SESSION[$currentModule.'_listquery'])){
+if (GlobalVariable::getVariable('Application_DetailView_Record_Navigation', 1) && isset($_SESSION[$currentModule.'_listquery'])){
 	$recordNavigationInfo = ListViewSession::getListViewNavigation($focus->id);
 	VT_detailViewNavigation($smarty,$recordNavigationInfo,$focus->id);
 }
