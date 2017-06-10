@@ -247,10 +247,17 @@ $GlobalVariableDefinitons = array(
 ),
 'Application_ListView_Record_Change_Indicator' => array(
 	'status' => 'Implemented',
-	'valuetype' => 'integer',
+	'valuetype' => 'Integer',
 	'category' => 'Performance',
 	'values' => '0 | 1',
 	'definition' => 'Compute record change indication for each record shown on listview. The default is 1',
+),
+'Application_ListView_Default_Sorting' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Performance',
+	'values' => '0 | 1',
+	'definition' => 'Turn-off default sorting in ListView, could eat up time as data grows. The default is 0',
 ),
 'Application_Upload_MaxSize' => array(
 	'status' => 'Implemented',
