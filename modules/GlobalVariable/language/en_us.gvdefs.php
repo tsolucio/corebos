@@ -245,6 +245,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'ASC | DESC',
 	'definition' => 'Initial sort order for records when clicking on list view header. The default is ASC',
 ),
+'Application_ListView_Record_Change_Indicator' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'integer',
+	'category' => 'Performance',
+	'values' => '0 | 1',
+	'definition' => 'Compute record change indication for each record shown on listview. The default is 1',
+),
 'Application_Upload_MaxSize' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Integer',

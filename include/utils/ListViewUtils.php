@@ -966,7 +966,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 				}
 			}
 			// Record Change Notification
-			if (method_exists($focus, 'isViewed') && PerformancePrefs::getBoolean('LISTVIEW_RECORD_CHANGE_INDICATOR', true)) {
+			if (method_exists($focus, 'isViewed') && GlobalVariable::getVariable('Application_ListView_Record_Change_Indicator', 1, $module)) {
 				if (!$focus->isViewed($entity_id)) {
 					$links_info .= " | <img src='" . vtiger_imageurl('important1.gif', $theme) . "' border=0>";
 				}
