@@ -576,7 +576,7 @@ class Services extends CRMEntity {
 		$image_path=$theme_path."images/";
 
 		$computeCount = (isset($_REQUEST['withCount']) ? $_REQUEST['withCount'] : false);
-		if (PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true || ((boolean) $computeCount) == true) {
+		if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0, 'PriceBooks') || ((boolean) $computeCount) == true) {
 			$rs = $adb->query(mkCountQuery($query));
 			$noofrows = $adb->query_result($rs,0,'count');
 		}else{

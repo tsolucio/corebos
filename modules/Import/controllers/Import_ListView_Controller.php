@@ -67,7 +67,7 @@ class Import_ListView_Controller {
 		// Fetch only last imported records
 		$list_query .= ' AND '.$focus->table_name.'.'.$focus->table_index.' IN ('. implode(',', $importedRecordIds).')';
 
-		if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true){
+		if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0, $moduleName)) {
 			$count_result = $adb->query( mkCountQuery( $list_query));
 			$noofrows = $adb->query_result($count_result,0,"count");
 		}else{

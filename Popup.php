@@ -466,7 +466,7 @@ $smarty->assign("HEADERCOUNT",count($listview_header)+1);
 
 $listview_entries = getSearchListViewEntries($focus,"$currentModule",$list_result,$navigation_array,$form);
 $smarty->assign("LISTENTITY", $listview_entries);
-if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true){
+if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0, $currentModule)) {
 	$record_string = getRecordRangeMessage($list_result, $limstart, $noofrows);
 } else {
 	$record_string = '';

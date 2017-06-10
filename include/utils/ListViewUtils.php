@@ -3732,7 +3732,7 @@ function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $
 		onkeypress=\"$jsHandler\">";
 	$output .= "<span name='listViewCountContainerName' class='small' style='white-space: nowrap;'>";
 	$computeCount = isset($_REQUEST['withCount']) ? $_REQUEST['withCount'] : '';
-	if (PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true || ((boolean) $computeCount) == true) {
+	if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0, $module) || ((boolean) $computeCount) == true) {
 		$output .= $app_strings['LBL_LIST_OF'] . ' ' . $navigation_array['verylast'];
 	} else {
 		$output .= "<img src='" . vtiger_imageurl('windowRefresh.gif', $theme) . "' alt='" . $app_strings['LBL_HOME_COUNT'] . "'
@@ -4154,7 +4154,7 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '
 		style='width: 3em;margin-right: 0.7em;' onchange=\"$jsNavigate\"
 		onkeypress=\"$jsHandler\">";
 	$output .= "<span name='" . $module . "_listViewCountContainerName' class='small' style='white-space: nowrap;'>";
-	if (PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true) {
+	if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0, $module)) {
 		$output .= $app_strings['LBL_LIST_OF'] . ' ' . $navigation_array['verylast'];
 	} else {
 		$output .= "<img src='" . vtiger_imageurl('windowRefresh.gif', $theme) . "' alt='" . $app_strings['LBL_HOME_COUNT'] . "'
@@ -4200,7 +4200,7 @@ function getRecordRangeMessage($listResult, $limitStartRecord, $totalRows = '') 
 	if ($numRows > 0) {
 		$recordListRangeMsg = $app_strings['LBL_SHOWING'] . ' ' . $app_strings['LBL_RECORDS'] .
 				' ' . ($limitStartRecord + 1) . ' - ' . ($limitStartRecord + $numRows);
-		if (PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true) {
+		if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0)) {
 			$recordListRangeMsg .= ' ' . $app_strings['LBL_LIST_OF'] . " $totalRows";
 		}
 	}

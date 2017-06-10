@@ -259,6 +259,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Turn-off default sorting in ListView, could eat up time as data grows. The default is 0',
 ),
+'Application_ListView_Compute_Page_Count' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Performance',
+	'values' => '0 | 1',
+	'definition' => 'Compute list view record count while loading listview. The default is 0',
+),
 'Application_Upload_MaxSize' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Integer',

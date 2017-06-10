@@ -225,7 +225,7 @@ if (GlobalVariable::getVariable('Debug_ListView_Query', '0')=='1') {
 	echo '<br>'.$list_query.'<br>';
 }
 try {
-if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true){
+if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0)) {
 	$count_query = preg_replace("/[\n\r\s]+/", " ", $list_query);
 	$count_query = 'SELECT 1 ' . substr($count_query, stripos($count_query, ' FROM '), strlen($count_query));
 	if (stripos($count_query, 'ORDER BY') > 0)

@@ -1454,7 +1454,7 @@ function getEventList(& $calendar,$start_date,$end_date,$info='')
 	$group_cond .= " GROUP BY vtiger_activity.activityid ORDER BY vtiger_activity.date_start,vtiger_activity.time_start ASC";
 
 	//Ticket 6476
-	if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true){
+	if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0)) {
 		$count_result = $adb->pquery( mkCountQuery( $query),$params);
 		$noofrows = $adb->query_result($count_result,0,"count");
 	}else{
@@ -1683,8 +1683,8 @@ function getTodoList(& $calendar,$start_date,$end_date,$info='')
 	else 
 		$start = 1;
 
-//T6477 changes
-	if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true){
+	//T6477 changes
+	if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0)) {
 		$count_res = $adb->pquery(mkCountQuery($query), $params);
 		$total_rec_count = $adb->query_result($count_res,0,'count');
 	}else{

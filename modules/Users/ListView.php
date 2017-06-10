@@ -73,7 +73,7 @@ if(!empty($order_by)){
 	$list_query .= ' ORDER BY '.$order_by.' '.$sorder;
 }
 
-if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true){
+if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0)) {
 	$count_result = $adb->query( mkCountQuery($list_query));
 	$noofrows = $adb->query_result($count_result,0,"count");
 }else{

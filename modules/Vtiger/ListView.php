@@ -131,7 +131,7 @@ if (GlobalVariable::getVariable('Debug_ListView_Query', '0')=='1') {
 	echo '<br>'.$list_query.'<br>';
 }
 try {
-if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true) {
+if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0)) {
 	list($specialPermissionWithDuplicateRows,$cached) = VTCacheUtils::lookupCachedInformation('SpecialPermissionWithDuplicateRows');
 	if ($specialPermissionWithDuplicateRows) {
 		$count_result = $adb->query(mkCountWithFullQuery($list_query));
