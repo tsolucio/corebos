@@ -96,7 +96,7 @@ $smarty->assign("MOD",$mod_strings);
 $smarty->assign("APP",$app_strings);
 $smarty->assign("THEME", $theme);
 $smarty->assign("LAYOUT", $numberofcols);
-$widgetBlockSize = PerformancePrefs::getBoolean('HOME_PAGE_WIDGET_GROUP_SIZE', 12);
+$widgetBlockSize = GlobalVariable::getVariable('HomePage_Widget_Group_Size', 12, 'Home');
 $smarty->assign('widgetBlockSize', $widgetBlockSize);
 
 // First time login check

@@ -308,6 +308,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'If set to 1 and email will be sent to the owner of the HelpDesk Ticket when it changes, if set to 0 no email will be sent to the owner. This can be overriden with workflows, it only applies to the default workflows. The default value is 1.',
 ),
+'HomePage_Widget_Group_Size' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Performance',
+	'values' => '',
+	'definition' => 'Number of ajax requests on home page, reduce this value if home page widgets dont show values. The default value is 12.',
+),
 'Application_Single_Pane_View' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
