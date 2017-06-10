@@ -13,6 +13,7 @@ require_once('data/Tracker.php');
 require_once('include/utils/utils.php');
 require_once('include/utils/UserInfoUtil.php');
 require_once('modules/com_vtiger_workflow/VTWorkflowManager.inc');
+$VTIGER_BULK_SAVE_MODE = false; // mass create/import global variable
 
 class CRMEntity {
 

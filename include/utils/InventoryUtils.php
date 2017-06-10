@@ -1041,6 +1041,7 @@ function updateProductStockFromDatabase($recordId,$add=true) {
 
 function createRecords($obj) {
 	global $adb, $VTIGER_BULK_SAVE_MODE;
+	$previousBulkSaveMode = isset($VTIGER_BULK_SAVE_MODE) ? $VTIGER_BULK_SAVE_MODE : false;
 	$moduleName = $obj->module;
 
 	$moduleHandler = vtws_getModuleHandlerFromName($moduleName, $obj->user);
@@ -1147,7 +1148,7 @@ function createRecords($obj) {
 							try{
 								$VTIGER_BULK_SAVE_MODE = false;
 								$psInfo = vtws_create($referenceModuleName, $pdoinfo, $obj->user);
-								$VTIGER_BULK_SAVE_MODE = true;
+								$VTIGER_BULK_SAVE_MODE = $previousBulkSaveMode;
 								$entityId = $psInfo['id'];
 							} catch (Exception $e){
 								continue 2; // ignore this line
