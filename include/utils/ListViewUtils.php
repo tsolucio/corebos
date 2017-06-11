@@ -3845,11 +3845,9 @@ function getListViewDeleteLink($module, $entity_id, $relatedlist, $returnset, $l
 	}
 	if ($isCustomModule && !in_array($requestAction, Array('index', 'ListView'))) {
 		$requestRecord = vtlib_purify($_REQUEST['record']);
-		$parenttab = vtlib_purify($_REQUEST['parenttab']);
 		$del_link = "index.php?module=$requestModule&action=updateRelations&parentid=$requestRecord";
-		$del_link .= "&destination_module=$module&idlist=$entity_id&mode=delete&parenttab=$parenttab";
+		$del_link .= "&destination_module=$module&idlist=$entity_id&mode=delete";
 	}
-	// END
 
 	return $del_link;
 }

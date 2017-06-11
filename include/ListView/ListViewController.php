@@ -827,6 +827,7 @@ class ListViewController {
 
 		$moduleFields = $meta->getModuleFields();
 		$i =0;
+		$OPTION_SET = array();
 		foreach ($moduleFields as $fieldName=>$field) {
 			if($field->getFieldDataType() == 'reference') {
 				$typeOfData = 'V';

@@ -318,7 +318,7 @@ class Project extends CRMEntity {
 		$thumbGanttChartImageUrl = $image;
 		$entries[0] = array("<a href='$fullGanttChartImageUrl' border='0' target='_blank'><img src='$thumbGanttChartImageUrl' border='0'></a>");
 
-		return array('header'=> $headers, 'entries'=> $entries);
+		return array('header'=> $headers, 'entries'=> $entries,'navigation'=>array('',''));
 	}
 }
 ?>
