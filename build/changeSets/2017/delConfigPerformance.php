@@ -66,12 +66,6 @@ class delConfigPerformance extends cbupdaterWorker {
 				$rec['value'] = 1;
 				vtws_create('GlobalVariable', $rec, $current_user);
 			}
-			if (isset($PERFORMANCE_CONFIG) and isset($PERFORMANCE_CONFIG['LISTVIEW_COMPUTE_PAGE_COUNT']) and $PERFORMANCE_CONFIG['LISTVIEW_COMPUTE_PAGE_COUNT']) {
-				$rec = $default_values;
-				$rec['gvname'] = 'Application_ListView_Compute_Page_Count';
-				$rec['value'] = 1;
-				vtws_create('GlobalVariable', $rec, $current_user);
-			}
 			if (isset($PERFORMANCE_CONFIG) and isset($PERFORMANCE_CONFIG['DETAILVIEW_RECORD_NAVIGATION']) and !$PERFORMANCE_CONFIG['DETAILVIEW_RECORD_NAVIGATION']) {
 				$rec = $default_values;
 				$rec['gvname'] = 'Application_DetailView_Record_Navigation';
