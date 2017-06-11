@@ -525,14 +525,14 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Nombre maximum de colonnes pouvant être dêefinie en affichage par liste. La valeur par défaut est (12).',
 ),
-'Application_Action_Panel_Open' => array(
+'Application_DetailView_ActionPanel_Open' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Booléen',
 	'category' => 'Application',
 	'values' => '0 | 1',
 	'definition' => 'Permet de cacher (0) ou d\'afficher (1) le panneau droit en  mode aperçu détaillé. La valeur par défaut est (1).',
 ),
-'Application_Search_Panel_Open' => array(
+'Application_ListView_SearchPanel_Open' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Booléen',
 	'category' => 'Application',

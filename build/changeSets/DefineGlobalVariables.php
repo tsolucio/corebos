@@ -42,10 +42,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_ExpirePasswordAfterDays',
 				'Application_AdminLoginIPs',
 				'Application_UserLoginIPs',
-				'Application_Action_Panel_Open',
 				'Application_DetailView_Inline_Edit',
 				'Application_DetailView_Record_Navigation',
-				'Application_Search_Panel_Open',
 				'Application_TrackerMaxHistory',
 				'Application_Announcement',
 				'Application_Display_World_Clock',
@@ -257,6 +255,12 @@ class DefineGlobalVariables extends cbupdaterWorker {
 							'to' => 1
 						),
 					)
+				),
+				'Application_Action_Panel_Open' => array(
+					'to' => 'Application_DetailView_ActionPanel_Open',
+				),
+				'Application_Search_Panel_Open' => array(
+					'to' => 'Application_ListView_SearchPanel_Open',
 				),
 			);
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');

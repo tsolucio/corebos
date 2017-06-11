@@ -581,14 +581,14 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Maximum number of columns that can be set on a list view. The default is 12.',
 ),
-'Application_Action_Panel_Open' => array(
+'Application_DetailView_ActionPanel_Open' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
 	'values' => '0 | 1',
 	'definition' => 'If set to 0 the right action panel in detail view will be hidden. The default is 1 showing the action panel. It can be toggled using the icon on top.',
 ),
-'Application_Search_Panel_Open' => array(
+'Application_ListView_SearchPanel_Open' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
