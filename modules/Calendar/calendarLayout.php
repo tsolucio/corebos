@@ -1359,7 +1359,7 @@ function getEventList(& $calendar,$start_date,$end_date,$info='')
 	$category = getParentTab();
 	global $adb,$current_user,$mod_strings,$app_strings,$cal_log,$listview_max_textlength,$list_max_entries_per_page;
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
-        require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
 	$cal_log->debug("Entering getEventList() method...");
 
 	$and = "AND (
@@ -1424,11 +1424,11 @@ function getEventList(& $calendar,$start_date,$end_date,$info='')
 			$com_q = " AND vtiger_crmentity.smownerid = ?
 				GROUP BY vtiger_activity.activityid";
 		}
-			
+
 		$pending_query = $query." AND (vtiger_activity.eventstatus = 'Planned')".$com_q;
 		$total_q =  $query."".$com_q;
 		array_push($info_params, $current_user->id);
-		
+
 		if (count($groupids) > 0) {
 			array_push($info_params, $groupids);
 		}
@@ -1702,7 +1702,6 @@ function getTodoList(& $calendar,$start_date,$end_date,$info='')
 	if($start_rec < 0)
 		$start_rec = 0;
 
-	//ends
 	$query .= $group_cond." limit $start_rec,$list_max_entries_per_page";
 
 	$result = $adb->pquery($query, $params);
@@ -1710,29 +1709,27 @@ function getTodoList(& $calendar,$start_date,$end_date,$info='')
 	$c=0;
 	if($start > 1)
 		$c = ($start-1) * $list_max_entries_per_page;
-	for($i=0;$i<$rows;$i++)
-        {
-		
-                $element = Array();
+	for ($i=0;$i<$rows;$i++) {
+		$element = Array();
 		$contact_name = '';
-                $element['no'] = $c+1;
-                $more_link = "";
-                $start_time = $adb->query_result($result,$i,"time_start");
-				$date_start = $adb->query_result($result,$i,"date_start");
-				$due_date = $adb->query_result($result,$i,"due_date");
-				$date = new DateTimeField($date_start.' '.$start_time);
-				$endDate = new DateTimeField($due_date);
-				if(!empty($start_time)){
-					$start_time = $date->getDisplayTime();
-				}
-                $format = $calendar['calendar']->hour_format;
-				$value = getaddEventPopupTime($start_time,$start_time,$format);
-                $element['starttime'] = $value['starthour'].':'.$value['startmin'].''.$value['startfmt'];
-				$element['startdate'] = $date->getDisplayDate();
-				$element['duedate'] = $endDate->getDisplayDate();
+		$element['no'] = $c+1;
+		$more_link = "";
+		$start_time = $adb->query_result($result,$i,"time_start");
+		$date_start = $adb->query_result($result,$i,"date_start");
+		$due_date = $adb->query_result($result,$i,"due_date");
+		$date = new DateTimeField($date_start.' '.$start_time);
+		$endDate = new DateTimeField($due_date);
+		if(!empty($start_time)){
+			$start_time = $date->getDisplayTime();
+		}
+		$format = $calendar['calendar']->hour_format;
+		$value = getaddEventPopupTime($start_time,$start_time,$format);
+		$element['starttime'] = $value['starthour'].':'.$value['startmin'].''.$value['startfmt'];
+		$element['startdate'] = $date->getDisplayDate();
+		$element['duedate'] = $endDate->getDisplayDate();
 
-                $id = $adb->query_result($result,$i,"activityid");
-                $subject = $adb->query_result($result,$i,"subject");
+		$id = $adb->query_result($result,$i,"activityid");
+		$subject = $adb->query_result($result,$i,"subject");
 		$more_link = "<a href='index.php?action=DetailView&module=Calendar&record=".$id."&activity_mode=Task&viewtype=calendar&parenttab=".$category."' class='webMnu'>".$subject."</a>";
 		$element['tododetail'] = $more_link;
 		if(getFieldVisibilityPermission('Calendar',$current_user->id,'taskstatus') == '0')
