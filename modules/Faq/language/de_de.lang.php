@@ -28,14 +28,6 @@ $mod_strings = Array(
     'LBL_LIST_EMAIL_ADDRESS'=>'E-Mail',
     'LBL_LIST_CONTACT_NAME'=>'Person',
     'LBL_FAQ_INFORMATION'=>'Wissensbasis Information',
-
-    //DON'T CONVERT THESE THEY ARE MAPPINGS
-    'db_name' => 'LBL_LIST_ACCOUNT_NAME',
-    'db_website' => 'LBL_LIST_WEBSITE',
-    'db_billing_address_city' => 'LBL_LIST_CITY',
-
-    //END DON'T CONVERT
-
     'LBL_ACCOUNT'=>'Thema:',
     'LBL_ACCOUNT_NAME'=>'Themename:',
     'LBL_PHONE'=>'Telefon:',

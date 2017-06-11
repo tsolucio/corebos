@@ -27,14 +27,6 @@ $mod_strings = Array(
 'LBL_LIST_EMAIL_ADDRESS'=>'Endereço Email',
 'LBL_LIST_CONTACT_NAME'=>'Nome Contato',
 'LBL_LIST_AMOUNT' => 'Total',
-      
-//DON'T CONVERT THESE THEY ARE MAPPINGS
-'db_name' => 'LBL_LIST_ACCOUNT_NAME',
-'db_website' => 'LBL_LIST_WEBSITE',
-'db_billing_address_city' => 'LBL_LIST_CITY',
-
-//END DON'T CONVERT
-      
 'LBL_ACCOUNT'=>'Organização:',
 'LBL_ACCOUNT_NAME'=>'Nome Organização:',
 'LBL_PHONE'=>'Telefone:',
