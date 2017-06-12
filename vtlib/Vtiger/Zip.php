@@ -188,7 +188,7 @@ class Vtiger_Zip {
 	function isInsideApplication($path2check) {
 		global $root_directory;
 		$rp = realpath($path2check);
-		return (strpos($rp,$root_directory)==0);
+		return (strpos($rp,$root_directory)===0);
 	}
 
 }

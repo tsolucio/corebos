@@ -32,6 +32,15 @@ function is_admin($user) {
 }
 
 /**
+ * path is inside the application tree
+ */
+function isInsideApplication($path2check) {
+	global $root_directory;
+	$rp = realpath($path2check);
+	return (strpos($rp,$root_directory)===0);
+}
+
+/**
  * THIS FUNCTION IS DEPRECATED AND SHOULD NOT BE USED; USE get_select_options_with_id()
  * Create HTML to display select options in a dropdown list.  To be used inside
  * of a select statement in a form.
