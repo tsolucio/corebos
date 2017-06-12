@@ -259,7 +259,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$col_fields[$fieldname] = from_html($col_fields[$fieldname]);
 		} else {
 			//$col_fields[$fieldname] = preg_replace(array('/</', '/>/', '/"/'), array('&lt;', '&gt;', '&quot;'), $col_fields[$fieldname]);
-			$col_fields[$fieldname] = htmlentities($col_fields[$fieldname]); // prepare for output
+			$col_fields[$fieldname] = htmlentities($col_fields[$fieldname],ENT_QUOTES,$default_charset); // prepare for output
 		}
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$label_fld[] = $col_fields[$fieldname];
