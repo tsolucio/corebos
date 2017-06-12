@@ -1200,4 +1200,11 @@
 	<classname>delConfigPerformance</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Database table for dynamic workflow expression functions.</description>
+	<filename>build/changeSets/2017/workflowexpressionfunctions.php</filename>
+	<classname>workflowexpressionfunctions</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
