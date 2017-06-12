@@ -302,7 +302,7 @@ class GlobalVariable extends CRMEntity {
 		if (empty($gvuserid) and !empty($current_user)) $gvuserid = $current_user->id;
 		if (empty($gvuserid)) return $default;
 		if (empty($module)) $module = $currentModule;
-		$key = md5('gvcache'.$var.$module.$gvuserid);
+		$key = 'gvcache'.$var.$module.$gvuserid;
 		list($value,$found) = VTCacheUtils::lookupCachedInformation($key);
 		if ($found) {
 			$gvvalidationinfo[] = "variable found in cache";
