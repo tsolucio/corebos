@@ -240,8 +240,7 @@
                                                                            <select id="txtbox_{$keyfldname}" name="{$keyfldname}" class="small">
                                                                                 {foreach item=arr key=uid from=$keyoptions}
                                                                                         {foreach key=sel_value item=value from=$arr}
-                                                                                                <option value="{$uid}" {$value}>{if $APP.$sel_value}{$APP.$sel_value}{else}{$sel_value}{/if}</option>
-
+                                                                                                <option value="{$uid}" {$value}>{$sel_value}</option>
                                                                                         {/foreach}
                                                                                 {/foreach}
                                                                            </select>
