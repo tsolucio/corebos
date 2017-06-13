@@ -79,7 +79,8 @@
 			}
 		}
 		//  Product line support
-		if(in_array($entityName,getInventoryModules()) && is_array($element['pdoInformation'])) {
+		if (in_array($entityName,getInventoryModules()) && isset($element['pdoInformation']) && is_array($element['pdoInformation'])) {
+			$elementType = $entityName;
 			include_once 'include/Webservices/ProductLines.php';
 		} else {
 			$_REQUEST['action'] = $entityName.'Ajax';
