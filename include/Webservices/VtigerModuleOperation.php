@@ -77,8 +77,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			return $error;
 		}
 		$cfields = $crmObject->getFields();
-		$cfields = DataTransform::sanitizeForInsert($cfields,$this->meta);
-		$cfields = DataTransform::sanitizeTextFieldsForInsert($cfields,$this->meta);
+		$cfields = DataTransform::sanitizeRetrieveEntityInfo($cfields,$this->meta);
 		$element = array_merge($cfields,$element);
 		$error = $crmObject->update($element);
 		if(!$error){
@@ -98,26 +97,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 	}
 
 	public function revise($element){
-		$ids = vtws_getIdComponents($element["id"]);
-		$element = DataTransform::sanitizeForInsert($element,$this->meta);
-
-		$crmObject = new VtigerCRMObject($this->tabId, true);
-		$crmObject->setObjectId($ids[1]);
-		$error = $crmObject->revise($element);
-		if(!$error){
-			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR,
-					vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
-		}
-
-		$id = $crmObject->getObjectId();
-
-		$error = $crmObject->read($id);
-		if(!$error){
-			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR,
-					vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
-		}
-
-		return DataTransform::filterAndSanitize($crmObject->getFields(),$this->meta);
+		return $this->update($element);
 	}
 
 	public function delete($id){

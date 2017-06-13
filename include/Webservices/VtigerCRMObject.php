@@ -132,31 +132,31 @@ class VtigerCRMObject{
 		return !$error;
 	}
 
-	public function revise($element){
-		global $adb;
-		$error = false;
+// 	public function revise($element){
+// 		global $adb;
+// 		$error = false;
 
-		$error = $this->read($this->getObjectId());
-		if($error == false){
-			return $error;
-		}
+// 		$error = $this->read($this->getObjectId());
+// 		if($error == false){
+// 			return $error;
+// 		}
 
-		foreach($element as $k=>$v){
-			$this->instance->column_fields[$k] = $v;
-		}
+// 		foreach($element as $k=>$v){
+// 			$this->instance->column_fields[$k] = $v;
+// 		}
 
-		//added to fix the issue of utf8 characters
-		foreach($this->instance->column_fields as $key=>$value){
-			$this->instance->column_fields[$key] = decode_html($value);
-		}
+// 		//added to fix the issue of utf8 characters
+// 		foreach($this->instance->column_fields as $key=>$value){
+// 			$this->instance->column_fields[$key] = decode_html($value);
+// 		}
 
-		$adb->startTransaction();
-		$this->instance->mode = "edit";
-		$this->instance->Save($this->getTabName());
-		$error = $adb->hasFailedTransaction();
-		$adb->completeTransaction();
-		return !$error;
-	}
+// 		$adb->startTransaction();
+// 		$this->instance->mode = "edit";
+// 		$this->instance->Save($this->getTabName());
+// 		$error = $adb->hasFailedTransaction();
+// 		$adb->completeTransaction();
+// 		return !$error;
+// 	}
 
 	public function delete($id){
 		global $adb;
