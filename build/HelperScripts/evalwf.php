@@ -148,7 +148,7 @@ if ($workflows[$workflowid_to_evaluate]->executionCondition==VTWorkflowManager::
 	$wfcandidatesrs = $adb->pquery('SELECT * FROM com_vtiger_workflows WHERE workflow_id = ?',array($workflowid_to_evaluate));
 	echo '<br><br><table border=1><tr><th>workflow</th><th>module</th><th>next trigger</th></tr>';
 	while ($cwf=$adb->fetch_array($wfcandidatesrs)) {
-		echo '<tr><td><a href="'.$site_url.'index.php?module=com_vtiger_workflow&action=editworkflow&return_url=index.php&workflow_id='.$cwf['workflow_id'].'">'.$cwf['summary'].'</a></td><td>'.$cwf['module_name'].'</td><td>'.$cwf['nexttrigger_time'].'</td></tr>';
+		echo '<tr><td><a href="'.$site_URL.'index.php?module=com_vtiger_workflow&action=editworkflow&return_url=index.php&workflow_id='.$cwf['workflow_id'].'">'.$cwf['summary'].'</a></td><td>'.$cwf['module_name'].'</td><td>'.$cwf['nexttrigger_time'].'</td></tr>';
 	}
 	$ntt = $workflow->getNextTriggerTime();
 	echo '</table><br><br>&nbsp;Next trigger time if launched now: '.$ntt;

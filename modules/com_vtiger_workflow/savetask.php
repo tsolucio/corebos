@@ -62,7 +62,7 @@ require_once("VTWorkflowApplication.inc");
 			}
 		}
 		$task->test = $request["conditions"];
-		$task->reevaluate = ($request['reevaluate']=='on' ? 1 : 0);
+		$task->reevaluate = ((isset($request['reevaluate']) and $request['reevaluate']=='on') ? 1 : 0);
 		$tm->saveTask($task);
 
 		if(isset($request["return_url"])){

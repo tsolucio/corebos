@@ -343,7 +343,7 @@ function deleteInventoryProductDetails($focus)
 			}
 		}
 	}
-	$updateInventoryProductRel_update_product_array = $focus->update_product_array;
+	$updateInventoryProductRel_update_product_array = (isset($focus->update_product_array) ? $focus->update_product_array : array());
 	$adb->pquery("delete from vtiger_inventoryproductrel where id=?", array($focus->id));
 	$adb->pquery("delete from vtiger_inventorysubproductrel where id=?", array($focus->id));
 	$adb->pquery("delete from vtiger_inventoryshippingrel where id=?", array($focus->id));
@@ -614,7 +614,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 	if (isset($_REQUEST['adjustmentType']) and $_REQUEST['adjustmentType'] == '-')
 		$adjustmentType = vtlib_purify($_REQUEST['adjustmentType']);
 
-	$adjustment = vtlib_purify($_REQUEST['adjustment']);
+	$adjustment = (isset($_REQUEST['adjustment']) ? vtlib_purify($_REQUEST['adjustment']) : 0);
 	$updatequery .= " adjustment=?,";
 	array_push($updateparams, floatval($adjustmentType.$adjustment));
 
