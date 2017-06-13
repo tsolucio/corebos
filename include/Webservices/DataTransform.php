@@ -124,7 +124,11 @@ class DataTransform{
 		$ownerFields = $meta->getOwnerFields();
 		foreach($ownerFields as $index=>$field){
 			if(isset($row[$field]) && $row[$field]!=null){
-				$ownerDetails = vtws_getIdComponents($row[$field]);
+				if (strpos($row[$field],'x')!==false) {
+					$ownerDetails = vtws_getIdComponents($row[$field]);
+				} else {
+					$ownerDetails[1] = $row[$field];
+				}
 				$row[$field] = $ownerDetails[1];
 			}
 		}
