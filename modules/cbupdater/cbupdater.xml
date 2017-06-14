@@ -1207,4 +1207,11 @@
 	<classname>workflowexpressionfunctions</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Change TypeOf Campaign NumSent which is percentage and should be number.</description>
+	<filename>build/changeSets/2017/changeTypeOfCampaignNumSent.php</filename>
+	<classname>changeTypeOfCampaignNumSent</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
