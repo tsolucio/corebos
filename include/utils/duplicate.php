@@ -156,6 +156,7 @@ function dup_dependent_rec($record_id, $relatedModule, $new_record_id, $dependen
 				// Duplicate dependent records
 				$entity = new $module();
 				$entity->mode='';
+				$entity->isduplicate = true;
 				$entity->retrieve_entity_info($r[0],$module);
 				$entity->column_fields[$related_field] = $new_record_id;
 				$entity->column_fields = DataTransform::sanitizeRetrieveEntityInfo($entity->column_fields, $meta);
