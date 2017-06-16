@@ -89,6 +89,7 @@ $smarty->assign('CURR_ROW', 0);
 $smarty->assign('FIELDNAME', '');
 $smarty->assign('PRODUCTID', 0);
 $smarty->assign('RECORDID', 0);
+$smarty->assign('RETURN_MODULE', '');
 $smarty->assign('SELECT', '');
 switch($currentModule)
 {
@@ -271,11 +272,11 @@ if($currentModule == 'PriceBooks' && isset($_REQUEST['productid']))
 else
 {
 	$where_relquery = '';
-	if(isset($_REQUEST['recordid']) && $_REQUEST['recordid'] != '')
-	{
-		$smarty->assign("RECORDID",vtlib_purify($_REQUEST['recordid']));
-		$url_string .='&recordid='.vtlib_purify($_REQUEST['recordid']);
-		$where_relquery = getRelCheckquery($currentModule,$_REQUEST['return_module'],$_REQUEST['recordid']);
+	if (!empty($_REQUEST['recordid'])) {
+		$recid = vtlib_purify($_REQUEST['recordid']);
+		$smarty->assign('RECORDID',$recid);
+		$url_string .='&recordid='.$recid;
+		$where_relquery = getRelCheckquery($currentModule, (isset($_REQUEST['return_module']) ? $_REQUEST['return_module'] : ''), $recid);
 	}
 	if (isset($_REQUEST['relmod_id']) || isset($_REQUEST['fromPotential'])) {
 		if (isset($_REQUEST['relmod_id'])) {

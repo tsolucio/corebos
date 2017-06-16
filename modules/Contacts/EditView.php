@@ -47,7 +47,7 @@ if ($errormessage != '') {
 	$smarty->assign("ERROR_MESSAGE", $errormessage);
 }
 
-if (isset($_REQUEST['account_id']) && $_REQUEST['account_id'] != '' && $_REQUEST['record'] == '') {
+if (isset($_REQUEST['account_id']) && $_REQUEST['account_id'] != '' && empty($record)) {
 	require_once('modules/Accounts/Accounts.php');
 	$focus->column_fields['account_id'] = vtlib_purify($_REQUEST['account_id']);
 	$acct_focus = new Accounts();
@@ -68,10 +68,10 @@ if (isset($_REQUEST['account_id']) && $_REQUEST['account_id'] != '' && $_REQUEST
 	$focus->column_fields['otherpobox'] = $acct_focus->column_fields['ship_pobox'];
 }
 //needed when creating a new contact with a default account value passed in
-if (isset($_REQUEST['account_name']) && is_null($focus->account_name)) {
+if (isset($_REQUEST['account_name']) && empty($focus->account_name)) {
 	$focus->account_name = vtlib_purify($_REQUEST['account_name']);
 }
-if (isset($_REQUEST['account_id']) && is_null($focus->account_id)) {
+if (isset($_REQUEST['account_id']) && empty($focus->account_id)) {
 	$focus->account_id = vtlib_purify($_REQUEST['account_id']);
 }
 if (isset($_REQUEST['campaignid']))

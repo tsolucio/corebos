@@ -42,10 +42,10 @@
 		if($meta->hasWriteAccess()!==true){
 			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to write is denied");
 		}
-		
+
 		$referenceFields = $meta->getReferenceFieldDetails();
-		foreach($referenceFields as $fieldName=>$details){
-			if(isset($element[$fieldName]) && strlen($element[$fieldName]) > 0){
+		foreach ($referenceFields as $fieldName=>$details) {
+			if (isset($element[$fieldName]) && strlen($element[$fieldName]) > 0) {
 				$ids = vtws_getIdComponents($element[$fieldName]);
 				$elemTypeId = $ids[0];
 				$elemId = $ids[1];
@@ -62,11 +62,11 @@
 					throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,
 						"Permission to access reference type is denied ".$referenceObject->getEntityName());
 				}
-			}else if($element[$fieldName] !== NULL){
+			} else if (isset($element[$fieldName]) and $element[$fieldName] !== NULL) {
 				unset($element[$fieldName]);
 			}
 		}
-		
+
 		$meta->hasMandatoryFields($element);
 		
 		$ownerFields = $meta->getOwnerFields();

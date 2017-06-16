@@ -1,4 +1,4 @@
-<?php 
+<?php
  /*************************************************************************************************
  * Copyright 2016 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
  * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
@@ -18,17 +18,17 @@
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************
  * The accepted format is:
-  <map> 
-  <targetmodule> 
-  <targetname>ProductDetail</targetname> 
-  </targetmodule> 
-  * 
-  <fields> 
+  <map>
+  <targetmodule>
+  <targetname>ProductDetail</targetname>
+  </targetmodule>
+  *
+  <fields>
      <field>
           <fieldname>productvin</fieldname>
           <fieldID></fieldID>
           <value>productvin</value>
-          <predefined></predefined> 
+          <predefined></predefined>
           <Orgfields>
               <Relfield>
                   <RelfieldName>cf_880</RelfieldName>
@@ -39,18 +39,18 @@
       </field>
       .............
   </fields>
- <matches> 
-      <match> 
-          <fieldname>productdetailname</fieldname> 
-          <fieldID> </fieldID> 
-          <value>productdetailname</value> 
-          <predefined></predefined> 
-      </match> 
+ <matches>
+      <match>
+          <fieldname>productdetailname</fieldname>
+          <fieldID> </fieldID>
+          <value>productdetailname</value>
+          <predefined></predefined>
+      </match>
       ....................
-  </matches> 
-  <options> 
-  <update>FIRST/LAST/ALL</update> 
-  </options> 
+  </matches>
+  <options>
+  <update>FIRST/LAST/ALL</update>
+  </options>
   </map>
  *************************************************************************************************/
 
@@ -64,13 +64,13 @@ class Import extends processcbMap {
 
 	function processMap($arguments) {
 		$this->convertMap2Array();
-                $contentok = processcbMap::isXML(htmlspecialchars_decode($this->Map->column_fields['content']));
-                if ($contentok !== true) {
-                    echo '<b>Incorrect Content</b>';
-                    die();
-                }
-                $table=$this->initializeImport($arguments[1]);
-                $this->doImport($table);
+		$contentok = processcbMap::isXML(htmlspecialchars_decode($this->Map->column_fields['content']));
+		if ($contentok !== true) {
+			echo '<b>Incorrect Content</b>';
+			die();
+		}
+		$table=$this->initializeImport($arguments[1]);
+		$this->doImport($table);
 		return $this;
 	}
 
@@ -78,31 +78,30 @@ class Import extends processcbMap {
 		return $this->mapping;
 	}
 
-	
-        public function getMapTargetModule(){
-            if(isset($this->mapping["targetmodule"]))
+	public function getMapTargetModule(){
+		if(isset($this->mapping["targetmodule"]))
 			return $this->mapping["targetmodule"];
 		return array();
 	}
-        
-        public function getMapUpdateFld(){
-            if(isset($this->mapping["target"]))
+
+	public function getMapUpdateFld(){
+		if(isset($this->mapping["target"]))
 			return $this->mapping["target"];
 		return array();
 	}
-        
-        public function getMapMatchFld(){
-            if(isset($this->mapping["match"]))
+
+	public function getMapMatchFld(){
+		if(isset($this->mapping["match"]))
 			return $this->mapping["match"];
 		return array();
 	}
-        
-        public function getMapOptions(){
-            if(isset($this->mapping["options"]))
+
+	public function getMapOptions(){
+		if(isset($this->mapping["options"]))
 			return $this->mapping["options"];
 		return array();
 	}
-                
+
 	private function convertMap2Array() {
 		$xml = $this->getXMLContent();
                 foreach ($xml->fields->field as $k => $v) {
@@ -114,7 +113,7 @@ class Import extends processcbMap {
                     }
                     elseif(!empty($v->Orgfields[0]->Relfield) && isset($v->Orgfields[0]->Relfield) ){
                         $allRelValues=array();
-                        foreach ($v->Orgfields[0]->Relfield as $key => $value1) { 
+                        foreach ($v->Orgfields[0]->Relfield as $key => $value1) {
                             if ($key == 'RelfieldName') {
                                 $allRelValues['fieldname']=(string) $value1;
                             }
@@ -123,7 +122,7 @@ class Import extends processcbMap {
                             }
                             if ($key == 'linkfield') {
                                 $allRelValues['linkfield']=(string) $value1;
-                            } 
+                            }
                             $allmergeFields[]=$allRelValues;
                         }
                         $fieldinfo[$fieldname] = array('value'=>$value,'predefined'=>$predefined,"relatedFields" => $allmergeFields);
@@ -140,15 +139,14 @@ class Import extends processcbMap {
                 foreach ($xml->targetmodule[0] as $key => $value) {
                     $target_module[$key] = (string) $value;
                 }
-                $mapping= array('target' => $fieldinfo, 
+                $mapping= array('target' => $fieldinfo,
                     'match' => $match_fields,
                     'options'=>$update_rules,
-                    'targetmodule'=>$target_module);                
+                    'targetmodule'=>$target_module);
 		$this->mapping = $mapping;
 	}
-        
+
         private function initializeImport($csvfile) {
-            
             global $adb;
             $filename = "import/$csvfile";
             $table = pathinfo($filename);
@@ -182,9 +180,8 @@ class Import extends processcbMap {
             }
             return $table;
         }
-        
+
         private function doImport($table) {
-            
             include_once('modules/Users/Users.php');
             global $adb,$current_user;
             $adminUser = Users::getActiveAdminUser();
@@ -220,7 +217,7 @@ class Import extends processcbMap {
                         for ($i = 0; $i < $nr_rows; $i++) {
                             $allids[] = $adb->query_result($index_query, $i, $focus->table_index);
                         }
-                    } 
+                    }
                     for ($el = 0; $el < count($allids); $el++) {
                         $index_result = $adb->query_result($index_query, $el, $focus->table_index);
                           if($nr_rows>0)  $focus->retrieve_entity_info($index_result, $module);
@@ -264,7 +261,7 @@ class Import extends processcbMap {
                             $focus->saveentity($module);
                             if (!empty($focus->id)) {
                                 $adb->pquery("UPDATE $table SET selected=1 WHERE id=?", array($id));
-                            } 
+                            }
                     }
                 }
                 else {
@@ -299,11 +296,10 @@ class Import extends processcbMap {
                             $focus1->column_fields["assigned_user_id"]=$current_user->id;
                             $focus1->saveentity($module); $r++;
                             if (!empty($focus1->id)) {
-                                $adb->pquery("UPDATE $table SET selected=1 WHERE id=?", array($id));   
+                                $adb->pquery("UPDATE $table SET selected=1 WHERE id=?", array($id));
                             }
                    }
             }
-            
         }
 
 }

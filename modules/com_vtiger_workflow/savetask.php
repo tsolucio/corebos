@@ -53,12 +53,12 @@ require_once("VTWorkflowApplication.inc");
 
 		$fieldNames = $task->getFieldNames();
 		foreach($fieldNames as $fieldName){
-			$task->$fieldName = $request[$fieldName];
+			$task->$fieldName = (isset($request[$fieldName]) ? $request[$fieldName] : '');
 			if ($fieldName == 'calendar_repeat_limit_date') {
 				$task->$fieldName = DateTimeField::convertToDBFormat($request[$fieldName]);
 			}
 			if ($fieldName == 'content') {
-				$task->$fieldName = $_REQUEST[$fieldName];
+				$task->$fieldName = (isset($_REQUEST[$fieldName]) ? $_REQUEST[$fieldName] : '');
 			}
 		}
 		$task->test = $request["conditions"];
