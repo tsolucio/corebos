@@ -10,7 +10,7 @@ document.write("<script type='text/javascript' src='include/js/Inventory.js'></s
 
 // Show stock or not
 var hide_stock = 'no';
-ExecuteFunctions('ismoduleactive','Products').then(function(response) {
+ExecuteFunctions('ismoduleactive','checkmodule=Products').then(function(response) {
 	var obj = JSON.parse(response);
 	if(obj.isactive == true)
 		hide_stock = 'no';
