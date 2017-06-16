@@ -52,13 +52,24 @@ class ServiceContractsHandler extends VTEventHandler {
 						} else {
 							$op = '+';
 						}
+						$directRelationFields = '';
+						$params = array($ticketId,$ticketId);
+						$sql = 'SELECT tablename,columnname FROM vtiger_fieldmodulerel JOIN vtiger_field ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid WHERE module=? AND relmodule=?';
+						$result = $adb->pquery($sql, array('HelpDesk','ServiceContracts'));
+						$noofrows = $adb->num_rows($result);
+						if($noofrows){
+							while ($r = $adb->fetch_array($result)) {
+								$directRelationFields .= ' UNION SELECT '.$r['tablename'].'.'.$r['columnname'].' FROM '.$r['tablename'].' WHERE '.$r['tablename'].'.ticketid=?';
+								$params[] = $ticketId;
+							}
+						}
 						$contract_tktresult = $adb->pquery("SELECT crmid FROM vtiger_crmentityrel
 																WHERE module = 'ServiceContracts'
 																AND relmodule = 'HelpDesk' AND relcrmid = ?
 															UNION
 																SELECT relcrmid FROM vtiger_crmentityrel
 																WHERE relmodule = 'ServiceContracts'
-																AND module = 'HelpDesk' AND crmid = ?", array($ticketId,$ticketId));
+																AND module = 'HelpDesk' AND crmid = ? $directRelationFields", $params);
 						$noOfContracts = $adb->num_rows($contract_tktresult);
 						if($noOfContracts > 0) {
 							for($i=0;$i<$noOfContracts;$i++) {
