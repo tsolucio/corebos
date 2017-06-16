@@ -57,6 +57,7 @@ if($image_error=="true")
 if($isduplicate == 'true') {
 	$focus->id = '';
 	$focus->mode = '';
+	$focus->column_fields['isduplicatedfromrecordid'] = $record; // in order to support duplicate workflows
 	$_REQUEST['cbcustominfo1'] = 'duplicatingproduct';
 	$_REQUEST['cbcustominfo2'] = $record;
 }

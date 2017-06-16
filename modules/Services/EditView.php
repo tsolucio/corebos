@@ -35,6 +35,7 @@ if($record) {
 if($isduplicate == 'true') {
 	$focus->id = '';
 	$focus->mode = '';
+	$focus->column_fields['isduplicatedfromrecordid'] = $record; // in order to support duplicate workflows
 }
 $focus->preEditCheck($_REQUEST,$smarty);
 if (!empty($_REQUEST['save_error']) and $_REQUEST['save_error'] == "true") {
