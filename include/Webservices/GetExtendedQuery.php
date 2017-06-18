@@ -223,7 +223,11 @@ function __FQNExtendedQueryAddCondition($queryGenerator,$condition,$glue,$mainMo
 			$op = 'isnull';
 		}
 	} else {
-		$val = substr($condition,strpos($condition,$op)+strlen($op));
+		if ($op=='like') {
+			$val = substr($condition,stripos($condition,' '.$op)+strlen(' '.$op));
+		} else {
+			$val = substr($condition,stripos($condition,$op)+strlen($op));
+		}
 	}
 	$val = trim($val);
 	$val = trim($val,"'");
