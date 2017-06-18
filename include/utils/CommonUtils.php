@@ -2046,37 +2046,11 @@ function getEntityName($module, $ids_list) {
 	$log->debug("Exiting getEntityName method ...");
 }
 
-/* * Function to get all permitted modules for a user with their parent
+/*
+ * @deprecated
  */
-
 function getAllParenttabmoduleslist() {
-	global $adb, $current_user;
-	$resultant_array = Array();
-
-	//$query = 'select name,tablabel,parenttab_label,vtiger_tab.tabid from vtiger_parenttabrel inner join vtiger_tab on vtiger_parenttabrel.tabid = vtiger_tab.tabid inner join vtiger_parenttab on vtiger_parenttabrel.parenttabid = vtiger_parenttab.parenttabid and vtiger_tab.presence order by vtiger_parenttab.sequence, vtiger_parenttabrel.sequence';
-	// vtlib customization: Disabling the tab item based on presence
-	$query = 'select name,tablabel,parenttab_label,vtiger_tab.tabid from vtiger_parenttabrel inner join vtiger_tab on vtiger_parenttabrel.tabid = vtiger_tab.tabid inner join vtiger_parenttab on vtiger_parenttabrel.parenttabid = vtiger_parenttab.parenttabid and vtiger_tab.presence in (0,2) order by vtiger_parenttab.sequence, vtiger_parenttabrel.sequence';
-	// END
-
-	$result = $adb->pquery($query, array());
-	require('user_privileges/user_privileges_' . $current_user->id . '.php');
-	for ($i = 0; $i < $adb->num_rows($result); $i++) {
-		$parenttabname = $adb->query_result($result, $i, 'parenttab_label');
-		$modulename = $adb->query_result($result, $i, 'name');
-		$tablabel = $adb->query_result($result, $i, 'tablabel');
-		$tabid = $adb->query_result($result, $i, 'tabid');
-		if ($is_admin) {
-			$resultant_array[$parenttabname][] = Array($modulename, $tablabel);
-		} elseif ($profileGlobalPermission[2] == 0 || $profileGlobalPermission[1] == 0 || $profileTabsPermission[$tabid] === 0) {
-			$resultant_array[$parenttabname][] = Array($modulename, $tablabel);
-		}
-	}
-
-	if ($is_admin) {
-		$resultant_array['Settings'][] = Array('Settings', 'Settings');
-		$resultant_array['Settings'][] = Array('Settings', getTranslatedString('VTLIB_LBL_MODULE_MANAGER', 'Settings'), 'ModuleManager');
-	}
-	return $resultant_array;
+	return array();
 }
 
 /**
