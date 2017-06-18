@@ -560,7 +560,6 @@ $mod_strings = array(
 	'INTERNAL_MAIL_COMPOSER' => 'Interne e-mail Composer',
 	'User Login Details' => 'Gebruiker Login Details',
 	'LBL_TO_LOGIN' => 'naar Login',
-	'LBL_MAIL_SEND_STATUS' => 'Mail verzendstatus:',
 	'LBL_MAIL_NOT_SENT_TO_USER' => 'Mail kon niet worden verstuurd naar ',
 	'LBL_PLS_CHECK_EMAIL_N_SERVER' => 'Controleer svp het emailid/Server settings',
 	'LBL_SSL' => 'SSL',
