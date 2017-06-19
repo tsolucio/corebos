@@ -13,7 +13,7 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
-
+global $adb;
 $wfexpfuncs = $adb->query('select funcfile from com_vtiger_workflows_expfunctions');
 while ($ffile = $adb->fetch_array($wfexpfuncs)) {
 	if (file_exists($ffile['funcfile']) and isInsideApplication($ffile['funcfile'])) {
