@@ -482,14 +482,13 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 	} elseif ($uitype == 57) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$contact_id = $col_fields[$fieldname];
+		$contact_name = '';
 		if ($contact_id != '') {
 			$displayValueArray = getEntityName('Contacts', $contact_id);
 			if (!empty($displayValueArray)) {
 				foreach ($displayValueArray as $key => $field_value) {
 					$contact_name = $field_value;
 				}
-			} else {
-				$contact_name='';
 			}
 		}
 		$label_fld[] = $contact_name;
@@ -498,6 +497,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 	} elseif ($uitype == 59) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$product_id = $col_fields[$fieldname];
+		$product_name = '';
 		if ($product_id != '') {
 			$product_name = getProductName($product_id);
 		}

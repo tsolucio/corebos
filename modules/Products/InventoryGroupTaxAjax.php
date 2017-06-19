@@ -19,11 +19,15 @@
  *************************************************************************************************/
 require_once ('Smarty_setup.php');
 
-global $mod_strings, $app_strings;
+global $mod_strings, $app_strings, $theme;
+$theme_path="themes/".$theme."/";
+$image_path=$theme_path."images/";
 
 $smarty = new vtigerCRM_Smarty();
 $smarty->assign("MOD", $mod_strings);
 $smarty->assign("APP", $app_strings);
+$smarty->assign("THEME", $theme);
+$smarty->assign("IMAGE_PATH",$image_path);
 
 $editmode = vtlib_purify($_REQUEST['editmode']);
 if ($editmode != 'edit') {
