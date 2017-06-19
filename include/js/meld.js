@@ -13,7 +13,7 @@
  * @author John Hann
  * @version 1.3.1
  */
-var corebosaop_meld = function () {
+var corebosjshook = function () {
 	//
 	// Public API
 	//
