@@ -50,6 +50,7 @@
         </Orgfield>
         <delimiter>;</delimiter>
       </Orgfields>
+      <master>true|false</master> {optional: used for integration mapping between two systems}
     </field>
     <field>
       <fieldname>description</fieldname>   {destination field on invoice}
@@ -168,6 +169,11 @@ class Mapping extends processcbMap {
 			if(isset($v->Orgfields->delimiter))
 				$target_fields[$fieldname]['delimiter']=(String)$v->Orgfields->delimiter;
 			$target_fields[$fieldname]['merge']=$allmergeFields;
+			if (isset($v->master)) {
+				$target_fields[$fieldname]['master'] = filter_var((String)$v->master, FILTER_VALIDATE_BOOLEAN);
+			} else {
+				$target_fields[$fieldname]['master'] = false;
+			}
 		}
 		$mapping['fields'] = $target_fields;
 		return $mapping;
