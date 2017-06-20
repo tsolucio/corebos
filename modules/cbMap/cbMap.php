@@ -231,5 +231,18 @@ class cbMap extends CRMEntity {
 		}
 	}
 
+	public function getMapArray() {
+		$ret = array();
+		$name = basename($this->column_fields['maptype']);
+		@require_once 'modules/cbMap/processmap/'.$name.'.php';
+		if (class_exists($name)) {
+			$processmap = new $name($this);
+			if (method_exists($processmap, 'convertMap2Array')) {
+				$ret = $processmap->convertMap2Array();
+			}
+		}
+		return $ret;
+	}
+
 }
 ?>
