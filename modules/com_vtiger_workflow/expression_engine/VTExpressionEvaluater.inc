@@ -36,6 +36,8 @@ class VTFieldExpressionEvaluater{
 				'add_days' => '__vt_add_days',
 				'sub_days' => '__vt_sub_days',
 				'get_date' => '__vt_get_date',
+				'get_nextdate' => '__cb_next_date',
+				'get_nextdatelaborable' => '__cb_next_dateLaborable',
 				'format_date' => '__cb_format_date',
 				'add_time' => '__vt_add_time',
 				'sub_time' => '__vt_sub_time',

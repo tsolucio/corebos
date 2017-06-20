@@ -88,8 +88,7 @@ function __vt_sub_days($arr) {
 }
 
 function __vt_get_date($arr) {
-	$type = $arr[0];
-	switch ($type) {
+	switch (strtolower($arr[0])) {
 		case 'today': return date('Y-m-d');
 			break;
 		case 'tomorrow': return date('Y-m-d', strtotime('+1 day'));
@@ -133,6 +132,80 @@ function __vt_sub_time($arr) {
 	}
 	$endTime = strtotime("-$minutes minutes", strtotime($baseTime));
 	return date('H:i:s',$endTime);
+}
+
+/* get next date that falls on the closest given days
+ * @param ISO start date "2017-06-16
+ * @param comma separated string of month days "15,30"
+ * @param comma separated string of ISO holiday dates
+ * @param boolean 0 exclude saturday and sunday, 1 include them, default not included
+ */
+function __cb_next_date($arr) {
+	$startDate = new DateTime( $arr[0] );
+	$endDate = new DateTime( __vt_add_days(array($arr[0],180)) ); // 180 days to make sure we catch next occurrence
+	$nextDays = explode(',', $arr[1]);
+	if (isset($arr[2])) { // list of holidays
+		$holiday = explode(',', $arr[2]);
+	} else {
+		$holiday = array();
+	}
+	if (empty($arr[3])) { // include weekends or not
+		$lastdow = 6;
+	} else {
+		$lastdow = 8;
+	}
+	$interval = new DateInterval('P1D'); // set the interval as 1 day
+	$daterange = new DatePeriod($startDate, $interval ,$endDate);
+	$result = '';
+	foreach ($daterange as $date) {
+		if ($date->format("N") < $lastdow AND !in_array($date->format("Y-m-d"),$holiday)) {
+			if (in_array($date->format('d'),$nextDays)) {
+				$result = $date->format("Y-m-d");
+				break;
+			}
+		}
+	}
+	return $result;
+}
+
+/* get next laborable date that falls after the closest given days
+ * @param ISO start date "2017-06-16
+ * @param comma separated string of month days "15,30"
+ * @param comma separated string of ISO holiday dates
+ * @param boolean 0 saturday is not laborable, 1 it is, default it isn't
+ */
+function __cb_next_dateLaborable($arr) {
+	$startDate = new DateTime( $arr[0] );
+	$endDate = new DateTime( __vt_add_days(array($arr[0],180)) ); // 180 days to make sure we catch next occurrence
+	$nextDays = explode(',', $arr[1]);
+	if (isset($arr[2])) { // list of holidays
+		$holiday = explode(',', $arr[2]);
+	} else {
+		$holiday = array();
+	}
+	if (empty($arr[3])) { // saturday is not laborable
+		$weekend = array(6,7);
+	} else {
+		$weekend = array(7);
+	}
+	$interval = new DateInterval('P1D'); // set the interval as 1 day
+	$daterange = new DatePeriod($startDate, $interval ,$endDate);
+	$result = '';
+	$found = false;
+	foreach ($daterange as $date) {
+		if (in_array($date->format('d'),$nextDays)) {
+			$found = $date;
+			break;
+		}
+	}
+	if ($found) {
+		while ((in_array($found->format("N"),$weekend) or in_array($found->format("Y-m-d"),$holiday))) {
+			$found->add($interval);
+		}
+		return $found->format("Y-m-d");
+	} else {
+		return '';
+	}
 }
 
 ?>
