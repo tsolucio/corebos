@@ -36,6 +36,9 @@ class DuplicateRecords extends VTTask{
 			$duplicatedfromfields = $recordid->getData();
 			$duplicatedfrom = $duplicatedfromfields['isduplicatedfromrecordid'];
 			if (!empty($duplicatedfrom)) {
+				if (strpos($duplicatedfrom,'x')>0) {
+					list($wsdup,$duplicatedfrom) = explode('x',$duplicatedfrom);
+				}
 				duplicateRecordRelations($module, $cto_id, $duplicatedfrom, $map);
 			} else {
 				duplicaterec($module, $cto_id, $map);
