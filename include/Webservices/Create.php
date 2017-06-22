@@ -10,7 +10,7 @@
 
 require_once('include/Webservices/SetRelation.php');
 function vtws_create($elementType, $element, $user) {
-
+    global $root_directory;
     $types = vtws_listtypes(null, $user);
     if (!in_array($elementType, $types['types'])) {
         throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Permission to perform the operation is denied");
@@ -21,6 +21,22 @@ function vtws_create($elementType, $element, $user) {
       $relations=$element['relations'];
       unset($element['relations']);
     }
+
+    if (!empty($element['attachments'])) {
+      foreach ($element['attachments'] as $fieldname => $attachment){
+        $filepath = $root_directory.'storage/'.$attachment['name'];
+        file_put_contents($filepath, base64_decode($attachment['content']));
+        $_FILES[$fieldname] = array(
+            'name' => $attachment['name'],
+            'type' => $attachment['type'],
+            'tmp_name' => $filepath,
+            'error' => 0,
+            'size' => $attachment['size']
+        );
+      }
+      unset($element['attachments']);
+    }
+
 
     // Cache the instance for re-use
 	if(!isset($vtws_create_cache[$elementType]['webserviceobject'])) {
@@ -105,8 +121,18 @@ function vtws_create($elementType, $element, $user) {
         	vtws_internal_setrelation($newrecid, $modname, $relations);
         }
         VTWS_PreserveGlobal::flush();
+        if(!empty($_FILES)){
+            foreach ($_FILES as $field => $file) {
+                unlink($file['tmp_name']);
+            }
+        }
         return $entity;
     } else {
+        if(!empty($_FILES)){
+            foreach ($_FILES as $field => $file) {
+                unlink($file['tmp_name']);
+            }
+        }
         return null;
     }
 }

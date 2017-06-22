@@ -21,6 +21,21 @@
 		$handler = new $handlerClass($webserviceObject,$user,$adb,$log);
 		$meta = $handler->getMeta();
 		$entityName = $meta->getObjectEntityName($element['id']);
+
+	    if (!empty($element['attachments'])) {
+	      foreach ($element['attachments'] as $fieldname => $attachment){
+	        $filepath = $root_directory.'storage/'.$attachment['name'];
+	        file_put_contents($filepath, base64_decode($attachment['content']));
+	        $_FILES[$fieldname] = array(
+	            'name' => $attachment['name'],
+	            'type' => $attachment['type'],
+	            'tmp_name' => $filepath,
+	            'error' => 0,
+	            'size' => $attachment['size']
+	        );
+	      }
+	      unset($element['attachments']);
+	    }
 		
 		$types = vtws_listtypes(null, $user);
 		if(!in_array($entityName,$types['types'])){
@@ -96,6 +111,11 @@
 			$adb->pquery('update vtiger_troubletickets set update_log=? where ticketid=?', array($updlog, $idList[1]));
 		}
 		VTWS_PreserveGlobal::flush();
+        if(!empty($_FILES)){
+            foreach ($_FILES as $field => $file) {
+                unlink($file['tmp_name']);
+            }
+        }
 		return $entity;
 	}
 	
