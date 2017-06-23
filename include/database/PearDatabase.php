@@ -879,7 +879,11 @@ class PearDatabase{
 		}
 		$this->database = ADONewConnection($this->dbType);
 
-		$this->database->PConnect($this->dbHostName, $this->userName, $this->userPassword, $this->dbName);
+		if (isset($dbconfig['persistent']) and $dbconfig['persistent']) {
+			$this->database->PConnect($this->dbHostName, $this->userName, $this->userPassword, $this->dbName);
+		} else {
+			$this->database->Connect($this->dbHostName, $this->userName, $this->userPassword, $this->dbName);
+		}
 		$this->database->LogSQL($this->enableSQLlog);
 
 		// 'SET NAMES UTF8' needs to be executed even if database has default CHARSET UTF8
