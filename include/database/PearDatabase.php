@@ -140,7 +140,6 @@ class PearDatabase{
 	var $dbType = null;
 	var $dbHostName = null;
 	var $dbName = null;
-	var $dbOptions = null;
 	var $userName=null;
 	var $userPassword=null;
 	var $query_time = 0;
@@ -226,7 +225,6 @@ class PearDatabase{
 	function setUserName($name){ $this->userName = $name; }
 
 	function setOption($name, $value){
-		if(isset($this->dbOptions)) $this->dbOptions[$name] = $value;
 		if(isset($this->database)) $this->database->setOption($name, $value);
 	}
 
@@ -874,7 +872,7 @@ class PearDatabase{
 	}
 
 	function connect($dieOnError = false) {
-		global $dbconfigoption,$dbconfig;
+		global $dbconfig;
 		if(!isset($this->dbType)) {
 			$this->println("ADODB Connect : DBType not specified");
 			return;
@@ -914,7 +912,7 @@ class PearDatabase{
 	}
 
 	function resetSettings($dbtype,$host,$dbname,$username,$passwd){
-		global $dbconfig, $dbconfigoption;
+		global $dbconfig;
 
 		if($host == '') {
 			$this->disconnect();
@@ -923,7 +921,6 @@ class PearDatabase{
 			$this->setUserPassword($dbconfig['db_password']);
 			$this->setDatabaseHost( $dbconfig['db_hostname']);
 			$this->setDatabaseName($dbconfig['db_name']);
-			$this->dbOptions = $dbconfigoption;
 			if($dbconfig['log_sql'])
 				$this->enableSQLlog = ($dbconfig['log_sql'] == true);
 		} else {

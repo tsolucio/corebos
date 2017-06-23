@@ -29,6 +29,7 @@ $dbconfig['db_name'] = '_DBC_NAME_';
 $dbconfig['db_type'] = '_DBC_TYPE_';
 $dbconfig['db_status'] = '_DB_STAT_';
 $dbconfig['db_hostname'] = $dbconfig['db_server'].$dbconfig['db_port'];
+$host_name = $dbconfig['db_hostname'];
 
 // log_sql default value = false
 $dbconfig['log_sql'] = false;
@@ -36,26 +37,6 @@ $dbconfig['log_sql'] = false;
 // Should the caller information be captured in SQL Logging?
 // Adds a little overhead for performance but will be useful for debugging
 $SQL_LOG_INCLUDE_CALLER = false;
-
-// persistent default value = true
-$dbconfigoption['persistent'] = true;
-
-// autofree default value = false
-$dbconfigoption['autofree'] = false;
-
-// debug default value = 0
-$dbconfigoption['debug'] = 0;
-
-// seqname_format default value = '%s_seq'
-$dbconfigoption['seqname_format'] = '%s_seq';
-
-// portability default value = 0
-$dbconfigoption['portability'] = 0;
-
-// ssl default value = false
-$dbconfigoption['ssl'] = false;
-
-$host_name = $dbconfig['db_hostname'];
 
 $site_URL = '_SITE_URL_';
 
@@ -99,10 +80,6 @@ $default_password = '';
 $create_default_user = false;
 // default_user_is_admin default value = false
 $default_user_is_admin = false;
-
-// if your MySQL/PHP configuration does not support persistent connections set this to true to avoid a large performance slowdown
-// disable_persistent_connections default value = false
-$disable_persistent_connections = false;
 
 //Master currency name
 $currency_name = '_MASTER_CURRENCY_';
