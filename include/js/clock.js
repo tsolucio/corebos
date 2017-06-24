@@ -1,4 +1,3 @@
-if (document.getElementById){
 
 fCol='#000000'; //face/number colour.
 dCol='#cccccc'; //dot colour.
@@ -39,45 +38,6 @@ plusMinus=false;
 
 var mon=new Array("January","February","March","April","May","June","July","August","September","October","November","December");
 
-document.write('<div id="theDate" class="datestyle" style="color:'+cCol+'">\!<\/div>');
-document.write('<div id="amOrPm" class="ampmstyle" style="color:'+aCol+'">\!<\/div>');
-for (i=0; i < n; i++){
- document.write('<div id="theFace'+i+'" class="facestyle" style="color:'+fCol+'">'+face[i]+'<\/div>');
-
- cf[i]=document.getElementById("theFace"+i).style;
- cf[i].top=y-6+30*1.4*Math.sin(i*e*Math.PI/180)+"px";
- cf[i].left=xpos-6+30*1.4*Math.cos(i*e*Math.PI/180)+"px";
-}
-for (i=0; i < n; i++){}
-for (i=0; i < h; i++){
- document.write('<div id="H'+i+'" class="handsanddotsstyle" style="background-color:'+hCol+'"><\/div>');
- ch[i]=document.getElementById("H"+i).style;
-}
-for (i=0; i < m; i++){
- document.write('<div id="M'+i+'" class="handsanddotsstyle" style="background-color:'+mCol+'"><\/div>');
- cm[i]=document.getElementById("M"+i).style;
-}
-for (i=0; i < s; i++){
- document.write('<div id="S'+i+'" class="handsanddotsstyle" style="background-color:'+sCol+'"><\/div>');
- cs[i]=document.getElementById("S"+i).style;
-}
-
-var dsp1=document.getElementById("amOrPm").style;
-var dsp2=document.getElementById("theCities").style;
-var dsp3=document.getElementById("theDate").style;
-//var dsp4=document.getElementById("city").style;
-var dsp5=document.getElementById("theClockLayer").style;
-dsp1.top=y+"px";
-dsp1.left=xpos-8+"px";
-dsp2.top=y-80+"px";
-dsp2.left=xpos-55+"px";
-dsp3.top=y+55+"px";
-dsp3.left=xpos-60+"px";
-
-dsp5.backgroundImage="url(themes/images/clock_bg.gif)"
-dsp5.backgroundRepeat="no-repeat"
-dsp5.backgroundPosition="4px 38px"
-
 function lcl(currIndex,localState){
 	zone=document.frmtimezone.clockcity.options[currIndex].value;
 	isItLocal=localState;
@@ -86,14 +46,12 @@ function lcl(currIndex,localState){
 	if (oddMinutes){
 	 getOddMinutes=zone.substring(zone.indexOf(".")+1,zone.length)
 	}
-	
 	addHours=(oddMinutes)?parseInt(zone.substring(0,zone.indexOf("."))):parseInt(zone)
 	if (plusMinus){
 	 addOddMinutes=(oddMinutes)?parseInt(-getOddMinutes):0;
 	} else{
 	 addOddMinutes=(oddMinutes)?parseInt(getOddMinutes):0;
 	}
-	
 	set_cookie("timezone",currIndex)
 }
 
@@ -102,10 +60,10 @@ function ClockAndAssign(){
 	dayAdjust=0;
 	monthAdjust=0;
 	now=new Date();
-	
+
 	secs=now.getSeconds();
 	sec=Math.PI*(secs-15)/30;
-	
+
 	mins=(isItLocal)?now.getMinutes():now.getUTCMinutes();
 	if (oddMinutes){ 
 	 mins=eval(mins+addOddMinutes);
@@ -117,7 +75,7 @@ function ClockAndAssign(){
 	if (mins>59){
 	 mins-=60;hourAdjust=1;
 	}
-	
+
 	hr=(isItLocal)?now.getHours()+hourAdjust:now.getUTCHours()+addHours+hourAdjust
 	hrs=Math.PI*(hr-3)/6+Math.PI*parseInt(now.getMinutes())/360;
 
@@ -130,7 +88,7 @@ function ClockAndAssign(){
 		  dayAdjust+=1
 	  }
 	}
-	
+
 	day=now.getDate()+dayAdjust;
 	
 	if (day<1){
@@ -141,7 +99,7 @@ function ClockAndAssign(){
 	 day-=daysInMonth; 
 	 monthAdjust=1;
 	}
-	
+
 	month=parseInt(now.getMonth()+1+monthAdjust);
 	
 	if (month==2){
@@ -194,19 +152,8 @@ function ClockAndAssign(){
 		 hr-=12;
 	}
 
-	
 	if (mins.toString().length==1) mins="0"+mins;
-	
+
 	document.getElementById("theDate").firstChild.data=todaysDate+" "+hr+":"+mins+" "+ampm;
 	setTimeout('ClockAndAssign()',100);
-	}
-	ClockAndAssign();
-}
-
-
-if (get_cookie("timezone")==null || get_cookie("timezone")==false || get_cookie("timezone")<0 || get_cookie("timezone")=="1") {
-	lcl(0,true)
-} else {
-	lcl(get_cookie("timezone"),false)
-	document.frmtimezone.clockcity.options[get_cookie("timezone")].selected=true
 }

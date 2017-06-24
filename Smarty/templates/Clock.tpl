@@ -1,13 +1,12 @@
 {*<!--
 /*********************************************************************************
-  ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
-   * ("License"); You may not use this file except in compliance with the License
-   * The Original Code is:  vtiger CRM Open Source
-   * The Initial Developer of the Original Code is vtiger.
-   * Portions created by vtiger are Copyright (C) vtiger.
-   * All Rights Reserved.
-  *
- ********************************************************************************/
+ ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
+  * ("License"); You may not use this file except in compliance with the License
+  * The Original Code is:  vtiger CRM Open Source
+  * The Initial Developer of the Original Code is vtiger.
+  * Portions created by vtiger are Copyright (C) vtiger.
+  * All Rights Reserved.
+********************************************************************************/
 -->*}
 
 {if $WORLD_CLOCK_DISPLAY eq 'true'}
@@ -29,8 +28,7 @@
 	<div style="background-image: url({$IMAGEPATH}clock_bg.gif); background-repeat: no-repeat; background-position: 4px 38px;" id="theClockLayer">
 <div id="theCities" class="citystyle">
 <form action="" name="frmtimezone">
-<input name="PHPSESSID" value="162c0ab587f6c555aaaa30d681b61f7c" type="hidden">
-<select name="clockcity" size="1" class="importBox small"   id="clockcity" style="width:125px;"  onchange="lcl(this.selectedIndex,this.options[0].selected)">
+<select name="clockcity" size="1" class="importBox small" id="clockcity" style="width:125px;" onchange="lcl(this.selectedIndex,this.options[0].selected)">
 <option value="0" selected="selected">Local time</option>
 <option value="4.30">Afghanistan</option>
 <option value="1">Algeria</option>
@@ -138,11 +136,9 @@
 </select>
 </form>
 </div>
-<script type="text/javascript">
-        var theme = "{$THEME}";
-</script>
 <script type="text/javascript" src="include/js/clock.js"></script>
-
+<div id="theDate" class="datestyle">\!</div>
+<div id="amOrPm" class="ampmstyle" style="color:'+aCol+'">\!</div>
 <div id="theFace0" class="facestyle" style="color: rgb(0, 0, 0); top: 81px; left: 96px;">3</div>
 <div id="theFace1" class="facestyle" style="color: rgb(0, 0, 0); top: 102px; left: 90.3731px;">4</div>
 <div id="theFace2" class="facestyle" style="color: rgb(0, 0, 0); top: 117.373px; left: 75px;">5</div>
@@ -161,6 +157,60 @@
 </table>
 </div>
 <script>
+	for (i=0; i < n; i++){
+		cf[i]=document.getElementById("theFace"+i).style;
+		cf[i].top=y-6+30*1.4*Math.sin(i*e*Math.PI/180)+"px";
+		cf[i].left=xpos-6+30*1.4*Math.cos(i*e*Math.PI/180)+"px";
+	}
+	var theClockLayer = document.getElementById("theClockLayer");
+	for (i=0; i < h; i++){
+		var accdiv = document.createElement("div");
+		accdiv.id = "H"+i;
+		accdiv.className = "handsanddotsstyle";
+		accdiv.style.backgroundColor = hCol;
+		theClockLayer.appendChild(accdiv);
+		ch[i]=document.getElementById("H"+i).style;
+	}
+	for (i=0; i < m; i++){
+		var accdiv = document.createElement("div");
+		accdiv.id = "M"+i;
+		accdiv.className = "handsanddotsstyle";
+		accdiv.style.backgroundColor = mCol;
+		theClockLayer.appendChild(accdiv);
+		cm[i]=document.getElementById("M"+i).style;
+	}
+	for (i=0; i < s; i++){
+		var accdiv = document.createElement("div");
+		accdiv.id = "S"+i;
+		accdiv.className = "handsanddotsstyle";
+		accdiv.style.backgroundColor = sCol;
+		theClockLayer.appendChild(accdiv);
+		cs[i]=document.getElementById("S"+i).style;
+	}
+
+	var dsp1=document.getElementById("amOrPm").style;
+	dsp1.color = aCol;
+	var dsp2=document.getElementById("theCities").style;
+	var dsp3=document.getElementById("theDate").style;
+	dsp3.color = cCol;
+	//var dsp4=document.getElementById("city").style;
+	var dsp5=document.getElementById("theClockLayer").style;
+	dsp1.top=y+"px";
+	dsp1.left=xpos-8+"px";
+	dsp2.top=y-80+"px";
+	dsp2.left=xpos-55+"px";
+	dsp3.top=y+55+"px";
+	dsp3.left=xpos-60+"px";
+	dsp5.backgroundImage="url(themes/images/clock_bg.gif)";
+	dsp5.backgroundRepeat="no-repeat";
+	dsp5.backgroundPosition="4px 38px";
+	ClockAndAssign();
+	if (get_cookie("timezone")==null || get_cookie("timezone")==false || get_cookie("timezone")<0 || get_cookie("timezone")=="1") {
+		lcl(0,true)
+	} else {
+		lcl(get_cookie("timezone"),false)
+		document.frmtimezone.clockcity.options[get_cookie("timezone")].selected=true
+	}
 	jQuery('#wclock').draggable({ldelim} handle: "#Handle" {rdelim});
 </script>
 
