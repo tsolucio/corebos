@@ -133,8 +133,13 @@ if(isset($_REQUEST["internal_mailer"]) and $_REQUEST["internal_mailer"] == "true
 		//check added for email link in user detail view
 		$module_focus = Vtiger_Module::getInstance($type);
 		$field_focus = Vtiger_Field::getInstance($fieldname,$module_focus);
-		$q = "select $fieldname from " . $field_focus->table . " where " . $module_focus->basetableid. "= ?";
-		$email1 = $adb->query_result($adb->pquery($q, array($rec_id)),0,$fieldname);
+		if ($field_focus) {
+			$q = 'select ' . $field_focus->name . ' from ' . $field_focus->table . ' where ' . $module_focus->basetableid. '= ?';
+			$rsfn = $adb->pquery($q, array($rec_id));
+			$email1 = $adb->query_result($rsfn,0,$fieldname);
+		} else {
+			$email1 = '';
+		}
 	} elseif ($rec_type == "email_addy") {
 		$email1 = vtlib_purify($_REQUEST["email_addy"]);
 	}
