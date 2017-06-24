@@ -8,7 +8,6 @@
  ********************************************************************************/
 document.write("<script type='text/javascript' src='include/js/Inventory.js'></" + "script>");
 document.write("<script type='text/javascript' src='include/js/Mail.js'></" + "script>");
-document.write("<script type='text/javascript' src='include/js/Merge.js'></" + "script>");
 document.write('<div id="setaddressaccountdiv" style="z-index:12;display:none;width:400px;top:30px;left:0;right:0;margin:auto;" class="layerPopup"></div>');
 
 function set_return(product_id, product_name) {
