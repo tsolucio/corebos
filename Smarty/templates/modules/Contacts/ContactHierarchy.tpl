@@ -10,8 +10,6 @@
 -->*}
 <script type="text/javascript" src="include/js/general.js"></script>
 <script type="text/javascript" src="include/js/{$LANGUAGE}.lang.js"></script>
-<script type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
-
 {include file='Buttons_List.tpl'}
 		</td>
 	</tr>

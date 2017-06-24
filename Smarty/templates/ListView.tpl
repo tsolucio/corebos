@@ -13,7 +13,6 @@
 <script type="text/javascript" src="include/js/Merge.js"></script>
 <script type="text/javascript" src="include/js/dtlviewajax.js"></script>
 <script type="text/javascript" src="include/js/FieldDependencies.js"></script>
-<script type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
 {if !isset($Document_Folder_View)}
 	{assign var=Document_Folder_View value=0}
 {/if}
