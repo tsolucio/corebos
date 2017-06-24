@@ -228,7 +228,7 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 						case 'Last5': $queryCriteria = sprintf(" ORDER BY %s.%s DESC LIMIT 5", $entityInstance->table_name, $entityInstance->table_index); break;
 						case 'Mine': $queryCriteria = ' AND vtiger_crmentity.smcreatorid=' . $current_user->id; break;
 					}
-					$query = $entityInstance->getListQuery($moduleName, sprintf(" AND %s.related_to=$crmid", $entityInstance->table_name));
+					$query = $entityInstance->getListQuery('ModComments', sprintf(" AND %s.related_to=$crmid", $entityInstance->table_name));
 					$query .= $queryCriteria;
 					$qfields = __getRLQueryFields($meta,$queryParameters['columns']);
 					// Remove all the \n, \r and white spaces to keep the space between the words consistent.
