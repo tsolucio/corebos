@@ -25,21 +25,28 @@ function cbmqtm_testSubscribePS() {
 	$cbmq->subscribeToChannel('cbTestChannel', 'cbmqtm', 'cbmqtm', array('file'=>'include/cbmqtm/cbmqtm_dbdisttest.php','method'=>'cbmqtm_testSubscribeConsume1'));
 	$cbmq->subscribeToChannel('cbTestChannel', 'cbmqtm', 'cbmqtm', array('file'=>'include/cbmqtm/cbmqtm_dbdisttest.php','method'=>'cbmqtm_testSubscribeConsume2'));
 
-	$cbmq->sendMessage('cbTestChannel', 'cbmqtm', 'cbmqtm', 'Data', 'P:S', 1, 30, 1, 'informationPS');
+	$cbmq->sendMessage('cbTestChannel', 'cbmqtm', 'cbmqtm', 'Data', 'P:S', 1, 30, 1, 1, 'informationPS');
 }
 
 function cbmqtm_testSubscribe1M() {
 	$cbmq = coreBOS_MQTM::getInstance();
 	$cbmq->subscribeToChannel('cbTestChannel', 'cbmqtm', 'cbmqtm', array('file'=>'include/cbmqtm/cbmqtm_dbdisttest.php','method'=>'cbmqtm_testSubscribeConsume1'));
 
-	$cbmq->sendMessage('cbTestChannel', 'cbmqtm', 'cbmqtm', 'Data', '1:M', 1, 30, 1, 'information1M');
+	$cbmq->sendMessage('cbTestChannel', 'cbmqtm', 'cbmqtm', 'Data', '1:M', 1, 30, 1, 1, 'information1M');
 }
 
 function cbmqtm_testSubscribe1MC() {
 	$cbmq = coreBOS_MQTM::getInstance();
 	$cbmq->subscribeToChannel('cbTestChannel', 'cbmqtm', 'cbmqtm', array('file'=>'include/cbmqtm/cbmqtm_dbdisttestclass.php','class'=>'cbmqtm_dbdisttestclass', 'method'=>'consume'));
 
-	$cbmq->sendMessage('cbTestChannel', 'cbmqtm', 'cbmqtm', 'Data', '1:M', 1, 30, 1, 'information1MC');
+	$cbmq->sendMessage('cbTestChannel', 'cbmqtm', 'cbmqtm', 'Data', '1:M', 1, 30, 1, 1, 'information1MC');
+}
+
+function cbmqtm_testSubscribeMemoryLog() {
+	$cbmq = coreBOS_MQTM::getInstance();
+	$cbmq->subscribeToChannel('cbMemoryUsageChannel', 'cbmqtmmemusage', 'cbmqtmmemusage', array('file'=>'include/cbmqtm/cbmqtm_memusage.php','method'=>'cbmqtm_logMemoryUsage'));
+
+	$cbmq->sendMessage('cbMemoryUsageChannel', 'cbmqtmmemusage', 'cbmqtmmemusage', 'Command', '1:M', 1, 380, 300, 1, 'logMemoryUsage');
 }
 
 function cbmqtm_testSubscribeConsume1() {
@@ -65,6 +72,8 @@ if (!empty($argc)) {
 			cbmqtm_testSubscribe1M();
 		} elseif ($argv[1] == '1MC') {
 			cbmqtm_testSubscribe1MC();
+		} elseif ($argv[1] == 'ML') {
+			cbmqtm_testSubscribeMemoryLog();
 		} else {
 			cbmqtm_testSubscribePS();
 		}
