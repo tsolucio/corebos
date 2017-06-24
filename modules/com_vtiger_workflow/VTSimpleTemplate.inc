@@ -21,7 +21,7 @@ class VTSimpleTemplate{
 
 	private function matchHandler($match){
 		global $current_user;
-		preg_match('/\((\w+) : \(([_\w]+)\) (\w+)\)/', $match[1], $matches);
+		preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', $match[1], $matches);
 		if(count($matches)==0){
 			$fieldname = $match[1];
 			$data = $this->parent->getData();
@@ -51,9 +51,11 @@ class VTSimpleTemplate{
 			}
 		}else{
 			list($full, $referenceField, $referenceModule, $fieldname) = $matches;
-			if($referenceModule === '__VtigerMeta__'){
+			if ($referenceModule === '__VtigerMeta__') {
 				$result = $this->getMetaValue($fieldname);
-			}else{
+			} elseif ($referenceModule === '__WorkflowFunction__') {
+				$result = $this->getWorkflowFunctionValue($fieldname);
+			} else {
 				$referenceId = $this->parent->get($referenceField);
 				if($referenceId==null){
 					$result="";
@@ -280,7 +282,7 @@ class VTSimpleTemplate{
 		}
 		$current_user = new Users();
 		$current_user->retrieveCurrentUserInfoFromFile($assigned_user_id);
-		$return = preg_replace_callback('/\\$(\w+|\((\w+) : \(([_\w]+)\) (\w+)\))/', array($this,"matchHandler"), $this->template);
+		$return = preg_replace_callback('/\\$(\w+|\((\w+) : \(([_\w]+)\) (.+)\))/', array($this,"matchHandler"), $this->template);
 		$current_user = $backCurrentUser;
 		return $return;
 	}
@@ -362,5 +364,14 @@ class VTSimpleTemplate{
 			default: '';
 		}
 	}
+
+	function getWorkflowFunctionValue($tplexpression) {
+		$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($tplexpression)));
+		$expression = $parser->expression();
+		$exprEvaluater = new VTFieldExpressionEvaluater($expression);
+		$exprEvaluation = $exprEvaluater->evaluate($this->parent);
+		return $exprEvaluation;
+	}
+
 }
 ?>
