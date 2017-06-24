@@ -122,7 +122,7 @@ class VTSimpleTemplate{
 		$datefmtuserid = $this->parent->get('assigned_user_id');
 		if (!empty($datefmtuserid)) {
 			list($void,$dfuid) = explode('x',$datefmtuserid);
-			if (file_exists('user_privileges/user_privileges_' . $userid . '.php')) {
+			if (file_exists('user_privileges/user_privileges_' . $dfuid . '.php')) {
 				$datefmtuser = new Users();
 				$datefmtuser->retrieveCurrentUserInfoFromFile($dfuid);
 			} else {
