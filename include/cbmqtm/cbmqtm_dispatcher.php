@@ -48,6 +48,11 @@ class coreBOS_MQTMDispatcher extends \Core_Daemon {
 	 * @return void
 	 */
 	protected function execute() {
+		if (empty($this->cb_db) or $this->cb_db->database->_connectionID->errno>0) {
+			global $adb;
+			$adb->connect();
+			$this->setup();
+		}
 		$callbacks = $this->cb_mq->getSubscriptionWakeUps();
 		foreach ($callbacks as $callback) {
 			if (!empty($callback['file'])) {
