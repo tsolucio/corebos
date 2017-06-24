@@ -6,7 +6,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-document.write("<script type='text/javascript' src='include/js/Mail.js'></script>");
+
 function verifyConvertLeadData(form) {
 	var convertForm=document.ConvertLead;
 	var no_ele=convertForm.length;

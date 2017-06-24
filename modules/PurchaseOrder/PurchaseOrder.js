@@ -6,7 +6,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-document.write("<script type='text/javascript' src='include/js/Inventory.js'></script>");
 
 function set_return(product_id, product_name) {
 	window.opener.document.EditView.parent_name.value = product_name;

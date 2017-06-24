@@ -6,7 +6,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-document.write("<script type='text/javascript' src='include/js/Mail.js'></script>");
+
 function set_return(user_id, user_name) {
 	window.opener.document.EditView.reports_to_name.value = user_name;
 	window.opener.document.EditView.reports_to_id.value = user_id;

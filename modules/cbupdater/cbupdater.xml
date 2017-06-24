@@ -1214,4 +1214,11 @@
 	<classname>changeTypeOfCampaignNumSent</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Load javascript from HTML not document.write.</description>
+	<filename>build/changeSets/2017/dropdocumentwrite.php</filename>
+	<classname>dropdocumentwrite</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
