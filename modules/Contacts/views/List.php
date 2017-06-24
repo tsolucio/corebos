@@ -40,7 +40,7 @@ class Google_List_View  {
         $viewer->assign('STATE', 'home');
         $viewer->assign('SYNCTIME', Google_Utils_Helper::getLastSyncTime($sourceModule));
         $viewer->assign('SOURCEMODULE', $request->get('sourcemodule'));
-        $viewer->assign('SCRIPTS',$this->getHeaderScripts($request));
+        $viewer->assign('SCRIPTS','');
         global $coreBOS_app_name;
         $coreBOS_uiapp_name = GlobalVariable::getVariable('Application_UI_Name',$coreBOS_app_name);
         $viewer->assign('coreBOS_uiapp_name',$coreBOS_uiapp_name);
@@ -190,16 +190,6 @@ class Google_List_View  {
         }
         return $countRecords;
     }
-
-	/**
-	 * Function to get the list of Script models to be included
-	 * @param Vtiger_Request $request
-	 * @return <Array> - List of Vtiger_JsScript_Model instances
-	 */
-	public function getHeaderScripts(Vtiger_Request $request) {
-		$moduleName = $request->getModule();
-		return $this->checkAndConvertJsScripts(array("~libraries/bootstrap/js/bootstrap-popover.js","modules.$moduleName.resources.List"));
-	}
 
 	public function validateRequest(Vtiger_Request $request) {
 		//don't do validation because there is a redirection from google

@@ -565,25 +565,7 @@ if($Ajx_module == 'Events')
 	$Ajx_module = 'Calendar';
 if((!$viewAttachment) && (!$viewAttachment && $action != 'home_rss') && $action != $Ajx_module."Ajax" && $action != 'massdelete' && $action != "DashboardAjax" && $action != "ActivityAjax")
 {
-	// Under the SPL you do not have the right to remove this copyright statement.
-	$copyrightstatement="<style>
-		.bggray
-		{
-			background-color: #dfdfdf;
-		}
-	.bgwhite
-	{
-		background-color: #FFFFFF;
-	}
-	.copy
-	{
-		font-size:9px;
-		font-family: Verdana, Arial, Helvetica, Sans-serif;
-	}
-	</style>";
-
 	if((!$skipFooters) && $action != "ChangePassword" && $action != "body" && $action != $Ajx_module."Ajax" && $action!='Popup' && $action != 'ImportStep3' && $action != 'ActivityAjax' && $action != 'getListOfRecords') {
-		echo $copyrightstatement;
 		cbEventHandler::do_action('corebos.footer.prefooter');
 		$coreBOS_uiapp_name = GlobalVariable::getVariable('Application_UI_Name',$coreBOS_app_name);
 		$coreBOS_uiapp_version = GlobalVariable::getVariable('Application_UI_Version',$coreBOS_app_version);
