@@ -198,7 +198,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$options[] = array($pickListValue => $chk_val);
 		}
 		$label_fld ["options"] = $options;
-	} elseif ($uitype == 33) { //uitype 33 added for multiselector picklist - Jeri
+	} elseif ($uitype == 33) {
 		$roleid = $current_user->roleid;
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$label_fld[] = str_ireplace(' |##| ', ', ', $col_fields[$fieldname]);

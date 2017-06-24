@@ -44,13 +44,12 @@ for($i = 0; $i < $numrows; $i++)
 		$returnvalue [$fieldid]= $value;
 	}
 }
-
-if($single_record && count($columnlists) > 0)
-{
+$entity_name = '';
+$field_value = array();
+if ($single_record && count($columnlists) > 0) {
 	$count = 0;
 	$val_cnt = 0;
-	switch($pmodule)
-	{
+	switch ($pmodule) {
 		case 'Accounts':
 			$query = 'select accountname,'.implode(",",$columnlists).' from vtiger_account left join vtiger_accountscf on vtiger_accountscf.accountid = vtiger_account.accountid where vtiger_account.accountid = ?';
 			$result=$adb->pquery($query, array($idlist));
