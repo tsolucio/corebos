@@ -54,7 +54,18 @@ function verifyConvertLeadData(form) {
 				return false;
 			}
 		}
-		if(form.amount.value!=null && isNaN(form.amount.value)){
+		val = form.amount.value;
+		if(typeof userCurrencySeparator != 'undefined' && userCurrencySeparator != '') {
+			while(val.indexOf(userCurrencySeparator) != -1) {
+				val = val.replace(userCurrencySeparator,'');
+			}
+		}
+		if(typeof userDecimalSeparator != 'undefined' && userDecimalSeparator != '') {
+			if(val.indexOf(userDecimalSeparator) != -1) {
+				val = val.replace(userDecimalSeparator,'.');
+			}
+		}
+		if(form.amount.value!=null && isNaN(val)){
 			alert(alert_arr["ERR_POTENTIAL_AMOUNT"]);
 			return false;
 		}
