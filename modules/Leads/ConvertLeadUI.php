@@ -233,23 +233,21 @@ class ConvertLeadUI {
 
 		$fieldinfo = $this->getFieldInfo($module, $fieldName);
 		if ($fieldinfo['type']['name'] == 'picklist' || $fieldinfo['type']['name'] == 'multipicklist') {
-			$valuelist = null;
-			switch ($fieldName) {
-				case 'industry':$valuelist = $this->getIndustryList();
-					break;
-				case 'sales_stage':$valuelist = $this->getSalesStageList();
-					break;
-			}
-			foreach ($fieldinfo['type']['picklistValues'] as $key => $values) {
-				if ($values['value'] == $this->row[$leadfname]) {
-					return $this->row[$leadfname];
+			if (!empty($leadfname) and !empty($this->row[$leadfname])) {
+				foreach ($fieldinfo['type']['picklistValues'] as $key => $values) {
+					if ($values['value'] == $this->row[$leadfname]) {
+						return $this->row[$leadfname];
+					}
 				}
 			}
 			return $fieldinfo['default'];
 		}
-		$value = html_entity_decode($this->row[$leadfname], ENT_QUOTES, $default_charset);
-		return htmlentities($value, ENT_QUOTES, $default_charset);
-		//return $this->row[$leadfname];
+		if (empty($leadfname) or empty($this->row[$leadfname])) {
+			return '';
+		} else {
+			$value = html_entity_decode($this->row[$leadfname], ENT_QUOTES, $default_charset);
+			return htmlentities($value, ENT_QUOTES, $default_charset);
+		}
 	}
 
 }
