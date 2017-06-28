@@ -27,7 +27,7 @@ class ConvertLeadUI {
 	static $industry = false;
 
 	function __construct($leadid, $current_user) {
-		global$adb;
+		global $adb;
 		$this->leadid = $leadid;
 		$this->current_user = $current_user;
 		$sql = "SELECT * FROM vtiger_leaddetails,vtiger_leadscf,vtiger_crmentity
@@ -140,11 +140,9 @@ class ConvertLeadUI {
 	}
 
 	function getIndustryList() {
-		global$adb;
-
+		global $adb;
 		require_once 'modules/PickList/PickListUtils.php';
 
-		global $adb;
 		$industry_list = array();
 		if (is_admin($this->current_user)) {
 			$pick_list_values = getAllPickListValues('industry');
@@ -158,11 +156,9 @@ class ConvertLeadUI {
 	}
 
 	function getSalesStageList() {
-		global$adb;
-
+		global $adb;
 		require_once 'modules/PickList/PickListUtils.php';
 
-		global $adb;
 		$sales_stage_list = array();
 		if (is_admin($this->current_user)) {
 			$pick_list_values = getAllPickListValues('sales_stage');
