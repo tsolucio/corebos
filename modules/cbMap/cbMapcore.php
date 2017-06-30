@@ -27,12 +27,13 @@ class cbMapcore {
 		$this->Map = $map;
 	}
 
-	public static function isXML($xml){
+	public static function isXML($xml) {
+		if (empty($xml)) return 'Empty XML string';
 		libxml_use_internal_errors(true);
 		$doc = new DOMDocument('1.0', 'utf-8');
 		$doc->loadXML($xml);
 		$errors = libxml_get_errors();
-		if(empty($errors)){
+		if (empty($errors)) {
 			return true;
 		}
 

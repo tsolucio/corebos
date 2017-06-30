@@ -361,7 +361,7 @@ function vtlib_isCustomModule($moduleName) {
 }
 
 /**
- * Check for custom module by its name.
+ * Check for entity module by its name.
  */
 function vtlib_isEntityModule($moduleName) {
 	global $adb,$log;
