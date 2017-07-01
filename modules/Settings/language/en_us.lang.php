@@ -955,10 +955,7 @@ $mod_strings = Array(
 'ModTracker' => 'ModTracker',
 'LBL_MODTRACKER_DESCRIPTION' => 'Select modules for tracking',
 
-'LBL_MENUS_TO_SHOW'=>'Select modules to be displayed on main menu',
-'LBL_MENU_DESC'=>'Customize Menu Sequence',
 'LBL_MENU_EDITOR'=>'Menu Editor',
-'LBL_MENUS_TO_SHOW_DESCRIPTION' => 'You can use arrows to order the items in the menu. The top 10 items appear on the main menu and the rest are displayed under the <b><i>More</i></b> dropdown',
 'LBL_ALL_MODULES' => 'All Modules',
 'LBL_SELECTED_MODULES' => 'Selected Modules',
 

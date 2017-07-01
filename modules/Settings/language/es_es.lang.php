@@ -896,10 +896,7 @@ $mod_strings = array (
       'ModTracker' => 'Control de Cambios',
       'LBL_MODTRACKER_DESCRIPTION' => 'Selecciona módulos para seguimiento',
 
-      'LBL_MENUS_TO_SHOW'=>'Selecciona módulos a mostrar en menú principal',
-      'LBL_MENU_DESC'=>'Personalizar Secuencia de Menú',
       'LBL_MENU_EDITOR'=>'Editor de Menú',
-      'LBL_MENUS_TO_SHOW_DESCRIPTION' => 'Utiliza las flechas para ordenar los elementos del menú. Los primeros 10 elementos aparecen en el menú, los demás se muestran en el desplegable <b><i>Más</i></b>',
       'LBL_ALL_MODULES' => 'Todos los Módulos',
       'LBL_SELECTED_MODULES' => 'Módulos Seleccionados',
 

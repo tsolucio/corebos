@@ -997,12 +997,7 @@ $mod_strings = Array(
 'ModTracker' => 'ModTracker',
 'LBL_MODTRACKER_DESCRIPTION' => 'Selecteer modules voor tracking',
 
-'LBL_MENUS_TO_SHOW'=>'Selecteer modules om in het hoofdmenu te tonen',
-'LBL_MENU_DESC'=>'Pas de Menuvolgorde aan',
 'LBL_MENU_EDITOR'=>'Menubewerker',
-'LBL_MENUS_TO_SHOW_DESCRIPTION' => 'Gebruik de pijlen om de voglenorde in ' .
-		'het menu aan te passen. De top 10 menuitems worden in het hoofdmenu getoond' .
-		'en de rest wordt getoond onder de <b><i>Meer</i></b> dropdown',
 'LBL_ALL_MODULES' => 'Alle Modules',
 'LBL_SELECTED_MODULES' => 'Geselecteerde Modules',
 

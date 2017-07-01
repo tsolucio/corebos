@@ -851,10 +851,7 @@ $mod_strings = array (
 		'ModTracker' => 'Historique des Modifications',
 		'LBL_MODTRACKER_DESCRIPTION' => 'Selectionner les modules pour le suivi des modifications',
 
-		'LBL_MENUS_TO_SHOW'=>'Choix des modules visibles dans le menu principal <br /><i>accès direct en un clic</i>',
-		'LBL_MENU_DESC'=>'Personaliser l\'affichage du Menu',
 		'LBL_MENU_EDITOR'=>'Editeur du Menu',
-		'LBL_MENUS_TO_SHOW_DESCRIPTION' => 'Utilisez les flèches pour modifier l\'ordre d\'affichage des modules dans le menu. <br/>Les 10 premiers items apparaitront au premier plan et les suivants apparaitront dans le menu <b><i>Plus</i></b>',
 		'LBL_ALL_MODULES' => 'Tous les Modules',
 		'LBL_SELECTED_MODULES' => 'Choix des Modules',
 

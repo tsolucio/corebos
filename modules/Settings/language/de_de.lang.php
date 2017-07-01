@@ -1000,10 +1000,7 @@ $mod_strings = Array(
     'ModTracker' => 'Modulverfolger',
     'LBL_MODTRACKER_DESCRIPTION' => 'Wähle zu verfolgende Module',
 
-    'LBL_MENUS_TO_SHOW'=>'Wähle Module, die im Hauptmenü gezeigt werden sollen',
-    'LBL_MENU_DESC'=>'Menüreihenfolge anpassen',
     'LBL_MENU_EDITOR'=>'Menüeditor',
-    'LBL_MENUS_TO_SHOW_DESCRIPTION' => 'Benutze die Pfeile, um die Menüeinträge zu ordnen. Die ersten 10 erscheinen im Haupmenü, die restlichen sind über <b><i>Mehr</i></b> -Auswahl erreichbar.',
     'LBL_ALL_MODULES' => 'alle Module',
     'LBL_SELECTED_MODULES' => 'gewählte Module',
 
