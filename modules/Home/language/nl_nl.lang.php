@@ -23,10 +23,10 @@
 /*******************************************************************************
  * Vicus eBusiness Solutions Version Control
  * @package 	NL-Dutch
- * Description	Dutch language pack for vtiger CRM version 5.3.x
+ * Description	Dutch language pack for vtiger CRM version 5.4.x
  * @author	$Author: luuk $
- * @version 	$Revision: 1.4 $ $Date: 2012/02/28 23:40:22 $
- * @source	$Source: /var/lib/cvs/vtiger530/Dutch/modules/Home/language/nl_nl.lang.php,v $
+ * @version 	$Revision: 1.3 $ $Date: 2014/02/13 21:42:40 $
+ * @source	$Source: /var/lib/cvs/vtiger540/Dutch/modules/Home/language/nl_nl.lang.php,v $
  * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
  * @license	vtiger CRM Public License Version 1.0 (by definition)
  ********************************************************************************/
@@ -132,6 +132,10 @@ $mod_strings = Array(
 
 'MSG_NO_FILTERS' => 'Geen filters beschikbaar',
 'MSG_NO_FIELDS' => 'Geen Velden Beschikbaar',
+
+'LBL_REPORTCHARTS' => 'RapportGrafieken',
+'LBL_HOME_REPORT_NAME'=> 'Rapportnaam',
+'LBL_HOME_REPORT_TYPE' => 'Rapporttype',
 
 //added for Default Widgets
 'LBL_DEFAULT_WIDGET'=>'Standaard Widgets',

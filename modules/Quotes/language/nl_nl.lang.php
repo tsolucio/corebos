@@ -183,7 +183,7 @@ $mod_strings = Array(
 'Adjustment'=>'Bijstelling',
 'Sub Total'=>'Subtotaal',
 'S&H Amount'=>'Handling en Verzendtoeslag',
-                    
+
 //Added after 5.0.4 GA
 'Quote No'=>'Offerte Nr',
 

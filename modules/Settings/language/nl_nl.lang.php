@@ -22,10 +22,10 @@
 /*******************************************************************************
  * Vicus eBusiness Solutions Version Control
  * @package 	NL-Dutch
- * Description	Dutch language pack for vtiger CRM version 5.3.x
+ * Description	Dutch language pack for vtiger CRM version 5.4.x
  * @author	$Author: luuk $
- * @version 	$Revision: 1.6 $ $Date: 2012/02/28 23:40:22 $
- * @source	$Source: /var/lib/cvs/vtiger530/Dutch/modules/Settings/language/nl_nl.lang.php,v $
+ * @version 	$Revision: 1.3 $ $Date: 2014/02/13 21:42:40 $
+ * @source	$Source: /var/lib/cvs/vtiger540/Dutch/modules/Settings/language/nl_nl.lang.php,v $
  * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
  * @license	vtiger CRM Public License Version 1.0 (by definition)
  ********************************************************************************/
@@ -199,7 +199,7 @@ $mod_strings = Array(
 'LBL_USERNAME'=>'Gebruikersnaam',
 'LBL_PASWRD'=>'Wachtwoord',
 'LBL_REQUIRES_AUTHENT'=>'Inloggen is hier verplicht!',
-'LBL_FROM_EMAIL_FIELD'=>'Van e-mail',
+'LBL_FROM_EMAIL_FIELD'=>'Van e-mailadres (afzender)',
 //Fields for Settings
 'LBL_USER_MANAGEMENT'=>'Gebruikers & Toegang Management',
 'LBL_USERS'=>'Gebruikers',
@@ -238,7 +238,7 @@ $mod_strings = Array(
 
 'LBL_STUDIO'=>'Studio',
 'LBL_CUSTOM_FIELD_SETTINGS'=>'Aangepaste veld instellingen',
-'LBL_CREATE_AND_MANAGE_USER_DEFINED_FIELDS'=>'Regel gebruiker definieerde velden...',
+'LBL_CREATE_AND_MANAGE_USER_DEFINED_FIELDS'=>'Beheer gebruiker definieerde velden...',
 'LBL_SELECT_MODULE'=>'Selecteer module',
 'LBL_SELECT_CF_TEXT'=>'Selecteer de CRM module:',
 
@@ -411,11 +411,11 @@ $mod_strings = Array(
 'LBL_ANNOUNCEMENT_DESCRIPTION'=>'Verander de teksten van de aankondigingen',
 'LBL_CUSTOM_FIELDS_DESCRIPTION'=>'Maak en bewerk gedefinieerde gebruikersvelden',
 'LBL_PICKLIST_DESCRIPTION'=>'Inhoud van selectielijstjes in alle CRM modules',
-'LBL_EMAIL_TEMPLATE_DESCRIPTION'=>'Regel sjablonen voor de e-mail module',
-'LBL_MAIL_MERGE_DESCRIPTION'=>'Regel sjablonen voor e-mail merging',
-'LBL_NOTIF_SCHED_DESCRIPTION'=>'Regel notificaties van alle belangrijke acties waar u een alarm voor wilt hebben',
+'LBL_EMAIL_TEMPLATE_DESCRIPTION'=>'Beheer sjablonen voor de e-mail module',
+'LBL_MAIL_MERGE_DESCRIPTION'=>'Beheer sjablonen voor e-mail merging',
+'LBL_NOTIF_SCHED_DESCRIPTION'=>'Beheer notificaties van alle belangrijke acties waarvoor u een melding wilt ontvangen',
 'LBL_INV_NOTIF_DESCRIPTION'=>'Verander instellingen van voorraad gerelateerde notificaties',
-'LBL_INV_TANDC_DESCRIPTION'=>'Tekstinhoud vand e Algemene Voorwaarden',
+'LBL_INV_TANDC_DESCRIPTION'=>'Tekstinhoud van de Algemene Voorwaarden',
 'LBL_COMPANY_DESCRIPTION'=>'Details van uw bedrijf',
 'LBL_MAIL_SERVER_DESCRIPTION'=>'Instellingen van de uitgaande e-mail server',
 'LBL_BACKUP_SERVER_DESCRIPTION'=>'Instellingen van de backup server',
@@ -427,11 +427,11 @@ $mod_strings = Array(
 'LBL_COMPANY_DESC'=>'Informatie & contact details van uw bedrijf',
 'LBL_SELECT_LOGO'=>'Selecteer een nieuw logo :',
 'LBL_INVEN_TANDC_DESC'=>'Verander de tekst van uw Algemene Voorwaarden in de voorraad module',
-'LBL_MAIL_SERVER_DESC'=>'Regel uw e-mail server instellingen',
-'LBL_BACKUP_SERVER_DESC'=>'Regel uw backup server instellingen',
+'LBL_MAIL_SERVER_DESC'=>'Beheer uw e-mail server instellingen',
+'LBL_BACKUP_SERVER_DESC'=>'Beheer uw backup server instellingen',
 'LBL_MODULES_AND_OWNERS'=>'Module & eigenaren',
-'LBL_GROUP_DESC'=>'Regel Gebruikersgroepen',
-'LBL_MAIL_MERGE_DESC'=>'Regel e-mail merge sjablonen die u gebruikt in de CRM modules',
+'LBL_GROUP_DESC'=>'Beheer Gebruikersgroepen',
+'LBL_MAIL_MERGE_DESC'=>'Beheer e-mail merge sjablonen die u gebruikt in de CRM modules',
 
 //Added fields after 5.0 Alpha
 'LBL_REQUIRE_SMTP_AUTHENTICATION'=>'Heeft u SMTP authenticatie?',
@@ -559,7 +559,7 @@ $mod_strings = Array(
 'LBL_ALLOW'=>'Toegestaan',
 'LBL_MESG_VIEW'=>'Alle informatie bekijken / modules van CRM',
 'LBL_MESG_EDIT'=>'Alle informatie bewerken / modules van CRM',
-'LBL_TAB_MESG_OPTION'=>'Te bezichtigen modules',
+'LBL_TAB_MESG_OPTION'=>'Toegankelijke modules',
 'LBL_CREATE_EDIT'=>'Aanmaken/Bewerken',
 'LBL_VIEW'=>'Bekijk',
 'LBL_MANDATORY_MSG'=>'Verplichte velden',
@@ -591,7 +591,7 @@ $mod_strings = Array(
 'LBL_PRIVILEGES'=>'Privileges',
 'LBL_CUSTOM_ACCESS_PRIVILEGES'=>'Standaard regels delen',
 'LBL_ADD_PRIVILEGES_BUTTON'=>'Privileges toevoegen',
-'LBL_RULE_NO'=>'Regel nr.',
+'LBL_RULE_NO'=>'Regelnummer',
 'LBL_CAN_BE_ACCESSED'=>'kan benaderd worden door',
 'LBL_CUSTOM_ACCESS_MESG'=>'Geen standaard toegang weergegeven.',
 'LNK_CLICK_HERE'=>'Klik hier',
@@ -749,7 +749,7 @@ $mod_strings = Array(
 
 // vtlib customization: Language Stings
 'VTLIB_LBL_MODULE_MANAGER'=>'Module Manager',
-'VTLIB_LBL_MODULE_MANAGER_DESCRIPTION'=>'Manage module gedrag binnen het CRM',
+'VTLIB_LBL_MODULE_MANAGER_DESCRIPTION'=>'Beheer modulegedrag binnen het CRM',
 'VTLIB_LBL_MODULE_MANAGER_CUSTOMMOD'=>'Maatwerk Modules',
 'VTLIB_LBL_MODULE_MANAGER_STANDARDMOD'=>'Standaard Modules',
 'VTLIB_LBL_MODULE_MANAGER_NOMODULES'=>'Geen Maatwerk modules gevonden! Creeer module of importeer module ...',
@@ -831,14 +831,14 @@ $mod_strings = Array(
 
 //Added for the workflow module
 'LBL_LIST_WORKFLOWS'=>'Werkstromen',
-'LBL_LIST_WORKFLOWS_DESCRIPTION' => 'Maak en bewerk de CRM workflows',
+'LBL_LIST_WORKFLOWS_DESCRIPTION' => 'Maak en bewerk de CRM werkstromen',
 'LBL_TASK_TITLE'=>'Taak Titel',
 'LBL_PARENT_WORKFLOW'=>'Ouder Werkstroom',
 'MSG_EXECUTE_TASK_DELAY'=>'Uitvoeren van taak na enige vertraging',
 'LBL_AFTER'=>'Na',
 'LBL_BEFORE'=>'Voor',
 'LBL_TASK_OPERATIONS'=>'Taak Handelingen',
-'LBL_CREATE_TASK'=>'Maal Taak',
+'LBL_CREATE_TASK'=>'Maak Taak',
 'LBL_CREATE_TASK_OF_TYPE'=>'Maak een nieuwe taak van type',
 'LBL_SUMMARY'=>'Samenvatting',
 'LBL_WHEN_TO_RUN_WORKFLOW'=>'Wanneer een werkstroom starten',

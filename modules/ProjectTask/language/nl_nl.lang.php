@@ -22,28 +22,28 @@
 /*******************************************************************************
  * Vicus eBusiness Solutions Version Control
  * @package 	NL-Dutch
- * Description	Dutch language pack for vtiger CRM version 5.3.x
+ * Description	Dutch language pack for vtiger CRM version 5.4.x
  * @author	$Author: luuk $
- * @version 	$Revision: 1.4 $ $Date: 2011/11/14 17:07:26 $
- * @source	$Source: /var/lib/cvs/vtiger530/Dutch/modules/ProjectTask/language/nl_nl.lang.php,v $
+ * @version 	$Revision: 1.2 $ $Date: 2012/04/22 12:16:58 $
+ * @source	$Source: /var/lib/cvs/vtiger540/Dutch/modules/ProjectTask/language/nl_nl.lang.php,v $
  * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
  * @license	vtiger CRM Public License Version 1.0 (by definition)
  ********************************************************************************/
 
 $mod_strings = Array(
 
-    'LBL_MODULE_NAME'=>'Project Taken',
-    'LBL_MODULE_TITLE'=>'Project Taken',
-    'LBL_NEW_PROJECTTASK'=>'Nieuwe Project Taak',
-    'LBL_PROJECTTASKS'=>'Project Taken',
-    'LBL_PROJECTTASK'=>'Project Taak',
-    'Project Task ID'=>'Project Taak ID',
+    'LBL_MODULE_NAME'=>'Projecttaken',
+    'LBL_MODULE_TITLE'=>'Projecttaken',
+    'LBL_NEW_PROJECTTASK'=>'Nieuwe Projecttaak',
+    'LBL_PROJECTTASKS'=>'Projecttaken',
+    'LBL_PROJECTTASK'=>'Projecttaak',
+    'Project Task ID'=>'Projecttaak ID',
     'projecttasks' => 'projecttaken',
     //added this to translate the module name in the main app menu
-    'ProjectTask'=>'Project Taken',
-    'SINGLE_ProjectTask' => 'Project Taak',
+    'ProjectTask'=>'Projecttaken',
+    'SINGLE_ProjectTask' => 'Projecttaak',
     'LBL_CUSTOM_INFORMATION' => 'Aangepaste Informatie',
-    'LBL_PROJECT_TASK_INFORMATION' => 'Project Taak Informatie',
+    'LBL_PROJECT_TASK_INFORMATION' => 'Projecttaak Informatie',
     'LBL_DESCRIPTION_INFORMATION' => 'Omschrijving',
     'Assigned To' => 'Toegewezen Aan',
     'Priority' => 'Prioriteit',

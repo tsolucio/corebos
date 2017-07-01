@@ -23,10 +23,10 @@
 /*******************************************************************************
  * Vicus eBusiness Solutions Version Control
  * @package 	NL-Dutch
- * Description	Dutch language pack for vtiger CRM version 5.3.x
+ * Description	Dutch language pack for vtiger CRM version 5.4.x
  * @author	$Author: luuk $
- * @version 	$Revision: 1.3 $ $Date: 2012/02/28 23:40:22 $
- * @source	$Source: /var/lib/cvs/vtiger530/Dutch/modules/Webforms/language/nl_nl.lang.php,v $
+ * @version 	$Revision: 1.2 $ $Date: 2012/04/22 12:16:58 $
+ * @source	$Source: /var/lib/cvs/vtiger540/Dutch/modules/Webforms/language/nl_nl.lang.php,v $
  * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
  * @license	vtiger CRM Public License Version 1.0 (by definition)
  ********************************************************************************/
@@ -40,7 +40,7 @@ $mod_strings = Array (
 	'LBL_ERROR_MESSAGE' => 'Foutboodschap',
 
 	'LBL_WEBFORM_NAME'=>'Webformulier naam',
-	'LBL_DESCRIPTION'=>'OMschrijving',
+	'LBL_DESCRIPTION'=>'Omschrijving',
 	'LBL_MODULE'=>'Module',
 	'LBL_RETURNURL'=>'Return URL',
 	'LBL_ACTION'=>'Actie',

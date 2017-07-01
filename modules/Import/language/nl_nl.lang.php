@@ -22,10 +22,10 @@
 /*******************************************************************************
  * Vicus eBusiness Solutions Version Control
  * @package 	NL-Dutch
- * Description	Dutch language pack for vtiger CRM version 5.3.x
+ * Description	Dutch language pack for vtiger CRM version 5.4.x
  * @author	$Author: luuk $
- * @version 	$Revision: 1.4 $ $Date: 2011/11/14 17:07:26 $
- * @source	$Source: /var/lib/cvs/vtiger530/Dutch/modules/Import/language/nl_nl.lang.php,v $
+ * @version 	$Revision: 1.3 $ $Date: 2014/02/13 21:42:40 $
+ * @source	$Source: /var/lib/cvs/vtiger540/Dutch/modules/Import/language/nl_nl.lang.php,v $
  * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
  * @license	vtiger CRM Public License Version 1.0 (by definition)
  ********************************************************************************/
@@ -121,14 +121,15 @@ $mod_strings = Array(
 'LBL_HEADER_ROW'=>'Toprij',
 'LBL_ROW'=>'Rij',
 'LBL_SAVE_AS_CUSTOM'=>'Bewaar als standaardmapping :',
+'LBL_SAVE_AS_CUSTOM_MAPPING'=>'Bewaar als standaardmapping :',
 'LBL_CONTACTS_NOTE_1'=>'Of achternaam of volledige naam moeten worden gekoppeld.',
 'LBL_CONTACTS_NOTE_2'=>'Als de volledige naam is gekoppeld, worden de voornaam en achternaam genegeerd.',
 'LBL_CONTACTS_NOTE_3'=>'Als de volledige naam is gekoppeld, zal de data van de volledige naam opgesplitst worden in voornaam en achternaam en in de database gezet worden.',
 'LBL_CONTACTS_NOTE_4'=>'Velden die eindigen in adres straat 2 en adres straat 3 zijn aan elkaar geschakeld samen met het hoofdadres veld wanneer deze is ingegeven in de database.',
 'LBL_ACCOUNTS_NOTE_1'=>'Accountnaam moet gekoppeld zijn.',
 'LBL_ACCOUNTS_NOTE_2'=>'Velden in adres 2 en adres 3 worden samengevoegd in het hoofdadres wanneer men deze toevoegd in de database.',
-'LBL_POTENTIALS_NOTE_1'=>'Naam verkoopkans, accountnaam, sluitingsdatum, en verkoop stadium zijn verplichte velden.',
-'LBL_OPPORTUNITIES_NOTE_1'=>'Naam verkoopkans, accountnaam, sluitingsdatum, en verkoop stadium zijn verplichte velden.',
+'LBL_POTENTIALS_NOTE_1'=>'Naam verkoopkans, accountnaam, sluitingsdatum, en verkoopstadium zijn verplichte velden.',
+'LBL_OPPORTUNITIES_NOTE_1'=>'Naam verkoopkans, accountnaam, sluitingsdatum, en verkoopstadium zijn verplichte velden.',
 'LBL_LEADS_NOTE_1'=>'Achternaam moet gekoppeld zijn.',
 'LBL_LEADS_NOTE_2'=>'Bedrijfsnaam moet gekoppeld zijn.',
 'LBL_IMPORT_NOW'=>'Importeer nu',
@@ -199,7 +200,7 @@ $mod_strings = Array(
 'LBL_DELIMITER' => 'Scheidingsteken:',
 'LBL_FORMAT' => 'Formaat:',
 
-'LBL_MERGE_FIELDS_DUPLICATE' => 'Samenvoegen van velden voro dubbele import records',
+'LBL_MERGE_FIELDS_DUPLICATE' => 'Samenvoegen van velden voor dubbele import records',
 'Customer Portal Login Details' => 'Klantportaal Login Details',
 'LBL_FILE_UPLOAD_FAILED' => 'File upload failed',
 'LBL_IMPORT_ERROR_LARGE_FILE' => 'File is to big to upload. The maximum upload size (',

@@ -20,10 +20,10 @@
 /*******************************************************************************
  * Vicus eBusiness Solutions Version Control
  * @package 	NL-Dutch
- * Description	Dutch language pack for vtiger CRM version 5.3.x
+ * Description	Dutch language pack for vtiger CRM version 5.4.x
  * @author	$Author: luuk $
- * @version 	$Revision: 1.6 $ $Date: 2012/02/28 23:40:22 $
- * @source	$Source: /var/lib/cvs/vtiger530/Dutch/modules/com_vtiger_workflow/language/nl_nl.lang.php,v $
+ * @version 	$Revision: 1.3 $ $Date: 2014/02/13 21:42:40 $
+ * @source	$Source: /var/lib/cvs/vtiger540/Dutch/modules/com_vtiger_workflow/language/nl_nl.lang.php,v $
  * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
  * @license	vtiger CRM Public License Version 1.0 (by definition)
  ********************************************************************************/
@@ -83,7 +83,7 @@ $mod_strings = array(
 
 'LBL_VALIDATION_DUPLICATE_FIELDNAMES' => 'Zelfde veld is meer dan eens gekozen.',
 'LBL_VALIDATION_INVALID_FIELD_VALUES' => 'Ongeldige veldwaarden',
-'LBL_CREATE_ENTITY_NOTE_ORDER_MATTERS' => 'Opmerking: Formules worden afgewerkt in de volgorde van de aangeboden veldwaarden. Zorg er dus voro dat elk veld een waarde heeft alvorens deze in een formule te gebruiken.',
+'LBL_CREATE_ENTITY_NOTE_ORDER_MATTERS' => 'Opmerking: Formules worden afgewerkt in de volgorde van de aangeboden veldwaarden. Zorg er dus voor dat elk veld een waarde heeft alvorens deze in een formule te gebruiken.',
 'LBL_CREATE_ENTITY_NOTE_BUSINESSMAPS' => 'Note: You can use a Field Business Map to map fields from one entity to the other, in that case the business map definitions will overwrite the ones defined here.',
 'LBL_SET_VALUE' => 'Stel waarde in',
 
