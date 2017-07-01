@@ -114,6 +114,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 
 	public function wsVTQL2SQL($q,&$meta,&$queryRelatedModules){
 		require_once 'include/Webservices/GetExtendedQuery.php';
+		$q = str_replace(array("\n", "\t", "\r"), ' ', $q);
 		if (__FQNExtendedQueryIsRelatedQuery($q)) { // related query
 			require_once 'include/Webservices/GetRelatedRecords.php';
 			$queryParameters = array();
