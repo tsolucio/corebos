@@ -1221,4 +1221,11 @@
 	<classname>dropdocumentwrite</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Set MassEditable to 0 for uitype 4 fields</description>
+	<filename>build/changeSets/2017/fixMassEditableOnuitype4.php</filename>
+	<classname>fixMassEditableOnuitype4</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

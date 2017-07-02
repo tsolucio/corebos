@@ -115,7 +115,7 @@
 <displaytype>1</displaytype>
 <info_type>BAS</info_type>
 <helpinfo><![CDATA[]]></helpinfo>
-<masseditable>1</masseditable>
+<masseditable>0</masseditable>
 <entityidentifier>
 <entityidfield>cobropagoid</entityidfield>
 <entityidcolumn>cobropagoid</entityidcolumn>
