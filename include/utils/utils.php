@@ -947,11 +947,14 @@ function getColumnFields($module) {
 function getUserEmail($userid) {
 	global $log, $adb;
 	$log->debug('Entering getUserEmail('.print_r($userid,true).') method ...');
-	if($userid != '') {
+	$email = '';
+	if (!empty($userid) and is_numeric($userid)) {
 		$sql = 'select email1 from vtiger_users where id=?';
 		if (!is_array($userid)) $userid = array($userid);
 		$result = $adb->pquery($sql, $userid);
-		$email = $adb->query_result($result,0,'email1');
+		if ($result and $adb->num_rows($result)>0) {
+			$email = $adb->query_result($result,0,'email1');
+		}
 	}
 	$log->debug('Exiting getUserEmail method ...');
 	return $email;
