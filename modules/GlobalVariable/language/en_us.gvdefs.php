@@ -840,6 +840,20 @@ $GlobalVariableDefinitons = array(
 	'values' => 'LDAP | AD | SQL',
 	'definition' => 'Login authentication type. Use the default SQL to login using the passwords stored in the database',
 ),
+'User_2FAAuthentication' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Ask for Two Factor Authentification',
+),
+'User_2FAAuthentication_SendMethod' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'SMS | EMAIL',
+	'definition' => 'Method to send 2FA code to user',
+),
 'Application_FirstTimeLogin_Template' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'String',

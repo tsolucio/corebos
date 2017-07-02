@@ -97,6 +97,9 @@ class DefineGlobalVariables extends cbupdaterWorker {
 
 				'Users_ReplyTo_SecondEmail',
 				'Users_Default_Send_Email_Template',
+				'User_AuthenticationType',
+				'User_2FAAuthentication',
+				'User_2FAAuthentication_SendMethod',
 
 				'Accounts_BlockDuplicateName',
 				'Campaign_CreatePotentialOnAccountRelation',
@@ -127,7 +130,6 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'HelpDesk_Support_Reply_EMail',
 				'HelpDesk_Notify_Owner_EMail',
 				'Document_Folder_View',
-				'User_AuthenticationType',
 				'HomePage_Widget_Group_Size',
 
 				'Report_Send_Scheduled_ifEmpty',

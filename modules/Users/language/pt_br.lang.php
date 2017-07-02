@@ -47,8 +47,6 @@ $mod_strings = Array(
 'Name'=>'Nome',
 'Tools'=>'Ferramentas',
 
-
-//added for patch2
 'LBL_GROUP'=>'Grupo',
 'LBL_CURRENCY_NAME'=>'Moeda',
 
@@ -60,6 +58,10 @@ $mod_strings = Array(
 'LBL_ERROR'=>'Erro:',
 'LBL_PASSWORD'=>'Senha',
 'LBL_USER_NAME'=>'Usuário',
+'LBL_2FACODE' => 'Code',
+'LBL_2FAGETCODE' => 'Get another code',
+'2FA_NEWCODESENT' => 'New code has been sent.',
+'2FA_ACCESSCODE' => 'Your access code is %s',
 'LBL_CRM_ID'=>'ID CRM',
 'LBL_FIRST_NAME'=>'Nome',
 'LBL_LAST_NAME'=>'Sobrenome',
@@ -114,6 +116,8 @@ $mod_strings = Array(
 'ERR_ENTER_CONFIRMATION_PASSWORD'=>'Por favor entre com a confirmação de senha.',
 'ERR_REENTER_PASSWORDS'=>'Por favor entre novamente com sua senha.  Os valores \"nova senha\" e \"confirme senha\" não combinam.',
 'ERR_INVALID_PASSWORD'=>'Você deve especificar um nome de usuário e senha válidos',
+'ERR_INVALID_2FACODE' => 'You have introduced an invalid code, please try again.',
+'ERR_INVALIDUSERID' => 'Invalid user ID given.',
 'ERR_INVALID_ADMINIPLOGIN' => 'O usuário Administrador deve fazer login a partir de dispositivos autorizados.',
 'ERR_INVALID_USERIPLOGIN' => 'Restricted access to authorized personnel only<br> You are connecting from an invalid IP',
 'ERR_PASSWORD_CHANGE_FAILED_1'=>'Mudança na senha do usuário falhou ',

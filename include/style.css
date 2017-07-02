@@ -72,6 +72,10 @@ a:hover {
 	z-index: 2;
 }
 
+.loginForm2FA {
+	height: 190px;
+}
+
 .loginForm input{
 	width: 225px; 
 	border: 1px solid #fff;
