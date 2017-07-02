@@ -42,8 +42,6 @@ else
 	coreBOS_Session::set('login_user_name', $login_user_name);
 }
 
-$current_module_strings['VLD_ERROR'] = base64_decode('UGxlYXNlIHJlcGxhY2UgdGhlIFN1Z2FyQ1JNIGxvZ29zLg==');
-
 // Retrieve username and password from the session if possible.
 if(isset($_SESSION["login_password"]))
 {
