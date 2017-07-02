@@ -525,7 +525,7 @@ class HelpDesk extends CRMEntity {
 		if($mode != 'edit') {
 			$updatelog = self::getUpdateLogCreateMessage($focus->column_fields, $assigned_group_name, $assigntype);
 		} else {
-			$updatelog = self::getUpdateLogEditMessage($focus->id,$focus->column_fields);
+			$updatelog = self::getUpdateLogEditMessage($focus->id,$focus->column_fields, $assigntype);
 		}
 		return $updatelog;
 	}
@@ -552,7 +552,7 @@ class HelpDesk extends CRMEntity {
 		return $updatelog;
 	}
 
-	public static function getUpdateLogEditMessage($ticketid,$column_fields) {
+	public static function getUpdateLogEditMessage($ticketid,$column_fields, $assigntype) {
 		global $adb,$log,$current_user;
 		//First retrieve the existing information
 		$tktresult = $adb->pquery("select * from vtiger_troubletickets where ticketid=?", array($ticketid));
