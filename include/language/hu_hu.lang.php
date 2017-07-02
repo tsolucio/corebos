@@ -13,7 +13,7 @@
  * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
  ********************************************************************************/
 $app_strings = array(
-	'LBL_BROWSER_TITLE' => 'vtiger CRM 5 - Open Source Ügyfélkapcsolati Rendszer',
+	'LBL_BROWSER_TITLE' => 'coreBOS',
 	'LBL_MY_ACCOUNT' => 'Saját Adataim',
 	'LBL_MY_PREFERENCES' => 'Beállításaim',
 	'LBL_ADMIN' => 'Admin',
@@ -27,7 +27,7 @@ $app_strings = array(
 	'all' => 'Minden',
 	'LBL_UPCOMING_EVENTS' => 'Esedékes teendők',
 	'LBL_PENDING_EVENTS' => 'Függő teendők',
-	'NTC_WELCOME_MESSAGE' => 'Üdvözlünk a VTiger CRM-ben!',
+	'NTC_WELCOME_MESSAGE' => 'Üdvözlünk a coreBOS-ben!',
 	'NTC_DESCRIPTION' => 'Adj meg helyes felhasználó nevet és jelszót a belépéshez!',
 	'NTC_WELCOME' => 'Üdvözlet',
 	'NTC_NO_ITEMS_DISPLAY' => 'semmi',
@@ -450,7 +450,7 @@ $app_strings = array(
 	'LNK_NEW_FAQ' => 'Új TudásTár',
 	'Vendor Name' => 'Beszállító neve',
 	'LNK_WEARE' => 'Rólunk',
-	'LBL_DISCUSS' => 'Oszd meg más Vtiger felhasználókkal',
+	'LBL_DISCUSS' => 'Oszd meg más coreBOS felhasználókkal',
 	'Quote Stage' => 'Ajánlat fázis',
 	'Potential Name' => 'Lehetőség megnevezése',
 	'Total' => 'Teljes összeg',
@@ -807,7 +807,7 @@ $app_strings = array(
 	'MSG_THANK_YOU' => 'Köszönjük',
 	'MSG_HAS_BEEN_CREATED_FOR' => 'létrehoztuk',
 	'MSG_THANKS' => 'Kösz,',
-	'MSG_VTIGERTEAM' => ' vTiger Team',
+	'MSG_VTIGERTEAM' => ' coreBOS Team',
 	'MSG_IS_NOT_UPLOADED' => 'nem került feltöltésre. Megengedett fájl típusok - jpeg, png, jpg, pjpeg, x-png vagy gif',
 	'MSG_IMAGE_ERROR' => 'A kép nem található',
 	'Information' => 'Információ',

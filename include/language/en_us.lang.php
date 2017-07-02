@@ -865,7 +865,6 @@ $app_strings = array(
 'Quote No'=>'Quote No',
 'Yahoo Id'=>'Yahoo Id',
 
-// Added/Updated for vtiger CRM 5.0.4
 'LBL_CHARSET' => 'UTF-8',
 'Lost Lead' => 'Lost Lead',
 //Added for incoming mail server settings form js validation
