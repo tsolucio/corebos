@@ -24,7 +24,7 @@ if(isset($_SESSION["login_user_name"]))
 	elseif (isset($_REQUEST['login_user_name']))
 		$login_user_name = trim(vtlib_purify($_REQUEST['login_user_name']), '"\'');
 	else
-		$login_user_name = '';
+		$login_user_name = trim(vtlib_purify($_SESSION['login_user_name']), '"\'');
 }
 else
 {
@@ -105,4 +105,5 @@ $smarty->assign("LOGIN_ERROR", $login_error);
 $currentYear = date('Y');
 $smarty->assign('currentYear',$currentYear);
 $smarty->display('Login.tpl');
+coreBOS_Session::delete('login_error');
 ?>
