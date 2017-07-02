@@ -118,6 +118,10 @@ if($action == 'ExportAjax')
 {
 	include ('include/utils/ExportAjax.php');
 }
+$nologinaction = array('sendnew2facode');
+if (in_array($action, $nologinaction) and file_exists('modules/Utilities/'.$action.'.php')) {
+	include ('modules/Utilities/'.$action.'.php');
+}
 // vtlib customization: Module manager export
 if($action == 'ModuleManagerExport') {
 	include('modules/Settings/ModuleManager/Export.php');
