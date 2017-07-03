@@ -15,14 +15,14 @@ require_once('include/utils/UserInfoUtil.php');
 require_once('modules/Webmails/MailBox.php');
 require_once('modules/Webmails/Webmails.php');
 
-global $mod_strings, $app_strings, $theme;
+global $mod_strings, $app_strings, $theme, $default_charset;
 
 $focus = new Emails();
 $smarty = new vtigerCRM_Smarty();
 $smarty->assign('APP',$app_strings);
 $smarty->assign('MOD',$mod_strings);
 $smarty->assign('THEME',$theme);
-
+$smarty->assign('LBL_CHARSET', $default_charset);
 if(isset($_REQUEST['record']) && $_REQUEST['record'] !='' && empty($_REQUEST['mailbox'])) {
 	$focus->id = $_REQUEST['record'];
 	$focus->mode = 'edit';
