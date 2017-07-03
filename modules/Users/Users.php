@@ -311,7 +311,7 @@ class Users extends CRMEntity {
 			default:
 				require_once('modules/Emails/mail.php');
 				require_once('modules/Emails/Emails.php');
-				$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail','joe@tsolucio.com','HelpDesk',$userid);
+				$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail','support@your_support_domain.tld','HelpDesk',$userid);
 				$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name','your-support name','HelpDesk',$userid);
 				$mailto = getUserEmail($userid);
 				if ($mailto!='') {
