@@ -4903,3 +4903,230 @@ function CLIPBOARD_CLASS(canvas_id, autoresize) {
 		pastedImage.src = source;
 	};
 }
+
+
+var throttle = function(func, limit) {
+	var inThrottle = undefined;
+	return function() {
+		var args = arguments,
+			context = this;
+		if (!inThrottle) {
+			func.apply(context, args);
+			inThrottle = true;
+			return setTimeout(function() {
+				return inThrottle = false;
+			}, limit);
+		}
+	};
+};
+
+document.addEventListener("DOMContentLoaded", function(event) {
+
+	/* ======= Auto complete part relations ====== */
+	var acInputs = document.getElementsByClassName("autocomplete-input");
+	for (var i = 0; i < acInputs.length; i++) {
+		(function(_i){
+			var ac = new AutocompleteRelation(acInputs[_i], _i);
+			acInputs[_i].addEventListener("input", function(e){
+				throttle(ac.get(e), 500);
+			});
+		})(i);
+	}
+
+});
+
+function AutocompleteRelation(target, i) {
+
+	this.inputField 	= target;
+	this.data 			= JSON.parse(target.getAttribute("data-autocomp"));
+	this.targetUL 		= document.getElementsByClassName("relation-autocomplete__target")[i];
+	this.hiddenInput	= document.getElementsByClassName("relation-autocomplete__hidden")[i];
+	this.displayFields 	= this.data.showfields.split(",");
+	this.entityName		= this.data.entityfield;
+	this.moduleName 	= this.data.searchmodule;
+	this.fillfields		= this.data.fillfields;
+	this.maxResults 	= 5;
+
+	this.targetUL.show 	= function() {
+		if (!this.classList.contains("active")) {
+			(function(){
+				var allAcLists = document.getElementsByClassName("relation-autocomplete__target");
+				for (var i = 0; i < allAcLists.length; i++) {
+					allAcLists[i].hide();
+				}
+			})();
+			this.style.opacity = 1;
+			this.classList.add("active");
+		}
+	}
+	this.targetUL.hide 	= function() {
+		if (this.classList.contains("active")) {
+			this.style.opacity = 0;
+			this.classList.remove("active");
+		}
+	}
+
+	this.targetUL.style.transition = "opacity 100ms ease";
+}
+
+AutocompleteRelation.prototype.get = function(e) {
+
+	var term = e.target.value;
+	if (term.length > 3) {
+		this.data.term = term;
+		var acInstance = this;
+
+		var r = new XMLHttpRequest();
+		r.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+				var json_data = JSON.parse(r.response)
+				if(json_data.length == 0)
+					acInstance.clearTargetUL()
+				else
+					acInstance.set(json_data)
+			}
+		};
+		r.open("GET", "index.php?module=Utilities&action=UtilitiesAjax&file=getAutocomplete&data="+encodeURIComponent(JSON.stringify(this.data)), true);
+		r.send();
+	} else {
+		this.clearTargetUL();
+		this.targetUL.hide();
+	}
+}
+
+AutocompleteRelation.prototype.set = function(items) {
+
+	if (items.length > 0) {
+		this.clearTargetUL();
+		this.targetUL.show();
+		var acInstance = this;
+		var limit = acInstance.maxResults < items.length ? acInstance.maxResults : items.length;
+		for (var i = 0; i < limit; i++) {
+
+			var li = this.buildListItem(items[i]);
+			this.targetUL.appendChild(li);
+
+			li.addEventListener("click", function(e){
+				acInstance.select({
+					label 		: this.getAttribute("data-label"),
+					value 		: this.getAttribute("data-crmid")
+				});
+				acInstance.fillOtherFields(this);
+			});
+
+		}
+	}
+}
+
+AutocompleteRelation.prototype.select = function(params) {
+
+	var label = params.label;
+	var value = params.value;
+
+	this.inputField.value 	= label;
+	// this.hiddenInput.value 	= value;
+
+	// Housekeeping after selection
+	this.clearTargetUL();
+	this.targetUL.hide();
+	// Schedular.AutoComplete.Current.clear();
+}
+
+AutocompleteRelation.prototype.buildListItem = function(item) {
+	var li = document.createElement("li");
+	li.className = "slds-listbox__item";
+	li.setAttribute("role", "presentation");
+	li.setAttribute("data-crmid", item.crmid);
+	li.setAttribute("data-label", item[this.entityName]);
+
+	for (var field in item) {
+		if(field != this.entityName)
+			li.setAttribute("data-" + field, item[field])
+	}
+
+	var span = document.createElement("span");
+	span.setAttribute("class", "slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta");
+	span.setAttribute("role", "option");
+
+	li.appendChild(span);
+
+	span = document.createElement("span");
+	span.setAttribute("class", "slds-media__figure");
+
+	li.children[0].appendChild(span);
+
+	span = document.createElement("span");
+	span.setAttribute("class", "slds-icon_container slds-icon-standard-account");
+	span.setAttribute("title", "TO FILL!");
+
+	li.children[0].children[0].appendChild(span);
+
+	var svg = document.createElement("svg");
+	svg.setAttribute("class", "slds-icon slds-icon_small");
+	svg.setAttribute("aria-hidden", "true");
+
+	li.children[0].children[0].children[0].appendChild(svg);
+
+	var use = document.createElement("use");
+	use.setAttribute("xlink:href", "include/LD/assets/icons/standard-sprite/svg/symbols.svg#account");
+
+	li.children[0].children[0].children[0].children[0].appendChild(use);
+
+	span = document.createElement("span");
+	span.setAttribute("class", "slds-assistive-text");
+	span.innerText = "Description of icon";
+
+	li.children[0].children[0].children[0].appendChild(span);
+
+	span = document.createElement("span");
+	span.setAttribute("class", "slds-media__body");
+
+	li.children[0].appendChild(span);
+
+	span = document.createElement("span");
+	span.setAttribute("class", "slds-listbox__option-text slds-listbox__option-text_entity");
+	span.innerHTML = item[this.entityName];
+
+	li.children[0].children[1].appendChild(span);
+
+	span = document.createElement("span");
+	span.setAttribute("class", "slds-listbox__option-meta slds-listbox__option-meta_entity");
+	span.innerText = this.buildSecondayReturnFields(item);
+
+	li.children[0].children[1].appendChild(span);
+
+	return li;
+}
+
+AutocompleteRelation.prototype.buildSecondayReturnFields = function(item) {
+	var returnString = "";
+	for (var i = 0; i < this.displayFields.length; i++) {
+		if (i != 0) {
+			returnString = returnString + item[this.displayFields[i]];
+			if (i < this.displayFields.length - 1) {
+				returnString += "\n";
+			}
+		}
+	}
+	return returnString;
+}
+
+AutocompleteRelation.prototype.clearTargetUL = function () {
+	while (this.targetUL.firstChild) {
+		this.targetUL.removeChild(this.targetUL.firstChild);
+		this.targetUL.hide();
+	}
+}
+
+AutocompleteRelation.prototype.fillOtherFields = function (data) {
+
+	var fields = this.fillfields.split(",");
+	fields_length = fields.length
+	for (var i = 0; i < fields_length; i++) {
+		this_field = fields[i].split("=");
+		get_field_value = data.getAttribute("data-" + this_field[0] )
+		field_element = document.getElementsByName(this_field[0])[0];
+		field_element.value = get_field_value;
+	}
+
+}
