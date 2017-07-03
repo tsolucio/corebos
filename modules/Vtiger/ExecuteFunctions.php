@@ -163,6 +163,15 @@ switch ($functiontocall) {
 		$rdo = vtlib_isModuleActive($mod);
 		$ret = array('isactive'=>$rdo);
 		break;
+	case 'getNumberDisplayValue':
+	default:
+		$value = vtlib_purify($_REQUEST['val']);
+		$currencyField = new CurrencyField($value);
+		$decimals = vtlib_purify($_REQUEST['decimals']);
+		$currencyField->initialize($current_user);
+		$currencyField->setNumberofDecimals(min($decimals,$currencyField->getCurrencyDecimalPlaces()));
+		$ret = $currencyField->getDisplayValue(null,true,true);
+		break;
 }
 
 echo json_encode($ret);
