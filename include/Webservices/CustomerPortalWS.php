@@ -940,19 +940,22 @@ function getFieldAutocomplete($term, $filter, $searchinmodule, $fields, $returnf
 	$sindex = $smod->table_index;
 	$queryGenerator = new QueryGenerator($searchinmodule, $current_user);
 	$sfields = explode(',', $fields);
-	$rfields = explode(',', $returnfields);
+	$rfields = array_filter( explode(',', $returnfields) );
 	$flds = array_unique(array_merge($rfields,$sfields,array('id')));
+
 	$queryGenerator->setFields($flds);
 	foreach ($sfields as $sfld) {
 		$queryGenerator->addCondition($sfld,$term,$op,$queryGenerator::$OR);
 	}
+
 	$query = $queryGenerator->getQuery();
 	$rsemp=$adb->query($query);
 	$wsid = vtyiicpng_getWSEntityId($searchinmodule);
 	while ($emp=$adb->fetch_array($rsemp)) {
 		$rsp = array();
 		foreach ($rfields as $rf) {
-			$rsp[$rf] = html_entity_decode($emp[$rf],ENT_QUOTES,$default_charset);
+			$colum_name = $queryGenerator->getModuleFields()[$rf]->getColumnName();
+			$rsp[$rf] = html_entity_decode($emp[$colum_name],ENT_QUOTES,$default_charset);
 		}
 		$respuesta[]=array(
 			'crmid'=>$wsid.$emp[$sindex],
