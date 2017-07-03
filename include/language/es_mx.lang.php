@@ -853,7 +853,6 @@ $app_strings = array (
       'Lead Status' => 'Estado de Prospecto',
       'Lead Source' => 'Origen de Prospecto',
       'Yahoo Id' => 'Yahoo Id',
-      'LBL_CHARSET' => 'UTF-8',
       'Lost Lead' => 'Prospecto Perdido',
       'LBL_SEND_EMAIL_PDF' => 'Enviar Email con PDF',
       'ERR_INVALID_PAGE_COUNT' => 'Paginación Inválida',

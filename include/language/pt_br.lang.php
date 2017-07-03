@@ -872,7 +872,6 @@ $app_strings = array (
 'Quote No'=>'No Cotação',
 'Yahoo Id'=>'ID Yahoo',
 
-'LBL_CHARSET' => 'UTF-8',
 'Lost Lead' => 'Lead Perdido',
 //Added for incoming mail server settings form js validation
 'ERR_INVALID_PAGE_COUNT' => "Organizaçãogem Página Inválida",

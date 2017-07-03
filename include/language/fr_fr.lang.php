@@ -842,7 +842,6 @@ $app_strings = array (
 	'Lead Source' => 'Source prospect',
 	'Quote No' => 'Devis n°',
 	'Yahoo Id' => 'Yahoo Id',
-	'LBL_CHARSET' => 'UTF-8',
 	'Lost Lead' => 'Prospect perdu',
 	'ERR_INVALID_PAGE_COUNT' => 'Nombre de page invalide',
 	'Quotes' => 'Devis',

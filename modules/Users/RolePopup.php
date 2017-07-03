@@ -11,7 +11,7 @@ require_once('include/utils/UserInfoUtil.php');
 require_once('Smarty_setup.php');
 $smarty = new vtigerCRM_Smarty;
 
-global $mod_strings, $app_strings, $adb, $theme;
+global $mod_strings, $app_strings, $adb, $theme, $default_charset;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 
@@ -143,6 +143,7 @@ $smarty->assign("THEME",$theme_path);
 $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH",$image_path);
 $smarty->assign("APP", $app_strings);
+$smarty->assign('LBL_CHARSET', $default_charset);
 $smarty->assign("CMOD", $mod_strings);
 $smarty->assign('coreBOS_uiapp_name', GlobalVariable::getVariable('Application_UI_Name',$coreBOS_app_name));
 $smarty->assign("ROLETREE", $roleout);

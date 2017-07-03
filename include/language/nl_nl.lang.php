@@ -20,7 +20,6 @@
  ********************************************************************************/
 
 $app_strings = array(
-	'LBL_CHARSET' => 'UTF-8',
 	'LBL_BROWSER_TITLE' => 'coreBOS',
 	'LBL_MY_ACCOUNT' => 'Mijn account',
 	'LBL_MY_PREFERENCES' => 'Mijn voorkeuren',

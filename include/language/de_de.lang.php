@@ -870,7 +870,6 @@ $app_strings = array(
 'Quote No'=>'Angebotsnr.',
 'Yahoo Id'=>'Yahoo E-Mail',
 
-'LBL_CHARSET' => 'UTF-8',
 'Lost Lead' => 'verlorener Lead',
 //Added for incoming mail server settings form js validation
 'ERR_INVALID_PAGE_COUNT' => "Seitenzahl ungültig",

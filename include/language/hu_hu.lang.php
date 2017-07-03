@@ -846,7 +846,6 @@ $app_strings = array(
 	'Lead Status' => 'Jelölt állapot',
 	'Lead Source' => 'Jelölt forrás',
 	'Yahoo Id' => 'Yahoo azonosító',
-	'LBL_CHARSET' => 'UTF-8',
 	'Lost Lead' => 'Elvesztett Jelölt',
 	'LBL_SEND_EMAIL_PDF' => 'Email küldés PDF melléklettel',
 	'ERR_INVALID_PAGE_COUNT' => 'Érvénytelen oldal szám',

@@ -843,7 +843,6 @@ $app_strings = array(
 	'Lead Status' => 'Lead Status',
 	'Lead Source' => 'Lead Source',
 	'Yahoo Id' => 'Yahoo ID',
-	'LBL_CHARSET' => 'UTF-8',
 	'Lost Lead' => 'Lost Lead',
 	'LBL_SEND_EMAIL_PDF' => 'Send Email with PDF',
 	'ERR_INVALID_PAGE_COUNT' => 'Invalid page count',

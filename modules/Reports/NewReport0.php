@@ -13,7 +13,7 @@ require_once('include/logging.php');
 require_once('include/utils/utils.php');
 require_once('modules/Reports/Reports.php');
 
-global $app_strings, $mod_strings, $current_language;
+global $app_strings, $mod_strings, $current_language, $default_charset;
 $current_module_strings = return_module_language($current_language, 'Reports');
 $log = LoggerManager::getLogger('report_list');
 global $currentModule, $image_path, $theme;
@@ -27,6 +27,7 @@ $list_report_form = new vtigerCRM_Smarty;
 $list_report_form->assign('LANGUAGE', $current_language);
 $list_report_form->assign("MOD", $mod_strings);
 $list_report_form->assign("APP", $app_strings);
+$list_report_form->assign('LBL_CHARSET', $default_charset);
 $list_report_form->assign('REPORTTYPE',isset($_REQUEST['cbreporttype']) ? vtlib_purify($_REQUEST['cbreporttype']) : '');
 $repObj = new Reports ();
 $folderid = 0;

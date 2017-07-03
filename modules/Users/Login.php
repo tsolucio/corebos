@@ -71,12 +71,7 @@ $app_strings = return_application_language('en_us');
 
 $smarty=new vtigerCRM_Smarty;
 $smarty->assign("APP", $app_strings);
-
-if(isset($app_strings['LBL_CHARSET'])) {
-	$smarty->assign("LBL_CHARSET", $app_strings['LBL_CHARSET']);
-} else {
-	$smarty->assign("LBL_CHARSET", $default_charset);
-}
+$smarty->assign('LBL_CHARSET', $default_charset);
 
 $smarty->assign("IMAGE_PATH", $image_path);
 $smarty->assign("VTIGER_VERSION", $coreBOS_app_version);
