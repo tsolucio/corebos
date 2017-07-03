@@ -16,7 +16,7 @@
 global $entityDel, $display;
 
 if(version_compare(phpversion(), '5.2.0') < 0 or version_compare(phpversion(), '7.1.0') >= 0) {
-	insert_charset_header();
+	header('Content-Type: text/html; charset=UTF-8');
 	$serverPhpVersion = phpversion();
 	require_once('phpversionfail.php');
 	die();
@@ -43,18 +43,8 @@ if(get_magic_quotes_gpc() == 1){
 	$_GET = array_map('stripslashes_checkstrings', $_GET);
 }
 
-/** Function to set, character set in the header, as given in include/language/*_lang.php */
-function insert_charset_header()
-{
-	global $app_strings, $default_charset;
-	$charset = $default_charset;
-	if(isset($app_strings['LBL_CHARSET'])) {
-		$charset = $app_strings['LBL_CHARSET'];
-	}
-	header('Content-Type: text/html; charset='. $charset);
-}
+header('Content-Type: text/html; charset='. $default_charset);
 
-insert_charset_header();
 // Create or reestablish the current session
 coreBOS_Session::init(true);
 
@@ -72,11 +62,6 @@ require_once('config.inc.php');
 if (!isset($dbconfig['db_hostname']) || $dbconfig['db_status']=='_DB_STAT_') {
 	header("Location: install.php");
 	exit();
-}
-
-// load up the config_override.php file.  This is used to provide default user settings
-if (is_file('config_override.php')) {
-	require_once('config_override.php');
 }
 
 // Set the default timezone preferred by user
