@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ******************************************************************************* */
-
 require_once('Smarty_setup.php');
 require_once('include/database/PearDatabase.php');
 require_once('include/CustomFieldUtil.php');
@@ -50,86 +49,35 @@ $cftextcombo = Array($mod_strings['Text'],
 	$mod_strings['LBL_MULTISELECT_COMBO']
 );
 
-
 $smarty->assign("MODULES", $module_array);
 $smarty->assign("CFTEXTCOMBO", $cftextcombo);
 $smarty->assign("CFIMAGECOMBO", $cfimagecombo);
-if ($_REQUEST['fld_module'] != '')
+if (!empty($_REQUEST['fld_module']))
 	$fld_module = vtlib_purify($_REQUEST['fld_module']);
-elseif ($_REQUEST['formodule'] != '') {
+elseif (!empty($_REQUEST['formodule'])) {
 	$fld_module = vtlib_purify($_REQUEST['formodule']);
 }
 else
 	$fld_module = 'Leads';
 $smarty->assign("MODULE", $fld_module);
-if ($fld_module == 'Calendar')
-	$smarty->assign("CFENTRIES", getCFListEntries($fld_module));
-else
-	$smarty->assign("CFENTRIES", getCFLeadMapping($fld_module));
+$smarty->assign("CFENTRIES", getCFLeadMapping($fld_module));
 if (isset($_REQUEST["duplicate"]) && $_REQUEST["duplicate"] == "yes") {
 	$error = getTranslatedString('ERR_CUSTOM_FIELD_WITH_NAME', 'Settings') . vtlib_purify($_REQUEST["fldlabel"]) . ' ' . getTranslatedString('ERR_ALREADY_EXISTS', 'Settings') . ' ' . getTranslatedString('ERR_SPECIFY_DIFFERENT_LABEL', 'Settings');
 	$smarty->assign("DUPLICATE_ERROR", $error);
+} else {
+	$smarty->assign('DUPLICATE_ERROR', '');
 }
 
-if ($_REQUEST['mode'] != '')
+if (!empty($_REQUEST['mode']))
 	$mode = vtlib_purify($_REQUEST['mode']);
+else
+	$mode = '';
 $smarty->assign("MODE", $mode);
 
-if ($_REQUEST['ajax'] != 'true')
+if (empty($_REQUEST['ajax']) or $_REQUEST['ajax'] != 'true')
 	$smarty->display(vtlib_getModuleTemplate('Vtiger', 'CustomFieldList.tpl'));
 else
 	$smarty->display(vtlib_getModuleTemplate('Vtiger', 'CustomFieldEntries.tpl'));
-
-/**
- * Function to get customfield entries
- * @param string $module - Module name
- * return array  $cflist - customfield entries
- */
-function getCFListEntries($module) {
-	global $adb, $app_strings, $theme, $smarty, $log;
-	$tabid = getTabid($module);
-	if ($module == 'Calendar') {
-		$tabid = array(9, 16);
-	}
-	$theme_path = "themes/" . $theme . "/";
-	$image_path = "themes/images/";
-	$dbQuery = "SELECT fieldid,columnname,fieldlabel,uitype,displaytype,block,vtiger_convertleadmapping.cfmid,tabid FROM vtiger_field LEFT JOIN vtiger_convertleadmapping
-				ON  vtiger_convertleadmapping.leadfid = vtiger_field.fieldid WHERE tabid IN (" . generateQuestionMarks($tabid) . ")
-				AND vtiger_field.presence IN (0,2)
-				AND generatedtype = 2
-				ORDER BY sequence";
-	$result = $adb->pquery($dbQuery, array($tabid));
-	$row = $adb->fetch_array($result);
-	$count = 1;
-	$cflist = Array();
-	if ($row != '') {
-		do {
-			$cf_element = Array();
-			$cf_element['no'] = $count;
-			$cf_element['label'] = getTranslatedString($row["fieldlabel"], $module);
-			$fld_type_name = getCustomFieldTypeName($row["uitype"]);
-			$cf_element['type'] = $fld_type_name;
-			$cf_tab_id = $row["tabid"];
-			if ($module == 'Leads') {
-				$mapping_details = getListLeadMapping($row["cfmid"]);
-				$cf_element[] = $mapping_details['accountlabel'];
-				$cf_element[] = $mapping_details['contactlabel'];
-				$cf_element[] = $mapping_details['potentiallabel'];
-			}
-			if ($module == 'Calendar') {
-				if ($cf_tab_id == '9')
-					$cf_element['activitytype'] = getTranslatedString('Task', $module);
-				else
-					$cf_element['activitytype'] = getTranslatedString('Event', $module);
-
-				$cf_element['tool'] = '&nbsp;<img style="cursor:pointer;" onClick="deleteCustomField(' . $row["fieldid"] . ',\'' . $module . '\', \'' . $row["columnname"] . '\', \'' . $row["uitype"] . '\')" src="' . vtiger_imageurl('delete.gif', $theme) . '" border="0"  alt="' . $app_strings['LBL_DELETE_BUTTON_LABEL'] . '" title="' . $app_strings['LBL_DELETE_BUTTON_LABEL'] . '"/></a>';
-			}
-			$cflist[] = $cf_element;
-			$count++;
-		}while ($row = $adb->fetch_array($result));
-	}
-	return $cflist;
-}
 
 /**
  * Function to get customfield entries for leads
@@ -215,7 +163,7 @@ function getListLeadMapping($cfid) {
 function getCustomFieldSupportedModules() {
 	global $adb;
 
-	$sql = "SELECT distinct vtiger_field.tabid,name FROM vtiger_field INNER JOIN vtiger_tab ON vtiger_field.tabid=vtiger_tab.tabid WHERE vtiger_field.tabid NOT IN(10,16,15,8,29) AND vtiger_tab.presence != 1"; // 16 is still here as we do not want duplicates for Calendar - Both 9 and 16 point to Calendar itself
+	$sql = "SELECT distinct vtiger_field.tabid,name FROM vtiger_field INNER JOIN vtiger_tab ON vtiger_field.tabid=vtiger_tab.tabid WHERE vtiger_field.tabid NOT IN(9,10,16,15,8,29) AND vtiger_tab.presence != 1"; // Both 9 and 16 point to Calendar itself
 	// END
 	$result = $adb->pquery($sql, array());
 	while ($moduleinfo = $adb->fetch_array($result)) {

@@ -7,21 +7,21 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-// Get User Default calendar variables
+//// Get User Default calendar variables
 var calendar_call_default_duration = 5; // minutes
-GlobalVariable_getVariable('Calendar_call_default_duration', 5, 'Calendar', gVTUserID).then(function(response) {
-	var obj = JSON.parse(response);
-	calendar_call_default_duration = obj.Calendar_call_default_duration;
-}, function(error) {
-	calendar_call_default_duration = 5; // minutes
-});
+//GlobalVariable_getVariable('Calendar_call_default_duration', 5, 'Calendar', gVTUserID).then(function(response) {
+//	var obj = JSON.parse(response);
+//	calendar_call_default_duration = obj.Calendar_call_default_duration;
+//}, function(error) {
+//	calendar_call_default_duration = 5; // minutes
+//});
 var calendar_other_default_duration = 1; // hours
-GlobalVariable_getVariable('Calendar_other_default_duration', 1, 'Calendar', gVTUserID).then(function(response) {
-	var obj = JSON.parse(response);
-	calendar_other_default_duration = obj.Calendar_other_default_duration;
-}, function(error) {
-	calendar_other_default_duration = 1; // hours
-});
+//GlobalVariable_getVariable('Calendar_other_default_duration', 1, 'Calendar', gVTUserID).then(function(response) {
+//	var obj = JSON.parse(response);
+//	calendar_other_default_duration = obj.Calendar_other_default_duration;
+//}, function(error) {
+//	calendar_other_default_duration = 1; // hours
+//});
 
 function DisableSharing() {
 	x = document.SharedList.selected_id.length;

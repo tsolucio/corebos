@@ -23,7 +23,7 @@ $typeids = vtlib_purify($_REQUEST['typeids']);
 $Type_Ids = explode(',',$typeids);
 
 $user_view_type = vtlib_purify($_REQUEST['user_view_type']);
-$save = vtlib_purify($_REQUEST['save']);
+$save = (isset($_REQUEST['save']) ? vtlib_purify($_REQUEST['save']) : '');
 $full_calendar_view = vtlib_purify($_REQUEST['view']);
 if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') $record = $_REQUEST['record'];
 
@@ -40,13 +40,13 @@ if (!empty($_REQUEST['usersids'])) {
 }
 
 $Load_Event_Status = array();
-$event_status = vtlib_purify($_REQUEST["event_status"]);
+$event_status = (isset($_REQUEST['event_status']) ? vtlib_purify($_REQUEST['event_status']) : '');
 if ($event_status != "") { 
 	$Load_Event_Status = explode(",",$event_status);
 }
 
 $Load_Task_Status = array();
-$task_status = vtlib_purify($_REQUEST["task_status"]);
+$task_status = (isset($_REQUEST['task_status']) ? vtlib_purify($_REQUEST['task_status']) : '');
 if ($task_status != "") {
 	$Load_Task_Status = explode(",",$task_status);
 }
@@ -256,7 +256,7 @@ foreach($Users_Ids AS $userid) {
 			$event = $activitytypeid;
 			$into_title = isset($row["subject"]) ? $row["subject"] : (isset($row[$subject]) ? $row[$subject] : getTranslatedString('LBL_NONE'));
 			if ($detailview_permissions) {
-				if (($Calendar4You->view_all && $Calendar4You->edit_all) || ($userid == $current_user->id || $row["visibility"] == "Public" || in_array($userid,$ParentUsers) || $activitytypeid == "invite")) {
+				if (($Calendar4You->view_all && $Calendar4You->edit_all) || ($userid == $current_user->id || (isset($row['visibility']) and $row['visibility'] == 'Public') || in_array($userid,$ParentUsers) || $activitytypeid == "invite")) {
 					if (isset($Showed_Field[$event]))
 						$into_title = transferForAddIntoTitle(1,$row,$Showed_Field[$event]);
 					$add_more_info = true;
@@ -266,30 +266,26 @@ foreach($Users_Ids AS $userid) {
 					$editable = true;
 				}
 			}
-			if ($activitytypeid == "task" or in_array($activitytypeid,$tasklabel)){
-				$activity_mode = "Task";
-			} else {
-				$activity_mode = "Events";
-			}
+			$activity_mode = "Events";
 			if ($record != "") {
 				$Actions = array();
 				if ($visibility == "public") {
 					if(in_array($activitytypeid,$tasklabel))
 					$Actions[] = "<a target='_new' href='index.php?action=DetailView&module=".$activitytypeid."&record=".$record."'>".$mod['LBL_DETAIL']."</a>";
 					else
-					$Actions[] = "<a target='_new' href='index.php?action=EventDetailView&module=Calendar4You&record=".$record."&activity_mode=$activity_mode&parenttab=Tools'>".$mod['LBL_DETAIL']."</a>";
+					$Actions[] = "<a target='_new' href='index.php?action=DetailView&module=cbCalendar&record=".$record."&activity_mode=$activity_mode'>".$mod['LBL_DETAIL']."</a>";
 				}
 				if($Calendar4You->CheckPermissions("EDIT",$record)) {
 					if(in_array($activitytypeid,$tasklabel))
 						$Actions[] = "<a target='_new' href='index.php?action=EditView&module=".$activitytypeid."&record=".$record."'>".$app['LNK_EDIT']."</a>";
 					else
-						$Actions[] = "<a target='_new' href='index.php?action=EventEditView&module=Calendar4You&record=".$record."&activity_mode=$activity_mode&parenttab=Tools'>".$app['LNK_EDIT']."</a>";
+						$Actions[] = "<a target='_new' href='index.php?action=EditView&module=cbCalendar&record=".$record."&activity_mode=$activity_mode'>".$app['LNK_EDIT']."</a>";
 				}
 				if (vtlib_isModuleActive('Timecontrol') and !in_array($activitytypeid,$tasklabel)) {
 					$Actions[] = "<a target='_newtc' href='index.php?action=EditView&module=Timecontrol&calendarrecord=$record&activity_mode=$activity_mode'>".getTranslatedString('LBL_TIME_TAKEN').'</a>';
 				}
 				if($Calendar4You->CheckPermissions("DELETE",$record)) {
-					$Actions[] = "<a href='javascript:void(0)' onclick='EditView.record.value=".$record.";EditView.return_module.value=".'"Calendar4You"; EditView.return_action.value="index";  var confirmMsg = "'.getTranslatedString('NTC_DELETE_CONFIRMATION').'"; submitFormForActionWithConfirmation("EditView", "Delete", confirmMsg);\'>'.$app['LNK_DELETE'].'</a>';
+					$Actions[] = "<a href='javascript:void(0)' onclick='EditView.record.value=".$record.";EditView.return_module.value=".'"Calendar4You"; EditView.module.value="cbCalendar"; EditView.return_action.value="index";  var confirmMsg = "'.getTranslatedString('NTC_DELETE_CONFIRMATION').'"; submitFormForActionWithConfirmation("EditView", "Delete", confirmMsg);\'>'.$app['LNK_DELETE'].'</a>';
 				}
 				$actions = implode(" | ",$Actions);
 				if (isset($stfields['subject'])) {
@@ -313,14 +309,16 @@ foreach($Users_Ids AS $userid) {
 					}
 					$into_title = implode(' -- ', $descvals);
 				}
-				$into_title = $app['LBL_ACTION'].": ".$actions."<hr>".nl2br($into_title);
+				$into_title = '<div class="slds-border_bottom" style="border-bottom: 1px solid #d8dde6">'.$app['LBL_ACTION'].": ".$actions."</div>".nl2br(vtlib_purify($into_title));
 			}
 			$title = "<font style='font-size:12px'>".$into_title."</font>";
 			if ($add_more_info) {
 				if (isset($Event_Info[$event]) and count($Event_Info[$event]) > 0) {
+					$titlemi = '';
 					foreach($Event_Info[$event] AS $CD) {
-						$title .= transferForAddIntoTitle(2,$row,$CD);
+						$titlemi .= transferForAddIntoTitle(2,$row,$CD);
 					}
+					$title .= vtlib_purify($titlemi);
 				}
 			}
 			if(in_array($activitytypeid,$tasklabel)){
@@ -352,7 +350,7 @@ foreach($Users_Ids AS $userid) {
 				'visibility' => $visibility,
 				'editable' => $editable,
 				'activity_mode' => $activity_mode,
-				'title' => $title . (isset($row['description']) ? '<br>' . textlength_check($row['description']) : ''),
+				'title' => $title . (isset($row['description']) ? '<br>' . textlength_check(vtlib_purify($row['description'])) : ''),
 				'start' => $user_date_start,
 				'end' => $user_due_date,
 				'allDay' => $allDay,

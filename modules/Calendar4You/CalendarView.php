@@ -59,7 +59,7 @@ $smarty->assign("CREATE_PERMISSION",($Calendar4You->CheckPermissions("CREATE") ?
 	$temp_date = $date->getDisplayDate();
 
 	if($current_user->column_fields['is_admin']=='on')
-		$Res = $adb->pquery("select * from vtiger_activitytype",array());
+		$Res = $adb->pquery('select * from vtiger_activitytype where activitytype!=?',array('Emails'));
 	else {
 		$roleid=$current_user->roleid;
 		$subrole = getRoleSubordinates($roleid);
@@ -71,9 +71,9 @@ $smarty->assign("CREATE_PERMISSION",($Calendar4You->CheckPermissions("CREATE") ?
 		}
 
 		if (count($roleids) > 1) {
-			$Res=$adb->pquery("select distinct activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where roleid in (". generateQuestionMarks($roleids) .") and picklistid in (select picklistid from vtiger_picklist) order by sortid asc", array($roleids));
+			$Res=$adb->pquery("select activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where activitytype!=? and roleid in (". generateQuestionMarks($roleids) .") and picklistid in (select picklistid from vtiger_picklist) order by sortid asc", array('Emails',$roleids));
 		} else {
-			$Res=$adb->pquery("select distinct activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where roleid = ? and picklistid in (select picklistid from vtiger_picklist) order by sortid asc", array($roleid));
+			$Res=$adb->pquery("select activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where activitytype!=? and roleid = ? and picklistid in (select picklistid from vtiger_picklist) order by sortid asc", array('Emails',$roleid));
 		}
 	}
 
@@ -120,18 +120,9 @@ $Task_Colors = getEColors("type","task");
 
 $Task_Colors_Palete = $colorHarmony->Monochromatic($Task_Colors["bg"]);
 
-if (!$load_ch || $Ch_Views["1"]["task"]) $task_checked = true; else $task_checked = false;
+if (!$load_ch || !empty($Ch_Views["1"]["task"])) $task_checked = true; else $task_checked = false;
 
 $Activity_Types = $Module_Types = array();
-$Activity_Types["task"] = array(
-	"typename"=>"Tasks",
-	"label"=>$c_mod_strings["LBL_TASK"],
-	"act_type"=>"task",
-	"title_color"=>$Task_Colors_Palete[0],
-	"color"=>$Task_Colors_Palete[1],
-	"textColor"=>$Task_Colors["text"],
-	"checked"=>$task_checked
-);
 
 $ActTypes = getActTypesForCalendar();
 if (!$load_ch || $Ch_Views["1"]["invite"]) $invite_checked = true; else $invite_checked = false;

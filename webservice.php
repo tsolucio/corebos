@@ -154,10 +154,10 @@
 		}
 
 		$userid = $sessionManager->get("authenticatedUserId");
-		if($userid){
+		if (!empty($userid)) {
 			$seed_user = new Users();
 			$current_user = $seed_user->retrieveCurrentUserInfoFromFile($userid);
-		}else{
+		} else {
 			$current_user = null;
 		}
 

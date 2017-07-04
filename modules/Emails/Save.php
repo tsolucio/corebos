@@ -195,11 +195,13 @@ if(isset($_REQUEST['send_mail']) && $_REQUEST['send_mail'] && $_REQUEST['parent_
 } elseif( isset($_REQUEST['send_mail']) && $_REQUEST['send_mail'])
 	include("modules/Emails/mailsend.php");
 
-if(isset($_REQUEST['return_action']) && $_REQUEST['return_action'] == 'mailbox')
+if (isset($_REQUEST['return_action']) && $_REQUEST['return_action'] == 'mailbox') {
 	header('Location: index.php?action=index&module='.urlencode($return_module));
-else {
-	if($_REQUEST['return_viewname'] == '') $return_viewname='0';
-	if($_REQUEST['return_viewname'] != '')$return_viewname=vtlib_purify($_REQUEST['return_viewname']);
+} elseif (isset($_REQUEST['return_action'])) {
+	header('Location: index.php?action='.urlencode($return_action).'&module='.urlencode($return_module).'&record='.urlencode($return_id));
+} else {
+	if (empty($_REQUEST['return_viewname'])) $return_viewname = '0';
+	if (!empty($_REQUEST['return_viewname'])) $return_viewname = vtlib_purify($_REQUEST['return_viewname']);
 	//Added for 4600
 	$inputs="<script>window.opener.location.href=window.opener.location.href;window.self.close();</script>";
 	echo $inputs;

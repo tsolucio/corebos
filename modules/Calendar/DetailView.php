@@ -188,8 +188,7 @@ elseif($activity_mode == 'Events')
 		$recurringObject = RecurringType::fromDBRequest($adb->query_result_rowdata($res, 0));
 		$recurringInfoDisplayData = $recurringObject->getDisplayRecurringInfo();
 		$data = array_merge($data, $recurringInfoDisplayData);
-
-	} else  {
+	} else {
 		$data['recurringcheck'] = getTranslatedString('LBL_NO', $currentModule);
 		$data['repeat_str'] = '';
 	}

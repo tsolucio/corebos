@@ -1188,6 +1188,13 @@
 </changeSet>
 <changeSet>
 	<author>joebordes</author>
+	<description>Install Calendar remake module</description>
+	<filename>build/changeSets/2017/installcbcalendar.php</filename>
+	<classname>installcbcalendar</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
 	<description>Image fields supported on all modules: products and contacts. first step towards multiimage field which is only working now on Products</description>
 	<filename>build/changeSets/2017/supportForImageFieldsonProducts.php</filename>
 	<classname>supportForImageFieldsonProducts</classname>
