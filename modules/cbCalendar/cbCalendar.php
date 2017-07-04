@@ -200,6 +200,11 @@ class cbCalendar extends CRMEntity {
 		}
 	}
 
+	function trash($module, $id) {
+		parent::trash($module, $id);
+		$this->activity_reminder($id,'0',0,0,'delete');
+	}
+
 	/** Function to insert values in vtiger_recurringevents table for the specified tablename,module
 	  * @param $recurObj -- Recurring Object:: Type varchar
 	 */
@@ -319,8 +324,7 @@ class cbCalendar extends CRMEntity {
 	function insertIntoReminderTable($table_name,$recurid)
 	{
 		global $log;
-		if(isset($_REQUEST['set_reminder']) and $_REQUEST['set_reminder'] == 'Yes')
-		{
+		if (isset($_REQUEST['set_reminder']) and $_REQUEST['set_reminder'] == 'Yes') {
 			coreBOS_Session::delete('next_reminder_time');
 			$log->debug("set reminder is set");
 			$rem_days = $_REQUEST['remdays'];
@@ -347,7 +351,7 @@ class cbCalendar extends CRMEntity {
 				$this->activity_reminder($this->id,$reminder_time,0,$recurid,'');
 			}
 		}
-		elseif(isset($_REQUEST['set_reminder']) and $_REQUEST['set_reminder'] == 'No')
+		elseif (isset($_REQUEST['set_reminder']) and $_REQUEST['set_reminder'] == 'No')
 		{
 			$this->activity_reminder($this->id,'0',0,$recurid,'delete');
 		}
