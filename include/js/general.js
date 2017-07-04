@@ -5125,8 +5125,40 @@ AutocompleteRelation.prototype.fillOtherFields = function (data) {
 	for (var i = 0; i < fields_length; i++) {
 		this_field = fields[i].split("=");
 		get_field_value = data.getAttribute("data-" + this_field[0] )
+
 		field_element = document.getElementsByName(this_field[0])[0];
+
+		if(this_field[0] == "assigned_user_id") {
+			field_element = this.fillAssignField(get_field_value);
+		}
+
 		field_element.value = get_field_value;
 	}
 
+}
+
+AutocompleteRelation.prototype.fillAssignField = function (value) {
+	var type, active_piclist;
+	var user_picklist = document.getElementById("assigned_user_id");
+	var group_picklist = document.getElementById("assigned_group_id");
+
+	var assigntype = document.getElementsByName("assigntype");
+
+	if( user_picklist.innerHTML.indexOf('value="' + value + '"') > -1 ) {
+		type = "U";
+		active_piclist = user_picklist;
+	}
+	else {
+		type = "T";
+		active_piclist = group_picklist;
+	}
+
+	for(var i = 0; i < assigntype.length; i++) {
+		assigntype[i].checked = false;
+		if(assigntype[i].value == type)
+			assigntype[i].checked = true;
+	}
+
+	toggleAssignType(type);
+	return active_piclist;
 }
