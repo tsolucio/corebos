@@ -165,7 +165,7 @@ class ChartUtils {
 	static public function getChartHTML($labels, $values, $graph_title, $target_values, $html_imagename, $width, $height, $left, $right, $top, $bottom, $graph_type, $legend_position='right', $responsive=true) {
 		$lbls = implode(',',$labels);
 		$vals = str_replace('::',',',$values);
-		$minscale = min(explode(',',$vals))-2;
+		$minscale = max(0,min(explode(',',$vals))-2);
 		$lnks = array();
 		$cnt=0;
 		foreach ($target_values as $value) {
