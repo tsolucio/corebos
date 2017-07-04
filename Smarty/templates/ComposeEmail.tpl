@@ -34,6 +34,8 @@
 <input type="hidden" name="record" value="{$ID}">
 <input type="hidden" name="mode" value="{if isset($MODE)}{$MODE}{/if}">
 <input type="hidden" name="action">
+<input type="hidden" name="return_action" value="{if isset($RETURN_ACTION)}{$RETURN_ACTION}{/if}">
+<input type="hidden" name="return_module" value="{if isset($RETURN_MODULE)}{$RETURN_MODULE}{/if}">
 <input type="hidden" name="popupaction" value="create">
 <input type="hidden" name="hidden_toid" id="hidden_toid">
 <table class="small mailClient" border="0" cellpadding="0" cellspacing="0" width="100%">

@@ -708,10 +708,9 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
 <?php
 	global $adb;
-	if($current_user->column_fields['is_admin']=='on')
-		$Res = $adb->pquery("select * from vtiger_activitytype",array());
-	else
-	{
+	if (is_admin($current_user)) {
+		$Res = $adb->pquery('select * from vtiger_activitytype where activitytype!=?',array('Emails'));
+	} else {
 		$role_id=$current_user->roleid;
 		$subrole = getRoleSubordinates($role_id);
 		if(count($subrole)> 0)
@@ -725,24 +724,23 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 		}
 
 		if (count($roleids) > 1) {
-			$Res=$adb->pquery("select distinct activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where roleid in (". generateQuestionMarks($roleids) .") and picklistid in (select picklistid from vtiger_picklist) order by sortid asc",array($roleids));
+			$Res=$adb->pquery("select activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where activitytype!=? and roleid in (". generateQuestionMarks($roleids) .") and picklistid in (select picklistid from vtiger_picklist) order by sortid asc",array('Emails',$roleids));
 		} else {
-			$Res=$adb->pquery("select distinct activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where roleid = ? and picklistid in (select picklistid from vtiger_picklist) order by sortid asc",array($role_id));
+			$Res=$adb->pquery("select activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where activitytype!=? and roleid = ? and picklistid in (select picklistid from vtiger_picklist) order by sortid asc",array('Emails',$role_id));
 		}
 	}
 	$eventlist='';
-	for($i=0; $i<$adb->num_rows($Res);$i++)
-	{
+	$previousValue = '';
+	for ($i=0; $i<$adb->num_rows($Res);$i++) {
 		$eventlist = $adb->query_result($Res,$i,'activitytype');
+		if ($previousValue == $eventlist) continue;
+		$previousValue = $eventlist;
 		$eventlist = html_entity_decode($eventlist,ENT_QUOTES,$default_charset);
 		$actname = getTranslatedString($eventlist,'Calendar');
 ?>
 	<tr><td><a href='' id="add<?php echo strtolower($eventlist);?>" class='drop_down'><?php echo $actname; ?></a></td></tr>
 <?php
 	}
-?>
-	<tr><td><a href='' id="addtodo" class='drop_down'><?php echo $c_mod_strings['LBL_ADDTODO']?></a></td></tr>
-<?php
 	$timeModules = getAllModulesWithDateTimeFields();
 	foreach ($timeModules as $tmid => $tmmod) {
 		$tmline = getTranslatedString($tmmod,$tmmod);
@@ -763,14 +761,15 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 	$time_arr = getaddITSEventPopupTime($hour_startat,$hour_endat,$Calendar_Settings["hour_format"]);
 	$tdate = new DateTimeField(null);
 	$temp_date = $tdate->getDisplayDate();
-	for($i=0; $i<$adb->num_rows($Res);$i++)
-	{
+	$previousValue = '';
+	for ($i=0; $i<$adb->num_rows($Res);$i++) {
 		$eventlist = $adb->query_result($Res,$i,'activitytype');
+		if ($previousValue == $eventlist) continue;
+		$previousValue = $eventlist;
 		$eventlist = html_entity_decode($eventlist,ENT_QUOTES,$default_charset);
 		$actname = getTranslatedString($eventlist,'Calendar');
 		echo '<tr><td><a href="javascript:gITSshow(\'addITSEvent\',\''.$eventlist."','".$temp_date."','".$temp_date."','".$time_arr["starthour"]."','".$time_arr["startmin"]."','".$time_arr["startfmt"]."','".$time_arr["endhour"]."','".$time_arr["endmin"]."','".$time_arr["endfmt"].'\',\'hourview\',\'\');fnRemoveITSEvent();" class="drop_down">'.$actname.'</a></td></tr>';
 	}
-	echo '<tr><td><a href="javascript:gITSshow(\'createTodo\',\'todo\',\''.$temp_date."','".$temp_date."','".$time_arr["starthour"]."','".$time_arr["startmin"]."','".$time_arr["startfmt"]."','".$time_arr["endhour"]."','".$time_arr["endmin"]."','".$time_arr["endfmt"].'\',\'hourview\',\'\');fnRemoveITSEvent();" class="drop_down">'.$c_mod_strings['LBL_ADDTODO'].'</a></td></tr>';
 ?>
 </table>
 </div>

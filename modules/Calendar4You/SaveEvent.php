@@ -15,7 +15,6 @@ require_once('modules/Calendar/CalendarCommon.php');
 require_once 'modules/Calendar4You/CalendarUtils.php';
 global $adb,$theme,$mod_strings,$current_user;
 $local_log = LoggerManager::getLogger('index');
-$_REQUEST = vtlib_purify($_REQUEST);  // clean up ALL values
 
 if ($_REQUEST['mode'] == 'event_drop' || $_REQUEST['mode'] == 'event_resize') {
 	list($void,$processed) = cbEventHandler::do_filter('corebos.filter.CalendarModule.save', array($_REQUEST, false));
@@ -23,7 +22,7 @@ if ($_REQUEST['mode'] == 'event_drop' || $_REQUEST['mode'] == 'event_resize') {
 }
 
 $focus = new Activity();
-$activity_mode = vtlib_purify($_REQUEST['activity_mode']);
+$activity_mode = (isset($_REQUEST['activity_mode']) ? vtlib_purify($_REQUEST['activity_mode']) : '');
 $record = vtlib_purify($_REQUEST['record']);
 if (empty($activity_mode) and !empty($record)) {
 	$activity_mode = getEventActivityMode($record);
@@ -32,17 +31,16 @@ $tab_type = 'Calendar';
 if ($activity_mode == 'Events') {
 	$tab_type = 'Events';
 }
-$search=vtlib_purify($_REQUEST['search_url']);
+$search = (isset($_REQUEST['search_url']) ? vtlib_purify($_REQUEST['search_url']) : '');
 
 $focus->column_fields["activitytype"] = 'Task';
-if(isset($record)) {
-	$focus->id = $_REQUEST['record'];
-	$local_log->debug("id is ".$id);
+if (isset($record)) {
+	$focus->id = $record;
 }
 
 if ($_REQUEST['mode'] == "event_drop" || $_REQUEST['mode'] == "event_resize") {
     $activityid = $focus->id;
-    
+
     if(isPermitted("Calendar","EditView",$activityid) == 'yes') {
         $focus->retrieve_entity_info($focus->id,$tab_type);
         $focus->mode = "edit";
@@ -200,9 +198,9 @@ if((isset($_REQUEST['change_status']) && $_REQUEST['change_status']) && ($_REQUE
 		}
 	}
 	if(isset($_REQUEST['visibility']) && $_REQUEST['visibility']!= '')
-	        $focus->column_fields['visibility'] = $_REQUEST['visibility'];
+		$focus->column_fields['visibility'] = $_REQUEST['visibility'];
 	else
-	        $focus->column_fields['visibility'] = 'Private';
+		$focus->column_fields['visibility'] = 'Private';
 
 	if($_REQUEST['assigntype'] == 'U') {
 		$focus->column_fields['assigned_user_id'] = $_REQUEST['assigned_user_id'];
@@ -224,7 +222,7 @@ if((isset($_REQUEST['change_status']) && $_REQUEST['change_status']) && ($_REQUE
 	$date = new DateTimeField($_REQUEST[$dateField]. ' ' . $_REQUEST[$fieldname]);
 	$focus->column_fields[$dateField] = $date->getDBInsertDateValue();
 	$focus->column_fields[$fieldname] = $date->getDBInsertTimeValue();
-    
+
 	$focus->save($tab_type);
 	/* For Followup START -- by Minnie */
 	if(isset($_REQUEST['followup']) && $_REQUEST['followup'] == 'on' && $activity_mode == 'Events' && isset($_REQUEST['followup_time_start']) &&  $_REQUEST['followup_time_start'] != '') {

@@ -119,7 +119,7 @@ if($adb->num_rows($result) >= 1)
 							$contents = nl2br(getTranslatedString($adb->query_result($result_main,0,'notificationbody'),'Calendar')) ."\n\n ".
 								getTranslatedString('Subject','Calendar').' : '.$activity_sub."\n ". $parent_content .' '.
 								getTranslatedString('Date & Time','Calendar').' : '.$stdatetime->getDisplayDateTimeValue($reminduser).' ('. $reminduser->column_fields['time_zone'] .")\n\n ".
-								getTranslatedString('Visit_Link','Calendar')." <a href='".$site_URL."/index.php?action=EventDetailView&module=Calendar4You&record=".$activity_id."&activity_mode=".$activitymode."'>".getTranslatedString('Click here','Calendar').'</a>';
+								getTranslatedString('Visit_Link','Calendar')." <a href='".$site_URL."/index.php?action=DetailView&module=cbCalendar&record=".$activity_id."&activity_mode=".$activitymode."'>".getTranslatedString('Click here','Calendar').'</a>';
 							$sendto = $user_result_row['email1'];
 							$rdo = send_mail('Calendar',$sendto,$HELPDESK_SUPPORT_NAME,$from,$subject,nl2br($contents));
 						}

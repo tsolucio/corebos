@@ -136,7 +136,7 @@ class Calendar_RepeatEvents {
 
 		$eventStartDate = $focus->column_fields['date_start'];
 		$interval = strtotime($focus->column_fields['due_date']) - strtotime($focus->column_fields['date_start']);
-
+		$numberOfRepeats = count($recurObj->recurringdates);
 		foreach ($recurObj->recurringdates as $index => $startDate) {
 			if($index == 0 && $eventStartDate == $startDate) {
 				continue;
@@ -160,7 +160,7 @@ class Calendar_RepeatEvents {
 					$new_focus->column_fields[$key]         = $value;
 				}
 			}
-			if($numberOfRepeats > 10 && $index > 10) {
+			if ($numberOfRepeats > 10 && $index > 10) {
 				unset($new_focus->column_fields['sendnotification']);
 			}
 			$new_focus->save('Calendar');

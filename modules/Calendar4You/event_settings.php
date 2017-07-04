@@ -69,15 +69,14 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
 <input type="hidden" name="module" value="Calendar4You">
 <input type="hidden" name="action" value="SaveEventSettings">
 <input type="hidden" name="view" value="<?php echo vtlib_purify($_REQUEST['view']); ?>">
-<input type="hidden" name="hour" value="<?php echo vtlib_purify($_REQUEST['hour']); ?>">
-<input type="hidden" name="day" value="<?php echo vtlib_purify($_REQUEST['day']); ?>">
-<input type="hidden" name="month" value="<?php echo vtlib_purify($_REQUEST['month']); ?>">
-<input type="hidden" name="year" value="<?php echo vtlib_purify($_REQUEST['year']); ?>">
+<input type="hidden" name="hour" value="<?php echo (isset($_REQUEST['hour']) ? vtlib_purify($_REQUEST['hour']) : ''); ?>">
+<input type="hidden" name="day" value="<?php echo (isset($_REQUEST['day']) ? vtlib_purify($_REQUEST['day']) : ''); ?>">
+<input type="hidden" name="month" value="<?php echo (isset($_REQUEST['month']) ? vtlib_purify($_REQUEST['month']) : ''); ?>">
+<input type="hidden" name="year" value="<?php echo (isset($_REQUEST['year']) ? vtlib_purify($_REQUEST['year']) : ''); ?>">
 <input type="hidden" name="user_view_type" value="<?php echo $user_view_type; ?>">
 <input type="hidden" name="save_fields" value="<?php if ($mode != "user" && $id != "invite") echo "1"; else echo "0"; ?>">
 <input type="hidden" name="mode" value="<?php echo $mode; ?>">
 <input type="hidden" name="id" value="<?php echo $id; ?>">
-<input type="hidden" name="parenttab" value="<?php echo vtlib_purify($_REQUEST['parenttab']); ?>">
 <input type="hidden" name="current_userid" value="<?php echo $current_user->id; ?>" >
 <input type="hidden" name="shar_userid" id="shar_userid" >
 <div style="padding:5px">
@@ -236,7 +235,7 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
                 </td>
                 <td class="small">
                     <select name="selected_day_fields" id="selected_day_fields" class=small size=5 multiple style="height:70px;width:100%">
-                    <?php echo createFieldsOptions($Event_Fields["day"]); ?>
+                    <?php echo createFieldsOptions((isset($Event_Fields["day"]) ? $Event_Fields["day"] : '')); ?>
                     </select>
                 </td>
 			</tr>
@@ -273,7 +272,7 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
                 </td>
                 <td class="small">
                     <select name="selected_week_fields" id="selected_week_fields" class=small size=5 multiple style="height:70px;width:100%">
-                    <?php echo createFieldsOptions($Event_Fields["week"]); ?>
+                    <?php echo createFieldsOptions((isset($Event_Fields["week"]) ? $Event_Fields["week"] : '')); ?>
                     </select>
                 </td>
 			</tr>
@@ -310,7 +309,7 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
                 </td>
                 <td class="small">
                     <select name="selected_month_fields" id="selected_month_fields" class=small size=5 multiple style="height:70px;width:100%">
-                    <?php echo createFieldsOptions($Event_Fields["month"]); ?>
+                    <?php echo createFieldsOptions((isset($Event_Fields["month"]) ? $Event_Fields["month"] : '')); ?>
                     </select>
                 </td>
 			</tr>
@@ -339,11 +338,8 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
                     $GoogleSync4You->setEvent($id); 
 
                     $selected_calendar = $GoogleSync4You->getSCalendar("1");
-                    
                     echo $mod_strings["LBL_TO_GOOGLE_CALENDAR"].": ";
-                    
                     $listFeed =  $GoogleSync4You->getGoogleCalendars();
-                    
                     echo "<select name='selected_calendar' onChange='showGoogleSyncAccDiv(this.value)'>";
                     echo "<option value=''></option>";
                     foreach ($listFeed as $calendar) {
@@ -351,26 +347,26 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
                         echo "<option value='".$calendar->id."' ".$selected.">".$calendar->summary."</option>";
                     }
                     echo "</select>";
-                   
+
                     echo "<br /><br />";
-                    
+
                     if ($selected_calendar != "") $display = "block"; else $display = "none";
                     echo "<div id='google_sync_acc_div' style='display:".$display."'>";
-                   
+
                     $is_export_disabled = $GoogleSync4You->isDisabled(1);
                     if (!$is_export_disabled) $checked1 = "checked"; else $checked1 = "";
-                    
+
                     echo $app_strings["LBL_EXPORT"]." &quot;".$event_name."&quot; ";
                     echo $mod_strings["LBL_EVENTS_TO_GOOGLE"].": ";
                     echo "<input type='checkbox' name='export_to_calendar' value='1' ".$checked1."><br>";
-                    
+
                     $is_import_disabled = $GoogleSync4You->isDisabled(2);
                     if (!$is_import_disabled) $checked2 = "checked"; else $checked2 = "";
-                    
+
                     echo $mod_strings["LBL_IMPORT_FROM_G_GOOGLE"]." &quot;".$event_name."&quot; ";
                     echo "<input type='checkbox' name='import_from_calendar' value='1' ".$checked2."><br>";
                     echo "</div>";
-                    
+
                     $save_google_sync = "1";
                 }
             } else {
@@ -396,6 +392,7 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
 </form>
 <?php
 function createFieldsOptions($Fields_Array,$selected_field = "") {
+	if (!is_array($Fields_Array)) return '';
 	$c = "";
 	$mod = '';
 	$closetag = false;
@@ -407,9 +404,10 @@ function createFieldsOptions($Fields_Array,$selected_field = "") {
 				$c .= '<optgroup label="'.getTranslatedString($mod,$mod).'">';
 				$closetag = true;
 			}
-			if ($selected_field == $fielddata["fieldname"]) $sel = "selected"; else $sel = "";
+			$sel = ($selected_field == $fielddata['fieldname'] ? 'selected' : '');
 			$c .= "<option value='".$fielddata["fieldname"].':'.$fieldid."' ".$sel.">".$fielddata["fieldlabel"]."</option>";
 		} else {
+			$sel = ($selected_field == $fieldid ? 'selected' : '');
 			$c .= "<option value='".$fieldid."' ".$sel.">".$fielddata."</option>";
 		}
 	}

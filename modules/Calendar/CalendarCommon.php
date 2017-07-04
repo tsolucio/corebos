@@ -322,7 +322,7 @@ function getActivityDetails($description,$user_id,$from='') {
 	global $log,$current_user,$current_language,$adb;
 	require_once 'include/utils/utils.php';
 	$mod_strings = return_module_language($current_language, 'Calendar');
-	$log->debug("Entering getActivityDetails(".$description.") method ...");
+	$log->debug("Entering getActivityDetails() method ...");
 	$updated = $mod_strings['LBL_UPDATED'];
 	$created = $mod_strings['LBL_CREATED'];
 	$reply = (($description['mode'] == 'edit')?"$updated":"$created");
