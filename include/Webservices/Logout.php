@@ -11,8 +11,8 @@
 function vtws_logout($sessionId,$user){
 	$sessionManager = new SessionManager();
 	$sid = $sessionManager->startSession($sessionId);
-	
-	if(!isset($sessionId) || !$sessionManager->isValid()){
+
+	if (!isset($sessionId) || !$sessionManager->isValid()) {
 		return $sessionManager->getError();
 	}
 

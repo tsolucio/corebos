@@ -39,8 +39,7 @@ function vtws_convertlead($entityvalues, $user) {
 	$leadIdComponents = vtws_getIdComponents($entityvalues['leadId']);
 	$result = $adb->pquery($sql, array($leadIdComponents[1]));
 	if ($result === false) {
-		throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR,
-				vtws_getWebserviceTranslatedString('LBL_' . WebServiceErrorCode::$DATABASEQUERYERROR));
+		throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, vtws_getWebserviceTranslatedString('LBL_' . WebServiceErrorCode::$DATABASEQUERYERROR));
 	}
 	$rowCount = $adb->num_rows($result);
 	if ($rowCount > 0) {
@@ -120,8 +119,7 @@ function vtws_convertlead($entityvalues, $user) {
 			$sql = "insert into vtiger_contpotentialrel values(?,?)";
 			$result = $adb->pquery($sql, array($contactId, $potentialIdComponents[1]));
 			if ($result === false) {
-				throw new WebServiceException(WebServiceErrorCode::$FAILED_TO_CREATE_RELATION,
-						"Failed to related Contact with the Potential");
+				throw new WebServiceException(WebServiceErrorCode::$FAILED_TO_CREATE_RELATION, 'Failed to related Contact with the Potential');
 			}
 		}
 
