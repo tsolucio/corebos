@@ -518,6 +518,7 @@ class Users extends CRMEntity {
 		$query = "UPDATE $this->table_name SET user_password=?, confirm_password=?, crypt_type=?, change_password=?, last_password_reset_date=now(), failed_login_attempts=0 where id=?";
 		$this->db->pquery($query, array($encrypted_new_password, $encrypted_new_password, $crypt_type, $change_password_next_login, $this->id));
 		$this->createAccessKey();
+		coreBOS_Settings::delSetting('coreBOS_2FA_Secret_'.$this->id);
 		require_once ('modules/Users/CreateUserPrivilegeFile.php');
 		createUserPrivilegesfile($this->id);
 		return true;

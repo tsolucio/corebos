@@ -102,7 +102,7 @@ if ($focus->is_authenticated() and $focus->is_twofaauthenticated()) {
 		header("Location: index.php");
 	}
 }
-elseif (!$focus->is_twofaauthenticated())
+else
 {
 	$sql = 'select failed_login_attempts from vtiger_users where user_name=?';
 	$result = $adb->pquery($sql, array($focus->column_fields["user_name"]));
