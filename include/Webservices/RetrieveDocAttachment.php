@@ -15,7 +15,7 @@
 
 function vtws_retrievedocattachment($all_ids, $returnfile, $user) {
 	global $log,$adb;
-	$entities=array();
+	$entities = array();
 	$docWSId = vtws_getEntityId('Documents').'x';
 	$log->debug("Entering function vtws_retrievedocattachment");
 	$all_ids="(".str_replace($docWSId,'',$all_ids).")";
@@ -37,29 +37,29 @@ function vtws_retrievedocattachment($all_ids, $returnfile, $user) {
 	$meta = $handler->getMeta();
 	$entityName = $meta->getObjectEntityName($id);
 	$types = vtws_listtypes(null, $user);
-	if(!in_array($entityName,$types['types'])){
+	if (!in_array($entityName,$types['types'])) {
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to perform the operation is denied");
 	}
-	if($meta->hasReadAccess()!==true){
+	if ($meta->hasReadAccess()!==true) {
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to write is denied");
 	}
 
-	if($entityName !== $webserviceObject->getEntityName()){
+	if ($entityName !== $webserviceObject->getEntityName()) {
 		throw new WebServiceException(WebServiceErrorCode::$INVALIDID,"Id specified is incorrect");
 	}
 
-	if(!$meta->hasPermission(EntityMeta::$RETRIEVE,$id)){
+	if (!$meta->hasPermission(EntityMeta::$RETRIEVE,$id)) {
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to read given object ($id) is denied");
 	}
 
 	$ids = vtws_getIdComponents($id);
-	if(!$meta->exists($ids[1])){
+	if (!$meta->exists($ids[1])) {
 		throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND,"Document Record you are trying to access is not found");
 	}
 
 	$document_id = $ids[1];
 	$filetype=$adb->query_result($result,$i,'filelocationtype');
-	if ($filetype=='E'){
+	if ($filetype=='E') {
 		$entity["recordid"] = $adb->query_result($result,$i,'notesid');
 		$entity["filetype"] = $fileType;
 		$entity["filename"] = $adb->query_result($result,$i,'filename');
@@ -75,7 +75,6 @@ function vtws_retrievedocattachment($all_ids, $returnfile, $user) {
 	return $entities;
 }
 
-
 function vtws_retrievedocattachment_get_attachment($fileid,$nr=false,$returnfile=true) {
 	global $adb, $log, $default_charset;
 	$log->debug("Entering function vtws_retrievedocattachment_get_attachment($fileid)");
@@ -89,8 +88,7 @@ function vtws_retrievedocattachment_get_attachment($fileid,$nr=false,$returnfile
 	$result = $adb->pquery($query,array($fileid));
 	if ($adb->num_rows($result)==0 && $nr==false)
 		throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND,"Attachment Record you are trying to access is not found ($fileid)");
-	if($adb->num_rows($result) == 1)
-	{
+	if ($adb->num_rows($result) == 1) {
 		$fileType = @$adb->query_result($result, 0, "filetype");
 		$name = @$adb->query_result($result, 0, "filename");
 		$name = html_entity_decode($name, ENT_QUOTES, $default_charset);
@@ -98,22 +96,18 @@ function vtws_retrievedocattachment_get_attachment($fileid,$nr=false,$returnfile
 		$attachid = $adb->query_result($result,0,'attachmentsid');
 
 		$saved_filename = $attachid."_".$name;
-		if(!file_exists($filepath.$saved_filename))
-		$saved_filename = $attachid."_".@html_entity_decode($adb->query_result($result, 0, "name"), ENT_QUOTES, $default_charset);
+		if (!file_exists($filepath.$saved_filename))
+			$saved_filename = $attachid."_".@html_entity_decode($adb->query_result($result, 0, "name"), ENT_QUOTES, $default_charset);
 
 		$filesize = filesize($filepath.$saved_filename);
-		if(!fopen($filepath.$saved_filename, "r"))
-		{
+		if (!fopen($filepath.$saved_filename, "r")) {
 			$log->debug('Unable to open file');
 			return array();
 			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Unable to open file $saved_filename. Object is denied");
-		}
-		else
-		{
+		} else {
 			$fileContent = $returnfile ? fread(fopen($filepath.$saved_filename, "r"), $filesize) : '';
 		}
-		if($fileContent != '')
-		{
+		if ($fileContent != '') {
 			$log->debug('About to update download count');
 			$rsn = $adb->pquery('select filedownloadcount from vtiger_notes where notesid= ?',array($fileid));
 			$download_count = $adb->query_result($rsn,0,'filedownloadcount') + 1;

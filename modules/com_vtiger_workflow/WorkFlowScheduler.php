@@ -99,7 +99,7 @@ class WorkFlowScheduler {
 					$data = $entityData->getData();
 					foreach ($tasks as $task) {
 						if ($task->active) {
-							$trigger = $task->trigger;
+							$trigger = (empty($task->trigger) ? null : $task->trigger);
 							$wfminutes=$workflow->schminuteinterval;
 							if($wfminutes!=null){
 								$time = time();
