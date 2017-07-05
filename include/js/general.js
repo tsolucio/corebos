@@ -5124,7 +5124,7 @@ AutocompleteRelation.prototype.fillOtherFields = function (data) {
 	fields_length = fields.length
 	for (var i = 0; i < fields_length; i++) {
 		this_field = fields[i].split("=");
-		get_field_value = data.getAttribute("data-" + this_field[0] )
+		get_field_value = data.getAttribute("data-" + this_field[1] )
 
 		field_element = document.getElementsByName(this_field[0])[0];
 
