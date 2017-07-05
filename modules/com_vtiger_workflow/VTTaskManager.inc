@@ -87,6 +87,7 @@
 		public function retrieveTask($taskId){
 			$adb = $this->adb;
 			$result = $adb->pquery("select task from com_vtiger_workflowtasks where task_id=?", array($taskId));
+			if (!$result or $adb->num_rows($result)==0) return false;
 			$data = $adb->raw_query_result_rowdata($result, 0);
 			$task = $data["task"];
 			$task = $this->unserializeTask($task);
