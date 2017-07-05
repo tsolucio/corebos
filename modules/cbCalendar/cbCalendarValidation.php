@@ -24,11 +24,47 @@ include_once 'modules/cbMap/processmap/Validations.php';
 $screen_values = json_decode($_REQUEST['structure'],true);
 if ((empty($screen_values['dtstart']) or empty($screen_values['dtend'])) and !empty($screen_values['record'])) {
 	$rs = $adb->pquery('select dtstart,dtend from vtiger_activity where activityid=?',array($screen_values['record']));
+	$dbdatestart = $adb->query_result($rs, 0, 'dtstart');
+	$dbdateend = $adb->query_result($rs, 0, 'dtend');
 	if (empty($screen_values['dtstart'])) {
 		$screen_values['dtstart'] = $adb->query_result($rs, 0, 'dtstart');
+	} else {
+		$dt = new DateTimeField($screen_values['dtstart']);
+		$screen_values['dtstart'] = $dt->getDBInsertDateTimeValue();
 	}
 	if (empty($screen_values['dtend'])) {
 		$screen_values['dtend'] = $adb->query_result($rs, 0, 'dtend');
+	} else {
+		$dt = new DateTimeField($screen_values['dtend']);
+		$screen_values['dtend'] = $dt->getDBInsertDateTimeValue();
+	}
+}
+
+if (empty($screen_values['action']) and !empty($screen_values['record'])) { // DetailView Edit
+	list($screen_values['date_start'],$screen_values['time_start']) = explode(' ',$screen_values['dtstart']);
+	list($screen_values['due_date'],$screen_values['time_end']) = explode(' ',$screen_values['dtend']);
+	$pushenddate = GlobalVariable::getVariable('Calendar_Push_End_On_Start_Change', 'No','cbCalendar');
+	switch ($pushenddate) {
+		case 'Distance':
+			$dist = strtotime($dbdateend)-strtotime($dbdatestart);
+			$newend = strtotime($screen_values['dtstart'])+$dist;
+			$screen_values['dtend'] = date('Y-m-d H:i:s',$newend);
+			list($screen_values['due_date'],$screen_values['time_end']) = explode(' ',$screen_values['dtend']);
+			$adb->pquery('update vtiger_activity set dtend=?,due_date=?,time_end=? where activityid=?',
+				array($screen_values['dtend'],$screen_values['due_date'],$screen_values['time_end'],$screen_values['record']));
+			break;
+		case 'Set':
+			if ($screen_values['dtend'] < $screen_values['dtstart']) {
+				$dist = GlobalVariable::getVariable('Calendar_call_default_duration', 5, 'Calendar4You');
+				$newend = strtotime($screen_values['dtstart'])+($dist*60);
+				$screen_values['dtend'] = date('Y-m-d H:i:s',$newend);
+				list($screen_values['due_date'],$screen_values['time_end']) = explode(' ',$screen_values['dtend']);
+				$adb->pquery('update vtiger_activity set dtend=?,due_date=?,time_end=? where activityid=?',
+					array($screen_values['dtend'],$screen_values['due_date'],$screen_values['time_end'],$screen_values['record']));
+			}
+			break;
+		default:
+			break;
 	}
 }
 
