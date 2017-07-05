@@ -22,7 +22,7 @@ function modcomms_changeModuleVisibility($mname, $status) {
 function modcomms_getModuleinfo() {
 	global $adb;
 	$allEntities = array();
-	$entityQuery = "SELECT tabid,name FROM vtiger_tab WHERE isentitytype=1 and name NOT IN ('Rss','Webmails','Recyclebin','Events')";
+	$entityQuery = "SELECT tabid,name FROM vtiger_tab WHERE isentitytype=1 and name NOT IN ('Emails', 'Rss','Webmails','Recyclebin','Events','Calendar')";
 	$result = $adb->pquery($entityQuery, array());
 	while($result && $row = $adb->fetch_array($result)){
 		$allEntities[$row['tabid']] = getTranslatedString($row['name'],$row['name']);
