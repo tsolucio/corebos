@@ -780,7 +780,7 @@ class cbCalendar extends CRMEntity {
 				while ($fldrow = $adb->fetch_array($frs)) {
 					$field1 = new Vtiger_Field();
 					$field1->name = $fldrow['fieldname'];
-					$field1->label= $fldrow['fieldlabel'];
+					$field1->label = decode_html($fldrow['fieldlabel']);
 					$field1->column = $fldrow['columnname'];
 					$field1->table = $fldrow['tablename'];
 					$field1->uitype = $fldrow['uitype'];
