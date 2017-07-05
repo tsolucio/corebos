@@ -1,0 +1,448 @@
+ * @summary Container that manages layout when a listbox of pill options sit next to a combobox search input
+ *
+ * @name base
+ * @selector .slds-combobox_container
+ * @restrict div
+ * @variant
+ */
+.slds-combobox_container {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column;
+  position: relative;
+  /**
+   * Opens listbox dropdown
+   *
+   * @selector .slds-is-open
+   * @restrict .slds-combobox
+   * @modifier
+   */ }
+
+.slds-combobox_container.slds-is-open .slds-dropdown {
+  display: block; }
+
+/**
+ * Container around form element with combobox input
+ *
+ * @selector .slds-combobox
+ * @restrict .slds-combobox_container > div
+ */
+.slds-combobox {
+  position: static;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column;
+  -ms-flex: 1 1 auto;
+      flex: 1 1 auto; }
+
+/**
+ * Form element with combobox input
+ *
+ * @selector .slds-combobox__form-element
+ * @restrict .slds-combobox > div
+ */
+.slds-combobox__form-element {
+  -ms-flex: 1 1 auto;
+      flex: 1 1 auto; }
+
+/**
+ * Listbox container
+ *
+ * @selector .slds-listbox
+ * @restrict ul
+ */
+.slds-listbox {
+  font-size: 0.8125rem; }
+
+/**
+ * Inline listbox
+ *
+ * @selector .slds-listbox_inline
+ * @restrict .slds-listbox
+ * @modifier
+ */
+.slds-listbox_inline,
+.slds-listbox--inline {
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  -ms-flex-align: center;
+      align-items: center;
+  margin-left: 0.125rem;
+  margin-right: 0.125rem; }
+
+.slds-listbox_inline li,
+.slds-listbox--inline li {
+  display: -ms-flexbox;
+  display: flex; }
+
+.slds-listbox_inline li + li,
+.slds-listbox--inline li + li {
+  padding-left: 0.125rem; }
+
+/**
+ * Horizontal listbox
+ *
+ * @selector .slds-listbox_horizontal
+ * @restrict .slds-listbox
+ * @modifier
+ */
+.slds-listbox_horizontal,
+.slds-listbox--horizontal {
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -ms-flex-align: center;
+      align-items: center; }
+
+.slds-listbox_horizontal li + li,
+.slds-listbox--horizontal li + li {
+  padding-left: 0.125rem; }
+
+/**
+ * Choosable option within listbox
+ *
+ * @selector .slds-listbox__option
+ * @restrict .slds-listbox__item > span
+ */
+.slds-listbox__option:hover {
+  cursor: pointer; }
+
+.slds-listbox__option:focus {
+  outline: 0; }
+
+.slds-listbox__option .slds-truncate {
+  display: inline-block;
+  vertical-align: middle; }
+
+/**
+ * Creates a vertical listbox
+ *
+ * @selector .slds-listbox_vertical
+ * @restrict .slds-listbox
+ * @modifier
+ */
+.slds-listbox_vertical,
+.slds-listbox--vertical {
+  /**
+   * Focus state of a vertical listbox option
+   *
+   * @selector .slds-has-focus
+   * @restrict .slds-listbox__option
+   * @modifier
+   */
+  /**
+   * Modifies the listbox option if it contains an plain object or string
+   *
+   * @selector .slds-listbox__option_plain
+   * @restrict .slds-listbox__option
+   */
+  /**
+   * Modifies the listbox option if it contains an entity object
+   *
+   * @selector .slds-listbox__option_entity
+   * @restrict .slds-listbox__option
+   */
+  /**
+   * If the listbox option has metadata or secondary information that sits below its primary text
+   *
+   * @selector .slds-listbox__option_has-meta
+   * @restrict .slds-listbox__option
+   */ }
+
+.slds-listbox_vertical .slds-listbox__option:focus,
+.slds-listbox_vertical .slds-listbox__option:hover,
+.slds-listbox_vertical .slds-listbox__option.slds-has-focus,
+.slds-listbox--vertical .slds-listbox__option:focus,
+.slds-listbox--vertical .slds-listbox__option:hover,
+.slds-listbox--vertical .slds-listbox__option.slds-has-focus {
+  background-color: #f4f6f9;
+  text-decoration: none; }
+
+.slds-listbox_vertical .slds-listbox__option[role="presentation"]:hover,
+.slds-listbox--vertical .slds-listbox__option[role="presentation"]:hover {
+  background-color: transparent;
+  cursor: default; }
+
+.slds-listbox_vertical .slds-listbox__option_plain,
+.slds-listbox_vertical .slds-listbox__option--plain,
+.slds-listbox--vertical .slds-listbox__option_plain,
+.slds-listbox--vertical .slds-listbox__option--plain {
+  padding: 0.5rem 0.75rem; }
+
+.slds-listbox_vertical .slds-listbox__option_entity,
+.slds-listbox_vertical .slds-listbox__option--entity,
+.slds-listbox--vertical .slds-listbox__option_entity,
+.slds-listbox--vertical .slds-listbox__option--entity {
+  padding: 0.25rem 0.75rem; }
+
+.slds-listbox_vertical .slds-listbox__option_entity .slds-media__figure,
+.slds-listbox_vertical .slds-listbox__option--entity .slds-media__figure,
+.slds-listbox--vertical .slds-listbox__option_entity .slds-media__figure,
+.slds-listbox--vertical .slds-listbox__option--entity .slds-media__figure {
+  margin-right: 0.5rem; }
+
+.slds-listbox_vertical .slds-listbox__option_has-meta .slds-media__figure,
+.slds-listbox_vertical .slds-listbox__option--has-meta .slds-media__figure,
+.slds-listbox--vertical .slds-listbox__option_has-meta .slds-media__figure,
+.slds-listbox--vertical .slds-listbox__option--has-meta .slds-media__figure {
+  margin-top: 0.25rem; }
+
+[class*="slds-input-has-icon_left"] .slds-combobox__input[value],
+[class*="slds-input-has-icon--left"] .slds-combobox__input[value] {
+  padding-left: 2.25rem; }
+
+/**
+ * If readonly selection is an entity, use this class
+ *
+ * @selector .slds-combobox__input-entity-icon
+ * @restrict .slds-combobox__form-element span
+ */
+.slds-combobox__input-entity-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  position: absolute;
+  top: 50%;
+  left: calc(0.25rem + 1px);
+  transform: translateY(-50%); }
+
+.slds-combobox__input-entity-icon .slds-icon {
+  width: 1.25rem;
+  height: 1.25rem; }
+
+/**
+ * Icon that is a direct sibling of a combobox container. This is not the same as an input icon.
+ *
+ * @selector .slds-combobox_container__icon
+ * @restrict .slds-combobox_container svg
+ */
+.slds-combobox_container__icon {
+  color: #9faab5; }
+
+/**
+ * The icon within a plain listbox that indicates if an option has been selected or not.
+ *
+ * @selector .slds-listbox__icon-selected
+ * @restrict .slds-listbox__item svg
+ */
+.slds-listbox__icon-selected {
+  opacity: 0;
+  fill: #0070d2; }
+
+/**
+ * Modifier that makes selected icon visible
+ *
+ * @selector .slds-is-selected
+ * @restrict .slds-listbox__option
+ * @modifier
+ */
+.slds-listbox__option.slds-is-selected .slds-listbox__icon-selected {
+  opacity: 1; }
+
+/**
+ * The main text of an entity listbox
+ *
+ * @selector .slds-listbox__option-text_entity
+ * @restrict .slds-listbox__option span
+ */
+.slds-listbox__option-text_entity,
+.slds-listbox__option-text--entity {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  margin-bottom: 0.125rem; }
+
+/**
+ * The metadata or secondary text of an entity listbox
+ *
+ * @selector .slds-listbox__option-meta_entity
+ * @restrict .slds-listbox__option span
+ */
+.slds-listbox__option-meta_entity,
+.slds-listbox__option-meta--entity {
+  display: block;
+  margin-top: -0.25rem;
+  color: #54698d; }
+
+.slds-listbox_object-switcher,
+.slds-listbox--object-switcher {
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  padding: 0.125rem; }
+
+/**
+ * If combo has a selection model that requires a listbox of pills to be displayed
+ * inside of a combobox
+ *
+ * @selector .slds-has-inline-listbox
+ * @restrict .slds-combobox_container
+ */
+.slds-has-inline-listbox,
+.slds-has-object-switcher {
+  -ms-flex-direction: row;
+      flex-direction: row;
+  border: 1px solid #d8dde6;
+  border-radius: 0.25rem;
+  /**
+   * Input field within a combobox
+   *
+   * @selector .slds-combobox__input
+   * @restrict .slds-combobox input
+   */
+  /**
+   * Modifier to the combobox when an SVG icon sits adjacent to the combobox form element
+   *
+   * @selector .slds-has-icon_left
+   * @restrict .slds-combobox
+   */ }
+
+.slds-has-inline-listbox .slds-combobox__input,
+.slds-has-object-switcher .slds-combobox__input {
+  min-height: 1.625rem;
+  line-height: 1.625rem;
+  border: 0;
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem; }
+
+.slds-has-inline-listbox .slds-combobox__input:focus, .slds-has-inline-listbox .slds-combobox__input:active,
+.slds-has-object-switcher .slds-combobox__input:focus,
+.slds-has-object-switcher .slds-combobox__input:active {
+  outline: 0;
+  box-shadow: none; }
+
+.slds-has-inline-listbox .slds-listbox_object-switcher ~ .slds-listbox_inline,
+.slds-has-inline-listbox .slds-listbox--object-switcher ~ .slds-listbox--inline,
+.slds-has-inline-listbox .slds-combobox_container__icon ~ .slds-listbox_inline,
+.slds-has-inline-listbox .slds-combobox_container__icon ~ .slds-listbox--inline,
+.slds-has-object-switcher .slds-listbox_object-switcher ~ .slds-listbox_inline,
+.slds-has-object-switcher .slds-listbox--object-switcher ~ .slds-listbox--inline,
+.slds-has-object-switcher .slds-combobox_container__icon ~ .slds-listbox_inline,
+.slds-has-object-switcher .slds-combobox_container__icon ~ .slds-listbox--inline {
+  margin-left: 0.5rem; }
+
+.slds-has-inline-listbox.slds-has-icon_left,
+.slds-has-object-switcher.slds-has-icon_left {
+  padding-left: 2.25rem;
+  /**
+     * SVG icon that sits adjacent to the combobox form element
+     *
+     * @selector .slds-combobox_container__icon
+     * @restrict .slds-combobox_container svg
+     */ }
+
+.slds-has-inline-listbox.slds-has-icon_left .slds-combobox_container__icon,
+.slds-has-object-switcher.slds-has-icon_left .slds-combobox_container__icon {
+  width: 1rem;
+  height: 1rem;
+  position: absolute;
+  left: 1.125rem;
+  top: 50%;
+  margin-top: -0.5rem; }
+
+.slds-has-inline-listbox [role="listbox"] {
+  display: -ms-inline-flexbox;
+  display: inline-flex; }
+
+.slds-has-inline-listbox .slds-combobox__input[value] {
+  box-shadow: 0 0 0 2px #fff inset, 0 0 0 3px #d8dde6 inset; }
+
+/**
+ * A dueling picklist inherits styles from the listbox component
+ * @summary Initializes a dueling picklist
+ *
+ * @name base
+ * @selector .slds-dueling-list
+ * @restrict div
+ * @variant
+ */
+.slds-dueling-list {
+  display: -ms-flexbox;
+  display: flex; }
+
+/**
+ * @summary Handles the layout of the dueling picklist
+ *
+ * @selector .slds-dueling-list__column
+ * @restrict .slds-dueling-list div
+ */
+.slds-dueling-list__column {
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -ms-flex-direction: column;
+      flex-direction: column; }
+
+.slds-dueling-list__column .slds-button {
+  margin: 0.25rem; }
+
+.slds-dueling-list__column .slds-button:first-of-type {
+  margin-top: 1.5rem; }
+
+/**
+ * @summary Bounding visual container for listbox of options
+ *
+ * @selector .slds-dueling-list__options
+ * @restrict .slds-dueling-list div
+ */
+.slds-dueling-list__options,
+.slds-picklist__options {
+  border: 1px solid #d8dde6;
+  border-radius: 0.25rem;
+  padding: 0.25rem 0;
+  width: 15rem;
+  height: 15rem;
+  background-color: white;
+  overflow: auto; }
+
+.slds-dueling-list__options [aria-selected="true"],
+.slds-picklist__options [aria-selected="true"] {
+  background-color: #0070d2;
+  color: white; }
+
+.slds-dueling-list__options [aria-selected="true"]:hover, .slds-dueling-list__options [aria-selected="true"]:focus,
+.slds-picklist__options [aria-selected="true"]:hover,
+.slds-picklist__options [aria-selected="true"]:focus {
+  background: #005fb2;
+  color: white; }
+
+.slds-picklist_draggable,
+.slds-picklist--draggable {
+  display: -ms-flexbox;
+  display: flex; }
+
+.slds-picklist_draggable .slds-button,
+.slds-picklist--draggable .slds-button {
+  margin: 0.25rem; }
+
+.slds-picklist_draggable .slds-button:first-of-type,
+.slds-picklist--draggable .slds-button:first-of-type {
+  margin-top: 1.5rem; }
+
+.slds-picklist__item {
+  position: relative;
+  line-height: 1.5; }
+
+.slds-picklist__item > a,
+.slds-picklist__item > span {
+  display: block;
+  padding: 0.5rem 0.75rem; }
+
+.slds-picklist__item > a:hover,
+.slds-picklist__item > span:hover {
+  background-color: #f4f6f9;
+  cursor: pointer; }
+
+.slds-picklist__item > a:active,
+.slds-picklist__item > span:active {
+  background-color: #eef1f6; }
+
+.slds-picklist__item[aria-selected="true"] {
+  background-color: #eef1f6; }
+
