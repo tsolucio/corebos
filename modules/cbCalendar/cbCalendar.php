@@ -805,6 +805,7 @@ class cbCalendar extends CRMEntity {
 			$taskManager = new VTTaskManager($adb);
 
 			while ($calwf = $adb->getNextRow($rescalwf, false)) {
+				if ($calwf['summary']=='Workflow for Calendar Todos when Send Notification is True') continue;
 				$calwf['test'] = str_replace('parent_id','rel_id', $calwf['test']);
 				$calwf['test'] = str_replace('contact_id','cto_id', $calwf['test']);
 				$calwf['test'] = str_replace('taskstatus','eventstatus', $calwf['test']);
