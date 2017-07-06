@@ -1839,7 +1839,6 @@ class ReportRun extends CRMEntity {
 		$columnstotallist = $this->getColumnsTotal($reportid,$columnlist);
 		$advfiltersql = $this->getAdvFilterSql($reportid);
 
-
 		$this->totallist = $columnstotallist;
 		$tab_id = getTabid($this->primarymodule);
 		//Fix for ticket #4915.
@@ -1877,7 +1876,7 @@ class ReportRun extends CRMEntity {
 			$wheresql = '';
 		}
 
-		if(isset($filtersql) && $filtersql !== false) {
+		if(isset($filtersql) && !empty($filtersql)) {
 			$advfiltersql = $filtersql;
 		}
 		$where_condition = '';
