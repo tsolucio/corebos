@@ -1389,7 +1389,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		if ($value != "<font color='red'>" . $app_strings['LBL_NOT_ACCESSIBLE'] . "</font>") {
 			$value = textlength_check($value);
 		}
-	} elseif ($uitype == 16 || $uitype == 1613 || $uitype == 1614) {
+	} elseif ($uitype == 16 || $uitype == 1613 || $uitype == 1614 || $uitype == 1615) {
 		$value = getTranslatedString($temp_val, $currentModule);
 		$value = textlength_check($value);
 	} elseif ($uitype == 71 || $uitype == 72) {

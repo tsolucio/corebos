@@ -413,6 +413,7 @@ class WebserviceField{
 		switch ($uitype) {
 			case '1613':
 			case '1614':
+			case '1615':
 			case '3313':
 			case '3314':
 			case '1024':

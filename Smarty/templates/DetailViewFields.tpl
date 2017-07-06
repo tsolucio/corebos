@@ -72,7 +72,7 @@
 				{/if}
 				</span>
 			</td>
-		{elseif $keyid eq '15' || $keyid eq '16' || $keyid eq '1613' || $keyid eq '1614'} <!--ComboBox-->
+		{elseif $keyid eq '15' || $keyid eq '16' || $keyid eq '1613' || $keyid eq '1614' || $keyid eq '1615'} <!--ComboBox-->
 			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;
 				{assign var=fontval value=''}
 				{foreach item=arr from=$keyoptions}
@@ -81,7 +81,12 @@
 						{assign var=fontval value='red'}
 					{/if}
 				{/foreach}
+				{if $keyid eq '1615'}
+					{assign var=plinfo value='::'|explode:$keyval}
+					{$plinfo[0]|@getTranslatedString:$plinfo[0]} {$plinfo[1]|@getTranslatedString:$plinfo[0]}
+				{else}
 				<font color="{$fontval}">{$keyval|@getTranslatedString:$MODULE}</font>
+				{/if}
 			</td>
 		{elseif $keyid eq '33' || $keyid eq '3313' || $keyid eq '3314'}
 			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;

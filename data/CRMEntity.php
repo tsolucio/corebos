@@ -558,10 +558,9 @@ class CRMEntity {
 					} else {
 						$fldvalue = '0';
 					}
-				} elseif ($uitype == 15 || $uitype == 16 || $uitype == 1613 || $uitype == 1614) {
+				} elseif ($uitype == 15 || $uitype == 16 || $uitype == 1613 || $uitype == 1614 || $uitype == 1615) {
 
 					if ($this->column_fields[$fieldname] == $app_strings['LBL_NOT_ACCESSIBLE']) {
-
 						//If the value in the request is Not Accessible for a picklist, the existing value will be replaced instead of Not Accessible value.
 						$sql = "select $columname from $table_name where " . $this->tab_name_index[$table_name] . "=?";
 						$res = $adb->pquery($sql, array($this->id));

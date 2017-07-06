@@ -37,6 +37,7 @@ $uitypes = array(
 	'16'=>'picklist',
 	'1613'=>'module picklist',
 	'1614'=>'all module picklist',
+	'1615'=>'all picklist picklist',
 	'17'=>'url',
 	'19'=>'text',
 	'20'=>'text',

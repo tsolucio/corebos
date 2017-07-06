@@ -132,7 +132,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		}
 
 		$label_fld ["options"] = $options;
-	} elseif ($uitype == 1613 || $uitype == 1614) {
+	} elseif ($uitype == 1613 || $uitype == 1614 || $uitype == 1615) {
 		require_once 'modules/PickList/PickListUtils.php';
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$label_fld[] = getTranslatedString($col_fields[$fieldname], $module);

@@ -330,6 +330,18 @@ function getPicklistValuesSpecialUitypes($uitype,$fieldname,$value,$action='Edit
 				}
 			}
 		}
+	} elseif ($uitype == '1615') {
+		$actual = getPickListModules();
+		$i = 0;
+		foreach ($actual as $mod) {
+			$options[$i++] = array(
+				getTranslatedString($mod,$mod),
+				$mod,
+				$value,
+				get_available_module_picklist(getUserFldArray($mod,$current_user->roleid))
+			);
+		}
+		global $log;$log->fatal($options);
 	}
 	uasort($options, function($a,$b) {return (strtolower($a[0]) < strtolower($b[0])) ? -1 : 1;});
 	return $options;

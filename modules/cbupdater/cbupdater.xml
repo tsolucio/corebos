@@ -1242,4 +1242,11 @@
 	<classname>changeActivityRelatedListTocbCalendar</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add UIType 1614 and 1615 to Webservice Field Type</description>
+	<filename>build/changeSets/2017/addUIType1614and1615WebserviceFieldType.php</filename>
+	<classname>addUIType1614and1615WebserviceFieldType</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

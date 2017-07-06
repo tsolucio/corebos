@@ -88,8 +88,8 @@ function handleEdit(event)
 {
 	show(globaleditareaspanid);
 	fnhide(globaldtlviewspanid);
-	if( ((globaluitype == 15 || globaluitype == 16 || globaluitype == 1613 || globaluitype == 1614) && globaltempvalue == '') ||
-		 (globaluitype != 53 && globaluitype != 15 && globaluitype != 16 && globaluitype != 1613 && globaluitype != 1614) ) {
+	if( ((globaluitype == 15 || globaluitype == 16 || globaluitype == 1613 || globaluitype == 1614 || globaluitype == 1615) && globaltempvalue == '') ||
+		 (globaluitype != 53 && globaluitype != 15 && globaluitype != 16 && globaluitype != 1613 && globaluitype != 1614 && globaluitype != 1615) ) {
 		globaltempvalue = getObj(globaltxtboxid).value;
 		if(getObj(globaltxtboxid).type != 'hidden')
 			getObj(globaltxtboxid).focus();
@@ -182,7 +182,7 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 			var groupurl = "&assigned_group_id="+group_id+"&assigntype=T";
 		}
 	}
-	else if(uitype == 15 || uitype == 16 || uitype == 1613 || uitype == 1614)
+	else if(uitype == 15 || uitype == 16 || uitype == 1613 || uitype == 1614 || uitype == 1615)
 	{
 		var txtBox= "txtbox_"+ fieldLabel;
 		var not_access =document.getElementById(txtBox);
