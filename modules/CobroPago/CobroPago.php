@@ -349,69 +349,6 @@ class CobroPago extends CRMEntity {
 	 */
 	//function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
 
-	function get_activities($id, $cur_tab_id, $rel_tab_id, $actions)
-	{
-		global $log, $singlepane_view,$currentModule,$current_user, $mod_strings;
-		$log->debug("Entering get_activities(".$id.") method ...");
-		$this_module = $currentModule;
-
-		$related_module = vtlib_getModuleNameById($rel_tab_id);
-		require_once("modules/$related_module/Activity.php");
-		$other = new Activity();
-		$singular_modname = vtlib_toSingular($related_module);
-
-		$parenttab = getParentTab();
-
-		if($singlepane_view == 'true')
-			$returnset = '&return_module='.$this_module.'&return_action=DetailView&return_id='.$id;
-		else
-			$returnset = '&return_module='.$this_module.'&return_action=CallRelatedList&return_id='.$id;
-
-		$button = '';
-
-		$button .= '<input type="hidden" name="activity_mode">';
-
-		if($actions) {
-			if(is_string($actions)) $actions = explode(',', strtoupper($actions));
-			if(in_array('ADD', $actions) && isPermitted($related_module,1, '') == 'yes') {
-				$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). " ". getTranslatedString('LBL_TODO', $related_module) ."' class='crmbutton small create'" .
-					" onclick='this.form.action.value=\"EventEditView\";this.form.module.value=\"Calendar4You\";this.form.return_module.value=\"$this_module\";this.form.activity_mode.value=\"Task\";' type='submit' name='button'" .
-					" value='". getTranslatedString('LBL_ADD_NEW'). " " . getTranslatedString('LBL_TODO', $related_module) ."'>&nbsp;";
-				$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). " ". getTranslatedString('LBL_EVENT', $related_module) ."' class='crmbutton small create'" .
-					" onclick='this.form.action.value=\"EventEditView\";this.form.module.value=\"Calendar4You\";this.form.return_module.value=\"$this_module\";this.form.activity_mode.value=\"Events\";' type='submit' name='button'" .
-					" value='". getTranslatedString('LBL_ADD_NEW'). " " . getTranslatedString('LBL_EVENT', $related_module) ."'>";
-			}
-		}
-
-		$query = "SELECT vtiger_activity.*,
-		    vtiger_seactivityrel.*, vtiger_contactdetails.lastname,
-		    vtiger_contactdetails.firstname, vtiger_cntactivityrel.*,
-		    vtiger_crmentity.crmid, vtiger_crmentity.smownerid,
-		    vtiger_crmentity.modifiedtime,
-		    case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name,
-		    vtiger_recurringevents.recurringtype
-		    from vtiger_activity
-		    inner join vtiger_seactivityrel on vtiger_seactivityrel.activityid=vtiger_activity.activityid
-		    inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid
-		    left join vtiger_cntactivityrel on vtiger_cntactivityrel.activityid = vtiger_activity.activityid
-		    left join vtiger_contactdetails on vtiger_contactdetails.contactid = vtiger_cntactivityrel.contactid
-		    inner join vtiger_cobropago on vtiger_cobropago.cobropagoid=vtiger_seactivityrel.crmid
-		    left join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid
-		    left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
-		    left outer join vtiger_recurringevents on vtiger_recurringevents.activityid=vtiger_activity.activityid
-		    where vtiger_seactivityrel.crmid=".$id." and vtiger_crmentity.deleted=0
-		    and ((vtiger_activity.activitytype='Task' and vtiger_activity.status not in ('Completed','Deferred'))
-		    or (vtiger_activity.activitytype in ('Meeting','Call') and  vtiger_activity.eventstatus not in ('','Held'))) ";
-
-		$return_value = GetRelatedList($this_module, $related_module, $other, $query, $button, $returnset);
-
-		if($return_value == null) $return_value = Array();
-		$return_value['CUSTOM_BUTTON'] = $button;
-
-		$log->debug("Exiting get_activities method ...");
-		return $return_value;
-	}
-
 	/**	Function used to get the Payments Stage history of the CobroPago
 	 *	@param $id - cobropagoid
 	 *	return $return_data - array with header and the entries in format Array('header'=>$header,'entries'=>$entries_list) where as $header and $entries_list are array which contains all the column values of an row
@@ -462,34 +399,6 @@ class CobroPago extends CRMEntity {
 
 		$log->debug("Exiting get_stage_history method ...");
 		return $return_data;
-	}
-
-	/**
-	* Function to get CobroPago related Task & Event which have activity type Held, Completed or Deferred.
-	* @param  integer   $id
-	* returns related Task or Event record in array format
-	*/
-	function get_history($id, $cur_tab_id, $rel_tab_id, $actions)
-	{
-			global $log;
-			$log->debug("Entering get_history(".$id.") method ...");
-			$query = "SELECT vtiger_activity.activityid, vtiger_activity.subject, vtiger_activity.status,
-				vtiger_activity.eventstatus, vtiger_activity.activitytype,vtiger_activity.date_start,
-				vtiger_activity.due_date, vtiger_activity.time_start,vtiger_activity.time_end,
-				vtiger_crmentity.modifiedtime, vtiger_crmentity.createdtime, 
-				vtiger_crmentity.description,case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name
-				from vtiger_activity
-				inner join vtiger_seactivityrel on vtiger_seactivityrel.activityid=vtiger_activity.activityid
-				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid
-				left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
-				left join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid
-				where (vtiger_activity.activitytype = 'Meeting' or vtiger_activity.activitytype='Call' or vtiger_activity.activitytype='Task')
-				and (vtiger_activity.status = 'Completed' or vtiger_activity.status = 'Deferred' or (vtiger_activity.eventstatus = 'Held' and vtiger_activity.eventstatus != ''))
-				and vtiger_seactivityrel.crmid=".$id." and vtiger_crmentity.deleted = 0";
-		//Don't add order by, because, for security, one more condition will be added with this query in include/RelatedListView.php
-
-		$log->debug("Exiting get_history method ...");
-		return getHistory('CobroPago',$query,$id);
 	}
 
 	function get_history_cobropago($cobropagoid){

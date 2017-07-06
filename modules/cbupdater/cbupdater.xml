@@ -1235,4 +1235,11 @@
 	<classname>fixMassEditableOnuitype4</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>changeActivityRelatedListTocbCalendar</description>
+	<filename>build/changeSets/2017/changeActivityRelatedListTocbCalendar.php</filename>
+	<classname>changeActivityRelatedListTocbCalendar</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

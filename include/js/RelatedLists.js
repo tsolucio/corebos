@@ -46,8 +46,8 @@ function OpenWindow(url) {
 
 function isRelatedListBlockLoaded(id,urldata){
 	var elem = document.getElementById(id);
-	if(elem == null || typeof elem == 'undefined' || urldata.indexOf('order_by') != -1 ||
-		urldata.indexOf('start') != -1 || urldata.indexOf('withCount') != -1 || urldata.indexOf('email_filter') != -1){
+	if (elem == null || typeof elem == 'undefined' || urldata.indexOf('order_by') != -1 || urldata.indexOf('start') != -1 ||
+		urldata.indexOf('withCount') != -1 || urldata.indexOf('email_filter') != -1 || urldata.indexOf('cbcalendar_filter') != -1) {
 		return false;
 	}
 	var tables = elem.getElementsByTagName('table');

@@ -2134,6 +2134,138 @@ class CRMEntity {
 		return $return_value;
 	}
 
+	/** Returns a list of the associated cbCalendar events
+	 * Defined here for backward compatibility with previous calendar system
+	*/
+	function get_activities($id, $cur_tab_id, $rel_tab_id, $actions=false) {
+		global $currentModule, $app_strings, $singlepane_view, $current_user, $adb;
+		$rel_tab_id = getTabid('cbCalendar');
+
+		$parenttab = getParentTab();
+
+		$related_module = vtlib_getModuleNameById($rel_tab_id);
+		$other = CRMEntity::getInstance($related_module);
+
+		$singular_modname = 'SINGLE_' . $related_module;
+
+		$button = '';
+
+		// To make the edit or del link actions to return back to same view.
+		if ($singlepane_view == 'true')
+			$returnset = "&return_module=$currentModule&return_action=DetailView&return_id=$id";
+		else
+			$returnset = "&return_module=$currentModule&return_action=CallRelatedList&return_id=$id";
+
+		$return_value = null;
+		$dependentFieldSql = $this->db->pquery("SELECT tabid, tablename, fieldname, columnname FROM vtiger_field WHERE uitype='10' AND" .
+				" fieldid IN (SELECT fieldid FROM vtiger_fieldmodulerel WHERE relmodule=? AND module=?)", array($currentModule, $related_module));
+		$numOfFields = $this->db->num_rows($dependentFieldSql);
+
+		$relWithSelf = false;
+		if ($numOfFields > 0) {
+			$relconds = array();
+			while ($depflds = $this->db->fetch_array($dependentFieldSql)) {
+			$dependentTable = $depflds['tablename'];
+			if (isset($other->related_tables)) {
+				if(!is_array($other->related_tables)){
+					$otherRelatedTable = array($other->related_tables);
+				}else {
+					$otherRelatedTable = $other->related_tables;
+				}
+			} else {
+				$otherRelatedTable = '';
+			}
+			if ($dependentTable!=$other->table_name and !in_array($dependentTable, $otherRelatedTable)) {
+				$relidx = isset($other->tab_name_index[$dependentTable]) ? $other->tab_name_index[$dependentTable] : $other->table_index;
+				$other->related_tables[$dependentTable] = array($relidx,$other->table_name,$other->table_index);
+			}
+			$dependentColumn = $depflds['columnname'];
+			$dependentField = $depflds['fieldname'];
+			if ($this->table_name==$other->table_name) {
+				$thistablename = $this->table_name.'RelSelf';
+				$relWithSelf = true;
+			} else {
+				$thistablename = $this->table_name;
+			}
+			$relconds[] = "$thistablename.$this->table_index = $dependentTable.$dependentColumn";
+			$button .= '<input type="hidden" name="' . $dependentColumn . '" id="' . $dependentColumn . '" value="' . $id . '">';
+			$button .= '<input type="hidden" name="' . $dependentColumn . '_type" id="' . $dependentColumn . '_type" value="' . $currentModule . '">';
+			}
+			$relationconditions = '('.implode(' or ', $relconds).')';
+			$calStatus = getAssignedPicklistValues('eventstatus', $current_user->roleid, $adb);
+			$relid = $adb->run_query_field('select relation_id from vtiger_relatedlists where tabid='.$cur_tab_id.' and related_tabid='.$rel_tab_id,'relation_id');
+			$button .= '<select name="cbcalendar_filter" class="small"
+			 onchange="loadRelatedListBlock(\'module='.$currentModule.'&action='.$currentModule.'Ajax&file=DetailViewAjax&record='.$id.'&ajxaction=LOADRELATEDLIST&header=Activities&relation_id='.$relid.'&cbcalendar_filter=\'+this.options[this.options.selectedIndex].value+\'&actions=add&parenttab=Support\',\'tbl_'.$currentModule.'_Activities\',\''.$currentModule.'_Activities\');">
+			<option value="all">'.getTranslatedString('LBL_ALL').'</option>';
+			foreach ($calStatus as $cstatkey => $cstatvalue) {
+				$button .= '<option value="'.$cstatkey.'" '.((isset($_REQUEST['cbcalendar_filter']) and $_REQUEST['cbcalendar_filter']==$cstatkey) ? 'selected' : '').'>'.$cstatvalue.'</option>';
+			}
+			$button .= '</select>&nbsp;';
+			if ($actions) {
+				if (is_string($actions))
+					$actions = explode(',', strtoupper($actions));
+				$wfs = '';
+				if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes'
+						&& getFieldVisibilityPermission($related_module, $current_user->id, $dependentField, 'readwrite') == '0') {
+					$wfs = new VTWorkflowManager($adb);
+					$racbr = $wfs->getRACRuleForRecord($currentModule, $id);
+					if (!$racbr or $racbr->hasRelatedListPermissionTo('create',$related_module)) {
+						$button .= "<input title='" . getTranslatedString('LBL_ADD_NEW') . " " . getTranslatedString($singular_modname, $related_module) . "' class='crmbutton small create'" .
+							" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
+							" value='" . getTranslatedString('LBL_ADD_NEW') . " " . getTranslatedString($singular_modname, $related_module) . "'>&nbsp;";
+					}
+				}
+			}
+
+			$query = "SELECT vtiger_crmentity.*, $other->table_name.*";
+
+			$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name','last_name' => 'vtiger_users.last_name'), 'Users');
+			$query .= ", CASE WHEN (vtiger_users.user_name NOT LIKE '') THEN $userNameSql ELSE vtiger_groups.groupname END AS user_name";
+
+			$more_relation = '';
+			if (!empty($other->related_tables)) {
+				foreach ($other->related_tables as $tname => $relmap) {
+					$query .= ", $tname.*";
+
+					// Setup the default JOIN conditions if not specified
+					if (empty($relmap[1]))
+						$relmap[1] = $other->table_name;
+					if (empty($relmap[2]))
+						$relmap[2] = $relmap[0];
+					$more_relation .= " LEFT JOIN $tname ON $tname.$relmap[0] = $relmap[1].$relmap[2]";
+				}
+			}
+
+			$query .= " FROM $other->table_name";
+			$query .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
+			$query .= $more_relation;
+			if ($relWithSelf) {
+				$query .= " INNER JOIN $this->table_name as ".$this->table_name."RelSelf ON $relationconditions";
+			} else {
+				$query .= " INNER JOIN $this->table_name ON $relationconditions";
+			}
+			$query .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
+			$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
+
+			if ($relWithSelf) {
+				$query .= " WHERE vtiger_crmentity.deleted = 0 AND ".$this->table_name."RelSelf.$this->table_index = $id";
+			} else {
+				$query .= " WHERE vtiger_crmentity.deleted = 0 AND $this->table_name.$this->table_index = $id";
+			}
+
+			if (isset($_REQUEST['cbcalendar_filter']) and $_REQUEST['cbcalendar_filter'] != 'all') {
+				$query .= $adb->convert2Sql(' and vtiger_activity.eventstatus=? ', array(vtlib_purify($_REQUEST['cbcalendar_filter'])));
+			}
+			global $log;$log->fatal($query);
+			$return_value = GetRelatedList($currentModule, $related_module, $other, $query, $button, $returnset);
+		}
+		if ($return_value == null)
+			$return_value = Array();
+		$return_value['CUSTOM_BUTTON'] = $button;
+
+		return $return_value;
+	}
+
 	/**
 	 * Move the related records of the specified list of id's to the given record.
 	 * @param String This module name
