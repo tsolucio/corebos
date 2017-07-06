@@ -17,12 +17,15 @@ require_once ('data/Tracker.php');
 require_once 'include/utils/CommonUtils.php';
 require_once 'include/Webservices/Utils.php';
 require_once ('modules/Users/UserTimeZonesArray.php');
+include_once 'modules/Users/authTypes/TwoFactorAuth/autoload.php';
+use \RobThree\Auth\TwoFactorAuth;
 
 class Users extends CRMEntity {
 	var $db, $log; // Used in class functions of CRMEntity
 	// Stored fields
 	var $id;
 	var $authenticated = false;
+	var $twoFAauthenticated = false;
 	var $error_string;
 	var $is_admin;
 	var $deleted;
@@ -288,6 +291,36 @@ class Users extends CRMEntity {
 		return false;
 	}
 
+	public static function send2FACode($code,$userid) {
+		global $adb;
+		$msg = sprintf(getTranslatedString('2FA_ACCESSCODE','Users'),$code);
+		$SendCodeMethod = strtoupper(GlobalVariable::getVariable('User_2FAAuthentication_SendMethod','EMAIL','Users',$userid));
+		if (!vtlib_isModuleActive('SMSNotifier') and $SendCodeMethod=='SMS') $SendCodeMethod = 'EMAIL';
+		switch ($SendCodeMethod) {
+			case 'SMS':
+				require_once 'modules/SMSNotifier/SMSNotifier.php';
+				$rs = $adb->pquery('select coalesce(phone_work,phone_mobile) as phone from vtiger_users where userid=?',array($userid));
+				if ($rs and $adb->num_rows($rs)>0) {
+					$phone = $adb->query_result($rs, 0, 0);
+					if (!empty($phone)) {
+						SMSNotifier::sendsms($msg, $phone, $userid, $userid, 'Users');
+					}
+				}
+				break;
+			case 'EMAIL':
+			default:
+				require_once('modules/Emails/mail.php');
+				require_once('modules/Emails/Emails.php');
+				$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail','support@your_support_domain.tld','HelpDesk',$userid);
+				$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name','your-support name','HelpDesk',$userid);
+				$mailto = getUserEmail($userid);
+				if ($mailto!='') {
+					send_mail('Emails',$mailto,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID,$msg,$msg);
+				}
+				break;
+		}
+	}
+
 	/**
 	 * Load a user based on the user_name in $this
 	 * @return -- this if load was successul and null if load failed.
@@ -296,6 +329,29 @@ class Users extends CRMEntity {
 	 */
 	function load_user($user_password) {
 		$usr_name = $this->column_fields["user_name"];
+		if (!empty($_POST['twofauserauth'])) {
+			$this->authenticated = false;
+			$this->twoFAauthenticated = false;
+			// csrf check
+			// Get the fields for the user
+			$query = "SELECT * from $this->table_name where user_name='$usr_name'";
+			$result = $this->db->requireSingleResult($query, false);
+			$row = $this->db->fetchByAssoc($result);
+			if ($row['id']!=$_POST['twofauserauth']) {
+				return null;
+			}
+			// validate 2fa
+			$tfa = new TwoFactorAuth('coreBOSWebApp');
+			$twofasecret = coreBOS_Settings::getSetting('coreBOS_2FA_Secret_'.$row['id'], false);
+			if ($twofasecret === false or $tfa->verifyCode($twofasecret, $_POST['user_2facode']) === false) {
+				return null;
+			}
+			$this->column_fields = $row;
+			$this->id = $row['id'];
+			$this->authenticated = true;
+			$this->twoFAauthenticated = true;
+			return $this;
+		}
 		$maxFailedLoginAttempts = GlobalVariable::getVariable('Application_MaxFailedLoginAttempts', 5, 'Users');
 		if (isset($_SESSION['loginattempts'])) {
 			coreBOS_Session::set('loginattempts',$_SESSION['loginattempts'] + 1);
@@ -462,6 +518,7 @@ class Users extends CRMEntity {
 		$query = "UPDATE $this->table_name SET user_password=?, confirm_password=?, crypt_type=?, change_password=?, last_password_reset_date=now(), failed_login_attempts=0 where id=?";
 		$this->db->pquery($query, array($encrypted_new_password, $encrypted_new_password, $crypt_type, $change_password_next_login, $this->id));
 		$this->createAccessKey();
+		coreBOS_Settings::delSetting('coreBOS_2FA_Secret_'.$this->id);
 		require_once ('modules/Users/CreateUserPrivilegeFile.php');
 		createUserPrivilegesfile($this->id);
 		return true;
@@ -511,6 +568,15 @@ class Users extends CRMEntity {
 		return $this->authenticated;
 	}
 
+	function is_twofaauthenticated() {
+		$do2FA = GlobalVariable::getVariable('User_2FAAuthentication',0,'Users',Users::getActiveAdminId());
+		if ($do2FA) {
+			return $this->twoFAauthenticated;
+		} else {
+			return true;
+		}
+	}
+
 	/** gives the user id for the specified user name
 	 * @param $user_name -- user name:: Type varchar
 	 * @returns user id
@@ -525,6 +591,18 @@ class Users extends CRMEntity {
 			$userid = 0;
 		}
 		return $userid;
+	}
+
+	/** check if given number is a valid and active user ID
+	 * @param integer $userid
+	 * @returns boolean
+	 */
+	public static function is_ActiveUserID($userid) {
+		global $adb;
+		if (empty($userid) or !is_numeric($userid)) return false;
+		$query = "SELECT 1 from vtiger_users where status='Active' AND id=? AND deleted=0";
+		$result = $adb->pquery($query, array($userid));
+		return ($result and $adb->num_rows($result) > 0);
 	}
 
 	/**

@@ -12,13 +12,13 @@ require_once('data/Tracker.php');
 require_once('include/upload_file.php');
 require_once('include/utils/utils.php');
 
-global $log, $app_strings, $mod_strings, $currentModule, $theme;
+global $log, $app_strings, $mod_strings, $currentModule, $theme, $default_charset;
 
 $focus = CRMEntity::getInstance($currentModule);
 
 $smarty = new vtigerCRM_Smarty;
 if(isset($_REQUEST['record'])) {
-	global $adb,$default_charset;
+	global $adb;
 	$focus->retrieve_entity_info($_REQUEST['record'],"Emails");
 	$log->info("Entity info successfully retrieved for DetailView.");
 	$focus->id = $_REQUEST['record'];
@@ -90,7 +90,7 @@ $sec_arr = array('index.php?module=Emails&action=index'=>'Emails','index.php?mod
 
 $smarty->assign("MOD", $mod_strings);
 $smarty->assign("APP", $app_strings);
-
+$smarty->assign('LBL_CHARSET', $default_charset);
 $smarty->assign("UPDATEINFO",updateInfo($focus->id));
 if (isset($_REQUEST['return_module'])) $smarty->assign("RETURN_MODULE", vtlib_purify($_REQUEST['return_module']));
 if (isset($_REQUEST['return_action'])) $smarty->assign("RETURN_ACTION", vtlib_purify($_REQUEST['return_action']));

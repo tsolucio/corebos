@@ -12,7 +12,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 $app_strings = array(
-'LBL_BROWSER_TITLE' => 'vtiger CRM 5 - Commercial Open Source CRM',
+'LBL_BROWSER_TITLE' => 'coreBOS',
 'LBL_MY_ACCOUNT'=>'Mein Konto',
 'LBL_MY_PREFERENCES'=>'Meine Einstellungen',
 'LBL_ADMIN'=>'Admin',
@@ -820,7 +820,7 @@ $app_strings = array(
 'MSG_THANK_YOU'=>'Danke für Ihre Aufmerksamkeit',
 'MSG_HAS_BEEN_CREATED_FOR'=>'wurde erstellt für',
 'MSG_THANKS'=>'Danke,',
-'MSG_VTIGERTEAM'=>' vTiger Team',
+'MSG_VTIGERTEAM'=>' coreBOS Team',
 'MSG_IS_NOT_UPLOADED'=>'wurde nicht geladen. Zulässige Dateitypen - jpeg, png, jpg, pjpeg, x-png oder gif',
 'MSG_IMAGE_ERROR'=>'Das Bild wurde nicht gefunden.',
 
@@ -870,8 +870,6 @@ $app_strings = array(
 'Quote No'=>'Angebotsnr.',
 'Yahoo Id'=>'Yahoo E-Mail',
 
-// Added/Updated for vtiger CRM 5.0.4
-'LBL_CHARSET' => 'UTF-8',
 'Lost Lead' => 'verlorener Lead',
 //Added for incoming mail server settings form js validation
 'ERR_INVALID_PAGE_COUNT' => "Seitenzahl ungültig",

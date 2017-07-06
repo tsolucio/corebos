@@ -282,7 +282,7 @@ class VTSimpleTemplate{
 		}
 		$current_user = new Users();
 		$current_user->retrieveCurrentUserInfoFromFile($assigned_user_id);
-		$return = preg_replace_callback('/\\$(\w+|\((\w+) : \(([_\w]+)\) (.+)\))/', array($this,"matchHandler"), $this->template);
+		$return = preg_replace_callback('/\\$(\w+?|\(general : \(__WorkflowFunction__\) (.+?) \) |\((\w+) : \(([_\w]+)\) (.+)\))/U', array($this,"matchHandler"), $this->template);
 		$current_user = $backCurrentUser;
 		return $return;
 	}
@@ -290,6 +290,7 @@ class VTSimpleTemplate{
 	function getMetaValue($fieldname){
 		require_once 'config.inc.php';
 		global $site_URL, $current_user;
+		$fieldname = trim($fieldname);
 		if (substr($fieldname,0,14)=='groupEmailList') {
 			$groupname = trim(str_replace('_', ' ', substr($fieldname, 14)));
 			$fieldname = 'groupEmailList';
@@ -330,12 +331,8 @@ class VTSimpleTemplate{
 											$parts = explode('x', $wsId);
 											$recordId = $parts[1];
 											$moduleName = $this->parent->getModuleName();
-											if($moduleName == 'Events' || $moduleName == 'Calendar')
-											{
-												if($moduleName == 'Events')
-													return $site_URL.'/index.php?action=EventDetailView&module=Calendar4You&record='.$recordId.'&activity_mode=Events';
-												elseif($moduleName == 'Calendar')
-													return $site_URL.'/index.php?action=EventDetailView&module=Calendar4You&record='.$recordId.'&activity_mode=Task';
+											if ($moduleName == 'Events' || $moduleName == 'Calendar') {
+												return $site_URL.'/index.php?action=DetailView&module=cbCalendar&record='.$recordId;
 											}
 											else
 												return $site_URL.'/index.php?action=DetailView&module='.$moduleName.'&record='.$recordId;

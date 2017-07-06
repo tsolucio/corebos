@@ -96,9 +96,9 @@ if(isPermitted('Calendar','index') == 'yes'){
 
 				// Appending recordid we can get unique callback dom id for that record.
 				$popupid = "ActivityReminder_$cbrecord";
-				if($cbdate <= date('Y-m-d')){
-					if($cbdate == date('Y-m-d') && $cbtime > date('H:i')) $cbcolor = '';
-					else $cbcolor= '#FF1515';
+				$cbcolor = '';
+				if ($cbdate <= date('Y-m-d') and !($cbdate == date('Y-m-d') && $cbtime > date('H:i'))) {
+					$cbcolor= '#FF1515';
 				}
 				$smarty->assign("THEME", $theme);
 				$smarty->assign("popupid", $popupid);

@@ -73,12 +73,12 @@ function get_module_pdf($modulename, $recordid) {
 
 	$_pdf_data = GetRawPDFData($modulename, $recordid);
 
-    $recordpdf[0]["recordid"] = $recordid;
-    $recordpdf[0]["modulename"] = $modulename;
-    $recordpdf[0]["pdf_data"] = base64_encode($_pdf_data) ;
+	$recordpdf[0]["recordid"] = $recordid;
+	$recordpdf[0]["modulename"] = $modulename;
+	$recordpdf[0]["pdf_data"] = base64_encode($_pdf_data) ;
 
 	$log->debug("Leaving function get_module_pdf($recordid)");
-    return $recordpdf;
+	return $recordpdf;
 }
 
 function GetRawPDFData($modulename, $recordid) {

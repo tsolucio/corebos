@@ -27,7 +27,7 @@ require_once 'include/Webservices/PreserveGlobal.php';
  * @param $id - id of the user
  * returns Array:UserIds userid of all the users in the groups that this user is part of.
  */
-function vtws_getUsersInTheSameGroup($id){
+function vtws_getUsersInTheSameGroup($id) {
 	require_once('include/utils/GetGroupUsers.php');
 	require_once('include/utils/GetUserGroups.php');
 
@@ -41,7 +41,7 @@ function vtws_getUsersInTheSameGroup($id){
 		$groupUsers->getAllUsersInGroup($group);
 		$usersInGroup = $groupUsers->group_users;
 		foreach ($usersInGroup as $user) {
-		if($user != $id){
+		if ($user != $id) {
 				$allUsers[$user] = getUserFullName($user);
 			}
 		}
@@ -49,11 +49,11 @@ function vtws_getUsersInTheSameGroup($id){
 	return $allUsers;
 }
 
-function vtws_generateRandomAccessKey($length=10){
+function vtws_generateRandomAccessKey($length=10) {
 	$source = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 	$accesskey = "";
 	$maxIndex = strlen($source);
-	for($i=0;$i<$length;++$i){
+	for ($i=0;$i<$length;++$i) {
 		$accesskey = $accesskey.substr($source,rand(null,$maxIndex),1);
 	}
 	return $accesskey;
@@ -62,32 +62,31 @@ function vtws_generateRandomAccessKey($length=10){
 /**
  * get current vtiger version from the database.
  */
-function vtws_getVtigerVersion(){
+function vtws_getVtigerVersion() {
 	global $adb;
 	$query = 'select * from vtiger_version';
 	$result = $adb->pquery($query, array());
 	$version = '';
-	while($row = $adb->fetch_array($result))
-	{
+	while ($row = $adb->fetch_array($result)) {
 		$version = $row['current_version'];
 	}
 	return $version;
 }
 
-function vtws_getUserAccessibleGroups($moduleId, $user){
+function vtws_getUserAccessibleGroups($moduleId, $user) {
 	global $adb;
 	require('user_privileges/user_privileges_'.$user->id.'.php');
 	require('user_privileges/sharing_privileges_'.$user->id.'.php');
 	$tabName = getTabname($moduleId);
-	if($is_admin==false && $profileGlobalPermission[2] == 1 &&
-			($defaultOrgSharingPermission[$moduleId] == 3 or $defaultOrgSharingPermission[$moduleId] == 0)){
+	if ($is_admin==false && $profileGlobalPermission[2] == 1 &&
+			($defaultOrgSharingPermission[$moduleId] == 3 or $defaultOrgSharingPermission[$moduleId] == 0)) {
 		$result=get_current_user_access_groups($tabName);
-	}else{
+	} else {
 		$result = get_group_options();
 	}
 
 	$groups = array();
-	if($result != null && $result != '' && is_object($result)){
+	if ($result != null && $result != '' && is_object($result)) {
 		$rowCount = $adb->num_rows($result);
 		for ($i = 0; $i < $rowCount; $i++) {
 			$nameArray = $adb->query_result_rowdata($result,$i);
@@ -99,25 +98,25 @@ function vtws_getUserAccessibleGroups($moduleId, $user){
 	return $groups;
 }
 
-function vtws_getWebserviceGroupFromGroups($groups){
+function vtws_getWebserviceGroupFromGroups($groups) {
 	global $adb;
 	$webserviceObject = VtigerWebserviceObject::fromName($adb,'Groups');
-	foreach($groups as $index=>$group){
+	foreach ($groups as $index=>$group) {
 		$groups[$index]['id'] = vtws_getId($webserviceObject->getEntityId(),$group['id']);
 	}
 	return $groups;
 }
 
-function vtws_getUserWebservicesGroups($tabId,$user){
+function vtws_getUserWebservicesGroups($tabId,$user) {
 	$groups = vtws_getUserAccessibleGroups($tabId,$user);
 	return vtws_getWebserviceGroupFromGroups($groups);
 }
 
-function vtws_getIdComponents($elementid){
+function vtws_getIdComponents($elementid) {
 	return explode("x",$elementid);
 }
 
-function vtws_getId($objId, $elemId){
+function vtws_getId($objId, $elemId) {
 	return $objId."x".$elemId;
 }
 
@@ -132,11 +131,10 @@ function vtws_getEntityId($entityName) {
 	return $wsid;
 }
 
-function getEmailFieldId($meta, $entityId){
+function getEmailFieldId($meta, $entityId) {
 	global $adb;
 	//no email field accessible in the module. since its only association pick up the field any way.
-	$query="SELECT fieldid,fieldlabel,columnname FROM vtiger_field WHERE tabid=?
-		and uitype=13 and presence in (0,2)";
+	$query = 'SELECT fieldid,fieldlabel,columnname FROM vtiger_field WHERE tabid=? and uitype=13 and presence in (0,2)';
 	$result = $adb->pquery($query, array($meta->getTabId()));
 
 	//pick up the first field.
@@ -144,9 +142,9 @@ function getEmailFieldId($meta, $entityId){
 	return $fieldId;
 }
 
-function vtws_getParameter($parameterArray, $paramName,$default=null){
+function vtws_getParameter($parameterArray, $paramName,$default=null) {
 	if (!get_magic_quotes_gpc()) {
-		if(isset($parameterArray[$paramName]) and is_array($parameterArray[$paramName])) {
+		if (isset($parameterArray[$paramName]) and is_array($parameterArray[$paramName])) {
 			$param = array_map('addslashes', $parameterArray[$paramName]);
 		} else {
 			$param = isset($parameterArray[$paramName]) ? addslashes($parameterArray[$paramName]) : '';
@@ -154,24 +152,23 @@ function vtws_getParameter($parameterArray, $paramName,$default=null){
 	} else {
 		$param = isset($parameterArray[$paramName]) ? $parameterArray[$paramName] : '';
 	}
-	if(!$param){
+	if (!$param) {
 		$param = $default;
 	}
 	return $param;
 }
 
-function vtws_getEntityNameFields($moduleName){
-
+function vtws_getEntityNameFields($moduleName) {
 	global $adb;
 	$query = "select fieldname,tablename,entityidfield from vtiger_entityname where modulename = ?";
 	$result = $adb->pquery($query, array($moduleName));
 	$rowCount = $adb->num_rows($result);
 	$nameFields = array();
-	if($rowCount > 0){
+	if ($rowCount > 0) {
 		$fieldsname = $adb->query_result($result,0,'fieldname');
-		if(!(strpos($fieldsname,',') === false)){
+		if (!(strpos($fieldsname,',') === false)) {
 			 $nameFields = explode(',',$fieldsname);
-		}else{
+		} else {
 			array_push($nameFields,$fieldsname);
 		}
 	}
@@ -181,28 +178,28 @@ function vtws_getEntityNameFields($moduleName){
 /** function to get the module List to which are crm entities.
  *  @return Array modules list as array
  */
-function vtws_getModuleNameList(){
+function vtws_getModuleNameList() {
 	global $adb;
 	$sql = "select name from vtiger_tab where isentitytype=1 and name not in ('Rss','Webmails','Recyclebin','Events') order by tabsequence";
 	$res = $adb->pquery($sql, array());
 	$mod_array = Array();
-	while($row = $adb->fetchByAssoc($res)){
+	while ($row = $adb->fetchByAssoc($res)) {
 		array_push($mod_array,$row['name']);
 	}
 	return $mod_array;
 }
 
-function vtws_getWebserviceEntities(){
+function vtws_getWebserviceEntities() {
 	global $adb;
 
 	$sql = "select name,id,ismodule from vtiger_ws_entity";
 	$res = $adb->pquery($sql, array());
 	$moduleArray = Array();
 	$entityArray = Array();
-	while($row = $adb->fetchByAssoc($res)){
-		if($row['ismodule'] == '1'){
+	while($row = $adb->fetchByAssoc($res)) {
+		if ($row['ismodule'] == '1') {
 			array_push($moduleArray,$row['name']);
-		}else{
+		} else {
 			array_push($entityArray,$row['name']);
 		}
 	}
@@ -214,12 +211,12 @@ function vtws_getWebserviceEntities(){
  * @param VtigerWebserviceObject $webserviceObject
  * @return CRMEntity
  */
-function vtws_getModuleInstance($webserviceObject){
+function vtws_getModuleInstance($webserviceObject) {
 	$moduleName = $webserviceObject->getEntityName();
 	return CRMEntity::getInstance($moduleName);
 }
 
-function vtws_isRecordOwnerUser($ownerId){
+function vtws_isRecordOwnerUser($ownerId) {
 	global $adb;
 	static $cache = array();
 	if (is_array($ownerId) and isset($ownerId['Users'])) $ownerId = $ownerId['Users'];
@@ -234,14 +231,14 @@ function vtws_isRecordOwnerUser($ownerId){
 	return $ownedByUser;
 }
 
-function vtws_isRecordOwnerGroup($ownerId){
+function vtws_isRecordOwnerGroup($ownerId) {
 	global $adb;
 
 	static $cache = array();
 	if (!array_key_exists($ownerId, $cache)) {
-	$result = $adb->pquery("select groupname from vtiger_groups where groupid = ?",array($ownerId));
-	$rowCount = $adb->num_rows($result);
-	$ownedByGroup = ($rowCount > 0);
+		$result = $adb->pquery("select groupname from vtiger_groups where groupid = ?",array($ownerId));
+		$rowCount = $adb->num_rows($result);
+		$ownedByGroup = ($rowCount > 0);
 		$cache[$ownerId] = $ownedByGroup;
 	} else {
 		$ownedByGroup = $cache[$ownerId];
@@ -249,17 +246,17 @@ function vtws_isRecordOwnerGroup($ownerId){
 	return $ownedByGroup;
 }
 
-function vtws_getOwnerType($ownerId){
-	if(vtws_isRecordOwnerGroup($ownerId) == true){
+function vtws_getOwnerType($ownerId) {
+	if (vtws_isRecordOwnerGroup($ownerId) == true) {
 		return 'Groups';
 	}
-	if(vtws_isRecordOwnerUser($ownerId) == true){
+	if (vtws_isRecordOwnerUser($ownerId) == true) {
 		return 'Users';
 	}
 	throw new WebServiceException(WebServiceErrorCode::$INVALIDID,"Invalid owner of the record");
 }
 
-function vtws_runQueryAsTransaction($query,$params,&$result){
+function vtws_runQueryAsTransaction($query,$params,&$result) {
 	global $adb;
 
 	$adb->startTransaction();
@@ -269,16 +266,16 @@ function vtws_runQueryAsTransaction($query,$params,&$result){
 	return !$error;
 }
 
-function vtws_getCalendarEntityType($id){
+function vtws_getCalendarEntityType($id) {
 	global $adb;
 
 	$sql = "select activitytype from vtiger_activity where activityid=?";
 	$result = $adb->pquery($sql,array($id));
 	$seType = 'Calendar';
-	if($result != null && isset($result)){
-		if($adb->num_rows($result)>0){
+	if ($result != null && isset($result)) {
+		if ($adb->num_rows($result)>0) {
 			$activityType = $adb->query_result($result,0,"activitytype");
-			if($activityType !== "Task"){
+			if ($activityType !== "Task") {
 				$seType = "Events";
 			}
 		}
@@ -289,25 +286,24 @@ function vtws_getCalendarEntityType($id){
 /***
  * Get the webservice reference Id given the entity's id and it's type name
  */
-function vtws_getWebserviceEntityId($entityName, $id){
+function vtws_getWebserviceEntityId($entityName, $id) {
 	global $adb;
 	$webserviceObject = VtigerWebserviceObject::fromName($adb,$entityName);
 	return $webserviceObject->getEntityId().'x'.$id;
 }
 
-function vtws_addDefaultModuleTypeEntity($moduleName){
+function vtws_addDefaultModuleTypeEntity($moduleName) {
 	global $adb;
 	$isModule = 1;
-	$moduleHandler = array('file'=>'include/Webservices/VtigerModuleOperation.php',
-		'class'=>'VtigerModuleOperation');
+	$moduleHandler = array('file'=>'include/Webservices/VtigerModuleOperation.php', 'class'=>'VtigerModuleOperation');
 	return vtws_addModuleTypeWebserviceEntity($moduleName,$moduleHandler['file'],$moduleHandler['class'],$isModule);
 }
 
-function vtws_addModuleTypeWebserviceEntity($moduleName,$filePath,$className){
+function vtws_addModuleTypeWebserviceEntity($moduleName,$filePath,$className) {
 	global $adb;
 	$checkres = $adb->pquery('SELECT id FROM vtiger_ws_entity WHERE name=? AND handler_path=? AND handler_class=?',
 		array($moduleName, $filePath, $className));
-	if($checkres && $adb->num_rows($checkres) == 0) {
+	if ($checkres && $adb->num_rows($checkres) == 0) {
 		$isModule=1;
 		$entityId = $adb->getUniqueID("vtiger_ws_entity");
 		$adb->pquery('insert into vtiger_ws_entity(id,name,handler_path,handler_class,ismodule) values (?,?,?,?,?)',
@@ -320,29 +316,25 @@ function vtws_deleteWebserviceEntity($moduleName) {
 	$adb->pquery('DELETE FROM vtiger_ws_entity WHERE name=?',array($moduleName));
 }
 
-function vtws_addDefaultActorTypeEntity($actorName,$actorNameDetails,$withName = true){
-	$actorHandler = array('file'=>'include/Webservices/VtigerActorOperation.php',
-		'class'=>'VtigerActorOperation');
-	if($withName == true){
-		vtws_addActorTypeWebserviceEntityWithName($actorName,$actorHandler['file'],$actorHandler['class'],
-			$actorNameDetails);
+function vtws_addDefaultActorTypeEntity($actorName,$actorNameDetails,$withName = true) {
+	$actorHandler = array('file'=>'include/Webservices/VtigerActorOperation.php', 'class'=>'VtigerActorOperation');
+	if ($withName == true) {
+		vtws_addActorTypeWebserviceEntityWithName($actorName,$actorHandler['file'],$actorHandler['class'], $actorNameDetails);
 	}else{
-		vtws_addActorTypeWebserviceEntityWithoutName($actorName,$actorHandler['file'],$actorHandler['class'],
-			$actorNameDetails);
+		vtws_addActorTypeWebserviceEntityWithoutName($actorName,$actorHandler['file'],$actorHandler['class'], $actorNameDetails);
 	}
 }
 
-function vtws_addActorTypeWebserviceEntityWithName($moduleName,$filePath,$className,$actorNameDetails){
+function vtws_addActorTypeWebserviceEntityWithName($moduleName,$filePath,$className,$actorNameDetails) {
 	global $adb;
 	$isModule=0;
 	$entityId = $adb->getUniqueID("vtiger_ws_entity");
 	$adb->pquery('insert into vtiger_ws_entity(id,name,handler_path,handler_class,ismodule) values (?,?,?,?,?)',
 		array($entityId,$moduleName,$filePath,$className,$isModule));
-	vtws_addActorTypeName($entityId,$actorNameDetails['fieldNames'],$actorNameDetails['indexField'],
-		$actorNameDetails['tableName']);
+	vtws_addActorTypeName($entityId,$actorNameDetails['fieldNames'],$actorNameDetails['indexField'], $actorNameDetails['tableName']);
 }
 
-function vtws_addActorTypeWebserviceEntityWithoutName($moduleName,$filePath,$className,$actorNameDetails){
+function vtws_addActorTypeWebserviceEntityWithoutName($moduleName,$filePath,$className,$actorNameDetails) {
 	global $adb;
 	$isModule=0;
 	$entityId = $adb->getUniqueID("vtiger_ws_entity");
@@ -350,13 +342,13 @@ function vtws_addActorTypeWebserviceEntityWithoutName($moduleName,$filePath,$cla
 		array($entityId,$moduleName,$filePath,$className,$isModule));
 }
 
-function vtws_addActorTypeName($entityId,$fieldNames,$indexColumn,$tableName){
+function vtws_addActorTypeName($entityId,$fieldNames,$indexColumn,$tableName) {
 	global $adb;
 	$adb->pquery('insert into vtiger_ws_entity_name(entity_id,name_fields,index_field,table_name) values (?,?,?,?)',
 		array($entityId,$fieldNames,$indexColumn,$tableName));
 }
 
-function vtws_getName($id,$user){
+function vtws_getName($id,$user) {
 	global $log,$adb;
 
 	$webserviceObject = VtigerWebserviceObject::fromId($adb,$id);
@@ -370,7 +362,7 @@ function vtws_getName($id,$user){
 	return $meta->getName($id);
 }
 
-function vtws_preserveGlobal($name,$value){
+function vtws_preserveGlobal($name,$value) {
 	return VTWS_PreserveGlobal::preserveGlobal($name,$value);
 }
 
@@ -406,14 +398,14 @@ function registerWSAPI($operationInfo) {
 	$operationId = vtws_addWebserviceOperation($operationInfo['name'], $operationInfo['include'],
 		$operationInfo['handler'], $operationInfo['type'], $operationInfo['prelogin']);
 
-	if(empty($operationId)){
+	if (empty($operationId)) {
 		throw new Exception('FAILED TO SETUP '.$operationInfo['name'].' WEBSERVICE');
 	}
 
 	$sequence = 1;
 	foreach ($operationInfo['parameters'] as $parameters) {
 		$status = vtws_addWebserviceOperationParam($operationId,$parameters['name'], $parameters['type'],$sequence++);
-		if($status === false){
+		if ($status === false) {
 			throw new Exception('FAILED TO SETUP '.$parameters['name'].' WEBSERVICE HALFWAY THOURGH');
 		}
 	}
@@ -433,23 +425,22 @@ function registerWSAPI($operationInfo) {
  * 	for the operation.
  * @return Integer operationId of successful or null upon failure.
  */
-function vtws_addWebserviceOperation($name,$handlerFilePath,$handlerMethodName,$requestType,$preLogin = 0){
+function vtws_addWebserviceOperation($name,$handlerFilePath,$handlerMethodName,$requestType,$preLogin = 0) {
 	global $adb;
 	$createOperationQuery = "insert into vtiger_ws_operation(operationid,name,handler_path,handler_method,type,prelogin)
 		values (?,?,?,?,?,?);";
-	if(strtolower($requestType) != 'get' && strtolower($requestType) != 'post'){
+	if (strtolower($requestType) != 'get' && strtolower($requestType) != 'post') {
 		return null;
 	}
 	$requestType = strtoupper($requestType);
-	if(empty($preLogin)){
+	if (empty($preLogin)) {
 		$preLogin = 0;
-	}else{
+	} else {
 		$preLogin = 1;
 	}
 	$operationId = $adb->getUniqueID("vtiger_ws_operation");
-	$result = $adb->pquery($createOperationQuery,array($operationId,$name,$handlerFilePath,$handlerMethodName,
-		$requestType,$preLogin));
-	if($result !== false){
+	$result = $adb->pquery($createOperationQuery,array($operationId,$name,$handlerFilePath,$handlerMethodName, $requestType,$preLogin));
+	if ($result !== false) {
 		return $operationId;
 	}
 	return null;
@@ -464,32 +455,31 @@ function vtws_addWebserviceOperation($name,$handlerFilePath,$handlerMethodName,$
  * @param $sequence sequence of the parameter in the definition in the handler method.
  * @return Boolean true if the parameter was added successfully, false otherwise
  */
-function vtws_addWebserviceOperationParam($operationId,$paramName,$paramType,$sequence){
+function vtws_addWebserviceOperationParam($operationId,$paramName,$paramType,$sequence) {
 	global $adb;
 	$supportedTypes = array('string','encoded','datetime','double','boolean');
-	if(!is_numeric($sequence)){
-		$sequence = 1;
-	}if($sequence <=1){
+	if (!is_numeric($sequence)) {
 		$sequence = 1;
 	}
-	if(!in_array(strtolower($paramType),$supportedTypes)){
+	if ($sequence <=1) {
+		$sequence = 1;
+	}
+	if (!in_array(strtolower($paramType),$supportedTypes)) {
 		return false;
 	}
-	$createOperationParamsQuery = "insert into vtiger_ws_operation_parameters(operationid,name,type,sequence)
-		values (?,?,?,?);";
+	$createOperationParamsQuery = 'insert into vtiger_ws_operation_parameters(operationid,name,type,sequence) values (?,?,?,?);';
 	$result = $adb->pquery($createOperationParamsQuery,array($operationId,$paramName,$paramType,$sequence));
 	return ($result !== false);
 }
 
 /**
- *
  * @global PearDatabase $adb
  * @global <type> $log
  * @param <type> $name
  * @param <type> $user
  * @return WebserviceEntityOperation
  */
-function vtws_getModuleHandlerFromName($name,$user){
+function vtws_getModuleHandlerFromName($name,$user) {
 	global $adb, $log;
 	$webserviceObject = VtigerWebserviceObject::fromName($adb,$name);
 	$handlerPath = $webserviceObject->getHandlerPath();
@@ -501,7 +491,7 @@ function vtws_getModuleHandlerFromName($name,$user){
 	return $handler;
 }
 
-function vtws_getModuleHandlerFromId($id,$user){
+function vtws_getModuleHandlerFromId($id,$user) {
 	global $adb, $log;
 	$webserviceObject = VtigerWebserviceObject::fromId($adb,$id);
 	$handlerPath = $webserviceObject->getHandlerPath();
@@ -522,11 +512,11 @@ function vtws_CreateCompanyLogoFile($fieldname) {
 	$fileSize = $_FILES[$fieldname]['size'];
 	$fileTypeArray = explode("/",$fileType);
 	$fileTypeValue = strtolower($fileTypeArray[1]);
-	if($fileTypeValue == '') {
+	if ($fileTypeValue == '') {
 		$fileTypeValue = substr($binFile,strrpos($binFile, '.')+1);
 	}
-	if($fileSize != 0) {
-		if(in_array($fileTypeValue, $allowedFileTypes)) {
+	if ($fileSize != 0) {
+		if (in_array($fileTypeValue, $allowedFileTypes)) {
 			move_uploaded_file($_FILES[$fieldname]['tmp_name'], $uploaddir.$binFile);
 			return $binFile;
 		}
@@ -566,8 +556,7 @@ function vtws_getActorEntityNameById ($entityId, $idList) {
 				$nameFields = $nameFields.")";
 			}
 
-			$query1 = "select $nameFields as entityname, $indexField from $tableName where ".
-				"$indexField in (".generateQuestionMarks($idList).")";
+			$query1 = "select $nameFields as entityname, $indexField from $tableName where $indexField in (".generateQuestionMarks($idList).")";
 			$params1 = array($idList);
 			$result = $db->pquery($query1, $params1);
 			if (is_object($result)) {
@@ -590,19 +579,22 @@ function vtws_isRoleBasedPicklist($name) {
 	return ($db->num_rows($result) > 0);
 }
 
-function vtws_getConvertLeadFieldMapping(){
+function vtws_getConvertLeadFieldMapping() {
 	global $adb;
 	$sql = "select * from vtiger_convertleadmapping";
 	$result = $adb->pquery($sql,array());
-	if($result === false){
+	if ($result === false) {
 		return null;
 	}
 	$mapping = array();
 	$rowCount = $adb->num_rows($result);
-	for($i=0;$i<$rowCount;++$i){
+	for($i=0;$i<$rowCount;++$i) {
 		$row = $adb->query_result_rowdata($result,$i);
-		$mapping[$row['leadfid']] = array('Accounts'=>$row['accountfid'],
-			'Potentials'=>$row['potentialfid'],'Contacts'=>$row['contactfid']);
+		$mapping[$row['leadfid']] = array(
+			'Accounts' => $row['accountfid'],
+			'Potentials' => $row['potentialfid'],
+			'Contacts' => $row['contactfid']
+		);
 	}
 	return $mapping;
 }
@@ -616,32 +608,32 @@ function vtws_getRelatedNotesAttachments($id,$relatedId) {
 
 	$sql = "select * from vtiger_senotesrel where crmid=?";
 	$result = $adb->pquery($sql, array($id));
-	if($result === false){
+	if ($result === false) {
 		return false;
 	}
 	$rowCount = $adb->num_rows($result);
 
 	$sql="insert into vtiger_senotesrel(crmid,notesid) values (?,?)";
-	for($i=0; $i<$rowCount;++$i ) {
+	for ($i=0; $i<$rowCount;++$i ) {
 		$noteId=$adb->query_result($result,$i,"notesid");
 		$resultNew = $adb->pquery($sql, array($relatedId, $noteId));
-		if($resultNew === false){
+		if ($resultNew === false) {
 			return false;
 		}
 	}
 
 	$sql = "select * from vtiger_seattachmentsrel where crmid=?";
 	$result = $adb->pquery($sql, array($id));
-	if($result === false){
+	if ($result === false) {
 		return false;
 	}
 	$rowCount = $adb->num_rows($result);
 
 	$sql = "insert into vtiger_seattachmentsrel(crmid,attachmentsid) values (?,?)";
-	for($i=0;$i<$rowCount;++$i) {
+	for ($i=0;$i<$rowCount;++$i) {
 		$attachmentId=$adb->query_result($result,$i,"attachmentsid");
 		$resultNew = $adb->pquery($sql, array($relatedId, $attachmentId));
-		if($resultNew === false){
+		if ($resultNew === false) {
 			return false;
 		}
 	}
@@ -657,14 +649,14 @@ function vtws_saveLeadRelatedProducts($leadId, $relatedId, $setype) {
 	global $adb;
 
 	$result = $adb->pquery("select * from vtiger_seproductsrel where crmid=?", array($leadId));
-	if($result === false){
+	if ($result === false) {
 		return false;
 	}
 	$rowCount = $adb->num_rows($result);
 	for($i = 0; $i < $rowCount; ++$i) {
 		$productId = $adb->query_result($result,$i,'productid');
 		$resultNew = $adb->pquery("insert into vtiger_seproductsrel values(?,?,?)", array($relatedId, $productId, $setype));
-		if($resultNew === false){
+		if ($resultNew === false) {
 			return false;
 		}
 	}
@@ -680,30 +672,29 @@ function vtws_saveLeadRelations($leadId, $relatedId, $setype) {
 	global $adb;
 
 	$result = $adb->pquery("select * from vtiger_crmentityrel where crmid=?", array($leadId));
-	if($result === false){
+	if ($result === false) {
 		return false;
 	}
 	$rowCount = $adb->num_rows($result);
 	for($i = 0; $i < $rowCount; ++$i) {
 		$recordId = $adb->query_result($result,$i,'relcrmid');
 		$recordModule = $adb->query_result($result,$i,'relmodule');
-		$adb->pquery("insert into vtiger_crmentityrel values(?,?,?,?)",
-		array($relatedId, $setype, $recordId, $recordModule));
-		if($resultNew === false){
+		$adb->pquery("insert into vtiger_crmentityrel values(?,?,?,?)", array($relatedId, $setype, $recordId, $recordModule));
+		if ($resultNew === false) {
 			return false;
 		}
 	}
 	$result = $adb->pquery("select * from vtiger_crmentityrel where relcrmid=?", array($leadId));
-	if($result === false){
+	if ($result === false) {
 		return false;
 	}
 	$rowCount = $adb->num_rows($result);
-	for($i = 0; $i < $rowCount; ++$i) {
+	for ($i = 0; $i < $rowCount; ++$i) {
 		$recordId = $adb->query_result($result,$i,'crmid');
 		$recordModule = $adb->query_result($result,$i,'module');
 		$adb->pquery("insert into vtiger_crmentityrel values(?,?,?,?)",
 		array($relatedId, $setype, $recordId, $recordModule));
-		if($resultNew === false){
+		if ($resultNew === false) {
 			return false;
 		}
 	}
@@ -711,9 +702,9 @@ function vtws_saveLeadRelations($leadId, $relatedId, $setype) {
 	return true;
 }
 
-function vtws_getFieldfromFieldId($fieldId, $fieldObjectList){
+function vtws_getFieldfromFieldId($fieldId, $fieldObjectList) {
 	foreach ($fieldObjectList as $field) {
-		if($fieldId == $field->getFieldId()){
+		if ($fieldId == $field->getFieldId()) {
 			return $field;
 		}
 	}
@@ -728,51 +719,50 @@ function vtws_getFieldfromFieldId($fieldId, $fieldObjectList){
  */
 function vtws_getRelatedActivities($leadId,$accountId,$contactId,$relatedId) {
 
-	if(empty($leadId) || empty($relatedId) || (empty($accountId) && empty($contactId))){
-		throw new WebServiceException(WebServiceErrorCode::$LEAD_RELATED_UPDATE_FAILED,
-			"Failed to move related Activities/Emails");
+	if (empty($leadId) || empty($relatedId) || (empty($accountId) && empty($contactId))) {
+		throw new WebServiceException(WebServiceErrorCode::$LEAD_RELATED_UPDATE_FAILED, "Failed to move related Activities/Emails");
 	}
 	global $adb;
 	$sql = "select * from vtiger_seactivityrel where crmid=?";
 	$result = $adb->pquery($sql, array($leadId));
-	if($result === false){
+	if ($result === false) {
 		return false;
 	}
 	$rowCount = $adb->num_rows($result);
-	for($i=0;$i<$rowCount;++$i) {
+	for ($i=0;$i<$rowCount;++$i) {
 		$activityId=$adb->query_result($result,$i,"activityid");
 
 		$sql ="select setype from vtiger_crmentity where crmid=?";
 		$resultNew = $adb->pquery($sql, array($activityId));
-		if($resultNew === false){
+		if ($resultNew === false) {
 			return false;
 		}
 		$type=$adb->query_result($resultNew,0,"setype");
 
 		$sql="delete from vtiger_seactivityrel where crmid=?";
 		$resultNew = $adb->pquery($sql, array($leadId));
-		if($resultNew === false){
+		if ($resultNew === false) {
 			return false;
 		}
-		if($type != "Emails") {
-				if(!empty($accountId)){
-					$sql = "insert into vtiger_seactivityrel(crmid,activityid) values (?,?)";
-					$resultNew = $adb->pquery($sql, array($accountId, $activityId));
-					if($resultNew === false){
-						return false;
+		if ($type != "Emails") {
+			if (!empty($accountId)) {
+				$sql = "insert into vtiger_seactivityrel(crmid,activityid) values (?,?)";
+				$resultNew = $adb->pquery($sql, array($accountId, $activityId));
+				if ($resultNew === false) {
+					return false;
 				}
 			}
-				if(!empty($contactId)){
-					$sql="insert into vtiger_cntactivityrel(contactid,activityid) values (?,?)";
-					$resultNew = $adb->pquery($sql, array($contactId, $activityId));
-					if($resultNew === false){
-						return false;
+			if (!empty($contactId)) {
+				$sql="insert into vtiger_cntactivityrel(contactid,activityid) values (?,?)";
+				$resultNew = $adb->pquery($sql, array($contactId, $activityId));
+				if ($resultNew === false) {
+					return false;
 				}
 			}
 		} else {
 			$sql = "insert into vtiger_seactivityrel(crmid,activityid) values (?,?)";
 			$resultNew = $adb->pquery($sql, array($relatedId, $activityId));
-			if($resultNew === false){
+			if ($resultNew === false) {
 				return false;
 			}
 		}
@@ -791,20 +781,18 @@ function vtws_saveLeadRelatedCampaigns($leadId, $relatedId, $seType) {
 	global $adb;
 
 	$result = $adb->pquery("select * from vtiger_campaignleadrel where leadid=?", array($leadId));
-	if($result === false){
+	if ($result === false) {
 		return false;
 	}
 	$rowCount = $adb->num_rows($result);
 	for($i = 0; $i < $rowCount; ++$i) {
 		$campaignId = $adb->query_result($result,$i,'campaignid');
-		if($seType == 'Accounts') {
-			$resultNew = $adb->pquery("insert into vtiger_campaignaccountrel (campaignid, accountid) values(?,?)",
-				array($campaignId, $relatedId));
+		if ($seType == 'Accounts') {
+			$resultNew = $adb->pquery("insert into vtiger_campaignaccountrel (campaignid, accountid) values(?,?)", array($campaignId, $relatedId));
 		} elseif ($seType == 'Contacts') {
-			$resultNew = $adb->pquery("insert into vtiger_campaigncontrel (campaignid, contactid) values(?,?)",
-				array($campaignId, $relatedId));
+			$resultNew = $adb->pquery("insert into vtiger_campaigncontrel (campaignid, contactid) values(?,?)", array($campaignId, $relatedId));
 		}
-		if($resultNew === false){
+		if ($resultNew === false) {
 			return false;
 		}
 	}
@@ -819,30 +807,25 @@ function vtws_saveLeadRelatedCampaigns($leadId, $relatedId, $seType) {
  */
 function vtws_transferLeadRelatedRecords($leadId, $relatedId, $seType) {
 	global $adb;
-	if(empty($leadId) || empty($relatedId) || empty($seType)){
-		throw new WebServiceException(WebServiceErrorCode::$LEAD_RELATED_UPDATE_FAILED,
-			"Failed to move related Records");
+	if (empty($leadId) || empty($relatedId) || empty($seType)) {
+		throw new WebServiceException(WebServiceErrorCode::$LEAD_RELATED_UPDATE_FAILED, "Failed to move related Records");
 	}
 	$status = vtws_getRelatedNotesAttachments($leadId, $relatedId);
-	if($status === false){
-		throw new WebServiceException(WebServiceErrorCode::$LEAD_RELATED_UPDATE_FAILED,
-			"Failed to move related Documents to the ".$seType);
+	if ($status === false) {
+		throw new WebServiceException(WebServiceErrorCode::$LEAD_RELATED_UPDATE_FAILED, "Failed to move related Documents to the ".$seType);
 	}
 	//Retrieve the lead related products and relate them with this new account
 	$status = vtws_saveLeadRelatedProducts($leadId, $relatedId, $seType);
-	if($status === false){
-		throw new WebServiceException(WebServiceErrorCode::$LEAD_RELATED_UPDATE_FAILED,
-			"Failed to move related Products to the ".$seType);
+	if ($status === false) {
+		throw new WebServiceException(WebServiceErrorCode::$LEAD_RELATED_UPDATE_FAILED, "Failed to move related Products to the ".$seType);
 	}
 	$status = vtws_saveLeadRelations($leadId, $relatedId, $seType);
-	if($status === false){
-		throw new WebServiceException(WebServiceErrorCode::$LEAD_RELATED_UPDATE_FAILED,
-			"Failed to move Records to the ".$seType);
+	if ($status === false) {
+		throw new WebServiceException(WebServiceErrorCode::$LEAD_RELATED_UPDATE_FAILED, "Failed to move Records to the ".$seType);
 	}
 	$status = vtws_saveLeadRelatedCampaigns($leadId, $relatedId, $seType);
-	if($status === false){
-		throw new WebServiceException(WebServiceErrorCode::$LEAD_RELATED_UPDATE_FAILED,
-			"Failed to move Records to the ".$seType);
+	if ($status === false) {
+		throw new WebServiceException(WebServiceErrorCode::$LEAD_RELATED_UPDATE_FAILED, "Failed to move Records to the ".$seType);
 	}
 	vtws_transferComments($leadId, $relatedId);
 	// Tags
@@ -850,7 +833,7 @@ function vtws_transferLeadRelatedRecords($leadId, $relatedId, $seType) {
 }
 
 function vtws_transferComments($sourceRecordId, $destinationRecordId) {
-	if(vtlib_isModuleActive('ModComments')) {
+	if (vtlib_isModuleActive('ModComments')) {
 		CRMEntity::getInstance('ModComments'); ModComments::transferRecords($sourceRecordId, $destinationRecordId);
 	}
 }
@@ -877,7 +860,7 @@ function vtws_transferOwnership($ownerId, $newOwnerId, $delete=true) {
 	$sql ="update vtiger_import_maps set assigned_user_id=? where assigned_user_id=?";
 	$db->pquery($sql, array($newOwnerId, $ownerId));
 
-	if(Vtiger_Utils::CheckTable('vtiger_customerportal_prefs')) {
+	if (Vtiger_Utils::CheckTable('vtiger_customerportal_prefs')) {
 		$query = 'UPDATE vtiger_customerportal_prefs SET prefvalue = ? WHERE prefkey = ? AND prefvalue = ?';
 		$params = array($newOwnerId, 'defaultassignee', $ownerId);
 		$db->pquery($query, $params);
@@ -913,7 +896,7 @@ function vtws_transferOwnership($ownerId, $newOwnerId, $delete=true) {
 	$columnList = array();
 	foreach ($it as $row) {
 		$column = $row->tablename.'.'.$row->columnname;
-		if(!in_array($column, $columnList)) {
+		if (!in_array($column, $columnList)) {
 			$columnList[] = $column;
 			$sql = "update $row->tablename set $row->columnname=? where $row->columnname=?";
 			$db->pquery($sql, array($newOwnerId, $ownerId));
@@ -921,15 +904,14 @@ function vtws_transferOwnership($ownerId, $newOwnerId, $delete=true) {
 	}
 }
 
-
 function vtws_getWebserviceTranslatedStringForLanguage($label, $currentLanguage) {
 	static $translations = array();
 	$currentLanguage = vtws_getWebserviceCurrentLanguage();
-	if(empty($translations[$currentLanguage])) {
+	if (empty($translations[$currentLanguage])) {
 		include 'include/Webservices/language/'.$currentLanguage.'.lang.php';
 		$translations[$currentLanguage] = $webservice_strings;
 	}
-	if(isset($translations[$currentLanguage][$label])) {
+	if (isset($translations[$currentLanguage][$label])) {
 		return $translations[$currentLanguage][$label];
 	}
 	return null;
@@ -938,7 +920,7 @@ function vtws_getWebserviceTranslatedStringForLanguage($label, $currentLanguage)
 function vtws_getWebserviceTranslatedString($label) {
 	$currentLanguage = vtws_getWebserviceCurrentLanguage();
 	$translation = vtws_getWebserviceTranslatedStringForLanguage($label, $currentLanguage);
-	if(!empty($translation)) {
+	if (!empty($translation)) {
 		return $translation;
 	}
 
@@ -946,15 +928,15 @@ function vtws_getWebserviceTranslatedString($label) {
 	//if default language is english then LBL_ will not shown to the user.
 	$defaultLanguage = vtws_getWebserviceDefaultLanguage();
 	$translation = vtws_getWebserviceTranslatedStringForLanguage($label, $defaultLanguage);
-	if(!empty($translation)) {
+	if (!empty($translation)) {
 		return $translation;
 	}
 
 	//if default language is not en_us then do the translation in en_us to eliminate the LBL_ bit
 	//of label.
-	if('en_us' != $defaultLanguage) {
+	if ('en_us' != $defaultLanguage) {
 		$translation = vtws_getWebserviceTranslatedStringForLanguage($label, 'en_us');
-		if(!empty($translation)) {
+		if (!empty($translation)) {
 			return $translation;
 		}
 	}
@@ -963,7 +945,7 @@ function vtws_getWebserviceTranslatedString($label) {
 
 function vtws_getWebserviceCurrentLanguage() {
 	global $default_language, $current_language;
-	if(empty($current_language)) {
+	if (empty($current_language)) {
 		return $default_language;
 	}
 	return $current_language;

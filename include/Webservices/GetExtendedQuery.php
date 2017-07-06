@@ -234,14 +234,14 @@ function __FQNExtendedQueryAddCondition($queryGenerator,$condition,$glue,$mainMo
 	// TODO  add query generator operators for 'bw' = BETWEEN value1 and value2  (between two dates)
 	switch ($op) {
 		case '<':
-			if (is_date_type) {
+			if (strtotime($val)) { // is date type
 				$op = 'b';
 			} else {
 				$op = 'l';
 			}
 			break;
 		case '>':
-			if (is_date_type) {
+			if (strtotime($val)) { // is date type
 				$op = 'a';
 			} else {
 				$op = 'g';

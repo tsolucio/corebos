@@ -770,7 +770,6 @@ class Common_Install_Wizard_Utils {
 		'Modules Directory' => './modules/',
 		'Cron Modules Directory' => './cron/modules/',
 		'Vtlib Test Directory' => './test/vtlib/',
-		'Vtlib Test HTML Directory' => './test/vtlib/HTML',
 		'Backup Directory' => './backup/',
 		'Smarty Modules Directory' => './Smarty/templates/modules/',
 		'Product Image Directory' => './test/product/',

@@ -17,13 +17,17 @@ global $mod_strings, $default_charset, $adb;
 $focus = new Users();
 
 // Add in defensive code here.
-$focus->column_fields["user_name"] = to_html(vtlib_purify($_REQUEST['user_name']));
-$user_password = $_REQUEST['user_password'];
+$focus->column_fields["user_name"] = to_html(vtlib_purify($_POST['user_name']));
+$user_password = $_POST['user_password'];
 
 $focus->load_user($user_password);
 
-if($focus->is_authenticated())
-{
+if ($focus->is_authenticated() and !$focus->is_twofaauthenticated()) {
+	coreBOS_Session::set('login_user_name', $focus->column_fields['user_name']);
+	include 'modules/Users/do2FAAuthentication.php';
+	die();
+}
+if ($focus->is_authenticated() and $focus->is_twofaauthenticated()) {
 	coreBOS_Session::destroy();
 	//Inserting entries for audit trail during login
 	if ($audit_trail == 'true') {
@@ -113,7 +117,14 @@ else
 	coreBOS_Session::set('login_user_name', $focus->column_fields["user_name"]);
 	coreBOS_Session::set('login_password', $user_password);
 	if (empty($_SESSION['login_error'])) {
-		coreBOS_Session::set('login_error', ($failed_login_attempts>=$maxFailedLoginAttempts ? $mod_strings['ERR_MAXLOGINATTEMPTS'] : $mod_strings['ERR_INVALID_PASSWORD']));
+		if ($failed_login_attempts >= $maxFailedLoginAttempts) {
+			$errstr = $mod_strings['ERR_MAXLOGINATTEMPTS'];
+		} elseif (!$focus->is_twofaauthenticated()) {
+			$errstr = $mod_strings['ERR_INVALID_2FACODE'];
+		} else {
+			$errstr = $mod_strings['ERR_INVALID_PASSWORD'];
+		}
+		coreBOS_Session::set('login_error', $errstr);
 	}
 	cbEventHandler::do_action('corebos.audit.login.attempt',array(0, $focus->column_fields["user_name"], 'Login Attempt', 0, date('Y-m-d H:i:s')));
 	// go back to the login screen.

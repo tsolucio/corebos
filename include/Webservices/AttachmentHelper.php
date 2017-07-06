@@ -12,61 +12,59 @@
 * See the License for the specific language governing permissions and limitations under the
 * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
 *************************************************************************************************/
-
 include_once 'include/Webservices/VtigerModuleOperation.php';
 include_once 'modules/Settings/MailScanner/core/MailAttachmentMIME.php';
 
-	/**
-	 * Save the attachment to the database
-	 */
-	function SaveAttachmentDB($element) {
-		global $adb;
-		$attachid = $adb->getUniqueId('vtiger_crmentity');
-		$filename = $element['name'];
-		$description = $filename;
-		$date_var = $adb->formatDate(date('YmdHis'), true);
-		$usetime = $adb->formatDate($date_var, true);
-		$userid = vtws_getIdComponents($element['assigned_user_id']);
-		$userid = $userid[1];
-		$setype = $element['setype'];
-		$adb->pquery("INSERT INTO vtiger_crmentity(crmid, smcreatorid, smownerid,
-				modifiedby, setype, description, createdtime, modifiedtime, presence, deleted)
-				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-				Array($attachid, $userid, $userid, $userid, $setype, $description, $usetime, $usetime, 1, 0));
-		SaveAttachmentFile($attachid, $filename, $element['content']);
-		return $attachid;
-	}
+/**
+ * Save the attachment to the database
+ */
+function SaveAttachmentDB($element) {
+	global $adb;
+	$attachid = $adb->getUniqueId('vtiger_crmentity');
+	$filename = $element['name'];
+	$description = $filename;
+	$date_var = $adb->formatDate(date('YmdHis'), true);
+	$usetime = $adb->formatDate($date_var, true);
+	$userid = vtws_getIdComponents($element['assigned_user_id']);
+	$userid = $userid[1];
+	$setype = $element['setype'];
+	$adb->pquery('INSERT INTO vtiger_crmentity(crmid, smcreatorid, smownerid, modifiedby, setype, description, createdtime, modifiedtime, presence, deleted)
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+		Array($attachid, $userid, $userid, $userid, $setype, $description, $usetime, $usetime, 1, 0));
+	SaveAttachmentFile($attachid, $filename, $element['content']);
+	return $attachid;
+}
 
-	/**
-	 * Save the attachment to the file
-	 */
-	function SaveAttachmentFile($attachid, $filename, $filecontent) {
-		global $adb;
+/**
+ * Save the attachment to the file
+ */
+function SaveAttachmentFile($attachid, $filename, $filecontent) {
+	global $adb;
 
-		$dirname = decideFilePath();
-		if(!is_dir($dirname)) mkdir($dirname);
+	$dirname = decideFilePath();
+	if(!is_dir($dirname)) mkdir($dirname);
 
-		$description = $filename;
-		$filename = str_replace(' ', '_', $filename);
-		$saveasfile = "$dirname$attachid" . "_$filename";
-		if(!file_exists($saveasfile)) {
-			$fh = @fopen($saveasfile, 'wb');
-			if (!$fh) {
-				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied, could not open file to save attachment: '.$saveasfile);
-			}
-			if (substr($filecontent,0,strlen('data:image/png;base64,'))=='data:image/png;base64,') {
-				// Base64 Encoded HTML5 Canvas image
-				$filecontent = str_replace('data:image/png;base64,', '', $filecontent);
-				$filecontent = str_replace(' ', '+', $filecontent);
-			}
-			fwrite($fh, base64_decode($filecontent));
-			fclose($fh);
+	$description = $filename;
+	$filename = str_replace(' ', '_', $filename);
+	$saveasfile = "$dirname$attachid" . "_$filename";
+	if(!file_exists($saveasfile)) {
+		$fh = @fopen($saveasfile, 'wb');
+		if (!$fh) {
+			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied, could not open file to save attachment: '.$saveasfile);
 		}
-
-		$mimetype = MailAttachmentMIME::detect($saveasfile);
-	
-		$adb->pquery("INSERT INTO vtiger_attachments SET attachmentsid=?, name=?, description=?, type=?, path=?",
-				Array($attachid, $filename, $description, $mimetype, $dirname));
+		if (substr($filecontent,0,strlen('data:image/png;base64,'))=='data:image/png;base64,') {
+			// Base64 Encoded HTML5 Canvas image
+			$filecontent = str_replace('data:image/png;base64,', '', $filecontent);
+			$filecontent = str_replace(' ', '+', $filecontent);
+		}
+		fwrite($fh, base64_decode($filecontent));
+		fclose($fh);
 	}
+
+	$mimetype = MailAttachmentMIME::detect($saveasfile);
+
+	$adb->pquery('INSERT INTO vtiger_attachments SET attachmentsid=?, name=?, description=?, type=?, path=?',
+		Array($attachid, $filename, $description, $mimetype, $dirname));
+}
 
 ?>

@@ -47,12 +47,13 @@ $query="select vtiger_activity.activityid,vtiger_recurringevents.recurringid
 	where vtiger_activity.date_start >= '".date('Y-m-d')."'
 	  and vtiger_crmentity.crmid != 0 and vtiger_activity.eventstatus = 'Planned'
 	  and vtiger_activity_reminder.reminder_sent = 0
+	  and vtiger_crmentity.deleted = 0
 	group by vtiger_activity.activityid,vtiger_recurringevents.recurringid";
 $result = $adb->pquery($query, array());
 
 if($adb->num_rows($result) >= 1)
 {
-	$query='select vtiger_crmentity.crmid,vtiger_seactivityrel.crmid as setype,vtiger_activity.*,
+	$query='select vtiger_crmentity.crmid,vtiger_seactivityrel.crmid as setype,vtiger_activity.*,vtiger_crmentity.setype as calendarsetype,
 	vtiger_activity_reminder.reminder_time,vtiger_activity_reminder.recurringid,vtiger_recurringevents.recurringdate
 	from vtiger_activity
 	inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid
@@ -119,7 +120,7 @@ if($adb->num_rows($result) >= 1)
 							$contents = nl2br(getTranslatedString($adb->query_result($result_main,0,'notificationbody'),'Calendar')) ."\n\n ".
 								getTranslatedString('Subject','Calendar').' : '.$activity_sub."\n ". $parent_content .' '.
 								getTranslatedString('Date & Time','Calendar').' : '.$stdatetime->getDisplayDateTimeValue($reminduser).' ('. $reminduser->column_fields['time_zone'] .")\n\n ".
-								getTranslatedString('Visit_Link','Calendar')." <a href='".$site_URL."/index.php?action=EventDetailView&module=Calendar4You&record=".$activity_id."&activity_mode=".$activitymode."'>".getTranslatedString('Click here','Calendar').'</a>';
+								getTranslatedString('Visit_Link','Calendar')." <a href='".$site_URL."/index.php?action=DetailView&module=cbCalendar&record=".$activity_id."&activity_mode=".$activitymode."'>".getTranslatedString('Click here','Calendar').'</a>';
 							$sendto = $user_result_row['email1'];
 							$rdo = send_mail('Calendar',$sendto,$HELPDESK_SUPPORT_NAME,$from,$subject,nl2br($contents));
 						}
@@ -127,7 +128,8 @@ if($adb->num_rows($result) >= 1)
 				}
 			} else {
 				// coreBOS workflow based notification template
-				$result = $adb->pquery("select * from com_vtiger_workflows where summary='Send Reminder Template' and module_name='Events' limit 1",array());
+				$wfsetype = ($result_set['calendarsetype'] == 'cbCalendar' ? 'cbCalendar' : 'Events');
+				$result = $adb->pquery("select * from com_vtiger_workflows where summary='Send Reminder Template' and module_name=? limit 1",array($wfsetype));
 				if ($result and $adb->num_rows($result)>0) {
 					$util = new VTWorkflowUtils();
 					$adminUser = $util->adminUser();
@@ -135,7 +137,12 @@ if($adb->num_rows($result) >= 1)
 					$wfs = new VTWorkflowManager($adb);
 					$workflows = $wfs->getWorkflowsForResult($result);
 					$workflow = reset($workflows);
-					$wsid = vtws_getWebserviceEntityId(($result_set['activitytype'] == 'Task')?'Calendar':'Events', $activity_id);
+					if ($result_set['calendarsetype'] == 'cbCalendar') {
+						$setype = 'cbCalendar';
+					} else {
+						$setype = ($result_set['activitytype'] == 'Task') ? 'Calendar' : 'Events';
+					}
+					$wsid = vtws_getWebserviceEntityId($setype, $activity_id);
 					$entityData = $entityCache->forId($wsid);
 					if ($workflow->evaluate($entityCache, $entityData->getId())) {
 						$workflow->performTasks($entityData);

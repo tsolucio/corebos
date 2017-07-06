@@ -177,7 +177,7 @@ function vtlib_getToggleModuleInfo() {
 
 	$modinfo = Array();
 
-	$sqlresult = $adb->query("SELECT name, presence, customized, isentitytype FROM vtiger_tab WHERE name NOT IN ('Users') AND presence IN (0,1) ORDER BY name");
+	$sqlresult = $adb->query("SELECT name, presence, customized, isentitytype FROM vtiger_tab WHERE name NOT IN ('Users','Calendar') AND presence IN (0,1) ORDER BY name");
 	$num_rows  = $adb->num_rows($sqlresult);
 	for($idx = 0; $idx < $num_rows; ++$idx) {
 		$module = $adb->query_result($sqlresult, $idx, 'name');
@@ -361,7 +361,7 @@ function vtlib_isCustomModule($moduleName) {
 }
 
 /**
- * Check for custom module by its name.
+ * Check for entity module by its name.
  */
 function vtlib_isEntityModule($moduleName) {
 	global $adb,$log;
@@ -449,7 +449,8 @@ function vtlib_purify($input, $ignore=false) {
 
 			$config = HTMLPurifier_Config::createDefault();
 			$config->set('Core.Encoding', $use_charset);
-			$config->set('Cache.SerializerPath', "$use_root_directory/cache");
+			$config->set('Cache.SerializerPath', "$use_root_directory/test/vtlib");
+			$config->set('Attr.AllowedFrameTargets', array('_blank', '_self', '_parent', '_top','_new','_newtc'));
 
 			$__htmlpurifier_instance = new HTMLPurifier($config);
 		}

@@ -23,10 +23,10 @@
 /*******************************************************************************
  * Vicus eBusiness Solutions Version Control
  * @package 	NL-Dutch
- * Description	Dutch language pack for vtiger CRM version 5.3.x
+ * Description	Dutch language pack for vtiger CRM version 5.4.x
  * @author	$Author: luuk $
- * @version 	$Revision: 1.4 $ $Date: 2011/11/14 17:07:26 $
- * @source	$Source: /var/lib/cvs/vtiger530/Dutch/modules/Project/language/nl_nl.lang.php,v $
+ * @version 	$Revision: 1.2 $ $Date: 2012/04/22 12:16:58 $
+ * @source	$Source: /var/lib/cvs/vtiger540/Dutch/modules/Project/language/nl_nl.lang.php,v $
  * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
  * @license	vtiger CRM Public License Version 1.0 (by definition)
  ********************************************************************************/
@@ -98,7 +98,7 @@ $mod_strings = Array(
 	'Project No' => 'Project Nr',
 	
 	'Project Milestones' => 'Project Mijlpalen',
-	'Project Tasks' => 'Project Taken',
+	'Project Tasks' => 'Projecttaken',
 	'Project Team' => 'Project Team', 
 );
 

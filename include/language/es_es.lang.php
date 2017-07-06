@@ -854,7 +854,6 @@ $app_strings = array (
       'Lead Status' => 'Estado de Pre-Contacto',
       'Lead Source' => 'Origen de Pre-Contacto',
       'Yahoo Id' => 'Yahoo Id',
-      'LBL_CHARSET' => 'UTF-8',
       'Lost Lead' => 'Pre-Contacto Perdido',
       'LBL_SEND_EMAIL_PDF' => 'Enviar Email con PDF',
       'ERR_INVALID_PAGE_COUNT' => 'Paginación Inválida',

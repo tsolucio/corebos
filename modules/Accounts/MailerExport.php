@@ -239,7 +239,7 @@ else
 	}
 	// echo "<br>Rows: ".$adb->num_rows($result);
 	header( "Content-Disposition: inline; filename=MailerExport.csv");
-	header( "Content-Type: text/csv; charset=".$app_strings['LBL_CHARSET']);
+	header( "Content-Type: text/csv; charset=".$default_charset);
 	header( "Expires: Mon, 26 Jul 2007 05:00:00 GMT" );
 	header( "Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT" );
 	header( "Cache-Control: post-check=0, pre-check=0", false );

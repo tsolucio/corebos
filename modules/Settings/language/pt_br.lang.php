@@ -104,17 +104,8 @@ $mod_strings = Array(
 'EDITQUOTEPICKLISTVALUES'=>'Edita Lista Opções Cotação',
 'EDITINVOICEPICKLISTVALUES'=>'Edita Lista Opções Fatura',
 
-
-// Added for Release vtigerCRM 3.2 PATCH 1.0
-
 //Settings/index.php
-
-
 'LBL_PICKLIST_FIELD_SETTINGS'=>'Configurações Campos Lista de Opções:',
-
-
-
-//SETTINGS/CustomFieldList.php,ComboFieldList.php,CreateCustomField.php
 
 'Leads'=>'Lead',
 
@@ -1195,10 +1186,7 @@ $mod_strings = Array(
 'ModTracker' => 'Rastreador de Módulo',
 'LBL_MODTRACKER_DESCRIPTION' => 'Selecionar Módulos para rastrear',
 
-'LBL_MENUS_TO_SHOW'=>'Selecionar os Módulos para serem apresentados no menu principal',
-'LBL_MENU_DESC'=>'Customizar sequência do Menu',
 'LBL_MENU_EDITOR'=>'Editor de Menu',
-'LBL_MENUS_TO_SHOW_DESCRIPTION' => 'Você pode utilizar as setas para ordenar os itens do Menu. Os 10 primeiros itens aparecem no menu principal e os demais são apresentados no dropdown <b><i>Mais</i></b>',
 'LBL_ALL_MODULES' => 'Todos os Módulos',
 'LBL_SELECTED_MODULES' => 'Módulos Selecionados',
 

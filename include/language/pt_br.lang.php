@@ -13,7 +13,7 @@
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese | 13/04/2012 |Curitiba/Paraná/Brasil.| www.ttcasolucoes.com.br
  ********************************************************************************/
 $app_strings = array (
-'LBL_BROWSER_TITLE' => 'vtiger CRM 5 - Commercial Open Source CRM',
+'LBL_BROWSER_TITLE' => 'coreBOS',
 'LBL_MY_ACCOUNT' => 'Minha Organização',
 'LBL_MY_PREFERENCES' => 'Minhas Preferências',
 'LBL_ADMIN' => 'Admin',
@@ -27,8 +27,8 @@ $app_strings = array (
 'all'=>'Todos',
 'LBL_UPCOMING_EVENTS'=>'Próximas Atividades',
 'LBL_PENDING_EVENTS'=>'Atividades Pendentes',
-'NTC_WELCOME_MESSAGE'=>'Bem vindo(a) ao vtiger CRM!',
-'NTC_DESCRIPTION' => 'Utilize um nome de usuário e senha validos para acessar o vtiger CRM.',
+'NTC_WELCOME_MESSAGE'=>'Bem vindo(a) ao coreBOS!',
+'NTC_DESCRIPTION' => 'Utilize um nome de usuário e senha validos para acessar o coreBOS.',
 'NTC_WELCOME' => 'Bem vindo(a)',
 'NTC_NO_ITEMS_DISPLAY' => 'nada',
 'LBL_OR' => 'ou',
@@ -822,7 +822,7 @@ $app_strings = array (
 'MSG_THANK_YOU'=>'Obrigado',
 'MSG_HAS_BEEN_CREATED_FOR'=>'foi criado para',
 'MSG_THANKS'=>'Obrigado,',
-'MSG_VTIGERTEAM'=>'Equipe vTiger',
+'MSG_VTIGERTEAM'=>'Equipe coreBOS',
 'MSG_IS_NOT_UPLOADED'=>'não foi atualizado. São permitidos arquivos do tipo - jpeg, png, jpg, pjpeg, x-png or gif',
 'MSG_IMAGE_ERROR'=>'Imagem não encontrada',
 
@@ -872,8 +872,6 @@ $app_strings = array (
 'Quote No'=>'No Cotação',
 'Yahoo Id'=>'ID Yahoo',
 
-// Added/Updated for vtiger CRM 5.0.4
-'LBL_CHARSET' => 'UTF-8',
 'Lost Lead' => 'Lead Perdido',
 //Added for incoming mail server settings form js validation
 'ERR_INVALID_PAGE_COUNT' => "Organizaçãogem Página Inválida",

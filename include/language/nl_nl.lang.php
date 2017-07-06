@@ -20,7 +20,6 @@
  ********************************************************************************/
 
 $app_strings = array(
-	'LBL_CHARSET' => 'UTF-8',
 	'LBL_BROWSER_TITLE' => 'coreBOS',
 	'LBL_MY_ACCOUNT' => 'Mijn account',
 	'LBL_MY_PREFERENCES' => 'Mijn voorkeuren',
@@ -608,7 +607,7 @@ $app_strings = array(
 	'LBL_TRANSFER_OWNERSHIP' => 'Verander eigenaar naar',
 	'LBL_SELECT_STATUS' => 'Selecteer nieuwe status',
 	'LBL_UPDATE_OWNER' => 'Vernieuw gebruiker',
-	'LBL_UPDATE' => 'Update',
+	'LBL_UPDATE' => 'Vernieuw',
 	'LBL_UPDATE_STATUS' => 'Vernieuw status',
 	'LBL_NET_PRICE' => 'Netto prijs',
 	'LBL_TOOLS' => 'Gereedschappen',
@@ -624,7 +623,7 @@ $app_strings = array(
 	'LBL_ZERO_DISCOUNT' => 'NUL Korting',
 	'LBL_OF_PRICE' => 'van prijs',
 	'LBL_DIRECT_PRICE_REDUCTION' => 'Directe prijsreductie',
-	'LBL_INDIVIDUAL' => 'individeel',
+	'LBL_INDIVIDUAL' => 'Individueel',
 	'LBL_CPY_MAILING_ADDRESS' => 'Kopieer Postadres',
 	'LBL_CPY_OTHER_ADDRESS' => 'Kopieer Bezoekadres',
 	'LBL_PERMISSION' => 'U mag deze actie niet uitvoeren',
@@ -1017,9 +1016,9 @@ $app_strings = array(
 	'LBL_OTHERS' => 'Anders',
 	'PO Number' => 'Inkoopnummer',
 	'MSG_AUTO_GEN_ON_SAVE' => 'AUTO GEN BIJ BEWAREN',
-	'LBL_MERGE' => 'Merge',
+	'LBL_MERGE' => 'Samenvoegen',
 	'LBL_SAVE_MERGE_BUTTON_TITLE' => 'Vind Dubbelen',
-	'LBL_SELECT_MERGECRITERIA_HEADER' => 'Samenvoegcriteria Selectie',
+	'LBL_SELECT_MERGECRITERIA_HEADER' => 'Selecteer Samenvoegcriteria',
 	'LBL_SELECT_AS_PARENT' => '(selecteer als hoofdregel)',
 	'LBL_SELECT_MERGECRITERIA_TEXT' => 'Selecteer de overeenkomstige velden om dubbele records te vinden',
 	'LBL_MERGE_SHOULDHAVE_INFO' => 'Selecteer minstens 1 veld om op samen te voegen',

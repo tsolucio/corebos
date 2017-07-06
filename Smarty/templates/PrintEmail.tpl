@@ -11,12 +11,12 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset={$APP.LBL_CHARSET}">
+<meta http-equiv="Content-Type" content="text/html; charset={$LBL_CHARSET}">
 <title>{$MOD.TITLE_VTIGERCRM_MAIL}</title>
 <link REL="SHORTCUT ICON" HREF="themes/images/favicon.ico">	
 <style type="text/css">@import url("themes/{$THEME}/style.css");</style>
-	<body  onLoad="window.print()">
-		<table>
+	<body onLoad="window.print()">
+		<table style="width:98%;margin:auto;">
 			<tr>
 				<td class="lvtCol" width="15%" height="10px" style="padding: 1px;" align="left"><b>{$MOD.LBL_FROM}</b></td>
 				<td class="dvtCellLabel" style="padding: 1px;">&nbsp;{$FROM_MAIL}</td>
@@ -38,7 +38,7 @@
 				<td class="dvtCellLabel" style="padding:1px;">&nbsp;{$SUBJECT}</td>
 			</tr>
 			<tr>
-				<td colspan="2" class="dvtCellLabel" style="padding:1px;">&nbsp;{$DESCRIPTION}</td>
+				<td colspan="2" class="dvtCellLabel" style="padding:1px;white-space:normal"><p>&nbsp;{$DESCRIPTION}</p></td>
 			</tr>
 		</table>
 	</body>

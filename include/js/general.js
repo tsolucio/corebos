@@ -314,7 +314,7 @@ function patternValidate(fldName,fldLabel,type) {
 function splitDateVal(dateval) {
 	var datesep;
 	var dateelements = new Array(3);
-
+	if (dateval==undefined) return dateelements;
 	if (dateval.indexOf("-")>=0) datesep="-";
 	else if (dateval.indexOf(".")>=0) datesep=".";
 	else if (dateval.indexOf("/")>=0) datesep="/";
@@ -1370,7 +1370,7 @@ function doformValidation(edit_type) {
 			}
 		}
 	}
-	if(statusvalue == "Planned")
+	if(statusvalue == "Planned" && startdatevalue != undefined)
 	{
 		var dateelements=splitDateVal(startdatevalue);
 		var hourval=parseInt(timeval.substring(0,timeval.indexOf(":")));
@@ -2992,7 +2992,21 @@ function updateBaseCurrencyValue() {
 			base_currency_ele.value = cur_ele.value;
 	}
 }
-
+function standarizeFormatCurrencyValue(val) {
+	if(val != undefined && val != null && val != 0) {
+		if(typeof userCurrencySeparator != 'undefined') {
+			while(val.indexOf(userCurrencySeparator) != -1) {
+				val = val.replace(userCurrencySeparator,'');
+			}
+		}
+		if(typeof userDecimalSeparator != 'undefined') {
+			if(val.indexOf(userDecimalSeparator) != -1) {
+				val = val.replace(userDecimalSeparator,'.');
+			}
+		}
+	}
+	return val;
+}
 /******************************************************************************/
 /* Activity reminder Customization: Setup Callback */
 function ActivityReminderProgressIndicator(show) {

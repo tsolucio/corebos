@@ -42,8 +42,6 @@
   'Name' => 'Nome',
   'Tools' => 'Strumenti',
 
-
-
   'LBL_GROUP' => 'Gruppo',
   'LBL_CURRENCY_NAME' => 'Valuta',
 
@@ -55,6 +53,10 @@
   'LBL_ERROR' => 'Errore:',
   'LBL_PASSWORD' => 'Password:',
   'LBL_USER_NAME' => 'Nome Utente',
+  'LBL_2FACODE' => 'Code',
+  'LBL_2FAGETCODE' => 'Get another code',
+  '2FA_NEWCODESENT' => 'New code has been sent.',
+  '2FA_ACCESSCODE' => 'Your access code is %s',
   'LBL_CRM_ID' => 'CRM ID',
   'LBL_FIRST_NAME' => 'Nome',
   'LBL_LAST_NAME' => 'Cognome',
@@ -109,6 +111,8 @@
   'ERR_ENTER_CONFIRMATION_PASSWORD' => 'Inserisci la Conferma della Password.',
   'ERR_REENTER_PASSWORDS' => 'Reinserisci la Password. I valori della  Nuova Password e  della Conferma della Password  non coincidono',
   'ERR_INVALID_PASSWORD' => 'Devi specificare un utente e una password validi.',
+  'ERR_INVALID_2FACODE' => 'You have introduced an invalid code, please try again.',
+  'ERR_INVALIDUSERID' => 'Invalid user ID given.',
   'ERR_INVALID_ADMINIPLOGIN' => 'Administrator users must login from authorized devices.',
   'ERR_INVALID_USERIPLOGIN' => 'Restricted access to authorized personnel only<br> You are connecting from an invalid IP',
   'ERR_PASSWORD_CHANGE_FAILED_1' => 'Impossibile modificare la password per',

@@ -14,7 +14,6 @@
 *************************************************************************************************/
 
 function vtws_gettranslation($totranslate, $portal_language, $module, $user){
-
 	global $log,$adb,$default_language;
 	$log->debug("Entering function vtws_gettranslation");
 	$language = $portal_language;
@@ -49,10 +48,10 @@ function vtws_gettranslation($totranslate, $portal_language, $module, $user){
 				$modlanguage_used = false;
 		}
 	}
-	
+
 	if (!$applanguage_used and !$modlanguage_used)
-	  return $totranslate;  // We can't find language file so we return what we are given
-	
+		return $totranslate;  // We can't find language file so we return what we are given
+
 	$translated=array();
 	foreach ($totranslate as $key=>$str) {
 		if ($mod_strings[$str] != '')

@@ -80,11 +80,10 @@ class RecurringType {
 		if (empty($this->recur_freq)) {
 			$this->recur_freq = 1;
 		}
-		$this->dayofweek_to_rpt = $repeat_arr['dayofweek_to_repeat'];
-		$this->repeat_monthby = $repeat_arr['repeatmonth_type'];
-		if (isset($repeat_arr['repeatmonth_date']))
-			$this->rptmonth_datevalue = $repeat_arr['repeatmonth_date'];
-		$this->rptmonth_daytype = $repeat_arr['repeatmonth_daytype'];
+		$this->dayofweek_to_rpt = isset($repeat_arr['dayofweek_to_repeat']) ? $repeat_arr['dayofweek_to_repeat'] : '';
+		$this->repeat_monthby = isset($repeat_arr['repeatmonth_type']) ? $repeat_arr['repeatmonth_type'] : '';
+		$this->rptmonth_datevalue = isset($repeat_arr['repeatmonth_date']) ? $repeat_arr['repeatmonth_date'] : '';
+		$this->rptmonth_daytype = isset($repeat_arr['repeatmonth_daytype']) ? $repeat_arr['repeatmonth_daytype'] : '';
 		$this->recurringdates = $this->_getRecurringDates();
 	}
 
@@ -310,14 +309,16 @@ class RecurringType {
 		$displayRecurringData['repeat_frequency'] = $this->getRecurringFrequency();
 		$displayRecurringData['recurringtype'] = $this->getRecurringType();
 
-		if ($this->getRecurringType() == 'Weekly') {
+		switch ($this->getRecurringType()) {
+		case 'Weekly':
 			$noOfDays = count($recurringInfo['dayofweek_to_repeat']);
 			$translatedRepeatDays = array();
 			for ($i = 0; $i < $noOfDays; ++$i) {
 				$translatedRepeatDays[] = getTranslatedString('LBL_DAY' . $recurringInfo['dayofweek_to_repeat'][$i], $i18nModule);
 			}
 			$displayRecurringData['repeat_str'] = implode(',', $translatedRepeatDays);
-		} elseif ($this->getRecurringType() == 'Monthly') {
+			break;
+		case 'Monthly':
 			$translatedRepeatDays = array();
 			$displayRecurringData['repeatMonth'] = $recurringInfo['repeatmonth_type'];
 			if ($recurringInfo['repeatmonth_type'] == 'date') {
@@ -334,6 +335,11 @@ class RecurringType {
 						. ' ' . getTranslatedString($recurringInfo['repeatmonth_daytype'], $i18nModule)
 						. ' ' . $translatedRepeatDay;
 			}
+			break;
+		case 'Daily':
+		case 'Yearly':
+			$displayRecurringData['repeat_str'] = '';
+			break;
 		}
 		return $displayRecurringData;
 	}

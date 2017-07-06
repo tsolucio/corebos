@@ -7,9 +7,11 @@
 * Portions created by vtiger are Copyright (C) vtiger.
 * All Rights Reserved.
 ************************************************************************************/
-$COMMONFTRLINKS = Vtiger_Link::getAllByType(Vtiger_Link::IGNORE_MODULE, Array('FOOTERSCRIPT'), array('MODULE'=>$currentModule));
-foreach ($COMMONFTRLINKS['FOOTERSCRIPT'] as $fscript) {
-	echo '<script type="text/javascript" src="' . $fscript->linkurl . '"></script>';
+if (isset($adb) and !empty($current_user->id)) {
+	$COMMONFTRLINKS = Vtiger_Link::getAllByType(Vtiger_Link::IGNORE_MODULE, Array('FOOTERSCRIPT'), array('MODULE'=>$currentModule));
+	foreach ($COMMONFTRLINKS['FOOTERSCRIPT'] as $fscript) {
+		echo '<script type="text/javascript" src="' . $fscript->linkurl . '"></script>';
+	}
 }
 cbEventHandler::do_action('corebos.footer');
 ?>

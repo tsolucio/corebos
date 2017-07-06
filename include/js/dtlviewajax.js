@@ -273,6 +273,7 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 		"fldName" : fieldName,
 		"fieldValue" : encodeURIComponent(tagValue)
 	};
+	data = corebosjshook_dtlViewAjaxFinishSave_moredata(data);
 	var url = "file=DetailViewAjax&module=" + module + "&action=" + module + "Ajax&record=" + crmId + "&recordid=" + crmId + "&ajxaction=DETAILVIEW" + groupurl;
 	if(module == 'Users') {
 		url += "&form_token=" + (document.getElementsByName('form_token')[0].value);

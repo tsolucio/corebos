@@ -166,6 +166,7 @@ if($focus->mode != 'edit' && $mod_seq_field != null) {
 
 // Gather the help information associated with fields
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
+$smarty->assign('Module_Popup_Edit',isset($_REQUEST['Module_Popup_Edit']) ? vtlib_purify($_REQUEST['Module_Popup_Edit']) : 0);
 
 //Tax handling (get the available taxes only) - starts
 if($focus->mode == 'edit')
@@ -174,13 +175,15 @@ if($focus->mode == 'edit')
 	$serviceid = $focus->id;
 	$tax_details = getTaxDetailsForProduct($serviceid,'available_associated');
 }
-elseif($_REQUEST['isDuplicate'] == 'true')
+elseif ($isduplicate == 'true')
 {
 	$retrieve_taxes = true;
 	$serviceid = $_REQUEST['record'];
 	$tax_details = getTaxDetailsForProduct($serviceid,'available_associated');
 }
 else {
+	$retrieve_taxes = false;
+	$serviceid = 0;
 	$tax_details = getAllTaxes('available');
 }
 
@@ -216,6 +219,7 @@ $smarty->assign("PRICE_DETAILS", $price_details);
 
 $base_currency = 'curname' . $service_base_currency;
 $smarty->assign("BASE_CURRENCY", $base_currency);
+$smarty->assign('CONVERT_MODE', '');
 
 $picklistDependencyDatasource = Vtiger_DependencyPicklist::getPicklistDependencyDatasource($currentModule);
 $smarty->assign("PICKIST_DEPENDENCY_DATASOURCE", json_encode($picklistDependencyDatasource));

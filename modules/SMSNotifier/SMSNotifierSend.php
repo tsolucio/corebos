@@ -40,13 +40,12 @@ foreach($idlist as $recordid) {
 	}
 	if($numberSelected) {
 		$recordids[] = $recordid;
-	}	
+	}
 }
 
 if(!empty($tonumbers)) {
-	SMSNotifier::sendsms($message, $tonumbers, $current_user->id, $recordids, $sourcemodule);	
+	SMSNotifier::sendsms($message, $tonumbers, $current_user->id, $recordids, $sourcemodule);
 }
 
 echo "DONE";
-
 ?>

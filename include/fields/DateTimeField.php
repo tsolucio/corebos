@@ -240,7 +240,7 @@ class DateTimeField {
 		return $myDateTime;
 	}
 
-	/** Function to set timee values compatible to database (GMT)
+	/** Function to set time values compatible to database (GMT)
 	 * @param $user -- value :: Type Users
 	 * @returns $insert_date -- insert_date :: Type string
 	 */

@@ -6,14 +6,8 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  *********************************************************************************/
 
-/**
- * Description of RelatedModuleMeta
- * TODO to add and extend a way to track many-many and many-one relationships.
- * @author MAK
- */
 class RelatedModuleMeta {
 	private $module;
 	private $relatedModule;
@@ -21,8 +15,8 @@ class RelatedModuleMeta {
 	private $PRODUCTQUOTESREL = 2;
 	private $PRODUCTINVOICEREL = 3;
 	private $PRODUCTPURCHASEORDERREL = 4;
-	
-	private function  __construct($module, $relatedModule) {
+
+	private function __construct($module, $relatedModule) {
 		$this->module = $module;
 		$this->relatedModule = $relatedModule;
 	}
@@ -31,7 +25,7 @@ class RelatedModuleMeta {
 	 *
 	 * @param <type> $module
 	 * @param <type> $relatedModule
-	 * @return RelatedModuleMeta 
+	 * @return RelatedModuleMeta
 	 */
 	public static function getInstance($module, $relatedModule) {
 		return new RelatedModuleMeta($module, $relatedModule);
@@ -42,20 +36,16 @@ class RelatedModuleMeta {
 		$productInvoiceRel = array('Products','Invoice');
 		$productQuotesRel = array('Products','Quotes');
 		$productPurchaseOrder = array('Products','PurchaseOrder');
-		if(in_array($this->module, $campaignContactRel) && in_array($this->relatedModule,
-				$campaignContactRel)) {
+		if (in_array($this->module, $campaignContactRel) && in_array($this->relatedModule, $campaignContactRel)) {
 			return $this->getRelationMetaInfo($this->CAMPAIGNCONTACTREL);
 		}
-		if(in_array($this->module, $productInvoiceRel) && in_array($this->relatedModule,
-				$productInvoiceRel)) {
+		if (in_array($this->module, $productInvoiceRel) && in_array($this->relatedModule, $productInvoiceRel)) {
 			return $this->getRelationMetaInfo($this->PRODUCTINVOICEREL);
 		}
-		if(in_array($this->module, $productQuotesRel) && in_array($this->relatedModule,
-				$productQuotesRel)) {
+		if (in_array($this->module, $productQuotesRel) && in_array($this->relatedModule, $productQuotesRel)) {
 			return $this->getRelationMetaInfo($this->PRODUCTQUOTESREL);
 		}
-		if(in_array($this->module, $productPurchaseOrder) && in_array($this->relatedModule,
-				$productPurchaseOrder)) {
+		if (in_array($this->module, $productPurchaseOrder) && in_array($this->relatedModule, $productPurchaseOrder)) {
 			return $this->getRelationMetaInfo($this->PRODUCTPURCHASEORDERREL);
 		}
 	}
@@ -63,25 +53,25 @@ class RelatedModuleMeta {
 	private function getRelationMetaInfo($relationId) {
 		switch($relationId) {
 			case $this->CAMPAIGNCONTACTREL: return array(
-					'relationTable' => 'vtiger_campaigncontrel',
-					'Campaigns' => 'campaignid',
-					'Contacts' => 'contactid'
-				);
+				'relationTable' => 'vtiger_campaigncontrel',
+				'Campaigns' => 'campaignid',
+				'Contacts' => 'contactid'
+			);
 			case $this->PRODUCTINVOICEREL: return array(
-					'relationTable' => 'vtiger_inventoryproductrel',
-					'Products' => 'productid',
-					'Invoice' => 'id'
-				);
+				'relationTable' => 'vtiger_inventoryproductrel',
+				'Products' => 'productid',
+				'Invoice' => 'id'
+			);
 			case $this->PRODUCTQUOTESREL: return array(
-					'relationTable' => 'vtiger_inventoryproductrel',
-					'Products' => 'productid',
-					'Quotes' => 'id'
-				);
+				'relationTable' => 'vtiger_inventoryproductrel',
+				'Products' => 'productid',
+				'Quotes' => 'id'
+			);
 			case $this->PRODUCTPURCHASEORDERREL: return array(
-					'relationTable' => 'vtiger_inventoryproductrel',
-					'Products' => 'productid',
-					'PurchaseOrder' => 'id'
-				);
+				'relationTable' => 'vtiger_inventoryproductrel',
+				'Products' => 'productid',
+				'PurchaseOrder' => 'id'
+			);
 		}
 	}
 }

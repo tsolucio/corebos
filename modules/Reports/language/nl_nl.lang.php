@@ -22,10 +22,10 @@
 /*******************************************************************************
  * Vicus eBusiness Solutions Version Control
  * @package 	NL-Dutch
- * Description	Dutch language pack for vtiger CRM version 5.3.x
+ * Description	Dutch language pack for vtiger CRM version 5.4.x
  * @author	$Author: luuk $
- * @version 	$Revision: 1.2 $ $Date: 2011/11/14 17:07:26 $
- * @source	$Source: /var/lib/cvs/vtiger530/Dutch/modules/Reports/language/nl_nl.lang.php,v $
+ * @version 	$Revision: 1.3 $ $Date: 2014/02/13 21:42:40 $
+ * @source	$Source: /var/lib/cvs/vtiger540/Dutch/modules/Reports/language/nl_nl.lang.php,v $
  * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
  * @license	vtiger CRM Public License Version 1.0 (by definition)
  ********************************************************************************/
@@ -145,7 +145,7 @@ $mod_strings = Array(
 'Contacts related to Potentials'=>'Contacten gerelateerd aan verkoopkansen',
 'Lead by Source'=>'Lead per bron',
 'Lead Status Report'=>'Lead status rapport',
-'Potential Pipeline'=>'Verkoopkans Pipeline',
+'Potential Pipeline'=>'Verkoopkans Pijplijn',
 'Closed Potentials'=>'Gesloten verkoopkansen',
 'Potential that have Won'=>'Gewonnen verkoopkansen',
 'Tickets by Products'=>'Tickets per Product',
@@ -265,8 +265,8 @@ $mod_strings = Array(
 'BiWeekly'=>'Twee-Wekelijks',
 'Monthly'=>'Maandelijks',
 'Annually'=>'Jaarlijks',
-'LBL_SCHEDULE_REPORT'=>'Plan Report',
-'ScheduleReports'=>'Plan Report',
+'LBL_SCHEDULE_REPORT'=>'Rapportage inplannen',
+'ScheduleReports'=>'Rapportage inplannen',
 'LBL_SCHEDULE_FREQUENCY'=>'Frequentie',
 'OPTION_SCHEDULE_EMAIL_CHOOSE'=>'Kies ..... ',
 'LBL_SCHEDULE_EMAIL_TIME'=>'Tijd',
@@ -281,6 +281,19 @@ $mod_strings = Array(
 'LBL_RELOAD_REPORT' => 'Reload Report',
 'LBL_SAVE_REPORT' => 'Opslaan',
 'LBL_SAVE_REPORT_AS' => 'Sla Rapport op als...',
+
+//Report Charts
+'LBL_VIEW_CHARTS' => 'Bekijk grafieken',
+'LBL_ADD_CHARTS' => 'Voeg Grafiek toe aan Homepage',
+'LBL_HOME_REPORT_NAME' => 'Rapportnaam',
+'LBL_HOME_HORIZONTAL_BARCHART' => 'Horizontale Staafgrafiek',
+'LBL_HOME_VERTICAL_BARCHART' => 'Verticale Staafgrafiek',
+'LBL_HOME_PIE_CHART' => 'Taartdiagram',
+'LBL_HOME_REPORT_TYPE' => 'Rapporttype',
+'LBL_HOME_WINDOW_TITLE' => 'Window titel',
+'LBL_GROUPING_TIME' => 'Groepeer op tijd',
+'LBL_WIDGET_ADDED' => 'Widget toevoegen geslaagd.',
+'LBL_UNDEFINED' => 'Niet gedefinieerd',
 'Add ReportCharts' => 'Add Report Charts',
 'Choose Report Type' => 'Choose Report Type',
 'Application Report' => 'Application Report',

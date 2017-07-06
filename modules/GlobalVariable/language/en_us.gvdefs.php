@@ -679,6 +679,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Comma separated list of user column fields by which the user list on the calendar will be sorted. By default it is first_name,last_name',
 ),
+'Calendar_Push_End_On_Start_Change' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'No | Distance | Set',
+	'definition' => 'On DetailView Edit of start date we can push forward the end date. If this variable is set to "No", the end date will not be modified. This is the default value. If it is set to "Set" the end date will be set to the same value as the start date plus the minutes in Calendar_call_default_duration. If it is set to "Distance" the same time difference that exists prior to the change will be applied.',
+),
 'CronTasks_cronWatcher_mailto' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'CSV emails',
@@ -839,6 +846,20 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => 'LDAP | AD | SQL',
 	'definition' => 'Login authentication type. Use the default SQL to login using the passwords stored in the database',
+),
+'User_2FAAuthentication' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Ask for Two Factor Authentification',
+),
+'User_2FAAuthentication_SendMethod' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'SMS | EMAIL',
+	'definition' => 'Method to send 2FA code to user',
 ),
 'Application_FirstTimeLogin_Template' => array(
 	'status' => 'Implemented',

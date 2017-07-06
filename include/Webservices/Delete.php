@@ -10,6 +10,20 @@
 
 function vtws_delete($id,$user){
 	global $log,$adb;
+	list($wsid,$crmid) = explode('x', $id);
+	if ((vtws_getEntityId('Calendar')==$wsid or vtws_getEntityId('Events')==$wsid) and getSalesEntityType($crmid)=='cbCalendar') {
+		$id = vtws_getEntityId('cbCalendar') . 'x' . $crmid;
+	}
+	if (vtws_getEntityId('cbCalendar')==$wsid and getSalesEntityType($crmid)=='Calendar') {
+		$rs = $adb->pquery('select activitytype from vtiger_activity where activityid=?', array($crmid));
+		if ($rs and $adb->num_rows($rs)==1) {
+			if ($adb->query_result($rs,0,0)=='Task') {
+				$id = vtws_getEntityId('Calendar') . 'x' . $crmid;
+			} else {
+				$id = vtws_getEntityId('Events') . 'x' . $crmid;
+			}
+		}
+	}
 	$webserviceObject = VtigerWebserviceObject::fromId($adb,$id);
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();

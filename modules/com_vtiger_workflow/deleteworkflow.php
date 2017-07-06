@@ -12,30 +12,29 @@ require_once("include/events/SqlResultIterator.inc");
 require_once("VTWorkflowApplication.inc");
 require_once("VTWorkflowManager.inc");
 require_once("VTWorkflowUtils.php");
-	function vtDeleteWorkflow($adb, $request){
-		$util = new VTWorkflowUtils();
-		$module = new VTWorkflowApplication("deleteworkflow");
+function vtDeleteWorkflow($adb, $request){
+	$util = new VTWorkflowUtils();
+	$module = new VTWorkflowApplication("deleteworkflow");
 
-		if(!$util->checkAdminAccess()){
-			$errorUrl = $module->errorPageUrl(getTranslatedString('LBL_ERROR_NOT_ADMIN', $module->name));
-			$util->redirectTo($errorUrl, getTranslatedString('LBL_ERROR_NOT_ADMIN', $module->name));
-			return;
-		}
-
-		$wm = new VTWorkflowManager($adb);
-		$wm->delete($request['workflow_id']);
-		
-		if(isset($request["return_url"])){
-			$returnUrl=$request["return_url"];
-		}else{
-			$returnUrl=$module->listViewUrl($wf->id);
-		}
-		?>
-		<script type="text/javascript" charset="utf-8">
-			window.location="<?php echo $returnUrl?>";
-		</script>
-		<a href="<?php echo $returnUrl?>">Return</a>
-		<?php
+	if (!$util->checkAdminAccess()) {
+		$errorUrl = $module->errorPageUrl(getTranslatedString('LBL_ERROR_NOT_ADMIN', $module->name));
+		$util->redirectTo($errorUrl, getTranslatedString('LBL_ERROR_NOT_ADMIN', $module->name));
+		return;
 	}
-	vtDeleteWorkflow($adb, $_REQUEST);
+
+	$wm = new VTWorkflowManager($adb);
+	$wm->delete($request['workflow_id']);
+
+	if (isset($request["return_url"])) {
+		$returnUrl=$request["return_url"];
+	} else {
+		$returnUrl=$module->listViewUrl($wf->id);
+	}
+?>
+	<script type="text/javascript" charset="utf-8">
+		window.location="<?php echo $returnUrl?>";
+	</script>
+<?php
+}
+vtDeleteWorkflow($adb, $_REQUEST);
 ?>

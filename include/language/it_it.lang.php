@@ -843,7 +843,6 @@ $app_strings = array (
   'Lead Status' => 'Stato Lead',
   'Lead Source' => 'Origine Lead',
   'Yahoo Id' => ' Id Yahoo',
-  'LBL_CHARSET' => 'UTF-8',
   'Lost Lead' => 'Lead Perso',
   'ERR_INVALID_PAGE_COUNT' => 'Conteggio pagine errato',
   'Quotes' => 'Preventivi',

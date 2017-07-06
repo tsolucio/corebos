@@ -24,7 +24,7 @@ if(isset($_SESSION["login_user_name"]))
 	elseif (isset($_REQUEST['login_user_name']))
 		$login_user_name = trim(vtlib_purify($_REQUEST['login_user_name']), '"\'');
 	else
-		$login_user_name = '';
+		$login_user_name = trim(vtlib_purify($_SESSION['login_user_name']), '"\'');
 }
 else
 {
@@ -41,8 +41,6 @@ else
 	}
 	coreBOS_Session::set('login_user_name', $login_user_name);
 }
-
-$current_module_strings['VLD_ERROR'] = base64_decode('UGxlYXNlIHJlcGxhY2UgdGhlIFN1Z2FyQ1JNIGxvZ29zLg==');
 
 // Retrieve username and password from the session if possible.
 if(isset($_SESSION["login_password"]))
@@ -73,12 +71,7 @@ $app_strings = return_application_language('en_us');
 
 $smarty=new vtigerCRM_Smarty;
 $smarty->assign("APP", $app_strings);
-
-if(isset($app_strings['LBL_CHARSET'])) {
-	$smarty->assign("LBL_CHARSET", $app_strings['LBL_CHARSET']);
-} else {
-	$smarty->assign("LBL_CHARSET", $default_charset);
-}
+$smarty->assign('LBL_CHARSET', $default_charset);
 
 $smarty->assign("IMAGE_PATH", $image_path);
 $smarty->assign("VTIGER_VERSION", $coreBOS_app_version);
@@ -105,4 +98,5 @@ $smarty->assign("LOGIN_ERROR", $login_error);
 $currentYear = date('Y');
 $smarty->assign('currentYear',$currentYear);
 $smarty->display('Login.tpl');
+coreBOS_Session::delete('login_error');
 ?>

@@ -149,21 +149,19 @@ class Products extends CRMEntity {
 		$tax_per = '';
 		//Save the Product - tax relationship if corresponding tax check box is enabled
 		//Delete the existing tax if any
-		if($this->mode == 'edit')
-		{
-			for($i=0;$i<count($tax_details);$i++)
-			{
+		if ($this->mode == 'edit') {
+			for ($i=0;$i<count($tax_details);$i++) {
 				$tax_checkname = $tax_details[$i]['taxname']."_check";
-				if($_REQUEST['action'] == 'MassEditSave') { // then we only modify the marked taxes
-					if (($_REQUEST[$tax_checkname] == 'on' || $_REQUEST[$tax_checkname] == 1)) {
+				if ($_REQUEST['action'] == 'MassEditSave') { // then we only modify the marked taxes
+					if (isset($_REQUEST[$tax_checkname]) and ($_REQUEST[$tax_checkname] == 'on' || $_REQUEST[$tax_checkname] == 1)) {
 						$taxid = getTaxId($tax_details[$i]['taxname']);
 						$sql = "delete from vtiger_producttaxrel where productid=? and taxid=?";
 						$adb->pquery($sql, array($this->id,$taxid));
 					}
 				} else {
-				$taxid = getTaxId($tax_details[$i]['taxname']);
-				$sql = "delete from vtiger_producttaxrel where productid=? and taxid=?";
-				$adb->pquery($sql, array($this->id,$taxid));
+					$taxid = getTaxId($tax_details[$i]['taxname']);
+					$sql = "delete from vtiger_producttaxrel where productid=? and taxid=?";
+					$adb->pquery($sql, array($this->id,$taxid));
 				}
 			}
 		}

@@ -103,16 +103,11 @@ return $the_title;
 function insert_popup_header($theme)
 {
 global $app_strings, $default_charset;
-$charset = $default_charset;
 
-if(isset($app_strings['LBL_CHARSET']))
-{
-	$charset = $app_strings['LBL_CHARSET'];
-}
 $theme = vtlib_purify($theme);
 $out  = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">';
 $out .=	'<HTML><HEAD>';
-$out .=	'<meta http-equiv="Content-Type" content="text/html; charset='.$charset.'">';
+$out .=	'<meta http-equiv="Content-Type" content="text/html; charset='.$default_charset.'">';
 $out .=	'<title>'.$app_strings['LBL_BROWSER_TITLE'].'</title>';
 $out .= '<style type="text/css">@import url("themes/'.$theme.'/style.css"); </style>';
 $out .=	'</HEAD><BODY leftMargin="5" topMargin="5" MARGINHEIGHT="0" MARGINWIDTH="0">';
