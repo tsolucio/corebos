@@ -934,13 +934,9 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 			else
 				$varreturnset = $returnset;
 
-			if ($module == 'Calendar') {
+			if ($module == 'cbCalendar') {
 				$actvity_type = $adb->query_result($list_result, $list_result_count, 'activitytype');
-				if ($actvity_type == 'Task')
-					$varreturnset .= '&activity_mode=Task';
-				else{
-					$varreturnset .= '&activity_mode=Events';
-				}
+				$varreturnset .= '&activity_mode=' . ($actvity_type == 'Task' ? 'Task' : 'Call');
 			}
 
 			//Added for Actions ie., edit and delete links in listview
@@ -1278,11 +1274,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		$uitype = $key;
 		$colname = $value;
 	}
-	//added for getting event status in Custom view - Jaguar
-	if ($module == 'Calendar' && ($colname == "status" || $colname == "eventstatus")) {
-		$colname = "activitystatus";
-	}
-	//Ends
 	$field_val = $adb->query_result($list_result, $list_result_count, $colname);
 	if ($uitype != 8) {
 		$temp_val = html_entity_decode($field_val, ENT_QUOTES, $default_charset);
