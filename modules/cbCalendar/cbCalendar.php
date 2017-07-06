@@ -54,25 +54,25 @@ class cbCalendar extends CRMEntity {
 	var $list_fields = Array (
 		/* Format: Field Label => Array(tablename => columnname) */
 		// tablename should not have prefix 'vtiger_'
-		'Close'=>Array('activity'=>'status'),
-		'Type'=>Array('activity'=>'activitytype'),
 		'Subject'=>Array('activity'=>'subject'),
+		'Type'=>Array('activity'=>'activitytype'),
+		'Status'=>Array('activity'=>'eventstatus'),
+		'Start Date Time'=>Array('activity','dtstart'),
+		'End Date Time'=>Array('activity'=>'dtend'),
 		'Related to'=>Array('seactivityrel'=>'rel_id'),
 		'Contact Name'=>Array('activity'=>'cto_id'),
-		'Start Date'=>Array('activity','dtstart'),
-		'End Date'=>Array('activity'=>'dtend'),
 		'Assigned To'=>Array('crmentity'=>'smownerid'),
 	);
 
 	var $list_fields_name = Array(
 		/* Format: Field Label => fieldname */
-		'Close'=>'status',
-		'Type'=>'activitytype',
 		'Subject'=>'subject',
-		'Related to'=>'rel_id',
-		'Contact Name'=>'cto_id',
+		'Type'=>'activitytype',
+		'Status'=>'eventstatus',
 		'Start Date Time'=>'dtstart',
 		'End Date Time'=>'dtend',
+		'Related to'=>'rel_id',
+		'Contact Name'=>'cto_id',
 		'Assigned To'=>'assigned_user_id',
 	);
 
@@ -83,33 +83,25 @@ class cbCalendar extends CRMEntity {
 	var $search_fields = Array(
 		/* Format: Field Label => Array(tablename => columnname) */
 		// tablename should not have prefix 'vtiger_'
-		'Close'=>Array('activity'=>'status'),
-		'Type'=>Array('activity'=>'activitytype'),
 		'Subject'=>Array('activity'=>'subject'),
+		'Type'=>Array('activity'=>'activitytype'),
+		'Status'=>Array('activity'=>'eventstatus'),
+		'Start Date Time'=>Array('activity'=>'dtstart'),
+		'End Date Time'=>Array('activity'=>'dtend'),
 		'Related to'=>Array('seactivityrel'=>'parent_id'),
-		'Start Date'=>Array('activity'=>'date_start'),
-		'Start Time'=>Array('activity','time_start'),
-		'End Date'=>Array('activity'=>'due_date'),
-		'End Time'=>Array('activity','time_end'),
-		'Recurring Type'=>Array('recurringevents'=>'recurringtype'),
+		'Contact Name'=>Array('contactdetails'=>'lastname'),
 		'Assigned To'=>Array('crmentity'=>'smownerid'),
-		'Contact Name'=>Array('contactdetails'=>'lastname')
 	);
 	var $search_fields_name = Array(
 		/* Format: Field Label => fieldname */
-		'Close'=>'status',
-		'Type'=>'activitytype',
 		'Subject'=>'subject',
-		'Contact Name'=>'lastname',
+		'Type'=>'activitytype',
+		'Status'=>'eventstatus',
+		'Start Date Time'=>'dtstart',
+		'End Date Time'=>'dtend',
 		'Related to'=>'parent_id',
-		'Start Date & Time'=>'date_start',
-		'End Date & Time'=>'due_date',
-		'Recurring Type'=>'recurringtype',
+		'Contact Name'=>'lastname',
 		'Assigned To'=>'assigned_user_id',
-		'Start Date'=>'date_start',
-		'Start Time'=>'time_start',
-		'End Date'=>'due_date',
-		'End Time'=>'time_end',
 	);
 
 	// For Popup window record selection
