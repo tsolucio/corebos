@@ -7,4 +7,11 @@
 	<classname>cbmqtmdbdistributordeliverafter</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Install Translation module</description>
+	<filename>build/changeSets/2017/installcbtranslation.php</filename>
+	<classname>installcbtranslation</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
