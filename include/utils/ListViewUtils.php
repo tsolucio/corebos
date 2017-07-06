@@ -2213,8 +2213,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					}
 				}
 			}
-		} elseif ($module == 'Calendar' && ($fieldname == 'time_start' ||
-				$fieldname == 'time_end')) {
+		} elseif ($module == 'Calendar' && ($fieldname == 'time_start' || $fieldname == 'time_end')) {
 			$dateField = 'date_start';
 			if ($fieldname == 'time_end') {
 				$dateField = 'due_date';
@@ -2237,7 +2236,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		}
 	}
 
-	// Mike Crowe Mod --------------------------------------------------------Make right justified and vtiger_currency value
+	// right justify currency value
 	if (in_array($uitype, array(71, 72, 7, 9, 90))) {
 		$value = '<span align="right">' . $value . '</div>';
 	}

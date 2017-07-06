@@ -14,11 +14,11 @@ class VtigerCRMObject{
 	private $moduleId;
 	private $instance;
 
-	function __construct($moduleCredential, $isId=false){
-		if($isId){
+	function __construct($moduleCredential, $isId=false) {
+		if ($isId) {
 			$this->moduleId = $moduleCredential;
 			$this->moduleName = $this->getObjectTypeName($this->moduleId);
-		}else{
+		} else {
 			$this->moduleName = $moduleCredential;
 			$this->moduleId = $this->getObjectTypeId($this->moduleName);
 		}
@@ -26,41 +26,41 @@ class VtigerCRMObject{
 		$this->getInstance();
 	}
 
-	public function getModuleName(){
+	public function getModuleName() {
 		return $this->moduleName;
 	}
 
-	public function getModuleId(){
+	public function getModuleId() {
 		return $this->moduleId;
 	}
 
-	public function getInstance(){
-		if($this->instance == null){
+	public function getInstance() {
+		if ($this->instance == null) {
 			$this->instance = $this->getModuleClassInstance($this->moduleName);
 		}
 		return $this->instance;
 	}
 
-	public function getObjectId(){
-		if($this->instance==null){
+	public function getObjectId() {
+		if ($this->instance==null) {
 			$this->getInstance();
 		}
 		return $this->instance->id;
 	}
 
-	public function setObjectId($id){
-		if($this->instance==null){
+	public function setObjectId($id) {
+		if ($this->instance==null) {
 			$this->getInstance();
 		}
 		$this->instance->id = $id;
 	}
 
-	private function titleCase($str){
+	private function titleCase($str) {
 		$first = substr($str, 0, 1);
 		return strtoupper($first).substr($str,1);
 	}
 
-	private function getObjectTypeId($objectName){
+	private function getObjectTypeId($objectName) {
 		// Use getTabid API
 		$tid = getTabid($objectName);
 
@@ -76,22 +76,22 @@ class VtigerCRMObject{
 		return $tid;
 	}
 
-	private function getModuleClassInstance($moduleName){
+	private function getModuleClassInstance($moduleName) {
 		return CRMEntity::getInstance($moduleName);
 	}
 
-	private function getObjectTypeName($moduleId){
+	private function getObjectTypeName($moduleId) {
 		return getTabModuleName($moduleId);
 	}
 
-	private function getTabName(){
-		if($this->moduleName == 'Events'){
+	private function getTabName() {
+		if ($this->moduleName == 'Events') {
 			return 'Calendar';
 		}
 		return $this->moduleName;
 	}
 
-	public function read($id,$deleted=false){
+	public function read($id,$deleted=false) {
 		global $adb;
 		$error = false;
 		$adb->startTransaction();
@@ -101,11 +101,11 @@ class VtigerCRMObject{
 		return !$error;
 	}
 
-	public function create($element){
+	public function create($element) {
 		global $adb;
 
 		$error = false;
-		foreach($element as $k=>$v){
+		foreach ($element as $k=>$v) {
 			$this->instance->column_fields[$k] = $v;
 		}
 
@@ -116,11 +116,11 @@ class VtigerCRMObject{
 		return !$error;
 	}
 
-	public function update($element){
+	public function update($element) {
 		global $adb;
 		$error = false;
 
-		foreach($element as $k=>$v){
+		foreach($element as $k=>$v) {
 			$this->instance->column_fields[$k] = $v;
 		}
 
@@ -132,21 +132,21 @@ class VtigerCRMObject{
 		return !$error;
 	}
 
-// 	public function revise($element){
+// 	public function revise($element) {
 // 		global $adb;
 // 		$error = false;
 
 // 		$error = $this->read($this->getObjectId());
-// 		if($error == false){
+// 		if ($error == false) {
 // 			return $error;
 // 		}
 
-// 		foreach($element as $k=>$v){
+// 		foreach ($element as $k=>$v) {
 // 			$this->instance->column_fields[$k] = $v;
 // 		}
 
 // 		//added to fix the issue of utf8 characters
-// 		foreach($this->instance->column_fields as $key=>$value){
+// 		foreach ($this->instance->column_fields as $key=>$value) {
 // 			$this->instance->column_fields[$key] = decode_html($value);
 // 		}
 
@@ -158,7 +158,7 @@ class VtigerCRMObject{
 // 		return !$error;
 // 	}
 
-	public function delete($id){
+	public function delete($id) {
 		global $adb;
 		$error = false;
 		$adb->startTransaction();
@@ -168,32 +168,32 @@ class VtigerCRMObject{
 		return !$error;
 	}
 
-	public function getFields(){
+	public function getFields() {
 		return $this->instance->column_fields;
 	}
 
-	function exists($id){
+	function exists($id) {
 		global $adb;
 
 		$exists = false;
 		$sql = "select * from vtiger_crmentity where crmid=? and deleted=0";
 		$result = $adb->pquery($sql , array($id));
-		if($result != null && isset($result)){
-			if($adb->num_rows($result)>0){
+		if ($result != null && isset($result)) {
+			if ($adb->num_rows($result)>0) {
 				$exists = true;
 			}
 		}
 		return $exists;
 	}
 
-	function getSEType($id){
+	function getSEType($id) {
 		global $adb;
 
 		$seType = null;
 		$sql = "select * from vtiger_crmentity where crmid=? and deleted=0";
 		$result = $adb->pquery($sql , array($id));
-		if($result != null && isset($result)){
-			if($adb->num_rows($result)>0){
+		if ($result != null && isset($result)) {
+			if ($adb->num_rows($result)>0) {
 				$seType = $adb->query_result($result,0,"setype");
 			}
 		}
