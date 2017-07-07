@@ -36,15 +36,13 @@ if ($record and cbCalendar::getCalendarActivityType($record)=='Emails') {
 
 if (empty($record)) {
 	if (empty($_REQUEST['dtend'])) {
-		if (isset($_REQUEST['activitytype'])) {
-			if ($_REQUEST['activitytype']=='Call') {
-				$duration = GlobalVariable::getVariable('Calendar_call_default_duration', 5, 'Calendar4You');
-			} else {
-				$duration = GlobalVariable::getVariable('Calendar_other_default_duration', 1, 'Calendar4You') * 60;
-			}
-			$date = new DateTimeField(date('Y-m-d H:i:s',mktime(date('H'),date('i')+$duration)));
-			$_REQUEST['dtend'] = substr($date->getDisplayDateTimeValue(),0,16);
+		if (isset($_REQUEST['activitytype']) && $_REQUEST['activitytype']=='Call') {
+				$duration = GlobalVariable::getVariable('Calendar_call_default_duration', 5, 'cbCalendar');
+		} else {
+			$duration = GlobalVariable::getVariable('Calendar_other_default_duration', 1, 'cbCalendar') * 60;
 		}
+		$date = new DateTimeField(date('Y-m-d H:i:s',mktime(date('H'),date('i')+$duration)));
+		$_REQUEST['dtend'] = substr($date->getDisplayDateTimeValue(),0,16);
 	}
 }
 
@@ -136,7 +134,7 @@ if(isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 	for ($i = 0; $i < 7; ++$i) {
 		$value['week'.$i] = '';
 	}
-	$default_calendar_reminder = GlobalVariable::getVariable('Calendar_Default_Reminder_Minutes', 0, 'Calendar4You');
+	$default_calendar_reminder = GlobalVariable::getVariable('Calendar_Default_Reminder_Minutes', 0, 'cbCalendar');
 	$rem_days = floor($default_calendar_reminder/(24*60));
 	$rem_hrs = floor(($default_calendar_reminder-$rem_days*24*60)/60);
 	$rem_min = ($default_calendar_reminder-$rem_days*24*60)%60;
