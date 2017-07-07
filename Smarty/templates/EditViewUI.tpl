@@ -209,6 +209,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			</td>
 			<td width="30%" align=left class="dvtCellInfo">
 				<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small" style="width:280px;">
+				<option value="">{$APP.LBL_NONE}</option>
 				{foreach item=arr from=$fldvalue}
 					<optgroup label="{$arr[0]}">
 					{foreach item=plarr key=plkey from=$arr[3]}

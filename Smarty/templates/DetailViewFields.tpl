@@ -81,7 +81,7 @@
 						{assign var=fontval value='red'}
 					{/if}
 				{/foreach}
-				{if $keyid eq '1615'}
+				{if $keyid eq '1615' && $keyval!=''}
 					{assign var=plinfo value='::'|explode:$keyval}
 					{$plinfo[0]|@getTranslatedString:$plinfo[0]} {$plinfo[1]|@getTranslatedString:$plinfo[0]}
 				{else}

@@ -111,9 +111,10 @@
 		</td>
 	{elseif $keyid eq '1615'}
 		{assign var=plinfo value='::'|explode:$keyval}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'><span id="dtlview_{$keyfldname}">{$plinfo[0]|@getTranslatedString:$plinfo[0]} {$plinfo[1]|@getTranslatedString:$plinfo[0]}</span>
+		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'><span id="dtlview_{$keyfldname}">{if $keyval neq ''}{$plinfo[0]|@getTranslatedString:$plinfo[0]} {$plinfo[1]|@getTranslatedString:$plinfo[0]}{/if}</span>
 			<div id="editarea_{$keyfldname}" style="display:none;">
 				<select id="txtbox_{$keyfldname}" name="{$keyfldname}" class="small" style="width:280px;">
+				<option value="">{$APP.LBL_NONE}</option>
 				{foreach item=arr from=$keyoptions}
 					<optgroup label="{$arr[0]}">
 					{foreach item=plarr key=plkey from=$arr[3]}
