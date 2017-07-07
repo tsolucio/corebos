@@ -1119,7 +1119,8 @@ class QueryGenerator {
 					$sql[] = 'IS NULL or '.$field->getTableName().'.'.$field->getColumnName()." = ''";
 					return $sql;
 				}
-			} elseif($field->getFieldDataType()=='picklist' || $field->getFieldDataType()=='multipicklist') {
+			} elseif ($field->getFieldDataType()=='picklist' || $field->getFieldDataType()=='multipicklist'
+					and !in_array($field->getUIType(),array('1613','1614','1615','1024','3313','3314'))) {
 				if(!isValueInPicklist($value,$field->getFieldName()))
 					$value = getTranslationKeyFromTranslatedValue($this->module, $value);
 			} else if ($field->getFieldDataType() === 'currency') {
