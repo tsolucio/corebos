@@ -300,6 +300,17 @@ class cbtranslation extends CRMEntity {
 		return $i18n;
 	}
 
+	public static function getPicklistValues($lang, $module, $picklist) {
+		global $adb;
+		$plvals = array();
+		$sql = 'SELECT i18n FROM vtiger_cbtranslation WHERE locale=? and forpicklist=? and translation_module=?';
+		$trans = $adb->pquery($sql, array($lang,$module.'::'.$picklist,$module));
+		while ($i18n = $adb->fetch_array($trans)) {
+			$plvals[] = $i18n['i18n'];
+		}
+		return $plvals;
+	}
+
 	public static function return_module_language($lang, $module) {
 		global $adb, $current_user, $current_language, $currentModule, $installationStrings;
 		if (!is_object($adb) or is_null($adb->database)) return array();
