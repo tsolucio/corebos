@@ -125,7 +125,7 @@ class cbtranslation extends CRMEntity {
 	function vtlib_handler($modulename, $event_type) {
 		if($event_type == 'module.postinstall') {
 			// TODO Handle post installation actions
-			$this->setModuleSeqNumber('configure', $modulename, $modulename.'-', '0000001');
+			$this->setModuleSeqNumber('configure', $modulename, 'cbtr-', '0000001');
 			$module = Vtiger_Module::getInstance($modulename);
 			$field = Vtiger_Field::getInstance('translates',$module);
 			$field->setRelatedModules(getAllowedPicklistModules(false));

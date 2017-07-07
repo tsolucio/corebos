@@ -14,6 +14,8 @@ include_once('vtlib/Vtiger/Module.php');
 error_reporting(E_ALL);ini_set("display_errors", "on");
 $usr = new Users();
 $current_user = Users::getActiveAdminUser();
+set_time_limit(0);
+ini_set('memory_limit','1024M');
 
 include_once 'include/Webservices/Create.php';
 include_once 'modules/cbtranslation/cbtranslation.php';
@@ -39,6 +41,7 @@ foreach ($import_langs as $lang) {
 $import_modules = getAllowedPicklistModules(1);
 $import_modules = array_merge($import_modules, array('Rss','Webmails','Recyclebin'));
 foreach ($import_modules as $impmod) {
+	set_time_limit(0);
 	foreach ($import_langs as $lang) {
 		if (file_exists('modules/' . $impmod . '/language/' . $lang . '.lang.php')) {
 			include 'modules/' . $impmod . '/language/' . $lang . '.lang.php';
