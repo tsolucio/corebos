@@ -11,17 +11,16 @@
 function vtws_update($element,$user) {
 	global $log,$adb,$root_directory;
 	$idList = vtws_getIdComponents($element['id']);
-	list($wsid,$crmid) = explode('x', $idList[0]);
-	if ((vtws_getEntityId('Calendar')==$wsid or vtws_getEntityId('Events')==$wsid) and getSalesEntityType($crmid)=='cbCalendar') {
-		$idList[0] = vtws_getEntityId('cbCalendar') . 'x' . $crmid;
+	if ((vtws_getEntityId('Calendar')==$idList[0] or vtws_getEntityId('Events')==$idList[0]) and getSalesEntityType($idList[1])=='cbCalendar') {
+		$idList[0] = vtws_getEntityId('cbCalendar') . 'x' . $idList[1];
 	}
-	if (vtws_getEntityId('cbCalendar')==$wsid and getSalesEntityType($crmid)=='Calendar') {
-		$rs = $adb->pquery('select activitytype from vtiger_activity where activityid=?', array($crmid));
+	if (vtws_getEntityId('cbCalendar')==$idList[0] and getSalesEntityType($idList[1])=='Calendar') {
+		$rs = $adb->pquery('select activitytype from vtiger_activity where activityid=?', array($idList[1]));
 		if ($rs and $adb->num_rows($rs)==1) {
 			if ($adb->query_result($rs,0,0)=='Task') {
-				$idList[0] = vtws_getEntityId('Calendar') . 'x' . $crmid;
+				$idList[0] = vtws_getEntityId('Calendar') . 'x' . $idList[1];
 			} else {
-				$idList[0] = vtws_getEntityId('Events') . 'x' . $crmid;
+				$idList[0] = vtws_getEntityId('Events') . 'x' . $idList[1];
 			}
 		}
 	}
