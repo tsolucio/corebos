@@ -243,48 +243,58 @@ class cbtranslation extends CRMEntity {
 			} else {
 				$count = null;
 			}
+			if (isset($options['field'])) {
+				$field = $options['field'];
+			} else {
+				$field = null;
+			}
 		} else {
 			$lang = $current_language;
-			$context = $count = null;
+			$context = $count = $field =null;
 		}
 		$translatedString = null;
-		if (!empty($context) && !empty($count)) {
+		if (!empty($context) && !is_null($count)) {
 			$searchKey = $key.'_'.$context;
 			$searchKey = self::getPluralizedKey($searchKey, $lang, $count);
-			$translatedString = self::getTranslation($searchKey, $module, $lang);
+			$translatedString = self::getTranslation($searchKey, $module, $lang, $field);
 			if ($translatedString == $searchKey) $translatedString = null;
 		}
 		if (!empty($context) && $translatedString == null) {
 			$searchKey = $key.'_'.$context;
-			$translatedString = self::getTranslation($searchKey, $module, $lang);
+			$translatedString = self::getTranslation($searchKey, $module, $lang, $field);
 			if ($translatedString == $searchKey) $translatedString = null;
 		}
-		if (!empty($count) && $translatedString == null) {
-			$searchKey = $key;
-			$searchKey = self::getPluralizedKey($searchKey, $lang, $count);
-			$translatedString = self::getTranslation($searchKey, $module, $lang);
+		if (!is_null($count) && $translatedString == null) {
+			$searchKey = self::getPluralizedKey($key, $lang, $count);
+			$translatedString = self::getTranslation($searchKey, $module, $lang, $field);
 			if ($translatedString == $searchKey) $translatedString = null;
 		}
 		if ($translatedString == null) {
-			$translatedString = self::getTranslation($key, $module, $lang);
+			$translatedString = self::getTranslation($key, $module, $lang, $field);
 		}
 		$args = func_get_args();
 		$args = array_slice($args, 3);
 		if (is_array($args) && !empty($args)) {
-			$translatedString = sprintf($translatedString,$args);
+			$translatedString = vsprintf($translatedString, $args);
 		}
 		return $translatedString;
 	}
 
-	protected static function getTranslation($key, $module, $lang) {
+	protected static function getTranslation($key, $module, $lang, $field=null) {
 		global $adb;
-		$ckey = 'cbtcache'.$searchKey.$module.$lang;
+		$ckey = 'cbtcache'.$key.$module.$lang.(is_null($field) ? '' : $field);
 		list($value,$found) = VTCacheUtils::lookupCachedInformation($ckey);
 		if ($found) {
 			return $value;
 		}
-		$sql = "SELECT i18n,translation_module FROM vtiger_cbtranslation WHERE locale=? and translation_key=? and (translation_module=? or translation_module='cbtranslation')";
-		$trans = $adb->pquery($sql, array($lang,$key,$module));
+		$params = array($lang,$key,$module);
+		if (is_null($field)) {
+			$sql = "SELECT i18n,translation_module FROM vtiger_cbtranslation WHERE locale=? and translation_key=? and (translation_module=? or translation_module='cbtranslation')";
+		} else {
+			$sql = "SELECT i18n,translation_module FROM vtiger_cbtranslation WHERE locale=? and translation_key=? and (translation_module=? or translation_module='cbtranslation') and forfield=?";
+			$params[] = $field;
+		}
+		$trans = $adb->pquery($sql, $params);
 		if ($trans and $adb->num_rows($trans)>0) {
 			$i18n = $adb->query_result($trans, 0, 'i18n');
 			if ($adb->num_rows($trans)==2) {
