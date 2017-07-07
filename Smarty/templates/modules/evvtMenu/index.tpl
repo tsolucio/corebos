@@ -128,6 +128,10 @@
                   </div>
               </div>
           </div>
+		<div id="permissionForm">
+			<label class="slds-form-element__label evvtmenu-label" for="mvisible">{'MenuVisible'|getTranslatedString:$MODULE}</label>
+			<input type="checkbox" name="mvisible" id="mvisible">
+		</div>
           <div id="permissionForm">
           <label class="slds-form-element__label evvtmenu-label" for="mpermission">{'MenuPermission'|getTranslatedString:$MODULE}</label>
           {html_options name="mpermission[]" id="mpermission" multiple="multiple" options=$PROFILES}

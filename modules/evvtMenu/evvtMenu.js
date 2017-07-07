@@ -21,6 +21,7 @@ function getMenuInfo(info){
 	$('#mparent').val(info['mparent']);
 	$('#mtype').val(info['mtype']);
 	$('#mlabel').val(info['mlabel']);
+	document.getElementById("mvisible").checked = (info['mvisible']=='1');
 	if(info.mtype==='module') $('#modname').val(info['mvalue']);
 	if(info.mtype==='url') $('#mvalue').val(info['mvalue']);
 	$('#mpermission').val(info['mpermission'].split(','));

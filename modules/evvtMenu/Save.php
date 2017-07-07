@@ -40,35 +40,37 @@ switch ($do) {
 		$mvalue = vtlib_purify($_REQUEST['mvalue']);
 		$evvtmenuid = vtlib_purify($_REQUEST['evvtmenuid']);
 		$mparent = vtlib_purify($_REQUEST['mparent']);
+		$mvisible = (isset($_REQUEST['mvisible']) ? 1 : 0);
 		$mpermission = isset($_REQUEST['mpermission']) ? vtlib_purify($_REQUEST['mpermission']) : '';
 		if (empty($mpermission)) $mpermission = array();
 		if($mtype == 'menu') {
 			$pmenuidrs = $adb->query('select max(mseq) from vtiger_evvtmenu where mparent= 0');
 			$mseq = $adb->query_result($pmenuidrs, 0, 0) + 1;
 			$adb->pquery('insert into vtiger_evvtmenu (mtype,mvalue,mlabel,mparent,mseq,mvisible,mpermission) values (?,?,?,?,?,?,?)',
-				array($mtype, $mvalue, $mlabel, 0, $mseq, 1, implode(',', $mpermission)));
+				array($mtype, $mvalue, $mlabel, 0, $mseq, $mvisible, implode(',', $mpermission)));
 		} else {
 			if($mparent == 0) $mparent = $evvtmenuid;
 			if($mtype=='module') $mvalue = vtlib_purify($_REQUEST['modname']);
 			$pmenuidrs = $adb->pquery('select max(mseq) from vtiger_evvtmenu where mparent=?',array($mparent));
 			$mseq = $adb->query_result($pmenuidrs,0,0) + 1;
 			$adb->pquery('insert into vtiger_evvtmenu (mtype,mvalue,mlabel,mparent,mseq,mvisible,mpermission) values (?,?,?,?,?,?,?)',
-				array($mtype,$mvalue,$mlabel,$mparent,$mseq,1,implode(',',$mpermission)));
+				array($mtype,$mvalue,$mlabel,$mparent,$mseq,$mvisible,implode(',',$mpermission)));
 		}
 		break;
 	case 'doUpd':
 		$evvtmenuid = vtlib_purify($_REQUEST['evvtmenuid']);
 		if (is_numeric($evvtmenuid)) {
 			$mtype = vtlib_purify($_REQUEST['mtype']);
-			$mparent = vtlib_purify($_REQUEST['mparent']);
+			$mparent = (isset($_REQUEST['mparent']) ? vtlib_purify($_REQUEST['mparent']) : 0);
 			$mlabel = vtlib_purify($_REQUEST['mlabel']);
 			$mvalue = vtlib_purify($_REQUEST['mvalue']);
+			$mvisible = (isset($_REQUEST['mvisible']) ? 1 : 0);
 			if ($mtype=='module') {
 				$mvalue = vtlib_purify($_REQUEST['modname']);
 			}
 			$mpermission = isset($_REQUEST['mpermission']) ? implode(',',vtlib_purify($_REQUEST['mpermission'])) : '';
-			$updrs = $adb->pquery('update vtiger_evvtmenu set mtype=?,mvalue=?,mlabel=?, mparent=?,mpermission=? where evvtmenuid=?',
-				array($mtype,$mvalue,$mlabel,$mparent, $mpermission,$evvtmenuid));
+			$updrs = $adb->pquery('update vtiger_evvtmenu set mtype=?,mvalue=?,mlabel=?, mparent=?,mpermission=?,mvisible=? where evvtmenuid=?',
+				array($mtype,$mvalue,$mlabel,$mparent, $mpermission,$mvisible,$evvtmenuid));
 		}
 		break;
 	case 'doDel':
