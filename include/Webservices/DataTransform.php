@@ -270,6 +270,12 @@ class DataTransform{
 					$row[$fieldName] = $dateFieldObj->getDisplayDate($current_user);
 				}
 			}
+			if ($fieldObj->getFieldDataType()=="datetime") {
+				if(!empty($row[$fieldName])){
+					$dateFieldObj = new DateTimeField($row[$fieldName]);
+					$row[$fieldName] = substr($dateFieldObj->getDisplayDateTimeValue(),0,16);
+				}
+			}
 		}
 		return $row;
 	}
