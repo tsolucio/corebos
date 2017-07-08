@@ -465,8 +465,8 @@ class ListViewController {
 						$image_res = $this->db->pquery($sql, array(str_replace(' ', '_', $value),$recordId));
 						$image_id = $this->db->query_result($image_res, 0, 'attachmentsid');
 						$image_path = $this->db->query_result($image_res, 0, 'path');
-						$image_name = urlencode(decode_html($this->db->query_result($image_res, 0, 'name')));
-						$imgpath = $image_path . $image_id . "_" . $image_name;
+						$image_name = decode_html($this->db->query_result($image_res, 0, 'name'));
+						$imgpath = $image_path . $image_id . "_" . urlencode($image_name);
 						if ($image_name != '') {
 							$ftype = $this->db->query_result($image_res, 0, 'type');
 							$isimage = stripos($ftype, 'image') !== false;
@@ -475,7 +475,7 @@ class ListViewController {
 								$value = '<div style="width:100%;text-align:center;"><img src="' . $imgpath . '" alt="' . $imgtxt . '" title= "' . $imgtxt . '" style="max-width: 50px;"></div>';
 							} else {
 								$imgtxt = getTranslatedString('SINGLE_'.$module,$module).' '.getTranslatedString('SINGLE_Documents');
-								$value = '<a href="' . $imgpath . '" alt="' . $imgtxt . '" title= "' . $imgtxt . '">'.$image_name.'</a>';
+								$value = '<a href="' . $imgpath . '" alt="' . $imgtxt . '" title= "' . $imgtxt . '" target="_blank">'.$image_name.'</a>';
 							}
 						} else {
 							$value = '';
