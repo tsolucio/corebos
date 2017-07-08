@@ -226,7 +226,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				{/if}
 
 				<span id="assign_user" style="{$style_user}">
-					<select name="{$fldname}" class="small">
+					<select name="{$fldname}" id="{$fldname}" class="small">
 						{foreach key=key_one item=arr from=$fldvalue}
 							{foreach key=sel_value item=value from=$arr}
 								<option value="{$key_one}" {$value}>{$sel_value}</option>
@@ -237,7 +237,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 
 				{if $secondvalue neq ''}
 					<span id="assign_team" style="{$style_group}">
-						<select name="assigned_group_id" class="small">
+						<select name="assigned_group_id" id="assigned_group_id" class="small">
 							{foreach key=key_one item=arr from=$secondvalue}
 								{foreach key=sel_value item=value from=$arr}
 									<option value="{$key_one}" {$value}>{$sel_value}</option>
@@ -253,11 +253,11 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			</span>
 			<span width="30%" class="mdCellInfo">
 				{if $uitype eq 52}
-					<select name="{$fldname}" tabindex="{$vt_tab}" class="small">
+					<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small">
 				{elseif $uitype eq 77}
-					<select name="{$fldname}" tabindex="{$vt_tab}" class="small">
+					<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small">
 				{else}
-					<select name="{$fldname}" tabindex="{$vt_tab}" class="small">
+					<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small">
 				{/if}
 
 				{foreach key=key_one item=arr from=$fldvalue}
