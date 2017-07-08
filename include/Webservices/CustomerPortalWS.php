@@ -936,7 +936,7 @@ function getFieldAutocomplete($term, $filter, $searchinmodule, $fields, $returnf
 		}
 	}
 	$current_user = VTWS_PreserveGlobal::preserveGlobal('current_user',$user);
-	$smod = new $searchinmodule();
+	$smod = CRMEntity::getInstance($searchinmodule);
 	$sindex = $smod->table_index;
 	$queryGenerator = new QueryGenerator($searchinmodule, $current_user);
 	$sfields = explode(',', $fields);
