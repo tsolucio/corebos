@@ -318,6 +318,8 @@ class InventoryDetails extends CRMEntity {
 		}
 
 		$requestindex = 1;
+		$inputFiles = $_FILES;
+		unset($_FILES);
 		while (isset($_REQUEST['deleted'.$requestindex]) and $_REQUEST['deleted'.$requestindex] == 1) {
 			$requestindex++;
 		}
@@ -341,6 +343,11 @@ class InventoryDetails extends CRMEntity {
 			foreach ($invdet_focus->column_fields as $fieldname => $val) {
 				if (isset($_REQUEST[$fieldname.$requestindex])) {
 					$invdet_focus->column_fields[$fieldname] = vtlib_purify($_REQUEST[$fieldname.$requestindex]);
+				} elseif (isset($_REQUEST[$fieldname.$requestindex.'_hidden'])) {
+					$invdet_focus->column_fields[$fieldname.'_hidden'] = $_REQUEST[$fieldname.'_hidden'] = vtlib_purify($_REQUEST[$fieldname.$requestindex.'_hidden']);
+					if (isset($inputFiles[$fieldname.$requestindex])) {
+						$_FILES[$fieldname] = $inputFiles[$fieldname.$requestindex];
+					}
 				} elseif (isset($row[$fieldname])) {
 					$invdet_focus->column_fields[$fieldname] = $row[$fieldname];
 				}
