@@ -8,18 +8,61 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-		{assign var="uitype" value=$maindata[0][0]}
-		{assign var="fldlabel" value=$maindata[1][0]}
-		{assign var="fldlabel_sel" value=$maindata[1][1]}
-		{assign var="fldlabel_combo" value=$maindata[1][2]}
-		{assign var="fldlabel_other" value=$maindata[1][3]}
-		{assign var="fldname" value=$maindata[2][0]|cat:$row_no}
-		{assign var="fldvalue" value=$maindata[3][0]}
-		{assign var="secondvalue" value=$maindata[3][1]}
-		{assign var="thirdvalue" value=$maindata[3][2]}
-		{assign var="typeofdata" value=$maindata[4]}
-		{assign var="vt_tab" value=$maindata[5][0]}
-
+		{if isset($maindata[0][0])}
+			{assign var="uitype" value=$maindata[0][0]}
+		{else}
+			{assign var="uitype" value=''}
+		{/if}
+		{if isset($maindata[1][0])}
+			{assign var="fldlabel" value=$maindata[1][0]}
+		{else}
+			{assign var="fldlabel" value=''}
+		{/if}
+		{if isset($maindata[1][1])}
+			{assign var="fldlabel_sel" value=$maindata[1][1]}
+		{else}
+			{assign var="fldlabel_sel" value=''}
+		{/if}
+		{if isset($maindata[1][2])}
+			{assign var="fldlabel_combo" value=$maindata[1][2]}
+		{else}
+			{assign var="fldlabel_combo" value=''}
+		{/if}
+		{if isset($maindata[1][3])}
+			{assign var="fldlabel_other" value=$maindata[1][3]}
+		{else}
+			{assign var="fldlabel_other" value=''}
+		{/if}
+		{if isset($maindata[2][0])}
+			{assign var="fldname" value=$maindata[2][0]|cat:$row_no}
+		{else}
+			{assign var="fldname" value=''}
+		{/if}
+		{if isset($maindata[3][0])}
+			{assign var="fldvalue" value=$maindata[3][0]}
+		{else}
+			{assign var="fldvalue" value=''}
+		{/if}
+		{if isset($maindata[3][1])}
+			{assign var="secondvalue" value=$maindata[3][1]}
+		{else}
+			{assign var="secondvalue" value=''}
+		{/if}
+		{if isset($maindata[3][2])}
+			{assign var="thirdvalue" value=$maindata[3][2]}
+		{else}
+			{assign var="thirdvalue" value=''}
+		{/if}
+		{if isset($maindata[4])}
+			{assign var="typeofdata" value=$maindata[4]}
+		{else}
+			{assign var="typeofdata" value=''}
+		{/if}
+		{if isset($maindata[5][0])}
+			{assign var="vt_tab" value=$maindata[5][0]}
+		{else}
+			{assign var="vt_tab" value=''}
+		{/if}
 		{if $typeofdata eq 'M'}
 			{assign var="mandatory_field" value="*"}
 		{else}
@@ -29,16 +72,14 @@
 		{* vtlib customization: Help information for the fields *}
 		{assign var="usefldlabel" value=$fldlabel}
 		{assign var="fldhelplink" value=""}
-		{if $FIELDHELPINFO && $FIELDHELPINFO.$fldname}
+		{if isset($FIELDHELPINFO) && isset($FIELDHELPINFO.$fldname)}
 			{assign var="fldhelplinkimg" value='help_icon.gif'|@vtiger_imageurl:$THEME}
 			{assign var="fldhelplink" value="<img style='cursor:pointer' onclick='vtlib_field_help_show(this, \"$fldname\");' border=0 src='$fldhelplinkimg'>"}
 			{if $uitype neq '10'}
 				{assign var="usefldlabel" value="$fldlabel $fldhelplink"}
 			{/if}
 		{/if}
-		{* END *}
 
-		{* vtlib customization *}
 		{if $uitype eq '10'}
 			<span class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
 			<font color="red">{$mandatory_field}</font>
@@ -166,6 +207,8 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 					{/foreach}
 				{/foreach}
 
+				{assign var=select_user value=''}
+				{assign var=select_group value=''}
 				{if $check eq 0}
 					{assign var=select_user value='checked'}
 					{assign var=style_user value='display:block'}

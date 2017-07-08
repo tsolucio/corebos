@@ -8,13 +8,11 @@
  * All Rights Reserved.
  ********************************************************************************/
 require_once('include/utils/utils.php');
-global $mod_strings;
-global $app_strings;
-global $theme;
+global $mod_strings, $app_strings, $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 
-$smarty = new vtigerCRM_Smarty; 
+$smarty = new vtigerCRM_Smarty;
 $defSharingPermissionData = getDefaultSharingEditAction();
 
 $row=1;
@@ -30,7 +28,7 @@ foreach($defSharingPermissionData as $tab_id => $def_perr)
 		$defActionArr=getModuleSharingActionArray($tab_id);
 
 		$entries[] = $entity_name;
-		
+
 		if($tab_id != 6)
 		{
 			$output = '<select class="detailedViewTextBox" id="'.$tab_id.'_perm_combo" name="'.$tab_id.'_per">';
@@ -40,7 +38,7 @@ foreach($defSharingPermissionData as $tab_id => $def_perr)
 			$output = '<select class="detailedViewTextBox" id="'.$tab_id.'_perm_combo" name="'.$tab_id.'_per" onchange="checkAccessPermission(this.value)">';
 		}
 		$entries[] = $tab_id;
-		
+
 		foreach($defActionArr as $shareActId=>$shareActName)
 		{
 			$selected='';

@@ -46,16 +46,13 @@
 <body leftmargin=0 topmargin=0 marginheight=0 marginwidth=0 class=small>
 	<a name="top"></a>
 	<!-- header -->
-	<!-- header-vtiger crm name & RSS -->
 	<script type="text/javascript" src="include/sw-precache/service-worker-registration.js"></script>
 	<script type="text/javascript" src="include/jquery/jquery.js"></script>
 	<script type="text/javascript" src="include/jquery/jquery-ui.js"></script>
 	<script type="text/javascript" src="include/js/meld.js"></script>
 	<script type="text/javascript" src="include/js/corebosjshooks.js"></script>
 	<script type="text/javascript" src="include/js/general.js"></script>
-	<!-- vtlib customization: Javascript hook -->
 	<script type="text/javascript" src="include/js/vtlib.js"></script>
-	<!-- END -->
 	<script type="text/javascript" id="_current_language_" src="include/js/{$LANGUAGE}.lang.js"></script>
 	<script type="text/javascript" src="include/js/QuickCreate.js"></script>
 	{if $CALCULATOR_DISPLAY eq 'true'}
