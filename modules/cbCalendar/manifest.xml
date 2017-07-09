@@ -40,7 +40,7 @@
 <generatedtype>1</generatedtype>
 <fieldlabel>Subject</fieldlabel>
 <readonly>1</readonly>
-<presence>0</presence>
+<presence>2</presence>
 <defaultvalue></defaultvalue>
 <sequence>1</sequence>
 <maximumlength>100</maximumlength>
@@ -64,7 +64,7 @@
 <generatedtype>1</generatedtype>
 <fieldlabel>Assigned To</fieldlabel>
 <readonly>1</readonly>
-<presence>0</presence>
+<presence>2</presence>
 <defaultvalue></defaultvalue>
 <sequence>2</sequence>
 <maximumlength>100</maximumlength>
@@ -84,7 +84,7 @@
 <generatedtype>1</generatedtype>
 <fieldlabel>Start Date Time</fieldlabel>
 <readonly>1</readonly>
-<presence>0</presence>
+<presence>2</presence>
 <defaultvalue></defaultvalue>
 <sequence>3</sequence>
 <maximumlength>100</maximumlength>
@@ -104,7 +104,7 @@
 <generatedtype>1</generatedtype>
 <fieldlabel>Due Date</fieldlabel>
 <readonly>1</readonly>
-<presence>0</presence>
+<presence>2</presence>
 <defaultvalue></defaultvalue>
 <sequence>5</sequence>
 <maximumlength>100</maximumlength>
@@ -124,7 +124,7 @@
 <generatedtype>1</generatedtype>
 <fieldlabel>Related To</fieldlabel>
 <readonly>1</readonly>
-<presence>0</presence>
+<presence>2</presence>
 <defaultvalue></defaultvalue>
 <sequence>7</sequence>
 <maximumlength>100</maximumlength>
@@ -152,7 +152,7 @@
 <generatedtype>1</generatedtype>
 <fieldlabel>Contact Name</fieldlabel>
 <readonly>1</readonly>
-<presence>0</presence>
+<presence>2</presence>
 <defaultvalue></defaultvalue>
 <sequence>8</sequence>
 <maximumlength>100</maximumlength>
@@ -175,7 +175,7 @@
 <generatedtype>1</generatedtype>
 <fieldlabel>Status</fieldlabel>
 <readonly>1</readonly>
-<presence>0</presence>
+<presence>2</presence>
 <defaultvalue></defaultvalue>
 <sequence>9</sequence>
 <maximumlength>100</maximumlength>
@@ -205,7 +205,7 @@
 <generatedtype>1</generatedtype>
 <fieldlabel>Priority</fieldlabel>
 <readonly>1</readonly>
-<presence>0</presence>
+<presence>2</presence>
 <defaultvalue></defaultvalue>
 <sequence>10</sequence>
 <maximumlength>100</maximumlength>
@@ -230,7 +230,7 @@
 <generatedtype>1</generatedtype>
 <fieldlabel>Send Notification</fieldlabel>
 <readonly>1</readonly>
-<presence>0</presence>
+<presence>2</presence>
 <defaultvalue></defaultvalue>
 <sequence>11</sequence>
 <maximumlength>100</maximumlength>
@@ -250,7 +250,7 @@
 <generatedtype>1</generatedtype>
 <fieldlabel>Created Time</fieldlabel>
 <readonly>1</readonly>
-<presence>0</presence>
+<presence>2</presence>
 <defaultvalue></defaultvalue>
 <sequence>14</sequence>
 <maximumlength>100</maximumlength>
@@ -270,7 +270,7 @@
 <generatedtype>1</generatedtype>
 <fieldlabel>Modified Time</fieldlabel>
 <readonly>1</readonly>
-<presence>0</presence>
+<presence>2</presence>
 <defaultvalue></defaultvalue>
 <sequence>15</sequence>
 <maximumlength>100</maximumlength>
@@ -290,7 +290,7 @@
 <generatedtype>1</generatedtype>
 <fieldlabel>Activity Type</fieldlabel>
 <readonly>1</readonly>
-<presence>0</presence>
+<presence>2</presence>
 <defaultvalue></defaultvalue>
 <sequence>16</sequence>
 <maximumlength>100</maximumlength>
@@ -316,7 +316,7 @@
 <generatedtype>1</generatedtype>
 <fieldlabel>Visibility</fieldlabel>
 <readonly>1</readonly>
-<presence>0</presence>
+<presence>2</presence>
 <defaultvalue></defaultvalue>
 <sequence>17</sequence>
 <maximumlength>100</maximumlength>
@@ -340,7 +340,7 @@
 <generatedtype>1</generatedtype>
 <fieldlabel>Duration</fieldlabel>
 <readonly>1</readonly>
-<presence>0</presence>
+<presence>2</presence>
 <defaultvalue></defaultvalue>
 <sequence>17</sequence>
 <maximumlength>100</maximumlength>
@@ -360,7 +360,7 @@
 <generatedtype>1</generatedtype>
 <fieldlabel>Duration Minutes</fieldlabel>
 <readonly>1</readonly>
-<presence>0</presence>
+<presence>2</presence>
 <defaultvalue></defaultvalue>
 <sequence>18</sequence>
 <maximumlength>100</maximumlength>
@@ -386,7 +386,7 @@
 <generatedtype>1</generatedtype>
 <fieldlabel>Location</fieldlabel>
 <readonly>1</readonly>
-<presence>0</presence>
+<presence>2</presence>
 <defaultvalue></defaultvalue>
 <sequence>19</sequence>
 <maximumlength>100</maximumlength>
@@ -406,7 +406,7 @@
 <generatedtype>1</generatedtype>
 <fieldlabel>Send Reminder</fieldlabel>
 <readonly>1</readonly>
-<presence>0</presence>
+<presence>2</presence>
 <defaultvalue></defaultvalue>
 <sequence>1</sequence>
 <maximumlength>100</maximumlength>
@@ -426,7 +426,7 @@
 <generatedtype>1</generatedtype>
 <fieldlabel>Recurrence</fieldlabel>
 <readonly>1</readonly>
-<presence>0</presence>
+<presence>2</presence>
 <defaultvalue></defaultvalue>
 <sequence>6</sequence>
 <maximumlength>100</maximumlength>
@@ -453,7 +453,7 @@
 <generatedtype>1</generatedtype>
 <fieldlabel>No Time</fieldlabel>
 <readonly>1</readonly>
-<presence>0</presence>
+<presence>2</presence>
 <defaultvalue></defaultvalue>
 <sequence>20</sequence>
 <maximumlength>100</maximumlength>
@@ -473,7 +473,7 @@
 <generatedtype>1</generatedtype>
 <fieldlabel>Related with</fieldlabel>
 <readonly>1</readonly>
-<presence>0</presence>
+<presence>2</presence>
 <defaultvalue></defaultvalue>
 <sequence>21</sequence>
 <maximumlength>100</maximumlength>
@@ -496,7 +496,7 @@
 <generatedtype>1</generatedtype>
 <fieldlabel>Created By</fieldlabel>
 <readonly>1</readonly>
-<presence>0</presence>
+<presence>2</presence>
 <selected>0</selected>
 <sequence>22</sequence>
 <maximumlength>100</maximumlength>
@@ -516,7 +516,7 @@
 <generatedtype>1</generatedtype>
 <fieldlabel>Last Modified By</fieldlabel>
 <readonly>1</readonly>
-<presence>0</presence>
+<presence>2</presence>
 <defaultvalue></defaultvalue>
 <sequence>23</sequence>
 <maximumlength>100</maximumlength>
@@ -541,7 +541,7 @@
 <generatedtype>1</generatedtype>
 <fieldlabel>Description</fieldlabel>
 <readonly>1</readonly>
-<presence>0</presence>
+<presence>2</presence>
 <defaultvalue></defaultvalue>
 <sequence>1</sequence>
 <maximumlength>100</maximumlength>

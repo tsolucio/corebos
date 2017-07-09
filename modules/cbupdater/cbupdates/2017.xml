@@ -14,4 +14,11 @@
 	<classname>installcbtranslation</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Fix Calendar Field Presence Value</description>
+	<filename>build/changeSets/2017/fixCalendarPresenceValue.php</filename>
+	<classname>fixCalendarPresenceValue</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
