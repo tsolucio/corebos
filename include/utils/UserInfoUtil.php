@@ -252,6 +252,7 @@ function getDefaultSharingAction()
 	$sql= 'select * from vtiger_def_org_share where editstatus in(0,1)';
 	$result = $adb->pquery($sql, array());
 	$permissionRow=$adb->fetch_array($result);
+	$copy = array();
 	do
 	{
 		for($j=0;$j<count($permissionRow);$j++)

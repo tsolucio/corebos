@@ -40,7 +40,7 @@
 		<br>
 		<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 		<tr>
-			<td class="big"><strong>{$CMOD.LBL_GLOBAL_FIELDS_MANAGER}</strong></td>
+			<td class="big"><strong>{'LBL_GLOBAL_FIELDS_MANAGER'|@getTranslatedString:'Users'}</strong></td>
 			<td class="small" align=right>
 			{if $MODE neq 'edit'}
 				<input name="Edit" type="submit" class="crmButton small edit" value="{$APP.LBL_EDIT_BUTTON}" >
@@ -53,7 +53,7 @@
 		</table>
 		<table width="100%" border="0" cellpadding="5" cellspacing="0" class="listTableTopButtons">
 		<tr>
-			<td  style="padding-left:5px;" class="big">{$CMOD.LBL_SELECT_SCREEN}&nbsp; 
+			<td  style="padding-left:5px;" class="big">{'LBL_SELECT_SCREEN'|@getTranslatedString:'Users'}&nbsp;
 			<select name="Screen" class="detailedViewTextBox" style="width:30%;"  onChange="changemodules(this)">
 			{foreach item=module from=$FIELD_INFO}
 				{assign var="MODULELABEL" value=$module|@getTranslatedString:$module}
@@ -69,10 +69,7 @@
 		</tr>
 		</table>
 		{foreach key=module item=info name=allmodules from=$FIELD_LISTS}
-		{assign var="MODULELABEL" value=$module}
-		{if $APP.$module neq ''}
-			{assign var="MODULELABEL" value=$APP.$module}
-		{/if}
+		{assign var="MODULELABEL" value=$module|@getTranslatedString:$module}
 		{if $module eq $DEF_MODULE}
 			<div id="{$module}_fields" style="display:block">
 		{else}
@@ -81,7 +78,7 @@
 		<table cellspacing=0 cellpadding=5 width=100% class="listTable small">
 		<tr>
 			<td colspan="2" class="listRow" valign="top" nowrap>
-			<b>{$CMOD.LBL_FIELDS_AVLBL} {$MODULELABEL}</b>
+			<b>{'LBL_FIELDS_AVLBL'|@getTranslatedString:'Users'} {$MODULELABEL}</b>
 			</td>
 		</tr>
 		<tr>

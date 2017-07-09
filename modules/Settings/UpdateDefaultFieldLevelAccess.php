@@ -12,18 +12,16 @@ require_once('include/utils/utils.php');
 global $adb;
 
 $field_module=getFieldModuleAccessArray();
-foreach($field_module as $fld_module=>$fld_name)
-{
+foreach ($field_module as $fld_module=>$fld_name) {
 	$fieldListResult = getDefOrgFieldList($fld_module);
 	$noofrows = $adb->num_rows($fieldListResult);
-	for($i=0; $i<$noofrows; $i++)
-	{
+	for ($i=0; $i<$noofrows; $i++) {
 		$fieldid =  $adb->query_result($fieldListResult,$i,"fieldid");
 		$displaytype = $adb->query_result($fieldListResult,$i,"displaytype");
 		$tab_id = $adb->query_result($fieldListResult,$i,"tabid");
 		$presence = $adb->query_result($fieldListResult,$i,"presence");
-		$visible = vtlib_purify($_REQUEST[$fieldid]);
-		if($visible == 'on' || $presence == '0')
+		$visible = (isset($_REQUEST[$fieldid]) ? vtlib_purify($_REQUEST[$fieldid]) : '');
+		if ($visible == 'on' || $presence == '0')
 		{
 			$visible_value = 0;
 		}
@@ -36,7 +34,7 @@ foreach($field_module as $fld_module=>$fld_name)
 		$fieldname = $adb->query_result($fieldListResult,$i,"fieldname");
 		$typeofdata = $adb->query_result($fieldListResult,$i,"typeofdata");
 		$fieldtype = explode("~",$typeofdata);
-		if(($fieldname == "salutationtype" && $uitype == 55) || $fieldtype[1] == "M" || $uitype == 111  || $displaytype == 3|| $fieldname == "activitytype")
+		if (($fieldname == "salutationtype" && $uitype == 55) || (isset($fieldtype[1]) and $fieldtype[1] == 'M')  || $displaytype == 3 || $fieldname == "activitytype")
 		{
 			$visible_value = 0;
 		}
