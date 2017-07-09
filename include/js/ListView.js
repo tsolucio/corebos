@@ -746,16 +746,25 @@ function loadCvList(type,id) {
 function emptyCvList(type,id) {
 	if (confirm(alert_arr.ARE_YOU_SURE_YOU_WANT_TO_DELETE)) {
 		document.getElementById("status").style.display="inline";
+		var relidsselected = get_cookie(type+"_all");
+		if (relidsselected == '' || document.getElementById('Campaigns_'+type+'_selectallActivate').value == 'true') {
+			var idlist = 'All';
+		} else {
+			var idlist = relidsselected;
+		}
 		jQuery.ajax({
-				method: 'POST',
-				url: 'index.php?module=Campaigns&action=CampaignsAjax&file=updateRelations&ajax=true&parentid='+id+'&destination_module='+type+'&mode=delete&idlist=All'
-			}).done(function (response) {
-					document.getElementById("status").style.display="none";
-					var element = document.getElementById('RLContents');
-					element.innerHTML = response;
-					vtlib_executeJavascriptInElement(element);
-				}
-		);
+			method: 'POST',
+			url: 'index.php?module=Campaigns&action=CampaignsAjax&file=updateRelations&ajax=true&parentid='+id+'&destination_module='+type+'&mode=delete',
+			data : {
+				"idlist" : idlist
+			}
+		}).done(function (response) {
+			document.getElementById("status").style.display="none";
+			var element = document.getElementById('RLContents');
+			element.innerHTML = response;
+			vtlib_executeJavascriptInElement(element);
+			set_cookie(type+"_all",'');
+		});
 	}
 }
 

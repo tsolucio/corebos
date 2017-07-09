@@ -38,15 +38,18 @@ if($mode == 'delete') {
 		$action = 'CampaignsAjax&file=CallRelatedList&ajax=true';
 	} else {
 		// Split the string of ids
-		$ids = explode (';',$idlist);
-		if(!empty($ids)) {
+		$ids = explode (';',trim($idlist,';'));
+		if (!empty($ids)) {
 			$focus->delete_related_module($currentModule, $forCRMRecord, $destinationModule, $ids);
+		}
+		if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'CampaignsAjax' and isset($_REQUEST['ajax'])) {
+			$action = 'CampaignsAjax&file=CallRelatedList&ajax=true';
 		}
 	}
 } else {
-	if(!empty($idlist)) {
+	if (!empty($idlist)) {
 		$ids = explode (';',trim($idlist,';'));
-	} else if(!empty($_REQUEST['entityid'])){
+	} else if (!empty($_REQUEST['entityid'])){
 		$ids = $_REQUEST['entityid'];
 	}
 	if(!empty($ids)) {

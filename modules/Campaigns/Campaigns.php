@@ -534,6 +534,33 @@ class Campaigns extends CRMEntity {
 		}
 	}
 
+	function delete_related_module($module, $crmid, $with_module, $with_crmid) {
+		global $adb;
+		if (!is_array($with_crmid))
+			$with_crmid = Array($with_crmid);
+		$data = array();
+		$data['sourceModule'] = $module;
+		$data['sourceRecordId'] = $crmid;
+		$data['destinationModule'] = $with_module;
+		foreach ($with_crmid as $relcrmid) {
+			$data['destinationRecordId'] = $relcrmid;
+			cbEventHandler::do_action('corebos.entity.link.delete',$data);
+			if ($with_module == 'Documents') {
+				$adb->pquery('DELETE FROM vtiger_senotesrel WHERE crmid=? AND notesid=?', Array($crmid, $relcrmid));
+			} elseif ($with_module == 'Leads') {
+				$adb->pquery('DELETE FROM vtiger_campaignleadrel WHERE campaignid=? AND leadid=?', Array($crmid, $relcrmid));
+			} elseif ($with_module == 'Contacts') {
+				$adb->pquery('DELETE FROM vtiger_campaigncontrel WHERE campaignid=? AND contactid=?', Array($crmid, $relcrmid));
+			} elseif ($with_module == 'Accounts') {
+				$adb->pquery('DELETE FROM vtiger_campaignaccountrel WHERE campaignid=? AND accountid=?', Array($crmid, $relcrmid));
+			} else {
+				$adb->pquery('DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND module=? AND relcrmid=? AND relmodule=?) OR (relcrmid=? AND relmodule=? AND crmid=? AND module=?)',
+					Array($crmid, $module, $relcrmid, $with_module,$crmid, $module, $relcrmid, $with_module));
+			}
+			cbEventHandler::do_action('corebos.entity.link.delete.final',$data);
+		}
+	}
+
 	/* Create potential */
 	public static function createPotentialRelatedTo($relatedto,$campaignid) {
 		global $adb, $current_user;
