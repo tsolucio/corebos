@@ -26,14 +26,14 @@ $focus = CRMEntity::getInstance($currentModule);
 
 if($mode == 'delete') {
 	// Split the string of ids
-	$ids = explode (';',$idlist);
-	if(!empty($ids)) {
+	$ids = explode (';',trim($idlist,';'));
+	if (!empty($ids)) {
 		$focus->delete_related_module($currentModule, $forCRMRecord, $destinationModule, $ids);
 	}
 } else {
-	if(!empty($idlist)) {
+	if (!empty($idlist)) {
 		$ids = explode (';',trim($idlist,';'));
-	} else if(!empty($_REQUEST['entityid'])){
+	} else if (!empty($_REQUEST['entityid'])){
 		$ids = $_REQUEST['entityid'];
 	}
 	if(!empty($ids)) {
