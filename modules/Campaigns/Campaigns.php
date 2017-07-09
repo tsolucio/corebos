@@ -499,21 +499,18 @@ class Campaigns extends CRMEntity {
 	function save_related_module($module, $crmid, $with_module, $with_crmids) {
 		$adb = PearDatabase::getInstance();
 
-		if(!is_array($with_crmids)) $with_crmids = Array($with_crmids);
-		foreach($with_crmids as $with_crmid) {
+		if (!is_array($with_crmids)) $with_crmids = Array($with_crmids);
+		foreach ($with_crmids as $with_crmid) {
 			if ($with_module == 'Leads') {
-				$checkResult = $adb->pquery('SELECT 1 FROM vtiger_campaignleadrel WHERE campaignid = ? AND leadid = ?',
-												array($crmid, $with_crmid));
-				if($checkResult && $adb->num_rows($checkResult) > 0) {
+				$checkResult = $adb->pquery('SELECT 1 FROM vtiger_campaignleadrel WHERE campaignid = ? AND leadid = ?', array($crmid, $with_crmid));
+				if ($checkResult && $adb->num_rows($checkResult) > 0) {
 					continue;
 				}
 				$sql = 'INSERT INTO vtiger_campaignleadrel VALUES(?,?,1)';
 				$adb->pquery($sql, array($crmid, $with_crmid));
-
-			} elseif($with_module == 'Contacts') {
-				$checkResult = $adb->pquery('SELECT 1 FROM vtiger_campaigncontrel WHERE campaignid = ? AND contactid = ?',
-												array($crmid, $with_crmid));
-				if($checkResult && $adb->num_rows($checkResult) > 0) {
+			} elseif ($with_module == 'Contacts') {
+				$checkResult = $adb->pquery('SELECT 1 FROM vtiger_campaigncontrel WHERE campaignid = ? AND contactid = ?', array($crmid, $with_crmid));
+				if ($checkResult && $adb->num_rows($checkResult) > 0) {
 					continue;
 				}
 				$sql = 'INSERT INTO vtiger_campaigncontrel VALUES(?,?,1)';
@@ -521,10 +518,9 @@ class Campaigns extends CRMEntity {
 				if (GlobalVariable::getVariable('Campaign_CreatePotentialOnContactRelation', '0')=='1') {
 					self::createPotentialRelatedTo($with_crmid, $crmid);
 				}
-			} elseif($with_module == 'Accounts') {
-				$checkResult = $adb->pquery('SELECT 1 FROM vtiger_campaignaccountrel WHERE campaignid = ? AND accountid = ?',
-												array($crmid, $with_crmid));
-				if($checkResult && $adb->num_rows($checkResult) > 0) {
+			} elseif ($with_module == 'Accounts') {
+				$checkResult = $adb->pquery('SELECT 1 FROM vtiger_campaignaccountrel WHERE campaignid = ? AND accountid = ?', array($crmid, $with_crmid));
+				if ($checkResult && $adb->num_rows($checkResult) > 0) {
 					continue;
 				}
 				$sql = 'INSERT INTO vtiger_campaignaccountrel VALUES(?,?,1)';
