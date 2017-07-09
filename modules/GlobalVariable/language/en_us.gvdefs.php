@@ -663,14 +663,14 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Integer: minutes',
 	'category' => 'Application',
 	'values' => '',
-	'definition' => 'Initial number of minutes assigned to a call when creating. The default is 15 minutes.',
+	'definition' => 'Initial number of minutes assigned to a call when creating. The default is 5 minutes.',
 ),
 'Calendar_other_default_duration' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Integer: minutes',
 	'category' => 'Application',
 	'values' => '',
-	'definition' => 'Initial number of minutes assigned to a call when creating. The default is 15 minutes.',
+	'definition' => 'Initial number of hours assigned to an event that is not a call when creating. The default is 1 hour.',
 ),
 'Calendar_sort_users_by' => array(
 	'status' => 'Implemented',
