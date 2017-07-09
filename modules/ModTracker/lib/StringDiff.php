@@ -8,6 +8,7 @@ class StringDiff {
 	/*
 		Paul's Simple Diff Algorithm v 0.1
 		(C) Paul Butler 2007 <http://www.paulbutler.org/>
+		Code on github: https://github.com/paulgb/simplediff
 		May be used and distributed under the zlib/libpng license.
 	
 		This code is intended for learning purposes; it was written with short
@@ -26,6 +27,8 @@ class StringDiff {
 	*/
 
 	static function diff($old, $new){
+		$matrix = array();
+		$maxlen = 0;
 		foreach($old as $oindex => $ovalue){
 			$nkeys = array_keys($new, $ovalue);
 			foreach($nkeys as $nindex){
@@ -46,7 +49,8 @@ class StringDiff {
 	}
 
 	static function htmlDiff($old, $new){
-		$diff = self::diff(explode(' ', $old), explode(' ', $new));
+		$ret = '';
+		$diff = self::diff(preg_split("/[\s]+/", $old), preg_split("/[\s]+/", $new));
 		foreach($diff as $k){
 			if(is_array($k))
 				$ret .= (!empty($k['d'])?"<del>".implode(' ',$k['d'])."</del> ":'').
@@ -55,6 +59,5 @@ class StringDiff {
 		}
 		return $ret;
 	}
-	/* END */
 }
 ?>
