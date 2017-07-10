@@ -190,9 +190,16 @@ class cbMap extends CRMEntity {
 	}
 
 	public static function getMapByID($cbmapid) {
-		$cbmap = new cbMap();
-		$cbmap->retrieve_entity_info($cbmapid, 'cbMap');
-		return $cbmap;
+		global $adb;
+		$query = 'SELECT crmid,setype FROM vtiger_crmentity where crmid=? AND deleted=0';
+		$result = $adb->pquery($query, array($cbmapid));
+		if ($result and $adb->num_rows($result)>0 and $adb->query_result($result, 0, 'setype') == 'cbMap') {
+			$cbmap = new cbMap();
+			$cbmap->retrieve_entity_info($cbmapid, 'cbMap');
+			return $cbmap;
+		} else {
+			return null;
+		}
 	}
 
 	public static function getMapByName($name,$type='') {
