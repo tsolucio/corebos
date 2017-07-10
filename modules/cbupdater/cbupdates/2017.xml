@@ -21,4 +21,11 @@
 	<classname>fixCalendarPresenceValue</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Fix Calendar displaytype Value for location field</description>
+	<filename>build/changeSets/2017/fixCalendarLocationDisplayTypeValue.php</filename>
+	<classname>fixCalendarLocationDisplayTypeValue</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
