@@ -43,8 +43,10 @@ require_once 'modules/Vtiger/DetailView.php';
 list($focus->column_fields['date_start'],$focus->column_fields['time_start']) = explode(' ', $focus->column_fields['dtstart'].' ');
 list($focus->column_fields['due_date'],$focus->column_fields['time_end']) = explode(' ', $focus->column_fields['dtend'].' ');
 $focus->column_fields['parent_id'] = $focus->column_fields['rel_id'];
-
-$act_data = getBlocks('Events','detail_view','',$focus->column_fields);
+$evfocus = CRMEntity::getInstance('Events');
+$evfocus->retrieve_entity_info($record, 'Events');
+$colfields = array_merge($evfocus->column_fields,$focus->column_fields);
+$act_data = getBlocks('Events','detail_view','',$colfields);
 $finaldata = $fldlabel = array();
 foreach($act_data as $block=>$entry) {
 	foreach($entry as $key=>$value) {
