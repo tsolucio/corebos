@@ -97,7 +97,7 @@ class ConditionQuery extends processcbMap {
 
 	private function processQuery($xml,$arguments) {
 		$query = $this->getExpressionQuery($xml);
-		return $this->executeSQL($query, $arguments, (String)$xml->return);
+		return $this->executeSQL($query, array(), (String)$xml->return);
 	}
 
 	public function getExpressionQuery($xml) {
