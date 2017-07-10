@@ -10,6 +10,7 @@
 require_once('data/CRMEntity.php');
 require_once('data/Tracker.php');
 require_once('modules/cbMap/processmap/processMap.php');
+include_once('modules/cbMap/cbRule.php');
 
 class cbMap extends CRMEntity {
 	var $db, $log; // Used in class functions of CRMEntity
