@@ -130,7 +130,7 @@
           </div>
 		<div id="permissionForm">
 			<label class="slds-form-element__label evvtmenu-label" for="mvisible">{'MenuVisible'|getTranslatedString:$MODULE}</label>
-			<input type="checkbox" name="mvisible" id="mvisible">
+			<input type="checkbox" name="mvisible" id="mvisible" checked>
 		</div>
           <div id="permissionForm">
           <label class="slds-form-element__label evvtmenu-label" for="mpermission">{'MenuPermission'|getTranslatedString:$MODULE}</label>
