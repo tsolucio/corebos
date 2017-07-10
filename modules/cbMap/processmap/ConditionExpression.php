@@ -27,11 +27,11 @@
  </map>
 
  <map>
-  <expression>employee + 10</expression>
+  <expression>employees + 10</expression>
  </map>
 
  <map>
-  <expression>if employee > 10 then true else false</expression>
+  <expression>if employees > 10 then 'true' else 'false' end</expression>
  </map>
 
  <map>

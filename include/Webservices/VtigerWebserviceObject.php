@@ -66,9 +66,8 @@ class VtigerWebserviceObject{
 			}
 		}
 
-		$rowData = self::$_fromIdCache[$entityId];
-
-		if ($rowData) {
+		if (!empty(self::$_fromIdCache[$entityId])) {
+			$rowData = self::$_fromIdCache[$entityId];
 			return new VtigerWebserviceObject($rowData['id'],$rowData['name'],$rowData['handler_path'],$rowData['handler_class']);
 		}
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to perform the operation is denied for id");
