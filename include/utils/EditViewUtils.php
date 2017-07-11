@@ -150,8 +150,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		if(empty($value)) {
 			if ($generatedtype != 2) {
 				$date = new DateTimeField();
-				$isodate = $date->getDBInsertDateTimeValue();
-				$date = new DateTimeField($isodate);
 				$disp_value = substr($date->getDisplayDateTimeValue(),0,16);
 			} else {
 				$disp_value = '';
