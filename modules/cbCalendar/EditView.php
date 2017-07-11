@@ -57,7 +57,10 @@ if(isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 	list($focus->column_fields['date_start'],$focus->column_fields['time_start']) = explode(' ', $focus->column_fields['dtstart'].' ');
 	list($focus->column_fields['due_date'],$focus->column_fields['time_end']) = explode(' ', $focus->column_fields['dtend'].' ');
 	$focus->column_fields['parent_id'] = $_REQUEST['parent_id'] = $focus->column_fields['rel_id'];
-	$act_data = getBlocks('Events','edit_view','edit',$focus->column_fields);
+	$evfocus = CRMEntity::getInstance('Events');
+	$evfocus->retrieve_entity_info($record, 'Events');
+	$colfields = array_merge($evfocus->column_fields,$focus->column_fields);
+	$act_data = getBlocks('Events','edit_view','edit',$colfields);
 	foreach($act_data as $header=>$blockitem) {
 		foreach($blockitem as $row=>$data) {
 			foreach($data as $key=>$maindata) {
