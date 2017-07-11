@@ -4074,7 +4074,8 @@ function DeleteEntity($module,$return_module,$focus,$record,$return_id) {
 	global $log;
 	$log->debug("Entering DeleteEntity method ($module, $return_module, $record, $return_id)");
 	if (!empty($record)) {
-		if (getSalesEntityType($record)!=$module) {
+		$setype = getSalesEntityType($record);
+		if ($setype != $module and !($module == 'cbCalendar' and $setype == 'Calendar')) {
 			return array(true,getTranslatedString('LBL_PERMISSION'));
 		}
 		if ($module != $return_module && !empty($return_module) && !empty($return_id)) {
