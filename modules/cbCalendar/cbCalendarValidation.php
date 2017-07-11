@@ -68,13 +68,17 @@ if (empty($screen_values['action']) and !empty($screen_values['record'])) { // D
 	}
 }
 
-$v = new cbValidator($screen_values);
-$v->rule('required', 'dtstart');
-$v->rule('required', 'dtend');
-$v->rule('dateAfter', 'dtend', $screen_values['dtstart'])->label(getTranslatedString('Due Date','cbCalendar'));
-if ($v->validate()) {
+if (isset($screen_values['action']) and $screen_values['action'] == 'MassEditSave') {
 	echo '%%%OK%%%';
 } else {
-	// Errors
-	echo Validations::formatValidationErrors($v->errors(),'cbCalendar');
+	$v = new cbValidator($screen_values);
+	$v->rule('required', 'dtstart');
+	$v->rule('required', 'dtend');
+	$v->rule('dateAfter', 'dtend', $screen_values['dtstart'])->label(getTranslatedString('Due Date','cbCalendar'));
+	if ($v->validate()) {
+		echo '%%%OK%%%';
+	} else {
+		// Errors
+		echo Validations::formatValidationErrors($v->errors(),'cbCalendar');
+	}
 }
