@@ -521,6 +521,16 @@ class Emails extends CRMEntity {
 		$this->db->pquery('UPDATE vtiger_crmentity SET modifiedtime = ? WHERE crmid = ?', array(date('y-m-d H:i:d'), $id));
 	}
 
+	function getListButtons($app_strings) {
+		global $currentModule;
+		$list_buttons = Array();
+
+		if (isPermitted($currentModule, 'Delete', '') == 'yes')
+			$list_buttons['del'] = $app_strings['LBL_MASS_DELETE'];
+		unset($list_buttons['mass_edit']);
+		return $list_buttons;
+	}
+
 }
 
 /** Function to get the emailids for the given ids form the request parameters

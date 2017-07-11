@@ -8,6 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 global $currentModule, $rstart;
+$nonSupportedMassEdit = array('Emails');
 
 $focus = CRMEntity::getInstance($currentModule);
 
@@ -23,12 +24,12 @@ if(isset($_REQUEST['start']) && $_REQUEST['start']!=''){
 	$rstart = '&start=' . urlencode(vtlib_purify($_REQUEST['start']));
 }
 
-if(isset($idlist)) {
+if (isset($idlist)) {
 	$recordids = explode(';', $idlist);
-	for($index = 0; $index < count($recordids); ++$index) {
+	for ($index = 0; $index < count($recordids); ++$index) {
 		$recordid = $recordids[$index];
-		if($recordid == '') continue;
-		if(isPermitted($currentModule,'EditView',$recordid) == 'yes') {
+		if ($recordid == '' or in_array(getSalesEntityType($recordid), $nonSupportedMassEdit)) continue;
+		if (isPermitted($currentModule,'EditView',$recordid) == 'yes') {
 			// Save each module record with update value.
 			$focus->retrieve_entity_info($recordid, $currentModule);
 			$focus->mode = 'edit';
