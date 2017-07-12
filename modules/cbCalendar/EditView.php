@@ -36,15 +36,15 @@ if ($record and cbCalendar::getCalendarActivityType($record)=='Emails') {
 
 if (empty($record)) {
 	if (empty($_REQUEST['dtend'])) {
-		if (isset($_REQUEST['activitytype'])) {
-			if ($_REQUEST['activitytype']=='Call') {
-				$duration = GlobalVariable::getVariable('Calendar_call_default_duration', 5, 'cbCalendar');
-			} else {
-				$duration = GlobalVariable::getVariable('Calendar_other_default_duration', 1, 'cbCalendar') * 60;
-			}
-			$date = new DateTimeField(date('Y-m-d H:i:s',mktime(date('H'),date('i')+$duration)));
-			$_REQUEST['dtend'] = substr($date->getDisplayDateTimeValue(),0,16);
+		if (isset($_REQUEST['activitytype']) and $_REQUEST['activitytype']=='Call') {
+			$duration = GlobalVariable::getVariable('Calendar_call_default_duration', 5, 'cbCalendar');
+		} else {
+			$duration = GlobalVariable::getVariable('Calendar_other_default_duration', 1, 'cbCalendar') * 60;
 		}
+		$stdate = new DateTimeField();
+		$startparts = $date->getDBInsertDateTimeValueComponents();
+		$date = new DateTimeField(date('Y-m-d H:i:s',mktime($startparts['hour'],$startparts['minute']+$duration,$startparts['second'],$startparts['month'],$startparts['day'],$startparts['year'])));
+		$_REQUEST['dtend'] = substr($date->getDisplayDateTimeValue(),0,16);
 	}
 }
 
