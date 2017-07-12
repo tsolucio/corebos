@@ -45,7 +45,7 @@ class VTExpressionsManager{
 			'next_date' => "get_nextdate(startDate,days,holidays,include_weekend)", 'next_date_laborable' => "get_nextdatelaborable(startDate,days,holidays,saturday_laborable)",
 			'substring' => 'substring(stringfield,start,end)', 'uppercase'=>'uppercase(stringfield)', 'lowercase'=>'lowercase(stringfield)', 'uppercasefirst'=>'uppercasefirst(stringfield)',
 			'uppercasewords'=>'uppercasewords(stringfield)', 'round' => 'round(numericfield,decimals)', 'ceil' => 'ceil(numericfield)', 'floor' => 'floor(numericfield)',
-			'getCurrentUserID' => 'getCurrentUserID()','getCurrentUserName' => 'getCurrentUserName({full})',
+			'getCurrentUserID' => 'getCurrentUserID()','getCurrentUserName' => 'getCurrentUserName({full})','getCurrentUserField' => 'getCurrentUserField(fieldname)',
 			'getLatitude' => 'getLatitude(address)', 'getLongitude' => 'getLongitude(address)',
 			'getGEODistance' => 'getGEODistance(address_from,address_to)',
 			'getGEODistanceFromCompanyAddress' => 'getGEODistanceFromCompanyAddress(address)',

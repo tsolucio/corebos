@@ -51,6 +51,7 @@ class VTFieldExpressionEvaluater{
 				'floor' => '__vt_floor',
 				'getCurrentUserID' => '__getCurrentUserID',
 				'getCurrentUserName' => '__getCurrentUserName',
+				'getCurrentUserField' => '__getCurrentUserField',
 				'getLatitude' => '__cb_getLatitude',
 				'getLongitude' => '__cb_getLongitude',
 				'getGEODistance' => '__cb_getGEODistance',
