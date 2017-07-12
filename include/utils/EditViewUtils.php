@@ -151,22 +151,18 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			if ($generatedtype != 2) {
 				$date = new DateTimeField();
 				$disp_value = substr($date->getDisplayDateTimeValue(),0,16);
+				list($void,$curr_time) = explode(' ',$disp_value);
 			} else {
-				$disp_value = '';
+				$disp_value = $curr_time = '';
 			}
 		} else {
 			$date = new DateTimeField($value);
 			$disp_value = substr($date->getDisplayDateTimeValue(),0,16);
+			list($void,$curr_time) = explode(' ',$disp_value);
 		}
 		$value = $disp_value;
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$date_format = parse_calendardate($app_strings['NTC_DATE_FORMAT']).' '.($current_user->hour_format=='24' ? '%H' : '%I').':%M';
-		if(!empty($curr_time)) {
-			$curr_time = DateTimeField::convertToUserTimeZone($curr_time);
-			$curr_time = $curr_time->format('H:i');
-		} else {
-			$curr_time = '';
-		}
 		$fieldvalue[] = array($disp_value => $curr_time);
 		$fieldvalue[] = array($date_format=>$current_user->date_format.' '.$current_user->hour_format);
 	}
