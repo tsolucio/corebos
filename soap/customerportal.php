@@ -285,6 +285,12 @@ $server->register(
 	$NAMESPACE);
 
 $server->register(
+	'get_pdfmaker_pdf',
+	array('id'=>'xsd:string','block'=>'xsd:string','contactid'=>'xsd:string','sessionid'=>'xsd:string','language'=>'xsd:string'),
+	array('return'=>'tns:field_datalist_array'),
+	$NAMESPACE);
+
+$server->register(
 	'get_filecontent_detail',
 	array('id'=>'xsd:string','folderid'=>'xsd:string','block'=>'xsd:string','contactid'=>'xsd:string','sessionid'=>'xsd:string'),
 	array('return'=>'tns:get_ticket_attachments_array'),
@@ -1974,6 +1980,72 @@ function get_pdf($id,$block,$customerid,$sessionid)
 		$filecontents = "failure";
 	}
 	$log->debug("Exiting customer portal function get_pdf");
+	return $filecontents;
+}
+
+function get_pdfmaker_pdf($id,$block,$customerid,$sessionid,$language) {
+	if(!file_exists("modules/PDFMaker/checkGenerate.php"))
+		return array("failure");
+
+	global $adb, $vtiger_current_version, $site_URL, $current_user,$log,$default_language;
+	global $currentModule,$mod_strings,$app_strings,$app_list_strings;
+	$log->debug("Entering customer portal function get_pdfmaker_pdf");
+
+	if(!validateSession($customerid,$sessionid))
+		return array("failure");
+
+	require_once("config.inc.php");
+	$current_user = Users::getActiveAdminUser();
+
+	$currentModule = $block;
+	$current_language = $default_language;
+	$app_strings = return_application_language($current_language);
+	$app_list_strings = return_app_list_strings_language($current_language);
+	$mod_strings = return_module_language($current_language, $currentModule);
+
+	$sql = "SELECT a.templateid
+		FROM vtiger_pdfmaker AS a
+		INNER JOIN vtiger_pdfmaker_settings AS b USING(templateid)
+		WHERE a.module=? AND is_portal='1'";
+	$params = array($currentModule);
+	$result = $adb->pquery($sql, $params);
+	$templateid = $adb->query_result($result,0,"templateid");
+	if ($templateid == "")
+		return array("failure");
+
+	$_REQUEST['relmodule']= $block;
+	$_REQUEST['record']= $id;
+	$_REQUEST['commontemplateid']= $templateid;
+	$_REQUEST['is_portal']= 'true';
+
+	if (file_exists("modules/".$block."/language/".$language.".lang.php"))
+		$_REQUEST['language'] = $language;
+	else
+		$_REQUEST['language'] = "en_us";
+
+	include("modules/PDFMaker/checkGenerate.php");
+
+	if (isset($_SESSION["portal_pdf_name"])) {
+		$filenamewithpath = $_SESSION["portal_pdf_name"];
+		//expected format is cache/<timestamp>/filename.pdf
+		$tmpArr = explode("/", $filenamewithpath);
+		$timestamp = $tmpArr[1];
+		$filename = $tmpArr[2];
+		$filecontents[] = $filename;
+		unset($_SESSION["portal_pdf_name"]);
+
+		if (file_exists($filenamewithpath) && (filesize($filenamewithpath) > 0)) {
+			$filecontents[] = base64_encode(file_get_contents($filenamewithpath));
+			unlink($filenamewithpath);
+			rmdir("cache/".$timestamp); // cache is given as a string for purpose because we expect to have a pdf file in that folder
+		} else {
+			return array("failure");
+		}
+	} else {
+		return array("failure");
+	}
+
+	$log->debug("Exiting customer portal function get_pdfmaker_pdf");
 	return $filecontents;
 }
 
