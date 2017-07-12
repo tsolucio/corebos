@@ -60,8 +60,88 @@ class DateTimeField {
 		return $this->getDBInsertDateValue($user) . ' ' . $this->getDBInsertTimeValue($user);
 	}
 
+	public function getDBInsertDateTimeValueComponents($user = null) {
+		global $current_user;
+		if (empty($user)) {
+			$user = $current_user;
+		}
+
+		$format = $user->date_format;
+		if (empty($format)) {
+			$format = 'dd-mm-yyyy';
+		}
+		$datetime = $this->getDBInsertDateTimeValue($user);
+		if (strpos($this->datetime,' ')>0) {
+			list($date,$time) = explode(' ', $datetime);
+		} else {
+			$date = $datetime;
+			$time = '';
+		}
+		list($y, $m, $d) = explode('-', $date);
+		if (strlen($y) != 4) {
+			if ($format == 'dd-mm-yyyy') {
+				list($d, $m, $y) = explode('-', $date);
+			} elseif ($format == 'mm-dd-yyyy') {
+				list($m, $d, $y) = explode('-', $date);
+			} elseif ($format == 'yyyy-mm-dd') {
+				list($y, $m, $d) = explode('-', $date);
+			}
+		}
+		$components = array(
+			'year' => $y,
+			'month' => $m,
+			'day' => $d,
+		);
+
+		$tcomponents = explode(':',$time);
+		if (isset($tcomponents[0])) $components['hour'] = $tcomponents[0];
+		if (isset($tcomponents[1])) $components['minute'] = $tcomponents[1];
+		if (isset($tcomponents[2])) $components['second'] = $tcomponents[2];
+		return $components;
+	}
+
 	public function getDisplayDateTimeValue ($user = null) {
 		return $this->getDisplayDate($user) . ' ' . $this->getDisplayTime($user);
+	}
+
+	public function getDisplayDateTimeValueComponents($user = null) {
+		global $current_user;
+		if (empty($user)) {
+			$user = $current_user;
+		}
+
+		$format = $user->date_format;
+		if (empty($format)) {
+			$format = 'dd-mm-yyyy';
+		}
+		$datetime = $this->getDisplayDateTimeValue($user);
+		if (strpos($this->datetime,' ')>0) {
+			list($date,$time) = explode(' ', $datetime);
+		} else {
+			$date = $datetime;
+			$time = '';
+		}
+		list($y, $m, $d) = explode('-', $date);
+		if (strlen($y) != 4) {
+			if ($format == 'dd-mm-yyyy') {
+				list($d, $m, $y) = explode('-', $date);
+			} elseif ($format == 'mm-dd-yyyy') {
+				list($m, $d, $y) = explode('-', $date);
+			} elseif ($format == 'yyyy-mm-dd') {
+				list($y, $m, $d) = explode('-', $date);
+			}
+		}
+		$components = array(
+			'year' => $y,
+			'month' => $m,
+			'day' => $d,
+		);
+
+		$tcomponents = explode(':',$time);
+		if (isset($tcomponents[0])) $components['hour'] = $tcomponents[0];
+		if (isset($tcomponents[1])) $components['minute'] = $tcomponents[1];
+		if (isset($tcomponents[2])) $components['second'] = $tcomponents[2];
+		return $components;
 	}
 
 	/**
