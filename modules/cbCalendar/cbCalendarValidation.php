@@ -38,6 +38,15 @@ if ((empty($screen_values['dtstart']) or empty($screen_values['dtend'])) and !em
 		$dt = new DateTimeField($screen_values['dtend']);
 		$screen_values['dtend'] = $dt->getDBInsertDateTimeValue();
 	}
+} else {
+	if (!empty($screen_values['dtstart'])) {
+		$dt = new DateTimeField($screen_values['dtstart']);
+		$screen_values['dtstart'] = $dt->getDBInsertDateTimeValue();
+	}
+	if (!empty($screen_values['dtend'])) {
+		$dt = new DateTimeField($screen_values['dtend']);
+		$screen_values['dtend'] = $dt->getDBInsertDateTimeValue();
+	}
 }
 
 if (empty($screen_values['action']) and !empty($screen_values['record'])) { // DetailView Edit
