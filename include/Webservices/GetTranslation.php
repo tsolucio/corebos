@@ -54,13 +54,13 @@ function vtws_gettranslation($totranslate, $portal_language, $module, $user){
 
 	$translated=array();
 	foreach ($totranslate as $key=>$str) {
-		if ($mod_strings[$str] != '')
+		if (!empty($mod_strings[$str]))
 			$tr = $mod_strings[$str];
-		elseif ($app_strings[$str] != '')
+		elseif (!empty($app_strings[$str]))
 			$tr = $app_strings[$str];
-		elseif ($mod_strings[$key] != '')
+		elseif (!empty($mod_strings[$key]))
 			$tr = $mod_strings[$key];
-		elseif ($app_strings[$key] != '')
+		elseif (!empty($app_strings[$key]))
 			$tr = $app_strings[$key];
 		else
 			$tr = $str;
