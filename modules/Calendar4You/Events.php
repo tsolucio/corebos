@@ -254,7 +254,7 @@ foreach($Users_Ids AS $userid) {
 			$for_me = false;
 			$add_more_info = false;
 			$event = $activitytypeid;
-			$into_title = isset($row["subject"]) ? $row["subject"] : (isset($row[$subject]) ? $row[$subject] : getTranslatedString('LBL_NONE'));
+			$into_title = isset($row['subject']) ? vtlib_purify($row['subject']) : (isset($row[$subject]) ? vtlib_purify($row[$subject]) : getTranslatedString('LBL_NONE'));
 			if ($detailview_permissions) {
 				if (($Calendar4You->view_all && $Calendar4You->edit_all) || ($userid == $current_user->id || (isset($row['visibility']) and $row['visibility'] == 'Public') || in_array($userid,$ParentUsers) || $activitytypeid == "invite")) {
 					if (isset($Showed_Field[$event]))
