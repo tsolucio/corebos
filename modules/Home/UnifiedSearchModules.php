@@ -21,9 +21,20 @@ if(!empty($_SESSION['__UnifiedSearch_SelectedModules__']) && is_array($_SESSION[
 	}
 }
 
+$doNotSearchThese = array('Dashboard','Home','Calendar','Events','Rss','Reports','Portal','Webmails','Users','ConfigEditor','Import','MailManager','Mobile','ModTracker',
+	'PBXManager','VtigerBackup','WSAPP','cbupdater','CronTasks','RecycleBin','Tooltip','Webforms','Calendar4You','GlobalVariable','cbMap','evvtMenu','cbAuditTrail',
+	'cbLoginHistory','cbtranslation');
+$doNotSearchTheseTabids = array();
+foreach ($doNotSearchThese as $mname) {
+	$tabid = getTabid($mname);
+	if (!empty($tabid)) {
+		$doNotSearchTheseTabids[] = $tabid;
+	}
+}
 $allowed_modules = array();
-$sql = 'select distinct vtiger_field.tabid,name from vtiger_field inner join vtiger_tab on vtiger_tab.tabid=vtiger_field.tabid where vtiger_tab.tabid not in (16,29) and vtiger_tab.presence != 1 and vtiger_field.presence in (0,2)';
-$moduleres = $adb->query($sql);
+$sql = 'select distinct vtiger_field.tabid,name from vtiger_field inner join vtiger_tab on vtiger_tab.tabid=vtiger_field.tabid
+	where vtiger_tab.tabid not in ('.generateQuestionMarks($doNotSearchTheseTabids).') and vtiger_tab.presence != 1 and vtiger_field.presence in (0,2)';
+$moduleres = $adb->pquery($sql,array($doNotSearchTheseTabids));
 while($modulerow = $adb->fetch_array($moduleres)) {
 	if(is_admin($current_user) || isPermitted($modulerow['name'], 'DetailView') == 'yes') {
 		$modulename = $modulerow['name'];
@@ -45,5 +56,4 @@ $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('ALLOWED_MODULES', $allowed_modules);
 
 $smarty->display('UnifiedSearchModules.tpl');
-
 ?>
