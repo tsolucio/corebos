@@ -37,7 +37,7 @@ class DateTimeField {
 		$log->debug("Entering getDBInsertDateValue(" . $this->datetime . ") method ...");
 		$value = explode(' ', $this->datetime);
 		if (count($value) == 2) {
-			$value[0] = self::convertToUserFormat($value[0]);
+			$value[0] = self::convertToUserFormat($value[0], $user);
 		}
 
 		$insert_time = '';
@@ -309,7 +309,12 @@ class DateTimeField {
                             $hour = '00:00';
                         }
                         if($hour >= '24:00') $time = $date.' 00:00';
-			$myDateTime = new DateTime($time, $sourceTimeZone);
+			try {
+				$myDateTime = new DateTime($time, $sourceTimeZone);
+			} catch (Exception $e) {
+				$cleantime = self::sanitizeDate($time, '');
+				$myDateTime = new DateTime($cleantime, $sourceTimeZone);
+			}
 
 			// convert this to target timezone using the DateTimeZone object
 			$targetTimeZone = new DateTimeZone($targetTimeZoneName);
