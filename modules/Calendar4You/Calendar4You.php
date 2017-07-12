@@ -135,6 +135,7 @@ public function setgoogleaccessparams($userid){
 
         $colorHarmony = new colorHarmony();
 
+		$sortusersby = GlobalVariable::getVariable('Calendar_sort_users_by','first_name, last_name');
 		if ($this->view_all) {
 			$calshowinactiveusers = GlobalVariable::getVariable('Calendar_Show_Inactive_Users',1);
 			if ($calshowinactiveusers) {
@@ -142,7 +143,6 @@ public function setgoogleaccessparams($userid){
 			} else {
 				$sqllshowinactiveusers = "and status='Active'";
 			}
-			$sortusersby = GlobalVariable::getVariable('Calendar_sort_users_by','first_name, last_name');
 			$query = "SELECT * FROM vtiger_users WHERE deleted=0 $sqllshowinactiveusers ORDER BY $sortusersby";
 			$params = array();
 		} else {
@@ -161,7 +161,7 @@ public function setgoogleaccessparams($userid){
 					  vtiger_users.first_name as first_name ,vtiger_users.last_name as last_name from vtiger_tmp_write_user_sharing_per inner join vtiger_users on vtiger_users.id=vtiger_tmp_write_user_sharing_per.shareduserid where vtiger_tmp_write_user_sharing_per.userid=? and vtiger_tmp_write_user_sharing_per.tabid=?
                       union
                       select status as status, id as id,user_name as user_name,first_name,last_name from vtiger_users 
-                      inner join vtiger_sharedcalendar on vtiger_sharedcalendar.userid = vtiger_users.id where sharedid=?";
+                      inner join vtiger_sharedcalendar on vtiger_sharedcalendar.userid = vtiger_users.id where sharedid=? ORDER BY $sortusersby";
 			$params = array($current_user->id, $current_user_parent_role_seq."::%", $current_user->id, $this->tabid, $current_user->id);
         }
         $result = $this->db->pquery($query,$params);
