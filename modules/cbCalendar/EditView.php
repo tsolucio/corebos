@@ -35,6 +35,18 @@ if ($record and cbCalendar::getCalendarActivityType($record)=='Emails') {
 } else {
 
 if (empty($record)) {
+	if (isset($_REQUEST['Module_Popup_Edit']) and $_REQUEST['Module_Popup_Edit']==1) {
+		if(!empty($_REQUEST['dtstart'])) {
+			$date = new DateTimeField($_REQUEST['dtstart']);
+			$isodate = $date->getDBInsertDateTimeValue();
+			$_REQUEST['dtstart'] = $isodate;
+		}
+		if(!empty($_REQUEST['dtend'])) {
+			$date = new DateTimeField($_REQUEST['dtend']);
+			$isodate = $date->getDBInsertDateTimeValue();
+			$_REQUEST['dtend'] = $isodate;
+		}
+	}
 	if (empty($_REQUEST['dtend'])) {
 		if (isset($_REQUEST['activitytype']) and $_REQUEST['activitytype']=='Call') {
 			$duration = GlobalVariable::getVariable('Calendar_call_default_duration', 5, 'cbCalendar');
