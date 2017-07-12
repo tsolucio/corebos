@@ -1356,7 +1356,8 @@ class CRMEntity {
 	function trash($module, $id) {
 		global $log, $current_user, $adb;
 
-		if (getSalesEntityType($id)!=$module) { // security
+		$setype = getSalesEntityType($id);
+		if ($setype != $module and !($module == 'cbCalendar' and $setype == 'Calendar')) { // security
 			return false;
 		}
 		require_once("include/events/include.inc");
