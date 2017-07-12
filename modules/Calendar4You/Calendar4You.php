@@ -131,9 +131,9 @@ public function setgoogleaccessparams($userid){
 		include_once('modules/Calendar4You/class/color_converter.class.php');
 		include_once('modules/Calendar4You/class/color_harmony.class.php');
 
-        if (count($this->View) > 0) $load_ch = true; else $load_ch = false;
+		if (count($this->View) > 0) $load_ch = true; else $load_ch = false;
 
-        $colorHarmony = new colorHarmony();
+		$colorHarmony = new colorHarmony();
 
 		$sortusersby = GlobalVariable::getVariable('Calendar_sort_users_by','first_name, last_name');
 		if ($this->view_all) {
@@ -151,44 +151,43 @@ public function setgoogleaccessparams($userid){
 			require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
 			require('user_privileges/user_privileges_'.$current_user->id.'.php');
 
-            $query = "select status as status, id as id,user_name as user_name,first_name,last_name from vtiger_users where id=? 
-                      union 
-                      select status as status, vtiger_user2role.userid as id,vtiger_users.user_name as user_name ,
-					  vtiger_users.first_name as first_name ,vtiger_users.last_name as last_name
-					  from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like ? 
-                      union
-					  select status as status, shareduserid as id,vtiger_users.user_name as user_name,
-					  vtiger_users.first_name as first_name ,vtiger_users.last_name as last_name from vtiger_tmp_write_user_sharing_per inner join vtiger_users on vtiger_users.id=vtiger_tmp_write_user_sharing_per.shareduserid where vtiger_tmp_write_user_sharing_per.userid=? and vtiger_tmp_write_user_sharing_per.tabid=?
-                      union
-                      select status as status, id as id,user_name as user_name,first_name,last_name from vtiger_users 
-                      inner join vtiger_sharedcalendar on vtiger_sharedcalendar.userid = vtiger_users.id where sharedid=? ORDER BY $sortusersby";
+			$query = "select status as status, id as id,user_name as user_name,first_name,last_name from vtiger_users where id=?
+				union
+				select status as status, vtiger_user2role.userid as id,vtiger_users.user_name as user_name, vtiger_users.first_name as first_name ,vtiger_users.last_name as last_name
+					from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like ?
+				union
+				select status as status, shareduserid as id,vtiger_users.user_name as user_name, vtiger_users.first_name as first_name ,vtiger_users.last_name as last_name
+					from vtiger_tmp_write_user_sharing_per inner join vtiger_users on vtiger_users.id=vtiger_tmp_write_user_sharing_per.shareduserid where vtiger_tmp_write_user_sharing_per.userid=? and vtiger_tmp_write_user_sharing_per.tabid=?
+				union
+				select status as status, id as id,user_name as user_name,first_name,last_name from vtiger_users
+					inner join vtiger_sharedcalendar on vtiger_sharedcalendar.userid = vtiger_users.id where sharedid=? ORDER BY $sortusersby";
 			$params = array($current_user->id, $current_user_parent_role_seq."::%", $current_user->id, $this->tabid, $current_user->id);
-        }
-        $result = $this->db->pquery($query,$params);
+		}
+		$result = $this->db->pquery($query,$params);
 
-        $return_data = Array();
+		$return_data = Array();
 		$num_rows = $this->db->num_rows($result);
 
-		for($i=0;$i < $num_rows; $i++) {
+		for ($i=0;$i < $num_rows; $i++) {
 			$userid = $this->db->query_result($result,$i,'id');
-            $user_name = $this->db->query_result($result,$i,'user_name');
+			$user_name = $this->db->query_result($result,$i,'user_name');
 			$first_name = $this->db->query_result($result,$i,'first_name');
-            $last_name = $this->db->query_result($result,$i,'last_name');
-            $status = $this->db->query_result($result,$i,'status');
-            
-            if($this->CheckUserPermissions($userid) === false)
-                continue;
-            
-            $User_Colors = getEColors("user",$userid);
-            $User_Colors_Palette = $colorHarmony->Monochromatic($User_Colors["bg"]); 
-            
-            if (!$load_ch || !empty($this->View["2"][$userid])) $user_checked = true; else $user_checked = false;
-            
-            $user_array = array("id"=> $userid, "firstname" => $first_name, "lastname" => $last_name, "fullname" => trim($first_name." ".$last_name), "color" => $User_Colors_Palette[1], "textColor" => $User_Colors["text"], "title_color" => $User_Colors_Palette[0], "status" => $status, "checked"=>$user_checked);			
+			$last_name = $this->db->query_result($result,$i,'last_name');
+			$status = $this->db->query_result($result,$i,'status');
+
+			if ($this->CheckUserPermissions($userid) === false)
+				continue;
+
+			$User_Colors = getEColors("user",$userid);
+			$User_Colors_Palette = $colorHarmony->Monochromatic($User_Colors["bg"]);
+
+			if (!$load_ch || !empty($this->View["2"][$userid])) $user_checked = true; else $user_checked = false;
+
+			$user_array = array("id"=> $userid, "firstname" => $first_name, "lastname" => $last_name, "fullname" => trim($first_name." ".$last_name), "color" => $User_Colors_Palette[1], "textColor" => $User_Colors["text"], "title_color" => $User_Colors_Palette[0], "status" => $status, "checked"=>$user_checked);
 			$return_data [$userid]= $user_array;
-            
-            unset($User_Colors);
-            unset($User_Colors_Palette);
+
+			unset($User_Colors);
+			unset($User_Colors_Palette);
 		}
 
 		return $return_data;

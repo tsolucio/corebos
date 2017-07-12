@@ -91,7 +91,6 @@ class ClickATellREST implements ISMSProvider {
 		$httpClient->setBody(json_encode($params));
 		$response = $httpClient->doPost(false);
 		$rsp = json_decode($response,true);
-		global $log;$log->fatal($rsp);
 		$results = array();
 		if (empty($rsp['error'])) {
 			$responseLines = $rsp['messages'];

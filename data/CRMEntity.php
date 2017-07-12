@@ -2256,7 +2256,6 @@ class CRMEntity {
 			if (isset($_REQUEST['cbcalendar_filter']) and $_REQUEST['cbcalendar_filter'] != 'all') {
 				$query .= $adb->convert2Sql(' and vtiger_activity.eventstatus=? ', array(vtlib_purify($_REQUEST['cbcalendar_filter'])));
 			}
-			global $log;$log->fatal($query);
 			$return_value = GetRelatedList($currentModule, $related_module, $other, $query, $button, $returnset);
 		}
 		if ($return_value == null)
