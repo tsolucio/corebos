@@ -73,8 +73,14 @@ class FieldInfo extends processcbMap {
 		foreach($xml->fields->field as $k=>$v) {
 			$fieldname = (String)$v->fieldname;
 			$features = array();
-			foreach($v->features->feature as $key=>$value) {
-				$features[(String)$value->name] = (String)$value->value;
+			foreach($v->features->feature as $key=>$feature) {
+				if(isset($feature->value)) {
+						  $features[(String)$feature->name] = (String)$feature->value;
+				} else {
+					foreach($feature->values->value as $key1 => $single_value) {
+						$features[(String)$feature->name][(String)$single_value->module] = (String)$single_value->value;
+					}
+				}
 			}
 			$target_fields[$fieldname] = $features;
 		}
