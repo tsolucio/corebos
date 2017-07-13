@@ -572,7 +572,7 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'string',
 	'category' => 'Application',
 	'values' => 'Valid Quote status picklist values',
-	'definition' => 'When saving an SalesOrder related to a Quote, the status of the quote will be set to the value contained in this variable. The special value "DoNotChange" will deactivate this functionality and no change will be done.',
+	'definition' => 'When saving a Sales Order related to a Quote, the status of the quote will be set to the value contained in this variable. The special value "DoNotChange" will deactivate this functionality and no change will be done.',
 ),
 'Application_ListView_MaxColumns' => array(
 	'status' => 'Implemented',
