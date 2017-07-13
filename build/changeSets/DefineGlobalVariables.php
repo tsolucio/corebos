@@ -144,7 +144,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'CustomerPortal_PDFTemplate_Quote',
 				'CustomerPortal_PDFTemplate_SalesOrder',
 				'CustomerPortal_PDFTemplate_Invoice',
-				'CustomerPortal_PDFTemplate_PurchaeOrder',
+				'CustomerPortal_PDFTemplate_PurchaseOrder',
 			);
 			$delete_these = array(
 				'preload_prototype',

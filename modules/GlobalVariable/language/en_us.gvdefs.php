@@ -882,6 +882,41 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Maximum number of records that will be synchronized in one batch when sending or receiving information from Google Contacts. The default value is 200 records.',
 ),
+'CustomerPortal_PDF'  => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Integration',
+	'values' => 'Native | PDFMaker | GenDoc',
+	'definition' => 'When using the getpdfdata webservice call, this variable indicates which PDF generation system to use. Native is the programmed PDF, PDFMaker requires that you have PDFMaker installed and GenDoc uses the OpenOffice integration.',
+),
+'CustomerPortal_PDFTemplate_Quote'  => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Integration',
+	'values' => 'ID or name of template to use',
+	'definition' => 'When the CustomerPortal_PDF variable is set to PDFMaker or GenDoc, this variable indicates which template should be used to generate Quotes PDF. If it is empty the first template found will be used.',
+),
+'CustomerPortal_PDFTemplate_SalesOrder'  => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Integration',
+	'values' => 'ID or name of template to use',
+	'definition' => 'When the CustomerPortal_PDF variable is set to PDFMaker or GenDoc, this variable indicates which template should be used to generate Sales Order PDF. If it is empty the first template found will be used.',
+),
+'CustomerPortal_PDFTemplate_Invoice'  => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Integration',
+	'values' => 'ID or name of template to use',
+	'definition' => 'When the CustomerPortal_PDF variable is set to PDFMaker or GenDoc, this variable indicates which template should be used to generate Invoice PDF. If it is empty the first template found will be used.',
+),
+'CustomerPortal_PDFTemplate_PurchaseOrder'  => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Integration',
+	'values' => 'ID or name of template to use',
+	'definition' => 'When the CustomerPortal_PDF variable is set to PDFMaker or GenDoc, this variable indicates which template should be used to generate Purchase Order PDF. If it is empty the first template found will be used.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/en_us.gvdefs.*.php',GLOB_BRACE) as $tcode) {
