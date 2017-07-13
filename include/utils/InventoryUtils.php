@@ -816,8 +816,8 @@ function getPriceDetailsForProduct($productid, $unit_price, $available='availabl
 			if ($currency_id == $product_currency_id) {
 				$is_basecurrency = true;
 			}
+			$price_details[$i]['check_value'] = false;
 			if ($cur_value == null || $cur_value == '') {
-				$price_details[$i]['check_value'] = false;
 				if	($unit_price != null) {
 					$cur_value = CurrencyField::convertFromMasterCurrency($unit_price, $actual_conversion_rate);
 				} else {
