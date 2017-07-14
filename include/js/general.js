@@ -4955,10 +4955,10 @@ function AutocompleteRelation(target, i) {
 	this.data 			= JSON.parse(target.getAttribute("data-autocomp"));
 	this.targetUL 		= document.getElementsByClassName("relation-autocomplete__target")[i];
 	this.hiddenInput	= document.getElementsByClassName("relation-autocomplete__hidden")[i];
-	this.displayFields 	= this.data.showfields.split(",");
-	this.entityName		= this.data.entityfield;
+	this.displayFields 	= this.showFields();
+	this.entityName		= this.entityField();
 	this.moduleName 	= this.data.searchmodule;
-	this.fillfields		= this.data.fillfields;
+	this.fillfields		= this.fillFields();
 	this.maxResults 	= 5;
 
 	this.targetUL.show 	= function() {
@@ -4989,6 +4989,11 @@ AutocompleteRelation.prototype.get = function(e) {
 	if (term.length > 3) {
 		this.data.term = term;
 		var acInstance = this;
+
+		this.displayFields 	= this.showFields();
+		this.entityName		= this.entityField();
+		this.fillfields		= this.fillFields();
+		acInstance.isReferenceField(e);
 
 		var r = new XMLHttpRequest();
 		r.onreadystatechange = function() {
@@ -5037,7 +5042,7 @@ AutocompleteRelation.prototype.select = function(params) {
 	var label = params.label;
 	var value = params.value;
 
-	this.inputField.value 	= label;
+	// this.inputField.value 	= label;
 	// this.hiddenInput.value 	= value;
 
 	// Housekeeping after selection
@@ -5133,11 +5138,12 @@ AutocompleteRelation.prototype.clearTargetUL = function () {
 }
 
 AutocompleteRelation.prototype.fillOtherFields = function (data) {
-
-	var fields = this.fillfields.split(",");
+	var fields = this.fillfields;
 	fields_length = fields.length
+
 	for (var i = 0; i < fields_length; i++) {
 		this_field = fields[i].split("=");
+
 		get_field_value = data.getAttribute("data-" + this_field[1] )
 
 		field_element = document.getElementsByName(this_field[0])[0];
@@ -5175,4 +5181,61 @@ AutocompleteRelation.prototype.fillAssignField = function (value) {
 
 	toggleAssignType(type);
 	return active_piclist;
+}
+
+AutocompleteRelation.prototype.isReferenceField = function (e) {
+	var current_field_name = e.target.name;
+
+	if(current_field_name.indexOf("_display") !== -1) {
+
+		var field_root_name = current_field_name.substring(0, current_field_name.indexOf("_display"))
+		var reference_type_field = document.getElementsByName(field_root_name + "_type");
+
+		if(reference_type_field.length > 0) {
+			ref_module = reference_type_field[0].value;
+			var ref_field_id = document.getElementsByName(field_root_name);
+			ref_record_id = ref_field_id[0].value;
+
+			this.data.referencefield = {module:ref_module, fieldname:field_root_name}
+			this.extendFillFields([field_root_name +"="+field_root_name, field_root_name+"_display="+field_root_name+"_display"]);
+		}
+	}
+}
+
+AutocompleteRelation.prototype.getReferenceModule = function () {
+	var current_field_name = this.inputField.name;
+	var field_root_name = current_field_name.substring(0, current_field_name.indexOf("_display"))
+	var reference_type_field = document.getElementsByName(field_root_name + "_type");
+	return reference_type_field[0].value
+}
+
+AutocompleteRelation.prototype.extendFillFields = function (other_fields) {
+	this.fillfields = this.fillfields.concat(other_fields)
+}
+
+AutocompleteRelation.prototype.showFields = function () {
+	try {
+		return this.data.showfields.split(",");
+	} catch(e) {
+		ref_module = this.getReferenceModule();
+		return this.data.showfields[ref_module].split(",");
+	}
+}
+
+AutocompleteRelation.prototype.entityField = function () {
+	if(typeof this.data.entityfield === 'string')
+		return this.data.entityfield
+	else {
+		ref_module = this.getReferenceModule();
+		return this.data.entityfield[ref_module];
+	}
+}
+
+AutocompleteRelation.prototype.fillFields = function () {
+	try {
+		return this.data.fillfields.split(",");
+	} catch(e) {
+		ref_module = this.getReferenceModule();
+		return this.data.fillfields[ref_module].split(",");
+	}
 }
