@@ -1922,13 +1922,13 @@ function QuickCreate($module) {
 	return $form_data;
 }
 
-function getUserslist($setdefval = true) {
+function getUserslist($setdefval = true, $selecteduser = '') {
 	global $log, $current_user, $module, $adb, $assigned_user_id;
 	$log->debug("Entering getUserslist() method ...");
 	require('user_privileges/user_privileges_' . $current_user->id . '.php');
 	require('user_privileges/sharing_privileges_' . $current_user->id . '.php');
-
-	if ($is_admin == false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid($module)] == 3 or $defaultOrgSharingPermission[getTabid($module)] == 0)) {
+	$tabid = getTabid($module);
+	if ($is_admin == false && $profileGlobalPermission[2] == 1 && (is_null($tabid) or $defaultOrgSharingPermission[$tabid] == 3 or $defaultOrgSharingPermission[$tabid] == 0)) {
 		$user_array = get_user_array(FALSE, "Active", $current_user->id, 'private');
 	} else {
 		$user_array = get_user_array(FALSE, "Active", $current_user->id);
@@ -1939,6 +1939,8 @@ function getUserslist($setdefval = true) {
 		foreach ($value as $username => $selected) {
 			if ($setdefval == false) {
 				$change_owner .= "<option value=$userid>" . $username . "</option>";
+			} elseif (is_numeric($selecteduser)) {
+				$change_owner .= "<option value=$userid ". ($userid==$selecteduser ? 'selected' : '') .">" . $username . "</option>";
 			} else {
 				$change_owner .= "<option value=$userid $selected>" . $username . "</option>";
 			}
