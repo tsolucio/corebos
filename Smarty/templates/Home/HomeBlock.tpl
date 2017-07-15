@@ -159,6 +159,12 @@ window.doChart{$HOME_STUFFID} = function(charttype) {ldelim}
 			backgroundColor: [{/literal}{foreach item=CVALUE name=chartvalues from=$HOME_STUFF.yaxisData}getRandomColor(){if not $smarty.foreach.chartvalues.last},{/if}{/foreach}{literal}]
 		}]
 	};
+	Chart.scaleService.updateScaleDefaults('linear', {
+		ticks: {
+			min: 0,
+			max: Math.max.apply(Math, chartDataObject.datasets[0].data)+1
+		}
+	});
 	window.schart{/literal}{$HOME_STUFFID}{literal} = new Chart(stuffchart,{
 		type: charttype,
 		data: chartDataObject,
