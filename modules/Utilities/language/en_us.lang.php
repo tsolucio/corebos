@@ -22,5 +22,8 @@ $mod_strings = array(
 	'_apiurl' => 'API URL',
 	'_clientId' => 'Client ID',
 	'_clientSecret' => 'Client API Key',
+	'2FA Activation' => 'Two Factor Authentication Activation',
+	'GoTo2FAActivation' => 'Two Factor Activation',
+	'2FA Secret Code' => '2FA Secret Code',
 );
 ?>

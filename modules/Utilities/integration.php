@@ -55,6 +55,10 @@ switch ($_REQUEST['_op']) {
 	case 'setconfighubspot':
 		include_once 'include/integrations/hubspot/settings.php';
 		break;
+	case 'getconfig2fa':
+	case 'setconfig2fa':
+		include_once 'include/integrations/2fa/settings.php';
+		break;
 	case 'getconfiggcontact':
 	case 'setconfiggcontact':
 		include_once 'include/integrations/GContacts/settings.php';

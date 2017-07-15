@@ -858,7 +858,7 @@ $GlobalVariableDefinitons = array(
 	'status' => 'Implemented',
 	'valuetype' => 'String',
 	'category' => 'Application',
-	'values' => 'SMS | EMAIL',
+	'values' => 'SMS | EMAIL | MOBILE',
 	'definition' => 'Method to send 2FA code to user',
 ),
 'Application_FirstTimeLogin_Template' => array(

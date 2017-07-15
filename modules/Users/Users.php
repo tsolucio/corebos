@@ -307,6 +307,8 @@ class Users extends CRMEntity {
 					}
 				}
 				break;
+			case 'MOBILE':
+				break;
 			case 'EMAIL':
 			default:
 				require_once('modules/Emails/mail.php');
