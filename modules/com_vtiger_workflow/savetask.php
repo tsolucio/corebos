@@ -19,13 +19,13 @@ function vtSaveTask($adb, $request){
 	$util = new VTWorkflowUtils();
 	$module = new VTWorkflowApplication("savetask");
 	$mod = return_module_language($current_language, $module->name);
-	$request = vtlib_purify($request);  // this cleans all values of the array
 	if (!$util->checkAdminAccess()) {
 		$errorUrl = $module->errorPageUrl($mod['LBL_ERROR_NOT_ADMIN']);
 		$util->redirectTo($errorUrl, $mod['LBL_ERROR_NOT_ADMIN']);
 		return;
 	}
 
+	$request = vtlib_purify($request);  // this cleans all values of the array
 	$tm = new VTTaskManager($adb);
 	if (isset($request["task_id"])) {
 		$task = $tm->retrieveTask($request["task_id"]);
@@ -53,7 +53,24 @@ function vtSaveTask($adb, $request){
 
 	$fieldNames = $task->getFieldNames();
 	foreach ($fieldNames as $fieldName) {
-		$task->$fieldName = (isset($request[$fieldName]) ? $request[$fieldName] : '');
+		if (isset($request[$fieldName])) {
+			$result = json_decode($_REQUEST[$fieldName],true);
+			if (json_last_error() === JSON_ERROR_NONE) { // JSON is valid
+				if (is_array($result)) {
+					$cleanarray = array();
+					foreach ($result as $key => $value) {
+						$cleanarray[$key] = vtlib_purify($value);
+					}
+					$task->$fieldName = json_encode($cleanarray,JSON_UNESCAPED_UNICODE);
+				} else {
+					$task->$fieldName = $request[$fieldName];
+				}
+			} else {
+				$task->$fieldName = $request[$fieldName];
+			}
+		} else {
+			$task->$fieldName = '';
+		}
 		if ($fieldName == 'calendar_repeat_limit_date') {
 			$task->$fieldName = DateTimeField::convertToDBFormat($request[$fieldName]);
 		}
