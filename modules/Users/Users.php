@@ -568,7 +568,7 @@ class Users extends CRMEntity {
 	}
 
 	function is_twofaauthenticated() {
-		$do2FA = GlobalVariable::getVariable('User_2FAAuthentication',0,'Users',Users::getActiveAdminId());
+		$do2FA = GlobalVariable::getVariable('User_2FAAuthentication',0,'Users',(empty($this->id) ? Users::getActiveAdminId() : $this->id));
 		if ($do2FA) {
 			return $this->twoFAauthenticated;
 		} else {
