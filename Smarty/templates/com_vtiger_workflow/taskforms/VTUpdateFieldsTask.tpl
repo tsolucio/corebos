@@ -14,7 +14,8 @@
 <script type="text/javascript" charset="utf-8">
     var moduleName = '{$entityName}';
     {if isset($task->field_value_mapping)}
-        var fieldvaluemapping = JSON.parse('{$task->field_value_mapping|escape:'quotes'}');
+		{assign var="fvmdoubleslashes" value=$task->field_value_mapping|replace:'\"':'\\\\"'}
+		var fieldvaluemapping = JSON.parse('{$fvmdoubleslashes|escape:'quotes'}');
     {else}
         var fieldvaluemapping = null;
     {/if}
