@@ -226,7 +226,7 @@ function get_user_array($add_blank=true, $status="Active", $assigned_user="",$pr
 						from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like ? and status='Active' union
 						select shareduserid as id,vtiger_users.user_name as user_name ,
 						vtiger_users.first_name as first_name ,vtiger_users.last_name as last_name from vtiger_tmp_write_user_sharing_per inner join vtiger_users on vtiger_users.id=vtiger_tmp_write_user_sharing_per.shareduserid where status='Active' and vtiger_tmp_write_user_sharing_per.userid=? and vtiger_tmp_write_user_sharing_per.tabid=?";
-					$params = array($current_user->id, $current_user_parent_role_seq."::%", $current_user->id, getTabid($module));
+					$params = array($current_user->id, (isset($current_user_parent_role_seq) ? $current_user_parent_role_seq : '')."::%", $current_user->id, getTabid($module));
 				}
 				else
 				{
