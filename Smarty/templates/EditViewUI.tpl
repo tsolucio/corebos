@@ -110,10 +110,9 @@
 			<td width="30%" align=left class="dvtCellInfo">
 				<input id="{$fldname}" name="{$fldname}" type="hidden" value="{$fldvalue.entityid}">
 
-
+				<div style="position: relative;">
 				{if ( isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['searchfields']) )}
 					{assign var="autocomp" value=$maindata['extendedfieldinfo'] }
-					<div style="position: relative;">
 					<input
 						id="{$fldname}_display"
 						name="{$fldname}_display"
@@ -123,12 +122,6 @@
 						autocomplete="off"
 						class="autocomplete-input"
 						data-autocomp='{$maindata["extendedfieldinfo"]|@json_encode}'>&nbsp;
-						<div id="listbox-unique-id" role="listbox" class="">
-							<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity : 0; width: 100%;" role="presentation">
-
-							</ul>
-						</div>
-					</div>
 				{else}
 					<input
 						id="{$fldname}_display"
@@ -138,11 +131,16 @@
 						style="border:1px solid #bababa;"
 						value="{$fldvalue.displayvalue}">&nbsp;
 				{/if}
-
 				<img src="{'select.gif'|@vtiger_imageurl:$THEME}" tabindex="{$vt_tab}"
 alt="{'LBL_SELECT'|@getTranslatedString}" title="{'LBL_SELECT'|@getTranslatedString}" onclick='return {$vtui10func}("{$fromlink}","{$fldname}","{$MODULE}","{if isset($ID)}{$ID}{/if}");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
 				<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}"
 alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedString}" onClick="this.form.{$fldname}.value=''; this.form.{$fldname}_display.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
+				{if ( isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['searchfields']) )}
+					<div id="listbox-unique-id" role="listbox" class="">
+						<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0; width: 100%;" role="presentation"></ul>
+					</div>
+				{/if}
+				</div>
 			</td>
 
 		{elseif $uitype eq 2}
@@ -164,9 +162,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 						class="autocomplete-input detailedViewTextBox"
 						data-autocomp='{$maindata["extendedfieldinfo"]|@json_encode}' />
 						<div id="listbox-unique-id" role="listbox" class="">
-							<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity : 0; width: 100%;" role="presentation">
-
-							</ul>
+							<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity : 0; width: 100%;" role="presentation"></ul>
 						</div>
 					</div>
 				{else}
