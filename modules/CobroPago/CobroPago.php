@@ -420,6 +420,19 @@ class CobroPago extends CRMEntity {
 		return $return_value;
 	}
 
+	function preEditCheck($request,$smarty) {
+		global $log, $app_strings;
+		$isduplicate = isset($_REQUEST['isDuplicate']) ? $_REQUEST['isDuplicate'] : null;
+		if (!$this->permissiontoedit() and $isduplicate != 'true') {
+			$log->debug("You don't have permission to edit cobropago");
+			$smarty->assign('APP', $app_strings);
+			$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
+			exit;
+		}
+		list($request,$smarty,$void) = cbEventHandler::do_filter('corebos.filter.preEditCheck', array($request,$smarty,$this));
+		return '';
+	}
+
 	/**
 	 *	This function check is this payment is paid or not, to haver permission to edit
 	**/
