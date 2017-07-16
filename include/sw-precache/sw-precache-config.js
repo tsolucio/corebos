@@ -5,7 +5,6 @@ module.exports = {
     'modules/Calendar4You/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
     'modules/Mobile/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
     'kcfinder/{adapters,css,js,themes}/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
-    'themes/{alphagrey,bluelagoon,images,softed,woodspice}/**/*.{js,css,png,PNG,jpg,gif,svg,eot,ttf,woff}',
     'include/LD/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
     'include/ckeditor/{adapters,images,lang,plugins,skins,themes}/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
     'include/ckeditor/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
