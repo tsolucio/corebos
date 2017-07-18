@@ -2192,7 +2192,7 @@ class CRMEntity {
 			$button .= '<input type="hidden" name="' . $dependentColumn . '_type" id="' . $dependentColumn . '_type" value="' . $currentModule . '">';
 			}
 			$relationconditions = '('.implode(' or ', $relconds).')';
-			$calStatus = getAssignedPicklistValues('eventstatus', $current_user->roleid, $adb);
+			$calStatus = getAssignedPicklistValues('eventstatus', $current_user->roleid, $adb, $app_strings);
 			$relid = $adb->run_query_field('select relation_id from vtiger_relatedlists where tabid='.$cur_tab_id.' and related_tabid='.$rel_tab_id,'relation_id');
 			$button .= '<select name="cbcalendar_filter" class="small"
 			 onchange="loadRelatedListBlock(\'module='.$currentModule.'&action='.$currentModule.'Ajax&file=DetailViewAjax&record='.$id.'&ajxaction=LOADRELATEDLIST&header=Activities&relation_id='.$relid.'&cbcalendar_filter=\'+this.options[this.options.selectedIndex].value+\'&actions=add&parenttab=Support\',\'tbl_'.$currentModule.'_Activities\',\''.$currentModule.'_Activities\');">
