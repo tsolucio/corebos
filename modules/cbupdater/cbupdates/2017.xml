@@ -28,4 +28,11 @@
 	<classname>fixCalendarLocationDisplayTypeValue</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Fix Calendar relations with missing modules</description>
+	<filename>build/changeSets/2017/fixCalendarRelations.php</filename>
+	<classname>fixCalendarRelations</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
