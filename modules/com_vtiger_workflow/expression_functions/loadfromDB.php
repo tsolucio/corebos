@@ -14,7 +14,7 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 global $adb;
-$wfexpfuncs = $adb->query('select funcfile from com_vtiger_workflows_expfunctions');
+$wfexpfuncs = $adb->query('select distinct funcfile from com_vtiger_workflows_expfunctions');
 while ($ffile = $adb->fetch_array($wfexpfuncs)) {
 	if (file_exists($ffile['funcfile']) and isInsideApplication($ffile['funcfile'])) {
 		include $ffile['funcfile'];
