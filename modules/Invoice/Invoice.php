@@ -216,7 +216,7 @@ class Invoice extends CRMEntity {
 		$query = 'select vtiger_invoicestatushistory.*, vtiger_invoice.invoice_no from vtiger_invoicestatushistory inner join vtiger_invoice on vtiger_invoice.invoiceid = vtiger_invoicestatushistory.invoiceid inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_invoice.invoiceid where vtiger_crmentity.deleted = 0 and vtiger_invoice.invoiceid = ?';
 		$result=$adb->pquery($query, array($id));
 		$noofrows = $adb->num_rows($result);
-
+		$header = array();
 		$header[] = $app_strings['Invoice No'];
 		$header[] = $app_strings['LBL_ACCOUNT_NAME'];
 		$header[] = $app_strings['LBL_AMOUNT'];
@@ -234,8 +234,8 @@ class Invoice extends CRMEntity {
 		//- ==> picklist field is not permitted in profile
 		//Not Accessible - picklist is permitted in profile but picklist value is not permitted
 		$error_msg = ($invoicestatus_access != 1)? getTranslatedString('LBL_NOT_ACCESSIBLE'): '-';
-
-		while($row = $adb->fetch_array($result)) {
+		$entries_list = Array();
+		while ($row = $adb->fetch_array($result)) {
 			$entries = Array();
 
 			$entries[] = $row['invoice_no'];
@@ -248,7 +248,7 @@ class Invoice extends CRMEntity {
 			$entries_list[] = $entries;
 		}
 
-		$return_data = Array('header'=>$header,'entries'=>$entries_list);
+		$return_data = Array('header'=>$header,'entries'=>$entries_list,'navigation'=>array('',''));
 		$log->debug("Exiting get_invoicestatushistory method ...");
 		return $return_data;
 	}

@@ -2006,7 +2006,7 @@ class CRMEntity {
 		$return_value = GetRelatedList($currentModule, $related_module, $other, $query, $button, $returnset);
 
 		if ($return_value == null)
-			$return_value = Array();
+			$return_value = Array('header'=>array(),'entries'=>array(),'navigation'=>array('',''));
 		$return_value['CUSTOM_BUTTON'] = $button;
 
 		return $return_value;
@@ -2128,7 +2128,7 @@ class CRMEntity {
 			$return_value = GetRelatedList($currentModule, $related_module, $other, $query, $button, $returnset);
 		}
 		if ($return_value == null)
-			$return_value = Array();
+			$return_value = Array('header'=>array(),'entries'=>array(),'navigation'=>array('',''));
 		$return_value['CUSTOM_BUTTON'] = $button;
 
 		return $return_value;
@@ -2259,7 +2259,7 @@ class CRMEntity {
 			$return_value = GetRelatedList($currentModule, $related_module, $other, $query, $button, $returnset);
 		}
 		if ($return_value == null)
-			$return_value = Array();
+			$return_value = Array('header'=>array(),'entries'=>array(),'navigation'=>array('',''));
 		$return_value['CUSTOM_BUTTON'] = $button;
 
 		return $return_value;

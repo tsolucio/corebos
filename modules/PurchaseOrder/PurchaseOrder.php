@@ -185,7 +185,7 @@ class PurchaseOrder extends CRMEntity {
 		$query = 'select vtiger_postatushistory.*, vtiger_purchaseorder.purchaseorder_no from vtiger_postatushistory inner join vtiger_purchaseorder on vtiger_purchaseorder.purchaseorderid = vtiger_postatushistory.purchaseorderid inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_purchaseorder.purchaseorderid where vtiger_crmentity.deleted = 0 and vtiger_purchaseorder.purchaseorderid = ?';
 		$result=$adb->pquery($query, array($id));
 		$noofrows = $adb->num_rows($result);
-
+		$header = Array();
 		$header[] = $app_strings['Order No'];
 		$header[] = $app_strings['Vendor Name'];
 		$header[] = $app_strings['LBL_AMOUNT'];
@@ -203,9 +203,8 @@ class PurchaseOrder extends CRMEntity {
 		//- ==> picklist field is not permitted in profile
 		//Not Accessible - picklist is permitted in profile but picklist value is not permitted
 		$error_msg = ($postatus_access != 1)? getTranslatedString('LBL_NOT_ACCESSIBLE'): '-';
-
-		while($row = $adb->fetch_array($result))
-		{
+		$entries_list = Array();
+		while ($row = $adb->fetch_array($result)) {
 			$entries = Array();
 
 			$entries[] = $row['purchaseorder_no'];
@@ -219,10 +218,11 @@ class PurchaseOrder extends CRMEntity {
 			$entries_list[] = $entries;
 		}
 
-		$return_data = Array('header'=>$header,'entries'=>$entries_list);
+		$return_data = Array('header'=>$header,'entries'=>$entries_list,'navigation'=>array('',''));
 		$log->debug("Exiting get_postatushistory method ...");
 		return $return_data;
 	}
+
 	/*
 	 * Function to get the secondary query part of a report
 	 * @param - $module primary module name
