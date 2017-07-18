@@ -19,6 +19,7 @@ $mod_strings = Array(
 
 	'Subject' => 'Subject',
 	'Start Date Time' => 'Start Date Time',
+	'End Date Time' => 'End Date Time',
 	'Time Start' => 'Time Start',
 	'End Time' => 'End Time',
 	'Due Date' => 'Due Date',

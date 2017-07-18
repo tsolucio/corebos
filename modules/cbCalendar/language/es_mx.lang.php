@@ -18,7 +18,8 @@ $mod_strings = Array(
 	'EventAdvancedOptions' => 'Información Avanzada',
 
 	'Subject' => 'Asunto',
-	'Start Date Time' => 'FechaHora Inicio',
+	'Start Date Time' => 'Fecha Hora Inicio',
+	'End Date Time' => 'Fecha Hora Fin',
 	'Time Start' => 'Hora Inicio',
 	'End Time' => 'Hora Fin',
 	'Due Date' => 'Fecha Vencimiento',

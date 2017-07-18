@@ -20,6 +20,7 @@ $mod_strings = Array(
 
 	'Subject' => 'Assunto',
 	'Start Date Time' => 'Dia e Hora de Início',
+	'End Date Time' => 'Dia e Hora de Fin',
 	'Time Start' => 'Hora Início',
 	'End Time' => 'Hora Final',
 	'Due Date' => 'Data de Vencimento',
