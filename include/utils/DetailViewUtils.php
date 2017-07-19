@@ -1780,8 +1780,11 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 		if (is_array($custfld)) {
 			$extendedfieldinfo = '';
 			if (isset($custfld[2]) and $custfld[2]==10) {
-				$fldmod_result = $adb->pquery('SELECT relmodule, status FROM vtiger_fieldmodulerel WHERE fieldid=
-					(SELECT fieldid FROM vtiger_field, vtiger_tab WHERE vtiger_field.tabid=vtiger_tab.tabid AND fieldname=? AND name=? and vtiger_field.presence in (0,2)) order by sequence',
+				$fldmod_result = $adb->pquery('SELECT relmodule, status
+						FROM vtiger_fieldmodulerel
+						INNER JOIN vtiger_tab ON vtiger_fieldmodulerel.relmodule=vtiger_tab.name and vtiger_tab.presence=0
+						WHERE fieldid=
+						(SELECT fieldid FROM vtiger_field, vtiger_tab WHERE vtiger_field.tabid=vtiger_tab.tabid AND fieldname=? AND name=? and vtiger_field.presence in (0,2) and vtiger_tab.presence=0) order by sequence',
 					Array($fieldname, $module));
 				$entityTypes = Array();
 				$parent_id = $col_fields[$fieldname];
