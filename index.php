@@ -160,6 +160,8 @@ if(isset($_SESSION["authenticated_user_id"]) && (isset($_SESSION["app_unique_key
 if (isset($_SESSION["authenticated_user_id"]) && isset($module) && $module == 'Users' && $action == 'Login') {
 	$default_action = GlobalVariable::getVariable('Application_Default_Action','index','',$_SESSION["authenticated_user_id"]);
 	$default_module = GlobalVariable::getVariable('Application_Default_Module','Home','',$_SESSION["authenticated_user_id"]);
+	$result = $adb->pquery('select tabid from vtiger_tab where name=?', array($default_module));
+	if (!$result or $adb->num_rows($result)==0) $default_module = 'Home';
 	header("Location: index.php?action=$default_action&module=$default_module");
 }
 
@@ -333,8 +335,8 @@ if(isset($action) && isset($module))
 	}
 	$currentModule = $module;
 } else {
-	// use $default_module and $default_action as set in config.php
-	// Redirect to the correct module with the correct action.  We need the URI to include these fields.
+	// use $default_module and $default_action
+	// Redirect to the correct module with the correct action. We need the URI to include these fields.
 	if(isset($_SESSION["authenticated_user_id"])){
 		$userid = $_SESSION["authenticated_user_id"];
 	}else{
@@ -342,6 +344,8 @@ if(isset($action) && isset($module))
 	}
 	$default_action = GlobalVariable::getVariable('Application_Default_Action','index','',$userid);
 	$default_module = GlobalVariable::getVariable('Application_Default_Module','Home','',$userid);
+	$result = $adb->pquery('select tabid from vtiger_tab where name=?', array($default_module));
+	if (!$result or $adb->num_rows($result)==0) $default_module = 'Home';
 	header("Location: index.php?action=$default_action&module=$default_module");
 	exit();
 }
