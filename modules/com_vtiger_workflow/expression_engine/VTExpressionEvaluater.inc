@@ -133,7 +133,11 @@ class VTFieldExpressionEvaluater{
 	function env($sym,$raw=false){
 		if($this->env) {
 			$val = $this->env->get($sym->value);
-			$module = Vtiger_Module::getInstance($this->env->moduleName);
+			if (isset($this->env->moduleName)) {
+				$module = Vtiger_Module::getInstance($this->env->moduleName);
+			} else {
+				$module = Vtiger_Module::getInstance($this->env->getModuleName());
+			}
 			$field = Vtiger_Field::getInstance($sym->value,$module);
 			if ($field and !$raw) {
 				global $adb,$log;
