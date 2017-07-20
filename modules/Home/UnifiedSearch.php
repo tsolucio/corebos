@@ -42,7 +42,7 @@ if(isset($query_string) && $query_string != ''){
 	coreBOS_Session::set('__UnifiedSearch_SelectedModules__', $search_onlyin);
 
 	$object_array = getSearchModules($search_onlyin);
-
+	uasort($object_array, function($a,$b) {return (strtolower(getTranslatedString($a,$a)) < strtolower(getTranslatedString($b,$b))) ? -1 : 1;});
 	global $adb, $current_user, $theme;
 	$image_path="themes/".$theme."/"."images/";
 
