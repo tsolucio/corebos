@@ -18,6 +18,7 @@
 		</tbody>
 	</table>
 </div>
+<script src='modules/Calendar4You/fullcalendar/locale-all.js'></script>
 <div id="event_setting" style="border:1px solid #000000;position:absolute;display:none;z-index:10000;background-color:white"></div>
 <script>
 
@@ -166,15 +167,15 @@ Calendar_Event_Types = {literal}{
          }
 
 jQuery(document).ready(function(){
-		
 	var lastView;
-        var date = new Date();
+	var date = new Date();
 	var d = date.getDate();
 	var m = date.getMonth();
 	var y = date.getFullYear();
 
     var config = {
 
+		locale: '{/literal}{$USER_LANGUAGE}{literal}',
         fixedWeekCount :false,
         theme: true,
         defaultView: '{/literal}{$DEFAULTVIEW}{literal}',

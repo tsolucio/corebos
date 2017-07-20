@@ -298,17 +298,7 @@ $dat_fmt = $current_user->date_format;
 if ($dat_fmt == '') {
 	$dat_fmt = 'dd-mm-yyyy';
 }
-switch ($dat_fmt) {
-	case 'mm-dd-yyyy':
-	case 'yyyy-mm-dd':
-		$CALENDAR_DAYMONTHFORMAT = 'M/d';
-		break;
-	case 'dd-mm-yyyy':
-	default:
-		$CALENDAR_DAYMONTHFORMAT = 'd/M';
-		break;
-}
-$smarty->assign('CALENDAR_DAYMONTHFORMAT', $CALENDAR_DAYMONTHFORMAT);
+$smarty->assign('USER_LANGUAGE', substr($current_language, 0, 2));
 $dat_fmt = str_replace("mm","MM",$dat_fmt);
 $smarty->assign('USER_DATE_FORMAT', $dat_fmt);
 $smarty->assign('Calendar_Slot_Minutes', "00:".GlobalVariable::getVariable('Calendar_Slot_Minutes', 15).":00");
