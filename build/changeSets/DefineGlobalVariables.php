@@ -165,6 +165,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'upload_maxsize',
 				'helpdesk_support_email_id',
 				'helpdesk_support_email_reply_id',
+				'helpdesk_support_name',
 				'limitpage_navigation',
 				'default_timezone',
 				'import_dir',
