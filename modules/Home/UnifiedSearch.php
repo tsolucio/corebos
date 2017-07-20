@@ -43,6 +43,16 @@ if(isset($query_string) && $query_string != ''){
 
 	$object_array = getSearchModules($search_onlyin);
 	uasort($object_array, function($a,$b) {return (strtolower(getTranslatedString($a,$a)) < strtolower(getTranslatedString($b,$b))) ? -1 : 1;});
+	$topmodules = GlobalVariable::getVariable('Application_Global_Search_TopModules', '');
+	if ($topmodules != '') {
+		$userorderedmodules = array();
+		$usertopmodules = explode(',', $topmodules);
+		foreach ($usertopmodules as $mod) {
+			$userorderedmodules[$mod] = $mod;
+			unset($object_array[$mod]);
+		}
+		$object_array = array_merge($userorderedmodules,$object_array);
+	}
 	global $adb, $current_user, $theme;
 	$image_path="themes/".$theme."/"."images/";
 

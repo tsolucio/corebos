@@ -33,9 +33,10 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Debug_Calculate_Response_Time',
 
 				'Application_Global_Search_SelectedModules',
+				'Application_Global_Search_Binary',
+				'Application_Global_Search_TopModules',
 				'Application_Storage_Directory',
 				'Application_Storage_SaveStrategy',
-				'Application_Global_Search_Binary',
 				'Application_OpenRecordInNewXOnRelatedList',
 				'Application_OpenRecordInNewXOnListView',
 				'Application_MaxFailedLoginAttempts',
