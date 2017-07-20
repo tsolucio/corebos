@@ -616,13 +616,16 @@ class HelpDesk extends CRMEntity {
 		}
 
 		$wsParentId = $entityData->get('parent_id');
-		$parentIdParts = explode('x', $wsParentId);
-		$parentId = $parentIdParts[1];
+		if (empty($wsParentId)) {
+			$parentId = 0;
+		} else {
+			$parentIdParts = explode('x', $wsParentId);
+			$parentId = $parentIdParts[1];
+		}
 		$desc = getTranslatedString('Ticket ID', $moduleName) . ' : ' . $entityId . '<br>'
-				. getTranslatedString('Ticket Title', $moduleName) . ' : ' . $temp . ' '
-				. $entityData->get('ticket_title');
+			. getTranslatedString('Ticket Title', $moduleName) . ' : ' . $temp . ' ' . $entityData->get('ticket_title');
 		$desc .= "<br><br>" . getTranslatedString('Hi', $moduleName) . " " . getParentName($parentId) . ",<br><br>"
-				. getTranslatedString('LBL_PORTAL_BODY_MAILINFO', $moduleName) . " " . $reply . " " . getTranslatedString('LBL_DETAIL', $moduleName) . "<br>";
+			. getTranslatedString('LBL_PORTAL_BODY_MAILINFO', $moduleName) . " " . $reply . " " . getTranslatedString('LBL_DETAIL', $moduleName) . "<br>";
 		$desc .= "<br>" . getTranslatedString('Ticket No', $moduleName) . " : " . $entityData->get('ticket_no');
 		$desc .= "<br>" . getTranslatedString('Status', $moduleName) . " : " . $entityData->get('ticketstatus');
 		$desc .= "<br>" . getTranslatedString('Category', $moduleName) . " : " . $entityData->get('ticketcategories');
@@ -656,14 +659,18 @@ class HelpDesk extends CRMEntity {
 		$entityId = $parts[1];
 
 		$wsParentId = $entityData->get('parent_id');
-		$parentIdParts = explode('x', $wsParentId);
-		$parentId = $parentIdParts[1];
+		if (empty($wsParentId)) {
+			$parentId = 0;
+		} else {
+			$parentIdParts = explode('x', $wsParentId);
+			$parentId = $parentIdParts[1];
+		}
 		$PORTAL_URL = GlobalVariable::getVariable('Application_Customer_Portal_URL','http://your_support_domain.tld/customerportal');
 		$portalUrl = "<a href='" . $PORTAL_URL . "/index.php?module=HelpDesk&action=index&ticketid=" . $entityId . "&fun=detail'>"
-				. getTranslatedString('LBL_TICKET_DETAILS', $moduleName) . "</a>";
+			. getTranslatedString('LBL_TICKET_DETAILS', $moduleName) . "</a>";
 		$contents = getTranslatedString('Dear', $moduleName) . " " . getParentName(parentId) . ",<br><br>";
 		$contents .= getTranslatedString('reply', $moduleName) . ' <b>' . $entityData->get('ticket_title')
-				. '</b>' . getTranslatedString('customer_portal', $moduleName);
+			. '</b>' . getTranslatedString('customer_portal', $moduleName);
 		$contents .= getTranslatedString("link", $moduleName) . '<br>';
 		$contents .= $portalUrl;
 		$contents .= '<br><br>' . getTranslatedString("Thanks", $moduleName) . '<br><br>' . getTranslatedString("Support_team", $moduleName);

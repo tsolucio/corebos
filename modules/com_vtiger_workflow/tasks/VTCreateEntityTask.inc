@@ -122,7 +122,7 @@ class VTCreateEntityTask extends VTTask {
 			$cbfrom->retrieve_entity_info($cbfromid, $cbfrommodule);
 			$cbMapidFromid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 			if ($cbMapidFromid) $cbMapid = $cbMapidFromid;
-			if ($cbMapid) {
+			if (!empty($cbMapid)) {
 				$cbMap = cbMap::getMapByID($cbMapid);
 				$newEntity->column_fields = $cbMap->Mapping($cbfrom->column_fields,$newEntity->column_fields);
 			}
