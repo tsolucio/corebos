@@ -917,6 +917,20 @@ $GlobalVariableDefinitons = array(
 	'values' => 'ID or name of template to use',
 	'definition' => 'When the CustomerPortal_PDF variable is set to PDFMaker or GenDoc, this variable indicates which template should be used to generate Purchase Order PDF. If it is empty the first template found will be used.',
 ),
+'Application_Permit_Assign_Up'  => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'In modules with private sharing privileges, permit assigning the record to any active user in the application.',
+),
+'Application_Permit_Assign_SameRole'  => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'In modules with private sharing privileges, permit assigning the record to any active user in the application with the same role as the current user.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/en_us.gvdefs.*.php',GLOB_BRACE) as $tcode) {
