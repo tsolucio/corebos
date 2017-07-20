@@ -200,41 +200,35 @@ function get_user_array($add_blank=true, $status="Active", $assigned_user="",$pr
 {
 	global $log, $current_user;
 	$log->debug("Entering get_user_array(".$add_blank.",". $status.",".$assigned_user.",".$private.") method ...");
-	if(isset($current_user) && $current_user->id != '')
-	{
+	if (isset($current_user) && $current_user->id != '') {
 		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
 		require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	}
 	static $user_array = null;
 	$module = isset($_REQUEST['module']) ? $_REQUEST['module'] : '';
 
-	if($user_array == null)
-	{
+	if ($user_array == null) {
 		require_once('include/database/PearDatabase.php');
 		$db = PearDatabase::getInstance();
 		$temp_result = Array();
 		// Including deleted users for now.
 		if (empty($status)) {
-				$query = "SELECT id, user_name from vtiger_users";
-				$params = array();
+			$query = "SELECT id, user_name from vtiger_users";
+			$params = array();
 		} else {
-				$assignUP = GlobalVariable::getVariable('Application_Permit_Assign_Up', 0, $module, $current_user->id);
-				if ($private == 'private' and empty($assignUP)) {
-					$assignBrothers = GlobalVariable::getVariable('Application_Permit_Assign_SameRole', 0, $module, $current_user->id);
-					$log->debug("Sharing is Private. Only the current user should be listed");
-					$query = "select id as id,user_name as user_name,first_name,last_name from vtiger_users where id=? and status='Active' union select vtiger_user2role.userid as id,vtiger_users.user_name as user_name ,
-						vtiger_users.first_name as first_name ,vtiger_users.last_name as last_name
-						from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like ? and status='Active' union
-						select shareduserid as id,vtiger_users.user_name as user_name ,
-						vtiger_users.first_name as first_name ,vtiger_users.last_name as last_name from vtiger_tmp_write_user_sharing_per inner join vtiger_users on vtiger_users.id=vtiger_tmp_write_user_sharing_per.shareduserid where status='Active' and vtiger_tmp_write_user_sharing_per.userid=? and vtiger_tmp_write_user_sharing_per.tabid=?";
-					$params = array($current_user->id, (isset($current_user_parent_role_seq) ? $current_user_parent_role_seq : '').(empty($assignBrothers) ? '::%' : '%'), $current_user->id, getTabid($module));
-				}
-				else
-				{
-					$log->debug("Sharing is Public. All vtiger_users should be listed");
-					$query = "SELECT id, user_name,first_name,last_name from vtiger_users WHERE status=?";
-					$params = array($status);
-				}
+			$assignUP = GlobalVariable::getVariable('Application_Permit_Assign_Up', 0, $module, $current_user->id);
+			if ($private == 'private' and empty($assignUP)) {
+				$assignBrothers = GlobalVariable::getVariable('Application_Permit_Assign_SameRole', 0, $module, $current_user->id);
+				$query = "select id as id,user_name as user_name,first_name,last_name from vtiger_users where id=? and status='Active' union select vtiger_user2role.userid as id,vtiger_users.user_name as user_name ,
+					vtiger_users.first_name as first_name ,vtiger_users.last_name as last_name
+					from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like ? and status='Active' union
+					select shareduserid as id,vtiger_users.user_name as user_name ,
+					vtiger_users.first_name as first_name ,vtiger_users.last_name as last_name from vtiger_tmp_write_user_sharing_per inner join vtiger_users on vtiger_users.id=vtiger_tmp_write_user_sharing_per.shareduserid where status='Active' and vtiger_tmp_write_user_sharing_per.userid=? and vtiger_tmp_write_user_sharing_per.tabid=?";
+				$params = array($current_user->id, (isset($current_user_parent_role_seq) ? $current_user_parent_role_seq : '').(empty($assignBrothers) ? '::%' : '%'), $current_user->id, getTabid($module));
+			} else {
+				$query = "SELECT id, user_name,first_name,last_name from vtiger_users WHERE status=?";
+				$params = array($status);
+			}
 		}
 		if (!empty($assigned_user)) {
 			$query .= " OR id=?";
@@ -245,14 +239,13 @@ function get_user_array($add_blank=true, $status="Active", $assigned_user="",$pr
 
 		$result = $db->pquery($query, $params, true, "Error filling in user array: ");
 
-		if ($add_blank==true){
+		if ($add_blank==true) {
 			// Add in a blank row
 			$temp_result[''] = '';
 		}
 
 		// Get the id and the name.
-		while($row = $db->fetchByAssoc($result))
-		{
+		while ($row = $db->fetchByAssoc($result)) {
 			$temp_result[$row['id']] = getFullNameFromArray('Users', $row);
 		}
 

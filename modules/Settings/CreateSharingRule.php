@@ -91,7 +91,7 @@ elseif($mode == 'edit')
 			}
 		}
 
-		$fromComboValues .='<option value="rs::'.$roleid.'" '.$selected.'>'.$mod_strings[LBL_ROLES_SUBORDINATES].'::'.$rolename[0].'</option>';
+		$fromComboValues .='<option value="rs::'.$roleid.'" '.$selected.'>'.$mod_strings['LBL_ROLES_SUBORDINATES'].'::'.$rolename[0].'</option>';
 	}
 
 	foreach($grpDetails as $groupid=>$groupname)
@@ -123,7 +123,7 @@ elseif($mode == 'edit')
 				$selected='selected';
 			}
 		}
-		$toComboValues .='<option value="roles::'.$roleid.'" '.$selected.'>'.$mod_strings[LBL_ROLES].'::'.$rolename[0].'</option>';
+		$toComboValues .='<option value="roles::'.$roleid.'" '.$selected.'>'.$mod_strings['LBL_ROLES'].'::'.$rolename[0].'</option>';
 	}
 
 	foreach($roleDetails as $roleid=>$rolename)
