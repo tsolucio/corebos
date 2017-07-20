@@ -317,11 +317,11 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				}
 				$field->setPicklistValues($global_variables);
 				foreach ($delete_these as $gvar) {
-					$sql = 'select * from vtiger_gvname where gvname=?';
+					$sql = 'select * from vtiger_gvname where BINARY gvname=?';
 					$result = $adb->pquery($sql, array($gvar));
 					if ($adb->num_rows($result)>0) {
 						$origPicklistID = $adb->query_result($result, 0, 'picklist_valueid');
-						$sql = 'delete from vtiger_gvname where gvname=?';
+						$sql = 'delete from vtiger_gvname where BINARY gvname=?';
 						$this->ExecuteQuery($sql, array($gvar));
 						$sql = 'delete from vtiger_role2picklist where picklistvalueid=?';
 						$this->ExecuteQuery($sql, array($origPicklistID));
