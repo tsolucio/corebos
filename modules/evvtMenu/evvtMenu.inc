@@ -65,7 +65,7 @@ function getMenuBranch($mparent) {
  * @return string
  */
 function getMenuJSON2() {
-	global $adb;
+	global $adb, $default_charset;
 	$menustructure = array(array('id'=>0, 'parent'=>'#', 'text' => 'Menu'));
 	$menurs = $adb->query("SELECT * FROM `vtiger_evvtmenu` ORDER BY mseq ASC");
 	if ($menurs and $adb->num_rows($menurs)>0) {
@@ -74,8 +74,8 @@ function getMenuJSON2() {
 				'evvtmenuid' => $menu['evvtmenuid'],
 				'mparent' =>$menu['mparent'],
 				'mtype' => $menu['mtype'],
-				'mvalue' => $menu['mvalue'],
-				'mlabel' => $menu['mlabel'],
+				'mvalue' => html_entity_decode($menu['mvalue'],ENT_QUOTES,$default_charset),
+				'mlabel' => html_entity_decode($menu['mlabel'],ENT_QUOTES,$default_charset),
 				'mvisible' => $menu['mvisible'],
 				'mpermission' => $menu['mpermission'],
 				'mseq' => $menu['mseq'],
