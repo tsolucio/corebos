@@ -173,6 +173,9 @@ class cbCalendar extends CRMEntity {
 			}
 		}
 		//Insert into cntactivity rel
+		if (empty($this->column_fields['contact_id']) and !empty($this->column_fields['cto_id'])) {
+			$this->column_fields['contact_id'] = $this->column_fields['cto_id'];
+		}
 		if (!empty($this->column_fields['contact_id'])) {
 			$ctovalue = $this->column_fields['contact_id'];
 			$listofctos = explode(';',$this->column_fields['contact_id']);

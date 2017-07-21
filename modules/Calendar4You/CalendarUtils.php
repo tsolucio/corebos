@@ -260,7 +260,7 @@ function getCalendar4YouListQuery($userid, $invites, $where = '', $type='1') {
 
 	$query .= "vtiger_contactdetails.lastname, vtiger_contactdetails.firstname, vtiger_contactdetails.contactid, vtiger_account.accountid, vtiger_account.accountname, ";
 
-	$query .= "vtiger_activity.rel_id AS parent_id,its4you_googlesync4you_events.geventid,vtiger_activity_reminder.reminder_time
+	$query .= 'vtiger_activity.rel_id AS parent_id,its4you_googlesync4you_events.geventid,vtiger_activity_reminder.reminder_time
 	FROM vtiger_activity
 	LEFT JOIN vtiger_activitycf ON vtiger_activitycf.activityid = vtiger_activity.activityid
 	LEFT JOIN vtiger_contactdetails ON vtiger_contactdetails.contactid = vtiger_activity.cto_id
@@ -269,8 +269,7 @@ function getCalendar4YouListQuery($userid, $invites, $where = '', $type='1') {
 	LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
 	LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 	LEFT JOIN vtiger_users vtiger_users2 ON vtiger_crmentity.modifiedby = vtiger_users2.id
-	LEFT JOIN vtiger_groups vtiger_groups2 ON vtiger_crmentity.modifiedby = vtiger_groups2.groupid
-	LEFT OUTER JOIN vtiger_account ON vtiger_account.accountid = vtiger_contactdetails.accountid ";
+	LEFT JOIN vtiger_groups vtiger_groups2 ON vtiger_crmentity.modifiedby = vtiger_groups2.groupid ';
 	$tabid = getTabid('cbCalendar');
 	$dependentFieldIDrs = $adb->pquery("SELECT fieldid FROM vtiger_field WHERE uitype='10' AND fieldname='rel_id' and tabid=?", array($tabid));
 	$dependentFieldRelModsrs = $adb->pquery("SELECT vtiger_entityname.*
@@ -278,7 +277,6 @@ function getCalendar4YouListQuery($userid, $invites, $where = '', $type='1') {
 		INNER JOIN vtiger_fieldmodulerel ON modulename=relmodule
 			WHERE vtiger_fieldmodulerel.fieldid = ? AND module=?", array($adb->query_result($dependentFieldIDrs, 0, 0),'cbCalendar'));
 	while ($join = $adb->fetch_array($dependentFieldRelModsrs)) {
-		if ($join['modulename']=='Accounts') continue;
 		$query .= ' LEFT OUTER JOIN ' . $join['tablename'] . ' ON vtiger_activity.rel_id = ' . $join['tablename'] . '.' . $join['entityidfield'];
 	}
 	$query .= ' ';
@@ -439,7 +437,12 @@ function transferForAddIntoTitle($type, $row, $CD) {
 	} else {
 		$queryGenerator = new QueryGenerator($CD['module'], $current_user);
 		$queryGenerator->setFields(array($CD['fieldname']));
-		$queryGenerator->addCondition('id',$row['rel_id'],'e',$queryGenerator::$AND);
+		$frs = $adb->pquery('select fieldname
+			from vtiger_field
+			inner join vtiger_fieldmodulerel on vtiger_field.fieldid = vtiger_fieldmodulerel.fieldid
+			where relmodule=? and module=?',array($CD['module'],'cbCalendar'));
+		$relfield = $adb->query_result($frs, 0, 0);
+		$queryGenerator->addCondition('id',$row[$relfield],'e',$queryGenerator::$AND);
 		$rec_query = $queryGenerator->getQuery();
 		$recinfo = $adb->pquery($rec_query,array());
 		$Cal_Data = array();
