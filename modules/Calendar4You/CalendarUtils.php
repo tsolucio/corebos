@@ -247,7 +247,7 @@ function NOPermissionDiv() {
 }
 
 function getCalendar4YouListQuery($userid, $invites, $where = '', $type='1') {
-	global $log, $current_user;
+	global $log, $current_user, $adb;
 	$log->debug("Entering getCalendar4YouListQuery(" . $userid . "," . $where . ") method ...");
 	if ($userid != "") {
 		require('user_privileges/user_privileges_' . $userid . '.php');
@@ -258,52 +258,30 @@ function getCalendar4YouListQuery($userid, $invites, $where = '', $type='1') {
 
 	$query = "SELECT distinct vtiger_activity.activityid as act_id, vtiger_crmentity.*, vtiger_activity.*, vtiger_activitycf.*, ";
 
-	if ($type == '1') $query .= "vtiger_contactdetails.lastname, vtiger_contactdetails.firstname, vtiger_contactdetails.contactid, vtiger_account.accountid, vtiger_account.accountname, ";
+	$query .= "vtiger_contactdetails.lastname, vtiger_contactdetails.firstname, vtiger_contactdetails.contactid, vtiger_account.accountid, vtiger_account.accountname, ";
 
-	$query .= "vtiger_seactivityrel.crmid AS parent_id,its4you_googlesync4you_events.geventid,vtiger_activity_reminder.reminder_time
+	$query .= "vtiger_activity.rel_id AS parent_id,its4you_googlesync4you_events.geventid,vtiger_activity_reminder.reminder_time
 	FROM vtiger_activity
-	LEFT JOIN vtiger_activitycf
-		ON vtiger_activitycf.activityid = vtiger_activity.activityid
-	LEFT JOIN vtiger_cntactivityrel
-		ON vtiger_cntactivityrel.activityid = vtiger_activity.activityid
-	LEFT JOIN vtiger_contactdetails
-		ON vtiger_contactdetails.contactid = (select vtiger_cntactivityrel.contactid
-		from vtiger_cntactivityrel
-		where vtiger_cntactivityrel.activityid = vtiger_activity.activityid limit 1)
-	LEFT JOIN vtiger_seactivityrel
-		ON vtiger_seactivityrel.activityid = vtiger_activity.activityid
-	LEFT OUTER JOIN vtiger_activity_reminder
-		ON vtiger_activity_reminder.activity_id = vtiger_activity.activityid
-	LEFT JOIN vtiger_crmentity
-		ON vtiger_crmentity.crmid = vtiger_activity.activityid
-	LEFT JOIN vtiger_users
-		ON vtiger_users.id = vtiger_crmentity.smownerid
-	LEFT JOIN vtiger_groups
-		ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-	LEFT JOIN vtiger_users vtiger_users2
-		ON vtiger_crmentity.modifiedby = vtiger_users2.id
-	LEFT JOIN vtiger_groups vtiger_groups2
-		ON vtiger_crmentity.modifiedby = vtiger_groups2.groupid
-	LEFT OUTER JOIN vtiger_account
-		ON vtiger_account.accountid = vtiger_contactdetails.accountid
-	LEFT OUTER JOIN vtiger_leaddetails
-		ON vtiger_leaddetails.leadid = vtiger_seactivityrel.crmid
-	LEFT OUTER JOIN vtiger_account vtiger_account2
-		ON vtiger_account2.accountid = vtiger_seactivityrel.crmid
-	LEFT OUTER JOIN vtiger_potential
-		ON vtiger_potential.potentialid = vtiger_seactivityrel.crmid
-	LEFT OUTER JOIN vtiger_troubletickets
-		ON vtiger_troubletickets.ticketid = vtiger_seactivityrel.crmid
-	LEFT OUTER JOIN vtiger_salesorder
-		ON vtiger_salesorder.salesorderid = vtiger_seactivityrel.crmid
-	LEFT OUTER JOIN vtiger_purchaseorder
-		ON vtiger_purchaseorder.purchaseorderid = vtiger_seactivityrel.crmid
-	LEFT OUTER JOIN vtiger_quotes
-		ON vtiger_quotes.quoteid = vtiger_seactivityrel.crmid
-	LEFT OUTER JOIN vtiger_invoice
-		ON vtiger_invoice.invoiceid = vtiger_seactivityrel.crmid
-	LEFT OUTER JOIN vtiger_campaign
-	ON vtiger_campaign.campaignid = vtiger_seactivityrel.crmid ";
+	LEFT JOIN vtiger_activitycf ON vtiger_activitycf.activityid = vtiger_activity.activityid
+	LEFT JOIN vtiger_contactdetails ON vtiger_contactdetails.contactid = vtiger_activity.cto_id
+	LEFT OUTER JOIN vtiger_activity_reminder ON vtiger_activity_reminder.activity_id = vtiger_activity.activityid
+	LEFT JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_activity.activityid
+	LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
+	LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
+	LEFT JOIN vtiger_users vtiger_users2 ON vtiger_crmentity.modifiedby = vtiger_users2.id
+	LEFT JOIN vtiger_groups vtiger_groups2 ON vtiger_crmentity.modifiedby = vtiger_groups2.groupid
+	LEFT OUTER JOIN vtiger_account ON vtiger_account.accountid = vtiger_contactdetails.accountid ";
+	$tabid = getTabid('cbCalendar');
+	$dependentFieldIDrs = $adb->pquery("SELECT fieldid FROM vtiger_field WHERE uitype='10' AND fieldname='rel_id' and tabid=?", array($tabid));
+	$dependentFieldRelModsrs = $adb->pquery("SELECT vtiger_entityname.*
+		FROM vtiger_entityname
+		INNER JOIN vtiger_fieldmodulerel ON modulename=relmodule
+			WHERE vtiger_fieldmodulerel.fieldid = ? AND module=?", array($adb->query_result($dependentFieldIDrs, 0, 0),'cbCalendar'));
+	while ($join = $adb->fetch_array($dependentFieldRelModsrs)) {
+		if ($join['modulename']=='Accounts') continue;
+		$query .= ' LEFT OUTER JOIN ' . $join['tablename'] . ' ON vtiger_activity.rel_id = ' . $join['tablename'] . '.' . $join['entityidfield'];
+	}
+	$query .= ' ';
 
 	//added to fix #5135
 	if (isset($_REQUEST['from_homepage']) && ($_REQUEST['from_homepage'] == "upcoming_activities" || $_REQUEST['from_homepage'] == "pending_activities")) {
@@ -461,7 +439,7 @@ function transferForAddIntoTitle($type, $row, $CD) {
 	} else {
 		$queryGenerator = new QueryGenerator($CD['module'], $current_user);
 		$queryGenerator->setFields(array($CD['fieldname']));
-		$queryGenerator->addCondition('id',$row['parent_id'],'e',$queryGenerator::$AND);
+		$queryGenerator->addCondition('id',$row['rel_id'],'e',$queryGenerator::$AND);
 		$rec_query = $queryGenerator->getQuery();
 		$recinfo = $adb->pquery($rec_query,array());
 		$Cal_Data = array();
