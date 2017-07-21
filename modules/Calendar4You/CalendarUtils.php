@@ -448,7 +448,10 @@ function transferForAddIntoTitle($type, $row, $CD) {
 		$trmodule = $CD['module'];
 	}
 
-	if ($CD["uitype"] == "15")
+	if ($CD['uitype'] == '10') {
+		$value = getEntityName(getSalesEntityType($Cal_Data[1]),$Cal_Data[1]);
+		$value = $value[$Cal_Data[1]];
+	} elseif ($CD['uitype'] == '15')
 		$value = getTranslatedString($Cal_Data[1],$trmodule);
 	else
 		$value = $Cal_Data[1];
