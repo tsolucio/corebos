@@ -86,8 +86,7 @@ function getMenuJSON2() {
 				'parent' => $menu['mparent'],
 				'text' => $menu['mlabel'],
 				'li_attr' => array('class'=>'jstree-drop',),
-				'a_attr' => array('onclick' => 'getMenuInfo('.$info.');',
-								'mseq' => $menu['mseq'])
+				'a_attr' => array('onclick' => 'getMenuInfo('.$info.');', 'mseq' => $menu['mseq'])
 			);
 		}
 	}

@@ -46,7 +46,7 @@ function VTCreateEntityTask($, fieldvaluemapping){
 	}
 
 	function removeFieldValueMapping(mappingno){
-	  $(format("#save_fieldvalues_%s", mappingno)).remove();
+		$(format("#save_fieldvalues_%s", mappingno)).remove();
 	}
 
 	function map(fn, list){
@@ -114,9 +114,9 @@ function VTCreateEntityTask($, fieldvaluemapping){
 		vtinst.describeObject(moduleName, handleError(function(result){
 			var parent = result;
 			var fields = parent['fields'];
-			var referenceFields = filter(function(e){
-				return e['type']['name']=='reference';},
-			  fields);
+			var referenceFields = filter(function(e) {
+					return e['type']['name']=='reference';
+				}, fields);
 			var referenceFieldModules =
 				map(
 					function(e){
@@ -125,8 +125,8 @@ function VTCreateEntityTask($, fieldvaluemapping){
 					referenceFields
 				);
 			function union(a, b){
-			  var newfields = filter(function(e){return !contains(a, e);}, b);
-			  return a.concat(newfields);
+				var newfields = filter(function(e){return !contains(a, e);}, b);
+				return a.concat(newfields);
 			}
 			var relatedModules = reduceR(union, referenceFieldModules, [parent['name']]);
 
@@ -139,12 +139,8 @@ function VTCreateEntityTask($, fieldvaluemapping){
 					var firstFailure = failures[0];
 					callback(false, firstFailure[1]);
 				}else{
-					var moduleDescriptions = map(function(e){
-						return e[1];},
-					  parameters);
-					var modules = dict(map(function(e){
-						  return [e['name'], e];},
-						moduleDescriptions));
+					var moduleDescriptions = map(function(e) { return e[1]; }, parameters);
+					var modules = dict(map(function(e) { return [e['name'], e]; }, moduleDescriptions));
 					callback(true, modules);
 				}
 			}
@@ -155,9 +151,9 @@ function VTCreateEntityTask($, fieldvaluemapping){
 		}));
 	}
 
-    function editFieldExpression(fieldValueNode, fieldType) {
+	function editFieldExpression(fieldValueNode, fieldType) {
 		editpopupobj.edit(fieldValueNode.attr('id'), fieldValueNode.val(), fieldType);
-    }
+	}
 
 	function resetFields(opType, fieldName, mappingno) {
 		defaultValue(opType.name)(opType, mappingno);
@@ -352,10 +348,10 @@ function VTCreateEntityTask($, fieldvaluemapping){
 
 	$(document).ready(function(){
 		jQuery("#editpopup").draggable({ handle: "#editpopup_draghandle" });
-        editpopupobj = fieldExpressionPopup(moduleName, $);
-        editpopupobj.setModule(moduleName);
+		editpopupobj = fieldExpressionPopup(moduleName, $);
+		editpopupobj.setModule(moduleName);
 		editpopupobj.close();
-                
+
 		validator.addValidator('validateDuplicateFields', validateDuplicateFields);
 		validator.mandatoryFields = ['summary', 'entity_type'];
 
@@ -410,9 +406,9 @@ function VTCreateEntityTask($, fieldvaluemapping){
 					}
 				});
 				if(fieldvaluemapping.length==0){
-				  var out = "";
+					var out = "";
 				}else{
-				  var out = JSON.stringify(fieldvaluemapping);
+					var out = JSON.stringify(fieldvaluemapping);
 				}
 				$("#save_fieldvaluemapping_json").val(out);
 

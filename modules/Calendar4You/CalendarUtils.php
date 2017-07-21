@@ -438,10 +438,12 @@ function getCalendar4YouNonAdminModuleAccessQuery($module, $userid) {
 function transferForAddIntoTitle($type, $row, $CD) {
 	global $log, $current_user, $adb;
 	list($CD['fieldname'],$void) = explode(':', $CD['fieldname']);
-	if ($CD["uitype"] == "66") 
+	$Col_Field = array();
+	if ($CD['uitype'] == '66' and !empty($row['parent_id'])) {
 		$Col_Field = array($CD["fieldname"]=> $row["parent_id"]);
-	else
+	} elseif (!empty($row[$CD["columnname"]])) {
 		$Col_Field = array($CD["fieldname"]=> $row[$CD["columnname"]]);
+	}
 
 	if ($CD["fieldname"] == "duration_hours") 
 		$Col_Field["duration_minutes"] = $row["duration_minutes"];
@@ -485,9 +487,9 @@ function getEventActivityMode($id) {
 	$query = "select activitytype from vtiger_activity where activityid=?";
 	$result = $adb->pquery($query, array($id));
 	$actType = $adb->query_result($result,0,'activitytype');
-	if( $actType == 'Task')	{
-		$activity_mode = $actType;	
-	} elseif($actType != 'Emails') {
+	if ($actType == 'Task') {
+		$activity_mode = $actType;
+	} elseif ($actType != 'Emails') {
 		$activity_mode = 'Events';
 	}
 	return $activity_mode;
