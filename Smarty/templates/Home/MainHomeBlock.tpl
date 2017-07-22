@@ -1,10 +1,9 @@
-
 {*<!-- this file displays a widget div - the contents of the div are loaded later usnig javascript -->*}
 {assign var="homepagedashboard_title" value='Home Page Dashboard'|@getTranslatedString:'Home'}
 {assign var="keymetrics_title" value='Key Metrics'|@getTranslatedString:'Home'}
 {assign var="stitle" value=$tablestuff.Stufftitle}
 <script type="text/javascript">var vtdashboard_defaultDashbaordWidgetTitle = '{$homepagedashboard_title}';</script>
-<div id="stuff_{$tablestuff.Stuffid}" class="MatrixLayer {if $tablestuff.Stufftitle eq $homepagedashboard_title}twoColumnWidget{/if}" style="float:left;overflow-x:hidden;overflow-y:auto;">
+<div id="stuff_{$tablestuff.Stuffid}" class="MatrixLayer {if $tablestuff.Stufftitle eq $homepagedashboard_title}twoColumnWidget{/if}" style="float:left;overflow-x:auto;overflow-y:auto;">
 	<table width="100%" cellpadding="0" cellspacing="0" class="small" style="padding-right:0px;padding-left:0px;padding-top:0px;">
 		<tr id="headerrow_{$tablestuff.Stuffid}" class="headerrow">
 			<td align="left" class="homePageMatrixHdr" style="height:30px;" nowrap width=60%><b>&nbsp;{$stitle}</b></td>

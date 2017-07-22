@@ -297,7 +297,7 @@ var alert_arr = {
 	'AFTER': 'después',
 	'ERROR_DELETING_TRY_AGAIN': 'Error eliminando. Por favor inténtalo otra vez.',
 	'LBL_ENTER_WINDOW_TITLE': 'Introduce el título de la ventana.',
-	'LBL_SELECT_ONLY_FIELDS': 'Selecciona solo dos campos.',
+	'LBL_SELECT_ONLY_FIELDS': 'Selecciona menos campos.',
 	'LBL_ENTER_RSS_URL':'Introduce la URL del RSS',
 	'LBL_ADD_HOME_WIDGET': 'No se ha podido agregar elementos a la portada! Por favor inténtalo otra vez.',
 	

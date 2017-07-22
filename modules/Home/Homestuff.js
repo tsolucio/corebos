@@ -435,6 +435,13 @@ function loadAllWidgets(widgetInfoList, batchSize){
 	}
 }
 
+var Application_ListView_MaxColumns = 12;
+GlobalVariable_getVariable('Application_ListView_MaxColumns', 12, 'Home', gVTUserID).then(function(response) {
+	var obj = JSON.parse(response);
+	Application_ListView_MaxColumns = parseInt(obj.Application_ListView_MaxColumns);
+}, function(error) {
+	Application_ListView_MaxColumns = 12;
+});
 /**
  * this function validates the form for creating a new widget
  */
@@ -490,7 +497,7 @@ function frmValidate(){
 					cnt= cnt+1;
 				}
 			}
-			if(cnt>2){
+			if (cnt>Application_ListView_MaxColumns) {
 				alert(alert_arr.LBL_SELECT_ONLY_FIELDS);
 				selVal.focus();
 				return false;
@@ -632,7 +639,7 @@ function positionDivInAccord(targetDiv,stufftitle,stufftype){
 			break;
 	}
 	var mainX = parseInt(document.getElementById("MainMatrix").style.width);
-	if(stufftitle != vtdashboard_defaultDashbaordWidgetTitle && stufftype != "DashBoard" && stufftype != "ReportCharts"){
+	if(stufftitle != vtdashboard_defaultDashbaordWidgetTitle && stufftype != "DashBoard" && stufftype != "ReportCharts" && stufftype != "Module"){
 		var dx = mainX * widgetWidth/ 100;
 	}else{
 		var dx = mainX * dashWidth / 100;

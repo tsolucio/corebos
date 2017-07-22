@@ -300,7 +300,7 @@ var alert_arr = {
 	'AFTER': 'after',
 	'ERROR_DELETING_TRY_AGAIN': 'Error while deleting. Please try again.',
 	'LBL_ENTER_WINDOW_TITLE': 'Please enter Window Title.',
-	'LBL_SELECT_ONLY_FIELDS': 'Please select only two fields.',
+	'LBL_SELECT_ONLY_FIELDS': 'Please select less fields.',
 	'LBL_ENTER_RSS_URL':'Please enter RSS URL',
 	'LBL_ADD_HOME_WIDGET': 'Unable to add homestuff! Please try again',
 

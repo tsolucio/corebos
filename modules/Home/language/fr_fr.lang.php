@@ -48,8 +48,7 @@ $mod_strings = array (
 	'LBL_HOME_STUFFTITLE' => 'Nom du bloc',
 	'LBL_HOME_SHOW' => 'Montrer',
 	'LBL_HOME_FILTERBY' => 'Filtrer par',
-	'LBL_HOME_Fields' => 'Champs à afficher<br>
-	(selectionnez-en deux)',
+	'LBL_HOME_Fields' => 'Champs à afficher',
 	'LBL_HOME_PRESSCTRL' => '(Appuyez sur "Ctrl"
 	pour en sélectionner plusieurs)',
 	'LBL_HOME_RSSURL' => 'RSS URL',
