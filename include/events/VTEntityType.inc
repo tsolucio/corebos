@@ -44,7 +44,7 @@ class VTEntityType {
 		$result = $adb->pquery("select * from vtiger_field where fieldname=? and tabid=? and vtiger_field.presence in (0,2)", array($fieldName, $this->tabId));
 		$uitype = $adb->query_result($result,0,"uitype");
 		$fieldType = new VTFieldType();
-		if (in_array($uitype, array(50, 51, 73))) {
+		if (in_array($uitype, array(51, 73))) {
 			$fieldType->type = "Related";
 			$fieldType->relatedTo = "Accounts";
 		} else if ($uitype == 71) {
