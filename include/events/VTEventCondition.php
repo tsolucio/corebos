@@ -73,7 +73,16 @@ class VTEventCondition {
 			return $obj[$field];
 		} else {
 			$func = "get".ucwords($field);
-			return $obj->$func();
+			if (method_exists($obj, $func)) {
+				return $obj->$func();
+			} else {
+				$ret = $obj->get($field);
+				if (is_null($ret)) {
+					return '';
+				} else {
+					return $ret;
+				}
+			}
 		}
 	}
 }
