@@ -42,10 +42,10 @@ class DFA {
 	protected $eot;
 	protected $eof;
 	protected $min;
-    protected $max;
-    protected $accept;
-    protected $special;
-    protected $transition;
+	protected $max;
+	protected $accept;
+	protected $special;
+	protected $transition;
 
 	protected $decisionNumber;
 
@@ -62,7 +62,7 @@ class DFA {
 	//TODO: This is a hackish way of doing a try finally, replace this by bunching up the returns.
 	//Possibly rewrite  predict. There is one more place i might need to fix, where i thought 
 	//try{}catch(ex){[work]; throw ex}; [work]; would be the same as a try finally;
-	
+
 	public function predict($input){
 		if ( $this->debug ) {
 			echo ("Enter DFA.predict for decision ".$this->decisionNumber);
@@ -79,7 +79,7 @@ class DFA {
 		$input->rewind($mark);
 		return $ret;
 	}
-	
+
 	public function _predict($input) {
 		$s = 0; // we always start at s0
 			while ( true ) {

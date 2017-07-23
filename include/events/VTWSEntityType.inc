@@ -23,42 +23,41 @@ require_once 'include/Webservices/VtigerWebserviceObject.php';
 /*
  * An implementation of VTEntityType that uses the webservices api to reflect on vtiger's types.
  */
-class VTWSEntityType{
+class VTWSEntityType {
 
-	function __construct($entityTypeName, $user){
+	function __construct($entityTypeName, $user) {
 		$describeResult = vtws_describe($entityTypeName, $user);
-		//print_r($describeResult);
 		$this->entityTypeName = $entityTypeName;
 		$this->description = $describeResult;
 	}
 
-	public static function usingGlobalCurrentUser($entityTypeName){
+	public static function usingGlobalCurrentUser($entityTypeName) {
 		global $current_user;
 		return new VTWSEntityType($entityTypeName, $current_user);
 	}
 
-	function forUser($entityTypeName, $user){
+	public static function forUser($entityTypeName, $user) {
 		return new VTWSEntityType($entityTypeName, $user);
 	}
 
-	function getTabId(){
+	function getTabId() {
 		global $adb;
-		if(!isset($this->tabId)){
+		if (!isset($this->tabId)) {
 			$result = $adb->pquery("select tabid from vtiger_tab where name=?", array($this->entityTypeName));
 			$this->tabId = $adb->query_result($result,0,"tabid");
 		}
 		return $this->tabId;
 	}
 
-	function getModuleName(){
+	function getModuleName() {
 		return $this->moduleName;
 	}
 
-	function getFieldNames(){
-		if(!isset($this->fieldNames)){
+	function getFieldNames() {
+		if (!isset($this->fieldNames)) {
 			$fields = $this->description['fields'];
 			$arr = array();
-			foreach($fields as $field){
+			foreach ($fields as $field) {
 				$arr[]=$field["name"];
 			}
 			$this->fieldNames = $arr;
@@ -66,31 +65,31 @@ class VTWSEntityType{
 		return $this->fieldNames;
 	}
 
-	function getFieldLabel($fieldName){
-		if(!isset($this->fieldLabels)){
+	function getFieldLabel($fieldName) {
+		if (!isset($this->fieldLabels)) {
 			$this->getFieldLabels();
 		}
 		return $this->fieldLabels[$fieldName];
 	}
 
-	function getFieldLabels(){
-		if(!isset($this->fieldLabels)){
+	function getFieldLabels() {
+		if (!isset($this->fieldLabels)) {
 			$fields = $this->description['fields'];
-			foreach($fields as $field){
+			foreach ($fields as $field) {
 				$this->fieldLabels[$field['name']] = $field['label'];
 			}
 		}
 		return $this->fieldLabels;
 	}
 
-	function getFieldType($fieldName){
-		if(!isset($this->fieldTypes[$fieldName])){
+	function getFieldType($fieldName) {
+		if (!isset($this->fieldTypes[$fieldName])) {
 			$fields = $this->description['fields'];
-			foreach($fields as $field){
-				if($field['name']==$fieldName){
+			foreach ($fields as $field) {
+				if ($field['name']==$fieldName) {
 					$type = $field['type'];
 					$et = new VTWSFieldType();
-					switch($type['name']){
+					switch ($type['name']) {
 						case 'reference':
 							$et->type = 'Related';
 							$et->relatedTo = $type['refersTo'];
@@ -176,10 +175,10 @@ class VTWSEntityType{
 		return $this->fieldTypes[$fieldName];
 	}
 
-	function getFieldTypes(){
+	function getFieldTypes() {
 		$fieldNames = $this->getFieldNames();
 		$fieldTypes = array();
-		foreach($fieldNames as $fieldName){
+		foreach ($fieldNames as $fieldName) {
 			$fieldTypes[$fieldName]=$this->getFieldType($fieldName);
 		}
 		return $fieldTypes;
@@ -187,12 +186,12 @@ class VTWSEntityType{
 
 }
 
-class VTWSFieldType{
-	function toArray(){
+class VTWSFieldType {
+	function toArray() {
 		$ro = new ReflectionObject($this);
 		$props = $ro->getProperties();
 		$arr = array();
-		foreach($props as $prop){
+		foreach ($props as $prop) {
 			$arr[$prop->getName()]=$prop->getValue($this);
 		}
 		return $arr;

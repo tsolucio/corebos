@@ -16,7 +16,7 @@
 {if ($tablestuff.Stufftype neq "Default" || $tablestuff.Stufftitle neq $keymetrics_title) && ($tablestuff.Stufftype neq "Default" || $tablestuff.Stufftitle neq $homepagedashboard_title) && ($tablestuff.Stufftype neq "Tag Cloud") && ($tablestuff.Stufftype neq "Notebook")}
 				<a id="editlink" style='cursor:pointer;' onclick="showEditrow({$tablestuff.Stuffid})">
 					<img src="{'windowSettings.gif'|@vtiger_imageurl:$THEME}" border="0" alt="{$APP.LBL_EDIT_BUTTON}" title="{$APP.LBL_EDIT_BUTTON_TITLE}" hspace="2" align="absmiddle"/>
-				</a>	
+				</a>
 {else}
 				<img src="{'windowSettings-off.gif'|@vtiger_imageurl:$THEME}" border="0" alt="{$APP.LBL_EDIT_BUTTON}" title="{$APP.LBL_EDIT_BUTTON_TITLE}" hspace="2" align="absmiddle"/>
 {/if}
@@ -34,7 +34,7 @@
 {/if}
 {*<!-- code for refresh button ends here -->*}
 
-{*<!-- hide button :: show only for default widgets  -->*}
+{*<!-- hide button :: show only for default widgets -->*}
 {if $tablestuff.Stufftype eq "Default" || $tablestuff.Stufftype eq "Tag Cloud"}
 				<a style='cursor:pointer;' onclick="HideDefault({$tablestuff.Stuffid})"><img src="{'windowMinMax.gif'|@vtiger_imageurl:$THEME}" border="0" alt="{$APP.LBL_HIDE}" title="{$APP.LBL_HIDE}" hspace="5" align="absmiddle"/></a>
 {else}
@@ -52,7 +52,7 @@
 			</td>
 		</tr>
 	</table>
-    
+
 	<table width="100%" cellpadding="0" cellspacing="0" class="small" style="padding-right:0px;padding-left:0px;padding-top:0px;">
 {if $tablestuff.Stufftype eq "Module"}
 		<tr id="maincont_row_{$tablestuff.Stuffid}" class="show_tab winmarkModulesusr">
@@ -70,12 +70,12 @@
 		<tr id="maincont_row_{$tablestuff.Stuffid}" class="show_tab">
 {/if}
 			<td colspan="2">
-				<div id="stuffcont_{$tablestuff.Stuffid}" style="height:260px; overflow-y: auto; overflow-x:hidden;width:100%;height:100%;"> 
+				<div id="stuffcont_{$tablestuff.Stuffid}" style="height:260px; overflow-y: auto; overflow-x:hidden;width:100%;height:100%;">
 				</div>
 			</td>
 		</tr>
 	</table>
-	
+
 	<table width="100%" cellpadding="0" cellspacing="0" class="small scrollLink">
 	<tr>
 		<td align="left">
@@ -83,7 +83,7 @@
 				{$MOD.LBL_SCROLL}
 			</a>
 		</td>
-{if $tablestuff.Stufftype eq "Module" || ($tablestuff.Stufftype eq "Default" &&  $tablestuff.Stufftitle neq "Key Metrics" && $tablestuff.Stufftitle neq $homepagedashboard_title && $tablestuff.Stufftitle neq "My Group Allocation" ) || $tablestuff.Stufftype eq "RSS" || $tablestuff.Stufftype eq "DashBoard"|| $tablestuff.Stufftype eq "ReportCharts"}
+{if $tablestuff.Stufftype eq "Module" || ($tablestuff.Stufftype eq "Default" && $tablestuff.Stufftitle neq "Key Metrics" && $tablestuff.Stufftitle neq $homepagedashboard_title && $tablestuff.Stufftitle neq "My Group Allocation" ) || $tablestuff.Stufftype eq "RSS" || $tablestuff.Stufftype eq "DashBoard"|| $tablestuff.Stufftype eq "ReportCharts"}
 		<td align="right">
 			<a href="#" id="a_{$tablestuff.Stuffid}">
 				{$MOD.LBL_MORE}

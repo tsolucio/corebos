@@ -1,5 +1,4 @@
 <?php
-
 /*
  [The "BSD licence"]
  Copyright (c) 2005-2008 Terence Parr
@@ -34,11 +33,10 @@
 class AntlrParser extends BaseRecognizer {
 	public $input;
 
-
 	public function __construct($input, $state = null) {
 		parent::__construct($state); // share the state object with another parser
 		$this->setTokenStream($input);
-    }
+	}
 
 	public function reset() {
 		parent::reset(); // reset all recognizer state variables
