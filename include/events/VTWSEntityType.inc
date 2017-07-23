@@ -50,7 +50,7 @@ class VTWSEntityType {
 	}
 
 	function getModuleName() {
-		return $this->moduleName;
+		return $this->entityTypeName;
 	}
 
 	function getFieldNames() {

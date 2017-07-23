@@ -83,7 +83,7 @@
 		}
 
 		public function setLine($line) {
-			$this->line = $this->line;
+			$this->line = $line;
 		}
 
 		public function getText() {
@@ -103,7 +103,7 @@
 		 *  was converted to a new string in the token object.
 		 */
 		public function setText($text) {
-			$this->text = $this->text;
+			$this->text = $text;
 		}
 
 		public function getLine() {
@@ -115,7 +115,7 @@
 		}
 
 		public function setCharPositionInLine($charPositionInLine) {
-			$this->charPositionInLine = $this->charPositionInLine;
+			$this->charPositionInLine = $charPositionInLine;
 		}
 
 		public function getChannel() {
@@ -123,11 +123,11 @@
 		}
 
 		public function setChannel($channel) {
-			$this->channel = $this->channel;
+			$this->channel = $channel;
 		}
 
 		public function setType($type) {
-			$this->type = $this->type;
+			$this->type = $type;
 		}
 
 		public function getStartIndex() {
@@ -135,7 +135,7 @@
 		}
 
 		public function setStartIndex($start) {
-			$this->start = $this->start;
+			$this->start = $start;
 		}
 
 		public function getStopIndex() {
@@ -143,7 +143,7 @@
 		}
 
 		public function setStopIndex($stop) {
-			$this->stop = $this->stop;
+			$this->stop = $stop;
 		}
 
 		public function getTokenIndex() {
@@ -151,7 +151,7 @@
 		}
 
 		public function setTokenIndex($index) {
-			$this->index = $this->index;
+			$this->index = $index;
 		}
 
 		public function getInputStream() {
@@ -159,7 +159,7 @@
 		}
 
 		public function setInputStream($input) {
-			$this->input = $this->input;
+			$this->input = $input;
 		}
 
 		public function toString() {

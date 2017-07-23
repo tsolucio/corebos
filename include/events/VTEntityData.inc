@@ -128,11 +128,11 @@ class VTEntityData {
 	}
 
 	function get($fieldName) {
-		return $this->focus->column_fields[$fieldName];
+		return (isset($this->focus->column_fields[$fieldName]) ? $this->focus->column_fields[$fieldName] : null);
 	}
 
 	function set($fieldName, $value) {
-		$data = $this->focus->column_fields[$fieldName] = $value;
+		$this->focus->column_fields[$fieldName] = $value;
 	}
 
 	/**

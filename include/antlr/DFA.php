@@ -134,13 +134,13 @@ class DFA {
 					$input->consume();
 					continue;
 				}
-				if ( $eot[$s]>=0 ) {  // EOT Transition?
+				if ( empty($eot[$s]) || $eot[$s]>=0 ) {  // EOT Transition?
 					if ( $this->debug ) println("EOT transition");
 					$s = $this->eot[$s];
 					$input->consume();
 					continue;
 				}
-				if ( $c==Token::$EOF && $eof[$s]>=0 ) {  // EOF Transition to accept state?
+				if ( $c==TokenConst::$EOF && isset($eof[$s]) && $eof[$s]>=0 ) {  // EOF Transition to accept state?
 					if ( $this->debug ) echo ("accept via EOF; predict "+$this->accept[$eof[$s]]+" from "+$eof[$s]);
 					return $this->accept[$eof[$s]];
 				}
@@ -166,11 +166,8 @@ class DFA {
 			$this->recognizer->state->failed=true;
 			return;
 		}
-		$nvae =
-			new NoViableAltException($this->getDescription(),
-									 $decisionNumber,
-									 $s,
-									 $input);
+		$decisionNumber = null;
+		$nvae = new NoViableAltException($this->getDescription(), $decisionNumber, $s, $input);
 		$this->error($nvae);
 		throw $nvae;
 	}
