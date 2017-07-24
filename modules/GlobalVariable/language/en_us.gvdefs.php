@@ -784,6 +784,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Maximum number of product images that can be related to a product. The default is 6.',
 ),
+'EMail_Maximum_Number_Attachments' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'Maximum number of attachments that can be uploaded to an email. The default is 6.',
+),
 'Workflow_Send_Email_ToCCBCC' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Email CSV',

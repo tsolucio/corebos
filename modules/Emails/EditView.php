@@ -376,5 +376,7 @@ $check_button = Button_Check($module);
 $smarty->assign("CHECK", $check_button);
 $smarty->assign('LISTID',(isset($_REQUEST['idlist']) ? vtlib_purify($_REQUEST['idlist']) : ''));
 
+$smarty->assign('EMail_Maximum_Number_Attachments',GlobalVariable::getVariable('EMail_Maximum_Number_Attachments',6));
+
 $smarty->display("ComposeEmail.tpl");
 ?>
