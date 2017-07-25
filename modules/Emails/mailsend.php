@@ -111,6 +111,8 @@ for ($i=0;$i<(count($myids)-1);$i++)
 	} else {
 		//Send mail to account, lead or contact based on their ids
 		$pmodule=getSalesEntityType($mycrmid);
+		$subject = $_REQUEST['subject'];
+		$description = $_REQUEST['description'];
 		for ($j=1;$j<$nemail;$j++) {
 			$temp=$realid[$j];
 			$myquery='Select columnname from vtiger_field where fieldid = ? and vtiger_field.presence in (0,2)';
@@ -120,18 +122,39 @@ for ($i=0;$i<(count($myids)-1);$i++)
 				require_once('modules/Contacts/Contacts.php');
 				$myfocus = new Contacts();
 				$myfocus->retrieve_entity_info($mycrmid,"Contacts");
+
+				$subject=getMergedDescription($subject,$mycrmid,$pmodule);
+				$description=getMergedDescription($description,$mycrmid,$pmodule);
+
+				$subject=getMergedDescription($subject,$myfocus->column_fields['account_id'],'Accounts');
+				$description=getMergedDescription($description,$myfocus->column_fields['account_id'],'Accounts');
+
+				$subject=getMergedDescription($subject,$current_user->id,'Users');
+				$description=getMergedDescription($description,$current_user->id,'Users');
 			}
 			elseif ($pmodule=='Accounts')
 			{
 				require_once('modules/Accounts/Accounts.php');
 				$myfocus = new Accounts();
 				$myfocus->retrieve_entity_info($mycrmid,"Accounts");
+
+				$subject=getMergedDescription($subject,$mycrmid,$pmodule);
+				$description=getMergedDescription($description,$mycrmid,$pmodule);
+
+				$subject=getMergedDescription($subject,$current_user->id,'Users');
+				$description=getMergedDescription($description,$current_user->id,'Users');
 			}
 			elseif ($pmodule=='Leads')
 			{
 				require_once('modules/Leads/Leads.php');
 				$myfocus = new Leads();
 				$myfocus->retrieve_entity_info($mycrmid,"Leads");
+
+				$subject=getMergedDescription($subject,$mycrmid,$pmodule);
+				$description=getMergedDescription($description,$mycrmid,$pmodule);
+
+				$subject=getMergedDescription($subject,$current_user->id,'Users');
+				$description=getMergedDescription($description,$current_user->id,'Users');
 			}
 			elseif ($pmodule=='Vendors')
 			{
@@ -144,12 +167,17 @@ for ($i=0;$i<(count($myids)-1);$i++)
 				// vtlib customization: Enabling mail send from other modules
 				$myfocus = CRMEntity::getInstance($pmodule);
 				$myfocus->retrieve_entity_info($mycrmid, $pmodule);
+
+				$subject=getMergedDescription($subject,$mycrmid,$pmodule);
+				$description = getMergedDescription($description,$mycrmid,$pmodule);
+
+				$subject=getMergedDescription($subject,$current_user->id,'Users');
+				$description=getMergedDescription($description,$current_user->id,'Users');
 			}
 			$fldname=$adb->query_result($fresult,0,"columnname");
 			$emailadd=br2nl($myfocus->column_fields[$fldname]);
 
 			if($emailadd != '') {
-				$description = getMergedDescription($_REQUEST['description'],$mycrmid,$pmodule);
 				//Email Open/Stat Tracking
 				global $site_URL, $application_unique_key;
 				$EMail_OpenTrackingEnabled = GlobalVariable::getVariable('EMail_OpenTrackingEnabled',1,'Emails');
@@ -169,7 +197,7 @@ for ($i=0;$i<(count($myids)-1);$i++)
 				}
 				if(isPermitted($pmodule,'DetailView',$mycrmid) == 'yes')
 				{
-					$mail_status = send_mail('Emails',$emailadd,$from_name,$from_address,$_REQUEST['subject'],$description,'','','all',$focus->id,$logo);
+					$mail_status = send_mail('Emails',$emailadd,$from_name,$from_address,$subject,$description,'','','all',$focus->id,$logo);
 				}
 
 				$all_to_emailids []= $emailadd;
