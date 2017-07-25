@@ -856,6 +856,10 @@ function vtws_transferOwnership($ownerId, $newOwnerId, $delete=true) {
 		$db->pquery($sql, array($ownerId));
 	}
 
+	//updating the filters
+	$sql = 'update vtiger_customview set userid=? where userid=?';
+	$db->pquery($sql, array($newOwnerId, $ownerId));
+
 	//updating the vtiger_import_maps
 	$sql ="update vtiger_import_maps set assigned_user_id=? where assigned_user_id=?";
 	$db->pquery($sql, array($newOwnerId, $ownerId));
