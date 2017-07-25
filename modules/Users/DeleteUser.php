@@ -8,8 +8,12 @@
  * All Rights Reserved.
  ********************************************************************************/
 require_once 'modules/Users/Users.php';
+global $adb,$app_strings;
 
-global $adb;
+if (!is_admin($current_user)) {
+	die("<br><br><center>".$app_strings['LBL_PERMISSION']." <a href='javascript:window.history.back()'>".$app_strings['LBL_GO_BACK'].".</a></center>");
+}
+
 $del_id = vtlib_purify($_REQUEST['delete_user_id']);
 $tran_id = vtlib_purify($_REQUEST['transfer_user_id']);
 
