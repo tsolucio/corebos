@@ -141,11 +141,16 @@ class MailManager_MailController extends MailManager_Controller {
 						if (!empty($parent_module)) {
 							$description = getMergedDescription($body,$entityId,$parent_module);
 							$subject = getMergedDescription($subject,$entityId,$parent_module);
+							$description = getMergedDescription($description,$current_user->id,'Users');
+							$subject = getMergedDescription($subject,$current_user->id,'Users');
 						} else {
 							$n = MailManager_RelationControllerAction::ws_modulename($relateto[0]);
 							if ($n=='Users') {
 								$description = getMergedDescription($body,$entityId,'Users');
 								$subject = getMergedDescription($subject,$entityId,'Users');
+							} else {
+								$description = getMergedDescription($body,$current_user->id,'Users');
+								$subject = getMergedDescription($subject,$current_user->id,'Users');
 							}
 						}
 					}
