@@ -3338,19 +3338,28 @@ function getReturnPath($host, $from_email) {
 
 	// Review if the host is not local
 	if (!in_array(strtolower($host), array('localhost'))) {
-		list($from_name, $from_domain) = explode('@', $from_email);
+		if (strpos($from_email, '@')) {
+			list($from_name, $from_domain) = explode('@', $from_email);
+		} else {
+			$from_name = $from_domain = '';
+		}
 
 		//strip [,] from domain name in case ip address is used as domain: xyz@[192.45.32.67]
 		preg_replace("/[\[\]]/",$from_domain,$from_domain);
 
 		// If from-email domain is not matching (or sub-domain) of host
 		// reset the return-path
-		if (strpos($host, $from_domain)== false) {
-			$from_domain = trim($from_domain);
-
-			if(preg_match( '/^((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))$/', $host)){
+		if ($from_domain == '' or strpos($host, $from_domain) == false) {
+			if (preg_match( '/^((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))$/', $host)) {
 				$returnpath = $returnname . '@[' . $host.']';
-			}else{
+			} else {
+				if (strpos($host, '.')) {
+					$cmps = explode('.', $host);
+					while (count($cmps)>2) {
+						array_shift($cmps);
+					}
+					$host = implode('.', $cmps);
+				}
 				$returnpath = $returnname . '@' . $host;
 			}
 		}
