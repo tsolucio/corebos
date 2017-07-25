@@ -2217,10 +2217,11 @@ function getMergedDescription($description, $id, $parent_type) {
 		$description = $emailTemplate->getProcessedDescription();
 	}
 	$templateVariablePair = explode('$', $description);
-	$tokenDataPair = explode('$', $description);
+	$token_data_pair = explode('$', $description);
 	$fields = Array();
 	for ($i = 1; $i < count($token_data_pair); $i+=2) {
-		$module = explode('-', $tokenDataPair[$i]);
+		if (strpos($token_data_pair[$i], '-') === false) continue;
+		$module = explode('-', $token_data_pair[$i]);
 		$fields[$module[0]][] = $module[1];
 	}
 	if (isset($fields['custom']) && is_array($fields['custom']) && count($fields['custom']) > 0) {

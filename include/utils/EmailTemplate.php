@@ -34,6 +34,7 @@ class EmailTemplate {
 		$templateVariablePair = explode('$',$this->rawDescription);
 		$this->templateFields = Array();
 		for($i=1;$i < count($templateVariablePair);$i+=2) {
+			if (strpos($templateVariablePair[$i], '-') === false) continue;
 			list($module,$fieldName) = explode('-',$templateVariablePair[$i]);
 			if ($pos = strpos($fieldName,'_fullpath')) {
 				list($field,$fpath) = explode('_',$fieldName);
