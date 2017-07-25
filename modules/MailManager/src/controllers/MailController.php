@@ -110,7 +110,7 @@ class MailManager_MailController extends MailManager_Controller {
 							for($i=0; $i<count($relatedtos); $i++) {
 								if($i == count($relatedtos)-1) {
 									$relateto = vtws_getIdComponents($relatedtos[$i]['record']);
-									$parentIds .= $relateto[1]."@1";
+									$parentIds = $relateto[1]."@1";
 								}elseif($relatedtos[$i]['module'] == $val){
 									$relateto = vtws_getIdComponents($relatedtos[$i]['record']);
 									$parentIds = $relateto[1]."@1";
@@ -156,9 +156,10 @@ class MailManager_MailController extends MailManager_Controller {
 					}
 
 					$pos = strpos($description, '$logo$');
+					$logo = 0;
 					if ($pos !== false) {
-						$description =str_replace('$logo$','<img src="cid:logo" />',$description);
-						$logo=1;
+						$description = str_replace('$logo$','<img src="cid:logo" />',$description);
+						$logo = 1;
 					}
 					$fromEmail = $connector->getFromEmailAddress();
 					$userFullName = getFullNameFromArray('Users', $current_user->column_fields);
