@@ -47,12 +47,16 @@ function gITSshow(argg1,type,startdate,enddate,starthr,startmin,startfmt,endhr,e
 	smin = parseInt(startmin,10);
 	smin = smin - (smin%5);
 	smin = _2digit(smin);
-	if (startfmt=='pm') shr = shr + 12;
+	if (startfmt=='pm' && shr != 12) {
+		shr = shr + 12;
+	}
 	shr = _2digit(shr);
 	ehr = parseInt(endhr,10);
 	emin = parseInt(endmin,10);
 	emin = emin - (emin%5);
-	if (endfmt=='pm') ehr = ehr + 12;
+	if (endfmt=='pm' && ehr != 12) {
+		ehr = ehr + 12;
+	}
 	ehr = _2digit(ehr);
 	emin = _2digit(emin);
 	url = url + '&dtstart=' + startdate + ' ' + shr + ':' + smin;
