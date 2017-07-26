@@ -583,9 +583,8 @@ function getAdvSearchfields($module)
 	$noofrows = $adb->num_rows($result);
 	$block = '';
 	$select_flag = '';
-
-	for($i=0; $i<$noofrows; $i++)
-	{
+	$OPTION_SET = '';
+	for ($i=0; $i<$noofrows; $i++) {
 		$fieldtablename = $adb->query_result($result,$i,"tablename");
 		$fieldcolname = $adb->query_result($result,$i,"columnname");
 		$fieldname = $adb->query_result($result,$i,"fieldname");
@@ -597,7 +596,7 @@ function getAdvSearchfields($module)
 			$fieldtypeofdata = "V";
 		if($fieldcolname == "discontinued" || $fieldcolname == "active")
 			$fieldtypeofdata = "C";
-		$fieldlabel = $mod_strings[$adb->query_result($result,$i,"fieldlabel")];
+		$fieldlabel = $adb->query_result($result,$i,'fieldlabel');
 
 		// Added to display customfield label in search options
 		if($fieldlabel == "")
@@ -632,7 +631,7 @@ function getAdvSearchfields($module)
 			if ($i==0)
 				$select_flag = "selected";
 
-			$mod_fieldlabel = $mod_strings[$fieldlabel];
+			$mod_fieldlabel = getTranslatedString($fieldlabel,$module);
 			if($mod_fieldlabel =="") $mod_fieldlabel = $fieldlabel;
 
 			if($fieldlabel == "Product Code")
