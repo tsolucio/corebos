@@ -226,7 +226,7 @@ if (!empty ($_REQUEST['parent_id']) && !empty ($_REQUEST['return_module'])) {
 }
 
 // Get Account address if vtiger_account is given
-if ((isset ($_REQUEST['account_id'])) && ($_REQUEST['record'] == '') && ($_REQUEST['account_id'] != '') && ($_REQUEST['convertmode'] != 'update_quote_val')) {
+if (!empty($_REQUEST['account_id']) && is_null($record) && isset($_REQUEST['convertmode']) && $_REQUEST['convertmode'] != 'update_quote_val') {
 	require_once ('modules/Accounts/Accounts.php');
 	$acct_focus = new Accounts();
 	$acct_focus->retrieve_entity_info($_REQUEST['account_id'], "Accounts");

@@ -779,6 +779,7 @@ function getUserName($userid) {
 function getUserFullName($userid) {
 	global $log, $adb;
 	$log->debug("Entering getUserFullName($userid) method ...");
+	$user_name = '';
 	if ($userid != '') {
 		if (strpos($userid,'x')) list($wsid,$userid) = explode('x', $userid);
 		$displayValueArray = getEntityName('Users', $userid);
@@ -787,8 +788,6 @@ function getUserFullName($userid) {
 				$user_name = $value;
 			}
 		}
-	} else {
-		$user_name = '';
 	}
 	$log->debug('Exiting getUserFullName method ...');
 	return $user_name;

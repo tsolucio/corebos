@@ -255,7 +255,7 @@ if (!empty ($_REQUEST['parent_id']) && !empty ($_REQUEST['return_module'])) {
 	}
 }
 
-if (isset ($_REQUEST['account_id']) && $_REQUEST['account_id'] != '' && ($record == '' || $_REQUEST['convertmode'] == "potentoinvoice") && ($_REQUEST['convertmode'] != 'update_so_val')) {
+if (!empty($_REQUEST['account_id']) && (is_null($record) || (isset($_REQUEST['convertmode']) && $_REQUEST['convertmode'] == "potentoinvoice")) && (empty($_REQUEST['convertmode']) || $_REQUEST['convertmode'] != 'update_so_val')) {
 	require_once ('modules/Accounts/Accounts.php');
 	$acct_focus = new Accounts();
 	$acct_focus->retrieve_entity_info($_REQUEST['account_id'], "Accounts");
@@ -272,7 +272,7 @@ if (isset ($_REQUEST['account_id']) && $_REQUEST['account_id'] != '' && ($record
 	$focus->column_fields['bill_pobox'] = $acct_focus->column_fields['bill_pobox'];
 	$focus->column_fields['ship_pobox'] = $acct_focus->column_fields['ship_pobox'];
 }
-if (isset ($_REQUEST['contact_id']) && $_REQUEST['contact_id'] != '' && ($_REQUEST['record'] == '' || $_REQUEST['convertmode'] == "potentoinvoice")) {
+if (!empty($_REQUEST['contact_id']) && (is_null('record') || (isset($_REQUEST['convertmode']) && $_REQUEST['convertmode'] == "potentoinvoice"))) {
 	require_once ('modules/Contacts/Contacts.php');
 	$cto_focus = new Contacts();
 	$cto_focus->retrieve_entity_info($_REQUEST['contact_id'], "Contacts");

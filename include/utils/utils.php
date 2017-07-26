@@ -2851,17 +2851,14 @@ function getMigrationCharsetFlag() {
 }
 
 /** Function to convert a given time string to Minutes */
-function ConvertToMinutes($time_string)
-{
+function ConvertToMinutes($time_string) {
+	if (empty($time_string)) return 0;
 	$interval = explode(' ', $time_string);
 	$interval_minutes = intval($interval[0]);
 	$interval_string = strtolower($interval[1]);
-	if($interval_string == 'hour' || $interval_string == 'hours')
-	{
+	if ($interval_string == 'hour' || $interval_string == 'hours') {
 		$interval_minutes = $interval_minutes * 60;
-	}
-	elseif($interval_string == 'day' || $interval_string == 'days')
-	{
+	} elseif ($interval_string == 'day' || $interval_string == 'days') {
 		$interval_minutes = $interval_minutes * 1440;
 	}
 	return $interval_minutes;
@@ -4342,28 +4339,29 @@ function getValidDBInsertDateValue($value) {
 	$value = trim($value);
 	if (empty($value)) return '';
 	$delim = array('/','.');
-	foreach ($delim as $delimiter){
+	foreach ($delim as $delimiter) {
 		$x = strpos($value, $delimiter);
-		if($x === false) continue;
-		else{
+		if ($x === false) continue;
+		else {
 			$value=str_replace($delimiter, '-', $value);
 			break;
 		}
 	}
+
+	if (preg_match("/^[0-9]{2,4}[-][0-1]{1,2}?[0-9]{1,2}[-][0-3]{1,2}?[0-9]{1,2}$/", $value) == 0) {
+		return '';
+	}
+
 	list($y,$m,$d) = explode('-',$value);
-	if(strlen($y) == 1) $y = '0'.$y;
-	if(strlen($m) == 1) $m = '0'.$m;
-	if(strlen($d) == 1) $d = '0'.$d;
+	if (strlen($y) == 1) $y = '0'.$y;
+	if (strlen($m) == 1) $m = '0'.$m;
+	if (strlen($d) == 1) $d = '0'.$d;
 	$value = implode('-', array($y,$m,$d));
 
-	if(strlen($y)<4){
+	if (strlen($y)<4) {
 		$insert_date = DateTimeField::convertToDBFormat($value);
 	} else {
 		$insert_date = $value;
-	}
-
-	if (preg_match("/^[0-9]{2,4}[-][0-1]{1,2}?[0-9]{1,2}[-][0-3]{1,2}?[0-9]{1,2}$/", $insert_date) == 0) {
-		return '';
 	}
 
 	$log->debug("Exiting getValidDBInsertDateValue method ...");
