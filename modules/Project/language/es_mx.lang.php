@@ -6,61 +6,57 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * 
  * ***********************************************************
-*  Module       : Project
-*  Language     : ES Spanish
-*  Version      : vt5.4.0
+*  Module	   : Project
+*  Language	 : ES Spanish
+*  Version	  : vt5.4.0
 *  Created Date : 2012-02-27
-*  Author       : Odin Consultores S de RL de CV
-*  License      : MPL 1.1
+*  Author	   : Odin Consultores S de RL de CV
+*  License	  : MPL 1.1
  ************************************************************************************/
 $mod_strings = Array(
-
-  	'LBL_MODULE_NAME'=>'Proyectos',
-  	'LBL_MODULE_TITLE'=>'Proyectos',
-    'LBL_NEW_PROJECT'=>'Nuevo Proyecto',
-    'LBL_PROJECTS'=>'Proyectos',
-    'LBL_PROJECT'=>'Proyecto',
+	'LBL_MODULE_NAME'=>'Proyectos',
+	'LBL_MODULE_TITLE'=>'Proyectos',
+	'LBL_NEW_PROJECT'=>'Nuevo Proyecto',
+	'LBL_PROJECTS'=>'Proyectos',
+	'LBL_PROJECT'=>'Proyecto',
 	'projectname' => 'Nombre Proyecto',
-    //added this to translate the module name in the main app menu
-    'Project'=>'Proyectos',
-    //
-    'SINGLE_Project' => 'Proyecto',
-    'LBL_CUSTOM_INFORMATION' => 'Información Personalizada',
-    'LBL_PROJECT_INFORMATION' => 'Información de Proyecto',
-    'LBL_DESCRIPTION_INFORMATION' => 'Descripción',
-  
-    'projectid' => 'ID Proyecto',  
-    'Project ID'=>'ID Proyecto',
-    'Assigned To' => 'Asignado a',
-    'Start Date' => 'Fecha inicio',
-    'Target End Date' => 'Fecha fin prevista',
-    'Actual End Date' => 'Fecha fin real',
-    'Status'=>'Estado',
-    'Type'=>'Tipo',
-    'Target Budget'=>'Presupuesto Inicial',
-    'Project Url'=>'URL Proyecto',
-    'Priority'=>'Prioridad Proyecto',
-    'Progress'=>'Progreso',
-    'Related To' => 'Relacionado con',
-    'administrative' => 'administrativo',
-    'operative' => 'operativo',
-    'other' => 'otro',
-    'low' => 'baja',
-    'normal' => 'normal',
-    'high' => 'alta',
-    'prospecting' => 'Buscando',
-    'in progress' => 'En progreso',
-    'initiated' => 'Iniciado',
-    'on hold' => 'En espera',
-    'archived' => 'Archivado',
-    'completed' => 'Finalizado',
-    'delivered'=>'Entregado',
-    '--none--' => '--ninguno--',
-    'Project Name' => 'Nombre Proyecto',
-    'LBL_RELATED_PROJECT_TASKS' => 'Actividades',
-    'LBL_RELATED_PROJECT_MILESTONES' => 'Hitos',
+	'Project'=>'Proyectos',
+	'SINGLE_Project' => 'Proyecto',
+	'LBL_CUSTOM_INFORMATION' => 'Información Personalizada',
+	'LBL_PROJECT_INFORMATION' => 'Información de Proyecto',
+	'LBL_DESCRIPTION_INFORMATION' => 'Descripción',
+
+	'projectid' => 'ID Proyecto',
+	'Project ID'=>'ID Proyecto',
+	'Assigned To' => 'Asignado a',
+	'Start Date' => 'Fecha inicio',
+	'Target End Date' => 'Fecha fin prevista',
+	'Actual End Date' => 'Fecha fin real',
+	'Status'=>'Estado',
+	'Type'=>'Tipo',
+	'Target Budget'=>'Presupuesto Inicial',
+	'Project Url'=>'URL Proyecto',
+	'Priority'=>'Prioridad Proyecto',
+	'Progress'=>'Progreso',
+	'Related To' => 'Relacionado con',
+	'administrative' => 'administrativo',
+	'operative' => 'operativo',
+	'other' => 'otro',
+	'low' => 'baja',
+	'normal' => 'normal',
+	'high' => 'alta',
+	'prospecting' => 'Buscando',
+	'in progress' => 'En progreso',
+	'initiated' => 'Iniciado',
+	'on hold' => 'En espera',
+	'archived' => 'Archivado',
+	'completed' => 'Finalizado',
+	'delivered'=>'Entregado',
+	'--none--' => '--ninguno--',
+	'Project Name' => 'Nombre Proyecto',
+	'LBL_RELATED_PROJECT_TASKS' => 'Actividades',
+	'LBL_RELATED_PROJECT_MILESTONES' => 'Hitos',
 
 	'Charts' => 'Gráficos',
 	'LBL_PROGRESS_CHART' => 'Gráfico Progreso',
