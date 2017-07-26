@@ -14,10 +14,15 @@
 
 {*<!-- the edit button for widgets :: don't show for key metrics and dasboard widget -->*}
 {if ($tablestuff.Stufftype neq "Default" || $tablestuff.Stufftitle neq $keymetrics_title) && ($tablestuff.Stufftype neq "Default" || $tablestuff.Stufftitle neq $homepagedashboard_title) && ($tablestuff.Stufftype neq "Tag Cloud") && ($tablestuff.Stufftype neq "Notebook")}
-				<a id="editlink" style='cursor:pointer;' onclick="showEditrow({$tablestuff.Stuffid})">
+				<a style='cursor:pointer;' onclick="showEditrow({$tablestuff.Stuffid})">
 					<img src="{'windowSettings.gif'|@vtiger_imageurl:$THEME}" border="0" alt="{$APP.LBL_EDIT_BUTTON}" title="{$APP.LBL_EDIT_BUTTON_TITLE}" hspace="2" align="absmiddle"/>
 				</a>
 {else}
+			{if $tablestuff.Stufftitle eq $keymetrics_title}
+				<a style='cursor:pointer;' href="index.php?module=Home&action=HomeBlock&homestuffid={$tablestuff.Stuffid}&blockstufftype={$tablestuff.Stufftype}" target="_blank">
+					<img src="{'webmail_uparrow.gif'|@vtiger_imageurl:$THEME}" border="0" alt="Open" title="Open"  hspace="2" align="absmiddle"/>
+				</a>
+			{/if}
 				<img src="{'windowSettings-off.gif'|@vtiger_imageurl:$THEME}" border="0" alt="{$APP.LBL_EDIT_BUTTON}" title="{$APP.LBL_EDIT_BUTTON_TITLE}" hspace="2" align="absmiddle"/>
 {/if}
 {*<!-- code for edit button ends here -->*}
