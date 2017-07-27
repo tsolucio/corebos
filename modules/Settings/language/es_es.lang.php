@@ -704,7 +704,7 @@ $mod_strings = array (
     
       'LBL_NOT'=>'No',
 
-      'LBL_ALL' => 'Toda',
+      'LBL_ALL' => 'Todos',
       'LBL_ANY'=>'Cualquier',
       'LBL_CONDITION'=>'Condición',
       'LBL_ACTION'=>'Acción',
@@ -722,7 +722,7 @@ $mod_strings = array (
       'LBL_UNREAD'=>'No leídos',
       'LBL_READ'=>'Leídos',
       'LBL_AFTER_SCAN'=>'Post-scan',
-      'LBL_MESSAGES_FROM_LASTSCAN'=>'Mensajes último scan',
+      'LBL_MESSAGES_FROM_LASTSCAN'=>'desde última lectura',
       'LBL_MARK_MESSAGE_AS'=>'Marcar mensaje como',
       'LBL_ASSIGN' => 'Asignar a',
 
