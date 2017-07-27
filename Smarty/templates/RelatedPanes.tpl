@@ -22,7 +22,7 @@
 	<div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_{$tabposition}"
 	{if $tabposition eq 'top'}onmouseout="fnHideDrop('More_Information_pane{$RLTAB}_List');" onmouseover="fnDropDown(this,'More_Information_pane{$RLTAB}_List');"{/if}>
 	<a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}&RelatedPane={$RLTAB}">{$RLARR.label}</a>
-	{if $tabcache neq 'dvtTabCacheBottom'}
+	{if empty($tabcache) || $tabcache neq 'dvtTabCacheBottom'}
 	<div onmouseover="fnShowDrop('More_Information_pane{$RLTAB}_List')" onmouseout="fnHideDrop('More_Information_pane{$RLTAB}_List')"
 				 id="More_Information_pane{$RLTAB}_List" class="drop_mnu" style="left: 502px; top: 76px; display: none;">
 		<table border="0" cellpadding="0" cellspacing="0" width="100%">
