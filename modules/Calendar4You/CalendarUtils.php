@@ -460,7 +460,7 @@ function transferForAddIntoTitle($type, $row, $CD) {
 		$value = $Cal_Data[1];
 
 	if ($type == "1")
-		return $Cal_Data[1];
+		return vtlib_purify($Cal_Data[1]);
 	else
 //		return "<br><b>".$Cal_Data[0]."</b>: ".$value;
 		return '<table><tr><td><b>'.$Cal_Data[0].':</b></td><td onmouseover="vtlib_listview.trigger(\'cell.onmouseover\', this)" onmouseout="vtlib_listview.trigger(\'cell.onmouseout\', this)">'.vtlib_purify($value).'</td></tr></table>';
