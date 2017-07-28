@@ -28,6 +28,18 @@ class ldMenu extends cbupdaterWorker {
 					vtlib_toggleModuleAccess( $module, true );
 					$this->sendMsg( "$module activated!" );
 				} else {
+					$this->ExecuteQuery("CREATE TABLE IF NOT EXISTS `vtiger_evvtmenu` (
+								  `evvtmenuid` int(11) NOT NULL AUTO_INCREMENT,
+								  `mtype` varchar(25) NOT NULL,
+								  `mvalue` varchar(200) NOT NULL,
+								  `mlabel` varchar(200) NOT NULL,
+								  `mparent` int(11) NOT NULL,
+								  `mseq` smallint(6) NOT NULL,
+								  `mvisible` tinyint(4) NOT NULL,
+								  `mpermission` varchar(250) NOT NULL,
+								  PRIMARY KEY (`evvtmenuid`),
+								  KEY `mparent` (`mparent`)
+								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;");
 					$this->installManifestModule( $module );
 				}
 			}
