@@ -201,12 +201,14 @@ function export($type){
 
 	$__processor = new ExportUtils($type, $fields_array);
 
+	$CSV_Separator = GlobalVariable::getVariable('Export_Field_Separator_Symbol',',',$type);
+
 	// Translated the field names based on the language used.
 	$translated_fields_array = array();
 	for($i=0; $i<count($fields_array); $i++) {
 		$translated_fields_array[$i] = getTranslatedString($fields_array[$i],$type);
 	}
-	$header = implode("\",\"",array_values($translated_fields_array));
+	$header = implode('"'.$CSV_Separator.'"',array_values($translated_fields_array));
 	$header = "\"" .$header;
 	$header .= "\"\r\n";
 
@@ -229,7 +231,7 @@ function export($type){
 				array_push($new_arr, preg_replace("/\"/","\"\"",$value));
 			}
 		}
-		$line = implode("\",\"",$new_arr);
+		$line = implode('"'.$CSV_Separator.'"',$new_arr);
 		$line = "\"" .$line;
 		$line .= "\"\r\n";
 		/** Output each row information */

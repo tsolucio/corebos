@@ -364,6 +364,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Threshold record limit for immediate import. If record count is more than this, then the import is scheduled through cron job. Default value is 1000',
 ),
+'Export_Field_Separator_Symbol' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'character',
+	'category' => 'Application',
+	'values' => ', | ; | others',
+	'definition' => 'Character symbol which separates fields in the CSV export files. Normally this will be a comma or semicolon, but any symbol may be used.',
+),
 'Application_Help_URL' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'String',
