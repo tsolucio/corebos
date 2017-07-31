@@ -31,7 +31,8 @@
 
 		function save($workflow){
 			$adb=$this->adb;
-			if (!isset($workflow->schtime)) $workflow->schtime = '';
+			if (!isset($workflow->schtypeid)) $workflow->schtypeid = 0;
+			if (!isset($workflow->schtime)) $workflow->schtime = '00:00:00';
 			if (!isset($workflow->schdayofmonth)) $workflow->schdayofmonth = '';
 			if (!isset($workflow->schdayofweek)) $workflow->schdayofweek = '';
 			if (!isset($workflow->schannualdates)) $workflow->schannualdates = '';
