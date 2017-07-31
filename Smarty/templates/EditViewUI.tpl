@@ -637,7 +637,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 					{/foreach}
 				</select>
 
-		{elseif $uitype eq 68 || $uitype eq 66 || $uitype eq 62}
+		{elseif $uitype eq 66 || $uitype eq 62}
 			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
 				<font color="red">{$mandatory_field}</font>
 				{if $fromlink eq 'qcreate'}
