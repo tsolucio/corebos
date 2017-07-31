@@ -258,7 +258,7 @@ function getCalendar4YouListQuery($userid, $invites, $where = '', $type='1') {
 
 	$query = "SELECT distinct vtiger_activity.activityid as act_id, vtiger_crmentity.*, vtiger_activity.*, vtiger_activitycf.*, ";
 
-	$query .= "vtiger_contactdetails.lastname, vtiger_contactdetails.firstname, vtiger_contactdetails.contactid, vtiger_account.accountid, vtiger_account.accountname, ";
+	$query .= 'vtiger_contactdetails.lastname, vtiger_contactdetails.firstname, vtiger_contactdetails.contactid, ';
 
 	$query .= 'vtiger_activity.rel_id AS parent_id,its4you_googlesync4you_events.geventid,vtiger_activity_reminder.reminder_time
 	FROM vtiger_activity
