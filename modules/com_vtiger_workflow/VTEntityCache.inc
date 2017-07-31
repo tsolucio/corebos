@@ -22,8 +22,9 @@ class VTWorkflowEntity{
 			$data = vtws_retrieve_deleted($id, $user);
 		else
 			$data = vtws_retrieve($id, $user);
-		foreach($data as $key => $value){
-			if(is_string($value)){
+		if (!is_null($data))
+		foreach ($data as $key => $value) {
+			if (is_string($value)) {
 				$data[$key] = html_entity_decode($value, ENT_QUOTES, 'utf-8');
 			}
 		}
