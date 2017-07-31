@@ -130,6 +130,12 @@ class Mapping extends processcbMap {
 					$adminUser = $util->adminUser();
 					$entityCache = new VTEntityCache($adminUser);
 					$testexpression = array_pop($fieldinfo);
+					if (strtoupper($idx[0])=='FIELD') {
+						$testexpression = trim($testexpression);
+						if (substr($testexpression,0,1) != '$') {
+							$testexpression = '$' . $testexpression;
+						}
+					}
 					$ct = new VTSimpleTemplate($testexpression);
 					$value.= $ct->render($entityCache, $entityId).$delim;
 					$util->revertUser();
@@ -138,6 +144,12 @@ class Mapping extends processcbMap {
 					$adminUser = $util->adminUser();
 					$entityCache = new VTEntityCache($adminUser);
 					$testexpression = array_pop($fieldinfo);
+					if (strtoupper($idx[0])=='FIELD') {
+						$testexpression = trim($testexpression);
+						if (substr($testexpression,0,1) != '$') {
+							$testexpression = '$' . $testexpression;
+						}
+					}
 					$ct = new VTSimpleTemplateOnData($testexpression);
 					$value.= $ct->render($entityCache,$mapping['origin'],$ofields).$delim;
 					$util->revertUser();
