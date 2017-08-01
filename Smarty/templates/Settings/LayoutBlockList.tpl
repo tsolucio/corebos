@@ -14,8 +14,7 @@
 function check(){
 	var blocklabel = document.getElementById('blocklabel');
 	var val = trim(blocklabel.value);
-	if(val == "")
-	{
+	if (val == "") {
 		alert(alert_arr.BLOCK_NAME_CANNOT_BE_BLANK);
 		return false;
 	}
@@ -29,50 +28,46 @@ function getCustomFieldList(customField)
 	var modulename = customField.options[customField.options.selectedIndex].value;
 	document.getElementById('module_info').innerHTML = '{$MOD.LBL_CUSTOM_FILED_IN} "'+modulename+'" {$APP.LBL_MODULE}';
 	jQuery.ajax({ldelim}
-			method:"POST",
-			url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&fld_module='+modulename+'&parenttab=Settings&ajax=true'
+		method:"POST",
+		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&fld_module='+modulename+'&parenttab=Settings&ajax=true'
 	{rdelim}).done(function(response) {ldelim}
-				document.getElementById("cfList").innerHTML=response;
-	{rdelim}
-	);
+		document.getElementById("cfList").innerHTML=response;
+	{rdelim});
 {rdelim}
 
 function changeFieldorder(what_to_do,fieldid,blockid,modulename)
 {ldelim}
 	document.getElementById('vtbusy_info').style.display = "block";
 	jQuery.ajax({ldelim}
-			method:"POST",
-			url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=changeOrder&fld_module='+modulename+'&parenttab=Settings&what_to_do='+what_to_do+'&fieldid='+fieldid+'&blockid='+blockid+'&ajax=true'
+		method:"POST",
+		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=changeOrder&fld_module='+modulename+'&parenttab=Settings&what_to_do='+what_to_do+'&fieldid='+fieldid+'&blockid='+blockid+'&ajax=true'
 	{rdelim}).done(function(response) {ldelim}
-				document.getElementById("cfList").innerHTML=response;
-				document.getElementById('vtbusy_info').style.display = "none";
-	{rdelim}
-	);
+		document.getElementById("cfList").innerHTML=response;
+		document.getElementById('vtbusy_info').style.display = "none";
+	{rdelim});
 {rdelim}
 
 function changeShowstatus(tabid,blockid,modulename)
 {ldelim}
 	var display_status = document.getElementById('display_status_'+blockid).value;
 	jQuery.ajax({ldelim}
-			method:"POST",
-			url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=changeOrder&fld_module='+modulename+'&parenttab=Settings&what_to_do='+display_status+'&tabid='+tabid+'&blockid='+blockid+'&ajax=true'
+		method:"POST",
+		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=changeOrder&fld_module='+modulename+'&parenttab=Settings&what_to_do='+display_status+'&tabid='+tabid+'&blockid='+blockid+'&ajax=true'
 	{rdelim}).done(function(response) {ldelim}
-				document.getElementById("cfList").innerHTML=response;
-	{rdelim}
-	);
+		document.getElementById("cfList").innerHTML=response;
+	{rdelim});
 {rdelim}
 
 function changeBlockorder(what_to_do,tabid,blockid,modulename)
 {ldelim}
 	document.getElementById('vtbusy_info').style.display = "block";
 	jQuery.ajax({ldelim}
-			method:"POST",
-			url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=changeOrder&fld_module='+modulename+'&parenttab=Settings&what_to_do='+what_to_do+'&tabid='+tabid+'&blockid='+blockid+'&ajax=true'
+		method:"POST",
+		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=changeOrder&fld_module='+modulename+'&parenttab=Settings&what_to_do='+what_to_do+'&tabid='+tabid+'&blockid='+blockid+'&ajax=true'
 	{rdelim}).done(function(response) {ldelim}
-				document.getElementById("cfList").innerHTML=response;
-				document.getElementById('vtbusy_info').style.display = "none";
-		{rdelim}
-	);
+		document.getElementById("cfList").innerHTML=response;
+		document.getElementById('vtbusy_info').style.display = "none";
+	{rdelim});
 {rdelim}
 
 {literal}
@@ -81,14 +76,13 @@ function deleteCustomField(id, fld_module, colName, uitype)
 	if(confirm(alert_arr.ARE_YOU_SURE_YOU_WANT_TO_DELETE)){
 		document.getElementById('vtbusy_info').style.display = "block";
 			jQuery.ajax({
-					method:"POST",
-					url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=deleteCustomField&ajax=true&fld_module='+fld_module+'&fld_id='+id+'&colName='+colName+'&uitype='+uitype
+				method:"POST",
+				url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=deleteCustomField&ajax=true&fld_module='+fld_module+'&fld_id='+id+'&colName='+colName+'&uitype='+uitype
 			}).done(function(response) {
-						document.getElementById("cfList").innerHTML=response;
-						gselected_fieldtype = '';
-						document.getElementById('vtbusy_info').style.display = "none";
-				}
-			);
+				document.getElementById("cfList").innerHTML=response;
+				gselected_fieldtype = '';
+				document.getElementById('vtbusy_info').style.display = "none";
+			});
 	}else{
 		fninvsh('editfield_'+id);
 	}
@@ -102,11 +96,11 @@ function deleteCustomBlock(module,blockid,no){
 		if(confirm(alert_arr.ARE_YOU_SURE_YOU_WANT_TO_DELETE_BLOCK)){
 			document.getElementById('vtbusy_info').style.display = "block";
 			jQuery.ajax({
-					method:"POST",
-					url:'index.php?module=Settings&action=SettingsAjax&fld_module='+module+'&file=LayoutBlockList&sub_mode=deleteCustomBlock&ajax=true&blockid='+blockid
+				method:"POST",
+				url:'index.php?module=Settings&action=SettingsAjax&fld_module='+module+'&file=LayoutBlockList&sub_mode=deleteCustomBlock&ajax=true&blockid='+blockid
 			}).done(function(response) {
-					document.getElementById("cfList").innerHTML=response;
-					document.getElementById('vtbusy_info').style.display = "none";
+				document.getElementById("cfList").innerHTML=response;
+				document.getElementById('vtbusy_info').style.display = "none";
 			});
 		}
 	}
@@ -127,18 +121,18 @@ function getCreateCustomBlockForm(modulename,mode)
 			url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=addBlock&fld_module='+modulename+'&parenttab=Settings&ajax=true&mode='+mode+'&blocklabel='+
 			encodeURIComponent(val)+'&after_blockid='+blockid+'&relblock='+relblock
 		}).done(function(response) {
-				document.getElementById('vtbusy_info').style.display = "none";
-				var str = response;
-				if(str == 'ERROR'){
-					alert(alert_arr.LABEL_ALREADY_EXISTS);
-					return false;
-				}else if(str == 'LENGTH_ERROR'){
-					alert(alert_arr.LENGTH_OUT_OF_RANGE);
-					return false;
-				}else{
-					document.getElementById("cfList").innerHTML=str;
-				}
-				gselected_fieldtype = '';
+			document.getElementById('vtbusy_info').style.display = "none";
+			var str = response;
+			if (str == 'ERROR') {
+				alert(alert_arr.LABEL_ALREADY_EXISTS);
+				return false;
+			} else if(str == 'LENGTH_ERROR') {
+				alert(alert_arr.LENGTH_OUT_OF_RANGE);
+				return false;
+			} else {
+				document.getElementById("cfList").innerHTML=str;
+			}
+			gselected_fieldtype = '';
 		});
 }
 
@@ -187,13 +181,13 @@ function saveFieldInfo(fieldid,module,sub_mode,typeofdata){
 
 	document.getElementById('vtbusy_info').style.display = "block";
 	jQuery.ajax({
-			method:"POST",
-			url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode='+sub_mode+'&parenttab=Settings'+
-				'&fieldid='+fieldid+'&fld_module='+module+'&ajax=true'+urlstring
+		method:"POST",
+		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode='+sub_mode+'&parenttab=Settings'+
+			'&fieldid='+fieldid+'&fld_module='+module+'&ajax=true'+urlstring
 	}).done(function(response) {
-			fninvsh('editfield_'+fieldid);
-			document.getElementById("cfList").innerHTML=response;
-			document.getElementById('vtbusy_info').style.display = "none";
+		fninvsh('editfield_'+fieldid);
+		document.getElementById("cfList").innerHTML=response;
+		document.getElementById('vtbusy_info').style.display = "none";
 	});
 }
 
@@ -235,18 +229,18 @@ function getCreateCustomFieldForm(modulename,blockid,mode) {
 	var relationmodules=encodeURIComponent(relationmodules);
 	VtigerJS_DialogBox.block();
 	jQuery.ajax({
-			method:"POST",
-			url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=addCustomField&fld_module='+modulename+'&ajax=true&blockid='+blockid+'&fieldType='+type+'&fldLabel='+label+'&fldLength='+fldLength+'&fldDecimal='+fldDecimal+'&fldPickList='+fldPickList+'&relationmodules='+relationmodules,
+		method:"POST",
+		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=addCustomField&fld_module='+modulename+'&ajax=true&blockid='+blockid+'&fieldType='+type+'&fldLabel='+label+'&fldLength='+fldLength+'&fldDecimal='+fldDecimal+'&fldPickList='+fldPickList+'&relationmodules='+relationmodules,
 	}).done(function(response) {
-				VtigerJS_DialogBox.unblock();
-				var str = response;
-				if(str == 'ERROR'){
-					alert(alert_arr.LABEL_ALREADY_EXISTS);
-					return false;
-				}else{
-					document.getElementById("cfList").innerHTML=str;
-				}
-				gselected_fieldtype = '';
+		VtigerJS_DialogBox.unblock();
+		var str = response;
+		if (str == 'ERROR') {
+			alert(alert_arr.LABEL_ALREADY_EXISTS);
+			return false;
+		} else {
+			document.getElementById("cfList").innerHTML=str;
+		}
+		gselected_fieldtype = '';
 	});
 
 }
@@ -283,11 +277,11 @@ function show_move_hiddenfields(modulename,tabid,blockid,sub_mode){
 	}
 	document.getElementById('vtbusy_info').style.display = "block";
 	jQuery.ajax({
-			method:"POST",
-			url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode='+sub_mode+'&fld_module='+modulename+'&parenttab=Settings&ajax=true&tabid='+tabid+'&blockid='+blockid+'&selected='+selectedids_str,
+		method:"POST",
+		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode='+sub_mode+'&fld_module='+modulename+'&parenttab=Settings&ajax=true&tabid='+tabid+'&blockid='+blockid+'&selected='+selectedids_str,
 	}).done(function(response) {
-			document.getElementById("cfList").innerHTML=response;
-			document.getElementById('vtbusy_info').style.display = "none";
+		document.getElementById("cfList").innerHTML=response;
+		document.getElementById('vtbusy_info').style.display = "none";
 	});
 }
 
@@ -295,24 +289,23 @@ function changeRelatedListorder(what_to_do,tabid,sequence,id,module)
 {
 	document.getElementById('vtbusy_info').style.display = "block";
 	jQuery.ajax({
-			method:"POST",
-			url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=changeRelatedInfoOrder&sequence='+sequence+'&fld_module='+module+'&parenttab=Settings&what_to_do='+what_to_do+'&tabid='+tabid+'&id='+id+'&ajax=true'
+		method:"POST",
+		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=changeRelatedInfoOrder&sequence='+sequence+'&fld_module='+module+'&parenttab=Settings&what_to_do='+what_to_do+'&tabid='+tabid+'&id='+id+'&ajax=true'
 	}).done(function(response) {
-			document.getElementById("relatedlistdiv").innerHTML=response;
-			document.getElementById('vtbusy_info').style.display = "none";
+		document.getElementById("relatedlistdiv").innerHTML=response;
+		document.getElementById('vtbusy_info').style.display = "none";
 	});
 }
 
 function deleteRelatedList(tabid,sequence,id,module) {
 	document.getElementById('vtbusy_info').style.display = "block";
 	jQuery.ajax({
-			method:"POST",
-			url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=deleteRelatedList&sequence='+sequence+'&fld_module='+module+'&parenttab=Settings&tabid='+tabid+'&id='+id+'&ajax=true'
+		method:"POST",
+		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=deleteRelatedList&sequence='+sequence+'&fld_module='+module+'&parenttab=Settings&tabid='+tabid+'&id='+id+'&ajax=true'
 	}).done(function(response) {
-			document.getElementById("relatedlistdiv").innerHTML=response;
-			document.getElementById('vtbusy_info').style.display = "none";
-		}
-	);
+		document.getElementById("relatedlistdiv").innerHTML=response;
+		document.getElementById('vtbusy_info').style.display = "none";
+	});
 }
 
 function createRelatedList(module) {
@@ -320,24 +313,23 @@ function createRelatedList(module) {
 	var relmodpl = document.getElementById('relatewithmodule');
 	var relmod = relmodpl.options[relmodpl.selectedIndex].value;
 	jQuery.ajax({
-			method:"POST",
-			url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=createRelatedList&fld_module='+module+'&relwithmod='+relmod+'&parenttab=Settings&ajax=true',
+		method:"POST",
+		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=createRelatedList&fld_module='+module+'&relwithmod='+relmod+'&parenttab=Settings&ajax=true',
 	}).done(function(response) {
-			document.getElementById("relatedlistdiv").innerHTML=response;
-			document.getElementById('vtbusy_info').style.display = "none";
-		}
-	);
+		document.getElementById("relatedlistdiv").innerHTML=response;
+		document.getElementById('vtbusy_info').style.display = "none";
+	});
 }
 
 function callRelatedList(module){
 	document.getElementById('vtbusy_info').style.display = "block";
 	jQuery.ajax({
-			method:"POST",
-			url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=getRelatedInfoOrder&parenttab=Settings&formodule='+module+'&ajax=true'
+		method:"POST",
+		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=getRelatedInfoOrder&parenttab=Settings&formodule='+module+'&ajax=true'
 	}).done(function(response) {
-			document.getElementById("relatedlistdiv").innerHTML=response;
-			fnvshNrm('relatedlistdiv');
-			document.getElementById('vtbusy_info').style.display = "none";
+		document.getElementById("relatedlistdiv").innerHTML=response;
+		fnvshNrm('relatedlistdiv');
+		document.getElementById('vtbusy_info').style.display = "none";
 	});
 }
 
