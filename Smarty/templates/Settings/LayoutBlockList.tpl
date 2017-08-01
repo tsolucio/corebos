@@ -237,12 +237,15 @@ function getCreateCustomFieldForm(modulename,blockid,mode) {
 		if (str == 'ERROR') {
 			alert(alert_arr.LABEL_ALREADY_EXISTS);
 			return false;
+		} else if (str.indexOf('ERROR::') > -1) {
+			var msg = str.split('ERROR::');
+			alert(msg[1]);
+			return false;
 		} else {
 			document.getElementById("cfList").innerHTML=str;
 		}
 		gselected_fieldtype = '';
 	});
-
 }
 
 function makeFieldSelected(oField,fieldid,blockid)

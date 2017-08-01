@@ -681,7 +681,6 @@ $mod_strings = Array(
 'LBL_SELECT_ROLE'=>'Rol selecteren',
 'LBL_BACKUP_DESC'=>' Het CRM system staat toe dat u een backup kan maken van de database naar uw FTP server. Het CRM zal een backup maken van alle data wanneer een admin gebruiker niet is ingelogd. Zorg ervoor dat u genoeg disk ruimte heeft op uw FTP server. Het gemaakte backup bestand zal in het volgende formaat zijn weergegeven: "backup-date-time.sql".',
 
-// Added/Updated for vtiger CRM 5.0.4
 'LBL_SUPPORT_NOTICIATION'=>'Ondersteuning Einde Notificatie eerder dan een week',
 'LBL_SUPPORT_NOTICIATION_MONTH'=>'Ondersteuning Einde Notificatie eerder dan een maand' ,
 'LBL_SUPPORT_DESCRIPTION'=>'Waarschuw bij een week voor Ondersteuning einde',
@@ -690,10 +689,11 @@ $mod_strings = Array(
 'LBL_TEMPLATE'=>'Sjabloon',
 'LBL_SELECT_EMAIL_TEMPLATE_FOR'=>'Selecteer een e-mail sjabloon voor',
 
-
 'ERR_CUSTOM_FIELD_WITH_NAME'=>'Custom veld met de naam ',
 'ERR_ALREADY_EXISTS'=>' bestaat reeds.',
 'ERR_SPECIFY_DIFFERENT_LABEL'=>'Geef een ander Label',
+'ROWSIZEERROR' => 'Row size too large. Reached maximum size limit of database table size.',
+'ADDFIELDERROR' => 'Custom field could not be added due to a database error.',
 'LBL_TOOLS_TO_BE_SHOWN'=>'Gereedschap zichtbaar',
 'LBL_PICKLIST_GLOBAL_DELETE'=>'Globaal Wissen',
 'LBL_PICKLIST_TRANSFER'=>'Transporteren waardes Van ',
