@@ -301,18 +301,36 @@ class ExportUtils{
 			}elseif($uitype == 10){
 				//have to handle uitype 10
 				$value = trim($value);
-				if(!empty($value)) {
+				if (!empty($value)) {
 					$parent_module = getSalesEntityType($value);
-					$displayValueArray = getEntityName($parent_module, $value);
-					if(!empty($displayValueArray)){
-						foreach($displayValueArray as $k=>$v){
-							$displayValue = $v;
+					$Export_RelatedField_GetValueFrom = GlobalVariable::getVariable('Export_RelatedField_GetValueFrom','',$parent_module);
+					if ($Export_RelatedField_GetValueFrom != '') {
+						$qg = new QueryGenerator($parent_module, $current_user);
+						$qg->setFields(array($Export_RelatedField_GetValueFrom));
+						$qg->addCondition('id',$value,'e');
+						$query = $qg->getQuery();
+						$rs = $adb->query($query);
+						if ($rs and $adb->num_rows($rs) == 1) {
+							$displayValue = $adb->query_result($rs,0, $Export_RelatedField_GetValueFrom);
+						} else {
+							$displayValue = $value;
+						}
+					} else {
+						$displayValueArray = getEntityName($parent_module, $value);
+						if(!empty($displayValueArray)){
+							foreach($displayValueArray as $k=>$v){
+								$displayValue = $v;
+							}
 						}
 					}
-					if(!empty($parent_module) && !empty($displayValue)){
-						$value = $parent_module."::::".$displayValue;
-					}else{
-						$value = "";
+					if (!empty($parent_module) && !empty($displayValue)) {
+						$value = $parent_module.'::::'.$displayValue;
+						$Export_RelatedField_NameForSearch = GlobalVariable::getVariable('Export_RelatedField_NameForSearch','',$parent_module);
+						if ($Export_RelatedField_NameForSearch != '') {
+							$value = $value.'::::'.$Export_RelatedField_NameForSearch;
+						}
+					} else {
+						$value = '';
 					}
 				} else {
 					$value = '';

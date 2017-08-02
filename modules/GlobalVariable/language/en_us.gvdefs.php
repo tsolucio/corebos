@@ -371,6 +371,20 @@ $GlobalVariableDefinitons = array(
 	'values' => ', | ; | others',
 	'definition' => 'Character symbol which separates fields in the CSV export files. Normally this will be a comma or semicolon, but any symbol may be used.',
 ),
+'Export_RelatedField_GetValueFrom' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'string',
+	'category' => 'Application',
+	'values' => 'valid field name for the module',
+	'definition' => 'Field name to use to get the value of the related field export.',
+),
+'Export_RelatedField_NameForSearch' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'string',
+	'category' => 'Application',
+	'values' => 'valid field name for the module',
+	'definition' => 'Field name to append to the end of a related field export. This supports the extended search field syntax of the import process.',
+),
 'Application_Help_URL' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'String',
