@@ -162,25 +162,23 @@
 </table>
 {literal}
 <script>
-function validate_mail_server(form)
-{
-	if(form.server.value =='')
-	{
-		{/literal}
-		alert("{$APP.SERVERNAME_CANNOT_BE_EMPTY}")
+function validate_mail_server(form) {
+	if (form.server.value == '') {
+		alert("{/literal}{$APP.SERVERNAME_CANNOT_BE_EMPTY}{literal}")
 		return false;
-		{literal}
+	}
+	if (form.from_email_field != '') {
+		if (patternValidate('from_email_field','{/literal}{$MOD.LBL_FROM_EMAIL_FIELD}{literal}','EMAIL') == false)
+			return false;
 	}
 	return true;
 }
 
-function setDefaultMailServer()
-{
+function setDefaultMailServer() {
 	var confirmMsg = document.getElementById('confirmMsg').value;
-	if(confirm(confirmMsg)){
+	if (confirm(confirmMsg)) {
 		return true;
-	}
-	else{
+	} else {
 		return false;
 	}
 }
