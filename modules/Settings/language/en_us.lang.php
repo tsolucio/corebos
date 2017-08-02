@@ -651,7 +651,6 @@ $mod_strings = Array(
 'LBL_MOVE_ROLE'=>'Move Role',
 'LBL_BACKUP_DESC'=>' The CRM system allows you to make a backup of the database to your FTP server. The CRM will take backup of all data whenever an admin user logs out. Make sure you have enough disk space available on your FTP server. The created backup file will be in the following format: "backup_date_time.sql".',
 
-// Added/Updated for vtiger CRM 5.0.4
 'LBL_SUPPORT_NOTICIATION'=>'Support End Notification before a week',
 'LBL_SUPPORT_NOTICIATION_MONTH'=>'Support End Notification before a month' ,
 'LBL_SUPPORT_DESCRIPTION'=>'Notify before one week when support is about to end',
@@ -663,6 +662,8 @@ $mod_strings = Array(
 'ERR_CUSTOM_FIELD_WITH_NAME'=>'Custom Field with the Name ',
 'ERR_ALREADY_EXISTS'=>' already exists.',
 'ERR_SPECIFY_DIFFERENT_LABEL'=>'Please specify a different Label',
+'ROWSIZEERROR' => 'Row size too large. Reached maximum size limit of database table size.',
+'ADDFIELDERROR' => 'Custom field could not be added due to a database error.',
 'LBL_TOOLS_TO_BE_SHOWN'=>'Tools to be shown',
 'LBL_PICKLIST_TRANSFER'=>'Transfering the values Of ',
 'LBL_REPLACE_VALUE_WITH'=>'Replace value with ',
@@ -786,7 +787,7 @@ $mod_strings = Array(
 'LBL_UNREAD'=>'Unread',
 'LBL_READ'=>'Read',
 'LBL_AFTER_SCAN'=>'After scan',
-'LBL_MESSAGES_FROM_LASTSCAN'=>'Messages from lastscan',
+'LBL_MESSAGES_FROM_LASTSCAN'=>'Messages from last scan',
 'LBL_MARK_MESSAGE_AS'=>'Mark message as',
 'LBL_ASSIGN' => 'Assign to',
 

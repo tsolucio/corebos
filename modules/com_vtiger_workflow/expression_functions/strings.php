@@ -59,4 +59,15 @@ function __vt_uppercasewords($arr) {
 	}
 }
 
+function __cb_coalesce($arr) {
+	$result = '';
+	foreach ($arr as $value) {
+		if (!empty($value)) {
+			$result = $value;
+			break;
+		}
+	}
+	return $result;
+}
+
 ?>

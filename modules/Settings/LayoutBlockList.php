@@ -1031,6 +1031,15 @@ function addCustomField() {
 
 		if(is_numeric($blockid)) {
 			if(empty($_REQUEST['fieldid'])) {
+				$rdoadd = $adb->alterTable($tableName, $columnName." ".$type, "Add_Column");
+				if ($rdoadd==1) {
+					if (substr($adb->database->ErrorMsg(),0,18) == 'Row size too large') {
+						echo 'ROWSIZEERROR::' . getTranslatedString('ROWSIZEERROR','Settings');
+					} else {
+						echo 'ADDFIELDERROR::' . getTranslatedString('ADDFIELDERROR','Settings');
+					}
+					die();
+				}
 				$max_fieldsequence = "select max(sequence) as maxsequence from vtiger_field where block = ? ";
 				$res = $adb->pquery($max_fieldsequence,array($blockid));
 				$max_seq = $adb->query_result($res,0,'maxsequence');
@@ -1042,8 +1051,7 @@ function addCustomField() {
 				$query = "insert into vtiger_field (tabid,fieldid,columnname,tablename,generatedtype,uitype,fieldname,fieldlabel,readonly,presence,defaultvalue,maximumlength,sequence,block,displaytype,typeofdata,quickcreate,quickcreatesequence,info_type,masseditable) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 				$qparams = array($tabid,$custfld_fieldid,$columnName,$tableName,2,$uitype,$columnName,$fldlabel,0,2,'',100,$max_seq+1,$blockid,1,$uichekdata,$quickcreate,0,'BAS',1);
 				$adb->pquery($query, $qparams);
-				$adb->alterTable($tableName, $columnName." ".$type, "Add_Column");
-				//Inserting values into vtiger_profile2field vtiger_tables
+				//Inserting values into vtiger_profile2field tables
 				$sql1 = "select * from vtiger_profile";
 				$sql1_result = $adb->pquery($sql1, array());
 				$sql1_num = $adb->num_rows($sql1_result);
@@ -1053,7 +1061,7 @@ function addCustomField() {
 					$adb->pquery($sql2, array($profileid, $tabid, $custfld_fieldid, 0, 0));
 				}
 
-				//Inserting values into def_org vtiger_tables
+				//Inserting values into def_org tables
 				$sql_def = "insert into vtiger_def_org_field values(?,?,?,?)";
 				$adb->pquery($sql_def, array($tabid, $custfld_fieldid, 0, 0));
 

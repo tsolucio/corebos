@@ -92,9 +92,33 @@ class VTEmailTask extends VTTask{
 			$this->attachmentsinfo = '';
 		}
 		if(!empty($this->attfieldnames)){
-			$attfield = new VTSimpleTemplate('$'.$this->attfieldnames);
-			$pathattfield = $attfield->render($entityCache,$entity->getId());
-			$this->attachmentsinfo[] = $pathattfield;
+			if (substr($this->attfieldnames,-24) == ' : (Documents) filename)') {
+				global $adb;
+				$this->attfieldnames = substr($this->attfieldnames,1,strlen($this->attfieldnames)-25);
+				$rsfld = $adb->pquery('select 1 from vtiger_field
+					inner join vtiger_fieldmodulerel on vtiger_field.fieldid = vtiger_fieldmodulerel.fieldid
+					where vtiger_fieldmodulerel.module=? and vtiger_fieldmodulerel.relmodule = ? and uitype=10 and tabid=? and fieldname=?',
+					array($module,'Documents',getTabid($module),$this->attfieldnames));
+				if ($rsfld and $adb->num_rows($rsfld, 0, 'uitype') == 1) {
+					$query = 'SELECT vtiger_attachments.path, vtiger_attachments.name, vtiger_attachments.attachmentsid
+						FROM vtiger_attachments
+						INNER JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
+						INNER JOIN vtiger_crmentity ON vtiger_attachments.attachmentsid=vtiger_crmentity.crmid
+						WHERE deleted=0 AND vtiger_seattachmentsrel.crmid = ?';
+					$docid = $entity->get($this->attfieldnames);
+					if (!empty($docid)) {
+						list($void,$docid) = explode('x', $docid);
+						$docrs = $adb->pquery($query,array($docid));
+						if ($docrs and $adb->num_rows($docrs)==1) {
+							$this->attachmentsinfo[] = $adb->query_result($docrs, 0, 'path').$adb->query_result($docrs, 0, 'attachmentsid').'_'.$adb->query_result($docrs, 0, 'name');
+						}
+					}
+				}
+			} else {
+				$attfield = new VTSimpleTemplate('$'.$this->attfieldnames);
+				$pathattfield = $attfield->render($entityCache,$entity->getId());
+				$this->attachmentsinfo[] = $pathattfield;
+			}
 		}
 		$st = new VTSimpleTemplate($this->subject);
 		$subject = $st->render($entityCache, $entity->getId());

@@ -1627,7 +1627,7 @@ function getRelatedListsInformation($module, $focus) {
  */
 function getRelatedLists($module, $focus,$restrictedRelations=null) {
 	global $log, $adb, $current_user;
-	$log->debug("Entering getRelatedLists(" . $module . "," . get_class($focus) . ") method ...");
+	$log->debug('Entering getRelatedLists(' . $module . ') method ...');
 	require('user_privileges/user_privileges_' . $current_user->id . '.php');
 
 	$cur_tab_id = getTabid($module);

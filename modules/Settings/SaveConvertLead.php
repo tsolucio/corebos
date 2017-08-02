@@ -16,8 +16,11 @@ $adb->pquery($deletSQL, array());
 $insertSQL = "INSERT INTO vtiger_convertleadmapping(leadfid,accountfid,contactfid,potentialfid) VALUES(?,?,?,?)";
 $map = vtlib_purify($_REQUEST['map']);
 foreach ($map as $mapping) {
-	if (!((empty($mapping['Accounts'])) && (empty($mapping['Contacts'])) && (empty($mapping['Potentials'])))) {
-		$adb->pquery($insertSQL, array($mapping['Leads'], $mapping['Accounts'], $mapping['Contacts'], $mapping['Potentials']));
+	if (!(empty($mapping['Accounts']) && empty($mapping['Contacts']) && empty($mapping['Potentials']))) {
+		$adb->pquery($insertSQL, array($mapping['Leads'],
+			empty($mapping['Accounts']) ? 0 : $mapping['Accounts'],
+			empty($mapping['Contacts']) ? 0 : $mapping['Contacts'],
+			empty($mapping['Potentials']) ? 0 : $mapping['Potentials']));
 	}
 }
 

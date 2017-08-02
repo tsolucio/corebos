@@ -594,7 +594,9 @@ $mod_strings = array (
       'ERR_CUSTOM_FIELD_WITH_NAME' => 'Un campo personalizado de nombre ',
       'ERR_ALREADY_EXISTS' => 'ya existe.',
       'ERR_SPECIFY_DIFFERENT_LABEL' => 'Por favor introduzca una etiqueta distinta',
-      'LBL_TOOLS_TO_BE_SHOWN'=>'Herramientas a mostrar',
+	'ROWSIZEERROR' => 'Fila demasiado grande. Se ha alcanzado el tamaño máximo para una tabla en la base de datos.',
+	'ADDFIELDERROR' => 'No se ha podido añadir el campo personalizado debido a un error en la base de datos.',
+	'LBL_TOOLS_TO_BE_SHOWN'=>'Herramientas a mostrar',
       'LBL_PICKLIST_TRANSFER'=>'Transfiriendo los valores de ',
       'LBL_REPLACE_VALUE_WITH'=>'Sustituir valor con ',
       'LBL_EDIT_CUSTOM_RULE'=>'Editar Regla de Privilegio Personalizada',
@@ -704,7 +706,7 @@ $mod_strings = array (
     
       'LBL_NOT'=>'No',
 
-      'LBL_ALL' => 'Toda',
+      'LBL_ALL' => 'Todos',
       'LBL_ANY'=>'Cualquier',
       'LBL_CONDITION'=>'Condición',
       'LBL_ACTION'=>'Acción',
@@ -722,7 +724,7 @@ $mod_strings = array (
       'LBL_UNREAD'=>'No leídos',
       'LBL_READ'=>'Leídos',
       'LBL_AFTER_SCAN'=>'Post-scan',
-      'LBL_MESSAGES_FROM_LASTSCAN'=>'Mensajes último scan',
+      'LBL_MESSAGES_FROM_LASTSCAN'=>'desde última lectura',
       'LBL_MARK_MESSAGE_AS'=>'Marcar mensaje como',
       'LBL_ASSIGN' => 'Asignar a',
 

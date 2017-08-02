@@ -41,7 +41,6 @@ class corebos_gcontacts {
 	const IDField = 'gcontactsid';
 	const LastSyncField = 'gcontactslastsync';
 	const SyncWithField = 'gcontactssyncwith';
-	const supportedModules = array('Accounts','Contacts','Leads');
 	const gcontacts_appurl = 'https://app.gcontacts.com';
 
 	// Debug

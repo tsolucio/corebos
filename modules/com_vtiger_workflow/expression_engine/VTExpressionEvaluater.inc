@@ -31,6 +31,7 @@ class VTFieldExpressionEvaluater{
 		);
 		$this->functions = array(
 				'concat'=>'__vt_concat',
+				'coalesce'=>'__cb_coalesce',
 				'time_diff' => '__vt_time_diff',
 				'time_diffdays' => '__vt_time_diffdays',
 				'add_days' => '__vt_add_days',

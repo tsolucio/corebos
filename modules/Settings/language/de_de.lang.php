@@ -685,7 +685,6 @@ $mod_strings = Array(
     'LBL_MOVE_ROLE'=>'Rolle verschieben',
     'LBL_BACKUP_DESC'=>' Sie können ein vollständiges Backup Ihrer Datenbank auf einen FTP Server machen. Dieses Backup wird dann automatisch ausgeführt, wenn sich der admin Nutzer ausloggt. Sie müssen sicherstellen, dass Ihr FTP Server über ausreichend Speicherplatz verfügt. Die Backup Datei liegt dann im folgenden Format vor: "backup-datum-zeit.sql".',
 
-    // Added/Updated for vtiger CRM 5.0.4
     'LBL_SUPPORT_NOTICIATION'=>'Ende Supportfall',
     'LBL_SUPPORT_NOTICIATION_MONTH'=>'Supportfall ist in einem Monat beendet' ,
     'LBL_SUPPORT_DESCRIPTION'=>'Mitteilung über einen abgeschlossenen Supportfall',
@@ -697,7 +696,9 @@ $mod_strings = Array(
     'ERR_CUSTOM_FIELD_WITH_NAME'=>'Ein benutzerdefiniertes Feld mit dem Namen ',
     'ERR_ALREADY_EXISTS'=>' existiert bereits.',
     'ERR_SPECIFY_DIFFERENT_LABEL'=>'Bitte eine andere Bezeichung auswählen',
-    'LBL_TOOLS_TO_BE_SHOWN'=>'Werkzeuge zur Anzeige',
+	'ROWSIZEERROR' => 'Row size too large. Reached maximum size limit of database table size.',
+	'ADDFIELDERROR' => 'Custom field could not be added due to a database error.',
+	'LBL_TOOLS_TO_BE_SHOWN'=>'Werkzeuge zur Anzeige',
     'LBL_PICKLIST_GLOBAL_DELETE'=>'globales Löschen',
     'LBL_PICKLIST_TRANSFER'=>'übertrage die Einträge von ',
     'LBL_REPLACE_VALUE_WITH'=>'Ersetze Einträge mit ',

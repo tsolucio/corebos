@@ -113,6 +113,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Import_Full_CSV',
 				'Import_Batch_Limit',
 				'Import_Scheduled_Limit',
+				'Export_Field_Separator_Symbol',
 				'Lead_Convert_TransferToAccount',
 				'Lead_Convert_OpportunitySelected',
 				'PBX_Get_Line_Prefix',
