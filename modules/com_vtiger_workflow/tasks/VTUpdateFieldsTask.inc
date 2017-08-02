@@ -106,7 +106,9 @@ class VTUpdateFieldsTask extends VTTask {
 					if ($userId == 0 && $groupId == 0) {
 						$fieldValue = $focus->column_fields[$fieldName];
 					} else {
-						$fieldValue = ($userId == 0) ? $groupId : $userId;
+                                                $userEntityId=vtws_getEntityId('Users').'x';
+                                                $groupEntityId=vtws_getEntityId('Groups').'x';
+						$fieldValue = ($userId == 0) ? $groupEntityId.$groupId : $userEntityId.$userId;
 					}
 				}
 
