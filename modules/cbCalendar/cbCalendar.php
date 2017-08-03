@@ -173,6 +173,7 @@ class cbCalendar extends CRMEntity {
 					$this->insertIntoRecurringTable($recur_data);
 			}
 		}
+		//Insert into seactivity rel
 		if(isset($this->column_fields['rel_id']) && $this->column_fields['rel_id'] != '' && $this->column_fields['rel_id'] != '0') {
 			$res_rel = $adb->pquery('SELECT * FROM vtiger_seactivityrel WHERE activityid = ?',array($this->id));
 			if($adb->num_rows($res_rel) > 0) {
@@ -180,6 +181,8 @@ class cbCalendar extends CRMEntity {
 			} else {
 				$adb->pquery('insert into vtiger_seactivityrel(crmid,activityid) values(?,?)',array($this->column_fields['rel_id'],$this->id));
 			}
+		} elseif (($this->column_fields['rel_id']=='' || $this->column_fields['rel_id']=='0') && $this->mode=="edit") {
+			$this->deleteRelation("vtiger_seactivityrel");
 		}
 		//Insert into cntactivity rel
 		if (empty($this->column_fields['contact_id']) and !empty($this->column_fields['cto_id'])) {
