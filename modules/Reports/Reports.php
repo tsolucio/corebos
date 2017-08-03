@@ -1190,7 +1190,7 @@ function getEscapedColumns($selectedfields) {
 		while($columnslistrow = $adb->fetch_array($result))
 		{
 			$fieldname ="";
-			$fieldcolname = $columnslistrow["columnname"];
+			$fieldcolname = decode_html($columnslistrow["columnname"]);
 
 			$selmod_field_disabled = true;
 			foreach($selected_mod as $smod){
