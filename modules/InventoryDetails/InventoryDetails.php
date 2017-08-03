@@ -347,6 +347,8 @@ class InventoryDetails extends CRMEntity {
 					$invdet_focus->column_fields[$fieldname.'_hidden'] = $_REQUEST[$fieldname.'_hidden'] = vtlib_purify($_REQUEST[$fieldname.$requestindex.'_hidden']);
 					if (isset($inputFiles[$fieldname.$requestindex])) {
 						$_FILES[$fieldname] = $inputFiles[$fieldname.$requestindex];
+						$_REQUEST[$fieldname.'_canvas_image'] = vtlib_purify($_REQUEST[$fieldname.$requestindex.'_canvas_image']);
+						$_REQUEST[$fieldname.'_canvas_image_set'] = vtlib_purify($_REQUEST[$fieldname.$requestindex.'_canvas_image_set']);
 					}
 				} elseif (isset($row[$fieldname])) {
 					$invdet_focus->column_fields[$fieldname] = $row[$fieldname];

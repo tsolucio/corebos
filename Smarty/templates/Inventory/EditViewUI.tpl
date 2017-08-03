@@ -533,45 +533,30 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 		{elseif $uitype eq 69}
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
 				<font color="red">{$mandatory_field}</font>{$usefldlabel}
-			</span>
-			<span colspan="1" width="30%" class="mdCellInfo">
-				{if $MODULE eq 'Products'}
-					<input name="del_file_list" type="hidden" value="">
-					<div id="files_list" style="border: 1px solid grey; width: 500px; padding: 5px; background: rgb(255, 255, 255) none repeat scroll 0%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial; font-size: x-small">
-						<span id="limitmsg" style= "color:red;"> {'LBL_MAX_SIZE'|@getTranslatedString:$MODULE} {$UPLOADSIZE}{'LBL_FILESIZEIN_MB'|@getTranslatedString:$MODULE}, {$APP.Files_Maximum}{$Product_Maximum_Number_Images}</span>
-						<input id="my_file_element" type="file" name="file_1" tabindex="{$vt_tab}"  onchange="validateFilename(this)"/>
-						<!--input type="hidden" name="file_1_hidden" value=""/-->
-						{assign var=image_count value=0}
-						{if isset($maindata[3].0.name) && $maindata[3].0.name neq '' && $DUPLICATE neq 'true'}
-							{foreach name=image_loop key=num item=image_details from=$maindata[3]}
-							<div align="center">
-								<img src="{$image_details.path}{$image_details.name}" height="50">&nbsp;&nbsp;[{$image_details.orgname}]<input id="file_{$num}" value="{'LBL_DELETE_BUTTON'|@getTranslatedString}" type="button" class="crmbutton small delete" onclick='this.parentNode.parentNode.removeChild(this.parentNode);delRowEmt("{$image_details.orgname}")'>
-							</div>
-							{assign var=image_count value=$smarty.foreach.image_loop.iteration}
-							{/foreach}
-						{/if}
-					</div>
-
-					<script>
-						{*<!-- Create an instance of the multiSelector class, pass it the output target and the max number of files -->*}
-						var multi_selector = new MultiSelector( document.getElementById( 'files_list' ), {$Product_Maximum_Number_Images} );
-						multi_selector.count = {$image_count};
-						{*<!-- Pass in the file element -->*}
-						multi_selector.addElement( document.getElementById( 'my_file_element' ) );
-					</script>
+			</span><span colspan="1" width="30%" class="mdCellInfo">
+				<div style="display: flex;flex-direction: row; width:100%">
+				<div width="80%">
+				<span id="limitmsg" style= "color:red;"> {'LBL_MAX_SIZE'|@getTranslatedString:$MODULE} {$UPLOADSIZE}{'LBL_FILESIZEIN_MB'|@getTranslatedString:$MODULE}<br /></span>
+				{if isset($maindata[3].0.name) && $maindata[3].0.name != "" && $DUPLICATE neq 'true'}
+					{assign var=imagevalueexists value=true}
 				{else}
-					<span id="limitmsg" style= "color:red;"> {'LBL_MAX_SIZE'|@getTranslatedString:$MODULE} {$UPLOADSIZE}{'LBL_FILESIZEIN_MB'|@getTranslatedString:$MODULE}<br /></span>
-					{if isset($maindata[3].0.name) && $maindata[3].0.name != "" && $DUPLICATE neq 'true'}
-					  {assign var=imagevalueexists value=true}
-					{else}
-					  {assign var=imagevalueexists value=false}
-					{/if}
-					<input name="{$fldname}"  type="file" value="{if $imagevalueexists}{$maindata[3].0.name}{/if}" tabindex="{$vt_tab}" onchange="validateFilename(this);" />
-					<input name="{$fldname}_hidden"  type="hidden" value="{if $imagevalueexists}{$maindata[3].0.name}{/if}" />
-					{if $imagevalueexists}
-						<div id="{$fldname}_replaceimage">[{$maindata[3].0.orgname}] <input id="{$fldname}_attach" value="{'LBL_DELETE_BUTTON'|@getTranslatedString}" type="button" class="crmbutton small delete" onclick='delimage({$ID},"{$fldname}","{$maindata[3].0.orgname}");'></div>
-					{/if}
+					{assign var=imagevalueexists value=false}
 				{/if}
+				<input name="{$fldname}" type="file" value="{if $imagevalueexists}{$maindata[3].0.name}{/if}" tabindex="{$vt_tab}" onchange="validateFilename(this);" />
+				<input name="{$fldname}_hidden" type="hidden" value="{if $imagevalueexists}{$maindata[3].0.name}{/if}" />
+				<input name="{$fldname}_path_hidden" type="hidden" value="{if $imagevalueexists}{$maindata[3].0.path}{$maindata[3].0.name}{/if}" />
+				{if $imagevalueexists}
+					<div id="{$fldname}_replaceimage">[{$maindata[3].0.orgname}] <input id="{$fldname}_attach" value="{'LBL_DELETE_BUTTON'|@getTranslatedString}" type="button" class="crmbutton small delete" onclick='delimage({$ID},"{$fldname}","{$maindata[3].0.orgname}");'></div>
+				{/if}
+				<div id="displaySize"></div>
+				</div>
+				<div style="width:50px;height:50px;overflow: hidden;">
+					<canvas style="border:1px solid grey;" id="{$fldname}_canvas" tabindex="{$vt_tab}1}"></canvas>
+					<input name="{$fldname}_canvas_image" id="{$fldname}_canvas_image" type="hidden" value="" />
+					<input name="{$fldname}_canvas_image_set" id="{$fldname}_canvas_image_set" type="hidden" value="0" />
+					<script>var {$fldname}_CLIPBOARD = new CLIPBOARD_CLASS("{$fldname}_canvas", true);</script>
+				</div>
+				</div>
 			</span>
 
 		{elseif $uitype eq 61}
