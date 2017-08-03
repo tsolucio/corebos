@@ -46,6 +46,7 @@ class cbCalendar extends CRMEntity {
 		'vtiger_activity_reminder'=>'activity_id',
 		'vtiger_recurringevents'=>'activityid',
 		'vtiger_activitycf' => 'activityid',
+		'vtiger_seactivityrel'=>'activityid'
 	);
 
 	/**
@@ -170,6 +171,14 @@ class cbCalendar extends CRMEntity {
 				$recur_data = getrecurringObjValue();
 				if(is_object($recur_data))
 					$this->insertIntoRecurringTable($recur_data);
+			}
+		}
+		if(isset($this->column_fields['rel_id']) && $this->column_fields['rel_id'] != '' && $this->column_fields['rel_id'] != '0') {
+			$res_rel = $adb->pquery('SELECT * FROM vtiger_seactivityrel WHERE activityid = ?',array($this->id));
+			if($adb->num_rows($res_rel) > 0) {
+				$adb->pquery('UPDATE vtiger_seactivityrel SET crmid = ? WHERE activityid = ?',array($this->column_fields['rel_id'],$this->id));
+			} else {
+				$adb->pquery('insert into vtiger_seactivityrel(crmid,activityid) values(?,?)',array($this->column_fields['rel_id'],$this->id));
 			}
 		}
 		//Insert into cntactivity rel
