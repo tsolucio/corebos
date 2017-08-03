@@ -122,8 +122,12 @@ class CRMEntity {
 
 		// vtlib customization: Hook provide to enable generic module relation.
 		if (isset($_REQUEST['createmode']) and $_REQUEST['createmode'] == 'link') {
+			if (!isset($_REQUEST['source_id'] || $_REQUEST['source_id'] == '') {
+				$for_crmid = vtlib_purify($_REQUEST['return_id']);
+			} else {
+				$for_crmid = vtlib_purify($_REQUEST['source_id']);
+			}
 			$for_module = vtlib_purify($_REQUEST['return_module']);
-			$for_crmid = vtlib_purify($_REQUEST['return_id']);
 			$with_module = $module;
 			$with_crmid = $this->id;
 
