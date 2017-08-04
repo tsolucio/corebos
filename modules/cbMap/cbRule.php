@@ -24,6 +24,10 @@ class coreBOS_Rule {
 
 	static public function evaluate($conditionid,$contextid) {
 		global $log,$adb,$current_user;
+		if (strpos($contextid, 'x')===false) {
+			$setype = getSalesEntityType($contextid);
+			$contextid = vtws_getEntityId($setype).'x'.$contextid;
+		}
 		// check that $contextid is correct
 		$webserviceObject = VtigerWebserviceObject::fromId($adb,$contextid);
 		$handlerPath = $webserviceObject->getHandlerPath();
