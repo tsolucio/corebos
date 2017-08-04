@@ -159,11 +159,15 @@ switch ($functiontocall) {
 		break;
 	case 'getNumberDisplayValue':
 		$value = vtlib_purify($_REQUEST['val']);
-		$currencyField = new CurrencyField($value);
-		$decimals = vtlib_purify($_REQUEST['decimals']);
-		$currencyField->initialize($current_user);
-		$currencyField->setNumberofDecimals(min($decimals,$currencyField->getCurrencyDecimalPlaces()));
-		$ret = $currencyField->getDisplayValue(null,true,true);
+		if (empty($value)) {
+			$ret = '0';
+		} else {
+			$currencyField = new CurrencyField($value);
+			$decimals = vtlib_purify($_REQUEST['decimals']);
+			$currencyField->initialize($current_user);
+			$currencyField->setNumberofDecimals(min($decimals,$currencyField->getCurrencyDecimalPlaces()));
+			$ret = $currencyField->getDisplayValue(null,true,true);
+		}
 		break;
 	case 'ismoduleactive':
 	default:
