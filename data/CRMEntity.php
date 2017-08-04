@@ -20,6 +20,7 @@ class CRMEntity {
 	var $ownedby;
 	var $mode;
 	var $id;
+	var $linkmodeid;
 	var $DirectImageFieldValues = array();
 	var $HasDirectImageField = false;
 	static protected $methods = array();
