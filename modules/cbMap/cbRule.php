@@ -22,8 +22,17 @@ class coreBOS_Rule {
 
 	public static $supportedBusinessMaps = array('Condition Query','Condition Expression');
 
-	static public function evaluate($conditionid,$contextid) {
+	static public function evaluate($conditionid,$context) {
 		global $log,$adb,$current_user;
+		if (is_array($context)) {
+			if (empty($context['record_id']))
+				throw new WebServiceException(WebServiceErrorCode::$INVALIDID,'No record_id value given in context array.');
+			$mergeContextVariables = $context;
+			$contextid = $mergeContextVariables['record_id'];
+		} else {
+			$mergeContextVariables = false;
+			$contextid = $context;
+		}
 		if (strpos($contextid, 'x')===false) {
 			$setype = getSalesEntityType($contextid);
 			$contextid = vtws_getEntityId($setype).'x'.$contextid;
@@ -42,11 +51,6 @@ class coreBOS_Rule {
 			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to read given object is denied");
 		}
 
-		$idComponents = vtws_getIdComponents($contextid);
-		if (!$meta->exists($idComponents[1])) {
-			throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND,"Record you are trying to access is not found");
-		}
-
 		// check that cbmapid is correct and load it
 		if (preg_match('/^[0-9]+x[0-9]+$/',$conditionid)) {
 			list($cbmapws,$conditionid) = explode('x',$conditionid);
@@ -54,15 +58,23 @@ class coreBOS_Rule {
 		if (is_numeric($conditionid)) {
 			$cbmap = cbMap::getMapByID($conditionid);
 		} else {
-			$cbmap = cbMap::getMapByName($conditionid);
+			$cbmap = GlobalVariable::getVariable('BusinessMapping_'.$conditionid, cbMap::getMapIdByName($conditionid));
 		}
 		if (empty($cbmap) or !in_array($cbmap->column_fields['maptype'],self::$supportedBusinessMaps)) {
-			throw new WebServiceException(WebServiceErrorCode::$INVALID_BUSINESSMAP,"Valid Business Map not found.");
+			throw new WebServiceException(WebServiceErrorCode::$INVALID_BUSINESSMAP,'Invalid Business Map identifier.');
+		}
+
+		// merge fixed context array values
+		if (is_array($mergeContextVariables)) {
+			foreach ($mergeContextVariables as $key => $value) {
+				$cbmap->column_fields['content'] = str_ireplace('$['.$key.']',$value,$cbmap->column_fields['content']);
+			}
 		}
 
 		// do calculation
 		switch ($cbmap->column_fields['maptype']) {
 			case 'Condition Query':
+				$idComponents = vtws_getIdComponents($contextid);
 				$ruleinfo = $cbmap->ConditionQuery($idComponents[1]);
 				break;
 			case 'Condition Expression':
