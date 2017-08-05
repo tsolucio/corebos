@@ -79,6 +79,14 @@ switch ($do) {
 			delMenuBranch($evvtmenuid);
 		}
 		break;
+	case 'fixOrphaned':
+		$rsmenu = $adb->query("select evvtmenuid from vtiger_evvtmenu where mtype='menu'");
+		$menus = array();
+		while ($m = $adb->fetch_array($rsmenu)) {
+			$menus[] = $m['evvtmenuid'];
+		}
+		$adb->query('update vtiger_evvtmenu set mparent=0 where mparent not in ('.implode(',', $menus).')');
+		break;
 	case 'updateTree':
 		$treeIds = vtlib_purify($_REQUEST['treeIds']);
 		$treeParents = vtlib_purify($_REQUEST['treeParents']);
