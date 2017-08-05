@@ -8,11 +8,11 @@
  * All Rights Reserved.
  ******************************************************************************/
 
-function __vt_equals($arr){
+function __vt_equals($arr) {
 	return $arr[0] == $arr[1];
 }
 
-function __cb_distinct($arr){
+function __cb_distinct($arr) {
 	return $arr[0] != $arr[1];
 }
 
