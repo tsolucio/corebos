@@ -60,4 +60,9 @@ function __vt_floor($num) {
 	}
 }
 
+function __cb_modulo($arr) {
+	if (sizeof($arr)==1 or empty($arr[1])) return 0;
+	return $arr[0] % $arr[1];
+}
+
 ?>

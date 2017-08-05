@@ -50,6 +50,7 @@ class VTFieldExpressionEvaluater{
 				'round' => '__vt_round',
 				'ceil' => '__vt_ceil',
 				'floor' => '__vt_floor',
+				'modulo' => '__cb_modulo',
 				'getCurrentUserID' => '__getCurrentUserID',
 				'getCurrentUserName' => '__getCurrentUserName',
 				'getCurrentUserField' => '__getCurrentUserField',
