@@ -145,6 +145,9 @@ switch ($focus->column_fields['maptype']) {
 	case 'FieldInfo':
 		$mapinfo = $focus->FieldInfo();
 		break;
+	case 'GlobalSearchAutocomplete':
+		$mapinfo = $focus->GlobalSearchAutocomplete();
+		break;
 	case 'FieldDependency':
 		$mapinfo = $focus->FieldDependency()->getCompleteMapping();
 		$mapinfo['TargetModule'] = $focus->FieldDependency()->getMapTargetModule();

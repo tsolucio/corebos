@@ -35,6 +35,7 @@ class cbMapAddMapTypes extends cbupdaterWorker {
 				'Import',
 				'RelatedPanes',
 				'FieldInfo',
+				'GlobalSearchAutocomplete',
 			);
 			$moduleInstance = Vtiger_Module::getInstance('cbMap');
 			$field = Vtiger_Field::getInstance('maptype',$moduleInstance);
