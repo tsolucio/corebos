@@ -954,19 +954,15 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		}
 		else
 		{
-			$contact_selected = $account_selected = $vendor_selected = $lead_selected = $user_selected = '';
 			$parent_name='';
 			$parent_id='';
-			if(!empty($_REQUEST['record']))
-			{
+			if (!empty($_REQUEST['record'])) {
 				$myemailid= vtlib_purify($_REQUEST['record']);
 				$mysql = "select crmid from vtiger_seactivityrel where activityid=?";
 				$myresult = $adb->pquery($mysql, array($myemailid));
 				$mycount=$adb->num_rows($myresult);
-				if($mycount >0)
-				{
-					for ($i=0;$i<$mycount;$i++)
-					{
+				if ($mycount >0) {
+					for ($i=0;$i<$mycount;$i++) {
 						$mycrmid=$adb->query_result($myresult,$i,'crmid');
 						$parent_module = getSalesEntityType($mycrmid);
 						if($parent_module == "Leads")

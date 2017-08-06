@@ -2069,7 +2069,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						}
 						$querystr = "SELECT fieldid,fieldlabel,columnname FROM vtiger_field WHERE tabid=? and uitype=13 and vtiger_field.presence in (0,2)";
 						$queryres = $adb->pquery( $querystr, array( getTabid ( $module ) ));
-						// Change this index 0 - to get the vtiger_fieldid based on email1 or email2
 						$fieldid = $adb->query_result ( $queryres, 0, 'fieldid' );
 						$slashes_name = popup_from_html ( $name );
 						$slashes_name = htmlspecialchars ( $slashes_name, ENT_QUOTES, $default_charset );
@@ -2086,7 +2085,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						}
 						$querystr = "SELECT fieldid,fieldlabel,columnname FROM vtiger_field WHERE tabid=? and uitype=13 and vtiger_field.presence in (0,2)";
 						$queryres = $adb->pquery( $querystr, array( getTabid ( $module )));
-						// Change this index 0 - to get the vtiger_fieldid based on email1 or email2
 						$fieldid = $adb->query_result ( $queryres, 0, 'fieldid' );
 						$slashes_name = popup_from_html ( $name );
 						$slashes_name = htmlspecialchars ( $slashes_name, ENT_QUOTES, $default_charset );
@@ -2103,7 +2101,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						}
 						$querystr = "SELECT fieldid,fieldlabel,columnname FROM vtiger_field WHERE tabid=? and uitype=13 and vtiger_field.presence in (0,2)";
 						$queryres = $adb->pquery( $querystr, array( getTabid( $module )));
-						// Change this index 0 - to get the vtiger_fieldid based on email1 or email2
 						$fieldid = $adb->query_result ( $queryres, 0, 'fieldid' );
 						$slashes_name = popup_from_html ( $name );
 						$slashes_name = htmlspecialchars ( $slashes_name, ENT_QUOTES, $default_charset );
@@ -2120,7 +2117,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						}
 						$querystr = "SELECT fieldid,fieldlabel,columnname FROM vtiger_field WHERE tabid=? and uitype=13 and vtiger_field.presence in (0,2)";
 						$queryres = $adb->pquery( $querystr, array( getTabid( $module )));
-						// Change this index 0 - to get the vtiger_fieldid based on email1 or email2
 						$fieldid = $adb->query_result ( $queryres, 0, 'fieldid' );
 						$slashes_name = popup_from_html ( $name );
 						$slashes_name = htmlspecialchars ( $slashes_name, ENT_QUOTES, $default_charset );
@@ -2963,29 +2959,23 @@ function getRelatedTo($module, $list_result, $rset) {
 	$tabname = getParentTab();
 	if ($module == "Documents") {
 		$notesid = $adb->query_result($list_result, $rset, "notesid");
-		$action = "DetailView";
 		$evt_query = 'SELECT vtiger_senotesrel.crmid, vtiger_crmentity.setype
-					FROM vtiger_senotesrel
-					INNER JOIN vtiger_crmentity
-					ON vtiger_senotesrel.crmid = vtiger_crmentity.crmid
-				WHERE vtiger_senotesrel.notesid = ?';
+			FROM vtiger_senotesrel
+			INNER JOIN vtiger_crmentity ON vtiger_senotesrel.crmid = vtiger_crmentity.crmid
+			WHERE vtiger_senotesrel.notesid = ?';
 		$params = array($notesid);
 	} else if ($module == "Products") {
 		$productid = $adb->query_result($list_result, $rset, "productid");
-		$action = "DetailView";
 		$evt_query = 'SELECT vtiger_seproductsrel.crmid, vtiger_crmentity.setype
-					FROM vtiger_seproductsrel
-					INNER JOIN vtiger_crmentity
-					ON vtiger_seproductsrel.crmid = vtiger_crmentity.crmid
-					WHERE vtiger_seproductsrel.productid =?';
+			FROM vtiger_seproductsrel
+			INNER JOIN vtiger_crmentity ON vtiger_seproductsrel.crmid = vtiger_crmentity.crmid
+			WHERE vtiger_seproductsrel.productid =?';
 		$params = array($productid);
 	} else {
 		$activity_id = $adb->query_result($list_result, $rset, "activityid");
-		$action = "DetailView";
 		$evt_query = 'SELECT vtiger_seactivityrel.crmid, vtiger_crmentity.setype
 			FROM vtiger_seactivityrel
-			INNER JOIN vtiger_crmentity
-				ON vtiger_seactivityrel.crmid = vtiger_crmentity.crmid
+			INNER JOIN vtiger_crmentity ON vtiger_seactivityrel.crmid = vtiger_crmentity.crmid
 			WHERE vtiger_seactivityrel.activityid=?';
 		$params = array($activity_id);
 
@@ -2997,7 +2987,7 @@ function getRelatedTo($module, $list_result, $rset) {
 			}
 		}
 	}
-	//added by raju to change the related to in emails inot multiple if email is for more than one contact
+	// change the related to in emails to multiple if email is related with more than one contact
 	$evt_result = $adb->pquery($evt_query, $params);
 	$numrows = $adb->num_rows($evt_result);
 
@@ -3008,7 +2998,6 @@ function getRelatedTo($module, $list_result, $rset) {
 		$parent_module = 'Multiple';
 		$parent_name = $app_strings['LBL_MULTIPLE'];
 	}
-	//Raju -- Ends
 	if ($module == 'HelpDesk' && ($parent_module == 'Accounts' || $parent_module == 'Contacts')) {
 		global $theme;
 		$module_icon = '<img src="themes/images/' . $parent_module . '.gif" alt="' . $app_strings[$parent_module] . '" title="' . $app_strings[$parent_module] . '" border=0 align=center> ';

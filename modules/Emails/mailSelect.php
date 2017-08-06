@@ -37,7 +37,7 @@ for($i = 0; $i < $numrows; $i++)
 	if($permit == '0')
 	{
 		$temp=$adb->query_result($res,$i,'columnname');
-		$columnlists [] = $temp;
+		$columnlists[] = $temp;
 		$fieldid=$adb->query_result($res,$i,'fieldid');
 		$fieldlabel =$adb->query_result($res,$i,'fieldlabel');
 		$value[] = getTranslatedString($fieldlabel);
