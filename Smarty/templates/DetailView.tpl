@@ -747,6 +747,6 @@ getTagCloud();
 	<td align=right valign=top><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
 </tr></table>
 
-{if $MODULE eq 'Leads' or $MODULE eq 'Contacts' or $MODULE eq 'Accounts' or $MODULE eq 'Campaigns' or $MODULE eq 'Vendors' or $MODULE eq 'Project' or $MODULE eq 'Potentials' or $MODULE eq 'ProjectTask' or $MODULE eq 'HelpDesk'}
+{if $MODULE|hasEmailField}
 	<form name="SendMail"><div id="sendmail_cont" style="z-index:100001;position:absolute;"></div></form>
 {/if}

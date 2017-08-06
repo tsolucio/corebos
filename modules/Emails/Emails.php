@@ -577,6 +577,7 @@ function get_to_emailids($module) {
 	}
 	if(empty($emailFields))
 		return false;
+	$params = $idlist;
 	if ($module == 'Leads') {
 		$query = 'SELECT firstname,lastname,'.implode(",", $emailFields).',vtiger_leaddetails.leadid as id
 				  FROM vtiger_leaddetails
@@ -622,13 +623,26 @@ function get_to_emailids($module) {
 				  INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_troubletickets.ticketid
 				  LEFT JOIN vtiger_ticketcf ON vtiger_ticketcf.ticketid = vtiger_troubletickets.ticketid
 				  WHERE vtiger_crmentity.deleted=0 AND vtiger_troubletickets.ticketid IN ('.generateQuestionMarks($idlist).')';
-	} else { // vendors
+	} else if ($module == 'Vendors') {
 		$query = 'SELECT vtiger_vendor.vendorname, '.implode(",", $emailFields).',vtiger_vendor.vendorid as id FROM vtiger_vendor
 				   INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_vendor.vendorid
 				   LEFT JOIN vtiger_vendorcf ON vtiger_vendorcf.vendorid= vtiger_vendor.vendorid
 				   WHERE vtiger_crmentity.deleted=0 AND vtiger_vendor.vendorid IN ('.generateQuestionMarks($idlist).')';
+	} else {
+		$minfo = getEntityFieldNames($module);
+		$qg = new QueryGenerator($module, $current_user);
+		$fields = $emailFields;
+		$fields[] = $minfo['fieldname'];
+		$fields[] = 'id';
+		$qg->setFields($fields);
+		$qg->addCondition('id', $idlist, 'i');
+		$query = $qg->getQuery();
+		$query = preg_replace('/'.$minfo['entityidfield'].'/', $minfo['entityidfield'].' as id', $query, 1);
+		$fldrs = $adb->pquery('select columnname from vtiger_field where tabid=? and fieldname=?',array(getTabid($module),$minfo['fieldname']));
+		$minfo['columnname'] = $adb->query_result($fldrs, 0, 0);
+		$params = array();
 	}
-	$result = $adb->pquery($query,$idlist);
+	$result = $adb->pquery($query,$params);
 
 	$idlists = $mailids = '';
 	if($adb->num_rows($result)>0){
@@ -647,8 +661,12 @@ function get_to_emailids($module) {
 						$mailids .= $entityvalue['potentialname'] . "<" . $entityvalue[$emailFieldName] . ">,";
 					} else if($module == "HelpDesk"){
 						$mailids .= $entityvalue['title'] . "<" . $entityvalue[$emailFieldName] . ">,";
-					} else {
+					} else if($module == "Vendors"){
+						$mailids .= $entityvalue['vendorname'] . "<" . $entityvalue[$emailFieldName] . ">,";
+					} else if($module == "Accounts"){
 						$mailids .= $entityvalue['accountname'] . "<" . $entityvalue[$emailFieldName] . ">,";
+					} else {
+						$mailids .= $entityvalue[$minfo['columnname']] . "<" . $entityvalue[$emailFieldName] . ">,";
 					}
 				}
 			}

@@ -127,6 +127,22 @@ if ($single_record && count($columnlists) > 0) {
 			}
 			$entity_name = $adb->query_result($result,0,'title');
 			break;
+		default:
+			$minfo = getEntityField($pmodule);
+			$qg = new QueryGenerator($pmodule, $current_user);
+			$fields = $columnlists;
+			$fields[] = $minfo['fieldname'];
+			$qg->setFields($fields);
+			$qg->addCondition('id', $idlist, 'e');
+			$query = $qg->getQuery();
+			$result = $adb->query($query);
+			foreach ($columnlists as $columnname) {
+				$con_eval = $adb->query_result($result,0,$columnname);
+				$field_value[$count++] = $con_eval;
+				if($con_eval != "") $val_cnt++;
+			}
+			$entity_name = $adb->query_result($result,0,$minfo['fieldname']);
+			break;
 	}
 }
 $smarty->assign('PERMIT',$permit);

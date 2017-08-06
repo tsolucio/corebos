@@ -4512,6 +4512,36 @@ function getEmailRelatedModules() {
 	return $relatedModules;
 }
 
+function hasEmailField($module) {
+	global $adb;
+	$querystr = 'SELECT fieldid FROM vtiger_field WHERE tabid=? and uitype=13 and vtiger_field.presence in (0,2)';
+	$queryres = $adb->pquery($querystr, array(getTabid($module)));
+	return ($queryres and $adb->num_rows($queryres)>0);
+}
+
+function getFirstEmailField($module) {
+	global $adb;
+	$querystr = 'SELECT fieldname FROM vtiger_field WHERE tabid=? and uitype=13 and vtiger_field.presence in (0,2)';
+	$queryres = $adb->pquery($querystr, array(getTabid($module)));
+	if ($queryres and $adb->num_rows($queryres)>0) {
+		$emailfield = $adb->query_result($queryres, 0,0);
+	} else {
+		$emailfield = '';
+	}
+	return $emailfield;
+}
+
+function modulesWithEmailField() {
+	global $adb;
+	$querystr = 'SELECT distinct vtiger_tab.name FROM vtiger_field INNER JOIN vtiger_tab ON vtiger_tab.tabid=vtiger_field.tabid WHERE uitype=13 and vtiger_field.presence in (0,2)';
+	$queryres = $adb->query($querystr);
+	$emailmodules = array();
+	while ($mod = $adb->fetch_array($queryres)) {
+		$emailmodules[] = $mod['name'];
+	}
+	return $emailmodules;
+}
+
 function getInventoryModules() {
 	return array('Invoice','Quotes','PurchaseOrder','SalesOrder','Issuecards');
 }

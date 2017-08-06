@@ -815,115 +815,69 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	elseif($uitype == 357)
 	{
 		$pmodule = isset($_REQUEST['pmodule']) ? $_REQUEST['pmodule'] : (isset($_REQUEST['par_module']) ? $_REQUEST['par_module'] : null);
-
-		if($pmodule == 'Contacts')
-		{
-			$contact_selected = 'selected';
-		}
-		elseif($pmodule == 'Accounts')
-		{
-			$account_selected = 'selected';
-		}
-		elseif($pmodule == 'Leads')
-		{
-			$lead_selected = 'selected';
-		}
-		elseif($pmodule == 'Vendors')
-		{
-			$vendor_selected = 'selected';
-		}
-		elseif($pmodule == 'Users')
-		{
-			$user_selected = 'selected';
-		}
-		elseif($pmodule == 'Project')
-		{
-			$project_selected = 'selected';
-		}
-		elseif($pmodule == 'ProjectTask')
-		{
-			$projecttask_selected = 'selected';
-		}
-		elseif($pmodule == 'Potentials')
-		{
-			$potentials_selected = 'selected';
-		}
-		elseif($pmodule == 'HelpDesk')
-		{
-			$helpdesk_selected = 'selected';
-		}
-		if(isset($_REQUEST['emailids']) && $_REQUEST['emailids'] != '')
-		{
+		if (isset($_REQUEST['emailids']) && $_REQUEST['emailids'] != '') {
 			$parent_id = $_REQUEST['emailids'];
 			$parent_name='';
 
 			$myids=explode("|",$parent_id);
-			for ($i=0;$i<(count($myids)-1);$i++)
-			{
+			for ($i=0;$i<(count($myids)-1);$i++) {
 				$realid=explode("@",$myids[$i]);
 				$entityid=$realid[0];
 				$nemail=count($realid);
 
-				if ($pmodule=='Accounts'){
+				if ($pmodule=='Accounts') {
 					require_once('modules/Accounts/Accounts.php');
 					$myfocus = new Accounts();
 					$myfocus->retrieve_entity_info($entityid,"Accounts");
 					$fullname=br2nl($myfocus->column_fields['accountname']);
-					$account_selected = 'selected';
 				}
-				elseif ($pmodule=='Contacts'){
+				elseif ($pmodule=='Contacts') {
 					require_once('modules/Contacts/Contacts.php');
 					$myfocus = new Contacts();
 					$myfocus->retrieve_entity_info($entityid,"Contacts");
 					$fname=br2nl($myfocus->column_fields['firstname']);
 					$lname=br2nl($myfocus->column_fields['lastname']);
 					$fullname=$lname.' '.$fname;
-					$contact_selected = 'selected';
 				}
-				elseif ($pmodule=='Leads'){
+				elseif ($pmodule=='Leads') {
 					require_once('modules/Leads/Leads.php');
 					$myfocus = new Leads();
 					$myfocus->retrieve_entity_info($entityid,"Leads");
 					$fname=br2nl($myfocus->column_fields['firstname']);
 					$lname=br2nl($myfocus->column_fields['lastname']);
 					$fullname=$lname.' '.$fname;
-					$lead_selected = 'selected';
 				}
-				elseif ($pmodule=='Project'){
+				elseif ($pmodule=='Project') {
 					require_once('modules/Project/Project.php');
 					$myfocus = new Project();
 					$myfocus->retrieve_entity_info($entityid,"Project");
 					$fname=br2nl($myfocus->column_fields['projectname']);
-					$lname=br2nl($myfocus->column_fields['projectid']);
 					$fullname=$fname;
-					$project_selected = 'selected';
 				}
-				elseif ($pmodule=='ProjectTask'){
+				elseif ($pmodule=='ProjectTask') {
 					require_once('modules/ProjectTask/ProjectTask.php');
 					$myfocus = new ProjectTask();
 					$myfocus->retrieve_entity_info($entityid,"ProjectTask");
 					$fname=br2nl($myfocus->column_fields['projecttaskname']);
-					$lname=br2nl($myfocus->column_fields['projecttaskid']);
 					$fullname=$fname;
-					$projecttask_selected = 'selected';
 				}
-				elseif ($pmodule=='Potentials'){
+				elseif ($pmodule=='Potentials') {
 					require_once('modules/Potentials/Potentials.php');
 					$myfocus = new Potentials();
 					$myfocus->retrieve_entity_info($entityid,"Potentials");
 					$fname=br2nl($myfocus->column_fields['potentialname']);
-					$lname=br2nl($myfocus->column_fields['potentialid']);
 					$fullname=$fname;
-					$potentials_selected = 'selected';
 				}
-				elseif ($pmodule=='HelpDesk'){
+				elseif ($pmodule=='HelpDesk') {
 					require_once('modules/HelpDesk/HelpDesk.php');
 					$myfocus = new HelpDesk();
 					$myfocus->retrieve_entity_info($entityid,"HelpDesk");
 					$fname=br2nl($myfocus->column_fields['title']);
-					$lname=br2nl($myfocus->column_fields['ticketid']);
 					$fullname=$fname;
-					$helpdesk_selected = 'selected';
+				}
+				else {
+					$ename = getEntityName($pmodule, array($entityid));
+					$fullname = br2nl($ename[$entityid]);
 				}
 				for ($j=1;$j<$nemail;$j++){
 					$querystr='select columnname from vtiger_field where fieldid=? and vtiger_field.presence in (0,2)';
@@ -971,9 +925,8 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 							$result = $adb->pquery($sql, array($mycrmid));
 							$full_name = getFullNameFromQResult($result,0,"Leads");
 							$myemail=$adb->query_result($result,0,"email");
-							$parent_id .=$mycrmid.'@0|' ; //make it such that the email adress sent is remebered and only that one is retrived
+							$parent_id .=$mycrmid.'@0|' ;
 							$parent_name .= $full_name.'<'.$myemail.'>; ';
-							$lead_selected = 'selected';
 						}
 						elseif($parent_module == "Contacts")
 						{
@@ -981,9 +934,8 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 							$result = $adb->pquery($sql, array($mycrmid));
 							$full_name = getFullNameFromQResult($result,0,"Contacts");
 							$myemail=$adb->query_result($result,0,"email");
-							$parent_id .=$mycrmid.'@0|';//make it such that the email adress sent is remebered and only that one is retrived
+							$parent_id .=$mycrmid.'@0|';
 							$parent_name .= $full_name.'<'.$myemail.'>; ';
-							$contact_selected = 'selected';
 						}
 						elseif($parent_module == "Accounts")
 						{
@@ -991,18 +943,16 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 							$result = $adb->pquery($sql, array($mycrmid));
 							$account_name = $adb->query_result($result,0,"accountname");
 							$myemail=$adb->query_result($result,0,"email1");
-							$parent_id .=$mycrmid.'@0|';//make it such that the email adress sent is remebered and only that one is retrived
+							$parent_id .=$mycrmid.'@0|';
 							$parent_name .= $account_name.'<'.$myemail.'>; ';
-							$account_selected = 'selected';
 						}elseif($parent_module == "Users")
 						{
 							$sql = "select user_name,email1 from vtiger_users where id=?";
 							$result = $adb->pquery($sql, array($mycrmid));
 							$account_name = $adb->query_result($result,0,"user_name");
 							$myemail=$adb->query_result($result,0,"email1");
-							$parent_id .=$mycrmid.'@0|';//make it such that the email adress sent is remebered and only that one is retrived
+							$parent_id .=$mycrmid.'@0|';
 							$parent_name .= $account_name.'<'.$myemail.'>; ';
-							$user_selected = 'selected';
 						}
 						elseif($parent_module == "Vendors")
 						{
@@ -1010,25 +960,39 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 							$result = $adb->pquery($sql, array($mycrmid));
 							$vendor_name = $adb->query_result($result,0,"vendorname");
 							$myemail=$adb->query_result($result,0,"email");
-							$parent_id .=$mycrmid.'@0|';//make it such that the email adress sent is remebered and only that one is retrived
+							$parent_id .=$mycrmid.'@0|';
 							$parent_name .= $vendor_name.'<'.$myemail.'>; ';
-							$vendor_selected = 'selected';
+						}
+						else
+						{
+							$emailfield = getFirstEmailField($pmodule);
+							if ($emailfield != '') {
+								$qg = new QueryGenerator($pmodule, $current_user);
+								$qg->setFields(array($emailfield));
+								$qg->addCondition('id', $mycrmid, 'e');
+								$query = $qg->getQuery();
+								$result = $adb->query($query);
+								$myemail = $adb->query_result($result,0,$emailfield);
+							} else {
+								$myemail = '';
+							}
+							$parent_id .=$mycrmid.'@0|';
+							$minfo = getEntityName($pmodule,array($mycrmid));
+							$parent_name .= $minfo[$mycrmid] . '<'.$myemail.'>; ';
 						}
 					}
 				}
 			}
-			$editview_label[] = array(
-					'Contacts'=>$contact_selected,
-					'Accounts'=>$account_selected,
-					'Vendors'=>$vendor_selected,
-					'Leads'=>$lead_selected,
-					'Users'=>$user_selected
-					);
+			$emailmodules = modulesWithEmailField();
+			$evlbl = array();
+			foreach ($emailmodules as $mod) {
+				$evlbl[$mod] = ($pmodule == $mod ? 'selected' : '');
+			}
+			$editview_label[] = $evlbl;
 			$fieldvalue[] = $parent_name;
 			$fieldvalue[] = $parent_id;
 		}
 	}
-	//end of rdhital/Raju
 	elseif ($uitype == 9 || $uitype == 7) {
 		$editview_label[] = getTranslatedString($fieldlabel, $module_name);
 		$fldrs = $adb->pquery('select typeofdata from vtiger_field
