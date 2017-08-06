@@ -36,7 +36,7 @@ function vtws_update($element,$user) {
 
 	if (!empty($element['attachments'])) {
 		foreach ($element['attachments'] as $fieldname => $attachment) {
-			$filepath = $root_directory.'storage/'.$attachment['name'];
+			$filepath = $root_directory.'cache/'.$attachment['name'];
 			file_put_contents($filepath, base64_decode($attachment['content']));
 			$_FILES[$fieldname] = array(
 				'name' => $attachment['name'],
