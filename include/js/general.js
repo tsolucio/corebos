@@ -1919,7 +1919,7 @@ function InternalMailer(record_id,field_id,field_name,par_module,type) {
 			break;
 	}
 	var opts = "menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=yes";
-	openPopUp('xComposeEmail',this,url,'createemailWin',830,662,opts);
+	openPopUp('xComposeEmail',this,url,'createemailWin',1000,800,opts);
 }
 
 function fnHide_Event(obj){
@@ -1929,7 +1929,7 @@ function fnHide_Event(obj){
 function ReplyCompose(id,mode)
 {
 	url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&record='+id+'&reply=true';
-	openPopUp('xComposeEmail',this,url,'createemailWin',820,689,'menubar=no,toolbar=no,location=no,status=no,resizable=no,scrollbars=yes');
+	openPopUp('xComposeEmail',this,url,'createemailWin',1000,800,'menubar=no,toolbar=no,location=no,status=no,resizable=no,scrollbars=yes');
 }
 
 function OpenCompose(id,mode,crmid)
