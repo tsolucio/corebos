@@ -2304,6 +2304,7 @@ class ReportRun extends CRMEntity {
 			return $resp;
 		}elseif($outputformat == 'JSON' or $outputformat == 'JSONPAGED') {
 			$sSQL = $this->sGetSQLforReport($this->reportid,$filtersql,($outputformat == 'JSON' ? 'HTML' : 'HTMLPAGED'));
+			$sSQL = 'SELECT SQL_CALC_FOUND_ROWS'.substr($sSQL, 6);
 			$result = $adb->query($sSQL);
 			$error_msg = $adb->database->ErrorMsg();
 			if(!$result && $error_msg!=''){
@@ -2323,15 +2324,8 @@ class ReportRun extends CRMEntity {
 			if($result)
 			{
 				$fldcnt=$adb->num_fields($result);
-				if ($outputformat == 'JSONPAGED') {
-					$fullsSQL = $this->sGetSQLforReport($this->reportid,$filtersql, 'HTML');
-					$fullresult = $adb->query($fullsSQL);
-					$noofrows = $adb->num_rows($fullresult);
-					unset($fullsSQL);
-					unset($fullresult);
-				} else {
-					$noofrows = $adb->num_rows($result);
-				}
+				$count_result = $adb->query('SELECT FOUND_ROWS();');
+				$noofrows = $adb->query_result($count_result,0,0);
 				$this->number_of_rows = $noofrows;
 				$resp = array(
 					'total' => $noofrows,
