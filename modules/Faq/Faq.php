@@ -111,20 +111,20 @@ class Faq extends CRMEntity {
 	 * @param $table_name -- table name:: Type varchar
 	 * @param $module -- module:: Type varchar
 	 */
-	function insertIntoFAQCommentTable($table_name, $module)
-	{
+	function insertIntoFAQCommentTable($table_name, $module) {
 		global $log, $adb;
 		$log->info("in insertIntoFAQCommentTable ".$table_name." module is ".$module);
 
 		$current_time = $adb->formatDate(date('Y-m-d H:i:s'), true);
 
-		if($this->column_fields['comments'] != '')
+		if (!empty($this->column_fields['comments']))
 			$comment = $this->column_fields['comments'];
+		elseif (!empty($_REQUEST['comments']))
+			$comment = vtlib_purify($_REQUEST['comments']);
 		else
-			$comment = $_REQUEST['comments'];
+			$comment = '';
 
-		if($comment != '')
-		{
+		if ($comment != '') {
 			$params = array($this->id, $comment, $current_time);
 			$sql = "insert into vtiger_faqcomments (faqid, comments, createdtime) values(?, ?, ?)";
 			$adb->pquery($sql, $params);
@@ -135,8 +135,7 @@ class Faq extends CRMEntity {
 	 * @param  int  $faqid - FAQ id
 	 * @return list $list - return the list of comments and comment informations as a html output where as these comments and comments informations will be formed in div tag.
 	 **/
-	function getFAQComments($faqid)
-	{
+	function getFAQComments($faqid) {
 		global $log, $default_charset, $mod_strings;
 		$log->debug("Entering getFAQComments(".$faqid.") method ...");
 
@@ -146,21 +145,18 @@ class Faq extends CRMEntity {
 		$list = '';
 		$enddiv = '';
 		// In ajax save we should not add this div
-		if($_REQUEST['action'] != 'FaqAjax')
-		{
+		if ($_REQUEST['action'] != 'FaqAjax') {
 			$list = '<div id="comments_div" style="overflow: auto;height:200px;width:100%;">';
 			$enddiv = '</div>';
 		}
 
-		for($i=0;$i<$noofrows;$i++)
-		{
+		for ($i=0;$i<$noofrows;$i++) {
 			$comment = $this->db->query_result($result,$i,'comments');
 			$date = new DateTimeField($this->db->query_result($result,$i,'createdtime'));
 			$createdtime = $date->getDisplayDateTimeValue();
-			if($comment != '')
-			{
+			if ($comment != '') {
 				//this div is to display the comment
-				if($_REQUEST['action'] == 'FaqAjax') {
+				if ($_REQUEST['action'] == 'FaqAjax') {
 					$comment = htmlentities($comment, ENT_QUOTES, $default_charset);
 				}
 				$list .= '<div valign="top" style="width:99%;padding-top:10px;" class="dataField">'.make_clickable(nl2br($comment)).'</div>';
@@ -179,7 +175,7 @@ class Faq extends CRMEntity {
 	 * @param - $module Primary module name
 	 * returns the query string formed on fetching the related data for report for primary module
 	 */
-	function generateReportsQuery($module){
+	function generateReportsQuery($module) {
 		$moduletable = $this->table_name;
 		$moduleindex = $this->table_index;
 		$query = "from $moduletable
@@ -199,7 +195,7 @@ class Faq extends CRMEntity {
 	 * returns the array with table names and fieldnames storing relations between module and this module
 	 */
 	function setRelationTables($secmodule){
-		$rel_tables = array (
+		$rel_tables = array(
 			"Documents" => array("vtiger_senotesrel"=>array("crmid","notesid"),"vtiger_faq"=>"id"),
 		);
 		return $rel_tables[$secmodule];
