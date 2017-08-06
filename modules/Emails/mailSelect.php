@@ -29,19 +29,17 @@ $querystr = "select fieldid, fieldname, fieldlabel, columnname from vtiger_field
 $res=$adb->pquery($querystr, array(getTabid($pmodule)));
 $numrows = $adb->num_rows($res);
 $returnvalue = Array();
-for($i = 0; $i < $numrows; $i++)
-{
+for ($i = 0; $i < $numrows; $i++) {
 	$value = Array();
 	$fieldname = $adb->query_result($res,$i,"fieldname");
 	$permit = getFieldVisibilityPermission($pmodule, $userid, $fieldname);
-	if($permit == '0')
-	{
-		$temp=$adb->query_result($res,$i,'columnname');
+	if ($permit == '0') {
+		$temp = $adb->query_result($res,$i,'columnname');
 		$columnlists[] = $temp;
-		$fieldid=$adb->query_result($res,$i,'fieldid');
-		$fieldlabel =$adb->query_result($res,$i,'fieldlabel');
-		$value[] = getTranslatedString($fieldlabel);
-		$returnvalue [$fieldid]= $value;
+		$fieldid = $adb->query_result($res,$i,'fieldid');
+		$fieldlabel = $adb->query_result($res,$i,'fieldlabel');
+		$value[] = getTranslatedString($fieldlabel,$pmodule);
+		$returnvalue[$fieldid] = $value;
 	}
 }
 $entity_name = '';
