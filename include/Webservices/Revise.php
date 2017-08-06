@@ -9,7 +9,7 @@
  *************************************************************************************/
 
 function vtws_revise($element,$user){
-	global $log,$adb;
+	global $log, $adb, $root_directory;
 	$idList = vtws_getIdComponents($element['id']);
 	if ((vtws_getEntityId('Calendar')==$idList[0] or vtws_getEntityId('Events')==$idList[0]) and getSalesEntityType($idList[1])=='cbCalendar') {
 		$idList[0] = vtws_getEntityId('cbCalendar') . 'x' . $idList[1];
@@ -34,6 +34,21 @@ function vtws_revise($element,$user){
 	$handler = new $handlerClass($webserviceObject,$user,$adb,$log);
 	$meta = $handler->getMeta();
 	$entityName = $meta->getObjectEntityName($element['id']);
+
+	if (!empty($element['attachments'])) {
+		foreach ($element['attachments'] as $fieldname => $attachment) {
+			$filepath = $root_directory.'cache/'.$attachment['name'];
+			file_put_contents($filepath, base64_decode($attachment['content']));
+			$_FILES[$fieldname] = array(
+				'name' => $attachment['name'],
+				'type' => $attachment['type'],
+				'tmp_name' => $filepath,
+				'error' => 0,
+				'size' => $attachment['size']
+			);
+		}
+		unset($element['attachments']);
+	}
 
 	$types = vtws_listtypes(null, $user);
 	if (!in_array($entityName,$types['types'])) {
@@ -97,6 +112,11 @@ function vtws_revise($element,$user){
 
 	$entity = $handler->revise($element);
 	VTWS_PreserveGlobal::flush();
+	if (!empty($_FILES)) {
+		foreach ($_FILES as $field => $file) {
+			unlink($file['tmp_name']);
+		}
+	}
 	return $entity;
 }
 
