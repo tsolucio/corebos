@@ -793,13 +793,19 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 										"$customlinknode->handler_class",
 										"$customlinknode->handler");
 			}
+			if (isset($customlinknode->onlyonmodule)) {
+				$onlyonmodule = empty($customlinknode->onlyonmodule);
+			} else {
+				$onlyonmodule = false;
+			}
 			$moduleInstance->addLink(
 				"$customlinknode->linktype",
 				"$customlinknode->linklabel",
 				"$customlinknode->linkurl",
 				"$customlinknode->linkicon",
 				"$customlinknode->sequence",
-				$handlerInfo
+				$handlerInfo,
+				$onlyonmodule
 			);
 		}
 	}
