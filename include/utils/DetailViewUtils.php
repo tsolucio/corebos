@@ -894,13 +894,12 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$label_fld[] = $value;
 		}
 	}
-	//added by raju/rdhital for better emails
 	elseif ($uitype == 357) {
 		$value = $col_fields[$fieldname];
 		if ($value != '') {
 			$parent_name = '';
 			$parent_id = '';
-			$myemailid = $_REQUEST['record'];
+			$myemailid = vtlib_purify($_REQUEST['record']);
 			$mysql = "select crmid from vtiger_seactivityrel where activityid=?";
 			$myresult = $adb->pquery($mysql, array($myemailid));
 			$mycount = $adb->num_rows($myresult);
@@ -908,34 +907,11 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 				$label_fld[] = $app_strings['LBL_RELATED_TO'];
 				$label_fld[] = $app_strings['LBL_MULTIPLE'];
 			} else {
+				$value = substr($value,0,strpos($value,'@'));
 				$parent_module = getSalesEntityType($value);
-				if ($parent_module == "Leads") {
-					$label_fld[] = $app_strings['LBL_LEAD_NAME'];
-					$displayValueArray = getEntityName($parent_module, $value);
-					if (!empty($displayValueArray)) {
-						foreach ($displayValueArray as $key => $field_value) {
-							$lead_name = $field_value;
-						}
-					}
-					$label_fld[] = '<a href="index.php?module=' . $parent_module . '&action=DetailView&record=' . $value . '">' . $lead_name . '</a>';
-				} elseif ($parent_module == "Contacts") {
-					$label_fld[] = $app_strings['LBL_CONTACT_NAME'];
-					$displayValueArray = getEntityName($parent_module, $value);
-					if (!empty($displayValueArray)) {
-						foreach ($displayValueArray as $key => $field_value) {
-							$contact_name = $field_value;
-						}
-					} else {
-					$contact_name='';
-				}
-					$label_fld[] = '<a href="index.php?module=' . $parent_module . '&action=DetailView&record=' . $value . '">' . $contact_name . '</a>';
-				} elseif ($parent_module == "Accounts") {
-					$label_fld[] = $app_strings['LBL_ACCOUNT_NAME'];
-					$sql = "select * from vtiger_account where accountid=?";
-					$result = $adb->pquery($sql, array($value));
-					$accountname = $adb->query_result($result, 0, "accountname");
-					$label_fld[] = '<a href="index.php?module=' . $parent_module . '&action=DetailView&record=' . $value . '">' . $accountname . '</a>';
-				}
+				$label_fld[] = getTranslatedString($parent_module, $parent_module);
+				$ename = getEntityName($parent_module, $value);
+				$label_fld[] = '<a href="index.php?module=' . $parent_module . '&action=DetailView&record=' . $value . '">' . $ename[$value] . '</a>';
 			}
 		} else {
 			$label_fld[] = getTranslatedString($fieldlabel, $module);
