@@ -141,7 +141,7 @@ class ListColumns extends processcbMap {
 					$res = $adb->pquery("SELECT columnname,tablename FROM vtiger_field WHERE fieldname=? AND tabid=?",array((String)$vl->name,$tabid));
 					$nr = $adb->num_rows($res);
 					if($nr > 0){
-						$table = $adb->query_result($res,0,'tablename');
+						$table = str_replace('vtiger_', '', $adb->query_result($res,0,'tablename'));
 						$columnname = $adb->query_result($res,0,'columnname');
 					}
 					$this->mapping[$modulename]['ListFields'][(String)$vl->label] = array((String)$table=>(String)$columnname);
