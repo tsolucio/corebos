@@ -432,7 +432,7 @@ input[type=button].slds-button--small {
 }
 
 input[type=submit].slds-button--small {
-    min-height: 1.75rem;
+    min-height: 1rem;
     font-size: 11px;
     border-left: 1px solid #ffffff;
     border-top: 1px solid #ffffff;
