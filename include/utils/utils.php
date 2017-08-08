@@ -87,6 +87,7 @@ function getBrowserVariables(&$smarty) {
 	}
 	$swmd5file = file_get_contents('include/sw-precache/service-worker.md5');
 	$swmd5 = substr($swmd5file,0,strpos($swmd5file,' '));
+	$corebos_browsertabID = (empty($_COOKIE['corebos_browsertabID']) ? '' : $_COOKIE['corebos_browsertabID']);
 	if ($smarty) {
 		$smarty->assign('GVTMODULE',$vars['gVTModule']);
 		$smarty->assign('THEME', $vars['gVTTheme']);
@@ -99,6 +100,7 @@ function getBrowserVariables(&$smarty) {
 		$smarty->assign('USER_NUMBER_DECIMALS', $vars['userNumberOfDecimals']);
 		$smarty->assign('USER_LANGUAGE', $current_language);
 		$smarty->assign('SW_MD5', $swmd5);
+		$smarty->assign('corebos_browsertabID', $corebos_browsertabID);
 	}
 }
 

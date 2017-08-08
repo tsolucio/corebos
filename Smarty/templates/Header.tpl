@@ -77,8 +77,10 @@
 {/if}
 	<script type="text/javascript">
 	<!-- browser tab identification on ajax calls -->
-	jQuery(document).ajaxSend(function() {ldelim}
-		document.cookie = "corebos_browsertabID="+corebos_browsertabID;
+	jQuery(document).ready(function() {ldelim}
+		jQuery(document).ajaxSend(function() {ldelim}
+			document.cookie = "corebos_browsertabID="+corebos_browsertabID;
+		{rdelim});
 	{rdelim});
 	</script>
 

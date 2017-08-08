@@ -139,6 +139,18 @@ switch ($functiontocall) {
 			$ret = '';
 		}
 		break;
+	case 'updateBrowserTabSession':
+		$newssid = vtlib_purify($_REQUEST['newtabssid']);
+		$oldssid = vtlib_purify($_REQUEST['oldtabssid']);
+		foreach ($_SESSION as $key => $value) {
+			if (strpos($key, $oldssid) !== false) {
+				$newkey = str_replace($oldssid, $newssid, $key);
+				coreBOS_Session::set($newkey, $value);
+				coreBOS_Session::set($key, $_SESSION[$key.'__prev']);
+			}
+		}
+		$ret = '';
+		break;
 	case 'getEmailTemplateVariables':
 		$module = vtlib_purify($_REQUEST['module_from']);
 		$allOptions=getEmailTemplateVariables(array($module,'Accounts'));

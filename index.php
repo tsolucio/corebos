@@ -46,7 +46,7 @@ if(get_magic_quotes_gpc() == 1){
 header('Content-Type: text/html; charset='. $default_charset);
 
 // Create or reestablish the current session
-coreBOS_Session::init(true);
+coreBOS_Session::init(true, true);
 
 if(isset($_REQUEST['view'])) {
 	$view = $_REQUEST["view"];

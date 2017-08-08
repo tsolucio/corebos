@@ -38,10 +38,29 @@ class coreBOS_Session {
 	/**
 	 * Initialize session
 	 */
-	static function init($setKCFinder=false) {
+	static function init($setKCFinder=false,$saveTabValues=false) {
 		session_name(self::getSessionName());
 		@session_start();
 		if ($setKCFinder) self::setKCFinderVariables();
+		if ($saveTabValues) self::copyTabVariables();
+	}
+
+	/**
+	 * create session name from given URL or $site_URL
+	 */
+	static function copyTabVariables() {
+		if (!empty($_COOKIE['corebos_browsertabID'])) {
+			$corebos_browsertabID = vtlib_purify($_COOKIE['corebos_browsertabID']);
+			$newvars = array();
+			foreach ($_SESSION as $key => $value) {
+				if (strpos($key, $corebos_browsertabID) !== false and strpos($key, $corebos_browsertabID.'__prev') === false) {
+					$newvars[$key.'__prev'] = $value;
+				}
+			}
+			foreach ($newvars as $key => $value) {
+				$_SESSION[$key] = $value;
+			}
+		}
 	}
 
 	/**

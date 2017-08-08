@@ -20,8 +20,17 @@ var userDecimalSeparator = "{$USER_DECIMAL_FORMAT}";
 var userNumberOfDecimals = "{$USER_NUMBER_DECIMALS}";
 var gVTuserLanguage = "{$USER_LANGUAGE}";
 var gServiceWorkermd5 = '{$SW_MD5}';
+var goldcorebos_browsertabID = '{$corebos_browsertabID}';
 if (typeof(Storage) !== "undefined") {ldelim}
-	var corebos_browsertabID = sessionStorage.corebos_browsertabID ? sessionStorage.corebos_browsertabID : sessionStorage.corebos_browsertabID = Math.random().toString().substring(2);
+	if (sessionStorage.corebos_browsertabID) {
+		var corebos_browsertabID = sessionStorage.corebos_browsertabID;
+	} else {
+		sessionStorage.corebos_browsertabID = Math.random().toString().substring(2);
+		var corebos_browsertabID = sessionStorage.corebos_browsertabID;
+		fetch('index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=updateBrowserTabSession&newtabssid=' + corebos_browsertabID + '&oldtabssid=' + goldcorebos_browsertabID, {
+			credentials: 'same-origin'
+		});
+	}
 	window.addEventListener('beforeunload', function(event) {ldelim}
 		document.cookie = "corebos_browsertabID="+corebos_browsertabID;
 	{rdelim});
