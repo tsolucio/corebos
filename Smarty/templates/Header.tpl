@@ -21,6 +21,7 @@
 	<link rel="stylesheet" href="include/LD/assets/styles/slds-combobox.css" type="text/css" />
 	<link rel="stylesheet" href="include/LD/assets/styles/mainmenu.css" type="text/css" />
 	<link rel="stylesheet" href="include/LD/assets/styles/override_lds.css" type="text/css" />
+	<link rel="stylesheet" href="include/LD/assets/styles/customLD.css" type="text/css" />
 {* vtlib customization: Inclusion of custom javascript and css as registered *}
 {if $HEADERCSS}
 	<!-- Custom Header CSS -->
