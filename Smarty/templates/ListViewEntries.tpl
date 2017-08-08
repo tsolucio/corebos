@@ -126,7 +126,7 @@
 								{/foreach}
 							</tr>
 	                        <tr>
-								<td id="linkForSelectAll" class="linkForSelectAll" style="display:none;" colspan=15>
+								<td id="linkForSelectAll" class="linkForSelectAll" style="display:none;" colspan=8>
 									<span id="selectAllRec" class="selectall" style="display:inline;" onClick="toggleSelectAll_Records('{$MODULE}',true,'selected_id')">{$APP.LBL_SELECT_ALL} <span id="count"> </span> {$APP.LBL_RECORDS_IN} {$MODULE|@getTranslatedString:$MODULE}</span>
 									<span id="deSelectAllRec" class="selectall" style="display:none;" onClick="toggleSelectAll_Records('{$MODULE}',false,'selected_id')">{$APP.LBL_DESELECT_ALL} {$MODULE|@getTranslatedString:$MODULE}</span>
 								</td>
@@ -135,7 +135,7 @@
 	                    <tbody>	
 	                    	<!-- Table Contents -->
 	                        {foreach item=entity key=entity_id from=$LISTENTITY}
-	                        <tr id="row_{$entity_id}" class="slds-hint-parent slds-line-height--reset" style="margin: 0; padding: 0; line-height: normal;">
+	                        <tr id="row_{$entity_id}" class="slds-hint-parent slds-line-height--reset">
 	                            <td role="gridcell" class="slds-text-align--center" >
 	                                <div class="slds-th__action slds-th__action_form">
 	                                    <span class="slds-checkbox">
