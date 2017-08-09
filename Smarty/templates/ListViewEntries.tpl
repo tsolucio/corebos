@@ -29,7 +29,7 @@
 	<!-- List View Master Holder starts -->
 	<table border=0 cellspacing=1 cellpadding=0 width=100% class="lvtBg">
 		<tr>
-			<td style="padding-bottom: 0">
+			<td style="padding: 0 .5rem;">
 				<!-- List View's Buttons and Filters starts -->
 				<table width="100%" class="layerPopupTransport">
 					<tr>
@@ -108,18 +108,18 @@
 				<!-- =====================LIGHITNG DESGIN LIST VIEW =========== -->
                 <!--  / slds-table--col-bordered-->
 				<div>
-	                <table class="slds-table slds-table--bordered slds-table--fixed-layout" role="grid">
+	                <table class="slds-table slds-table--bordered slds-table--fixed-layout ld-font">
 	                    <thead>
 	                    	<!-- Table Headers -->
 	                        <tr>
-								<th scope="col" class="slds-text-align--center" style="width: 3.25rem;" >
-									<div class="slds-th__action slds-th__action_form">
+								<th scope="col" class="slds-text-align--center" style="width: 3.25rem;text-align: center;" >
+									<!-- <div class="slds-th__action slds-th__action_form"> -->
 										<input type="checkbox" name="selectall" style="margin: 0;" id="selectCurrentPageRec" onClick=toggleSelect_ListView(this.checked,"selected_id")>
-									</div>
+									<!-- </div> -->
 								</th>
 								{foreach name="listviewforeach" item=header from=$LISTHEADER}
 								<th class="slds-text-title--caps" scope="col">
-							          <span class="slds-truncate slds-text-link--reset slds-th__action" style="padding: .5rem 0;">
+							          <span class="slds-truncate slds-text-link--reset" style="padding: .5rem 0;">
 							          	{$header}
 							          </span> 
 	                            </th>
@@ -137,7 +137,7 @@
 	                        {foreach item=entity key=entity_id from=$LISTENTITY}
 	                        <tr id="row_{$entity_id}" class="slds-hint-parent slds-line-height--reset">
 	                            <td role="gridcell" class="slds-text-align--center" >
-	                                <div class="slds-th__action slds-th__action_form">
+	                                <!-- <div class="slds-th__action slds-th__action_form"> -->
 	                                    <span class="slds-checkbox">
 	                                    	{if $entity_id>0}
 				                                <input type="checkbox" NAME="selected_id" id="{$entity_id}" value='{$entity_id}' onClick="check_object(this)">
@@ -150,12 +150,12 @@
 				                            {/if}
 								            
 	                                    </span>
-	                                </div>
+	                                <!-- </div> -->
 	                            </td>
 
 	                            {foreach item=data from=$entity} {* vtlib customization: Trigger events on listview cell *}
 	                            <th scope="row">
-	                                <div class="slds-truncate slds-th__action" onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">
+	                                <div class="slds-truncate" onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">
 	                                	{$data}
 	                            	</div>
 	                            </th>

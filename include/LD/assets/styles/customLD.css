@@ -5,19 +5,6 @@
     background-color: #f7f9fb;
 }
 
-
-
-/*.LD_buttonList div {
-    border: 1px solid #ccc;
-    background-color: #fff;
-}
-
-.LD_buttonList div:hover {
-    background-color: rgb(234, 246, 249);
-    border-color: #fff;
-}
-*/
-
 .LD_buttonList th {
     background-color: rgb(244, 246, 249)!important;
 }
@@ -90,6 +77,10 @@
 
 .slds-button {
     cursor: pointer;
+}
+
+.slds-table td.searchAlph {
+    padding: .2rem;
 }
 
 .searchAlph:hover {
@@ -660,6 +651,9 @@ select:-moz-focusring {
     background-color: #f7f9fb!important;
 }
 
+.ld-font {
+    font-family: 'Salesforce Sans';
+}
 
 /*=========   END ListView.tpl  ==========*/
 
@@ -672,16 +666,21 @@ select:-moz-focusring {
 
 td[role="gridcell"] {
     width: 3.25rem;
-    padding: 0 .5rem;
+    padding: .2REM .5rem;
 }
 
 th[scope="row"] {
-    padding: 0 .5rem;
+    padding: .2rem .5rem;
+    text-align: left;
 }
 
-th[scope="row"] .slds-th__action {
-    padding: 0 .5rem;
+th[scope="col"] {
+    text-align: left;
 }
+
+/*th[scope="row"] .slds-th__action {
+    padding: 0 .5rem;
+}*/
 
 
 
