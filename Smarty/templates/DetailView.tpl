@@ -11,7 +11,7 @@
 -->*}
 <script type="text/javascript" src="include/js/dtlviewajax.js"></script>
 <span id="crmspanid" style="display:none;position:absolute;" onmouseover="show('crmspanid');">
-	<a class="link" href="javascript:;">{$APP.LBL_EDIT_BUTTON}</a>
+	<a class="link" href="javascript:;" style="padding:10px 5px 0 0;">{$APP.LBL_EDIT_BUTTON}</a>
 </span>
 <div id="convertleaddiv" style="display:block;position:absolute;left:225px;top:150px;"></div>
 <script>
@@ -29,36 +29,33 @@ function callConvertLeadDiv(id) {
 
 function showHideStatus(sId, anchorImgId, sImagePath) {
     oObj = document.getElementById(sId);
-    if (oObj.style.display == 'block') {
-        oObj.style.display = 'none';
-        if (anchorImgId != null) {
+        if (oObj.style.display == 'block')
+        {
+            oObj.style.display = 'none';
+            if (anchorImgId != null)
             {
-                /literal}
+                {/literal}
                 document.getElementById(anchorImgId).src = 'themes/images/inactivate.gif';
-                document.getElementById(anchorImgId).alt = '{'
-                LBL_Show '|@getTranslatedString:'
-                Settings '}';
-                document.getElementById(anchorImgId).title = '{'
-                LBL_Show '|@getTranslatedString:'
-                Settings '}';
-                document.getElementById(anchorImgId).parentElement.className = 'exp_coll_block activate'; { literal }
-            }
-        } else {
-            oObj.style.display = 'block';
-            if (anchorImgId != null) {
-                {
-                    /literal}
-                    document.getElementById(anchorImgId).src = 'themes/images/activate.gif';
-                    document.getElementById(anchorImgId).alt = '{'
-                    LBL_Hide '|@getTranslatedString:'
-                    Settings '}';
-                    document.getElementById(anchorImgId).title = '{'
-                    LBL_Hide '|@getTranslatedString:'
-                    Settings '}';
-                    document.getElementById(anchorImgId).parentElement.className = 'exp_coll_block inactivate'; { literal }
-                }
+                document.getElementById(anchorImgId).alt = '{'LBL_Show'|@getTranslatedString:'Settings'}';
+                document.getElementById(anchorImgId).title = '{'LBL_Show'|@getTranslatedString:'Settings'}';
+                document.getElementById(anchorImgId).parentElement.className = 'exp_coll_block activate';
+                {literal}
             }
         }
+        else
+        {
+            oObj.style.display = 'block';
+            if (anchorImgId != null)
+            {
+                {/literal}
+                document.getElementById(anchorImgId).src = 'themes/images/activate.gif';
+                document.getElementById(anchorImgId).alt = '{'LBL_Hide'|@getTranslatedString:'Settings'}';
+                document.getElementById(anchorImgId).title = '{'LBL_Hide'|@getTranslatedString:'Settings'}';
+                document.getElementById(anchorImgId).parentElement.className = 'exp_coll_block inactivate';
+                {literal}
+            }
+        }
+    }
 
         function setCoOrdinate(elemId) {
             oBtnObj = document.getElementById(elemId);
@@ -148,7 +145,7 @@ function showHideStatus(sId, anchorImgId, sImagePath) {
                     <td>
                         <!-- PUBLIC CONTENTS STARTS-->
                         <div class="small" onclick="hndCancelOutsideClick();" ;>
-                            <table class="slds-table slds-no-row-hover slds-table--cell-buffer slds-table-moz">
+                            <table class="slds-table slds-no-row-hover slds-table--cell-buffer slds-table-moz" style="background-color: #f7f9fb;">
                                 <tr class="slds-text-title--caps">
                                     <td style="padding: 0;">
                                         {* Module Record numbering, used MOD_SEQ_ID instead of ID *} {assign var="USE_ID_VALUE" value=$MOD_SEQ_ID} {if $USE_ID_VALUE eq ''} {assign var="USE_ID_VALUE" value=$ID} {/if}
@@ -320,87 +317,94 @@ function showHideStatus(sId, anchorImgId, sImagePath) {
                                                                             {if $header eq $APP.LBL_COMMENTS || (isset($MOD.LBL_COMMENTS) && $header eq $MOD.LBL_COMMENTS) || (isset($MOD.LBL_COMMENT_INFORMATION) && $header eq $MOD.LBL_COMMENT_INFORMATION)}
                                                                             <div class="flexipageComponent" style="background-color: #fff;">
                                                                                 <article class="slds-card container MEDIUM forceBaseCard
-	                                                                                     runtime_sales_mergeMergeCandidatesPreviewCard" aria-describedby="header" style="margin: 0;">
-                                                                                    <div class="slds-card__header slds-grid">
-                                                                                        <header class="slds-media slds-media--center slds-has-flexi-truncate">
-                                                                                            <div class="slds-media__figure" data-aura-rendered-by="1215:0">
-                                                                                                <div class="extraSmall forceEntityIcon" style="background-color: #A094ED" data-aura-rendered-by="3:1782;a" data-aura-class="forceEntityIcon">
+                                                                                 runtime_sales_mergeMergeCandidatesPreviewCard"
+                                                                                         aria-describedby="header" style="margin: 0;">
+                                                                                        <div class="slds-card__header slds-grid">
+                                                                                            <header class="slds-media slds-media--center slds-has-flexi-truncate">
+                                                                                                <div class="slds-media__figure" data-aura-rendered-by="1215:0">
+                                                                                                    <div class="extraSmall forceEntityIcon" style="background-color: #A094ED">
                                                                                                     <span data-aura-rendered-by="6:1782;a" class="uiImage" data-aura-class="uiImage">
-	                                                                                                            <a href="javascript:showHideStatus('tbl{$header|replace:' ':''}','aid{$header|replace:' ':''}','{$THEME}');">
-	                                                                                                                {if isset($BLOCKINITIALSTATUS[$header]) && $BLOCKINITIALSTATUS[$header] eq 1}
-	                                                                                                                    <span class="exp_coll_block inactivate">
-	                                                                                                                <img id="aid{$header|replace:' ':''}"
-	                                                                                                                     src="{'activate.gif'|@vtiger_imageurl:$THEME}"
-	                                                                                                                     style="border: 0px solid #000000;"
-	                                                                                                                     alt="{'LBL_Hide'|@getTranslatedString:'Settings'}"
-	                                                                                                                     title="{'LBL_Hide'|@getTranslatedString:'Settings'}"/>
-	                                                                                                                </span> {else}
-                                                                                                    <span class="exp_coll_block activate">
-	                                                                                                                <img id="aid{$header|replace:' ':''}"
-	                                                                                                                     src="{'inactivate.gif'|@vtiger_imageurl:$THEME}"
-	                                                                                                                     style="border: 0px solid #000000;"
-	                                                                                                                     alt="{'LBL_Show'|@getTranslatedString:'Settings'}"
-	                                                                                                                     title="{'LBL_Show'|@getTranslatedString:'Settings'}"/>
-	                                                                                                                </span> {/if}
-                                                                                                    </a>
+                                                                                                        <a href="javascript:showHideStatus('tbl{$header|replace:' ':''}','aid{$header|replace:' ':''}','{$THEME}');">
+                                                                                                            {if isset($BLOCKINITIALSTATUS[$header]) && $BLOCKINITIALSTATUS[$header] eq 1}
+                                                                                                                <span class="exp_coll_block inactivate">
+                                                                                                            <img id="aid{$header|replace:' ':''}"
+                                                                                                                 src="{'activate.gif'|@vtiger_imageurl:$THEME}"
+                                                                                                                 style="border: 0px solid #000000;"
+                                                                                                                 alt="{'LBL_Hide'|@getTranslatedString:'Settings'}"
+                                                                                                                 title="{'LBL_Hide'|@getTranslatedString:'Settings'}"/>
+                                                                                                            </span>
+                                                                                                            {else}
+                                                                                                                <span class="exp_coll_block activate">
+                                                                                                            <img id="aid{$header|replace:' ':''}"
+                                                                                                                 src="{'inactivate.gif'|@vtiger_imageurl:$THEME}"
+                                                                                                                 style="border: 0px solid #000000;"
+                                                                                                                 alt="{'LBL_Show'|@getTranslatedString:'Settings'}"
+                                                                                                                 title="{'LBL_Show'|@getTranslatedString:'Settings'}"/>
+                                                                                                            </span>
+                                                                                                            {/if}
+                                                                                                        </a>
                                                                                                     </span>
+                                                                                                    </div>
                                                                                                 </div>
-                                                                                            </div>
-                                                                                            <div class="slds-media__body">
-                                                                                                <h2 class="header-title-container">
-	                                                                                                            <span class="slds-text-heading--small slds-truncate actionLabel">
-	                                                                                                                <b>{if isset($MOD.LBL_COMMENT_INFORMATION)}{$MOD.LBL_COMMENT_INFORMATION}{else}{$APP.LBL_COMMENTS}{/if}</b>
-	                                                                                                            </span>
-	                                                                                                        </h2>
-                                                                                            </div>
-                                                                                        </header>
-                                                                                    </div>
-                                                                                    <div class="slds-card__body slds-card__body--inner">
-                                                                                        <div class="commentData">
-                                                                                            {$COMMENT_BLOCK}
+                                                                                                <div class="slds-media__body">
+                                                                                                    <h2 class="header-title-container" >
+                                                                                                        <span class="slds-text-heading--small slds-truncate actionLabel">
+                                                                                                            <b>{if isset($MOD.LBL_COMMENT_INFORMATION)}{$MOD.LBL_COMMENT_INFORMATION}{else}{$APP.LBL_COMMENTS}{/if}</b>
+                                                                                                        </span>
+                                                                                                    </h2>
+                                                                                                </div>
+                                                                                            </header>
                                                                                         </div>
-                                                                                    </div>
+                                                                                        <div class="slds-card__body slds-card__body--inner">
+                                                                                            <div class="commentData">
+                                                                                                    {$COMMENT_BLOCK}
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    
                                                                                 </article>
                                                                             </div>
                                                                             {/if} {if $header neq 'Comments' && (!isset($BLOCKS.$header.relatedlist) || $BLOCKS.$header.relatedlist eq 0)} {strip}
-                                                                            <div class="forceRelatedListSingleContainer" data-aura-rendered-by="5:1654;a" data-aura-class="forceRelatedListSingleContainer">
-                                                                                <article class="slds-card forceRelatedListCardDesktop" aria-describedby="header" data-aura-rendered-by="1212:0" data-aura-class="forceRelatedListCardDesktop">
-                                                                                    <div class="slds-card__header slds-grid" data-aura-rendered-by="1213:0">
-                                                                                        <header class="slds-media slds-media--center slds-has-flexi-truncate" data-aura-rendered-by="1214:0">
-                                                                                            <div class="slds-media__figure" data-aura-rendered-by="1215:0">
-                                                                                                <div class="extraSmall forceEntityIcon" style="background-color: #A094ED" data-aura-rendered-by="3:1782;a" data-aura-class="forceEntityIcon">
-                                                                                                    <span data-aura-rendered-by="6:1782;a" class="uiImage" data-aura-class="uiImage">
-		                                                                                                                        <a href="javascript:showHideStatus('tbl{$header|replace:' ':''}','aid{$header|replace:' ':''}','{$THEME}');">
-		                                                                                                                            {if isset($BLOCKINITIALSTATUS[$header]) && $BLOCKINITIALSTATUS[$header] eq 1}
-		                                                                                                                                <span class="exp_coll_block inactivate">
-		                                                                                                                            <img id="aid{$header|replace:' ':''}"
-		                                                                                                                                 src="{'activate.gif'|@vtiger_imageurl:$THEME}"
-		                                                                                                                                 style="border: 0px solid #000000;"
-		                                                                                                                                 alt="{'LBL_Hide'|@getTranslatedString:'Settings'}"
-		                                                                                                                                 title="{'LBL_Hide'|@getTranslatedString:'Settings'}"/>
-		                                                                                                                            </span> {else}
-                                                                                                    <span class="exp_coll_block activate">
-		                                                                                                                            <img id="aid{$header|replace:' ':''}"
-		                                                                                                                                 src="{'inactivate.gif'|@vtiger_imageurl:$THEME}"
-		                                                                                                                                 style="border: 0px solid #000000;"
-		                                                                                                                                 alt="{'LBL_Show'|@getTranslatedString:'Settings'}"
-		                                                                                                                                 title="{'LBL_Show'|@getTranslatedString:'Settings'}"/>
-		                                                                                                                            </span> {/if}
+                                                                            <div class="forceRelatedListSingleContainer">
+                                                                                <article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
+                                                                                    <div class="slds-card__header slds-grid">
+                                                                                        <header class="slds-media slds-media--center slds-has-flexi-truncate">
+                                                                                            <div class="slds-media__figure">
+                                                                                                <div class="extraSmall forceEntityIcon" style="background-color: #A094ED" 
+                                                                                                data-aura-rendered-by="3:1782;a" data-aura-class="forceEntityIcon">
+                                                                                                <span data-aura-rendered-by="6:1782;a" class="uiImage" data-aura-class="uiImage">
+                                                                                                    <a href="javascript:showHideStatus('tbl{$header|replace:' ':''}','aid{$header|replace:' ':''}','{$THEME}');">
+                                                                                                        {if isset($BLOCKINITIALSTATUS[$header]) && $BLOCKINITIALSTATUS[$header] eq 1}
+                                                                                                            <span class="exp_coll_block inactivate">
+                                                                                                        <img id="aid{$header|replace:' ':''}"
+                                                                                                             src="{'activate.gif'|@vtiger_imageurl:$THEME}"
+                                                                                                             style="border: 0px solid #000000;"
+                                                                                                             alt="{'LBL_Hide'|@getTranslatedString:'Settings'}"
+                                                                                                             title="{'LBL_Hide'|@getTranslatedString:'Settings'}"/>
+                                                                                                        </span>
+                                                                                                        {else}
+                                                                                                            <span class="exp_coll_block activate">
+                                                                                                        <img id="aid{$header|replace:' ':''}"
+                                                                                                             src="{'inactivate.gif'|@vtiger_imageurl:$THEME}"
+                                                                                                             style="border: 0px solid #000000;"
+                                                                                                             alt="{'LBL_Show'|@getTranslatedString:'Settings'}"
+                                                                                                             title="{'LBL_Show'|@getTranslatedString:'Settings'}"/>
+                                                                                                        </span>
+                                                                                                        {/if}
                                                                                                     </a>
-                                                                                                    </span>
+                                                                                                </span>
                                                                                                 </div>
                                                                                             </div>
-                                                                                            <div class="slds-media__body" data-aura-rendered-by="1216:0">
-                                                                                                <h2 data-aura-rendered-by="1217:0">
-		                                                                                                                        <span class="slds-text-title--caps slds-truncate slds-m-right--xx-small" 
-		                                                                                                                            title="{$header}" data-aura-rendered-by="1219:0">
-		                                                                                                                            <b>{$header}</b>
-		                                                                                                                        </span>
-		                                                                                                                   </h2>
+                                                                                            <div class="slds-media__body">
+                                                                                                <h2>
+                                                                                                    <span class="slds-text-title--caps slds-truncate slds-m-right--xx-small" 
+                                                                                                        title="{$header}">
+                                                                                                        <b>{$header}</b>
+                                                                                                    </span>
+                                                                                               </h2>
                                                                                             </div>
                                                                                         </header>
                                                                                         <div class="slds-no-flex" data-aura-rendered-by="1224:0">
-                                                                                            <div class="actionsContainer mapButton" data-aura-rendered-by="1225:0">
+                                                                                            <div class="actionsContainer mapButton">
                                                                                                 {if isset($MOD.LBL_ADDRESS_INFORMATION) && $header eq $MOD.LBL_ADDRESS_INFORMATION && ($MODULE eq 'Accounts' || $MODULE eq 'Contacts' || $MODULE eq 'Leads') } {if $MODULE eq 'Leads'}
                                                                                                 <input name="mapbutton" type="button" value="{$APP.LBL_LOCATE_MAP}" class="slds-button slds-button--small slds-button--brand" onClick="searchMapLocation( 'Main' )" title="{$APP.LBL_LOCATE_MAP}"> {else}
                                                                                                 <input name="mapbutton" value="{$APP.LBL_LOCATE_MAP}" class="slds-button slds-button--small slds-button--brand" type="button" onClick="fnvshobj(this,'locateMap');" onMouseOut="fninvsh('locateMap');" title="{$APP.LBL_LOCATE_MAP}"> {/if} {/if}
@@ -409,32 +413,36 @@ function showHideStatus(sId, anchorImgId, sImagePath) {
                                                                                     </div>
                                                                                 </article>
                                                                             </div>
-                                                                            {/strip} {/if} {if $header neq 'Comments'} {if (isset($BLOCKINITIALSTATUS[$header]) && $BLOCKINITIALSTATUS[$header] eq 1) || !empty($BLOCKS.$header.relatedlist)}
-                                                                            <div style="width:auto;display:block;" id="tbl{$header|replace:' ':''}">
-                                                                                {else}
-                                                                                <div style="width:auto;display:none;" id="tbl{$header|replace:' ':''}">
-                                                                                    {/if}
-                                                                                    <table class="slds-table slds-table--cell-buffer slds-no-row-hover slds-table--bordered slds-table--fixed-layout small detailview_table">
-                                                                                        {if !empty($CUSTOMBLOCKS.$header.custom)} {include file=$CUSTOMBLOCKS.$header.tpl} {elseif isset($BLOCKS.$header.relatedlist) && $IS_REL_LIST|@count > 0} {assign var='RELBINDEX' value=$BLOCKS.$header.relatedlist} {include file='RelatedListNew.tpl' RELATEDLISTS=$RELATEDLISTBLOCK.$RELBINDEX RELLISTID=$RELBINDEX} {else} {foreach item=detailInfo from=$detail}
-                                                                                        <tr class="slds-line-height--reset">
-                                                                                            {foreach key=label item=data from=$detailInfo} {assign var=keyid value=$data.ui} {assign var=keyval value=$data.value} {assign var=keytblname value=$data.tablename} {assign var=keyfldname value=$data.fldname} {assign var=keyfldid value=$data.fldid} {assign var=keyoptions value=$data.options} {assign var=keysecid value=$data.secid} {assign var=keyseclink value=$data.link} {assign var=keycursymb value=$data.cursymb} {assign var=keysalut value=$data.salut} {assign var=keyaccess value=$data.notaccess} {assign var=keycntimage value=$data.cntimage} {assign var=keyadmin value=$data.isadmin} {assign var=display_type value=$data.displaytype} {assign var=_readonly value=$data.readonly} {if $label ne ''}
-                                                                                            <td class="dvtCellLabel" align=right width=25%>
-                                                                                                {if $keycntimage ne ''} {$keycntimage} {elseif $keyid eq '71' || $keyid eq '72'}
-                                                                                                <!-- Currency symbol -->
-                                                                                                {$label} ({$keycursymb}) {elseif $keyid eq '9'} {$label} {$APP.COVERED_PERCENTAGE} {elseif $keyid eq '14'} {$label} {"LBL_TIMEFIELD"|@getTranslatedString} {else} {$label} {/if}
-                                                                                            </td>
-                                                                                            {if $EDIT_PERMISSION eq 'yes' && $display_type neq '2' && $_readonly eq '0'} {* Performance Optimization Control *} {if !empty($DETAILVIEW_AJAX_EDIT) } {include file="DetailViewUI.tpl"} {else} {include file="DetailViewFields.tpl"} {/if} {* END *} {else} {include file="DetailViewFields.tpl"} {/if} {/if} {/foreach}
-                                                                                        </tr>
-                                                                                        {/foreach} {/if}
-                                                                                    </table>
-                                                                                </div>
-                                                                                {/if}
+                                                                            {/strip}
+                                                                        {/if}
+
+                                                                        {if $header neq 'Comments'}
+                                                                        {if (isset($BLOCKINITIALSTATUS[$header]) && $BLOCKINITIALSTATUS[$header] eq 1) || !empty($BLOCKS.$header.relatedlist)}
+                                                                            <div class="slds-truncate" style="display:block;" id="tbl{$header|replace:' ':''}">
+                                                                        {else}
+                                                                            <div class="slds-truncate" style="display:block;" id="tbl{$header|replace:' ':''}">
+                                                                        {/if}
+	                                                                            <table class="slds-table slds-table--cell-buffer slds-no-row-hover slds-table--bordered slds-table--fixed-layout small detailview_table">
+	                                                                                {if !empty($CUSTOMBLOCKS.$header.custom)} {include file=$CUSTOMBLOCKS.$header.tpl} {elseif isset($BLOCKS.$header.relatedlist) && $IS_REL_LIST|@count > 0} {assign var='RELBINDEX' value=$BLOCKS.$header.relatedlist} {include file='RelatedListNew.tpl' RELATEDLISTS=$RELATEDLISTBLOCK.$RELBINDEX RELLISTID=$RELBINDEX} {else} {foreach item=detailInfo from=$detail}
+	                                                                                <tr class="slds-line-height--reset">
+	                                                                                    {foreach key=label item=data from=$detailInfo} {assign var=keyid value=$data.ui} {assign var=keyval value=$data.value} {assign var=keytblname value=$data.tablename} {assign var=keyfldname value=$data.fldname} {assign var=keyfldid value=$data.fldid} {assign var=keyoptions value=$data.options} {assign var=keysecid value=$data.secid} {assign var=keyseclink value=$data.link} {assign var=keycursymb value=$data.cursymb} {assign var=keysalut value=$data.salut} {assign var=keyaccess value=$data.notaccess} {assign var=keycntimage value=$data.cntimage} {assign var=keyadmin value=$data.isadmin} {assign var=display_type value=$data.displaytype} {assign var=_readonly value=$data.readonly} {if $label ne ''}
+	                                                                                    <td class="dvtCellLabel" align=right width=25%>
+	                                                                                        {if $keycntimage ne ''} {$keycntimage} {elseif $keyid eq '71' || $keyid eq '72'}
+	                                                                                        <!-- Currency symbol -->
+	                                                                                        {$label} ({$keycursymb}) {elseif $keyid eq '9'} {$label} {$APP.COVERED_PERCENTAGE} {elseif $keyid eq '14'} {$label} {"LBL_TIMEFIELD"|@getTranslatedString} {else} {$label} {/if}
+	                                                                                    </td>
+	                                                                                    {if $EDIT_PERMISSION eq 'yes' && $display_type neq '2' && $_readonly eq '0'} {* Performance Optimization Control *} {if !empty($DETAILVIEW_AJAX_EDIT) } {include file="DetailViewUI.tpl"} {else} {include file="DetailViewFields.tpl"} {/if} {* END *} {else} {include file="DetailViewFields.tpl"} {/if} {/if} {/foreach}
+	                                                                                </tr>
+	                                                                                {/foreach} {/if}
+	                                                                            </table>
+                                                                            </div>
+                                                                        {/if}
                                                                         </td>
                                                                     </tr>
                                                                     {* vtlib Customization: Embed DetailViewWidget block:// type if any *} {if $CUSTOM_LINKS && !empty($CUSTOM_LINKS.DETAILVIEWWIDGET)} {foreach item=CUSTOM_LINK_DETAILVIEWWIDGET from=$CUSTOM_LINKS.DETAILVIEWWIDGET} {if preg_match("/^block:\/\/.*/", $CUSTOM_LINK_DETAILVIEWWIDGET->linkurl)} {if ($smarty.foreach.BLOCKS.first && $CUSTOM_LINK_DETAILVIEWWIDGET->sequence
                                                                     <=1 ) || ($CUSTOM_LINK_DETAILVIEWWIDGET->sequence == $smarty.foreach.BLOCKS.iteration + 1) || ($smarty.foreach.BLOCKS.last && $CUSTOM_LINK_DETAILVIEWWIDGET->sequence >= $smarty.foreach.BLOCKS.iteration + 1)}
-                                                                        <tr>
-                                                                            <td style="padding:5px;">{process_widget widgetLinkInfo=$CUSTOM_LINK_DETAILVIEWWIDGET}</td>
+                                                                        <tr class="blockStyleCss">
+                                                                            <td class="detailViewContainer">{process_widget widgetLinkInfo=$CUSTOM_LINK_DETAILVIEWWIDGET}</td>
                                                                         </tr>
                                                                         {/if} {/if} {/foreach} {/if} {* END *} {/foreach} {*-- End of Blocks--*}
                                                                         <!-- Inventory - Product Details informations -->

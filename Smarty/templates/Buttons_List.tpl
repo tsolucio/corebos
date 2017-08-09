@@ -31,7 +31,6 @@
     	<td width=100% nowrap>
     		<table border="0" cellspacing="0" cellpadding="0" class="slds-table-buttons">
                 <tr>
-                    <!-- <td class="sep1" style="width:1px;"></td> -->
                     <td class=small >
                         <!-- Add and Search -->
                         <table class="slds-table slds-no-row-hover background">
