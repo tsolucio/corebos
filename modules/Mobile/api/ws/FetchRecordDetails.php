@@ -63,7 +63,6 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 		$comments = $result['comments'];
 		$module = $this->detectModuleName($resultRecord['id']);
 		//set download pathinfo
-		
 		$modifiedRecord = $this->transformRecordWithGrouping($resultRecord, $module,$operation);
 		$ret_arr = array('record' => $modifiedRecord);
 		if (is_array ($relatedlistcontent)) {
@@ -147,7 +146,7 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 				$fieldlabel = $fieldinfo['label'];
 
 				// get field information
-				if(isset($resultRecord[$fieldname])) {
+				if (isset($resultRecord[$fieldname])) {
 					//get standard content & perform special settings
 					if($fieldinfo['uitype'] == 17 && strlen($resultRecord[$fieldname]) ) {
 						//www fields
@@ -262,20 +261,20 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 						$field['relatedmodule'] = crmtogo_WS_Utils::getEntityName($field['name'], $module);
 					}
 					$fields[] = $field;
-										
-				} 
+				}
 			}
 			// build address for "open address in maps" button
 			// array with all different address fieldnames for each module
 			$fieldnamesByModule = array(
-				"Accounts" 		=> array("bill_street", "ship_street", "bill_city", "ship_city", "bill_state", "ship_state", "bill_code", "ship_code", "bill_country", "ship_country", "ship_address", "bill_address"),
-				"SalesOrder" 	=> array("bill_street", "ship_street", "bill_city", "ship_city", "bill_state", "ship_state", "bill_code", "ship_code", "bill_country", "ship_country", "ship_address", "bill_address"),
-				"Contacts" 		=> array("mailingstreet", "otherstreet", "mailingcity", "othercity", "mailingstate", "otherstate", "mailingzip", "otherzip", "mailingcountry", "othercountry", "mailingaddress", "otheraddress"),
-				"Leads" 			=> array("lane", "", "city", "", "state", "", "code", "", "country", "", "mailingaddress", ""),
+				"Accounts"		=> array("bill_street", "ship_street", "bill_city", "ship_city", "bill_state", "ship_state", "bill_code", "ship_code", "bill_country", "ship_country", "ship_address", "bill_address"),
+				"SalesOrder"	=> array("bill_street", "ship_street", "bill_city", "ship_city", "bill_state", "ship_state", "bill_code", "ship_code", "bill_country", "ship_country", "ship_address", "bill_address"),
+				"Contacts"		=> array("mailingstreet", "otherstreet", "mailingcity", "othercity", "mailingstate", "otherstate", "mailingzip", "otherzip", "mailingcountry", "othercountry", "mailingaddress", "otheraddress"),
+				"Leads"			=> array("lane", "", "city", "", "state", "", "code", "", "country", "", "mailingaddress", ""),
 			);
-			
+
 			// get the right array depending on current module
 			$fieldnames = $fieldnamesByModule[$module];
+
 			/*
 			0 = appears if fieldgroup is not address information
 			1 = address values are set, show button
@@ -287,7 +286,7 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 			$otherAddress = "";
 			// go through all fields
 			foreach($fieldgroups as $fieldname => $fieldinfo) {
-				if(!is_array($resultRecord[$fieldname]) AND !is_object($resultRecord[$fieldname])) {
+				if (!is_array($resultRecord[$fieldname]) AND !is_object($resultRecord[$fieldname])) {
 					$value = trim($resultRecord[$fieldname]);
 					// check street and city for first address
 					if($mailingAddressOK != -1 AND ($fieldname == $fieldnames[0] OR $fieldname == $fieldnames[2])) {

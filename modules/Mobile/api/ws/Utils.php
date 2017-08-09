@@ -416,6 +416,7 @@ class crmtogo_WS_Utils {
 		}
 		return $commentlist;
 	}
+
 	/**     Function to create a comment for a troubleticket
 	  *     @param int $ticketid -- troubleticket id, comments array
 	  *     returns the comment as a array

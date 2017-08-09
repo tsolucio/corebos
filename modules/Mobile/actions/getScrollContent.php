@@ -58,12 +58,12 @@ class crmtogo_UI_GetScrollRecords extends crmtogo_WS_getScrollContent{
 			$ws_entity=$adb->pquery($entity, array($wsResponseResult['module']));
 			$ws_entity2= $adb->query_result($ws_entity,0,'id');
 		}
-			
+
 		$output = "";
-		for($i=0;$i<$noofrows;$i++) {
+		for ($i=0;$i<$noofrows;$i++) {
 			$firstname = $adb->query_result($records,$i,$fieldcontent[0]);
 			$lastname = $adb->query_result($records,$i,$fieldcontent[1]);
-		
+
 			if ($module =='Calendar' || $module =='Events') {
 				//for calendar display date and time
 				global $current_language;

@@ -21,7 +21,7 @@ class crmtogo_WS_Describe extends crmtogo_WS_Controller {
 			}
 		}
 	}
-	
+
 	function process(crmtogo_API_Request $request) {
 		global $current_user;
 		$module = $request->get('module');
@@ -30,8 +30,7 @@ class crmtogo_WS_Describe extends crmtogo_WS_Controller {
 		$response->setResult(array('record' => $newrecord));
 		return $response;
 	}
-	
-	
+
 	protected function transformToBlocks($module) {
 		global $current_language,$current_user;
 		if(empty($current_language))
@@ -40,16 +39,16 @@ class crmtogo_WS_Describe extends crmtogo_WS_Controller {
 		$describeInfo = vtws_describe($module, $current_user);
 		crmtogo_WS_Utils::fixDescribeFieldInfo($module, $describeInfo,$current_user);
 		$modifiedResult = array();
-		$blocks = array(); 
+		$blocks = array();
 		$labelFields = false;
 		foreach($moduleFieldGroups as $blocklabel => $fieldgroups) {
 			$fields = array();
 			foreach($fieldgroups as $fieldname => $fieldinfo) {
-				$field['name'] = $fieldname;	
-				$field['value'] = '';	
-				$field['label'] = $fieldinfo['label'];	
-				$field['uitype'] = $fieldinfo['uitype'];	
-				$field['typeofdata'] = $fieldinfo['typeofdata'];	
+				$field['name'] = $fieldname;
+				$field['value'] = '';
+				$field['label'] = $fieldinfo['label'];
+				$field['uitype'] = $fieldinfo['uitype'];
+				$field['typeofdata'] = $fieldinfo['typeofdata'];
 				foreach($describeInfo['fields'] as $describeField) {
 					if ($describeField['name']== $fieldname) {
 						$field['type'] = '';
@@ -63,8 +62,8 @@ class crmtogo_WS_Describe extends crmtogo_WS_Controller {
 						}
 					}
 				}
-				if($field['uitype'] == '51' || $field['uitype'] == '59' || $field['uitype'] == '10'){
-						$field['relatedmodule'] = crmtogo_WS_Utils::getEntityName($field['name'], $module);
+				if ($field['uitype'] == '51' || $field['uitype'] == '59' || $field['uitype'] == '10') {
+					$field['relatedmodule'] = crmtogo_WS_Utils::getEntityName($field['name'], $module);
 				}
 				$fields[] = $field;
 			}
@@ -81,7 +80,7 @@ class crmtogo_WS_Describe extends crmtogo_WS_Controller {
 		$modifiedResult = array('blocks' => $blocks, 'id' => $resultRecord['id']);
 		if($labelFields) {
 			$modifiedResult['labelFields'] = $labelFields;
-		} 
+		}
 		return $modifiedResult;
 	}
 

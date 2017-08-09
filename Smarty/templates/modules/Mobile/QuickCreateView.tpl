@@ -1,11 +1,11 @@
 {strip}
 <!DOCTYPE html>
 <head>
-	<title>{$_MODULE->label()} {$MOD.LBL_QUICKCREATE}</title> 
-	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<title>{$_MODULE->label()} {$MOD.LBL_QUICKCREATE}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta charset="utf-8">
-	<link REL="SHORTCUT ICON" HREF="resources/images/favicon.ico">	
-	<link rel="stylesheet" href="resources/css/jquery.mobile-1.4.5.min.css">	
+	<link REL="SHORTCUT ICON" HREF="resources/images/favicon.ico">
+	<link rel="stylesheet" href="resources/css/jquery.mobile-1.4.5.min.css">
 	<script type="text/javascript" src="resources/jquery-1.11.2.min.js"></script>
 	<script type="text/javascript" src="resources/jquery.mobile-1.4.5.min.js"></script>
 	<link rel="stylesheet" href="resources/css/jquery.mobile.structure-1.4.5.min.css" >
@@ -15,7 +15,7 @@
 	<script type="text/javascript" src="resources/crmtogo.js"></script>
 	<script type="text/javascript" src="resources/lang/{$LANGUAGE}.lang.js"></script>
 	<style>
-	</style>	
+	</style>
 </head>
 <body> 
 <div data-role="page" data-theme="b" data-mini="true" id="edit_page">
@@ -29,7 +29,7 @@
 		<a href="#panelmenu" data-mini='true' data-role='button' class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-grid ui-corner-all ui-icon-bars"></a>
 	</div>
 	<!-- /header -->
-	<div data-role="collapsible-set" data-mini="true">	
+	<div data-role="collapsible-set" data-mini="true">
 		<form method="post" data-transition="pop" data-ajax="false" enctype="multipart/form-data" name="EditView" id="EditView">
 			<input type="hidden" name="pagenumber" value="{$smarty.request.start|@vtlib_purify}">
 			<input type="hidden" name="module" id="module" value="{$_MODULE->name()}">
