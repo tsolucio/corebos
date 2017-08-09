@@ -62,7 +62,7 @@ class crmtogo_UI_GetScrollRecords extends crmtogo_WS_getScrollContent{
 		$output = "";
 		for ($i=0;$i<$noofrows;$i++) {
 			$firstname = $adb->query_result($records,$i,$fieldcontent[0]);
-			$lastname = $adb->query_result($records,$i,$fieldcontent[1]);
+			$lastname = (isset($fieldcontent[1]) ? $adb->query_result($records,$i,$fieldcontent[1]) : '');
 
 			if ($module =='Calendar' || $module =='Events') {
 				//for calendar display date and time

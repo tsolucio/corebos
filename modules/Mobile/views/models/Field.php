@@ -42,7 +42,7 @@ class crmtogo_UI_FieldModel {
 			}
 		}
 		else {
-			if($_REQUEST['module'] == 'Timecontrol' && $this->name()=='relatedto' && isset($_REQUEST['relatedto'])){
+			if (isset($_REQUEST['module']) && $_REQUEST['module'] == 'Timecontrol' && $this->name()=='relatedto' && isset($_REQUEST['relatedto'])) {
 				$relatedto = $_REQUEST['relatedto'];
 				$fieldvalue = trim(vtws_getName($relatedto, $current_user));
 				$relvalue = array('value' => $relatedto, 'label'=>$fieldvalue);

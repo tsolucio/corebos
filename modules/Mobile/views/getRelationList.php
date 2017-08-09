@@ -23,6 +23,7 @@ class crmtogo_UI_GetRelatedLists extends crmtogo_WS_RelatedRecords {
 			$current_language = $this->sessionGet('language') ;
 			$relatedlistsmodule = array_keys($wsResponseResult);
 			$relatedresponse = new crmtogo_API_Response();
+			$detailresponse_record = array();
 			foreach ($relatedlistsmodule as $module) {
 				$moduleWSId = crmtogo_WS_Utils::getEntityModuleWSId($module);
 				if($module == 'Events' || $module == 'Calendar') {
@@ -42,7 +43,7 @@ class crmtogo_UI_GetRelatedLists extends crmtogo_WS_RelatedRecords {
 					}
 				}
 			}
-			$relatedresponse -> setResult($detailresponse_record);
+			$relatedresponse->setResult((count($detailresponse_record)>0 ? $detailresponse_record : null));
 			$response = new crmtogo_API_Response();
 			$config = $this->getUserConfigSettings();
 			$viewer = new crmtogo_UI_Viewer();

@@ -39,9 +39,9 @@
 	<!-- /header -->
 	<div data-role="collapsible-set" data-mini="true">
 		<form method="post" data-transition="pop" data-ajax="false" enctype="multipart/form-data" name="EditView" id="EditView">
-			<input type="hidden" name="pagenumber" value="{$smarty.request.start|@vtlib_purify}">
+			<input type="hidden" name="pagenumber" value="{if isset($smarty.request.start)}{$smarty.request.start|@vtlib_purify}{/if}">
 			<input type="hidden" name="module" id="module" value="{$_MODULE->name()}">
-			<input type="hidden" name="mobilerecord" value="{$mobilerecordid}">
+			<input type="hidden" name="mobilerecord" value="{if isset($mobilerecordid)}{$mobilerecordid}{/if}">
 			<input type="hidden" name="record" id="record" value="{$id}">
 			<input type="hidden" name="mode" id="mode" value="{$mode}">
 			<input type="hidden" name="mobilemode" value="1">
@@ -51,8 +51,8 @@
 			<input type="hidden" name="return_module" value="{$_MODULE->name()}">
 			<input type="hidden" name="return_id" value="{$id}">
 			<input type="hidden" name="return_action" value="index">
-			<input type="hidden" name="return_viewname" value="{$RETURN_VIEWNAME}">
-			<input type="hidden" name="createmode" value="{$CREATEMODE}" />
+			<input type="hidden" name="return_viewname" value="{if isset($RETURN_VIEWNAME)}{$RETURN_VIEWNAME}{/if}">
+			<input type="hidden" name="createmode" value="{if isset($CREATEMODE)}{$CREATEMODE}{/if}" />
 			<input type="hidden" name="origmodule" id="origmodule" value="{$ORIGMODULE}" />
 			{if $ORIGMODULE eq 'Events'}
 				<input type="hidden" name="inviteesid" value="{$INVITEES}">
@@ -115,11 +115,11 @@
 										<select  id="{$_FIELD->name()}" name="{$_FIELD->name()}"   data-mini="true" class="select" data-native-menu="false">
 											{foreach item=arr from=$_FIELD->value()}
 												{if $arr.label eq $MOD.LBL_NOT_ACCESSIBLE}
-													<option value="{$arr.label}" {$arr.selected}>
+													<option value="{$arr.label}" {if isset($arr.selected)}{$arr.selected}{/if}>
 														{$arr.label}
 													</option>
 												{else}
-												<option value="{$arr.value}" {$arr.selected}>
+												<option value="{$arr.value}" {if isset($arr.selected)}{$arr.selected}{/if}>
 													{$arr.label|@getTranslatedString:$_MODULE->name()}
 												</option>
 												{/if}
@@ -136,11 +136,11 @@
 											<option value="_empty" selected="selected" style="display:none;"></option>
 											{foreach item=arr from=$_FIELD->value()}
 												{if $arr.label eq $MOD.LBL_NOT_ACCESSIBLE}
-													<option value="{$arr.label}" {$arr.selected}>
+													<option value="{$arr.label}" {if isset($arr.selected)}{$arr.selected}{/if}>
 														{$arr.label}
 													</option>
 												{else}
-												<option value="{$arr.value}" {$arr.selected}>
+												<option value="{$arr.value}" {if isset($arr.selected)}{$arr.selected}{/if}>
 													{$arr.label|@getTranslatedString:$_MODULE->name()}
 							                    </option>
 												{/if}
@@ -166,9 +166,11 @@
 									{/foreach}
  									{if $check eq 0}
 										{assign var=select_user value='checked'}
+										{assign var=select_group value=''}
 										{assign var=style_user value='display:block'}
 										{assign var=style_group value='display:none'}
 									{else}
+										{assign var=select_user value=''}
 										{assign var=select_group value='checked'}
 										{assign var=style_user value='display:none'}
 										{assign var=style_group value='display:block'}

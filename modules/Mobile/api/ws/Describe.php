@@ -22,7 +22,7 @@ class crmtogo_WS_Describe extends crmtogo_WS_Controller {
 		}
 	}
 
-	function process(crmtogo_API_Request $request) {
+	public static function process(crmtogo_API_Request $request) {
 		global $current_user;
 		$module = $request->get('module');
 		$newrecord = self::transformToBlocks($module);
@@ -31,7 +31,7 @@ class crmtogo_WS_Describe extends crmtogo_WS_Controller {
 		return $response;
 	}
 
-	protected function transformToBlocks($module) {
+	protected static function transformToBlocks($module) {
 		global $current_language,$current_user;
 		if(empty($current_language))
 			$current_language = crmtogo_WS_Controller::sessionGet('language');
@@ -52,7 +52,7 @@ class crmtogo_WS_Describe extends crmtogo_WS_Controller {
 				foreach($describeInfo['fields'] as $describeField) {
 					if ($describeField['name']== $fieldname) {
 						$field['type'] = '';
-						if (isset($describeField['type']) && $describeField['type']!='') {
+						if (!empty($describeField['type']) && !empty($describeField['type']['picklistValues'])) {
 							$picklistValues = $describeField['type']['picklistValues'];
 							$field['type']['value'] = array ('value' =>$picklistValues,'name' => $fieldname);
 						}

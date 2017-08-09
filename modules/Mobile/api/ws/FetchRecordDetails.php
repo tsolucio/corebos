@@ -60,7 +60,6 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 		$operation = $request->getOperation();
 		$resultRecord = $result['record'];
 		$relatedlistcontent = isset($result['relatedlistcontent']) ? $result['relatedlistcontent'] : '';
-		$comments = $result['comments'];
 		$module = $this->detectModuleName($resultRecord['id']);
 		//set download pathinfo
 		$modifiedRecord = $this->transformRecordWithGrouping($resultRecord, $module,$operation);
@@ -68,8 +67,8 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 		if (is_array ($relatedlistcontent)) {
 			$ret_arr['relatedlistcontent'] = $relatedlistcontent;
 		}
-		if (isset($comments)) {
-			$ret_arr['comments'] = $comments;
+		if (isset($result['comments'])) {
+			$ret_arr['comments'] = $result['comments'];
 		}
 		if (isset($resultRecord['attachmentinfo']) and $resultRecord['attachmentinfo']!='') {
 			$ret_arr['attachmentinfo'] = $resultRecord['attachmentinfo'];
@@ -142,11 +141,12 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 			$fields = array();
 			
 			foreach($fieldgroups as $fieldname => $fieldinfo) {
-				$value = $resultRecord[$fieldname];
+				$value = '';
 				$fieldlabel = $fieldinfo['label'];
 
 				// get field information
 				if (isset($resultRecord[$fieldname])) {
+					$value = $resultRecord[$fieldname];
 					//get standard content & perform special settings
 					if($fieldinfo['uitype'] == 17 && strlen($resultRecord[$fieldname]) ) {
 						//www fields
@@ -273,7 +273,7 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 			);
 
 			// get the right array depending on current module
-			$fieldnames = $fieldnamesByModule[$module];
+			$fieldnames = (isset($fieldnamesByModule[$module]) ? $fieldnamesByModule[$module] : null);
 
 			/*
 			0 = appears if fieldgroup is not address information
@@ -285,6 +285,7 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 			$mailingAddress = "";
 			$otherAddress = "";
 			// go through all fields
+			if (!empty($fieldnames))
 			foreach($fieldgroups as $fieldname => $fieldinfo) {
 				if (!is_array($resultRecord[$fieldname]) AND !is_object($resultRecord[$fieldname])) {
 					$value = trim($resultRecord[$fieldname]);
