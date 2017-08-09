@@ -1209,9 +1209,9 @@ function getDetailAssociatedProducts($module, $focus) {
 	$tabid = getTabid($module);
 	if ($module != 'PurchaseOrder') {
 		if (GlobalVariable::getVariable('Application_B2B', '1')=='1') {
-			$acvid = $focus->column_fields['account_id'];
+			$acvid = (isset($focus->column_fields['account_id']) ? $focus->column_fields['account_id'] : (isset($focus->column_fields['accid']) ? $focus->column_fields['accid'] : 0));
 		} else {
-			$acvid = $focus->column_fields['contact_id'];
+			$acvid = (isset($focus->column_fields['contact_id']) ? $focus->column_fields['contact_id'] : (isset($focus->column_fields['ctoid']) ? $focus->column_fields['ctoid'] : 0));
 		}
 	} else {
 		$acvid = $focus->column_fields['vendor_id'];
