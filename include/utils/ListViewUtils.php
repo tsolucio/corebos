@@ -1813,12 +1813,8 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$tax_str = trim($tax_str, ',');
 					$rate = $current_user->column_fields['conv_rate'];
 
-					if (getFieldVisibilityPermission($module, $current_user->id, 'unit_price') == '0') {
-						$unitprice = $adb->query_result($list_result, $list_result_count, 'unit_price');
-						if ($_REQUEST['currencyid'] != null) {
-							$prod_prices = getPricesForProducts($_REQUEST['currencyid'], array($entity_id), $module);
-							$unitprice = $prod_prices[$entity_id];
-						}
+					if (getFieldVisibilityPermission($module, $current_user->id, 'cost_price') == '0') {
+						$unitprice = $adb->query_result($list_result, $list_result_count, 'cost_price');
 					} else {
 						$unitprice = '';
 					}
