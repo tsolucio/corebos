@@ -519,6 +519,27 @@ class ListViewController {
 						}
 					}
 					$value = textlength_check(implode(', ',$content));
+				} elseif ($field->getUIType() == 1025) {
+					$content=array();
+					if ($value != '') {
+                                                $values=explode(' |##| ',$value);
+                                                for ($fvalues=0;$fvalues<sizeof($values);$fvalues++) {
+                                                        $srchmod=  getSalesEntityType($values[$fvalues]);
+                                                        $id=$values[$fvalues];
+                                                        $displayValueArray = getEntityName($srchmod, $id);
+                                                        if(!empty($displayValueArray)){
+                                                                foreach($displayValueArray as $key=>$value2){
+                                                                        $shown_val = $value2;
+                                                                }
+                                                        }
+                                                        if (!(vtlib_isModuleActive($srchmod) and isPermitted($srchmod,'DetailView',$id))){
+                                                                $content[$fvalues]=textlength_check($shown_val);
+                                                        } else {
+                                                                $content[$fvalues]='<a href="index.php?module='.$srchmod.'&action=DetailView&record='.$id.'">'.textlength_check($shown_val).'</a>';
+                                                        }
+                                                }
+					}
+					$value = textlength_check(implode(', ',$content));
 				} elseif ($field->getFieldDataType() == 'skype') {
 					$value = ($value != "") ? "<a href='skype:$value?call'>".textlength_check($value)."</a>" : "";
 				} elseif ($field->getFieldDataType() == 'phone') {

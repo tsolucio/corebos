@@ -4960,6 +4960,10 @@ function AutocompleteRelation(target, i) {
 	this.moduleName 	= this.data.searchmodule;
 	this.fillfields		= this.fillFields();
 	this.maxResults 	= 5;
+        this.multiselect 	= this.multiselect();
+        if(this.multiselect==='true'){
+            target.style.width='95%';
+        }
 
 	this.targetUL.show 	= function() {
 		if (!this.classList.contains("active")) {
@@ -4986,6 +4990,11 @@ function AutocompleteRelation(target, i) {
 AutocompleteRelation.prototype.get = function(e) {
 
 	var term = e.target.value;
+        if(this.multiselect==='true'){
+            var array=term.split(',');
+            var nr_opt=array.length;
+            term=array[nr_opt-1];
+        }
 	if (term.length > 3) {
 		this.data.term = term;
 		var acInstance = this;
@@ -5151,9 +5160,25 @@ AutocompleteRelation.prototype.fillOtherFields = function (data) {
 		if(this_field[0] == "assigned_user_id") {
 			field_element = this.fillAssignField(get_field_value);
 		}
-
-		field_element.value = get_field_value;
-	}
+                var field_root_name = this.inputField.name.substring(0, this.inputField.name.indexOf("_display"));
+                if(this.multiselect==='true' && (this_field[0]==field_root_name+'_display' || this_field[0]==field_root_name || this_field[0]==this.inputField.name)){
+                    if(this_field[0]==field_root_name+'_display'){
+                        var array=field_element.value.split(',');
+                        var nr_opt=array.length;
+                        array[nr_opt-1]=get_field_value;
+                        field_element.value = array.join(',')+',';
+                    }
+                    else{
+                        var array=field_element.value.split(' |##| ').filter(item => item);
+                        var nr_opt=array.length;
+                        array.push(get_field_value);
+                        field_element.value = array.join(' |##| ');
+                    }
+                }
+                else{
+                    field_element.value = get_field_value;
+                }
+        }
 
 }
 
@@ -5237,5 +5262,14 @@ AutocompleteRelation.prototype.fillFields = function () {
 	} catch(e) {
 		ref_module = this.getReferenceModule();
 		return this.data.fillfields[ref_module].split(",");
+	}
+}
+
+AutocompleteRelation.prototype.multiselect = function () {
+	if(typeof this.data.multiselect === 'string')
+		return this.data.multiselect
+	else if(typeof this.data.multiselect === undefined){
+		ref_module = this.getReferenceModule();
+		return this.data.multiselect[ref_module];
 	}
 }

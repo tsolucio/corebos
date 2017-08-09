@@ -569,7 +569,7 @@ class CRMEntity {
 					} else {
 						$fldvalue = $this->column_fields[$fieldname];
 					}
-				} elseif ($uitype == 33 || $uitype == 3313 || $uitype == 3314 || $uitype == 1024) {
+				} elseif ($uitype == 33 || $uitype == 3313 || $uitype == 3314 || $uitype == 1024 || $uitype == 1025) {
 					if (empty($this->column_fields[$fieldname])) {
 						$fldvalue = '';
 					} else {
@@ -589,7 +589,10 @@ class CRMEntity {
 						$currentvalues = array_map('trim', explode('|##|', decode_html($vlera)));
 					}
 					$selectedvalues = $this->column_fields[$fieldname];
-					if ($uitype == 3313 || $uitype == 3314) {
+					if ($uitype == 1025) {
+						$uservalues = $currentvalues;
+					}
+                                        elseif ($uitype == 3313 || $uitype == 3314) {
 						$uservalues = getAllowedPicklistModules();
 					} elseif ($uitype == 1024){
 						$roleid = $current_user->roleid;
@@ -2004,7 +2007,7 @@ class CRMEntity {
 		$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
 		$query .= " WHERE vtiger_crmentity.deleted = 0 AND (vtiger_crmentityrel.crmid = $id OR vtiger_crmentityrel.relcrmid = $id)";
 		$return_value = GetRelatedList($currentModule, $related_module, $other, $query, $button, $returnset);
-
+var_dump($query);
 		if ($return_value == null)
 			$return_value = Array('header'=>array(),'entries'=>array(),'navigation'=>array('',''));
 		$return_value['CUSTOM_BUTTON'] = $button;
