@@ -62,7 +62,7 @@
 	{foreach $submenu as $menuitem}
 		{if $menuitem.mtype == 'module' && empty($menuitem.submenu)}
 		<li class="slds-dropdown__item" role="presentation">
-			<a href="index.php?action=index&amp;module={$menuitem.mvalue}" role="menuitem" tabindex="-1">
+			<a href="index.php?action=index&amp;module={$menuitem.mvalue}" class="drop_down" role="menuitem" tabindex="-1">
 				<span class="slds-truncate">{$menuitem.mlabel}</span>
 			</a>
 		</li>
