@@ -446,6 +446,11 @@ tr td.table-aside>.detailview_actionlinks {
     border-bottom: 1px solid #d4d4d4;
 }
 
+.dvtCellInfo a .slds-button--small {
+    height: 1.5rem;
+    line-height: 1.5rem;
+    margin-left: .6rem;
+}
 
 
 /**
