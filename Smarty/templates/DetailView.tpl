@@ -34,24 +34,24 @@ function showHideStatus(sId,anchorImgId,sImagePath)
 	{
 		oObj.style.display = 'none';
 		if(anchorImgId !=null){
-// {/literal}
+{/literal}
 			document.getElementById(anchorImgId).src = 'themes/images/inactivate.gif';
 			document.getElementById(anchorImgId).alt = '{'LBL_Show'|@getTranslatedString:'Settings'}';
 			document.getElementById(anchorImgId).title = '{'LBL_Show'|@getTranslatedString:'Settings'}';
 			document.getElementById(anchorImgId).parentElement.className = 'exp_coll_block activate';
-// {literal}
+{literal}
 		}
 	}
 	else
 	{
 		oObj.style.display = 'block';
 		if(anchorImgId !=null){
-// {/literal}
+{/literal}
 			document.getElementById(anchorImgId).src = 'themes/images/activate.gif';
 			document.getElementById(anchorImgId).alt = '{'LBL_Hide'|@getTranslatedString:'Settings'}';
 			document.getElementById(anchorImgId).title = '{'LBL_Hide'|@getTranslatedString:'Settings'}';
 			document.getElementById(anchorImgId).parentElement.className = 'exp_coll_block inactivate';
-// {literal}
+{literal}
 		}
 	}
 }
