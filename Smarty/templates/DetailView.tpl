@@ -56,67 +56,81 @@ function showHideStatus(sId,anchorImgId,sImagePath)
 	}
 }
 
-        function setCoOrdinate(elemId) {
-            oBtnObj = document.getElementById(elemId);
-            var tagName = document.getElementById('lstRecordLayout');
-            leftpos = 0;
-            toppos = 0;
-            aTag = oBtnObj;
-            do {
-                leftpos += aTag.offsetLeft;
-                toppos += aTag.offsetTop;
-            } while (aTag = aTag.offsetParent);
-            tagName.style.top = toppos + 20 + 'px';
-            tagName.style.left = leftpos - 276 + 'px';
-        }
+function setCoOrdinate(elemId){
+	oBtnObj = document.getElementById(elemId);
+	var tagName = document.getElementById('lstRecordLayout');
+	leftpos  = 0;
+	toppos = 0;
+	aTag = oBtnObj;
+	do {
+		leftpos += aTag.offsetLeft;
+		toppos += aTag.offsetTop;
+	} while(aTag = aTag.offsetParent);
+	tagName.style.top= toppos + 20 + 'px';
+	tagName.style.left= leftpos - 276 + 'px';
+}
 
-        function getListOfRecords(obj, sModule, iId, sParentTab) {
-            jQuery.ajax({
-                method: "POST",
-                url: 'index.php?module=Users&action=getListOfRecords&ajax=true&CurModule=' + sModule + '&CurRecordId=' + iId + '&CurParentTab=' + sParentTab,
-            }).done(function(response) {
-                sResponse = response;
-                jQuery("#lstRecordLayout").html(sResponse);
-                Lay = 'lstRecordLayout';
-                var tagName = document.getElementById(Lay);
-                var leftSide = findPosX(obj);
-                var topSide = findPosY(obj);
-                var maxW = tagName.style.width;
-                var widthM = maxW.substring(0, maxW.length - 2);
-                var getVal = parseInt(leftSide) + parseInt(widthM);
-                if (getVal > document.body.clientWidth) {
-                    leftSide = parseInt(leftSide) - parseInt(widthM);
-                    tagName.style.left = leftSide + 230 + 'px';
-                    tagName.style.top = topSide + 20 + 'px';
-                } else {
-                    tagName.style.left = leftSide + 230 + 'px';
-                }
-                setCoOrdinate(obj.id);
+function getListOfRecords(obj, sModule, iId,sParentTab) {
+	jQuery.ajax({
+				method:"POST",
+				url:'index.php?module=Users&action=getListOfRecords&ajax=true&CurModule='+sModule+'&CurRecordId='+iId+'&CurParentTab='+sParentTab,
+	}).done(function(response) {
+				sResponse = response;
+				jQuery("#lstRecordLayout").html(sResponse);
+				Lay = 'lstRecordLayout';
+				var tagName = document.getElementById(Lay);
+				var leftSide = findPosX(obj);
+				var topSide = findPosY(obj);
+				var maxW = tagName.style.width;
+				var widthM = maxW.substring(0,maxW.length-2);
+				var getVal = parseInt(leftSide) + parseInt(widthM);
+				if(getVal  > document.body.clientWidth ){
+					leftSide = parseInt(leftSide) - parseInt(widthM);
+					tagName.style.left = leftSide + 230 + 'px';
+					tagName.style.top = topSide + 20 + 'px';
+				}else{
+					tagName.style.left = leftSide + 230 + 'px';
+				}
+				setCoOrdinate(obj.id);
 
-                tagName.style.display = 'block';
-                tagName.style.visibility = "visible";
-            });
-        } {
-            /literal}
+				tagName.style.display = 'block';
+				tagName.style.visibility = "visible";
+			}
+	);
+}
+{/literal}
+function tagvalidate()
+{ldelim}
+	if(trim(document.getElementById('txtbox_tagfields').value) != '')
+		SaveTag('txtbox_tagfields','{$ID}','{$MODULE}');
+	else
+	{ldelim}
+		alert("{$APP.PLEASE_ENTER_TAG}");
+		return false;
+	{rdelim}
+{rdelim}
+function DeleteTag(id,recordid)
+{ldelim}
+	document.getElementById("vtbusy_info").style.display="inline";
+	jQuery('#tag_'+id).fadeOut();
+	jQuery.ajax({ldelim}
+			method:"POST",
+			url:"index.php?file=TagCloud&module={$MODULE}&action={$MODULE}Ajax&ajxaction=DELETETAG&recordid="+recordid+"&tagid=" +id,
+	{rdelim}).done(function(response) {ldelim}
+				getTagCloud();
+				jQuery("#vtbusy_info").hide();
+	{rdelim}
+	);
+{rdelim}
 
-            function tagvalidate() { ldelim }
-            if (trim(document.getElementById('txtbox_tagfields').value) != '')
-                SaveTag('txtbox_tagfields', '{$ID}', '{$MODULE}');
-            else { ldelim }
-            alert("{$APP.PLEASE_ENTER_TAG}");
-            return false; { rdelim } { rdelim }
+//Added to send a file, in Documents module, as an attachment in an email
+function sendfile_email()
+{ldelim}
+	filename = document.getElementById('dldfilename').value;
+	document.DetailView.submit();
+	OpenCompose(filename,'Documents');
+{rdelim}
 
-            function DeleteTag(id, recordid) { ldelim }
-            document.getElementById("vtbusy_info").style.display = "inline";
-            jQuery('#tag_' + id).fadeOut();
-            jQuery.ajax({ ldelim } method: "POST",
-                url: "index.php?file=TagCloud&module={$MODULE}&action={$MODULE}Ajax&ajxaction=DELETETAG&recordid=" + recordid + "&tagid=" + id, { rdelim }).done(function(response) { ldelim } getTagCloud(); jQuery("#vtbusy_info").hide(); { rdelim }); { rdelim }
-
-            //Added to send a file, in Documents module, as an attachment in an email
-            function sendfile_email() { ldelim }
-            filename = document.getElementById('dldfilename').value;
-            document.DetailView.submit();
-            OpenCompose(filename, 'Documents'); { rdelim }
 </script>
 <div id="lstRecordLayout" class="layerPopup" style="display:none;width:325px;height:300px;"></div>
 {if $MODULE eq 'Accounts' || $MODULE eq 'Contacts' || $MODULE eq 'Leads'} {if $MODULE eq 'Accounts'} {assign var=address1 value='$MOD.LBL_BILLING_ADDRESS'} {assign var=address2 value='$MOD.LBL_SHIPPING_ADDRESS'} {/if} {if $MODULE eq 'Contacts'} {assign var=address1 value='$MOD.LBL_PRIMARY_ADDRESS'} {assign var=address2 value='$MOD.LBL_ALTERNATE_ADDRESS'} {/if}
@@ -161,36 +175,37 @@ function showHideStatus(sId,anchorImgId,sImagePath)
                                                                              class="icon " alt="Contact"
                                                                              title="Contact">
                                                                     </span>
-                                                        </div>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="slds-media__body">
-                                                    <p class="slds-text-heading--label slds-line-height--reset">{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</p>
-                                                    <h1 class="slds-page-header__title slds-m-right--small slds-truncate slds-align-middle">
-                                                            <span class="uiOutputText">[ {$USE_ID_VALUE} ] {$NAME}</span>
-                                                            <span class="small" style="text-transform: capitalize;">{$UPDATEINFO}</span>&nbsp;&nbsp;&nbsp;
-                                                            <span id="vtbusy_info" style="display:none; text-transform: capitalize;" valign="bottom">
-                                                                <img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0">
-                                                            </span>
-                                                        </h1>
-                                                </div>
-                                            </div>
-                                            <div class="slds-col slds-no-flex slds-grid slds-align-middle actionsContainer" id="detailview_utils_thirdfiller">
-                                                <p class="slds-text-heading--label slds-line-height--reset" style="text-align: right; margin: 0 0 5px 0;">
-                                                    {if $privrecord neq ''}
-                                                    <span class="detailview_utils_prev" onclick="location.href='index.php?module={$MODULE}&viewtype={if isset($VIEWTYPE)}{$VIEWTYPE}{/if}&action=DetailView&record={$privrecord}&parenttab={$CATEGORY}&start={$privrecordstart}'" title="{$APP.LNK_LIST_PREVIOUS}">
+                                                        		</div>
+                                                        	</span>
+                                                    	</div>
+                                                	</div>
+	                                                <div class="slds-media__body">
+	                                                    <p class="slds-text-heading--label slds-line-height--reset">{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</p>
+	                                                    <h1 class="slds-page-header__title slds-m-right--small slds-truncate slds-align-middle">
+	                                                            <span class="uiOutputText">[ {$USE_ID_VALUE} ] {$NAME}</span>
+	                                                            <span class="small" style="text-transform: capitalize;">{$UPDATEINFO}</span>&nbsp;&nbsp;&nbsp;
+	                                                            <span id="vtbusy_info" style="display:none; text-transform: capitalize;" valign="bottom">
+	                                                                <img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0">
+	                                                            </span>
+
+	                                                        </h1>
+	                                                </div>
+                                            	</div>
+                                            	<div class="slds-col slds-no-flex slds-grid slds-align-middle actionsContainer" id="detailview_utils_thirdfiller">
+                                                	<p class="slds-text-heading--label slds-line-height--reset" style="text-align: right; margin: 0 0 5px 0;">
+	                                                    {if $privrecord neq ''}
+	                                                    <span class="detailview_utils_prev" onclick="location.href='index.php?module={$MODULE}&viewtype={if isset($VIEWTYPE)}{$VIEWTYPE}{/if}&action=DetailView&record={$privrecord}&parenttab={$CATEGORY}&start={$privrecordstart}'" title="{$APP.LNK_LIST_PREVIOUS}">
                                                                     <img align="absmiddle"
                                                                          accessKey="{$APP.LNK_LIST_PREVIOUS}"
                                                                          name="privrecord"
                                                                          value="{$APP.LNK_LIST_PREVIOUS}"
                                                                          src="{'rec_prev.gif'|@vtiger_imageurl:$THEME}"/>
                                                             </span>&nbsp; {else}
-                                                    <span class="detailview_utils_prev" title="{$APP.LNK_LIST_PREVIOUS}">
+                                                    	<span class="detailview_utils_prev" title="{$APP.LNK_LIST_PREVIOUS}">
                                                                     <img align="absmiddle" width="23"
                                                                          src="{'rec_prev_disabled.gif'|@vtiger_imageurl:$THEME}">
                                                             </span>&nbsp; {/if} {if $privrecord neq '' || $nextrecord neq ''}
-                                                    <span class="detailview_utils_jumpto" id="jumpBtnIdTop" onclick="
+                                                    	<span class="detailview_utils_jumpto" id="jumpBtnIdTop" onclick="
                                                                           var obj = this;
                                                                           var lhref = getListOfRecords(obj, '{$MODULE}',{$ID},'{$CATEGORY}');" title="{$APP.LBL_JUMP_BTN}">
                                                                 <img align="absmiddle" title="{$APP.LBL_JUMP_BTN}"
@@ -199,44 +214,55 @@ function showHideStatus(sId,anchorImgId,sImagePath)
                                                                      id="jumpBtnIdTop"  />
                                                                      <!-- src="{'rec_jump.gif'|@vtiger_imageurl:$THEME}" -->
                                                             </span>&nbsp; {/if} {if $nextrecord neq ''}
-                                                    <span class="detailview_utils_next" onclick="location.href='index.php?module={$MODULE}&viewtype={if isset($VIEWTYPE)}{$VIEWTYPE}{/if}&action=DetailView&record={$nextrecord}&parenttab={$CATEGORY}&start={$nextrecordstart}'" title="{$APP.LNK_LIST_NEXT}">
+                                                    	<span class="detailview_utils_next" onclick="location.href='index.php?module={$MODULE}&viewtype={if isset($VIEWTYPE)}{$VIEWTYPE}{/if}&action=DetailView&record={$nextrecord}&parenttab={$CATEGORY}&start={$nextrecordstart}'" title="{$APP.LNK_LIST_NEXT}">
                                                                 <img align="absmiddle"
                                                                      accessKey="{$APP.LNK_LIST_NEXT}"
                                                                      name="nextrecord"
                                                                      src="{'rec_next.gif'|@vtiger_imageurl:$THEME}">
                                                             </span>&nbsp; {else}
-                                                    <span class="detailview_utils_next" title="{$APP.LNK_LIST_NEXT}">
+                                                    	<span class="detailview_utils_next" title="{$APP.LNK_LIST_NEXT}">
                                                                 <img align="absmiddle" title="{$APP.LNK_LIST_NEXT}"
                                                                     width="23"
                                                                     src="{'rec_next_disabled.gif'|@vtiger_imageurl:$THEME}"/>
                                                             </span>&nbsp; {/if}
-                                                </p>
-                                                <div class="slds-grid forceActionsContainer">
-                                                    {if $EDIT_PERMISSION eq 'yes'}
-                                                    <input class="slds-button slds-button--neutral not-selected slds-not-selected uiButton" aria-live="assertive" type="button" name="Edit" title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.return_id.value='{$ID}';DetailView.module.value='{$MODULE}';submitFormForAction('DetailView','EditView');" value="&nbsp;{$APP.LBL_EDIT_BUTTON_LABEL}&nbsp;" />&nbsp; {/if} {if ((isset($CREATE_PERMISSION) && $CREATE_PERMISSION eq 'permitted') || (isset($EDIT_PERMISSION) && $EDIT_PERMISSION eq 'yes')) && $MODULE neq 'Documents'}
-                                                    <input title="{$APP.LBL_DUPLICATE_BUTTON_TITLE}" accessKey="{$APP.LBL_DUPLICATE_BUTTON_KEY}" {*class="slds-button slds-button--small slds-button--brand assideBtn" *} class="slds-button slds-button--neutral not-selected slds-not-selected uiButton" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.isDuplicate.value='true';DetailView.module.value='{$MODULE}'; submitFormForAction('DetailView','EditView');" type="button" name="Duplicate" value="{$APP.LBL_DUPLICATE_BUTTON_LABEL}" />&nbsp; {/if} {if $DELETE eq 'permitted'}
-                                                    <input title="{$APP.LBL_DELETE_BUTTON_TITLE}" accessKey="{$APP.LBL_DELETE_BUTTON_KEY}" {*class="slds-button slds-button--small slds-button--destructive assideBtn" *} class="slds-button slds-button--neutral not-selected slds-not-selected uiButton" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='index'; {if $MODULE eq 'Accounts'} var confirmMsg = '{$APP.NTC_ACCOUNT_DELETE_CONFIRMATION}' {else} var confirmMsg = '{$APP.NTC_DELETE_CONFIRMATION}' {/if}; submitFormForActionWithConfirmation('DetailView', 'Delete', confirmMsg);" type="button" name="Delete" value="{$APP.LBL_DELETE_BUTTON_LABEL}" />&nbsp; {/if} {*
-                                                    <span class="detailview_utils_toggleactions">
-                                                            <img
-                                                              align="absmiddle" title="{$APP.TOGGLE_ACTIONS}"
-                                                              src="{'list_60.png'|@vtiger_imageurl:$THEME}"
-                                                              onclick="
-                                                              {literal}
-                                                                  if (document.getElementById('actioncolumn').style.display=='none') {
-                                                                      document.getElementById('actioncolumn').style.display='table-cell';
-                                                                  } else {
-                                                                      document.getElementById('actioncolumn').style.display='none';
-                                                                  }
-                                                                  window.dispatchEvent(new Event('resize'));
-                                                              {/literal}">
-                                                        </span>&nbsp; *}
-                                                </div> {*/forceActionsContainer*}
-                                            </div> {*/detailview_utils_thirdfiller*}
-                                        </div> {*/primaryFieldRow*}
-                        </div> {*/forceHighlightsStencilDesktop*}
-                        </td>
-                        </tr>
-                        </table>
+                                                	</p>
+	                                                <div class="slds-grid forceActionsContainer">
+	                                                    {if $EDIT_PERMISSION eq 'yes'}
+	                                                    <input class="slds-button slds-button--neutral not-selected slds-not-selected uiButton" aria-live="assertive" 
+	                                                    type="button" name="Edit" title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" 
+	                                                    onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.return_id.value='{$ID}';DetailView.module.value='{$MODULE}';submitFormForAction('DetailView','EditView');" value="&nbsp;{$APP.LBL_EDIT_BUTTON_LABEL}&nbsp;" />&nbsp; {/if} {if ((isset($CREATE_PERMISSION) && $CREATE_PERMISSION eq 'permitted') || (isset($EDIT_PERMISSION) && $EDIT_PERMISSION eq 'yes')) && $MODULE neq 'Documents'}
+	                                                    
+	                                                    <input title="{$APP.LBL_DUPLICATE_BUTTON_TITLE}" accessKey="{$APP.LBL_DUPLICATE_BUTTON_KEY}" 
+	                                                    class="slds-button slds-button--neutral not-selected slds-not-selected uiButton" 
+	                                                    onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.isDuplicate.value='true';DetailView.module.value='{$MODULE}'; submitFormForAction('DetailView','EditView');" type="button" name="Duplicate" value="{$APP.LBL_DUPLICATE_BUTTON_LABEL}" />&nbsp; {/if} {if $DELETE eq 'permitted'}
+	                                                    
+	                                                    <input title="{$APP.LBL_DELETE_BUTTON_TITLE}" accessKey="{$APP.LBL_DELETE_BUTTON_KEY}" 
+	                                                    class="slds-button slds-button--neutral not-selected slds-not-selected uiButton" 
+	                                                    onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='index'; {if $MODULE eq 'Accounts'} var confirmMsg = '{$APP.NTC_ACCOUNT_DELETE_CONFIRMATION}' {else} var confirmMsg = '{$APP.NTC_DELETE_CONFIRMATION}' {/if}; submitFormForActionWithConfirmation('DetailView', 'Delete', confirmMsg);" type="button" name="Delete" value="{$APP.LBL_DELETE_BUTTON_LABEL}" />&nbsp; {/if} 
+	                                                    
+	                                                    {*
+	                                                    <span class="detailview_utils_toggleactions">
+	                                                            <img
+	                                                              align="absmiddle" title="{$APP.TOGGLE_ACTIONS}"
+	                                                              src="{'list_60.png'|@vtiger_imageurl:$THEME}"
+	                                                              onclick="
+	                                                              {literal}
+	                                                                  if (document.getElementById('actioncolumn').style.display=='none') {
+	                                                                      document.getElementById('actioncolumn').style.display='table-cell';
+	                                                                  } else {
+	                                                                      document.getElementById('actioncolumn').style.display='none';
+	                                                                  }
+	                                                                  window.dispatchEvent(new Event('resize'));
+	                                                              {/literal}">
+	                                                        </span>&nbsp; *}
+
+	                                                </div> {*/.forceActionsContainer*}
+                                            	</div> {*/#detailview_utils_thirdfiller*}
+                                        	</div> {*/primaryFieldRow*}
+                        				</div> {*/forceHighlightsStencilDesktop*}
+                        			</td>
+                        		</tr>
+                        	</table>
                         <br> {include file='applicationmessage.tpl'}
                         <!-- Entity and More information tabs -->
                         <table border=0 cellspacing=0 cellpadding=0 width=100% align=center>
@@ -287,21 +313,23 @@ function showHideStatus(sId,anchorImgId,sImagePath)
                                                             <li class="slds-tabs--scoped__item active" onclick="openCity(event, 'tab--scoped-1')" title="{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}" role="presentation">
                                                                 <a class="slds-tabs--scoped__link " href="javascript:void(0);" role="tab" tabindex="0" aria-selected="true" aria-controls="tab--scoped-1" id="tab--scoped--1__item">{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</a>
                                                             </li>
-                                                            {if $SinglePane_View eq 'false' && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
-                                                            <li class="slds-tabs--scoped__item slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open" title="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}" role="presentation">
-                                                                <a class="slds-tabs--scoped__link" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab--scoped-2" id="tab--scoped-2__item">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</a>
-                                                                <div class="slds-dropdown slds-dropdown--left" style="margin-top: 0;">
-                                                                    <ul class="slds-dropdown__list slds-dropdown--length-7" role="menu">
-                                                                        {foreach key=_RELATION_ID item=_RELATED_MODULE from=$IS_REL_LIST}
-                                                                        <li class="slds-dropdown__item" role="presentation">
-                                                                            <a role="menuitem" tabindex="-1" class="drop_down" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}&selected_header={$_RELATED_MODULE}&relation_id={$_RELATION_ID}#tbl_{$MODULE}_{$_RELATED_MODULE}">
-	                                                                           {$_RELATED_MODULE|@getTranslatedString:$_RELATED_MODULE}</a>
-                                                                        </li>
-                                                                        {/foreach}
-                                                                    </ul>
-                                                                </div>
-                                                            </li>
+                                                            {if $SinglePane_View eq 'false' && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0} {if $HASRELATEDPANES eq 'true'} {include file='RelatedPanes.tpl' tabposition='top' RETURN_RELATEDPANE=''} {else}
+	                                                            <li class="slds-tabs--scoped__item slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open" title="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}" role="presentation">
+	                                                                <a class="slds-tabs--scoped__link" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab--scoped-2" id="tab--scoped-2__item">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</a>
+	                                                                <div class="slds-dropdown slds-dropdown--left" style="margin-top: 0;">
+	                                                                    <ul class="slds-dropdown__list slds-dropdown--length-7" role="menu">
+	                                                                        {foreach key=_RELATION_ID item=_RELATED_MODULE from=$IS_REL_LIST}
+	                                                                        <li class="slds-dropdown__item" role="presentation">
+	                                                                            <a role="menuitem" tabindex="-1" class="drop_down" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}&selected_header={$_RELATED_MODULE}&relation_id={$_RELATION_ID}#tbl_{$MODULE}_{$_RELATED_MODULE}">
+		                                                                           {$_RELATED_MODULE|@getTranslatedString:$_RELATED_MODULE}</a>
+	                                                                        </li>
+	                                                                        {/foreach}
+	                                                                    </ul>
+	                                                                </div>
+	                                                            </li>
                                                             {/if}
+                                                            {/if}
+
                                                         </ul>
                                                         <!-- content cache -->
                                                         <!-- Command Buttons -->
@@ -320,31 +348,6 @@ function showHideStatus(sId,anchorImgId,sImagePath)
                                                                                          aria-describedby="header" style="margin: 0;">
                                                                                         <div class="slds-card__header slds-grid">
                                                                                             <header class="slds-media slds-media--center slds-has-flexi-truncate">
-                                                                                                <div class="slds-media__figure" data-aura-rendered-by="1215:0">
-                                                                                                    <div class="extraSmall forceEntityIcon" style="background-color: #A094ED">
-                                                                                                    <span data-aura-rendered-by="6:1782;a" class="uiImage" data-aura-class="uiImage">
-                                                                                                        <a href="javascript:showHideStatus('tbl{$header|replace:' ':''}','aid{$header|replace:' ':''}','{$THEME}');">
-                                                                                                            {if isset($BLOCKINITIALSTATUS[$header]) && $BLOCKINITIALSTATUS[$header] eq 1}
-                                                                                                                <span class="exp_coll_block inactivate">
-                                                                                                            <img id="aid{$header|replace:' ':''}"
-                                                                                                                 src="{'activate.gif'|@vtiger_imageurl:$THEME}"
-                                                                                                                 style="border: 0px solid #000000;"
-                                                                                                                 alt="{'LBL_Hide'|@getTranslatedString:'Settings'}"
-                                                                                                                 title="{'LBL_Hide'|@getTranslatedString:'Settings'}"/>
-                                                                                                            </span>
-                                                                                                            {else}
-                                                                                                                <span class="exp_coll_block activate">
-                                                                                                            <img id="aid{$header|replace:' ':''}"
-                                                                                                                 src="{'inactivate.gif'|@vtiger_imageurl:$THEME}"
-                                                                                                                 style="border: 0px solid #000000;"
-                                                                                                                 alt="{'LBL_Show'|@getTranslatedString:'Settings'}"
-                                                                                                                 title="{'LBL_Show'|@getTranslatedString:'Settings'}"/>
-                                                                                                            </span>
-                                                                                                            {/if}
-                                                                                                        </a>
-                                                                                                    </span>
-                                                                                                    </div>
-                                                                                                </div>
                                                                                                 <div class="slds-media__body">
                                                                                                     <h2 class="header-title-container" >
                                                                                                         <span class="slds-text-heading--small slds-truncate actionLabel">
@@ -353,6 +356,13 @@ function showHideStatus(sId,anchorImgId,sImagePath)
                                                                                                     </h2>
                                                                                                 </div>
                                                                                             </header>
+                                                                                            <div class="slds-no-flex" data-aura-rendered-by="1224:0">
+	                                                                                            <div class="actionsContainer mapButton">
+	                                                                                                {if isset($MOD.LBL_ADDRESS_INFORMATION) && $header eq $MOD.LBL_ADDRESS_INFORMATION && ($MODULE eq 'Accounts' || $MODULE eq 'Contacts' || $MODULE eq 'Leads') } {if $MODULE eq 'Leads'}
+	                                                                                                <input name="mapbutton" type="button" value="{$APP.LBL_LOCATE_MAP}" class="slds-button slds-button--small slds-button--brand" onClick="searchMapLocation( 'Main' )" title="{$APP.LBL_LOCATE_MAP}"> {else}
+	                                                                                                <input name="mapbutton" value="{$APP.LBL_LOCATE_MAP}" class="slds-button slds-button--small slds-button--brand" type="button" onClick="fnvshobj(this,'locateMap');" onMouseOut="fninvsh('locateMap');" title="{$APP.LBL_LOCATE_MAP}"> {/if} {/if}
+	                                                                                            </div>
+                                                                                        	</div>
                                                                                         </div>
                                                                                         <div class="slds-card__body slds-card__body--inner">
                                                                                             <div class="commentData">
@@ -371,7 +381,7 @@ function showHideStatus(sId,anchorImgId,sImagePath)
                                                                                                 <div class="extraSmall forceEntityIcon" style="background-color: #A094ED" 
                                                                                                 data-aura-rendered-by="3:1782;a" data-aura-class="forceEntityIcon">
                                                                                                 <span data-aura-rendered-by="6:1782;a" class="uiImage" data-aura-class="uiImage">
-                                                                                                    <a href="javascript:showHideStatus('tbl{$header|replace:' ':''}','aid{$header|replace:' ':''}','{$THEME}');">
+                                                                                                    <a href="javascript:showHideStatus('tbl{$header|replace:' ':''}','aid{$header|replace:' ':''}','{$IMAGE_PATH}');">
                                                                                                         {if isset($BLOCKINITIALSTATUS[$header]) && $BLOCKINITIALSTATUS[$header] eq 1}
                                                                                                             <span class="exp_coll_block inactivate">
                                                                                                         <img id="aid{$header|replace:' ':''}"
