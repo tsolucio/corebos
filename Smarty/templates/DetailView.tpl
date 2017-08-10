@@ -15,7 +15,7 @@
 </span>
 <div id="convertleaddiv" style="display:block;position:absolute;left:225px;top:150px;"></div>
 <script>
-{ literal }
+{literal}
 
 function callConvertLeadDiv(id) {
     jQuery.ajax({
@@ -193,8 +193,7 @@ function sendfile_email()
                                             	</div>
                                             	<div class="slds-col slds-no-flex slds-grid slds-align-middle actionsContainer" id="detailview_utils_thirdfiller">
                                                 	
-                                                	<div class="detailview_utils_table_tabactionsep detailview_utils_table_tabactionsep_top" id="detailview_utils_table_tabactionsep_top"></div>
-	                                                <div class="slds-grid forceActionsContainer">
+                                                	<div class="slds-grid forceActionsContainer">
 	                                                    {if $EDIT_PERMISSION eq 'yes'}
 	                                                    <input class="slds-button slds-button--neutral not-selected slds-not-selected uiButton" aria-live="assertive" 
 	                                                    type="button" name="Edit" title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" 

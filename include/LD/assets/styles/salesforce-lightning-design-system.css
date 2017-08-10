@@ -3706,7 +3706,7 @@ a.slds-button--inverse:focus {
     border-radius: 0.25rem;
     width: 100%;
     transition: border 0.1s linear, background-color 0.1s linear;
-    height: calc(1.875rem + (1px * 2));
+    height: calc(1.5rem + (1px * 2));
 }
 
 .slds-select:focus,
@@ -3737,7 +3737,7 @@ a.slds-button--inverse:focus {
 
 .slds-select[size],
 .slds-select[multiple] {
-    min-height: calc(1.875rem + (1px * 2));
+    min-height: calc(1.5rem + (1px * 2));
     height: inherit;
 }
 

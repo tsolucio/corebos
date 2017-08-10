@@ -446,12 +446,19 @@ tr td.table-aside>.detailview_actionlinks {
     border-bottom: 1px solid #d4d4d4;
 }
 
-.dvtCellInfo a .slds-button--small {
+.slds-button--x-small {
     height: 1.5rem;
     line-height: 1.5rem;
-    margin-left: .6rem;
+    margin: .2rem .6rem;
 }
 
+.dvtCellInfo input[type="radio"] {
+    margin-top: 0;
+}
+
+.dvtCellInfo select {
+    margin: .5rem 0;
+}
 
 /**
 - * Creates a green button style
@@ -474,14 +481,14 @@ tr td.table-aside>.detailview_actionlinks {
     font-weight: bold;
 }
 
-.slds-button_success:link,
+/*.slds-button_success:link,
 .slds-button_success:visited,
 .slds-button_success:active,
 .slds-button--success:link,
 .slds-button--success:visited,
 .slds-button--success:active {
     color: #16325c;
-}
+}*/
 
 .slds-button_success:hover,
 .slds-button_success:focus,
@@ -551,8 +558,9 @@ li[title="More Information"] svg {
     color: #000;
     border-radius: 5px;
     border-top: 1px solid #d4d4d4;
-    padding: .2rem .5rem;
+    padding: .1rem .5rem;
     margin: .1rem 0;
+    font-size: inherit;
 }
 
 @media only screen and (max-width: 881px) {

@@ -28,10 +28,10 @@
                 <div id="editarea_{$keyfldname}" style="display:none;">
                 	<input class="detailedViewTextBox slds-input" onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" type="text" id="txtbox_{$keyfldname}" name="{$keyfldname}" maxlength='100' value="{$keyval}"></input>
                     <br>
-                    <a href="javascript:;" class="slds-button slds-button_success slds-button--small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();"/>
+                    <a href="javascript:;" class="slds-button slds-button_success slds-button--x-small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();"/>
                     	{$APP.LBL_SAVE_LABEL}
                     </a>
-                    <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--small">
+                    <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--x-small">
                     	{$APP.LBL_CANCEL_BUTTON_LABEL}
                     </a>
                 </div>
@@ -81,8 +81,8 @@
 				</span>
                 <div id="editarea_{$keyfldname}" style="display:none;">
                 	<input class="detailedViewTextBox slds-input" onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" type="text" id="txtbox_{$keyfldname}" name="{$keyfldname}" maxlength='100' value="{$keyval}"></input>
-                	<br><a href="javascript:;" class="slds-button slds-button_success slds-button--small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
-                	<a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
+                	<br><a href="javascript:;" class="slds-button slds-button_success slds-button--x-small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
+                	<a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--x-small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
                 </div>
 				<div id="internal_mailer_{$keyfldname}" style="display: none;">{$keyfldid}####{$smarty.session.internal_mailer}</div>
 			</td>
@@ -105,8 +105,8 @@
 						{/if}
 					{/foreach}
 				</select>
-				<br><a class="slds-button slds-button_success slds-button--small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
-					<a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
+				<a class="slds-button slds-button_success slds-button--x-small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
+					<a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--x-small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
 			</div>
 		</td>
 	{elseif $keyid eq '1615'}
@@ -124,8 +124,8 @@
 					</optgroup>
 				{/foreach}
 				</select>
-				<br><a class="slds-button slds-button_success slds-button--small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
-					<a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
+				<a class="slds-button slds-button_success slds-button--x-small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
+					<a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--x-small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
 			</div>
 		</td>
 	{elseif $keyid eq '33' || $keyid eq '3313' || $keyid eq '3314'}<!--Multi Select Combo box-->
@@ -152,8 +152,8 @@
 										<option value="{$arr[1]}" {$arr[2]}>{$arr[0]}</option>
 				                                    {/foreach}
 			                                   </select>
-			                                   <br><a class="slds-button slds-button_success slds-button--small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();"/>{$APP.LBL_SAVE_LABEL}</a>
-                                              		   <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
+			                                   <a class="slds-button slds-button_success slds-button--x-small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();"/>{$APP.LBL_SAVE_LABEL}</a>
+                                              		   <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--x-small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
                     							</div>
                							</td>
 						{elseif $keyid eq '115'} <!--ComboBox Status edit only for admin Users-->
@@ -169,8 +169,8 @@
 									{/foreach}
 									{/foreach}
                     							   </select>
-                    							   <br><a class="slds-button slds-button_success slds-button--small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
-                                              		   <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
+                    							   <a class="slds-button slds-button_success slds-button--x-small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
+                                              		   <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--x-small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
                     							</div>
 								{else}
                							<td width=25% class="dvtCellInfo" align="left">{$keyval}
@@ -179,19 +179,19 @@
 
                							</td>
                                              {elseif $keyid eq '17'} <!--WebSite-->
-                                                  <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}"><a href="{$keyval}" target="_blank" onclick="event.stopPropagation();">{$keyval}</a></span>
-                                              		<div id="editarea_{$keyfldname}" style="display:none;">
+                                                  <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="	
+                                              			<div id="editarea_{$keyfldname}" style="display:none;">
                                               		  <input class="detailedViewTextBox slds-input" onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" onkeyup="validateUrl('{$keyfldname}');" type="text" id="txtbox_{$keyfldname}" name="{$keyfldname}" maxlength='100' value="{$keyval}"></input>
-                                              		  <br><a class="slds-button slds-button_success slds-button--small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
-                                              		  <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
+                                              		  <br><a class="slds-button slds-button_success slds-button--x-small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
+                                              		  <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--x-small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
                                                        </div>
                                                   </td>
 					     {elseif $keyid eq '85'}<!--Skype-->
                                                 <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}"><a href="skype:{$keyval}?call" onclick="event.stopPropagation();"><img src="{'skype.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SKYPE}" title="{$APP.LBL_SKYPE}"  align="absmiddle"></img>&nbsp;{$keyval}</a></span>
                                                         <div id="editarea_{$keyfldname}" style="display:none;">
                                                           <input class="detailedViewTextBox" onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" type="text" id="txtbox_{$keyfldname}" name="{$keyfldname}" maxlength='100' value="{$keyval}"></input>
-                                                          <br><a class="slds-button slds-button_success slds-button--small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
-                                                          <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
+                                                          <br><a class="slds-button slds-button_success slds-button--x-small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
+                                                          <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--x-small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
                                                        </div>
                                                   </td>
                                              {elseif $keyid eq '19' || $keyid eq '20'} <!--TextArea/Description-->
@@ -211,8 +211,8 @@
 									</span>
 									<div id="editarea_{$keyfldname}" style="display:none;">
 									<textarea id="txtbox_{$keyfldname}" name="{$keyfldname}"  class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'"onBlur="this.className='detailedViewTextBox'" cols="90" rows="8">{$keyval|replace:"<br>":"\n"}</textarea>
-									<br><a class="slds-button slds-button_success slds-button--small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
-									<a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
+									<br><a class="slds-button slds-button_success slds-button--x-small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
+									<a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--x-small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
 									</div>
 								</td>
 							{/if}
@@ -220,8 +220,8 @@
                                                   <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}">{$keyval}</span>
                                               		<div id="editarea_{$keyfldname}" style="display:none;">
                                               		  <textarea id="txtbox_{$keyfldname}" name="{$keyfldname}"  class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'"onBlur="this.className='detailedViewTextBox'" rows=2>{$keyval|regex_replace:"/<br\s*\/>/":""}</textarea>
-                                              		  <br><a class="slds-button slds-button_success slds-button--small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
-                                              		  <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
+                                              		  <br><a class="slds-button slds-button_success slds-button--x-small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
+                                              		  <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--x-small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
                                                        </div>
                                                   </td>
                                              {elseif $keyid eq '73' || $keyid eq '51'} <!--AccountPopup-->
@@ -234,8 +234,8 @@
                                                   <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}"><a href="{$keyseclink}" onclick="event.stopPropagation();">{$keyval}</a></span>
                                               		<div id="editarea_{$keyfldname}" style="display:none;">
                                                          <input id="popuptxt_{$keyfldname}" name="product_name" readonly type="text" value="{$keyval}"><input id="txtbox_{$keyfldname}" name="{$keyfldname}" type="hidden" value="{$keysecid}">&nbsp;<img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}"  onclick='return window.open("index.php?module=Products&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=specific","test","width=600,height=602,resizable=1,scrollbars=1,top=150,left=200");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}"  onClick="this.form.product_id.value=''; this.form.product_name.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
-                                                         <br><a class="slds-button slds-button_success slds-button--small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
-                                              		  <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
+                                                         <br><a class="slds-button slds-button_success slds-button--x-small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
+                                              		  <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--x-small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
                                                        </div>
                                                   </td>
                                              {elseif $keyid eq '75' || $keyid eq '81'} <!--VendorPopup-->
@@ -263,8 +263,8 @@
                                                                                         {/foreach}
                                                                                 {/foreach}
                                                                            </select>
-                                                                           <br><a class="slds-button slds-button_success slds-button--small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
-                                                           <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
+                                                                          <a class="slds-button slds-button_success slds-button--x-small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
+                                                           <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--x-small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
                                                                         </div>
                                                                 </td>
 						{elseif $keyid eq '53'} <!--Assigned To-->
@@ -310,9 +310,8 @@
                     </select>
 					</span>
 
-                    <br>
-                    <a class="slds-button slds-button_success slds-button--small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
-                    <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
+                    <a class="slds-button slds-button_success slds-button--x-small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
+                    <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--x-small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
                     </div>
                     </td>
 						{elseif $keyid eq '99'}<!-- Password Field-->
@@ -334,8 +333,8 @@
                        		{/if}
                        	{/if}
                        	{if $keyfldname eq 'portal'}<input type="hidden" name="existing_portal" id="existing_portal" value="{if $keyval eq $APP.yes}1{else}0{/if}">{/if}
-                         <br><a class="slds-button slds-button_success slds-button--small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
-                          <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
+                         <br><a class="slds-button slds-button_success slds-button--x-small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
+                          <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--x-small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
                         </div>
                         </td>
 			{elseif $keyid eq '156'} <!--CheckBox for is admin-->
@@ -347,8 +346,8 @@
                         {else}
                           <input id="txtbox_{$keyfldname}" type="checkbox" name="{$keyfldname}" style="border:1px solid #bababa;" value="0">
                        	{/if}
-                         <br><a class="slds-button slds-button_success slds-button--small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
-                          <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
+                         <br><a class="slds-button slds-button_success slds-button--x-small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
+                          <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--x-small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
                         </div>
 			{else}
 				 <td width=25% class="dvtCellInfo" align="left">{$keyval}
@@ -377,8 +376,8 @@
 						<div id="editarea_{$keyfldname}" style="display:none;">
 							<input style="border:1px solid #bababa;" size="{if $keyid eq 5}10{else}16{/if}" maxlength="{if $keyid eq 5}10{else}16{/if}" type="text" id="txtbox_{$keyfldname}" name="{$keyfldname}" value="{$keyval|regex_replace:'/[^-]*(--)[^-]*$/':''}"></input>
 							<img src="{'btnL3Calendar.gif'|@vtiger_imageurl:$THEME}" id="jscal_trigger_{$keyfldname}">
-							<br><a class="slds-button slds-button_success slds-button--small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
-							<a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
+							<br><a class="slds-button slds-button_success slds-button--x-small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
+							<a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--x-small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
 							<script type="text/javascript">
 								Calendar.setup ({ldelim}
 									inputField : "txtbox_{$keyfldname}", ifFormat : '{$dateFormat}{if $keyid eq 50} %H:%M{/if}', showsTime : {if $keyid eq 5}false{else}true{/if}, button : "jscal_trigger_{$keyfldname}", singleClick : true, step : 1
@@ -417,8 +416,8 @@
 								alt="{'LBL_SELECT'|@getTranslatedString}" title="{'LBL_SELECT'|@getTranslatedString}" onclick='return {$vtui10func}("DetailView","{$keyfldname}","{$MODULE}","{$ID}");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
 							<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}"
 								alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedString}" onClick="document.getElementById('txtbox_{$keyfldname}').value='0'; document.getElementById('{$keyfldname}_display').value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
-							<br><a class="slds-button slds-button_success slds-button--small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
-							<a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
+							<br><a class="slds-button slds-button_success slds-button--x-small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
+							<a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--x-small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
 						</div>
 					</td>
 				{else}
