@@ -139,8 +139,6 @@ $mod_strings = Array(
 
 'LBL_TOOL_FORM_TITLE'=>'Leads gereedschap',
 
-'LBL_SELECT_TEMPLATE_TO_MAIL_MERGE'=>'Selecteer sjabloon voor e-mail merge:',
-
 'Salutation'=>'Begroeting',
 'First Name'=>'Voornaam',
 'Phone'=>'Telefoon',

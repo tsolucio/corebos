@@ -108,7 +108,6 @@ $mod_strings = Array(
 	'LBL_HOT' => 'Hot',
 	'LBL_COLD' => 'Cold',
 	'LBL_TOOL_FORM_TITLE' => 'Lead Tools',
-	'LBL_SELECT_TEMPLATE_TO_MAIL_MERGE' => 'Select template to Mail Merge:',
 	'Salutation' => 'Salutation',
 	'First Name' => 'First Name',
 	'Phone' => 'Phone',

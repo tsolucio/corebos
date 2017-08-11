@@ -121,8 +121,6 @@ $mod_strings = Array(
 
 'LBL_TOOL_FORM_TITLE'=>'Ferramentas Lead',
 
-'LBL_SELECT_TEMPLATE_TO_MAIL_MERGE'=>'Selecione modelo para Mesclar Mensagem:',
-
 'Salutation'=>'Saudação',
 'First Name'=>'Nome',
 'Phone'=>'Fone',
