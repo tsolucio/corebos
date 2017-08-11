@@ -10,7 +10,7 @@
 			{* Pickup the translated label provided by the module *}
 			{assign var="customlink_label" value=$customlink_label|@getTranslatedString:$CUSTOMLINK->module()}
 		{/if}
-		<input class="crmbutton small edit" type="button" id="LISTVIEWBASIC_{$customlink_id}" value="{$customlink_label}" onclick="{$customlink_href}" />
+		<input class="slds-button slds-button_success slds-button--small" type="button" id="LISTVIEWBASIC_{$customlink_id}" value="{$customlink_label}" onclick="{$customlink_href}" />
 	{/foreach}
 {/if}
 

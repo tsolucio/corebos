@@ -8,56 +8,91 @@
  ************************************************************************************}
 
 {if empty($smarty.request.ajax)}
-<table class="small" border="0" cellpadding="0" cellspacing="0" width="100%">
-<tr class="detailview_block_header comments_block_header">
-<td colspan="4" class="dvInnerHeader">
-	<div style="float: left; font-weight: bold;">
-	<div style="float: left;">
-	<a href="javascript:showHideStatus('tbl{$UIKEY}','aid{$UIKEY}','$IMAGE_PATH');">
-	{if $BLOCKOPEN}
-	<span class="exp_coll_block inactivate"><img id="aid{$UIKEY}" src="{'activate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid rgb(0, 0, 0);" alt="{'LBL_Hide'|@getTranslatedString:'Settings'}" title="{'LBL_Hide'|@getTranslatedString:'Settings'}"></span></a>
-	{else}
-	<span class="exp_coll_block activate"><img id="aid{$UIKEY}" src="{'inactivate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid rgb(0, 0, 0);" alt="{'LBL_Show'|@getTranslatedString:'Settings'}" title="{'LBL_Show'|@getTranslatedString:'Settings'}">
-	{/if}
-	</span></a>
-	</div><b>&nbsp;{$WIDGET_TITLE}</b></div>
-	<span style="float: right;">
-		<img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border=0 id="indicator{$UIKEY}" style="display:none;">
-		{$APP.LBL_SHOW} <select class="small" onchange="ModCommentsCommon.reloadContentWithFiltering('{$WIDGET_NAME}', '{$ID}', this.value, 'tbl{$UIKEY}', 'indicator{$UIKEY}');">
-			<option value="All" {if $CRITERIA eq 'All'}selected{/if}>{$APP.LBL_ALL}</option>
-			<option value="Last5" {if $CRITERIA eq 'Last5'}selected{/if}>{$MOD.LBL_LAST5}</option>
-			<option value="Mine" {if $CRITERIA eq 'Mine'}selected{/if}>{$MOD.LBL_MINE}</option>
-		</select>
-	</span>
-	</td>
-</tr>
-</table>
+	<div class="forceRelatedListSingleContainer">
+        <article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
+            <div class="slds-card__header slds-grid">
+                <header class="slds-media slds-media--center slds-has-flexi-truncate">
+                    <div class="slds-media__figure">
+                        <div class="extraSmall forceEntityIcon" style="background-color: #A094ED; height: 1rem;" 
+                        data-aura-rendered-by="3:1782;a" data-aura-class="forceEntityIcon">
+                        	<span data-aura-rendered-by="6:1782;a" class="uiImage" data-aura-class="uiImage">
+								<a href="javascript:showHideStatus('tbl{$UIKEY}','aid{$UIKEY}','$IMAGE_PATH');">
+									{if $BLOCKOPEN}
+										   <span class="exp_coll_block inactivate">
+                                            <img id="aid{$header|replace:' ':''}"
+                                                 src="{'activate.gif'|@vtiger_imageurl:$THEME}"
+                                                 style="border: 0px solid #000000;"
+                                                 alt="{'LBL_Hide'|@getTranslatedString:'Settings'}"
+                                                 title="{'LBL_Hide'|@getTranslatedString:'Settings'}"/>
+                                            </span>
+									{else}
+										    <span class="exp_coll_block activate">
+                                            <img id="aid{$header|replace:' ':''}"
+                                                 src="{'inactivate.gif'|@vtiger_imageurl:$THEME}"
+                                                 style="border: 0px solid #000000;"
+                                                 alt="{'LBL_Show'|@getTranslatedString:'Settings'}"
+                                                 title="{'LBL_Show'|@getTranslatedString:'Settings'}"/>
+                                            </span>
+									{/if}
+								</a>
+							</span>
+						</div>
+					</div>
+					<div class="slds-media__body">
+	                    <h2 class="header-title-container" >
+	                        <span class="slds-text-title--caps slds-truncate slds-m-right--xx-small">
+	                            <b>{$WIDGET_TITLE}</b>
+	                        </span>
+	                    </h2>
+	                </div>
+				</header>
+				<div class="slds-no-flex" data-aura-rendered-by="1224:0">
+	                <div class="actionsContainer mapButton" data-aura-rendered-by="1225:0">
+	                    <img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border=0 id="indicator{$UIKEY}" style="display:none;">
+						{$APP.LBL_SHOW} <select class="small" onchange="ModCommentsCommon.reloadContentWithFiltering('{$WIDGET_NAME}', '{$ID}', this.value, 'tbl{$UIKEY}', 'indicator{$UIKEY}');">
+							<option value="All" {if $CRITERIA eq 'All'}selected{/if}>{$APP.LBL_ALL}</option>
+							<option value="Last5" {if $CRITERIA eq 'Last5'}selected{/if}>{$MOD.LBL_LAST5}</option>
+							<option value="Mine" {if $CRITERIA eq 'Mine'}selected{/if}>{$MOD.LBL_MINE}</option>
+						</select>
+	                </div>
+	            </div>
+			</div>
+	 	</article>
+	</div>
 {/if}
 
-<div id="tbl{$UIKEY}" style="display: {if $BLOCKOPEN}block{else}none{/if};">
-	<table class="small" border="0" cellpadding="0" cellspacing="0" width="100%">
-	<tr style="height: 25px;">
-		<td colspan="4" align="left" class="dvtCellInfo commentCell">
-		<div id="contentwrap_{$UIKEY}" style="overflow: auto; height: 250px; width: 100%;word-break: break-all;">
-			{foreach item=COMMENTMODEL from=$COMMENTS}
-				{include file="modules/ModComments/widgets/DetailViewBlockCommentItem.tpl" COMMENTMODEL=$COMMENTMODEL}
-			{/foreach}
-		</div>
-		</td>
-	</tr>
-	{if $CANADDCOMMENTS eq 'YES'}
-	<tr style="height: 25px;" class='noprint'>
-	<td class="dvtCellLabel" align="right">
-		{$MOD.LBL_ADD_COMMENT}
-	</td>
-	<td width="100%" colspan="3" class="dvtCellInfo" align="left">
-		<div id="editarea_{$UIKEY}">
-			<textarea id="txtbox_{$UIKEY}" class="detailedViewTextBox" onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" cols="90" rows="8"></textarea>
-			<br><a href="javascript:;" class="detailview_ajaxbutton ajax_save_detailview" onclick="ModCommentsCommon.addComment('{$UIKEY}', '{$ID}');">{$APP.LBL_SAVE_LABEL}</a>
-			<a href="javascript:;" onclick="document.getElementById('txtbox_{$UIKEY}').value='';" class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CLEAR_BUTTON_LABEL}</a>
-		</div>
-	</td>
-	</tr>
-	{/if}
-	</table>
-</div>
+	<div id="tbl{$UIKEY}" class="slds-truncate" style="display: {if $BLOCKOPEN}block{else}none{/if}; white-space: normal;">
+		
+		<table class="small" border="0" cellpadding="0" cellspacing="0" width="100%">
+		
+			<tr style="height: 25px;">
+				<td colspan="4" align="left" class="dvtCellInfo commentCell" style="white-space: normal;">
+				<div id="contentwrap_{$UIKEY}">
+						
+					{foreach item=COMMENTMODEL from=$COMMENTS}
+						{include file="modules/ModComments/widgets/DetailViewBlockCommentItem.tpl" COMMENTMODEL=$COMMENTMODEL}
+					{/foreach}
+					
+				</div>
+				</td>
+			</tr>
+
+		{if $CANADDCOMMENTS eq 'YES'}
+			<tr style="height: 25px;" class='noprint'>
+				<td class="dvtCellLabel" align="right" >
+					{$MOD.LBL_ADD_COMMENT}
+				</td>
+				<td width="100%" colspan="3" class="dvtCellInfo" align="left">
+					<div id="editarea_{$UIKEY}">
+						<textarea id="txtbox_{$UIKEY}" class="detailedViewTextBox" onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" cols="90" rows="8"></textarea>
+						<br><a href="javascript:;" class="slds-button slds-button_success slds-button--x-small" onclick="ModCommentsCommon.addComment('{$UIKEY}', '{$ID}');">{$APP.LBL_SAVE_LABEL}</a>
+						<a href="javascript:;" onclick="document.getElementById('txtbox_{$UIKEY}').value='';" class="slds-button slds-button--destructive slds-button--x-small">{$APP.LBL_CLEAR_BUTTON_LABEL}</a>
+					</div>
+				</td>
+			</tr>
+		{/if}
+		</table>
+
+	</div>
+
+	

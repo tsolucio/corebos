@@ -1,0 +1,721 @@
+/*=========  Button List  ==========*/
+
+#LB_buttonlist {
+    /*background-color: rgb(244, 246, 249);*/
+    background-color: #f7f9fb;
+}
+
+.LD_buttonList th {
+    background-color: rgb(244, 246, 249)!important;
+}
+
+.uiMenu {
+    position: relative;
+}
+
+.forceHeaderMenuTrigger.uiPopupTrigger {
+    display: inline-block;
+}
+
+.forceHeaderMenuTrigger a {
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: .25rem;
+    background: transparent none;
+    text-decoration: none;
+}
+
+.forceHeaderMenuTrigger .headerTrigger {
+    display: block;
+}
+
+.uiTooltip.tooltip-trigger {
+    display: inline;
+    position: relative;
+}
+
+.forceHeaderMenuTrigger .headerTrigger {
+    display: block;
+}
+
+.oneGlobalCreate svg {
+    fill: rgb(255, 255, 255);
+    margin: 1px;
+}
+
+.slds-global-header__button_icon-actions,
+.slds-global-header__button--icon-actions {
+    background: rgb(82, 105, 141);
+    border-radius: .25rem;
+    color: rgb(255, 255, 255);
+}
+
+.slds-global-header__button_icon-actions:hover,
+.slds-global-header__button--icon-actions:hover {
+    background: rgb(102, 179, 255);
+    /*background: rgb(102, 102, 255);*/
+}
+
+.slds-table-buttons th {
+    padding-right: 0;
+}
+
+.LB_Button {
+    padding: .2rem;
+}
+
+.forceHeaderMenuTrigger img {
+    width: 20px;
+    -webkit-transition: -webkit-transform .5s ease-in-out;
+    transition: transform .5s ease-in-out;
+}
+
+.forceHeaderMenuTrigger img:hover {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+}
+
+.slds-button {
+    cursor: pointer;
+}
+
+.slds-table td.searchAlph {
+    padding: .2rem;
+}
+
+.searchAlph:hover {
+    background-color: #e2e5ff;
+    /*color: #fff;*/
+}
+
+/*=========   END BUTTON_LIST  ==========*/
+
+.homePageButtons img {
+    height: 20px;
+    width: 20px;
+}
+
+.homePageButtons img {
+    -webkit-transition: -webkit-transform .5s ease-in-out;
+    transition: transform .5s ease-in-out;
+}
+
+.homePageButtons img:hover {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+}
+
+
+/*=========  DETAIL VIEW  ==========*/
+
+ul .slds-tabs--scoped__item {
+    border-right: 1px solid #d8dde6;
+}
+
+.detailview_utils_jumpto img {
+    -webkit-transition: -webkit-transform .5s ease-in-out;
+    transition: transform .5s ease-in-out;
+}
+
+.detailview_utils_jumpto img:hover {
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
+
+/*.slds-tabs--scoped__nav .slds-tabs--scoped__item,*/
+
+
+/*.slds-tabs--scoped__nav .slds-tabs--scoped__item .active,*/
+
+li.active,
+.slds-tabs--scoped__nav .slds-tabs--scoped__item:focus,
+.slds-tabs--scoped__nav .slds-tabs--scoped__item:active {
+    background-color: white;
+    color: #0070d2;
+    border-color: #d8dde6;
+}
+
+
+
+
+
+/*=========  DETAIL VIEW ---HEADER---  ==========*/
+
+.s1FixedFullWidth {
+    left: 0;
+    right: 0;
+    -webkit-transition: left .25s;
+    -moz-transition: left .25s;
+    -ms-transition: left .25s;
+    -o-transition: left .25s;
+    transition: left .25s;
+}
+
+.forceHighlightsStencilDesktop.s1FixedTop {
+    /*position: fixed;*/
+    border-top: none;
+    z-index: 7000;
+}
+
+.forceHighlightsStencilDesktop {
+    min-height: 60px;
+}
+
+.primaryFieldRow {
+    z-index: 2;
+    position: relative;
+}
+
+.forceHighlightsStencilDesktop.profilePicWrapper {
+    -webkit-box-flex: 0;
+    flex: none;
+    -webkit-transform-origin: bottom left;
+    -moz-transform-origin: bottom left;
+    -ms-transform-origin: bottom left;
+    -o-transform-origin: bottom left;
+    transform-origin: bottom left;
+    align-items: flex-start;
+}
+
+.forceEntityIcon {
+    display: block;
+    -webkit-border-radius: .125rem;
+    -moz-border-radius: .125rem;
+    border-radius: .125rem;
+}
+
+.forceSocialPhoto.photoContainer {
+    float: left;
+    display: block;
+    padding-right: .25rem;
+    line-height: 1;
+    background-clip: content-box;
+}
+
+.forceHighlightsStencilDesktop .photoContainer:not(.forceOutputLookup) {
+    padding-right: 0;
+}
+
+.forceEntityIcon {
+    display: block;
+    border-radius: .125rem;
+}
+
+.forceEntityIcon.small {
+    width: 2rem;
+    height: 2rem;
+}
+
+.forceEntityIcon.roundedSquare {
+    border-radius: .25rem;
+}
+
+.forceHighlightsStencilDesktop .forceEntityIcon,
+.forceHighlightsStencilDesktop .forceSocialPhoto img,
+.forceHighlightsStencilDesktop .forceSocialPhoto_v2 img {
+    width: 2rem;
+    height: 2rem;
+}
+
+.slds-media__body p,
+.slds-media__body h1,
+.slds-media__body h2 {
+    margin: 0;
+}
+
+.forceHighlightsStencilDesktop .actionsContainer {
+    -webkit-align-items: flex-end;
+    -ms-flex-align: end;
+    align-items: flex-end;
+    padding-top: .75rem;
+}
+
+#detailview_utils_thirdfiller {
+    display: block;
+    padding: 0;
+}
+
+.detailview_utils_prev,
+.detailview_utils_next,
+.detailview_utils_toggleactions,
+.detailview_utils_jumpto {
+    cursor: pointer;
+}
+
+.detailview_utils_jumpto img {
+    /*padding-top: 9px;*/
+}
+
+.detailview_utils_toggleactions img {
+    padding-top: 7px;
+    width: 16px;
+}
+
+.detailview_utils_prev img:hover,
+.detailview_utils_next img:hover,
+.detailview_utils_jumpto img:hover,
+.detailview_utils_toggleactions img:hover {
+    opacity: 0.5;
+}
+
+.detailview_utils_prev img[width='23']:hover,
+.detailview_utils_next img[width='23']:hover {
+    opacity: 1;
+}
+
+
+
+/*=========  END DETAIL VIEW ---HEADER---  ==========*/
+
+
+/*=========  DETAIL VIEW ---BODY---  ==========*/
+
+.detailview_table {
+    border-collapse: separate;
+    border-spacing: .2rem;
+    border: none;
+}
+
+article {
+    display: block;
+}
+
+.flexipageComponent>article {
+    border-radius: 0;
+}
+
+article.container::before,
+article.container::after {
+    content: normal;
+}
+
+@media only screen and (min-width: 768px) {
+    article.container {
+        max-width: 100%;
+    }
+}
+
+.runtime_sales_mergeMergeCandidatesPreviewCard.container {
+    background-color: rgb(244, 246, 249);
+    /*background-color: #fff;*/
+    /*margin: 1rem 0 0 0;*/
+}
+
+.runtime_sales_mergeMergeCandidatesPreviewCard .merge-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    color: rgb(255, 255, 255);
+    background-color: rgb(242, 207, 91);
+    border-radius: .125rem;
+    text-align: center;
+    display: inline-block;
+}
+
+.runtime_sales_mergeMergeCandidatesPreviewCard .forceIcon.merge-icon {
+    font-size: .845rem;
+}
+
+.forceBaseCard .header-title-container {
+    display: -webkit-inline-flex;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    max-width: 100%;
+}
+
+.runtime_sales_mergeMergeCandidatesPreviewCard h2.header-title-container span.slds-truncate {
+    white-space: normal;
+}
+
+.slds-card__header {
+    padding-top: .75rem;
+    margin-bottom: .75rem;
+}
+
+.slds-card__body {
+    margin-bottom: .75rem;
+}
+
+.flexipageComponent {
+    /*background-color: rgb(244, 246, 249);*/
+    /*padding: 1rem ;*/
+    border: 1px solid rgb(216, 221, 230);
+}
+
+
+
+/*.flexipageComponent .slds-card {*/
+
+
+/*border-bottom-left-radius: 0;*/
+
+
+/*border-bottom-right-radius: 0;*/
+
+
+/*}*/
+
+.flexipageComponentComment {
+    margin-bottom: 3rem;
+}
+
+.blockStyleCss {
+    /*background-color: rgb(244, 246, 249);*/
+}
+
+.runtime_sales_mergeMergeCandidatesPreviewCard .actionData,
+.runtime_sales_mergeMergeCandidatesPreviewCard .rightMailMergeData,
+.runtime_sales_mergeMergeCandidatesPreviewCard .generalData {
+    padding: .5rem 0;
+    text-align: left;
+    color: rgb(84, 105, 141);
+    font-size: .8125rem;
+}
+
+.generalData img,
+.actionData img. .noSpace {
+    margin-left: 0;
+}
+
+
+
+/*=========  END DETAIL VIEW ---BODY---  ==========*/
+
+.slds-table-moz {
+    width: 100%;
+}
+
+tr td.detailViewContainer {
+    padding: 1rem .5rem;
+    border: 2px solid rgb(216, 221, 230);
+}
+
+.mapButton td {
+    text-align: right;
+}
+
+tr.slds-text-title--caps {
+    letter-spacing: 0.02rem;
+}
+
+.tabsTitle {
+    padding: 0.625rem 1.3rem;
+}
+
+.slds-table td {
+    position: inherit;
+}
+
+.slds-table--cell-buffer tr>td:first-child {
+    padding-left: 0.5rem;
+}
+
+input[type=button].slds-button--small {
+    font-weight: bold;
+    min-height: 1rem;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    border-left: 1px solid #ffffff;
+    border-top: 1px solid #ffffff;
+    border-right: 1px solid #555555;
+    border-bottom: 1px solid #555555;
+}
+
+input[type=submit].slds-button--small {
+    min-height: 1rem;
+    font-size: 11px;
+    border-left: 1px solid #ffffff;
+    border-top: 1px solid #ffffff;
+    border-right: 1px solid #555555;
+    border-bottom: 1px solid #555555;
+}
+
+tr td.action-block {
+    /*padding: 2.5rem 1rem;*/
+    padding: 0 0 0 1rem;
+    width: 22%;
+    vertical-align: top;
+}
+
+tr td.table-aside>.detailview_actionlinks {
+    margin-top: 3rem;
+}
+
+.actionLabel {
+    border-bottom: 1px solid #d4d4d4;
+}
+
+.slds-button--x-small {
+    height: 1.5rem;
+    line-height: 1.5rem;
+    margin: .2rem .6rem;
+}
+
+.dvtCellInfo input[type="radio"] {
+    margin-top: 0;
+}
+
+.dvtCellInfo select {
+    margin: .5rem 0;
+}
+
+/**
+- * Creates a green button style
+- *
+- * @selector .slds-button_success
+- * @restrict .slds-button
+- * @group theme
+- * @modifier
+- */
+
+.slds-button_success,
+.slds-button--success {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #5cb85c;
+    border: 1px solid #4cae4c;
+    color: #fff;
+    font-weight: bold;
+}
+
+/*.slds-button_success:link,
+.slds-button_success:visited,
+.slds-button_success:active,
+.slds-button--success:link,
+.slds-button--success:visited,
+.slds-button--success:active {
+    color: #16325c;
+}*/
+
+.slds-button_success:hover,
+.slds-button_success:focus,
+.slds-button--success:hover,
+.slds-button--success:focus {
+    background-color: #04844b;
+    border-color: #04844b;
+    color: white;
+}
+
+.slds-button_success:active,
+.slds-button--success:active {
+    background-color: #04844b;
+    border-color: #04844b;
+}
+
+.slds-button+.slds-button {
+    margin-left: 0;
+}
+
+ul.slds-tabs--default__nav li {
+    padding-bottom: 0;
+    padding-top: 0;
+}
+
+.slds-dropdown__item>a {
+    padding: .1rem .5rem;
+}
+
+.assideBtn {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.tabMenuTop li {
+    border-top: 1px solid #dfdfdf;
+    border-left: 1px solid #dfdfdf;
+    border-right: 1px solid #dfdfdf;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+li[title="More Information"] {
+    margin-left: 5px;
+}
+
+li[title="More Information"] svg {
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+.tabMenuBottom {
+    border-bottom: 1px solid #dfdfdf;
+    border-left: 1px solid #dfdfdf;
+    border-right: 1px solid #dfdfdf;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.slds-tabs--default__link_mod {
+    border-top: 2px solid transparent;
+    border-bottom: none;
+}
+
+.slds-select option {
+    background-color: #fff;
+    color: #000;
+    border-radius: 5px;
+    border-top: 1px solid #d4d4d4;
+    padding: .1rem .5rem;
+    margin: .1rem 0;
+    font-size: inherit;
+}
+
+@media only screen and (max-width: 881px) {
+    .slds-table--fixed-layout {
+        min-width: 768px;
+    }
+}
+
+
+
+/*=========   END DETAIL VIEW  ==========*/
+
+
+/*=========   DetailView - DetailViewUI - DetailViewUIUser  ==========*/
+
+
+/*remove dotted outline/border in Firefox*/
+
+button:focus,
+span:focus,
+a:focus,
+a:active,
+button::-moz-focus-inner,
+input[type="reset"]::-moz-focus-inner,
+input[type="button"]::-moz-focus-inner,
+input[type="radio"]::-moz-focus-inner,
+input[type="submit"]::-moz-focus-inner,
+select::-moz-focus-inner,
+input[type="file"]>input[type="button"]::-moz-focus-inner {
+    outline: none !important;
+}
+
+select:-moz-focusring {
+    color: transparent;
+    text-shadow: 0 0 0 #000;
+}
+
+.slds-input {
+    width: 75%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.LD-icons {
+    width: 25px;
+    vertical-align: top;
+    -webkit-transition: -webkit-transform .5s ease-in-out;
+    transition: transform .5s ease-in-out;
+    cursor: pointer;
+}
+
+.LD-icons:hover {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+}
+
+#tagfields span {
+    text-decoration: underline;
+    padding: .1rem;
+}
+
+#tagfields span img{
+    width: 10px;
+}
+
+/*=========   END DetailView - DetailViewUI - DetailViewUIUser  ==========*/
+
+
+/*=========   DetailViewUtils.php  ==========*/
+
+#proTab {
+    margin-top: 40px;
+}
+
+.itemDetailsCss {
+    text-transform: uppercase;
+    letter-spacing: 0.02rem;
+}
+
+
+
+/*=========   END DetailViewUtils.php  ==========*/
+
+
+/*=========   Inventory DetailView.tpl  ==========*/
+
+.borderFix {
+    border-right: 1px solid #fff;
+    border-left: 1px solid #fff;
+}
+
+
+
+/*=========   END InventoryDetailView.tpl  ==========*/
+
+.dvtCellLabel {
+    text-align: right;
+}
+
+.dvtBottomButtons {
+    padding: .2rem 1.5rem;
+}
+
+.dvtControlsButtons {
+    padding: .1rem 1.5rem;
+}
+
+.dvtContentSpace {
+    border: none;
+}
+
+.dvtContentSpace>tr {
+    background-color: #f7f7fb;
+}
+
+
+
+
+/*=========   ListView.tpl  ==========*/
+.background {
+    background-color: #f7f9fb!important;
+}
+
+.ld-font {
+    font-family: 'Salesforce Sans';
+}
+
+/*=========   END ListView.tpl  ==========*/
+
+
+/*=========   ListView Entries.tpl  ==========*/
+
+.layerPopupTransport td {
+    padding: 0 .5rem;
+}
+
+td[role="gridcell"] {
+    width: 3.25rem;
+    padding: .2REM .5rem;
+}
+
+th[scope="row"] {
+    padding: .2rem .5rem;
+    text-align: left;
+}
+
+th[scope="col"] {
+    text-align: left;
+}
+
+/*th[scope="row"] .slds-th__action {
+    padding: 0 .5rem;
+}*/
+
+
+
+
+/*=========   END ListView Entries.tpl  ==========*/

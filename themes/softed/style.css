@@ -11,6 +11,23 @@
 
 /* SOFTED  - COLOR THEME*/
 
+/*
+*::-moz-focus-inner {
+  outline:none;
+}
+*/
+
+/*
+a, a:active,    a:focus {
+  -moz-outline:none;
+}
+*/
+
+span:focus {
+    outline: 0;
+}
+
+
 .small {
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 11px;
@@ -344,10 +361,8 @@ a:hover {
 }
 
 .dvtContentSpace {
-	border-left:1px solid #dedede;
-	border-right:1px solid #dedede;
-	border-bottom:1px solid #dedede;
-	padding-left:0px;
+	border:1px solid #dedede;
+	padding-left:0;
 }
 
 .dvtCellLabel, .cellLabel,.cellLabelnew{
@@ -366,6 +381,11 @@ a:hover {
 	border-bottom:1px solid #dedede;
 	border-right:1px solid #dedede;
 	border-left:1px solid #dedede;
+}
+
+.dvtCellInfo span a {
+    word-wrap: break-word;
+    white-space: normal;
 }
 
 .rightMailMerge {
@@ -394,24 +414,46 @@ a:hover {
 	color: #000000;
 }
 
+td span {
+    word-wrap: break-word;
+    white-space: normal;
+}
+
 .detailedViewTextBox {
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 11px;
-	color: #000000;
-	border:1px solid #bababa;
-	padding-left:5px;
-	width:90%;
-	background-color:#ffffff;
+    width:88%;
+    resize: vertical;
+    min-height: 26px;
+    padding: 4px 10px;
+    line-height: 1.428571429;
+    color: #555;
+    vertical-align: middle;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.slds-radio_button > input[type="radio"] {
+    margin: 0;
 }
 
 .detailedViewTextBoxOn {
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 11px;
-	color: #000000;
-	border:1px solid #bababa;
-	padding-left:5px;
-	width:90%;
-	background-color:#ffffdd;
+	width:88%;
+    resize: vertical;
+    min-height: 26px;
+    padding: 6px 12px;
+    color: #555;
+    vertical-align: middle;
+    background-color: #fff;
+    border: 1px solid #66afe9;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
 }
 
 .advSearch {
@@ -1964,6 +2006,8 @@ ul {
 	display: inline-block;
 	border-radius: 5px;
 	text-decoration: none !important;
+    border-width: 0;
+/*    margin-left: 5px;*/
 }
 
 .inactive{
@@ -2981,19 +3025,17 @@ a.allMnu:Hover{
 }
 
 .detailview_utils_table_tab_selected_top {
-	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
-	padding-top: 4px;
-	padding-bottom: 4px;
+    padding: 0.625rem 1.3rem;
 	background:#ffffff url(images/tab.gif) top repeat-x;
 }
 
 .detailview_utils_table_tab_selected_bottom {
-	border-bottom-left-radius: 10px;
-	border-bottom-right-radius: 10px;
+/*	border-bottom-left-radius: 10px;*/
+/*	border-bottom-right-radius: 10px;*/
+    padding: 0.625rem 1.3rem;
 	border-top:0px solid #e0dddd;
-	padding-top: 4px;
-	padding-bottom: 4px;
+/*	padding-top: 4px;*/
+/*	padding-bottom: 4px;*/
 	background:#ffffff url(images/tab.gif) bottom repeat-x;
 }
 
@@ -3010,17 +3052,19 @@ a.allMnu:Hover{
 }
 
 .detailview_utils_table_tab_unselected_top {
-	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
-	padding-top: 8px;
-	padding-bottom: 4px;
+/*	border-top-left-radius: 10px;*/
+/*	border-top-right-radius: 10px;*/
+    padding: 0.625rem 1.3rem;
+/*	padding-top: 8px;*/
+/*	padding-bottom: 4px;*/
 }
 
 .detailview_utils_table_tab_unselected_bottom {
-	border-bottom-left-radius: 10px;
-	border-bottom-right-radius: 10px;
-	padding-top: 8px;
-	padding-bottom: 4px;
+/*	border-bottom-left-radius: 10px;*/
+/*	border-bottom-right-radius: 10px;*/
+    padding: 0.625rem 1.3rem;
+/*	padding-top: 8px;*/
+/*	padding-bottom: 4px;*/
 }
 
 .listview_row_total, .listview_row_sigma {

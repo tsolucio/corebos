@@ -1,23 +1,23 @@
 {foreach key=button_check item=button_label from=$BUTTONS}
 	{if $button_check eq 'del'}
-		<input class="crmbutton small delete" type="button" value="{$button_label}" onclick="return massDelete('{$MODULE}')"/>
+		<input class="slds-button slds-button--destructive slds-button--small" type="button" value="{$button_label}" onclick="return massDelete('{$MODULE}')"/>
 	{elseif $button_check eq 'mass_edit'}
-		<input class="crmbutton small edit" type="button" value="{$button_label}" onclick="return mass_edit(this, 'massedit', '{$MODULE}', '{$CATEGORY}')"/>
+		<input class="slds-button slds-button--brand slds-button--small" type="button" value="{$button_label}" onclick="return mass_edit(this, 'massedit', '{$MODULE}', '{$CATEGORY}')"/>
 	{elseif $button_check eq 's_mail'}
-		<input class="crmbutton small edit" type="button" value="{$button_label}" onclick="return eMail('{$MODULE}',this);"/>
+		<input class="slds-button slds-button_success slds-button--small" type="button" value="{$button_label}" onclick="return eMail('{$MODULE}',this);"/>
 	{elseif $button_check eq 's_cmail'}
-		<input class="crmbutton small edit" type="submit" value="{$button_label}" onclick="return massMail('{$MODULE}')"/>
+		<input class="slds-button slds-button_success slds-button--small" type="submit" value="{$button_label}" onclick="return massMail('{$MODULE}')"/>
 	{elseif $button_check eq 'mailer_exp'}
-		<input class="crmbutton small edit" type="submit" value="{$button_label}" onclick="return mailer_export()"/>
+		<input class="slds-button slds-button_success slds-button--small" type="submit" value="{$button_label}" onclick="return mailer_export()"/>
 	{* Mass Edit handles Change Owner for other module except Calendar *}
 	{elseif $button_check eq 'c_owner' && $MODULE eq 'Calendar'}
-		<input class="crmbutton small edit" type="button" value="{$button_label}" onclick="return change(this,'changeowner')"/>
+		<input class="slds-button slds-button_success slds-button--small" type="button" value="{$button_label}" onclick="return change(this,'changeowner')"/>
 	{/if}
 {/foreach}
 {include file='ListViewCustomButtons.tpl'}
 {if $MODULE eq 'Documents'}
 	{if $CHECK.EditView eq 'yes'}
-		<input type="button" name="move" value="{$MOD.LBL_MOVE}" class="crmbutton small edit" onClick="fnvshNrm('movefolderlist'); posLay(this,'movefolderlist');" title="{$MOD.LBL_MOVE_DOCUMENTS}">
+		<input type="button" name="move" value="{$MOD.LBL_MOVE}" class="slds-button slds-button_success slds-button--small" onClick="fnvshNrm('movefolderlist'); posLay(this,'movefolderlist');" title="{$MOD.LBL_MOVE_DOCUMENTS}">
 		<div style="display:none;position:absolute;width:150px;" id="movefolderlist" >
 			<div class="layerPopup thickborder" style="display:block;position:relative;width:250px;">
 				<table  class="layerHeadingULine" border="0" cellpadding="5" cellspacing="0" width="100%">
@@ -44,7 +44,7 @@
 				</div>
 			</div>
 		</div>
-		<input type="button" name="add" value="{$MOD.LBL_ADD_NEW_FOLDER}" class="crmbutton small edit" onClick="fnvshobj(this,'orgLay');" title="{$MOD.LBL_ADD_NEW_FOLDER}">
+		<input type="button" name="add" value="{$MOD.LBL_ADD_NEW_FOLDER}" class="slds-button slds-button_success slds-button--small" onClick="fnvshobj(this,'orgLay');" title="{$MOD.LBL_ADD_NEW_FOLDER}">
 		<div id="orgLay" style="display:none;width:350px;" class="layerPopup" >
 			<table border=0 cellspacing=0 cellpadding=5 width=100% class=layerHeadingULine>
 				<tr>
@@ -75,15 +75,15 @@
 			<table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport">
 				<tr>
 					<td class="small" align="center">
-						<input name="save" value=" &nbsp;{$APP.LBL_SAVE_BUTTON_LABEL}&nbsp; " class="crmbutton small save" onClick="AddFolder();" type="button">&nbsp;&nbsp;
-						<input name="cancel" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="crmbutton small cancel" onclick="closeFolderCreate();" type="button">
+						<input name="save" value=" &nbsp;{$APP.LBL_SAVE_BUTTON_LABEL}&nbsp; " class="slds-button slds-button_success slds-button--small" onClick="AddFolder();" type="button">&nbsp;&nbsp;
+						<input name="cancel" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="slds-button slds-button--destructive slds-button--small" onclick="closeFolderCreate();" type="button">
 					</td>
 				</tr>
 			</table>
 		</div>
 	{/if}
 	{if $EMPTY_FOLDERS|@count gt 0}
-		<input type="button" name="show" value="{$MOD.LBL_VIEW_EMPTY_FOLDERS}" class="crmbutton small cancel" onClick="fnvshobj(this,'emptyfolder');" title="{$MOD.LBL_VIEW_EMPTY_FOLDERS}">
+		<input type="button" name="show" value="{$MOD.LBL_VIEW_EMPTY_FOLDERS}" class="slds-button slds-button--destructive slds-button--small" onClick="fnvshobj(this,'emptyfolder');" title="{$MOD.LBL_VIEW_EMPTY_FOLDERS}">
 		<div class="layerPopup thickborder" style="display:none;position:absolute; left:193px;top:106px;width:250px;z-index:1" id="emptyfolder">
 			<table  class="layerHeadingULine" border="0" cellpadding="5" cellspacing="0" width="100%">
 				<tr>
