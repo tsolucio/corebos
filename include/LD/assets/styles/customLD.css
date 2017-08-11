@@ -604,7 +604,27 @@ select:-moz-focusring {
     margin-bottom: 5px;
 }
 
+.LD-icons {
+    width: 25px;
+    vertical-align: top;
+    -webkit-transition: -webkit-transform .5s ease-in-out;
+    transition: transform .5s ease-in-out;
+    cursor: pointer;
+}
 
+.LD-icons:hover {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+}
+
+#tagfields span {
+    text-decoration: underline;
+    padding: .1rem;
+}
+
+#tagfields span img{
+    width: 10px;
+}
 
 /*=========   END DetailView - DetailViewUI - DetailViewUIUser  ==========*/
 

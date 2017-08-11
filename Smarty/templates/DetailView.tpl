@@ -303,6 +303,7 @@ function sendfile_email()
                                     </div>
                                 </td>
                             </tr>
+
                             <tr>
                                 <td>
                                     <div class="slds-truncate">
@@ -330,7 +331,6 @@ function sendfile_email()
 	                                                            </li>
                                                             {/if}
                                                             {/if}
-
                                                         </ul>
                                                         <!-- content cache -->
                                                         <!-- Command Buttons -->
@@ -349,6 +349,32 @@ function sendfile_email()
                                                                                          aria-describedby="header" style="margin: 0;">
                                                                                         <div class="slds-card__header slds-grid">
                                                                                             <header class="slds-media slds-media--center slds-has-flexi-truncate">
+                                                                                                <div class="slds-media__figure">
+	                                                                                                <div class="extraSmall forceEntityIcon" style="background-color: #A094ED" 
+	                                                                                                	data-aura-rendered-by="3:1782;a" data-aura-class="forceEntityIcon">
+		                                                                                                <span data-aura-rendered-by="6:1782;a" class="uiImage" data-aura-class="uiImage">
+		                                                                                                    <a href="javascript:showHideStatus('tbl{$header|replace:' ':''}','aid{$header|replace:' ':''}','{$THEME}');">
+		                                                                                                        {if isset($BLOCKINITIALSTATUS[$header]) && $BLOCKINITIALSTATUS[$header] eq 1}
+		                                                                                                            <span class="exp_coll_block inactivate">
+		                                                                                                        <img id="aid{$header|replace:' ':''}"
+		                                                                                                             src="{'activate.gif'|@vtiger_imageurl:$THEME}"
+		                                                                                                             style="border: 0px solid #000000;"
+		                                                                                                             alt="{'LBL_Hide'|@getTranslatedString:'Settings'}"
+		                                                                                                             title="{'LBL_Hide'|@getTranslatedString:'Settings'}"/>
+		                                                                                                        </span>
+		                                                                                                        {else}
+		                                                                                                            <span class="exp_coll_block activate">
+		                                                                                                        <img id="aid{$header|replace:' ':''}"
+		                                                                                                             src="{'inactivate.gif'|@vtiger_imageurl:$THEME}"
+		                                                                                                             style="border: 0px solid #000000;"
+		                                                                                                             alt="{'LBL_Show'|@getTranslatedString:'Settings'}"
+		                                                                                                             title="{'LBL_Show'|@getTranslatedString:'Settings'}"/>
+		                                                                                                        </span>
+		                                                                                                        {/if}
+		                                                                                                    </a>
+		                                                                                                </span>
+	                                                                                                </div>
+	                                                                                            </div>
                                                                                                 <div class="slds-media__body">
                                                                                                     <h2 class="header-title-container" >
                                                                                                         <span class="slds-text-heading--small slds-truncate actionLabel">
@@ -380,28 +406,28 @@ function sendfile_email()
                                                                                         <header class="slds-media slds-media--center slds-has-flexi-truncate">
                                                                                             <div class="slds-media__figure">
                                                                                                 <div class="extraSmall forceEntityIcon" style="background-color: #A094ED" 
-                                                                                                data-aura-rendered-by="3:1782;a" data-aura-class="forceEntityIcon">
-                                                                                                <span data-aura-rendered-by="6:1782;a" class="uiImage" data-aura-class="uiImage">
-                                                                                                    <a href="javascript:showHideStatus('tbl{$header|replace:' ':''}','aid{$header|replace:' ':''}','{$IMAGE_PATH}');">
-                                                                                                        {if isset($BLOCKINITIALSTATUS[$header]) && $BLOCKINITIALSTATUS[$header] eq 1}
-                                                                                                            <span class="exp_coll_block inactivate">
-                                                                                                        <img id="aid{$header|replace:' ':''}"
-                                                                                                             src="{'activate.gif'|@vtiger_imageurl:$THEME}"
-                                                                                                             style="border: 0px solid #000000;"
-                                                                                                             alt="{'LBL_Hide'|@getTranslatedString:'Settings'}"
-                                                                                                             title="{'LBL_Hide'|@getTranslatedString:'Settings'}"/>
-                                                                                                        </span>
-                                                                                                        {else}
-                                                                                                            <span class="exp_coll_block activate">
-                                                                                                        <img id="aid{$header|replace:' ':''}"
-                                                                                                             src="{'inactivate.gif'|@vtiger_imageurl:$THEME}"
-                                                                                                             style="border: 0px solid #000000;"
-                                                                                                             alt="{'LBL_Show'|@getTranslatedString:'Settings'}"
-                                                                                                             title="{'LBL_Show'|@getTranslatedString:'Settings'}"/>
-                                                                                                        </span>
-                                                                                                        {/if}
-                                                                                                    </a>
-                                                                                                </span>
+                                                                                                	data-aura-rendered-by="3:1782;a" data-aura-class="forceEntityIcon">
+	                                                                                                <span data-aura-rendered-by="6:1782;a" class="uiImage" data-aura-class="uiImage">
+	                                                                                                    <a href="javascript:showHideStatus('tbl{$header|replace:' ':''}','aid{$header|replace:' ':''}','{$THEME}');">
+	                                                                                                        {if isset($BLOCKINITIALSTATUS[$header]) && $BLOCKINITIALSTATUS[$header] eq 1}
+	                                                                                                            <span class="exp_coll_block inactivate">
+	                                                                                                        <img id="aid{$header|replace:' ':''}"
+	                                                                                                             src="{'activate.gif'|@vtiger_imageurl:$THEME}"
+	                                                                                                             style="border: 0px solid #000000;"
+	                                                                                                             alt="{'LBL_Hide'|@getTranslatedString:'Settings'}"
+	                                                                                                             title="{'LBL_Hide'|@getTranslatedString:'Settings'}"/>
+	                                                                                                        </span>
+	                                                                                                        {else}
+	                                                                                                            <span class="exp_coll_block activate">
+	                                                                                                        <img id="aid{$header|replace:' ':''}"
+	                                                                                                             src="{'inactivate.gif'|@vtiger_imageurl:$THEME}"
+	                                                                                                             style="border: 0px solid #000000;"
+	                                                                                                             alt="{'LBL_Show'|@getTranslatedString:'Settings'}"
+	                                                                                                             title="{'LBL_Show'|@getTranslatedString:'Settings'}"/>
+	                                                                                                        </span>
+	                                                                                                        {/if}
+	                                                                                                    </a>
+	                                                                                                </span>
                                                                                                 </div>
                                                                                             </div>
                                                                                             <div class="slds-media__body">
@@ -629,26 +655,30 @@ function sendfile_email()
                                                     {* END *} -->
                                                     <!-- Action links END -->
                                                     
-                                                    {if $TAG_CLOUD_DISPLAY eq 'true'}
+                                                    <br>{if $TAG_CLOUD_DISPLAY eq 'true'}
                                                     <!-- Tag cloud display -->
-                                                    <table border=0 cellspacing=0 cellpadding=0 width=100% class="tagCloud">
-                                                        <tr>
-                                                            <td class="tagCloudTopBg"><img src="{$IMAGE_PATH}tagCloudName.gif" border=0></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
+                                                    <div class="flexipageComponent tagCloud" style="background-color: #fff;">
+                                                    	<article class="slds-card container MEDIUM forceBaseCard runtime_sales_mergeMergeCandidatesPreviewCard" aria-describedby="header">
+                                                        	<div class="slds-card__header slds-grid">
+                                                                <header class="slds-media slds-media--center slds-has-flexi-truncate">
+                                                                    <div class="slds-media__body">
+                                                                        <img src="{$IMAGE_PATH}tagCloudName.gif" border=0>
+                                                                    </div>
+                                                                </header>
+                                                            </div>
+                                                            <div class="slds-card__body slds-card__body--inner">
                                                                 <div id="tagdiv" style="display:visible;">
                                                                     <form method="POST" action="javascript:void(0);" onsubmit="return tagvalidate();">
-                                                                        <input class="textbox" type="text" id="txtbox_tagfields" name="textbox_First Name" value="" style="width:100px;margin-left:5px;"></input>&nbsp;&nbsp;
-                                                                        <input name="button_tagfileds" type="submit" class="crmbutton small save" value="{$APP.LBL_TAG_IT}" />
+                                                                        <input class="textbox slds-input" type="text" id="txtbox_tagfields" name="textbox_First Name" value="" style="width:100px;margin-left:5px;"></input>&nbsp;&nbsp;
+                                                                        <input name="button_tagfileds" type="submit" class="slds-button slds-button_success slds-button--small" value="{$APP.LBL_TAG_IT}" />
                                                                     </form>
                                                                 </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="tagCloudDisplay" valign=top> <span id="tagfields"></span></td>
-                                                        </tr>
-                                                    </table>
+                                                                <div class="tagCloudDisplay actionData">
+                                                                 	<span id="tagfields"></span>
+                                                                </div>
+                                                            </div>
+                                                      	</article>
+                                                    </div>
                                                     <!-- End Tag cloud display -->
                                                     {/if}
                                                     
@@ -718,6 +748,7 @@ function sendfile_email()
                                     </div>
                                 </td>
                             </tr>
+
                             <tr style="display: none;">
                                 <td>
                                     <div class="small detailview_utils_table_bottom">

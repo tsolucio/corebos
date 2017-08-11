@@ -9,25 +9,30 @@
 
 {if empty($smarty.request.ajax)}
 	<div class="forceRelatedListSingleContainer">
-		<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
-			<div class="slds-card__header slds-grid">
-		        <header class="slds-media slds-media--center slds-has-flexi-truncate">
-					<div class="slds-media__figure" data-aura-rendered-by="1215:0">
-	                    <div class="extraSmall forceEntityIcon" style="background-color: #A094ED">
-		                    <span data-aura-rendered-by="6:1782;a" class="uiImage" data-aura-class="uiImage">
+        <article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
+            <div class="slds-card__header slds-grid">
+                <header class="slds-media slds-media--center slds-has-flexi-truncate">
+                    <div class="slds-media__figure">
+                        <div class="extraSmall forceEntityIcon" style="background-color: #A094ED; height: 1rem;" 
+                        data-aura-rendered-by="3:1782;a" data-aura-class="forceEntityIcon">
+                        	<span data-aura-rendered-by="6:1782;a" class="uiImage" data-aura-class="uiImage">
 								<a href="javascript:showHideStatus('tbl{$UIKEY}','aid{$UIKEY}','$IMAGE_PATH');">
 									{if $BLOCKOPEN}
-										<span class="exp_coll_block inactivate">
-											<img id="aid{$UIKEY}" src="{'activate.gif'|@vtiger_imageurl:$THEME}" 
-												 style="border: 0px solid rgb(0, 0, 0);" alt="{'LBL_Hide'|@getTranslatedString:'Settings'}" 
-												 title="{'LBL_Hide'|@getTranslatedString:'Settings'}">
-										</span>
+										   <span class="exp_coll_block inactivate">
+                                            <img id="aid{$header|replace:' ':''}"
+                                                 src="{'activate.gif'|@vtiger_imageurl:$THEME}"
+                                                 style="border: 0px solid #000000;"
+                                                 alt="{'LBL_Hide'|@getTranslatedString:'Settings'}"
+                                                 title="{'LBL_Hide'|@getTranslatedString:'Settings'}"/>
+                                            </span>
 									{else}
-										<span class="exp_coll_block activate">
-											<img id="aid{$UIKEY}" src="{'inactivate.gif'|@vtiger_imageurl:$THEME}" 
-												 style="border: 0px solid rgb(0, 0, 0);" alt="{'LBL_Show'|@getTranslatedString:'Settings'}" 
-												 title="{'LBL_Show'|@getTranslatedString:'Settings'}">
-									 	</span>
+										    <span class="exp_coll_block activate">
+                                            <img id="aid{$header|replace:' ':''}"
+                                                 src="{'inactivate.gif'|@vtiger_imageurl:$THEME}"
+                                                 style="border: 0px solid #000000;"
+                                                 alt="{'LBL_Show'|@getTranslatedString:'Settings'}"
+                                                 title="{'LBL_Show'|@getTranslatedString:'Settings'}"/>
+                                            </span>
 									{/if}
 								</a>
 							</span>
@@ -35,7 +40,7 @@
 					</div>
 					<div class="slds-media__body">
 	                    <h2 class="header-title-container" >
-	                        <span class="slds-text-heading--small slds-truncate actionLabel">
+	                        <span class="slds-text-title--caps slds-truncate slds-m-right--xx-small">
 	                            <b>{$WIDGET_TITLE}</b>
 	                        </span>
 	                    </h2>
