@@ -57,7 +57,7 @@
 
 {* Creates the second level menu *}
 {function cbsubmenu j=0}
-<div class="slds-dropdown slds-dropdown--right slds-nubbin--top">
+<div class="slds-dropdown slds-dropdown--center slds-nubbin--top">
 	<ul class="slds-dropdown__list" role="menu" id="menu{$i}">
 	{foreach $submenu as $menuitem}
 		{if $menuitem.mtype == 'module' && empty($menuitem.submenu)}
