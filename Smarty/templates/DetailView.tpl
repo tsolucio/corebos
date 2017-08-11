@@ -500,35 +500,35 @@ function sendfile_email()
                                                         <article class="slds-card container MEDIUM forceBaseCard runtime_sales_mergeMergeCandidatesPreviewCard" aria-describedby="header" style="margin: 0;">
 		                                                    
 		                                                    
-		                                                        <div class="slds-card__header slds-grid">
-                                                                    <header class="slds-media slds-media--center slds-has-flexi-truncate">
-                                                                        <div class="slds-media__body">
-                                                                            <h2 class="header-title-container">
-                                                                                <span class="slds-text-heading--small slds-truncate actionLabel">
-                                                                                    <b>{$APP.LBL_ACTIONS}</b>
-                                                                                </span>
-                                                                            </h2>
-                                                                        </div>
-                                                                    </header>
-                                                                </div>
+	                                                        <div class="slds-card__header slds-grid">
+                                                                <header class="slds-media slds-media--center slds-has-flexi-truncate">
+                                                                    <div class="slds-media__body">
+                                                                        <h2 class="header-title-container">
+                                                                            <span class="slds-text-heading--small slds-truncate actionLabel">
+                                                                                <b>{$APP.LBL_ACTIONS}</b>
+                                                                            </span>
+                                                                        </h2>
+                                                                    </div>
+                                                                </header>
+                                                            </div>
 
-                                                                <div class="slds-card__body slds-card__body--inner">
-			                                                        {if $MODULE eq 'HelpDesk'} {if $CONVERTASFAQ eq 'permitted'}
-				                                                        <div class="actionData actionlink_converttofaq">
-			                                                                <a class="webMnu" href="index.php?return_module={$MODULE}&return_action=DetailView&record={$ID}&return_id={$ID}&module={$MODULE}&action=ConvertAsFAQ"><img src="{'convert.gif'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle"  border="0"/></a>
-			                                                                <a class="webMnu" href="index.php?return_module={$MODULE}&return_action=DetailView&record={$ID}&return_id={$ID}&module={$MODULE}&action=ConvertAsFAQ">{$MOD.LBL_CONVERT_AS_FAQ_BUTTON_LABEL}</a>
-				                                                        </div>
-			                                                        {/if}
+                                                            <div class="slds-card__body slds-card__body--inner">
+		                                                        {if $MODULE eq 'HelpDesk'} {if $CONVERTASFAQ eq 'permitted'}
+			                                                        <div class="actionData actionlink_converttofaq">
+		                                                                <a class="webMnu" href="index.php?return_module={$MODULE}&return_action=DetailView&record={$ID}&return_id={$ID}&module={$MODULE}&action=ConvertAsFAQ"><img src="{'convert.gif'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle"  border="0"/></a>
+		                                                                <a class="webMnu" href="index.php?return_module={$MODULE}&return_action=DetailView&record={$ID}&return_id={$ID}&module={$MODULE}&action=ConvertAsFAQ">{$MOD.LBL_CONVERT_AS_FAQ_BUTTON_LABEL}</a>
+			                                                        </div>
+		                                                        {/if}
 
-			                                                        {elseif $MODULE eq 'Potentials'} {if $CONVERTINVOICE eq 'permitted'}
-				                                                        <div class="actionData actionlink_converttoinvoice">
-			                                                                <a class="webMnu" href="index.php?return_module={$MODULE}&return_action=DetailView&return_id={$ID}&convertmode={$CONVERTMODE}&module=Invoice&action=EditView&account_id={$ACCOUNTID}"><img src="{'actionGenerateInvoice.gif'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle"  border="0"/></a>
-			                                                                <a class="webMnu" href="index.php?return_module={$MODULE}&return_action=DetailView&return_id={$ID}&convertmode={$CONVERTMODE}&module=Invoice&action=EditView&account_id={$ACCOUNTID}">{$APP.LBL_CREATE} {$APP.Invoice}</a>
-				                                                        </div>
-			                                                        {/if} 
+		                                                        {elseif $MODULE eq 'Potentials'} {if $CONVERTINVOICE eq 'permitted'}
+			                                                        <div class="actionData actionlink_converttoinvoice">
+		                                                                <a class="webMnu" href="index.php?return_module={$MODULE}&return_action=DetailView&return_id={$ID}&convertmode={$CONVERTMODE}&module=Invoice&action=EditView&account_id={$ACCOUNTID}"><img src="{'actionGenerateInvoice.gif'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle"  border="0"/></a>
+		                                                                <a class="webMnu" href="index.php?return_module={$MODULE}&return_action=DetailView&return_id={$ID}&convertmode={$CONVERTMODE}&module=Invoice&action=EditView&account_id={$ACCOUNTID}">{$APP.LBL_CREATE} {$APP.Invoice}</a>
+			                                                        </div>
+		                                                        {/if} 
 
-			                                                        {elseif $TODO_PERMISSION eq 'true' || $EVENT_PERMISSION eq 'true' || $CONTACT_PERMISSION eq 'true'|| $MODULE eq 'Contacts' || $MODULE eq 'Leads' || ($MODULE eq 'Documents')} 
-				                                                        {if $MODULE eq 'Contacts'} {assign var=subst value="contact_id"} {assign var=acc value="&account_id=$accountid"} {else} {assign var=subst value="parent_id"} {assign var=acc value=""} {/if} 
+		                                                        {elseif $TODO_PERMISSION eq 'true' || $EVENT_PERMISSION eq 'true' || $CONTACT_PERMISSION eq 'true'|| $MODULE eq 'Contacts' || $MODULE eq 'Leads' || ($MODULE eq 'Documents')} 
+			                                                        {if $MODULE eq 'Contacts'} {assign var=subst value="contact_id"} {assign var=acc value="&account_id=$accountid"} {else} {assign var=subst value="parent_id"} {assign var=acc value=""} {/if} 
 
 				                                                        {if $MODULE eq 'Leads' || $MODULE eq 'Contacts' || $MODULE eq 'Accounts'} 
 
@@ -602,12 +602,12 @@ function sendfile_email()
 			                                                        	</div>
 		                                                        	
 		                                                        	{/if} 
-		                                                        {/if}
+	                                                        	{/if}
                                                     
                                                     
-                                                    {* vtlib customization: Avoid line break if custom links are present *} {if !isset($CUSTOM_LINKS) || empty($CUSTOM_LINKS)}
-                                                    <br> {/if} {* vtlib customization: Custom links on the Detail view basic links *} {if $CUSTOM_LINKS && $CUSTOM_LINKS.DETAILVIEWBASIC}
-                                                  
+			                                                    {* vtlib customization: Avoid line break if custom links are present *} {if !isset($CUSTOM_LINKS) || empty($CUSTOM_LINKS)}
+			                                                    <br> {/if} {* vtlib customization: Custom links on the Detail view basic links *} {if $CUSTOM_LINKS && $CUSTOM_LINKS.DETAILVIEWBASIC}
+			                                                  
 		                                                        {foreach item=CUSTOMLINK from=$CUSTOM_LINKS.DETAILVIEWBASIC}
 
 		                                                            <div class="actionData actionlink_{$CUSTOMLINK->linklabel|lower|replace:' ':'_'}">
@@ -618,17 +618,17 @@ function sendfile_email()
 		                                                            </div>
 
 		                                                        {/foreach}
+		                                                    
 
-		                                                    </div>
+                                                    {/if}
+                                                    		</div>
 	                                                    </article>
                                                     </div>
 
-                                                    {/if}
-
                                                      {* vtlib customization: Custom links on the Detail view *} 
-                                                     <!-- {if $CUSTOM_LINKS && $CUSTOM_LINKS.DETAILVIEW} -->
-                                                    <!-- <br> {if !empty($CUSTOM_LINKS.DETAILVIEW)} -->
-                                                    <!-- 
+                                                    {if $CUSTOM_LINKS && $CUSTOM_LINKS.DETAILVIEW} 
+                                                    <br> {if !empty($CUSTOM_LINKS.DETAILVIEW)} 
+                                                    
                                                     <table width="100%" border="0" cellpadding="5" cellspacing="0">
                                                         <tr>
                                                             <td align="left" class="dvtUnSelectedCell dvtCellLabel">
@@ -650,14 +650,14 @@ function sendfile_email()
                                                                 </td>
                                                             </tr>
                                                         </table>
-                                                    </div> -->
-                                                    <!-- {/if} {/if} 
-                                                    {* END *} -->
+                                                    </div>
+                                                    {/if} {/if} 
+                                                    {* END *}
                                                     <!-- Action links END -->
                                                     
-                                                    <br>{if $TAG_CLOUD_DISPLAY eq 'true'}
+                                                    {if $TAG_CLOUD_DISPLAY eq 'true'}
                                                     <!-- Tag cloud display -->
-                                                    <div class="flexipageComponent tagCloud" style="background-color: #fff;">
+                                                    <br><div class="flexipageComponent tagCloud" style="background-color: #fff;">
                                                     	<article class="slds-card container MEDIUM forceBaseCard runtime_sales_mergeMergeCandidatesPreviewCard" aria-describedby="header">
                                                         	<div class="slds-card__header slds-grid">
                                                                 <header class="slds-media slds-media--center slds-has-flexi-truncate">

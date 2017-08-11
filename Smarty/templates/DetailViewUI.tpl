@@ -148,11 +148,12 @@
 						</span>
 						<!--code given by Neil End-->
                                           <div id="editarea_{$keyfldname}" style="display:none;">
-                                          <select MULTIPLE id="txtbox_{$keyfldname}" name="{$keyfldname}" size="4" style="width:280px;" class="slds-select">
+                                          <select MULTIPLE id="txtbox_{$keyfldname}" name="{$keyfldname}" size="4" class="slds-select">
 				                                    {foreach item=arr from=$keyoptions}
 										<option value="{$arr[1]}" {$arr[2]}>{$arr[0]}</option>
 				                                    {/foreach}
 			                                   </select>
+			                                   <br>
 			                                   <a class="slds-button slds-button_success slds-button--x-small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();"/>{$APP.LBL_SAVE_LABEL}</a>
                                               		   <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--x-small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
                     							</div>
