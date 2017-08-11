@@ -57,7 +57,7 @@ class cbMapcore {
 		global $log;
 		$xmlcontent=html_entity_decode($this->Map->column_fields['content'],ENT_QUOTES,'UTF-8');
 		if(self::isXML($xmlcontent)){
-			$xml=simplexml_load_string($xmlcontent);
+			$xml=simplexml_load_string($xmlcontent, null, LIBXML_NOCDATA);
 			return $xml;
 		} else {
 			return null;
