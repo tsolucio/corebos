@@ -426,3 +426,4 @@
 				{else}
 					<td class="dvtCellInfo" id="mouseArea_{$keyfldname}" align="left" width=25%>&nbsp;{$keyval}</td>
 				{/if}
+
