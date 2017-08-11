@@ -6,10 +6,10 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************}
-<div class="dataField" style="padding-top: 10px; display: none;" valign="top">
-<p style="word-break: break-all;">
+<div class="dataField" style="padding-top: 10px;" valign="top">
+<span>
 	{$COMMENTMODEL->content()|@nl2br}
-</p>
+</span>
 
 </div>
 <div class="dataLabel" style="border-bottom: 1px dotted rgb(204, 204, 204);padding-bottom: 5px;" valign="top">

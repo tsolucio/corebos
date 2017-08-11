@@ -56,12 +56,12 @@
 	</div>
 {/if}
 
-	<div id="tbl{$UIKEY}" class="slds-truncate" style="display: {if $BLOCKOPEN}block{else}none{/if};">
+	<div id="tbl{$UIKEY}" class="slds-truncate" style="display: {if $BLOCKOPEN}block{else}none{/if}; white-space: normal;">
 		
 		<table class="small" border="0" cellpadding="0" cellspacing="0" width="100%">
 		
 			<tr style="height: 25px;">
-				<td colspan="4" align="left" class="dvtCellInfo commentCell">
+				<td colspan="4" align="left" class="dvtCellInfo commentCell" style="white-space: normal;">
 				<div id="contentwrap_{$UIKEY}">
 						
 					{foreach item=COMMENTMODEL from=$COMMENTS}
@@ -74,7 +74,7 @@
 
 		{if $CANADDCOMMENTS eq 'YES'}
 			<tr style="height: 25px;" class='noprint'>
-				<td class="dvtCellLabel" align="right">
+				<td class="dvtCellLabel" align="right" >
 					{$MOD.LBL_ADD_COMMENT}
 				</td>
 				<td width="100%" colspan="3" class="dvtCellInfo" align="left">
