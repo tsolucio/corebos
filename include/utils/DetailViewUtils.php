@@ -172,17 +172,12 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			}
 		}
 		$label_fld ["options"] = $options;
-	} elseif ($uitype == 1024) {
+	} elseif ($uitype == 1024 || $uitype == 1025) {
 		require_once 'modules/PickList/PickListUtils.php';
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$content = getPicklistValuesSpecialUitypes($uitype,$fieldname,$col_fields[$fieldname],'DetailView');
 		$label_fld[] = implode(', ',$content);
-	} elseif ($uitype == 1025) {
-		require_once 'modules/PickList/PickListUtils.php';
-		$label_fld[] = getTranslatedString($fieldlabel, $module);
-		$content = getPicklistValuesSpecialUitypes($uitype,$fieldname,$col_fields[$fieldname],'DetailView');
-		$label_fld[] = implode(', ',$content);
-	}elseif ($uitype == 115) {
+	} elseif ($uitype == 115) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$label_fld[] = getTranslatedString($col_fields[$fieldname]);
 

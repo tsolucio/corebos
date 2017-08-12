@@ -40,7 +40,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 
 	// vtlib customization: Related type field
 	if($uitype == '10') {
-		global $adb;
 		$fldmod_result = $adb->pquery('SELECT relmodule, status
 				FROM vtiger_fieldmodulerel
 				INNER JOIN vtiger_tab ON vtiger_fieldmodulerel.relmodule=vtiger_tab.name and vtiger_tab.presence=0
@@ -251,37 +250,36 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue [] = getPicklistValuesSpecialUitypes($uitype,$fieldname,$value);
 	}
-        elseif($uitype == 1025){
-                global $adb;              
+	elseif ($uitype == 1025){
 		$entityTypes = Array();
 		$parent_id = $value;
-                $values = explode(' |##| ', $value);
-		foreach( $cbMapFI['searchfields'] as $k=>$value) {
+		$values = explode(' |##| ', $value);
+		foreach ($cbMapFI['searchfields'] as $k=>$value) {
 			$entityTypes[] = $k;
 		}
 
-		if(!empty($value) && !empty($values[0])) {
-                        $valueType= $srchmod=  getSalesEntityType($values[0]);
-                        $field_val = getEntityFieldNames($srchmod);
+		if (!empty($value) && !empty($values[0])) {
+			$valueType= $srchmod=  getSalesEntityType($values[0]);
+			$field_val = getEntityFieldNames($srchmod);
 
-                        $response=array();
-                        $shown_val='';
-                        foreach ($values as $val) {
-                                $displayValueArray = getEntityName($valueType, $val);
-                                if(!empty($displayValueArray)){
-                                        foreach($displayValueArray as $key=>$value2){
-                                                $shown_val = $value2;
-                                        }
-                                }
-                                $response[]=html_entity_decode($shown_val,ENT_QUOTES,$default_charset);
-                        }
-                        $displayValue=implode(',',$response).',';
+			$response=array();
+			$shown_val='';
+			foreach ($values as $val) {
+				$displayValueArray = getEntityName($valueType, $val);
+				if (!empty($displayValueArray)) {
+					foreach ($displayValueArray as $key=>$value2) {
+						$shown_val = $value2;
+					}
+				}
+				$response[]=html_entity_decode($shown_val,ENT_QUOTES,$default_charset);
+			}
+			$displayValue=implode(',',$response).',';
 		} else {
 			$displayValue='';
 			$valueType='';
 			$value='';
 		}
-                $editview_label[] = Array('options'=>$entityTypes, 'selected'=>$valueType, 'displaylabel'=>getTranslatedString($fieldlabel, $module_name));
+		$editview_label[] = Array('options'=>$entityTypes, 'selected'=>$valueType, 'displaylabel'=>getTranslatedString($fieldlabel, $module_name));
 		$fieldvalue[] = Array('displayvalue'=>$displayValue,'entityid'=>$parent_id);
 	}
 	elseif($uitype == 17)
