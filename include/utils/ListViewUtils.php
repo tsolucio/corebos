@@ -1298,6 +1298,30 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 			$value = '';
 		}
 	} // END
+	elseif ($uitype == '1025') {
+		$parent_id = $temp_val;
+		if (!empty($parent_id)) {
+			$values=explode(' |##| ',$parent_id);
+			for ($fvalues=0; $fvalues<sizeof($values); $fvalues++) {
+				$srchmod =  getSalesEntityType($values[$fvalues]);
+				$id = $values[$fvalues];
+				$displayValueArray = getEntityName($srchmod, $id);
+				if (!empty($displayValueArray)) {
+					foreach ($displayValueArray as $key=>$value2) {
+						$shown_val = $value2;
+					}
+				}
+				if (!(vtlib_isModuleActive($srchmod) and isPermitted($srchmod,'DetailView',$id))) {
+					$content[$fvalues]=textlength_check($shown_val);
+				} else {
+					$content[$fvalues]='<a href="index.php?module='.$srchmod.'&action=DetailView&record='.$id.'">'.textlength_check($shown_val).'</a>';
+				}
+			}
+			$value = textlength_check(implode(',',$content));
+		} else {
+			$value = '';
+		}
+	}
 	else if ($uitype == 53) {
 		$value = $adb->query_result($list_result, $list_result_count, 'user_name');
 		// When Assigned To field is used in Popup window

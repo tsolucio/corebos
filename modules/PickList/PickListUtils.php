@@ -342,6 +342,26 @@ function getPicklistValuesSpecialUitypes($uitype,$fieldname,$value,$action='Edit
 			);
 		}
 	}
+	elseif ($uitype == '1025') {
+		$values = explode(' |##| ',$value);
+		if (!empty($value) && !empty($values[0])) {
+			$srchmod=  getSalesEntityType($values[0]);
+			for ($i=0;$i<sizeof($values);$i++) {
+				$id = $values[$i];
+				$displayValueArray = getEntityName($srchmod, $id);
+				if (!empty($displayValueArray)) {
+					foreach ($displayValueArray as $key=>$value2) {
+						$shown_val = $value2;
+					}
+				}
+				if (!(vtlib_isModuleActive($srchmod) and isPermitted($srchmod,'DetailView',$id))) {
+					$options[$i]=$shown_val;
+				} else {
+					$options[$i]='<a href="index.php?module='.$srchmod.'&action=DetailView&record='.$id.'">'.$shown_val.'</a>';
+				}
+			}
+		}
+	}
 	uasort($options, function($a,$b) {return (strtolower($a[0]) < strtolower($b[0])) ? -1 : 1;});
 	return $options;
 }
