@@ -42,4 +42,11 @@
 	<classname>syncSeactivityRelWithAllRelIdOnCbCalendar</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>AlbanaCelepija</author>
+	<description>Add uitype 1025 MultiValued Field Webservice Type</description>
+	<filename>build/changeSets/addUIType1025WebserviceFieldType.php</filename>
+	<classname>addUIType1025WebserviceFieldType</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
