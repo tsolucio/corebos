@@ -127,6 +127,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Product_Maximum_Number_Images',
 				'Workflow_Send_Email_ToCCBCC',
 				'Workflow_GeoDistance_Country_Default',
+				'Workflow_GeoDistance_ServerIP',
 				'ModComments_DefaultCriteria',
 				'ModComments_DefaultBlockStatus',
 				'EMail_OpenTrackingEnabled',

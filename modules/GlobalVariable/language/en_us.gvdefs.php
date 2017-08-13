@@ -821,10 +821,17 @@ $GlobalVariableDefinitons = array(
 ),
 'Workflow_GeoDistance_Country_Default' => array(
 	'status' => 'Implemented',
-	'valuetype' => 'String: Country Name',
+	'valuetype' => 'String',
 	'category' => 'Application',
-	'values' => '',
+	'values' => 'Country Name',
 	'definition' => 'For GeoDistance calculation workflow functions, this variable sets the default country to use if none is given. Useful when the company has a local area of influence.',
+),
+'Workflow_GeoDistance_ServerIP' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'Server name or IP',
+	'definition' => 'For GeoDistance calculation workflow functions, this variable sets the server IP that will be used. Default value is router.project-osrm.org',
 ),
 'Application_Billing_Address_Checked' => array(
 	'status' => 'Implemented',

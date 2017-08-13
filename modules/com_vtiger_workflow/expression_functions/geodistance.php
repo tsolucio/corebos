@@ -33,7 +33,8 @@ function __cb_getGEODistance($arr) {
 	$to = decode_html($arr[1]);
 	$coo1 = __cb_getLongitude($from).",".__cb_getLatitude($from);
 	$coo2 = __cb_getLongitude($to).",".__cb_getLatitude($to);
-	$distance = file_get_contents("http://router.project-osrm.org/route/v1/driving/$coo1;$coo2?overview=false");
+	$gdserverip = GlobalVariable::getVariable('Workflow_GeoDistance_ServerIP','router.project-osrm.org');
+	$distance = file_get_contents("http://$gdserverip/route/v1/driving/$coo1;$coo2?overview=false");
 	$dis = json_decode($distance);
 	$total_distance = $dis->routes[0]->distance/1000;
 	return $total_distance." km";
