@@ -87,7 +87,9 @@ if ($saveerror) { // there is an error so we go back to EditView.
 	header('Location: index.php?' . $req->getReturnURL() . $search . $returnvalues . "&error_msg=$errormessage&save_error=true&encode_val=$encode_field_values");
 	die();
 }
-
+if (!isset($source_id) && $source_id) {
+	$focus->linkmodeid = $source_id;
+}
 $focus->save($currentModule);
 $return_id = $focus->id;
 $req->set('return_record',$return_id);
