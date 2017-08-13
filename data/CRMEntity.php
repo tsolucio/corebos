@@ -20,7 +20,8 @@ class CRMEntity {
 	var $ownedby;
 	var $mode;
 	var $id;
-	var $linkmodeid;
+	var $linkmodeid = 0;
+	var $linkmodemodule = '';
 	var $DirectImageFieldValues = array();
 	var $HasDirectImageField = false;
 	static protected $methods = array();
@@ -123,12 +124,16 @@ class CRMEntity {
 
 		// vtlib customization: Hook provide to enable generic module relation.
 		if (isset($_REQUEST['createmode']) and $_REQUEST['createmode'] == 'link') {
-			if (isset($this->linkmodeid) && $this->linkmodeid) {
+			if (!empty($this->linkmodeid)) {
 				$for_crmid = vtlib_purify($this->linkmodeid);
 			} else {
 				$for_crmid = vtlib_purify($_REQUEST['return_id']);
 			}
-			$for_module = vtlib_purify($_REQUEST['return_module']);
+			if (!empty($this->linkmodemodule)) {
+				$for_module = vtlib_purify($this->linkmodemodule);
+			} else {
+				$for_module = vtlib_purify($_REQUEST['return_module']);
+			}
 			$with_module = $module;
 			$with_crmid = $this->id;
 
