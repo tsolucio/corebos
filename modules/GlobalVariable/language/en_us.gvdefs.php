@@ -101,7 +101,7 @@ $GlobalVariableDefinitons = array(
 'Application_TrackerMaxHistory' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Integer',
-	'category' => 'Application Functionality',
+	'category' => 'Application',
 	'values' => '',
 	'definition' => 'Máximum number of elements in the Recent Viewed elements popup. The default value is 10.',
 ),
@@ -667,9 +667,9 @@ $GlobalVariableDefinitons = array(
 ),
 'Calendar_Slot_Minutes' => array(
 	'status' => 'Implemented',
-	'valuetype' => 'Integer: minutes',
+	'valuetype' => 'Integer',
 	'category' => 'Application',
-	'values' => '',
+	'values' => 'minutes',
 	'definition' => 'Each hour on the calendar will be divided into this number of minutes. The default is 15 minutes which creates 4 divisions for each hour.',
 ),
 'Calendar_Show_Inactive_Users' => array(
@@ -688,23 +688,23 @@ $GlobalVariableDefinitons = array(
 ),
 'Calendar_call_default_duration' => array(
 	'status' => 'Implemented',
-	'valuetype' => 'Integer: minutes',
+	'valuetype' => 'Integer',
 	'category' => 'Application',
-	'values' => '',
+	'values' => 'minutes',
 	'definition' => 'Initial number of minutes assigned to a call when creating. The default is 5 minutes.',
 ),
 'Calendar_other_default_duration' => array(
 	'status' => 'Implemented',
-	'valuetype' => 'Integer: minutes',
+	'valuetype' => 'Integer',
 	'category' => 'Application',
-	'values' => '',
+	'values' => 'hours',
 	'definition' => 'Initial number of hours assigned to an event that is not a call when creating. The default is 1 hour.',
 ),
 'Calendar_sort_users_by' => array(
 	'status' => 'Implemented',
-	'valuetype' => 'String: CSV of column names',
+	'valuetype' => 'String',
 	'category' => 'Application',
-	'values' => '',
+	'values' => 'CSV of column names',
 	'definition' => 'Comma separated list of user column fields by which the user list on the calendar will be sorted. By default it is first_name,last_name',
 ),
 'Calendar_Push_End_On_Start_Change' => array(
