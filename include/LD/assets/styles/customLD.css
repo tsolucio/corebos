@@ -89,6 +89,8 @@
 }
 
 
+
+
 /*=========   END BUTTON_LIST  ==========*/
 
 .homePageButtons img {
@@ -105,6 +107,8 @@
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
 }
+
+
 
 
 
@@ -126,6 +130,8 @@ ul .slds-tabs--scoped__item {
 
 
 
+
+
 /*.slds-tabs--scoped__nav .slds-tabs--scoped__item,*/
 
 
@@ -138,6 +144,8 @@ li.active,
     color: #0070d2;
     border-color: #d8dde6;
 }
+
+
 
 
 
@@ -187,6 +195,7 @@ li.active,
     -webkit-border-radius: .125rem;
     -moz-border-radius: .125rem;
     border-radius: .125rem;
+    height: 1.1rem;
 }
 
 .forceSocialPhoto.photoContainer {
@@ -271,6 +280,8 @@ li.active,
 
 
 
+
+
 /*=========  END DETAIL VIEW ---HEADER---  ==========*/
 
 
@@ -351,6 +362,8 @@ article.container::after {
 
 
 
+
+
 /*.flexipageComponent .slds-card {*/
 
 
@@ -383,6 +396,8 @@ article.container::after {
 .actionData img. .noSpace {
     margin-left: 0;
 }
+
+
 
 
 
@@ -468,6 +483,8 @@ tr td.table-aside>.detailview_actionlinks {
 }
 
 
+
+
 /**
 - * Creates a green button style
 - *
@@ -488,6 +505,8 @@ tr td.table-aside>.detailview_actionlinks {
     color: #fff;
     font-weight: bold;
 }
+
+
 
 
 /*.slds-button_success:link,
@@ -581,6 +600,8 @@ li[title="More Information"] svg {
 
 
 
+
+
 /*=========   END DETAIL VIEW  ==========*/
 
 
@@ -637,6 +658,8 @@ select:-moz-focusring {
 }
 
 
+
+
 /*=========   END DetailView - DetailViewUI - DetailViewUIUser  ==========*/
 
 
@@ -654,6 +677,8 @@ select:-moz-focusring {
 
 
 
+
+
 /*=========   END DetailViewUtils.php  ==========*/
 
 
@@ -663,6 +688,8 @@ select:-moz-focusring {
     border-right: 1px solid #fff;
     border-left: 1px solid #fff;
 }
+
+
 
 
 
@@ -693,6 +720,8 @@ select:-moz-focusring {
 
 
 
+
+
 /*=========   ListView.tpl  ==========*/
 
 .background {
@@ -712,12 +741,22 @@ select:-moz-focusring {
 }
 
 @media screen and (max-width: 1400px) {
-    .ld-font th:nth-child(2),
-    .ld-font th:nth-child(10),
-    .ld-font th:nth-child(11) {
-        width: 155px;
+    .ld-font th:nth-child(2) {
+        padding: .5rem 0;
+    }
+    }
+    .ld-font th:nth-child(4) {
+        /*padding: .5rem 0;*/
+        width: 140px;
+    }
+    .ld-font th.slds-text-title--caps span{
+        font-size: .8rem;
+        word-wrap: break-word;
+        white-space: normal;
     }
 }
+
+
 
 /*=========   END ListView.tpl  ==========*/
 
@@ -743,9 +782,10 @@ th[scope="col"] {
 }
 
 
-/*th[scope="row"] .slds-th__action {
-    padding: 0 .5rem;
-}*/
-
-
 /*=========   END ListView Entries.tpl  ==========*/
+
+
+/*===========Related List Data Content===========*/
+
+
+/*===========END Related List Data Content===========*/

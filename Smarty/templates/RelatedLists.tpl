@@ -15,90 +15,135 @@
 <!-- Contents -->
 <div id="editlistprice" style="position:absolute;width:300px;"></div>
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
-<tr>
-	<td valign=top><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-	<td class="showPanelBg" valign=top width=100%>
+	<tr>
+		<td>
 		<!-- PUBLIC CONTENTS STARTS-->
-		<div class="small" style="padding:14px">
-			<table align="center" border="0" cellpadding="0" cellspacing="0" width="95%">
-				<tr><td>
-				{* Module Record numbering, used MOD_SEQ_ID instead of ID *}
-				{assign var="USE_ID_VALUE" value=$MOD_SEQ_ID}
-				{if $USE_ID_VALUE eq ''} {assign var="USE_ID_VALUE" value=$ID} {/if}
-				<span class="dvHeaderText">[ {$USE_ID_VALUE} ] {$NAME} -  {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</span>&nbsp;&nbsp;&nbsp;<span class="small">{$UPDATEINFO}</span>&nbsp;<span id="vtbusy_info" style="display:none;" valign="bottom"><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
-				</td></tr>
+		<div class="slds-truncate">
+			<table class="slds-table slds-no-row-hover slds-table--cell-buffer slds-table-moz" style="background-color: #f7f9fb;">
+				<tr class="slds-text-title--caps">
+					<td style="padding: 0;">
+					{* Module Record numbering, used MOD_SEQ_ID instead of ID *}
+					{assign var="USE_ID_VALUE" value=$MOD_SEQ_ID}
+					{if $USE_ID_VALUE eq ''} {assign var="USE_ID_VALUE" value=$ID} {/if}
+						<div class="slds-page-header s1FixedFullWidth s1FixedTop forceHighlightsStencilDesktop" style="height: 70px;">
+							<div class="slds-grid primaryFieldRow" style="transform: translate3d(0, -8.65823px, 0);">
+								<div class="slds-grid slds-col slds-has-flexi-truncate slds-media--center">
+									<div class="profilePicWrapper slds-media slds-no-space" style="transform: scale3d(0.864715, 0.864715, 1) translate3d(4.32911px, 2.16456px, 0);">
+										<div class="slds-media__figure slds-icon forceEntityIcon">
+											<span class="photoContainer forceSocialPhoto">
+												<div class="small roundedSquare forceEntityIcon" style="background-color: #A094ED">
+													<span class="uiImage">
+														<img src="https://playful-raccoon-70441-dev-ed.my.salesforce.com/img/icon/t4v35/standard/contact_120.png" class="icon " alt="Contact" title="Contact">
+													</span>
+												</div>
+											</span>
+										</div>
+									</div>
+									<div class="slds-media__body">
+										<p class="slds-text-heading--label slds-line-height--reset" style="opacity: 1;">{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</p>
+										<h1 class="slds-page-header__title slds-m-right--small slds-truncate slds-align-middle">
+										<span class="uiOutputText">[ {$USE_ID_VALUE} ] {$NAME}</span>
+											<span class="small" style="text-transform: capitalize;">{$UPDATEINFO}</span>&nbsp;&nbsp;&nbsp;
+											<span id="vtbusy_info" style="display:none; text-transform: capitalize;" valign="bottom">
+												<img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0">
+											</span>
+										</h1>
+									</div>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
 			</table>
 			<br>
 
 			<!-- Account details tabs -->
-			<table border=0 cellspacing=0 cellpadding=0 width=95% align=center>
-			<tr>
-				<td>
+			<table border=0 cellspacing=0 cellpadding=0 width=100% align=center>
+				<tr style="display: none;">
+					<td valign=top align=left>
 					{if isset($OP_MODE) && $OP_MODE eq 'edit_view'}
 						{assign var="action" value="EditView"}
 					{else}
 						{assign var="action" value="DetailView"}
 					{/if}
-					<div class="small detailview_utils_table_top">
-						<div class="detailview_utils_table_tabs">
-							<div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_top"><a href="index.php?action={$action}&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$SINGLE_MOD} {$APP.LBL_INFORMATION}</a></div>
-							{if isset($HASRELATEDPANES) && $HASRELATEDPANES eq 'true'}
-								{include file='RelatedPanes.tpl' tabposition='top'}
-							{else}
-								<div class="detailview_utils_table_tab detailview_utils_table_tab_selected detailview_utils_table_tab_selected_top">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</div>
-							{/if}
+						<div class="small detailview_utils_table_top">
+							<div class="detailview_utils_table_tabs">
+								<div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_top"><a href="index.php?action={$action}&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$SINGLE_MOD} {$APP.LBL_INFORMATION}</a></div>
+								{if isset($HASRELATEDPANES) && $HASRELATEDPANES eq 'true'}
+									{include file='RelatedPanes.tpl' tabposition='top'}
+								{else}
+									<div class="detailview_utils_table_tab detailview_utils_table_tab_selected detailview_utils_table_tab_selected_top">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</div>
+								{/if}
+							</div>
+							<div class="detailview_utils_table_tabactionsep detailview_utils_table_tabactionsep_top" id="detailview_utils_table_tabactionsep_top"></div>
 						</div>
-						<div class="detailview_utils_table_tabactionsep detailview_utils_table_tabactionsep_top" id="detailview_utils_table_tabactionsep_top"></div>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td style="vertical-align: top;align-content=left;">
-					<table border=0 cellspacing=0 cellpadding=3 width=100% class="dvtContentSpace" style="border-bottom:0;">
-						<tr>
-							<td style="vertical-align: top;align-content=left;">
-							<!-- content cache -->
-								<table border=0 cellspacing=0 cellpadding=0 width=100%>
-									<tr>
-										<td style="padding:10px" class="contains_rel_modules">
-										<!-- General details -->
-												{include file='RelatedListsHidden.tpl'}
-												<div id="RLContents">
-												{include file='RelatedListContents.tpl'}
-												</div>
-												</form>
-										{*-- End of Blocks--*}
-										</td>
-									</tr>
-								</table>
-							</td>
-							{if isset($HASRELATEDPANESACTIONS) && $HASRELATEDPANESACTIONS eq 'true'}
-								{include file='RelatedPaneActions.tpl'}
-							{/if}
-						</tr>
-					</table>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<div class="small detailview_utils_table_bottom">
-						<div class="detailview_utils_table_tabs">
-							<div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_bottom"><a href="index.php?action={$action}&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$SINGLE_MOD} {$APP.LBL_INFORMATION}</a></div>
-							{if $HASRELATEDPANES eq 'true'}
-								{include file='RelatedPanes.tpl' tabposition='bottom'}
-							{else}
-								<div class="detailview_utils_table_tab detailview_utils_table_tab_selected detailview_utils_table_tab_selected_bottom">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</div>
-							{/if}
+					</td>
+				</tr>
+				<tr>
+					<td valign=top align=left>
+						<div class="slds-truncate">
+							<table class="slds-table slds-no-row-hover slds-table-moz dvtContentSpace">
+								<tr>
+									<td valign="top" style="padding: 0;">
+										<!-- content cache -->
+										<div class="slds-table--scoped">
+											<ul class="slds-tabs--scoped__nav" role="tablist" style="margin-bottom: 0;">
+												<li class="slds-tabs--scoped__item" onclick="openCity(event, 'tab--scoped-1')" title="{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}" role="presentation">
+													<a class="slds-tabs--scoped__link " href="index.php?action={$action}&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}" role="tab" tabindex="0" aria-selected="true" aria-controls="tab--scoped-1" id="tab--scoped--1__item">{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</a>
+												</li>
+												{if $HASRELATEDPANES eq 'true'}
+													{include file='RelatedPanes.tpl' tabposition='bottom'}
+												{else}
+												<li class="slds-tabs--scoped__item active" title="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}" role="presentation" style="border-left: 1px solid #d8dde6;">
+													<a class="slds-tabs--scoped__link" href="#" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab--scoped-2" id="tab--scoped-2__item">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</a>
+												</li>
+												{/if}
+											</ul>
+											<div id="tab--scoped-1" role="tabpanel" aria-labelledby="tab--scoped-1__item" class="slds-tabs--scoped__content slds-truncate" style="padding-top: 0;">
+												<table class="slds-table slds-no-row-hover slds-table-moz" style="border-collapse:separate; border-spacing: 1rem 2rem;">
+													<tr>
+														<td>
+														<!-- General details -->
+																{include file='RelatedListsHidden.tpl'}
+																<div id="RLContents">
+																{include file='RelatedListContents.tpl'}
+																</div>
+																</form>
+														{*-- End of Blocks--*}
+														</td>
+													</tr>
+												</table>
+											</div>
+										</div>
+									</td>
+									{if isset($HASRELATEDPANESACTIONS) && $HASRELATEDPANESACTIONS eq 'true'}
+										{include file='RelatedPaneActions.tpl'}
+									{/if}
+								</tr>
+							</table>
 						</div>
-						<div class="detailview_utils_table_tabactionsep detailview_utils_table_tabactionsep_bottom" id="detailview_utils_table_tabactionsep_bottom"></div>
-					</div>
-				</td>
-			</tr>
+					</td>
+				</tr>
+				<tr style="display: none;">
+					<td>
+						<div class="small detailview_utils_table_bottom">
+							<div class="detailview_utils_table_tabs">
+								<div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_bottom">
+								<a href="index.php?action={$action}&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$SINGLE_MOD} {$APP.LBL_INFORMATION}</a></div>
+								{if $HASRELATEDPANES eq 'true'}
+									{include file='RelatedPanes.tpl' tabposition='bottom'}
+								{else}
+									<div class="detailview_utils_table_tab detailview_utils_table_tab_selected detailview_utils_table_tab_selected_bottom">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</div>
+								{/if}
+							</div>
+							<div class="detailview_utils_table_tabactionsep detailview_utils_table_tabactionsep_bottom" id="detailview_utils_table_tabactionsep_bottom"></div>
+						</div>
+					</td>
+				</tr>
 			</table>
 		</div>
 	<!-- PUBLIC CONTENTS STOPS-->
 	</td>
-	<td align=right valign=top><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
 </tr>
 </table>
 
