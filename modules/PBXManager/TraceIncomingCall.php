@@ -38,36 +38,33 @@ function TraceIncomingCall(){
 		$callerType = $adb->query_result($result,0,'callertype');
 		$refuid = $adb->query_result($result, 0, 'refuid');
 
-		$callerLinks = '';
-		$firstCallerInfo = false;
-		if(!empty($callerNumber)){
-			$createActivityInfo = array(
-				'action' => 'asterisk_addToActivityHistory',
-				'callerName' => $callerName,
-				'allerNumber' => $callerNumber,
-				'callerType' => $callerType,
-			);
-			$tracedCallerInfo = getTraceIncomingCallerInfo($callerNumber,$callerName,$createActivityInfo);
-			$callerLinks = $tracedCallerInfo['callerLinks'];
-			if(!empty($tracedCallerInfo['callerInfos'])) {
-				$firstCallerInfo = $tracedCallerInfo['callerInfos'];
-			}
-		}
-
 		$newTime = time();
-		if(($newTime-$oldTime)>=3 && $flag == 1){
+		if (($newTime-$oldTime)>=3 && $flag == 1) {
 			$adb->pquery('delete from vtiger_asteriskincomingcalls where to_number = ?', array($asterisk_extension));
-		}else{
-			if($flag==0){
+		} else {
+			$activityid = 0;
+			if ($flag==0) {
 				$flag=1;
 				// Trying to get the Related CRM ID for the Event (if already desired by popup click)
 				$relcrmid = false;
-				if(!empty($refuid)) {
+				if (!empty($refuid)) {
 					$refuidres = $adb->pquery('SELECT relcrmid FROM vtiger_asteriskincomingevents WHERE uid=?',array($refuid));
 					if($adb->num_rows($refuidres)) $relcrmid = $adb->query_result($refuidres, 0, 'relcrmid');
 				}
 				$adb->pquery('update vtiger_asteriskincomingcalls set flag = ? where to_number = ?', array($flag, $asterisk_extension));
-				$activityid = asterisk_addToActivityHistory($callerName, $callerNumber, $callerType, $adb, $current_user->id, $relcrmid, $firstCallerInfo);
+				$activityid = asterisk_addToActivityHistory($callerName, $callerNumber, $callerType, $adb, $current_user->id, $relcrmid, getCallerInfo($callerNumber));
+			}
+			$callerLinks = '';
+			if (!empty($callerNumber)) {
+				$createActivityInfo = array(
+					'action' => 'asterisk_addToActivityHistory',
+					'callerName' => $callerName,
+					'callerNumber' => $callerNumber,
+					'callerType' => $callerType,
+					'activityid' => $activityid,
+				);
+				$tracedCallerInfo = getTraceIncomingCallerInfo($callerNumber,$callerName,$createActivityInfo);
+				$callerLinks = $tracedCallerInfo['callerLinks'];
 			}
 			//prepare the div for incoming calls
 			$status = "<table border='0' cellpadding='5' cellspacing='0'>

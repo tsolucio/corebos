@@ -24,7 +24,7 @@ class PBXManagerAfterSaveCreateActivity extends VTEventHandler {
 				$callerNumber = $act['callerNumber'];
 				$callerType = $act['callerType'];
 				$relcrmid = $entityData->getId();
-				$activityid = asterisk_addToActivityHistory($callerName, $callerNumber, $callerType, $adb, $current_user->id, $relcrmid);
+				$activityid = asterisk_addToActivityHistory($callerName, $callerNumber, $callerType, $adb, $current_user->id, $relcrmid, $act);
 			}
 		}
 	}

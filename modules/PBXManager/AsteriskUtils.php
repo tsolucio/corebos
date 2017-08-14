@@ -141,28 +141,32 @@ function asterisk_addToActivityHistory($callerName, $callerNumber, $callerType, 
 	$date = new DateTimeField(null);
 	$currentDate = $date->getDisplayDate();
 	$currentTime = $date->getDisplayTime();
-	require_once 'modules/Calendar/Activity.php';
-	$focus = new Activity();
+	$focus = CRMEntity::getInstance('cbCalendar');
 	$focus->column_fields['subject'] = getTranslatedString('Call From','PBXManager')." $callerName ($callerNumber)";
 	$focus->column_fields['activitytype'] = 'Call';
-	$focus->column_fields['date_start'] = $currentDate;
-	$focus->column_fields['due_date'] = $currentDate;
-	$focus->column_fields['time_start'] = $currentTime;
-	$focus->column_fields['time_end'] = $currentTime;
+	$focus->column_fields['dtstart'] = $currentDate.' '.$currentTime;
+	$focus->column_fields['dtend'] = $currentDate.' '.$currentTime;
 	$focus->column_fields['eventstatus'] = 'Held';
-	$focus->column_fields['assigned_user_id'] = $userid;
-	$focus->save('Calendar');
-	$focus->setActivityReminder('off');
-
-	if(empty($relcrmid)) {
-		if(empty($callerInfo)) {
+	if (!empty($callerInfo['activityid'])) {
+		$focus->column_fields['relatedwith'] = $callerInfo['activityid'];
+	}
+	if (empty($relcrmid)) {
+		if (empty($callerInfo)) {
 			$callerInfo = getCallerInfo($callerNumber);
 		}
+		$focus->column_fields['cto_id'] = $callerInfo['id'];
+		$focus->column_fields['rel_id'] = 0;
 	} else {
 		$callerInfo = array();
 		$callerInfo['module'] = getSalesEntityType($relcrmid);
 		$callerInfo['id'] = $relcrmid;
+		$ctoInfo = getCallerInfo($callerNumber);
+		$focus->column_fields['cto_id'] = $ctoInfo['id'];
+		$focus->column_fields['rel_id'] = $relcrmid;
 	}
+	$focus->column_fields['assigned_user_id'] = $userid;
+	$focus->save('cbCalendar');
+	$focus->setActivityReminder('off');
 
 	if($callerInfo != false){
 		$tablename = array('Contacts'=>'vtiger_cntactivityrel', 'Accounts'=>'vtiger_seactivityrel', 'Leads'=>'vtiger_seactivityrel', 'HelpDesk'=>'vtiger_seactivityrel', 'Potentials'=>'vtiger_seactivityrel');
@@ -181,30 +185,30 @@ function asterisk_addToActivityHistory($callerName, $callerNumber, $callerType, 
  */
 function addOutgoingcallHistory($current_user,$extension, $record ,$adb){
 	global $log;
-	require_once 'modules/Calendar/Activity.php';
 
 	$date = new DateTimeField(null);
 	$currentDate = $date->getDisplayDate();
 	$currentTime = $date->getDisplayTime();
 
-	$focus = new Activity();
-	$focus->column_fields['subject'] = "Outgoing call from $current_user->user_name ($extension)";
+	$setype = getSalesEntityType($record);
+	$focus = CRMEntity::getInstance('cbCalendar');
+	$focus->column_fields['subject'] = getTranslatedString('OutgoingCall','PBXManager').' '.$current_user->user_name." ($extension)";
 	$focus->column_fields['activitytype'] = "Call";
-	$focus->column_fields['date_start'] = $currentDate;
-	$focus->column_fields['due_date'] = $currentDate;
-	$focus->column_fields['time_start'] = $currentTime;
-	$focus->column_fields['time_end'] = $currentTime;
+	$focus->column_fields['dtstart'] = $currentDate.' '.$currentTime;
+	$focus->column_fields['dtend'] = $currentDate.' '.$currentTime;
 	$focus->column_fields['eventstatus'] = "Held";
 	$focus->column_fields['assigned_user_id'] = $current_user->id;
-	$focus->save('Calendar');
+	if ($setype=='Contacts') {
+		$focus->column_fields['cto_id'] = $record;
+	} elseif (!empty($setype)) {
+		$focus->column_fields['rel_id'] = $record;
+	}
+	$focus->save('cbCalendar');
 	$focus->setActivityReminder('off');
-	$setype = $adb->pquery("SELECT setype FROM vtiger_crmentity WHERE crmid = ?",array($record));
-	$rows = $adb->num_rows($setype);
 
-	if($rows > 0){
-		$module = $adb->query_result($setype,0,'setype');
+	if (!empty($setype)) {
 		$tablename = array('Contacts'=>'vtiger_cntactivityrel', 'Accounts'=>'vtiger_seactivityrel', 'Leads'=>'vtiger_seactivityrel');
-		$sql = "insert into ".$tablename[$module]." values (?,?)";
+		$sql = "insert into ".$tablename[$setype]." values (?,?)";
 		$params = array($record, $focus->id);
 		$adb->pquery($sql, $params);
 		$status = "success";
