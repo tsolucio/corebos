@@ -4350,15 +4350,15 @@ function getValidDBInsertDateValue($value) {
 		}
 	}
 
-	if (preg_match("/^[0-9]{2,4}[-][0-1]{1,2}?[0-9]{1,2}[-][0-3]{1,2}?[0-9]{1,2}$/", $value) == 0) {
-		return '';
-	}
-
 	list($y,$m,$d) = explode('-',$value);
 	if (strlen($y) == 1) $y = '0'.$y;
 	if (strlen($m) == 1) $m = '0'.$m;
 	if (strlen($d) == 1) $d = '0'.$d;
 	$value = implode('-', array($y,$m,$d));
+
+	if (preg_match("/^[0-9]{2,4}[-][0-3]{1,2}?[0-9]{1,2}[-][0-3]{1,2}?[0-9]{1,2}$/", $value) == 0) {
+		return '';
+	}
 
 	if (strlen($y)<4) {
 		$insert_date = DateTimeField::convertToDBFormat($value);
