@@ -136,7 +136,7 @@ class Users extends CRMEntity {
 				$this->user_preferences = array();
 		}
 		if (!array_key_exists($name, $this->user_preferences) || $this->user_preferences[$name] != $value) {
-			$this->log->debug("Saving To Preferences:" . $name . "=" . $value);
+			$this->log->debug("Saving To Preferences:" . $name . "=" . print_r($value,true));
 			$this->user_preferences[$name] = $value;
 			$this->savePreferecesToDB();
 		}
@@ -149,7 +149,7 @@ class Users extends CRMEntity {
 	function savePreferecesToDB() {
 		$data = base64_encode(serialize($this->user_preferences));
 		$query = "UPDATE $this->table_name SET user_preferences=? where id=?";
-		$result = &$this->db->pquery($query, array($data, $this->id));
+		$result = $this->db->pquery($query, array($data, $this->id));
 		$this->log->debug("SAVING: PREFERENCES SIZE " . strlen($data) . "ROWS AFFECTED WHILE UPDATING USER PREFERENCES:" . $this->db->getAffectedRowCount($result));
 		coreBOS_Session::set('USER_PREFERENCES', $this->user_preferences);
 	}

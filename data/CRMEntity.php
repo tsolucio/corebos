@@ -446,7 +446,7 @@ class CRMEntity {
 		$log->debug("function insertIntoEntityTable $module $table_name");
 		$insertion_mode = $this->mode;
 
-		//Checkin whether an entry is already is present in the vtiger_table to update
+		//Checking if entry is already present so we have to update
 		if ($insertion_mode == 'edit') {
 			$tablekey = $this->tab_name_index[$table_name];
 			// Make selection on the primary key of the module table to check.

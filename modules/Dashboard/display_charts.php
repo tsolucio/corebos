@@ -513,7 +513,7 @@ require 'modules/Dashboard/graphdefinitions.php';
 			echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query,1100,650);
 		}
 		//Charts for Products by PO
-		elseif (($is_admin || $profileTabsPermission[getTabid("Products")] == 0) && ($type == "productbypo") && $profileTabsPermission[getTabid("PurchaseOrder")] == 0)
+		elseif (($is_admin || $profileTabsPermission[getTabid("Products")] == 0) && ($type == "productbypo") && ($is_admin || $profileTabsPermission[getTabid("PurchaseOrder")] == 0))
 		{
 			$graph_by="purchaseorderid";
 			$graph_title=$mod_strings['productbypo'];
@@ -523,7 +523,7 @@ require 'modules/Dashboard/graphdefinitions.php';
 			echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query,1100,650);
 		}
 		//Charts for Products by Quotes
-		elseif (($is_admin || $profileTabsPermission[getTabid("Products")] == 0) && ($type == "productbyquotes") && $profileTabsPermission[getTabid("Quotes")] == 0)
+		elseif (($is_admin || $profileTabsPermission[getTabid("Products")] == 0) && ($type == "productbyquotes") && ($is_admin || $profileTabsPermission[getTabid("Quotes")] == 0))
 		{
 			$graph_by="quoteid";
 			$graph_title=$mod_strings['productbyquotes'];
@@ -533,7 +533,7 @@ require 'modules/Dashboard/graphdefinitions.php';
 			echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query,1100,650);
 		}
 		//Charts for Products by Invoice
-		elseif (($is_admin || $profileTabsPermission[getTabid("Products")] == 0) && ($type == "productbyinvoice") && $profileTabsPermission[getTabid("Invoice")] == 0)
+		elseif (($is_admin || $profileTabsPermission[getTabid("Products")] == 0) && ($type == "productbyinvoice") && ($is_admin || $profileTabsPermission[getTabid("Invoice")] == 0))
 		{
 			$graph_by="invoiceid";
 			$graph_title=$mod_strings['productbyinvoice'];
@@ -687,7 +687,7 @@ require 'modules/Dashboard/graphdefinitions.php';
 			echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query,1100,650);
 		}
 		//Campaigns by Contact
-		elseif (($is_admin || $profileTabsPermission[getTabid("Contacts")] == 0) && ($type == "contactbycampaign") && $profileTabsPermission[getTabid("Campaigns")] == 0)
+		elseif (($is_admin || $profileTabsPermission[getTabid("Contacts")] == 0) && ($type == "contactbycampaign") && ($is_admin || $profileTabsPermission[getTabid("Campaigns")] == 0))
 		{
 			$graph_by="campaignid";
 			$graph_title=$mod_strings['contactbycampaign'];

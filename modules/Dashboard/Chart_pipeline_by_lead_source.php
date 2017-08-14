@@ -44,7 +44,7 @@ elseif (isset($_REQUEST['pbls_lead_sources']) && count($_REQUEST['pbls_lead_sour
 	$log->debug($_SESSION['pbls_lead_sources']);
 }
 
-//set $datax using selected sales stage keys 
+//set $datax using selected sales stage keys
 if (count($tempx) > 0) {
 	foreach ($tempx as $key) {
 		$datax[$key] = $comboFieldArray['lead_source_dom'][$key];

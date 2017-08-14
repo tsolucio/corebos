@@ -90,7 +90,7 @@ elseif (isset($_REQUEST['pbss_sales_stages']) && count($_REQUEST['pbss_sales_sta
 	$log->debug($_SESSION['pbss_sales_stages']);
 }
 
-//set $datax using selected sales stage keys 
+//set $datax using selected sales stage keys
 if (count($tempx) > 0) {
 	foreach ($tempx as $key) {
 		$datax[$key] = $comboFieldArray['sales_stage_dom'][$key];

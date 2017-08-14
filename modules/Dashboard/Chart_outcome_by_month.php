@@ -162,6 +162,6 @@ else {
 }
 else
 {
-	echo $mod_strings['LBL_NO_PERMISSION'];	
+	echo $mod_strings['LBL_NO_PERMISSION'];
 }
 ?>
