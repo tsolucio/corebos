@@ -88,6 +88,7 @@
     /*color: #fff;*/
 }
 
+
 /*=========   END BUTTON_LIST  ==========*/
 
 .homePageButtons img {
@@ -104,6 +105,7 @@
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
 }
+
 
 
 /*=========  DETAIL VIEW  ==========*/
@@ -123,6 +125,7 @@ ul .slds-tabs--scoped__item {
 }
 
 
+
 /*.slds-tabs--scoped__nav .slds-tabs--scoped__item,*/
 
 
@@ -135,6 +138,7 @@ li.active,
     color: #0070d2;
     border-color: #d8dde6;
 }
+
 
 
 
@@ -266,6 +270,7 @@ li.active,
 
 
 
+
 /*=========  END DETAIL VIEW ---HEADER---  ==========*/
 
 
@@ -345,6 +350,7 @@ article.container::after {
 
 
 
+
 /*.flexipageComponent .slds-card {*/
 
 
@@ -377,6 +383,7 @@ article.container::after {
 .actionData img. .noSpace {
     margin-left: 0;
 }
+
 
 
 
@@ -460,6 +467,7 @@ tr td.table-aside>.detailview_actionlinks {
     margin: .5rem 0;
 }
 
+
 /**
 - * Creates a green button style
 - *
@@ -480,6 +488,7 @@ tr td.table-aside>.detailview_actionlinks {
     color: #fff;
     font-weight: bold;
 }
+
 
 /*.slds-button_success:link,
 .slds-button_success:visited,
@@ -571,6 +580,7 @@ li[title="More Information"] svg {
 
 
 
+
 /*=========   END DETAIL VIEW  ==========*/
 
 
@@ -622,9 +632,10 @@ select:-moz-focusring {
     padding: .1rem;
 }
 
-#tagfields span img{
+#tagfields span img {
     width: 10px;
 }
+
 
 /*=========   END DetailView - DetailViewUI - DetailViewUIUser  ==========*/
 
@@ -642,6 +653,7 @@ select:-moz-focusring {
 
 
 
+
 /*=========   END DetailViewUtils.php  ==========*/
 
 
@@ -651,6 +663,7 @@ select:-moz-focusring {
     border-right: 1px solid #fff;
     border-left: 1px solid #fff;
 }
+
 
 
 
@@ -679,13 +692,27 @@ select:-moz-focusring {
 
 
 
+
 /*=========   ListView.tpl  ==========*/
+
 .background {
     background-color: #f7f9fb!important;
 }
 
 .ld-font {
     font-family: 'Salesforce Sans';
+}
+
+.ld-font span {
+    letter-spacing: initial;
+}
+
+@media screen and (max-width: 1400px) {
+    .ld-font th:nth-child(2),
+    .ld-font th:nth-child(10),
+    .ld-font th:nth-child(11) {
+        width: 155px;
+    }
 }
 
 /*=========   END ListView.tpl  ==========*/
@@ -711,11 +738,10 @@ th[scope="col"] {
     text-align: left;
 }
 
+
 /*th[scope="row"] .slds-th__action {
     padding: 0 .5rem;
 }*/
-
-
 
 
 /*=========   END ListView Entries.tpl  ==========*/
