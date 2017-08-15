@@ -2288,7 +2288,8 @@ function get_announcements() {
 	global $default_charset, $currentModule;
 	$announcement = GlobalVariable::getVariable('Application_Announcement','',$currentModule);
 	if ($announcement != '') {
-			$announcement = html_entity_decode($announcement, ENT_QUOTES, $default_charset);
+		$announcement = html_entity_decode($announcement, ENT_QUOTES, $default_charset);
+		$announcement = vtlib_purify($announcement);
 	}
 	return $announcement;
 }
