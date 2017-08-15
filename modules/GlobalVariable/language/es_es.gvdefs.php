@@ -679,6 +679,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'minutos',
 	'definition' => 'Cada hora en el calendario se dividirá en este número de minutos. El valor predeterminado es 15 minutos, lo que crea 4 divisiones por hora.',
 ),
+'Calendar_Slot_Event_Overlap' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Determina si los eventos en la vista de agenda deben superponerse visualmente. Cuando se establece en 1 (el valor predeterminado), los eventos se superpondrán entre si. Cuando se establece en 0, no habrá absolutamente ninguna superposición.',
+),
 'Calendar_Show_Inactive_Users' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',

@@ -679,6 +679,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'minutes',
 	'definition' => 'Each hour on the calendar will be divided into this number of minutes. The default is 15 minutes which creates 4 divisions for each hour.',
 ),
+'Calendar_Slot_Event_Overlap' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Determines if timed events in agenda view should visually overlap. When set to true (the default), events will overlap each other. At most half of each event will be obscured. When set to false, there will be absolutely no overlapping.',
+),
 'Calendar_Show_Inactive_Users' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',

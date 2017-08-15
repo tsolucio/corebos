@@ -78,6 +78,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Calendar_Modules_Panel_Visible',
 				'Calendar_Default_Reminder_Minutes',
 				'Calendar_Slot_Minutes',
+				'Calendar_Slot_Event_Overlap',
 				'Calendar_Show_Inactive_Users',
 				'Calendar_Show_Group_Events',
 				'Calendar_Push_End_On_Start_Change',

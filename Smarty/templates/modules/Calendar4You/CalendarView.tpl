@@ -183,6 +183,7 @@ jQuery(document).ready(function(){
 		minTime:  "{/literal}{$CALENDAR_SETTINGS.start_hour}{literal}",
 		maxTime:  "{/literal}{$CALENDAR_SETTINGS.end_hour}{literal}",
 		slotDuration: "{/literal}{$Calendar_Slot_Minutes}{literal}",
+		slotEventOverlap: {/literal}{$Calendar_Slot_Event_Overlap}{literal},
 
 		header: {
 			left: 'prev,next today ',
