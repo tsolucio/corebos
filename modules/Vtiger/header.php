@@ -76,8 +76,6 @@ $smarty->assign('LANGUAGE', $current_language);
 // Pass on the Application Name
 $smarty->assign('coreBOS_app_name', GlobalVariable::getVariable('Application_UI_Name','coreBOS'));
 
-global $application_unique_key;
-$smarty->assign('application_unique_key', $application_unique_key);
 // We check if we have the two new logo fields > if not we create them
 $cnorg=$adb->getColumnNames('vtiger_organizationdetails');
 if (!in_array('faviconlogo', $cnorg)) {
