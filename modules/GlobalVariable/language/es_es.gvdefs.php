@@ -637,6 +637,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Nombre de la plantilla de correo electrónico predeterminada que se cargará al crear un nuevo correo electrónico. El valor predeterminado es vacío.',
 ),
+'Users_Select_Inactive' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Por defecto la aplicación permite seleccionar usuarios marcados como inactivos. Estableciendo esta variable a 0 no mostrará los usuarios inactivos.',
+),
 'Campaign_CreatePotentialOnAccountRelation' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',

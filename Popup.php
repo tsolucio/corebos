@@ -352,6 +352,9 @@ else
 		$smarty->assign("RECORDID",vtlib_purify($_REQUEST['recordid']));
 	}
 
+	if ($currentModule == 'Users' && !GlobalVariable::getVariable('Users_Select_Inactive',1,'Users')) {
+		$where_relquery .= " and vtiger_users.status!='Inactive'";
+	}
 	if($currentModule == 'Users' && !empty($_REQUEST['recordid'])){
 		$where_relquery .=" and vtiger_users.id!=".$adb->sql_escape_string($_REQUEST['recordid']);
 		$smarty->assign("RECORDID",vtlib_purify($_REQUEST['recordid']));

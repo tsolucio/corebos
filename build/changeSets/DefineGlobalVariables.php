@@ -101,6 +101,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 
 				'Users_ReplyTo_SecondEmail',
 				'Users_Default_Send_Email_Template',
+				'Users_Select_Inactive',
 				'User_AuthenticationType',
 				'User_2FAAuthentication',
 				'User_2FAAuthentication_SendMethod',

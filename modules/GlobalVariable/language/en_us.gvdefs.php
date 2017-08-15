@@ -637,6 +637,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Name of the default email template to load when creating a new email. The default is empty.',
 ),
+'Users_Select_Inactive' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'By default, the application permits selecting inactive users. Setting this variable to 0 will hide inactive users.',
+),
 'Campaign_CreatePotentialOnAccountRelation' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
