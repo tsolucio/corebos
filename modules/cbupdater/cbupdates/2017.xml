@@ -49,4 +49,11 @@
 	<classname>addUIType1025WebserviceFieldType</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete Email uitype 104 (mostly for users). Use uitype 13.</description>
+	<filename>build/changeSets/2017/delEmail104uitype.php</filename>
+	<classname>delEmail104uitype</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
