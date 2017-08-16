@@ -361,7 +361,7 @@ class Vtiger_Soap_CustomerPortal {
 	/** Preference value caching */
 	static $_prefs_cache = array();
 	static function lookupPrefValue($key) {
-		if(self::$_prefs_cache[$key]) {
+		if (isset(self::$_prefs_cache[$key])) {
 			return self::$_prefs_cache[$key];
 		}
 		return false;
@@ -740,11 +740,9 @@ function get_tickets_list($input_array) {
 	}
 	$params = array($entity_ids_list);
 
-
 	$TicketsfieldVisibilityByColumn = array();
 	foreach($fields_list as $fieldlabel=> $fieldname) {
-		$TicketsfieldVisibilityByColumn[$fieldname] =
-			getColumnVisibilityPermission($current_user->id,$fieldname,'HelpDesk');
+		$TicketsfieldVisibilityByColumn[$fieldname] = getColumnVisibilityPermission($current_user->id,$fieldname,'HelpDesk');
 	}
 
 	$res = $adb->pquery($query,$params);
@@ -1009,7 +1007,6 @@ function authenticate_user($username,$password,$version,$login = 'true')
 
 		$list[0]['sessionid'] = $sessionid;
 	}
-
 	return $list;
 }
 
