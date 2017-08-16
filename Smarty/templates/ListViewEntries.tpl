@@ -136,8 +136,7 @@
 	                    	<!-- Table Contents -->
 	                        {foreach item=entity key=entity_id from=$LISTENTITY}
 	                        <tr id="row_{$entity_id}" class="slds-hint-parent slds-line-height--reset">
-	                            <td role="gridcell" class="slds-text-align--center" >
-	                                <!-- <div class="slds-th__action slds-th__action_form"> -->
+	                            <td role="gridcell" class="slds-text-align--center">
 	                                    <span class="slds-checkbox">
 	                                    	{if $entity_id>0}
 				                                <input type="checkbox" NAME="selected_id" id="{$entity_id}" value='{$entity_id}' onClick="check_object(this)">
@@ -148,9 +147,7 @@
 				                            {else}
 				                                <span class="listview_row_sigma">&Sigma;</span>
 				                            {/if}
-								            
 	                                    </span>
-	                                <!-- </div> -->
 	                            </td>
 
 	                            {foreach item=data from=$entity} {* vtlib customization: Trigger events on listview cell *}
