@@ -1,7 +1,6 @@
 /*=========  Button List  ==========*/
 
 #LB_buttonlist {
-    /*background-color: rgb(244, 246, 249);*/
     background-color: #f7f9fb;
 }
 
@@ -118,24 +117,27 @@ ul .slds-tabs--scoped__item {
     border-right: 1px solid #d8dde6;
 }
 
-.detailview_utils_jumpto img {
+.detailview_utils_jumpto img,
+.calendar-icon img {
     -webkit-transition: -webkit-transform .5s ease-in-out;
     transition: transform .5s ease-in-out;
 }
 
-.detailview_utils_jumpto img:hover {
+.detailview_utils_jumpto img:hover,
+.calendar-icon img:hover {
     -webkit-transform: rotate(180deg);
     transform: rotate(180deg);
 }
 
+.calendar-icon img {
+    vertical-align: inherit;
+    width: 18px;
+    cursor: pointer;
+}
 
-
-
-
-/*.slds-tabs--scoped__nav .slds-tabs--scoped__item,*/
-
-
-/*.slds-tabs--scoped__nav .slds-tabs--scoped__item .active,*/
+.slds-select {
+    font-size: .8rem;
+}
 
 li.active,
 .slds-tabs--scoped__nav .slds-tabs--scoped__item:focus,
@@ -787,5 +789,14 @@ th[scope="col"] {
 
 /*===========Related List Data Content===========*/
 
+/*=======CustomView.tpl=======*/
+.align-left td:not(:first-child) {
+    text-align: left;
+}
+
+.font-size select{
+    font-size: .8rem;
+}
+/*=======End CustomView.tpl=======*/
 
 /*===========END Related List Data Content===========*/

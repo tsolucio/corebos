@@ -55,7 +55,7 @@ function addColumnConditionGlue(columnIndex) {ldelim}
 	var columnConditionGlueElement = document.getElementById('columnconditionglue_'+columnIndex);
 
 	if(columnConditionGlueElement) {ldelim}
-		columnConditionGlueElement.innerHTML = "<select name='fcon"+columnIndex+"' id='fcon"+columnIndex+"' class='detailedViewTextBox'>"+
+		columnConditionGlueElement.innerHTML = "<select name='fcon"+columnIndex+"' id='fcon"+columnIndex+"' class='slds-select'>"+
 			"<option value='and'>{'LBL_CRITERIA_AND'|@getTranslatedString:$MODULE}</option>"+
 			"<option value='or'>{'LBL_CRITERIA_OR'|@getTranslatedString:$MODULE}</option>"+
 			"</select>";
@@ -92,7 +92,7 @@ function addConditionRow(groupIndex) {ldelim}
 							'<option value="">{'LBL_NONE'|@getTranslatedString:$MODULE}</option>'+COL_BLOCK+
 						'</select>';
 	{else}
-		node1.innerHTML = "<select name='fcol"+columnIndex+"' id='fcol"+columnIndex+"' onchange='updatefOptions(this, \"fop"+columnIndex+"\");addRequiredElements("+columnIndex+");' class='detailedViewTextBox slds-select'>"+
+		node1.innerHTML = "<select name='fcol"+columnIndex+"' id='fcol"+columnIndex+"' onchange='updatefOptions(this, \"fop"+columnIndex+"\");addRequiredElements("+columnIndex+");' class='slds-select'>"+
 							"<option value=''>{'LBL_NONE'|@getTranslatedString:$MODULE}</option>"+COL_BLOCK+
 						"</select>";
 	{/if}
@@ -100,7 +100,7 @@ function addConditionRow(groupIndex) {ldelim}
 	node2.setAttribute('class', 'dvtCellLabel');
 	node2.setAttribute('width', '25%');
 
-	node2.innerHTML = '<select name="fop'+columnIndex+'" id="fop'+columnIndex+'" class="repBox slds-select" style="width:200px;" onchange="addRequiredElements('+columnIndex+');">'+FOPTION_ADV+
+	node2.innerHTML = '<select name="fop'+columnIndex+'" id="fop'+columnIndex+'" class="slds-select" style="width:200px;" onchange="addRequiredElements('+columnIndex+');">'+FOPTION_ADV+
 							'<option value="">{'LBL_NONE'|@getTranslatedString:$MODULE}</option>'+
 						'</select>';
 	newNode.appendChild(node2);
@@ -131,7 +131,7 @@ function addConditionRow(groupIndex) {ldelim}
 														'<tr>'+
 															'<td width="30%" align="left" class="cellLabel small">{$MOD.LBL_RELATED_FIELDS}</td>'+
 															'<td width="30%" align="left" class="cellText">'+
-																'<select name="fval_'+columnIndex+'" id="fval_'+columnIndex+'" onChange="AddFieldToFilter('+columnIndex+',this);" class="detailedViewTextBox">'+
+																'<select name="fval_'+columnIndex+'" id="fval_'+columnIndex+'" onChange="AddFieldToFilter('+columnIndex+',this);" class="slds-select">'+
 																	'<option value="">{$MOD.LBL_NONE}</option>'+
 																	REL_FIELDS+
 																'</select>'+
@@ -154,18 +154,18 @@ function addConditionRow(groupIndex) {ldelim}
 							'</table>'+
 						'</div>';
 	{else}
-		node3.innerHTML = '<input name="fval'+columnIndex+'" id="fval'+columnIndex+'" class="repBox slds-input" type="text" value="" style="width:200px;">'+ '<img align="absmiddle" style="cursor: pointer;" onclick="document.getElementById(\'fval'+columnIndex+'\').value=\'\';return false;" title="{$APP.LBL_CLEAR}" alt="{$APP.LBL_CLEAR}" src="themes/images/clear_field.gif"/>';
+		node3.innerHTML = '<input name="fval'+columnIndex+'" id="fval'+columnIndex+'" class="slds-input" type="text" value="" style="width:200px;">'+ '<img align="absmiddle" style="cursor: pointer;" onclick="document.getElementById(\'fval'+columnIndex+'\').value=\'\';return false;" title="{$APP.LBL_CLEAR}" alt="{$APP.LBL_CLEAR}" src="themes/images/clear_field.gif"/>';
 	{/if}
 
 	node4 = document.createElement('td');
 	node4.setAttribute('class', 'dvtCellLabel');
 	node4.setAttribute('id', 'columnconditionglue_'+columnIndex);
-	node4.setAttribute('width', '60px');
+	node4.setAttribute('width', '100px');
 	newNode.appendChild(node4);
 
 	node5 = document.createElement('td');
 	node5.setAttribute('class', 'dvtCellLabel');
-	node5.setAttribute('width', '30px');
+	node5.setAttribute('width', '50px');
 	newNode.appendChild(node5);
 	node5.innerHTML = '<a onclick="deleteColumnRow('+groupIndex+','+columnIndex+');" href="javascript:;">'+
 					'<img src="themes/images/delete.gif" align="absmiddle" border="0"></a>';
