@@ -654,13 +654,16 @@ function save_faq_comment($input_array)
 
 
 function get_tickets_list($input_array) {
-
 	global $adb,$log, $current_user;
 	//To avoid SQL injection we are type casting as well as bound the id variable.
 	$id = (int) vtlib_purify($input_array['id']);
 
 	$only_mine = $input_array['onlymine'];
-	$where = $adb->sql_escape_string($input_array['where']);
+	if (empty($input_array['where'])) {
+		$where = '';
+	} else {
+		$where = $adb->sql_escape_string($input_array['where']);
+	}
 	$match = $input_array['match'];
 	$sessionid = $input_array['sessionid'];
 
