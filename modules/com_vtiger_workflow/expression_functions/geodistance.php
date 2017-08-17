@@ -16,14 +16,16 @@
 
 function __cb_getLatitude($address) {
 	$addr = urlencode($address);
-	$data = file_get_contents("http://nominatim.openstreetmap.org/?format=json&addressdetails=1&q=$addr&format=json&limit=1");
+	$email = urlencode(GlobalVariable::getVariable('Workflow_GeoDistance_Email',''));
+	$data = file_get_contents("http://nominatim.openstreetmap.org/?format=json&addressdetails=1&q=$addr&format=json&limit=1&email=$email");
 	$data = json_decode($data);
 	return $data[0]->lat;
 }
 
 function __cb_getLongitude($address) {
 	$addr = urlencode($address);
-	$data = file_get_contents("http://nominatim.openstreetmap.org/?format=json&addressdetails=1&q=$addr&format=json&limit=1");
+	$email = urlencode(GlobalVariable::getVariable('Workflow_GeoDistance_Email',''));
+	$data = file_get_contents("http://nominatim.openstreetmap.org/?format=json&addressdetails=1&q=$addr&format=json&limit=1&email=$email");
 	$data = json_decode($data);
 	return $data[0]->lon;
 }

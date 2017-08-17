@@ -847,6 +847,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Server name or IP',
 	'definition' => 'For GeoDistance calculation workflow functions, this variable sets the server IP that will be used. Default value is router.project-osrm.org',
 ),
+'Workflow_GeoDistance_Email' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'Valid Email',
+	'definition' => 'For GeoDistance calculation workflow functions, we need to sets this variable with a valid email. Default value is an empty string',
+),
 'Application_Billing_Address_Checked' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',

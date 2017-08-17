@@ -847,6 +847,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Server name or IP',
 	'definition' => 'Para las funciones de flujo de trabajo de cálculo de GeoDistance, esta variable establece la IP del servidor que se utilizará. El valor predeterminado es router.project-osrm.org',
 ),
+'Workflow_GeoDistance_Email' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'Email válido',
+	'definition' => 'Para las funciones de flujo de trabajo de cálculo de GeoDistance, es necesario establecer esta variable indicando un email válido. El valor predeterminado es una cadena vacía',
+),
 'Application_Billing_Address_Checked' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
