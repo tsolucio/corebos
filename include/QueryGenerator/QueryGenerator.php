@@ -70,7 +70,7 @@ class QueryGenerator {
 		$this->meta = $this->getMeta($module);
 		$this->moduleNameFields[$module] = $this->meta->getNameFields();
 		$this->referenceFieldInfoList = $this->meta->getReferenceFieldDetails();
-		$this->referenceFieldList = array_keys($this->referenceFieldInfoList);;
+		$this->referenceFieldList = array_keys($this->referenceFieldInfoList);
 		$this->ownerFields = $this->meta->getOwnerFields();
 		$this->columns = null;
 		$this->fromClause = null;
@@ -90,7 +90,6 @@ class QueryGenerator {
 	 * @return EntityMeta
 	 */
 	public function getMeta($module) {
-		$db = PearDatabase::getInstance();
 		if (empty($this->referenceModuleMetaInfo[$module])) {
 			$handler = vtws_getModuleHandlerFromName($module, $this->user);
 			$meta = $handler->getMeta();
@@ -112,7 +111,7 @@ class QueryGenerator {
 		$this->setReferenceFields();
 	}
 
-	// Adding support for reference module fields
+	// Support for reference module fields
 	public function setReferenceFields() {
 		global $current_user;
 		$this->referenceFieldNameList = array();
