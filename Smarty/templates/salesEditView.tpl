@@ -22,158 +22,265 @@
 
 {*<!-- Contents -->*}
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
-   <tr>
-	<td valign=top><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
+	<tr>
+		<td>
+			{*<!-- PUBLIC CONTENTS STARTS-->*}
+			<div class="slds-truncate">
+				<table class="slds-table slds-no-row-hover slds-table--cell-buffer slds-table-moz" style="background-color: #f7f9fb;">
+					<tr class="slds-text-title--caps">
+						<td style="padding: 0;">
+							<div class="slds-page-header s1FixedFullWidth s1FixedTop forceHighlightsStencilDesktop" style="height: 70px;">
+								<div class="slds-grid primaryFieldRow" style="transform: translate3d(0, -8.65823px, 0);">
+									<div class="slds-grid slds-col slds-has-flexi-truncate slds-media--center">
+										<div class="profilePicWrapper slds-media slds-no-space" style="transform: scale3d(0.864715, 0.864715, 1) translate3d(4.32911px, 2.16456px, 0);">
+											<div class="slds-media__figure slds-icon forceEntityIcon">
+												<span class="photoContainer forceSocialPhoto">
+													<div class="small roundedSquare forceEntityIcon img-background">
+														<span class="uiImage">
+															{if $MODULE eq 'Contacts'}
+																<img src="{'contact_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Contact" title="Contact">
+															{elseif $MODULE eq 'Accounts'}
+																<img src="{'account_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Organization" title="Organization">
+															{elseif $MODULE eq 'Leads'}
+																<img src="{'lead_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Leads" title="Leads">
+															{elseif $MODULE eq 'Campaigns'}
+																<img src="{'campaign_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Campaigns" title="Campaigns">
+															{elseif $MODULE eq 'Potentials'}
+																<img src="{'opportunity_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Opportunity" title="Opportunity">
+															{elseif $MODULE eq 'Quotes'}
+																<img src="{'quotes_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Quotes" title="Quotes">
+															{/if}
+														</span>
+													</div>
+												</span>
+											</div>
+										</div>
+										<div class="slds-media__body">
+										{if $OP_MODE eq 'edit_view'}
+											{assign var="USE_ID_VALUE" value=$MOD_SEQ_ID}
+											{if $USE_ID_VALUE eq ''} {assign var="USE_ID_VALUE" value=$ID} {/if}
+											<p class="slds-text-heading--label slds-line-height--reset">{$APP.LBL_EDITING} {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</p>
+											<h1 class="slds-page-header__title slds-m-right--small slds-truncate slds-align-middle">
+												<span class="uiOutputText"><font color="purple">[ {$USE_ID_VALUE} ] </font>{$NAME}</span>
+												<span class="small" style="text-transform: capitalize;">{$UPDATEINFO}</span>
+											</h1>
+										{/if}
 
-	<td class="showPanelBg" valign=top width=100%>
-		{*<!-- PUBLIC CONTENTS STARTS-->*}
-		<div class="small" style="padding:20px">
-			{if $OP_MODE eq 'edit_view'}
-				{assign var="USE_ID_VALUE" value=$MOD_SEQ_ID}
-				{if $USE_ID_VALUE eq ''} {assign var="USE_ID_VALUE" value=$ID} {/if}
-				<span class="lvtHeaderText"><font color="purple">[ {$USE_ID_VALUE} ] </font>{$NAME} - {$APP.LBL_EDITING} {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</span> <br>
-				{$UPDATEINFO}
-			{/if}
-			{if $OP_MODE eq 'create_view'}
-				{if $DUPLICATE neq 'true'}
-					<span class="lvtHeaderText">{$APP.LBL_CREATING} {$SINGLE_MOD|@getTranslatedString:$MODULE}</span> <br>
-				{else}
-					<span class="lvtHeaderText">{$APP.LBL_DUPLICATING} "{$NAME}" </span> <br>
-				{/if}
-			{/if}
-
-			<hr noshade size=1>
-			<br>
-
-			{include file='EditViewHidden.tpl'}
+										{if $OP_MODE eq 'create_view'}
+											{if $DUPLICATE neq 'true'}
+												<p class="slds-text-heading--label slds-line-height--reset" style="opacity: 1;">{$APP.LBL_CREATING} {$SINGLE_MOD|@getTranslatedString:$MODULE}</p>
+											{else}
+												<p class="slds-text-heading--label slds-line-height--reset" style="opacity: 1;">{$APP.LBL_DUPLICATING} "{$NAME}" </p>
+											{/if}
+										{/if}
+										</div>
+									</div>
+								</div> {*/primaryFieldRow*}
+							</div> {*/forceHighlightsStencilDesktop*}
+						</td>
+					</tr>
+				</table>
+				<br>
+				{include file='EditViewHidden.tpl'}
 
 			{*<!-- Account details tabs -->*}
-			<table border=0 cellspacing=0 cellpadding=0 width=95% align=center>
-			   <tr>
-				<td>
-					<table border=0 cellspacing=0 cellpadding=3 width=100% class="small">
-					   <tr>
-						<td class="dvtTabCache" style="width:10px" nowrap>&nbsp;</td>
-						<td class="dvtSelectedCell" align=center nowrap> {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</td>
-						<td class="dvtTabCache" style="width:10px">&nbsp;</td>
-						<td class="dvtTabCache" style="width:100%">&nbsp;</td>
-					   </tr>
-					</table>
-				</td>
-			   </tr>
-			   <tr>
-				<td valign=top align=left >
-					<table border=0 cellspacing=0 cellpadding=3 width=100% class="dvtContentSpace">
-					   <tr>
-
-						<td align=left>
-							{*<!-- content cache -->*}
-					
-							<table border=0 cellspacing=0 cellpadding=0 width=100%>
-							   <tr>
-								<td style="padding:10px">
-									<!-- General details -->
-									<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small createview_table">
-									   <tr>
-										<td  colspan=4 style="padding:5px">
-											<div align="center">
-												{if $MODULE eq 'Webmails'}
-													<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.action.value='Save';this.form.module.value='Webmails';this.form.send_mail.value='true';this.form.record.value='{$ID}'" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
-												{else}
-													<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmButton small save" onclick="this.form.action.value='Save'; displaydeleted(); return formValidate();" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
-												{/if}
-													<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="{if isset($smarty.request.Module_Popup_Edit)}window.close(){else}window.history.back(){/if};" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
-											</div>
-										</td>
-									   </tr>
-
-									   <!-- included to handle the edit fields based on ui types -->
-									   {foreach key=header item=data from=$BLOCKS}
-
-							<!-- This is added to display the existing comments -->
-							{if $header eq $APP.LBL_COMMENTS || (isset($MOD.LBL_COMMENT_INFORMATION) && $header eq $MOD.LBL_COMMENT_INFORMATION)}
-							   <tr><td>&nbsp;</td></tr>
-							   <tr>
-								<td colspan=4 class="dvInnerHeader">
-									<b>{if isset($MOD.LBL_COMMENT_INFORMATION)}{$MOD.LBL_COMMENT_INFORMATION}{else}{$APP.LBL_COMMENTS}{/if}</b>
-								</td>
-							   </tr>
-							   <tr>
-								<td colspan=4 class="dvtCellInfo">{$COMMENT_BLOCK}</td>
-							   </tr>
-							   <tr><td>&nbsp;</td></tr>
-							{/if}
-
-										<tr id="tbl{$header|replace:' ':''}Head">
-										{if isset($MOD.LBL_ADDRESS_INFORMATION) && $header==$MOD.LBL_ADDRESS_INFORMATION && ($MODULE == 'Accounts' || $MODULE == 'Quotes' || $MODULE == 'PurchaseOrder' || $MODULE == 'SalesOrder'|| $MODULE == 'Invoice') && $SHOW_COPY_ADDRESS eq 1}
-                                                                                <td colspan=2 class="detailedViewHeader">
-                                                                                <b>{$header}</b></td>
-                                                                                <td class="detailedViewHeader">
-                                                                                <input name="cpy" onclick="return copyAddressLeft(EditView)" type="radio"><b>{$APP.LBL_RCPY_ADDRESS}</b></td>
-                                                                                <td class="detailedViewHeader">
-                                                                                <input name="cpy" onclick="return copyAddressRight(EditView)" type="radio"><b>{$APP.LBL_LCPY_ADDRESS}</b></td>
-										{elseif isset($MOD.LBL_ADDRESS_INFORMATION) && $header== $MOD.LBL_ADDRESS_INFORMATION && $MODULE == 'Contacts' && $SHOW_COPY_ADDRESS eq 1}
-										<td colspan=2 class="detailedViewHeader">
-                                                                                <b>{$header}</b></td>
-                                                                                <td class="detailedViewHeader">
-                                                                                <input name="cpy" onclick="return copyAddressLeft(EditView)" type="radio"><b>{$APP.LBL_CPY_OTHER_ADDRESS}</b></td>
-                                                                                <td class="detailedViewHeader">
-                                                                                <input name="cpy" onclick="return copyAddressRight(EditView)" type="radio"><b>{$APP.LBL_CPY_MAILING_ADDRESS}</b></td>
-                                                                                {else}
-										<td colspan=4 class="detailedViewHeader">
-											<b>{$header}</b>
-										</td>
+			<table border=0 cellspacing=0 cellpadding=0 width=100% align=center>
+				<tr>
+					<td valign=top align=left >
+						<!-- General details -->
+						<table class="slds-table slds-no-row-hover slds-table-moz dvtContentSpace">
+							<!-- Top buttons -->
+							<tr>
+								<td colspan=4 style="padding:5px">
+									<div align="center">
+										{if $MODULE eq 'Webmails'}
+											<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="slds-button slds-button_success slds-button--small" onclick="this.form.action.value='Save';this.form.module.value='Webmails';this.form.send_mail.value='true';this.form.record.value='{$ID}'" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
+										{else}
+											<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="slds-button slds-button_success slds-button--small" onclick="this.form.action.value='Save'; displaydeleted(); return formValidate();" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
 										{/if}
-										</tr>
+											<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="slds-button slds-button--destructive slds-button--small" onclick="{if isset($smarty.request.Module_Popup_Edit)}window.close(){else}window.history.back(){/if};" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
+									</div>
+								</td>
+							</tr>
+							<!-- End Top buttons -->
+							<!-- Main Content -->
+							<tr>
+								<td valign="top" style="padding: 0;">
+									<div class="slds-tabs--scoped">
+										<ul class="slds-tabs--scoped__nav" role="tablist" style="margin-bottom: 0;">
+											<li class="slds-tabs--scoped__item active" onclick="openCity(event, 'tab--scoped-1')"  title="{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}" role="presentation">
+												<a class="slds-tabs--scoped__link "  href="javascript:void(0);"  role="tab" tabindex="0" aria-selected="true" aria-controls="tab--scoped-1" id="tab--scoped--1__item">{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</a>
+											</li>
+										</ul>
 
-                                                                                {if $CUSTOMBLOCKS.$header.custom}
-                                                                                    {include file=$CUSTOMBLOCKS.$header.tpl}
-                                                                                {else}
-                                                                                    <!-- Handle the ui types display -->
-                                                                                    {include file="DisplayFields.tpl"}
-                                                                                {/if}
+										<div id="tab--scoped-1" role="tabpanel" aria-labelledby="tab--scoped-1__item" class="slds-tabs--scoped__content slds-truncate">
+											<!-- Content here -->
+											<table class="slds-table slds-no-row-hover slds-table-moz" style="border-collapse: separate;border-spacing: 1rem 2rem;">
+												<!-- included to handle the edit fields based on ui types -->
+												{foreach key=header item=data from=$BLOCKS}
+												<tr class="blockStyleCss">
+													<td class="detailViewContainer">
+														<!-- This is added to display the existing comments -->
+														{if $header eq $APP.LBL_COMMENTS || (isset($MOD.LBL_COMMENT_INFORMATION) && $header eq $MOD.LBL_COMMENT_INFORMATION)}
+														<div class="flexipageComponent" style="background-color: #fff;">
+															<article class="slds-card container MEDIUM forceBaseCard runtime_sales_mergeMergeCandidatesPreviewCard" aria-describedby="header" style="margin: 0;">
+																<div class="slds-card__header slds-grid">
+																	<header class="slds-media slds-media--center slds-has-flexi-truncate">
+																		<div class="slds-media__body">
+																			<h2 class="header-title-container" >
+																				<span class="slds-text-heading--small slds-truncate actionLabel">
+																					<b>{if isset($MOD.LBL_COMMENT_INFORMATION)}{$MOD.LBL_COMMENT_INFORMATION}{else}{$APP.LBL_COMMENTS}{/if}</b>
+																				</span>
+																			</h2>
+																		</div>
+																	</header>
+																</div>
+																<div class="slds-card__body slds-card__body--inner">
+																	<div class="commentData">{$COMMENT_BLOCK}</div>
+																</div>
+															</article>
+														</div>
+														{/if}
 
-									   {/foreach}
+														<div id="tbl{$header|replace:' ':''}Head">
+															{if isset($MOD.LBL_ADDRESS_INFORMATION) && $header==$MOD.LBL_ADDRESS_INFORMATION && ($MODULE == 'Accounts' || $MODULE == 'Quotes' || $MODULE == 'PurchaseOrder' || $MODULE == 'SalesOrder'|| $MODULE == 'Invoice') && $SHOW_COPY_ADDRESS eq 1}
+																<div class="forceRelatedListSingleContainer">
+																	<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
+																		<div class="slds-card__header slds-grid">
+																			<header class="slds-media slds-media--center slds-has-flexi-truncate">
+																				<div class="slds-media__body">
+																					<h2>
+																						<span class="slds-text-title--caps slds-truncate slds-m-right--xx-small">
+																							<b>{$header}</b>
+																						</span>
+																					</h2>
+																				</div>
+																			</header>
+																			<div class="slds-no-flex" data-aura-rendered-by="1224:0">
+																				<div class="forceRelatedListSingleContainer">
+																					<span class="slds-radio">
+																						<input name="cpy" onclick="return copyAddressLeft(EditView)" id="shipping-address" type="radio">
+																						<label class="slds-radio__label" for="shipping-address">
+																							<span class="slds-radio--faux"></span>
+																							<span class="slds-form-element__label"><b>{$APP.LBL_RCPY_ADDRESS}</b></span>
+																						</label>
+																					</span>
+																				</div>
+																				<div class="forceRelatedListSingleContainer">
+																					<span class="slds-radio">
+																						<input name="cpy" onclick="return copyAddressRight(EditView)" id="billing-address" type="radio">
+																						<label class="slds-radio__label" for="billing-address">
+																							<span class="slds-radio--faux"></span>
+																							<span class="slds-form-element__label"><b>{$APP.LBL_LCPY_ADDRESS}</b></span>
+																						</label>
+																					</span>
+																				</div>
+																			</div>
+																		</div>
+																	</article>
+																</div>
+															{elseif isset($MOD.LBL_ADDRESS_INFORMATION) && $header== $MOD.LBL_ADDRESS_INFORMATION && $MODULE == 'Contacts' && $SHOW_COPY_ADDRESS eq 1}
 
+																<div class="forceRelatedListSingleContainer">
+																	<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
+																		<div class="slds-card__header slds-grid">
+																			<header class="slds-media slds-media--center slds-has-flexi-truncate">
+																				<div class="slds-media__body">
+																					<h2>
+																						<span class="slds-text-title--caps slds-truncate slds-m-right--xx-small">
+																							<b>{$header}</b>
+																						</span>
+																					</h2>
+																				</div>
+																			</header>
+																			<div class="slds-no-flex" data-aura-rendered-by="1224:0">
+																				<div class="forceRelatedListSingleContainer">
+																					<span class="slds-radio">
+																						<input name="cpy" onclick="return copyAddressLeft(EditView)" id="shipping-address1" type="radio">
+																						<label class="slds-radio__label" for="shipping-address1">
+																							<span class="slds-radio--faux"></span>
+																							<span class="slds-form-element__label"><b>{$APP.LBL_CPY_OTHER_ADDRESS}</b></span>
+																						</label>
+																					</span>
+																				</div>
+																				<div class="forceRelatedListSingleContainer">
+																					<span class="slds-radio">
+																						<input name="cpy" onclick="return copyAddressRight(EditView)" id="billing-address2" type="radio">
+																						<label class="slds-radio__label" for="billing-address2">
+																							<span class="slds-radio--faux"></span>
+																							<span class="slds-form-element__label"><b>{$APP.LBL_CPY_MAILING_ADDRESS}</b></span>
+																						</label>
+																					</span>
+																				</div>
+																			</div>
+																		</div>
+																	</article>
+																</div>
+															{else}
+																<div class="forceRelatedListSingleContainer">
+																	<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
+																		<div class="slds-card__header slds-grid">
+																			<header class="slds-media slds-media--center slds-has-flexi-truncate">
+																				<div class="slds-media__body">
+																					<h2>
+																						<span class="slds-text-title--caps slds-truncate slds-m-right--xx-small">
+																							<b>{$header}</b>
+																						</span>
+																					</h2>
+																				</div>
+																			</header>
+																		</div>
+																	</article>
+																</div>
+															{/if}
+														</div>
+														{if $CUSTOMBLOCKS.$header.custom}
+															{include file=$CUSTOMBLOCKS.$header.tpl}
+														{else}
+															<!-- Handle the ui types display -->
+															{include file="DisplayFields.tpl"}
+														{/if}
 
-									   <!-- Added to display the Product Details in Inventory-->
-									   {if $MODULE eq 'PurchaseOrder' || $MODULE eq 'SalesOrder' || $MODULE eq 'Quotes' || $MODULE eq 'Invoice'}
-							   		   <tr>
-										<td colspan=4>
-											{include file="ProductDetailsEditView.tpl"}
-										</td>
-							   		   </tr>
-									   {/if}
-
-									   <tr>
-										<td  colspan=4 style="padding:5px">
-											<div align="center">
+														<!-- Added to display the Product Details in Inventory-->
+														{if $MODULE eq 'PurchaseOrder' || $MODULE eq 'SalesOrder' || $MODULE eq 'Quotes' || $MODULE eq 'Invoice'}
+														<div>
+															{include file="ProductDetailsEditView.tpl"}
+														</div>
+														{/if}
+													</td>
+												</tr>
+												{/foreach}
+											</table>
+											<!-- Content here -->
+										</div>
+									</div>
+								</td>
+							</tr>
+							<!-- End Main Content -->
+							<!-- Bottom buttons -->
+							<tr>
+								<td  colspan=4 style="padding:5px">
+									<div align="center">
 										{if $MODULE eq 'Emails'}
-										<input title="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_TITLE}" accessKey="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_KEY}" class="crmbutton small create" onclick="window.open('index.php?module=Users&action=lookupemailtemplates&entityid={$ENTITY_ID}&entity={$ENTITY_TYPE}','emailtemplate','top=100,left=200,height=400,width=300,menubar=no,addressbar=no,status=yes')" type="button" name="button" value="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_LABEL}">
-										<input title="{$MOD.LBL_SEND}" accessKey="{$MOD.LBL_SEND}" class="crmbutton small save" onclick="this.form.action.value='Save';this.form.send_mail.value='true'; return formValidate()" type="submit" name="button" value="  {$MOD.LBL_SEND}  " >
+											<input title="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_TITLE}" accessKey="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_KEY}" class="crmbutton small create" onclick="window.open('index.php?module=Users&action=lookupemailtemplates&entityid={$ENTITY_ID}&entity={$ENTITY_TYPE}','emailtemplate','top=100,left=200,height=400,width=300,menubar=no,addressbar=no,status=yes')" type="button" name="button" value="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_LABEL}">
+											<input title="{$MOD.LBL_SEND}" accessKey="{$MOD.LBL_SEND}" class="crmbutton small save" onclick="this.form.action.value='Save';this.form.send_mail.value='true'; return formValidate()" type="submit" name="button" value="  {$MOD.LBL_SEND}  " >
 										{/if}
 										{if $MODULE eq 'Webmails'}
-										<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.action.value='Save';this.form.module.value='Webmails';this.form.send_mail.value='true';this.form.record.value='{$ID}'" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
+											<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="slds-button slds-button_success slds-button--small" onclick="this.form.action.value='Save';this.form.module.value='Webmails';this.form.send_mail.value='true';this.form.record.value='{$ID}'" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
 										{else}
-											<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.action.value='Save';  displaydeleted();return formValidate();" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
+											<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="slds-button slds-button_success slds-button--small" onclick="this.form.action.value='Save';  displaydeleted();return formValidate();" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
 										{/if}
-										<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="{if isset($smarty.request.Module_Popup_Edit)}window.close(){else}window.history.back(){/if};" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
-											</div>
-										</td>
-									   </tr>
-									</table>
+											<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="slds-button slds-button--destructive slds-button--small" onclick="{if isset($smarty.request.Module_Popup_Edit)}window.close(){else}window.history.back(){/if};" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
+									</div>
 								</td>
-							   </tr>
-							</table>
-						</td>
-					   </tr>
-					</table>
-				</td>
-			   </tr>
+							</tr>
+							<!-- End Bottom buttons -->
+						</table>
+					</td>
+				</tr>
 			</table>
 		</div>
 	</td>
-	<td align=right valign=top><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
    </tr>
 </table>
 <!--added to fix 4600-->

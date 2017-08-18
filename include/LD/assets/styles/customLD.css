@@ -1,3 +1,6 @@
+.slds-table tbody tr {
+    counter-increment: row-number;
+}
 /*=========  Button List  ==========*/
 
 #LB_buttonlist {
@@ -90,6 +93,7 @@
 
 
 
+
 /*=========   END BUTTON_LIST  ==========*/
 
 .homePageButtons img {
@@ -106,6 +110,7 @@
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
 }
+
 
 
 
@@ -146,6 +151,7 @@ li.active,
     color: #0070d2;
     border-color: #d8dde6;
 }
+
 
 
 
@@ -284,6 +290,7 @@ li.active,
 
 
 
+
 /*=========  END DETAIL VIEW ---HEADER---  ==========*/
 
 
@@ -366,6 +373,7 @@ article.container::after {
 
 
 
+
 /*.flexipageComponent .slds-card {*/
 
 
@@ -404,6 +412,7 @@ article.container::after {
 
 
 
+
 /*=========  END DETAIL VIEW ---BODY---  ==========*/
 
 .slds-table-moz {
@@ -412,7 +421,7 @@ article.container::after {
 
 tr td.detailViewContainer {
     padding: 1rem .5rem;
-    border: 2px solid rgb(216, 221, 230);
+    /*border: 2px solid rgb(216, 221, 230);*/
 }
 
 .mapButton td {
@@ -487,6 +496,7 @@ tr td.table-aside>.detailview_actionlinks {
 
 
 
+
 /**
 - * Creates a green button style
 - *
@@ -507,6 +517,7 @@ tr td.table-aside>.detailview_actionlinks {
     color: #fff;
     font-weight: bold;
 }
+
 
 
 
@@ -599,10 +610,33 @@ li[title="More Information"] svg {
     }
 }
 
+.img-background {
+    background-color: cornflowerblue!important;
+}
 
+.createview_field_row tr,
+.createview_field_row td {
+    height: .1rem!important;
+}
 
+.createview_field_row .slds-select {
+    width: 75%;
+}
 
+.createview_field_row select {
+    margin: 0;
+}
 
+.createview_field_row textarea {
+    min-height: 35px;
+}
+
+.createview_field_row .slds-input {
+    line-height: .875rem!important;
+    min-height: calc(1.7rem + (1px * 2)!important);
+    font-size: .875rem!important;
+    margin: 0!important;
+}
 
 /*=========   END DETAIL VIEW  ==========*/
 
@@ -637,6 +671,8 @@ select:-moz-focusring {
     margin-bottom: 5px;
 }
 
+
+
 .LD-icons {
     width: 25px;
     vertical-align: top;
@@ -662,6 +698,7 @@ select:-moz-focusring {
 
 
 
+
 /*=========   END DetailView - DetailViewUI - DetailViewUIUser  ==========*/
 
 
@@ -681,6 +718,7 @@ select:-moz-focusring {
 
 
 
+
 /*=========   END DetailViewUtils.php  ==========*/
 
 
@@ -690,6 +728,7 @@ select:-moz-focusring {
     border-right: 1px solid #fff;
     border-left: 1px solid #fff;
 }
+
 
 
 
@@ -724,6 +763,7 @@ select:-moz-focusring {
 
 
 
+
 /*=========   ListView.tpl  ==========*/
 
 .background {
@@ -746,25 +786,28 @@ select:-moz-focusring {
     .ld-font th:nth-child(2) {
         padding: .5rem 0;
     }
-    }
-    .ld-font th:nth-child(4) {
-        /*padding: .5rem 0;*/
-        width: 140px;
-    }
-    .ld-font th.slds-text-title--caps span{
-        font-size: .8rem;
-        word-wrap: break-word;
-        white-space: normal;
-    }
 }
+
+.ld-font th:nth-child(4) {
+    /*padding: .5rem 0;*/
+    width: 140px;
+}
+
+.ld-font th.slds-text-title--caps span {
+    font-size: .8rem;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+
+}
+
 
 
 
 /*=========   END ListView.tpl  ==========*/
 
-
 /*=========   ListView Entries.tpl  ==========*/
-
 .layerPopupTransport td {
     padding: 0 .5rem;
 }
@@ -784,8 +827,8 @@ th[scope="col"] {
 }
 
 
-/*=========   END ListView Entries.tpl  ==========*/
 
+/*=========   END ListView Entries.tpl  ==========*/
 
 /*===========Related List Data Content===========*/
 
@@ -794,9 +837,10 @@ th[scope="col"] {
     text-align: left;
 }
 
-.font-size select{
+.font-size select {
     font-size: .8rem;
 }
+
 /*=======End CustomView.tpl=======*/
 
 /*===========END Related List Data Content===========*/

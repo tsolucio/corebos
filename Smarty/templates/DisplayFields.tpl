@@ -10,14 +10,23 @@
 -->*}
 
 {assign var="fromlink" value=""}
-{foreach key=label item=subdata from=$data}
-	{if $header eq 'Product Details'}
-		<tr name="tbl{$header|replace:' ':''}Content" class="createview_field_row">
-	{else}
-		<tr name="tbl{$header|replace:' ':''}Content" style="height:25px" class="createview_field_row">
-	{/if}
-	{foreach key=mainlabel item=maindata from=$subdata}
-		{if count($maindata)>0}{include file='EditViewUI.tpl'}{/if}
-	{/foreach}
-	</tr>
-{/foreach}
+<div class="createview_field_row">
+	<table class="slds-table slds-table--cell-buffer slds-no-row-hover slds-table--bordered slds-table--fixed-layout small detailview_table">
+		{foreach key=label item=subdata from=$data}
+			{if $header eq 'Product Details'}
+				
+				<tr name="tbl{$header|replace:' ':''}Content" class="slds-line-height--reset">
+			{else}
+
+				<tr name="tbl{$header|replace:' ':''}Content" class="slds-line-height--reset">
+			{/if}
+				
+				{foreach key=mainlabel item=maindata from=$subdata}
+					
+					{if count($maindata)>0}{include file='EditViewUI.tpl'}{/if}
+					
+				{/foreach}
+			</tr>
+		{/foreach}
+	</table>
+</div>
