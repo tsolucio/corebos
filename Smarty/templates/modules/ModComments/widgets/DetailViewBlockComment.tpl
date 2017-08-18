@@ -13,14 +13,14 @@
             <div class="slds-card__header slds-grid">
                 <header class="slds-media slds-media--center slds-has-flexi-truncate">
                     <div class="slds-media__figure">
-                        <div class="extraSmall forceEntityIcon" style="background-color: #A094ED; height: 1rem;" 
+                        <div class="extraSmall forceEntityIcon" style="height: 1rem;" 
                         data-aura-rendered-by="3:1782;a" data-aura-class="forceEntityIcon">
                         	<span data-aura-rendered-by="6:1782;a" class="uiImage" data-aura-class="uiImage">
-								<a href="javascript:showHideStatus('tbl{$UIKEY}','aid{$UIKEY}','$IMAGE_PATH');">
+								<a href="javascript:showHideStatus('tbl{$UIKEY}','aid{$UIKEY}','{$IMAGE_PATH}');">
 									{if $BLOCKOPEN}
 										   <span class="exp_coll_block inactivate">
                                             <img id="aid{$header|replace:' ':''}"
-                                                 src="{'activate.gif'|@vtiger_imageurl:$THEME}"
+                                                 src="{'chevrondown_60.png'|@vtiger_imageurl:$THEME}" width="16"
                                                  style="border: 0px solid #000000;"
                                                  alt="{'LBL_Hide'|@getTranslatedString:'Settings'}"
                                                  title="{'LBL_Hide'|@getTranslatedString:'Settings'}"/>
@@ -28,7 +28,7 @@
 									{else}
 										    <span class="exp_coll_block activate">
                                             <img id="aid{$header|replace:' ':''}"
-                                                 src="{'inactivate.gif'|@vtiger_imageurl:$THEME}"
+                                                 src="{'chevronright_60.png'|@vtiger_imageurl:$THEME}" width="16"
                                                  style="border: 0px solid #000000;"
                                                  alt="{'LBL_Show'|@getTranslatedString:'Settings'}"
                                                  title="{'LBL_Show'|@getTranslatedString:'Settings'}"/>
@@ -84,7 +84,7 @@
 				</td>
 				<td width="100%" colspan="3" class="dvtCellInfo" align="left">
 					<div id="editarea_{$UIKEY}">
-						<textarea id="txtbox_{$UIKEY}" class="detailedViewTextBox" onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" cols="90" rows="8"></textarea>
+						<textarea id="txtbox_{$UIKEY}" class="slds-textarea" cols="90" rows="8" style="min-height: 35px;"></textarea>
 						<br><a href="javascript:;" class="slds-button slds-button_success slds-button--x-small" onclick="ModCommentsCommon.addComment('{$UIKEY}', '{$ID}');">{$APP.LBL_SAVE_LABEL}</a>
 						<a href="javascript:;" onclick="document.getElementById('txtbox_{$UIKEY}').value='';" class="slds-button slds-button--destructive slds-button--x-small">{$APP.LBL_CLEAR_BUTTON_LABEL}</a>
 					</div>

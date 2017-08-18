@@ -21,18 +21,16 @@
 				<div class="slds-card__header slds-grid">
 					<header class="slds-media slds-media--center slds-has-flexi-truncate">
 						<div class="slds-media__figure">
-							<div class="extraSmall forceEntityIcon" style="background-color: #A094ED" data-aura-rendered-by="3:1782;a" data-aura-class="forceEntityIcon">
+							<div class="extraSmall forceEntityIcon" data-aura-rendered-by="3:1782;a" data-aura-class="forceEntityIcon">
 								<span data-aura-rendered-by="6:1782;a" class="uiImage" data-aura-class="uiImage">
 									<a href="javascript:showHideStatus('tbl{$header|replace:' ':''}','aid{$header|replace:' ':''}','{$THEME}');">
 										{if isset($BLOCKINITIALSTATUS[$header]) && $BLOCKINITIALSTATUS[$header] eq 1}
 										<span class="exp_coll_block inactivate">
-											<img id="aid{$header|replace:' ':''}" src="{'activate.gif'|@vtiger_imageurl:$THEME}"
-											style="border: 0px solid #000000;" alt="{'LBL_Hide'|@getTranslatedString:'Settings'}" title="{'LBL_Hide'|@getTranslatedString:'Settings'}"/>
+											<img id="aid{$header|replace:' ':''}" src="{'chevrondown_60.png'|@vtiger_imageurl:$THEME}" width="16" alt="{'LBL_Hide'|@getTranslatedString:'Settings'}" title="{'LBL_Hide'|@getTranslatedString:'Settings'}"/>
 										</span>
 										{else}
 										<span class="exp_coll_block activate">
-											<img id="aid{$header|replace:' ':''}" src="{'inactivate.gif'|@vtiger_imageurl:$THEME}"
-											style="border: 0px solid #000000;" alt="{'LBL_Show'|@getTranslatedString:'Settings'}" title="{'LBL_Show'|@getTranslatedString:'Settings'}"/>
+											<img id="aid{$header|replace:' ':''}" src="{'chevronright_60.png'|@vtiger_imageurl:$THEME}" width="16" alt="{'LBL_Show'|@getTranslatedString:'Settings'}" title="{'LBL_Show'|@getTranslatedString:'Settings'}"/>
 										</span>
 										{/if}
 									</a>
@@ -66,17 +64,17 @@
 				<div class="slds-card__header slds-grid">
 					<header class="slds-media slds-media--center slds-has-flexi-truncate">
 						<div class="slds-media__figure">
-							<div class="extraSmall forceEntityIcon" style="background-color: #A094ED" data-aura-rendered-by="3:1782;a" data-aura-class="forceEntityIcon">
+							<div class="extraSmall forceEntityIcon" data-aura-rendered-by="3:1782;a" data-aura-class="forceEntityIcon">
 								<span data-aura-rendered-by="6:1782;a" class="uiImage" data-aura-class="uiImage">
 									{strip}
 										<a href="javascript:loadRelatedListBlock('module={$MODULE}&action={$MODULE}Ajax&file=DetailViewAjax&record={$ID}&ajxaction=LOADRELATEDLIST&header={$header}&relation_id={$detail.relationId}&actions={$detail.actions}&parenttab={$CATEGORY}','tbl_{$MODULE}_{$header|replace:' ':''}','{$MODULE}_{$header|replace:' ':''}');">
 											<span class="exp_coll_block activate">
-												<img id="show_{$MODULE}_{$header|replace:' ':''}" src="{'inactivate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;" alt="{'LBL_Show'|@getTranslatedString:'Settings'}" title="{'LBL_Show'|@getTranslatedString:'Settings'}"/>
+												<img id="show_{$MODULE}_{$header|replace:' ':''}" src="{'chevronright_60.png'|@vtiger_imageurl:$THEME}" style=" width: 16px;" alt="{'LBL_Show'|@getTranslatedString:'Settings'}" title="{'LBL_Show'|@getTranslatedString:'Settings'}"/>
 											</span>
 										</a>
 										<a href="javascript:hideRelatedListBlock('tbl_{$MODULE}_{$header|replace:' ':''}','{$MODULE}_{$header|replace:' ':''}');">
 											<span class="exp_coll_block inactivate" style="display: none">
-												<img id="hide_{$MODULE}_{$header|replace:' ':''}" src="{'activate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;display:none;" alt="{'LBL_Show'|@getTranslatedString:'Settings'}" title="{'LBL_Show'|@getTranslatedString:'Settings'}"/>
+												<img id="hide_{$MODULE}_{$header|replace:' ':''}" src="{'chevrondown_60.png'|@vtiger_imageurl:$THEME}" style="display:none; width: 16px;" alt="{'LBL_Show'|@getTranslatedString:'Settings'}" title="{'LBL_Show'|@getTranslatedString:'Settings'}"/>
 											</span>
 										</a>
 									{/strip}

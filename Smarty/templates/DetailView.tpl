@@ -33,7 +33,7 @@ function showHideStatus(sId,anchorImgId,sImagePath)
 		oObj.style.display = 'none';
 		if(anchorImgId !=null){
 {/literal}
-			document.getElementById(anchorImgId).src = 'themes/images/inactivate.gif';
+			document.getElementById(anchorImgId).src = 'themes/images/chevronright_60.png';
 			document.getElementById(anchorImgId).alt = '{'LBL_Show'|@getTranslatedString:'Settings'}';
 			document.getElementById(anchorImgId).title = '{'LBL_Show'|@getTranslatedString:'Settings'}';
 			document.getElementById(anchorImgId).parentElement.className = 'exp_coll_block activate';
@@ -45,7 +45,7 @@ function showHideStatus(sId,anchorImgId,sImagePath)
 		oObj.style.display = 'block';
 		if(anchorImgId !=null){
 {/literal}
-			document.getElementById(anchorImgId).src = 'themes/images/activate.gif';
+			document.getElementById(anchorImgId).src = 'themes/images/chevrondown_60.png';
 			document.getElementById(anchorImgId).alt = '{'LBL_Hide'|@getTranslatedString:'Settings'}';
 			document.getElementById(anchorImgId).title = '{'LBL_Hide'|@getTranslatedString:'Settings'}';
 			document.getElementById(anchorImgId).parentElement.className = 'exp_coll_block inactivate';
@@ -167,9 +167,21 @@ function sendfile_email()
 													<div class="profilePicWrapper slds-media slds-no-space" style="transform: scale3d(0.864715, 0.864715, 1) translate3d(4.32911px, 2.16456px, 0);">
 														<div class="slds-media__figure slds-icon forceEntityIcon">
 															<span class="photoContainer forceSocialPhoto">
-																<div class="small roundedSquare forceEntityIcon" style="background-color: #A094ED">
+																<div class="small roundedSquare forceEntityIcon img-background">
 																	<span class="uiImage">
-																		<img src="https://playful-raccoon-70441-dev-ed.my.salesforce.com/img/icon/t4v35/standard/contact_120.png" class="icon " alt="Contact" title="Contact">
+																		{if $MODULE eq 'Contacts'}
+																			<img src="{'contact_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Contact" title="Contact">
+																		{elseif $MODULE eq 'Accounts'}
+																			<img src="{'account_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Organization" title="Organization">
+																		{elseif $MODULE eq 'Leads'}
+																			<img src="{'lead_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Leads" title="Leads">
+																		{elseif $MODULE eq 'Campaigns'}
+																			<img src="{'campaign_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Campaigns" title="Campaigns">
+																		{elseif $MODULE eq 'Potentials'}
+																			<img src="{'opportunity_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Opportunity" title="Opportunity">
+																		{elseif $MODULE eq 'Quotes'}
+																			<img src="{'quotes_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Quotes" title="Quotes">
+																		{/if}
 																	</span>
 																</div>
 															</span>
@@ -336,18 +348,16 @@ function sendfile_email()
 																								<div class="slds-card__header slds-grid">
 																									<header class="slds-media slds-media--center slds-has-flexi-truncate">
 																										<div class="slds-media__figure">
-																											<div class="extraSmall forceEntityIcon" style="background-color: #A094ED" data-aura-rendered-by="3:1782;a" data-aura-class="forceEntityIcon">
+																											<div class="extraSmall forceEntityIcon" data-aura-rendered-by="3:1782;a" data-aura-class="forceEntityIcon">
 																												<span data-aura-rendered-by="6:1782;a" class="uiImage" data-aura-class="uiImage">
-																													<a href="javascript:showHideStatus('tbl{$header|replace:' ':''}','aid{$header|replace:' ':''}','{$THEME}');">
+																													<a href="javascript:showHideStatus('tbl{$header|replace:' ':''}','aid{$header|replace:' ':''}','{$IMAGE_PATH}');">
 																														{if isset($BLOCKINITIALSTATUS[$header]) && $BLOCKINITIALSTATUS[$header] eq 1}
 																														<span class="exp_coll_block inactivate">
-																															<img id="aid{$header|replace:' ':''}" src="{'activate.gif'|@vtiger_imageurl:$THEME}"
-																															style="border: 0px solid #000000;" alt="{'LBL_Hide'|@getTranslatedString:'Settings'}" title="{'LBL_Hide'|@getTranslatedString:'Settings'}"/>
+																															<img id="aid{$header|replace:' ':''}" src="{'chevrondown_60.png'|@vtiger_imageurl:$THEME}" width="16" alt="{'LBL_Hide'|@getTranslatedString:'Settings'}" title="{'LBL_Hide'|@getTranslatedString:'Settings'}"/>
 																														</span>
 																														{else}
 																														<span class="exp_coll_block activate">
-																															<img id="aid{$header|replace:' ':''}" src="{'inactivate.gif'|@vtiger_imageurl:$THEME}"
-																															style="border: 0px solid #000000;" alt="{'LBL_Show'|@getTranslatedString:'Settings'}" title="{'LBL_Show'|@getTranslatedString:'Settings'}"/>
+																															<img id="aid{$header|replace:' ':''}" src="{'chevronright_60.png'|@vtiger_imageurl:$THEME}" width="16" alt="{'LBL_Show'|@getTranslatedString:'Settings'}" title="{'LBL_Show'|@getTranslatedString:'Settings'}"/>
 																														</span>
 																														{/if}
 																													</a>
@@ -546,7 +556,7 @@ function sendfile_email()
 																			</div>
 																		{/if}
 																	{/if}
-																		<!-- Start: Actions for Documents Module -->
+																		{*<!-- Start: Actions for Documents Module -->*}
 																		{if $MODULE eq 'Documents'}
 																			<div class="actionData actionlink_downloaddocument">
 																				{if $DLD_TYPE eq 'I' && $FILE_STATUS eq '1' && $FILE_EXIST eq 'yes'}
@@ -575,7 +585,7 @@ function sendfile_email()
 																				{/if}
 																			</div>
 																		{/if}
-																	<!-- {/if} -->
+																	{/if}
 
 																	{* vtlib customization: Avoid line break if custom links are present *}
 																	{if !isset($CUSTOM_LINKS) || empty($CUSTOM_LINKS)} <br> {/if}

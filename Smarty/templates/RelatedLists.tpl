@@ -31,9 +31,21 @@
 									<div class="profilePicWrapper slds-media slds-no-space" style="transform: scale3d(0.864715, 0.864715, 1) translate3d(4.32911px, 2.16456px, 0);">
 										<div class="slds-media__figure slds-icon forceEntityIcon">
 											<span class="photoContainer forceSocialPhoto">
-												<div class="small roundedSquare forceEntityIcon" style="background-color: #A094ED">
+												<div class="small roundedSquare forceEntityIcon img-background">
 													<span class="uiImage">
-														<img src="https://playful-raccoon-70441-dev-ed.my.salesforce.com/img/icon/t4v35/standard/contact_120.png" class="icon " alt="Contact" title="Contact">
+														{if $MODULE eq 'Contacts'}
+															<img src="{'contact_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Contact" title="Contact">
+														{elseif $MODULE eq 'Accounts'}
+															<img src="{'account_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Organization" title="Organization">
+														{elseif $MODULE eq 'Leads'}
+															<img src="{'lead_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Leads" title="Leads">
+														{elseif $MODULE eq 'Campaigns'}
+															<img src="{'campaign_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Campaigns" title="Campaigns">
+														{elseif $MODULE eq 'Potentials'}
+															<img src="{'opportunity_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Opportunity" title="Opportunity">
+														{elseif $MODULE eq 'Quotes'}
+															<img src="{'quotes_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Quotes" title="Quotes">
+														{/if}
 													</span>
 												</div>
 											</span>
