@@ -351,7 +351,7 @@ function sendfile_email()
 																											<div class="extraSmall forceEntityIcon" data-aura-rendered-by="3:1782;a" data-aura-class="forceEntityIcon">
 																												<span data-aura-rendered-by="6:1782;a" class="uiImage" data-aura-class="uiImage">
 																													<a href="javascript:showHideStatus('tbl{$header|replace:' ':''}','aid{$header|replace:' ':''}','{$IMAGE_PATH}');">
-																														{if isset($BLOCKINITIALSTATUS[$header]) && $BLOCKINITIALSTATUS[$header] eq 1}
+																														{if isset($BLOCKINITIALSTATUS[$header]) || $BLOCKINITIALSTATUS[$header] eq 1}
 																														<span class="exp_coll_block inactivate">
 																															<img id="aid{$header|replace:' ':''}" src="{'chevrondown_60.png'|@vtiger_imageurl:$THEME}" width="16" alt="{'LBL_Hide'|@getTranslatedString:'Settings'}" title="{'LBL_Hide'|@getTranslatedString:'Settings'}"/>
 																														</span>
