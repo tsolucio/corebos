@@ -8,14 +8,10 @@ build/migrate6
 build/migrate_from_vt6.php
 build/missingLanguage.sh
 build/oo-merge
-build/tests
 build/InstallRESTChanges.php
 build/WebserviceVQLParser
-include/php_writeexcel
-include/prototype-1.4.0
-include/scriptaculous
-include/Zend
-Image
+include/install/resources/gdinfo.php
+include/install/resources/utils.php
 install
 install.php
 modules/Users/authTypes/adldap_test.php
