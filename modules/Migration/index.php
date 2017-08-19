@@ -6,9 +6,8 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
 ********************************************************************************/
-
+include_once 'modules/Migration/migrationutils.php';
 global $current_user;
 if($current_user->is_admin != 'on')
 {
@@ -22,7 +21,7 @@ if ($migration_tpl_file != null) unlink($migration_tpl_file);
 if(getMigrationCharsetFlag() != MIG_CHARSET_PHP_UTF8_DB_UTF8 && !isset($_REQUEST['migration_charstcheck'])) 
 {
 	include('modules/Migration/MigrationStep0.php');
-	exit;	
+	exit;
 }
 
 include("modules/Migration/versions.php");
@@ -40,7 +39,6 @@ if($exists)
 	{
 		$status=false;
 	}
-
 }
 if(!$adb->isPostgres()) {
 	if(isset($_REQUEST['dbconversionutf8'])) {
@@ -49,7 +47,7 @@ if(!$adb->isPostgres()) {
 			$adb->query($query);
 		}
 	}
-}	
+}
 
 $smarty = new vtigerCRM_Smarty();
 
