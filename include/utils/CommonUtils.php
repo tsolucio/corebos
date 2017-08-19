@@ -2069,11 +2069,14 @@ function decideFilePath() {
 	switch (strtolower($saveStrategy)) {
 		case 'crmid':
 			// CRMID in folder
-			if (isset($_REQUEST['return_id']) and $_REQUEST['return_id']>0 and $_REQUEST['return_id']<100000000000) {
-				$filepath .= $_REQUEST['return_id'] . '/';
+			if (isset($_REQUEST['return_id'])) {
+				$retid = vtlib_purify($_REQUEST['return_id']);
+				if (is_numeric($retid) && $retid > 0 && $retid < 100000000000) {
+					$filepath .= $retid . '/';
+				}
 			}
 
-			if(!is_dir($filepath)) {
+			if (!is_dir($filepath)) {
 				//create new folder
 				mkdir($filepath);
 			}
