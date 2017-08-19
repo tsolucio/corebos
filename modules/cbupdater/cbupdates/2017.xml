@@ -56,4 +56,11 @@
 	<classname>delEmail104uitype</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete FieldFormula module: Use workflows.</description>
+	<filename>build/changeSets/2017/delFieldFormula.php</filename>
+	<classname>delFieldFormula</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

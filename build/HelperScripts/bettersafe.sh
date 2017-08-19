@@ -34,7 +34,6 @@ echo "Deactivate all modules you are not using. Besides being more secure the ap
 echo "Optionally you can"
 echo
 echo "=> Deactivate and eliminate (completely uninstall) these modules:"
-echo " - FieldFormulas  this module is totally obsolete > move any rules you have there to workflows"
 echo " - evvtApps  as far as I know nobody is using this"
 echo
 echo "=> Eliminate the SOAP interface extensions you are not using:"

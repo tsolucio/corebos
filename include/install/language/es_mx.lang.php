@@ -12,7 +12,6 @@
 
 $optionalModuleStrings = array(
 	'CustomerPortal_description'=>'Configuración del comportamiento del Portal del Cliente',
-	'FieldFormulas_description'=>'Configuración de Fórmulas de actualización de campos personalizados',
 	'RecycleBin_description'=>'Módulo de control de entidades eliminadas, permite restaurar y eliminar definitivamente',
 	'Tooltip_description'=>'Configuración de referencias de campos que pueden ser una combinación de otros',
 	'Webforms_description'=>'Soporte para webforms. Captura de información externa.',

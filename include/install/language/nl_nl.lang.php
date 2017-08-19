@@ -1,5 +1,4 @@
 <?php
-
 /*******************************************************************************
  * The contents of this file are subject to the following licences:
  * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
@@ -33,7 +32,6 @@
 
 $optionalModuleStrings = array(
 	'CustomerPortal_description'=>'Management interface to control the behavior of Customer Portal Plugin',
-	'FieldFormulas_description'=>'Setup rules for custom fields to update value on record save',
 	'RecycleBin_description'=>'Module to manage deleted records, provides ability to restore or remove it completely',
 	'Tooltip_description'=>'Configure tooltip to be shown for a field, which can be combination of other fields',
 	'Webforms_description'=>'Server side support to allow building client webforms to capture the information easily',

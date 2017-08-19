@@ -105,18 +105,6 @@ if (!empty($fldname) and !empty($modname)) {
 			} else {
 				echo "Field not found in Email Templates<br>";
 			}
-			// Field Formulas
-			$crs = $adb->query("SELECT expressionid
-				FROM `vtiger_fieldformulas`
-				WHERE expression_engine like '%$fldname%'");
-			if ($crs and $adb->num_rows($crs)>0) {
-				while ($fnd=$adb->fetch_array($crs)) {
-					echo "Field found in Field Formula: ".$fnd['expressionid'];
-					echo "<br>";
-				}
-			} else {
-				echo "Field not found in Field Formulas<br>";
-			}
 			// Report Fields
 			$crs = $adb->query("SELECT vtiger_report.reportid,vtiger_report.reportname
 				FROM `vtiger_selectcolumn`

@@ -10,7 +10,6 @@
 
 $optionalModuleStrings = array(
 	'CustomerPortal_description'=>'Management interface to control the behavior of Customer Portal Plugin',
-	'FieldFormulas_description'=>'Setup rules for custom fields to update value on record save',
 	'RecycleBin_description'=>'Module to manage deleted records, provides ability to restore or remove it completely',
 	'Tooltip_description'=>'Configure tooltip to be shown for a field, which can be a combination of other fields',
 	'Webforms_description'=>'Server side support to allow building client webforms to capture information easily',
