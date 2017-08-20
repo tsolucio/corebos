@@ -913,7 +913,22 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			{/if}
 			<input name="user_role" id="user_role" value="{$fldvalue}" type="hidden">
 			</td>
-			{elseif $uitype eq 105}
+		{elseif $uitype eq 115}<!-- for Status field Disabled for nonadmin -->
+			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
+				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
+			</td>
+			<td width="30%" align=left class="dvtCellInfo">
+				{if $secondvalue eq 1 && isset($smarty.request.record) && $CURRENT_USERID != $smarty.request.record}
+					<select id="user_status" name="{$fldname}" tabindex="{$vt_tab}" class="small">
+				{else}
+					<select id="user_status" disabled name="{$fldname}" class="small">
+				{/if}
+				{foreach item=arr from=$fldvalue}
+					<option value="{$arr[1]}" {$arr[2]} >{$arr[0]}</option>
+				{/foreach}
+					</select>
+			</td>
+		{elseif $uitype eq 105}
 			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
 				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
 			</td>
