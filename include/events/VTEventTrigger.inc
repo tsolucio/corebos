@@ -100,7 +100,7 @@ class VTEventTrigger {
 		}
 
 		if (is_array($name)) return $evtinfosbyname[$name[0]];
-		elseif ($name) return $evtinfosbyname[$name];
+		elseif ($name && isset($evtinfosbyname[$name])) return $evtinfosbyname[$name];
 		else return $evtinfosbyname;
 	}
 

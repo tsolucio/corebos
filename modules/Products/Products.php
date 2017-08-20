@@ -265,12 +265,12 @@ class Products extends CRMEntity {
 		foreach ($_FILES as $fileindex => $files) {
 			if (substr($fileindex,0,5)!='file_' and !($fileindex=='file' and $_REQUEST['action']=='ProductsAjax' and $_REQUEST['file']=='UploadImage')) continue;
 			if ($files['name'] != '' && $files['size'] > 0) {
-				if($_REQUEST[$fileindex.'_hidden'] != '')
+				if (!empty($_REQUEST[$fileindex.'_hidden']))
 					$files['original_name'] = vtlib_purify($_REQUEST[$fileindex.'_hidden']);
 				else
 					$files['original_name'] = stripslashes($files['name']);
 				$files['original_name'] = str_replace('"','',$files['original_name']);
-				$file_saved = $this->uploadAndSaveFile($id,$module,$files,'',false,'imagename');
+				$file_saved = $this->uploadAndSaveFile($id,$module,$files,'',$direct_import,'imagename');
 			}
 			unset($_FILES[$fileindex]);
 		}

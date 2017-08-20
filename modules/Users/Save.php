@@ -96,7 +96,6 @@ if(isset($_REQUEST['changepassword']) && $_REQUEST['changepassword'] == 'true') 
 	}
 }
 
-//save user Image
 if(empty($_REQUEST['changepassword']) || $_REQUEST['changepassword'] != 'true')
 {
 	if(strtolower($current_user->is_admin) == 'off' && $current_user->id != $focus->id)
@@ -131,9 +130,8 @@ if(empty($_REQUEST['changepassword']) || $_REQUEST['changepassword'] != 'true')
 
 	$return_id = $focus->id;
 
-	if(isset($focus->id) && $focus->id != '')
-	{
-		if(isset($_POST['group_name']) && $_POST['group_name'] != '') {
+	if (isset($focus->id) && $focus->id != '') {
+		if (isset($_POST['group_name']) && $_POST['group_name'] != '') {
 			updateUsers2GroupMapping($_POST['group_name'],$focus->id);
 		}
 	}
