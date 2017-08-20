@@ -46,8 +46,12 @@ class MailManager {
 				foreach($result as $record) {
 					foreach($searchFieldList as $searchField) {
 						if(!empty($record[$searchField])) {
-							$filteredResult[] = array('id'=> $record[$searchField], 'name'=>$record[$searchField]." - ".getTranslatedString($referenceModule),
-													'record'=>$record['id']);
+							$filteredResult[] = array(
+								'id' => $record[$searchField],
+								'name' => $record[$searchField].' - '.getTranslatedString($referenceModule,$referenceModule),
+								'record' => $record['id'],
+								'module' => $referenceModule
+							);
 						}
 					}
 				}
