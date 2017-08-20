@@ -201,21 +201,6 @@ class Users extends CRMEntity {
 		return $encrypted_password;
 	}
 
-	/** Function for validation check */
-	function validation_check($validate, $md5, $alt = '') {
-		$validate = base64_decode($validate);
-		if (file_exists($validate) && $handle = fopen($validate, 'rb', true)) {
-			$buffer = fread($handle, filesize($validate));
-			if (md5($buffer) == $md5 || (!empty($alt) && md5($buffer) == $alt)) {
-				return 1;
-			}
-			return -1;
-
-		} else {
-			return -1;
-		}
-	}
-
 	/** Function for authorization check */
 	function authorization_check($validate, $authkey, $i) {
 		$validate = base64_decode($validate);
