@@ -12,6 +12,7 @@ build/InstallRESTChanges.php
 build/WebserviceVQLParser
 include/install/resources/gdinfo.php
 include/install/resources/utils.php
+include/utils/DBHealthCheck.php
 install
 install.php
 modules/Users/authTypes/adldap_test.php
