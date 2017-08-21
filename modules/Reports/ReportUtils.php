@@ -164,7 +164,11 @@ function getReportFieldValue ($report, $picklistArray, $dbField, $valueArray, $f
 		} else {
 			implode(', ', $translatedValueList);
 		}
-	}
+	} elseif( $fieldType == "multireference" && !empty($value)){
+                require_once 'modules/PickList/PickListUtils.php';
+                $content = getPicklistValuesSpecialUitypes($field->getUIType(),$field->getFieldName(),$value,'DetailView');
+                $fieldvalue = strip_tags(implode(', ',$content));
+        }
 	if($fieldvalue == "") {
 		return "-";
 	}
