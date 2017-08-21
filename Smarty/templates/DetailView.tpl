@@ -179,8 +179,8 @@ function sendfile_email()
 																			<img src="{'campaign_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Campaigns" title="Campaigns">
 																		{elseif $MODULE eq 'Potentials'}
 																			<img src="{'opportunity_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Opportunity" title="Opportunity">
-																		{elseif $MODULE eq 'Quotes'}
-																			<img src="{'quotes_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Quotes" title="Quotes">
+																		{elseif $MODULE eq 'Documents'}
+																			<img src="{'document_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Documents" title="Documents">
 																		{/if}
 																	</span>
 																</div>
@@ -201,17 +201,16 @@ function sendfile_email()
 												<div class="slds-col slds-no-flex slds-grid slds-align-middle actionsContainer" id="detailview_utils_thirdfiller">
 													<div class="slds-grid forceActionsContainer">
 														{if $EDIT_PERMISSION eq 'yes'}
-														<input class="slds-button slds-button--neutral not-selected slds-not-selected uiButton" aria-live="assertive" 
-														type="button" name="Edit" title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" 
-														onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.return_id.value='{$ID}';DetailView.module.value='{$MODULE}';submitFormForAction('DetailView','EditView');" value="&nbsp;{$APP.LBL_EDIT_BUTTON_LABEL}&nbsp;" />&nbsp; {/if} {if ((isset($CREATE_PERMISSION) && $CREATE_PERMISSION eq 'permitted') || (isset($EDIT_PERMISSION) && $EDIT_PERMISSION eq 'yes')) && $MODULE neq 'Documents'}
+															<input class="slds-button slds-button--neutral not-selected slds-not-selected uiButton" aria-live="assertive" type="button" name="Edit" title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.return_id.value='{$ID}';DetailView.module.value='{$MODULE}';submitFormForAction('DetailView','EditView');" value="&nbsp;{$APP.LBL_EDIT_BUTTON_LABEL}&nbsp;" />&nbsp;
+														{/if}
 
-														<input title="{$APP.LBL_DUPLICATE_BUTTON_TITLE}" accessKey="{$APP.LBL_DUPLICATE_BUTTON_KEY}" 
-														class="slds-button slds-button--neutral not-selected slds-not-selected uiButton" 
-														onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.isDuplicate.value='true';DetailView.module.value='{$MODULE}'; submitFormForAction('DetailView','EditView');" type="button" name="Duplicate" value="{$APP.LBL_DUPLICATE_BUTTON_LABEL}" />&nbsp; {/if} {if $DELETE eq 'permitted'}
-														
-														<input title="{$APP.LBL_DELETE_BUTTON_TITLE}" accessKey="{$APP.LBL_DELETE_BUTTON_KEY}" 
-														class="slds-button slds-button--neutral not-selected slds-not-selected uiButton" 
-														onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='index'; {if $MODULE eq 'Accounts'} var confirmMsg = '{$APP.NTC_ACCOUNT_DELETE_CONFIRMATION}' {else} var confirmMsg = '{$APP.NTC_DELETE_CONFIRMATION}' {/if}; submitFormForActionWithConfirmation('DetailView', 'Delete', confirmMsg);" type="button" name="Delete" value="{$APP.LBL_DELETE_BUTTON_LABEL}" />&nbsp; {/if} 
+														{if ((isset($CREATE_PERMISSION) && $CREATE_PERMISSION eq 'permitted') || (isset($EDIT_PERMISSION) && $EDIT_PERMISSION eq 'yes')) && $MODULE neq 'Documents'}
+														<input title="{$APP.LBL_DUPLICATE_BUTTON_TITLE}" accessKey="{$APP.LBL_DUPLICATE_BUTTON_KEY}" class="slds-button slds-button--neutral not-selected slds-not-selected uiButton" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.isDuplicate.value='true';DetailView.module.value='{$MODULE}'; submitFormForAction('DetailView','EditView');" type="button" name="Duplicate" value="{$APP.LBL_DUPLICATE_BUTTON_LABEL}" />&nbsp;
+														{/if}
+
+														{if $DELETE eq 'permitted'}
+															<input title="{$APP.LBL_DELETE_BUTTON_TITLE}" accessKey="{$APP.LBL_DELETE_BUTTON_KEY}" 
+														class="slds-button slds-button--neutral not-selected slds-not-selected uiButton" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='index'; {if $MODULE eq 'Accounts'} var confirmMsg = '{$APP.NTC_ACCOUNT_DELETE_CONFIRMATION}' {else} var confirmMsg = '{$APP.NTC_DELETE_CONFIRMATION}' {/if}; submitFormForActionWithConfirmation('DetailView', 'Delete', confirmMsg);" type="button" name="Delete" value="{$APP.LBL_DELETE_BUTTON_LABEL}" />&nbsp; {/if} 
 														
 														{*
 														<span class="detailview_utils_toggleactions">
@@ -233,13 +232,13 @@ function sendfile_email()
 
 														<p class="slds-text-heading--label slds-line-height--reset" style="text-align: right; margin: 7px 0 0 5px ;">
 															{if $privrecord neq ''}
-															<span class="detailview_utils_prev" onclick="location.href='index.php?module={$MODULE}&viewtype={if isset($VIEWTYPE)}{$VIEWTYPE}{/if}&action=DetailView&record={$privrecord}&parenttab={$CATEGORY}&start={$privrecordstart}'" title="{$APP.LNK_LIST_PREVIOUS}">
-																<img align="absmiddle" accessKey="{$APP.LNK_LIST_PREVIOUS}" name="privrecord" value="{$APP.LNK_LIST_PREVIOUS}" src="{'rec_prev.gif'|@vtiger_imageurl:$THEME}"/>
-															</span>&nbsp;
+																<span class="detailview_utils_prev" onclick="location.href='index.php?module={$MODULE}&viewtype={if isset($VIEWTYPE)}{$VIEWTYPE}{/if}&action=DetailView&record={$privrecord}&parenttab={$CATEGORY}&start={$privrecordstart}'" title="{$APP.LNK_LIST_PREVIOUS}">
+																	<img align="absmiddle" accessKey="{$APP.LNK_LIST_PREVIOUS}" name="privrecord" value="{$APP.LNK_LIST_PREVIOUS}" src="{'rec_prev.gif'|@vtiger_imageurl:$THEME}"/>
+																</span>&nbsp;
 															{else}
-															<span class="detailview_utils_prev" title="{$APP.LNK_LIST_PREVIOUS}">
-																<img align="absmiddle" width="23" src="{'rec_prev_disabled.gif'|@vtiger_imageurl:$THEME}">
-															</span>&nbsp;
+																<span class="detailview_utils_prev" title="{$APP.LNK_LIST_PREVIOUS}">
+																	<img align="absmiddle" width="23" src="{'rec_prev_disabled.gif'|@vtiger_imageurl:$THEME}">
+																</span>&nbsp;
 															{/if} 
 															{if $privrecord neq '' || $nextrecord neq ''}
 															<span class="detailview_utils_jumpto" id="jumpBtnIdTop"
@@ -253,8 +252,7 @@ function sendfile_email()
 															{/if}
 															{if $nextrecord neq ''}
 															<span class="detailview_utils_next" onclick="location.href='index.php?module={$MODULE}&viewtype={if isset($VIEWTYPE)}{$VIEWTYPE}{/if}&action=DetailView&record={$nextrecord}&parenttab={$CATEGORY}&start={$nextrecordstart}'" title="{$APP.LNK_LIST_NEXT}">
-																<img align="absmiddle" accessKey="{$APP.LNK_LIST_NEXT}"
-																name="nextrecord" src="{'rec_next.gif'|@vtiger_imageurl:$THEME}">
+																<img align="absmiddle" accessKey="{$APP.LNK_LIST_NEXT}" name="nextrecord" src="{'rec_next.gif'|@vtiger_imageurl:$THEME}">
 															</span>&nbsp;
 															{else}
 															<span class="detailview_utils_next" title="{$APP.LNK_LIST_NEXT}">
@@ -476,8 +474,10 @@ function sendfile_email()
 
 																				<!-- Inventory - Product Details informations -->
 																			{if isset($ASSOCIATED_PRODUCTS)}
-																				<tr>
-																					{$ASSOCIATED_PRODUCTS}
+																				<tr class="blockStyleCss">
+																					<td class="detailViewContainer">
+																						{$ASSOCIATED_PRODUCTS}
+																					</td>
 																				</tr>
 																			{/if}
 
@@ -655,7 +655,7 @@ function sendfile_email()
 																	<div class="slds-card__body slds-card__body--inner">
 																		<div id="tagdiv" style="display:visible;">
 																			<form method="POST" action="javascript:void(0);" onsubmit="return tagvalidate();">
-																				<input class="textbox slds-input" type="text" id="txtbox_tagfields" name="textbox_First Name" value="" style="width:100px;margin-left:5px;"></input>&nbsp;&nbsp;
+																				<input class="textbox slds-input" type="text" id="txtbox_tagfields" name="textbox_First Name" value="" style="width:150px;margin-left:5px;"></input>&nbsp;&nbsp;
 																				<input name="button_tagfileds" type="submit" class="slds-button slds-button_success slds-button--small" value="{$APP.LBL_TAG_IT}" />
 																			</form>
 																		</div>

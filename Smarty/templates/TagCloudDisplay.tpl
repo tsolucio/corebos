@@ -11,16 +11,27 @@
 
 {if $TAG_CLOUD_DISPLAY eq 'true'}
 <!-- Tag cloud display -->
-	<table border=0 cellspacing=0 cellpadding=0 width=100% class="tagCloud">
-	<tr>
-		<td class="tagCloudTopBg"><img src="{$IMAGE_PATH}tagCloudName.gif" border=0></td>
-	</tr>
-	<tr>
-		<td><div id="tagdiv" style="display:visible;"><form method="POST" action="javascript:void(0);" onsubmit="return tagvalidate();"><input class="textbox"  type="text" id="txtbox_tagfields" name="textbox_First Name" value="" style="width:100px;margin-left:5px;"></input>&nbsp;&nbsp;<input name="button_tagfileds" type="submit" class="crmbutton small save" value="{$APP.LBL_TAG_IT}"/></form></div></td>
-	</tr>
-	<tr>
-		<td class="tagCloudDisplay" valign=top> <span id="tagfields"></span></td>
-	</tr>
-	</table>
+	<div class="flexipageComponent tagCloud" style="background-color: #fff;">
+		<article class="slds-card container MEDIUM forceBaseCard runtime_sales_mergeMergeCandidatesPreviewCard" aria-describedby="header">
+			<div class="slds-card__header slds-grid">
+				<header class="slds-media slds-media--center slds-has-flexi-truncate">
+					<div class="slds-media__body">
+						<img src="{$IMAGE_PATH}tagCloudName.gif" border=0 />
+					</div>
+				</header>
+			</div>
+			<div class="slds-card__body slds-card__body--inner">
+				<div id="tagdiv" style="display:visible;">
+					<form method="POST" action="javascript:void(0);" onsubmit="return tagvalidate();">
+						<input class="textbox slds-input" type="text" id="txtbox_tagfields" name="textbox_First Name" value="" style="width:150px;margin-left:5px;"/>&nbsp;&nbsp;
+						<input name="button_tagfileds" type="submit" class="slds-button slds-button_success slds-button--small" value="{$APP.LBL_TAG_IT}"/>
+					</form>
+				</div>
+				<div class="tagCloudDisplay actionData">
+					<span id="tagfields"></span>
+				</div>
+			</div>
+		</article>
+	</div>
 <!-- End Tag cloud display -->
 {/if}
