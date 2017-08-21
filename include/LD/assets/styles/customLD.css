@@ -95,7 +95,9 @@
 }
 
 
-
+.header-title-container .slds-truncate {
+    white-space: normal;
+}
 
 
 /*=========   END BUTTON_LIST  ==========*/

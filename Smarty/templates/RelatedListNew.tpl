@@ -14,8 +14,8 @@
 <!-- Contents -->
 <div id="editlistprice" style="position:absolute;width:300px;"></div>
 	<tr>
-		<td valign=top align=left >
-			<div class="small" style="padding:5px">
+		<td valign=top align=left style="{if $MODULE eq 'Documents'}padding:0;{/if}">
+			<div class="small">
 			<table border=0 cellspacing=0 cellpadding=3 width=100% >
 				<tr>
 					<td valign=top align=left>

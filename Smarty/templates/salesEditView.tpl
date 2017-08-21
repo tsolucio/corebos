@@ -49,6 +49,14 @@
 																<img src="{'opportunity_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Opportunity" title="Opportunity">
 															{elseif $MODULE eq 'Quotes'}
 																<img src="{'quotes_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Quotes" title="Quotes">
+															{elseif $MODULE eq 'SalesOrder'}
+																<img src="{'salesorder_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="SalesOrder" title="SalesOrder">
+															{elseif $MODULE eq 'Invoice'}
+																<img src="{'invoice_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Invoice" title="Invoice" style="height:1.8rem; padding-top: 1px;">
+															{elseif $MODULE eq 'PriceBooks'}
+																<img src="{'pricebook_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="PriceBooks" title="PriceBooks">
+															{elseif $MODULE eq 'Documents'}
+																<img src="{'document_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Documents" title="Documents">
 															{/if}
 														</span>
 													</div>
