@@ -1177,12 +1177,11 @@ class QueryGenerator {
 				case 'b': $sqlOperator = "<";
 					break;
 			}
-			if(!$this->isNumericType($field->getFieldDataType()) &&
-					($field->getFieldName() != 'birthday' || ($field->getFieldName() == 'birthday'
-							&& $this->isRelativeSearchOperators($operator)))){
+			if ($this->requiresQuoteSearchOperators($operator) || (!$this->isNumericType($field->getFieldDataType()) &&
+					($field->getFieldName() != 'birthday' || ($field->getFieldName() == 'birthday' && $this->isRelativeSearchOperators($operator))))) {
 				$value = "'$value'";
 			}
-			if($this->isNumericType($field->getFieldDataType()) && empty($value)) {
+			if ($this->isNumericType($field->getFieldDataType()) && empty($value)) {
 				$value = '0';
 			}
 			$sql[] = "$sqlOperator $value";
@@ -1208,6 +1207,10 @@ class QueryGenerator {
 	private function isRelativeSearchOperators($operator) {
 		$nonDaySearchOperators = array('l','g','m','h');
 		return in_array($operator, $nonDaySearchOperators);
+	}
+	private function requiresQuoteSearchOperators($operator) {
+		$requiresQuote = array('s','ew','c','k');
+		return in_array($operator, $requiresQuote);
 	}
 	private function isNumericType($type) {
 		return ($type == 'integer' || $type == 'double' || $type == 'currency');
