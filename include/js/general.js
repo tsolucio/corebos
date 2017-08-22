@@ -4963,7 +4963,7 @@ function AutocompleteRelation(target, i) {
 	this.moduleName 	= this.data.searchmodule;
 	this.fillfields		= this.fillFields();
 	this.maxResults 	= this.MaxResults();
-        this.mincharstoSearch 	= this.MinCharsToSearch();
+	this.mincharstoSearch 	= this.MinCharsToSearch();
 	this.multiselect 	= this.multiselect();
 	if(this.multiselect==='true'){
 		target.style.width='95%';
@@ -5018,16 +5018,15 @@ AutocompleteRelation.prototype.get = function(e) {
 					acInstance.set(json_data)
 			}
 		};
-                if(e.target.name==='query_string'){
-                    var params=JSON.stringify(this.data);
-                    r.open("POST", "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getGloalSearch", true);
-                    r.setRequestHeader( "Content-type", "application/json;charset=UTF-8" );
-                    r.send(params);
-                }
-                else{
-                    r.open("GET", "index.php?module=Utilities&action=UtilitiesAjax&file=getAutocomplete&data="+encodeURIComponent(JSON.stringify(this.data)), true);
-                    r.send();
-                }
+		if (e.target.name==='query_string') {
+			var params=JSON.stringify(this.data);
+			r.open("POST", "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getGloalSearch", true);
+			r.setRequestHeader( "Content-type", "application/json;charset=UTF-8" );
+			r.send(params);
+		} else {
+			r.open("GET", "index.php?module=Utilities&action=UtilitiesAjax&file=getAutocomplete&data="+encodeURIComponent(JSON.stringify(this.data)), true);
+			r.send();
+		}
 	} else {
 		this.clearTargetUL();
 		this.targetUL.hide();
@@ -5052,12 +5051,12 @@ AutocompleteRelation.prototype.set = function(items) {
 					value 		: this.getAttribute("data-crmid")
 				});
 				acInstance.fillOtherFields(this);
-                                if(acInstance.inputField.name==='query_string'){
-                                    acInstance.goToRec({
-					crmmodule 	: this.getAttribute("data-crmmodule"),
-					value 		: this.getAttribute("data-crmid")
-                                    });
-                                }
+				if (acInstance.inputField.name==='query_string') {
+					acInstance.goToRec({
+						crmmodule 	: this.getAttribute("data-crmmodule"),
+						value 		: this.getAttribute("data-crmid")
+					});
+				}
 			});
 
 		}
@@ -5142,11 +5141,11 @@ AutocompleteRelation.prototype.buildListItem = function(item) {
 
 	span = document.createElement("span");
 	span.setAttribute("class", "slds-listbox__option-meta slds-listbox__option-meta_entity");
-	if(this.inputField.name==='query_string'){
-            span.innerText = this.buildSecondayReturnFieldsGS(item);
-        }else{
-            span.innerText = this.buildSecondayReturnFields(item);
-        }
+	if (this.inputField.name==='query_string') {
+		span.innerText = this.buildSecondayReturnFieldsGS(item);
+	} else {
+		span.innerText = this.buildSecondayReturnFields(item);
+	}
 
 	li.children[0].children[1].appendChild(span);
 
@@ -5168,13 +5167,13 @@ AutocompleteRelation.prototype.buildSecondayReturnFields = function(item) {
 
 AutocompleteRelation.prototype.buildSecondayReturnFieldsGS = function(item) {
 	var returnString = "";
-        var module=item['crmmodule'];
-        var displayFld=this.data.searchin[module]['showfields'];
+	var module=item['crmmodule'];
+	var displayFld=this.data.searchin[module]['showfields'];
 	for (var i = 0; i < displayFld.length; i++) {
-                returnString = returnString + item[displayFld[i]];
-                if (i < displayFld.length - 1) {
-                        returnString += "\n";
-                }
+		returnString = returnString + item[displayFld[i]];
+		if (i < displayFld.length - 1) {
+			returnString += "\n";
+		}
 	}
 	return returnString;
 }
@@ -5288,7 +5287,7 @@ AutocompleteRelation.prototype.showFields = function () {
 }
 
 AutocompleteRelation.prototype.entityField = function () {
-        if(typeof this.data.entityfield === 'string')
+	if(typeof this.data.entityfield === 'string')
 		return this.data.entityfield
 	else {
 		ref_module = this.getReferenceModule();
@@ -5319,21 +5318,21 @@ AutocompleteRelation.prototype.MaxResults = function () {
 		return this.data.maxresults;
 	else if(typeof this.data.maxresults === undefined){
 		ref_module = this.getReferenceModule();
-                if(ref_module !== '' && this.data.maxresults[ref_module] !== undefined){
-                    return this.data.maxresults[ref_module]
-                }
+		if (ref_module !== '' && this.data.maxresults[ref_module] !== undefined) {
+			return this.data.maxresults[ref_module]
+		}
 	}
-        return 5;
+	return 5;
 }
 
 AutocompleteRelation.prototype.MinCharsToSearch = function () {
-	if(typeof this.data.mincharstosearch === 'number'){
+	if (typeof this.data.mincharstosearch === 'number') {
 		return this.data.mincharstosearch;
-        }else if(typeof this.data.mincharstosearch === undefined){
+	} else if (typeof this.data.mincharstosearch === undefined) {
 		ref_module = this.getReferenceModule();
-                if(ref_module !== '' && this.data.mincharstosearch[ref_module] !== undefined){
-                    return this.data.mincharstosearch[ref_module]
-                }
-        }
-        return 3;
+		if (ref_module !== '' && this.data.mincharstosearch[ref_module] !== undefined) {
+			return this.data.mincharstosearch[ref_module]
+		}
+	}
+	return 3;
 }

@@ -996,71 +996,69 @@ function getGlobalSearch($term, $searchin, $limit, $user) {
 
 	$respuesta=array();
 	if (empty($searchin)) return $respuesta;
-	if (empty($limit)) $limit = 15;  // hard coded default
+	if (empty($limit)) $limit = 15; // hard coded default
 
 	$current_user = VTWS_PreserveGlobal::preserveGlobal('current_user',$user);
-        $query=array();
-        foreach($searchin as $key=>$value){
-            $searchinmodule=$key;
-            $smod = CRMEntity::getInstance($searchinmodule);
-            $sindex = $smod->table_index;
-            $wsid = vtyiicpng_getWSEntityId($searchinmodule);
-            if (!(vtlib_isModuleActive($searchinmodule) and isPermitted($searchinmodule,'DetailView')))  continue;
-            $filter     =$value['searchcondition'];
-            $sfields    =$value['searchfields'];
-            $rfields    =$value['showfields'];
-            $queryGenerator = new QueryGenerator($searchinmodule, $current_user);
-            if (empty($term)) {
-		$term='%';
-		$op='like';
-            } else {
-                    switch ($filter) {
-                            case 'eq':
-                                    $op='e';
-                                    break;
-                            case 'neq':
-                                    $op='n';
-                                    break;
-                            case 'startswith':
-                                    $op='s';
-                                    break;
-                            case 'endswith':
-                                    $op='ew';
-                                    break;
-                            case 'contains':
-                                    $op='c';
-                                    break;
-                            default: $op='e'; break;
-                    }
-            }
-            $flds = array_unique(array_merge($sfields,$rfields,array('id')));
-
-            $queryGenerator->setFields($flds);
-            foreach ($sfields as $sfld) {
-                    $queryGenerator->addCondition($sfld,$term,$op,$queryGenerator::$OR);
-            }
-            $query = $queryGenerator->getQuery();
-            $rsemp=$adb->query($query);
-            while ($emp=$adb->fetch_array($rsemp)) {
-		$rsp = array();
-		foreach ($rfields as $rf) {
-			$colum_name = $queryGenerator->getModuleFields()[$rf]->getColumnName();
-			$rsp[$rf] = html_entity_decode($emp[$colum_name],ENT_QUOTES,$default_charset);
+	$query = array();
+	foreach ($searchin as $key=>$value) {
+		$searchinmodule=$key;
+		$smod = CRMEntity::getInstance($searchinmodule);
+		$sindex = $smod->table_index;
+		$wsid = vtyiicpng_getWSEntityId($searchinmodule);
+		if (!(vtlib_isModuleActive($searchinmodule) and isPermitted($searchinmodule,'DetailView'))) continue;
+		$filter =$value['searchcondition'];
+		$sfields = $value['searchfields'];
+		$rfields = $value['showfields'];
+		$queryGenerator = new QueryGenerator($searchinmodule, $current_user);
+		if (empty($term)) {
+			$term='%';
+			$op='like';
+		} else {
+			switch ($filter) {
+				case 'neq':
+					$op='n';
+					break;
+				case 'startswith':
+					$op='s';
+					break;
+				case 'endswith':
+					$op='ew';
+					break;
+				case 'contains':
+					$op='c';
+					break;
+				case 'eq':
+				default:
+					$op='e';
+					break;
+			}
 		}
-		$respuesta[]=array(
-			'crmid'=>$wsid.$emp[$sindex],
-                        'query_string'=>getTranslatedString($searchinmodule),
-                        'crmmodule'=> $searchinmodule,
-			'crmfields'=>$rsp,
-		);
-		if (count($respuesta)>=$limit) break;
-            }
-        }
-	
-	
+		$flds = array_unique(array_merge($sfields,$rfields,array('id')));
+
+		$queryGenerator->setFields($flds);
+		foreach ($sfields as $sfld) {
+			$queryGenerator->addCondition($sfld,$term,$op,$queryGenerator::$OR);
+		}
+		$query = $queryGenerator->getQuery();
+		global $log;$log->fatal($query);
+		$rsemp=$adb->query($query);
+		while ($emp=$adb->fetch_array($rsemp)) {
+			$rsp = array();
+			foreach ($rfields as $rf) {
+				$colum_name = $queryGenerator->getModuleFields()[$rf]->getColumnName();
+				$rsp[$rf] = html_entity_decode($emp[$colum_name],ENT_QUOTES,$default_charset);
+			}
+			$respuesta[]=array(
+				'crmid'=>$wsid.$emp[$sindex],
+				'query_string'=>getTranslatedString($searchinmodule),
+				'crmmodule'=> $searchinmodule,
+				'crmfields'=>$rsp,
+			);
+			if (count($respuesta)>=$limit) break;
+		}
+	}
 	VTWS_PreserveGlobal::flush();
 	return $respuesta;
 }
-
 
 ?>

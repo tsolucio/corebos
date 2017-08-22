@@ -106,9 +106,9 @@ $bmapname = 'GlobalSearchAutocomplete';
 $cbMapGS = array();
 $cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 if ($cbMapid) {
-    $cbMap = cbMap::getMapByID($cbMapid);
-    $cbMapGS = $cbMap->GlobalSearchAutocomplete();
-    $cbMapGS['entityfield']='query_string';
+	$cbMap = cbMap::getMapByID($cbMapid);
+	$cbMapGS = $cbMap->GlobalSearchAutocomplete();
+	$cbMapGS['entityfield']='query_string';
 }
 $smarty->assign("GS_AUTOCOMP",$cbMapGS);
 

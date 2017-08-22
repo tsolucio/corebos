@@ -181,13 +181,12 @@ switch ($functiontocall) {
 			$ret = $currencyField->getDisplayValue(null,true,true);
 		}
 		break;
-        case 'getGloalSearch':
+	case 'getGloalSearch':
 		include_once 'include/Webservices/CustomerPortalWS.php';
-                $data=json_decode(file_get_contents('php://input'), TRUE);
-		$searchin   = vtlib_purify($data['searchin']);
-		$limit      = vtlib_purify($data['maxResults']);
-                $term       = vtlib_purify($data['term']);
-                
+		$data = json_decode(file_get_contents('php://input'), TRUE);
+		$searchin = vtlib_purify($data['searchin']);
+		$limit = isset($data['maxResults']) ? vtlib_purify($data['maxResults']) : '';
+		$term = vtlib_purify($data['term']);
 		$retvals = getGlobalSearch($term, $searchin, $limit, $current_user);
 		$ret = array();
 		foreach ($retvals as $value) {
