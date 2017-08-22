@@ -422,8 +422,8 @@ article.container::after {
     margin-bottom: 3rem;
 }
 
-.blockStyleCss {
-    /*background-color: rgb(244, 246, 249);*/
+.blockStyleCss > td{
+    white-space: normal!important;
 }
 
 .runtime_sales_mergeMergeCandidatesPreviewCard .actionData,

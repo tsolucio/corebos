@@ -178,21 +178,26 @@
 						{* Pickup the translated label provided by the module *}
 						{assign var="customlink_label" value=$customlink_label|@getTranslatedString:$CUSTOMLINK->module()}
 					{/if}
-					<br/>
-					<table border=0 cellspacing=0 cellpadding=0 width=100% class="rightMailMerge">
-						<tr>
-							<td class="rightMailMergeHeader">
-								<b>{$customlink_label}</b>
-								<img id="detailview_block_{$CUSTOMLINK_NO}_indicator" style="display:none;" src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" />
-							</td>
-						</tr>
-						<tr style="height:25px">
-							<td class="rightMailMergeContent"><div id="detailview_block_{$CUSTOMLINK_NO}"></div></td>
-						</tr>
-						<script type="text/javascript">
-							vtlib_loadDetailViewWidget("{$customlink_href}", "detailview_block_{$CUSTOMLINK_NO}", "detailview_block_{$CUSTOMLINK_NO}_indicator");
-						</script>
-					</table>
+					<div class="flexipageComponent">
+						<article class="slds-card container MEDIUM forceBaseCard runtime_sales_mergeMergeCandidatesPreviewCard" aria-describedby="header">
+							<div class="slds-card__header slds-grid">
+								<header class="slds-media slds-media--center slds-has-flexi-truncate">
+									<div class="slds-media__body">
+										<h4 class="header-title-container">
+											<span class="slds-text-heading--small slds-truncate actionLabel"><b>{$customlink_label}</b></span>
+											<img id="detailview_block_{$CUSTOMLINK_NO}_indicator" style="display:none;" src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" />
+										</h4>
+	 								</div>
+								</header>
+							</div>
+							<div class="slds-card__body slds-card__body--inner">
+								<div id="detailview_block_{$CUSTOMLINK_NO}"></div>
+								<script type="text/javascript">
+									vtlib_loadDetailViewWidget("{$customlink_href}", "detailview_block_{$CUSTOMLINK_NO}", "detailview_block_{$CUSTOMLINK_NO}_indicator");
+								</script>
+							</div>
+						</article>
+					</div>
 				{/if}
 			{/foreach}
 		{/if}

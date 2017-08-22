@@ -312,13 +312,13 @@ function sendfile_email()
 																						<!-- Detailed View Code starts here-->
 																						<!-- This is added to display the existing comments -->
 																						{if $header eq $APP.LBL_COMMENTS || (isset($MOD.LBL_COMMENTS) && $header eq $MOD.LBL_COMMENTS) || (isset($MOD.LBL_COMMENT_INFORMATION) && $header eq $MOD.LBL_COMMENT_INFORMATION)}
-																						<div class="flexipageComponent" style="background-color: #fff;">
-																							<article class="slds-card container MEDIUM forceBaseCard runtime_sales_mergeMergeCandidatesPreviewCard" aria-describedby="header" style="margin: 0;">
+																						<div class="forceRelatedListSingleContainer">
+																							<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
 																								<div class="slds-card__header slds-grid">
 																									<header class="slds-media slds-media--center slds-has-flexi-truncate">
 																										<div class="slds-media__body">
-																											<h2 class="header-title-container" >
-																												<span class="slds-text-heading--small slds-truncate actionLabel">
+																											<h2>
+																												<span class="slds-text-title--caps slds-truncate slds-m-right--xx-small">
 																													<b>{if isset($MOD.LBL_COMMENT_INFORMATION)}{$MOD.LBL_COMMENT_INFORMATION}{else}{$APP.LBL_COMMENTS}{/if}</b>
 																												</span>
 																											</h2>
@@ -337,6 +337,8 @@ function sendfile_email()
 																									</div>
 																							</article>
 																						</div>
+																						<br/>
+																						<br/>
 																						{/if}
 
 																						{if $header neq 'Comments' && (!isset($BLOCKS.$header.relatedlist) || $BLOCKS.$header.relatedlist eq 0)}
@@ -365,7 +367,7 @@ function sendfile_email()
 																										<div class="slds-media__body">
 																											<h2>
 																												<span class="slds-text-title--caps slds-truncate slds-m-right--xx-small" title="{$header}">
-																													<b>{$header}</b>
+																													<b>{$APP.LBL_COMMENTS}</b>
 																												</span>
 																											</h2>
 																										</div>
@@ -676,7 +678,7 @@ function sendfile_email()
 																<input type="hidden" name="record" value="{$ID}">
 																<input type="hidden" name="action">
 
-																<div class="flexipageComponent" style="background-color: #fff;">
+																<div class="flexipageComponent">
 																	<article class="slds-card container MEDIUM forceBaseCard runtime_sales_mergeMergeCandidatesPreviewCard" aria-describedby="header">
 																		<div class="slds-card__header slds-grid">
 																			<header class="slds-media slds-media--center slds-has-flexi-truncate">
@@ -688,7 +690,7 @@ function sendfile_email()
 																			</header>
 																		</div>
 																		<div class="slds-card__body slds-card__body--inner">
-																			<div class="rightMailMergeData">
+																			<div class="actionData">
 																				{if $TEMPLATECOUNT neq 0}
 																					<select name="mergefile" class="slds-select">
 																						{foreach key=templid item=tempflname from=$TOPTIONS}
@@ -718,22 +720,24 @@ function sendfile_email()
 																 		{* Pickup the translated label provided by the module *}
 															 			{assign var="customlink_label" value=$customlink_label|@getTranslatedString:$CUSTOMLINK->module()}
 														 			{/if}
-													 				<br/>
-													 				<table border=0 cellspacing=0 cellpadding=0 width=100% class="rightMailMerge" id="{$CUSTOMLINK->linklabel}">
-													 					<tr>
-													 						<td class="rightMailMergeHeader"><b>{$customlink_label}</b>
-													 							<img id="detailview_block_{$CUSTOMLINK_NO}_indicator" style="display:none;" src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" />
-													 						</td>
-												 						</tr>
-																		<tr style="height:25px">
-																			<td class="rightMailMergeContent">
+														 			<div class="flexipageComponent" id="{$CUSTOMLINK->linklabel}">
+																		<article class="slds-card container MEDIUM forceBaseCard runtime_sales_mergeMergeCandidatesPreviewCard" aria-describedby="header">
+																			<div class="slds-card__header slds-grid">
+																				<header class="slds-media slds-media--center slds-has-flexi-truncate">
+																					<div class="slds-media__body">
+																						<b>{$customlink_label}</b>
+													 									<img id="detailview_block_{$CUSTOMLINK_NO}_indicator" style="display:none;" src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" />
+																					</div>
+																				</header>
+																			</div>
+																			<div class="slds-card__body slds-card__body--inner">
 																				<div id="detailview_block_{$CUSTOMLINK_NO}"></div>
-																			</td>
-																		</tr>
-																		<script type="text/javascript">
-																		vtlib_loadDetailViewWidget("{$customlink_href}", "detailview_block_{$CUSTOMLINK_NO}", "detailview_block_{$CUSTOMLINK_NO}_indicator");
-																		</script>
-																	</table>
+																				<script type="text/javascript">
+																				vtlib_loadDetailViewWidget("{$customlink_href}", "detailview_block_{$CUSTOMLINK_NO}", "detailview_block_{$CUSTOMLINK_NO}_indicator");
+																				</script>
+																			</div>
+																		</article>
+																	</div>
 																{/if}
 															{/foreach}
 														{/if}

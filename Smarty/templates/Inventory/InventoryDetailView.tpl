@@ -146,6 +146,8 @@ function DeleteTag(id,recordid)
 																			<img src="{'invoice_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Invoice" title="Invoice" style="height:1.8rem; padding-top: 1px;">
 																		{elseif $MODULE eq 'PriceBooks'}
 																			<img src="{'pricebook_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="PriceBooks" title="PriceBooks">
+																		{elseif $MODULE eq 'Products'}
+																			<img src="{'product_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Products" title="Products">
 																		{/if}
 																	</span>
 																</div>
