@@ -345,8 +345,9 @@ class CRMEntity {
 		$ownerid = $this->column_fields['assigned_user_id'];
 		if (strpos($ownerid,'x')>0) { // we have a WSid
 			$usrWSid = vtws_getEntityId('Users');
+			$grpWSid = vtws_getEntityId('Groups');
 			list($inputWSid,$inputCRMid) = explode('x',$ownerid);
-			if ($usrWSid==$inputWSid) {
+			if ($usrWSid==$inputWSid || $grpWSid==$inputWSid) {
 				$ownerid = $inputCRMid;
 			} else {
 				die('Invalid user id!');
