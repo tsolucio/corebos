@@ -4999,7 +4999,7 @@ AutocompleteRelation.prototype.get = function(e) {
 		var nr_opt=array.length;
 		term=array[nr_opt-1];
 	}
-	if (term.length > this.mincharstoSearch) {
+	if (term.length > this.mincharstoSearch && typeof(this.data.searchin) != 'undefined') {
 		this.data.term = term;
 		var acInstance = this;
 
