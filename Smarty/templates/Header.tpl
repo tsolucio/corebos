@@ -109,7 +109,15 @@
 								<input type="hidden" name="module" value="Home" style="margin:0px">
 								<input type="hidden" name="parenttab" value="{$CATEGORY}" style="margin:0px">
 								<input type="hidden" name="search_onlyin" value="--USESELECTED--" style="margin:0px">
-								<input type="text" name="query_string" id="query_string" value="{$QUERY_STRING}" class="searchBox" onFocus="this.value=''" >
+								<input type="text" name="query_string" id="query_string" value="{$QUERY_STRING}" 
+                                                                       class="searchBox" onFocus="this.value=''" 
+                                                                       autocomplete="off"
+                                                                       data-autocomp='{$GS_AUTOCOMP|@json_encode}'>
+                                                                {if ( isset($GS_AUTOCOMP) && isset($GS_AUTOCOMP['searchin']) )}
+                                                                        <div id="listbox-unique-id" role="listbox" class="">
+                                                                                <ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0; width: 100%;left:45%;" role="presentation"></ul>
+                                                                        </div>
+                                                                {/if}
 							</td>
 							<td align ="right" style="background-color:#FFFFEF; vertical-align:middle;padding:5px;" onclick="UnifiedSearch_SelectModuleForm(this);">
 								<a href='javascript:void(0);' ><img src="{'arrow_down_black.png'|@vtiger_imageurl:$THEME}" align='left' border=0></a>

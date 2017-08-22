@@ -181,6 +181,19 @@ switch ($functiontocall) {
 			$ret = $currencyField->getDisplayValue(null,true,true);
 		}
 		break;
+        case 'getGloalSearch':
+		include_once 'include/Webservices/CustomerPortalWS.php';
+                $data=json_decode(file_get_contents('php://input'), TRUE);
+		$searchin   = vtlib_purify($data['searchin']);
+		$limit      = vtlib_purify($data['maxResults']);
+                $term       = vtlib_purify($data['term']);
+                
+		$retvals = getGlobalSearch($term, $searchin, $limit, $current_user);
+		$ret = array();
+		foreach ($retvals as $value) {
+			$ret[] = array('crmid'=>$value['crmid'],'crmmodule'=>$value['crmmodule'],'query_string'=>$value['query_string'])+ $value['crmfields'];
+		}
+		break;
 	case 'ismoduleactive':
 	default:
 		$mod = vtlib_purify($_REQUEST['checkmodule']);

@@ -57,7 +57,7 @@ class GlobalSearchAutocomplete extends processcbMap {
 			$searchin[(String)$v->name] = array(
 				'searchfields' => $searchfields,
 				'showfields' => $showfields,
-				'searchcondition' => (isset($xml->searchcondition) ? (String)$xml->searchcondition : 'startswith'),
+				'searchcondition' => (isset($v->searchcondition) ? (String)$v->searchcondition : 'startswith'),
 			);
 		}
 		$mapping['searchin'] = $searchin;
