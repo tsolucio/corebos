@@ -1,6 +1,8 @@
 .slds-table tbody tr {
     counter-increment: row-number;
 }
+
+
 /*=========  Button List  ==========*/
 
 #LB_buttonlist {
@@ -14,6 +16,7 @@
 .uiMenu {
     position: relative;
 }
+
 
 /*.extraSmall:hover {
     background-color: #90b8e8;
@@ -100,6 +103,7 @@
 }
 
 
+
 /*=========   END BUTTON_LIST  ==========*/
 
 .homePageButtons img {
@@ -116,6 +120,7 @@
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
 }
+
 
 
 
@@ -160,6 +165,15 @@ li.active,
 
 
 
+.uiOutputText {
+    display: block;
+    /* or inline-block */
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    overflow: hidden;
+    width: 850px;
+    white-space: nowrap;
+}
 
 
 
@@ -297,6 +311,7 @@ li.active,
 
 
 
+
 /*=========  END DETAIL VIEW ---HEADER---  ==========*/
 
 
@@ -380,6 +395,7 @@ article.container::after {
 
 
 
+
 /*.flexipageComponent .slds-card {*/
 
 
@@ -412,6 +428,7 @@ article.container::after {
 .actionData img. .noSpace {
     margin-left: 0;
 }
+
 
 
 
@@ -503,6 +520,7 @@ tr td.table-aside>.detailview_actionlinks {
 
 
 
+
 /**
 - * Creates a green button style
 - *
@@ -523,6 +541,7 @@ tr td.table-aside>.detailview_actionlinks {
     color: #fff;
     font-weight: bold;
 }
+
 
 
 
@@ -644,6 +663,7 @@ li[title="More Information"] svg {
     margin: 0!important;
 }
 
+
 /*=========   END DETAIL VIEW  ==========*/
 
 
@@ -705,6 +725,7 @@ select:-moz-focusring {
 
 
 
+
 /*=========   END DetailView - DetailViewUI - DetailViewUIUser  ==========*/
 
 
@@ -725,6 +746,7 @@ select:-moz-focusring {
 
 
 
+
 /*=========   END DetailViewUtils.php  ==========*/
 
 
@@ -734,6 +756,7 @@ select:-moz-focusring {
     border-right: 1px solid #fff;
     border-left: 1px solid #fff;
 }
+
 
 
 
@@ -762,6 +785,7 @@ select:-moz-focusring {
 .dvtContentSpace>tr {
     background-color: #f7f7fb;
 }
+
 
 
 
@@ -806,7 +830,9 @@ select:-moz-focusring {
 }
 
 
+
 }
+
 
 
 
@@ -834,6 +860,7 @@ th[scope="col"] {
 
 
 
+
 /*=========   END ListView Entries.tpl  ==========*/
 
 /*===========Related List Data Content===========*/
@@ -846,6 +873,7 @@ th[scope="col"] {
 .font-size select {
     font-size: .8rem;
 }
+
 
 /*=======End CustomView.tpl=======*/
 

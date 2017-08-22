@@ -2126,9 +2126,7 @@ textarea {
 }
 
 .mailSubHeader {
-	background:#FFFFFF url(images/level2Bg.gif) repeat-x scroll center bottom;
-	border-top:0px solid #ddd;
-	padding:4px;
+	background-color:#e2e5ff;
 }
 
 .mailClientWriteEmailHeader {

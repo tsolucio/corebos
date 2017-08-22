@@ -11,19 +11,26 @@
 {if isset($smarty.request.ajax) && $smarty.request.ajax neq ''}
 &#&#&#{$ERROR}&#&#&#
 {/if}
-<table class="layerPopupTransport" width="100%">
-    <tr>
-        <td class="small" nowrap="" width="25%"></td>
-        <td>
-            <!-- Filters -->
+<table width="98%" align="center" class="layerPopupTransport">
+	<tr>
+		<td width="25%" class="small" nowrap align="left"></td>
+		<td>
+			<!-- Filters -->
 			{if empty($HIDE_CUSTOM_LINKS) || $HIDE_CUSTOM_LINKS neq '1'}
-				<table border=0 cellspacing=0 cellpadding=0 class="small" align="center">
+				<table cellpadding="5" cellspacing="0" class="small" align="center">
 					<tr>
-						<td align="center" style="padding-left:5px;padding-right:5px">
-							<b><font size=2>{$APP.LBL_VIEW}</font></b> <SELECT NAME="viewname" id="viewname" class="small" onchange="showDefaultCustomView(this,'{$MODULE}','{$CATEGORY}')">{$CUSTOMVIEW_OPTION}</SELECT>
+						<td style="padding: 0 5px; display: flex;" align="center">
+							<b style="margin: .4rem;"><font size=2>{$APP.LBL_VIEW}</font></b>
+							<div class="slds-form-element">
+								<div class="slds-form-element__control">
+									<div class="slds-select_container">
+										<select name="viewname" id="viewname" class="small slds-select" style="max-width:240px;" onchange="showDefaultCustomView(this,'{$MODULE}','{$CATEGORY}')">{$CUSTOMVIEW_OPTION}</select>
+									</div>
+								</div>
+							</div>
 						</td>
 						{if $ALL eq 'All'}
-							<td align="center" style="padding-left:5px;padding-right:5px">
+							<td style="padding-left:5px;padding-right:5px" align="center">
 								<a href="index.php?module={$MODULE}&action=CustomView&parenttab={$CATEGORY}">{$APP.LNK_CV_CREATEVIEW}</a>
 								<span class="small">|</span>
 								<span class="small" disabled>{$APP.LNK_CV_EDIT}</span>
@@ -31,7 +38,7 @@
 								<span class="small" disabled>{$APP.LNK_CV_DELETE}</span>
 							</td>
 						{else}
-							<td>
+							<td style="padding-left:5px;padding-right:5px" align="center">
 								<a href="index.php?module={$MODULE}&action=CustomView&parenttab={$CATEGORY}">{$APP.LNK_CV_CREATEVIEW}</a>
 								<span class="small">|</span>
 								{if $CV_EDIT_PERMIT neq 'yes'}
@@ -56,7 +63,7 @@
 			{/if}
 			<!-- Filters  END-->
 		</td>
-		<td height="38px" class="small" nowrap="" width="25%"> </td>
+		<td class="small" nowrap="" width="25%"> </td>
 	</tr>
 </table>
 <form name="massdelete" method="POST" id="massdelete">
@@ -71,7 +78,7 @@
 	<input name="allselectedboxes" id="allselectedboxes" type="hidden" value="">
 	<input name="current_page_boxes" id="current_page_boxes" type="hidden" value="{$CURRENT_PAGE_BOXES}">
 	<!-- List View Master Holder starts -->
-	<table border="0" cellspacing="1" cellpadding="0" width="100%" class="lvtBg">
+	<table border="0" cellspacing="1" cellpadding="0" align="center" width="98%" class="lvtBg">
 		<tr>
 			{if $NO_FOLDERS eq 'yes'}
 				<td width="100%" valign="top" height="250px;"><br><br>
@@ -86,35 +93,29 @@
 					</div>
 				</td>
 			{else}
-				<td>
+				<td style="padding: 0;">
 					<table width="100%">
 						<tr>
-							<td align="center">
+							<td align="center" style="padding: 0;">
 								<!-- List View's Buttons and Filters starts -->
 								<table border=0 cellspacing=0 cellpadding=2 width=100% class="small">
 									<tr>
-										<td>
-											<table border=0 cellspacing=0 cellpadding=0>
-												<tr>
-													<td style="padding-right:20px" nowrap>{include file='ListViewButtons.tpl'}</td>
-												</tr>
-											</table>
-										</td>
-										<td width="100%" align="right"></td>
+										<!-- Buttons -->
+										<td style="padding-right:20px" nowrap>{include file='ListViewButtons.tpl'}</td>
 									</tr>
 								</table>
-	                            <!-- List View's Buttons and Filters ends -->
+								<!-- List View's Buttons and Filters ends -->
 
-                                {foreach item=folder from=$FOLDERS}
+								{foreach item=folder from=$FOLDERS}
 									<!-- folder division starts -->
 									{assign var=foldercount value=$FOLDERS|@count}
 
-                                    <div id='{$folder.folderid}' class="documentModuleFolderView">
+									<div id='{$folder.folderid}' class="documentModuleFolderView">
 										<input type="hidden" name="numOfRows" id="numOfRows_selectall{$folder.folderid}" value="">
 										<input type="hidden" name="folderidVal" id="folderid_selectall{$folder.folderid}" value="{$folder.folderid}">
 										<input type="hidden" name="selectedboxes" id="selectedboxes_selectall{$folder.folderid}" value="">
 										<input type="hidden" name="excludedRecords" id="excludedRecords_selectall{$folder.folderid}" value="">
-                                        <table class="reportsListTable" align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+										<table class="slds-table slds-no-row-hover">
 											<tr>
 												<td class="mailSubHeader" width="40%" align="left">
 													<b>{$folder.foldername}</b>
@@ -123,20 +124,27 @@
 														<font class="copy">[<i>{$folder.description}</i>]</font>
 													{/if}
 												</td>
-												<td class="mailSubHeader small" align="center" nowrap>{$folder.recordListRange}</td>
+												<td class="mailSubHeader" align="center" nowrap>{$folder.recordListRange}</td>
 												{$folder.navigation}
 											</tr>
-                                            <tr>
+											<tr>
 												<td colspan="4" >
 													<div id="FileList_{$folder.folderid}">
 														<!-- File list table for a folder starts -->
-														<table border=0 cellspacing=1 cellpadding=3 width=100%>
-                                                        <!-- Table Headers -->
+														<table class="slds-table slds-table--bordered">
+															<thead>
+															<!-- Table Headers -->
 															{assign var="header_count" value=$folder.header|@count}
 																<tr>
-																	<td class="lvtCol" width="10px"><input type="checkbox"  name="selectall{$folder.folderid}" id="currentPageRec_selectall{$folder.folderid}" onClick='toggleSelect_ListView(this.checked,"selected_id{$folder.folderid}","selectall{$folder.folderid}");'></td>
+																	<th scope="col" class="slds-text-align--center" style="width: 3.25rem;text-align: center;" >
+																		<input type="checkbox" style="margin: 0;" name="selectall{$folder.folderid}" id="currentPageRec_selectall{$folder.folderid}" onClick='toggleSelect_ListView(this.checked,"selected_id{$folder.folderid}","selectall{$folder.folderid}");'>
+																	</th>
 																	{foreach name="listviewforeach" item=header from=$folder.header}
-																		<td class="lvtCol">{$header}</td>
+																		<th class="slds-text-title--caps" scope="col">
+																			<span class="slds-truncate slds-text-link--reset" style="padding: .5rem 0;">
+																				{$header}
+																			</span>
+																		</th>
 																	{/foreach}
 																</tr>
 																<tr>
@@ -145,24 +153,35 @@
 																		<span id="deSelectAllRec_selectall{$folder.folderid}" class="selectall" style="display:none;" onClick="toggleSelectDocumentRecords('{$MODULE}',false,'selected_id{$folder.folderid}','selectall{$folder.folderid}')">{$APP.LBL_DESELECT_ALL} <span class="folder">{$folder.foldername}</span> {$APP.LBL_FOLDER}</span>
 																	</td>
 																</tr>
-
-																<!-- Table Contents -->
-
-                                                                {foreach item=entity key=entity_id from=$folder.entries}
-                                                                <tr class="lvtColData" bgcolor=white onMouseOver="this.className='lvtColDataHover'" onMouseOut="this.className='lvtColData'" id="row_{$entity_id}">
-																	<td width="2%"><input type="checkbox" name="selected_id{$folder.folderid}" id="{$entity_id}" value= '{$entity_id}' onClick='check_object(this,"selectall{$folder.folderid}")'></td>
-                                                                    {foreach item=recordid key=record_id from=$entity}
-																		{foreach item=data from=$recordid}
-																			{* vtlib customization: Trigger events on listview cell *}
-																				<td onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">{$data}</td>
-																			{* END *}
+															</thead>
+																<tbody>
+																	<!-- Table Contents -->
+																	{foreach item=entity key=entity_id from=$folder.entries}
+																	<tr class="slds-hint-parent slds-line-height--reset" id="row_{$entity_id}">
+																		<td role="gridcell" class="slds-text-align--center">
+																			<span class="slds-checkbox">
+																				<input type="checkbox" name="selected_id{$folder.folderid}" id="{$entity_id}" value= '{$entity_id}' onClick='check_object(this,"selectall{$folder.folderid}")'>
+																				<label class="slds-checkbox__label" for="{$entity_id}">
+																						<span class="slds-checkbox--faux"></span>
+																				</label>
+																			</span>
+																		</td>
+																		{foreach item=recordid key=record_id from=$entity}
+																			{foreach item=data from=$recordid}
+																				{* vtlib customization: Trigger events on listview cell *}
+																					<th scope="row">
+																						<div class="slds-truncate" onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">
+																							{$data}
+																						</div>
+																					</th>
+																				{* END *}
+																			{/foreach}
 																		{/foreach}
-																	{/foreach}
-																</tr>
+																	</tr>
 
-                                                                <!-- If there are no entries for a folder -->
-                                                                {foreachelse}
-																	{if $foldercount eq 1}
+																	<!-- If there are no entries for a folder -->
+																	{foreachelse}
+																		{if $foldercount eq 1}
 																		<tr>
 																			<td align="center" style="background-color:#efefef;height:340px" colspan="{$header_count+1}">
 																				<div style="border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 45%; position: relative;">
@@ -222,6 +241,7 @@
 																		</tr>
 																	{/if}
 																{/foreach}
+																</tbody>
 														</table>
 													</div>
                                                     <!-- File list table for a folder ends -->
@@ -229,9 +249,9 @@
 											</tr>
 										</table>
 									</div>
-                                    <!-- folder division ends -->
+									<!-- folder division ends -->
 								{/foreach}
-                                <!-- $FOLDERS ends -->
+								<!-- $FOLDERS ends -->
 							</td>
 						{/if}
 						<!-- conditional statement for $NO_FOLDERS ends -->

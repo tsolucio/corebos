@@ -113,9 +113,7 @@
 							<!-- Table Headers -->
 							<tr>
 								<th scope="col" class="slds-text-align--center" style="width: 3.25rem;text-align: center;" >
-									<!-- <div class="slds-th__action slds-th__action_form"> -->
-										<input type="checkbox" name="selectall" style="margin: 0;" id="selectCurrentPageRec" onClick=toggleSelect_ListView(this.checked,"selected_id")>
-									<!-- </div> -->
+									<input type="checkbox" name="selectall" style="margin: 0;" id="selectCurrentPageRec" onClick=toggleSelect_ListView(this.checked,"selected_id")>
 								</th>
 								{foreach name="listviewforeach" item=header from=$LISTHEADER}
 								<th class="slds-text-title--caps" scope="col">
@@ -283,104 +281,6 @@
 					</div>
 				</section>
 				<!-- ===========END popover============== -->
-
-
-				<div style="display: none;">
-					<table border=0 cellspacing=1 cellpadding=3 width=100% class="lvt small">
-						<!-- Table Headers -->
-						<tr>
-							<td class="lvtCol"><input type="checkbox" name="selectall" id="selectCurrentPageRec" onClick=toggleSelect_ListView(this.checked,"selected_id")></td>
-							{foreach name="listviewforeach" item=header from=$LISTHEADER}
-								<td class="lvtCol">{$header}</td>
-							{/foreach}
-						</tr>
-						<tr>
-							<td id="linkForSelectAll" class="linkForSelectAll" style="display:none;" colspan=15>
-								<span id="selectAllRec" class="selectall" style="display:inline;" onClick="toggleSelectAll_Records('{$MODULE}',true,'selected_id')">{$APP.LBL_SELECT_ALL} <span id="count"> </span> {$APP.LBL_RECORDS_IN} {$MODULE|@getTranslatedString:$MODULE}</span>
-								<span id="deSelectAllRec" class="selectall" style="display:none;" onClick="toggleSelectAll_Records('{$MODULE}',false,'selected_id')">{$APP.LBL_DESELECT_ALL} {$MODULE|@getTranslatedString:$MODULE}</span>
-							</td>
-						</tr>
-						<!-- Table Contents -->
-						{foreach item=entity key=entity_id from=$LISTENTITY}
-							<tr bgcolor=white onMouseOver="this.className='lvtColDataHover'" onMouseOut="this.className='lvtColData'" id="row_{$entity_id}">
-								<td width="2%">{if $entity_id>0}<input type="checkbox" NAME="selected_id" id="{$entity_id}" value= '{$entity_id}' onClick="check_object(this)">{else}<span class="listview_row_sigma">&Sigma;</span>{/if}</td>
-								{foreach item=data from=$entity}
-									{* vtlib customization: Trigger events on listview cell *}
-									<td onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">{$data}</td>
-								{/foreach}
-							</tr>
-						{foreachelse}
-							<tr>
-							<td style="background-color:#efefef;height:340px" align="center" colspan="{$smarty.foreach.listviewforeach.iteration+1}">
-							<div id="no_entries_found" style="border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 45%; position: relative;">
-							{assign var=vowel_conf value='LBL_A'}
-							{if $MODULE eq 'Accounts' || $MODULE eq 'Invoice'}
-								{assign var=vowel_conf value='LBL_AN'}
-							{/if}
-							{assign var=MODULE_CREATE value=$SINGLE_MOD}
-							{if $MODULE eq 'HelpDesk'}
-								{assign var=MODULE_CREATE value='Ticket'}
-							{/if}
-
-							{if $SQLERROR}
-								<table border="0" cellpadding="5" cellspacing="0" width="98%">
-								<tr>
-									<td rowspan="2" width="25%"><img src="{'empty.png'|@vtiger_imageurl:$THEME}" height="60" width="61"></td>
-									<td style="border-bottom: 1px solid rgb(204, 204, 204);" nowrap="nowrap" width="75%">
-										<span class="genHeaderSmall">{$APP.LBL_NO_DATA}</span>
-									</td>
-								</tr>
-								<tr>
-									<td class="small" align="left" nowrap="nowrap">{'ERROR_GETTING_FILTER'|@getTranslatedString:$MODULE}</td>
-								</tr>
-								</table>
-							{else}
-								{if $CHECK.EditView eq 'yes' && $MODULE neq 'Emails' && $MODULE neq 'Webmails'}
-									<table border="0" cellpadding="5" cellspacing="0" width="98%">
-									<tr>
-										<td rowspan="2" width="25%"><img src="{'empty.png'|@vtiger_imageurl:$THEME}" height="60" width="61"></td>
-										<td style="border-bottom: 1px solid rgb(204, 204, 204);" nowrap="nowrap" width="75%">
-											<span class="genHeaderSmall">{$APP.LBL_NO_DATA}</span>
-										</td>
-									</tr>
-									<tr>
-										<td class="small" align="left" nowrap="nowrap">
-											{if $MODULE neq 'Calendar'}
-												<b><a class="nef_action" href="index.php?module={$MODULE}&action=EditView&return_action=DetailView&parenttab={$CATEGORY}">{$APP.LBL_CREATE} {$APP.$vowel_conf}
-													{$MODULE_CREATE|@getTranslatedString:$MODULE}
-													{if $CHECK.Import eq 'yes' && $MODULE neq 'Documents'}
-													</a></b><br>
-													<b><a class="nef_action" href="index.php?module={$MODULE}&action=Import&step=1&return_module={$MODULE}&return_action=ListView&parenttab={$CATEGORY}">{$APP.LBL_IMPORT} {$MODULE|@getTranslatedString:$MODULE}
-													{/if}
-												</a></b><br>
-											{else}
-												<b><a class="nef_action" href="index.php?module=Calendar4You&amp;action=EventEditView&amp;return_module=Calendar4You&amp;activity_mode=Events&amp;return_action=DetailView&amp;parenttab={$CATEGORY}">{$APP.LBL_CREATE} {$APP.LBL_AN} {$APP.Event}</a></b><br>
-												<b><a class="nef_action" href="index.php?module=Calendar4You&amp;action=EventEditView&amp;return_module=Calendar4You&amp;activity_mode=Task&amp;return_action=DetailView&amp;parenttab={$CATEGORY}">{$APP.LBL_CREATE} {$APP.LBL_A} {$APP.Task}</a></b>
-											{/if}
-										</td>
-									</tr>
-									</table>
-								{else}
-									<table border="0" cellpadding="5" cellspacing="0" width="98%">
-									<tr>
-										<td rowspan="2" width="25%"><img src="{'denied.gif'|@vtiger_imageurl:$THEME}"></td>
-										<td style="border-bottom: 1px solid rgb(204, 204, 204);" nowrap="nowrap" width="75%"><span class="genHeaderSmall">{$APP.LBL_NO_DATA}</span></td>
-									</tr>
-									<tr>
-										<td class="small" align="left" nowrap="nowrap">{$APP.LBL_YOU_ARE_NOT_ALLOWED_TO_CREATE} {$APP.$vowel_conf}
-										{$MODULE_CREATE|@getTranslatedString:$MODULE}
-										<br>
-										</td>
-									</tr>
-									</table>
-								{/if}
-							{/if} {* SQL ERROR ELSE END *}
-						</div>
-						</td>
-						</tr>
-						{/foreach}
-					</table>
-				</div>
 
 				<table border=0 cellspacing=0 cellpadding=2 width=100%>
 					<tr>
