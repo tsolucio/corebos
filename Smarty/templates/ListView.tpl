@@ -40,11 +40,11 @@
 <!-- Contents -->*}
 <table class="slds-table slds-no-row-hover">
 	<tr>
-		<td valign="top" width=98% style="padding:10px;">
+		<td valign="top" width=98% style="padding:0;">
 			<!-- SIMPLE SEARCH -->
 			<div id="searchAcc" style="{$DEFAULT_SEARCH_PANEL_STATUS};position:relative;">
 				<form name="basicSearch" method="post" action="index.php" onSubmit="document.basicSearch.searchtype.searchlaunched='basic';return callSearch('Basic');">
-					<table width="99%" cellpadding="5" cellspacing="0" class="searchUIBasic small" align="center" border=0>
+					<table width="98%" cellpadding="5" cellspacing="0" class="searchUIBasic small" align="center" border=0>
 						<tr>
 							<td class="searchUIName small" nowrap align="left">
 								<span class="moduleName">{$APP.LBL_SEARCH}</span>
@@ -95,12 +95,12 @@
 						</tr>
 					</table>
 				</form>
-				<br class="searchbreak">
+				<!-- <br class="searchbreak"> -->
 			</div>
 			<!-- ADVANCED SEARCH -->
 			<div id="advSearch" style="display:none;">
 				<form name="advSearch" method="post" action="index.php" onSubmit="document.basicSearch.searchtype.searchlaunched='advance';return callSearch('Advanced');">
-					<table cellspacing=0 cellpadding=5 width=100% class="searchUIAdv1 small" align="center" border=0>
+					<table cellspacing=0 cellpadding=5 width=98% class="searchUIAdv1 small" align="center" border=0>
 						<tr>
 							<td class="searchUIName small" nowrap align="left">
 								<span class="moduleName">{$APP.LBL_SEARCH}</span>
@@ -110,14 +110,14 @@
 							<td class="small closeX" align="right" valign="top" onMouseOver="this.style.cursor='pointer';" onclick="moveMe('searchAcc');searchshowhide('searchAcc','advSearch');document.basicSearch.searchtype.searchlaunched='';">[x]</td>
 						</tr>
 					</table>
-					<table cellpadding="2" cellspacing="0" width="100%" align="center" class="searchUIAdv2 small" border=0>
+					<table cellpadding="2" cellspacing="0" width="98%" align="center" class="searchUIAdv2 small" border=0>
 						<tr>
 							<td align="center" class="small" width=90%>
 								{include file='AdvanceFilter.tpl' SOURCE='customview' COLUMNS_BLOCK=$FIELDNAMES}
 							</td>
 						</tr>
 					</table>
-					<table border=0 cellspacing=0 cellpadding=5 width=100% class="searchUIAdv3 small" align="center">
+					<table border=0 cellspacing=0 cellpadding=5 width=98% class="searchUIAdv3 small" align="center">
 						<tr>
 							<td align="center" class="small">
 								<input type="button" class="slds-button slds-button--brand slds-button--small" value=" {$APP.LBL_SEARCH_NOW_BUTTON} " onClick="callSearch('Advanced');document.basicSearch.searchtype.searchlaunched='advance';">
@@ -133,7 +133,7 @@
 				{include file="MergeColumns.tpl"}
 			</div>
 			<!-- PUBLIC CONTENTS STARTS-->
-			<div id="ListViewContents" class="small" style="width:100%;">
+			<div id="ListViewContents" class="small" style="width:100%;margin-top: .5rem;">
 				{if $MODULE neq "Documents" || $Document_Folder_View eq 0} {include file="ListViewEntries.tpl"} {else} {include file="DocumentsListViewEntries.tpl"} {/if}
 			</div>
 		</td>

@@ -27,11 +27,11 @@
 	<input name="allselectedboxes" id="allselectedboxes" type="hidden" value="{$ALLSELECTEDIDS}">
 	<input name="current_page_boxes" id="current_page_boxes" type="hidden" value="{$CURRENT_PAGE_BOXES}">
 	<!-- List View Master Holder starts -->
-	<table border=0 cellspacing=1 cellpadding=0 width=100% class="lvtBg">
+	<table border=0 cellspacing=1 cellpadding=0 width=98% class="lvtBg" align="center">
 		<tr>
-			<td style="padding: 0 .5rem;">
+			<td style="padding: 0;">
 				<!-- List View's Buttons and Filters starts -->
-				<table width="100%" class="layerPopupTransport">
+				<table width="100%" class="layerPopupTransport" align="center">
 					<tr>
 						<td width="25%" class="small" nowrap align="left">{$recordListRange}</td>
 						<td>
