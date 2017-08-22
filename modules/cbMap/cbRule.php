@@ -58,7 +58,8 @@ class coreBOS_Rule {
 		if (is_numeric($conditionid)) {
 			$cbmap = cbMap::getMapByID($conditionid);
 		} else {
-			$cbmap = GlobalVariable::getVariable('BusinessMapping_'.$conditionid, cbMap::getMapIdByName($conditionid));
+			$cbmapid = GlobalVariable::getVariable('BusinessMapping_'.$conditionid, cbMap::getMapIdByName($conditionid));
+			$cbmap = cbMap::getMapByID($cbmapid);
 		}
 		if (empty($cbmap) or !in_array($cbmap->column_fields['maptype'],self::$supportedBusinessMaps)) {
 			throw new WebServiceException(WebServiceErrorCode::$INVALID_BUSINESSMAP,'Invalid Business Map identifier.');
