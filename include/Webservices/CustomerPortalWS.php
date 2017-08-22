@@ -1040,7 +1040,6 @@ function getGlobalSearch($term, $searchin, $limit, $user) {
 			$queryGenerator->addCondition($sfld,$term,$op,$queryGenerator::$OR);
 		}
 		$query = $queryGenerator->getQuery();
-		global $log;$log->fatal($query);
 		$rsemp=$adb->query($query);
 		while ($emp=$adb->fetch_array($rsemp)) {
 			$rsp = array();
