@@ -4937,7 +4937,7 @@ var throttle = function(func, limit) {
 document.addEventListener("DOMContentLoaded", function(event) {
 
 	/* ======= Auto complete part relations ====== */
-	var acInputs = document.getElementsByClassName("autocomplete-input");
+	var acInputs = document.querySelectorAll(".autocomplete-input,.searchBox");
 	for (var i = 0; i < acInputs.length; i++) {
 		(function(_i){
 			var ac = new AutocompleteRelation(acInputs[_i], _i);
@@ -4959,7 +4959,8 @@ function AutocompleteRelation(target, i) {
 	this.entityName		= this.entityField();
 	this.moduleName 	= this.data.searchmodule;
 	this.fillfields		= this.fillFields();
-	this.maxResults 	= 5;
+	this.maxResults 	= this.MaxResults();
+        this.mincharstoSearch 	= this.MinCharsToSearch();
 	this.multiselect 	= this.multiselect();
 	if(this.multiselect==='true'){
 		target.style.width='95%';
@@ -4995,7 +4996,7 @@ AutocompleteRelation.prototype.get = function(e) {
 		var nr_opt=array.length;
 		term=array[nr_opt-1];
 	}
-	if (term.length > 3) {
+	if (term.length > this.mincharstoSearch) {
 		this.data.term = term;
 		var acInstance = this;
 
@@ -5014,8 +5015,16 @@ AutocompleteRelation.prototype.get = function(e) {
 					acInstance.set(json_data)
 			}
 		};
-		r.open("GET", "index.php?module=Utilities&action=UtilitiesAjax&file=getAutocomplete&data="+encodeURIComponent(JSON.stringify(this.data)), true);
-		r.send();
+                if(e.target.name==='query_string'){
+                    var params=JSON.stringify(this.data);
+                    r.open("POST", "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getGloalSearch", true);
+                    r.setRequestHeader( "Content-type", "application/json;charset=UTF-8" );
+                    r.send(params);
+                }
+                else{
+                    r.open("GET", "index.php?module=Utilities&action=UtilitiesAjax&file=getAutocomplete&data="+encodeURIComponent(JSON.stringify(this.data)), true);
+                    r.send();
+                }
 	} else {
 		this.clearTargetUL();
 		this.targetUL.hide();
@@ -5040,6 +5049,12 @@ AutocompleteRelation.prototype.set = function(items) {
 					value 		: this.getAttribute("data-crmid")
 				});
 				acInstance.fillOtherFields(this);
+                                if(acInstance.inputField.name==='query_string'){
+                                    acInstance.goToRec({
+					crmmodule 	: this.getAttribute("data-crmmodule"),
+					value 		: this.getAttribute("data-crmid")
+                                    });
+                                }
 			});
 
 		}
@@ -5059,6 +5074,11 @@ AutocompleteRelation.prototype.select = function(params) {
 	this.targetUL.hide();
 	// Schedular.AutoComplete.Current.clear();
 }
+AutocompleteRelation.prototype.goToRec = function(params) {
+        var value = params.value.split('x')[1];
+        var crmmodule = params.crmmodule;
+        window.open('index.php?module='+crmmodule+'&action=DetailView&record='+value);
+};
 
 AutocompleteRelation.prototype.buildListItem = function(item) {
 	var li = document.createElement("li");
@@ -5119,7 +5139,11 @@ AutocompleteRelation.prototype.buildListItem = function(item) {
 
 	span = document.createElement("span");
 	span.setAttribute("class", "slds-listbox__option-meta slds-listbox__option-meta_entity");
-	span.innerText = this.buildSecondayReturnFields(item);
+	if(this.inputField.name==='query_string'){
+            span.innerText = this.buildSecondayReturnFieldsGS(item);
+        }else{
+            span.innerText = this.buildSecondayReturnFields(item);
+        }
 
 	li.children[0].children[1].appendChild(span);
 
@@ -5135,6 +5159,19 @@ AutocompleteRelation.prototype.buildSecondayReturnFields = function(item) {
 				returnString += "\n";
 			}
 		}
+	}
+	return returnString;
+}
+
+AutocompleteRelation.prototype.buildSecondayReturnFieldsGS = function(item) {
+	var returnString = "";
+        var module=item['crmmodule'];
+        var displayFld=this.data.searchin[module]['showfields'];
+	for (var i = 0; i < displayFld.length; i++) {
+                returnString = returnString + item[displayFld[i]];
+                if (i < displayFld.length - 1) {
+                        returnString += "\n";
+                }
 	}
 	return returnString;
 }
@@ -5231,7 +5268,7 @@ AutocompleteRelation.prototype.getReferenceModule = function () {
 	var current_field_name = this.inputField.name;
 	var field_root_name = current_field_name.substring(0, current_field_name.indexOf("_display"))
 	var reference_type_field = document.getElementsByName(field_root_name + "_type");
-	return reference_type_field[0].value
+	return (reference_type_field[0] !== undefined ? reference_type_field[0].value : '');
 }
 
 AutocompleteRelation.prototype.extendFillFields = function (other_fields) {
@@ -5243,16 +5280,16 @@ AutocompleteRelation.prototype.showFields = function () {
 		return this.data.showfields.split(",");
 	} catch(e) {
 		ref_module = this.getReferenceModule();
-		return this.data.showfields[ref_module].split(",");
+		return (ref_module !== '' ? this.data.showfields[ref_module].split(",") : '');
 	}
 }
 
 AutocompleteRelation.prototype.entityField = function () {
-	if(typeof this.data.entityfield === 'string')
+        if(typeof this.data.entityfield === 'string')
 		return this.data.entityfield
 	else {
 		ref_module = this.getReferenceModule();
-		return this.data.entityfield[ref_module];
+		return (ref_module !== '' ? this.data.entityfield[ref_module] : '');
 	}
 }
 
@@ -5261,7 +5298,7 @@ AutocompleteRelation.prototype.fillFields = function () {
 		return this.data.fillfields.split(",");
 	} catch(e) {
 		ref_module = this.getReferenceModule();
-		return this.data.fillfields[ref_module].split(",");
+		return (ref_module !== '' ? this.data.fillfields[ref_module].split(",") : '');
 	}
 }
 
@@ -5270,6 +5307,30 @@ AutocompleteRelation.prototype.multiselect = function () {
 		return this.data.multiselect
 	else if(typeof this.data.multiselect === undefined){
 		ref_module = this.getReferenceModule();
-		return this.data.multiselect[ref_module];
+		return (ref_module !== '' ? this.data.multiselect[ref_module] : '');
 	}
+}
+
+AutocompleteRelation.prototype.MaxResults = function () {
+	if(typeof this.data.maxresults === 'number')
+		return this.data.maxresults;
+	else if(typeof this.data.maxresults === undefined){
+		ref_module = this.getReferenceModule();
+                if(ref_module !== '' && this.data.maxresults[ref_module] !== undefined){
+                    return this.data.maxresults[ref_module]
+                }
+	}
+        return 5;
+}
+
+AutocompleteRelation.prototype.MinCharsToSearch = function () {
+	if(typeof this.data.mincharstosearch === 'number'){
+		return this.data.mincharstosearch;
+        }else if(typeof this.data.mincharstosearch === undefined){
+		ref_module = this.getReferenceModule();
+                if(ref_module !== '' && this.data.mincharstosearch[ref_module] !== undefined){
+                    return this.data.mincharstosearch[ref_module]
+                }
+        }
+        return 3;
 }
