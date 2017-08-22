@@ -223,6 +223,10 @@ li.active,
     align-items: flex-start;
 }
 
+.profilePicWrapper {
+    padding-bottom: .7rem;
+}
+
 .forceEntityIcon {
     display: block;
     -webkit-border-radius: .125rem;

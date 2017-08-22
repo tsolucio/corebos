@@ -17,17 +17,13 @@
 
 {foreach key=RLTAB item=RLARR from=$RLTabs}
 {if $RETURN_RELATEDPANE eq $RLTAB}
-	<!-- <div class="detailview_utils_table_tab detailview_utils_table_tab_selected detailview_utils_table_tab_selected_{$tabposition}">{$RLARR.label}</div> -->
 	<li class="slds-tabs--scoped__item" title="{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}" role="presentation">
 		<a class="slds-tabs--scoped__link " href="javascript:void(0);" role="tab" tabindex="0" aria-selected="true" aria-controls="tab--scoped-1" id="tab--scoped--1__item">{$RLARR.label}</a>
 	</li>
 {else}
-	<!-- <div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_{$tabposition}" -->
-	<!-- {if $tabposition eq 'top'}onmouseout="fnHideDrop('More_Information_pane{$RLTAB}_List');" onmouseover="fnDropDown(this,'More_Information_pane{$RLTAB}_List');"{/if}> -->
 	<li class="slds-tabs--scoped__item slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open" role="presentation">
 		<a class="slds-tabs--scoped__link" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}&RelatedPane={$RLTAB}" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab--scoped-2">{$RLARR.label}</a>
 		{if empty($tabcache) || $tabcache neq 'dvtTabCacheBottom'}
-			<!-- <div onmouseover="fnShowDrop('More_Information_pane{$RLTAB}_List')" onmouseout="fnHideDrop('More_Information_pane{$RLTAB}_List')" id="More_Information_pane{$RLTAB}_List" class="drop_mnu" style="left: 502px; top: 76px; display: none;"> -->
 			<div class="slds-dropdown slds-dropdown--left" style="margin-top: 0;">
 				<ul class="slds-dropdown__list slds-dropdown--length-7" role="menu">
 					{foreach key=_BLOCK_ID item=_RELATED_BLOCK from=$RLARR.blocks}
@@ -39,6 +35,5 @@
 			</div>
 		{/if}
 	</li>
-	<!-- </div> -->
 {/if}
 {/foreach}

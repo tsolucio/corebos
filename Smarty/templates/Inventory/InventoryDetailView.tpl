@@ -156,7 +156,7 @@ function DeleteTag(id,recordid)
 														<p class="slds-text-heading--label slds-line-height--reset" style="opacity: 1;">{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</p>
 														<h1 class="slds-page-header__title slds-m-right--small slds-truncate slds-align-middle">
 														<span class="uiOutputText">[ {$USE_ID_VALUE} ] {$NAME}</span>
-															<span class="small" style="text-transform: capitalize;">{$UPDATEINFO}</span>&nbsp;&nbsp;&nbsp;
+															<span class="small" style="text-transform: capitalize;">{$UPDATEINFO}</span>
 															<span id="vtbusy_info" style="display:none;" valign="bottom">
 																<img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0">
 															</span>
@@ -223,26 +223,6 @@ function DeleteTag(id,recordid)
 												<table class="slds-table slds-no-row-hover dvtContentSpace">
 													<tr>
 														<td valign="top" style="padding: 0;">
-															<div class="detailview_utils_table_tabs" style="display: none;">
-																<div class="detailview_utils_table_tab detailview_utils_table_tab_selected detailview_utils_table_tab_selected_top">{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</div>
-																{if $SinglePane_View eq 'false' && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
-																	{if $HASRELATEDPANES eq 'true'}
-																		{include file='RelatedPanes.tpl' tabposition='top' RETURN_RELATEDPANE=''}
-																	{else}
-																	<div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_top" onmouseout="fnHideDrop('More_Information_Modules_List');" onmouseover="fnDropDown(this,'More_Information_Modules_List');">
-																		<a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</a>
-																		<div onmouseover="fnShowDrop('More_Information_Modules_List')" onmouseout="fnHideDrop('More_Information_Modules_List')"
-																		 id="More_Information_Modules_List" class="drop_mnu" style="left: 502px; top: 76px; display: none;">
-																		<table border="0" cellpadding="0" cellspacing="0" width="100%">
-																		{foreach key=_RELATION_ID item=_RELATED_MODULE from=$IS_REL_LIST}
-																			<tr><td><a class="drop_down" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}&selected_header={$_RELATED_MODULE}&relation_id={$_RELATION_ID}#tbl_{$MODULE}_{$_RELATED_MODULE}">{$_RELATED_MODULE|@getTranslatedString:$_RELATED_MODULE}</a></td></tr>
-																		{/foreach}
-																		</table>
-																		</div>
-																	</div>
-																	{/if}
-																{/if}
-															</div>
 															<!-- content cache -->
 															<div class="slds-table--scoped">
 																<ul class="slds-tabs--scoped__nav" role="tablist" style="margin-bottom: 0;">
