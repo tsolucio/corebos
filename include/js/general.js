@@ -3816,6 +3816,8 @@ function startCall(number, recordid){
 //added for tooltip manager
 function ToolTipManager(){
 	var state = false;
+	var secondshowTimer = 0;
+	var secondshowTimeout = 1800;
 	/**
 	 * this function creates the tooltip div and adds the information to it
 	 * @param string text - the text to be added to the tooltip
@@ -3867,9 +3869,10 @@ function ToolTipManager(){
 		var div = document.getElementById(divName);
 		if(typeof div != 'undefined' && div != null ){
 			if(typeof nodelay != 'undefined' && nodelay != null){
-				setTimeout(function(){
+				if (secondshowTimer != 0) clearTimeout(secondshowTimer);
+				secondshowTimer = setTimeout(function(){
 					div.style.display = "none";
-				}, 700);
+				}, secondshowTimeout);
 			}else{
 				setTimeout(function(){
 					if(!state){
