@@ -206,17 +206,15 @@ class Documents extends CRMEntity {
 	 * @param int $id  - entity id to which the files to be uploaded
 	 * @param string $module  - the current module name
 	*/
-	function insertIntoAttachment($id,$module, $direct_import=false)
-	{
+	function insertIntoAttachment($id,$module, $direct_import=false) {
 		global $log, $adb;
 		$log->debug("Entering into insertIntoAttachment($id,$module) method.");
 
 		$file_saved = false;
 
-		foreach($_FILES as $fileindex => $files)
-		{
-			if($files['name'] != '' && $files['size'] > 0)
-			{
+		if (isset($_FILES))
+		foreach ($_FILES as $fileindex => $files) {
+			if ($files['name'] != '' && $files['size'] > 0) {
 				$files['original_name'] = (empty($_REQUEST[$fileindex.'_hidden']) ? vtlib_purify($files['name']) : vtlib_purify($_REQUEST[$fileindex.'_hidden']));
 				$file_saved = $this->uploadAndSaveFile($id,$module,$files);
 			}

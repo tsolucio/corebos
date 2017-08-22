@@ -5077,9 +5077,9 @@ AutocompleteRelation.prototype.select = function(params) {
 	// Schedular.AutoComplete.Current.clear();
 }
 AutocompleteRelation.prototype.goToRec = function(params) {
-        var value = params.value.split('x')[1];
-        var crmmodule = params.crmmodule;
-        window.open('index.php?module='+crmmodule+'&action=DetailView&record='+value);
+	var value = params.value.split('x')[1];
+	var crmmodule = params.crmmodule;
+	window.open('index.php?module='+crmmodule+'&action=DetailView&record='+value);
 };
 
 AutocompleteRelation.prototype.buildListItem = function(item) {
