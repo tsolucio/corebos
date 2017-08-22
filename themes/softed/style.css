@@ -1817,7 +1817,8 @@ ul {
 }
 
 .tagCloudDisplay {
-	background-color:#fff;
+	/*background-color:#fff;*/
+	background-color: rgb(244, 246, 249);
 	padding:5px;
 }
 

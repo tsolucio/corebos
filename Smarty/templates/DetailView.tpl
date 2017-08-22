@@ -643,7 +643,7 @@ function sendfile_email()
 														{if $TAG_CLOUD_DISPLAY eq 'true'}
 															<!-- Tag cloud display -->
 															<br>
-															<div class="flexipageComponent tagCloud" style="background-color: #fff;">
+															<div class="flexipageComponent tagCloud">
 																<article class="slds-card container MEDIUM forceBaseCard runtime_sales_mergeMergeCandidatesPreviewCard" aria-describedby="header">
 																	<div class="slds-card__header slds-grid">
 																		<header class="slds-media slds-media--center slds-has-flexi-truncate">
