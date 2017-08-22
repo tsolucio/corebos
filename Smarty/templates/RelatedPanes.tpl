@@ -23,7 +23,7 @@
 	</li>
 {else}
 	<!-- <div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_{$tabposition}" -->
-	{if $tabposition eq 'top'}onmouseout="fnHideDrop('More_Information_pane{$RLTAB}_List');" onmouseover="fnDropDown(this,'More_Information_pane{$RLTAB}_List');"{/if}>
+	<!-- {if $tabposition eq 'top'}onmouseout="fnHideDrop('More_Information_pane{$RLTAB}_List');" onmouseover="fnDropDown(this,'More_Information_pane{$RLTAB}_List');"{/if}> -->
 		<li class="slds-tabs--scoped__item slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open" title="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}" role="presentation">
 		<a lass="slds-tabs--scoped__link" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}&RelatedPane={$RLTAB}">{$RLARR.label}</a>
 			{if empty($tabcache) || $tabcache neq 'dvtTabCacheBottom'}
@@ -42,4 +42,3 @@
 	<!-- </div> -->
 {/if}
 {/foreach}
-	
