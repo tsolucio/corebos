@@ -1036,9 +1036,11 @@ function getGlobalSearch($term, $searchin, $limit, $user) {
 		$flds = array_unique(array_merge($sfields,$rfields,array('id')));
 
 		$queryGenerator->setFields($flds);
+		$queryGenerator->startGroup();
 		foreach ($sfields as $sfld) {
 			$queryGenerator->addCondition($sfld,$term,$op,$queryGenerator::$OR);
 		}
+		$queryGenerator->endGroup();
 		$query = $queryGenerator->getQuery();
 		$rsemp=$adb->query($query);
 		while ($emp=$adb->fetch_array($rsemp)) {
