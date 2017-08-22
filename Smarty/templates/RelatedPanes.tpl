@@ -24,16 +24,16 @@
 {else}
 	<!-- <div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_{$tabposition}" -->
 	<!-- {if $tabposition eq 'top'}onmouseout="fnHideDrop('More_Information_pane{$RLTAB}_List');" onmouseover="fnDropDown(this,'More_Information_pane{$RLTAB}_List');"{/if}> -->
-		<li class="slds-tabs--scoped__item slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open" title="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}" role="presentation">
-		<a lass="slds-tabs--scoped__link" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}&RelatedPane={$RLTAB}">{$RLARR.label}</a>
+		<li class="slds-tabs--scoped__item slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open" role="presentation">
+		<a lass="slds-tabs--scoped__link" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}&RelatedPane={$RLTAB}" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab--scoped-2">{$RLARR.label}</a>
 			{if empty($tabcache) || $tabcache neq 'dvtTabCacheBottom'}
 				<!-- <div onmouseover="fnShowDrop('More_Information_pane{$RLTAB}_List')" onmouseout="fnHideDrop('More_Information_pane{$RLTAB}_List')" id="More_Information_pane{$RLTAB}_List" class="drop_mnu" style="left: 502px; top: 76px; display: none;"> -->
 				<div class="slds-dropdown slds-dropdown--left" style="margin-top: 0;">
 					<ul class="slds-dropdown__list slds-dropdown--length-7" role="menu">
 						{foreach key=_BLOCK_ID item=_RELATED_BLOCK from=$RLARR.blocks}
-								<li class="slds-dropdown__item" role="presentation">
-									<a role="menuitem" tabindex="-1" class="drop_down" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}&RelatedPane={$RLTAB}&selected_header={$_RELATED_BLOCK.loadfrom}&relation_id={$_RELATED_BLOCK.relatedid}#tbl_{$MODULE}_{$_RELATED_BLOCK.loadfrom}">{$_RELATED_BLOCK.label|@getTranslatedString:$MODULE}</a>
-								</li>
+							<li class="slds-dropdown__item" role="presentation">
+								<a role="menuitem" tabindex="-1" class="drop_down" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}&RelatedPane={$RLTAB}&selected_header={$_RELATED_BLOCK.loadfrom}&relation_id={$_RELATED_BLOCK.relatedid}#tbl_{$MODULE}_{$_RELATED_BLOCK.loadfrom}">{$_RELATED_BLOCK.label|@getTranslatedString:$MODULE}</a>
+							</li>
 						{/foreach}
 					</ul>
 				</div>
