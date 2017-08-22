@@ -269,7 +269,7 @@ function DeleteTag(id,recordid)
 																</ul>
 															</div>
 															<div id="tab--scoped-1" role="tabpanel" aria-labelledby="tab--scoped-1__item" class="slds-tabs--scoped__content slds-truncate">
-																<table class="slds-table slds-no-row-hover slds-table-moz" ng-controller="detailViewng" style="border-collapse:separate; border-spacing: 1rem 2rem;">
+																<table class="slds-table slds-no-row-hover slds-table-moz" ng-controller="detailViewng" style="border-collapse:separate; border-spacing: 1rem;">
 																	<form action="index.php" method="post" name="DetailView" id="formDetailView">
 																		<input type="hidden" id="hdtxt_IsAdmin" value="{if isset($hdtxt_IsAdmin)}{$hdtxt_IsAdmin}{else}0{/if}">
 																		{include file='DetailViewHidden.tpl'}

@@ -438,7 +438,9 @@ article.container::after {
 
 
 
-
+.slds-tabs--scoped__content {
+    padding-top: 0;
+}
 
 
 
@@ -451,7 +453,7 @@ article.container::after {
 }
 
 tr td.detailViewContainer {
-    padding: 1rem .5rem;
+    padding: .5rem;
     /*border: 2px solid rgb(216, 221, 230);*/
 }
 
