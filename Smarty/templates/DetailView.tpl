@@ -181,6 +181,12 @@ function sendfile_email()
 																			<img src="{'opportunity_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Opportunity" title="Opportunity">
 																		{elseif $MODULE eq 'Documents'}
 																			<img src="{'document_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Documents" title="Documents">
+																		{elseif $MODULE eq 'HelpDesk'}
+																			<img src="{'help_desk_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="HelpDesk" title="HelpDesk">
+																		{elseif $MODULE eq 'Faq'}
+																			<img src="{'faq_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Faq" title="Faq">
+																		{elseif $MODULE eq 'ServiceContracts'}
+																			<img src="{'service_contract_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="ServiceContracts" title="ServiceContracts">
 																		{/if}
 																	</span>
 																</div>
@@ -318,7 +324,7 @@ function sendfile_email()
 																									<header class="slds-media slds-media--center slds-has-flexi-truncate">
 																										<div class="slds-media__body">
 																											<h2>
-																												<span class="slds-text-title--caps slds-truncate slds-m-right--xx-small">
+																												<span class="slds-text-title--caps slds-truncate slds-m-right--xx-small actionLabel">
 																													<b>{if isset($MOD.LBL_COMMENT_INFORMATION)}{$MOD.LBL_COMMENT_INFORMATION}{else}{$APP.LBL_COMMENTS}{/if}</b>
 																												</span>
 																											</h2>

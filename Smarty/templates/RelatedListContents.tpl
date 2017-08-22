@@ -12,7 +12,7 @@
 
 {foreach key=header item=detail from=$RELATEDLISTS}
 <tr class="blockStyleCss">
-	<td class="detailViewContainer" valign="top" style="{if $MODULE eq 'Documents'}padding: 1rem 0;{/if}">
+	<td class="detailViewContainer" valign="top" style="{if $MODULE eq 'Documents'}padding: 1rem 0;{else}padding:0;{/if}">
 {if is_numeric($header)}
 	{if $detail.type eq 'CodeWithHeader'}
 		{strip}

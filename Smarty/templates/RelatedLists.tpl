@@ -53,6 +53,12 @@
 																<img src="{'pricebook_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="PriceBooks" title="PriceBooks">
 															{elseif $MODULE eq 'Documents'}
 																<img src="{'document_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Documents" title="Documents">
+															{elseif $MODULE eq 'HelpDesk'}
+																<img src="{'help_desk_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="HelpDesk" title="HelpDesk">
+															{elseif $MODULE eq 'Faq'}
+																<img src="{'faq_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Faq" title="Faq">
+															{elseif $MODULE eq 'ServiceContracts'}
+																<img src="{'service_contract_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="ServiceContracts" title="ServiceContracts">
 															{/if}
 														</span>
 													</div>
@@ -63,7 +69,7 @@
 											<p class="slds-text-heading--label slds-line-height--reset" style="opacity: 1;">{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</p>
 											<h1 class="slds-page-header__title slds-m-right--small slds-truncate slds-align-middle">
 											<span class="uiOutputText">[ {$USE_ID_VALUE} ] {$NAME}</span>
-												<span class="small" style="text-transform: capitalize;">{$UPDATEINFO}</span>&nbsp;&nbsp;&nbsp;
+												<span class="small" style="text-transform: capitalize;">{$UPDATEINFO}</span>
 												<span id="vtbusy_info" style="display:none; text-transform: capitalize;" valign="bottom">
 													<img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0">
 												</span>
@@ -107,7 +113,7 @@
 												<div id="tab--scoped-1" role="tabpanel" aria-labelledby="tab--scoped-1__item" class="slds-tabs--scoped__content slds-truncate" style="padding-top: 0;">
 													<table class="slds-table slds-no-row-hover slds-table-moz" style="border-collapse:separate; border-spacing: 1rem 2rem;">
 														<tr>
-															<td>
+															<td style="padding:0;">
 															<!-- General details -->
 																	{include file='RelatedListsHidden.tpl'}
 																	<div id="RLContents">
