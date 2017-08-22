@@ -65,6 +65,9 @@ class ConditionExpression extends processcbMap {
 		$holduser = $current_user;
 		$current_user = Users::getActiveAdminUser(); // evaluate condition as admin user
 		$entity = new VTWorkflowEntity($current_user, $entityId, true);
+		if (is_null($entity->data)) { // invalid context
+			return false;
+		}
 		$current_user = $holduser;
 		if (isset($xml->expression)) {
 			$testexpression = (String)$xml->expression;
