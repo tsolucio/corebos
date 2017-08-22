@@ -35,6 +35,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_Global_Search_SelectedModules',
 				'Application_Global_Search_Binary',
 				'Application_Global_Search_TopModules',
+				'Application_Global_Search_Active',
 				'Application_Storage_Directory',
 				'Application_Storage_SaveStrategy',
 				'Application_OpenRecordInNewXOnRelatedList',

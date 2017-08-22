@@ -111,6 +111,8 @@ if ($cbMapid) {
 	$cbMapGS['entityfield']='query_string';
 }
 $smarty->assign("GS_AUTOCOMP",$cbMapGS);
+$Application_Global_Search_Active = GlobalVariable::getVariable('Application_Global_Search_Active', 1);
+$smarty->assign('Application_Global_Search_Active',$Application_Global_Search_Active);
 
 $smarty->assign('HELP_URL',GlobalVariable::getVariable('Application_Help_URL','http://corebos.org/documentation'));
 ob_start();

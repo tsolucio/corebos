@@ -441,6 +441,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'individual | group',
 	'definition' => 'Establecer el modo de impuesto en módulos de inventario a línea individual o grupo de impuestos',
 ),
+'Application_Global_Search_Active' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Muestra (1) o esconde (0) la funcionalidad de búsqueda global. Puede combinarse con el mapa de búsqueda global para ofrecer una opción de búsqueda reducida.',
+),
 'Application_Global_Search_SelectedModules' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'CSV lista de módulos',

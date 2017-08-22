@@ -441,6 +441,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'individual | group',
 	'definition' => 'Establish the tax mode on inventory modules to Individual line or Group tax',
 ),
+'Application_Global_Search_Active' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Displays (1) or hides (0) the global search functionality. It can be combined with the global search autocomplete map to offer a reduced search option.',
+),
 'Application_Global_Search_SelectedModules' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'CSV list of modules',
