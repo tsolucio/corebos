@@ -1,6 +1,24 @@
+/*========    Header    ==========*/
+
+.headerlink img {
+    width: 22px;
+    vertical-align: text-bottom;
+}
+
+.headerlink img:hover {
+    opacity: 0.7;
+}
+
+.td-space td{
+    padding-left: 3px;
+}
+
+/*========    End Header    ==========*/
+
 .slds-table tbody tr {
     counter-increment: row-number;
 }
+
 
 
 
@@ -17,6 +35,8 @@
 .uiMenu {
     position: relative;
 }
+
+
 
 
 
@@ -107,6 +127,8 @@
 
 
 
+
+
 /*=========   END BUTTON_LIST  ==========*/
 
 .homePageButtons img {
@@ -123,6 +145,8 @@
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
 }
+
+
 
 
 
@@ -178,6 +202,8 @@ li.active,
     width: 850px;
     white-space: nowrap;
 }
+
+
 
 
 
@@ -322,6 +348,8 @@ li.active,
 
 
 
+
+
 /*=========  END DETAIL VIEW ---HEADER---  ==========*/
 
 
@@ -399,30 +427,11 @@ article.container::after {
     border: 1px solid rgb(216, 221, 230);
 }
 
-
-
-
-
-
-
-
-
-/*.flexipageComponent .slds-card {*/
-
-
-/*border-bottom-left-radius: 0;*/
-
-
-/*border-bottom-right-radius: 0;*/
-
-
-/*}*/
-
 .flexipageComponentComment {
     margin-bottom: 3rem;
 }
 
-.blockStyleCss > td{
+.blockStyleCss>td {
     white-space: normal!important;
 }
 
@@ -451,6 +460,72 @@ article.container::after {
 
 
 /*=========  END DETAIL VIEW ---BODY---  ==========*/
+
+
+/*=========  DETAIL VIEW ---Actions---  ==========*/
+
+.webMnu img {
+    border-radius: 5px;
+    width: 20px;
+    padding: .1rem;
+    margin: 0 .2rem!important;
+}
+
+.actionlink_lbl_show_contact_hierarchy img,
+.actionlink_lbl_show_account_hierarchy img {
+    background-color: #558384;
+}
+
+.actionlink_sendemail img {
+    background-color: #95bf42;
+}
+
+.actionlink_downloaddocument img {
+    background-color: #95bf42;
+    padding: .2rem;
+}
+
+.actionlink_addevent img {
+    background-color: #a25016;
+}
+
+.actionlink_addtodo img {
+    background-color: #5bd6d6;
+}
+
+.actionlink_lbl_add_note img,
+.actionlink_checkdocinteg img {
+    background-color: #daa520;
+}
+
+.actionlink_convertlead img {
+    background-color: #558384;
+}
+
+.actionGenerateInvoice img {
+    background-color: #daa520;
+}
+
+.actionGenerateSalesOrder img,
+.actionListLinkedQuotes img {
+    background-color: #a0522d;
+    padding: 0;
+}
+
+.actionlink_converttoinvoice img {
+    background-color: #8ab82d;
+}
+
+.actionGenerateQuote img {}
+
+.customLinkModule img {
+    background-color: #6dc066;
+}
+
+
+
+
+/*=========  END DETAIL VIEW ---Actions-  ==========*/
 
 .slds-table-moz {
     width: 100%;
@@ -536,6 +611,8 @@ tr td.table-aside>.detailview_actionlinks {
 
 
 
+
+
 /**
 - * Creates a green button style
 - *
@@ -556,6 +633,8 @@ tr td.table-aside>.detailview_actionlinks {
     color: #fff;
     font-weight: bold;
 }
+
+
 
 
 
@@ -597,7 +676,7 @@ ul.slds-tabs--default__nav li {
 }
 
 .slds-dropdown__item>a {
-    padding: .1rem .5rem;
+    padding: .2rem .5rem;
 }
 
 .assideBtn {
@@ -681,6 +760,8 @@ li[title="More Information"] svg {
 
 
 
+
+
 /*=========   END DETAIL VIEW  ==========*/
 
 
@@ -743,7 +824,6 @@ select:-moz-focusring {
 
 
 
-
 /*=========   END DetailView - DetailViewUI - DetailViewUIUser  ==========*/
 
 
@@ -764,8 +844,6 @@ select:-moz-focusring {
 
 
 
-
-
 /*=========   END DetailViewUtils.php  ==========*/
 
 
@@ -775,11 +853,6 @@ select:-moz-focusring {
     border-right: 1px solid #fff;
     border-left: 1px solid #fff;
 }
-
-
-
-
-
 
 
 
@@ -805,10 +878,6 @@ select:-moz-focusring {
 .dvtContentSpace>tr {
     background-color: #f7f7fb;
 }
-
-
-
-
 
 
 
@@ -852,9 +921,13 @@ select:-moz-focusring {
 
 
 
+
+
 /*=========   END ListView.tpl  ==========*/
 
+
 /*=========   ListView Entries.tpl  ==========*/
+
 .layerPopupTransport td {
     padding: 0 .5rem;
 }
@@ -877,11 +950,16 @@ th[scope="col"] {
 
 
 
+
+
 /*=========   END ListView Entries.tpl  ==========*/
+
 
 /*===========Related List Data Content===========*/
 
+
 /*=======CustomView.tpl=======*/
+
 .align-left td:not(:first-child) {
     text-align: left;
 }
@@ -892,6 +970,9 @@ th[scope="col"] {
 
 
 
+
+
 /*=======End CustomView.tpl=======*/
+
 
 /*===========END Related List Data Content===========*/

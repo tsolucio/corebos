@@ -1882,7 +1882,7 @@ ul {
 .settingsSelectedUI {
 	padding-bottom: 5px;
 	background-color:#ffffff;
-	background:url(../images/settingsSelUIBg.gif) repeat-x;
+	/*background:url(../images/settingsSelUIBg.gif) repeat-x;*/
 	padding:  15px 25px ;
 
 }
