@@ -143,11 +143,17 @@ function DeleteTag(id,recordid)
 																		{elseif $MODULE eq 'SalesOrder'}
 																			<img src="{'salesorder_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="SalesOrder" title="SalesOrder">
 																		{elseif $MODULE eq 'Invoice'}
-																			<img src="{'invoice_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Invoice" title="Invoice" style="height:1.8rem; padding-top: 1px;">
+																			<img src="{'invoice_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Invoice" title="Invoice" style="height:1.8rem;">
 																		{elseif $MODULE eq 'PriceBooks'}
 																			<img src="{'pricebook_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="PriceBooks" title="PriceBooks">
 																		{elseif $MODULE eq 'Products'}
 																			<img src="{'product_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Products" title="Products">
+																		{elseif $MODULE eq 'Vendors'}
+																			<img src="{'vendors_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Vendors" title="Vendors">
+																		{elseif $MODULE eq 'Services'}
+																			<img src="{'custom_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Services" title="Services">
+																		{elseif $MODULE eq 'PurchaseOrder'}
+																			<img src="{'purchase_order_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="PurchaseOrder" title="PurchaseOrder">
 																		{/if}
 																	</span>
 																</div>

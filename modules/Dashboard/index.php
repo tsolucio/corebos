@@ -23,68 +23,113 @@ if(isset($_REQUEST['type']) && $_REQUEST['type'] != '')
 }
 ?>
 
-<TABLE border=0 cellspacing=0 cellpadding=0 width=100% class=small>
-<tr><td style="height:2px"></td></tr>
-<tr>
-	<td style="padding-left:10px;padding-right:30px" class="moduleName" width="20%" nowrap><a class="hdrLink" href="index.php?action=index&parenttab=Analytics&module=Dashboard"><?php echo $app_strings['Dashboard'] ?></a></td>
-
-	<td nowrap width="8%">
-		<table border=0 cellspacing=0 cellpadding=0>
-		<tr>
-			<td class="sep1" style="width:1px;"></td>
-			<td class=small>
-				<table border=0 cellspacing=0 cellpadding=5>
+<TABLE class="slds-table slds-no-row-hover lds-img">
+	<tr>
+		<th scope="col" style="padding: 1rem 1.5rem 1rem 1rem;">
+			<div class="slds-truncate moduleName" title="{$MODULELABEL}">
+				<a class="hdrLink" href="index.php?action=index&parenttab=Analytics&module=Dashboard"><?php echo $app_strings['Dashboard'] ?></a>
+			</div>
+		</th>
+		<td width=100% nowrap>
+			<table border="0" cellspacing="0" cellpadding="0" class="slds-table-buttons">
 				<tr>
-					<td style="padding-right:0px;padding-left:10px;"><img src="<?php echo vtiger_imageurl('btnL3Add-Faded.gif', $theme); ?>" border=0></td>
-					 <td style="padding-right:10px"><img src="<?php echo vtiger_imageurl('btnL3Search-Faded.gif', $theme); ?>" border=0></td>
+					<td class="small">
+						<table border="0" cellspacing="0" cellpadding="0" class="slds-table-buttons">
+							<tr>
+								<td class=small>
+									<!-- Add and Search -->
+									<table class="slds-table slds-no-row-hover">
+										<tr>
+											<th scope="col">
+												<div class="globalCreateContainer oneGlobalCreate">
+													<div class="forceHeaderMenuTrigger">
+														<div class="LB_Button slds-truncate disabled">
+															<img src="<?php echo vtiger_imageurl('btnL3Add.gif', $theme); ?>">
+														</div>
+													</div>
+												</div>
+											</th>
+											<th scope="col">
+												<div class="globalCreateContainer oneGlobalCreate">
+													<div class="forceHeaderMenuTrigger">
+														<div class="LB_Button slds-truncate disabled">
+															<img src="<?php echo vtiger_imageurl('btnL3Search.gif', $theme); ?>">
+														</div>
+													</div>
+												</div>
+											</th>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+					</td>
+					<td style="width:20px;" class="LB_Divider">&nbsp;&nbsp;</td>
+					<td class="small">
+						<!-- Calendar, Clock and Calculator -->
+						<table class="slds-table slds-no-row-hover">
+							<tr>
+								<?php
+								if(GlobalVariable::getVariable('Application_Display_Mini_Calendar',1,$currentModule)) {
+								?>
+									<th scope="col">
+										<a href="javascript:;" onClick='fnvshobj(this,"miniCal");getMiniCal("parenttab=My Home Page");'>
+											<img src="<?php echo vtiger_imageurl('btnL3Calendar.gif', $theme); ?>" alt="<?php echo $app_strings['LBL_CALENDAR_ALT']; ?>" title="<?php echo $app_strings['LBL_CALENDAR_TITLE']; ?>" border=0>
+										</a>
+									</th>
+								<?php
+								}
+								if(GlobalVariable::getVariable('Application_Display_World_Clock',1,$currentModule)) {
+								?>
+									<th scope="col">
+										<a href="javascript:;">
+											<img src="<?php echo vtiger_imageurl('btnL3Clock.gif', $theme); ?>" alt="<?php echo $app_strings['LBL_CLOCK_ALT']; ?>" title="<?php echo $app_strings['LBL_CLOCK_TITLE']; ?>" border=0 onClick="fnvshobj(this,'wclock');">
+										</a>
+									</th>
+								<?php
+								}
+								if(GlobalVariable::getVariable('Application_Display_Calculator',1,$currentModule)) {
+								?>
+									<th scope="col">
+										<a href="#">
+											<img src="<?php echo vtiger_imageurl('btnL3Calc.gif', $theme); ?>" alt="<?php echo $app_strings['LBL_CALCULATOR_ALT']; ?>" title="<?php echo $app_strings['LBL_CALCULATOR_TITLE']; ?>" border=0 onClick="fnvshobj(this,'calculator_cont');fetch_calc();">
+										</a>
+									</th>
+								<?php
+								}
+								?>
+								<th scope="col">
+									<img src="<?php echo vtiger_imageurl('btnL3Tracker.gif', $theme); ?>" alt="<?php echo $app_strings['LBL_LAST_VIEWED']; ?>" title="<?php echo $app_strings['LBL_LAST_VIEWED']; ?>" onclick="fnvshobj(this,'tracker');" style="cursor:pointer;" border="0">
+								</th>
+							</tr>
+						</table>
+					</td>
+					<td style="width:20px;" class="LB_Divider">&nbsp;</td>
+					<td class="small">
+						<!-- Import / Export / DuplicatesHandling-->
+						<table class="slds-table slds-no-row-hover">
+							<tr>
+								<th scope="col">
+									<div class="globalCreateContainer oneGlobalCreate">
+										<div class="forceHeaderMenuTrigger">
+											<div class="LB_Button slds-truncate disabled">
+												<img src="<?php echo vtiger_imageurl('tbarImport.gif', $theme) ?>" border="0">
+											</div>
+										</div>
+									</div>
+								</th>
+								<th scope="col">
+									<div class="slds-truncate disabled">
+										<img src="<?php echo vtiger_imageurl('tbarExport.gif', $theme) ?>" border="0">
+									</div>
+								</th>
+							</tr>
+						</table>
+					</td>
 				</tr>
-				</table>
-	</td>
-			</tr>
 			</table>
-	</td>
-	<td width="1">&nbsp;</td>
-	<td class="small" width="10%" align="left">
-		<table border=0 cellspacing=0 cellpadding=5>
-			<tr>
-<?php
-if(GlobalVariable::getVariable('Application_Display_Mini_Calendar',1,$currentModule)) {
-?>
-	<td style="padding-right:0px;padding-left:10px;"><a href="javascript:;" onClick='fnvshobj(this,"miniCal");getMiniCal("parenttab=My Home Page");'><img src="<?php echo vtiger_imageurl('btnL3Calendar.gif', $theme); ?>" alt="<?php echo $app_strings['LBL_CALENDAR_ALT']; ?>" title="<?php echo $app_strings['LBL_CALENDAR_TITLE']; ?>" border=0></a></a></td>
-<?php
-}
-if(GlobalVariable::getVariable('Application_Display_World_Clock',1,$currentModule)) {
-?>
-	<td style="padding-right:0px"><a href="javascript:;"><img src="<?php echo vtiger_imageurl('btnL3Clock.gif', $theme); ?>" alt="<?php echo $app_strings['LBL_CLOCK_ALT']; ?>" title="<?php echo $app_strings['LBL_CLOCK_TITLE']; ?>" border=0 onClick="fnvshobj(this,'wclock');"></a></a></td>
-<?php
-}
-if(GlobalVariable::getVariable('Application_Display_Calculator',1,$currentModule)) {
-?>
-	<td style="padding-right:0px"><a href="#"><img src="<?php echo vtiger_imageurl('btnL3Calc.gif', $theme); ?>" alt="<?php echo $app_strings['LBL_CALCULATOR_ALT']; ?>" title="<?php echo $app_strings['LBL_CALCULATOR_TITLE']; ?>" border=0 onClick="fnvshobj(this,'calculator_cont');fetch_calc();"></a></td>
-<?php
-}
-?>
-</td>
-				<td style="padding-right: 10px;"><img src="<?php echo vtiger_imageurl('btnL3Tracker.gif', $theme); ?>" alt="<?php echo $app_strings['LBL_LAST_VIEWED']; ?>" title="<?php echo $app_strings['LBL_LAST_VIEWED']; ?>" onclick="fnvshobj(this,'tracker');" style="cursor:pointer;" border="0"></td>
-			</tr>
-		</table>
-	</td>
-	<td width="1">&nbsp;</td>
-	<td class="small" align="left" width="5%">
-		<table border=0 cellspacing=0 cellpadding=5>
-			<tr>
-				<td style="padding-right:0px;padding-left:10px;"><img src="<?php echo vtiger_imageurl('tbarImport-Faded.gif', $theme) ?>" border="0"></td>
-				<td style="padding-right:10px"><img src="<?php echo vtiger_imageurl('tbarExport-Faded.gif', $theme) ?>" border="0"></td>
-			</tr>
-		</table>
-	</td>
-	<td width="20">&nbsp;</td>
-	<td class="small" align="left"></td>
+		</td>
 	</tr>
-	</table>
-	</td>
-</tr>
-<tr><td style="height:2px"></td></tr>
 </TABLE>
 <br>
 

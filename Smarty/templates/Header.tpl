@@ -124,7 +124,7 @@
 			</div>
 		</td>
 		<td class=small nowrap align="right" style="padding-right:10px;">
-			<table border=0 cellspacing=0 cellpadding=0>
+			<table border=0 cellspacing=0 cellpadding=0 class="headerlink-lds">
 				<tr class="td-space">
 					<td valign="top" class="genHeaderSmall" style="padding-left:10px;padding-top:3px;">
 						<span class="userName">{$USER}</span>

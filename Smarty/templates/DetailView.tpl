@@ -187,6 +187,12 @@ function sendfile_email()
 																			<img src="{'faq_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Faq" title="Faq">
 																		{elseif $MODULE eq 'ServiceContracts'}
 																			<img src="{'service_contract_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="ServiceContracts" title="ServiceContracts">
+																		{elseif $MODULE eq 'ModComments'}
+																			<img src="{'quick_text_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Comments" title="Comments">
+																		{elseif $MODULE eq 'InventoryDetails'}
+																			<img src="{'inventory_details_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="InventoryDetails" title="InventoryDetails">
+																		{elseif $MODULE eq 'GlobalVariable'}
+																			<img src="{'global_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="GlobalVariable" title="GlobalVariable">
 																		{/if}
 																	</span>
 																</div>
@@ -568,16 +574,16 @@ function sendfile_email()
 																		{if $MODULE eq 'Documents'}
 																			<div class="actionData actionlink_downloaddocument">
 																				{if $DLD_TYPE eq 'I' && $FILE_STATUS eq '1' && $FILE_EXIST eq 'yes'}
-																					<br><a href="index.php?module=uploads&action=downloadfile&fileid={$FILEID}&entityid={$NOTESID}" onclick="javascript:dldCntIncrease({$NOTESID});" class="webMnu"><img src="{'fbDownload.gif'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle" title="{$MOD.LNK_DOWNLOAD}" border="0"/></a>
+																					<a href="index.php?module=uploads&action=downloadfile&fileid={$FILEID}&entityid={$NOTESID}" onclick="javascript:dldCntIncrease({$NOTESID});" class="webMnu"><img src="{'fbDownload.gif'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle" title="{$MOD.LNK_DOWNLOAD}" border="0"/></a>
 																					<a href="index.php?module=uploads&action=downloadfile&fileid={$FILEID}&entityid={$NOTESID}" onclick="javascript:dldCntIncrease({$NOTESID});">{$MOD.LBL_DOWNLOAD_FILE}</a> {elseif $DLD_TYPE eq 'E' && $FILE_STATUS eq '1'}
-																					<br><a target="_blank" href="{$DLD_PATH}" onclick="javascript:dldCntIncrease({$NOTESID});"><img src="{'fbDownload.gif'|@vtiger_imageurl:$THEME}"" align="absmiddle" title="{$MOD.LNK_DOWNLOAD}" border="0"></a>
+																					<a target="_blank"  class="webMnu" href="{$DLD_PATH}" onclick="javascript:dldCntIncrease({$NOTESID});"><img src="{'fbDownload.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" title="{$MOD.LNK_DOWNLOAD}" border="0"></a>
 																					<a target="_blank" href="{$DLD_PATH}" onclick="javascript:dldCntIncrease({$NOTESID});">{$MOD.LBL_DOWNLOAD_FILE}</a>
 																				{/if}
 																			</div>
 
 																			{if $CHECK_INTEGRITY_PERMISSION eq 'yes'}
 																				<div class="actionData actionlink_checkdocinteg">
-																					<br><a href="javascript:;" onClick="checkFileIntegrityDetailView({$NOTESID});"><img id="CheckIntegrity_img_id" src="{'yes.gif'|@vtiger_imageurl:$THEME}" alt="Check integrity of this file" title="Check integrity of this file" hspace="5" align="absmiddle" border="0"/></a>
+																					<a class="webMnu" href="javascript:;" onClick="checkFileIntegrityDetailView({$NOTESID});"><img id="CheckIntegrity_img_id" src="{'yes.gif'|@vtiger_imageurl:$THEME}" alt="Check integrity of this file" title="Check integrity of this file" hspace="5" align="absmiddle" border="0"/></a>
 																					<a href="javascript:;" onClick="checkFileIntegrityDetailView({$NOTESID});">{$MOD.LBL_CHECK_INTEGRITY}</a>&nbsp;
 																					<input type="hidden" id="dldfilename" name="dldfilename" value="{$FILEID}-{$FILENAME}">
 																					<span id="vtbusy_integrity_info" style="display:none;"><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
@@ -588,7 +594,7 @@ function sendfile_email()
 																			<div class="actionData actionlink_emaildocument">
 																				{if $DLD_TYPE eq 'I' && $FILE_STATUS eq '1' && $FILE_EXIST eq 'yes'}
 																					<input type="hidden" id="dldfilename" name="dldfilename" value="{$FILEID}-{$FILENAME}">
-																						<br><a href="javascript: document.DetailView.return_module.value='Documents'; document.DetailView.return_action.value='DetailView'; document.DetailView.module.value='Documents'; document.DetailView.action.value='EmailFile'; document.DetailView.record.value={$NOTESID}; document.DetailView.return_id.value={$NOTESID}; sendfile_email();" class="webMnu"><img src="{'attachment.gif'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle" border="0"/></a>
+																						<a href="javascript: document.DetailView.return_module.value='Documents'; document.DetailView.return_action.value='DetailView'; document.DetailView.module.value='Documents'; document.DetailView.action.value='EmailFile'; document.DetailView.record.value={$NOTESID}; document.DetailView.return_id.value={$NOTESID}; sendfile_email();" class="webMnu"><img src="{'attachment.gif'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle" border="0"/></a>
 																						<a href="javascript: document.DetailView.return_module.value='Documents'; document.DetailView.return_action.value='DetailView'; document.DetailView.module.value='Documents'; document.DetailView.action.value='EmailFile'; document.DetailView.record.value={$NOTESID}; document.DetailView.return_id.value={$NOTESID}; sendfile_email();">{$MOD.LBL_EMAIL_FILE}</a> 
 																				{/if}
 																			</div>
