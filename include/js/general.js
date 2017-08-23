@@ -4947,15 +4947,19 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			acInputs[_i].addEventListener("input", function(e){
 				throttle(ac.get(e), 500);
 			});
+                        $('html').click(function() {
+                            ac.clearTargetUL();
+                            ac.targetUL.hide();
+                        });
 		})(i);
 	}
-
+        
 });
 
 function AutocompleteRelation(target, i) {
 
 	this.inputField 	= target;
-	this.data 			= JSON.parse(target.getAttribute("data-autocomp"));
+        this.data 		= JSON.parse(target.getAttribute("data-autocomp"));
 	this.targetUL 		= document.getElementsByClassName("relation-autocomplete__target")[i];
 	this.hiddenInput	= document.getElementsByClassName("relation-autocomplete__hidden")[i];
 	this.displayFields 	= this.showFields();
@@ -4968,7 +4972,7 @@ function AutocompleteRelation(target, i) {
 	if(this.multiselect==='true'){
 		target.style.width='95%';
 	}
-
+        
 	this.targetUL.show 	= function() {
 		if (!this.classList.contains("active")) {
 			(function(){
@@ -4999,7 +5003,7 @@ AutocompleteRelation.prototype.get = function(e) {
 		var nr_opt=array.length;
 		term=array[nr_opt-1];
 	}
-	if (term.length > this.mincharstoSearch && typeof(this.data.searchin) != 'undefined') {
+	if (term.length > this.mincharstoSearch && (typeof(this.data.searchin) != 'undefined' || typeof(this.data.searchfields) != 'undefined') ) {
 		this.data.term = term;
 		var acInstance = this;
 
@@ -5058,7 +5062,7 @@ AutocompleteRelation.prototype.set = function(items) {
 					});
 				}
 			});
-
+                         
 		}
 	}
 }
