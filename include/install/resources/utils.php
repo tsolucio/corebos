@@ -301,6 +301,8 @@ class Migration_Utils {
 
 	private static function getNumberOfTables($dbConnection) {
 		$metaTablesSql = $dbConnection->metaTablesSQL;
+                if (substr($metaTablesSql,-1)=='=')
+                $metaTablesSql.="'".$dbConnection->database."'";
 		$noOfTables = 0;
 		if(!empty($metaTablesSql)) {
 			$tablesResult = $dbConnection->_Execute($metaTablesSql);

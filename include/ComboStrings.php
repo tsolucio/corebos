@@ -354,6 +354,6 @@ $combo_strings = Array(
 
 require_once('modules/Users/UserTimeZonesArray.php');
 $usertimezonesClass = new UserTimeZones();
-$arrayOfSupportedTimeZones = $usertimezonesClass->userTimeZones();
+$arrayOfSupportedTimeZones = $usertimezonesClass->arrayOfSupportedTimeZones;
 $combo_strings['time_zone_dom'] = array_combine($arrayOfSupportedTimeZones,$arrayOfSupportedTimeZones);
 ?>

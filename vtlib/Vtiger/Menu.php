@@ -125,6 +125,17 @@ class Vtiger_Menu {
 		global $adb;
 		$query = false;
 		$instance = false;
+                $adb->query("CREATE TABLE IF NOT EXISTS `vtiger_evvtmenu` (`evvtmenuid` int(11) NOT NULL AUTO_INCREMENT,
+                                                                  `mtype` varchar(25) NOT NULL,
+                                                                  `mvalue` varchar(200) NOT NULL,
+                                                                  `mlabel` varchar(200) NOT NULL,
+                                                                  `mparent` int(11) NOT NULL,
+                                                                  `mseq` smallint(6) NOT NULL,
+                                                                  `mvisible` tinyint(4) NOT NULL,
+                                                                  `mpermission` varchar(250) NOT NULL,
+                                                                  PRIMARY KEY (`evvtmenuid`),
+                                                                  KEY `mparent` (`mparent`)
+                                                                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;");
 		if(Vtiger_Utils::isNumber($value)) {
 			$query = "SELECT * FROM vtiger_parenttab WHERE parenttabid=?";
 			$querymenu = "SELECT * FROM vtiger_evvtmenu WHERE evvtmenuid=? and mtype='menu'";
