@@ -182,14 +182,24 @@ class CRMEntity {
 				$upd = "update $tblname set $colname=? where ".$this->tab_name_index[$tblname].'=?';
 				$adb->pquery($upd, array($files['original_name'],$this->id));
 				$this->column_fields[$fldname] = $files['original_name'];
+				if (!empty($old_attachmentid)) {
+					$setypers = $adb->pquery('select setype from vtiger_crmentity where crmid=?', array($old_attachmentid));
+					$setype = $adb->query_result($setypers,0,'setype');
+					if ($setype == 'Contacts Image' || $setype == $module.' Attachment') {
+						$cntrels = $adb->pquery('select count(*) as cnt from vtiger_seattachmentsrel where attachmentsid=?', array($old_attachmentid));
+						$numrels = $adb->query_result($cntrels,0,'cnt');
+					} else {
+						$numrels = 0;
+					}
+				}
 				$file_saved = $this->uploadAndSaveFile($id,$module,$files,$attachmentname, $direct_import, $fldname);
 				// Remove the deleted attachments from db
 				if ($file_saved && !empty($old_attachmentid)) {
-					$setypers = $adb->pquery('select setype from vtiger_crmentity where crmid=?', array($old_attachmentid));
-					$setype = $adb->query_result($setypers,0,'setype');
 					if ($setype == 'Contacts Image' or $setype == $module.' Attachment') {
-						$del_res1 = $adb->pquery('delete from vtiger_attachments where attachmentsid=?', array($old_attachmentid));
-						$del_res2 = $adb->pquery('delete from vtiger_seattachmentsrel where attachmentsid=?', array($old_attachmentid));
+						if ($numrels == 1) {
+							$del_res1 = $adb->pquery('delete from vtiger_attachments where attachmentsid=?', array($old_attachmentid));
+						}
+						$del_res2 = $adb->pquery('delete from vtiger_seattachmentsrel where crmid = ? and attachmentsid=?', array($id,$old_attachmentid));
 					}
 				}
 			} elseif (isset($_REQUEST[$fileindex.'_canvas_image_set']) and $_REQUEST[$fileindex.'_canvas_image_set']==1 and !empty($_REQUEST[$fileindex.'_canvas_image'])) {
@@ -315,10 +325,14 @@ class CRMEntity {
 				$res = $adb->pquery($att_sql, array($attachmentname,$id));
 				$attachmentsid = $adb->query_result($res, 0, 'attachmentsid');
 				if ($attachmentsid != '') {
+					$cntrels = $adb->pquery('select count(*) as cnt from vtiger_seattachmentsrel where attachmentsid=?', array($attachmentsid));
+					$numrels = $adb->query_result($cntrels,0,'cnt');
 					$delquery = 'delete from vtiger_seattachmentsrel where crmid=? and attachmentsid=?';
 					$adb->pquery($delquery, array($id, $attachmentsid));
-					$crm_delquery = "delete from vtiger_crmentity where crmid=?";
-					$adb->pquery($crm_delquery, array($attachmentsid));
+					if ($numrels == 1) {
+						$crm_delquery = "delete from vtiger_crmentity where crmid=?";
+						$adb->pquery($crm_delquery, array($attachmentsid));
+					}
 					$sql5 = 'insert into vtiger_seattachmentsrel values(?,?)';
 					$adb->pquery($sql5, array($id, $current_id));
 				} else {
