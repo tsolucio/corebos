@@ -218,6 +218,13 @@ class CRMEntity {
 				$fldname = $fileindex;
 				$upd = "update $tblname set $colname=? where ".$this->tab_name_index[$tblname].'=?';
 				$adb->pquery($upd, array($saveasfile,$this->id));
+			} elseif (empty($files['name']) && $files['size'] == 0) {
+				$result = $adb->pquery($sql, array($fileindex,$tabid));
+				$tblname = $adb->query_result($result, 0, 'tablename');
+				$colname = $adb->query_result($result, 0, 'columnname');
+				$fldname = $fileindex;
+				$upd = "update $tblname set $colname='' where ".$this->tab_name_index[$tblname].'=?';
+				$adb->pquery($upd, array($this->id));
 			}
 		}
 		$log->debug("Exiting from insertIntoAttachment($id,$module) method.");
