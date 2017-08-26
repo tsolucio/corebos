@@ -4952,19 +4952,18 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			acInputs[_i].addEventListener("input", function(e){
 				throttle(ac.get(e), 500);
 			});
-                        $('html').click(function() {
-                            ac.clearTargetUL();
-                            ac.targetUL.hide();
-                        });
+			$('html').click(function() {
+				ac.clearTargetUL();
+				ac.targetUL.hide();
+			});
 		})(i);
 	}
-        
 });
 
 function AutocompleteRelation(target, i) {
 
 	this.inputField 	= target;
-        this.data 		= JSON.parse(target.getAttribute("data-autocomp"));
+	this.data			= JSON.parse(target.getAttribute("data-autocomp"));
 	this.targetUL 		= document.getElementsByClassName("relation-autocomplete__target")[i];
 	this.hiddenInput	= document.getElementsByClassName("relation-autocomplete__hidden")[i];
 	this.displayFields 	= this.showFields();
@@ -4977,7 +4976,6 @@ function AutocompleteRelation(target, i) {
 	if(this.multiselect==='true'){
 		target.style.width='95%';
 	}
-        
 	this.targetUL.show 	= function() {
 		if (!this.classList.contains("active")) {
 			(function(){
@@ -5067,7 +5065,6 @@ AutocompleteRelation.prototype.set = function(items) {
 					});
 				}
 			});
-                         
 		}
 	}
 }

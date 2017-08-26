@@ -79,7 +79,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	{
 		$log->info("uitype is ".$uitype);
 		if($value == '') {
-			//modified to fix the issue in trac(http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/1469)
 			if ($fieldname != 'birthday' && $generatedtype != 2 && getTabid($module_name) != 14)
 				$disp_value = getNewDisplayDate();
 
