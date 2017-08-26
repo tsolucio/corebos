@@ -148,6 +148,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Report_Send_Scheduled_ifEmpty',
 				'Report_ListView_PageSize',
 				'Report_MaxRows_OnScreen',
+				'Report_MaxRelated_Modules',
 
 				'Inventory_ListPrice_ReadOnly',
 				'GContacts_Max_Results',

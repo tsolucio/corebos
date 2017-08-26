@@ -109,7 +109,7 @@ wizard.steps({
 			var $error_selector = $("#step2_error");
 			var modsselected = $('.secondarymodule:checkbox:checked').length;
 
-			if ((cbreporttype != 'crosstabsql' && modsselected<=2) || (cbreporttype == 'crosstabsql' && modsselected == 1)) {
+			if ((cbreporttype != 'crosstabsql' && modsselected<=Report_MaxRelated_Modules) || (cbreporttype == 'crosstabsql' && modsselected == 1)) {
 				var data = setStepData(3);
 				jQuery.ajax({
 					method: 'POST',
@@ -129,7 +129,7 @@ wizard.steps({
 				} else if (cbreporttype == 'crosstabsql') {
 					$error_selector.html(alert_arr.ONLY_ONE_MODULE_PERMITTED_FOR_REPORT);
 				} else {
-					$error_selector.html(alert_arr.MAXIMUM_OF_TWO_MODULES_PERMITTED);
+					$error_selector.html(alert_arr.MAXIMUM_OF_MODULES_PERMITTED);
 				}
 				can_pass = false;
 			}
