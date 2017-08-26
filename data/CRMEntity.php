@@ -233,8 +233,26 @@ class CRMEntity {
 				$tblname = $adb->query_result($result, 0, 'tablename');
 				$colname = $adb->query_result($result, 0, 'columnname');
 				$fldname = $fileindex;
-				$upd = "update $tblname set $colname='' where ".$this->tab_name_index[$tblname].'=?';
-				$adb->pquery($upd, array($this->id));
+				if (empty($_REQUEST[$fileindex.'_hidden']) || empty($_REQUEST['__cbisduplicatedfromrecordid'])) {
+					$upd = "update $tblname set $colname='' where ".$this->tab_name_index[$tblname].'=?';
+					$adb->pquery($upd, array($this->id));
+				} else {
+					$attachmentname = vtlib_purify($_REQUEST[$fileindex.'_hidden']);
+					$isduplicatedfromrecordid = vtlib_purify($_REQUEST['__cbisduplicatedfromrecordid']);
+					$old_attachmentrs = $adb->pquery('select vtiger_crmentity.crmid from vtiger_seattachmentsrel
+					 inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_seattachmentsrel.attachmentsid
+					 inner join vtiger_attachments on vtiger_crmentity.crmid=vtiger_attachments.attachmentsid
+					 where vtiger_seattachmentsrel.crmid=? and vtiger_attachments.name=?', array($isduplicatedfromrecordid,$attachmentname));
+					if ($old_attachmentrs and $adb->num_rows($old_attachmentrs)>0) {
+						$old_attachmentid = $adb->query_result($old_attachmentrs,0,'crmid');
+						$upd = "update $tblname set $colname=? where ".$this->tab_name_index[$tblname].'=?';
+						$adb->pquery($upd, array($attachmentname,$this->id));
+						$adb->pquery('insert into vtiger_seattachmentsrel values(?,?)', array($id, $old_attachmentid));
+					} else {
+						$upd = "update $tblname set $colname='' where ".$this->tab_name_index[$tblname].'=?';
+						$adb->pquery($upd, array($this->id));
+					}
+				}
 			}
 		}
 		$log->debug("Exiting from insertIntoAttachment($id,$module) method.");

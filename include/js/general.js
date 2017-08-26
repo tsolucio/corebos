@@ -2916,6 +2916,9 @@ function fnpriceValidation(txtObj) {
 }
 
 function delimage(id,fname,aname) {
+	if (id == 0) {
+		document.getElementById(fname+'_replaceimage').innerHTML=alert_arr.LBL_IMAGE_DELETED;
+	} else {
 	jQuery.ajax({
 		method: 'POST',
 		url: 'index.php?module=Contacts&action=ContactsAjax&file=DelImage&ImageModule='+gVTModule+'&recordid='+id+'&fieldname='+fname+'&attachmentname='+aname,
@@ -2925,6 +2928,8 @@ function delimage(id,fname,aname) {
 		else
 			alert(alert_arr.ERROR_WHILE_EDITING);
 	});
+	}
+	document.getElementById(fname+'_hidden').value = '';
 }
 
 function delUserImage(id) {
