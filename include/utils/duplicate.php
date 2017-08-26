@@ -22,15 +22,19 @@ error_reporting("E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED & ~E_WARNING");
 require_once 'include/utils/utils.php';
 require_once 'include/utils/CommonUtils.php';
 
-function duplicaterec($currentModule, $record_id, $bmapname) {
+function duplicaterec($currentModule, $record_id, $bmap) {
 	global $adb, $current_user;
 
 	$focus = CRMEntity::getInstance($currentModule);
 	$focus->retrieve_entity_info($record_id, $currentModule);
 
+	if (is_numeric($bmap)) {
+		$cbMapid = $bmap;
+	} else {
+		//$bmapname = 'BusinessMapping_'.$currentModule.'_DuplicateRelations';
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmap, cbMap::getMapIdByName($bmap));
+	}
 	// Retrieve relations map
-	//$bmapname = 'BusinessMapping_'.$currentModule.'_DuplicateRelations';
-	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 	if ($cbMapid) {
 		$cbMap = cbMap::getMapByID($cbMapid);
 		$maped_relations = $cbMap->DuplicateRelations()->getRelatedModules();
@@ -74,12 +78,16 @@ function duplicaterec($currentModule, $record_id, $bmapname) {
 }
 
 // The duplicate has already been created elsewhere, so here we just do the relations, not the direct relations, only the related lists
-function duplicateRecordRelations($currentModule, $duplicatedrecord, $duplicatedfrom, $bmapname) {
+function duplicateRecordRelations($currentModule, $duplicatedrecord, $duplicatedfrom, $bmap) {
 	global $adb, $current_user;
 
+	if (is_numeric($bmap)) {
+		$cbMapid = $bmap;
+	} else {
+		//$bmapname = 'BusinessMapping_'.$currentModule.'_DuplicateRelations';
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmap, cbMap::getMapIdByName($bmap));
+	}
 	// Retrieve relations map
-	//$bmapname = 'BusinessMapping_'.$currentModule.'_DuplicateRelations';
-	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 	if ($cbMapid) {
 		$cbMap = cbMap::getMapByID($cbMapid);
 		$maped_relations = $cbMap->DuplicateRelations()->getRelatedModules();
