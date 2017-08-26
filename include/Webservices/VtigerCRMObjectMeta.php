@@ -319,6 +319,13 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		return parent::getEmailFields();
 	}
 
+	function getImageFields() {
+		if (!$this->meta) {
+			$this->retrieveMeta();
+		}
+		return parent::getImageFields();
+	}
+
 	function getFieldIdFromFieldName($fieldName){
 		if(!$this->meta){
 			$this->retrieveMeta();

@@ -31,6 +31,7 @@ abstract class EntityMeta{
 	protected $mandatoryFields;
 	protected $referenceFieldDetails;
 	protected $emailFields;
+	protected $imageFields;
 	protected $ownerFields;
 	protected $moduleFields;
 
@@ -51,6 +52,18 @@ abstract class EntityMeta{
 			}
 		}
 		return $this->emailFields;
+	}
+
+	public function getImageFields() {
+		if ($this->imageFields === null) {
+			$this->imageFields =  array();
+			foreach ($this->moduleFields as $fieldName=>$webserviceField) {
+				if ($webserviceField->getUIType() == 69) {
+					array_push($this->imageFields, $fieldName);
+				}
+			}
+		}
+		return $this->imageFields;
 	}
 
 	public function getFieldColumnMapping(){
