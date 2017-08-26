@@ -56,17 +56,47 @@ function duplicaterec($currentModule, $record_id, $bmap) {
 				$entity = CRMEntity::getInstance($module);
 				$entity->mode='';
 				$entity->retrieve_entity_info($value,$module);
+				$imageFields = $meta->getImageFields();
+				if (count($imageFields)>0) {
+					foreach ($imageFields as $imgfld) {
+						$_FILES[$imgfld] = array('name'=>'','size'=>0);
+						$_REQUEST[$imgfld.'_hidden'] = $entity->column_fields[$imgfld];
+					}
+					$_REQUEST['__cbisduplicatedfromrecordid'] = $value;
+				}
 				$entity->column_fields = DataTransform::sanitizeRetrieveEntityInfo($entity->column_fields, $meta);
 				$entity->save($module);
 				$focus->column_fields[$fieldname] = $entity->id;
+				if (count($imageFields)>0) {
+					foreach ($imageFields as $imgfld) {
+						unset($_FILES[$imgfld]);
+						unset($_REQUEST[$imgfld.'_hidden']);
+					}
+					unset($_REQUEST['__cbisduplicatedfromrecordid']);
+				}
 			}
 		}
 	}
 
 	$handler = vtws_getModuleHandlerFromName($currentModule, $current_user);
 	$meta = $handler->getMeta();
+	$imageFields = $meta->getImageFields();
+	if (count($imageFields)>0) {
+		foreach ($imageFields as $imgfld) {
+			$_FILES[$imgfld] = array('name'=>'','size'=>0);
+			$_REQUEST[$imgfld.'_hidden'] = $focus->column_fields[$imgfld];
+		}
+		$_REQUEST['__cbisduplicatedfromrecordid'] = $record_id;
+	}
 	$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $meta);
 	$focus->saveentity($currentModule); // no workflows for this one => so we don't reenter this process
+	if (count($imageFields)>0) {
+		foreach ($imageFields as $imgfld) {
+			unset($_FILES[$imgfld]);
+			unset($_REQUEST[$imgfld.'_hidden']);
+		}
+		unset($_REQUEST['__cbisduplicatedfromrecordid']);
+	}
 	$new_record_id = $focus->id;
 	$curr_tab_id = gettabid($currentModule);
 	$related_list = get_related_lists($curr_tab_id, $maped_relations);
@@ -180,21 +210,40 @@ function dup_dependent_rec($record_id, $relatedModule, $new_record_id, $dependen
 			$handler = vtws_getModuleHandlerFromName($module, $current_user);
 			$meta = $handler->getMeta();
 			$related_field = $tables['columname'];
+			$imageFields = $meta->getImageFields();
+			if (count($imageFields)>0) {
+				foreach ($imageFields as $imgfld) {
+					$_FILES[$imgfld] = array('name'=>'','size'=>0);
+				}
+			}
 			$queryGenerator = new QueryGenerator($module, $current_user);
 			$queryGenerator->setFields(array('id'));
 			$queryGenerator->addReferenceModuleFieldCondition($relatedModule, $related_field, 'id', $record_id,'e');
 			$query = $queryGenerator->getQuery();
 			$result=$adb->pquery($query,array());
-			while($r = $adb->fetch_array($result)) {
+			while ($r = $adb->fetch_array($result)) {
 				// Duplicate dependent records
 				$entity = new $module();
 				$entity->mode='';
 				$entity->isduplicate = true;
 				$entity->retrieve_entity_info($r[0],$module);
+				if (count($imageFields)>0) {
+					foreach ($imageFields as $imgfld) {
+						$_REQUEST[$imgfld.'_hidden'] = $entity->column_fields[$imgfld];
+					}
+					$_REQUEST['__cbisduplicatedfromrecordid'] = $r[0];
+				}
 				$entity->column_fields[$related_field] = $new_record_id;
 				$entity->column_fields = DataTransform::sanitizeRetrieveEntityInfo($entity->column_fields, $meta);
 				$entity->column_fields['isduplicatedfromrecordid'] = $entity->column_fields['record_id']; // in order to support duplicate workflows
 				$entity->save($module);
+			}
+			if (count($imageFields)>0) {
+				foreach ($imageFields as $imgfld) {
+					unset($_FILES[$imgfld]);
+					unset($_REQUEST[$imgfld.'_hidden']);
+				}
+				unset($_REQUEST['__cbisduplicatedfromrecordid']);
 			}
 		}
 	}
