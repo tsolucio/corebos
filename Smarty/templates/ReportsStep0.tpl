@@ -46,6 +46,7 @@
 	<script type="text/javascript" src="include/jquery/jquery.steps.min.js"></script>
 	{include file='BrowserVariables.tpl'}
 	<script type="text/javascript" src="include/js/general.js"></script>
+	<script type="text/javascript" src="include/js/vtlib.js"></script>
 	<script type="text/javascript" src="include/js/{$LANGUAGE}.lang.js"></script>
 	<script type="text/javascript" src="modules/Reports/Reports.js"></script>
 </head>
