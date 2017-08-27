@@ -504,15 +504,16 @@ class QueryGenerator {
 			$baseTable = $field->getTableName();
 			$tableIndexList = $this->meta->getEntityTableIndexList();
 			$baseTableIndex = $tableIndexList[$baseTable];
-			if($field->getFieldDataType() == 'reference') {
+			if ($field->getFieldDataType() == 'reference') {
 				$moduleList = $this->referenceFieldInfoList[$fieldName];
-				$tableJoinMapping[$field->getTableName()] = 'INNER JOIN';
-				foreach($moduleList as $module) {
-					if($module == 'Users' && $baseModule != 'Users') {
-						$tableJoinCondition[$fieldName]['vtiger_users'.$fieldName] = $field->getTableName().
-							".".$field->getColumnName()." = vtiger_users".$fieldName.".id";
-						$tableJoinCondition[$fieldName]['vtiger_groups'.$fieldName] = $field->getTableName().
-							".".$field->getColumnName()." = vtiger_groups".$fieldName.".groupid";
+				$tableJoinMapping[$baseTable] = 'INNER JOIN';
+				$fldcolname = $field->getColumnName();
+				foreach ($moduleList as $module) {
+					if ($module == 'Users' && $baseModule != 'Users') {
+						$tableJoinCondition[$fieldName]['vtiger_users'.$fieldName] = $baseTable.
+							".".$fldcolname." = vtiger_users".$fieldName.".id";
+						$tableJoinCondition[$fieldName]['vtiger_groups'.$fieldName] = $baseTable.
+							".".$fldcolname." = vtiger_groups".$fieldName.".groupid";
 						$tableJoinMapping['vtiger_users'.$fieldName] = 'LEFT JOIN vtiger_users AS';
 						$tableJoinMapping['vtiger_groups'.$fieldName] = 'LEFT JOIN vtiger_groups AS';
 					}
@@ -523,8 +524,8 @@ class QueryGenerator {
 				$tableJoinMapping['vtiger_users'] = 'LEFT JOIN';
 				$tableJoinMapping['vtiger_groups'] = 'LEFT JOIN';
 			}
-			$tableList[$field->getTableName()] = $field->getTableName();
-			$tableJoinMapping[$field->getTableName()] = $this->meta->getJoinClause($field->getTableName());
+			$tableList[$baseTable] = $baseTable;
+			$tableJoinMapping[$baseTable] = $this->meta->getJoinClause($baseTable);
 		}
 		$baseTable = $this->meta->getEntityBaseTable();
 		$moduleTableIndexList = $this->meta->getEntityTableIndexList();
@@ -542,19 +543,19 @@ class QueryGenerator {
 			// When a field is included in Where Clause, but not in Select Clause, and the field table is not base table,
 			// The table will not be present in tablesList and hence needs to be added to the list.
 			if(empty($tableList[$baseTable])) {
-				$tableList[$baseTable] = $field->getTableName();
-				$tableJoinMapping[$baseTable] = $this->meta->getJoinClause($field->getTableName());
+				$tableList[$baseTable] = $baseTable;
+				$tableJoinMapping[$baseTable] = $this->meta->getJoinClause($baseTable);
 			}
 			if($field->getFieldDataType() == 'reference') {
 				$moduleList = $this->referenceFieldInfoList[$fieldName];
 				// This is special condition as the data is not stored in the base table,
 				// If empty search is performed on this field then it fails to retrieve any information.
-				if ($fieldName == 'parent_id' && $field->getTableName() == 'vtiger_seactivityrel') {
-					$tableJoinMapping[$field->getTableName()] = 'LEFT JOIN';
-				} else if ($fieldName == 'contact_id' && $field->getTableName() == 'vtiger_cntactivityrel') {
-					$tableJoinMapping[$field->getTableName()] = "LEFT JOIN";
+				if ($fieldName == 'parent_id' && $baseTable == 'vtiger_seactivityrel') {
+					$tableJoinMapping[$baseTable] = 'LEFT JOIN';
+				} else if ($fieldName == 'contact_id' && $baseTable == 'vtiger_cntactivityrel') {
+					$tableJoinMapping[$baseTable] = "LEFT JOIN";
 				} else {
-					$tableJoinMapping[$field->getTableName()] = 'INNER JOIN';
+					$tableJoinMapping[$baseTable] = 'INNER JOIN';
 				}
 				foreach($moduleList as $module) {
 					$meta = $this->getMeta($module);
@@ -596,8 +597,8 @@ class QueryGenerator {
 				$tableJoinMapping['vtiger_users'] = 'LEFT JOIN';
 				$tableJoinMapping['vtiger_groups'] = 'LEFT JOIN';
 			} else {
-				$tableList[$field->getTableName()] = $field->getTableName();
-				$tableJoinMapping[$field->getTableName()] = $this->meta->getJoinClause($field->getTableName());
+				$tableList[$baseTable] = $baseTable;
+				$tableJoinMapping[$baseTable] = $this->meta->getJoinClause($baseTable);
 			}
 		}
 
