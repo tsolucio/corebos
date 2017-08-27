@@ -186,16 +186,15 @@ public function setgoogleaccessparams($userid){
 			$user_array = array("id"=> $userid, "firstname" => $first_name, "lastname" => $last_name, "fullname" => trim($first_name." ".$last_name), "color" => $User_Colors_Palette[1], "textColor" => $User_Colors["text"], "title_color" => $User_Colors_Palette[0], "status" => $status, "checked"=>$user_checked);
 			$return_data [$userid]= $user_array;
 
-			unset($User_Colors);
-			unset($User_Colors_Palette);
+			unset($User_Colors,$User_Colors_Palette);
 		}
 
 		return $return_data;
 	}
-	
-    public function CheckUserPermissions($userid) {
-        return true;
-    }    
+
+	public function CheckUserPermissions($userid) {
+		return true;
+	}
 
     /**
      * Handle module events

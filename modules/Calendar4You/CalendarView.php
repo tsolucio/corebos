@@ -155,8 +155,7 @@ foreach ($ActTypes AS $act_id => $act_name) {
 			"checked"=>$invite_checked
 		);
 	}
-	unset($Colors);
-	unset($Colors_Palete);
+	unset($Colors,$Colors_Palete);
 }
 
 $Invite_Colors = getEColors("type","invite");

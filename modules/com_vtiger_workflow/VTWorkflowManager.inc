@@ -299,9 +299,8 @@
 			$exp['tasks'] = array();
 			$tm = new VTTaskManager($this->adb);
 			$tasks = $tm->getTasksForWorkflow($workflow->id);
-			foreach($tasks as $task){
-				unset($task->id);
-				unset($task->workflowId);
+			foreach ($tasks as $task) {
+				unset($task->id,$task->workflowId);
 				$exp['tasks'][] = serialize($task);
 			}
 			return  json_encode($exp);

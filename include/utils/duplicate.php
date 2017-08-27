@@ -69,8 +69,7 @@ function duplicaterec($currentModule, $record_id, $bmap) {
 				$focus->column_fields[$fieldname] = $entity->id;
 				if (count($imageFields)>0) {
 					foreach ($imageFields as $imgfld) {
-						unset($_FILES[$imgfld]);
-						unset($_REQUEST[$imgfld.'_hidden']);
+						unset($_FILES[$imgfld],$_REQUEST[$imgfld.'_hidden']);
 					}
 					unset($_REQUEST['__cbisduplicatedfromrecordid']);
 				}
@@ -92,8 +91,7 @@ function duplicaterec($currentModule, $record_id, $bmap) {
 	$focus->saveentity($currentModule); // no workflows for this one => so we don't reenter this process
 	if (count($imageFields)>0) {
 		foreach ($imageFields as $imgfld) {
-			unset($_FILES[$imgfld]);
-			unset($_REQUEST[$imgfld.'_hidden']);
+			unset($_FILES[$imgfld],$_REQUEST[$imgfld.'_hidden']);
 		}
 		unset($_REQUEST['__cbisduplicatedfromrecordid']);
 	}
@@ -240,8 +238,7 @@ function dup_dependent_rec($record_id, $relatedModule, $new_record_id, $dependen
 			}
 			if (count($imageFields)>0) {
 				foreach ($imageFields as $imgfld) {
-					unset($_FILES[$imgfld]);
-					unset($_REQUEST[$imgfld.'_hidden']);
+					unset($_FILES[$imgfld],$_REQUEST[$imgfld.'_hidden']);
 				}
 				unset($_REQUEST['__cbisduplicatedfromrecordid']);
 			}
