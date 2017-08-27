@@ -1927,8 +1927,7 @@ class CRMEntity {
 	 */
 	function save_related_module($module, $crmid, $with_module, $with_crmid) {
 		global $adb;
-		if (!is_array($with_crmid))
-			$with_crmid = Array($with_crmid);
+		$with_crmid = (array)$with_crmid;
 		foreach ($with_crmid as $relcrmid) {
 
 			if ($with_module == 'Documents') {
@@ -1959,8 +1958,7 @@ class CRMEntity {
 	 */
 	function delete_related_module($module, $crmid, $with_module, $with_crmid) {
 		global $adb;
-		if (!is_array($with_crmid))
-			$with_crmid = Array($with_crmid);
+		$with_crmid = (array)$with_crmid;
 		$data = array();
 		$data['sourceModule'] = $module;
 		$data['sourceRecordId'] = $crmid;
@@ -2099,11 +2097,7 @@ class CRMEntity {
 			while ($depflds = $this->db->fetch_array($dependentFieldSql)) {
 			$dependentTable = $depflds['tablename'];
 			if (isset($other->related_tables)) {
-				if (!is_array($other->related_tables)) {
-					$otherRelatedTable = array($other->related_tables);
-				} else {
-					$otherRelatedTable = $other->related_tables;
-				}
+				$otherRelatedTable = (array)$other->related_tables;
 			} else {
 				$otherRelatedTable = '';
 			}
@@ -2218,11 +2212,7 @@ class CRMEntity {
 			while ($depflds = $this->db->fetch_array($dependentFieldSql)) {
 			$dependentTable = $depflds['tablename'];
 			if (isset($other->related_tables)) {
-				if (!is_array($other->related_tables)) {
-					$otherRelatedTable = array($other->related_tables);
-				} else {
-					$otherRelatedTable = $other->related_tables;
-				}
+				$otherRelatedTable = (array)$other->related_tables;
 			} else {
 				$otherRelatedTable = '';
 			}
@@ -2692,8 +2682,7 @@ class CRMEntity {
 	function buildSearchQueryForFieldTypes($uitypes, $value=false) {
 		global $adb;
 
-		if (!is_array($uitypes))
-			$uitypes = array($uitypes);
+		$uitypes = (array)$uitypes;
 		$module = get_class($this);
 
 		$cachedModuleFields = VTCacheUtils::lookupFieldInfo_Module($module);

@@ -946,7 +946,7 @@ function getUserEmail($userid) {
 	$email = '';
 	if (!empty($userid) and is_numeric($userid)) {
 		$sql = 'select email1 from vtiger_users where id=?';
-		if (!is_array($userid)) $userid = array($userid);
+		$userid = (array)$userid;
 		$result = $adb->pquery($sql, $userid);
 		if ($result and $adb->num_rows($result)>0) {
 			$email = $adb->query_result($result,0,'email1');
@@ -4090,7 +4090,7 @@ function DeleteEntity($module,$return_module,$focus,$record,$return_id) {
  * Function to related two records of different entity types
  */
 function relateEntities($focus, $sourceModule, $sourceRecordId, $destinationModule, $destinationRecordIds) {
-	if(!is_array($destinationRecordIds)) $destinationRecordIds = Array($destinationRecordIds);
+	$destinationRecordIds = (array)$destinationRecordIds;
 	$data = array();
 	$data['focus'] = $focus;
 	$data['sourceModule'] = $sourceModule;

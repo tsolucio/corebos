@@ -234,8 +234,7 @@ class Documents extends CRMEntity {
 		global $adb;
 		if ($module=='Documents') {
 			// in this case we have to turn the parameters around to call the parent method correctly
-			if (!is_array($with_crmid))
-				$with_crmid = Array($with_crmid);
+			$with_crmid = (array)$with_crmid;
 			foreach ($with_crmid as $relcrmid) {
 				$checkpresence = $adb->pquery("SELECT crmid FROM vtiger_senotesrel WHERE crmid = ? AND notesid = ?", Array($relcrmid,$crmid));
 				// Relation already exists? No need to add again

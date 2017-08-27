@@ -178,7 +178,7 @@ class ServiceContracts extends CRMEntity {
 	 */
 	function save_related_module($module, $crmid, $with_module, $with_crmids) {
 
-		if(!is_array($with_crmids)) $with_crmids = Array($with_crmids);
+		$with_crmids = (array)$with_crmids;
 		foreach($with_crmids as $with_crmid) {
 			parent::save_related_module($module, $crmid, $with_module, $with_crmid);
 			if ($with_module == 'HelpDesk') {
@@ -193,7 +193,7 @@ class ServiceContracts extends CRMEntity {
 		global $log;
 		$log->debug('Entering into function updateHelpDeskRelatedTo');
 
-		if (!is_array($entityIds)) $entityIds = array($entityIds);
+		$entityIds = (array)$entityIds;
 		$selectTicketsQuery = "SELECT ticketid FROM vtiger_troubletickets WHERE (parent_id IS NULL OR parent_id = 0) AND ticketid IN (" . generateQuestionMarks($entityIds) .")";
 		$selectTicketsResult = $this->db->pquery($selectTicketsQuery, array($entityIds));
 		$noOfTickets = $this->db->num_rows($selectTicketsResult);

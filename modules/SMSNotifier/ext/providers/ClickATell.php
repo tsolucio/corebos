@@ -72,9 +72,7 @@ class ClickATell implements ISMSProvider {
 	}
 
 	public function send($message, $tonumbers) {
-		if(!is_array($tonumbers)) {
-			$tonumbers = array($tonumbers);
-		}
+		$tonumbers = (array)$tonumbers;
 
 		$params = $this->prepareParameters();
 		$params['text'] = $message;

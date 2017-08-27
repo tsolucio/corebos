@@ -1061,7 +1061,7 @@ class Accounts extends CRMEntity {
 	function save_related_module($module, $crmid, $with_module, $with_crmids) {
 		$adb = $this->db;
 
-		if(!is_array($with_crmids)) $with_crmids = Array($with_crmids);
+		$with_crmids = (array)$with_crmids;
 		foreach($with_crmids as $with_crmid) {
 			if($with_module == 'Products') {
 				$checkResult = $adb->pquery('SELECT 1 FROM vtiger_seproductsrel WHERE productid = ? AND crmid = ?', array($with_crmid, $crmid));

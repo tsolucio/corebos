@@ -50,7 +50,7 @@ class RelatedPanes extends processcbMap {
 
 	function getRelationIds($origintab,$mlist) {
 		global $adb;
-		if (!is_array($mlist)) $mlist = array($mlist);
+		$mlist = (array)$mlist;
 		$mlist_ids=array();
 		foreach ($mlist as $rellabel) {
 			$tid=getTabid($rellabel);

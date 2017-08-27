@@ -97,9 +97,7 @@ class Skebby implements ISMSProvider {
 	}
 
 	public function send($message, $recipients) {
-		if(!is_array($recipients)) {
-			$recipients = array($recipients);
-		}
+		$recipients = (array)$recipients;
 
 		$params = $this->prepareParameters();
 

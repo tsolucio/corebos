@@ -106,8 +106,7 @@ function get_options_array_seperate_key(&$label_list, &$key_list, $selected_key,
 	//for setting null selection values to human readable --None--
 	$pattern = "/'0?'></";
 	$replacement = "''>" . $app_strings['LBL_NONE'] . "<";
-	if (!is_array($selected_key))
-		$selected_key = array($selected_key);
+	$selected_key = (array)$selected_key;
 
 	//create the type dropdown domain and set the selected value if $opp value already exists
 	foreach ($key_list as $option_key => $option_value) {
@@ -144,8 +143,7 @@ function get_select_options_with_id_separate_key(&$label_list, &$key_list, $sele
 
 	$pattern = "/'0?'></";
 	$replacement = "''>" . $app_strings['LBL_NONE'] . "<";
-	if (!is_array($selected_key))
-		$selected_key = array($selected_key);
+	$selected_key = (array)$selected_key;
 
 	foreach ($key_list as $option_key => $option_value) {
 		$selected_string = '';
@@ -173,8 +171,7 @@ function get_select_options_with_value_separate_key(&$label_list, &$key_list, $s
 
 	$pattern = "/'0?'></";
 	$replacement = "''>" . $app_strings['LBL_NONE'] . "<";
-	if (!is_array($selected_key))
-		$selected_key = array($selected_key);
+	$selected_key = (array)$selected_key;
 
 	foreach ($key_list as $option_key => $option_value) {
 		$selected_string = '';

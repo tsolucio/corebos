@@ -78,9 +78,7 @@ class SMSMasivos implements ISMSProvider {
 	}
 
 	public function send($message, $tonumbers) {
-		if(!is_array($tonumbers)) {
-			$tonumbers = array($tonumbers);
-		}
+		$tonumbers = (array)$tonumbers;
 
 		foreach ($tonumbers as $key => $value) {
 			if (substr($value, 0,3) == '044') $tonumbers[$key]=substr($value,3);

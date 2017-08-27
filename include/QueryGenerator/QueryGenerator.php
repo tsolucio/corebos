@@ -879,9 +879,7 @@ class QueryGenerator {
 				$fieldSqlList[$index] = '('.$valueSqlList[0].')';
 				continue;
 			}
-			if(!is_array($valueSqlList)) {
-				$valueSqlList = array($valueSqlList);
-			}
+			$valueSqlList = (array)$valueSqlList;
 			foreach ($valueSqlList as $valueSql) {
 				if (in_array($fieldName, $this->referenceFieldList)) {
 					$moduleList = $this->referenceFieldInfoList[$fieldName];

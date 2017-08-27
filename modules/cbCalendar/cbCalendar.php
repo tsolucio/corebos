@@ -901,8 +901,7 @@ class cbCalendar extends CRMEntity {
 	 */
 	function save_related_module($module, $crmid, $with_module, $with_crmid) {
 		global $adb;
-		if (!is_array($with_crmid))
-			$with_crmid = Array($with_crmid);
+		$with_crmid = (array)$with_crmid;
 		foreach ($with_crmid as $relcrmid) {
 			$checkpresence = $adb->pquery('SELECT contactid FROM vtiger_cntactivityrel WHERE activityid = ? AND contactid = ?', Array($crmid, $relcrmid));
 			// Relation already exists? No need to add again
@@ -920,8 +919,7 @@ class cbCalendar extends CRMEntity {
 	 */
 	function delete_related_module($module, $crmid, $with_module, $with_crmid) {
 		global $adb;
-		if (!is_array($with_crmid))
-			$with_crmid = Array($with_crmid);
+		$with_crmid = (array)$with_crmid;
 		$data = array();
 		$data['sourceModule'] = $module;
 		$data['sourceRecordId'] = $crmid;

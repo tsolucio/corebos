@@ -1220,7 +1220,7 @@ class Products extends CRMEntity {
 	function save_related_module($module, $crmid, $with_module, $with_crmids) {
 		$adb = PearDatabase::getInstance();
 
-		if(!is_array($with_crmids)) $with_crmids = Array($with_crmids);
+		$with_crmids = (array)$with_crmids;
 		foreach($with_crmids as $with_crmid) {
 			if($with_module == 'Leads' || $with_module == 'Accounts' ||
 					$with_module == 'Contacts' || $with_module == 'Potentials' || $with_module == 'Products'){
