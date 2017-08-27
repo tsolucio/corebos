@@ -2635,23 +2635,21 @@ function formatForSqlLike($str, $flag=0,$is_field=false) {
  */
 function getCurrentModule($perform_set=false) {
 	global $currentModule,$root_directory;
-	if(isset($currentModule)) return $currentModule;
+	if (!empty($currentModule)) return $currentModule;
 
 	// Do some security check and return the module information
-	if(isset($_REQUEST['module']))
-	{
+	if (isset($_REQUEST['module'])) {
 		$is_module = false;
-		$module = $_REQUEST['module'];
-		$dir = @scandir($root_directory."modules");
-		$temp_arr = Array("CVS","Attic");
-		$res_arr = @array_intersect($dir,$temp_arr);
-		if(count($res_arr) == 0 && !preg_match("/[\/.]/",$module)) {
-			if(@in_array($module,$dir))
-				$is_module = true;
+		$module = vtlib_purify($_REQUEST['module']);
+		$dir = @scandir($root_directory.'modules', SCANDIR_SORT_NONE);
+		$temp_arr = Array('.','..','Vtiger','uploads');
+		$res_arr = @array_diff($dir,$temp_arr);
+		if (!preg_match("/[\/.]/",$module)) {
+			$is_module = @in_array($module,$res_arr);
 		}
 
-		if($is_module) {
-			if($perform_set) $currentModule = $module;
+		if ($is_module) {
+			if ($perform_set) $currentModule = $module;
 			return $module;
 		}
 	}
