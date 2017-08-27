@@ -3269,7 +3269,7 @@ function getReturnPath($host, $from_email) {
 	$host = trim($host);
 
 	// Review if the host is not local
-	if (!in_array(strtolower($host), array('localhost'))) {
+	if ('localhost' != strtolower($host)) {
 		if (strpos($from_email, '@')) {
 			list($from_name, $from_domain) = explode('@', $from_email);
 		} else {
