@@ -565,6 +565,9 @@ class Validator
      */
     protected function validateSlug($field, $value)
     {
+        if(is_array($value)) {
+            return false;
+        }
         return preg_match('/^([-a-z0-9_-])+$/i', $value);
     }
 
@@ -889,6 +892,11 @@ class Validator
         if (is_array($identifiers) && count($identifiers) === 0) {
             return array($data, false);
         }
+        
+        // Catches the case where the data isn't an array or object
+        if (is_scalar($data)) {
+            return array(NULL, false);
+        }
 
         $identifier = array_shift($identifiers);
 
@@ -937,7 +945,11 @@ class Validator
                 // Don't validate if the field is not required and the value is empty
                 if ($this->hasRule('optional', $field) && isset($values)) {
                     //Continue with execution below if statement
-                } elseif ($v['rule'] !== 'required' && !$this->hasRule('required', $field) && (! isset($values) || $values === '' || ($multiple && count($values) == 0))) {
+                } elseif (
+                    $v['rule'] !== 'required' && !$this->hasRule('required', $field) &&
+                    $v['rule'] !== 'accepted' &&
+                    (! isset($values) || $values === '' || ($multiple && count($values) == 0))
+                ) {
                     continue;
                 }
 
@@ -1120,11 +1132,21 @@ class Validator
         $msgs = $this->getRuleMessages();
         $message = isset($msgs[$rule]) ? $msgs[$rule] : self::ERROR_DEFAULT;
 
+        // Ensure message contains field label
+        if (function_exists('mb_strpos')) {
+            $notContains = mb_strpos($message, '{field}') === false;
+        } else {
+            $notContains = strpos($message, '{field}') === false;
+        }
+        if ($notContains) {
+            $message = '{field} ' . $message;
+        }
+
         $this->_validations[] = array(
             'rule' => $rule,
             'fields' => (array) $fields,
             'params' => (array) $params,
-            'message' => '{field} ' . $message
+            'message' => $message
         );
 
         return $this;
@@ -1191,6 +1213,9 @@ class Validator
         foreach ($rules as $ruleType => $params) {
             if (is_array($params)) {
                 foreach ($params as $innerParams) {
+                    if (! is_array($innerParams)){
+                        $innerParams = (array) $innerParams;
+                    }
                     array_unshift($innerParams, $ruleType);
                     call_user_func_array(array($this, 'rule'), $innerParams);
                 }
