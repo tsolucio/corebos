@@ -698,6 +698,7 @@ $mod_strings = array (
 		'LBL_SCANNING' => 'Récupération',
 		'LBL_LOOKFOR' => 'Rechercher',
 		'LBL_UNREAD' => 'Non lu',
+		'LBL_ALLUNREAD'=>'TOUTS Non lu',
 		'LBL_READ' => 'Lu',
 		'LBL_AFTER_SCAN' => 'Après la récupération',
 		'LBL_MESSAGES_FROM_LASTSCAN' => 'Messages depuis le dernier scan',

@@ -1,4 +1,4 @@
-<?php
+f<?php
 /*********************************************************************************
  * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
  * ("License"); You may not use this file except in compliance with the
@@ -825,6 +825,7 @@ $mod_strings = Array(
     'LBL_SCANNING'=>'Scannen',
     'LBL_LOOKFOR'=>'suche nach',
     'LBL_UNREAD'=>'ungelesenen',
+    'LBL_ALLUNREAD'=>'ALL Unread',
     'LBL_READ'=>'gelesen',
     'LBL_AFTER_SCAN'=>'nach dem Scan',
     'LBL_MESSAGES_FROM_LASTSCAN'=>'Nachrichten vom letzten Scan',
