@@ -2717,8 +2717,7 @@ class CRMEntity {
 			}
 		}
 		foreach ($LookupTable as $tablename) {
-			$query .= " INNER JOIN $tablename
-						on $this->table_name.$this->table_index = $tablename." . $this->tab_name_index[$tablename];
+			$query .= " INNER JOIN $tablename on $this->table_name.$this->table_index = $tablename." . $this->tab_name_index[$tablename];
 		}
 		if (!empty($lookupcolumns) && $value !== false) {
 			$query .=" WHERE ";

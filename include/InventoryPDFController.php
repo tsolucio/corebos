@@ -6,9 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
-
 include_once 'vtlib/Vtiger/PDF/models/Model.php';
 include_once 'vtlib/Vtiger/PDF/inventory/HeaderViewer.php';
 include_once 'vtlib/Vtiger/PDF/inventory/FooterViewer.php';
@@ -77,18 +75,15 @@ class Vtiger_InventoryPDFController {
 		if(is_null($this->focus)) return;
 
 		$pdfgenerator = $this->getPDFGenerator();
-		
 		$pdfgenerator->setPagerViewer($this->getPagerViewer());
 		$pdfgenerator->setHeaderViewer($this->getHeaderViewer());
 		$pdfgenerator->setFooterViewer($this->getFooterViewer());
 		$pdfgenerator->setContentViewer($this->getContentViewer());
-		
 		return $pdfgenerator->generate($filename, $type);
 	}
 
 
 	// Helper methods
-	
 	function buildContentModels() {
 		$associated_products = $this->associated_products;
 		$contentModels = array();
@@ -99,7 +94,7 @@ class Vtiger_InventoryPDFController {
 
 			$contentModel = new Vtiger_PDF_Model();
 
-			$discountPercentage  = 0.00;
+			$discountPercentage = 0.00;
 			$total_tax_percent = 0.00;
 			$producttotal_taxes = 0.00;
 			$quantity = ''; $listPrice = ''; $discount = ''; $taxable_total = '';
@@ -130,13 +125,13 @@ class Vtiger_InventoryPDFController {
 			$discountPercentage = $productLineItem["discount_percent{$productLineItemIndex}"];
 			$productName = decode_html($productLineItem["productName{$productLineItemIndex}"]);
 			//get the sub product
-            $subProducts = $productLineItem["subProductArray{$productLineItemIndex}"];
-            if($subProducts != ''){
-				foreach($subProducts as $subProduct) {
+			$subProducts = $productLineItem["subProductArray{$productLineItemIndex}"];
+			if ($subProducts != '') {
+				foreach ($subProducts as $subProduct) {
 					$productName .="\n"." - ".decode_html($subProduct);
-                    }
+				}
 			}
-            $contentModel->set('Name', $productName);
+			$contentModel->set('Name', $productName);
 			$contentModel->set('Code', $productLineItem["hdnProductcode{$productLineItemIndex}"]);
 			$contentModel->set('Quantity', $quantity);
 			$contentModel->set('Price',     $this->formatPrice($listPrice));
@@ -148,7 +143,6 @@ class Vtiger_InventoryPDFController {
 			$contentModels[] = $contentModel;
 		}
 		$this->totaltaxes = $totaltaxes; //will be used to add it to the net total
-		
 		return $contentModels;
 	}
 
@@ -171,7 +165,7 @@ class Vtiger_InventoryPDFController {
 
 		$summaryModel = new Vtiger_PDF_Model();
 
-		$netTotal = $discount = $handlingCharges =  $handlingTaxes = 0;
+		$netTotal = $discount = $handlingCharges = $handlingTaxes = 0;
 		$adjustment = $grandTotal = 0;
 
 		$productLineItemIndex = 0;
@@ -182,7 +176,6 @@ class Vtiger_InventoryPDFController {
 		}
 		$netTotal = number_format(($netTotal + $this->totaltaxes), 2,'.', '');
 		$summaryModel->set(getTranslatedString("Net Total", $this->moduleName), $this->formatPrice($netTotal));
-		
 		$discount_amount = $final_details["discount_amount_final"];
 		$discount_percent = $final_details["discount_percentage_final"];
 
@@ -193,7 +186,6 @@ class Vtiger_InventoryPDFController {
 			$discount = (($discount_percent*$final_details["hdnSubTotal"])/100);
 		}
 		$summaryModel->set(getTranslatedString("Discount", $this->moduleName), $this->formatPrice($discount));
-		
 		$group_total_tax_percent = '0.00';
 		//To calculate the group tax amount
 		if($final_details['taxtype'] == 'group') {
@@ -210,12 +202,10 @@ class Vtiger_InventoryPDFController {
 		}
 		//obtain the Currency Symbol
 		$currencySymbol = $this->buildCurrencySymbol();
-		
 		$summaryModel->set(getTranslatedString("Shipping & Handling Charges", $this->moduleName), $this->formatPrice($final_details['shipping_handling_charge']));
 		$summaryModel->set(getTranslatedString("Shipping & Handling Tax:", $this->moduleName)."($sh_tax_percent%)", $this->formatPrice($final_details['shtax_totalamount']));
 		$summaryModel->set(getTranslatedString("Adjustment", $this->moduleName), $this->formatPrice($final_details['adjustment']));
 		$summaryModel->set(getTranslatedString("Grand Total : (in $currencySymbol)", $this->moduleName), $this->formatPrice($final_details['grandTotal'])); // TODO add currency string
-		
 		return $summaryModel;
 	}
 
@@ -224,14 +214,13 @@ class Vtiger_InventoryPDFController {
 		$headerModel->set('title', $this->buildHeaderModelTitle());
 		$modelColumns = array($this->buildHeaderModelColumnLeft(), $this->buildHeaderModelColumnCenter(), $this->buildHeaderModelColumnRight());
 		$headerModel->set('columns', $modelColumns);
-		
 		return $headerModel;
 	}
 
 	function buildHeaderModelTitle() {
 		return $this->moduleName;
 	}
-	
+
 	function buildHeaderModelColumnLeft() {
 		global $adb;
 
@@ -247,8 +236,6 @@ class Vtiger_InventoryPDFController {
 			if(!empty($resultrow['state'])) $addressValues[]= ",".$resultrow['state'];
 			if(!empty($resultrow['code'])) $addressValues[]= $resultrow['code'];
 			if(!empty($resultrow['country'])) $addressValues[]= "\n".$resultrow['country'];
-			
-
 			if(!empty($resultrow['phone']))		$additionalCompanyInfo[]= "\n".getTranslatedString("Phone: ", $this->moduleName). $resultrow['phone'];
 			if(!empty($resultrow['fax']))		$additionalCompanyInfo[]= "\n".getTranslatedString("Fax: ", $this->moduleName). $resultrow['fax'];
 			if(!empty($resultrow['website']))	$additionalCompanyInfo[]= "\n".getTranslatedString("Website: ", $this->moduleName). $resultrow['website'];
@@ -306,13 +293,13 @@ class Vtiger_InventoryPDFController {
 		$labelModel->set(Vtiger_PDF_InventoryFooterViewer::$TERMSANDCONDITION_LABEL_KEY, getTranslatedString('Terms & Conditions',$this->moduleName));
 		return $labelModel;
 	}
-	
+
 	function buildPagerModel() {
 		$footerModel = new Vtiger_PDF_Model();
 		$footerModel->set('format', '-%s-');
 		return $footerModel;
 	}
-	
+
 	function getWatermarkContent() {
 		return '';
 	}
