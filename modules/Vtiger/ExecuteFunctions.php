@@ -143,7 +143,7 @@ switch ($functiontocall) {
 		$newssid = vtlib_purify($_REQUEST['newtabssid']);
 		$oldssid = vtlib_purify($_REQUEST['oldtabssid']);
 		foreach ($_SESSION as $key => $value) {
-			if (strpos($key, $oldssid) !== false) {
+			if (strpos($key, $oldssid) !== false and strpos($key, $oldssid.'__prev') === false) {
 				$newkey = str_replace($oldssid, $newssid, $key);
 				coreBOS_Session::set($newkey, $value);
 				coreBOS_Session::set($key, $_SESSION[$key.'__prev']);
@@ -179,6 +179,18 @@ switch ($functiontocall) {
 			$currencyField->initialize($current_user);
 			$currencyField->setNumberofDecimals(min($decimals,$currencyField->getCurrencyDecimalPlaces()));
 			$ret = $currencyField->getDisplayValue(null,true,true);
+		}
+		break;
+	case 'getGloalSearch':
+		include_once 'include/Webservices/CustomerPortalWS.php';
+		$data = json_decode(file_get_contents('php://input'), TRUE);
+		$searchin = vtlib_purify($data['searchin']);
+		$limit = isset($data['maxResults']) ? vtlib_purify($data['maxResults']) : '';
+		$term = vtlib_purify($data['term']);
+		$retvals = getGlobalSearch($term, $searchin, $limit, $current_user);
+		$ret = array();
+		foreach ($retvals as $value) {
+			$ret[] = array('crmid'=>$value['crmid'],'crmmodule'=>$value['crmmodule'],'query_string'=>$value['query_string'])+ $value['crmfields'];
 		}
 		break;
 	case 'ismoduleactive':

@@ -901,8 +901,7 @@ class cbCalendar extends CRMEntity {
 	 */
 	function save_related_module($module, $crmid, $with_module, $with_crmid) {
 		global $adb;
-		if (!is_array($with_crmid))
-			$with_crmid = Array($with_crmid);
+		$with_crmid = (array)$with_crmid;
 		foreach ($with_crmid as $relcrmid) {
 			$checkpresence = $adb->pquery('SELECT contactid FROM vtiger_cntactivityrel WHERE activityid = ? AND contactid = ?', Array($crmid, $relcrmid));
 			// Relation already exists? No need to add again
@@ -920,8 +919,7 @@ class cbCalendar extends CRMEntity {
 	 */
 	function delete_related_module($module, $crmid, $with_module, $with_crmid) {
 		global $adb;
-		if (!is_array($with_crmid))
-			$with_crmid = Array($with_crmid);
+		$with_crmid = (array)$with_crmid;
 		$data = array();
 		$data['sourceModule'] = $module;
 		$data['sourceRecordId'] = $crmid;
@@ -962,6 +960,25 @@ class cbCalendar extends CRMEntity {
 			$atype = 'Call';
 		}
 		return $atype;
+	}
+
+	/**
+	 * this function sets the status flag of activity to true or false depending on the status passed to it
+	 * @param string $status - the status of the activity flag to set
+	 * @return:: true if successful; false otherwise
+	 */
+	function setActivityReminder($status){
+		global $adb;
+		if ($status == "on") {
+			$flag = 0;
+		} elseif ($status == "off") {
+			$flag = 1;
+		} else {
+			return false;
+		}
+		$sql = 'update vtiger_activity_reminder_popup set status=1 where recordid=?';
+		$adb->pquery($sql, array($this->id));
+		return true;
 	}
 }
 ?>

@@ -8,6 +8,9 @@
  * All Rights Reserved.
  ************************************************************************************/
 
+if (isset($_REQUEST['activitytype']) and $_REQUEST['activitytype']=='Emails') {
+	$_REQUEST['activitytype'] = 'Task'; // cbCalendar Emails cannot be created through this GUI
+}
 $__cbSaveSendHeader = false;
 require_once('modules/Vtiger/Save.php');
 

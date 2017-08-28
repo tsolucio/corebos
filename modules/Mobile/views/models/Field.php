@@ -19,22 +19,20 @@ class crmtogo_UI_FieldModel {
 	function uitype() {
 		return $this->data['uitype'];
 	}
-	
-	
+
 	function name() {
 		return $this->data['name'];
 	}
-	
-	
+
 	function value() {
 		global $current_user;
 		if ($this->data['uitype'] == '15' || $this->data['uitype'] == '33' || ($this->data['uitype'] == '16' and $this->data['name'] !='recurringtype' and $this->data['name'] !='duration_minutes' and $this->data['name'] !='visibility' )) {  
 			$rawValue = $this->data['type']['value'];
 			
-			if (is_array($rawValue)) {           
+			if (is_array($rawValue)) {
 				return $rawValue['value'];
 			}
-		    return $rawValue;
+			return $rawValue;
 		}
 		else if($this->data['uitype'] == '53') {
 			$rawValue = $this->data['type']['value'];
@@ -44,28 +42,26 @@ class crmtogo_UI_FieldModel {
 			}
 		}
 		else {
-			if($_REQUEST['module'] == 'Timecontrol' && $this->name()=='relatedto' && isset($_REQUEST['relatedto'])){
+			if (isset($_REQUEST['module']) && $_REQUEST['module'] == 'Timecontrol' && $this->name()=='relatedto' && isset($_REQUEST['relatedto'])) {
 				$relatedto = $_REQUEST['relatedto'];
 				$fieldvalue = trim(vtws_getName($relatedto, $current_user));
 				$relvalue = array('value' => $relatedto, 'label'=>$fieldvalue);
 				$rawValue = $relvalue;
 				$this->data['value'] = $relvalue;
-			}else{
+			} else {
 				$rawValue = $this->data['value'];
 			}
 			if (is_array($rawValue)) return $rawValue['value'];
 			return $rawValue;
-		}	
-		
+		}
 	}
-	
+
 	function valueLabel() {
 		$rawValue = $this->data['value'];
 		if (is_array($rawValue)) return $rawValue['label'];
 		return $rawValue;
 	}
-	
-	
+
 	function label() {
 		return $this->data['label'];
 	}

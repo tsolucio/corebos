@@ -105,12 +105,12 @@ class CobroPago extends CRMEntity {
 	var $mandatory_fields = Array('createdtime', 'modifiedtime','cyp_no');
 
 	function save($module, $fileid = '') {
-		global $adb, $mod_strings, $current_user;
+		global $adb, $current_user;
 		$update_after = false;
 		if ($this->column_fields['paid'] == 'on' or $this->column_fields['paid'] == '1'){
 			if($this->mode != 'edit'){
 				$update_after = true;
-				$update_log = $mod_strings['Payment Paid'].$current_user->user_name.$mod_strings['PaidOn'].date("l dS F Y h:i:s A").'--//--';
+				$update_log = getTranslatedString('Payment Paid','CobroPago').$current_user->user_name.getTranslatedString('PaidOn','CobroPago').date("l dS F Y h:i:s A").'--//--';
 			}else{
 				$SQL = 'SELECT paid,update_log FROM vtiger_cobropago WHERE cobropagoid=?';
 				$result = $adb->pquery($SQL,array($this->id));
@@ -118,7 +118,7 @@ class CobroPago extends CRMEntity {
 				if ($old_paid == '0'){
 					$update_after = true;
 					$update_log = $adb->query_result($result,0,'update_log');
-					$update_log .= $mod_strings['Payment Paid'].$current_user->user_name.$mod_strings['PaidOn'].date("l dS F Y h:i:s A").'--//--';
+					$update_log .= getTranslatedString('Payment Paid','CobroPago').$current_user->user_name.getTranslatedString('PaidOn','CobroPago').date("l dS F Y h:i:s A").'--//--';
 				}
 			}
 		}

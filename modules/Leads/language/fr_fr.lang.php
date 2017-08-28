@@ -107,7 +107,6 @@ $mod_strings = Array(
 	'LBL_HOT' => 'Chaud',
 	'LBL_COLD' => 'Froid',
 	'LBL_TOOL_FORM_TITLE' => 'Outils',
-	'LBL_SELECT_TEMPLATE_TO_MAIL_MERGE' => 'Sélectionnez un modèle de document pour publipostage :',
 	'Salutation' => 'Civilité',
 	'First Name' => 'Prénom',
 	'Phone' => 'Téléphone',

@@ -17,7 +17,7 @@ require_once('config.php');
 
 // Performance Optimization: Configure the log folder
 if (!empty($LOG4PHP_DEBUG)) {
-	define('LOG4PHP_DIR', 'log4php.debug');
+	define('LOG4PHP_DIR', 'include/log4php.debug');
 	require_once(LOG4PHP_DIR.'/Logger.php');
 	Logger::configure('log4php.properties');
 	class LoggerManager {
@@ -26,7 +26,7 @@ if (!empty($LOG4PHP_DEBUG)) {
 		}
 	}
 } else {
-	define('LOG4PHP_DIR', 'log4php');
+	define('LOG4PHP_DIR', 'include/log4php');
 	require_once(LOG4PHP_DIR.'/LoggerManager.php');
 	require_once(LOG4PHP_DIR.'/LoggerPropertyConfigurator.php');
 	$config = new LoggerPropertyConfigurator();

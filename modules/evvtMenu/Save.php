@@ -43,19 +43,12 @@ switch ($do) {
 		$mvisible = (isset($_REQUEST['mvisible']) ? 1 : 0);
 		$mpermission = isset($_REQUEST['mpermission']) ? vtlib_purify($_REQUEST['mpermission']) : '';
 		if (empty($mpermission)) $mpermission = array();
-		if($mtype == 'menu') {
-			$pmenuidrs = $adb->query('select max(mseq) from vtiger_evvtmenu where mparent= 0');
-			$mseq = $adb->query_result($pmenuidrs, 0, 0) + 1;
-			$adb->pquery('insert into vtiger_evvtmenu (mtype,mvalue,mlabel,mparent,mseq,mvisible,mpermission) values (?,?,?,?,?,?,?)',
-				array($mtype, $mvalue, $mlabel, 0, $mseq, $mvisible, implode(',', $mpermission)));
-		} else {
-			if($mparent == 0) $mparent = $evvtmenuid;
-			if($mtype=='module') $mvalue = vtlib_purify($_REQUEST['modname']);
-			$pmenuidrs = $adb->pquery('select max(mseq) from vtiger_evvtmenu where mparent=?',array($mparent));
-			$mseq = $adb->query_result($pmenuidrs,0,0) + 1;
-			$adb->pquery('insert into vtiger_evvtmenu (mtype,mvalue,mlabel,mparent,mseq,mvisible,mpermission) values (?,?,?,?,?,?,?)',
-				array($mtype,$mvalue,$mlabel,$mparent,$mseq,$mvisible,implode(',',$mpermission)));
-		}
+		if ($mparent == 0) $mparent = $evvtmenuid;
+		if ($mtype=='module') $mvalue = vtlib_purify($_REQUEST['modname']);
+		$pmenuidrs = $adb->pquery('select max(mseq) from vtiger_evvtmenu where mparent=?',array($mparent));
+		$mseq = $adb->query_result($pmenuidrs,0,0) + 1;
+		$adb->pquery('insert into vtiger_evvtmenu (mtype,mvalue,mlabel,mparent,mseq,mvisible,mpermission) values (?,?,?,?,?,?,?)',
+			array($mtype,$mvalue,$mlabel,$mparent,$mseq,$mvisible,implode(',',$mpermission)));
 		break;
 	case 'doUpd':
 		$evvtmenuid = vtlib_purify($_REQUEST['evvtmenuid']);

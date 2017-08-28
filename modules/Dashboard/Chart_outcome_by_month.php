@@ -134,9 +134,15 @@ if (isset($_REQUEST['obm_edit']) && $_REQUEST['obm_edit'] == 'true') {
 </tr><tr>
 <td nowrap><?php echo $current_module_strings['LBL_USERS'];?></td>
 <?php if($is_admin==false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid('Potentials')] == 3 or $defaultOrgSharingPermission[getTabid('Potentials')] == 0)) { ?>
-	<td valign='top' ><select name="obm_ids[]" multiple size='3'><?php echo get_select_options_with_id(get_user_array(FALSE, "Active", $current_user->id,'private'),$_SESSION['obm_ids']); ?></select></td>
+	<td valign='top' ><select name="obm_ids[]" multiple size='3'><?php
+	$usrarray = get_user_array(FALSE, 'Active', $current_user->id,'private');
+	echo get_select_options_with_id($usrarray,(isset($_SESSION['obm_ids']) ? $_SESSION['obm_ids'] : '')); ?>
+	</select></td>
 <?php } else { ?>
-	<td valign='top' ><select name="obm_ids[]" multiple size='3'><?php echo get_select_options_with_id(get_user_array(FALSE, "Active",$current_user->id),$_SESSION['obm_ids']); ?></select></td>
+	<td valign='top' ><select name="obm_ids[]" multiple size='3'><?php
+	$usrarray = get_user_array(FALSE, 'Active',$current_user->id);
+	echo get_select_options_with_id($usrarray,(isset($_SESSION['obm_ids']) ? $_SESSION['obm_ids'] : '')); ?>
+	</select></td>
 <?php } ?>
 </tr><tr>
 <td align="right"><br /> <input class="button" onclick="return verify_chart_data(outcome_by_month);" type="submit" title="<?php echo $app_strings['LBL_SELECT_BUTTON_TITLE']; ?>" accessKey="<?php echo $app_strings['LBL_SELECT_BUTTON_KEY']; ?>" value="<?php echo $app_strings['LBL_SELECT_BUTTON_LABEL']?>" /></td>
@@ -162,6 +168,6 @@ else {
 }
 else
 {
-	echo $mod_strings['LBL_NO_PERMISSION'];	
+	echo $mod_strings['LBL_NO_PERMISSION'];
 }
 ?>

@@ -389,8 +389,7 @@ class Vendors extends CRMEntity {
 	function delete_related_module($module, $crmid, $with_module, $with_crmid) {
 		global $log, $adb;
 		if($with_module == 'Contacts') {
-			if (!is_array($with_crmid))
-				$with_crmid = Array($with_crmid);
+			$with_crmid = (array)$with_crmid;
 			$data = array();
 			$data['sourceModule'] = $module;
 			$data['sourceRecordId'] = $crmid;
@@ -409,7 +408,7 @@ class Vendors extends CRMEntity {
 	function save_related_module($module, $crmid, $with_module, $with_crmids) {
 		$adb = PearDatabase::getInstance();
 
-		if(!is_array($with_crmids)) $with_crmids = Array($with_crmids);
+		$with_crmids = (array)$with_crmids;
 		foreach($with_crmids as $with_crmid) {
 			if($with_module == 'Contacts')
 				$adb->pquery("insert into vtiger_vendorcontactrel values (?,?)", array($crmid, $with_crmid));

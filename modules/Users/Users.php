@@ -136,7 +136,7 @@ class Users extends CRMEntity {
 				$this->user_preferences = array();
 		}
 		if (!array_key_exists($name, $this->user_preferences) || $this->user_preferences[$name] != $value) {
-			$this->log->debug("Saving To Preferences:" . $name . "=" . $value);
+			$this->log->debug("Saving To Preferences:" . $name . "=" . print_r($value,true));
 			$this->user_preferences[$name] = $value;
 			$this->savePreferecesToDB();
 		}
@@ -149,7 +149,7 @@ class Users extends CRMEntity {
 	function savePreferecesToDB() {
 		$data = base64_encode(serialize($this->user_preferences));
 		$query = "UPDATE $this->table_name SET user_preferences=? where id=?";
-		$result = &$this->db->pquery($query, array($data, $this->id));
+		$result = $this->db->pquery($query, array($data, $this->id));
 		$this->log->debug("SAVING: PREFERENCES SIZE " . strlen($data) . "ROWS AFFECTED WHILE UPDATING USER PREFERENCES:" . $this->db->getAffectedRowCount($result));
 		coreBOS_Session::set('USER_PREFERENCES', $this->user_preferences);
 	}
@@ -199,21 +199,6 @@ class Users extends CRMEntity {
 
 		$encrypted_password = crypt($user_password, $salt);
 		return $encrypted_password;
-	}
-
-	/** Function for validation check */
-	function validation_check($validate, $md5, $alt = '') {
-		$validate = base64_decode($validate);
-		if (file_exists($validate) && $handle = fopen($validate, 'rb', true)) {
-			$buffer = fread($handle, filesize($validate));
-			if (md5($buffer) == $md5 || (!empty($alt) && md5($buffer) == $alt)) {
-				return 1;
-			}
-			return -1;
-
-		} else {
-			return -1;
-		}
 	}
 
 	/** Function for authorization check */

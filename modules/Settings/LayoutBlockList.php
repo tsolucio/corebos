@@ -361,9 +361,7 @@ function getFieldListEntries($module) {
 			$cflist[$i]['movefield'] = $movefields;
 
 			$cflist[$i]['hascustomtable'] = $focus->customFieldTable;
-			unset($cf_element);
-			unset($cf_hidden_element);
-			unset($movefields);
+			unset($cf_element,$cf_hidden_element,$movefields);
 			$i++;
 		} while($row = $adb->fetch_array($result));
 	}

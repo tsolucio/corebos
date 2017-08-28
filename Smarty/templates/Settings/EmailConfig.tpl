@@ -167,7 +167,7 @@ function validate_mail_server(form) {
 		alert("{/literal}{$APP.SERVERNAME_CANNOT_BE_EMPTY}{literal}")
 		return false;
 	}
-	if (form.from_email_field != '') {
+	if (form.from_email_field.value != '') {
 		if (patternValidate('from_email_field','{/literal}{$MOD.LBL_FROM_EMAIL_FIELD}{literal}','EMAIL') == false)
 			return false;
 	}

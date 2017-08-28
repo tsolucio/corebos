@@ -370,7 +370,7 @@ var alert_arr = {
 	'LBL_MORE_THAN_HOURS_BEFORE' : 'plus de x heures avant',
 	'LBL_MORE_THAN_HOURS_LATER' : 'plus de x heures après',
 	'LBL_EXISTS' : 'existe',
-	'MAXIMUM_OF_TWO_MODULES_PERMITTED' : 'Un maximum de deux modules est autorisé.',
+	'MAXIMUM_OF_MODULES_PERMITTED' : 'You have reached the maximum of modules that are permitted.',
 	'ONLY_ONE_MODULE_PERMITTED_FOR_REPORT' : 'You can select only one related module for this type of report',
 	'MUST_SELECT_ONE_MODULE_FOR_REPORT' : 'Vous devez choisir un module lié pour ce type de rapport',
 	'LBL_NEW_CONDITION' : 'Nouvelle condition',

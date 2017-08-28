@@ -40,7 +40,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 
 	// vtlib customization: Related type field
 	if($uitype == '10') {
-		global $adb;
 		$fldmod_result = $adb->pquery('SELECT relmodule, status
 				FROM vtiger_fieldmodulerel
 				INNER JOIN vtiger_tab ON vtiger_fieldmodulerel.relmodule=vtiger_tab.name and vtiger_tab.presence=0
@@ -80,7 +79,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	{
 		$log->info("uitype is ".$uitype);
 		if($value == '') {
-			//modified to fix the issue in trac(http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/1469)
 			if ($fieldname != 'birthday' && $generatedtype != 2 && getTabid($module_name) != 14)
 				$disp_value = getNewDisplayDate();
 
@@ -250,6 +248,38 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		require_once 'modules/PickList/PickListUtils.php';
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue [] = getPicklistValuesSpecialUitypes($uitype,$fieldname,$value);
+	}
+	elseif ($uitype == 1025){
+		$entityTypes = Array();
+		$parent_id = $value;
+		$values = explode(' |##| ', $value);
+		foreach ($cbMapFI['searchfields'] as $k=>$value) {
+			$entityTypes[] = $k;
+		}
+
+		if (!empty($value) && !empty($values[0])) {
+			$valueType= $srchmod=  getSalesEntityType($values[0]);
+			$field_val = getEntityFieldNames($srchmod);
+
+			$response=array();
+			$shown_val='';
+			foreach ($values as $val) {
+				$displayValueArray = getEntityName($valueType, $val);
+				if (!empty($displayValueArray)) {
+					foreach ($displayValueArray as $key=>$value2) {
+						$shown_val = $value2;
+					}
+				}
+				$response[]=html_entity_decode($shown_val,ENT_QUOTES,$default_charset);
+			}
+			$displayValue=implode(',',$response).',';
+		} else {
+			$displayValue='';
+			$valueType='';
+			$value='';
+		}
+		$editview_label[] = Array('options'=>$entityTypes, 'selected'=>$valueType, 'displaylabel'=>getTranslatedString($fieldlabel, $module_name));
+		$fieldvalue[] = Array('displayvalue'=>$displayValue,'entityid'=>$parent_id);
 	}
 	elseif($uitype == 17)
 	{
@@ -611,7 +641,13 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	elseif ($uitype == 69 or $uitype == '69m')
 	{
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		if (!empty($col_fields['record_id'])) {
+		if (isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
+			if ($uitype == '69') {
+				$fieldvalue[] = array('name'=>$col_fields[$fieldname],'path'=>'','orgname'=>$col_fields[$fieldname]);
+			} else {
+				$fieldvalue[] = '';
+			}
+		} elseif (!empty($col_fields['record_id'])) {
 			if ($uitype == '69m') { // module_name == 'Products'
 				$query = 'select vtiger_attachments.path, vtiger_attachments.attachmentsid, vtiger_attachments.name ,vtiger_crmentity.setype from vtiger_products left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid=vtiger_products.productid inner join vtiger_attachments on vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_attachments.attachmentsid where vtiger_crmentity.setype="Products Image" and productid=?';
 				$params = array($col_fields['record_id']);

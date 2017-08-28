@@ -10,7 +10,6 @@
 
 $optionalModuleStrings = array(
 	'CustomerPortal_description'=>'Management Interface zur Kontrolle des Kundenportals',
-	'FieldFormulas_description'=>'Definiere Regeln für benutzerdefinierte Felder um die Werte beim Speichern eines Datensatzes zu setzen',
 	'RecycleBin_description'=>'Modul zur Wiederherstellung oder entgültigem Entfernen von gelöschten Datensätzen',
 	'Tooltip_description'=>'Konfiguriere Kurzinfos für ein Feld in Bezug auf andere Felder',
 	'Webforms_description'=>'Server seitige Unterstützung für die Konfiguration von Webforms',

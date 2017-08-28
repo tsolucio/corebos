@@ -358,10 +358,9 @@ class Vtiger_InventoryPDFController {
 		}
 		return false;
 	}
+
 	function focusColumnValues($names, $delimeter="\n") {
-		if(!is_array($names)) {
-			$names = array($names);
-		}
+		$names = (array)$names;
 		$values = array();
 		foreach($names as $name) {
 			$value = $this->focusColumnValue($name, false);

@@ -200,7 +200,7 @@ class ModTracker_Field {
 		}
 		if ($fieldInstance->getFieldDataType() == 'owner') {
 			$ownerName = trim(getUserFullName($value));
-			if (empty($ownerName)) {
+			if (empty($ownerName) and !empty($value)) {
 				$ownerInfo = getGroupName($value);
 				$ownerName = $ownerInfo[0];
 			}
@@ -223,7 +223,7 @@ class ModTracker_Field {
 			$this->fieldInfo = $webserviceField;
 		} else {
 			$moduleFields = $this->moduleMeta->getModuleFields();
-			$this->fieldInfo = $moduleFields[$this->parent->getFieldName()];
+			$this->fieldInfo = (isset($moduleFields[$this->parent->getFieldName()]) ? $moduleFields[$this->parent->getFieldName()] : '');
 		}
 	}
 

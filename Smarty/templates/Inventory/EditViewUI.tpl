@@ -604,11 +604,6 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			{/if}
 			<input name="user_role" id="user_role" value="{$fldvalue}" type="hidden">
 			</span>
-		{elseif $uitype eq 104}<!-- Mandatory Email Fields -->
-			 <span class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-			<font color="red">{$mandatory_field}</font>{$usefldlabel}
-			</span>
-			<span class="mdCellInfo"><input type="text" name="{$fldname}" id ="{$fldname}" value="{$fldvalue}" tabindex="{$vt_tab}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"></span>
 		{elseif $uitype eq 115}<!-- for Status field Disabled for nonadmin -->
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
 				<font color="red">{$mandatory_field}</font>{$usefldlabel}

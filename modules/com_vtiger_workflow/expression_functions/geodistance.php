@@ -16,14 +16,16 @@
 
 function __cb_getLatitude($address) {
 	$addr = urlencode($address);
-	$data = file_get_contents("http://nominatim.openstreetmap.org/?format=json&addressdetails=1&q=$addr&format=json&limit=1");
+	$email = urlencode(GlobalVariable::getVariable('Workflow_GeoDistance_Email',''));
+	$data = file_get_contents("http://nominatim.openstreetmap.org/?format=json&addressdetails=1&q=$addr&format=json&limit=1&email=$email");
 	$data = json_decode($data);
 	return $data[0]->lat;
 }
 
 function __cb_getLongitude($address) {
 	$addr = urlencode($address);
-	$data = file_get_contents("http://nominatim.openstreetmap.org/?format=json&addressdetails=1&q=$addr&format=json&limit=1");
+	$email = urlencode(GlobalVariable::getVariable('Workflow_GeoDistance_Email',''));
+	$data = file_get_contents("http://nominatim.openstreetmap.org/?format=json&addressdetails=1&q=$addr&format=json&limit=1&email=$email");
 	$data = json_decode($data);
 	return $data[0]->lon;
 }
@@ -33,7 +35,8 @@ function __cb_getGEODistance($arr) {
 	$to = decode_html($arr[1]);
 	$coo1 = __cb_getLongitude($from).",".__cb_getLatitude($from);
 	$coo2 = __cb_getLongitude($to).",".__cb_getLatitude($to);
-	$distance = file_get_contents("http://router.project-osrm.org/route/v1/driving/$coo1;$coo2?overview=false");
+	$gdserverip = GlobalVariable::getVariable('Workflow_GeoDistance_ServerIP','router.project-osrm.org');
+	$distance = file_get_contents("http://$gdserverip/route/v1/driving/$coo1;$coo2?overview=false");
 	$dis = json_decode($distance);
 	$total_distance = $dis->routes[0]->distance/1000;
 	return $total_distance." km";

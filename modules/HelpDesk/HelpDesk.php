@@ -351,7 +351,7 @@ class HelpDesk extends CRMEntity {
 					} else {
 						$contact_name='';
 					}
-					$list .= $contact_name;
+					$list .= '<a href="index.php?module=Contacts&action=DetailView&record='.$contactid.'">'.$contact_name.'</a>';
 				}
 				$date = new DateTimeField($adb->query_result($result,$i,'createdtime'));
 				$list .= ' on '.$date->getDisplayDateTimeValue().' &nbsp;';

@@ -55,9 +55,9 @@
 </nav>
 {/function}
 
-{* Creates the second and third level menu *}
-{function cbsubmenu}
-<div class="slds-dropdown slds-dropdown--right">
+{* Creates the second level menu *}
+{function cbsubmenu j=0}
+<div class="slds-dropdown slds-dropdown--center slds-nubbin--top">
 	<ul class="slds-dropdown__list" role="menu" id="menu{$i}">
 	{foreach $submenu as $menuitem}
 		{if $menuitem.mtype == 'module' && empty($menuitem.submenu)}
@@ -68,39 +68,13 @@
 		</li>
 		{elseif $menuitem.mtype == 'module' && !empty($menuitem.submenu)}
 		<li class="slds-dropdown__item" role="presentation">
-			<a href="index.php?action=index&amp;module={$menuitem.mvalue}" role="menuitem" tabindex="-1">
-				<span class="slds-truncate" style="padding-right: 20px;">{$menuitem.mlabel}</span>
-				<svg aria-hidden="true" class="slds-button__icon">
-					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
-				</svg>
-			</a>
-			<ul id="submenu{$i}-0" class="moreMenu">
-			{foreach $menuitem.submenu as $submenu_item}
-				<li class="slds-dropdown__item" role="presentation">
-					<a href="index.php?action=index&amp;module={$submenu_item.mvalue}" role="menuitem" tabindex="-1">
-						<span class="slds-truncate">{$submenu_item.mlabel}</span>
-					</a>
-				</li>
-			{/foreach}
-			</ul>
+		{call cbsubsubmenu submenuitem=$menuitem i=$i j=$j k=0}
+		{$j = $j + 1}
 		</li>
 		{elseif $menuitem.mtype == 'menu' && !empty($menuitem.submenu)}
 		<li class="slds-dropdown__item" role="presentation">
-			<a href="javascript:void(0);" role="menuitem" tabindex="-1">
-				<span class="slds-truncate" style="padding-right: 20px;">{$menuitem.mlabel}</span>
-				<svg aria-hidden="true" class="slds-button__icon">
-					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
-				</svg>
-			</a>
-			<ul id="submenu{$i}-0" class="moreMenu">
-			{foreach $menuitem.submenu as $submenu_item}
-				<li class="slds-dropdown__item" role="presentation">
-					<a href="index.php?action=index&amp;module={$submenu_item.mvalue}" role="menuitem" tabindex="-1">
-						<span class="slds-truncate">{$submenu_item.mlabel}</span>
-					</a>
-				</li>
-			{/foreach}
-			</ul>
+		{call cbsubsubmenu submenuitem=$menuitem i=$i j=$j k=0}
+		{$j = $j + 1}
 		</li>
 		{elseif $menuitem.mtype == 'headtop'}
 		<li class="slds-dropdown__header slds-has-divider--top-space" role="separator">
@@ -111,7 +85,7 @@
 			<span class="slds-text-title--caps">{$menuitem.mlabel}</span>
 		</li>
 		{elseif $menuitem.mtype == 'sep'}
-		<li class="slds-dropdown__header slds-has-divider--top-space" role="separator">
+		<li class="slds-dropdown__header slds-has-divider--top-space" role="separator"></li>
 		{elseif $menuitem.mtype == 'url'}
 		<li class="slds-dropdown__item" role="presentation">
 			<a href="{$menuitem.mvalue}" role="menuitem" tabindex="-1">
@@ -122,4 +96,50 @@
 	{/foreach}
 	</ul>
 </div>
+{/function}
+
+{* Creates all the other levels recursively *}
+{function cbsubsubmenu}
+	{if !empty($submenuitem.submenu)}
+		{if $submenuitem.mtype == 'module'}
+		<a href="index.php?action=index&amp;module={$menuitem.mvalue}" role="menuitem" tabindex="-1">
+		{else}
+		<a href="javascript:void(0);" role="menuitem" tabindex="-1">
+		{/if}
+			<span class="slds-truncate" style="padding-right: 20px;">{$submenuitem.mlabel}</span>
+			<svg aria-hidden="true" class="slds-button__icon">
+				<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
+			</svg>
+		</a>
+		<ul id="submenu{$i}-{$j}{if $k > 0}-{$k}{/if}" class="moreMenu">
+		{foreach $submenuitem.submenu as $submenu_item}
+			<li class="slds-dropdown__item" role="presentation">
+				{$k = $k + 1}
+				{call cbsubsubmenu submenuitem=$submenu_item i=$i j=$j k=$k}
+			</li>
+		{/foreach}
+		</ul>
+	{elseif $submenuitem.mtype == 'module'}
+		<li class="slds-dropdown__item" role="presentation">
+			<a href="index.php?action=index&amp;module={$submenuitem.mvalue}" role="menuitem" tabindex="-1">
+				<span class="slds-truncate">{$submenuitem.mlabel}</span>
+			</a>
+		</li>
+	{elseif $submenuitem.mtype == 'headtop'}
+		<li class="slds-dropdown__header slds-has-divider--top-space" role="separator">
+			<span class="slds-text-title--caps">{$submenuitem.mlabel}</span>
+		</li>
+	{elseif $submenuitem.mtype == 'headbottom'}
+		<li class="slds-dropdown__header slds-has-divider--bottom-space" role="separator">
+			<span class="slds-text-title--caps">{$submenuitem.mlabel}</span>
+		</li>
+	{elseif $submenuitem.mtype == 'sep'}
+		<li class="slds-dropdown__header slds-has-divider--top-space" role="separator"></li>
+	{elseif $submenuitem.mtype == 'url'}
+		<li class="slds-dropdown__item" role="presentation">
+			<a href="{$submenuitem.mvalue}" role="menuitem" tabindex="-1">
+				<span class="slds-truncate">{$submenuitem.mlabel}</span>
+			</a>
+		</li>
+	{/if}
 {/function}

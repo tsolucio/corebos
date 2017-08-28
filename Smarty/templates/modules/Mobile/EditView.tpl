@@ -6,10 +6,10 @@
 	{else}
 		<title>{$_MODULE->label()} {$MOD.LBL_NEW}</title>
 	{/if}
-	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta charset="utf-8">
-	<link REL="SHORTCUT ICON" HREF="resources/images/favicon.ico">	
-	<link rel="stylesheet" href="resources/css/jquery.mobile-1.4.5.min.css">	
+	<link REL="SHORTCUT ICON" HREF="resources/images/favicon.ico">
+	<link rel="stylesheet" href="resources/css/jquery.mobile-1.4.5.min.css">
 	<script type="text/javascript" src="resources/jquery-1.11.2.min.js"></script>
 	<script type="text/javascript" src="resources/jquery.mobile-1.4.5.min.js"></script>
 	<link rel="stylesheet" href="resources/css/jquery.mobile.structure-1.4.5.min.css" >
@@ -19,7 +19,7 @@
 	<script type="text/javascript" src="resources/crmtogo.js"></script>
 	<script type="text/javascript" src="resources/lang/{$LANGUAGE}.lang.js"></script>
 	<style>
-	</style>	
+	</style>
 </head>
 <body> 
 <div data-role="page" data-theme="b" data-mini="true" id="edit_page">
@@ -37,11 +37,11 @@
 		<a href="#panelmenu" data-mini='true' data-role='button' class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-grid ui-corner-all ui-icon-bars"></a>
 	</div>
 	<!-- /header -->
-	<div data-role="collapsible-set" data-mini="true">	
+	<div data-role="collapsible-set" data-mini="true">
 		<form method="post" data-transition="pop" data-ajax="false" enctype="multipart/form-data" name="EditView" id="EditView">
-			<input type="hidden" name="pagenumber" value="{$smarty.request.start|@vtlib_purify}">
+			<input type="hidden" name="pagenumber" value="{if isset($smarty.request.start)}{$smarty.request.start|@vtlib_purify}{/if}">
 			<input type="hidden" name="module" id="module" value="{$_MODULE->name()}">
-			<input type="hidden" name="mobilerecord" value="{$mobilerecordid}">
+			<input type="hidden" name="mobilerecord" value="{if isset($mobilerecordid)}{$mobilerecordid}{/if}">
 			<input type="hidden" name="record" id="record" value="{$id}">
 			<input type="hidden" name="mode" id="mode" value="{$mode}">
 			<input type="hidden" name="mobilemode" value="1">
@@ -51,8 +51,8 @@
 			<input type="hidden" name="return_module" value="{$_MODULE->name()}">
 			<input type="hidden" name="return_id" value="{$id}">
 			<input type="hidden" name="return_action" value="index">
-			<input type="hidden" name="return_viewname" value="{$RETURN_VIEWNAME}">
-			<input type="hidden" name="createmode" value="{$CREATEMODE}" />
+			<input type="hidden" name="return_viewname" value="{if isset($RETURN_VIEWNAME)}{$RETURN_VIEWNAME}{/if}">
+			<input type="hidden" name="createmode" value="{if isset($CREATEMODE)}{$CREATEMODE}{/if}" />
 			<input type="hidden" name="origmodule" id="origmodule" value="{$ORIGMODULE}" />
 			{if $ORIGMODULE eq 'Events'}
 				<input type="hidden" name="inviteesid" value="{$INVITEES}">
@@ -62,7 +62,7 @@
 			{/if}
 			{foreach item=_BLOCK key=_BLOCKLABEL from=$_RECORD->blocks()}
 			{assign var=_FIELDS value=$_BLOCK->fields()}
-				<div data-role="collapsible" id="{$_BLOCKLABEL}" data-collapsed="false" data-mini="true"  >
+				<div data-role="collapsible" id="{$_BLOCKLABEL}" data-collapsed="false" data-mini="true" >
 					<h3>{$_BLOCKLABEL|@getTranslatedString:$_MODULE->name()}</h3>
 					<p>
 					{foreach item=_FIELD from=$_FIELDS}
@@ -109,26 +109,26 @@
 								{if $_FIELD->uitype() eq '4'}
 									<label for="{$_FIELD->name()}" >{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
 									<input  type="text" class="ui-disabled" name="{$_FIELD->name()}" id="{$_FIELD->label()}" value="{$_FIELD->value()}"  />
-							    {/if}							
+								{/if}
 								{if $_FIELD->uitype() eq '15'}
 									    <label for="{$_FIELD->label()}">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
 										<select  id="{$_FIELD->name()}" name="{$_FIELD->name()}"   data-mini="true" class="select" data-native-menu="false">
 											{foreach item=arr from=$_FIELD->value()}
 												{if $arr.label eq $MOD.LBL_NOT_ACCESSIBLE}
-													<option value="{$arr.label}" {$arr.selected}>
+													<option value="{$arr.label}" {if isset($arr.selected)}{$arr.selected}{/if}>
 														{$arr.label}
 													</option>
 												{else}
-												<option value="{$arr.value}" {$arr.selected}>
+												<option value="{$arr.value}" {if isset($arr.selected)}{$arr.selected}{/if}>
 													{$arr.label|@getTranslatedString:$_MODULE->name()}
-							                    </option>
+												</option>
 												{/if}
 											{foreachelse}
 												<option value=""></option>
 												<option value="" style='color: #777777' disabled>{$MOD.LBL_NONE}</option>
 											{/foreach}
 										</select>
-								{/if} 							
+								{/if}
 								{if $_FIELD->uitype() eq '33'}
 									    <label for="{$_FIELD->label()}">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
 										<select  id="{$_FIELD->name()}" name="{$_FIELD->name()}" multiple data-mini="true" class="select" data-native-menu="false">
@@ -136,17 +136,17 @@
 											<option value="_empty" selected="selected" style="display:none;"></option>
 											{foreach item=arr from=$_FIELD->value()}
 												{if $arr.label eq $MOD.LBL_NOT_ACCESSIBLE}
-													<option value="{$arr.label}" {$arr.selected}>
+													<option value="{$arr.label}" {if isset($arr.selected)}{$arr.selected}{/if}>
 														{$arr.label}
 													</option>
 												{else}
-												<option value="{$arr.value}" {$arr.selected}>
+												<option value="{$arr.value}" {if isset($arr.selected)}{$arr.selected}{/if}>
 													{$arr.label|@getTranslatedString:$_MODULE->name()}
 							                    </option>
 												{/if}
 											{/foreach}
 										</select>
-								{/if}       
+								{/if}
 								{if $_FIELD->uitype() eq '53'}
 									<div>
 									<label for="assign_user">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
@@ -166,9 +166,11 @@
 									{/foreach}
  									{if $check eq 0}
 										{assign var=select_user value='checked'}
+										{assign var=select_group value=''}
 										{assign var=style_user value='display:block'}
 										{assign var=style_group value='display:none'}
 									{else}
+										{assign var=select_user value=''}
 										{assign var=select_group value='checked'}
 										{assign var=style_user value='display:none'}
 										{assign var=style_group value='display:block'}

@@ -178,7 +178,7 @@ class ServiceContracts extends CRMEntity {
 	 */
 	function save_related_module($module, $crmid, $with_module, $with_crmids) {
 
-		if(!is_array($with_crmids)) $with_crmids = Array($with_crmids);
+		$with_crmids = (array)$with_crmids;
 		foreach($with_crmids as $with_crmid) {
 			parent::save_related_module($module, $crmid, $with_module, $with_crmid);
 			if ($with_module == 'HelpDesk') {
@@ -186,26 +186,26 @@ class ServiceContracts extends CRMEntity {
 				$this->updateServiceContractState($crmid);
 			}
 		}
-	 }
+	}
 
-	 // Function to Update the parent_id of HelpDesk with sc_related_to of ServiceContracts if the parent_id is not set.
-	 function updateHelpDeskRelatedTo($focusId, $entityIds) {
+	// Function to Update the parent_id of HelpDesk with sc_related_to of ServiceContracts if the parent_id is not set.
+	function updateHelpDeskRelatedTo($focusId, $entityIds) {
 		global $log;
-		$log->debug("Entering into function updateHelpDeskRelatedTo(".$entityIds.").");
+		$log->debug('Entering into function updateHelpDeskRelatedTo');
 
-		if(!is_array($entityIds)) $entityIds = array($entityIds);
+		$entityIds = (array)$entityIds;
 		$selectTicketsQuery = "SELECT ticketid FROM vtiger_troubletickets WHERE (parent_id IS NULL OR parent_id = 0) AND ticketid IN (" . generateQuestionMarks($entityIds) .")";
 		$selectTicketsResult = $this->db->pquery($selectTicketsQuery, array($entityIds));
 		$noOfTickets = $this->db->num_rows($selectTicketsResult);
-		for($i=0; $i < $noOfTickets; ++$i) {
+		for ($i=0; $i < $noOfTickets; ++$i) {
 			$ticketId = $this->db->query_result($selectTicketsResult,$i,'ticketid');
 			$updateQuery = "UPDATE vtiger_troubletickets, vtiger_servicecontracts SET parent_id=vtiger_servicecontracts.sc_related_to" .
-						" WHERE vtiger_servicecontracts.sc_related_to IS NOT NULL AND vtiger_servicecontracts.sc_related_to != 0" .
-						" AND vtiger_servicecontracts.servicecontractsid = ? AND vtiger_troubletickets.ticketid = ?";
+				" WHERE vtiger_servicecontracts.sc_related_to IS NOT NULL AND vtiger_servicecontracts.sc_related_to != 0" .
+				" AND vtiger_servicecontracts.servicecontractsid = ? AND vtiger_troubletickets.ticketid = ?";
 			$updateResult = $this->db->pquery($updateQuery, array($focusId, $ticketId));
 		}
 
-		$log->debug("Exit from function updateHelpDeskRelatedTo(".$entityIds.")");
+		$log->debug('Exit from function updateHelpDeskRelatedTo');
 	}
 
 	// Function to Compute and Update the Used Units and Progress of the Service Contract based on all the related Trouble tickets.

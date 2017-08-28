@@ -169,6 +169,66 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 					<input type="text" name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" value="{$fldvalue}" tabindex="{$vt_tab}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'">
 				{/if}
 			</td>
+		{elseif $uitype eq 1025}
+			<td width=20% class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
+			<font color="red">{$mandatory_field}</font>
+			{$fldlabel.displaylabel}
+
+			{assign var="use_parentmodule" value=$fldlabel.options.0}
+			{assign var=vtui10func value=$use_parentmodule|getvtlib_open_popup_window_function:$fldname:$MODULE}
+			{if count($fldlabel.options) eq 1}
+				<input type='hidden' class='small' name="{$fldname}_type" id="{$fldname}_type" value="{$use_parentmodule}">
+			{else}
+				<br>
+				{if $fromlink eq 'qcreate'}
+				<select id="{$fldname}_type" class="small" name="{$fldname}_type" onChange='document.QcEditView.{$fldname}_display.value=""; document.QcEditView.{$fldname}.value="";'>
+				{else}
+				<select id="{$fldname}_type" class="small" name="{$fldname}_type" onChange='document.EditView.{$fldname}_display.value=""; document.EditView.{$fldname}.value="";document.getElementById("qcform").innerHTML=""'>
+				{/if}
+				{foreach item=option from=$fldlabel.options}
+					<option value="{$option}"
+					{if $fldlabel.selected == $option}selected{/if}>
+					{$option|@getTranslatedString:$option}
+					</option>
+				{/foreach}
+				</select>
+			{/if}
+			{if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
+			{$fldhelplink}
+
+			</td>
+			<td width="30%" align=left class="dvtCellInfo">
+				<input id="{$fldname}" name="{$fldname}" type="hidden" value="{$fldvalue.entityid}">
+
+				<div style="position: relative;">
+				{if ( isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['searchfields']) )}
+					{assign var="autocomp" value=$maindata['extendedfieldinfo'] }
+					<input
+						id="{$fldname}_display"
+						name="{$fldname}_display"
+						type="text"
+						style="border:1px solid #bababa;"
+						value="{$fldvalue.displayvalue}"
+						autocomplete="off"
+						class="autocomplete-input"
+						data-autocomp='{$maindata["extendedfieldinfo"]|@json_encode}'>&nbsp;
+				{else}
+					<input
+						id="{$fldname}_display"
+						name="{$fldname}_display"
+						type="text"
+						style="border:1px solid #bababa;"
+						value="{$fldvalue.displayvalue}">&nbsp;
+				{/if}
+				<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}"
+alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedString}" onClick="this.form.{$fldname}.value=''; this.form.{$fldname}_display.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
+				{if ( isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['searchfields']) )}
+					<div id="listbox-unique-id" role="listbox" class="">
+						<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0; width: 100%;" role="presentation"></ul>
+					</div>
+				{/if}
+				</div>
+			</td>
 		{elseif $uitype eq 3 || $uitype eq 4}<!-- Non Editable field, only configured value will be loaded -->
 				<td width=20% class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right><font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small">{/if}</td>
 				<td width=30% align=left class="dvtCellInfo"><input readonly type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" {if $MODE eq 'edit'} value="{$fldvalue}" {else} value="{$MOD_SEQ_ID}" {/if} class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"></td>
@@ -784,15 +844,15 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				<div style="display: flex;flex-direction: row; width:100%">
 				<div width="80%">
 				<span id="limitmsg" style= "color:red;"> {'LBL_MAX_SIZE'|@getTranslatedString:$MODULE} {$UPLOADSIZE}{'LBL_FILESIZEIN_MB'|@getTranslatedString:$MODULE}<br /></span>
-				{if isset($maindata[3].0.name) && $maindata[3].0.name != "" && $DUPLICATE neq 'true'}
+				{if isset($maindata[3].0.name) && $maindata[3].0.name != ''}
 					{assign var=imagevalueexists value=true}
 				{else}
 					{assign var=imagevalueexists value=false}
 				{/if}
-				<input name="{$fldname}" type="file" value="{if $imagevalueexists}{$maindata[3].0.name}{/if}" tabindex="{$vt_tab}" onchange="validateFilename(this);" />
-				<input name="{$fldname}_hidden" type="hidden" value="{if $imagevalueexists}{$maindata[3].0.name}{/if}" />
+				<input name="{$fldname}" id="{$fldname}" type="file" value="{if $imagevalueexists}{$maindata[3].0.name}{/if}" tabindex="{$vt_tab}" onchange="validateFilename(this);" />
+				<input name="{$fldname}_hidden" id="{$fldname}_hidden" type="hidden" value="{if $imagevalueexists}{$maindata[3].0.name}{/if}" />
 				{if $imagevalueexists}
-					<div id="{$fldname}_replaceimage">[{$maindata[3].0.orgname}] <input id="{$fldname}_attach" value="{'LBL_DELETE_BUTTON'|@getTranslatedString}" type="button" class="crmbutton small delete" onclick='delimage({$ID},"{$fldname}","{$maindata[3].0.orgname}");'></div>
+					<div id="{$fldname}_replaceimage">[{$maindata[3].0.orgname}] <input id="{$fldname}_attach" value="{'LBL_DELETE_BUTTON'|@getTranslatedString}" type="button" class="crmbutton small delete" onclick='delimage({if !empty($ID)}{$ID}{else}0{/if},"{$fldname}","{$maindata[3].0.orgname}");'></div>
 				{/if}
 				<div id="displaySize"></div>
 				</div>
@@ -853,29 +913,22 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			{/if}
 			<input name="user_role" id="user_role" value="{$fldvalue}" type="hidden">
 			</td>
-		{elseif $uitype eq 104}<!-- Mandatory Email Fields -->
-			<td width=20% class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
-			<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
-			</td>
-			<td width=30% align=left class="dvtCellInfo"><input type="text" name="{$fldname}" id ="{$fldname}" value="{$fldvalue}" tabindex="{$vt_tab}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"></td>
-			{elseif $uitype eq 115}<!-- for Status field Disabled for nonadmin -->
+		{elseif $uitype eq 115}<!-- for Status field Disabled for nonadmin -->
 			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
 				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
 			</td>
 			<td width="30%" align=left class="dvtCellInfo">
-			   {if $secondvalue eq 1 && isset($smarty.request.record) && $CURRENT_USERID != $smarty.request.record}
-			   	<select id="user_status" name="{$fldname}" tabindex="{$vt_tab}" class="small">
-			   {else}
-			   	<select id="user_status" disabled name="{$fldname}" class="small">
-			   {/if}
+				{if $secondvalue eq 1 && isset($smarty.request.record) && $CURRENT_USERID != $smarty.request.record}
+					<select id="user_status" name="{$fldname}" tabindex="{$vt_tab}" class="small">
+				{else}
+					<select id="user_status" disabled name="{$fldname}" class="small">
+				{/if}
 				{foreach item=arr from=$fldvalue}
-                                        <option value="{$arr[1]}" {$arr[2]} >
-                                                {$arr[0]}
-                                        </option>
+					<option value="{$arr[1]}" {$arr[2]} >{$arr[0]}</option>
 				{/foreach}
-			   </select>
+					</select>
 			</td>
-			{elseif $uitype eq 105}
+		{elseif $uitype eq 105}
 			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
 				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
 			</td>

@@ -90,7 +90,7 @@ elseif (isset($_REQUEST['pbss_sales_stages']) && count($_REQUEST['pbss_sales_sta
 	$log->debug($_SESSION['pbss_sales_stages']);
 }
 
-//set $datax using selected sales stage keys 
+//set $datax using selected sales stage keys
 if (count($tempx) > 0) {
 	foreach ($tempx as $key) {
 		$datax[$key] = $comboFieldArray['sales_stage_dom'][$key];
@@ -164,14 +164,20 @@ if (isset($_REQUEST['pbss_edit']) && $_REQUEST['pbss_edit'] == 'true') {
 <td valign='top' ><input class="text" name="pbss_date_end" size='12' maxlength='10' id='date_end' value='<?php if (isset($_SESSION['pbss_date_end'])) echo vtlib_purify($_SESSION['pbss_date_end']); ?>'>  <img src="<?php echo vtiger_imageurl('calendar.gif', $theme) ?>" id="date_end_trigger"> </td>
 </tr><tr>
 <td valign='top' nowrap><?php echo $current_module_strings['LBL_SALES_STAGES'];?></td>
-<td valign='top' ><select name="pbss_sales_stages[]" multiple size='3'><?php echo get_select_options_with_id($comboFieldArray['sales_stage_dom'],$_SESSION['pbss_sales_stages']); ?></select></td>
+<td valign='top' ><select name="pbss_sales_stages[]" multiple size='3'><?php echo get_select_options_with_id($comboFieldArray['sales_stage_dom'],(isset($_SESSION['pbss_sales_stages']) ? $_SESSION['pbss_sales_stages'] : '')); ?></select></td>
 </tr><tr>
 <td valign='top' nowrap><?php echo $current_module_strings['LBL_USERS'];?></td>
 <?php if($is_admin==false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid('Potentials')] == 3 or $defaultOrgSharingPermission[getTabid('Potentials')] == 0)) { ?>
-	<td valign='top'><select name="pbss_ids[]" multiple size='3'><?php echo get_select_options_with_id(get_user_array(FALSE, "Active", $current_user->id,'private'),$_SESSION['pbss_ids']); ?></select></td>
+	<td valign='top'><select name="pbss_ids[]" multiple size='3'><?php
+	$usrarray = get_user_array(FALSE, 'Active', $current_user->id,'private');
+	echo get_select_options_with_id($usrarray,(isset($_SESSION['pbss_ids']) ? $_SESSION['pbss_ids'] : '')); ?>
+	</select></td>
 	<?php } else { ?>
-	<td valign='top'><select name="pbss_ids[]" multiple size='3'><?php echo get_select_options_with_id(get_user_array(FALSE,"Active",$current_user->id),$_SESSION['pbss_ids']); ?></select></td>	
-<?php } ?>		
+	<td valign='top'><select name="pbss_ids[]" multiple size='3'><?php
+	$usrarray = get_user_array(FALSE, 'Active', $current_user->id);
+	echo get_select_options_with_id($usrarray,(isset($_SESSION['pbss_ids']) ? $_SESSION['pbss_ids'] : '')); ?>
+	</select></td>
+<?php } ?>
 </tr><tr>
 <td align="right"><br /> <input class="button" onclick="return verify_chart_data(pipeline_by_sales_stage);" type="submit" title="<?php echo $app_strings['LBL_SELECT_BUTTON_TITLE']; ?>" accessKey="<?php echo $app_strings['LBL_SELECT_BUTTON_KEY']; ?>" value="<?php echo $app_strings['LBL_SELECT_BUTTON_LABEL']?>" /></td>
 </tr></table>

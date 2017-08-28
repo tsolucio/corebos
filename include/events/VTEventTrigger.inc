@@ -22,8 +22,7 @@ class VTEventTrigger {
 		global $adb;
 
 		if ($name) {
-			$names = $name;
-			if (!is_array($names)) $names = array($name);
+			$names = (array)$name;
 
 			$evtinfos = self::getActiveEventInfos($adb, $names);
 
@@ -100,7 +99,7 @@ class VTEventTrigger {
 		}
 
 		if (is_array($name)) return $evtinfosbyname[$name[0]];
-		elseif ($name) return $evtinfosbyname[$name];
+		elseif ($name && isset($evtinfosbyname[$name])) return $evtinfosbyname[$name];
 		else return $evtinfosbyname;
 	}
 

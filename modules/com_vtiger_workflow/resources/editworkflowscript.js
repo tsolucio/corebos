@@ -523,17 +523,17 @@ function editworkflowscript($, conditions){
 							$("#save_conditions").append(
 								group_condition_html
 								+ '<div id="condition_group_'+groupid+'" class="condition_group_block" > \
-                                    <div style="float:right;"> \
-                                        <span id="save_condition_group_'+groupid+'_remove" class="link remove-link"> \
-                                        <img src="themes/images/close.gif"></span> \
-                                    </div> \
-                                    <div style="clear:both;"></div> \
-                                    <div id="save_condition_group_'+groupid+'" class="save_condition_group"> \
-                                    </div> \
-                                    <div> \
-                                        <input type="button" id="add_group_condition_'+groupid+'" value="'+alert_arr.LBL_NEW_CONDITION+'" class="small edit" /> \
-                                    </div> \
-                                </div>'
+									<div style="float:right;"> \
+										<span id="save_condition_group_'+groupid+'_remove" class="link remove-link"> \
+										<img src="themes/images/close.gif"></span> \
+									</div> \
+									<div style="clear:both;"></div> \
+									<div id="save_condition_group_'+groupid+'" class="save_condition_group"> \
+									</div> \
+									<div> \
+										<input type="button" id="add_group_condition_'+groupid+'" value="'+alert_arr.LBL_NEW_CONDITION+'" class="small edit" /> \
+									</div> \
+								</div>'
 								);
 							if($(".condition_group_block").length > 0) {
 								var fjgc = $("#save_condition_group_"+groupid+"_joincondition");
@@ -562,14 +562,14 @@ function editworkflowscript($, conditions){
 						$("#save_condition_group_"+groupid).append(
 							'<div id="save_condition_'+condid+'" style=\'margin-bottom: 5px\'> \
 								<input type="hidden" id="save_condition_'+condid+'_groupid" class="groupid" value="'+groupid+'" /> \
-                                <select id="save_condition_'+condid+'_fieldname" class="fieldname" style="width:300px;"></select> \
+								<select id="save_condition_'+condid+'_fieldname" class="fieldname" style="width:300px;"></select> \
 								<select id="save_condition_'+condid+'_operation" class="operation"></select> \
-                                <input type="hidden" id="save_condition_'+condid+'_value_type" class="expressiontype" /> \
-                                <input type="text" id="save_condition_'+condid+'_value" class="expressionvalue" readonly /> \
+								<input type="hidden" id="save_condition_'+condid+'_value_type" class="expressiontype" /> \
+								<input type="text" id="save_condition_'+condid+'_value" class="expressionvalue" readonly /> \
 								<select id="save_condition_'+condid+'_joincondition" class="joincondition"></select> \
 								<span id="save_condition_'+condid+'_remove" class="link remove-link"> \
 								<img src="modules/com_vtiger_workflow/resources/remove.png"></span> \
-                            </div>'
+							</div>'
 							);
 						resetJoinCondition(groupid, condid);
 
@@ -631,7 +631,7 @@ function editworkflowscript($, conditions){
 							$(format("#save_condition_%s_operation", condno)).val(condition["operation"]);
 							$('#dump').html(condition["value"]);
 							var text = $('#dump').text();
-							if(condition["operation"] == 'is empty' || condition["operation"] == 'is not empty')  {
+							if(condition["operation"] == 'is empty' || condition["operation"] == 'is not empty') {
 								$(format("#save_condition_%s_value", condno)).hide();
 							}
 							$(format("#save_condition_%s_value", condno)).val(text);
@@ -639,7 +639,7 @@ function editworkflowscript($, conditions){
 							if(condition["joincondition"] != '') {
 								$(format("#save_condition_%s_joincondition", condno)).val(condition["joincondition"]);
 							}
-							if(condition["groupjoin"]  != '') {
+							if(condition["groupjoin"] != '') {
 								$(format("#save_condition_group_%s_joincondition", groupid)).val(condition["groupjoin"]);
 							}
 							condno+=1;
@@ -753,7 +753,7 @@ function onschedule_selectschedule(selbox) {
 		jQuery('#minutesinterval').hide();
 		jQuery('#scheduledTime').show();
 		break;
-		case '6':  // Not Implemented yet
+		case '6': // Not Implemented yet
 		break;
 		case '7':
 		jQuery('#scheduledWeekDay').hide();

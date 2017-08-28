@@ -64,10 +64,7 @@ class smsFactor implements ISMSProvider
 	}
 
 	public function send($message, $tonumbers) {
-		if(!is_array($tonumbers)) {
-			$tonumbers = array($tonumbers);
-		}
-		
+		$tonumbers = (array)$tonumbers;
 		$tonumbers = $this->cleanNumbers($tonumbers);
 		$clientMessageReference = $this->generateClientMessageReference();
 		$response = $this->sendMessage($clientMessageReference, $message, $tonumbers);

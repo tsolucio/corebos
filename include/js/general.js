@@ -2916,6 +2916,9 @@ function fnpriceValidation(txtObj) {
 }
 
 function delimage(id,fname,aname) {
+	if (id == 0) {
+		document.getElementById(fname+'_replaceimage').innerHTML=alert_arr.LBL_IMAGE_DELETED;
+	} else {
 	jQuery.ajax({
 		method: 'POST',
 		url: 'index.php?module=Contacts&action=ContactsAjax&file=DelImage&ImageModule='+gVTModule+'&recordid='+id+'&fieldname='+fname+'&attachmentname='+aname,
@@ -2925,6 +2928,8 @@ function delimage(id,fname,aname) {
 		else
 			alert(alert_arr.ERROR_WHILE_EDITING);
 	});
+	}
+	document.getElementById(fname+'_hidden').value = '';
 }
 
 function delUserImage(id) {
@@ -3816,6 +3821,8 @@ function startCall(number, recordid){
 //added for tooltip manager
 function ToolTipManager(){
 	var state = false;
+	var secondshowTimer = 0;
+	var secondshowTimeout = 1800;
 	/**
 	 * this function creates the tooltip div and adds the information to it
 	 * @param string text - the text to be added to the tooltip
@@ -3867,9 +3874,10 @@ function ToolTipManager(){
 		var div = document.getElementById(divName);
 		if(typeof div != 'undefined' && div != null ){
 			if(typeof nodelay != 'undefined' && nodelay != null){
-				setTimeout(function(){
+				if (secondshowTimer != 0) clearTimeout(secondshowTimer);
+				secondshowTimer = setTimeout(function(){
 					div.style.display = "none";
-				}, 700);
+				}, secondshowTimeout);
 			}else{
 				setTimeout(function(){
 					if(!state){
@@ -4937,30 +4945,37 @@ var throttle = function(func, limit) {
 document.addEventListener("DOMContentLoaded", function(event) {
 
 	/* ======= Auto complete part relations ====== */
-	var acInputs = document.getElementsByClassName("autocomplete-input");
+	var acInputs = document.querySelectorAll(".autocomplete-input,.searchBox");
 	for (var i = 0; i < acInputs.length; i++) {
 		(function(_i){
 			var ac = new AutocompleteRelation(acInputs[_i], _i);
 			acInputs[_i].addEventListener("input", function(e){
 				throttle(ac.get(e), 500);
 			});
+			$('html').click(function() {
+				ac.clearTargetUL();
+				ac.targetUL.hide();
+			});
 		})(i);
 	}
-
 });
 
 function AutocompleteRelation(target, i) {
 
 	this.inputField 	= target;
-	this.data 			= JSON.parse(target.getAttribute("data-autocomp"));
+	this.data			= JSON.parse(target.getAttribute("data-autocomp"));
 	this.targetUL 		= document.getElementsByClassName("relation-autocomplete__target")[i];
 	this.hiddenInput	= document.getElementsByClassName("relation-autocomplete__hidden")[i];
 	this.displayFields 	= this.showFields();
 	this.entityName		= this.entityField();
 	this.moduleName 	= this.data.searchmodule;
 	this.fillfields		= this.fillFields();
-	this.maxResults 	= 5;
-
+	this.maxResults 	= this.MaxResults();
+	this.mincharstoSearch 	= this.MinCharsToSearch();
+	this.multiselect 	= this.multiselect();
+	if(this.multiselect==='true'){
+		target.style.width='95%';
+	}
 	this.targetUL.show 	= function() {
 		if (!this.classList.contains("active")) {
 			(function(){
@@ -4986,7 +5001,12 @@ function AutocompleteRelation(target, i) {
 AutocompleteRelation.prototype.get = function(e) {
 
 	var term = e.target.value;
-	if (term.length > 3) {
+	if(this.multiselect==='true'){
+		var array=term.split(',');
+		var nr_opt=array.length;
+		term=array[nr_opt-1];
+	}
+	if (term.length > this.mincharstoSearch && (typeof(this.data.searchin) != 'undefined' || typeof(this.data.searchfields) != 'undefined') ) {
 		this.data.term = term;
 		var acInstance = this;
 
@@ -5005,8 +5025,15 @@ AutocompleteRelation.prototype.get = function(e) {
 					acInstance.set(json_data)
 			}
 		};
-		r.open("GET", "index.php?module=Utilities&action=UtilitiesAjax&file=getAutocomplete&data="+encodeURIComponent(JSON.stringify(this.data)), true);
-		r.send();
+		if (e.target.name==='query_string') {
+			var params=JSON.stringify(this.data);
+			r.open("POST", "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getGloalSearch", true);
+			r.setRequestHeader( "Content-type", "application/json;charset=UTF-8" );
+			r.send(params);
+		} else {
+			r.open("GET", "index.php?module=Utilities&action=UtilitiesAjax&file=getAutocomplete&data="+encodeURIComponent(JSON.stringify(this.data)), true);
+			r.send();
+		}
 	} else {
 		this.clearTargetUL();
 		this.targetUL.hide();
@@ -5031,8 +5058,13 @@ AutocompleteRelation.prototype.set = function(items) {
 					value 		: this.getAttribute("data-crmid")
 				});
 				acInstance.fillOtherFields(this);
+				if (acInstance.inputField.name==='query_string') {
+					acInstance.goToRec({
+						crmmodule 	: this.getAttribute("data-crmmodule"),
+						value 		: this.getAttribute("data-crmid")
+					});
+				}
 			});
-
 		}
 	}
 }
@@ -5050,6 +5082,11 @@ AutocompleteRelation.prototype.select = function(params) {
 	this.targetUL.hide();
 	// Schedular.AutoComplete.Current.clear();
 }
+AutocompleteRelation.prototype.goToRec = function(params) {
+	var value = params.value.split('x')[1];
+	var crmmodule = params.crmmodule;
+	window.open('index.php?module='+crmmodule+'&action=DetailView&record='+value);
+};
 
 AutocompleteRelation.prototype.buildListItem = function(item) {
 	var li = document.createElement("li");
@@ -5110,7 +5147,11 @@ AutocompleteRelation.prototype.buildListItem = function(item) {
 
 	span = document.createElement("span");
 	span.setAttribute("class", "slds-listbox__option-meta slds-listbox__option-meta_entity");
-	span.innerText = this.buildSecondayReturnFields(item);
+	if (this.inputField.name==='query_string') {
+		span.innerText = this.buildSecondayReturnFieldsGS(item);
+	} else {
+		span.innerText = this.buildSecondayReturnFields(item);
+	}
 
 	li.children[0].children[1].appendChild(span);
 
@@ -5125,6 +5166,19 @@ AutocompleteRelation.prototype.buildSecondayReturnFields = function(item) {
 			if (i < this.displayFields.length - 1) {
 				returnString += "\n";
 			}
+		}
+	}
+	return returnString;
+}
+
+AutocompleteRelation.prototype.buildSecondayReturnFieldsGS = function(item) {
+	var returnString = "";
+	var module=item['crmmodule'];
+	var displayFld=this.data.searchin[module]['showfields'];
+	for (var i = 0; i < displayFld.length; i++) {
+		returnString = returnString + item[displayFld[i]];
+		if (i < displayFld.length - 1) {
+			returnString += "\n";
 		}
 	}
 	return returnString;
@@ -5151,8 +5205,24 @@ AutocompleteRelation.prototype.fillOtherFields = function (data) {
 		if(this_field[0] == "assigned_user_id") {
 			field_element = this.fillAssignField(get_field_value);
 		}
-
-		field_element.value = get_field_value;
+		var field_root_name = this.inputField.name.substring(0, this.inputField.name.indexOf("_display"));
+		if(this.multiselect==='true' && (this_field[0]==field_root_name+'_display' || this_field[0]==field_root_name || this_field[0]==this.inputField.name)){
+			if(this_field[0]==field_root_name+'_display'){
+				var array=field_element.value.split(',');
+				var nr_opt=array.length;
+				array[nr_opt-1]=get_field_value;
+				field_element.value = array.join(',')+',';
+			}
+			else{
+				var array=field_element.value.split(' |##| ').filter(item => item);
+				var nr_opt=array.length;
+				array.push(get_field_value);
+				field_element.value = array.join(' |##| ');
+			}
+		}
+		else{
+			field_element.value = get_field_value;
+		}
 	}
 
 }
@@ -5206,7 +5276,7 @@ AutocompleteRelation.prototype.getReferenceModule = function () {
 	var current_field_name = this.inputField.name;
 	var field_root_name = current_field_name.substring(0, current_field_name.indexOf("_display"))
 	var reference_type_field = document.getElementsByName(field_root_name + "_type");
-	return reference_type_field[0].value
+	return (reference_type_field[0] !== undefined ? reference_type_field[0].value : '');
 }
 
 AutocompleteRelation.prototype.extendFillFields = function (other_fields) {
@@ -5218,7 +5288,7 @@ AutocompleteRelation.prototype.showFields = function () {
 		return this.data.showfields.split(",");
 	} catch(e) {
 		ref_module = this.getReferenceModule();
-		return this.data.showfields[ref_module].split(",");
+		return (ref_module !== '' ? this.data.showfields[ref_module].split(",") : '');
 	}
 }
 
@@ -5227,7 +5297,7 @@ AutocompleteRelation.prototype.entityField = function () {
 		return this.data.entityfield
 	else {
 		ref_module = this.getReferenceModule();
-		return this.data.entityfield[ref_module];
+		return (ref_module !== '' ? this.data.entityfield[ref_module] : '');
 	}
 }
 
@@ -5236,6 +5306,39 @@ AutocompleteRelation.prototype.fillFields = function () {
 		return this.data.fillfields.split(",");
 	} catch(e) {
 		ref_module = this.getReferenceModule();
-		return this.data.fillfields[ref_module].split(",");
+		return (ref_module !== '' ? this.data.fillfields[ref_module].split(",") : '');
 	}
+}
+
+AutocompleteRelation.prototype.multiselect = function () {
+	if(typeof this.data.multiselect === 'string')
+		return this.data.multiselect
+	else if(typeof this.data.multiselect === undefined){
+		ref_module = this.getReferenceModule();
+		return (ref_module !== '' ? this.data.multiselect[ref_module] : '');
+	}
+}
+
+AutocompleteRelation.prototype.MaxResults = function () {
+	if(typeof this.data.maxresults === 'number')
+		return this.data.maxresults;
+	else if(typeof this.data.maxresults === undefined){
+		ref_module = this.getReferenceModule();
+		if (ref_module !== '' && this.data.maxresults[ref_module] !== undefined) {
+			return this.data.maxresults[ref_module]
+		}
+	}
+	return 5;
+}
+
+AutocompleteRelation.prototype.MinCharsToSearch = function () {
+	if (typeof this.data.mincharstosearch === 'number') {
+		return this.data.mincharstosearch;
+	} else if (typeof this.data.mincharstosearch === undefined) {
+		ref_module = this.getReferenceModule();
+		if (ref_module !== '' && this.data.mincharstosearch[ref_module] !== undefined) {
+			return this.data.mincharstosearch[ref_module]
+		}
+	}
+	return 3;
 }

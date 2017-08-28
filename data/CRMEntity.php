@@ -20,6 +20,8 @@ class CRMEntity {
 	var $ownedby;
 	var $mode;
 	var $id;
+	var $linkmodeid = 0;
+	var $linkmodemodule = '';
 	var $DirectImageFieldValues = array();
 	var $HasDirectImageField = false;
 	static protected $methods = array();
@@ -122,8 +124,16 @@ class CRMEntity {
 
 		// vtlib customization: Hook provide to enable generic module relation.
 		if (isset($_REQUEST['createmode']) and $_REQUEST['createmode'] == 'link') {
-			$for_module = vtlib_purify($_REQUEST['return_module']);
-			$for_crmid = vtlib_purify($_REQUEST['return_id']);
+			if (!empty($this->linkmodeid)) {
+				$for_crmid = vtlib_purify($this->linkmodeid);
+			} else {
+				$for_crmid = vtlib_purify($_REQUEST['return_id']);
+			}
+			if (!empty($this->linkmodemodule)) {
+				$for_module = vtlib_purify($this->linkmodemodule);
+			} else {
+				$for_module = vtlib_purify($_REQUEST['return_module']);
+			}
 			$with_module = $module;
 			$with_crmid = $this->id;
 
@@ -172,14 +182,24 @@ class CRMEntity {
 				$upd = "update $tblname set $colname=? where ".$this->tab_name_index[$tblname].'=?';
 				$adb->pquery($upd, array($files['original_name'],$this->id));
 				$this->column_fields[$fldname] = $files['original_name'];
+				if (!empty($old_attachmentid)) {
+					$setypers = $adb->pquery('select setype from vtiger_crmentity where crmid=?', array($old_attachmentid));
+					$setype = $adb->query_result($setypers,0,'setype');
+					if ($setype == 'Contacts Image' || $setype == $module.' Attachment') {
+						$cntrels = $adb->pquery('select count(*) as cnt from vtiger_seattachmentsrel where attachmentsid=?', array($old_attachmentid));
+						$numrels = $adb->query_result($cntrels,0,'cnt');
+					} else {
+						$numrels = 0;
+					}
+				}
 				$file_saved = $this->uploadAndSaveFile($id,$module,$files,$attachmentname, $direct_import, $fldname);
 				// Remove the deleted attachments from db
 				if ($file_saved && !empty($old_attachmentid)) {
-					$setypers = $adb->pquery('select setype from vtiger_crmentity where crmid=?', array($old_attachmentid));
-					$setype = $adb->query_result($setypers,0,'setype');
 					if ($setype == 'Contacts Image' or $setype == $module.' Attachment') {
-						$del_res1 = $adb->pquery('delete from vtiger_attachments where attachmentsid=?', array($old_attachmentid));
-						$del_res2 = $adb->pquery('delete from vtiger_seattachmentsrel where attachmentsid=?', array($old_attachmentid));
+						if ($numrels == 1) {
+							$del_res1 = $adb->pquery('delete from vtiger_attachments where attachmentsid=?', array($old_attachmentid));
+						}
+						$del_res2 = $adb->pquery('delete from vtiger_seattachmentsrel where crmid = ? and attachmentsid=?', array($id,$old_attachmentid));
 					}
 				}
 			} elseif (isset($_REQUEST[$fileindex.'_canvas_image_set']) and $_REQUEST[$fileindex.'_canvas_image_set']==1 and !empty($_REQUEST[$fileindex.'_canvas_image'])) {
@@ -208,6 +228,31 @@ class CRMEntity {
 				$fldname = $fileindex;
 				$upd = "update $tblname set $colname=? where ".$this->tab_name_index[$tblname].'=?';
 				$adb->pquery($upd, array($saveasfile,$this->id));
+			} elseif (empty($files['name']) && $files['size'] == 0) {
+				$result = $adb->pquery($sql, array($fileindex,$tabid));
+				$tblname = $adb->query_result($result, 0, 'tablename');
+				$colname = $adb->query_result($result, 0, 'columnname');
+				$fldname = $fileindex;
+				if (empty($_REQUEST[$fileindex.'_hidden']) || empty($_REQUEST['__cbisduplicatedfromrecordid'])) {
+					$upd = "update $tblname set $colname='' where ".$this->tab_name_index[$tblname].'=?';
+					$adb->pquery($upd, array($this->id));
+				} else {
+					$attachmentname = vtlib_purify($_REQUEST[$fileindex.'_hidden']);
+					$isduplicatedfromrecordid = vtlib_purify($_REQUEST['__cbisduplicatedfromrecordid']);
+					$old_attachmentrs = $adb->pquery('select vtiger_crmentity.crmid from vtiger_seattachmentsrel
+					 inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_seattachmentsrel.attachmentsid
+					 inner join vtiger_attachments on vtiger_crmentity.crmid=vtiger_attachments.attachmentsid
+					 where vtiger_seattachmentsrel.crmid=? and vtiger_attachments.name=?', array($isduplicatedfromrecordid,$attachmentname));
+					if ($old_attachmentrs and $adb->num_rows($old_attachmentrs)>0) {
+						$old_attachmentid = $adb->query_result($old_attachmentrs,0,'crmid');
+						$upd = "update $tblname set $colname=? where ".$this->tab_name_index[$tblname].'=?';
+						$adb->pquery($upd, array($attachmentname,$this->id));
+						$adb->pquery('insert into vtiger_seattachmentsrel values(?,?)', array($id, $old_attachmentid));
+					} else {
+						$upd = "update $tblname set $colname='' where ".$this->tab_name_index[$tblname].'=?';
+						$adb->pquery($upd, array($this->id));
+					}
+				}
 			}
 		}
 		$log->debug("Exiting from insertIntoAttachment($id,$module) method.");
@@ -298,10 +343,14 @@ class CRMEntity {
 				$res = $adb->pquery($att_sql, array($attachmentname,$id));
 				$attachmentsid = $adb->query_result($res, 0, 'attachmentsid');
 				if ($attachmentsid != '') {
+					$cntrels = $adb->pquery('select count(*) as cnt from vtiger_seattachmentsrel where attachmentsid=?', array($attachmentsid));
+					$numrels = $adb->query_result($cntrels,0,'cnt');
 					$delquery = 'delete from vtiger_seattachmentsrel where crmid=? and attachmentsid=?';
 					$adb->pquery($delquery, array($id, $attachmentsid));
-					$crm_delquery = "delete from vtiger_crmentity where crmid=?";
-					$adb->pquery($crm_delquery, array($attachmentsid));
+					if ($numrels == 1) {
+						$crm_delquery = "delete from vtiger_crmentity where crmid=?";
+						$adb->pquery($crm_delquery, array($attachmentsid));
+					}
 					$sql5 = 'insert into vtiger_seattachmentsrel values(?,?)';
 					$adb->pquery($sql5, array($id, $current_id));
 				} else {
@@ -335,8 +384,9 @@ class CRMEntity {
 		$ownerid = $this->column_fields['assigned_user_id'];
 		if (strpos($ownerid,'x')>0) { // we have a WSid
 			$usrWSid = vtws_getEntityId('Users');
+			$grpWSid = vtws_getEntityId('Groups');
 			list($inputWSid,$inputCRMid) = explode('x',$ownerid);
-			if ($usrWSid==$inputWSid) {
+			if ($usrWSid==$inputWSid || $grpWSid==$inputWSid) {
 				$ownerid = $inputCRMid;
 			} else {
 				die('Invalid user id!');
@@ -436,7 +486,7 @@ class CRMEntity {
 		$log->debug("function insertIntoEntityTable $module $table_name");
 		$insertion_mode = $this->mode;
 
-		//Checkin whether an entry is already is present in the vtiger_table to update
+		//Checking if entry is already present so we have to update
 		if ($insertion_mode == 'edit') {
 			$tablekey = $this->tab_name_index[$table_name];
 			// Make selection on the primary key of the module table to check.
@@ -569,7 +619,7 @@ class CRMEntity {
 					} else {
 						$fldvalue = $this->column_fields[$fieldname];
 					}
-				} elseif ($uitype == 33 || $uitype == 3313 || $uitype == 3314 || $uitype == 1024) {
+				} elseif ($uitype == 33 || $uitype == 3313 || $uitype == 3314 || $uitype == 1024 || $uitype == 1025) {
 					if (empty($this->column_fields[$fieldname])) {
 						$fldvalue = '';
 					} else {
@@ -591,6 +641,8 @@ class CRMEntity {
 					$selectedvalues = $this->column_fields[$fieldname];
 					if ($uitype == 3313 || $uitype == 3314) {
 						$uservalues = getAllowedPicklistModules();
+					} elseif ($uitype == 1025) {
+						$uservalues = $currentvalues;
 					} elseif ($uitype == 1024) {
 						$roleid = $current_user->roleid;
 						$subrole = getRoleSubordinates($roleid);
@@ -921,6 +973,10 @@ class CRMEntity {
 			$_REQUEST['assigned_user_id'] = $current_user->id;
 			$this->column_fields['assigned_user_id'] = $current_user->id;
 			$_REQUEST['assigntype'] = 'U';
+		}
+		// get is duplicate from id if present and not set
+		if (empty($this->column_fields['isduplicatedfromrecordid']) and !empty($_REQUEST['__cbisduplicatedfromrecordid'])) {
+			$this->column_fields['isduplicatedfromrecordid'] = vtlib_purify($_REQUEST['__cbisduplicatedfromrecordid']);
 		}
 
 		//Event triggering code
@@ -1871,8 +1927,7 @@ class CRMEntity {
 	 */
 	function save_related_module($module, $crmid, $with_module, $with_crmid) {
 		global $adb;
-		if (!is_array($with_crmid))
-			$with_crmid = Array($with_crmid);
+		$with_crmid = (array)$with_crmid;
 		foreach ($with_crmid as $relcrmid) {
 
 			if ($with_module == 'Documents') {
@@ -1903,8 +1958,7 @@ class CRMEntity {
 	 */
 	function delete_related_module($module, $crmid, $with_module, $with_crmid) {
 		global $adb;
-		if (!is_array($with_crmid))
-			$with_crmid = Array($with_crmid);
+		$with_crmid = (array)$with_crmid;
 		$data = array();
 		$data['sourceModule'] = $module;
 		$data['sourceRecordId'] = $crmid;
@@ -2043,11 +2097,7 @@ class CRMEntity {
 			while ($depflds = $this->db->fetch_array($dependentFieldSql)) {
 			$dependentTable = $depflds['tablename'];
 			if (isset($other->related_tables)) {
-				if (!is_array($other->related_tables)) {
-					$otherRelatedTable = array($other->related_tables);
-				} else {
-					$otherRelatedTable = $other->related_tables;
-				}
+				$otherRelatedTable = (array)$other->related_tables;
 			} else {
 				$otherRelatedTable = '';
 			}
@@ -2162,11 +2212,7 @@ class CRMEntity {
 			while ($depflds = $this->db->fetch_array($dependentFieldSql)) {
 			$dependentTable = $depflds['tablename'];
 			if (isset($other->related_tables)) {
-				if (!is_array($other->related_tables)) {
-					$otherRelatedTable = array($other->related_tables);
-				} else {
-					$otherRelatedTable = $other->related_tables;
-				}
+				$otherRelatedTable = (array)$other->related_tables;
 			} else {
 				$otherRelatedTable = '';
 			}
@@ -2636,8 +2682,7 @@ class CRMEntity {
 	function buildSearchQueryForFieldTypes($uitypes, $value=false) {
 		global $adb;
 
-		if (!is_array($uitypes))
-			$uitypes = array($uitypes);
+		$uitypes = (array)$uitypes;
 		$module = get_class($this);
 
 		$cachedModuleFields = VTCacheUtils::lookupFieldInfo_Module($module);
@@ -2751,7 +2796,6 @@ class CRMEntity {
 		$tabId = getTabid($module);
 		$sharingRuleInfoVariable = $module . '_share_read_permission';
 		$sharingRuleInfo = $$sharingRuleInfoVariable;
-		$sharedTabId = null;
 		$query = '';
 		if (!empty($sharingRuleInfo) && (count($sharingRuleInfo['ROLE']) > 0 || count($sharingRuleInfo['GROUP']) > 0)) {
 			$query = " (SELECT shareduserid FROM vtiger_tmp_read_user_sharing_per " .

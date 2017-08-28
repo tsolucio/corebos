@@ -404,18 +404,28 @@ class crmtogo_WS_Utils {
 		$sql = "select * from vtiger_ticketcomments where ticketid=?";
 		$recordid = vtws_getIdComponents($ticket['id']);
 		$recordid = $recordid[1];
+		$recordprefix= self::getEntityModuleWSId('Users');
+		$sqluser = 'SELECT 1 FROM vtiger_users WHERE id=?';
 		$result = $db->pquery($sql, array($recordid));
-		$recordprefix= self::getEntityModuleWSId('Users') ;
 		for($i=0;$i<$db->num_rows($result);$i++) {
 			$comment = $db->query_result($result,$i,'comments');
 			if($comment != '') {
+				$crmid = $db->query_result($result,$i,'ownerid');
+				$rsusr = $db->pquery($sqluser, array($crmid));
+				if ($rsusr && $db->num_rows($rsusr)) {
+					$wsid = $recordprefix;
+				} else {
+					$setype = getSalesEntityType($crmid);
+					$wsid = self::getEntityModuleWSId($setype);
+				}
 				$commentlist[$i]['commentcontent'] = $comment;
-				$commentlist[$i]['assigned_user_id'] = $recordprefix.'x'.$db->query_result($result,$i,'ownerid');
+				$commentlist[$i]['assigned_user_id'] = $wsid.'x'.$crmid;
 				$commentlist[$i]['createdtime'] = $db->query_result($result,$i,'createdtime');
 			}
 		}
 		return $commentlist;
 	}
+
 	/**     Function to create a comment for a troubleticket
 	  *     @param int $ticketid -- troubleticket id, comments array
 	  *     returns the comment as a array

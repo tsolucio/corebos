@@ -65,7 +65,7 @@ function get_select_options(&$option_list, $selected, $advsearch = 'false') {
  */
 function get_select_options_with_id(&$option_list, $selected_key, $advsearch = 'false') {
 	global $log;
-	$log->debug("Entering and Exiting get_select_options_with_id (" . print_r($option_list,true) . "," . $selected_key . "," . $advsearch . ") method ...");
+	$log->debug("Entering and Exiting get_select_options_with_id (" . print_r($option_list,true) . "," . print_r($selected_key,true) . "," . $advsearch . ") method ...");
 	return get_select_options_with_id_separate_key($option_list, $option_list, $selected_key, $advsearch);
 }
 
@@ -106,8 +106,7 @@ function get_options_array_seperate_key(&$label_list, &$key_list, $selected_key,
 	//for setting null selection values to human readable --None--
 	$pattern = "/'0?'></";
 	$replacement = "''>" . $app_strings['LBL_NONE'] . "<";
-	if (!is_array($selected_key))
-		$selected_key = array($selected_key);
+	$selected_key = (array)$selected_key;
 
 	//create the type dropdown domain and set the selected value if $opp value already exists
 	foreach ($key_list as $option_key => $option_value) {
@@ -144,8 +143,7 @@ function get_select_options_with_id_separate_key(&$label_list, &$key_list, $sele
 
 	$pattern = "/'0?'></";
 	$replacement = "''>" . $app_strings['LBL_NONE'] . "<";
-	if (!is_array($selected_key))
-		$selected_key = array($selected_key);
+	$selected_key = (array)$selected_key;
 
 	foreach ($key_list as $option_key => $option_value) {
 		$selected_string = '';
@@ -173,8 +171,7 @@ function get_select_options_with_value_separate_key(&$label_list, &$key_list, $s
 
 	$pattern = "/'0?'></";
 	$replacement = "''>" . $app_strings['LBL_NONE'] . "<";
-	if (!is_array($selected_key))
-		$selected_key = array($selected_key);
+	$selected_key = (array)$selected_key;
 
 	foreach ($key_list as $option_key => $option_value) {
 		$selected_string = '';
@@ -2069,11 +2066,14 @@ function decideFilePath() {
 	switch (strtolower($saveStrategy)) {
 		case 'crmid':
 			// CRMID in folder
-			if (isset($_REQUEST['return_id']) and $_REQUEST['return_id']>0 and $_REQUEST['return_id']<100000000000) {
-				$filepath .= $_REQUEST['return_id'] . '/';
+			if (isset($_REQUEST['return_id'])) {
+				$retid = vtlib_purify($_REQUEST['return_id']);
+				if (is_numeric($retid) && $retid > 0 && $retid < 100000000000) {
+					$filepath .= $retid . '/';
+				}
 			}
 
-			if(!is_dir($filepath)) {
+			if (!is_dir($filepath)) {
 				//create new folder
 				mkdir($filepath);
 			}
@@ -2288,7 +2288,8 @@ function get_announcements() {
 	global $default_charset, $currentModule;
 	$announcement = GlobalVariable::getVariable('Application_Announcement','',$currentModule);
 	if ($announcement != '') {
-			$announcement = html_entity_decode($announcement, ENT_QUOTES, $default_charset);
+		$announcement = html_entity_decode($announcement, ENT_QUOTES, $default_charset);
+		$announcement = vtlib_purify($announcement);
 	}
 	return $announcement;
 }
@@ -2801,74 +2802,6 @@ function getBasic_Advance_SearchURL() {
 	return $url;
 }
 
-/** Clear the Smarty cache files(in Smarty/smarty_c)
- * * This function will called after migration.
- * */
-function clear_smarty_cache($path = null) {
-
-	global $root_directory;
-	if ($path == null) {
-		$path = $root_directory . 'Smarty/templates_c/';
-	}
-	$mydir = @opendir($path);
-	while (false !== ($file = readdir($mydir))) {
-		if ($file != "." && $file != ".." && $file != ".svn") {
-			//chmod($path.$file, 0777);
-			if (is_dir($path . $file)) {
-				chdir('.');
-				clear_smarty_cache($path . $file . '/');
-				//rmdir($path.$file); // No need to delete the directories.
-			} else {
-				// Delete only files ending with .tpl.php
-				if (strripos($file, '.tpl.php') == (strlen($file) - strlen('.tpl.php'))) {
-					unlink($path . $file);
-				}
-			}
-		}
-	}
-	@closedir($mydir);
-}
-
-/** Get Smarty compiled file for the specified template filename.
- * * @param $template_file Template filename for which the compiled file has to be returned.
- * * @return Compiled file for the specified template file.
- * */
-function get_smarty_compiled_file($template_file, $path = null) {
-
-	global $root_directory;
-	if ($path == null) {
-		$path = $root_directory . 'Smarty/templates_c/';
-	}
-	$mydir = @opendir($path);
-	$compiled_file = null;
-	while (false !== ($file = readdir($mydir)) && $compiled_file == null) {
-		if ($file != "." && $file != ".." && $file != ".svn") {
-			//chmod($path.$file, 0777);
-			if (is_dir($path . $file)) {
-				chdir('.');
-				$compiled_file = get_smarty_compiled_file($template_file, $path . $file . '/');
-				//rmdir($path.$file); // No need to delete the directories.
-			} else {
-				// Check if the file name matches the required template fiel name
-				if (strripos($file, $template_file . '.php') == (strlen($file) - strlen($template_file . '.php'))) {
-					$compiled_file = $path . $file;
-				}
-			}
-		}
-	}
-	@closedir($mydir);
-	return $compiled_file;
-}
-
-/** Function to carry out all the necessary actions after migration */
-function perform_post_migration_activities() {
-	//After applying all the DB Changes,Here we clear the Smarty cache files
-	clear_smarty_cache();
-	//Writing tab data in flat file
-	create_tab_data_file();
-	create_parenttab_data_file();
-}
-
 /** Function To create Email template variables dynamically -- Pavani */
 function getEmailTemplateVariables($modules_list = null) {
 	global $adb;
@@ -3336,7 +3269,7 @@ function getReturnPath($host, $from_email) {
 	$host = trim($host);
 
 	// Review if the host is not local
-	if (!in_array(strtolower($host), array('localhost'))) {
+	if ('localhost' != strtolower($host)) {
 		if (strpos($from_email, '@')) {
 			list($from_name, $from_domain) = explode('@', $from_email);
 		} else {

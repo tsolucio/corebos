@@ -61,12 +61,12 @@ class VTUpdateFieldsTask extends VTTask {
 
 				$fieldInstance = $moduleFields[$fieldName];
 				$fieldtype = $fieldInstance->getFieldDataType();
-				if ($fieldValueType == 'fieldname') {
+				if ($fieldValueType == 'fieldname' && !preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', $fieldValue)) {
 					if ($fieldtype === 'currency' or $fieldtype === 'double') {
 						$focus->column_fields[$fieldValue] = $focus->adjustCurrencyField($fieldValue,$focus->column_fields[$fieldValue],$handlerMeta->getTabId());
 					}
 					$fieldValue = $focus->column_fields[$fieldValue];
-				} elseif ($fieldValueType == 'expression') {
+				} elseif ($fieldValueType == 'expression' || ($fieldValueType == 'fieldname' && preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', $fieldValue))) {
 					require_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
 					$fieldValue = preg_replace('/<br(\s+)?\/?>/i', ' ', $fieldValue);
 					$fieldValue = str_replace("''", "' '", $fieldValue);
@@ -106,8 +106,8 @@ class VTUpdateFieldsTask extends VTTask {
 					if ($userId == 0 && $groupId == 0) {
 						$fieldValue = $focus->column_fields[$fieldName];
 					} else {
-                                                $userEntityId=vtws_getEntityId('Users').'x';
-                                                $groupEntityId=vtws_getEntityId('Groups').'x';
+						$userEntityId=vtws_getEntityId('Users').'x';
+						$groupEntityId=vtws_getEntityId('Groups').'x';
 						$fieldValue = ($userId == 0) ? $groupEntityId.$groupId : $userEntityId.$userId;
 					}
 				}

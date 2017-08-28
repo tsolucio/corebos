@@ -31,6 +31,7 @@ $mod_strings = Array(
 	'incoming-received' => 'Recebida-Atendida',
 	'missed' => 'Perdida',
 	'received' => 'Recebida',
+	'OutgoingCall' => 'Outgoing call from',
 );
 
 ?>

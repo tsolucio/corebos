@@ -415,9 +415,7 @@ class Vtiger_ModuleBasic {
 	 */
 	public function getFieldsByType($type) {
 		global $adb;
-		if(!is_array($type)) {
-			$type = array($type);
-		}
+		$type = (array)$type;
 		$fields = $this->getFields();
 		$fieldList = array();
 		foreach($fields as $field) {
