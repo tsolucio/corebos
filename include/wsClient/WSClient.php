@@ -62,8 +62,8 @@ class Vtiger_WSClient {
 	 * Get the URL for sending webservice request.
 	 */
 	function getWebServiceURL($url) {
-		if(stripos($url, $this->_servicebase) === false) {
-			if(strripos($url, '/') != (strlen($url)-1)) {
+		if (stripos($url, $this->_servicebase) === false) {
+			if (strrpos($url, '/') != (strlen($url)-1)) {
 				$url .= '/';
 			}
 			$url .= $this->_servicebase;
@@ -178,7 +178,7 @@ class Vtiger_WSClient {
 
 		// Make sure the query ends with ;
 		$query = trim($query);
-		if(strripos($query, ';') != strlen($query)-1) $query .= ';';
+		if (strrpos($query, ';') != strlen($query)-1) $query .= ';';
 
 		$getdata = Array(
 			'operation' => 'query',
