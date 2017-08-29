@@ -152,8 +152,8 @@ class ChartUtils {
 				}
 			}
 		}
-		if(count($groupByFields) == 0) {
-			$ChartDataArray['error'] = "<div class='componentName'>".getTranslatedString('LBL_NO_DATA', 'Reports')."</div";
+		if (count($groupByFields) == 0) {
+			$ChartDataArray['error'] = "<div class='componentName'>".getTranslatedString('LBL_NO_DATA', 'Reports').'</div>';
 		}
 		$ChartDataArray['xaxisData'] = $groupByFields;
 		$ChartDataArray['yaxisData'] = $yaxisArray;

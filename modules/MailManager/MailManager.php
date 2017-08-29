@@ -10,7 +10,7 @@
 require_once 'include/Webservices/Query.php';
 
 class MailManager {
-	
+
 	static function updateMailAssociation($mailuid, $emailid, $crmid) {
 		global $adb;
 		$adb->pquery("INSERT INTO vtiger_mailmanager_mailrel (mailuid, emailid, crmid) VALUES (?,?,?)", array($mailuid, $emailid, $crmid));
@@ -46,8 +46,12 @@ class MailManager {
 				foreach($result as $record) {
 					foreach($searchFieldList as $searchField) {
 						if(!empty($record[$searchField])) {
-							$filteredResult[] = array('id'=> $record[$searchField], 'name'=>$record[$searchField]." - ".getTranslatedString($referenceModule),
-													'record'=>$record['id']);
+							$filteredResult[] = array(
+								'id' => $record[$searchField],
+								'name' => $record[$searchField].' - '.getTranslatedString($referenceModule,$referenceModule),
+								'record' => $record['id'],
+								'module' => $referenceModule
+							);
 						}
 					}
 				}
@@ -58,7 +62,7 @@ class MailManager {
 
 	static function lookupMailAssociation($mailuid) {
 		global $adb;
-		
+
 		// Mail could get associated with two-or-more records if they get deleted after linking.
 		$result = $adb->pquery(
 			"SELECT vtiger_mailmanager_mailrel.* FROM vtiger_mailmanager_mailrel INNER JOIN
@@ -111,11 +115,11 @@ class MailManager {
 	static function checkModuleReadAccessForCurrentUser($module) {
 		global $current_user;
 		if (isPermitted($module, 'DetailView') == "yes" && vtlib_isModuleActive($module)) {
-            return true;
+			return true;
 		}
 		return false;
 	}
-        
+
 	/**
 	 * Invoked when special actions are performed on the module.
 	 * @param String $modulename - Module name

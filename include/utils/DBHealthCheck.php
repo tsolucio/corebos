@@ -14,7 +14,7 @@ class DBHealthCheck {
 	var $dbName;
 	var $dbHostName;
 	var $recommendedEngineType = 'InnoDB';
-	
+
 	function __construct($db) {
 		$this->db = $db;
 		$this->dbType = $db->databaseType;
@@ -36,20 +36,20 @@ class DBHealthCheck {
 
 	function getUnhealthyTablesList() {
 		$tablesList = array();
-		if($this->isMySql()) {
+		if ($this->isMySql()) {
 			$tablesList = $this->_mysql_getUnhealthyTables();
 		}
 		return $tablesList;
 	}
 
 	function updateTableEngineType($tableName) {
-		if($this->isMySql()) {
+		if ($this->isMySql()) {
 			$this->_mysql_updateEngineType($tableName);
 		}
 	}
 
 	function updateAllTablesEngineType() {
-		if($this->isMySql()) {
+		if ($this->isMySql()) {
 			$this->_mysql_updateEngineTypeForAllTables();
 		}
 	}
@@ -59,7 +59,7 @@ class DBHealthCheck {
 		$noOfTables = $tablesResult->NumRows($tablesResult);
 		$unHealthyTables = array();
 		$i=0;
-		for($j=0; $j<$noOfTables; ++$j) {
+		for ($j=0; $j<$noOfTables; ++$j) {
 			$tableInfo = $tablesResult->GetRowAssoc(0);
 			$isHealthy = false;
 			// If already InnoDB type, skip it.
@@ -72,7 +72,7 @@ class DBHealthCheck {
 			if ($tableNameParts[$tableNamePartsCount-1] == 'seq') {
 				$isHealthy = true;
 			}
-			if(!$isHealthy) {
+			if (!$isHealthy) {
 				$unHealthyTables[$i]['name'] = $tableInfo['name'];
 				$unHealthyTables[$i]['engine'] = $tableInfo['engine'];
 				$unHealthyTables[$i]['autoincrementValue'] = $tableInfo['auto_increment'];
@@ -94,7 +94,7 @@ class DBHealthCheck {
 	function _mysql_updateEngineTypeForAllTables() {
 		$unHealthyTables = $this->_mysql_getUnhealthyTables();
 		$noOfTables = count($unHealthyTables);
-		for($i=0; $i<$noOfTables; ++$i) {
+		for ($i=0; $i<$noOfTables; ++$i) {
 			$tableName = $unHealthyTables[$i]['name'];
 			$this->db->_Execute("ALTER TABLE $tableName ENGINE=$this->recommendedEngineType");
 		}

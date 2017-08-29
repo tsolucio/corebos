@@ -115,7 +115,6 @@ $mod_strings = Array(
 	'LBL_HOT' => 'Forró',
 	'LBL_COLD' => 'Hideg',
 	'LBL_TOOL_FORM_TITLE' => 'Jelölt Eszközök',
-	'LBL_SELECT_TEMPLATE_TO_MAIL_MERGE' => 'Válassz egy sablont a csoportos email küldéshez:',
 	'Salutation' => 'Megszólítás',
 	'First Name' => 'Keresztnév',
 	'Phone' => 'Telefon',

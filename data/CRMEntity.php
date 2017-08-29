@@ -20,6 +20,8 @@ class CRMEntity {
 	var $ownedby;
 	var $mode;
 	var $id;
+	var $linkmodeid = 0;
+	var $linkmodemodule = '';
 	var $DirectImageFieldValues = array();
 	var $HasDirectImageField = false;
 	static protected $methods = array();
@@ -122,8 +124,16 @@ class CRMEntity {
 
 		// vtlib customization: Hook provide to enable generic module relation.
 		if (isset($_REQUEST['createmode']) and $_REQUEST['createmode'] == 'link') {
-			$for_module = vtlib_purify($_REQUEST['return_module']);
-			$for_crmid = vtlib_purify($_REQUEST['return_id']);
+			if (!empty($this->linkmodeid)) {
+				$for_crmid = vtlib_purify($this->linkmodeid);
+			} else {
+				$for_crmid = vtlib_purify($_REQUEST['return_id']);
+			}
+			if (!empty($this->linkmodemodule)) {
+				$for_module = vtlib_purify($this->linkmodemodule);
+			} else {
+				$for_module = vtlib_purify($_REQUEST['return_module']);
+			}
 			$with_module = $module;
 			$with_crmid = $this->id;
 
@@ -335,8 +345,9 @@ class CRMEntity {
 		$ownerid = $this->column_fields['assigned_user_id'];
 		if (strpos($ownerid,'x')>0) { // we have a WSid
 			$usrWSid = vtws_getEntityId('Users');
+			$grpWSid = vtws_getEntityId('Groups');
 			list($inputWSid,$inputCRMid) = explode('x',$ownerid);
-			if ($usrWSid==$inputWSid) {
+			if ($usrWSid==$inputWSid || $grpWSid==$inputWSid) {
 				$ownerid = $inputCRMid;
 			} else {
 				die('Invalid user id!');
@@ -436,7 +447,7 @@ class CRMEntity {
 		$log->debug("function insertIntoEntityTable $module $table_name");
 		$insertion_mode = $this->mode;
 
-		//Checkin whether an entry is already is present in the vtiger_table to update
+		//Checking if entry is already present so we have to update
 		if ($insertion_mode == 'edit') {
 			$tablekey = $this->tab_name_index[$table_name];
 			// Make selection on the primary key of the module table to check.
@@ -569,7 +580,7 @@ class CRMEntity {
 					} else {
 						$fldvalue = $this->column_fields[$fieldname];
 					}
-				} elseif ($uitype == 33 || $uitype == 3313 || $uitype == 3314 || $uitype == 1024) {
+				} elseif ($uitype == 33 || $uitype == 3313 || $uitype == 3314 || $uitype == 1024 || $uitype == 1025) {
 					if (empty($this->column_fields[$fieldname])) {
 						$fldvalue = '';
 					} else {
@@ -591,6 +602,8 @@ class CRMEntity {
 					$selectedvalues = $this->column_fields[$fieldname];
 					if ($uitype == 3313 || $uitype == 3314) {
 						$uservalues = getAllowedPicklistModules();
+					} elseif ($uitype == 1025) {
+						$uservalues = $currentvalues;
 					} elseif ($uitype == 1024) {
 						$roleid = $current_user->roleid;
 						$subrole = getRoleSubordinates($roleid);
@@ -2751,7 +2764,6 @@ class CRMEntity {
 		$tabId = getTabid($module);
 		$sharingRuleInfoVariable = $module . '_share_read_permission';
 		$sharingRuleInfo = $$sharingRuleInfoVariable;
-		$sharedTabId = null;
 		$query = '';
 		if (!empty($sharingRuleInfo) && (count($sharingRuleInfo['ROLE']) > 0 || count($sharingRuleInfo['GROUP']) > 0)) {
 			$query = " (SELECT shareduserid FROM vtiger_tmp_read_user_sharing_per " .

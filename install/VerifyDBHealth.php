@@ -9,13 +9,13 @@
  *********************************************************************************/
 session_start();
 
-if(empty($_SESSION['authentication_key'])) {
+if (empty($_SESSION['authentication_key'])) {
 	die($installationStrings['ERR_NOT_AUTHORIZED_TO_PERFORM_THE_OPERATION']);
 }
-if($_REQUEST['ajax'] == true) {
-	if($_SESSION['authentication_key'] != $_REQUEST['auth_key']) {
+if ($_REQUEST['ajax'] == true) {
+	if ($_SESSION['authentication_key'] != $_REQUEST['auth_key']) {
 		die($installationStrings['ERR_NOT_AUTHORIZED_TO_PERFORM_THE_OPERATION']);
-	}	
+	}
 }
 
 $configFileInfo = $_SESSION['config_file_info'];
@@ -29,13 +29,13 @@ require_once('include/utils/DBHealthCheck.php');
 $dbHealthCheck = new DBHealthCheck($db);
 $dbHostName = $dbHealthCheck->dbHostName;
 $dbName = $dbHealthCheck->dbName;
-if(!empty($_REQUEST['forceDbCheck']) || $_SESSION[$dbName.'_'.$dbHostName.'_HealthApproved'] != true) {
-	
-	if($_REQUEST['updateTableEngine'] == true) {
-		if(!empty($_REQUEST['updateEngineForTable'])) {
+if (!empty($_REQUEST['forceDbCheck']) || $_SESSION[$dbName.'_'.$dbHostName.'_HealthApproved'] != true) {
+
+	if ($_REQUEST['updateTableEngine'] == true) {
+		if (!empty($_REQUEST['updateEngineForTable'])) {
 			$dbHealthCheck->updateTableEngineType(htmlentities($_REQUEST['updateEngineForTable']));
 		}
-		elseif($_REQUEST['updateEngineForAllTables'] == true) {
+		elseif ($_REQUEST['updateEngineForAllTables'] == true) {
 			$dbHealthCheck->updateAllTablesEngineType();
 		}
 	}
@@ -85,14 +85,14 @@ if ($_REQUEST['viewDBReport'] == true) {
 		</table>
 		<table cellpadding="10" cellspacing="0" border="0" width="99%" height="45%" align="center">
 			<tr>
-				<td bgcolor="#4572be" align="center" class="small">				
+				<td bgcolor="#4572be" align="center" class="small">
 					<?php if($_SESSION[$dbName.'_'.$dbHostName.'_HealthApproved'] == true) { ?>
 					<table class="cwContentDisplay" cellpadding="10" cellspacing="10" border="0" width="97%" style="height: 100%" align="center">
 						<tr>
 							<td class="contentDisplay">
 								<div class="textCenter higherLineHeight">
-									<?php echo $installationStrings['MSG_TABLES_IN_INNODB']; ?>.<br />	
-									<?php echo $installationStrings['MSG_CLOSE_WINDOW_TO_PROCEED']; ?>.<br />							
+									<?php echo $installationStrings['MSG_TABLES_IN_INNODB']; ?>.<br />
+									<?php echo $installationStrings['MSG_CLOSE_WINDOW_TO_PROCEED']; ?>.<br />
 									<input type="button" class="small edit" value="<?php echo $installationStrings['LBL_CLOSE']; ?>" name="Close" onClick="window.close()" />
 								</div>
 							</td>
@@ -103,15 +103,15 @@ if ($_REQUEST['viewDBReport'] == true) {
 						<tr>
 							<td class="contentDisplay">
 								<div>
-									<?php echo $installationStrings['LBL_RECOMMENDATION_FOR_PROPERLY_WORKING_CRM']; ?>:					
+									<?php echo $installationStrings['LBL_RECOMMENDATION_FOR_PROPERLY_WORKING_CRM']; ?>:
 									<ul>
-								    	<li><?php echo $installationStrings['LBL_TABLES_SHOULD_BE_INNODB']; ?>. ( <a href="http://dev.mysql.com/doc/refman/5.0/en/innodb.html" target="_about"><?php echo $installationStrings['QUESTION_WHAT_IS_INNODB']; ?>?</a>).<br/></li>
-								    	<li><?php echo $installationStrings['LBL_TABLES_CHARSET_TO_BE_UTF8']; ?>.<br/></li>
+										<li><?php echo $installationStrings['LBL_TABLES_SHOULD_BE_INNODB']; ?>. ( <a href="http://dev.mysql.com/doc/refman/5.0/en/innodb.html" target="_about"><?php echo $installationStrings['QUESTION_WHAT_IS_INNODB']; ?>?</a>).<br/></li>
+										<li><?php echo $installationStrings['LBL_TABLES_CHARSET_TO_BE_UTF8']; ?>.<br/></li>
 									</ul>
 								</div>
 							</td>
 						</tr>
-					</table>	 
+					</table>
 					<table class="cwContentDisplay" cellpadding="10" cellspacing="0" border="0" width="97%" align="center">
 						<tr>
 							<td>
@@ -154,7 +154,7 @@ if ($_REQUEST['viewDBReport'] == true) {
 									<tr>
 										<td><?php echo $tableName; ?></td>
 										<td><?php echo $characterSet; ?></td>
-										<td><font style='color:red;'><?php echo $engineType; ?></font>&nbsp;&nbsp;(<a href='javascript:correctTableEngineType("<?php echo $tableName; ?>");' title='<?php echo $installationStrings['LBL_CORRECT_ENGINE_TYPE']; ?>'  style='cursor:pointer;'><?php echo $installationStrings['LBL_FIX_NOW']; ?></a>)</td>
+										<td><font style='color:red;'><?php echo $engineType; ?></font>&nbsp;&nbsp;(<a href='javascript:correctTableEngineType("<?php echo $tableName; ?>");' title='<?php echo $installationStrings['LBL_CORRECT_ENGINE_TYPE']; ?>' style='cursor:pointer;'><?php echo $installationStrings['LBL_FIX_NOW']; ?></a>)</td>
 									</tr>
 									<?php } ?>
 								</table>

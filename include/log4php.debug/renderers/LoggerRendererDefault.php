@@ -31,6 +31,6 @@ class LoggerRendererDefault implements LoggerRenderer {
 
 	/** @inheritdoc */
 	public function render($input) {
-		return print_r($input, true);
+		return @print_r($input, true);
 	}
 }

@@ -176,8 +176,7 @@ class Campaigns extends CRMEntity {
 			}
 		}
 
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>
-							'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 		$query = "SELECT vtiger_account.*,
 				CASE when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,
 				vtiger_crmentity.*, vtiger_crmentity.modifiedtime, vtiger_campaignrelstatus.*, vtiger_accountbillads.*
@@ -193,9 +192,9 @@ class Campaigns extends CRMEntity {
 
 		$return_value = GetRelatedList($this_module, $related_module, $other, $query, $button, $returnset);
 
-		if($return_value == null)
+		if ($return_value == null)
 			$return_value = Array();
-		else if($is_CampaignStatusAllowed) {
+		else if ($is_CampaignStatusAllowed and !empty($return_value['header'])) {
 			$statusPos = count($return_value['header']) - 2; // Last column is for Actions, exclude that. Also the index starts from 0, so reduce one more count.
 			$return_value = $this->add_status_popup($return_value, $statusPos, 'Accounts');
 		}
@@ -272,8 +271,7 @@ class Campaigns extends CRMEntity {
 			}
 		}
 
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>
-							'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 		$query = "SELECT vtiger_contactdetails.accountid, vtiger_account.accountname,
 				CASE when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name ,
 				vtiger_contactdetails.contactid, vtiger_contactdetails.lastname, vtiger_contactdetails.firstname, vtiger_contactdetails.title,
@@ -293,9 +291,9 @@ class Campaigns extends CRMEntity {
 
 		$return_value = GetRelatedList($this_module, $related_module, $other, $query, $button, $returnset);
 
-		if($return_value == null)
+		if ($return_value == null)
 			$return_value = Array();
-		else if($is_CampaignStatusAllowed) {
+		else if ($is_CampaignStatusAllowed and !empty($return_value['header'])) {
 			$statusPos = count($return_value['header']) - 2; // Last column is for Actions, exclude that. Also the index starts from 0, so reduce one more count.
 			$return_value = $this->add_status_popup($return_value, $statusPos, 'Contacts');
 		}
@@ -372,8 +370,7 @@ class Campaigns extends CRMEntity {
 			}
 		}
 
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>
-							'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 		$query = "SELECT vtiger_leaddetails.*, vtiger_crmentity.crmid,vtiger_leadaddress.phone,vtiger_leadsubdetails.website,
 				CASE when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,
 				vtiger_crmentity.smownerid, vtiger_campaignrelstatus.*
@@ -390,9 +387,9 @@ class Campaigns extends CRMEntity {
 
 		$return_value = GetRelatedList($this_module, $related_module, $other, $query, $button, $returnset);
 
-		if($return_value == null)
+		if ($return_value == null)
 			$return_value = Array();
-		else if($is_CampaignStatusAllowed) {
+		else if ($is_CampaignStatusAllowed and !empty($return_value['header'])) {
 			$statusPos = count($return_value['header']) - 2; // Last column is for Actions, exclude that. Also the index starts from 0, so reduce one more count.
 			$return_value = $this->add_status_popup($return_value, $statusPos, 'Leads');
 		}
@@ -409,32 +406,29 @@ class Campaigns extends CRMEntity {
 	 * @param - $status_column index of the status column in the list.
 	 * returns true on success
 	 */
-	function add_status_popup($related_list, $status_column = 7, $related_module)
-	{
+	function add_status_popup($related_list, $status_column = 7, $related_module) {
 		global $adb;
 		if (empty($this->campaignrelstatus)) {
 			$this->campaignrelstatus = array();
 		}
 		if (count($this->campaignrelstatus)==0) {
 			$result = $adb->query('SELECT * FROM vtiger_campaignrelstatus;');
-			while($row = $adb->fetchByAssoc($result))
-			{
+			while ($row = $adb->fetchByAssoc($result)) {
 				$r = $row;
 				$r['campaignrelstatusi18n'] = getTranslatedString($row['campaignrelstatus'],'Campaigns');
 				$this->campaignrelstatus[$row['campaignrelstatus']] = $r;
 			}
 		}
-		foreach($related_list['entries'] as $key => &$entry)
-		{
-			$popupitemshtml = '';
-			foreach($this->campaignrelstatus as $campaingrelstatus)
-			{
-				$camprelstatus = $campaingrelstatus['campaignrelstatusi18n'];
-				$popupitemshtml .= "<a onmouseover=\"javascript: showBlock('campaignstatus_popup_$key')\" href=\"javascript:updateCampaignRelationStatus('$related_module', '".$this->id."', '$key', '".$campaingrelstatus['campaignrelstatusid']."', '".addslashes($camprelstatus)."');\">$camprelstatus</a><br />";
+		if (isset($related_list['entries'])) {
+			foreach ($related_list['entries'] as $key => &$entry) {
+				$popupitemshtml = '';
+				foreach ($this->campaignrelstatus as $campaingrelstatus) {
+					$camprelstatus = $campaingrelstatus['campaignrelstatusi18n'];
+					$popupitemshtml .= "<a onmouseover=\"javascript: showBlock('campaignstatus_popup_$key')\" href=\"javascript:updateCampaignRelationStatus('$related_module', '".$this->id."', '$key', '".$campaingrelstatus['campaignrelstatusid']."', '".addslashes($camprelstatus)."');\">$camprelstatus</a><br />";
+				}
+				$popuphtml = '<div onmouseover="javascript:clearTimeout(statusPopupTimer);" onmouseout="javascript:closeStatusPopup(\'campaignstatus_popup_'.$key.'\');" style="margin-top: -14px; width: 200px;" id="campaignstatus_popup_'.$key.'" class="calAction"><div style="background-color: #FFFFFF; padding: 8px;">'.$popupitemshtml.'</div></div>';
+				$entry[$status_column] = "<a href=\"javascript: showBlock('campaignstatus_popup_$key');\">[+]</a> <span id='campaignstatus_$key'>".$entry[$status_column]."</span>".$popuphtml;
 			}
-			$popuphtml = '<div onmouseover="javascript:clearTimeout(statusPopupTimer);" onmouseout="javascript:closeStatusPopup(\'campaignstatus_popup_'.$key.'\');" style="margin-top: -14px; width: 200px;" id="campaignstatus_popup_'.$key.'" class="calAction"><div style="background-color: #FFFFFF; padding: 8px;">'.$popupitemshtml.'</div></div>';
-
-			$entry[$status_column] = "<a href=\"javascript: showBlock('campaignstatus_popup_$key');\">[+]</a> <span id='campaignstatus_$key'>".$entry[$status_column]."</span>".$popuphtml;
 		}
 		return $related_list;
 	}
@@ -445,7 +439,7 @@ class Campaigns extends CRMEntity {
 	 * @param - $secmodule secondary module name
 	 * returns the query string formed on fetching the related data for report for secondary module
 	 */
-	function generateReportsSecQuery($module,$secmodule){
+	function generateReportsSecQuery($module,$secmodule) {
 		$query = $this->getRelationQuery($module,$secmodule,"vtiger_campaign","campaignid");
 		$query .=" left join vtiger_crmentity as vtiger_crmentityCampaigns on vtiger_crmentityCampaigns.crmid=vtiger_campaign.campaignid and vtiger_crmentityCampaigns.deleted=0
 				left join vtiger_products as vtiger_productsCampaigns on vtiger_campaign.product_id = vtiger_productsCampaigns.productid

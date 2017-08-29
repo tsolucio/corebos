@@ -4286,15 +4286,15 @@ function getRecordInfoFromID($id){
 }
 
 /**
- * this function accepts an tabiD and returns the tablename, fieldname and fieldlabel for email field
- * @param integer $tabid - the tabid of current module
- * @return string $fields - the array of mail field's tablename, fieldname and fieldlabel
+ * this function accepts a tabiD and returns the tablename, fieldname and fieldlabel of the first email field it finds
+ * @param integer $tabid - the tabid of the module
+ * @return array $fields - array of the email field's tablename, fieldname and fieldlabel or empty if not found
  */
-function getMailFields($tabid){
+function getMailFields($tabid) {
 	global $adb;
 	$fields = array();
-	$result = $adb->pquery("SELECT tablename,fieldlabel,fieldname FROM vtiger_field WHERE tabid=? AND uitype IN (13,104)", array($tabid));
-	if($adb->num_rows($result)>0){
+	$result = $adb->pquery("SELECT tablename,fieldlabel,fieldname FROM vtiger_field WHERE tabid=? AND uitype='13'", array($tabid));
+	if ($adb->num_rows($result)>0) {
 		$tablename = $adb->query_result($result, 0, "tablename");
 		$fieldname = $adb->query_result($result, 0, "fieldname");
 		$fieldlabel = $adb->query_result($result, 0, "fieldlabel");
@@ -4350,15 +4350,15 @@ function getValidDBInsertDateValue($value) {
 		}
 	}
 
-	if (preg_match("/^[0-9]{2,4}[-][0-1]{1,2}?[0-9]{1,2}[-][0-3]{1,2}?[0-9]{1,2}$/", $value) == 0) {
-		return '';
-	}
-
 	list($y,$m,$d) = explode('-',$value);
 	if (strlen($y) == 1) $y = '0'.$y;
 	if (strlen($m) == 1) $m = '0'.$m;
 	if (strlen($d) == 1) $d = '0'.$d;
 	$value = implode('-', array($y,$m,$d));
+
+	if (preg_match("/^[0-9]{2,4}[-][0-3]{1,2}?[0-9]{1,2}[-][0-3]{1,2}?[0-9]{1,2}$/", $value) == 0) {
+		return '';
+	}
 
 	if (strlen($y)<4) {
 		$insert_date = DateTimeField::convertToDBFormat($value);
@@ -4376,11 +4376,11 @@ function getValidDBInsertDateTimeValue($value) {
 	if(count($valueList) == 2) {
 		$dbDateValue = getValidDBInsertDateValue($valueList[0]);
 		$dbTimeValue = $valueList[1];
-		if(!empty($dbTimeValue) && strpos($dbTimeValue, ':') === false) {
+		if (!empty($dbTimeValue) && strpos($dbTimeValue, ':') === false) {
 			$dbTimeValue = $dbTimeValue.':';
 		}
 		$timeValueLength = strlen($dbTimeValue);
-		if(!empty($dbTimeValue) && strrpos($dbTimeValue, ':') == ($timeValueLength-1)) {
+		if (!empty($dbTimeValue) && strrpos($dbTimeValue, ':') == ($timeValueLength-1)) {
 			$dbTimeValue = $dbTimeValue.'00';
 		}
 		try {
@@ -4389,9 +4389,10 @@ function getValidDBInsertDateTimeValue($value) {
 		} catch (Exception $ex) {
 			return '';
 		}
-	} elseif(count($valueList == 1)) {
+	} elseif (count($valueList == 1)) {
 		return getValidDBInsertDateValue($value);
 	}
+	return '';
 }
 
 /** Function to set the PHP memory limit to the specified value, if the memory limit set in the php.ini is less than the specified value

@@ -24,7 +24,7 @@ if (isset($cvid) && $cvid != '') {
 		if(!$updateresult)
 			echo ':#:FAILURE:#:';
 		else 
-			echo ':#:SUCCESS:#:' . urlencode($module) . ':#:';
+			echo ':#:SUCCESS:#:';
 	}
 	else
 	{

@@ -51,6 +51,7 @@ class VTFieldExpressionEvaluater{
 				'ceil' => '__vt_ceil',
 				'floor' => '__vt_floor',
 				'modulo' => '__cb_modulo',
+				'aggregation' => '__cb_aggregation',
 				'getCurrentUserID' => '__getCurrentUserID',
 				'getCurrentUserName' => '__getCurrentUserName',
 				'getCurrentUserField' => '__getCurrentUserField',
@@ -116,6 +117,10 @@ class VTFieldExpressionEvaluater{
 							array_push($params,$value);
 						}
 					}
+				} elseif ($func == '__cb_aggregation') {
+					$params = array_map(array($this, 'exec'), $expr->getParams());
+					if (count($params)==3) $params[] = ''; // no conditions
+					$params[] = $this->env;
 				} else {
 					$params = array_map(array($this, 'exec'), $expr->getParams());
 				}

@@ -67,13 +67,13 @@ class VTCreateEntityTask extends VTTask {
 				$fieldValueType = $fieldInfo['valuetype'];
 				$fieldValue = trim($fieldInfo['value']);
 
-				if ($fieldValueType == 'fieldname') {
+				if ($fieldValueType == 'fieldname' && !preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', $fieldValue)) {
 					if ($referenceModule == $entityType) {
 						$fieldValue = $newEntity->column_fields[$fieldValue];
 					} else {
 						$fieldValue = $focus->column_fields[$fieldValue];
 					}
-				} elseif ($fieldValueType == 'expression') {
+				} elseif ($fieldValueType == 'expression' || ($fieldValueType == 'fieldname' && preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', $fieldValue))) {
 					$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($fieldValue)));
 					$expression = $parser->expression();
 					$exprEvaluater = new VTFieldExpressionEvaluater($expression);

@@ -573,42 +573,35 @@ public function setgoogleaccessparams($userid){
 		return $return_data;
 	}
 
-    function SaveView($Type_Ids, $Users_Ids, $all_users, $Load_Event_Status, $Load_Task_Status, $Load_Task_Priority) {
-        global $adb,$current_user;
-        
-        $Save = array("1" => $Type_Ids, "2" => $Users_Ids, "3" => $Load_Event_Status, "4" => $Load_Task_Status, "5" => $Load_Task_Priority);
-        
-        foreach ($Save AS $type => $Save_Array) {
-            if (($type == 2 && $all_users) || $type != 2) {
-                $d_sql = "DELETE FROM its4you_calendar4you_view WHERE userid = ? AND type = ?";
-                $adb->pquery($d_sql,array($current_user->id,$type));
-        
-                if (count($Save_Array) > 0) {
-                    $i_sql = "INSERT its4you_calendar4you_view (userid,type,parent) VALUES (?,?,?)";
-                    foreach ($Save_Array AS $parent) {
-                        if ($parent !="") $adb->pquery($i_sql,array($current_user->id,$type,$parent));
-                    }
-                }
-            }
-        }
+	function SaveView($Type_Ids, $Users_Ids, $all_users, $Load_Event_Status, $Load_Task_Status, $Load_Task_Priority) {
+		global $adb,$current_user;
+		$Save = array('1' => $Type_Ids, '2' => $Users_Ids, '3' => $Load_Event_Status, '4' => $Load_Task_Status, '5' => $Load_Task_Priority);
+		foreach ($Save AS $type => $Save_Array) {
+			if (($type == 2 && $all_users) || $type != 2) {
+				$d_sql = 'DELETE FROM its4you_calendar4you_view WHERE userid = ? AND type = ?';
+				$adb->pquery($d_sql,array($current_user->id,$type));
+				if (count($Save_Array) > 0) {
+					$i_sql = 'INSERT its4you_calendar4you_view (userid,type,parent) VALUES (?,?,?)';
+					foreach ($Save_Array AS $parent) {
+						if ($parent != '') $adb->pquery($i_sql,array($current_user->id,$type,$parent));
+					}
+				}
+			}
+		}
+	}
 
-    }
-
-    function GetView() {
-        global $adb,$current_user;
-        
-        $View = array();
-        $sql = "SELECT * FROM its4you_calendar4you_view WHERE userid = ?";
-        $result = $adb->pquery($sql,array($current_user->id));
-        $num_rows = $adb->num_rows($result);
-    
-        if ($num_rows > 0) {
-            while($row = $adb->fetchByAssoc($result)) {
-            	$this->View[$row["type"]][$row["parent"]] = true;
-            }
-        }
-
-        return $this->View;
-    }
+	function GetView() {
+		global $adb,$current_user;
+		$View = array();
+		$sql = 'SELECT * FROM its4you_calendar4you_view WHERE userid = ?';
+		$result = $adb->pquery($sql,array($current_user->id));
+		$num_rows = $adb->num_rows($result);
+		if ($num_rows > 0) {
+			while ($row = $adb->fetchByAssoc($result)) {
+				$this->View[$row['type']][$row['parent']] = true;
+			}
+		}
+		return $this->View;
+	}
 }
 ?>

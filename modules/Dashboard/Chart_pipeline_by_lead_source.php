@@ -44,7 +44,7 @@ elseif (isset($_REQUEST['pbls_lead_sources']) && count($_REQUEST['pbls_lead_sour
 	$log->debug($_SESSION['pbls_lead_sources']);
 }
 
-//set $datax using selected sales stage keys 
+//set $datax using selected sales stage keys
 if (count($tempx) > 0) {
 	foreach ($tempx as $key) {
 		$datax[$key] = $comboFieldArray['lead_source_dom'][$key];
@@ -100,14 +100,18 @@ if (isset($_REQUEST['pbls_edit']) && $_REQUEST['pbls_edit'] == 'true') {
 <table cellpadding="2" border="0"><tbody>
 <tr>
 <td valign='top' nowrap><?php echo $current_module_strings['LBL_LEAD_SOURCES'];?></td>
-<td valign='top'><select name="pbls_lead_sources[]" multiple size='3'><?php echo get_select_options_with_id($comboFieldArray['lead_source_dom'],$_SESSION['pbls_lead_sources']); ?></select></td>
+<td valign='top'><select name="pbls_lead_sources[]" multiple size='3'><?php echo get_select_options_with_id($comboFieldArray['lead_source_dom'],(isset($_SESSION['pbls_lead_sources']) ? $_SESSION['pbls_lead_sources'] : '')); ?></select></td>
 </tr><tr>
 <td valign='top' nowrap><?php echo $current_module_strings['LBL_USERS'];?></td>
 <?php if($is_admin==false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid('Potentials')] == 3 or $defaultOrgSharingPermission[getTabid('Potentials')] == 0)) { ?>
-	<td valign='top'><select name="pbls_ids[]" multiple size='3'><?php echo get_select_options_with_id(get_user_array(FALSE, "Active", $current_user->id,'private'),$_SESSION['pbls_ids']); ?></select></td>
+	<td valign='top'><select name="pbls_ids[]" multiple size='3'><?php
+	$usrarray = get_user_array(FALSE, 'Active', $current_user->id, 'private');
+	echo get_select_options_with_id($usrarray,(isset($_SESSION['pbls_ids']) ? $_SESSION['pbls_ids'] : '')); ?></select></td>
 <?php } else { ?>
-	<td valign='top'><select name="pbls_ids[]" multiple size='3'><?php echo get_select_options_with_id(get_user_array(false, "Active" ,$current_user->id),$_SESSION['pbls_ids']); ?></select></td>
-<?php } ?>		
+	<td valign='top'><select name="pbls_ids[]" multiple size='3'><?php
+	$usrarray = get_user_array(false, 'Active' ,$current_user->id);
+	echo get_select_options_with_id($usrarray,(isset($_SESSION['pbls_ids']) ? $_SESSION['pbls_ids'] : '')); ?></select></td>
+<?php } ?>
 </tr><tr>
 <td align="right"><br /> <input class="button" type="submit" title="<?php echo $app_strings['LBL_SELECT_BUTTON_TITLE']; ?>" accessKey="<?php echo $app_strings['LBL_SELECT_BUTTON_KEY']; ?>" value="<?php echo $app_strings['LBL_SELECT_BUTTON_LABEL']?>" /></td>
 </tr></table>

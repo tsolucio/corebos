@@ -125,7 +125,7 @@ if (!$load_ch || !empty($Ch_Views["1"]["task"])) $task_checked = true; else $tas
 $Activity_Types = $Module_Types = array();
 
 $ActTypes = getActTypesForCalendar();
-if (!$load_ch || $Ch_Views["1"]["invite"]) $invite_checked = true; else $invite_checked = false;
+if (!$load_ch || !empty($Ch_Views['1']['invite'])) $invite_checked = true; else $invite_checked = false;
 
 foreach ($ActTypes AS $act_id => $act_name) {
 	if (!$load_ch || !empty($Ch_Views["1"][$act_id])) $event_checked = true; else $event_checked = false;
@@ -302,6 +302,7 @@ $smarty->assign('USER_LANGUAGE', substr($current_language, 0, 2));
 $dat_fmt = str_replace("mm","MM",$dat_fmt);
 $smarty->assign('USER_DATE_FORMAT', $dat_fmt);
 $smarty->assign('Calendar_Slot_Minutes', "00:".GlobalVariable::getVariable('Calendar_Slot_Minutes', 15).":00");
+$smarty->assign('Calendar_Slot_Event_Overlap', (GlobalVariable::getVariable('Calendar_Slot_Event_Overlap', 1) ? 'true' : 'false'));
 $smarty->assign('Calendar_Modules_Panel_Visible', GlobalVariable::getVariable('Calendar_Modules_Panel_Visible', 1));
 
 $smarty->display('modules/Calendar4You/CalendarView.tpl');

@@ -29,7 +29,7 @@ if (!empty($fldname) and !empty($modname)) {
 		$field = Vtiger_Field::getInstance($fldname,$mod);
 		if ($field) {
 			// Workflow Conditions
-			$crs = $adb->pquery("SELECT workflow_id,summary
+			$crs = $adb->query("SELECT workflow_id,summary
 				FROM `com_vtiger_workflows`
 				WHERE test like '%$fldname%'");
 			if ($crs and $adb->num_rows($crs)>0) {
@@ -42,7 +42,7 @@ if (!empty($fldname) and !empty($modname)) {
 				echo "Field not found in workflow condtions<br>";
 			}
 			// Workflow Tasks
-			$crs = $adb->pquery("SELECT workflow_id,task_id,summary
+			$crs = $adb->query("SELECT workflow_id,task_id,summary
 				FROM `com_vtiger_workflowtasks`
 				WHERE task like '%$fldname%'");
 			if ($crs and $adb->num_rows($crs)>0) {
@@ -55,7 +55,7 @@ if (!empty($fldname) and !empty($modname)) {
 				echo "Field not found in workflow tasks<br>";
 			}
 			// Custom View Columns
-			$crs = $adb->pquery("SELECT vtiger_customview.viewname
+			$crs = $adb->query("SELECT vtiger_customview.viewname
 				FROM `vtiger_cvcolumnlist`
 				INNER JOIN vtiger_customview on vtiger_customview.cvid=vtiger_cvcolumnlist.cvid
 				WHERE columnname like '%$fldname%'");
@@ -68,7 +68,7 @@ if (!empty($fldname) and !empty($modname)) {
 				echo "Field not found in custom view columns<br>";
 			}
 			// Custom View Conditions
-			$crs = $adb->pquery("SELECT vtiger_customview.viewname
+			$crs = $adb->query("SELECT vtiger_customview.viewname
 				FROM `vtiger_cvadvfilter`
 				INNER JOIN vtiger_customview on vtiger_customview.cvid=vtiger_cvadvfilter.cvid
 				WHERE columnname like '%$fldname%'");
@@ -81,7 +81,7 @@ if (!empty($fldname) and !empty($modname)) {
 				echo "Field not found in custom view conditions<br>";
 			}
 			// Custom View Date Filters
-			$crs = $adb->pquery("SELECT vtiger_customview.viewname
+			$crs = $adb->query("SELECT vtiger_customview.viewname
 				FROM `vtiger_cvstdfilter`
 				INNER JOIN vtiger_customview on vtiger_customview.cvid=vtiger_cvstdfilter.cvid
 				WHERE columnname like '%$fldname%'");
@@ -94,7 +94,7 @@ if (!empty($fldname) and !empty($modname)) {
 				echo "Field not found in custom view date conditions<br>";
 			}
 			// Email Templates
-			$crs = $adb->pquery("SELECT templateid,templatename
+			$crs = $adb->query("SELECT templateid,templatename
 				FROM `vtiger_emailtemplates`
 				WHERE subject like '%$fldname%' or body like '%$fldname%'");
 			if ($crs and $adb->num_rows($crs)>0) {
@@ -105,20 +105,8 @@ if (!empty($fldname) and !empty($modname)) {
 			} else {
 				echo "Field not found in Email Templates<br>";
 			}
-			// Field Formulas
-			$crs = $adb->pquery("SELECT expressionid
-				FROM `vtiger_fieldformulas`
-				WHERE expression_engine like '%$fldname%'");
-			if ($crs and $adb->num_rows($crs)>0) {
-				while ($fnd=$adb->fetch_array($crs)) {
-					echo "Field found in Field Formula: ".$fnd['expressionid'];
-					echo "<br>";
-				}
-			} else {
-				echo "Field not found in Field Formulas<br>";
-			}
 			// Report Fields
-			$crs = $adb->pquery("SELECT vtiger_report.reportid,vtiger_report.reportname
+			$crs = $adb->query("SELECT vtiger_report.reportid,vtiger_report.reportname
 				FROM `vtiger_selectcolumn`
 				INNER JOIN vtiger_report on vtiger_report.queryid=vtiger_selectcolumn.queryid
 				WHERE columnname like '%$fldname%'");
@@ -131,7 +119,7 @@ if (!empty($fldname) and !empty($modname)) {
 				echo "Field not found in Report Columns<br>";
 			}
 			// Report Date Filters
-			$crs = $adb->pquery("SELECT vtiger_report.reportid,vtiger_report.reportname
+			$crs = $adb->query("SELECT vtiger_report.reportid,vtiger_report.reportname
 				FROM `vtiger_reportdatefilter`
 				INNER JOIN vtiger_report on vtiger_report.reportid=vtiger_reportdatefilter.datefilterid
 				WHERE datecolumnname like '%$fldname%'");
@@ -144,7 +132,7 @@ if (!empty($fldname) and !empty($modname)) {
 				echo "Field not found in Report Date Filters<br>";
 			}
 			// Report Group By
-			$crs = $adb->pquery("SELECT vtiger_report.reportid,vtiger_report.reportname
+			$crs = $adb->query("SELECT vtiger_report.reportid,vtiger_report.reportname
 				FROM `vtiger_reportgroupbycolumn`
 				INNER JOIN vtiger_report on vtiger_report.reportid=vtiger_reportgroupbycolumn.reportid
 				WHERE sortcolname like '%$fldname%'");
@@ -157,7 +145,7 @@ if (!empty($fldname) and !empty($modname)) {
 				echo "Field not found in Report Group By<br>";
 			}
 			// Report Sort By
-			$crs = $adb->pquery("SELECT vtiger_report.reportid,vtiger_report.reportname
+			$crs = $adb->query("SELECT vtiger_report.reportid,vtiger_report.reportname
 				FROM `vtiger_reportsortcol`
 				INNER JOIN vtiger_report on vtiger_report.reportid=vtiger_reportsortcol.reportid
 				WHERE columnname like '%$fldname%'");
@@ -170,7 +158,7 @@ if (!empty($fldname) and !empty($modname)) {
 				echo "Field not found in Report Sort By<br>";
 			}
 			// Report Summary
-			$crs = $adb->pquery("SELECT vtiger_report.reportid,vtiger_report.reportname
+			$crs = $adb->query("SELECT vtiger_report.reportid,vtiger_report.reportname
 				FROM `vtiger_reportsummary`
 				INNER JOIN vtiger_report on vtiger_report.reportid=vtiger_reportsummary.reportsummaryid
 				WHERE columnname like '%$fldname%'");
@@ -206,7 +194,6 @@ if (!empty($fldname) and !empty($modname)) {
 				} else {
 					echo "Field not found in Lead Conversion Mapping<br>";
 				}
-				
 			}
 		} else {
 			echo "<br><b>Field $fldname could not be found on module $modname!</b><br>";

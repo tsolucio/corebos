@@ -963,5 +963,24 @@ class cbCalendar extends CRMEntity {
 		}
 		return $atype;
 	}
+
+	/**
+	 * this function sets the status flag of activity to true or false depending on the status passed to it
+	 * @param string $status - the status of the activity flag to set
+	 * @return:: true if successful; false otherwise
+	 */
+	function setActivityReminder($status){
+		global $adb;
+		if ($status == "on") {
+			$flag = 0;
+		} elseif ($status == "off") {
+			$flag = 1;
+		} else {
+			return false;
+		}
+		$sql = 'update vtiger_activity_reminder_popup set status=1 where recordid=?';
+		$adb->pquery($sql, array($this->id));
+		return true;
+	}
 }
 ?>

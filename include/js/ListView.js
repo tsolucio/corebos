@@ -615,10 +615,8 @@ function ChangeCustomViewStatus(viewid, now_status, changed_status, module, pare
 		if (responseVal.indexOf(':#:FAILURE') > -1) {
 			alert('Failed');
 		} else if (responseVal.indexOf(':#:SUCCESS') > -1) {
-			var values = responseVal.split(':#:');
-			var module_name = values[2];
 			var customview_ele = document.getElementById('viewname');
-			showDefaultCustomView(customview_ele, module_name, parenttab);
+			showDefaultCustomView(customview_ele, module, parenttab);
 		} else {
 			document.getElementById('ListViewContents').innerHTML = responseVal;
 		}

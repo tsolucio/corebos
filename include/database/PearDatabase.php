@@ -1080,6 +1080,7 @@ class PearDatabase{
 	//To get a function name with respect to the database type which escapes strings in given text
 	function sql_escape_string($str)
 	{
+		if (is_null($str)) return 'NULL';
 		$result_data = $this->database->qstr($str);
 		$result_data = substr($result_data, 1, -1);
 		return $result_data;

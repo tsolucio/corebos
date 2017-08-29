@@ -100,7 +100,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$options[$currency_id] = array($pickListValue => $chk_val);
 		}
 		$label_fld ["options"] = $options;
-	} elseif ($uitype == 13 || $uitype == 104) {
+	} elseif ($uitype == 13) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$label_fld[] = $col_fields[$fieldname];
 	} elseif ($uitype == 16) {
@@ -172,7 +172,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			}
 		}
 		$label_fld ["options"] = $options;
-	} elseif ($uitype == 1024) {
+	} elseif ($uitype == 1024 || $uitype == 1025) {
 		require_once 'modules/PickList/PickListUtils.php';
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$content = getPicklistValuesSpecialUitypes($uitype,$fieldname,$col_fields[$fieldname],'DetailView');

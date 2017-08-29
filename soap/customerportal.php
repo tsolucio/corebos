@@ -361,7 +361,7 @@ class Vtiger_Soap_CustomerPortal {
 	/** Preference value caching */
 	static $_prefs_cache = array();
 	static function lookupPrefValue($key) {
-		if(self::$_prefs_cache[$key]) {
+		if (isset(self::$_prefs_cache[$key])) {
 			return self::$_prefs_cache[$key];
 		}
 		return false;
@@ -654,13 +654,16 @@ function save_faq_comment($input_array)
 
 
 function get_tickets_list($input_array) {
-
 	global $adb,$log, $current_user;
 	//To avoid SQL injection we are type casting as well as bound the id variable.
 	$id = (int) vtlib_purify($input_array['id']);
 
 	$only_mine = $input_array['onlymine'];
-	$where = $adb->sql_escape_string($input_array['where']);
+	if (empty($input_array['where'])) {
+		$where = '';
+	} else {
+		$where = $adb->sql_escape_string($input_array['where']);
+	}
 	$match = $input_array['match'];
 	$sessionid = $input_array['sessionid'];
 
@@ -740,11 +743,9 @@ function get_tickets_list($input_array) {
 	}
 	$params = array($entity_ids_list);
 
-
 	$TicketsfieldVisibilityByColumn = array();
 	foreach($fields_list as $fieldlabel=> $fieldname) {
-		$TicketsfieldVisibilityByColumn[$fieldname] =
-			getColumnVisibilityPermission($current_user->id,$fieldname,'HelpDesk');
+		$TicketsfieldVisibilityByColumn[$fieldname] = getColumnVisibilityPermission($current_user->id,$fieldname,'HelpDesk');
 	}
 
 	$res = $adb->pquery($query,$params);
@@ -1009,7 +1010,6 @@ function authenticate_user($username,$password,$version,$login = 'true')
 
 		$list[0]['sessionid'] = $sessionid;
 	}
-
 	return $list;
 }
 

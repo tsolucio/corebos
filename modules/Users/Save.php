@@ -96,7 +96,6 @@ if(isset($_REQUEST['changepassword']) && $_REQUEST['changepassword'] == 'true') 
 	}
 }
 
-//save user Image
 if(empty($_REQUEST['changepassword']) || $_REQUEST['changepassword'] != 'true')
 {
 	if(strtolower($current_user->is_admin) == 'off' && $current_user->id != $focus->id)
@@ -131,20 +130,8 @@ if(empty($_REQUEST['changepassword']) || $_REQUEST['changepassword'] != 'true')
 
 	$return_id = $focus->id;
 
-	if (isset($_POST['user_name']) && isset($_POST['new_password'])) {
-		$new_pass = $_POST['new_password'];
-		$new_passwd = $_POST['new_password'];
-		$new_pass = md5($new_pass);
-		$uname = $_POST['user_name'];
-		if (!$focus->change_password($_POST['confirm_new_password'], $_POST['new_password'])) {
-			header("Location: index.php?action=DetailView&module=Users&record=".$focus->id."&error_string=".urlencode($focus->error_string));
-			exit;
-		}
-	}
-
-	if(isset($focus->id) && $focus->id != '')
-	{
-		if(isset($_POST['group_name']) && $_POST['group_name'] != '') {
+	if (isset($focus->id) && $focus->id != '') {
+		if (isset($_POST['group_name']) && $_POST['group_name'] != '') {
 			updateUsers2GroupMapping($_POST['group_name'],$focus->id);
 		}
 	}

@@ -304,8 +304,7 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 		}
 	);
 	tagValue = get_converted_html(tagValue);
-	if(uitype == '13' || uitype == '104')
-	{
+	if (uitype == '13') {
 		var temp_fieldname = 'internal_mailer_'+fieldName;
 		if(document.getElementById(temp_fieldname))
 		{

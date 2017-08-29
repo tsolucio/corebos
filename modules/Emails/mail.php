@@ -291,7 +291,7 @@ function setMailerProperties($mail,$subject,$contents,$from_email,$from_name,$to
   */
 function setMailServerProperties($mail)
 {
-	global $adb;
+	global $adb,$default_charset;
 	$adb->println("Inside the function setMailServerProperties");
 
 	$res = $adb->pquery("select * from vtiger_systems where server_type=?", array('email'));
@@ -306,8 +306,7 @@ function setMailServerProperties($mail)
 	if(isset($_REQUEST['server_password']))
 		$password = $_REQUEST['server_password'];
 	else
-		$password = $adb->query_result($res,0,'server_password');
-	// Prasad: First time read smtp_auth from the request
+		$password = html_entity_decode($adb->query_result($res,0,'server_password'),ENT_QUOTES,$default_charset);
 	if(isset($_REQUEST['smtp_auth'])) {
 		$smtp_auth = $_REQUEST['smtp_auth'];
 	} else {

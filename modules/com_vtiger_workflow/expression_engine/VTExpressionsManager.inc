@@ -28,11 +28,31 @@ class VTExpressionsManager{
 
 	function fields($moduleName){
 		global $current_user;
+		$mainhandler = vtws_getModuleHandlerFromName($moduleName, $current_user);
+		$mainmeta = $mainhandler->getMeta();
+		$referenceFieldInfoList = $mainmeta->getReferenceFieldDetails();
+		$reffields = array_keys($referenceFieldInfoList);
 		$result = vtws_describe($moduleName, $current_user);
 		$fields = $result['fields'];
-		$arr = array();
+		$arr = $reflabels = array();
 		foreach($fields as $field){
 			$arr[$field['name']] = $field['label'];
+			if (in_array($field['name'],$reffields)) {
+				$reflabels[$field['name']] = $field['label'];
+			}
+		}
+		foreach ($referenceFieldInfoList as $mainfield => $relmodules) {
+			$mainfieldi18n = getTranslatedCurrencyString($reflabels[$mainfield],$moduleName);
+			foreach ($relmodules as $relmodule) {
+				$relmodulei18n = getTranslatedCurrencyString($relmodule,$relmodule);
+				$relhandler = vtws_getModuleHandlerFromName($relmodule, $current_user);
+				$relmeta = $relhandler->getMeta();
+				$relfields = $relmeta->getModuleFields();
+				foreach ($relfields as $relfield => $wsfld) {
+					$relfieldi18n = getTranslatedCurrencyString($wsfld->getFieldLabelKey(),$relmodule);
+					$arr["$($mainfield : ($relmodule) $relfield)"] = "($mainfieldi18n : ($relmodulei18n) $relfieldi18n)";
+				}
+			}
 		}
 		return $arr;
 	}
@@ -45,6 +65,7 @@ class VTExpressionsManager{
 			'next_date' => "get_nextdate(startDate,days,holidays,include_weekend)", 'next_date_laborable' => "get_nextdatelaborable(startDate,days,holidays,saturday_laborable)",
 			'substring' => 'substring(stringfield,start,end)', 'uppercase'=>'uppercase(stringfield)', 'lowercase'=>'lowercase(stringfield)', 'uppercasefirst'=>'uppercasefirst(stringfield)',
 			'uppercasewords'=>'uppercasewords(stringfield)', 'round' => 'round(numericfield,decimals)', 'ceil' => 'ceil(numericfield)', 'floor' => 'floor(numericfield)','modulo' => 'modulo(numericfield)',
+			'aggregation'=>'aggregation(operation,RelatedModule,relatedFieldToAggregate,conditions)',
 			'getCurrentUserID' => 'getCurrentUserID()','getCurrentUserName' => 'getCurrentUserName({full})','getCurrentUserField' => 'getCurrentUserField(fieldname)',
 			'getLatitude' => 'getLatitude(address)', 'getLongitude' => 'getLongitude(address)',
 			'getGEODistance' => 'getGEODistance(address_from,address_to)',

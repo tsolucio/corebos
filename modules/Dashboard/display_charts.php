@@ -84,7 +84,7 @@ $cont_checkQ = " and vtiger_crmentityContacts.crmid in(0)";
 if(count($cont_Array) > 0)
 	$cont_checkQ = " and vtiger_crmentityContacts.crmid in(".implode(", ", $cont_Array).")";
 
-$campaign_query="select vtiger_campaign.*,vtiger_crmentity.* from vtiger_campaign inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_campaign.campaignid inner join vtiger_campaigncontrel on vtiger_campaigncontrel.campaignid=vtiger_campaign.campaignid left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid left join vtiger_users on vtiger_crmentity.smownerid=vtiger_users.id left join vtiger_contactdetails on vtiger_contactdetails.contactid = vtiger_campaigncontrel.contactid left join vtiger_crmentity as vtiger_crmentityContacts on vtiger_crmentityContacts.crmid = vtiger_contactdetails.contactid where vtiger_campaigncontrel.campaignid=vtiger_campaign.campaignid and vtiger_crmentity.deleted=0 and vtiger_crmentityContacts.deleted=0".$cont_checkQ;
+$campaign_query="select vtiger_campaign.*,vtiger_crmentity.* from vtiger_campaign inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_campaign.campaignid inner join vtiger_campaigncontrel on vtiger_campaigncontrel.campaignid=vtiger_campaign.campaignid left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid left join vtiger_users on vtiger_crmentity.smownerid=vtiger_users.id left join vtiger_contactdetails on vtiger_contactdetails.contactid = vtiger_campaigncontrel.contactid left join vtiger_crmentity as vtiger_crmentityContacts on vtiger_crmentityContacts.crmid = vtiger_contactdetails.contactid where vtiger_crmentity.deleted=0 and vtiger_crmentityContacts.deleted=0".$cont_checkQ;
 
 //Query for tickets by account
 $tickets_by_account="select vtiger_troubletickets.*, vtiger_groups.groupname AS ticketgroupname, vtiger_crmentity.*, vtiger_account.* from vtiger_troubletickets inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_troubletickets.ticketid inner join vtiger_account on vtiger_account.accountid=vtiger_troubletickets.parent_id left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid left join vtiger_users on vtiger_crmentity.smownerid=vtiger_users.id where vtiger_crmentity.deleted=0";
@@ -513,7 +513,7 @@ require 'modules/Dashboard/graphdefinitions.php';
 			echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query,1100,650);
 		}
 		//Charts for Products by PO
-		elseif (($is_admin || $profileTabsPermission[getTabid("Products")] == 0) && ($type == "productbypo") && $profileTabsPermission[getTabid("PurchaseOrder")] == 0)
+		elseif (($is_admin || $profileTabsPermission[getTabid("Products")] == 0) && ($type == "productbypo") && ($is_admin || $profileTabsPermission[getTabid("PurchaseOrder")] == 0))
 		{
 			$graph_by="purchaseorderid";
 			$graph_title=$mod_strings['productbypo'];
@@ -523,7 +523,7 @@ require 'modules/Dashboard/graphdefinitions.php';
 			echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query,1100,650);
 		}
 		//Charts for Products by Quotes
-		elseif (($is_admin || $profileTabsPermission[getTabid("Products")] == 0) && ($type == "productbyquotes") && $profileTabsPermission[getTabid("Quotes")] == 0)
+		elseif (($is_admin || $profileTabsPermission[getTabid("Products")] == 0) && ($type == "productbyquotes") && ($is_admin || $profileTabsPermission[getTabid("Quotes")] == 0))
 		{
 			$graph_by="quoteid";
 			$graph_title=$mod_strings['productbyquotes'];
@@ -533,7 +533,7 @@ require 'modules/Dashboard/graphdefinitions.php';
 			echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query,1100,650);
 		}
 		//Charts for Products by Invoice
-		elseif (($is_admin || $profileTabsPermission[getTabid("Products")] == 0) && ($type == "productbyinvoice") && $profileTabsPermission[getTabid("Invoice")] == 0)
+		elseif (($is_admin || $profileTabsPermission[getTabid("Products")] == 0) && ($type == "productbyinvoice") && ($is_admin || $profileTabsPermission[getTabid("Invoice")] == 0))
 		{
 			$graph_by="invoiceid";
 			$graph_title=$mod_strings['productbyinvoice'];
@@ -687,7 +687,7 @@ require 'modules/Dashboard/graphdefinitions.php';
 			echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query,1100,650);
 		}
 		//Campaigns by Contact
-		elseif (($is_admin || $profileTabsPermission[getTabid("Contacts")] == 0) && ($type == "contactbycampaign") && $profileTabsPermission[getTabid("Campaigns")] == 0)
+		elseif (($is_admin || $profileTabsPermission[getTabid("Contacts")] == 0) && ($type == "contactbycampaign") && ($is_admin || $profileTabsPermission[getTabid("Campaigns")] == 0))
 		{
 			$graph_by="campaignid";
 			$graph_title=$mod_strings['contactbycampaign'];
