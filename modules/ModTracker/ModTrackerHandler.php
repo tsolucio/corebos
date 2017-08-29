@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once dirname(__FILE__) .'/ModTracker.php';
+require_once __DIR__ .'/ModTracker.php';
 require_once 'data/VTEntityDelta.php';
 
 class ModTrackerHandler extends VTEventHandler {

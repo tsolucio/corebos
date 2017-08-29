@@ -8,7 +8,7 @@
  * All Rights Reserved.
  * modified by crm-now  www.crm-now.com
  ************************************************************************************/
-include_once dirname(__FILE__) . '/../ISMSProvider.php';
+include_once __DIR__ . '/../ISMSProvider.php';
 include_once 'vtlib/Vtiger/Net/Client.php';
 
 class Nexmo implements ISMSProvider {

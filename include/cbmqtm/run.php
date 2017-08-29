@@ -5,7 +5,7 @@ ini_set('display_errors', 0);
 // Define a simple Auto Loader:
 // Add the current application and the PHP Simple Daemon ./Core library to the existing include path
 // Then set an __autoload function that uses Zend Framework naming conventions.
-define("BASE_PATH", dirname(__FILE__));
+define("BASE_PATH", __DIR__);
 set_include_path(implode(PATH_SEPARATOR, array(
     realpath(BASE_PATH),
     realpath(BASE_PATH . '/Core'),

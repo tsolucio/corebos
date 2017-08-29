@@ -8,8 +8,8 @@
  * All Rights Reserved.
  ************************************************************************************/
 include_once 'modules/Settings/MailScanner/core/MailRecord.php';
-include_once dirname(__FILE__) . '/../helpers/Utils.php';
-require_once dirname(__FILE__).'/../../config.inc.php';
+include_once __DIR__ . '/../helpers/Utils.php';
+require_once __DIR__ .'/../../config.inc.php';
 
 class MailManager_Model_Message extends Vtiger_MailRecord {
 

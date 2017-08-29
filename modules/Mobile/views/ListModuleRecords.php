@@ -8,9 +8,9 @@
  * All Rights Reserved.
  * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
-include_once dirname(__FILE__) . '/../api/ws/ListModuleRecords.php';
-include_once dirname(__FILE__) . '/../api/ws/DeleteRecords.php';
-include_once dirname(__FILE__) . '/../views/models/SearchFilter.php';
+include_once __DIR__ . '/../api/ws/ListModuleRecords.php';
+include_once __DIR__ . '/../api/ws/DeleteRecords.php';
+include_once __DIR__ . '/../views/models/SearchFilter.php';
 
 class crmtogo_UI_ListModuleRecords extends crmtogo_WS_ListModuleRecords {
 

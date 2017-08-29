@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-include_once dirname(__FILE__).'/Folder.php';
+include_once __DIR__ .'/Folder.php';
 
 class MailManager_Model_DraftFolder extends MailManager_Model_Folder {
 

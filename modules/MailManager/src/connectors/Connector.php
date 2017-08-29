@@ -8,8 +8,8 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-include_once dirname(__FILE__) . '/../models/Folder.php';
-include_once dirname(__FILE__) . '/../models/Message.php';
+include_once __DIR__ . '/../models/Folder.php';
+include_once __DIR__ . '/../models/Message.php';
 
 class MailManager_Connector {
 

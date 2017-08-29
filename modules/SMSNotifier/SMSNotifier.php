@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-include_once dirname(__FILE__) . '/SMSNotifierBase.php';
-include_once dirname(__FILE__) . '/ext/SMSProvider.php';
+include_once __DIR__ . '/SMSNotifierBase.php';
+include_once __DIR__ . '/ext/SMSProvider.php';
 
 class SMSNotifier extends SMSNotifierBase {
 

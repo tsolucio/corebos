@@ -8,13 +8,13 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-include_once dirname(__FILE__) . '/../helpers/Utils.php';
+include_once __DIR__ . '/../helpers/Utils.php';
 
-include_once dirname(__FILE__) . '/../helpers/Request.php';
-include_once dirname(__FILE__) . '/../helpers/Response.php';
-include_once dirname(__FILE__) . '/../viewers/Viewer.php';
-include_once dirname(__FILE__) . '/../models/Mailbox.php';
-include_once dirname(__FILE__) . '/DraftController.php';
+include_once __DIR__ . '/../helpers/Request.php';
+include_once __DIR__ . '/../helpers/Response.php';
+include_once __DIR__ . '/../viewers/Viewer.php';
+include_once __DIR__ . '/../models/Mailbox.php';
+include_once __DIR__ . '/DraftController.php';
 
 /**
  * Abstract Mail Manager Controller

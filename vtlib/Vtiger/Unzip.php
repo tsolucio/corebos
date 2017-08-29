@@ -62,7 +62,7 @@ class Vtiger_Unzip {
 		$maintainStructure = true;
 
 		if($targetDir === false)
-			$targetDir = dirname(__FILE__)."/";
+			$targetDir = __DIR__."/";
 
 		if($renamePaths === false) $renamePaths = Array();
 
@@ -187,7 +187,7 @@ class Vtiger_Unzip {
 
 	public function unzipAll($targetDir=false, $baseDir='', $maintainStructure=true, $applyChmod=0775) {
 		if($targetDir === false)
-			$targetDir = dirname(__FILE__).'/';
+			$targetDir = __DIR__.'/';
 		$ret = $this->zipa->extractTo($targetDir);
 		return $ret;
 	}

@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 include_once 'include/Webservices/Query.php';
-include_once dirname(__FILE__) . '/Filter.php';
+include_once __DIR__ . '/Filter.php';
 	
 class crmtogo_WS_SearchFilterModel extends crmtogo_WS_FilterModel {
 	protected $criterias;
