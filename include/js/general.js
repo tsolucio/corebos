@@ -1122,16 +1122,17 @@ function doformValidation(edit_type) {
 		}
 		else
 		{
-			if(getObj('portal') != null && getObj('portal').checked && getObj('portal_mass_edit_check').checked && (getObj('email') == null || trim(getObj('email').value) == '' || getObj('email_mass_edit_check').checked==false))
-			{
-				alert(alert_arr.PORTAL_PROVIDE_EMAILID);
-				return false;
-			}
-			if((getObj('email') != null && trim(getObj('email').value) == '' && getObj('email_mass_edit_check').checked) && !(getObj('portal').checked==false && getObj('portal_mass_edit_check').checked))
-			{
-				alert(alert_arr.EMAIL_CHECK_MSG);
-				return false;
-			}
+// This checks mass edit mode, but it doesn't make much sense to obligate this in mass edit mode
+//			if(getObj('portal') != null && getObj('portal').checked && getObj('portal_mass_edit_check').checked && (getObj('email') == null || trim(getObj('email').value) == '' || getObj('email_mass_edit_check').checked==false))
+//			{
+//				alert(alert_arr.PORTAL_PROVIDE_EMAILID);
+//				return false;
+//			}
+//			if((getObj('email') != null && trim(getObj('email').value) == '' && getObj('email_mass_edit_check').checked) && !(getObj('portal').checked==false && getObj('portal_mass_edit_check').checked))
+//			{
+//				alert(alert_arr.EMAIL_CHECK_MSG);
+//				return false;
+//			}
 		}
 	}
 	if(gVTModule == 'SalesOrder') {
