@@ -233,10 +233,10 @@ class CRMEntity {
 				$tblname = $adb->query_result($result, 0, 'tablename');
 				$colname = $adb->query_result($result, 0, 'columnname');
 				$fldname = $fileindex;
-				if (empty($_REQUEST[$fileindex.'_hidden']) || empty($_REQUEST['__cbisduplicatedfromrecordid'])) {
+				if (empty($_REQUEST[$fileindex.'_hidden'])) {
 					$upd = "update $tblname set $colname='' where ".$this->tab_name_index[$tblname].'=?';
 					$adb->pquery($upd, array($this->id));
-				} else {
+				} elseif (!empty($_REQUEST['__cbisduplicatedfromrecordid'])) {
 					$attachmentname = vtlib_purify($_REQUEST[$fileindex.'_hidden']);
 					$isduplicatedfromrecordid = vtlib_purify($_REQUEST['__cbisduplicatedfromrecordid']);
 					$old_attachmentrs = $adb->pquery('select vtiger_crmentity.crmid from vtiger_seattachmentsrel
