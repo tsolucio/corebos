@@ -3874,8 +3874,7 @@ function ToolTipManager(){
 		var div = document.getElementById(divName);
 		if(typeof div != 'undefined' && div != null ){
 			if(typeof nodelay != 'undefined' && nodelay != null){
-				if (secondshowTimer != 0) clearTimeout(secondshowTimer);
-				secondshowTimer = setTimeout(function(){
+				setTimeout(function(){
 					div.style.display = "none";
 				}, secondshowTimeout);
 			}else{
@@ -3883,7 +3882,7 @@ function ToolTipManager(){
 					if(!state){
 						div.style.display = "none";
 					}
-				}, 700);
+				}, secondshowTimeout);
 			}
 		}
 	}
