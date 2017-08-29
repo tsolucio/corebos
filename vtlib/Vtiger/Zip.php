@@ -93,7 +93,7 @@ class Vtiger_Zip {
 	 * Check and add '/' directory separator
 	 */
 	function __fixDirSeparator($path) {
-		if($path != '' && (strripos($path, '/') != strlen($path)-1)) $path .= '/';
+		if ($path != '' && (strrpos($path, '/') != strlen($path)-1)) $path .= '/';
 		return $path;
 	}
 
@@ -101,7 +101,7 @@ class Vtiger_Zip {
 	 * Normalize the directory path separators.
 	 */
 	function __normalizePath($path) {
-		if($path && strpos($path, '\\')!== false) $path = preg_replace("/\\\\/", "/", $path);
+		if ($path && strpos($path, '\\')!== false) $path = preg_replace("/\\\\/", "/", $path);
 		return $path;
 	}
 
@@ -113,7 +113,7 @@ class Vtiger_Zip {
 		if (!is_dir($dirname)) return false;
 		$dir = opendir($dirname);
 		if ($dir===false) return false;
-		if(strripos($dirname, '/') != strlen($dirname)-1)
+		if (strrpos($dirname, '/') != strlen($dirname)-1)
 			$dirname .= '/';
 
 		if($basedirname == null) $basedirname = realpath($dirname);
@@ -146,10 +146,10 @@ class Vtiger_Zip {
 	function copyDirectoryFromDiskNoOffset($dirname, $zipdirname=null, $excludeList=null, $basedirname=null) {
 		if (!$this->isInsideApplication($dirname)) return false;
 		$dir = opendir($dirname);
-		if(strripos($dirname, '/') != strlen($dirname)-1)
+		if (strrpos($dirname, '/') != strlen($dirname)-1)
 			$dirname .= '/';
 
-		if($basedirname == null) $basedirname = realpath($dirname);
+		if ($basedirname == null) $basedirname = realpath($dirname);
 
 		while(false !== ($file = readdir($dir))) {
 			if($file != '.' && $file != '..' && 

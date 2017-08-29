@@ -452,8 +452,7 @@ function BasicSearch($module,$search_field,$search_string,$input=''){
 			}
 		}
 	}
-	if(stristr($where,"like '%%'"))
-	{
+	if (false !== stripos($where,"like '%%'")) {
 		$where_cond0=str_replace("like '%%'","like ''",$where);
 		$where_cond1=str_replace("like '%%'","is NULL",$where);
 		if($module == "Calendar")
@@ -703,8 +702,7 @@ function getSearch_criteria($criteria,$searchstring,$searchfield)
 	global $log;
 	$log->debug("Entering getSearch_criteria(".$criteria.",".$searchstring.",".$searchfield.") method ...");
 	$searchstring = ltrim(rtrim($searchstring));
-	if(($searchfield != "vtiger_troubletickets.update_log") && ($searchfield == "vtiger_crmentity.modifiedtime" || $searchfield == "vtiger_crmentity.createdtime" || stristr($searchfield,'date')))
-	{
+	if (($searchfield != 'vtiger_troubletickets.update_log') && ($searchfield == 'vtiger_crmentity.modifiedtime' || $searchfield == 'vtiger_crmentity.createdtime' || false !== stripos($searchfield,'date'))) {
 		if ($search_string != '' && $search_string != '0000-00-00') {
 			$date = new DateTimeField($search_string);
 			$value = $date->getDisplayDate();
@@ -1039,7 +1037,7 @@ function getUnifiedWhere($listquery,$module,$search_val){
 		if($module == 'HelpDesk' && $columnname == 'parent_id') {
 			$columnname = "accountname";
 			$tablename = "vtiger_account";
-			if(strstr($listquery,$tablename)){
+			if (false !== strpos($listquery, $tablename)) {
 				if($where != ''){
 					$where .= " OR ";
 				}
@@ -1052,10 +1050,9 @@ function getUnifiedWhere($listquery,$module,$search_val){
 			$columnname = "firstname";
 			$tablename = "vtiger_contactdetails";
 		}
-		// END
 
 		//Before form the where condition, check whether the table for the field has been added in the listview query
-		if(strstr($listquery,$tablename)){
+		if (false !== strpos($listquery, $tablename)) {
 			if($where != ''){
 				$where .= " OR ";
 			}
