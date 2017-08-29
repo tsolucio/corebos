@@ -31,9 +31,6 @@
 }
 
 
-
-
-
 /*=========  Button List  ==========*/
 
 #LB_buttonlist {
@@ -760,6 +757,7 @@ li[title="More Information"] svg {
     padding: .1rem .5rem;
     margin: .1rem 0;
     font-size: inherit;
+    cursor: pointer;
 }
 
 @media only screen and (max-width: 881px) {

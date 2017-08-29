@@ -112,8 +112,17 @@
 						<thead>
 							<!-- Table Headers -->
 							<tr>
+								<!-- <th scope="col" class="slds-text-align--center" style="width: 3.25rem;text-align: center;" >
+								</th> -->
 								<th scope="col" class="slds-text-align--center" style="width: 3.25rem;text-align: center;" >
-									<input type="checkbox" name="selectall" style="margin: 0;" id="selectCurrentPageRec" onClick=toggleSelect_ListView(this.checked,"selected_id")>
+									<div class="slds-th_action slds-th__action_form">
+										<span class="slds-checkbox">
+											<input type="checkbox" name="selectall" style="margin: 0;" id="selectCurrentPageRec" onClick=toggleSelect_ListView(this.checked,"selected_id")>
+											<label class="slds-checkbox__label" for="selectCurrentPageRec">
+												<span class="slds-checkbox--faux"></span>
+											</label>
+										</span>
+									</div>
 								</th>
 								{foreach name="listviewforeach" item=header from=$LISTHEADER}
 								<th class="slds-text-title--caps" scope="col">
