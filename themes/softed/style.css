@@ -35,7 +35,7 @@ span:focus {
 }
 
 .big {
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size: 12px;
 	line-height: 18px;
 	color: #000000;
@@ -43,7 +43,7 @@ span:focus {
 }
 
 .componentName {
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size: 18px;
 	line-height: 18px;
 	color: #33338c;
@@ -53,7 +53,7 @@ span:focus {
 }
 
 .genHeaderBig{
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size: 16px;
 	line-height: 19px;
 	color: #000000;
@@ -61,7 +61,7 @@ span:focus {
 }
 
 .genHeaderSmall{
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size: 14px;
 	line-height: 16px;
 	color: #000000;
@@ -69,7 +69,7 @@ span:focus {
 }
 
 .moduleName {
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size: 16px;
 	color: #33338c;
 	font-weight:bold;
@@ -88,7 +88,7 @@ span:focus {
 .tabSelected {
 	background: #fff url(images/toolbar-bg_selected.png) bottom repeat-x;
 	background-color:#fff;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-weight:bold;
 	font-size: 11px;
 	padding-left:10px;
@@ -108,7 +108,7 @@ span:focus {
 .tabUnSelected {
 	background: #fff url(images/toolbar-bg.png) bottom repeat-x;
 	background-color:#fff;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size: 11px;
 	padding-left:10px;
 	padding-right:10px;
@@ -118,7 +118,7 @@ span:focus {
 }
 
 .tabUnSelected a{
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size: 12px;
 	color:white;
 	font-weight:bold;
@@ -135,7 +135,7 @@ span:focus {
 }
 
 .level2text {
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size: 11px;
 	padding-left:15px;
 	padding-right:15px;
@@ -157,7 +157,7 @@ span:focus {
 
 .level2Bg {
 	background:#fff url(images/level2Bg.gif) bottom repeat-x;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size: 11px;
 	border-top:1px solid #b8b8b8;
 	border-bottom:1px solid #bfbfbf;
@@ -205,7 +205,7 @@ a:hover {
 }
 
 .hdrLink {
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size: 16px;
 	text-decoration:none;
 	color:#0070BA;
@@ -217,7 +217,7 @@ a:hover {
 #border2pxpopup{ border:2px solid #dddddd;}
 
 .hdrLink:hover {
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size: 16px;
 	text-decoration:underline;
 	color:#33338c;
@@ -226,7 +226,7 @@ a:hover {
 
 .searchBox {
 	border: 0px solid #0000aa;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size: 11px;
 	padding-left:2px;
 	width:300px;
@@ -235,7 +235,7 @@ a:hover {
 
 .searchBtn {
 	border :0px #cccccc solid;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size: 11px;
 	font-weight:bold;
 	background: #578FC8 url(images/button_serach.gif) bottom repeat-x;
@@ -253,7 +253,7 @@ a:hover {
 }
 
 .lvtHeaderText {
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size: 14px;
 	font-weight:bold;
 }
@@ -279,7 +279,7 @@ a:hover {
 
 /* Detailed View classes starts +++++++++++++++++++++++ */
 .dvHeaderText{
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size: 14px;
 	color:#000000;
 	font-weight:bold;
@@ -420,7 +420,7 @@ td span {
 }
 
 .detailedViewTextBox {
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size: 11px;
     width:88%;
     resize: vertical;
@@ -439,7 +439,7 @@ td span {
 }
 
 .detailedViewTextBoxOn {
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size: 11px;
 	width:88%;
     resize: vertical;
@@ -485,7 +485,7 @@ td span {
 .textbox {
 	border:1px solid #999999;
 	background-color:#ffffff;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size: 11px;
 	width:120px;
 	padding:2px;
@@ -625,7 +625,7 @@ a.dash_href{
 }
 
 .dashHeading {
-	font-family:Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size:24px;
 	font-weight:bold;
 	color:#fff;
@@ -924,7 +924,7 @@ a.submenu:Hover{
 
 /* RSS STYLES */
 .subHdr{
-	font-family:Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size:12px;
 	color:#FFFFFF;
 	background-image:url(../images/rssHeader.gif);
@@ -936,7 +936,7 @@ a.submenu:Hover{
 }
 
 .delBg{
-	font-family:Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size:12px;
 	color:#FFFFFF;
 	background-image:url(../images/rssdelete.gif);
@@ -977,7 +977,7 @@ a.submenu:Hover{
 	text-align:left;
 	border-bottom:1px dotted #dadada;
 	border-left:1px dotted #dadada;
-	font-family:Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size:11px;
 	font-weight:normal;
 	white-space:nowrap;
@@ -985,7 +985,7 @@ a.submenu:Hover{
 }
 
 .forwardBg{
-	font-family:Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size:12px;
 	color:#000000;
 	background-image:url(../images/rssforward.gif);
@@ -1014,7 +1014,7 @@ a.submenu:Hover{
 /* profile */
 
 .prvPrfBigText {
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size: 14px;
 }
 
@@ -1041,7 +1041,7 @@ a.submenu:Hover{
 /*  Organization */
 
 .orgTab{
-	font-family:Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size:11px;
 	font-weight:normal;
 	color:#666666;
@@ -1052,7 +1052,7 @@ a.submenu:Hover{
 
 .orgTab tr th{
 	text-align:left;
-	font-family:Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size:12px;
 	text-decoration:none;
 	font-weight:bold;
@@ -1061,7 +1061,7 @@ a.submenu:Hover{
 }
 
 .orgTab tr td{
-	font-family:Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size:11px;
 	text-decoration:none;
 	font-weight:normal;
@@ -1074,7 +1074,7 @@ a.submenu:Hover{
 /* Groups */
 .groupli{
 	margin-left:20px;
-	font-family:Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-weight:normal;
 	font-size:12px;
 	text-decoration:none;
@@ -1088,7 +1088,7 @@ a.submenu:Hover{
 /*Oraganization Edit Features */
 
 #orgLay{
-	font-family:Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size:11px;
 	text-align:left;
 	width:500px;
@@ -1103,7 +1103,7 @@ a.submenu:Hover{
 /*  Role */
 
 #roleLay{
-	font-family:Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size:11px;
 	text-align:left;
 	width:300px;
@@ -1132,7 +1132,7 @@ a.submenu:Hover{
 .txtBox{
 	width:85%;
 	border:1px solid #666666;
-	font-family:Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size:11px;
 }
 
@@ -1147,7 +1147,7 @@ a.submenu:Hover{
 }
 
 .genHeaderGray{
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size: 14px;
 	line-height: 16px;
 	color: #888888;
@@ -1155,7 +1155,7 @@ a.submenu:Hover{
 }
 
 .genHeaderGrayBig{
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size: 18px;
 	line-height: 16px;
 	color: #888888;
@@ -1165,7 +1165,7 @@ a.submenu:Hover{
 .importBox{
 	width:125px;
 	border:1px solid #666666;
-	font-family:Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size:11px;
 }
 
@@ -1335,7 +1335,7 @@ a.alpha:Hover{
 .allMnuHandle td{
 	height:20px;
 	color:#FFFFFF;
-	font-family:Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size:12px;
 	font-weight:bold;
 	text-decoration:none;
@@ -1519,7 +1519,7 @@ a.calMnu:Hover{
 .calTxt{
 	width:50%;
 	border:1px solid #CCCCCC;
-	font-family:Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size:11px;
 	text-align:left;
 	padding-left:5px;
@@ -1566,7 +1566,7 @@ level2Sel{
 }
 
 #DeleteLay{
-	font-family:Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size:11px;
 	text-align:left;
 	border:3px solid #CCCCCC;
@@ -1575,7 +1575,7 @@ level2Sel{
 }
 
 #CurrencyDeleteLay{
-	font-family:Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size:11px;
 	text-align:left;
 	width:350px;
@@ -1702,7 +1702,7 @@ datatable stats {
 
 #PopupLay{
 	position:absolute;
-	font-family:Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size:11px;
 	text-align:left;
 	width:500px;
@@ -1788,7 +1788,7 @@ datatable stats {
 .tagCloudDisplay {
 	background-color:#fff;
 	padding:10px;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size: 11px;
 	line-height: 14px;
 	color: #000000;
@@ -2129,6 +2129,14 @@ textarea {
 	background-color:#e2e5ff;
 }
 
+.mailSubHeader b {
+	padding-left: .5rem;
+}
+
+.mailSubHeader i {
+	padding-right: .5rem;
+}
+
 .mailClientWriteEmailHeader {
 	font-family:arial, helvetica, sans-serif;
 	font-size:20px;
@@ -2427,13 +2435,13 @@ a.drop_downnew_parent{
 .repBox{
 	width:100px;
 	border:1px solid #666666;
-	font-family:Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size:11px;
 }
 .repBox1{
 	width:200px;
 	border:1px solid #666666;
-	font-family:Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size:11px;
 }
 .warning {
@@ -2749,7 +2757,7 @@ input {
 .mm_tableHeadBg{
 	background-color:#C9E0F0;
 	height:25px;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size:11px;
 	color:#000066;
 }
@@ -2774,7 +2782,7 @@ a.drop_downnew{
 	width:100px;
 	text-align:left;
 	font-size: 12px;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	line-height:20px;
 	font-weight:normal;
 	color:#33338c;
@@ -2878,7 +2886,7 @@ a.allMnu:Hover{
 	display:none;
 }
 .userName{
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
 	font-size: 12px;
 	line-height: 16px;
 	color: #000000;

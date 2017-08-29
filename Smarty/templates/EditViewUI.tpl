@@ -91,9 +91,9 @@
 			{else}
 				<br>
 				{if $fromlink eq 'qcreate'}
-				<select id="{$fldname}_type" class="small slds-select" style="width: 50%;" name="{$fldname}_type" onChange='document.QcEditView.{$fldname}_display.value=""; document.QcEditView.{$fldname}.value="";'>
+				<select id="{$fldname}_type" class="small slds-select" style="width: 75%;" name="{$fldname}_type" onChange='document.QcEditView.{$fldname}_display.value=""; document.QcEditView.{$fldname}.value="";'>
 				{else}
-				<select id="{$fldname}_type" class="small slds-select" style="width: 50%;" name="{$fldname}_type" onChange='document.EditView.{$fldname}_display.value=""; document.EditView.{$fldname}.value="";document.getElementById("qcform").innerHTML=""'>
+				<select id="{$fldname}_type" class="small slds-select" style="width: 75%;" name="{$fldname}_type" onChange='document.EditView.{$fldname}_display.value=""; document.EditView.{$fldname}.value="";document.getElementById("qcform").innerHTML=""'>
 				{/if}
 				{foreach item=option from=$fldlabel.options}
 					<option value="{$option}"
@@ -204,7 +204,6 @@
 						id="{$fldname}_display"
 						name="{$fldname}_display"
 						type="text"
-						style="border:1px solid #bababa;"
 						value="{$fldvalue.displayvalue}"
 						autocomplete="off"
 						class="autocomplete-input"
@@ -214,7 +213,6 @@
 						id="{$fldname}_display"
 						name="{$fldname}_display"
 						type="text"
-						style="border:1px solid #bababa;"
 						value="{$fldvalue.displayvalue}">&nbsp;
 				{/if}
 				<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}"
@@ -246,7 +244,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 					<font color="red">{$mandatory_field}</font>
 				{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
 			</td>
-			<td colspan=3 class="dvtCellInfo">
+			<td width=30% class="dvtCellInfo">
 				<textarea class="slds-textarea" tabindex="{$vt_tab}" name="{$fldname}" id="{$fldname}" cols="90" rows="8">{$fldvalue}</textarea>
 				{assign var="i18nSolution" value='Solution'|@getTranslatedString:$MODULE}
 				{if $fldlabel eq $i18nSolution}
@@ -496,7 +494,8 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			<td width="30%" align=left class="dvtCellInfo">
 				<input name="salesorder_name" readonly type="text" class="slds-input" value="{$fldvalue}">
 				<input name="{$fldname}" type="hidden" value="{$secondvalue}">&nbsp;
-				<img src="{'btnL3Add.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='selectSalesOrder();' align="absmiddle" style='width:18px;cursor:pointer'>&nbsp;<input type="image" tabindex="{$vt_tab}" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.salesorder_id.value=''; this.form.salesorder_name.value='';return false;" align="absmiddle" style='width:18px;cursor:pointer'>
+				<img src="{'btnL3Add.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='selectSalesOrder();' align="absmiddle" style='width:18px;cursor:pointer'>&nbsp;
+				<input type="image" tabindex="{$vt_tab}" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.salesorder_id.value=''; this.form.salesorder_name.value='';return false;" align="absmiddle" style='width:18px;cursor:pointer'>
 			</td>
 
 		{elseif $uitype eq 78}
@@ -507,7 +506,8 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			<td width="30%" align=left class="dvtCellInfo">
 				<input name="quote_name" readonly type="text" class="slds-input" value="{$fldvalue}">
 				<input name="{$fldname}" type="hidden" value="{$secondvalue}" >&nbsp;
-				<img src="{'btnL3Add.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='selectQuote()' align="absmiddle" style='width:18px;cursor:pointer' >&nbsp;<input type="image" tabindex="{$vt_tab}" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.quote_id.value=''; this.form.quote_name.value='';return false;" align="absmiddle" style='width:18px;cursor:pointer'>
+				<img src="{'btnL3Add.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='selectQuote()' align="absmiddle" style='width:18px;cursor:pointer' >&nbsp;
+				<input type="image" tabindex="{$vt_tab}" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.quote_id.value=''; this.form.quote_name.value='';return false;" align="absmiddle" style='width:18px;cursor:pointer'>
 			</td>
 
 		{elseif $uitype eq 76}
@@ -518,7 +518,8 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			<td width="30%" align=left class="dvtCellInfo">
 				<input name="potential_name" readonly type="text" class="slds-input" value="{$fldvalue}">
 				<input name="{$fldname}" type="hidden" value="{$secondvalue}">&nbsp;
-				<img tabindex="{$vt_tab}" src="{'btnL3Add.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='selectPotential()' align="absmiddle" style='width:18px;cursor:pointer'>&nbsp;<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.potential_id.value=''; this.form.potential_name.value='';return false;" align="absmiddle" style='width:18px;cursor:pointer'>
+				<img tabindex="{$vt_tab}" src="{'btnL3Add.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='selectPotential()' align="absmiddle" style='width:18px;cursor:pointer'>&nbsp;
+				<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.potential_id.value=''; this.form.potential_name.value='';return false;" align="absmiddle" style='width:18px;cursor:pointer'>
 			</td>
 
 		{elseif $uitype eq 17}
@@ -551,9 +552,9 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			<td width="30%" align=left class="dvtCellInfo">
 				{if $fldname eq "unit_price"}
 					<span id="multiple_currencies">
-						<input name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" type="text" updateUnitPrice('unit_price', '{$BASE_CURRENCY}');"  value="{$fldvalue}" style="width:60%;">
+						<input name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" type="text" updateUnitPrice('unit_price', '{$BASE_CURRENCY}');"  value="{$fldvalue}" class="slds-input">
 					{if $MASS_EDIT neq 1}
-						&nbsp;<a href="javascript:void(0);" onclick="updateUnitPrice('unit_price', '{$BASE_CURRENCY}'); toggleShowHide('currency_class','multiple_currencies');">{$APP.LBL_MORE_CURRENCIES} &raquo;</a>
+						<br/><a href="javascript:void(0);" onclick="updateUnitPrice('unit_price', '{$BASE_CURRENCY}'); toggleShowHide('currency_class','multiple_currencies');">{$APP.LBL_MORE_CURRENCIES} &raquo;</a>
 					{/if}
 					</span>
 					{if $MASS_EDIT neq 1}
@@ -675,7 +676,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				<img src="{'btnL3Calendar.gif'|@vtiger_imageurl:$THEME}" id="jscal_trigger_{$fldname}" style="width:18px;vertical-align: inherit;">
 
 				{if $uitype eq 6}
-					<input name="time_start" tabindex="{$vt_tab}" size="5" maxlength="5" type="text" value="{$time_val}">
+					<input name="time_start" tabindex="{$vt_tab}" size="5" maxlength="5" class="slds-input" type="text" value="{$time_val}">
 				{/if}
 
 				{if $uitype eq 6 && $QCMODULE eq 'Event'}
@@ -691,9 +692,9 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				{/foreach}
 
 				{if $uitype eq 5 || $uitype eq 23}
-					<font size=1><em old="(yyyy-mm-dd)">({$dateStr})</em></font>
+					<br/><font size=1><em old="(yyyy-mm-dd)">({$dateStr})</em></font>
 				{else}
-					<font size=1><em old="(yyyy-mm-dd)">({$dateStr})</em></font>
+					<br/><font size=1><em old="(yyyy-mm-dd)">({$dateStr})</em></font>
 				{/if}
 
 				<script type="text/javascript" id='massedit_calendar_{$fldname}'>
@@ -755,12 +756,14 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			</td>
 			<td width="30%" align=left class="dvtCellInfo">
 				<input name="{$fldname}" type="hidden" value="{$secondvalue}">
-				<input name="parent_name" readonly id = "parentid" type="text" value="{$fldvalue}">
+				<input name="parent_name" readonly id = "parentid" type="text" class="slds-input" value="{$fldvalue}">
 				&nbsp;
 				{if $fromlink eq 'qcreate'}
-					<img src="{'btnL3Add.gif'|@vtiger_imageurl:$THEME}" tabindex="{$vt_tab}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module="+ document.QcEditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&fromlink={$fromlink}","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='width:18px;cursor:pointer'>&nbsp;<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.parent_id.value=''; this.form.parent_name.value=''; return false;" align="absmiddle" style='width:18px;cursor:pointer'>
+					<img src="{'btnL3Add.gif'|@vtiger_imageurl:$THEME}" tabindex="{$vt_tab}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module="+ document.QcEditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&fromlink={$fromlink}","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='width:18px;cursor:pointer'>&nbsp;
+					<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.parent_id.value=''; this.form.parent_name.value=''; return false;" align="absmiddle" style='width:18px;cursor:pointer'>
 				{else}
-					<img src="{'btnL3Add.gif'|@vtiger_imageurl:$THEME}" tabindex="{$vt_tab}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&fromlink={$fromlink}","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='width:18px;cursor:pointer'>&nbsp;<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.parent_id.value=''; this.form.parent_name.value=''; return false;" align="absmiddle" style='width:18px;cursor:pointer'>
+					<img src="{'btnL3Add.gif'|@vtiger_imageurl:$THEME}" tabindex="{$vt_tab}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&fromlink={$fromlink}","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='width:18px;cursor:pointer'>&nbsp;
+					<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.parent_id.value=''; this.form.parent_name.value=''; return false;" align="absmiddle" style='width:18px;cursor:pointer'>
 				{/if}
 			</td>
 
@@ -776,9 +779,11 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				</select>
 				&nbsp;
 				{if $fromlink eq 'qcreate'}
-					<img tabindex="{$vt_tab}" src="{'btnL3Add.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module="+ document.QcEditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&fromlink={$fromlink}","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='width:18px;cursor:pointer'>&nbsp;<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.parent_id.value=''; this.form.parent_name.value=''; return false;" align="absmiddle" style='width:18px;cursor:pointer'>
+					<img tabindex="{$vt_tab}" src="{'btnL3Add.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module="+ document.QcEditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&fromlink={$fromlink}","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='width:18px;cursor:pointer'>&nbsp;
+					<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.parent_id.value=''; this.form.parent_name.value=''; return false;" align="absmiddle" style='width:18px;cursor:pointer'>
 				{else}
-					<img tabindex="{$vt_tab}" src="{'btnL3Add.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&fromlink={$fromlink}","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='width:18px;cursor:pointer'>&nbsp;<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.parent_id.value=''; this.form.parent_name.value=''; return false;" align="absmiddle" style='width:18px;cursor:pointer'>
+					<img tabindex="{$vt_tab}" src="{'btnL3Add.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&fromlink={$fromlink}","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='width:18px;cursor:pointer'>&nbsp;
+					<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.parent_id.value=''; this.form.parent_name.value=''; return false;" align="absmiddle" style='width:18px;cursor:pointer'>
 				{/if}
 			</td>
 		   <tr style="height:25px">
@@ -798,7 +803,9 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			</td>
 			<td width="30%" align=left class="dvtCellInfo">
 				<input name="{$fldname}" type="hidden" value="{$secondvalue}">
-				<input name="product_name" readonly type="text" value="{$fldvalue}">&nbsp;<img tabindex="{$vt_tab}" src="{'btnL3Add.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module=Products&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=specific&fromlink={$fromlink}","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='width:18px;cursor:pointer'>&nbsp;<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.product_id.value=''; this.form.product_name.value=''; return false;" align="absmiddle" style='width:18px;cursor:pointer'>
+				<input name="product_name" readonly type="text" value="{$fldvalue}" class="slds-input">&nbsp;
+				<img tabindex="{$vt_tab}" src="{'btnL3Add.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module=Products&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=specific&fromlink={$fromlink}","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='width:18px;cursor:pointer'>&nbsp;
+				<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.product_id.value=''; this.form.product_name.value=''; return false;" align="absmiddle" style='width:18px;cursor:pointer'>
 			</td>
 
 		{elseif $uitype eq 55 || $uitype eq 255}
@@ -815,7 +822,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 
 			<td width="30%" align=left class="dvtCellInfo">
 			{if $fldvalue neq ''}
-			<select name="salutationtype" class="small slds-select" style="width: 20%;">
+			<select name="salutationtype" class="small slds-select" style="width: 32%;">
 				{foreach item=arr from=$fldvalue}
 				<option value="{$arr[1]}" {$arr[2]}>
 				{$arr[0]}
@@ -1018,7 +1025,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 					<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
 				</td>
 				<td width="30%" align=left class="dvtCellInfo">
-					<input id="{$fldname}_display" name="{$fldname}_display" readonly type="text" value="{$fldvalue}" class="small" />&nbsp;
+					<input id="{$fldname}_display" name="{$fldname}_display" readonly type="text" value="{$fldvalue}" class="slds-input" />&nbsp;
 					<input id="{$fldname}" name="{$fldname}" type="hidden" value="{$secondvalue}" id="{$fldname}" />
 					&nbsp;<input title="{$APP.LBL_CHANGE_TITLE}" accessKey="C" type="button" class="small" value='{$APP.LBL_CHANGE}' name="btn1" onclick='return window.open("index.php?module=Users&action=Popup&html=Popup_picker&form=vtlibPopupView&form_submit=false&fromlink={$fromlink}&recordid={if isset($ID)}{$ID}{/if}&forfield={$fldname}","test","width=640,height=603,resizable=0,scrollbars=0");'>
 					&nbsp;<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.{$fldname}.value=''; this.form.{$fldname}_display.value=''; return false;" align="absmiddle" style='width:18px;cursor:pointer'>

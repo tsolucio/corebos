@@ -24,9 +24,12 @@
     counter-increment: row-number;
 }
 
-.dvtCellInfo img {
+.dvtCellInfo img,
+.dvtCellInfo .slds-select,
+.dvtCellInfo .slds-radio--faux {
     cursor: pointer;
 }
+
 
 
 
@@ -782,7 +785,8 @@ li[title="More Information"] svg {
     margin: 0;
 }
 
-.createview_field_row textarea {
+.createview_field_row textarea,
+.dvtCellInfo textarea {
     min-height: 35px;
 }
 
