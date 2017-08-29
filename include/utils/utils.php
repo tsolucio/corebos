@@ -4339,14 +4339,7 @@ function getValidDBInsertDateValue($value) {
 	$value = trim($value);
 	if (empty($value)) return '';
 	$delim = array('/','.');
-	foreach ($delim as $delimiter) {
-		$x = strpos($value, $delimiter);
-		if ($x === false) continue;
-		else {
-			$value=str_replace($delimiter, '-', $value);
-			break;
-		}
-	}
+	$value = str_replace($delim, '-', $value);
 
 	list($y,$m,$d) = explode('-',$value);
 	if (strlen($y) == 1) $y = '0'.$y;
