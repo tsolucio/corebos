@@ -193,6 +193,8 @@ function sendfile_email()
 																			<img src="{'inventory_details_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="InventoryDetails" title="InventoryDetails">
 																		{elseif $MODULE eq 'GlobalVariable'}
 																			<img src="{'global_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="GlobalVariable" title="GlobalVariable">
+																		{elseif $MODULE eq 'cbCalendar'}
+																			<img src="{'todo_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Todo" title="Todo">
 																		{/if}
 																	</span>
 																</div>
@@ -407,7 +409,7 @@ function sendfile_email()
 																							{else}
 																								<div class="slds-truncate" style="display:block;" id="tbl{$header|replace:' ':''}">
 																							{/if}
-																									<table class="slds-table slds-table--cell-buffer slds-no-row-hover slds-table--bordered slds-table--fixed-layout small detailview_table">
+																									<table class="slds-table slds-table--cell-buffer slds-no-row-hover slds-table--fixed-layout small detailview_table">
 																										{if !empty($CUSTOMBLOCKS.$header.custom)}
 																											{include file=$CUSTOMBLOCKS.$header.tpl}
 																										{elseif isset($BLOCKS.$header.relatedlist) && $IS_REL_LIST|@count > 0}

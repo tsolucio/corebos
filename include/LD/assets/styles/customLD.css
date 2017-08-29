@@ -203,9 +203,12 @@ li.active,
 .slds-tabs--scoped__nav .slds-tabs--scoped__item:active {
     background-color: white;
     color: #0070d2;
-    border-color: #d8dde6;
+    /*border-color: #d8dde6;*/
 }
 
+.slds-tabs--scoped__nav li {
+    border-right: 1px solid #d8dde6;
+}
 
 
 .uiOutputText {
@@ -711,7 +714,11 @@ ul.slds-tabs--default__nav li {
 }
 
 .slds-dropdown__item>a {
-    padding: .2rem .5rem;
+    padding:2px 5px 2px 5px;
+}
+
+.slds-dropdown__list li.slds-dropdown__item {
+    padding: 0;
 }
 
 .assideBtn {

@@ -183,10 +183,10 @@ function switchClass(myModule,toStatus) {
 	if((x))
 	{
 		if (toStatus=="on") {
-			x.className="dvtSelectedCell";
+			x.className="active";
 		}
 		if (toStatus=="off") {
-			x.className="dvtUnSelectedCell";
+			x.className="";
 		}
 	}
 }
