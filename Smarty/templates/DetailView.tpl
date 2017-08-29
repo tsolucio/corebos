@@ -379,7 +379,7 @@ function sendfile_email()
 																										<div class="slds-media__body">
 																											<h2>
 																												<span class="slds-text-title--caps slds-truncate slds-m-right--xx-small" title="{$header}">
-																													<b>{$APP.LBL_COMMENTS}</b>
+																													<b>{$header}</b>
 																												</span>
 																											</h2>
 																										</div>

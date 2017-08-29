@@ -300,7 +300,7 @@
 <div id="calculator_cont" style="position:absolute; z-index:10000" ></div>
 {include file="Clock.tpl"}
 
-<div id="qcform" style="position:absolute;width:700px;top:80px;left:450px;z-index:90000;"></div>
+<div id="qcform" style="position:absolute;width:910px;top:80px;left:450px;z-index:90000;"></div>
 
 <!-- Unified Search module selection feature -->
 <div id="UnifiedSearch_moduleformwrapper" style="position:absolute;width:417px;z-index:100002;display:none;"></div>

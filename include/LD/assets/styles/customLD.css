@@ -13,6 +13,10 @@
     padding-left: 3px;
 }
 
+#qccombo {
+    cursor: pointer;
+}
+
 
 /*========    End Header    ==========*/
 
@@ -20,6 +24,9 @@
     counter-increment: row-number;
 }
 
+.dvtCellInfo img {
+    cursor: pointer;
+}
 
 
 
@@ -37,6 +44,7 @@
 .uiMenu {
     position: relative;
 }
+
 
 
 
@@ -133,6 +141,7 @@
 
 
 
+
 /*=========   END BUTTON_LIST  ==========*/
 
 .homePageButtons img {
@@ -149,6 +158,7 @@
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
 }
+
 
 
 
@@ -207,6 +217,7 @@ li.active,
     width: 850px;
     white-space: nowrap;
 }
+
 
 
 
@@ -356,6 +367,7 @@ li.active,
 
 
 
+
 /*=========  END DETAIL VIEW ---HEADER---  ==========*/
 
 
@@ -466,6 +478,7 @@ article.container::after {
 
 
 
+
 /*=========  END DETAIL VIEW ---BODY---  ==========*/
 
 
@@ -537,6 +550,7 @@ article.container::after {
 .customLinkModule img {
     background-color: #6dc066;
 }
+
 
 
 
@@ -631,6 +645,7 @@ tr td.table-aside>.detailview_actionlinks {
 
 
 
+
 /**
 - * Creates a green button style
 - *
@@ -651,6 +666,7 @@ tr td.table-aside>.detailview_actionlinks {
     color: #fff;
     font-weight: bold;
 }
+
 
 
 
@@ -782,6 +798,7 @@ li[title="More Information"] svg {
 
 
 
+
 /*=========   END DETAIL VIEW  ==========*/
 
 
@@ -845,6 +862,7 @@ select:-moz-focusring {
 
 
 
+
 /*=========   END DetailView - DetailViewUI - DetailViewUIUser  ==========*/
 
 
@@ -866,6 +884,7 @@ select:-moz-focusring {
 
 
 
+
 /*=========   END DetailViewUtils.php  ==========*/
 
 
@@ -875,6 +894,7 @@ select:-moz-focusring {
     border-right: 1px solid #fff;
     border-left: 1px solid #fff;
 }
+
 
 
 
@@ -901,6 +921,7 @@ select:-moz-focusring {
 .dvtContentSpace>tr {
     background-color: #f7f7fb;
 }
+
 
 
 /*=========   ListView.tpl  ==========*/
@@ -937,6 +958,8 @@ select:-moz-focusring {
     word-wrap: break-word;
     white-space: normal;
 }
+
+
 /*=========   END ListView.tpl  ==========*/
 
 
@@ -960,25 +983,31 @@ th[scope="col"] {
     text-align: left;
 }
 
+
 /*=========   END ListView Entries.tpl  ==========*/
 
 
 /*========= Dashboard buttons ========*/
+
 .lds-img img {
     width: 20px;
 }
 
-.lds-img td{
+.lds-img td {
     padding: 0!important;
 }
 
 .lds-img img:hover {
     opacity: .7;
 }
+
+
 /*========= End Dashboard buttons ========*/
 
 
 /*===========Related List Data Content===========*/
+
+
 /*=======CustomView.tpl=======*/
 
 .align-left td:not(:first-child) {
@@ -989,5 +1018,8 @@ th[scope="col"] {
     font-size: .8rem;
 }
 
+
 /*=======End CustomView.tpl=======*/
+
+
 /*===========END Related List Data Content===========
