@@ -3652,6 +3652,7 @@ a.slds-button--inverse:focus {
     border-radius: 0.125rem;
     background: white;
     transition: border 0.1s linear, background-color 0.1s linear;
+    cursor: pointer;
 }
 
 .slds-checkbox .slds-form-element__label {
