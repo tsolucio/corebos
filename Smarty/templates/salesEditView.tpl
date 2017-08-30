@@ -127,7 +127,7 @@
 												<!-- included to handle the edit fields based on ui types -->
 												{foreach key=header item=data from=$BLOCKS}
 												<tr class="blockStyleCss">
-													<td class="detailViewContainer">
+													<td class="detailViewContainer" valign="top">
 														<!-- This is added to display the existing comments -->
 														{if $header eq $APP.LBL_COMMENTS || (isset($MOD.LBL_COMMENT_INFORMATION) && $header eq $MOD.LBL_COMMENT_INFORMATION)}
 														<div class="flexipageComponent" style="background-color: #fff;">
@@ -150,7 +150,7 @@
 														</div>
 														{/if}
 
-														<div id="tbl{$header|replace:' ':''}Head">
+														<div class="slds-truncate" id="tbl{$header|replace:' ':''}Head">
 															{if isset($MOD.LBL_ADDRESS_INFORMATION) && $header==$MOD.LBL_ADDRESS_INFORMATION && ($MODULE == 'Accounts' || $MODULE == 'Quotes' || $MODULE == 'PurchaseOrder' || $MODULE == 'SalesOrder'|| $MODULE == 'Invoice') && $SHOW_COPY_ADDRESS eq 1}
 																<div class="forceRelatedListSingleContainer">
 																	<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
@@ -240,14 +240,14 @@
 																		</div>
 																	</article>
 																</div>
+																{if $CUSTOMBLOCKS.$header.custom}
+																	{include file=$CUSTOMBLOCKS.$header.tpl}
+																{else}
+																	<!-- Handle the ui types display -->
+																	{include file="DisplayFields.tpl"}
+																{/if}
 															{/if}
 														</div>
-														{if $CUSTOMBLOCKS.$header.custom}
-															{include file=$CUSTOMBLOCKS.$header.tpl}
-														{else}
-															<!-- Handle the ui types display -->
-															{include file="DisplayFields.tpl"}
-														{/if}
 
 														<!-- Added to display the Product Details in Inventory-->
 														{if $MODULE eq 'PurchaseOrder' || $MODULE eq 'SalesOrder' || $MODULE eq 'Quotes' || $MODULE eq 'Invoice'}
