@@ -55,10 +55,16 @@
 																<img src="{'document_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Documents" title="Documents">
 															{elseif $MODULE eq 'HelpDesk'}
 																<img src="{'help_desk_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="HelpDesk" title="HelpDesk">
+															{elseif $MODULE eq 'Products'}
+																<img src="{'product_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Products" title="Products">
 															{elseif $MODULE eq 'Faq'}
 																<img src="{'faq_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Faq" title="Faq">
 															{elseif $MODULE eq 'ServiceContracts'}
 																<img src="{'service_contract_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="ServiceContracts" title="ServiceContracts">
+															{elseif $MODULE eq 'cbCalendar'}
+																<img src="{'todo_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Todo" title="Todo">
+															{elseif $MODULE eq 'Vendors'}
+																<img src="{'vendors_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Vendors" title="Vendors">
 															{/if}
 														</span>
 													</div>
