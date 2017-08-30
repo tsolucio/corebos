@@ -358,9 +358,9 @@ function updateInventoryProductRel($entity) {
 	$log->debug("Entering into function updateInventoryProductRel(".$entity_id.").");
 
 	if(!empty($update_product_array)) {
-		foreach($update_product_array as $id=>$seq) {
-			foreach($seq as $seq=>$product_info) {
-				foreach($product_info as $key=>$index) {
+		foreach ($update_product_array as $seq) {
+			foreach ($seq as $product_info) {
+				foreach ($product_info as $key=>$index) {
 					$updqtyinstk= getPrdQtyInStck($key);
 					$upd_qty = $updqtyinstk+$index;
 					updateProductQty($key, $upd_qty);
