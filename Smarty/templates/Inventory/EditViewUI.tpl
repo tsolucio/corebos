@@ -578,7 +578,7 @@
 				<input name="{$fldname}_hidden" type="hidden" value="{if $imagevalueexists}{$maindata[3].0.name}{/if}" />
 				<input name="{$fldname}_path_hidden" type="hidden" value="{if $imagevalueexists}{$maindata[3].0.path}{$maindata[3].0.name}{/if}" />
 				{if $imagevalueexists}
-					<div id="{$fldname}_replaceimage">[{$maindata[3].0.orgname}] <input id="{$fldname}_attach" value="{'LBL_DELETE_BUTTON'|@getTranslatedString}" type="button" class="crmbutton small delete" onclick='delimage({$ID},"{$fldname}","{$maindata[3].0.orgname}");'></div>
+					<div id="{$fldname}_replaceimage">[{$maindata[3].0.orgname}] <input id="{$fldname}_attach" value="{'LBL_DELETE_BUTTON'|@getTranslatedString}" type="button" class="slds-button slds-button--small slds-button--destructive" onclick='delimage({$ID},"{$fldname}","{$maindata[3].0.orgname}");'></div>
 				{/if}
 				<div id="displaySize"></div>
 				</div>
