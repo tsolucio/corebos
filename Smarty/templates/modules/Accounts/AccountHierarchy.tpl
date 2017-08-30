@@ -31,9 +31,7 @@
 											<span class="photoContainer forceSocialPhoto">
 												<div class="small roundedSquare forceEntityIcon img-background">
 													<span class="uiImage">
-													{if $MODULE eq 'Accounts'}
 														<img src="{'account_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Organization" title="Organization">
-													{/if}
 													</span>
 												</div>
 											</span>
