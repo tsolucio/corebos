@@ -57,6 +57,8 @@
 																<img src="{'pricebook_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="PriceBooks" title="PriceBooks">
 															{elseif $MODULE eq 'Documents'}
 																<img src="{'document_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Documents" title="Documents">
+															{elseif $MODULE eq 'cbCalendar'}
+																<img src="{'todo_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Todo" title="Todo">
 															{/if}
 														</span>
 													</div>
