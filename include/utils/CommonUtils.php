@@ -2033,8 +2033,8 @@ function getEntityName($module, $ids_list) {
 		$entityIdField = $entity_field_info['entityidfield'];
 		$entity_FieldValue = getEntityFieldValues($entity_field_info, $ids_list);
 
-		foreach($entity_FieldValue as $key => $entityInfo) {
-			foreach($entityInfo as $key => $entityName) {
+		foreach ($entity_FieldValue as $entityInfo) {
+			foreach ($entityInfo as $key => $entityName) {
 				$fieldValues = $entityName;
 				$entityDisplay[$key] = getEntityFieldNameDisplay($module, $fieldsName, $fieldValues);
 			}
