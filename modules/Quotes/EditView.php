@@ -47,6 +47,7 @@ if($isduplicate == 'true') {
 	$log->debug("Mode is Duplicate. Quoteid to be duplicated is ".$focus->id);
 	$focus->id = '';
 	$focus->mode = '';
+	$smarty->assign('__cbisduplicatedfromrecordid', $record);
 }
 $focus->preEditCheck($_REQUEST,$smarty);
 if (!empty($_REQUEST['save_error']) and $_REQUEST['save_error'] == "true") {
