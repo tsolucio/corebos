@@ -34,7 +34,7 @@ function vtws_listtypes($fieldTypeList, $user){
 		vtws_preserveGlobal('current_user',$user);
 		//get All the modules the current user is permitted to Access.
 		$allModuleNames = getPermittedModuleNames();
-		if (array_search('Calendar',$allModuleNames) !== false) {
+		if (in_array('Calendar',$allModuleNames)) {
 			$allModuleNames[] = 'Events';
 		}
 
