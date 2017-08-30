@@ -116,6 +116,13 @@ class CRMEntity {
 			}
 		}
 
+		// If multicurrency module we save the currency and conversion rate
+		if (!empty($this->column_fields['conversion_rate']) && !empty($this->column_fields['currency_id'])) {
+			$update_query = 'update '.$this->table_name.' set currency_id=?, conversion_rate=? where '.$this->table_index.'=?';
+			$update_params = array($this->column_fields['currency_id'], $this->column_fields['conversion_rate'], $this->id);
+			$this->db->pquery($update_query, $update_params);
+		}
+
 		//Calling the Module specific save code
 		$this->save_module($module);
 
