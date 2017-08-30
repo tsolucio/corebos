@@ -89,7 +89,7 @@
 			$params = array(VTWorkflowManager::$ON_SCHEDULE);
 			if($referenceTime != '') {
 				$query .= " AND (nexttrigger_time = '' OR nexttrigger_time IS NULL OR nexttrigger_time <= ?)";
-				array_push($params, $referenceTime);
+				$params[] = $referenceTime;
 			}
 			$result = $adb->pquery($query, $params);
 			return $this->getWorkflowsForResult($result);

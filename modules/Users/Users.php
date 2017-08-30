@@ -854,10 +854,10 @@ class Users extends CRMEntity {
 				} else {
 					$update .= ', ' . $columname . "=?";
 				}
-				array_push($update_params, $fldvalue);
+				$update_params[] = $fldvalue;
 			} else {
 				$column .= ", " . $columname;
-				array_push($qparams, $fldvalue);
+				$qparams[] = $fldvalue;
 			}
 		}
 
@@ -865,7 +865,7 @@ class Users extends CRMEntity {
 			//Check done by Don. If update is empty the the query fails
 			if (trim($update) != '') {
 				$sql1 = "update $table_name set $update where " . $this->tab_name_index[$table_name] . "=?";
-				array_push($update_params, $this->id);
+				$update_params[] = $this->id;
 				$this->db->pquery($sql1, $update_params);
 			}
 

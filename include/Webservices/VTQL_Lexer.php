@@ -180,7 +180,7 @@ class VTQL_Lexer {
 		return $this->{'yylex' . $this->_yy_state} ();
 	}
 	function yypushstate($state) {
-		array_push ( $this->_yy_stack, $this->_yy_state );
+		$this->_yy_stack[] = $this->_yy_state;
 		$this->_yy_state = $state;
 	}
 	function yypopstate() {

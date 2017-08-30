@@ -36,7 +36,7 @@ if(isset($_REQUEST['edit']) && $_REQUEST['edit'] && $_REQUEST['record']!='') {
 	$params = array($displayname, $email, $account_name, $mailprotocol, $server_username);
 	if($server_password != '*****') {
 		$sql.=", mail_password=?";
-		array_push($params, $encrypted_password);
+		$params[] = $encrypted_password;
 	}
 	$sql.=", mail_servername=?,  box_refresh=?,  mails_per_page=?, ssltype=? , sslmeth=?, int_mailer=? where user_id = ?";
 	array_push($params, $mail_servername, $box_refresh, $mails_per_page, $ssltype, $sslmeth, $_REQUEST["int_mailer"], $id);

@@ -82,7 +82,7 @@ class VTEventTrigger {
 		}
 		if (CRMEntity::isBulkSaveMode()) {
 			$query .= " AND handler_class IN (" . generateQuestionMarks(self::$mandatoryEventClass) . ")";
-			array_push($params, self::$mandatoryEventClass);
+			$params[] = self::$mandatoryEventClass;
 		}
 
 		$evtinfosbyname = array();

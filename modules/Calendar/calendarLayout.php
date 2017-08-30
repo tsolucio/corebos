@@ -278,7 +278,7 @@ function get_cal_header_data(& $cal_arr,$viewBox,$subtab)
 		if(count($subrole)> 0)
 		{
 			$roleids = $subrole;
-			array_push($roleids, $roleid);
+			$roleids[] = $roleid;
 		}
 		else
 		{	
@@ -1004,8 +1004,8 @@ function getYearViewLayout(& $cal)
 					{
 						for($act_count = 0;$act_count<count($cal['slice']->activities);$act_count++)
 						{
-							array_push($date_stack,$cal['slice']->activities[$act_count]->
-									start_time->get_formatted_date());
+							$date_stack[] = $cal['slice']->activities[$act_count]->
+									start_time->get_formatted_date();
 						}
 					}
 					if(in_array($cal['calendar']->month_day_slices[$count][$cnt],$date_stack))
@@ -1427,10 +1427,10 @@ function getEventList(& $calendar,$start_date,$end_date,$info='')
 
 		$pending_query = $query." AND (vtiger_activity.eventstatus = 'Planned')".$com_q;
 		$total_q =  $query."".$com_q;
-		array_push($info_params, $current_user->id);
+		$info_params[] = $current_user->id;
 
 		if (count($groupids) > 0) {
-			array_push($info_params, $groupids);
+			$info_params[] = $groupids;
 		}
 
 		$total_res = $adb->pquery($total_q, $info_params);
@@ -1574,7 +1574,7 @@ function getEventList(& $calendar,$start_date,$end_date,$info='')
 				$subrole = getRoleSubordinates($roleid);
 				if(count($subrole)> 0)
 				$roleids = $subrole;
-				array_push($roleids, $roleid);
+				$roleids[] = $roleid;
 
 				//here we are checking wheather the table contains the sortorder column .If  sortorder is present in the main picklist table, then the role2picklist will be applicable for this table...
 
@@ -1658,11 +1658,11 @@ function getTodoList(& $calendar,$start_date,$end_date,$info='')
 			if (count($groupids) > 0 && !is_admin($current_user)) {
 				$com_q = " AND (vtiger_crmentity.smownerid = ?
 					OR vtiger_groups.groupid in (". generateQuestionMarks($groupids) ."))";
-				array_push($info_params, $current_user->id);
-				array_push($info_params, $groupids);
+				$info_params[] = $current_user->id;
+				$info_params[] = $groupids;
 			} elseif(!is_admin($current_user)) {
 				$com_q = " AND vtiger_crmentity.smownerid = ?";
-				array_push($info_params, $current_user->id);
+				$info_params[] = $current_user->id;
 			}
 			//end
 
@@ -1743,7 +1743,7 @@ function getTodoList(& $calendar,$start_date,$end_date,$info='')
 				$subrole = getRoleSubordinates($roleid);
 				if(count($subrole)> 0)
 				$roleids = $subrole;
-				array_push($roleids, $roleid);
+				$roleids[] = $roleid;
 
 				//here we are checking wheather the table contains the sortorder column .If  sortorder is present in the main picklist table, then the role2picklist will be applicable for this table...
 
@@ -1863,16 +1863,16 @@ function constructEventListView(& $cal,$entry_list,$navigation_array='')
 		             );
 	if(isPermitted("Calendar","EditView") == "yes" || isPermitted("Calendar","Delete") == "yes")
 	{
-		array_push($header,$mod_strings['LBL_ACTION']);
-		 array_push($header_width,'10%');
+		$header[] = $mod_strings['LBL_ACTION'];
+		 $header_width[] = '10%';
 	}
 	if(getFieldVisibilityPermission('Events',$current_user->id,'eventstatus') == '0')
 	{
-		array_push($header,$mod_strings['LBL_STATUS']);
-		array_push($header_width,'$10%');
+		$header[] = $mod_strings['LBL_STATUS'];
+		$header_width[] = '$10%';
 	}
-	array_push($header,$mod_strings['LBL_ASSINGEDTO']);
-	array_push($header_width,'15%');
+	$header[] = $mod_strings['LBL_ASSINGEDTO'];
+	$header_width[] = '15%';
 	
         $list_view .="<table style='background-color: rgb(204, 204, 204);' class='small' align='center' border='0' cellpadding='5' cellspacing='1' width='98%'>
                         <tr>";
@@ -1998,17 +1998,17 @@ function constructTodoListView($todo_list,$cal,$subtab,$navigation_array='')
 		$header_width = Array('0'=>'5%','1'=>'10%','2'=>'10%','3'=>'38%',);
 		if(getFieldVisibilityPermission('Calendar',$current_user->id,'taskstatus') == '0')
 		{
-			array_push($header,$mod_strings['LBL_STATUS']);
-			array_push($header_width,'10%');
+			$header[] = $mod_strings['LBL_STATUS'];
+			$header_width[] = '10%';
 		}
 
 		if(isPermitted("Calendar","EditView") == "yes" || isPermitted("Calendar","Delete") == "yes")
 		{
-			array_push($header,$mod_strings['LBL_ACTION']);
-			array_push($header_width,'10%');
+			$header[] = $mod_strings['LBL_ACTION'];
+			$header_width[] = '10%';
 		}
-		array_push($header,$mod_strings['LBL_ASSINGEDTO']);
-		array_push($header_width,'15%');
+		$header[] = $mod_strings['LBL_ASSINGEDTO'];
+		$header_width[] = '15%';
 	}
 	else
 	{
@@ -2027,15 +2027,15 @@ function constructTodoListView($todo_list,$cal,$subtab,$navigation_array='')
 			);
 		if(getFieldVisibilityPermission('Calendar',$current_user->id,'taskstatus') == '0')
 		{
-			array_push($header,$mod_strings['LBL_STATUS']);
-			array_push($header_width,'10%');
+			$header[] = $mod_strings['LBL_STATUS'];
+			$header_width[] = '10%';
 		}
 		if(isPermitted("Calendar","EditView") == "yes" || isPermitted("Calendar","Delete") == "yes")
 		{
-			array_push($header,$mod_strings['LBL_ACTION']);
+			$header[] = $mod_strings['LBL_ACTION'];
 		}
-		array_push($header,$mod_strings['LBL_ASSINGEDTO']);
-		array_push($header_width,'15%');
+		$header[] = $mod_strings['LBL_ASSINGEDTO'];
+		$header_width[] = '15%';
 		
 	}
 	if($current_user->column_fields['is_admin']=='on')
@@ -2047,7 +2047,7 @@ function constructTodoListView($todo_list,$cal,$subtab,$navigation_array='')
 		if(count($subrole)> 0)
 		{
 			$roleids = $subrole;
-			array_push($roleids, $roleid);
+			$roleids[] = $roleid;
 		}
 		else
 		{

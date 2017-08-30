@@ -288,9 +288,9 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			if(((int)$webserviceField->getPresence()) == 1) {
 				continue;
 			}
-			array_push($fields,$this->getDescribeFieldArray($webserviceField));
+			$fields[] = $this->getDescribeFieldArray($webserviceField);
 		}
-		array_push($fields,$this->getIdField($this->meta->getObectIndexColumn()));
+		$fields[] = $this->getIdField($this->meta->getObectIndexColumn());
 		$purified_mfcache[$mfkey] = $fields;
 		return $fields;
 	}

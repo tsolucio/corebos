@@ -303,7 +303,7 @@ class ServiceContracts extends CRMEntity {
 		} else {
 			$plannedDurationUpdate = " planned_duration = ''";
 		}
-		array_push($updateCols, $plannedDurationUpdate);
+		$updateCols[] = $plannedDurationUpdate;
 
 		// Calculate the Actual Duration based on End date and Start date. (in days)
 		if(!empty($endDate) && !empty($startDate)) {
@@ -311,7 +311,7 @@ class ServiceContracts extends CRMEntity {
 		} else {
 			$actualDurationUpdate = "actual_duration = ''";
 		}
-		array_push($updateCols, $actualDurationUpdate);
+		$updateCols[] = $actualDurationUpdate;
 
 		// Update the Progress based on Used Units and Total Units (in percentage)
 		if(!empty($usedUnits) && !empty($totalUnits) && $totalUnits > 0) {
@@ -321,12 +321,12 @@ class ServiceContracts extends CRMEntity {
 			$progressUpdate = 'progress = ?';
 			$progressUpdateParams = null;
 		}
-		array_push($updateCols, $progressUpdate);
-		array_push($updateParams, $progressUpdateParams);
+		$updateCols[] = $progressUpdate;
+		$updateParams[] = $progressUpdateParams;
 
 		if(count($updateCols) > 0) {
 			$updateQuery = 'UPDATE vtiger_servicecontracts SET '. implode(",", $updateCols) .' WHERE servicecontractsid = ?';
-			array_push($updateParams, $this->id);
+			$updateParams[] = $this->id;
 			$this->db->pquery($updateQuery, $updateParams);
 		}
 	}

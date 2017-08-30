@@ -316,7 +316,7 @@ class WebserviceField{
 			$result = $this->pearDB->pquery($sql,$params);
 			$numRows = $this->pearDB->num_rows($result);
 			for($i=0;$i<$numRows;++$i){
-				array_push($referenceTypes,$this->pearDB->query_result($result,$i,"type"));
+				$referenceTypes[] = $this->pearDB->query_result($result,$i,"type");
 			}
 			
 			//to handle hardcoding done for Calendar module todo activities.
@@ -335,7 +335,7 @@ class WebserviceField{
 			$types = vtws_listtypes(null, $current_user);
 			$accessibleTypes = $types['types'];
 			if(!is_admin($current_user)) {
-				array_push($accessibleTypes, 'Users');
+				$accessibleTypes[] = 'Users';
 			}
 			$referenceTypes = array_values(array_intersect($accessibleTypes,$referenceTypes));
 			$referenceList[$this->getFieldId()] = $referenceTypes;
@@ -453,7 +453,7 @@ class WebserviceField{
 				while ($trans_str != preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str)) $trans_str = preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str);
 				$elem["label"] = $trans_str;
 				$elem["value"] = $picklistValue;
-				array_push($options,$elem);
+				$options[] = $elem;
 			}
 		}else{
 			$user = VTWS_PreserveGlobal::getGlobal('current_user');
@@ -465,7 +465,7 @@ class WebserviceField{
 				while ($trans_str != preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str)) $trans_str = preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str);
 				$elem["label"] = $trans_str;
 				$elem["value"] = $picklistValue;
-				array_push($options,$elem);
+				$options[] = $elem;
 			}
 		}
 		$purified_plcache[$moduleName.$fieldName] = $options;
@@ -494,7 +494,7 @@ class WebserviceField{
 				$elem = array();
 				$elem["label"] = $value[0];
 				$elem["value"] = $value[1];
-				array_push($options,$elem);
+				$options[] = $elem;
 		}
 		$purified_plcache[$moduleName.$fieldName] = $options;
 		return $options;

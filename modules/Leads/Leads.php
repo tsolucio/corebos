@@ -296,7 +296,7 @@ class Leads extends CRMEntity {
 			$params1 = array();
 			if (count($profileList) > 0) {
 				$sql1 .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .") group by fieldid";
-				array_push($params1, $profileList);
+				$params1[] = $profileList;
 			}
 		}
 		$result = $this->db->pquery($sql1, $params1);
@@ -504,7 +504,7 @@ class Leads extends CRMEntity {
 			$params1 = array();
 			if (count($profileList) > 0) {
 				 $sql1 .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
-				 array_push($params1, $profileList);
+				 $params1[] = $profileList;
 			}
 		}
 		$result1 = $this->db->pquery($sql1, $params1);

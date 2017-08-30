@@ -169,7 +169,7 @@ function vtws_getEntityNameFields($moduleName) {
 		if (!(strpos($fieldsname,',') === false)) {
 			 $nameFields = explode(',',$fieldsname);
 		} else {
-			array_push($nameFields,$fieldsname);
+			$nameFields[] = $fieldsname;
 		}
 	}
 	return $nameFields;
@@ -184,7 +184,7 @@ function vtws_getModuleNameList() {
 	$res = $adb->pquery($sql, array());
 	$mod_array = Array();
 	while ($row = $adb->fetchByAssoc($res)) {
-		array_push($mod_array,$row['name']);
+		$mod_array[] = $row['name'];
 	}
 	return $mod_array;
 }
@@ -198,9 +198,9 @@ function vtws_getWebserviceEntities() {
 	$entityArray = Array();
 	while($row = $adb->fetchByAssoc($res)) {
 		if ($row['ismodule'] == '1') {
-			array_push($moduleArray,$row['name']);
+			$moduleArray[] = $row['name'];
 		} else {
-			array_push($entityArray,$row['name']);
+			$entityArray[] = $row['name'];
 		}
 	}
 	return array('module'=>$moduleArray,'entity'=>$entityArray);

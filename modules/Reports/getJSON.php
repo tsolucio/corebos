@@ -39,7 +39,7 @@ if($res and $adb->num_rows($res) > 0) {
 	else
 		$rep_modules = array();
 
-	array_push($rep_modules,$primarymodule);
+	$rep_modules[] = $primarymodule;
 	$modules_permitted = true;
 	$modules_export_permitted = true;
 	foreach($rep_modules as $mod){

@@ -484,19 +484,19 @@ class vt_DateTime {
 		$array = Array();
 		if ( isset( $this->hour) && $this->hour != '')
 		{
-			array_push( $array, "hour=".$this->hour);
+			$array[] = "hour=".$this->hour;
 		}
 		if ( isset( $this->day) && $this->day != '')
 		{
-			array_push( $array, "day=".$this->day);
+			$array[] = "day=".$this->day;
 		}
 		if ( isset( $this->month) && $this->month)
 		{
-			array_push( $array, "month=".$this->month);
+			$array[] = "month=".$this->month;
 		}
 		if ( isset( $this->year) && $this->year != '')
 		{
-			array_push( $array, "year=".$this->year);
+			$array[] = "year=".$this->year;
 		}
 		return  ("&".implode('&',$array));
 	}

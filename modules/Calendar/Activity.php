@@ -588,7 +588,7 @@ function insertIntoRecurringTable(& $recurObj)
 		$params1 = array();
 		if (count($profileList) > 0) {
 			$sql1 .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
-			array_push($params1, $profileList);
+			$params1[] = $profileList;
 		}
 	}
 	$result1 = $adb->pquery($sql1,$params1);
@@ -652,7 +652,7 @@ function insertIntoRecurringTable(& $recurObj)
 			$params1 = array();
 			if (count($profileList) > 0) {
 				$sql1 .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
-				array_push($params1,$profileList);
+				$params1[] = $profileList;
 			}
 		}
 		$result1 = $adb->pquery($sql1, $params1);

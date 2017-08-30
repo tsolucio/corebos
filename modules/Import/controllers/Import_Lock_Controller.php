@@ -38,7 +38,7 @@ class Import_Lock_Controller {
 			$params = array($user->id);
 			if($module != false) {
 				$query .= ' AND tabid=?';
-				array_push($params, getTabid($module));
+				$params[] = getTabid($module);
 			}
 			$adb->pquery($query, $params);
 		}

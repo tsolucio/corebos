@@ -474,8 +474,8 @@ public function setgoogleaccessparams($userid){
     		$subrole = getRoleSubordinates($roleid);
     		if(count($subrole)> 0) {
     			$roleids = $subrole;
-    			array_push($roleids, $roleid);
-    		} else {	
+				$roleids[] = $roleid;
+			} else {
     			$roleids = $roleid;
     		}
 

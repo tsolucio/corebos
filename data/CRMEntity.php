@@ -736,12 +736,12 @@ class CRMEntity {
 
 			if ($insertion_mode == 'edit') {
 				if ($table_name != 'vtiger_ticketcomments' && $uitype != 4) {
-					array_push($update, $columname . "=?");
-					array_push($update_params, $fldvalue);
+					$update[] = $columname . '=?';
+					$update_params[] = $fldvalue;
 				}
 			} else {
-				array_push($column, $columname);
-				array_push($value, $fldvalue);
+				$column[] = $columname;
+				$value[] = $fldvalue;
 			}
 		}
 
@@ -749,7 +749,7 @@ class CRMEntity {
 			// If update is empty the query fails
 			if (count($update) > 0) {
 				$sql1 = "update $table_name set " . implode(",", $update) . " where " . $this->tab_name_index[$table_name] . "=?";
-				array_push($update_params, $this->id);
+				$update_params[] = $this->id;
 				$adb->pquery($sql1, $update_params);
 			}
 		} else {
@@ -1592,11 +1592,11 @@ class CRMEntity {
 		$params = array($tabid);
 		if (count($exclude_columns) > 0) {
 			$sql .= " AND columnname NOT IN (" . generateQuestionMarks($exclude_columns) . ")";
-			array_push($params, $exclude_columns);
+			$params[] = $exclude_columns;
 		}
 		if (count($exclude_uitypes) > 0) {
 			$sql .= " AND uitype NOT IN (" . generateQuestionMarks($exclude_uitypes) . ")";
-			array_push($params, $exclude_uitypes);
+			$params[] = $exclude_uitypes;
 		}
 		$result = $adb->pquery($sql, $params);
 		$num_rows = $adb->num_rows($result);

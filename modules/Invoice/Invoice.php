@@ -423,7 +423,7 @@ class Invoice extends CRMEntity {
 			$updatequery .= implode(",", $updatecols);
 
 			$updatequery .= " WHERE invoiceid=?";
-			array_push($updateparams, $this->id);
+			$updateparams[] = $this->id;
 
 			$adb->pquery($updatequery, $updateparams);
 		}

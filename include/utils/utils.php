@@ -234,7 +234,7 @@ function get_user_array($add_blank=true, $status="Active", $assigned_user="",$pr
 		}
 		if (!empty($assigned_user)) {
 			$query .= " OR id=?";
-			array_push($params, $assigned_user);
+			$params[] = $assigned_user;
 		}
 
 		$query .= " order by user_name ASC";
@@ -288,22 +288,22 @@ function get_group_array($add_blank=true, $status="Active", $assigned_user="",$p
 
 			if(count($current_user_groups) != 0) {
 				$query .= " OR vtiger_groups.groupid in (".generateQuestionMarks($current_user_groups).")";
-				array_push($params, $current_user_groups);
+				$params[] = $current_user_groups;
 			}
 			$log->debug("Sharing is Private. Only the current user should be listed");
 			$query .= " union select vtiger_group2role.groupid as groupid,vtiger_groups.groupname as groupname from vtiger_group2role inner join vtiger_groups on vtiger_groups.groupid=vtiger_group2role.groupid inner join vtiger_role on vtiger_role.roleid=vtiger_group2role.roleid where vtiger_role.parentrole like ?";
-			array_push($params, $current_user_parent_role_seq."::%");
+			$params[] = $current_user_parent_role_seq.'::%';
 
 			if(count($current_user_groups) != 0) {
 				$query .= " union select vtiger_groups.groupid as groupid,vtiger_groups.groupname as groupname from vtiger_groups inner join vtiger_group2rs on vtiger_groups.groupid=vtiger_group2rs.groupid where vtiger_group2rs.roleandsubid in (".generateQuestionMarks($parent_roles).")";
-				array_push($params, $parent_roles);
+				$params[] = $parent_roles;
 			}
 
 			$query .= " union select sharedgroupid as groupid,vtiger_groups.groupname as groupname from vtiger_tmp_write_group_sharing_per inner join vtiger_groups on vtiger_groups.groupid=vtiger_tmp_write_group_sharing_per.sharedgroupid where vtiger_tmp_write_group_sharing_per.userid=?";
-			array_push($params, $current_user->id);
+			$params[] = $current_user->id;
 
 			$query .= " and vtiger_tmp_write_group_sharing_per.tabid=?";
-			array_push($params, getTabid($module));
+			$params[] = getTabid($module);
 		}
 		$query .= " order by groupname ASC";
 
@@ -583,7 +583,7 @@ function append_where_clause(&$where_clauses, $variable_name, $SQL_name = null)
 
 	if(isset($_REQUEST[$variable_name]) && $_REQUEST[$variable_name] != "")
 	{
-		array_push($where_clauses, "$SQL_name like '$_REQUEST[$variable_name]%'");
+		$where_clauses[] = "$SQL_name like '$_REQUEST[$variable_name]%'";
 	}
 	$log->debug("Exiting append_where_clause method ...");
 }
@@ -2704,7 +2704,7 @@ function getAccessPickListValues($module)
 	if(count($subrole)> 0)
 	{
 		$roleids = $subrole;
-		array_push($roleids, $roleid);
+		$roleids[] = $roleid;
 	}
 	else
 	{
@@ -2967,7 +2967,7 @@ function getRecordValues($id_array,$module) {
 				}
 				$value_pair['org_value'] = $field_values[$j][$fld_name];
 
-				array_push($record_values[$c][$fld_label],$value_pair);
+				$record_values[$c][$fld_label][] = $value_pair;
 			}
 			$c++;
 		}
@@ -3991,16 +3991,16 @@ function getFieldsResultForMerge($tabid) {
 
 	if (isset($nonmergable_field_tab[$tabid]) && count($nonmergable_field_tab[$tabid]) > 0) {
 		$where .= " AND fieldname NOT IN (". generateQuestionMarks($nonmergable_field_tab[$tabid]) .")";
-		array_push($params, $nonmergable_field_tab[$tabid]);
+		$params[] = $nonmergable_field_tab[$tabid];
 	}
 
 	if (count($nonmergable_displaytypes) > 0) {
 		$where .= " AND displaytype NOT IN (". generateQuestionMarks($nonmergable_displaytypes) .")";
-		array_push($params, $nonmergable_displaytypes);
+		$params[] = $nonmergable_displaytypes;
 	}
 	if (count($nonmergable_uitypes) > 0) {
 		$where .= " AND uitype NOT IN ( ". generateQuestionMarks($nonmergable_uitypes) .")" ;
-		array_push($params, $nonmergable_uitypes);
+		$params[] = $nonmergable_uitypes;
 	}
 
 	if (trim($where) != '') {

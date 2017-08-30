@@ -63,10 +63,10 @@ $smarty->assign("CREATE_PERMISSION",($Calendar4You->CheckPermissions("CREATE") ?
 	else {
 		$roleid=$current_user->roleid;
 		$subrole = getRoleSubordinates($roleid);
-		if(count($subrole)> 0) {
+		if (count($subrole)> 0) {
 			$roleids = $subrole;
-			array_push($roleids, $roleid);
-		} else {	
+			$roleids[] = $roleid;
+		} else {
 			$roleids = $roleid;
 		}
 

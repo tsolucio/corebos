@@ -54,7 +54,7 @@ class VtigerCRMActorMeta extends EntityMeta {
 			if (strcasecmp($fieldDataType,'reference') === 0) {
 				$webserviceField->setReferenceList($this->getReferenceList($dbField,$tableName));
 			}
-			array_push($tableFieldList,$webserviceField);
+			$tableFieldList[] = $webserviceField;
 		}
 		return $tableFieldList;
 	}
@@ -101,7 +101,7 @@ class VtigerCRMActorMeta extends EntityMeta {
 		$result = $this->pearDB->pquery($sql,array($fieldTypeData['fieldtypeid']));
 		$numRows = $this->pearDB->num_rows($result);
 		for ($i=0;$i<$numRows;++$i) {
-			array_push($referenceTypes,$this->pearDB->query_result($result,$i,"type"));
+			$referenceTypes[] = $this->pearDB->query_result($result,$i,"type");
 		}
 		$referenceList[$dbField->name] = $referenceTypes;
 		return $referenceTypes;

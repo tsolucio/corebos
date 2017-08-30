@@ -77,8 +77,8 @@ $cont_Array = array();
 for($z=0;$z<$num_conts;$z++)
 {
 	$cont_ID=$adb->query_result($result,$z,'crmid');
-	if(!in_array($cont_ID, $cont_Array))
-		array_push($cont_Array, $cont_ID);
+	if (!in_array($cont_ID, $cont_Array))
+		$cont_Array[] = $cont_ID;
 }
 $cont_checkQ = " and vtiger_crmentityContacts.crmid in(0)";
 if(count($cont_Array) > 0)
@@ -750,7 +750,7 @@ function picklist_check($module,$graph_by)
 	if(count($subrole)> 0)
 	{
 		$roleids = $subrole;
-		array_push($roleids, $roleid);
+		$roleids[] = $roleid;
 	}
 	else
 	{

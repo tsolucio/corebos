@@ -474,7 +474,7 @@ class PearDatabase{
 			if(is_array($value)) {
 				$output = $this->flatten_array($value, $output);
 			} else {
-				array_push($output, $value);
+				$output[] = $value;
 			}
 		}
 		return $output;
@@ -551,7 +551,7 @@ class PearDatabase{
 			if (!$meta) {
 				return 0;
 			}
-			array_push($field_array,$meta);
+			$field_array[] = $meta;
 			$i++;
 		}
 
@@ -573,7 +573,7 @@ class PearDatabase{
 			if (!$meta) {
 				return 0;
 			}
-			array_push($field_array,$meta->name);
+			$field_array[] = $meta->name;
 			$i++;
 		}
 
