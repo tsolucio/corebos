@@ -18,6 +18,8 @@
 }
 
 
+
+
 /*========    End Header    ==========*/
 
 .slds-table tbody tr {
@@ -29,6 +31,8 @@
 .dvtCellInfo .slds-radio--faux {
     cursor: pointer;
 }
+
+
 
 
 /*=========  Button List  ==========*/
@@ -44,6 +48,8 @@
 .uiMenu {
     position: relative;
 }
+
+
 
 
 
@@ -142,6 +148,8 @@
 
 
 
+
+
 /*=========   END BUTTON_LIST  ==========*/
 
 .homePageButtons img {
@@ -158,6 +166,8 @@
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
 }
+
+
 
 
 
@@ -220,6 +230,8 @@ li.active,
     width: 850px;
     white-space: nowrap;
 }
+
+
 
 
 
@@ -367,7 +379,23 @@ li.active,
     padding: 3px;
 }
 
+.text-left {
+    text-align: left!important;
+}
 
+.slds-width {
+    width: 100%;
+}
+
+#availableusers option:first-child,
+#selectedusers option:first-child {
+    border: none;
+}
+
+#availableusers option,
+#selectedusers option {
+    border-radius: 0;
+}
 
 
 
@@ -482,6 +510,8 @@ article.container::after {
 
 
 
+
+
 /*=========  END DETAIL VIEW ---BODY---  ==========*/
 
 
@@ -553,6 +583,8 @@ article.container::after {
 .customLinkModule img {
     background-color: #6dc066;
 }
+
+
 
 
 
@@ -649,6 +681,8 @@ tr td.table-aside>.detailview_actionlinks {
 
 
 
+
+
 /**
 - * Creates a green button style
 - *
@@ -669,6 +703,8 @@ tr td.table-aside>.detailview_actionlinks {
     color: #fff;
     font-weight: bold;
 }
+
+
 
 
 
@@ -714,7 +750,7 @@ ul.slds-tabs--default__nav li {
 }
 
 .slds-dropdown__item>a {
-    padding:2px 5px 2px 5px;
+    padding: 2px 5px 2px 5px;
 }
 
 .slds-dropdown__list li.slds-dropdown__item {
@@ -756,10 +792,14 @@ li[title="More Information"] svg {
     border-bottom: none;
 }
 
+.slds-checkbox--faux {
+    cursor: pointer;
+}
+
 .slds-select option {
     background-color: #fff;
     color: #000;
-    border-radius: 5px;
+    /*border-radius: 5px;*/
     border-top: 1px solid #d4d4d4;
     padding: .1rem .5rem;
     margin: .1rem 0;
@@ -801,6 +841,8 @@ li[title="More Information"] svg {
     font-size: .875rem!important;
     margin: 0!important;
 }
+
+
 
 
 
@@ -872,6 +914,8 @@ select:-moz-focusring {
 
 
 
+
+
 /*=========   END DetailView - DetailViewUI - DetailViewUIUser  ==========*/
 
 
@@ -894,6 +938,8 @@ select:-moz-focusring {
 
 
 
+
+
 /*=========   END DetailViewUtils.php  ==========*/
 
 
@@ -903,6 +949,8 @@ select:-moz-focusring {
     border-right: 1px solid #fff;
     border-left: 1px solid #fff;
 }
+
+
 
 
 
@@ -930,6 +978,8 @@ select:-moz-focusring {
 .dvtContentSpace>tr {
     background-color: #f7f7fb;
 }
+
+
 
 
 
@@ -969,6 +1019,8 @@ select:-moz-focusring {
 }
 
 
+
+
 /*=========   END ListView.tpl  ==========*/
 
 
@@ -993,6 +1045,8 @@ th[scope="col"] {
 }
 
 
+
+
 /*=========   END ListView Entries.tpl  ==========*/
 
 
@@ -1011,6 +1065,8 @@ th[scope="col"] {
 }
 
 
+
+
 /*========= End Dashboard buttons ========*/
 
 
@@ -1026,6 +1082,8 @@ th[scope="col"] {
 .font-size select {
     font-size: .8rem;
 }
+
+
 
 
 /*=======End CustomView.tpl=======*/

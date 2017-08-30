@@ -17,7 +17,7 @@
 						{/if}
 
 						{if $LABEL.recurringtype neq ''}
-						<li class="slds-tabs--scoped__item selectedTab" id="cellTabRepeat" onClick="switchClass('cellTabInvite','off');switchClass('cellTabAlarm','off');switchClass('cellTabRepeat','on');ghide('addEventAlarmUI');ghide('addEventInviteUI');dispLayer('addEventRepeatUI');" role="presentation">
+						<li class="slds-tabs--scoped__item" id="cellTabRepeat" onClick="switchClass('cellTabInvite','off');switchClass('cellTabAlarm','off');switchClass('cellTabRepeat','on');ghide('addEventAlarmUI');ghide('addEventInviteUI');dispLayer('addEventRepeatUI');" role="presentation">
 							<a href="javascript:doNothing()" class="slds-tabs--scoped__link" role="tab" tabindex="-1" aria-selected="false" ><b>{$MOD.LBL_REPEAT}</b></a>
 						</li>
 						{/if}
@@ -41,11 +41,12 @@
 									<tr class="slds-line-height--reset">
 										<td class="dvtCellLabel" width="50%"><b>{$MOD.LBL_SENDREMINDER}</b></td>
 										<td class="dvtCellInfo" width="50%">{$ACTIVITYDATA.set_reminder}</td>
+
+											{if $ACTIVITYDATA.set_reminder != 'No'}
+											<td class="dvtCellLabel" width="50%"><b>{$MOD.LBL_RMD_ON}</b></td>
+											<td class="dvtCellInfo" width="50%">{$ACTIVITYDATA.reminder_str}</td>
+										{/if}
 									</tr>
-									{if $ACTIVITYDATA.set_reminder != 'No'}
-										<td class="dvtCellLabel" width="50%"><b>{$MOD.LBL_RMD_ON}</b></td>
-										<td class="dvtCellInfo" width="50%">{$ACTIVITYDATA.reminder_str}</td>
-									{/if}
 								</table>
 							{/if}
 						</div>
@@ -56,20 +57,20 @@
 							{if $LABEL.recurringtype neq ''}
 								<table class="slds-table slds-table--cell-buffer slds-no-row-hover slds-table--bordered slds-table--fixed-layout small detailview_table">
 
-									<tr>
+									<tr class="slds-line-height--reset">
 										<td class="dvtCellLabel" width="50%"><b>{$MOD.LBL_ENABLE_REPEAT}</b></td>
 										<td class="dvtCellInfo" width="50%">{$ACTIVITYDATA.recurringcheck}</td>
 									</tr>
 
 									{if $ACTIVITYDATA.repeat_frequency neq ''}
-										<tr>
+										<tr class="slds-line-height--reset">
 											<td class="dvtCellLabel" width="50%">&nbsp;</td>
 											<td class="dvtCellInfo" width="50%">{$MOD.LBL_REPEATEVENT}&nbsp;{$ACTIVITYDATA.repeat_frequency}&nbsp;{$MOD[$ACTIVITYDATA.recurringtype]}</td>
 										</tr>
 									{/if}
 
 									{if $ACTIVITYDATA.repeat_str neq ''}
-										<tr>
+										<tr class="slds-line-height--reset">
 											<td class="dvtCellLabel" width="50%">&nbsp;</td>
 											<td class="dvtCellInfo" width="50%">{$ACTIVITYDATA.repeat_str}</td>
 										</tr>
@@ -89,84 +90,3 @@
 <!-- End Lighting Design Tab Conrols by Endrit -->
 
 </td>
-
-
-
-	<table border=0 cellspacing=0 cellpadding=0 width=100% align=center style="display: none;">
-		<tr>
-			<td>
-				<table border=0 cellspacing=0 cellpadding=3 width=100%>
-					<tr>
-
-						<td id="cellTabInvite" class="dvtSelectedCell" align=center nowrap>
-						<a href="javascript:doNothing()" onClick="switchClass('cellTabInvite','on');switchClass('cellTabAlarm','off');switchClass('cellTabRepeat','off');ghide('addEventAlarmUI');dispLayer('addEventInviteUI');ghide('addEventRepeatUI');">{$MOD.LBL_INVITE}</a></td>
-
-						{if $LABEL.reminder_time neq ''}
-						<td id="cellTabAlarm" class="dvtUnSelectedCell" align=center nowrap>
-						<a href="javascript:doNothing()" onClick="switchClass('cellTabInvite','off');switchClass('cellTabAlarm','on');switchClass('cellTabRepeat','off');dispLayer('addEventAlarmUI');ghide('addEventInviteUI');ghide('addEventRepeatUI');">{$MOD.LBL_REMINDER}</a></td>
-						{/if}
-
-						{if $LABEL.recurringtype neq ''}
-						<td id="cellTabRepeat" class="dvtUnSelectedCell" align=center nowrap>
-						<a href="javascript:doNothing()" onClick="switchClass('cellTabInvite','off');switchClass('cellTabAlarm','off');switchClass('cellTabRepeat','on');ghide('addEventAlarmUI');ghide('addEventInviteUI');dispLayer('addEventRepeatUI');">{$MOD.LBL_REPEAT}</a></td>
-						{/if}
-
-					</tr>
-				</table>
-			</td>
-		</tr>
-
-		<tr>
-			<td width=100% valign=top align=left class="dvtContentSpace" style="padding:10px;height:120px"><!-- Invite UI -->
-			<DIV id="addEventInviteUI" style="display:block;width:100%">
-				<table width="100%" cellpadding="5" cellspacing="0" border="0">
-					<tr>
-						<td width="30%" valign="top" align=right><b>{$MOD.LBL_USERS}</b></td>
-						<td width="70%" align=left valign="top"> {foreach item=username key=userid from=$INVITEDUSERS}
-						{$username}
-						<br>
-						{/foreach} </td>
-					</tr>
-				</table>
-			</DIV><!-- Reminder UI -->
-			<DIV id="addEventAlarmUI" style="display:none;width:100%">
-				{if $LABEL.reminder_time != ''}
-				<table width="100%" cellpadding="5" cellspacing="0" border="0">
-					<tr>
-						<td width="30%" align=right><b>{$MOD.LBL_SENDREMINDER}</b></td>
-						<td width="70%" align=left>{$ACTIVITYDATA.set_reminder}</td>
-					</tr>
-					{if $ACTIVITYDATA.set_reminder != 'No'}
-					<tr>
-						<td width="30%" align=right><b>{$MOD.LBL_RMD_ON}</b></td>
-						<td width="70%" align=left>{$ACTIVITYDATA.reminder_str}</td>
-					</tr>
-					{/if}
-				</table>
-				{/if}
-			</DIV><!-- Repeat UI -->
-			<div id="addEventRepeatUI" style="display:none;width:100%">
-				{if $LABEL.recurringtype neq ''}
-				<table width="100%" cellpadding="5" cellspacing="0" border="0">
-					<tr>
-						<td width="30%" align=right><b>{$MOD.LBL_ENABLE_REPEAT}</b></td>
-						<td width="70%" align=left>{$ACTIVITYDATA.recurringcheck}</td>
-					</tr>
-					{if $ACTIVITYDATA.repeat_frequency neq ''}
-					<tr>
-						<td width="30%" align=right>&nbsp;</td>
-						<td>{$MOD.LBL_REPEATEVENT}&nbsp;{$ACTIVITYDATA.repeat_frequency}&nbsp;{$MOD[$ACTIVITYDATA.recurringtype]}</td>
-					</tr>
-					{/if}
-					{if $ACTIVITYDATA.repeat_str neq ''}
-					<tr>
-						<td width="30%" align=right>&nbsp;</td>
-						<td>{$ACTIVITYDATA.repeat_str}</td>
-					</tr>
-					{/if}
-				</table>
-				{/if}
-			</div>
-			</td>
-		</tr>
-	</table>
