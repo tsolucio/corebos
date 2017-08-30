@@ -204,7 +204,7 @@ class QueryGenerator {
 		$field = '';
 		if ($fldmod == '') {  // not FQN > we have to look for it
 			foreach ($this->referenceFieldInfoList as $fld => $mods) {
-				if ($fld=='modifiedby') $fld=='assigned_user_id';
+				if ($fld=='modifiedby') $fld='assigned_user_id';
 				foreach ($mods as $mname) {
 					if (!empty($this->referenceFields[$fld][$mname][$fldname])) {
 						$field = $this->referenceFields[$fld][$mname][$fldname];

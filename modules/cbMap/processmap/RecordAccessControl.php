@@ -207,7 +207,7 @@ class RecordAccessControl extends processcbMap {
 		if (count($this->mapping)==0) $this->convertMap2Array();
 		if (!isset($this->mapping['listview'])) return $default;
 		$map2use = $this->mapping['listview'];
-		if (count($map2use['condition']>0)) {
+		if (count($map2use['condition'])>0) {
 			$map2use = $this->getMap2Use($map2use);
 		}
 		switch (strtolower($operation)) {
@@ -239,7 +239,7 @@ class RecordAccessControl extends processcbMap {
 		if (count($this->mapping)==0) $this->convertMap2Array();
 		if (!isset($this->mapping['detailview'])) return $default;
 		$map2use = $this->mapping['detailview'];
-		if (count($map2use['condition']>0)) {
+		if (count($map2use['condition'])>0) {
 			$map2use = $this->getMap2Use($map2use);
 		}
 		switch (strtolower($operation)) {
@@ -272,7 +272,7 @@ class RecordAccessControl extends processcbMap {
 		if (count($this->mapping)==0) $this->convertMap2Array();
 		if (!isset($this->mapping['relatedlist']) or !isset($this->mapping['relatedlist'][$onmodule])) return true;
 		$map2use = $this->mapping['relatedlist'][$onmodule];
-		if (count($map2use['condition']>0)) {
+		if (count($map2use['condition'])>0) {
 			$map2use = $this->getMap2Use($map2use);
 		}
 		switch (strtolower($operation)) {
