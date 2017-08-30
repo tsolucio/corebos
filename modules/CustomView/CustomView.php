@@ -1003,9 +1003,12 @@ class CustomView extends CRMEntity {
 				$tablefield = "";
 				if ($value != "") {
 					$list = explode(":", $value);
-
 					//Added For getting status for Activities -Jaguar
-					$sqllist_column = $list[0] . "." . $list[1];
+					if($this->customviewmodule == "Calendar" && $list[0] == 'vtiger_cntactivityrel'){
+						$sqllist_column = "ctorel." . $list[1];
+					}else{
+						$sqllist_column = $list[0] . "." . $list[1];
+					}
 					if ($this->customviewmodule == "Calendar") {
 						if ($list[1] == "status" || $list[1] == "eventstatus") {
 							$sqllist_column = "case when (vtiger_activity.status not like '') then vtiger_activity.status else vtiger_activity.eventstatus end as activitystatus";
