@@ -1409,12 +1409,12 @@ class QueryGenerator {
 			} else {
 				$value = '';
 			}
-			if(!empty($input['operator'])) {
+			if (!empty($input['operator'])) {
 				$operator = $input['operator'];
-			} elseif(trim(strtolower($value)) == 'null'){
+			} elseif (strtolower(trim($value)) == 'null') {
 				$operator = 'e';
 			} else {
-				if(!$this->isNumericType($type) && !$this->isDateType($type)) {
+				if (!$this->isNumericType($type) && !$this->isDateType($type)) {
 					$operator = 'c';
 				} else {
 					$operator = 'h';
