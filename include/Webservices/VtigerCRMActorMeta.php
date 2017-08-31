@@ -165,10 +165,7 @@ class VtigerCRMActorMeta extends EntityMeta {
 		if (is_admin($this->user)) {
 			return true;
 		} else {
-			if (strcmp($operation,EntityMeta::$RETRIEVE)===0) {
-				return true;
-			}
-			return false;
+			return strcmp($operation,EntityMeta::$RETRIEVE)===0;
 		}
 	}
 
@@ -178,10 +175,7 @@ class VtigerCRMActorMeta extends EntityMeta {
 		} else {
 			$idComponents = vtws_getIdComponents($webserviceId);
 			$userId=$idComponents[1];
-			if ($this->user->id === $userId) {
-				return true;
-			}
-			return false;
+			return $this->user->id === $userId;
 		}
 	}
 

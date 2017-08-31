@@ -347,10 +347,7 @@ class ModTracker {
 	static function isViewPermitted($linkData) {
 		$moduleName = $linkData->getModule();
 		$recordId = $linkData->getInputParameter('record');
-		if(isPermitted($moduleName, 'DetailView', $recordId) == 'yes') {
-			return true;
-		}
-		return false;
+        return isPermitted($moduleName, 'DetailView', $recordId) == 'yes';
 	}
 }
 ?>

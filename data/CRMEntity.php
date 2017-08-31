@@ -59,10 +59,7 @@ class CRMEntity {
 	 */
 	static function isBulkSaveMode() {
 		global $VTIGER_BULK_SAVE_MODE;
-		if (isset($VTIGER_BULK_SAVE_MODE) && $VTIGER_BULK_SAVE_MODE) {
-			return true;
-		}
-		return false;
+		return isset($VTIGER_BULK_SAVE_MODE) && $VTIGER_BULK_SAVE_MODE;
 	}
 
 	static function getInstance($module) {
@@ -1660,10 +1657,7 @@ class CRMEntity {
 	function isModuleSequenceConfigured($module) {
 		$adb = PearDatabase::getInstance();
 		$result = $adb->pquery('SELECT 1 FROM vtiger_modentity_num WHERE semodule = ? AND active = 1', array($module));
-		if ($result && $adb->num_rows($result) > 0) {
-			return true;
-		}
-		return false;
+		return $result && $adb->num_rows($result) > 0;
 	}
 
 	/* Function to get the next module sequence number for a given module */

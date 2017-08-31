@@ -2970,10 +2970,7 @@ function isFileAccessible($filepath) {
 	$realfilepath = str_replace('\\', '/', $realfilepath);
 	$rootdirpath = str_replace('\\', '/', $rootdirpath);
 
-	if (stripos($realfilepath, $rootdirpath) !== 0) {
-		return false;
-	}
-	return true;
+	return !(stripos($realfilepath, $rootdirpath) !== 0);
 }
 
 /** Function to get the ActivityType for the given entity id

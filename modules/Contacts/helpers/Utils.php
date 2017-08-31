@@ -106,10 +106,7 @@ class Google_Utils_Helper {
         $db = PearDatabase::getInstance();
         $sql = 'SELECT 1 FROM ' . self::settings_table_name . ' WHERE user = ?';
         $result = $db->pquery($sql, array($userId));
-        if($db->num_rows($result) > 0){
-            return true;
-        }
-        return false;
+        return $db->num_rows($result) > 0;
     }
 
     static function saveSettings($request) {
