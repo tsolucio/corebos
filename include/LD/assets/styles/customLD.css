@@ -231,18 +231,6 @@ li.active,
     white-space: nowrap;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 /*=========  DETAIL VIEW ---HEADER---  ==========*/
 
 .s1FixedFullWidth {
@@ -255,12 +243,14 @@ li.active,
     transition: left .25s;
 }
 
+.forceHighlightsStencilSettings.s1FixedTop,
 .forceHighlightsStencilDesktop.s1FixedTop {
     /*position: fixed;*/
     border-top: none;
     z-index: 7000;
 }
 
+.forceHighlightsStencilSettings,
 .forceHighlightsStencilDesktop {
     min-height: 60px;
 }
@@ -270,6 +260,7 @@ li.active,
     position: relative;
 }
 
+.forceHighlightsStencilSettings.profilePicWrapper,
 .forceHighlightsStencilDesktop.profilePicWrapper {
     -webkit-box-flex: 0;
     flex: none;
@@ -301,6 +292,7 @@ li.active,
     background-clip: content-box;
 }
 
+.forceHighlightsStencilSettings .photoContainer:not(.forceOutputLookup),
 .forceHighlightsStencilDesktop .photoContainer:not(.forceOutputLookup) {
     padding-right: 0;
 }
@@ -326,12 +318,20 @@ li.active,
     height: 2rem;
 }
 
+.forceHighlightsStencilSettings .forceEntityIcon,
+.forceHighlightsStencilSettings .forceSocialPhoto img,
+.forceHighlightsStencilSettings .forceSocialPhoto_v2 img {
+    width: 48px;
+    height: 48px;
+}
+
 .slds-media__body p,
 .slds-media__body h1,
 .slds-media__body h2 {
     margin: 0;
 }
 
+.forceHighlightsStencilSettings .actionsContainer,
 .forceHighlightsStencilDesktop .actionsContainer {
     -webkit-align-items: flex-end;
     -ms-flex-align: end;
