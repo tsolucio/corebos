@@ -55,7 +55,7 @@
 										{if $data.name eq ''}
 											&nbsp;
 										{else}
-											<div class="slds-page-header s1FixedFullWidth s1FixedTop forceHighlightsStencilSettings" style="height: 100px;">
+											<div class="slds-page-header s1FixedFullWidth s1FixedTop forceHighlightsStencilSettings" style="height: 100px; min-width: 300px;">
 												<div class="slds-grid primaryFieldRow" style="transform: translate3d(0, -8.65823px, 0);">
 													<div class="slds-grid slds-col slds-has-flexi-truncate slds-media--center">
 														<table border=0 cellspacing=0 cellpadding=5 width=100%>
