@@ -266,8 +266,8 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$current_user = vtws_preserveGlobal('current_user',$this->user);
 
 		$label = (isset($app_strings[$elementType]))? $app_strings[$elementType]:$elementType;
-		$createable = (strcasecmp(isPermitted($elementType,EntityMeta::$CREATE),'yes')===0)? true:false;
-		$updateable = (strcasecmp(isPermitted($elementType,EntityMeta::$UPDATE),'yes')===0)? true:false;
+		$createable = strcasecmp(isPermitted($elementType, EntityMeta::$CREATE), 'yes') === 0;
+		$updateable = strcasecmp(isPermitted($elementType, EntityMeta::$UPDATE), 'yes') === 0;
 		$deleteable = $this->meta->hasDeleteAccess();
 		$retrieveable = $this->meta->hasReadAccess();
 		$fields = $this->getModuleFields();

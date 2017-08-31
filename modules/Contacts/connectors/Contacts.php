@@ -753,7 +753,7 @@ Class Google_Contacts_Connector extends WSAPP_TargetConnector {
      * @return <boolean> true or false
      */
     public function moreRecordsExits() {
-        return ($this->totalRecords - $this->createdRecords > 0) ? true : false;
+        return $this->totalRecords - $this->createdRecords > 0;
     }
 
      /**

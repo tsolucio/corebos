@@ -55,11 +55,11 @@ class WSAPP_SyncRecordModel extends WSAPP_BaseModel{
 	}
 
 	public function isDeleteMode(){
-		return ($this->mode == self::WSAPP_DELETE_MODE) ? true :false;
+		return $this->mode == self::WSAPP_DELETE_MODE;
 	}
 
 	public function isCreateMode(){
-		return ($this->mode == self::WSAPP_CREATE_MODE) ? true : false;
+		return $this->mode == self::WSAPP_CREATE_MODE;
 	}
 
 	public function getSyncIdentificationKey(){

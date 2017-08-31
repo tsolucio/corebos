@@ -127,7 +127,7 @@ class Campaigns extends CRMEntity {
 			$other->list_fields['Status'] = array('vtiger_campaignrelstatus'=>'campaignrelstatus');
 			$other->list_fields_name['Status'] = 'campaignrelstatus';
 			$other->sortby_fields[] = 'campaignrelstatus';
-			$is_CampaignStatusAllowed = (getFieldVisibilityPermission('Accounts', $current_user->id, 'campaignrelstatus','readwrite') == '0')? true : false;
+			$is_CampaignStatusAllowed = getFieldVisibilityPermission('Accounts', $current_user->id, 'campaignrelstatus', 'readwrite') == '0';
 		}
 
 		$singular_modname = vtlib_toSingular($related_module);
@@ -225,7 +225,7 @@ class Campaigns extends CRMEntity {
 			$other->list_fields['Status'] = array('vtiger_campaignrelstatus'=>'campaignrelstatus');
 			$other->list_fields_name['Status'] = 'campaignrelstatus';
 			$other->sortby_fields[] = 'campaignrelstatus';
-			$is_CampaignStatusAllowed = (getFieldVisibilityPermission('Contacts', $current_user->id, 'campaignrelstatus','readwrite') == '0')? true : false;
+			$is_CampaignStatusAllowed = getFieldVisibilityPermission('Contacts', $current_user->id, 'campaignrelstatus', 'readwrite') == '0';
 		}
 
 		$singular_modname = vtlib_toSingular($related_module);
@@ -324,7 +324,7 @@ class Campaigns extends CRMEntity {
 			$other->list_fields['Status'] = array('vtiger_campaignrelstatus'=>'campaignrelstatus');
 			$other->list_fields_name['Status'] = 'campaignrelstatus';
 			$other->sortby_fields[] = 'campaignrelstatus';
-			$is_CampaignStatusAllowed  = (getFieldVisibilityPermission('Leads', $current_user->id, 'campaignrelstatus','readwrite') == '0')? true : false;
+			$is_CampaignStatusAllowed  = getFieldVisibilityPermission('Leads', $current_user->id, 'campaignrelstatus', 'readwrite') == '0';
 		}
 
 		$singular_modname = vtlib_toSingular($related_module);

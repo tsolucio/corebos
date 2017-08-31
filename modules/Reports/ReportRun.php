@@ -2296,7 +2296,7 @@ class ReportRun extends CRMEntity {
 				$i18nheader[] = $i18nheaderLabel;
 			}
 			$resp = array(
-				'has_contents' => ($adb->num_rows($result)==1 ? true : false),
+				'has_contents' => ($adb->num_rows($result) == 1),
 				'jsonheaders' => $jsonheader,
 				'i18nheaders' => $i18nheader,
 				'error' => false,

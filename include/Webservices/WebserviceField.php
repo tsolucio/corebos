@@ -135,11 +135,11 @@ class WebserviceField{
 	}
 
 	public function isReferenceField() {
-		return ($this->getFieldDataType() == self::REFERENCE_TYPE) ? true : false;
+		return $this->getFieldDataType() == self::REFERENCE_TYPE;
 	}
 
 	public function isOwnerField() {
-		return ($this->getFieldDataType() == self::OWNER_TYPE) ? true : false;
+		return $this->getFieldDataType() == self::OWNER_TYPE;
 	}
 
 	public function getTypeOfData(){

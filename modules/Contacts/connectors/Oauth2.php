@@ -113,7 +113,7 @@ class Google_Oauth2_Connector {
         $sql = 'SELECT 1 FROM ' . $this->table_name . ' WHERE userid = ? AND service = ?';
         $params = array($this->user_id, $this->service_name);
         $res = $this->db->pquery($sql,$params);
-        $hasStoredToken = ($this->db->num_rows($res) > 0) ? true : false;
+        $hasStoredToken = $this->db->num_rows($res) > 0;
         return $hasStoredToken;
     }
 
