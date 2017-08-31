@@ -2500,7 +2500,7 @@ function utf8RawUrlDecode ($source) {
 */
 function html_to_utf8 ($data)
 {
-	return preg_replace_callback("/\\&\\#([0-9]{3,10})\\;/", '_html_to_utf8', $data);
+	return preg_replace_callback("/\\&\\#(\d{3,10})\\;/", '_html_to_utf8', $data);
 }
 
 function decode_html($str) {
@@ -4347,7 +4347,7 @@ function getValidDBInsertDateValue($value) {
 	if (strlen($d) == 1) $d = '0'.$d;
 	$value = implode('-', array($y,$m,$d));
 
-	if (preg_match("/^[0-9]{2,4}[-][0-3]{1,2}?[0-9]{1,2}[-][0-9]{2,4}$/", $value) == 0) {
+	if (preg_match('/^\d{2,4}[-][0-3]{1,2}?\d{1,2}[-]\d{2,4}$/', $value) == 0) {
 		return '';
 	}
 
