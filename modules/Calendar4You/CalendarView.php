@@ -79,12 +79,22 @@ $smarty->assign("CREATE_PERMISSION",($Calendar4You->CheckPermissions("CREATE") ?
 
 	$eventlist=''; 
 	$eventlists_array='';
+	$abelist = '';
 	for($i=0; $i<$adb->num_rows($Res);$i++) {
 		$actname = $adb->query_result($Res,$i,'activitytype');
-		$eventlist .= html_entity_decode($actname,ENT_QUOTES,$default_charset).";";
-		$eventlists_array .= '"'.html_entity_decode(html_entity_decode($actname,ENT_QUOTES,$default_charset),ENT_QUOTES, $default_charset).'",';
+		$actname = html_entity_decode($actname,ENT_QUOTES,$default_charset);
+		$eventlist .= $actname.";";
+		$eventlists_array .= '"'.html_entity_decode($actname,ENT_QUOTES, $default_charset).'",';
+		$i18actname = getTranslatedString($actname,'Calendar');
+		$abelist.='<tr><td><a id="add'.strtolower($actname).'" href="index.php?module=Calendar4You&action=EventEditView&return_module=Calendar&return_action=index&activity_mode=Events&activitytype='.$eventlist.'" class="drop_down">'.$i18actname.'</a></td></tr>';
 	}
-
+	$timeModules = getAllModulesWithDateTimeFields();
+	foreach ($timeModules as $tmid => $tmmod) {
+		$tmline = getTranslatedString($tmmod,$tmmod);
+		$tmlineid = str_replace(' ', '', $tmmod);
+		$abelist .= '<tr><td><a href="" id="add' . strtolower($tmlineid) . '" class="drop_down">' . $tmline . '</a></td></tr>';
+	}
+	$smarty->assign('ADD_BUTTONEVENTLIST', $abelist);
 	$add_javascript = "onMouseOver='fnAddITSEvent(this,\"addButtonDropDown\",\"".$temp_date."\",\"".$temp_date."\",\"".$time_arr['starthour']."\",\"".$time_arr['startmin']."\",\"".$time_arr['startfmt']."\",\"".$time_arr['endhour']."\",\"".$time_arr['endmin']."\",\"".$time_arr['endfmt']."\",\"".$viewBox."\",\"".(isset($subtab) ? $subtab : '')."\",\"".$eventlist."\");'";
 	$smarty->assign('ADD_ONMOUSEOVER', $add_javascript);
 
@@ -305,4 +315,3 @@ $smarty->assign('Calendar_Slot_Event_Overlap', (GlobalVariable::getVariable('Cal
 $smarty->assign('Calendar_Modules_Panel_Visible', GlobalVariable::getVariable('Calendar_Modules_Panel_Visible', 1));
 
 $smarty->display('modules/Calendar4You/CalendarView.tpl');
-include_once 'modules/Calendar4You/addEventUI.php';
