@@ -278,7 +278,7 @@ class iCalendar_component {
 			if(!empty($ical_activity['VALARM'])){
 				$temp = str_replace("PT",'',$ical_activity['VALARM']['TRIGGER']);
 				$duration_type = $temp[strlen($temp)-1];
-				$duration = intval($temp);
+				$duration = (int)$temp;
 				if($duration_type=='H'){
 					$reminder_time = $duration*60;
 				} else if($duration_type=='M'){

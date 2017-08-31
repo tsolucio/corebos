@@ -43,7 +43,7 @@ foreach ($products as $product) {
 	} else {
 		$divisible = true;
 	}
-	if ( !$divisible && floatval($product['qty']) != intval($product['qty']) ) {
+	if ( !$divisible && (float)$product['qty'] != (int)$product['qty']) {
 		$message = $product['name'].' '.getTranslatedString('DIVISIBLE_WARNING_PURCHASE','Products');
 		break;
 	}

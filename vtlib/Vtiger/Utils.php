@@ -21,7 +21,7 @@ class Vtiger_Utils {
 	 * @param mixed String or Integer
 	 */
 	static function isNumber($value) {
-		return is_numeric($value)? intval($value) == $value : false;
+		return is_numeric($value)? (int)$value == $value : false;
 	}
 
 	/**

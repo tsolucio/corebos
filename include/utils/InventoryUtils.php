@@ -541,12 +541,12 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 		//set the discount percentage or discount amount in update query, then set the tax values
 		if (isset($_REQUEST['discount_type'.$i]) and $_REQUEST['discount_type'.$i] == 'percentage') {
 			$updatequery .= " discount_percent=?,";
-			$updateparams[] = floatval($_REQUEST['discount_percentage'.$i]);
+			$updateparams[] = (float)$_REQUEST['discount_percentage'.$i];
 		}
 		elseif (isset($_REQUEST['discount_type'.$i]) and $_REQUEST['discount_type'.$i] == 'amount') {
 			$updatequery .= " discount_amount=?,";
 			$discount_amount = $_REQUEST['discount_amount'.$i];
-			$updateparams[] = floatval($discount_amount);
+			$updateparams[] = (float)$discount_amount;
 		}
 		if($_REQUEST['taxtype'] == 'group')
 		{
@@ -559,7 +559,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 				if(isset($_REQUEST[$request_tax_name]))
 					$tax_val =vtlib_purify($_REQUEST[$request_tax_name]);
 				$updatequery .= " $tax_name = ?,";
-				$updateparams[] = floatval($tax_val);
+				$updateparams[] = (float)$tax_val;
 			}
 			$updatequery = trim($updatequery,',')." where id=? and productid=? and lineitem_id = ?";
 			array_push($updateparams,$focus->id,$prod_id, $lineitem_id);
@@ -571,7 +571,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 				if (!in_array($tax_name, $ipr_cols)) continue;
 				$request_tax_name = $tax_name."_percentage".$i;
 				$updatequery .= " $tax_name = ?,";
-				$updateparams[] = floatval(vtlib_purify($_REQUEST[$request_tax_name]));
+				$updateparams[] = (float)vtlib_purify($_REQUEST[$request_tax_name]);
 			}
 			$updatequery = trim($updatequery,',')." where id=? and productid=? and lineitem_id = ?";
 			array_push($updateparams, $focus->id,$prod_id, $lineitem_id);
@@ -589,7 +589,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 	$updateparams = array();
 	$subtotal = vtlib_purify($_REQUEST['subtotal']);
 	$updatequery .= " subtotal=?,";
-	$updateparams[] = floatval($subtotal);
+	$updateparams[] = (float)$subtotal;
 
 	$updatequery .= " taxtype=?,";
 	$updateparams[] = vtlib_purify($_REQUEST['taxtype']);
@@ -597,17 +597,17 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 	//for discount percentage or discount amount
 	if (isset($_REQUEST['discount_type_final']) and $_REQUEST['discount_type_final'] == 'percentage') {
 		$updatequery .= " discount_percent=?,";
-		$updateparams[] = floatval(vtlib_purify($_REQUEST['discount_percentage_final']));
+		$updateparams[] = (float)vtlib_purify($_REQUEST['discount_percentage_final']);
 	}
 	elseif (isset($_REQUEST['discount_type_final']) and $_REQUEST['discount_type_final'] == 'amount') {
 		$discount_amount_final = vtlib_purify($_REQUEST['discount_amount_final']);
 		$updatequery .= " discount_amount=?,";
-		$updateparams[] = floatval($discount_amount_final);
+		$updateparams[] = (float)$discount_amount_final;
 	}
 
 	$shipping_handling_charge = vtlib_purify($_REQUEST['shipping_handling_charge']);
 	$updatequery .= " s_h_amount=?,";
-	$updateparams[] = floatval($shipping_handling_charge);
+	$updateparams[] = (float)$shipping_handling_charge;
 
 	//if the user gave - sign in adjustment then add with the value
 	$adjustmentType = '';
@@ -616,11 +616,11 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 
 	$adjustment = (isset($_REQUEST['adjustment']) ? vtlib_purify($_REQUEST['adjustment']) : 0);
 	$updatequery .= " adjustment=?,";
-	$updateparams[] = floatval($adjustmentType.$adjustment);
+	$updateparams[] = (float)($adjustmentType.$adjustment);
 
 	$total = vtlib_purify($_REQUEST['total']);
 	$updatequery .= " total=?";
-	$updateparams[] = floatval($total);
+	$updateparams[] = (float)$total;
 
 	//$id_array = Array('PurchaseOrder'=>'purchaseorderid','SalesOrder'=>'salesorderid','Quotes'=>'quoteid','Invoice'=>'invoiceid');
 	//Added where condition to which entity we want to update these values
@@ -640,7 +640,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 		if (isset($_REQUEST[$tax_name]) and $_REQUEST[$tax_name] != '' and in_array($sh_tax_details[$i]['taxname'], $isr_cols)) {
 			$sh_query_fields .= $sh_tax_details[$i]['taxname'].",";
 			$sh_query_values .= "?,";
-			$sh_query_params[] = floatval(vtlib_purify($_REQUEST[$tax_name]));
+			$sh_query_params[] = (float)vtlib_purify($_REQUEST[$tax_name]);
 		}
 	}
 	$sh_query_fields = trim($sh_query_fields,',');

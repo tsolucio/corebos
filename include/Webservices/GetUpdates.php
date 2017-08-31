@@ -201,7 +201,7 @@ function vtws_sync($mtime,$elementType,$syncType='',$user=''){
 		$modifiedtime = vtws_getSeconds($maxModifiedTime);
 	}
 	if (is_string($modifiedtime)) {
-		$modifiedtime = intval($modifiedtime);
+		$modifiedtime = (int)$modifiedtime;
 	}
 	$output['lastModifiedTime'] = $modifiedtime;
 

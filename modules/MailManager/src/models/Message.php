@@ -65,7 +65,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 			}
 			if ($loaded) {
 				$this->setRead(true);
-				$this->setMsgNo(intval($msgno));
+				$this->setMsgNo((int)$msgno);
 			}
 		}
 	}
@@ -212,11 +212,11 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 			$this->_body    = decode_html($resultrow['mbody']);
 			$this->_charset = decode_html($resultrow['mcharset']);
 
-			$this->_isbodyhtml   = intval($resultrow['misbodyhtml'])? true : false;
+			$this->_isbodyhtml   = (int)$resultrow['misbodyhtml'] ? true : false;
 			$this->_plainmessage = $resultrow['mplainmessage'];
 			$this->_htmlmessage  = $resultrow['mhtmlmessage'];
 			$this->_uniqueid     = decode_html($resultrow['muniqueid']);
-			$this->_bodyparsed   = intval($resultrow['mbodyparsed'])? true : false;
+			$this->_bodyparsed   = (int)$resultrow['mbodyparsed'] ? true : false;
 
 			return true;
 		}

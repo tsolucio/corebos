@@ -1386,13 +1386,13 @@ function get_time_difference( $start, $end )
 		if( $uts['end'] >= $uts['start'] )
 		{
 			$diff    =    $uts['end'] - $uts['start'];
-			if( $days=intval((floor($diff/86400))) )
+			if( $days= (int)(floor($diff/86400)))
 			$diff = $diff % 86400;
-			if( $hours=intval((floor($diff/3600))) )
+			if( $hours= (int)(floor($diff/3600)))
 			$diff = $diff % 3600;
-			if( $minutes=intval((floor($diff/60))) )
+			if( $minutes= (int)(floor($diff/60)))
 			$diff = $diff % 60;
-			$diff    =    intval( $diff );
+			$diff    = (int)$diff;
 			return( array('days'=>$days, 'hours'=>$hours, 'minutes'=>$minutes, 'seconds'=>$diff) );
 		}
 	}

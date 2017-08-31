@@ -249,7 +249,7 @@ class MailManager_Connector {
 		// Optimization to avoid trigger for ever mail open (with interval specified)
 		$lastClearTimeFromSession = false;
 		if ($interval && isset($_SESSION) && isset($_SESSION['mailmanager_clearDBCacheIntervalLast'])) {
-			$lastClearTimeFromSession = intval($_SESSION['mailmanager_clearDBCacheIntervalLast']);
+			$lastClearTimeFromSession = (int)$_SESSION['mailmanager_clearDBCacheIntervalLast'];
 			if (($timenow - $lastClearTimeFromSession) < ($timenow - $interval)) {
 				$interval = false;
 			}

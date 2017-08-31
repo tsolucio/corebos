@@ -2854,7 +2854,7 @@ function getMigrationCharsetFlag() {
 function ConvertToMinutes($time_string) {
 	if (empty($time_string)) return 0;
 	$interval = explode(' ', $time_string);
-	$interval_minutes = intval($interval[0]);
+	$interval_minutes = (int)$interval[0];
 	$interval_string = strtolower($interval[1]);
 	if ($interval_string == 'hour' || $interval_string == 'hours') {
 		$interval_minutes = $interval_minutes * 60;

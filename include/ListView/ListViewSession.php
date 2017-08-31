@@ -192,7 +192,7 @@ class ListViewSession {
 			$start = $_SESSION['lvs'][$currentModule][$viewid]['start'];
 		}
 		if(!$queryMode) {
-			coreBOS_Session::set('lvs^'.$currentModule.'^'.$viewid.'^'.'start', intval($start));
+			coreBOS_Session::set('lvs^'.$currentModule.'^'.$viewid.'^'.'start', (int)$start);
 		}
 		return $start;
 	}

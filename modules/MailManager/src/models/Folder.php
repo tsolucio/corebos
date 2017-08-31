@@ -49,11 +49,11 @@ class MailManager_Model_Folder {
 	}
 	
 	function setPaging($start, $end, $limit, $total, $current) {
-		$this->mPageStart = intval($start);
-		$this->mPageEnd = intval($end);
-		$this->mPageLimit = intval($limit);
-		$this->mCount = intval($total);
-		$this->mPageCurrent = intval($current);
+		$this->mPageStart = (int)$start;
+		$this->mPageEnd = (int)$end;
+		$this->mPageLimit = (int)$limit;
+		$this->mCount = (int)$total;
+		$this->mPageCurrent = (int)$current;
 	}
 	
 	function pageStart() {

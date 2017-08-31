@@ -60,7 +60,7 @@ class PerformancePrefs {
 	}
 	/** Get Integer value */
 	static function getInteger($key, $defvalue=false) {
-		return intval(self::get($key, $defvalue));
+		return (int)self::get($key, $defvalue);
 	}
 }
 
