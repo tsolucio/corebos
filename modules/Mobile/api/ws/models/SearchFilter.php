@@ -40,6 +40,7 @@ class crmtogo_WS_SearchFilterModel extends crmtogo_WS_FilterModel {
 		}
 		$orderClause = "";
 		$groupClause = "";
+		$limitClause = '';
 		if ($paging) {
 			$config = crmtogo_WS_Controller::getUserConfigSettings();
 			$limitClause = "LIMIT 0,".$config['NavigationLimit'];

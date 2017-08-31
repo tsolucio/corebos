@@ -139,7 +139,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 		}
 
 		// SUBPART RECURSION
-		if ($p->parts) {
+		if (!empty($p->parts)) {
 			foreach ($p->parts as $partno0=>$p2)
 				$this->__getpart($imap,$messageid,$p2,$partno.'.'.($partno0+1));  // 1.2, 1.2.1, etc.
 		}
