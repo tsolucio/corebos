@@ -13,7 +13,6 @@ class DateTimeField {
 
 	static protected $databaseTimeZone = null;
 	protected $datetime;
-	private static $cache = array();
 
 	/**
 	 *
@@ -291,37 +290,30 @@ class DateTimeField {
 	 * @return DateTime
 	 */
 	public static function convertTimeZone($time, $sourceTimeZoneName, $targetTimeZoneName) {
-		// TODO Caching is causing problem in getting the right date time format in Calendar module.
-		// Need to figure out the root cause for the problem. Till then, disabling caching.
-		//if(empty(self::$cache[$time][$targetTimeZoneName])) {
-			// create datetime object for given time in source timezone
-			$sourceTimeZone = new DateTimeZone($sourceTimeZoneName);
-                        preg_match('/(\d{1,2}\:\d{2}:\d{2}$|\d{1,2}\:\d{2}$)/', $time, $matches);
-                        if($matches){
-                            $timefield = $matches[0];
-                            $postime = strpos($time, $timefield);
-                            $date = trim(substr($time, 0, $postime));
-                            if (strlen($date)<8) $date = ''; // will set today
-                            if (strlen($date)>10) $date = substr($date,0,10);
-                            $hour = $timefield;
-                        }else{
-                            $date = $time;
-                            $hour = '00:00';
-                        }
-                        if($hour >= '24:00') $time = $date.' 00:00';
-			try {
-				$myDateTime = new DateTime($time, $sourceTimeZone);
-			} catch (Exception $e) {
-				$cleantime = self::sanitizeDate($time, '');
-				$myDateTime = new DateTime($cleantime, $sourceTimeZone);
-			}
+		$sourceTimeZone = new DateTimeZone($sourceTimeZoneName);
+		preg_match('/(\d{1,2}\:\d{2}:\d{2}$|\d{1,2}\:\d{2}$)/', $time, $matches);
+		if ($matches) {
+			$timefield = $matches[0];
+			$postime = strpos($time, $timefield);
+			$date = trim(substr($time, 0, $postime));
+			if (strlen($date)<8) $date = ''; // will set today
+			if (strlen($date)>10) $date = substr($date,0,10);
+			$hour = $timefield;
+		} else {
+			$date = $time;
+			$hour = '00:00';
+		}
+		if ($hour >= '24:00') $time = $date.' 00:00';
+		try {
+			$myDateTime = new DateTime($time, $sourceTimeZone);
+		} catch (Exception $e) {
+			$cleantime = self::sanitizeDate($time, '');
+			$myDateTime = new DateTime($cleantime, $sourceTimeZone);
+		}
 
-			// convert this to target timezone using the DateTimeZone object
-			$targetTimeZone = new DateTimeZone($targetTimeZoneName);
-			$myDateTime->setTimeZone($targetTimeZone);
-			self::$cache[$time][$targetTimeZoneName] = $myDateTime;
-		//}
-		$myDateTime = self::$cache[$time][$targetTimeZoneName];
+		// convert this to target timezone using the DateTimeZone object
+		$targetTimeZone = new DateTimeZone($targetTimeZoneName);
+		$myDateTime->setTimeZone($targetTimeZone);
 		return $myDateTime;
 	}
 
