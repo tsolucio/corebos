@@ -121,181 +121,257 @@ function check_duplicate()
 {/if}
 <!-- END -->
 
-<br>
-<table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
-<tbody><tr>
-	<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
-	<br>
-	<div align=center>
-	{if $PARENTTAB eq 'Settings'}
-		{include file='SetMenu.tpl'}
-	{/if}
-
-		<form name="EditView" method="POST" action="index.php" ENCTYPE="multipart/form-data" onsubmit="VtigerJS_DialogBox.block();">
-		<input type="hidden" name="module" value="Users">
-		<input type="hidden" name="record" value="{if isset($ID)}{$ID}{/if}">
-		<input type="hidden" name="mode" value="{$MODE}">
-		<input type='hidden' name='parenttab' value='{$PARENTTAB}'>
-		<input type="hidden" name="action">
-		<input type="hidden" name="return_module" value="{$RETURN_MODULE}">
-		<input type="hidden" name="return_id" value="{$RETURN_ID}">
-		<input type="hidden" name="return_action" value="{$RETURN_ACTION}">
-		<input type="hidden" name="tz" value="Europe/Berlin">
-		<input type="hidden" name="holidays" value="de,en_uk,fr,it,us,">
-		<input type="hidden" name="workdays" value="0,1,2,3,4,5,6,">
-		<input type="hidden" name="namedays" value="">
-		<input type="hidden" name="weekstart" value="1">
-		<input type="hidden" name="hour_format" value="{$HOUR_FORMAT}">
-		<input type="hidden" name="start_hour" value="{$START_HOUR}">
-		<input type="hidden" name="form_token" value="{$FORM_TOKEN}">
-
-	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="settingsSelUITopLine">
-	<tr><td align="left">
-		<table class="settingsSelUITopLine" border="0" cellpadding="5" cellspacing="0" width="100%">
-		<tr>
-			<td rowspan="2" width="50"><img src="{'ico-users.gif'|@vtiger_imageurl:$THEME}" align="absmiddle"></td>
-			<td>
-				<span class="lvtHeaderText">
-				{if $PARENTTAB neq ''}
-				<b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString} </a> &gt; <a href="index.php?module=Users&action=index&parenttab=Settings">{$MOD.LBL_USERS}</a> &gt;
-					{if $MODE eq 'edit'}
-						{$UMOD.LBL_EDITING} "{$USERNAME}"
-					{else}
-						{if $DUPLICATE neq 'true'}
-						{$UMOD.LBL_CREATE_NEW_USER}
-						{else}
-						{$APP.LBL_DUPLICATING} "{$USERNAME}"
-						{/if}
-					{/if}
-					</b></span>
-				{else}
-					<span class="lvtHeaderText"><b>{$APP.LBL_MY_PREFERENCES}</b></span>
-				{/if}
-			</td>
-			<td rowspan="2" nowrap>&nbsp;
-			</td>
-		</tr>
-		<tr>
-			{if $MODE eq 'edit'}
-				<td><b class="small">{$UMOD.LBL_EDIT_VIEW} "{$USERNAME}"</b>
-			{else}
-				{if $DUPLICATE neq 'true'}
-				<td><b class="small">{$UMOD.LBL_CREATE_NEW_USER}</b>
-				{/if}
-			{/if}
-			</td>
-		</tr>
-		</table>
-	</td>
-	</tr>
-	<tr><td>&nbsp;</td></tr>
+<table width="100%" cellpadding="2" cellspacing="0" border="0" class="detailview_wrapper_table">
 	<tr>
-		<td nowrap align="right">
-			{if $LDAP_BUTTON neq ''}
-				<input type="text" id="LdapSearchUser" class="detailedViewTextBox" style="width:150px;" placeholder="{$UMOD.LBL_FORE_LASTNAME}">
-				<input type="button" class="crmbutton small create" value="{$UMOD.LBL_QUERY} {$LDAP_BUTTON}" onClick="QueryLdap('LdapSearchUser');">
-				<select id="LdapSelectUser" class="small" style="width:250px; visibility:hidden;" onChange="QueryLdap('LdapSelectUser');"></select>
-			{/if}
-			<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accesskey="{$APP.LBL_SAVE_BUTTON_KEY}" class="small crmbutton save" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  " onclick="this.form.action.value='Save'; return verify_data(EditView)" type="button" />
-			<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accesskey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="small crmbutton cancel" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  " onclick="window.history.back()" type="button" />
-		</td>
-	</tr>
-	<tr><td class="padTab" align="left">
-		<table width="100%" border="0" cellpadding="0" cellspacing="0">
-		<tr><td colspan="2">
-			<table align="center" border="0" cellpadding="0" cellspacing="0" width="99%">
-			<tr>
-				<td align="left" valign="top">
-				<table border="0" cellpadding="0" cellspacing="0" width="100%">
-					<tr><td align="left">
-						{foreach key=header name=blockforeach item=data from=$BLOCKS}
-						<br>
-						<table class="tableHeading" border="0" cellpadding="5" cellspacing="0" width="100%">
-						<tr>{strip}
-							<td class="big"><strong>{$smarty.foreach.blockforeach.iteration}. {$header}</strong></td>
-							<td class="small" align="right">&nbsp;</td>
-						{/strip}</tr>
-						</table>
-						<table border="0" cellpadding="5" cellspacing="0" width="100%">
-						<!-- Handle the ui types display -->
-							{include file="DisplayFields.tpl"}
-						</table>
-						{assign var=list_numbering value=$smarty.foreach.blockforeach.iteration}
-					{/foreach}
-				<br>
-				<table class="tableHeading" border="0" cellpadding="5" cellspacing="0" width="100%">
-					<tr>
-						<td class="big"><strong>{$list_numbering+1}. {$UMOD.LBL_HOME_PAGE_COMP}</strong></td>
-						<td class="small" align="right">&nbsp;</td>
-					</tr>
-				</table>
-				<table border="0" cellpadding="5" cellspacing="0" width="100%">
-				{foreach item=homeitems key=values from=$HOMEORDER}
-					<tr>
-						<td class="dvtCellLabel" align="right" width="30%">{$UMOD.$values|@getTranslatedString:'Home'}</td>
-						<td class="dvtCellInfo" align="center" width="5%"><input name="{$values}" value="{$values}" {if $homeitems neq ''}checked{/if} type="radio"></td>
-						<td class="dvtCellInfo" align="left" width="20%">{$UMOD.LBL_SHOW}</td>
-						<td class="dvtCellInfo" align="center" width="5%"><input name="{$values}" value="" {if $homeitems eq ''}checked{/if} type="radio"></td>
-						<td class="dvtCellInfo" align="left">{$UMOD.LBL_HIDE}</td>
-					</tr>
-				{/foreach}
-				</table>
-				<!-- Added for User Based TagCloud -->
-				<table class="tableHeading" border="0" cellpadding="5" cellspacing="0" width="100%">
-				<tr>
-					<td class="big"><strong>{$list_numbering+2}. {$UMOD.LBL_TAGCLOUD_DISPLAY}</strong></td>
-					<td class="small" align="right">&nbsp;</td>
-				</tr>
-				</table>
-				<!-- End of Header -->
-				<table border="0" cellpadding="5" cellspacing="0" width="100%">
-					<tr><td class="dvtCellLabel" align="right" width="30%">{$UMOD.LBL_TAG_CLOUD}</td>
-				{if $TAGCLOUDVIEW eq 'true'}
-					<td class="dvtCellInfo" align="center" width="5%">
-					<input name="tagcloudview" value="true" checked type="radio"></td><td class="dvtCellInfo" align="left" >{$UMOD.LBL_SHOW}</td>
-					<td class="dvtCellInfo" align="center" width="5%">
-					<input name="tagcloudview" value="false" type="radio"></td><td class="dvtCellInfo" align="left">{$UMOD.LBL_HIDE}</td>
-				{else}
-					<td class="dvtCellInfo" align="center" width="5%">
-					<input name="tagcloudview" value="true" type="radio"></td><td class="dvtCellInfo" align="left">{$UMOD.LBL_SHOW}</td>
-					<td class="dvtCellInfo" align="center" width="5%">
-					<input name="tagcloudview" value="false" checked type="radio"></td><td class="dvtCellInfo" align="left">{$UMOD.LBL_HIDE}</td>
+		<td style="padding: 0;">
+			<div align=center>
+				{if $PARENTTAB eq 'Settings'}
+					{include file='SetMenu.tpl'}
 				{/if}
-					</tr>
-					<tr><td class="dvtCellLabel" align="right" width="30%">{$MOD.LBL_Show}</td>
-						<td class="dvtCellInfo" align="left" colspan=4>
-							<select class="small" name="showtagas">
-							{html_options options=$tagshow_options selected=$SHOWTAGAS}
-							</select>
-						</td>
-					</tr>
-				</table>
-				<!--end of Added for User Based TagCloud -->
-				<br>
-				<tr><td colspan=4>&nbsp;</td></tr>
+
+				<form name="EditView" method="POST" action="index.php" ENCTYPE="multipart/form-data" onsubmit="VtigerJS_DialogBox.block();">
+					<input type="hidden" name="module" value="Users">
+					<input type="hidden" name="record" value="{if isset($ID)}{$ID}{/if}">
+					<input type="hidden" name="mode" value="{$MODE}">
+					<input type='hidden' name='parenttab' value='{$PARENTTAB}'>
+					<input type="hidden" name="action">
+					<input type="hidden" name="return_module" value="{$RETURN_MODULE}">
+					<input type="hidden" name="return_id" value="{$RETURN_ID}">
+					<input type="hidden" name="return_action" value="{$RETURN_ACTION}">
+					<input type="hidden" name="tz" value="Europe/Berlin">
+					<input type="hidden" name="holidays" value="de,en_uk,fr,it,us,">
+					<input type="hidden" name="workdays" value="0,1,2,3,4,5,6,">
+					<input type="hidden" name="namedays" value="">
+					<input type="hidden" name="weekstart" value="1">
+					<input type="hidden" name="hour_format" value="{$HOUR_FORMAT}">
+					<input type="hidden" name="start_hour" value="{$START_HOUR}">
+					<input type="hidden" name="form_token" value="{$FORM_TOKEN}">
+
+					<table width="100%" border="0" cellpadding="0" cellspacing="0">
+
 						<tr>
-							<td colspan=4 align="right">
-							<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accesskey="{$APP.LBL_SAVE_BUTTON_KEY}" class="small crmbutton save" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  " onclick="this.form.action.value='Save'; return verify_data(EditView)" type="button" />
-							<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accesskey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="small crmbutton cancel" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  " onclick="window.history.back()" type="button" />
+							<td valign=top align=left>
+								<table class="slds-table slds-no-row-hover slds-table--cell-buffer slds-table-moz">
+									<tr>
+										<td style="padding: 0;">
+											<div class="slds-page-header s1FixedFullWidth s1FixedTop forceHighlightsStencilSettings" style="height: 70px;">
+												<div class="slds-grid primaryFieldRow" style="transform: translate3d(0, -8.65823px, 0);">
+													<div class="slds-grid slds-col slds-has-flexi-truncate slds-media--center">
+														<div class="profilePicWrapper slds-media slds-no-space" style="transform: scale3d(0.864715, 0.864715, 1) translate3d(4.32911px, 2.16456px, 0);">
+															<div class="slds-media__figure slds-icon forceEntityIcon">
+																<span class="photoContainer forceSocialPhoto">
+																	<div class="small roundedSquare forceEntityIcon">
+																		<span class="uiImage">
+																			<img src="{'ico-users.gif'|@vtiger_imageurl:$THEME}" align="absmiddle"/>
+																		</span>
+																	</div>
+																</span>
+															</div>
+														</div>
+														<div class="slds-media__body">
+															<h2 class="slds-page-header__title slds-m-right--small slds-truncate slds-align-middle">
+																{if $PARENTTAB neq ''}
+																	<span class="uiOutputText" style="display: initial;">
+																		<b>
+																			<a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a>&gt;
+																			<a href="index.php?module=Users&action=index&parenttab=Settings">{$MOD.LBL_USERS}</a>&gt;
+																			{if $MODE eq 'edit'}
+																				{$UMOD.LBL_EDITING} "{$USERNAME}"
+																			{else}
+																				{if $DUPLICATE neq 'true'}
+																					{$UMOD.LBL_CREATE_NEW_USER}
+																				{else}
+																					{$APP.LBL_DUPLICATING} "{$USERNAME}"
+																				{/if}
+																			{/if}
+																		</b>
+																	</span>
+																{else}
+																	<span class="uiOutputText" style="display: initial;">
+																		<b>{$APP.LBL_MY_PREFERENCES}</b>
+																	</span>
+																{/if}
+																<br/>
+																{if $MODE eq 'edit'}
+																	<span class="small"><b>{$UMOD.LBL_EDIT_VIEW} "{$USERNAME}"</b>
+																{else}
+																	{if $DUPLICATE neq 'true'}
+																	<span class="small"><b>{$UMOD.LBL_CREATE_NEW_USER}</b>
+																	{/if}
+																{/if}
+															</h2>
+														</div>
+													</div>
+												</div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="4" style="padding: .5rem 0 0 0;">
+											<div align="center">
+												{if $LDAP_BUTTON neq ''}
+													<input type="text" id="LdapSearchUser" class="slds-input" placeholder="{$UMOD.LBL_FORE_LASTNAME}" style="width: 25%;vertical-align: middle;">
+													<input type="button" class="slds-button slds-button--neutral not-selected slds-not-selected uiButton" aria-live="assertive" value="{$UMOD.LBL_QUERY} {$LDAP_BUTTON}" onClick="QueryLdap('LdapSearchUser');">
+													<select id="LdapSelectUser" class="slds-select visibility:hidden;" onChange="QueryLdap('LdapSelectUser');" style="width: 25%;vertical-align: sub;"></select>
+												{/if}
+												<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accesskey="{$APP.LBL_SAVE_BUTTON_KEY}" class="slds-button slds-button_success slds-button--small" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  " onclick="this.form.action.value='Save'; return verify_data(EditView)" type="button" />
+												<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accesskey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="slds-button slds-button--destructive slds-button--small" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  " onclick="window.history.back()" type="button" />
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td style="padding: 0">
+											<table class="slds-table slds-no-row-hover slds-table-moz" style="border-collapse: separate;border-spacing: 1rem 2rem;">
+												{foreach key=header name=blockforeach item=data from=$BLOCKS}
+													<tr class="blockStyleCss">
+														<td class="detailViewContainer" valign="top" style="padding: 0 .5rem">
+															{strip}
+															<div class="forceRelatedListSingleContainer">
+																<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
+																	<div class="slds-card__header slds-grid">
+																		<header class="slds-media slds-media--center slds-has-flexi-truncate">
+																			<div class="slds-media__body">
+																				<h2>
+																					<span class="slds-text-title--caps slds-truncate slds-m-right--xx-small">
+																						<b>{$smarty.foreach.blockforeach.iteration}. {$header}</b>
+																					</span>
+																				</h2>
+																			</div>
+																		</header>
+																	</div>
+																</article>
+															</div>
+															{/strip}
+															<!-- Handle the ui types display -->
+															{include file="DisplayFields.tpl"}
+															{assign var=list_numbering value=$smarty.foreach.blockforeach.iteration}
+														</td>
+													</tr>
+												{/foreach}
+													<!-- Added for HOME PAGE COMPONENT -->
+													<tr class="blockStyleCss">
+														<td class="detailViewContainer" valign="top">
+															{strip}
+															<div class="forceRelatedListSingleContainer">
+																<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
+																	<div class="slds-card__header slds-grid">
+																		<header class="slds-media slds-media--center slds-has-flexi-truncate">
+																			<div class="slds-media__body">
+																				<h2>
+																					<span class="slds-text-title--caps slds-truncate slds-m-right--xx-small">
+																						<b>{$list_numbering+1}. {$UMOD.LBL_HOME_PAGE_COMP}</b>
+																					</span>
+																				</h2>
+																			</div>
+																		</header>
+																	</div>
+																</article>
+															</div>
+															{/strip}
+															<!-- Handle the ui types display -->
+															<div class="createview_field_row">
+																<table class="slds-table slds-table--cell-buffer slds-no-row-hover slds-table--bordered slds-table--fixed-layout small detailview_table">
+																	{foreach item=homeitems key=values from=$HOMEORDER}
+																		<tr class="slds-line-height--reset">
+																			<td class="dvtCellLabel" align="right" width="20%">{$UMOD.$values|@getTranslatedString:'Home'}</td>
+																			<td class="dvtCellInfo" align="center" width="5%"><input name="{$values}" value="{$values}" {if $homeitems neq ''}checked{/if} type="radio"></td>
+																			<td class="dvtCellInfo" align="left" width="35%">{$UMOD.LBL_SHOW}</td>
+																			<td class="dvtCellInfo" align="center" width="5%"><input name="{$values}" value="" {if $homeitems eq ''}checked{/if} type="radio"></td>
+																			<td class="dvtCellInfo" align="left" width="35%">{$UMOD.LBL_HIDE}</td>
+																		</tr>
+																	{/foreach}
+																</table>
+															</div>
+														</td>
+													</tr>
+													<!-- Added for User Based TagCloud -->
+													<tr class="blockStyleCss">
+														<td class="detailViewContainer" valign="top">
+															{strip}
+															<div class="forceRelatedListSingleContainer">
+																<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
+																	<div class="slds-card__header slds-grid">
+																		<header class="slds-media slds-media--center slds-has-flexi-truncate">
+																			<div class="slds-media__body">
+																				<h2>
+																					<span class="slds-text-title--caps slds-truncate slds-m-right--xx-small">
+																						<b>{$list_numbering+2}. {$UMOD.LBL_TAGCLOUD_DISPLAY}</b>
+																					</span>
+																				</h2>
+																			</div>
+																		</header>
+																	</div>
+																</article>
+															</div>
+															{/strip}
+															<!-- End of Header -->
+															<div class="createview_field_row">
+																<table class="slds-table slds-table--cell-buffer slds-no-row-hover slds-table--bordered slds-table--fixed-layout small detailview_table">
+																	<tr class="slds-line-height--reset">
+																			<td class="dvtCellLabel" align="right" width="20%">{$UMOD.LBL_TAG_CLOUD}</td>
+																		{if $TAGCLOUDVIEW eq 'true'}
+																			<td class="dvtCellInfo" align="center" width="5%">
+																				<input name="tagcloudview" value="true" checked type="radio"></td>
+																			<td class="dvtCellInfo" align="left" width="35%">{$UMOD.LBL_SHOW}</td>
+																			<td class="dvtCellInfo" align="center" width="5%">
+																				<input name="tagcloudview" value="false" type="radio"></td>
+																			<td class="dvtCellInfo" align="left" width="35%">{$UMOD.LBL_HIDE}</td>
+																		{else}
+																			<td class="dvtCellInfo" align="center" width="5%">
+																				<input name="tagcloudview" value="true" type="radio"></td>
+																			<td class="dvtCellInfo" align="left" width="35%">{$UMOD.LBL_SHOW}</td>
+																			<td class="dvtCellInfo" align="center" width="5%">
+																				<input name="tagcloudview" value="false" checked type="radio"></td>
+																			<td class="dvtCellInfo" align="left" width="35%">{$UMOD.LBL_HIDE}</td>
+																		{/if}
+																	</tr>
+																</table>
+																<table class="slds-table slds-table--cell-buffer slds-no-row-hover slds-table--bordered slds-table--fixed-layout small detailview_table">
+																	<tr class="slds-line-height--reset">
+																		<td class="dvtCellLabel" align="right" width="20%">{$MOD.LBL_Show}</td>
+																		<td class="dvtCellInfo" align="left" width="80%">
+																			<select class="slds-select" name="showtagas" style="width: 25%;">
+																				{html_options options=$tagshow_options selected=$SHOWTAGAS}
+																			</select>
+																		</td>
+																	</tr>
+																</table>
+															</div>
+															<!--end of Added for User Based TagCloud -->
+														</td>
+													</tr>
+											</table>
+											<table class="slds-table slds-no-row-hover slds-table-moz dvtContentSpace">
+												<tr>
+													<td colspan="4" style="padding: 5px;">
+														<div align="center">
+															<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accesskey="{$APP.LBL_SAVE_BUTTON_KEY}" class="slds-button slds-button_success slds-button--small" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  " onclick="this.form.action.value='Save'; return verify_data(EditView)" type="button" />
+															<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accesskey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="slds-button slds-button--destructive slds-button--small" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  " onclick="window.history.back()" type="button" />
+														</div>
+													</td>
+												</tr>
+												<tr>
+													<td class="small">
+														<div align="right">
+															<a href="#top">{$MOD.LBL_SCROLL}</a>
+														</div>
+													</td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+
+								</table>
 							</td>
 						</tr>
 					</table>
-					</td></tr>
-					</table>
-					</td></tr>
-				</table>
-				<br>
-				</td></tr>
-				<tr><td class="small"><div align="right"><a href="#top">{$MOD.LBL_SCROLL}</a></div></td></tr>
-				</table>
-			</td>
-			</tr>
-			</table>
-			</form>	
+				</form>
+			</div>
+		</td>
+	</tr>
+</table>
 </td>
 </tr>
 </table>
-</td></tr></table>
 <br>
 {$JAVASCRIPT}

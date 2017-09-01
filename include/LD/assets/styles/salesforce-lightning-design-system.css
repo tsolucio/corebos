@@ -66,6 +66,7 @@
 
 
 
+
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
 
 html {
@@ -850,6 +851,7 @@ a.slds-button--inverse:focus {
 
 
 
+
 /**
 * @summary Creates a button that looks like a plain icon
 *
@@ -1034,6 +1036,7 @@ a.slds-button--inverse:focus {
 .slds-button--icon-border.slds-is-selected:focus .slds-button__icon {
     fill: white;
 }
+
 
 
 
@@ -3002,6 +3005,7 @@ a.slds-button--inverse:focus {
 
 
 
+
 /**
 * The base card is used primarily on desktop within a &ldquo;wide&rdquo; column
 * or &ldquo;main content area&rdquo;, which uses two-thirds of the viewport.
@@ -3133,6 +3137,7 @@ a.slds-button--inverse:focus {
 
 
 
+
 /**
  * Use class if card consumes any form of a tile
  *
@@ -3143,6 +3148,7 @@ a.slds-button--inverse:focus {
 .slds-card__tile {
     margin-top: 0.5rem;
 }
+
 
 
 
@@ -3406,6 +3412,7 @@ a.slds-button--inverse:focus {
 
 
 
+
 /**
  * @summary Initializes radio button
  *
@@ -3506,6 +3513,7 @@ a.slds-button--inverse:focus {
     background-color: #e0e5ee;
     border-color: #a8b7c7;
 }
+
 
 
 
@@ -3653,6 +3661,20 @@ a.slds-button--inverse:focus {
     background: white;
     transition: border 0.1s linear, background-color 0.1s linear;
     cursor: pointer;
+}
+
+.slds-checkbox [type="checkbox"]:checked+.slds-checkbox__label .slds-checkbox_faux::after,
+.slds-checkbox [type="checkbox"]:checked+.slds-checkbox__label .slds-checkbox--faux::after {
+    display: block;
+    content: '';
+    height: 0.25rem;
+    width: 0.5rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0) rotate(-45deg);
+    border-bottom: 2px solid #1589ee;
+    border-left: 2px solid #1589ee;
 }
 
 .slds-checkbox .slds-form-element__label {
@@ -4009,6 +4031,7 @@ a.slds-button--inverse:focus {
 }
 
 
+
 /**
  * @summary Container that manages layout when a listbox of pill options sit next to a combobox search input
  *
@@ -4038,6 +4061,7 @@ a.slds-button--inverse:focus {
 }
 
 
+
 /**
  * Container around form element with combobox input
  *
@@ -4056,6 +4080,7 @@ a.slds-button--inverse:focus {
 }
 
 
+
 /**
  * Form element with combobox input
  *
@@ -4067,6 +4092,7 @@ a.slds-button--inverse:focus {
     -ms-flex: 1 1 auto;
     flex: 1 1 auto;
 }
+
 
 
 /**
@@ -4089,6 +4115,7 @@ a.slds-button--inverse:focus {
     width: 1.25rem;
     height: 1.25rem;
 }
+
 
 
 /**
@@ -4653,6 +4680,7 @@ a.slds-button--inverse:focus {
 
 
 
+
 /**
  * @name base
  * @selector .slds-popover
@@ -4774,6 +4802,7 @@ a.slds-button--inverse:focus {
 .slds-popover *:last-child {
     margin-bottom: 0;
 }
+
 
 
 
@@ -5091,6 +5120,7 @@ a.slds-button--inverse:focus {
     box-shadow: -1px 1px 2px 0 rgba(0, 0, 0, 0.16);
     z-index: -1;
 }
+
 
 
 
@@ -7938,6 +7968,7 @@ a.slds-button--inverse:focus {
 
 
 
+
 /**
  * @summary Initializes tile
  *
@@ -7988,6 +8019,7 @@ a.slds-button--inverse:focus {
 .slds-tile--board .slds-has-alert {
     padding-right: 1.5rem;
 }
+
 
 
 
@@ -8056,6 +8088,7 @@ a.slds-button--inverse:focus {
         margin-left: 1.5rem;
     }
 }
+
 
 
 
@@ -8175,6 +8208,7 @@ a.slds-button--inverse:focus {
     height: 3px;
     background-color: #0070d2;
 }
+
 
 
 
@@ -9732,6 +9766,7 @@ th.slds-is-sortable:hover .slds-button {
 
 
 
+
 /**
  * @summary Initializes grid
  *
@@ -9743,6 +9778,7 @@ th.slds-is-sortable:hover .slds-button {
     display: -ms-flexbox;
     display: flex;
 }
+
 
 
 
@@ -9776,6 +9812,7 @@ th.slds-is-sortable:hover .slds-button {
 
 
 
+
 /**
  * @summary Initializes grid
  *
@@ -9798,6 +9835,7 @@ th.slds-is-sortable:hover .slds-button {
 
 
 
+
 /**
  * @summary Initializes grid
  *
@@ -9810,6 +9848,7 @@ th.slds-is-sortable:hover .slds-button {
     -ms-flex-direction: column-reverse;
     flex-direction: column-reverse;
 }
+
 
 
 
@@ -9866,6 +9905,7 @@ th.slds-is-sortable:hover .slds-button {
 .slds-col--padded-around-large {
     padding: 1.5rem;
 }
+
 
 
 
@@ -9933,6 +9973,7 @@ th.slds-is-sortable:hover .slds-button {
 
 
 
+
 /**
  * @summary Allows columns to wrap when they exceed 100% of their parent’s width
  *
@@ -9946,6 +9987,7 @@ th.slds-is-sortable:hover .slds-button {
     -ms-flex-align: start;
     align-items: flex-start;
 }
+
 
 
 
@@ -10055,6 +10097,7 @@ th.slds-is-sortable:hover .slds-button {
 
 
 
+
 /**
  * @summary Needed when truncation is nested in a flexible container in a grid
  *
@@ -10123,6 +10166,7 @@ th.slds-is-sortable:hover .slds-button {
     -ms-flex-positive: 0;
     flex-grow: 0;
 }
+
 
 
 
@@ -10306,6 +10350,7 @@ th.slds-is-sortable:hover .slds-button {
 
 
 
+
 /**
  * @summary Creates media object
  *
@@ -10363,6 +10408,7 @@ th.slds-is-sortable:hover .slds-button {
 
 
 
+
 /**
  * Adjusts whitespace on smaller media objects
  *
@@ -10379,6 +10425,7 @@ th.slds-is-sortable:hover .slds-button {
 .slds-media--small .slds-media__figure--reverse {
     margin-left: 0.25rem;
 }
+
 
 
 
@@ -10419,6 +10466,7 @@ th.slds-is-sortable:hover .slds-button {
 
 
 
+
 /**
  * Aligns the content in the .slds-media__body to the middle of the .slds-media__figure
  *
@@ -10431,6 +10479,7 @@ th.slds-is-sortable:hover .slds-button {
     -ms-flex-align: center;
     align-items: center;
 }
+
 
 
 
@@ -11092,6 +11141,7 @@ th.slds-is-sortable:hover .slds-button {
 
 
 
+
 /**
  * @summary Pulls element from document flow and floats right. Text and other elements wrap around it.
  *
@@ -11385,6 +11435,7 @@ th.slds-is-sortable:hover .slds-button {
 .slds-has-cards--space>.slds-list__item+.slds-list__item {
     margin-top: 0.5rem;
 }
+
 
 
 
@@ -11993,6 +12044,7 @@ th.slds-is-sortable:hover .slds-button {
 
 
 
+
 /**
  * @summary Creates a more pale-colored 12px copy
  *
@@ -12010,6 +12062,7 @@ th.slds-is-sortable:hover .slds-button {
     font-size: 1.75rem;
     line-height: 1.25;
 }
+
 
 
 
@@ -12055,6 +12108,7 @@ th.slds-is-sortable:hover .slds-button {
 
 
 
+
 /**
  * @summary All caps 12px heading
  *
@@ -12079,6 +12133,7 @@ th.slds-is-sortable:hover .slds-button {
 .slds-text-color--default {
     color: #16325c;
 }
+
 
 
 
@@ -12333,6 +12388,7 @@ th.slds-is-sortable:hover .slds-button {
 .slds-size--xx-large {
     width: 60rem;
 }
+
 
 
 
@@ -15147,6 +15203,7 @@ th.slds-is-sortable:hover .slds-button {
         display: inline;
     }
 }
+
 
 
 

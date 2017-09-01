@@ -955,40 +955,28 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			</td>
 			<td width="30%" align=left class="dvtCellInfo">
 			{if $thirdvalue eq 1}
-				<input name="role_name" id="role_name" readonly class="txtBox" tabindex="{$vt_tab}" value="{$secondvalue}" type="text">&nbsp;
-				<a href="javascript:openPopup();"><img src="{'btnL3Add.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0"></a>
+				<input name="role_name" id="role_name" readonly class="slds-input" tabindex="{$vt_tab}" value="{$secondvalue}" type="text">&nbsp;
+				<a href="javascript:openPopup();"><img src="{'btnL3Add.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0" width="16"></a>
 			{else}
 				<input name="role_name" id="role_name" tabindex="{$vt_tab}" class="txtBox" readonly value="{$secondvalue}" type="text">&nbsp;
 			{/if}
 			<input name="user_role" id="user_role" value="{$fldvalue}" type="hidden">
 			</td>
-<<<<<<< HEAD
 		{elseif $uitype eq 104}<!-- Mandatory Email Fields -->
 			<td width=20% class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
 			<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
 			</td>
 			<td width=30% align=left class="dvtCellInfo"><input type="text" name="{$fldname}" id ="{$fldname}" value="{$fldvalue}" tabindex="{$vt_tab}" class="slds-input"></td>
 			{elseif $uitype eq 115}<!-- for Status field Disabled for nonadmin -->
-=======
-		{elseif $uitype eq 115}<!-- for Status field Disabled for nonadmin -->
->>>>>>> origin/master
 			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
 				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
 			</td>
 			<td width="30%" align=left class="dvtCellInfo">
-<<<<<<< HEAD
-			   {if $secondvalue eq 1 && isset($smarty.request.record) && $CURRENT_USERID != $smarty.request.record}
-			   	<select id="user_status" name="{$fldname}" tabindex="{$vt_tab}" class="small slds-select">
-			   {else}
-			   	<select id="user_status" disabled name="{$fldname}" class="small slds-select">
-			   {/if}
-=======
 				{if $secondvalue eq 1 && isset($smarty.request.record) && $CURRENT_USERID != $smarty.request.record}
-					<select id="user_status" name="{$fldname}" tabindex="{$vt_tab}" class="small">
+					<select id="user_status" name="{$fldname}" tabindex="{$vt_tab}" class="small slds-select">
 				{else}
-					<select id="user_status" disabled name="{$fldname}" class="small">
+					<select id="user_status" disabled name="{$fldname}" class="small slds-select">
 				{/if}
->>>>>>> origin/master
 				{foreach item=arr from=$fldvalue}
 					<option value="{$arr[1]}" {$arr[2]} >{$arr[0]}</option>
 				{/foreach}
@@ -998,7 +986,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
 				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
 			</td>
-			<td width="30%" align=left class="dvtCellInfo">
+			<td align=left class="dvtCellInfo">
 				{if $MODE eq 'edit' && $IMAGENAME neq ''}
 					<input name="{$fldname}" type="file" value="{$maindata[3].0.name}" tabindex="{$vt_tab}" onchange="validateFilename(this);" /><div id="replaceimage">[{$IMAGENAME}]&nbsp;<a href="javascript:;" onClick="delUserImage({$ID})">Del</a></div>
 					<br>{'LBL_IMG_FORMATS'|@getTranslatedString:$MODULE}
@@ -1027,7 +1015,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				<td width="30%" align=left class="dvtCellInfo">
 					<input id="{$fldname}_display" name="{$fldname}_display" readonly type="text" value="{$fldvalue}" class="slds-input" />&nbsp;
 					<input id="{$fldname}" name="{$fldname}" type="hidden" value="{$secondvalue}" id="{$fldname}" />
-					&nbsp;<input title="{$APP.LBL_CHANGE_TITLE}" accessKey="C" type="button" class="small" value='{$APP.LBL_CHANGE}' name="btn1" onclick='return window.open("index.php?module=Users&action=Popup&html=Popup_picker&form=vtlibPopupView&form_submit=false&fromlink={$fromlink}&recordid={if isset($ID)}{$ID}{/if}&forfield={$fldname}","test","width=640,height=603,resizable=0,scrollbars=0");'>
+					&nbsp;<input title="{$APP.LBL_CHANGE_TITLE}" accessKey="C" type="button" class="slds-button slds-button--small slds-button--brand" value='{$APP.LBL_CHANGE}' name="btn1" onclick='return window.open("index.php?module=Users&action=Popup&html=Popup_picker&form=vtlibPopupView&form_submit=false&fromlink={$fromlink}&recordid={if isset($ID)}{$ID}{/if}&forfield={$fldname}","test","width=640,height=603,resizable=0,scrollbars=0");'>
 					&nbsp;<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.{$fldname}.value=''; this.form.{$fldname}_display.value=''; return false;" align="absmiddle" style='width:18px;cursor:pointer'>
 				</td>
 			{elseif $uitype eq 116 || $uitype eq 117}<!-- for currency in users details-->
