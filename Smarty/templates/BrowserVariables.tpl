@@ -14,6 +14,7 @@ var gVTTheme  = "{$THEME}";
 var gVTUserID = "{$CURRENT_USER_ID}";
 var default_charset = "{$DEFAULT_CHARSET}";
 var userDateFormat = "{$USER_DATE_FORMAT}";
+var userHourFormat = "{$USER_HOUR_FORMAT}";
 var userFirstDayOfWeek = {$USER_FIRST_DOW};
 var userCurrencySeparator = "{$USER_CURRENCY_SEPARATOR}";
 var userDecimalSeparator = "{$USER_DECIMAL_FORMAT}";

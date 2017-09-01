@@ -62,6 +62,7 @@ function getBrowserVariables(&$smarty) {
 	$vars['gVTUserID'] = $current_user->id;
 	$vars['default_charset'] = $default_charset;
 	$vars['userDateFormat'] = $current_user->date_format;
+	$vars['userHourFormat'] = ($current_user->hour_format=='24' ? '24' : 'am/pm');
 	$sql = 'SELECT dayoftheweek FROM its4you_calendar4you_settings WHERE userid=?';
 	$result = $adb->pquery($sql, array($current_user->id));
 	if ($adb and $adb->num_rows($result)>0) {
@@ -94,6 +95,7 @@ function getBrowserVariables(&$smarty) {
 		$smarty->assign('DEFAULT_CHARSET', $vars['default_charset']);
 		$smarty->assign('CURRENT_USER_ID', $vars['gVTUserID']);
 		$smarty->assign('USER_DATE_FORMAT',$vars['userDateFormat']);
+		$smarty->assign('USER_HOUR_FORMAT',$vars['userHourFormat']);
 		$smarty->assign('USER_FIRST_DOW',$vars['userFirstDOW']);
 		$smarty->assign('USER_CURRENCY_SEPARATOR', $vars['userCurrencySeparator']);
 		$smarty->assign('USER_DECIMAL_FORMAT', $vars['userDecimalSeparator']);
