@@ -137,7 +137,14 @@
 															{assign var="header_count" value=$folder.header|@count}
 																<tr>
 																	<th scope="col" class="slds-text-align--center" style="width: 3.25rem;text-align: center;" >
-																		<input type="checkbox" style="margin: 0;" name="selectall{$folder.folderid}" id="currentPageRec_selectall{$folder.folderid}" onClick='toggleSelect_ListView(this.checked,"selected_id{$folder.folderid}","selectall{$folder.folderid}");'>
+																		<div class="slds-th_action slds-th__action_form">
+																			<span class="slds-checkbox">
+																				<input type="checkbox" style="margin: 0;" name="selectall{$folder.folderid}" id="currentPageRec_selectall{$folder.folderid}" onClick='toggleSelect_ListView(this.checked,"selected_id{$folder.folderid}","selectall{$folder.folderid}");'>
+																				<label class="slds-checkbox__label" for="currentPageRec_selectall{$folder.folderid}">
+																					<span class="slds-checkbox--faux"></span>
+																				</label>
+																			</span>
+																		</div>
 																	</th>
 																	{foreach name="listviewforeach" item=header from=$folder.header}
 																		<th class="slds-text-title--caps" scope="col">
