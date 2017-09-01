@@ -831,7 +831,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			</select>
 			{if $MASS_EDIT eq '1'}<br />{/if}
 			{/if}
-			<input type="text" name="{$fldname}" tabindex="{$vt_tab}" class="slds-input" value= "{$secondvalue}" >
+			<input type="text" name="{$fldname}" tabindex="{$vt_tab}" class="slds-input" value= "{$secondvalue}" style="width: 65%;">
 			</td>
 
 		{elseif $uitype eq 22}

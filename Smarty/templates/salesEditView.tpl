@@ -242,15 +242,15 @@
 																		</div>
 																	</article>
 																</div>
-																{if $CUSTOMBLOCKS.$header.custom}
-																	{include file=$CUSTOMBLOCKS.$header.tpl}
-																{else}
-																	<!-- Handle the ui types display -->
-																	{include file="DisplayFields.tpl"}
-																{/if}
 															{/if}
 														</div>
 
+														{if $CUSTOMBLOCKS.$header.custom}
+															{include file=$CUSTOMBLOCKS.$header.tpl}
+														{else}
+															<!-- Handle the ui types display -->
+															{include file="DisplayFields.tpl"}
+														{/if}
 														<!-- Added to display the Product Details in Inventory-->
 														{if $MODULE eq 'PurchaseOrder' || $MODULE eq 'SalesOrder' || $MODULE eq 'Quotes' || $MODULE eq 'Invoice'}
 														<div>
