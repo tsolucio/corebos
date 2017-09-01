@@ -36,7 +36,7 @@ $newscannerinfo->markas     = vtlib_purify(trim($_REQUEST['mailboxinfo_markas'])
 $newscannerinfo->isvalid    = vtlib_purify($_REQUEST['mailboxinfo_enable']) == 'true';
 
 // Rescan all folders on next run?
-$rescanfolder = (bool)(isset($_REQUEST['mailboxinfo_rescan_folders']) and $_REQUEST['mailboxinfo_rescan_folders'] == 'true');
+$rescanfolder = (bool)(isset($_REQUEST['mailboxinfo_rescan_folders']) && $_REQUEST['mailboxinfo_rescan_folders'] == 'true');
 
 $isconnected = false;
 

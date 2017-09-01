@@ -83,8 +83,8 @@ class cbupdaterWorker {
 			$this->classname = $cbu['classname'];
 			$this->execstate = $cbu['execstate'];
 			$this->systemupdate = ($cbu['systemupdate'] == '1');
-			$this->perspective = ((bool)(isset($cbu['perspective']) and $cbu['perspective'] == '1'));
-			$this->blocked = ((bool)(isset($cbu['blocked']) and $cbu['blocked'] == '1'));
+			$this->perspective = ((bool)(isset($cbu['perspective']) && $cbu['perspective'] == '1'));
+			$this->blocked = ((bool)(isset($cbu['blocked']) && $cbu['blocked'] == '1'));
 			$this->execdate = $cbu['execdate'];
 			$this->updError = false;
 		} else {  // it doesn't exist, we fail because it MUST exist
