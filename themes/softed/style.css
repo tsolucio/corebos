@@ -2208,7 +2208,7 @@ textarea {
 
 .reportCreateBottom{
 	background-color:#ddf;
-	border-bottom:2px solid #737251;
+	/*border-bottom:2px solid #737251;*/
 }
 
 .importLeadUI{

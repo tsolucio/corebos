@@ -1086,4 +1086,14 @@ th[scope="col"] {
 /*=======End CustomView.tpl=======*/
 
 
-/*===========END Related List Data Content===========
+/*===========END Related List Data Content===========*/
+
+/*=======Start Popup UI10=============*/
+/*@media screen and (max-width: 886px) {*/
+    /*.mediaQuery .slds-input ,
+    .mediaQuery .slds-select {
+
+    }*/
+/*}*/
+
+/*=======End Popup UI10=============*/

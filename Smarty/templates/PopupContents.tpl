@@ -28,58 +28,86 @@
 	</tr>
 	<tr>
 		<td style="padding:10px;" colspan=3>
-		<input name="module" type="hidden" value="{$RETURN_MODULE}">
-		<input name="action" type="hidden" value="{$RETURN_ACTION}">
-		<input name="pmodule" type="hidden" value="{$MODULE}">
-		<input type="hidden" name="curr_row" value="{$CURR_ROW}">
-		<input name="entityid" type="hidden" value="">
-		<input name="popuptype" id="popup_type" type="hidden" value="{$POPUPTYPE}">
-		<input name="idlist" type="hidden" value="">
-		<div style="overflow:auto;height:348px;">
-		<table style="background-color: rgb(204, 204, 204);" class="small" border="0" cellpadding="5" cellspacing="1" width="100%">
-		<tbody>
-		<tr>
-			{if $SELECT eq 'enable'}
-				<td class="lvtCol" width="3%"><input type="checkbox" name="select_all" value="" onClick=toggleSelect(this.checked,"selected_id")></td>
-			{/if}
-			{foreach item=header from=$LISTHEADER}
-				<td class="lvtCol">{$header}</td>
-			{/foreach}
-			{if $SELECT eq 'enable' && ($POPUPTYPE eq 'inventory_prod' || $POPUPTYPE eq 'inventory_prod_po')}
-				{if !$RECORD_ID || $SUBPRODUCT_BE_PARENT eq 'yes'}
-					<td class="lvtCol">{$APP.LBL_ACTION}</td>
-				{/if}
-			{/if}
-		</tr>
-		{foreach key=entity_id item=entity from=$LISTENTITY}
-		<tr bgcolor=white onMouseOver="this.className='lvtColDataHover'" onMouseOut="this.className='lvtColData'" >
-			{if $SELECT eq 'enable'}
-				<td><input type="checkbox" name="selected_id" value="{$entity_id}" onClick=toggleSelectAll(this.name,"select_all")></td>
-			{/if}
-			{foreach item=data from=$entity}
-				<td onMouseOver="vtlib_listview.trigger('cell.onmouseover', this);" onMouseOut="vtlib_listview.trigger('cell.onmouseout', this)">{$data}</td>
-			{/foreach}
-		</tr>
-		{foreachelse}
-		<tr><td colspan="{$HEADERCOUNT}">
-			<div style="border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 99%;position: relative; z-index: 10000000;">
-			<table border="0" cellpadding="5" cellspacing="0" width="98%">
-			<tr>
-				<td rowspan="2" width="25%"><img src="{'empty.jpg'|@vtiger_imageurl:$THEME}" height="60" width="61%"></td>
-				{if $recid_var_value neq '' && $mod_var_value neq '' && $RECORD_COUNTS eq 0 }
-					<script>window.onload = function() { redirectWhenNoRelatedRecordsFound(); };</script>
-					<td style="border-bottom: 1px solid rgb(204, 204, 204);" nowrap="nowrap" width="75%"><span class="genHeaderSmall">{$APP.LBL_NO} {$MODULE|@getTranslatedString:$MODULE} {$APP.RELATED} !</td>
-				{else}
-					<td style="border-bottom: 1px solid rgb(204, 204, 204);" nowrap="nowrap" width="75%"><span class="genHeaderSmall">{$APP.LBL_NO} {$MODULE|@getTranslatedString:$MODULE} {$APP.LBL_FOUND} !</td>
-				{/if}
-			</tr>
-			</table>
+			<input name="module" type="hidden" value="{$RETURN_MODULE}">
+			<input name="action" type="hidden" value="{$RETURN_ACTION}">
+			<input name="pmodule" type="hidden" value="{$MODULE}">
+			<input type="hidden" name="curr_row" value="{$CURR_ROW}">
+			<input name="entityid" type="hidden" value="">
+			<input name="popuptype" id="popup_type" type="hidden" value="{$POPUPTYPE}">
+			<input name="idlist" type="hidden" value="">
+			<div style="overflow:auto;height:348px;">
+				<table class="slds-table slds-table--bordered slds-table--fixed-layout ld-font">
+					<thead>
+						<tr>
+							{if $SELECT eq 'enable'}
+								<th scope="col" class="slds-text-align--center" style="width: 3.25rem;text-align: center;" >
+									<div class="slds-th_action slds-th__action_form">
+										<span class="slds-checkbox">
+											<input type="checkbox" name="select_all" id="checkboxAll" style="margin: 0;" value="" onClick=toggleSelect(this.checked,"selected_id")>
+											<label class="slds-checkbox__label" for="checkboxAll">
+												<span class="slds-checkbox--faux"></span>
+											</label>
+										</span>
+									</div>
+								</th>
+							{/if}
+							{foreach item=header from=$LISTHEADER}
+								<th class="slds-text-title--caps" scope="col">
+									<span class="slds-truncate slds-text-link--reset" style="padding: .5rem 0;">{$header}</span>
+								</th>
+							{/foreach}
+							{if $SELECT eq 'enable' && ($POPUPTYPE eq 'inventory_prod' || $POPUPTYPE eq 'inventory_prod_po')}
+								{if !$RECORD_ID || $SUBPRODUCT_BE_PARENT eq 'yes'}
+									<th class="slds-text-title--caps" scope="col">
+										<span class="slds-truncate slds-text-link--reset" style="padding: .5rem 0;">{$APP.LBL_ACTION}</span>
+									</th>
+								{/if}
+							{/if}
+						</tr>
+					</thead>
+					<tbody>
+						{foreach key=entity_id item=entity from=$LISTENTITY}
+							<tr class="slds-hint-parent slds-line-height--reset">
+								{if $SELECT eq 'enable'}
+									<td role="gridcell" class="slds-text-align--center">
+										<span class="slds-checkbox">
+											<input type="checkbox" name="selected_id" id="{$entity_id}" value="{$entity_id}" onClick=toggleSelectAll(this.name,"select_all")>
+											<label class="slds-checkbox__label" for="{$entity_id}">
+													<span class="slds-checkbox--faux"></span>
+											</label>
+										</span>
+									</td>
+								{/if}
+								{foreach item=data from=$entity}
+									<th scope="row">
+										<div class="slds-truncate" onMouseOver="vtlib_listview.trigger('cell.onmouseover', this);" onMouseOut="vtlib_listview.trigger('cell.onmouseout', this)">
+											{$data}
+										</div>
+									</th>
+								{/foreach}
+							</tr>
+						{foreachelse}
+							<tr>
+								<td colspan="{$HEADERCOUNT}">
+									<div style="border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 99%;position: relative; z-index: 10000000;">
+										<table border="0" cellpadding="5" cellspacing="0" width="98%">
+											<tr>
+												<td rowspan="2" width="25%"><img src="{'empty.jpg'|@vtiger_imageurl:$THEME}" height="60" width="61%"></td>
+												{if $recid_var_value neq '' && $mod_var_value neq '' && $RECORD_COUNTS eq 0 }
+													<script>window.onload = function() { redirectWhenNoRelatedRecordsFound(); };</script>
+													<td style="border-bottom: 1px solid rgb(204, 204, 204);" nowrap="nowrap" width="75%"><span class="genHeaderSmall">{$APP.LBL_NO} {$MODULE|@getTranslatedString:$MODULE} {$APP.RELATED} !</td>
+												{else}
+													<td style="border-bottom: 1px solid rgb(204, 204, 204);" nowrap="nowrap" width="75%"><span class="genHeaderSmall">{$APP.LBL_NO} {$MODULE|@getTranslatedString:$MODULE} {$APP.LBL_FOUND} !</td>
+												{/if}
+											</tr>
+										</table>
+									</div>
+								</td>
+							</tr>
+						{/foreach}
+					</tbody>
+				</table>
 			</div>
-		</td></tr>
-		{/foreach}
-		</tbody>
-		</table>
-		</div>
 		</td>
 	</tr>
 </table>
