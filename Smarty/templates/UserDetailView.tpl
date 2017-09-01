@@ -304,9 +304,9 @@
 																												<div class="extraSmall forceEntityIcon" data-aura-rendered-by="3:1782;a" data-aura-class="forceEntityIcon">
 																													<span data-aura-rendered-by="6:1782;a" class="uiImage" data-aura-class="uiImage">
 																													{if $GROUP_COUNT > 0}
-																														<a href="javascript:fetchGroups_js({$ID});ShowHidefn('{$ID}', 'arrowDownCloud', 'arrowUpCloud');">
-																															<img src="{'showDown.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" width="16px;" style="display: none;">
-																															<img src="{'showUp.gif'|@vtiger_imageurl:$THEME}" id="arrowUpCloud" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" width="16">
+																														<a href="javascript:fetchGroups_js({$ID});">
+																															<img src="{'showDown.gif'|@vtiger_imageurl:$THEME}" id="arrowDownGroups" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" width="16px;" style="display: none;">
+																															<img src="{'showUp.gif'|@vtiger_imageurl:$THEME}" id="arrowUpGroups" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" width="16">
 																														</a>
 																													{else}
 																														&nbsp;
@@ -318,7 +318,7 @@
 																									</div>
 																								</article>
 																							</div>
-																							<div class="slds-truncate" id="user_group_cont" style="display:none;"></div>
+																							<div class="slds-truncate" id="user_group_cont" style="display:none; padding: 0 .5rem;"></div>
 																						</td>
 																					</tr>
 																				</table>
@@ -380,9 +380,17 @@ function ShowHidefn(divid, imgidDown, imgidUp)
 function fetchGroups_js(id)
 {
 	if(document.getElementById('user_group_cont').style.display != 'none')
+		{
 		jQuery('#user_group_cont').fadeOut();
+		jQuery('#arrowDownGroups').hide();
+		jQuery('#arrowUpGroups').show();
+		}
 	else
+		{
 		fetchUserGroups(id);
+		jQuery('#arrowDownGroups').show();
+		jQuery('#arrowUpGroups').hide();
+		}
 }
 function fetchUserGroups(id)
 {
