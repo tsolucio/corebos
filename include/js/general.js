@@ -1122,16 +1122,17 @@ function doformValidation(edit_type) {
 		}
 		else
 		{
-			if(getObj('portal') != null && getObj('portal').checked && getObj('portal_mass_edit_check').checked && (getObj('email') == null || trim(getObj('email').value) == '' || getObj('email_mass_edit_check').checked==false))
-			{
-				alert(alert_arr.PORTAL_PROVIDE_EMAILID);
-				return false;
-			}
-			if((getObj('email') != null && trim(getObj('email').value) == '' && getObj('email_mass_edit_check').checked) && !(getObj('portal').checked==false && getObj('portal_mass_edit_check').checked))
-			{
-				alert(alert_arr.EMAIL_CHECK_MSG);
-				return false;
-			}
+// This checks mass edit mode, but it doesn't make much sense to obligate this in mass edit mode
+//			if(getObj('portal') != null && getObj('portal').checked && getObj('portal_mass_edit_check').checked && (getObj('email') == null || trim(getObj('email').value) == '' || getObj('email_mass_edit_check').checked==false))
+//			{
+//				alert(alert_arr.PORTAL_PROVIDE_EMAILID);
+//				return false;
+//			}
+//			if((getObj('email') != null && trim(getObj('email').value) == '' && getObj('email_mass_edit_check').checked) && !(getObj('portal').checked==false && getObj('portal_mass_edit_check').checked))
+//			{
+//				alert(alert_arr.EMAIL_CHECK_MSG);
+//				return false;
+//			}
 		}
 	}
 	if(gVTModule == 'SalesOrder') {
@@ -2916,6 +2917,9 @@ function fnpriceValidation(txtObj) {
 }
 
 function delimage(id,fname,aname) {
+	if (id == 0) {
+		document.getElementById(fname+'_replaceimage').innerHTML=alert_arr.LBL_IMAGE_DELETED;
+	} else {
 	jQuery.ajax({
 		method: 'POST',
 		url: 'index.php?module=Contacts&action=ContactsAjax&file=DelImage&ImageModule='+gVTModule+'&recordid='+id+'&fieldname='+fname+'&attachmentname='+aname,
@@ -2925,6 +2929,8 @@ function delimage(id,fname,aname) {
 		else
 			alert(alert_arr.ERROR_WHILE_EDITING);
 	});
+	}
+	document.getElementById(fname+'_hidden').value = '';
 }
 
 function delUserImage(id) {
@@ -3869,8 +3875,7 @@ function ToolTipManager(){
 		var div = document.getElementById(divName);
 		if(typeof div != 'undefined' && div != null ){
 			if(typeof nodelay != 'undefined' && nodelay != null){
-				if (secondshowTimer != 0) clearTimeout(secondshowTimer);
-				secondshowTimer = setTimeout(function(){
+				setTimeout(function(){
 					div.style.display = "none";
 				}, secondshowTimeout);
 			}else{
@@ -3878,7 +3883,7 @@ function ToolTipManager(){
 					if(!state){
 						div.style.display = "none";
 					}
-				}, 700);
+				}, secondshowTimeout);
 			}
 		}
 	}
@@ -4947,19 +4952,18 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			acInputs[_i].addEventListener("input", function(e){
 				throttle(ac.get(e), 500);
 			});
-                        $('html').click(function() {
-                            ac.clearTargetUL();
-                            ac.targetUL.hide();
-                        });
+			$('html').click(function() {
+				ac.clearTargetUL();
+				ac.targetUL.hide();
+			});
 		})(i);
 	}
-        
 });
 
 function AutocompleteRelation(target, i) {
 
 	this.inputField 	= target;
-        this.data 		= JSON.parse(target.getAttribute("data-autocomp"));
+	this.data			= JSON.parse(target.getAttribute("data-autocomp"));
 	this.targetUL 		= document.getElementsByClassName("relation-autocomplete__target")[i];
 	this.hiddenInput	= document.getElementsByClassName("relation-autocomplete__hidden")[i];
 	this.displayFields 	= this.showFields();
@@ -4972,7 +4976,6 @@ function AutocompleteRelation(target, i) {
 	if(this.multiselect==='true'){
 		target.style.width='95%';
 	}
-        
 	this.targetUL.show 	= function() {
 		if (!this.classList.contains("active")) {
 			(function(){
@@ -5062,7 +5065,6 @@ AutocompleteRelation.prototype.set = function(items) {
 					});
 				}
 			});
-                         
 		}
 	}
 }

@@ -308,7 +308,7 @@ function getRoleBasesdPickList($fldname,$exist_val)
 				$subrole = getRoleSubordinates($roleid);
 				if(count($subrole)> 0)
 				$roleids = $subrole;
-				array_push($roleids, $roleid);
+				$roleids[] = $roleid;
 
 				//here we are checking wheather the table contains the sortorder column .If  sortorder is present in the main picklist table, then the role2picklist will be applicable for this table...
 

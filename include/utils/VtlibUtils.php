@@ -442,8 +442,8 @@ function vtlib_purify($input, $ignore=false) {
 	if(!$ignore) {
 		// Initialize the instance if it has not yet done
 		if($__htmlpurifier_instance == false) {
-			if(empty($use_charset)) $use_charset = 'UTF-8';
-			if(empty($use_root_directory)) $use_root_directory = dirname(__FILE__) . '/../..';
+			if (empty($use_charset)) $use_charset = 'UTF-8';
+			if (empty($use_root_directory)) $use_root_directory = __DIR__ . '/../..';
 
 			include_once ('include/htmlpurifier/library/HTMLPurifier.auto.php');
 

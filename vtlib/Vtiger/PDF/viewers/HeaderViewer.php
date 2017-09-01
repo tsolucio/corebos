@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-include_once dirname(__FILE__) . '/Viewer.php';
+include_once __DIR__ . '/Viewer.php';
 
 class Vtiger_PDF_HeaderViewer extends Vtiger_PDF_Viewer {
 

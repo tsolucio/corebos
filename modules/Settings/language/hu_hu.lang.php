@@ -709,6 +709,7 @@ $mod_strings = array(
 	'LBL_SCANNING' => 'Vizsgálat',
 	'LBL_LOOKFOR' => 'Keresés',
 	'LBL_UNREAD' => 'Olvasatlan',
+	'LBL_ALLUNREAD'=>'ALL Unread',
 	'LBL_READ' => 'Olvasott',
 	'LBL_AFTER_SCAN' => 'Vizsgálat után',
 	'LBL_MESSAGES_FROM_LASTSCAN' => 'Üzenetek utolsó vizsgálatból',

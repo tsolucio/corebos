@@ -80,7 +80,7 @@ class VTScheduledReport extends Reports {
 				foreach($recipientsInfo['roles'] as $roleId) {
 					$roleUsers = getRoleUsers($roleId);
 					foreach($roleUsers as $userId => $userName) {
-						array_push($recipientsList, $userId);
+						$recipientsList[] = $userId;
 					}
 				}
 			}
@@ -89,7 +89,7 @@ class VTScheduledReport extends Reports {
 				foreach($recipientsInfo['rs'] as $roleId) {
 					$users = getRoleAndSubordinateUsers($roleId);
 					foreach($users as $userId => $userName) {
-						array_push($recipientsList, $userId);
+						$recipientsList[] = $userId;
 					}
 				}
 			}

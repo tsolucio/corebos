@@ -8,7 +8,7 @@
  * All Rights Reserved.
  * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
-include_once dirname(__FILE__) . '/../api/ws/FetchRecordDetails.php';
+include_once __DIR__ . '/../api/ws/FetchRecordDetails.php';
 
 class crmtogo_UI_DetailView extends crmtogo_WS_FetchRecordDetails {
 	function cachedModuleLookupWithRecordId($recordId) {

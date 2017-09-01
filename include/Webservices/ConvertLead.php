@@ -288,7 +288,7 @@ function vtws_createEntities($entityIds, $leadId) {
 			if(in_array($module,$excludedModules)) continue;
 			$entityRecord = vtws_createEntity($entityIds,$originModules,$module);
 			if ($entityRecord['id']) {
-				array_push($originModules, $module);
+				$originModules[] = $module;
 				$entityIds[$module] = $entityRecord['id'];
 			}
 		}

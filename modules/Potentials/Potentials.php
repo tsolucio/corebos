@@ -639,7 +639,7 @@ class Potentials extends CRMEntity {
 	function save_related_module($module, $crmid, $with_module, $with_crmids) {
 		$adb = PearDatabase::getInstance();
 
-		if(!is_array($with_crmids)) $with_crmids = Array($with_crmids);
+		$with_crmids = (array)$with_crmids;
 		foreach($with_crmids as $with_crmid) {
 			if($with_module == 'Contacts') { //When we select contact from potential related list
 				$sql = "insert into vtiger_contpotentialrel values (?,?)";
@@ -654,6 +654,7 @@ class Potentials extends CRMEntity {
 			}
 		}
 	}
+
 	function getListButtons($app_strings) {
 		$list_buttons = Array ();
 

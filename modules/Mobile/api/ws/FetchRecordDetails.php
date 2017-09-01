@@ -10,8 +10,8 @@
  ************************************************************************************/
 include_once 'include/Webservices/Retrieve.php';
 include_once 'include/Webservices/DescribeObject.php';
-include_once dirname(__FILE__) . '/FetchRecord.php';
-include_once dirname(__FILE__) . '/Describe.php';
+include_once __DIR__ . '/FetchRecord.php';
+include_once __DIR__ . '/Describe.php';
 
 class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 	

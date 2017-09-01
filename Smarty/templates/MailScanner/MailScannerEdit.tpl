@@ -167,10 +167,12 @@
 							<td width="80%" class="small cellText">
 							<select name="mailboxinfo_searchfor" class="small">
 								<option value="ALL" {if $SCANNERINFO.searchfor eq 'ALL'}selected=true{/if}
-									onclick="jQuery('#mailboxinfo_rescan_folders_span').show();">{$MOD.LBL_ALL}</option>
+									onclick="jQuery('#mailboxinfo_rescan_folders_span').show();">{$MOD.LBL_ALL} {$MOD.LBL_MESSAGES_FROM_LASTSCAN}</option>
 								<option value="UNSEEN" {if $SCANNERINFO.searchfor eq 'UNSEEN'}selected=true{/if}
-									onclick="this.form.mailboxinfo_rescan_folders.checked=false;jQuery('#mailboxinfo_rescan_folders_span').hide();">{$MOD.LBL_UNREAD}</option>
-							</select> {$MOD.LBL_MESSAGES_FROM_LASTSCAN}
+									onclick="this.form.mailboxinfo_rescan_folders.checked=false;jQuery('#mailboxinfo_rescan_folders_span').hide();">{$MOD.LBL_UNREAD} {$MOD.LBL_MESSAGES_FROM_LASTSCAN}</option>
+								<option value="ALLUNSEEN" {if $SCANNERINFO.searchfor eq 'ALLUNSEEN'}selected=true{/if}
+									onclick="this.form.mailboxinfo_rescan_folders.checked=false;jQuery('#mailboxinfo_rescan_folders_span').hide();">{$MOD.LBL_ALLUNREAD}</option>
+							</select>
 
 							{if $SCANNERINFO.searchfor eq 'ALL'}
 								<span id="mailboxinfo_rescan_folders_span">

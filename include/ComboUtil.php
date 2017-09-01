@@ -31,7 +31,7 @@ function getComboArray($combofieldNames)
 			if(count($subrole)> 0)
 			{
 				$roleids = $subrole;
-				array_push($roleids, $roleid);
+				$roleids[] = $roleid;
 			}
 			else
 			{

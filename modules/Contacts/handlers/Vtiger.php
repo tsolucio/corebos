@@ -62,9 +62,7 @@ class Google_Vtiger_Handler extends vtigerCRMHandler {
             $webserviceRecordId = $record["id"];
 			//While Updating Vtiger Record, should not update these values for event
 			if($record['module'] == 'Events') {
-				unset($record['eventstatus']);
-				unset($record['activitytype']);
-				unset($record['duration_hours']);
+				unset($record['eventstatus'],$record['activitytype'],$record['duration_hours']);
 			}
             $recordIdComp = vtws_getIdComponents($webserviceRecordId);
             try {

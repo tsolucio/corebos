@@ -1014,6 +1014,7 @@ $mod_strings = Array(
 'LBL_SCANNING'=>'Rastreando',
 'LBL_LOOKFOR'=>'Procurar por',
 'LBL_UNREAD'=>'não lida',
+'LBL_ALLUNREAD'=>'ALL Unread',
 'LBL_READ'=>'Lida',
 'LBL_AFTER_SCAN'=>'Rastrear depois',
 'LBL_MESSAGES_FROM_LASTSCAN'=>'Mensagens do último rastreamento',

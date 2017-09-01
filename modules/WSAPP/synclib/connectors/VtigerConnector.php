@@ -117,7 +117,7 @@ class WSAPP_VtigerConnector extends WSAPP_BaseConnector {
 		} else {
 			$result = $this->db->pquery('SELECT 1 FROM vtiger_wsapp_sync_state where name=? and userid=?', array($this->getName(), $this->getSynchronizeController()->user->id));
 		}
-		return ($this->db->num_rows($result) > 0) ? true : false;
+		return $this->db->num_rows($result) > 0;
 	}
 
 	public function pull(WSAPP_SyncStateModel $syncStateModel) {

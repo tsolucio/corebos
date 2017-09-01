@@ -234,7 +234,7 @@ class iCalendar_property_method extends iCalendar_property {
     function is_valid_value($value) {
         // This is case-sensitive
         // Methods from RFC 2446
-        $methods == array('PUBLISH', 'REQUEST', 'REPLY', 'ADD', 'CANCEL', 'REFRESH', 'COUNTER', 'DECLINECOUNTER');
+        $methods = array('PUBLISH', 'REQUEST', 'REPLY', 'ADD', 'CANCEL', 'REFRESH', 'COUNTER', 'DECLINECOUNTER');
         return in_array($value, $methods);
     }
 }
@@ -450,7 +450,7 @@ class iCalendar_property_percent_complete extends iCalendar_property {
         if(!parent::is_valid_value($value)) {
             return false;
         }
-        $value = intval($value);
+        $value = (int)$value;
         return ($value >= 0 && $value <= 100);
     }
 
@@ -1101,7 +1101,7 @@ class iCalendar_property_sequence extends iCalendar_property {
         if(!parent::is_valid_value($value)) {
             return false;
         }
-        $value = intval($value);
+        $value = (int)$value;
         return ($value >= 0);
     }
 }

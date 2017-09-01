@@ -692,7 +692,7 @@ function load_list ($path)
      {
        $buffer = trim(fgets($fp, 4096));
        if ($buffer != "")
-	 array_push ($contacts, $buffer);
+	$contacts[] = $buffer;
      }
 
    fclose($fp);

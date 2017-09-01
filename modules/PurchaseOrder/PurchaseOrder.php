@@ -123,11 +123,6 @@ class PurchaseOrder extends CRMEntity {
 			if(vtlib_isModuleActive("InventoryDetails"))
 				InventoryDetails::createInventoryDetails($this,'PurchaseOrder');
 		}
-
-		// Update the currency id and the conversion rate for the purchase order
-		$update_query = "update vtiger_purchaseorder set currency_id=?, conversion_rate=? where purchaseorderid=?";
-		$update_params = array($this->column_fields['currency_id'], $this->column_fields['conversion_rate'], $this->id);
-		$adb->pquery($update_query, $update_params);
 	}
 
 	function registerInventoryHistory() {

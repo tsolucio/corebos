@@ -378,7 +378,7 @@ var alert_arr = {
 	'LBL_MORE_THAN_HOURS_BEFORE' : 'más de x horas antes',
 	'LBL_MORE_THAN_HOURS_LATER' : 'más de x horas después',
 	'LBL_EXISTS' : 'existe',
-	'MAXIMUM_OF_TWO_MODULES_PERMITTED' : 'Solo se permite relacionar con un máximo de dos módulos.',
+	'MAXIMUM_OF_MODULES_PERMITTED' : 'Has llegado al máximo número de módulos relacionados permitido.',
 	'ONLY_ONE_MODULE_PERMITTED_FOR_REPORT' : 'Solo se permite relacionar con un módulo para este tipo de informe',
 	'MUST_SELECT_ONE_MODULE_FOR_REPORT' : 'Debes seleccionar un módulo relacionado para este tipo de informe',
 	'LBL_NEW_CONDITION' : 'New Condition',

@@ -328,7 +328,7 @@ class Accounts extends CRMEntity {
 			$numOfContacts = $adb->num_rows($accountContacts);
 			if($accountContacts && $numOfContacts > 0) {
 				for($i=0; $i < $numOfContacts; ++ $i) {
-					array_push($entityIds, $adb->query_result($accountContacts, $i, 'contactid'));
+					$entityIds[] = $adb->query_result($accountContacts, $i, 'contactid');
 				}
 			}
 		} else {
@@ -679,7 +679,7 @@ class Accounts extends CRMEntity {
 			$params1 = array();
 			if (count($profileList) > 0) {
 				$sql1 .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .") group by fieldid";
-				array_push($params1, $profileList);
+				$params1[] = $profileList;
 			}
 		}
 		$result = $this->db->pquery($sql1, $params1);
@@ -1061,7 +1061,7 @@ class Accounts extends CRMEntity {
 	function save_related_module($module, $crmid, $with_module, $with_crmids) {
 		$adb = $this->db;
 
-		if(!is_array($with_crmids)) $with_crmids = Array($with_crmids);
+		$with_crmids = (array)$with_crmids;
 		foreach($with_crmids as $with_crmid) {
 			if($with_module == 'Products') {
 				$checkResult = $adb->pquery('SELECT 1 FROM vtiger_seproductsrel WHERE productid = ? AND crmid = ?', array($with_crmid, $crmid));
@@ -1168,7 +1168,7 @@ class Accounts extends CRMEntity {
 			$params1 = array();
 			if (count($profileList) > 0) {
 				$sql1 .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
-				array_push($params1, $profileList);
+				$params1[] = $profileList;
 			}
 		}
 		$result1 = $this->db->pquery($sql1, $params1);

@@ -11,7 +11,7 @@ global $app_strings, $mod_strings, $current_language, $currentModule, $theme;
 
 require_once('Smarty_setup.php');
 
-include_once dirname(__FILE__) . '/core/ModTracker_Basic.php';
+include_once __DIR__ . '/core/ModTracker_Basic.php';
 
 $smarty = new vtigerCRM_Smarty();
 

@@ -151,7 +151,7 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 		$columnStr = 'set '.implode('=?,',array_keys($element)).' =? ';
 		$query = 'update '.$this->entityTableName.' '.$columnStr.'where '. $this->meta->getObectIndexColumn().'=?';
 		$params = array_values($element);
-		array_push($params,$id);
+		$params[] = $id;
 		$result = null;
 		$transactionSuccessful = vtws_runQueryAsTransaction($query,$params,$result);
 		return $transactionSuccessful;
@@ -173,7 +173,7 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 		$columnStr = 'set '.implode('=?,',array_keys($element)).' =? ';
 		$query = 'update '.$this->entityTableName.' '.$columnStr.'where '.$this->meta->getObectIndexColumn().'=?';
 		$params = array_values($element);
-		array_push($params,$id);
+		$params[] = $id;
 		$result = null;
 		$transactionSuccessful = vtws_runQueryAsTransaction($query,$params,$result);
 		return $transactionSuccessful;
@@ -243,7 +243,7 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 			$fields = array();
 			$moduleFields = $this->meta->getModuleFields();
 			foreach ($moduleFields as $fieldName=>$webserviceField) {
-				array_push($fields,$this->getDescribeFieldArray($webserviceField));
+				$fields[] = $this->getDescribeFieldArray($webserviceField);
 			}
 			$this->moduleFields = $fields;
 		}

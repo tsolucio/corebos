@@ -118,7 +118,7 @@ class Import_Queue_Controller {
 		$params = array();
 		if($status !== false) {
 			$query .= ' WHERE status = ?';
-			array_push($params, $status);
+			$params[] = $status;
 		}
 		$result = $adb->pquery($query, $params);
 

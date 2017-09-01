@@ -130,9 +130,7 @@ if (typeof(ImportJs) == 'undefined') {
 			if (mandatoryFields!='') {
 				mandatoryFields = JSON.parse(mandatoryFields);
 				for(var mandatoryFieldName in mandatoryFields) {
-					if(mandatoryFieldName in mappedFields) {
-						continue;
-					} else {
+					if (!(mandatoryFieldName in mappedFields)) {
 						missingMandatoryFields.push('"'+mandatoryFields[mandatoryFieldName]+'"');
 					}
 				}

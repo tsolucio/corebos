@@ -35,10 +35,7 @@ class OutlookSyncServer extends SyncServer{
             throw new WebServiceException('WSAPP04', "Access restricted to app");
         }
 
-        if (!is_array($element))
-            $records = array($element);
-        else
-            $records = $element;
+        $records = (array)$element;
 
         //hardcoded since the destination handler will be vtigerCRM
         $serverKey = wsapp_getAppKey("vtigerCRM");
@@ -154,7 +151,7 @@ class OutlookSyncServer extends SyncServer{
             $queueRecordIds[] = $record['id'];
             $queueRecordDetails[$record['id']] = parent::convertToQueueRecordFormat($record, $this->delete);
         }
-        if (count($queueRecordIds > 0)) {
+        if (count($queueRecordIds) > 0) {
             $syncServerDetails = parent::idmap_get_clientmap($appid, $queueRecordIds);
             foreach ($queueRecordIds as $serverId) {
                 $syncServerId = $syncServerDetails[$serverId]['id'];

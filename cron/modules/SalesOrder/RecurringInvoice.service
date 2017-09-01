@@ -137,7 +137,7 @@ function createInvoice($salesorder_id) {
 
 	// Pick up the Payment due date based on the Configuration in SO
 	$payment_duration = $so_focus->column_fields['payment_duration'];
-	$due_duration = $payment_duration_values[trim(strtolower($payment_duration))];
+	$due_duration = $payment_duration_values[strtolower(trim($payment_duration))];
 	$durationinsec = mktime(0,0,0,date('m'),date('d')+$due_duration,date('Y'));
 
 	// Cleanup focus object, to duplicate the Invoice.

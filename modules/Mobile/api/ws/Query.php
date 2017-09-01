@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-include_once dirname(__FILE__) . '/FetchRecordDetails.php';
+include_once __DIR__ . '/FetchRecordDetails.php';
 
 include_once 'include/Webservices/Query.php';
 

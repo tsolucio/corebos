@@ -134,8 +134,7 @@ class Vtiger_Request {
 	 * Delete the value for key
 	 */
 	public function delete($key) {
-		unset($this->valuemap[$key]);
-		unset($this->rawvaluemap[$key]);
+		unset($this->valuemap[$key],$this->rawvaluemap[$key]);
 	}
 
 	/**

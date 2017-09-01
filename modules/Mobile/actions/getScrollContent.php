@@ -8,7 +8,7 @@
  * All Rights Reserved.
  * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
-include_once dirname(__FILE__) . '/../api/ws/getScrollContent.php';
+include_once __DIR__ . '/../api/ws/getScrollContent.php';
 
 //get new content for scrolling
 class crmtogo_UI_GetScrollRecords extends crmtogo_WS_getScrollContent{

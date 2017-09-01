@@ -109,7 +109,7 @@ class MailManager_Model_Mailbox {
 		$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,'Emails');
 		$account_id = 1;
 		$maxresult = $adb->pquery("SELECT max(account_id) as max_account_id FROM vtiger_mail_accounts", array());
-		if ($adb->num_rows($maxresult)) $account_id += intval($adb->query_result($maxresult, 0, 'max_account_id'));
+		if ($adb->num_rows($maxresult)) $account_id += (int)$adb->query_result($maxresult, 0, 'max_account_id');
 		
 		$isUpdate = !empty($this->mId);
 		

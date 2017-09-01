@@ -77,7 +77,7 @@ class Calendar
 					{
 						$layout = new Layout('hour',$this->date_time->getTodayDatetimebyIndex($i));
 						$this->day_slice[$layout->start_time->get_formatted_date().':'.$layout->start_time->z_hour] = $layout;
-						array_push($this->slices,  $layout->start_time->get_formatted_date().":".$layout->start_time->z_hour);
+						$this->slices[] = $layout->start_time->get_formatted_date().":".$layout->start_time->z_hour;
 					}
 				}
 				break;
@@ -100,10 +100,10 @@ class Calendar
 						{
 						    $hour_list = new Layout('hour',$this->date_time->getTodayDatetimebyIndex($h,$layout->start_time->day,$layout->start_time->month,$layout->start_time->year));
 							$this->week_slice[$layout->start_time->get_formatted_date().':'.$hour_list->start_time->z_hour] = $hour_list;
-							array_push($this->week_hour_slices,  $layout->start_time->get_formatted_date().":".$hour_list->start_time->z_hour);
+							$this->week_hour_slices[] = $layout->start_time->get_formatted_date().":".$hour_list->start_time->z_hour;
 						}
 					}
-					array_push($this->slices,  $layout->start_time->get_formatted_date());
+					$this->slices[] = $layout->start_time->get_formatted_date();
 					
 				}
 				break;
@@ -124,7 +124,7 @@ class Calendar
 					$slices = $arr["slices"];
 					
 					$this->month_day_slices[$i] = $slices;
-					array_push($this->slices,  $layout->start_time->z_month);
+					$this->slices[] = $layout->start_time->z_month;
 				}
 				break;
 		}
@@ -213,28 +213,28 @@ class Calendar
 					if(empty($this->day_slice[$value->formatted_datetime]->activities)) {
 						$this->day_slice[$value->formatted_datetime]->activities = array();
 					}
-					array_push($this->day_slice[$value->formatted_datetime]->activities, $value);
+					$this->day_slice[$value->formatted_datetime]->activities[] = $value;
 				}
 				elseif($this->view == 'week')
 				{
 					if(empty($this->week_slice[$value->formatted_datetime]->activities)) {
 						$this->week_slice[$value->formatted_datetime]->activities = array();
 					}
-					array_push($this->week_slice[$value->formatted_datetime]->activities, $value);
+					$this->week_slice[$value->formatted_datetime]->activities[] = $value;
 				}
 				elseif($this->view == 'month')
 				{
 					if(empty($this->month_array[$value->formatted_datetime]->activities)) {
 						$this->month_array[$value->formatted_datetime]->activities = array();
 					}
-					array_push($this->month_array[$value->formatted_datetime]->activities,$value);
+					$this->month_array[$value->formatted_datetime]->activities[] = $value;
 				}
 				elseif($this->view == 'year')
 				{
 					if(empty($this->year_array[$value->formatted_datetime]->activities)) {
 						$this->year_array[$value->formatted_datetime]->activities = array();
 					}
-					array_push($this->year_array[$value->formatted_datetime]->activities,$value);
+					$this->year_array[$value->formatted_datetime]->activities[] = $value;
 				}
 				else
 					die("view:".$this->view." is not defined");
@@ -299,7 +299,7 @@ function getCalendarDaysInMonth($date_time){
 		$layout = new Layout('day', $pd);
 		$date = $layout->start_time->get_formatted_date();
 		$month_array[$date] = $layout;
-		array_push($slices,  $date);
+		$slices[] = $date;
 	}
 	
 	$result = array("month_array"=>$month_array, "slices"=>$slices, "date_time"=>$date_time);

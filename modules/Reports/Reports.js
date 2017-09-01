@@ -8,6 +8,13 @@
  ********************************************************************************/
 
 var gcurrepfolderid=0;
+var Report_MaxRelated_Modules = 2;
+GlobalVariable_getVariable('Report_MaxRelated_Modules', 2, 'Reports', gVTUserID).then(function(response) {
+	var obj = JSON.parse(response);
+	Report_MaxRelated_Modules = obj.Report_MaxRelated_Modules;
+}, function(error) {
+	Report_MaxRelated_Modules = 2;
+});
 
 // Setting cookies
 function set_cookie ( name, value, exp_y, exp_m, exp_d, path, domain, secure )
@@ -484,10 +491,10 @@ function changeSteps() {
 				modsselected++;
 			}
 		}
-		if (modsselected<=2) {
+		if (modsselected<=Report_MaxRelated_Modules) {
 			document.NewRep.submit();
 		} else {
-			alert(alert_arr.MAXIMUM_OF_TWO_MODULES_PERMITTED);
+			alert(alert_arr.MAXIMUM_OF_MODULES_PERMITTED);
 		}
 	}
 }

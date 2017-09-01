@@ -25,7 +25,7 @@ $image_path=$theme_path."images/";
 if(isset($_REQUEST['emailconfig_mode']) && $_REQUEST['emailconfig_mode'] == 'delete') {
 	$sql="delete from vtiger_systems where server_type = ?";
 	$result = $adb->pquery($sql, array('email'));
-	$_REQUEST['emailconfig_mode'] == 'view';
+	$_REQUEST['emailconfig_mode'] = 'view';
 }
 
 $sql="select * from vtiger_systems where server_type = ?";

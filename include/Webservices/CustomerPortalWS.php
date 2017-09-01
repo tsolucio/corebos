@@ -407,7 +407,7 @@ function getSearchingListViewEntries($focus, $module,$list_result,$navigation_ar
 		{
 			$fieldname = 'product_id';
 		}
-		array_push($field_list, $fieldname);
+		$field_list[] = $fieldname;
 	}
 	$field=Array();
 	if (!is_admin($current_user))
@@ -432,7 +432,7 @@ function getSearchingListViewEntries($focus, $module,$list_result,$navigation_ar
 				$query .=" WHERE vtiger_field.tabid in (9,16) and vtiger_field.presence in (0,2)";
 			else {
 				$query .=" WHERE vtiger_field.tabid = ? and vtiger_field.presence in (0,2)";
-				array_push($params, $tabid);
+				$params[] = $tabid;
 			}
 
 			$query .=" AND vtiger_profile2field.visible = 0
@@ -460,10 +460,10 @@ function getSearchingListViewEntries($focus, $module,$list_result,$navigation_ar
 		$query .=" WHERE vtiger_field.tabid in (9,16) and vtiger_field.presence in (0,2)";
 	else {
 		$query .=" WHERE vtiger_field.tabid = ? and vtiger_field.presence in (0,2)";
-		array_push($params, $tabid);
+		$params[] = $tabid;
 	}
 	$query .= " AND fieldname IN (". generateQuestionMarks($field_list).") ";
-	array_push($params, $field_list);
+	$params[] = $field_list;
 
 	$result = $adb->pquery($query, $params);
 	$num_rows=$adb->num_rows($result);
@@ -813,7 +813,7 @@ function getSearchingListViewEntries($focus, $module,$list_result,$navigation_ar
 						{
 							if((getFieldVisibilityPermission('Events',$current_user->id,'eventstatus') == '0') || (getFieldVisibilityPermission('Calendar',$current_user->id,'taskstatus') == '0'))
 							{
-								array_push($list_header,$value);
+								$list_header[] = $value;
 							}
 						}
 					}

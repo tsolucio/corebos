@@ -202,7 +202,7 @@ class Documents extends CRMEntity {
 	}
 
 	/**
-	 * This function is used to add the vtiger_attachments. This will call the function uploadAndSaveFile which will upload the attachment into the server and save that attachment information in the database.
+	 * This function is used to add the attachments. This will call the function uploadAndSaveFile which will upload the attachment into the server and save that attachment information in the database.
 	 * @param int $id  - entity id to which the files to be uploaded
 	 * @param string $module  - the current module name
 	*/
@@ -234,8 +234,7 @@ class Documents extends CRMEntity {
 		global $adb;
 		if ($module=='Documents') {
 			// in this case we have to turn the parameters around to call the parent method correctly
-			if (!is_array($with_crmid))
-				$with_crmid = Array($with_crmid);
+			$with_crmid = (array)$with_crmid;
 			foreach ($with_crmid as $relcrmid) {
 				$checkpresence = $adb->pquery("SELECT crmid FROM vtiger_senotesrel WHERE crmid = ? AND notesid = ?", Array($relcrmid,$crmid));
 				// Relation already exists? No need to add again

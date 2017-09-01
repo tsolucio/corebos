@@ -59,10 +59,7 @@ class CRMEntity {
 	 */
 	static function isBulkSaveMode() {
 		global $VTIGER_BULK_SAVE_MODE;
-		if (isset($VTIGER_BULK_SAVE_MODE) && $VTIGER_BULK_SAVE_MODE) {
-			return true;
-		}
-		return false;
+		return isset($VTIGER_BULK_SAVE_MODE) && $VTIGER_BULK_SAVE_MODE;
 	}
 
 	static function getInstance($module) {
@@ -114,6 +111,13 @@ class CRMEntity {
 			} else {
 				$this->insertIntoEntityTable($table_name, $module, $fileid);
 			}
+		}
+
+		// If multicurrency module we save the currency and conversion rate
+		if (!empty($this->column_fields['conversion_rate']) && !empty($this->column_fields['currency_id'])) {
+			$update_query = 'update '.$this->table_name.' set currency_id=?, conversion_rate=? where '.$this->table_index.'=?';
+			$update_params = array($this->column_fields['currency_id'], $this->column_fields['conversion_rate'], $this->id);
+			$this->db->pquery($update_query, $update_params);
 		}
 
 		//Calling the Module specific save code
@@ -182,14 +186,24 @@ class CRMEntity {
 				$upd = "update $tblname set $colname=? where ".$this->tab_name_index[$tblname].'=?';
 				$adb->pquery($upd, array($files['original_name'],$this->id));
 				$this->column_fields[$fldname] = $files['original_name'];
+				if (!empty($old_attachmentid)) {
+					$setypers = $adb->pquery('select setype from vtiger_crmentity where crmid=?', array($old_attachmentid));
+					$setype = $adb->query_result($setypers,0,'setype');
+					if ($setype == 'Contacts Image' || $setype == $module.' Attachment') {
+						$cntrels = $adb->pquery('select count(*) as cnt from vtiger_seattachmentsrel where attachmentsid=?', array($old_attachmentid));
+						$numrels = $adb->query_result($cntrels,0,'cnt');
+					} else {
+						$numrels = 0;
+					}
+				}
 				$file_saved = $this->uploadAndSaveFile($id,$module,$files,$attachmentname, $direct_import, $fldname);
 				// Remove the deleted attachments from db
 				if ($file_saved && !empty($old_attachmentid)) {
-					$setypers = $adb->pquery('select setype from vtiger_crmentity where crmid=?', array($old_attachmentid));
-					$setype = $adb->query_result($setypers,0,'setype');
 					if ($setype == 'Contacts Image' or $setype == $module.' Attachment') {
-						$del_res1 = $adb->pquery('delete from vtiger_attachments where attachmentsid=?', array($old_attachmentid));
-						$del_res2 = $adb->pquery('delete from vtiger_seattachmentsrel where attachmentsid=?', array($old_attachmentid));
+						if ($numrels == 1) {
+							$del_res1 = $adb->pquery('delete from vtiger_attachments where attachmentsid=?', array($old_attachmentid));
+						}
+						$del_res2 = $adb->pquery('delete from vtiger_seattachmentsrel where crmid = ? and attachmentsid=?', array($id,$old_attachmentid));
 					}
 				}
 			} elseif (isset($_REQUEST[$fileindex.'_canvas_image_set']) and $_REQUEST[$fileindex.'_canvas_image_set']==1 and !empty($_REQUEST[$fileindex.'_canvas_image'])) {
@@ -218,6 +232,31 @@ class CRMEntity {
 				$fldname = $fileindex;
 				$upd = "update $tblname set $colname=? where ".$this->tab_name_index[$tblname].'=?';
 				$adb->pquery($upd, array($saveasfile,$this->id));
+			} elseif (empty($files['name']) && $files['size'] == 0) {
+				$result = $adb->pquery($sql, array($fileindex,$tabid));
+				$tblname = $adb->query_result($result, 0, 'tablename');
+				$colname = $adb->query_result($result, 0, 'columnname');
+				$fldname = $fileindex;
+				if (empty($_REQUEST[$fileindex.'_hidden'])) {
+					$upd = "update $tblname set $colname='' where ".$this->tab_name_index[$tblname].'=?';
+					$adb->pquery($upd, array($this->id));
+				} elseif (!empty($_REQUEST['__cbisduplicatedfromrecordid'])) {
+					$attachmentname = vtlib_purify($_REQUEST[$fileindex.'_hidden']);
+					$isduplicatedfromrecordid = vtlib_purify($_REQUEST['__cbisduplicatedfromrecordid']);
+					$old_attachmentrs = $adb->pquery('select vtiger_crmentity.crmid from vtiger_seattachmentsrel
+					 inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_seattachmentsrel.attachmentsid
+					 inner join vtiger_attachments on vtiger_crmentity.crmid=vtiger_attachments.attachmentsid
+					 where vtiger_seattachmentsrel.crmid=? and vtiger_attachments.name=?', array($isduplicatedfromrecordid,$attachmentname));
+					if ($old_attachmentrs and $adb->num_rows($old_attachmentrs)>0) {
+						$old_attachmentid = $adb->query_result($old_attachmentrs,0,'crmid');
+						$upd = "update $tblname set $colname=? where ".$this->tab_name_index[$tblname].'=?';
+						$adb->pquery($upd, array($attachmentname,$this->id));
+						$adb->pquery('insert into vtiger_seattachmentsrel values(?,?)', array($id, $old_attachmentid));
+					} else {
+						$upd = "update $tblname set $colname='' where ".$this->tab_name_index[$tblname].'=?';
+						$adb->pquery($upd, array($this->id));
+					}
+				}
 			}
 		}
 		$log->debug("Exiting from insertIntoAttachment($id,$module) method.");
@@ -308,10 +347,14 @@ class CRMEntity {
 				$res = $adb->pquery($att_sql, array($attachmentname,$id));
 				$attachmentsid = $adb->query_result($res, 0, 'attachmentsid');
 				if ($attachmentsid != '') {
+					$cntrels = $adb->pquery('select count(*) as cnt from vtiger_seattachmentsrel where attachmentsid=?', array($attachmentsid));
+					$numrels = $adb->query_result($cntrels,0,'cnt');
 					$delquery = 'delete from vtiger_seattachmentsrel where crmid=? and attachmentsid=?';
 					$adb->pquery($delquery, array($id, $attachmentsid));
-					$crm_delquery = "delete from vtiger_crmentity where crmid=?";
-					$adb->pquery($crm_delquery, array($attachmentsid));
+					if ($numrels == 1) {
+						$crm_delquery = "delete from vtiger_crmentity where crmid=?";
+						$adb->pquery($crm_delquery, array($attachmentsid));
+					}
 					$sql5 = 'insert into vtiger_seattachmentsrel values(?,?)';
 					$adb->pquery($sql5, array($id, $current_id));
 				} else {
@@ -690,12 +733,12 @@ class CRMEntity {
 
 			if ($insertion_mode == 'edit') {
 				if ($table_name != 'vtiger_ticketcomments' && $uitype != 4) {
-					array_push($update, $columname . "=?");
-					array_push($update_params, $fldvalue);
+					$update[] = $columname . '=?';
+					$update_params[] = $fldvalue;
 				}
 			} else {
-				array_push($column, $columname);
-				array_push($value, $fldvalue);
+				$column[] = $columname;
+				$value[] = $fldvalue;
 			}
 		}
 
@@ -703,7 +746,7 @@ class CRMEntity {
 			// If update is empty the query fails
 			if (count($update) > 0) {
 				$sql1 = "update $table_name set " . implode(",", $update) . " where " . $this->tab_name_index[$table_name] . "=?";
-				array_push($update_params, $this->id);
+				$update_params[] = $this->id;
 				$adb->pquery($sql1, $update_params);
 			}
 		} else {
@@ -934,6 +977,10 @@ class CRMEntity {
 			$_REQUEST['assigned_user_id'] = $current_user->id;
 			$this->column_fields['assigned_user_id'] = $current_user->id;
 			$_REQUEST['assigntype'] = 'U';
+		}
+		// get is duplicate from id if present and not set
+		if (empty($this->column_fields['isduplicatedfromrecordid']) and !empty($_REQUEST['__cbisduplicatedfromrecordid'])) {
+			$this->column_fields['isduplicatedfromrecordid'] = vtlib_purify($_REQUEST['__cbisduplicatedfromrecordid']);
 		}
 
 		//Event triggering code
@@ -1542,11 +1589,11 @@ class CRMEntity {
 		$params = array($tabid);
 		if (count($exclude_columns) > 0) {
 			$sql .= " AND columnname NOT IN (" . generateQuestionMarks($exclude_columns) . ")";
-			array_push($params, $exclude_columns);
+			$params[] = $exclude_columns;
 		}
 		if (count($exclude_uitypes) > 0) {
 			$sql .= " AND uitype NOT IN (" . generateQuestionMarks($exclude_uitypes) . ")";
-			array_push($params, $exclude_uitypes);
+			$params[] = $exclude_uitypes;
 		}
 		$result = $adb->pquery($sql, $params);
 		$num_rows = $adb->num_rows($result);
@@ -1610,10 +1657,7 @@ class CRMEntity {
 	function isModuleSequenceConfigured($module) {
 		$adb = PearDatabase::getInstance();
 		$result = $adb->pquery('SELECT 1 FROM vtiger_modentity_num WHERE semodule = ? AND active = 1', array($module));
-		if ($result && $adb->num_rows($result) > 0) {
-			return true;
-		}
-		return false;
+		return $result && $adb->num_rows($result) > 0;
 	}
 
 	/* Function to get the next module sequence number for a given module */
@@ -1884,8 +1928,7 @@ class CRMEntity {
 	 */
 	function save_related_module($module, $crmid, $with_module, $with_crmid) {
 		global $adb;
-		if (!is_array($with_crmid))
-			$with_crmid = Array($with_crmid);
+		$with_crmid = (array)$with_crmid;
 		foreach ($with_crmid as $relcrmid) {
 
 			if ($with_module == 'Documents') {
@@ -1916,8 +1959,7 @@ class CRMEntity {
 	 */
 	function delete_related_module($module, $crmid, $with_module, $with_crmid) {
 		global $adb;
-		if (!is_array($with_crmid))
-			$with_crmid = Array($with_crmid);
+		$with_crmid = (array)$with_crmid;
 		$data = array();
 		$data['sourceModule'] = $module;
 		$data['sourceRecordId'] = $crmid;
@@ -2056,11 +2098,7 @@ class CRMEntity {
 			while ($depflds = $this->db->fetch_array($dependentFieldSql)) {
 			$dependentTable = $depflds['tablename'];
 			if (isset($other->related_tables)) {
-				if (!is_array($other->related_tables)) {
-					$otherRelatedTable = array($other->related_tables);
-				} else {
-					$otherRelatedTable = $other->related_tables;
-				}
+				$otherRelatedTable = (array)$other->related_tables;
 			} else {
 				$otherRelatedTable = '';
 			}
@@ -2175,11 +2213,7 @@ class CRMEntity {
 			while ($depflds = $this->db->fetch_array($dependentFieldSql)) {
 			$dependentTable = $depflds['tablename'];
 			if (isset($other->related_tables)) {
-				if (!is_array($other->related_tables)) {
-					$otherRelatedTable = array($other->related_tables);
-				} else {
-					$otherRelatedTable = $other->related_tables;
-				}
+				$otherRelatedTable = (array)$other->related_tables;
 			} else {
 				$otherRelatedTable = '';
 			}
@@ -2649,8 +2683,7 @@ class CRMEntity {
 	function buildSearchQueryForFieldTypes($uitypes, $value=false) {
 		global $adb;
 
-		if (!is_array($uitypes))
-			$uitypes = array($uitypes);
+		$uitypes = (array)$uitypes;
 		$module = get_class($this);
 
 		$cachedModuleFields = VTCacheUtils::lookupFieldInfo_Module($module);
@@ -2685,8 +2718,7 @@ class CRMEntity {
 			}
 		}
 		foreach ($LookupTable as $tablename) {
-			$query .= " INNER JOIN $tablename
-						on $this->table_name.$this->table_index = $tablename." . $this->tab_name_index[$tablename];
+			$query .= " INNER JOIN $tablename on $this->table_name.$this->table_index = $tablename." . $this->tab_name_index[$tablename];
 		}
 		if (!empty($lookupcolumns) && $value !== false) {
 			$query .=" WHERE ";

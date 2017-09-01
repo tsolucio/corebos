@@ -605,7 +605,7 @@ $timezone_field->uitype = 16;
 $block->addField($timezone_field);
 
 $usertimezonesClass = new UserTimeZones();
-$arrayOfSupportedTimeZones = $usertimezonesClass->userTimeZones();
+$arrayOfSupportedTimeZones = $usertimezonesClass->arrayOfSupportedTimeZones;
 $timezone_field->setPicklistValues($arrayOfSupportedTimeZones);
 
 $timeZone = DateTimeField::getDBTimeZone();

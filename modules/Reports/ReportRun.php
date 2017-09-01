@@ -281,7 +281,7 @@ class ReportRun extends CRMEntity {
 			if (count($profileList) > 0) {
 				$query .= " vtiger_field.tabid in (9,16) and vtiger_field.displaytype in (1,2,3) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0
 								and vtiger_field.presence IN (0,2) and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .") group by vtiger_field.fieldid order by block,sequence";
-				array_push($params, $profileList);
+				$params[] = $profileList;
 			} else {
 				$query .= " vtiger_field.tabid in (9,16) and vtiger_field.displaytype in (1,2,3) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0
 								and vtiger_field.presence IN (0,2) group by vtiger_field.fieldid order by block,sequence";
@@ -289,11 +289,11 @@ class ReportRun extends CRMEntity {
 		}
 		else
 		{
-			array_push($params, $module);
+			$params[] = $module;
 			if (count($profileList) > 0) {
 				$query .= " vtiger_field.tabid in (select tabid from vtiger_tab where vtiger_tab.name in (?)) and vtiger_field.displaytype in (1,2,3,5) and vtiger_profile2field.visible=0
 								and vtiger_field.presence IN (0,2) and vtiger_def_org_field.visible=0 and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .") group by vtiger_field.fieldid order by block,sequence";
-				array_push($params, $profileList);
+				$params[] = $profileList;
 			} else {
 				$query .= " vtiger_field.tabid in (select tabid from vtiger_tab where vtiger_tab.name in (?)) and vtiger_field.displaytype in (1,2,3,5) and vtiger_profile2field.visible=0
 								and vtiger_field.presence IN (0,2) and vtiger_def_org_field.visible=0 group by vtiger_field.fieldid order by block,sequence";
@@ -2296,7 +2296,7 @@ class ReportRun extends CRMEntity {
 				$i18nheader[] = $i18nheaderLabel;
 			}
 			$resp = array(
-				'has_contents' => ($adb->num_rows($result)==1 ? true : false),
+				'has_contents' => ($adb->num_rows($result) == 1),
 				'jsonheaders' => $jsonheader,
 				'i18nheaders' => $i18nheader,
 				'error' => false,
@@ -3176,7 +3176,7 @@ class ReportRun extends CRMEntity {
 		global $adb, $current_user;
 		$id = array(getTabid($this->primarymodule));
 		if($this->secondarymodule != '')
-			array_push($id, getTabid($this->secondarymodule));
+			$id[] = getTabid($this->secondarymodule);
 
 		$query = 'select fieldname,columnname,fieldid,fieldlabel,tabid,uitype from vtiger_field where tabid in('. generateQuestionMarks($id) .') and uitype in (15,33,55)'; //and columnname in (?)';
 		$result = $adb->pquery($query, $id);//,$select_column));
@@ -3185,7 +3185,7 @@ class ReportRun extends CRMEntity {
 		if(count($subrole)> 0)
 		{
 			$roleids = $subrole;
-			array_push($roleids, $roleid);
+			$roleids[] = $roleid;
 		}
 		else
 		{

@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-include_once dirname(__FILE__) . '/ModuleRecord.php';
+include_once __DIR__ . '/ModuleRecord.php';
 
 class crmtogo_UI_ModuleModel {
 	public $data;

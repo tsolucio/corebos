@@ -8,7 +8,7 @@
  * All Rights Reserved.
  *************************************************************************************/
 require_once('Smarty_setup.php');
-include_once dirname(__FILE__) . '/SMSNotifier.php';
+include_once __DIR__ . '/SMSNotifier.php';
 
 global $theme, $currentModule, $mod_strings, $app_strings, $current_user;
 $theme_path="themes/".$theme."/";

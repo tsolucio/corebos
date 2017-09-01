@@ -773,7 +773,7 @@ function convertMailData2Html($maildata, $cutafter = 0) {
 		}
 		else
 		{
-			array_push($attach_tab, $tmpvar);
+			$attach_tab[] = $tmpvar;
 		}
 		$link_att = '';
 		$att_links = '';//variable added to display the attachments in full email view

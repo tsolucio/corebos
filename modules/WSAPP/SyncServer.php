@@ -36,7 +36,7 @@ class SyncServer {
 	 * application and serverid
 	 */
 	function idmap_get_clientmap($appid, $serverids) {
-		if (!is_array($serverids)) $serverids = array($serverids);
+		$serverids = (array)$serverids;
 		$db = PearDatabase::getInstance();
 		$result = $db->pquery(sprintf(
 			"SELECT serverid, clientid,clientmodifiedtime,servermodifiedtime,id FROM vtiger_wsapp_recordmapping WHERE appid=? AND serverid IN ('%s')",
@@ -57,7 +57,7 @@ class SyncServer {
 	 * application and client
 	 */
 	function idmap_get_clientservermap($appid,$clientids){
-		if(!is_array($clientids)) $clientids = array($clientids);
+		$clientids = (array)$clientids;
 
 		$db = PearDatabase::getInstance();
 
@@ -72,8 +72,7 @@ class SyncServer {
 	}
 
 	function idmap_storeRecordsInQueue($syncServerId,$recordDetails,$flag,$appid){
-		if(!is_array($recordDetails))
-			$recordDetails = array($recordDetails);
+		$recordDetails = (array)$recordDetails;
 		$db = PearDatabase::getInstance();
 		$params = array();
 		$params[] = $syncServerId;
@@ -247,10 +246,7 @@ class SyncServer {
 			throw new WebServiceException('WSAPP04',"Access restricted to app");
 		}
 
-		if (!is_array($element))
-			$records = array($element);
-		else
-			$records = $element;
+		$records = (array)$element;
 
 		//hardcoded since the destination handler will be vtigerCRM
 		$serverKey = wsapp_getAppKey("vtigerCRM");
@@ -337,7 +333,7 @@ class SyncServer {
 			$queueRecordIds[] = $record['id'];
 			$queueRecordDetails[$record['id']] = $this->convertToQueueRecordFormat($record, $this->delete);
 		}
-		if(count($queueRecordIds > 0)){
+		if (count($queueRecordIds) > 0) {
 			$syncServerDetails = $this->idmap_get_clientmap($appid,$queueRecordIds);
 			foreach($queueRecordIds as $serverId){
 				$syncServerId = $syncServerDetails[$serverId]['id'];

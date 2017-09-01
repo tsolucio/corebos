@@ -31,6 +31,7 @@ abstract class EntityMeta{
 	protected $mandatoryFields;
 	protected $referenceFieldDetails;
 	protected $emailFields;
+	protected $imageFields;
 	protected $ownerFields;
 	protected $moduleFields;
 
@@ -46,11 +47,23 @@ abstract class EntityMeta{
 			$this->emailFields =  array();
 			foreach ($this->moduleFields as $fieldName=>$webserviceField) {
 				if(strcasecmp($webserviceField->getFieldType(),'e') === 0){
-					array_push($this->emailFields, $fieldName);
+					$this->emailFields[] = $fieldName;
 				}
 			}
 		}
 		return $this->emailFields;
+	}
+
+	public function getImageFields() {
+		if ($this->imageFields === null) {
+			$this->imageFields =  array();
+			foreach ($this->moduleFields as $fieldName=>$webserviceField) {
+				if ($webserviceField->getUIType() == 69) {
+					$this->imageFields[] = $fieldName;
+				}
+			}
+		}
+		return $this->imageFields;
 	}
 
 	public function getFieldColumnMapping(){
@@ -69,7 +82,7 @@ abstract class EntityMeta{
 			$this->mandatoryFields =  array();
 			foreach ($this->moduleFields as $fieldName=>$webserviceField) {
 				if($webserviceField->isMandatory() === true){
-					array_push($this->mandatoryFields,$fieldName);
+					$this->mandatoryFields[] = $fieldName;
 				}
 			}
 		}
@@ -93,7 +106,7 @@ abstract class EntityMeta{
 			$this->ownerFields =  array();
 			foreach ($this->moduleFields as $fieldName=>$webserviceField) {
 				if(strcasecmp($webserviceField->getFieldDataType(),'owner') === 0){
-					array_push($this->ownerFields, $fieldName);
+					$this->ownerFields[] = $fieldName;
 				}
 			}
 		}
@@ -108,9 +121,9 @@ abstract class EntityMeta{
 		if($this->userAccessibleColumns === null){
 			$this->userAccessibleColumns =  array();
 			foreach ($this->moduleFields as $fieldName=>$webserviceField) {
-				array_push($this->userAccessibleColumns,$webserviceField->getColumnName());
+				$this->userAccessibleColumns[] = $webserviceField->getColumnName();
 			}
-			array_push($this->userAccessibleColumns,$this->idColumn);
+			$this->userAccessibleColumns[] = $this->idColumn;
 		}
 		return $this->userAccessibleColumns;
 	}
@@ -181,7 +194,7 @@ abstract class EntityMeta{
 		$moduleFields = $this->getModuleFields();
 		foreach ($moduleFields as $fieldName=>$webserviceField) {
 			if (strcmp($webserviceField->getFieldDataType(),$type) === 0) {
-				array_push($typeList, $fieldName);
+				$typeList[] = $fieldName;
 			}
 		}
 		return $typeList;
@@ -193,7 +206,7 @@ abstract class EntityMeta{
 		$moduleFields = $this->getModuleFields();
 		foreach ($moduleFields as $fieldName=>$webserviceField) {
 			if(strcmp($webserviceField->getFieldDataType(),$type) === 0){
-				array_push($typeList, $webserviceField);
+				$typeList[] = $webserviceField;
 			}
 		}
 		return $typeList;

@@ -106,8 +106,7 @@ function get_options_array_seperate_key(&$label_list, &$key_list, $selected_key,
 	//for setting null selection values to human readable --None--
 	$pattern = "/'0?'></";
 	$replacement = "''>" . $app_strings['LBL_NONE'] . "<";
-	if (!is_array($selected_key))
-		$selected_key = array($selected_key);
+	$selected_key = (array)$selected_key;
 
 	//create the type dropdown domain and set the selected value if $opp value already exists
 	foreach ($key_list as $option_key => $option_value) {
@@ -144,8 +143,7 @@ function get_select_options_with_id_separate_key(&$label_list, &$key_list, $sele
 
 	$pattern = "/'0?'></";
 	$replacement = "''>" . $app_strings['LBL_NONE'] . "<";
-	if (!is_array($selected_key))
-		$selected_key = array($selected_key);
+	$selected_key = (array)$selected_key;
 
 	foreach ($key_list as $option_key => $option_value) {
 		$selected_string = '';
@@ -173,8 +171,7 @@ function get_select_options_with_value_separate_key(&$label_list, &$key_list, $s
 
 	$pattern = "/'0?'></";
 	$replacement = "''>" . $app_strings['LBL_NONE'] . "<";
-	if (!is_array($selected_key))
-		$selected_key = array($selected_key);
+	$selected_key = (array)$selected_key;
 
 	foreach ($key_list as $option_key => $option_value) {
 		$selected_string = '';
@@ -1242,7 +1239,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 	$blockid_list = array();
 	for ($i = 0; $i < $noofrows; $i++) {
 		$blockid = $adb->query_result($result, $i, "blockid");
-		array_push($blockid_list, $blockid);
+		$blockid_list[] = $blockid;
 		$block_label[$blockid] = $adb->query_result($result, $i, "blocklabel");
 
 		$sLabelVal = getTranslatedString($block_label[$blockid], $module);
@@ -1337,7 +1334,7 @@ function getCustomBlocks($module, $disp_view) {
 		$blockid = $adb->query_result($result, $i, "blockid");
 		$block_label[$blockid] = $adb->query_result($result, $i, "blocklabel");
 		$sLabelVal = getTranslatedString($block_label[$blockid], $module);
-		array_push($block_list, $sLabelVal);
+		$block_list[] = $sLabelVal;
 		if (($disp_view == 'edit_view' || $disp_view == 'create' || $disp_view == 'create_view') && file_exists("Smarty/templates/modules/$module/{$block_label[$blockid]}_edit.tpl")) {
 			$block_list[$sLabelVal] = array('custom' => true, 'relatedlist' => false, 'tpl' => "modules/$module/{$block_label[$blockid]}_edit.tpl");
 		} elseif ($disp_view == 'detail_view' && file_exists("Smarty/templates/modules/$module/{$block_label[$blockid]}_detail.tpl")) {
@@ -1850,7 +1847,7 @@ function getQuickCreateModules() {
 			$return_qcmodule[] = $tabname;
 		}
 	}
-	if (sizeof($return_qcmodule > 0)) {
+	if (sizeof($return_qcmodule) > 0) {
 		$return_qcmodule = array_chunk($return_qcmodule, 2);
 	}
 
@@ -2036,8 +2033,8 @@ function getEntityName($module, $ids_list) {
 		$entityIdField = $entity_field_info['entityidfield'];
 		$entity_FieldValue = getEntityFieldValues($entity_field_info, $ids_list);
 
-		foreach($entity_FieldValue as $key => $entityInfo) {
-			foreach($entityInfo as $key => $entityName) {
+		foreach ($entity_FieldValue as $entityInfo) {
+			foreach ($entityInfo as $key => $entityName) {
 				$fieldValues = $entityName;
 				$entityDisplay[$key] = getEntityFieldNameDisplay($module, $fieldsName, $fieldValues);
 			}
@@ -2876,7 +2873,7 @@ function checkFileAccessForInclusion($filepath) {
 	// Set the base directory to compare with
 	$use_root_directory = $root_directory;
 	if (empty($use_root_directory)) {
-		$use_root_directory = realpath(dirname(__FILE__) . '/../../.');
+		$use_root_directory = realpath(__DIR__ . '/../../.');
 	}
 
 	$unsafeDirectories = array('storage', 'cache', 'test', 'build', 'logs', 'backup', 'packages', 'schema');
@@ -2910,7 +2907,7 @@ function checkFileAccessForDeletion($filepath) {
 	// Set the base directory to compare with
 	$use_root_directory = $root_directory;
 	if (empty($use_root_directory)) {
-		$use_root_directory = realpath(dirname(__FILE__) . '/../../.');
+		$use_root_directory = realpath(__DIR__ . '/../../.');
 	}
 
 	$safeDirectories = array('storage', 'cache', 'test');
@@ -2960,7 +2957,7 @@ function isFileAccessible($filepath) {
 	// Set the base directory to compare with
 	$use_root_directory = $root_directory;
 	if (empty($use_root_directory)) {
-		$use_root_directory = realpath(dirname(__FILE__) . '/../../.');
+		$use_root_directory = realpath(__DIR__ . '/../../.');
 	}
 
 	$realfilepath = realpath($filepath);
@@ -2973,10 +2970,7 @@ function isFileAccessible($filepath) {
 	$realfilepath = str_replace('\\', '/', $realfilepath);
 	$rootdirpath = str_replace('\\', '/', $rootdirpath);
 
-	if (stripos($realfilepath, $rootdirpath) !== 0) {
-		return false;
-	}
-	return true;
+	return !(stripos($realfilepath, $rootdirpath) !== 0);
 }
 
 /** Function to get the ActivityType for the given entity id
@@ -3272,7 +3266,7 @@ function getReturnPath($host, $from_email) {
 	$host = trim($host);
 
 	// Review if the host is not local
-	if (!in_array(strtolower($host), array('localhost'))) {
+	if ('localhost' != strtolower($host)) {
 		if (strpos($from_email, '@')) {
 			list($from_name, $from_domain) = explode('@', $from_email);
 		} else {

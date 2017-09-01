@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-include_once dirname(__FILE__) . '/TCPDF.php';
-include_once dirname(__FILE__) . '/Frame.php';
+include_once __DIR__ . '/TCPDF.php';
+include_once __DIR__ . '/Frame.php';
 
 class Vtiger_PDF_Generator {
 	private $headerViewer = false, $footerViewer = false, $contentViewer = false, $pagerViewer = false;

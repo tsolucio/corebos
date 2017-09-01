@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once dirname(__FILE__) . '/../../../include/tcpdf/config/lang/eng.php';
-require_once dirname(__FILE__) . '/../../../include/tcpdf/tcpdf.php';
+require_once __DIR__ . '/../../../include/tcpdf/config/lang/eng.php';
+require_once __DIR__ . '/../../../include/tcpdf/tcpdf.php';
 
 class Vtiger_PDF_TCPDF extends TCPDF {
 

@@ -206,7 +206,7 @@ class CurrencyField {
 	 * @return Formatted Currency
 	 */
 	private function _formatCurrencyValue($value) {
-		if (is_string($value)) $value = floatval($value);
+		if (is_string($value)) $value = (float)$value;
 		if ($value == 0) return '0';
 		$currencyPattern = $this->currencyFormat;
 		$currencySeparator = $this->currencySeparator;

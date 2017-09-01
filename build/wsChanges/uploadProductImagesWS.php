@@ -1,6 +1,6 @@
 <?php
 /*********************************************************************************
- * Copyright 2016 JPL TSolucio, S.L.  --  This file is a part of coreBOS.
+ * Copyright 2017 JPL TSolucio, S.L.  --  This file is a part of coreBOS.
  * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
  * Vizsage Public License (the "License"). You may not use this file except in compliance with the
  * License. Roughly speaking, non-commercial users may share and modify this code, but must give credit
@@ -13,7 +13,7 @@
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
  ********************************************************************************/
 
- $operationInfo = array(
+$operationInfo = array(
 	'name'    => 'addProductImages',
 	'include' => 'include/Webservices/UploadProductImages.php',
 	'handler' => 'cbws_uploadProductImages',

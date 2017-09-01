@@ -89,7 +89,7 @@
 			$params = array(VTWorkflowManager::$ON_SCHEDULE);
 			if($referenceTime != '') {
 				$query .= " AND (nexttrigger_time = '' OR nexttrigger_time IS NULL OR nexttrigger_time <= ?)";
-				array_push($params, $referenceTime);
+				$params[] = $referenceTime;
 			}
 			$result = $adb->pquery($query, $params);
 			return $this->getWorkflowsForResult($result);
@@ -299,9 +299,8 @@
 			$exp['tasks'] = array();
 			$tm = new VTTaskManager($this->adb);
 			$tasks = $tm->getTasksForWorkflow($workflow->id);
-			foreach($tasks as $task){
-				unset($task->id);
-				unset($task->workflowId);
+			foreach ($tasks as $task) {
+				unset($task->id,$task->workflowId);
 				$exp['tasks'][] = serialize($task);
 			}
 			return  json_encode($exp);

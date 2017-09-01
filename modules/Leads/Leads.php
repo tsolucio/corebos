@@ -296,7 +296,7 @@ class Leads extends CRMEntity {
 			$params1 = array();
 			if (count($profileList) > 0) {
 				$sql1 .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .") group by fieldid";
-				array_push($params1, $profileList);
+				$params1[] = $profileList;
 			}
 		}
 		$result = $this->db->pquery($sql1, $params1);
@@ -424,7 +424,7 @@ class Leads extends CRMEntity {
 	function save_related_module($module, $crmid, $with_module, $with_crmids) {
 		$adb = PearDatabase::getInstance();
 
-		if(!is_array($with_crmids)) $with_crmids = Array($with_crmids);
+		$with_crmids = (array)$with_crmids;
 		foreach($with_crmids as $with_crmid) {
 			if($with_module == 'Products')
 				$adb->pquery("insert into vtiger_seproductsrel values (?,?,?)", array($crmid, $with_crmid, $module));
@@ -504,7 +504,7 @@ class Leads extends CRMEntity {
 			$params1 = array();
 			if (count($profileList) > 0) {
 				 $sql1 .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
-				 array_push($params1, $profileList);
+				 $params1[] = $profileList;
 			}
 		}
 		$result1 = $this->db->pquery($sql1, $params1);

@@ -186,16 +186,15 @@ public function setgoogleaccessparams($userid){
 			$user_array = array("id"=> $userid, "firstname" => $first_name, "lastname" => $last_name, "fullname" => trim($first_name." ".$last_name), "color" => $User_Colors_Palette[1], "textColor" => $User_Colors["text"], "title_color" => $User_Colors_Palette[0], "status" => $status, "checked"=>$user_checked);
 			$return_data [$userid]= $user_array;
 
-			unset($User_Colors);
-			unset($User_Colors_Palette);
+			unset($User_Colors,$User_Colors_Palette);
 		}
 
 		return $return_data;
 	}
-	
-    public function CheckUserPermissions($userid) {
-        return true;
-    }    
+
+	public function CheckUserPermissions($userid) {
+		return true;
+	}
 
     /**
      * Handle module events
@@ -445,10 +444,7 @@ public function setgoogleaccessparams($userid){
 
     	$query = "select * from vtiger_invitees where activityid =? and inviteeid=?";
         $result=$adb->pquery($query, array($recordId, $current_user->id));
-    	if($adb->num_rows($result) >0) {
-    		return true;
-    	}
-    	return false;
+        return $adb->num_rows($result) >0;
     }
     
     function getActStatusFieldValues($fieldname,$tablename) {
@@ -475,8 +471,8 @@ public function setgoogleaccessparams($userid){
     		$subrole = getRoleSubordinates($roleid);
     		if(count($subrole)> 0) {
     			$roleids = $subrole;
-    			array_push($roleids, $roleid);
-    		} else {	
+				$roleids[] = $roleid;
+			} else {
     			$roleids = $roleid;
     		}
 

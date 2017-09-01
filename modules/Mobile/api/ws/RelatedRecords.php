@@ -9,7 +9,7 @@
  * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
 
-include_once dirname(__FILE__) . '/QueryWithGrouping.php';
+include_once __DIR__ . '/QueryWithGrouping.php';
 
 class crmtogo_WS_RelatedRecords extends crmtogo_WS_QueryWithGrouping {
 

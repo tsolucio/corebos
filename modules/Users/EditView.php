@@ -103,8 +103,7 @@ if ((empty($_REQUEST['isDuplicate']) || $_REQUEST['isDuplicate'] != 'true') && i
 $HomeValues = $focus->getHomeStuffOrder($focus->id);
 $smarty->assign("TAGCLOUDVIEW",$HomeValues['Tag Cloud']);
 $smarty->assign("SHOWTAGAS",$HomeValues['showtagas']);
-unset($HomeValues['Tag Cloud']);
-unset($HomeValues['showtagas']);
+unset($HomeValues['Tag Cloud'],$HomeValues['showtagas']);
 $smarty->assign("HOMEORDER",$HomeValues);
 
 $smarty->assign("tagshow_options", array(

@@ -125,6 +125,17 @@ class Vtiger_Menu {
 		global $adb;
 		$query = false;
 		$instance = false;
+                $adb->query("CREATE TABLE IF NOT EXISTS `vtiger_evvtmenu` (`evvtmenuid` int(11) NOT NULL AUTO_INCREMENT,
+                                                                  `mtype` varchar(25) NOT NULL,
+                                                                  `mvalue` varchar(200) NOT NULL,
+                                                                  `mlabel` varchar(200) NOT NULL,
+                                                                  `mparent` int(11) NOT NULL,
+                                                                  `mseq` smallint(6) NOT NULL,
+                                                                  `mvisible` tinyint(4) NOT NULL,
+                                                                  `mpermission` varchar(250) NOT NULL,
+                                                                  PRIMARY KEY (`evvtmenuid`),
+                                                                  KEY `mparent` (`mparent`)
+                                                                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;");
 		if(Vtiger_Utils::isNumber($value)) {
 			$query = "SELECT * FROM vtiger_parenttab WHERE parenttabid=?";
 			$querymenu = "SELECT * FROM vtiger_evvtmenu WHERE evvtmenuid=? and mtype='menu'";
@@ -154,12 +165,12 @@ class Vtiger_Menu {
 			if ($rsmnu and $adb->num_rows($rsmnu)>0) {
 				$mnu = $adb->fetch_array($rsmnu);
 				$mnuinfo = array(
-					'parenttabid' => intval($mnu['evvtmenuid']),
-					'menuid' => intval($mnu['evvtmenuid']),
+					'parenttabid' => (int)$mnu['evvtmenuid'],
+					'menuid' => (int)$mnu['evvtmenuid'],
 					'parenttab_label' => $mnu['mlabel'],
 					'menulabel' => $mnu['mlabel'],
-					'sequence' => intval($mnu['mseq']),
-					'menusequence' => intval($mnu['mseq']),
+					'sequence' => (int)$mnu['mseq'],
+					'menusequence' => (int)$mnu['mseq'],
 					'visible' => 0,
 					'menuvisible' => 1,
 				);

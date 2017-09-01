@@ -8,8 +8,8 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-include_once dirname(__FILE__) . '/../models/Folder.php';
-include_once dirname(__FILE__) . '/../models/Message.php';
+include_once __DIR__ . '/../models/Folder.php';
+include_once __DIR__ . '/../models/Message.php';
 
 class MailManager_Connector {
 
@@ -249,7 +249,7 @@ class MailManager_Connector {
 		// Optimization to avoid trigger for ever mail open (with interval specified)
 		$lastClearTimeFromSession = false;
 		if ($interval && isset($_SESSION) && isset($_SESSION['mailmanager_clearDBCacheIntervalLast'])) {
-			$lastClearTimeFromSession = intval($_SESSION['mailmanager_clearDBCacheIntervalLast']);
+			$lastClearTimeFromSession = (int)$_SESSION['mailmanager_clearDBCacheIntervalLast'];
 			if (($timenow - $lastClearTimeFromSession) < ($timenow - $interval)) {
 				$interval = false;
 			}

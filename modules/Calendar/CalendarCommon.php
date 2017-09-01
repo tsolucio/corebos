@@ -89,7 +89,7 @@ function getSharingUserName($id) {
 		$params = array($current_user->id, $role_seq."::%", $current_user->id);
 		if (!empty($assigned_user_id)) {
 			$query .= " OR id=?";
-			array_push($params, $assigned_user_id);
+			$params[] = $assigned_user_id;
 		}
 		$query .= " order by user_name ASC";
 		$result = $adb->pquery($query, $params, true, "Error filling in user array: ");
@@ -244,7 +244,7 @@ function getActFieldCombo($fieldname,$tablename,$follow_activitytype = false) {
 		if(count($subrole)> 0)
 		{
 			$roleids = $subrole;
-			array_push($roleids, $roleid);
+			$roleids[] = $roleid;
 		}
 		else
 		{

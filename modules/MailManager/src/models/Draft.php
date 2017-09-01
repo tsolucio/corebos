@@ -13,7 +13,7 @@ include_once 'include/Webservices/Create.php';
 include_once 'include/Webservices/Update.php';
 include_once 'modules/MailManager/config.inc.php';
 include_once 'modules/MailManager/src/controllers/UploadController.php';
-include_once dirname(__FILE__).'/DraftFolder.php';
+include_once __DIR__ .'/DraftFolder.php';
 
 class MailManager_Model_DraftEmail {
 
