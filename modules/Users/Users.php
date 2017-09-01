@@ -196,9 +196,7 @@ class Users extends CRMEntity {
 			//crypt API is lot stricter in taking the value for salt.
 			$salt = '$1$' . str_pad($salt, 9, '0');
 		}
-
-		$encrypted_password = crypt($user_password, $salt);
-		return $encrypted_password;
+		return crypt($user_password, $salt);
 	}
 
 	/** Function for authorization check */

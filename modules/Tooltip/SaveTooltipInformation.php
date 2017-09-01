@@ -27,21 +27,20 @@ echo SaveTooltipInformation($fieldid, $sequence);
 function SaveTooltipInformation($fieldid, $sequence, $view=1){
 	global $adb;
 
-	if(empty($fieldid)){
+	if (empty($fieldid)) {
 		return "FAILURE";
-	}else{
+	} else {
 		$checkedFields = array();
-		if(!empty($_REQUEST['checkedFields'])){
+		if (!empty($_REQUEST['checkedFields'])) {
 			$checkedFields = explode(",",$_REQUEST['checkedFields']);
 			//add to vtiger_quickview table
-			foreach($checkedFields as $checkedField){
+			foreach ($checkedFields as $checkedField) {
 				$query = "insert into vtiger_quickview (fieldid,related_fieldid,sequence,currentview) values (?,?,?,?)";
 				$adb->pquery($query,array($fieldid, $checkedField, $sequence, $view));
 				$sequence++;
 			}
 		}
-		$data = getDetailViewForTooltip($fieldid, $checkedFields);
-		return $data;
+		return getDetailViewForTooltip($fieldid, $checkedFields);
 	}
 }
 
@@ -67,7 +66,7 @@ function getDetailViewForTooltip($fieldid, $checkedFields){
 	require_once('Smarty_setup.php');
 	global $app_strings, $theme;
 	$labels = array();
-	if(!empty($checkedFields)){
+	if (!empty($checkedFields)) {
 		$labels = getFieldLabels($checkedFields);
 	}
 	$module = getModuleForField($fieldid);
@@ -80,9 +79,7 @@ function getDetailViewForTooltip($fieldid, $checkedFields){
 	$smarty->assign('THEME', $theme);
 	$smarty->assign("LABELS", $labels);
 	$smarty->assign("COUNT", count($labels));
-
-	$data = $smarty->fetch("modules/Tooltip/DetailQuickView.tpl");
-	return $data;
+	return $smarty->fetch('modules/Tooltip/DetailQuickView.tpl');
 }
 
 /**

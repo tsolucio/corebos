@@ -802,8 +802,7 @@ function loadSession(&$ev, &$key)
     return '';
   }
 
-  $line = trim(fgets($file, 1024));
-  return $line;
+  return trim(fgets($file, 1024));
 }
 
 // Convert a language string to HTML

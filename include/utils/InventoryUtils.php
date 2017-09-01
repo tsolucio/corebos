@@ -891,8 +891,7 @@ function getProductBaseCurrency($productid,$module='Products') {
 	}
 	$params = array($productid);
 	$res = $adb->pquery($sql, $params);
-	$currencyid = $adb->query_result($res, 0, 'currency_id');
-	return $currencyid;
+	return $adb->query_result($res, 0, 'currency_id');
 }
 
 /**	Function used to get the conversion rate for the product base currency with respect to the CRM base currency
@@ -982,9 +981,8 @@ function getPricesForProducts($currencyid, $product_ids, $module='Products') {
  */
 function getPriceBookCurrency($pricebook_id) {
 	global $adb;
-	$result = $adb->pquery("select currency_id from vtiger_pricebook where pricebookid=?", array($pricebook_id));
-	$currency_id = $adb->query_result($result,0,'currency_id');
-	return $currency_id;
+	$result = $adb->pquery('select currency_id from vtiger_pricebook where pricebookid=?', array($pricebook_id));
+	return $adb->query_result($result,0,'currency_id');
 }
 
 // deduct products from stock - if status will be changed from cancel to other status.

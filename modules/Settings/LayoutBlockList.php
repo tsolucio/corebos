@@ -924,11 +924,9 @@ function addCustomField() {
 	$params =  array($dup_check_tab_id, $fldlabel);
 	$checkresult=$adb->pquery($checkquery,$params);
 
-	if($adb->num_rows($checkresult) > 0 ) {
-		$duplicate = 'yes';
-		return $duplicate ;
-	}
-	else {
+	if ($adb->num_rows($checkresult) > 0 ) {
+		return 'yes';
+	} else {
 		$max_fieldid = $adb->getUniqueID("vtiger_field");
 		$columnName = 'cf_'.$max_fieldid;
 		$custfld_fieldid = $max_fieldid;

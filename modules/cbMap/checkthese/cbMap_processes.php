@@ -16,29 +16,25 @@ class cbMap extends CRMEntity {
            $map=htmlspecialchars_decode($this->column_fields['content']);
            $x = new crXml();
            $x->loadXML($map);
-           $originmodule=(string)$x->map->targetmodule[0]->targetname;
-           return $originmodule;
+           return (string)$x->map->targetmodule[0]->targetname;
         }
        function getMapOriginModule(){
            $map=htmlspecialchars_decode($this->column_fields['content']);
            $x = new crXml();
            $x->loadXML($map);
-           $return_module=(string)$x->map->originmodule[0]->originname;
-           return $return_module;
+           return (string)$x->map->originmodule[0]->originname;
         }
          function getMapOriginTable(){
            $map=htmlspecialchars_decode($this->column_fields['content']);
            $x = new crXml();
            $x->loadXML($map);
-           $originmodule=(string)$x->map->table[0]->tablename;
-           return $originmodule;
+           return (string)$x->map->table[0]->tablename;
         }
         function getMapPointingFieldUpdate(){
            $map=htmlspecialchars_decode($this->column_fields['content']);
            $x = new crXml();
            $x->loadXML($map);
-           $originmodule=(string)$x->map->pointingfield[0]->originname;
-           return $originmodule;
+           return (string)$x->map->pointingfield[0]->originname;
         }
        function getMapTargetFields(){
             $map=htmlspecialchars_decode($this->column_fields['content']);
@@ -180,9 +176,8 @@ class cbMap extends CRMEntity {
            $map=htmlspecialchars_decode($this->column_fields['content']);
            $x = new crXml();
            $x->loadXML($map);
-           $return_module=(string)$x->map->targetmodule[0]->targetid;
            //var_dump($return_module);
-           return $return_module;
+           return (string)$x->map->targetmodule[0]->targetid;
         }
 
        function getMapSendEmails(){
@@ -333,8 +328,7 @@ function getMapFieldDependency(){
                   }
             }
               }
-            $res=array('modules'=>$columns,'profile'=>$profile);
-            return $res;
+            return array('modules'=>$columns,'profile'=>$profile);
         }
         
        function getMapPortalDvBlocks(){
@@ -494,8 +488,7 @@ function getMapFieldDependency(){
      function getFieldName($fieldid){
         global $adb;
         $result = $adb->pquery("Select fieldname from vtiger_field where fieldid = ?",array($fieldid));
-        $fieldname = $adb->query_result($result,0,'fieldname');
-        return $fieldname;
+        return $adb->query_result($result,0,'fieldname');
     }
 
     function getPriModuleFieldsList($module,$modtype,$mode='')

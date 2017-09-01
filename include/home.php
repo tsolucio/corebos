@@ -195,8 +195,7 @@ class Homestuff{
 				$homeval[]=Array('Stuffid'=>$stuffid,'Stufftype'=>$stufftype,'Stufftitle'=>$stuff_title);
 			}
 		}
-		$homeframe=$homeval;
-		return $homeframe;
+		return $homeval;
 	}
 
 	/**
@@ -382,8 +381,7 @@ class Homestuff{
 	 */
 	private function getdisplayChart($type,$Chart_Type,$from_page){
 		require_once('modules/Dashboard/homestuff.php');
-		$return_dash=dashboardDisplayCall($type,$Chart_Type,$from_page);
-		return $return_dash;
+		return dashboardDisplayCall($type,$Chart_Type,$from_page);
 	}
 
 	function getReportChartDetails($stuffId,$skipChart=''){

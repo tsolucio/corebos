@@ -543,8 +543,7 @@ class ReportRun extends CRMEntity {
 				$fieldtablename = "vtiger_usersRel1";
 				$fieldcolname = "user_name";
 			}
-			$value = $fieldtablename.".".$fieldcolname;
-		return $value;
+		return $fieldtablename.".".$fieldcolname;
 	}
 
 	/** Function to get the advanced filter columns for the reportid

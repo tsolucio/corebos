@@ -34,8 +34,7 @@ class MailManager_Model_DraftEmail {
 			$where = $type ." LIKE '%". $q ."%'" ;
 		}
 		$where = " AND ".$where;
-		$draftMails = $this->getDrafts($page, $limit, $folder, $where);
-		return $draftMails;
+		return $this->getDrafts($page, $limit, $folder, $where);
 	}
 
 	function constructAllClause($query) {
@@ -54,7 +53,7 @@ class MailManager_Model_DraftEmail {
 		global $current_user;
 		$handler = vtws_getModuleHandlerFromName('Emails', $current_user);
 		$meta = $handler->getMeta();
-		if(!$meta->hasReadAccess())  {
+		if (!$meta->hasReadAccess()) {
 			return false;
 		}
 

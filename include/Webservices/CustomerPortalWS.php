@@ -270,8 +270,7 @@ function vtws_getSearchResults($query,$search_onlyin,$restrictionids,$user) {
 		}
 		$i++;
 	}
-	$result=serialize($res);
-	return $result;
+	return serialize($res);
 }
 
 function evvt_PortalModuleRestrictions($module,$accountId,$contactId) {

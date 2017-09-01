@@ -3729,11 +3729,10 @@ function getCallerInfo($number){
 		if(empty($query)) return false;
 
 		$result = $adb->pquery($query, array());
-		if($adb->num_rows($result) > 0 ){
+		if ($adb->num_rows($result) > 0 ) {
 			$callerName = $adb->query_result($result, 0, 'name');
 			$callerID = $adb->query_result($result,0,'id');
-			$data = array('name'=>$callerName, 'module'=>$module, 'id'=>$callerID);
-			return $data;
+			return array('name'=>$callerName, 'module'=>$module, 'id'=>$callerID);
 		}
 	}
 	return false;
@@ -4452,11 +4451,10 @@ function getTabInfo($tabId) {
  */
 function getBlockName($blockid) {
 	global $adb;
-	if(!empty($blockid)){
+	if (!empty($blockid)) {
 		$block_res = $adb->pquery('SELECT blocklabel FROM vtiger_blocks WHERE blockid = ?',array($blockid));
-		if($adb->num_rows($block_res)){
-			$blockname = $adb->query_result($block_res,0,'blocklabel');
-			return $blockname;
+		if ($adb->num_rows($block_res)) {
+			return $adb->query_result($block_res,0,'blocklabel');
 		}
 	}
 	return '';
@@ -4670,38 +4668,34 @@ function getSelectAllQuery($input,$module) {
 		}
 	}
 
-	$result = $adb->pquery($query, array());
-	return $result;
+	return $adb->pquery($query, array());
 }
 
 function getCampaignAccountIds($id) {
 	global $adb;
-	$sql="SELECT vtiger_account.accountid as id FROM vtiger_account
+	$sql = "SELECT vtiger_account.accountid as id FROM vtiger_account
 		INNER JOIN vtiger_campaignaccountrel ON vtiger_campaignaccountrel.accountid = vtiger_account.accountid
 		LEFT JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_account.accountid
 		WHERE vtiger_campaignaccountrel.campaignid = ? AND vtiger_crmentity.deleted=0";
-	$result = $adb->pquery($sql, array($id));
-	return $result;
+	return $adb->pquery($sql, array($id));
 }
 
 function getCampaignContactIds($id) {
 	global $adb;
-	$sql="SELECT vtiger_contactdetails.contactid as id FROM vtiger_contactdetails
+	$sql = "SELECT vtiger_contactdetails.contactid as id FROM vtiger_contactdetails
 		INNER JOIN vtiger_campaigncontrel ON vtiger_campaigncontrel.contactid = vtiger_contactdetails.contactid
 		LEFT JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid
 		WHERE vtiger_campaigncontrel.campaignid = ? AND vtiger_crmentity.deleted=0";
-	$result = $adb->pquery($sql, array($id));
-	return $result;
+	return $adb->pquery($sql, array($id));
 }
 
 function getCampaignLeadIds($id) {
 	global $adb;
-	$sql="SELECT vtiger_leaddetails.leadid as id FROM vtiger_leaddetails
+	$sql = "SELECT vtiger_leaddetails.leadid as id FROM vtiger_leaddetails
 		INNER JOIN vtiger_campaignleadrel ON vtiger_campaignleadrel.leadid = vtiger_leaddetails.leadid
 		LEFT JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_leaddetails.leadid
 		WHERE vtiger_campaignleadrel.campaignid = ? AND vtiger_crmentity.deleted=0";
-	$result = $adb->pquery($sql, array($id));
-	return $result;
+	return $adb->pquery($sql, array($id));
 }
 
 /** Function to get the difference between 2 datetime strings or millisecond values */

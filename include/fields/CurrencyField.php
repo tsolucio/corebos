@@ -152,19 +152,17 @@ class CurrencyField {
 	 */
 	public function getDisplayValue($user=null, $skipConversion=false, $noInit=false) {
 		global $current_user;
-		if(empty($user)) {
+		if (empty($user)) {
 			$user = $current_user;
 		}
 		if (!$noInit) {
 			$this->initialize($user);
 		}
 		$value = $this->value;
-		if($skipConversion == false) {
+		if ($skipConversion == false) {
 			$value = self::convertFromDollar($value,$this->conversionRate);
 		}
-
-		$number = $this->_formatCurrencyValue($value);
-		return $number;
+		return $this->_formatCurrencyValue($value);
 	}
 
 	/**

@@ -114,8 +114,7 @@ class vt_DateTime {
 		$day_array['day'] = $day;
 		$day_array['month'] = $month;
 		$day_array['year'] = $year;
-		$datetimevalue = new vt_DateTime($day_array,true);
-		return $datetimevalue;
+		return new vt_DateTime($day_array,true);
 	}
 	
 	/**
@@ -131,8 +130,7 @@ class vt_DateTime {
 		$week_array['day'] = $this->day + ($index - $this->dayofweek);
 		$week_array['month'] = $this->month;
 		$week_array['year'] = $this->year;
-		$datetimevalue = new vt_DateTime($week_array,true);
-		return $datetimevalue;
+		return new vt_DateTime($week_array,true);
 	}
 
 	/**
@@ -160,8 +158,7 @@ class vt_DateTime {
 		$month_array['day'] = $day;
 		$month_array['month'] = $month;
 		$month_array['year'] = $year;
-		$datetimevalue = new vt_DateTime($month_array,true);
-		return $datetimevalue;
+		return new vt_DateTime($month_array,true);
 	}
 
 	/**
@@ -180,8 +177,7 @@ class vt_DateTime {
 		}
 		$year_array['month'] = $index+1;
 		$year_array['year'] = $this->year;
-		$datetimevalue = new vt_DateTime($year_array,true);
-		return $datetimevalue;
+		return new vt_DateTime($year_array,true);
 	}
 
 	/**
@@ -198,8 +194,7 @@ class vt_DateTime {
 		$date_array['sec'] = 59;
 		$date_array['month'] = $this->month;
 		$date_array['year'] = $this->year;
-		$datetimevalue = new vt_DateTime($date_array,true);
-		return $datetimevalue;
+		return new vt_DateTime($date_array,true);
 	}
 
 	/**
@@ -215,8 +210,7 @@ class vt_DateTime {
 		$date_array['day'] = $this->day;
 		$date_array['month'] = $this->month;
 		$date_array['year'] = $this->year;
-		$datetimevalue = new vt_DateTime($date_array,true);
-		return $datetimevalue;
+		return new vt_DateTime($date_array,true);
 	}
 
 	/**
@@ -232,8 +226,7 @@ class vt_DateTime {
 		$date_array['day'] = $this->daysinmonth;
 		$date_array['month'] = $this->month;
 		$date_array['year'] = $this->year;
-		$datetimevalue = new vt_DateTime($date_array,true);
-		return $datetimevalue;
+		return new vt_DateTime($date_array,true);
 	}
 
 	/**
@@ -358,7 +351,9 @@ class vt_DateTime {
 		}else{
 			die("year was not set");
 		}
-                if(empty($hour) && $hour !== 0) $hour = 0; 
+		if (empty($hour) && $hour !== 0) {
+			$hour = 0;
+		}
 		$this->ts = mktime($hour,$minute,$second,$month,$day,$year);
 		$this->setDateTime($this->ts);
 	}
@@ -522,8 +517,7 @@ class vt_DateTime {
 		$month_array['day'] = $day;
 		$month_array['month'] = $month;
 		$month_array['year'] = $year;
-		$datetimevalue = new vt_DateTime($month_array,true);
-		return $datetimevalue;
+        return new vt_DateTime($month_array,true);
 	}
 }
 ?>

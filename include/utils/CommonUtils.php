@@ -622,8 +622,7 @@ function getFullNameFromQResult($result, $row_count, $module) {
 function getFullNameFromArray($module, $fieldValues) {
 	$entityInfo = getEntityFieldNames($module);
 	$fieldsName = $entityInfo['fieldname'];
-	$displayName = getEntityFieldNameDisplay($module, $fieldsName, $fieldValues);
-	return $displayName;
+	return getEntityFieldNameDisplay($module, $fieldsName, $fieldValues);
 }
 
 /**
@@ -632,15 +631,12 @@ function getFullNameFromArray($module, $fieldValues) {
  * returns the Campaign Name in string format.
  */
 function getCampaignName($campaign_id) {
-	global $log;
-	$log->debug("Entering getCampaignName(" . $campaign_id . ") method ...");
-	$log->info("in getCampaignName " . $campaign_id);
-
-	global $adb;
-	$sql = "select * from vtiger_campaign where campaignid=?";
+	global $log, $adb;
+	$log->debug('Entering getCampaignName(' . $campaign_id . ') method ...');
+	$sql = 'select * from vtiger_campaign where campaignid=?';
 	$result = $adb->pquery($sql, array($campaign_id));
-	$campaign_name = $adb->query_result($result, 0, "campaignname");
-	$log->debug("Exiting getCampaignName method ...");
+	$campaign_name = $adb->query_result($result, 0, 'campaignname');
+	$log->debug('Exiting getCampaignName method ...');
 	return $campaign_name;
 }
 
@@ -2374,11 +2370,10 @@ function getrecurringObjValue() {
 				}
 			}
 		}
-		if (isset($_REQUEST['repeat_frequency']) && $_REQUEST['repeat_frequency'] != null)
+		if (isset($_REQUEST['repeat_frequency']) && $_REQUEST['repeat_frequency'] != null) {
 			$recurring_data['repeat_frequency'] = $_REQUEST['repeat_frequency'];
-
-		$recurObj = RecurringType::fromUserRequest($recurring_data);
-		return $recurObj;
+		}
+		return RecurringType::fromUserRequest($recurring_data);
 	}
 }
 
@@ -2979,10 +2974,9 @@ function isFileAccessible($filepath) {
  */
 function getActivityType($id) {
 	global $adb;
-	$quer = "select activitytype from vtiger_activity where activityid=?";
+	$quer = 'select activitytype from vtiger_activity where activityid=?';
 	$res = $adb->pquery($quer, array($id));
-	$acti_type = $adb->query_result($res, 0, "activitytype");
-	return $acti_type;
+	return $adb->query_result($res, 0, 'activitytype');
 }
 
 /** Function to get owner name either user or group */
@@ -3182,8 +3176,7 @@ function vt_suppressHTMLTags($string) {
 }
 
 function vt_hasRTE() {
-	$USE_RTE = GlobalVariable::getVariable('Application_Use_RTE',1);
-	return $USE_RTE;
+	return GlobalVariable::getVariable('Application_Use_RTE',1);
 }
 
 function getNameInDisplayFormat($input, $dispFormat = "lf") {
@@ -3203,13 +3196,11 @@ function getNameInDisplayFormat($input, $dispFormat = "lf") {
 }
 
 function concatNamesSql($string) {
-	$sqlString = "CONCAT(" . $string . ")";
-	return $sqlString;
+	return 'CONCAT(' . $string . ')';
 }
 
 function joinName($input, $glue = ' ') {
-	$displayName = implode($glue, $input);
-	return $displayName;
+	return implode($glue, $input);
 }
 
 function getSqlForNameInDisplayFormat($input, $module, $glue = ' ') {
@@ -3224,8 +3215,7 @@ function getSqlForNameInDisplayFormat($input, $module, $glue = ' ') {
 	} else {
 		$formattedNameListString = $input[$fieldsName];
 	}
-	$sqlString = concatNamesSql($formattedNameListString);
-	return $sqlString;
+	return concatNamesSql($formattedNameListString);
 }
 
 function getModuleSequenceNumber($module, $recordId) {
