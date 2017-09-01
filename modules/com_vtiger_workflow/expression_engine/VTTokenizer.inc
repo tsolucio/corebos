@@ -53,6 +53,7 @@ class VTExpressionTokenizer{
 		$this->EOF = new VTExpressionToken("EOF");
 		$matches = array();
 		$expr = html_entity_decode($expr, ENT_QUOTES, $default_charset);
+		$expr = str_replace("''", "' '", $expr); // empty strings cannot be empty
 		preg_match_all($tokenRe, $expr, $matches, PREG_SET_ORDER);
 		$this->matches = $matches;
 		$this->idx = 0;
