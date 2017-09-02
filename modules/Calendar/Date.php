@@ -374,17 +374,13 @@ class vt_DateTime {
 	function get_DB_formatted_date() {
 		return $this->year."-".$this->z_month."-".$this->z_day;
 	}
-	
+
 	/**
 	 * function to get mysql formatted time
 	 * return formatted time in string format
 	 */
 	function get_formatted_time(){
-		$hour = $this->z_hour;
-		$min = $this->min;
-		if(empty($hour)) $hour = '00';
-		if(empty($min)) $min = '00';
-		return $hour.':'.$min;
+		return (empty($this->z_hour) ? '00' : $this->z_hour).':'.(empty($this->minute) ? '00' : $this->minute);
 	}
 
 	/**
