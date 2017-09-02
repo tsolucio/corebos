@@ -1054,9 +1054,11 @@ function doServerValidation(edit_type,formName,callback) {
 			var myFields = document.forms[formName].elements;
 			var sentForm = new Object();
 			for (f=0; f<myFields.length; f++){
-				if(myFields[f].type=='checkbox')
+				if (myFields[f].type=='checkbox')
 					sentForm[myFields[f].name] = myFields[f].checked;
-				else
+				else if (myFields[f].type=='radio' && myFields[f].checked)
+					sentForm[myFields[f].name] = myFields[f].value;
+				else if (myFields[f].type!='radio')
 					sentForm[myFields[f].name] = myFields[f].value;
 			}
 			//JSONize form data
