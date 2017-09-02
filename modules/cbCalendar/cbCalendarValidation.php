@@ -84,6 +84,20 @@ if (isset($screen_values['action']) and $screen_values['action'] == 'MassEditSav
 	$v->rule('required', 'dtstart');
 	$v->rule('required', 'dtend');
 	$v->rule('dateAfter', 'dtend', $screen_values['dtstart'])->label(getTranslatedString('Due Date','cbCalendar'));
+	// Planned must have start date in future
+	if ($screen_values['eventstatus'] == 'Planned') {
+		$nowdateTime = new DateTimeField(date('Y-m-d H:i:s',strtotime('now')-600)); // 10min to create record
+		$v->rule('dateAfter', 'dtstart', $nowdateTime->getDBInsertDateTimeValue())->label(getTranslatedString('DATE_SHOULDNOT_PAST','cbCalendar'));
+	}
+	if (isset($screen_values['recurringcheck']) && $screen_values['recurringcheck'] == '1'
+		&& $screen_values['recurringtype'] == 'Monthly' && $screen_values['repeatMonth'] == 'date') {
+			$v->rule('required', 'repeatMonth_date')->label(getTranslatedString('day of the month','cbCalendar'));
+			$v->rule('between', 'repeatMonth_date', array(0,31));
+	}
+	if (isset($screen_values['followupcreate']) && $screen_values['followupcreate'] == '1') {
+		$v->rule('required', 'followupdt')->label(getTranslatedString('Fecha Seguimiento','cbCalendar'));
+		$v->rule('dateAfter', 'followupdt', $screen_values['dtend']);
+	}
 	if ($v->validate()) {
 		echo '%%%OK%%%';
 	} else {

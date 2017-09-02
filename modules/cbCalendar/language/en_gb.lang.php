@@ -91,6 +91,8 @@ $mod_strings = Array(
 	'Weekly'=>'Week(s)',
 	'Monthly'=>'Month(s)',
 	'Yearly'=>'Year',
+	'DATE_SHOULDNOT_PAST' => 'Current date & time for Activities with status as Planned',
+	'TIME_SHOULDNOT_PAST' => 'Current Time for Activities with status as Planned',
 );
 
 ?>
