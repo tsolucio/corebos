@@ -1347,60 +1347,12 @@ function doformValidation(edit_type) {
 		}
 	}
 
-	//added to check Start Date & Time,if Activity Status is Planned.//start
-	for (var j=0; j<fieldname.length; j++)
-	{
-		if(getObj(fieldname[j]) != null)
-		{
-			if(fieldname[j] == "date_start" || fieldname[j] == "task_date_start" )
-			{
-				var datelabel = fieldlabel[j];
-				var datefield = fieldname[j];
-				var startdatevalue = getObj(datefield).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
-			}
-			if(fieldname[j] == "time_start" || fieldname[j] == "task_time_start")
-			{
-				var timelabel = fieldlabel[j];
-				var timefield = fieldname[j];
-				var timeval=getObj(timefield).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
-			}
-			if(fieldname[j] == "eventstatus" || fieldname[j] == "taskstatus")
-			{
-				var statusvalue = getObj(fieldname[j]).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
-				var statuslabel = fieldlabel[j++];
-			}
-		}
-	}
-	if(statusvalue == "Planned" && startdatevalue != undefined)
-	{
-		var dateelements=splitDateVal(startdatevalue);
-		var hourval=parseInt(timeval.substring(0,timeval.indexOf(":")));
-		var minval=parseInt(timeval.substring(timeval.indexOf(":")+1,timeval.length));
-
-		dd=dateelements[0];
-		mm=dateelements[1];
-		yyyy=dateelements[2];
-
-		var chkdate=new Date();
-		chkdate.setYear(yyyy);
-		chkdate.setMonth(mm-1);
-		chkdate.setDate(dd);
-		chkdate.setMinutes(minval);
-		chkdate.setHours(hourval);
-		if(!comparestartdate(chkdate)) return false;
-	}
-
 	return true;
 }
 
 function clearId(fldName) {
 	var currObj=getObj(fldName);
 	currObj.value="";
-}
-
-function comparestartdate(chkdate) {
-	var currdate = new Date();
-	return compareDates(chkdate,alert_arr.START_DATE_TIME,currdate,alert_arr.DATE_SHOULDNOT_PAST,"GE");
 }
 
 function openPopUp(winInst,currObj,baseURL,winName,width,height,features) {
@@ -4710,42 +4662,6 @@ function QCformValidate(){
 				break;
 			}
 		}
-	}
-	//added to check Start Date & Time,if Activity Status is Planned.//start
-	for (var j=0; j<qcfieldname.length; j++) {
-		curr_fieldname = qcfieldname[j];
-		if(window.document.QcEditView[curr_fieldname] != null) {
-			if(qcfieldname[j] == "date_start") {
-				var datelabel = qcfieldlabel[j];
-				var datefield = qcfieldname[j];
-				var startdatevalue = window.document.QcEditView[datefield].value.replace(/^\s+/g, '').replace(/\s+$/g, '');
-			}
-			if(qcfieldname[j] == "time_start") {
-				var timelabel = qcfieldlabel[j];
-				var timefield = qcfieldname[j];
-				var timeval=window.document.QcEditView[timefield].value.replace(/^\s+/g, '').replace(/\s+$/g, '');
-			}
-			if(qcfieldname[j] == "eventstatus" || qcfieldname[j] == "taskstatus") {
-				var statusvalue = window.document.QcEditView[curr_fieldname].options[window.document.QcEditView[curr_fieldname].selectedIndex].value.replace(/^\s+/g, '').replace(/\s+$/g, '');
-				var statuslabel = qcfieldlabel[j++];
-			}
-		}
-	}
-	if(statusvalue == "Planned") {
-		var dateelements=splitDateVal(startdatevalue);
-		var hourval=parseInt(timeval.substring(0,timeval.indexOf(":")));
-		var minval=parseInt(timeval.substring(timeval.indexOf(":")+1,timeval.length));
-		var dd=dateelements[0];
-		var mm=dateelements[1];
-		var yyyy=dateelements[2];
-
-		var chkdate=new Date();
-		chkdate.setYear(yyyy);
-		chkdate.setMonth(mm-1);
-		chkdate.setDate(dd);
-		chkdate.setMinutes(minval);
-		chkdate.setHours(hourval);
-		if(!comparestartdate(chkdate)) return false;
 	}
 	return true;
 }
