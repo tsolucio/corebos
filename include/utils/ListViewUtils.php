@@ -1381,6 +1381,14 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		} else {
 			$date = new DateTimeField($temp_val);
 			$value = $date->getDisplayDateTimeValue();
+			$user_format = ($current_user->hour_format=='24' ? '24' : '12');
+			if ($user_format != '24') {
+				$curr_time = DateTimeField::formatUserTimeString($value, '12');
+				$time_format = substr($curr_time, -2);
+				$curr_time = substr($curr_time, 0, 5);
+				list($dt,$tm) = explode(' ',$value);
+				$value = $dt . ' ' . $curr_time . $time_format;
+			}
 		}
 	} elseif ($uitype == 15 || ($uitype == 55 && $fieldname == "salutationtype")) {
 		$temp_val = decode_html_force($adb->query_result($list_result, $list_result_count, $colname));

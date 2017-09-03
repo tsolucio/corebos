@@ -376,7 +376,15 @@ class ListViewController {
 						$date = new DateTimeField($value);
 						$value = $date->getDisplayDate();
 						if($field->getFieldDataType() == 'datetime') {
-							$value .= (' ' . $date->getDisplayTime());
+							$value .= ' ' . $date->getDisplayTime();
+							$user_format = ($current_user->hour_format=='24' ? '24' : '12');
+							if ($user_format != '24') {
+								$curr_time = DateTimeField::formatUserTimeString($value, '12');
+								$time_format = substr($curr_time, -2);
+								$curr_time = substr($curr_time, 0, 5);
+								list($dt,$tm) = explode(' ',$value);
+								$value = $dt . ' ' . $curr_time . $time_format;
+							}
 						}
 					} elseif (empty($value) || $value == '0000-00-00' || $value == '0000-00-00 00:00') {
 						$value = '';

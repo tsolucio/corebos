@@ -682,7 +682,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 					{assign var=dateStr value="$date_str"}
 				{/foreach}
 
-				<br><font size=1><em old="(yyyy-mm-dd)">({$dateStr}){if $userFormat neq "24"}&nbsp;<span id="timefmt_{$fldname}">{$fieldFormat}</span>{/if}</em></font>
+				<br><font size=1><em old="(yyyy-mm-dd)">({$dateStr})&nbsp;<span id="timefmt_{$fldname}">{if $userFormat neq "24"}{$fieldFormat}{/if}</span></em></font>
 
 				<script type="text/javascript" id='massedit_calendar_{$fldname}'>
 					Calendar.setup ({ldelim}

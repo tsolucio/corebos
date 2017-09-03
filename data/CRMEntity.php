@@ -665,6 +665,11 @@ class CRMEntity {
 						$fldvalue = $this->column_fields[$fieldname];
 					}
 				} elseif ($uitype == 50) {
+					$timefmt = '';
+					if (!empty($this->column_fields[$fieldname]) && strlen($this->column_fields[$fieldname])>16) {
+						$timefmt = substr($this->column_fields[$fieldname], -2);
+						$this->column_fields[$fieldname] = substr($this->column_fields[$fieldname], 0, 16);
+					}
 					if (isset($current_user->date_format) && !$ajaxSave) {
 						$fldvalue = getValidDBInsertDateTimeValue($this->column_fields[$fieldname]);
 					} else {
@@ -675,11 +680,10 @@ class CRMEntity {
 						if (isset($_REQUEST['timefmt_' . $fieldname])) {
 							$timefmt = vtlib_purify($_REQUEST['timefmt_' . $fieldname]);
 							$fldvalue = DateTimeField::formatDatebaseTimeString($fldvalue,$timefmt);
-						} else if (strlen($fldvalue)>16) {
-							$timefmt = substr($fldvalue, -2);
-							$fldvalue = substr($fldvalue, 0, 16);
+						} else {
 							$fldvalue = DateTimeField::formatDatebaseTimeString($fldvalue,$timefmt);
 						}
+						$this->column_fields[$fieldname] = $fldvalue;
 					}
 				//} elseif ($uitype == 7) {
 					//strip out the spaces and commas in numbers if given ie., in amounts there may be ,

@@ -30,7 +30,7 @@ function hndCancel(valuespanid,textareapanid,fieldlabel)
 			getObj(globaltxtboxid).checked = false;
 	} else if (globaluitype == '50') {
 		getObj(globaltxtboxid).value = globaltempvalue;
-		getObj('timefmt_' + fieldlabel).innerHTML = globalfldtimeformat;
+		getObj('timefmt_' + fieldlabel).innerHTML = (globalfldtimeformat != '24' ? globalfldtimeformat : '');
 		getObj('inputtimefmt_' + fieldlabel).value = globalfldtimeformat;
 	} else if (globaluitype != '53' && globaluitype != '33' && globaluitype != '3313' && globaluitype != '3314') {
 		getObj(globaltxtboxid).value = globaltempvalue;
@@ -495,6 +495,10 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 		desc = desc.replace(/,\"|\.\"|\)\"|\)\.\"|\.\)\"/, "\"");
 		//desc = desc.replace(/[\n\r]/g, "<br>&nbsp;");
 		getObj(dtlView).textContent = desc;
+	} else if (uitype == '50') {
+		let timefmt = tagValue.substring(tagValue.length-2);
+		if (timefmt == '24') timefmt = '';
+		getObj(dtlView).innerHTML = tagValue.substring(0,tagValue.length-2)+"&nbsp;<font size=1><em>&nbsp;<span id='timefmt_"+fieldName+"'>"+timefmt+"</span></em></font>";
 	}
 	else
 	{
