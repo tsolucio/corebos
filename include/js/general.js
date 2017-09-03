@@ -339,43 +339,52 @@ function splitDateVal(dateval) {
 	return dateelements;
 }
 
-function compareDates(date1,fldLabel1,date2,fldLabel2,type) {
+function compareDates(date1,fldLabel1,date2,fldLabel2,type,message) {
+	if (message == undefined) message = true;
 	var ret=true;
 	switch (type) {
 		case 'L':
 			if (date1>=date2) {//DATE1 VALUE LESS THAN DATE2
-			alert(fldLabel1+ alert_arr.SHOULDBE_LESS +fldLabel2);
-			ret=false;
-		}
+				if (message) {
+					alert(fldLabel1+ alert_arr.SHOULDBE_LESS +fldLabel2);
+				}
+				ret=false;
+			}
 		break;
 		case 'LE':
 			if (date1>date2) {//DATE1 VALUE LESS THAN OR EQUAL TO DATE2
-			alert(fldLabel1+alert_arr.SHOULDBE_LESS_EQUAL+fldLabel2);
-			ret=false;
-		}
+				if (message) {
+					alert(fldLabel1+alert_arr.SHOULDBE_LESS_EQUAL+fldLabel2);
+				}
+				ret=false;
+			}
 		break;
 		case 'E':
-			if (date1!=date2) {//DATE1 VALUE EQUAL TO DATE
-			alert(fldLabel1+alert_arr.SHOULDBE_EQUAL+fldLabel2);
-			ret=false;
-		}
+			if (date1-date2) {//DATE1 VALUE EQUAL TO DATE
+				if (message) {
+					alert(fldLabel1+alert_arr.SHOULDBE_EQUAL+fldLabel2);
+				}
+				ret=false;
+			}
 		break;
 		case 'G':
 			if (date1<=date2) {//DATE1 VALUE GREATER THAN DATE2
-			alert(fldLabel1+alert_arr.SHOULDBE_GREATER+fldLabel2);
-			ret=false;
-		}
+				if (message) {
+					alert(fldLabel1+alert_arr.SHOULDBE_GREATER+fldLabel2);
+				}
+				ret=false;
+			}
 		break;
 		case 'GE':
 			if (date1<date2) {//DATE1 VALUE GREATER THAN OR EQUAL TO DATE2
-			alert(fldLabel1+alert_arr.SHOULDBE_GREATER_EQUAL+fldLabel2);
-			ret=false;
-		}
+				if (message) {
+					alert(fldLabel1+alert_arr.SHOULDBE_GREATER_EQUAL+fldLabel2);
+				}
+				ret=false;
+			}
 		break;
 	}
-
-	if (ret==false) return false;
-	else return true;
+	return ret;
 }
 
 function dateTimeValidate(dateFldName,timeFldName,fldLabel,type) {
