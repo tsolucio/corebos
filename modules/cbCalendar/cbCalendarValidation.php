@@ -29,21 +29,25 @@ if ((empty($screen_values['dtstart']) or empty($screen_values['dtend'])) and !em
 	if (empty($screen_values['dtstart'])) {
 		$screen_values['dtstart'] = $adb->query_result($rs, 0, 'dtstart');
 	} else {
+		$screen_values['dtstart'] = DateTimeField::formatDatebaseTimeString($screen_values['dtstart'], $screen_values['timefmt_dtstart']);
 		$dt = new DateTimeField($screen_values['dtstart']);
 		$screen_values['dtstart'] = $dt->getDBInsertDateTimeValue();
 	}
 	if (empty($screen_values['dtend'])) {
 		$screen_values['dtend'] = $adb->query_result($rs, 0, 'dtend');
 	} else {
+		$screen_values['dtend'] = DateTimeField::formatDatebaseTimeString($screen_values['dtend'], $screen_values['timefmt_dtend']);
 		$dt = new DateTimeField($screen_values['dtend']);
 		$screen_values['dtend'] = $dt->getDBInsertDateTimeValue();
 	}
 } else {
 	if (!empty($screen_values['dtstart'])) {
+		$screen_values['dtstart'] = DateTimeField::formatDatebaseTimeString($screen_values['dtstart'], $screen_values['timefmt_dtstart']);
 		$dt = new DateTimeField($screen_values['dtstart']);
 		$screen_values['dtstart'] = $dt->getDBInsertDateTimeValue();
 	}
 	if (!empty($screen_values['dtend'])) {
+		$screen_values['dtend'] = DateTimeField::formatDatebaseTimeString($screen_values['dtend'], $screen_values['timefmt_dtend']);
 		$dt = new DateTimeField($screen_values['dtend']);
 		$screen_values['dtend'] = $dt->getDBInsertDateTimeValue();
 	}
