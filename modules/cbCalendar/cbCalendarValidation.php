@@ -22,6 +22,7 @@ include_once 'include/validation/load_validations.php';
 include_once 'modules/cbMap/processmap/Validations.php';
 
 $screen_values = json_decode($_REQUEST['structure'],true);
+$editingDTEnd = !empty($screen_values['dtend']);
 if ((empty($screen_values['dtstart']) or empty($screen_values['dtend'])) and !empty($screen_values['record'])) {
 	$rs = $adb->pquery('select dtstart,dtend from vtiger_activity where activityid=?',array($screen_values['record']));
 	$dbdatestart = $adb->query_result($rs, 0, 'dtstart');
@@ -53,7 +54,7 @@ if ((empty($screen_values['dtstart']) or empty($screen_values['dtend'])) and !em
 	}
 }
 
-if (empty($screen_values['action']) and !empty($screen_values['record'])) { // DetailView Edit
+if (empty($screen_values['action']) && !empty($screen_values['record']) && !$editingDTEnd) { // DetailView Edit
 	list($screen_values['date_start'],$screen_values['time_start']) = explode(' ',$screen_values['dtstart']);
 	list($screen_values['due_date'],$screen_values['time_end']) = explode(' ',$screen_values['dtend']);
 	$pushenddate = GlobalVariable::getVariable('Calendar_Push_End_On_Start_Change', 'No','cbCalendar');
