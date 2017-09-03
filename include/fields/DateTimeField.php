@@ -144,6 +144,90 @@ class DateTimeField {
 	}
 
 	/**
+	 * @param mixed $datetime in 24 hour format
+	 * @param string $fmt 12 or 24
+	 * @return string time formatted as indicated by $fmt
+	 */
+	public static function formatUserTimeString($datetime,$fmt) {
+		if (empty($fmt)) {
+			$fmt = '24';
+		}
+		if (is_object($datetime)) {
+			$hr = $datetime->hour;
+			$min = $datetime->minute;
+		} elseif (is_array($datetime)) {
+			$hr = $datetime['hour'];
+			$min = $datetime['minute'];
+		} else {
+			if (strpos($datetime, ' ')>0) {
+				list($dt,$tm) = explode(' ', $datetime);
+			} else {
+				$tm = $datetime;
+			}
+			list($hr,$min) = explode(':', $tm);
+		}
+		if ($fmt != '24') {
+			$am_pm = array('AM', 'PM');
+			$hour = self::twoDigit($hr%12);
+			if ($hour == 0) {
+				$hour = 12;
+			}
+			$timeStr = $hour.':'.self::twoDigit($min).$am_pm[($hr/12)%2];
+		} else {
+			$timeStr = self::twoDigit($hr).':'.self::twoDigit($min);
+		}
+		return $timeStr;
+	}
+
+	/**
+	 * @param string $datetime in $fmt hour format
+	 * @param string $fmt am | pm | 24
+	 * @return string time formatted as 24h
+	 */
+	public static function formatDatebaseTimeString($datetime,$fmt) {
+		if (empty($datetime) || trim($datetime)=='') {
+			return '';
+		}
+		if (strpos($datetime, ' ')>0) {
+			list($dt,$tm) = explode(' ', $datetime);
+		} else {
+			$dt = '';
+			$tm = $datetime;
+		}
+		list($hr,$min) = explode(':', $tm);
+		$fmt = strtolower(trim($fmt));
+		if (empty($fmt) || $fmt == '24' || ($fmt != 'am' && $fmt != 'pm')) {
+			return trim($dt . ' ' . self::twoDigit($hr) . ':' . self::twoDigit($min));
+		}
+		if ($fmt == 'am') {
+			if ($hr == '12') {
+				$hour = '00';
+			} else {
+				$hour = self::twoDigit($hr);
+			}
+		} else {
+			if ($hr != '12') {
+				$hour = self::twoDigit((int)$hr+12);
+			} else {
+				$hour = self::twoDigit((int)$hr+1);
+			}
+		}
+		return trim($dt . ' ' . $hour . ':' . self::twoDigit($min));
+	}
+
+	/**
+	 * @param number
+	 * @return string
+	 */
+	public static function twoDigit($no) {
+		$no = trim($no);
+		if ($no < 10 && strlen($no) < 2) {
+			$no = '0'.$no;
+		}
+		return substr($no, 0, 2);
+	}
+
+	/**
 	 *
 	 * @global Users $current_user
 	 * @param type $date
