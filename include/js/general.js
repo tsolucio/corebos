@@ -530,6 +530,73 @@ function dateTimeComparison(dateFldName1,timeFldName1,fldLabel1,dateFldName2,tim
 	} else return true;
 }
 
+function dateTimeFieldComparison(dateFld1,fldLabel1,dateFld2,fldLabel2,type,message) {
+	var dateval1=getObj(dateFld1).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
+	var dateval2=getObj(dateFld2).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
+
+	let dt1array = dateval1.split(" ");
+	let dt2array = dateval2.split(" ");
+	var dateelements1=splitDateVal(dt1array[0]);
+	var dateelements2=splitDateVal(dt2array[0]);
+
+	dd1=dateelements1[0];
+	mm1=dateelements1[1];
+	yyyy1=dateelements1[2];
+
+	dd2=dateelements2[0];
+	mm2=dateelements2[1];
+	yyyy2=dateelements2[2];
+
+	var timeval1=dt1array[1];
+	var timeval2=dt2array[1];
+
+	var hh1=timeval1.substring(0,timeval1.indexOf(":"));
+	var tf1 = document.getElementById('inputtimefmt_' + dateFld1);
+	if (tf1 != undefined) {
+		if (tf1.value == 'PM') {
+			if (hh1 != '12') {
+				hh1 = +hh1 + 12;
+			}
+		}
+	}
+	var min1=timeval1.substring(timeval1.indexOf(":")+1,timeval1.length);
+
+	var hh2=timeval2.substring(0,timeval2.indexOf(":"));
+	var tf2 = document.getElementById('inputtimefmt_' + dateFld2);
+	if (tf2 != undefined) {
+		if (tf2.value == 'PM') {
+			if (hh2 != '12') {
+				hh2 = +hh2 + 12;
+			}
+		}
+	}
+	var min2=timeval2.substring(timeval2.indexOf(":")+1,timeval2.length);
+
+	var date1=new Date();
+	var date2=new Date();
+
+	date1.setYear(yyyy1);
+	date1.setMonth(mm1-1);
+	date1.setDate(dd1);
+	date1.setHours(hh1);
+	date1.setMinutes(min1);
+
+	date2.setYear(yyyy2);
+	date2.setMonth(mm2-1);
+	date2.setDate(dd2);
+	date2.setHours(hh2);
+	date2.setMinutes(min2);
+
+	if (type!="OTH") {
+		if (!compareDates(date1,fldLabel1,date2,fldLabel2,type,message)) {
+			try {
+				getObj(dateFld1).focus();
+			} catch(error) { }
+			return false;
+		} else return true;
+	} else return true;
+}
+
 function dateValidate(fldName,fldLabel,type) {
 	if(patternValidate(fldName,fldLabel,"DATE")==false)
 		return false;
