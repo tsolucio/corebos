@@ -671,6 +671,16 @@ class CRMEntity {
 						$fldvalue = $this->column_fields[$fieldname];
 					}
 					if (empty($fldvalue)) $fldvalue = null;
+					if ($fldvalue != null) {
+						if (isset($_REQUEST['timefmt_' . $fieldname])) {
+							$timefmt = vtlib_purify($_REQUEST['timefmt_' . $fieldname]);
+							$fldvalue = DateTimeField::formatDatebaseTimeString($fldvalue,$timefmt);
+						} else if (strlen($fldvalue)>16) {
+							$timefmt = substr($fldvalue, -2);
+							$fldvalue = substr($fldvalue, 0, 16);
+							$fldvalue = DateTimeField::formatDatebaseTimeString($fldvalue,$timefmt);
+						}
+					}
 				//} elseif ($uitype == 7) {
 					//strip out the spaces and commas in numbers if given ie., in amounts there may be ,
 					//$fldvalue = str_replace(",", "", $this->column_fields[$fieldname]); //trim($this->column_fields[$fieldname],",");

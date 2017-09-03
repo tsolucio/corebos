@@ -365,7 +365,7 @@
 							</tr>
 							{/foreach}
 
-				{elseif $keyid eq 5 || $keyid eq 50}
+				{elseif $keyid eq 5}
 					{* Initialize the date format if not present *}
 					{if empty($dateFormat)}
 						{assign var="dateFormat" value=$APP.NTC_DATE_FORMAT|@parse_calendardate}
@@ -375,14 +375,43 @@
 							{$keyval}
 						</span>
 						<div id="editarea_{$keyfldname}" style="display:none;">
-							<input style="border:1px solid #bababa;" size="{if $keyid eq 5}10{else}16{/if}" maxlength="{if $keyid eq 5}10{else}16{/if}" type="text" id="txtbox_{$keyfldname}" name="{$keyfldname}" value="{$keyval|regex_replace:'/[^-]*(--)[^-]*$/':''}"></input>
+							<input style="border:1px solid #bababa;" size="10" maxlength="10" type="text" id="txtbox_{$keyfldname}" name="{$keyfldname}" value="{$keyval|regex_replace:'/[^-]*(--)[^-]*$/':''}"></input>
 							<img src="{'btnL3Calendar.gif'|@vtiger_imageurl:$THEME}" id="jscal_trigger_{$keyfldname}" style="vertical-align:middle">
 							<br><a class="detailview_ajaxbutton ajax_save_detailview" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
 							<a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
 							<script type="text/javascript">
 								Calendar.setup ({ldelim}
-									inputField : "txtbox_{$keyfldname}", ifFormat : '{$dateFormat}{if $keyid eq 50} %H:%M{/if}', showsTime : {if $keyid eq 5}false{else}true{/if}, button : "jscal_trigger_{$keyfldname}", singleClick : true, step : 1
+									inputField : "txtbox_{$keyfldname}", ifFormat : '{$dateFormat}', showsTime : false, button : "jscal_trigger_{$keyfldname}", singleClick : true, step : 1
 								{rdelim})
+							</script>
+						</div>
+					</td>
+				{elseif $keyid eq 50}
+					{* Initialize the date format if not present *}
+					{if empty($dateFormat)}
+						{assign var="dateFormat" value=$APP.NTC_DATE_FORMAT|@parse_calendardate}
+					{/if}
+					{foreach key=user_format item=date_format from=$keyoptions}
+						{assign var=userFormat value="$user_format"}
+						{assign var=fieldFormat value="$date_format"}
+					{/foreach}
+					<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>
+						&nbsp;&nbsp;<span id="dtlview_{$keyfldname}">
+							{$keyval}&nbsp;<font size=1><em old="(yyyy-mm-dd)">{if $userFormat neq "24"}&nbsp;<span id="timefmt_{$keyfldname}">{$fieldFormat}</span>{/if}</em></font>
+						</span>
+						<div id="editarea_{$keyfldname}" style="display:none;">
+							<input style="border:1px solid #bababa;" size="16" maxlength="16" type="text" id="txtbox_{$keyfldname}" name="{$keyfldname}" value="{$keyval|regex_replace:'/[^-]*(--)[^-]*$/':''}"></input>
+							<input name="timefmt_{$keyfldname}" id="inputtimefmt_{$keyfldname}" type="hidden" value="{$fieldFormat}">
+							<img src="{'btnL3Calendar.gif'|@vtiger_imageurl:$THEME}" id="jscal_trigger_{$keyfldname}" style="vertical-align:middle">
+							<br><a class="detailview_ajaxbutton ajax_save_detailview" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
+							<a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
+							<script type="text/javascript">
+								Calendar.setup ({ldelim}
+									inputField : "txtbox_{$keyfldname}", ifFormat : '{$dateFormat} {if $userFormat neq "24"}%I{else}%H{/if}:%M', inputTimeFormat : "{$fieldFormat}",
+									{if $userFormat neq "24"}displayArea : "timefmt_{$keyfldname}", daFormat : "%p",{/if}
+									showsTime : true, timeFormat : "{$userFormat}",
+									button : "jscal_trigger_{$keyfldname}", singleClick : true, step : 1
+								{rdelim});
 							</script>
 						</div>
 					</td>

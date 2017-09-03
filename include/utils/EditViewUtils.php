@@ -148,24 +148,42 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		}
 	}
 	elseif($uitype == 50) {
-		if(empty($value)) {
+		$user_format = ($current_user->hour_format=='24' ? '24' : '12');
+		if (empty($value)) {
 			if ($generatedtype != 2) {
 				$date = new DateTimeField();
 				$disp_value = substr($date->getDisplayDateTimeValue(),0,16);
-				list($void,$curr_time) = explode(' ',$disp_value);
+				$curr_time = DateTimeField::formatUserTimeString($disp_value, $user_format);
+				if (strlen($curr_time)>5) {
+					$time_format = substr($curr_time, -2);
+					$curr_time = substr($curr_time, 0, 5);
+				} else {
+					$time_format = '24';
+				}
+				list($dt,$tm) = explode(' ',$disp_value);
+				$disp_value12 = $dt . ' ' . $curr_time;
 			} else {
-				$disp_value = $curr_time = '';
+				$disp_value = $disp_value12 = $curr_time = $time_format = '';
 			}
 		} else {
 			$date = new DateTimeField($value);
 			$disp_value = substr($date->getDisplayDateTimeValue(),0,16);
-			list($void,$curr_time) = explode(' ',$disp_value);
+			$curr_time = DateTimeField::formatUserTimeString($disp_value, $user_format);
+			if (strlen($curr_time)>5) {
+				$time_format = substr($curr_time, -2);
+				$curr_time = substr($curr_time, 0, 5);
+			} else {
+				$time_format = '24';
+			}
+			list($dt,$tm) = explode(' ',$disp_value);
+			$disp_value12 = $dt . ' ' . $curr_time;
 		}
 		$value = $disp_value;
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$date_format = parse_calendardate($app_strings['NTC_DATE_FORMAT']).' '.($current_user->hour_format=='24' ? '%H' : '%I').':%M';
-		$fieldvalue[] = array($disp_value => $curr_time);
-		$fieldvalue[] = array($date_format=>$current_user->date_format.' '.$current_user->hour_format);
+		$fieldvalue[] = array($disp_value => $disp_value12);
+		$fieldvalue[] = array($date_format=>$current_user->date_format.' '.($current_user->hour_format=='24' ? '24' : 'am/pm'));
+		$fieldvalue[] = array($user_format => $time_format);
 	}
 	elseif($uitype == 16) {
 		require_once 'modules/PickList/PickListUtils.php';
