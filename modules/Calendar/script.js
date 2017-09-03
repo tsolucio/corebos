@@ -7,22 +7,6 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-//// Get User Default calendar variables
-var calendar_call_default_duration = 5; // minutes
-//GlobalVariable_getVariable('Calendar_call_default_duration', 5, 'Calendar', gVTUserID).then(function(response) {
-//	var obj = JSON.parse(response);
-//	calendar_call_default_duration = obj.Calendar_call_default_duration;
-//}, function(error) {
-//	calendar_call_default_duration = 5; // minutes
-//});
-var calendar_other_default_duration = 1; // hours
-//GlobalVariable_getVariable('Calendar_other_default_duration', 1, 'Calendar', gVTUserID).then(function(response) {
-//	var obj = JSON.parse(response);
-//	calendar_other_default_duration = obj.Calendar_other_default_duration;
-//}, function(error) {
-//	calendar_other_default_duration = 1; // hours
-//});
-
 function DisableSharing() {
 	x = document.SharedList.selected_id.length;
 	idstring = "";
@@ -96,7 +80,7 @@ function gshow(argg1,type,startdate,enddate,starthr,startmin,startfmt,endhr,endm
 		document.EditView.startfmt.value = startfmt;
 		document.EditView.viewOption.value = viewOption;
 		document.EditView.subtab.value = subtab;
-		calDuedatetime(type);
+		changeEndtime_StartTime();
 	}
 	if (type == 'todo') {
 		smin = _2digit(smin);
@@ -789,168 +773,6 @@ function getSelectedStatus() {
 	}
 }
 
-function changeEndtime_StartTime(type) {
-	calDuedatetime(type);
-	return true;
-}
-
-function calDuedatetime(type) {
-	var dateval1 = getObj('date_start').value.replace(/^\s+/g, '').replace(/\s+$/g, '');
-	var dateelements1 = splitDateVal(dateval1);
-	dd1 = parseInt(dateelements1[0], 10);
-	mm1 = dateelements1[1];
-	yyyy1 = dateelements1[2];
-	var date1 = new Date();
-	//date1.setDate(dd1+1);
-	date1.setYear(yyyy1);
-	date1.setMonth(mm1 - 1, dd1 + 1);
-	var tempdate = getdispDate(date1);
-	var date = document.EditView.date_start.value;
-	var hour = parseInt(document.EditView.starthr.value, 10);
-	var min = parseInt(document.EditView.startmin.value, 10);
-	var fmt = document.EditView.startfmt.value;
-	if (type != 'Call') {
-		var day_change_hour = 12 - +calendar_other_default_duration;
-		if (fmt == 'pm') {
-			if (hour >= day_change_hour) {
-				date = tempdate;
-				hour = hour - +day_change_hour;
-				min = min;
-				fmt = 'am';
-			} else if (hour == 12) {
-				hour = 1;
-				min = min;
-				fmt = 'pm';
-			} else
-				hour = +hour + +calendar_other_default_duration;
-			hour = _2digit(hour);
-			min = _2digit(min);
-			document.EditView.due_date.value = date;
-			document.EditView.calendar_repeat_limit_date.value = date;
-			document.EditView.endhr.value = hour;
-			document.EditView.endmin.value = min;
-			document.EditView.endfmt.value = fmt;
-			document.EditView.followup_date.value = date;
-			document.EditView.followup_starthr.value = hour;
-			document.EditView.followup_startmin.value = min;
-			document.EditView.followup_startfmt.value = fmt;
-		} else if (fmt == 'am') {
-			if (hour >= day_change_hour) {
-				hour = hour - +day_change_hour;
-				min = min;
-				fmt = 'pm';
-			} else if (hour == 12) {
-				hour = 1;
-				min = min;
-				fmt = 'am';
-			} else
-				hour = +hour + +calendar_other_default_duration;
-			hour = _2digit(hour);
-			min = _2digit(min);
-			document.EditView.due_date.value = date;
-			document.EditView.endhr.value = hour;
-			document.EditView.endmin.value = min;
-			document.EditView.endfmt.value = fmt;
-			document.EditView.followup_date.value = date;
-			document.EditView.followup_starthr.value = hour;
-			document.EditView.followup_startmin.value = min;
-			document.EditView.followup_startfmt.value = fmt;
-		} else {
-			hour = +hour + +calendar_other_default_duration;
-			if (hour >= 24) {
-				hour = 0;
-				date = tempdate;
-			}
-			hour = _2digit(hour);
-			min = _2digit(min);
-			document.EditView.due_date.value = date;
-			document.EditView.endhr.value = hour;
-			document.EditView.endmin.value = min;
-			document.EditView.followup_date.value = date;
-			document.EditView.followup_starthr.value = hour;
-			document.EditView.followup_startmin.value = min;
-		}
-	}
-	if (type == 'Call') {
-		var hour_change_minute = 60 - +calendar_call_default_duration;
-		if (fmt == 'pm') {
-			if (hour == 11 && min == hour_change_minute) {
-				hour = 12;
-				min = 0;
-				fmt = 'am';
-				date = tempdate;
-			} else if (hour == 12 && min == hour_change_minute) {
-				hour = 1;
-				min = 0;
-				fmt = 'pm';
-			} else {
-				if (min >= hour_change_minute) {
-					min = min - hour_change_minute;
-					hour = hour + 1;
-				} else
-					min = +min + +calendar_call_default_duration;
-			}
-			hour = _2digit(hour);
-			min = _2digit(min);
-			document.EditView.due_date.value = date;
-			document.EditView.calendar_repeat_limit_date.value = date;
-			document.EditView.endhr.value = hour;
-			document.EditView.endmin.value = min;
-			document.EditView.endfmt.value = fmt;
-			document.EditView.followup_date.value = date;
-			document.EditView.followup_starthr.value = hour;
-			document.EditView.followup_startmin.value = min;
-			document.EditView.followup_startfmt.value = fmt;
-		} else if (fmt == 'am') {
-			if (hour == 11 && min == hour_change_minute) {
-				hour = 12;
-				min = 0;
-				fmt = 'pm';
-			} else if (hour == 12 && min == hour_change_minute) {
-				hour = 1;
-				min = 0;
-				fmt = 'am';
-			} else {
-				if (min >= hour_change_minute) {
-					min = min - hour_change_minute;
-					hour = hour + 1;
-				} else
-					min = +min + +calendar_call_default_duration;
-			}
-			hour = _2digit(hour);
-			min = _2digit(min);
-			document.EditView.due_date.value = date;
-			document.EditView.calendar_repeat_limit_date.value = date;
-			document.EditView.endhr.value = hour;
-			document.EditView.endmin.value = min;
-			document.EditView.endfmt.value = fmt;
-			document.EditView.followup_date.value = date;
-			document.EditView.followup_starthr.value = hour;
-			document.EditView.followup_startmin.value = min;
-			document.EditView.followup_startfmt.value = fmt;
-		} else {
-			if (min >= hour_change_minute) {
-				min = min - hour_change_minute;
-				hour = hour + 1;
-			} else
-				min = +min + +calendar_call_default_duration;
-			if (hour == 24) {
-				hour = 0;
-				date = tempdate;
-			}
-			hour = _2digit(hour);
-			min = _2digit(min);
-			document.EditView.due_date.value = date;
-			document.EditView.calendar_repeat_limit_date.value = date;
-			document.EditView.endhr.value = hour;
-			document.EditView.endmin.value = min;
-			document.EditView.followup_date.value = date;
-			document.EditView.followup_starthr.value = hour;
-			document.EditView.followup_startmin.value = min;
-		}
-	}
-}
-
 function cal_fnvshobj(obj,Lay){
 	var tagName = document.getElementById(Lay);
 	var leftSide = findPosX(obj);
@@ -974,13 +796,3 @@ function addOption(lvalue,ltext) {
 	document.getElementById('parentid').appendChild(optObj);
 }
 
-function getdispDate(tempDate)
-{
-	var datefmt = document.EditView.dateformat.value;
-	var dd = _2digit(parseInt(tempDate.getDate(),10));
-	var mm = _2digit(parseInt(tempDate.getMonth(),10)+1);
-	var yy = tempDate.getFullYear();
-	if(datefmt == '%d-%m-%Y') return dd+'-'+mm+'-'+yy;
-	else if(datefmt == '%m-%d-%Y') return mm+'-'+dd+'-'+yy;
-	else return yy+'-'+mm+'-'+dd;
-}
