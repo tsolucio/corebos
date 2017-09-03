@@ -59,7 +59,7 @@ function hndMouseOver(uitype,fieldLabel)
 	globaldtlviewspanid= "dtlview_"+ fieldLabel;//valuespanid;
 	globaleditareaspanid="editarea_"+ fieldLabel;//textareapanid;
 	globalfieldlabel = fieldLabel;
-	if(globaluitype == 53) {
+	if (globaluitype == 53) {
 		var assigntype = document.getElementsByName('assigntype');
 		if(assigntype.length > 0) {
 			var assign_type_U = assigntype[0].checked;

@@ -90,7 +90,7 @@ if (isset($screen_values['action']) and $screen_values['action'] == 'MassEditSav
 	$v->rule('required', 'dtend');
 	$v->rule('dateAfter', 'dtend', $screen_values['dtstart'])->label(getTranslatedString('Due Date','cbCalendar'));
 	// Planned must have start date in future
-	if ($screen_values['eventstatus'] == 'Planned') {
+	if (isset($screen_values['eventstatus']) && $screen_values['eventstatus'] == 'Planned') {
 		$nowdateTime = new DateTimeField(date('Y-m-d H:i:s',strtotime('now')-600)); // 10min to create record
 		$v->rule('dateAfter', 'dtstart', $nowdateTime->getDBInsertDateTimeValue())->label(getTranslatedString('DATE_SHOULDNOT_PAST','cbCalendar'));
 	}
