@@ -2144,7 +2144,7 @@ class ReportRun extends CRMEntity {
 						}
 						else if($fld->name == 'LBL_ACTION' && $fieldvalue != '-')
 						{
-							$fieldvalue = "<a href='index.php?module={$this->primarymodule}&action=DetailView&record={$fieldvalue}' target='_blank'>".getTranslatedString('LBL_VIEW_DETAILS','Reports')."</a>";
+							$fieldvalue = "<a href='index.php?module=" . ($this->primarymodule=='Calendar' ? 'cbCalendar' : $this->primarymodule) . "&action=DetailView&record={$fieldvalue}' target='_blank'>".getTranslatedString('LBL_VIEW_DETAILS','Reports')."</a>";
 						}
 
 						if(($lastvalue == $fieldvalue) && $this->reporttype == "summary")
@@ -2407,7 +2407,7 @@ class ReportRun extends CRMEntity {
 						}
 						else if($fld->name == 'LBL_ACTION' && $fieldvalue != '-')
 						{
-							$fieldvalue = "index.php?module={$this->primarymodule}&action=DetailView&record={$fieldvalue}";
+							$fieldvalue = 'index.php?module=' . ($this->primarymodule=='Calendar' ? 'cbCalendar' : $this->primarymodule) ."&action=DetailView&record={$fieldvalue}";
 						}
 						if ($header[$i]=='LBL ACTION') {
 							$datarow['reportrowaction'] = $fieldvalue;
