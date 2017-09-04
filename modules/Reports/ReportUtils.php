@@ -119,10 +119,16 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 		}
 	} elseif( $fieldType == 'date' && !empty($value)) {
 		if($module == 'Calendar' && $field->getFieldName() == 'due_date') {
-			$endTime = $valueArray['calendar_end_time'];
-			if(empty($endTime)) {
-				$recordId = $valueArray['calendar_id'];
-				$endTime = getSingleFieldValue('vtiger_activity', 'time_end', 'activityid', $recordId);
+			if (empty($valueArray['calendar_end_time'])) {
+				if (!empty($valueArray['calendar_id'])) {
+					$endTime = getSingleFieldValue('vtiger_activity', 'time_end', 'activityid', $valueArray['calendar_id']);
+				} else if (!empty($valueArray['lbl_action'])) {
+					$endTime = getSingleFieldValue('vtiger_activity', 'time_end', 'activityid', $valueArray['lbl_action']);
+				} else {
+					$endTime = '';
+				}
+			} else {
+				$endTime = $valueArray['calendar_end_time'];
 			}
 			$date = new DateTimeField($value.' '.$endTime);
 			$fieldvalue = $date->getDisplayDate();
