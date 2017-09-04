@@ -676,7 +676,7 @@ class CRMEntity {
 						$fldvalue = $this->column_fields[$fieldname];
 					}
 					if (empty($fldvalue)) $fldvalue = null;
-					if ($fldvalue != null) {
+					if ($fldvalue != null && !$ajaxSave) {
 						if (isset($_REQUEST['timefmt_' . $fieldname])) {
 							$timefmt = vtlib_purify($_REQUEST['timefmt_' . $fieldname]);
 							$fldvalue = DateTimeField::formatDatebaseTimeString($fldvalue,$timefmt);

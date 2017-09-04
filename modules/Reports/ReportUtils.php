@@ -132,6 +132,12 @@ function getReportFieldValue ($report, $picklistArray, $dbField, $valueArray, $f
 	} elseif( $fieldType == "datetime" && !empty($value)) {
 		$date = new DateTimeField($value);
 		$fieldvalue = $date->getDisplayDateTimeValue();
+		$user_format = ($current_user->hour_format=='24' ? '24' : '12');
+		if ($user_format != '24') {
+			$curr_time = DateTimeField::formatUserTimeString($fieldvalue, '12');
+			list($dt,$tm) = explode(' ',$fieldvalue);
+			$fieldvalue = $dt . ' ' . $curr_time;
+		}
 	} elseif( $fieldType == 'time' && !empty($value) && $field->getFieldName() != 'duration_hours' && $field->getFieldName() != 'totaltime') {
 		$date = new DateTimeField($value);
 		$fieldvalue = $date->getDisplayTime();
