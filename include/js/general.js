@@ -1114,9 +1114,10 @@ function doServerValidation(edit_type,formName,callback) {
 	} else {
 		var action = 'Save';
 	}
+	let SVModule = document.forms[formName].module.value;
 	//Testing if a Validation file exists
 	jQuery.ajax({
-		url: "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationExists&valmodule="+gVTModule,
+		url: "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationExists&valmodule="+SVModule,
 		type:'get'
 	}).fail(function (jqXHR, textStatus) { //Validation file does not exist
 		if (typeof callback == 'function') {
@@ -1142,7 +1143,7 @@ function doServerValidation(edit_type,formName,callback) {
 			jQuery.ajax({
 				type : 'post',
 				data : {structure: sentForm},
-				url : "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule="+gVTModule
+				url : "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule="+SVModule
 			}).done(function(msg) {  //Validation file answers
 					if (msg.search("%%%CONFIRM%%%") > -1) { //Allow to use confirm alert
 						//message to display
