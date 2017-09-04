@@ -17,6 +17,7 @@
 <script type="text/javascript">
 var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 var gVTUserID = "{$CURRENT_USER_ID}";
+var userFirstDayOfWeek = {$USER_FIRST_DOW};
 var image_pth = '{$IMAGE_PATH}';
 var product_default_units = '{if isset($Product_Default_Units)}{$Product_Default_Units}{else}1{/if}';
 var service_default_units = '{if isset($Service_Default_Units)}{$Service_Default_Units}{else}1{/if}';
@@ -40,6 +41,7 @@ var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
 var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 </script>
 <link rel="stylesheet" type="text/css" href="{$THEME_PATH}style.css">
+<link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
 {* corebos customization: Inclusion of custom javascript and css as registered in popup *}
 {if $HEADERCSS}
 	<!-- Custom Header CSS -->
@@ -60,6 +62,9 @@ var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 <script type="text/javascript" src="include/js/vtlib.js"></script>
 <script type="text/javascript" src="include/js/Mail.js"></script>
 <script type="text/javascript" src="modules/Tooltip/TooltipHeaderScript.js"></script>
+<script type="text/javascript" src="jscalendar/calendar.js"></script>
+<script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
+<script type="text/javascript" src="jscalendar/lang/calendar-{$APP.LBL_JSCALENDAR_LANG}.js"></script>
 {if !empty($RETURN_MODULE)}
 <script type="text/javascript" src="modules/{$RETURN_MODULE}/{$RETURN_MODULE}.js"></script>
 {else}

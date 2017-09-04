@@ -1692,7 +1692,7 @@ datatable stats {
 	overflow: scroll;
 	resize: both;
 	display: none;
-	z-index:10000001;
+	z-index:10000;
 	background-color:#ddd;
 	background-image:url(images/layerPopupBg.gif) ;
 	border:2px solid #000000;

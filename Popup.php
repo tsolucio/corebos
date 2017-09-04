@@ -35,6 +35,15 @@ $smarty->assign('THEME_PATH', "themes/$theme/");
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign("MODULE",$currentModule);
 $smarty->assign('coreBOS_uiapp_name', GlobalVariable::getVariable('Application_UI_Name',$coreBOS_app_name));
+$sql = 'SELECT dayoftheweek FROM its4you_calendar4you_settings WHERE userid=?';
+$result = $adb->pquery($sql, array($current_user->id));
+if ($result and $adb->num_rows($result)>0) {
+	$fDOW = $adb->query_result($result, 0,0);
+	$userFirstDOW = ($fDOW=='Monday' ? 1 : 0);
+} else {
+	$userFirstDOW = 0;
+}
+$smarty->assign('USER_FIRST_DOW',$userFirstDOW);
 // Gather the custom link information to display
 include_once('vtlib/Vtiger/Link.php');
 $hdrcustomlink_params = Array('MODULE'=>$currentModule);
