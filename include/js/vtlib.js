@@ -15,14 +15,14 @@ function vtlib_setvalue_from_popup(recordid,value,target_fieldname,formname) {
 	if(window.opener.document.forms[formname]) {
 		var wodform = window.opener.document.forms[formname];
 		ret = true;
+	} else if(window.opener.document.QcEditView) {
+		var wodform = window.opener.document.QcEditView;
+		ret = true;
 	} else if(window.opener.document.EditView) {
         var wodform = window.opener.document.EditView;
         ret = true;
 	} else if(window.opener.document.DetailView) {
         var wodform = window.opener.document.DetailView;
-        ret = true;
-    } else if(window.opener.document.QcEditView) {
-        var wodform = window.opener.document.QcEditView;
         ret = true;
     }
     if (ret) {
