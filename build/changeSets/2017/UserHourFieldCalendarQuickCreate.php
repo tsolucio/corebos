@@ -41,6 +41,7 @@ class UserHourFieldCalendarQuickCreate extends cbupdaterWorker {
 			$field = Vtiger_Field::getInstance('hour_format',$moduleInstance);
 			$this->ExecuteQuery('update vtiger_field set presence=0,uitype=16,displaytype=1 where fieldid=?',array($field->id));
 			$this->ExecuteQuery("update `vtiger_users` set hour_format='24' where hour_format = ''");
+			$this->ExecuteQuery("update `vtiger_users` set hour_format='12' where hour_format != '24'");
 			// Calendar Quick Create
 			$moduleInstance = Vtiger_Module::getInstance('cbCalendar');
 			$activatethese = array('activitytype','subject','assigned_user_id','dtstart','dtend','rel_id','cto_id','eventstatus');
