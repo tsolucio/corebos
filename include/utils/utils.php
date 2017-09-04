@@ -65,7 +65,7 @@ function getBrowserVariables(&$smarty) {
 	$vars['userHourFormat'] = ($current_user->hour_format=='24' ? '24' : 'am/pm');
 	$sql = 'SELECT dayoftheweek FROM its4you_calendar4you_settings WHERE userid=?';
 	$result = $adb->pquery($sql, array($current_user->id));
-	if ($adb and $adb->num_rows($result)>0) {
+	if ($result and $adb->num_rows($result)>0) {
 		$fDOW = $adb->query_result($result, 0,0);
 		$vars['userFirstDOW'] = ($fDOW=='Monday' ? 1 : 0);
 	} else {
