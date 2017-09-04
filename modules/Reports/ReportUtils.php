@@ -25,7 +25,7 @@ function getFieldByReportLabel($module, $label) {
 	if(empty($cachedModuleFields)) {
 		return null;
 	}
-	$label=decode_html($label);
+	$label = str_replace('&', 'and', decode_html($label));
 	foreach ($cachedModuleFields as $fieldInfo) {
 		$fieldLabel = str_replace(' ', '_', $fieldInfo['fieldlabel']);
 		$fieldLabel = str_replace('&', 'and', $fieldLabel);
