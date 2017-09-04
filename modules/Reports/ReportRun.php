@@ -3219,7 +3219,7 @@ class ReportRun extends CRMEntity {
 			$field_count = count($fieldvalues);
 			if( $uitype == 15 && $field_count > 0 && ($fieldname == 'taskstatus' || $fieldname == 'eventstatus'))
 			{
-				$temp_count =count($temp_status[$keyvalue]);
+				$temp_count = (empty($temp_status[$keyvalue]) ? 0 : count($temp_status[$keyvalue]));
 				if($temp_count > 0)
 				{
 					for($t=0;$t < $field_count;$t++)
