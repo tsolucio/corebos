@@ -4653,7 +4653,7 @@ function QCformValidate(){
 				case "V" : break;
 				case "C" : break;
 				case "DT":
-					if (window.document.QcEditView[curr_fieldname] != null && window.document.QcEditView[curr_fieldname].value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0) {
+					if (window.document.QcEditView[curr_fieldname] != null && window.document.QcEditView[curr_fieldname].value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0 && type[2] != undefined) {
 						if (type[1]=="M" && !qcemptyCheck(type[2],qcfieldlabel[i],getObj(type[2]).type))
 							return false;
 						if(typeof(type[3])=="undefined")
@@ -4669,7 +4669,7 @@ function QCformValidate(){
 					}
 				break;
 				case "D":
-					if (window.document.QcEditView[curr_fieldname] != null && window.document.QcEditView[curr_fieldname].value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0) {
+					if (window.document.QcEditView[curr_fieldname] != null && window.document.QcEditView[curr_fieldname].value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0 && type[2] != undefined) {
 						if(typeof(type[2])=="undefined")
 							var currdatechk="OTH";
 						else
