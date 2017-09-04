@@ -38,38 +38,6 @@ var product_labelarr = {ldelim}
 var fieldname = new Array({$VALIDATION_DATA_FIELDNAME});
 var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
 var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
-{literal}
-function QCreate(module,urlpop) {
-	if (module != 'none') {
-		document.getElementById("status").style.display="inline";
-		if (module == 'Events') {
-			module = 'Calendar';
-			var urlstr = '&activity_mode=Events&from=popup&pop='+urlpop;
-		} else if(module == 'Calendar') {
-			module = 'Calendar';
-			var urlstr = '&activity_mode=Task&from=popup&pop='+urlpop;
-		} else {
-			var urlstr = '&from=popup&pop='+urlpop;
-		}
-		jQuery.ajax({
-			method: 'POST',
-			url: 'index.php?module='+module+'&action='+module+'Ajax&file=QuickCreate'+urlstr
-		}).done(function(response) {
-			document.getElementById("status").style.display="none";
-			document.getElementById("qcformpop").style.display="inline";
-			document.getElementById("qcformpop").innerHTML = response;
-			// Evaluate all the script tags in the response text.
-			var scriptTags = document.getElementById("qcformpop").getElementsByTagName("script");
-			for (var i = 0; i< scriptTags.length; i++) {
-				var scriptTag = scriptTags[i];
-				eval(scriptTag.innerHTML);
-			}
-		});
-	} else {
-		hide('qcformpop');
-	}
-}
-{/literal}
 </script>
 <link rel="stylesheet" type="text/css" href="{$THEME_PATH}style.css">
 {* corebos customization: Inclusion of custom javascript and css as registered in popup *}
@@ -179,7 +147,7 @@ function QCreate(module,urlpop) {
 								<input type="button" name="search" value=" &nbsp;{$APP.LBL_SEARCH_NOW_BUTTON}&nbsp; " onClick="callSearch('Basic');" class="crmbutton small create">
 							</td>
 							<td width="2%" class="dvtCellLabel">
-								{if in_array($MODULE,$QCMODULEARRAY)}<a href="javascript:QCreate('{$MODULE}','{$POPUP}');"><img src="{'select.gif'|@vtiger_imageurl:$THEME}" align="left" border="0"></a>{/if}
+								{if in_array($MODULE,$QCMODULEARRAY)}<a href="javascript:QCreatePop('{$MODULE}','{$POPUP}');"><img src="{'select.gif'|@vtiger_imageurl:$THEME}" align="left" border="0"></a>{/if}
 							</td>
 						</tr>
 						 <tr>
