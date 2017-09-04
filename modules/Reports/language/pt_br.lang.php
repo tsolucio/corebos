@@ -183,6 +183,7 @@ $mod_strings = Array(
 'Current Month'=>'Mês Atual',
 'Next Month'=>'Próximo Mês',
 'Last 7 Days'=>'Últimos 7 Dias',
+'Last 14 Days' => 'Últimos 14 Dias',
 'Last 30 Days'=>'Últimos 30 Dias',
 'Last 60 Days'=>'Últimos 60 Dias',
 'Last 90 Days'=>'Últimos 90 Dias',
