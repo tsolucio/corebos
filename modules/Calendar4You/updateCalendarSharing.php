@@ -10,10 +10,11 @@
 require_once('include/database/PearDatabase.php');
 global $adb,$current_user;
 
-if(isset($_REQUEST['hour_format']) && $_REQUEST['hour_format'] != '')
-	$hour_format = $_REQUEST['hour_format'];
-else
-	$hour_format = 'am/pm';
+if (!empty($_REQUEST['hour_format'])) {
+	$hour_format = vtlib_purify($_REQUEST['hour_format']);
+} else {
+	$hour_format = '24';
+}
 
 $activity_view = $_REQUEST['activity_view'];
 
