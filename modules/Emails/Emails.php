@@ -134,6 +134,27 @@ class Emails extends CRMEntity {
 		$this->insertIntoAttachment($this->id, $module);
 	}
 
+	/**
+	 * Function to get the array of record ids from a string pattern like "2@71|17@-1|120@15"
+	 * This will filter user record ids
+	 * @param type $recordIdsStr
+	 * @return type
+	 */
+	function getCRMIdsFromStringPattern($recordIdsStr) {
+		$recordIds = array();
+		if (strpos($recordIdsStr, '@') !== false && strpos($recordIdsStr, '|') !== false) {
+			$recordIdsParts = explode('|', $recordIdsStr);
+			for ($i = 0; $i < (count($recordIdsParts) - 1); $i++) {
+				$recordIdParts = explode('@', $recordIdsParts[$i]);
+				//filter user records
+				if ($recordIdParts[1] !== -1) {
+					$recordIds[] = $recordIdParts[0];
+				}
+			}
+		}
+		return $recordIds;
+	}
+
 	function insertIntoAttachment($id, $module, $direct_import=false) {
 		global $log, $adb;
 		$log->debug("Entering into insertIntoAttachment($id,$module) method.");
