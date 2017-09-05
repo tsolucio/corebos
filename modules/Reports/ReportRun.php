@@ -1143,6 +1143,7 @@ class ReportRun extends CRMEntity {
 		$next120days = date("Y-m-d",mktime(0, 0, 0, date("m")  , date("d")+119, date("Y")));
 
 		$last7days = date("Y-m-d",mktime(0, 0, 0, date("m")  , date("d")-6, date("Y")));
+		$last14days = date("Y-m-d",mktime(0, 0, 0, date("m")  , date("d")-13, date("Y")));
 		$last30days = date("Y-m-d",mktime(0, 0, 0, date("m")  , date("d")-29, date("Y")));
 		$last60days = date("Y-m-d",mktime(0, 0, 0, date("m")  , date("d")-59, date("Y")));
 		$last90days = date("Y-m-d",mktime(0, 0, 0, date("m")  , date("d")-89, date("Y")));
@@ -1281,6 +1282,12 @@ class ReportRun extends CRMEntity {
 		{
 
 			$datevalue[0] = $last7days;
+			$datevalue[1] = $today;
+		}
+		elseif($type == "last14days" )
+		{
+
+			$datevalue[0] = $last14days;
 			$datevalue[1] = $today;
 		}
 		elseif($type == "last30days" )
