@@ -132,6 +132,9 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 			}
 			$date = new DateTimeField($value.' '.$endTime);
 			$fieldvalue = $date->getDisplayDate();
+		} elseif ($module == 'Calendar' && $field->getFieldName() == 'date_start') {
+			$date = new DateTimeField($value);
+			$fieldvalue = $date->getDisplayDateTimeValue();
 		} else {
 			$fieldvalue = DateTimeField::convertToUserFormat($value);
 		}
