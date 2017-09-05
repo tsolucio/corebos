@@ -2132,8 +2132,7 @@ class ReportRun extends CRMEntity {
 	 * @param $chartReport : boolean
 	 *  this returns join query for the report
 	 */
-	function sGetSQLforReport($reportid,$filtersql,$type='',$chartReport=false)
-	{
+	function sGetSQLforReport($reportid,$filtersql,$type='',$chartReport=false) {
 		global $log;
 		$groupsquery = '';
 		if ($this->reporttype == 'directsql' or $this->reporttype == 'crosstabsql') {
@@ -2174,45 +2173,39 @@ class ReportRun extends CRMEntity {
 		//Fix for ticket #4915.
 		$selectlist = $columnlist;
 		//columns list
-		if(isset($selectlist))
-		{
+		if (isset($selectlist)) {
 			$selectedcolumns = implode(", ",$selectlist);
 		}
 		//groups list
-		if(isset($groupslist))
-		{
+		if (isset($groupslist)) {
 			$groupsquery = implode(", ",$groupslist);
 		}
-		if(isset($groupTimeList)){
+		if (isset($groupTimeList)) {
 			$groupTimeQuery = implode(', ',$groupTimeList);
 		}
 
 		//standard list
-		if(isset($stdfilterlist))
-		{
+		if (isset($stdfilterlist)) {
 			$stdfiltersql = implode(", ",$stdfilterlist);
 		}
 		//columns to total list
-		if(isset($columnstotallist))
-		{
+		if (isset($columnstotallist)) {
 			$columnstotalsql = implode(', ',$columnstotallist);
 		} else {
 			$columnstotalsql = '';
 		}
-		if($stdfiltersql != '')
-		{
+		if ($stdfiltersql != '') {
 			$wheresql = ' and '.$stdfiltersql;
 		} else {
 			$wheresql = '';
 		}
 
-		if(isset($filtersql) && !empty($filtersql)) {
+		if (isset($filtersql) && !empty($filtersql)) {
 			$advfiltersql = $filtersql;
 		}
 		$where_condition = '';
-		if($advfiltersql != "") {
-			if($type == 'COLUMNSTOTOTAL')
-			{
+		if ($advfiltersql != "") {
+			if ($type == 'COLUMNSTOTOTAL') {
 				if (strstr($advfiltersql,'vtiger_products'.$this->primarymodule) || strstr($advfiltersql,'vtiger_service'.$this->primarymodule))
 					$where_condition='add';
 			}
@@ -3341,8 +3334,8 @@ class ReportRun extends CRMEntity {
 
 		global $adb, $modules, $log, $current_user;
 		static $modulename_cache = array();
-		$query = "select * from vtiger_reportmodules where reportmodulesid =?";
-		$res = $adb->pquery($query , array($reportid));
+		$query = 'select primarymodule,secondarymodules from vtiger_reportmodules where reportmodulesid=?';
+		$res = $adb->pquery($query, array($reportid));
 		$modrow = $adb->fetch_array($res);
 		$premod = $modrow["primarymodule"];
 		$secmod = $modrow["secondarymodules"];
