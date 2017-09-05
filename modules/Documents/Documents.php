@@ -151,6 +151,11 @@ class Documents extends CRMEntity {
 			$qparams = array($this->id);
 			$adb->pquery($query, $qparams);
 		}
+		//set the column_fields so that its available in the event handlers
+		$this->column_fields['filename'] = $filename;
+		$this->column_fields['filesize'] = $filesize;
+		$this->column_fields['filetype'] = $filetype;
+		$this->column_fields['filedownloadcount'] = $filedownloadcount;
 	}
 
 	/**
