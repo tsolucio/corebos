@@ -2429,11 +2429,9 @@ class CRMEntity {
 		// Add the pre-joined custom table query
 		$query .= ' ' . $cfquery;
 
-		if ($queryPlanner->requireTable('vtiger_groups'.$module)) {
-			$query .= " left join vtiger_groups as vtiger_groups" . $module . " on vtiger_groups" . $module . ".groupid = vtiger_crmentity.smownerid";
-		}
-		if ($queryPlanner->requireTable('vtiger_users'.$module)) {
+		if ($queryPlanner->requireTable('vtiger_users'.$module) || $queryPlanner->requireTable('vtiger_groups'.$module)) {
 			$query .= " left join vtiger_users as vtiger_users" . $module . " on vtiger_users" . $module . ".id = vtiger_crmentity.smownerid";
+			$query .= " left join vtiger_groups as vtiger_groups" . $module . " on vtiger_groups" . $module . ".groupid = vtiger_crmentity.smownerid";
 		}
 		if ($queryPlanner->requireTable('vtiger_lastModifiedBy'.$module)) {
 			$query .= " left join vtiger_users as vtiger_lastModifiedBy" . $module . " on vtiger_lastModifiedBy" . $module . ".id = vtiger_crmentity.modifiedby";

@@ -395,14 +395,12 @@ class Documents extends CRMEntity {
 		if ($queryplanner->requireTable("vtiger_attachmentsfolder")) {
 			$query .= " inner join vtiger_attachmentsfolder on vtiger_attachmentsfolder.folderid=$moduletable.folderid";
 		}
-		if ($queryplanner->requireTable("vtiger_groups".$module)) {
-			$query .= " left join vtiger_groups as vtiger_groups".$module." on vtiger_groups".$module.".groupid = vtiger_crmentity.smownerid";
-		}
 		if ($queryplanner->requireTable('vtiger_CreatedBy'.$module)) {
 			$query .= " LEFT JOIN vtiger_users AS vtiger_CreatedBy$module ON vtiger_CreatedBy$module.id = vtiger_crmentity.smcreatorid";
 		}
-		if ($queryplanner->requireTable("vtiger_users".$module)) {
+		if ($queryplanner->requireTable("vtiger_users".$module) || $queryplanner->requireTable("vtiger_groups".$module)) {
 			$query .= " left join vtiger_users as vtiger_users".$module." on vtiger_users".$module.".id = vtiger_crmentity.smownerid";
+			$query .= " left join vtiger_groups as vtiger_groups".$module." on vtiger_groups".$module.".groupid = vtiger_crmentity.smownerid";
 		}
 		$query .= " left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid";
 		$query .= " left join vtiger_notescf on vtiger_notes.notesid = vtiger_notescf.notesid";

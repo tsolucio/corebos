@@ -1546,11 +1546,9 @@ class ReportRun extends CRMEntity {
 			if ($this->queryPlanner->requireTable('vtiger_leadscf')) {
 				$query .= " inner join vtiger_leadscf on vtiger_leaddetails.leadid = vtiger_leadscf.leadid";
 			}
-			if ($this->queryPlanner->requireTable('vtiger_groupsLeads')) {
-				$query .= " left join vtiger_groups as vtiger_groupsLeads on vtiger_groupsLeads.groupid = vtiger_crmentity.smownerid";
-			}
-			if ($this->queryPlanner->requireTable('vtiger_usersLeads')) {
+			if ($this->queryPlanner->requireTable('vtiger_usersLeads') || $this->queryPlanner->requireTable('vtiger_groupsLeads')) {
 				$query .= " left join vtiger_users as vtiger_usersLeads on vtiger_usersLeads.id = vtiger_crmentity.smownerid";
+				$query .= " left join vtiger_groups as vtiger_groupsLeads on vtiger_groupsLeads.groupid = vtiger_crmentity.smownerid";
 			}
 			$query .= " left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid
 				left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid";
@@ -1593,17 +1591,15 @@ class ReportRun extends CRMEntity {
 			if ($this->queryPlanner->requireTable('vtiger_contactscf')) {
 				$query .= "	inner join vtiger_contactscf on vtiger_contactdetails.contactid = vtiger_contactscf.contactid";
 			}
-			if ($this->queryPlanner->requireTable('vtiger_groupsContacts')) {
-				$query .= " left join vtiger_groups vtiger_groupsContacts on vtiger_groupsContacts.groupid = vtiger_crmentity.smownerid";
-			}
 			if ($this->queryPlanner->requireTable('vtiger_contactdetailsContacts')) {
 				$query .= "	left join vtiger_contactdetails as vtiger_contactdetailsContacts on vtiger_contactdetailsContacts.contactid = vtiger_contactdetails.reportsto";
 			}
 			if ($this->queryPlanner->requireTable('vtiger_accountContacts')) {
 				$query .= "	left join vtiger_account as vtiger_accountContacts on vtiger_accountContacts.accountid = vtiger_contactdetails.accountid";
 			}
-			if ($this->queryPlanner->requireTable('vtiger_usersContacts')) {
+			if ($this->queryPlanner->requireTable('vtiger_usersContacts') || $this->queryPlanner->requireTable('vtiger_groupsContacts')) {
 				$query .= " left join vtiger_users as vtiger_usersContacts on vtiger_usersContacts.id = vtiger_crmentity.smownerid";
+				$query .= " left join vtiger_groups vtiger_groupsContacts on vtiger_groupsContacts.groupid = vtiger_crmentity.smownerid";
 			}
 
 			$query .= " left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
@@ -1674,11 +1670,9 @@ class ReportRun extends CRMEntity {
 			if ($this->queryPlanner->requireTable('vtiger_productsRel')) {
 				$query .= " left join vtiger_products as vtiger_productsRel on vtiger_productsRel.productid = vtiger_troubletickets.product_id";
 			}
-			if ($this->queryPlanner->requireTable('vtiger_groupsHelpDesk')) {
-				$query .= " left join vtiger_groups as vtiger_groupsHelpDesk on vtiger_groupsHelpDesk.groupid = vtiger_crmentity.smownerid";
-			}
-			if ($this->queryPlanner->requireTable('vtiger_usersHelpDesk')) {
+			if ($this->queryPlanner->requireTable('vtiger_usersHelpDesk') || $this->queryPlanner->requireTable('vtiger_groupsHelpDesk')) {
 				$query .= " left join vtiger_users as vtiger_usersHelpDesk on vtiger_crmentity.smownerid=vtiger_usersHelpDesk.id";
+				$query .= " left join vtiger_groups as vtiger_groupsHelpDesk on vtiger_groupsHelpDesk.groupid = vtiger_crmentity.smownerid";
 			}
 
 			$query .= " left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid";
@@ -1722,11 +1716,9 @@ class ReportRun extends CRMEntity {
 			if ($this->queryPlanner->requireTable('vtiger_contactdetailsCalendar')) {
 				$query .= " left join vtiger_contactdetails as vtiger_contactdetailsCalendar on vtiger_contactdetailsCalendar.contactid= vtiger_cntactivityrel.contactid";
 			}
-			if ($this->queryPlanner->requireTable('vtiger_groupsCalendar')) {
-				$query .= " left join vtiger_groups as vtiger_groupsCalendar on vtiger_groupsCalendar.groupid = vtiger_crmentity.smownerid";
-			}
-			if ($this->queryPlanner->requireTable('vtiger_usersCalendar')) {
+			if ($this->queryPlanner->requireTable('vtiger_usersCalendar') || $this->queryPlanner->requireTable('vtiger_groupsCalendar')) {
 				$query .= " left join vtiger_users as vtiger_usersCalendar on vtiger_usersCalendar.id = vtiger_crmentity.smownerid";
+				$query .= " left join vtiger_groups as vtiger_groupsCalendar on vtiger_groupsCalendar.groupid = vtiger_crmentity.smownerid";
 			}
 
 			$query .= " left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid";
@@ -1796,11 +1788,9 @@ class ReportRun extends CRMEntity {
 			if ($this->queryPlanner->requireTable("vtiger_quotescf")) {
 				$query .= " left join vtiger_quotescf on vtiger_quotes.quoteid = vtiger_quotescf.quoteid";
 			}
-			if ($this->queryPlanner->requireTable("vtiger_groupsQuotes")) {
-				$query .= " left join vtiger_groups as vtiger_groupsQuotes on vtiger_groupsQuotes.groupid = vtiger_crmentity.smownerid";
-			}
-			if ($this->queryPlanner->requireTable("vtiger_usersQuotes")) {
+			if ($this->queryPlanner->requireTable("vtiger_usersQuotes") || $this->queryPlanner->requireTable("vtiger_groupsQuotes")) {
 				$query .= " left join vtiger_users as vtiger_usersQuotes on vtiger_usersQuotes.id = vtiger_crmentity.smownerid";
+				$query .= " left join vtiger_groups as vtiger_groupsQuotes on vtiger_groupsQuotes.groupid = vtiger_crmentity.smownerid";
 			}
 
 			$query .= " left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid";
@@ -1862,11 +1852,9 @@ class ReportRun extends CRMEntity {
 			if ($this->queryPlanner->requireTable("vtiger_purchaseordercf")) {
 				$query .= " left join vtiger_purchaseordercf on vtiger_purchaseorder.purchaseorderid = vtiger_purchaseordercf.purchaseorderid";
 			}
-			if ($this->queryPlanner->requireTable("vtiger_groupsPurchaseOrder")) {
-				$query .= " left join vtiger_groups as vtiger_groupsPurchaseOrder on vtiger_groupsPurchaseOrder.groupid = vtiger_crmentity.smownerid";
-			}
-			if ($this->queryPlanner->requireTable("vtiger_usersPurchaseOrder")) {
+			if ($this->queryPlanner->requireTable("vtiger_usersPurchaseOrder") || $this->queryPlanner->requireTable("vtiger_groupsPurchaseOrder")) {
 				$query .= " left join vtiger_users as vtiger_usersPurchaseOrder on vtiger_usersPurchaseOrder.id = vtiger_crmentity.smownerid";
+				$query .= " left join vtiger_groups as vtiger_groupsPurchaseOrder on vtiger_groupsPurchaseOrder.groupid = vtiger_crmentity.smownerid";
 			}
 			if ($this->queryPlanner->requireTable("vtiger_accountsPurchaseOrder")) {
 				$query .= " left join vtiger_account as vtiger_accountsPurchaseOrder on vtiger_accountsPurchaseOrder.accountid = vtiger_purchaseorder.accountid";
@@ -1927,11 +1915,9 @@ class ReportRun extends CRMEntity {
 			if ($this->queryPlanner->requireTable("vtiger_invoicecf")) {
 				$query .= " left join vtiger_invoicecf on vtiger_invoice.invoiceid = vtiger_invoicecf.invoiceid";
 			}
-			if ($this->queryPlanner->requireTable("vtiger_groupsInvoice")) {
-				$query .= " left join vtiger_groups as vtiger_groupsInvoice on vtiger_groupsInvoice.groupid = vtiger_crmentity.smownerid";
-			}
-			if ($this->queryPlanner->requireTable("vtiger_usersInvoice")) {
+			if ($this->queryPlanner->requireTable("vtiger_usersInvoice") || $this->queryPlanner->requireTable("vtiger_groupsInvoice")) {
 				$query .= " left join vtiger_users as vtiger_usersInvoice on vtiger_usersInvoice.id = vtiger_crmentity.smownerid";
+				$query .= " left join vtiger_groups as vtiger_groupsInvoice on vtiger_groupsInvoice.groupid = vtiger_crmentity.smownerid";
 			}
 
 			$query .= " left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid";
@@ -2000,11 +1986,9 @@ class ReportRun extends CRMEntity {
 			if ($this->queryPlanner->requireTable("vtiger_invoice_recurring_info")) {
 				$query .= " left join vtiger_invoice_recurring_info on vtiger_invoice_recurring_info.salesorderid = vtiger_salesorder.salesorderid";
 			}
-			if ($this->queryPlanner->requireTable("vtiger_groupsSalesOrder")) {
-				$query .= " left join vtiger_groups as vtiger_groupsSalesOrder on vtiger_groupsSalesOrder.groupid = vtiger_crmentity.smownerid";
-			}
-			if ($this->queryPlanner->requireTable("vtiger_usersSalesOrder")) {
+			if ($this->queryPlanner->requireTable("vtiger_usersSalesOrder") || $this->queryPlanner->requireTable("vtiger_groupsSalesOrder")) {
 				$query .= " left join vtiger_users as vtiger_usersSalesOrder on vtiger_usersSalesOrder.id = vtiger_crmentity.smownerid";
+				$query .= " left join vtiger_groups as vtiger_groupsSalesOrder on vtiger_groupsSalesOrder.groupid = vtiger_crmentity.smownerid";
 			}
 
 			$query .= " left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid";
@@ -2031,11 +2015,9 @@ class ReportRun extends CRMEntity {
 			if ($this->queryPlanner->requireTable("vtiger_productsCampaigns")) {
 				$query .= " left join vtiger_products as vtiger_productsCampaigns on vtiger_productsCampaigns.productid = vtiger_campaign.product_id";
 			}
-			if ($this->queryPlanner->requireTable("vtiger_groupsCampaigns")) {
-				$query .= " left join vtiger_groups as vtiger_groupsCampaigns on vtiger_groupsCampaigns.groupid = vtiger_crmentity.smownerid";
-			}
-			if ($this->queryPlanner->requireTable("vtiger_usersCampaigns")) {
+			if ($this->queryPlanner->requireTable("vtiger_usersCampaigns") || $this->queryPlanner->requireTable("vtiger_groupsCampaigns")) {
 				$query .= " left join vtiger_users as vtiger_usersCampaigns on vtiger_usersCampaigns.id = vtiger_crmentity.smownerid";
+				$query .= " left join vtiger_groups as vtiger_groupsCampaigns on vtiger_groupsCampaigns.groupid = vtiger_crmentity.smownerid";
 			}
 
 			$query .= " left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid";
@@ -2059,11 +2041,9 @@ class ReportRun extends CRMEntity {
 			if ($this->queryPlanner->requireTable("vtiger_email_track")) {
 				$query .= " LEFT JOIN vtiger_email_track ON vtiger_email_track.mailid = vtiger_activity.activityid";
 			}
-			if ($this->queryPlanner->requireTable("vtiger_groupsEmails")) {
-				$query .= " LEFT JOIN vtiger_groups AS vtiger_groupsEmails ON vtiger_groupsEmails.groupid = vtiger_crmentity.smownerid";
-			}
-			if ($this->queryPlanner->requireTable("vtiger_usersEmails")) {
+			if ($this->queryPlanner->requireTable("vtiger_usersEmails") || $this->queryPlanner->requireTable("vtiger_groupsEmails")) {
 				$query .= " LEFT JOIN vtiger_users AS vtiger_usersEmails ON vtiger_usersEmails.id = vtiger_crmentity.smownerid";
+				$query .= " LEFT JOIN vtiger_groups AS vtiger_groupsEmails ON vtiger_groupsEmails.groupid = vtiger_crmentity.smownerid";
 			}
 
 			// TODO optimize inclusion of these tables

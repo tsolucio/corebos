@@ -709,10 +709,8 @@ class Services extends CRMEntity {
 		if ($queryPlanner->requireTable("vtiger_servicecf")) {
 			$query .= " left join vtiger_servicecf on vtiger_service.serviceid = vtiger_servicecf.serviceid";
 		}
-		if ($queryPlanner->requireTable("vtiger_usersServices")) {
+		if ($queryPlanner->requireTable("vtiger_usersServices") || $queryPlanner->requireTable("vtiger_groupsServices")) {
 			$query .= " left join vtiger_users as vtiger_usersServices on vtiger_usersServices.id = vtiger_crmentity.smownerid";
-		}
-		if ($queryPlanner->requireTable("vtiger_groupsServices")) {
 			$query .= " left join vtiger_groups as vtiger_groupsServices on vtiger_groupsServices.groupid = vtiger_crmentity.smownerid";
 		}
 		if ($queryPlanner->requireTable("vtiger_seproductsrel")) {
