@@ -204,27 +204,33 @@
 							<!-- Settings -->
 							<table class="slds-table slds-no-row-hover background">
 								<tr class="LD_buttonList">
-									<th scope="col">
-										<div class="globalCreateContainer oneGlobalCreate">
-											<div class="forceHeaderMenuTrigger">
-											{if $MODULE eq 'Calendar4You'}
-												{if $MODE neq 'DetailView' && $MODE neq 'EditView' && $MODE neq 'RelatedList'}
-												<div id="LB_ITSCalSettings" class="LB_Button slds-truncate" style="padding-left:50px;"><a href="javascript:;" onclick="fnvshobj(this,'calSettings'); getITSCalSettings();"><img src="themes/softed/images/tbarSettings.gif" alt="Settings" title="Settings" align="absmiddle" border="0"></a></div>
-												{/if}
-												<div id="LB_TaskIcon" class="LB_Button slds-truncate"><a href='index.php?module=Calendar&action=index'><img src="themes/images/tasks-icon.png" alt="{'Tasks'|getTranslatedString:$MODULE}" title="{'Tasks'|getTranslatedString:$MODULE}" border="0"></a></div>
-											{/if}
-											</div>
-										</div>
-									</th>
-									<th scope="col">
-										<div class="globalCreateContainer oneGlobalCreate">
-											<div class="forceHeaderMenuTrigger">
-											{if $CHECK.moduleSettings eq 'yes'}
-												<div id="LB_ModSettingsButton" class="LB_Button slds-truncate"><a href='index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$MODULE}&parenttab=Settings'><img src="{'settingsBox.png'|@vtiger_imageurl:$THEME}" alt="{$MODULE|getTranslatedString:$MODULE} {$APP.LBL_SETTINGS}" title="{$MODULE|getTranslatedString:$MODULE} {$APP.LBL_SETTINGS}" border="0"></a></div>
-											{/if}
-											</div>
-										</div>
-									</th>
+									{if $MODULE eq 'Calendar4You'}
+										{if $MODE neq 'DetailView' && $MODE neq 'EditView' && $MODE neq 'RelatedList'}
+											<th scope="col">
+												<div class="globalCreateContainer oneGlobalCreate">
+													<div class="forceHeaderMenuTrigger">
+														<div id="LB_ITSCalSettings" class="LB_Button slds-truncate"><a href="javascript:;" onclick="fnvshobj(this,'calSettings'); getITSCalSettings();"><img src="themes/softed/images/tbarSettings.gif" alt="Settings" title="Settings" align="absmiddle" border="0"></a></div>
+													</div>
+												</div>
+											</th>
+										{/if}
+											<th scope="col">
+												<div class="globalCreateContainer oneGlobalCreate">
+													<div class="forceHeaderMenuTrigger">
+														<div id="LB_TaskIcon" class="LB_Button slds-trunacte"><a href='index.php?module=Calendar&action=index'><img src="themes/images/task-icon.png" alt="{'Tasks'|getTranslatedString:$MODULE}" title="{'Tasks'|getTranslatedString:$MODULE}" border="0"></a></div>
+													</div>
+												</div>
+											</th>
+									{/if}
+											<th scope="col">
+												<div class="globalCreateContainer oneGlobalCreate">
+													<div class="forceHeaderMenuTrigger">
+													{if $CHECK.moduleSettings eq 'yes'}
+														<div id="LB_ModSettingsButton" class="LB_Button slds-truncate"><a href='index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$MODULE}&parenttab=Settings'><img src="{'settingsBox.png'|@vtiger_imageurl:$THEME}" alt="{$MODULE|getTranslatedString:$MODULE} {$APP.LBL_SETTINGS}" title="{$MODULE|getTranslatedString:$MODULE} {$APP.LBL_SETTINGS}" border="0"></a></div>
+													{/if}
+													</div>
+												</div>
+											</th>
 								</tr>
 							</table>
 						</td>
