@@ -20,8 +20,12 @@
 </div>
 <script src='modules/Calendar4You/fullcalendar/locale-all.js'></script>
 <div id="event_setting" style="border:1px solid #000000;position:absolute;display:none;z-index:10000;background-color:white"></div>
-<!-- Dropdown for Add Event Button -->
+<!-- Dropdown for Add Event on Field click -->
 <div id='addEventDropDown' style='width:160px' onmouseover='fnShowITSEvent()' onmouseout='fnRemoveITSEvent()'>
+<table width="100%" cellpadding="0" cellspacing="0" border="0">{$ADD_BUTTONEVENTLIST}</table>
+</div>
+<!-- Dropdown for Add Event on Button hover -->
+<div id='addButtonDropDown' style='width:160px' onmouseover='fnShowButton()' onmouseout='fnRemoveButton()'>
 <table width="100%" cellpadding="0" cellspacing="0" border="0">{$ADD_BUTTONEVENTLIST}</table>
 </div>
 <script>
