@@ -117,7 +117,7 @@
 									<td valign="top" style="padding: 0;">
 										<div class="slds-tabs--scoped">
 											<ul class="slds-tabs--scoped__nav" role="tablist" style="margin-bottom: 0;">
-												<li class="slds-tabs--scoped__item active" onclick="openCity(event, 'tab--scoped-1')"  title="{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}" role="presentation">
+												<li class="slds-tabs--scoped__item active" title="{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}" role="presentation">
 													<a class="slds-tabs--scoped__link "  href="javascript:void(0);"  role="tab" tabindex="0" aria-selected="true" aria-controls="tab--scoped-1" id="tab--scoped--1__item">{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</a>
 												</li>
 											</ul>

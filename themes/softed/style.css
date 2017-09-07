@@ -2980,12 +2980,6 @@ a.allMnu:Hover{
 	color: #3c763d;
 }
 
-#LB_TaskIcon img {
-	background-color: #4bc076;
-	width: 28px;
-	border-radius: 4px;
-}
-
 .detailview_utils_table_top, .detailview_utils_table_bottom {
 	display: flex;
 	flex-direction: row;

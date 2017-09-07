@@ -105,7 +105,7 @@
 													{assign var="action" value="DetailView"}
 												{/if}
 												<ul class="slds-tabs--scoped__nav" role="tablist" style="margin-bottom: 0;">
-													<li class="slds-tabs--scoped__item" onclick="openCity(event, 'tab--scoped-1')" title="{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}" role="presentation">
+													<li class="slds-tabs--scoped__item" title="{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}" role="presentation">
 														<a class="slds-tabs--scoped__link " href="index.php?action={$action}&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}" role="tab" tabindex="0" aria-selected="true" aria-controls="tab--scoped-1" id="tab--scoped--1__item">{$SINGLE_MOD} {$APP.LBL_INFORMATION}</a>
 													</li>
 													{if $HASRELATEDPANES eq 'true'}

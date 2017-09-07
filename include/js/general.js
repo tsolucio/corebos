@@ -2147,7 +2147,6 @@ function fnLoadCvValues(obj1,obj2,SelTab,unSelTab){
 	var tabName2 = document.getElementById(obj2); //mi
 	var tagName1 = document.getElementById(SelTab); //mnuTab
 	var tagName2 = document.getElementById(unSelTab); //mnuTab2
-	console.log(tabName1);
 	if(tabName1.className == "unSelectedTab")
 		tabName1.className = "selectedTab";
 		tabName1.classList.add("active");

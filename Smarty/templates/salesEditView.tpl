@@ -98,7 +98,7 @@
 				<tr>
 					<td valign=top align=left >
 						<!-- General details -->
-						<table class="slds-table slds-no-row-hover slds-table-moz dvtContentSpace">
+						<table class="slds-table slds-no-row-hover slds-table-moz dvtContentSpace" >
 							<!-- Top buttons -->
 							<tr>
 								<td colspan=4 style="padding:5px">
@@ -118,14 +118,14 @@
 								<td valign="top" style="padding: 0;">
 									<div class="slds-tabs--scoped">
 										<ul class="slds-tabs--scoped__nav" role="tablist" style="margin-bottom: 0;">
-											<li class="slds-tabs--scoped__item active" onclick="openCity(event, 'tab--scoped-1')"  title="{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}" role="presentation">
+											<li class="slds-tabs--scoped__item active" title="{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}" role="presentation">
 												<a class="slds-tabs--scoped__link "  href="javascript:void(0);"  role="tab" tabindex="0" aria-selected="true" aria-controls="tab--scoped-1" id="tab--scoped--1__item">{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</a>
 											</li>
 										</ul>
 
 										<div id="tab--scoped-1" role="tabpanel" aria-labelledby="tab--scoped-1__item" class="slds-tabs--scoped__content slds-truncate">
 											<!-- Content here -->
-											<table class="slds-table slds-no-row-hover slds-table-moz" style="border-collapse: separate;border-spacing: 1rem 2rem;">
+											<table class="slds-table slds-no-row-hover slds-table-moz" style="border-collapse: separate;border-spacing: 1rem 2rem;" ng-controller="editViewng">
 												<!-- included to handle the edit fields based on ui types -->
 												{foreach key=header item=data from=$BLOCKS}
 												<tr class="blockStyleCss">
@@ -190,7 +190,6 @@
 																	</article>
 																</div>
 															{elseif isset($MOD.LBL_ADDRESS_INFORMATION) && $header== $MOD.LBL_ADDRESS_INFORMATION && $MODULE == 'Contacts' && $SHOW_COPY_ADDRESS eq 1}
-
 																<div class="forceRelatedListSingleContainer">
 																	<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
 																		<div class="slds-card__header slds-grid">
@@ -291,7 +290,7 @@
 			</table>
 		</div>
 	</td>
-   </tr>
+	</tr>
 </table>
 <!--added to fix 4600-->
 <input name='search_url' id="search_url" type='hidden' value='{$SEARCH}'>
