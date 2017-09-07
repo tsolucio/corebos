@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-include_once dirname(__FILE__) . '/../lib/StringDiff.php';
-include_once dirname(__FILE__) . '/ModTracker_Field.php';
+include_once __DIR__ . '/../lib/StringDiff.php';
+include_once __DIR__ . '/ModTracker_Field.php';
 
 class ModTracker_Detail {
 	var $id;

@@ -38,12 +38,12 @@ class VTWorkflowUtils {
 	 *
 	 */
 	function adminUser() {
-        $user = Users::getActiveAdminUser();
+		$user = Users::getActiveAdminUser();
 		global $current_user;
 		if (empty(self::$userStack) || count(self::$userStack) == 0) {
 			self::$loggedInUser = $current_user;
 		}
-		array_push(self::$userStack, $current_user);
+		self::$userStack[] = $current_user;
 		$current_user = $user;
 		return $user;
 	}
@@ -55,7 +55,7 @@ class VTWorkflowUtils {
 	function loggedInUser() {
 		$user = self::$loggedInUser;
 		global $current_user;
-		array_push(self::$userStack, $current_user);
+		self::$userStack[] = $current_user;
 		$current_user = $user;
 		return $user;
 	}

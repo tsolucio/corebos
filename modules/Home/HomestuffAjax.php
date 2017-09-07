@@ -22,7 +22,7 @@ if(!empty($modval)){
 
 	if($is_admin == false){
 		$ssql .= " and (vtiger_customview.status=0 or vtiger_customview.userid = ? or vtiger_customview.status = 3 or vtiger_customview.userid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%'))";
-		array_push($sparams, $current_user->id);
+		$sparams[] = $current_user->id;
 	}
 	$result = $adb->pquery($ssql, $sparams);
 

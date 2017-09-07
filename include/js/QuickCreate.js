@@ -308,3 +308,27 @@ function qcdateTimeValidate(dateFldName,timeFldName,fldLabel,type) {
 	} else return true;
 }
 
+function QCreate(qcoptions){
+	var module = qcoptions.options[qcoptions.options.selectedIndex].value;
+	if (module != 'none') {
+		document.getElementById("status").style.display="inline";
+		jQuery.ajax({
+			method:"POST",
+			url:'index.php?module='+module+'&action='+module+'Ajax&file=QuickCreate'
+		}).done(function(response) {
+			document.getElementById("status").style.display="none";
+			document.getElementById("qcform").style.display="inline";
+			document.getElementById("qcform").innerHTML = response;
+			jQuery("#qcform").draggable();
+			// Evaluate all the script tags in the response text.
+			var scriptTags = document.getElementById("qcform").getElementsByTagName("script");
+			for (var i = 0; i< scriptTags.length; i++) {
+				var scriptTag = scriptTags[i];
+				eval(scriptTag.innerHTML);
+			}
+			posLay(qcoptions, "qcform");
+		});
+	} else {
+		hide('qcform');
+	}
+}

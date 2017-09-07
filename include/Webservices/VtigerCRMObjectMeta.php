@@ -202,10 +202,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 			}
 		}
 		$permitted = isPermitted($this->getTabName(),$operation,$id);
-		if(strcmp($permitted,"yes")===0){
-			return true;
-		}
-		return false;
+		return strcmp($permitted,'yes')===0;
 	}
 
 	function hasAssignPrivilege($webserviceId){

@@ -15,7 +15,7 @@
  *************************************************************************************************/
 require_once('include/utils/utils.php');
 require_once 'vtlib/Vtiger/Module.php';
-require_once dirname(__FILE__) .'/ModTracker.php';
+require_once __DIR__ .'/ModTracker.php';
 class ModTrackerUtils
 {
 	static function modTrac_changeModuleVisibility($tabid,$status) {

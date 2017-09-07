@@ -15,7 +15,7 @@
 //Added to check database charset and $default_charset are set to UTF8.
 //If both are not set to be UTF-8, Then we will show an alert message.
 function check_db_utf8_support($conn) {
-	$dbvarRS = &$conn->Execute("show variables like '%_database' ");
+	$dbvarRS = $conn->Execute("show variables like '%_database'");
 	$db_character_set = null;
 	$db_collation_type = null;
 	while(!$dbvarRS->EOF) {
@@ -28,11 +28,11 @@ function check_db_utf8_support($conn) {
 		// If we have all the required information break the loop.
 		if($db_character_set != null && $db_collation_type != null) break;
 	}
-	return (stristr($db_character_set, 'utf8') && stristr($db_collation_type, 'utf8'));
+	return (false !== stripos($db_character_set, 'utf8') && false !== stripos($db_collation_type, 'utf8'));
 }
 
 function get_db_charset($conn) {
-	$dbvarRS = &$conn->query("show variables like '%_database' ");
+	$dbvarRS = $conn->query("show variables like '%_database'");
 	$db_character_set = null;
 	while(!$dbvarRS->EOF) {
 		$arr = $dbvarRS->FetchRow();

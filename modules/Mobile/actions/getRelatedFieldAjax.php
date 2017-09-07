@@ -9,9 +9,9 @@
  * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
 require_once('include/utils/utils.php');
-include_once dirname(__FILE__) . '/../api/ws/Controller.php';
-include_once dirname(__FILE__) . '/../api/ws/Utils.php';
-include_once dirname(__FILE__) . '/../views/models/SearchFilter.php';
+include_once __DIR__ . '/../api/ws/Controller.php';
+include_once __DIR__ . '/../api/ws/Utils.php';
+include_once __DIR__ . '/../views/models/SearchFilter.php';
 include_once 'include/Webservices/Query.php';
 
 class crmtogo_UI_getRelatedFieldAjax extends crmtogo_WS_Controller{

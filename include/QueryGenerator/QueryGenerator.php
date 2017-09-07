@@ -204,7 +204,7 @@ class QueryGenerator {
 		$field = '';
 		if ($fldmod == '') {  // not FQN > we have to look for it
 			foreach ($this->referenceFieldInfoList as $fld => $mods) {
-				if ($fld=='modifiedby') $fld=='assigned_user_id';
+				if ($fld=='modifiedby') $fld='assigned_user_id';
 				foreach ($mods as $mname) {
 					if (!empty($this->referenceFields[$fld][$mname][$fldname])) {
 						$field = $this->referenceFields[$fld][$mname][$fldname];
@@ -212,7 +212,7 @@ class QueryGenerator {
 							if ($mname=='Users') {
 								return $field->getTableName().'.'.$fldname;
 							} else {
-								if($fldname=='assigned_user_id' && strstr($field->getTableName(),"vtiger_crmentity")) {
+								if ($fldname=='assigned_user_id' && false !== strpos($field->getTableName(), 'vtiger_crmentity')) {
 									$fldname='smownerid as smowner'.strtolower(getTabModuleName($field->getTabId()));
 								} else {
 									if ($alias) {
@@ -238,7 +238,7 @@ class QueryGenerator {
 						if ($fldmod=='Users') {
 							return $field->getTableName().'.'.$fldname;
 						} else {
-							if($fldname=='assigned_user_id' && strstr($field->getTableName(),"vtiger_crmentity")) {
+							if ($fldname=='assigned_user_id' && false !== strpos($field->getTableName(), 'vtiger_crmentity')) {
 								$fldname='smownerid as smowner'.strtolower(getTabModuleName($field->getTabId()));
 							} else {
 								if ($alias) {
@@ -1409,12 +1409,12 @@ class QueryGenerator {
 			} else {
 				$value = '';
 			}
-			if(!empty($input['operator'])) {
+			if (!empty($input['operator'])) {
 				$operator = $input['operator'];
-			} elseif(trim(strtolower($value)) == 'null'){
+			} elseif (strtolower(trim($value)) == 'null') {
 				$operator = 'e';
 			} else {
-				if(!$this->isNumericType($type) && !$this->isDateType($type)) {
+				if (!$this->isNumericType($type) && !$this->isDateType($type)) {
 					$operator = 'c';
 				} else {
 					$operator = 'h';

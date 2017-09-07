@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-include_once dirname(__FILE__) . '/ModCommentsCore.php';
-include_once dirname(__FILE__) . '/models/Comments.php';
+include_once __DIR__ . '/ModCommentsCore.php';
+include_once __DIR__ . '/models/Comments.php';
 
 require_once 'include/utils/VtlibUtils.php';
 
@@ -48,7 +48,7 @@ class ModComments extends ModCommentsCore {
 	static function getWidget($name) {
 		if ($name == 'DetailViewBlockCommentWidget' &&
 				isPermitted('ModComments', 'DetailView') == 'yes') {
-			require_once dirname(__FILE__) . '/widgets/DetailViewBlockComment.php';
+			require_once __DIR__ . '/widgets/DetailViewBlockComment.php';
 			return (new ModComments_DetailViewBlockCommentWidget());
 		}
 		return false;

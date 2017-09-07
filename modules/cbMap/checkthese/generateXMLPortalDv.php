@@ -30,7 +30,7 @@ $root->appendChild($b);
 
 $xml->appendChild($root);
 //$name = $xml->createElement("name");
-$module1 =  intval($_POST['modulePortal']);
+$module1 = (int)$_POST['modulePortal'];
 $module= getTabModuleName($module1);
 $focus = CRMEntity::getInstance($module);
 var_dump($mv);

@@ -8,8 +8,8 @@
  * All Rights Reserved.
  ************************************************************************************/
 include_once 'modules/Settings/MailScanner/core/MailRecord.php';
-include_once dirname(__FILE__) . '/../helpers/Utils.php';
-require_once dirname(__FILE__).'/../../config.inc.php';
+include_once __DIR__ . '/../helpers/Utils.php';
+require_once __DIR__ .'/../../config.inc.php';
 
 class MailManager_Model_Message extends Vtiger_MailRecord {
 
@@ -65,7 +65,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 			}
 			if ($loaded) {
 				$this->setRead(true);
-				$this->setMsgNo(intval($msgno));
+				$this->setMsgNo((int)$msgno);
 			}
 		}
 	}
@@ -139,7 +139,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 		}
 
 		// SUBPART RECURSION
-		if ($p->parts) {
+		if (!empty($p->parts)) {
 			foreach ($p->parts as $partno0=>$p2)
 				$this->__getpart($imap,$messageid,$p2,$partno.'.'.($partno0+1));  // 1.2, 1.2.1, etc.
 		}
@@ -212,11 +212,11 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 			$this->_body    = decode_html($resultrow['mbody']);
 			$this->_charset = decode_html($resultrow['mcharset']);
 
-			$this->_isbodyhtml   = intval($resultrow['misbodyhtml'])? true : false;
+			$this->_isbodyhtml   = (int)$resultrow['misbodyhtml'] ? true : false;
 			$this->_plainmessage = $resultrow['mplainmessage'];
 			$this->_htmlmessage  = $resultrow['mhtmlmessage'];
 			$this->_uniqueid     = decode_html($resultrow['muniqueid']);
-			$this->_bodyparsed   = intval($resultrow['mbodyparsed'])? true : false;
+			$this->_bodyparsed   = (int)$resultrow['mbodyparsed'] ? true : false;
 
 			return true;
 		}
@@ -493,12 +493,10 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 			} else if (preg_match("/[a-zA-Z]{3}, ([0-9]{1,2} [a-zA-Z]{3} [0-9]{4})/", $date, $m)) {
 				$date = $m[1]; // Pick only date part
 			}
-			$userDate = str_replace('--','',getValidDisplayDate($date));
-			return $userDate;
+			return str_replace('--','',getValidDisplayDate($date));
 		} else {
 			$dateWithTime = new DateTimeField(date('Y-m-d H:i:s',$date));
-			$userDateTime = $dateWithTime->getDisplayDateTimeValue();
-			return $userDateTime;
+			return $dateWithTime->getDisplayDateTimeValue();
 		}
 	}
 

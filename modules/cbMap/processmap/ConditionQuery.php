@@ -127,8 +127,7 @@ class ConditionQuery extends processcbMap {
 				$queryGenerator->addCondition('activitytype','Task','n','AND');
 			}
 		}
-		$query = $queryGenerator->getQuery();
-		return $query;
+		return $queryGenerator->getQuery();
 	}
 
 }

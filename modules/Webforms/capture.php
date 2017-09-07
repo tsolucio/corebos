@@ -8,7 +8,7 @@
  * All Rights Reserved.
  * ********************************************************************************** */
 // Switch the working directory to base
-chdir(dirname(__FILE__) . '/../..');
+chdir(__DIR__ . '/../..');
 
 include_once 'vtlib/Vtiger/Module.php';
 include_once 'include/utils/VtlibUtils.php';

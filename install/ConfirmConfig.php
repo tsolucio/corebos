@@ -67,7 +67,7 @@ if($next == true) {
 }
 require_once('include/utils/utils.php');  // Required - Especially to create adb instance in global scope.
 
-$mode = $_REQUEST['mode'];
+$mode = (isset($_REQUEST['mode']) ? $_REQUEST['mode'] : '');
 if($mode == 'migration') {
 	$prev_file_name = 'SetMigrationConfig.php';
 	$file_name = 'MigrationProcess.php';

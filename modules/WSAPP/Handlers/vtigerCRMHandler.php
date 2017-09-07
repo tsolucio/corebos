@@ -383,11 +383,11 @@ class vtigerCRMHandler extends SyncHandler {
     }
 
     public function isClientUserSyncType() {
-        return ($this->clientSyncType == 'user') ? true : false;
+        return $this->clientSyncType == 'user';
     }
 
     public function isClientUserAndGroupSyncType() {
-        return ($this->clientSyncType == 'userandgroup') ? true : false;
+        return $this->clientSyncType == 'userandgroup';
     }
 
 }

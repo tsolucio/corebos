@@ -13,7 +13,7 @@
  * Contributor(s):JPL TSolucio, S.L. http://www.tsolucio.com
  ********************************************************************************/
 
-$path_to_corebos = realpath(dirname(__FILE__).'/..');
+$path_to_corebos = realpath(__DIR__.'/..');
 ini_set("include_path", $path_to_corebos);
 require_once('config.inc.php');
 require_once('include/utils/utils.php');

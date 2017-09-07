@@ -34,8 +34,8 @@ function vtws_listtypes($fieldTypeList, $user){
 		vtws_preserveGlobal('current_user',$user);
 		//get All the modules the current user is permitted to Access.
 		$allModuleNames = getPermittedModuleNames();
-		if (array_search('Calendar',$allModuleNames) !== false) {
-			array_push($allModuleNames,'Events');
+		if (in_array('Calendar',$allModuleNames)) {
+			$allModuleNames[] = 'Events';
 		}
 
 		if (!empty($fieldTypeList)) {
@@ -93,7 +93,7 @@ function vtws_listtypes($fieldTypeList, $user){
 				$handler = new $handlerClass($webserviceObject,$user,$db,$log);
 				$meta = $handler->getMeta();
 				if ($meta->hasAccess()===true) {
-					array_push($accessibleEntities,$entity);
+					$accessibleEntities[] = $entity;
 				}
 			}
 		}

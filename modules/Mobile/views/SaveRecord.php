@@ -8,7 +8,7 @@
  * All Rights Reserved.
  * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
-include_once dirname(__FILE__) . '/../api/ws/SaveRecord.php';
+include_once __DIR__ . '/../api/ws/SaveRecord.php';
 
 class crmtogo_UI_ProcessRecordCreation  extends crmtogo_WS_SaveRecord {
 	

@@ -229,7 +229,7 @@ else
 			// foreach (array_values($val) as $value)
 			foreach ($val as $key => $value) {
 				$value=br2nl_int($value);
-				array_push($new_arr, preg_replace("/\"/","\"\"",$value));
+				$new_arr[] = preg_replace("/\"/","\"\"",$value);
 			}
 			$line = implode("\",\"",$new_arr);
 			$line = "\"" .$line;

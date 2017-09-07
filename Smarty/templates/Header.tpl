@@ -299,43 +299,6 @@
 
 <!-- Unified Search module selection feature -->
 <div id="UnifiedSearch_moduleformwrapper" style="position:absolute;width:417px;z-index:100002;display:none;"></div>
-<script type='text/javascript'>
-{literal}
-	function QCreate(qcoptions){
-		var module = qcoptions.options[qcoptions.options.selectedIndex].value;
-		if(module != 'none'){
-			document.getElementById("status").style.display="inline";
-			if(module == 'Events'){
-				module = 'Calendar';
-				var urlstr = '&activity_mode=Events';
-			}else if(module == 'Calendar'){
-				module = 'Calendar';
-				var urlstr = '&activity_mode=Task';
-			}else{
-				var urlstr = '';
-			}
-			jQuery.ajax({
-				method:"POST",
-				url:'index.php?module='+module+'&action='+module+'Ajax&file=QuickCreate'+urlstr
-			}).done(function(response) {
-				document.getElementById("status").style.display="none";
-				document.getElementById("qcform").style.display="inline";
-				document.getElementById("qcform").innerHTML = response;
-				jQuery("#qcform").draggable();
-				// Evaluate all the script tags in the response text.
-				var scriptTags = document.getElementById("qcform").getElementsByTagName("script");
-				for(var i = 0; i< scriptTags.length; i++){
-					var scriptTag = scriptTags[i];
-					eval(scriptTag.innerHTML);
-				}
-				posLay(qcoptions, "qcform");
-			});
-		}else{
-			hide('qcform');
-		}
-	}
-{/literal}
-</script>
 
 <div id="status" style="position:absolute;display:none;left:850px;top:95px;height:27px;white-space:nowrap;"><img src="{'status.gif'|@vtiger_imageurl:$THEME}"></div>
 

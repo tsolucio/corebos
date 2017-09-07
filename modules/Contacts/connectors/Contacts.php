@@ -285,8 +285,7 @@ Class Google_Contacts_Connector extends WSAPP_TargetConnector {
             'Authorization' => $this->apiConnection->token['access_token']['token_type'] . ' ' .
                                $this->apiConnection->token['access_token']['access_token'],
         );
-        $response = $this->fireRequest(self::CONTACTS_URI, $headers, $query, 'GET');
-        return $response;
+        return $this->fireRequest(self::CONTACTS_URI, $headers, $query, 'GET');
     }
 
     function getContactListFeed($query) {
@@ -402,8 +401,7 @@ Class Google_Contacts_Connector extends WSAPP_TargetConnector {
             'If-Match' => '*',
            // 'Content-Type' => 'application/atom+xml',
         );
-        $response = $this->fireRequest(self::CONTACTS_BATCH_URI, $headers, $batchFeed);
-        return $response;
+        return $this->fireRequest(self::CONTACTS_BATCH_URI, $headers, $batchFeed);
     }
 
     public function mbEncode($str) {
@@ -753,7 +751,7 @@ Class Google_Contacts_Connector extends WSAPP_TargetConnector {
      * @return <boolean> true or false
      */
     public function moreRecordsExits() {
-        return ($this->totalRecords - $this->createdRecords > 0) ? true : false;
+        return $this->totalRecords - $this->createdRecords > 0;
     }
 
      /**

@@ -25,7 +25,7 @@ function getFieldByReportLabel($module, $label) {
 	if(empty($cachedModuleFields)) {
 		return null;
 	}
-	$label=decode_html($label);
+	$label = str_replace('&', 'and', decode_html($label));
 	foreach ($cachedModuleFields as $fieldInfo) {
 		$fieldLabel = str_replace(' ', '_', $fieldInfo['fieldlabel']);
 		$fieldLabel = str_replace('&', 'and', $fieldLabel);
@@ -64,7 +64,7 @@ function isPicklistUIType($uitype) {
  * @param String $fieldName
  * @return String
  */
-function getReportFieldValue ($report, $picklistArray, $dbField, $valueArray, $fieldName) {
+function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fieldName) {
 	global $current_user;
 
 	$db = PearDatabase::getInstance();
@@ -119,19 +119,34 @@ function getReportFieldValue ($report, $picklistArray, $dbField, $valueArray, $f
 		}
 	} elseif( $fieldType == 'date' && !empty($value)) {
 		if($module == 'Calendar' && $field->getFieldName() == 'due_date') {
-			$endTime = $valueArray['calendar_end_time'];
-			if(empty($endTime)) {
-				$recordId = $valueArray['calendar_id'];
-				$endTime = getSingleFieldValue('vtiger_activity', 'time_end', 'activityid', $recordId);
+			if (empty($valueArray['calendar_end_time'])) {
+				if (!empty($valueArray['calendar_id'])) {
+					$endTime = getSingleFieldValue('vtiger_activity', 'time_end', 'activityid', $valueArray['calendar_id']);
+				} else if (!empty($valueArray['lbl_action'])) {
+					$endTime = getSingleFieldValue('vtiger_activity', 'time_end', 'activityid', $valueArray['lbl_action']);
+				} else {
+					$endTime = '';
+				}
+			} else {
+				$endTime = $valueArray['calendar_end_time'];
 			}
 			$date = new DateTimeField($value.' '.$endTime);
 			$fieldvalue = $date->getDisplayDate();
+		} elseif ($module == 'Calendar' && $field->getFieldName() == 'date_start') {
+			$date = new DateTimeField($value);
+			$fieldvalue = $date->getDisplayDateTimeValue();
 		} else {
 			$fieldvalue = DateTimeField::convertToUserFormat($value);
 		}
 	} elseif( $fieldType == "datetime" && !empty($value)) {
 		$date = new DateTimeField($value);
 		$fieldvalue = $date->getDisplayDateTimeValue();
+		$user_format = ($current_user->hour_format=='24' ? '24' : '12');
+		if ($user_format != '24') {
+			$curr_time = DateTimeField::formatUserTimeString($fieldvalue, '12');
+			list($dt,$tm) = explode(' ',$fieldvalue);
+			$fieldvalue = $dt . ' ' . $curr_time;
+		}
 	} elseif( $fieldType == 'time' && !empty($value) && $field->getFieldName() != 'duration_hours' && $field->getFieldName() != 'totaltime') {
 		$date = new DateTimeField($value);
 		$fieldvalue = $date->getDisplayTime();
@@ -165,10 +180,10 @@ function getReportFieldValue ($report, $picklistArray, $dbField, $valueArray, $f
 			implode(', ', $translatedValueList);
 		}
 	} elseif( $fieldType == "multireference" && !empty($value)){
-                require_once 'modules/PickList/PickListUtils.php';
-                $content = getPicklistValuesSpecialUitypes($field->getUIType(),$field->getFieldName(),$value,'DetailView');
-                $fieldvalue = strip_tags(implode(', ',$content));
-        }
+		require_once 'modules/PickList/PickListUtils.php';
+		$content = getPicklistValuesSpecialUitypes($field->getUIType(),$field->getFieldName(),$value,'DetailView');
+		$fieldvalue = strip_tags(implode(', ',$content));
+	}
 	if($fieldvalue == "") {
 		return "-";
 	}

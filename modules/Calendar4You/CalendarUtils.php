@@ -162,7 +162,7 @@ function getActTypesForCalendar() {
 		$subrole = getRoleSubordinates($roleid);
 		if(count($subrole)> 0) {
 			$roleids = $subrole;
-			array_push($roleids, $roleid);
+			$roleids[] = $roleid;
 		} else {
 			$roleids = $roleid;
 		}
@@ -508,9 +508,9 @@ function getITSActFieldCombo($fieldname,$tablename,$from_module = '',$follow_act
 	else {
 		$roleid=$current_user->roleid;
 		$subrole = getRoleSubordinates($roleid);
-		if(count($subrole)> 0) {
+		if (count($subrole)> 0) {
 			$roleids = $subrole;
-			array_push($roleids, $roleid);
+			$roleids[] = $roleid;
 		} else {
 			$roleids = $roleid;
 		}

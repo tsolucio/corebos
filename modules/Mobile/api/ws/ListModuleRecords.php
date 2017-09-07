@@ -8,7 +8,7 @@
  * All Rights Reserved.
  * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
-include_once dirname(__FILE__) . '/models/SearchFilter.php';
+include_once __DIR__ . '/models/SearchFilter.php';
 
 class crmtogo_WS_ListModuleRecords extends crmtogo_WS_Controller {
 

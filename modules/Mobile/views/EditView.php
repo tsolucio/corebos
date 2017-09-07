@@ -8,9 +8,9 @@
  * All Rights Reserved.
  * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
-include_once dirname(__FILE__) . '/../api/ws/FetchRecordDetails.php';
-include_once dirname(__FILE__) . '/../api/ws/Utils.php';
-include_once dirname(__FILE__) . '/../api/ws/Describe.php';
+include_once __DIR__ . '/../api/ws/FetchRecordDetails.php';
+include_once __DIR__ . '/../api/ws/Utils.php';
+include_once __DIR__ . '/../api/ws/Describe.php';
 
 class crmtogo_UI_EditView extends crmtogo_WS_FetchRecordDetails {
 

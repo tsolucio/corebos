@@ -71,11 +71,11 @@ class Vtiger_LanguageImport extends Vtiger_LanguageExport {
 		$filelist = $unzip->getList();
 
 		foreach($filelist as $filename=>$fileinfo) {
-			if(!$unzip->isdir($filename)) {
-				
-				if(strpos($filename, '/') === false) continue;
+			if (!$unzip->isdir($filename)) {
 
-				$targetdir  = substr($filename, 0, strripos($filename,'/'));
+				if (strpos($filename, '/') === false) continue;
+
+				$targetdir  = substr($filename, 0, strrpos($filename,'/'));
 				$targetfile = basename($filename);
 
 				$prefixparts = explode('_', $prefix);

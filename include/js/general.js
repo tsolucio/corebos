@@ -339,43 +339,52 @@ function splitDateVal(dateval) {
 	return dateelements;
 }
 
-function compareDates(date1,fldLabel1,date2,fldLabel2,type) {
+function compareDates(date1,fldLabel1,date2,fldLabel2,type,message) {
+	if (message == undefined) message = true;
 	var ret=true;
 	switch (type) {
 		case 'L':
 			if (date1>=date2) {//DATE1 VALUE LESS THAN DATE2
-			alert(fldLabel1+ alert_arr.SHOULDBE_LESS +fldLabel2);
-			ret=false;
-		}
+				if (message) {
+					alert(fldLabel1+ alert_arr.SHOULDBE_LESS +fldLabel2);
+				}
+				ret=false;
+			}
 		break;
 		case 'LE':
 			if (date1>date2) {//DATE1 VALUE LESS THAN OR EQUAL TO DATE2
-			alert(fldLabel1+alert_arr.SHOULDBE_LESS_EQUAL+fldLabel2);
-			ret=false;
-		}
+				if (message) {
+					alert(fldLabel1+alert_arr.SHOULDBE_LESS_EQUAL+fldLabel2);
+				}
+				ret=false;
+			}
 		break;
 		case 'E':
-			if (date1!=date2) {//DATE1 VALUE EQUAL TO DATE
-			alert(fldLabel1+alert_arr.SHOULDBE_EQUAL+fldLabel2);
-			ret=false;
-		}
+			if (date1-date2) {//DATE1 VALUE EQUAL TO DATE
+				if (message) {
+					alert(fldLabel1+alert_arr.SHOULDBE_EQUAL+fldLabel2);
+				}
+				ret=false;
+			}
 		break;
 		case 'G':
 			if (date1<=date2) {//DATE1 VALUE GREATER THAN DATE2
-			alert(fldLabel1+alert_arr.SHOULDBE_GREATER+fldLabel2);
-			ret=false;
-		}
+				if (message) {
+					alert(fldLabel1+alert_arr.SHOULDBE_GREATER+fldLabel2);
+				}
+				ret=false;
+			}
 		break;
 		case 'GE':
 			if (date1<date2) {//DATE1 VALUE GREATER THAN OR EQUAL TO DATE2
-			alert(fldLabel1+alert_arr.SHOULDBE_GREATER_EQUAL+fldLabel2);
-			ret=false;
-		}
+				if (message) {
+					alert(fldLabel1+alert_arr.SHOULDBE_GREATER_EQUAL+fldLabel2);
+				}
+				ret=false;
+			}
 		break;
 	}
-
-	if (ret==false) return false;
-	else return true;
+	return ret;
 }
 
 function dateTimeValidate(dateFldName,timeFldName,fldLabel,type) {
@@ -515,6 +524,73 @@ function dateTimeComparison(dateFldName1,timeFldName1,fldLabel1,dateFldName2,tim
 		if (!compareDates(date1,fldLabel1,date2,fldLabel2,type)) {
 			try {
 				getObj(dateFldName1).focus();
+			} catch(error) { }
+			return false;
+		} else return true;
+	} else return true;
+}
+
+function dateTimeFieldComparison(dateFld1,fldLabel1,dateFld2,fldLabel2,type,message) {
+	var dateval1=getObj(dateFld1).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
+	var dateval2=getObj(dateFld2).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
+
+	let dt1array = dateval1.split(" ");
+	let dt2array = dateval2.split(" ");
+	var dateelements1=splitDateVal(dt1array[0]);
+	var dateelements2=splitDateVal(dt2array[0]);
+
+	dd1=dateelements1[0];
+	mm1=dateelements1[1];
+	yyyy1=dateelements1[2];
+
+	dd2=dateelements2[0];
+	mm2=dateelements2[1];
+	yyyy2=dateelements2[2];
+
+	var timeval1=dt1array[1];
+	var timeval2=dt2array[1];
+
+	var hh1=timeval1.substring(0,timeval1.indexOf(":"));
+	var tf1 = document.getElementById('inputtimefmt_' + dateFld1);
+	if (tf1 != undefined) {
+		if (tf1.value == 'PM') {
+			if (hh1 != '12') {
+				hh1 = +hh1 + 12;
+			}
+		}
+	}
+	var min1=timeval1.substring(timeval1.indexOf(":")+1,timeval1.length);
+
+	var hh2=timeval2.substring(0,timeval2.indexOf(":"));
+	var tf2 = document.getElementById('inputtimefmt_' + dateFld2);
+	if (tf2 != undefined) {
+		if (tf2.value == 'PM') {
+			if (hh2 != '12') {
+				hh2 = +hh2 + 12;
+			}
+		}
+	}
+	var min2=timeval2.substring(timeval2.indexOf(":")+1,timeval2.length);
+
+	var date1=new Date();
+	var date2=new Date();
+
+	date1.setYear(yyyy1);
+	date1.setMonth(mm1-1);
+	date1.setDate(dd1);
+	date1.setHours(hh1);
+	date1.setMinutes(min1);
+
+	date2.setYear(yyyy2);
+	date2.setMonth(mm2-1);
+	date2.setDate(dd2);
+	date2.setHours(hh2);
+	date2.setMinutes(min2);
+
+	if (type!="OTH") {
+		if (!compareDates(date1,fldLabel1,date2,fldLabel2,type,message)) {
+			try {
+				getObj(dateFld1).focus();
 			} catch(error) { }
 			return false;
 		} else return true;
@@ -1038,9 +1114,10 @@ function doServerValidation(edit_type,formName,callback) {
 	} else {
 		var action = 'Save';
 	}
+	let SVModule = document.forms[formName].module.value;
 	//Testing if a Validation file exists
 	jQuery.ajax({
-		url: "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationExists&valmodule="+gVTModule,
+		url: "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationExists&valmodule="+SVModule,
 		type:'get'
 	}).fail(function (jqXHR, textStatus) { //Validation file does not exist
 		if (typeof callback == 'function') {
@@ -1054,9 +1131,11 @@ function doServerValidation(edit_type,formName,callback) {
 			var myFields = document.forms[formName].elements;
 			var sentForm = new Object();
 			for (f=0; f<myFields.length; f++){
-				if(myFields[f].type=='checkbox')
+				if (myFields[f].type=='checkbox')
 					sentForm[myFields[f].name] = myFields[f].checked;
-				else
+				else if (myFields[f].type=='radio' && myFields[f].checked)
+					sentForm[myFields[f].name] = myFields[f].value;
+				else if (myFields[f].type!='radio')
 					sentForm[myFields[f].name] = myFields[f].value;
 			}
 			//JSONize form data
@@ -1064,7 +1143,7 @@ function doServerValidation(edit_type,formName,callback) {
 			jQuery.ajax({
 				type : 'post',
 				data : {structure: sentForm},
-				url : "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule="+gVTModule
+				url : "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule="+SVModule
 			}).done(function(msg) {  //Validation file answers
 					if (msg.search("%%%CONFIRM%%%") > -1) { //Allow to use confirm alert
 						//message to display
@@ -1122,16 +1201,17 @@ function doformValidation(edit_type) {
 		}
 		else
 		{
-			if(getObj('portal') != null && getObj('portal').checked && getObj('portal_mass_edit_check').checked && (getObj('email') == null || trim(getObj('email').value) == '' || getObj('email_mass_edit_check').checked==false))
-			{
-				alert(alert_arr.PORTAL_PROVIDE_EMAILID);
-				return false;
-			}
-			if((getObj('email') != null && trim(getObj('email').value) == '' && getObj('email_mass_edit_check').checked) && !(getObj('portal').checked==false && getObj('portal_mass_edit_check').checked))
-			{
-				alert(alert_arr.EMAIL_CHECK_MSG);
-				return false;
-			}
+// This checks mass edit mode, but it doesn't make much sense to obligate this in mass edit mode
+//			if(getObj('portal') != null && getObj('portal').checked && getObj('portal_mass_edit_check').checked && (getObj('email') == null || trim(getObj('email').value) == '' || getObj('email_mass_edit_check').checked==false))
+//			{
+//				alert(alert_arr.PORTAL_PROVIDE_EMAILID);
+//				return false;
+//			}
+//			if((getObj('email') != null && trim(getObj('email').value) == '' && getObj('email_mass_edit_check').checked) && !(getObj('portal').checked==false && getObj('portal_mass_edit_check').checked))
+//			{
+//				alert(alert_arr.EMAIL_CHECK_MSG);
+//				return false;
+//			}
 		}
 	}
 	if(gVTModule == 'SalesOrder') {
@@ -1346,60 +1426,12 @@ function doformValidation(edit_type) {
 		}
 	}
 
-	//added to check Start Date & Time,if Activity Status is Planned.//start
-	for (var j=0; j<fieldname.length; j++)
-	{
-		if(getObj(fieldname[j]) != null)
-		{
-			if(fieldname[j] == "date_start" || fieldname[j] == "task_date_start" )
-			{
-				var datelabel = fieldlabel[j];
-				var datefield = fieldname[j];
-				var startdatevalue = getObj(datefield).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
-			}
-			if(fieldname[j] == "time_start" || fieldname[j] == "task_time_start")
-			{
-				var timelabel = fieldlabel[j];
-				var timefield = fieldname[j];
-				var timeval=getObj(timefield).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
-			}
-			if(fieldname[j] == "eventstatus" || fieldname[j] == "taskstatus")
-			{
-				var statusvalue = getObj(fieldname[j]).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
-				var statuslabel = fieldlabel[j++];
-			}
-		}
-	}
-	if(statusvalue == "Planned" && startdatevalue != undefined)
-	{
-		var dateelements=splitDateVal(startdatevalue);
-		var hourval=parseInt(timeval.substring(0,timeval.indexOf(":")));
-		var minval=parseInt(timeval.substring(timeval.indexOf(":")+1,timeval.length));
-
-		dd=dateelements[0];
-		mm=dateelements[1];
-		yyyy=dateelements[2];
-
-		var chkdate=new Date();
-		chkdate.setYear(yyyy);
-		chkdate.setMonth(mm-1);
-		chkdate.setDate(dd);
-		chkdate.setMinutes(minval);
-		chkdate.setHours(hourval);
-		if(!comparestartdate(chkdate)) return false;
-	}
-
 	return true;
 }
 
 function clearId(fldName) {
 	var currObj=getObj(fldName);
 	currObj.value="";
-}
-
-function comparestartdate(chkdate) {
-	var currdate = new Date();
-	return compareDates(chkdate,alert_arr.START_DATE_TIME,currdate,alert_arr.DATE_SHOULDNOT_PAST,"GE");
 }
 
 function openPopUp(winInst,currObj,baseURL,winName,width,height,features) {
@@ -3874,8 +3906,7 @@ function ToolTipManager(){
 		var div = document.getElementById(divName);
 		if(typeof div != 'undefined' && div != null ){
 			if(typeof nodelay != 'undefined' && nodelay != null){
-				if (secondshowTimer != 0) clearTimeout(secondshowTimer);
-				secondshowTimer = setTimeout(function(){
+				setTimeout(function(){
 					div.style.display = "none";
 				}, secondshowTimeout);
 			}else{
@@ -3883,7 +3914,7 @@ function ToolTipManager(){
 					if(!state){
 						div.style.display = "none";
 					}
-				}, 700);
+				}, secondshowTimeout);
 			}
 		}
 	}
@@ -4622,7 +4653,7 @@ function QCformValidate(){
 				case "V" : break;
 				case "C" : break;
 				case "DT":
-					if (window.document.QcEditView[curr_fieldname] != null && window.document.QcEditView[curr_fieldname].value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0) {
+					if (window.document.QcEditView[curr_fieldname] != null && window.document.QcEditView[curr_fieldname].value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0 && type[2] != undefined) {
 						if (type[1]=="M" && !qcemptyCheck(type[2],qcfieldlabel[i],getObj(type[2]).type))
 							return false;
 						if(typeof(type[3])=="undefined")
@@ -4638,7 +4669,7 @@ function QCformValidate(){
 					}
 				break;
 				case "D":
-					if (window.document.QcEditView[curr_fieldname] != null && window.document.QcEditView[curr_fieldname].value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0) {
+					if (window.document.QcEditView[curr_fieldname] != null && window.document.QcEditView[curr_fieldname].value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0 && type[2] != undefined) {
 						if(typeof(type[2])=="undefined")
 							var currdatechk="OTH";
 						else
@@ -4710,42 +4741,6 @@ function QCformValidate(){
 				break;
 			}
 		}
-	}
-	//added to check Start Date & Time,if Activity Status is Planned.//start
-	for (var j=0; j<qcfieldname.length; j++) {
-		curr_fieldname = qcfieldname[j];
-		if(window.document.QcEditView[curr_fieldname] != null) {
-			if(qcfieldname[j] == "date_start") {
-				var datelabel = qcfieldlabel[j];
-				var datefield = qcfieldname[j];
-				var startdatevalue = window.document.QcEditView[datefield].value.replace(/^\s+/g, '').replace(/\s+$/g, '');
-			}
-			if(qcfieldname[j] == "time_start") {
-				var timelabel = qcfieldlabel[j];
-				var timefield = qcfieldname[j];
-				var timeval=window.document.QcEditView[timefield].value.replace(/^\s+/g, '').replace(/\s+$/g, '');
-			}
-			if(qcfieldname[j] == "eventstatus" || qcfieldname[j] == "taskstatus") {
-				var statusvalue = window.document.QcEditView[curr_fieldname].options[window.document.QcEditView[curr_fieldname].selectedIndex].value.replace(/^\s+/g, '').replace(/\s+$/g, '');
-				var statuslabel = qcfieldlabel[j++];
-			}
-		}
-	}
-	if(statusvalue == "Planned") {
-		var dateelements=splitDateVal(startdatevalue);
-		var hourval=parseInt(timeval.substring(0,timeval.indexOf(":")));
-		var minval=parseInt(timeval.substring(timeval.indexOf(":")+1,timeval.length));
-		var dd=dateelements[0];
-		var mm=dateelements[1];
-		var yyyy=dateelements[2];
-
-		var chkdate=new Date();
-		chkdate.setYear(yyyy);
-		chkdate.setMonth(mm-1);
-		chkdate.setDate(dd);
-		chkdate.setMinutes(minval);
-		chkdate.setHours(hourval);
-		if(!comparestartdate(chkdate)) return false;
 	}
 	return true;
 }

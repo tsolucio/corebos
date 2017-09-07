@@ -98,6 +98,8 @@ $mod_strings = Array(
 	'Low' => 'Baixa',
 	'Private' => 'Privado',
 	'Public' => 'Público',
-	);
+	'DATE_SHOULDNOT_PAST' => 'Data e hora atuais para Atividades com status Planejado',
+	'TIME_SHOULDNOT_PAST' => 'Data atual para Atividades com status Planejado',
+);
 
 ?>

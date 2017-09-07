@@ -24,7 +24,7 @@ include_once('include/utils/utils.php');
 global $log, $app_strings, $mod_strings, $current_language, $currentModule, $theme;
 
 $mapInstance = CRMEntity::getInstance('cbMap');
-$module1 =  intval($_REQUEST['pmodule']);
+$module1 = (int)$_REQUEST['pmodule'];
 $module2= getTabName($module1);
 $focus = CRMEntity::getInstance($module2);
 $blocks=$mapInstance->getBlocksPortal1($module2, 'edit_view', 'edit', $focus->column_fields,'','5');

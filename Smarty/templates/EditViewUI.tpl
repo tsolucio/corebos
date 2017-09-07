@@ -630,7 +630,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				{/foreach}
 
 				<input name="{$fldname}" tabindex="{$vt_tab}" id="jscal_field_{$fldname}" type="text" style="border:1px solid #bababa;" size="11" maxlength="10" value="{$date_val}">
-				<img src="{'btnL3Calendar.gif'|@vtiger_imageurl:$THEME}" id="jscal_trigger_{$fldname}">
+				<img src="{'btnL3Calendar.gif'|@vtiger_imageurl:$THEME}" id="jscal_trigger_{$fldname}" style="vertical-align:middle">
 
 				{if $uitype eq 6}
 					<input name="time_start" tabindex="{$vt_tab}" style="border:1px solid #bababa;" size="5" maxlength="5" type="text" value="{$time_val}">
@@ -665,23 +665,32 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
 			</td>
 			<td width="30%" align=left class="dvtCellInfo">
-				{foreach key=date_value item=time_value from=$fldvalue}
+				{foreach key=date_value item=date12_value from=$fldvalue}
 					{assign var=date_val value="$date_value"}
+					{assign var=date12_val value="$date12_value"}
 				{/foreach}
-				<input name="{$fldname}" tabindex="{$vt_tab}" id="jscal_field_{$fldname}" type="text" style="border:1px solid #bababa;" size="16" maxlength="16" value="{$date_val}">
-				<img src="{'btnL3Calendar.gif'|@vtiger_imageurl:$THEME}" id="jscal_trigger_{$fldname}">
+				{foreach key=user_format item=date_format from=$thirdvalue}
+					{assign var=userFormat value="$user_format"}
+					{assign var=fieldFormat value="$date_format"}
+				{/foreach}
+				<input name="{$fldname}" tabindex="{$vt_tab}" id="jscal_field_{$fldname}" type="text" style="border:1px solid #bababa;" size="16" maxlength="16" value="{$date12_val}">
+				<input name="timefmt_{$fldname}" id="inputtimefmt_{$fldname}" type="hidden" value="{$fieldFormat}">
+				<img src="{'btnL3Calendar.gif'|@vtiger_imageurl:$THEME}" id="jscal_trigger_{$fldname}" style="vertical-align:middle">
 
 				{foreach key=date_format item=date_str from=$secondvalue}
 					{assign var=dateFormat value="$date_format"}
 					{assign var=dateStr value="$date_str"}
 				{/foreach}
 
-				<br><font size=1><em old="(yyyy-mm-dd)">({$dateStr})</em></font>
+				<br><font size=1><em old="(yyyy-mm-dd)">({$dateStr})&nbsp;<span id="timefmt_{$fldname}">{if $userFormat neq "24"}{$fieldFormat}{/if}</span></em></font>
 
 				<script type="text/javascript" id='massedit_calendar_{$fldname}'>
 					Calendar.setup ({ldelim}
-						inputField : "jscal_field_{$fldname}", ifFormat : "{$dateFormat}", showsTime : true, button : "jscal_trigger_{$fldname}", singleClick : true, step : 1
-					{rdelim})
+						inputField : "jscal_field_{$fldname}", ifFormat : "{$dateFormat}", inputTimeFormat : "{$fieldFormat}",
+						{if $userFormat neq "24"}displayArea : "timefmt_{$fldname}", daFormat : "%p",{/if}
+						showsTime : true, timeFormat : "{$userFormat}",
+						button : "jscal_trigger_{$fldname}", singleClick : true, step : 1
+					{rdelim});
 				</script>
 			</td>
 

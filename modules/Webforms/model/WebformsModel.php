@@ -156,8 +156,7 @@ class Webforms_Model {
 
 	function generatePublicId($name) {
 		global $adb, $log;
-		$uid = md5(microtime(true) + $name);
-		return $uid;
+		return md5(microtime(true) + $name);
 	}
 
 	function retrieveFields() {
@@ -263,10 +262,7 @@ class Webforms_Model {
 	}
 
 	static function isCustomField($fieldname) {
-		if (substr($fieldname, 0, 3) === "cf_") {
-			return true;
-		}
-		return false;
+        return substr($fieldname, 0, 3) === "cf_";
 	}
 
 	static function isRequired($webformid, $fieldname) {
@@ -305,10 +301,7 @@ class Webforms_Model {
 		global $adb;
 		$checkSQL = "SELECT 1 FROM vtiger_webforms WHERE name=?";
 		$check = $adb->pquery($checkSQL, array($name));
-		if ($adb->num_rows($check) > 0) {
-			return true;
-		}
-		return false;
+        return $adb->num_rows($check) > 0;
 	}
 
 	static function isActive($field, $mod) {
@@ -317,10 +310,7 @@ class Webforms_Model {
 		$query = 'SELECT 1 FROM vtiger_field WHERE fieldname = ? AND tabid = ? AND presence IN (0,2)';
 		$res = $adb->pquery($query, array($field, $tabid));
 		$rows = $adb->num_rows($res);
-		if ($rows > 0) {
-			return true;
-		}else
-			return false;
+		return $rows > 0;
 	}
 }
 

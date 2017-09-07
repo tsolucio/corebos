@@ -36,7 +36,7 @@ if($numOfRows > 0) {
 	else
 		$rep_modules = array();
 
-	array_push($rep_modules,$primarymodule);
+	$rep_modules[] = $primarymodule;
 	$modules_permitted = true;
 	foreach($rep_modules as $mod) {
 		if(isPermitted($mod,'index')!= "yes" || vtlib_isModuleActive($mod)==false) {

@@ -31,13 +31,13 @@ class MailManager_FolderController extends MailManager_Controller {
 			$folder = $connector->folderInstance($foldername);
 			
 			if (empty($q)) {
-				$connector->folderMails($folder, intval($request->get('_page', 0)), $list_max_entries_per_page);
+				$connector->folderMails($folder, (int)$request->get('_page', 0), $list_max_entries_per_page);
 			} else {
 				if(empty($type)) {
 					$type='ALL';
 				}
 				$q = ''.$type.' "'.vtlib_purify($q).'"';
-				$connector->searchMails($q, $folder, intval($request->get('_page', 0)), $list_max_entries_per_page);
+				$connector->searchMails($q, $folder, (int)$request->get('_page', 0), $list_max_entries_per_page);
 			}
 			
 			$folderList = $connector->getFolderList();
@@ -54,7 +54,7 @@ class MailManager_FolderController extends MailManager_Controller {
 		} elseif('drafts' == $request->getOperationArg()) {
 			$q = $request->get('q');
 			$type = $request->get('type');
-			$page = intval($request->get('_page', 0));
+			$page = (int)$request->get('_page', 0);
 
 			$connector = $this->getConnector('__vt_drafts');
 			$folder = $connector->folderInstance();
@@ -79,8 +79,7 @@ class MailManager_FolderController extends MailManager_Controller {
      * @return string
      */
 	static function getSearchOptions(){
-		$options = array('SUBJECT','TO','BODY','BCC','CC','FROM');
-		return $options;
+		return array('SUBJECT','TO','BODY','BCC','CC','FROM');
 	}
 }
 ?>

@@ -13,7 +13,7 @@ include_once 'include/Webservices/Create.php';
 include_once 'include/Webservices/Update.php';
 include_once 'modules/MailManager/config.inc.php';
 include_once 'modules/MailManager/src/controllers/UploadController.php';
-include_once dirname(__FILE__).'/DraftFolder.php';
+include_once __DIR__ .'/DraftFolder.php';
 
 class MailManager_Model_DraftEmail {
 
@@ -34,8 +34,7 @@ class MailManager_Model_DraftEmail {
 			$where = $type ." LIKE '%". $q ."%'" ;
 		}
 		$where = " AND ".$where;
-		$draftMails = $this->getDrafts($page, $limit, $folder, $where);
-		return $draftMails;
+		return $this->getDrafts($page, $limit, $folder, $where);
 	}
 
 	function constructAllClause($query) {
@@ -54,7 +53,7 @@ class MailManager_Model_DraftEmail {
 		global $current_user;
 		$handler = vtws_getModuleHandlerFromName('Emails', $current_user);
 		$meta = $handler->getMeta();
-		if(!$meta->hasReadAccess())  {
+		if (!$meta->hasReadAccess()) {
 			return false;
 		}
 

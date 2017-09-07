@@ -85,7 +85,7 @@ function color_generator($count = 1, $start = '33CCFF', $step = '221133')
 	// buils $count colours adding $step to $start
 	$result = array();
 	for($i=1; $i<=$count; $i++){
-		array_push($result,"#".dechex($colors[0]).dechex($colors[1]).dechex($colors[2]));
+		$result[] = '#'.dechex($colors[0]).dechex($colors[1]).dechex($colors[2]);
 		for($j=0; $j<3; $j++) {
 			$colors[$j] += $steps[$j];
 			if($colors[$j] > 0xFF) $colors[$j] -= 0xFF;

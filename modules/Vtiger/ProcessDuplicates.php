@@ -97,7 +97,7 @@ if ($mode == 'mergesave') {
 				$count++;
 			}
 		}
-		array_push($imported_records,$adb->query_result($result,$i,'bean_id'));
+		$imported_records[] = $adb->query_result($result,$i,'bean_id');
 	}
 
 	$no_existing = ($record_count == $count ? 1 : 0);

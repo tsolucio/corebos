@@ -152,19 +152,17 @@ class CurrencyField {
 	 */
 	public function getDisplayValue($user=null, $skipConversion=false, $noInit=false) {
 		global $current_user;
-		if(empty($user)) {
+		if (empty($user)) {
 			$user = $current_user;
 		}
 		if (!$noInit) {
 			$this->initialize($user);
 		}
 		$value = $this->value;
-		if($skipConversion == false) {
+		if ($skipConversion == false) {
 			$value = self::convertFromDollar($value,$this->conversionRate);
 		}
-
-		$number = $this->_formatCurrencyValue($value);
-		return $number;
+		return $this->_formatCurrencyValue($value);
 	}
 
 	/**
@@ -206,7 +204,7 @@ class CurrencyField {
 	 * @return Formatted Currency
 	 */
 	private function _formatCurrencyValue($value) {
-		if (is_string($value)) $value = floatval($value);
+		if (is_string($value)) $value = (float)$value;
 		if ($value == 0) return '0';
 		$currencyPattern = $this->currencyFormat;
 		$currencySeparator = $this->currencySeparator;

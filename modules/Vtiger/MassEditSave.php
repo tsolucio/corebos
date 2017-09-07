@@ -43,7 +43,9 @@ if (isset($idlist)) {
 							$value = vtlib_purify($_REQUEST['assigned_group_id']);
 						}
 					} else {
-						if(is_array($_REQUEST[$fieldname]))
+						if (!isset($_REQUEST[$fieldname])) {
+							$value = '';
+						} elseif (is_array($_REQUEST[$fieldname]))
 							$value = vtlib_purify($_REQUEST[$fieldname]);
 						else
 							$value = trim(vtlib_purify($_REQUEST[$fieldname]));

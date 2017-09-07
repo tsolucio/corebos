@@ -12,7 +12,7 @@ include_once 'include/Webservices/Query.php';
 require_once 'include/utils/utils.php';
 include_once 'modules/Settings/MailScanner/core/MailScannerAction.php';
 include_once 'modules/Settings/MailScanner/core/MailAttachmentMIME.php';
-require_once dirname(__FILE__) . '/RelationControllerAction.php';
+require_once __DIR__ . '/RelationControllerAction.php';
 
 /**
  * Class used to manage the emails relationship with vtiger records

@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-include_once dirname(__FILE__) . '/MainUIController.php';
+include_once __DIR__ . '/MainUIController.php';
 
 /**
  * Class used to control the Mail Manager Settings

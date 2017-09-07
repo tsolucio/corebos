@@ -112,8 +112,6 @@ class OutlookSyncServer extends SyncServer{
         $response['updated'] = array();
         $response['deleted'] = array();
 
-        $log->fatal($result['updated']);
-
         $nextSyncDeleteRecords = $this->destHandler->getAssignToChangedRecords();
         foreach ($result['created'] as $clientRecordId => $record) {
             parent::idmap_put($appid, $record['id'], $clientRecordId, $clientModifiedTimeList[$clientRecordId], $record['modifiedtime'], $serverAppId, $this->create);
@@ -151,7 +149,7 @@ class OutlookSyncServer extends SyncServer{
             $queueRecordIds[] = $record['id'];
             $queueRecordDetails[$record['id']] = parent::convertToQueueRecordFormat($record, $this->delete);
         }
-        if (count($queueRecordIds > 0)) {
+        if (count($queueRecordIds) > 0) {
             $syncServerDetails = parent::idmap_get_clientmap($appid, $queueRecordIds);
             foreach ($queueRecordIds as $serverId) {
                 $syncServerId = $syncServerDetails[$serverId]['id'];

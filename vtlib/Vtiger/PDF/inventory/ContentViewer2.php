@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-include_once dirname(__FILE__) . '/ContentViewer.php';
+include_once __DIR__ . '/ContentViewer.php';
 
 class Vtiger_PDF_InventoryTaxGroupContentViewer extends Vtiger_PDF_InventoryContentViewer {
 

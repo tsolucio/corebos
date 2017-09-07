@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-include_once dirname(__FILE__) . '/../../api/ws/models/SearchFilter.php';
+include_once __DIR__ . '/../../api/ws/models/SearchFilter.php';
 
 class crmtogo_UI_SearchFilterModel extends crmtogo_WS_SearchFilterModel {
 

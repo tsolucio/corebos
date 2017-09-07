@@ -34,7 +34,7 @@ class ChartUtils {
 		} else {
 			$reportModules = array();
 		}
-		array_push($reportModules,$report->primarymodule);
+		$reportModules[] = $report->primarymodule;
 
 		$restrictedModules = false;
 		foreach($reportModules as $mod) {

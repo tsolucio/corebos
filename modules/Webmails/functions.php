@@ -692,7 +692,7 @@ function load_list ($path)
      {
        $buffer = trim(fgets($fp, 4096));
        if ($buffer != "")
-	 array_push ($contacts, $buffer);
+	$contacts[] = $buffer;
      }
 
    fclose($fp);
@@ -802,8 +802,7 @@ function loadSession(&$ev, &$key)
     return '';
   }
 
-  $line = trim(fgets($file, 1024));
-  return $line;
+  return trim(fgets($file, 1024));
 }
 
 // Convert a language string to HTML
