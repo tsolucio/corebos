@@ -293,9 +293,9 @@ function getSearchModulesComboList($search_module){
 }
 
 /**
- * To get the modules allowed for global search this function returns all the 
- * modules which supports global search as an array in the following structure 
- * array($module_name1=>$object_name1,$module_name2=>$object_name2,$module_name3=>$object_name3,$module_name4=>$object_name4,-----);
+ * To get the modules allowed for global search this function returns all the
+ * modules which supports global search as an array in the following structure
+ * array($module_name1=>$object_name1,$module_name2=>$object_name2,$module_name3=>$object_name3,$module_name4=>$object_name4,-----)
  */
 function getSearchModules($filter = array()){
 	global $adb;
@@ -313,10 +313,11 @@ function getSearchModules($filter = array()){
 	$sql = 'select distinct vtiger_field.tabid,name from vtiger_field inner join vtiger_tab on vtiger_tab.tabid=vtiger_field.tabid
 		where vtiger_tab.tabid not in ('.generateQuestionMarks($doNotSearchTheseTabids).') and vtiger_tab.presence != 1 and vtiger_field.presence in (0,2)';
 	$result = $adb->pquery($sql, array($doNotSearchTheseTabids));
-	while($module_result = $adb->fetch_array($result)){
+	$return_arr = array();
+	while ($module_result = $adb->fetch_array($result)) {
 		$modulename = $module_result['name'];
 		// Do we need to filter the module selection?
-		if(!empty($filter) && is_array($filter) && !in_array($modulename, $filter)) {
+		if (!empty($filter) && is_array($filter) && !in_array($modulename, $filter)) {
 			continue;
 		}
 		$return_arr[$modulename] = $modulename;

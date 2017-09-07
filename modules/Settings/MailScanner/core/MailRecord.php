@@ -167,7 +167,7 @@ class Vtiger_MailRecord {
 					$decodevalue = quoted_printable_decode($data);
 				}
 				$value = self::__convert_encoding($decodevalue, $targetEncoding, $charset);
-				array_push($words, $value);
+				$words[] = $value;
 			}
 		}
 		if(!empty($words)) {

@@ -82,6 +82,7 @@ function mandatoryCheck()
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 	<tbody>
 		<tr>
+
 			<td>
 				<div class="slds-truncate">
 
@@ -361,6 +362,7 @@ function mandatoryCheck()
 			{if isset($STDFILTER_JAVASCRIPT)}{$STDFILTER_JAVASCRIPT}{/if}
 			{if isset($JAVASCRIPT)}{$JAVASCRIPT}{/if}
 			<!-- to show the mandatory fields while creating new customview -->
+
 <script type="text/javascript">
 var k;
 var colOpts;

@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *********************************************************************************** */
-include_once dirname(__FILE__) . '/ModTracker_Detail.php';
+include_once __DIR__ . '/ModTracker_Detail.php';
 
 class ModTracker_Basic {
 

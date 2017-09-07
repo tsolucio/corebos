@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-include_once dirname(__FILE__) . '/Field.php';
+include_once __DIR__ . '/Field.php';
 
 class crmtogo_UI_BlockModel {
 	private $_label;

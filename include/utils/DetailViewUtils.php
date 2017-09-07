@@ -967,13 +967,25 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 	} elseif ($uitype == 50) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$dateValue = $col_fields[$fieldname];
+		$user_format = ($current_user->hour_format=='24' ? '24' : '12');
 		if (empty($dateValue) || $dateValue == '0000-00-00 00:00') {
 			$displayValue = '';
+			$time_format = $user_format;
 		} else {
 			$date = new DateTimeField($col_fields[$fieldname]);
 			$displayValue = substr($date->getDisplayDateTimeValue(),0,16);
+			if ($user_format != '24') {
+				$curr_time = DateTimeField::formatUserTimeString($displayValue, '12');
+				$time_format = substr($curr_time, -2);
+				$curr_time = substr($curr_time, 0, 5);
+				list($dt,$tm) = explode(' ',$displayValue);
+				$displayValue = $dt . ' ' . $curr_time;
+			} else {
+				$time_format = '24';
+			}
 		}
 		$label_fld[] = $displayValue;
+		$label_fld['options'] = array($user_format => $time_format);
 	}
 	elseif ($uitype == 9 || $uitype == 7) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);

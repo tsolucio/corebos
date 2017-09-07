@@ -79,7 +79,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	{
 		$log->info("uitype is ".$uitype);
 		if($value == '') {
-			//modified to fix the issue in trac(http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/1469)
 			if ($fieldname != 'birthday' && $generatedtype != 2 && getTabid($module_name) != 14)
 				$disp_value = getNewDisplayDate();
 
@@ -149,24 +148,42 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		}
 	}
 	elseif($uitype == 50) {
-		if(empty($value)) {
+		$user_format = ($current_user->hour_format=='24' ? '24' : '12');
+		if (empty($value)) {
 			if ($generatedtype != 2) {
 				$date = new DateTimeField();
 				$disp_value = substr($date->getDisplayDateTimeValue(),0,16);
-				list($void,$curr_time) = explode(' ',$disp_value);
+				$curr_time = DateTimeField::formatUserTimeString($disp_value, $user_format);
+				if (strlen($curr_time)>5) {
+					$time_format = substr($curr_time, -2);
+					$curr_time = substr($curr_time, 0, 5);
+				} else {
+					$time_format = '24';
+				}
+				list($dt,$tm) = explode(' ',$disp_value);
+				$disp_value12 = $dt . ' ' . $curr_time;
 			} else {
-				$disp_value = $curr_time = '';
+				$disp_value = $disp_value12 = $curr_time = $time_format = '';
 			}
 		} else {
 			$date = new DateTimeField($value);
 			$disp_value = substr($date->getDisplayDateTimeValue(),0,16);
-			list($void,$curr_time) = explode(' ',$disp_value);
+			$curr_time = DateTimeField::formatUserTimeString($disp_value, $user_format);
+			if (strlen($curr_time)>5) {
+				$time_format = substr($curr_time, -2);
+				$curr_time = substr($curr_time, 0, 5);
+			} else {
+				$time_format = '24';
+			}
+			list($dt,$tm) = explode(' ',$disp_value);
+			$disp_value12 = $dt . ' ' . $curr_time;
 		}
 		$value = $disp_value;
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$date_format = parse_calendardate($app_strings['NTC_DATE_FORMAT']).' '.($current_user->hour_format=='24' ? '%H' : '%I').':%M';
-		$fieldvalue[] = array($disp_value => $curr_time);
-		$fieldvalue[] = array($date_format=>$current_user->date_format.' '.$current_user->hour_format);
+		$fieldvalue[] = array($disp_value => $disp_value12);
+		$fieldvalue[] = array($date_format=>$current_user->date_format.' '.($current_user->hour_format=='24' ? '24' : 'am/pm'));
+		$fieldvalue[] = array($user_format => $time_format);
 	}
 	elseif($uitype == 16) {
 		require_once 'modules/PickList/PickListUtils.php';
@@ -642,7 +659,13 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	elseif ($uitype == 69 or $uitype == '69m')
 	{
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		if (!empty($col_fields['record_id'])) {
+		if (isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
+			if ($uitype == '69') {
+				$fieldvalue[] = array('name'=>$col_fields[$fieldname],'path'=>'','orgname'=>$col_fields[$fieldname]);
+			} else {
+				$fieldvalue[] = '';
+			}
+		} elseif (!empty($col_fields['record_id'])) {
 			if ($uitype == '69m') { // module_name == 'Products'
 				$query = 'select vtiger_attachments.path, vtiger_attachments.attachmentsid, vtiger_attachments.name ,vtiger_crmentity.setype from vtiger_products left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid=vtiger_products.productid inner join vtiger_attachments on vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_attachments.attachmentsid where vtiger_crmentity.setype="Products Image" and productid=?';
 				$params = array($col_fields['record_id']);

@@ -9,6 +9,6 @@
  ************************************************************************************/
 
 global $currentModule;
-require_once dirname(__FILE__)."/BasicSettings.php";
+require_once __DIR__ ."/BasicSettings.php";
 
 ?>

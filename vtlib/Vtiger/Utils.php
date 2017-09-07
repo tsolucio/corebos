@@ -21,7 +21,7 @@ class Vtiger_Utils {
 	 * @param mixed String or Integer
 	 */
 	static function isNumber($value) {
-		return is_numeric($value)? intval($value) == $value : false;
+		return is_numeric($value)? (int)$value == $value : false;
 	}
 
 	/**
@@ -51,7 +51,7 @@ class Vtiger_Utils {
 		// Set the base directory to compare with
 		$use_root_directory = $root_directory;
 		if(empty($use_root_directory)) {
-			$use_root_directory = realpath(dirname(__FILE__).'/../../.');
+			$use_root_directory = realpath(__DIR__.'/../../.');
 		}
 
 		$unsafeDirectories = array('storage', 'cache', 'test');
@@ -94,7 +94,7 @@ class Vtiger_Utils {
 		// Set the base directory to compare with
 		$use_root_directory = $root_directory;
 		if(empty($use_root_directory)) {
-			$use_root_directory = realpath(dirname(__FILE__).'/../../.');
+			$use_root_directory = realpath(__DIR__.'/../../.');
 		}
 
 		$realfilepath = realpath($filepath);

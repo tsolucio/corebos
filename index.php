@@ -111,34 +111,23 @@ if (in_array($action, $nologinaction) and file_exists('modules/Utilities/'.$acti
 if($action == 'ModuleManagerExport') {
 	include('modules/Settings/ModuleManager/Export.php');
 }
-// END
 
 //Code added for 'Path Traversal/File Disclosure' security fix - Philip
 $is_module = false;
 $is_action = false;
-if(isset($_REQUEST['module']))
-{
+if (isset($_REQUEST['module'])) {
 	$module = vtlib_purify($_REQUEST['module']);
-	$dir = @scandir($root_directory."modules");
-	$temp_arr = Array("CVS","Attic");
-	$res_arr = @array_intersect($dir,$temp_arr);
-	if(count($res_arr) == 0 && !preg_match("/[\/.]/",$module)) {
-		if(@in_array($module,$dir))
-			$is_module = true;
+	if (!preg_match('/[\/.]/',$module)) {
+		$dir = @scandir($root_directory.'modules', SCANDIR_SORT_NONE);
+		$in_dir = @scandir($root_directory.'modules/'.$module, SCANDIR_SORT_NONE);
+		$is_module = @in_array($module,$dir);
+		$is_action = @in_array($action.'.php',$in_dir);
 	}
-	$in_dir = @scandir($root_directory."modules/".$module);
-	$res_arr = @array_intersect($in_dir,$temp_arr);
-	if(count($res_arr) == 0 && !preg_match("/[\/.]/",$module)) {
-		if(@in_array($action.".php",$in_dir))
-			$is_action = true;
-	}
-	if (empty($action)) $is_action = false;
-	if(!$is_module)
-	{
+	if (!$is_module) {
 		die("Module name is missing or incorrect. Please check the module name.");
 	}
-	if(!$is_action)
-	{
+	if (empty($action)) $is_action = false;
+	if (!$is_action) {
 		die('Action name is missing or incorrect. Please check the action name: '.vtlib_purify($action));
 	}
 }

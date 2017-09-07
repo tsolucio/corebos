@@ -696,6 +696,7 @@ $mod_strings = array (
 'LBL_SCANNING' => 'Scansionamento', //? bisognerebbe scambiare le stringhe (mail scanner)
 'LBL_LOOKFOR' => 'Cerca',
 'LBL_UNREAD' => 'Non Letto',
+'LBL_ALLUNREAD'=>'ALL Unread',
 'LBL_READ' => 'Letto',
 'LBL_AFTER_SCAN' => 'Dopo scansione',
 'LBL_MESSAGES_FROM_LASTSCAN' => 'Messaggi dopo l\'ultima scansione',

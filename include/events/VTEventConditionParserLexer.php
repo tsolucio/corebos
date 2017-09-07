@@ -214,8 +214,7 @@ class VTEventConditionParserLexer extends AntlrLexer {
 						break;
 					default :
 						if ( $cnt1 >= 1 ) break 2;//loop1;
-						$eee = new EarlyExitException(1, $this->input);
-						throw $eee;
+						throw new EarlyExitException(1, $this->input);
 				}
 				$cnt1++;
 			} while (true);
@@ -264,8 +263,7 @@ class VTEventConditionParserLexer extends AntlrLexer {
 						break;
 					default :
 						if ( $cnt2 >= 1 ) break 2;//loop2;
-						$eee = new EarlyExitException(2, $this->input);
-						throw $eee;
+						throw new EarlyExitException(2, $this->input);
 				}
 				$cnt2++;
 			} while (true);
@@ -292,8 +290,7 @@ class VTEventConditionParserLexer extends AntlrLexer {
 			} else if ( ($LA5_0==$this->getToken('96')) ) {
 				$alt5=2;
 			} else {
-				$nvae = new NoViableAltException("", 5, 0, $this->input);
-				throw $nvae;
+				throw new NoViableAltException('', 5, 0, $this->input);
 			}
 			switch ($alt5) {
 				case 1 :
@@ -344,8 +341,7 @@ class VTEventConditionParserLexer extends AntlrLexer {
 								break;
 							default :
 								if ( $cnt4 >= 1 ) break 2;//loop4;
-								$eee = new EarlyExitException(4, $this->input);
-								throw $eee;
+								throw new EarlyExitException(4, $this->input);
 						}
 						$cnt4++;
 					} while (true);
@@ -488,8 +484,7 @@ class VTEventConditionParserLexer extends AntlrLexer {
 						break;
 					default :
 						if ( $cnt8 >= 1 ) break 2;//loop8;
-						$eee = new EarlyExitException(8, $this->input);
-						throw $eee;
+						throw new EarlyExitException(8, $this->input);
 				}
 				$cnt8++;
 			} while (true);

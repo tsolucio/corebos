@@ -43,7 +43,7 @@ if($current_user->column_fields['is_admin']=='on') {
 	if(count($subrole)> 0)
 	{
 		$roleids = $subrole;
-		array_push($roleids, $role_id);
+		$roleids[] = $role_id;
 	}
 	else
 	{

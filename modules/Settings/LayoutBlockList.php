@@ -361,9 +361,7 @@ function getFieldListEntries($module) {
 			$cflist[$i]['movefield'] = $movefields;
 
 			$cflist[$i]['hascustomtable'] = $focus->customFieldTable;
-			unset($cf_element);
-			unset($cf_hidden_element);
-			unset($movefields);
+			unset($cf_element,$cf_hidden_element,$movefields);
 			$i++;
 		} while($row = $adb->fetch_array($result));
 	}
@@ -926,11 +924,9 @@ function addCustomField() {
 	$params =  array($dup_check_tab_id, $fldlabel);
 	$checkresult=$adb->pquery($checkquery,$params);
 
-	if($adb->num_rows($checkresult) > 0 ) {
-		$duplicate = 'yes';
-		return $duplicate ;
-	}
-	else {
+	if ($adb->num_rows($checkresult) > 0 ) {
+		return 'yes';
+	} else {
 		$max_fieldid = $adb->getUniqueID("vtiger_field");
 		$columnName = 'cf_'.$max_fieldid;
 		$custfld_fieldid = $max_fieldid;
@@ -1099,22 +1095,23 @@ function addCustomField() {
 						$adb->pquery($sql, array($picklistid,$columnName));
 					}
 					$roleid=$current_user->roleid;
-					$qry="select picklistid from vtiger_picklist where  name=?";
-					$picklistid = $adb->query_result($adb->pquery($qry, array($columnName)), 0,'picklistid');
+					$rs = $adb->pquery('select picklistid from vtiger_picklist where name=?', array($columnName));
+					$picklistid = $adb->query_result($rs, 0,'picklistid');
 					$pickArray = Array();
 					$fldPickList = vtlib_purify($_REQUEST['fldPickList']);
 					$pickArray = explode("\n",$fldPickList);
 					$count = count($pickArray);
 					global $default_charset;
-					for($i = 0; $i < $count; $i++) {
+					for ($i = 0; $i < $count; $i++) {
 						$pickArray[$i] = trim($pickArray[$i]);
-						if($pickArray[$i] != '') {
+						if ($pickArray[$i] != '') {
 							$picklistcount=0;
 							$sql ="select $columnName from vtiger_$columnName";
-							$numrow = $adb->num_rows($adb->pquery($sql, array()));
-							for($x=0;$x < $numrow ; $x++) {
-								$picklistvalues = $adb->query_result($adb->pquery($sql, array()),$x,$columnName);
-								if($pickArray[$i] == $picklistvalues) {
+							$rs = $adb->pquery($sql, array());
+							$numrow = $adb->num_rows($rs);
+							for ($x=0;$x < $numrow ; $x++) {
+								$picklistvalues = $adb->query_result($rs,$x,$columnName);
+								if ($pickArray[$i] == $picklistvalues) {
 									$picklistcount++;
 								}
 							}
@@ -1126,7 +1123,8 @@ function addCustomField() {
 								$adb->pquery($sql, array(++$picklist_valueid));*/
 							}
 							$sql = "select picklist_valueid from vtiger_$columnName where $columnName=?";
-							$pick_valueid = $adb->query_result($adb->pquery($sql, array($pickArray[$i])),0,'picklist_valueid');
+							$rs = $adb->pquery($sql, array($pickArray[$i]));
+							$pick_valueid = $adb->query_result($rs,0,'picklist_valueid');
 							$sql = "insert into vtiger_role2picklist select roleid,$pick_valueid,$picklistid,$i from vtiger_role";
 							$adb->pquery($sql, array());
 						}

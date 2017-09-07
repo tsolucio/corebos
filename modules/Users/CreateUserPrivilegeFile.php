@@ -449,9 +449,9 @@ function getUserModuleSharingObjects($module,$userid,$def_org_share,$current_use
 		$parRoleList = array();
 		foreach($parent_roles as $par_role_id)
 		{
-			array_push($parRoleList, $par_role_id);
+			$parRoleList[] = $par_role_id;
 		}
-		array_push($parRoleList, $current_user_roles);
+		$parRoleList[] = $current_user_roles;
 		$query="select vtiger_datashare_role2rs.* from vtiger_datashare_role2rs inner join vtiger_datashare_module_rel on vtiger_datashare_module_rel.shareid=vtiger_datashare_role2rs.shareid where vtiger_datashare_module_rel.tabid=? and vtiger_datashare_role2rs.to_roleandsubid in (". generateQuestionMarks($parRoleList) .")";
 		$result=$adb->pquery($query, array($mod_tabid, $parRoleList));
 		$num_rows=$adb->num_rows($result);
@@ -504,7 +504,7 @@ function getUserModuleSharingObjects($module,$userid,$def_org_share,$current_use
 
 			if (count($groupList) > 0) {
 				$query .= " and vtiger_datashare_role2group.to_groupid in (". generateQuestionMarks($groupList) .")";
-				array_push($qparams, $groupList);
+				$qparams[] = $groupList;
 			}
 			$result=$adb->pquery($query, $qparams);
 			$num_rows=$adb->num_rows($result);
@@ -603,9 +603,9 @@ function getUserModuleSharingObjects($module,$userid,$def_org_share,$current_use
 		$parRoleList = array();
 		foreach($parent_roles as $par_role_id)
 		{
-			array_push($parRoleList, $par_role_id);
+			$parRoleList[] = $par_role_id;
 		}
-		array_push($parRoleList, $current_user_roles);
+		$parRoleList[] = $current_user_roles;
 		$query="select vtiger_datashare_rs2rs.* from vtiger_datashare_rs2rs inner join vtiger_datashare_module_rel on vtiger_datashare_module_rel.shareid=vtiger_datashare_rs2rs.shareid where vtiger_datashare_module_rel.tabid=? and vtiger_datashare_rs2rs.to_roleandsubid in (". generateQuestionMarks($parRoleList) .")";
 		$result=$adb->pquery($query, array($mod_tabid, $parRoleList));
 		$num_rows=$adb->num_rows($result);
@@ -658,7 +658,7 @@ function getUserModuleSharingObjects($module,$userid,$def_org_share,$current_use
 		$qparams = array($mod_tabid);
 		if (count($groupList) > 0) {
 			$query .= " and vtiger_datashare_rs2grp.to_groupid in (". generateQuestionMarks($groupList) .")";
-			array_push($qparams, $groupList);
+			$qparams[] = $groupList;
 		}
 		$result=$adb->pquery($query, $qparams);
 		$num_rows=$adb->num_rows($result);
@@ -877,7 +877,7 @@ function getUserModuleSharingObjects($module,$userid,$def_org_share,$current_use
 		$qparams = array($mod_tabid);
 		if (count($groupList) > 0) {
 			$query .= " and vtiger_datashare_grp2grp.to_groupid in (". generateQuestionMarks($groupList) .")";
-			array_push($qparams, $groupList);
+			$qparams[] = $groupList;
 		}
 		$result=$adb->pquery($query, $qparams);
 		$num_rows=$adb->num_rows($result);

@@ -213,7 +213,7 @@ class Vtiger_MailScanner {
 	 * @returns false if given contain non-digits, else integer value
 	 */
 	function __toInteger($strvalue) {
-		$ival = intval($strvalue);
+		$ival = (int)$strvalue;
 		$intvalstr = "$ival";
 		if(strlen($strvalue) == strlen($intvalstr)) {
 			return $ival;

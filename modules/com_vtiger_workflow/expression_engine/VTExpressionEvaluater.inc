@@ -111,10 +111,10 @@ class VTFieldExpressionEvaluater{
 					$relto = $expr->getParams();
 					$params = array();
 					foreach ($relto as $key => $value) {
-						if(is_object($value)){
-							array_push($params,$this->env($value,true));
-						}else{
-							array_push($params,$value);
+						if (is_object($value)) {
+							$params[] = $this->env($value,true);
+						} else {
+							$params[] = $value;
 						}
 					}
 				} elseif ($func == '__cb_aggregation') {

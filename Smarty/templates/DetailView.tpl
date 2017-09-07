@@ -593,6 +593,7 @@ function sendfile_email()
 																				</div>
 																			{/if}
 
+
 																			<div class="actionData actionlink_emaildocument">
 																				{if $DLD_TYPE eq 'I' && $FILE_STATUS eq '1' && $FILE_EXIST eq 'yes'}
 																					<input type="hidden" id="dldfilename" name="dldfilename" value="{$FILEID}-{$FILENAME}">
@@ -602,6 +603,15 @@ function sendfile_email()
 																			</div>
 																		{/if}
 																	{/if}
+
+																	{if $MODULE eq 'Contacts'}
+																		{assign var=subst value="cto_id"}
+																		{assign var=acc value="&rel_id=$accountid"}
+																	{else}
+																		{assign var=subst value="rel_id"}
+																		{assign var=acc value=""}
+																	{/if}
+
 
 																	{* vtlib customization: Avoid line break if custom links are present *}
 																	{if !isset($CUSTOM_LINKS) || empty($CUSTOM_LINKS)} <br> {/if}

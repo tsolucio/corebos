@@ -40,12 +40,10 @@ function wsapp_getRecordEntityNameIds($entityNames,$modules,$user){
 
     if(empty($entityNames)) return;
 
-    if(!is_array($entityNames))
-        $entityNames = array($entityNames);
+	$entityNames = (array)$entityNames;
     if(empty($modules))
         return array();
-    if(!is_array($modules))
-        $modules = array($modules);
+	$modules = (array)$modules;
     $entityNameIds = array();
     foreach($modules as $moduleName){
         if(empty($entityMetaList[$moduleName])){
@@ -86,18 +84,15 @@ function wsapp_convertDateTimeToTimeZone($dateTime,$toTimeZone){
     $diff = (strtotime($destinationDate)-strtotime($sourceDate));
     $givenTimeInSec = strtotime($dateTime);
     $modifiedTimeSec = $givenTimeInSec+$diff;
-    $display_time = date("Y-m-d H:i:s",$modifiedTimeSec);
-    return $display_time;
+    return date('Y-m-d H:i:s',$modifiedTimeSec);
 }
 
 function wsapp_checkIfRecordsAssignToUser($recordsIds,$userIds){
     $assignedRecordIds = array();
-    if(!is_array($recordsIds))
-        $recordsIds = array($recordsIds);
+	$recordsIds = (array)$recordsIds;
     if(count($recordsIds)<=0)
         return $assignedRecordIds;
-    if(!is_array($userIds))
-        $userIds = array($userIds);
+	$userIds = (array)$userIds;
     $db = PearDatabase::getInstance();
     $query = "SELECT * FROM vtiger_crmentity where crmid IN (".generateQuestionMarks($recordsIds).") and smownerid in (".generateQuestionMarks($userIds).")";
     $params = array();
@@ -155,7 +150,7 @@ function wsapp_RegisterHandler($type,$handlerClass,$handlerPath){
 }
 
 function wsapp_DeleteHandler($type){
-	if(!is_array($type)) $type = array($type);
+	$type = (array)$type;
 	$db = PearDatabase::getInstance();
 	$query = 'DELETE FROM vtiger_wsapp_handlerdetails WHERE type IN('.  generateQuestionMarks($type).')';
 	$db->pquery($query,$type);

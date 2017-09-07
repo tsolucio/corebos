@@ -12,33 +12,33 @@
  */
 function vtlib_setvalue_from_popup(recordid,value,target_fieldname,formname) {
 	var ret = false;
-	if(window.opener.document.forms[formname]) {
+	if (window.opener.document.forms[formname]) {
 		var wodform = window.opener.document.forms[formname];
 		ret = true;
-	} else if(window.opener.document.EditView) {
-        var wodform = window.opener.document.EditView;
-        ret = true;
-	} else if(window.opener.document.DetailView) {
-        var wodform = window.opener.document.DetailView;
-        ret = true;
-    } else if(window.opener.document.QcEditView) {
-        var wodform = window.opener.document.QcEditView;
-        ret = true;
-    }
-    if (ret) {
-        var domnode_id = wodform[target_fieldname];
-        if (!domnode_id) domnode_id = window.opener.document.getElementById("txtbox_"+ target_fieldname);
-        var domnode_display = wodform[target_fieldname+'_display'];
-        if (!domnode_display) domnode_display = window.opener.document.getElementById(target_fieldname+'_display');
-        if(domnode_id) domnode_id.value = recordid;
-        if(domnode_display) domnode_display.value = value;
-    }
-    var func = window.opener.gVTModule + 'setValueFromCapture';
-    if (typeof window.opener[func] == 'function') {
-    	window.opener[func](recordid,value,target_fieldname);
-    	ret = true;
-    }
-    return ret;
+	} else if (window.opener.document.QcEditView) {
+		var wodform = window.opener.document.QcEditView;
+		ret = true;
+	} else if (window.opener.document.EditView) {
+		var wodform = window.opener.document.EditView;
+		ret = true;
+	} else if (window.opener.document.DetailView) {
+		var wodform = window.opener.document.DetailView;
+		ret = true;
+	}
+	if (ret) {
+		var domnode_id = wodform[target_fieldname];
+		if (!domnode_id) domnode_id = window.opener.document.getElementById("txtbox_"+ target_fieldname);
+		var domnode_display = wodform[target_fieldname+'_display'];
+		if (!domnode_display) domnode_display = window.opener.document.getElementById(target_fieldname+'_display');
+		if (domnode_id) domnode_id.value = recordid;
+		if (domnode_display) domnode_display.value = value;
+	}
+	var func = window.opener.gVTModule + 'setValueFromCapture';
+	if (typeof window.opener[func] == 'function') {
+		window.opener[func](recordid,value,target_fieldname);
+		ret = true;
+	}
+	return ret;
 }
 
 /*
@@ -74,41 +74,40 @@ function vtlib_open_popup_window(fromlink,fldname,MODULE,ID) {
  * Show the vtiger field help if available.
  */
 function vtlib_field_help_show(basenode, fldname) {
-    var domnode = jQuery('#vtlib_fieldhelp_div');
+	var domnode = jQuery('#vtlib_fieldhelp_div');
 
-    if(typeof(fieldhelpinfo) == 'undefined') return;
+	if (typeof(fieldhelpinfo) == 'undefined') return;
 
-    var helpcontent = fieldhelpinfo[fldname];
-    if(typeof(helpcontent) == 'undefined') return;
+	var helpcontent = fieldhelpinfo[fldname];
+	if (typeof(helpcontent) == 'undefined') return;
 
-    if(domnode.length==0) {
-        domnode = document.createElement('div');
-        domnode.id = 'vtlib_fieldhelp_div';
-        domnode.className = 'dvtSelectedCell';
-        domnode.style.position = 'absolute';
-        domnode.style.width = '150px';
-        domnode.style.padding = '4px';
-        domnode.style.fontWeight = 'normal';
-        document.body.appendChild(domnode);
-
-        domnode = jQuery('#vtlib_fieldhelp_div');
+	if (domnode.length==0) {
+		domnode = document.createElement('div');
+		domnode.id = 'vtlib_fieldhelp_div';
+		domnode.className = 'dvtSelectedCell';
+		domnode.style.position = 'absolute';
+		domnode.style.width = '150px';
+		domnode.style.padding = '4px';
+		domnode.style.fontWeight = 'normal';
+		document.body.appendChild(domnode);
+		domnode = jQuery('#vtlib_fieldhelp_div');
 		domnode.on("mouseenter",function() {
-            jQuery(this).show();
-        });
+			jQuery(this).show();
+		});
 		domnode.on("mouseleave",vtlib_field_help_hide);
-    }
-    else {
-        domnode.show();
-    }
-    domnode.html(helpcontent);
-    fnvshobj(basenode,'vtlib_fieldhelp_div');
+	} else {
+		domnode.show();
+	}
+	domnode.html(helpcontent);
+	fnvshobj(basenode,'vtlib_fieldhelp_div');
 }
+
 /**
  * Hide the vtiger field help
  */
 function vtlib_field_help_hide(evt) {
-    var domnode = jQuery('#vtlib_fieldhelp_div');
-    if(domnode) domnode.hide();
+	var domnode = jQuery('#vtlib_fieldhelp_div');
+	if (domnode) domnode.hide();
 }
 
 /**
@@ -119,7 +118,7 @@ function vtlib_field_help_hide(evt) {
  * vtlib_listview.register('cell.onmouseout', function(evtparams) {console.log(evtparams); });
  */
 var vtlib_listview = {
-    /**
+	/**
 	 * Callback function handlers that needs to be triggered for an event
 	 * 
 	 * _handlers = {
@@ -127,49 +126,49 @@ var vtlib_listview = {
 	 *     'event2' : [ [handlerfn21, handlerfn21_moreparams], [handlerfn2, handlerfn22_moreparams] ]
 	 * }
 	 */
-    _handlers : {},
+	_handlers : {},
 
-    /**
+	/**
 	 * Register handler function for the event
 	 */
-    register : function(evttype, handler, callback_params) {
-        if(typeof(callback_params) == 'undefined') callback_params = false;
-        if(typeof(vtlib_listview._handlers[evttype]) == 'undefined') {
-            vtlib_listview._handlers[evttype] = [];
-        }
-        // Event handlerinfo is an array having (function, optional_more_parameters)
-        vtlib_listview._handlers[evttype].push([handler, callback_params]);
-    },
+	register : function(evttype, handler, callback_params) {
+		if (typeof(callback_params) == 'undefined') callback_params = false;
+		if (typeof(vtlib_listview._handlers[evttype]) == 'undefined') {
+			vtlib_listview._handlers[evttype] = [];
+		}
+		// Event handlerinfo is an array having (function, optional_more_parameters)
+		vtlib_listview._handlers[evttype].push([handler, callback_params]);
+	},
 
-    /**
+	/**
 	 * Invoke handler function based on event type
 	 */
-    invoke_handler : function(evttype, event_params) {
-        var evthandlers = vtlib_listview._handlers[evttype];
-        if(typeof(evthandlers) == 'undefined') return;
-        for(var index = 0; index < evthandlers.length; ++index) {
-            var evthandlerinfo = evthandlers[index];
-            // Event handlerinfo is an array having (function, optional_more_parameters)
-            var evthandlerfn = evthandlerinfo[0];
-            if(typeof(evthandlerfn) == 'function') {
-                evthandlerfn(event_params, evthandlerinfo[1]);
-            }
-        }
-    },
+	invoke_handler : function(evttype, event_params) {
+		var evthandlers = vtlib_listview._handlers[evttype];
+		if (typeof(evthandlers) == 'undefined') return;
+		for (var index = 0; index < evthandlers.length; ++index) {
+			var evthandlerinfo = evthandlers[index];
+			// Event handlerinfo is an array having (function, optional_more_parameters)
+			var evthandlerfn = evthandlerinfo[0];
+			if (typeof(evthandlerfn) == 'function') {
+				evthandlerfn(event_params, evthandlerinfo[1]);
+			}
+		}
+	},
 	getFieldInfo : function(fieldid){
  		var node = document.getElementById(fieldid);
 		var innerNodes = node.getElementsByTagName('span');
 		var event_params = {};
-		if(typeof(innerNodes) != 'undefined') {
+		if (typeof(innerNodes) != 'undefined') {
 			var cellhandler = false;
-			for(var index = 0; index < innerNodes.length; ++index) {
+			for (var index = 0; index < innerNodes.length; ++index) {
 				var innerNodeAttrs = innerNodes[index].attributes;
-				if(typeof(innerNodeAttrs) != 'undefined' && typeof(innerNodeAttrs.type) != 'undefined' && innerNodeAttrs['type'].nodeValue == 'vtlib_metainfo') {
+				if (typeof(innerNodeAttrs) != 'undefined' && typeof(innerNodeAttrs.type) != 'undefined' && innerNodeAttrs['type'].nodeValue == 'vtlib_metainfo') {
 					cellhandler = innerNodes[index];
 					break;
 				}
 			}
-			if(cellhandler == false) return;
+			if (cellhandler == false) return;
 			var event_params = {
 				'domnode': node,
 				'module' : cellhandler.attributes['vtmodule'].nodeValue,
@@ -182,72 +181,68 @@ var vtlib_listview = {
 	/**
 	 * Trigger handler function for the event
 	 */
-    trigger  : function(evttype, node) {
-        if(evttype == 'cell.onmouseover' || evttype == 'cell.onmouseout' || evttype == 'invoiceasset.onmouseout') {
-            // Catch hold of DOM element which has meta inforamtion.
-            var innerNodes = node.getElementsByTagName('span');
-            if(typeof(innerNodes) != 'undefined') {
-                var cellhandler = false;
-                for(var index = 0; index < innerNodes.length; ++index) {
-                    var innerNodeAttrs = innerNodes[index].attributes;
-                    if(typeof(innerNodeAttrs) != 'undefined' && typeof(innerNodeAttrs.type) != 'undefined' && innerNodeAttrs['type'].nodeValue == 'vtlib_metainfo') {
-                        cellhandler = innerNodes[index];
-                        break;
-                    }
-                }
-                if(cellhandler == false) return;
-                var event_params = {
-                    'event'  : evttype,
-                    'domnode': node,
-                    'module' : cellhandler.attributes['vtmodule'].nodeValue,
-                    'fieldname': cellhandler.attributes['vtfieldname'].nodeValue,
-                    'recordid': cellhandler.attributes['vtrecordid'].nodeValue
-                };
-                vtlib_listview.invoke_handler(evttype, event_params);
-            }
-        }
+	trigger  : function(evttype, node) {
+		if (evttype == 'cell.onmouseover' || evttype == 'cell.onmouseout' || evttype == 'invoiceasset.onmouseout') {
+			// Catch hold of DOM element which has meta inforamtion.
+			var innerNodes = node.getElementsByTagName('span');
+			if (typeof(innerNodes) != 'undefined') {
+				var cellhandler = false;
+				for (var index = 0; index < innerNodes.length; ++index) {
+					var innerNodeAttrs = innerNodes[index].attributes;
+					if (typeof(innerNodeAttrs) != 'undefined' && typeof(innerNodeAttrs.type) != 'undefined' && innerNodeAttrs['type'].nodeValue == 'vtlib_metainfo') {
+						cellhandler = innerNodes[index];
+						break;
+					}
+				}
+				if (cellhandler == false) return;
+				var event_params = {
+					'event'  : evttype,
+					'domnode': node,
+					'module' : cellhandler.attributes['vtmodule'].nodeValue,
+					'fieldname': cellhandler.attributes['vtfieldname'].nodeValue,
+					'recordid': cellhandler.attributes['vtrecordid'].nodeValue
+				};
+				vtlib_listview.invoke_handler(evttype, event_params);
+			}
+		}
 	}
 };
-/** END **/
 
 /** 
  * DetailView widget loader API
  */
 function vtlib_loadDetailViewWidget(urldata, target, indicator) {
-
-    if(typeof(target) == 'undefined') {
-        target = false;
-    } else {
-        target = document.getElementById(target);
-    }
-    if(typeof(indicator) == 'undefined') {
-        indicator = false;
-    } else {
-        indicator = document.getElementById(indicator);
-    }
-	
-    if(indicator) {
-        indicator.style.display="block";
-    }
-	
-    jQuery.ajax({
-			method: 'POST',
-			url: "index.php?"+urldata
-    }).done(function (response) {
-            if(target) {
-                target.innerHTML = response;
-                if(typeof(ParseAjaxResponse)== 'function')
-                    ParseAjaxResponse(response);
-                else {
-					// Evaluate all the script tags in the response text.
-					vtlib_executeJavascriptInElement(target);
-                }
-                if(indicator) {
-                    indicator.style.display="none";
-                }
-            }
-    });
-    return false; // To stop event propogation
+	if (typeof(target) == 'undefined') {
+		target = false;
+	} else {
+		target = document.getElementById(target);
+	}
+	if (typeof(indicator) == 'undefined') {
+		indicator = false;
+	} else {
+		indicator = document.getElementById(indicator);
+	}
+	if (indicator) {
+		indicator.style.display="block";
+	}
+	jQuery.ajax({
+		method: 'POST',
+		url: "index.php?"+urldata
+	}).done(function (response) {
+		if (target) {
+			target.innerHTML = response;
+			if (typeof(ParseAjaxResponse)== 'function') {
+				ParseAjaxResponse(response);
+			} else {
+				// Evaluate all the script tags in the response text.
+				vtlib_executeJavascriptInElement(target);
+			}
+			if (indicator) {
+				indicator.style.display="none";
+			}
+		}
+	});
+	return false; // To stop event propogation
 }
 
 function vtlib_executeJavascriptInElement(element) {
@@ -264,28 +259,28 @@ function vtlib_executeJavascriptInElement(element) {
  *
  */
 function vtlib_vtiger_imageurl(theme){
-    return "themes/"+theme+"/images";
+	return "themes/"+theme+"/images";
 }
 
 /*
  * getElementsByClassName fix for I.E 8
  */
 function vtlib_getElementsByClassName(obj,className,tagName){
-    //Use getElementsByClassName if it is supported
-    if ( typeof(obj.getElementsByClassName) != 'undefined' ) {
-        return obj.getElementsByClassName(className);
-    }
+	//Use getElementsByClassName if it is supported
+	if ( typeof(obj.getElementsByClassName) != 'undefined' ) {
+		return obj.getElementsByClassName(className);
+	}
 
-    // Otherwise search for all tags of type tagname with class "className"
-    var returnList = new Array();
-    var nodes = obj.getElementsByTagName(tagName);
-    var max = nodes.length;
-    for ( var i = 0; i < max; i++ ) {
-        if ( nodes[i].className == className ) {
-            returnList[returnList.length] = nodes[i];
-        }
-    }
-    return returnList;
+	// Otherwise search for all tags of type tagname with class "className"
+	var returnList = new Array();
+	var nodes = obj.getElementsByTagName(tagName);
+	var max = nodes.length;
+	for (var i = 0; i < max; i++) {
+		if ( nodes[i].className == className ) {
+			returnList[returnList.length] = nodes[i];
+		}
+	}
+	return returnList;
 }
 
 function convertArrayOfJsonObjectsToString(arrayofjson) {

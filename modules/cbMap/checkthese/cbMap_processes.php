@@ -16,29 +16,25 @@ class cbMap extends CRMEntity {
            $map=htmlspecialchars_decode($this->column_fields['content']);
            $x = new crXml();
            $x->loadXML($map);
-           $originmodule=(string)$x->map->targetmodule[0]->targetname;
-           return $originmodule;
+           return (string)$x->map->targetmodule[0]->targetname;
         }
        function getMapOriginModule(){
            $map=htmlspecialchars_decode($this->column_fields['content']);
            $x = new crXml();
            $x->loadXML($map);
-           $return_module=(string)$x->map->originmodule[0]->originname;
-           return $return_module;
+           return (string)$x->map->originmodule[0]->originname;
         }
          function getMapOriginTable(){
            $map=htmlspecialchars_decode($this->column_fields['content']);
            $x = new crXml();
            $x->loadXML($map);
-           $originmodule=(string)$x->map->table[0]->tablename;
-           return $originmodule;
+           return (string)$x->map->table[0]->tablename;
         }
         function getMapPointingFieldUpdate(){
            $map=htmlspecialchars_decode($this->column_fields['content']);
            $x = new crXml();
            $x->loadXML($map);
-           $originmodule=(string)$x->map->pointingfield[0]->originname;
-           return $originmodule;
+           return (string)$x->map->pointingfield[0]->originname;
         }
        function getMapTargetFields(){
             $map=htmlspecialchars_decode($this->column_fields['content']);
@@ -180,9 +176,8 @@ class cbMap extends CRMEntity {
            $map=htmlspecialchars_decode($this->column_fields['content']);
            $x = new crXml();
            $x->loadXML($map);
-           $return_module=(string)$x->map->targetmodule[0]->targetid;
            //var_dump($return_module);
-           return $return_module;
+           return (string)$x->map->targetmodule[0]->targetid;
         }
 
        function getMapSendEmails(){
@@ -333,8 +328,7 @@ function getMapFieldDependency(){
                   }
             }
               }
-            $res=array('modules'=>$columns,'profile'=>$profile);
-            return $res;
+            return array('modules'=>$columns,'profile'=>$profile);
         }
         
        function getMapPortalDvBlocks(){
@@ -494,8 +488,7 @@ function getMapFieldDependency(){
      function getFieldName($fieldid){
         global $adb;
         $result = $adb->pquery("Select fieldname from vtiger_field where fieldid = ?",array($fieldid));
-        $fieldname = $adb->query_result($result,0,'fieldname');
-        return $fieldname;
+        return $adb->query_result($result,0,'fieldname');
     }
 
     function getPriModuleFieldsList($module,$modtype,$mode='')
@@ -911,7 +904,7 @@ function readInputFields() {
                         if($value=="''")
                            $vals.=" " .$fieldname." ".$operator. " '' ";
                         else
-                        if(gettype($value)=='string'){
+                        if(is_string($value)){
                             
                          if(stristr($value,'.')!='' && stristr($value,'vtiger_')!=''){
                           $expectedvalue_array=  explode('.', $value);
@@ -938,7 +931,7 @@ function readInputFields() {
                     
                 }else  if($expectedvalue=="''")
                            $vals.=" " .$fieldname." ".$operator. " '' ";
-                 else  if(gettype($expectedvalue)=="string"){
+                 else  if(is_string($expectedvalue)){
                                       // vetem ne rastin kur expected element eshte nje vtiger_module.field.
                       if(stristr($expectedvalue,'.')!='' && stristr($expectedvalue,'vtiger_')!='' ){
                           $expectedvalue_array=  explode('.', $expectedvalue);
@@ -1085,7 +1078,7 @@ if(!empty($expectedvalue_array)){
                       $uniquesearch_table_name=explode('.',$uniquesearch_field);
                       //tab exist in query and value is not field name
                       if(stristr($expectedvalue_base,$uniquesearch_table_name)!='' && stristr($uniquesearch_value,'vtiger_')==''){
-                          if(gettype($uniquesearch_value)=='string')
+                          if(is_string($uniquesearch_value))
                               $where.=" and  $uniquesearch_field='".$uniquesearch_value."' ";
                           else 
                               $where.=" and  $uniquesearch ";
@@ -1116,9 +1109,9 @@ if(!empty($expectedvalue_array)){
                           
                             $expectedvalue_base.=" join ". $uniquesearch_table_name[0] ." on ". $first_unique_module['tablename'].".$related_unique_fieldid_name=".$related_unique_module['tablename'].".".$related_unique_module['entityidfield']." ";
                             $where.=" and  c".$i.$j.".deleted=0 " ;
-                            if(gettype($uniquesearch_value)=='string' && stristr($uniquesearch_value,'vtiger_')!='')
+                            if(is_string($uniquesearch_value) && stristr($uniquesearch_value,'vtiger_')!='')
                               $where.=" and $uniquesearch_field=".$uniquesearch_value." ";
-                            else if(gettype($uniquesearch_value)=='string')
+                            else if(is_string($uniquesearch_value))
                               $where.=" and $uniquesearch_field='".$uniquesearch_value."' ";
                             else 
                               $where.=" and $uniquesearch ";
@@ -1146,7 +1139,7 @@ if(!empty($expectedvalue_array)){
                           
                             $expectedvalue_base.=" join ". $uniquesearch_table_name[0] ." on ". $first_unique_module['tablename'].".$related_unique_fieldid_name=".$related_unique_module['tablename'].".".$related_unique_module['entityidfield']." ";
                             $where.=" and  c".$i.$j.".deleted=0 " ;
-                            if(gettype($uniquesearch_value)=='string')
+                            if(is_string($uniquesearch_value))
                               $where.=" and $uniquesearch_field='".$uniquesearch_value."' ";
                             else 
                               $where.=" and $uniquesearch ";
@@ -1293,7 +1286,7 @@ function getBlocksPortal1($module, $disp_view, $mode, $col_fields = '', $info_ty
         $blockid_list = array();
 	for ($i = 0; $i < $noofrows; $i++) {
 		$blockid = $adb->query_result($result, $i, "blockid");
-		array_push($blockid_list, $blockid);
+		$blockid_list[] = $blockid;
 		$block_label[$blockid] = $adb->query_result($result, $i, "blocklabel");
 
 		$sLabelVal = getTranslatedString($block_label[$blockid], $module);

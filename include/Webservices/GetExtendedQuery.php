@@ -426,7 +426,7 @@ function __FQNExtendedQueryIsFQNQuery($q) {
 	$isnotnullopRegex = "/\s+is\s+(not\s+)?null/";
 	preg_match($isnotnullopRegex, $cq, $qop);
 	if (count($qop)>0) return true;  // "is not null" operator is supported by QG
-	return (stripos($cq,'.')>0 or stripos($cq,'(')>0);
+	return (strpos($cq,'.')>0 || strpos($cq,'(')>0);
 }
 
 function __FQNExtendedQueryIsRelatedQuery($q) {

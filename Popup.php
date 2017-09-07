@@ -35,6 +35,15 @@ $smarty->assign('THEME_PATH', "themes/$theme/");
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign("MODULE",$currentModule);
 $smarty->assign('coreBOS_uiapp_name', GlobalVariable::getVariable('Application_UI_Name',$coreBOS_app_name));
+$sql = 'SELECT dayoftheweek FROM its4you_calendar4you_settings WHERE userid=?';
+$result = $adb->pquery($sql, array($current_user->id));
+if ($result and $adb->num_rows($result)>0) {
+	$fDOW = $adb->query_result($result, 0,0);
+	$userFirstDOW = ($fDOW=='Monday' ? 1 : 0);
+} else {
+	$userFirstDOW = 0;
+}
+$smarty->assign('USER_FIRST_DOW',$userFirstDOW);
 // Gather the custom link information to display
 include_once('vtlib/Vtiger/Link.php');
 $hdrcustomlink_params = Array('MODULE'=>$currentModule);
@@ -53,7 +62,7 @@ $smarty->assign("POPUP", str_replace('&','-a;',$suri).'-a;popqc=true');
 if (!empty($_REQUEST['popqc']) and $_REQUEST['popqc'] = 'true' and empty($_REQUEST['advft_criteria']) and !empty($_REQUEST['record'])) {
 	$fldrs = $adb->pquery('SELECT vtiger_field.fieldlabel,vtiger_field.tablename,vtiger_field.columnname,vtiger_field.fieldname,vtiger_entityname.entityidfield
 			FROM vtiger_field
-			INNER JOIN vtiger_entityname on vtiger_field.tabid=vtiger_entityname.tabid and modulename=? WHERE uitype=4',array($currentModule));
+			INNER JOIN vtiger_entityname on vtiger_field.tabid=vtiger_entityname.tabid and modulename=? WHERE vtiger_field.fieldname=vtiger_entityname.fieldname',array($currentModule));
 	$row = $adb->fetch_array($fldrs);
 	$fieldLabelEscaped = str_replace(" ","_",$row['fieldlabel']);
 	$optionvalue = $row['tablename'].":".$row['columnname'].":".$row['fieldname'].":".$currentModule."_".$fieldLabelEscaped.":V";

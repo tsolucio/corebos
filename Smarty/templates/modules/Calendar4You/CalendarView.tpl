@@ -20,8 +20,11 @@
 </div>
 <script src='modules/Calendar4You/fullcalendar/locale-all.js'></script>
 <div id="event_setting" style="border:1px solid #000000;position:absolute;display:none;z-index:10000;background-color:white"></div>
+<!-- Dropdown for Add Event Button -->
+<div id='addEventDropDown' style='width:160px' onmouseover='fnShowITSEvent()' onmouseout='fnRemoveITSEvent()'>
+<table width="100%" cellpadding="0" cellspacing="0" border="0">{$ADD_BUTTONEVENTLIST}</table>
+</div>
 <script>
-
 var Events_color = new Array();
 
 {foreach name=calendar_users item=userdata key=userid from=$CALENDAR_USERS}

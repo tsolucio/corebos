@@ -175,9 +175,10 @@ function performScanNow(app_key, scannername) {
 							<tr>
 								<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_LOOKFOR}</strong></td>
 								<td width="80%" class="small cellText">
-									{if $SCANNERINFO.searchfor eq 'ALL'}{$MOD.LBL_ALL}
-									{elseif $SCANNERINFO.searchfor eq 'UNSEEN'}{$MOD.LBL_UNREAD}{/if}
-									{$MOD.LBL_MESSAGES_FROM_LASTSCAN}
+									{if $SCANNERINFO.searchfor eq 'ALL'}{$MOD.LBL_ALL} {$MOD.LBL_MESSAGES_FROM_LASTSCAN}
+									{elseif $SCANNERINFO.searchfor eq 'ALLUNSEEN'}{$MOD.LBL_ALLUNREAD}
+									{elseif $SCANNERINFO.searchfor eq 'UNSEEN'}{$MOD.LBL_UNREAD} {$MOD.LBL_MESSAGES_FROM_LASTSCAN}{/if}
+
 									{if $SCANNERINFO.requireRescan} [{$MOD.LBL_INCLUDE} {$MOD.LBL_SKIPPED}] {/if}
 								</td>
 							</tr>

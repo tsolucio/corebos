@@ -13,7 +13,7 @@ class SMSProvider {
 		if(!empty($providername)) {
 			$providername = trim($providername);
 
-			$filepath = dirname(__FILE__) . "/providers/{$providername}.php";
+			$filepath = __DIR__ . "/providers/{$providername}.php";
 			checkFileAccessForInclusion($filepath);
 			
 			if(!class_exists($providername)) { 
@@ -26,7 +26,7 @@ class SMSProvider {
 
 	static function listAll() {
 		$providers = array();
-		if ($handle = opendir( dirname(__FILE__) . '/providers')){
+		if ($handle = opendir( __DIR__ . '/providers')){
 			while (false !== ($file = readdir($handle))) {
 				if (!in_array($file, array('.', '..', '.svn', 'CVS'))) {
 					if(preg_match("/(.*)\.php$/", $file, $matches)) {

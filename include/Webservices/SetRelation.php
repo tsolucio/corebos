@@ -57,9 +57,7 @@ function vtws_setrelation($relateThisId, $withTheseIds, $user) {
 function vtws_internal_setrelation($elementId, $moduleName, $withTheseIds) {
 	global $adb;
 
-	if (!is_array($withTheseIds)) {
-		$withTheseIds = array($withTheseIds);
-	}
+	$withTheseIds = (array)$withTheseIds;
 	$focus = CRMEntity::getInstance($moduleName);
 	foreach ($withTheseIds as $withThisId) {
 		list($withModuleId, $withElementId) = vtws_getIdComponents($withThisId);

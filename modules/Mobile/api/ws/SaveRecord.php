@@ -8,7 +8,7 @@
  * All Rights Reserved.
  * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
-include_once dirname(__FILE__) . '/FetchRecord.php';
+include_once __DIR__ . '/FetchRecord.php';
 include_once 'include/Webservices/Create.php';
 include_once 'include/Webservices/Update.php';
 

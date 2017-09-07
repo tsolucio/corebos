@@ -237,11 +237,10 @@ function getAllowedPicklistModules($allowNonEntities=0) {
 	$entitycondition = ($allowNonEntities ? '' : 'isentitytype=1 and ');
 	$entityQuery = "SELECT name FROM vtiger_tab WHERE $entitycondition name NOT IN ('Rss','Webmails','Recyclebin','Events')";
 	$result = $adb->pquery($entityQuery, array());
-	while($result && $row = $adb->fetch_array($result)){
+	while ($result && $row = $adb->fetch_array($result)) {
 		$allEntities[] = $row['name'];
 	}
-	$allowedEntities=array_intersect($allAllowedModules, $allEntities);
-	return $allowedEntities;
+	return array_intersect($allAllowedModules, $allEntities);
 }
 
 function getPicklistValuesSpecialUitypes($uitype,$fieldname,$value,$action='EditView'){

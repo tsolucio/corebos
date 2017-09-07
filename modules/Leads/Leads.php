@@ -296,7 +296,7 @@ class Leads extends CRMEntity {
 			$params1 = array();
 			if (count($profileList) > 0) {
 				$sql1 .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .") group by fieldid";
-				array_push($params1, $profileList);
+				$params1[] = $profileList;
 			}
 		}
 		$result = $this->db->pquery($sql1, $params1);
@@ -359,15 +359,44 @@ class Leads extends CRMEntity {
 	 * @param - $secmodule secondary module name
 	 * returns the query string formed on fetching the related data for report for secondary module
 	 */
-	function generateReportsSecQuery($module,$secmodule){
-		$query = $this->getRelationQuery($module,$secmodule,"vtiger_leaddetails","leadid");
-		$query .= " left join vtiger_crmentity as vtiger_crmentityLeads on vtiger_crmentityLeads.crmid = vtiger_leaddetails.leadid and vtiger_crmentityLeads.deleted=0
-			left join vtiger_leadaddress on vtiger_leaddetails.leadid = vtiger_leadaddress.leadaddressid
-			left join vtiger_leadsubdetails on vtiger_leadsubdetails.leadsubscriptionid = vtiger_leaddetails.leadid
-			left join vtiger_leadscf on vtiger_leadscf.leadid = vtiger_leaddetails.leadid
-			left join vtiger_groups as vtiger_groupsLeads on vtiger_groupsLeads.groupid = vtiger_crmentityLeads.smownerid
-			left join vtiger_users as vtiger_usersLeads on vtiger_usersLeads.id = vtiger_crmentityLeads.smownerid
-			left join vtiger_users as vtiger_lastModifiedByLeads on vtiger_lastModifiedByLeads.id = vtiger_crmentityLeads.modifiedby ";
+	function generateReportsSecQuery($module,$secmodule, $queryPlanner,$type = '',$where_condition = '') {
+		$matrix = $queryPlanner->newDependencyMatrix();
+		$matrix->setDependency('vtiger_crmentityLeads',array('vtiger_groupsLeads','vtiger_usersLeads','vtiger_lastModifiedByLeads'));
+
+		if (!$queryPlanner->requireTable("vtiger_leaddetails",$matrix)) {
+			return '';
+		}
+
+		$matrix->setDependency('vtiger_leaddetails',array('vtiger_crmentityLeads', 'vtiger_leadaddress','vtiger_leadsubdetails','vtiger_leadscf','vtiger_email_trackLeads'));
+
+		$query = $this->getRelationQuery($module,$secmodule,"vtiger_leaddetails","leadid", $queryPlanner);
+		if ($queryPlanner->requireTable("vtiger_crmentityLeads",$matrix)) {
+			$query .= " left join vtiger_crmentity as vtiger_crmentityLeads on vtiger_crmentityLeads.crmid = vtiger_leaddetails.leadid and vtiger_crmentityLeads.deleted=0";
+		}
+		if ($queryPlanner->requireTable("vtiger_leadaddress")) {
+			$query .= " left join vtiger_leadaddress on vtiger_leaddetails.leadid = vtiger_leadaddress.leadaddressid";
+		}
+		if ($queryPlanner->requireTable("vtiger_leadsubdetails")) {
+			$query .= " left join vtiger_leadsubdetails on vtiger_leadsubdetails.leadsubscriptionid = vtiger_leaddetails.leadid";
+		}
+		if ($queryPlanner->requireTable("vtiger_leadscf")) {
+			$query .= " left join vtiger_leadscf on vtiger_leadscf.leadid = vtiger_leaddetails.leadid";
+		}
+		if ($queryPlanner->requireTable("vtiger_email_trackLeads")) {
+			$query .= " LEFT JOIN vtiger_email_track AS vtiger_email_trackLeads ON vtiger_email_trackLeads.crmid = vtiger_leaddetails.leadid";
+		}
+		if ($queryPlanner->requireTable("vtiger_groupsLeads")) {
+			$query .= " left join vtiger_groups as vtiger_groupsLeads on vtiger_groupsLeads.groupid = vtiger_crmentityLeads.smownerid";
+		}
+		if ($queryPlanner->requireTable("vtiger_usersLeads")) {
+			$query .= " left join vtiger_users as vtiger_usersLeads on vtiger_usersLeads.id = vtiger_crmentityLeads.smownerid";
+		}
+		if ($queryPlanner->requireTable("vtiger_lastModifiedByLeads")) {
+			$query .= " left join vtiger_users as vtiger_lastModifiedByLeads on vtiger_lastModifiedByLeads.id = vtiger_crmentityLeads.modifiedby ";
+		}
+		if ($queryPlanner->requireTable("vtiger_CreatedByLeads")) {
+			$query .= " left join vtiger_users as vtiger_CreatedByLeads on vtiger_CreatedByLeads.id = vtiger_crmentityLeads.smcreatorid ";
+		}
 		return $query;
 	}
 
@@ -399,10 +428,11 @@ class Leads extends CRMEntity {
 		elseif($return_module == 'Products') {
 			$sql = 'DELETE FROM vtiger_seproductsrel WHERE crmid=? AND productid=?';
 			$this->db->pquery($sql, array($id, $return_id));
+		} elseif($return_module == 'Documents') {
+			$sql = 'DELETE FROM vtiger_senotesrel WHERE crmid=? AND notesid=?';
+			$this->db->pquery($sql, array($id, $return_id));
 		} else {
-			$sql = 'DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND relmodule=? AND relcrmid=?) OR (relcrmid=? AND module=? AND crmid=?)';
-			$params = array($id, $return_module, $return_id, $id, $return_module, $return_id);
-			$this->db->pquery($sql, $params);
+			parent::unlinkRelationship($id, $return_module, $return_id);
 		}
 	}
 
@@ -424,7 +454,7 @@ class Leads extends CRMEntity {
 	function save_related_module($module, $crmid, $with_module, $with_crmids) {
 		$adb = PearDatabase::getInstance();
 
-		if(!is_array($with_crmids)) $with_crmids = Array($with_crmids);
+		$with_crmids = (array)$with_crmids;
 		foreach($with_crmids as $with_crmid) {
 			if($with_module == 'Products')
 				$adb->pquery("insert into vtiger_seproductsrel values (?,?,?)", array($crmid, $with_crmid, $module));
@@ -504,7 +534,7 @@ class Leads extends CRMEntity {
 			$params1 = array();
 			if (count($profileList) > 0) {
 				 $sql1 .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
-				 array_push($params1, $profileList);
+				 $params1[] = $profileList;
 			}
 		}
 		$result1 = $this->db->pquery($sql1, $params1);

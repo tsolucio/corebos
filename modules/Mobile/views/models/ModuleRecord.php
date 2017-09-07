@@ -8,7 +8,7 @@
  * All Rights Reserved.
  * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
-include_once dirname(__FILE__) . '/Block.php';
+include_once __DIR__ . '/Block.php';
 
 class crmtogo_UI_ModuleRecordModel {
 	private $_id;

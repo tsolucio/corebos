@@ -120,14 +120,14 @@ class Reports extends CRMEntity{
 				$user_group_query = '';
 				if(!empty($user_groups) && $is_admin==false){
 					$user_group_query = " (shareid IN (".generateQuestionMarks($user_groups).") AND setype='groups') OR";
-					array_push($params, $user_groups);
+					$params[] = $user_groups;
 				}
 
 				$non_admin_query = " vtiger_report.reportid IN (SELECT reportid from vtiger_reportsharing WHERE $user_group_query (shareid=? AND setype='users'))";
 				if($is_admin==false){
 					$ssql .= " and ( (".$non_admin_query.") or vtiger_report.sharingtype='Public' or vtiger_report.owner = ? or vtiger_report.owner in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%'))";
-					array_push($params, $current_user->id);
-					array_push($params, $current_user->id);
+					$params[] = $current_user->id;
+					$params[] = $current_user->id;
 				}
 
 				$query = $adb->pquery("select userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%'",array());
@@ -378,14 +378,14 @@ class Reports extends CRMEntity{
 		$user_group_query = '';
 		if(!empty($user_groups) && $is_admin==false){
 			$user_group_query = " (shareid IN (".generateQuestionMarks($user_groups).") AND setype='groups') OR";
-			array_push($params, $user_groups);
+			$params[] = $user_groups;
 		}
 
 		$non_admin_query = " vtiger_report.reportid IN (SELECT reportid from vtiger_reportsharing WHERE $user_group_query (shareid=? AND setype='users'))";
 		if($is_admin==false){
 			$sql .= " and ( (".$non_admin_query.") or vtiger_report.sharingtype='Public' or vtiger_report.owner = ? or vtiger_report.owner in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%'))";
-			array_push($params, $current_user->id);
-			array_push($params, $current_user->id);
+			$params[] = $current_user->id;
+			$params[] = $current_user->id;
 		}
 		$query = $adb->pquery("select userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%'",array());
 		$subordinate_users = Array();
@@ -581,13 +581,13 @@ class Reports extends CRMEntity{
 			$profileList = getCurrentUserProfileList();
 			if (count($profileList) > 0) {
 				$sql .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
-				array_push($params, $profileList);
+				$params[] = $profileList;
 			}
 			$sql .= ' and tablename NOT IN ('.generateQuestionMarks($skipTalbes).') ';
-			array_push($params, $skipTalbes);
+			$params[] = $skipTalbes;
 			if($module == 'Calendar') {
 				$sql.= ' and vtiger_field.fieldid in (select min(fieldid) from vtiger_field where vtiger_field.tabid in ('. generateQuestionMarks($tabid) .') group by fieldlabel) order by sequence';
-				array_push($params, $tabid);
+				$params[] = $tabid;
 			} else {
 				$sql.= ' group by vtiger_field.fieldid order by sequence';
 			}
@@ -725,13 +725,13 @@ class Reports extends CRMEntity{
 		$options = array();
 		$datefiltervalue = Array("custom","prevfy","thisfy","nextfy","prevfq","thisfq","nextfq",
 				"yesterday","today","tomorrow","lastweek","thisweek","nextweek","lastmonth","thismonth",
-				"nextmonth","last7days","last30days", "last60days","last90days","last120days",
+				"nextmonth","last7days","last14days","last30days", "last60days","last90days","last120days",
 				"next30days","next60days","next90days","next120days"
 				);
 
 		$datefilterdisplay = Array("Custom","Previous FY", "Current FY","Next FY","Previous FQ","Current FQ","Next FQ","Yesterday",
 				"Today","Tomorrow","Last Week","Current Week","Next Week","Last Month","Current Month",
-				"Next Month","Last 7 Days","Last 30 Days","Last 60 Days","Last 90 Days","Last 120 Days",
+				"Next Month","Last 7 Days","Last 14 Days","Last 30 Days","Last 60 Days","Last 90 Days","Last 120 Days",
 				"Next 7 Days","Next 30 Days","Next 60 Days","Next 90 Days","Next 120 Days"
 				);
 
@@ -775,7 +775,7 @@ class Reports extends CRMEntity{
 			$sql = "select * from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid where vtiger_field.tabid=? and (vtiger_field.uitype =5 or vtiger_field.displaytype=2) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.block in (". generateQuestionMarks($block) .") and vtiger_field.presence in (0,2)";
 			if (count($profileList) > 0) {
 				$sql .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
-				array_push($params, $profileList);
+				$params[] = $profileList;
 			}
 			$sql .= " order by vtiger_field.sequence";
 		}
@@ -862,6 +862,9 @@ class Reports extends CRMEntity{
 
 		$last7days = date("Y-m-d",mktime(0, 0, 0, date("m")  , date("d")-6, date("Y")));
 		$last7DaysDateTime = new DateTimeField($last7days.' '. date('H:i:s'));
+
+		$last14days = date("Y-m-d",mktime(0, 0, 0, date("m")  , date("d")-13, date("Y")));
+		$last14DaysDateTime = new DateTimeField($last14days.' '. date('H:i:s'));
 
 		$last30days = date("Y-m-d",mktime(0, 0, 0, date("m")  , date("d")-29, date("Y")));
 		$last30DaysDateTime = new DateTimeField($last30days.' '. date('H:i:s'));
@@ -1030,6 +1033,10 @@ class Reports extends CRMEntity{
 					document.NewReport.startdate.value = "'.$last7DaysDateTime->getDisplayDate().'";
 					document.NewReport.enddate.value = "'.$todayDateTime->getDisplayDate().'";
 
+				} else if( type == "last14days" ) {
+					document.NewReport.startdate.value = "'.$last14DaysDateTime->getDisplayDate().'";
+					document.NewReport.enddate.value =  "'.$todayDateTime->getDisplayDate().'";
+
 				} else if( type == "last30days" ) {
 					document.NewReport.startdate.value = "'.$last30DaysDateTime->getDisplayDate().'";
 					document.NewReport.enddate.value = "'.$todayDateTime->getDisplayDate().'";
@@ -1113,7 +1120,7 @@ function getEscapedColumns($selectedfields) {
 			$query .= " vtiger_field.tabid in (9,16) and vtiger_field.displaytype in (1,2,3) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)";
 			if (count($profileList) > 0) {
 				$query .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
-				array_push($params, $profileList);
+				$params[] = $profileList;
 			}
 			$query .= " group by vtiger_field.fieldid order by block,sequence";
 		}
@@ -1123,7 +1130,7 @@ function getEscapedColumns($selectedfields) {
 			$query .= " vtiger_field.tabid in (select tabid from vtiger_tab where vtiger_tab.name in (?,?)) and vtiger_field.displaytype in (1,2,3) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)";
 			if (count($profileList) > 0) {
 				$query .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
-				array_push($params, $profileList);
+				$params[] = $profileList;
 			}
 			$query .= " group by vtiger_field.fieldid order by block,sequence";
 		}
@@ -1182,7 +1189,7 @@ function getEscapedColumns($selectedfields) {
 		$permitted_fields = Array();
 
 		$selected_mod = explode(":",$this->secmodule);
-		array_push($selected_mod,$this->primodule);
+		$selected_mod[] = $this->primodule;
 
 		$inventory_fields = array('quantity','listprice','serviceid','productid','discount','comment');
 		$inventory_modules = getInventoryModules();
@@ -1410,12 +1417,12 @@ function getEscapedColumns($selectedfields) {
 			$ssql = "select * from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid where vtiger_field.uitype != 50 and vtiger_field.tabid=? and vtiger_field.displaytype in (1,2,3) and vtiger_def_org_field.visible=0 and vtiger_profile2field.visible=0 and vtiger_field.presence in (0,2)";
 			if (count($profileList) > 0) {
 				$ssql .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
-				array_push($sparams, $profileList);
+				$sparams[] = $profileList;
 			}
 			$calcf = "select * from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid where vtiger_field.uitype != 50 and vtiger_field.tablename='vtiger_activitycf' and vtiger_field.displaytype in (1,2,3) and vtiger_def_org_field.visible=0 and vtiger_profile2field.visible=0 and vtiger_field.presence in (0,2)";
 			if ($tabid==9 and count($profileList) > 0) {
 				$calcf .= ' and vtiger_profile2field.profileid in ('. generateQuestionMarks($profileList) .')';
-				array_push($sparams, $profileList);
+				$sparams[] = $profileList;
 			}
 		}
 

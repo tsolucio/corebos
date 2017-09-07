@@ -7,9 +7,9 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-include_once dirname(__FILE__) . '/src/controllers/Controller.php';
-include_once dirname(__FILE__) . '/src/connectors/Connector.php';
-include_once dirname(__FILE__) . '/MailManager.php';
+include_once __DIR__ . '/src/controllers/Controller.php';
+include_once __DIR__ . '/src/connectors/Connector.php';
+include_once __DIR__ . '/MailManager.php';
 
 class MailManager_IndexController extends MailManager_Controller {
 
@@ -31,7 +31,7 @@ class MailManager_IndexController extends MailManager_Controller {
 		$controllerInfo = self::$controllers[$operation];
 
 		// TODO Handle case when controller information is not available
-		$controllerFile = dirname(__FILE__) . '/' . $controllerInfo['file'];
+		$controllerFile = __DIR__ . '/' . $controllerInfo['file'];
 		checkFileAccessForInclusion($controllerFile);
 		include_once $controllerFile;
 		$controller = new $controllerInfo['class'];
@@ -41,8 +41,7 @@ class MailManager_IndexController extends MailManager_Controller {
 		$response = $controller->process($request);
 		if ($response) $response->emit();
 
-		unset($request);
-		unset($response);
+		unset($request,$response);
 	}
 
 	function processRoot(MailManager_Request $request) {

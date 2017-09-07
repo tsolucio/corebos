@@ -140,8 +140,6 @@ class cbCalendar extends CRMEntity {
 		$this->column_fields['time_start'] = $_REQUEST['time_start'] = $ts;
 		$this->column_fields['due_date'] = $_REQUEST['due_date'] = $de;
 		$this->column_fields['time_end'] = $_REQUEST['time_end'] = $te;
-		list($ds,$ts) = explode(' ',getValidDBInsertDateTimeValue($this->column_fields['dtstart']));
-		list($de,$te) = explode(' ',getValidDBInsertDateTimeValue($this->column_fields['dtend']));
 		$adb->pquery('update vtiger_activity set date_start=?, time_start=?, due_date=?, time_end=? where activityid=?',array($ds,$ts,$de,$te,$this->id));
 		// code added to send mail to the invitees
 		if (!empty($_REQUEST['inviteesid'])) {
@@ -474,11 +472,11 @@ class cbCalendar extends CRMEntity {
 			}
 		}
 		$cont_name = '';
-		foreach($cont_id as $key=>$id) {
+		foreach($cont_id as $id) {
 			if($id != '') {
 				$displayValueArray = getEntityName('Contacts', $id);
 				if (!empty($displayValueArray)) {
-					foreach ($displayValueArray as $key => $field_value) {
+					foreach ($displayValueArray as $field_value) {
 						$contact_name = $field_value;
 					}
 				}
@@ -901,8 +899,7 @@ class cbCalendar extends CRMEntity {
 	 */
 	function save_related_module($module, $crmid, $with_module, $with_crmid) {
 		global $adb;
-		if (!is_array($with_crmid))
-			$with_crmid = Array($with_crmid);
+		$with_crmid = (array)$with_crmid;
 		foreach ($with_crmid as $relcrmid) {
 			$checkpresence = $adb->pquery('SELECT contactid FROM vtiger_cntactivityrel WHERE activityid = ? AND contactid = ?', Array($crmid, $relcrmid));
 			// Relation already exists? No need to add again
@@ -920,8 +917,7 @@ class cbCalendar extends CRMEntity {
 	 */
 	function delete_related_module($module, $crmid, $with_module, $with_crmid) {
 		global $adb;
-		if (!is_array($with_crmid))
-			$with_crmid = Array($with_crmid);
+		$with_crmid = (array)$with_crmid;
 		$data = array();
 		$data['sourceModule'] = $module;
 		$data['sourceRecordId'] = $crmid;

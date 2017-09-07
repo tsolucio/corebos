@@ -28,10 +28,7 @@ class DBHealthCheck {
 
 	function isDBHealthy() {
 		$tablesList = $this->getUnhealthyTablesList();
-		if (count($tablesList) > 0) {
-			return false;
-		}
-		return true;
+		return !(count($tablesList) > 0);
 	}
 
 	function getUnhealthyTablesList() {

@@ -20,12 +20,11 @@ $cnt=1;
 $output='';
 $list_header = array($mod_strings['LBL_LIST_TOOLS'],$mod_strings['LBL_GROUP_NAME'],$mod_strings['LBL_DESCRIPTION']);
 $return_data = array();
-foreach($groupInfo as $groupId=>$groupInfo)
-{
+foreach ($groupInfo as $groupId=>$group) {
 	$standCustFld = array();
 	$standCustFld['groupid']= $groupId;	
-	$standCustFld['groupname']= $groupInfo[0];
-	$standCustFld['description']= $groupInfo[1];
+	$standCustFld['groupname']= $group[0];
+	$standCustFld['description']= $group[1];
 	$return_data[]=$standCustFld;
 	$cnt++;
 }

@@ -204,7 +204,7 @@ class QueryGenerator {
 		$field = '';
 		if ($fldmod == '') {  // not FQN > we have to look for it
 			foreach ($this->referenceFieldInfoList as $fld => $mods) {
-				if ($fld=='modifiedby') $fld=='assigned_user_id';
+				if ($fld=='modifiedby') $fld='assigned_user_id';
 				foreach ($mods as $mname) {
 					if (!empty($this->referenceFields[$fld][$mname][$fldname])) {
 						$field = $this->referenceFields[$fld][$mname][$fldname];
@@ -212,7 +212,7 @@ class QueryGenerator {
 							if ($mname=='Users') {
 								return $field->getTableName().'.'.$fldname;
 							} else {
-								if($fldname=='assigned_user_id' && strstr($field->getTableName(),"vtiger_crmentity")) {
+								if ($fldname=='assigned_user_id' && false !== strpos($field->getTableName(), 'vtiger_crmentity')) {
 									$fldname='smownerid as smowner'.strtolower(getTabModuleName($field->getTabId()));
 								} else {
 									if ($alias) {
@@ -238,7 +238,7 @@ class QueryGenerator {
 						if ($fldmod=='Users') {
 							return $field->getTableName().'.'.$fldname;
 						} else {
-							if($fldname=='assigned_user_id' && strstr($field->getTableName(),"vtiger_crmentity")) {
+							if ($fldname=='assigned_user_id' && false !== strpos($field->getTableName(), 'vtiger_crmentity')) {
 								$fldname='smownerid as smowner'.strtolower(getTabModuleName($field->getTabId()));
 							} else {
 								if ($alias) {
@@ -504,15 +504,16 @@ class QueryGenerator {
 			$baseTable = $field->getTableName();
 			$tableIndexList = $this->meta->getEntityTableIndexList();
 			$baseTableIndex = $tableIndexList[$baseTable];
-			if($field->getFieldDataType() == 'reference') {
+			if ($field->getFieldDataType() == 'reference') {
 				$moduleList = $this->referenceFieldInfoList[$fieldName];
-				$tableJoinMapping[$field->getTableName()] = 'INNER JOIN';
-				foreach($moduleList as $module) {
-					if($module == 'Users' && $baseModule != 'Users') {
-						$tableJoinCondition[$fieldName]['vtiger_users'.$fieldName] = $field->getTableName().
-							".".$field->getColumnName()." = vtiger_users".$fieldName.".id";
-						$tableJoinCondition[$fieldName]['vtiger_groups'.$fieldName] = $field->getTableName().
-							".".$field->getColumnName()." = vtiger_groups".$fieldName.".groupid";
+				$tableJoinMapping[$baseTable] = 'INNER JOIN';
+				$fldcolname = $field->getColumnName();
+				foreach ($moduleList as $module) {
+					if ($module == 'Users' && $baseModule != 'Users') {
+						$tableJoinCondition[$fieldName]['vtiger_users'.$fieldName] = $baseTable.
+							".".$fldcolname." = vtiger_users".$fieldName.".id";
+						$tableJoinCondition[$fieldName]['vtiger_groups'.$fieldName] = $baseTable.
+							".".$fldcolname." = vtiger_groups".$fieldName.".groupid";
 						$tableJoinMapping['vtiger_users'.$fieldName] = 'LEFT JOIN vtiger_users AS';
 						$tableJoinMapping['vtiger_groups'.$fieldName] = 'LEFT JOIN vtiger_groups AS';
 					}
@@ -523,8 +524,8 @@ class QueryGenerator {
 				$tableJoinMapping['vtiger_users'] = 'LEFT JOIN';
 				$tableJoinMapping['vtiger_groups'] = 'LEFT JOIN';
 			}
-			$tableList[$field->getTableName()] = $field->getTableName();
-			$tableJoinMapping[$field->getTableName()] = $this->meta->getJoinClause($field->getTableName());
+			$tableList[$baseTable] = $baseTable;
+			$tableJoinMapping[$baseTable] = $this->meta->getJoinClause($baseTable);
 		}
 		$baseTable = $this->meta->getEntityBaseTable();
 		$moduleTableIndexList = $this->meta->getEntityTableIndexList();
@@ -542,19 +543,19 @@ class QueryGenerator {
 			// When a field is included in Where Clause, but not in Select Clause, and the field table is not base table,
 			// The table will not be present in tablesList and hence needs to be added to the list.
 			if(empty($tableList[$baseTable])) {
-				$tableList[$baseTable] = $field->getTableName();
-				$tableJoinMapping[$baseTable] = $this->meta->getJoinClause($field->getTableName());
+				$tableList[$baseTable] = $baseTable;
+				$tableJoinMapping[$baseTable] = $this->meta->getJoinClause($baseTable);
 			}
 			if($field->getFieldDataType() == 'reference') {
 				$moduleList = $this->referenceFieldInfoList[$fieldName];
 				// This is special condition as the data is not stored in the base table,
 				// If empty search is performed on this field then it fails to retrieve any information.
-				if ($fieldName == 'parent_id' && $field->getTableName() == 'vtiger_seactivityrel') {
-					$tableJoinMapping[$field->getTableName()] = 'LEFT JOIN';
-				} else if ($fieldName == 'contact_id' && $field->getTableName() == 'vtiger_cntactivityrel') {
-					$tableJoinMapping[$field->getTableName()] = "LEFT JOIN";
+				if ($fieldName == 'parent_id' && $baseTable == 'vtiger_seactivityrel') {
+					$tableJoinMapping[$baseTable] = 'LEFT JOIN';
+				} else if ($fieldName == 'contact_id' && $baseTable == 'vtiger_cntactivityrel') {
+					$tableJoinMapping[$baseTable] = "LEFT JOIN";
 				} else {
-					$tableJoinMapping[$field->getTableName()] = 'INNER JOIN';
+					$tableJoinMapping[$baseTable] = 'INNER JOIN';
 				}
 				foreach($moduleList as $module) {
 					$meta = $this->getMeta($module);
@@ -596,8 +597,8 @@ class QueryGenerator {
 				$tableJoinMapping['vtiger_users'] = 'LEFT JOIN';
 				$tableJoinMapping['vtiger_groups'] = 'LEFT JOIN';
 			} else {
-				$tableList[$field->getTableName()] = $field->getTableName();
-				$tableJoinMapping[$field->getTableName()] = $this->meta->getJoinClause($field->getTableName());
+				$tableList[$baseTable] = $baseTable;
+				$tableJoinMapping[$baseTable] = $this->meta->getJoinClause($baseTable);
 			}
 		}
 
@@ -879,9 +880,7 @@ class QueryGenerator {
 				$fieldSqlList[$index] = '('.$valueSqlList[0].')';
 				continue;
 			}
-			if(!is_array($valueSqlList)) {
-				$valueSqlList = array($valueSqlList);
-			}
+			$valueSqlList = (array)$valueSqlList;
 			foreach ($valueSqlList as $valueSql) {
 				if (in_array($fieldName, $this->referenceFieldList)) {
 					$moduleList = $this->referenceFieldInfoList[$fieldName];
@@ -1410,12 +1409,12 @@ class QueryGenerator {
 			} else {
 				$value = '';
 			}
-			if(!empty($input['operator'])) {
+			if (!empty($input['operator'])) {
 				$operator = $input['operator'];
-			} elseif(trim(strtolower($value)) == 'null'){
+			} elseif (strtolower(trim($value)) == 'null') {
 				$operator = 'e';
 			} else {
-				if(!$this->isNumericType($type) && !$this->isDateType($type)) {
+				if (!$this->isNumericType($type) && !$this->isDateType($type)) {
 					$operator = 'c';
 				} else {
 					$operator = 'h';

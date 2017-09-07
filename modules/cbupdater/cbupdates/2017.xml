@@ -63,4 +63,18 @@
 	<classname>delFieldFormula</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Database optimizations and support for mass edit on solution and customer portal fields</description>
+	<filename>build/changeSets/2017/cleanoptimizedatabase_200.php</filename>
+	<classname>cleanoptimizedatabase_200</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>User Hour Field and Calendar Quick Create</description>
+	<filename>build/changeSets/2017/UserHourFieldCalendarQuickCreate.php</filename>
+	<classname>UserHourFieldCalendarQuickCreate</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

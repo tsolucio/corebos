@@ -58,6 +58,7 @@ if($isduplicate == 'true') {
 	$focus->id = '';
 	$focus->mode = '';
 	$focus->column_fields['isduplicatedfromrecordid'] = $record; // in order to support duplicate workflows
+	$smarty->assign('__cbisduplicatedfromrecordid', $record);
 	$_REQUEST['cbcustominfo1'] = 'duplicatingproduct';
 	$_REQUEST['cbcustominfo2'] = $record;
 }

@@ -228,7 +228,7 @@ function getAllTaxes($available='all', $sh='',$mode='',$id='')
 
 			$tax_val=$adb->query_result($inventory_tax_val_result,0,$taxname);
 				if ($tax_val != '') {
-				array_push($result_ids,$taxid);
+				$result_ids[] = $taxid;
 			}
 
 		}
@@ -358,9 +358,9 @@ function updateInventoryProductRel($entity) {
 	$log->debug("Entering into function updateInventoryProductRel(".$entity_id.").");
 
 	if(!empty($update_product_array)) {
-		foreach($update_product_array as $id=>$seq) {
-			foreach($seq as $seq=>$product_info) {
-				foreach($product_info as $key=>$index) {
+		foreach ($update_product_array as $seq) {
+			foreach ($seq as $product_info) {
+				foreach ($product_info as $key=>$index) {
 					$updqtyinstk= getPrdQtyInStck($key);
 					$upd_qty = $updqtyinstk+$index;
 					updateProductQty($key, $upd_qty);
@@ -541,12 +541,12 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 		//set the discount percentage or discount amount in update query, then set the tax values
 		if (isset($_REQUEST['discount_type'.$i]) and $_REQUEST['discount_type'.$i] == 'percentage') {
 			$updatequery .= " discount_percent=?,";
-			array_push($updateparams, floatval($_REQUEST['discount_percentage'.$i]));
+			$updateparams[] = (float)$_REQUEST['discount_percentage'.$i];
 		}
 		elseif (isset($_REQUEST['discount_type'.$i]) and $_REQUEST['discount_type'.$i] == 'amount') {
 			$updatequery .= " discount_amount=?,";
 			$discount_amount = $_REQUEST['discount_amount'.$i];
-			array_push($updateparams, floatval($discount_amount));
+			$updateparams[] = (float)$discount_amount;
 		}
 		if($_REQUEST['taxtype'] == 'group')
 		{
@@ -559,7 +559,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 				if(isset($_REQUEST[$request_tax_name]))
 					$tax_val =vtlib_purify($_REQUEST[$request_tax_name]);
 				$updatequery .= " $tax_name = ?,";
-				array_push($updateparams,floatval($tax_val));
+				$updateparams[] = (float)$tax_val;
 			}
 			$updatequery = trim($updatequery,',')." where id=? and productid=? and lineitem_id = ?";
 			array_push($updateparams,$focus->id,$prod_id, $lineitem_id);
@@ -571,7 +571,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 				if (!in_array($tax_name, $ipr_cols)) continue;
 				$request_tax_name = $tax_name."_percentage".$i;
 				$updatequery .= " $tax_name = ?,";
-				array_push($updateparams, floatval(vtlib_purify($_REQUEST[$request_tax_name])));
+				$updateparams[] = (float)vtlib_purify($_REQUEST[$request_tax_name]);
 			}
 			$updatequery = trim($updatequery,',')." where id=? and productid=? and lineitem_id = ?";
 			array_push($updateparams, $focus->id,$prod_id, $lineitem_id);
@@ -589,25 +589,25 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 	$updateparams = array();
 	$subtotal = vtlib_purify($_REQUEST['subtotal']);
 	$updatequery .= " subtotal=?,";
-	array_push($updateparams, floatval($subtotal));
+	$updateparams[] = (float)$subtotal;
 
 	$updatequery .= " taxtype=?,";
-	array_push($updateparams, vtlib_purify($_REQUEST['taxtype']));
+	$updateparams[] = vtlib_purify($_REQUEST['taxtype']);
 
 	//for discount percentage or discount amount
 	if (isset($_REQUEST['discount_type_final']) and $_REQUEST['discount_type_final'] == 'percentage') {
 		$updatequery .= " discount_percent=?,";
-		array_push($updateparams, floatval(vtlib_purify($_REQUEST['discount_percentage_final'])));
+		$updateparams[] = (float)vtlib_purify($_REQUEST['discount_percentage_final']);
 	}
 	elseif (isset($_REQUEST['discount_type_final']) and $_REQUEST['discount_type_final'] == 'amount') {
 		$discount_amount_final = vtlib_purify($_REQUEST['discount_amount_final']);
 		$updatequery .= " discount_amount=?,";
-		array_push($updateparams, floatval($discount_amount_final));
+		$updateparams[] = (float)$discount_amount_final;
 	}
 
 	$shipping_handling_charge = vtlib_purify($_REQUEST['shipping_handling_charge']);
 	$updatequery .= " s_h_amount=?,";
-	array_push($updateparams, floatval($shipping_handling_charge));
+	$updateparams[] = (float)$shipping_handling_charge;
 
 	//if the user gave - sign in adjustment then add with the value
 	$adjustmentType = '';
@@ -616,16 +616,16 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 
 	$adjustment = (isset($_REQUEST['adjustment']) ? vtlib_purify($_REQUEST['adjustment']) : 0);
 	$updatequery .= " adjustment=?,";
-	array_push($updateparams, floatval($adjustmentType.$adjustment));
+	$updateparams[] = (float)($adjustmentType.$adjustment);
 
 	$total = vtlib_purify($_REQUEST['total']);
 	$updatequery .= " total=?";
-	array_push($updateparams, floatval($total));
+	$updateparams[] = (float)$total;
 
 	//$id_array = Array('PurchaseOrder'=>'purchaseorderid','SalesOrder'=>'salesorderid','Quotes'=>'quoteid','Invoice'=>'invoiceid');
 	//Added where condition to which entity we want to update these values
 	$updatequery .= " where ".$focus->table_index."=?";
-	array_push($updateparams, $focus->id);
+	$updateparams[] = $focus->id;
 
 	$adb->pquery($updatequery,$updateparams);
 
@@ -640,7 +640,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 		if (isset($_REQUEST[$tax_name]) and $_REQUEST[$tax_name] != '' and in_array($sh_tax_details[$i]['taxname'], $isr_cols)) {
 			$sh_query_fields .= $sh_tax_details[$i]['taxname'].",";
 			$sh_query_values .= "?,";
-			array_push($sh_query_params, floatval(vtlib_purify($_REQUEST[$tax_name])));
+			$sh_query_params[] = (float)vtlib_purify($_REQUEST[$tax_name]);
 		}
 	}
 	$sh_query_fields = trim($sh_query_fields,',');
@@ -891,8 +891,7 @@ function getProductBaseCurrency($productid,$module='Products') {
 	}
 	$params = array($productid);
 	$res = $adb->pquery($sql, $params);
-	$currencyid = $adb->query_result($res, 0, 'currency_id');
-	return $currencyid;
+	return $adb->query_result($res, 0, 'currency_id');
 }
 
 /**	Function used to get the conversion rate for the product base currency with respect to the CRM base currency
@@ -982,9 +981,8 @@ function getPricesForProducts($currencyid, $product_ids, $module='Products') {
  */
 function getPriceBookCurrency($pricebook_id) {
 	global $adb;
-	$result = $adb->pquery("select currency_id from vtiger_pricebook where pricebookid=?", array($pricebook_id));
-	$currency_id = $adb->query_result($result,0,'currency_id');
-	return $currency_id;
+	$result = $adb->pquery('select currency_id from vtiger_pricebook where pricebookid=?', array($pricebook_id));
+	return $adb->query_result($result,0,'currency_id');
 }
 
 // deduct products from stock - if status will be changed from cancel to other status.
@@ -1103,7 +1101,7 @@ function createRecords($obj) {
 			if ($subjectRow['productid'] == '' || $subjectRow['quantity'] == '' || $subjectRow['listprice'] == '') {
 				continue;
 			}
-			array_push($subjectRowIDs, $subjectRow['id']);
+			$subjectRowIDs[] = $subjectRow['id'];
 			$lineItemData = array();
 			$lineItemData['discount'] = 0;
 			foreach ($fieldMapping as $fieldName => $index) {
@@ -1178,7 +1176,7 @@ function createRecords($obj) {
 					}
 				}
 			}
-			array_push($lineItems,$lineItemData);
+			$lineItems[] = $lineItemData;
 		}
 		foreach ($fieldMapping as $fieldName => $index) {
 			$fieldData[$fieldName] = $subjectRow[strtolower($fieldName)];

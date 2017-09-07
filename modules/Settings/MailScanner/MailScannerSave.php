@@ -33,10 +33,10 @@ $newscannerinfo->ssltype    = vtlib_purify(trim($_REQUEST['mailboxinfo_ssltype']
 $newscannerinfo->sslmethod  = vtlib_purify(trim($_REQUEST['mailboxinfo_sslmethod']));
 $newscannerinfo->searchfor  = vtlib_purify(trim($_REQUEST['mailboxinfo_searchfor']));
 $newscannerinfo->markas     = vtlib_purify(trim($_REQUEST['mailboxinfo_markas']));
-$newscannerinfo->isvalid    =(vtlib_purify($_REQUEST['mailboxinfo_enable']) == 'true')? true : false;
+$newscannerinfo->isvalid    = vtlib_purify($_REQUEST['mailboxinfo_enable']) == 'true';
 
 // Rescan all folders on next run?
-$rescanfolder = (isset($_REQUEST['mailboxinfo_rescan_folders']) and $_REQUEST['mailboxinfo_rescan_folders'] == 'true')? true : false;
+$rescanfolder = (bool)(isset($_REQUEST['mailboxinfo_rescan_folders']) && $_REQUEST['mailboxinfo_rescan_folders'] == 'true');
 
 $isconnected = false;
 

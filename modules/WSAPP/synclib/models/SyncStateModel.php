@@ -27,7 +27,7 @@ class WSAPP_SyncStateModel extends WSAPP_BaseModel{
 	}
 
 	public function hasMoreRecords(){
-		return ($this->get('more')==1) ? true : false;
+		return $this->get('more') == 1;
 	}
 
 	public function getSyncTrackerId(){

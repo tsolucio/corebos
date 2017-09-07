@@ -169,7 +169,7 @@ class Google_List_View  {
                 if (count($records) == 0) {
                     $pullRecord = true;
                 }
-                foreach ($records as $type => $record) {
+                foreach ($records as $record) {
                     foreach ($record as $type => $data) {
                         if ($type == 'target') {
                             if ($data->getMode() == WSAPP_SyncRecordModel::WSAPP_UPDATE_MODE) {

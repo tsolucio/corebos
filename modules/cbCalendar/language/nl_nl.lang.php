@@ -18,6 +18,8 @@ $mod_strings = Array(
 	'LBL_DESCRIPTION_INFORMATION' => 'Verkoopkans omschrijving',
 
 	'ModuleFieldLabel' => 'ModuleFieldLabel Text',
+	'DATE_SHOULDNOT_PAST' => 'Huidige datum & tijd voor Activitieiten met status zoals Geplanned',
+	'TIME_SHOULDNOT_PAST' => 'Huidige tijd voor Activitieiten met status zoals Geplanned',
 );
 
 ?>

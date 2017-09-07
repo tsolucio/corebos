@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 include_once 'include/InventoryPDFController.php';
-include_once dirname(__FILE__). '/SalesOrderPDFHeaderViewer.php';
+include_once __DIR__ . '/SalesOrderPDFHeaderViewer.php';
 class Vtiger_SalesOrderPDFController extends Vtiger_InventoryPDFController{
 	function buildHeaderModelTitle() {
 		$singularModuleNameKey = 'SINGLE_'.$this->moduleName;
@@ -24,12 +24,11 @@ class Vtiger_SalesOrderPDFController extends Vtiger_InventoryPDFController{
 		$headerViewer->setModel($this->buildHeaderModel());
 		return $headerViewer;
 	}
-	
+
 	function buildHeaderModelColumnLeft() {
-		$modelColumnLeft = parent::buildHeaderModelColumnLeft();
-		return $modelColumnLeft;
+		return parent::buildHeaderModelColumnLeft();
 	}
-	
+
 	function buildHeaderModelColumnCenter() {
 		$subject = $this->focusColumnValue('subject');
 		$customerName = $this->resolveReferenceLabel($this->focusColumnValue('account_id'), 'Accounts');

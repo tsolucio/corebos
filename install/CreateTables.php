@@ -150,7 +150,7 @@ session_destroy();
 </table>
 <table border=0 cellspacing=0 cellpadding=0 width=80% align=center>
 	<tr>
-		<td class=small align=center> <a href="<?php echo $coreBOS_app_url; ?>" target="_blank"><?php echo $coreBOS_app_name; ?></a></td> | <?php echo $statimage ?>
+		<td class=small align=center> <a href="<?php echo $coreBOS_app_url; ?>" target="_blank"><?php echo $coreBOS_app_name; ?></a></td>
 	</tr>
 </table>
 </body>

@@ -9,7 +9,7 @@
  ************************************************************************************/
 include_once 'include/Webservices/Utils.php';
 include_once 'modules/Mobile/Mobile.php';
-include_once dirname(__FILE__) . '/Utils.php';
+include_once __DIR__ . '/Utils.php';
 
 class crmtogo_WS_Controller  {
 	

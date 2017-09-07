@@ -161,7 +161,7 @@ class Vtiger_FieldBasic {
 				uitype, fieldname, fieldlabel, readonly, presence, defaultvalue, maximumlength, sequence,
 				block, displaytype, typeofdata, quickcreate, quickcreatesequence, info_type, helpinfo)
 				VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-					Array($this->getModuleId(), $this->id, $this->column, $this->table, intval($this->generatedtype),
+					Array($this->getModuleId(), $this->id, $this->column, $this->table, (int)$this->generatedtype,
 					$this->uitype, $this->name, $this->label, $this->readonly, $this->presence, $this->defaultvalue,
 					$this->maximumlength, $this->sequence, $this->getBlockId(), $this->displaytype, $this->typeofdata,
 					$this->quickcreate, $this->quicksequence, $this->info_type, $this->helpinfo));

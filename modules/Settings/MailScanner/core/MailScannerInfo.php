@@ -109,7 +109,7 @@ class Vtiger_MailScannerInfo {
 					$scannedon =$adb->query_result($lastscanres, $lsindex, 'lastscan');
 					$nextrescan =$adb->query_result($lastscanres, $lsindex, 'rescan');
 					$this->lastscan[$folder] = $scannedon;
-					$this->rescan[$folder]   = ($nextrescan == 0)? false : true;
+					$this->rescan[$folder]   = $nextrescan != 0;
 				}
 			}
 		}

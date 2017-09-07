@@ -38,7 +38,7 @@ class Import_Lock_Controller {
 			$params = array($user->id);
 			if($module != false) {
 				$query .= ' AND tabid=?';
-				array_push($params, getTabid($module));
+				$params[] = getTabid($module);
 			}
 			$adb->pquery($query, $params);
 		}
@@ -46,16 +46,12 @@ class Import_Lock_Controller {
 
 	public static function isLockedForModule($module) {
 		$adb = PearDatabase::getInstance();
-		
-		if(Vtiger_Utils::CheckTable('vtiger_import_locks')) {
+		if (Vtiger_Utils::CheckTable('vtiger_import_locks')) {
 			$lockResult = $adb->pquery('SELECT * FROM vtiger_import_locks WHERE tabid=?',array(getTabid($module)));
-
-			if($lockResult && $adb->num_rows($lockResult) > 0) {
-				$lockInfo = $adb->query_result_rowdata($lockResult, 0);
-				return $lockInfo;
+			if ($lockResult && $adb->num_rows($lockResult) > 0) {
+				return $adb->query_result_rowdata($lockResult, 0);
 			}
 		}
-
 		return null;
 	}
 }

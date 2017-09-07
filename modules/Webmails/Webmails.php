@@ -615,9 +615,8 @@ function GetCodeScoreAll($Data,$beg_charset) {
 		$Mark_koi+=$Cur_mark_koi*$scaleK;
 		$Mark_win+=$Cur_mark_win*$scaleW;
 	}
-	$Mark_list=array($Mark_koi,$Mark_win);
 	//setlocale(LC_CTYPE,$old_locale);
-	return $Mark_list;
+	return array($Mark_koi,$Mark_win);
 }
 
 /* lxnt:  patched to return charset names that iconv() understands*/
@@ -773,7 +772,7 @@ function convertMailData2Html($maildata, $cutafter = 0) {
 		}
 		else
 		{
-			array_push($attach_tab, $tmpvar);
+			$attach_tab[] = $tmpvar;
 		}
 		$link_att = '';
 		$att_links = '';//variable added to display the attachments in full email view

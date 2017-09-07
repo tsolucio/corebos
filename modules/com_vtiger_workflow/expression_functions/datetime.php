@@ -144,7 +144,7 @@ function __cb_next_date($arr) {
 	$startDate = new DateTime( $arr[0] );
 	$endDate = new DateTime( __vt_add_days(array($arr[0],180)) ); // 180 days to make sure we catch next occurrence
 	$nextDays = explode(',', $arr[1]);
-	if (isset($arr[2])) { // list of holidays
+	if (isset($arr[2]) && trim($arr[2])!='') { // list of holidays
 		$holiday = explode(',', $arr[2]);
 	} else {
 		$holiday = array();
@@ -178,7 +178,7 @@ function __cb_next_dateLaborable($arr) {
 	$startDate = new DateTime( $arr[0] );
 	$endDate = new DateTime( __vt_add_days(array($arr[0],180)) ); // 180 days to make sure we catch next occurrence
 	$nextDays = explode(',', $arr[1]);
-	if (isset($arr[2])) { // list of holidays
+	if (isset($arr[2]) && trim($arr[2])!='') { // list of holidays
 		$holiday = explode(',', $arr[2]);
 	} else {
 		$holiday = array();

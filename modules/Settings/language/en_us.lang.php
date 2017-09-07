@@ -785,6 +785,7 @@ $mod_strings = Array(
 'LBL_SCANNING'=>'Scanning',
 'LBL_LOOKFOR'=>'Look for',
 'LBL_UNREAD'=>'Unread',
+'LBL_ALLUNREAD'=>'ALL Unread',
 'LBL_READ'=>'Read',
 'LBL_AFTER_SCAN'=>'After scan',
 'LBL_MESSAGES_FROM_LASTSCAN'=>'Messages from last scan',

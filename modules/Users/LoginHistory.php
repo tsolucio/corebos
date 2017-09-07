@@ -194,8 +194,7 @@ class LoginHistory {
 		cbEventHandler::do_action('corebos.audit.login',array($usname, 'Users', 'Login', $usname, date("Y-m-d H:i:s")));
 		$query = "Insert into vtiger_loginhistory (user_name, user_ip, logout_time, login_time, status) values (?,?,?,?,?)";
 		$params = array($usname,$usip,null, $this->db->formatDate($intime, true),'Signed in');
-		$result = $adb->pquery($query, $params);
-		return $result;
+		return $adb->pquery($query, $params);
 	}
 
 	/** Function that Records the Logout info of the User

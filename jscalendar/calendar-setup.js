@@ -30,6 +30,7 @@
  *    prop. name   | description
  *  -------------------------------------------------------------------------------------------------
  *   inputField    | the ID of an input field to store the date
+ *   inputTimeFormat | format of the established field value: 24, am or pm
  *   displayArea   | the ID of a DIV or other element to show the date
  *   button        | ID of a button or other element that will trigger the calendar
  *   eventName     | event that will trigger the calendar, without the "on" prefix (default: "click")
@@ -63,6 +64,7 @@ Calendar.setup = function (params) {
 	function param_default(pname, def) { if (typeof params[pname] == "undefined") { params[pname] = def; } };
 
 	param_default("inputField",     null);
+	param_default("inputTimeFormat",null);
 	param_default("displayArea",    null);
 	param_default("button",         null);
 	param_default("eventName",      "click");
@@ -115,8 +117,13 @@ Calendar.setup = function (params) {
 			if (typeof p.inputField.onchange == "function")
 				p.inputField.onchange();
 		}
-		if (update && p.displayArea)
+		if (update && p.displayArea) {
 			p.displayArea.innerHTML = cal.date.print(p.daFormat);
+			var daInput = document.getElementById('input' + p.displayArea.id);
+			if (daInput != undefined) {
+				daInput.value = cal.date.print(p.daFormat);
+			}
+		}
 		if (update && p.singleClick && cal.dateClicked)
 			cal.callCloseHandler();
 		if (update && typeof p.onUpdate == "function")

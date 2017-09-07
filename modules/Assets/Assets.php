@@ -132,47 +132,6 @@ class Assets extends CRMEntity {
 	}
 
 	/**
-	 * Get list view query (send more WHERE clause condition if required)
-	 */
-	function getListQuery($module, $where='') {
-		$query = "SELECT vtiger_crmentity.*, $this->table_name.*";
-
-		// Select Custom Field Table Columns if present
-		if(!empty($this->customFieldTable)) $query .= ", " . $this->customFieldTable[0] . ".* ";
-
-		$query .= " FROM $this->table_name";
-
-		$query .= "	INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
-
-		// Consider custom table join as well.
-		if(!empty($this->customFieldTable)) {
-			$query .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
-				" = $this->table_name.$this->table_index";
-		}
-		$query .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
-		$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
-
-		$linkedModulesQuery = $this->db->pquery("SELECT distinct tablename, columnname, relmodule FROM vtiger_field" .
-				" INNER JOIN vtiger_fieldmodulerel ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid" .
-				" WHERE uitype='10' AND vtiger_fieldmodulerel.module=?", array($module));
-		$linkedFieldsCount = $this->db->num_rows($linkedModulesQuery);
-
-		for($i=0; $i<$linkedFieldsCount; $i++) {
-			$related_module = $this->db->query_result($linkedModulesQuery, $i, 'relmodule');
-			$tablename = $this->db->query_result($linkedModulesQuery, $i, 'tablename');
-			$columnname = $this->db->query_result($linkedModulesQuery, $i, 'columnname');
-
-			$other = CRMEntity::getInstance($related_module);
-
-			$query .= " LEFT JOIN $other->table_name ON $other->table_name.$other->table_index = $tablename.$columnname";
-		}
-
-		$query .= "	WHERE vtiger_crmentity.deleted = 0 ".$where;
-		$query .= $this->getListViewSecurityParameter($module);
-		return $query;
-	}
-
-	/**
 	 * Handle saving related module information.
 	 * NOTE: This function has been added to CRMEntity (base class).
 	 * You can override the behavior by re-defining it here.
@@ -192,22 +151,6 @@ class Assets extends CRMEntity {
 	 * You can override the behavior by re-defining it here.
 	 */
 	//function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
-
-
-	/*
-	 * Function to get the primary query part of a report
-	 * @param - $module primary module name
-	 * returns the query string formed on fetching the related data for report for secondary module
-	 */
-	// function generateReportsQuery($module){ }
-
-	/*
-	 * Function to get the secondary query part of a report
-	 * @param - $module primary module name
-	 * @param - $secmodule secondary module name
-	 * returns the query string formed on fetching the related data for report for secondary module
-	 */
-	// function generateReportsSecQuery($module,$secmodule){ }
 
 	// Function to unlink all the dependent entities of the given Entity by Id
 	function unlinkDependencies($module, $id) {

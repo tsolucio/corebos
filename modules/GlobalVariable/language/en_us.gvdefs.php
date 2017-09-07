@@ -511,6 +511,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'The maximum number of rows permitted for a full length HTML report. The default value is 5000.',
 ),
+'Report_MaxRelated_Modules' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'The maximum number of related modules permitted for a report. The default value is 2.',
+),
 'Workflow_Maximum_Scheduled' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Integer',

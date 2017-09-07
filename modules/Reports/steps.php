@@ -836,9 +836,7 @@ function getRelatedFieldColumns($selected="") {
 	$ogReport = new Reports();
 	$ogReport->getPriModuleColumnsList($oReport->primodule);
 	$ogReport->getSecModuleColumnsList($oReport->secmodule);
-
-	$rel_fields = $ogReport->adv_rel_fields;
-	return $rel_fields;
+	return $ogReport->adv_rel_fields;
 }
 
 /** Function to get visible criteria for a report
@@ -923,6 +921,5 @@ function getShareInfo($recordid='') {
 	}
 	return $member_data;
 }
-
 
 ?>

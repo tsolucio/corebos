@@ -9,7 +9,7 @@
  * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
 include_once 'include/Webservices/DescribeObject.php';
-include_once dirname(__FILE__) . '/Utils.php';
+include_once __DIR__ . '/Utils.php';
 
 class crmtogo_WS_Describe extends crmtogo_WS_Controller {
 	protected function cacheDescribeInfo($describeInfo) {

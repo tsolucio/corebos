@@ -511,6 +511,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Número máximo de filas permitidas en un informe completo HTML. El valor por defecto es 5000.',
 ),
+'Report_MaxRelated_Modules' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Entero',
+	'category' => 'Aplicación',
+	'values' => '',
+	'definition' => 'El número máximo de módulos relacionados permitido en un informe. El valor predeterminado es 2.',
+),
 'Workflow_Maximum_Scheduled' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Entero',

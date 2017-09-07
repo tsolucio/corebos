@@ -138,8 +138,7 @@ function getEmailFieldId($meta, $entityId) {
 	$result = $adb->pquery($query, array($meta->getTabId()));
 
 	//pick up the first field.
-	$fieldId = $adb->query_result($result,0,'fieldid');
-	return $fieldId;
+	return $adb->query_result($result,0,'fieldid');
 }
 
 function vtws_getParameter($parameterArray, $paramName,$default=null) {
@@ -169,7 +168,7 @@ function vtws_getEntityNameFields($moduleName) {
 		if (!(strpos($fieldsname,',') === false)) {
 			 $nameFields = explode(',',$fieldsname);
 		} else {
-			array_push($nameFields,$fieldsname);
+			$nameFields[] = $fieldsname;
 		}
 	}
 	return $nameFields;
@@ -184,7 +183,7 @@ function vtws_getModuleNameList() {
 	$res = $adb->pquery($sql, array());
 	$mod_array = Array();
 	while ($row = $adb->fetchByAssoc($res)) {
-		array_push($mod_array,$row['name']);
+		$mod_array[] = $row['name'];
 	}
 	return $mod_array;
 }
@@ -198,9 +197,9 @@ function vtws_getWebserviceEntities() {
 	$entityArray = Array();
 	while($row = $adb->fetchByAssoc($res)) {
 		if ($row['ismodule'] == '1') {
-			array_push($moduleArray,$row['name']);
+			$moduleArray[] = $row['name'];
 		} else {
-			array_push($entityArray,$row['name']);
+			$entityArray[] = $row['name'];
 		}
 	}
 	return array('module'=>$moduleArray,'entity'=>$entityArray);
@@ -484,11 +483,8 @@ function vtws_getModuleHandlerFromName($name,$user) {
 	$webserviceObject = VtigerWebserviceObject::fromName($adb,$name);
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();
-
 	require_once $handlerPath;
-
-	$handler = new $handlerClass($webserviceObject,$user,$adb,$log);
-	return $handler;
+	return new $handlerClass($webserviceObject,$user,$adb,$log);
 }
 
 function vtws_getModuleHandlerFromId($id,$user) {
@@ -499,8 +495,7 @@ function vtws_getModuleHandlerFromId($id,$user) {
 
 	require_once $handlerPath;
 
-	$handler = new $handlerClass($webserviceObject,$user,$adb,$log);
-	return $handler;
+    return new $handlerClass($webserviceObject,$user,$adb,$log);
 }
 
 function vtws_CreateCompanyLogoFile($fieldname) {

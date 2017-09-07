@@ -106,8 +106,7 @@ function get_options_array_seperate_key(&$label_list, &$key_list, $selected_key,
 	//for setting null selection values to human readable --None--
 	$pattern = "/'0?'></";
 	$replacement = "''>" . $app_strings['LBL_NONE'] . "<";
-	if (!is_array($selected_key))
-		$selected_key = array($selected_key);
+	$selected_key = (array)$selected_key;
 
 	//create the type dropdown domain and set the selected value if $opp value already exists
 	foreach ($key_list as $option_key => $option_value) {
@@ -144,8 +143,7 @@ function get_select_options_with_id_separate_key(&$label_list, &$key_list, $sele
 
 	$pattern = "/'0?'></";
 	$replacement = "''>" . $app_strings['LBL_NONE'] . "<";
-	if (!is_array($selected_key))
-		$selected_key = array($selected_key);
+	$selected_key = (array)$selected_key;
 
 	foreach ($key_list as $option_key => $option_value) {
 		$selected_string = '';
@@ -173,8 +171,7 @@ function get_select_options_with_value_separate_key(&$label_list, &$key_list, $s
 
 	$pattern = "/'0?'></";
 	$replacement = "''>" . $app_strings['LBL_NONE'] . "<";
-	if (!is_array($selected_key))
-		$selected_key = array($selected_key);
+	$selected_key = (array)$selected_key;
 
 	foreach ($key_list as $option_key => $option_value) {
 		$selected_string = '';
@@ -625,8 +622,7 @@ function getFullNameFromQResult($result, $row_count, $module) {
 function getFullNameFromArray($module, $fieldValues) {
 	$entityInfo = getEntityFieldNames($module);
 	$fieldsName = $entityInfo['fieldname'];
-	$displayName = getEntityFieldNameDisplay($module, $fieldsName, $fieldValues);
-	return $displayName;
+	return getEntityFieldNameDisplay($module, $fieldsName, $fieldValues);
 }
 
 /**
@@ -635,15 +631,12 @@ function getFullNameFromArray($module, $fieldValues) {
  * returns the Campaign Name in string format.
  */
 function getCampaignName($campaign_id) {
-	global $log;
-	$log->debug("Entering getCampaignName(" . $campaign_id . ") method ...");
-	$log->info("in getCampaignName " . $campaign_id);
-
-	global $adb;
-	$sql = "select * from vtiger_campaign where campaignid=?";
+	global $log, $adb;
+	$log->debug('Entering getCampaignName(' . $campaign_id . ') method ...');
+	$sql = 'select * from vtiger_campaign where campaignid=?';
 	$result = $adb->pquery($sql, array($campaign_id));
-	$campaign_name = $adb->query_result($result, 0, "campaignname");
-	$log->debug("Exiting getCampaignName method ...");
+	$campaign_name = $adb->query_result($result, 0, 'campaignname');
+	$log->debug('Exiting getCampaignName method ...');
 	return $campaign_name;
 }
 
@@ -1242,7 +1235,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 	$blockid_list = array();
 	for ($i = 0; $i < $noofrows; $i++) {
 		$blockid = $adb->query_result($result, $i, "blockid");
-		array_push($blockid_list, $blockid);
+		$blockid_list[] = $blockid;
 		$block_label[$blockid] = $adb->query_result($result, $i, "blocklabel");
 
 		$sLabelVal = getTranslatedString($block_label[$blockid], $module);
@@ -1337,7 +1330,7 @@ function getCustomBlocks($module, $disp_view) {
 		$blockid = $adb->query_result($result, $i, "blockid");
 		$block_label[$blockid] = $adb->query_result($result, $i, "blocklabel");
 		$sLabelVal = getTranslatedString($block_label[$blockid], $module);
-		array_push($block_list, $sLabelVal);
+		$block_list[] = $sLabelVal;
 		if (($disp_view == 'edit_view' || $disp_view == 'create' || $disp_view == 'create_view') && file_exists("Smarty/templates/modules/$module/{$block_label[$blockid]}_edit.tpl")) {
 			$block_list[$sLabelVal] = array('custom' => true, 'relatedlist' => false, 'tpl' => "modules/$module/{$block_label[$blockid]}_edit.tpl");
 		} elseif ($disp_view == 'detail_view' && file_exists("Smarty/templates/modules/$module/{$block_label[$blockid]}_detail.tpl")) {
@@ -1831,11 +1824,8 @@ function getQuickCreateModules() {
 	global $log, $adb, $mod_strings;
 	$log->debug('Entering getQuickCreateModules() method ...');
 
-	// vtlib customization: Ignore disabled modules.
-	//$qc_query = "select distinct vtiger_tab.tablabel,vtiger_tab.name from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid where quickcreate=0 order by vtiger_tab.tablabel";
 	$qc_query = "select distinct vtiger_tab.tablabel,vtiger_tab.name from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid 
-			where quickcreate in (0,2) and vtiger_tab.presence != 1";
-	// END
+		where quickcreate in (0,2) and vtiger_tab.presence != 1 and vtiger_tab.name != 'Calendar' and vtiger_tab.name != 'Events'";
 
 	$result = $adb->pquery($qc_query, array());
 	$noofrows = $adb->num_rows($result);
@@ -1850,7 +1840,7 @@ function getQuickCreateModules() {
 			$return_qcmodule[] = $tabname;
 		}
 	}
-	if (sizeof($return_qcmodule > 0)) {
+	if (sizeof($return_qcmodule) > 0) {
 		$return_qcmodule = array_chunk($return_qcmodule, 2);
 	}
 
@@ -1872,7 +1862,7 @@ function QuickCreate($module) {
 	//Adding Security Check
 	require('user_privileges/user_privileges_' . $current_user->id . '.php');
 	if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
-		$quickcreate_query = "select * from vtiger_field where (quickcreate in (0,2) or typeofdata like '%M%') and tabid = ? and vtiger_field.presence in (0,2) and displaytype != 2 order by quickcreatesequence";
+		$quickcreate_query = "select * from vtiger_field where (quickcreate in (0,2) or typeofdata like '%~M%') and tabid = ? and vtiger_field.presence in (0,2) and displaytype != 2 order by quickcreatesequence";
 		$params = array($tabid);
 	} else {
 		$profileList = getCurrentUserProfileList();
@@ -2036,8 +2026,8 @@ function getEntityName($module, $ids_list) {
 		$entityIdField = $entity_field_info['entityidfield'];
 		$entity_FieldValue = getEntityFieldValues($entity_field_info, $ids_list);
 
-		foreach($entity_FieldValue as $key => $entityInfo) {
-			foreach($entityInfo as $key => $entityName) {
+		foreach ($entity_FieldValue as $entityInfo) {
+			foreach ($entityInfo as $key => $entityName) {
 				$fieldValues = $entityName;
 				$entityDisplay[$key] = getEntityFieldNameDisplay($module, $fieldsName, $fieldValues);
 			}
@@ -2377,11 +2367,10 @@ function getrecurringObjValue() {
 				}
 			}
 		}
-		if (isset($_REQUEST['repeat_frequency']) && $_REQUEST['repeat_frequency'] != null)
+		if (isset($_REQUEST['repeat_frequency']) && $_REQUEST['repeat_frequency'] != null) {
 			$recurring_data['repeat_frequency'] = $_REQUEST['repeat_frequency'];
-
-		$recurObj = RecurringType::fromUserRequest($recurring_data);
-		return $recurObj;
+		}
+		return RecurringType::fromUserRequest($recurring_data);
 	}
 }
 
@@ -2876,7 +2865,7 @@ function checkFileAccessForInclusion($filepath) {
 	// Set the base directory to compare with
 	$use_root_directory = $root_directory;
 	if (empty($use_root_directory)) {
-		$use_root_directory = realpath(dirname(__FILE__) . '/../../.');
+		$use_root_directory = realpath(__DIR__ . '/../../.');
 	}
 
 	$unsafeDirectories = array('storage', 'cache', 'test', 'build', 'logs', 'backup', 'packages', 'schema');
@@ -2910,7 +2899,7 @@ function checkFileAccessForDeletion($filepath) {
 	// Set the base directory to compare with
 	$use_root_directory = $root_directory;
 	if (empty($use_root_directory)) {
-		$use_root_directory = realpath(dirname(__FILE__) . '/../../.');
+		$use_root_directory = realpath(__DIR__ . '/../../.');
 	}
 
 	$safeDirectories = array('storage', 'cache', 'test');
@@ -2960,7 +2949,7 @@ function isFileAccessible($filepath) {
 	// Set the base directory to compare with
 	$use_root_directory = $root_directory;
 	if (empty($use_root_directory)) {
-		$use_root_directory = realpath(dirname(__FILE__) . '/../../.');
+		$use_root_directory = realpath(__DIR__ . '/../../.');
 	}
 
 	$realfilepath = realpath($filepath);
@@ -2973,10 +2962,7 @@ function isFileAccessible($filepath) {
 	$realfilepath = str_replace('\\', '/', $realfilepath);
 	$rootdirpath = str_replace('\\', '/', $rootdirpath);
 
-	if (stripos($realfilepath, $rootdirpath) !== 0) {
-		return false;
-	}
-	return true;
+	return !(stripos($realfilepath, $rootdirpath) !== 0);
 }
 
 /** Function to get the ActivityType for the given entity id
@@ -2985,10 +2971,9 @@ function isFileAccessible($filepath) {
  */
 function getActivityType($id) {
 	global $adb;
-	$quer = "select activitytype from vtiger_activity where activityid=?";
+	$quer = 'select activitytype from vtiger_activity where activityid=?';
 	$res = $adb->pquery($quer, array($id));
-	$acti_type = $adb->query_result($res, 0, "activitytype");
-	return $acti_type;
+	return $adb->query_result($res, 0, 'activitytype');
 }
 
 /** Function to get owner name either user or group */
@@ -3188,8 +3173,7 @@ function vt_suppressHTMLTags($string) {
 }
 
 function vt_hasRTE() {
-	$USE_RTE = GlobalVariable::getVariable('Application_Use_RTE',1);
-	return $USE_RTE;
+	return GlobalVariable::getVariable('Application_Use_RTE',1);
 }
 
 function getNameInDisplayFormat($input, $dispFormat = "lf") {
@@ -3209,13 +3193,11 @@ function getNameInDisplayFormat($input, $dispFormat = "lf") {
 }
 
 function concatNamesSql($string) {
-	$sqlString = "CONCAT(" . $string . ")";
-	return $sqlString;
+	return 'CONCAT(' . $string . ')';
 }
 
 function joinName($input, $glue = ' ') {
-	$displayName = implode($glue, $input);
-	return $displayName;
+	return implode($glue, $input);
 }
 
 function getSqlForNameInDisplayFormat($input, $module, $glue = ' ') {
@@ -3230,8 +3212,7 @@ function getSqlForNameInDisplayFormat($input, $module, $glue = ' ') {
 	} else {
 		$formattedNameListString = $input[$fieldsName];
 	}
-	$sqlString = concatNamesSql($formattedNameListString);
-	return $sqlString;
+	return concatNamesSql($formattedNameListString);
 }
 
 function getModuleSequenceNumber($module, $recordId) {
@@ -3272,7 +3253,7 @@ function getReturnPath($host, $from_email) {
 	$host = trim($host);
 
 	// Review if the host is not local
-	if (!in_array(strtolower($host), array('localhost'))) {
+	if ('localhost' != strtolower($host)) {
 		if (strpos($from_email, '@')) {
 			list($from_name, $from_domain) = explode('@', $from_email);
 		} else {

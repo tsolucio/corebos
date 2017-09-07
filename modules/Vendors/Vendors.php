@@ -295,12 +295,35 @@ class Vendors extends CRMEntity {
 	 * @param - $secmodule secondary module name
 	 * returns the query string formed on fetching the related data for report for secondary module
 	 */
-	function generateReportsSecQuery($module,$secmodule){
-		$query = $this->getRelationQuery($module,$secmodule,"vtiger_vendor","vendorid");
-		$query .=" left join vtiger_crmentity as vtiger_crmentityVendors on vtiger_crmentityVendors.crmid=vtiger_vendor.vendorid and vtiger_crmentityVendors.deleted=0
-			left join vtiger_vendorcf on vtiger_vendorcf.vendorid = vtiger_crmentityVendors.crmid
-			left join vtiger_users as vtiger_usersVendors on vtiger_usersVendors.id = vtiger_crmentityVendors.smownerid
-			left join vtiger_users as vtiger_lastModifiedByVendors on vtiger_lastModifiedByVendors.id = vtiger_crmentityVendors.modifiedby ";
+	function generateReportsSecQuery($module,$secmodule, $queryplanner,$type = '',$where_condition = '') {
+
+		$matrix = $queryplanner->newDependencyMatrix();
+
+		$matrix->setDependency("vtiger_crmentityVendors",array("vtiger_usersVendors","vtiger_lastModifiedByVendors"));
+		if (!$queryplanner->requireTable('vtiger_vendor', $matrix)) {
+			return '';
+		}
+		$matrix->setDependency("vtiger_vendor",array("vtiger_crmentityVendors","vtiger_vendorcf","vtiger_email_trackVendors"));
+		$query = $this->getRelationQuery($module,$secmodule,"vtiger_vendor","vendorid", $queryplanner);
+
+		if ($queryplanner->requireTable("vtiger_crmentityVendors",$matrix)) {
+			$query .=" left join vtiger_crmentity as vtiger_crmentityVendors on vtiger_crmentityVendors.crmid=vtiger_vendor.vendorid and vtiger_crmentityVendors.deleted=0";
+		}
+		if ($queryplanner->requireTable("vtiger_vendorcf")) {
+			$query .=" left join vtiger_vendorcf on vtiger_vendorcf.vendorid = vtiger_crmentityVendors.crmid";
+		}
+		if ($queryplanner->requireTable("vtiger_email_trackVendors")) {
+			$query .=" LEFT JOIN vtiger_email_track AS vtiger_email_trackVendors ON vtiger_email_trackVendors.crmid = vtiger_vendor.vendorid";
+		}
+		if ($queryplanner->requireTable("vtiger_usersVendors")) {
+			$query .=" left join vtiger_users as vtiger_usersVendors on vtiger_usersVendors.id = vtiger_crmentityVendors.smownerid";
+		}
+		if ($queryplanner->requireTable("vtiger_lastModifiedByVendors")) {
+			$query .=" left join vtiger_users as vtiger_lastModifiedByVendors on vtiger_lastModifiedByVendors.id = vtiger_crmentityVendors.modifiedby ";
+		}
+		if ($queryplanner->requireTable("vtiger_CreatedByVendors")) {
+			$query .= " left join vtiger_users as vtiger_CreatedByVendors on vtiger_CreatedByVendors.id = vtiger_crmentityVendors.smcreatorid ";
+		}
 		return $query;
 	}
 
@@ -389,8 +412,7 @@ class Vendors extends CRMEntity {
 	function delete_related_module($module, $crmid, $with_module, $with_crmid) {
 		global $log, $adb;
 		if($with_module == 'Contacts') {
-			if (!is_array($with_crmid))
-				$with_crmid = Array($with_crmid);
+			$with_crmid = (array)$with_crmid;
 			$data = array();
 			$data['sourceModule'] = $module;
 			$data['sourceRecordId'] = $crmid;
@@ -409,7 +431,7 @@ class Vendors extends CRMEntity {
 	function save_related_module($module, $crmid, $with_module, $with_crmids) {
 		$adb = PearDatabase::getInstance();
 
-		if(!is_array($with_crmids)) $with_crmids = Array($with_crmids);
+		$with_crmids = (array)$with_crmids;
 		foreach($with_crmids as $with_crmid) {
 			if($with_module == 'Contacts')
 				$adb->pquery("insert into vtiger_vendorcontactrel values (?,?)", array($crmid, $with_crmid));

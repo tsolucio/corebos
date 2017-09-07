@@ -115,7 +115,7 @@ function vtws_sync($mtime,$elementType,$syncType='',$user=''){
 		$handler = vtws_getModuleHandlerFromName($elementType, $user);
 		$moduleMeta = $handler->getMeta();
 		$deletedQueryCondition = $moduleMeta->getEntityDeletedQuery();
-		preg_match_all("/(?:\s+\w+[ \t\n\r]+)?([^=]+)\s*=([^\s]+|'[^']+')/",$deletedQueryCondition,$deletedFieldDetails);
+		preg_match_all("/(?:\s+\w+[ \t\n\r]+)?([^=]+)\s*=(\S+|'[^']+')/",$deletedQueryCondition,$deletedFieldDetails);
 		$fieldNameDetails = $deletedFieldDetails[1];
 		$deleteFieldValues = $deletedFieldDetails[2];
 		$deleteColumnNames = array();
@@ -201,7 +201,7 @@ function vtws_sync($mtime,$elementType,$syncType='',$user=''){
 		$modifiedtime = vtws_getSeconds($maxModifiedTime);
 	}
 	if (is_string($modifiedtime)) {
-		$modifiedtime = intval($modifiedtime);
+		$modifiedtime = (int)$modifiedtime;
 	}
 	$output['lastModifiedTime'] = $modifiedtime;
 

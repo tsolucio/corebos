@@ -6,7 +6,7 @@ return array(
     'different'     => "deve essere differente da '%s'",
     'accepted'      => "deve essere accettato",
     'numeric'       => "deve essere numerico",
-    'integer'       => "deve essere un intero (0-9)",
+    'integer'       => "deve essere un intero",
     'length'        => "deve avere una lunghezza di %d",
     'min'           => "deve essere superiore a %s",
     'max'           => "deve essere inferiore a %s",
@@ -27,5 +27,8 @@ return array(
     'contains'      => "deve contenere %s",
     'boolean'       => "deve essere un booleano",
     'lengthBetween' => "deve essere compreso tra %d e %d caratteri",
-    'creditCard'    => "deve essere un numero di carta di credito valido"
+    'creditCard'    => "deve essere un numero di carta di credito valido",
+    'lengthMin'     => "deve essere lungo almeno %d caratteri",
+    'lengthMax'     => "non deve superare %d caratteri",
+    'instanceOf'    => "deve essere un'istanza di '%s'",
 );

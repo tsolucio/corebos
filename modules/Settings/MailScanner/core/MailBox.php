@@ -152,6 +152,8 @@ class Vtiger_MailBox {
 			if($searchfor && $lastscanOn) {
 				if($searchfor == 'ALL') {
 					$searchQuery = "SINCE $lastscanOn";
+				}elseif($searchfor == 'ALLUNSEEN') {
+					$searchQuery = "UNSEEN";
 				} else {
 					$searchQuery = "$searchfor SINCE $lastscanOn";
 				}

@@ -13,7 +13,7 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
-include_once dirname(__FILE__) . '/../ISMSProvider.php';
+include_once __DIR__ . '/../ISMSProvider.php';
 include_once 'vtlib/Vtiger/Net/Client.php';
 
 class SMSMasivos implements ISMSProvider {
@@ -78,9 +78,7 @@ class SMSMasivos implements ISMSProvider {
 	}
 
 	public function send($message, $tonumbers) {
-		if(!is_array($tonumbers)) {
-			$tonumbers = array($tonumbers);
-		}
+		$tonumbers = (array)$tonumbers;
 
 		foreach ($tonumbers as $key => $value) {
 			if (substr($value, 0,3) == '044') $tonumbers[$key]=substr($value,3);

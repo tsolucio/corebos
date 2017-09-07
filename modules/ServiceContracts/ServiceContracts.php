@@ -178,7 +178,7 @@ class ServiceContracts extends CRMEntity {
 	 */
 	function save_related_module($module, $crmid, $with_module, $with_crmids) {
 
-		if(!is_array($with_crmids)) $with_crmids = Array($with_crmids);
+		$with_crmids = (array)$with_crmids;
 		foreach($with_crmids as $with_crmid) {
 			parent::save_related_module($module, $crmid, $with_module, $with_crmid);
 			if ($with_module == 'HelpDesk') {
@@ -193,7 +193,7 @@ class ServiceContracts extends CRMEntity {
 		global $log;
 		$log->debug('Entering into function updateHelpDeskRelatedTo');
 
-		if (!is_array($entityIds)) $entityIds = array($entityIds);
+		$entityIds = (array)$entityIds;
 		$selectTicketsQuery = "SELECT ticketid FROM vtiger_troubletickets WHERE (parent_id IS NULL OR parent_id = 0) AND ticketid IN (" . generateQuestionMarks($entityIds) .")";
 		$selectTicketsResult = $this->db->pquery($selectTicketsQuery, array($entityIds));
 		$noOfTickets = $this->db->num_rows($selectTicketsResult);
@@ -303,7 +303,7 @@ class ServiceContracts extends CRMEntity {
 		} else {
 			$plannedDurationUpdate = " planned_duration = ''";
 		}
-		array_push($updateCols, $plannedDurationUpdate);
+		$updateCols[] = $plannedDurationUpdate;
 
 		// Calculate the Actual Duration based on End date and Start date. (in days)
 		if(!empty($endDate) && !empty($startDate)) {
@@ -311,22 +311,22 @@ class ServiceContracts extends CRMEntity {
 		} else {
 			$actualDurationUpdate = "actual_duration = ''";
 		}
-		array_push($updateCols, $actualDurationUpdate);
+		$updateCols[] = $actualDurationUpdate;
 
 		// Update the Progress based on Used Units and Total Units (in percentage)
 		if(!empty($usedUnits) && !empty($totalUnits) && $totalUnits > 0) {
 			$progressUpdate = 'progress = ?';
-			$progressUpdateParams = floatval(($usedUnits * 100) / $totalUnits);
+			$progressUpdateParams = (float)(($usedUnits * 100) / $totalUnits);
 		} else {
 			$progressUpdate = 'progress = ?';
 			$progressUpdateParams = null;
 		}
-		array_push($updateCols, $progressUpdate);
-		array_push($updateParams, $progressUpdateParams);
+		$updateCols[] = $progressUpdate;
+		$updateParams[] = $progressUpdateParams;
 
 		if(count($updateCols) > 0) {
 			$updateQuery = 'UPDATE vtiger_servicecontracts SET '. implode(",", $updateCols) .' WHERE servicecontractsid = ?';
-			array_push($updateParams, $this->id);
+			$updateParams[] = $this->id;
 			$this->db->pquery($updateQuery, $updateParams);
 		}
 	}

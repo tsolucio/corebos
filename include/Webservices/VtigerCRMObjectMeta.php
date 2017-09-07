@@ -202,10 +202,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 			}
 		}
 		$permitted = isPermitted($this->getTabName(),$operation,$id);
-		if(strcmp($permitted,"yes")===0){
-			return true;
-		}
-		return false;
+		return strcmp($permitted,'yes')===0;
 	}
 
 	function hasAssignPrivilege($webserviceId){
@@ -317,6 +314,13 @@ class VtigerCRMObjectMeta extends EntityMeta {
 			$this->retrieveMeta();
 		}
 		return parent::getEmailFields();
+	}
+
+	function getImageFields() {
+		if (!$this->meta) {
+			$this->retrieveMeta();
+		}
+		return parent::getImageFields();
 	}
 
 	function getFieldIdFromFieldName($fieldName){

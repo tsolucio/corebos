@@ -196,9 +196,7 @@ class Users extends CRMEntity {
 			//crypt API is lot stricter in taking the value for salt.
 			$salt = '$1$' . str_pad($salt, 9, '0');
 		}
-
-		$encrypted_password = crypt($user_password, $salt);
-		return $encrypted_password;
+		return crypt($user_password, $salt);
 	}
 
 	/** Function for authorization check */
@@ -479,7 +477,7 @@ class Users extends CRMEntity {
 			return false;
 		}
 
-		if (!is_admin($current_user) and !$this->verifyPassword($user_password)) {
+		if (!$this->verifyPassword($user_password) && !is_admin($current_user)) {
 			$this->log->warn("Incorrect old password for $usr_name");
 			$this->error_string = $mod_strings['ERR_PASSWORD_INCORRECT_OLD'];
 			return false;
@@ -541,13 +539,8 @@ class Users extends CRMEntity {
 		$query = "SELECT user_name,user_password,crypt_type FROM {$this->table_name} WHERE id=?";
 		$result = $this->db->pquery($query, array($this->id));
 		$row = $this->db->fetchByAssoc($result);
-		$this->log->debug("select old password query: $query");
-		$this->log->debug("return result of $row");
 		$encryptedPassword = $this->encrypt_password($password, $row['crypt_type']);
-		if ($encryptedPassword != $row['user_password']) {
-			return false;
-		}
-		return true;
+		return !($encryptedPassword != $row['user_password']);
 	}
 
 	function is_authenticated() {
@@ -854,10 +847,10 @@ class Users extends CRMEntity {
 				} else {
 					$update .= ', ' . $columname . "=?";
 				}
-				array_push($update_params, $fldvalue);
+				$update_params[] = $fldvalue;
 			} else {
 				$column .= ", " . $columname;
-				array_push($qparams, $fldvalue);
+				$qparams[] = $fldvalue;
 			}
 		}
 
@@ -865,7 +858,7 @@ class Users extends CRMEntity {
 			//Check done by Don. If update is empty the the query fails
 			if (trim($update) != '') {
 				$sql1 = "update $table_name set $update where " . $this->tab_name_index[$table_name] . "=?";
-				array_push($update_params, $this->id);
+				$update_params[] = $this->id;
 				$this->db->pquery($sql1, $update_params);
 			}
 

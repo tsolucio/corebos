@@ -146,7 +146,7 @@ switch ($functiontocall) {
 			if (strpos($key, $oldssid) !== false and strpos($key, $oldssid.'__prev') === false) {
 				$newkey = str_replace($oldssid, $newssid, $key);
 				coreBOS_Session::set($newkey, $value);
-				coreBOS_Session::set($key, $_SESSION[$key.'__prev']);
+				coreBOS_Session::set($key, (isset($_SESSION[$key.'__prev']) ? $_SESSION[$key.'__prev'] : ''));
 			}
 		}
 		$ret = '';

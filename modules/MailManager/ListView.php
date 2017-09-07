@@ -7,5 +7,5 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-include dirname(__FILE__) . '/index.php';
+include __DIR__ . '/index.php';
 ?>

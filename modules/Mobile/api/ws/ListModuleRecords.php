@@ -8,7 +8,7 @@
  * All Rights Reserved.
  * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
-include_once dirname(__FILE__) . '/models/SearchFilter.php';
+include_once __DIR__ . '/models/SearchFilter.php';
 
 class crmtogo_WS_ListModuleRecords extends crmtogo_WS_Controller {
 
@@ -138,22 +138,16 @@ class crmtogo_WS_ListModuleRecords extends crmtogo_WS_Controller {
 		$records = array_merge($eventsRecords, $calendarRecords);
 
 		$modifiedRecords = array();
-		foreach($records as $record) {
+		foreach ($records as $record) {
 			$modifiedRecord = array();
 			$modifiedRecord['id'] = $record['id'];
-			unset($record['id']);
-			$modifiedRecord['eventstartdate'] = $record['date_start'];  
-			unset($record['date_start']);
-			$modifiedRecord['eventstarttime'] = $record['time_start'];  
-			unset($record['time_start']);
-			$modifiedRecord['eventtype'] = $record['activitytype'];     
-			unset($record['activitytype']);
-			$modifiedRecord['eventlocation'] = $record['location'];     
-			unset($record['location']);
-			$modifiedRecord['eventendtime'] = $record['time_end'];     
-			unset($record['time_end']);
-			$modifiedRecord['eventenddate'] = $record['due_date'];     
-			unset($record['due_date']);
+			$modifiedRecord['eventstartdate'] = $record['date_start'];
+			$modifiedRecord['eventstarttime'] = $record['time_start'];
+			$modifiedRecord['eventtype'] = $record['activitytype'];
+			$modifiedRecord['eventlocation'] = $record['location'];
+			$modifiedRecord['eventendtime'] = $record['time_end'];
+			$modifiedRecord['eventenddate'] = $record['due_date'];
+			unset($record['id'],$record['date_start'],$record['time_start'],$record['activitytype'],$record['location'],$record['time_end'],$record['due_date']);
 
 			$modifiedRecord['label'] = implode(' ',array_values($record));
 			$modifiedRecords[] = $modifiedRecord;

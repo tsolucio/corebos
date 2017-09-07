@@ -168,9 +168,9 @@ function rfc2445_is_valid_value($value, $type) {
                 return false;
             }
 
-            $y = intval(substr($value, 0, 4));
-            $m = intval(substr($value, 4, 2));
-            $d = intval(substr($value, 6, 2));
+            $y = (int)substr($value, 0, 4);
+            $m = (int)substr($value, 4, 2);
+            $d = (int)substr($value, 6, 2);
 
             return checkdate($m, $d, $y);
         break;
@@ -544,7 +544,7 @@ function rfc2445_is_valid_value($value, $type) {
                         if(!rfc2445_is_valid_value($intpart, RFC2445_TYPE_INTEGER)) {
                             return false;
                         }
-                        if(intval($intpart) == 0) {
+                        if((int)$intpart == 0) {
                             return false;
                         }
                     }
@@ -562,7 +562,7 @@ function rfc2445_is_valid_value($value, $type) {
                     if(!rfc2445_is_valid_value($mday, RFC2445_TYPE_INTEGER)) {
                         return false;
                     }
-                    $mday = abs(intval($mday));
+                    $mday = abs((int)$mday);
                     if($mday == 0 || $mday > 31) {
                         return false;
                     }
@@ -580,7 +580,7 @@ function rfc2445_is_valid_value($value, $type) {
                     if(!rfc2445_is_valid_value($yday, RFC2445_TYPE_INTEGER)) {
                         return false;
                     }
-                    $yday = abs(intval($yday));
+                    $yday = abs((int)$yday);
                     if($yday == 0 || $yday > 366) {
                         return false;
                     }
@@ -598,7 +598,7 @@ function rfc2445_is_valid_value($value, $type) {
                     if(!rfc2445_is_valid_value($weekno, RFC2445_TYPE_INTEGER)) {
                         return false;
                     }
-                    $weekno = abs(intval($weekno));
+                    $weekno = abs((int)$weekno);
                     if($weekno == 0 || $weekno > 53) {
                         return false;
                     }
@@ -634,7 +634,7 @@ function rfc2445_is_valid_value($value, $type) {
                     if(!rfc2445_is_valid_value($set, RFC2445_TYPE_INTEGER)) {
                         return false;
                     }
-                    $set = abs(intval($set));
+                    $set = abs((int)$set);
                     if($set == 0 || $set > 366) {
                         return false;
                     }
@@ -692,9 +692,9 @@ function rfc2445_is_valid_value($value, $type) {
                 return false;
             }
 
-            $h = intval(substr($value, 0, 2));
-            $m = intval(substr($value, 2, 2));
-            $s = intval(substr($value, 4, 2));
+            $h = (int)substr($value, 0, 2);
+            $m = (int)substr($value, 2, 2);
+            $s = (int)substr($value, 4, 2);
 
             return ($h <= 23 && $m <= 59 && $s <= 60);
         break;
@@ -713,7 +713,7 @@ function rfc2445_is_valid_value($value, $type) {
             }
 
             if(strlen($value) == 7) {
-                $s = intval(substr($value, 5, 2));
+                $s = (int)substr($value, 5, 2);
                 $value = substr($value, 0, 5);
             }
             if(strlen($value) != 5 || $value == "-0000") {
@@ -724,8 +724,8 @@ function rfc2445_is_valid_value($value, $type) {
                 return false;
             }
 
-            $h = intval(substr($value, 1, 2));
-            $m = intval(substr($value, 3, 2));
+            $h = (int)substr($value, 1, 2);
+            $m = (int)substr($value, 3, 2);
 
             return ($h <= 23 && $m <= 59 && $s <= 59);
         break;

@@ -707,7 +707,7 @@ class crmtogo_WS_Utils {
 				$comments_module[] =vtlib_getModuleNameById($tabid);
 			}
 		}
-		array_push($comments_module,'HelpDesk');
+		$comments_module[] = 'HelpDesk';
 		return $comments_module;
 	}
 

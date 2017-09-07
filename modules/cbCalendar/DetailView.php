@@ -71,7 +71,7 @@ foreach($act_data as $block=>$entry) {
 	}
 }
 if (empty($current_user->hour_format))
-	$format = 'am/pm';
+	$format = '24';
 else
 	$format = $current_user->hour_format;
 list($stdate,$sttime) = explode(' ',$finaldata['date_start'].' ');

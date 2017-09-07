@@ -64,15 +64,14 @@ class MailManager_Response {
 		else
 			echo $this->emitHTML();
 	}
-	
+
 	function emitJSON() {
-		$response = json_encode($this->prepareResponse());
-		return $response;
+		return json_encode($this->prepareResponse());
 	}
-	
+
 	function emitHTML() {
 		if($this->result === NULL) return (is_string($this->error))? $this->error : var_export($this->error, true);
 		return $this->result;
 	}
-	
+
 }

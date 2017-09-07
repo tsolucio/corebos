@@ -168,7 +168,7 @@ class CustomView extends CRMEntity {
 
 		if ($is_admin == false) {
 			$ssql .= " and (vtiger_customview.status=0 or vtiger_customview.userid = ? or vtiger_customview.status = 3 or vtiger_customview.userid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '" . $current_user_parent_role_seq . "::%'))";
-			array_push($sparams, $current_user->id);
+			$sparams[] = $current_user->id;
 		}
 		$result = $adb->pquery($ssql, $sparams);
 
@@ -217,7 +217,7 @@ class CustomView extends CRMEntity {
 
 		if ($is_admin == false) {
 			$ssql .= " and (vtiger_customview.status=0 or vtiger_customview.userid = ? or vtiger_customview.status = 3 or vtiger_customview.userid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '" . $current_user_parent_role_seq . "::%'))";
-			array_push($sparams, $current_user->id);
+			$sparams[] = $current_user->id;
 		}
 		$ssql .= " ORDER BY viewname";
 		$cuserroles = getRoleAndSubordinateUserIds($current_user->column_fields['roleid']);
@@ -320,7 +320,7 @@ class CustomView extends CRMEntity {
 
 			if (count($profileList) > 0) {
 				$sql.= "  and vtiger_profile2field.profileid in (" . generateQuestionMarks($profileList) . ")";
-				array_push($params, $profileList);
+				$params[] = $profileList;
 			}
 			if ($tabid == 9 || $tabid == 16) {
 				$sql.= " and vtiger_field.fieldname not in('notime','duration_minutes','duration_hours')";
@@ -478,7 +478,7 @@ class CustomView extends CRMEntity {
 
 			if (count($profileList) > 0) {
 				$sql.= " and vtiger_profile2field.profileid in (" . generateQuestionMarks($profileList) . ")";
-				array_push($params, $profileList);
+				$params[] = $profileList;
 			}
 
 			$sql.= " order by vtiger_field.sequence";
@@ -1003,9 +1003,12 @@ class CustomView extends CRMEntity {
 				$tablefield = "";
 				if ($value != "") {
 					$list = explode(":", $value);
-
 					//Added For getting status for Activities -Jaguar
-					$sqllist_column = $list[0] . "." . $list[1];
+					if($this->customviewmodule == "Calendar" && $list[0] == 'vtiger_cntactivityrel'){
+						$sqllist_column = "ctorel." . $list[1];
+					}else{
+						$sqllist_column = $list[0] . "." . $list[1];
+					}
 					if ($this->customviewmodule == "Calendar") {
 						if ($list[1] == "status" || $list[1] == "eventstatus") {
 							$sqllist_column = "case when (vtiger_activity.status not like '') then vtiger_activity.status else vtiger_activity.eventstatus end as activitystatus";

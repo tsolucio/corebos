@@ -328,7 +328,7 @@ class Accounts extends CRMEntity {
 			$numOfContacts = $adb->num_rows($accountContacts);
 			if($accountContacts && $numOfContacts > 0) {
 				for($i=0; $i < $numOfContacts; ++ $i) {
-					array_push($entityIds, $adb->query_result($accountContacts, $i, 'contactid'));
+					$entityIds[] = $adb->query_result($accountContacts, $i, 'contactid');
 				}
 			}
 		} else {
@@ -679,7 +679,7 @@ class Accounts extends CRMEntity {
 			$params1 = array();
 			if (count($profileList) > 0) {
 				$sql1 .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .") group by fieldid";
-				array_push($params1, $profileList);
+				$params1[] = $profileList;
 			}
 		}
 		$result = $this->db->pquery($sql1, $params1);
@@ -769,16 +769,68 @@ class Accounts extends CRMEntity {
 	 * @param - $secmodule secondary module name
 	 * returns the query string formed on fetching the related data for report for secondary module
 	 */
-	function generateReportsSecQuery($module,$secmodule){
-		$query = $this->getRelationQuery($module,$secmodule,"vtiger_account","accountid");
-		$query .= " left join vtiger_crmentity as vtiger_crmentityAccounts on vtiger_crmentityAccounts.crmid=vtiger_account.accountid and vtiger_crmentityAccounts.deleted=0
-			left join vtiger_accountbillads on vtiger_account.accountid=vtiger_accountbillads.accountaddressid
-			left join vtiger_accountshipads on vtiger_account.accountid=vtiger_accountshipads.accountaddressid
-			left join vtiger_accountscf on vtiger_account.accountid = vtiger_accountscf.accountid
-			left join vtiger_account as vtiger_accountAccounts on vtiger_accountAccounts.accountid = vtiger_account.parentid
-			left join vtiger_groups as vtiger_groupsAccounts on vtiger_groupsAccounts.groupid = vtiger_crmentityAccounts.smownerid
-			left join vtiger_users as vtiger_usersAccounts on vtiger_usersAccounts.id = vtiger_crmentityAccounts.smownerid
-			left join vtiger_users as vtiger_lastModifiedByAccounts on vtiger_lastModifiedByAccounts.id = vtiger_crmentityAccounts.modifiedby ";
+	function generateReportsSecQuery($module,$secmodule,$queryPlanner,$type = '',$where_condition = '') {
+
+		$matrix = $queryPlanner->newDependencyMatrix();
+		$matrix->setDependency('vtiger_crmentityAccounts', array('vtiger_groupsAccounts', 'vtiger_usersAccounts', 'vtiger_lastModifiedByAccounts'));
+		$matrix->setDependency('vtiger_account', array('vtiger_crmentityAccounts',' vtiger_accountbillads', 'vtiger_accountshipads', 'vtiger_accountscf', 'vtiger_accountAccounts', 'vtiger_email_trackAccounts'));
+
+		if (!$queryPlanner->requireTable('vtiger_account', $matrix)) {
+			return '';
+		}
+
+		// Activities related to contact should linked to accounts if contact is related to that account
+		if ($module == "Calendar") {
+			// query to get all the contacts related to Accounts
+			$relContactsQuery = "SELECT contactid FROM vtiger_contactdetails as vtiger_tmpContactCalendar
+				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_tmpContactCalendar.contactid
+				WHERE vtiger_tmpContactCalendar.accountid IS NOT NULL AND vtiger_tmpContactCalendar.accountid !=''
+				AND vtiger_crmentity.deleted=0";
+			$query = " left join vtiger_cntactivityrel as vtiger_tmpcntactivityrel ON
+				vtiger_activity.activityid = vtiger_tmpcntactivityrel.activityid AND
+				vtiger_tmpcntactivityrel.contactid IN ($relContactsQuery)
+				left join vtiger_contactdetails as vtiger_tmpcontactdetails on vtiger_tmpcntactivityrel.contactid = vtiger_tmpcontactdetails.contactid ";
+		} else {
+			$query = "";
+		}
+
+		$query .= $this->getRelationQuery($module,$secmodule,"vtiger_account","accountid", $queryPlanner);
+
+		if ($module == "Calendar") {
+			$query .= " OR vtiger_account.accountid = vtiger_tmpcontactdetails.accountid " ;
+		}
+
+		if ($queryPlanner->requireTable('vtiger_crmentityAccounts', $matrix)) {
+			$query .= " left join vtiger_crmentity as vtiger_crmentityAccounts on vtiger_crmentityAccounts.crmid=vtiger_account.accountid and vtiger_crmentityAccounts.deleted=0";
+		}
+		if ($queryPlanner->requireTable('vtiger_accountbillads')) {
+			$query .= " left join vtiger_accountbillads on vtiger_account.accountid=vtiger_accountbillads.accountaddressid";
+		}
+		if ($queryPlanner->requireTable('vtiger_accountshipads')) {
+			$query .= " left join vtiger_accountshipads on vtiger_account.accountid=vtiger_accountshipads.accountaddressid";
+		}
+		if ($queryPlanner->requireTable('vtiger_accountscf')) {
+			$query .= " left join vtiger_accountscf on vtiger_account.accountid = vtiger_accountscf.accountid";
+		}
+		if ($queryPlanner->requireTable('vtiger_accountAccounts', $matrix)) {
+			$query .= "	left join vtiger_account as vtiger_accountAccounts on vtiger_accountAccounts.accountid = vtiger_account.parentid";
+		}
+		if ($queryPlanner->requireTable('vtiger_email_track')) {
+			$query .= " LEFT JOIN vtiger_email_track AS vtiger_email_trackAccounts ON vtiger_email_trackAccounts .crmid = vtiger_account.accountid";
+		}
+		if ($queryPlanner->requireTable('vtiger_groupsAccounts')) {
+			$query .= "	left join vtiger_groups as vtiger_groupsAccounts on vtiger_groupsAccounts.groupid = vtiger_crmentityAccounts.smownerid";
+		}
+		if ($queryPlanner->requireTable('vtiger_usersAccounts')) {
+			$query .= " left join vtiger_users as vtiger_usersAccounts on vtiger_usersAccounts.id = vtiger_crmentityAccounts.smownerid";
+		}
+		if ($queryPlanner->requireTable('vtiger_lastModifiedByAccounts')) {
+			$query .= " left join vtiger_users as vtiger_lastModifiedByAccounts on vtiger_lastModifiedByAccounts.id = vtiger_crmentityAccounts.modifiedby ";
+		}
+		if ($queryPlanner->requireTable("vtiger_CreatedByAccounts")) {
+			$query .= " left join vtiger_users as vtiger_CreatedByAccounts on vtiger_CreatedByAccounts.id = vtiger_crmentityAccounts.smcreatorid ";
+		}
+
 		return $query;
 	}
 
@@ -1051,17 +1103,18 @@ class Accounts extends CRMEntity {
 		} else if($return_module == 'Products') {
 			$sql = 'DELETE FROM vtiger_seproductsrel WHERE crmid=? AND productid=?';
 			$this->db->pquery($sql, array($id, $return_id));
+		} elseif($return_module == 'Documents') {
+			$sql = 'DELETE FROM vtiger_senotesrel WHERE crmid=? AND notesid=?';
+			$this->db->pquery($sql, array($id, $return_id));
 		} else {
-			$sql = 'DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND relmodule=? AND relcrmid=?) OR (relcrmid=? AND module=? AND crmid=?)';
-			$params = array($id, $return_module, $return_id, $id, $return_module, $return_id);
-			$this->db->pquery($sql, $params);
+			parent::unlinkRelationship($id, $return_module, $return_id);
 		}
 	}
 
 	function save_related_module($module, $crmid, $with_module, $with_crmids) {
 		$adb = $this->db;
 
-		if(!is_array($with_crmids)) $with_crmids = Array($with_crmids);
+		$with_crmids = (array)$with_crmids;
 		foreach($with_crmids as $with_crmid) {
 			if($with_module == 'Products') {
 				$checkResult = $adb->pquery('SELECT 1 FROM vtiger_seproductsrel WHERE productid = ? AND crmid = ?', array($with_crmid, $crmid));
@@ -1168,7 +1221,7 @@ class Accounts extends CRMEntity {
 			$params1 = array();
 			if (count($profileList) > 0) {
 				$sql1 .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
-				array_push($params1, $profileList);
+				$params1[] = $profileList;
 			}
 		}
 		$result1 = $this->db->pquery($sql1, $params1);

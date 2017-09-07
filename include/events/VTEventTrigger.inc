@@ -22,8 +22,7 @@ class VTEventTrigger {
 		global $adb;
 
 		if ($name) {
-			$names = $name;
-			if (!is_array($names)) $names = array($name);
+			$names = (array)$name;
 
 			$evtinfos = self::getActiveEventInfos($adb, $names);
 
@@ -83,7 +82,7 @@ class VTEventTrigger {
 		}
 		if (CRMEntity::isBulkSaveMode()) {
 			$query .= " AND handler_class IN (" . generateQuestionMarks(self::$mandatoryEventClass) . ")";
-			array_push($params, self::$mandatoryEventClass);
+			$params[] = self::$mandatoryEventClass;
 		}
 
 		$evtinfosbyname = array();
