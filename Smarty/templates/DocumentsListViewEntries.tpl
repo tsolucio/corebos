@@ -128,7 +128,7 @@
 												{$folder.navigation}
 											</tr>
 											<tr>
-												<td colspan="4" >
+												<td colspan="4">
 													<div id="FileList_{$folder.folderid}">
 														<!-- File list table for a folder starts -->
 														<table class="slds-table slds-table--bordered">
@@ -251,7 +251,7 @@
 																</tbody>
 														</table>
 													</div>
-                                                    <!-- File list table for a folder ends -->
+												<!-- File list table for a folder ends -->
 												</td>
 											</tr>
 										</table>

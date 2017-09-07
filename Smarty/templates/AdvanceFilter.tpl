@@ -276,17 +276,6 @@ function add_grouping_criteria(grouping_criteria) {ldelim}
 </script>
 
 <div style="overflow:auto;" id='adv_filter_div' name='adv_filter_div'>
-	<table class="small" border="0" cellpadding="5" cellspacing="0" width="100%" style="display: none;">
-		<tr>
-			<td class="detailedViewHeader" align="left"><b>{'LBL_ADVANCED_FILTER'|@getTranslatedString:$MODULE}</b></td>
-		</tr>
-		<tr>
-			<td colspan="2" align="right">
-				<input type="button" class="slds-button slds-button-brand slds-button--small" value="{'LBL_NEW_GROUP'|@getTranslatedString:$MODULE}" onclick="addNewConditionGroup('adv_filter_div')" />
-			</td>
-		</tr>
-	</table>
-
 	<!--Lighting Desing -->
 	<div class="flexipageComponent" style="background-color: #fff; ">
         <article class="slds-card container MEDIUM forceBaseCard

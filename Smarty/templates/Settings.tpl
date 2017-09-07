@@ -120,4 +120,3 @@
 		{/if}
 	{/foreach}
 </table>
-

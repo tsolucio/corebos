@@ -137,7 +137,6 @@
 				{if $MODULE neq "Documents" || $Document_Folder_View eq 0} {include file="ListViewEntries.tpl"} {else} {include file="DocumentsListViewEntries.tpl"} {/if}
 			</div>
 		</td>
-		<!-- <td valign=top><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td> -->
 	</tr>
 </table>
 

@@ -106,14 +106,11 @@
 
 
 				<!-- =====================LIGHITNG DESGIN LIST VIEW =========== -->
-				<!--	/ slds-table--col-bordered-->
 				<div >
 					<table class="slds-table slds-table--bordered slds-table--fixed-layout ld-font">
 						<thead>
 							<!-- Table Headers -->
 							<tr>
-								<!-- <th scope="col" class="slds-text-align--center" style="width: 3.25rem;text-align: center;" >
-								</th> -->
 								<th scope="col" class="slds-text-align--center" style="width: 3.25rem;text-align: center;" >
 									<div class="slds-th_action slds-th__action_form">
 										<span class="slds-checkbox">

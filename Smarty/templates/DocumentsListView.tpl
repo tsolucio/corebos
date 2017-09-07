@@ -18,19 +18,19 @@
 {/if}
 <script>var Document_Folder_View={$Document_Folder_View};</script>
 		{include file='Buttons_List.tpl'}
-                                <div id="searchingUI" style="display:none;">
-                                        <table border=0 cellspacing=0 cellpadding=0 width=100%>
-                                        <tr>
-                                                <td align=center>
-                                                <img src="{'searching.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SEARCHING}"  title="{$APP.LBL_SEARCHING}">
-                                                </td>
-                                        </tr>
-                                        </table>
-                                </div>
-                        </td>
-                </tr>
-                </table>
-        </td>
+								<div id="searchingUI" style="display:none;">
+										<table border=0 cellspacing=0 cellpadding=0 width=100%>
+										<tr>
+												<td align=center>
+												<img src="{'searching.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SEARCHING}"  title="{$APP.LBL_SEARCHING}">
+												</td>
+										</tr>
+										</table>
+								</div>
+						</td>
+				</tr>
+				</table>
+		</td>
 </tr>
 </table>
 
@@ -46,7 +46,6 @@
 							<td class="searchUIName small" nowrap align="left">
 								<span class="moduleName">{$APP.LBL_SEARCH}</span>
 								<br><span class="small"><a href="#" onClick="fnhide('searchAcc');show('advSearch');document.basicSearch.searchtype.value='advance';document.basicSearch.searchtype.searchlaunched='';">{$APP.LBL_GO_TO} {$APP.LNK_ADVANCED_SEARCH}</a></span>
-								<!-- <img src="themes/images/basicSearchLens.gif" align="absmiddle" alt="{$APP.LNK_BASIC_SEARCH}" title="{$APP.LNK_BASIC_SEARCH}" border=0>&nbsp;&nbsp;-->
 							</td>
 							<td class="small" nowrap align=right><b>{$APP.LBL_SEARCH_FOR}</b></td>
 							<td class="small">
