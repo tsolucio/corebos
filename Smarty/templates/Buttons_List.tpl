@@ -37,7 +37,7 @@
 							<tr class="LD_buttonList">
 								<th scope="col">
 									<div class="globalCreateContainer oneGlobalCreate">
-									   <div class="forceHeaderMenuTrigger">
+										<div class="forceHeaderMenuTrigger">
 											{if $CHECK.CreateView eq 'yes' && ($MODULE eq 'Calendar' || $MODULE eq 'Calendar4You')}
 												<div id="LB_AddButton" class="LB_Button slds-truncate">
 													<img src="{$IMAGE_PATH}btnL3Add.gif" alt="{$MOD.LBL_ADD_EVENT}" title="{$MOD.LBL_ADD_EVENT}" border=0 {$ADD_ONMOUSEOVER}>
@@ -55,7 +55,7 @@
 													</span>
 												</div>
 											{/if}
-									  </div>
+										</div>
 									</div>
 								</th>
 								<th scope="col">
