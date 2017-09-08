@@ -14,7 +14,7 @@
 	<table  border="0" cellpadding="5" cellspacing="0" width="100%">
 		<tr style="cursor:move;" >
 			<td class="mailClientBg small" id="calc_Handle"><b>{$APP.LBL_CALCULATOR}</b></td>
-			<td align="right"class="mailClientBg small">
+			<td align="right" class="mailClientBg small">
 			<a href="javascript:;">
 			<img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0"  onClick="fninvsh('calc')" hspace="5" align="absmiddle">
 			</a>
