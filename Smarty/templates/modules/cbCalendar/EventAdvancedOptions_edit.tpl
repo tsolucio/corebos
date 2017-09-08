@@ -27,9 +27,9 @@
 						<div id="addEventInviteUI" role="tabpanel" aria-labelledby="tab--scoped-1__item" class="slds-tabs--scoped__content slds-truncate" style="display:block;">
 							<table class="slds-table slds-table--cell-buffer slds-no-row-hover slds-table--bordered slds-table--fixed-layout small detailview_table">
 								<tr class="slds-line-height--reset">
-									<td class="dvtCellLabel" width="45%" class="text-left"><b>{$MOD.LBL_USERS}</b></td>
+									<td class="dvtCellLabel text-left" width="45%"><b>{$MOD.LBL_USERS}</b></td>
 									<td class="dvtCellLabel" width="10%">&nbsp;</td>
-									<td class="dvtCellLabel" width="45%" class="text-left"><b>{$MOD.LBL_SEL_USERS}</b></td>
+									<td class="dvtCellLabel text-left" width="45%"><b>{$MOD.LBL_SEL_USERS}</b></td>
 								</tr>
 								<tr class="slds-line-height--reset">
 									<td class="dvtCellInfo" width="45%">
