@@ -18,10 +18,6 @@
 }
 
 
-
-
-
-
 /*========    End Header    ==========*/
 
 .slds-table tbody tr {
@@ -33,11 +29,6 @@
 .dvtCellInfo .slds-radio--faux {
     cursor: pointer;
 }
-
-
-
-
-
 
 /*=========  Button List  ==========*/
 
@@ -51,6 +42,10 @@
 
 .uiMenu {
     position: relative;
+}
+
+.close-icon img{
+    width: 16px;
 }
 
 
