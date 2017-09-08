@@ -87,9 +87,7 @@ class Vtiger_PDF_InventoryContentViewer extends Vtiger_PDF_ContentViewer {
 
 		$contentLineX = $contentFrame->x; $contentLineY = $contentFrame->y;
 		$overflowOffsetH = 8; // This is offset used to detect overflow to next page
-		for ($index = 0; $index < $totalModels; ++$index) {
-			$model = $models[$index];
-			
+		foreach ($models as $model) {
 			$contentHeight = 1;
 			
 			// Determine the content height to use

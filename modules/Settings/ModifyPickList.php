@@ -54,9 +54,7 @@
 			$params = array($picklist_id, $val, 1, $picklistvalue_id);			
 			$adb->pquery($query, $params);
 			 
-			$num_roles = count($roleIds);
-			for($i=0;$i<$num_roles;$i++) {
-				$roleid = $roleIds[$i];
+			foreach ($roleIds as $roleid) {
 				
 				$sql ="select max(sortid)+1 as sortid from vtiger_role2picklist left join vtiger_$tableName on vtiger_$tableName.picklist_valueid=vtiger_role2picklist.picklistvalueid where roleid=? and picklistid=?";
 				$sortid = $adb->query_result($adb->pquery($sql, array($roleid, $picklistid)),0,'sortid');
@@ -121,10 +119,7 @@
 							$old_res = $adb->pquery($old_query, array($val));
 							$old_picklistvalue_id = $adb->query_result($old_res, 0, 'picklist_valueid');
 							
-							$num_roles = count($roleIds);
-							for($i=0;$i<$num_roles;$i++) {
-								$roleid = $roleIds[$i];
-							
+							foreach ($roleIds as $roleid) {
 								$upd_qry = "update vtiger_role2picklist set picklistvalueid=? where picklistvalueid=? and picklistid=? and roleid=?";
 								$adb->pquery($upd_qry, array($picklistvalue_id, $old_picklistvalue_id, $picklistid, $roleid));
 							}

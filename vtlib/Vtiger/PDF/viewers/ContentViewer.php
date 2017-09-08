@@ -70,7 +70,6 @@ class Vtiger_PDF_ContentViewer extends Vtiger_PDF_Viewer {
 	function display($parent) {
 		$models = $this->contentModels;
 
-		$totalModels = count($models);
 		$pdf = $parent->getPDF();
 		
 		$parent->createPage();
@@ -78,8 +77,7 @@ class Vtiger_PDF_ContentViewer extends Vtiger_PDF_Viewer {
 
 		$contentLineX = $contentFrame->x; $contentLineY = $contentFrame->y;
 		
-		for ($index = 0; $index < $totalModels; ++$index) {
-			$model = $models[$index];			
+		foreach ($models as $model) {
 			
 			$contentHeight = $pdf->GetStringHeight($model->get('content'), $contentFrame->w);			
 			if($contentLineY + $contentHeight > ($contentFrame->h+$contentFrame->y)) {

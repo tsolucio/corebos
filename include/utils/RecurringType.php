@@ -307,10 +307,9 @@ class RecurringType {
 
 		switch ($this->getRecurringType()) {
 		case 'Weekly':
-			$noOfDays = count($recurringInfo['dayofweek_to_repeat']);
 			$translatedRepeatDays = array();
-			for ($i = 0; $i < $noOfDays; ++$i) {
-				$translatedRepeatDays[] = getTranslatedString('LBL_DAY' . $recurringInfo['dayofweek_to_repeat'][$i], $i18nModule);
+			foreach ($recurringInfo['dayofweek_to_repeat'] as $day) {
+				$translatedRepeatDays[] = getTranslatedString('LBL_DAY' . $day, $i18nModule);
 			}
 			$displayRecurringData['repeat_str'] = implode(',', $translatedRepeatDays);
 			break;

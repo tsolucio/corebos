@@ -543,23 +543,22 @@ function getSecondaryColumns_GroupingHTML($module,$selected="") {
 	$list = array();
 	if($module != "") {
 		$secmodule = explode(":",$module);
-		$secmodule_length = count($secmodule);
-		for($i=0;$i < $secmodule_length ;$i++) {
-			if(vtlib_isModuleActive($secmodule[$i])) {
-				$i18nModule = getTranslatedString($secmodule[$i],$secmodule[$i]);
-				$mod_strings = return_module_language($current_language,$secmodule[$i]);
+		foreach ($secmodule as $mod) {
+			if (vtlib_isModuleActive($mod)) {
+				$i18nModule = getTranslatedString($mod,$mod);
+				$mod_strings = return_module_language($current_language,$mod);
 				$block_listed = array();
-				foreach($oReport->module_list[$secmodule[$i]] as $key=>$value) {
-					if(isset($oReport->sec_module_columnslist[$secmodule[$i]][$value]) && !$block_listed[$value]) {
+				foreach ($oReport->module_list[$mod] as $key=>$value) {
+					if (isset($oReport->sec_module_columnslist[$mod][$value]) && !$block_listed[$value]) {
 						$block_listed[$value] = true;
 
 						$optgroup = array(
-							"label" => $i18nModule." ".getTranslatedString($value,$secmodule[$i]),
+							"label" => $i18nModule." ".getTranslatedString($value,$mod),
 							"class" => "select",
 							"style" => "border:none"
 						);
 
-						foreach($oReport->sec_module_columnslist[$secmodule[$i]][$value] as $field=>$fieldlabel) {
+						foreach ($oReport->sec_module_columnslist[$mod][$value] as $field=>$fieldlabel) {
 							$option = array("value" => $field);
 
 							if(isset($mod_strings[$fieldlabel]))
@@ -694,19 +693,18 @@ function getSecondaryStdFilterHTML($module,$selected="") {
 	if($module != "")
 	{
 		$secmodule = explode(":",$module);
-		for($i=0;$i < count($secmodule) ;$i++)
-		{
-			$result = $ogReport->oCustomView->getStdCriteriaByModule($secmodule[$i]);
+		foreach ($secmodule as $mod) {
+			$result = $ogReport->oCustomView->getStdCriteriaByModule($mod);
 			if(isset($result))
 			{
-				$mod_strings = return_module_language($current_language,$secmodule[$i]);
-				$i18nModule = getTranslatedString($secmodule[$i],$secmodule[$i]);
+				$mod_strings = return_module_language($current_language,$mod);
+				$i18nModule = getTranslatedString($mod,$mod);
 				foreach($result as $key=>$value) {
 					if(isset($mod_strings[$value])) {
 						if($key == $selected)
-							$filters[] = array("selected"=>true,"value"=>$key, "label"=>$i18nModule." - ".getTranslatedString($value,$secmodule[$i]));
+							$filters[] = array("selected"=>true,"value"=>$key, "label"=>$i18nModule." - ".getTranslatedString($value,$mod));
 						else
-							$filters[] = array("value"=>$key, "label"=>$i18nModule." - ".getTranslatedString($value,$secmodule[$i]));
+							$filters[] = array("value"=>$key, "label"=>$i18nModule." - ".getTranslatedString($value,$mod));
 					}
 					else {
 						if($key == $selected)
