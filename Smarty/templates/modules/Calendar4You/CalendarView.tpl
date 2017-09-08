@@ -219,11 +219,11 @@ jQuery(document).ready(function(){
         dayNamesShort: ['{$CMOD.LBL_SM_SUN|escape}','{$CMOD.LBL_SM_MON|escape}', '{$CMOD.LBL_SM_TUE|escape}', '{$CMOD.LBL_SM_WED|escape}', '{$CMOD.LBL_SM_THU|escape}', '{$CMOD.LBL_SM_FRI|escape}', '{$CMOD.LBL_SM_SAT|escape}'],
 
         buttonText: {ldelim}
-            today:'{$APP.LBL_TODAY|escape}',
-            month: '{$CMOD.LBL_MON|escape}',
-            week: '{$CMOD.LBL_WEEK|escape}',
-            day: '{$CMOD.LBL_DAY|escape}',
-            list: '{$MOD.LBL_LIST|escape}'
+            today:'{$APP.LBL_TODAY|escape:'quotes'}',
+            month: '{$CMOD.LBL_MON|escape:'quotes'}',
+            week: '{$CMOD.LBL_WEEK|escape:'quotes'}',
+            day: '{$CMOD.LBL_DAY|escape:'quotes'}',
+            list: '{$MOD.LBL_LIST|escape:'quotes'}'
         {rdelim},
 
 		eventSources: [Calendar_Event_Types],
