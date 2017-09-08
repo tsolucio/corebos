@@ -2237,9 +2237,14 @@ function getMergedDescriptionCustomVars($fields, $description) {
 		$token_value = '';
 		switch ($columnname) {
 			case 'currentdate':
-				$mes = date('m')-1;
-				$mesi18n = $lang['MONTH_STRINGS'][$mes];
-				$token_value = $mesi18n.date(' j, Y');
+				$dtformat = GlobalVariable::getVariable('EMail_CustomCurrentDate_Format','',$currentModule);
+				if ($dtformat=='') {
+					$mes = date('m')-1;
+					$mesi18n = $lang['MONTH_STRINGS'][$mes];
+					$token_value = $mesi18n.date(' j, Y');
+				} else {
+					$token_value = date($dtformat);
+				}
 				break;
 			case 'currenttime': $token_value = date("G:i:s T");
 				break;

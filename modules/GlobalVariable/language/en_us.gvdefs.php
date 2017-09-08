@@ -840,6 +840,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'The maximum number of attachments that can be uploaded to an email. The default is 6.',
 ),
+'EMail_CustomCurrentDate_Format' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Aplicación',
+	'values' => 'valid PHP date format string',
+	'definition' => 'Format to apply to $custom-currentdate$ variable in email templates. Accepts any valid date format string from PHP. By default leave it empty to get the month in text, day and year.',
+),
 'Workflow_Send_Email_ToCCBCC' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Email CSV',

@@ -840,6 +840,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'El número máximo de archivos adjuntos que se pueden cargar en un correo electrónico. El valor predeterminado es 6.',
 ),
+'EMail_CustomCurrentDate_Format' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'Cadena de formato de fecha PHP válida',
+	'definition' => 'Formato a aplicar a la variable $custom-currentdate$ en las plantillas de email. Acepta cualquier cadena de formato de fecha válida de PHP. Por defecto dejar vacio para obtener el mes en texto, dia y año.',
+),
 'Workflow_Send_Email_ToCCBCC' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Email CSV',

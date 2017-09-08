@@ -137,6 +137,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'EMail_OpenTrackingEnabled',
 				'Email_Attachments_Folder',
 				'EMail_Maximum_Number_Attachments',
+				'EMail_CustomCurrentDate_Format',
 				'ToolTip_MaxFieldValueLength',
 				'HelpDesk_Support_EMail',
 				'HelpDesk_Support_Name',
