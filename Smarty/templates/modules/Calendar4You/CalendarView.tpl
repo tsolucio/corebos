@@ -679,6 +679,17 @@ function hideITSEventInfo(){
 </table>
 <div id="calendar_div2"><br></div>
 <input type="hidden" name="logged_user" id="logged_user" value="">
+<form id="EditView" name="EditView" method="POST" action="index.php">
+	<input type="hidden" name="action" value="SaveEvent">
+	<input type="hidden" name="module" value="Calendar4You">
+	<input type="hidden" name="return_action" value="index">
+	<input type="hidden" name="return_module" value="Calendar4You">
+	<input type="hidden" name="record" value="">
+	<input type="hidden" name="mode" value="">
+	<input type="hidden" name="geventid" value="">
+	<input type="hidden" name="gevent_type" value="">
+	<input type="hidden" name="gevent_userid" value="">
+</form>
 <script>
 function changeCalendarUserView(type) {ldelim}
 	if(type == "all") {ldelim}

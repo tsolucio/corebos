@@ -249,6 +249,7 @@ foreach($Users_Ids AS $userid) {
 		}
 		$list_result = $adb->pquery($list_query, $list_array);
 		while($row = $adb->fetchByAssoc($list_result)) {
+			if (!empty($stfields['start']) && empty($row[$stfields['start']])) continue;
 			$visibility = "private";
 			$editable = false;
 			$for_me = false;
