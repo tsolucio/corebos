@@ -122,10 +122,8 @@ class RecurringType {
 		if ($requestArray['type'] == 'Weekly') {
 			if ($requestArray['dayofweek_to_repeat'] != null) {
 				$userStartDateTime = DateTimeField::convertToUserTimeZone($startDate . ' ' . $startTime);
-				$dayOfWeek = $requestArray['dayofweek_to_repeat'];
 				$dbDaysOfWeek = array();
-				for ($i = 0; $i < count($dayOfWeek); ++$i) {
-					$selectedDayOfWeek = $dayOfWeek[$i];
+				foreach ($requestArray['dayofweek_to_repeat'] as $selectedDayOfWeek) {
 					$currentDayOfWeek = $userStartDateTime->format('w');
 					$newDate = $userStartDateTime->format('d') + ($selectedDayOfWeek - $currentDayOfWeek);
 					$userStartDateTime->setDate($userStartDateTime->format('Y'), $userStartDateTime->format('m'), $newDate);
@@ -247,10 +245,8 @@ class RecurringType {
 		if ($recurringType == 'Weekly') {
 			if ($this->dayofweek_to_rpt != null) {
 				$dbStartDateTime = new DateTime($this->startdate->get_DB_formatted_date() . ' ' . $this->startdate->get_formatted_time());
-				$dayOfWeek = $this->dayofweek_to_rpt;
 				$userDaysOfWeek = array();
-				for ($i = 0; $i < count($dayOfWeek); ++$i) {
-					$selectedDayOfWeek = $dayOfWeek[$i];
+				foreach ($this->dayofweek_to_rpt as $selectedDayOfWeek) {
 					$currentDayOfWeek = $dbStartDateTime->format('w');
 					$newDate = $dbStartDateTime->format('d') + ($selectedDayOfWeek - $currentDayOfWeek);
 					$dbStartDateTime->setDate($dbStartDateTime->format('Y'), $dbStartDateTime->format('m'), $newDate);
@@ -378,8 +374,8 @@ class RecurringType {
 					$this->dayofweek_to_rpt[] = $this->startdate->dayofweek;
 				}
 
-				for ($i = 0; $i < count($this->dayofweek_to_rpt); $i++) {
-					$repeatDay = $tempdateObj->getThisweekDaysbyIndex($this->dayofweek_to_rpt[$i]);
+				foreach ($this->dayofweek_to_rpti as $day) {
+					$repeatDay = $tempdateObj->getThisweekDaysbyIndex($day);
 					$repeatDate = $repeatDay->get_DB_formatted_date();
 					if ($repeatDate > $startdate && $repeatDate <= $enddate) {
 						$recurringDates[] = $repeatDate;

@@ -2897,7 +2897,7 @@ function getRecordValues($id_array,$module) {
 			$fld_array []= $fld_name;
 			$record_values[$c][$fld_label] = Array();
 			$ui_value[]=$ui_type;
-			for($j=0;$j < count($field_values);$j++) {
+			for ($j=0, $jMax = count($field_values); $j < $jMax; $j++) {
 
 				if($ui_type ==56) {
 					if($field_values[$j][$fld_name] == 0)
@@ -3269,8 +3269,7 @@ function getDuplicateRecordsArr($module)
 			$grp = "group".$gcnt;
 		}
 		$fld_values[$grp][$ii]['recordid'] = $result['recordid'];
-		for($k=0;$k<count($col_arr);$k++)
-		{
+		for ($k=0, $kMax = count($col_arr); $k< $kMax; $k++) {
 			if($rec_cnt == 0)
 			{
 				$temp[$fld_labl_arr[$k]] = html_entity_decode($result[$col_arr[$k]], ENT_QUOTES, $default_charset);
@@ -3481,7 +3480,6 @@ function setFormatForDuplicateCompare(&$string){
 }
 
 /** Function to get recordids for subquery where condition */
-// TODO - Need to check if this method is used anywhere?
 function get_subquery_recordids($sub_query)
 {
 	global $adb;
@@ -3638,13 +3636,9 @@ function transferProductCurrency($old_cur, $new_cur) {
 	}
 	if(count($prod_ids) > 0) {
 		$prod_price_list = getPricesForProducts($new_cur,$prod_ids);
-
-		for($i=0;$i<count($prod_ids);$i++) {
-			$product_id = $prod_ids[$i];
-			$unit_price = $prod_price_list[$product_id];
-			$query = "update vtiger_products set currency_id=?, unit_price=? where productid=?";
-			$params = array($new_cur, $unit_price, $product_id);
-			$adb->pquery($query, $params);
+		$query = 'update vtiger_products set currency_id=?, unit_price=? where productid=?';
+		foreach ($prod_ids as $product_id) {
+			$adb->pquery($query, array($new_cur, $prod_price_list[$product_id], $product_id));
 		}
 	}
 	$log->debug("Exiting function updateProductCurrency...");
@@ -3664,9 +3658,7 @@ function transferPriceBookCurrency($old_cur, $new_cur) {
 
 	if(count($pb_ids) > 0) {
 		require_once('modules/PriceBooks/PriceBooks.php');
-
-		for($i=0;$i<count($pb_ids);$i++) {
-			$pb_id = $pb_ids[$i];
+		foreach ($pb_ids as $pb_id) {
 			$focus = new PriceBooks();
 			$focus->id = $pb_id;
 			$focus->mode = 'edit';

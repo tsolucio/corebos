@@ -229,8 +229,7 @@ function getValuesforColumns($column_name,$search_string,$criteria='cts',$input=
 	if($input['type'] == "entchar")
 		$criteria = "is";
 
-	for($i=0; $i<count($column_array);$i++)
-	{
+	for ($i=0, $iMax = count($column_array); $i< $iMax; $i++) {
 		if($column_name == $column_array[$i])
 		{
 			$val=$table_col_array[$i];
@@ -248,8 +247,7 @@ function getValuesforColumns($column_name,$search_string,$criteria='cts',$input=
 				}
 				else {
 					$where="(";
-					for($j=0;$j<count($explode_column);$j++)
-					{
+					for ($j=0, $jMax = count($explode_column); $j< $jMax; $j++) {
 						$where .=getSearch_criteria($criteria,$search_string,$explode_column[$j]);
 						if($j != $x-1)
 						{
@@ -1158,8 +1156,8 @@ function generateAdvancedSearchSql($advfilterlist) {
 				if($fieldcolname != "" && $comparator != "") {
 					$valuearray = explode(",",trim($value));
 					if(isset($valuearray) && count($valuearray) > 0 && $comparator != 'bw') {
-						for($n=0;$n<count($valuearray);$n++) {
-							$advorsql[] = getAdvancedSearchValue($columns[0],$columns[1],$comparator,trim($valuearray[$n]),$datatype);
+						foreach ($valuearray as $val) {
+							$advorsql[] = getAdvancedSearchValue($columns[0],$columns[1],$comparator,trim($val),$datatype);
 						}
 						//If negative logic filter ('not equal to', 'does not contain') is used, 'and' condition should be applied instead of 'or'
 						if($comparator == 'n' || $comparator == 'k' || $comparator == 'h' || $comparator == 'l')

@@ -1460,25 +1460,22 @@ function updateInfo($id) {
  * rotating the product Images
  */
 function getProductImages($id) {
-	global $log;
+	global $adb, $log;
 	$log->debug("Entering getProductImages(" . $id . ") method ...");
-	global $adb;
-	$image_lists = array();
-	$script_images = array();
-	$script = '<script>var ProductImages = new Array(';
-	$i = 0;
 	$query = 'select imagename from vtiger_products where productid=?';
 	$result = $adb->pquery($query, array($id));
 	$imagename = $adb->query_result($result, 0, 'imagename');
-	$image_lists = explode('###', $imagename);
-	for ($i = 0; $i < count($image_lists); $i++) {
-		$script_images[] = '"' . $image_lists[$i] . '"';
-	}
-	$script .=implode(',', $script_images) . ');</script>';
+
 	if ($imagename != '') {
-		$log->debug("Exiting getProductImages method ...");
-		return $script;
+		$script = implode(',', array_map(
+			function ($val) { return "\"$val\""; },
+			explode('###', $imagename)
+		));
+		$log->debug('Exiting getProductImages method ...');
+		return "<script>var ProductImages = new Array($script);</script>";
 	}
+	$log->debug('Exiting getProductImages method ...');
+	return '';
 }
 
 /**
@@ -1599,13 +1596,10 @@ function file_exist_fn($filename, $exist) {
 			$next = $exist + 1;
 			$explode_name = explode("_", $filename);
 			$implode_array = array();
-			for ($j = 0; $j < count($explode_name); $j++) {
-				if ($j != 0) {
-					$implode_array[] = $explode_name[$j];
-				}
+			for ($j = 1, $jMax = count($explode_name); $j < $jMax; $j++) {
+				$implode_array[] = $explode_name[$j];
 			}
 			$implode_name = implode("_", $implode_array);
-			$test_name = $implode_name;
 		} else {
 			$implode_name = $filename;
 		}
@@ -1896,7 +1890,7 @@ function QuickCreate($module) {
 		$custfld = getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields, $generatedtype, $module, '', $typeofdata);
 		$qcreate_arr[] = $custfld;
 	}
-	for ($i = 0, $j = 0; $i < count($qcreate_arr); $i = $i + 2, $j++) {
+	for ($i = 0, $j = 0, $iMax = count($qcreate_arr); $i < $iMax; $i += 2, $j++) {
 		$key1 = $qcreate_arr[$i];
 		if (isset($qcreate_arr[$i + 1]) and is_array($qcreate_arr[$i + 1])) {
 			$key2 = $qcreate_arr[$i + 1];
@@ -2211,7 +2205,7 @@ function getMergedDescription($description, $id, $parent_type) {
 	$templateVariablePair = explode('$', $description);
 	$token_data_pair = explode('$', $description);
 	$fields = Array();
-	for ($i = 1; $i < count($token_data_pair); $i+=2) {
+	for ($i = 1, $iMax = count($token_data_pair); $i < $iMax; $i+=2) {
 		if (strpos($token_data_pair[$i], '-') === false) continue;
 		$module = explode('-', $token_data_pair[$i]);
 		$fields[$module[0]][] = $module[1];
@@ -3131,7 +3125,7 @@ function getEntityFieldValues($entity_field_info, $ids_list) {
 	$entity_info = array();
 	for ($i = 0; $i < $numrows; $i++) {
 		if(is_array($fieldsName)) {
-			for($j = 0; $j < count($fieldsName); $j++) {
+			for($j = 0, $jMax = count($fieldsName); $j < $jMax; $j++) {
 				$entity_id = $adb->query_result($result, $i, $entityIdField);
 				$entity_info[$i][$entity_id][$fieldsName[$j]] = $adb->query_result($result, $i, $fieldsName[$j]);
 			}
