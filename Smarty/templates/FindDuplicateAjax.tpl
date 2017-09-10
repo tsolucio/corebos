@@ -9,23 +9,23 @@
 <table border="0" align ="center" width ="95%">
 	<tr>
 		<td >
-            {assign var='massDelete' value='LBL_MASS_DELETE'|getTranslatedString:$MODULE}
-            {if $DELETE eq $massDelete}
-                 <input class="crmbutton small delete" type="button" value="{$APP.LBL_DELETE}" onclick="return delete_fields('{$MODULE}')"/>
-            {/if}
-        </td>
+			{assign var='massDelete' value='LBL_MASS_DELETE'|getTranslatedString:$MODULE}
+			{if $DELETE eq $massDelete}
+				<input class="crmbutton small delete" type="button" value="{$APP.LBL_DELETE}" onclick="return delete_fields('{$MODULE}')"/>
+			{/if}
+		</td>
 		<td nowrap >
 			<table border=0 cellspacing=0 cellpadding=0 class="small">
 				<tr>{$NAVIGATION}</tr>
 			</table>
-        </td>
+		</td>
 	</tr>
 </table>
 
-<table class="lvt small" border="0" cellpadding="3" align="center" cellspacing="1" width="95%" >
+<table class="lvt small" border="0" cellpadding="3" align="center" cellspacing="1" width="95%">
 <tr>
 	<td class="lvtCol" width="40px">
-		<input type="checkbox" name="CheckAll" onclick='selectAllDel(this.checked,"del");' >
+		<input type="checkbox" name="CheckAll" onclick='selectAllDel(this.checked,"del");'>
 	</td>
 	{foreach key=key item=field_values from=$FIELD_NAMES}
 		<td class="lvtCol big"> 
@@ -51,7 +51,7 @@
 			{foreach key=key3 item=newdata1 from=$data}
 				<tr class="{$tdclass}" nowrap="nowrap" >
 					<td>
-						<input type="checkbox" name="del" value="{$data.$key3.recordid}" onclick='selectDel(this.name,"CheckAll");'  >
+						<input type="checkbox" name="del" value="{$data.$key3.recordid}" onclick='selectDel(this.name,"CheckAll");'>
 					</td>
 					{foreach key=key item=newdata2 from=$newdata1}
 						<td >
@@ -67,10 +67,10 @@
 										{/if}
 									{else}
 										{$APP.LBL_EXISTING}
+									{/if}
+								{else}
+									{$newdata2}
 								{/if}
-							{else}
-								{$newdata2}
-							{/if}
 							{/if}
 						</td>
 					{/foreach}	
@@ -86,5 +86,5 @@
 	{/foreach}
 </table>
 <div name="group_count" id="group_count" style="display :none">
-		{$NUM_GROUP}
+	{$NUM_GROUP}
 </div>
