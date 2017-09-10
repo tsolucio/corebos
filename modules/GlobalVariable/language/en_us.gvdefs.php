@@ -427,6 +427,20 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'URL of the application that will be used on screen as a link in the name.',
 ),
+'Application_UI_CompanyName' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'Name of the company creating the application. Appears in the lower right-hand link of the footer. Defaults to the same as Application_UI_Name.',
+),
+'Application_UI_ShowGITVersion' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'Show approximate git version after the application version number.',
+),
 'Document_Folder_View' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',

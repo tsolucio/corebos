@@ -427,6 +427,20 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'URL de la aplicación que se presentará en pantalla como enlace del nombre.',
 ),
+'Application_UI_CompanyName' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => '',
+	'definition' => 'Nombre de la empresa que crea la aplicación. Aparece en el enlace inferior derecho del pie de página. El valor predeterminado es el mismo que Application_UI_Name.',
+),
+'Application_UI_ShowGITVersion' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '',
+	'definition' => 'Mostrar la versión aproximada de git después del número de versión de la aplicación..',
+),
 'Document_Folder_View' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
