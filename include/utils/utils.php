@@ -3475,8 +3475,9 @@ function elimina_acentos($cadena){
 /** call back function to change the array values in to lower case */
 function setFormatForDuplicateCompare(&$string){
 	global $default_charset;
+	$string = html_entity_decode($string, ENT_QUOTES, $default_charset);
 	$string = elimina_acentos(trim($string));
-	$string = strtolower(html_entity_decode($string, ENT_QUOTES, $default_charset));
+	$string = strtolower($string);
 }
 
 /** Function to get recordids for subquery where condition */
