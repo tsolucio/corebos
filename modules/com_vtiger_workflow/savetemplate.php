@@ -16,6 +16,7 @@ require_once "VTTaskManager.inc";
 require_once "VTWorkflowUtils.php";
 
 function vtSaveWorkflowTemplate($adb, $request){
+	global $current_language;
 	$util = new VTWorkflowUtils();
 	$module = new VTWorkflowApplication("savetemplate");
 	$mod = return_module_language($current_language, $module->name);

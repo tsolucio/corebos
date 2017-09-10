@@ -166,24 +166,22 @@ class VTWorkflowTemplateManager {
 			}
 	}
 
-
 	private function getTemplatesForResult($result){
 		$adb = $this->adb;
-		$it = new SqlResultIterator($adb, $result);
 		$templates = array();
-		foreach($it as $row){
+		while ($row = $adb->fetch_array($result)) {
 			$template = new VTWorkflowTemplate();
-			$template->id = $row->template_id;
-			$template->title = $row->title;
-			$tempalte->moduleName = $row->module_name;
-			$template->template = $row->template;
+			$template->id = $row['template_id'];
+			$template->title = $row['title'];
+			$template->moduleName = $row['module_name'];
+			$template->template = $row['template'];
 			$templates[] = $template;
 		}
 		return $templates;
 	}
 }
 
-class VTWorkflowTemplate{
-	
+class VTWorkflowTemplate {
+
 }
 ?>
