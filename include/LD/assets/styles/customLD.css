@@ -17,9 +17,15 @@
     cursor: pointer;
 }
 
+/*========    Search    ==========*/
+.slds-pill__remove img{
+    width: 16px;
+    cursor: pointer;
+}
+/*========    End Search    ==========*/
+
 
 /*========    End Header    ==========*/
-
 .slds-table tbody tr {
     counter-increment: row-number;
 }
@@ -36,9 +42,6 @@
     background-color: #f7f9fb;
 }
 
-.LD_buttonList th {
-    background-color: rgb(244, 246, 249)!important;
-}
 
 .uiMenu {
     position: relative;
@@ -48,19 +51,6 @@
     width: 16px;
 }
 
-
-
-
-
-
-
-
-
-
-
-/*.extraSmall:hover {
-    background-color: #90b8e8;
-}*/
 
 .forceHeaderMenuTrigger.uiPopupTrigger {
     display: inline-block;
@@ -659,6 +649,12 @@ tr td.action-block {
     /*padding: 2.5rem 1rem;*/
     padding: 0 0 0 1rem;
     width: 22%;
+    vertical-align: top;
+}
+
+tr td.action-block-calendar {
+    padding: 0 0 0 1rem;
+    width: 20%;
     vertical-align: top;
 }
 

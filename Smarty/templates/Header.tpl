@@ -1,11 +1,11 @@
 {*<!--
 /*********************************************************************************
-  ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
-   * ("License"); You may not use this file except in compliance with the License
-   * The Original Code is:  vtiger CRM Open Source
-   * The Initial Developer of the Original Code is vtiger.
-   * Portions created by vtiger are Copyright (C) vtiger.
-   * All Rights Reserved.
+	** The contents of this file are subject to the vtiger CRM Public License Version 1.0
+	 * ("License"); You may not use this file except in compliance with the License
+	 * The Original Code is:	vtiger CRM Open Source
+	 * The Initial Developer of the Original Code is vtiger.
+	 * Portions created by vtiger are Copyright (C) vtiger.
+	 * All Rights Reserved.
  ********************************************************************************/
 -->*}
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -101,42 +101,36 @@
 	<tr>
 		<td valign=top align=left><img src="test/logo/{$FRONTLOGO}" alt="{$COMPANY_DETAILS.name}" title="{$COMPANY_DETAILS.name}" border=0 style="width: 15em;height: 4.2em;"></td>
 		<td align="center" valign=bottom>
-			<div align ="center" width ="50%" border='3' style="padding:5px;" class="noprint">
-				{if $Application_Global_Search_Active || (isset($GS_AUTOCOMP) && isset($GS_AUTOCOMP['searchin']))}
-				<table border=0 cellspacing=0 cellpadding=0 id="search" align="center">
-				{else}
-				<table border=0 cellspacing=0 cellpadding=0 align="center">
-				{/if}
-					<tr>
-						{if $Application_Global_Search_Active}
-						<form name="UnifiedSearch" method="post" action="index.php" style="margin:0px" onsubmit="if (document.getElementById('query_string').value=='') return false; VtigerJS_DialogBox.block();">
-						{else}
-						<form name="UnifiedSearch" style="margin:0px" onsubmit="return false;">
-						{/if}
-							<td style="background-color:#ffffef;border:1px;border-color:black;vertical-align:middle;" nowrap>
-								{if $Application_Global_Search_Active || (isset($GS_AUTOCOMP) && isset($GS_AUTOCOMP['searchin']))}
-								<input type="hidden" name="action" value="UnifiedSearch" style="margin:0px">
-								<input type="hidden" name="module" value="Home" style="margin:0px">
-								<input type="hidden" name="parenttab" value="{$CATEGORY}" style="margin:0px">
-								<input type="hidden" name="search_onlyin" value="--USESELECTED--" style="margin:0px">
-								<input type="text" name="query_string" id="query_string" value="{$QUERY_STRING}" class="searchBox" onFocus="this.value=''" autocomplete="off" data-autocomp='{$GS_AUTOCOMP|@json_encode}'>
-									<div id="listbox-unique-id" role="listbox" class="">
-										<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0; width: 100%;left:45%;" role="presentation"></ul>
-									</div>
-								{/if}
-							</td>
+			{if $Application_Global_Search_Active || (isset($GS_AUTOCOMP) && isset($GS_AUTOCOMP['searchin']))}
+				<div class="slds-combobox_container slds-has-object-switcher" id="search" style="width: 50%;margin: .5rem 0;">
+			{else}
+				<div class="slds-combobox_container slds-has-object-switcher" style="width: 50%;margin-top: .5rem;">
+			{/if}
+					<div class="slds-listbox_object-switcher slds-dropdown-trigger slds-dropdown-trigger_click">
+						<button class="slds-button slds-button_icon" onclick="UnifiedSearch_SelectModuleForm(this);" aria-haspopup="true" title="Select object to search in" style="padding: .5rem;">
+							<img src="themes/images/chevrondown_60.png" style="width: 16px;" >
+						</button>
+					</div>
+					<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-expanded="false" aria-haspopup="listbox" role="combobox">
+						<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right">
 							{if $Application_Global_Search_Active}
-							<td align ="right" style="background-color:#FFFFEF; vertical-align:middle;padding:5px;" onclick="UnifiedSearch_SelectModuleForm(this);">
-								<a href='javascript:void(0);' ><img src="{'arrow_down_black.png'|@vtiger_imageurl:$THEME}" align='left' border=0></a>
-							</td>
-							<td style="background-color:#cccccc">
-								<input type="image" class="searchBtn" alt="{$APP.LBL_FIND}" title="{$APP.LBL_FIND}" width="70%" height="70%" src="{'searchicon.PNG'|@vtiger_imageurl:$THEME}" align='left' border=1>
-							</td>
+								<form name="UnifiedSearch" method="post" action="index.php" style="margin:0px" onsubmit="if (document.getElementById('query_string').value=='') return false; VtigerJS_DialogBox.block();">
+							{else}
+								<form name="UnifiedSearch" style="margin:0px" onsubmit="return false;">
 							{/if}
-						</form>
-					</tr>
-				</table>
-			</div>
+									{if $Application_Global_Search_Active || (isset($GS_AUTOCOMP) && isset($GS_AUTOCOMP['searchin']))}
+									<input type="hidden" name="action" value="UnifiedSearch">
+									<input type="hidden" name="module" value="Home">
+									<input type="hidden" name="parenttab" value="{$CATEGORY}">
+									<input type="hidden" name="search_onlyin" value="--USESELECTED--">
+									<input type="text" name="query_string" id="query_string" value="{$QUERY_STRING}" class="slds-input slds-combobox__input" onFocus="this.value=''" autocomplete="off" data-autocomp='{$GS_AUTOCOMP|@json_encode}'>
+									<input type="image" alt="{$APP.LBL_FIND}" title="{$APP.LBL_FIND}" src="themes/softed/images/btnL3Search.gif" width="16px" style="vertical-align: middle;">
+									{/if}
+								</form>
+						</div>
+					</div>
+
+				</div>
 		</td>
 		<td class=small nowrap align="right" style="padding-right:10px;">
 			<table border=0 cellspacing=0 cellpadding=0 class="headerlink-lds">

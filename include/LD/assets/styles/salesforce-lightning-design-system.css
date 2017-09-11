@@ -3288,9 +3288,45 @@ a.slds-button--inverse:focus {
     min-height: calc(1.875rem + (1px * 2));
 }
 
+/**
+ * @summary Modifier if text input has svg icon adjacent to input
+ *
+ * @selector .slds-input-has-icon
+ * @restrict .slds-form-element div
+ */
 .slds-input-has-icon {
     position: relative;
 }
+  /**
+   * Hook for .slds-input-has-icon
+   *
+   * @selector .slds-input__icon
+   * @restrict .slds-input-has-icon svg, .slds-input-has-icon button
+   */
+  /**
+   * Positions .slds-input__icon to the left of the text input
+   *
+   * @selector .slds-input-has-icon_left
+   * @restrict .slds-input-has-icon
+   * @modifier
+   * @group position
+   */
+  /**
+   * Positions .slds-input__icon to the right of the text input
+   *
+   * @selector .slds-input-has-icon_right
+   * @restrict .slds-input-has-icon
+   * @modifier
+   * @group position
+   */
+  /**
+   * Positions .slds-input__icon_left to the left of the text input and .slds-input__icon_right to the right of the text input
+   *
+   * @selector .slds-input-has-icon_left-right
+   * @restrict .slds-input-has-icon
+   * @modifier
+   * @group position
+   */ }
 
 .slds-input-has-icon .slds-input__icon {
     width: 1rem;
@@ -3301,36 +3337,67 @@ a.slds-button--inverse:focus {
     fill: #54698d;
 }
 
-.slds-input-has-icon--left .slds-input__icon {
-    left: 0.75rem;
-}
+slds-input-has-icon_left .slds-input__icon, .slds-input-has-icon--left .slds-input__icon {
+  left: 0.75rem; }
 
-.slds-input-has-icon--left .slds-input,
+.slds-input-has-icon_left .slds-input,
+.slds-input-has-icon_left .slds-input_bare,
+.slds-input-has-icon_left .slds-input--bare, .slds-input-has-icon--left .slds-input,
+.slds-input-has-icon--left .slds-input_bare,
 .slds-input-has-icon--left .slds-input--bare {
-    padding-left: 2rem;
-}
+  padding-left: 2rem; }
 
-.slds-input-has-icon--right .slds-input__icon {
-    right: 0.75rem;
-}
+.slds-input-has-icon_right .slds-input__icon, .slds-input-has-icon--right .slds-input__icon {
+  right: 0.75rem; }
 
-.slds-input-has-icon--right .slds-input,
+.slds-input-has-icon_right .slds-input,
+.slds-input-has-icon_right .slds-input_bare,
+.slds-input-has-icon_right .slds-input--bare, .slds-input-has-icon--right .slds-input,
+.slds-input-has-icon--right .slds-input_bare,
 .slds-input-has-icon--right .slds-input--bare {
-    padding-right: 2rem;
-}
+  padding-right: 2rem; }
 
+.slds-input-has-icon_left-right, .slds-input-has-icon--left-right {
+  /**
+     * Hook for .slds-input-has-icon--left-right
+     *
+     * @selector .slds-input__icon_left
+     * @restrict .slds-input__icon
+     */
+  /**
+     * Hook for .slds-input-has-icon_left-right
+     *
+     * @selector .slds-input__icon_right
+     * @restrict .slds-input__icon
+     */ }
+
+.slds-input-has-icon_left-right .slds-input__icon_left,
+.slds-input-has-icon_left-right .slds-input__icon--left, .slds-input-has-icon--left-right .slds-input__icon_left,
 .slds-input-has-icon--left-right .slds-input__icon--left {
-    left: 0.75rem;
-}
+  left: 0.75rem; }
 
+.slds-input-has-icon_left-right .slds-input__icon_right,
+.slds-input-has-icon_left-right .slds-input__icon--right, .slds-input-has-icon--left-right .slds-input__icon_right,
 .slds-input-has-icon--left-right .slds-input__icon--right {
-    right: 0.75rem;
-}
+  right: 0.75rem; }
 
-.slds-input-has-icon--left-right .slds-input,
+.slds-input-has-icon_left-right .slds-input,
+.slds-input-has-icon_left-right .slds-input_bare,
+.slds-input-has-icon_left-right .slds-input--bare, .slds-input-has-icon--left-right .slds-input,
+.slds-input-has-icon--left-right .slds-input_bare,
 .slds-input-has-icon--left-right .slds-input--bare {
-    padding: 0 2rem;
-}
+  padding: 0 2rem; }
+
+/**
+ * Positions two items (icons and/or spinners) on one side or the other of the input
+ *
+ * @selector .slds-input__icon-group
+ * @restrict .slds-input-has-icon div
+ */
+.slds-input__icon-group {
+  position: absolute;
+  height: 1rem;
+  margin-top: -0.5rem; }
 
 .slds-input-has-fixed-addon {
     display: -ms-flexbox;
@@ -4116,6 +4183,240 @@ a.slds-button--inverse:focus {
     height: 1.25rem;
 }
 
+/**
+ * If combo has a selection model that requires a listbox of pills to be displayed
+ * inside of a combobox
+ *
+ * @selector .slds-has-inline-listbox
+ * @restrict .slds-combobox_container
+ */
+.slds-has-inline-listbox,
+.slds-has-object-switcher {
+  -ms-flex-direction: row;
+      flex-direction: row;
+  border: 1px solid #d8dde6;
+  border-radius: 0.25rem;
+  /**
+   * Input field within a combobox
+   *
+   * @selector .slds-combobox__input
+   * @restrict .slds-combobox input
+   */
+  /**
+   * Modifier to the combobox when an SVG icon sits adjacent to the combobox form element
+   *
+   * @selector .slds-has-icon_left
+   * @restrict .slds-combobox
+   */ }
+
+/**
+ * Listbox container
+ *
+ * @selector .slds-listbox
+ * @restrict ul
+ */
+.slds-listbox {
+  font-size: 0.8125rem; }
+
+/**
+ * Inline listbox
+ *
+ * @selector .slds-listbox_inline
+ * @restrict .slds-listbox
+ * @modifier
+ */
+.slds-listbox_inline,
+.slds-listbox--inline {
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  -ms-flex-align: center;
+      align-items: center;
+  margin-left: 0.125rem;
+  margin-right: 0.125rem; }
+
+.slds-listbox_inline li,
+.slds-listbox--inline li {
+  display: -ms-flexbox;
+  display: flex; }
+
+.slds-listbox_inline li + li,
+.slds-listbox--inline li + li {
+  padding-left: 0.125rem; }
+
+/**
+ * Horizontal listbox
+ *
+ * @selector .slds-listbox_horizontal
+ * @restrict .slds-listbox
+ * @modifier
+ */
+.slds-listbox_horizontal,
+.slds-listbox--horizontal {
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -ms-flex-align: center;
+      align-items: center; }
+
+.slds-listbox_horizontal li + li,
+.slds-listbox--horizontal li + li {
+  padding-left: 0.125rem; }
+
+/**
+ * Choosable option within listbox
+ *
+ * @selector .slds-listbox__option
+ * @restrict .slds-listbox__item > span
+ */
+.slds-listbox__option:hover {
+  cursor: pointer; }
+
+.slds-listbox__option:focus {
+  outline: 0; }
+
+.slds-listbox__option .slds-truncate {
+  display: inline-block;
+  vertical-align: middle; }
+
+/**
+ * Creates a vertical listbox
+ *
+ * @selector .slds-listbox_vertical
+ * @restrict .slds-listbox
+ * @modifier
+ */
+.slds-listbox_vertical,
+.slds-listbox--vertical {
+  /**
+   * Focus state of a vertical listbox option
+   *
+   * @selector .slds-has-focus
+   * @restrict .slds-listbox__option
+   * @modifier
+   */
+  /**
+   * Modifies the listbox option if it contains an plain object or string
+   *
+   * @selector .slds-listbox__option_plain
+   * @restrict .slds-listbox__option
+   */
+  /**
+   * Modifies the listbox option if it contains an entity object
+   *
+   * @selector .slds-listbox__option_entity
+   * @restrict .slds-listbox__option
+   */
+  /**
+   * If the listbox option has metadata or secondary information that sits below its primary text
+   *
+   * @selector .slds-listbox__option_has-meta
+   * @restrict .slds-listbox__option
+   */ }
+
+.slds-listbox_vertical .slds-listbox__option:focus,
+.slds-listbox_vertical .slds-listbox__option:hover,
+.slds-listbox_vertical .slds-listbox__option.slds-has-focus,
+.slds-listbox--vertical .slds-listbox__option:focus,
+.slds-listbox--vertical .slds-listbox__option:hover,
+.slds-listbox--vertical .slds-listbox__option.slds-has-focus {
+  background-color: #f4f6f9;
+  text-decoration: none; }
+
+.slds-listbox_vertical .slds-listbox__option[role="presentation"]:hover,
+.slds-listbox--vertical .slds-listbox__option[role="presentation"]:hover {
+  background-color: transparent;
+  cursor: default; }
+
+.slds-listbox_vertical .slds-listbox__option_plain,
+.slds-listbox_vertical .slds-listbox__option--plain,
+.slds-listbox--vertical .slds-listbox__option_plain,
+.slds-listbox--vertical .slds-listbox__option--plain {
+  padding: 0.5rem 0.75rem; }
+
+.slds-listbox_vertical .slds-listbox__option_entity,
+.slds-listbox_vertical .slds-listbox__option--entity,
+.slds-listbox--vertical .slds-listbox__option_entity,
+.slds-listbox--vertical .slds-listbox__option--entity {
+  padding: 0.25rem 0.75rem; }
+
+.slds-listbox_vertical .slds-listbox__option_entity .slds-media__figure,
+.slds-listbox_vertical .slds-listbox__option--entity .slds-media__figure,
+.slds-listbox--vertical .slds-listbox__option_entity .slds-media__figure,
+.slds-listbox--vertical .slds-listbox__option--entity .slds-media__figure {
+  margin-right: 0.5rem; }
+
+.slds-listbox_vertical .slds-listbox__option_has-meta .slds-media__figure,
+.slds-listbox_vertical .slds-listbox__option--has-meta .slds-media__figure,
+.slds-listbox--vertical .slds-listbox__option_has-meta .slds-media__figure,
+.slds-listbox--vertical .slds-listbox__option--has-meta .slds-media__figure {
+  margin-top: 0.25rem; }
+
+
+   /**
+ * The metadata or secondary text of an entity listbox
+ *
+ * @selector .slds-listbox__option-meta_entity
+ * @restrict .slds-listbox__option span
+ */
+.slds-listbox__option-meta_entity,
+.slds-listbox__option-meta--entity {
+  display: block;
+  margin-top: -0.25rem;
+  color: #54698d; }
+
+.slds-listbox_object-switcher,
+.slds-listbox--object-switcher {
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  padding: 0.125rem; }
+
+.slds-has-inline-listbox .slds-combobox__input,
+.slds-has-object-switcher .slds-combobox__input {
+  min-height: 1.625rem;
+  line-height: 1.625rem;
+  border: 0;
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem; }
+
+.slds-has-inline-listbox .slds-combobox__input:focus, .slds-has-inline-listbox .slds-combobox__input:active,
+.slds-has-object-switcher .slds-combobox__input:focus,
+.slds-has-object-switcher .slds-combobox__input:active {
+  outline: 0;
+  box-shadow: none; }
+
+.slds-has-inline-listbox .slds-listbox_object-switcher ~ .slds-listbox_inline,
+.slds-has-inline-listbox .slds-listbox--object-switcher ~ .slds-listbox--inline,
+.slds-has-inline-listbox .slds-combobox_container__icon ~ .slds-listbox_inline,
+.slds-has-inline-listbox .slds-combobox_container__icon ~ .slds-listbox--inline,
+.slds-has-object-switcher .slds-listbox_object-switcher ~ .slds-listbox_inline,
+.slds-has-object-switcher .slds-listbox--object-switcher ~ .slds-listbox--inline,
+.slds-has-object-switcher .slds-combobox_container__icon ~ .slds-listbox_inline,
+.slds-has-object-switcher .slds-combobox_container__icon ~ .slds-listbox--inline {
+  margin-left: 0.5rem; }
+
+.slds-has-inline-listbox.slds-has-icon_left,
+.slds-has-object-switcher.slds-has-icon_left {
+  padding-left: 2.25rem;
+  /**
+     * SVG icon that sits adjacent to the combobox form element
+     *
+     * @selector .slds-combobox_container__icon
+     * @restrict .slds-combobox_container svg
+     */ }
+
+.slds-has-inline-listbox.slds-has-icon_left .slds-combobox_container__icon,
+.slds-has-object-switcher.slds-has-icon_left .slds-combobox_container__icon {
+  width: 1rem;
+  height: 1rem;
+  position: absolute;
+  left: 1.125rem;
+  top: 50%;
+  margin-top: -0.5rem; }
 
 
 /**
@@ -4129,6 +4430,15 @@ a.slds-button--inverse:focus {
     color: #9faab5;
 }
 
+/**
+ * The icon within a plain listbox that indicates if an option has been selected or not.
+ *
+ * @selector .slds-listbox__icon-selected
+ * @restrict .slds-listbox__item svg
+ */
+.slds-listbox__icon-selected {
+  opacity: 0;
+  fill: #0070d2; }
 
 .slds-checkbox--button-group {
     display: -ms-inline-flexbox;
@@ -5655,6 +5965,23 @@ a.slds-button--inverse:focus {
     opacity: 0;
     transition: opacity 0.1s linear, visibility 0.1s linear;
 }
+
+.slds-dropdown-trigger_click, .slds-dropdown-trigger--click {
+  /**
+     * Opens dropdown menu when invoked on click
+     *
+     * @selector .slds-is-open
+     * @restrict .slds-dropdown-trigger_click
+     * @modifier
+     */ }
+
+.slds-dropdown-trigger_click .slds-dropdown, .slds-dropdown-trigger--click .slds-dropdown {
+  display: none; }
+
+.slds-dropdown-trigger_click.slds-is-open .slds-dropdown, .slds-dropdown-trigger--click.slds-is-open .slds-dropdown {
+  display: block;
+  /*visibility: visible;*/
+  opacity: 1; }
 
 .slds-dropdown-trigger:hover,
 .slds-dropdown-trigger:focus {
@@ -7203,71 +7530,139 @@ a.slds-button--inverse:focus {
     min-height: 1.625rem;
 }
 
-.slds-pill+.slds-pill {
-    margin-left: 0.125rem;
-}
+.slds-pill + .slds-pill {
+  margin-left: 0.125rem; }
 
 .slds-pill:hover {
-    background-color: #f4f6f9;
-}
+  background-color: #f4f6f9; }
+
+.slds-pill:focus {
+  outline: 0;
+  border-radius: 0.25rem;
+  border-color: #1589ee;
+  box-shadow: 0 0 3px #0070D2; }
 
 .slds-pill a {
-    text-decoration: none;
-}
+  text-decoration: none; }
 
-.slds-pill--bare {
-    background-color: transparent;
-    border: 0;
-}
+.slds-pill_bare, .slds-pill--bare {
+  background-color: transparent;
+  border: 0; }
 
-.slds-pill--bare:hover {
-    background-color: transparent;
-}
+.slds-pill_bare:hover, .slds-pill--bare:hover {
+  background-color: transparent; }
 
-.slds-pill__container,
-.slds-pill-container,
-.slds-pill_container {
-    padding: 0.125rem;
-    border: 1px solid #d8dde6;
-    border-radius: 0.25rem;
-    min-height: calc(1.875rem + 2px);
-}
+.slds-pill__container, .slds-pill-container, .slds-pill_container {
+  display: -ms-flexbox;
+  display: flex;
+  padding: 0.125rem;
+  border: 1px solid #d8dde6;
+  border-radius: 0.25rem;
+  min-height: calc(1.875rem + 2px); }
 
-.slds-pill__container--bare,
-.slds-pill_container--bare {
-    padding: 0.125rem;
-    border: 0;
-    border-radius: 0;
-}
+.slds-pill__container_bare, .slds-pill__container--bare, .slds-pill_container_bare, .slds-pill_container--bare {
+  display: -ms-flexbox;
+  display: flex;
+  padding: 0.125rem;
+  border: 0;
+  border-radius: 0; }
 
 .slds-pill__label {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; }
 
 .slds-pill__label:focus {
-    outline: 0;
-    border-radius: 0.25rem;
-    box-shadow: 0 0 3px #0070D2;
-}
+  outline: 0;
+  border-radius: 0.25rem;
+  box-shadow: 0 0 3px #0070D2; }
 
-.slds-pill__icon,
-.slds-pill__icon_container {
-    width: 1.25rem;
-    height: 1.25rem;
-    margin-right: 0.25rem;
-}
+.slds-pill__icon, .slds-pill__icon_container {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0.25rem; }
 
 .slds-pill__icon .slds-icon,
-.slds-pill__icon_container .slds-icon {
-    width: 1.25rem;
-    height: 1.25rem;
-}
+.slds-pill__icon .slds-avatar, .slds-pill__icon_container .slds-icon,
+.slds-pill__icon_container .slds-avatar {
+  width: 1.25rem;
+  height: 1.25rem;
+  display: block;
+  font-size: 0.625rem; }
+
+.slds-pill__icon ~ .slds-pill__action, .slds-pill__icon_container ~ .slds-pill__action {
+  padding-left: calc(1.25rem + 0.25rem + 2px); }
 
 .slds-pill__remove {
-    margin-left: 0.25rem;
-}
+  width: 1rem;
+  height: 1rem;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -ms-flex-align: center;
+      align-items: center;
+  -ms-flex-pack: center;
+      justify-content: center;
+  margin-left: 0.25rem;
+  border-radius: 0.125rem; }
+
+.slds-pill__remove svg {
+  width: 0.875rem;
+  height: 0.875rem; }
+
+/**
+ * Creates a pill with a hyperlink
+ *
+ * @selector .slds-pill_link
+ * @restrict .slds-pill
+ */
+.slds-pill_link,
+.slds-pill--link {
+  border: 0;
+  padding: 0; }
+
+.slds-pill_link .slds-pill__icon_container,
+.slds-pill--link .slds-pill__icon_container {
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  left: 0.125rem;
+  transform: translateY(-50%); }
+
+.slds-pill_link .slds-pill__remove,
+.slds-pill--link .slds-pill__remove {
+  position: absolute;
+  top: 50%;
+  right: 0.125rem;
+  transform: translateY(-50%); }
+
+/**
+ * Actionable element inside of pill with hyperlink
+ *
+ * @selector .slds-pill__action
+ * @restrict .slds-pill_link a
+ */
+.slds-pill__action {
+  padding: 0.125rem;
+  padding-right: calc(1rem + 0.25rem + 2px);
+  border: 1px solid #d8dde6;
+  border-radius: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -ms-flex-positive: 1;
+      flex-grow: 1; }
+
+.slds-pill__action:focus {
+  outline: 0;
+  border-color: #1589ee;
+  box-shadow: 0 0 3px #0070D2; }
+
+.slds-has-error .slds-pill__label {
+  font-weight: 700;
+  color: #c23934; }
+
+.slds-has-error .slds-pill__action {
+  border-color: #c23934; }
 
 .slds-wizard {
     position: relative;
@@ -12390,7 +12785,9 @@ th.slds-is-sortable:hover .slds-button {
 }
 
 
-
+.slds-p-top_xxx-small,
+.slds-p-top--xxx-small {
+  padding-top: 0.125rem; }
 
 
 /*

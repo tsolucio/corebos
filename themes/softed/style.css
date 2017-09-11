@@ -414,7 +414,7 @@ a:hover {
 	color: #000000;
 }
 
-td span {
+td span:not(.search-dropdown) {
     word-wrap: break-word;
     white-space: normal;
 }
@@ -2865,9 +2865,12 @@ a.allMnu:Hover{
 	background-color:#eef;
 	color:#333;
 }
-#search{
+#search1{
 	border:3px solid #4E8DCC;
 	background-color:#ffffef;
+	width :50%;
+}
+#search1{
 	width :50%;
 }
 .drop_mnu_user{
