@@ -427,6 +427,20 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'URL of the application that will be used on screen as a link in the name.',
 ),
+'Application_UI_CompanyName' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'Name of the company creating the application. Appears in the lower right-hand link of the footer. Defaults to the same as Application_UI_Name.',
+),
+'Application_UI_ShowGITVersion' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'Show approximate git version after the application version number.',
+),
 'Document_Folder_View' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
@@ -839,6 +853,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => '',
 	'definition' => 'The maximum number of attachments that can be uploaded to an email. The default is 6.',
+),
+'EMail_CustomCurrentDate_Format' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Aplicación',
+	'values' => 'valid PHP date format string',
+	'definition' => 'Format to apply to $custom-currentdate$ variable in email templates. Accepts any valid date format string from PHP. By default leave it empty to get the month in text, day and year.',
 ),
 'Workflow_Send_Email_ToCCBCC' => array(
 	'status' => 'Implemented',

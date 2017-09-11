@@ -54,9 +54,9 @@ class Homestuff{
 				return false;
 			}
 
-			for($q=0;$q<sizeof($fieldarray);$q++){
+			foreach ($fieldarray as $field){
 				$queryfld="insert into vtiger_homemoduleflds values(? ,?);";
-				$params = array($stuffid,$fieldarray[$q]);
+				$params = array($stuffid,$field);
 				$result=$adb->pquery($queryfld, $params);
 			}
 

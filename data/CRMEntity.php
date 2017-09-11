@@ -2356,7 +2356,7 @@ class CRMEntity {
 	}
 
 	/*
-	 * Function to get the primary query part of a report for which generateReportsQuery Doesnt exist in module
+	 * Function to get the primary query part of a report
 	 * @param - $module Primary module name
 	 * returns the query string formed on fetching the related data for report for primary module
 	 */

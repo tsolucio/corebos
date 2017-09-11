@@ -517,33 +517,25 @@ class ListViewController {
 						$value = textlength_check($value);
 					}
 				} elseif ($field->getUIType() == 1024) {
-					$content=array();
 					if ($value != '') {
-						$arr_evo_actions=explode(' |##| ',$value);
-						for($fvalues=0;$fvalues<sizeof($arr_evo_actions);$fvalues++) {
-							$roleid=$arr_evo_actions[$fvalues];
-							$rolename=getRoleName($roleid);
-							$content[$fvalues]=$rolename;
-						}
+						$value = textlength_check(implode(', ', array_map('getRoleName', explode(' |##| ',$value))));
 					}
-					$value = textlength_check(implode(', ',$content));
 				} elseif ($field->getUIType() == 1025) {
 					$content=array();
 					if ($value != '') {
 						$values=explode(' |##| ',$value);
-						for ($fvalues=0;$fvalues<sizeof($values);$fvalues++) {
-							$srchmod=  getSalesEntityType($values[$fvalues]);
-							$id=$values[$fvalues];
-							$displayValueArray = getEntityName($srchmod, $id);
+						foreach ($values as $crmid) {
+							$srchmod=  getSalesEntityType($crmid);
+							$displayValueArray = getEntityName($srchmod, $crmid);
 							if (!empty($displayValueArray)) {
 								foreach ($displayValueArray as $key=>$value2) {
 									$shown_val = $value2;
 								}
 							}
-							if (!(vtlib_isModuleActive($srchmod) and isPermitted($srchmod,'DetailView',$id))) {
-								$content[$fvalues]=textlength_check($shown_val);
+							if (!(vtlib_isModuleActive($srchmod) and isPermitted($srchmod,'DetailView',$crmid))) {
+								$content[]=textlength_check($shown_val);
 							} else {
-								$content[$fvalues]='<a href="index.php?module='.$srchmod.'&action=DetailView&record='.$id.'">'.textlength_check($shown_val).'</a>';
+								$content[]='<a href="index.php?module='.$srchmod.'&action=DetailView&record='.$crmid.'">'.textlength_check($shown_val).'</a>';
 							}
 						}
 					}

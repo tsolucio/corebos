@@ -1155,7 +1155,7 @@ $app_strings = array(
 'LBL_FIELDLISTS'=> 'List Of Fields',
 'LBL_RECORD'=>'Record #',
 'LBL_DUP_PERMISSION' => 'You are not permitted to delete ',
-'recordid' => 'recordid',
+'recordid' => 'Record',
 'Entity Type' => 'Entity Type',
 
 // gmailbookmarklet customization

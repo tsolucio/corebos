@@ -178,11 +178,12 @@
 		}
 
 		function getoneRACWorkflowForRecord($moduleName,$recordid) {
+			$wfs = $this->getRACWorkflowsForModule($moduleName);
+			if (count($wfs)==0) return false;
 			$util = new VTWorkflowUtils();
 			$adminUser = $util->adminUser();
 			$entityCache = new VTEntityCache($adminUser);
 			$entityData = $entityCache->forId($recordid);
-			$wfs = $this->getRACWorkflowsForModule($moduleName);
 			$found = false;
 			foreach ($wfs as $wf) {
 				$found = $wf->evaluate($entityCache, $recordid);
