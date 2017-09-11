@@ -439,6 +439,23 @@ function hideITSEventInfo(){
 
 }
 {/literal}
+
+function ShowHidefn(divid, imgidDown, imgidUp)
+{ldelim}
+	if(document.getElementById(divid).style.display != 'none')
+		{ldelim}
+		jQuery("#"+divid).fadeOut();
+		jQuery("#"+imgidDown).fadeIn();
+		jQuery("#"+imgidUp).hide();
+		{rdelim}
+	else
+		{ldelim}
+		jQuery("#"+divid).fadeIn();
+		jQuery("#"+imgidDown).hide();
+		jQuery("#"+imgidUp).fadeIn();
+		{rdelim}
+{rdelim}
+
 </script>
 {include file='Buttons_List.tpl'}
 <br/>
@@ -449,22 +466,32 @@ function hideITSEventInfo(){
 			<div class="small">
 				<table class="slds-table slds-no-row-hover slds-table--cell-buffer slds-table-moz">
 					<tr class="slds-text-title--caps">
-						<td class="noprint action-block" style="padding: 0;">
+						<td class="noprint action-block-calendar" id="activityCalendar" style="padding: 0;{$DEFAULT_ACTION_PANEL_STATUS}">
 							<div class="flexipageComponent">
 								<article class="slds-card container MEDIUM forceBaseCard runtime_sales_mergeMergeCandidatesPreviewCard" aria-describedby="header" style="margin: 0;">
 									<div class="slds-card__header slds-grid">
 										<header class="slds-media slds-media--center slds-has-flexi-truncate">
 											<div class="slds-media__body">
 												<h2 class="header-title-container">
-													<span class="slds-text-heading--small slds-truncate actionLabel" onclick="jQuery('#event_type_wrapper').toggle();"><b>{$CMOD.LBL_LIST_FORM_TITLE}</b></span>
+													<span class="slds-text-heading--small slds-truncate"><b>{$CMOD.LBL_LIST_FORM_TITLE}</b></span>
 												</h2>
+											</div>
+											<div class="slds-media__figure">
+												<div class="extraSmall forceEntityIcon">
+													<span class="uiImage">
+														<a href="javascript:ShowHidefn('event_type_wrapper', 'arrowDownActivity', 'arrowUpActivity');" >
+															<img src="{'showDown.gif'|@vtiger_imageurl:$THEME}" id="arrowDownActivity" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" width="16" style="display: none;">
+															<img src="{'showUp.gif'|@vtiger_imageurl:$THEME}" id="arrowUpActivity" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" width="16">
+														</a>
+													</span>
+												</div>
 											</div>
 										</header>
 									</div>
 									<div class="slds-card__body slds-card__body--inner">
-										<div id="event_type_wrapper">
+										<div id="event_type_wrapper" >
 											{foreach name=act_types2 item=typedata key=typeid from=$ACTIVITYTYPES}
-												<table width="98%" id="event_type_{$typeid}" class="calendar-activity-module-blocks" style="{if $USER_VIEW_TYPE neq 'all'}color:{$typedata.textColor};background-color:{$typedata.color};border-color:{$typedata.title_color}{else}background-color:#ffffff;border: 2px solid #dedede{/if};" onMouseOver="showEventIcon('event_type_{$typeid}_icon')" onMouseOut="hideEventIcon('event_type_{$typeid}_icon')">
+												<table width="98%" id="event_type_{$typeid}" class="calendar-activity-module-blocks" style="{if $USER_VIEW_TYPE neq 'all'}color:{$typedata.textColor};background-color:{$typedata.color};{$typedata.title_color}{else}background-color:#ffffff;border: 2px solid #dedede{/if};" onMouseOver="showEventIcon('event_type_{$typeid}_icon')" onMouseOut="hideEventIcon('event_type_{$typeid}_icon')">
 													<tr class="slds-line-height--reset">
 														<td>
 															<span class="slds-checkbox">
@@ -495,13 +522,23 @@ function hideITSEventInfo(){
 										<header class="slds-media slds-media--center slds-has-flexi-truncate">
 											<div class="slds-media__body">
 												<h2 class="header-title-container">
-													<span class="slds-text-heading--small slds-truncate actionLabel" onclick="jQuery('#module_type_wrapper').toggle();"><b>{'LIST_MODULES'|@getTranslatedString:$MODULE}</b></span>
+													<span class="slds-text-heading--small slds-truncate"><b>{'LIST_MODULES'|@getTranslatedString:$MODULE}</b></span>
 												</h2>
+											</div>
+											<div class="slds-media__figure">
+												<div class="extraSmall forceEntityIcon">
+													<span class="uiImage">
+														<a href="javascript:ShowHidefn('module_type_wrapper', 'arrowDownModule', 'arrowUpModule');" >
+															<img src="{'showDown.gif'|@vtiger_imageurl:$THEME}" id="arrowDownModule" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" width="16">
+															<img src="{'showUp.gif'|@vtiger_imageurl:$THEME}" id="arrowUpModule" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" width="16" style="display: none;">
+														</a>
+													</span>
+												</div>
 											</div>
 										</header>
 									</div>
 									<div class="slds-card__body slds-card__body--inner">
-										<div id="module_type_wrapper">
+										<div id="module_type_wrapper" style="display: none;">
 											{foreach name=act_types2 item=typedata key=typeid from=$MODULETYPES}
 											<table width="98%" id="event_type_{$typeid}" class="calendar-activity-module-blocks" style="{if $USER_VIEW_TYPE neq ' all '}color:{$typedata.textColor};background-color:{$typedata.color};border-color: {$typedata.title_color}{else}background-color:#ffffff;border: 2px solid #dedede{/if};">
 												<tr class="slds-line-height--reset">
@@ -534,7 +571,7 @@ function hideITSEventInfo(){
 										<header class="slds-media slds-media--center slds-has-flexi-truncate">
 											<div class="slds-media__body">
 												<h2 class="header-title-container">
-													<span class="slds-text-heading--small slds-truncate actionLabel"><b>{$APP.LBL_ASSIGNED_TO}</b></span>
+													<span class="slds-text-heading--small slds-truncate"><b>{$APP.LBL_ASSIGNED_TO}</b></span>
 												</h2>
 											</div>
 										</header>
@@ -580,13 +617,23 @@ function hideITSEventInfo(){
 										<header class="slds-media slds-media--center slds-has-flexi-truncate">
 											<div class="slds-media__body">
 												<h2 class="header-title-container">
-													<span class="slds-text-heading--small slds-truncate actionLabel" onclick="jQuery('#et_status_wrapper').toggle();"><b>{$CMOD.Status}</b></span>
+													<span class="slds-text-heading--small slds-truncate"><b>{$CMOD.Status}</b></span>
 												</h2>
+											</div>
+											<div class="slds-media__figure">
+												<div class="extraSmall forceEntityIcon">
+													<span class="uiImage">
+														<a href="javascript:ShowHidefn('et_status_wrapper', 'arrowDownStatus', 'arrowUpStatus');" >
+															<img src="{'showDown.gif'|@vtiger_imageurl:$THEME}" id="arrowDownStatus" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" width="16">
+															<img src="{'showUp.gif'|@vtiger_imageurl:$THEME}" id="arrowUpStatus" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" width="16" style="display: none;">
+														</a>
+													</span>
+												</div>
 											</div>
 										</header>
 									</div>
 									<div class="slds-card__body slds-card__body--inner">
-										<div id="et_status_wrapper">{$MOD.LBL_EVENT_STATUS}:
+										<div id="et_status_wrapper" style="display: none;">{$MOD.LBL_EVENT_STATUS}:
 											<br>
 											<div id="event_status_list">
 												{foreach name=calendar_event_status item=estatusdata key=estatus_key from=$EVENT_STATUS}
@@ -636,13 +683,23 @@ function hideITSEventInfo(){
 										<header class="slds-media slds-media--center slds-has-flexi-truncate">
 											<div class="slds-media__body">
 												<h2 class="header-title-container">
-													<span class="slds-text-heading--small slds-truncate actionLabel" onclick="jQuery('#task_priority_list').toggle();"><b>{$CMOD.Priority}</b></span>
+													<span class="slds-text-heading--small slds-truncate" onclick="jQuery('#task_priority_list').toggle();"><b>{$CMOD.Priority}</b></span>
 												</h2>
+											</div>
+											<div class="slds-media__figure">
+												<div class="extraSmall forceEntityIcon">
+													<span class="uiImage">
+														<a href="javascript:ShowHidefn('task_priority_list', 'arrowDownPriority', 'arrowUpPriority');" >
+															<img src="{'showDown.gif'|@vtiger_imageurl:$THEME}" id="arrowDownPriority" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" width="16">
+															<img src="{'showUp.gif'|@vtiger_imageurl:$THEME}" id="arrowUpPriority" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" width="16" style="display: none;">
+														</a>
+													</span>
+												</div>
 											</div>
 										</header>
 									</div>
 									<div class="slds-card__body slds-card__body--inner">
-										<div id="task_priority_list">
+										<div id="task_priority_list" style="display: none;">
 											{foreach name=calendar_task_priority item=tprioritydata key=tpriority_key from=$TASK_PRIORITY}
 												<table width="98%" class="calendar-activity-blocks">
 													<tr>

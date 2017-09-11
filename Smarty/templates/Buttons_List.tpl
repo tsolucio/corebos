@@ -234,6 +234,27 @@
 								</tr>
 							</table>
 						</td>
+						<td style="width:20px;" class="LB_Divider">&nbsp;</td>
+						<td class="small">
+							<!-- Hide Activity Blocks -->
+							<table class="slds-table slds-no-row-hover background">
+								<tr class="LD_buttonList">
+									{if $MODULE eq 'Calendar4You'}
+										{if $MODE neq 'DetailView' && $MODE neq 'EditView' && $MODE neq 'RelatedList'}
+											<th scope="col">
+												<div class="globalCreateContainer oneGlobalCreate">
+													<div class="forceHeaderMenuTrigger">
+														<div id="LB_ITSCalSettings" class="LB_Button slds-truncate">
+															<a href="javascript:;"><img align="absmiddle" title="Toggle Activity Blocks" src="{'hide-menu.png'|@vtiger_imageurl:$THEME}" onclick="{literal}if (document.getElementById('activityCalendar').style.display=='none') {document.getElementById('activityCalendar').style.display='table-cell';}else{document.getElementById('activityCalendar').style.display='none';}window.dispatchEvent(new Event('resize'));{/literal}"></span></a>
+														</div>
+													</div>
+												</div>
+											</th>
+										{/if}
+									{/if}
+								</tr>
+							</table>
+						</td>
 				</tr>
 			</table>
 		</td>
