@@ -2640,26 +2640,30 @@ class CRMEntity {
 		}
 		$secQuery = "select $table_name.* from $table_name inner join vtiger_crmentity on " .
 				"vtiger_crmentity.crmid=$table_name.$column_name and vtiger_crmentity.deleted=0";
+
+		$secQueryTempTableQuery = $queryPlanner->registerTempTable($secQuery, array($column_name, $secfieldname, $prifieldname), $module);
+
 		$query = '';
 		if ($pritablename == 'vtiger_crmentityrel') {
-			$condition = "($table_name.$column_name={$tmpname}.{$secfieldname} " .
-					"OR $table_name.$column_name={$tmpname}.{$prifieldname})";
-			$query = " left join vtiger_crmentityrel as $tmpname ON ($condvalue={$tmpname}.{$secfieldname} " .
-					"OR $condvalue={$tmpname}.{$prifieldname}) ";
+			$condition = "($table_name.$column_name={$tmpname}.{$secfieldname} OR $table_name.$column_name={$tmpname}.{$prifieldname})";
+			$query = " left join vtiger_crmentityrel as $tmpname ON ($condvalue={$tmpname}.{$secfieldname} OR $condvalue={$tmpname}.{$prifieldname}) ";
 		} elseif (strripos($pritablename, 'rel') === (strlen($pritablename) - 3)) {
 			$instance = self::getInstance($module);
 			$sectableindex = $instance->tab_name_index[$sectablename];
 			$condition = "$table_name.$column_name=$tmpname.$secfieldname";
-			$query = " left join $pritablename as $tmpname ON ($sectablename.$sectableindex=$tmpname.$prifieldname)";
-			if ($secmodule == 'Calendar') {
-				$condition .= " AND $table_name.activitytype != 'Emails'";
-			} else if ($secmodule == 'Leads') {
+			if ($pritablename === 'vtiger_senotesrel') {
+				$query = " left join $pritablename as $tmpname ON ($sectablename.$sectableindex=$tmpname.$prifieldname
+					AND $tmpname.notesid IN (SELECT crmid FROM vtiger_crmentity WHERE setype='Documents' AND deleted = 0))";
+			} else {
+				$query = " left join $pritablename as $tmpname ON ($sectablename.$sectableindex=$tmpname.$prifieldname)";
+			}
+			if ($secmodule == 'Leads') {
 				$val_conv = ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true') ? 1 : 0);
 				$condition .= " AND $table_name.converted = $val_conv";
 			}
 		}
 
-		$query .= " left join ($secQuery) as $table_name on {$condition}";
+		$query .= " left join $secQueryTempTableQuery as $table_name on {$condition}";
 		return $query;
 	}
 
