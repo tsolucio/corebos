@@ -49,6 +49,8 @@ class moveCalendarReport2cbCalendar extends cbupdaterWorker {
 							where columnindex=? and queryid=?",array($ctocol['columnindex'],$repid));
 					}
 				}
+				$this->ExecuteQuery("update vtiger_selectcolumn set columnname='vtiger_activity:dtstart:cbCalendar_Start_Date_and_Time:dtstart:DT'
+					where columnname='vtiger_activity:date_start:cbCalendar_Start_Date_and_Time:date_start:DT' and queryid=?",array($repid));
 				$this->ExecuteQuery("update vtiger_relcriteria set columnname=replace(columnname,'Calendar','cbCalendar') where queryid=?",array($repid));
 				$this->ExecuteQuery("update vtiger_reportdatefilter set datecolumnname=replace(datecolumnname,'Calendar','cbCalendar') where datefilterid=?",array($repid));
 				$this->ExecuteQuery("update vtiger_reportgroupbycolumn set sortcolname=replace(sortcolname,'Calendar','cbCalendar') where reportid=?",array($repid));
