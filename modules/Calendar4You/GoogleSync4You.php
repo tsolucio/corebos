@@ -247,11 +247,7 @@ class GoogleSync4You {
         $query = "SELECT * FROM `its4you_googlesync4you_dis` WHERE `userid`=? AND `event`=? AND `type` =?";
 		$result = $this->db->pquery($query, array($this->user_id, $this->event, $type));
 		$num_rows = $this->db->num_rows($result);
-		if ($num_rows == 1) {
-            return true;
-        }
-		
-		return false;
+        return $num_rows == 1;
     }
     
     public function loadUserCalendar() {

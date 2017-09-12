@@ -52,9 +52,9 @@ class GetUserGroups {
 		$parentRoles=getParentRole($userRole);
 		$parentRolelist= array();
 		foreach($parentRoles as $par_rol_id) {
-			array_push($parentRolelist, $par_rol_id);
+			$parentRolelist[] = $par_rol_id;
 		}
-		array_push($parentRolelist, $userRole);
+		$parentRolelist[] = $userRole;
 		$query="select * from vtiger_group2rs where roleandsubid in (". generateQuestionMarks($parentRolelist) .")";
 		$result = $adb->pquery($query, array($parentRolelist));
 		$num_rows=$adb->num_rows($result);

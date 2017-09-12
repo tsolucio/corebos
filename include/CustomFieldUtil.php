@@ -265,7 +265,7 @@ function getCalendarCustomFields($tabid,$mode='edit',$col_fields='') {
 			$custquery .= "  AND vtiger_profile2field.readonly = 0";
 		}
 		$custquery .= " GROUP BY vtiger_field.fieldid";
-		array_push($custparams, $profileList);
+		$custparams[] = $profileList;
 	}
 	$custresult = $adb->pquery($custquery, $custparams);
 	$custFldArray = Array();

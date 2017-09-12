@@ -140,8 +140,6 @@ class cbCalendar extends CRMEntity {
 		$this->column_fields['time_start'] = $_REQUEST['time_start'] = $ts;
 		$this->column_fields['due_date'] = $_REQUEST['due_date'] = $de;
 		$this->column_fields['time_end'] = $_REQUEST['time_end'] = $te;
-		list($ds,$ts) = explode(' ',getValidDBInsertDateTimeValue($this->column_fields['dtstart']));
-		list($de,$te) = explode(' ',getValidDBInsertDateTimeValue($this->column_fields['dtend']));
 		$adb->pquery('update vtiger_activity set date_start=?, time_start=?, due_date=?, time_end=? where activityid=?',array($ds,$ts,$de,$te,$this->id));
 		// code added to send mail to the invitees
 		if (!empty($_REQUEST['inviteesid'])) {
@@ -474,11 +472,11 @@ class cbCalendar extends CRMEntity {
 			}
 		}
 		$cont_name = '';
-		foreach($cont_id as $key=>$id) {
+		foreach($cont_id as $id) {
 			if($id != '') {
 				$displayValueArray = getEntityName('Contacts', $id);
 				if (!empty($displayValueArray)) {
-					foreach ($displayValueArray as $key => $field_value) {
+					foreach ($displayValueArray as $field_value) {
 						$contact_name = $field_value;
 					}
 				}

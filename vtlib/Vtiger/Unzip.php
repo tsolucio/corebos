@@ -186,10 +186,9 @@ class Vtiger_Unzip {
 	}
 
 	public function unzipAll($targetDir=false, $baseDir='', $maintainStructure=true, $applyChmod=0775) {
-		if($targetDir === false)
+		if ($targetDir === false)
 			$targetDir = __DIR__.'/';
-		$ret = $this->zipa->extractTo($targetDir);
-		return $ret;
+		return $this->zipa->extractTo($targetDir);
 	}
 
 }

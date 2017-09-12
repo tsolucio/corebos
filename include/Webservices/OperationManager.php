@@ -85,7 +85,7 @@ class OperationManager{
 			if($rowCount > 0){
 				for ($i=0;$i<$rowCount;++$i){
 					$row = $this->pearDB->query_result_rowdata($result,$i);
-					array_push($this->operationParams,array($row['name']=>$row['type']));
+					$this->operationParams[] = array($row['name'] => $row['type']);
 				}
 			}
 		}
@@ -163,7 +163,7 @@ class OperationManager{
 
 	function getOperationIncludes(){
 		$includes = array();
-		array_push($includes,$this->handlerPath);
+		$includes[] = $this->handlerPath;
 		return $includes;
 	}
 }

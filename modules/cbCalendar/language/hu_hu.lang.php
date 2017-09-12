@@ -18,6 +18,8 @@ $mod_strings = Array(
 	'LBL_DESCRIPTION_INFORMATION' => 'Description',
 
 	'ModuleFieldLabel' => 'ModuleFieldLabel Text',
+	'DATE_SHOULDNOT_PAST' => 'Az aktuális dátum és idő az Aktivitás számára Tervezett státusú',
+	'TIME_SHOULDNOT_PAST' => 'Az aktuális idő az Aktivitás számára Tervezett státusú',
 );
 
 ?>

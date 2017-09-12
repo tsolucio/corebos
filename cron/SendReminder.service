@@ -155,7 +155,7 @@ if($adb->num_rows($result) >= 1)
 			$upd_params = array($activity_id);
 			if($recur_id!=0) {
 				$upd_query.=' and recurringid=?';
-				array_push($upd_params, $recur_id);
+				$upd_params[] = $recur_id;
 			}
 			$adb->pquery($upd_query, $upd_params);
 		}

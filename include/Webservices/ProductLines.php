@@ -57,10 +57,9 @@ foreach ($pdoInformation as $pdoline) {
 	}
 	$subtotal = $subtotal + ($qty * $_REQUEST['listPrice'.$i]) - $discount;
 	if($taxtype == "individual") {
-		$taxes_for_product = getTaxDetailsForProduct($pdoline['productid'],'all',$acvid);
-		for($tax_count=0;$tax_count<count($taxes_for_product);$tax_count++) {
-			$tax_name = $taxes_for_product[$tax_count]['taxname'];
-			$tax_val = $taxes_for_product[$tax_count]['percentage'];
+		foreach (getTaxDetailsForProduct($pdoline['productid'],'all',$acvid) as $productTax) {
+			$tax_name = $productTax['taxname'];
+			$tax_val = $productTax['percentage'];
 			$request_tax_name = $tax_name."_percentage".$i;
 			$_REQUEST[$request_tax_name] = $tax_val;
 			$totalwithtax += ($qty * $_REQUEST['listPrice'.$i]) * ($tax_val/100);
@@ -92,10 +91,9 @@ if($taxtype == "individual") {
 	} elseif ($element['discount_type_final']=='percentage') {
 		$totaldoc=$totaldoc-($totaldoc*$element['hdnDiscountPercent']/100);
 	}
-	$all_available_taxes = getAllTaxes('available','');
 	$tax_val = 0;
-	for($tax_count=0;$tax_count<count($all_available_taxes);$tax_count++) {
-		$tax_val += $all_available_taxes[$tax_count]['percentage'];
+	foreach (getAllTaxes('available','') as $availableTax) {
+		$tax_val += $availableTax['percentage'];
 	}
 	$totaldoc=$totaldoc+($totaldoc*$tax_val/100);
 }

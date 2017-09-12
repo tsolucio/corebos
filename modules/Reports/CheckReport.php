@@ -20,7 +20,7 @@ if($_REQUEST['check']== 'reportCheck')
 	$params = array(trim($reportName));
 	if(!empty($reportID)) {
 		$sSQL .= ' and reportid != ?';
-		array_push($params, $reportID);
+		$params[] = $reportID;
 	}
 	$sqlresult = $adb->pquery($sSQL,$params);
 	echo $adb->num_rows($sqlresult);

@@ -620,7 +620,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 					<img src="modules/Products/placeholder.gif" width="571" height="117" style="position:relative;">
 					</div><script>var Car_NoOfSides=' . $sides . '; Car_Image_Sources=new Array(';
 
-				for ($image_iter = 0; $image_iter < count($image_array); $image_iter++) {
+				for ($image_iter = 0, $image_iterMax = count($image_array); $image_iter < $image_iterMax; $image_iter++) {
 					$images[] = '"' . $imagepath_array[$image_iter] . $image_id_array[$image_iter] . "_" . $image_array[$image_iter] . '","' . $imagepath_array[$image_iter] . $image_id_array[$image_iter] . "_" . $image_array[$image_iter] . '"';
 				}
 				$image_lists .=implode(',', $images) . ');</script><script type="text/javascript" src="modules/Products/Productsslide.js"></script><script type="text/javascript">Carousel();</script>';
@@ -967,13 +967,25 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 	} elseif ($uitype == 50) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$dateValue = $col_fields[$fieldname];
+		$user_format = ($current_user->hour_format=='24' ? '24' : '12');
 		if (empty($dateValue) || $dateValue == '0000-00-00 00:00') {
 			$displayValue = '';
+			$time_format = $user_format;
 		} else {
 			$date = new DateTimeField($col_fields[$fieldname]);
 			$displayValue = substr($date->getDisplayDateTimeValue(),0,16);
+			if ($user_format != '24') {
+				$curr_time = DateTimeField::formatUserTimeString($displayValue, '12');
+				$time_format = substr($curr_time, -2);
+				$curr_time = substr($curr_time, 0, 5);
+				list($dt,$tm) = explode(' ',$displayValue);
+				$displayValue = $dt . ' ' . $curr_time;
+			} else {
+				$time_format = '24';
+			}
 		}
 		$label_fld[] = $displayValue;
+		$label_fld['options'] = array($user_format => $time_format);
 	}
 	elseif ($uitype == 9 || $uitype == 7) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
@@ -1326,12 +1338,10 @@ function getDetailAssociatedProducts($module, $focus) {
 		if ($taxtype == 'individual') {
 			$taxtotal = '0.00';
 			$tax_info_message = $app_strings['LBL_TOTAL_AFTER_DISCOUNT'] . " = ".CurrencyField::convertToUserFormat($totalAfterDiscount, null, true)." \\n";
-			$tax_details = getTaxDetailsForProduct($productid, 'all', $acvid);
-			for ($tax_count = 0; $tax_count < count($tax_details); $tax_count++) {
-				$tax_name = $tax_details[$tax_count]['taxname'];
-				$tax_label = $tax_details[$tax_count]['taxlabel'];
+			foreach (getTaxDetailsForProduct($productid, 'all', $acvid) as $taxItem) {
+				$tax_name = $taxItem['taxname'];
+				$tax_label = $taxItem['taxlabel'];
 				$tax_value = getInventoryProductTaxValue($focus->id, $productid, $tax_name);
-
 				$individual_taxamount = $totalAfterDiscount * $tax_value / 100;
 				$taxtotal = $taxtotal + $individual_taxamount;
 				$tax_info_message .= "$tax_label : $tax_value % = ".CurrencyField::convertToUserFormat($individual_taxamount, null, true)." \\n";
@@ -1483,16 +1493,15 @@ function getDetailAssociatedProducts($module, $focus) {
 		$final_totalAfterDiscount = $netTotal - $finalDiscount;
 		$tax_info_message = $app_strings['LBL_TOTAL_AFTER_DISCOUNT'] . " = ". CurrencyField::convertToUserFormat($final_totalAfterDiscount, null, true)." \\n";
 		//First we should get all available taxes and then retrieve the corresponding tax values
-		$tax_details = getAllTaxes('available', '', 'edit', $focus->id);
 		$ipr_cols = $adb->getColumnNames('vtiger_inventoryproductrel');
 		//if taxtype is group then the tax should be same for all products in vtiger_inventoryproductrel table
-		for ($tax_count = 0; $tax_count < count($tax_details); $tax_count++) {
-			$tax_name = $tax_details[$tax_count]['taxname'];
-			$tax_label = $tax_details[$tax_count]['taxlabel'];
+		foreach (getAllTaxes('available', '', 'edit', $focus->id) as $taxItem) {
+			$tax_name = $taxItem['taxname'];
+			$tax_label = $taxItem['taxlabel'];
 			if (in_array($tax_name, $ipr_cols))
 				$tax_value = $adb->query_result($result, 0, $tax_name);
 			else
-				$tax_value = $tax_details[$tax_count]['percentage'];
+				$tax_value = $taxItem['percentage'];
 			if ($tax_value == '' || $tax_value == 'NULL')
 				$tax_value = '0.00';
 
@@ -1517,12 +1526,11 @@ function getDetailAssociatedProducts($module, $focus) {
 	//calculate S&H tax
 	$shtaxtotal = '0.00';
 	//First we should get all available taxes and then retrieve the corresponding tax values
-	$shtax_details = getAllTaxes('available', 'sh', 'edit', $focus->id);
 	//if taxtype is group then the tax should be same for all products in vtiger_inventoryproductrel table
 	$shtax_info_message = $app_strings['LBL_SHIPPING_AND_HANDLING_CHARGE'] . " = ". CurrencyField::convertToUserFormat($shAmount, null, true) ."\\n";
-	for ($shtax_count = 0; $shtax_count < count($shtax_details); $shtax_count++) {
-		$shtax_name = $shtax_details[$shtax_count]['taxname'];
-		$shtax_label = $shtax_details[$shtax_count]['taxlabel'];
+	foreach (getAllTaxes('available', 'sh', 'edit', $focus->id) as $taxItem) {
+		$shtax_name = $taxItem['taxname'];
+		$shtax_label = $taxItem['taxlabel'];
 		$shtax_percent = getInventorySHTaxPercent($focus->id, $shtax_name);
 		$shtaxamount = $shAmount * $shtax_percent / 100;
 		$shtaxtotal = $shtaxtotal + $shtaxamount;
@@ -1806,7 +1814,7 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 	}
 	foreach ($label_data as $headerid => $value_array) {
 		$detailview_data = Array();
-		for ($i = 0, $j = 0; $i < count($value_array); $j++) {
+		for ($i = 0, $j = 0, $iMax = count($value_array); $i < $iMax; $j++) {
 			$key2 = null;
 			$keys = array_keys($value_array[$i]);
 			$key1 = $keys[0];

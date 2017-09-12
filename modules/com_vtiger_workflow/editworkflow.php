@@ -35,47 +35,47 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 	}
 
 	$smarty = new vtigerCRM_Smarty();
+	$wfs = new VTWorkflowManager($adb);
 	if(isset($request['source']) and $request['source']=='from_template'){
 		$tm = new VTWorkflowTemplateManager($adb);
 		$template = $tm->retrieveTemplate($request['template_id']);
 		$workflow = $tm->createWorkflow($template);
 	}else{
-		$wfs = new VTWorkflowManager($adb);
 		if(isset($request["workflow_id"])){
 			$workflow = $wfs->retrieve($request["workflow_id"]);
 		}else{
 			$moduleName=$request["module_name"];
 			$workflow = $wfs->newWorkflow($moduleName);
 		}
-		$smarty->assign('ScheduledWorkflowsCount', $wfs->getScheduledWorkflowsCount());
-		$smarty->assign('MaxAllowedScheduledWorkflows', $wfs->getMaxAllowedScheduledWorkflows());
-		if (empty($workflow->schtime)) {
-			$smarty->assign('schdtime_12h',date('h:ia'));
-		} else {
-			$smarty->assign('schdtime_12h',date('h:ia', strtotime(substr($workflow->schtime,0,strrpos($workflow->schtime, ':')))));
-		}
-		if (!empty($workflow->schannualdates)) {
-			$schannualdates = json_decode($workflow->schannualdates);
-			$schannualdates = DateTimeField::convertToUserFormat($schannualdates[0]);
-		} else {
-			$schannualdates = '';
-		}
-		$smarty->assign('schdate',$schannualdates);
-		if (empty($workflow->schdayofmonth)) {
-			$smarty->assign('selected_days1_31','');
-		} else {
-			$smarty->assign('selected_days1_31',json_decode($workflow->schdayofmonth));
-		}
-		if (empty($workflow->schminuteinterval)) {
-			$smarty->assign('selected_minute_interval','');
-		} else {
-			$smarty->assign('selected_minute_interval',json_decode($workflow->schminuteinterval));
-		}
-		if (empty($workflow->schdayofweek)) {
-			$smarty->assign('dayOfWeek','');
-		} else {
-			$smarty->assign('dayOfWeek',json_decode($workflow->schdayofweek));
-		}
+	}
+	$smarty->assign('ScheduledWorkflowsCount', $wfs->getScheduledWorkflowsCount());
+	$smarty->assign('MaxAllowedScheduledWorkflows', $wfs->getMaxAllowedScheduledWorkflows());
+	if (empty($workflow->schtime)) {
+		$smarty->assign('schdtime_12h',date('h:ia'));
+	} else {
+		$smarty->assign('schdtime_12h',date('h:ia', strtotime(substr($workflow->schtime,0,strrpos($workflow->schtime, ':')))));
+	}
+	if (!empty($workflow->schannualdates)) {
+		$schannualdates = json_decode($workflow->schannualdates);
+		$schannualdates = DateTimeField::convertToUserFormat($schannualdates[0]);
+	} else {
+		$schannualdates = '';
+	}
+	$smarty->assign('schdate',$schannualdates);
+	if (empty($workflow->schdayofmonth)) {
+		$smarty->assign('selected_days1_31','');
+	} else {
+		$smarty->assign('selected_days1_31',json_decode($workflow->schdayofmonth));
+	}
+	if (empty($workflow->schminuteinterval)) {
+		$smarty->assign('selected_minute_interval','');
+	} else {
+		$smarty->assign('selected_minute_interval',json_decode($workflow->schminuteinterval));
+	}
+	if (empty($workflow->schdayofweek)) {
+		$smarty->assign('dayOfWeek','');
+	} else {
+		$smarty->assign('dayOfWeek',json_decode($workflow->schdayofweek));
 	}
 
 	if($workflow==null){

@@ -81,7 +81,7 @@ function getSearchListHeaderValues($focus, $module,$sort_qry='',$sorder='',$orde
 		if($fieldname == 'folderid' && $module == 'Documents'){
 			$fieldname = 'foldername';
 		}
-		array_push($field_list, $fieldname);
+		$field_list[] = $fieldname;
 	}
 	//Getting the Entries from Profile2field table
 	if (!is_admin($current_user))
@@ -229,8 +229,7 @@ function getValuesforColumns($column_name,$search_string,$criteria='cts',$input=
 	if($input['type'] == "entchar")
 		$criteria = "is";
 
-	for($i=0; $i<count($column_array);$i++)
-	{
+	for ($i=0, $iMax = count($column_array); $i< $iMax; $i++) {
 		if($column_name == $column_array[$i])
 		{
 			$val=$table_col_array[$i];
@@ -248,8 +247,7 @@ function getValuesforColumns($column_name,$search_string,$criteria='cts',$input=
 				}
 				else {
 					$where="(";
-					for($j=0;$j<count($explode_column);$j++)
-					{
+					for ($j=0, $jMax = count($explode_column); $j< $jMax; $j++) {
 						$where .=getSearch_criteria($criteria,$search_string,$explode_column[$j]);
 						if($j != $x-1)
 						{
@@ -551,7 +549,7 @@ function getAdvSearchfields($module)
 
 		if (count($profileList) > 0) {
 			$sql.= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
-			array_push($params, $profileList);
+			$params[] = $profileList;
 		}
 
 		if($tabid == 13 || $tabid == 15)
@@ -918,23 +916,23 @@ function getdashboardcondition($input = '')
 
 	if(isset($date_closed_start) && $date_closed_start != "" && isset($date_closed_end) && $date_closed_end != "")
 	{
-		array_push($where_clauses, "vtiger_potential.closingdate >= ".$adb->quote($date_closed_start)." and vtiger_potential.closingdate <= ".$adb->quote($date_closed_end));
+		$where_clauses[] = 'vtiger_potential.closingdate >= '.$adb->quote($date_closed_start).' and vtiger_potential.closingdate <= '.$adb->quote($date_closed_end);
 		$url_string .= "&closingdate_start=".$date_closed_start."&closingdate_end=".$date_closed_end;
 	}
 
 	if(isset($sales_stage) && $sales_stage!=''){
 		if($sales_stage=='Other')
-		array_push($where_clauses, "(vtiger_potential.sales_stage <> 'Closed Won' and vtiger_potential.sales_stage <> 'Closed Lost')");
+		$where_clauses[] = "(vtiger_potential.sales_stage <> 'Closed Won' and vtiger_potential.sales_stage <> 'Closed Lost')";
 		else
-		array_push($where_clauses, "vtiger_potential.sales_stage = ".$adb->quote($sales_stage));
+		$where_clauses[] = 'vtiger_potential.sales_stage = '.$adb->quote($sales_stage);
 		$url_string .= "&sales_stage=".$sales_stage;
 	}
 	if(isset($lead_source) && $lead_source != "") {
-		array_push($where_clauses, "vtiger_potential.leadsource = ".$adb->quote($lead_source));
+		$where_clauses[] = 'vtiger_potential.leadsource = '.$adb->quote($lead_source);
 		$url_string .= "&leadsource=".$lead_source;
 	}
 	if(isset($date_closed) && $date_closed != "") {
-		array_push($where_clauses, $adb->getDBDateString("vtiger_potential.closingdate")." like ".$adb->quote($date_closed.'%')."");
+		$where_clauses[] = $adb->getDBDateString('vtiger_potential.closingdate').' like '.$adb->quote($date_closed.'%').'';
 		$url_string .= "&date_closed=".$date_closed;
 	}
 	if(isset($owner) && $owner != ""){
@@ -942,28 +940,28 @@ function getdashboardcondition($input = '')
 		$user_qry="select vtiger_users.id from vtiger_users where $column = ?";
 		$res = $adb->pquery($user_qry, array($owner));
 		$uid = $adb->query_result($res,0,'id');
-		array_push($where_clauses, "vtiger_crmentity.smownerid = ".$uid);
+		$where_clauses[] = 'vtiger_crmentity.smownerid = '.$uid;
 		//$url_string .= "&assigned_user_id=".$uid;
 		$url_string .= "&owner=".$owner;
 	}
 	if(isset($campaign) && $campaign != "")
 	{
-		array_push($where_clauses, "vtiger_campaigncontrel.campaignid = ".$campaign);
+		$where_clauses[] = 'vtiger_campaigncontrel.campaignid = '.$campaign;
 		$url_string .= "&campaignid=".$campaign;
 	}
 	if(isset($quote) && $quote != "")
 	{
-		array_push($where_clauses, "vtiger_inventoryproductrel.id = ".$quote);
+		$where_clauses[] = 'vtiger_inventoryproductrel.id = '.$quote;
 		$url_string .= "&quoteid=".$quote;
 	}
 	if(isset($invoice) && $invoice != "")
 	{
-		array_push($where_clauses, "vtiger_inventoryproductrel.id = ".$invoice);
+		$where_clauses[] = 'vtiger_inventoryproductrel.id = '.$invoice;
 		$url_string .= "&invoiceid=".$invoice;
 	}
 	if(isset($po) && $po != "")
 	{
-		array_push($where_clauses, "vtiger_inventoryproductrel.id = ".$po);
+		$where_clauses[] = 'vtiger_inventoryproductrel.id = '.$po;
 		$url_string .= "&purchaseorderid=".$po;
 	}
 	if(isset($input['from_homepagedb']) && $input['from_homepagedb'] != '') {
@@ -1158,8 +1156,8 @@ function generateAdvancedSearchSql($advfilterlist) {
 				if($fieldcolname != "" && $comparator != "") {
 					$valuearray = explode(",",trim($value));
 					if(isset($valuearray) && count($valuearray) > 0 && $comparator != 'bw') {
-						for($n=0;$n<count($valuearray);$n++) {
-							$advorsql[] = getAdvancedSearchValue($columns[0],$columns[1],$comparator,trim($valuearray[$n]),$datatype);
+						foreach ($valuearray as $val) {
+							$advorsql[] = getAdvancedSearchValue($columns[0],$columns[1],$comparator,trim($val),$datatype);
 						}
 						//If negative logic filter ('not equal to', 'does not contain') is used, 'and' condition should be applied instead of 'or'
 						if($comparator == 'n' || $comparator == 'k' || $comparator == 'h' || $comparator == 'l')

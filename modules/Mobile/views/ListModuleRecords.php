@@ -82,8 +82,7 @@ class crmtogo_UI_ListModuleRecords extends crmtogo_WS_ListModuleRecords {
 					$cal_startdate = $calarray["eventstartdate"];
 					$cal_starttime = $calarray["eventstarttime"];
 					//consider time zone
-					$date = new DateTimeField($cal_startdate.' '.$cal_starttime);
-					$start_datetime = $date->getDisplayDateTimeValue();	
+					$start_datetime = $cal_startdate.' '.$cal_starttime;
 					$tmp_date_arr = explode(' ', $start_datetime);
 					$formated_date = $tmp_date_arr[0];
 					$userStartDate =date('Y-m-d', strtotime($tmp_date_arr[0])).'T'.$tmp_date_arr[1];
@@ -96,15 +95,14 @@ class crmtogo_UI_ListModuleRecords extends crmtogo_WS_ListModuleRecords {
 						$cal_endtime = '00:00:00';
 					}
 					//consider time zone
-					$date = new DateTimeField($cal_startdate.' '.$cal_endtime);
-					$end_datetime = $date->getDisplayDateTimeValue();
+					$end_datetime = $cal_startdate.' '.$cal_endtime;
 					$tmp_date_arr = explode(' ', $end_datetime);
 					$formated_date = $tmp_date_arr[0];
 					$userEndDate =date('Y-m-d', strtotime($tmp_date_arr[0])).'T'.$tmp_date_arr[1];
 					
 					//$sample = array(Array("summary" => "Test event 5.4.", "begin" =>"Mon Apr 05 2016 10:30:00 GMT+0200", "end" => "Mon Apr 05 2016 10:50:00 GMT+0200"), array( "summary" => "Test event22 4.4.", "begin" =>"Mon pr 04 2016 10:30:00 GMT+0200", "end" => "Mon Apr 04 2016 10:55:00 GMT+0200" ));
 					$record_infos = Array ('summary' => $calarray["label"], 'begin' =>$userStartDate, 'end' => $userEndDate, 'id' => $cal_id, 'activity_type' => $activity_type);
-					array_push($calendar_records,$record_infos);
+					$calendar_records[] = $record_infos;
 				}
 				$response->addToResult('records',$calendar_records);
 				$response->addToResult('type','json');

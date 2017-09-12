@@ -97,8 +97,7 @@ class MailBox {
 		if ($current_mails<=0)$current_mails=0;
 
 		$mailOverviews = @imap_fetch_overview($this->mbox, "$start:$current_mails", 0);
-		$out = array("overview"=>$mailOverviews,"count"=>$numEmails);
-		return $out;
+		return array('overview'=>$mailOverviews,'count'=>$numEmails);
 	}
 
 	function searchMailList($searchstring,$page) {

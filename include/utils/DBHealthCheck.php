@@ -28,10 +28,7 @@ class DBHealthCheck {
 
 	function isDBHealthy() {
 		$tablesList = $this->getUnhealthyTablesList();
-		if (count($tablesList) > 0) {
-			return false;
-		}
-		return true;
+		return !(count($tablesList) > 0);
 	}
 
 	function getUnhealthyTablesList() {
@@ -93,9 +90,8 @@ class DBHealthCheck {
 
 	function _mysql_updateEngineTypeForAllTables() {
 		$unHealthyTables = $this->_mysql_getUnhealthyTables();
-		$noOfTables = count($unHealthyTables);
-		for ($i=0; $i<$noOfTables; ++$i) {
-			$tableName = $unHealthyTables[$i]['name'];
+		foreach ($unHealthyTables as $table) {
+			$tableName = $table['name'];
 			$this->db->_Execute("ALTER TABLE $tableName ENGINE=$this->recommendedEngineType");
 		}
 	}

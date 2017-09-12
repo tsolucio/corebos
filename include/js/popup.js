@@ -245,3 +245,25 @@ function getListViewSorted_js(module,url)
 		document.getElementById("status").style.display = "none";
 	});
 }
+
+function QCreatePop(module,urlpop) {
+	if (module != 'none') {
+		document.getElementById("status").style.display="inline";
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module='+module+'&action='+module+'Ajax&file=QuickCreate&from=popup&pop='+urlpop
+		}).done(function(response) {
+			document.getElementById("status").style.display="none";
+			document.getElementById("qcformpop").style.display="inline";
+			document.getElementById("qcformpop").innerHTML = response;
+			// Evaluate all the script tags in the response text.
+			var scriptTags = document.getElementById("qcformpop").getElementsByTagName("script");
+			for (var i = 0; i< scriptTags.length; i++) {
+				var scriptTag = scriptTags[i];
+				eval(scriptTag.innerHTML);
+			}
+		});
+	} else {
+		hide('qcformpop');
+	}
+}

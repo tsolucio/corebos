@@ -84,8 +84,7 @@ function wsapp_convertDateTimeToTimeZone($dateTime,$toTimeZone){
     $diff = (strtotime($destinationDate)-strtotime($sourceDate));
     $givenTimeInSec = strtotime($dateTime);
     $modifiedTimeSec = $givenTimeInSec+$diff;
-    $display_time = date("Y-m-d H:i:s",$modifiedTimeSec);
-    return $display_time;
+    return date('Y-m-d H:i:s',$modifiedTimeSec);
 }
 
 function wsapp_checkIfRecordsAssignToUser($recordsIds,$userIds){

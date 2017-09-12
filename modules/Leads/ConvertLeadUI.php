@@ -44,10 +44,7 @@ class ConvertLeadUI {
 
 	function isModuleActive($module) {
 		include_once 'include/utils/VtlibUtils.php';
-		if (vtlib_isModuleActive($module) && ((isPermitted($module, 'EditView') == 'yes'))) {
-			return true;
-		}
-		return false;
+		return vtlib_isModuleActive($module) && ((isPermitted($module, 'EditView') == 'yes'));
 	}
 
 	function isActive($field, $mod) {

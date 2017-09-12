@@ -16,7 +16,7 @@ if (isset($_REQUEST['dup_check']) && $_REQUEST['dup_check'] != '') {
 	$id = vtlib_purify($_REQUEST['record']);
 	if(isset($id) && $id !='') {
 		$query .= ' and vtiger_account.accountid != ?';
-		array_push($params, $id);
+		$params[] = $id;
 	}
 	$result = $adb->pquery($query, $params);
 	if($adb->num_rows($result) > 0) {

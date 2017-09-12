@@ -61,16 +61,15 @@ class Import_Map {
 	}
 
 	public function getStringifiedContent() {
-		if(empty($this->map['content'])) return;
+		if (empty($this->map['content'])) return;
 		$content = $this->map['content'];
 		$keyValueStrings = array();
-		foreach($content as $key => $value) {
+		foreach ($content as $key => $value) {
 			$key = str_replace('=', '/eq/', $key);
 			$key = str_replace('&', '/amp/', $key);
 			$keyValueStrings[] = $key.'='.$value;
 		}
-		$stringifiedContent = implode('&', $keyValueStrings);
-		return $stringifiedContent;
+		return implode('&', $keyValueStrings);
 	}
 
 	public function save() {

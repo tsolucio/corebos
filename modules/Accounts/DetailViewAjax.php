@@ -23,7 +23,7 @@ if($ajaxaction == 'DETAILVIEW') {
 			$params = array($value);
 			if(isset($crmid) && $crmid !='') {
 				$query .= " and vtiger_account.accountid != ?";
-				array_push($params, $crmid);
+				$params[] = $crmid;
 			}
 			$result = $adb->pquery($query, $params);
 			if($adb->num_rows($result) > 0)

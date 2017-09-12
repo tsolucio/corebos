@@ -20,8 +20,15 @@
 </div>
 <script src='modules/Calendar4You/fullcalendar/locale-all.js'></script>
 <div id="event_setting" style="border:1px solid #000000;position:absolute;display:none;z-index:10000;background-color:white"></div>
+<!-- Dropdown for Add Event Button -->
+<div id='addEventDropDown' style='width:160px' onmouseover='fnShowITSEvent()' onmouseout='fnRemoveITSEvent()'>
+<table width="100%" cellpadding="0" cellspacing="0" border="0">{$ADD_BUTTONEVENTLIST}</table>
+</div>
+<!-- Dropdown for Add Event on Button hover -->
+<div id='addButtonDropDown' style='width:160px' onmouseover='fnShowButton()' onmouseout='fnRemoveButton()'>
+<table width="100%" cellpadding="0" cellspacing="0" border="0">{$ADD_BUTTONEVENTLIST}</table>
+</div>
 <script>
-
 var Events_color = new Array();
 
 {foreach name=calendar_users item=userdata key=userid from=$CALENDAR_USERS}
@@ -212,11 +219,11 @@ jQuery(document).ready(function(){
         dayNamesShort: ['{$CMOD.LBL_SM_SUN|escape}','{$CMOD.LBL_SM_MON|escape}', '{$CMOD.LBL_SM_TUE|escape}', '{$CMOD.LBL_SM_WED|escape}', '{$CMOD.LBL_SM_THU|escape}', '{$CMOD.LBL_SM_FRI|escape}', '{$CMOD.LBL_SM_SAT|escape}'],
 
         buttonText: {ldelim}
-            today:'{$APP.LBL_TODAY|escape}',
-            month: '{$CMOD.LBL_MON|escape}',
-            week: '{$CMOD.LBL_WEEK|escape}',
-            day: '{$CMOD.LBL_DAY|escape}',
-            list: '{$MOD.LBL_LIST|escape}'
+            today:'{$APP.LBL_TODAY|escape:'quotes'}',
+            month: '{$CMOD.LBL_MON|escape:'quotes'}',
+            week: '{$CMOD.LBL_WEEK|escape:'quotes'}',
+            day: '{$CMOD.LBL_DAY|escape:'quotes'}',
+            list: '{$MOD.LBL_LIST|escape:'quotes'}'
         {rdelim},
 
 		eventSources: [Calendar_Event_Types],
@@ -567,6 +574,17 @@ function hideITSEventInfo(){
 </table>
 <div id="calendar_div2"><br></div>
 <input type="hidden" name="logged_user" id="logged_user" value="">
+<form id="EditView" name="EditView" method="POST" action="index.php">
+	<input type="hidden" name="action" value="SaveEvent">
+	<input type="hidden" name="module" value="Calendar4You">
+	<input type="hidden" name="return_action" value="index">
+	<input type="hidden" name="return_module" value="Calendar4You">
+	<input type="hidden" name="record" value="">
+	<input type="hidden" name="mode" value="">
+	<input type="hidden" name="geventid" value="">
+	<input type="hidden" name="gevent_type" value="">
+	<input type="hidden" name="gevent_userid" value="">
+</form>
 <script>
 function changeCalendarUserView(type) {ldelim}
 	if(type == "all") {ldelim}

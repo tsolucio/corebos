@@ -198,8 +198,7 @@ class Google_Contacts_Model extends WSAPP_SyncRecordModel {
      * @return Google_Contacts_Model
      */
     public static function getInstanceFromValues($recordValues) {
-        $model = new Google_Contacts_Model($recordValues);
-        return $model;
+        return new Google_Contacts_Model($recordValues);
     }
 
     /**

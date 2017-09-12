@@ -165,12 +165,12 @@ class Vtiger_Menu {
 			if ($rsmnu and $adb->num_rows($rsmnu)>0) {
 				$mnu = $adb->fetch_array($rsmnu);
 				$mnuinfo = array(
-					'parenttabid' => intval($mnu['evvtmenuid']),
-					'menuid' => intval($mnu['evvtmenuid']),
+					'parenttabid' => (int)$mnu['evvtmenuid'],
+					'menuid' => (int)$mnu['evvtmenuid'],
 					'parenttab_label' => $mnu['mlabel'],
 					'menulabel' => $mnu['mlabel'],
-					'sequence' => intval($mnu['mseq']),
-					'menusequence' => intval($mnu['mseq']),
+					'sequence' => (int)$mnu['mseq'],
+					'menusequence' => (int)$mnu['mseq'],
 					'visible' => 0,
 					'menuvisible' => 1,
 				);

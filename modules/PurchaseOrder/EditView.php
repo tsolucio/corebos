@@ -45,6 +45,7 @@ if($isduplicate == 'true') {
 	$currencyid = $inventory_cur_info['currency_id'];
 	$focus->id = '';
 	$focus->mode = '';
+	$smarty->assign('__cbisduplicatedfromrecordid', $record);
 }
 // MajorLabel Addition: add products when converting from a salesorder
 if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] == 'SalesOrder' && $_REQUEST['salesorderid'] != '' && $_REQUEST['createmode'] == 'link') {

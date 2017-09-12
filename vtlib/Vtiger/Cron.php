@@ -51,34 +51,34 @@ class Vtiger_Cron {
      * Get the frequency set.
      */
     function getFrequency() {
-        return intval($this->data['frequency']);
+        return (int)$this->data['frequency'];
     }
 
     /**
      * Get the daily set.
      */
     function getdaily() {
-        return intval($this->data['daily']);
+        return (int)$this->data['daily'];
     }
 
     /**
      * Get the status
      */
     function getStatus() {
-        return intval($this->data['status']);
+        return (int)$this->data['status'];
     }
     /**
      * Get the timestamp lastrun started.
      */
     function getLastStart() {
-        return intval($this->data['laststart']);
+        return (int)$this->data['laststart'];
     }
 
     /**
      * Get the timestamp lastrun ended.
      */
     function getLastEnd() {
-        return intval($this->data['lastend']);
+        return (int)$this->data['lastend'];
     }
 
     /**
@@ -112,8 +112,7 @@ class Vtiger_Cron {
     function getTimeDiff() {
         $lastStart = $this->getLastStart();
         $lastEnd   = $this->getLastEnd();
-        $timeDiff  = $lastEnd - $lastStart;
-        return $timeDiff;
+        return $lastEnd - $lastStart;
     }
 
     /**
@@ -164,7 +163,7 @@ class Vtiger_Cron {
      * Helper function to check the status value.
      */
     function statusEqual($value) {
-        $status = intval($this->data['status']);
+        $status = (int)$this->data['status'];
         return $status == $value;
     }
 
@@ -193,7 +192,7 @@ class Vtiger_Cron {
      * Update status
      */
     function updateStatus($status) {
-        switch (intval($status)) {
+        switch ((int)$status) {
             case self::$STATUS_DISABLED:
             case self::$STATUS_ENABLED:
             case self::$STATUS_RUNNING:
@@ -265,7 +264,7 @@ class Vtiger_Cron {
      */
     function hadTimedout() {
         if($this->data['lastend'] === 0 && $this->data['laststart'] != 0)
-        return intval($this->data['lastend']);
+        return (int)$this->data['lastend'];
     }
 
     /**

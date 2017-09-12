@@ -55,8 +55,7 @@ function getStdOutput($roleid)
 	//Check for Current User
 	global $current_user;
 	$current_role = fetchUserRole($current_user->id);
-	$return_data = Array('profileinfo'=>$profileinfo,'userinfo'=>$userinfo);
-	return $return_data;
+	return Array('profileinfo'=>$profileinfo,'userinfo'=>$userinfo);
 }
 
 if(isset($_REQUEST['roleid']) && $_REQUEST['roleid'] != '')

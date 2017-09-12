@@ -208,58 +208,46 @@ function getTabsUtilityActionPermission($profileid)
 	return $check;
 }
 
- /**This Function returns the Default Organisation Sharing Action Array for all modules whose sharing actions are editable
-  * The result array will be in the following format:
+ /**This Function returns the Default Organization Sharing Action Array for all modules whose sharing actions are editable
+  * The returned array will be in the following format:
   * Arr=(tabid1=>Sharing Action Id,
-  *      tabid2=>SharingAction Id,
+  *      tabid2=>Sharing Action Id,
   *            |
-  *            |
-  *            |
-  *      tabid3=>SharingAcion Id)
+  *      tabidn=>Sharing Acion Id)
   */
 function getDefaultSharingEditAction()
 {
 	global $log,$adb;
 	$log->debug('Entering getDefaultSharingEditAction() method ...');
 	//retreiving the standard permissions
-	$sql= 'select * from vtiger_def_org_share where editstatus=0';
+	$copy = array();
+	$sql= 'select tabid,permission from vtiger_def_org_share where editstatus=0';
 	$result = $adb->pquery($sql, array());
-	$permissionRow=$adb->fetch_array($result);
-	do {
-		for($j=0;$j<count($permissionRow);$j++) {
-			$copy[$permissionRow[1]]=$permissionRow[2];
-		}
-	}while($permissionRow=$adb->fetch_array($result));
-
+	while ($permissionRow=$adb->fetch_array($result)) {
+		$copy[$permissionRow['tabid']] = $permissionRow['permission'];
+	}
 	$log->debug('Exiting getDefaultSharingEditAction method ...');
 	return $copy;
 }
 
-/**This Function returns the Default Organisation Sharing Action Array for modules with edit status in (0,1)
-  * The result array will be in the following format:
+/**This Function returns the Default Organization Sharing Action Array for modules with edit status in (0,1)
+  * The returned array will be in the following format:
   * Arr=(tabid1=>Sharing Action Id,
-  *      tabid2=>SharingAction Id,
+  *      tabid2=>Sharing Action Id,
   *            |
-  *            |
-  *            |
-  *      tabid3=>SharingAcion Id)
+  *      tabidn=>Sharing Acion Id)
   */
 function getDefaultSharingAction()
 {
 	global $log, $adb;
 	$log->debug('Entering getDefaultSharingAction() method ...');
 	//retrieve standard permissions
+	$copy = array();
 	$sql= 'select * from vtiger_def_org_share where editstatus in(0,1)';
 	$result = $adb->pquery($sql, array());
-	$permissionRow=$adb->fetch_array($result);
-	$copy = array();
-	do
-	{
-		for($j=0;$j<count($permissionRow);$j++)
-		{
-			$copy[$permissionRow[1]]=$permissionRow[2];
-		}
-	}while($permissionRow=$adb->fetch_array($result));
+	while ($permissionRow=$adb->fetch_array($result)) {
+		$copy[$permissionRow['tabid']] = $permissionRow['permission'];
+	}
 	$log->debug('Exiting getDefaultSharingAction method ...');
 	return $copy;
 }
@@ -1800,7 +1788,7 @@ function deleteRoleRelatedSharingRules($roleId)
 		$params = array($roleId);
 		if(sizeof($colNameArr) >1) {
 			$query .=" or ".$colNameArr[1]."=?";
-			array_push($params, $roleId);
+			$params[] = $roleId;
 		}
 		$result=$adb->pquery($query, $params);
 		$num_rows=$adb->num_rows($result);
@@ -1831,7 +1819,7 @@ function deleteGroupRelatedSharingRules($grpId)
 		$params = array($grpId);
 		if(sizeof($colNameArr) >1) {
 			$query .=" or ".$colNameArr[1]."=?";
-			array_push($params, $grpId);
+			$params[] = $grpId;
 		}
 		$result=$adb->pquery($query, $params);
 		$num_rows=$adb->num_rows($result);
@@ -3084,12 +3072,12 @@ function getCurrentUserProfileList()
 		$profilename = $adb->query_result($resprofile, 0, 'profilename');
 		if(strpos($profilename, 'Mobile::') !== false){
 			if(defined('COREBOS_INSIDE_MOBILE')){
-				array_push($profList, $profid);
+				$profList[] = $profid;
 			}
 		}else{
-			array_push($profListTypeNoMobile, $profid);
+			$profListTypeNoMobile[] = $profid;
 			if(!defined('COREBOS_INSIDE_MOBILE')){
-				array_push($profList, $profid);
+				$profList[] = $profid;
 			}
 		}
 	}
@@ -3110,7 +3098,7 @@ function getCurrentUserGroupList()
 	if(sizeof($current_user_groups) > 0)
 	{
 		foreach ($current_user_groups as $grpid) {
-			array_push($grpList, $grpid);
+			$grpList[] = $grpid;
 		}
 	}
 	$log->debug('Exiting getCurrentUserGroupList method ...');
@@ -3208,11 +3196,11 @@ function constructList($array,$data_type)
 		{
 			if($data_type == "INTEGER")
 			{
-				array_push($list, $value);
+				$list[] = $value;
 			}
 			elseif($data_type == "VARCHAR")
 			{
-				array_push($list, "'".$value."'");
+				$list[] = "'".$value."'";
 			}
 			$i++;
 		}
@@ -3575,14 +3563,14 @@ function get_current_user_access_groups($module)
 	elseif(count($current_user_group_list) > 0)
 	{
 		$query .= " where groupid in (". generateQuestionMarks($current_user_group_list) .")";
-		array_push($params, $current_user_group_list);
+		$params[] = $current_user_group_list;
 		$result = $adb->pquery($query, $params);
 		$noof_group_rows=$adb->num_rows($result);
 	}
 	elseif(count($sharing_write_group_list) > 0)
 	{
 		$query .= " where groupid in (". generateQuestionMarks($sharing_write_group_list) .")";
-		array_push($params, $sharing_write_group_list);
+		$params[] = $sharing_write_group_list;
 		$result = $adb->pquery($query, $params);
 		$noof_group_rows=$adb->num_rows($result);
 	}
@@ -3639,7 +3627,7 @@ function getFieldVisibilityPermission($fld_module, $userid, $fieldname, $accessm
 		//get profile list using userid
 		$profilelist = array();
 		foreach ($current_user_profiles as $profid) {
-			array_push($profilelist, $profid);
+			$profilelist[] = $profid;
 		}
 
 		//get tabid

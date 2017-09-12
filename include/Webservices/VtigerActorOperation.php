@@ -72,8 +72,7 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 			$sql = "update $tableName"."_seq set id=(select max(".$meta->getIdColumn().") from $tableName)";
 			$this->pearDB->pquery($sql,array());
 		}
-		$id = $this->pearDB->getUniqueId($tableName);
-		return $id;
+		return $this->pearDB->getUniqueId($tableName);
 	}
 
 	public function __create($elementType,$element) {
@@ -151,10 +150,9 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 		$columnStr = 'set '.implode('=?,',array_keys($element)).' =? ';
 		$query = 'update '.$this->entityTableName.' '.$columnStr.'where '. $this->meta->getObectIndexColumn().'=?';
 		$params = array_values($element);
-		array_push($params,$id);
+		$params[] = $id;
 		$result = null;
-		$transactionSuccessful = vtws_runQueryAsTransaction($query,$params,$result);
-		return $transactionSuccessful;
+		return vtws_runQueryAsTransaction($query,$params,$result);
 	}
 
 	public function update($element) {
@@ -173,10 +171,9 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 		$columnStr = 'set '.implode('=?,',array_keys($element)).' =? ';
 		$query = 'update '.$this->entityTableName.' '.$columnStr.'where '.$this->meta->getObectIndexColumn().'=?';
 		$params = array_values($element);
-		array_push($params,$id);
+		$params[] = $id;
 		$result = null;
-		$transactionSuccessful = vtws_runQueryAsTransaction($query,$params,$result);
-		return $transactionSuccessful;
+		return vtws_runQueryAsTransaction($query,$params,$result);
 	}
 
 	public function revise($element) {
@@ -243,7 +240,7 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 			$fields = array();
 			$moduleFields = $this->meta->getModuleFields();
 			foreach ($moduleFields as $fieldName=>$webserviceField) {
-				array_push($fields,$this->getDescribeFieldArray($webserviceField));
+				$fields[] = $this->getDescribeFieldArray($webserviceField);
 			}
 			$this->moduleFields = $fields;
 		}

@@ -663,7 +663,7 @@ function AddContacts($username,$session,$cntdtls)
 		$params1 = array();
 		if (count($profileList) > 0) {
 			$sql1 .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
-			array_push($params1, $profileList);
+			$params1[] = $profileList;
 		}
 	}
 	$result1 = $adb->pquery($sql1, $params1);
@@ -749,7 +749,7 @@ function UpdateContacts($username,$session,$cntdtls)
   		$params1 = array();
 		if (count($profileList) > 0) {
 			$sql1 .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
-			array_push($params1, $profileList);
+			$params1[] = $profileList;
 		}
 	}
 	$result1 = $adb->pquery($sql1, $params1);
@@ -974,7 +974,7 @@ function AddTasks($username,$session,$taskdtls)
 		$params1 = array();
 		if (count($profileList) > 0) {
 			$sql1 .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
-			array_push($params1, $profileList);
+			$params1[] = $profileList;
 		}
 	}
 	$result1 = $adb->pquery($sql1, $params1);
@@ -1062,7 +1062,7 @@ function UpdateTasks($username,$session,$taskdtls)
 		$params1 = array();
 		if (count($profileList) > 0) {
 			$sql1 .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
-			array_push($params1, $profileList);
+			$params1[] = $profileList;
 		}
 	}
 	$result1 = $adb->pquery($sql1, $params1);
@@ -1205,7 +1205,6 @@ function GetClndr($username,$session)
 			"category" => "",
 		);
 	}
-	//$log->fatal($output_list);
 	$seed_clndr = $seed_clndr;
 	return $output_list;
 }
@@ -1235,7 +1234,7 @@ function AddClndr($username,$session,$clndrdtls)
 		$params1 = array();
 		if (count($profileList) > 0) {
 			$sql1 .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
-			array_push($params1, $profileList);
+			$params1[] = $profileList;
 		}
 	}
 	$result1 = $adb->pquery($sql1, $params1);
@@ -1308,7 +1307,7 @@ function UpdateClndr($username,$session,$clndrdtls)
 		$params1 = array();
 		if (count($profileList) > 0) {
 			$sql1 .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
-			array_push($params1, $profileList);
+			$params1[] = $profileList;
 		}
 	}
 	$result1 = $adb->pquery($sql1, $params1);
@@ -1386,13 +1385,13 @@ function get_time_difference( $start, $end )
 		if( $uts['end'] >= $uts['start'] )
 		{
 			$diff    =    $uts['end'] - $uts['start'];
-			if( $days=intval((floor($diff/86400))) )
+			if( $days= (int)(floor($diff/86400)))
 			$diff = $diff % 86400;
-			if( $hours=intval((floor($diff/3600))) )
+			if( $hours= (int)(floor($diff/3600)))
 			$diff = $diff % 3600;
-			if( $minutes=intval((floor($diff/60))) )
+			if( $minutes= (int)(floor($diff/60)))
 			$diff = $diff % 60;
-			$diff    =    intval( $diff );
+			$diff    = (int)$diff;
 			return( array('days'=>$days, 'hours'=>$hours, 'minutes'=>$minutes, 'seconds'=>$diff) );
 		}
 	}

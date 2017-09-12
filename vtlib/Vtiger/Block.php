@@ -45,8 +45,7 @@ class Vtiger_Block {
 		global $adb;
 
 		/** Sequence table was added from 5.1.0 */
-		$maxblockid = $adb->getUniqueID('vtiger_blocks');
-		return $maxblockid;
+		return $adb->getUniqueID('vtiger_blocks');
 	}
 
 	/**

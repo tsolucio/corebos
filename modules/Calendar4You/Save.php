@@ -190,11 +190,11 @@ function getRequestData($return_id) {
 		}
 	}
 	$cont_name = '';
-	foreach($cont_id as $key=>$id) {
+	foreach($cont_id as $id) {
 		if($id != '') {
 			$displayValueArray = getEntityName('Contacts', $id);
 			if (!empty($displayValueArray)) {
-				foreach ($displayValueArray as $key => $field_value) {
+				foreach ($displayValueArray as $field_value) {
 					$contact_name = $field_value;
 				}
 			}

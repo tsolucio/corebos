@@ -113,7 +113,7 @@ class Google_Oauth2_Connector {
         $sql = 'SELECT 1 FROM ' . $this->table_name . ' WHERE userid = ? AND service = ?';
         $params = array($this->user_id, $this->service_name);
         $res = $this->db->pquery($sql,$params);
-        $hasStoredToken = ($this->db->num_rows($res) > 0) ? true : false;
+        $hasStoredToken = $this->db->num_rows($res) > 0;
         return $hasStoredToken;
     }
 
@@ -125,8 +125,7 @@ class Google_Oauth2_Connector {
         $ipAddr = getHostByName($parse['host']);
         // to prevent domain name forgery
         $stateDetails['dnf'] = md5($ipAddr);
-        $state = json_encode($stateDetails,JSON_FORCE_OBJECT);
-        return $state;
+        return json_encode($stateDetails,JSON_FORCE_OBJECT);
     }
 
     public function setState() {
@@ -167,8 +166,7 @@ class Google_Oauth2_Connector {
             'client_secret' => $this->client_secret,
             'redirect_uri' => $this->redirect_uri
         );
-        $response = $this->fireRequest(self::OAUTH2_TOKEN_URI,array(),$params);
-        return $response;
+        return $this->fireRequest(self::OAUTH2_TOKEN_URI,array(),$params);
     }
 
     public function storeToken($token) {

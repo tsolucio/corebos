@@ -36,7 +36,7 @@ if ($blockDuplicateAccounts and isset($screen_values['accountname'])) {
 	$id = vtlib_purify($screen_values['record']);
 	if(!empty($id)) {
 		$query .= ' and vtiger_account.accountid != ?';
-		array_push($params, $id);
+		$params[] = $id;
 	}
 	$result = $adb->pquery($query, $params);
 	if($adb->num_rows($result) > 0) {

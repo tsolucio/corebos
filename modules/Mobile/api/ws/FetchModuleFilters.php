@@ -45,16 +45,14 @@ class crmtogo_WS_FetchModuleFilters extends crmtogo_WS_Controller {
 			INNER JOIN vtiger_users ON vtiger_customview.userid = vtiger_users.id WHERE vtiger_customview.entitytype=?";
 		$parameters = array($moduleName);
 
-		if(!is_admin($user)) {
+		if (!is_admin($user)) {
 			require('user_privileges/user_privileges_'.$user->id.'.php');
-			
 			$sql .= " AND (vtiger_customview.status=0 or vtiger_customview.userid = ? or vtiger_customview.status = 3 or vtiger_customview.userid IN
 			(SELECT vtiger_user2role.userid FROM vtiger_user2role INNER JOIN vtiger_users on vtiger_users.id=vtiger_user2role.userid 
 			INNER JOIN vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid WHERE vtiger_role.parentrole LIKE '".$current_user_parent_role_seq."::%'))";
-			
-			array_push($parameters, $current_user->id);
+			$parameters[] = $current_user->id;
 		}
-		
+
 		$result = $adb->pquery($sql, $parameters);
 		if($result && $adb->num_rows($result)) {
 			while($resultrow = $adb->fetch_array($result)) {

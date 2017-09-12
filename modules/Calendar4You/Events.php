@@ -41,7 +41,7 @@ if (!empty($_REQUEST['usersids'])) {
 
 $Load_Event_Status = array();
 $event_status = (isset($_REQUEST['event_status']) ? vtlib_purify($_REQUEST['event_status']) : '');
-if ($event_status != "") { 
+if ($event_status != "") {
 	$Load_Event_Status = explode(",",$event_status);
 }
 
@@ -122,9 +122,9 @@ if (count($Load_Event_Status) > 0) {
 		$s_sql = "SELECT eventstatus FROM vtiger_eventstatus WHERE picklist_valueid = ?";
 		$s_result = $adb->pquery($s_sql, array($sid));
 		$eventstatus = $adb->query_result($s_result,0,"eventstatus");
-		array_push($Event_Status, $eventstatus); 
+		$Event_Status[] = $eventstatus;
 		$eventstatus = html_entity_decode($eventstatus,ENT_QUOTES,$default_charset);
-		array_push($Event_Status, $eventstatus);
+		$Event_Status[] = $eventstatus;
 	}
 }
 
@@ -134,9 +134,9 @@ if (count($Load_Task_Status) > 0) {
 		$s_sql = "SELECT taskstatus FROM vtiger_taskstatus WHERE picklist_valueid = ?";
 		$s_result = $adb->pquery($s_sql, array($sid));
 		$taskstatus = $adb->query_result($s_result,0,"taskstatus");
-		array_push($Task_Status, $taskstatus);
+		$Task_Status[] = $taskstatus;
 		$taskstatus = html_entity_decode($taskstatus,ENT_QUOTES,$default_charset);
-		array_push($Task_Status, $taskstatus);
+		$Task_Status[] = $taskstatus;
 	}
 }
 $showGroupEvents = GlobalVariable::getVariable('Calendar_Show_Group_Events',1);
@@ -249,6 +249,7 @@ foreach($Users_Ids AS $userid) {
 		}
 		$list_result = $adb->pquery($list_query, $list_array);
 		while($row = $adb->fetchByAssoc($list_result)) {
+			if (!empty($stfields['start']) && empty($row[$stfields['start']])) continue;
 			$visibility = "private";
 			$editable = false;
 			$for_me = false;
