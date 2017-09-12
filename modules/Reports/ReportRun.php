@@ -36,7 +36,7 @@ class ReportRun extends CRMEntity {
 	var $islastpage = false;
 
 	var $_groupinglist  = false;
-	var $_columnslist    = false;
+	var $_columnslist   = array();
 	var $_stdfilterlist = false;
 	var $_columnstotallist = false;
 	var $_columnstotallistaddtoselect = false;
@@ -84,8 +84,8 @@ class ReportRun extends CRMEntity {
 	function getQueryColumnsList($reportid,$outputformat='')
 	{
 		// Have we initialized information already?
-		if($this->_columnslist !== false) {
-			return $this->_columnslist;
+		if (!empty($this->_columnslist[$outputformat])) {
+			return $this->_columnslist[$outputformat];
 		}
 
 		global $adb, $modules, $log,$current_user,$current_language;
@@ -294,7 +294,7 @@ class ReportRun extends CRMEntity {
 		}
 		$columnslist['vtiger_crmentity:crmid:LBL_ACTION:crmid:I'] = 'vtiger_crmentity.crmid AS "LBL_ACTION"' ;
 		// Save the information
-		$this->_columnslist = $columnslist;
+		$this->_columnslist[$outputformat] = $columnslist;
 
 		$log->info("ReportRun :: Successfully returned getQueryColumnsList".$reportid);
 		return $columnslist;
