@@ -142,12 +142,19 @@
 
 <!-- MassEdit Feature -->
 <div id="massedit" class="layerPopup" style="display:none;width:80%;">
-<table width="100%" border="0" cellpadding="3" cellspacing="0" class="layerHeadingULine">
-<tr>
-	<td class="layerPopupHeading" align="left" width="60%">{$APP.LBL_MASSEDIT_FORM_HEADER}</td>
-	<td>&nbsp;</td>
-	<td align="right" width="40%"><img onClick="fninvsh('massedit');" title="{$APP.LBL_CLOSE}" alt="{$APP.LBL_CLOSE}" style="cursor:pointer;" src="{'close.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0"></td>
-</tr>
+<table class="slds-table slds-no-row-hover" width="100%" style="border-bottom: 1px solid #ddd;">
+	<tr class="slds-text-title--header">
+		<th scope="col">
+			<div class="slds-truncate moduleName">
+				{$APP.LBL_MASSEDIT_FORM_HEADER}
+			</div>
+		</th>
+		<th scope="col">
+			<div class="slds-truncate" style="text-align:right; padding: .5rem;">
+				<img onClick="fninvsh('massedit');" title="{$APP.LBL_CLOSE}" alt="{$APP.LBL_CLOSE}" style="cursor:pointer;" src="{'close.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0">
+			</div>
+		</th>
+	</tr>
 </table>
 <div id="massedit_form_div"></div>
 

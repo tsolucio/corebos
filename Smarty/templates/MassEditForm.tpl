@@ -16,69 +16,58 @@
 			<form name="EditView" id="massedit_form" action="index.php" onsubmit="VtigerJS_DialogBox.block();" method="POST">
 				<input id="idstring" value="{$IDS}" type="hidden" />
 				<table border=0 cellspacing=0 cellpadding=0 width=100% align=center bgcolor=white>
-				<tr>
-					<td colspan=4 valign="top">
-						<div style='padding: 5px 0;'>
-							<span class="helpmessagebox">{$APP.LBL_SELECT_FIELDS_TO_UDPATE_WITH_NEW_VALUE}</span>
-						</div>
-						<!-- Hidden Fields -->
-						{include file='EditViewHidden.tpl'}
-						<input type="hidden" name="massedit_recordids">
-						<input type="hidden" name="massedit_module">
-					</td>
-				</tr>
+					<tr>
+						<td colspan=4 valign="top">
+							<div style='padding: 5px 0;'>
+								<span class="helpmessagebox">{$APP.LBL_SELECT_FIELDS_TO_UDPATE_WITH_NEW_VALUE}</span>
+							</div>
+							<!-- Hidden Fields -->
+							{include file='EditViewHidden.tpl'}
+							<input type="hidden" name="massedit_recordids">
+							<input type="hidden" name="massedit_module">
+						</td>
+					</tr>
 					<tr>
 						<td colspan=4>
-							<table class="small" border="0" cellpadding="3" cellspacing="0" width="100%">
-								<tbody><tr>
-									<td class="dvtTabCache" style="width: 10px;" nowrap>&nbsp;</td>
+							<div class="slds-table--scoped">
+								<ul class="slds-tabs--scoped__nav" role="tablist" style="margin-bottom: 0; border-bottom: 0;">
 									{foreach key=header name=block item=data from=$BLOCKS}
 										{if $smarty.foreach.block.index eq 0}
-											<td nowrap class="dvtSelectedCell" id="tab{$smarty.foreach.block.index}" onclick="massedit_togglediv({$smarty.foreach.block.index},{$BLOCKS|@count});">
-											<b>{$header}</b>
-											</td>
+											<li class="slds-tabs--scoped__item active" id="tab{$smarty.foreach.block.index}" onClick="massedit_togglediv({$smarty.foreach.block.index},{$BLOCKS|@count});" role="presentation" style="border-top-left-radius: .25rem;">
+												<a href="javascript:doNothing()" class="slds-tabs--scoped__link " role="tab" tabindex="0" aria-selected="true"><b>{$header}</b></a>
+											</li>
 										{else}
-											<td nowrap class="dvtUnSelectedCell" id="tab{$smarty.foreach.block.index}" onclick="massedit_togglediv({$smarty.foreach.block.index},{$BLOCKS|@count});">
-											<b>{$header}</b>
-											</td>
+											<li class="slds-tabs--scoped__item" id="tab{$smarty.foreach.block.index}" onClick="massedit_togglediv({$smarty.foreach.block.index},{$BLOCKS|@count});" role="presentation">
+												<a href="javascript:doNothing()" class="slds-tabs--scoped__link" role="tab" tabindex="-1" aria-selected="false" ><b>{$header}</b></a>
+											</li>
 										{/if}
 									{/foreach}
-								<td class="dvtTabCache" nowrap style="width:55%;">&nbsp;</td>
-								</tr>
-								</tbody>
-							</table>
+								</ul>
+									{foreach key=header name=block item=data from=$BLOCKS}
+										{if $smarty.foreach.block.index eq 0}
+											<div id="massedit_div{$smarty.foreach.block.index}" role="tabpanel" class="slds-tabs--scoped__content slds-truncate" style='display:block;'>
+												{include file="DisplayFields.tpl"}
+											</div>
+										{else}
+											<div id="massedit_div{$smarty.foreach.block.index}" role="tabpanel" class="slds-tabs--scoped__content slds-truncate" style='display:none;'>
+												{include file="DisplayFields.tpl"}
+											</div>
+										{/if}
+									{/foreach}
+							</div>
 						</td>
 					</tr>
-					<tr>
-						<td colspan=4>
-							{foreach key=header name=block item=data from=$BLOCKS}
-								{if $smarty.foreach.block.index eq 0}
-									<div id="massedit_div{$smarty.foreach.block.index}" style='display:block;'>
-									<table border=0 cellspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
-										{include file="DisplayFields.tpl"}
-									</table>
-									</div>
-								{else}
-									<div id="massedit_div{$smarty.foreach.block.index}" style='display:none;'>
-									<table border=0 cellspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
-										{include file="DisplayFields.tpl"}
-									</table>
-									</div>
-								{/if}
-							{/foreach}
+				</table>
+				<table class="layerPopupTransport" width="100%">
+					<tr class="slds-line-height--reset">
+						<td style="padding: .5rem;" align="center">
+							<!--input type="submit" name="save" class="crmbutton small edit" value="{$APP.LBL_SAVE_LABEL}">
+							<input type="button" name="button" class="crmbutton small cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" onClick="fninvsh('massedit')"-->
+							<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="slds-button slds-button--small slds-button_success" onclick="document.getElementById('massedit_form').action.value='MassEditSave'; return massEditFormValidate()" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
+							<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="slds-button slds-button--small slds-button--destructive" onclick="fninvsh('massedit')" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
 						</td>
 					</tr>
-			</table>
-			<table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport">
-				<tr>
-					<td align="center">
-						<!--input type="submit" name="save" class="crmbutton small edit" value="{$APP.LBL_SAVE_LABEL}">
-						<input type="button" name="button" class="crmbutton small cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" onClick="fninvsh('massedit')"-->
-						<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="document.getElementById('massedit_form').action.value='MassEditSave'; return massEditFormValidate()" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
-						<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="fninvsh('massedit')" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
-					</td>
-				</tr>
-			</table>
+				</table>
 			</form>
 		</td>
 	</tr>
