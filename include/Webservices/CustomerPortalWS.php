@@ -1,3 +1,4 @@
+
 <?php
 /*************************************************************************************************
  * Copyright 2012-2014 JPL TSolucio, S.L.  --  This file is a part of coreBOSCP.
@@ -968,7 +969,8 @@ function getFieldAutocomplete($term, $filter, $searchinmodule, $fields, $returnf
 	while ($emp=$adb->fetch_array($rsemp)) {
 		$rsp = array();
 		foreach ($rfields as $rf) {
-			$colum_name = $queryGenerator->getModuleFields()[$rf]->getColumnName();
+			$mod_fields = $queryGenerator->getModuleFields();
+			$colum_name = $mod_fields[$rf]->getColumnName();
 			$rsp[$rf] = html_entity_decode($emp[$colum_name],ENT_QUOTES,$default_charset);
 		}
 		$respuesta[]=array(
