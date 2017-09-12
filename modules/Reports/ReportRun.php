@@ -2062,9 +2062,9 @@ class ReportRun extends CRMEntity {
 			" WHERE vtiger_crmentity.deleted = 0";
 		} else if ($module == "Issuecards") {
 			$focus = CRMEntity::getInstance($module);
-			$query = $focus->generateReportsQuery($module);
+			$query = $focus->generateReportsQuery($module, $this->queryPlanner);
 			$query .= " left join vtiger_currency_info as vtiger_currency_info$module on vtiger_currency_info$module.id = vtiger_issuecards.currency_id";
-			if(($type !== 'COLUMNSTOTOTAL') || ($type == 'COLUMNSTOTOTAL' && $where_condition == 'add')) {
+			if (($type !== 'COLUMNSTOTOTAL') || ($type == 'COLUMNSTOTOTAL' && $where_condition == 'add')) {
 				$query .=" left join vtiger_inventoryproductrel as vtiger_inventoryproductrelIssuecards on vtiger_issuecards.issuecardid = vtiger_inventoryproductrelIssuecards.id
 					left join vtiger_products as vtiger_productsIssuecards on vtiger_productsIssuecards.productid = vtiger_inventoryproductrelIssuecards.productid
 					left join vtiger_service as vtiger_serviceIssuecards on vtiger_serviceIssuecards.serviceid = vtiger_inventoryproductrelIssuecards.productid";
@@ -3485,20 +3485,12 @@ class ReportRun extends CRMEntity {
 		if($this->secondarymodule != '')
 			$id[] = getTabid($this->secondarymodule);
 
-		$query = 'select fieldname,columnname,fieldid,fieldlabel,tabid,uitype from vtiger_field where tabid in('. generateQuestionMarks($id) .') and uitype in (15,33,55)'; //and columnname in (?)';
-		$result = $adb->pquery($query, $id);//,$select_column));
+		$query = 'select fieldname,columnname,fieldid,fieldlabel,tabid,uitype from vtiger_field where tabid in('. generateQuestionMarks($id) .") and uitype in (15,33,55) and columnname != 'firstname'";
+		$result = $adb->pquery($query, $id);
 		$roleid=$current_user->roleid;
-		$subrole = getRoleSubordinates($roleid);
-		if(count($subrole)> 0)
-		{
-			$roleids = $subrole;
-			$roleids[] = $roleid;
-		}
-		else
-		{
-			$roleids = $roleid;
-		}
-
+		$roleids = getRoleSubordinates($roleid);
+		$roleids[] = $roleid;
+		$roleidslist = implode($roleids,'","');
 		$temp_status = Array();
 		$fieldlists = array();
 		for($i=0;$i < $adb->num_rows($result);$i++)
@@ -3511,13 +3503,8 @@ class ReportRun extends CRMEntity {
 			$fieldlabel1 = str_replace(" ","_",$fieldlabel);
 			$keyvalue = getTabModuleName($tabid)."_".$fieldlabel1;
 			$fieldvalues = Array();
-			if (count($roleids) > 1) {
-				$mulsel="select distinct $fieldname from vtiger_$fieldname inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$fieldname.picklist_valueid where roleid in (\"". implode($roleids,"\",\"") ."\") and picklistid in (select picklistid from vtiger_picklist)"; // order by sortid asc - not requried
-			} else {
-				$mulsel="select distinct $fieldname from vtiger_$fieldname inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$fieldname.picklist_valueid where roleid ='".$roleid."' and picklistid in (select picklistid from vtiger_picklist)"; // order by sortid asc - not requried
-			}
-			if($fieldname != 'firstname')
-				$mulselresult = $adb->query($mulsel);
+			$mulsel = "select distinct $fieldname from vtiger_$fieldname inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$fieldname.picklist_valueid where roleid in (\"". $roleidslist .'") and picklistid in (select picklistid from vtiger_picklist)'; // order by sortid asc - not requried
+			$mulselresult = $adb->query($mulsel);
 			for($j=0;$j < $adb->num_rows($mulselresult);$j++)
 			{
 				$fldvalue = $adb->query_result($mulselresult,$j,$fieldname);

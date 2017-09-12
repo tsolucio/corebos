@@ -525,11 +525,9 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 
 		$sub_prod_str = (isset($_REQUEST['subproduct_ids'.$i]) ? $_REQUEST['subproduct_ids'.$i] : '');
 		if (!empty($sub_prod_str)) {
-			$sub_prod = explode(":",$sub_prod_str);
-			for($j=0;$j<count($sub_prod);$j++){
-				$query ="insert into vtiger_inventorysubproductrel(id, sequence_no, productid) values(?,?,?)";
-				$qparams = array($focus->id,$prod_seq,$sub_prod[$j]);
-				$adb->pquery($query,$qparams);
+			$query ='insert into vtiger_inventorysubproductrel(id, sequence_no, productid) values(?,?,?)';
+			foreach (explode(":",$sub_prod_str) as $item) {
+				$adb->pquery($query,array($focus->id,$prod_seq,$item));
 			}
 		}
 		$prod_seq++;
@@ -550,11 +548,10 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 		}
 		if($_REQUEST['taxtype'] == 'group')
 		{
-			for($tax_count=0;$tax_count<count($all_available_taxes);$tax_count++)
-			{
-				$tax_name = $all_available_taxes[$tax_count]['taxname'];
+			foreach ($all_available_taxes as $available_tax) {
+				$tax_name = $available_tax['taxname'];
 				if (!in_array($tax_name, $ipr_cols)) continue;
-				$tax_val = $all_available_taxes[$tax_count]['percentage'];
+				$tax_val = $available_tax['percentage'];
 				$request_tax_name = $tax_name."_group_percentage";
 				if(isset($_REQUEST[$request_tax_name]))
 					$tax_val =vtlib_purify($_REQUEST[$request_tax_name]);
@@ -564,10 +561,8 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 			$updatequery = trim($updatequery,',')." where id=? and productid=? and lineitem_id = ?";
 			array_push($updateparams,$focus->id,$prod_id, $lineitem_id);
 		} else {
-			$taxes_for_product = getTaxDetailsForProduct($prod_id,'all',$acvid);
-			for($tax_count=0;$tax_count<count($taxes_for_product);$tax_count++)
-			{
-				$tax_name = $taxes_for_product[$tax_count]['taxname'];
+			foreach (getTaxDetailsForProduct($prod_id,'all',$acvid) as $productTax) {
+				$tax_name = $productTax['taxname'];
 				if (!in_array($tax_name, $ipr_cols)) continue;
 				$request_tax_name = $tax_name."_percentage".$i;
 				$updatequery .= " $tax_name = ?,";
@@ -631,14 +626,13 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 
 	//to save the S&H tax details in vtiger_inventoryshippingrel table
 	$isr_cols = $adb->getColumnNames('vtiger_inventoryshippingrel');
-	$sh_tax_details = getAllTaxes('all','sh');
 	$sh_query_fields = "id,";
 	$sh_query_values = "?,";
 	$sh_query_params = array($focus->id);
-	for($i=0;$i<count($sh_tax_details);$i++) {
-		$tax_name = $sh_tax_details[$i]['taxname']."_sh_percent";
-		if (isset($_REQUEST[$tax_name]) and $_REQUEST[$tax_name] != '' and in_array($sh_tax_details[$i]['taxname'], $isr_cols)) {
-			$sh_query_fields .= $sh_tax_details[$i]['taxname'].",";
+	foreach (getAllTaxes('all','sh') as $taxDetail) {
+		$tax_name = $taxDetail['taxname']."_sh_percent";
+		if (isset($_REQUEST[$tax_name]) and $_REQUEST[$tax_name] != '' and in_array($taxDetail['taxname'], $isr_cols)) {
+			$sh_query_fields .= $taxDetail['taxname'].',';
 			$sh_query_values .= "?,";
 			$sh_query_params[] = (float)vtlib_purify($_REQUEST[$tax_name]);
 		}

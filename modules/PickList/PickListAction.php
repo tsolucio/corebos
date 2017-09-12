@@ -27,23 +27,20 @@ if($mode == 'add'){
 
 	$arr = json_decode($newValues,true);
 	$roles = json_decode($selectedRoles,true);
-	$count = count($arr);
 
 	$sql = "select picklistid from vtiger_picklist where name=?";
 	$result = $adb->pquery($sql, array($tableName));
 	$picklistid = $adb->query_result($result,0,"picklistid");
 
-	for($i=0; $i<$count;$i++){
-		//$val = htmlentities(trim($arr[$i]), ENT_QUOTES, $default_charset);
-		$val = $arr[$i];
+	foreach ($arr as $val) {
+		//$val = htmlentities(trim($val), ENT_QUOTES, $default_charset);
 		if(!empty($val)){
 			$id = $adb->getUniqueID("vtiger_$tableName");
 			$picklist_valueid = getUniquePicklistID();
 			$sql = "insert into vtiger_$tableName values (?,?,?,?)";
 			$adb->pquery($sql, array($id, $val, 1, $picklist_valueid));
 			//add the picklist values to the selected roles
-			for($j=0;$j<count($roles);$j++){
-				$roleid = $roles[$j];
+			foreach ($roles as $roleid) {
 				$sql ="select max(sortid)+1 as sortid from vtiger_role2picklist left join vtiger_$tableName on vtiger_$tableName.picklist_valueid=vtiger_role2picklist.picklistvalueid where roleid=? and picklistid=?";
 				$rs = $adb->pquery($sql, array($roleid, $picklistid));
 				$sortid = $adb->query_result($rs,0,'sortid');

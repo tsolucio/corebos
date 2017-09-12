@@ -177,12 +177,9 @@ class Emails extends CRMEntity {
 		}
 		if ($module == 'Emails' && isset($_REQUEST['att_id_list']) && $_REQUEST['att_id_list'] != '') {
 			$att_lists = explode(";", $_REQUEST['att_id_list'], -1);
-			$id_cnt = count($att_lists);
-			if ($id_cnt != 0) {
-				for ($i = 0; $i < $id_cnt; $i++) {
-					$sql_rel = 'insert into vtiger_seattachmentsrel values(?,?)';
-					$adb->pquery($sql_rel, array($id, $att_lists[$i]));
-				}
+			$sql_rel = 'insert into vtiger_seattachmentsrel values(?,?)';
+			foreach ($att_lists as $att) {
+				$adb->pquery($sql_rel, array($id, $att));
 			}
 		}
 		if ($module == 'Emails' && isset($_REQUEST['doc_attachments']) && count($_REQUEST['doc_attachments']) > 0) {

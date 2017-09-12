@@ -1129,7 +1129,7 @@ $app_strings = array (
      'LBL_FIELDLISTS'=> 'Lista de Campos',
      'LBL_RECORD'=>'Registro #',
      'LBL_DUP_PERMISSION' => 'No tienes permiso para eliminar ',
-     'recordid' => 'id registro',
+     'recordid' => 'Registro',
      'Entity Type' => 'Tipo Entidad',
 
      // gmailbookmarklet customization
