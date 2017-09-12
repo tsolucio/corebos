@@ -70,14 +70,15 @@ class crmtogo_UI_GetScrollRecords extends crmtogo_WS_getScrollContent{
 				$activitytype = ($adb->query_result($records,$i,'activitytype') != 'Task' ? 'E' : ($current_language == 'de_de' ? 'A' : 'T'));
 				$ws_entity2 = ($adb->query_result($records,$i,'activitytype') != 'Task' ? $arr_entity2[1] : $arr_entity2[0]);
 				$firstname = $activitytype." | ".$firstname." |";
-				$lastname = getValidDisplayDate($adb->query_result($records,$i,'date_start'));
+				$date_start = getValidDisplayDate($adb->query_result($records,$i,'date_start'));
 				
 				$timequery = "select time_start from vtiger_activity where activityid =?";
 				$timequeryresult = $adb->pquery($timequery, array($adb->query_result($records,$i,$entityidfield)));
 				$time_start = $adb->query_result($timequeryresult,0,'time_start');
 				//cut seconds if exist
 				$time = (strlen($time_start) > 5) ? substr($time_start,0,5).'' : $time_start;
-				$lastname .= " $time";
+				$date = new DateTimeField($date_start.' '.$time);
+				$lastname = $date->getDisplayDateTimeValue();
 
 			}
 			$id = $ws_entity2."x".$adb->query_result($records,$i,$entityidfield);
