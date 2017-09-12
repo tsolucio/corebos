@@ -1122,7 +1122,7 @@ class Products extends CRMEntity {
 
 		$matrix->setDependency("vtiger_crmentityProducts",array("vtiger_groupsProducts","vtiger_usersProducts","vtiger_lastModifiedByProducts"));
 
-		if (!$queryplanner->requireTable('vtiger_products', $matrix)) {
+		if (!$queryplanner->requireTable('vtiger_products', $matrix) && !$queryplanner->requireTable('vtiger_productcf',$matrix)) {
 			return '';
 		}
 		$matrix->setDependency("vtiger_products",array("innerProduct","vtiger_crmentityProducts","vtiger_productcf","vtiger_vendorRelProducts"));

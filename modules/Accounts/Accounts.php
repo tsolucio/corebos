@@ -775,7 +775,7 @@ class Accounts extends CRMEntity {
 		$matrix->setDependency('vtiger_crmentityAccounts', array('vtiger_groupsAccounts', 'vtiger_usersAccounts', 'vtiger_lastModifiedByAccounts'));
 		$matrix->setDependency('vtiger_account', array('vtiger_crmentityAccounts',' vtiger_accountbillads', 'vtiger_accountshipads', 'vtiger_accountscf', 'vtiger_accountAccounts', 'vtiger_email_trackAccounts'));
 
-		if (!$queryPlanner->requireTable('vtiger_account', $matrix)) {
+		if (!$queryPlanner->requireTable('vtiger_account', $matrix) && !$queryplanner->requireTable('vtiger_accountscf',$matrix)) {
 			return '';
 		}
 

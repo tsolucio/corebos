@@ -300,7 +300,7 @@ class Vendors extends CRMEntity {
 		$matrix = $queryplanner->newDependencyMatrix();
 
 		$matrix->setDependency("vtiger_crmentityVendors",array("vtiger_usersVendors","vtiger_lastModifiedByVendors"));
-		if (!$queryplanner->requireTable('vtiger_vendor', $matrix)) {
+		if (!$queryplanner->requireTable('vtiger_vendor', $matrix) && !$queryplanner->requireTable('vtiger_vendorcf',$matrix)) {
 			return '';
 		}
 		$matrix->setDependency("vtiger_vendor",array("vtiger_crmentityVendors","vtiger_vendorcf","vtiger_email_trackVendors"));

@@ -363,7 +363,7 @@ class Leads extends CRMEntity {
 		$matrix = $queryPlanner->newDependencyMatrix();
 		$matrix->setDependency('vtiger_crmentityLeads',array('vtiger_groupsLeads','vtiger_usersLeads','vtiger_lastModifiedByLeads'));
 
-		if (!$queryPlanner->requireTable("vtiger_leaddetails",$matrix)) {
+		if (!$queryPlanner->requireTable("vtiger_leaddetails",$matrix) && !$queryplanner->requireTable('vtiger_leadscf',$matrix)) {
 			return '';
 		}
 

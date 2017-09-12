@@ -422,7 +422,7 @@ class Documents extends CRMEntity {
 		$matrix = $queryplanner->newDependencyMatrix();
 		$matrix->setDependency("vtiger_crmentityDocuments",array("vtiger_groupsDocuments","vtiger_usersDocuments","vtiger_lastModifiedByDocuments"));
 
-		if (!$queryplanner->requireTable('vtiger_notes', $matrix)) {
+		if (!$queryplanner->requireTable('vtiger_notes', $matrix) && !$queryplanner->requireTable('vtiger_notescf',$matrix)) {
 			return '';
 		}
 		$matrix->setDependency("vtiger_notes",array("vtiger_crmentityDocuments","vtiger_attachmentsfolder"));
