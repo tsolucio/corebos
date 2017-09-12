@@ -247,32 +247,36 @@ class ReportRun extends CRMEntity {
 						}
 					}
 					elseif ($selectedfields[0] == 'vtiger_inventoryproductrel') {
-						if ($selectedfields[1] == 'discount') {
-							$columnslist[$fieldcolname] = " case when (vtiger_inventoryproductrel{$module}.discount_amount != '') then vtiger_inventoryproductrel{$module}.discount_amount else ROUND((vtiger_inventoryproductrel{$module}.listprice * vtiger_inventoryproductrel{$module}.quantity * (vtiger_inventoryproductrel{$module}.discount_percent/100)),3) end as '" . $header_label ."'";
-						} else if ($selectedfields[1] == 'productid') {
-							$columnslist[$fieldcolname] = "vtiger_products{$module}.productname as '" . $header_label ."'";
-							$this->queryPlanner->addTable("vtiger_products{$module}");
-						} else if ($selectedfields[1] == 'serviceid') {
-							$columnslist[$fieldcolname] = "vtiger_service{$module}.servicename as '" . $header_label ."'";
-							$this->queryPlanner->addTable("vtiger_service{$module}");
-						} else {
-							$columnslist[$fieldcolname] = $selectedfields[0].$module.".".$selectedfields[1]." as '".$header_label."'";
+						if ($outputformat !== 'COLUMNSTOTOTAL') {
+							if ($selectedfields[1] == 'discount') {
+								$columnslist[$fieldcolname] = " case when (vtiger_inventoryproductrel{$module}.discount_amount != '') then vtiger_inventoryproductrel{$module}.discount_amount else ROUND((vtiger_inventoryproductrel{$module}.listprice * vtiger_inventoryproductrel{$module}.quantity * (vtiger_inventoryproductrel{$module}.discount_percent/100)),3) end as '" . $header_label ."'";
+							} else if ($selectedfields[1] == 'productid') {
+								$columnslist[$fieldcolname] = "vtiger_products{$module}.productname as '" . $header_label ."'";
+								$this->queryPlanner->addTable("vtiger_products{$module}");
+							} else if ($selectedfields[1] == 'serviceid') {
+								$columnslist[$fieldcolname] = "vtiger_service{$module}.servicename as '" . $header_label ."'";
+								$this->queryPlanner->addTable("vtiger_service{$module}");
+							} else {
+								$columnslist[$fieldcolname] = $selectedfields[0].$module.".".$selectedfields[1]." as '".$header_label."'";
+							}
+							$this->queryPlanner->addTable($selectedfields[0] . $module);
 						}
-						$this->queryPlanner->addTable($selectedfields[0] . $module);
 					}
 					elseif ($selectedfields[0] == 'vtiger_inventoryproductrel'.$module) {
-						if ($selectedfields[1] == 'discount') {
-							$columnslist[$fieldcolname] = " case when (vtiger_inventoryproductrel{$module}.discount_amount != '') then vtiger_inventoryproductrel{$module}.discount_amount else ROUND((vtiger_inventoryproductrel{$module}.listprice * vtiger_inventoryproductrel{$module}.quantity * (vtiger_inventoryproductrel{$module}.discount_percent/100)),3) end as '" . $header_label ."'";
-						} else if ($selectedfields[1] == 'productid') {
-							$columnslist[$fieldcolname] = "vtiger_products{$module}.productname as '" . $header_label ."'";
-							$this->queryPlanner->addTable("vtiger_products{$module}");
-						} else if ($selectedfields[1] == 'serviceid') {
-							$columnslist[$fieldcolname] = "vtiger_service{$module}.servicename as '" . $header_label ."'";
-							$this->queryPlanner->addTable("vtiger_service{$module}");
-						} else {
-							$columnslist[$fieldcolname] = $selectedfields[0].".".$selectedfields[1]." as '".$header_label."'";
+						if ($outputformat !== 'COLUMNSTOTOTAL') {
+							if ($selectedfields[1] == 'discount') {
+								$columnslist[$fieldcolname] = " case when (vtiger_inventoryproductrel{$module}.discount_amount != '') then vtiger_inventoryproductrel{$module}.discount_amount else ROUND((vtiger_inventoryproductrel{$module}.listprice * vtiger_inventoryproductrel{$module}.quantity * (vtiger_inventoryproductrel{$module}.discount_percent/100)),3) end as '" . $header_label ."'";
+							} else if ($selectedfields[1] == 'productid') {
+								$columnslist[$fieldcolname] = "vtiger_products{$module}.productname as '" . $header_label ."'";
+								$this->queryPlanner->addTable("vtiger_products{$module}");
+							} else if ($selectedfields[1] == 'serviceid') {
+								$columnslist[$fieldcolname] = "vtiger_service{$module}.servicename as '" . $header_label ."'";
+								$this->queryPlanner->addTable("vtiger_service{$module}");
+							} else {
+								$columnslist[$fieldcolname] = $selectedfields[0].".".$selectedfields[1]." as '".$header_label."'";
+							}
+							$this->queryPlanner->addTable('vtiger_inventoryproductrel'.$module);
 						}
-						$this->queryPlanner->addTable('vtiger_inventoryproductrel'.$module);
 					}
 					elseif(stristr($selectedfields[1],'cf_')==true && stripos($selectedfields[1],'cf_')==0)
 					{
