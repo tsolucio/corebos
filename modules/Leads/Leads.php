@@ -360,42 +360,15 @@ class Leads extends CRMEntity {
 	 * returns the query string formed on fetching the related data for report for secondary module
 	 */
 	function generateReportsSecQuery($module,$secmodule, $queryPlanner,$type = '',$where_condition = '') {
-		$matrix = $queryPlanner->newDependencyMatrix();
-		$matrix->setDependency('vtiger_crmentityLeads',array('vtiger_groupsLeads','vtiger_usersLeads','vtiger_lastModifiedByLeads'));
-
-		if (!$queryPlanner->requireTable("vtiger_leaddetails",$matrix) && !$queryplanner->requireTable('vtiger_leadscf',$matrix)) {
-			return '';
-		}
-
-		$matrix->setDependency('vtiger_leaddetails',array('vtiger_crmentityLeads', 'vtiger_leadaddress','vtiger_leadsubdetails','vtiger_leadscf','vtiger_email_trackLeads'));
-
-		$query = $this->getRelationQuery($module,$secmodule,"vtiger_leaddetails","leadid", $queryPlanner);
-		if ($queryPlanner->requireTable("vtiger_crmentityLeads",$matrix)) {
-			$query .= " left join vtiger_crmentity as vtiger_crmentityLeads on vtiger_crmentityLeads.crmid = vtiger_leaddetails.leadid and vtiger_crmentityLeads.deleted=0";
-		}
+		$query = parent::generateReportsSecQuery($module, $secmodule, $queryPlanner, $type, $where_condition);
 		if ($queryPlanner->requireTable("vtiger_leadaddress")) {
 			$query .= " left join vtiger_leadaddress on vtiger_leaddetails.leadid = vtiger_leadaddress.leadaddressid";
 		}
 		if ($queryPlanner->requireTable("vtiger_leadsubdetails")) {
 			$query .= " left join vtiger_leadsubdetails on vtiger_leadsubdetails.leadsubscriptionid = vtiger_leaddetails.leadid";
 		}
-		if ($queryPlanner->requireTable("vtiger_leadscf")) {
-			$query .= " left join vtiger_leadscf on vtiger_leadscf.leadid = vtiger_leaddetails.leadid";
-		}
 		if ($queryPlanner->requireTable("vtiger_email_trackLeads")) {
 			$query .= " LEFT JOIN vtiger_email_track AS vtiger_email_trackLeads ON vtiger_email_trackLeads.crmid = vtiger_leaddetails.leadid";
-		}
-		if ($queryPlanner->requireTable("vtiger_groupsLeads")) {
-			$query .= " left join vtiger_groups as vtiger_groupsLeads on vtiger_groupsLeads.groupid = vtiger_crmentityLeads.smownerid";
-		}
-		if ($queryPlanner->requireTable("vtiger_usersLeads")) {
-			$query .= " left join vtiger_users as vtiger_usersLeads on vtiger_usersLeads.id = vtiger_crmentityLeads.smownerid";
-		}
-		if ($queryPlanner->requireTable("vtiger_lastModifiedByLeads")) {
-			$query .= " left join vtiger_users as vtiger_lastModifiedByLeads on vtiger_lastModifiedByLeads.id = vtiger_crmentityLeads.modifiedby ";
-		}
-		if ($queryPlanner->requireTable("vtiger_CreatedByLeads")) {
-			$query .= " left join vtiger_users as vtiger_CreatedByLeads on vtiger_CreatedByLeads.id = vtiger_crmentityLeads.smcreatorid ";
 		}
 		return $query;
 	}
