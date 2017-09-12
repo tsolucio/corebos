@@ -2548,6 +2548,9 @@ class CRMEntity {
 		if ($queryPlanner->requireTable("vtiger_users$secmodule")) {
 			$query .= " left join vtiger_users as vtiger_users" . $secmodule . " on vtiger_users" . $secmodule . ".id = vtiger_crmentity$secmodule.smownerid";
 		}
+		if ($queryPlanner->requireTable("vtiger_currency_info$secmodule")){
+			$query .=" left join vtiger_currency_info as vtiger_currency_info" . $secmodule . " on vtiger_currency_info" . $secmodule . ".id = $tablename.currency_id";
+		}
 		if ($queryPlanner->requireTable("vtiger_lastModifiedBy$secmodule")) {
 			$query .= " left join vtiger_users as vtiger_lastModifiedBy" . $secmodule . " on vtiger_lastModifiedBy" . $secmodule . ".id = vtiger_crmentity" . $secmodule . ".modifiedby";
 		}
