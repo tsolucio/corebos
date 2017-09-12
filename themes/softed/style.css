@@ -916,10 +916,10 @@ a.submenu:Hover{
 	top:100px;
 	background-color:#FFFFFF;
 	width:185px;
-	border-bottom:2px solid #000000;
+	/*border-bottom:2px solid #000000;
 	border-right:2px solid #666666;
 	border-left:2px solid #CCCCCC;
-	border-top:2px solid #CCCCCC;
+	border-top:2px solid #CCCCCC;*/
 }
 
 /* RSS STYLES */
@@ -2164,7 +2164,7 @@ textarea {
 /* Layer Popup */
 .layerPopup {
 	border:2px solid #ddd;
-	background:#fffff5 url(images/layerPopupBg.gif) ;
+	background:#fffff5;
 	position:absolute;
 }
 
