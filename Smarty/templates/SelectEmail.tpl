@@ -14,60 +14,96 @@
 	<input name='search_url' id="search_url" type='hidden' value='{$SEARCH_URL}'>
 	<input name='viewid' id="viewid" type='hidden' value='{$VIEWID}'>
 	<input name='recordid' id="recordid" type='hidden' value='{$RECORDID}'>
-	<table border=0 cellspacing=0 cellpadding=5 width=100% class=layerHeadingULine>
-		<tr>
-			<td width="90%" align="left" class="genHeaderSmall">{$MOD.SELECT_EMAIL}
-				{if $ONE_RECORD neq 'true'}
-				({$MOD.LBL_MULTIPLE} {$FROM_MODULE|getTranslatedString:$FROM_MODULE})
-				{/if}
-				&nbsp;
-			</td>
-			<td width="10%" align="right">
-				<a href="javascript:fninvsh('roleLay');"><img title="{$APP.LBL_CLOSE}" alt="{$APP.LBL_CLOSE}" src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0"  align="absmiddle" /></a>
-			</td>
+	<table class="slds-table slds-no-row-hover layerHeadingULine" width="100%">
+		<tr class="slds-text-title--header">
+			<th scope="col">
+				<div class="slds-truncate moduleName">
+					{$MOD.SELECT_EMAIL}
+				</div>
+			</th>
+			<th scope="col">
+				<div class="slds-truncate">
+					<span>
+						{if $ONE_RECORD neq 'true'}
+							({$MOD.LBL_MULTIPLE} {$FROM_MODULE|getTranslatedString:$FROM_MODULE})
+						{/if}
+					</span>
+				</div>
+			</th>
+			<th scope="col" style="padding: .5rem;">
+				<div class="slds-truncate">
+					<a href="javascript:fninvsh('roleLay');">
+						<img title="{$APP.LBL_CLOSE}" alt="{$APP.LBL_CLOSE}" src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0"  align="absmiddle" />
+					</a>
+				</div>
+			</th>
 		</tr>
 	</table>
-	<table border=0 cellspacing=0 cellpadding=5 width=95% align=center>
-		<tr><td class="small">
-			<table border=0 cellspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
-				<tr>
-					<td align="left">
-					{if $ONE_RECORD eq 'true'}
-						<b>{$ENTITY_NAME}</b> {$MOD.LBL_MAILSELECT_INFO}.<br><br>
-					{else}
-						{$MOD.LBL_MAILSELECT_INFO1} {$FROM_MODULE|getTranslatedString:$FROM_MODULE}.{$MOD.LBL_MAILSELECT_INFO2}<br><br>
-					{/if}
-						<div style="height:120px;overflow-y:auto;overflow-x:hidden;" align="center">
-							<table border="0" cellpadding="5" cellspacing="0" width="90%">
+	<table width="100%">
+		<tr class="slds-line-height--reset">
+			<td class="small">
+				<div class="forceRelatedListSingleContainer">
+					<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
+						<div class="slds-card__header slds-grid">
+							<header class="slds-media slds-media--center slds-has-flexi-truncate">
+								<div class="slds-media__body">
+									<span class="slds-truncate slds-m-right--xx-small">
+										{if $ONE_RECORD eq 'true'}
+											<b>{$ENTITY_NAME}</b> {$MOD.LBL_MAILSELECT_INFO}.
+										{else}
+											{$MOD.LBL_MAILSELECT_INFO1} {$FROM_MODULE|getTranslatedString:$FROM_MODULE}.{$MOD.LBL_MAILSELECT_INFO2}
+										{/if}
+									</span>
+								</div>
+							</header>
+						</div>
+					</article>
+				</div>
+				<div style="height:120px;overflow-y:auto;overflow-x:hidden;" align="center">
+							<table class="slds-table slds-no-row-hover">
 								{foreach name=emailids key=fieldid item=elements from=$MAILINFO}
-								<tr>
+								<tr class="slds-line-height--reset">
 									{if $smarty.foreach.emailids.iteration eq 1}
-									<td align="center"><input type="checkbox" checked value="{$fieldid}" name="semail" /></td>
+										<td class="dvtCellLabel">
+											<span class="slds-checkbox">
+												<input type="checkbox" checked value="{$fieldid}" id="email_{$fieldid}" name="semail"/>
+												<label class="slds-checkbox__label" for="email_{$fieldid}">
+													<span class="slds-checkbox--faux"></span>
+												</label>
+											</span>
+										</td>
 									{else}
-									<td align="center"><input type="checkbox" value="{$fieldid}" name="semail" /></td>
+										<td class="dvtCellLabel">
+											<span class="slds-checkbox">
+												<input type="checkbox" value="{$fieldid}" id="email_{$fieldid}" name="semail"/>
+												<label class="slds-checkbox__label" for="other_{$fieldid}">
+													<span class="slds-checkbox--faux"></span>
+												</label>
+											</span>
+										</td>
 									{/if}
 									{if $PERMIT eq '0'}
-									{if $ONE_RECORD eq 'true'}
-									<td align="left"><b>{$elements.0}</b><br>{$MAILDATA[$smarty.foreach.emailids.index]}</td>
+										{if $ONE_RECORD eq 'true'}
+											<td class="dvtCellInfo"><b>{$elements.0}</b><br>{$MAILDATA[$smarty.foreach.emailids.index]}</td>
+										{else}
+											<td class="dvtCellInfo"><b>{$elements.0}</b></td>
+										{/if}
 									{else}
-									<td align="left"><b>{$elements.0}</b></td>
-									{/if}
-									{else}
-									<td align="left"><b>{$elements.0}</b><br>{$MAILDATA[$smarty.foreach.emailids.index]}</td>
+										<td class="dvtCellInfo"><b>{$elements.0}</b><br>{$MAILDATA[$smarty.foreach.emailids.index]}</td>
 									{/if}
 								</tr>
 								{/foreach}
 							</table>
-						</div>
-					</td>
-				</tr>
-			</table>
-		</td></tr>
+				</div>
+			</td>
+		</tr>
 	</table>
 	<table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport">
-		<tr><td align=center class="small">
-			<input type="button" name="{$APP.LBL_SELECT_BUTTON_LABEL}" value=" {$APP.LBL_SELECT_BUTTON_LABEL} " class="crmbutton small create" onClick="validate_sendmail('{$IDLIST}','{$FROM_MODULE}');"/>&nbsp;&nbsp;
-			<input type="button" name="{$APP.LBL_CANCEL_BUTTON_LABEL}" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="crmbutton small cancel" onclick="fninvsh('roleLay');" />
-		</td></tr>
+		<tr class="slds-line-height--reset">
+			<td align=center style="padding: .5rem;">
+				<input type="button" name="{$APP.LBL_SELECT_BUTTON_LABEL}" value=" {$APP.LBL_SELECT_BUTTON_LABEL} " class="slds-button slds-button--small slds-button_success" onClick="validate_sendmail('{$IDLIST}','{$FROM_MODULE}');"/>&nbsp;&nbsp;
+				<input type="button" name="{$APP.LBL_CANCEL_BUTTON_LABEL}" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="slds-button slds-button--small slds-button--destructive" onclick="fninvsh('roleLay');" />
+			</td>
+		</tr>
 	</table>
 </div>

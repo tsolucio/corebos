@@ -20,81 +20,122 @@
 	<input type="hidden" name="from" value="{if isset($FROM)}{$FROM}{/if}">
 	<input type="hidden" name="fieldlist" value="{$FIELDLIST}">
 	<input type="hidden" name="typelist" value="{$TYPELIST}">
-	<table align="center" border="0" cellpadding="0" cellspacing="0" width="98%" class="small">
+
+	<table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
 		<tr>
-			<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}" /></td>
-			<td class="showPanelBg" valign="top" width="100%">
-			<table cellpadding="0" cellspacing="0" width="100%" border=0>
-				<tr>
-					<td width="50%" valign=top>
-					<br />
-					<table align="center" cellpadding="5" cellspacing="0" width="80%" class="mailClient importLeadUI small" border="0">
-						<tr>
-							<td colspan="2" height="50" valign="middle" align="left" class="mailClientBg  genHeaderSmall">{$MOD.LBL_MAILER_EXPORT}</td>
-						</tr>
-						<tr >
-							<td colspan="2" align="left" valign="top" style="padding-left:40px;">
-							<br>
-							<span class="genHeaderGray">{$MOD.LBL_MAILER_EXPORT_CONTACTS_TYPE}</span>&nbsp; <span class="genHeaderSmall">{$MOD.LBL_MAILER_EXPORT_CONTACTS_DESCR}</span></td>
-						</tr>
-						{foreach from=$QUERYFIELDS name=querysel item=myVal}
-						{if $smarty.foreach.querysel.index % 2 == 0}
-						<tr>
-							{/if}
-							<td align="left" valign="top" width="25%" class=small  style="padding-left:40px;"> {if $myVal.uitype == 1}
-							<input type=text name={$myVal.columnname} size=13>
-							{elseif $myVal.uitype == 15 || $myVal.uitype == 56}
-							{html_options name=$myVal.columnname  options=$myVal.value}
-							{/if}
-							&nbsp;<b>{$myVal.fieldlabel}</b></td>
-							{if $smarty.foreach.querysel.index % 2 > 0}
-						</tr>
-						{/if}
-						{/foreach}
-						<input type="hidden" name="query" value="{$FIELDLIST}">
-						<tr >
-							<td align="left" valign="top" colspan="2">&nbsp;</td>
-						</tr>
-						<tr >
-							<td colspan="2" align="left" valign="top" style="padding-left:40px;">
-							<br>
-							<span class="genHeaderGray">{$MOD.LBL_MAILER_EXPORT_RESULTS_TYPE}</span>&nbsp; <span class="genHeaderSmall">{$MOD.LBL_MAILER_EXPORT_RESULTS_DESCR}</span></td>
-						</tr>
-						<tr >
-							<td align="right" valign="top" width="50%" class=small><b>{$MOD.LBL_EXPORT_RESULTS_EMAIL} </b></td>
-							<td align="left" valign="top" width="50%" style="padding-left:40px;">
-							<input type="radio" name="export_type" checked value="email">
-							</td>
-						</tr>
-						<tr >
-							<td align="right" valign="top" width="50%" class=small style="padding-left:40px;"><b>{$MOD.LBL_EXPORT_RESULTS_EMAIL_CORP} </b></td>
-							<td align="left" valign="top" width="50%" style="padding-left:40px;">
-							<input type="radio" name="export_type" value="emailplus">
-							</td>
-						</tr>
-						<tr >
-							<td align="right" valign="top" width="50%" class=small style="padding-left:40px;"><b>{$MOD.LBL_EXPORT_RESULTS_FULL} </b></td>
-							<td align="left" valign="top" width="50%" style="padding-left:40px;">
-							<input type="radio" name="export_type" value="full">
-							</td>
-						</tr>
-						<tr >
-							<td colspan="2" height="50" style="padding-left:40px;">&nbsp;</td>
-						</tr>
-						<tr >
-							<td colspan="2" align="right" style="padding-right:40px;" class="reportCreateBottom">
-							<input title="{$MOD.LBL_EXPORT_RESULTS_GO}" accessKey="" class="crmButton small save" type="submit" name="button" value="  {$MOD.LBL_EXPORT_RESULTS_GO} &rsaquo; ">
-							</td>
-							<td colspan="2" align="right" style="padding-right:40px;" class="reportCreateBottom">
-							<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="window.history.back()" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  " style="width:70px">
-							</td>
-						</tr>
-					</table>
-					<br>
-					</td>
-				</tr>
-			</table></td>
-			<td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}" /></td>
+			<td>
+				<table class="slds-table slds-no-row-hover slds-table-moz mailClient importLeadUI">
+					<tr class="blockStyleCss">
+						<td class="detailViewContainer" valign="middle" align="left">
+							<div class="forceRelatedListSingleContainer">
+								<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
+									<div class="slds-card__header slds-grid">
+										<header class="slds-media slds-media--center slds-has-flexi-truncate">
+											<div class="slds-media__body">
+												<h1><span class="slds-text-title--caps slds-truncate genHeaderBig" style="font-size: 1rem;">{$MOD.LBL_MAILER_EXPORT}</span></h1>
+											</div>
+										</header>
+									</div>
+								</article>
+							</div>
+							<div class="slds-truncate" style="padding-top: .5rem; width: 98%;display: inherit;">
+								<div class="forceRelatedListSingleContainer">
+									<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
+										<div class="slds-card__body slds-card__body--inner" style="margin-top: .75rem;">
+											<div class="commentData">
+												<span class="genHeaderGray">{$MOD.LBL_MAILER_EXPORT_CONTACTS_TYPE}</span>&nbsp;
+												<span class="genHeaderSmall">{$MOD.LBL_MAILER_EXPORT_CONTACTS_DESCR}</span>
+											</div>
+										</div>
+									</article>
+								</div>
+								<table class="slds-table slds-table--cell-buffer slds-no-row-hover slds-table--fixed-layout small detailview_table">
+									{foreach from=$QUERYFIELDS name=querysel item=myVal}
+										{if $smarty.foreach.querysel.index % 2 == 0}
+										<tr class="slds-line-height--reset">
+										{/if}
+											{if $myVal.uitype == 1}
+											<td class="dvtCellLabel">
+												<input type=text name={$myVal.columnname} size=13>
+											{elseif $myVal.uitype == 15 || $myVal.uitype == 56}
+											<td class="dvtCellLabel	">
+												{html_options name=$myVal.columnname  options=$myVal.value}
+											{/if}
+											<td class="dvtCellInfo">
+												<b>{$myVal.fieldlabel}</b>
+											</td>
+										{if $smarty.foreach.querysel.index % 2 > 0}
+										</tr>
+										{/if}
+									{/foreach}
+									<input type="hidden" name="query" value="{$FIELDLIST}">
+								</table>
+							</div>
+							<div class="forceRelatedListSingleContainer" style="margin-top: 1rem;">
+								<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
+									<div class="slds-card__body slds-card__body--inner" style="margin-top: .75rem;">
+										<div class="commentData">
+											<span class="genHeaderGray">{$MOD.LBL_MAILER_EXPORT_RESULTS_TYPE}</span>&nbsp; 
+											<span class="genHeaderSmall">{$MOD.LBL_MAILER_EXPORT_RESULTS_DESCR}</span>
+										</div>
+									</div>
+								</article>
+							</div>
+							<div class="slds-truncate" style="width: 98%;display: inherit;">
+								<table class="slds-table slds-table--cell-buffer slds-no-row-hover slds-table--fixed-layout small detailview_table">
+									<tr class="slds-line-height--reset">
+										<td class="dvtCellLabel">
+											<b>{$MOD.LBL_EXPORT_RESULTS_EMAIL}</b>
+										</td>
+										<td class="dvtCellInfo">
+											<span class="slds-radio" style="margin-bottom: .1rem;">
+												<input type="radio" name="export_type" id="{$MOD.LBL_EXPORT_RESULTS_EMAIL}" checked value="email">
+												<label class="slds-radio__label" for="{$MOD.LBL_EXPORT_RESULTS_EMAIL}">
+													<span class="slds-radio--faux"></span>
+												</label>
+											</span>
+										</td>
+									</tr>
+									<tr class="slds-line-height--reset">
+										<td class="dvtCellLabel">
+											<b>{$MOD.LBL_EXPORT_RESULTS_EMAIL_CORP}</b>
+										</td>
+										<td class="dvtCellInfo">
+											<span class="slds-radio" style="margin-bottom: .1rem;">
+												<input type="radio" name="export_type" id="{$MOD.LBL_EXPORT_RESULTS_EMAIL_CORP}" value="emailplus">
+												<label class="slds-radio__label" for="{$MOD.LBL_EXPORT_RESULTS_EMAIL_CORP}">
+													<span class="slds-radio--faux"></span>
+												</label>
+											</span>
+										</td>
+									</tr>
+									<tr class="slds-line-height--reset">
+										<td class="dvtCellLabel">
+											<b>{$MOD.LBL_EXPORT_RESULTS_FULL}</b>
+										</td>
+										<td class="dvtCellInfo">
+											<span class="slds-radio" style="margin-bottom: .1rem;">
+												<input type="radio" name="export_type" id="{$MOD.LBL_EXPORT_RESULTS_FULL}" value="full">
+												<label class="slds-radio__label" for="{$MOD.LBL_EXPORT_RESULTS_FULL}">
+													<span class="slds-radio--faux"></span>
+												</label>
+											</span>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</td>
+					</tr>
+				</table>
+				<table class="slds-table slds-no-row-hover slds-table-moz mailClient importLeadUI">
+					<tr>
+						<td class="reportCreateBottom" align="center">
+							<input title="{$MOD.LBL_EXPORT_RESULTS_GO}" accessKey="" class="slds-button slds-button--small slds-button_success" type="submit" name="button" value=" {$MOD.LBL_EXPORT_RESULTS_GO} &rsaquo; ">
+							<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="slds-button slds-button--small slds-button--destructive" onclick="window.history.back()" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  " style="width:70px">
+						</td>
+					</tr>
+				</table>
+			</td>
 		</tr>
 	</table>
 </form>

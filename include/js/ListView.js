@@ -13,12 +13,12 @@ function massedit_togglediv(curTabId,total){
 	tagName = document.getElementById('massedit_div'+i);
 	tagName1 = document.getElementById('tab'+i);
 	tagName.style.display = 'none';
-	tagName1.className = 'dvtUnSelectedCell';
+	tagName1.className = '';
 	}
 	tagName = document.getElementById('massedit_div'+curTabId);
 	tagName.style.display = 'block';
 	tagName1 = document.getElementById('tab'+curTabId);
-	tagName1.className = 'dvtSelectedCell';
+	tagName1.className = 'active';
 }
 
 function massedit_initOnChangeHandlers() {
