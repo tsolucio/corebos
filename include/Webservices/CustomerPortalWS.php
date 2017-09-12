@@ -1047,7 +1047,8 @@ function getGlobalSearch($term, $searchin, $limit, $user) {
 		while ($emp=$adb->fetch_array($rsemp)) {
 			$rsp = array();
 			foreach ($rfields as $rf) {
-				$colum_name = $queryGenerator->getModuleFields()[$rf]->getColumnName();
+				$mod_fields = $queryGenerator->getModuleFields();
+				$colum_name = $mod_fields[$rf]->getColumnName();
 				$rsp[$rf] = html_entity_decode($emp[$colum_name],ENT_QUOTES,$default_charset);
 			}
 			$respuesta[]=array(
