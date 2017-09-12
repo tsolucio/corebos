@@ -54,16 +54,16 @@ span:focus {
 
 .genHeaderBig{
 	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
-	font-size: 16px;
-	line-height: 19px;
+	font-size: 20px;
+	line-height: 20px;
 	color: #000000;
 	font-weight:bold;
 }
 
 .genHeaderSmall{
 	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
-	font-size: 14px;
-	line-height: 16px;
+	font-size: 12px;
+	line-height: 12px;
 	color: #000000;
 	font-weight:bold;
 }
@@ -778,6 +778,7 @@ a.submenu:Hover{
 	top:0px;
 	left:0px;
 	text-align:left;
+
 }
 
 #theClockLayer{
@@ -1148,8 +1149,8 @@ a.submenu:Hover{
 
 .genHeaderGray{
 	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
-	font-size: 14px;
-	line-height: 16px;
+	font-size: 12px;
+	line-height: 12px;
 	color: #888888;
 	font-weight:bold;
 }
@@ -2207,7 +2208,7 @@ textarea {
 }
 
 .reportCreateBottom{
-	background-color:#ddf;
+	background-color:#f4f6f9;
 	/*border-bottom:2px solid #737251;*/
 }
 

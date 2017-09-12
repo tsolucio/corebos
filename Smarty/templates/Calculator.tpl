@@ -10,23 +10,30 @@
  ********************************************************************************/
 -->*}
 
-<div id="calc" style="z-index:10000002" class="layerPopup" >
-	<table  border="0" cellpadding="5" cellspacing="0" width="100%">
-		<tr style="cursor:move;" >
-			<td class="mailClientBg small" id="calc_Handle"><b>{$APP.LBL_CALCULATOR}</b></td>
-			<td align="right" class="mailClientBg small">
-			<a href="javascript:;">
-			<img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0"  onClick="fninvsh('calc')" hspace="5" align="absmiddle">
-			</a>
-			</td>
+<div id="calc" style="z-index:10000002; border: 1px solid #ddd;">
+	<table class="slds-table slds-no-row-hover" width="100%">
+		<tr class="slds-text-title--header" style="cursor:move;">
+			<th scope="col" id="calc_Handle">
+				<div class="slds-truncate moduleName">
+					<b>{$APP.LBL_CALCULATOR}</b>
+				</div>
+			</th>
+			<th scope="col" style="padding: .5rem 0 .5rem 2.5rem;">
+				<div class="slds-truncate">
+					<a href="javascript:;">
+						<img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0"  onClick="fninvsh('calc')" hspace="5" align="absmiddle">
+					</a>
+				</div>
+			</th>
 		</tr>
 	</table>
-	<table  border="0" cellpadding="0" cellspacing="0" width="100%" class="hdrNameBg">
-	</tr>
-	<tr><td style="padding:10px;" colspan="2">{$CALC}</td></tr>
+	<table width="100%" class="layerPopup">
+		<tr class="slds-line-height--reset">
+			<td style="padding:10px;" colspan="2">{$CALC}</td>
+		</tr>
 	</table>
 </div>
 
 <script>
 	jQuery("#calc").draggable({ldelim} handle: "#calc_Handle" {rdelim});
-</script>	
+</script>

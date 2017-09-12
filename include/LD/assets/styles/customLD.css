@@ -203,18 +203,21 @@ ul .slds-tabs--scoped__item {
     font-size: .8rem;
 }
 
+
+
+.slds-tabs--scoped__nav li {
+    border-right: 1px solid #d8dde6;
+    border-bottom: 1px solid #d8dde6;
+}
+
 li.active,
 .slds-tabs--scoped__nav .slds-tabs--scoped__item:focus,
 .slds-tabs--scoped__nav .slds-tabs--scoped__item:active {
     background-color: white;
     color: #0070d2;
+    border-bottom: 0;
     /*border-color: #d8dde6;*/
 }
-
-.slds-tabs--scoped__nav li {
-    border-right: 1px solid #d8dde6;
-}
-
 
 .uiOutputText {
     display: block;
