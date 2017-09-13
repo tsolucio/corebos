@@ -77,6 +77,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'If set to 1 the SQL query being launched to retrieve records in a Popup View will be shown on screen.',
 ),
+'Debug_Email_Sending' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Debug',
+	'values' => '0 | 1',
+	'definition' => 'If set to 1 the full email conversation will be output to the log file so you can debug email settings issues. The log file debugging must be activated.',
+),
 'Accounts_BlockDuplicateName' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
