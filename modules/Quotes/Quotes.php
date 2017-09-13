@@ -264,7 +264,7 @@ class Quotes extends CRMEntity {
 		$matrix->setDependency('vtiger_crmentityQuotes', array('vtiger_usersQuotes', 'vtiger_groupsQuotes', 'vtiger_lastModifiedByQuotes'));
 		$matrix->setDependency('vtiger_inventoryproductrelQuotes', array('vtiger_productsQuotes', 'vtiger_serviceQuotes'));
 
-		if (!$queryPlanner->requireTable('vtiger_quotes', $matrix)) {
+		if (!$queryPlanner->requireTable('vtiger_quotes', $matrix) && !$queryplanner->requireTable('vtiger_quotescf',$matrix)) {
 			return '';
 		}
 		$matrix->setDependency('vtiger_quotes',array('vtiger_crmentityQuotes', "vtiger_currency_info$secmodule",

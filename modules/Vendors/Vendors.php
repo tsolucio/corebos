@@ -290,44 +290,6 @@ class Vendors extends CRMEntity {
 	}
 
 	/*
-	 * Function to get the secondary query part of a report
-	 * @param - $module primary module name
-	 * @param - $secmodule secondary module name
-	 * returns the query string formed on fetching the related data for report for secondary module
-	 */
-	function generateReportsSecQuery($module,$secmodule, $queryplanner,$type = '',$where_condition = '') {
-
-		$matrix = $queryplanner->newDependencyMatrix();
-
-		$matrix->setDependency("vtiger_crmentityVendors",array("vtiger_usersVendors","vtiger_lastModifiedByVendors"));
-		if (!$queryplanner->requireTable('vtiger_vendor', $matrix)) {
-			return '';
-		}
-		$matrix->setDependency("vtiger_vendor",array("vtiger_crmentityVendors","vtiger_vendorcf","vtiger_email_trackVendors"));
-		$query = $this->getRelationQuery($module,$secmodule,"vtiger_vendor","vendorid", $queryplanner);
-
-		if ($queryplanner->requireTable("vtiger_crmentityVendors",$matrix)) {
-			$query .=" left join vtiger_crmentity as vtiger_crmentityVendors on vtiger_crmentityVendors.crmid=vtiger_vendor.vendorid and vtiger_crmentityVendors.deleted=0";
-		}
-		if ($queryplanner->requireTable("vtiger_vendorcf")) {
-			$query .=" left join vtiger_vendorcf on vtiger_vendorcf.vendorid = vtiger_crmentityVendors.crmid";
-		}
-		if ($queryplanner->requireTable("vtiger_email_trackVendors")) {
-			$query .=" LEFT JOIN vtiger_email_track AS vtiger_email_trackVendors ON vtiger_email_trackVendors.crmid = vtiger_vendor.vendorid";
-		}
-		if ($queryplanner->requireTable("vtiger_usersVendors")) {
-			$query .=" left join vtiger_users as vtiger_usersVendors on vtiger_usersVendors.id = vtiger_crmentityVendors.smownerid";
-		}
-		if ($queryplanner->requireTable("vtiger_lastModifiedByVendors")) {
-			$query .=" left join vtiger_users as vtiger_lastModifiedByVendors on vtiger_lastModifiedByVendors.id = vtiger_crmentityVendors.modifiedby ";
-		}
-		if ($queryplanner->requireTable("vtiger_CreatedByVendors")) {
-			$query .= " left join vtiger_users as vtiger_CreatedByVendors on vtiger_CreatedByVendors.id = vtiger_crmentityVendors.smcreatorid ";
-		}
-		return $query;
-	}
-
-	/*
 	 * Function to get the relation tables for related modules
 	 * @param - $secmodule secondary module name
 	 * returns the array with table names and fieldnames storing relations between module and this module

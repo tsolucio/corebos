@@ -554,7 +554,7 @@ class HelpDesk extends CRMEntity {
 		$matrix->setDependency("vtiger_crmentityHelpDesk",array("vtiger_groupsHelpDesk","vtiger_usersHelpDesk","vtiger_lastModifiedByHelpDesk"));
 		$matrix->setDependency("vtiger_crmentityRelHelpDesk",array("vtiger_accountRelHelpDesk","vtiger_contactdetailsRelHelpDesk"));
 
-		if (!$queryplanner->requireTable('vtiger_troubletickets', $matrix)) {
+		if (!$queryplanner->requireTable('vtiger_troubletickets', $matrix) && !$queryplanner->requireTable('vtiger_ticketcf',$matrix)) {
 			return '';
 		}
 

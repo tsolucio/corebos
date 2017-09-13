@@ -18,11 +18,13 @@ class ReportRunQueryDependencyMatrix {
 
 	function setDependency($table, array $dependents) {
 		$this->matrix[$table] = $dependents;
+		$this->computedMatrix = null;
 	}
 
 	function addDependency($table, $dependent) {
 		if (isset($this->matrix[$table]) && !in_array($dependent, $this->matrix[$table])) {
 			$this->matrix[$table][] = $dependent;
+			$this->computedMatrix = null;
 		} else {
 			$this->setDependency($table, array($dependent));
 		}

@@ -77,4 +77,11 @@
 	<classname>UserHourFieldCalendarQuickCreate</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Move Calendar Reports to cbCalendar module</description>
+	<filename>build/changeSets/2017/moveCalendarReport2cbCalendar.php</filename>
+	<classname>moveCalendarReport2cbCalendar</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
