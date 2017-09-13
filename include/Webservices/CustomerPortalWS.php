@@ -14,7 +14,7 @@
 *************************************************************************************************/
 
 function vtyiicpng_getWSEntityId($entityName,$user='') {
-	global $adb,$log;
+	global $adb;
 	$wsrs=$adb->pquery('select id from vtiger_ws_entity where name=?',array($entityName));
 	if ($wsrs and $adb->num_rows($wsrs)==1) {
 		$wsid = $adb->query_result($wsrs,0,0);
@@ -45,10 +45,11 @@ function vtws_findByPortalUserName($username) {
 	global $adb,$log;
 	$log->debug("Entering function vtws_findByPortalUserName");
 	$nra=$adb->query_result($adb->pquery("select count(*) from vtiger_portalinfo where isactive=1 and user_name=?",array($username)),0,0);
-	if (empty($nra))
+	if (empty($nra)){
 		$output=false;
-	else
+	}else{
 		$output=true;
+	}
 	$log->debug("Exiting function vtws_findByPortalUserName");
 	return $output;
 }
@@ -78,15 +79,15 @@ function vtws_sendRecoverPassword($username) {
 }
 
 function vtws_getPortalUserDateFormat($user) {
-	global $adb,$log;
-	if (isset($user->column_fields['date_format']) and !empty($user->column_fields['date_format']))
+	global $adb;
+	if (isset($user->column_fields['date_format']) and !empty($user->column_fields['date_format'])){
 		return $user->column_fields['date_format'];
-	else
+	}else{
 		return 'yyyy-mm-dd';
+	}
 }
 
 function vtws_getPortalUserInfo($user) {
-	global $adb,$log;
 	$usrinfo = array();
 	$retfields = array('date_format','first_name','last_name','email1');
 	foreach ($retfields as $fld) {
@@ -97,7 +98,7 @@ function vtws_getPortalUserInfo($user) {
 }
 
 function vtws_getAssignedUserList($module,$user) {
-	global $adb,$log,$current_user,$default_charset;
+	global $log,$current_user,$default_charset;
 	$log->debug("Entering getAssignedUserList function with parameter modulename: ".$module);
 	$hcuser = $current_user;
 	$current_user = $user;
@@ -130,8 +131,11 @@ function vtws_AuthenticateContact($email,$password) {
 		 and isactive=1 and vtiger_customerdetails.portal=1",array($email,$password));
 	$nra = $adb->query_result($rs,0,0);
 
-	if (!empty($nra)) return vtyiicpng_getWSEntityId('Contacts').$nra;
-	else return false;
+	if (!empty($nra)) {
+		return vtyiicpng_getWSEntityId('Contacts').$nra;
+	}else{
+		return false;
+	}
 }
 
 function vtws_getPicklistValues($fld_module) {
@@ -207,7 +211,7 @@ function vtws_getReferenceValue($strids) {
 // $search_onlyin is a comma separated list of modules to search in
 // $restrictionids is an array which contains the user we are to search as and the account and contact restrictions
 function vtws_getSearchResults($query,$search_onlyin,$restrictionids,$user) {
-	global $adb,$log,$current_user;
+	global $adb,$current_user;
 	$res=array();
 	// security restrictions
 	if (empty($query) or empty($restrictionids) or !is_array($restrictionids)) return serialize($res);
@@ -217,7 +221,9 @@ function vtws_getSearchResults($query,$search_onlyin,$restrictionids,$user) {
 	list($void,$userId) = explode('x',$restrictionids['userId']);
 	$current_user->retrieveCurrentUserInfoFromFile($userId);
 	// if connected user does not have admin privileges > user must be the connected user
-	if ($user->is_admin!='on' and $user->id!=$userId) return serialize($res);
+	if ($user->is_admin!='on' and $user->id!=$userId) {
+		return serialize($res);
+	}
 	// connected user must have access to account and contact > this will be restricted by the coreBOS system and the rest of the code
 	// start work
 	require_once('modules/CustomView/CustomView.php');
@@ -239,14 +245,10 @@ function vtws_getSearchResults($query,$search_onlyin,$restrictionids,$user) {
 		$listquery = $oCustomView->getModifiedCvListQuery($viewid,$listquery,$module);
 		if (!empty($accountId) and !empty($contactId)) {
 			switch ($module) {
-				case 'Products':
-					// FIXME:  add inner join on relations to accounts and contacts
-					break;
-				case 'Services':
-					// FIXME:  add inner join on relations to accounts and contacts
-					break;
 				case 'Documents':
 					$listquery = str_replace(' WHERE ', " inner join vtiger_senotesrel on vtiger_senotesrel.notesid=vtiger_notes.notesid and (vtiger_senotesrel.crmid=$accountId or vtiger_senotesrel.crmid=$contactId) WHERE ",$listquery);
+					break;
+				default:
 					break;
 			}
 		}
@@ -391,22 +393,18 @@ function getSearchingListViewEntries($focus, $module,$list_result,$navigation_ar
 	foreach($focus->list_fields as $name=>$tableinfo)
 	{
 		$fieldname = $focus->list_fields_name[$name];
-		if($oCv)
-		{
-			if(isset($oCv->list_fields_name))
-			{
+		if($oCv){
+			if(isset($oCv->list_fields_name)){
 				$fieldname = $oCv->list_fields_name[$name];
 			}
 		}
-		if($fieldname == 'accountname' && $module != 'Accounts')
-		{
+		if($fieldname == 'accountname' && $module != 'Accounts'){
 			$fieldname = 'account_id';
 		}
-		if($fieldname == 'lastname' &&($module == 'SalesOrder'|| $module == 'PurchaseOrder' || $module == 'Invoice' || $module == 'Quotes'||$module == 'Calendar'))
+		if($fieldname == 'lastname' &&($module == 'SalesOrder'|| $module == 'PurchaseOrder' || $module == 'Invoice' || $module == 'Quotes'||$module == 'Calendar')){
 			$fieldname = 'contact_id';
-
-		if($fieldname == 'productname' && $module != 'Products')
-		{
+		}
+		if($fieldname == 'productname' && $module != 'Products'){
 			$fieldname = 'product_id';
 		}
 		$field_list[] = $fieldname;
@@ -430,9 +428,9 @@ function getSearchingListViewEntries($focus, $module,$list_result,$navigation_ar
 			INNER JOIN vtiger_def_org_field
 			ON vtiger_def_org_field.fieldid = vtiger_field.fieldid";
 
-			if($module == "Calendar")
+			if($module == "Calendar"){
 				$query .=" WHERE vtiger_field.tabid in (9,16) and vtiger_field.presence in (0,2)";
-			else {
+			} else {
 				$query .=" WHERE vtiger_field.tabid = ? and vtiger_field.presence in (0,2)";
 				$params[] = $tabid;
 			}
@@ -458,9 +456,9 @@ function getSearchingListViewEntries($focus, $module,$list_result,$navigation_ar
 	$params = array();
 	$query = "SELECT uitype, columnname, fieldname FROM vtiger_field ";
 
-	if($module == "Calendar")
+	if($module == "Calendar"){
 		$query .=" WHERE vtiger_field.tabid in (9,16) and vtiger_field.presence in (0,2)";
-	else {
+	}else {
 		$query .=" WHERE vtiger_field.tabid = ? and vtiger_field.presence in (0,2)";
 		$params[] = $tabid;
 	}
@@ -479,17 +477,15 @@ function getSearchingListViewEntries($focus, $module,$list_result,$navigation_ar
 		$ui_col_array[$field_name]=$tempArr;
 	}
 	//end
-	if($navigation_array['start'] !=0)
+	if($navigation_array['start'] !=0){
 		for ($i=1; $i<=$noofrows; $i++)
 		{
 			$list_header =Array();
 			//Getting the entityid
-			if($module != 'Users')
-			{
+			if($module != 'Users'){
 				$entity_id = $adb->query_result($list_result,$i-1,"crmid");
 				$owner_id = $adb->query_result($list_result,$i-1,"smownerid");
-			}else
-			{
+			}else{
 				$entity_id = $adb->query_result($list_result,$i-1,"id");
 			}
 			foreach($focus->list_fields as $name=>$tableinfo)
@@ -639,16 +635,17 @@ function getSearchingListViewEntries($focus, $module,$list_result,$navigation_ar
 									$ext =substr($fld_value, $ext_pos + 1);
 									$ext = strtolower($ext);
 									if($value != ''){
-										if($ext == 'bin' || $ext == 'exe' || $ext == 'rpm')
+										if($ext == 'bin' || $ext == 'exe' || $ext == 'rpm'){
 											$fileicon="<img src='" . vtiger_imageurl('fExeBin.gif', $theme) . "' hspace='3' align='absmiddle' border='0'>";
-										elseif($ext == 'jpg' || $ext == 'gif' || $ext == 'bmp')
-										$fileicon="<img src='" . vtiger_imageurl('fbImageFile.gif', $theme) . "' hspace='3' align='absmiddle' border='0'>";
-										elseif($ext == 'txt' || $ext == 'doc' || $ext == 'xls')
-										$fileicon="<img src='" . vtiger_imageurl('fbTextFile.gif', $theme) . "' hspace='3' align='absmiddle' border='0'>";
-										elseif($ext == 'zip' || $ext == 'gz' || $ext == 'rar')
-										$fileicon="<img src='" . vtiger_imageurl('fbZipFile.gif', $theme) . "' hspace='3' align='absmiddle'	border='0'>";
-										else
+										}elseif($ext == 'jpg' || $ext == 'gif' || $ext == 'bmp'){
+											$fileicon="<img src='" . vtiger_imageurl('fbImageFile.gif', $theme) . "' hspace='3' align='absmiddle' border='0'>";
+										}elseif($ext == 'txt' || $ext == 'doc' || $ext == 'xls'){
+											$fileicon="<img src='" . vtiger_imageurl('fbTextFile.gif', $theme) . "' hspace='3' align='absmiddle' border='0'>";
+										}elseif($ext == 'zip' || $ext == 'gz' || $ext == 'rar'){
+											$fileicon="<img src='" . vtiger_imageurl('fbZipFile.gif', $theme) . "' hspace='3' align='absmiddle'	border='0'>";
+										}else{
 											$fileicon="<img src='" . vtiger_imageurl('fbUnknownFile.gif', $theme) . "' hspace='3' align='absmiddle' border='0'>";
+										}
 									}
 								} elseif($downloadtype == 'E') {
 									if(trim($value) != '' ) {
@@ -687,24 +684,26 @@ function getSearchingListViewEntries($focus, $module,$list_result,$navigation_ar
 								$downloadtype = $adb->query_result($list_result,$i-1,'filelocationtype');
 								if($downloadtype == 'I') {
 									$filesize = $value;
-									if($filesize < 1024)
+									if($filesize < 1024){
 										$value=$filesize.' B';
-									elseif($filesize > 1024 && $filesize < 1048576)
-									$value=round($filesize/1024,2).' KB';
-									else if($filesize > 1048576)
+									}elseif($filesize > 1024 && $filesize < 1048576){
+										$value=round($filesize/1024,2).' KB';
+									}else if($filesize > 1048576){
 										$value=round($filesize/(1024*1024),2).' MB';
+									}
 								} else {
 									$value = ' --';
 								}
 							}
 							if($fieldname == 'filestatus') {
 								$filestatus = $value;
-								if($filestatus == 1)
+								if($filestatus == 1){
 									$value=getTranslatedString('yes',$module);
-								elseif($filestatus == 0)
-								$value=getTranslatedString('no',$module);
-								else
+								}elseif($filestatus == 0){
+									$value=getTranslatedString('no',$module);
+								}else{
 									$value=' --';
+								}
 							}
 							if($fieldname == 'filetype') {
 								$downloadtype = $adb->query_result($list_result,$i-1,'filelocationtype');
@@ -725,8 +724,9 @@ function getSearchingListViewEntries($focus, $module,$list_result,$navigation_ar
 								$contact_id = $adb->query_result($list_result,$i-1,"contactid");
 								$contact_name = getFullNameFromQResult($list_result, $i-1,"Contacts");
 								$value="";
-								if(($contact_name != "") && ($contact_id !='NULL'))
+								if(($contact_name != "") && ($contact_id !='NULL')){
 									$value =$contact_name;
+								}
 							}
 						} elseif($name == 'Product') {
 							$product_id = textlength_check($adb->query_result($list_result,$i-1,"productname"));
@@ -750,15 +750,16 @@ function getSearchingListViewEntries($focus, $module,$list_result,$navigation_ar
 								$value = $acc_name;
 							}
 						} elseif(( $module == 'HelpDesk' || $module == 'PriceBook' || $module == 'Quotes' || $module == 'PurchaseOrder' || $module == 'Faq') && $name == 'Product Name') {
-							if($module == 'HelpDesk' || $module == 'Faq')
+							if($module == 'HelpDesk' || $module == 'Faq'){
 								$product_id = $adb->query_result($list_result,$i-1,"product_id");
-							else
+							}else{
 								$product_id = $adb->query_result($list_result,$i-1,"productid");
-
-							if($product_id != '')
+							}
+							if($product_id != ''){
 								$product_name = getProductName($product_id);
-							else
+							}else{
 								$product_name = '';
+							}
 
 							$value = textlength_check($product_name);
 						} elseif(($module == 'Quotes' && $name == 'Potential Name') || ($module == 'SalesOrder' && $name == 'Potential Name')) {
@@ -809,19 +810,15 @@ function getSearchingListViewEntries($focus, $module,$list_result,$navigation_ar
 					//$value = "$value <span type='vtlib_metainfo' vtrecordid='{$entity_id}' vtfieldname='{$fieldname}' vtmodule='$module' style='display:none;'></span>";
 					// END
 
-					if($module == "Calendar" && $name == $app_strings['Close'])
-					{
-						if(isPermitted("Calendar","EditView") == 'yes')
-						{
-							if((getFieldVisibilityPermission('Events',$current_user->id,'eventstatus') == '0') || (getFieldVisibilityPermission('Calendar',$current_user->id,'taskstatus') == '0'))
-							{
+					if($module == "Calendar" && $name == $app_strings['Close']){
+						if(isPermitted("Calendar","EditView") == 'yes'){
+							if((getFieldVisibilityPermission('Events',$current_user->id,'eventstatus') == '0') || (getFieldVisibilityPermission('Calendar',$current_user->id,'taskstatus') == '0')){
 								$list_header[] = $value;
 							}
 						}
-					}
-					else
+					}else{
 						$list_header[] = $value;
-
+					}
 				}
 			}
 			$varreturnset = '';
@@ -833,12 +830,13 @@ function getSearchingListViewEntries($focus, $module,$list_result,$navigation_ar
 			$list_block[$entity_id] = $list_header;
 
 		}
-		$log->debug("Exiting getSearchingListViewEntries method ...");
-		return $list_block;
+		$log->debug("Exiting getSearchingListViewEntries method ...");		
+	}
+	return $list_block;
 }
 
 function getReferenceAutocomplete($term, $filter, $searchinmodules, $limit, $user) {
-	global $current_user,$log,$adb,$default_charset;
+	global $adb,$default_charset;
 
 	if (!empty($searchinmodules)) {
 		$searchin = explode(',', $searchinmodules);
@@ -846,7 +844,9 @@ function getReferenceAutocomplete($term, $filter, $searchinmodules, $limit, $use
 		$searchin = array('HelpDesk','Project','ProjectTask','Potentials','ProjectMilestone',
 		'Invoice','PurchaseOrder','Quotes','SalesOrder','ServiceContracts','Accounts','Contacts');
 	}
-	if (empty($limit)) $limit = 30;  // hard coded default
+	if (empty($limit)) {
+		$limit = 30;  // hard coded default
+	}
 	$respuesta=array();
 
 	if (empty($term)) {
@@ -872,7 +872,9 @@ function getReferenceAutocomplete($term, $filter, $searchinmodules, $limit, $use
 				$op='like';
 				$term='%'.$term.'%';
 				break;
-			default: $op='='; break;
+			default: 
+				$op='='; 
+				break;
 		}
 	}
 
@@ -903,7 +905,9 @@ function getReferenceAutocomplete($term, $filter, $searchinmodules, $limit, $use
 					'crmname'=>html_entity_decode($emp['crmname'],ENT_QUOTES,$default_charset).($num_search_modules>1 ? " :: $trmod" : ''),
 					'crmmodule'=>$srchmod,
 			);
-			if (count($respuesta)>=$limit) break;
+			if (count($respuesta)>=$limit) {
+				break;
+			}
 		}
 	}
 	return $respuesta;
@@ -923,10 +927,18 @@ function getFieldAutocomplete($term, $filter, $searchinmodule, $fields, $returnf
 	global $current_user,$log,$adb,$default_charset;
 
 	$respuesta=array();
-	if (empty($searchinmodule) or empty($fields)) return $respuesta;
-	if (!(vtlib_isModuleActive($searchinmodule) and isPermitted($searchinmodule,'DetailView'))) return $respuesta;
-	if (empty($returnfields)) $returnfields = $fields;
-	if (empty($limit)) $limit = 30;  // hard coded default
+	if (empty($searchinmodule) || empty($fields)) {
+		return $respuesta;
+	}
+	if (!(vtlib_isModuleActive($searchinmodule) && isPermitted($searchinmodule,'DetailView'))) {
+		return $respuesta;
+	}
+	if (empty($returnfields)){
+		$returnfields = $fields;
+	}
+	if (empty($limit)) {
+		$limit = 30;  // hard coded default
+	}
 
 	if (empty($term)) {
 		$term='%';
@@ -948,7 +960,9 @@ function getFieldAutocomplete($term, $filter, $searchinmodule, $fields, $returnf
 			case 'contains':
 				$op='c';
 				break;
-			default: $op='e'; break;
+			default:
+				$op='e';
+				break;
 		}
 	}
 	$current_user = VTWS_PreserveGlobal::preserveGlobal('current_user',$user);
@@ -978,7 +992,9 @@ function getFieldAutocomplete($term, $filter, $searchinmodule, $fields, $returnf
 			'crmid'=>$wsid.$emp[$sindex],
 			'crmfields'=>$rsp,
 		);
-		if (count($respuesta)>=$limit) break;
+		if (count($respuesta)>=$limit) {
+			break;
+		}
 	}
 	VTWS_PreserveGlobal::flush();
 	return $respuesta;
@@ -995,11 +1011,15 @@ function getFieldAutocomplete($term, $filter, $searchinmodule, $fields, $returnf
  * @return Array values found: crmid => array($returnfields)
  */
 function getGlobalSearch($term, $searchin, $limit, $user) {
-	global $current_user,$log,$adb,$default_charset;
+	global $current_user,$adb,$default_charset;
 
 	$respuesta=array();
-	if (empty($searchin)) return $respuesta;
-	if (empty($limit)) $limit = 15; // hard coded default
+	if (empty($searchin)) {
+		return $respuesta;
+	}
+	if (empty($limit)) {
+		$limit = 15; // hard coded default
+	}
 
 	$current_user = VTWS_PreserveGlobal::preserveGlobal('current_user',$user);
 	$query = array();
@@ -1059,7 +1079,9 @@ function getGlobalSearch($term, $searchin, $limit, $user) {
 				'crmmodule'=> $searchinmodule,
 				'crmfields'=>$rsp,
 			);
-			if (count($respuesta)>=$limit) break;
+			if (count($respuesta)>=$limit) {
+				break;
+			}
 		}
 	}
 	VTWS_PreserveGlobal::flush();
