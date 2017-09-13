@@ -932,21 +932,7 @@ function get_contactsforol($user_name)
 	 * returns the query string formed on fetching the related data for report for secondary module
 	 */
 	function generateReportsSecQuery($module,$secmodule,$queryplanner,$type = '',$where_condition = ''){
-		$matrix = $queryplanner->newDependencyMatrix();
-		$matrix->setDependency('vtiger_crmentityContacts',array('vtiger_groupsContacts','vtiger_usersContacts','vtiger_lastModifiedByContacts'));
-
-		if (!$queryplanner->requireTable('vtiger_contactdetails', $matrix)) {
-			return '';
-		}
-
-		$matrix->setDependency('vtiger_contactdetails', array('vtiger_crmentityContacts','vtiger_contactaddress',
-			'vtiger_customerdetails','vtiger_contactsubdetails','vtiger_contactscf'));
-
-		$query = $this->getRelationQuery($module,$secmodule,"vtiger_contactdetails","contactid", $queryplanner);
-
-		if ($queryplanner->requireTable("vtiger_crmentityContacts",$matrix)) {
-			$query .= " left join vtiger_crmentity as vtiger_crmentityContacts on vtiger_crmentityContacts.crmid = vtiger_contactdetails.contactid  and vtiger_crmentityContacts.deleted=0";
-		}
+		$query = parent::generateReportsSecQuery($module, $secmodule, $queryplanner, $type, $where_condition);
 		if ($queryplanner->requireTable("vtiger_contactdetailsContacts")) {
 			$query .= " left join vtiger_contactdetails as vtiger_contactdetailsContacts on vtiger_contactdetailsContacts.contactid = vtiger_contactdetails.reportsto";
 		}
@@ -962,23 +948,8 @@ function get_contactsforol($user_name)
 		if ($queryplanner->requireTable("vtiger_accountContacts")) {
 			$query .= " left join vtiger_account as vtiger_accountContacts on vtiger_accountContacts.accountid = vtiger_contactdetails.accountid";
 		}
-		if ($queryplanner->requireTable("vtiger_contactscf")) {
-			$query .= " left join vtiger_contactscf on vtiger_contactdetails.contactid = vtiger_contactscf.contactid";
-		}
 		if ($queryplanner->requireTable("vtiger_email_trackContacts")) {
 			$query .= " LEFT JOIN vtiger_email_track AS vtiger_email_trackContacts ON vtiger_email_trackContacts.crmid = vtiger_contactdetails.contactid";
-		}
-		if ($queryplanner->requireTable("vtiger_groupsContacts")) {
-			$query .= " left join vtiger_groups as vtiger_groupsContacts on vtiger_groupsContacts.groupid = vtiger_crmentityContacts.smownerid";
-		}
-		if ($queryplanner->requireTable("vtiger_usersContacts")) {
-			$query .= " left join vtiger_users as vtiger_usersContacts on vtiger_usersContacts.id = vtiger_crmentityContacts.smownerid";
-		}
-		if ($queryplanner->requireTable("vtiger_lastModifiedByContacts")) {
-			$query .= " left join vtiger_users as vtiger_lastModifiedByContacts on vtiger_lastModifiedByContacts.id = vtiger_crmentityContacts.modifiedby ";
-		}
-		if ($queryplanner->requireTable("vtiger_CreatedByContacts")) {
-			$query .= " left join vtiger_users as vtiger_CreatedByContacts on vtiger_CreatedByContacts.id = vtiger_crmentityContacts.smcreatorid ";
 		}
 		return $query;
 	}

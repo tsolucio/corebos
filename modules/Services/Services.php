@@ -759,7 +759,7 @@ class Services extends CRMEntity {
 		global $current_user;
 		$matrix = $queryPlanner->newDependencyMatrix();
 		$matrix->setDependency('vtiger_crmentityServices',array('vtiger_usersServices','vtiger_groupsServices','vtiger_lastModifiedByServices'));
-		if (!$queryPlanner->requireTable("vtiger_service",$matrix)){
+		if (!$queryPlanner->requireTable("vtiger_service",$matrix) && !$queryplanner->requireTable('vtiger_servicecf',$matrix)){
 			return '';
 		}
 		$matrix->setDependency('vtiger_service',array('actual_unit_price','vtiger_currency_info','vtiger_productcurrencyrel','vtiger_servicecf','vtiger_crmentityServices'));

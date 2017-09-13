@@ -30,15 +30,17 @@ function evvt_strip_html_links($text) {
 	return $text;
 }
 
-function vtws_changePortalUserPassword($email,$newPass)
-{   global $adb,$log;
-    $log->debug("Entering search function with parameter accountname: ".$accountname);
-
-    $nra=$adb->pquery("Update vtiger_portalinfo set user_password=? where user_name=?",array($newPass,$email));
-
-    if ($nra) return true;
-    else return false;
+function vtws_changePortalUserPassword($email,$newPass) {
+	global $adb,$log;
+	$log->debug('Entering schangePortalUserPassword');
+	$nra = $adb->pquery('update vtiger_portalinfo set user_password=? where user_name=?',array($newPass,$email));
+	if ($nra) {
+		return true;
+	} else {
+		return false;
+	}
 }
+
 function vtws_findByPortalUserName($username) {
 	global $adb,$log;
 	$log->debug("Entering function vtws_findByPortalUserName");
@@ -74,6 +76,7 @@ function vtws_sendRecoverPassword($username) {
 	$log->debug("Exiting function vtws_sendRecoverPassword");
 	return $mail_status;
 }
+
 function vtws_getPortalUserDateFormat($user) {
 	global $adb,$log;
 	if (isset($user->column_fields['date_format']) and !empty($user->column_fields['date_format']))
@@ -81,6 +84,7 @@ function vtws_getPortalUserDateFormat($user) {
 	else
 		return 'yyyy-mm-dd';
 }
+
 function vtws_getPortalUserInfo($user) {
 	global $adb,$log;
 	$usrinfo = array();
@@ -91,6 +95,7 @@ function vtws_getPortalUserInfo($user) {
 	}
 	return $usrinfo;
 }
+
 function vtws_getAssignedUserList($module,$user) {
 	global $adb,$log,$current_user,$default_charset;
 	$log->debug("Entering getAssignedUserList function with parameter modulename: ".$module);
@@ -130,42 +135,42 @@ function vtws_AuthenticateContact($email,$password) {
 }
 
 function vtws_getPicklistValues($fld_module) {
-    global $adb,$log;
-    include_once('modules/PickList/PickListUtils.php');
-    $log->debug("Entering getPicklistValues function with parameter fieldname: ".$fieldname);
-    $res=array();
-    $all=array();
-    if($fld_module == 'Documents') {
-     $result=$adb->query("select folderid,foldername from vtiger_attachmentsfolder");
-     $number=$adb->num_rows($result);
-     $DocumentFoldersWSID=vtyiicpng_getWSEntityId('DocumentFolders');
-     for($i=0;$i<$number;$i++){
-         $folderid=$DocumentFoldersWSID.$adb->query_result($result,$i,0);
-         $foldername=$adb->query_result($result,$i,1);
-         $all[$folderid]=$foldername;
-     }
-     $res['folderid']=$all;
-    } else {
-      $allpicklists=getUserFldArray($fld_module,'H1');
-      foreach($allpicklists as $picklist){
-        $res[$picklist['fieldname']]=$picklist['value'];
-      }
-    }
-    return serialize($res);
+	global $adb,$log;
+	include_once('modules/PickList/PickListUtils.php');
+	$log->debug("Entering getPicklistValues function with parameter fieldname: ".$fieldname);
+	$res=array();
+	$all=array();
+	if ($fld_module == 'Documents') {
+		$result=$adb->query("select folderid,foldername from vtiger_attachmentsfolder");
+		$number=$adb->num_rows($result);
+		$DocumentFoldersWSID=vtyiicpng_getWSEntityId('DocumentFolders');
+		for ($i=0;$i<$number;$i++) {
+			$folderid=$DocumentFoldersWSID.$adb->query_result($result,$i,0);
+			$foldername=$adb->query_result($result,$i,1);
+			$all[$folderid]=$foldername;
+		}
+		$res['folderid']=$all;
+	} else {
+		$allpicklists=getUserFldArray($fld_module,'H1');
+		foreach ($allpicklists as $picklist) {
+			$res[$picklist['fieldname']]=$picklist['value'];
+		}
+	}
+	return serialize($res);
 }
 
 function vtws_getUItype($module,$user) {
-    global $adb,$log;
-    $log->debug("Entering getUItype function with parameter modulename: ".$module);
-    $tabid=getTabid($module);
-    $res=$adb->pquery('select uitype,fieldname from vtiger_field where tabid=? and presence in (0,2) ',array($tabid));
-    $nr=$adb->num_rows($res);
-    $resp=array();
-    for($i=0;$i<$nr;$i++) {
-      $fieldname=$adb->query_result($res,$i,'fieldname');
-      $resp[$fieldname]=$adb->query_result($res,$i,'uitype');
-    }
-    return $resp;
+	global $adb,$log;
+	$log->debug("Entering getUItype function with parameter modulename: ".$module);
+	$tabid=getTabid($module);
+	$res=$adb->pquery('select uitype,fieldname from vtiger_field where tabid=? and presence in (0,2) ',array($tabid));
+	$nr=$adb->num_rows($res);
+	$resp=array();
+	for ($i=0;$i<$nr;$i++) {
+		$fieldname=$adb->query_result($res,$i,'fieldname');
+		$resp[$fieldname]=$adb->query_result($res,$i,'uitype');
+	}
+	return $resp;
 }
 
 function vtws_getReferenceValue($strids) {
@@ -351,12 +356,10 @@ function getSearchModules($filter = array()) {
 
 function getSearchingListViewEntries($focus, $module,$list_result,$navigation_array,$relatedlist='',$returnset='',$edit_action='EditView',$del_action='Delete',$oCv='',$page='',$selectedfields='',$contRelatedfields='',$skipActions=false,$linksallowed=false)
 {
-	global $log;
-	global $mod_strings;
+	global $log, $mod_strings;
 	$log->debug("Entering getSearchingListViewEntries(".get_class($focus).",". $module.",".$list_result.",".$navigation_array.",".$relatedlist.",".$returnset.",".$edit_action.",".$del_action.",".(is_object($oCv)? get_class($oCv) : $oCv).") method ...");
 	$tabname = getParentTab();
-	global $adb,$current_user;
-	global $app_strings;
+	global $adb,$current_user, $app_strings;
 	$noofrows = $adb->num_rows($list_result);
 	$list_block = Array();
 	global $theme;
@@ -576,7 +579,7 @@ function getSearchingListViewEntries($focus, $module,$list_result,$navigation_ar
 										$contact_name = getContactName($contact_id);
 									}
 									if(($contact_name != "") && ($contact_id !='NULL')) {
-										$value =  $contact_name;
+										$value = $contact_name;
 									}
 								}
 								if($fieldname == "firstname") {
@@ -727,7 +730,7 @@ function getSearchingListViewEntries($focus, $module,$list_result,$navigation_ar
 							}
 						} elseif($name == 'Product') {
 							$product_id = textlength_check($adb->query_result($list_result,$i-1,"productname"));
-							$value =  $product_id;
+							$value = $product_id;
 						} elseif($name=='Account Name') {
 							//modified for vtiger_customview 27/5
 							if($module == 'Accounts') {
@@ -735,7 +738,7 @@ function getSearchingListViewEntries($focus, $module,$list_result,$navigation_ar
 								//$account_name = getAccountName($account_id);
 								$account_name = textlength_check($adb->query_result($list_result,$i-1,"accountname"));
 								$value = $account_name;
-							} elseif($module == 'Potentials' || $module == 'Contacts' || $module == 'Invoice' || $module == 'SalesOrder' || $module == 'Quotes') { //Potential,Contacts,Invoice,SalesOrder & Quotes  records   sort by Account Name
+							} elseif($module == 'Potentials' || $module == 'Contacts' || $module == 'Invoice' || $module == 'SalesOrder' || $module == 'Quotes') { //Potential,Contacts,Invoice,SalesOrder & Quotes records sort by Account Name
 								//$accountname = textlength_check($adb->query_result($list_result,$i-1,"accountname"));
 								$accountid = $adb->query_result($list_result,$i-1,"accountid");
 								$accountname = textlength_check(getAccountName($accountid));
@@ -967,7 +970,8 @@ function getFieldAutocomplete($term, $filter, $searchinmodule, $fields, $returnf
 	while ($emp=$adb->fetch_array($rsemp)) {
 		$rsp = array();
 		foreach ($rfields as $rf) {
-			$colum_name = $queryGenerator->getModuleFields()[$rf]->getColumnName();
+			$mod_fields = $queryGenerator->getModuleFields();
+			$colum_name = $mod_fields[$rf]->getColumnName();
 			$rsp[$rf] = html_entity_decode($emp[$colum_name],ENT_QUOTES,$default_charset);
 		}
 		$respuesta[]=array(
@@ -1045,7 +1049,8 @@ function getGlobalSearch($term, $searchin, $limit, $user) {
 		while ($emp=$adb->fetch_array($rsemp)) {
 			$rsp = array();
 			foreach ($rfields as $rf) {
-				$colum_name = $queryGenerator->getModuleFields()[$rf]->getColumnName();
+				$mod_fields = $queryGenerator->getModuleFields();
+				$colum_name = $mod_fields[$rf]->getColumnName();
 				$rsp[$rf] = html_entity_decode($emp[$colum_name],ENT_QUOTES,$default_charset);
 			}
 			$respuesta[]=array(

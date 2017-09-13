@@ -289,44 +289,6 @@ class PriceBooks extends CRMEntity {
 	}
 
 	/*
-	 * Function to get the secondary query part of a report
-	 * @param - $module primary module name
-	 * @param - $secmodule secondary module name
-	 * returns the query string formed on fetching the related data for report for secondary module
-	 */
-	function generateReportsSecQuery($module,$secmodule,$queryplanner,$type = '',$where_condition = '') {
-
-		$matrix = $queryplanner->newDependencyMatrix();
-
-		$matrix->setDependency("vtiger_crmentityPriceBooks",array("vtiger_usersPriceBooks","vtiger_groupsPriceBooks"));
-		if (!$queryplanner->requireTable('vtiger_pricebook', $matrix)) {
-			return '';
-		}
-		$matrix->setDependency("vtiger_pricebook",array("vtiger_crmentityPriceBooks","vtiger_currency_infoPriceBooks"));
-
-		$query = $this->getRelationQuery($module,$secmodule,"vtiger_pricebook","pricebookid", $queryplanner);
-		if ($queryplanner->requireTable("vtiger_crmentityPriceBooks",$matrix)){
-		$query .=" left join vtiger_crmentity as vtiger_crmentityPriceBooks on vtiger_crmentityPriceBooks.crmid=vtiger_pricebook.pricebookid and vtiger_crmentityPriceBooks.deleted=0";
-		}
-		if ($queryplanner->requireTable("vtiger_currency_infoPriceBooks")){
-			$query .=" left join vtiger_currency_info as vtiger_currency_infoPriceBooks on vtiger_currency_infoPriceBooks.id = vtiger_pricebook.currency_id";
-		}
-		if ($queryplanner->requireTable("vtiger_usersPriceBooks")){
-			$query .=" left join vtiger_users as vtiger_usersPriceBooks on vtiger_usersPriceBooks.id = vtiger_crmentityPriceBooks.smownerid";
-		}
-		if ($queryplanner->requireTable("vtiger_groupsPriceBooks")){
-			$query .=" left join vtiger_groups as vtiger_groupsPriceBooks on vtiger_groupsPriceBooks.groupid = vtiger_crmentityPriceBooks.smownerid";
-		}
-		if ($queryplanner->requireTable("vtiger_lastModifiedByPriceBooks")){
-			$query .=" left join vtiger_users as vtiger_lastModifiedByPriceBooks on vtiger_lastModifiedByPriceBooks.id = vtiger_crmentityPriceBooks.smownerid";
-		}
-		if ($queryplanner->requireTable("vtiger_CreatedByPriceBooks")){
-			$query .= " left join vtiger_users as vtiger_CreatedByPriceBooks on vtiger_CreatedByPriceBooks.id = vtiger_crmentityPriceBooks.smcreatorid ";
-		}
-		return $query;
-	}
-
-	/*
 	 * Function to get the relation tables for related modules
 	 * @param - $secmodule secondary module name
 	 * returns the array with table names and fieldnames storing relations between module and this module

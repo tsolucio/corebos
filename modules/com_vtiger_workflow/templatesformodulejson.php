@@ -8,12 +8,12 @@
  * All Rights Reserved.
  ************************************************************************************/
 require_once 'VTWorkflowTemplateManager.inc';
-function vtTemplatesForModuleJson($adb, $request){
+function vtTemplatesForModuleJson($adb, $request) {
 	$moduleName = $request['module_name'];
-	$tm = new VTWorkflowTemplateManager($adb); 
+	$tm = new VTWorkflowTemplateManager($adb);
 	$templates = $tm->getTemplatesForModule($moduleName);
 	$arr = array();
-	foreach($templates as $template){
+	foreach ($templates as $template) {
 		$arr[] = array("title"=>$template->title, 'id'=>$template->id);
 	}
 	echo json_encode($arr);

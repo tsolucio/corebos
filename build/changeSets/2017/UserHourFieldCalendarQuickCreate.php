@@ -52,7 +52,9 @@ class UserHourFieldCalendarQuickCreate extends cbupdaterWorker {
 			$deactivatethese = array('time_end','due_date','time_start','date_start','recurringtype','reminder_time','sendnotification');
 			foreach ($deactivatethese as $fieldname) {
 				$field = Vtiger_Field::getInstance($fieldname,$moduleInstance);
-				$this->ExecuteQuery("update vtiger_field set quickcreate=1,typeofdata=REPLACE(typeofdata,'~M','~O') where fieldid=?",array($field->id));
+				if ($field) {
+					$this->ExecuteQuery("update vtiger_field set quickcreate=1,typeofdata=REPLACE(typeofdata,'~M','~O') where fieldid=?",array($field->id));
+				}
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();

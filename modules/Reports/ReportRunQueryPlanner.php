@@ -189,19 +189,19 @@ class ReportRunQueryPlanner {
 					}
 				}
 			}
-			if (count($newAdvFilterList[$i])) {
+			if (count($newAdvFilterList) && count($newAdvFilterList[$i])) {
 				$newAdvFilterList[$i]['condition'] = $advfilterlist[$i]['condition'];
 			}
 			if (isset($newAdvFilterList[$i]['columns'][$k - 1])) {
 				$newAdvFilterList[$i]['columns'][$k - 1]['column_condition'] = '';
 			}
-			if (count($newAdvFilterList[$i]) != 2) {
+			if (count($newAdvFilterList) && count($newAdvFilterList[$i]) != 2) {
 				unset($newAdvFilterList[$i]);
 			}
 		}
 		end($newAdvFilterList);
 		$lastConditionsGrpKey = key($newAdvFilterList);
-		if (count($newAdvFilterList[$lastConditionsGrpKey])) {
+		if (count($newAdvFilterList) && count($newAdvFilterList[$lastConditionsGrpKey])) {
 			$newAdvFilterList[$lastConditionsGrpKey]['condition'] = '';
 		}
 
