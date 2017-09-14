@@ -23,6 +23,20 @@ class ReportRunQueryPlanner {
 	protected $registeredCleanup = false;
 	var $reportRun = false;
 
+	function disablePlanner() {
+		$this->disablePlanner = true;
+		$this->allowTempTables = false;
+	}
+
+	function enablePlanner() {
+		$this->disablePlanner = false;
+		$this->allowTempTables = true;
+	}
+
+	function isDisabled() {
+		return $this->disablePlanner;
+	}
+
 	function addTable($table) {
 		if (!empty($table)) {
 			$this->tables[$table] = $table;
