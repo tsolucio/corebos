@@ -763,6 +763,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'No | Distance | Set',
 	'definition' => 'En la edición en línea de la vista de detalle de la fecha de inicio podemos avanzar la fecha de finalización. Si esta variable se establece en "No", la fecha de finalización no se modificará. Este es el valor predeterminado. Si se establece en "Set", la fecha de finalización se establecerá en el mismo valor que la fecha de inicio más los minutos en Calendar_call_default_duration. Si se establece en "Distance", se aplicará la misma diferencia de tiempo que existe antes del cambio.',
 ),
+'Calendar_PopupReminder_DaysPast' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Entero',
+	'category' => 'Aplicación',
+	'values' => '',
+	'definition' => 'Número máximo de días en el pasado para buscar eventos que aparecerán en la ventana emergente del recordatorio. El valor predeterminado es 7 días.',
+),
 'CronTasks_cronWatcher_mailto' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Emails CSV',

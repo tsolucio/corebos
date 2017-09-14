@@ -33,20 +33,25 @@ if(isPermitted('Calendar','index') == 'yes'){
 		coreBOS_Session::set('next_reminder_time', 'None');
 	}
 	if($active_res!='None'){
+		$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',10,'Calendar');
+		$Calendar_PopupReminder_DaysPast = GlobalVariable::getVariable('Calendar_PopupReminder_DaysPast',7,'Calendar');
 		$interval=$adb->query_result($active,0,"reminder_interval");
 		$intervalInMinutes = ConvertToMinutes($interval);
 		// check for reminders every minute
 		$time = time();
 		coreBOS_Session::set('next_reminder_time', $time + ($intervalInMinutes * 60));
 		$date = date('Y-m-d', strtotime("+$intervalInMinutes minutes", $time));
-		$time = date('H:i',   strtotime("+$intervalInMinutes minutes", $time));
+		$date_inpast = date('Y-m-d', strtotime('-'.$Calendar_PopupReminder_DaysPast.' day', $time));
+		$time = date('H:i', strtotime("+$intervalInMinutes minutes", $time));
 		$callback_query =
-		"SELECT * FROM vtiger_activity_reminder_popup inner join vtiger_crmentity where " .
-		" vtiger_activity_reminder_popup.status = 0 and " .
-		" vtiger_activity_reminder_popup.recordid = vtiger_crmentity.crmid " .
-		" and vtiger_crmentity.smownerid = ".$current_user->id." and vtiger_crmentity.deleted = 0 " .
-		" and ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') <= '" . $date . "')" .
-		" AND (TIME_FORMAT(vtiger_activity_reminder_popup.time_start,'%H:%i') <= '" . $time . "'))";
+		"SELECT *" .
+		" FROM vtiger_activity_reminder_popup" .
+		" inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_activity_reminder_popup.recordid " .
+		" WHERE vtiger_activity_reminder_popup.status = 0 and vtiger_crmentity.smownerid = ".$current_user->id." and vtiger_crmentity.deleted = 0 " .
+		" and ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') < '" . $date . "' and DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') >= '" . $date_inpast . "')" .
+		" or ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') = '" . $date . "')" .
+		" AND (TIME_FORMAT(vtiger_activity_reminder_popup.time_start,'%H:%i') <= '" . $time . "')))
+		ORDER BY vtiger_activity_reminder_popup.date_start DESC limit 0, ".$list_max_entries_per_page;
 
 		$result = $adb->query($callback_query);
 
