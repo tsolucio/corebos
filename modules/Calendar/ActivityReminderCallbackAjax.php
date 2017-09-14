@@ -20,7 +20,7 @@ coreBOS_Session::set('last_reminder_check_time', $cur_time);
 coreBOS_Session::set('next_reminder_interval', 60);
 if(isset($_SESSION['next_reminder_time']) && $_SESSION['next_reminder_time'] == 'None') {
 	return;
-} elseif(isset($_SESSION['next_reminder_interval']) && isset($_SESSION['next_reminder_time']) && (($_SESSION['next_reminder_time'] - $_SESSION['next_reminder_interval']) > $cur_time)) {
+} elseif (isset($_SESSION['next_reminder_time']) && (($_SESSION['next_reminder_time'] - $_SESSION['next_reminder_interval']) > $cur_time)) {
 	echo "<script type='text/javascript' id='_vtiger_activityreminder_callback_interval_'>".($_SESSION['next_reminder_interval'] * 1000)."</script>";
 	return;
 }
@@ -59,9 +59,8 @@ if(isPermitted('Calendar','index') == 'yes'){
 				if($cbmodule == 'Events') {$cbmodule = 'Calendar';}
 				$focus = CRMEntity::getInstance($cbmodule);
 
-				if($cbmodule == 'Calendar') {
+				if ($cbmodule == 'Calendar') {
 					$focus->retrieve_entity_info($cbrecord,$cbmodule);
-
 					$cbsubject = $focus->column_fields['subject'];
 					$cbactivitytype   = $focus->column_fields['activitytype'];
 					$cbdate   = $focus->column_fields["date_start"];
@@ -73,9 +72,8 @@ if(isPermitted('Calendar','index') == 'yes'){
 					$cbactivitytype = getTranslatedString($cbmodule, $cbmodule);
 					$cbdate         = $adb->query_result($result, $index, 'date_start');
 					$cbtime         = $adb->query_result($result, $index, 'time_start');
-
 				}
-				if($cbtime != ''){
+				if ($cbtime != '') {
 					$date = new DateTimeField($cbdate.' '.$cbtime);
 					$cbtime = $date->getDisplayTime();
 					$cbdate = $date->getDisplayDate();

@@ -263,10 +263,14 @@ $smarty->assign('FOLDERS', $folders);
 $smarty->assign('EMPTY_FOLDERS', $emptyfolders);
 $smarty->assign('ALL_FOLDERS', array_merge($folders, $emptyfolders));
 
+$smarty->assign("AVALABLE_FIELDS", getMergeFields($currentModule,"available_fields"));
+$smarty->assign("FIELDS_TO_MERGE", getMergeFields($currentModule,"fileds_to_merge"));
+
 //Added to select Multiple records in multiple pages
 $smarty->assign('SELECTEDIDS', (isset($_REQUEST['selobjs']) ? vtlib_purify($_REQUEST['selobjs']) : ''));
 $smarty->assign('ALLSELECTEDIDS', (isset($_REQUEST['allselobjs']) ? vtlib_purify($_REQUEST['allselobjs']) : ''));
 $smarty->assign('CURRENT_PAGE_BOXES', '');
+ListViewSession::setSessionQuery($currentModule,$focus->query,$viewid);
 
 $alphabetical = AlphabeticalSearch($currentModule,'index','notes_title','true','basic','','','','',$viewid);
 $fieldnames = $controller->getAdvancedSearchOptionString();
@@ -279,8 +283,6 @@ $smarty->assign("IS_ADMIN",$adminuser);
 
 $check_button = Button_Check($module);
 $smarty->assign("CHECK", $check_button);
-
-ListViewSession::setSessionQuery($currentModule,$focus->query,$viewid);
 
 // Gather the custom link information to display
 include_once('vtlib/Vtiger/Link.php');
