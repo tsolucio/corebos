@@ -81,10 +81,7 @@ if(isPermitted('Calendar','index') == 'yes'){
 					$cbtime = $cbtimeArr['starthour'].':'.$cbtimeArr['startmin'].''.$cbtimeArr['startfmt'];
 				}
 
-				if($cbactivitytype=='Task'){
-					$cbstatus = $focus->column_fields["taskstatus"];
-				} else {
-					$cbstatus = $focus->column_fields["eventstatus"];
+				$cbstatus = $focus->column_fields["eventstatus"];
 
 				$cbstatus = getTranslatedString($cbstatus, $currentModule);
 				$atrs = $adb->pquery('select activitytype from vtiger_activity where activityid=?', array($cbrecord));
@@ -116,7 +113,6 @@ if(isPermitted('Calendar','index') == 'yes'){
 				$adb->pquery($mark_reminder_as_read, array($reminderid));
 				echo "<script type='text/javascript'>window.top.document.title= '".
 					$app_strings['LBL_NEW_BUTTON_LABEL'].$app_strings['LBL_Reminder']."';</script>";
-				}
 			}
 		} else {
 			$callback_query =
