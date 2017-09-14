@@ -65,6 +65,18 @@
 																<img src="{'todo_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Todo" title="Todo">
 															{elseif $MODULE eq 'Vendors'}
 																<img src="{'vendors_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Vendors" title="Vendors">
+															{elseif $MODULE eq 'Services'}
+																<img src="{'custom_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Services" title="Services">
+															{elseif $MODULE eq 'PurchaseOrder'}
+																<img src="{'purchase_order_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="PurchaseOrder" title="PurchaseOrder">
+															{elseif $MODULE eq 'CobroPago'}
+																<img src="{'payment_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Payment" title="Payment">
+															{elseif $MODULE eq 'Assets'}
+																<img src="{'assets_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Assets" title="Assets">
+															{elseif $MODULE eq 'ProjectTask'}
+																<img src="{'project_tasks_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="ProjectTask" title="ProjectTask">
+															{elseif $MODULE eq 'Project'}
+																<img src="{'project_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Project" title="Project">
 															{/if}
 														</span>
 													</div>

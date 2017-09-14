@@ -195,6 +195,16 @@ function sendfile_email()
 																			<img src="{'global_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="GlobalVariable" title="GlobalVariable">
 																		{elseif $MODULE eq 'cbCalendar'}
 																			<img src="{'todo_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Todo" title="Todo">
+																		{elseif $MODULE eq 'CobroPago'}
+																			<img src="{'payment_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Payment" title="Payment">
+																		{elseif $MODULE eq 'Assets'}
+																			<img src="{'assets_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Assets" title="Assets">
+																		{elseif $MODULE eq 'ProjectMilestone'}
+																			<img src="{'project_milestone_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="ProjectMilestone" title="ProjectMilestone">
+																		{elseif $MODULE eq 'ProjectTask'}
+																			<img src="{'project_tasks_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="ProjectTask" title="ProjectTask">
+																		{elseif $MODULE eq 'Project'}
+																			<img src="{'project_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Project" title="Project">
 																		{/if}
 																	</span>
 																</div>
