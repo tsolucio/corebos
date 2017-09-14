@@ -11,7 +11,12 @@
 <table class="slds-table slds-table--cell-buffer slds-no-row-hover slds-table--fixed-layout small detailview_table">
 	<tr class="slds-line-height--reset">
 		<td class="dvtCellLabel text-left heading2" width=20%>
-			<input type="checkbox" class="small" id="auto_merge" name="auto_merge" onclick="ImportJs.toogleMergeConfiguration();" />
+			<span class="slds-checkbox">
+				<input type="checkbox" class="small" id="auto_merge" name="auto_merge" onclick="ImportJs.toogleMergeConfiguration();" />
+				<label class="slds-checkbox__label" for="auto_merge">
+					<span class="slds-checkbox--faux"></span>
+				</label>
+			</span>
 			{'LBL_IMPORT_STEP_3'|@getTranslatedString:$MODULE}:
 		</td>
 		<td class="dvtCellInfo big" colspan="2" width=80%>
