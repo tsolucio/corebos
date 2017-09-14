@@ -14,35 +14,60 @@
 	<input type="hidden" name="module" value="{$FOR_MODULE}" />
 	<input type="hidden" name="action" value="Import" />
 	<input type="hidden" name="mode" value="upload_and_parse" />
-	<table style="width:80%;margin-left:auto;margin-right:auto;margin-top:10px;" cellpadding="5" cellspacing="12" class="searchUIBasic">
+	<br/>
+	<table align="center" width="98%">
 		<tr>
-			<td class="heading2" align="left" colspan="2">
-				{'LBL_IMPORT'|@getTranslatedString:$MODULE} {$FOR_MODULE|@getTranslatedString:$FOR_MODULE}
-			</td>
-		</tr>
-		{if !empty($ERROR_MESSAGE)}
-		<tr>
-			<td class="style1" align="left" colspan="2">
-				{$ERROR_MESSAGE}
-			</td>
-		</tr>
-		{/if}
-		<tr>
-			<td class="leftFormBorder1" width="60%" valign="top">
-			{include file='modules/Import/Import_Step1.tpl'}
-			</td>
-			<td class="leftFormBorder1" width="40%" valign="top">
-			{include file='modules/Import/Import_Step2.tpl'}
-			</td>
-		</tr>
-		<tr>
-			<td class="leftFormBorder1" colspan="2" valign="top">
-			{include file='modules/Import/Import_Step3.tpl'}
-			</td>
-		</tr>
-		<tr>
-			<td align="right" colspan="2">
-			{include file='modules/Import/Import_Basic_Buttons.tpl'}
+			<td>
+				<div class="forceRelatedListSingleContainer">
+					<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
+						<div class="slds-card__header slds-grid">
+							<header class="slds-media slds-media--center slds-has-flexi-truncate">
+								<div class="slds-media__body">
+									<h2>
+										<span class="slds-text-title--caps slds-truncate heading2 actionLabel">
+											<b>{'LBL_IMPORT'|@getTranslatedString:$MODULE} {$FOR_MODULE|@getTranslatedString:$FOR_MODULE}</b>
+										</span>
+									</h2>
+								</div>
+							</header>
+						</div>
+					</article>
+				</div>
+				<div class="slds-truncate">
+					<table class="slds-table slds-table--cell-buffer slds-no-row-hover slds-table--fixed-layout small detailview_table">
+						{if !empty($ERROR_MESSAGE)}
+						<tr class="slds-line-height--reset">
+							<td class="style1" align="left" colspan="2">
+								{$ERROR_MESSAGE}
+							</td>
+						</tr>
+						{/if}
+						<tr class="slds-line-height--reset">
+							<td class="dvtCellInfo leftFormBorder1" valign="top">
+								<div class="slds-truncate">
+									{include file='modules/Import/Import_Step1.tpl'}
+								</div>
+							</td>
+							<td class="leftFormBorder1" rowspan="2" valign="top">
+								<div class="slds-truncate">
+									{include file='modules/Import/Import_Step3.tpl'}
+								</div>
+							</td>
+						</tr>
+						<tr class="slds-line-height--reset">
+							<td class="dvtCellInfo leftFormBorder1" valign="top">
+								<div class="slds-truncate">
+									{include file='modules/Import/Import_Step2.tpl'}
+								</div>
+							</td>
+						</tr>
+						<tr class="slds-line-height--reset">
+							<td align="right" colspan="2">
+								{include file='modules/Import/Import_Basic_Buttons.tpl'}
+							</td>
+						</tr>
+					</table>
+				</div>
 			</td>
 		</tr>
 	</table>
