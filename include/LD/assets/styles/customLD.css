@@ -17,6 +17,10 @@
     cursor: pointer;
 }
 
+.quickCreateTable tr .dvtCellInfo .slds-select {
+    width: 75%;
+}
+
 /*========    Search    ==========*/
 .slds-pill__remove img{
     width: 16px;
@@ -397,9 +401,9 @@ li.active,
     border-radius: 0;
 }
 
-
-
-
+.dvtCellInfo input[name="firstname"] {
+    width: 65%;
+}
 
 /*=========  END DETAIL VIEW ---HEADER---  ==========*/
 
