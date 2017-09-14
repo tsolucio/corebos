@@ -1027,9 +1027,9 @@ select:-moz-focusring {
     letter-spacing: initial;
 }
 
-.slds-hint-parent th[scope="row"] div {
+/*.slds-hint-parent th[scope="row"] div {
     height: 15px;
-}
+}*/
 
 @media screen and (max-width: 1400px) {
     .ld-font th:nth-child(2) {
