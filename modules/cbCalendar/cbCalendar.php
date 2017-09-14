@@ -297,7 +297,7 @@ class cbCalendar extends CRMEntity {
 		$cbrecord = $this->id;
 		coreBOS_Session::delete('next_reminder_time');
 		if(isset($cbmodule) && isset($cbrecord)) {
-			list($cbdate,$cbtime) = explode(' ',getValidDBInsertDateTimeValue($this->column_fields['dtstart']));
+			list($cbdate,$cbtime) = explode(' ',$this->column_fields['dtstart']);
 
 			$reminder_query = "SELECT reminderid FROM vtiger_activity_reminder_popup WHERE recordid = ?";
 			$reminder_params = array($cbrecord);
