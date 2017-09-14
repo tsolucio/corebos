@@ -653,10 +653,10 @@ class ReportRun extends CRMEntity {
 	}
 
 	function generateAdvFilterSql($advfilterlist) {
-		global $adb;
+		global $adb, $current_user;
 
 		$advfiltersql = "";
-
+		$currentUserFullName = getUserFullName($current_user->id);
 		foreach($advfilterlist as $groupindex => $groupinfo) {
 			$groupcondition = isset($groupinfo['condition']) ? $groupinfo['condition'] : '';
 			$groupcolumns = $groupinfo['columns'];
@@ -695,23 +695,27 @@ class ReportRun extends CRMEntity {
 
 							$advcolumnsql = "";
 							for($n=0;$n<count($valuearray);$n++) {
+								$valuearray[$n] = trim($valuearray[$n]);
 								if(($selectedfields[0] == 'vtiger_users'.$this->primarymodule || in_array($selectedfields[0],$secondarymodules)) && $selectedfields[1] == 'user_name') {
+									if ($valuearray[$n]=='current_user') {
+										$valuearray[$n] = $currentUserFullName;
+									}
 									$module_from_tablename = str_replace("vtiger_users","",$selectedfields[0]);
-									$advcolsql[] = " trim($concatSql)".$this->getAdvComparator($comparator,trim($valuearray[$n]),$datatype)." or vtiger_groups".$module_from_tablename.".groupname ".$this->getAdvComparator($comparator,trim($valuearray[$n]),$datatype);
+									$advcolsql[] = " trim($concatSql)".$this->getAdvComparator($comparator,$valuearray[$n],$datatype)." or vtiger_groups".$module_from_tablename.".groupname ".$this->getAdvComparator($comparator,$valuearray[$n],$datatype);
 								} elseif($selectedfields[1] == 'status') {//when you use comma seperated values.
 									if($selectedfields[2] == 'Calendar_Status')
-									$advcolsql[] = "(case when (vtiger_activity.status not like '') then vtiger_activity.status else vtiger_activity.eventstatus end)".$this->getAdvComparator($comparator,trim($valuearray[$n]),$datatype);
+									$advcolsql[] = "(case when (vtiger_activity.status not like '') then vtiger_activity.status else vtiger_activity.eventstatus end)".$this->getAdvComparator($comparator,$valuearray[$n],$datatype);
 									elseif($selectedfields[2] == 'HelpDesk_Status')
-									$advcolsql[] = "vtiger_troubletickets.status".$this->getAdvComparator($comparator,trim($valuearray[$n]),$datatype);
+									$advcolsql[] = "vtiger_troubletickets.status".$this->getAdvComparator($comparator,$valuearray[$n],$datatype);
 								} elseif($selectedfields[1] == 'description') {//when you use comma seperated values.
 									if($selectedfields[0]=='vtiger_crmentity'.$this->primarymodule)
-										$advcolsql[] = "vtiger_crmentity.description".$this->getAdvComparator($comparator,trim($valuearray[$n]),$datatype);
+										$advcolsql[] = "vtiger_crmentity.description".$this->getAdvComparator($comparator,$valuearray[$n],$datatype);
 									else
-										$advcolsql[] = $selectedfields[0].".".$selectedfields[1].$this->getAdvComparator($comparator,trim($valuearray[$n]),$datatype);
+										$advcolsql[] = $selectedfields[0].".".$selectedfields[1].$this->getAdvComparator($comparator,$valuearray[$n],$datatype);
 								} elseif($selectedfields[2] == 'Quotes_Inventory_Manager'){
-									$advcolsql[] = ("trim($concatSql)".$this->getAdvComparator($comparator,trim($valuearray[$n]),$datatype));
+									$advcolsql[] = ("trim($concatSql)".$this->getAdvComparator($comparator,$valuearray[$n],$datatype));
 								} else {
-									$advcolsql[] = $selectedfields[0].".".$selectedfields[1].$this->getAdvComparator($comparator,trim($valuearray[$n]),$datatype);
+									$advcolsql[] = $selectedfields[0].".".$selectedfields[1].$this->getAdvComparator($comparator,$valuearray[$n],$datatype);
 								}
 							}
 							//If negative logic filter ('not equal to', 'does not contain') is used, 'and' condition should be applied instead of 'or'
@@ -721,8 +725,12 @@ class ReportRun extends CRMEntity {
 								$advcolumnsql = implode(" or ",$advcolsql);
 							$fieldvalue = " (".$advcolumnsql.") ";
 						} elseif(($selectedfields[0] == 'vtiger_users'.$this->primarymodule || in_array($selectedfields[0],$secondarymodules)) && $selectedfields[1] == 'user_name') {
+							$value = trim($value);
+							if ($value=='current_user') {
+								$value = $currentUserFullName;
+							}
 							$module_from_tablename = str_replace("vtiger_users","",$selectedfields[0]);
-							$fieldvalue = " trim(case when (".$selectedfields[0].".last_name NOT LIKE '') then ".$concatSql." else vtiger_groups".$module_from_tablename.".groupname end) ".$this->getAdvComparator($comparator,trim($value),$datatype);
+							$fieldvalue = " trim(case when (".$selectedfields[0].".last_name NOT LIKE '') then ".$concatSql." else vtiger_groups".$module_from_tablename.".groupname end) ".$this->getAdvComparator($comparator,$value,$datatype);
 						} elseif($comparator == 'bw' && count($valuearray) == 2) {
 							if($selectedfields[0] == "vtiger_crmentity".$this->primarymodule) {
 								$fieldvalue = "("."vtiger_crmentity.".$selectedfields[1]." between '".trim($valuearray[0])."' and '".trim($valuearray[1])."')";
@@ -742,8 +750,12 @@ class ReportRun extends CRMEntity {
 							} else {
 								$tableName = 'vtiger_CreatedBy'.$this->primarymodule;
 							}
+							$value = trim($value);
+							if ($value=='current_user') {
+								$value = $currentUserFullName;
+							}
 							$fieldvalue = getSqlForNameInDisplayFormat(array('last_name'=>"$tableName.last_name",'first_name'=>"$tableName.first_name"), 'Users').
-									$this->getAdvComparator($comparator,trim($value),$datatype);
+									$this->getAdvComparator($comparator,$value,$datatype);
 							$this->queryPlanner->addTable($tableName);
 						} elseif($selectedfields[1]=='modifiedby') {
 							$module_from_tablename = str_replace("vtiger_crmentity","",$selectedfields[0]);
@@ -752,8 +764,12 @@ class ReportRun extends CRMEntity {
 							} else {
 								$tableName = 'vtiger_lastModifiedBy'.$this->primarymodule;
 							}
+							$value = trim($value);
+							if ($value=='current_user') {
+								$value = $currentUserFullName;
+							}
 							$fieldvalue = getSqlForNameInDisplayFormat(array('last_name'=>"$tableName.last_name",'first_name'=>"$tableName.first_name"), 'Users').
-									$this->getAdvComparator($comparator,trim($value),$datatype);
+									$this->getAdvComparator($comparator,$value,$datatype);
 							$this->queryPlanner->addTable($tableName);
 						} elseif($selectedfields[0] == "vtiger_activity" && $selectedfields[1] == 'status') {
 							$fieldvalue = "(case when (vtiger_activity.status not like '') then vtiger_activity.status else vtiger_activity.eventstatus end)".$this->getAdvComparator($comparator,trim($value),$datatype);
