@@ -2616,6 +2616,9 @@ class ReportRun extends CRMEntity {
 			$sSQL = $this->sGetSQLforReport($this->reportid,$filtersql,($outputformat == 'JSON' ? 'HTML' : 'HTMLPAGED'));
 			$sSQL = 'SELECT SQL_CALC_FOUND_ROWS'.substr($sSQL, 6);
 			$result = $adb->query($sSQL);
+			if ($result) {
+				$count_result = $adb->query('SELECT FOUND_ROWS();');
+			}
 			$error_msg = $adb->database->ErrorMsg();
 			if(!$result && $error_msg!=''){
 				$resp = array(
@@ -2634,7 +2637,6 @@ class ReportRun extends CRMEntity {
 			if($result)
 			{
 				$fldcnt=$adb->num_fields($result);
-				$count_result = $adb->query('SELECT FOUND_ROWS();');
 				$noofrows = $adb->query_result($count_result,0,0);
 				$this->number_of_rows = $noofrows;
 				$resp = array(
