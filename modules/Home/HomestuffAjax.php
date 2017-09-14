@@ -30,7 +30,7 @@ if(!empty($modval)){
 		echo $mod_strings['MSG_NO_FILTERS'];
 		die;
 	}else{
-		$html = '<select id=selFilterid name=selFiltername onchange=setPrimaryFld(this) class="detailedViewTextBox" onfocus="this.className=\'detailedViewTextBoxOn\'" onblur="this.className=\'detailedViewTextBox\'" style="width:60%">';
+		$html = '<select id=selFilterid name=selFiltername onchange=setPrimaryFld(this) class="slds-select" style="width:75%">';
 		for($i=0;$i<$adb->num_rows($result);$i++){
 			if($adb->query_result($result,$i,"viewname")=='All'){
 				$html .= "<option value='".$adb->query_result($result,$i,'cvid')."'>".getTranslatedString('COMBO_ALL',$currentModule)."</option>";
@@ -80,7 +80,7 @@ if(!empty($dash)){
 		'ticketsbycontact'=> $dashbd_strings['ticketsbycontact'],
 	);
 
-	$html='<select name=seldashbd id=seldashbd_id class="detailedViewTextBox" onfocus="this.className=\'detailedViewTextBoxOn\'" onblur="this.className=\'detailedViewTextBox\'" style="width:60%">';
+	$html='<select name=seldashbd id=seldashbd_id class="slds-select" style="width:75%">';
 	foreach($graph_array as $key=>$value){
 		$html .='<option value="'.$key.'">'.$value.'</option>';
 	}
@@ -99,7 +99,7 @@ if(!empty($_REQUEST['primecvid'])){
 		echo $mod_strings['MSG_NO_FIELDS'];
 		die;
 	}else{
-		$html = '<select id=selPrimeFldid name=PrimeFld multiple class="detailedViewTextBox" onfocus="this.className=\'detailedViewTextBoxOn\'" onblur="this.className=\'detailedViewTextBox\'" style="width:60%">';
+		$html = '<select id=selPrimeFldid name=PrimeFld multiple class="slds-select" style="width:75%">';
 		for($i=0;$i<$adb->num_rows($result);$i++){
 			$columnname=$adb->query_result($result,$i,"columnname");
 			if($columnname != ''){

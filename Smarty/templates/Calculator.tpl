@@ -34,6 +34,4 @@
 	</table>
 </div>
 
-<script>
-	jQuery("#calc").draggable({ldelim} handle: "#calc_Handle" {rdelim});
-</script>
+<script>jQuery("#calc").draggable({ldelim} handle: "#calc_Handle" {rdelim});</script>

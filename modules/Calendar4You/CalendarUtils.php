@@ -54,15 +54,11 @@ function get_its_mini_calendar(& $cal) {
 	$minical = '';
 	$mt = substr('0' . $cal['calendar']->date_time->month, -2);
 	$dy = substr('0' . $cal['calendar']->date_time->day, -2);
-	$minical .= "<table class='mailClient ' bgcolor='white' border='0' cellpadding='2' cellspacing='0' width='98%'>
-		<tr>
-			<td class='calHdr'>&nbsp;</td>
-			<td style='padding:5px' colspan='6' class='calHdr' align='center'>".get_previous_its_cal($cal)."&nbsp;";
-			$minical .= "<a style='text-decoration: none;' href='javascript:changeCalendarMonthDate(\"".$cal['calendar']->date_time->year.'","'.$mt.'","'.$dy."\");'><b>".display_date($cal['view'],$cal['calendar']->date_time).'</b></a>&nbsp;'.get_next_its_cal($cal).'</td>';
+	$minical .= "<table class='slds-table slds-no-row-hover layerPopup' width='100%' style='position:relative;'><tr class='slds-text-title--header'><th scope='col'><div class='slds-truncate moduleName'>".get_previous_its_cal($cal)."&nbsp;";
+			$minical .= "<a style='text-decoration: none;' href='javascript:changeCalendarMonthDate(\"".$cal['calendar']->date_time->year.'","'.$mt.'","'.$dy."\");'><b>".display_date($cal['view'],$cal['calendar']->date_time).'</b></a>&nbsp;'.get_next_its_cal($cal).'</div></th>';
 			//$minical .= "<a style='text-decoration: none;' href='index.php?module=Calendar&action=index&view=".$cal['view']."".$cal['calendar']->date_time->get_date_str()."&parenttab=".$category."'><b>".display_date($cal['view'],$cal['calendar']->date_time)."</b></a>&nbsp;".get_next_its_cal($cal)."</td>";
-			$minical .= "<td class='calHdr' align='right'><a href='javascript:ghide(\"miniCal\");'><img src='". vtiger_imageurl('close.gif', $theme). "' align='right' border='0'></a>
-		</td></tr>";
-	$minical .= "<tr class='hdrNameBg'>";
+			$minical .= "<th scope='col' style='text-align:right; padding: .5rem;'><div class='slds-truncate'><a href='javascript:ghide(\"miniCal\");'><img src='". vtiger_imageurl('close.gif', $theme). "' align='right' border='0'></a></div></th></tr></table>";
+	$minical .= "<table class='layerPopup' align='center' border='0' width='100%'><tr class='slds-line-height--reset'>";
 	//To display days in week
 	$minical .= '<th width="12%">'.$mod_strings['LBL_WEEK'].'</th>';
 	for ($i = 0; $i < 7; $i ++){

@@ -2286,7 +2286,7 @@ a.drop_downnew_parent{
 }
 
 .searchUIBasic {
-	background-image:url(images/layerPopupBg.gif);
+	/*background-image:url(images/layerPopupBg.gif);*/
 	border:2px solid #a5b5ee;
 }
 

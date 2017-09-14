@@ -198,10 +198,7 @@
 										<table width="100%" cellpadding="5" cellspacing="0" border="0">
 											<tr>
 												<td width="30%" valign="top" align=right><b>{$CMOD.LBL_USERS}</b></td>
-												<td width="70%" align=left valign="top"> {foreach item=username key=userid from=$INVITEDUSERS}
-												{$username}
-												<br>
-												{/foreach} </td>
+												<td width="70%" align=left valign="top"> {foreach item=username key=userid from=$INVITEDUSERS}{$username}<br>{/foreach}</td>
 											</tr>
 										</table>
 									</DIV><!-- Reminder UI -->

@@ -15,7 +15,7 @@ $summaryReportQuery = "SELECT * FROM vtiger_report
 
 $reportRes = $adb->pquery($summaryReportQuery, array());
 
-$selectElement = '<select name=selreportchart id=selreportchart_id class="detailedViewTextBox" onfocus="this.className=\'detailedViewTextBoxOn\'" onblur="this.className=\'detailedViewTextBox\'" style="width:60%">';
+$selectElement = '<select name=selreportchart id=selreportchart_id class="slds-select" style="width:75%">';
 
 $num_rows = $adb->num_rows($reportRes);
 for ($i = 0; $i < $num_rows; $i++) {
