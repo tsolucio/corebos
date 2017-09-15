@@ -221,13 +221,12 @@ function setMailerProperties($mail,$subject,$contents,$from_email,$from_name,$to
 	if($to_email != '')
 	{
 		if(is_array($to_email)) {
-			for($j=0,$num=count($to_email);$j<$num;$j++) {
-				$mail->addAddress($to_email[$j]);
+			foreach ($to_email as $recip) {
+				$mail->addAddress($recip);
 			}
 		} else {
-			$_tmp = explode(",",$to_email);
-			for($j=0,$num=count($_tmp);$j<$num;$j++) {
-				$mail->addAddress($_tmp[$j]);
+			foreach (explode(",",$to_email) as $recip) {
+				$mail->addAddress($recip);
 			}
 		}
 	}
@@ -266,19 +265,18 @@ function setMailerProperties($mail,$subject,$contents,$from_email,$from_name,$to
 		}
 	}
 
-        //If we send attachments from MarketingDashboard
-	if(is_array($attachment))
-	{
+	//If we send attachments from MarketingDashboard
+	if (is_array($attachment)) {
 		if(array_key_exists('direct', $attachment) && $attachment['direct']){
 			//We are sending attachments with direct content, the files are'nt stored
-            foreach($attachment['files'] as $file){
-			addStringAttachment($mail,$file['name'],$file['content']);
-            }
-		}else{
-            foreach($attachment as $file){
-			addAttachment($mail,$file,$emailid);
-            }
-        }
+			foreach ($attachment['files'] as $file) {
+				addStringAttachment($mail,$file['name'],$file['content']);
+			}
+		} else {
+			foreach ($attachment as $file) {
+				addAttachment($mail,$file,$emailid);
+			}
+		}
 	}
 
 	$mail->IsHTML(true);		// set email format to HTML
@@ -334,7 +332,19 @@ function setMailServerProperties($mail)
 	$mail->Username = $username ;	// SMTP username
 	$mail->Password = $password ;	// SMTP password
 
-	return;
+	$debugEmail = GlobalVariable::getVariable('Debug_Email_Sending',0);
+	if ($debugEmail) {
+		global $log;
+		$log->fatal(array(
+			'SMTPOptions' => $mail->SMTPOptions,
+			'SMTPSecure' => $mail->SMTPSecure,
+			'Host' => $mail->Host = $server,
+			'Username' => $mail->Username = $username,
+			'Password' => $mail->Password = $password,
+		));
+		$mail->SMTPDebug = 4;
+		$mail->Debugoutput = function($str, $level) { global $log;$log->fatal($str); };
+	}
 }
 
 /**	Function to add the file as attachment with the mail object

@@ -27,6 +27,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Debug_Report_Query',
 				'Debug_ListView_Query',
 				'Debug_Popup_Query',
+				'Debug_Email_Sending',
 				'Debug_Send_VtigerCron_Error',
 				'Debug_Send_AdminLoginIPAuth_Error',
 				'Debug_Send_UserLoginIPAuth_Error',
@@ -68,6 +69,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_Customer_Portal_URL',
 				'Application_Help_URL',
 				'Application_UI_Name',
+				'Application_UI_CompanyName',
+				'Application_UI_ShowGITVersion',
 				'Application_UI_Version',
 				'Application_UI_URL',
 				'Application_Group_Selection_Permitted',
@@ -83,6 +86,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Calendar_Show_Inactive_Users',
 				'Calendar_Show_Group_Events',
 				'Calendar_Push_End_On_Start_Change',
+				'Calendar_PopupReminder_DaysPast',
 
 				'CronTasks_cronWatcher_mailto',
 
@@ -137,6 +141,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'EMail_OpenTrackingEnabled',
 				'Email_Attachments_Folder',
 				'EMail_Maximum_Number_Attachments',
+				'EMail_CustomCurrentDate_Format',
 				'ToolTip_MaxFieldValueLength',
 				'HelpDesk_Support_EMail',
 				'HelpDesk_Support_Name',

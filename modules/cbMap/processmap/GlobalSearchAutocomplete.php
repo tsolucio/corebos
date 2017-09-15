@@ -39,8 +39,7 @@ use phpDocumentor\Reflection\Types\Integer;
 class GlobalSearchAutocomplete extends processcbMap {
 
 	function processMap($arguments) {
-		$mapping=$this->convertMap2Array();
-		return $mapping;
+		return $this->convertMap2Array();
 	}
 
 	function convertMap2Array() {

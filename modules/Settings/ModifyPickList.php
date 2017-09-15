@@ -25,7 +25,7 @@
 	$moduleName=vtlib_purify($_REQUEST["fld_module"]);
 	$uitype=vtlib_purify($_REQUEST["uitype"]);
 	$mode=vtlib_purify($_REQUEST["mode"]);
-	
+
 	if($moduleName == 'Events')
 		$temp_module_strings = return_module_language($current_language, 'Calendar');
 	else
@@ -34,36 +34,28 @@
 	$sql = "select picklistid from vtiger_picklist where name=?";
 	$result = $adb->pquery($sql, array($fieldName));
 	$picklistid = $adb->query_result($result,0,"picklistid");
-	
-	if($mode == 'addnew')
-	{
+
+	if ($mode == 'addnew') {
 		$newValues = vtlib_purify($_REQUEST['newValues']);
 		$selectedRoles = vtlib_purify($_REQUEST['selectedRoles']);
-		
+
 		$newPicklist = explode(",",$newValues);
 		$roleIds = explode(":",$selectedRoles);
-		
+
 		$tableName = $adb->sql_escape_string($fieldName);
-		foreach($newPicklist as $key => $val)
-		{	
-			$val = urldecode($val);		
+		foreach ($newPicklist as $key => $val) {
+			$val = urldecode($val);
 			$picklistvalue_id = getUniquePicklistID();
 			$picklist_id = $adb->getUniqueID("vtiger_".$tableName);
-			
-			$query = "insert into vtiger_".$tableName." values(?,?,?,?)";		
-			$params = array($picklist_id, $val, 1, $picklistvalue_id);			
+			$query = "insert into vtiger_".$tableName." values(?,?,?,?)";
+			$params = array($picklist_id, $val, 1, $picklistvalue_id);
 			$adb->pquery($query, $params);
-			 
-			$num_roles = count($roleIds);
-			for($i=0;$i<$num_roles;$i++) {
-				$roleid = $roleIds[$i];
-				
+			foreach ($roleIds as $roleid) {
 				$sql ="select max(sortid)+1 as sortid from vtiger_role2picklist left join vtiger_$tableName on vtiger_$tableName.picklist_valueid=vtiger_role2picklist.picklistvalueid where roleid=? and picklistid=?";
 				$sortid = $adb->query_result($adb->pquery($sql, array($roleid, $picklistid)),0,'sortid');
 				if ($sortid == '') {
 					$sortid = 0;
 				}
-			
 				$sql = "insert into vtiger_role2picklist values(?,?,?,?)";
 				$adb->pquery($sql, array($roleid, $picklistvalue_id, $picklistid, $sortid));
 			}
@@ -81,50 +73,40 @@
 		}
 		$selectedFields = vtlib_purify($_REQUEST['selectedFields']);
 		$unwantedPicklist = explode(',',$selectedFields);
-		
 		$selectedRoles = vtlib_purify($_REQUEST['selectedRoles']);
 		$roleIds = explode(":",$selectedRoles);
-		
-		foreach($unwantedPicklist as $key => $val)
-		{
+		foreach ($unwantedPicklist as $key => $val) {
 			$qry="select tablename,columnname,uitype from vtiger_field where fieldname=?";
 			$result = $adb->pquery($qry, array($fieldName));
 			$num = $adb->num_rows($result);
 			$val = urldecode($val);
-			if($num > 0)
-			{
-				for($n=0;$n<$num;$n++)
-				{					
+			if ($num > 0) {
+				for ($n=0;$n<$num;$n++) {
 					$table_name = $adb->query_result($result,$n,'tablename');
 					$column_name = $adb->query_result($result,$n,'columnname');
-					if ($mode_type == 'delete') {	
+					if ($mode_type == 'delete') {
 						$update_picklist = "update $table_name set $column_name=? where $column_name=?";
 						$adb->pquery($update_picklist, array($replaceWith, $val));
-						
 						$dele_pick_val =" delete from vtiger_role2picklist where picklistvalueid in (select picklist_valueid from vtiger_$fieldName where $fieldName=?)";
 						$adb->pquery($dele_pick_val, array($val));
-	
 						$del_qry = "delete from vtiger_$fieldName where $fieldName=?";
 						$adb->pquery($del_qry, array($val));
 					}
-					if($mode_type == 'edit') {	
+					if ($mode_type == 'edit') {
 						$sel_qry = "select $fieldName from vtiger_$fieldName where $fieldName = ?";
 						$cnt_res = $adb->pquery($sel_qry, array($replaceWith));
 						if ($adb->num_rows($cnt_res) <= 0) {  // Avoid inserting duplicate entries for the new picklist value
 							$picklistvalue_id = getUniquePicklistID();
-							$picklist_id = $adb->getUniqueID("vtiger_$fieldName");						
-							$query = "insert into vtiger_$fieldName values(?,?,?,?)";		
-							$params = array($picklist_id, $replaceWith, 1, $picklistvalue_id);			
+							$picklist_id = $adb->getUniqueID("vtiger_$fieldName");
+							$query = "insert into vtiger_$fieldName values(?,?,?,?)";
+							$params = array($picklist_id, $replaceWith, 1, $picklistvalue_id);
 							$adb->pquery($query, $params);
-							 
+
 							$old_query = "select * from vtiger_$fieldName where $fieldName=?";
 							$old_res = $adb->pquery($old_query, array($val));
 							$old_picklistvalue_id = $adb->query_result($old_res, 0, 'picklist_valueid');
-							
-							$num_roles = count($roleIds);
-							for($i=0;$i<$num_roles;$i++) {
-								$roleid = $roleIds[$i];
-							
+
+							foreach ($roleIds as $roleid) {
 								$upd_qry = "update vtiger_role2picklist set picklistvalueid=? where picklistvalueid=? and picklistid=? and roleid=?";
 								$adb->pquery($upd_qry, array($picklistvalue_id, $old_picklistvalue_id, $picklistid, $roleid));
 							}
@@ -180,16 +162,14 @@
 		$smarty->assign('NONEDIT_FLAG','true');
 		else
 		$smarty->assign('NONEDIT_FLAG','false');
-				
 
 		$smarty->assign('NONEDITPICKLIST',$non_pick);
-		
 
 		if($mode == "transfer")
 		{
 			$option='';
 			$selectedFields = vtlib_purify($_REQUEST['selectedFields']);
-			$pick_arr = explode(",",  vtlib_purify($_REQUEST['selectedFields']));
+			$pick_arr = explode(",", vtlib_purify($_REQUEST['selectedFields']));
 			foreach($pick_arr as $v)
 			{
 				$v = urldecode($v);
@@ -211,19 +191,15 @@
 						$option .= "<option value='".$avail_entries."'>".$avail_entries."</option>";
 					}
 				}
-				
-			
-			
 			$output="<table border=0 cellspacing=0 cellpadding=5 width=100%>
 					<tr><td colspan=2 align='center'><strong> ".$mod_strings['LBL_PICKLIST_TRANSFER']."\"".$fieldLabel."\"</strong></td><td align='right'><img src='" . vtiger_imageurl('close.gif', $theme) . "' align='middle' border='0' onclick=hide('transferdiv');></td></tr>
 					<tr><td></td><td></td><td></td></tr>
 					<tr><td class='small' align='right'><b>".$mod_strings['LBL_REPLACE_VALUE_WITH'].":</b></td><td align='left'><select style='width:180px;font-size:normal;' class='small detailedViewTextBox' id='replacePick'>$option</select></td><td></td></tr>
 					<tr><td colspan=3 align='center'><input type='button' name='replaceText' value='".$app_strings['LBL_REPLACE_LABEL']."' onClick=pickReplace('".$moduleName."','".$fieldName."','delete'); class='crmButton small save'>&nbsp;<input type='button' value='".$app_strings['LBL_CANCEL_BUTTON_LABEL']."' name='cancel' class='crmButton small cancel' onclick=\"hide('transferdiv');\"></td></tr>
 				</table>";
-				
 			$smarty->assign("OUTPUT",$output);
 		}
-		
+
 		$temp_label = getTranslatedString($fieldLabel);
 		$roleDetails=getAllRoleDetails();
 		// Remove Organization from the list of roles (which is the first one in the list of roles)

@@ -62,9 +62,10 @@ function getBrowserVariables(&$smarty) {
 	$vars['gVTUserID'] = $current_user->id;
 	$vars['default_charset'] = $default_charset;
 	$vars['userDateFormat'] = $current_user->date_format;
+	$vars['userHourFormat'] = ($current_user->hour_format=='24' ? '24' : 'am/pm');
 	$sql = 'SELECT dayoftheweek FROM its4you_calendar4you_settings WHERE userid=?';
 	$result = $adb->pquery($sql, array($current_user->id));
-	if ($adb and $adb->num_rows($result)>0) {
+	if ($result and $adb->num_rows($result)>0) {
 		$fDOW = $adb->query_result($result, 0,0);
 		$vars['userFirstDOW'] = ($fDOW=='Monday' ? 1 : 0);
 	} else {
@@ -94,6 +95,7 @@ function getBrowserVariables(&$smarty) {
 		$smarty->assign('DEFAULT_CHARSET', $vars['default_charset']);
 		$smarty->assign('CURRENT_USER_ID', $vars['gVTUserID']);
 		$smarty->assign('USER_DATE_FORMAT',$vars['userDateFormat']);
+		$smarty->assign('USER_HOUR_FORMAT',$vars['userHourFormat']);
 		$smarty->assign('USER_FIRST_DOW',$vars['userFirstDOW']);
 		$smarty->assign('USER_CURRENCY_SEPARATOR', $vars['userCurrencySeparator']);
 		$smarty->assign('USER_DECIMAL_FORMAT', $vars['userDecimalSeparator']);
@@ -2895,7 +2897,7 @@ function getRecordValues($id_array,$module) {
 			$fld_array []= $fld_name;
 			$record_values[$c][$fld_label] = Array();
 			$ui_value[]=$ui_type;
-			for($j=0;$j < count($field_values);$j++) {
+			for ($j=0, $jMax = count($field_values); $j < $jMax; $j++) {
 
 				if($ui_type ==56) {
 					if($field_values[$j][$fld_name] == 0)
@@ -3197,9 +3199,9 @@ function getDuplicateRecordsArr($module)
 	$count_res = $adb->query($dup_count_query);
 	$no_of_rows = $adb->query_result($count_res,0,"count");
 
-	if($no_of_rows <= $list_max_entries_per_page)
+	if ($no_of_rows <= $list_max_entries_per_page)
 		coreBOS_Session::set('dup_nav_start'.$module, 1);
-	else if(isset($_REQUEST["start"]) && $_REQUEST["start"] != "" && $_SESSION['dup_nav_start'.$module] != $_REQUEST["start"])
+	else if (isset($_REQUEST['start']) && $_REQUEST['start'] != '' && (empty($_SESSION['dup_nav_start'.$module]) || $_SESSION['dup_nav_start'.$module] != $_REQUEST['start']))
 		coreBOS_Session::set('dup_nav_start'.$module, ListViewSession::getRequestStartPage());
 	$start = (!empty($_SESSION['dup_nav_start'.$module]) ? $_SESSION['dup_nav_start'.$module] : 1);
 	$navigation_array = getNavigationValues($start, $no_of_rows, $list_max_entries_per_page);
@@ -3267,8 +3269,7 @@ function getDuplicateRecordsArr($module)
 			$grp = "group".$gcnt;
 		}
 		$fld_values[$grp][$ii]['recordid'] = $result['recordid'];
-		for($k=0;$k<count($col_arr);$k++)
-		{
+		for ($k=0, $kMax = count($col_arr); $k< $kMax; $k++) {
 			if($rec_cnt == 0)
 			{
 				$temp[$fld_labl_arr[$k]] = html_entity_decode($result[$col_arr[$k]], ENT_QUOTES, $default_charset);
@@ -3474,12 +3475,12 @@ function elimina_acentos($cadena){
 /** call back function to change the array values in to lower case */
 function setFormatForDuplicateCompare(&$string){
 	global $default_charset;
+	$string = html_entity_decode($string, ENT_QUOTES, $default_charset);
 	$string = elimina_acentos(trim($string));
-	$string = strtolower(html_entity_decode($string, ENT_QUOTES, $default_charset));
+	$string = strtolower($string);
 }
 
 /** Function to get recordids for subquery where condition */
-// TODO - Need to check if this method is used anywhere?
 function get_subquery_recordids($sub_query)
 {
 	global $adb;
@@ -3636,13 +3637,9 @@ function transferProductCurrency($old_cur, $new_cur) {
 	}
 	if(count($prod_ids) > 0) {
 		$prod_price_list = getPricesForProducts($new_cur,$prod_ids);
-
-		for($i=0;$i<count($prod_ids);$i++) {
-			$product_id = $prod_ids[$i];
-			$unit_price = $prod_price_list[$product_id];
-			$query = "update vtiger_products set currency_id=?, unit_price=? where productid=?";
-			$params = array($new_cur, $unit_price, $product_id);
-			$adb->pquery($query, $params);
+		$query = 'update vtiger_products set currency_id=?, unit_price=? where productid=?';
+		foreach ($prod_ids as $product_id) {
+			$adb->pquery($query, array($new_cur, $prod_price_list[$product_id], $product_id));
 		}
 	}
 	$log->debug("Exiting function updateProductCurrency...");
@@ -3662,9 +3659,7 @@ function transferPriceBookCurrency($old_cur, $new_cur) {
 
 	if(count($pb_ids) > 0) {
 		require_once('modules/PriceBooks/PriceBooks.php');
-
-		for($i=0;$i<count($pb_ids);$i++) {
-			$pb_id = $pb_ids[$i];
+		foreach ($pb_ids as $pb_id) {
 			$focus = new PriceBooks();
 			$focus->id = $pb_id;
 			$focus->mode = 'edit';
@@ -3727,11 +3722,10 @@ function getCallerInfo($number){
 		if(empty($query)) return false;
 
 		$result = $adb->pquery($query, array());
-		if($adb->num_rows($result) > 0 ){
+		if ($adb->num_rows($result) > 0 ) {
 			$callerName = $adb->query_result($result, 0, 'name');
 			$callerID = $adb->query_result($result,0,'id');
-			$data = array('name'=>$callerName, 'module'=>$module, 'id'=>$callerID);
-			return $data;
+			return array('name'=>$callerName, 'module'=>$module, 'id'=>$callerID);
 		}
 	}
 	return false;
@@ -4450,11 +4444,10 @@ function getTabInfo($tabId) {
  */
 function getBlockName($blockid) {
 	global $adb;
-	if(!empty($blockid)){
+	if (!empty($blockid)) {
 		$block_res = $adb->pquery('SELECT blocklabel FROM vtiger_blocks WHERE blockid = ?',array($blockid));
-		if($adb->num_rows($block_res)){
-			$blockname = $adb->query_result($block_res,0,'blocklabel');
-			return $blockname;
+		if ($adb->num_rows($block_res)) {
+			return $adb->query_result($block_res,0,'blocklabel');
 		}
 	}
 	return '';
@@ -4668,38 +4661,34 @@ function getSelectAllQuery($input,$module) {
 		}
 	}
 
-	$result = $adb->pquery($query, array());
-	return $result;
+	return $adb->pquery($query, array());
 }
 
 function getCampaignAccountIds($id) {
 	global $adb;
-	$sql="SELECT vtiger_account.accountid as id FROM vtiger_account
+	$sql = "SELECT vtiger_account.accountid as id FROM vtiger_account
 		INNER JOIN vtiger_campaignaccountrel ON vtiger_campaignaccountrel.accountid = vtiger_account.accountid
 		LEFT JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_account.accountid
 		WHERE vtiger_campaignaccountrel.campaignid = ? AND vtiger_crmentity.deleted=0";
-	$result = $adb->pquery($sql, array($id));
-	return $result;
+	return $adb->pquery($sql, array($id));
 }
 
 function getCampaignContactIds($id) {
 	global $adb;
-	$sql="SELECT vtiger_contactdetails.contactid as id FROM vtiger_contactdetails
+	$sql = "SELECT vtiger_contactdetails.contactid as id FROM vtiger_contactdetails
 		INNER JOIN vtiger_campaigncontrel ON vtiger_campaigncontrel.contactid = vtiger_contactdetails.contactid
 		LEFT JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid
 		WHERE vtiger_campaigncontrel.campaignid = ? AND vtiger_crmentity.deleted=0";
-	$result = $adb->pquery($sql, array($id));
-	return $result;
+	return $adb->pquery($sql, array($id));
 }
 
 function getCampaignLeadIds($id) {
 	global $adb;
-	$sql="SELECT vtiger_leaddetails.leadid as id FROM vtiger_leaddetails
+	$sql = "SELECT vtiger_leaddetails.leadid as id FROM vtiger_leaddetails
 		INNER JOIN vtiger_campaignleadrel ON vtiger_campaignleadrel.leadid = vtiger_leaddetails.leadid
 		LEFT JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_leaddetails.leadid
 		WHERE vtiger_campaignleadrel.campaignid = ? AND vtiger_crmentity.deleted=0";
-	$result = $adb->pquery($sql, array($id));
-	return $result;
+	return $adb->pquery($sql, array($id));
 }
 
 /** Function to get the difference between 2 datetime strings or millisecond values */

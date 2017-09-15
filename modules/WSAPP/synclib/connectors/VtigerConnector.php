@@ -63,8 +63,7 @@ class WSAPP_VtigerConnector extends WSAPP_BaseConnector {
 		}
 		$rowData = $this->db->raw_query_result_rowdata($result);
 		$stateValues = json_decode($rowData['stateencodedvalues'],true);
-		$model = WSAPP_SyncStateModel::getInstanceFromQueryResult($stateValues);
-		return $model;
+		return WSAPP_SyncStateModel::getInstanceFromQueryResult($stateValues);
 	}
 
 	public function moreRecordsExits() {

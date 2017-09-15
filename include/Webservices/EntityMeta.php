@@ -233,8 +233,7 @@ abstract class EntityMeta{
 	}
 
 	public function getEntityAccessControlQuery(){
-		$accessControlQuery = '';
-		return $accessControlQuery;
+		return '';
 	}
 
 	public function getEntityDeletedQuery(){

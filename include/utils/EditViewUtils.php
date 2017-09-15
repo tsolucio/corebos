@@ -148,24 +148,42 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		}
 	}
 	elseif($uitype == 50) {
-		if(empty($value)) {
+		$user_format = ($current_user->hour_format=='24' ? '24' : '12');
+		if (empty($value)) {
 			if ($generatedtype != 2) {
 				$date = new DateTimeField();
 				$disp_value = substr($date->getDisplayDateTimeValue(),0,16);
-				list($void,$curr_time) = explode(' ',$disp_value);
+				$curr_time = DateTimeField::formatUserTimeString($disp_value, $user_format);
+				if (strlen($curr_time)>5) {
+					$time_format = substr($curr_time, -2);
+					$curr_time = substr($curr_time, 0, 5);
+				} else {
+					$time_format = '24';
+				}
+				list($dt,$tm) = explode(' ',$disp_value);
+				$disp_value12 = $dt . ' ' . $curr_time;
 			} else {
-				$disp_value = $curr_time = '';
+				$disp_value = $disp_value12 = $curr_time = $time_format = '';
 			}
 		} else {
 			$date = new DateTimeField($value);
 			$disp_value = substr($date->getDisplayDateTimeValue(),0,16);
-			list($void,$curr_time) = explode(' ',$disp_value);
+			$curr_time = DateTimeField::formatUserTimeString($disp_value, $user_format);
+			if (strlen($curr_time)>5) {
+				$time_format = substr($curr_time, -2);
+				$curr_time = substr($curr_time, 0, 5);
+			} else {
+				$time_format = '24';
+			}
+			list($dt,$tm) = explode(' ',$disp_value);
+			$disp_value12 = $dt . ' ' . $curr_time;
 		}
 		$value = $disp_value;
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$date_format = parse_calendardate($app_strings['NTC_DATE_FORMAT']).' '.($current_user->hour_format=='24' ? '%H' : '%I').':%M';
-		$fieldvalue[] = array($disp_value => $curr_time);
-		$fieldvalue[] = array($date_format=>$current_user->date_format.' '.$current_user->hour_format);
+		$fieldvalue[] = array($disp_value => $disp_value12);
+		$fieldvalue[] = array($date_format=>$current_user->date_format.' '.($current_user->hour_format=='24' ? '24' : 'am/pm'));
+		$fieldvalue[] = array($user_format => $time_format);
 	}
 	elseif($uitype == 16) {
 		require_once 'modules/PickList/PickListUtils.php';
@@ -669,7 +687,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			}
 			$result_image = $adb->pquery($query, $params);
 			$image_array = array();
-			for($image_iter=0;$image_iter < $adb->num_rows($result_image);$image_iter++) {
+			for ($image_iter=0, $img_itrMax = $adb->num_rows($result_image); $image_iter < $img_itrMax; $image_iter++) {
 				$image_id_array[] = $adb->query_result($result_image,$image_iter,'attachmentsid');
 
 				//decode_html  - added to handle UTF-8   characters in file names
@@ -680,7 +698,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 				$image_path_array[] = $adb->query_result($result_image,$image_iter,'path');
 			}
 			if(count($image_array)>0)
-				for($img_itr=0;$img_itr<count($image_array);$img_itr++) {
+				for ($img_itr=0, $img_itrMax = count($image_array); $img_itr< $img_itrMax; $img_itr++) {
 					$fieldvalue[] = array('name'=>$image_array[$img_itr],'path'=>$image_path_array[$img_itr].$image_id_array[$img_itr]."_","orgname"=>$image_orgname_array[$img_itr]);
 				}
 			else
@@ -1255,7 +1273,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			}
 		}
 		if(isset($image_array) && is_array($image_array))
-			for($img_itr=0;$img_itr<count($image_array);$img_itr++)
+			for($img_itr=0, $img_itrMax = count($image_array); $img_itr< $img_itrMax; $img_itr++)
 			{
 				$fieldvalue[] = array('name'=>$image_array[$img_itr],'path'=>$image_path_array[$img_itr]);
 			}
@@ -1370,12 +1388,12 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 function getConvertSoToInvoice($focus,$so_focus,$soid) {
 	global $log,$current_user;
 	$log->debug("Entering getConvertSoToInvoice(".get_class($focus).",".get_class($so_focus).",".$soid.") method ...");
-	$xyz=array('bill_street','bill_city','bill_code','bill_pobox','bill_country','bill_state','ship_street','ship_city','ship_code','ship_pobox','ship_country','ship_state');
-	for($i=0;$i<count($xyz);$i++){
-		if (getFieldVisibilityPermission('SalesOrder', $current_user->id,$xyz[$i]) == '0') {
-			$so_focus->column_fields[$xyz[$i]] = $so_focus->column_fields[$xyz[$i]];
+	$fields = array('bill_street','bill_city','bill_code','bill_pobox','bill_country','bill_state','ship_street','ship_city','ship_code','ship_pobox','ship_country','ship_state');
+	foreach ($fields as $fieldname) {
+		if (getFieldVisibilityPermission('SalesOrder', $current_user->id, $fieldname) == '0') {
+			$so_focus->column_fields[$fieldname] = $so_focus->column_fields[$fieldname];
 		} else {
-			$so_focus->column_fields[$xyz[$i]] = '';
+			$so_focus->column_fields[$fieldname] = '';
 		}
 	}
 	$focus->column_fields['salesorder_id'] = $soid;
@@ -1422,13 +1440,13 @@ function getConvertQuoteToInvoice($focus,$quote_focus,$quoteid)
 {
 	global $log,$current_user;
 	$log->debug("Entering getConvertQuoteToInvoice(".get_class($focus).",".get_class($quote_focus).",".$quoteid.") method ...");
-	$xyz=array('bill_street','bill_city','bill_code','bill_pobox','bill_country','bill_state','ship_street','ship_city','ship_code','ship_pobox','ship_country','ship_state');
-	for($i=0;$i<12;$i++){
-		if (getFieldVisibilityPermission('Quotes', $current_user->id,$xyz[$i]) == '0'){
-			$quote_focus->column_fields[$xyz[$i]] = $quote_focus->column_fields[$xyz[$i]];
+	$fields = array('bill_street','bill_city','bill_code','bill_pobox','bill_country','bill_state','ship_street','ship_city','ship_code','ship_pobox','ship_country','ship_state');
+	foreach ($fields as $fieldname) {
+		if (getFieldVisibilityPermission('Quotes', $current_user->id,$fieldname) == '0'){
+			$quote_focus->column_fields[$fieldname] = $quote_focus->column_fields[$fieldname];
 		}
 		else
-			$quote_focus->column_fields[$xyz[$i]] = '';
+			$quote_focus->column_fields[$fieldname] = '';
 	}
 	$focus->column_fields['subject'] = $quote_focus->column_fields['subject'];
 	$focus->column_fields['account_id'] = $quote_focus->column_fields['account_id'];
@@ -1468,13 +1486,13 @@ function getConvertQuoteToSoObject($focus,$quote_focus,$quoteid)
 {
 	global $log,$current_user;
 	$log->debug("Entering getConvertQuoteToSoObject(".get_class($focus).",".get_class($quote_focus).",".$quoteid.") method ...");
-	$xyz=array('bill_street','bill_city','bill_code','bill_pobox','bill_country','bill_state','ship_street','ship_city','ship_code','ship_pobox','ship_country','ship_state');
-	for($i=0;$i<12;$i++){
-		if (getFieldVisibilityPermission('Quotes', $current_user->id,$xyz[$i]) == '0'){
-			$quote_focus->column_fields[$xyz[$i]] = $quote_focus->column_fields[$xyz[$i]];
+	$fields = array('bill_street','bill_city','bill_code','bill_pobox','bill_country','bill_state','ship_street','ship_city','ship_code','ship_pobox','ship_country','ship_state');
+	foreach ($fields as $fieldname) {
+		if (getFieldVisibilityPermission('Quotes', $current_user->id,$fieldname) == '0'){
+			$quote_focus->column_fields[$fieldname] = $quote_focus->column_fields[$fieldname];
 		}
 		else
-			$quote_focus->column_fields[$xyz[$i]] = '';
+			$quote_focus->column_fields[$fieldname] = '';
 	}
 	$focus->column_fields['quote_id'] = $quoteid;
 	$focus->column_fields['subject'] = $quote_focus->column_fields['subject'];
@@ -1755,8 +1773,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 		//First we will get all associated taxes as array
 		$tax_details = getTaxDetailsForProduct($hdnProductId,'all',$acvid);
 		//Now retrieve the tax values from the current query with the name
-		for($tax_count=0;$tax_count<count($tax_details);$tax_count++)
-		{
+		for ($tax_count=0, $tax_countMax = count($tax_details); $tax_count< $tax_countMax; $tax_count++) {
 			$tax_name = $tax_details[$tax_count]['taxname'];
 			$tax_label = $tax_details[$tax_count]['taxlabel'];
 			$tax_value = '0.00';
@@ -1832,8 +1849,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 	$tax_details = getAllTaxes('available','','edit',$focus->id);
 	$ipr_cols = $adb->getColumnNames('vtiger_inventoryproductrel');
 
-	for($tax_count=0;$tax_count<count($tax_details);$tax_count++)
-	{
+	for ($tax_count=0, $tax_countMax = count($tax_details); $tax_count< $tax_countMax; $tax_count++) {
 		$tax_name = $tax_details[$tax_count]['taxname'];
 		$tax_label = $tax_details[$tax_count]['taxlabel'];
 
@@ -1869,8 +1885,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 	$shtax_details = getAllTaxes('available','sh','edit',$focus->id);
 
 	//if taxtype is group then the tax should be same for all products in vtiger_inventoryproductrel table
-	for($shtax_count=0;$shtax_count<count($shtax_details);$shtax_count++)
-	{
+	for ($shtax_count=0, $shtax_countMax = count($shtax_details); $shtax_count< $shtax_countMax; $shtax_count++) {
 		$shtax_name = $shtax_details[$shtax_count]['taxname'];
 		$shtax_label = $shtax_details[$shtax_count]['taxlabel'];
 		$shtax_percent = '0.00';
@@ -1996,8 +2011,7 @@ function getBlockInformation($module, $result, $col_fields,$tabid,$block_label,$
 	foreach($editview_arr as $headerid=>$editview_value)
 	{
 		$editview_data = Array();
-		for ($i=0,$j=0;$i<count($editview_value);$j++)
-		{
+		for ($i=0, $j=0, $iMax = count($editview_value); $i< $iMax; $j++) {
 			$key1=$editview_value[$i];
 			if(isset($editview_value[$i+1]) && is_array($editview_value[$i+1]) && ($key1[0][0]!=19 && $key1[0][0]!=20))
 			{

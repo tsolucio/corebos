@@ -290,21 +290,6 @@ class Vendors extends CRMEntity {
 	}
 
 	/*
-	 * Function to get the secondary query part of a report
-	 * @param - $module primary module name
-	 * @param - $secmodule secondary module name
-	 * returns the query string formed on fetching the related data for report for secondary module
-	 */
-	function generateReportsSecQuery($module,$secmodule){
-		$query = $this->getRelationQuery($module,$secmodule,"vtiger_vendor","vendorid");
-		$query .=" left join vtiger_crmentity as vtiger_crmentityVendors on vtiger_crmentityVendors.crmid=vtiger_vendor.vendorid and vtiger_crmentityVendors.deleted=0
-			left join vtiger_vendorcf on vtiger_vendorcf.vendorid = vtiger_crmentityVendors.crmid
-			left join vtiger_users as vtiger_usersVendors on vtiger_usersVendors.id = vtiger_crmentityVendors.smownerid
-			left join vtiger_users as vtiger_lastModifiedByVendors on vtiger_lastModifiedByVendors.id = vtiger_crmentityVendors.modifiedby ";
-		return $query;
-	}
-
-	/*
 	 * Function to get the relation tables for related modules
 	 * @param - $secmodule secondary module name
 	 * returns the array with table names and fieldnames storing relations between module and this module

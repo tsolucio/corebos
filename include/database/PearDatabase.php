@@ -672,8 +672,7 @@ class PearDatabase{
 		if (!is_object($result))
 			throw new Exception("query \"$query\" failed: ".serialize($result));
 		$res = $result->FetchRow();
-		$rowdata = $this->change_key_case($res);
-		return $rowdata;
+		return $this->change_key_case($res);
 	}
 
 	function run_query_allrecords($query) {
@@ -790,8 +789,7 @@ class PearDatabase{
 		if (!is_object($result))
 			throw new Exception("result is not an object");
 		$result->Move($row);
-		$rowdata = $this->change_key_case($result->FetchRow());
-		return $rowdata;
+		return $this->change_key_case($result->FetchRow());
 	}
 
 	function getAffectedRowCount(&$result){
@@ -1061,8 +1059,7 @@ class PearDatabase{
 	function getDBDateString($datecolname) {
 		$this->checkConnection();
 		$db = $this->database;
-		$datestr = $db->SQLDate("Y-m-d, H:i:s" ,$datecolname);
-		return $datestr;
+		return $db->SQLDate('Y-m-d, H:i:s' ,$datecolname);
 	}
 
 	function getUniqueID($seqname) {

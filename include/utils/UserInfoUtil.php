@@ -208,58 +208,46 @@ function getTabsUtilityActionPermission($profileid)
 	return $check;
 }
 
- /**This Function returns the Default Organisation Sharing Action Array for all modules whose sharing actions are editable
-  * The result array will be in the following format:
+ /**This Function returns the Default Organization Sharing Action Array for all modules whose sharing actions are editable
+  * The returned array will be in the following format:
   * Arr=(tabid1=>Sharing Action Id,
-  *      tabid2=>SharingAction Id,
+  *      tabid2=>Sharing Action Id,
   *            |
-  *            |
-  *            |
-  *      tabid3=>SharingAcion Id)
+  *      tabidn=>Sharing Acion Id)
   */
 function getDefaultSharingEditAction()
 {
 	global $log,$adb;
 	$log->debug('Entering getDefaultSharingEditAction() method ...');
 	//retreiving the standard permissions
-	$sql= 'select * from vtiger_def_org_share where editstatus=0';
+	$copy = array();
+	$sql= 'select tabid,permission from vtiger_def_org_share where editstatus=0';
 	$result = $adb->pquery($sql, array());
-	$permissionRow=$adb->fetch_array($result);
-	do {
-		for($j=0;$j<count($permissionRow);$j++) {
-			$copy[$permissionRow[1]]=$permissionRow[2];
-		}
-	}while($permissionRow=$adb->fetch_array($result));
-
+	while ($permissionRow=$adb->fetch_array($result)) {
+		$copy[$permissionRow['tabid']] = $permissionRow['permission'];
+	}
 	$log->debug('Exiting getDefaultSharingEditAction method ...');
 	return $copy;
 }
 
-/**This Function returns the Default Organisation Sharing Action Array for modules with edit status in (0,1)
-  * The result array will be in the following format:
+/**This Function returns the Default Organization Sharing Action Array for modules with edit status in (0,1)
+  * The returned array will be in the following format:
   * Arr=(tabid1=>Sharing Action Id,
-  *      tabid2=>SharingAction Id,
+  *      tabid2=>Sharing Action Id,
   *            |
-  *            |
-  *            |
-  *      tabid3=>SharingAcion Id)
+  *      tabidn=>Sharing Acion Id)
   */
 function getDefaultSharingAction()
 {
 	global $log, $adb;
 	$log->debug('Entering getDefaultSharingAction() method ...');
 	//retrieve standard permissions
+	$copy = array();
 	$sql= 'select * from vtiger_def_org_share where editstatus in(0,1)';
 	$result = $adb->pquery($sql, array());
-	$permissionRow=$adb->fetch_array($result);
-	$copy = array();
-	do
-	{
-		for($j=0;$j<count($permissionRow);$j++)
-		{
-			$copy[$permissionRow[1]]=$permissionRow[2];
-		}
-	}while($permissionRow=$adb->fetch_array($result));
+	while ($permissionRow=$adb->fetch_array($result)) {
+		$copy[$permissionRow['tabid']] = $permissionRow['permission'];
+	}
 	$log->debug('Exiting getDefaultSharingAction method ...');
 	return $copy;
 }

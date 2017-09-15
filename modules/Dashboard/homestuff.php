@@ -14,13 +14,12 @@ function dashboardDisplayCall($type,$Chart_Type,$from_page)
 	require_once('include/logging.php');
 	require 'modules/Dashboard/graphdefinitions.php';
 	$log = LoggerManager::getLogger('dashboard');
-	if(isset($type)) {
+	if (isset($type)) {
 		require_once('modules/Dashboard/display_charts.php');
 		$_REQUEST['type'] = $type;
 		$_REQUEST['Chart_Type'] = $Chart_Type;
 		$_REQUEST['from_page'] = 'HomePage';
-		$dashval=dashBoardDisplayChart();
-		return $dashval;
+		return dashBoardDisplayChart();
 	}
 	return '';
 }

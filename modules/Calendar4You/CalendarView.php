@@ -67,14 +67,9 @@ $smarty->assign("CREATE_PERMISSION",($Calendar4You->CheckPermissions("CREATE") ?
 			$roleids = $subrole;
 			$roleids[] = $roleid;
 		} else {
-			$roleids = $roleid;
+			$roleids = array($roleid);
 		}
-
-		if (count($roleids) > 1) {
-			$Res=$adb->pquery("select activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where activitytype!=? and roleid in (". generateQuestionMarks($roleids) .") and picklistid in (select picklistid from vtiger_picklist) order by sortid asc", array('Emails',$roleids));
-		} else {
-			$Res=$adb->pquery("select activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where activitytype!=? and roleid = ? and picklistid in (select picklistid from vtiger_picklist) order by sortid asc", array('Emails',$roleid));
-		}
+		$Res=$adb->pquery("select distinct activitytype,sortid from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where activitytype!=? and roleid in (". generateQuestionMarks($roleids) .") and picklistid in (select picklistid from vtiger_picklist) order by sortid asc", array('Emails',$roleids));
 	}
 
 	$eventlist=''; 
@@ -86,7 +81,7 @@ $smarty->assign("CREATE_PERMISSION",($Calendar4You->CheckPermissions("CREATE") ?
 		$eventlist .= $actname.";";
 		$eventlists_array .= '"'.html_entity_decode($actname,ENT_QUOTES, $default_charset).'",';
 		$i18actname = getTranslatedString($actname,'Calendar');
-		$abelist.='<tr><td><a id="add'.strtolower($actname).'" href="index.php?module=Calendar4You&action=EventEditView&return_module=Calendar&return_action=index&activity_mode=Events&activitytype='.$eventlist.'" class="drop_down">'.$i18actname.'</a></td></tr>';
+		$abelist.='<tr><td><a id="add'.strtolower($actname).'" href="index.php?module=cbCalendar&action=EditView&return_module=Calendar4You&return_action=index&activity_mode=Events&activitytype='.$actname.'" class="drop_down">'.$i18actname.'</a></td></tr>';
 	}
 	$timeModules = getAllModulesWithDateTimeFields();
 	foreach ($timeModules as $tmid => $tmmod) {

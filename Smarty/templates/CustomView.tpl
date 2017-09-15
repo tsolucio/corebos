@@ -238,7 +238,7 @@ function mandatoryCheck()
 				{assign var=msg_style value="readonly"}
 			     {/if}
 			     <input name="startdate" id="jscal_field_date_start" type="text" size="10" class="textField small" value="{if isset($STARTDATE)}{$STARTDATE}{/if}" {$msg_style}>
-			     <img src="{$IMAGE_PATH}btnL3Calendar.gif" id="jscal_trigger_date_start" style={$img_style}>
+			     <img src="{$IMAGE_PATH}btnL3Calendar.gif" id="jscal_trigger_date_start" style="vertical-align:middle;{$img_style}">
 			     <font size=1><em old="(yyyy-mm-dd)">({$DATEFORMAT})</em></font>
 			     <script type="text/javascript">
 			  		Calendar.setup ({ldelim}
@@ -250,7 +250,7 @@ function mandatoryCheck()
 			     <td align="right" class="dvtCellLabel">{$MOD.End_Date} :</td> 
   			     <td width="25%" align=left class="dvtCellInfo">
 			     <input name="enddate" {$msg_style} id="jscal_field_date_end" type="text" size="10" class="textField small" value="{if isset($ENDDATE)}{$ENDDATE}{/if}">
-			     <img src="{$IMAGE_PATH}btnL3Calendar.gif" id="jscal_trigger_date_end" style={$img_style}>
+			     <img src="{$IMAGE_PATH}btnL3Calendar.gif" id="jscal_trigger_date_end" style="vertical-align:middle;{$img_style}">
 			     <font size=1><em old="(yyyy-mm-dd)">({$DATEFORMAT})</em></font>
 			     <script type="text/javascript">
 					Calendar.setup ({ldelim}

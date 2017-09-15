@@ -8,15 +8,15 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-class VTWorkflowTemplateManager{
+class VTWorkflowTemplateManager {
 	public function __construct($adb){
 		$this->adb = $adb;
 	}
-	
+
 	/**
 	 * Create anew template instance from a workflow
 	 *
-	 * This template instance will not be saved. The save 
+	 * This template instance will not be saved. The save
 	 * will have to be done explicitly.
 	 *
 	 * @param $title The title of the template
@@ -32,7 +32,7 @@ class VTWorkflowTemplateManager{
 		$template->template = $str;
 		return $template;
 	}
-	
+
 	/**
 	 * Retrieve a template given it's id
 	 *
@@ -80,7 +80,7 @@ class VTWorkflowTemplateManager{
 
 	/**
 	 * Get all templates
-	 * 
+	 *
 	 * Get all the templates as an array
 	 *
 	 * @return An array containing template objects.
@@ -95,30 +95,24 @@ class VTWorkflowTemplateManager{
 	 * Save a template
 	 *
 	 * If the object is a newly created template it
-	 * will be added to the database and a field id containing 
+	 * will be added to the database and a field id containing
 	 * the new id will be added to the object.
 	 *
 	 * @param $template The template object to save.
 	 */
 	public function saveTemplate($template){
 		$adb = $this->adb;
-		if(is_numeric($template->id)){//How do I check whether a member exists in php?
-				$templateId = $template->id;
-				$adb->pquery("update com_vtiger_workflowtemplates set title=?,"+
-										 " module_name=?, template=? where template_id=?", 
-										 array($template->title, $template->moduleName, 
-													 $template->template, $templateId));	
-				return $templateId;
-			}else{
-				$templateId = $adb->getUniqueID("com_vtiger_workflowtemplates");
-				$template->id = $templateId;
-				$adb->pquery("insert into com_vtiger_workflowtemplates 
-							(template_id, title, module_name, template) 
-							values (?, ?, ?, ?)", 
-					array($templateId, $template->title, 
-								$template->moduleName, $template->template));
-				return $templateId;
-			}
+		if (!empty($template->id)) {
+			$templateId = $template->id;
+			$adb->pquery('update com_vtiger_workflowtemplates set title=?, module_name=?, template=? where template_id=?',
+				array($template->title, $template->moduleName, $template->template, $templateId));
+		} else {
+			$templateId = $adb->getUniqueID("com_vtiger_workflowtemplates");
+			$template->id = $templateId;
+			$adb->pquery('insert into com_vtiger_workflowtemplates (template_id, title, module_name, template) values (?, ?, ?, ?)',
+				array($templateId, $template->title, $template->moduleName, $template->template));
+		}
+		return $templateId;
 	}
 
 	/**
@@ -128,15 +122,13 @@ class VTWorkflowTemplateManager{
 	 */
 	public function deleteTemplate($templateId){
 		$adb = $this->adb;
-		$adb->pquery('delete from com_vtiger_workflowtemplates where template_id=?',
-								 array($templateId));
+		$adb->pquery('delete from com_vtiger_workflowtemplates where template_id=?', array($templateId));
 	}
-	
-	
+
 	/**
 	 * Dump all the templates in vtiger into a string
 	 *
-	 * This can be used for exporting templates from one 
+	 * This can be used for exporting templates from one
 	 * machine to another
 	 *
 	 * @return The string dump of the templates.
@@ -156,7 +148,7 @@ class VTWorkflowTemplateManager{
 		}
 		return json_encode($arr);
 	}
-	
+
 	/**
 	 * Load templates form a dumped string
 	 *
@@ -174,24 +166,22 @@ class VTWorkflowTemplateManager{
 			}
 	}
 
-
 	private function getTemplatesForResult($result){
 		$adb = $this->adb;
-		$it = new SqlResultIterator($adb, $result);
 		$templates = array();
-		foreach($it as $row){
+		while ($row = $adb->fetch_array($result)) {
 			$template = new VTWorkflowTemplate();
-			$template->id = $row->template_id;
-			$template->title = $row->title;
-			$tempalte->moduleName = $row->module_name;
-			$template->template = $row->template;
+			$template->id = $row['template_id'];
+			$template->title = $row['title'];
+			$template->moduleName = $row['module_name'];
+			$template->template = $row['template'];
 			$templates[] = $template;
 		}
 		return $templates;
 	}
 }
 
-class VTWorkflowTemplate{
-	
+class VTWorkflowTemplate {
+
 }
 ?>

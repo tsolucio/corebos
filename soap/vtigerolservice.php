@@ -1205,7 +1205,6 @@ function GetClndr($username,$session)
 			"category" => "",
 		);
 	}
-	//$log->fatal($output_list);
 	$seed_clndr = $seed_clndr;
 	return $output_list;
 }

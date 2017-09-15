@@ -725,13 +725,13 @@ class Reports extends CRMEntity{
 		$options = array();
 		$datefiltervalue = Array("custom","prevfy","thisfy","nextfy","prevfq","thisfq","nextfq",
 				"yesterday","today","tomorrow","lastweek","thisweek","nextweek","lastmonth","thismonth",
-				"nextmonth","last7days","last30days", "last60days","last90days","last120days",
+				"nextmonth","last7days","last14days","last30days", "last60days","last90days","last120days",
 				"next30days","next60days","next90days","next120days"
 				);
 
 		$datefilterdisplay = Array("Custom","Previous FY", "Current FY","Next FY","Previous FQ","Current FQ","Next FQ","Yesterday",
 				"Today","Tomorrow","Last Week","Current Week","Next Week","Last Month","Current Month",
-				"Next Month","Last 7 Days","Last 30 Days","Last 60 Days","Last 90 Days","Last 120 Days",
+				"Next Month","Last 7 Days","Last 14 Days","Last 30 Days","Last 60 Days","Last 90 Days","Last 120 Days",
 				"Next 7 Days","Next 30 Days","Next 60 Days","Next 90 Days","Next 120 Days"
 				);
 
@@ -862,6 +862,9 @@ class Reports extends CRMEntity{
 
 		$last7days = date("Y-m-d",mktime(0, 0, 0, date("m")  , date("d")-6, date("Y")));
 		$last7DaysDateTime = new DateTimeField($last7days.' '. date('H:i:s'));
+
+		$last14days = date("Y-m-d",mktime(0, 0, 0, date("m")  , date("d")-13, date("Y")));
+		$last14DaysDateTime = new DateTimeField($last14days.' '. date('H:i:s'));
 
 		$last30days = date("Y-m-d",mktime(0, 0, 0, date("m")  , date("d")-29, date("Y")));
 		$last30DaysDateTime = new DateTimeField($last30days.' '. date('H:i:s'));
@@ -1029,6 +1032,10 @@ class Reports extends CRMEntity{
 				} else if( type == "last7days" ) {
 					document.NewReport.startdate.value = "'.$last7DaysDateTime->getDisplayDate().'";
 					document.NewReport.enddate.value = "'.$todayDateTime->getDisplayDate().'";
+
+				} else if( type == "last14days" ) {
+					document.NewReport.startdate.value = "'.$last14DaysDateTime->getDisplayDate().'";
+					document.NewReport.enddate.value =  "'.$todayDateTime->getDisplayDate().'";
 
 				} else if( type == "last30days" ) {
 					document.NewReport.startdate.value = "'.$last30DaysDateTime->getDisplayDate().'";

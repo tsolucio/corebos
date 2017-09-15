@@ -71,8 +71,7 @@ class WSAPP_SyncRecordModel extends WSAPP_BaseModel{
 	}
 
 	public static function getInstanceFromValues($recordValues){
-		$model = new WSAPP_SyncRecordModel($recordValues);
-		return $model;
+		return new WSAPP_SyncRecordModel($recordValues);
 	}
 
 }

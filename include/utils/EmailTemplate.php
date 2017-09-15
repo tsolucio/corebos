@@ -33,7 +33,7 @@ class EmailTemplate {
 		$this->processedDescription = $description;
 		$templateVariablePair = explode('$',$this->rawDescription);
 		$this->templateFields = Array();
-		for($i=1;$i < count($templateVariablePair);$i+=2) {
+		for($i=1, $iMax = count($templateVariablePair); $i < $iMax; $i+=2) {
 			if (strpos($templateVariablePair[$i], '-') === false) continue;
 			list($module,$fieldName) = explode('-',$templateVariablePair[$i]);
 			if ($pos = strpos($fieldName,'_fullpath')) {

@@ -79,8 +79,7 @@ class MailManager_FolderController extends MailManager_Controller {
      * @return string
      */
 	static function getSearchOptions(){
-		$options = array('SUBJECT','TO','BODY','BCC','CC','FROM');
-		return $options;
+		return array('SUBJECT','TO','BODY','BCC','CC','FROM');
 	}
 }
 ?>

@@ -204,11 +204,11 @@ function export($type){
 	$CSV_Separator = GlobalVariable::getVariable('Export_Field_Separator_Symbol',',',$type);
 
 	// Translated the field names based on the language used.
-	$translated_fields_array = array();
-	for($i=0; $i<count($fields_array); $i++) {
-		$translated_fields_array[$i] = getTranslatedString($fields_array[$i],$type);
-	}
-	$header = implode('"'.$CSV_Separator.'"',array_values($translated_fields_array));
+	$translated_fields_array = array_map(
+		function ($field) use($type) { return getTranslatedString($field, $type); },
+		$fields_array
+	);
+	$header = implode('"'.$CSV_Separator.'"', $translated_fields_array);
 	$header = "\"" .$header;
 	$header .= "\"\r\n";
 

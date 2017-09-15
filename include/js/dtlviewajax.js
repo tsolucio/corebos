@@ -9,6 +9,7 @@
 var globaldtlviewspanid = "";
 var globaleditareaspanid = ""; 
 var globaltxtboxid = "";
+var globalfldtimeformat = "";
 var itsonview=false;
 // to retain the old value if we cancel the ajax edit
 var globaltempvalue = '';
@@ -27,8 +28,13 @@ function hndCancel(valuespanid,textareapanid,fieldlabel)
 			getObj(globaltxtboxid).checked = true;
 		else
 			getObj(globaltxtboxid).checked = false;
-	} else if(globaluitype != '53' && globaluitype != '33' && globaluitype != '3313' && globaluitype != '3314')
+	} else if (globaluitype == '50') {
 		getObj(globaltxtboxid).value = globaltempvalue;
+		getObj('timefmt_' + fieldlabel).innerHTML = (globalfldtimeformat != '24' ? globalfldtimeformat : '');
+		getObj('inputtimefmt_' + fieldlabel).value = globalfldtimeformat;
+	} else if (globaluitype != '53' && globaluitype != '33' && globaluitype != '3313' && globaluitype != '3314') {
+		getObj(globaltxtboxid).value = globaltempvalue;
+	}
 	globaltempvalue = '';
 	itsonview=false;
 	return false;
@@ -53,7 +59,7 @@ function hndMouseOver(uitype,fieldLabel)
 	globaldtlviewspanid= "dtlview_"+ fieldLabel;//valuespanid;
 	globaleditareaspanid="editarea_"+ fieldLabel;//textareapanid;
 	globalfieldlabel = fieldLabel;
-	if(globaluitype == 53) {
+	if (globaluitype == 53) {
 		var assigntype = document.getElementsByName('assigntype');
 		if(assigntype.length > 0) {
 			var assign_type_U = assigntype[0].checked;
@@ -69,6 +75,8 @@ function hndMouseOver(uitype,fieldLabel)
 			} else {
 				globaltxtboxid= 'txtbox_U'+fieldLabel;
 			}
+	} else if (globaluitype == 50) {
+		globalfldtimeformat = getObj('inputtimefmt_' + fieldLabel).value;
 	} else {
 		globaltxtboxid="txtbox_"+ fieldLabel;//textboxpanid;
 	}
@@ -255,6 +263,8 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 	}else if(uitype == '24' || uitype == '21')
 	{
 		tagValue = document.getElementById(txtBox).value.replace(/<br\s*\/>/g, " ");
+	} else if (uitype == '50') {
+		tagValue = document.getElementById(txtBox).value + getObj('inputtimefmt_' + fieldLabel).value;
 	}else
 	{
 		tagValue = trim(document.getElementById(txtBox).value);
@@ -485,6 +495,10 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 		desc = desc.replace(/,\"|\.\"|\)\"|\)\.\"|\.\)\"/, "\"");
 		//desc = desc.replace(/[\n\r]/g, "<br>&nbsp;");
 		getObj(dtlView).textContent = desc;
+	} else if (uitype == '50') {
+		let timefmt = tagValue.substring(tagValue.length-2);
+		if (timefmt == '24') timefmt = '';
+		getObj(dtlView).innerHTML = tagValue.substring(0,tagValue.length-2)+"&nbsp;<font size=1><em>&nbsp;<span id='timefmt_"+fieldName+"'>"+timefmt+"</span></em></font>";
 	}
 	else
 	{
@@ -539,6 +553,11 @@ function dtlviewModuleValidation(fieldLabel,module,uitype,tableName,fieldName,cr
 							} else {
 								sentForm[fieldName] = 0;
 							}
+							break;
+						case '50':
+						case 50:
+							sentForm[fieldName] = document.getElementById("txtbox_" + fieldName).value;
+							sentForm["timefmt_" + fieldName] = document.getElementById("inputtimefmt_" + fieldName).value;
 							break;
 						case '53':
 						case 53:

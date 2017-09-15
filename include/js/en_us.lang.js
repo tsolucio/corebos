@@ -47,7 +47,6 @@ var alert_arr = {
 	'DISABLE_SHARING_CONFIRMATION':'Are you sure you want to disable sharing for selected ',
 	'USERS':' user(s) ?',
 	'ENDTIME_GREATER_THAN_STARTTIME':'End Time should be greater than Start Time ',
-	'FOLLOWUPTIME_GREATER_THAN_STARTTIME':'Follow up Time should be greater than End Time ',
 	'MISSING_EVENT_NAME':'Missing Event Name',
 	'EVENT_TYPE_NOT_SELECTED':'Event Type is not selected',
 	'CLOSEDATE_CANNOT_BE_EMPTY':'Close Date field cannot be empty',
@@ -124,8 +123,6 @@ var alert_arr = {
 	'ENDDATE': 'End Date',
 	'START_DATE_TIME': 'Start Date & Time',
 	'START_TIME': 'Start Time',
-	'DATE_SHOULDNOT_PAST':'Current date & time for Activities with status as Planned',
-	'TIME_SHOULDNOT_PAST':'Current Time for Activities with status as Planned',
 	'LBL_AND': 'And',
 	'LBL_OR': 'Or',
 	'LBL_ENTER_VALID_PORT': 'Please enter valid port number',
@@ -133,13 +130,11 @@ var alert_arr = {
 	'LBL_ENTER_VALID_NO': 'Please enter valid number',
 	'LBL_PROVIDE_YES_NO': ' Invalid value.\n Please Provide Yes or No',
 	'LBL_SELECT_CRITERIA': ' Invalid criteria.\n Please select criteria',
-	// Added/Updated for vtiger CRM 5.0.4
 	'OPPORTUNITYNAME_CANNOT_BE_EMPTY':'Potential Name field cannot be empty',
 	'OVERWRITE_EXISTING_ACCOUNT1':'Do you want to Overwrite the existing address with this selected organization(',
 	'NAME_DESC':' for Folder Name & Description',
 	'ENDS_WITH':'ends with',
 	'SHARED_EVENT_DEL_MSG':'The User does not have permission to Edit/Delete Shared Event.',
-
 
 	'LBL_WRONG_IMAGE_TYPE': 'Allowed file types for Contacts - jpeg, png, jpg, pjpeg, x-png or gif',
 	'SELECT_MAIL_MOVE': 'Please select a mail and then move..',

@@ -192,6 +192,7 @@ $mod_strings = Array(
 'Current Month'=>'Deze maand',
 'Next Month'=>'Volgende maand',
 'Last 7 Days'=>'Laatste 7 dagen',
+'Last 14 Days' => 'Laatste 14 dagen',
 'Last 30 Days'=>'Laatste 30 dagen',
 'Last 60 Days'=>'Laatste 60 dagen',
 'Last 90 Days'=>'Laatste 90 dagen',

@@ -151,6 +151,11 @@ class Documents extends CRMEntity {
 			$qparams = array($this->id);
 			$adb->pquery($query, $qparams);
 		}
+		//set the column_fields so that its available in the event handlers
+		$this->column_fields['filename'] = $filename;
+		$this->column_fields['filesize'] = $filesize;
+		$this->column_fields['filetype'] = $filetype;
+		$this->column_fields['filedownloadcount'] = $filedownloadcount;
 	}
 
 	/**
@@ -382,18 +387,27 @@ class Documents extends CRMEntity {
 	 * @param - $module Primary module name
 	 * returns the query string formed on fetching the related data for report for primary module
 	 */
-	function generateReportsQuery($module){
+	function generateReportsQuery($module,$queryplanner) {
 		$moduletable = $this->table_name;
 		$moduleindex = $this->tab_name_index[$moduletable];
 		$query = "from $moduletable
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=$moduletable.$moduleindex
-			inner join vtiger_attachmentsfolder on vtiger_attachmentsfolder.folderid=$moduletable.folderid 
-			inner join vtiger_notescf on vtiger_notescf.notesid = $moduletable.$moduleindex
-			left join vtiger_groups as vtiger_groups".$module." on vtiger_groups".$module.".groupid = vtiger_crmentity.smownerid
-			left join vtiger_users as vtiger_users".$module." on vtiger_users".$module.".id = vtiger_crmentity.smownerid
-			left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid
-			left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
-			left join vtiger_users as vtiger_lastModifiedBy".$module." on vtiger_lastModifiedBy".$module.".id = vtiger_crmentity.modifiedby ";
+			inner join vtiger_crmentity on vtiger_crmentity.crmid=$moduletable.$moduleindex";
+		if ($queryplanner->requireTable("vtiger_attachmentsfolder")) {
+			$query .= " inner join vtiger_attachmentsfolder on vtiger_attachmentsfolder.folderid=$moduletable.folderid";
+		}
+		if ($queryplanner->requireTable('vtiger_CreatedBy'.$module)) {
+			$query .= " LEFT JOIN vtiger_users AS vtiger_CreatedBy$module ON vtiger_CreatedBy$module.id = vtiger_crmentity.smcreatorid";
+		}
+		if ($queryplanner->requireTable("vtiger_users".$module) || $queryplanner->requireTable("vtiger_groups".$module)) {
+			$query .= " left join vtiger_users as vtiger_users".$module." on vtiger_users".$module.".id = vtiger_crmentity.smownerid";
+			$query .= " left join vtiger_groups as vtiger_groups".$module." on vtiger_groups".$module.".groupid = vtiger_crmentity.smownerid";
+		}
+		$query .= " left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid";
+		$query .= " left join vtiger_notescf on vtiger_notes.notesid = vtiger_notescf.notesid";
+		$query .= " left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid";
+		if ($queryplanner->requireTable("vtiger_lastModifiedBy".$module)) {
+			$query .= " left join vtiger_users as vtiger_lastModifiedBy".$module." on vtiger_lastModifiedBy".$module.".id = vtiger_crmentity.modifiedby ";
+		}
 		return $query;
 	}
 
@@ -403,14 +417,11 @@ class Documents extends CRMEntity {
 	 * @param - $secmodule secondary module name
 	 * returns the query string formed on fetching the related data for report for secondary module
 	 */
-	function generateReportsSecQuery($module,$secmodule){
-		$query = $this->getRelationQuery($module,$secmodule,"vtiger_notes","notesid");
-		$query .=" left join vtiger_crmentity as vtiger_crmentityDocuments on vtiger_crmentityDocuments.crmid=vtiger_notes.notesid and vtiger_crmentityDocuments.deleted=0 
-			left join vtiger_notescf on vtiger_notescf.notesid = vtiger_notes.notesid 
-			left join vtiger_attachmentsfolder on vtiger_attachmentsfolder.folderid=vtiger_notes.folderid
-			left join vtiger_groups as vtiger_groupsDocuments on vtiger_groupsDocuments.groupid = vtiger_crmentityDocuments.smownerid
-			left join vtiger_users as vtiger_usersDocuments on vtiger_usersDocuments.id = vtiger_crmentityDocuments.smownerid
-			left join vtiger_users as vtiger_lastModifiedByDocuments on vtiger_lastModifiedByDocuments.id = vtiger_crmentityDocuments.modifiedby ";
+	function generateReportsSecQuery($module,$secmodule,$queryplanner,$type = '',$where_condition = '') {
+		$query = parent::generateReportsSecQuery($module, $secmodule, $queryplanner, $type, $where_condition);
+		if ($queryplanner->requireTable("vtiger_attachmentsfolder")){
+			$query .= ' left join vtiger_attachmentsfolder on vtiger_attachmentsfolder.folderid=vtiger_notes.folderid';
+		}
 		return $query;
 	}
 

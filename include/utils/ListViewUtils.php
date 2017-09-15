@@ -576,8 +576,8 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 	else
 		$linkstart = '';
 	$wfs = new VTWorkflowManager($adb);
-	if ($navigation_array['start'] != 0)
-		$totals = array();
+	$totals = array();
+	if ($navigation_array['start'] != 0) {
 		for ($i = 1; $i <= $noofrows; $i++) {
 			$list_header = Array();
 			//Getting the entityid
@@ -973,7 +973,8 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 			list($list_header, $unused, $unused2) = cbEventHandler::do_filter('corebos.filter.listview.render', array($list_header, $adb->query_result_rowdata($list_result, $i - 1), $entity_id));
 			$list_block[$entity_id] = $list_header;
 		}
-	if(count($totals) > 0){
+	}
+	if (count($totals) > 0) {
 		$trow = array();
 		foreach ($focus->list_fields as $name => $tableinfo) {
 			$field_name = $focus->list_fields_name[$name];
@@ -1164,9 +1165,8 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 
 				//To get all the tax types and values and pass it to product details
 				$tax_str = '';
-				$tax_details = getAllTaxes();
-				for ($tax_count = 0; $tax_count < count($tax_details); $tax_count++) {
-					$tax_str .= $tax_details[$tax_count]['taxname'] . '=' . $tax_details[$tax_count]['percentage'] . ',';
+				foreach (getAllTaxes() as $tax_detail) {
+					$tax_str .= $tax_detail['taxname'] . '=' . $tax_detail['percentage'] . ',';
 				}
 				$tax_str = trim($tax_str, ',');
 				$rate = $current_user->column_fields['conv_rate'];
@@ -1217,9 +1217,8 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 
 				//To get all the tax types and values and pass it to product details
 				$tax_str = '';
-				$tax_details = getAllTaxes();
-				for ($tax_count = 0; $tax_count < count($tax_details); $tax_count++) {
-					$tax_str .= $tax_details[$tax_count]['taxname'] . '=' . $tax_details[$tax_count]['percentage'] . ',';
+				foreach (getAllTaxes() as $tax_detail) {
+					$tax_str .= $tax_detail['taxname'] . '=' . $tax_detail['percentage'] . ',';
 				}
 				$tax_str = trim($tax_str, ',');
 				$rate = $current_user->column_fields['conv_rate'];
@@ -1381,6 +1380,14 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		} else {
 			$date = new DateTimeField($temp_val);
 			$value = $date->getDisplayDateTimeValue();
+			$user_format = ($current_user->hour_format=='24' ? '24' : '12');
+			if ($user_format != '24') {
+				$curr_time = DateTimeField::formatUserTimeString($value, '12');
+				$time_format = substr($curr_time, -2);
+				$curr_time = substr($curr_time, 0, 5);
+				list($dt,$tm) = explode(' ',$value);
+				$value = $dt . ' ' . $curr_time . $time_format;
+			}
 		}
 	} elseif ($uitype == 15 || ($uitype == 55 && $fieldname == "salutationtype")) {
 		$temp_val = decode_html_force($adb->query_result($list_result, $list_result_count, $colname));
@@ -1651,8 +1658,8 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 				}
 				$pickListResult = $adb->pquery($pick_query, $params);
 				$picklistval = Array();
-				for ($i = 0; $i < $adb->num_rows($pickListResult); $i++) {
-					$picklistarr[] = $adb->query_result($pickListResult, $i, $fieldname);
+				while ($plval = $adb->fetch_array($pickListResult)) {
+					$picklistarr[] = $plval[$fieldname];
 				}
 				$value_temp = Array();
 				$string_temp = '';
@@ -1784,9 +1791,8 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 
 					//To get all the tax types and values and pass it to product details
 					$tax_str = '';
-					$tax_details = getAllTaxes();
-					for ($tax_count = 0; $tax_count < count($tax_details); $tax_count++) {
-						$tax_str .= $tax_details[$tax_count]['taxname'] . '=' . $tax_details[$tax_count]['percentage'] . ',';
+					foreach (getAllTaxes() as $tax_detail) {
+						$tax_str .= $tax_detail['taxname'] . '=' . $tax_detail['percentage'] . ',';
 					}
 					$tax_str = trim($tax_str, ',');
 					$rate = $current_user->column_fields['conv_rate'];
@@ -1830,9 +1836,8 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 
 					//To get all the tax types and values and pass it to product details
 					$tax_str = '';
-					$tax_details = getAllTaxes();
-					for ($tax_count = 0; $tax_count < count($tax_details); $tax_count++) {
-						$tax_str .= $tax_details[$tax_count]['taxname'] . '=' . $tax_details[$tax_count]['percentage'] . ',';
+					foreach (getAllTaxes() as $tax_detail) {
+						$tax_str .= $tax_detail['taxname'] . '=' . $tax_detail['percentage'] . ',';
 					}
 					$tax_str = trim($tax_str, ',');
 					$rate = $current_user->column_fields['conv_rate'];
@@ -1872,9 +1877,8 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 
 					//To get all the tax types and values and pass it to product details
 					$tax_str = '';
-					$tax_details = getAllTaxes();
-					for ($tax_count = 0; $tax_count < count($tax_details); $tax_count++) {
-						$tax_str .= $tax_details[$tax_count]['taxname'] . '=' . $tax_details[$tax_count]['percentage'] . ',';
+					foreach (getAllTaxes() as $tax_detail) {
+						$tax_str .= $tax_detail['taxname'] . '=' . $tax_detail['percentage'] . ',';
 					}
 					$tax_str = trim($tax_str, ',');
 					$rate = $current_user->column_fields['conv_rate'];
@@ -3527,7 +3531,7 @@ function setSessionVar($lv_array, $noofrows, $max_ent, $module = '', $related = 
 	if (isset($_REQUEST['start']) && $_REQUEST['start'] != '') {
 		$lv_array['start'] = ListViewSession::getRequestStartPage();
 		$start = ListViewSession::getRequestStartPage();
-	} elseif ($_SESSION['rlvs'][$module][$related]['start'] != '') {
+	} elseif (isset($_SESSION['rlvs'][$module][$related]['start']) && $_SESSION['rlvs'][$module][$related]['start'] != '') {
 
 		if ($related != '') {
 			$lv_array['start'] = $_SESSION['rlvs'][$module][$related]['start'];

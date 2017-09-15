@@ -72,8 +72,7 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 			$sql = "update $tableName"."_seq set id=(select max(".$meta->getIdColumn().") from $tableName)";
 			$this->pearDB->pquery($sql,array());
 		}
-		$id = $this->pearDB->getUniqueId($tableName);
-		return $id;
+		return $this->pearDB->getUniqueId($tableName);
 	}
 
 	public function __create($elementType,$element) {
@@ -153,8 +152,7 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 		$params = array_values($element);
 		$params[] = $id;
 		$result = null;
-		$transactionSuccessful = vtws_runQueryAsTransaction($query,$params,$result);
-		return $transactionSuccessful;
+		return vtws_runQueryAsTransaction($query,$params,$result);
 	}
 
 	public function update($element) {
@@ -175,8 +173,7 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 		$params = array_values($element);
 		$params[] = $id;
 		$result = null;
-		$transactionSuccessful = vtws_runQueryAsTransaction($query,$params,$result);
-		return $transactionSuccessful;
+		return vtws_runQueryAsTransaction($query,$params,$result);
 	}
 
 	public function revise($element) {

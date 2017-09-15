@@ -164,6 +164,7 @@ $mod_strings = array (
 	'Next Month' => 'Le mois prochain',
 	'Last 7 Days' => 'Les 7 derniers jours',
 	'Last 30 Days' => 'Les 30 derniers jours',
+	'Last 14 Days' => 'Les 14 derniers jours',
 	'Last 60 Days' => 'Les 60 derniers jours',
 	'Last 90 Days' => 'Les 90 derniers jours',
 	'Last 120 Days' => 'Les 120 derniers jours',

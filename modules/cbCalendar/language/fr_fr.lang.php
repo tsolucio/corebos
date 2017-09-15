@@ -95,6 +95,8 @@ $mod_strings = Array(
 	'Weekly' => 'Semaine(s)',
 	'Monthly' => 'Mois',
 	'Yearly' => 'Année',
+	'DATE_SHOULDNOT_PAST' => 'Date et heure des activités planifiées',
+	'TIME_SHOULDNOT_PAST' => 'Activités courantes planifiées',
 );
 
 ?>

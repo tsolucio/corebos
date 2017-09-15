@@ -167,7 +167,7 @@ class coreBOS_Session {
 		}
 		if (!isset($_SESSION[$keyparts[0]])) return $defvalue;
 		$sespos = $_SESSION[$keyparts[0]];
-		for ($p=1;$p<count($keyparts);$p++) {
+		for ($p=1, $pMax = count($keyparts); $p< $pMax; $p++) {
 			if (!isset($sespos[$keyparts[$p]])) return $defvalue;
 			$sespos = $sespos[$keyparts[$p]];
 		}

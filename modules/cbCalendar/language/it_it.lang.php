@@ -17,6 +17,8 @@ $mod_strings = Array(
 	'LBL_MODULEBLOCK_INFORMATION' => 'Informazione Blocco del Modulo',
 
 	'ModuleFieldLabel' => 'Testo Etichetta Campo Modulo',
+	'DATE_SHOULDNOT_PAST' => "Data e orario corrente per le attivit\u00E0 pianificate",
+	'TIME_SHOULDNOT_PAST' => "Ora corrente per le attivit\u00E0 pianificate",
 );
 
 ?>

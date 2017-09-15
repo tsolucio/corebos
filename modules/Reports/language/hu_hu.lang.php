@@ -176,6 +176,7 @@ $mod_strings = array(
 	'Current Month' => 'Aktuális hónap',
 	'Next Month' => 'Következő hónap',
 	'Last 7 Days' => 'Elmúlt 7 nap',
+	'Last 14 Days' => 'Elmúlt 14 nap',
 	'Last 30 Days' => 'Elmúlt 30 nap',
 	'Last 60 Days' => 'Elmúlt 60 nap',
 	'Last 90 Days' => 'Elmúlt 90 nap',

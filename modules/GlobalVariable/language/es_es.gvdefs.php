@@ -77,6 +77,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Si el valor de la variable es 1 se escribirá en pantalla, la consulta de obtención de registros para la vista de pantalla de captura o selección.',
 ),
+'Debug_Email_Sending' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Depuración',
+	'values' => '0 | 1',
+	'definition' => 'Si se establece en 1, la conversación de correo electrónico completa se enviará al archivo de registro para poder depurar los problemas de configuración de correo electrónico. La depuración del archivo de registro debe estar activada.',
+),
 'Accounts_BlockDuplicateName' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
@@ -427,6 +434,20 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'URL de la aplicación que se presentará en pantalla como enlace del nombre.',
 ),
+'Application_UI_CompanyName' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => '',
+	'definition' => 'Nombre de la empresa que crea la aplicación. Aparece en el enlace inferior derecho del pie de página. El valor predeterminado es el mismo que Application_UI_Name.',
+),
+'Application_UI_ShowGITVersion' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '',
+	'definition' => 'Mostrar la versión aproximada de git después del número de versión de la aplicación..',
+),
 'Document_Folder_View' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
@@ -742,6 +763,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'No | Distance | Set',
 	'definition' => 'En la edición en línea de la vista de detalle de la fecha de inicio podemos avanzar la fecha de finalización. Si esta variable se establece en "No", la fecha de finalización no se modificará. Este es el valor predeterminado. Si se establece en "Set", la fecha de finalización se establecerá en el mismo valor que la fecha de inicio más los minutos en Calendar_call_default_duration. Si se establece en "Distance", se aplicará la misma diferencia de tiempo que existe antes del cambio.',
 ),
+'Calendar_PopupReminder_DaysPast' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Entero',
+	'category' => 'Aplicación',
+	'values' => '',
+	'definition' => 'Número máximo de días en el pasado para buscar eventos que aparecerán en la ventana emergente del recordatorio. El valor predeterminado es 7 días.',
+),
 'CronTasks_cronWatcher_mailto' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Emails CSV',
@@ -839,6 +867,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => '',
 	'definition' => 'El número máximo de archivos adjuntos que se pueden cargar en un correo electrónico. El valor predeterminado es 6.',
+),
+'EMail_CustomCurrentDate_Format' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'Cadena de formato de fecha PHP válida',
+	'definition' => 'Formato a aplicar a la variable $custom-currentdate$ en las plantillas de email. Acepta cualquier cadena de formato de fecha válida de PHP. Por defecto dejar vacio para obtener el mes en texto, dia y año.',
 ),
 'Workflow_Send_Email_ToCCBCC' => array(
 	'status' => 'Implementada',

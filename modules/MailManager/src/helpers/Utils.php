@@ -16,8 +16,7 @@ class MailManager_Utils {
 		$config->set('Core.Encoding', 'UTF8');
 		$config->set('Cache.SerializerPath', "$root_directory/cache");
 		$htmlpurifier_instance = new HTMLPurifier($config);
-		$htmlSafe = $htmlpurifier_instance->purify($string);
-		return $htmlSafe;
+		return $htmlpurifier_instance->purify($string);
 	}
 
 	static function allowedFileExtension($filename) {

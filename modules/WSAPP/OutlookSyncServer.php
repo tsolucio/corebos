@@ -112,8 +112,6 @@ class OutlookSyncServer extends SyncServer{
         $response['updated'] = array();
         $response['deleted'] = array();
 
-        $log->fatal($result['updated']);
-
         $nextSyncDeleteRecords = $this->destHandler->getAssignToChangedRecords();
         foreach ($result['created'] as $clientRecordId => $record) {
             parent::idmap_put($appid, $record['id'], $clientRecordId, $clientModifiedTimeList[$clientRecordId], $record['modifiedtime'], $serverAppId, $this->create);

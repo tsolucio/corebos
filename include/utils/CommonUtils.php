@@ -622,8 +622,7 @@ function getFullNameFromQResult($result, $row_count, $module) {
 function getFullNameFromArray($module, $fieldValues) {
 	$entityInfo = getEntityFieldNames($module);
 	$fieldsName = $entityInfo['fieldname'];
-	$displayName = getEntityFieldNameDisplay($module, $fieldsName, $fieldValues);
-	return $displayName;
+	return getEntityFieldNameDisplay($module, $fieldsName, $fieldValues);
 }
 
 /**
@@ -632,15 +631,12 @@ function getFullNameFromArray($module, $fieldValues) {
  * returns the Campaign Name in string format.
  */
 function getCampaignName($campaign_id) {
-	global $log;
-	$log->debug("Entering getCampaignName(" . $campaign_id . ") method ...");
-	$log->info("in getCampaignName " . $campaign_id);
-
-	global $adb;
-	$sql = "select * from vtiger_campaign where campaignid=?";
+	global $log, $adb;
+	$log->debug('Entering getCampaignName(' . $campaign_id . ') method ...');
+	$sql = 'select * from vtiger_campaign where campaignid=?';
 	$result = $adb->pquery($sql, array($campaign_id));
-	$campaign_name = $adb->query_result($result, 0, "campaignname");
-	$log->debug("Exiting getCampaignName method ...");
+	$campaign_name = $adb->query_result($result, 0, 'campaignname');
+	$log->debug('Exiting getCampaignName method ...');
 	return $campaign_name;
 }
 
@@ -1464,25 +1460,22 @@ function updateInfo($id) {
  * rotating the product Images
  */
 function getProductImages($id) {
-	global $log;
+	global $adb, $log;
 	$log->debug("Entering getProductImages(" . $id . ") method ...");
-	global $adb;
-	$image_lists = array();
-	$script_images = array();
-	$script = '<script>var ProductImages = new Array(';
-	$i = 0;
 	$query = 'select imagename from vtiger_products where productid=?';
 	$result = $adb->pquery($query, array($id));
 	$imagename = $adb->query_result($result, 0, 'imagename');
-	$image_lists = explode('###', $imagename);
-	for ($i = 0; $i < count($image_lists); $i++) {
-		$script_images[] = '"' . $image_lists[$i] . '"';
-	}
-	$script .=implode(',', $script_images) . ');</script>';
+
 	if ($imagename != '') {
-		$log->debug("Exiting getProductImages method ...");
-		return $script;
+		$script = implode(',', array_map(
+			function ($val) { return "\"$val\""; },
+			explode('###', $imagename)
+		));
+		$log->debug('Exiting getProductImages method ...');
+		return "<script>var ProductImages = new Array($script);</script>";
 	}
+	$log->debug('Exiting getProductImages method ...');
+	return '';
 }
 
 /**
@@ -1603,13 +1596,10 @@ function file_exist_fn($filename, $exist) {
 			$next = $exist + 1;
 			$explode_name = explode("_", $filename);
 			$implode_array = array();
-			for ($j = 0; $j < count($explode_name); $j++) {
-				if ($j != 0) {
-					$implode_array[] = $explode_name[$j];
-				}
+			for ($j = 1, $jMax = count($explode_name); $j < $jMax; $j++) {
+				$implode_array[] = $explode_name[$j];
 			}
 			$implode_name = implode("_", $implode_array);
-			$test_name = $implode_name;
 		} else {
 			$implode_name = $filename;
 		}
@@ -1828,11 +1818,8 @@ function getQuickCreateModules() {
 	global $log, $adb, $mod_strings;
 	$log->debug('Entering getQuickCreateModules() method ...');
 
-	// vtlib customization: Ignore disabled modules.
-	//$qc_query = "select distinct vtiger_tab.tablabel,vtiger_tab.name from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid where quickcreate=0 order by vtiger_tab.tablabel";
 	$qc_query = "select distinct vtiger_tab.tablabel,vtiger_tab.name from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid 
-			where quickcreate in (0,2) and vtiger_tab.presence != 1";
-	// END
+		where quickcreate in (0,2) and vtiger_tab.presence != 1 and vtiger_tab.name != 'Calendar' and vtiger_tab.name != 'Events'";
 
 	$result = $adb->pquery($qc_query, array());
 	$noofrows = $adb->num_rows($result);
@@ -1869,7 +1856,7 @@ function QuickCreate($module) {
 	//Adding Security Check
 	require('user_privileges/user_privileges_' . $current_user->id . '.php');
 	if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
-		$quickcreate_query = "select * from vtiger_field where (quickcreate in (0,2) or typeofdata like '%M%') and tabid = ? and vtiger_field.presence in (0,2) and displaytype != 2 order by quickcreatesequence";
+		$quickcreate_query = "select * from vtiger_field where (quickcreate in (0,2) or typeofdata like '%~M%') and tabid = ? and vtiger_field.presence in (0,2) and displaytype != 2 order by quickcreatesequence";
 		$params = array($tabid);
 	} else {
 		$profileList = getCurrentUserProfileList();
@@ -1903,7 +1890,7 @@ function QuickCreate($module) {
 		$custfld = getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields, $generatedtype, $module, '', $typeofdata);
 		$qcreate_arr[] = $custfld;
 	}
-	for ($i = 0, $j = 0; $i < count($qcreate_arr); $i = $i + 2, $j++) {
+	for ($i = 0, $j = 0, $iMax = count($qcreate_arr); $i < $iMax; $i += 2, $j++) {
 		$key1 = $qcreate_arr[$i];
 		if (isset($qcreate_arr[$i + 1]) and is_array($qcreate_arr[$i + 1])) {
 			$key2 = $qcreate_arr[$i + 1];
@@ -2218,7 +2205,7 @@ function getMergedDescription($description, $id, $parent_type) {
 	$templateVariablePair = explode('$', $description);
 	$token_data_pair = explode('$', $description);
 	$fields = Array();
-	for ($i = 1; $i < count($token_data_pair); $i+=2) {
+	for ($i = 1, $iMax = count($token_data_pair); $i < $iMax; $i+=2) {
 		if (strpos($token_data_pair[$i], '-') === false) continue;
 		$module = explode('-', $token_data_pair[$i]);
 		$fields[$module[0]][] = $module[1];
@@ -2250,9 +2237,14 @@ function getMergedDescriptionCustomVars($fields, $description) {
 		$token_value = '';
 		switch ($columnname) {
 			case 'currentdate':
-				$mes = date('m')-1;
-				$mesi18n = $lang['MONTH_STRINGS'][$mes];
-				$token_value = $mesi18n.date(' j, Y');
+				$dtformat = GlobalVariable::getVariable('EMail_CustomCurrentDate_Format','');
+				if ($dtformat=='') {
+					$mes = date('m')-1;
+					$mesi18n = $lang['MONTH_STRINGS'][$mes];
+					$token_value = $mesi18n.date(' j, Y');
+				} else {
+					$token_value = date($dtformat);
+				}
 				break;
 			case 'currenttime': $token_value = date("G:i:s T");
 				break;
@@ -2374,11 +2366,10 @@ function getrecurringObjValue() {
 				}
 			}
 		}
-		if (isset($_REQUEST['repeat_frequency']) && $_REQUEST['repeat_frequency'] != null)
+		if (isset($_REQUEST['repeat_frequency']) && $_REQUEST['repeat_frequency'] != null) {
 			$recurring_data['repeat_frequency'] = $_REQUEST['repeat_frequency'];
-
-		$recurObj = RecurringType::fromUserRequest($recurring_data);
-		return $recurObj;
+		}
+		return RecurringType::fromUserRequest($recurring_data);
 	}
 }
 
@@ -2979,10 +2970,9 @@ function isFileAccessible($filepath) {
  */
 function getActivityType($id) {
 	global $adb;
-	$quer = "select activitytype from vtiger_activity where activityid=?";
+	$quer = 'select activitytype from vtiger_activity where activityid=?';
 	$res = $adb->pquery($quer, array($id));
-	$acti_type = $adb->query_result($res, 0, "activitytype");
-	return $acti_type;
+	return $adb->query_result($res, 0, 'activitytype');
 }
 
 /** Function to get owner name either user or group */
@@ -3140,7 +3130,7 @@ function getEntityFieldValues($entity_field_info, $ids_list) {
 	$entity_info = array();
 	for ($i = 0; $i < $numrows; $i++) {
 		if(is_array($fieldsName)) {
-			for($j = 0; $j < count($fieldsName); $j++) {
+			for($j = 0, $jMax = count($fieldsName); $j < $jMax; $j++) {
 				$entity_id = $adb->query_result($result, $i, $entityIdField);
 				$entity_info[$i][$entity_id][$fieldsName[$j]] = $adb->query_result($result, $i, $fieldsName[$j]);
 			}
@@ -3182,8 +3172,7 @@ function vt_suppressHTMLTags($string) {
 }
 
 function vt_hasRTE() {
-	$USE_RTE = GlobalVariable::getVariable('Application_Use_RTE',1);
-	return $USE_RTE;
+	return GlobalVariable::getVariable('Application_Use_RTE',1);
 }
 
 function getNameInDisplayFormat($input, $dispFormat = "lf") {
@@ -3203,13 +3192,11 @@ function getNameInDisplayFormat($input, $dispFormat = "lf") {
 }
 
 function concatNamesSql($string) {
-	$sqlString = "CONCAT(" . $string . ")";
-	return $sqlString;
+	return 'CONCAT(' . $string . ')';
 }
 
 function joinName($input, $glue = ' ') {
-	$displayName = implode($glue, $input);
-	return $displayName;
+	return implode($glue, $input);
 }
 
 function getSqlForNameInDisplayFormat($input, $module, $glue = ' ') {
@@ -3224,8 +3211,7 @@ function getSqlForNameInDisplayFormat($input, $module, $glue = ' ') {
 	} else {
 		$formattedNameListString = $input[$fieldsName];
 	}
-	$sqlString = concatNamesSql($formattedNameListString);
-	return $sqlString;
+	return concatNamesSql($formattedNameListString);
 }
 
 function getModuleSequenceNumber($module, $recordId) {

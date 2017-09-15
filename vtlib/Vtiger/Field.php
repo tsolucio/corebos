@@ -16,6 +16,8 @@ include_once('vtlib/Vtiger/FieldBasic.php');
  */
 class Vtiger_Field extends Vtiger_FieldBasic {
 
+	var $webserviceField = false;
+
 	/**
 	 * Get unique picklist id to use
 	 * @access private
@@ -270,5 +272,53 @@ class Vtiger_Field extends Vtiger_FieldBasic {
 		$adb->pquery("DELETE FROM vtiger_field WHERE tabid=?", Array($moduleInstance->id));
 		self::log("Deleting fields of the module ... DONE");
 	}
+
+	/**
+	 * Function to get list of modules the field refernced to
+	 * @return <Array> -  list of modules for which field is refered to
+	 */
+	public function getReferenceList($hideDisabledModules = true, $presenceZero = true) {
+		$webserviceField = $this->getWebserviceFieldObject();
+		$referenceList = $webserviceField->getReferenceList($hideDisabledModules);
+		if ($presenceZero && is_array($referenceList) && count($referenceList) > 0) {
+			foreach ($referenceList as $key => $referenceModule) {
+				$moduleModel = Vtiger_Module::getInstance($referenceModule);
+				if ($moduleModel && $moduleModel->presence != 0) {
+					unset($referenceList[$key]);
+				}
+			}
+		}
+		return $referenceList;
+	}
+
+	/**
+	 * Function to get the Webservice Field Object for the current Field Object
+	 * @return WebserviceField instance
+	 */
+	public function getWebserviceFieldObject() {
+		if ($this->webserviceField == false) {
+			$db = PearDatabase::getInstance();
+
+			$row = array();
+			$row['uitype'] = $this->uitype;
+			$row['block'] = $this->block->id;
+			$row['tablename'] = $this->table;
+			$row['columnname'] = $this->column;
+			$row['fieldname'] = $this->name;
+			$row['fieldlabel'] = $this->label;
+			$row['displaytype'] = $this->displaytype;
+			$row['masseditable'] = $this->masseditable;
+			$row['typeofdata'] = $this->typeofdata;
+			$row['presence'] = $this->presence;
+			$row['tabid'] = $this->getModuleId();
+			$row['fieldid'] = $this->id;
+			$row['readonly'] = !$this->readonly;
+			$row['defaultvalue'] = $this->defaultvalue;
+
+			$this->webserviceField = WebserviceField::fromArray($db, $row);
+		}
+		return $this->webserviceField;
+	}
+
 }
 ?>
