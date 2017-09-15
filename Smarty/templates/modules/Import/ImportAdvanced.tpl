@@ -22,7 +22,7 @@
 	<input type="hidden" name="merge_fields" value='{$USER_INPUT->getString('merge_fields')}' />
 
 	<input type="hidden" id="mandatory_fields" name="mandatory_fields" value='{$ENCODED_MANDATORY_FIELDS}' />
-
+	<br/>
 	<table align="center" width="98%">
 		<tr>
 			<td>
