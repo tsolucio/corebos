@@ -8,6 +8,6 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<input type="submit" name="next" value="{'LBL_NEXT_BUTTON_LABEL'|@getTranslatedString:$MODULE}" class="slds-button slds-button--small slds-button_success" onclick="return ImportJs.uploadAndParse();" />
-&nbsp;&nbsp;
 <input type="button" name="cancel" value="{'LBL_CANCEL_BUTTON_LABEL'|@getTranslatedString:$MODULE}" class="slds-button slds-button--small slds-button--destructive" onclick="location.href='index.php?module={$FOR_MODULE}&action=index'" />
+&nbsp;&nbsp;
+<input type="submit" name="next" value="{'LBL_NEXT_BUTTON_LABEL'|@getTranslatedString:$MODULE}" class="slds-button slds-button--small slds-button_success" onclick="return ImportJs.uploadAndParse();" />

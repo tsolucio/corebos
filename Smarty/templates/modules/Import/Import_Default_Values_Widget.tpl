@@ -8,20 +8,21 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
+
 <div style="visibility: hidden; height: 0px;" id="defaultValuesElementsContainer">
 	{foreach key=_FIELD_NAME item=_FIELD_INFO from=$AVAILABLE_FIELDS}
 	<span id="{$_FIELD_NAME}_defaultvalue_container" name="{$_FIELD_NAME}_defaultvalue" class="small">
 		{assign var="_FIELD_TYPE" value=$_FIELD_INFO->getFieldDataType()}
 		{if $_FIELD_TYPE eq 'picklist' || $_FIELD_TYPE eq 'multipicklist'}
-			<select id="{$_FIELD_NAME}_defaultvalue" name="{$_FIELD_NAME}_defaultvalue" class="small">
+			<select id="{$_FIELD_NAME}_defaultvalue" name="{$_FIELD_NAME}_defaultvalue" class="slds-select" style="width: 30%;">
 			{foreach item=_PICKLIST_DETAILS from=$_FIELD_INFO->getPicklistDetails()}
 				<option value="{$_PICKLIST_DETAILS.value}">{$_PICKLIST_DETAILS.label|@getTranslatedString:$FOR_MODULE}</option>
 			{/foreach}
 			</select>
 		{elseif $_FIELD_TYPE eq 'integer'}
-			<input type="text" id="{$_FIELD_NAME}_defaultvalue" name="{$_FIELD_NAME}_defaultvalue" class="small" value="0" />
+			<input type="text" id="{$_FIELD_NAME}_defaultvalue" name="{$_FIELD_NAME}_defaultvalue" class="slds-input" style="width: 30%;" value="0" />
 		{elseif $_FIELD_TYPE eq 'owner' || $_FIELD_INFO->getUIType() eq '52'}
-			<select id="{$_FIELD_NAME}_defaultvalue" name="{$_FIELD_NAME}_defaultvalue" class="small">
+			<select id="{$_FIELD_NAME}_defaultvalue" name="{$_FIELD_NAME}_defaultvalue" class="slds-select" style="width: 30%;">
 				<option value="">--{'LBL_NONE'|@getTranslatedString:$FOR_MODULE}--</option>
 			{foreach key=_ID item=_NAME from=$USERS_LIST}
 				<option value="{$_ID}">{$_NAME}</option>
@@ -33,8 +34,8 @@
 			{/if}
 			</select>
 		{elseif $_FIELD_TYPE eq 'date'}
-			<input type="text" id="{$_FIELD_NAME}_defaultvalue" name="{$_FIELD_NAME}_defaultvalue" class="small" value="" />
-			<img border=0 src="{'btnL3Calendar.gif'|@vtiger_imageurl:$THEME}" id="jscal_trigger_{$_FIELD_NAME}"
+			<input type="text" id="{$_FIELD_NAME}_defaultvalue" name="{$_FIELD_NAME}_defaultvalue" class="slds-input" style="width: 30%;" value="" />
+			<img border=0 src="{'btnL3Calendar.gif'|@vtiger_imageurl:$THEME}" id="jscal_trigger_{$_FIELD_NAME}" style="width: 18px;vertical-align: middle;" 
 				 alt="{'LBL_SET_DATE'|@getTranslatedString:$FOR_MODULE}" title="{'LBL_SET_DATE'|@getTranslatedString:$FOR_MODULE}" />
 			<script type="text/javascript">
 			Calendar.setup (
@@ -48,8 +49,8 @@
 			);
 			</script>
 		{elseif $_FIELD_TYPE eq 'datetime'}
-			<input type="text" id="{$_FIELD_NAME}_defaultvalue" name="{$_FIELD_NAME}_defaultvalue" class="small" value="" />
-			<img border=0 src="{'btnL3Calendar.gif'|@vtiger_imageurl:$THEME}" id="jscal_trigger_{$_FIELD_NAME}"
+			<input type="text" id="{$_FIELD_NAME}_defaultvalue" name="{$_FIELD_NAME}_defaultvalue" class="slds-input" style="width: 30%;" value="" />
+			<img border=0 src="{'btnL3Calendar.gif'|@vtiger_imageurl:$THEME}" id="jscal_trigger_{$_FIELD_NAME}" style="width: 18px;vertical-align: middle;" 
 				 alt="{'LBL_SET_DATE_TIME'|@getTranslatedString:$FOR_MODULE}" title="{'LBL_SET_DATE_TIME'|@getTranslatedString:$FOR_MODULE}" />
 			<script type="text/javascript">
 			Calendar.setup (
@@ -63,9 +64,14 @@
 			);
 			</script>
 		{elseif $_FIELD_TYPE eq 'boolean'}
-			<input type="checkbox" id="{$_FIELD_NAME}_defaultvalue" name="{$_FIELD_NAME}_defaultvalue" class="small" />
+			<span class="slds-checkbox">
+				<input type="checkbox" id="{$_FIELD_NAME}_defaultvalue" name="{$_FIELD_NAME}_defaultvalue"/>
+				<label class="slds-checkbox__label" for="{$_FIELD_NAME}_defaultvalue">
+					<span class="slds-checkbox--faux"></span>
+				</label>
+			</span>
 		{elseif $_FIELD_TYPE neq 'reference'}
-			<input type="input" id="{$_FIELD_NAME}_defaultvalue" name="{$_FIELD_NAME}_defaultvalue" class="small" />
+			<input type="input" id="{$_FIELD_NAME}_defaultvalue" name="{$_FIELD_NAME}_defaultvalue" class="slds-input" style="width: 30%;"/>
 		{/if}
 	</span>
 	{/foreach}

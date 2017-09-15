@@ -23,25 +23,45 @@
 
 	<input type="hidden" id="mandatory_fields" name="mandatory_fields" value='{$ENCODED_MANDATORY_FIELDS}' />
 
-	<table style="width:80%;margin-left:auto;margin-right:auto;margin-top:10px;" cellpadding="5" cellspacing="12" class="searchUIBasic">
+	<table align="center" width="98%">
 		<tr>
-			<td class="heading2" align="left" colspan="2">
-				{'LBL_IMPORT'|@getTranslatedString:$MODULE} {$FOR_MODULE|@getTranslatedString:$FOR_MODULE}
+			<td>
+				<div class="forceRelatedListSingleContainer">
+					<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
+						<div class="slds-card__header slds-grid">
+							<header class="slds-media slds-media--center slds-has-flexi-truncate">
+								<div class="slds-media__body">
+									<h2>
+										<span class="slds-text-title--caps slds-truncate heading2 actionLabel">
+											<b>{'LBL_IMPORT'|@getTranslatedString:$MODULE} {$FOR_MODULE|@getTranslatedString:$FOR_MODULE}</b>
+										</span>
+									</h2>
+								</div>
+							</header>
+						</div>
+					</article>
+				</div>
+				<div class="slds-truncate">
+					<table class="slds-table slds-table--cell-buffer slds-no-row-hover slds-table--fixed-layout small detailview_table">
+						{if !empty($ERROR_MESSAGE)}
+						<tr class="slds-line-height--reset">
+							<td class="style1" align="left" colspan="2">
+								{$ERROR_MESSAGE}
+							</td>
+						</tr>
+						{/if}
+						<tr class="slds-line-height--reset">
+							<td class="dvtCellInfo leftFormBorder1" valign="top" width="100%">
+								<div class="slds-truncate">
+									{include file='modules/Import/Import_Step4.tpl'}
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
 			</td>
 		</tr>
-		{if !empty($ERROR_MESSAGE)}
-		<tr>
-			<td class="style1" align="left" colspan="2">
-				{$ERROR_MESSAGE}
-			</td>
-		</tr>
-		{/if}
-		<tr>
-			<td class="leftFormBorder1" colspan="2" valign="top">
-			{include file='modules/Import/Import_Step4.tpl'}
-			</td>
-		</tr>
-		<tr>
+		<tr class="slds-line-height--reset">
 			<td align="right" colspan="2">
 			{include file='modules/Import/Import_Advanced_Buttons.tpl'}
 			</td>

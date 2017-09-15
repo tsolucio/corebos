@@ -8,6 +8,6 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<input type="submit" name="import" value="{'LBL_IMPORT_BUTTON_LABEL'|@getTranslatedString:$MODULE}" class="crmButton big edit" onclick="return ImportJs.sanitizeAndSubmit();" />
+<input type="button" name="cancel" value="{'LBL_CANCEL_BUTTON_LABEL'|@getTranslatedString:$MODULE}" class="slds-button slds-button--small slds-button--destructive" onclick="window.history.back()" />
 &nbsp;&nbsp;
-<input type="button" name="cancel" value="{'LBL_CANCEL_BUTTON_LABEL'|@getTranslatedString:$MODULE}" class="crmButton big cancel" onclick="window.history.back()" />
+<input type="submit" name="import" value="{'LBL_IMPORT_BUTTON_LABEL'|@getTranslatedString:$MODULE}" class="slds-button slds-button--small slds-button_success" onclick="return ImportJs.sanitizeAndSubmit();" />

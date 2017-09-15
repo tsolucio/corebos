@@ -1147,3 +1147,11 @@ th[scope="col"] {
 }
 
 /*=======End Calendar Module=============*/
+
+/*=======Impotrt_Default_Values_widget=============*/
+#defaultValuesElementsContainer .small .slds-input,
+#defaultValuesElementsContainer .slds-select {
+    width: 25%;
+}
+
+/*======= End Import_Default_Values_widget=============*/
