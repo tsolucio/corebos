@@ -17,7 +17,7 @@ $mod_strings = Array(
 	'LBL_MODULEBLOCK_INFORMATION' => 'ModuleBlock Information',
 	'LBL_DESCRIPTION_INFORMATION' => 'Verkoopkans omschrijving',
 
-	'ModuleFieldLabel' => 'ModuleFieldLabel Text',
+	'No Time' => 'Hele dag',
 	'DATE_SHOULDNOT_PAST' => 'Huidige datum & tijd voor Activitieiten met status zoals Geplanned',
 	'TIME_SHOULDNOT_PAST' => 'Huidige tijd voor Activitieiten met status zoals Geplanned',
 );
