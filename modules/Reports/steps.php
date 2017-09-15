@@ -549,7 +549,7 @@ function getSecondaryColumns_GroupingHTML($module,$selected="") {
 				$mod_strings = return_module_language($current_language,$mod);
 				$block_listed = array();
 				foreach ($oReport->module_list[$mod] as $key=>$value) {
-					if (isset($oReport->sec_module_columnslist[$mod][$value]) && !$block_listed[$value]) {
+					if (isset($oReport->sec_module_columnslist[$mod][$value]) && empty($block_listed[$value])) {
 						$block_listed[$value] = true;
 
 						$optgroup = array(

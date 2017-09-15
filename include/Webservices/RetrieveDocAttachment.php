@@ -96,13 +96,13 @@ function vtws_retrievedocattachment_get_attachment($fileid,$nr=false,$returnfile
 		$attachid = $adb->query_result($result,0,'attachmentsid');
 
 		$saved_filename = $attachid."_".$name;
-		if (!file_exists($filepath.$saved_filename))
+		if (!file_exists($filepath.$saved_filename)) {
 			$saved_filename = $attachid."_".@html_entity_decode($adb->query_result($result, 0, "name"), ENT_QUOTES, $default_charset);
-
+		}
+		$fileContent = '';
 		$filesize = filesize($filepath.$saved_filename);
 		if (!fopen($filepath.$saved_filename, "r")) {
 			$log->debug('Unable to open file');
-			return array();
 			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Unable to open file $saved_filename. Object is denied");
 		} else {
 			$fileContent = $returnfile ? fread(fopen($filepath.$saved_filename, "r"), $filesize) : '';
@@ -112,7 +112,7 @@ function vtws_retrievedocattachment_get_attachment($fileid,$nr=false,$returnfile
 			$rsn = $adb->pquery('select filedownloadcount from vtiger_notes where notesid= ?',array($fileid));
 			$download_count = $adb->query_result($rsn,0,'filedownloadcount') + 1;
 			$sql="update vtiger_notes set filedownloadcount= ? where notesid= ?";
-			$res=$adb->pquery($sql,array($download_count,$fileid));
+			$adb->pquery($sql,array($download_count,$fileid));
 		}
 		$recordpdf["recordid"] = $fileid;
 		$recordpdf["filetype"] = $fileType;

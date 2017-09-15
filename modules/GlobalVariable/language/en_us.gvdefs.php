@@ -77,6 +77,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'If set to 1 the SQL query being launched to retrieve records in a Popup View will be shown on screen.',
 ),
+'Debug_Email_Sending' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Debug',
+	'values' => '0 | 1',
+	'definition' => 'If set to 1 the full email conversation will be output to the log file so you can debug email settings issues. The log file debugging must be activated.',
+),
 'Accounts_BlockDuplicateName' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
@@ -755,6 +762,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => 'No | Distance | Set',
 	'definition' => 'On DetailView Edit of start date we can push forward the end date. If this variable is set to "No", the end date will not be modified. This is the default value. If it is set to "Set" the end date will be set to the same value as the start date plus the minutes in Calendar_call_default_duration. If it is set to "Distance" the same time difference that exists prior to the change will be applied.',
+),
+'Calendar_PopupReminder_DaysPast' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'Maximum number of days in the past to search for events that will appear in the reminder pop-up. The default is 7 days.',
 ),
 'CronTasks_cronWatcher_mailto' => array(
 	'status' => 'Implemented',
