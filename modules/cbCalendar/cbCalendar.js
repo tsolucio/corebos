@@ -171,6 +171,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	let fldstart = document.getElementById('jscal_field_dtstart');
 	if (fldstart != undefined) {
 		fldstart.onchange = changeEndtime_StartTime;
+		let timefmtstart = document.getElementById('inputtimefmt_dtstart');
+		timefmtstart.onchange = changeEndtime_StartTime;
 	}
 });
 
