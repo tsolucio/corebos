@@ -777,6 +777,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'El servicio de Cron Watcher enviará un correo electrónico al primer usuario administrador que encuentra y cualquier correo electrónico contenido en esta variable. Por defecto está vacía.',
 ),
+'CronTasks_cronWatcher_TimeThreshold' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Integer',
+	'category' => 'Depuración',
+	'values' => 'minutos',
+	'definition' => 'El umbral de tiempo en minutos que una tarea programada debe estar ejecutándose para que el servicio de Cron Watcher envíe el correo electrónico de advertencia. El valor predeterminado es 30 minutos.',
+),
 'BusinessMapping_SalesOrder2Invoice' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Mapa Negocio',
