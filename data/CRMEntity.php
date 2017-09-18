@@ -1761,7 +1761,6 @@ class CRMEntity {
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		$other = CRMEntity::getInstance($related_module);
 
-		$singular_modname = vtlib_toSingular($related_module);
 		$button = '';
 		if ($actions) {
 			if (is_string($actions))
@@ -1780,10 +1779,11 @@ class CRMEntity {
 					$racbr = $wfs->getRACRuleForRecord($currentModule, $id);
 				}
 				if (!$racbr or $racbr->hasRelatedListPermissionTo('create',$related_module)) {
+					$singular_modname = getTranslatedString('SINGLE_' . $related_module,$related_module);
 					$button .= "<input type='hidden' name='createmode' value='link' />" .
 						"<input title='" . getTranslatedString('LBL_ADD_NEW') . " " . getTranslatedString($singular_modname) . "' class='slds-button slds-button--small slds-button_success '" .
 						" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
-						" value='" . getTranslatedString('LBL_ADD_NEW') . " " . getTranslatedString($singular_modname) . "'>&nbsp;";
+						" value='" . getTranslatedString('LBL_ADD_NEW') . " " . $singular_modname . "'>&nbsp;";
 				}
 			}
 		}
@@ -1831,7 +1831,6 @@ class CRMEntity {
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once("modules/$related_module/$related_module.php");
 		$other = new $related_module();
-		$singular_modname = vtlib_toSingular($related_module);
 
 		$parenttab = getParentTab();
 
@@ -2003,8 +2002,6 @@ class CRMEntity {
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		$other = CRMEntity::getInstance($related_module);
 
-		$singular_modname = 'SINGLE_' . $related_module;
-
 		$button = '';
 		if ($actions) {
 			if (is_string($actions))
@@ -2025,10 +2022,11 @@ class CRMEntity {
 					$racbr = $wfs->getRACRuleForRecord($currentModule, $id);
 				}
 				if (!$racbr or $racbr->hasRelatedListPermissionTo('create',$related_module)) {
+					$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
 					$button .= "<input type='hidden' name='createmode' value='link' />" .
 						"<input title='" . getTranslatedString('LBL_ADD_NEW') . " " . getTranslatedString($singular_modname) . "' class='slds-button slds-button--small slds-button_success '" .
 						" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
-						" value='" . getTranslatedString('LBL_ADD_NEW') . " " . getTranslatedString($singular_modname, $related_module) . "'>&nbsp;";
+						" value='" . getTranslatedString('LBL_ADD_NEW') . " " . $singular_modname . "'>&nbsp;";
 				}
 			}
 		}
@@ -2090,8 +2088,6 @@ class CRMEntity {
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		$other = CRMEntity::getInstance($related_module);
 
-		$singular_modname = 'SINGLE_' . $related_module;
-
 		$button = '';
 
 		// To make the edit or del link actions to return back to same view.
@@ -2143,7 +2139,7 @@ class CRMEntity {
 					if (!$racbr or $racbr->hasRelatedListPermissionTo('create',$related_module)) {
 						$button .= "<input title='" . getTranslatedString('LBL_ADD_NEW') . " " . getTranslatedString($singular_modname, $related_module) . "' class='slds-button slds-button--small slds-button_success '" .
 							" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
-							" value='" . getTranslatedString('LBL_ADD_NEW') . " " . getTranslatedString($singular_modname, $related_module) . "'>&nbsp;";
+							" value='" . getTranslatedString('LBL_ADD_NEW') . " " . $singular_modname . "'>&nbsp;";
 					}
 				}
 			}
@@ -2205,8 +2201,6 @@ class CRMEntity {
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		$other = CRMEntity::getInstance($related_module);
 
-		$singular_modname = 'SINGLE_' . $related_module;
-
 		$button = '';
 
 		// To make the edit or del link actions to return back to same view.
@@ -2267,7 +2261,7 @@ class CRMEntity {
 					if (!$racbr or $racbr->hasRelatedListPermissionTo('create',$related_module)) {
 						$button .= "<input title='" . getTranslatedString('LBL_ADD_NEW') . " " . getTranslatedString($singular_modname, $related_module) . "' class='slds-button slds-button--small slds-button_success '" .
 							" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
-							" value='" . getTranslatedString('LBL_ADD_NEW') . " " . getTranslatedString($singular_modname, $related_module) . "'>&nbsp;";
+							" value='" . getTranslatedString('LBL_ADD_NEW') . " " . $singular_modname . "'>&nbsp;";
 					}
 				}
 			}

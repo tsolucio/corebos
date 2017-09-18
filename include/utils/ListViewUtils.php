@@ -1341,8 +1341,22 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		elseif ($module == 'Products')
 			$entity_name = textlength_check(getProductName($parentid));
 		$value = '<a href="index.php?module=' . $module . '&action=DetailView&record=' . $parentid . '&parenttab=' . $tabname . '">' . $entity_name . '</a>';
-	}
-	elseif ($uitype == 77) {
+	} else if ($uitype == '69m' && $module == 'Products') {
+		$queryPrdt = 'SELECT vtiger_attachments.path,vtiger_attachments.attachmentsid,vtiger_attachments.`name`
+			FROM vtiger_attachments
+			INNER JOIN vtiger_seattachmentsrel ON vtiger_attachments.attachmentsid = vtiger_seattachmentsrel.attachmentsid
+			INNER JOIN vtiger_products ON vtiger_seattachmentsrel.crmid = vtiger_products.productid
+			where vtiger_seattachmentsrel.crmid=?';
+		$resultprdt = $adb->pquery($queryPrdt,array($entity_id));
+		if ($resultprdt && $adb->num_rows($resultprdt)>0) {
+			$imgpath = $adb->query_result($resultprdt,0,'path');
+			$attid = $adb->query_result($resultprdt,0,'attachmentsid');
+			$imgfilename = $adb->query_result($resultprdt,0,'name');
+			$value = "<div style='text-align:center;width:100%;'><img src='./".$imgpath.$attid.'_'.$imgfilename."' height='50'></div>";
+		} else {
+			$value = '';
+		}
+	} elseif ($uitype == 77) {
 		$value = getOwnerName($adb->query_result($list_result, $list_result_count, 'inventorymanager'));
 		$value = textlength_check($value);
 	} elseif ($uitype == 5 || $uitype == 6 || $uitype == 23 || $uitype == 70) {
