@@ -2954,11 +2954,11 @@ class CRMEntity {
 			} elseif ($module == 'Calendar' || !empty($scope)) {
 				$tableName .= '_t' . $tabId;
 			}
-			list($tsSpecialAccessQuery, $typeOfPermissionOverride, $unused1, $unused2) = cbEventHandler::do_filter('corebos.permissions.accessquery', array(' ', 'none', $module, $user));
+			list($tsSpecialAccessQuery, $typeOfPermissionOverride, $unused1, $unused2, $SpecialPermissionMayHaveDuplicateRows) = cbEventHandler::do_filter('corebos.permissions.accessquery', array(' ', 'none', $module, $user, true));
 			if ($typeOfPermissionOverride=='fullOverride') {
 				// create the default temporary table in case it is needed
 				$this->setupTemporaryTable($tableName, $sharedTabId, $user, $current_user_parent_role_seq, $current_user_groups);
-				VTCacheUtils::updateCachedInformation('SpecialPermissionWithDuplicateRows', true);
+				VTCacheUtils::updateCachedInformation('SpecialPermissionWithDuplicateRows', $SpecialPermissionMayHaveDuplicateRows);
 				return $tsSpecialAccessQuery;
 			}
 			if ($typeOfPermissionOverride=='none' or trim($tsSpecialAccessQuery)=='') {
@@ -2966,7 +2966,7 @@ class CRMEntity {
 				$query = " INNER JOIN $tableName $tableName$scope ON $tableName$scope.id = vtiger_crmentity$scope.smownerid ";
 			} else {
 				global $adb;
-				VTCacheUtils::updateCachedInformation('SpecialPermissionWithDuplicateRows', true);
+				VTCacheUtils::updateCachedInformation('SpecialPermissionWithDuplicateRows', $SpecialPermissionMayHaveDuplicateRows);
 				$tsTableName = "tsolucio_tmp_u{$user->id}";
 				$adb->query("drop table if exists {$tsTableName}");
 				if ($typeOfPermissionOverride=='addToUserPermission') {

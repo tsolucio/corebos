@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-global $adb,$current_user;
+global $adb,$current_user,$default_timezone;
 
 if ($_REQUEST['mode'] == 'event_drop' || $_REQUEST['mode'] == 'event_resize') {
 	list($void,$processed) = cbEventHandler::do_filter('corebos.filter.CalendarModule.save', array($_REQUEST, false));
@@ -73,7 +73,9 @@ if ($_REQUEST['mode'] == 'event_drop' || $_REQUEST['mode'] == 'event_resize') {
 			}
 		}
 		$new_time_start_time = $date->format('U');
-		$newdtstart = $date->format($dt_fmt) . ' ' . DateTimeField::formatUserTimeString($date->format('H:i:s'), $hr_fmt);
+		$tzstartdatetime = DateTimeField::convertTimeZone($date->format('H:i:s'), $default_timezone, $current_user->time_zone);
+		$tzstarttime = $tzstartdatetime->format('H:i:s');
+		$newdtstart = $date->format($dt_fmt) . ' ' . DateTimeField::formatUserTimeString($tzstarttime, $hr_fmt);
 
 		$date = new DateTime($ActEnd);
 		if ($day_drop != 0) {
@@ -85,8 +87,9 @@ if ($_REQUEST['mode'] == 'event_drop' || $_REQUEST['mode'] == 'event_resize') {
 		$new_due_date = $date->format('Y-m-d');
 		$new_time_end = $date->format('H:i:s');
 		$new_time_end_time = $date->format('U');
-
-		$focus->column_fields['dtend'] = $date->format($dt_fmt) . ' ' . DateTimeField::formatUserTimeString($new_time_end, $hr_fmt);
+		$tzenddatetime = DateTimeField::convertTimeZone($date->format('H:i:s'), $default_timezone, $current_user->time_zone);
+		$tzendtime = $tzenddatetime->format('H:i:s');
+		$focus->column_fields['dtend'] = $date->format($dt_fmt) . ' ' . DateTimeField::formatUserTimeString($tzendtime, $hr_fmt);
 
 		if ($_REQUEST['mode'] == "event_resize") {
 			$duration_time = $new_time_end_time - $new_time_start_time;
