@@ -27,6 +27,24 @@ function __vt_substring($arr) {
 	}
 }
 
+function __cb_stringposition($arr) {
+	if (count($arr)!=2) return -1;
+	$ret = stripos($arr[0],$arr[1]);
+	if ($ret === false) {
+		return -1;
+	} else {
+		return $ret;
+	}
+}
+
+function __cb_stringlength($arr) {
+	return strlen($arr[0]);
+}
+
+function __cb_stringreplace($arr) {
+	return str_replace($arr[0], $arr[1], $arr[2]);
+}
+
 function __vt_uppercase($arr) {
 	if (count($arr)==0) {
 		return '';

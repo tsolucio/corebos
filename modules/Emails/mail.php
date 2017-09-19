@@ -332,7 +332,19 @@ function setMailServerProperties($mail)
 	$mail->Username = $username ;	// SMTP username
 	$mail->Password = $password ;	// SMTP password
 
-	return;
+	$debugEmail = GlobalVariable::getVariable('Debug_Email_Sending',0);
+	if ($debugEmail) {
+		global $log;
+		$log->fatal(array(
+			'SMTPOptions' => $mail->SMTPOptions,
+			'SMTPSecure' => $mail->SMTPSecure,
+			'Host' => $mail->Host = $server,
+			'Username' => $mail->Username = $username,
+			'Password' => $mail->Password = $password,
+		));
+		$mail->SMTPDebug = 4;
+		$mail->Debugoutput = function($str, $level) { global $log;$log->fatal($str); };
+	}
 }
 
 /**	Function to add the file as attachment with the mail object

@@ -96,9 +96,9 @@ function vtws_retrievedocattachment_get_attachment($fileid,$nr=false,$returnfile
 		$attachid = $adb->query_result($result,0,'attachmentsid');
 
 		$saved_filename = $attachid."_".$name;
-		if (!file_exists($filepath.$saved_filename))
+		if (!file_exists($filepath.$saved_filename)) {
 			$saved_filename = $attachid."_".@html_entity_decode($adb->query_result($result, 0, "name"), ENT_QUOTES, $default_charset);
-
+		}
 		$fileContent = '';
 		$filesize = filesize($filepath.$saved_filename);
 		if (!fopen($filepath.$saved_filename, "r")) {

@@ -77,6 +77,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Si el valor de la variable es 1 se escribirá en pantalla, la consulta de obtención de registros para la vista de pantalla de captura o selección.',
 ),
+'Debug_Email_Sending' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Depuración',
+	'values' => '0 | 1',
+	'definition' => 'Si se establece en 1, la conversación de correo electrónico completa se enviará al archivo de registro para poder depurar los problemas de configuración de correo electrónico. La depuración del archivo de registro debe estar activada.',
+),
 'Accounts_BlockDuplicateName' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
