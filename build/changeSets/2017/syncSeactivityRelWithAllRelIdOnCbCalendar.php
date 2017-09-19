@@ -22,27 +22,13 @@ class syncSeactivityRelWithAllRelIdOnCbCalendar extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$res_cal = $adb->pquery("SELECT activityid,rel_id FROM vtiger_activity",array());
+			$res_cal = $adb->pquery("SELECT activityid,rel_id FROM vtiger_activity WHERE activitytype != 'Emails' and rel_id is not null and rel_id>0",array());
 			$noofrows = $adb->num_rows($res_cal);
 			for ($i = 0; $i < $noofrows; $i++) {
-				$activityid = '0';
-				$rel_id = '0';
 				$activityid = $adb->query_result($res_cal,$i,'activityid');
 				$rel_id = $adb->query_result($res_cal,$i,'rel_id');
 				//Insert into seactivity rel
-				if($rel_id != '' && $rel_id != '0') {
-					$res_rel = $adb->pquery('SELECT * FROM vtiger_seactivityrel WHERE activityid = ?',array($activityid));
-					if($adb->num_rows($res_rel) > 0) {
-						$adb->pquery('UPDATE vtiger_seactivityrel SET crmid = ? WHERE activityid = ?',array($rel_id,$activityid));
-					} else {
-						$adb->pquery('insert into vtiger_seactivityrel(crmid,activityid) values(?,?)',array($rel_id,$activityid));
-					}
-				} elseif ($rel_id=='' || $rel_id=='0') {
-					$res_rel = $adb->pquery('SELECT * FROM vtiger_seactivityrel WHERE activityid = ?',array($activityid));
-					if($adb->num_rows($res_rel) > 0) {
-						$adb->pquery("DELETE from vtiger_seactivityrel where activityid = ?", array($activityid));
-					}
-				}
+				$adb->pquery('insert IGNORE into vtiger_seactivityrel(crmid,activityid) values(?,?)',array($rel_id,$activityid));
 				if ($i % 1000 == 0) {
 					$this->sendMsg('RELATING ACTIVITIES: '.$i.'/'.$noofrows);
 				}
