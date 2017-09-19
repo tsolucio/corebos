@@ -3040,11 +3040,15 @@ class CRMEntity {
 	function getSortOrder() {
 		global $log,$currentModule;
 		$log->debug("Entering getSortOrder() method ...");
-		$sorder = $this->default_sort_order;
-		if (isset($_REQUEST['sorder']))
+		$sorder = GlobalVariable::getVariable('Application_ListView_Default_Sort_Order','ASC',$currentModule);
+		if(empty($sorder)){
+			$sorder = $this->default_sort_order;
+		}
+		if (isset($_REQUEST['sorder']) && empty($sorder)){
 			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
-		else if (!empty($_SESSION[$currentModule.'_Sort_Order']))
+		}else if (!empty($_SESSION[$currentModule.'_Sort_Order']) && empty($sorder)){
 			$sorder = $this->db->sql_escape_string($_SESSION[$currentModule.'_Sort_Order']);
+		}
 		$log->debug("Exiting getSortOrder() method ...");
 		return $sorder;
 	}
@@ -3056,17 +3060,15 @@ class CRMEntity {
 	function getOrderBy() {
 		global $log, $currentModule;
 		$log->debug("Entering getOrderBy() method ...");
-
-		$use_default_order_by = '';
-		if (GlobalVariable::getVariable('Application_ListView_Default_Sorting', 0, $currentModule)) {
-			$use_default_order_by = $this->default_order_by;
+		$order_by = GlobalVariable::getVariable('Application_ListView_Default_Sorting', 0, $currentModule);
+		if(empty($order_by)){
+			$order_by = $this->default_order_by;
 		}
-
-		$order_by = $use_default_order_by;
-		if (isset($_REQUEST['order_by']))
+		if (isset($_REQUEST['order_by']) && empty($order_by)){
 			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
-		else if (!empty($_SESSION[$currentModule.'_Order_By']))
+		}else if (!empty($_SESSION[$currentModule.'_Order_By']) && empty($order_by)){
 			$order_by = $this->db->sql_escape_string($_SESSION[$currentModule.'_Order_By']);
+		}
 		$log->debug("Exiting getOrderBy method ...");
 		return $order_by;
 	}

@@ -771,7 +771,6 @@ class ListViewController {
 		//vtiger_field for arrow image and change order
 		$change_sorder = array('ASC'=>'DESC','DESC'=>'ASC');
 		$arrow_gif = array('ASC'=>'arrow_down.gif','DESC'=>'arrow_up.gif');
-		$default_sort_order = GlobalVariable::getVariable('Application_ListView_Default_Sort_Order','ASC',$module);
 		foreach($listViewFields as $fieldName) {
 			if (!empty($moduleFields[$fieldName])) {
 				$field = $moduleFields[$fieldName];
@@ -783,9 +782,7 @@ class ListViewController {
 			if(in_array($field->getColumnName(),$focus->sortby_fields)) {
 				if($orderBy == $field->getColumnName()) {
 					$temp_sorder = $change_sorder[$sorder];
-					$arrow = "&nbsp;<img src ='".vtiger_imageurl($arrow_gif[$sorder], $theme)."' border='0'>";
-				} else {
-					$temp_sorder = $default_sort_order;
+					$arrow = "&nbsp;<img src ='".vtiger_imageurl($arrow_gif[$sorder], $theme)."' border='0'>";				
 				}
 				$label = getTranslatedString($fieldLabel, $module);
 				//added to display currency symbol in listview header
@@ -816,13 +813,6 @@ class ListViewController {
 			}
 			$header[]=$name;
 		}
-
-		//Added for Action - edit and delete link header in listview
-		if(!$skipActions && (isPermitted($module,"EditView","") == 'yes' ||
-				isPermitted($module,"Delete","") == 'yes'))
-			$header[] = getTranslatedString("LBL_ACTION", $module);
-		$header = cbEventHandler::do_filter('corebos.filter.listview.header', $header);
-		return $header;
 	}
 
 	public function getBasicSearchFieldInfoList() {
