@@ -104,10 +104,9 @@ $scheduledFormat    = isset($_REQUEST['scheduledReportFormat']) ? vtlib_purify($
 $scheduledInterval  = isset($_REQUEST['scheduledIntervalString']) ? vtlib_purify($_REQUEST['scheduledIntervalString']) : '';
 //<<<<<<<scheduled report>>>>>>>>
 
-$saveas=vtlib_purify($_REQUEST['saveashidden']);
 $newreportname=vtlib_purify($_REQUEST['newreportname']);
-if($reportid == '' || ($reportid!='' && strstr($saveas,'saveas')!='' && $newreportname!='')) {
-	if($reportid!='' && $folderid=='') {
+if ($reportid == '' || ($reportid!='' && isset($_REQUEST['saveashidden']) && $_REQUEST['saveashidden'] == 'saveas' && $newreportname!='')) {
+	if ($reportid!='' && isset($_REQUEST['saveashidden']) && $_REQUEST['saveashidden'] == 'saveas' && $newreportname!='') {
 		$reportdetails=$adb->pquery("select * from vtiger_report as report join vtiger_reportmodules as repmodules on report.reportid=repmodules.reportmodulesid join vtiger_selectcolumn as sc on sc.queryid=report.reportid where reportid=?",array($reportid));
 		$folderid=$adb->query_result($reportdetails,0,'folderid');
 		$reporttype=$adb->query_result($reportdetails,0,'reporttype');
