@@ -175,12 +175,12 @@ class ReportRun extends CRMEntity {
 					}
 					elseif($selectedfields[0] == 'vtiger_activity' && $selectedfields[1] == 'status')
 					{
-						$columnslist[$fieldcolname] = " case when (vtiger_activity.status not like '') then vtiger_activity.status else vtiger_activity.eventstatus end as Calendar_Status";
+						$columnslist[$fieldcolname] = " case when (vtiger_activity.status not like '') then vtiger_activity.status else vtiger_activity.eventstatus end as cbCalendar_Status";
 						$this->queryPlanner->addTable($selectedfields[0]);
 					}
 					elseif ($selectedfields[0] == 'vtiger_activity' && $selectedfields[1] == 'date_start')
 					{
-						$columnslist[$fieldcolname] = "cast(concat(vtiger_activity.date_start,'  ',vtiger_activity.time_start) as DATETIME) as Calendar_Start_Date_and_Time";
+						$columnslist[$fieldcolname] = "cast(concat(vtiger_activity.date_start,'  ',vtiger_activity.time_start) as DATETIME) as cbCalendar_Start_Date_and_Time";
 						$this->queryPlanner->addTable($selectedfields[0]);
 					}
 					elseif (stristr($selectedfields[0],"vtiger_users") && ($selectedfields[1] == 'user_name'))
@@ -703,7 +703,7 @@ class ReportRun extends CRMEntity {
 									$module_from_tablename = str_replace("vtiger_users","",$selectedfields[0]);
 									$advcolsql[] = " trim($concatSql)".$this->getAdvComparator($comparator,$valuearray[$n],$datatype)." or vtiger_groups".$module_from_tablename.".groupname ".$this->getAdvComparator($comparator,$valuearray[$n],$datatype);
 								} elseif($selectedfields[1] == 'status') {//when you use comma seperated values.
-									if($selectedfields[2] == 'Calendar_Status')
+									if($selectedfields[2] == 'cbCalendar_Status')
 									$advcolsql[] = "(case when (vtiger_activity.status not like '') then vtiger_activity.status else vtiger_activity.eventstatus end)".$this->getAdvComparator($comparator,$valuearray[$n],$datatype);
 									elseif($selectedfields[2] == 'HelpDesk_Status')
 									$advcolsql[] = "vtiger_troubletickets.status".$this->getAdvComparator($comparator,$valuearray[$n],$datatype);
@@ -734,7 +734,7 @@ class ReportRun extends CRMEntity {
 						} elseif($comparator == 'bw' && count($valuearray) == 2) {
 							if($selectedfields[0] == "vtiger_crmentity".$this->primarymodule) {
 								$fieldvalue = "("."vtiger_crmentity.".$selectedfields[1]." between '".trim($valuearray[0])."' and '".trim($valuearray[1])."')";
-							} elseif($selectedfields[2]=='Calendar_Start_Date_and_Time') {
+							} elseif($selectedfields[2]=='cbCalendar_Start_Date_and_Time') {
 								$fieldvalue = "(cast(concat(vtiger_activity.date_start,'  ',vtiger_activity.time_start) as DATETIME) between '".trim($valuearray[0])."' and '".trim($valuearray[1])."')";
 							} else {
 								$fieldvalue = "(".$selectedfields[0].".".$selectedfields[1]." between '".trim($valuearray[0])."' and '".trim($valuearray[1])."')";
