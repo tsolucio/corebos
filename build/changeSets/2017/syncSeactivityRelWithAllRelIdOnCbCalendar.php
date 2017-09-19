@@ -34,17 +34,17 @@ class syncSeactivityRelWithAllRelIdOnCbCalendar extends cbupdaterWorker {
 					$res_rel = $adb->pquery('SELECT * FROM vtiger_seactivityrel WHERE activityid = ?',array($activityid));
 					if($adb->num_rows($res_rel) > 0) {
 						$adb->pquery('UPDATE vtiger_seactivityrel SET crmid = ? WHERE activityid = ?',array($rel_id,$activityid));
-						$this->sendMsg('UPDATE RELATION ACTIVITYID: '.$activityid.' WITH REL_ID: '.$rel_id);
 					} else {
 						$adb->pquery('insert into vtiger_seactivityrel(crmid,activityid) values(?,?)',array($rel_id,$activityid));
-						$this->sendMsg('ADD RELATION ACTIVITYID: '.$activityid.' WITH REL_ID: '.$rel_id);
 					}
 				} elseif ($rel_id=='' || $rel_id=='0') {
 					$res_rel = $adb->pquery('SELECT * FROM vtiger_seactivityrel WHERE activityid = ?',array($activityid));
 					if($adb->num_rows($res_rel) > 0) {
 						$adb->pquery("DELETE from vtiger_seactivityrel where activityid = ?", array($activityid));
-						$this->sendMsg('DELETE RELATION ACTIVITYID: '.$activityid);
 					}
+				}
+				if ($i % 1000 == 0) {
+					$this->sendMsg('RELATING ACTIVITIES: '.$i.'/'.$noofrows);
 				}
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
