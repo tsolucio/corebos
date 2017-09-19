@@ -24,9 +24,9 @@ class VTConditionalExpression {
 		if (in_array($tree[0], array("and", "or"))) {
 			switch ($tree[0]) {
 				case "and":
-					return $this->evalGate($tree[1]) and $this->evalGate($tree[2]);
+					return ($this->evalGate($tree[1]) && $this->evalGate($tree[2]));
 				case "or":
-					return $this->evalGate($tree[1]) or $this->evalGate($tree[2]);
+					return ($this->evalGate($tree[1]) || $this->evalGate($tree[2]));
 			}
 		} else {
 			return $this->evalCondition($tree);
