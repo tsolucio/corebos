@@ -504,6 +504,7 @@ $app_strings = array(
 'LBL_SALES_ORDER_ID'=>'Verkaufsnummer',
 'LBL_PURCHASE_ORDER_ID'=>'Einkaufsnummer',
 'LBL_EXPORT_TO_PDF'=>'Export als PDF',
+'DeletedProducts' => 'This record has deleted product/service lines. Please edit and fix accordingly.',
 'LBL_HOME_KEY_METRICS'=>'benutzerdefinierte Listen',
 'LBL_HOME_METRICS'=>'Listenname',
 'LBL_HOME_COUNT'=>'Anzahl',

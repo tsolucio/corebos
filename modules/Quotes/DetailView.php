@@ -15,6 +15,16 @@ $smarty = new vtigerCRM_Smarty();
 
 require_once 'modules/Vtiger/DetailView.php';
 
+$pdochk = $adb->pquery('select 1
+	from '.$focus->table_name.'
+	inner join vtiger_inventoryproductrel on '.$focus->table_index.'=id
+	inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
+	where vtiger_crmentity.deleted = 1 and '.$focus->table_index.'=?',array($record));
+if ($adb->num_rows($pdochk)>0) {
+	$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-warning');
+	$smarty->assign('ERROR_MESSAGE', getTranslatedString('DeletedProducts',$currentModule));
+}
+
 if(isPermitted('SalesOrder','CreateView',$record) == 'yes')
 	$smarty->assign('CONVERTSALESORDER','permitted');
 if(isPermitted('Invoice','CreateView',$record) == 'yes')
