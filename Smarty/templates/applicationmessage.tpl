@@ -26,7 +26,7 @@
 {else}
 	{assign var="slds_role" value="error"}
 {/if}
-<div class="slds-m-top--x-large">
+<div class="slds-m-top--x-small slds-m-bottom--x-small">
 	<div class="slds-notify slds-notify--alert slds-theme--{$slds_role} slds-theme--alert-texture" role="alert" style="padding:0.1rem">
 	<h2>
 		<svg class="slds-icon slds-icon--small slds-m-right--x-small" aria-hidden="true">
