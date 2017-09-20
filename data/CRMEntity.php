@@ -3044,9 +3044,9 @@ class CRMEntity {
 		if(empty($sorder)){
 			$sorder = $this->default_sort_order;
 		}
-		if (isset($_REQUEST['sorder']) && empty($sorder)){
+		if (isset($_REQUEST['sorder'])){
 			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
-		}else if (!empty($_SESSION[$currentModule.'_Sort_Order']) && empty($sorder)){
+		}else if (!empty($_SESSION[$currentModule.'_Sort_Order'])){
 			$sorder = $this->db->sql_escape_string($_SESSION[$currentModule.'_Sort_Order']);
 		}
 		$log->debug("Exiting getSortOrder() method ...");
@@ -3064,9 +3064,9 @@ class CRMEntity {
 		if(empty($order_by)){
 			$order_by = $this->default_order_by;
 		}
-		if (isset($_REQUEST['order_by']) && empty($order_by)){
+		if (isset($_REQUEST['order_by'])){
 			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
-		}else if (!empty($_SESSION[$currentModule.'_Order_By']) && empty($order_by)){
+		}else if (!empty($_SESSION[$currentModule.'_Order_By'])){
 			$order_by = $this->db->sql_escape_string($_SESSION[$currentModule.'_Order_By']);
 		}
 		$log->debug("Exiting getOrderBy method ...");
