@@ -997,7 +997,7 @@ function getFieldAutocomplete($term, $filter, $searchinmodule, $fields, $returnf
  * @return Array values found: crmid => array($returnfields)
  */
 function getGlobalSearch($term, $searchin, $limit, $user) {
-	global $current_user,$log,$adb,$default_charset;
+	global $current_user,$adb,$default_charset;
 
 	$respuesta=array();
 	if (empty($searchin)) {
