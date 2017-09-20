@@ -100,7 +100,7 @@ for ($i=0;$i<(count($myids)-1);$i++)
 	$realid=explode("@",$myids[$i]);
 	$nemail=count($realid);
 	$mycrmid=$realid[0];
-	if (getmoduleforfield($realid[1]) == 'Users') {
+	if (getModuleForField($realid[1]) == 'Users') {
 		//handle the mail send to vtiger_users
 		$emailadd = $adb->query_result($adb->pquery("select email1 from vtiger_users where id=?", array($mycrmid)),0,'email1');
 		$pmodule = 'Users';
