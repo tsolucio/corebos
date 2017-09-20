@@ -31,7 +31,7 @@ class checkAndRestoreEmailsRelations extends cbupdaterWorker {
 				for ($j = 0; $j < (count($myids) - 1); $j++) {
 					$realid = explode("@", $myids[$j]);
 					$mycrmid = $realid[0];
-					if (getSalesEntityType($realid[1]) != 'Users') {
+					if (getModuleForField($realid[1]) != 'Users') {
 						$adb->pquery('insert ignore into vtiger_seactivityrel(crmid,activityid) values(?,?)',array($mycrmid,$activityid));
 					}
 				}
