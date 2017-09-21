@@ -112,7 +112,7 @@ $check_mysql_extension = Common_Install_Wizard_Utils::check_mysql_extension();
 																	<tr class='level1'>
 																		<td valign=top ><?php echo $installationStrings['LBL_PHP_VERSION_GT_5']; ?></td>
 																		<td  valign=top><?php $php_version = phpversion();
-																							echo (version_compare($php_version, '5.2.0') == -1) ?
+																							echo (version_compare($php_version, '5.4.0') == -1) ?
 																								"<strong><font color=\"Red\">{$installationStrings['LBL_NO']}</strong></font>" :
 																								"<strong><font color=\"#46882B\">$php_version</strong></font>";
 																						?>
