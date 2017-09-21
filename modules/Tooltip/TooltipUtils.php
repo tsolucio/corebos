@@ -105,6 +105,7 @@ function getToolTipText($view,$fieldname,$module,$value){
 	$keys = array_keys($value[0]);
 	//getting the quickview list here
 	$fieldlabel = Array();
+	require_once 'modules/Reports/ReportUtils.php';
 	$fieldid = getFieldid(getTabid($module), $fieldname);
 	$quickview = 'select fieldname,fieldlabel,uitype from vtiger_quickview inner join vtiger_field on vtiger_quickview.related_fieldid=vtiger_field.fieldid where vtiger_quickview.fieldid = ? and currentview= ? and vtiger_field.presence in (0,2) order by vtiger_quickview.sequence';
 	$result = $adb->pquery($quickview,array($fieldid,$view));
@@ -126,8 +127,15 @@ function getToolTipText($view,$fieldname,$module,$value){
 			if(strlen($fieldvalue)>$ttMaxFieldValueLength){
 				$fieldvalue = substr($fieldvalue,0,$ttMaxFieldValueLength).'...';
 			}
-			if ($adb->query_result($result,$i,'uitype')==17) { // website
+			$uitype = $adb->query_result($result,$i,'uitype');
+			if ($uitype==17) { // website
 				$fieldvalue = '<a href="//'.$value[0][$fieldname].'" target=_blank>'.$fieldvalue.'</a>';
+			}
+			if ($uitype==10 || isReferenceUIType($uitype)) {
+				list($fieldvalue,$wsid) = explode('::::', $fieldvalue);
+				list($wsmod,$crmid) = explode('x', $wsid);
+				$relmodule = getSalesEntityType($crmid);
+				$fieldvalue = '<a href="index.php?module='.$relmodule.'&action=DetailView&record='.$crmid.'" target=_blank>'.$fieldvalue.'</a>';
 			}
 			$text[$label] = $fieldvalue;
 		}
@@ -197,7 +205,7 @@ function vttooltip_processResult($result, $descObj){
 			$name = $field['name'];
 			
 			if(!empty($value)){
-				$result[0][$name] = vtws_getName($value,$current_user);
+				$result[0][$name] = vtws_getName($value,$current_user).'::::'.$value;
 			}else{
 				$result[0][$name] = '';
 			}

@@ -25,14 +25,13 @@ class PublicInvitePermissionHandler extends VTEventHandler {
 		if ($handlerType == 'corebos.permissions.accessquery' and $parameter[2] == 'cbCalendar') {
 			$user = $parameter[3];
 			$parameter[1] = 'addToUserPermission';
-			// all the tickets the user can access plus those related to
-			//  accounts or products assigned to him
 			$parameter[0] = "select vtiger_activity.activityid as id
 				from vtiger_activity
 				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid
 				where deleted=0 and visibility='Public' and smownerid in (select userid from vtiger_sharedcalendar where sharedid=".$user->id."))
 				UNION
 				(select vtiger_invitees.activityid as id from vtiger_invitees where inviteeid=".$user->id;
+			$parameter[4] = false;
 		}
 		return $parameter;
 	}

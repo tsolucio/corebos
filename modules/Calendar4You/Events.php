@@ -344,6 +344,9 @@ foreach($Users_Ids AS $userid) {
 				$convert_due_date = DateTimeField::convertToUserTimeZone($row["due_date"]." ".$row["time_end"]);
 				$user_due_date = $convert_due_date->format('Y-m-d H:i');
 			}
+			if (isset($row['notime'])) {
+				$allDay = ($row['notime'] ? true : false);
+			}
 			$Activities[] = array(
 				'id' => $row['crmid'],
 				'typeid' => $activitytypeid,

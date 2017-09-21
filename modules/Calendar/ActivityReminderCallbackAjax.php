@@ -64,7 +64,7 @@ if(isPermitted('Calendar','index') == 'yes'){
 				if($cbmodule == 'Events') {$cbmodule = 'Calendar';}
 				$focus = CRMEntity::getInstance($cbmodule);
 
-				if ($cbmodule == 'Calendar') {
+				if ($cbmodule == 'Calendar' || $cbmodule == 'cbCalendar') {
 					$focus->retrieve_entity_info($cbrecord,$cbmodule);
 					$cbsubject = $focus->column_fields['subject'];
 					$cbactivitytype   = $focus->column_fields['activitytype'];
@@ -82,7 +82,12 @@ if(isPermitted('Calendar','index') == 'yes'){
 					$date = new DateTimeField($cbdate.' '.$cbtime);
 					$cbtime = $date->getDisplayTime();
 					$cbdate = $date->getDisplayDate();
-					$cbtimeArr = getaddEventPopupTime($cbtime, '', 'am/pm');
+					if (empty($current_user->hour_format)) {
+						$format = '24';
+					} else {
+						$format = $current_user->hour_format;
+					}
+					$cbtimeArr = getaddEventPopupTime($cbtime, '', $format);
 					$cbtime = $cbtimeArr['starthour'].':'.$cbtimeArr['startmin'].''.$cbtimeArr['startfmt'];
 				}
 

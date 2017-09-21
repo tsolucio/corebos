@@ -376,6 +376,7 @@ jQuery(document).ready(function(){
                                         record: event.id,
                                         day: dayDelta._days,
                                         minute: dayDelta._milliseconds/60000,
+                                        allday: event.allDay
                                     },
                                     success: function(data) {
                                     }

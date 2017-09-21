@@ -266,7 +266,7 @@ function __vtlib_get_modulevar_value($module, $varname) {
 }
 
 /**
- * Convert given text input to singular.
+ * @deprecated: use 'SINGLE_' or cbtranslation
  */
 function vtlib_tosingular($text) {
 	$lastpos = strripos($text, 's');

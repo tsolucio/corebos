@@ -277,7 +277,7 @@ class Validations extends processcbMap {
 			}
 			$screen_values['pdoInformation'] = $products;
 		}
-		$record = (isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : 0);
+		$record = (isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : (isset($screen_values['record']) ? vtlib_purify($screen_values['record']) : 0));
 		$q = 'select cbmapid from vtiger_cbmap
 			inner join vtiger_crmentity on crmid=cbmapid
 			where deleted=0 and maptype=? and targetname=?';

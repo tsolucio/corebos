@@ -89,6 +89,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Calendar_PopupReminder_DaysPast',
 
 				'CronTasks_cronWatcher_mailto',
+				'CronTasks_cronWatcher_TimeThreshold',
 
 				'BusinessMapping_SalesOrder2Invoice',
 				'BusinessMapping_PotentialOnCampaignRelation',

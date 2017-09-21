@@ -96,7 +96,7 @@ class Emails extends CRMEntity {
 					$realid = explode("@", $myids[$i]);
 					$mycrmid = $realid[0];
 					//added to handle the relationship of emails with vtiger_users
-					if (getmoduleforfield($realid[1]) == 'Users') {
+					if (getModuleForField($realid[1]) == 'Users') {
 						$del_q = 'delete from vtiger_salesmanactivityrel where smid=? and activityid=?';
 						$adb->pquery($del_q, array($mycrmid, $actid));
 						$mysql = 'insert into vtiger_salesmanactivityrel values(?,?)';
@@ -339,7 +339,6 @@ class Emails extends CRMEntity {
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once("modules/$related_module/$related_module.php");
 		$other = new $related_module();
-		$singular_modname = vtlib_toSingular($related_module);
 
 		$parenttab = getParentTab();
 

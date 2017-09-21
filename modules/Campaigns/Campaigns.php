@@ -130,8 +130,6 @@ class Campaigns extends CRMEntity {
 			$is_CampaignStatusAllowed = getFieldVisibilityPermission('Accounts', $current_user->id, 'campaignrelstatus', 'readwrite') == '0';
 		}
 
-		$singular_modname = vtlib_toSingular($related_module);
-
 		$parenttab = getParentTab();
 
 		if($singlepane_view == 'true')
@@ -159,20 +157,19 @@ class Campaigns extends CRMEntity {
 		$button .= "<input title='".getTranslatedString('LBL_EMPTY_LIST',$this_module)."' class='crmbutton small edit' value='".getTranslatedString('LBL_EMPTY_LIST',$this_module)."' type='button' name='button' onclick='emptyCvList(\"$related_module\",\"$id\")'>";
 		$button .= '&nbsp;&nbsp;&nbsp;&nbsp;';
 
-		if($actions)
-		{
-			if(is_string($actions))
+		if ($actions) {
+			if (is_string($actions)) {
 				$actions = explode(',', strtoupper($actions));
-			if(in_array('SELECT', $actions) && isPermitted($related_module,4, '') == 'yes')
-			{
-				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module). "' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module) ."'>&nbsp;";
 			}
-			if(in_array('ADD', $actions) && isPermitted($related_module,1, '') == 'yes')
-			{
+			if (in_array('SELECT', $actions) && isPermitted($related_module,4, '') == 'yes') {
+				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module). "' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
+			}
+			if (in_array('ADD', $actions) && isPermitted($related_module,1, '') == 'yes') {
+				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
 				$button .= "<input type='hidden' name='createmode' value='link' />".
-					"<input title='".getTranslatedString('LBL_ADD_NEW'). " ". getTranslatedString($singular_modname) ."' class='crmbutton small create'" .
+					"<input title='".getTranslatedString('LBL_ADD_NEW'). " ". $singular_modname ."' class='crmbutton small create'" .
 					" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
-					" value='". getTranslatedString('LBL_ADD_NEW'). " " . getTranslatedString($singular_modname) ."'>&nbsp;";
+					" value='". getTranslatedString('LBL_ADD_NEW'). " " . $singular_modname ."'>&nbsp;";
 			}
 		}
 
@@ -228,8 +225,6 @@ class Campaigns extends CRMEntity {
 			$is_CampaignStatusAllowed = getFieldVisibilityPermission('Contacts', $current_user->id, 'campaignrelstatus', 'readwrite') == '0';
 		}
 
-		$singular_modname = vtlib_toSingular($related_module);
-
 		$parenttab = getParentTab();
 
 		if($singlepane_view == 'true')
@@ -258,16 +253,19 @@ class Campaigns extends CRMEntity {
 		$button .= "<input title='".getTranslatedString('LBL_EMPTY_LIST',$this_module)."' class='crmbutton small edit' value='".getTranslatedString('LBL_EMPTY_LIST',$this_module)."' type='button' name='button' onclick='emptyCvList(\"$related_module\",\"$id\")'>";
 		$button .= '&nbsp;&nbsp;&nbsp;&nbsp;';
 
-		if($actions) {
-			if(is_string($actions)) $actions = explode(',', strtoupper($actions));
-			if(in_array('SELECT', $actions) && isPermitted($related_module,4, '') == 'yes') {
-				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module). "' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module) ."'>&nbsp;";
+		if ($actions) {
+			if (is_string($actions)) {
+				$actions = explode(',', strtoupper($actions));
 			}
-			if(in_array('ADD', $actions) && isPermitted($related_module,1, '') == 'yes') {
+			if (in_array('SELECT', $actions) && isPermitted($related_module,4, '') == 'yes') {
+				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module). "' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
+			}
+			if (in_array('ADD', $actions) && isPermitted($related_module,1, '') == 'yes') {
+				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
 				$button .= "<input type='hidden' name='createmode' value='link' />".
-					"<input title='".getTranslatedString('LBL_ADD_NEW'). " ". getTranslatedString($singular_modname) ."' class='crmbutton small create'" .
+					"<input title='".getTranslatedString('LBL_ADD_NEW'). " ". $singular_modname ."' class='crmbutton small create'" .
 					" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
-					" value='". getTranslatedString('LBL_ADD_NEW'). " " . getTranslatedString($singular_modname) ."'>&nbsp;";
+					" value='". getTranslatedString('LBL_ADD_NEW'). " " . $singular_modname ."'>&nbsp;";
 			}
 		}
 
@@ -327,8 +325,6 @@ class Campaigns extends CRMEntity {
 			$is_CampaignStatusAllowed  = getFieldVisibilityPermission('Leads', $current_user->id, 'campaignrelstatus', 'readwrite') == '0';
 		}
 
-		$singular_modname = vtlib_toSingular($related_module);
-
 		$parenttab = getParentTab();
 
 		if($singlepane_view == 'true')
@@ -357,16 +353,19 @@ class Campaigns extends CRMEntity {
 		$button .= "<input title='".getTranslatedString('LBL_EMPTY_LIST',$this_module)."' class='crmbutton small edit' value='".getTranslatedString('LBL_EMPTY_LIST',$this_module)."' type='button' name='button' onclick='emptyCvList(\"$related_module\",\"$id\")'>";
 		$button .= '&nbsp;&nbsp;&nbsp;&nbsp;';
 
-		if($actions) {
-			if(is_string($actions)) $actions = explode(',', strtoupper($actions));
-			if(in_array('SELECT', $actions) && isPermitted($related_module,4, '') == 'yes') {
-				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module). "' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module) ."'>&nbsp;";
+		if ($actions) {
+			if (is_string($actions)) {
+				$actions = explode(',', strtoupper($actions));
 			}
-			if(in_array('ADD', $actions) && isPermitted($related_module,1, '') == 'yes') {
+			if (in_array('SELECT', $actions) && isPermitted($related_module,4, '') == 'yes') {
+				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module). "' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
+			}
+			if (in_array('ADD', $actions) && isPermitted($related_module,1, '') == 'yes') {
+				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
 				$button .= "<input type='hidden' name='createmode' value='link' />".
-					"<input title='".getTranslatedString('LBL_ADD_NEW'). " ". getTranslatedString($singular_modname) ."' class='crmbutton small create'" .
+					"<input title='".getTranslatedString('LBL_ADD_NEW'). " ". $singular_modname ."' class='crmbutton small create'" .
 					" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
-					" value='". getTranslatedString('LBL_ADD_NEW'). " " . getTranslatedString($singular_modname) ."'>&nbsp;";
+					" value='". getTranslatedString('LBL_ADD_NEW'). " " . $singular_modname ."'>&nbsp;";
 			}
 		}
 
