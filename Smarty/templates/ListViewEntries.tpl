@@ -12,6 +12,17 @@
 &#&#&#{if isset($ERROR)}{$ERROR}{/if}&#&#&#
 {/if}
 <script type="text/javascript" src="include/js/ListView.js"></script>
+<script type="text/javascript" src="include/js/colResizable-1.6.min.js"></script>
+<script type="text/javascript">
+	jQuery(function(){
+		jQuery("#resizableTable").colResizable({
+				liveDrag:true, 
+				gripInnerHtml:"<div class='grip'></div>", 
+				draggingClass:"dragging", 
+				resizeMode:'fit'
+			});
+		});
+</script>
 <form name="massdelete" method="POST" id="massdelete" onsubmit="VtigerJS_DialogBox.block();">
 	<input name='search_url' id="search_url" type='hidden' value='{$SEARCH_URL}'>
 	<input name="idlist" id="idlist" type="hidden">
@@ -107,7 +118,7 @@
 
 				<!-- =====================LIGHITNG DESGIN LIST VIEW =========== -->
 				<div >
-					<table class="slds-table slds-table--bordered slds-table--fixed-layout ld-font">
+					<table id="resizableTable" class="slds-table slds-table--bordered slds-table--fixed-layout ld-font">
 						<thead>
 							<!-- Table Headers -->
 							<tr>
