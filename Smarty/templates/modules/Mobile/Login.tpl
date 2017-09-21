@@ -24,9 +24,9 @@
 			<label for="username">{$MOD.LBL_NAME}:</label>
 			<input type="text" name="username" id="username" value="" placeholder="{$MOD.LBL_NAME}"/>
 			<label for="password">{$MOD.LBL_PASSWORD}:</label>
+			<input type="password" name="password" id="password" value="" placeholder="{$MOD.LBL_PASSWORD}"/>
 			<input name="checkbox-mini-0" id="showpw" data-mini="true" data-theme=c type="checkbox">
 			<label for="showpw">{$MOD.LBL_SHOW}</label>
-			<input type="password" name="password" id="password" value="" placeholder="{$MOD.LBL_PASSWORD}"/>
 			<div data-role="button" >
 				<input  type="submit" value="Login" >
 			</div>
