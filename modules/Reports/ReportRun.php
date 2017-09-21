@@ -29,6 +29,7 @@ class ReportRun extends CRMEntity {
 	var $selectcolumns;
 	var $groupbylist;
 	var $reporttype;
+	var $cbreporttype;
 	var $reportname;
 	var $totallist;
 	var $number_of_rows;
@@ -69,6 +70,7 @@ class ReportRun extends CRMEntity {
 		$this->primarymodule = $oReport->primodule;
 		$this->secondarymodule = $oReport->secmodule;
 		$this->reporttype = $oReport->reporttype;
+		$this->cbreporttype = $oReport->cbreporttype;
 		$this->reportname = $oReport->reportname;
 		$this->queryPlanner = new ReportRunQueryPlanner();
 		$this->queryPlanner->reportRun = $this;
@@ -2089,13 +2091,13 @@ class ReportRun extends CRMEntity {
 		return $query;
 	}
 
-	public static function sGetDirectSQL($reportid, $reporttype, $eliminatenewlines=true) {
+	public static function sGetDirectSQL($reportid, $cbreporttype, $eliminatenewlines=true) {
 		global $log, $adb;
 		$rptrs = $adb->pquery('select moreinfo from vtiger_report where reportid=?',array($reportid));
 		if ($rptrs and $adb->num_rows($rptrs)>0) {
 			$minfo = $adb->query_result($rptrs, 0, 0);
 			if (!empty($minfo)) {
-				if ($reporttype == 'crosstabsql') {
+				if ($cbreporttype == 'crosstabsql') {
 					$minfo = unserialize($minfo);
 					$minfo = $minfo['sql'];
 				}
@@ -2118,8 +2120,8 @@ class ReportRun extends CRMEntity {
 	function sGetSQLforReport($reportid,$filtersql,$type='',$chartReport=false) {
 		global $log;
 		$groupsquery = '';
-		if ($this->reporttype == 'directsql' or $this->reporttype == 'crosstabsql') {
-			$reportquery = self::sGetDirectSQL($reportid,$this->reporttype,true);
+		if ($this->cbreporttype == 'directsql' or $this->cbreporttype == 'crosstabsql') {
+			$reportquery = self::sGetDirectSQL($reportid,$this->cbreporttype,true);
 			$columnstotalsql = '';
 			if (stripos($reportquery, ' order by ')) {
 				$groupsquery = substr($reportquery, stripos($reportquery, ' order by ')+10);
@@ -2235,7 +2237,7 @@ class ReportRun extends CRMEntity {
 				$totalsselectedcolumns = implode(', ',$totalsselectedcolumns);
 				$reportquery = "select ".$columnstotalsql.' from (select DISTINCT '.$totalsselectedcolumns.$_columnstotallistaddtoselect." ".$reportquery." ".$wheresql.') as summary_calcs';
 			}
-		} elseif ($this->reporttype != 'directsql' and $this->reporttype != 'crosstabsql') {
+		} elseif ($this->cbreporttype != 'directsql' and $this->cbreporttype != 'crosstabsql') {
 			if($selectedcolumns == '') { // Fix for: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/4758 - Prasad
 				$selectedcolumns = "''"; // "''" to get blank column name
 				$allColumnsRestricted = true;
