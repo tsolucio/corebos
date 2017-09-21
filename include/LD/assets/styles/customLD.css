@@ -953,21 +953,23 @@ select:-moz-focusring {
     text-transform: uppercase;
     letter-spacing: 0.02rem;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*=========   END DetailViewUtils.php  ==========*/
 
+
+/*=========   HomeBlock.tpl ==========*/
+.homePageMatrixHdr .slds-radio--faux {
+    margin-right: 0!important;
+}
+
+.homePageMatrixHdr {
+    height: 35px;
+    padding: 5px;
+}
+
+.homePageMatrixHdr .slds-select{
+    width: 30%;
+}
+/*=========   End HomeBlock.tpl ==========*/
 
 /*=========   Inventory DetailView.tpl  ==========*/
 
@@ -975,15 +977,6 @@ select:-moz-focusring {
     border-right: 1px solid #fff;
     border-left: 1px solid #fff;
 }
-
-
-
-
-
-
-
-
-
 
 /*=========   END InventoryDetailView.tpl  ==========*/
 

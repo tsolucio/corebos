@@ -1,50 +1,72 @@
 
-<div class='hide_tab' id="editRowmodrss_{$HOME_STUFFID}" style="position:absolute; top:0px;left:0px;">
+<div class='hide_tab' id="editRowmodrss_{$HOME_STUFFID}" style="position:absolute;top:30px;right:1px;">
 	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="small" valign="top">
-	<tr>
-{if $HOME_STUFFTYPE eq "Module" || $HOME_STUFFTYPE eq "RSS" || $HOME_STUFFTYPE eq "Default"}
-		<td align="left" class="homePageMatrixHdr" style="height:28px;" nowrap width="40%">
-			{$MOD.LBL_HOME_SHOW}&nbsp;
-			<select id="maxentries_{$HOME_STUFFID}" name="maxid" class="small" style="width:40px;">
-	{section name=iter start=1 loop=13 step=1}
-				<option value="{$smarty.section.iter.index}" {if $HOME_STUFF.Maxentries==$smarty.section.iter.index} selected {/if}>
-					{$smarty.section.iter.index}
-				</option>
-	{/section}
-			</select>&nbsp;{$MOD.LBL_HOME_ITEMS}
-		</td>
-		<td align="right" class="homePageMatrixHdr" nowrap style="height:28px;" width=60%>
-			<input type="button" title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  " name="save" class="crmbutton small save" onclick="saveEntries('maxentries_{$HOME_STUFFID}')">
-			<input type="button" title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  " name="cancel" class="crmbutton small cancel" onclick="cancelEntries('editRowmodrss_{$HOME_STUFFID}')">
-		</td>
-{elseif $HOME_STUFFTYPE eq "DashBoard"}
-		<td  valign="top" align='center' class="homePageMatrixHdr" style="height:28px;" width=60%>
-			<input type="radio" id="dashradio_0" name="dashradio_{$HOME_STUFFID}" value="horizontalbarchart" {if $DASHDETAILS.$HOME_STUFFID.Chart eq 'horizontalbarchart'}checked{/if}>{'LBL_HOME_HORIZONTAL'|@getTranslatedString:'Home'}
-			<input type="radio" id="dashradio_1" name="dashradio_{$HOME_STUFFID}" value="verticalbarchart"{if $DASHDETAILS.$HOME_STUFFID.Chart eq 'verticalbarchart'}checked{/if}>{'LBL_HOME_VERTICAL'|@getTranslatedString:'Home'}
-			<input type="radio" id="dashradio_2" name="dashradio_{$HOME_STUFFID}" value="piechart" {if $DASHDETAILS.$HOME_STUFFID.Chart eq 'piechart'}checked{/if}>{'LBL_HOME_PIE'|@getTranslatedString:'Home'}
-		</td>
-		</tr>
+		{if $HOME_STUFFTYPE eq "Module" || $HOME_STUFFTYPE eq "RSS" || $HOME_STUFFTYPE eq "Default"}
 		<tr>
-			<td  valign="top" align="center" class="homePageMatrixHdr" nowrap style="height:28px;" width="40%">
-			<input type="button" name="save" title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  " class="crmbutton small save" onclick="saveEditDash({$HOME_STUFFID})">
-			<input type="button" name="cancel" title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  " class="crmbutton small cancel" onclick="cancelEntries('editRowmodrss_{$HOME_STUFFID}')">
+			<td align="left" class="homePageMatrixHdr" nowrap width="40%">
+				{$MOD.LBL_HOME_SHOW}&nbsp;
+				<select id="maxentries_{$HOME_STUFFID}" name="maxid" class="slds-select">
+					{section name=iter start=1 loop=13 step=1}
+						<option value="{$smarty.section.iter.index}" {if $HOME_STUFF.Maxentries==$smarty.section.iter.index} selected {/if}>
+							{$smarty.section.iter.index}
+						</option>
+					{/section}
+				</select>&nbsp;{$MOD.LBL_HOME_ITEMS}
 			</td>
 		</tr>
-{elseif $HOME_STUFFTYPE eq "ReportCharts"}
-		<td  valign="top" align='center' class="homePageMatrixHdr" style="height:28px;" width=60%>
-			<input type="radio" id="reportradio_{$HOME_STUFFID}_0" name="reportradio_{$HOME_STUFFID}" value="horizontalbarchart" {if $DASHDETAILS.$HOME_STUFFID.Chart eq 'horizontalbarchart'}checked{/if} onclick="changeGraphType({$HOME_STUFFID},'horizontalbarchart');">{'LBL_HOME_HORIZONTAL'|@getTranslatedString:'Home'}
-			<input type="radio" id="reportradio_{$HOME_STUFFID}_1" name="reportradio_{$HOME_STUFFID}" value="verticalbarchart"{if $DASHDETAILS.$HOME_STUFFID.Chart eq 'verticalbarchart'}checked{/if} onclick="changeGraphType({$HOME_STUFFID},'verticalbarchart');">{'LBL_HOME_VERTICAL'|@getTranslatedString:'Home'}
-			<input type="radio" id="reportradio_{$HOME_STUFFID}_2" name="reportradio_{$HOME_STUFFID}" value="piechart" {if $DASHDETAILS.$HOME_STUFFID.Chart eq 'piechart'}checked{/if} onclick="changeGraphType({$HOME_STUFFID},'piechart');">{'LBL_HOME_PIE'|@getTranslatedString:'Home'}
-		</td>
-	</tr>
-	<tr>
-		<td  valign="top" align="center" class="homePageMatrixHdr" nowrap style="height:28px;" width="40%">
-			<input type="button" name="save" title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  " class="crmbutton small save" onclick="saveEditReportCharts({$HOME_STUFFID})">
-			<input type="button" name="cancel" title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  " class="crmbutton small cancel" onclick="cancelEntries('editRowmodrss_{$HOME_STUFFID}')">
-		</td>
-	</tr>
-{/if}
-	</tr>
+		<tr>
+			<td align="right" class="homePageMatrixHdr" nowrap width=60%>
+				<input type="button" title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  " name="save" class="slds-button slds-button--small slds-button_success" onclick="saveEntries('maxentries_{$HOME_STUFFID}')">
+				<input type="button" title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  " name="cancel" class="slds-button slds-button--small slds-button--destructive" onclick="cancelEntries('editRowmodrss_{$HOME_STUFFID}')">
+			</td>
+		</tr>
+		{elseif $HOME_STUFFTYPE eq "DashBoard"}
+		<tr>
+			<td  valign="top" align='center' class="homePageMatrixHdr" width=60%>
+				<input type="radio" id="dashradio_0" name="dashradio_{$HOME_STUFFID}" value="horizontalbarchart" {if $DASHDETAILS.$HOME_STUFFID.Chart eq 'horizontalbarchart'}checked{/if}>{'LBL_HOME_HORIZONTAL'|@getTranslatedString:'Home'}
+				<input type="radio" id="dashradio_1" name="dashradio_{$HOME_STUFFID}" value="verticalbarchart"{if $DASHDETAILS.$HOME_STUFFID.Chart eq 'verticalbarchart'}checked{/if}>{'LBL_HOME_VERTICAL'|@getTranslatedString:'Home'}
+				<input type="radio" id="dashradio_2" name="dashradio_{$HOME_STUFFID}" value="piechart" {if $DASHDETAILS.$HOME_STUFFID.Chart eq 'piechart'}checked{/if}>{'LBL_HOME_PIE'|@getTranslatedString:'Home'}
+			</td>
+		</tr>
+		<tr>
+			<td valign="top" align="center" class="homePageMatrixHdr" nowrap  width="40%">
+				<input type="button" name="save" title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  " class="slds-button slds-button--small slds-button_success" onclick="saveEditDash({$HOME_STUFFID})">
+				<input type="button" name="cancel" title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  " class="slds-button slds-button--small slds-button--destructive" onclick="cancelEntries('editRowmodrss_{$HOME_STUFFID}')">
+			</td>
+		</tr>
+		{elseif $HOME_STUFFTYPE eq "ReportCharts"}
+			<td valign="top" align='center' class="homePageMatrixHdr" width=60%>
+				<span class="slds-radio">
+					<input type="radio" id="reportradio_{$HOME_STUFFID}_0" name="reportradio_{$HOME_STUFFID}" value="horizontalbarchart" {if $DASHDETAILS.$HOME_STUFFID.Chart eq 'horizontalbarchart'}checked{/if} onclick="changeGraphType({$HOME_STUFFID},'horizontalbarchart');">
+					<label class="slds-radio__label" for="reportradio_{$HOME_STUFFID}_0">
+						<span class="slds-radio--faux"></span>
+					</label>
+					<span class="slds-form-element__label">{'LBL_HOME_HORIZONTAL'|@getTranslatedString:'Home'}</span>
+				</span>
+				<span class="slds-radio">
+					<input type="radio" id="reportradio_{$HOME_STUFFID}_1" name="reportradio_{$HOME_STUFFID}" value="verticalbarchart"{if $DASHDETAILS.$HOME_STUFFID.Chart eq 'verticalbarchart'}checked{/if} onclick="changeGraphType({$HOME_STUFFID},'verticalbarchart');">
+					<label class="slds-radio__label" for="reportradio_{$HOME_STUFFID}_1">
+						<span class="slds-radio--faux"></span>
+					</label>
+					<span class="slds-form-element__label">{'LBL_HOME_VERTICAL'|@getTranslatedString:'Home'}</span>
+				</span>
+				<span class="slds-radio">
+					<input type="radio" id="reportradio_{$HOME_STUFFID}_2" name="reportradio_{$HOME_STUFFID}" value="piechart" {if $DASHDETAILS.$HOME_STUFFID.Chart eq 'piechart'}checked{/if} onclick="changeGraphType({$HOME_STUFFID},'piechart');">
+					<label class="slds-radio__label" for="reportradio_{$HOME_STUFFID}_2">
+						<span class="slds-radio--faux"></span>
+					</label>
+					<span class="slds-form-element__label">{'LBL_HOME_PIE'|@getTranslatedString:'Home'}</span>
+				</span>
+			</td>
+		</tr>
+		<tr>
+			<td valign="top" align="center" class="homePageMatrixHdr" nowrap width="40%">
+				<input type="button" name="save" title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  " class="slds-button slds-button--small slds-button_success" onclick="saveEditReportCharts({$HOME_STUFFID})">
+				<input type="button" name="cancel" title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  " class="slds-button slds-button--small slds-button--destructive" onclick="cancelEntries('editRowmodrss_{$HOME_STUFFID}')">
+			</td>
+		</tr>
+		{/if}
+		</tr>
 	</table>
 </div>
 <input type=hidden id="test_{$HOME_STUFFID}" value = {$HOME_STUFFTYPE}/>
@@ -140,73 +162,73 @@
 			<td align="left">{$HOME_STUFF}</td>
 		</tr>
 	</table>
+
 {elseif $HOME_STUFFTYPE eq "ReportCharts"}
-	<input type=hidden id=more_{$HOME_STUFFID} value="{$DASHDETAILS[$HOME_STUFFID].ReportId}"/>
-	<table border=0 cellspacing=0 cellpadding=5 width=100%>
-		<tr>
-			<td align="left">
-			<canvas id="homechart{$HOME_STUFFID}" style="width:500px;height:250px;margin:auto;padding:10px;"></canvas>
+<input type=hidden id=more_{$HOME_STUFFID} value="{$DASHDETAILS[$HOME_STUFFID].ReportId}"/>
+<table border=0 cellspacing=0 cellpadding=5 width=100%>
+	<tr>
+		<td align="left">
+		<canvas id="homechart{$HOME_STUFFID}" style="width:500px;height:250px;margin:auto;padding:10px;"></canvas>
 <script type="text/javascript">
-window.doChart{$HOME_STUFFID} = function(charttype) {ldelim}
-	let stuffchart = document.getElementById('homechart{$HOME_STUFFID}');
-	let stuffcontext = stuffchart.getContext('2d');
-	stuffcontext.clearRect(0, 0, stuffchart.width, stuffchart.height);
-{literal}
-	let chartDataObject = {
-		labels: [{/literal}{foreach item=LABEL name=chartlabels from=$HOME_STUFF.xaxisData}"{$LABEL}"{if not $smarty.foreach.chartlabels.last},{/if}{/foreach}{literal}],
-		datasets: [{
-			data: [{/literal}{foreach item=CVALUE name=chartvalues from=$HOME_STUFF.yaxisData}"{$CVALUE}"{if not $smarty.foreach.chartvalues.last},{/if}{/foreach}{literal}],
-			backgroundColor: [{/literal}{foreach item=CVALUE name=chartvalues from=$HOME_STUFF.yaxisData}getRandomColor(){if not $smarty.foreach.chartvalues.last},{/if}{/foreach}{literal}]
-		}]
-	};
-	Chart.scaleService.updateScaleDefaults('linear', {
-		ticks: {
-			min: 0,
-			max: Math.max.apply(Math, chartDataObject.datasets[0].data)+1
-		}
-	});
-	window.schart{/literal}{$HOME_STUFFID}{literal} = new Chart(stuffchart,{
-		type: charttype,
-		data: chartDataObject,
-		options: {
-			responsive: true,
-			legend: {
-				position: "right",
-				display: (charttype=='pie'),
-				labels: {
-					fontSize: 11,
-					boxWidth: 18
+	window.doChart{$HOME_STUFFID} = function(charttype) {ldelim}
+		let stuffchart = document.getElementById('homechart{$HOME_STUFFID}');
+		let stuffcontext = stuffchart.getContext('2d');
+		stuffcontext.clearRect(0, 0, stuffchart.width, stuffchart.height);
+	{literal}
+		let chartDataObject = {
+			labels: [{/literal}{foreach item=LABEL name=chartlabels from=$HOME_STUFF.xaxisData}"{$LABEL}"{if not $smarty.foreach.chartlabels.last},{/if}{/foreach}{literal}],
+			datasets: [{
+				data: [{/literal}{foreach item=CVALUE name=chartvalues from=$HOME_STUFF.yaxisData}"{$CVALUE}"{if not $smarty.foreach.chartvalues.last},{/if}{/foreach}{literal}],
+				backgroundColor: [{/literal}{foreach item=CVALUE name=chartvalues from=$HOME_STUFF.yaxisData}getRandomColor(){if not $smarty.foreach.chartvalues.last},{/if}{/foreach}{literal}]
+			}]
+		};
+		Chart.scaleService.updateScaleDefaults('linear', {
+			ticks: {
+				min: 0,
+				max: Math.max.apply(Math, chartDataObject.datasets[0].data)+1
+			}
+		});
+		window.schart{/literal}{$HOME_STUFFID}{literal} = new Chart(stuffchart,{
+			type: charttype,
+			data: chartDataObject,
+			options: {
+				responsive: true,
+				legend: {
+					position: "right",
+					display: (charttype=='pie'),
+					labels: {
+						fontSize: 11,
+						boxWidth: 18
+					}
 				}
 			}
-		}
-	});
-	stuffchart.addEventListener('click',function(evt) {
-		let activePoint = schart{/literal}{$HOME_STUFFID}{literal}.getElementAtEvent(evt);
-		let clickzone = {
-			{/literal}{foreach item=CLICKVALUE key=CLICKINDEX name=clickvalues from=$HOME_STUFF.targetLink}{$CLICKINDEX}:"{$CLICKVALUE}"{if not $smarty.foreach.clickvalues.last},{/if}{/foreach}{literal}
-		};
-		let a = document.createElement("a");
-		a.target = "_blank";
-		a.href = clickzone[activePoint[0]._index];
-		document.body.appendChild(a);
-		a.click();
-	});
-}
-{/literal}
-{if $DASHDETAILS.$HOME_STUFFID.Chart eq 'horizontalbarchart'}
-let charttype = 'horizontalBar';
-{elseif $DASHDETAILS.$HOME_STUFFID.Chart eq 'verticalbarchart'}
-let charttype = 'bar';
-{elseif $DASHDETAILS.$HOME_STUFFID.Chart eq 'piechart'}
-let charttype = 'pie';
-{else}
-let charttype = 'verticalbarchart';
-{/if}
-doChart{$HOME_STUFFID}(charttype);
+		});
+		stuffchart.addEventListener('click',function(evt) {
+			let activePoint = schart{/literal}{$HOME_STUFFID}{literal}.getElementAtEvent(evt);
+			let clickzone = {
+				{/literal}{foreach item=CLICKVALUE key=CLICKINDEX name=clickvalues from=$HOME_STUFF.targetLink}{$CLICKINDEX}:"{$CLICKVALUE}"{if not $smarty.foreach.clickvalues.last},{/if}{/foreach}{literal}
+			};
+			let a = document.createElement("a");
+			a.target = "_blank";
+			a.href = clickzone[activePoint[0]._index];
+			document.body.appendChild(a);
+			a.click();
+		});
+	}
+	{/literal}
+	{if $DASHDETAILS.$HOME_STUFFID.Chart eq 'horizontalbarchart'}
+	let charttype = 'horizontalBar';
+	{elseif $DASHDETAILS.$HOME_STUFFID.Chart eq 'verticalbarchart'}
+	let charttype = 'bar';
+	{elseif $DASHDETAILS.$HOME_STUFFID.Chart eq 'piechart'}
+	let charttype = 'pie';
+	{else}
+	let charttype = 'verticalbarchart';
+	{/if}
+	doChart{$HOME_STUFFID}(charttype);
 </script>
-			</td>
-		</tr>
-	</table>
+
+</td></tr></table>
 {/if}
 {if isset($HOME_STUFF.Details) && $HOME_STUFF.Details|@is_array == 'true'}
 <input id='search_qry_{$HOME_STUFFID}' name='search_qry_{$HOME_STUFFID}' type='hidden' value='{if isset($HOME_STUFF.Details.search_qry)}{$HOME_STUFF.Details.search_qry}{/if}' />

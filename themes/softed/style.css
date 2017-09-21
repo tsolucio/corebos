@@ -1884,7 +1884,7 @@ ul {
 	padding-bottom: 5px;
 	background-color:#ffffff;
 	/*background:url(../images/settingsSelUIBg.gif) repeat-x;*/
-	padding:  15px 25px ;
+	/*padding:  15px 25px ;*/
 
 }
 
@@ -2192,7 +2192,7 @@ textarea {
 
 .homePageMatrixHdr {
 	border-bottom:0px solid #d3d2c1;
-	background:#ffffff  ;
+	background:#f7f9fb;
 }
 
 .reportsListTable {
@@ -2519,7 +2519,7 @@ a.drop_downnew_parent{
 
 .topMarginHomepage{
 	margin-left: 10px;
-	margin-top: 10px;
+	/*margin-top: 10px;*/
 }
 
 /*home page classes end here*/

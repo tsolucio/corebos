@@ -20,7 +20,7 @@
 <div id="vtbusy_homeinfo" style="display:none;"><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></div>
 
 {*<!-- Main Contents Start Here -->*}
-<table border=0 cellspacing=0 cellpadding=0 width=100% align="center" valign="top">
+<table border=0 cellspacing=0 cellpadding=0 width=98% align="center" valign="top">
 	<tr>
 		<td width="100%" align="center" valign="top" height="350">
 			<div id="MainMatrix" class="show_tab topMarginHomepage" style="padding:0px;width:100%">
