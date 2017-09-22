@@ -1148,3 +1148,23 @@ th[scope="col"] {
 }
 
 /*======= End Import_Default_Values_widget=============*/
+
+/*======= Documents module =============*/
+
+.addfolderDocuments tr td{
+    padding: 0 .5rem;
+}
+
+.delete-documents-folder {
+    width: 16px;
+    cursor: pointer;
+}
+
+.delete-documents-folder:hover {
+    opacity: .7;
+}
+/*======= End Documents module=============*/
+
+.slds-table .globalVariableRow td {
+    white-space: normal;
+}
