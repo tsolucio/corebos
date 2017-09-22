@@ -1,5 +1,5 @@
 <tr>
-<td>
+	<td>
 {include file='modules/GlobalVariable/VarDefinition.tpl'}
-</td>
+	</td>
 </tr>

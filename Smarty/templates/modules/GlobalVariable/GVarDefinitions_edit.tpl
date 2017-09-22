@@ -1,5 +1,5 @@
-<tr>
-<td colspan="4">
-{include file='modules/GlobalVariable/VarDefinition.tpl'}
-</td>
+<tr class="globalVariableRow">
+	<td colspan="4">
+		{include file='modules/GlobalVariable/VarDefinition.tpl'}
+	</td>
 </tr>
