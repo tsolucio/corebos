@@ -31,73 +31,56 @@
 </table>
 
 {*<!-- Contents -->*}
+<table border=0 cellspacing=0 cellpadding=0 width=100% align=center>
+	<tr>
+		<td>
+			<form name="basicSearch" action="index.php" onsubmit="return false;">
+				<div id="searchAcc" style="display: block;position:relative;">
+					<table width="98%" cellpadding="5" cellspacing="0" class="searchUIBasic small" align="center" border=0>
+						<tr>
+							<td class="searchUIName small" nowrap align="left">
+								<span class="moduleName">{$APP.LBL_SEARCH}</span><br>
+							</td>
+							<td class="small" nowrap align=right><b>{$APP.LBL_SEARCH_FOR}</b></td>
+							<td class="small"><input type="text" class="txtBox slds-input" name="search_text"></td>
+							<td class="small" nowrap><b>{$APP.LBL_IN}</b>&nbsp;</td>
+							<td class="small" nowrap>
+								<div id="basicsearchcolumns_real">
+									<select name="search_field" id="bas_searchfield" class="txtBox slds-select">
+										{html_options options=$SEARCHLISTHEADER }
+									</select>
+								</div>
+								<input type="hidden" name="searchtype" value="BasicSearch">
+								<input type="hidden" name="module" value="{$SELECTED_MODULE}">
+								<input type="hidden" name="parenttab" value="{$CATEGORY}">
+								<input type="hidden" name="action" value="index">
+								<input type="hidden" name="query" value="true">
+								<input type="hidden" name="search_cnt">
+							</td>
+							<td class="small" nowrap>
+								<input name="submit" type="button" class="slds-button slds-button--small slds-button--brand" onClick="callRBSearch('Basic');" value=" {$APP.LBL_SEARCH_NOW_BUTTON} ">&nbsp;
+							</td>
+							<td class="small" valign="top" onMouseOver="this.style.cursor='pointer';" onclick="moveMe('searchAcc');searchshowhide('searchAcc','')">[x]</td>
+						</tr>
+						<tr>
+							<td colspan="7" align="center" class="small">
+								<table border=0 cellspacing=0 cellpadding=0 width=100%>
+									<tr>
+										{$ALPHABETICAL}
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</form>
 
-<table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
-
-<tr><td valign=top><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-	<td class="showPanelBg" valign="top" width=100% style="padding:10px;">
-
-		<form name="basicSearch" action="index.php" onsubmit="return false;">
-		<div id="searchAcc" style="display: block;position:relative;">
-			<table width="80%" cellpadding="5" cellspacing="0" class="searchUIBasic small" align="center" border=0>
-				<tr>
-					<td class="searchUIName small" nowrap align="left">
-						<span class="moduleName">{$APP.LBL_SEARCH}</span><br>
-					</td>
-					<td class="small" nowrap align=right><b>{$APP.LBL_SEARCH_FOR}</b></td>
-					<td class="small"><input type="text" class="txtBox" style="width:120px" name="search_text"></td>
-					<td class="small" nowrap><b>{$APP.LBL_IN}</b>&nbsp;</td>
-					<td class="small" nowrap>
-						<div id="basicsearchcolumns_real">
-							<select name="search_field" id="bas_searchfield" class="txtBox" style="width:150px">
-							{html_options options=$SEARCHLISTHEADER }
-							</select>
-						</div>
-						<input type="hidden" name="searchtype" value="BasicSearch">
-						<input type="hidden" name="module" value="{$SELECTED_MODULE}">
-						<input type="hidden" name="parenttab" value="{$CATEGORY}">
-						<input type="hidden" name="action" value="index">
-						<input type="hidden" name="query" value="true">
-						<input type="hidden" name="search_cnt">
-					</td>
-					<td class="small" nowrap>
-						<input name="submit" type="button" class="crmbutton small create" onClick="callRBSearch('Basic');" value=" {$APP.LBL_SEARCH_NOW_BUTTON} ">&nbsp;
-					</td>
-					<td class="small" valign="top" onMouseOver="this.style.cursor='pointer';" onclick="moveMe('searchAcc');searchshowhide('searchAcc','')">[x]</td>
-				</tr>
-				<tr>
-					<td colspan="7" align="center" class="small">
-						<table border=0 cellspacing=0 cellpadding=0 width=100%>
-							<tr>
-								{$ALPHABETICAL}
-							</tr>
-						</table>
-					</td>
-				</tr>
-			</table>
-		</div>
-		</form>
-
-{*<!-- Searching UI -->*}
-
-	<div id="modules_datas" class="small" style="width:100%;">
-		{include file="modules/$MODULE/RecycleBinContents.tpl"}
-	</div>
-</tr></td>
-
-
-</div>
-</td>
-</tr>
-</table>
-</td>
-</tr>
-</table>
-
-	</td>
-	<td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
-</tr>
-</tbody>
+			{*<!-- Searching UI -->*}
+			<div id="modules_datas" class="small">
+				{include file="modules/$MODULE/RecycleBinContents.tpl"}
+			</div>
+		</td>
+	</tr>
 </table>
 
 <div style="display: none;" class="veil_new small" id="rb_empty_conf_id">

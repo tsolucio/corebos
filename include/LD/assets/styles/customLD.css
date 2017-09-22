@@ -1168,3 +1168,16 @@ th[scope="col"] {
 .slds-table .globalVariableRow td {
     white-space: normal;
 }
+
+.slds-hint-parent th .slds-truncate {
+    min-height: 13px;
+}
+
+.nav-recycle-bar {
+    margin: 5px 0;
+}
+
+.recycle-nav td {
+    background-color: #f7f9fb;
+    padding: .2rem;
+}
