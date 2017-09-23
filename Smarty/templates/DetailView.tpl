@@ -344,7 +344,7 @@ function sendfile_email()
 																											{assign var=_readonly value=$data.readonly}
 
 																											{if $label ne ''}
-																												<td class="dvtCellLabel" align=right width=25%>
+																												<td class="dvtCellLabel" align=right width=25% style="white-space: normal;">{strip}
 																												{if $keycntimage ne ''}
 																													{$keycntimage}
 																												{elseif $keyid eq '71' || $keyid eq '72'}<!-- Currency symbol -->
@@ -356,7 +356,7 @@ function sendfile_email()
 																												{else}
 																													{$label}
 																												{/if}
-																												</td>
+																												{/strip}</td>
 																												{if $EDIT_PERMISSION eq 'yes' && $display_type neq '2' && $_readonly eq '0'}
 																													{* Performance Optimization Control *}
 																													{if !empty($DETAILVIEW_AJAX_EDIT) }
