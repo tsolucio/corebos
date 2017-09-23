@@ -432,10 +432,10 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 	 * @access private
 	 */
 	function import_Module() {
-		$tabname = $this->_modulexml->name;
-		$tablabel= $this->_modulexml->label;
+		$tabname = (string)$this->_modulexml->name;
+		$tablabel= (string)$this->_modulexml->label;
 		$parenttab=(string)$this->_modulexml->parent;
-		$tabversion=$this->_modulexml->version;
+		$tabversion=(string)$this->_modulexml->version;
 
 		$isextension= false;
 		if(!empty($this->_modulexml->type)) {
@@ -444,8 +444,8 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 				$isextension = true;
 		}
 
-		$vtigerMinVersion = $this->_modulexml->dependencies->vtiger_version;
-		$vtigerMaxVersion = $this->_modulexml->dependencies->vtiger_max_version;
+		$vtigerMinVersion = (string)$this->_modulexml->dependencies->vtiger_version;
+		$vtigerMaxVersion = (string)$this->_modulexml->dependencies->vtiger_max_version;
 
 		$moduleInstance = new Vtiger_Module();
 		$moduleInstance->name = $tabname;
@@ -611,8 +611,8 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 
 		// Set the field as entity identifier if marked.
 		if(!empty($fieldnode->entityidentifier)) {
-			$moduleInstance->entityidfield = $fieldnode->entityidentifier->entityidfield;
-			$moduleInstance->entityidcolumn= $fieldnode->entityidentifier->entityidcolumn;
+			$moduleInstance->entityidfield = (string)$fieldnode->entityidentifier->entityidfield;
+			$moduleInstance->entityidcolumn= (string)$fieldnode->entityidentifier->entityidcolumn;
 			$moduleInstance->setEntityIdentifier($fieldInstance);
 		}
 
@@ -629,7 +629,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 		if(!empty($fieldnode->relatedmodules) && !empty($fieldnode->relatedmodules->relatedmodule)) {
 			$relatedmodules = Array();
 			foreach($fieldnode->relatedmodules->relatedmodule as $relatedmodulenode) {
-				$relatedmodules[] = $relatedmodulenode;
+				$relatedmodules[] = (string)$relatedmodulenode;
 			}
 			$fieldInstance->setRelatedModules($relatedmodules);
 		}
