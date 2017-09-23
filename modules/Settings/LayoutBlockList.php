@@ -1070,7 +1070,7 @@ function addCustomField() {
 						$field->setRelatedModules($moduleNames);
 						foreach ($moduleNames as $mod) {
 							$modrel = Vtiger_Module::getInstance($mod);
-							$modrel->setRelatedList($moduleInstance, $fldmodule, Array('ADD'),'get_dependents_list');
+							$modrel->setRelatedList($moduleInstance, $fldmodule, Array('ADD'),'get_dependents_list',$custfld_fieldid,'1:N');
 						}
 					}
 				}
