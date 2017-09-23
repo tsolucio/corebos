@@ -130,7 +130,7 @@ function getToolTipText($view,$fieldname,$module,$value){
 				$fieldvalue = '<a href="//'.$value[0][$fieldname].'" target=_blank>'.$fieldvalue.'</a>';
 			}
 			if ($uitype==10 || isReferenceUIType($uitype)) {
-				list($fieldvalue,$wsid) = explode('::::', $fieldvalue);
+				list($fieldvalue,$wsid) = explode('::::', $value[0][$fieldname]);
 				list($wsmod,$crmid) = explode('x', $wsid);
 				$relmodule = getSalesEntityType($crmid);
 				$fieldvalue = '<a href="index.php?module='.$relmodule.'&action=DetailView&record='.$crmid.'" target=_blank>'.$fieldvalue.'</a>';
