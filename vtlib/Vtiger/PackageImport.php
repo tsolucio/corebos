@@ -717,10 +717,12 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 	 */
 	function import_Event($modulenode, $moduleInstance, $eventnode) {
 		$event_condition = '';
+		$event_dependent = '[]';
 		if(!empty($eventnode->condition)) $event_condition = "$eventnode->condition";
+		if(!empty($eventnode->dependent)) $event_dependent = "$eventnode->dependent";
 		Vtiger_Event::register($moduleInstance,
 			(string)$eventnode->eventname, (string)$eventnode->classname,
-			(string)$eventnode->filename, (string)$event_condition
+			(string)$eventnode->filename, (string)$event_condition, (string)$event_dependent
 		);
 	}
 
