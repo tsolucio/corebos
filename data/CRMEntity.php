@@ -2110,7 +2110,7 @@ class CRMEntity {
 			if (isset($other->related_tables)) {
 				$otherRelatedTable = (array)$other->related_tables;
 			} else {
-				$otherRelatedTable = '';
+				$otherRelatedTable = array();
 			}
 			if ($dependentTable!=$other->table_name and !in_array($dependentTable, $otherRelatedTable)) {
 				$relidx = isset($other->tab_name_index[$dependentTable]) ? $other->tab_name_index[$dependentTable] : $other->table_index;

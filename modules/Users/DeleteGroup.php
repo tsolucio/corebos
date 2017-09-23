@@ -7,24 +7,18 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('include/utils/UserInfoUtil.php');
 
 global $adb;
 $del_id = vtlib_purify($_REQUEST['delete_group_id']);
-$transfer_group_id = vtlib_purify($_REQUEST['transfer_group_id']);
 $assignType = vtlib_purify($_REQUEST['assigntype']);
 
-if($assignType == 'T')
-{
+if ($assignType == 'T') {
 	$transferId = vtlib_purify($_REQUEST['transfer_group_id']);
-}
-elseif($assignType == 'U')
-{
+} elseif ($assignType == 'U') {
 	$transferId = vtlib_purify($_REQUEST['transfer_user_id']);
 }
 
-//Updating the user2 vtiger_role vtiger_table
 deleteGroup($del_id,$transferId);
 
 header("Location: index.php?action=listgroups&module=Settings&parenttab=Settings");
