@@ -65,8 +65,6 @@ foreach ($rls as $relid => $relinfo) {
 	}
 	if ($module=='Emails') {
 		echo '<td><img align="absmiddle" width="20px" title="'.$add.'" src="themes/softed/images/btnL3Add.gif" onclick="fnvshobj(this,\'sendmail_cont\');sendmail(\''.$formodule."',$forrecord);".'"></td>';
-	} elseif ($module=='Calendar') {
-		echo '<td><img align="absmiddle" width="20px" title="'.$add.'" src="themes/softed/images/btnL3Add.gif" onclick="document.location=\'index.php?module=Calendar4You&action=EventEditView&createmode=link&return_id='.$forrecord.'&return_action=DetailView&return_module='.$formodule.'&activity_mode=Task&cbfromid='.$forrecord.'\'"></td>';
 	} else {
 		echo '<td><img align="absmiddle" width="20px" title="'.$add.'" src="themes/softed/images/btnL3Add.gif" onclick="document.location=\'index.php?module='.urlencode($module).'&action=EditView&createmode=link&return_id='.$forrecord.'&return_action=DetailView&return_module='.$formodule.'&cbfromid='.$forrecord.'\'"></td>';
 	}
