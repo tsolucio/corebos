@@ -59,9 +59,9 @@ foreach ($rls as $relid => $relinfo) {
 		$onclick = "onclick=\"javascript:loadRelatedListBlock(".
 				"'module=$formodule&action={$formodule}Ajax&file=DetailViewAjax&record={$forrecord}&ajxaction=LOADRELATEDLIST&header={$label}&relation_id={$relid}&actions={$actions}',".
 				"'tbl_{$formodule}_{$labelnospace}','{$formodule}_{$labelnospace}');document.location='#tbl_".$formodule.'_'.$labelnospace.'\';"';
-		echo '<td><a title="'.$goto.'" href="javascript:;" '.$onclick.'>'.getTranslatedString($label,$module).'</a></td>';
+		echo '<td><a title="'.$goto.'" href="javascript:;" '.$onclick.'>'.getTranslatedString($relinfo['label'],$module).'</a></td>';
 	} else {
-		echo '<td><a title="'.$goto.'" href="index.php?action=CallRelatedList&module='.$formodule.'&record='.$forrecord.'&selected_header='.$label.'&relation_id='.$relid.'#tbl_'.$formodule.'_'.$labelnospace.'">'.getTranslatedString($label,$module).'</a></td>';
+		echo '<td><a title="'.$goto.'" href="index.php?action=CallRelatedList&module='.$formodule.'&record='.$forrecord.'&selected_header='.$label.'&relation_id='.$relid.'#tbl_'.$formodule.'_'.$labelnospace.'">'.getTranslatedString($relinfo['label'],$module).'</a></td>';
 	}
 	if ($module=='Emails') {
 		echo '<td><img align="absmiddle" width="20px" title="'.$add.'" src="themes/softed/images/btnL3Add.gif" onclick="fnvshobj(this,\'sendmail_cont\');sendmail(\''.$formodule."',$forrecord);".'"></td>';
