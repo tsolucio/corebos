@@ -137,11 +137,11 @@ class Calendar_RepeatEvents {
 		/** Create instance before and reuse */
 		$new_focus = new cbCalendar();
 
-		$eventStartDate = $focus->column_fields['dtstart'];
 		$interval = strtotime($focus->column_fields['dtend']) - strtotime($focus->column_fields['dtstart']);
 		$numberOfRepeats = count($recurObj->recurringdates);
+		unset($_REQUEST['timefmt_dtstart'],$_REQUEST['timefmt_dtend']);
 		foreach ($recurObj->recurringdates as $index => $startDate) {
-			if($index == 0 && $eventStartDate == $startDate) {
+			if ($index == 0 && $focus->column_fields['date_start'] == $startDate) {
 				continue;
 			}
 			$startDateTimestamp = strtotime($startDate);
