@@ -855,28 +855,18 @@ function getTabModuleName($tabid) {
 
 	// Lookup information in cache first
 	$tabname = VTCacheUtils::lookupModulename($tabid);
-	if($tabname === false) {
+	if ($tabname === false) {
 		if (file_exists('tabdata.php') && (filesize('tabdata.php') != 0)) {
 			include('tabdata.php');
 			$tabname = array_search($tabid,$tab_info_array);
-
-			if($tabname == false) {
-				$sql = "select name from vtiger_tab where tabid=?";
-				$result = $adb->pquery($sql, array($tabid));
-				$tabname = $adb->query_result($result,0,"name");
-			}
-
-			// Update information to cache for re-use
-			VTCacheUtils::updateTabidInfo($tabid, $tabname);
-
-		} else {
+		}
+		if ($tabname === false) {
 			$sql = "select name from vtiger_tab where tabid=?";
 			$result = $adb->pquery($sql, array($tabid));
 			$tabname = $adb->query_result($result,0,"name");
-
-			// Update information to cache for re-use
-			VTCacheUtils::updateTabidInfo($tabid, $tabname);
 		}
+		// Update information to cache for re-use
+		VTCacheUtils::updateTabidInfo($tabid, $tabname);
 	}
 	$log->debug("Exiting getTabModuleName ($tabname) ...");
 	return $tabname;
