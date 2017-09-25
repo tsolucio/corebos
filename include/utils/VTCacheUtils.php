@@ -48,7 +48,11 @@ class VTCacheUtils {
 			self::$_tabidinfo_cache[$tabid] = $module;
 		}
 	}
-	
+
+	static function emptyTabidInfo() {
+		self::$_tabidinfo_cache = array();
+	}
+
 	/** All tab information caching */
 	static $_alltabrows_cache = false;
 	static function lookupAllTabsInfo() {

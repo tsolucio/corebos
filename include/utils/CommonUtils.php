@@ -1764,7 +1764,10 @@ function create_tab_data_file() {
 	}
 
 	$filename = 'tabdata.php';
-
+	VTCacheUtils::emptyTabidInfo();
+	if (function_exists('opcache_invalidate')) {
+		opcache_invalidate('tabdata.php', true);
+	}
 
 	if (file_exists($filename)) {
 
