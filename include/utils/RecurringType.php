@@ -373,7 +373,7 @@ class RecurringType {
 					$this->dayofweek_to_rpt[] = $this->startdate->dayofweek;
 				}
 
-				foreach ($this->dayofweek_to_rpti as $day) {
+				foreach ($this->dayofweek_to_rpt as $day) {
 					$repeatDay = $tempdateObj->getThisweekDaysbyIndex($day);
 					$repeatDate = $repeatDay->get_DB_formatted_date();
 					if ($repeatDate > $startdate && $repeatDate <= $enddate) {
