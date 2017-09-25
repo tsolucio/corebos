@@ -11,9 +11,9 @@
 ( function( $ ) {
 function pageIsSelectmenuDialog( page ) {
     var isDialog = false,
-        id = page && page.attr( "id" );
+        id = page && page.prop( "id" );
     $( ".filterable-select" ).each( function() {
-        if ( $( this ).attr( "id" ) + "-dialog" === id ) {
+        if ( $( this ).prop( "id" ) + "-dialog" === id ) {
             isDialog = true;
             return false;
         }
@@ -50,7 +50,7 @@ $.mobile.document
 		var selectmenu = $( event.target );
 		//remove not selected options
 		$('option:not(:selected)', selectmenu).remove();
-		var list = $( "#" + selectmenu.attr( "id" ) + "-menu" );
+		var list = $( "#" + selectmenu.prop( "id" ) + "-menu" );
         var form = list.jqmData( "filter-form" );
         // We store the generated form in a variable attached to the popup so we avoid creating a
         // second form/input field when the listview is destroyed/rebuilt during a refresh.
@@ -80,7 +80,7 @@ $.mobile.document
 					url: "index.php?_operation=getRelatedFieldAjax",
 					dataType: "json",
 					data: {
-						parentselector: selectmenu.attr('id'),
+						parentselector: selectmenu.prop('id'),
 						searchvalue: input.val(),
 						modulename : $("#module").val()
 					}
@@ -619,9 +619,9 @@ $(document).delegate("#login_page", "pageinit", function() {
 			var field = $(settings.field)
 			control.bind('click', function () {
 				if (control.is(':checked')) {
-					field.attr('type', 'text');
+					field.prop('type', 'text');
 				} else {
-					field.attr('type', 'password');
+					field.prop('type', 'password');
 				}
 			})
 		};

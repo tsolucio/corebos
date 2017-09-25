@@ -152,7 +152,7 @@ function VTCreateEntityTask($, fieldvaluemapping){
 	}
 
 	function editFieldExpression(fieldValueNode, fieldType) {
-		editpopupobj.edit(fieldValueNode.attr('id'), fieldValueNode.val(), fieldType);
+		editpopupobj.edit(fieldValueNode.prop('id'), fieldValueNode.val(), fieldType);
 	}
 
 	function resetFields(opType, fieldName, mappingno) {
@@ -301,7 +301,7 @@ function VTCreateEntityTask($, fieldvaluemapping){
 				});
 				fe.bind("change", function(){
 					var select = $(this);
-					var mappingno = select.attr("id").match(/save_fieldvalues_(\d+)_fieldname/)[1];
+					var mappingno = select.prop("id").match(/save_fieldvalues_(\d+)_fieldname/)[1];
 					var fullFieldName = $(this).val();
 					resetFields(entityFieldTypes[fullFieldName], fullFieldName, mappingno);
 				});

@@ -12,7 +12,7 @@ jQuery.Class("Contact",{
         if(jQuery('#sync_button')){
             jQuery('#sync_button').on('click',function(){
                 jQuery('#sync_button b').text(app.vtranslate('LBL_SYNCRONIZING'));
-                jQuery('#sync_button').attr("disabled", "disabled")
+                jQuery('#sync_button').prop("disabled", "disabled")
                 jQuery('#synctime').remove();
                 var imagePath = app.vimage_path('Sync.gif')
                 jQuery('#sync_details').html('<img src='+imagePath+' style="margin-left:40px"/>');
@@ -252,7 +252,7 @@ jQuery.Class("Contact",{
         var prevSelectedValues = element.val();
         element.html('');
         for(var value in allValuesMap) {
-           element.append(jQuery('<option></option>').attr('value', value).text(app.vtranslate(allValuesMap[value])));
+           element.append(jQuery('<option></option>').prop('value', value).text(app.vtranslate(allValuesMap[value])));
         }
         for(var index in selectedValues) {
             if (jQuery.inArray(selectedValues[index], [prevSelectedValues]) === -1) {

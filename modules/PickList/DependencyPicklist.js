@@ -231,7 +231,7 @@ function handleCellClick(event, element) {
 		} else {
 			selectCell(element);
 		}
-		var selectedSourceId = (jQuery(element).attr('id')).slice(7);
+		var selectedSourceId = (jQuery(element).prop('id')).slice(7);
 		if(typeof selectedSourceId != 'undefined' && modifiedMappingValues.indexOf(selectedSourceId) == -1) {
 			modifiedMappingValues.push(selectedSourceId);
 		}

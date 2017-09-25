@@ -1,7 +1,7 @@
 function edittaskscript($){
 
 	function NumberBox(element){
-		var elementId = element.attr("id");
+		var elementId = element.prop("id");
 		var boxId = '#'+elementId+'-number-box';
 		var str = "";
 		for(var i = 1; i <= 30; i++){
