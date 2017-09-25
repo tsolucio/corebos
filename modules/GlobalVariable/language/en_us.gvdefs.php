@@ -445,8 +445,15 @@ $GlobalVariableDefinitons = array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
-	'values' => '',
-	'definition' => 'Show approximate git version after the application version number.',
+	'values' => '0 | 1',
+	'definition' => 'Show approximate last git commit version after the application version number.',
+),
+'Application_UI_ShowGITDate' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Show approximate last git commit date after the application version number.',
 ),
 'Document_Folder_View' => array(
 	'status' => 'Implemented',
