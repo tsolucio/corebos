@@ -1626,9 +1626,9 @@ if (typeof(MailManager) == 'undefined') {
             for(i=0; i<elements.length; i++) {
                 var element = jQuery(elements[i]);
                 if(state) {
-                    element.attr('checked',state).parent().parent().addClass('mm_lvtColDataHover').removeClass('mm_lvtColData');
+                    element.prop('checked',state).parent().parent().addClass('mm_lvtColDataHover').removeClass('mm_lvtColData');
                 } else {
-                    element.attr('checked',state).parent().parent().removeClass('mm_lvtColDataHover').addClass('mm_lvtColData');
+                    element.prop('checked',state).parent().parent().removeClass('mm_lvtColDataHover').addClass('mm_lvtColData');
                 }
             }
         },
