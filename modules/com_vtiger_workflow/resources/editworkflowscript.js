@@ -375,7 +375,7 @@ function editworkflowscript($, conditions){
 
 	function resetGroupJoinCondition(groupno) {
 		var firstChildNode = $("#save_conditions :first");
-		if(firstChildNode.length > 0 && firstChildNode.attr('class').indexOf('condition_group_join_block') >= 0) {
+		if(firstChildNode.length > 0 && firstChildNode.prop('class').indexOf('condition_group_join_block') >= 0) {
 			firstChildNode.remove();
 		}
 	}
@@ -446,7 +446,7 @@ function editworkflowscript($, conditions){
 	}
 
 	function editFieldExpression(fieldValueNode, fieldType) {
-		editpopupobj.edit(fieldValueNode.attr('id'), fieldValueNode.val(), fieldType);
+		editpopupobj.edit(fieldValueNode.prop('id'), fieldValueNode.val(), fieldType);
 	}
 
 	$(document).ready(function(){
@@ -591,7 +591,7 @@ function editworkflowscript($, conditions){
 
 						fe.bind("change", function(){
 							var select = $(this);
-							var condNo = select.attr("id").match(/save_condition_(\d+)_fieldname/)[1];
+							var condNo = select.prop("id").match(/save_condition_(\d+)_fieldname/)[1];
 							var fullFieldName = $(this).val();
 							resetFields(getFieldType(fullFieldName), condNo);
 						});
