@@ -22,44 +22,43 @@ var MailManageri18nInfo = {ldelim}{rdelim};
 {/foreach}
 </script>
 
-<table border=0 cellspacing=0 cellpadding=0 width=98%>
-<tr>
-	<td valign=top align=right width='8px'><img src='{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}' ></td>
-	<td class='showPanelBg' valign='top' >
+<table align="center" border=0 cellspacing=0 cellpadding=0 width=98%>
+	<tr>
+		<td valign='top'>
 
 		<div id='_progress_' style='float: right; display: none; position: absolute; right: 35px; font-weight: bold;'>
-		<span id='_progressmsg_'>...</span><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border='0' align='absmiddle'></div>
+			<span id='_progressmsg_'>...</span>
+			<img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border='0' align='absmiddle'>
+		</div>
 
-		<div style='padding: 20px 5px 20px 20px; min-height: 300px;' id='_mailmanagermaindiv_'>
-			<table width="100%" cellpadding=0 cellspacing=0 align=left>
-			<tr valign=top>
-				<td nowrap="nowrap" width="15%" class='noprint'>
-					<div id="_quicklinks_mainuidiv_">{include file="modules/MailManager/Mainui.QuickLinks.tpl"}</div>
-					<div id='_folderprogress_' style='float: right; display: none; position: absolute;left: 30px; font-weight: bold;'>
-						<span>{$MOD.JSLBL_LOADING_FOLDERS}</span><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border='0' align='absmiddle'>
-					</div>
-					<div id="_mainfolderdiv_" >
-					</div>
-				</td>
-				<td width="85%">
-					<span id="_messagediv_">{if $ERROR}<p>{$ERROR}</p>{/if}</span>
-						<div id="_contentdiv_"></div>
-						<div id="_contentdiv2_"></div>
-						<div id="_settingsdiv_"></div>
-						<div id="_relationpopupdiv_" style="display:none;position:absolute;width:800px;z-index:80000;"></div>
-						<div id="_replydiv_" style="display:none;">
-							{include file="modules/MailManager/Mail.Send.tpl"}
+		<div id='_mailmanagermaindiv_' style='min-height: 300px;' >
+			<table class="slds-table slds-no-row-hover dvtContentSpace">
+				<tr valign=top>
+					<td class='noprint action-block-mailManager'>
+						<div id="_quicklinks_mainuidiv_">{include file="modules/MailManager/Mainui.QuickLinks.tpl"}</div>
+						<div id='_folderprogress_' style='float: right; display: none; position: absolute;left: 30px; font-weight: bold;'>
+							<span>{$MOD.JSLBL_LOADING_FOLDERS}</span><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border='0' align='absmiddle'>
 						</div>
-						<div id="replycontentdiv" style="display:none;">
-							{include file="modules/MailManager/Mail.Send.tpl"}
-						</div>
-				</td>
-			</tr>
+						<div id="_mainfolderdiv_" ></div>
+					</td>
+					<td valign="top" style="padding-right: 0;">
+						<span id="_messagediv_">{if $ERROR}<p>{$ERROR}</p>{/if}</span>
+							<div id="_contentdiv_"></div>
+							<div id="_contentdiv2_"></div>
+							<div id="_settingsdiv_"></div>
+							<div id="_relationpopupdiv_" style="display:none;position:absolute;width:800px;z-index:80000;"></div>
+							<div id="_replydiv_" style="display:none;">
+								{include file="modules/MailManager/Mail.Send.tpl"}
+							</div>
+							<div id="replycontentdiv" style="display:none;">
+								{include file="modules/MailManager/Mail.Send.tpl"}
+							</div>
+					</td>
+				</tr>
 			</table>
 		</div>
 		<div id = '__vtiger__'></div>
 	</td>
-	<td valign=top align=right width='8px'><img src='{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}'></td>
 </tr>
 </table>
 

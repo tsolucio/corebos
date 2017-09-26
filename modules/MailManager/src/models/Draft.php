@@ -68,7 +68,8 @@ class MailManager_Model_DraftEmail {
 			foreach($draftMails[$i] as $fieldname=>$fieldvalue) {
 				if($fieldname == "saved_toid" || $fieldname == "ccmail" || $fieldname == "bccmail") {
 					if(!empty($fieldvalue)) {
-						$value = implode(',',json_decode($fieldvalue),true);
+						// $value = implode(',',json_decode($fieldvalue),true); error 2 params excpected
+						$value = implode(',',json_decode($fieldvalue));
 						if(strlen($value) > 45) {
 							$value = substr($value, 0, 45)."....";
 						}

@@ -1251,6 +1251,46 @@ tr td.action-block-mailManager {
     color: #000;
 }
 
+.mail-send-table .dvtCellInfo input {
+    width: 75%;
+}
+
+.mail-send-table .dvtCellInfo img {
+    cursor: pointer;
+    width: 18px;
+    padding: 2px 0;
+}
+
+.mail-send-table .dvtCellInfo img:hover {
+    opacity: .7;
+}
+
+.mail-send-table textarea {
+    height: 100%;
+}
+
+.mail-send-table tr .textarea-template-cell {
+    padding: .5rem!important;
+}
+
+.slds-button--info {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    text-align: center;
+    vertical-align: middle;
+    color: #fff;
+    font-weight: bold;
+    background-color: #5bc0de;
+    border-color: #46b8da;
+}
+
+.slds-button--info:hover {
+    color: #fff;
+    background-color: #46b8da;
+    border-color: #5bc0de;
+}
+
+
 /* RSS module */
 .rss-table td {
     padding: 0;
