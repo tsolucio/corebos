@@ -67,6 +67,8 @@ function cbws_uploadProductImages($recordID, $fileData, $user) {
 	$log->debug("Entering into add uploadProductImages($recordID) method.");
 
 	$finfo = finfo_open(FILEINFO_MIME_TYPE);
+	$myResult = array();
+	
 	$newnumimages = $numimages;
 	foreach ($fileData as $imageDetail) {
 		$_FILES = array();
@@ -82,6 +84,7 @@ function cbws_uploadProductImages($recordID, $fileData, $user) {
 		);
 		$product->insertIntoAttachment($crmid, 'Products', true);
 		unlink($filepath);
+		$myResult ['FileName'] [] = $imageDetail['name'];
 		$newnumimages++;
 		if ($newnumimages >= $maximages) {
 			break;
@@ -94,7 +97,25 @@ function cbws_uploadProductImages($recordID, $fileData, $user) {
 		where deleted=0 and vtiger_crmentity.setype LIKE "Products Image" and vtiger_seattachmentsrel.crmid=?', array($crmid));
 	$finalnumimages = $adb->query_result($rsimg, 0, 'cnt');
 
-	return ($finalnumimages == ($numimages + count($fileData)));
+	  // Check that final total of images equals the start number plus the file count
+    if ($finalnumimages == ($numimages + count($fileData))) {
+      $myResult ['Error'] = '0';
+      $myResult ['ImagesAtStart'] = $numimages;
+      $myResult ['NumberToAdd'] = count($fileData);
+      $myResult ['ImagesAtFinish'] = $newnumimages;
+      $myResult ['MaxImages'] = $maximages;
+    }
+		// If not return the images actually inserted and an error code
+    else {
+      $myResult ['Error'] = '1';
+      $myResult ['ImagesAtStart'] = $numimages;
+      $myResult ['NumberToAdd'] = count($fileData);
+      $myResult ['ImagesAtFinish'] = $newnumimages;
+      $myResult ['MaxImages'] = $maximages;
+    }
+
+	return $myResult;	
+	
 }
 
 ?>
