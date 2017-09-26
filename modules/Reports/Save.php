@@ -54,7 +54,7 @@ $smodule = (isset($_REQUEST['secondarymodule']) ? vtlib_purify($_REQUEST['second
 $reportname = (isset($_REQUEST['reportName']) ? vtlib_purify($_REQUEST['reportName']) : '');
 $reportdescription = (isset($_REQUEST['reportDesc']) ? vtlib_purify($_REQUEST['reportDesc']) : '');
 $cbreporttype = (!empty($_REQUEST['cbreporttype']) ? vtlib_purify($_REQUEST['cbreporttype']) : '');
-$reporttype = (isset($_REQUEST['reportType']) ? vtlib_purify($_REQUEST['reportType']) : ''));
+$reporttype = (isset($_REQUEST['reportType']) ? vtlib_purify($_REQUEST['reportType']) : 'tabular');
 $folderid = (!empty($_REQUEST['folder']) ? vtlib_purify($_REQUEST['folder']) : !empty($_REQUEST['reportfolder']) ? vtlib_purify($_REQUEST['reportfolder']) : 1);
 //<<<<<<<report>>>>>>>>>
 
@@ -371,7 +371,7 @@ if ($reportid == '' || ($reportid!='' && isset($_REQUEST['saveashidden']) && $_R
 		//<<<<reportmodules>>>>>>>
 		$select = 'SELECT cbreporttype FROM vtiger_report WHERE reportid=?';
 		$res = $adb->pquery($select,array($reportid));
-		$cbreporttype = $adb->query_result($res);
+		$cbreporttype = $adb->query_result($res,0,0);
 		if ($cbreporttype != 'corebos') {
 			$reporttype='';
 		}

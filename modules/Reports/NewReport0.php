@@ -28,6 +28,7 @@ $list_report_form->assign('LANGUAGE', $current_language);
 $list_report_form->assign("MOD", $mod_strings);
 $list_report_form->assign("APP", $app_strings);
 $list_report_form->assign('LBL_CHARSET', $default_charset);
+$list_report_form->assign('REPORTTYPE',isset($_REQUEST['reporttype']) ? vtlib_purify($_REQUEST['reporttype']) : '');
 $list_report_form->assign('REPORTTYPE2',isset($_REQUEST['cbreporttype']) ? vtlib_purify($_REQUEST['cbreporttype']) : '');
 $repObj = new Reports ();
 $folderid = 0;
