@@ -2684,7 +2684,7 @@ a .links{
 }
 /* Mail Manager starts*/
 .mm_blur {
-	color: #D3D3D3;
+	color: #b5b5b5;
 }
 .mm_bold {
 	padding: .3em;
@@ -2696,7 +2696,7 @@ a .links{
 }
 .mm_normal td {
 	padding: .3em;
-	border-bottom: 1px solid #aaa;
+	/*border-bottom: 1px solid #aaa;*/
 }
 .mm_bold td {
 	padding: .3em;
@@ -2750,7 +2750,8 @@ input {
 	border-collapse:collapse;
 }
 .mm_folder_selected_background {
-	background-color: #C9E0F0
+	background-color: #C9E0F0;
+	color: 000;
 }
 .mm_folder_unselected_background {
 	background-color: white

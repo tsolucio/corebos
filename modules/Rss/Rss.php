@@ -298,8 +298,8 @@ class vtigerRSS extends CRMEntity {
 		}
 		$starredhtml = "<table class='rssTable' cellspacing='0' cellpadding='0'>
 						<tr>
-						<th width='75%'>".$mod_strings['LBL_SUBJECT']."</th>
-						<th width='25%'>".$mod_strings['LBL_SENDER']."</th>
+						<th class='dvtCellLabel text-left' width='75%'>".$mod_strings['LBL_SUBJECT']."</th>
+						<th class='dvtCellLabel' width='25%'>".$mod_strings['LBL_SENDER']."</th>
 						</tr>".$starredhtml."</table>";
 		return $starredhtml;
 	}
@@ -358,8 +358,8 @@ class vtigerRSS extends CRMEntity {
 	{
 		global $adb;
 		$shtml = "<tr>
-					<td colspan=\"3\">
-					<table width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"2\" style=\"margin:5 0 0 35\">".$this->getRssFeedsbyCategory()."</table>
+					<td>
+					<table width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"2\" >".$this->getRssFeedsbyCategory()."</table>
 					</td>
 				</tr>";
 		return $shtml;

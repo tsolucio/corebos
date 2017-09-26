@@ -472,10 +472,6 @@ article.container::after {
     margin-bottom: .75rem;
 }
 
-.slds-card__body {
-    margin-bottom: .75rem;
-}
-
 .flexipageComponent {
     /*background-color: rgb(244, 246, 249);*/
     /*padding: 1rem ;*/
@@ -1149,7 +1145,15 @@ th[scope="col"] {
 
 /*======= End Import_Default_Values_widget=============*/
 
-/*======= Documents module =============*/
+.slds-table .globalVariableRow td {
+    white-space: normal;
+}
+
+.slds-hint-parent th .slds-truncate {
+    min-height: 13px;
+}
+
+/* Documents module */
 
 .addfolderDocuments tr td{
     padding: 0 .5rem;
@@ -1163,15 +1167,8 @@ th[scope="col"] {
 .delete-documents-folder:hover {
     opacity: .7;
 }
-/*======= End Documents module=============*/
 
-.slds-table .globalVariableRow td {
-    white-space: normal;
-}
-
-.slds-hint-parent th .slds-truncate {
-    min-height: 13px;
-}
+/* RecycleBin module */
 
 .nav-recycle-bar {
     margin: 5px 0;
@@ -1180,4 +1177,87 @@ th[scope="col"] {
 .recycle-nav td {
     background-color: #f7f9fb;
     padding: .2rem;
+}
+
+
+/* Mail Manager Module */
+
+tr td.action-block-mailManager {
+    width: 20%;
+    vertical-align: top;
+    padding-left: 0;
+}
+
+.mail-action .actionData {
+    padding-left: .5rem;
+    border-radius: 5px;
+    margin: .2rem;
+}
+
+.mail-action .actionData:hover {
+    background-color: #C9E0F0;
+}
+
+.mail-action .actionData a:focus,
+.mail-action .actionData a:hover,
+.mail-action .actionData a:active,
+.mail-action .actionData a:after {
+    color: #000!important;
+}
+
+.mail-action .actionData img{
+    vertical-align: sub;
+}
+
+.actionList {
+    padding: 0 .3rem;
+    text-align: left;
+    color: rgb(84, 105, 141);
+    font-size: .8125rem;
+}
+
+.actionList li {
+    padding: .3rem;
+    border-radius: 5px;
+    margin-bottom: .1rem;
+}
+
+.actionList li:focus,
+.actionList li:hover,
+.actionList li:active,
+.actionList li:after {
+    background-color: #C9E0F0;
+}
+
+.actionList li a:focus,
+.actionList li a:hover,
+.actionList li a:active,
+.actionList li a:after {
+    color: #000!important;
+}
+
+
+/* Mail manager Settings */
+.org-type-table .slds-input,
+.org-type-table .slds-select{
+    width: 50%;
+}
+
+.org-type-table .slds-radio--faux {
+    margin-right: 0!important;
+}
+
+.org-type-table .slds-form-element__label {
+    color: #000;
+}
+
+/* RSS module */
+.rss-table td {
+    padding: 0;
+}
+
+.action-block-rss {
+    padding: 0 1rem 0 0;
+    width: 30%;
+    vertical-align: top;
 }

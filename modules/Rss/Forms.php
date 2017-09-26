@@ -19,7 +19,7 @@ function get_rssfeeds_form() {
 	$allrsshtml = $oRss->getRSSCategoryHTML();
 	//$starred_rss_html = $oRss->getStarredRssFolder();
 
-	$the_form  = '<table width="100%" border="0" cellspacing="2" cellpadding="0" style="margin-top:10px">';
+	$the_form  = '<table width="100%" border="0" cellspacing="2" cellpadding="0">';
 	$the_form .= $allrsshtml;
 	$the_form .= '</table>';
 	return $the_form;
