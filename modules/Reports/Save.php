@@ -53,7 +53,8 @@ $smodule = (isset($_REQUEST['secondarymodule']) ? vtlib_purify($_REQUEST['second
 //<<<<<<<report>>>>>>>>>
 $reportname = (isset($_REQUEST['reportName']) ? vtlib_purify($_REQUEST['reportName']) : '');
 $reportdescription = (isset($_REQUEST['reportDesc']) ? vtlib_purify($_REQUEST['reportDesc']) : '');
-$reporttype = (!empty($_REQUEST['cbreporttype']) ? vtlib_purify($_REQUEST['cbreporttype']) : (isset($_REQUEST['reportType']) ? vtlib_purify($_REQUEST['reportType']) : ''));
+$cbreporttype = (!empty($_REQUEST['cbreporttype']) ? vtlib_purify($_REQUEST['cbreporttype']) : '');
+$reporttype = (isset($_REQUEST['reportType']) ? vtlib_purify($_REQUEST['reportType']) : ''));
 $folderid = (!empty($_REQUEST['folder']) ? vtlib_purify($_REQUEST['folder']) : !empty($_REQUEST['reportfolder']) ? vtlib_purify($_REQUEST['reportfolder']) : 1);
 //<<<<<<<report>>>>>>>>>
 
@@ -110,7 +111,8 @@ if ($reportid == '' || ($reportid!='' && isset($_REQUEST['saveashidden']) && $_R
 		$reportdetails=$adb->pquery("select * from vtiger_report as report join vtiger_reportmodules as repmodules on report.reportid=repmodules.reportmodulesid join vtiger_selectcolumn as sc on sc.queryid=report.reportid where reportid=?",array($reportid));
 		$folderid=$adb->query_result($reportdetails,0,'folderid');
 		$reporttype=$adb->query_result($reportdetails,0,'reporttype');
-		$_REQUEST['cbreporttype'] = $reporttype;
+		$cbreporttype=$adb->query_result($reportdetails,0,'cbreporttype');
+		$_REQUEST['cbreporttype'] = $cbreporttype;
 		$sharetype=$adb->query_result($reportdetails,0,'sharingtype');
 		$reportdescription=$adb->query_result($reportdetails,0,'description');
 		$pmodule = $adb->query_result($reportdetails,0,'primarymodule');
@@ -163,9 +165,12 @@ if ($reportid == '' || ($reportid!='' && isset($_REQUEST['saveashidden']) && $_R
 			{
 				if($reportid!='')
 					$reportname=$newreportname;
-				list($reporttype,$minfo) = report_getMoreInfoFromRequest($reporttype,$pmodule,$smodule,$pivotcolumns);
-				$ireportsql = 'insert into vtiger_report (REPORTID,FOLDERID,REPORTNAME,DESCRIPTION,REPORTTYPE,QUERYID,STATE,OWNER,SHARINGTYPE,moreinfo) values (?,?,?,?,?,?,?,?,?,?)';
-				$ireportparams = array($genQueryId, $folderid, $reportname, $reportdescription, $reporttype, $genQueryId,'CUSTOM',$current_user->id,$sharetype,$minfo);
+				list($cbreporttype,$minfo) = report_getMoreInfoFromRequest($cbreporttype,$pmodule,$smodule,$pivotcolumns);
+				if (isset($_REQUEST['cbreporttype']) && $_REQUEST['cbreporttype'] != 'corebos') {
+					$reporttype='';
+				}
+				$ireportsql = 'insert into vtiger_report (REPORTID,FOLDERID,REPORTNAME,DESCRIPTION,REPORTTYPE,QUERYID,STATE,OWNER,SHARINGTYPE,moreinfo,cbreporttype) values (?,?,?,?,?,?,?,?,?,?,?)';
+				$ireportparams = array($genQueryId, $folderid, $reportname, $reportdescription, $reporttype, $genQueryId,'CUSTOM',$current_user->id,$sharetype,$minfo,$cbreporttype);
 				$ireportresult = $adb->pquery($ireportsql, $ireportparams);
 				$log->info("Reports :: Save->Successfully saved vtiger_report");
 				if($ireportresult!=false)
@@ -364,8 +369,13 @@ if ($reportid == '' || ($reportid!='' && isset($_REQUEST['saveashidden']) && $_R
 		$ireportmoduleresult = $adb->pquery($ireportmodulesql, array($pmodule, $smodule,$reportid));
 		$log->info("Reports :: Save->Successfully saved vtiger_reportmodules");
 		//<<<<reportmodules>>>>>>>
-
-		list($reporttype,$minfo) = report_getMoreInfoFromRequest($reporttype,$pmodule,$smodule,$pivotcolumns);
+		$select = 'SELECT cbreporttype FROM vtiger_report WHERE reportid=?';
+		$res = $adb->pquery($select,array($reportid));
+		$cbreporttype = $adb->query_result($res);
+		if ($cbreporttype != 'corebos') {
+			$reporttype='';
+		}
+		list($cbreporttype,$minfo) = report_getMoreInfoFromRequest($cbreporttype,$pmodule,$smodule,$pivotcolumns);
 		$ireportsql = "update vtiger_report set REPORTNAME=?, DESCRIPTION=?, REPORTTYPE=?, SHARINGTYPE=?, folderid=?, moreinfo=? where REPORTID=?";
 		$ireportparams = array($reportname, $reportdescription, $reporttype, $sharetype, $folderid, $minfo, $reportid);
 		$ireportresult = $adb->pquery($ireportsql, $ireportparams);

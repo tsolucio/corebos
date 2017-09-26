@@ -26,7 +26,7 @@ if(isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 		// CREATE NEW REPORT OBJECT FROM REPORT ID
 		$oReport = new Reports($recordid);
 		$primarymodule = $oReport->primodule;
-		if ($oReport->reporttype=='crosstabsql') {
+		if ($oReport->cbreporttype=='crosstabsql') {
 			$rs = $adb->pquery('select moreinfo from vtiger_report where reportid=?',array($recordid));
 			$minfo = $adb->query_result($rs, 0, 0);
 			$minfo = unserialize($minfo);
