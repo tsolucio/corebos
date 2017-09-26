@@ -407,7 +407,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 			if((empty($importCronTask->sequence))){
 				$importCronTask->sequence=Vtiger_Cron::nextSequence();
 			}
-			Vtiger_Cron::register("$importCronTask->name","$importCronTask->handler", "$importCronTask->frequency", "$modulenode->name","$importCronTask->status","$importCronTask->sequence","$cronTask->description");
+			Vtiger_Cron::register("$importCronTask->name","$importCronTask->handler", "$importCronTask->frequency", "$modulenode->name","$importCronTask->status","$importCronTask->sequence","$importCronTask->description");
 		}
 	}
 }

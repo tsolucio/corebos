@@ -24,7 +24,7 @@ require('user_privileges/user_privileges_' . $current_user->id . '.php');
 $fortabid = getTabid($formodule);
 $forrecord = vtlib_purify($_REQUEST['forrecord']);
 $rls = array();
-$query = 'select relation_id,related_tabid,label,vtiger_tab.name,actions
+$query = 'select relation_id,related_tabid,label,vtiger_tab.name,actions,relationfieldid
 	from vtiger_relatedlists
 	inner join vtiger_tab on vtiger_tab.tabid=vtiger_relatedlists.related_tabid
 	where vtiger_relatedlists.tabid=? order by sequence';
@@ -37,7 +37,7 @@ while ($rel = $adb->fetch_array($result)) {
 	$permitted = $tab_seq_array[$relatedTabId];
 	if ($permitted === 0 || empty($relatedTabId)) {
 		if ($is_admin || $profileTabsPermission[$relatedTabId] === 0 || empty($relatedTabId)) {
-			$rls[$relatedId] = array('label'=>$relationLabel,'tabid'=>$relatedTabId,'module'=>$rel['name'],'actions'=>$rel['actions']);
+			$rls[$relatedId] = array('label'=>$relationLabel,'tabid'=>$relatedTabId,'module'=>$rel['name'],'actions'=>$rel['actions'],'relationfieldid'=>$rel['relationfieldid']);
 		}
 	}
 }
@@ -59,16 +59,24 @@ foreach ($rls as $relid => $relinfo) {
 		$onclick = "onclick=\"javascript:loadRelatedListBlock(".
 				"'module=$formodule&action={$formodule}Ajax&file=DetailViewAjax&record={$forrecord}&ajxaction=LOADRELATEDLIST&header={$label}&relation_id={$relid}&actions={$actions}',".
 				"'tbl_{$formodule}_{$labelnospace}','{$formodule}_{$labelnospace}');document.location='#tbl_".$formodule.'_'.$labelnospace.'\';"';
-		echo '<td><a title="'.$goto.'" href="javascript:;" '.$onclick.'>'.getTranslatedString($label,$module).'</a></td>';
+		echo '<td><a title="'.$goto.'" href="javascript:;" '.$onclick.'>'.getTranslatedString($relinfo['label'],$module).'</a></td>';
 	} else {
-		echo '<td><a title="'.$goto.'" href="index.php?action=CallRelatedList&module='.$formodule.'&record='.$forrecord.'&selected_header='.$label.'&relation_id='.$relid.'#tbl_'.$formodule.'_'.$labelnospace.'">'.getTranslatedString($label,$module).'</a></td>';
+		echo '<td><a title="'.$goto.'" href="index.php?action=CallRelatedList&module='.$formodule.'&record='.$forrecord.'&selected_header='.$label.'&relation_id='.$relid.'#tbl_'.$formodule.'_'.$labelnospace.'">'.getTranslatedString($relinfo['label'],$module).'</a></td>';
 	}
 	if ($module=='Emails') {
 		echo '<td><img align="absmiddle" width="20px" title="'.$add.'" src="themes/softed/images/btnL3Add.gif" onclick="fnvshobj(this,\'sendmail_cont\');sendmail(\''.$formodule."',$forrecord);".'"></td>';
-	} elseif ($module=='Calendar') {
-		echo '<td><img align="absmiddle" width="20px" title="'.$add.'" src="themes/softed/images/btnL3Add.gif" onclick="document.location=\'index.php?module=Calendar4You&action=EventEditView&createmode=link&return_id='.$forrecord.'&return_action=DetailView&return_module='.$formodule.'&activity_mode=Task&cbfromid='.$forrecord.'\'"></td>';
 	} else {
-		echo '<td><img align="absmiddle" width="20px" title="'.$add.'" src="themes/softed/images/btnL3Add.gif" onclick="document.location=\'index.php?module='.urlencode($module).'&action=EditView&createmode=link&return_id='.$forrecord.'&return_action=DetailView&return_module='.$formodule.'&cbfromid='.$forrecord.'\'"></td>';
+		if (empty($relinfo['relationfieldid'])) {
+			$linkmode = '&createmode=link';
+		} else {
+			$result = $adb->pquery('select fieldname from vtiger_field where fieldid=?', array($relinfo['relationfieldid']));
+			if ($result && $adb->num_rows($result)>0) {
+				$linkmode = '&'.$adb->query_result($result, 0, 0).'='.$forrecord;
+			} else {
+				$linkmode = '';
+			}
+		}
+		echo '<td><img align="absmiddle" width="20px" title="'.$add.'" src="themes/softed/images/btnL3Add.gif" onclick="document.location=\'index.php?module='.urlencode($module).'&action=EditView'.$linkmode.'&return_id='.$forrecord.'&return_action=DetailView&return_module='.$formodule.'&cbfromid='.$forrecord.'\'"></td>';
 	}
 	echo '</tr>';
 }

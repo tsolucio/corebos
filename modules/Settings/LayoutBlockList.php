@@ -1070,7 +1070,7 @@ function addCustomField() {
 						$field->setRelatedModules($moduleNames);
 						foreach ($moduleNames as $mod) {
 							$modrel = Vtiger_Module::getInstance($mod);
-							$modrel->setRelatedList($moduleInstance, $fldmodule, Array('ADD'),'get_dependents_list');
+							$modrel->setRelatedList($moduleInstance, $fldmodule, Array('ADD'),'get_dependents_list',$custfld_fieldid,'1:N');
 						}
 					}
 				}
@@ -1199,6 +1199,7 @@ function createRelatedList() {
 		case 'Documents':
 			$funcname = 'get_attachments';
 			break;
+		case 'cbCalendar':
 		case 'Calendar':
 		case 'Events':
 			$funcname = 'get_activities';

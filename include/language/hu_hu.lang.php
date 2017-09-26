@@ -508,6 +508,7 @@ $app_strings = array(
 	'LBL_SALES_ORDER_ID' => 'Megrendelés No.',
 	'LBL_PURCHASE_ORDER_ID' => 'Beszerzés No.',
 	'LBL_EXPORT_TO_PDF' => 'Exportálás PDF-be',
+	'DeletedProducts' => 'This record has deleted product/service lines. Please edit and fix accordingly.',
 	'LBL_HOME_KEY_METRICS' => 'Alap Mérőszámok',
 	'LBL_HOME_METRICS' => 'Mérőszámok',
 	'LBL_HOME_COUNT' => 'Darab',

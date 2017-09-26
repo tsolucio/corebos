@@ -209,11 +209,10 @@ function getAdminevvtMenu() {
 }
 
 function checkevvtMenuInstalled() {
-	global $log;
-	if(vtlib_isModuleActive('cbupdater')) {
+	global $log, $adb, $current_user;
+	if (vtlib_isModuleActive('cbupdater')) {
 		// first we make sure we have Global Variable
-		if(!vtlib_isModuleActive('GlobalVariable')) {
-			global $current_user;
+		if (!vtlib_isModuleActive('GlobalVariable')) {
 			$holduser = $current_user;
 			ob_start();
 			include 'modules/cbupdater/getupdatescli.php';
@@ -226,8 +225,7 @@ function checkevvtMenuInstalled() {
 			ob_end_clean();
 			$current_user = $holduser;
 		}
-		if(!vtlib_isModuleActive('evvtMenu')) {
-			global $current_user;
+		if (!vtlib_isModuleActive('evvtMenu')) {
 			$holduser = $current_user;
 			ob_start();
 			include 'modules/cbupdater/getupdatescli.php';

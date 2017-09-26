@@ -401,6 +401,35 @@ function sendfile_email()
 																											{if isset($MOD.LBL_ADDRESS_INFORMATION) && $header eq $MOD.LBL_ADDRESS_INFORMATION && ($MODULE eq 'Accounts' || $MODULE eq 'Contacts' || $MODULE eq 'Leads') }
 																												{if $MODULE eq 'Leads'}
 																													<input name="mapbutton" type="button" value="{$APP.LBL_LOCATE_MAP}" class="slds-button slds-button--small slds-button--brand" onClick="searchMapLocation( 'Main' )" title="{$APP.LBL_LOCATE_MAP}">
+
+																													{if $label ne ''}
+																														<td class="dvtCellLabel" align=right width=25% style="white-space: normal;">
+																															{strip}
+																															{if $keycntimage ne ''}
+																																{$keycntimage}
+																															{elseif $keyid eq '71' || $keyid eq '72'}<!-- Currency symbol -->
+																																{$label} ({$keycursymb})
+																															{elseif $keyid eq '9'}
+																																{$label} {$APP.COVERED_PERCENTAGE}
+																															{elseif $keyid eq '14'}
+																																{$label} {"LBL_TIMEFIELD"|@getTranslatedString}
+																															{else}
+																																{$label}
+																															{/if}
+																															{/strip}
+																														</td>
+																														{if $EDIT_PERMISSION eq 'yes' && $display_type neq '2' && $_readonly eq '0'}
+																															{* Performance Optimization Control *}
+																															{if !empty($DETAILVIEW_AJAX_EDIT) }
+																																{include file="DetailViewUI.tpl"}
+																															{else}
+																																{include file="DetailViewFields.tpl"}
+																															{/if}
+																															{* END *}
+																														{else}
+																															{include file="DetailViewFields.tpl"}
+																														{/if}
+																													{/if}
 																												{else}
 																													<input name="mapbutton" value="{$APP.LBL_LOCATE_MAP}" class="slds-button slds-button--small slds-button--brand" type="button" onClick="fnvshobj(this,'locateMap');" onMouseOut="fninvsh('locateMap');" title="{$APP.LBL_LOCATE_MAP}">
 																												{/if}
@@ -447,6 +476,7 @@ function sendfile_email()
 
 																														{if $label ne ''}
 																															<td class="dvtCellLabel" align=right width=25%>
+																															{strip}
 																															{if $keycntimage ne ''}
 																																{$keycntimage}
 																															{elseif $keyid eq '71' || $keyid eq '72'}<!-- Currency symbol -->
@@ -458,6 +488,7 @@ function sendfile_email()
 																															{else}
 																																{$label}
 																															{/if}
+																															{/strip}
 																															</td>
 																															{if $EDIT_PERMISSION eq 'yes' && $display_type neq '2' && $_readonly eq '0'}
 																																{* Performance Optimization Control *}

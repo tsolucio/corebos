@@ -34,7 +34,7 @@ function getFieldList($module_name, $field_name = "") {
 	return $fields;
 }
 
-/** 
+/**
  * this function returns the fields related to a field
  * @param array $result -- mysql query result that contains the field information
  * @param array $lang_strings -- language strings array
@@ -97,24 +97,23 @@ function tooltip_exists($fieldid, $related_fieldid) {
  * function to return the tooltip information
  * @param int $view - there can be multiple tooltips for a single module; this variable decides which is for which field
  * @param int $tabid - tabid of the field for which the tooltip has to be fetched
- * @param int $id - this  is the crmid of the record
- * returns the tooltip string 
+ * @param int $id - this is the crmid of the record
+ * returns the tooltip string
  */
 function getToolTipText($view,$fieldname,$module,$value){
 	global $adb,$app_strings;
 	$keys = array_keys($value[0]);
 	//getting the quickview list here
 	$fieldlabel = Array();
+	require_once 'modules/Reports/ReportUtils.php';
 	$fieldid = getFieldid(getTabid($module), $fieldname);
 	$quickview = 'select fieldname,fieldlabel,uitype from vtiger_quickview inner join vtiger_field on vtiger_quickview.related_fieldid=vtiger_field.fieldid where vtiger_quickview.fieldid = ? and currentview= ? and vtiger_field.presence in (0,2) order by vtiger_quickview.sequence';
 	$result = $adb->pquery($quickview,array($fieldid,$view));
 	$count = $adb->num_rows($result);
-	
 	$text=array();
 	$fieldname = Array();
 	for($i=0;$i<$count;$i++){
 		$fieldname = $adb->query_result($result,$i,"fieldname");
-		
 		if(in_array($fieldname, $keys)){
 			$fieldlabel = $adb->query_result($result,$i,"fieldlabel");
 			$label = getTranslatedString($fieldlabel,$module);
@@ -126,8 +125,15 @@ function getToolTipText($view,$fieldname,$module,$value){
 			if(strlen($fieldvalue)>$ttMaxFieldValueLength){
 				$fieldvalue = substr($fieldvalue,0,$ttMaxFieldValueLength).'...';
 			}
-			if ($adb->query_result($result,$i,'uitype')==17) { // website
+			$uitype = $adb->query_result($result,$i,'uitype');
+			if ($uitype==17) { // website
 				$fieldvalue = '<a href="//'.$value[0][$fieldname].'" target=_blank>'.$fieldvalue.'</a>';
+			}
+			if ($uitype==10 || isReferenceUIType($uitype)) {
+				list($fieldvalue,$wsid) = explode('::::', $value[0][$fieldname]);
+				list($wsmod,$crmid) = explode('x', $wsid);
+				$relmodule = getSalesEntityType($crmid);
+				$fieldvalue = '<a href="index.php?module='.$relmodule.'&action=DetailView&record='.$crmid.'" target=_blank>'.$fieldvalue.'</a>';
 			}
 			$text[$label] = $fieldvalue;
 		}
@@ -147,7 +153,6 @@ function getToolTip($text,$format = "default"){
 	if(trim(implode('', $text)) == ''){
 		return $tip;
 	}
-	
 	$smarty->assign("TEXT",$text);
 	$tip = $smarty->fetch("modules/Tooltip/$format.tpl");
 	return $tip;
@@ -166,10 +171,8 @@ function ToolTipExists($fieldname,$tabid){
 		$count = $adb->num_rows($result);
 		if($count > 0){
 			$fieldid = $adb->query_result($result,0,'fieldid');
-		
 			$sql = "select * from vtiger_quickview where fieldid = ?";
 			$result = $adb->pquery($sql, array($fieldid));
-		
 			if($adb->num_rows($result) > 0){
 				return $fieldid;
 			}else{
@@ -195,9 +198,8 @@ function vttooltip_processResult($result, $descObj){
 		$value = $result[0][$name];
 		if($field['type']['name'] == 'reference'){
 			$name = $field['name'];
-			
 			if(!empty($value)){
-				$result[0][$name] = vtws_getName($value,$current_user);
+				$result[0][$name] = vtws_getName($value,$current_user).'::::'.$value;
 			}else{
 				$result[0][$name] = '';
 			}
@@ -241,9 +243,8 @@ function vttooltip_processResult($result, $descObj){
  */
 function QuickViewFieldList($module){
 	global $adb, $app_strings,$mod_strings;
-	
+
 	$tabid = getTabid($module);
-	
 	$query = "select * from vtiger_field where tabid = ? and columnname not like 'imagename' and uitype not in (61, 122) and vtiger_field.presence in (0,2)";
 	$result = $adb->pquery($query,array($tabid));
 	if($adb->num_rows($result)>0){

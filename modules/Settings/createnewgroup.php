@@ -51,9 +51,9 @@ $grpNameStr="";
 
 foreach($roleDetails as $roleId=>$roleInfo)
 {
-	if($i !=0)
+	if($roleId != 'H1')
 	{
-		if($i !=1)
+		if($i >=1)
 		{
 			$roleIdStr .= ", ";
 			$roleNameStr .= ", ";

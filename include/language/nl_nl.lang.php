@@ -527,6 +527,7 @@ $app_strings = array(
 	'LBL_SALES_ORDER_ID' => 'Verkoopordernummer',
 	'LBL_PURCHASE_ORDER_ID' => 'Inkoopordernummer',
 	'LBL_EXPORT_TO_PDF' => 'Exporteer naar PDF',
+	'DeletedProducts' => 'This record has deleted product/service lines. Please edit and fix accordingly.',
 	'LBL_SEND_EMAIL_PDF' => 'Verstuur e-mail met PDF',
 	'LBL_HOME_KEY_METRICS' => 'Kerngetallen',
 	'LBL_HOME_METRICS' => 'Kerngetallen',

@@ -17,7 +17,7 @@ global $adb, $log,$current_user;
 $reportid = vtlib_purify($_REQUEST["record"]);
 
 //<<<<<<<selectcolumn>>>>>>>>>
-$selectedcolumnstring = $_REQUEST["selectedColumnsString"];
+$selectedcolumnstring = (isset($_REQUEST['selectedColumnsString']) ? $_REQUEST['selectedColumnsString'] : '');
 //<<<<<<<selectcolumn>>>>>>>>>
 
 //<<<<<<<reportsortcol>>>>>>>>>
@@ -46,36 +46,36 @@ if(!in_array($sort_by3,$selectedcolumns)){
 	$selectedcolumns[] = $sort_by3;
 }
 //<<<<<<<reportmodules>>>>>>>>>
-$pmodule = vtlib_purify($_REQUEST["primarymodule"]);
-$smodule = vtlib_purify($_REQUEST["secondarymodule"]);
+$pmodule = (isset($_REQUEST['primarymodule']) ? vtlib_purify($_REQUEST['primarymodule']) : '');
+$smodule = (isset($_REQUEST['secondarymodule']) ? vtlib_purify($_REQUEST['secondarymodule']) : '');
 //<<<<<<<reportmodules>>>>>>>>>
 
 //<<<<<<<report>>>>>>>>>
-$reportname = vtlib_purify($_REQUEST["reportName"]);
-$reportdescription = vtlib_purify($_REQUEST["reportDesc"]);
-$reporttype = (!empty($_REQUEST['cbreporttype']) ? vtlib_purify($_REQUEST['cbreporttype']) : vtlib_purify($_REQUEST["reportType"]));
+$reportname = (isset($_REQUEST['reportName']) ? vtlib_purify($_REQUEST['reportName']) : '');
+$reportdescription = (isset($_REQUEST['reportDesc']) ? vtlib_purify($_REQUEST['reportDesc']) : '');
+$reporttype = (!empty($_REQUEST['cbreporttype']) ? vtlib_purify($_REQUEST['cbreporttype']) : (isset($_REQUEST['reportType']) ? vtlib_purify($_REQUEST['reportType']) : ''));
 $folderid = (!empty($_REQUEST['folder']) ? vtlib_purify($_REQUEST['folder']) : !empty($_REQUEST['reportfolder']) ? vtlib_purify($_REQUEST['reportfolder']) : 1);
 //<<<<<<<report>>>>>>>>>
 
 //<<<<<<<standarfilters>>>>>>>>>
-$stdDateFilterField = vtlib_purify($_REQUEST["stdDateFilterField"]);
-$stdDateFilter = vtlib_purify($_REQUEST["stdDateFilter"]);
-$startdate = $_REQUEST["startdate"];
-$enddate = $_REQUEST["enddate"];
+$stdDateFilterField = (isset($_REQUEST['stdDateFilterField']) ? vtlib_purify($_REQUEST['stdDateFilterField']) : '');
+$stdDateFilter = (isset($_REQUEST['stdDateFilter']) ? vtlib_purify($_REQUEST['stdDateFilter']) : '');
+$startdate = (isset($_REQUEST['startdate']) ? vtlib_purify($_REQUEST['startdate']) : '');
+$enddate = (isset($_REQUEST['enddate']) ? vtlib_purify($_REQUEST['enddate']) : '');
 $dbCurrentDateTime = new DateTimeField(date('Y-m-d H:i:s'));
-if(!empty($startdate)) {
+if (!empty($startdate)) {
 	$startDateTime = new DateTimeField($startdate.' '. $dbCurrentDateTime->getDisplayTime());
 	$startdate = $startDateTime->getDBInsertDateValue();
 }
-if(!empty($enddate)) {
+if (!empty($enddate)) {
 	$endDateTime = new DateTimeField($enddate.' '. $dbCurrentDateTime->getDisplayTime());
 	$enddate = $endDateTime->getDBInsertDateValue();
 }
 //<<<<<<<standardfilters>>>>>>>>>
 
 //<<<<<<<shared entities>>>>>>>>>
-$sharetype = vtlib_purify($_REQUEST["stdtypeFilter"]);
-$shared_entities = vtlib_purify($_REQUEST["selectedColumnsStr"]);
+$sharetype = (isset($_REQUEST['stdtypeFilter']) ? vtlib_purify($_REQUEST['stdtypeFilter']) : '');
+$shared_entities = (isset($_REQUEST['selectedColumnsStr']) ? vtlib_purify($_REQUEST['selectedColumnsStr']) : '');
 //<<<<<<<shared entities>>>>>>>>>
 
 //<<<<<<<columnstototal>>>>>>>>>>
@@ -83,7 +83,7 @@ $columnstototal = array();
 $allKeys = array_keys($_REQUEST);
 for ($i=0;$i<count($allKeys);$i++) {
 	$string = substr($allKeys[$i], 0, 3);
-	if($string == 'cb:') {
+	if ($string == 'cb:') {
 		$columnstototal[] = $allKeys[$i];
 	}
 }
@@ -104,19 +104,20 @@ $scheduledFormat    = isset($_REQUEST['scheduledReportFormat']) ? vtlib_purify($
 $scheduledInterval  = isset($_REQUEST['scheduledIntervalString']) ? vtlib_purify($_REQUEST['scheduledIntervalString']) : '';
 //<<<<<<<scheduled report>>>>>>>>
 
-$saveas=vtlib_purify($_REQUEST['saveashidden']);
 $newreportname=vtlib_purify($_REQUEST['newreportname']);
-if($reportid == '' || ($reportid!='' && strstr($saveas,'saveas')!='' && $newreportname!='')) {
-	if($reportid!='' && $folderid=='') {
+if ($reportid == '' || ($reportid!='' && isset($_REQUEST['saveashidden']) && $_REQUEST['saveashidden'] == 'saveas' && $newreportname!='')) {
+	if ($reportid!='' && isset($_REQUEST['saveashidden']) && $_REQUEST['saveashidden'] == 'saveas' && $newreportname!='') {
 		$reportdetails=$adb->pquery("select * from vtiger_report as report join vtiger_reportmodules as repmodules on report.reportid=repmodules.reportmodulesid join vtiger_selectcolumn as sc on sc.queryid=report.reportid where reportid=?",array($reportid));
 		$folderid=$adb->query_result($reportdetails,0,'folderid');
 		$reporttype=$adb->query_result($reportdetails,0,'reporttype');
+		$_REQUEST['cbreporttype'] = $reporttype;
 		$sharetype=$adb->query_result($reportdetails,0,'sharingtype');
 		$reportdescription=$adb->query_result($reportdetails,0,'description');
 		$pmodule = $adb->query_result($reportdetails,0,'primarymodule');
 		$smodule = $adb->query_result($reportdetails,0,'secondarymodules');
-		for($in=0;$in<$adb->num_rows($reportdetails);$in++)
-		$selectedcolumns[]=$adb->query_result($reportdetails,$in,'columnname');
+		for ($in=0; $in < $adb->num_rows($reportdetails); $in++) {
+			$selectedcolumns[] = $adb->query_result($reportdetails,$in,'columnname');
+		}
 	}
 	$pivotcolumns = '';
 	$genQueryId = $adb->getUniqueID("vtiger_selectquery");

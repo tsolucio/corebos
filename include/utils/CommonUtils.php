@@ -341,9 +341,11 @@ function getTabid($module) {
 	if ($tabid === false) {
 		if (file_exists('tabdata.php') && (filesize('tabdata.php') != 0)) {
 			include('tabdata.php');
-			if (!isset($tab_info_array[$module])) return null;
-			$tabid = $tab_info_array[$module];
-		} else {
+			if (!empty($tab_info_array[$module])) {
+				$tabid = $tab_info_array[$module];
+			}
+		}
+		if ($tabid === false) {
 			global $adb;
 			$sql = "select tabid from vtiger_tab where name=?";
 			$result = $adb->pquery($sql, array($module));
@@ -1762,7 +1764,10 @@ function create_tab_data_file() {
 	}
 
 	$filename = 'tabdata.php';
-
+	VTCacheUtils::emptyTabidInfo();
+	if (function_exists('opcache_invalidate')) {
+		opcache_invalidate('tabdata.php', true);
+	}
 
 	if (file_exists($filename)) {
 

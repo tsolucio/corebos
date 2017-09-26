@@ -498,6 +498,7 @@ $app_strings = array (
 	'LBL_SALES_ORDER_ID' => 'Ref',
 	'LBL_PURCHASE_ORDER_ID' => 'Ref',
 	'LBL_EXPORT_TO_PDF' => 'Export PDF',
+	'DeletedProducts' => 'This record has deleted product/service lines. Please edit and fix accordingly.',
 	'LBL_HOME_KEY_METRICS' => 'Indicateurs clés',
 	'LBL_HOME_METRICS' => 'Indicateurs',
 	'LBL_HOME_COUNT' => 'Valeurs',

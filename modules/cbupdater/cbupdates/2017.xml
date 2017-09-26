@@ -91,4 +91,18 @@
 	<classname>activateCalendarAllDay</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Check and Restore Email Relations</description>
+	<filename>build/changeSets/2017/checkAndRestoreEmailsRelations.php</filename>
+	<classname>checkAndRestoreEmailsRelations</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Field Relation Information To Related List</description>
+	<filename>build/changeSets/2017/addRelationInformationToRelatedList.php</filename>
+	<classname>addRelationInformationToRelatedList</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

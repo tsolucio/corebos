@@ -513,6 +513,7 @@ $app_strings = array (
       'LBL_SALES_ORDER_ID' => 'Número de Orden de Venta',
       'LBL_PURCHASE_ORDER_ID' => 'Número Orden de Compra',
       'LBL_EXPORT_TO_PDF' => 'Exportar a PDF',
+	'DeletedProducts' => 'Este registro contiene productos/servicios que han sido eliminados. Por favor, edita y arreglalo según corresponda.',
       'LBL_HOME_KEY_METRICS' => 'Estadísticas',
       'LBL_HOME_METRICS' => 'Elemento',
       'LBL_HOME_COUNT' => 'Cantidad',

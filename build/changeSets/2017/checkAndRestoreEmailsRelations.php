@@ -14,7 +14,7 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 
-class syncSeactivityRelWithAllRelIdOnCbCalendar extends cbupdaterWorker {
+class checkAndRestoreEmailsRelations extends cbupdaterWorker {
 
 	function applyChange() {
 		global $adb;
@@ -22,15 +22,21 @@ class syncSeactivityRelWithAllRelIdOnCbCalendar extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$res_cal = $adb->pquery("SELECT activityid,rel_id FROM vtiger_activity WHERE activitytype != 'Emails' and rel_id is not null and rel_id>0",array());
+			$res_cal = $adb->pquery("SELECT emailid, idlists FROM vtiger_emaildetails WHERE idlists <> ''",array());
 			$noofrows = $adb->num_rows($res_cal);
 			for ($i = 0; $i < $noofrows; $i++) {
 				$activityid = $adb->query_result($res_cal,$i,'activityid');
-				$rel_id = $adb->query_result($res_cal,$i,'rel_id');
-				//Insert into seactivity rel
-				$adb->pquery('insert IGNORE into vtiger_seactivityrel(crmid,activityid) values(?,?)',array($rel_id,$activityid));
-				if ($i % 1000 == 0) {
-					$this->sendMsg('RELATING ACTIVITIES: '.$i.'/'.$noofrows);
+				$parentid = $adb->query_result($res_cal,$i,'idlists');
+				$myids = explode("|", $parentid);  //106@6|
+				for ($j = 0; $j < (count($myids) - 1); $j++) {
+					$realid = explode("@", $myids[$j]);
+					$mycrmid = $realid[0];
+					if (getModuleForField($realid[1]) != 'Users') {
+						$adb->pquery('insert ignore into vtiger_seactivityrel(crmid,activityid) values(?,?)',array($mycrmid,$activityid));
+					}
+				}
+				if (($i % 1000) == 0) {
+					$this->sendMsg('RELATING EMAILS: '.$i.'/'.$noofrows);
 				}
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
@@ -38,5 +44,4 @@ class syncSeactivityRelWithAllRelIdOnCbCalendar extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-
 }

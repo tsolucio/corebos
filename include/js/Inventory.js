@@ -1276,6 +1276,7 @@ function InventorySelectAll(mod,image_pth)
 						set_return_inventory_po(prod_id,prod_name,unit_price,taxstring,parseInt(row_id),desc,subprod_ids);
 					}
 					y=y+1;
+					window.opener.document.EditView.elements["qty"+row_id].onblur();
 				}
 			}
 		}
