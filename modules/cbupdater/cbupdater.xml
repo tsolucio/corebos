@@ -1249,4 +1249,11 @@
 	<classname>addUIType1614and1615WebserviceFieldType</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>albadisha</author>
+	<description>Add new column for Report Types</description>
+	<filename>build/changeSets/2017/addNewReportTypeColumn.php</filename>
+	<classname>addNewReportTypeColumn</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

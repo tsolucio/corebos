@@ -203,7 +203,7 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 	return $fieldvalue;
 }
 
-function report_getMoreInfoFromRequest($reporttype,$pmodule,$smodule,$pivotcolumns) {
+function report_getMoreInfoFromRequest($cbreporttype,$pmodule,$smodule,$pivotcolumns) {
 	global $adb;
 	if (isset($_REQUEST['cbreporttype']) && $_REQUEST['cbreporttype']=='external') {
 		if (isset($_REQUEST['adduserinfo']) and ($_REQUEST['adduserinfo'] == 'on' || $_REQUEST['adduserinfo'] == 1)) {
@@ -215,10 +215,10 @@ function report_getMoreInfoFromRequest($reporttype,$pmodule,$smodule,$pivotcolum
 			'url' => vtlib_purify($_REQUEST['externalurl']),
 			'adduserinfo' => $aui,
 		));
-		$reporttype = 'external';
+		$cbreporttype = 'external';
 	} elseif (isset($_REQUEST['cbreporttype']) && $_REQUEST['cbreporttype']=='directsql') {
 		$minfo = vtlib_purify($_REQUEST['directsqlcommand']);
-		$reporttype = 'directsql';
+		$cbreporttype = 'directsql';
 	} elseif (isset($_REQUEST['cbreporttype']) && $_REQUEST['cbreporttype']=='crosstabsql') {
 		require_once 'include/adodb/pivottable.inc.php';
 		$pmod = CRMEntity::getInstance($pmodule);
@@ -273,12 +273,13 @@ function report_getMoreInfoFromRequest($reporttype,$pmodule,$smodule,$pivotcolum
 			'crosstabaggfunction' => vtlib_purify($_REQUEST['crosstabaggfunction']),
 			'sql' => $sql
 		));
-		$reporttype = 'crosstabsql';
+		$cbreporttype = 'crosstabsql';
 	} else {
 		$minfo = '';
+		$cbreporttype='corebos';
 	}
 	return array(
-		$reporttype,
+		$cbreporttype,
 		$minfo
 	);
 }
