@@ -625,10 +625,10 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 					<input name="time_start" tabindex="{$vt_tab}" style="border:1px solid #bababa;" size="5" maxlength="5" type="text" value="{$time_val}">
 				{/if}
 
-				{if $uitype eq 6 && $QCMODULE eq 'Event'}
+				{if $uitype eq 6 && isset($QCMODULE) && $QCMODULE eq 'Event'}
 					<input name="dateFormat" type="hidden" value="{$dateFormat}">
 				{/if}
-				{if $uitype eq 23 && $QCMODULE eq 'Event'}
+				{if $uitype eq 23 && isset($QCMODULE) && $QCMODULE eq 'Event'}
 					<input name="time_end" style="border:1px solid #bababa;" size="5" maxlength="5" type="text" value="{$time_val}">
 				{/if}
 
