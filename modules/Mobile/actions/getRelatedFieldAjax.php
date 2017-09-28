@@ -27,7 +27,7 @@ class crmtogo_UI_getRelatedFieldAjax extends crmtogo_WS_Controller{
 		$parentselector = vtlib_purify($request->get('parentselector'));
 		$parentid=  str_replace('_selector','',$parentselector);
 		$parentid=  crmtogo_WS_Utils::fixReferenceIdByModule($module, $parentid);
-
+		$searchresult = Array();
 		//HelpDesk special case with Product.
 		if($module == 'HelpDesk' && $parentid == 'product_id'){
 			$query = "SELECT modulename,fieldname FROM vtiger_entityname WHERE entityidcolumn = ?";
