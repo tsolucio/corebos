@@ -13,6 +13,7 @@ include_once 'include/Webservices/Create.php';
 include_once 'include/Webservices/Update.php';
 
 class crmtogo_WS_SaveRecord extends crmtogo_WS_FetchRecord {
+
 	protected $recordValues = false;
 
 	// Avoid retrieve and return the value obtained after Create or Update

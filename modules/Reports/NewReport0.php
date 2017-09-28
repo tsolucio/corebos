@@ -28,7 +28,8 @@ $list_report_form->assign('LANGUAGE', $current_language);
 $list_report_form->assign("MOD", $mod_strings);
 $list_report_form->assign("APP", $app_strings);
 $list_report_form->assign('LBL_CHARSET', $default_charset);
-$list_report_form->assign('REPORTTYPE',isset($_REQUEST['cbreporttype']) ? vtlib_purify($_REQUEST['cbreporttype']) : '');
+$list_report_form->assign('REPORTTYPE',isset($_REQUEST['reporttype']) ? vtlib_purify($_REQUEST['reporttype']) : '');
+$list_report_form->assign('REPORTTYPE2',isset($_REQUEST['cbreporttype']) ? vtlib_purify($_REQUEST['cbreporttype']) : '');
 $repObj = new Reports ();
 $folderid = 0;
 if($recordid!=''){
@@ -67,9 +68,13 @@ if($recordid!=''){
 	$list_report_form->assign("RECORDID",$recordid);
 	$list_report_form->assign("REPORTNAME",$oRep->reportname);
 	$list_report_form->assign('REPORTTYPE',$oRep->reporttype);
-	$list_report_form->assign("REPORTDESC",$oRep->reportdescription);
+	$list_report_form->assign('REPORTTYPE2',$oRep->cbreporttype);
+
+
+
+  $list_report_form->assign("REPORTDESC",$oRep->reportdescription);
 	$list_report_form->assign("REP_MODULE",$oRep->primodule);
-	if ($oRep->reporttype=='external') {
+	if ($oRep->cbreporttype=='external') {
 		$rptrs = $adb->pquery('select moreinfo from vtiger_report where reportid=?',array($recordid));
 		if ($rptrs and $adb->num_rows($rptrs)>0) {
 			$minfo = $adb->query_result($rptrs, 0, 0);
@@ -78,7 +83,7 @@ if($recordid!=''){
 			$list_report_form->assign('REPORTADDUSERINFO',($minfo['adduserinfo']==1 ? 'checked' : ''));
 		}
 	} else {
-		$reportquery = ReportRun::sGetDirectSQL($recordid,$oRep->reporttype,false);
+		$reportquery = ReportRun::sGetDirectSQL($recordid,$oRep->cbreporttype,false);
 	}
 	$list_report_form->assign('REPORTMINFO',$reportquery);
 	$folderid = $oRep->folderid;

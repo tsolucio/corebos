@@ -1051,12 +1051,16 @@ function getGlobalSearch($term, $searchin, $limit, $user) {
 		}
 		$queryGenerator->endGroup();
 		$query = $queryGenerator->getQuery();
+		$mod_fields = $queryGenerator->getModuleFields();
 		$rsemp=$adb->query($query);
 		while ($emp=$adb->fetch_array($rsemp)) {
 			$rsp = array();
 			foreach ($rfields as $rf) {
-				$mod_fields = $queryGenerator->getModuleFields();
-				$colum_name = $mod_fields[$rf]->getColumnName();
+				if (strpos($rf,'.')>0) { // other module reference field
+					$colum_name = strtolower(str_replace('.', '', $rf));
+				} else {
+					$colum_name = $mod_fields[$rf]->getColumnName();
+				}
 				$rsp[$rf] = html_entity_decode($emp[$colum_name],ENT_QUOTES,$default_charset);
 			}
 			$respuesta[] = array(

@@ -64,7 +64,8 @@
 		<input type="hidden" name="action" value="Save">
 		<input type="hidden" name='saveashidden' value='saveas'/>
 		<input type="hidden" name='newreportname' id='newreportname' value=''/>
-		<input type="hidden" name='cbreporttype' id='cbreporttype' value='{$REPORTTYPE}'/>
+		<input type="hidden" name='cbreporttype' id='cbreporttype' value='{$REPORTTYPE2}'/>
+		<input type="hidden" name='reporttype' id='reporttype' value='{$REPORTTYPE}'/>
 		<div id="report-steps" class="jquery-steps">
 
 			<!-- STEP 1 -->
@@ -99,7 +100,7 @@
 						<td align="right" style="padding-right:5px;" valign="top"><b>{$MOD.LBL_DESCRIPTION}: </b></td>
 						<td align="left" style="padding-left:5px;"><textarea name="reportDesc" class="txtBox" rows="5">{$REPORTDESC}</textarea></td>
 					</tr>
-					{if $REPORTTYPE eq 'external'}
+					{if $REPORTTYPE2 eq 'external'}
 						<tr>
 							<td colspan="2"><b>{'External Report URL'|@getTranslatedString:'Reports'} : </b></td>
 						</tr>
@@ -112,7 +113,7 @@
 								<b>{'Add User Information'|@getTranslatedString:'Reports'}</b>
 							</td>
 						</tr>
-					{elseif $REPORTTYPE eq 'directsql'}
+					{elseif $REPORTTYPE2 eq 'directsql'}
 						<tr>
 							<td colspan="2"><b>{'Direct SQL Statement'|@getTranslatedString:'Reports'} : </b></td>
 						</tr>

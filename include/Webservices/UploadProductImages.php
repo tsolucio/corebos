@@ -56,9 +56,17 @@ function cbws_uploadProductImages($recordID, $fileData, $user) {
 		inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
 		inner join vtiger_seattachmentsrel on vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid
 		where deleted=0 and vtiger_crmentity.setype LIKE "Products Image" and vtiger_seattachmentsrel.crmid=?', array($crmid));
-	$numimages = $adb->query_result($rsimg, 0, 'cnt');
+	$numimages = (int)$adb->query_result($rsimg, 0, 'cnt');
 	if ($numimages >= $maximages) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Maximum number of images has been reached");
+		return array(
+			'Error' => '1',
+			'ErrorStr' => 'Maximum number of images has been reached',
+			'FileName' => array(),
+			'ImagesAtStart' => $numimages,
+			'NumberToAdd' => count($fileData),
+			'ImagesAtFinish' => $numimages,
+			'MaxImages' => $maximages,
+		);
 	}
 
 	$product = CRMEntity::getInstance('Products');
@@ -67,6 +75,7 @@ function cbws_uploadProductImages($recordID, $fileData, $user) {
 	$log->debug("Entering into add uploadProductImages($recordID) method.");
 
 	$finfo = finfo_open(FILEINFO_MIME_TYPE);
+	$myResult = array();
 	$newnumimages = $numimages;
 	foreach ($fileData as $imageDetail) {
 		$_FILES = array();
@@ -82,6 +91,7 @@ function cbws_uploadProductImages($recordID, $fileData, $user) {
 		);
 		$product->insertIntoAttachment($crmid, 'Products', true);
 		unlink($filepath);
+		$myResult['FileName'][] = $imageDetail['name'];
 		$newnumimages++;
 		if ($newnumimages >= $maximages) {
 			break;
@@ -94,7 +104,23 @@ function cbws_uploadProductImages($recordID, $fileData, $user) {
 		where deleted=0 and vtiger_crmentity.setype LIKE "Products Image" and vtiger_seattachmentsrel.crmid=?', array($crmid));
 	$finalnumimages = $adb->query_result($rsimg, 0, 'cnt');
 
-	return ($finalnumimages == ($numimages + count($fileData)));
+	// Check that final total of images equals the start number plus the file count
+	if ($finalnumimages == ($numimages + count($fileData))) {
+		$myResult['Error'] = '0';
+		$myResult['ImagesAtStart'] = $numimages;
+		$myResult['NumberToAdd'] = count($fileData);
+		$myResult['ImagesAtFinish'] = $newnumimages;
+		$myResult['MaxImages'] = $maximages;
+	} else { // If not return the images actually inserted and an error code
+		$myResult['Error'] = '1';
+		$myResult['ErrorStr'] = 'Maximum number of images has been reached';
+		$myResult['ImagesAtStart'] = $numimages;
+		$myResult['NumberToAdd'] = count($fileData);
+		$myResult['ImagesAtFinish'] = $newnumimages;
+		$myResult['MaxImages'] = $maximages;
+	}
+
+	return $myResult;
 }
 
 ?>

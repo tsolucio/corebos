@@ -807,10 +807,11 @@
 					<input name="time_start" tabindex="{$vt_tab}" size="5" maxlength="5" class="slds-input" type="text" value="{$time_val}">
 				{/if}
 
-				{if $uitype eq 6 && $QCMODULE eq 'Event'}
+				{if $uitype eq 6 && isset($QCMODULE) && $QCMODULE eq 'Event'}
 					<input name="dateFormat" type="hidden" value="{$dateFormat}">
 				{/if}
-				{if $uitype eq 23 && $QCMODULE eq 'Event'}
+
+				{if $uitype eq 23 && isset($QCMODULE) && $QCMODULE eq 'Event'}
 					<input name="time_end" size="5" maxlength="5" type="text" value="{$time_val}">
 				{/if}
 

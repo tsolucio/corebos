@@ -80,6 +80,7 @@ class Reports extends CRMEntity{
 	var $columnssummary;
 	var $is_editable;
 	var $reporttype;
+	var $cbreporttype;
 	var $reportname;
 	var $reportdescription;
 	var $folderid;
@@ -148,7 +149,8 @@ class Reports extends CRMEntity{
 						$current_user->id, $reportid, $reportmodulesrow["primarymodule"],
 						$reportmodulesrow["secondarymodules"], $reportmodulesrow["reporttype"],
 						$reportmodulesrow["reportname"], $reportmodulesrow["description"],
-						$reportmodulesrow["folderid"], $reportmodulesrow["owner"]
+						$reportmodulesrow["folderid"], $reportmodulesrow["owner"],
+						$reportmodulesrow["cbreporttype"]
 					);
 				}
 
@@ -160,6 +162,8 @@ class Reports extends CRMEntity{
 				$this->primodule = $cachedInfo["primarymodule"];
 				$this->secmodule = $cachedInfo["secondarymodules"];
 				$this->reporttype = $cachedInfo["reporttype"];
+				$this->cbreporttype = $cachedInfo["cbreporttype"];
+
 				$this->reportname = decode_html($cachedInfo["reportname"]);
 				$this->reportdescription = decode_html($cachedInfo["description"]);
 				$this->folderid = $cachedInfo["folderid"];
@@ -407,7 +411,8 @@ class Reports extends CRMEntity{
 				$report_details['reportname'] = $report["reportname"];
 				$report_details['sharingtype'] = $report["sharingtype"];
 				$report_details['reporttype'] = $report['reporttype'];
-				if ($report['reporttype']=='external') {
+				$report_details['cbreporttype'] = $report['cbreporttype'];
+				if ($report['cbreporttype']=='external') {
 					$minfo = unserialize(decode_html($report['moreinfo']));
 					$report_details['moreinfo'] = $minfo['url'];
 					if ($minfo['adduserinfo']==1) {
