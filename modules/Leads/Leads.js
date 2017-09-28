@@ -237,3 +237,9 @@ function toggle_converted(){
 	}
 	document.location.reload(true);
 }
+
+function LeadssetValueFromCapture(recordid,value,target_fieldname) {
+	if (target_fieldname=="accountname") {
+		document.getElementById('txtbox_accountname').value = value;
+	}
+}
