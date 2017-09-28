@@ -69,12 +69,18 @@ if(!empty($_REQUEST['entities']))
 		die();
 	}
 
-	$accountIdComponents = vtws_getIdComponents($result['Accounts']);
-	$accountId = $accountIdComponents[1];
-	$contactIdComponents = vtws_getIdComponents($result['Contacts']);
-	$contactId = $contactIdComponents[1];
-	$potentialIdComponents = vtws_getIdComponents($result['Potentials']);
-	$potentialId = $potentialIdComponents[1];
+	if (isset($result['Accounts'])) {
+		$accountIdComponents = vtws_getIdComponents($result['Accounts']);
+		$accountId = $accountIdComponents[1];
+	} else {
+		$accountId = 0;
+	}
+	if (isset($result['Contacts'])) {
+		$contactIdComponents = vtws_getIdComponents($result['Contacts']);
+		$contactId = $contactIdComponents[1];
+	} else {
+		$contactId = 0;
+	}
 }
 
 if (!empty($accountId)) {
