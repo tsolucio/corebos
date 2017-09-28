@@ -27,7 +27,7 @@
 	<tr>
 		<td colspan="2" align="left" valign="top" style="height: 1px;">
 			<div id='std_filter_div_show' name='std_filter_div_show'>
-				<img border="0" align="absmiddle" src={'inactivate.gif'|@vtiger_imageurl:$THEME} onclick="showHideDivs('std_filter_div','std_filter_div_show');" style="cursor:pointer;" />
+				<img border="0" align="absmiddle" src={'inactivate.gif'|@vtiger_imageurl:$THEME} onclick="showHideDivs('std_filter_div','std_filter_div_show');" style="width:16px;cursor:pointer;" />
 				<b>{$MOD.LBL_SHOW_STANDARD_FILTERS}</b>
 			</div>
 		</td>
@@ -38,7 +38,7 @@
 				<table class="small" border="0" cellpadding="5" cellspacing="0" width="100%">
 					<tr>
 						<td class="detailedViewHeader" colspan="4">
-							<img border="0" align="absmiddle" src={'activate.gif'|@vtiger_imageurl:$THEME} onclick="showHideDivs('std_filter_div_show','std_filter_div');" style="cursor:pointer;" />
+							<img border="0" align="absmiddle" src={'activate.gif'|@vtiger_imageurl:$THEME} onclick="showHideDivs('std_filter_div_show','std_filter_div');" style="width:16px;cursor:pointer;" />
 							<b>{$MOD.LBL_STANDARD_FILTER}</b>
 						</td>
 					</tr>
