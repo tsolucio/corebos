@@ -76,7 +76,7 @@ span:focus {
 }
 
 .hdrNameBg {
-	background:#ffffff url(images/header-bg.png) repeat-x;
+	/*background:#ffffff url(images/header-bg.png) repeat-x;*/
 }
 
 .hdrTabBg {
@@ -2197,7 +2197,7 @@ textarea {
 
 .reportsListTable {
 	background-color:white;
-	border:2px solid #c4a6d1;
+	border:2px solid #00a1df;
 }
 
 .reportGenerateTable{

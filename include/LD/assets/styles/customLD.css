@@ -1301,3 +1301,9 @@ tr td.action-block-mailManager {
     width: 30%;
     vertical-align: top;
 }
+
+/* Reports module */
+.reports-table .tools-cell img {
+    width: 18px;
+    vertical-align: text-bottom;
+}

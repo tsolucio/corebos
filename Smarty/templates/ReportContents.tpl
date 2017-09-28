@@ -16,71 +16,95 @@
 			{assign var=poscount value=0}
 			{foreach item=reportfolder from=$REPT_FLDR}
 				{assign var=poscount value=$poscount+1}
-				<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="reportsListTable">
+				<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="reportsListTable" style="border:none;">
 					<tr>
 						<td class="mailSubHeader">
-							
-							<b><span id='folder{$reportfolder.id}'>{$reportfolder.name|@getTranslatedString:$MODULE}</span></b>
-							<i><font color='#C0C0C0'> - {$reportfolder.description|@getTranslatedString:$MODULE}</font></i>
-							
-						</td>
-					</tr>
-					<tr>
-						<td class="hdrNameBg" colspan="3" style="padding: 5px;" align="right" >
-							<table width="100%" border="0" cellpadding="0" cellspacing="0">
+							<div class="forceRelatedListSingleContainer">
+								<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
+									<div class="slds-card__header slds-grid">
+										<header class="slds-media slds-media--center slds-has-flexi-truncate">
+											<div class="slds-media__body">
+												<h2>
+													<span class="slds-text-title--caps slds-truncate slds-m-right--xx-small actionLabel">
+														<b><span id='folder{$reportfolder.id}'>{$reportfolder.name|@getTranslatedString:$MODULE}</span></b>
+													</span>
+													<small><i><font color='#C0C0C0'> - {$reportfolder.description|@getTranslatedString:$MODULE}</font></i></small>
+												</h2>
+											</div>
+										</header>
+									</div>
+								</article>
+							</div>
+							<table width="100%" border="0" cellpadding="0" cellspacing="0" style="padding: 5px;background-color: #fff;">
 								<tr>
-									<td id="repposition{$poscount}" width="20%" align="right">
+									<td id="repposition{$poscount}" class="hdrNameBg" width="20%" align="left">
 										<input name="newReportInThisModule" value="{$MOD.LBL_CREATE_REPORT}..." class="slds-button slds-button--small slds-button_success" onclick="gcurrepfolderid={$reportfolder.id};fnvshobj(this,'reportLay')" type="button">
 									</td>
-									<td width="80%" align="right">
+									<td width="80%" align="right" class="hdrNameBg">
 										<input type="button" name="Edit" value=" {$MOD.LBL_RENAME_FOLDER} " class="slds-button slds-button--small slds-button--brand" onClick='EditFolder("{$reportfolder.id}","{$reportfolder.fname}","{$reportfolder.fdescription}"),fnvshobj(this,"orgLay");'>&nbsp;
 										&nbsp;{if $ISADMIN}<input type="button" name="delete" value=" {$MOD.LBL_DELETE_FOLDER} " class="slds-button slds-button--small slds-button--destructive" onClick="DeleteFolder('{$reportfolder.id}');">{/if}
 									</td>
 								</tr>
 							</table>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<table class="small" border="0" cellpadding="5" cellspacing="1" width="100%">
-								<tbody>
-									<tr>
-										<td class="lvtCol" width="5%">#</td>
-										<td class="lvtCol" width="35%">{$MOD.LBL_REPORT_NAME}</td>
-										<td class="lvtCol" width="50%">{$MOD.LBL_DESCRIPTION}</td>
-										<td class="lvtCol" width="10%">{$MOD.LBL_TOOLS}</td>
-									</tr>
-									{foreach name=reportdtls item=reportdetails from=$reportfolder.details}
-									<tr class="lvtColData" onmouseover="this.className='lvtColDataHover'" onmouseout="this.className='lvtColData'" bgcolor="white">
-										<td>{$smarty.foreach.reportdtls.iteration}</td>
-										<td>
-										{if $reportdetails.cbreporttype eq 'external'}
-											<a href="{$reportdetails.moreinfo}" target="_blank">{$reportdetails.reportname|@getTranslatedString:$MODULE}</a>
-										{else}
-											<a href="index.php?module=Reports&action=SaveAndRun&record={$reportdetails.reportid}&folderid={$reportfolder.id}">{$reportdetails.reportname|@getTranslatedString:$MODULE}</a>
-										{/if}
-										{if $reportdetails.sharingtype eq 'Shared'}
-											<img src="{'Meetings.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border=0 height=12 width=12 />
-										{/if}
-										</td>
-										<td>{$reportdetails.description|@getTranslatedString:$MODULE}</td>
-										<td align="center" nowrap>
-											{if $reportdetails.customizable eq '1' && $reportdetails.editable eq 'true'}
-												<a href="javascript:;" onClick="editReport('{$reportdetails.reportid}');"><img src="{'editfield.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" title="{$MOD.LBL_CUSTOMIZE_BUTTON}..." border="0"></a>
-											{/if}
-											{if $ISADMIN || ($reportdetails.state neq 'SAVED' && $reportdetails.editable eq 'true')}
-												&nbsp;|&nbsp;<a href="javascript:;" onclick="DeleteReport('{$reportdetails.reportid}');"><img src="{'delete.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" title="{$MOD.LBL_DELETE}..." border="0"></a>
-											{/if}
-											{if $reportdetails.cbreporttype neq 'external'}
-											&nbsp;|&nbsp;<a href="javascript:void(0);" onclick="gotourl('index.php?module=Reports&action=ReportsAjax&file=CreateCSV&record={$reportdetails.reportid}');"><img src="{'csv_text.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTCSV}" title="{$MOD.LBL_EXPORTCSV}" border="0"></a>
-											&nbsp;|&nbsp;<a href="javascript:void(0);" onclick="gotourl('index.php?module=Reports&action=CreateXL&record={$reportdetails.reportid}');"><img src="{'excel.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTXL_BUTTON}" title="{$MOD.LBL_EXPORTXL_BUTTON}" border="0"></a>
-											&nbsp;|&nbsp;<a href="javascript:void(0);" onclick="gotourl('index.php?module=Reports&action=CreatePDF&record={$reportdetails.reportid}');"><img src="{'pdf.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTPDF_BUTTON}" title="{$MOD.LBL_EXPORTPDF_BUTTON}" border="0"></a>
-											{/if}
-										</td>
-									</tr>
-									{/foreach}
-								</tbody>
-							</table>
+							<div class="slds-truncate" style="padding: 5px;background-color: #fff;">
+								<table class="slds-table slds-table--bordered slds-table--fixed-layout ld-font reports-table">
+									<thead>
+										<tr>
+											<th scope="col" class="slds-text-align--center" style="width: 3.25rem;text-align: center;" >
+												<div class="slds-th_action slds-th__action_form"><span>#</span></div>
+											</th>
+											<th class="slds-text-title--caps" scope="col">
+												<span class="slds-truncate slds-text-link--reset" style="padding: .5rem 0;">
+													{$MOD.LBL_REPORT_NAME}
+												</span>
+											</th>
+											<th class="slds-text-title--caps" scope="col">
+												<span class="slds-truncate slds-text-link--reset" style="padding: .5rem 0;">
+													{$MOD.LBL_DESCRIPTION}
+												</span>
+											</th>
+											<th class="slds-text-title--caps" scope="col" style="width:160px;">
+												<span class="slds-truncate slds-text-link--reset" style="padding: .5rem 0;">
+													{$MOD.LBL_TOOLS}
+												</span>
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										{foreach name=reportdtls item=reportdetails from=$reportfolder.details}
+										<tr class="slds-hint-parent slds-line-height--reset" id="row_{$entity_id}">
+											<td role="gridcell" class="slds-text-align--center">{$smarty.foreach.reportdtls.iteration}</td>
+											<td role="gridcell" class="slds-text-align--left">
+												{if $reportdetails.cbreporttype eq 'external'}
+													<a href="{$reportdetails.moreinfo}" target="_blank">{$reportdetails.reportname|@getTranslatedString:$MODULE}</a>
+												{else}
+													<a href="index.php?module=Reports&action=SaveAndRun&record={$reportdetails.reportid}&folderid={$reportfolder.id}">{$reportdetails.reportname|@getTranslatedString:$MODULE}</a>
+												{/if}
+												{if $reportdetails.sharingtype eq 'Shared'}
+													<img src="{'Meetings.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border=0 height=12 width=12 />
+												{/if}
+											</td>
+											<td role="gridcell" class="slds-text-align--left">{$reportdetails.description|@getTranslatedString:$MODULE}</td>
+											<th scope="row" class="tools-cell" align="center">
+												<div class="slds-truncate">
+												{if $reportdetails.customizable eq '1' && $reportdetails.editable eq 'true'}
+													<a href="javascript:;" onClick="editReport('{$reportdetails.reportid}');"><img src="{'editfield.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" title="{$MOD.LBL_CUSTOMIZE_BUTTON}..." border="0"></a>
+												{/if}
+												{if $ISADMIN || ($reportdetails.state neq 'SAVED' && $reportdetails.editable eq 'true')}
+													&nbsp;|&nbsp;<a href="javascript:;" onclick="DeleteReport('{$reportdetails.reportid}');"><img src="{'delete.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" title="{$MOD.LBL_DELETE}..." border="0"></a>
+												{/if}
+												{if $reportdetails.cbreporttype neq 'external'}
+												&nbsp;|&nbsp;<a href="javascript:void(0);" onclick="gotourl('index.php?module=Reports&action=ReportsAjax&file=CreateCSV&record={$reportdetails.reportid}');"><img src="{'csv_text.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTCSV}" title="{$MOD.LBL_EXPORTCSV}" border="0"></a>
+												&nbsp;|&nbsp;<a href="javascript:void(0);" onclick="gotourl('index.php?module=Reports&action=CreateXL&record={$reportdetails.reportid}');"><img src="{'excel.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTXL_BUTTON}" title="{$MOD.LBL_EXPORTXL_BUTTON}" border="0"></a>
+												&nbsp;|&nbsp;<a href="javascript:void(0);" onclick="gotourl('index.php?module=Reports&action=CreatePDF&record={$reportdetails.reportid}');"><img src="{'pdf.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTPDF_BUTTON}" title="{$MOD.LBL_EXPORTPDF_BUTTON}" border="0"></a>
+												{/if}
+												</div>
+											</th>
+										</tr>
+										{/foreach}
+									</tbody>
+								</table>
+							</div>
 						</td>
 					</tr>
 				</table>
