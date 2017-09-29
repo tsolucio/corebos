@@ -13,6 +13,7 @@
 * permissions and limitations under the License. You may obtain a copy of the License
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
+include_once 'modules/Reports/ReportRun.php';
 
 class moveCalendarReport2cbCalendar extends cbupdaterWorker {
 
