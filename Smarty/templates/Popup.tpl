@@ -110,7 +110,7 @@ var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 						<div class="componentName" align=right>{$coreBOS_uiapp_name}
 							&nbsp;&nbsp;
 							<input type="hidden" id='closewindow' value="true"/>
-							<img src="themes/images/unlocked.png" style="width:16px;vertical-align: top;" id='closewindowimage' onclick="if (document.getElementById('closewindow').value=='true') {ldelim}document.getElementById('closewindowimage').src='themes/images/locked.png';document.getElementById('closewindow').value='false';{rdelim} else {ldelim}document.getElementById('closewindowimage').src='themes/images/unlocked.png';document.getElementById('closewindow').value='true';{rdelim};"/>
+							<img src="themes/images/unlocked.png" style="width:20px;vertical-align: top;" id='closewindowimage' onclick="if (document.getElementById('closewindow').value=='true') {ldelim}document.getElementById('closewindowimage').src='themes/images/locked.png';document.getElementById('closewindow').value='false';{rdelim} else {ldelim}document.getElementById('closewindowimage').src='themes/images/unlocked.png';document.getElementById('closewindow').value='true';{rdelim};"/>
 						</div>
 					</th>
 				</tr>

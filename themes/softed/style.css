@@ -2086,6 +2086,8 @@ textarea {
 	border:3px solid #CCCCCC;
 	padding:5px;
 	position:absolute;
+	top: 0;
+	right: 300px;
 	background-color:#FFFFFF;
 	display:none;
 }

@@ -1307,3 +1307,61 @@ tr td.action-block-mailManager {
     width: 18px;
     vertical-align: text-bottom;
 }
+
+/* ProductDetails.tpl */
+.td-less-padding tr td{
+    padding: .1rem 0!important;
+}
+
+.td-med-padding tr td{
+    padding: .3rem!important;
+}
+
+.total-col tr:first-child td {
+    border:none!important;
+    padding: 1.2rem 0 .5rem 0;
+}
+
+.total-col tr:nth-child(2) td,
+.total-col tr:nth-child(3) td {
+    padding: .1rem 0;
+}
+
+.total-col tr:last-child td {
+    padding: .2rem 0;
+}
+
+#proTab .slds-input {
+    font-size: 11px!important;
+}
+
+#proTab tr td:nth-child(4) .slds-input {
+    width: 100%;
+}
+}
+
+.tool {
+    width: 30px;
+}
+
+.item-name {
+    width: 450px;
+}
+
+.quantity {
+    width: 100px;
+}
+
+.net-price,
+.total-price {
+    width: 160px;
+}
+.net-price-total {
+    width: 160px;
+    padding-top: 6rem!important;
+}
+
+.itemDetails-table img{
+    width: 18px;
+    margin-left: 5px;
+}
