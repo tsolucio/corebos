@@ -541,6 +541,9 @@ function _vtisPermitted($module,$actionname,$record_id='') {
 	if (strpos($record_id,'x')>0) { // is webserviceid
 		list($void,$record_id) = explode('x', $record_id);
 	}
+	if (!empty($record_id) && $module != getSalesEntityType($record_id)) {
+		$record_id = '';
+	}
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
 	$parenttab = empty($_REQUEST['parenttab']) ? '' : vtlib_purify($_REQUEST['parenttab']);

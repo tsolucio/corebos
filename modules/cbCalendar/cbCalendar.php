@@ -662,6 +662,7 @@ class cbCalendar extends CRMEntity {
 			// TODO Handle post installation actions
 			//$this->setModuleSeqNumber('configure', $modulename, 'cbcal-', '0000001');
 			global $adb;
+			set_time_limit(0);
 			$rs = $adb->query('select *
 					from vtiger_seactivityrel
 					inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_seactivityrel.crmid
