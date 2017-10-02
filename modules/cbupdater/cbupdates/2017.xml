@@ -105,4 +105,11 @@
 	<classname>addRelationInformationToRelatedList</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Make duration calendar field visible as readonly</description>
+	<filename>build/changeSets/2017/makeDurationCalendarFieldVisible.php</filename>
+	<classname>makeDurationCalendarFieldVisible</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
