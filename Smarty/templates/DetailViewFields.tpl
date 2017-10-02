@@ -72,19 +72,23 @@
 				{/if}
 				</span>
 			</td>
-		{elseif $keyid eq '15' || $keyid eq '16' || $keyid eq '1613'} <!--ComboBox-->
+		{elseif $keyid eq '15' || $keyid eq '16' || $keyid eq '1613' || $keyid eq '1614' || $keyid eq '1615'} <!--ComboBox-->
 			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;
+				{assign var=fontval value=''}
 				{foreach item=arr from=$keyoptions}
 					{if $arr[0] eq $APP.LBL_NOT_ACCESSIBLE}
 						{assign var=keyval value=$APP.LBL_NOT_ACCESSIBLE}
 						{assign var=fontval value='red'}
-					{else}
-						{assign var=fontval value=''}
 					{/if}
 				{/foreach}
-				<font color="{$fontval}">{if $APP.$keyval!=''}{$APP.$keyval}{elseif $MOD.$keyval!=''}{$MOD.$keyval}{else}{$keyval}{/if}</font>
+				{if $keyid eq '1615' && $keyval!=''}
+					{assign var=plinfo value='::'|explode:$keyval}
+					{$plinfo[0]|@getTranslatedString:$plinfo[0]} {$plinfo[1]|@getTranslatedString:$plinfo[0]}
+				{else}
+				<font color="{$fontval}">{$keyval|@getTranslatedString:$MODULE}</font>
+				{/if}
 			</td>
-		{elseif $keyid eq '33' || $keyid eq '3313'}
+		{elseif $keyid eq '33' || $keyid eq '3313' || $keyid eq '3314'}
 			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;
 				{foreach item=sel_val from=$keyoptions }
 					{if $sel_val[2] eq 'selected'}
@@ -106,7 +110,7 @@
 				<span id="dtlview_{$label}"><a href="skype:{$keyval}?call">{$keyval}</a></span>
 			</td>
 		{elseif $keyid eq '19' || $keyid eq '20'} <!--TextArea/Description-->
-			{if $label eq $MOD.LBL_ADD_COMMENT}
+			{if isset($MOD.LBL_ADD_COMMENT) && $label eq $MOD.LBL_ADD_COMMENT}
 				{assign var=keyval value=''}
 			{/if}
 			<td width=100% colspan="3" class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;
@@ -115,7 +119,7 @@
 			</td>
 		{elseif $keyid eq '21' || $keyid eq '24' || $keyid eq '22'} <!--TextArea/Street-->
 			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<span id ="dtlview_{$label}">{$keyval}</span></td>
-		{elseif $keyid eq '50' || $keyid eq '73' || $keyid eq '51' || $keyid eq '57' || $keyid eq '59' || $keyid eq '75' || $keyid eq '81' || $keyid eq '76' || $keyid eq '78' || $keyid eq '80'} <!--AccountPopup-->
+		{elseif $keyid eq '73' || $keyid eq '51' || $keyid eq '57' || $keyid eq '59' || $keyid eq '75' || $keyid eq '81' || $keyid eq '76' || $keyid eq '78' || $keyid eq '80'} <!--AccountPopup-->
 			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="vtlib_listview.trigger('cell.onmouseover', this);" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">&nbsp;<a href="{$keyseclink}">{$keyval}</a></td>
 		{elseif $keyid eq 82} <!--Email Body-->
 			<td colspan="3" width=100% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;{$keyval}</td>

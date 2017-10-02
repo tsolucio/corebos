@@ -12,7 +12,6 @@
  * See the License for the specific language governing permissions and limitations under the
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
  ************************************************************************************/
-
 require_once("include/Webservices/Utils.php");
 
 /*
@@ -61,7 +60,7 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 	$queryGenerator = new QueryGenerator($mainModule, $user);
 	$queryColumns = trim(substr($q,6,stripos($q,' from ')-5));
 	$queryColumns = explode(',',$queryColumns);
-	$queryColumns = array_map(trim, $queryColumns);
+	$queryColumns = array_map('trim', $queryColumns);
 	$countSelect = ($queryColumns == array('count(*)'));
 	$queryRelatedModules = array();
 	foreach ($queryColumns as $k => $field) {
@@ -104,8 +103,6 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 	// $obflds has the list of order by fields
 	// $limit is the full correct limit SQL part
 	// transform REST ids
-	$relatedCond = "/=\s*'*\d+x(\d+)'*/";
-	$afterwhere=preg_replace($relatedCond,' = $1 ',$afterwhere);
 	// where
 	if (strlen($queryConditions)>0) {
 		$queryGenerator->startGroup();
@@ -114,7 +111,7 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 			$queryGenerator->startGroup();
 			$qc = substr($qc,1);
 		}
-		$inopRegex = "/\s+in\s+\(/";
+		$inopRegex = "/\s+(in|IN)\s+\(/";
 		$posand = stripos($qc, ' and ');
 		$posor = stripos($qc, ' or ');
 		$glue = '';
@@ -226,21 +223,25 @@ function __FQNExtendedQueryAddCondition($queryGenerator,$condition,$glue,$mainMo
 			$op = 'isnull';
 		}
 	} else {
-		$val = substr($condition,strpos($condition,$op)+strlen($op));
+		if ($op=='like') {
+			$val = substr($condition,stripos($condition,' '.$op)+strlen(' '.$op));
+		} else {
+			$val = substr($condition,stripos($condition,$op)+strlen($op));
+		}
 	}
 	$val = trim($val);
 	$val = trim($val,"'");
 	// TODO  add query generator operators for 'bw' = BETWEEN value1 and value2  (between two dates)
 	switch ($op) {
 		case '<':
-			if (is_date_type) {
+			if (strtotime($val)) { // is date type
 				$op = 'b';
 			} else {
 				$op = 'l';
 			}
 			break;
 		case '>':
-			if (is_date_type) {
+			if (strtotime($val)) { // is date type
 				$op = 'a';
 			} else {
 				$op = 'g';
@@ -265,7 +266,7 @@ function __FQNExtendedQueryAddCondition($queryGenerator,$condition,$glue,$mainMo
 			$val = ltrim($val,'(');
 			$val = rtrim($val,')');
 			$val = explode(',', $val);
-			array_walk($val,function(&$elemento, $clave, $prefijo) { $elemento = trim($elemento,"'"); });
+			array_walk($val,function(&$elemento, $clave) { $elemento = trim($elemento,"'"); });
 			break;
 		case 'like':
 			if (substr($val,-1)=='%' and substr($val,0,1)=='%') {
@@ -329,7 +330,7 @@ function __FQNExtendedQueryAddCondition($queryGenerator,$condition,$glue,$mainMo
 	} else {
 		if ($field=='id') {
 			if (is_array($val)) {
-				array_walk($val,function(&$elemento, $clave, $prefijo) { $elemento = trim($elemento,"'");list($void,$elemento) = explode('x', $elemento); });
+				array_walk($val,function(&$elemento, $clave) { $elemento = trim($elemento,"'");list($void,$elemento) = explode('x', $elemento); });
 			} else {
 				list($void,$val) = explode('x', $val);
 			}
@@ -418,6 +419,7 @@ function __FQNExtendedQueryProcessCondition($condition) {
 }
 
 function __FQNExtendedQueryIsFQNQuery($q) {
+	$q = strtolower($q);
 	$notinopRegex = "/\s+not\s+in\s+\(/";
 	preg_match($notinopRegex, $q, $qop);
 	if (count($qop)>0) return true;  // "not in" operator is supported by QG
@@ -425,15 +427,19 @@ function __FQNExtendedQueryIsFQNQuery($q) {
 	$isnotnullopRegex = "/\s+is\s+(not\s+)?null/";
 	preg_match($isnotnullopRegex, $cq, $qop);
 	if (count($qop)>0) return true;  // "is not null" operator is supported by QG
-	return (stripos($cq,'.')>0 or stripos($cq,'(')>0);
+	return (strpos($cq,'.')>0 || strpos($cq,'(')>0);
 }
 
 function __FQNExtendedQueryIsRelatedQuery($q) {
+	$q = strtolower($q);
 	$cq = __FQNExtendedQueryCleanQuery($q);
 	$cq = substr($cq,stripos($cq,' where '));
 	return (stripos($cq,'related.')>0);
 }
 
+/*
+ * param $q SQL command to analyze. MUST be in lower case
+ */
 function __FQNExtendedQueryCleanQuery($q) {
 	$moduleRegex = "/ in \(.+\)/Us";  // eliminate IN operator
 	$r = preg_replace($moduleRegex, '', $q);

@@ -15,7 +15,7 @@
 *************************************************************************************************/
 
 class UserSendEmailToSender extends cbupdaterWorker {
-	
+
 	function applyChange() {
 		global $adb;
 		if ($this->hasError()) $this->sendError();
@@ -26,7 +26,7 @@ class UserSendEmailToSender extends cbupdaterWorker {
 			$block = Vtiger_Block::getInstance('LBL_MORE_INFORMATION', $moduleInstance);
 			$field = Vtiger_Field::getInstance('send_email_to_sender',$moduleInstance);
 			if ($field) {
-				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid='.$field->id);
+				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?',array($field->id));
 			} else {
 				$user_field = new Vtiger_Field();
 				$user_field->name = 'send_email_to_sender';

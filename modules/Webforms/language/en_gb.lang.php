@@ -11,8 +11,8 @@
 $mod_strings = array(
 	'Webforms' => 'Webforms',
 	'Allows you to manage Webforms' => 'Create and manage webforms which can be used to capture Leads',
-	'LBL_SUCCESS' => 'entry is added to vtiger CRM',
-	'LBL_FAILURE' => 'Failed to add entry to vtiger CRM',
+	'LBL_SUCCESS' => 'entry has been added to the application',
+	'LBL_FAILURE' => 'Failed to add entry in the application',
 	'LBL_ERROR_CODE' => 'Error Code',
 	'LBL_ERROR_MESSAGE' => 'Error Message',
 	'LBL_WEBFORM_NAME' => 'Webform Name',
@@ -41,9 +41,10 @@ $mod_strings = array(
 	'LBL_CANCEL' => 'Cancel',
 	'LBL_SAVE' => 'Save',
 	'LBL_SELECT_VALUE' => '--Select Value--',
-	'LBL_BASIC_INFORMATION' => 'Basic Information',
 	'LBL_SELECT_USER' => 'Select User',
 	'LBL_DUPLICATE_NAME' => 'Webform with same name exists',
-	'ERR_CREATE_WEBFORM' => 'Webform creation failed'
+	'ERR_CREATE_WEBFORM' => 'Webform creation failed',
+	'LBL_WEB_DOMAIN' => 'Web Domain',
+	'LBL_CREATENEW' => 'You can Create a Webform Now. Click the link below',
 );
 ?>

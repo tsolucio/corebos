@@ -8,7 +8,7 @@
  * All Rights Reserved.
  * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
-include_once dirname(__FILE__) . '/../api/ws/Login.php';
+include_once __DIR__ . '/../api/ws/Login.php';
 class crmtogo_UI_Logout extends crmtogo_WS_Login {
 
 	function requireLogin() {

@@ -158,7 +158,7 @@ class coreBOSEventsPermissionExample extends VTEventHandler {
 	 */
 	function getAccountContactRelatedAccessQuery($module, $user) {
 		global $adb;
-		if (GlobalVariable::getVariable('B2B', '1')) {
+		if (GlobalVariable::getVariable('Application_B2B', '1')) {
 			$parentmodule = 'Accounts';
 		} else {
 			$parentmodule = 'Contacts';

@@ -14,16 +14,16 @@ global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
 $smarty = new vtigerCRM_Smarty();
 
 if(isPermitted('HelpDesk','Merge','') == 'yes') {
-	require("user_privileges/user_privileges_".$current_user->id.".php");
 	require_once('include/utils/UserInfoUtil.php');
 	$wordTemplateResult = fetchWordTemplateList("HelpDesk");
 	$tempCount = $adb->num_rows($wordTemplateResult);
 	$tempVal = $adb->fetch_array($wordTemplateResult);
+	$optionString = array();
 	for($templateCount=0;$templateCount<$tempCount;$templateCount++) {
 		$optionString[$tempVal["templateid"]]=$tempVal["filename"];
 		$tempVal = $adb->fetch_array($wordTemplateResult);
 	}
-	if($is_admin)
+	if (is_admin($current_user))
 		$smarty->assign('MERGEBUTTON','permitted');
 	elseif($tempCount >0)
 		$smarty->assign('MERGEBUTTON','permitted');
@@ -35,7 +35,7 @@ if(isPermitted('HelpDesk','Merge','') == 'yes') {
 require_once 'modules/Vtiger/DetailView.php';
 
 //Added code for Error display in sending mail to assigned to user when ticket is created or updated.
-if($_REQUEST['mail_error'] != '') {
+if(!empty($_REQUEST['mail_error'])) {
 	require_once("modules/Emails/mail.php");
 	$ticket_owner = getUserFullName($focus->column_fields['assigned_user_id']);
 	$error_msg = strip_tags(parseEmailErrorString($_REQUEST['mail_error']));

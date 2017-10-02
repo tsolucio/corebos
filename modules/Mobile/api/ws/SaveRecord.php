@@ -8,11 +8,12 @@
  * All Rights Reserved.
  * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
-include_once dirname(__FILE__) . '/FetchRecord.php';
+include_once __DIR__ . '/FetchRecord.php';
 include_once 'include/Webservices/Create.php';
 include_once 'include/Webservices/Update.php';
 
 class crmtogo_WS_SaveRecord extends crmtogo_WS_FetchRecord {
+
 	protected $recordValues = false;
 
 	// Avoid retrieve and return the value obtained after Create or Update
@@ -47,20 +48,30 @@ class crmtogo_WS_SaveRecord extends crmtogo_WS_FetchRecord {
 				$this->recordValues = array();
 			}
 		
-			if ($module == 'Events' || $module == 'Calendar') {
+			if ($module == 'Events' || $module == 'Calendar' || $module == 'Timecontrol') {
+				if($module == 'Timecontrol'){
+					$endDname = 'date_end';
+				}else{
+					$endDname = 'due_date';
+				}
 				//Start Date and Time values
-				$values["time_start"] = $values["time_start"].":00";
-				$values["date_start"] = $values["date_start"];
+				$date = new DateTimeField($values["date_start"]. ' ' . $values["time_start"]);
+				$values["time_start"] = $date->getDBInsertTimeValue();
+				$values["date_start"] = $date->getDBInsertDateValue();
 				//End Date and Time values
 				if (isset ($values["time_end"])) {
-					$endTime = $values["time_end"].":00";
+					$endTime = $values["time_end"];
 				}
 				else {
 					$endTime = '00:00:00';
 				}
-				$values["due_date"] = $values["due_date"];
-				$values["time_end"] = $endTime;
+				if(!empty($values[$endDname])){
+					$date = new DateTimeField($values[$endDname]. ' ' . $endTime);
+					$values[$endDname] = $date->getDBInsertDateValue();
+					$values["time_end"] = $date->getDBInsertTimeValue();
+				}
 			}
+
 			// Set the modified values
 			foreach($values as $name => $value) {
 				//for multi picklist remove _empty

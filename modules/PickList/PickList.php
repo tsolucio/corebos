@@ -12,24 +12,13 @@ require_once('include/database/PearDatabase.php');
 require_once 'include/utils/CommonUtils.php';
 require_once 'modules/PickList/PickListUtils.php';
 
-global $app_strings, $app_list_strings, $current_language, $currentModule, $theme, $current_user;
+global $app_strings, $current_language, $currentModule, $theme, $current_user;
 
-if(!is_admin($current_user)) {
-	echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
-	echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
-			<table border='0' cellpadding='5' cellspacing='0' width='98%'>
-				<tr>
-					<td rowspan='2' width='11%'><img src='". vtiger_imageurl('denied.gif', $theme) . "' ></td>
-					<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span class='genHeaderSmall'>$app_strings[LBL_PERMISSION]</span></td>
-				</tr>
-				<tr>
-					<td class='small' align='right' nowrap='nowrap'>
-						<a href='javascript:window.history.back();'>$app_strings[LBL_GO_BACK]</a><br>
-					</td>
-				</tr>
-			</table>
-		</div>";
-	echo "</td></tr></table>";
+$smarty = new vtigerCRM_Smarty;
+$smarty->assign("APP", $app_strings);
+
+if (!is_admin($current_user)) {
+	$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
 	die;
 }
 
@@ -47,24 +36,17 @@ if(!empty($_REQUEST['roleid'])) {
 	$roleid = 'H2';		//set default to CEO
 }
 
-if(!empty($_REQUEST['uitype'])) {
-	$uitype = vtlib_purify($_REQUEST['uitype']);
-}
-
-$smarty = new vtigerCRM_Smarty;
-
-if((sizeof($picklists_entries) %3) != 0) {
-	$value = (sizeof($picklists_entries) + 3 - (sizeof($picklists_entries))%3);
-}else {
-	$value = sizeof($picklists_entries);
-}
-
 if($fld_module == 'Events') {
 	$temp_module_strings = return_module_language($current_language, 'Calendar');
 }else {
 	$temp_module_strings = return_module_language($current_language, $fld_module);
 }
 $picklists_entries = getUserFldArray($fld_module,$roleid);
+if((sizeof($picklists_entries) %3) != 0) {
+	$value = (sizeof($picklists_entries) + 3 - (sizeof($picklists_entries))%3);
+}else {
+	$value = sizeof($picklists_entries);
+}
 $available_module_picklist = array();
 $picklist_fields = array();
 if(!empty($picklists_entries)) {
@@ -79,7 +61,6 @@ $smarty->assign("MODULE_LISTS",$mods);
 $smarty->assign("ROLE_LISTS",getrole2picklist());
 $smarty->assign("ALL_LISTS",$available_module_picklist);
 
-$smarty->assign("APP", $app_strings);		//the include language files
 $smarty->assign("MOD", return_module_language($current_language,'Settings'));	//the settings module language file
 $smarty->assign("MOD_PICKLIST", return_module_language($current_language,'PickList'));	//the picklist module language files
 $smarty->assign("TEMP_MOD", $temp_module_strings);	//the selected modules' language file
@@ -87,10 +68,11 @@ $smarty->assign("TEMP_MOD", $temp_module_strings);	//the selected modules' langu
 $smarty->assign("MODULE",$fld_module);
 $smarty->assign("PICKLIST_VALUES",$picklist_fields);
 $smarty->assign("THEME",$theme);
+$uitype = (!empty($_REQUEST['uitype']) ? vtlib_purify($_REQUEST['uitype']) : '');
 $smarty->assign("UITYPE", $uitype);
 $smarty->assign("SEL_ROLEID",$roleid);
 
-if($_REQUEST['directmode'] != 'ajax') {
+if(empty($_REQUEST['directmode']) or $_REQUEST['directmode'] != 'ajax') {
 	$smarty->display("modules/PickList/PickList.tpl");
 }else {
 	$smarty->display("modules/PickList/PickListContents.tpl");

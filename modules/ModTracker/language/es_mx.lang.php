@@ -44,5 +44,7 @@ $mod_strings = Array (
 'LBL_CONFIGURATION_DESCRIPTION' => 'Selecciona los módulos a controlar',
 'LBL_DELETED'=>'ELIMINADO!',
 'LBL_RESTORED'=>'RESTAURADO!',
+'LBL_ModTracker_SETTINGS' => 'Módulos Activados',
+'LBL_NO_HISTORY_TITLE' => 'No hay información Histórica',
 );
 ?>

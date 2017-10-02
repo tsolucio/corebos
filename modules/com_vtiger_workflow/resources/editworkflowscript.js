@@ -243,7 +243,7 @@ function editworkflowscript($, conditions){
 			number:[alert_arr.LBL_EQUAL_TO, alert_arr.LBL_LESS_THAN, alert_arr.LBL_GREATER_THAN, alert_arr.LBL_DOEST_NOT_EQUAL,
 					alert_arr.LBL_LESS_THAN_OR_EQUAL_TO, alert_arr.LBL_GREATER_THAN_OR_EQUAL_TO, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_EXISTS],
 			value:[alert_arr.LBL_IS, alert_arr.LBL_IS_NOT, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_HAS_CHANGED_TO, alert_arr.LBL_IS_EMPTY, alert_arr.LBL_IS_NOT_EMPTY, alert_arr.LBL_EXISTS],
-			reference:[alert_arr.LBL_IS, alert_arr.LBL_IS_NOT, alert_arr.LBL_HAS_CHANGED],
+			reference:[alert_arr.LBL_IS, alert_arr.LBL_IS_NOT, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_HAS_CHANGED_TO, alert_arr.LBL_IS_EMPTY, alert_arr.LBL_IS_NOT_EMPTY, alert_arr.LBL_EXISTS],
 			date:[alert_arr.LBL_IS, alert_arr.LBL_IS_NOT, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_HAS_CHANGED_TO,
 					alert_arr.LBL_BETWEEN, alert_arr.LBL_BEFORE, alert_arr.LBL_AFTER, alert_arr.LBL_IS_TODAY, alert_arr.LBL_LESS_THAN_DAYS_AGO,
 					alert_arr.LBL_MORE_THAN_DAYS_AGO, alert_arr.LBL_IN_LESS_THAN, alert_arr.LBL_IN_MORE_THAN, alert_arr.LBL_DAYS_AGO, alert_arr.LBL_DAYS_LATER, alert_arr.LBL_EXISTS],
@@ -291,7 +291,7 @@ function editworkflowscript($, conditions){
 		var group = fullFieldName.match(/(\w+) : \((\w+)\) (\w+)/);
 		if(group != null){
 			for(var i=0; i<selOperations.length; ++i) {
-				if(selOperations[i] != 'has changed') {
+				if(selOperations[i] != 'has changed' && selOperations[i] != 'has changed to') {
 					selectedOperations.push(selOperations[i]);
 					selTransOperations.push(transOperations[opType.name][i]);
 				}
@@ -375,7 +375,7 @@ function editworkflowscript($, conditions){
 
 	function resetGroupJoinCondition(groupno) {
 		var firstChildNode = $("#save_conditions :first");
-		if(firstChildNode.length > 0 && firstChildNode.attr('class').indexOf('condition_group_join_block') >= 0) {
+		if(firstChildNode.length > 0 && firstChildNode.prop('class').indexOf('condition_group_join_block') >= 0) {
 			firstChildNode.remove();
 		}
 	}
@@ -446,7 +446,7 @@ function editworkflowscript($, conditions){
 	}
 
 	function editFieldExpression(fieldValueNode, fieldType) {
-		editpopupobj.edit(fieldValueNode.attr('id'), fieldValueNode.val(), fieldType);
+		editpopupobj.edit(fieldValueNode.prop('id'), fieldValueNode.val(), fieldType);
 	}
 
 	$(document).ready(function(){
@@ -523,17 +523,17 @@ function editworkflowscript($, conditions){
 							$("#save_conditions").append(
 								group_condition_html
 								+ '<div id="condition_group_'+groupid+'" class="condition_group_block" > \
-                                    <div style="float:right;"> \
-                                        <span id="save_condition_group_'+groupid+'_remove" class="link remove-link"> \
-                                        <img src="themes/images/close.gif"></span> \
-                                    </div> \
-                                    <div style="clear:both;"></div> \
-                                    <div id="save_condition_group_'+groupid+'" class="save_condition_group"> \
-                                    </div> \
-                                    <div> \
-                                        <input type="button" id="add_group_condition_'+groupid+'" value="'+alert_arr.LBL_NEW_CONDITION+'" class="small edit" /> \
-                                    </div> \
-                                </div>'
+									<div style="float:right;"> \
+										<span id="save_condition_group_'+groupid+'_remove" class="link remove-link"> \
+										<img src="themes/images/close.gif"></span> \
+									</div> \
+									<div style="clear:both;"></div> \
+									<div id="save_condition_group_'+groupid+'" class="save_condition_group"> \
+									</div> \
+									<div> \
+										<input type="button" id="add_group_condition_'+groupid+'" value="'+alert_arr.LBL_NEW_CONDITION+'" class="small edit" /> \
+									</div> \
+								</div>'
 								);
 							if($(".condition_group_block").length > 0) {
 								var fjgc = $("#save_condition_group_"+groupid+"_joincondition");
@@ -562,14 +562,14 @@ function editworkflowscript($, conditions){
 						$("#save_condition_group_"+groupid).append(
 							'<div id="save_condition_'+condid+'" style=\'margin-bottom: 5px\'> \
 								<input type="hidden" id="save_condition_'+condid+'_groupid" class="groupid" value="'+groupid+'" /> \
-                                <select id="save_condition_'+condid+'_fieldname" class="fieldname" style="width:300px;"></select> \
+								<select id="save_condition_'+condid+'_fieldname" class="fieldname" style="width:300px;"></select> \
 								<select id="save_condition_'+condid+'_operation" class="operation"></select> \
-                                <input type="hidden" id="save_condition_'+condid+'_value_type" class="expressiontype" /> \
-                                <input type="text" id="save_condition_'+condid+'_value" class="expressionvalue" readonly /> \
+								<input type="hidden" id="save_condition_'+condid+'_value_type" class="expressiontype" /> \
+								<input type="text" id="save_condition_'+condid+'_value" class="expressionvalue" readonly /> \
 								<select id="save_condition_'+condid+'_joincondition" class="joincondition"></select> \
 								<span id="save_condition_'+condid+'_remove" class="link remove-link"> \
 								<img src="modules/com_vtiger_workflow/resources/remove.png"></span> \
-                            </div>'
+							</div>'
 							);
 						resetJoinCondition(groupid, condid);
 
@@ -591,7 +591,7 @@ function editworkflowscript($, conditions){
 
 						fe.bind("change", function(){
 							var select = $(this);
-							var condNo = select.attr("id").match(/save_condition_(\d+)_fieldname/)[1];
+							var condNo = select.prop("id").match(/save_condition_(\d+)_fieldname/)[1];
 							var fullFieldName = $(this).val();
 							resetFields(getFieldType(fullFieldName), condNo);
 						});
@@ -631,7 +631,7 @@ function editworkflowscript($, conditions){
 							$(format("#save_condition_%s_operation", condno)).val(condition["operation"]);
 							$('#dump').html(condition["value"]);
 							var text = $('#dump').text();
-							if(condition["operation"] == 'is empty' || condition["operation"] == 'is not empty')  {
+							if(condition["operation"] == 'is empty' || condition["operation"] == 'is not empty') {
 								$(format("#save_condition_%s_value", condno)).hide();
 							}
 							$(format("#save_condition_%s_value", condno)).val(text);
@@ -639,7 +639,7 @@ function editworkflowscript($, conditions){
 							if(condition["joincondition"] != '') {
 								$(format("#save_condition_%s_joincondition", condno)).val(condition["joincondition"]);
 							}
-							if(condition["groupjoin"]  != '') {
+							if(condition["groupjoin"] != '') {
 								$(format("#save_condition_group_%s_joincondition", groupid)).val(condition["groupjoin"]);
 							}
 							condno+=1;
@@ -753,7 +753,7 @@ function onschedule_selectschedule(selbox) {
 		jQuery('#minutesinterval').hide();
 		jQuery('#scheduledTime').show();
 		break;
-		case '6':  // Not Implemented yet
+		case '6': // Not Implemented yet
 		break;
 		case '7':
 		jQuery('#scheduledWeekDay').hide();

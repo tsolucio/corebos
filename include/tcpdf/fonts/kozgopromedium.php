@@ -55,8 +55,11 @@ $_cr = array(
 	array(8718, 8718, 500),
 	array(9738, 9757, 250), // quarter-width
 	array(9758, 9778, 333), // third-width
-	array(12063, 12087, 500),
+	array(12063, 12087, 500)
 );
-foreach($_cr as $_r)
-	for($i = $_r[0]; $i <= $_r[1]; $i++)
+foreach($_cr as $_r) {
+	for($i = $_r[0]; $i <= $_r[1]; $i++) {
 		$cw[$i+31] = $_r[2];
+	}
+}
+// --- EOF ---

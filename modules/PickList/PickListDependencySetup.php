@@ -13,53 +13,36 @@ require_once 'include/utils/utils.php';
 require_once 'modules/PickList/PickListUtils.php';
 require_once 'modules/PickList/DependentPickListUtils.php';
 
-global $app_strings, $app_list_strings, $current_language, $currentModule, $theme, $current_user;
+global $app_strings, $current_language, $currentModule, $theme, $current_user;
 
-if(!is_admin($current_user)) {
-	echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
-	echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
-			<table border='0' cellpadding='5' cellspacing='0' width='98%'>
-				<tr>
-					<td rowspan='2' width='11%'><img src='". vtiger_imageurl('denied.gif', $theme) . "' ></td>
-					<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span class='genHeaderSmall'>".$app_strings['LBL_PERMISSION']."</span></td>
-				</tr>
-				<tr>
-					<td class='small' align='right' nowrap='nowrap'>
-						<a href='javascript:window.history.back();'>".$app_strings['LBL_GO_BACK']."</a><br>
-					</td>
-				</tr>
-			</table>
-		</div>
-	</td></tr></table>";
+$smarty = new vtigerCRM_Smarty;
+$smarty->assign("APP", $app_strings);		//the include language files
+
+if (!is_admin($current_user)) {
+	$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
 	die;
 }
 
-$modules = Vtiger_DependencyPicklist::getDependentPickListModules();
-if(!empty($_REQUEST['moduleName'])) {
-	$fld_module = vtlib_purify($_REQUEST['moduleName']);
-}
+$smarty->assign("MOD", return_module_language($current_language,'Settings'));	//the settings module language file
+$smarty->assign("MOD_PICKLIST", return_module_language($current_language,'PickList'));	//the picklist module language files
 
-$smarty = new vtigerCRM_Smarty;
-
+$fld_module = (!empty($_REQUEST['moduleName']) ? vtlib_purify($_REQUEST['moduleName']) : '');
 if($fld_module == 'Events') {
 	$temp_module_strings = return_module_language($current_language, 'Calendar');
 }else {
 	$temp_module_strings = return_module_language($current_language, $fld_module);
 }
 
+$modules = Vtiger_DependencyPicklist::getDependentPickListModules();
 $smarty->assign("MODULE_LISTS",$modules);
-
-$smarty->assign("APP", $app_strings);		//the include language files
-$smarty->assign("MOD", return_module_language($current_language,'Settings'));	//the settings module language file
-$smarty->assign("MOD_PICKLIST", return_module_language($current_language,'PickList'));	//the picklist module language files
 
 $smarty->assign("MODULE",$fld_module);
 $smarty->assign("PICKLIST_MODULE",'PickList');
 $smarty->assign("THEME",$theme);
 
-$smarty->assign("SUBMODE",vtlib_purify($_REQUEST['submode']));
+$smarty->assign('SUBMODE',(isset($_REQUEST['submode']) ? vtlib_purify($_REQUEST['submode']) : ''));
 
-if($_REQUEST['directmode'] == 'ajax') {
+if(isset($_REQUEST['directmode']) and $_REQUEST['directmode'] == 'ajax') {
 	$subMode = vtlib_purify($_REQUEST['submode']);
 
 	if($subMode == 'getpicklistvalues') {
@@ -72,8 +55,8 @@ if($_REQUEST['directmode'] == 'ajax') {
 		echo json_encode($picklistValues);
 
 	} elseif($subMode == 'editdependency') {
-		$sourceField = vtlib_purify($_REQUEST['sourcefield']);
-		$targetField = vtlib_purify($_REQUEST['targetfield']);
+		$sourceField = (isset($_REQUEST['sourcefield']) ? vtlib_purify($_REQUEST['sourcefield']) : '');
+		$targetField = (isset($_REQUEST['targetfield']) ? vtlib_purify($_REQUEST['targetfield']) : '');
 
 		$cyclicDependencyExists = Vtiger_DependencyPicklist::checkCyclicDependency($fld_module, $sourceField, $targetField);
 
@@ -101,6 +84,10 @@ if($_REQUEST['directmode'] == 'ajax') {
 				$smarty->assign("DEPENDENT_PICKLISTS",$dependentPicklists);
 
 				$dependencyMap = Vtiger_DependencyPicklist::getPickListDependency($fld_module, $sourceField, $targetField);
+			} else {
+				$smarty->assign('SOURCE_VALUES', array());
+				$smarty->assign('TARGET_VALUES', array());
+				$smarty->assign('DEPENDENT_PICKLISTS', array());
 			}
 			$smarty->assign("DEPENDENCY_MAP", $dependencyMap);
 
@@ -115,8 +102,8 @@ if($_REQUEST['directmode'] == 'ajax') {
 			Vtiger_DependencyPicklist::savePickListDependencies($fld_module, $dependencyMappingData);
 
 		} elseif($subMode == 'deletedependency') {
-			$sourceField = vtlib_purify($_REQUEST['sourcefield']);
-			$targetField = vtlib_purify($_REQUEST['targetfield']);
+			$sourceField = (isset($_REQUEST['sourcefield']) ? vtlib_purify($_REQUEST['sourcefield']) : '');
+			$targetField = (isset($_REQUEST['targetfield']) ? vtlib_purify($_REQUEST['targetfield']) : '');
 			Vtiger_DependencyPicklist::deletePickListDependencies($fld_module, $sourceField, $targetField);
 		}
 		$dependentPicklists = Vtiger_DependencyPicklist::getDependentPicklistFields($fld_module);

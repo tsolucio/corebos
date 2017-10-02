@@ -36,14 +36,6 @@ $mod_strings = Array(
 'LBL_LIST_EMAIL_ADDRESS'=>'Dirección de Email',
 'LBL_LIST_CONTACT_NAME'=>'Persona de Contacto',
 'LBL_FAQ_INFORMATION'=>'Información de FAQ',
-
-//DON'T CONVERT THESE THEY ARE MAPPINGS
-'db_name' => 'LBL_LIST_ACCOUNT_NAME',
-'db_website' => 'LBL_LIST_WEBSITE',
-'db_billing_address_city' => 'LBL_LIST_CITY',
-
-//END DON'T CONVERT
-
 'LBL_ACCOUNT'=>'FAQ:',
 'LBL_ACCOUNT_NAME'=>'FAQ:',
 'LBL_PHONE'=>'Teléfono:',
@@ -115,7 +107,6 @@ $mod_strings = Array(
 'LBL_TICKETS'=>'casos',
 'LBL_FAQ'=>'FAQ',
 'Product Name'=>'Nombre del Producto',
-'FAQ Id'=>'FAQ ID',
 'Add Comment'=>'Agregar Comentario',
 'LBL_ADD_COMMENT'=>'Agregar Comentario',
 'LBL_COMMENT_INFORMATION'=>'Información del Comentario',

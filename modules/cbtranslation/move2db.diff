@@ -1,0 +1,135 @@
+diff --git a/include/utils/CommonUtils.php b/include/utils/CommonUtils.php
+index 43fc9e7..9f283d9 100644
+--- a/include/utils/CommonUtils.php
++++ b/include/utils/CommonUtils.php
+@@ -2401,10 +2401,8 @@ function getrecurringObjValue() {
+  * 	@return string $str - translated string, if the translated string is available then the translated string other wise original string will be returned
+  */
+ function getTranslatedString($str, $module = '') {
+-	global $app_strings, $mod_strings, $log, $current_language;
+-	$temp_mod_strings = ($module != '' ) ? return_module_language($current_language, $module) : $mod_strings;
+-	$trans_str = (!empty($temp_mod_strings[$str]) ? $temp_mod_strings[$str] : (!empty($app_strings[$str]) ? $app_strings[$str] : $str));
+-	return $trans_str;
++	include_once 'modules/cbtranslation/cbtranslation.php';
++	return cbtranslation::get($str, $module);
+ }
+ 
+ /**
+diff --git a/include/utils/utils.php b/include/utils/utils.php
+index 4cba0b2..69f30a9 100644
+--- a/include/utils/utils.php
++++ b/include/utils/utils.php
+@@ -418,33 +418,9 @@ function return_app_currency_strings_language($language) {
+  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
+  * All Rights Reserved.
+  * If you are using the current language, do not call this function unless you are loading it for the first time */
+-function return_application_language($language)
+-{
+-	global $log;
+-	$log->debug("Entering return_application_language(".$language.") method ...");
+-	global $app_strings, $default_language, $log;
+-	$temp_app_strings = $app_strings;
+-
+-	checkFileAccessForInclusion("include/language/$language.lang.php");
+-	@include("include/language/$language.lang.php");
+-	if(!isset($app_strings))
+-	{
+-		$log->warn("Unable to find the application language file for language: ".$language);
+-		require("include/language/$default_language.lang.php");
+-	}
+-
+-	if(!isset($app_strings))
+-	{
+-		$log->fatal("Unable to load the application language file for the selected language($language) or the default language($default_language)");
+-		$log->debug("Exiting return_application_language method ...");
+-		return null;
+-	}
+-
+-	$return_value = $app_strings;
+-	$app_strings = $temp_app_strings;
+-
+-	$log->debug("Exiting return_application_language method ...");
+-	return $return_value;
++function return_application_language($language) {
++	include_once 'modules/cbtranslation/cbtranslation.php';
++	return cbtranslation::return_application_language($language);
+ }
+ 
+ /** This function retrieves a module's language file and returns the array of strings included.
+@@ -452,71 +428,14 @@ function return_application_language($language)
+  * All Rights Reserved.
+  * If you are in the current module, do not call this function unless you are loading it for the first time */
+ function return_module_language($language, $module) {
+-	global $mod_strings, $default_language, $log, $currentModule;
+-	$log->debug("Entering return_module_language(".$language.",". $module.") method ...");
+-	if ($module == 'Events') $module = 'Calendar';
+-	static $cachedModuleStrings = array();
+-
+-	if(!empty($cachedModuleStrings[$module])) {
+-		$log->debug("Exiting return_module_language method ...");
+-		return $cachedModuleStrings[$module];
+-	}
+-
+-	$temp_mod_strings = $mod_strings;
+-
+-	@include("modules/$module/language/$language.lang.php");
+-	if(!isset($mod_strings))
+-	{
+-		$log->warn("Unable to find the module language file for language: ".$language." and module: ".$module);
+-		if($default_language == 'en_us') {
+-			require("modules/$module/language/$default_language.lang.php");
+-		} else {
+-			@include("modules/$module/language/$default_language.lang.php");
+-			if(!isset($mod_strings)) {
+-				require("modules/$module/language/en_us.lang.php");
+-			} else {
+-			}
+-		}
+-	}
+-
+-	if(!isset($mod_strings))
+-	{
+-		$log->fatal("Unable to load the module($module) language file for the selected language($language) or the default language($default_language)");
+-		$log->debug("Exiting return_module_language method ...");
+-		return null;
+-	}
+-
+-	$return_value = $mod_strings;
+-	$mod_strings = $temp_mod_strings;
+-
+-	$log->debug("Exiting return_module_language method ...");
+-	$cachedModuleStrings[$module] = $return_value;
+-	return $return_value;
++	include_once 'modules/cbtranslation/cbtranslation.php';
++	return cbtranslation::return_module_language($language, $module);
+ }
+ 
+ /*This function returns the mod_strings for the current language and the specified module */
+-function return_specified_module_language($language, $module)
+-{
+-	global $log, $default_language;
+-
+-	@include("modules/$module/language/$language.lang.php");
+-	if(!isset($mod_strings))
+-	{
+-		$log->warn("Unable to find the module language file for language: ".$language." and module: ".$module);
+-		require("modules/$module/language/$default_language.lang.php");
+-	}
+-
+-	if(!isset($mod_strings))
+-	{
+-		$log->fatal("Unable to load the module($module) language file for the selected language($language) or the default language($default_language)");
+-		$log->debug("Exiting return_module_language method ...");
+-		return null;
+-	}
+-
+-	$return_value = $mod_strings;
+-
+-	$log->debug("Exiting return_module_language method ...");
+-	return $return_value;
++function return_specified_module_language($language, $module) {
++	include_once 'modules/cbtranslation/cbtranslation.php';
++	return cbtranslation::return_module_language($language, $module);
+ }
+ 
+ /** This function retrieves a theme's language file and returns the array of strings included.

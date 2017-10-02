@@ -11,12 +11,16 @@
 	<script type="text/javascript" src="resources/getScrollcontent.js"></script>
 	<link rel="stylesheet" href="resources/css/jquery.mobile.structure-1.4.5.min.css" >
 	<link rel="stylesheet" href="resources/css/theme.css" >
+	<link rel="stylesheet" href="resources/css/signature-pad.css">
+	<script type="text/javascript" src="resources/jquery.blockUI.js" ></script>
 	<script type="text/javascript" src="resources/crmtogo.js"></script>
 	<script type="text/javascript" src="resources/lang/{$LANGUAGE}.lang.js"></script>
+	<script type="text/javascript" src="resources/signature_pad.js"></script>
 </head>
 <body>
 <div data-role="page" data-theme="b" id="detail_page">
 	<input type="hidden" name="recordid" id="recordid" value="{$_RECORD->id()}">
+	<input type="hidden" name="module" id="module" value="{$_MODULE->name()}">
 	{if $_MODULE->name() neq 'Accounts' && $_MODULE->name() neq 'Contacts'&& $_MODULE->name() neq 'Potentials' && $_MODULE->name() neq 'HelpDesk' && $_MODULE->name() neq 'Assets'}
 	<div  data-role="header" data-theme="{$COLOR_HEADER_FOOTER}" data-position="fixed">
 		{if $_MODULE->name() neq 'Quotes' AND  $_MODULE->name() neq 'SalesOrder' AND  $_MODULE->name() neq 'Invoice' AND  $_MODULE->name() neq 'PurchaseOrder' AND  $_MODULE->name() neq 'Documents' AND  $_MODULE->name() neq 'Products'}
@@ -42,6 +46,12 @@
 	</div>
 	{/if}
 	<div>
+	{if $_MODULE->name() eq "HelpDesk"}
+		<div data-role="collapsible" id="signatureCollapsible" data-collapsed="true" data-mini="true">
+			<h3>{'LBL_SIGNATURE'|@getTranslatedString:'Mobile'}</h3>
+			{include file="modules/Mobile/Signature.tpl"}
+		</div>
+	{/if}
 	{if $COMMENTDISPLAY eq true}
 		<div data-role="collapsible" data-collapsed="true" data-mini="true">
 			<h3>{$MOD.LBL_COMMENTS}</h3>
@@ -58,15 +68,16 @@
 	{/if}
 		{foreach item=_BLOCK key=_BLOCKLABEL from=$_RECORD->blocks()}
 			{assign var=_FIELDS value=$_BLOCK->fields()}	
-			<div data-role="collapsible" data-collapsed="false" data-mini="true">
+			<div data-role="collapsible" id="{$_BLOCKLABEL}" data-collapsed="false" data-mini="true">
 				<h3>{$_BLOCKLABEL|@getTranslatedString:$_MODULE->name()}</h3>
 				{foreach item=_FIELD from=$_FIELDS}
+					<input type="hidden" name="{$_FIELD->name()}" id="{$_FIELD->name()}" value="{$_FIELD->valueLabel()}">
 					<div class="ui-grid-a">
 						<div class="ui-block-a">
 							{if $_MODULE->name() eq 'Calendar' || $_MODULE->name() eq 'Events'}
 								{if $_FIELD->name() eq 'date_start'}
-									{'Start Date & Time'}:
-								{elseif $_FIELD->name() neq 'reminder_time' && $_FIELD->name() neq 'time_end' && $_FIELD->name() neq 'recurringtype' && $_FIELD->name() neq 'duration_hours' && $_FIELD->name() neq 'duration_minutes' && $_FIELD->name() neq 'notime' && $_FIELD->name() neq 'location'}
+									{'Start Date'|@getTranslatedString:$_MODULE->name()}:
+								{elseif $_FIELD->name() neq 'reminder_time' && $_FIELD->name() neq 'recurringtype' && $_FIELD->name() neq 'duration_hours' && $_FIELD->name() neq 'duration_minutes' && $_FIELD->name() neq 'notime' && $_FIELD->name() neq 'location'}
 									{if ($_FIELD->name() neq 'eventstatus' && $_FIELD->name() neq 'taskstatus') || $_FIELD->valueLabel() neq ''}
 										{$_FIELD->label()}:
 									{/if}
@@ -89,7 +100,7 @@
 									</a>
 								{/if}
 							{else}
-								{if ($_MODULE->name() eq 'Calendar' || $_MODULE->name() eq 'Events') && $_FIELD->name() neq 'reminder_time' && $_FIELD->name() neq 'time_end' && $_FIELD->name() neq 'recurringtype' && $_FIELD->name() neq 'duration_hours' && $_FIELD->name() neq 'duration_minutes' && $_FIELD->name() neq 'notime' && $_FIELD->name() neq 'location'}
+								{if ($_MODULE->name() eq 'Calendar' || $_MODULE->name() eq 'Events') && $_FIELD->name() neq 'reminder_time' && $_FIELD->name() neq 'recurringtype' && $_FIELD->name() neq 'duration_hours' && $_FIELD->name() neq 'duration_minutes' && $_FIELD->name() neq 'notime' && $_FIELD->name() neq 'location'}
 									{if $_FIELD->name() eq 'date_start' ||$_FIELD->name() eq 'due_date'}
 										{$_FIELD->valueLabel()}
 									{else}
@@ -113,7 +124,7 @@
 											{$MOD.LBL_NO}
 										{/if}
 									{else}
-										{if $_FIELD->name() eq 'phone' || $_FIELD->name() eq 'homephone'|| $_FIELD->name() eq 'mobile'|| $_FIELD->name() eq 'otherphone' }
+										{if $_FIELD->name() eq 'phone' || $_FIELD->name() eq 'homephone'|| $_FIELD->name() eq 'mobile'|| $_FIELD->name() eq 'otherphone' || $_FIELD->uitype() eq '11' }
 											{assign var=phoneinput value=$_FIELD->valueLabel()}	
 											<a href="tel:{$phoneinput|regex_replace:"/\A\+/":"00"|regex_replace:"/[^0-9]+/":""}">{$_FIELD->valueLabel()}</a>
 										{elseif $_FIELD->name() eq 'skype'}
@@ -149,6 +160,9 @@
 	</div>
 	<div data-role="footer" data-theme="{$COLOR_HEADER_FOOTER}" data-position="fixed">
 		<a href="?_operation=deleteConfirmation&module={$_MODULE->name()}&record={$_RECORD->id()}&&lang={$LANGUAGE}" class="ui-btn ui-corner-all ui-icon-delete ui-btn-icon-notext" data-rel="dialog" data-iconpos="left" data-prefetch>{$MOD.LBL_DELETE}</a>
+		{if $_MODULE->name() eq "HelpDesk" && 'Timecontrol'|vtlib_isModuleActive}
+		<a href="?_operation=create&module=Timecontrol&record=''&relatedto={$_RECORD->id()}" class="ui-btn ui-btn-right ui-corner-all ui-icon-clock ui-btn-icon-notext" data-transition="turn" data-iconpos="right">{$MOD.LBL_NEW}</a>
+		{/if}
 	</div>
 	{include file="modules/Mobile/PanelMenu.tpl"}
 </div>

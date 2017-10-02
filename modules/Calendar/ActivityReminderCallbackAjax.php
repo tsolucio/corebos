@@ -16,14 +16,12 @@ require_once('include/utils/utils.php');
 require_once('modules/Calendar/Activity.php');
 
 $cur_time = time();
-$_SESSION['last_reminder_check_time'] = $cur_time;
-$_SESSION['next_reminder_interval'] = 60;
-if($_SESSION['next_reminder_time'] == 'None') {
+coreBOS_Session::set('last_reminder_check_time', $cur_time);
+coreBOS_Session::set('next_reminder_interval', 60);
+if(isset($_SESSION['next_reminder_time']) && $_SESSION['next_reminder_time'] == 'None') {
 	return;
-} elseif(isset($_SESSION['next_reminder_interval']) && (($_SESSION['next_reminder_time'] -
-		$_SESSION['next_reminder_interval']) > $cur_time)) {
-	echo "<script type='text/javascript' id='_vtiger_activityreminder_callback_interval_'>".
-		($_SESSION['next_reminder_interval'] * 1000)."</script>";
+} elseif (isset($_SESSION['next_reminder_time']) && (($_SESSION['next_reminder_time'] - $_SESSION['next_reminder_interval']) > $cur_time)) {
+	echo "<script type='text/javascript' id='_vtiger_activityreminder_callback_interval_'>".($_SESSION['next_reminder_interval'] * 1000)."</script>";
 	return;
 }
 $log = LoggerManager::getLogger('Activity_Reminder');
@@ -32,23 +30,28 @@ if(isPermitted('Calendar','index') == 'yes'){
 	$active = $adb->pquery("select * from vtiger_users where id=?",array($current_user->id));
 	$active_res = $adb->query_result($active,0,'reminder_interval');
 	if($active_res == 'None') {
-		$_SESSION['next_reminder_time'] = 'None';
+		coreBOS_Session::set('next_reminder_time', 'None');
 	}
 	if($active_res!='None'){
+		$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',10,'Calendar');
+		$Calendar_PopupReminder_DaysPast = GlobalVariable::getVariable('Calendar_PopupReminder_DaysPast',7,'Calendar');
 		$interval=$adb->query_result($active,0,"reminder_interval");
 		$intervalInMinutes = ConvertToMinutes($interval);
 		// check for reminders every minute
 		$time = time();
-		$_SESSION['next_reminder_time'] = $time + ($intervalInMinutes * 60);
+		coreBOS_Session::set('next_reminder_time', $time + ($intervalInMinutes * 60));
 		$date = date('Y-m-d', strtotime("+$intervalInMinutes minutes", $time));
-		$time = date('H:i',   strtotime("+$intervalInMinutes minutes", $time));
+		$date_inpast = date('Y-m-d', strtotime('-'.$Calendar_PopupReminder_DaysPast.' day', $time));
+		$time = date('H:i', strtotime("+$intervalInMinutes minutes", $time));
 		$callback_query =
-		"SELECT * FROM vtiger_activity_reminder_popup inner join vtiger_crmentity where " .
-		" vtiger_activity_reminder_popup.status = 0 and " .
-		" vtiger_activity_reminder_popup.recordid = vtiger_crmentity.crmid " .
-		" and vtiger_crmentity.smownerid = ".$current_user->id." and vtiger_crmentity.deleted = 0 " .
-		" and ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') <= '" . $date . "')" .
-		" AND (TIME_FORMAT(vtiger_activity_reminder_popup.time_start,'%H:%i') <= '" . $time . "'))";
+		"SELECT *" .
+		" FROM vtiger_activity_reminder_popup" .
+		" inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_activity_reminder_popup.recordid " .
+		" WHERE vtiger_activity_reminder_popup.status = 0 and vtiger_crmentity.smownerid = ".$current_user->id." and vtiger_crmentity.deleted = 0 " .
+		" and ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') < '" . $date . "' and DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') >= '" . $date_inpast . "')" .
+		" or ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') = '" . $date . "')" .
+		" AND (TIME_FORMAT(vtiger_activity_reminder_popup.time_start,'%H:%i') <= '" . $time . "')))
+		ORDER BY vtiger_activity_reminder_popup.date_start DESC limit 0, ".$list_max_entries_per_page;
 
 		$result = $adb->query($callback_query);
 
@@ -61,9 +64,8 @@ if(isPermitted('Calendar','index') == 'yes'){
 				if($cbmodule == 'Events') {$cbmodule = 'Calendar';}
 				$focus = CRMEntity::getInstance($cbmodule);
 
-				if($cbmodule == 'Calendar') {
+				if ($cbmodule == 'Calendar' || $cbmodule == 'cbCalendar') {
 					$focus->retrieve_entity_info($cbrecord,$cbmodule);
-
 					$cbsubject = $focus->column_fields['subject'];
 					$cbactivitytype   = $focus->column_fields['activitytype'];
 					$cbdate   = $focus->column_fields["date_start"];
@@ -75,31 +77,33 @@ if(isPermitted('Calendar','index') == 'yes'){
 					$cbactivitytype = getTranslatedString($cbmodule, $cbmodule);
 					$cbdate         = $adb->query_result($result, $index, 'date_start');
 					$cbtime         = $adb->query_result($result, $index, 'time_start');
-
 				}
-				if($cbtime != ''){
+				if ($cbtime != '') {
 					$date = new DateTimeField($cbdate.' '.$cbtime);
 					$cbtime = $date->getDisplayTime();
 					$cbdate = $date->getDisplayDate();
-					$cbtimeArr = getaddEventPopupTime($cbtime, '', 'am/pm');
+					if (empty($current_user->hour_format)) {
+						$format = '24';
+					} else {
+						$format = $current_user->hour_format;
+					}
+					$cbtimeArr = getaddEventPopupTime($cbtime, '', $format);
 					$cbtime = $cbtimeArr['starthour'].':'.$cbtimeArr['startmin'].''.$cbtimeArr['startfmt'];
 				}
 
-				if($cbactivitytype=='Task')
-					$cbstatus   = $focus->column_fields["taskstatus"];
-				else
-					$cbstatus   = $focus->column_fields["eventstatus"];
+				$cbstatus = $focus->column_fields["eventstatus"];
 
 				$cbstatus = getTranslatedString($cbstatus, $currentModule);
-				$actType = $adb->query_result($adb->pquery('select activitytype from vtiger_activity where activityid=?', array($cbrecord)),0,'activitytype');
+				$atrs = $adb->pquery('select activitytype from vtiger_activity where activityid=?', array($cbrecord));
+				$actType = $adb->query_result($atrs,0,'activitytype');
 				$smarty->assign("activityimage", $actType);
 				$cbactivitytype = getTranslatedString($cbactivitytype, $currentModule);
 
 				// Appending recordid we can get unique callback dom id for that record.
 				$popupid = "ActivityReminder_$cbrecord";
-				if($cbdate <= date('Y-m-d')){
-					if($cbdate == date('Y-m-d') && $cbtime > date('H:i')) $cbcolor = '';
-					else $cbcolor= '#FF1515';
+				$cbcolor = '';
+				if ($cbdate <= date('Y-m-d') and !($cbdate == date('Y-m-d') && $cbtime > date('H:i'))) {
+					$cbcolor= '#FF1515';
 				}
 				$smarty->assign("THEME", $theme);
 				$smarty->assign("popupid", $popupid);
@@ -112,7 +116,6 @@ if(isPermitted('Calendar','index') == 'yes'){
 				$smarty->assign("cbrecord", $cbrecord);
 				$smarty->assign("cbstatus", $cbstatus);
 				$smarty->assign("cbcolor", $cbcolor);
-				$smarty->assign("cblinkdtl", $cblinkdtl);
 				$smarty->assign("activitytype", $cbactivitytype);
 				$smarty->display("ActivityReminderCallback.tpl");
 
@@ -135,10 +138,9 @@ if(isPermitted('Calendar','index') == 'yes'){
 			foreach ($it as $row) {
 				$nextReminderTime = strtotime($row->date_start.' '.$row->time_start);
 			}
-			$_SESSION['next_reminder_time'] = $nextReminderTime - ($intervalInMinutes * 60);
+			coreBOS_Session::set('next_reminder_time', $nextReminderTime - ($intervalInMinutes * 60));
 		}
-		echo "<script type='text/javascript' id='_vtiger_activityreminder_callback_interval_'>".
-				($_SESSION['next_reminder_interval'] * 1000)."</script>";
+		echo "<script type='text/javascript' id='_vtiger_activityreminder_callback_interval_'>".($_SESSION['next_reminder_interval'] * 1000)."</script>";
 	}
 }
 

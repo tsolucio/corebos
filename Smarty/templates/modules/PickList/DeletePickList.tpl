@@ -6,7 +6,6 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 <div style="position:relative;display: block;" class="layerPopup">
@@ -45,9 +44,9 @@
 			<td valign=top align=left>
 				<input type="button" value="{$APP.LBL_DELETE_BUTTON_LABEL}" name="del" class="crmButton small delete" onclick="validateDelete('{$FIELDNAME}','{$MODULE}');">
 				<input type="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" name="cancel" class="crmButton small cancel" onclick="fnhide('actiondiv');">
-			</td>			
+			</td>
 		</tr>
-	
+
 		{if is_array($NONEDITPICKLIST)}
 		<tr>
 			<td colspan=3>
@@ -56,12 +55,12 @@
 					<tr><td>
 					<select id="nonEditablePicklistVal" name="nonEditablePicklistVal" multiple="multiple" wrap size="5" style="width: 100%">
 					{foreach item=nonedit from=$NONEDITPICKLIST}
-						<option value="{$nonedit}" disabled>{$nonedit}</option>							
+						<option value="{$nonedit}" disabled>{$nonedit}</option>
 					{/foreach}
 					</select>
 				</table>
 			</td>
-		</tr>	
+		</tr>
 		{/if}
 	</table>
 </div>

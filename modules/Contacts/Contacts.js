@@ -6,9 +6,20 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-document.write("<script type='text/javascript' src='include/js/Mail.js'></"+"script>");
-document.write("<script type='text/javascript' src='include/js/Merge.js'></"+"script>");
-document.write('<div id="setaddresscontactdiv" style="z-index:12;display:none;width:400px;top:30px;left:0;right:0;margin:auto;" class="layerPopup"></div>');
+
+document.addEventListener('DOMContentLoaded', function() {
+	var accdiv = document.createElement("div");
+	accdiv.style.zIndex = "12";
+	accdiv.style.display = "none";
+	accdiv.style.width = "400px";
+	accdiv.style.top = "30px";
+	accdiv.style.left = "0";
+	accdiv.style.right = "0";
+	accdiv.style.margin = "auto";
+	accdiv.id = "setaddresscontactdiv";
+	accdiv.className = "layerPopup";
+	document.body.prepend(accdiv);
+}, false);
 
 function copyAddressRight(form) {
 	if(typeof(form.otherstreet) != 'undefined' && typeof(form.mailingstreet) != 'undefined')
@@ -318,4 +329,104 @@ function setReturnAddressShip() {
 		if (typeof (window.opener.document.EditView.pais) != 'undefined')
 			window.opener.document.EditView.pais.value = country;
 	}
+}
+
+function googleSynch(module,oButton) {
+	fnvshobj(oButton,'GoogleContacts');
+}
+
+function googleContactsSynch(module,oButton,type) {
+	var url="index.php?module="+module+"&action="+module+"Ajax&file=List&operation=sync&sourcemodule=Contacts";
+	var opts = "menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=yes";
+        
+        if(type==='signin'){
+            fninvsh('GoogleContacts');
+            openPopUp('GoogleContacts',oButton,url,'createemailWin',830,662,opts);
+        }
+        else{
+            document.getElementById('synchronize').disabled=true;
+            document.getElementById('synchronizespan').innerHTML='Synchronizing...';
+            document.getElementById('syncimage').style.display='block';
+            jQuery.ajax({
+                    method: 'POST',
+                    url: url
+            }).done(function (response) {
+                    fninvsh('GoogleContacts');
+                    document.getElementById('GoogleContactsSettings').innerHTML=response;
+                    fnvshobj(oButton,'GoogleContactsSettings');
+                    document.getElementById('synchronize').disabled=false;
+                    document.getElementById('synchronizespan').innerHTML='Sync';
+                    document.getElementById('syncimage').style.display='none';
+            });
+        }
+}
+
+function googleContactsSettings(module,oButton) {
+        fninvsh('GoogleContacts');
+        var url="index.php?module="+module+"&action="+module+"Ajax&file=GSyncSettings&operation=getconfiggsyncsettings&sourcemodule=Contacts";
+        jQuery.ajax({
+                method: 'POST',
+                url: url
+        }).done(function (response) {
+                document.getElementById('GoogleContactsSettings').innerHTML=response;
+                fnvshobj(oButton,'GoogleContactsSettings');
+        });
+}
+
+function saveSettings(){
+    return doSaveSettings();
+}
+
+function doSaveSettings(){
+    var container = jQuery('.googleSettings');
+    var form = container.find('form[name="contactsyncsettings"]');
+    var fieldMapping = packFieldmappingsForSubmit(container);
+    form.find('#user_field_mapping').val(fieldMapping);
+//    var serializedFormData = JSON.stringify(form);
+//    var form = document.forms['contactsyncsettings'];
+//    form.submit();
+//    jQuery.ajax({
+//            type : 'post',
+//            data :  serializedFormData,
+//            url : "index.php?module=Contacts&action=ContactsAjax&file=GSaveSyncSettings"
+//    }).done(function(msg) { 
+//        alert('sdfsfdsf');
+//    });
+    return true;
+}
+
+function packFieldmappingsForSubmit(container) {
+    var rows = container.find('div#googlesyncfieldmapping').find('table > tbody > tr');
+    var mapping = {};
+    jQuery.each(rows,function(index,row) {
+        var tr = jQuery(row);
+        var vtiger_field_name = tr.find('.vtiger_field_name').not('.select2-container').val();
+        var google_field_name = tr.find('.google_field_name').val();
+        var googleTypeElement = tr.find('.google-type').not('.select2-container');
+        var google_field_type = '';
+        var google_custom_label = '';
+        if(googleTypeElement.length) {
+            google_field_type = googleTypeElement.val();
+            var customLabelElement = tr.find('.google-custom-label');
+            if(google_field_type == 'custom' && customLabelElement.length) {
+                google_custom_label = customLabelElement.val();
+            }
+        }
+        var map = {};
+        map['vtiger_field_name'] = vtiger_field_name;
+        map['google_field_name'] = google_field_name;
+        map['google_field_type'] = google_field_type;
+        map['google_custom_label'] = google_custom_label;
+        mapping[index] = map;
+    });
+    return JSON.stringify(mapping);
+}
+
+function googleContactsLogOut(module){
+    jQuery.ajax({
+            type : 'post',
+            url : "index.php?module="+module+"&action="+module+"Ajax&file=List&operation=removeSync&sourcemodule=Contacts"
+    }).done(function(msg) { 
+        window.location.reload();
+    });
 }

@@ -61,7 +61,9 @@ class addNumberDecimalPlaces extends cbupdaterWorker {
 					$decimalsToChange = CurrencyField::$maxNumberOfDecimals - $tableAndColumnSize[$tableName][$columnName]['scale'];
 					if($decimalsToChange != 0) {
 						$maxlength = $tableAndColumnSize[$tableName][$columnName]['max_length'] + $decimalsToChange;
+						if ($maxlength>65) $maxlength = 65;
 						$decimalDigits = $tableAndColumnSize[$tableName][$columnName]['scale'] + $decimalsToChange;
+						if ($decimalDigits>10) $decimalDigits = 10;
 						$this->ExecuteQuery("ALTER TABLE " .$tableName." MODIFY COLUMN ".$columnName." decimal(?,?)", array($maxlength, $decimalDigits));
 					}
 				}

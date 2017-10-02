@@ -173,7 +173,7 @@ for($i = 0; $i < $company_name_count; $i++) {
 
 	$opp->column_fields["assigned_user_id"] = $assigned_user_id;
 	$opp->column_fields["potentialname"] = $account_name." - 1000 units";
-	$opp->column_fields["closingdate"] = & create_date();
+	$opp->column_fields["closingdate"] = create_date();
 
 	$key = array_rand($comboFieldArray['leadsource_dom']);
 	$opp->column_fields["leadsource"] = $comboFieldArray['leadsource_dom'][$key];
@@ -194,7 +194,6 @@ for($i = 0; $i < $company_name_count; $i++) {
 
 	$opportunity_ids[] = $opp->id;
 }
-
 
 for($i=0; $i<10; $i++)
 {
@@ -396,8 +395,8 @@ for($i=0; $i<10; $i++) {
 	$contact_key = array_rand($contact_ids);
     $product->column_fields["contact_id"] 	= 	$contact_ids[$contact_key];
 
-    $product->column_fields["start_date"] 	= 	& create_date();
-    $product->column_fields["sales_start_date"] 	= & create_date();
+    $product->column_fields["start_date"] = create_date();
+    $product->column_fields["sales_start_date"] = create_date();
 
     $product->column_fields["unit_price"] 	= 	$unit_price;
     $product->column_fields["commissionrate"] = 	$commission_rate;

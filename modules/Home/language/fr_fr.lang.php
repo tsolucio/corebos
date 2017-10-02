@@ -48,8 +48,7 @@ $mod_strings = array (
 	'LBL_HOME_STUFFTITLE' => 'Nom du bloc',
 	'LBL_HOME_SHOW' => 'Montrer',
 	'LBL_HOME_FILTERBY' => 'Filtrer par',
-	'LBL_HOME_Fields' => 'Champs à afficher<br>
-	(selectionnez-en deux)',
+	'LBL_HOME_Fields' => 'Champs à afficher',
 	'LBL_HOME_PRESSCTRL' => '(Appuyez sur "Ctrl"
 	pour en sélectionner plusieurs)',
 	'LBL_HOME_RSSURL' => 'RSS URL',
@@ -58,6 +57,10 @@ $mod_strings = array (
 	'LBL_HOME_HORIZONTAL_BARCHART' => 'Graphique avec barre horizontale',
 	'LBL_HOME_VERTICAL_BARCHART' => 'Graphique avec barre verticale',
 	'LBL_HOME_PIE_CHART' => 'Graphique en camembert',
+	'LBL_HOME_HORIZONTAL' => 'Horizontale',
+	'LBL_HOME_VERTICAL' => 'Verticale',
+	'LBL_HOME_PIE' => 'Camembert',
+	'Layout Saved' => 'Layout Saved',
 	'LBL_HOME_ITEMS' => 'objet(s)',
 	'LBL_MORE'=>'Plus',
 	'LBL_SCROLL'=>'Défiler',
@@ -100,7 +103,9 @@ $mod_strings = array (
 	//added for Default Widgets
 	'LBL_DEFAULT_WIDGET'=>'Widgets par défaut',
 	'LBL_NO_WIDGETS_HIDDEN'=>'Aucun widget par défaut masqué',
-	'UpdateExchangeRate' => 'Update Exchange Rate',
-	'LBL_HOME_ADDWINDOW' => 'Add Window',
+	'UpdateExchangeRate' => 'Mettre à jour taux de change',
+	'LBL_HOME_ADDWINDOW' => 'Ajouter Fenêtre',
+	'LBL_GETTING_STARTED' => 'Démarrage...',
+	'ExpirePasswordAfterDays' => 'Expire Password After Days',
 );
 ?>

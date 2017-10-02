@@ -23,6 +23,7 @@ $mod_strings = array(
 	'LBL_TOOLS' => 'Tools',
 	'LBL_MANAGE_SITES' => 'Manage sites',
 	'LBL_MY_SITES' => 'Sites',
-	'LBL_SET_DEFAULT_BUTTON' => 'Set as default'
+	'LBL_SET_DEFAULT_BUTTON' => 'Set as default',
+	'ERR_NOT_PERMITTED_LOAD' => 'The website you have indicated has blocked loading inside another webpage so it has been opened in another tab.',
 );
 ?>

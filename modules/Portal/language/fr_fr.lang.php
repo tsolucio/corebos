@@ -9,11 +9,11 @@
 
 $mod_strings = array (
 	'LBL_BOOKMARKED_URL' => 'Adresse',
-	'LBL_MANAGE_BOOKMARKS' => 'Gestion des marques pages',
+	'LBL_MANAGE_BOOKMARKS' => 'Gestion des favoris',
 	'LBL_BOOKMARK_LIST' => 'Liste',
-	'LBL_MY_BOOKMARKS' => 'Mes marques pages',
-	'LBL_NEW_BOOKMARK' => 'Nouveau marque page',
-	'LBL_BOOKMARK' => 'Marque page',
+	'LBL_MY_BOOKMARKS' => 'Mes favoris',
+	'LBL_NEW_BOOKMARK' => 'Nouveau favori',
+	'LBL_BOOKMARK' => 'Favori',
 	'LBL_NAME' => 'Nom :',
 	'LBL_URL' => 'Lien :',
 	'LBL_ADD' => 'Ajouter',

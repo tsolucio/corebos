@@ -28,11 +28,21 @@ $smarty = new vtigerCRM_Smarty();
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
-// TODO: Update Single Module Instance name here.
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
-$smarty->assign('CATEGORY', $category);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('THEME', $theme);
+$tool_buttons = array(
+	'EditView' => 'no',
+	'CreateView' => 'no',
+	'index' => 'yes',
+	'Import' => 'no',
+	'Export' => 'no',
+	'Merge' => 'no',
+	'DuplicatesHandling' => 'no',
+	'Calendar' => 'no',
+	'moduleSettings' => 'no',
+);
+$smarty->assign('CHECK', $tool_buttons);
 
 if (empty($_REQUEST['record'])) {
 	$smarty->assign('ERROR_MESSAGE', 'Missing Map ID (record)');
@@ -45,15 +55,6 @@ $focus = new cbMap();
 $focus->id = $mapid;
 $focus->mode = '';
 $focus->retrieve_entity_info($mapid, $currentModule);
-
-$contentok = processcbMap::isXML(htmlspecialchars_decode($focus->column_fields['content']));
-
-if ($contentok !== true) {
-	$smarty->assign('ERROR_MESSAGE', '<b>Incorrect Content</b><br>'.$contentok);
-	$smarty->display('modules/cbMap/testMap.tpl');
-	die();
-}
-
 $smarty->assign('ID', $focus->id);
 $smarty->assign('MODE', $focus->mode);
 
@@ -62,7 +63,18 @@ $recordName = $recordName[0];
 $smarty->assign('NAME', $recordName);
 $smarty->assign('UPDATEINFO',updateInfo($focus->id));
 $smarty->assign('MAPTYPE', $focus->column_fields['maptype']);
+
 $mapinfo = array();
+
+$contentok = processcbMap::isXML(html_entity_decode($focus->column_fields['content'],ENT_QUOTES,'UTF-8'));
+
+if ($contentok !== true) {
+	$smarty->assign('MAPINFO', $mapinfo);
+	$smarty->assign('ERROR_MESSAGE', '<b>Incorrect Content</b><br>'.$contentok);
+	$smarty->display('modules/cbMap/testMap.tpl');
+	die();
+}
+
 switch ($focus->column_fields['maptype']) {
 	case 'Condition Query':
 		$mapinfo = $focus->ConditionQuery(74);
@@ -124,16 +136,30 @@ switch ($focus->column_fields['maptype']) {
 		$mapinfo['OriginModule'] = $focus->getMapOriginModule();
 		break;
 	case 'IOMap':
-	        $mapinfo['InputFields'] = $focus->IOMap()->readInputFields();
-               $mapinfo['OutputFields'] = $focus->IOMap()->readOutputFields();
+		$mapinfo['InputFields'] = $focus->IOMap()->readInputFields();
+		$mapinfo['OutputFields'] = $focus->IOMap()->readOutputFields();
 		break;
 	case 'Search and Update':
 		$mapinfo = $focus->read_map();
+		break;
+	case 'FieldInfo':
+		$mapinfo = $focus->FieldInfo();
+		break;
+	case 'GlobalSearchAutocomplete':
+		$mapinfo = $focus->GlobalSearchAutocomplete();
 		break;
 	case 'FieldDependency':
 		$mapinfo = $focus->FieldDependency()->getCompleteMapping();
 		$mapinfo['TargetModule'] = $focus->FieldDependency()->getMapTargetModule();
 		$mapinfo['OriginModule'] = $focus->FieldDependency()->getMapOriginModule();
+		break;
+	case 'Validations':
+		$mapinfo = $focus->Validations(array(
+			'accountname' => 'Chemex',
+			'industry' => 'Banking',
+			'email1' => 'sdsdsd',
+		),
+		74);
 		break;
 	default:
 

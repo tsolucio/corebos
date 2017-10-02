@@ -9,14 +9,11 @@
 * Contributor: Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
 
-
 $mod_strings = array(
-
 'LBL_VENDOR_INFORMATION'=>'Informação Fornecedor:',
 'LBL_CUSTOM_INFORMATION'=>'Informação Customizada',
 'LBL_VENDOR_ADDRESS_INFORMATION'=>'Informação Endereço:',
 'LBL_DESCRIPTION_INFORMATION'=>'Descrição:',
-
 
 'Vendor Name'=>'Nome Fornecedor',
 'Name'=>'Nome',
@@ -47,29 +44,7 @@ $mod_strings = array(
 '307-Service-Hardware Labor'=>'307-Serviço-Lab Hardware',
 '308-Sales-Books'=>'308-Vendas-Livros',
 
-// Added/Updated for vtiger CRM 5.0.4
-'Created Time'=>'Data Criação',
-'Modified Time'=>'Data Modificação',
-
-// Added after 5.0.4 GA
-
-//added for find duplicate
-'LBL_DUPLICATE_DATA_IN'=>'Duplicado ',
-'LBL_DELETE'=>'Apagar',
-'LBL_MERGE_SELECT'=>'Mesclar Seleção',
-'LBL_MERGE'=>'Mesclar',
-'LBL_MERGE_DATA_IN'=>'Mesclar Registros em',
-'LBL_ACTION'=>'Ação',
-'LBL_FIELDLISTS'=> 'Lista de Campos',
-'LBL_RECORD'=>'Registro #',
-
-// Module Sequence Numbering
 'Vendor No' => 'Cod. Fornecedor',
-// END
-
-/*
- * 5.2.0 changes 
- */
 'LBL_MODULE_NAME'=>'Fornecedores',
 'Vendors ID'=>'ID Fornecedores',
 );

@@ -19,12 +19,13 @@
 		</td>
 		<td align="center">{$RELATEDLISTDATA.navigation.1} </td>
 		<td align="right">
-			{$RELATEDLISTDATA.CUSTOM_BUTTON}
+			{if isset($RELATEDLISTDATA.CUSTOM_BUTTON)}{$RELATEDLISTDATA.CUSTOM_BUTTON}{/if}
 
 			{if $HEADER eq 'Contacts' && $MODULE neq 'Campaigns' && $MODULE neq 'Accounts' && $MODULE neq 'Potentials' && $MODULE neq 'Products' && $MODULE neq 'Vendors'}
 				{if $MODULE eq 'Calendar'}
 					<input alt="{$APP.LBL_SELECT_CONTACT_BUTTON_LABEL}" title="{$APP.LBL_SELECT_CONTACT_BUTTON_LABEL}" accessKey="" class="crmbutton small edit" value="{$APP.LBL_SELECT_BUTTON_LABEL} {$APP.Contacts}" onclick='return window.open("index.php?module=Contacts&return_module={$MODULE}&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid={$ID}{$search_string}","test","width=640,height=602,resizable=0,scrollbars=0");' type="button"  name="button"></td>
 				{elseif $MODULE neq 'Services'}
+					<input type='hidden' name='createmode' value='link' />
 					<input title="{$APP.LBL_ADD_NEW} {$APP.Contact}" accessyKey="F" class="crmbutton small create" onclick="this.form.action.value='EditView';this.form.module.value='Contacts'" type="submit" name="button" value="{$APP.LBL_ADD_NEW} {$APP.Contact}"></td>
 				{/if}
 			{elseif $HEADER eq 'Users' && $MODULE eq 'Calendar'}
@@ -55,9 +56,9 @@
 	</tr>
 	{/if}
 	{foreach key=_RECORD_ID item=_RECORD from=$RELATEDLISTDATA.entries}
-		<tr bgcolor=white class="rel_mod_data_row">
+		<tr bgcolor=white class="rel_mod_data_row" id="row_{$_RECORD_ID}">
 			{if $MODULE eq 'Campaigns' && ($RELATED_MODULE eq 'Contacts' || $RELATED_MODULE eq 'Leads' || $RELATED_MODULE eq 'Accounts')}
-			<td><input name="{$MODULE}_{$RELATED_MODULE}_selected_id" id="{$_RECORD_ID}" value="{$_RECORD_ID}" onclick="rel_check_object(this,'{$RELATED_MODULE}');" type="checkbox"  {$RELATEDLISTDATA.checked.$_RECORD_ID}></td>
+			<td><input name="{$MODULE}_{$RELATED_MODULE}_selected_id" id="{$_RECORD_ID}" value="{$_RECORD_ID}" onclick="rel_check_object(this,'{$RELATED_MODULE}');" type="checkbox" {if isset($RELATEDLISTDATA.checked)}{$RELATEDLISTDATA.checked.$_RECORD_ID}{/if}></td>
 			{/if}
 			{foreach key=index item=_RECORD_DATA from=$_RECORD}
 				{* vtlib customization: Trigger events on listview cell *}

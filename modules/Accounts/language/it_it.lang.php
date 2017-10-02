@@ -26,14 +26,6 @@ $mod_strings = array (
   'LBL_LIST_EMAIL_ADDRESS' => 'Indirizzo Email',
   'LBL_LIST_CONTACT_NAME' => 'Nome Contatto',
   'LBL_LIST_AMOUNT' => 'Opportunit&agrave; Totali',
-
-
-  'db_name' => 'LBL_LIST_ACCOUNT_NAME',
-  'db_website' => 'LBL_LIST_WEBSITE',
-  'db_billing_address_city' => 'LBL_LIST_CITY',
-
-
-
   'LBL_ACCOUNT' => 'Azienda:',
   'LBL_ACCOUNT_NAME' => 'Nome Azienda:',
   'LBL_PHONE' => 'Telefono:',

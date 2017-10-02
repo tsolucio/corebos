@@ -11,6 +11,6 @@
 </div>
 <div class="dataLabel" style="border-bottom: 1px dotted rgb(204, 204, 204); width: 99%; padding-bottom: 5px;" valign="top">
 	<font color="darkred">
-		{$MOD.LBL_AUTHOR}: {$COMMENTMODEL->author()} {$MOD.LBL_ON} {$COMMENTMODEL->timestamp()}
+		{$MOD.LBL_AUTHOR}: {$COMMENTMODEL->author()} {$MOD.LBL_ON_DATE} {$COMMENTMODEL->timestamp()}
 	</font>
 </div>

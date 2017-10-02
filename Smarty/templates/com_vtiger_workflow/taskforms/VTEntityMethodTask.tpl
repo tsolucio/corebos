@@ -11,33 +11,33 @@
 
 <script type="text/javascript" charset="utf-8">
 var moduleName = '{$entityName}';
-var methodName = '{$task->methodName}';
+var methodName = '{if isset($task->methodName)}{$task->methodName}{/if}';
 {literal}
 	function entityMethodScript($){
-		
+
 		function jsonget(operation, params, callback){
 			var obj = {
-					module:'com_vtiger_workflow', 
-					action:'com_vtiger_workflowAjax',	
-					file:operation, ajax:'true'};
+				module:'com_vtiger_workflow',
+				action:'com_vtiger_workflowAjax',
+				file:operation, ajax:'true'
+			};
 			$.each(params,function(key, value){
 				obj[key] = value;
 			});
-			$.get('index.php', obj, 
+			$.get('index.php', obj,
 				function(result){
 					var parsed = JSON.parse(result);
 					callback(parsed);
 			});
 		}
-		
-		
+
 		$(document).ready(function(){
 			jsonget('entitymethodjson', {module_name:moduleName}, function(result){
 				$('#method_name_select_busyicon').hide();
 				if(result.length==0){
 					$('#method_name_select').hide();
 					$('#message_text').show();
-				}else{					
+				} else {
 					$('#method_name_select').show();
 					$('#message_text').hide();
 					$.each(result, function(i, v){

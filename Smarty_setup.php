@@ -20,18 +20,18 @@ class vtigerCRM_Smarty extends Smarty{
 		}
 		return self::$_tagcloud_display_cache[$userid];
 	}
-	/** END */
 
 	/** This function sets the smarty directory path for the member variables */
 	function __construct()
 	{
 		global $current_user, $currentModule;
 
-		$this->Smarty();
-		$this->template_dir = 'Smarty/templates';
-		$this->compile_dir = 'Smarty/templates_c';
-		$this->config_dir = 'Smarty/configs';
-		$this->cache_dir = 'Smarty/cache';
+		parent::__construct();
+		$this->setTemplateDir('Smarty/templates');
+		$this->setCompileDir('Smarty/templates_c');
+		$this->setConfigDir('Smarty/configs');
+		$this->setCacheDir('Smarty/cache');
+		$this->setPluginsDir('Smarty/libs/plugins');
 
 		//$this->caching = true;
 		$CALENDAR_DISPLAY = GlobalVariable::getVariable('Application_Display_Mini_Calendar',1,$currentModule);
@@ -44,15 +44,15 @@ class vtigerCRM_Smarty extends Smarty{
 		$this->assign('WORLD_CLOCK_DISPLAY', $WORLD_CLOCK_DISPLAY);
 		$this->assign('CALCULATOR_DISPLAY', $CALCULATOR_DISPLAY);
 		$this->assign('CURRENT_USER_ID',(isset($current_user) ? $current_user->id : 0));
-		$this->assign('PRELOAD_JSCALENDAR', GlobalVariable::getVariable('preload_jscalendar','true',$currentModule));
+		$this->assign('Application_JSCalendar_Load', GlobalVariable::getVariable('Application_JSCalendar_Load',1,$currentModule));
 
 		// Query For TagCloud only when required
 		if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'DetailView') {
 			//Added to provide User based Tagcloud
-			$this->assign('TAG_CLOUD_DISPLAY', self::lookupTagCloudView($current_user->id) );
+			$this->assign('TAG_CLOUD_DISPLAY', self::lookupTagCloudView((isset($current_user) ? $current_user->id : '')));
 		}
-		$this->load_filter('output', 'trimwhitespace');
-		$this->register_function('process_widget', 'smarty_function_process_widget');
+		$this->loadFilter('output', 'trimwhitespace');
+		$this->registerPlugin('function', 'process_widget', 'smarty_function_process_widget');
 	}
 }
 

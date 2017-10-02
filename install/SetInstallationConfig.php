@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-@include_once('config.db.php');
+@include_once('install/config.db.php');
 global $dbconfig, $coreBOS_app_version;
 $hostname = $_SERVER['SERVER_NAME'];
 $web_root = ($_SERVER["HTTP_HOST"]) ? $_SERVER["HTTP_HOST"]:$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'];

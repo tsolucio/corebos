@@ -107,7 +107,7 @@ function validate()
 						
 						<input type="button" class="crmButton cancel small" name="cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" onClick="window.history.back()">
 						</div></td>
-					  </tr>
+					</tr>
 					</table>
 					<table width="100%"  border="0" cellspacing="0" cellpadding="5">
                       <tr class="small">
@@ -119,10 +119,10 @@ function validate()
                         <td class="cellText">{$PARENTNAME}</td>
                       </tr>
                       <tr class="small">
-                        <td colspan="2" valign=top class="cellLabel"><strong>{$CMOD.LBL_PROFILE_M}</strong>						</td>
+                        <td colspan="2" valign=top class="cellLabel"><strong>{$CMOD.LBL_PROFILE_M}</strong></td>
                       </tr>
                       <tr class="small">
-                        <td colspan="2" valign=top class="cellText"> 
+                        <td colspan="2" valign=top class="cellText">
 						<br>
 						<table width="95%"  border="0" align="center" cellpadding="5" cellspacing="0">
                           <tr>
@@ -132,37 +132,33 @@ function validate()
                           </tr>
 
 			<tr class=small>
-	 	               <td valign=top>{$CMOD.LBL_PROFILES_M} {$CMOD.LBL_MEMBER} <br>
+				<td valign=top>{$CMOD.LBL_PROFILE_M} {$CMOD.LBL_MEMBER} <br>
 				<select multiple id="availList" name="availList" class="small crmFormList" size=10 >
-																				{foreach item=element from=$PROFILELISTS}
-																					<option value="{$element.0}">{$element.1}</option>
-																				{/foreach}
+				{foreach item=element from=$PROFILELISTS}
+					<option value="{$element.0}">{$element.1}</option>
+				{/foreach}
 				</select>
 				</td>
-                        	<td width="50"><div align="center">
-																				<input type="hidden" name="selectedColumnsString"/>
-																					<input name="Button" value="&nbsp;&rsaquo;&rsaquo;&nbsp;" type="button" class="crmButton small" style="width:100%" onClick="addColumn()">
-                                  <br>
-                                  <br>
-																					<input type="button" name="Button1" value="&nbsp;&lsaquo;&lsaquo;&nbsp;" class="crmButton small" onClick="delColumn()" style="width:100%">
-				  <br>
-				  <br>
-                            	</div></td>
-                            <td class="small" style="background-color:#ddFFdd" valign=top>{$CMOD.LBL_MEMBER} of &quot;{$ROLENAME}&quot; <br>
-                             <select multiple id="selectedColumns" name="selectedColumns" class="small crmFormList" size=10 >
-																			{foreach item=element from=$SELPROFILELISTS}
-																				<option value="{$element.0}">{$element.1}</option>
-																			{/foreach}
-                	    </select></td>
+				<td width="50"><div align="center">
+					<input type="hidden" name="selectedColumnsString"/>
+					<input name="Button" value="&nbsp;&rsaquo;&rsaquo;&nbsp;" type="button" class="crmButton small" style="width:100%" onClick="addColumn()">
+					<br>
+					<br>
+					<input type="button" name="Button1" value="&nbsp;&lsaquo;&lsaquo;&nbsp;" class="crmButton small" onClick="delColumn()" style="width:100%">
+					<br>
+					<br>
+				</div></td>
+				<td class="small" style="background-color:#ddFFdd" valign=top>{$CMOD.LBL_MEMBER} {'LBL_LIST_OF'|@getTranslatedString} &quot;{$ROLENAME}&quot; <br>
+						<select multiple id="selectedColumns" name="selectedColumns" class="small crmFormList" size=10 >
+							{foreach item=element from=$SELPROFILELISTS}
+								<option value="{$element.0}">{$element.1}</option>
+							{/foreach}
+						</select></td>
                        </tr>
-						  
                         </table>
-						
 						</td>
                       </tr>
-                        	 
                         </table>
-						
 						</td>
                       </tr>
                     </table>
@@ -170,17 +166,12 @@ function validate()
 					<table border=0 cellspacing=0 cellpadding=5 width=100% >
 					<tr><td class="small" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td></tr>
 					</table>
-					
-					
 				</td>
 				</tr>
 				<tr>
 				  <td valign=top>&nbsp;</td>
 				  </tr>
 				</table>
-			
-			
-			
 			</td>
 			</tr>
 			</table>
@@ -188,9 +179,7 @@ function validate()
 	</tr>
 	</form>
 	</table>
-		
 	</div>
-
 </td>
         <td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
    </tr>
@@ -199,38 +188,30 @@ function validate()
 
 <script type="text/JavaScript">
         var moveupLinkObj,moveupDisabledObj,movedownLinkObj,movedownDisabledObj;
-        function setObjects() 
-        {ldelim}
+        function setObjects() {ldelim}
             availListObj=getObj("availList")
             selectedColumnsObj=getObj("selectedColumns")
 
         {rdelim}
 
-        function addColumn() 
-        {ldelim}
-            for (i=0;i<selectedColumnsObj.length;i++) 
-            {ldelim}
+        function addColumn() {ldelim}
+            for (i=0;i<selectedColumnsObj.length;i++) {ldelim}
                 selectedColumnsObj.options[i].selected=false
             {rdelim}
 
-            for (i=0;i<availListObj.length;i++) 
-            {ldelim}
-                if (availListObj.options[i].selected==true) 
-                {ldelim}            	
+            for (i=0;i<availListObj.length;i++) {ldelim}
+                if (availListObj.options[i].selected==true) {ldelim}
                 	var rowFound=false;
                 	var existingObj=null;
-                    for (j=0;j<selectedColumnsObj.length;j++) 
-                    {ldelim}
-                        if (selectedColumnsObj.options[j].value==availListObj.options[i].value) 
-                        {ldelim}
+                    for (j=0;j<selectedColumnsObj.length;j++) {ldelim}
+                        if (selectedColumnsObj.options[j].value==availListObj.options[i].value) {ldelim}
                             rowFound=true
                             existingObj=selectedColumnsObj.options[j]
                             break
                         {rdelim}
                     {rdelim}
 
-                    if (rowFound!=true) 
-                    {ldelim}
+                    if (rowFound!=true) {ldelim}
                         var newColObj=document.createElement("OPTION")
                         newColObj.value=availListObj.options[i].value
                         if (browser_ie) newColObj.innerText=availListObj.options[i].innerText
@@ -239,8 +220,8 @@ function validate()
                         availListObj.options[i].selected=false
                         newColObj.selected=true
                         rowFound=false
-                    {rdelim} 
-                    else 
+                    {rdelim}
+                    else
                     {ldelim}
                         if(existingObj != null) existingObj.selected=true
                     {rdelim}
@@ -248,10 +229,8 @@ function validate()
             {rdelim}
         {rdelim}
 
-        function delColumn() 
-        {ldelim}
-            for (i=selectedColumnsObj.options.length;i>0;i--) 
-            {ldelim}
+        function delColumn() {ldelim}
+            for (i=selectedColumnsObj.options.length;i>0;i--) {ldelim}
                 if (selectedColumnsObj.options.selectedIndex>=0)
                 selectedColumnsObj.remove(selectedColumnsObj.options.selectedIndex)
             {rdelim}
@@ -260,8 +239,7 @@ function validate()
         function formSelectColumnString()
         {ldelim}
             var selectedColStr = "";
-            for (i=0;i<selectedColumnsObj.options.length;i++) 
-            {ldelim}
+            for (i=0;i<selectedColumnsObj.options.length;i++) {ldelim}
                 selectedColStr += selectedColumnsObj.options[i].value + ";";
             {rdelim}
             document.newRoleForm.selectedColumnsString.value = selectedColStr;

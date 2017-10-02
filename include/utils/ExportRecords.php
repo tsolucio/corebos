@@ -23,6 +23,19 @@ $idstring = getSelectedRecords($_REQUEST,$currentModule,(isset($_REQUEST['idstri
 $idstring = join(';',$idstring);
 
 $smarty->assign("SESSION_WHERE",(isset($_SESSION['export_where']) ? $_SESSION['export_where'] : ''));
+$tool_buttons = array(
+'EditView' => 'no',
+'CreateView' => 'no',
+'index' => 'yes',
+'Import' => 'no',
+'Export' => 'no',
+'Merge' => 'no',
+'DuplicatesHandling' => 'no',
+'Calendar' => 'no',
+'moduleSettings' => 'no',
+);
+$smarty->assign('CHECK', $tool_buttons);
+$smarty->assign('CUSTOM_MODULE', false);
 
 $smarty->assign('APP',$app_strings);
 $smarty->assign('MOD',$mod_strings);

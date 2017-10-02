@@ -8,9 +8,9 @@
  * All Rights Reserved.
  * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
-include_once dirname(__FILE__) . '/../api/ws/FetchRecordDetails.php';
-include_once dirname(__FILE__) . '/../api/ws/Utils.php';
-include_once dirname(__FILE__) . '/../api/ws/Describe.php';
+include_once __DIR__ . '/../api/ws/FetchRecordDetails.php';
+include_once __DIR__ . '/../api/ws/Utils.php';
+include_once __DIR__ . '/../api/ws/Describe.php';
 
 class crmtogo_UI_EditView extends crmtogo_WS_FetchRecordDetails {
 
@@ -76,7 +76,7 @@ class crmtogo_UI_EditView extends crmtogo_WS_FetchRecordDetails {
 
 			// change variance for split record id
 			$recordIdComponents = explode('x', $wsResponseResult['record']['id']);
-			//this is a temporary fix for invitees for events, must get modified later			
+			//this is a temporary fix for invitees for events, must get modified later
 			$invited_users=Array();
 			if ($currentModule == 'Events') {
 				global $adb;
@@ -96,7 +96,7 @@ class crmtogo_UI_EditView extends crmtogo_WS_FetchRecordDetails {
 			$viewer->assign('_MODULE', $moduleObj);
 			$viewer->assign('CURRENTMODUL', $currentModule);
 			$viewer->assign('_RECORD', $record);
-            $viewer->assign('id', $wsResponseResult['record']['id']);
+			$viewer->assign('id', $wsResponseResult['record']['id']);
 			$viewer->assign('mode', $request->getOperation());
 			$viewer->assign('crmtogorecordid', $wsResponseResult['record']['id']);
 			$viewer->assign('DATEFORMAT',  $current_user->date_format);

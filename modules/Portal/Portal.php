@@ -6,15 +6,13 @@
 * The Initial Developer of the Original Code is vtiger.
 * Portions created by vtiger are Copyright (C) vtiger.
 * All Rights Reserved.
-*
 ********************************************************************************/
 
-
-/** Function to save the portal in database 
+/** Function to save the portal in database
  *  @param $portalname : Type String
  *  @param $portalurl : Type String
  *  This function saves the portal with the given $portalname,$portalurl
- *  This Returns $portalid 
+ *  This Returns $portalid
  */
 function SavePortal($portalname,$portalurl)
 {
@@ -27,12 +25,12 @@ function SavePortal($portalname,$portalurl)
 	$result=$adb->pquery($query,$params);
 	return $portalid;
 }
-/** Function to update the portal in database 
+/** Function to update the portal in database
  *  @param $portalname : Type String
  *  @param $portalurl : Type String
- *  @param $portalid : Type Integer 
+ *  @param $portalid : Type Integer
  *  This function updates the portal with the given $portalname,$portalurl
- *  This Returns $portalid 
+ *  This Returns $portalid
  */
 function UpdatePortal($portalname,$portalurl,$portalid)
 {

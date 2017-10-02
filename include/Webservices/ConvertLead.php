@@ -39,8 +39,7 @@ function vtws_convertlead($entityvalues, $user) {
 	$leadIdComponents = vtws_getIdComponents($entityvalues['leadId']);
 	$result = $adb->pquery($sql, array($leadIdComponents[1]));
 	if ($result === false) {
-		throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR,
-				vtws_getWebserviceTranslatedString('LBL_' . WebServiceErrorCode::$DATABASEQUERYERROR));
+		throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, vtws_getWebserviceTranslatedString('LBL_' . WebServiceErrorCode::$DATABASEQUERYERROR));
 	}
 	$rowCount = $adb->num_rows($result);
 	if ($rowCount > 0) {
@@ -51,12 +50,12 @@ function vtws_convertlead($entityvalues, $user) {
 
 	$availableModules = array('Accounts', 'Contacts', 'Potentials');
 
-	if (!(($entityvalues['entities']['Accounts']['create']) || ($entityvalues['entities']['Contacts']['create']))) {
+	if (!(isset($entityvalues['entities']['Accounts']['create']) || isset($entityvalues['entities']['Contacts']['create']))) {
 		return null;
 	}
 
 	foreach ($availableModules as $entityName) {
-		if ($entityvalues['entities'][$entityName]['create']) {
+		if (isset($entityvalues['entities'][$entityName]['create'])) {
 			$entityvalue = $entityvalues['entities'][$entityName];
 			$entityObject = VtigerWebserviceObject::fromName($adb, $entityvalue['name']);
 			$handlerPath = $entityObject->getHandlerPath();
@@ -108,20 +107,25 @@ function vtws_convertlead($entityvalues, $user) {
 
 
 	try {
-		$accountIdComponents = vtws_getIdComponents($entityIds['Accounts']);
-		$accountId = $accountIdComponents[1];
-
-		$contactIdComponents = vtws_getIdComponents($entityIds['Contacts']);
-		$contactId = $contactIdComponents[1];
-
+		if (isset($entityIds['Accounts'])) {
+			$accountIdComponents = vtws_getIdComponents($entityIds['Accounts']);
+			$accountId = $accountIdComponents[1];
+		} else {
+			$accountId = 0;
+		}
+		if (isset($entityIds['Contacts'])) {
+			$contactIdComponents = vtws_getIdComponents($entityIds['Contacts']);
+			$contactId = $contactIdComponents[1];
+		} else {
+			$contactId = 0;
+		}
 		if (!empty($accountId) && !empty($contactId) && !empty($entityIds['Potentials'])) {
 			$potentialIdComponents = vtws_getIdComponents($entityIds['Potentials']);
 			$potentialId = $potentialIdComponents[1];
 			$sql = "insert into vtiger_contpotentialrel values(?,?)";
 			$result = $adb->pquery($sql, array($contactId, $potentialIdComponents[1]));
 			if ($result === false) {
-				throw new WebServiceException(WebServiceErrorCode::$FAILED_TO_CREATE_RELATION,
-						"Failed to related Contact with the Potential");
+				throw new WebServiceException(WebServiceErrorCode::$FAILED_TO_CREATE_RELATION, 'Failed to related Contact with the Potential');
 			}
 		}
 
@@ -241,7 +245,7 @@ function vtws_convertLeadTransferHandler($leadIdComponents, $entityIds, $entityv
 function vtws_updateConvertLeadStatus($entityIds, $leadId, $user) {
 	global $adb, $log;
 	$leadIdComponents = vtws_getIdComponents($leadId);
-	if ($entityIds['Accounts'] != '' || $entityIds['Contacts'] != '') {
+	if (!empty($entityIds['Accounts']) || !empty($entityIds['Contacts'])) {
 		$sql = "UPDATE vtiger_leaddetails SET converted = 1 where leadid=?";
 		$result = $adb->pquery($sql, array($leadIdComponents[1]));
 		if ($result === false) {
@@ -290,7 +294,7 @@ function vtws_createEntities($entityIds, $leadId) {
 			if(in_array($module,$excludedModules)) continue;
 			$entityRecord = vtws_createEntity($entityIds,$originModules,$module);
 			if ($entityRecord['id']) {
-				array_push($originModules, $module);
+				$originModules[] = $module;
 				$entityIds[$module] = $entityRecord['id'];
 			}
 		}

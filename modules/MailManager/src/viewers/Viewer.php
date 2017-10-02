@@ -18,7 +18,6 @@ class MailManager_Viewer extends vtigerCRM_Smarty {
 		$this->assign('APP', $app_strings);
 		$this->assign('MOD', $mod_strings);
 		$this->assign('MODULE', $currentModule);
-		// TODO: Update Single Module Instance name here.
 		$this->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 		$this->assign('CATEGORY', getParentTab());
 		$this->assign('IMAGE_PATH', "themes/$theme/images/");

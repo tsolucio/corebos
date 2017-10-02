@@ -26,7 +26,7 @@ class gvServiceOrProduct extends cbupdaterWorker {
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');
 			$field = Vtiger_Field::getInstance('gvname',$moduleInstance);
 			if ($field) {
-				$field->setPicklistValues(array('product_service_default'));
+				$field->setPicklistValues(array('Inventory_ProductService_Default'));
 			}
 			
 			$this->sendMsg('Changeset '.get_class($this).' applied!');

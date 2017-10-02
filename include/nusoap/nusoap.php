@@ -38,7 +38,7 @@ http://www.nusphere.com
 */
 
 global $soap_log;
-$soap_log =& LoggerManager::getLogger('SOAP');
+$soap_log = LoggerManager::getLogger('SOAP');
 /**
 *
 * nusoap_base

@@ -1,14 +1,10 @@
 <?php
 /*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+** The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
 require_once('config.php');
@@ -52,7 +48,6 @@ if(isset($_SESSION['authenticated_user_id']))
 		header("Location: index.php?action=Login&module=Users");
 		exit;
 	}
-
 }
 
 $allow_exports = GlobalVariable::getVariable('Application_Allow_Exports','all');
@@ -115,6 +110,8 @@ function export($type){
 
 	if(isset($_SESSION['export_where']) && $_SESSION['export_where']!='' && $search_type == 'includesearch'){
 		$where =$_SESSION['export_where'];
+	} else {
+		$where = '';
 	}
 
 	$query = $focus->create_export_query($where);
@@ -134,55 +131,55 @@ function export($type){
 		$idstring = explode(";", vtlib_purify($_REQUEST['idstring']));
 		if($type == 'Accounts' && count($idstring) > 0) {
 			$query .= ' and vtiger_account.accountid in ('. generateQuestionMarks($idstring) .')';
-			array_push($params, $idstring);
+			$params[] = $idstring;
 		} elseif($type == 'Contacts' && count($idstring) > 0) {
 			$query .= ' and vtiger_contactdetails.contactid in ('. generateQuestionMarks($idstring) .')';
-			array_push($params, $idstring);
+			$params[] = $idstring;
 		} elseif($type == 'Potentials' && count($idstring) > 0) {
 			$query .= ' and vtiger_potential.potentialid in ('. generateQuestionMarks($idstring) .')';
-			array_push($params, $idstring);
+			$params[] = $idstring;
 		} elseif($type == 'Leads' && count($idstring) > 0) {
 			$query .= ' and vtiger_leaddetails.leadid in ('. generateQuestionMarks($idstring) .')';
-			array_push($params, $idstring);
+			$params[] = $idstring;
 		} elseif($type == 'Products' && count($idstring) > 0) {
 			$query .= ' and vtiger_products.productid in ('. generateQuestionMarks($idstring) .')';
-			array_push($params, $idstring);
+			$params[] = $idstring;
 		} elseif($type == 'Documents' && count($idstring) > 0) {
 			$query .= ' and vtiger_notes.notesid in ('. generateQuestionMarks($idstring) .')';
-			array_push($params, $idstring);
+			$params[] = $idstring;
 		} elseif($type == 'HelpDesk' && count($idstring) > 0) {
 			$query .= ' and vtiger_troubletickets.ticketid in ('. generateQuestionMarks($idstring) .')';
-			array_push($params, $idstring);
+			$params[] = $idstring;
 		} elseif($type == 'Vendors' && count($idstring) > 0) {
 			$query .= ' and vtiger_vendor.vendorid in ('. generateQuestionMarks($idstring) .')';
-			array_push($params, $idstring);
+			$params[] = $idstring;
 		} elseif($type == 'Invoice' && count($idstring) > 0) {
 			$query .= ' and vtiger_invoice.invoiceid in ('. generateQuestionMarks($idstring) .')';
-			array_push($params, $idstring);
+			$params[] = $idstring;
 		} elseif($type == 'Quotes' && count($idstring) > 0) {
 			$query .= ' and vtiger_quotes.quoteid in ('. generateQuestionMarks($idstring) .')';
-			array_push($params, $idstring);
+			$params[] = $idstring;
 		} elseif($type == 'SalesOrder' && count($idstring) > 0) {
 			$query .= ' and vtiger_salesorder.salesorderid in ('. generateQuestionMarks($idstring) .')';
-			array_push($params, $idstring);
+			$params[] = $idstring;
 		} elseif($type == 'PurchaseOrder' && count($idstring) > 0) {
 			$query .= ' and vtiger_purchaseorder.purchaseorderid in ('. generateQuestionMarks($idstring) .')';
-			array_push($params, $idstring);
+			$params[] = $idstring;
 		} else if(count($idstring) > 0) {
 			// vtlib customization: Hook to make the export feature available for custom modules.
 			$query .= " and $focus->table_name.$focus->table_index in (" . generateQuestionMarks($idstring) . ')';
-			array_push($params, $idstring);
+			$params[] = $idstring;
 			// END
 		}
 	}
-	
+
 	if(isset($order_by) && $order_by != ''){
 		if($order_by == 'smownerid'){
-			$query .= ' ORDER BY user_name '.$sorder;
+			$query .= ' ORDER BY vtiger_users.user_name '.$sorder;
 		}elseif($order_by == 'lastname' && $type == 'Documents'){
-			$query .= ' ORDER BY vtiger_contactdetails.lastname  '. $sorder;
+			$query .= ' ORDER BY vtiger_contactdetails.lastname '. $sorder;
 		}elseif($order_by == 'crmid' && $type == 'HelpDesk'){
-			$query .= ' ORDER BY vtiger_troubletickets.ticketid  '. $sorder;
+			$query .= ' ORDER BY vtiger_troubletickets.ticketid '. $sorder;
 		}else{
 			$tablename = getTableNameForField($type,$order_by);
 			$tablename = (($tablename != '')?($tablename."."):'');
@@ -204,12 +201,14 @@ function export($type){
 
 	$__processor = new ExportUtils($type, $fields_array);
 
+	$CSV_Separator = GlobalVariable::getVariable('Export_Field_Separator_Symbol',',',$type);
+
 	// Translated the field names based on the language used.
-	$translated_fields_array = array();
-	for($i=0; $i<count($fields_array); $i++) {
-		$translated_fields_array[$i] = getTranslatedString($fields_array[$i],$type);
-	}
-	$header = implode("\",\"",array_values($translated_fields_array));
+	$translated_fields_array = array_map(
+		function ($field) use($type) { return getTranslatedString($field, $type); },
+		$fields_array
+	);
+	$header = implode('"'.$CSV_Separator.'"', $translated_fields_array);
 	$header = "\"" .$header;
 	$header .= "\"\r\n";
 
@@ -225,14 +224,14 @@ function export($type){
 			if($type == 'Documents' && $key == 'description'){
 				$value = strip_tags($value);
 				$value = str_replace('&nbsp;','',$value);
-				array_push($new_arr,$value);
+				$new_arr[] = $value;
 			}elseif($key != "user_name"){
 				// Let us provide the module to transform the value before we save it to CSV file
 				$value = $focus->transform_export_value($key, $value);
-				array_push($new_arr, preg_replace("/\"/","\"\"",$value));
+				$new_arr[] = preg_replace("/\"/","\"\"",$value);
 			}
 		}
-		$line = implode("\",\"",$new_arr);
+		$line = implode('"'.$CSV_Separator.'"',$new_arr);
 		$line = "\"" .$line;
 		$line .= "\"\r\n";
 		/** Output each row information */
@@ -270,7 +269,6 @@ class ExportUtils{
 
 	function __init($module, $fields_array){
 		$infoArr = self::getInformationArray($module);
-		
 		//attach extra fields related information to the fields_array; this will be useful for processing the export data
 		foreach($infoArr as $fieldname=>$fieldinfo){
 			if(in_array($fieldinfo["fieldlabel"], $fields_array)){
@@ -289,6 +287,7 @@ class ExportUtils{
 		$decimal = $current_user->currency_decimal_separator;
 		$numsep = $current_user->currency_grouping_separator;
 		foreach($arr as $fieldlabel=>&$value){
+			if (empty($this->fieldsArr[$fieldlabel])) continue;
 			$fieldInfo = $this->fieldsArr[$fieldlabel];
 
 			$uitype = $fieldInfo['uitype'];
@@ -302,18 +301,36 @@ class ExportUtils{
 			}elseif($uitype == 10){
 				//have to handle uitype 10
 				$value = trim($value);
-				if(!empty($value)) {
+				if (!empty($value)) {
 					$parent_module = getSalesEntityType($value);
-					$displayValueArray = getEntityName($parent_module, $value);
-					if(!empty($displayValueArray)){
-						foreach($displayValueArray as $k=>$v){
-							$displayValue = $v;
+					$Export_RelatedField_GetValueFrom = GlobalVariable::getVariable('Export_RelatedField_GetValueFrom','',$parent_module);
+					if ($Export_RelatedField_GetValueFrom != '') {
+						$qg = new QueryGenerator($parent_module, $current_user);
+						$qg->setFields(array($Export_RelatedField_GetValueFrom));
+						$qg->addCondition('id',$value,'e');
+						$query = $qg->getQuery();
+						$rs = $adb->query($query);
+						if ($rs and $adb->num_rows($rs) == 1) {
+							$displayValue = $adb->query_result($rs,0, $Export_RelatedField_GetValueFrom);
+						} else {
+							$displayValue = $value;
+						}
+					} else {
+						$displayValueArray = getEntityName($parent_module, $value);
+						if(!empty($displayValueArray)){
+							foreach($displayValueArray as $k=>$v){
+								$displayValue = $v;
+							}
 						}
 					}
-					if(!empty($parent_module) && !empty($displayValue)){
-						$value = $parent_module."::::".$displayValue;
-					}else{
-						$value = "";
+					if (!empty($parent_module) && !empty($displayValue)) {
+						$value = $parent_module.'::::'.$displayValue;
+						$Export_RelatedField_NameForSearch = GlobalVariable::getVariable('Export_RelatedField_NameForSearch','',$parent_module);
+						if ($Export_RelatedField_NameForSearch != '') {
+							$value = $value.'::::'.$Export_RelatedField_NameForSearch;
+						}
+					} else {
+						$value = '';
 					}
 				} else {
 					$value = '';

@@ -2,10 +2,11 @@
 /**
  * Base class for lexers
  */
-abstract class AntlrLexer extends BaseRecognizer{
+abstract class AntlrLexer extends BaseRecognizer {
+
 	public static $DEFAULT_TOKEN_CHANNEL = 0;
 	protected $input;
-	
+
 	public function __construct($input, $state=null) {
 		if($state==null){
 			$state = new RecognizerSharedState();
@@ -13,7 +14,7 @@ abstract class AntlrLexer extends BaseRecognizer{
 		$this->state = $state;
 		$this->input = $input;
 	}
-	
+
 	public function reset() {
 		parent::reset(); // reset all recognizer state variables
 		// wack Lexer state variables
@@ -31,11 +32,8 @@ abstract class AntlrLexer extends BaseRecognizer{
 		$this->state->tokenStartLine = -1;
 		$this->state->text = null;
 	}
-	
-	
-	/** Return a token from this source; i.e., match a token on the char
-	 *  stream.
-	 */
+
+	/** Return a token from this source; i.e., match a token on the char stream. */
 	public function nextToken() {
 		while (true) {
 			$this->state->token = null;
@@ -67,7 +65,7 @@ abstract class AntlrLexer extends BaseRecognizer{
 			}
 		}
 	}
-	
+
 	/** Instruct the lexer to skip creating a token for current lexer rule
 	 *  and look for another token.  nextToken() knows to keep looking when
 	 *  a lexer rule finishes with token set to SKIP_TOKEN.  Recall that
@@ -91,11 +89,11 @@ abstract class AntlrLexer extends BaseRecognizer{
 	public function getCharStream() {
 		return $this->input;
 	}
-	
+
 	public function getSourceName() {
 		return $this->input->getSourceName();
 	}
-	
+
 	/** Currently does not support multiple emits per nextToken invocation
 	 *  for efficiency reasons.  Subclass and override this method and
 	 *  nextToken (to push tokens into a list and pull from that list rather
@@ -121,7 +119,7 @@ abstract class AntlrLexer extends BaseRecognizer{
 		$this->state->token = $token;
 		return $token;
 	}
-	
+
 	function matchString($s){
 		$i = 0;
 		while ( $i<strlen($s)) {
@@ -136,14 +134,14 @@ abstract class AntlrLexer extends BaseRecognizer{
 			}
 			$i++;
 			$this->input->consume();
-			$state->failed = false;
+			$this->state->failed = false;
 		}
 	}
-	
+
 	public function matchAny($input) {
 		$this->input->consume();
 	}
-	
+
 	public function matchChar($c) {
 		if ($this->input->LA(1)!=$c ) {
 			if ( $this->state->backtracking>0 ) {
@@ -157,7 +155,7 @@ abstract class AntlrLexer extends BaseRecognizer{
 		$this->input->consume();
 		$this->state->failed = false;
 	}
-	
+
 	public function matchRange($a, $b) {
 		if ( $this->input->LA(1)<$a || $this->input->LA(1)>$b ) {
 			if ( $this->state->backtracking>0 ) {
@@ -171,7 +169,7 @@ abstract class AntlrLexer extends BaseRecognizer{
 		$this->input->consume();
 		$this->state->failed = false;
 	}
-	
+
 	public function getLine() {
 		return $this->input->getLine();
 	}
@@ -179,16 +177,13 @@ abstract class AntlrLexer extends BaseRecognizer{
 	public function getCharPositionInLine() {
 		return $this->input->getCharPositionInLine();
 	}
-	
+
 	/** What is the index of the current character of lookahead? */
 	public function getCharIndex() {
 		return $this->input->index();
 	}
-	
 
-	/** Return the text matched so far for the current token or any
-	 *  text override.
-	 */
+	/** Return the text matched so far for the current token or any text override. */
 	public function getText() {
 		if ( $this->state->text!=null ) {
 			return $this->state->text;
@@ -202,7 +197,7 @@ abstract class AntlrLexer extends BaseRecognizer{
 	public function setText($text) {
 		$this->state->text = $text;
 	}
-	
+
 	public function reportError($e) {
 		/** TODO: not thought about recovery in lexer yet.
 		 *
@@ -217,7 +212,7 @@ abstract class AntlrLexer extends BaseRecognizer{
 
 		$this->displayRecognitionError($this->getTokenNames(), $e);
 	}
-	
+
 	public function getErrorMessage($e, $tokenNames) {
 		$msg = null;
 		if ( $e instanceof MismatchedTokenException ) {
@@ -255,7 +250,7 @@ abstract class AntlrLexer extends BaseRecognizer{
 		}
 		return $msg;
 	}
-	
+
 	public function getCharErrorDisplay($c) {
 		$s = chr($c);
 		switch ( $s ) {
@@ -274,23 +269,22 @@ abstract class AntlrLexer extends BaseRecognizer{
 		}
 		return "'".$s."'";
 	}
-	
+
 	/** Lexers can normally match any char in it's vocabulary after matching
 	 *  a token, so do the easy thing and just kill a character and hope
 	 *  it all works out.  You can instead use the rule invocation stack
 	 *  to do sophisticated error recovery if you are in a fragment rule.
 	 */
-	public function recover($input, $re) {
+	public function recover($input, $re=null) {
 		$this->input->consume();
 	}
-	
-	
-	public function traceIn($ruleName, $ruleIndex, $inputSymbol) {
+
+	public function traceIn($ruleName, $ruleIndex, $inputSymbol=null) {
 		$inputSymbol = $this->input->LT(1)." line=".$this->getLine().":".$this->getCharPositionInLine();
 		parent::traceIn($ruleName, $ruleIndex, $inputSymbol);
 	}
 
-	public function traceOut($ruleName, $ruleIndex, $inputSymbol) {
+	public function traceOut($ruleName, $ruleIndex, $inputSymbol=null) {
 		$inputSymbol = $this->input->LT(1)." line=".$this->getLine().":".$this->getCharPositionInLine();
 		parent::traceOut($ruleName, $ruleIndex, $inputSymbol);
 	}

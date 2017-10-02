@@ -12,14 +12,13 @@
  * See the License for the specific language governing permissions and limitations under the
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
  ************************************************************************************/
-
 require_once("include/Webservices/Utils.php");
 
 /*
  * Given a record ID and a related module, this function returns the set of related records that belong to that ID
  * Only the columns and records the current user has access to will be returned.
  * If the current user cannot access the main module or the related module, an error will be returned.
- * 
+ *
  * Parameters:
  * id:
  *    a webservice ID corresponding to the main record we want to relate
@@ -43,13 +42,13 @@ require_once("include/Webservices/Utils.php");
  *  orderby: a syntactically and semantically correct order by directive wihtout the "order by", only the fields and their order (no validation is done)
  *  columns: a a comma separated string of column names that are to be returned. The special value "*" will return all fields.
  *       for example: 'assigned_user_id,id,createdtime,notes_title,filedownloadcount,filelocationtype,filesize'
- * 
+ *
  * Author: JPL TSolucio, S.L. June 2012.  Joe Bordes
- * 
+ *
  */
 function getRelatedRecords($id, $module, $relatedModule, $queryParameters, $user) {
 	global $adb, $currentModule, $log, $current_user;
-	
+
 	// TODO To be integrated with PearDatabase
 	$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 	// END
@@ -69,14 +68,14 @@ function getRelatedRecords($id, $module, $relatedModule, $queryParameters, $user
 	}
 
 	require_once $handlerPath;
-	
+
 	$handler = new $handlerClass($webserviceObject,$user,$adb,$log);
 	$meta = $handler->getMeta();
 
 	$query = __getRLQuery($id, $module, $relatedModule, $queryParameters, $user);
 	$result = $adb->pquery($query, array());
 	$records = array();
-	
+
 	// Return results
 	while ($row = $adb->fetch_array($result)) {
 		if (($module=='HelpDesk' or $module=='Faq') and $relatedModule=='ModComments') {
@@ -107,9 +106,9 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 	$webserviceObject = VtigerWebserviceObject::fromName($adb,$relatedModule);
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();
-	
+
 	require_once $handlerPath;
-	
+
 	$handler = new $handlerClass($webserviceObject,$user,$adb,$log);
 	$meta = $handler->getMeta();
 	$relatedModule = $meta->getEntityName();
@@ -121,9 +120,9 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 	$webserviceObject = VtigerWebserviceObject::fromName($adb,$module);
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();
-	
+
 	require_once $handlerPath;
-	
+
 	$handler = new $handlerClass($webserviceObject,$user,$adb,$log);
 	$meta = $handler->getMeta();
 	$module = $meta->getEntityName();
@@ -131,14 +130,28 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 		throw new WebserviceException('INVALID_MODULE',"Given module ($module) cannot be found");
 	}
 	$moduleId = getTabid($module);
-	
+
 	// check permission on module
+	list($wsid,$crmid) = explode('x', $id);
+	if ((vtws_getEntityId('Calendar')==$wsid or vtws_getEntityId('Events')==$wsid) and getSalesEntityType($crmid)=='cbCalendar') {
+		$id = vtws_getEntityId('cbCalendar') . 'x' . $crmid;
+	}
+	if (vtws_getEntityId('cbCalendar')==$wsid and getSalesEntityType($crmid)=='Calendar') {
+		$rs = $adb->pquery('select activitytype from vtiger_activity where activityid=?', array($crmid));
+		if ($rs and $adb->num_rows($rs)==1) {
+			if ($adb->query_result($rs,0,0)=='Task') {
+				$id = vtws_getEntityId('Calendar') . 'x' . $crmid;
+			} else {
+				$id = vtws_getEntityId('Events') . 'x' . $crmid;
+			}
+		}
+	}
 	$webserviceObject = VtigerWebserviceObject::fromId($adb,$id);
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();
-	
+
 	require_once $handlerPath;
-	
+
 	$handler = new $handlerClass($webserviceObject,$user,$adb,$log);
 	$meta = $handler->getMeta();
 	$entityName = $meta->getObjectEntityName($id);
@@ -146,15 +159,15 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 	if(!in_array($entityName,$types['types'])){
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to perform the operation on module ($module) is denied");
 	}
-	
+
 	if($entityName !== $webserviceObject->getEntityName()){
 		throw new WebServiceException(WebServiceErrorCode::$INVALIDID,"Id specified is incorrect");
 	}
-	
+
 	if(!$meta->hasPermission(EntityMeta::$RETRIEVE,$id)){
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to read given object is denied");
 	}
-	
+
 	$idComponents = vtws_getIdComponents($id);
 	if(!$meta->exists($idComponents[1])){
 		throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND,"Record you are trying to access is not found");
@@ -166,16 +179,16 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 	$webserviceObject = VtigerWebserviceObject::fromName($adb,$relatedModule);
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();
-	
+
 	require_once $handlerPath;
-	
+
 	$handler = new $handlerClass($webserviceObject,$user,$adb,$log);
 	$meta = $handler->getMeta();
 
 	if(!in_array($relatedModule,$types['types'])){
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to perform the operation on module ($relatedModule) is denied");
 	}
-	
+
 	if(!$meta->hasReadAccess()){
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to read given object is denied");
 	}
@@ -197,11 +210,11 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 						createdtime,
 						createdtime as modifiedtime,
 						0 as id,
-						comments as commentcontent, 
-						'$id' as related_to, 
+						comments as commentcontent,
+						'$id' as related_to,
 						'' as parent_comments,
 						ownertype,
-						case when (ownertype = 'user') then vtiger_users.user_name else vtiger_portalinfo.user_name end as owner_name 
+						case when (ownertype = 'user') then vtiger_users.user_name else vtiger_portalinfo.user_name end as owner_name
 					 from vtiger_ticketcomments
 					 left join vtiger_users on vtiger_users.id = ownerid
 					 left join vtiger_portalinfo on vtiger_portalinfo.id = ownerid
@@ -215,8 +228,8 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 						createdtime,
 						createdtime as modifiedtime,
 						0 as id,
-						comments as commentcontent, 
-						'$id' as related_to, 
+						comments as commentcontent,
+						'$id' as related_to,
 						'' as parent_comments
 					  from vtiger_faqcomments where faqid=$crmid";
 					break;
@@ -227,9 +240,9 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 					switch($criteria) { // currently hard coded to all  ** TODO **
 						case 'All': $queryCriteria = ''; break;
 						case 'Last5': $queryCriteria = sprintf(" ORDER BY %s.%s DESC LIMIT 5", $entityInstance->table_name, $entityInstance->table_index); break;
-						case 'Mine': $queryCriteria = ' AND vtiger_crmentity.smownerid=' . $current_user->id; break;
+						case 'Mine': $queryCriteria = ' AND vtiger_crmentity.smcreatorid=' . $current_user->id; break;
 					}
-					$query = $entityInstance->getListQuery($moduleName, sprintf(" AND %s.related_to=$crmid", $entityInstance->table_name));
+					$query = $entityInstance->getListQuery('ModComments', sprintf(" AND %s.related_to=$crmid", $entityInstance->table_name));
 					$query .= $queryCriteria;
 					$qfields = __getRLQueryFields($meta,$queryParameters['columns']);
 					// Remove all the \n, \r and white spaces to keep the space between the words consistent.
@@ -318,10 +331,10 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 					$q = "select distinct $qfields from vtiger_quotes
 						inner join vtiger_crmentity as crmq on crmq.crmid=vtiger_quotes.quoteid
 						left join vtiger_inventoryproductrel on vtiger_inventoryproductrel.id=vtiger_quotes.quoteid
-						inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid 
-						left join $pstable on $pstable.$psfield = vtiger_inventoryproductrel.productid 
+						inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
+						left join $pstable on $pstable.$psfield = vtiger_inventoryproductrel.productid
 						where vtiger_inventoryproductrel.productid = $pstable.$psfield AND crmq.deleted=0
-						  and $relatedField = $crmid";		
+						  and $relatedField = $crmid";
 					$query .= ($query=='' ? '' : ' UNION DISTINCT ').$q;
 				}
 				if ($productDiscriminator=='productlineinvoice' or $productDiscriminator=='productlineall') {
@@ -335,7 +348,7 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 					$query .= ($query=='' ? '' : ' UNION DISTINCT ').$q;
 				}
 				if ($productDiscriminator=='productlinesalesorder' or $productDiscriminator=='productlineall') {
-					$q = "select distinct $qfields from vtiger_salesorder 
+					$q = "select distinct $qfields from vtiger_salesorder
 					inner join vtiger_crmentity as crms on crms.crmid=vtiger_salesorder.salesorderid
 					left join vtiger_inventoryproductrel on vtiger_inventoryproductrel.id=vtiger_salesorder.salesorderid
 					inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
@@ -379,8 +392,8 @@ function __getRLQueryFields($meta,$cols='*') {
 	$qfields = '';
 	foreach($fieldcol as $field=>$col){
 		$cl = $col;
-		if ($col=='smownerid') $cl = 'smownerid as assigned_user_id,vtiger_crmentity.smownerid';
-		if ($col=='smcreatorid') $cl = 'smcreatorid as creator,vtiger_crmentity.smcreatorid';
+		if ($col=='smownerid') $cl = 'smownerid as assigned_user_id,vtiger_crmentity.smownerid,vtiger_users.first_name as owner_firstname, vtiger_users.last_name as owner_lastname';
+		if ($col=='smcreatorid') $cl = 'smcreatorid as creator,vtiger_crmentity.smcreatorid,vtiger_users.first_name as creator_firstname, vtiger_users.last_name as creator_lastname';
 		$qfields .= $columnTable[$col].".$cl,";
 	}
 	$qfields = trim($qfields,',');  // eliminate last comma

@@ -28,6 +28,7 @@ class MailManager_MainUIController extends MailManager_Controller {
 			$response->setResult( array('ui' => $content));
 			return $response;
 		} else {
+			$folders = array();
 			if ($this->hasMailboxModel()) {
 				$connector = $this->getConnector();
 
@@ -36,10 +37,10 @@ class MailManager_MainUIController extends MailManager_Controller {
 				} else {
 					$folders = $connector->folders();
 					$connector->updateFolders();
-					$viewer->assign('FOLDERS', $folders);
 				}
 				$this->closeConnector();
 			}
+			$viewer->assign('FOLDERS', $folders);
 			$viewer->assign('MODULE', $currentModule);
 			$content = $viewer->fetch($this->getModuleTpl('Mainui.tpl'));
 			$response->setResult( array('mailbox' => $this->hasMailboxModel(), 'ui' => $content));

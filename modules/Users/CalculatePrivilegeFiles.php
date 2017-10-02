@@ -17,9 +17,9 @@
  *************************************************************************************************/
 include 'modules/Users/CreateUserPrivilegeFile.php';
 $record = vtlib_purify($_REQUEST['record']);
-if (!empty($record)) {
+if (!empty($record) and is_numeric($record)) {
 	createUserPrivilegesfile($record);
 	createUserSharingPrivilegesfile($record);
 }
-header("Location: index.php?action=DetailView&module=Users&record=".$record);
+header('Location: index.php?action=DetailView&module=Users&record='.urlencode($record));
 ?>

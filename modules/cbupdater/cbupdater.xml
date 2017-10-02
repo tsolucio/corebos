@@ -461,7 +461,7 @@
 	<author>joebordes</author>
 	<description>Create and relate call activity when creating new record from call</description>
 	<filename>build/changeSets/PBXManagerAfterSaveCreateActivity.php</filename>
-	<classname>PBXManagerAfterSaveCreateActivity</classname>
+	<classname>cbupdPBXManagerAfterSaveCreateActivity</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
@@ -977,10 +977,283 @@
 	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
+	<author>joebordes</author>
+	<description>Make ModComments Shareable</description>
+	<filename>build/changeSets/makeModCommentsShareable.php</filename>
+	<classname>makeModCommentsShareable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
 	<author>loridacito</author>
 	<description>Add files on header for calendar4you</description>
 	<filename>build/changeSets/addlinksforcalendar.php</filename>
 	<classname>addlinksforcalendar</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>kikojover</author>
+	<description>Set Activity subject field to 250 chars</description>
+	<filename>build/changeSets/grow_activity_subject.php</filename>
+	<classname>grow_activity_subject</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>shpend</author>
+	<description>Lightning design evvtmenu</description>
+	<filename>build/changeSets/ldMenu.php</filename>
+	<classname>ldMenu</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete Audit Trail and Login History from Settings: use cbAuditTrail and cbLoginHistory</description>
+	<filename>build/changeSets/delSettingsAuditLogin.php</filename>
+	<classname>delSettingsAuditLogin</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>kevinduqi</author>
+	<description>Install Terms and Conditions Module</description>
+	<filename>build/changeSets/installcbTermConditions.php</filename>
+	<classname>installcbTermConditions</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>albertxhani</author>
+	<description>Remove Calendar4You Link for moment.mn.js</description>
+	<filename>build/changeSets/RemoveMomentjs.php</filename>
+	<classname>RemoveMomentLink</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Feature: See Converted Leads</description>
+	<filename>build/changeSets/FeatureSeeConvertedLeads.php</filename>
+	<classname>FeatureSeeConvertedLeads</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Increment module Name/Label size and add missing indexes on SMS</description>
+	<filename>build/changeSets/cleanoptimizedatabase_170.php</filename>
+	<classname>cleanoptimizedatabase_170</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Change GlobalVariable Module-List UIType to 3314</description>
+	<filename>build/changeSets/2017/GlobalVarUITypeModuleList3314.php</filename>
+	<classname>GlobalVarUITypeModuleList3314</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add database indexes while studying MySQL queries with no index for a few hours</description>
+	<filename>build/changeSets/2017/cleanoptimizedatabase_180.php</filename>
+	<classname>cleanoptimizedatabase_180</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Fix Term and Conditions Field table on inventory modules</description>
+	<filename>build/changeSets/2017/fixcbTermConditionsField.php</filename>
+	<classname>fixcbTermConditionsField</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add moreinfo field to Reports for External URLs, Direct SQL and other future enhancements</description>
+	<filename>build/changeSets/2017/addMoreInfoFieldToReports.php</filename>
+	<classname>addMoreInfoFieldToReports</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Migrate biurl to moreinfo</description>
+	<filename>build/changeSets/2017/migratebiurl2moreinfo.php</filename>
+	<classname>migratebiurl2moreinfo</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Change uitype 68 (helpdesk) to 10</description>
+	<filename>build/changeSets/2017/changeUitype68To10.php</filename>
+	<classname>changeUitype68To10</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>fix WordProcessor Merge Table for MySQL strict mode</description>
+	<filename>build/changeSets/2017/fixWordProcessorMergeTable.php</filename>
+	<classname>fixWordProcessorMergeTable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>loridacito</author>
+	<description>add daily field in cron table</description>
+	<filename>build/changeSets/2017/add_dailyfield_incron.php</filename>
+	<classname>add_dailyfield_incron</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Set uitype 50 to DateTime in Webservice</description>
+	<filename>build/changeSets/2017/uitype50DateTimeinWebservice.php</filename>
+	<classname>uitype50DateTimeinWebservice</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Database optimizations and cleanup</description>
+	<filename>build/changeSets/2017/cleanoptimizedatabase_190.php</filename>
+	<classname>cleanoptimizedatabase_190</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>fix Asterisk Label on Users Module</description>
+	<filename>build/changeSets/2017/fixAsteriskLabelOnUsersModule.php</filename>
+	<classname>fixAsteriskLabelOnUsersModule</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add database index to PBXManager</description>
+	<filename>build/changeSets/2017/addDatabaseIndex2PBXManager.php</filename>
+	<classname>addDatabaseIndex2PBXManager</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>set PBXManager timeofcall to uiyype 50 so it can be searched on filters and reports</description>
+	<filename>build/changeSets/2017/fixPBXManagerUITypes.php</filename>
+	<classname>fixPBXManagerUITypes</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete Integration extension</description>
+	<filename>build/changeSets/2017/delIntegration.php</filename>
+	<classname>delIntegration</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete uitype 50 as reference from Webservice</description>
+	<filename>build/changeSets/2017/uitype50DateTimeinWebservice2.php</filename>
+	<classname>uitype50DateTimeinWebservice2</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add WebForm Domain validation field</description>
+	<filename>build/changeSets/2017/addWebdomainWebFormscb.php</filename>
+	<classname>addWebdomainWebFormscb</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>coreBOS Message Queue and Task Manager database tables</description>
+	<filename>build/changeSets/2017/cbmqtmdbdistributortables.php</filename>
+	<classname>cbmqtmdbdistributortables</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Generic coreBOS Settings and Configuration database table</description>
+	<filename>build/changeSets/2017/corebossettingstable.php</filename>
+	<classname>corebossettingstable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>mysqlStrict support for product field in Assets module</description>
+	<filename>build/changeSets/2017/mysqlstrictAssets.php</filename>
+	<classname>mysqlstrictAssets</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Support for Import, Export and Deduplication on ModComments</description>
+	<filename>build/changeSets/2017/ModCommentsImportExport.php</filename>
+	<classname>ModCommentsImportExport</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>mysqlStrict support for google calendar and contacts authorization</description>
+	<filename>build/changeSets/2017/mysqlstrictGoogleSync.php</filename>
+	<classname>mysqlstrictGoogleSync</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Install Calendar remake module</description>
+	<filename>build/changeSets/2017/installcbcalendar.php</filename>
+	<classname>installcbcalendar</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Image fields supported on all modules: products and contacts. first step towards multiimage field which is only working now on Products</description>
+	<filename>build/changeSets/2017/supportForImageFieldsonProducts.php</filename>
+	<classname>supportForImageFieldsonProducts</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Migrate config.performance.php variables to Global Variables module.</description>
+	<filename>build/changeSets/2017/delConfigPerformance.php</filename>
+	<classname>delConfigPerformance</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Database table for dynamic workflow expression functions.</description>
+	<filename>build/changeSets/2017/workflowexpressionfunctions.php</filename>
+	<classname>workflowexpressionfunctions</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Change TypeOf Campaign NumSent which is percentage and should be number.</description>
+	<filename>build/changeSets/2017/changeTypeOfCampaignNumSent.php</filename>
+	<classname>changeTypeOfCampaignNumSent</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Load javascript from HTML not document.write.</description>
+	<filename>build/changeSets/2017/dropdocumentwrite.php</filename>
+	<classname>dropdocumentwrite</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Set MassEditable to 0 for uitype 4 fields</description>
+	<filename>build/changeSets/2017/fixMassEditableOnuitype4.php</filename>
+	<classname>fixMassEditableOnuitype4</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>changeActivityRelatedListTocbCalendar</description>
+	<filename>build/changeSets/2017/changeActivityRelatedListTocbCalendar.php</filename>
+	<classname>changeActivityRelatedListTocbCalendar</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add UIType 1614 and 1615 to Webservice Field Type</description>
+	<filename>build/changeSets/2017/addUIType1614and1615WebserviceFieldType.php</filename>
+	<classname>addUIType1614and1615WebserviceFieldType</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>albadisha</author>
+	<description>Add new column for Report Types</description>
+	<filename>build/changeSets/2017/addNewReportTypeColumn.php</filename>
+	<classname>addNewReportTypeColumn</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
 </updatesChangeLog>

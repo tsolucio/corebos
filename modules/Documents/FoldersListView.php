@@ -20,8 +20,14 @@ $log = LoggerManager::getLogger('note_list');
 global $app_strings,$mod_strings,$currentModule,$image_path,$theme;
 $list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$currentModule);
 $category = getParentTab();
-if(!$_SESSION['lvs'][$currentModule])
-{
+
+$focus = new Documents();
+// Initialize sort by fields
+$focus->initSortbyField('Documents');
+$sorder = $focus->getSortOrder();
+$order_by = $focus->getOrderBy();
+
+if(empty($_SESSION['lvs'][$currentModule])) {
 	coreBOS_Session::delete('lvs');
 	$modObj = new ListViewSession();
 	$modObj->sorder = $sorder;
@@ -38,14 +44,11 @@ $viewnamedesc = $oCustomView->getCustomViewByCvid($viewid);
 if (!isset($where)) $where = "";
 $url_string = ''; // assigning http url string
 
-$focus = new Documents();
-// Initialize sort by fields
-$focus->initSortbyField('Documents');
-// END
 $smarty = new vtigerCRM_Smarty;
 $other_text = Array();
+$smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
 
-if($_REQUEST['errormsg'] != '') {
+if(!empty($_REQUEST['errormsg'])) {
 	$errormsg = vtlib_purify($_REQUEST['errormsg']);
 	$smarty->assign('ERROR',"The User does not have permission to delete ".$errormsg." ".$currentModule);
 } else {
@@ -56,9 +59,6 @@ if(ListViewSession::hasViewChanged($currentModule,$viewid)) {
 	coreBOS_Session::set('NOTES_ORDER_BY', '');
 }
 //<<<<<<<<<<<<<<<<<<< sorting - stored in session >>>>>>>>>>>>>>>>>>>>
-$sorder = $focus->getSortOrder();
-$order_by = $focus->getOrderBy();
-
 if(empty($_REQUEST['folderid'])) {
 	coreBOS_Session::set('NOTES_ORDER_BY', $order_by);
 	coreBOS_Session::set('NOTES_SORT_ORDER', $sorder);
@@ -115,12 +115,12 @@ $hide_empty_folders = 'no';
 
 // Enabling Module Search
 $url_string = '';
-if($_REQUEST['query'] == 'true') {
+if(isset($_REQUEST['query']) and $_REQUEST['query'] == 'true') {
 	$queryGenerator->addUserSearchConditions($_REQUEST);
 	$ustring = getSearchURL($_REQUEST);
 	$url_string .= "&query=true$ustring";
-	$smarty->assign('SEARCH_URL', $url_string);
 }
+$smarty->assign('SEARCH_URL', $url_string);
 
 $query = $queryGenerator->getQuery();
 $where = $queryGenerator->getConditionalWhere();
@@ -133,23 +133,8 @@ $smarty->assign('export_where',to_html($where));
 
 $focus->query = $query;
 
-if($viewid ==0) {
-	echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>
-		<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
-		<table border='0' cellpadding='5' cellspacing='0' width='98%'>
-		<tbody><tr>
-		<td rowspan='2' width='11%'><img src='". vtiger_imageurl('denied.gif', $theme) ."' ></td>
-		<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span clas
-		s='genHeaderSmall'>".$app_strings['LBL_PERMISSION']."</span></td>
-		</tr>
-		<tr>
-		<td class='small' align='right' nowrap='nowrap'>
-		<a href='javascript:window.history.back();'>".$app_strings['LBL_GO_BACK']."</a><br>
-		</td>
-		</tr>
-		</tbody></table>
-		</div>
-		</td></tr></table>";
+if ($viewid ==0) {
+	$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
 	exit;
 }
 
@@ -160,8 +145,6 @@ $url_string .="&viewname=".$viewid;
 $controller = new ListViewController($adb, $current_user, $queryGenerator);
 $listview_header_search = $controller->getBasicSearchFieldInfoList();
 $smarty->assign('SEARCHLISTHEADER',$listview_header_search);
-
-$smarty->assign('SELECT_SCRIPT', $view_script);
 
 $start = Array();
 $request_folderid = '';
@@ -190,12 +173,12 @@ if($foldercount > 0 )
 		$folder_id = $adb->query_result($result,$i,"folderid");
 		$query .= " and vtiger_notes.folderid = $folder_id";
 		$sorder = $focus->getSortOrderForFolder($folder_id);
-		if(!is_array($_SESSION['NOTES_FOLDER_SORT_ORDER'])) {
+		if (isset($_SESSION['NOTES_FOLDER_SORT_ORDER']) && !is_array($_SESSION['NOTES_FOLDER_SORT_ORDER'])) {
 			coreBOS_Session::set('NOTES_FOLDER_SORT_ORDER', array());
 		}
 		coreBOS_Session::set('NOTES_FOLDER_SORT_ORDER^'.$folder_id, $sorder);
 		$order_by = $focus->getOrderByForFolder($folder_id);
-		if(!is_array($_SESSION['NOTES_FOLDER_ORDER_BY'])) {
+		if(isset($_SESSION['NOTES_FOLDER_ORDER_BY']) && !is_array($_SESSION['NOTES_FOLDER_ORDER_BY'])) {
 			coreBOS_Session::set('NOTES_FOLDER_ORDER_BY', array());
 		}
 		coreBOS_Session::set('NOTES_FOLDER_ORDER_BY^'.$folder_id, $order_by);
@@ -259,8 +242,7 @@ if($foldercount > 0 )
 		$folder_files = $controller->getListViewEntries($focus,$currentModule,$list_result,$navigation_array);
 		$folder_details['entries']= $folder_files;
 		$folder_details['navigation'] = getTableHeaderSimpleNavigation($navigation_array, $url_string,"Documents",$folder_id,$viewid);
-		$folder_details['recordListRange'] = getRecordRangeMessage($list_result, $limit_start_rec,
-				$num_records);
+		$folder_details['recordListRange'] = getRecordRangeMessage($list_result, $limit_start_rec, $num_records);
 		if ($displayFolder == true) {
 			$folders[$foldername] = $folder_details;
 		} else{
@@ -269,6 +251,7 @@ if($foldercount > 0 )
 		if ($folderid == 1) $default_folder_details = $folder_details;
 	}
 	if (count($folders) == 0) $folders[$default_folder_details['foldername']] = $default_folder_details;
+	$smarty->assign('NO_FOLDERS','no');
 }
 else
 {
@@ -280,9 +263,14 @@ $smarty->assign('FOLDERS', $folders);
 $smarty->assign('EMPTY_FOLDERS', $emptyfolders);
 $smarty->assign('ALL_FOLDERS', array_merge($folders, $emptyfolders));
 
+$smarty->assign("AVALABLE_FIELDS", getMergeFields($currentModule,"available_fields"));
+$smarty->assign("FIELDS_TO_MERGE", getMergeFields($currentModule,"fileds_to_merge"));
+
 //Added to select Multiple records in multiple pages
-$smarty->assign('SELECTEDIDS', vtlib_purify($_REQUEST['selobjs']));
-$smarty->assign('ALLSELECTEDIDS', vtlib_purify($_REQUEST['allselobjs']));
+$smarty->assign('SELECTEDIDS', (isset($_REQUEST['selobjs']) ? vtlib_purify($_REQUEST['selobjs']) : ''));
+$smarty->assign('ALLSELECTEDIDS', (isset($_REQUEST['allselobjs']) ? vtlib_purify($_REQUEST['allselobjs']) : ''));
+$smarty->assign('CURRENT_PAGE_BOXES', '');
+ListViewSession::setSessionQuery($currentModule,$focus->query,$viewid);
 
 $alphabetical = AlphabeticalSearch($currentModule,'index','notes_title','true','basic','','','','',$viewid);
 $fieldnames = $controller->getAdvancedSearchOptionString();
@@ -290,15 +278,11 @@ $criteria = getcriteria_options();
 $smarty->assign("ALPHABETICAL", $alphabetical);
 $smarty->assign("FIELDNAMES", $fieldnames);
 $smarty->assign("CRITERIA", $criteria);
-$smarty->assign("NAVIGATION", $navigationOutput);
-$smarty->assign("RECORD_COUNTS", $record_string);
 $adminuser = is_admin($current_user);
 $smarty->assign("IS_ADMIN",$adminuser);
 
 $check_button = Button_Check($module);
 $smarty->assign("CHECK", $check_button);
-
-ListViewSession::setSessionQuery($currentModule,$focus->query,$viewid);
 
 // Gather the custom link information to display
 include_once('vtlib/Vtiger/Link.php');
@@ -309,7 +293,7 @@ $smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModul
 $DEFAULT_SEARCH_PANEL_STATUS = GlobalVariable::getVariable('Application_Search_Panel_Open',1);
 $smarty->assign('DEFAULT_SEARCH_PANEL_STATUS',($DEFAULT_SEARCH_PANEL_STATUS ? 'display: block' : 'display: none'));
 
-if(isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '' || $_REQUEST['mode'] == 'ajax')
+if((isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') || (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'ajax'))
 	$smarty->display("DocumentsListViewEntries.tpl");
 else
 	$smarty->display("DocumentsListView.tpl");

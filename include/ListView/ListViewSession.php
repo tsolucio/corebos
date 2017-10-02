@@ -33,15 +33,15 @@ class ListViewSession {
 		$this->start =1;
 	}
 
-	function getCurrentPage($currentModule,$viewId){
+	public static function getCurrentPage($currentModule,$viewId){
 		if(!empty($_SESSION['lvs'][$currentModule][$viewId]['start'])){
 			return $_SESSION['lvs'][$currentModule][$viewId]['start'];
 		}
 		return 1;
 	}
 
-	function getRequestStartPage(){
-		$start = $_REQUEST['start'];
+	public static function getRequestStartPage(){
+		$start = isset($_REQUEST['start']) ? $_REQUEST['start'] : 1;
 		if(!is_numeric($start)){
 			$start = 1;
 		}
@@ -78,6 +78,7 @@ class ListViewSession {
 			}else{
 				$recordList = array();
 				$recordPageMapping = array();
+				$searchKey = 0;
 				foreach ($recordNavigationInfo as $start=>$recordIdList){
 					foreach ($recordIdList as $index=>$recordId) {
 						$recordList[] = $recordId;
@@ -108,7 +109,6 @@ class ListViewSession {
 			$list_query = $_SESSION[$currentModule.'_listquery'];
 			$instance = CRMEntity::getInstance($currentModule);
 			$instance->getNonAdminAccessControlQuery($currentModule, $current_user);
-			vtlib_setup_modulevars($currentModule, $instance);
 			if($currentModule=='Documents' && !empty($folderId)){
 				$list_query = preg_replace("/[\n\r\s]+/"," ",$list_query);
 				$hasOrderBy = stripos($list_query, 'order by');
@@ -151,7 +151,7 @@ class ListViewSession {
 			$recordNavigationInfo = array();
 			if($searchKey !== false){
 				foreach ($navigationRecordList as $index => $recordId) {
-					if(!is_array($recordNavigationInfo[$current])){
+					if(!isset($recordNavigationInfo[$current]) or !is_array($recordNavigationInfo[$current])){
 						$recordNavigationInfo[$current] = array();
 					}
 					if($index == $firstPageRecordCount  || $index == ($firstPageRecordCount+$pageCount * $list_max_entries_per_page)){
@@ -170,7 +170,7 @@ class ListViewSession {
 		global $adb;
 		$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$currentModule);
 		$start = 1;
-		if(isset($_REQUEST['query']) && $_REQUEST['query'] == 'true'&& $_REQUEST['start']!="last"){
+		if(isset($_REQUEST['query']) && $_REQUEST['query'] == 'true' && (empty($_REQUEST['start']) || $_REQUEST['start']!="last")){
 			return ListViewSession::getRequestStartPage();
 		}
 		if(!empty($_REQUEST['start'])){
@@ -192,7 +192,7 @@ class ListViewSession {
 			$start = $_SESSION['lvs'][$currentModule][$viewid]['start'];
 		}
 		if(!$queryMode) {
-			$_SESSION['lvs'][$currentModule][$viewid]['start'] = intval($start);
+			coreBOS_Session::set('lvs^'.$currentModule.'^'.$viewid.'^'.'start', (int)$start);
 		}
 		return $start;
 	}
@@ -200,7 +200,7 @@ class ListViewSession {
 	public static function setSessionQuery($currentModule,$query,$viewid){
 		if(isset($_SESSION[$currentModule.'_listquery'])){
 			if($_SESSION[$currentModule.'_listquery'] != $query){
-				unset($_SESSION[$currentModule.'_DetailView_Navigation'.$viewid]);
+				coreBOS_Session::delete($currentModule.'_DetailView_Navigation'.$viewid);
 			}
 		}
 		coreBOS_Session::set($currentModule.'_listquery',$query);

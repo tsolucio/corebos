@@ -66,7 +66,7 @@ class cbupdaterWorker {
 	var $failure_query_count=0;
 	var $success_query_array=array();
 	var $failure_query_array=array();
-	
+
 	function __construct() {
 		global $adb,$log,$current_user;
 		echo "<table width=80% align=center border=1>";
@@ -82,16 +82,16 @@ class cbupdaterWorker {
 			$this->filename = $cbu['filename'];
 			$this->classname = $cbu['classname'];
 			$this->execstate = $cbu['execstate'];
-			$this->systemupdate = ($cbu['systemupdate']=='1' ? true : false);
-			$this->perspective = ((isset($cbu['perspective']) and $cbu['perspective']=='1') ? true : false);
-			$this->blocked = ((isset($cbu['blocked']) and $cbu['blocked']=='1') ? true : false);
+			$this->systemupdate = ($cbu['systemupdate'] == '1');
+			$this->perspective = ((bool)(isset($cbu['perspective']) && $cbu['perspective'] == '1'));
+			$this->blocked = ((bool)(isset($cbu['blocked']) && $cbu['blocked'] == '1'));
 			$this->execdate = $cbu['execdate'];
 			$this->updError = false;
 		} else {  // it doesn't exist, we fail because it MUST exist
 			$this->sendError();
 		}
 	}
-	
+
 	function applyChange() {
 		if ($this->isBlocked()) return true;
 		if ($this->hasError()) $this->sendError();
@@ -104,7 +104,7 @@ class cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
+
 	function undoChange() {
 		if ($this->isBlocked()) return true;
 		if ($this->hasError()) $this->sendError();
@@ -121,7 +121,7 @@ class cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
+
 	function isApplied() {
 		return ($this->execstate=='Executed');
 	}
@@ -133,15 +133,15 @@ class cbupdaterWorker {
 	function isBlocked() {
 		return $this->blocked;
 	}
-	
+
 	function isContinuous() {
 		return ($this->execstate=='Continuous');
 	}
-	
+
 	function hasError() {
 		return ($this->updError or empty($this->cbupdid));
 	}
-	
+
 	function markApplied($stoponerror=true) {
 		if ($this->isBlocked()) return true;
 		if ($this->hasError() and $stoponerror) $this->sendError();
@@ -153,7 +153,7 @@ class cbupdaterWorker {
 		}
 		$this->execstate = 'Executed';
 	}
-	
+
 	function markUndone($stoponerror=true) {
 		if ($this->isBlocked() or $this->isContinuous()) return true;
 		if ($this->hasError() and $stoponerror) $this->sendError();
@@ -161,10 +161,10 @@ class cbupdaterWorker {
 		$adb->pquery('update vtiger_cbupdater set execstate=?,execdate=NULL where cbupdaterid=?', array('Pending',$this->cbupdid));
 		$this->execstate = 'Pending';
 	}
-	
+
 	function ExecuteQuery($query,$params=array()) {
 		global $adb,$log;
-	
+		$paramstring = (count($params)>0 ? '&nbsp;&nbsp;'.print_r($params,true) : '');
 		$status = $adb->pquery($query,$params);
 		$this->query_count++;
 		if(is_object($status)) {
@@ -172,7 +172,7 @@ class cbupdaterWorker {
 		<tr width="100%">
 		<td width="10%">'.get_class($status).'</td>
 		<td width="10%"><span style="color:green"> S </span></td>
-		<td width="80%">'.$query.(count($params)>0?'&nbsp;&nbsp;'.print_r($params,true):'').'</td>
+		<td width="80%">'.$query.$paramstring.'</td>
 		</tr>';
 			$success_query_array[$this->success_query_count++] = $query;
 			$log->debug("Query Success ==> $query");
@@ -181,14 +181,14 @@ class cbupdaterWorker {
 		<tr width="100%">
 		<td width="25%">'.$status.'</td>
 		<td width="5%"><span style="color:red"> F </span></td>
-		<td width="70%">'.$query.'</td>
+		<td width="70%">'.$query.$paramstring.'</td>
 		</tr>';
-			$this->failure_query_array[$this->failure_query_count++] = $query;
+			$this->failure_query_array[$this->failure_query_count++] = $query.$paramstring;
 			$this->updError = true;
 			$log->debug("Query Failed ==> $query \n Error is ==> [".$adb->database->ErrorNo()."]".$adb->database->ErrorMsg());
 		}
 	}
-	
+
 	function deleteWorkflow($wfid) {
 		$this->ExecuteQuery("DELETE FROM com_vtiger_workflowtasks WHERE workflow_id=?",array($wfid));
 		$this->ExecuteQuery("DELETE FROM com_vtiger_workflows WHERE workflow_id=?", array($wfid));
@@ -256,6 +256,60 @@ class cbupdaterWorker {
 		}
 	}
 
+	/* Given an array of field definitions this method will hide the fields.
+	 * The layout is an array of Module Name and Field Definition
+		array(
+			'{modulename}' => array(
+					'{fieldname1}',
+					'{fieldname2}',
+					'{fieldname3}',
+			)
+		),
+	*/
+	function massHideFields($fieldLayout) {
+		global $adb;
+		foreach($fieldLayout as $module => $fields){
+			$moduleInstance = Vtiger_Module::getInstance($module);
+			if ($moduleInstance) {
+				foreach ($fields as $field) {
+					$field = Vtiger_Field::getInstance($field,$moduleInstance);
+					if($field){
+						$this->ExecuteQuery('UPDATE vtiger_field SET presence = 1 WHERE fieldid=?',array($field->id));
+					}
+				}
+			} else {
+				$this->sendMsg('Module not found: '.$module.'!');
+			}
+		}
+	}
+
+	/* Given an array of field definitions this method will delete the fields.
+	 * The layout is an array of Module Name and Field Definition
+		array(
+			'{modulename}' => array(
+					'{fieldname1}',
+					'{fieldname2}',
+					'{fieldname3}',
+			)
+		),
+	*/
+	function massDeleteFields($fieldLayout) {
+		global $adb;
+		foreach($fieldLayout as $module => $fields){
+			$moduleInstance = Vtiger_Module::getInstance($module);
+			if ($moduleInstance) {
+				foreach ($fields as $field) {
+					$field = Vtiger_Field::getInstance($field,$moduleInstance);
+					if($field){
+						$field->delete();
+					}
+				}
+			} else {
+				$this->sendMsg('Module not found: '.$module.'!');
+			}
+		}
+	}
+
 	function installManifestModule($module) {
 		$package = new Vtiger_Package();
 		ob_start();
@@ -266,13 +320,13 @@ class cbupdaterWorker {
 		if ($rdo) $this->sendMsg("$module installed!");
 		else $this->sendMsgError("ERROR installing $module!");
 	}
-	
+
 	function isModuleInstalled($module) {
 		global $adb;
 		$tabrs = $adb->pquery('select count(*) from vtiger_tab where name=?',array($module));
 		return ($tabrs and $adb->query_result($tabrs, 0,0)==1);
 	}
-	
+
 	function sendMsg($msg) {
 		echo '<tr width="100%"><td colspan=3>'.$msg.'</td></tr>';
 	}
@@ -281,13 +335,13 @@ class cbupdaterWorker {
 		echo '<tr width="100%"><td colspan=3><span style="color:red">'.$msg.'</span></td></tr>';
 		$this->updError = true;
 	}
-	
+
 	function sendError() {
 		$this->updError = true;
 		echo '<tr width="100%"><td colspan=3<span style="color:red">ERROR: Class called without update record in application!!</span></td></tr></table>';
 		die();
 	}
-	
+
 	function finishExecution() {
 		echo '</table>';
 		if (count($this->failure_query_array)>0) {

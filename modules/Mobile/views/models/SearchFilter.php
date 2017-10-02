@@ -7,13 +7,13 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-include_once dirname(__FILE__) . '/../../api/ws/models/SearchFilter.php';
+include_once __DIR__ . '/../../api/ws/models/SearchFilter.php';
 
 class crmtogo_UI_SearchFilterModel extends crmtogo_WS_SearchFilterModel {
-	
-	function execute($fieldnames, $paging = false) {
+
+	function execute($fieldnames, $paging = false, $calwhere ='') {
 		global $current_user;
-		if ($this->moduleName == 'Project') {  
+		if ($this->moduleName == 'Project') {
 			// Custom View
 			include_once 'modules/CustomView/CustomView.php';
 			include_once 'include/QueryGenerator/QueryGenerator.php';
@@ -23,16 +23,15 @@ class crmtogo_UI_SearchFilterModel extends crmtogo_WS_SearchFilterModel {
 			$viewid = $customView->getViewId($this->moduleName);
 			$customview_html = $customView->getCustomViewCombo($viewid);
 			$viewinfo = $customView->getCustomViewByCvid($viewid);
-		       
+
 			$userid = coreBOS_Session::get('_authenticated_user_id');
 			$current_user = CRMEntity::getInstance('Users');
 			$current_user = $current_user->retrieveCurrentUserInfoFromFile($userid);
-		
+
 			$queryGenerator = new QueryGenerator($this->moduleName, $current_user);
 			if ($viewid != "0") {
 				$queryGenerator->initForCustomViewById($viewid);
-			} 
-			else {
+			} else {
 				$queryGenerator->initForDefaultCustomView();
 			}
 			$selectClause = sprintf("SELECT %s", implode(',', $fieldnames).",vtiger_project.projectid");

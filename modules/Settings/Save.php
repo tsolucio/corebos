@@ -7,17 +7,17 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-global $mod_strings,$adb,$root_directory;
+global $mod_strings,$adb;
 
-checkFileAccessForInclusion($root_directory."include/database/PearDatabase.php");
-require_once($root_directory."include/database/PearDatabase.php");
+checkFileAccessForInclusion('include/database/PearDatabase.php');
+require_once('include/database/PearDatabase.php');
 
 $server=vtlib_purify($_REQUEST['server']);
 $port=(empty($_REQUEST['port']) ? 0 : vtlib_purify($_REQUEST['port']));
 $server_username=vtlib_purify($_REQUEST['server_username']);
 $server_password=vtlib_purify($_REQUEST['server_password']);
 $server_type = vtlib_purify($_REQUEST['server_type']);
-$server_path = vtlib_purify($_REQUEST['server_path']);
+$server_path = isset($_REQUEST['server_path']) ? vtlib_purify($_REQUEST['server_path']) : '';
 $from_email_field = vtlib_purify($_REQUEST['from_email_field']);
 $smtp_auth = vtlib_purify($_REQUEST['smtp_auth']);
 
@@ -43,9 +43,9 @@ $smtp_auth = vtlib_purify($_REQUEST['smtp_auth']);
 	$action = 'EmailConfig';
 	if($mail_status != 1) {
 		$action = 'EmailConfig&emailconfig_mode=edit&server_name='.
-			vtlib_purify($_REQUEST['server']).'&server_user='.
-			vtlib_purify($_REQUEST['server_username']).'&auth_check='.
-			vtlib_purify($_REQUEST['smtp_auth']);
+			urlencode(vtlib_purify($_REQUEST['server'])).'&server_user='.
+			urlencode(vtlib_purify($_REQUEST['server_username'])).'&auth_check='.
+			urlencode(vtlib_purify($_REQUEST['smtp_auth']));
 	} else {
 		$sql='select * from vtiger_systems where server_type = ?';
 		$idrs=$adb->pquery($sql, array($server_type));

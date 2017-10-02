@@ -12,12 +12,36 @@ global $current_user, $currentModule, $singlepane_view;
 checkFileAccessForInclusion("modules/$currentModule/$currentModule.php");
 require_once("modules/$currentModule/$currentModule.php");
 
-$search = isset($_REQUEST['search_url']) ? vtlib_purify($_REQUEST['search_url']) : '';
+if (isset($_REQUEST['search_url'])) {
+	$search = vtlib_purify($_REQUEST['search_url']);
+	if (substr($search, 0, 1) != '&') $search = '&' . $search;
+} else {
+	$search = '';
+}
+$req = new Vtiger_Request();
+$req->setDefault('return_module',$currentModule);
+if(!empty($_REQUEST['return_module'])) {
+	$req->set('return_module',$_REQUEST['return_module']);
+}
+$req->setDefault('return_action','DetailView');
+if(!empty($_REQUEST['return_action'])) {
+	$req->set('return_action',$_REQUEST['return_action']);
+}
+//code added for returning back to the current view after edit from list view
+if(empty($_REQUEST['return_viewname']) or $singlepane_view == 'true') {
+	$req->set('return_viewname','0');
+} else {
+	$req->set('return_viewname',$_REQUEST['return_viewname']);
+}
+if(isset($_REQUEST['activity_mode'])) {
+	$req->set('return_activity_mode',$_REQUEST['activity_mode']);
+}
+$req->set('return_start',(isset($_REQUEST['pagenumber']) ? $_REQUEST['pagenumber'] : ''));
 
 $focus = new $currentModule();
 setObjectValuesFromRequest($focus);
 
-$mode = vtlib_purify($_REQUEST['mode']);
+$mode = (isset($_REQUEST['mode']) ? vtlib_purify($_REQUEST['mode']) : '');
 $record=vtlib_purify($_REQUEST['record']);
 if($mode) $focus->mode = $mode;
 if($record)$focus->id  = $record;
@@ -26,32 +50,22 @@ $focus->column_fields['currency_id'] = vtlib_purify($_REQUEST['inventory_currenc
 $cur_sym_rate = getCurrencySymbolandCRate(vtlib_purify($_REQUEST['inventory_currency']));
 $focus->column_fields['conversion_rate'] = $cur_sym_rate['rate'];
 }
-if($_REQUEST['assigntype'] == 'U') {
-	$focus->column_fields['assigned_user_id'] = $_REQUEST['assigned_user_id'];
-} elseif($_REQUEST['assigntype'] == 'T') {
-	$focus->column_fields['assigned_user_id'] = $_REQUEST['assigned_group_id'];
+if (empty($_REQUEST['assigned_user_id']) and empty($_REQUEST['assigned_group_id'])) {
+	$focus->column_fields['assigned_user_id'] = $current_user->id;
+} else {
+	if($_REQUEST['assigntype'] == 'U') {
+		$focus->column_fields['assigned_user_id'] = $_REQUEST['assigned_user_id'];
+	} elseif($_REQUEST['assigntype'] == 'T') {
+		$focus->column_fields['assigned_user_id'] = $_REQUEST['assigned_group_id'];
+	}
 }
 list($saveerror,$errormessage,$error_action,$returnvalues) = $focus->preSaveCheck($_REQUEST);
 if ($saveerror) { // there is an error so we go back to EditView.
 	$return_module=$return_id=$return_action='';
-	if (!empty($_REQUEST['return_action'])) {
-		$return_action = '&return_action='.vtlib_purify($_REQUEST['return_action']);
-	}
-	if (!empty($_REQUEST['return_module'])) {
-		$return_action .= '&return_module='.vtlib_purify($_REQUEST['return_module']);
-	}
 	if (isset($_REQUEST['return_id']) and $_REQUEST['return_id'] != '') {
-		$return_action = '&return_id='.vtlib_purify($_REQUEST['return_id']);
+		$req->set('RETURN_ID',$_REQUEST['return_id']);
 	}
-	if (!empty($_REQUEST['activity_mode'])) {
-		$return_action .= '&activity_mode='.vtlib_purify($_request['activity_mode']);
-	}
-	if (empty($_REQUEST['return_viewname'])) {
-		$return_viewname = '0';
-	} else {
-		$return_viewname = vtlib_purify($_REQUEST['return_viewname']);
-	}
-	$field_values_passed.="";
+	$field_values_passed = '';
 	foreach($focus->column_fields as $fieldname => $val) {
 		if(isset($_REQUEST[$fieldname])) {
 			$field_values_passed.="&";
@@ -65,39 +79,32 @@ if ($saveerror) { // there is an error so we go back to EditView.
 		}
 	}
 	$encode_field_values=base64_encode($field_values_passed);
-	$error_module = $currentModule;
+	$req->set('return_module',$currentModule);
 	$error_action = (empty($error_action) ? 'EditView' : $error_action);
+	$req->set('return_action',$error_action);
+	$req->set('return_record',$record);
 	$errormessage = urlencode($errormessage);
-	header("location: index.php?action=$error_action&module=$error_module&record=$record&return_viewname=$return_viewname".$search.$return_action.$returnvalues."&error_msg=$errormessage&save_error=true&encode_val=$encode_field_values");
+	header('Location: index.php?' . $req->getReturnURL() . $search . $returnvalues . "&error_msg=$errormessage&save_error=true&encode_val=$encode_field_values");
 	die();
 }
-
+if (!empty($source_id)) {
+	$focus->linkmodeid = $source_id;
+}
+if (!empty($source_module)) {
+	$focus->linkmodemodule = $source_module;
+}
 $focus->save($currentModule);
 $return_id = $focus->id;
-
-$parenttab = getParentTab();
-if(!empty($_REQUEST['return_module'])) {
-	$return_module = vtlib_purify($_REQUEST['return_module']);
-} else {
-	$return_module = $currentModule;
-}
-if(!empty($_REQUEST['return_action'])) {
-	$return_action = vtlib_purify($_REQUEST['return_action']);
-} else {
-	$return_action = 'DetailView';
-}
+$req->set('return_record',$return_id);
 if(isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != '') {
-	$return_id = vtlib_purify($_REQUEST['return_id']);
-}
-//code added for returning back to the current view after edit from list view
-if(empty($_REQUEST['return_viewname']) or $singlepane_view == 'true') {
-	$return_viewname='0';
-} else {
-	$return_viewname=vtlib_purify($_REQUEST['return_viewname']);
-}
-if(isset($_REQUEST['activity_mode'])) {
-	$return_action .= '&activity_mode='.vtlib_purify($_REQUEST['activity_mode']);
+	$req->set('return_record',$_REQUEST['return_id']);
 }
 
-header("Location: index.php?action=$return_action&module=$return_module&record=$return_id&parenttab=$parenttab&viewname=$return_viewname&start=".vtlib_purify($_REQUEST['pagenumber']).$search);
+if (!isset($__cbSaveSendHeader) || $__cbSaveSendHeader) {
+	if (isset($_REQUEST['Module_Popup_Edit']) and $_REQUEST['Module_Popup_Edit']==1) {
+		echo "<script>window.close();</script>";
+	} else {
+		header('Location: index.php?' . $req->getReturnURL() . $search);
+	}
+}
 ?>

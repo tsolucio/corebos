@@ -19,16 +19,18 @@
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
 
-// Time Threshold: after these minutes running we will send email
-$warningTimeThreshold = 30*60; // 30 minutes.
-///////////////////////////////////
-
 $Vtiger_Utils_Log = false;
 include_once('vtlib/Vtiger/Module.php');
 require_once('vtlib/Vtiger/Cron.php');
 require_once('modules/Emails/mail.php');
 require_once('modules/Emails/Emails.php');
-global $site_URL, $currentModule,$current_user;
+global $site_URL, $currentModule;
+
+// Time Threshold: after these minutes running we will send email
+$auser = Users::getActiveAdminUser();
+$warningMinutes = GlobalVariable::getVariable('CronTasks_cronWatcher_TimeThreshold', 30, 'CronTasks', $auser->id);
+$warningTimeThreshold = $warningMinutes*60; // $warningMinutes minutes.
+///////////////////////////////////
 
 // i18n
 //$i18nInactive = getTranslatedString('LBL_INACTIVE','CronTasks');
@@ -65,9 +67,8 @@ foreach ($cronTasks as $cronTask) {
 $currentModule = $holdCM;
 
 //Send email with error.
-$auser = Users::getActiveAdminUser();
 $mailto = $auser->column_fields['email1'];
-$mailtoDefined = GlobalVariable::getVariable('CronTasks_cronWatcher_mailto', '', 'CronTasks', $current_user->id);
+$mailtoDefined = GlobalVariable::getVariable('CronTasks_cronWatcher_mailto', '', 'CronTasks', $auser->id);
 if($mailto != ''){
 	$mailto .= ','.$mailtoDefined;
 }else {

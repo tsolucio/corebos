@@ -84,7 +84,7 @@
 	{/if}
 	{if $EMPTY_FOLDERS|@count gt 0}
 		<input type="button" name="show" value="{$MOD.LBL_VIEW_EMPTY_FOLDERS}" class="crmbutton small cancel" onClick="fnvshobj(this,'emptyfolder');" title="{$MOD.LBL_VIEW_EMPTY_FOLDERS}">
-		<div class="layerPopup thickborder" style="display:none;position:absolute; left:193px;top:106px;width:250px;" id="emptyfolder">
+		<div class="layerPopup thickborder" style="display:none;position:absolute; left:193px;top:106px;width:250px;z-index:1" id="emptyfolder">
 			<table  class="layerHeadingULine" border="0" cellpadding="5" cellspacing="0" width="100%">
 				<tr>
 					<td class="genHeaderSmall" align="left">

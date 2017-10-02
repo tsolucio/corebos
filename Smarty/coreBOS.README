@@ -1,0 +1,27 @@
+We modify the html_options plugin to add sort and multiple functionality. Remember to not lose this when upgrading.
+
+This is the change:
+
+diff --git a/Smarty/libs/plugins/function.html_options.php b/Smarty/libs/plugins/function.html_options.php
+index 20e6677..eb0506d 100644
+--- a/Smarty/libs/plugins/function.html_options.php
++++ b/Smarty/libs/plugins/function.html_options.php
+@@ -93,6 +93,17 @@ function smarty_function_html_options($params)
+                 }
+                 break;
+ 
++            case 'multiple':
++               if ($_val)
++                       $extra .= ' multiple="true" size="6"';
++               break;
++            case 'sortoptions':
++                if ($_val=='desc')
++                       arsort($options);
++                else
++                       asort($options);
++                break;
++
+             case 'strict':
+                 break;
+ 
+

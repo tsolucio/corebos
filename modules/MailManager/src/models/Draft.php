@@ -13,7 +13,7 @@ include_once 'include/Webservices/Create.php';
 include_once 'include/Webservices/Update.php';
 include_once 'modules/MailManager/config.inc.php';
 include_once 'modules/MailManager/src/controllers/UploadController.php';
-include_once dirname(__FILE__).'/DraftFolder.php';
+include_once __DIR__ .'/DraftFolder.php';
 
 class MailManager_Model_DraftEmail {
 
@@ -34,8 +34,7 @@ class MailManager_Model_DraftEmail {
 			$where = $type ." LIKE '%". $q ."%'" ;
 		}
 		$where = " AND ".$where;
-		$draftMails = $this->getDrafts($page, $limit, $folder, $where);
-		return $draftMails;
+		return $this->getDrafts($page, $limit, $folder, $where);
 	}
 
 	function constructAllClause($query) {
@@ -47,14 +46,14 @@ class MailManager_Model_DraftEmail {
 				$clause .=  $fields[$i]." LIKE '%".$query."%' OR ";
 			}
 		}
-        return $clause;
+		return $clause;
 	}
 
 	function getDrafts($page, $limit, $folder, $where = null) {
 		global $current_user;
 		$handler = vtws_getModuleHandlerFromName('Emails', $current_user);
 		$meta = $handler->getMeta();
-		if(!$meta->hasReadAccess())  {
+		if (!$meta->hasReadAccess()) {
 			return false;
 		}
 
@@ -169,7 +168,7 @@ class MailManager_Model_DraftEmail {
 		$email->column_fields['subject'] =  (!empty($subject)) ? $subject : "No Subject";
 		$email->column_fields['description'] = $request->get('body');
 		$email->column_fields['activitytype'] = 'Emails';
-		$email->column_fields['from_email'] = $fromEmail;
+		$email->column_fields['from_email'] = $this->getFromEmailAddress();
 		$email->column_fields['saved_toid'] = (!empty($to_string)) ? $to_string : "SAVED";
 		$email->column_fields['ccmail'] = $cc_string;
 		$email->column_fields['bccmail'] = $bcc_string;
@@ -195,7 +194,7 @@ class MailManager_Model_DraftEmail {
 			$adb->pquery("delete from vtiger_seactivityrel where activityid=?",array($emailId)); //remove all previous relation
 		}
 		for ($i=0; $i<(count($myids)); $i++) {
-				$realid = explode("@",$myids[$i]);
+			$realid = explode('@',$myids[$i]);
 			if(!empty($realid[0]) && !empty($emailId)) {
 				// this is needed as we might save the mail in draft mode earlier
 				$result = $adb->pquery("SELECT * FROM vtiger_seactivityrel WHERE crmid=? AND activityid=?",array($realid[0], $emailId));
@@ -210,11 +209,9 @@ class MailManager_Model_DraftEmail {
 	function getFromEmailAddress() {
 		global $adb, $current_user;
 		$fromEmail = false;
-		if (Vtiger_Version::check('5.2.0', '>=')) {
-			$smtpFromResult = $adb->pquery('SELECT from_email_field FROM vtiger_systems WHERE server_type=?', array('email'));
-			if ($adb->num_rows($smtpFromResult)) {
-				$fromEmail = decode_html($adb->query_result($smtpFromResult, 0, 'from_email_field'));
-			}
+		$smtpFromResult = $adb->pquery('SELECT from_email_field FROM vtiger_systems WHERE server_type=?', array('email'));
+		if ($smtpFromResult and $adb->num_rows($smtpFromResult)) {
+			$fromEmail = decode_html($adb->query_result($smtpFromResult, 0, 'from_email_field'));
 		}
 		if (empty($fromEmail)) $fromEmail = $current_user->column_fields['email1'];
 		return $fromEmail;
@@ -244,6 +241,7 @@ class MailManager_Model_DraftEmail {
 
 	function getParentFromEmails($to_string) {
 		global $current_user;
+		$parentIds = '';
 		if (!empty($to_string)) {
 			$toArray = explode(',', $to_string);
 			foreach($toArray as $to) {

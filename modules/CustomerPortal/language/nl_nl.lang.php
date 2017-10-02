@@ -42,11 +42,11 @@ $mod_strings = Array (
 	'LBL_USER_INFORMATION'=>'Gebruikersinformatie',
 	'YES'=>'Ja',
 	'NO'=>'Nee',
-	
+
 	'LBL_USER_DESCRIPTION'=>'Het hierboven geselecteerde gebruikersprofiel wordt gebruikt in de Klantportaal.',
-'LBL_GROUP_DESCRIPTION'=>'NOTE : Tickets worden toegewezen aan de bovenvermelde gebruiker in de standaard Groep/Gebruiker van het klantportaal.',
-'LBL_SELECT_USERS'=>'Selecteer de gebruikers',
-'LBL_DEFAULT_USERS'=>'Standaard gebruiker',
+	'LBL_GROUP_DESCRIPTION'=>'NOTE : Tickets worden toegewezen aan de bovenvermelde gebruiker in de standaard Groep/Gebruiker van het klantportaal.',
+	'LBL_SELECT_USERS'=>'Selecteer de gebruikers',
+	'LBL_DEFAULT_USERS'=>'Standaard gebruiker',
 
 	'SELECT_USERS'=>'Selecteer de gebruikers',				
 	'LBL_DISABLE'=>'Deactiveer',

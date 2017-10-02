@@ -7,8 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-
-include_once dirname(__FILE__) . '/../api/ws/Login.php';
+include_once __DIR__ . '/../api/ws/Login.php';
 
 class crmtogo_UI_Login  extends crmtogo_WS_Login {
 

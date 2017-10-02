@@ -66,7 +66,7 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 		$emailid = $focus->id;
 
 		// TODO: Handle attachments of the mail (inline/file)
-		$this->__SaveAttachements($mailrecord, 'Emails', $focus);
+		$this->__SaveAttachements($mailrecord, 'Emails', $focus, $module, $linkfocus);
 
 		return $emailid;
 	}
@@ -79,7 +79,7 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
      * @param String $basemodule
      * @param CRMEntity $basefocus
      */
-	function __SaveAttachements($mailrecord, $basemodule, $basefocus) {
+	function __SaveAttachements($mailrecord, $basemodule, $basefocus, $relate2module='', $relate2focus='') {
 		global $adb, $root_directory;
 
 		// If there is no attachments return
@@ -136,6 +136,11 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 				if(!empty($basefocus->id) && !empty($attachid)) {
 					$this->relateAttachment($basefocus->id, $attachid);
 				}
+
+				// Link document to related record
+				if(!empty($relate2focus) && !empty($relate2focus->id) && !empty($documentId)) {
+					$this->relatedDocument($relate2focus->id, $documentId);
+				}
 			}
 		}
 	}
@@ -156,8 +161,8 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 		$document = CRMEntity::getInstance('Documents');
 		$document->column_fields['notes_title']      = $info['title'];
 		$document->column_fields['filename']         = $info['filename'];
-        $document->column_fields['filesize']         = $info['size'];
-        $document->column_fields['filetype']         = $info['filetype'];
+		$document->column_fields['filesize']         = $info['size'];
+		$document->column_fields['filetype']         = $info['filetype'];
 		$document->column_fields['filestatus']       = 1;
 		$document->column_fields['filelocationtype'] = 'I';
 		$document->column_fields['folderid']         = 1; // Default Folder
@@ -201,8 +206,7 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
      * @return Array
      */
 	static function buildDetailViewLink($module, $record, $label) {
-		$detailViewLink = sprintf("<a target='_blank' href='index.php?module=%s&action=DetailView&record=%s'>%s</a>",
-                $module, $record, textlength_check($label));
+		$detailViewLink = sprintf("<a target='_blank' href='index.php?module=%s&action=DetailView&record=%s'>%s</a>", $module, $record, textlength_check($label));
 		return array('record'=>$record, 'module'=>$module, 'label'=>$label, 'detailviewlink'=> $detailViewLink);
 	}
 

@@ -25,7 +25,6 @@ $mod_strings = Array(
 'LBL_MODULE_TITLE'=>'Oportunidades: Principal',
 'LBL_SEARCH_FORM_TITLE'=>'Pesquisar Oportunidade',
 'LBL_LIST_FORM_TITLE'=>'Listar Oportunidade',
-'LBL_OPPORTUNITY_NAME'=>'Nome Oportunidade:',
 'LBL_OPPORTUNITY'=>'Oportunidade:',
 'LBL_NAME'=>'Nome Oportunidade',
 'LBL_INVITEE'=>'Contatos',

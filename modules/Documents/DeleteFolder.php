@@ -19,7 +19,7 @@ if($current_user->is_admin != 'on')
 }
 else
 {	
-	$local_log =& LoggerManager::getLogger('index');
+	$local_log = LoggerManager::getLogger('index');
 	if(isset($_REQUEST['folderid']) && $_REQUEST['folderid'] != '')
 		$folderId = $_REQUEST['folderid'];
 	else

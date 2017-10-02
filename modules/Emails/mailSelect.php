@@ -10,12 +10,11 @@
 require_once('Smarty_setup.php');
 require_once('include/database/PearDatabase.php');
 
-
 global $app_strings,$mod_strings,$current_user,$theme,$adb;
 $image_path = 'themes/'.$theme.'/images/';
 $idlist = vtlib_purify($_REQUEST['idlist']);
 $pmodule=vtlib_purify($_REQUEST['return_module']);
-$excludedRecords=vtlib_purify($_REQUEST['excludedRecords']);
+$excludedRecords = isset($_REQUEST['excludedRecords']) ? vtlib_purify($_REQUEST['excludedRecords']) : '';
 
 $single_record = false;
 if(!strpos($idlist,':'))
@@ -30,44 +29,40 @@ $querystr = "select fieldid, fieldname, fieldlabel, columnname from vtiger_field
 $res=$adb->pquery($querystr, array(getTabid($pmodule)));
 $numrows = $adb->num_rows($res);
 $returnvalue = Array();
-for($i = 0; $i < $numrows; $i++)
-{
+for ($i = 0; $i < $numrows; $i++) {
 	$value = Array();
 	$fieldname = $adb->query_result($res,$i,"fieldname");
 	$permit = getFieldVisibilityPermission($pmodule, $userid, $fieldname);
-	if($permit == '0')
-	{
-		$temp=$adb->query_result($res,$i,'columnname');
-		$columnlists [] = $temp;
-		$fieldid=$adb->query_result($res,$i,'fieldid');
-		$fieldlabel =$adb->query_result($res,$i,'fieldlabel');
-		$value[] = getTranslatedString($fieldlabel);
-		$returnvalue [$fieldid]= $value;
+	if ($permit == '0') {
+		$temp = $adb->query_result($res,$i,'columnname');
+		$columnlists[] = $temp;
+		$fieldid = $adb->query_result($res,$i,'fieldid');
+		$fieldlabel = $adb->query_result($res,$i,'fieldlabel');
+		$value[] = getTranslatedString($fieldlabel,$pmodule);
+		$returnvalue[$fieldid] = $value;
 	}
 }
-
-if($single_record && count($columnlists) > 0)
-{
+$entity_name = '';
+$field_value = array();
+if ($single_record && count($columnlists) > 0) {
 	$count = 0;
-	$val_cnt = 0;	
-	switch($pmodule)
-	{
+	$val_cnt = 0;
+	switch ($pmodule) {
 		case 'Accounts':
 			$query = 'select accountname,'.implode(",",$columnlists).' from vtiger_account left join vtiger_accountscf on vtiger_accountscf.accountid = vtiger_account.accountid where vtiger_account.accountid = ?';
 			$result=$adb->pquery($query, array($idlist));
-		        foreach($columnlists as $columnname)	
+			foreach($columnlists as $columnname)
 			{
 				$acc_eval = $adb->query_result($result,0,$columnname);
 				$field_value[$count++] = $acc_eval;
 				if($acc_eval != "") $val_cnt++;
-				
 			}
 			$entity_name = $adb->query_result($result,0,'accountname');
 			break;
 		case 'Leads':
 			$query = 'select concat(firstname," ",lastname) as leadname,'.implode(",",$columnlists).' from vtiger_leaddetails left join vtiger_leadscf on vtiger_leadscf.leadid = vtiger_leaddetails.leadid where vtiger_leaddetails.leadid = ?';
 			$result=$adb->pquery($query, array($idlist));
-		        foreach($columnlists as $columnname)	
+			foreach($columnlists as $columnname)
 			{
 				$lead_eval = $adb->query_result($result,0,$columnname);
 				$field_value[$count++] = $lead_eval;
@@ -116,7 +111,7 @@ if($single_record && count($columnlists) > 0)
 				$con_eval = $adb->query_result($result,0,$columnname);
 				$field_value[$count++] = $con_eval;
 				if($con_eval != "") $val_cnt++;
-			}	
+			}
 			$entity_name = $adb->query_result($result,0,'potentialname');
 			break;
 		case 'HelpDesk':
@@ -130,7 +125,23 @@ if($single_record && count($columnlists) > 0)
 			}
 			$entity_name = $adb->query_result($result,0,'title');
 			break;
-	}	
+		default:
+			$minfo = getEntityField($pmodule);
+			$qg = new QueryGenerator($pmodule, $current_user);
+			$fields = $columnlists;
+			$fields[] = $minfo['fieldname'];
+			$qg->setFields($fields);
+			$qg->addCondition('id', $idlist, 'e');
+			$query = $qg->getQuery();
+			$result = $adb->query($query);
+			foreach ($columnlists as $columnname) {
+				$con_eval = $adb->query_result($result,0,$columnname);
+				$field_value[$count++] = $con_eval;
+				if($con_eval != "") $val_cnt++;
+			}
+			$entity_name = $adb->query_result($result,0,$minfo['fieldname']);
+			break;
+	}
 }
 $smarty->assign('PERMIT',$permit);
 $smarty->assign('ENTITY_NAME',$entity_name);
@@ -144,9 +155,9 @@ $smarty->assign("FROM_MODULE", $pmodule);
 $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH",$image_path);
 $smarty->assign("EXE_REC", $excludedRecords);
-$smarty->assign("SEARCH_URL", vtlib_purify($_REQUEST['searchurl']));
-$smarty->assign("VIEWID", vtlib_purify($_REQUEST['viewname']));
-$smarty->assign('RECORDID',vtlib_purify($_REQUEST['recordid']));
+$smarty->assign('SEARCH_URL', isset($_REQUEST['searchurl']) ? vtlib_purify($_REQUEST['searchurl']) : '');
+$smarty->assign('VIEWID', isset($_REQUEST['viewname']) ? vtlib_purify($_REQUEST['viewname']) : '');
+$smarty->assign('RECORDID', isset($_REQUEST['recordid']) ? vtlib_purify($_REQUEST['recordid']) : '');
 
 if(($single_record && count($columnlists) > 0)){
 	$smarty->display("SelectEmail.tpl");

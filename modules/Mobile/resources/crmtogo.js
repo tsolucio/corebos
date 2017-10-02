@@ -11,16 +11,36 @@
 ( function( $ ) {
 function pageIsSelectmenuDialog( page ) {
     var isDialog = false,
-        id = page && page.attr( "id" );
+        id = page && page.prop( "id" );
     $( ".filterable-select" ).each( function() {
-        if ( $( this ).attr( "id" ) + "-dialog" === id ) {
+        if ( $( this ).prop( "id" ) + "-dialog" === id ) {
             isDialog = true;
             return false;
         }
     });
     return isDialog;
 }
-
+function updateOnlineStatus(event){
+	var condition = navigator.onLine ? "online" : "offline";
+	if(condition == 'offline'){
+		jQuery.blockUI({ 
+			message: cbMobile_arr.status_offline,
+			css: { 
+				border: 'none', 
+				padding: '15px', 
+				backgroundColor: '#000', 
+				'-webkit-border-radius': '10px', 
+				'-moz-border-radius': '10px', 
+				opacity: .5, 
+				color: '#fff'
+			}
+		});
+	}else{
+		jQuery.unblockUI();
+	}
+}
+window.addEventListener('online',  updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
 $.mobile.document
     // Upon creation of the select menu, we want to make use of the fact that the ID of the
     // listview it generates starts with the ID of the select menu itself, plus the suffix "-menu".
@@ -30,7 +50,7 @@ $.mobile.document
 		var selectmenu = $( event.target );
 		//remove not selected options
 		$('option:not(:selected)', selectmenu).remove();
-		var list = $( "#" + selectmenu.attr( "id" ) + "-menu" );
+		var list = $( "#" + selectmenu.prop( "id" ) + "-menu" );
         var form = list.jqmData( "filter-form" );
         // We store the generated form in a variable attached to the popup so we avoid creating a
         // second form/input field when the listview is destroyed/rebuilt during a refresh.
@@ -60,7 +80,7 @@ $.mobile.document
 					url: "index.php?_operation=getRelatedFieldAjax",
 					dataType: "json",
 					data: {
-						parentselector: selectmenu.attr('id'),
+						parentselector: selectmenu.prop('id'),
 						searchvalue: input.val(),
 						modulename : $("#module").val()
 					}
@@ -168,6 +188,12 @@ var crmtogo_Index_Js = {
 					$('#viewname').css('display','block');
 				}
 			});
+
+            $("#scopetoggle").on("change", function(e){
+                var myswitch = $(this);
+                var showWeek = myswitch[0].selectedIndex == 1 ? true:false;
+                $("#calendarcontainer").trigger("changeScope", showWeek);
+            });
 			
 			function fillcalendar(data) {
 				var calobj = jQuery.parseJSON(data);
@@ -191,6 +217,12 @@ var crmtogo_Index_Js = {
 						});
 					}
 				});
+
+                // sort events by begin date
+                caljson.sort(function(a,b){
+                    return a['begin'] > b['begin'];
+                });
+
 				$("#calendarcontainer").jqmCalendar({
 					events : caljson,
 					months : cal_config_arr.monthNames,
@@ -199,11 +231,11 @@ var crmtogo_Index_Js = {
 				});
 				$("#calendarcontainer").trigger('refresh');
 			}
-			$("#calendarcontainer").bind('change', function(event, date) {
+            $("#calendarcontainer").bind('change', function(event, date, inWeek) {
 				//get all calendar entries for the selected month
 				//make sure it is called only once
 				if (date.getTime() != tmp_date.getTime()) {
-					$.get('index.php?_operation=listModuleRecords&module=Calendar&compact=true&datetime='+date, fillcalendar);
+                    $.get('index.php?_operation=listModuleRecords&module=Calendar&compact=true&datetime='+date+((inWeek===true)?"&inweek=true":""), fillcalendar);
 				}
 				tmp_date = date;
 			});
@@ -389,7 +421,7 @@ var crmtogo_Index_Js = {
 		var origmodule = $("#origmodule").val()
 		var time_end = $("#time_end").val();
 		
-		if (mode =='edit' && origmodule == 'Events') {
+		if (origmodule == 'Events') {
 			//we use time_end for events
 			var endtime_arr = $("#time_end").val().split(':');
 			var endhour = parseFloat(endtime_arr[0]);
@@ -445,22 +477,13 @@ var crmtogo_Index_Js = {
 
 		var date1 = new Date(y1, m1, d1, starthour, startmin, 0);
 		if (origmodule == 'Events') {
-			if (mode == 'edit') {
-				var date2 = new Date(y1, m1, d1, endhour, endmin, 0);
-				if (date1 - date2 == '0') {
-					//add 5 minutes for create mode for events
-					date2.setMinutes(date2.getMinutes() + 5);
-					var fiveminutes = date2.getHours() + ":" + date2.getMinutes();
-					$("#time_end").val(fiveminutes);
-				}
-			}		
-			else {
-				var date2 = date1;
+			var date2 = new Date(y1, m1, d1, endhour, endmin, 0);
+			if (date1 - date2 == '0') {
 				//add 5 minutes for create mode for events
 				date2.setMinutes(date2.getMinutes() + 5);
 				var fiveminutes = date2.getHours() + ":" + date2.getMinutes();
 				$("#time_end").val(fiveminutes);
-			}		
+			}
 		}
 		//must be in the future
 		if(new Date() > date1){
@@ -596,9 +619,9 @@ $(document).delegate("#login_page", "pageinit", function() {
 			var field = $(settings.field)
 			control.bind('click', function () {
 				if (control.is(':checked')) {
-					field.attr('type', 'text');
+					field.prop('type', 'text');
 				} else {
-					field.attr('type', 'password');
+					field.prop('type', 'password');
 				}
 			})
 		};

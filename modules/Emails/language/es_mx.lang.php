@@ -159,7 +159,6 @@ $mod_strings = Array(
 'LBL_NO_RCPTS_EMAIL_ERROR'=>'No se ha especificado destinatario',
 'LBL_CONF_MAILSERVER_ERROR'=>'Configura el servidor de correo saliente en Herramientas --> Servidor de Correo',
 'LBL_CONF_SERVERSTORAGE_ERROR'=>'Los permisos en tu directorio storage son insuficientes, no podrás enviar adjuntos!',
-'LBL_VTIGER_EMAIL_CLIENT'=>'Webmail',
 'LBL_MAILSELECT_INFO3'=>'No tienes permiso para visualizar las cuentas de correo del registro seleccionado.',
 //Added  for script alerts
 'FEATURE_AVAILABLE_INFO' => 'Característica disponible sólo para Microsoft Internet Explorer 5.5+\n\n 

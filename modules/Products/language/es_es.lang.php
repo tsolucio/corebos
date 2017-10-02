@@ -227,6 +227,9 @@ $mod_strings = Array(
 
 'LBL_NO_TAXES_ASSOCIATED'=>'No hay impuestos asociados a este producto',
 'Products ID' => 'Id Producto',
+'Divisible' => 'Divisible',
+'DIVISIBLE_WARNING' => 'solo puede venderse en unidades enteras',
+'DIVISIBLE_WARNING_PURCHASE' => 'solo puede comprarse en unidades enteras',
 
 );
 

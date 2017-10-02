@@ -15,8 +15,8 @@ $smarty = new vtigerCRM_Smarty();
 
 require_once 'modules/Vtiger/DetailView.php';
 
-if($focus->permissiontoedit())
-	$smarty->assign('DETAILVIEW_AJAX_EDIT', PerformancePrefs::getBoolean('DETAILVIEW_AJAX_EDIT', true));
+if ($focus->permissiontoedit())
+	$smarty->assign('DETAILVIEW_AJAX_EDIT', GlobalVariable::getVariable('Application_DetailView_Inline_Edit', 1));
 else
 	$smarty->assign('DETAILVIEW_AJAX_EDIT', false); // no permission
 

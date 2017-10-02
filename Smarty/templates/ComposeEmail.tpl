@@ -11,29 +11,31 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset={$APP.LBL_CHARSET}">
+<meta http-equiv="Content-Type" content="text/html; charset={$LBL_CHARSET}">
 <title>{$MOD.TITLE_COMPOSE_MAIL}</title>
 <link REL="SHORTCUT ICON" HREF="themes/images/favicon.ico">
 <style type="text/css">@import url("themes/{$THEME}/style.css");</style>
 <script type="text/javascript" src="include/jquery/jquery.js"></script>
 <script type="text/javascript" src="include/js/general.js"></script>
-<script type="text/javascript" src="include/js/{$LANGUAGE}.lang.js?{$VERSION}"></script>
+<script type="text/javascript" src="include/js/{$LANGUAGE}.lang.js"></script>
 <script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
 <script type="text/javascript" src="modules/Products/multifile.js"></script>
+<script type="text/javascript" src="modules/Emails/Emails.js"></script>
 </head>
 <body marginheight="0" marginwidth="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
 {literal}
 <form name="EditView" method="POST" ENCTYPE="multipart/form-data" action="index.php" onSubmit="if(email_validate(this.form,'')) { VtigerJS_DialogBox.block();} else { return false; }">
 {/literal}
 <input type="hidden" name="send_mail" >
-<input type="hidden" name="contact_id" value="{$CONTACT_ID}">
-<input type="hidden" name="user_id" value="{$USER_ID}">
+<input type="hidden" name="contact_id" value="{if isset($CONTACT_ID)}{$CONTACT_ID}{/if}">
+<input type="hidden" name="user_id" value="{if isset($USER_ID)}{$USER_ID}{/if}">
 <input type="hidden" name="filename" value="{$FILENAME}">
-<input type="hidden" name="old_id" value="{$OLD_ID}">
 <input type="hidden" name="module" value="{$MODULE}">
 <input type="hidden" name="record" value="{$ID}">
-<input type="hidden" name="mode" value="{$MODE}">
+<input type="hidden" name="mode" value="{if isset($MODE)}{$MODE}{/if}">
 <input type="hidden" name="action">
+<input type="hidden" name="return_action" value="{if isset($RETURN_ACTION)}{$RETURN_ACTION}{/if}">
+<input type="hidden" name="return_module" value="{if isset($RETURN_MODULE)}{$RETURN_MODULE}{/if}">
 <input type="hidden" name="popupaction" value="create">
 <input type="hidden" name="hidden_toid" id="hidden_toid">
 <table class="small mailClient" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -51,19 +53,19 @@
 	<tr>
 	<td class="mailSubHeader" align="right"><font color="red">*</font><b>{$MOD.LBL_FROM}</b></td>
 	<td class="cellText" style="padding: 5px;">
-		<input name="from_email" id="from_email" class="txtBox" type="text" value="{$EMAIL_FROM}" style="width: 525px;" placeholder="{'LeaveEmptyForUserEmail'|@getTranslatedString:'Settings'}">
+		<input name="from_email" id="from_email" class="txtBox" type="text" value="{if isset($FROM_MAIL)}{$FROM_MAIL}{/if}" style="width: 525px;" placeholder="{'LeaveEmptyForUserEmail'|@getTranslatedString:'Settings'}">
 	</td>
 	<td class="cellText" style="padding: 5px;" align="left" nowrap></td>
 	</tr>
 {foreach item=row from=$BLOCKS}
 {foreach item=elements from=$row}
-	{if $elements.2.0 eq 'parent_id'}
+	{if isset($elements.2) && isset($elements.2.0) && $elements.2.0 eq 'parent_id'}
 	<tr>
 	<td class="mailSubHeader" align="right"><font color="red">*</font><b>{$MOD.LBL_TO}</b></td>
 	<td class="cellText" style="padding: 5px;">
-		<input name="{$elements.2.0}" id="{$elements.2.0}" type="hidden" value="{$IDLISTS}">
-		<input type="hidden" name="saved_toid" value="{$TO_MAIL}">
-		<input id="parent_name" name="parent_name" readonly class="txtBox" type="text" value="{$TO_MAIL}" style="width: 525px;">&nbsp;
+		<input name="{$elements.2.0}" id="{$elements.2.0}" type="hidden" value="{if isset($IDLISTS)}{$IDLISTS}{/if}">
+		<input type="hidden" name="saved_toid" value="{if isset($TO_MAIL)}{$TO_MAIL}{/if}">
+		<input id="parent_name" name="parent_name" readonly class="txtBox" type="text" value="{if isset($TO_MAIL)}{$TO_MAIL}{/if}" style="width: 525px;">&nbsp;
 		<span class="mailClientCSSButton">
 			<img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
 		</span>
@@ -89,7 +91,7 @@
 	{if 'ccmail'|@emails_checkFieldVisiblityPermission:'readwrite' eq '0'}
 	<td class="mailSubHeader" style="padding: 5px;" align="right">{$MOD.LBL_CC}</td>
 	<td class="cellText" style="padding: 5px;">
-		<input name="ccmail" id ="cc_name" class="txtBox" type="text" value="{$CC_MAIL}" style="width:525px">&nbsp;
+		<input name="ccmail" id ="cc_name" class="txtBox" type="text" value="{if isset($CC_MAIL)}{$CC_MAIL}{/if}" style="width:525px">&nbsp;
 		<span class="mailClientCSSButton">
 			<img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails&email_field=cc_name","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
 		</span>
@@ -107,7 +109,7 @@
 	<tr>
 	<td class="mailSubHeader" style="padding: 5px;" align="right">{$MOD.LBL_BCC}</td>
 	<td class="cellText" style="padding: 5px;">
-		<input name="bccmail" id="bcc_name" class="txtBox" type="text" value="{$BCC_MAIL}" style="width:525px">&nbsp;
+		<input name="bccmail" id="bcc_name" class="txtBox" type="text" value="{if isset($BCC_MAIL)}{$BCC_MAIL}{/if}" style="width:525px">&nbsp;
 		<span class="mailClientCSSButton">
 			<img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails&email_field=bcc_name","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
 		</span>
@@ -117,34 +119,34 @@
 	</td>
 	</tr>
 	{/if}
-	{elseif $elements.2.0 eq 'subject'}
+	{elseif isset($elements.2) && isset($elements.2.0) && $elements.2.0 eq 'subject'}
 	<tr>
 	<td class="mailSubHeader" style="padding: 5px;" align="right" nowrap><font color="red">*</font>{$elements.1.0} :</td>
-		{if $WEBMAIL eq 'true' or $RET_ERROR eq 1}
+		{if (isset($WEBMAIL) && $WEBMAIL eq 'true') or (isset($RET_ERROR) && $RET_ERROR eq 1)}
 			<td class="cellText" style="padding: 5px;"><input type="text" class="txtBox" name="{$elements.2.0}" value="{$SUBJECT}" id="{$elements.2.0}" style="width:99%"></td>
 		{else}
 			<td class="cellText" style="padding: 5px;"><input type="text" class="txtBox" name="{$elements.2.0}" value="{$elements.3.0}" id="{$elements.2.0}" style="width:99%"></td>
 		{/if}
 	</tr>
-	{elseif $elements.2.0 eq 'filename'}
+	{elseif isset($elements.2) && isset($elements.2.0) && $elements.2.0 eq 'filename'}
 	<tr>
 	<td class="mailSubHeader" style="padding: 5px;" align="right" nowrap>{$elements.1.0} :</td>
 	<td class="cellText" style="padding: 5px;">
 		<!--<input name="{$elements.2.0}" type="file" class="small txtBox" value="" size="78"/>-->
 		<input name="del_file_list" type="hidden" value="">
-		<div id="files_list" style="border: 1px solid grey; width: 500px; padding: 5px; background: rgb(255, 255, 255) none repeat scroll 0%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial; font-size: x-small">{$APP.Files_Maximum_6}
+		<div id="files_list" style="border: 1px solid grey; width: 500px; padding: 5px; background: rgb(255, 255, 255) none repeat scroll 0%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial; font-size: x-small">{$APP.Files_Maximum}{$EMail_Maximum_Number_Attachments}</span>
 			<input id="my_file_element" type="file" name="{$elements.2.0}" tabindex="7" onchange="validateFilename(this)" >
 			<input type="hidden" name="{$elements.2.0}_hidden" value="" />
 			<span id="limitmsg" style= "color:red; display:'';">{'LBL_MAX_SIZE'|@getTranslatedString:$MODULE} {$UPLOADSIZE}{'LBL_FILESIZEIN_MB'|@getTranslatedString:$MODULE}</span>
 		</div>
 		<script>
-			var multi_selector = new MultiSelector( document.getElementById( 'files_list' ), 6 );
+			var multi_selector = new MultiSelector( document.getElementById( 'files_list' ), {$EMail_Maximum_Number_Attachments} );
 			multi_selector.count = 0
 			multi_selector.addElement( document.getElementById( 'my_file_element' ) );
 		</script>
 		<div id="attach_temp_cont" style="display:none;">
 		<table class="small" width="100% ">
-			{if $smarty.request.attachment != ''}
+			{if !empty($smarty.request.attachment)}
 				<tr>
 				<td width="100%" colspan="2">{$smarty.request.attachment|@vtlib_purify}<input type="hidden" value="{$smarty.request.attachment|@vtlib_purify}" name="pdf_attachment"></td>
 				</tr>
@@ -157,14 +159,14 @@
 				{/foreach}
 				<input type='hidden' name='att_id_list' value='{$ATT_ID_LIST}' />
 			{/if}
-			{if $WEBMAIL eq 'true'}
+			{if isset($WEBMAIL) && $WEBMAIL eq 'true'}
 				{foreach item="attach_files" from=$webmail_attachments}
 					<tr ><td width="90%">{$attach_files}</td></tr>
 				{/foreach}
 			{/if}
 		</table>
 		</div>
-		{$elements.3.0}
+		{if isset($elements.3) && isset($elements.3.0)}{$elements.3.0}{/if}
 	</td>
 	</tr>
 	<tr>
@@ -176,17 +178,17 @@
 		<input name="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="crmbutton small cancel" type="button" onClick="window.close()">
 	</td>
 	</tr>
-	{elseif $elements.2.0 eq 'description'}
+	{elseif isset($elements.2) && isset($elements.2.0) && $elements.2.0 eq 'description'}
 	<tr>
 	<td colspan="3" align="center" valign="top" height="320">
-	{if $WEBMAIL eq 'true' or $RET_ERROR eq 1}
+	{if (isset($WEBMAIL) && $WEBMAIL eq 'true') or (isset($RET_ERROR) && $RET_ERROR eq 1)}
 		<input type="hidden" name="from_add" value="{$from_add}">
 		<input type="hidden" name="att_module" value="Webmails">
 		<input type="hidden" name="mailid" value="{$mailid}">
 		<input type="hidden" name="mailbox" value="{$mailbox}">
 		<textarea style="display: none;" class="detailedViewTextBox" id="description" name="description" cols="90" rows="8">{$DESCRIPTION}</textarea>
 	{else}
-		<textarea style="display: none;" class="detailedViewTextBox" id="description" name="description" cols="90" rows="16">{$elements.3.0}</textarea>
+		<textarea style="display: none;" class="detailedViewTextBox" id="description" name="description" cols="90" rows="16">{if isset($elements.3) && isset($elements.3.0)}{$elements.3.0}{/if}</textarea>
 	{/if}
 	</td>
 	</tr>
@@ -213,169 +215,7 @@ var bcc_err_msg = '{$MOD.LBL_BCC_EMAIL_ERROR}';
 var conf_mail_srvr_err_msg = '{$MOD.LBL_CONF_MAILSERVER_ERROR}';
 var conf_srvr_storage_err_msg = '{$MOD.LBL_CONF_SERVERSTORAGE_ERROR}';
 var remove_image_url = "{'no.gif'|@vtiger_imageurl:$THEME}";
-{literal}
-function searchDocuments() {
-	var emailId = 0;
-	window.open('index.php?module=Documents&return_module=Emails&action=Popup&popuptype=detailview&form=EditView&form_submit=false&parenttab=Marketing&srcmodule=Emails&popupmode=ajax&select=1','test','width=640,height=602,resizable=0,scrollbars=0');
-}
-function addOption(id, filename) {
-	var table = document.getElementById("attach_cont");
-	var attachments = document.getElementsByName("doc_attachments[]");
-	if (attachments !== undefined) {
-		for (var i = 0; i < attachments.length; i++) {
-			if (attachments[i].value == id) {
-				return;
-			}
-		}
-	}
-	var newRow = "<div>";
-	newRow += "<a href='javascript:void(0)' onclick='this.parentNode.parentNode.removeChild(this.parentNode);'><img src='" + remove_image_url + "'></a>";
-	newRow += "&nbsp" + filename + "<input type='hidden' name='doc_attachments[]' value='" + id + "'>";
-	newRow += "</div>";
-	table.innerHTML += newRow;
-}
-function email_validate(oform,mode)
-{
-	if(trim(mode) == '')
-	{
-		return false;
-	}
-	if(oform.parent_name.value.replace(/^\s+/g, '').replace(/\s+$/g, '').length==0)
-	{
-		//alert('No recipients were specified');
-		alert(no_rcpts_err_msg);
-		return false;
-	}
-	//Changes made to fix tickets #4633, # 5111 to accomodate all possible email formats
-	var email_regex = /^[a-zA-Z0-9]+([\_\-\.]*[a-zA-Z0-9]+[\_\-]?)*@[a-zA-Z0-9]+([\_\-]?[a-zA-Z0-9]+)*\.+([\_\-]?[a-zA-Z0-9])+(\.?[a-zA-Z0-9]+)*$/;
-
-	if(document.EditView.ccmail != null){
-		if(document.EditView.ccmail.value.length >= 1){
-			var str = document.EditView.ccmail.value;
-            arr = new Array();
-            arr = str.split(",");
-            var tmp;
-	    	for(var i=0; i<=arr.length-1; i++){
-	            tmp = arr[i];
-	            if(tmp.match('<') && tmp.match('>')) {
-                    if(!findAngleBracket(arr[i])) {
-                        alert(cc_err_msg+": "+arr[i]);
-                        return false;
-                    }
-            	}
-				else if(trim(arr[i]) != "" && !(email_regex.test(trim(arr[i]))))
-	            {
-	                    alert(cc_err_msg+": "+arr[i]);
-	                    return false;
-	            }
-			}
-		}
-	}
-	if(document.EditView.bccmail != null){
-		if(document.EditView.bccmail.value.length >= 1){
-			var str = document.EditView.bccmail.value;
-			arr = new Array();
-			arr = str.split(",");
-			var tmp;
-			for(var i=0; i<=arr.length-1; i++){
-				tmp = arr[i];
-				if(tmp.match('<') && tmp.match('>')) {
-                    if(!findAngleBracket(arr[i])) {
-                        alert(bcc_err_msg+": "+arr[i]);
-                        return false;
-                    }
-            	}
-            	else if(trim(arr[i]) != "" && !(email_regex.test(trim(arr[i])))){
-					alert(bcc_err_msg+": "+arr[i]);
-					return false;
-				}
-			}
-		}
-	}
-	if(oform.subject.value.replace(/^\s+/g, '').replace(/\s+$/g, '').length==0)
-	{
-		if(email_sub = prompt('You did not specify a subject from this email. If you would like to provide one, please type it now','(no-Subject)'))
-		{
-			oform.subject.value = email_sub;
-		}else
-		{
-			return false;
-		}
-	}
-	if(mode == 'send')
-	{
-		server_check()
-	}else if(mode == 'save')
-	{
-		oform.action.value='Save';
-		oform.submit();
-	}else
-	{
-		return false;
-	}
-}
-//function to extract the mailaddress inside < > symbols.......for the bug fix #3752
-function findAngleBracket(mailadd)
-{
-        var strlen = mailadd.length;
-        var success = 0;
-        var gt = 0;
-        var lt = 0;
-        var ret = '';
-        for(i=0;i<strlen;i++){
-                if(mailadd.charAt(i) == '<' && gt == 0){
-                        lt = 1;
-                }
-                if(mailadd.charAt(i) == '>' && lt == 1){
-                        gt = 1;
-                }
-                if(mailadd.charAt(i) != '<' && lt == 1 && gt == 0)
-                        ret = ret + mailadd.charAt(i);
-
-        }
-        if(/^[a-z0-9]([a-z0-9_\-\.]*)@([a-z0-9_\-\.]*)(\.[a-z]{2,3}(\.[a-z]{2}){0,2})$/.test(ret)){
-                return true;
-        }
-        else
-                return false;
-
-}
-function server_check(){
-	var oform = window.document.EditView;
-		jQuery.ajax({
-			method:"POST",
-			url:"index.php?module=Emails&action=EmailsAjax&file=Save&ajax=true&server_check=true",
-		}).done(function(response) {
-			if(response.indexOf('SUCCESS') > -1){
-				oform.send_mail.value='true';
-				oform.action.value='Save';
-				oform.submit();
-			}else{
-				if (response.indexOf('FAILURESTORAGE') > -1) {
-					if (confirm(conf_srvr_storage_err_msg)) {
-						oform.send_mail.value='true';
-						oform.action.value='Save';
-						oform.submit();
-					}
-				} else {
-					alert(conf_mail_srvr_err_msg);
-				}
-				return false;
-			}
-				}
-		);
-}
 document.getElementById('attach_cont').innerHTML = document.getElementById('attach_temp_cont').innerHTML;
-function delAttachments(id){
-	jQuery.ajax({
-		method:"POST",
-		url:'index.php?module=Contacts&action=ContactsAjax&file=DelImage&attachmodule=Emails&recordid='+id
-	}).done(function(response) {
-		jQuery('#row_'+id).fadeOut();
-		}
-	);
-}
-{/literal}
 </script>
 <script type="text/javascript" defer="1">
 	var textAreaName = 'description';

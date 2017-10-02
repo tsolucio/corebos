@@ -8,11 +8,11 @@
  * All Rights Reserved.
  * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
-include_once dirname(__FILE__) . '/FetchModuleFilters.php';
+include_once __DIR__ . '/FetchModuleFilters.php';
 include_once 'modules/CustomView/CustomView.php';
 
 class crmtogo_WS_FilterDetailsWithCount extends crmtogo_WS_FetchModuleFilters {
-	
+
 	function process(crmtogo_API_Request $request) {
 		$response = new crmtogo_API_Response();
 		$filterid = $request->get('filterid');
@@ -22,7 +22,7 @@ class crmtogo_WS_FilterDetailsWithCount extends crmtogo_WS_FetchModuleFilters {
 		$response->setResult($result);
 		return $response;
 	}
-	
+
 	protected function getModuleFilterDetails($filterid) {
 		$db = PearDatabase::getInstance();
 		$result = $db->pquery("SELECT * FROM vtiger_customview WHERE cvid=?", array($filterid));

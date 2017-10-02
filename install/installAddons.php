@@ -33,7 +33,6 @@ function installAddons() {
 		'Assets' => false,
 		'CronTasks' => true,
 		'CustomerPortal' => false,
-		'FieldFormulas' => false,
 		'ModComments' => true,
 		'ProjectMilestone' => false,
 		'ProjectTask' => false,

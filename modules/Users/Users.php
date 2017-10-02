@@ -17,12 +17,15 @@ require_once ('data/Tracker.php');
 require_once 'include/utils/CommonUtils.php';
 require_once 'include/Webservices/Utils.php';
 require_once ('modules/Users/UserTimeZonesArray.php');
+include_once 'modules/Users/authTypes/TwoFactorAuth/autoload.php';
+use \RobThree\Auth\TwoFactorAuth;
 
 class Users extends CRMEntity {
 	var $db, $log; // Used in class functions of CRMEntity
 	// Stored fields
 	var $id;
 	var $authenticated = false;
+	var $twoFAauthenticated = false;
 	var $error_string;
 	var $is_admin;
 	var $deleted;
@@ -44,7 +47,6 @@ class Users extends CRMEntity {
 
 	var $module_name = "Users";
 
-	var $object_name = "User";
 	var $user_preferences;
 	var $homeorder_array = array('HDB'=>'', 'ALVT'=>'', 'PLVT'=>'', 'QLTQ'=>'', 'CVLVT'=>'', 'HLT'=>'', 'GRT'=>'', 'OLTSO'=>'', 'ILTI'=>'', 'MNL'=>'', 'OLTPO'=>'', 'LTFAQ'=>'', 'UA'=>'', 'PA'=>'');
 
@@ -96,7 +98,7 @@ class Users extends CRMEntity {
 		if (isset($_REQUEST['sorder']))
 			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
 		else
-			$sorder = (($_SESSION['USERS_SORT_ORDER'] != '') ? ($_SESSION['USERS_SORT_ORDER']) : ($this->default_sort_order));
+			$sorder = (!empty($_SESSION['USERS_SORT_ORDER']) ? ($_SESSION['USERS_SORT_ORDER']) : ($this->default_sort_order));
 		$log->debug("Exiting getSortOrder method ...");
 		return $sorder;
 	}
@@ -110,14 +112,14 @@ class Users extends CRMEntity {
 		$log->debug("Entering getOrderBy() method ...");
 
 		$use_default_order_by = '';
-		if (PerformancePrefs::getBoolean('LISTVIEW_DEFAULT_SORTING', true)) {
+		if (GlobalVariable::getVariable('Application_ListView_Default_Sorting', 0)) {
 			$use_default_order_by = $this->default_order_by;
 		}
 
 		if (isset($_REQUEST['order_by']))
 			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
 		else
-			$order_by = (($_SESSION['USERS_ORDER_BY'] != '') ? ($_SESSION['USERS_ORDER_BY']) : ($use_default_order_by));
+			$order_by = (!empty($_SESSION['USERS_ORDER_BY']) ? ($_SESSION['USERS_ORDER_BY']) : ($use_default_order_by));
 		$log->debug("Exiting getOrderBy method ...");
 		return $order_by;
 	}
@@ -134,7 +136,7 @@ class Users extends CRMEntity {
 				$this->user_preferences = array();
 		}
 		if (!array_key_exists($name, $this->user_preferences) || $this->user_preferences[$name] != $value) {
-			$this->log->debug("Saving To Preferences:" . $name . "=" . $value);
+			$this->log->debug("Saving To Preferences:" . $name . "=" . print_r($value,true));
 			$this->user_preferences[$name] = $value;
 			$this->savePreferecesToDB();
 		}
@@ -147,7 +149,7 @@ class Users extends CRMEntity {
 	function savePreferecesToDB() {
 		$data = base64_encode(serialize($this->user_preferences));
 		$query = "UPDATE $this->table_name SET user_preferences=? where id=?";
-		$result = &$this->db->pquery($query, array($data, $this->id));
+		$result = $this->db->pquery($query, array($data, $this->id));
 		$this->log->debug("SAVING: PREFERENCES SIZE " . strlen($data) . "ROWS AFFECTED WHILE UPDATING USER PREFERENCES:" . $this->db->getAffectedRowCount($result));
 		coreBOS_Session::set('USER_PREFERENCES', $this->user_preferences);
 	}
@@ -194,24 +196,7 @@ class Users extends CRMEntity {
 			//crypt API is lot stricter in taking the value for salt.
 			$salt = '$1$' . str_pad($salt, 9, '0');
 		}
-
-		$encrypted_password = crypt($user_password, $salt);
-		return $encrypted_password;
-	}
-
-	/** Function for validation check */
-	function validation_check($validate, $md5, $alt = '') {
-		$validate = base64_decode($validate);
-		if (file_exists($validate) && $handle = fopen($validate, 'rb', true)) {
-			$buffer = fread($handle, filesize($validate));
-			if (md5($buffer) == $md5 || (!empty($alt) && md5($buffer) == $alt)) {
-				return 1;
-			}
-			return -1;
-
-		} else {
-			return -1;
-		}
+		return crypt($user_password, $salt);
 	}
 
 	/** Function for authorization check */
@@ -228,16 +213,17 @@ class Users extends CRMEntity {
 	}
 
 	/**
-	 * Checks the config.php AUTHCFG value for login type and forks off to the proper module
+	 * Checks the User_AuthenticationType global variavle value for login type and forks off to the proper module
 	 *
 	 * @param string $user_password - The password of the user to authenticate
 	 * @return true if the user is authenticated, false otherwise
 	 */
 	function doLogin($user_password) {
-		global $AUTHCFG;
+		$authType = GlobalVariable::getVariable('User_AuthenticationType', 'SQL');
+		if ($this->is_admin) $authType = 'SQL'; // admin users always login locally
 		$usr_name = $this->column_fields["user_name"];
 
-		switch (strtoupper($AUTHCFG['authType'])) {
+		switch (strtoupper($authType)) {
 			case 'LDAP' :
 				$this->log->debug("Using LDAP authentication");
 				require_once ('modules/Users/authTypes/LDAP.php');
@@ -262,7 +248,7 @@ class Users extends CRMEntity {
 
 			default :
 				$this->log->debug("Using integrated/SQL authentication");
-				$query = "SELECT crypt_type FROM $this->table_name WHERE user_name=?";
+				$query = "SELECT crypt_type FROM $this->table_name WHERE BINARY user_name=?";
 				$result = $this->db->requirePsSingleResult($query, array($usr_name), false);
 				if (empty($result)) {
 					return false;
@@ -288,6 +274,38 @@ class Users extends CRMEntity {
 		return false;
 	}
 
+	public static function send2FACode($code,$userid) {
+		global $adb;
+		$msg = sprintf(getTranslatedString('2FA_ACCESSCODE','Users'),$code);
+		$SendCodeMethod = strtoupper(GlobalVariable::getVariable('User_2FAAuthentication_SendMethod','EMAIL','Users',$userid));
+		if (!vtlib_isModuleActive('SMSNotifier') and $SendCodeMethod=='SMS') $SendCodeMethod = 'EMAIL';
+		switch ($SendCodeMethod) {
+			case 'SMS':
+				require_once 'modules/SMSNotifier/SMSNotifier.php';
+				$rs = $adb->pquery('select coalesce(phone_work,phone_mobile) as phone from vtiger_users where userid=?',array($userid));
+				if ($rs and $adb->num_rows($rs)>0) {
+					$phone = $adb->query_result($rs, 0, 0);
+					if (!empty($phone)) {
+						SMSNotifier::sendsms($msg, $phone, $userid, $userid, 'Users');
+					}
+				}
+				break;
+			case 'MOBILE':
+				break;
+			case 'EMAIL':
+			default:
+				require_once('modules/Emails/mail.php');
+				require_once('modules/Emails/Emails.php');
+				$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail','support@your_support_domain.tld','HelpDesk',$userid);
+				$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name','your-support name','HelpDesk',$userid);
+				$mailto = getUserEmail($userid);
+				if ($mailto!='') {
+					send_mail('Emails',$mailto,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID,$msg,$msg);
+				}
+				break;
+		}
+	}
+
 	/**
 	 * Load a user based on the user_name in $this
 	 * @return -- this if load was successul and null if load failed.
@@ -296,6 +314,29 @@ class Users extends CRMEntity {
 	 */
 	function load_user($user_password) {
 		$usr_name = $this->column_fields["user_name"];
+		if (!empty($_POST['twofauserauth'])) {
+			$this->authenticated = false;
+			$this->twoFAauthenticated = false;
+			// csrf check
+			// Get the fields for the user
+			$query = "SELECT * from $this->table_name where user_name='$usr_name'";
+			$result = $this->db->requireSingleResult($query, false);
+			$row = $this->db->fetchByAssoc($result);
+			if ($row['id']!=$_POST['twofauserauth']) {
+				return null;
+			}
+			// validate 2fa
+			$tfa = new TwoFactorAuth('coreBOSWebApp');
+			$twofasecret = coreBOS_Settings::getSetting('coreBOS_2FA_Secret_'.$row['id'], false);
+			if ($twofasecret === false or $tfa->verifyCode($twofasecret, $_POST['user_2facode']) === false) {
+				return null;
+			}
+			$this->column_fields = $row;
+			$this->id = $row['id'];
+			$this->authenticated = true;
+			$this->twoFAauthenticated = true;
+			return $this;
+		}
 		$maxFailedLoginAttempts = GlobalVariable::getVariable('Application_MaxFailedLoginAttempts', 5, 'Users');
 		if (isset($_SESSION['loginattempts'])) {
 			coreBOS_Session::set('loginattempts',$_SESSION['loginattempts'] + 1);
@@ -328,16 +369,40 @@ class Users extends CRMEntity {
 
 		$this->loadPreferencesFromDB($row['user_preferences']);
 
+		// Make sure user is logging in from authorized IPs
+		$UserLoginIPs = GlobalVariable::getVariable('Application_UserLoginIPs','','Users',$this->id);
+		if ($UserLoginIPs != '') {
+			$user_ip_addresses = explode(',',$UserLoginIPs);
+			$the_ip = Vtiger_Request::get_ip();
+			if (!in_array($the_ip,$user_ip_addresses)) {
+				$row['status'] = 'Inactive';
+				$this->authenticated = false;
+				coreBOS_Session::set('login_error', getTranslatedString('ERR_INVALID_USERIPLOGIN','Users'));
+				$mailsubject = "[Security Alert]: User login attempt rejected for login: $usr_name from external IP: $the_ip";
+				$this->log->warn($mailsubject);
+				// Send email with authentification error.
+				$mailto = GlobalVariable::getVariable('Debug_Send_UserLoginIPAuth_Error','','Users');
+				if ($mailto != '') {
+					require_once('modules/Emails/mail.php');
+					require_once('modules/Emails/Emails.php');
+					$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail','support@your_support_domain.tld','HelpDesk');
+					$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name','your-support name','HelpDesk');
+					$mailcontent = $mailsubject. "\n";
+					send_mail('Emails',$mailto,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID,$mailsubject,$mailcontent);
+				}
+			}
+		}
 		// Make sure admin is logging in from authorized IPs
 		if ($row['is_admin'] == 'on' or $row['is_admin'] == '1') {
-			$AdminLoginIPs = GlobalVariable::getVariable('Application_AdminLoginIPs','','Users');
+			$AdminLoginIPs = GlobalVariable::getVariable('Application_AdminLoginIPs','','Users',$this->id);
 			if ($AdminLoginIPs != '') {
 				$admin_ip_addresses = explode(',',$AdminLoginIPs);
-				if (!in_array($_SERVER['REMOTE_ADDR'],$admin_ip_addresses)) {
+				$the_ip = Vtiger_Request::get_ip();
+				if (!in_array($the_ip,$admin_ip_addresses)) {
 					$row['status'] = 'Inactive';
 					$this->authenticated = false;
 					coreBOS_Session::set('login_error', getTranslatedString('ERR_INVALID_ADMINIPLOGIN','Users'));
-					$mailsubject = "[Security Alert]: Admin login attempt rejected for login: $usr_name from external IP: " . $_SERVER['REMOTE_ADDR'];
+					$mailsubject = "[Security Alert]: Admin login attempt rejected for login: $usr_name from external IP: $the_ip";
 					$this->log->warn($mailsubject);
 					// Send email with authentification error.
 					$mailto = GlobalVariable::getVariable('Debug_Send_AdminLoginIPAuth_Error','','Users');
@@ -412,7 +477,7 @@ class Users extends CRMEntity {
 			return false;
 		}
 
-		if (!is_admin($current_user) and !$this->verifyPassword($user_password)) {
+		if (!$this->verifyPassword($user_password) && !is_admin($current_user)) {
 			$this->log->warn("Incorrect old password for $usr_name");
 			$this->error_string = $mod_strings['ERR_PASSWORD_INCORRECT_OLD'];
 			return false;
@@ -474,17 +539,21 @@ class Users extends CRMEntity {
 		$query = "SELECT user_name,user_password,crypt_type FROM {$this->table_name} WHERE id=?";
 		$result = $this->db->pquery($query, array($this->id));
 		$row = $this->db->fetchByAssoc($result);
-		$this->log->debug("select old password query: $query");
-		$this->log->debug("return result of $row");
 		$encryptedPassword = $this->encrypt_password($password, $row['crypt_type']);
-		if ($encryptedPassword != $row['user_password']) {
-			return false;
-		}
-		return true;
+		return !($encryptedPassword != $row['user_password']);
 	}
 
 	function is_authenticated() {
 		return $this->authenticated;
+	}
+
+	function is_twofaauthenticated() {
+		$do2FA = GlobalVariable::getVariable('User_2FAAuthentication',0,'Users',(empty($this->id) ? Users::getActiveAdminId() : $this->id));
+		if ($do2FA) {
+			return $this->twoFAauthenticated;
+		} else {
+			return true;
+		}
 	}
 
 	/** gives the user id for the specified user name
@@ -501,6 +570,18 @@ class Users extends CRMEntity {
 			$userid = 0;
 		}
 		return $userid;
+	}
+
+	/** check if given number is a valid and active user ID
+	 * @param integer $userid
+	 * @returns boolean
+	 */
+	public static function is_ActiveUserID($userid) {
+		global $adb;
+		if (empty($userid) or !is_numeric($userid)) return false;
+		$query = "SELECT 1 from vtiger_users where status='Active' AND id=? AND deleted=0";
+		$result = $adb->pquery($query, array($userid));
+		return ($result and $adb->num_rows($result) > 0);
 	}
 
 	/**
@@ -719,8 +800,6 @@ class Users extends CRMEntity {
 					$fldvalue = $this->column_fields[$fieldname];
 					$fldvalue = stripslashes($fldvalue);
 				}
-				$fldvalue = from_html($fldvalue, ($insertion_mode == 'edit') ? true : false);
-
 			} else {
 				$fldvalue = '';
 			}
@@ -758,7 +837,8 @@ class Users extends CRMEntity {
 			}
 			if ($columname == 'is_admin' and !is_admin($current_user)) {// only admin users can change admin field
 				if ($insertion_mode == 'edit') {// we force the same value that is currently set in database
-					$fldvalue = $adb->query_result($adb->pquery('select is_admin from vtiger_users where id=?', array($this->id)), 0, 0);
+					$rs = $adb->pquery('select is_admin from vtiger_users where id=?', array($this->id));
+					$fldvalue = $adb->query_result($rs, 0, 0);
 				}
 			}
 			if ($insertion_mode == 'edit') {
@@ -767,10 +847,10 @@ class Users extends CRMEntity {
 				} else {
 					$update .= ', ' . $columname . "=?";
 				}
-				array_push($update_params, $fldvalue);
+				$update_params[] = $fldvalue;
 			} else {
 				$column .= ", " . $columname;
-				array_push($qparams, $fldvalue);
+				$qparams[] = $fldvalue;
 			}
 		}
 
@@ -778,7 +858,7 @@ class Users extends CRMEntity {
 			//Check done by Don. If update is empty the the query fails
 			if (trim($update) != '') {
 				$sql1 = "update $table_name set $update where " . $this->tab_name_index[$table_name] . "=?";
-				array_push($update_params, $this->id);
+				$update_params[] = $this->id;
 				$this->db->pquery($sql1, $update_params);
 			}
 
@@ -856,9 +936,11 @@ class Users extends CRMEntity {
 			$currency_result = $adb->pquery($currency_query, array());
 		}
 		$currency_array = array("$" => "&#36;", "&euro;" => "&#8364;", "&pound;" => "&#163;", "&yen;" => "&#165;");
-		$ui_curr = $currency_array[$adb->query_result($currency_result, 0, "currency_symbol")];
-		if ($ui_curr == "")
+		if (isset($currency_array[$adb->query_result($currency_result, 0, "currency_symbol")])) {
+			$ui_curr = $currency_array[$adb->query_result($currency_result, 0, "currency_symbol")];
+		} else {
 			$ui_curr = $adb->query_result($currency_result, 0, "currency_symbol");
+		}
 		$this->column_fields["currency_name"] = $this->currency_name = $adb->query_result($currency_result, 0, "currency_name");
 		$this->column_fields["currency_code"] = $this->currency_code = $adb->query_result($currency_result, 0, "currency_code");
 		$this->column_fields["currency_symbol"] = $this->currency_symbol = $ui_curr;
@@ -884,16 +966,13 @@ class Users extends CRMEntity {
 	 * @param $module -- module name:: Type varchar
 	 * @param $file_details -- file details array:: Type array
 	 */
-	function uploadAndSaveFile($id, $module, $file_details, $attachmentname='', $direct_import=false) {
-		global $log;
-		$log->debug("Entering into uploadAndSaveFile($id,$module,$file_details) method.");
-
-		global $current_user, $upload_badext;
+	function uploadAndSaveFile($id, $module, $file_details, $attachmentname='', $direct_import=false, $forfield='') {
+		global $log, $current_user, $upload_badext;
 
 		$date_var = date('Y-m-d H:i:s');
 
 		//to get the owner id
-		$ownerid = $this->column_fields['assigned_user_id'];
+		$ownerid = (isset($this->column_fields['assigned_user_id']) ? $this->column_fields['assigned_user_id'] : $current_user->id);
 		if (!isset($ownerid) || $ownerid == '')
 			$ownerid = $current_user->id;
 
@@ -941,8 +1020,6 @@ class Users extends CRMEntity {
 		} else {
 			$log->debug("Skip the save attachment process.");
 		}
-		$log->debug("Exiting from uploadAndSaveFile($id,$module,$file_details) method.");
-
 		return;
 	}
 

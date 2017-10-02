@@ -64,5 +64,5 @@ if($allrec==1 and !empty($selected_module)){
 		$delselrel = $adb->pquery("DELETE FROM vtiger_relatedlists_rb WHERE entityid in (".generateQuestionMarks($idlists).")",array($idlists));
 	}
 }
-header("Location: index.php?module=RecycleBin&action=RecycleBinAjax&file=index&parenttab=$parenttab&mode=ajax&selected_module=$selected_module");
+header('Location: index.php?module=RecycleBin&action=RecycleBinAjax&file=index&mode=ajax&selected_module='.urlencode($selected_module));
 ?>

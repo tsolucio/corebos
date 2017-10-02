@@ -6,11 +6,9 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 <script type="text/javascript" src="include/js/smoothscroll.js"></script>
-<script type="text/javascript" src="include/js/menu.js"></script>
 <br>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 	<tbody>
@@ -65,7 +63,7 @@
 										</div>
 									</td>
 								</tr>
-								{if $ERROR_MESSAGE neq ''}
+								{if !empty($ERROR_MESSAGE)}
 								<tr><td>{include file='applicationmessage.tpl'}</td></tr>
 								{/if}
 								</table>
@@ -164,25 +162,23 @@
 </table>
 {literal}
 <script>
-function validate_mail_server(form)
-{
-	if(form.server.value =='')
-	{
-		{/literal}
-                alert("{$APP.SERVERNAME_CANNOT_BE_EMPTY}")
-                        return false;
-                {literal}
+function validate_mail_server(form) {
+	if (form.server.value == '') {
+		alert("{/literal}{$APP.SERVERNAME_CANNOT_BE_EMPTY}{literal}")
+		return false;
+	}
+	if (form.from_email_field.value != '') {
+		if (patternValidate('from_email_field','{/literal}{$MOD.LBL_FROM_EMAIL_FIELD}{literal}','EMAIL') == false)
+			return false;
 	}
 	return true;
 }
 
-function setDefaultMailServer()
-{
+function setDefaultMailServer() {
 	var confirmMsg = document.getElementById('confirmMsg').value;
-	if(confirm(confirmMsg)){
+	if (confirm(confirmMsg)) {
 		return true;
-	}
-	else{
+	} else {
 		return false;
 	}
 }

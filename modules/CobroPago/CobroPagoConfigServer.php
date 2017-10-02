@@ -33,12 +33,7 @@ if(!is_admin($current_user)) {
 
 	if(!empty($mode) && $mode == 'Save') {
 		$adb->query("delete from vtiger_cobropagoconfig");
-		$adb->query("insert into vtiger_cobropagoconfig values(
-			    '{$_POST['cyp_user']}',
-			    '{$_POST['cyp_password']}',
-			    '{$_POST['bluepay_mode']}',
-			    '{$_POST['block_paid']}'
-			    )");
+		$adb->pquery('insert into vtiger_cobropagoconfig values(?,?,?,?)', array($_POST['cyp_user'],$_POST['cyp_password'],$_POST['bluepay_mode'],$_POST['block_paid']));
 	}
 	$results = $adb->query("select * from vtiger_cobropagoconfig");
 	$ts_baccid = $adb->query_result($results,0,'bluepay_accountid');

@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-include_once('adodb/adodb.inc.php');
+include_once('include/adodb/adodb.inc.php');
 
 $langString = array(
 	'SourceConnectFailed'=>'Source database connect failed',

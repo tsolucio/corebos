@@ -27,11 +27,11 @@
  </map>
 
  <map>
-  <expression>employee + 10</expression>
+  <expression>employees + 10</expression>
  </map>
 
  <map>
-  <expression>if employee > 10 then true else false</expression>
+  <expression>if employees > 10 then 'true' else 'false' end</expression>
  </map>
 
  <map>
@@ -64,7 +64,10 @@ class ConditionExpression extends processcbMap {
 		$entityId = $arguments[0];
 		$holduser = $current_user;
 		$current_user = Users::getActiveAdminUser(); // evaluate condition as admin user
-		$entity = new VTWorkflowEntity($current_user, $entityId);
+		$entity = new VTWorkflowEntity($current_user, $entityId, true);
+		if (is_null($entity->data)) { // invalid context
+			return false;
+		}
 		$current_user = $holduser;
 		if (isset($xml->expression)) {
 			$testexpression = (String)$xml->expression;

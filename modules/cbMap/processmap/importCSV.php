@@ -1,5 +1,4 @@
 <?php
-
 /*************************************************************************************************
  * Copyright 2016 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
  * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
@@ -18,8 +17,7 @@
  *  Version      : 5.4.0
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
-         
-require_once("config.inc.php");
+require_once('config.inc.php');
 include_once('data/CRMEntity.php');
 include_once('modules/Users/Users.php');
 include_once('modules/cbMap/cbMap.php');
@@ -31,11 +29,10 @@ require_once('include/database/PearDatabase.php');
 global $adb, $log, $root_directory, $current_user;
 $current_user = Users::getActiveAdminUser();
 if (isset($argv) && !empty($argv)) {
-    $csvfile = $argv[1];
-    $mapid = $argv[2];
+	$csvfile = $argv[1];
+	$mapid = $argv[2];
 }
 $mapfocus = CRMEntity::getInstance("cbMap");
 $mapfocus->retrieve_entity_info($mapid, "cbMap");
 $mapinfo = $mapfocus->Import()->processMap($argv);
-
 ?>

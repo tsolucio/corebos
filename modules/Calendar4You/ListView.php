@@ -36,23 +36,23 @@ $smarty = new vtigerCRM_Smarty;
 $smarty->assign('ADD_ONMOUSEOVER', "onMouseOver=\"fnvshobj(this,'addButtonDropDown');\"");
 $abelist = '';
 if($current_user->column_fields['is_admin']=='on') {
-	$Res = $adb->pquery("select * from vtiger_activitytype",array());
+	$Res = $adb->pquery('select * from vtiger_activitytype where activitytype!=?',array('Emails'));
 } else {
 	$role_id=$current_user->roleid;
 	$subrole = getRoleSubordinates($role_id);
 	if(count($subrole)> 0)
 	{
 		$roleids = $subrole;
-		array_push($roleids, $role_id);
+		$roleids[] = $role_id;
 	}
 	else
 	{
 		$roleids = $role_id;
 	}
 	if (count($roleids) > 1) {
-		$Res=$adb->pquery("select distinct activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where roleid in (". generateQuestionMarks($roleids) .") and picklistid in (select picklistid from vtiger_picklist) order by sortid asc",array($roleids));
+		$Res=$adb->pquery("select distinct activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where activitytype!=? and roleid in (". generateQuestionMarks($roleids) .") and picklistid in (select picklistid from vtiger_picklist) order by sortid asc",array('Emails',$roleids));
 	} else {
-		$Res=$adb->pquery("select distinct activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where roleid = ? and picklistid in (select picklistid from vtiger_picklist) order by sortid asc",array($role_id));
+		$Res=$adb->pquery("select distinct activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where activitytype!=? and roleid = ? and picklistid in (select picklistid from vtiger_picklist) order by sortid asc",array('Emails',$role_id));
 	}
 }
 for($i=0; $i<$adb->num_rows($Res);$i++) {
@@ -225,7 +225,7 @@ if (GlobalVariable::getVariable('Debug_ListView_Query', '0')=='1') {
 	echo '<br>'.$list_query.'<br>';
 }
 try {
-if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true){
+if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0)) {
 	$count_query = preg_replace("/[\n\r\s]+/", " ", $list_query);
 	$count_query = 'SELECT 1 ' . substr($count_query, stripos($count_query, ' FROM '), strlen($count_query));
 	if (stripos($count_query, 'ORDER BY') > 0)
@@ -287,7 +287,6 @@ else
 $listview_entries = getListViewEntries($focus,"Calendar",$list_result,$navigation_array,"","","","",$oCustomView);
 
 $smarty->assign("LISTENTITY", $listview_entries);
-$smarty->assign("SELECT_SCRIPT", $view_script);
 
 } // end sqlerror
 

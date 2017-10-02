@@ -12,13 +12,13 @@ require_once('data/Tracker.php');
 require_once('include/upload_file.php');
 require_once('include/utils/utils.php');
 
-global $log, $app_strings, $mod_strings, $currentModule, $theme;
+global $log, $app_strings, $mod_strings, $currentModule, $theme, $default_charset;
 
 $focus = CRMEntity::getInstance($currentModule);
 
 $smarty = new vtigerCRM_Smarty;
 if(isset($_REQUEST['record'])) {
-	global $adb,$default_charset;
+	global $adb;
 	$focus->retrieve_entity_info($_REQUEST['record'],"Emails");
 	$log->info("Entity info successfully retrieved for DetailView.");
 	$focus->id = $_REQUEST['record'];
@@ -38,7 +38,7 @@ if(isset($_REQUEST['record'])) {
 	$fmtdate = $dt->getDisplayDate($current_user);
 	$smarty->assign('DATE_START',$fmtdate);
 	$smarty->assign('TIME_START',$adb->query_result($result,0,'time_start'));
-	if($focus->column_fields['name'] != '')
+	if(!empty($focus->column_fields['name']))
 		$focus->name = $focus->column_fields['name'];
 	else
 		$focus->name = $focus->column_fields['subject'];
@@ -74,12 +74,15 @@ if (isset($_REQUEST['parent_id'])) {
 }
 if (isset($_REQUEST['parent_type'])) {
 	$focus->parent_type = $_REQUEST['parent_type'];
+} else {
+	if (GlobalVariable::getVariable('Application_B2B', '1')) {
+		$focus->parent_type = 'Accounts';
+	} else {
+		$focus->parent_type = 'Contacts';
+	}
 }
 if (isset($_REQUEST['filename']) && is_null($focus->filename)) {
 	$focus->filename = $_REQUEST['filename'];
-}
-elseif (is_null($focus->parent_type)) {
-	$focus->parent_type = $app_list_strings['record_type_default_key'];
 }
 
 $submenu = array('LBL_EMAILS_TITLE'=>'index.php?module=Emails&action=index','LBL_WEBMAILS_TITLE'=>'index.php?module=squirrelmail-1.4.4&action=redirect');
@@ -87,7 +90,7 @@ $sec_arr = array('index.php?module=Emails&action=index'=>'Emails','index.php?mod
 
 $smarty->assign("MOD", $mod_strings);
 $smarty->assign("APP", $app_strings);
-
+$smarty->assign('LBL_CHARSET', $default_charset);
 $smarty->assign("UPDATEINFO",updateInfo($focus->id));
 if (isset($_REQUEST['return_module'])) $smarty->assign("RETURN_MODULE", vtlib_purify($_REQUEST['return_module']));
 if (isset($_REQUEST['return_action'])) $smarty->assign("RETURN_ACTION", vtlib_purify($_REQUEST['return_action']));
@@ -101,7 +104,6 @@ if (isset($focus->name)) $smarty->assign("NAME", $focus->name);
 	else $smarty->assign("NAME", "");
 
 $entries = getBlocks($currentModule,"detail_view",'',$focus->column_fields);
-//$entries[$mod_strings['LBL_EMAIL_INFORMATION']]['5'][$mod_strings['Description']]['value'] = from_html($entries[$mod_strings['LBL_EMAIL_INFORMATION']]['5'][$mod_strings['Description']]['value']);
 //changed this to view description in all langauge - bharath
 $smarty->assign("BLOCKS",$entries[$mod_strings['LBL_EMAIL_INFORMATION']]);
 $smarty->assign("SINGLE_MOD", 'Email');
@@ -116,10 +118,9 @@ $smarty->assign("ID",$focus->id);
 $check_button = Button_Check($module);
 $smarty->assign("CHECK", $check_button);
 
-//Constructing the Related Lists from here
 $smarty->assign("MODULE",$currentModule);
-$smarty->assign("SENDER",$email_id);
-if($_REQUEST['mode'] != 'ajax')
+
+if(empty($_REQUEST['mode']) or $_REQUEST['mode'] != 'ajax')
 	$smarty->display("EmailDetailView.tpl");
 else
 	$smarty->display("EmailDetails.tpl")

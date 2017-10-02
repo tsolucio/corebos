@@ -83,7 +83,7 @@ function gv_getGVVarNames() {
 <tr>
 	<td class='gvtestlabeltext'><?php echo getTranslatedString('Module','GlobalVariable');?></td>
 	<td><select name="mlist" id="mlist" style='width: 250px;'><?php 
-	$mlist = vtws_getModuleNameList();
+	$mlist = getAllowedPicklistModules(1);
 	$modlist = array();
 	foreach ($mlist as $mod) {
 		$modlist[$mod] = getTranslatedString($mod,$mod);

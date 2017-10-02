@@ -8,11 +8,11 @@
  * All Rights Reserved.
  ********************************************************************************/
 require_once('Smarty_setup.php');
-global $mod_strings, $app_strings, $app_list_strings, $adb, $theme;
+global $mod_strings, $app_strings, $adb, $theme;
 
 //Display the mail send status
 $smarty = new vtigerCRM_Smarty;
-if($_REQUEST['mail_error'] != '') {
+if (!empty($_REQUEST['mail_error'])) {
 	require_once("modules/Emails/mail.php");
 	$error_msg = strip_tags(parseEmailErrorString($_REQUEST['mail_error']));
 	$error_msg = $mod_strings['LBL_MAILSENDERROR'];
@@ -25,7 +25,7 @@ $image_path=$theme_path."images/";
 if(isset($_REQUEST['emailconfig_mode']) && $_REQUEST['emailconfig_mode'] == 'delete') {
 	$sql="delete from vtiger_systems where server_type = ?";
 	$result = $adb->pquery($sql, array('email'));
-	$_REQUEST['emailconfig_mode'] == 'view';
+	$_REQUEST['emailconfig_mode'] = 'view';
 }
 
 $sql="select * from vtiger_systems where server_type = ?";
@@ -35,8 +35,8 @@ $mail_server_username = $adb->query_result($result,0,'server_username');
 $mail_server_password = $adb->query_result($result,0,'server_password');
 $smtp_auth = $adb->query_result($result,0,'smtp_auth');
 $from_email_field = $adb->query_result($result, 0, 'from_email_field');
-$servername = vtlib_purify($_REQUEST['server_name']);
-$username = vtlib_purify($_REQUEST['server_user']);
+$servername = isset($_REQUEST['server_name']) ? vtlib_purify($_REQUEST['server_name']) : '';
+$username = isset($_REQUEST['server_user']) ? vtlib_purify($_REQUEST['server_user']) : '';
 
 if(!empty($servername)) {
 	$smarty->assign("MAILSERVER",$servername);
@@ -74,7 +74,7 @@ if(isset($_REQUEST['auth_check']))
 else
 {
 	$smarty->assign("SMTP_AUTH", $smtp_auth);
-	$smarty->assign('SMTP_AUTH_SHOW', $SMTP_AUTH_OPTIONS[$smtp_auth]);
+	$smarty->assign('SMTP_AUTH_SHOW', (isset($SMTP_AUTH_OPTIONS[$smtp_auth]) ? $SMTP_AUTH_OPTIONS[$smtp_auth] : ''));
 }
 
 if(isset($_REQUEST['emailconfig_mode']) && $_REQUEST['emailconfig_mode'] != '')

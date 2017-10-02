@@ -10,7 +10,6 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -25,7 +24,6 @@ $mod_strings = Array(
     'LBL_LIST_RELATED_TO'=>'Bezogen auf',
     'LBL_LIST_DATE'=>'Sendedatum',
     'LBL_LIST_TIME'=>'Sendezeit',
-    'LBL_MOVE_TO'=>'Verschieben zu',
     'LBL_DELETE'=>'Löschen',
 
     'ERR_DELETE_RECORD'=>"Um einen Eintrag zu löschen, muss einer ausgewählt werden.",

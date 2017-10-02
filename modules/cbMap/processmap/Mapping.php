@@ -50,6 +50,7 @@
         </Orgfield>
         <delimiter>;</delimiter>
       </Orgfields>
+      <master>true|false</master> {optional: used for integration mapping between two systems}
     </field>
     <field>
       <fieldname>description</fieldname>   {destination field on invoice}
@@ -99,6 +100,10 @@ class Mapping extends processcbMap {
 			$setype = getSalesEntityType($ofields['record_id']);
 			$entityId = vtws_getId(vtws_getEntityId($setype),$ofields['record_id']);
 		}
+		if (empty($ofields['assigned_user_id'])) {
+			$userwsid = vtws_getEntityId('Users');
+			$ofields['assigned_user_id'] = vtws_getId($userwsid, $current_user->id);
+		}
 		$tfields = $arguments[1];
 		foreach ($mapping['fields'] as $targetfield => $sourcefields) {
 			$value = '';
@@ -125,24 +130,32 @@ class Mapping extends processcbMap {
 					$adminUser = $util->adminUser();
 					$entityCache = new VTEntityCache($adminUser);
 					$testexpression = array_pop($fieldinfo);
+					if (strtoupper($idx[0])=='FIELD') {
+						$testexpression = trim($testexpression);
+						if (substr($testexpression,0,1) != '$') {
+							$testexpression = '$' . $testexpression;
+						}
+					}
 					$ct = new VTSimpleTemplate($testexpression);
 					$value.= $ct->render($entityCache, $entityId).$delim;
 					$util->revertUser();
 				} elseif (empty($ofields['record_id']) and (strtoupper($idx[0])=='FIELD' or strtoupper($idx[0])=='TEMPLATE')) {
-					if (empty($ofields['assigned_user_id'])) {
-						$userwsid = vtws_getEntityId('Users');
-						$ofields['assigned_user_id'] = vtws_getId($userwsid, $current_user->id);
-					}
 					$util = new VTWorkflowUtils();
 					$adminUser = $util->adminUser();
 					$entityCache = new VTEntityCache($adminUser);
 					$testexpression = array_pop($fieldinfo);
+					if (strtoupper($idx[0])=='FIELD') {
+						$testexpression = trim($testexpression);
+						if (substr($testexpression,0,1) != '$') {
+							$testexpression = '$' . $testexpression;
+						}
+					}
 					$ct = new VTSimpleTemplateOnData($testexpression);
 					$value.= $ct->render($entityCache,$mapping['origin'],$ofields).$delim;
 					$util->revertUser();
 				} else {
 					$fieldname = array_pop($fieldinfo);
-					$value.= $ofields[$fieldname].$delim;
+					$value.= (isset($ofields[$fieldname]) ? $ofields[$fieldname] : '').$delim;
 				}
 			}
 			$value = rtrim($value,$delim);
@@ -168,6 +181,11 @@ class Mapping extends processcbMap {
 			if(isset($v->Orgfields->delimiter))
 				$target_fields[$fieldname]['delimiter']=(String)$v->Orgfields->delimiter;
 			$target_fields[$fieldname]['merge']=$allmergeFields;
+			if (isset($v->master)) {
+				$target_fields[$fieldname]['master'] = filter_var((String)$v->master, FILTER_VALIDATE_BOOLEAN);
+			} else {
+				$target_fields[$fieldname]['master'] = false;
+			}
 		}
 		$mapping['fields'] = $target_fields;
 		return $mapping;

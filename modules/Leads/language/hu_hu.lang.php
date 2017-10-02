@@ -15,8 +15,18 @@
  * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
  ********************************************************************************/
 
-$mod_strings = array(
-	'LBL_MODULE_NAME' => 'Jelöltek',
+if ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true')) {
+	$toggle_historicos = 'See Non Converted Jelöltek';
+	$toggle_name = 'Converted Jelöltek';
+} else {
+	$toggle_historicos = 'See Converted Jelöltek';
+	$toggle_name = 'Jelöltek';
+}
+
+$mod_strings = Array(
+'LBL_TGL_HISTORICOS' => $toggle_historicos,
+'LBL_MODULE_NAME'=>$toggle_name,
+'Leads' => $toggle_name,
 	'LBL_DIRECT_REPORTS_FORM_NAME' => 'Közvetlen Jelentések',
 	'LBL_MODULE_TITLE' => 'Jelöltek: Kezdőlap',
 	'LBL_SEARCH_FORM_TITLE' => 'Jelöltek Keresés',
@@ -105,7 +115,6 @@ $mod_strings = array(
 	'LBL_HOT' => 'Forró',
 	'LBL_COLD' => 'Hideg',
 	'LBL_TOOL_FORM_TITLE' => 'Jelölt Eszközök',
-	'LBL_SELECT_TEMPLATE_TO_MAIL_MERGE' => 'Válassz egy sablont a csoportos email küldéshez:',
 	'Salutation' => 'Megszólítás',
 	'First Name' => 'Keresztnév',
 	'Phone' => 'Telefon',
@@ -114,6 +123,7 @@ $mod_strings = array(
 	'Company' => 'Cég',
 	'Fax' => 'Fax',
 	'Email' => 'Email',
+	'Secondary Email' => 'Másodlagos E-mail',
 	'Lead Source' => 'Jelölt forrása',
 	'Website' => 'Weboldal',
 	'Annual Revenue' => 'Éves forgalom',
@@ -209,14 +219,6 @@ $mod_strings = array(
 	'LBL_FIELD_SETTINGS' => 'Mező beállítások',
 	'Leads ID' => 'Jelöltek AZ',
 	'Send SMS' => 'SMS küldés',
-	'LBL_DUPLICATE_DATA_IN' => 'Duplikált adat ebben:',
-	'LBL_DELETE' => 'Törlés',
-	'LBL_MERGE_SELECT' => 'Válaszd ki az összefűzendő adatokat',
-	'LBL_MERGE' => 'Összefűzés',
-	'LBL_ACTION' => 'Műveletek',
-	'LBL_MERGE_DATA_IN' => 'Adatok összefűzése ebben:',
-	'LBL_FIELDLISTS' => 'Mezőlista',
-	'LBL_RECORD' => 'Rekord',
 	'LeadAlreadyConverted' => 'Lead cannot be converted. Either it has already been converted or you lack permission on one or more of the destination modules.',
 	'Is Converted From Lead'  => 'Vevőjelöltből konvertált?',
 	'Converted From Lead'  => 'Vevőjelöltből konvertált',

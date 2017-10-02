@@ -26,7 +26,7 @@
 			<input type="checkbox" name="fields[]" checked="checked" value="{$field.name}" record="true" disabled="true">
 			<input type="hidden" name="fields[]" value="{$field.name}" record="true" >
 		{else}
-			{if $WEBFORMID}
+			{if !empty($WEBFORMID)}
 				{if $WEBFORM->isWebformField($WEBFORMID,$field.name) eq true}
 					<input type="checkbox" name="fields[]" record="false" checked="checked" value="{$field.name}" onClick=Webforms.showHideElement('value[{$field.name}]','required[{$field.name}]','jscal_trigger_{$field.name}','mincal_{$field.name}')>
 				{else}
@@ -44,11 +44,10 @@
 			{$field.label|@getTranslatedString:$MODULE}
 		</td>
 		<td class="dvtCellInfo">
-		{if $WEBFORMID && $WEBFORM->isWebformField($WEBFORMID,$field.name) eq true }
+		{if !empty($WEBFORMID) && $WEBFORM->isWebformField($WEBFORMID,$field.name) eq true }
 		{assign var="defaultvalue" value=$WEBFORM->retrieveDefaultValue($WEBFORMID,$field.name)}
 			{if $field.type.name eq 'picklist' || $field.type.name eq 'multipicklist'}
 				{assign var="val_arr" value=$WEBFORM->retrieveDefaultValue($WEBFORMID,$field.name)}
-				{assign var="values" value=","|explode:$val_arr}
 				<select fieldtype="{$field.type.name}" fieldlabel="{$field.label}" class="small" name="value[{$field.name}][]" id="value[{$field.name}]" style="display:inline;" {if $field.type.name eq 'multipicklist'}multiple="multiple" size="5"{/if}>
 						<option value="">{'LBL_SELECT_VALUE'|@getTranslatedString:$MODULE}</option>
 					{foreach item=option from=$field.type.picklistValues name=optionloop}
@@ -68,14 +67,14 @@
 				<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="checkbox" id="value[{$field.name}]" name="value[{$field.name}]" {if $defaultvalue[0] eq 'on'}checked="checked"{/if}" >
 			{else}
 					{if $field.name eq 'salutationtype'}
-							<select fieldtype="{$field.type.name}" fieldlabel="{$field.label}" class="small" id="value[{$field.name}]" name="value[{$field.name}]">
-								<option value="" {if $WEBFORM->retrieveDefaultValue($WEBFORMID,$field.name) eq ""}selected="selected"{/if}>--None--</option>
-								<option value="Mr." {if $WEBFORM->retrieveDefaultValue($WEBFORMID,$field.name) eq "Mr."}selected="selected"{/if}>Mr.</option>
-								<option value="Ms." {if $WEBFORM->retrieveDefaultValue($WEBFORMID,$field.name) eq "Ms."}selected="selected"{/if}>Ms.</option>
-								<option value="Mrs." {if $WEBFORM->retrieveDefaultValue($WEBFORMID,$field.name) eq "Mrs."}selected="selected"{/if}>Mrs.</option>
-								<option value="Dr." {if $WEBFORM->retrieveDefaultValue($WEBFORMID,$field.name) eq "Dr."}selected="selected"{/if}>Dr.</option>
-								<option value="Prof." {if $WEBFORM->retrieveDefaultValue($WEBFORMID,$field.name) eq "Prof."}selected="selected"{/if}>Prof</option>
-							</select>
+						<select fieldtype="{$field.type.name}" fieldlabel="{$field.label}" class="small" id="value[{$field.name}]" name="value[{$field.name}]">
+							<option value="" {if $WEBFORM->retrieveDefaultValue($WEBFORMID,$field.name) eq ""}selected="selected"{/if}>--None--</option>
+							<option value="Mr." {if $WEBFORM->retrieveDefaultValue($WEBFORMID,$field.name) eq "Mr."}selected="selected"{/if}>Mr.</option>
+							<option value="Ms." {if $WEBFORM->retrieveDefaultValue($WEBFORMID,$field.name) eq "Ms."}selected="selected"{/if}>Ms.</option>
+							<option value="Mrs." {if $WEBFORM->retrieveDefaultValue($WEBFORMID,$field.name) eq "Mrs."}selected="selected"{/if}>Mrs.</option>
+							<option value="Dr." {if $WEBFORM->retrieveDefaultValue($WEBFORMID,$field.name) eq "Dr."}selected="selected"{/if}>Dr.</option>
+							<option value="Prof." {if $WEBFORM->retrieveDefaultValue($WEBFORMID,$field.name) eq "Prof."}selected="selected"{/if}>Prof</option>
+						</select>
 					{else}
 						<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="value[{$field.name}]" name="value[{$field.name}]" value="{$defaultvalue[0]}" style="display:inline;"></input>
 					{/if}
@@ -83,8 +82,11 @@
 		{else}
 			{if $field.mandatory eq 1}
 				{if $field.type.name eq 'picklist' || $field.type.name eq 'multipicklist'}
-					{assign var="val_arr" value=$WEBFORM->retrieveDefaultValue($WEBFORMID,$field.name)}
-					{assign var="values" value=","|explode:$val_arr}
+					{if !empty($WEBFORMID)}
+						{assign var="val_arr" value=$WEBFORM->retrieveDefaultValue($WEBFORMID,$field.name)}
+					{else}
+						{assign var="val_arr" value=$WEBFORM->retrieveDefaultValue('',$field.name)}
+					{/if}
 					<select fieldtype="{$field.type.name}" fieldlabel="{$field.label}" class="small" name="value[{$field.name}][]" id="value[{$field.name}]" style="display:inline;" class="small" {if $field.type.name eq 'multipicklist'}multiple="multiple" size="5"{/if}>
 							<option value="" {if $field.default eq $option.value} selected="selected"{/if}>{'LBL_SELECT_VALUE'|@getTranslatedString:$MODULE}</option>
 						{foreach item=option from=$field.type.picklistValues name=optionloop}
@@ -118,10 +120,13 @@
 				{/if}
 			{else}
 				{if $field.type.name eq 'picklist' || $field.type.name eq 'multipicklist'}
-					{assign var="val_arr" value=$WEBFORM->retrieveDefaultValue($WEBFORMID,$field.name)}
-					{assign var="values" value=","|explode:$val_arr}
+					{if !empty($WEBFORMID)}
+						{assign var="val_arr" value=$WEBFORM->retrieveDefaultValue($WEBFORMID,$field.name)}
+					{else}
+						{assign var="val_arr" value=$WEBFORM->retrieveDefaultValue('',$field.name)}
+					{/if}
 					<select fieldtype="{$field.type.name}" fieldlabel="{$field.label}" class="small" name="value[{$field.name}][]" id="value[{$field.name}]" style="display:none;" class="small" {if $field.type.name eq 'multipicklist'}multiple="multiple" size="5"{/if}>
-							<option value="" {if $field.default eq $option.value} selected="selected"{/if}>{'LBL_SELECT_VALUE'|@getTranslatedString:$MODULE}</option>
+						<option value="">{'LBL_SELECT_VALUE'|@getTranslatedString:$MODULE}</option>
 						{foreach item=option from=$field.type.picklistValues name=optionloop}
 							<option value="{$option.value}" {if $field.default eq $option.value} selected="selected"{/if} >{$option.label}</option>
 						{/foreach}
@@ -159,7 +164,7 @@
 				<input type="checkbox" checked="checked" disabled="disabled" value="{$field.name}" style="display:inline;" >
 				<input type="hidden" id="required[{$field.name}]" name="required[]" value="{$field.name}"></input>
 			{else}
-				{if $WEBFORMID}
+				{if !empty($WEBFORMID)}
 					{if $WEBFORM->isWebformField($WEBFORMID,$field.name) eq true && $WEBFORM->isRequired($WEBFORMID,$field.name) eq true}
 						<input type="checkbox" id="required[{$field.name}]" name="required[]" value="{$field.name}" checked="checked" style="display:inline;" >
 					{else}

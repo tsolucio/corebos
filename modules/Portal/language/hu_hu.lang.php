@@ -28,6 +28,7 @@ $mod_strings = array(
 	'LBL_TOOLS' => 'Eszközök',
 	'LBL_MANAGE_SITES' => 'Weboldalak kezelése',
 	'LBL_MY_SITES' => 'Weboldalak',
-	'LBL_SET_DEFAULT_BUTTON' => 'Alapértelmezettként beállít'
+	'LBL_SET_DEFAULT_BUTTON' => 'Alapértelmezettként beállít',
+	'ERR_NOT_PERMITTED_LOAD' => 'The website you have indicated has blocked loading inside another webpage so it has been opened in another tab.',
 );
 ?>

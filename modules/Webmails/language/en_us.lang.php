@@ -10,11 +10,6 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Emails/language/en_us.lang.php,v 1.17 2005/03/28 06:31:38 rank Exp $
- * Description:  Defines the English language pack for the Webmail.
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -29,7 +24,6 @@ $mod_strings = Array(
 'LBL_LIST_RELATED_TO'=>'Related to',
 'LBL_LIST_DATE'=>'Date Sent',
 'LBL_LIST_TIME'=>'Time Sent',
-'LBL_MOVE_TO'=>'Move To',
 'LBL_DELETE'=>'Delete',
 
 'ERR_DELETE_RECORD'=>"A record number must be specified to delete the organization.",

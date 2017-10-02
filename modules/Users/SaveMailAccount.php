@@ -36,7 +36,7 @@ if(isset($_REQUEST['edit']) && $_REQUEST['edit'] && $_REQUEST['record']!='') {
 	$params = array($displayname, $email, $account_name, $mailprotocol, $server_username);
 	if($server_password != '*****') {
 		$sql.=", mail_password=?";
-		array_push($params, $encrypted_password);
+		$params[] = $encrypted_password;
 	}
 	$sql.=", mail_servername=?,  box_refresh=?,  mails_per_page=?, ssltype=? , sslmeth=?, int_mailer=? where user_id = ?";
 	array_push($params, $mail_servername, $box_refresh, $mails_per_page, $ssltype, $sslmeth, $_REQUEST["int_mailer"], $id);
@@ -54,5 +54,5 @@ if(empty($return_module)) $return_module = 'Webmails';
 $return_action = vtlib_purify($_REQUEST['return_action']);
 if(empty($return_action)) $return_action = 'index';
 
-header("Location:index.php?module=$return_module&action=$return_action&mailbox=INBOX&parenttab=My Home Page");
+header('Location:index.php?module=' . urlencode($return_module) . '&action=' . urlencode($return_action) . '&mailbox=INBOX');
 ?>

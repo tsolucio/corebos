@@ -106,6 +106,7 @@ $mod_strings = array(
 	'LBL_ADD_PRICEBOOK_BUTTON_KEY' => 'Csomagár hozzáadása',
 	'LBL_ADD_SERVICE_PRICEBOOKS' => 'Szolgáltatás - Csomagárak',
 	'LBL_ADD_SERVICES_PRICEBOOK' => 'Szolgáltatás - Csomagár',
-	'LBL_SERVICE_PRICES' => 'Szolgáltatás ára'
+	'LBL_SERVICE_PRICES' => 'Szolgáltatás ára',
+	'Divisible'=>'Divisible',
 );
 ?>

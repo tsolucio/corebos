@@ -9,7 +9,7 @@
  ********************************************************************************/
 -->*}
 <!-- BEGIN: main -->
-<div id="roleLay" style="z-index:12;display:block;width:400px;" class="layerPopup">
+<div id="roleLay" style="z-index:12;display:inline-table;width:400px;" class="layerPopup">
 	<input name="excludedRecords" type="hidden" id="excludedRecords" value="{$EXE_REC}">
 	<input name='search_url' id="search_url" type='hidden' value='{$SEARCH_URL}'>
 	<input name='viewid' id="viewid" type='hidden' value='{$VIEWID}'>
@@ -18,7 +18,7 @@
 		<tr>
 			<td width="90%" align="left" class="genHeaderSmall">{$MOD.SELECT_EMAIL}
 				{if $ONE_RECORD neq 'true'}
-				({$MOD.LBL_MULTIPLE} {$APP[$FROM_MODULE]})
+				({$MOD.LBL_MULTIPLE} {$FROM_MODULE|getTranslatedString:$FROM_MODULE})
 				{/if}
 				&nbsp;
 			</td>
@@ -35,7 +35,7 @@
 					{if $ONE_RECORD eq 'true'}
 						<b>{$ENTITY_NAME}</b> {$MOD.LBL_MAILSELECT_INFO}.<br><br>
 					{else}
-						{$MOD.LBL_MAILSELECT_INFO1} {$APP[$FROM_MODULE]}.{$MOD.LBL_MAILSELECT_INFO2}<br><br>
+						{$MOD.LBL_MAILSELECT_INFO1} {$FROM_MODULE|getTranslatedString:$FROM_MODULE}.{$MOD.LBL_MAILSELECT_INFO2}<br><br>
 					{/if}
 						<div style="height:120px;overflow-y:auto;overflow-x:hidden;" align="center">
 							<table border="0" cellpadding="5" cellspacing="0" width="90%">

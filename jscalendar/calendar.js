@@ -889,8 +889,13 @@ Calendar.prototype.create = function (_par) {
 				if (pm && t12) hrs -= 12;
 				H.firstChild.data = (hrs < 10) ? ("0" + hrs) : hrs;
 				M.firstChild.data = (mins < 10) ? ("0" + mins) : mins;
-				if (t12)
-					AP.firstChild.data = pm ? "pm" : "am";
+				if (t12) {
+					if (this.params.inputTimeFormat != undefined) {
+						AP.firstChild.data = this.params.inputTimeFormat.toLowerCase();
+					} else {
+						AP.firstChild.data = pm ? "pm" : "am";
+					}
+				}
 			};
 
 			cal.onUpdateTime = function() {
@@ -1046,7 +1051,6 @@ Calendar._keyEvent = function(ev) {
  *  (RE)Initializes the calendar to the given date and firstDayOfWeek
  */
 Calendar.prototype._init = function (firstDayOfWeek, date) {
-	date.setHours(12); // Bugfix: Required for daylight saving!!!
 	var today = new Date();
 	this.table.style.visibility = "hidden";
 	var year = date.getFullYear();

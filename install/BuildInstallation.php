@@ -8,7 +8,7 @@
  * All Rights Reserved.
  *********************************************************************************/
 
-@include_once('config.db.php');
+@include_once('install/config.db.php');
 global $dbconfig, $vtiger_current_version, $vtconfig, $coreBOS_app_version;
 
 $hostname = $_SERVER['SERVER_NAME'];

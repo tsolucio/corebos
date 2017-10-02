@@ -37,7 +37,6 @@ $smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
-// TODO: Update Single Module Instance name here.
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $smarty->assign('CATEGORY', $category);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
@@ -45,9 +44,10 @@ $smarty->assign('THEME', $theme);
 $smarty->assign('ID', $focus->id);
 $smarty->assign('RECORDID', $focus->id);
 $smarty->assign('MODE', $focus->mode);
+$smarty->assign('USE_ASTERISK', get_use_asterisk($current_user->id));
 
 $recordName = array_values(getEntityName($currentModule, $focus->id));
-$recordName = $recordName[0];
+$recordName = isset($recordName[0]) ? $recordName[0] : '';
 $smarty->assign('NAME', $recordName);
 $smarty->assign('UPDATEINFO',updateInfo($focus->id));
 
@@ -70,9 +70,12 @@ $smarty->assign('EVENT_PERMISSION',CheckFieldPermission('parent_id','Events'));
 $smarty->assign('EDIT_PERMISSION', isPermitted($currentModule, 'EditView', $record));
 $smarty->assign('CHECK', $tool_buttons);
 
-if(PerformancePrefs::getBoolean('DETAILVIEW_RECORD_NAVIGATION', true) && isset($_SESSION[$currentModule.'_listquery'])){
+if (GlobalVariable::getVariable('Application_DetailView_Record_Navigation', 1) && isset($_SESSION[$currentModule.'_listquery'])){
 	$recordNavigationInfo = ListViewSession::getListViewNavigation($focus->id);
 	VT_detailViewNavigation($smarty,$recordNavigationInfo,$focus->id);
+} else {
+	$smarty->assign('privrecord', '');
+	$smarty->assign('nextrecord', '');
 }
 
 $smarty->assign('IS_REL_LIST', isPresentRelatedLists($currentModule));
@@ -93,6 +96,7 @@ if($singlepane_view == 'true' or $isPresentRelatedListBlock) {
 	$open_related_modules = RelatedListViewSession::getRelatedModulesFromSession();
 	$smarty->assign("SELECTEDHEADERS", $open_related_modules);
 } else {
+	$smarty->assign('RELATEDLISTS', array());
 	$bmapname = $currentModule.'RelatedPanes';
 	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 	if ($cbMapid) {
@@ -103,16 +107,28 @@ if($singlepane_view == 'true' or $isPresentRelatedListBlock) {
 	}
 }
 
-if(isPermitted($currentModule, 'CreateView', $record) == 'yes')
+if (isPermitted($currentModule, 'CreateView', $record) == 'yes') {
 	$smarty->assign('CREATE_PERMISSION', 'permitted');
-if(isPermitted($currentModule, 'Delete', $record) == 'yes')
+} else {
+	$smarty->assign('CREATE_PERMISSION', '');
+}
+if (isPermitted($currentModule, 'Delete', $record) == 'yes') {
 	$smarty->assign('DELETE', 'permitted');
+} else {
+	$smarty->assign('DELETE', '');
+}
 
 $blocks = getBlocks($currentModule,'detail_view','',$focus->column_fields);
 $smarty->assign('BLOCKS', $blocks);
 $custom_blocks = getCustomBlocks($currentModule,'detail_view');
 $smarty->assign('CUSTOMBLOCKS', $custom_blocks);
 $smarty->assign('FIELDS',$focus->column_fields);
+if (is_admin($current_user)) {
+	$smarty->assign('hdtxt_IsAdmin',1);
+} else {
+	$smarty->assign('hdtxt_IsAdmin',0);
+}
+
 $smarty->assign("BLOCKINITIALSTATUS",$_SESSION['BLOCKINITIALSTATUS']);
 // Gather the custom link information to display
 include_once('vtlib/Vtiger/Link.php');
@@ -136,9 +152,10 @@ if($isPresentRelatedListBlock) {
 // Hide Action Panel
 $DEFAULT_ACTION_PANEL_STATUS = GlobalVariable::getVariable('Application_Action_Panel_Open',1);
 $smarty->assign('DEFAULT_ACTION_PANEL_STATUS',($DEFAULT_ACTION_PANEL_STATUS ? '' : 'display:none'));
+$smarty->assign('Module_Popup_Edit',isset($_REQUEST['Module_Popup_Edit']) ? vtlib_purify($_REQUEST['Module_Popup_Edit']) : 0);
 
 // Record Change Notification
 $focus->markAsViewed($current_user->id);
 
-$smarty->assign('DETAILVIEW_AJAX_EDIT', PerformancePrefs::getBoolean('DETAILVIEW_AJAX_EDIT', true));
+$smarty->assign('DETAILVIEW_AJAX_EDIT', GlobalVariable::getVariable('Application_DetailView_Inline_Edit', 1));
 ?>

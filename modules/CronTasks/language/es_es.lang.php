@@ -1,4 +1,12 @@
 <?php
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
+ * All Rights Reserved.
+ ************************************************************************************/
 /* Spanish Translation File
 ***********************************************************
 *  Module       : CronTasks
@@ -20,12 +28,13 @@ $mod_strings = Array (
 	'LBL_SEQUENCE'=>'Secuencia',
 	'LBL_TOOLS' =>'Herramientas',
 	'LBL_RUNNING'=>'En ejecución',
-	'LBL_MINIMUM_FREQUENCY'=>'La frecuencia de los trabajos debe ser superior a 15 minutos',
+	'LBL_MINIMUM_FREQUENCY'=>'La frecuencia de los trabajos debe ser superior a',
 	'LBL_SECONDS'=>'Segundos',
 	'LBL_SECONDS_AGO'=>'seg',
 	'LBL_MINUTES'=>'Minutos',
 	'LBL_MINUTES_AGO'=>'min',
 	'LBL_HOURS'=>'Horas',
+	'LBL_DAILY'=>'Diario',
 	'LBL_HOURS_AGO'=>'hrs',
 	'LBL_DAYS'=>'Días',
 	'LBL_DAYS_AGO'=>'días',
@@ -36,5 +45,6 @@ $mod_strings = Array (
 	'Allows you to Configure Cron Task' => 'Permite configurar las Tareas Programadas',
 	'Scheduler' => 'Planificador Tareas',
 	'Cron Job' => 'Tarea Programada',
+	'cronWatcherService' => 'Vigilante Cron',
 );
 ?>

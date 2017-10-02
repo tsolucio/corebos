@@ -24,7 +24,7 @@ class changeUitype58To10 extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$ui58rs = $adb->pquery("select fieldid,name
+			$ui58rs = $adb->query("select fieldid,name
 					from vtiger_field
 					inner join vtiger_tab on vtiger_tab.tabid=vtiger_field.tabid
 					where uitype = '58'");

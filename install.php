@@ -8,9 +8,9 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-include('adodb/adodb.inc.php');
+include('include/adodb/adodb.inc.php');
 
-if(version_compare(phpversion(), '5.0') < 0) {
+if(version_compare(phpversion(), '5.4') < 0) {
 	$serverPhpVersion = phpversion();
 	require_once('phpversionfail.php');
 	die();
@@ -38,7 +38,7 @@ require_once('include/install/resources/utils.php');
 require_once('vtigerversion.php');	
 global $installationStrings, $vtiger_current_version, $coreBOS_app_version;
 
-@include_once('config.db.php');
+@include_once('install/config.db.php');
 global $dbconfig, $vtconfig;
 if(empty($_REQUEST['file']) && is_array($vtconfig) && $vtconfig['quickbuild'] == 'true') {
 	$the_file = 'BuildInstallation.php';

@@ -8,8 +8,8 @@
  * All Rights Reserved.
 ********************************************************************************/
 -->*}
-{if isset($smarty.request.ajax) && $smarty.request.ajax neq ''}
-&#&#&#{$ERROR}&#&#&#
+{if !empty($smarty.request.ajax)}
+&#&#&#{if isset($ERROR)}{$ERROR}{/if}&#&#&#
 {/if}
 <script type="text/javascript" src="include/js/ListView.js"></script>
 <form name="massdelete" method="POST" id="massdelete" onsubmit="VtigerJS_DialogBox.block();">
@@ -22,7 +22,7 @@
 	<input name="step" type="hidden">
 	<input name="excludedRecords" type="hidden" id="excludedRecords" value="">
 	<input name="numOfRows" id="numOfRows" type="hidden" value="">
-	<input name="allids" type="hidden" id="allids" value="{$ALLIDS}">
+	<input name="allids" type="hidden" id="allids" value="{if isset($ALLIDS)}{$ALLIDS}{/if}">
 	<input name="selectedboxes" id="selectedboxes" type="hidden" value="{$SELECTEDIDS}">
 	<input name="allselectedboxes" id="allselectedboxes" type="hidden" value="{$ALLSELECTEDIDS}">
 	<input name="current_page_boxes" id="current_page_boxes" type="hidden" value="{$CURRENT_PAGE_BOXES}">
@@ -38,13 +38,13 @@
 								<tr>
 									<td>
 										<!-- Filters -->
-										{if $HIDE_CUSTOM_LINKS neq '1'}
+										{if empty($HIDE_CUSTOM_LINKS) || $HIDE_CUSTOM_LINKS neq '1'}
 										<table cellpadding="5" cellspacing="0" class="small">
 											<tr>
 												<td style="padding-left:5px;padding-right:5px" align="center">
 													<b><font size=2>{$APP.LBL_VIEW}</font></b> <SELECT NAME="viewname" id="viewname" class="small" style="max-width:240px;" onchange="showDefaultCustomView(this,'{$MODULE}','{$CATEGORY}')">{$CUSTOMVIEW_OPTION}</SELECT>
 												</td>
-												{if $ALL eq 'All'}
+												{if isset($ALL) && $ALL eq 'All'}
 												<td style="padding-left:5px;padding-right:5px" align="center"><a href="index.php?module={$MODULE}&action=CustomView&parenttab={$CATEGORY}">{$APP.LNK_CV_CREATEVIEW}</a>
 													<span class="small">|</span>
 													<span class="small" disabled>{$APP.LNK_CV_EDIT}</span>
@@ -123,7 +123,7 @@
 			{foreachelse}
 			<tr>
 			<td style="background-color:#efefef;height:340px" align="center" colspan="{$smarty.foreach.listviewforeach.iteration+1}">
-			<div id="no_entries_found" style="border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 45%; position: relative; z-index: 10000000;">
+			<div id="no_entries_found" style="border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 45%; position: relative;">
 				{assign var=vowel_conf value='LBL_A'}
 				{if $MODULE eq 'Accounts' || $MODULE eq 'Invoice'}
 					{assign var=vowel_conf value='LBL_AN'}
@@ -158,7 +158,7 @@
 							<td class="small" align="left" nowrap="nowrap">
 								{if $MODULE neq 'Calendar'}
 									<b><a class="nef_action" href="index.php?module={$MODULE}&action=EditView&return_action=DetailView&parenttab={$CATEGORY}">{$APP.LBL_CREATE} {$APP.$vowel_conf}
-										{if $APP.$MODULE_CREATE}{$APP.$MODULE_CREATE}{else}{$MODULE_CREATE}{/if}
+										{$MODULE_CREATE|@getTranslatedString:$MODULE}
 										{if $CHECK.Import eq 'yes' && $MODULE neq 'Documents'}
 										</a></b><br>
 										<b><a class="nef_action" href="index.php?module={$MODULE}&action=Import&step=1&return_module={$MODULE}&return_action=ListView&parenttab={$CATEGORY}">{$APP.LBL_IMPORT} {$MODULE|@getTranslatedString:$MODULE}
@@ -179,7 +179,7 @@
 						</tr>
 						<tr>
 							<td class="small" align="left" nowrap="nowrap">{$APP.LBL_YOU_ARE_NOT_ALLOWED_TO_CREATE} {$APP.$vowel_conf}
-							{if $APP.$MODULE_CREATE}{$APP.$MODULE_CREATE}{else}{$MODULE_CREATE}{/if}
+							{$MODULE_CREATE|@getTranslatedString:$MODULE}
 							<br>
 							</td>
 						</tr>
@@ -199,7 +199,7 @@
 				<td align="right" width=40%>
 					<table border=0 cellspacing=0 cellpadding=0 class="small">
 					<tr>
-						{if $WORDTEMPLATES neq ''}
+						{if !empty($WORDTEMPLATES)}
 							{if $WORDTEMPLATES|@count gt 0}
 								<td>{'LBL_SELECT_TEMPLATE_TO_MAIL_MERGE'|@getTranslatedString:$MODULE}</td>
 								<td style="padding-left:5px;padding-right:5px">
@@ -242,5 +242,4 @@
 		</tr>
 	</table>
 </form>
-{if isset($SELECT_SCRIPT)}{$SELECT_SCRIPT}{/if}
 <div id="basicsearchcolumns" style="display:none;"><select name="search_field" id="bas_searchfield" class="txtBox" style="width:150px">{html_options options=$SEARCHLISTHEADER}</select></div>

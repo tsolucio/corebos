@@ -8,27 +8,28 @@
  * All Rights Reserved.
  ********************************************************************************/
 global $currentModule, $rstart;
+$nonSupportedMassEdit = array('Emails');
 
 $focus = CRMEntity::getInstance($currentModule);
 
 $idlist= vtlib_purify($_REQUEST['massedit_recordids']);
-$viewid = vtlib_purify($_REQUEST['viewname']);
-$return_module = vtlib_purify($_REQUEST['massedit_module']);
+$viewid = isset($_REQUEST['viewname']) ? vtlib_purify($_REQUEST['viewname']) : '';
+$return_module = urlencode(vtlib_purify($_REQUEST['massedit_module']));
 $return_action = 'index';
 
 //Added to fix 4600
 $url = getBasic_Advance_SearchURL();
 
 if(isset($_REQUEST['start']) && $_REQUEST['start']!=''){
-	$rstart = "&start=".vtlib_purify($_REQUEST['start']);
+	$rstart = '&start=' . urlencode(vtlib_purify($_REQUEST['start']));
 }
 
-if(isset($idlist)) {
+if (isset($idlist)) {
 	$recordids = explode(';', $idlist);
-	for($index = 0; $index < count($recordids); ++$index) {
+	for ($index = 0; $index < count($recordids); ++$index) {
 		$recordid = $recordids[$index];
-		if($recordid == '') continue;
-		if(isPermitted($currentModule,'EditView',$recordid) == 'yes') {
+		if ($recordid == '' or in_array(getSalesEntityType($recordid), $nonSupportedMassEdit)) continue;
+		if (isPermitted($currentModule,'EditView',$recordid) == 'yes') {
 			// Save each module record with update value.
 			$focus->retrieve_entity_info($recordid, $currentModule);
 			$focus->mode = 'edit';
@@ -42,7 +43,9 @@ if(isset($idlist)) {
 							$value = vtlib_purify($_REQUEST['assigned_group_id']);
 						}
 					} else {
-						if(is_array($_REQUEST[$fieldname]))
+						if (!isset($_REQUEST[$fieldname])) {
+							$value = '';
+						} elseif (is_array($_REQUEST[$fieldname]))
 							$value = vtlib_purify($_REQUEST[$fieldname]);
 						else
 							$value = trim(vtlib_purify($_REQUEST[$fieldname]));
@@ -57,6 +60,5 @@ if(isset($idlist)) {
 	}
 }
 
-$parenttab = getParentTab();
-header("Location: index.php?module=$return_module&action=$return_action&parenttab=$parenttab$rstart");
+header("Location: index.php?module=$return_module&action=$return_action$rstart");
 ?>

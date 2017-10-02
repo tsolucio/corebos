@@ -8,7 +8,7 @@
  * All Rights Reserved.
  * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
-include_once dirname(__FILE__) . '/../api/ws/getScrollContent.php';
+include_once __DIR__ . '/../api/ws/getScrollContent.php';
 
 //get new content for scrolling
 class crmtogo_UI_GetScrollRecords extends crmtogo_WS_getScrollContent{
@@ -58,26 +58,27 @@ class crmtogo_UI_GetScrollRecords extends crmtogo_WS_getScrollContent{
 			$ws_entity=$adb->pquery($entity, array($wsResponseResult['module']));
 			$ws_entity2= $adb->query_result($ws_entity,0,'id');
 		}
-			
+
 		$output = "";
-		for($i=0;$i<$noofrows;$i++) {
+		for ($i=0;$i<$noofrows;$i++) {
 			$firstname = $adb->query_result($records,$i,$fieldcontent[0]);
-			$lastname = $adb->query_result($records,$i,$fieldcontent[1]);
-		
+			$lastname = (isset($fieldcontent[1]) ? $adb->query_result($records,$i,$fieldcontent[1]) : '');
+
 			if ($module =='Calendar' || $module =='Events') {
 				//for calendar display date and time
 				global $current_language;
 				$activitytype = ($adb->query_result($records,$i,'activitytype') != 'Task' ? 'E' : ($current_language == 'de_de' ? 'A' : 'T'));
 				$ws_entity2 = ($adb->query_result($records,$i,'activitytype') != 'Task' ? $arr_entity2[1] : $arr_entity2[0]);
 				$firstname = $activitytype." | ".$firstname." |";
-				$lastname = getValidDisplayDate($adb->query_result($records,$i,'date_start'));
+				$date_start = getValidDisplayDate($adb->query_result($records,$i,'date_start'));
 				
 				$timequery = "select time_start from vtiger_activity where activityid =?";
 				$timequeryresult = $adb->pquery($timequery, array($adb->query_result($records,$i,$entityidfield)));
 				$time_start = $adb->query_result($timequeryresult,0,'time_start');
 				//cut seconds if exist
 				$time = (strlen($time_start) > 5) ? substr($time_start,0,5).'' : $time_start;
-				$lastname .= " $time";
+				$date = new DateTimeField($date_start.' '.$time);
+				$lastname = $date->getDisplayDateTimeValue();
 
 			}
 			$id = $ws_entity2."x".$adb->query_result($records,$i,$entityidfield);

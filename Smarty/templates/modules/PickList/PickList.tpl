@@ -6,11 +6,9 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 <script type="text/javascript" src="include/js/smoothscroll.js"></script>
-<script type="text/javascript" src="include/js/menu.js"></script>
 <script type="text/javascript" src="include/js/picklist.js"></script>
 <script src="modules/Home/Homestuff.js" type="text/javascript"></script>
 <br>
@@ -79,4 +77,3 @@
 
 <div id="actiondiv" style="display:block;position:absolute;"></div>
 <div id="editdiv" style="display:block;position:absolute;width:510px;"></div>
-			

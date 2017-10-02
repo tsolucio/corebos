@@ -17,7 +17,6 @@
 *  Version      : 5.5.0
 *  Author       : JPL TSolucio, S. L.
 *************************************************************************************************/
-
 global $adb, $log, $mod_strings, $app_strings, $currentModule, $current_user, $theme;
 require_once 'modules/cbupdater/cbupdaterHelper.php';
 
@@ -28,8 +27,8 @@ $smarty = new vtigerCRM_Smarty();
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
+$smarty->assign('CUSTOM_MODULE', true);
 $smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule));
-$smarty->assign('CATEGORY', $category);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('THEME', $theme);
 include('modules/cbupdater/forcedButtons.php');
@@ -55,7 +54,7 @@ if (!empty($ids)) {
 	} else {
 		$ids = str_replace(';', ',', $ids);
 		$ids = trim($ids,',');
-		$sql .= " cbupdaterid in ($ids)";
+		$sql .= $adb->sql_escape_string(" cbupdaterid in ($ids)");
 	}
 	$cbacc=$adb->getColumnNames('vtiger_cbupdater');
 	if (in_array('blocked', $cbacc)) {
@@ -102,7 +101,7 @@ if (!empty($ids)) {
 		} else {
 			$error = true;
 			$errmsg = getTranslatedString('err_noupdatefile',$currentModule);
-			cbupdater_show_error($errmsg);
+			cbupdater_show_error($errmsg. ' : ' . $upd['pathfilename']);
 		}
 	}
 } else {

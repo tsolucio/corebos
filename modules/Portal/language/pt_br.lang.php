@@ -9,9 +9,7 @@
 * Contributor: Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
 ********************************************************************************/
 
-
 $mod_strings = Array(
-// added for 5.0 beta
 'LBL_BOOKMARKED_URL'=>"URLs Favoritos",
 'LBL_MANAGE_BOOKMARKS'=>'Administrar Favoritos',
 'LBL_BOOKMARK_LIST'=>'Lista Favoritos',
@@ -27,8 +25,7 @@ $mod_strings = Array(
 'LBL_MANAGE_SITES'=>'Administração Sites',
 'LBL_MY_SITES'=>'Sites',
 
-// Added/Updated for vtiger CRM 5.0.4
-//added as an enhancement
 'LBL_SET_DEFAULT_BUTTON'=>'Definir como Padrão',
+		'ERR_NOT_PERMITTED_LOAD' => 'The website you have indicated has blocked loading inside another webpage so it has been opened in another tab.',
 );
 ?>

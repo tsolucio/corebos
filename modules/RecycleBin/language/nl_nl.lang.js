@@ -30,7 +30,7 @@
  * @license	vtiger CRM Public License Version 1.0 (by definition)
  ********************************************************************************/
 
-var mod_alert_arr = {       
+var mod_alert_arr = {
 	SELECT_ATLEAST_ONE_ENTITY:'Selecteer minimaal 1 waarde',
 	MSG_EMPTY_CONFIRMATION:'Are you sure you want to empty the selected',
 	MSG_RESTORE_CONFIRMATION:'Weet u zeker dat u de geselecteerde items wilt herstellen?'

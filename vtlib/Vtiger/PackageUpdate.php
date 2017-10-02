@@ -37,7 +37,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
         }
 
         if($module != null) {
-            $unzip = new Vtiger_Unzip($zipfile, $overwrite);
+            $unzip = new Vtiger_Unzip($zipfile);
 
             // Unzip selectively
             $unzip->unzipAllEx( ".",
@@ -161,7 +161,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
      * @access private
      */
     function parse_Migration($modulenode) {
-        if(!$this->_migrations) {
+        if (empty($this->_migrations)) {
             $this->_migrations = Array();
             if(!empty($modulenode->migrations) &&
                     !empty($modulenode->migrations->migration)) {
@@ -407,7 +407,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 			if((empty($importCronTask->sequence))){
 				$importCronTask->sequence=Vtiger_Cron::nextSequence();
 			}
-			Vtiger_Cron::register("$importCronTask->name","$importCronTask->handler", "$importCronTask->frequency", "$modulenode->name","$importCronTask->status","$importCronTask->sequence","$cronTask->description");
+			Vtiger_Cron::register("$importCronTask->name","$importCronTask->handler", "$importCronTask->frequency", "$modulenode->name","$importCronTask->status","$importCronTask->sequence","$importCronTask->description");
 		}
 	}
 }

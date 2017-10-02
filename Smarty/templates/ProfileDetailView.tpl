@@ -220,24 +220,24 @@ function UpdateProfile() {
 			        <tr>
 					{assign var=modulename value=$TAB_PRIV[$tabid][0]}
 					{assign var="MODULELABEL" value=$modulename|@getTranslatedString:$modulename}
-			          <td class="small cellLabel" width="3%"><div align="right">
+			          <td class="smal cellLabel" width="3%"><div align="right">
 					{$TAB_PRIV[$tabid][1]}
 			          </div></td>
 			          <td class="small cellLabel" width="40%"><p>{$MODULELABEL}</p></td>
 			          <td class="small cellText" width="10%">&nbsp;<div align="center">
-					{$STANDARD_PRIV[$tabid][4]}
+					{if !empty($STANDARD_PRIV[$tabid][4])}{$STANDARD_PRIV[$tabid][4]}{/if}
 			          </div></td>
 			          <td class="small cellText" width="10%">&nbsp;<div align="center">
-					{$STANDARD_PRIV[$tabid][1]}
+					{if !empty($STANDARD_PRIV[$tabid][1])}{$STANDARD_PRIV[$tabid][1]}{/if}
 			          </div></td>
 			          <td class="small cellText" width="10%">&nbsp;<div align="center">
-					{$STANDARD_PRIV[$tabid][3]}
+					{if !empty($STANDARD_PRIV[$tabid][3])}{$STANDARD_PRIV[$tabid][3]}{/if}
 			          </div></td>
 			          <td class="small cellText" width="10%">&nbsp;<div align="center">
-					{$STANDARD_PRIV[$tabid][2]}
+					{if !empty($STANDARD_PRIV[$tabid][2])}{$STANDARD_PRIV[$tabid][2]}{/if}
         			  </div></td>
 			          <td class="small cellText" width="17%">&nbsp;<div align="center">
-				{if $FIELD_PRIVILEGES[$tabid] neq NULL}
+				{if !empty($FIELD_PRIVILEGES[$tabid])}
 				<img src="{'showDown.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" onclick="fnToggleVIew('{$modulename}_view')" border="0" height="16" width="40">
 				{/if}
 				</div></td>
@@ -246,7 +246,7 @@ function UpdateProfile() {
 				          <td colspan="7" class="small settingsSelectedUI">
 						<table class="small" border="0" cellpadding="2" cellspacing="0" width="100%">
 			        	    	<tbody>
-						{if $FIELD_PRIVILEGES[$tabid] neq ''}
+						{if !empty($FIELD_PRIVILEGES[$tabid])}
 						<tr>
 							{if $modulename eq 'Calendar'}
 								<td class="small colHeader" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN} ({$APP.Tasks})</td>
@@ -254,7 +254,6 @@ function UpdateProfile() {
 								<td class="small colHeader" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN}</td>
 							{/if}
 						</tr>
-						{/if}
 						{foreach item=row_values from=$FIELD_PRIVILEGES[$tabid]}
 				            	<tr>
 						      {foreach item=element from=$row_values}
@@ -263,6 +262,7 @@ function UpdateProfile() {
 						      {/foreach}
 				                </tr>
 						{/foreach}
+						{/if}
 						{if $modulename eq 'Calendar'}
 						<tr>
 							<td class="small colHeader" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN}  ({$APP.Events})</td>
@@ -276,11 +276,10 @@ function UpdateProfile() {
 				                </tr>
 						{/foreach}
 						{/if}
-						{if $UTILITIES_PRIV[$tabid] neq ''}
+						{if !empty($UTILITIES_PRIV[$tabid])}
 						<tr>
 							<td colspan="7" class="small colHeader" valign="top">{$CMOD.LBL_TOOLS_TO_BE_SHOWN} </td>
 						</tr>
-						{/if}
 						{foreach item=util_value from=$UTILITIES_PRIV[$tabid]}
 						<tr>
 							{foreach item=util_elements from=$util_value}
@@ -289,6 +288,7 @@ function UpdateProfile() {
 							{/foreach}
 				               	</tr>
 						{/foreach}
+						{/if}
 					        </tbody>
 						</table>
 					</td>

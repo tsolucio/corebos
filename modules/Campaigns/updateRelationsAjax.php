@@ -6,47 +6,38 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
-
 require_once('include/database/PearDatabase.php');
 
 $rel_table = '';
 $rel_field = '';
-switch($_REQUEST['relatedmodule'])
-{
-	case 'Accounts' : $rel_table = 'vtiger_campaignaccountrel'; $rel_field = 'accountid';
-	break;
-	case 'Contacts' : $rel_table = 'vtiger_campaigncontrel'; $rel_field = 'contactid';
-	break;
-	case 'Leads' : $rel_table = 'vtiger_campaignleadrel'; $rel_field = 'leadid';
-	break;
+switch ($_REQUEST['relatedmodule']) {
+	case 'Accounts' :
+		$rel_table = 'vtiger_campaignaccountrel';
+		$rel_field = 'accountid';
+		break;
+	case 'Contacts' :
+		$rel_table = 'vtiger_campaigncontrel';
+		$rel_field = 'contactid';
+		break;
+	case 'Leads' :
+		$rel_table = 'vtiger_campaignleadrel';
+		$rel_field = 'leadid';
+		break;
 	case 'Potentials' :
-	{
-
-
-	}
-	break;
+		break;
 	default:
-	{
 		echo ":#:FAILURE";
 		exit;
-	}
-	break;
 }
-
 
 $sql = "UPDATE $rel_table SET campaignrelstatusid = ? WHERE campaignid = ? AND $rel_field = ?;";
 $params = array($_REQUEST['campaignrelstatusid'], $_REQUEST['campaignid'], $_REQUEST['crmid']);
-if($adb->pquery($sql, $params))
-{
+if ($adb->pquery($sql, $params)) {
 	echo ":#:SUCCESS";
-}
-else
-{
+} else {
 	echo ":#:FAILURE";
 }
 
 exit;
-
 ?>

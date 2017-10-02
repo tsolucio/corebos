@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 require_once('Smarty_setup.php');
 require_once('include/utils/utils.php');
@@ -14,11 +13,7 @@ require_once('data/Tracker.php');
 require_once('include/utils/UserInfoUtil.php');
 require_once('include/CustomFieldUtil.php');
 
-global $app_strings;
-global $mod_strings;
-global $current_language,$default_charset;
-
-global $theme;
+global $app_strings, $mod_strings, $current_language,$default_charset, $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 $smod_strings = return_module_language($current_language,'Settings');
@@ -37,7 +32,13 @@ $smarty->assign("ALL_VARIABLES", $allOptions);
 
 $smarty->assign("MOD", $smod_strings);
 $smarty->assign("MODULE", 'Settings');
-
+$smarty->assign('EMODE', 'create');
+$smarty->assign('FOLDERNAME', '');
+$smarty->assign('TEMPLATENAME', '');
+$smarty->assign('TEMPLATEID', 0);
+$smarty->assign('DESCRIPTION', '');
+$smarty->assign('SUBJECT', '');
+$smarty->assign('BODY', '');
+$smarty->assign('EMAILFROM', '');
 $smarty->display("CreateEmailTemplate.tpl");
-
 ?>

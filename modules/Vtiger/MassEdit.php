@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-
 global $mod_strings,$app_strings,$theme,$currentModule,$current_user;
 
 require_once('Smarty_setup.php');
@@ -30,9 +29,12 @@ $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $storearray = getSelectedRecords($_REQUEST, $currentModule, vtlib_purify($_REQUEST['idstring']),$excludedRecords);
 $idstringval=implode(';',$storearray);
 $smarty->assign("IDS",$idstringval);
+$smarty->assign('ID', 0);
+$smarty->assign('MODE', $focus->mode);
+$smarty->assign('CREATEMODE', '');
 $smarty->assign('MASS_EDIT','1');
 $smarty->assign('BLOCKS',getBlocks($currentModule,$disp_view,$mode,$focus->column_fields));
-if ($currentModule=='Products') {
+if ($currentModule=='Products' || $currentModule=='Services') {
 	$tax_details = getAllTaxes('available');
 	for($i=0;$i<count($tax_details);$i++) {
 		$tax_details[$i]['check_name'] = $tax_details[$i]['taxname'].'_check';
@@ -41,6 +43,9 @@ if ($currentModule=='Products') {
 	$smarty->assign("TAX_DETAILS", $tax_details);
 }
 $smarty->assign("CATEGORY",getParentTab());
+$upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize',3000000,$currentModule);
+$smarty->assign("UPLOADSIZE", $upload_maxsize/1000000); //Convert to MB
+$smarty->assign("UPLOAD_MAXSIZE",$upload_maxsize);
 
 // Field Validation Information
 $tabid = getTabid($currentModule);
@@ -50,7 +55,8 @@ $validationArray = split_validationdataArray($validationData);
 $smarty->assign("VALIDATION_DATA_FIELDNAME",$validationArray['fieldname']);
 $smarty->assign("VALIDATION_DATA_FIELDDATATYPE",$validationArray['datatype']);
 $smarty->assign("VALIDATION_DATA_FIELDLABEL",$validationArray['fieldlabel']);
-
+$picklistDependencyDatasource = Vtiger_DependencyPicklist::getPicklistDependencyDatasource($currentModule);
+$smarty->assign('PICKIST_DEPENDENCY_DATASOURCE', json_encode($picklistDependencyDatasource));
+$smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
 $smarty->display('MassEditForm.tpl');
-
 ?>

@@ -1,7 +1,7 @@
 <?php
 
 abstract class BaseRecognizer{
-	
+
 	public static $MEMO_RULE_FAILED = -2;
 	public static $MEMO_RULE_UNKNOWN = -1;
 	public static $INITIAL_FOLLOW_STACK_SIZE = 100;
@@ -11,14 +11,14 @@ abstract class BaseRecognizer{
 	public static $HIDDEN; //= TokenConst::$HIDDEN_CHANNEL;
 
 	public static $NEXT_TOKEN_RULE_NAME = "nextToken";
-	
+
 	public function __construct($state = null) {
 		if ( $state==null ) {
 			$state = new RecognizerSharedState();
 		}
 		$this->state = $state;
 	}
-	
+
 	/** reset the parser's state; subclasses must rewinds the input stream */
 	public function reset() {
 		// wack everything related to error recovery
@@ -36,7 +36,6 @@ abstract class BaseRecognizer{
 			$this->state->ruleMemo[$i] = null;
 		}
 	}
-
 
 	/** Match current input symbol against ttype.  Attempt
 	 *  single token insertion or deletion error recovery.  If
@@ -88,9 +87,9 @@ abstract class BaseRecognizer{
 		if ( $follow->member(TokenConst::$EOR_TOKEN_TYPE) ) {
 			$viableTokensFollowingThisRule = $this->computeContextSensitiveRuleFOLLOW();
 			$follow = $follow->union($viableTokensFollowingThisRule);
-            if ( $this->state->_fsp>=0 ) { // remove EOR if we're not the start symbol
-                $follow->remove(TokenConst::$EOR_TOKEN_TYPE);
-            }
+			if ( $this->state->_fsp>=0 ) { // remove EOR if we're not the start symbol
+				$follow->remove(TokenConst::$EOR_TOKEN_TYPE);
+			}
 		}
 		// if current token is consistent with what could come after set
 		// then we know we're missing a token; error recovery is free to
@@ -150,17 +149,15 @@ abstract class BaseRecognizer{
 		}
 		$this->state->syntaxErrors++; // don't count spurious
 		$this->state->errorRecovery = true;
-
 		$this->displayRecognitionError($this->getTokenNames(), $e);
 	}
-	
-	
-	public function displayRecognitionError($tokenNames, $e){
+
+	public function displayRecognitionError($tokenNames, $e) {
 		$hdr = $this->getErrorHeader($e);
 		$msg = $this->getErrorMessage($e, $tokenNames);
 		$this->emitErrorMessage($hdr." ".$msg);
 	}
-	
+
 	/** What error message should be generated for the various
 	 *  exception types?
 	 *
@@ -194,8 +191,7 @@ abstract class BaseRecognizer{
 			else {
 				$tokenName = $tokenNames[$ute->expecting];
 			}
-			$msg = "extraneous input ".$this->getTokenErrorDisplay($ute->getUnexpectedToken()).
-				" expecting ".$tokenName;
+			$msg = "extraneous input ".$this->getTokenErrorDisplay($ute->getUnexpectedToken()). " expecting ".$tokenName;
 		}
 		else if ( $e instanceof MissingTokenException ) {
 			$mte = $e;
@@ -278,8 +274,7 @@ abstract class BaseRecognizer{
 	public function getErrorHeader($e) {
 		return "line ".$e->line.":".$e->charPositionInLine;
 	}
-	
-	
+
 	/** How should a token be displayed in an error message? The default
 	 *  is to display just the text, but during development you might
 	 *  want to have a lot of information spit out.  Override in that case
@@ -315,7 +310,7 @@ abstract class BaseRecognizer{
 	 *  handle mismatched symbol exceptions but there could be a mismatched
 	 *  token that the match() routine could not recover from.
 	 */
-	public function recover($input, $re) {
+	public function recover($input, $re = null) {
 		if ( $this->state->lastErrorIndex==$input->index() ) {
 			// uh oh, another error at same token index; must be a case
 			// where LT(1) is in the recovery token set so nothing is
@@ -671,9 +666,7 @@ abstract class BaseRecognizer{
 	 *
 	 *  TODO: move to a utility class or something; weird having lexer call this
 	 */
-	public static function getRuleInvocationStack($e=null,
-											  $recognizerClassName=null)
-	{
+	public static function getRuleInvocationStack($e=null, $recognizerClassName=null) {
 		if($e==null){
 			$e = new Exception();
 		}
@@ -839,7 +832,7 @@ abstract class BaseRecognizer{
 			return $this->$name;
 		}
 	}
-	
+
 	public function getTokenName($tokenId){
 		
 	}

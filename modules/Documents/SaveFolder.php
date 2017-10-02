@@ -13,7 +13,7 @@ require_once('include/database/PearDatabase.php');
 
 global $adb;
 
-	$local_log =& LoggerManager::getLogger('index');
+	$local_log = LoggerManager::getLogger('index');
 	$folderid = $_REQUEST['record'];
 	$foldername = utf8RawUrlDecode($_REQUEST["foldername"]);
 	$folderdesc = utf8RawUrlDecode($_REQUEST["folderdesc"]);

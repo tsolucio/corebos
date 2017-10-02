@@ -21,9 +21,9 @@ require_once 'modules/Import/controllers/Import_Index_Controller.php';
 require_once 'modules/Import/controllers/Import_ListView_Controller.php';
 require_once 'modules/Import/controllers/Import_Controller.php';
 
-global $current_user;
+global $current_user, $VTIGER_BULK_SAVE_MODE;
 
-$previousBulkSaveMode = $VTIGER_BULK_SAVE_MODE;
+$previousBulkSaveMode = isset($VTIGER_BULK_SAVE_MODE) ? $VTIGER_BULK_SAVE_MODE : false;
 $VTIGER_BULK_SAVE_MODE = true;
 
 $requestObject = new Import_API_Request($_REQUEST);

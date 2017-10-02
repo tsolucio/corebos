@@ -15,10 +15,12 @@ require_once('include/utils/utils.php');
 
 $focus = CRMEntity::getInstance($currentModule);
 $smarty = new vtigerCRM_Smarty();
+// Identify this module as custom module.
+$smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
 
 $category = getParentTab($currentModule);
-$record = vtlib_purify($_REQUEST['record']);
-$isduplicate = vtlib_purify($_REQUEST['isDuplicate']);
+$record = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : null;
+$isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : null;
 
 //added to fix the issue4600
 $searchurl = getBasic_Advance_SearchURL();
@@ -28,6 +30,8 @@ $smarty->assign("SEARCH", $searchurl);
 $currencyid = fetchCurrency($current_user->id);
 $rate_symbol = getCurrencySymbolandCRate($currencyid);
 $rate = $rate_symbol['rate'];
+$associated_prod = array();
+$smarty->assign('CONVERT_MODE', '');
 if (isset ($_REQUEST['record']) && $_REQUEST['record'] != '') {
 	$focus->id = $record;
 	$focus->mode = 'edit';
@@ -41,9 +45,10 @@ if($isduplicate == 'true') {
 	$currencyid = $inventory_cur_info['currency_id'];
 	$focus->id = '';
 	$focus->mode = '';
+	$smarty->assign('__cbisduplicatedfromrecordid', $record);
 }
 // MajorLabel Addition: add products when converting from a salesorder
-if ($_REQUEST['return_module'] == 'SalesOrder' && $_REQUEST['salesorderid'] != '' && $_REQUEST['createmode'] == 'link') {
+if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] == 'SalesOrder' && $_REQUEST['salesorderid'] != '' && $_REQUEST['createmode'] == 'link') {
 	// Created from a sales order
 	require_once('modules/SalesOrder/SalesOrder.php');
 
@@ -87,6 +92,7 @@ if (!empty($_REQUEST['save_error']) and $_REQUEST['save_error'] == "true") {
 						break;
 					case '33':
 					case '3313':
+					case '3314':
 						if (is_array($field_value)) {
 							$field_value = implode(' |##| ', $field_value);
 						}
@@ -152,16 +158,23 @@ if(isset($_REQUEST['vendor_id']) && $_REQUEST['vendor_id']!='' && $_REQUEST['rec
 	$focus->column_fields['bill_pobox']=$vend_focus->column_fields['pobox'];
 	$focus->column_fields['ship_pobox']=$vend_focus->column_fields['pobox'];
 }
-
+$smarty->assign('MASS_EDIT','0');
 $disp_view = getView($focus->mode);
-$smarty->assign('BLOCKS', getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields));
-$smarty->assign('BASBLOCKS', getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields, 'BAS'));
-$smarty->assign('ADVBLOCKS',getBlocks($currentModule,$disp_view,$focus->mode,$focus->column_fields,'ADV'));
+$blocks = getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields);
+$smarty->assign('BLOCKS', $blocks);
+$basblocks = getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields, 'BAS');
+$smarty->assign('BASBLOCKS', $basblocks);
+$advblocks = getBlocks($currentModule,$disp_view,$focus->mode,$focus->column_fields,'ADV');
+$smarty->assign('ADVBLOCKS', $advblocks);
+
+$custom_blocks = getCustomBlocks($currentModule,$disp_view);
+$smarty->assign('CUSTOMBLOCKS', $custom_blocks);
+$smarty->assign('FIELDS',$focus->column_fields);
+
 $smarty->assign('OP_MODE',$disp_view);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
-// TODO: Update Single Module Instance name here.
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $smarty->assign('CATEGORY', $category);
 $smarty->assign("THEME", $theme);
@@ -173,9 +186,9 @@ $smarty->assign('CREATEMODE', isset($_REQUEST['createmode']) ? vtlib_purify($_RE
 $smarty->assign('CHECK', Button_Check($currentModule));
 $smarty->assign('DUPLICATE', $isduplicate);
 
-if($focus->mode == 'edit' || $isduplicate) {
+if($focus->mode == 'edit' || $isduplicate == 'true') {
 	$recordName = array_values(getEntityName($currentModule, $record));
-	$recordName = $recordName[0];
+	$recordName = isset($recordName[0]) ? $recordName[0] : '';
 	$smarty->assign('NAME', $recordName);
 	$smarty->assign('UPDATEINFO',updateInfo($record));
 }
@@ -190,6 +203,7 @@ elseif (isset ($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') 
 	$smarty->assign('MODE', $focus->mode);
 }
 $cbMap = cbMap::getMapByName($currentModule.'InventoryDetails','MasterDetailLayout');
+$smarty->assign('moreinfofields','');
 if ($cbMap!=null) {
 	$cbMapFields = $cbMap->MasterDetailLayout();
 	$smarty->assign('moreinfofields', "'".implode("','",$cbMapFields['detailview']['fieldnames'])."'");
@@ -253,7 +267,11 @@ if($focus->mode != 'edit' && $mod_seq_field != null) {
 		$smarty->assign("MOD_SEQ_ID",$autostr);
 	}
 } else {
-	$smarty->assign("MOD_SEQ_ID", $focus->column_fields[$mod_seq_field['name']]);
+	if (!empty($mod_seq_field) and !empty($mod_seq_field['name']) and !empty($focus->column_fields[$mod_seq_field['name']])) {
+		$smarty->assign('MOD_SEQ_ID', $focus->column_fields[$mod_seq_field['name']]);
+	} else {
+		$smarty->assign('MOD_SEQ_ID', '');
+	}
 }
 
 //if create PO, get all available product taxes and shipping & Handling taxes
@@ -275,20 +293,22 @@ if ($focus->mode == 'edit') {
 	$smarty->assign("INV_CURRENCY_ID", $currencyid);
 }
 
-$smarty->assign('CREATEMODE', vtlib_purify($_REQUEST['createmode']));
+$smarty->assign('CREATEMODE', isset($_REQUEST['createmode']) ? vtlib_purify($_REQUEST['createmode']) : '');
 
 // Gather the help information associated with fields
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
+$smarty->assign('Module_Popup_Edit',isset($_REQUEST['Module_Popup_Edit']) ? vtlib_purify($_REQUEST['Module_Popup_Edit']) : 0);
 
 $picklistDependencyDatasource = Vtiger_DependencyPicklist::getPicklistDependencyDatasource($currentModule);
 $smarty->assign("PICKIST_DEPENDENCY_DATASOURCE", json_encode($picklistDependencyDatasource));
 
 //Get Service or Product by default when create
-$smarty->assign('PRODUCT_OR_SERVICE', GlobalVariable::getVariable('product_service_default', 'Products', $currentModule, $current_user->id));
+$smarty->assign('PRODUCT_OR_SERVICE', GlobalVariable::getVariable('Inventory_ProductService_Default', 'Products', $currentModule, $current_user->id));
+$smarty->assign('Inventory_ListPrice_ReadOnly', GlobalVariable::getVariable('Inventory_ListPrice_ReadOnly', '0', $currentModule, $current_user->id));
 //Set taxt type group or individual by default when create
-$smarty->assign('TAX_TYPE', GlobalVariable::getVariable('Tax_Type_Default', 'individual', $currentModule, $current_user->id));
+$smarty->assign('TAX_TYPE', GlobalVariable::getVariable('Inventory_Tax_Type_Default', 'individual', $currentModule, $current_user->id));
 //Show or not the Header to copy address to left or right
-$smarty->assign('SHOW_COPY_ADDRESS', GlobalVariable::getVariable('Show_Copy_Adress_Header', 'yes', $currentModule, $current_user->id));
+$smarty->assign('SHOW_COPY_ADDRESS', GlobalVariable::getVariable('Application_Show_Copy_Address', 1, $currentModule, $current_user->id));
 
 $smarty->display('Inventory/InventoryEditView.tpl');
 ?>

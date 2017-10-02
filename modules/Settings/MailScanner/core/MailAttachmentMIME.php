@@ -1,14 +1,16 @@
 <?php
 
 /** Wrapper to extend the actual mimetype class below. */
-class MailAttachmentMIME extends mimetype {
-	/**
-	 * Detect the MIME type based on extension in the filename.
-	 * @return MIME type text.
-	 */
-	static function detect($filename) {
-		$mime = new mimetype();
-		return $mime->getType($filename);
+if(!class_exists('MailAttachmentMIME')){
+	class MailAttachmentMIME extends mimetype {
+		/**
+		 * Detect the MIME type based on extension in the filename.
+		 * @return MIME type text.
+		 */
+		static function detect($filename) {
+			$mime = new mimetype();
+			return $mime->getType($filename);
+		}
 	}
 }
 

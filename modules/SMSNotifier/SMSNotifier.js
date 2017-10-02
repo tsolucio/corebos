@@ -8,34 +8,30 @@
  ************************************************************************************/
 if(typeof(SMSNotifier) == 'undefined') {
 	var SMSNotifier = {
-		
+
 		checkstatus : function(record) {
 			SMSNotifier.loadstatus(record, true);
 		},
-		
+
 		loadstatus : function(record, query) {
 			var wrapper = document.getElementById('tblStatusInformation');
-			
+
 			if(typeof(query) == 'undefined') query = false;
-			
+
 			if(wrapper) {
 				var url = 'module=SMSNotifier&action=SMSNotifierAjax&ajax=true&file=SMSNotifierStatusWidget&record=' + record;
 				if(query) {
 					url += '&mode=query';
 				}
-				
 				document.getElementById('vtbusy_info').style.display="block";
-				
 				jQuery.ajax({
 					method: 'POST',
 					url: 'index.php?'+url,
-                }).done(function (response) {
-                     	wrapper.innerHTML = response;
-                     	document.getElementById('vtbusy_info').style.display="none";
-                     }
-             )
-			}	
+				}).done(function (response) {
+					wrapper.innerHTML = response;
+					document.getElementById('vtbusy_info').style.display="none";
+				});
+			}
 		}
-		
 	};
 }

@@ -10,11 +10,12 @@
 require_once 'include/fields/DateTimeField.php';
 require_once 'modules/WSAPP/SyncServer.php';
 require_once 'modules/WSAPP/Handlers/SyncHandler.php';
+require_once 'modules/WSAPP/OutlookSyncServer.php';
 
 Class OutlookHandler extends SyncHandler {
 
     public function __construct($appkey){
-        $this->syncServer = new SyncServer();
+        $this->syncServer = new OutlookSyncServer();
         $this->key = $appkey;
     }
 
@@ -70,15 +71,12 @@ Class OutlookHandler extends SyncHandler {
             $record['time_start'] = date($timeFormat,strtotime($startTime));
 
             $record['due_date'] = date($dateFormat,strtotime($endTime));
-            $record['time_end'] = date($timeFormat,strtotime($endTime));
+            // Because there is no end time for Task module
+            if($module == 'Events')
+                $record['time_end'] = date($timeFormat,strtotime($endTime));
 
             $record['duration_hours'] = date('H',(strtotime($endTime)-strtotime($startTime)));
             $record['duration_minutes'] = date('i',(strtotime($endTime)-strtotime($startTime)));
-	
-			//TODO:Make the Oulook client not to send the activity type parameter
-			if($module=="Events"){
-				unset($record['activitytype']);
-			}
         }
         $record['modifiedtime'] = $record['utclastmodifiedtime'];
         return $record;
@@ -106,7 +104,7 @@ Class OutlookHandler extends SyncHandler {
         }
         return $record;
     }
-    
+
     private function convertMapRecordsToSyncFormat($elements){
         $syncMapFormatElements = array();
         $syncMapFormatElements['create'] = array();

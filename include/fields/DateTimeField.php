@@ -13,7 +13,6 @@ class DateTimeField {
 
 	static protected $databaseTimeZone = null;
 	protected $datetime;
-	private static $cache = array();
 
 	/**
 	 *
@@ -37,11 +36,11 @@ class DateTimeField {
 		$log->debug("Entering getDBInsertDateValue(" . $this->datetime . ") method ...");
 		$value = explode(' ', $this->datetime);
 		if (count($value) == 2) {
-			$value[0] = self::convertToUserFormat($value[0]);
+			$value[0] = self::convertToUserFormat($value[0], $user);
 		}
 
 		$insert_time = '';
-		if ($value[1] != '') {
+		if (!empty($value[1])) {
 			$date = self::convertToDBTimeZone($this->datetime, $user);
 			$insert_date = $date->format('Y-m-d');
 		} else {
@@ -60,8 +59,172 @@ class DateTimeField {
 		return $this->getDBInsertDateValue($user) . ' ' . $this->getDBInsertTimeValue($user);
 	}
 
+	public function getDBInsertDateTimeValueComponents($user = null) {
+		global $current_user;
+		if (empty($user)) {
+			$user = $current_user;
+		}
+
+		$format = $user->date_format;
+		if (empty($format)) {
+			$format = 'dd-mm-yyyy';
+		}
+		$datetime = $this->getDBInsertDateTimeValue($user);
+		if (strpos($this->datetime,' ')>0) {
+			list($date,$time) = explode(' ', $datetime);
+		} else {
+			$date = $datetime;
+			$time = '';
+		}
+		list($y, $m, $d) = explode('-', $date);
+		if (strlen($y) != 4) {
+			if ($format == 'dd-mm-yyyy') {
+				list($d, $m, $y) = explode('-', $date);
+			} elseif ($format == 'mm-dd-yyyy') {
+				list($m, $d, $y) = explode('-', $date);
+			} elseif ($format == 'yyyy-mm-dd') {
+				list($y, $m, $d) = explode('-', $date);
+			}
+		}
+		$components = array(
+			'year' => $y,
+			'month' => $m,
+			'day' => $d,
+		);
+
+		$tcomponents = explode(':',$time);
+		if (isset($tcomponents[0])) $components['hour'] = $tcomponents[0];
+		if (isset($tcomponents[1])) $components['minute'] = $tcomponents[1];
+		if (isset($tcomponents[2])) $components['second'] = $tcomponents[2];
+		return $components;
+	}
+
 	public function getDisplayDateTimeValue ($user = null) {
 		return $this->getDisplayDate($user) . ' ' . $this->getDisplayTime($user);
+	}
+
+	public function getDisplayDateTimeValueComponents($user = null) {
+		global $current_user;
+		if (empty($user)) {
+			$user = $current_user;
+		}
+
+		$format = $user->date_format;
+		if (empty($format)) {
+			$format = 'dd-mm-yyyy';
+		}
+		$datetime = $this->getDisplayDateTimeValue($user);
+		if (strpos($this->datetime,' ')>0) {
+			list($date,$time) = explode(' ', $datetime);
+		} else {
+			$date = $datetime;
+			$time = '';
+		}
+		list($y, $m, $d) = explode('-', $date);
+		if (strlen($y) != 4) {
+			if ($format == 'dd-mm-yyyy') {
+				list($d, $m, $y) = explode('-', $date);
+			} elseif ($format == 'mm-dd-yyyy') {
+				list($m, $d, $y) = explode('-', $date);
+			} elseif ($format == 'yyyy-mm-dd') {
+				list($y, $m, $d) = explode('-', $date);
+			}
+		}
+		$components = array(
+			'year' => $y,
+			'month' => $m,
+			'day' => $d,
+		);
+
+		$tcomponents = explode(':',$time);
+		if (isset($tcomponents[0])) $components['hour'] = $tcomponents[0];
+		if (isset($tcomponents[1])) $components['minute'] = $tcomponents[1];
+		if (isset($tcomponents[2])) $components['second'] = $tcomponents[2];
+		return $components;
+	}
+
+	/**
+	 * @param mixed $datetime in 24 hour format
+	 * @param string $fmt 12 or 24
+	 * @return string time formatted as indicated by $fmt
+	 */
+	public static function formatUserTimeString($datetime,$fmt) {
+		if (empty($fmt)) {
+			$fmt = '24';
+		}
+		if (is_object($datetime)) {
+			$hr = $datetime->hour;
+			$min = $datetime->minute;
+		} elseif (is_array($datetime)) {
+			$hr = $datetime['hour'];
+			$min = $datetime['minute'];
+		} else {
+			if (strpos($datetime, ' ')>0) {
+				list($dt,$tm) = explode(' ', $datetime);
+			} else {
+				$tm = $datetime;
+			}
+			list($hr,$min) = explode(':', $tm);
+		}
+		if ($fmt != '24') {
+			$am_pm = array('AM', 'PM');
+			$hour = self::twoDigit($hr%12);
+			if ($hour == 0) {
+				$hour = 12;
+			}
+			$timeStr = $hour.':'.self::twoDigit($min).$am_pm[($hr/12)%2];
+		} else {
+			$timeStr = self::twoDigit($hr).':'.self::twoDigit($min);
+		}
+		return $timeStr;
+	}
+
+	/**
+	 * @param string $datetime in $fmt hour format
+	 * @param string $fmt am | pm | 24
+	 * @return string time formatted as 24h
+	 */
+	public static function formatDatebaseTimeString($datetime,$fmt) {
+		if (empty($datetime) || trim($datetime)=='') {
+			return '';
+		}
+		if (strpos($datetime, ' ')>0) {
+			list($dt,$tm) = explode(' ', $datetime);
+		} else {
+			$dt = '';
+			$tm = $datetime;
+		}
+		list($hr,$min) = explode(':', $tm);
+		$fmt = strtolower(trim($fmt));
+		if (empty($fmt) || $fmt == '24' || ($fmt != 'am' && $fmt != 'pm')) {
+			return trim($dt . ' ' . self::twoDigit($hr) . ':' . self::twoDigit($min));
+		}
+		if ($fmt == 'am') {
+			if ($hr == '12') {
+				$hour = '00';
+			} else {
+				$hour = self::twoDigit($hr);
+			}
+		} else {
+			if ($hr != '12') {
+				$hour = self::twoDigit((int)$hr+12);
+			} else {
+				$hour = self::twoDigit((int)$hr+1);
+			}
+		}
+		return trim($dt . ' ' . $hour . ':' . self::twoDigit($min));
+	}
+
+	/**
+	 * @param number
+	 * @return string
+	 */
+	public static function twoDigit($no) {
+		$no = trim($no);
+		if ($no < 10 && strlen($no) < 2) {
+			$no = '0'.$no;
+		}
+		return substr($no, 0, 2);
 	}
 
 	/**
@@ -211,36 +374,34 @@ class DateTimeField {
 	 * @return DateTime
 	 */
 	public static function convertTimeZone($time, $sourceTimeZoneName, $targetTimeZoneName) {
-		// TODO Caching is causing problem in getting the right date time format in Calendar module.
-		// Need to figure out the root cause for the problem. Till then, disabling caching.
-		//if(empty(self::$cache[$time][$targetTimeZoneName])) {
-			// create datetime object for given time in source timezone
-			$sourceTimeZone = new DateTimeZone($sourceTimeZoneName);
-                        preg_match('/(\d{1,2}\:\d{2}:\d{2}$|\d{1,2}\:\d{2}$)/', $time, $matches);
-                        if($matches){
-                            $timefield = $matches[0];
-                            $postime = strpos($time, $timefield);
-                            $date = trim(substr($time, 0, $postime));
-                            if (strlen($date)<8) $date = ''; // will set today
-                            if (strlen($date)>10) $date = substr($date,0,10);
-                            $hour = $timefield;
-                        }else{
-                            $date = $time;
-                            $hour = '00:00';
-                        }
-                        if($hour >= '24:00') $time = $date.' 00:00';
+		$sourceTimeZone = new DateTimeZone($sourceTimeZoneName);
+		preg_match('/(\d{1,2}\:\d{2}:\d{2}$|\d{1,2}\:\d{2}$)/', $time, $matches);
+		if ($matches) {
+			$timefield = $matches[0];
+			$postime = strpos($time, $timefield);
+			$date = trim(substr($time, 0, $postime));
+			if (strlen($date)<8) $date = ''; // will set today
+			if (strlen($date)>10) $date = substr($date,0,10);
+			$hour = $timefield;
+		} else {
+			$date = $time;
+			$hour = '00:00';
+		}
+		if ($hour >= '24:00') $time = $date.' 00:00';
+		try {
 			$myDateTime = new DateTime($time, $sourceTimeZone);
+		} catch (Exception $e) {
+			$cleantime = self::sanitizeDate($time, '');
+			$myDateTime = new DateTime($cleantime, $sourceTimeZone);
+		}
 
-			// convert this to target timezone using the DateTimeZone object
-			$targetTimeZone = new DateTimeZone($targetTimeZoneName);
-			$myDateTime->setTimeZone($targetTimeZone);
-			self::$cache[$time][$targetTimeZoneName] = $myDateTime;
-		//}
-		$myDateTime = self::$cache[$time][$targetTimeZoneName];
+		// convert this to target timezone using the DateTimeZone object
+		$targetTimeZone = new DateTimeZone($targetTimeZoneName);
+		$myDateTime->setTimeZone($targetTimeZone);
 		return $myDateTime;
 	}
 
-	/** Function to set timee values compatible to database (GMT)
+	/** Function to set time values compatible to database (GMT)
 	 * @param $user -- value :: Type Users
 	 * @returns $insert_date -- insert_date :: Type string
 	 */
@@ -309,11 +470,17 @@ class DateTimeField {
 
 		// No need to modify dd-mm-yyyy nor yyyy-mm-dd because PHP knows how to resolve those correctly.
 		if($user->date_format == 'mm-dd-yyyy') {
-			list($date, $time) = explode(' ', $value);
+			if (strpos($value, ' ')>0)
+				list($date, $time) = explode(' ', $value);
+			else
+				$date = $value;
 			if(!empty($date)) {
 				list($m, $d, $y) = explode('-', $date);
 				if(strlen($m) < 3) {
-					$time = ' '.$time;
+					if (isset($time))
+						$time = ' '.$time;
+					else
+						$time = '';
 					$value = "$y-$m-$d".rtrim($time);
 				}
 			}

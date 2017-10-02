@@ -6,16 +6,9 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  *********************************************************************************/
-
 require_once 'include/db_backup/backup.php';
 
-/**
- * Description of Vtiger_PHPZip
- *
- * @author MAK
- */
 class Vtiger_PHPZip extends Vtiger_BackupZip {
 
 	private $createZip;

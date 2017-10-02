@@ -34,7 +34,7 @@
 			<table border=0 cellspacing=0 cellpadding=0 width=95% align=center>
 			<tr>
 				<td>
-					{if $OP_MODE eq 'edit_view'}
+					{if isset($OP_MODE) && $OP_MODE eq 'edit_view'}
 						{assign var="action" value="EditView"}
 					{else}
 						{assign var="action" value="DetailView"}
@@ -42,7 +42,7 @@
 					<div class="small detailview_utils_table_top">
 						<div class="detailview_utils_table_tabs">
 							<div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_top"><a href="index.php?action={$action}&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$SINGLE_MOD} {$APP.LBL_INFORMATION}</a></div>
-							{if $HASRELATEDPANES eq 'true'}
+							{if isset($HASRELATEDPANES) && $HASRELATEDPANES eq 'true'}
 								{include file='RelatedPanes.tpl' tabposition='top'}
 							{else}
 								<div class="detailview_utils_table_tab detailview_utils_table_tab_selected detailview_utils_table_tab_selected_top">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</div>
@@ -72,7 +72,7 @@
 									</tr>
 								</table>
 							</td>
-							{if $HASRELATEDPANESACTIONS eq 'true'}
+							{if isset($HASRELATEDPANESACTIONS) && $HASRELATEDPANESACTIONS eq 'true'}
 								{include file='RelatedPaneActions.tpl'}
 							{/if}
 						</tr>
@@ -102,6 +102,6 @@
 </tr>
 </table>
 
-{if $MODULE eq 'Leads' or $MODULE eq 'Contacts' or $MODULE eq 'Accounts' or $MODULE eq 'Campaigns' or $MODULE eq 'Vendors' or $MODULE eq 'Project' or $MODULE eq 'Potentials' or $MODULE eq 'ProjectTask' or $MODULE eq 'HelpDesk'}
+{if $MODULE|hasEmailField}
 <form name="SendMail" onsubmit="VtigerJS_DialogBox.block();"><div id="sendmail_cont" style="z-index:100001;position:absolute;width:300px;"></div></form>
 {/if}

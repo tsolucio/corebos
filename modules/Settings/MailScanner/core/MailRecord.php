@@ -22,6 +22,8 @@ class Vtiger_MailRecord {
 	var $_cc;
 	// BCC address(es) list
 	var $_bcc;
+	// Reply To address(es) list
+	var $_reply_to;
 	// DATE
 	var $_date;
 	// SUBJECT
@@ -165,7 +167,7 @@ class Vtiger_MailRecord {
 					$decodevalue = quoted_printable_decode($data);
 				}
 				$value = self::__convert_encoding($decodevalue, $targetEncoding, $charset);
-				array_push($words, $value);
+				$words[] = $value;
 			}
 		}
 		if(!empty($words)) {
@@ -220,8 +222,9 @@ class Vtiger_MailRecord {
 
 		$this->_from = $this->__getEmailIdList($mailheader->from);
 		$this->_to   = $this->__getEmailIdList($mailheader->to);
-		$this->_cc   = $this->__getEmailIdList($mailheader->cc);
-		$this->_bcc  = $this->__getEmailIdList($mailheader->bcc);
+		$this->_cc   = $this->__getEmailIdList(isset($mailheader->cc) ? $mailheader->cc : '');
+		$this->_bcc  = $this->__getEmailIdList(isset($mailheader->bcc) ? $mailheader->bcc : '');
+		$this->_reply_to  = $this->__getEmailIdList(isset($mailheader->reply_to) ? $mailheader->reply_to : '');
 
 		$this->_date = $mailheader->udate;
 
@@ -237,7 +240,7 @@ class Vtiger_MailRecord {
 		$this->_body = '';
 		$this->_isbodyhtml = false;
 
-		if($structure->parts) { /* multipart */
+		if (!empty($structure->parts)) { /* multipart */
 			foreach($structure->parts as $partno0=>$p) {
 				$this->__getpart($imap, $messageid, $p, $partno0+1);
 			}

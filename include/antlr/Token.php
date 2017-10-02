@@ -10,7 +10,7 @@
 
 		public static $MIN_TOKEN_TYPE;// = UP+1;
 
-	    public static $EOF;// = CharStream.EOF;
+		public static $EOF;// = CharStream.EOF;
 		public static $EOF_TOKEN;// = new CommonToken(EOF);
 
 		public static $INVALID_TOKEN_TYPE = 0;
@@ -32,19 +32,16 @@
 		 */
 		public static $HIDDEN_CHANNEL = 99;
 	}
-	
-	
-	interface Token{
+
+	interface Token {
 	}
-	
-	
+
 	class CommonToken implements Token {
 
-		
 		function __construct(){
 			
 		}
-		
+
 		public static function forInput($input=null, $type, $channel=0, $start=0, $stop=0) {
 			$ct = new CommonToken();
 			$ct->charPositionInLine=-1;
@@ -55,11 +52,11 @@
 			$ct->stop = $stop;
 			return $ct;
 		}
-		
+
 		public static function forType($type){
 			return CommonToken::forInput($input=null, $type);
 		}
-	
+
 		public static function forTypeAndText($type, $text) {
 			$ct = new CommonToken();
 			$ct->type = $type;
@@ -86,7 +83,7 @@
 		}
 
 		public function setLine($line) {
-			$this->line = $this->line;
+			$this->line = $line;
 		}
 
 		public function getText() {
@@ -106,7 +103,7 @@
 		 *  was converted to a new string in the token object.
 		 */
 		public function setText($text) {
-			$this->text = $this->text;
+			$this->text = $text;
 		}
 
 		public function getLine() {
@@ -118,7 +115,7 @@
 		}
 
 		public function setCharPositionInLine($charPositionInLine) {
-			$this->charPositionInLine = $this->charPositionInLine;
+			$this->charPositionInLine = $charPositionInLine;
 		}
 
 		public function getChannel() {
@@ -126,11 +123,11 @@
 		}
 
 		public function setChannel($channel) {
-			$this->channel = $this->channel;
+			$this->channel = $channel;
 		}
 
 		public function setType($type) {
-			$this->type = $this->type;
+			$this->type = $type;
 		}
 
 		public function getStartIndex() {
@@ -138,7 +135,7 @@
 		}
 
 		public function setStartIndex($start) {
-			$this->start = $this->start;
+			$this->start = $start;
 		}
 
 		public function getStopIndex() {
@@ -146,7 +143,7 @@
 		}
 
 		public function setStopIndex($stop) {
-			$this->stop = $this->stop;
+			$this->stop = $stop;
 		}
 
 		public function getTokenIndex() {
@@ -154,7 +151,7 @@
 		}
 
 		public function setTokenIndex($index) {
-			$this->index = $this->index;
+			$this->index = $index;
 		}
 
 		public function getInputStream() {
@@ -162,7 +159,7 @@
 		}
 
 		public function setInputStream($input) {
-			$this->input = $this->input;
+			$this->input = $input;
 		}
 
 		public function toString() {
@@ -181,42 +178,36 @@
 			}
 			return "[@".$this->getTokenIndex().",".$this->start.":".$this->stop."='".$txt."',<".$this->type.">".$channelStr.",".$this->line.":".$this->getCharPositionInLine()."]";
 		}
-		
+
 		public function __toString(){
 			return $this->toString();
 		}
 	}
-	
+
 	TokenConst::$DEFAULT_CHANNEL=0;
 	TokenConst::$INVALID_TOKEN_TYPE=0;
 
 	TokenConst::$EOF = CharStreamConst::$EOF;
 	TokenConst::$EOF_TOKEN = CommonToken::forType(TokenConst::$EOF);
-	
+
 	TokenConst::$INVALID_TOKEN_TYPE = 0;
 	TokenConst::$INVALID_TOKEN = CommonToken::forType(TokenConst::$INVALID_TOKEN_TYPE);
 	/** In an action, a lexer rule can set token to this SKIP_TOKEN and ANTLR
 	 *  will avoid creating a token for this symbol and try to fetch another.
 	 */
 	TokenConst::$SKIP_TOKEN = CommonToken::forType(TokenConst::$INVALID_TOKEN_TYPE);
-	
+
 	/** All tokens go to the parser (unless skip() is called in that rule)
 	 *  on a particular "channel".  The parser tunes to a particular channel
 	 *  so that whitespace etc... can go to the parser on a "hidden" channel.
 	 */
 	TokenConst::$DEFAULT_CHANNEL = 0;
-	
+
 	/** Anything on different channel than DEFAULT_CHANNEL is not parsed
 	 *  by parser.
 	 */
 	TokenConst::$HIDDEN_CHANNEL = 99;
-	
-	
-	
+
 	TokenConst::$MIN_TOKEN_TYPE = TokenConst::$UP+1;
 
-
-
-	
-	
 ?>

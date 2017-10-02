@@ -23,10 +23,10 @@
 /*******************************************************************************
  * Vicus eBusiness Solutions Version Control
  * @package 	NL-Dutch
- * Description	Dutch language pack for vtiger CRM version 5.3.x
+ * Description	Dutch language pack for vtiger CRM version 5.4.x
  * @author	$Author: luuk $
- * @version 	$Revision: 1.4 $ $Date: 2012/02/28 23:40:22 $
- * @source	$Source: /var/lib/cvs/vtiger530/Dutch/modules/Home/language/nl_nl.lang.php,v $
+ * @version 	$Revision: 1.3 $ $Date: 2014/02/13 21:42:40 $
+ * @source	$Source: /var/lib/cvs/vtiger540/Dutch/modules/Home/language/nl_nl.lang.php,v $
  * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
  * @license	vtiger CRM Public License Version 1.0 (by definition)
  ********************************************************************************/
@@ -84,7 +84,7 @@ $mod_strings = Array(
 'LBL_HOME_STUFFTITLE'=>'Venster titel',
 'LBL_HOME_SHOW'=>'Toon',
 'LBL_HOME_FILTERBY'=>'Filter op',
-'LBL_HOME_Fields'=>'Weer te geven velden <br>(selecteer er twee)',
+'LBL_HOME_Fields'=>'Weer te geven velden',
 'LBL_HOME_PRESSCTRL'=>'(Klik "Ctrl" <br> voor meerdere selecties)',
 'LBL_HOME_RSSURL'=>'RSS URL',
 'LBL_HOME_DASHBOARD_NAME'=>'DashBoard Naam', 
@@ -92,6 +92,10 @@ $mod_strings = Array(
 'LBL_HOME_HORIZONTAL_BARCHART'=>'Horizontale Staafdiagram',
 'LBL_HOME_VERTICAL_BARCHART'=>'Verticale Staafdiagram',
 'LBL_HOME_PIE_CHART'=>'Taart Diagram',
+'LBL_HOME_HORIZONTAL' => 'Horizontale',
+'LBL_HOME_VERTICAL' => 'Verticale',
+'LBL_HOME_PIE' => 'Taart',
+'Layout Saved' => 'Layout Saved',
 'LBL_HOME_ITEMS'=>'item(s)',
 'LBL_MORE'=>'Meer',
 'LBL_SCROLL'=>'Blader',
@@ -129,11 +133,17 @@ $mod_strings = Array(
 'MSG_NO_FILTERS' => 'Geen filters beschikbaar',
 'MSG_NO_FIELDS' => 'Geen Velden Beschikbaar',
 
+'LBL_REPORTCHARTS' => 'RapportGrafieken',
+'LBL_HOME_REPORT_NAME'=> 'Rapportnaam',
+'LBL_HOME_REPORT_TYPE' => 'Rapporttype',
+
 //added for Default Widgets
 'LBL_DEFAULT_WIDGET'=>'Standaard Widgets',
 'LBL_NO_WIDGETS_HIDDEN'=>'Er zijn Geen standaard widgets verborgen',
 'UpdateExchangeRate' => 'Update Exchange Rate',
 'LBL_HOME_ADDWINDOW' => 'Add Window',
+'LBL_GETTING_STARTED' => 'Getting Started',
+'ExpirePasswordAfterDays' => 'Expire Password After Days',
 );
 
 ?>

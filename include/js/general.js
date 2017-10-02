@@ -22,8 +22,6 @@ function c_toggleAssignType(currType){
 	}
 }
 
-var gValidationCall='';
-
 if (document.all)
 	var browser_ie=true;
 
@@ -73,6 +71,10 @@ function getObj(n,d) {
 		// IE7 was returning form element with name = n (if there was multiple instance)
 		// But not firefox, so we are making a double check
 		if(x && x.id != n) x = false;
+	}
+
+	if (!x && d.getElementById) {
+		x=d.getElementById('txtbox_'+n); // for detail view edit fields
 	}
 
 	for(i=0;!x && i<d.forms.length;i++) {
@@ -148,7 +150,7 @@ function set_cookie( name, value, exp_y, exp_m, exp_d, path, domain, secure )
 // Retrieving cookies
 function get_cookie(cookie_name)
 {
-	var results = document.cookie.match(cookie_name + '=(.*?)(;|$)');
+	var results = document.cookie.match('(^| )' + cookie_name + '=(.*?)(;|$)');
 	if (results) return (unescape(results[1]));
 	else return null;
 }
@@ -198,6 +200,8 @@ function emptyCheck(fldName,fldLabel, fldType) {
 }
 
 function patternValidateObject(fldObject,fldLabel,type) {
+	fldObject.value = trim(fldObject.value);
+	let checkval = fldObject.value;
 	if (type.toUpperCase()=="EMAIL") //Email ID validation
 	{
 		var re=new RegExp(/^[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i);
@@ -224,14 +228,20 @@ function patternValidateObject(fldObject,fldLabel,type) {
 			case "dd-mm-yyyy" :
 				var re = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{4}$/;
 		}
+		if (checkval.indexOf(' ')>0) {
+			var dt = checkval.split(' ');
+			checkval = dt[0];
+		}
 	}
 
 	if (type.toUpperCase()=="TIME") {//TIME validation
 		var re = /^\d{1,2}\:\d{2}:\d{2}$|^\d{1,2}\:\d{2}$/;
+		if (checkval.indexOf(' ')>0) {
+			var dt = checkval.split(' ');
+			checkval = dt[1];
+		}
 	}
-	//Asha: Remove spaces on either side of a Email id before validating
-	if (type.toUpperCase()=="EMAIL" || type.toUpperCase() == "DATE") fldObject.value = trim(fldObject.value);
-	if (!re.test(fldObject.value)) {
+	if (!re.test(checkval)) {
 		alert(alert_arr.ENTER_VALID + fldLabel + " ("+type+")");
 		try {
 			fldObject.focus();
@@ -246,6 +256,8 @@ function patternValidateObject(fldObject,fldLabel,type) {
 
 function patternValidate(fldName,fldLabel,type) {
 	var currObj=getObj(fldName);
+	currObj.value = trim(currObj.value);
+	let checkval = currObj.value;
 
 	if (type.toUpperCase()=="EMAIL") //Email ID validation
 	{
@@ -273,14 +285,20 @@ function patternValidate(fldName,fldLabel,type) {
 			case "dd-mm-yyyy" :
 				var re = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{4}$/;
 		}
+		if (checkval.indexOf(' ')>0) {
+			var dt = checkval.split(' ');
+			checkval = dt[0];
+		}
 	}
 
 	if (type.toUpperCase()=="TIME") {//TIME validation
 		var re = /^\d{1,2}\:\d{2}:\d{2}$|^\d{1,2}\:\d{2}$/;
+		if (checkval.indexOf(' ')>0) {
+			var dt = checkval.split(' ');
+			checkval = dt[1];
+		}
 	}
-	//Asha: Remove spaces on either side of a Email id before validating
-	if (type.toUpperCase()=="EMAIL" || type.toUpperCase() == "DATE") currObj.value = trim(currObj.value);
-	if (typeof(re) != 'undefined' && !re.test(currObj.value)) {
+	if (typeof(re) != 'undefined' && !re.test(checkval)) {
 		alert(alert_arr.ENTER_VALID + fldLabel + " ("+type+")");
 		try {
 			currObj.focus();
@@ -296,7 +314,7 @@ function patternValidate(fldName,fldLabel,type) {
 function splitDateVal(dateval) {
 	var datesep;
 	var dateelements = new Array(3);
-
+	if (dateval==undefined) return dateelements;
 	if (dateval.indexOf("-")>=0) datesep="-";
 	else if (dateval.indexOf(".")>=0) datesep=".";
 	else if (dateval.indexOf("/")>=0) datesep="/";
@@ -321,50 +339,64 @@ function splitDateVal(dateval) {
 	return dateelements;
 }
 
-function compareDates(date1,fldLabel1,date2,fldLabel2,type) {
+function compareDates(date1,fldLabel1,date2,fldLabel2,type,message) {
+	if (message == undefined) message = true;
 	var ret=true;
 	switch (type) {
 		case 'L':
 			if (date1>=date2) {//DATE1 VALUE LESS THAN DATE2
-			alert(fldLabel1+ alert_arr.SHOULDBE_LESS +fldLabel2);
-			ret=false;
-		}
+				if (message) {
+					alert(fldLabel1+ alert_arr.SHOULDBE_LESS +fldLabel2);
+				}
+				ret=false;
+			}
 		break;
 		case 'LE':
 			if (date1>date2) {//DATE1 VALUE LESS THAN OR EQUAL TO DATE2
-			alert(fldLabel1+alert_arr.SHOULDBE_LESS_EQUAL+fldLabel2);
-			ret=false;
-		}
+				if (message) {
+					alert(fldLabel1+alert_arr.SHOULDBE_LESS_EQUAL+fldLabel2);
+				}
+				ret=false;
+			}
 		break;
 		case 'E':
-			if (date1!=date2) {//DATE1 VALUE EQUAL TO DATE
-			alert(fldLabel1+alert_arr.SHOULDBE_EQUAL+fldLabel2);
-			ret=false;
-		}
+			if (date1-date2) {//DATE1 VALUE EQUAL TO DATE
+				if (message) {
+					alert(fldLabel1+alert_arr.SHOULDBE_EQUAL+fldLabel2);
+				}
+				ret=false;
+			}
 		break;
 		case 'G':
 			if (date1<=date2) {//DATE1 VALUE GREATER THAN DATE2
-			alert(fldLabel1+alert_arr.SHOULDBE_GREATER+fldLabel2);
-			ret=false;
-		}
+				if (message) {
+					alert(fldLabel1+alert_arr.SHOULDBE_GREATER+fldLabel2);
+				}
+				ret=false;
+			}
 		break;
 		case 'GE':
 			if (date1<date2) {//DATE1 VALUE GREATER THAN OR EQUAL TO DATE2
-			alert(fldLabel1+alert_arr.SHOULDBE_GREATER_EQUAL+fldLabel2);
-			ret=false;
-		}
+				if (message) {
+					alert(fldLabel1+alert_arr.SHOULDBE_GREATER_EQUAL+fldLabel2);
+				}
+				ret=false;
+			}
 		break;
 	}
-
-	if (ret==false) return false;
-	else return true;
+	return ret;
 }
 
 function dateTimeValidate(dateFldName,timeFldName,fldLabel,type) {
 	if(patternValidate(dateFldName,fldLabel,"DATE")==false)
 		return false;
-	dateval=getObj(dateFldName).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
+	let dateval = getObj(dateFldName).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
 
+	if (timeFldName==undefined) {
+		timeFldName = dateFldName;
+		let dt = dateval.split(' ');
+		dateval = dt[0];
+	}
 	var dateelements=splitDateVal(dateval);
 
 	dd=dateelements[0];
@@ -414,6 +446,10 @@ function dateTimeValidate(dateFldName,timeFldName,fldLabel,type) {
 		return false;
 
 	var timeval=getObj(timeFldName).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
+	if (timeval.indexOf(' ')>0) {
+		let dt = timeval.split(' ');
+		timeval = dt[1];
+	}
 	var hourval=parseInt(timeval.substring(0,timeval.indexOf(":")));
 	var minval=parseInt(timeval.substring(timeval.indexOf(":")+1,timeval.length));
 	var currObj=getObj(timeFldName);
@@ -488,6 +524,73 @@ function dateTimeComparison(dateFldName1,timeFldName1,fldLabel1,dateFldName2,tim
 		if (!compareDates(date1,fldLabel1,date2,fldLabel2,type)) {
 			try {
 				getObj(dateFldName1).focus();
+			} catch(error) { }
+			return false;
+		} else return true;
+	} else return true;
+}
+
+function dateTimeFieldComparison(dateFld1,fldLabel1,dateFld2,fldLabel2,type,message) {
+	var dateval1=getObj(dateFld1).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
+	var dateval2=getObj(dateFld2).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
+
+	let dt1array = dateval1.split(" ");
+	let dt2array = dateval2.split(" ");
+	var dateelements1=splitDateVal(dt1array[0]);
+	var dateelements2=splitDateVal(dt2array[0]);
+
+	dd1=dateelements1[0];
+	mm1=dateelements1[1];
+	yyyy1=dateelements1[2];
+
+	dd2=dateelements2[0];
+	mm2=dateelements2[1];
+	yyyy2=dateelements2[2];
+
+	var timeval1=dt1array[1];
+	var timeval2=dt2array[1];
+
+	var hh1=timeval1.substring(0,timeval1.indexOf(":"));
+	var tf1 = document.getElementById('inputtimefmt_' + dateFld1);
+	if (tf1 != undefined) {
+		if (tf1.value == 'PM') {
+			if (hh1 != '12') {
+				hh1 = +hh1 + 12;
+			}
+		}
+	}
+	var min1=timeval1.substring(timeval1.indexOf(":")+1,timeval1.length);
+
+	var hh2=timeval2.substring(0,timeval2.indexOf(":"));
+	var tf2 = document.getElementById('inputtimefmt_' + dateFld2);
+	if (tf2 != undefined) {
+		if (tf2.value == 'PM') {
+			if (hh2 != '12') {
+				hh2 = +hh2 + 12;
+			}
+		}
+	}
+	var min2=timeval2.substring(timeval2.indexOf(":")+1,timeval2.length);
+
+	var date1=new Date();
+	var date2=new Date();
+
+	date1.setYear(yyyy1);
+	date1.setMonth(mm1-1);
+	date1.setDate(dd1);
+	date1.setHours(hh1);
+	date1.setMinutes(min1);
+
+	date2.setYear(yyyy2);
+	date2.setMonth(mm2-1);
+	date2.setDate(dd2);
+	date2.setHours(hh2);
+	date2.setMinutes(min2);
+
+	if (type!="OTH") {
+		if (!compareDates(date1,fldLabel1,date2,fldLabel2,type,message)) {
+			try {
+				getObj(dateFld1).focus();
 			} catch(error) { }
 			return false;
 		} else return true;
@@ -993,83 +1096,95 @@ function doModuleValidation(edit_type,editForm,callback) {
 	} else {
 		var formName = editForm;
 	}
-	if((formName == 'QcEditView' && QCformValidate()) || (doformValidation(edit_type))) { //base function which validates form data
-		VtigerJS_DialogBox.block();
-		if (edit_type=='mass_edit') {
-			var action = 'MassEditSave';
-		} else {
-			var action = 'Save';
-		}
-		//Testing if a Validation file exists
-		jQuery.ajax({
-			url: "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationExists&valmodule="+gVTModule,
-			type:'get'
-		}).fail(function (jqXHR, textStatus) { //Validation file does not exist
-				if (typeof callback == 'function') {
-					callback('submit');
-				} else {
-					submitFormForAction(formName, action);
-				}
-		}).done(function(data) { //Validation file exists
-				if (data == 'yes') {
-					// Create object which gets the values of all input, textarea, select and button elements from the form
-					var myFields = document.forms[formName].elements;
-					var sentForm = new Object();
-					for (f=0; f<myFields.length; f++){
-						if(myFields[f].type=='checkbox')
-							sentForm[myFields[f].name] = myFields[f].checked;
-						else
-							sentForm[myFields[f].name] = myFields[f].value;
-					}
-					//JSONize form data
-					sentForm = JSON.stringify(sentForm);
-					jQuery.ajax({
-						type : 'post',
-						data : {structure: sentForm},
-						url : "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule="+gVTModule
-					}).done(function(msg) {  //Validation file answers
-							if (msg.search("%%%CONFIRM%%%") > -1) { //Allow to use confirm alert
-								//message to display
-								var display = msg.split("%%%CONFIRM%%%");
-								if(confirm(display[1])) { //If you click on OK
-									if (typeof callback == 'function') {
-										callback('submit');
-									} else {
-										submitFormForAction(formName, action);
-									}
-								} else {
-									VtigerJS_DialogBox.unblock();
-								}
-							} else if (msg.search("%%%OK%%%") > -1) { //No error
-								if (typeof callback == 'function') {
-									callback('submit');
-								} else {
-									submitFormForAction(formName, action);
-								}
-							} else { //Error
-								alert(msg);
-								VtigerJS_DialogBox.unblock();
-							}
-					}).fail(function() {  //Error while asking file
-							alert('Error with AJAX');
-							VtigerJS_DialogBox.unblock();
-					});
-				} else { // no validation we send form
-					if (typeof callback == 'function') {
-						callback('submit');
-					} else {
-						submitFormForAction(formName, action);
-					}
-				}
-			});
+	if (formName == 'QcEditView') {
+		var isvalid = QCformValidate();
+	} else {
+		var isvalid = doformValidation(edit_type);
+	}
+	if (isvalid) {
+		doServerValidation(edit_type,formName,callback);
 	}
 	return false;
 }
 
+function doServerValidation(edit_type,formName,callback) {
+	VtigerJS_DialogBox.block();
+	if (edit_type=='mass_edit') {
+		var action = 'MassEditSave';
+	} else {
+		var action = 'Save';
+	}
+	let SVModule = document.forms[formName].module.value;
+	//Testing if a Validation file exists
+	jQuery.ajax({
+		url: "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationExists&valmodule="+SVModule,
+		type:'get'
+	}).fail(function (jqXHR, textStatus) { //Validation file does not exist
+		if (typeof callback == 'function') {
+			callback('submit');
+		} else {
+			submitFormForAction(formName, action);
+		}
+	}).done(function(data) { //Validation file exists
+		if (data == 'yes') {
+			// Create object which gets the values of all input, textarea, select and button elements from the form
+			var myFields = document.forms[formName].elements;
+			var sentForm = new Object();
+			for (f=0; f<myFields.length; f++){
+				if (myFields[f].type=='checkbox')
+					sentForm[myFields[f].name] = myFields[f].checked;
+				else if (myFields[f].type=='radio' && myFields[f].checked)
+					sentForm[myFields[f].name] = myFields[f].value;
+				else if (myFields[f].type!='radio')
+					sentForm[myFields[f].name] = myFields[f].value;
+			}
+			//JSONize form data
+			sentForm = JSON.stringify(sentForm);
+			jQuery.ajax({
+				type : 'post',
+				data : {structure: sentForm},
+				url : "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule="+SVModule
+			}).done(function(msg) {  //Validation file answers
+					if (msg.search("%%%CONFIRM%%%") > -1) { //Allow to use confirm alert
+						//message to display
+						var display = msg.split("%%%CONFIRM%%%");
+						if(confirm(display[1])) { //If you click on OK
+							if (typeof callback == 'function') {
+								callback('submit');
+							} else {
+								submitFormForAction(formName, action);
+							}
+						} else {
+							VtigerJS_DialogBox.unblock();
+						}
+					} else if (msg.search("%%%OK%%%") > -1) { //No error
+						if (typeof callback == 'function') {
+							callback('submit');
+						} else {
+							submitFormForAction(formName, action);
+						}
+					} else { //Error
+						alert(msg);
+						VtigerJS_DialogBox.unblock();
+					}
+			}).fail(function() {  //Error while asking file
+					alert('Error with AJAX');
+					VtigerJS_DialogBox.unblock();
+			});
+		} else { // no validation we send form
+			if (typeof callback == 'function') {
+				callback('submit');
+			} else {
+				submitFormForAction(formName, action);
+			}
+		}
+	});
+	return false;
+}
+
 function doformValidation(edit_type) {
-	//Validation for Portal User
-	if(gVTModule == 'Contacts' && gValidationCall != 'tabchange')
-	{
+	if(gVTModule == 'Contacts') {
+		//Validation for Portal User
 		//if existing portal value = 0, portal checkbox = checked, ( email field is not available OR  email is empty ) then we should not allow -- OR --
 		//if existing portal value = 1, portal checkbox = checked, ( email field is available     AND email is empty ) then we should not allow
 		if(edit_type=='')
@@ -1086,16 +1201,17 @@ function doformValidation(edit_type) {
 		}
 		else
 		{
-			if(getObj('portal') != null && getObj('portal').checked && getObj('portal_mass_edit_check').checked && (getObj('email') == null || trim(getObj('email').value) == '' || getObj('email_mass_edit_check').checked==false))
-			{
-				alert(alert_arr.PORTAL_PROVIDE_EMAILID);
-				return false;
-			}
-			if((getObj('email') != null && trim(getObj('email').value) == '' && getObj('email_mass_edit_check').checked) && !(getObj('portal').checked==false && getObj('portal_mass_edit_check').checked))
-			{
-				alert(alert_arr.EMAIL_CHECK_MSG);
-				return false;
-			}
+// This checks mass edit mode, but it doesn't make much sense to obligate this in mass edit mode
+//			if(getObj('portal') != null && getObj('portal').checked && getObj('portal_mass_edit_check').checked && (getObj('email') == null || trim(getObj('email').value) == '' || getObj('email_mass_edit_check').checked==false))
+//			{
+//				alert(alert_arr.PORTAL_PROVIDE_EMAILID);
+//				return false;
+//			}
+//			if((getObj('email') != null && trim(getObj('email').value) == '' && getObj('email_mass_edit_check').checked) && !(getObj('portal').checked==false && getObj('portal_mass_edit_check').checked))
+//			{
+//				alert(alert_arr.EMAIL_CHECK_MSG);
+//				return false;
+//			}
 		}
 	}
 	if(gVTModule == 'SalesOrder') {
@@ -1151,7 +1267,7 @@ function doformValidation(edit_type) {
 					if (getObj(fieldname[i]) != null && getObj(fieldname[i]).value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0)
 					{
 						if (type[1]=="M")
-							if (!emptyCheck(fieldname[2],fieldlabel[i],getObj(type[2]).type))
+							if (!emptyCheck(fieldname[2],fieldlabel[i],(type[2]!=undefined ? getObj(type[2]).type :'')))
 								return false;
 
 						if(typeof(type[3])=="undefined") var currdatechk="OTH";
@@ -1310,60 +1426,12 @@ function doformValidation(edit_type) {
 		}
 	}
 
-	//added to check Start Date & Time,if Activity Status is Planned.//start
-	for (var j=0; j<fieldname.length; j++)
-	{
-		if(getObj(fieldname[j]) != null)
-		{
-			if(fieldname[j] == "date_start" || fieldname[j] == "task_date_start" )
-			{
-				var datelabel = fieldlabel[j];
-				var datefield = fieldname[j];
-				var startdatevalue = getObj(datefield).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
-			}
-			if(fieldname[j] == "time_start" || fieldname[j] == "task_time_start")
-			{
-				var timelabel = fieldlabel[j];
-				var timefield = fieldname[j];
-				var timeval=getObj(timefield).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
-			}
-			if(fieldname[j] == "eventstatus" || fieldname[j] == "taskstatus")
-			{
-				var statusvalue = getObj(fieldname[j]).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
-				var statuslabel = fieldlabel[j++];
-			}
-		}
-	}
-	if(statusvalue == "Planned")
-	{
-		var dateelements=splitDateVal(startdatevalue);
-		var hourval=parseInt(timeval.substring(0,timeval.indexOf(":")));
-		var minval=parseInt(timeval.substring(timeval.indexOf(":")+1,timeval.length));
-
-		dd=dateelements[0];
-		mm=dateelements[1];
-		yyyy=dateelements[2];
-
-		var chkdate=new Date();
-		chkdate.setYear(yyyy);
-		chkdate.setMonth(mm-1);
-		chkdate.setDate(dd);
-		chkdate.setMinutes(minval);
-		chkdate.setHours(hourval);
-		if(!comparestartdate(chkdate)) return false;
-	}
-
 	return true;
 }
 
 function clearId(fldName) {
 	var currObj=getObj(fldName);
 	currObj.value="";
-}
-
-function comparestartdate(chkdate) {
-	var currdate = new Date();
-	return compareDates(chkdate,alert_arr.START_DATE_TIME,currdate,alert_arr.DATE_SHOULDNOT_PAST,"GE");
 }
 
 function openPopUp(winInst,currObj,baseURL,winName,width,height,features) {
@@ -1591,44 +1659,6 @@ function fnhide(divId) {
 	id.style.display = 'none';
 }
 
-function fnLoadValues(obj1,obj2,SelTab,unSelTab,moduletype,module){
-	var oform = document.forms['EditView'];
-	oform.action.value='Save';
-	//global variable to check the validation calling function to avoid validating when tab change
-	gValidationCall = 'tabchange';
-
-	/*var tabName1 = document.getElementById(obj1);
-	var tabName2 = document.getElementById(obj2);
-	var tagName1 = document.getElementById(SelTab);
-	var tagName2 = document.getElementById(unSelTab);
-	if(tabName1.className == "dvtUnSelectedCell")
-		tabName1.className = "dvtSelectedCell";
-	if(tabName2.className == "dvtSelectedCell")
-		tabName2.className = "dvtUnSelectedCell";
-
-	tagName1.style.display='block';
-	tagName2.style.display='none';*/
-	gValidationCall = 'tabchange';
-
-	// if((moduletype == 'inventory' && validateInventory(module)) ||(moduletype == 'normal') && formValidate())
-	// if(formValidate())
-	// {
-	var tabName1 = document.getElementById(obj1);
-	var tabName2 = document.getElementById(obj2);
-	var tagName1 = document.getElementById(SelTab);
-	var tagName2 = document.getElementById(unSelTab);
-	if(tabName1.className == "dvtUnSelectedCell")
-		tabName1.className = "dvtSelectedCell";
-
-	if(tabName2.className == "dvtSelectedCell")
-		tabName2.className = "dvtUnSelectedCell";
-
-	tagName1.style.display='block';
-	tagName2.style.display='none';
-	// }
-	gValidationCall = '';
-}
-
 function fnCopy(source,design){
 	document.getElementById(source).value=document.getElementById(design).value;
 	document.getElementById(source).disabled=true;
@@ -1672,7 +1702,7 @@ function fnDown(obj){
 
 /*
 * javascript function to add field rows
-* @param option_values :: List of Field names
+* @deprecated: not used anymore
 */
 var count = 0;
 var rowCnt = 1;
@@ -1892,54 +1922,6 @@ function ActivateCheckBox()
 	}
 }
 
-//wipe for Convert Lead
-
-function fnSlide2(obj,inner)
-{
-	var buff = document.getElementById(obj).height;
-	closeLimit = buff.substring(0,buff.length);
-	menu_max = eval(closeLimit);
-	var tagName = document.getElementById(inner);
-	document.getElementById(obj).style.height=0 + "px";
-	menu_i=0;
-	if (tagName.style.display == 'none')
-		fnexpanLay2(obj,inner);
-	else
-		fncloseLay2(obj,inner);
-}
-
-function fnexpanLay2(obj,inner)
-{
-	// document.getElementById(obj).style.display = 'run-in';
-	var setText = eval(closeLimit) - 1;
-	if (menu_i<=eval(closeLimit))
-	{
-		if (menu_i>setText){
-			document.getElementById(inner).style.display='block';
-		}
-		document.getElementById(obj).style.height=menu_i + "px";
-		setTimeout(function() {
-			fnexpanLay2(obj,inner);
-		},5);
-		menu_i=menu_i+5;
-	}
-}
-
-function fncloseLay2(obj,inner)
-{
-	if (menu_max >= eval(openLimit))
-	{
-		if (menu_max<eval(closeLimit)){
-			document.getElementById(inner).style.display='none';
-		}
-		document.getElementById(obj).style.height=menu_max +"px";
-		setTimeout(function() {
-			fncloseLay2(obj,inner);
-		}, 5);
-		menu_max = menu_max -5;
-	}
-}
-
 function addOnloadEvent(fnc){
 	if ( typeof window.addEventListener != "undefined" )
 		window.addEventListener( "load", fnc, false );
@@ -1969,7 +1951,7 @@ function InternalMailer(record_id,field_id,field_name,par_module,type) {
 			break;
 	}
 	var opts = "menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=yes";
-	openPopUp('xComposeEmail',this,url,'createemailWin',830,662,opts);
+	openPopUp('xComposeEmail',this,url,'createemailWin',1000,800,opts);
 }
 
 function fnHide_Event(obj){
@@ -1979,7 +1961,7 @@ function fnHide_Event(obj){
 function ReplyCompose(id,mode)
 {
 	url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&record='+id+'&reply=true';
-	openPopUp('xComposeEmail',this,url,'createemailWin',820,689,'menubar=no,toolbar=no,location=no,status=no,resizable=no,scrollbars=yes');
+	openPopUp('xComposeEmail',this,url,'createemailWin',1000,800,'menubar=no,toolbar=no,location=no,status=no,resizable=no,scrollbars=yes');
 }
 
 function OpenCompose(id,mode,crmid)
@@ -2005,19 +1987,19 @@ function OpenCompose(id,mode,crmid)
 			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&record='+id+'&reply=true';
 			break;
 		case 'Invoice':
-			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+i18n+'_'+id+'.pdf&invmodid='+crmid;
+			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&pmodule=Invoice&attachment='+i18n+'_'+id+'.pdf&invmodid='+crmid;
 			break;
 		case 'PurchaseOrder':
-			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+i18n+'_'+id+'.pdf&invmodid='+crmid;
+			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&pmodule=PurchaseOrder&attachment='+i18n+'_'+id+'.pdf&invmodid='+crmid;
 			break;
 		case 'SalesOrder':
-			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+i18n+'_'+id+'.pdf&invmodid='+crmid;
+			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&pmodule=SalesOrder&attachment='+i18n+'_'+id+'.pdf&invmodid='+crmid;
 			break;
 		case 'Quote':
-			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+i18n+'_'+id+'.pdf&invmodid='+crmid;
+			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&pmodule=Quotes&attachment='+i18n+'_'+id+'.pdf&invmodid='+crmid;
 			break;
 		case 'Documents':
-			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+id+'';
+			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&pmodule=Documents&attachment='+id+'';
 			break;
 		case 'print':
 			url = 'index.php?module=Emails&action=EmailsAjax&file=PrintEmail&record='+id+'&print=true';
@@ -2218,11 +2200,11 @@ function fnDropDown(obj,Lay){
 	if(getVal > document.body.clientWidth ){
 		leftSide = eval(leftSide) - eval(widthM);
 		tagName.style.left = leftSide + 34 + 'px';
-	}
-	else
+	} else {
 		tagName.style.left= leftSide + 'px';
-		tagName.style.top= topSide + obj.clientHeight +'px';
-		tagName.style.display = 'block';
+	}
+	tagName.style.top= topSide + obj.clientHeight +'px';
+	tagName.style.display = 'block';
 }
 
 function fnShowDrop(obj){
@@ -2966,6 +2948,9 @@ function fnpriceValidation(txtObj) {
 }
 
 function delimage(id,fname,aname) {
+	if (id == 0) {
+		document.getElementById(fname+'_replaceimage').innerHTML=alert_arr.LBL_IMAGE_DELETED;
+	} else {
 	jQuery.ajax({
 		method: 'POST',
 		url: 'index.php?module=Contacts&action=ContactsAjax&file=DelImage&ImageModule='+gVTModule+'&recordid='+id+'&fieldname='+fname+'&attachmentname='+aname,
@@ -2975,6 +2960,8 @@ function delimage(id,fname,aname) {
 		else
 			alert(alert_arr.ERROR_WHILE_EDITING);
 	});
+	}
+	document.getElementById(fname+'_hidden').value = '';
 }
 
 function delUserImage(id) {
@@ -3042,7 +3029,21 @@ function updateBaseCurrencyValue() {
 			base_currency_ele.value = cur_ele.value;
 	}
 }
-
+function standarizeFormatCurrencyValue(val) {
+	if(val != undefined && val != null && val != 0) {
+		if(typeof userCurrencySeparator != 'undefined') {
+			while(val.indexOf(userCurrencySeparator) != -1) {
+				val = val.replace(userCurrencySeparator,'');
+			}
+		}
+		if(typeof userDecimalSeparator != 'undefined') {
+			if(val.indexOf(userDecimalSeparator) != -1) {
+				val = val.replace(userDecimalSeparator,'.');
+			}
+		}
+	}
+	return val;
+}
 /******************************************************************************/
 /* Activity reminder Customization: Setup Callback */
 function ActivityReminderProgressIndicator(show) {
@@ -3837,22 +3838,23 @@ function startCall(number, recordid){
 
 	//var ASTERISK_DIV_TIMEOUT = 6000;
 	jQuery.ajax({
-			method: 'POST',
-			url: 'index.php?action=PBXManagerAjax&mode=ajax&file=StartCall&ajax=true&module=PBXManager&number='+encodeURIComponent(number)+'&recordid='+recordid
+		method: 'POST',
+		url: 'index.php?action=PBXManagerAjax&mode=ajax&file=StartCall&ajax=true&module=PBXManager&number='+encodeURIComponent(number)+'&recordid='+recordid
 	}).done(function (response) {
-				if(response == ''){
-				//successfully called
-				}else{
-					alert(response);
-				}
-			}
-		);
+		if (response == '') {
+			//successfully called
+		} else {
+			alert(response);
+		}
+	});
 }
 //asterisk integration :: ends
 
 //added for tooltip manager
 function ToolTipManager(){
 	var state = false;
+	var secondshowTimer = 0;
+	var secondshowTimeout = 1800;
 	/**
 	 * this function creates the tooltip div and adds the information to it
 	 * @param string text - the text to be added to the tooltip
@@ -3904,13 +3906,15 @@ function ToolTipManager(){
 		var div = document.getElementById(divName);
 		if(typeof div != 'undefined' && div != null ){
 			if(typeof nodelay != 'undefined' && nodelay != null){
-				div.style.display = "none";
+				setTimeout(function(){
+					div.style.display = "none";
+				}, secondshowTimeout);
 			}else{
 				setTimeout(function(){
 					if(!state){
 						div.style.display = "none";
 					}
-				}, 700);
+				}, secondshowTimeout);
 			}
 		}
 	}
@@ -4649,7 +4653,7 @@ function QCformValidate(){
 				case "V" : break;
 				case "C" : break;
 				case "DT":
-					if (window.document.QcEditView[curr_fieldname] != null && window.document.QcEditView[curr_fieldname].value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0) {
+					if (window.document.QcEditView[curr_fieldname] != null && window.document.QcEditView[curr_fieldname].value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0 && type[2] != undefined) {
 						if (type[1]=="M" && !qcemptyCheck(type[2],qcfieldlabel[i],getObj(type[2]).type))
 							return false;
 						if(typeof(type[3])=="undefined")
@@ -4665,7 +4669,7 @@ function QCformValidate(){
 					}
 				break;
 				case "D":
-					if (window.document.QcEditView[curr_fieldname] != null && window.document.QcEditView[curr_fieldname].value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0) {
+					if (window.document.QcEditView[curr_fieldname] != null && window.document.QcEditView[curr_fieldname].value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0 && type[2] != undefined) {
 						if(typeof(type[2])=="undefined")
 							var currdatechk="OTH";
 						else
@@ -4738,42 +4742,6 @@ function QCformValidate(){
 			}
 		}
 	}
-	//added to check Start Date & Time,if Activity Status is Planned.//start
-	for (var j=0; j<qcfieldname.length; j++) {
-		curr_fieldname = qcfieldname[j];
-		if(window.document.QcEditView[curr_fieldname] != null) {
-			if(qcfieldname[j] == "date_start") {
-				var datelabel = qcfieldlabel[j];
-				var datefield = qcfieldname[j];
-				var startdatevalue = window.document.QcEditView[datefield].value.replace(/^\s+/g, '').replace(/\s+$/g, '');
-			}
-			if(qcfieldname[j] == "time_start") {
-				var timelabel = qcfieldlabel[j];
-				var timefield = qcfieldname[j];
-				var timeval=window.document.QcEditView[timefield].value.replace(/^\s+/g, '').replace(/\s+$/g, '');
-			}
-			if(qcfieldname[j] == "eventstatus" || qcfieldname[j] == "taskstatus") {
-				var statusvalue = window.document.QcEditView[curr_fieldname].options[window.document.QcEditView[curr_fieldname].selectedIndex].value.replace(/^\s+/g, '').replace(/\s+$/g, '');
-				var statuslabel = qcfieldlabel[j++];
-			}
-		}
-	}
-	if(statusvalue == "Planned") {
-		var dateelements=splitDateVal(startdatevalue);
-		var hourval=parseInt(timeval.substring(0,timeval.indexOf(":")));
-		var minval=parseInt(timeval.substring(timeval.indexOf(":")+1,timeval.length));
-		var dd=dateelements[0];
-		var mm=dateelements[1];
-		var yyyy=dateelements[2];
-
-		var chkdate=new Date();
-		chkdate.setYear(yyyy);
-		chkdate.setMonth(mm-1);
-		chkdate.setDate(dd);
-		chkdate.setMinutes(minval);
-		chkdate.setHours(hourval);
-		if(!comparestartdate(chkdate)) return false;
-	}
 	return true;
 }
 
@@ -4795,9 +4763,9 @@ function duplicate_record(module,record)
 
 function getITSMiniCal(url){
 	if(url == undefined)
-		url = 'module=Calendar4You&action=ActivityAjax&type=minical&ajax=true';
+		url = 'module=Calendar4You&action=ActivityAjax&file=ActivityAjax&type=minical&ajax=true';
 	else
-		url = 'module=Calendar4You&action=ActivityAjax&'+url+'&type=minical&ajax=true';
+		url = 'module=Calendar4You&action=ActivityAjax&file=ActivityAjax&'+url+'&type=minical&ajax=true';
 	jQuery.ajax({
 			method:"POST",
 			url:'index.php?'+ url
@@ -4826,6 +4794,546 @@ function changeCalendarDayDate(year,month,date){
 
 function changeCalendarDate(year,month,date){
 	if (jQuery('#calendar_div').fullCalendar == undefined) return false;
-	jQuery('#calendar_div').fullCalendar( 'gotoDate', year, month - 1, date);
+	var date1= year+'-'+month+'-'+date;
+	jQuery('#calendar_div').fullCalendar( 'gotoDate',date1);
 }
 
+function fetch_clock() {
+	jQuery.ajax({
+		method:"POST",
+		url:'index.php?module=Utilities&action=UtilitiesAjax&file=Clock'
+	}).done(function(response) {
+		jQuery("#clock_cont").html(response);
+		execJS(document.getElementById('clock_cont'));
+	});
+}
+
+function fetch_calc() {
+	jQuery.ajax({
+		method:"POST",
+		url:'index.php?module=Utilities&action=UtilitiesAjax&file=Calculator'
+	}).done(function(response) {
+		jQuery("#calculator_cont").html(response);
+		execJS(document.getElementById('calculator_cont'));
+	});
+}
+
+function UnifiedSearch_SelectModuleForm(obj) {
+	if(jQuery('#UnifiedSearch_moduleform').length) {
+		// If we have loaded the form already.
+		UnifiedSearch_SelectModuleFormCallback(obj);
+	} else {
+		jQuery('#status').show();
+		jQuery.ajax({
+			method:"POST",
+			url:'index.php?module=Home&action=HomeAjax&file=UnifiedSearchModules&ajax=true'
+		}).done(function(response) {
+			jQuery('#status').hide();
+			jQuery('#UnifiedSearch_moduleformwrapper').html(response);
+			UnifiedSearch_SelectModuleFormCallback(obj);
+		});
+	}
+}
+
+function UnifiedSearch_SelectModuleFormCallback(obj) {
+	fnvshobjsearch(obj, 'UnifiedSearch_moduleformwrapper');
+}
+
+function UnifiedSearch_SelectModuleToggle(flag) {
+	jQuery('#UnifiedSearch_moduleform input[type=checkbox]').each(function() {
+		this.checked = flag;
+	});
+}
+
+function UnifiedSearch_SelectModuleCancel() {
+	jQuery('#UnifiedSearch_moduleformwrapper').hide();
+}
+
+function UnifiedSearch_SelectModuleSave() {
+	var UnifiedSearch_form = document.forms.UnifiedSearch;
+	UnifiedSearch_form.search_onlyin.value = jQuery('#UnifiedSearch_moduleform').serialize().replace(/search_onlyin=/g, '').replace(/&/g,',');
+	jQuery.ajax({
+		method:"POST",
+		url:'index.php?module=Home&action=HomeAjax&file=UnifiedSearchModulesSave&search_onlyin=' + encodeURIComponent(UnifiedSearch_form.search_onlyin.value)
+	}).done(function(response) {
+		// continue
+	});
+	UnifiedSearch_SelectModuleCancel();
+}
+
+/**
+ * image pasting into canvas
+ * @param {string} canvas_id - canvas id
+ * @param {boolean} autoresize - if canvas will be resized
+ */
+function CLIPBOARD_CLASS(canvas_id, autoresize) {
+	var _self = this;
+	var canvas = document.getElementById(canvas_id);
+	var ctx = document.getElementById(canvas_id).getContext("2d");
+	var startImage = new Image();
+	startImage.onload = function () {
+		ctx.drawImage(startImage, 0, 0, 60, 60, 12, 12, 30, 30);
+	}
+	startImage.src = 'include/LD/assets/icons/utility/paste_60.png';
+	//handlers
+	document.addEventListener('paste', function (e) { _self.paste_auto(e); }, false);
+
+	//on paste
+	this.paste_auto = function (e) {
+		if (e.clipboardData && document.activeElement.id==canvas_id) {
+			var items = e.clipboardData.items;
+			if (!items) return;
+
+			//access data directly
+			for (var i = 0; i < items.length; i++) {
+				if (items[i].type.indexOf("image") !== -1) {
+					//image
+					var blob = items[i].getAsFile();
+					var URLObj = window.URL || window.webkitURL;
+					var source = URLObj.createObjectURL(blob);
+					this.paste_createImage(source);
+					e.preventDefault();
+					break;
+				}
+			}
+		}
+	};
+	//draw pasted image to canvas
+	this.paste_createImage = function (source) {
+		var pastedImage = new Image();
+		pastedImage.onload = function () {
+			if(autoresize == true){
+				//resize
+				canvas.width = pastedImage.width;
+				canvas.height = pastedImage.height;
+			}
+			else{
+				//clear canvas
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+			}
+			ctx.drawImage(pastedImage, 0, 0);
+			var cnv_img = document.getElementById(canvas_id+'_image');
+			var cnv_img_set = document.getElementById(canvas_id+'_image_set');
+			if (cnv_img) cnv_img.value = canvas.toDataURL('image/png');
+			if (cnv_img_set) cnv_img_set.value = '1';
+		};
+		pastedImage.src = source;
+	};
+}
+
+
+var throttle = function(func, limit) {
+	var inThrottle = undefined;
+	return function() {
+		var args = arguments,
+			context = this;
+		if (!inThrottle) {
+			func.apply(context, args);
+			inThrottle = true;
+			return setTimeout(function() {
+				return inThrottle = false;
+			}, limit);
+		}
+	};
+};
+
+document.addEventListener("DOMContentLoaded", function(event) {
+
+	/* ======= Auto complete part relations ====== */
+	var acInputs = document.querySelectorAll(".autocomplete-input,.searchBox");
+	for (var i = 0; i < acInputs.length; i++) {
+		(function(_i){
+			var ac = new AutocompleteRelation(acInputs[_i], _i);
+			acInputs[_i].addEventListener("input", function(e){
+				throttle(ac.get(e), 500);
+			});
+			$('html').click(function() {
+				ac.clearTargetUL();
+				ac.targetUL.hide();
+			});
+		})(i);
+	}
+});
+
+function AutocompleteRelation(target, i) {
+
+	this.inputField 	= target;
+	this.data			= JSON.parse(target.getAttribute("data-autocomp"));
+	this.targetUL 		= document.getElementsByClassName("relation-autocomplete__target")[i];
+	this.hiddenInput	= document.getElementsByClassName("relation-autocomplete__hidden")[i];
+	this.displayFields 	= this.showFields();
+	this.entityName		= this.entityField();
+	this.moduleName 	= this.data.searchmodule;
+	this.fillfields		= this.fillFields();
+	this.maxResults 	= this.MaxResults();
+	this.mincharstoSearch 	= this.MinCharsToSearch();
+	this.multiselect 	= this.multiselect();
+	if(this.multiselect==='true'){
+		target.style.width='95%';
+	}
+	this.targetUL.show 	= function() {
+		if (!this.classList.contains("active")) {
+			(function(){
+				var allAcLists = document.getElementsByClassName("relation-autocomplete__target");
+				for (var i = 0; i < allAcLists.length; i++) {
+					allAcLists[i].hide();
+				}
+			})();
+			this.style.opacity = 1;
+			this.classList.add("active");
+		}
+	}
+	this.targetUL.hide 	= function() {
+		if (this.classList.contains("active")) {
+			this.style.opacity = 0;
+			this.classList.remove("active");
+		}
+	}
+
+	this.targetUL.style.transition = "opacity 100ms ease";
+}
+
+AutocompleteRelation.prototype.get = function(e) {
+
+	var term = e.target.value;
+	if(this.multiselect==='true'){
+		var array=term.split(',');
+		var nr_opt=array.length;
+		term=array[nr_opt-1];
+	}
+	if (term.length > this.mincharstoSearch && (typeof(this.data.searchin) != 'undefined' || typeof(this.data.searchfields) != 'undefined') ) {
+		this.data.term = term;
+		var acInstance = this;
+
+		this.displayFields 	= this.showFields();
+		this.entityName		= this.entityField();
+		this.fillfields		= this.fillFields();
+		acInstance.isReferenceField(e);
+
+		var r = new XMLHttpRequest();
+		r.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+				var json_data = JSON.parse(r.response)
+				if(json_data.length == 0)
+					acInstance.clearTargetUL()
+				else
+					acInstance.set(json_data)
+			}
+		};
+		if (e.target.name==='query_string') {
+			var params=JSON.stringify(this.data);
+			r.open("POST", "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getGloalSearch", true);
+			r.setRequestHeader( "Content-type", "application/json;charset=UTF-8" );
+			r.send(params);
+		} else {
+			r.open("GET", "index.php?module=Utilities&action=UtilitiesAjax&file=getAutocomplete&data="+encodeURIComponent(JSON.stringify(this.data)), true);
+			r.send();
+		}
+	} else {
+		this.clearTargetUL();
+		this.targetUL.hide();
+	}
+}
+
+AutocompleteRelation.prototype.set = function(items) {
+
+	if (items.length > 0) {
+		this.clearTargetUL();
+		this.targetUL.show();
+		var acInstance = this;
+		var limit = acInstance.maxResults < items.length ? acInstance.maxResults : items.length;
+		for (var i = 0; i < limit; i++) {
+
+			var li = this.buildListItem(items[i]);
+			this.targetUL.appendChild(li);
+
+			li.addEventListener("click", function(e){
+				acInstance.select({
+					label 		: this.getAttribute("data-label"),
+					value 		: this.getAttribute("data-crmid")
+				});
+				acInstance.fillOtherFields(this);
+				if (acInstance.inputField.name==='query_string') {
+					acInstance.goToRec({
+						crmmodule 	: this.getAttribute("data-crmmodule"),
+						value 		: this.getAttribute("data-crmid")
+					});
+				}
+			});
+		}
+	}
+}
+
+AutocompleteRelation.prototype.select = function(params) {
+
+	var label = params.label;
+	var value = params.value;
+
+	// this.inputField.value 	= label;
+	// this.hiddenInput.value 	= value;
+
+	// Housekeeping after selection
+	this.clearTargetUL();
+	this.targetUL.hide();
+	// Schedular.AutoComplete.Current.clear();
+}
+AutocompleteRelation.prototype.goToRec = function(params) {
+	var value = params.value.split('x')[1];
+	var crmmodule = params.crmmodule;
+	window.open('index.php?module='+crmmodule+'&action=DetailView&record='+value);
+};
+
+AutocompleteRelation.prototype.buildListItem = function(item) {
+	var li = document.createElement("li");
+	li.className = "slds-listbox__item";
+	li.setAttribute("role", "presentation");
+	li.setAttribute("data-crmid", item.crmid);
+	li.setAttribute("data-label", item[this.entityName]);
+
+	for (var field in item) {
+		if(field != this.entityName)
+			li.setAttribute("data-" + field, item[field])
+	}
+
+	var span = document.createElement("span");
+	span.setAttribute("class", "slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta");
+	span.setAttribute("role", "option");
+
+	li.appendChild(span);
+
+	span = document.createElement("span");
+	span.setAttribute("class", "slds-media__figure");
+
+	li.children[0].appendChild(span);
+
+	span = document.createElement("span");
+	span.setAttribute("class", "slds-icon_container slds-icon-standard-account");
+	span.setAttribute("title", "TO FILL!");
+
+	li.children[0].children[0].appendChild(span);
+
+	var svg = document.createElement("svg");
+	svg.setAttribute("class", "slds-icon slds-icon_small");
+	svg.setAttribute("aria-hidden", "true");
+
+	li.children[0].children[0].children[0].appendChild(svg);
+
+	var use = document.createElement("use");
+	use.setAttribute("xlink:href", "include/LD/assets/icons/standard-sprite/svg/symbols.svg#account");
+
+	li.children[0].children[0].children[0].children[0].appendChild(use);
+
+	span = document.createElement("span");
+	span.setAttribute("class", "slds-assistive-text");
+	span.innerText = "Description of icon";
+
+	li.children[0].children[0].children[0].appendChild(span);
+
+	span = document.createElement("span");
+	span.setAttribute("class", "slds-media__body");
+
+	li.children[0].appendChild(span);
+
+	span = document.createElement("span");
+	span.setAttribute("class", "slds-listbox__option-text slds-listbox__option-text_entity");
+	span.innerHTML = item[this.entityName];
+
+	li.children[0].children[1].appendChild(span);
+
+	span = document.createElement("span");
+	span.setAttribute("class", "slds-listbox__option-meta slds-listbox__option-meta_entity");
+	if (this.inputField.name==='query_string') {
+		span.innerText = this.buildSecondayReturnFieldsGS(item);
+	} else {
+		span.innerText = this.buildSecondayReturnFields(item);
+	}
+
+	li.children[0].children[1].appendChild(span);
+
+	return li;
+}
+
+AutocompleteRelation.prototype.buildSecondayReturnFields = function(item) {
+	var returnString = "";
+	for (var i = 0; i < this.displayFields.length; i++) {
+		if (i != 0) {
+			returnString = returnString + item[this.displayFields[i]];
+			if (i < this.displayFields.length - 1) {
+				returnString += "\n";
+			}
+		}
+	}
+	return returnString;
+}
+
+AutocompleteRelation.prototype.buildSecondayReturnFieldsGS = function(item) {
+	var returnString = "";
+	var module=item['crmmodule'];
+	var displayFld=this.data.searchin[module]['showfields'];
+	for (var i = 0; i < displayFld.length; i++) {
+		returnString = returnString + item[displayFld[i]];
+		if (i < displayFld.length - 1) {
+			returnString += "\n";
+		}
+	}
+	return returnString;
+}
+
+AutocompleteRelation.prototype.clearTargetUL = function () {
+	while (this.targetUL.firstChild) {
+		this.targetUL.removeChild(this.targetUL.firstChild);
+		this.targetUL.hide();
+	}
+}
+
+AutocompleteRelation.prototype.fillOtherFields = function (data) {
+	var fields = this.fillfields;
+	fields_length = fields.length
+
+	for (var i = 0; i < fields_length; i++) {
+		this_field = fields[i].split("=");
+
+		get_field_value = data.getAttribute("data-" + this_field[1] )
+
+		field_element = document.getElementsByName(this_field[0])[0];
+
+		if(this_field[0] == "assigned_user_id") {
+			field_element = this.fillAssignField(get_field_value);
+		}
+		var field_root_name = this.inputField.name.substring(0, this.inputField.name.indexOf("_display"));
+		if(this.multiselect==='true' && (this_field[0]==field_root_name+'_display' || this_field[0]==field_root_name || this_field[0]==this.inputField.name)){
+			if(this_field[0]==field_root_name+'_display'){
+				var array=field_element.value.split(',');
+				var nr_opt=array.length;
+				array[nr_opt-1]=get_field_value;
+				field_element.value = array.join(',')+',';
+			}
+			else{
+				var array=field_element.value.split(' |##| ').filter(item => item);
+				var nr_opt=array.length;
+				array.push(get_field_value);
+				field_element.value = array.join(' |##| ');
+			}
+		}
+		else{
+			field_element.value = get_field_value;
+		}
+	}
+
+}
+
+AutocompleteRelation.prototype.fillAssignField = function (value) {
+	var type, active_piclist;
+	var user_picklist = document.getElementById("assigned_user_id");
+	var group_picklist = document.getElementById("assigned_group_id");
+
+	var assigntype = document.getElementsByName("assigntype");
+
+	if( user_picklist.innerHTML.indexOf('value="' + value + '"') > -1 ) {
+		type = "U";
+		active_piclist = user_picklist;
+	}
+	else {
+		type = "T";
+		active_piclist = group_picklist;
+	}
+
+	for(var i = 0; i < assigntype.length; i++) {
+		assigntype[i].checked = false;
+		if(assigntype[i].value == type)
+			assigntype[i].checked = true;
+	}
+
+	toggleAssignType(type);
+	return active_piclist;
+}
+
+AutocompleteRelation.prototype.isReferenceField = function (e) {
+	var current_field_name = e.target.name;
+
+	if(current_field_name.indexOf("_display") !== -1) {
+
+		var field_root_name = current_field_name.substring(0, current_field_name.indexOf("_display"))
+		var reference_type_field = document.getElementsByName(field_root_name + "_type");
+
+		if(reference_type_field.length > 0) {
+			ref_module = reference_type_field[0].value;
+			var ref_field_id = document.getElementsByName(field_root_name);
+			ref_record_id = ref_field_id[0].value;
+
+			this.data.referencefield = {module:ref_module, fieldname:field_root_name}
+			this.extendFillFields([field_root_name +"="+field_root_name, field_root_name+"_display="+field_root_name+"_display"]);
+		}
+	}
+}
+
+AutocompleteRelation.prototype.getReferenceModule = function () {
+	var current_field_name = this.inputField.name;
+	var field_root_name = current_field_name.substring(0, current_field_name.indexOf("_display"))
+	var reference_type_field = document.getElementsByName(field_root_name + "_type");
+	return (reference_type_field[0] !== undefined ? reference_type_field[0].value : '');
+}
+
+AutocompleteRelation.prototype.extendFillFields = function (other_fields) {
+	this.fillfields = this.fillfields.concat(other_fields)
+}
+
+AutocompleteRelation.prototype.showFields = function () {
+	try {
+		return this.data.showfields.split(",");
+	} catch(e) {
+		ref_module = this.getReferenceModule();
+		return (ref_module !== '' ? this.data.showfields[ref_module].split(",") : '');
+	}
+}
+
+AutocompleteRelation.prototype.entityField = function () {
+	if(typeof this.data.entityfield === 'string')
+		return this.data.entityfield
+	else {
+		ref_module = this.getReferenceModule();
+		return (ref_module !== '' ? this.data.entityfield[ref_module] : '');
+	}
+}
+
+AutocompleteRelation.prototype.fillFields = function () {
+	try {
+		return this.data.fillfields.split(",");
+	} catch(e) {
+		ref_module = this.getReferenceModule();
+		return (ref_module !== '' ? this.data.fillfields[ref_module].split(",") : '');
+	}
+}
+
+AutocompleteRelation.prototype.multiselect = function () {
+	if(typeof this.data.multiselect === 'string')
+		return this.data.multiselect
+	else if(typeof this.data.multiselect === undefined){
+		ref_module = this.getReferenceModule();
+		return (ref_module !== '' ? this.data.multiselect[ref_module] : '');
+	}
+}
+
+AutocompleteRelation.prototype.MaxResults = function () {
+	if(typeof this.data.maxresults === 'number')
+		return this.data.maxresults;
+	else if(typeof this.data.maxresults === undefined){
+		ref_module = this.getReferenceModule();
+		if (ref_module !== '' && this.data.maxresults[ref_module] !== undefined) {
+			return this.data.maxresults[ref_module]
+		}
+	}
+	return 5;
+}
+
+AutocompleteRelation.prototype.MinCharsToSearch = function () {
+	if (typeof this.data.mincharstosearch === 'number') {
+		return this.data.mincharstosearch;
+	} else if (typeof this.data.mincharstosearch === undefined) {
+		ref_module = this.getReferenceModule();
+		if (ref_module !== '' && this.data.mincharstosearch[ref_module] !== undefined) {
+			return this.data.mincharstosearch[ref_module]
+		}
+	}
+	return 3;
+}

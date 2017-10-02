@@ -59,8 +59,6 @@ switch ($functiontocall) {
 	case 'getReferenceAutocomplete':
 		include_once 'include/Webservices/CustomerPortalWS.php';
 		$searchinmodule = vtlib_purify($_REQUEST['searchinmodule']);
-		$fields = vtlib_purify($_REQUEST['fields']);
-		$returnfields = vtlib_purify($_REQUEST['returnfields']);
 		$limit = vtlib_purify($_REQUEST['limit']);
 		$filter = vtlib_purify($_REQUEST['filter']);
 		if (is_array($filter)) {
@@ -73,19 +71,22 @@ switch ($functiontocall) {
 		$ret = getReferenceAutocomplete($term, $op, $searchinmodule, $limit, $current_user);
 		break;
 	case 'getFieldValuesFromRecord':
+		$ret = array();
 		$crmid = vtlib_purify($_REQUEST['getFieldValuesFrom']);
-		$module = getSalesEntityType($crmid);
-		$fields = vtlib_purify($_REQUEST['getTheseFields']);
-		$fields = explode(',',$fields);
-		$queryGenerator = new QueryGenerator($module, $current_user);
-		$queryGenerator->setFields($fields);
-		$queryGenerator->addCondition('id',$crmid,'e');
-		$query = $queryGenerator->getQuery();
-		$queryres=$adb->pquery($query,array());
-		if ($adb->num_rows($queryres)>0) {
-			$col=0;
-			foreach ($fields as $field) {
-				$ret[$field]=$adb->query_result($queryres,0,$col++);
+		if (!empty($crmid)) {
+			$module = getSalesEntityType($crmid);
+			$fields = vtlib_purify($_REQUEST['getTheseFields']);
+			$fields = explode(',',$fields);
+			$queryGenerator = new QueryGenerator($module, $current_user);
+			$queryGenerator->setFields($fields);
+			$queryGenerator->addCondition('id',$crmid,'e');
+			$query = $queryGenerator->getQuery();
+			$queryres=$adb->pquery($query,array());
+			if ($adb->num_rows($queryres)>0) {
+				$col=0;
+				foreach ($fields as $field) {
+					$ret[$field]=$adb->query_result($queryres,0,$col++);
+				}
 			}
 		}
 		break;
@@ -104,12 +105,25 @@ switch ($functiontocall) {
 		if (file_exists("modules/{$valmod}/{$valmod}Validation.php")) {
 			echo 'yes';
 		} else {
-			echo 'no';
+			include_once 'modules/cbMap/processmap/Validations.php';
+			if (Validations::ValidationsExist($valmod)) {
+				echo 'yes';
+			} else {
+				echo 'no';
+			}
 		}
 		die();
 		break;
 	case 'ValidationLoad':
 		$valmod = vtlib_purify($_REQUEST['valmodule']);
+		include_once 'modules/cbMap/processmap/Validations.php';
+		if (Validations::ValidationsExist($valmod)) {
+			$validation = Validations::processAllValidationsFor($valmod);
+			if ($validation!==true) {
+				echo Validations::formatValidationErrors($validation,$valmod);
+				die();
+			}
+		}
 		if (file_exists("modules/{$valmod}/{$valmod}Validation.php")) {
 			include "modules/{$valmod}/{$valmod}Validation.php";
 		} else {
@@ -123,6 +137,60 @@ switch ($functiontocall) {
 			$ret = vtws_getEntityId($wsmod);
 		} else {
 			$ret = '';
+		}
+		break;
+	case 'updateBrowserTabSession':
+		$newssid = vtlib_purify($_REQUEST['newtabssid']);
+		$oldssid = vtlib_purify($_REQUEST['oldtabssid']);
+		foreach ($_SESSION as $key => $value) {
+			if (strpos($key, $oldssid) !== false and strpos($key, $oldssid.'__prev') === false) {
+				$newkey = str_replace($oldssid, $newssid, $key);
+				coreBOS_Session::set($newkey, $value);
+				coreBOS_Session::set($key, (isset($_SESSION[$key.'__prev']) ? $_SESSION[$key.'__prev'] : ''));
+			}
+		}
+		$ret = '';
+		break;
+	case 'getEmailTemplateVariables':
+		$module = vtlib_purify($_REQUEST['module_from']);
+		$allOptions=getEmailTemplateVariables(array($module,'Accounts'));
+		$ret = array_merge($allOptions[0],$allOptions[1],$allOptions[2]);
+		break;
+	case 'saveAttachment':
+		include_once 'modules/Settings/MailScanner/core/MailAttachmentMIME.php';
+		include_once 'modules/MailManager/src/controllers/UploadController.php';
+		$allowedFileExtension = array();
+		$upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize',3000000,'Emails');
+		$upload = new MailManager_Uploader($allowedFileExtension, $upload_maxsize);
+		if ($upload) {
+			$filePath = decideFilePath();
+			$ret = $upload->handleUpload($filePath, false);
+		} else {
+			$ret = '';
+		}
+		break;
+	case 'getNumberDisplayValue':
+		$value = vtlib_purify($_REQUEST['val']);
+		if (empty($value)) {
+			$ret = '0';
+		} else {
+			$currencyField = new CurrencyField($value);
+			$decimals = vtlib_purify($_REQUEST['decimals']);
+			$currencyField->initialize($current_user);
+			$currencyField->setNumberofDecimals(min($decimals,$currencyField->getCurrencyDecimalPlaces()));
+			$ret = $currencyField->getDisplayValue(null,true,true);
+		}
+		break;
+	case 'getGloalSearch':
+		include_once 'include/Webservices/CustomerPortalWS.php';
+		$data = json_decode(file_get_contents('php://input'), TRUE);
+		$searchin = vtlib_purify($data['searchin']);
+		$limit = isset($data['maxResults']) ? vtlib_purify($data['maxResults']) : '';
+		$term = vtlib_purify($data['term']);
+		$retvals = getGlobalSearch($term, $searchin, $limit, $current_user);
+		$ret = array();
+		foreach ($retvals as $value) {
+			$ret[] = array('crmid'=>$value['crmid'],'crmmodule'=>$value['crmmodule'],'query_string'=>$value['query_string'])+ $value['crmfields'];
 		}
 		break;
 	case 'ismoduleactive':

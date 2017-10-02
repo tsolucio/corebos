@@ -13,10 +13,13 @@ require_once 'include/Webservices/Delete.php';
 require_once 'modules/WSAPP/Utils.php';
 
 function wsapp_put ($key, $element, $user) {
-        $name = wsapp_getApplicationName($key);
-        $handlerDetails  = wsapp_getHandler($name);
-        require_once $handlerDetails['handlerpath'];
-        $handler = new $handlerDetails['handlerclass']($key);
-        return $handler->put($element,$user);
+	$name = wsapp_getApplicationName($key);
+	if ($name) {
+		$handlerDetails  = wsapp_getHandler($name);
+		require_once $handlerDetails['handlerpath'];
+		$handler = new $handlerDetails['handlerclass']($key);
+		return $handler->put($element,$user);
+	}
+	return array();
 }
 

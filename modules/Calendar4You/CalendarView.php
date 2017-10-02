@@ -37,13 +37,12 @@ $c_mod_strings = return_specified_module_language($current_language, "Calendar")
 $smarty->assign('CMOD', $c_mod_strings);
 
 $smarty->assign('MODULE', $currentModule);
-// TODO: Update Single Module Instance name here.
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $smarty->assign('CATEGORY', $category);
 $smarty->assign("THEME", $theme);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
-$smarty->assign('ID', $focus->id);
-$smarty->assign('MODE', $focus->mode);
+$smarty->assign('ID', '');
+$smarty->assign('MODE', '');
 
 $viewBox = 'hourview'; 
 $smarty->assign("CREATE_PERMISSION",($Calendar4You->CheckPermissions("CREATE") ? "permitted" : ''));
@@ -60,33 +59,38 @@ $smarty->assign("CREATE_PERMISSION",($Calendar4You->CheckPermissions("CREATE") ?
 	$temp_date = $date->getDisplayDate();
 
 	if($current_user->column_fields['is_admin']=='on')
-		$Res = $adb->pquery("select * from vtiger_activitytype",array());
+		$Res = $adb->pquery('select * from vtiger_activitytype where activitytype!=?',array('Emails'));
 	else {
 		$roleid=$current_user->roleid;
 		$subrole = getRoleSubordinates($roleid);
-		if(count($subrole)> 0) {
+		if (count($subrole)> 0) {
 			$roleids = $subrole;
-			array_push($roleids, $roleid);
-		} else {	
-			$roleids = $roleid;
-		}
-
-		if (count($roleids) > 1) {
-			$Res=$adb->pquery("select distinct activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where roleid in (". generateQuestionMarks($roleids) .") and picklistid in (select picklistid from vtiger_picklist) order by sortid asc", array($roleids));
+			$roleids[] = $roleid;
 		} else {
-			$Res=$adb->pquery("select distinct activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where roleid = ? and picklistid in (select picklistid from vtiger_picklist) order by sortid asc", array($roleid));
+			$roleids = array($roleid);
 		}
+		$Res=$adb->pquery("select distinct activitytype,sortid from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where activitytype!=? and roleid in (". generateQuestionMarks($roleids) .") and picklistid in (select picklistid from vtiger_picklist) order by sortid asc", array('Emails',$roleids));
 	}
 
 	$eventlist=''; 
 	$eventlists_array='';
+	$abelist = '';
 	for($i=0; $i<$adb->num_rows($Res);$i++) {
 		$actname = $adb->query_result($Res,$i,'activitytype');
-		$eventlist .= html_entity_decode($actname,ENT_QUOTES,$default_charset).";";
-		$eventlists_array .= '"'.html_entity_decode(html_entity_decode($actname,ENT_QUOTES,$default_charset),ENT_QUOTES, $default_charset).'",';
+		$actname = html_entity_decode($actname,ENT_QUOTES,$default_charset);
+		$eventlist .= $actname.";";
+		$eventlists_array .= '"'.html_entity_decode($actname,ENT_QUOTES, $default_charset).'",';
+		$i18actname = getTranslatedString($actname,'Calendar');
+		$abelist.='<tr><td><a id="add'.strtolower($actname).'" href="index.php?module=cbCalendar&action=EditView&return_module=Calendar4You&return_action=index&activity_mode=Events&activitytype='.$actname.'" class="drop_down">'.$i18actname.'</a></td></tr>';
 	}
-
-	$add_javascript = "onMouseOver='fnAddITSEvent(this,\"addButtonDropDown\",\"".$temp_date."\",\"".$temp_date."\",\"".$time_arr['starthour']."\",\"".$time_arr['startmin']."\",\"".$time_arr['startfmt']."\",\"".$time_arr['endhour']."\",\"".$time_arr['endmin']."\",\"".$time_arr['endfmt']."\",\"".$viewBox."\",\"".$subtab."\",\"".$eventlist."\");'";
+	$timeModules = getAllModulesWithDateTimeFields();
+	foreach ($timeModules as $tmid => $tmmod) {
+		$tmline = getTranslatedString($tmmod,$tmmod);
+		$tmlineid = str_replace(' ', '', $tmmod);
+		$abelist .= '<tr><td><a href="" id="add' . strtolower($tmlineid) . '" class="drop_down">' . $tmline . '</a></td></tr>';
+	}
+	$smarty->assign('ADD_BUTTONEVENTLIST', $abelist);
+	$add_javascript = "onMouseOver='fnAddITSEvent(this,\"addButtonDropDown\",\"".$temp_date."\",\"".$temp_date."\",\"".$time_arr['starthour']."\",\"".$time_arr['startmin']."\",\"".$time_arr['startfmt']."\",\"".$time_arr['endhour']."\",\"".$time_arr['endmin']."\",\"".$time_arr['endfmt']."\",\"".$viewBox."\",\"".(isset($subtab) ? $subtab : '')."\",\"".$eventlist."\");'";
 	$smarty->assign('ADD_ONMOUSEOVER', $add_javascript);
 
 	$smarty->assign('EVENTLIST', trim($eventlists_array,","));
@@ -121,23 +125,15 @@ $Task_Colors = getEColors("type","task");
 
 $Task_Colors_Palete = $colorHarmony->Monochromatic($Task_Colors["bg"]);
 
-if (!$load_ch || $Ch_Views["1"]["task"]) $task_checked = true; else $task_checked = false;
+if (!$load_ch || !empty($Ch_Views["1"]["task"])) $task_checked = true; else $task_checked = false;
 
 $Activity_Types = $Module_Types = array();
-$Activity_Types["task"] = array(
-	"typename"=>"Tasks",
-	"label"=>$c_mod_strings["LBL_TASK"],
-	"act_type"=>"task",
-	"title_color"=>$Task_Colors_Palete[0],
-	"color"=>$Task_Colors_Palete[1],
-	"textColor"=>$Task_Colors["text"],
-	"checked"=>$task_checked
-);
 
 $ActTypes = getActTypesForCalendar();
+if (!$load_ch || !empty($Ch_Views['1']['invite'])) $invite_checked = true; else $invite_checked = false;
 
 foreach ($ActTypes AS $act_id => $act_name) {
-	if (!$load_ch || $Ch_Views["1"][$act_id]) $event_checked = true; else $event_checked = false;
+	if (!$load_ch || !empty($Ch_Views["1"][$act_id])) $event_checked = true; else $event_checked = false;
 
 	$Colors = getEColors("type",$act_id);   
 	$Colors_Palete = $colorHarmony->Monochromatic($Colors["bg"]);
@@ -164,14 +160,11 @@ foreach ($ActTypes AS $act_id => $act_name) {
 			"checked"=>$invite_checked
 		);
 	}
-	unset($Colors);
-	unset($Colors_Palete);
+	unset($Colors,$Colors_Palete);
 }
 
 $Invite_Colors = getEColors("type","invite");
 $Invite_Colors_Palette = $colorHarmony->Monochromatic($Invite_Colors["bg"]);
-
-if (!$load_ch || $Ch_Views["1"]["invite"]) $invite_checked = true; else $invite_checked = false;
 
 $Activity_Types["invite"] = array(
 	"typename"=>"Invite",
@@ -309,21 +302,11 @@ $dat_fmt = $current_user->date_format;
 if ($dat_fmt == '') {
 	$dat_fmt = 'dd-mm-yyyy';
 }
-switch ($dat_fmt) {
-	case 'mm-dd-yyyy':
-	case 'yyyy-mm-dd':
-		$CALENDAR_DAYMONTHFORMAT = 'M/d';
-		break;
-	case 'dd-mm-yyyy':
-	default:
-		$CALENDAR_DAYMONTHFORMAT = 'd/M';
-		break;
-}
-$smarty->assign('CALENDAR_DAYMONTHFORMAT', $CALENDAR_DAYMONTHFORMAT);
+$smarty->assign('USER_LANGUAGE', substr($current_language, 0, 2));
 $dat_fmt = str_replace("mm","MM",$dat_fmt);
 $smarty->assign('USER_DATE_FORMAT', $dat_fmt);
 $smarty->assign('Calendar_Slot_Minutes', "00:".GlobalVariable::getVariable('Calendar_Slot_Minutes', 15).":00");
+$smarty->assign('Calendar_Slot_Event_Overlap', (GlobalVariable::getVariable('Calendar_Slot_Event_Overlap', 1) ? 'true' : 'false'));
 $smarty->assign('Calendar_Modules_Panel_Visible', GlobalVariable::getVariable('Calendar_Modules_Panel_Visible', 1));
 
 $smarty->display('modules/Calendar4You/CalendarView.tpl');
-include_once 'modules/Calendar4You/addEventUI.php';

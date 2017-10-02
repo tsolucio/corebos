@@ -19,7 +19,7 @@ class VTCreateEntityTask extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $current_user,$from_wf;
+		global $adb, $current_user, $from_wf, $logbg;
 		$from_wf = true;
 		$util = new VTWorkflowUtils();
 
@@ -40,20 +40,26 @@ class VTCreateEntityTask extends VTTask {
 		}
 
 		if (!empty($entityType) && !empty($fieldValueMapping) && count($fieldValueMapping) > 0) {
+			$logbg->debug('CreateEntityTask: create '.$entityType);
 			require_once('data/CRMEntity.php');
-
-			$newEntity = CRMEntity::getInstance($entityType);
-			$newEntity->mode = '';
-			$newEntityData = VTEntityData::fromCRMEntity($newEntity);
-			$entityModuleHandler = vtws_getModuleHandlerFromName($entityType, $current_user);
-			$handlerMeta = $entityModuleHandler->getMeta();
-			$ownerFields = $handlerMeta->getOwnerFields();
+			require_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
 
 			$focus = CRMEntity::getInstance($moduleName);
 			$focus->id = $recordId;
 			$focus->mode = 'edit';
 			$focus->retrieve_entity_info($recordId, $moduleName);
 
+			$newEntity = CRMEntity::getInstance($entityType);
+			$newEntity->mode = '';
+			if ($moduleName == $entityType) {
+				$newEntity->column_fields = $focus->column_fields;
+			}
+			$newEntityData = VTEntityData::fromCRMEntity($newEntity);
+			$entityModuleHandler = vtws_getModuleHandlerFromName($entityType, $current_user);
+			$handlerMeta = $entityModuleHandler->getMeta();
+			$ownerFields = $handlerMeta->getOwnerFields();
+			$logbg->debug($focus->column_fields);
+			$logbg->debug($fieldValueMapping);
 			foreach ($fieldValueMapping as $fieldInfo) {
 				$fieldName = $fieldInfo['fieldname'];
 				$referenceModule = $fieldInfo['modulename'];
@@ -61,15 +67,13 @@ class VTCreateEntityTask extends VTTask {
 				$fieldValueType = $fieldInfo['valuetype'];
 				$fieldValue = trim($fieldInfo['value']);
 
-				if ($fieldValueType == 'fieldname') {
+				if ($fieldValueType == 'fieldname' && !preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', $fieldValue)) {
 					if ($referenceModule == $entityType) {
 						$fieldValue = $newEntity->column_fields[$fieldValue];
 					} else {
 						$fieldValue = $focus->column_fields[$fieldValue];
 					}
-				} elseif ($fieldValueType == 'expression') {
-					require_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
-
+				} elseif ($fieldValueType == 'expression' || ($fieldValueType == 'fieldname' && preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', $fieldValue))) {
 					$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($fieldValue)));
 					$expression = $parser->expression();
 					$exprEvaluater = new VTFieldExpressionEvaluater($expression);
@@ -111,23 +115,28 @@ class VTCreateEntityTask extends VTTask {
 				$newEntity->column_fields['parent_id'] = $focus->column_fields['vendor_id'];
 			}
 
-                        $cbfromid = $recordId;
-                        $cbfrommodule = getSalesEntityType($cbfromid);
-                        $bmapname = $cbfrommodule.'2'.$entityType;
-                        $cbfrom = CRMEntity::getInstance($cbfrommodule);
-                        $cbfrom->retrieve_entity_info($cbfromid, $cbfrommodule);
-                        $cbMapidFromid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
-                        if ($cbMapidFromid) $cbMapid = $cbMapidFromid;
-                        if ($cbMapid) {
-                                $cbMap = cbMap::getMapByID($cbMapid);
-                                $newEntity->column_fields = $cbMap->Mapping($cbfrom->column_fields,$newEntity->column_fields);
-                        }
-                        
-                        $newEntity->column_fields = DataTransform::sanitizeRetrieveEntityInfo($newEntity->column_fields,$handlerMeta);
+			$cbfromid = $recordId;
+			$cbfrommodule = getSalesEntityType($cbfromid);
+			$bmapname = $cbfrommodule.'2'.$entityType;
+			$cbfrom = CRMEntity::getInstance($cbfrommodule);
+			$cbfrom->retrieve_entity_info($cbfromid, $cbfrommodule);
+			$cbMapidFromid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+			if ($cbMapidFromid) $cbMapid = $cbMapidFromid;
+			if (!empty($cbMapid)) {
+				$cbMap = cbMap::getMapByID($cbMapid);
+				$newEntity->column_fields = $cbMap->Mapping($cbfrom->column_fields,$newEntity->column_fields);
+			}
+
+			$newEntity->column_fields = DataTransform::sanitizeRetrieveEntityInfo($newEntity->column_fields,$handlerMeta);
+			$logbg->debug($newEntity->column_fields);
 			$newEntity->save($entityType);
 			relateEntities($focus, $moduleName, $recordId, $entityType, $newEntity->id);
+		} else {
+			$logbg->debug('CreateEntityTask: cannot create entity due to missing information');
+			$logbg->debug($entityType);
+			$logbg->debug($fieldValueMapping);
 		}
-                $from_wf = false;
+		$from_wf = false;
 		$util->revertUser();
 	}
 

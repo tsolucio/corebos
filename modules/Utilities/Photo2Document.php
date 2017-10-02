@@ -13,7 +13,7 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
-global $adb,$current_user,$singlepane_view, $app_strings, $theme;
+global $adb,$current_user,$singlepane_view, $app_strings, $theme, $default_charset;
 $formodule = vtlib_purify($_REQUEST['formodule']);
 $forrecord = vtlib_purify($_REQUEST['forrecord']);
 $wsuserid = vtws_getEntityId('Users').'x'.$current_user->id;
@@ -23,7 +23,7 @@ $wsrecid = vtws_getEntityId($formodule).'x'.$forrecord;
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $app_strings['LBL_CHARSET']; ?>">
+	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $default_charset; ?>">
 	<title><?php echo $app_strings['Photo2Document']; ?></title>
 	<style type="text/css">@import url("themes/<?php echo $theme; ?>/style.css");</style>
 	<script type="text/javascript" src="include/jquery/jquery.js"></script>

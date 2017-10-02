@@ -23,8 +23,6 @@ $mod_strings = Array(
     'LBL_PROJECT_TASK_INFORMATION' => 'Informação Tarefa Projeto',
     'LBL_DESCRIPTION_INFORMATION' => 'Descrição',
     'Assigned To' => 'Atribuído à',
-    //'linktoproject' => 'Link to Project',
-    'Related Project' => 'Projeto Relacionado',
     'Priority' => 'Prioridade',
     'Progress' => 'Progresso',
 	'Open'=>'Aberto',
@@ -33,22 +31,18 @@ $mod_strings = Array(
     'Worked Hours'=>'Horas Trabalhadas',
     'Start Date'=>'Data Início',
     'End Date'=>'Data Final',
-    'Related To' => 'Relacionado à',
-    'projectid' => 'Relacionado à',
+    'Related to' => 'Projeto',
     'administrative' => 'administrativo',
     'operative' => 'operacional',
     'other' => 'outro',
     'low' => 'baixo',
     'normal' => 'normal',
     'high' => 'alto',
-    'Created Time' => 'Hora Criação',
-    'Modified Time' => 'Hora Modificação',
-    'Description' => 'Descrição',
-    'description' => 'Descrição',
     //added for related lists 
     'Project Task Name' => 'Nome Tarefa',
     'Project Task No' => 'No. Tarefa',
     'Project Task Number' => 'Código Tarefa',
+	'Add Note' => 'Add Note',
 );
 
 ?>

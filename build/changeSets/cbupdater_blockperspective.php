@@ -27,7 +27,7 @@ class cbupdater_blockperspective extends cbupdaterWorker {
 			// fields
 			$fieldp = Vtiger_Field::getInstance('perspective',$moduleInstance);
 			if ($fieldp) {
-				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid='.$fieldp->id);
+				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?',array($fieldp->id));
 			} else {
 				$fieldp = new Vtiger_Field();
 				$fieldp->name = 'perspective';
@@ -43,7 +43,7 @@ class cbupdater_blockperspective extends cbupdaterWorker {
 			}
 			$fieldb = Vtiger_Field::getInstance('blocked',$moduleInstance);
 			if ($fieldb) {
-				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid='.$fieldb->id);
+				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?',array($fieldb->id));
 			} else {
 				$fieldb = new Vtiger_Field();
 				$fieldb->name = 'blocked';
@@ -60,11 +60,11 @@ class cbupdater_blockperspective extends cbupdaterWorker {
 			$this->ExecuteQuery("update vtiger_cbupdater set perspective='0' where perspective is null");
 			$this->ExecuteQuery("update vtiger_cbupdater set blocked='0' where blocked is null");
 			$field = Vtiger_Field::getInstance('assigned_user_id',$moduleInstance);
-			$this->ExecuteQuery('update vtiger_field set sequence=10 where fieldid='.$field->id);
+			$this->ExecuteQuery('update vtiger_field set sequence=10 where fieldid=?',array($field->id));
 			$field = Vtiger_Field::getInstance('createdtime',$moduleInstance);
-			$this->ExecuteQuery('update vtiger_field set sequence=12 where fieldid='.$field->id);
+			$this->ExecuteQuery('update vtiger_field set sequence=12 where fieldid=?',array($field->id));
 			$field = Vtiger_Field::getInstance('modifiedtime',$moduleInstance);
-			$this->ExecuteQuery('update vtiger_field set sequence=13 where fieldid='.$field->id);
+			$this->ExecuteQuery('update vtiger_field set sequence=13 where fieldid=?',array($field->id));
 			$rdo = $adb->pquery('select count(*) from vtiger_execstate where execstate=?',array('Continuous'));
 			if ($rdo and $adb->query_result($rdo,0,0)==0) {
 				$field = Vtiger_Field::getInstance('execstate',$moduleInstance);

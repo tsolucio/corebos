@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 function vtSortFieldsJson($request){
-	$moduleName = $request['module_name'];
+	$moduleName = vtlib_purify($request['module_name']);
 	checkFileAccessForInclusion("modules/$moduleName/$moduleName.php");
 	require_once("modules/$moduleName/$moduleName.php");
 	$focus = new $moduleName();

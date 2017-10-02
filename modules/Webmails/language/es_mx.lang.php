@@ -32,7 +32,6 @@ $mod_strings = array (
 'LBL_LIST_RELATED_TO'=>'Relacionado con',
 'LBL_LIST_DATE'=>'Fecha de Envío',
 'LBL_LIST_TIME'=>'Hora de Envío',
-'LBL_MOVE_TO'=>'Mover A',
 'LBL_DELETE'=>'Borrar',
 
 'ERR_DELETE_RECORD'=>'Debe especificar un registro para eliminar la cuenta.',

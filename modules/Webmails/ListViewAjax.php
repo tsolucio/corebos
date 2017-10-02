@@ -6,9 +6,7 @@
   * Portions created by FOSS Labs are Copyright (C) FOSS Labs.
   * Portions created by vtiger are Copyright (C) vtiger.
   * All Rights Reserved.
-  * 
   ********************************************************************************/
-//Modified By Krem on  30/05/2008  - Details  at http://creadev.net/Webmails-vTiger504
 
 // figure out which page we are on and what mailbox we want to view
 
@@ -88,7 +86,7 @@ if($numPages > 1) {
 	}
 	if($start <= ($numPages-1)){
 		$navigationOutput .= "<a href='javascript:;' onClick=\"cal_navigation('".$mailbox."',".($start+1).");\" ><img src='modules/Webmails/images/next.gif' border='0'></a>&nbsp;&nbsp;";
-				$navigationOutput .= "<a href='javascript:;' onClick=\"cal_navigation('".$mailbox."',".$numPages.");\"><img src='modules/Webmails/images/end.gif' border='0'></a> &nbsp;";
+		$navigationOutput .= "<a href='javascript:;' onClick=\"cal_navigation('".$mailbox."',".$numPages.");\"><img src='modules/Webmails/images/end.gif' border='0'></a> &nbsp;";
 	}
 }
 
@@ -97,13 +95,12 @@ $overview=$elist["overview"];
 $mails = array();
 if (is_array($overview))
 {
-        foreach ($overview as $val)
-        { 
-                $mails[$val->msgno] = $val;
-                $hdr = @imap_headerinfo($MailBox->mbox, $val->msgno);
-                $val->from = utf8_decode(utf8_encode(imap_utf8(addslashes($val->from))));
-                $val->to = utf8_decode(utf8_encode(imap_utf8(addslashes($val->to))));
-                $val->subject = utf8_decode(utf8_encode(imap_utf8($val->subject)));
+	foreach ($overview as $val) {
+		$mails[$val->msgno] = $val;
+		$hdr = @imap_headerinfo($MailBox->mbox, $val->msgno);
+		$val->from = utf8_decode(utf8_encode(imap_utf8(addslashes($val->from))));
+		$val->to = utf8_decode(utf8_encode(imap_utf8(addslashes($val->to))));
+		$val->subject = utf8_decode(utf8_encode(imap_utf8($val->subject)));
 		$to = str_replace("<",":",$val->to);
 		$to_list = str_replace(">","",$to);
 		$from = str_replace("<",":",$val->from);
@@ -157,7 +154,6 @@ foreach($search_fields as $searchfield)
 		$search_html .= '<option selected value="'.$searchfield.'">'.$mod_strings["IN"].' '.$mod_strings[$searchfield].'</option>';
 	else
 		$search_html .= '<option value="'.$searchfield.'">'.$mod_strings["IN"].' '.$mod_strings[$searchfield].'</option>';
-			
 }
 $search_html .= '</select>';
 
@@ -166,8 +162,8 @@ $list = imap_getmailboxes($MailBox->mbox, "{".$MailBox->imapServerAddress."}", "
 sort($list);
 $i=0;
 if (is_array($list)) {
-      	$boxes = '<select name="mailbox" id="mailbox_select" onChange="move_messages();">';
-        $boxes .= '<option value="move_to" SELECTED>'.$mod_strings['LBL_MOVE_TO'].'</option>';
+	$boxes = '<select name="mailbox" id="mailbox_select" onChange="move_messages();">';
+	$boxes .= '<option value="move_to" SELECTED>'.$mod_strings['LBL_MOVE_TO'].'</option>';
 	foreach ($list as $key => $val) {
 		$tmpval = preg_replace(array("/\{.*?\}/i"),array(""),$val->name);
 		if(preg_match("/trash/i",$tmpval))

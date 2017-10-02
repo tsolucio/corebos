@@ -6,8 +6,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-document.write("<script type='text/javascript' src='include/js/Mail.js'></script>");
-document.write("<script type='text/javascript' src='include/js/Merge.js'></script>");
+
 function verifyConvertLeadData(form) {
 	var convertForm=document.ConvertLead;
 	var no_ele=convertForm.length;
@@ -55,7 +54,18 @@ function verifyConvertLeadData(form) {
 				return false;
 			}
 		}
-		if(form.amount.value!=null && isNaN(form.amount.value)){
+		val = form.amount.value;
+		if(typeof userCurrencySeparator != 'undefined' && userCurrencySeparator != '') {
+			while(val.indexOf(userCurrencySeparator) != -1) {
+				val = val.replace(userCurrencySeparator,'');
+			}
+		}
+		if(typeof userDecimalSeparator != 'undefined' && userDecimalSeparator != '') {
+			if(val.indexOf(userDecimalSeparator) != -1) {
+				val = val.replace(userDecimalSeparator,'.');
+			}
+		}
+		if(form.amount.value!=null && isNaN(val)){
 			alert(alert_arr["ERR_POTENTIAL_AMOUNT"]);
 			return false;
 		}
@@ -190,5 +200,46 @@ function selectTransferTo(module){
 			document.getElementById('contact_block').style.display="block";
 			document.getElementById('select_contact').checked="checked";
 		}
+	}
+}
+
+function setCookie(c_name,value,exdays){
+	var exdate=new Date();
+	exdate.setDate(exdate.getDate() + exdays);
+	var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+	document.cookie=c_name + "=" + c_value;
+}
+
+function getCookie(c_name){
+	var c_value = document.cookie;
+	var c_start = c_value.indexOf(" " + c_name + "=");
+	if (c_start == -1){
+		c_start = c_value.indexOf(c_name + "=");
+	}
+	if (c_start == -1){
+		c_value = null;
+	} else {
+		c_start = c_value.indexOf("=", c_start) + 1;
+		var c_end = c_value.indexOf(";", c_start);
+		if (c_end == -1){
+			c_end = c_value.length;
+		}
+		c_value = unescape(c_value.substring(c_start,c_end));
+	}
+	return c_value;
+}
+
+function toggle_converted(){
+	if (getCookie('LeadConv') == 'true') {
+		setCookie('LeadConv','false');
+	}else{
+		setCookie('LeadConv','true');
+	}
+	document.location.reload(true);
+}
+
+function LeadssetValueFromCapture(recordid,value,target_fieldname) {
+	if (target_fieldname=="accountname") {
+		document.getElementById('txtbox_accountname').value = value;
 	}
 }

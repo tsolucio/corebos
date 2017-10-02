@@ -6,9 +6,7 @@
 * The Initial Developer of the Original Code is vtiger.
 * Portions created by vtiger are Copyright (C) vtiger.
 * All Rights Reserved.
-*
 ********************************************************************************/
-
 
 $mod_strings = array (
   'LBL_BOOKMARKED_URL' => 'Segnalibri',
@@ -26,6 +24,6 @@ $mod_strings = array (
   'LBL_MANAGE_SITES' => 'Gestione Siti',
   'LBL_MY_SITES' => 'Siti',
   'LBL_SET_DEFAULT_BUTTON' => 'Imposta come default',
-
+	'ERR_NOT_PERMITTED_LOAD' => 'The website you have indicated has blocked loading inside another webpage so it has been opened in another tab.',
 );
 ?>

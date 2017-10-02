@@ -276,7 +276,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 		$module = $this->getModuleNameFromZip($zipfile);
 		if($module != null) {
 
-			$unzip = new Vtiger_Unzip($zipfile, $overwrite);
+			$unzip = new Vtiger_Unzip($zipfile);
 
 			// Unzip selectively
 			$unzip->unzipAllEx( ".",
@@ -295,8 +295,19 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 				)
 			);
 
-
 			@rename('manifest.xml',"modules/$module/manifest.xml");
+			// eliminate temporary directories
+			@rmdir("modules/$module/modules/$module");
+			@rmdir("modules/$module/modules/");
+			@rmdir("Smarty/templates/modules/$module/templates");
+			@rmdir("cron/modules/$module/cron");
+			$dirs = glob("modules/$module/*",GLOB_ONLYDIR);
+			foreach ($dirs as $path) {
+				$dir = basename($path);
+				@rmdir("modules/$module/$dir/modules/$module/$dir");
+				@rmdir("modules/$module/$dir/modules/$module");
+				@rmdir("modules/$module/$dir/modules/");
+			}
 			if($unzip) $unzip->close();
 		}
 		return $module;
@@ -421,10 +432,10 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 	 * @access private
 	 */
 	function import_Module() {
-		$tabname = $this->_modulexml->name;
-		$tablabel= $this->_modulexml->label;
+		$tabname = (string)$this->_modulexml->name;
+		$tablabel= (string)$this->_modulexml->label;
 		$parenttab=(string)$this->_modulexml->parent;
-		$tabversion=$this->_modulexml->version;
+		$tabversion=(string)$this->_modulexml->version;
 
 		$isextension= false;
 		if(!empty($this->_modulexml->type)) {
@@ -433,8 +444,8 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 				$isextension = true;
 		}
 
-		$vtigerMinVersion = $this->_modulexml->dependencies->vtiger_version;
-		$vtigerMaxVersion = $this->_modulexml->dependencies->vtiger_max_version;
+		$vtigerMinVersion = (string)$this->_modulexml->dependencies->vtiger_version;
+		$vtigerMaxVersion = (string)$this->_modulexml->dependencies->vtiger_max_version;
 
 		$moduleInstance = new Vtiger_Module();
 		$moduleInstance->name = $tabname;
@@ -600,8 +611,8 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 
 		// Set the field as entity identifier if marked.
 		if(!empty($fieldnode->entityidentifier)) {
-			$moduleInstance->entityidfield = $fieldnode->entityidentifier->entityidfield;
-			$moduleInstance->entityidcolumn= $fieldnode->entityidentifier->entityidcolumn;
+			$moduleInstance->entityidfield = (string)$fieldnode->entityidentifier->entityidfield;
+			$moduleInstance->entityidcolumn= (string)$fieldnode->entityidentifier->entityidcolumn;
 			$moduleInstance->setEntityIdentifier($fieldInstance);
 		}
 
@@ -618,7 +629,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 		if(!empty($fieldnode->relatedmodules) && !empty($fieldnode->relatedmodules->relatedmodule)) {
 			$relatedmodules = Array();
 			foreach($fieldnode->relatedmodules->relatedmodule as $relatedmodulenode) {
-				$relatedmodules[] = $relatedmodulenode;
+				$relatedmodules[] = (string)$relatedmodulenode;
 			}
 			$fieldInstance->setRelatedModules($relatedmodules);
 		}
@@ -706,10 +717,12 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 	 */
 	function import_Event($modulenode, $moduleInstance, $eventnode) {
 		$event_condition = '';
+		$event_dependent = '[]';
 		if(!empty($eventnode->condition)) $event_condition = "$eventnode->condition";
+		if(!empty($eventnode->dependent)) $event_dependent = "$eventnode->dependent";
 		Vtiger_Event::register($moduleInstance,
 			(string)$eventnode->eventname, (string)$eventnode->classname,
-			(string)$eventnode->filename, (string)$event_condition
+			(string)$eventnode->filename, (string)$event_condition, (string)$event_dependent
 		);
 	}
 
@@ -782,13 +795,19 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 										"$customlinknode->handler_class",
 										"$customlinknode->handler");
 			}
+			if (isset($customlinknode->onlyonmodule)) {
+				$onlyonmodule = empty($customlinknode->onlyonmodule);
+			} else {
+				$onlyonmodule = false;
+			}
 			$moduleInstance->addLink(
 				"$customlinknode->linktype",
 				"$customlinknode->linklabel",
 				"$customlinknode->linkurl",
 				"$customlinknode->linkicon",
 				"$customlinknode->sequence",
-				$handlerInfo
+				$handlerInfo,
+				$onlyonmodule
 			);
 		}
 	}

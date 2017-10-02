@@ -80,7 +80,7 @@ class VTScheduledReport extends Reports {
 				foreach($recipientsInfo['roles'] as $roleId) {
 					$roleUsers = getRoleUsers($roleId);
 					foreach($roleUsers as $userId => $userName) {
-						array_push($recipientsList, $userId);
+						$recipientsList[] = $userId;
 					}
 				}
 			}
@@ -89,7 +89,7 @@ class VTScheduledReport extends Reports {
 				foreach($recipientsInfo['rs'] as $roleId) {
 					$users = getRoleAndSubordinateUsers($roleId);
 					foreach($users as $userId => $userName) {
-						array_push($recipientsList, $userId);
+						$recipientsList[] = $userId;
 					}
 				}
 			}
@@ -121,7 +121,7 @@ class VTScheduledReport extends Reports {
 		require_once('modules/Emails/mail.php');
 		require_once('modules/Emails/Emails.php');
 
-		global $currentModule;
+		global $currentModule,$root_directory;
 
 		$recipientEmails = $this->getRecipientEmails();
 		$emails_to = '';
@@ -137,7 +137,7 @@ class VTScheduledReport extends Reports {
 		$contents .= '<b>'.getTranslatedString('LBL_REPORT_NAME', $currentModule) .' :</b> '. $this->reportname .'<br/>';
 		$contents .= '<b>'.getTranslatedString('LBL_DESCRIPTION', $currentModule) .' :</b><br/>'. $this->reportdescription .'<br/><br/>';
 
-		$baseFileName = utf8_decode(preg_replace('/[^a-zA-Z0-9_-\s]/', '', $this->reportname).'_'. preg_replace('/[^a-zA-Z0-9_-\s]/', '', date('YmdHis')));
+		$baseFileName = utf8_decode(preg_replace('/[^a-zA-Z0-9_\s]/', '', $this->reportname).'_'. preg_replace('/[^a-zA-Z0-9_\s]/', '', date('YmdHis')));
 
 		$oReportRun = new ReportRun($this->id);
 		$reportFormat = $this->scheduledFormat;
@@ -145,9 +145,9 @@ class VTScheduledReport extends Reports {
 
 		if($reportFormat == 'pdf' || $reportFormat == 'both') {
 			$fileName = $baseFileName.'.pdf';
-			$filePath = 'storage/'.$fileName;
-			$attachments[$fileName] = $filePath;
-			$_REQUEST['filename_hidden_pdf'] = $filePath;
+			$filePath = $root_directory.'storage/'.$fileName;
+			$attachments[$fileName] = 'storage/'.$fileName;
+			$_REQUEST['filename_hidden_pdf'] = 'storage/'.$fileName;
 			$pdf = $oReportRun->getReportPDF(NULL);
 			$pdf->Output($filePath,'F');
 		}
@@ -355,13 +355,14 @@ class VTScheduledReport extends Reports {
 	}
 
 	public static function runScheduledReports($adb) {
+		global $default_language;
 		require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 		$util = new VTWorkflowUtils();
 		$adminUser = $util->adminUser();
 
 		global $currentModule, $current_language;
 		if(empty($currentModule)) $currentModule = 'Reports';
-		if(empty($current_language)) $current_language = 'en_us';
+		if(empty($current_language)) $current_language = $default_language;
 
 		$scheduledReports = self::getScheduledReports($adb, $adminUser);
 		foreach($scheduledReports as $scheduledReport) {

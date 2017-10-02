@@ -31,51 +31,51 @@
 
 		function save($workflow){
 			$adb=$this->adb;
-			if(isset($workflow->id)){
-				$wf=$workflow;
+			if (!isset($workflow->schtypeid)) $workflow->schtypeid = 0;
+			if (!isset($workflow->schtime)) $workflow->schtime = '00:00:00';
+			if (!isset($workflow->schdayofmonth)) $workflow->schdayofmonth = '';
+			if (!isset($workflow->schdayofweek)) $workflow->schdayofweek = '';
+			if (!isset($workflow->schannualdates)) $workflow->schannualdates = '';
+			if (!isset($workflow->schminuteinterval)) $workflow->schminuteinterval = '';
+			$wf=$workflow;
+			if(!empty($workflow->id)){
 				$adb->pquery("update com_vtiger_workflows set
 								module_name=?, summary=?, test=?, execution_condition=?, defaultworkflow=?,
 								schtypeid=?, schtime=?, schdayofmonth=?, schdayofweek=?, schannualdates=?,schminuteinterval=? where workflow_id=?",
-					array($wf->moduleName, $wf->description, $wf->test, $wf->executionCondition, $wf->defaultworkflow,
+					array($wf->moduleName, $wf->description, $wf->test, $wf->executionCondition, (isset($wf->defaultworkflow) ? $wf->defaultworkflow : 0),
 						$wf->schtypeid, $wf->schtime, $wf->schdayofmonth, $wf->schdayofweek, $wf->schannualdates, $wf->schminuteinterval,$wf->id));
 			}else{
 				$workflowId = $adb->getUniqueID("com_vtiger_workflows");
 				$workflow->id = $workflowId;
-				$wf=$workflow;
 
 				$result=$adb->getColumnNames("com_vtiger_workflows");
 				if(in_array("type",$result)) {
 					$adb->pquery("insert into com_vtiger_workflows
 									(workflow_id, module_name, summary, test, execution_condition, type, defaultworkflow,
 									schtypeid, schtime, schdayofmonth, schdayofweek, schannualdates,schminuteinterval) values (?,?,?,?,?,?,?,?,?,?,?,?,?)",
-						array($workflowId, $wf->moduleName, $wf->description, $wf->test,  $wf->executionCondition, $wf->type, $wf->defaultworkflow,
+						array($workflowId, $wf->moduleName, $wf->description, $wf->test,  $wf->executionCondition, $wf->type, (isset($wf->defaultworkflow) ? $wf->defaultworkflow : 0),
 							$wf->schtypeid, $wf->schtime, $wf->schdayofmonth, $wf->schdayofweek, $wf->schannualdates,$wf->schminuteinterval));
 				} else {
 					$adb->pquery("insert into com_vtiger_workflows
 									(workflow_id, module_name, summary, test, execution_condition, defaultworkflow,
 									schtypeid, schtime, schdayofmonth, schdayofweek, schannualdates,schminuteinterval) values (?,?,?,?,?,?,?,?,?,?,?,?)",
-						array($workflowId, $wf->moduleName, $wf->description, $wf->test,  $wf->executionCondition, $wf->defaultworkflow,
+						array($workflowId, $wf->moduleName, $wf->description, $wf->test,  $wf->executionCondition, (isset($wf->defaultworkflow) ? $wf->defaultworkflow : 0),
 							$wf->schtypeid, $wf->schtime, $wf->schdayofmonth, $wf->schdayofweek, $wf->schannualdates,$wf->schminuteinterval));
 				}
 			}
 			$this->updateNexTriggerTime($workflow);
 		}
 
-
 		function getWorkflows(){
 			$adb=$this->adb;
 
 			$result=$adb->getColumnNames("com_vtiger_workflows");
-			if(in_array("defaultworkflow",$result)){
-				$result = $adb->query("select workflow_id, module_name, summary, test, execution_condition,defaultworkflow, type
-									from com_vtiger_workflows ");
-			}else{
-
-				$result = $adb->query("select workflow_id, module_name, summary, test, execution_condition, type
-									from com_vtiger_workflows");
+			if (in_array("defaultworkflow",$result)) {
+				$result = $adb->query('select workflow_id, module_name, summary, test, execution_condition,defaultworkflow, type from com_vtiger_workflows');
+			} else {
+				$result = $adb->query('select workflow_id, module_name, summary, test, execution_condition, type from com_vtiger_workflows');
 			}
 			return $this->getWorkflowsForResult($result);
-
 		}
 
 		/**
@@ -89,7 +89,7 @@
 			$params = array(VTWorkflowManager::$ON_SCHEDULE);
 			if($referenceTime != '') {
 				$query .= " AND (nexttrigger_time = '' OR nexttrigger_time IS NULL OR nexttrigger_time <= ?)";
-				array_push($params, $referenceTime);
+				$params[] = $referenceTime;
 			}
 			$result = $adb->pquery($query, $params);
 			return $this->getWorkflowsForResult($result);
@@ -112,7 +112,7 @@
 		 * @return int
 		 */
 		function getMaxAllowedScheduledWorkflows() {
-			return GlobalVariable::getVariable('Maximum_Scheduled_Workflows', 10);
+			return GlobalVariable::getVariable('Workflow_Maximum_Scheduled', 10);
 		}
 
 		function getWorkflowsForModule($moduleName){
@@ -178,11 +178,12 @@
 		}
 
 		function getoneRACWorkflowForRecord($moduleName,$recordid) {
+			$wfs = $this->getRACWorkflowsForModule($moduleName);
+			if (count($wfs)==0) return false;
 			$util = new VTWorkflowUtils();
 			$adminUser = $util->adminUser();
 			$entityCache = new VTEntityCache($adminUser);
 			$entityData = $entityCache->forId($recordid);
-			$wfs = $this->getRACWorkflowsForModule($moduleName);
 			$found = false;
 			foreach ($wfs as $wf) {
 				$found = $wf->evaluate($entityCache, $recordid);
@@ -272,10 +273,12 @@
 			$workflow->moduleName = $moduleName;
 			$workflow->executionCondition = self::$ON_EVERY_SAVE;
 			$workflow->type = 'basic';
+			$workflow->id = 0;
+			$workflow->description = '';
+			$workflow->schtypeid = 0;
+			$workflow->nexttrigger_time = '';
 			return $workflow;
-
 		}
-
 
 		/**
 		 * Export a workflow as a json encoded string
@@ -297,9 +300,8 @@
 			$exp['tasks'] = array();
 			$tm = new VTTaskManager($this->adb);
 			$tasks = $tm->getTasksForWorkflow($workflow->id);
-			foreach($tasks as $task){
-				unset($task->id);
-				unset($task->workflowId);
+			foreach ($tasks as $task) {
+				unset($task->id,$task->workflowId);
 				$exp['tasks'][] = serialize($task);
 			}
 			return  json_encode($exp);
@@ -427,7 +429,7 @@
 			foreach($tasks as $task){
 				if(is_object($task) and $task->active) {
 					$logbg->debug($task->summary);
-					$trigger = $task->trigger;
+					$trigger = (empty($task->trigger) ? null : $task->trigger);
 					if($trigger != null){
 						$delay = strtotime($data[$trigger['field']])+$trigger['days']*86400;
 					}else{
@@ -519,10 +521,10 @@
 
 			$scheduleType = $this->getWFScheduleType();
 			$scheduleMinute= $this->getScheduleMinute();
-			
-            if($scheduleType==Workflow::$SCHEDULED_BY_MINUTE){
-            	$nextTime=date("Y-m-d H:i:s",strtotime("+ $scheduleMinute minutes"));
-            }
+			$nextTime = date('Y-m-d H:i:s');
+			if($scheduleType==Workflow::$SCHEDULED_BY_MINUTE){
+				$nextTime=date("Y-m-d H:i:s",strtotime("+ $scheduleMinute minutes"));
+			}
 
 			if($scheduleType == Workflow::$SCHEDULED_HOURLY) {
 				$nextTime = date("Y-m-d H:i:s",strtotime("+1 hour"));

@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-include_once dirname(__FILE__) . '/Query.php';
+include_once __DIR__ . '/Query.php';
 
 include_once 'include/Webservices/Query.php';
 
@@ -15,7 +15,7 @@ class crmtogo_WS_QueryWithGrouping extends crmtogo_WS_Query {
 	
 	private $queryModule;
 	
-	function processQueryResultRecord($record, $user) {
+	function processQueryResultRecord(&$record, $user) {
 		parent::processQueryResultRecord($record, $user);
 
 		if ($this->cachedDescribeInfo() === false) {

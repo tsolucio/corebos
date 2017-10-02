@@ -51,27 +51,34 @@ class Vtiger_Cron {
      * Get the frequency set.
      */
     function getFrequency() {
-        return intval($this->data['frequency']);
+        return (int)$this->data['frequency'];
+    }
+
+    /**
+     * Get the daily set.
+     */
+    function getdaily() {
+        return (int)$this->data['daily'];
     }
 
     /**
      * Get the status
      */
     function getStatus() {
-        return intval($this->data['status']);
+        return (int)$this->data['status'];
     }
     /**
      * Get the timestamp lastrun started.
      */
     function getLastStart() {
-        return intval($this->data['laststart']);
+        return (int)$this->data['laststart'];
     }
 
     /**
      * Get the timestamp lastrun ended.
      */
     function getLastEnd() {
-        return intval($this->data['lastend']);
+        return (int)$this->data['lastend'];
     }
 
     /**
@@ -105,8 +112,7 @@ class Vtiger_Cron {
     function getTimeDiff() {
         $lastStart = $this->getLastStart();
         $lastEnd   = $this->getLastEnd();
-        $timeDiff  = $lastEnd - $lastStart;
-        return $timeDiff;
+        return $lastEnd - $lastStart;
     }
 
     /**
@@ -157,7 +163,7 @@ class Vtiger_Cron {
      * Helper function to check the status value.
      */
     function statusEqual($value) {
-        $status = intval($this->data['status']);
+        $status = (int)$this->data['status'];
         return $status == $value;
     }
 
@@ -186,7 +192,7 @@ class Vtiger_Cron {
      * Update status
      */
     function updateStatus($status) {
-        switch (intval($status)) {
+        switch ((int)$status) {
             case self::$STATUS_DISABLED:
             case self::$STATUS_ENABLED:
             case self::$STATUS_RUNNING:
@@ -204,6 +210,20 @@ class Vtiger_Cron {
         self::querySilent('UPDATE vtiger_cron_task SET frequency=? WHERE id=?', array($frequency, $this->getId()));
     }
 
+     /*
+     * update daily
+    */
+    function updatedaily($d) {
+        self::querySilent('UPDATE vtiger_cron_task SET daily=? WHERE id=?', array($d, $this->getId()));
+    }
+
+     /*
+     * update last start/end
+    */
+    function updatelaststartend($startend) {
+        self::querySilent('UPDATE vtiger_cron_task SET lastend=?, laststart=? WHERE id=?', array($startend,$startend, $this->getId()));
+    }
+
     /**
      * Mark this instance as running.
      */
@@ -215,10 +235,15 @@ class Vtiger_Cron {
     /**
      * Mark this instance as finished.
      */
-    function markFinished() {
-        self::querySilent('UPDATE vtiger_cron_task SET status=?, lastend=? WHERE id=?', array(self::$STATUS_ENABLED, time(), $this->getId()));
-        return $this;
-    }
+	function markFinished($daily,$timestart) {
+		if ($daily==1) {
+			$time=strtotime(' +1 days',$timestart);
+		} else {
+			$time=time();
+		}
+		self::querySilent('UPDATE vtiger_cron_task SET status=?, lastend=? WHERE id=?', array(self::$STATUS_ENABLED, $time, $this->getId()));
+		return $this;
+	}
 
     /**
      * Set the bulkMode flag
@@ -239,7 +264,7 @@ class Vtiger_Cron {
      */
     function hadTimedout() {
         if($this->data['lastend'] === 0 && $this->data['laststart'] != 0)
-        return intval($this->data['lastend']);
+        return (int)$this->data['lastend'];
     }
 
     /**

@@ -29,6 +29,7 @@ $smarty->assign("IMAGE_PATH",$image_path);
 foreach ($widgetInfoList as $widgetInfo) {
 	$widgetType = $widgetInfo['widgetType'];
 	$widgetId = $widgetInfo['widgetId'];
+	$homestuff_values = '';
 	if($widgetType=='Tag Cloud'){
 		$freetag = new freetag();
 		$smarty->assign("ALL_TAG",$freetag->get_tag_cloud_html("",$current_user->id));

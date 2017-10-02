@@ -1,5 +1,4 @@
 {*<!--
-
 /*********************************************************************************
 ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
@@ -7,9 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
-
 -->*}
 
 <form id="UnifiedSearch_moduleform" name="UnifiedSearch_moduleform">
@@ -22,12 +19,10 @@
 				<td align=right background="{'qcBg.gif'|@vtiger_imageurl:$THEME}" class="mailSubHeader">
 					<a href='javascript:void(0);' onclick="UnifiedSearch_SelectModuleToggle(true);">{$APP.LBL_SELECT_ALL}</a> |
 					<a href='javascript:void(0);' onclick="UnifiedSearch_SelectModuleToggle(false);">{$APP.LBL_UNSELECT_ALL}</a>
-					
 					<a href='javascript:void(0)' onclick="UnifiedSearch_SelectModuleCancel();"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border=0></a>
 				</td>
 			</tr>
 			</table>
-			
 			<table width="100%" cellspacing="0" cellpadding="5" border="0" class="small">
 				{foreach item=SEARCH_MODULEINFO key=SEARCH_MODULENAME from=$ALLOWED_MODULES name=allowed_modulesloop}
 				{if $smarty.foreach.allowed_modulesloop.index % 3 == 0}

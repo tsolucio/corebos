@@ -38,12 +38,12 @@ class VTWorkflowUtils {
 	 *
 	 */
 	function adminUser() {
-        $user = Users::getActiveAdminUser();
+		$user = Users::getActiveAdminUser();
 		global $current_user;
 		if (empty(self::$userStack) || count(self::$userStack) == 0) {
 			self::$loggedInUser = $current_user;
 		}
-		array_push(self::$userStack, $current_user);
+		self::$userStack[] = $current_user;
 		$current_user = $user;
 		return $user;
 	}
@@ -55,7 +55,7 @@ class VTWorkflowUtils {
 	function loggedInUser() {
 		$user = self::$loggedInUser;
 		global $current_user;
-		array_push(self::$userStack, $current_user);
+		self::$userStack[] = $current_user;
 		$current_user = $user;
 		return $user;
 	}
@@ -74,10 +74,13 @@ class VTWorkflowUtils {
 	}
 
 	/**
-	 * Get the current user
+	 * Get the previous user
 	 */
-	function currentUser() {
-		return $current_user;
+	public static function previousUser() {
+		if (count(self::$userStack)>0) {
+			return self::$userStack[count(self::$userStack)-1];
+		}
+		return false;
 	}
 
 	/**
@@ -118,7 +121,7 @@ class VTWorkflowUtils {
 	/* function to check if the module has workflow
 	 * @params :: $modulename - name of the module
 	 */
-	function checkModuleWorkflow($modulename) {
+	public static function checkModuleWorkflow($modulename) {
 		global $adb;
 		$tabid = getTabid($modulename);
 		$modules_not_supported = array('Calendar', 'Faq', 'Events', 'PBXManager', 'Users');

@@ -23,28 +23,28 @@
 /*******************************************************************************
  * Vicus eBusiness Solutions Version Control
  * @package 	NL-Dutch
- * Description	Dutch language pack for vtiger CRM version 5.3.x
+ * Description	Dutch language pack for vtiger CRM version 5.4.x
  * @author	$Author: luuk $
- * @version 	$Revision: 1.7 $ $Date: 2012/02/28 23:40:22 $
- * @source	$Source: /var/lib/cvs/vtiger530/Dutch/modules/Dashboard/language/nl_nl.lang.php,v $
+ * @version 	$Revision: 1.2 $ $Date: 2012/04/22 12:16:58 $
+ * @source	$Source: /var/lib/cvs/vtiger540/Dutch/modules/Dashboard/language/nl_nl.lang.php,v $
  * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
  * @license	vtiger CRM Public License Version 1.0 (by definition)
  ********************************************************************************/
  
 $mod_strings = Array(
-'LBL_SALES_STAGE_FORM_TITLE'=>'Pipeline per verkoop stadium',
-'LBL_SALES_STAGE_FORM_DESC'=>'Laat de cumulatieve bedragen van uw verkoopkansen zien. Geselecteerd op verkoop stadium en verkoopdatum.',
-'LBL_MONTH_BY_OUTCOME'=>'Pipeline per maand en resultaat',
-'LBL_MONTH_BY_OUTCOME_DESC'=>'Laat de cumulatieve bedragen van uw verkoopkansen zien. Geselecteerd per maand, verkoop stadium en resultaat.',
+'LBL_SALES_STAGE_FORM_TITLE'=>'Pijplijn per verkoopstadium',
+'LBL_SALES_STAGE_FORM_DESC'=>'Laat de cumulatieve bedragen van uw verkoopkansen zien. Geselecteerd op verkoopstadium en verkoopdatum.',
+'LBL_MONTH_BY_OUTCOME'=>'Pijplijn per maand en resultaat',
+'LBL_MONTH_BY_OUTCOME_DESC'=>'Laat de cumulatieve bedragen van uw verkoopkansen zien. Geselecteerd per maand, verkoopstadium en resultaat.',
 'LBL_LEAD_SOURCE_FORM_TITLE'=>'Alle Verkoopkansen per lead bron',
 'LBL_LEAD_SOURCE_FORM_DESC'=>'Laat de cumulatieve bedragen van uw verkoopkansen zien. Geselecteerd op lead bron.',
 'LBL_LEAD_SOURCE_BY_OUTCOME'=>'Alle verkoopkansen per lead bron en resultaat',
-'LBL_LEAD_SOURCE_BY_OUTCOME_DESC'=>'Laat de cumulatieve bedragen van uw verkoopkansen zien. Geselecteerd per maand, verkoop stadium en resultaat.',
-'LBL_PIPELINE_FORM_TITLE_DESC'=>'Laat de cumulatieve bedragen zien per verkoop stadium van uw verkoopkansen met de verwachte verkoopdatum.',
+'LBL_LEAD_SOURCE_BY_OUTCOME_DESC'=>'Laat de cumulatieve bedragen van uw verkoopkansen zien. Geselecteerd per maand, verkoopstadium en resultaat.',
+'LBL_PIPELINE_FORM_TITLE_DESC'=>'Laat de cumulatieve bedragen zien per verkoopstadium van uw verkoopkansen met de verwachte verkoopdatum.',
 'LBL_DATE_RANGE'=>'Datum selectie is',
 'LBL_DATE_RANGE_TO'=>'tot',  // van ... tot ...
 'ERR_NO_OPPS'=>'Maak een aantal verkoopkansen aan voor u de grafieken kunt maken/zien.',
-'LBL_TOTAL_PIPELINE'=>'De totale pipeline is ',
+'LBL_TOTAL_PIPELINE'=>'De totale pijplijn is ',
 'LBL_ALL_OPPORTUNITIES'=>'Totaalbedrag van alle verkoopkansen is ',
 'LBL_OPP_SIZE'=>'Verkoopkans grootte in ',
 'LBL_OPP_SIZE_VALUE'=>'1K',
@@ -57,7 +57,7 @@ $mod_strings = Array(
 'LBL_OPPS_IN_LEAD_SOURCE'=>'verkoopkansen per leadbron',
 'LBL_OPPS_OUTCOME'=>'verkoopkansen per resultaat',
 'LBL_USERS'=>'Gebruikers:',
-'LBL_SALES_STAGES'=>'Verkoop stadium:',
+'LBL_SALES_STAGES'=>'Verkoopstadium:',
 'LBL_LEAD_SOURCES'=>'Lead bronnen:',
 'LBL_DATE_START'=>'Startdatum:',
 'LBL_DATE_END'=>'Einddatum:',
@@ -104,7 +104,7 @@ $mod_strings = Array(
 'DashboardHome'=>'Dashboard Home',
 'GRIDVIEW'=>'Rooster view',
 'NORMALVIEW'=>'Normale view',
-'VIEWCHART'=>'Grafiek bekijken',
+'VIEWCHART'=>'Bekijk grafiek',
 'LBL_DASHBOARD'=>'Dashboard',
 
 // Added/Updated for vtiger CRM 5.0.4

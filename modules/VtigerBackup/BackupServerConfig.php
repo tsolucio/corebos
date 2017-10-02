@@ -10,7 +10,7 @@
 require_once('Smarty_setup.php');
 if (isPermitted('VtigerBackup','')=='yes') {
 
-global $mod_strings, $app_strings, $enable_backup, $app_list_strings, $adb, $theme;
+global $mod_strings, $app_strings, $enable_backup, $adb, $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 
@@ -21,13 +21,17 @@ if(isset($_REQUEST['opmode']) && $_REQUEST['opmode'] != '')
 }
 
 $smarty = new vtigerCRM_Smarty;
-if($_REQUEST['error'] != '')
-{
+if(!empty($_REQUEST['error'])) {
 	$smarty->assign("ERROR_MSG",'<b><font color="red">'.vtlib_purify($_REQUEST["error"]).'</font></b>');
 }
-if($_REQUEST['error1'] != '')
-{
+if(!empty($_REQUEST['error1'])) {
 	$smarty->assign("ERROR_STR",'<b><font color="red">'.vtlib_purify($_REQUEST["error1"]).'</font></b>');
+}
+if (!is_writable('user_privileges/enable_backup.php')) {
+	echo '<br>';
+	$smarty->assign('ERROR_MESSAGE', 'user_privileges/enable_backup.php '.getTranslatedString('VTLIB_LBL_NOT_WRITEABLE','Settings'));
+	$smarty->display('applicationmessage.tpl');
+	$smarty->assign('ERROR_MESSAGE','');
 }
 $sql="select * from vtiger_systems where server_type = ?";
 $result = $adb->pquery($sql, array('ftp_backup'));
@@ -98,10 +102,10 @@ global $adb, $enable_backup;
 
 if((isset($_REQUEST['backupnow'])))
 {
-	define("dbserver", $dbconfig['db_hostname']);
-	define("dbuser", $dbconfig['db_username']);
-	define("dbpass", $dbconfig['db_password']);
-	define("dbname", $dbconfig['db_name']);
+	defined('dbserver') or define('dbserver', $dbconfig['db_hostname']);
+	defined('dbuser') or define('dbuser', $dbconfig['db_username']);
+	defined('dbpass') or define('dbpass', $dbconfig['db_password']);
+	defined('dbname') or define('dbname', $dbconfig['db_name']);
 
 	$path_query = $adb->pquery("SELECT * FROM vtiger_systems WHERE server_type = ?",array('local_backup'));
 	$path = $adb->query_result($path_query,0,'server_path');
@@ -120,7 +124,7 @@ if((isset($_REQUEST['backupnow'])))
 	}
 }
 
-if($_REQUEST['ajax'] == 'true' && $_REQUEST['server_type'] == 'ftp_backup')
+if(isset($_REQUEST['ajax']) && $_REQUEST['ajax'] == 'true' && $_REQUEST['server_type'] == 'ftp_backup')
 	$smarty->display("modules/VtigerBackup/BackupServerContents.tpl");
 else
 	$smarty->display("modules/VtigerBackup/BackupServer.tpl");

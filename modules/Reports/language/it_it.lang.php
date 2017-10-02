@@ -74,6 +74,7 @@ $mod_strings = array (
   'LBL_GENERATED_REPORT' => 'Genera Report',
   'LBL_GRAND_TOTAL' => 'Totale complessivo',
   'LBL_EXPORTXL_BUTTON' => 'Esporta in Excel',
+  'LBL_EXPORTCSV' => 'Esporta in CSV',
   'LBL_NO_PERMISSION' => 'Il tuo profilo non permette di vedere i tuoi report per uno dei moduli',
   'LBL_SELECT_COLUMNS_TO_GENERATE_REPORTS' => 'Seleziona colonne per generare i report',
   'LBL_AVAILABLE_FIELDS' => 'Campi disponibili',
@@ -176,6 +177,7 @@ $mod_strings = array (
   'Next Month' => 'Prossimo Mese',
   'Last 7 Days' => 'Ultimi 7 giorni',
   'Last 30 Days' => 'Ultimi 30 giorni',
+	'Last 14 Days' => 'Ultimi 14 giorni',
   'Last 60 Days' => 'Ultimi  60 giorni',
   'Last 90 Days' => 'Ultimi 90 giorni',
   'Last 120 Days' => 'Ultimi 120 giorni',
@@ -210,6 +212,8 @@ $mod_strings = array (
 'LBL_FLDR_NOT_EMPTY' => 'La Cartella che stai per cancellare non e\' vuota, Sposta o Elimina i Report in essa.',
 'NO_REL_MODULES' => 'Nessun Modulo relazionato alla selezione',
 'LBL_REPORT_GENERATION_FAILED' => 'Generazione Report fallita!',
+'ERR_TOO_MANY_ROWS' => 'This report has too many rows. Please add some filters and divide it into various smaller reports.',
+'ERR_INCORRECT_REPORTID' => 'Report cannot be found',
 'LBL_OR'=>'o',
 'LBL_NEW_GROUP'=>'Nuovo Gruppo',
 'LBL_DELETE_GROUP'=>'Cancella Gruppo',
@@ -217,6 +221,7 @@ $mod_strings = array (
 'LBL_SHARING_TYPE'=>'Tipo di Condivisione',
 'LBL_SELECT_REPORT_TYPE_TO_CONTROL_ACCESS'=>'Seleziona il tipo di Condivisione per l\'accesso al Report', 
 'LBL_ACTION' => 'Azione',
+'LBL ACTION' => 'Azione',
 'ACTION' => 'Azione',
 'LBL_VIEW_DETAILS' => 'Vedi Dettagli',
 'LBL_SHOW_STANDARD_FILTERS' => 'Mostra Filtri Standard',
@@ -256,7 +261,7 @@ $mod_strings = array (
 
 'LBL_AUTO_GENERATED_REPORT_EMAIL' => 'Questa mail viene generata automaticamente per accompagnare un report.',
 'LBL_TIME_FORMAT_MSG' => 'hh:mm (Formato 24 ore)',
-
+'LBL_RELOAD_REPORT' => 'Ricaricare Report',
 'LBL_SAVE_REPORT' => 'Salva',
 'LBL_SAVE_REPORT_AS' => 'Salva report come...',
 
@@ -272,6 +277,24 @@ $mod_strings = array (
 'LBL_GROUPING_TIME' => 'Raggruppa per Ora',
 'LBL_WIDGET_ADDED' => 'Widget Aggiunto con Succssso.',
 'LBL_UNDEFINED' => 'Indefinito',
-)
+'Add ReportCharts' => 'Aggiungere grafici',
+'Choose Report Type' => 'Scegliere tipo di Report',
+'Application Report' => 'Report di applicazione',
+'External Application' => 'Applicazione esterna',
+'Direct SQL Statement' => 'Query diretta SQL',
+'Cross Tab' => 'Cross Tab',
+'Pivot Table' => 'Tabella Pivot',
+'External Report URL' => 'Report con URL esterno',
+'Add User Information' => 'Aggiungere informazione utente',
+'Select One Field of each' => 'Puoi solo scegliere un campo per ogni modulo in questo tipo di report',
+'Select Only One Module' => 'Puoi scegliere solo un modulo per questo tipo di report',
+'LBL_AGG_FIELD' => 'Campo di aggregazione',
+'LBL_AGG_FUNCTION_CHOOSE' => 'Selezionare colonna e funzione di aggregazione',
+'LBL_AGG_COLUMN' => 'Colonna di aggregazione',
+'LBL_AGG_FUNCTION' => 'Funzione di aggregazione',
+'LBL_COLUMNS_COUNT'=>'Count',
+'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Errore mentre si eliminava la cartella.',
+'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Errore mentre si eliminivano i report della cartella',
+);
 
 ?>

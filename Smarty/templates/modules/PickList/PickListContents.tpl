@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
 -->*}
 <div id="pickListContents">
@@ -24,9 +23,9 @@
 	</td>
 	<td nowrap align="right">
 		<input type="button" value="{'LBL_ADD_BUTTON'|@getTranslatedString}" name="add" class="crmButton small create" onclick="showAddDiv();">
- 		<input type="button" value="{'LBL_EDIT_BUTTON'|@getTranslatedString}" name="del" class="crmButton small edit" onclick="showEditDiv();">
- 		<input type="button" value="{'LBL_DELETE_BUTTON'|@getTranslatedString}" name="del" class="crmButton small delete" onclick="showDeleteDiv();">
- 	</td>
+		<input type="button" value="{'LBL_EDIT_BUTTON'|@getTranslatedString}" name="del" class="crmButton small edit" onclick="showEditDiv();">
+		<input type="button" value="{'LBL_DELETE_BUTTON'|@getTranslatedString}" name="del" class="crmButton small delete" onclick="showDeleteDiv();">
+	</td>
 </tr>
 </table>
 <table class="tableHeading" border="0" cellpadding="7" cellspacing="0" width="100%">
@@ -62,7 +61,7 @@
 		{foreach item=picklistfields from=$picklists}
 			{if $picklistfields neq ''}
 				<td class="listTableTopButtons small" style="padding-left:20px" valign="top" align="left">
-					{if $TEMP_MOD[$picklistfields.fieldlabel] neq ''}
+					{if !empty($TEMP_MOD[$picklistfields.fieldlabel])}
 						<b>{$TEMP_MOD[$picklistfields.fieldlabel]}</b>
 					{else}
 						<b>{$picklistfields.fieldlabel}</b>
@@ -82,9 +81,9 @@
 				<td colspan="2" valign="top">
 				<ul style="list-style-type: none;">
 					{foreach item=elements from=$picklistelements.value}
-						{if $TEMP_MOD[$elements] neq ''}
+						{if !empty($TEMP_MOD[$elements])}
 							<li>{$TEMP_MOD[$elements]}</li>
-						{elseif $MOD_PICKLIST[$elements] neq ''}
+						{elseif !empty($MOD_PICKLIST[$elements])}
 							<li>{$MOD_PICKLIST[$elements]}</li>
 						{else}
 							<li>{$elements}</li>

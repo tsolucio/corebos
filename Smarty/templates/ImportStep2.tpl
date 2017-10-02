@@ -6,16 +6,13 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 -->*}
-
-
 <script type="text/javascript" src="include/js/general.js"></script>
 <script type="text/javascript" src="include/js/Merge.js"></script>
 <script type="text/javascript" src="modules/Import/resources/ImportStep2.js"></script>
 <!-- header - level 2 tabs -->
-{include file='Buttons_List1.tpl'}	
+{include file='Buttons_List.tpl'}
 
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%" class="small">
 <tbody>
@@ -54,9 +51,9 @@
 					</td>
 				   </tr>
 				   <tr>
-					<td align="left" style="padding-left:40px;"> 
-					   {$MOD.LBL_STEP_2_MSG} {$MODULELABEL} {$MOD.LBL_STEP_2_MSG1} 
-					   {$MOD.LBL_STEP_2_TXT} {$MODULELABEL}. 
+					<td align="left" style="padding-left:40px;">
+					   {$MOD.LBL_STEP_2_MSG} {$MODULELABEL} {$MOD.LBL_STEP_2_MSG1}
+					   {$MOD.LBL_STEP_2_TXT} {$MODULELABEL}.
 					</td>
 				   </tr>
 				   <tr>
@@ -86,14 +83,14 @@
 						</table>
 						{assign var="Firstrow" value=$FIRSTROW}
 						{assign var="Secondrow" value=$SECONDROW}
-						{assign var="Thirdrow" value=$THIRDROW}				
+						{assign var="Thirdrow" value=$THIRDROW}
 						<table border="0" cellpadding="0" cellspacing="0" width="100%">
 						   <tr>
 							<td width="25%" valign="top">
 								<div id="importmapform">
 									{include file="ImportMap.tpl"}
 								</div>
-							</td>	
+							</td>
 							<td valign="top">
 								<table border="0" cellpadding="0" cellspacing="1" width="100%" valign="top"  class="small">
 								   {foreach name=iter item=row1 from=$Firstrow}
@@ -108,13 +105,13 @@
 										<td width="31%" height="30">&nbsp;{$row1}</td>
 										<td width="30%">&nbsp;{$Secondrow[$num]}</td>
 										<td>&nbsp;{$Thirdrow[$num]}</td>
-									{/if}	
+									{/if}
 								   </tr>
 								   {/foreach}
 								</table>
 							</td>
 						   </tr>
-						</table>	
+						</table>
 					</td>
 				   </tr>
 				   <tr>
@@ -135,7 +132,7 @@
 								<span class="genHeaderGray">{$MOD.LBL_STEP_3_4} </span>
 								<span class="genHeaderSmall">{$APP.LBL_DUPLICATE_MERGING} </span>
 								<span>({$APP.LBL_SELECT_TO_ENABLE_MERGING})</span> 
-							{else}	
+							{else}
 					   			<input id="merge_check" type="checkbox" disabled="true" onclick="mergeshowhide(this, 'importMergeDup')"/>
 								<span class="genHeaderGray">{$MOD.LBL_STEP_3_4} </span>
 								<span class="genHeaderSmall">{$APP.LBL_DUPLICATE_MERGING} </span>

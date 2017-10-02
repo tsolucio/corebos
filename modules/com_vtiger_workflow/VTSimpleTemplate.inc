@@ -13,7 +13,7 @@ class VTSimpleTemplate{
 		$this->template = $templateString;
 	}
 
-	function render($entityCache, $entityId){
+	function render($entityCache, $entityId, $void=array()) {
 		$this->cache = $entityCache;
 		$this->parent = $this->cache->forId($entityId);
 		return $this->parseTemplate();
@@ -21,7 +21,7 @@ class VTSimpleTemplate{
 
 	private function matchHandler($match){
 		global $current_user;
-		preg_match('/\((\w+) : \(([_\w]+)\) (\w+)\)/', $match[1], $matches);
+		preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', $match[1], $matches);
 		if(count($matches)==0){
 			$fieldname = $match[1];
 			$data = $this->parent->getData();
@@ -51,9 +51,11 @@ class VTSimpleTemplate{
 			}
 		}else{
 			list($full, $referenceField, $referenceModule, $fieldname) = $matches;
-			if($referenceModule === '__VtigerMeta__'){
+			if ($referenceModule === '__VtigerMeta__') {
 				$result = $this->getMetaValue($fieldname);
-			}else{
+			} elseif ($referenceModule === '__WorkflowFunction__') {
+				$result = $this->getWorkflowFunctionValue($fieldname);
+			} else {
 				$referenceId = $this->parent->get($referenceField);
 				if($referenceId==null){
 					$result="";
@@ -122,7 +124,7 @@ class VTSimpleTemplate{
 		$datefmtuserid = $this->parent->get('assigned_user_id');
 		if (!empty($datefmtuserid)) {
 			list($void,$dfuid) = explode('x',$datefmtuserid);
-			if (file_exists('user_privileges/user_privileges_' . $userid . '.php')) {
+			if (file_exists('user_privileges/user_privileges_' . $dfuid . '.php')) {
 				$datefmtuser = new Users();
 				$datefmtuser->retrieveCurrentUserInfoFromFile($dfuid);
 			} else {
@@ -280,7 +282,7 @@ class VTSimpleTemplate{
 		}
 		$current_user = new Users();
 		$current_user->retrieveCurrentUserInfoFromFile($assigned_user_id);
-		$return = preg_replace_callback('/\\$(\w+|\((\w+) : \(([_\w]+)\) (\w+)\))/', array($this,"matchHandler"), $this->template);
+		$return = preg_replace_callback('/\\$(\w+?|\(general : \(__WorkflowFunction__\) (.+?) \) |\((\w+) : \(([_\w]+)\) (.+)\))/U', array($this,"matchHandler"), $this->template);
 		$current_user = $backCurrentUser;
 		return $return;
 	}
@@ -288,6 +290,7 @@ class VTSimpleTemplate{
 	function getMetaValue($fieldname){
 		require_once 'config.inc.php';
 		global $site_URL, $current_user;
+		$fieldname = trim($fieldname);
 		if (substr($fieldname,0,14)=='groupEmailList') {
 			$groupname = trim(str_replace('_', ' ', substr($fieldname, 14)));
 			$fieldname = 'groupEmailList';
@@ -328,12 +331,8 @@ class VTSimpleTemplate{
 											$parts = explode('x', $wsId);
 											$recordId = $parts[1];
 											$moduleName = $this->parent->getModuleName();
-											if($moduleName == 'Events' || $moduleName == 'Calendar')
-											{
-												if($moduleName == 'Events')
-													return $site_URL.'/index.php?action=EventDetailView&module=Calendar4You&record='.$recordId.'&activity_mode=Events';
-												elseif($moduleName == 'Calendar')
-													return $site_URL.'/index.php?action=EventDetailView&module=Calendar4You&record='.$recordId.'&activity_mode=Task';
+											if ($moduleName == 'Events' || $moduleName == 'Calendar') {
+												return $site_URL.'/index.php?action=DetailView&module=cbCalendar&record='.$recordId;
 											}
 											else
 												return $site_URL.'/index.php?action=DetailView&module='.$moduleName.'&record='.$recordId;
@@ -362,5 +361,14 @@ class VTSimpleTemplate{
 			default: '';
 		}
 	}
+
+	function getWorkflowFunctionValue($tplexpression) {
+		$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($tplexpression)));
+		$expression = $parser->expression();
+		$exprEvaluater = new VTFieldExpressionEvaluater($expression);
+		$exprEvaluation = $exprEvaluater->evaluate($this->parent);
+		return $exprEvaluation;
+	}
+
 }
 ?>

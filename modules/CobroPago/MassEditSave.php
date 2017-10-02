@@ -12,15 +12,15 @@ global $currentModule, $rstart;
 $focus = CRMEntity::getInstance($currentModule);
 
 $idlist= vtlib_purify($_REQUEST['massedit_recordids']);
-$viewid = vtlib_purify($_REQUEST['viewname']);
-$return_module = vtlib_purify($_REQUEST['massedit_module']);
+$viewid = isset($_REQUEST['viewname']) ? vtlib_purify($_REQUEST['viewname']) : '';
+$return_module = urlencode(vtlib_purify($_REQUEST['massedit_module']));
 $return_action = 'index';
 
 //Added to fix 4600
 $url = getBasic_Advance_SearchURL();
 
 if(isset($_REQUEST['start']) && $_REQUEST['start']!=''){
-	$rstart = "&start=".vtlib_purify($_REQUEST['start']);
+	$rstart = '&start=' . urlencode(vtlib_purify($_REQUEST['start']));
 }
 
 if(isset($idlist)) {
@@ -34,32 +34,30 @@ if(isset($idlist)) {
 			$focus->mode = 'edit';
 			$focus->id = $recordid;
 			if($focus->permissiontoedit()) {
-				foreach($focus->column_fields as $fieldname => $val) {
-					if(isset($_REQUEST[$fieldname."_mass_edit_check"])) {
-						if($fieldname == 'assigned_user_id'){
-							if($_REQUEST['assigntype'] == 'U') {
-								$value = vtlib_purify($_REQUEST['assigned_user_id']);
-							} elseif($_REQUEST['assigntype'] == 'T') {
-								$value = vtlib_purify($_REQUEST['assigned_group_id']);
-							}
-						} else {
-							if(is_array($_REQUEST[$fieldname]))
-								$value = vtlib_purify($_REQUEST[$fieldname]);
-							else
-								$value = trim(vtlib_purify($_REQUEST[$fieldname]));
+			foreach($focus->column_fields as $fieldname => $val) {
+				if(isset($_REQUEST[$fieldname."_mass_edit_check"])) {
+					if($fieldname == 'assigned_user_id'){
+						if($_REQUEST['assigntype'] == 'U') {
+							$value = vtlib_purify($_REQUEST['assigned_user_id']);
+						} elseif($_REQUEST['assigntype'] == 'T') {
+							$value = vtlib_purify($_REQUEST['assigned_group_id']);
 						}
-						$focus->column_fields[$fieldname] = $value;
+					} else {
+						if(is_array($_REQUEST[$fieldname]))
+							$value = vtlib_purify($_REQUEST[$fieldname]);
+						else
+							$value = trim(vtlib_purify($_REQUEST[$fieldname]));
 					}
-					else {
-						$focus->column_fields[$fieldname] = decode_html($focus->column_fields[$fieldname]);
-					}
+					$focus->column_fields[$fieldname] = $value;
+				} else {
+					$focus->column_fields[$fieldname] = decode_html($focus->column_fields[$fieldname]);
 				}
-				$focus->save($currentModule);
+			}
+			$focus->save($currentModule);
 			}
 		}
 	}
 }
 
-$parenttab = getParentTab();
-header("Location: index.php?module=$return_module&action=$return_action&parenttab=$parenttab$rstart");
+header("Location: index.php?module=$return_module&action=$return_action$rstart");
 ?>

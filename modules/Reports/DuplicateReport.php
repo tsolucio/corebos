@@ -27,7 +27,6 @@ $response_array = array();
 
 if($numOfRows > 0) {
 	global $current_user;
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 
 	$ogReport = new Reports($reportid);
 	$primarymodule = $ogReport->primodule;
@@ -37,7 +36,7 @@ if($numOfRows > 0) {
 	else
 		$rep_modules = array();
 
-	array_push($rep_modules,$primarymodule);
+	$rep_modules[] = $primarymodule;
 	$modules_permitted = true;
 	foreach($rep_modules as $mod) {
 		if(isPermitted($mod,'index')!= "yes" || vtlib_isModuleActive($mod)==false) {

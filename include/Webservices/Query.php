@@ -8,62 +8,59 @@
  * All Rights Reserved.
  *************************************************************************************/
 
-	require_once("include/Webservices/QueryParser.php");
-	
-	function vtws_query($q,$user){
-		
-		static $vtws_query_cache = array();	
-		
-		global $log,$adb;
+require_once("include/Webservices/QueryParser.php");
 
-		// Cache the instance for re-use		
-		$moduleRegex = "/[fF][rR][Oo][Mm]\s+([^\s;]+)/";
-		$moduleName = '';
-		if(preg_match($moduleRegex, $q, $m)) $moduleName = trim($m[1]);
-		
-		if(!isset($vtws_create_cache[$moduleName]['webserviceobject'])) {
-			$webserviceObject = VtigerWebserviceObject::fromQuery($adb,$q);
-			$vtws_query_cache[$moduleName]['webserviceobject'] = $webserviceObject;
-		} else {
-			$webserviceObject = $vtws_query_cache[$moduleName]['webserviceobject'];
-		}
-		// END
-		
-		$handlerPath = $webserviceObject->getHandlerPath();
-		$handlerClass = $webserviceObject->getHandlerClass();
-		
-		require_once $handlerPath;
-		
-		// Cache the instance for re-use
-		if(!isset($vtws_query_cache[$moduleName]['handler'])) {
-			$handler = new $handlerClass($webserviceObject,$user,$adb,$log);
-			$vtws_query_cache[$moduleName]['handler'] = $handler;
-		} else {
-			$handler = $vtws_query_cache[$moduleName]['handler'];
-		}
-		// END	
+function vtws_query($q,$user){
 
-		// Cache the instance for re-use
-		if(!isset($vtws_query_cache[$moduleName]['meta'])) {
-			$meta = $handler->getMeta();
-			$vtws_query_cache[$moduleName]['meta'] = $meta;
-		} else {
-			$meta = $vtws_query_cache[$moduleName]['meta'];
-		}
-		// END
-		
-		$types = vtws_listtypes(null, $user);
-		if(!in_array($webserviceObject->getEntityName(),$types['types'])){
-			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to perform the operation is denied");
-		}
-		
-		if(!$meta->hasReadAccess()){
-			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to read is denied");
-		}
-		
-		$result = $handler->query($q);
-		VTWS_PreserveGlobal::flush();
-		return $result;
+	static $vtws_query_cache = array();
+
+	global $log,$adb;
+
+	// Cache the instance for re-use
+	$moduleRegex = "/[fF][rR][Oo][Mm]\s+([^\s;]+)/";
+	$moduleName = '';
+	if(preg_match($moduleRegex, $q, $m)) $moduleName = trim($m[1]);
+
+	if(!isset($vtws_create_cache[$moduleName]['webserviceobject'])) {
+		$webserviceObject = VtigerWebserviceObject::fromQuery($adb,$q);
+		$vtws_query_cache[$moduleName]['webserviceobject'] = $webserviceObject;
+	} else {
+		$webserviceObject = $vtws_query_cache[$moduleName]['webserviceobject'];
 	}
-	
+
+	$handlerPath = $webserviceObject->getHandlerPath();
+	$handlerClass = $webserviceObject->getHandlerClass();
+
+	require_once $handlerPath;
+
+	// Cache the instance for re-use
+	if(!isset($vtws_query_cache[$moduleName]['handler'])) {
+		$handler = new $handlerClass($webserviceObject,$user,$adb,$log);
+		$vtws_query_cache[$moduleName]['handler'] = $handler;
+	} else {
+		$handler = $vtws_query_cache[$moduleName]['handler'];
+	}
+
+	// Cache the instance for re-use
+	if(!isset($vtws_query_cache[$moduleName]['meta'])) {
+		$meta = $handler->getMeta();
+		$vtws_query_cache[$moduleName]['meta'] = $meta;
+	} else {
+		$meta = $vtws_query_cache[$moduleName]['meta'];
+	}
+
+	$types = vtws_listtypes(null, $user);
+	if(!in_array($webserviceObject->getEntityName(),$types['types'])){
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to perform the operation is denied");
+	}
+
+	if(!$meta->hasReadAccess()){
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to read is denied");
+	}
+
+	$result = $handler->query($q);
+	VTWS_PreserveGlobal::flush();
+	return $result;
+}
+
 ?>

@@ -11,8 +11,13 @@
 $sql= 'delete from vtiger_salesmanactivityrel where smid=? and activityid = ?';
 $adb->pquery($sql, array(vtlib_purify($_REQUEST['record']), vtlib_purify($_REQUEST['return_id'])));
 
-if($_REQUEST['return_module'] == 'Calendar')
-	$mode ='&activity_mode=Events';
+if(isset($_REQUEST['return_module']) and $_REQUEST['return_module'] == 'Calendar')
+	$mode = '&activity_mode=Events';
 
-header("Location: index.php?module=".vtlib_purify($_REQUEST['return_module'])."&action=".vtlib_purify($_REQUEST['return_action']).$mode."&record=".vtlib_purify($_REQUEST['return_id'])."&relmodule=".vtlib_purify($_REQUEST['module']));
+$req = new Vtiger_Request();
+$req->set('return_module',   $_REQUEST['return_module']);
+$req->set('return_action',   $_REQUEST['return_action']);
+$req->set('return_record',   $_REQUEST['return_id']);
+$req->set('return_relmodule',$_REQUEST['module']);
+header('Location: index.php?' . $req->getReturnURL() . $mode);
 ?>

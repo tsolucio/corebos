@@ -25,10 +25,16 @@ $ids = vtlib_purify($_REQUEST['idstring']);
 if (!empty($ids)) {
 	// Export as Zip
 	if ($todir == '') $todir = 'cache';
-	if ($xmlfilename == '') $xmlfilename = 'coreBOSUpdates.xml';
+	if (empty($xmlfilename)) {
+		$xmlfilename = 'coreBOSUpdates.xml';
+	} else {
+		$xmlfilename = basename($xmlfilename);
+	}
+	if (empty($xmlfilename) || $xmlfilename=='.' || $xmlfilename=='..') {
+		$xmlfilename = 'coreBOSUpdates.xml';
+	}
 	$xmlcfn = 'cache/'.$xmlfilename;
-	if ($zipfilename == '') $zipfilename = "cbupdates-" . date('YmdHis') . ".zip";
-	$zipfilename = "$todir/$zipfilename";
+	$zipfilename = "$todir/cbupdates-" . date('YmdHis') . ".zip";
 	$zip = new Vtiger_Zip($zipfilename);
 
 	$sql = 'select * from vtiger_cbupdater
@@ -37,7 +43,7 @@ if (!empty($ids)) {
 	if ($ids!='all') {
 		$ids = str_replace(';', ',', $ids);
 		$ids = trim($ids,',');
-		$sql .= " and cbupdaterid in ($ids)";
+		$sql .= $adb->sql_escape_string(" and cbupdaterid in ($ids)");
 	}
 	$rs = $adb->query($sql);
 	if ($rs and $adb->num_rows($rs)>0) {

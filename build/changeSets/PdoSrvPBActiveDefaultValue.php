@@ -15,7 +15,7 @@
 *************************************************************************************************/
 
 class PdoSrvPBActiveDefaultValue extends cbupdaterWorker {
-	
+
 	function applyChange() {
 		global $adb;
 		if ($this->hasError()) $this->sendError();
@@ -25,17 +25,17 @@ class PdoSrvPBActiveDefaultValue extends cbupdaterWorker {
 			$moduleInstance = Vtiger_Module::getInstance('Products');
 			$field = Vtiger_Field::getInstance('discontinued',$moduleInstance);
 			if ($field) {
-				$this->ExecuteQuery("update vtiger_field set defaultvalue='1' where fieldid=".$field->id);
+				$this->ExecuteQuery("update vtiger_field set defaultvalue='1' where fieldid=?",array($field->id));
 			}
 			$moduleInstance = Vtiger_Module::getInstance('Services');
 			$field = Vtiger_Field::getInstance('discontinued',$moduleInstance);
 			if ($field) {
-				$this->ExecuteQuery("update vtiger_field set defaultvalue='1' where fieldid=".$field->id);
+				$this->ExecuteQuery("update vtiger_field set defaultvalue='1' where fieldid=?",array($field->id));
 			}
 			$moduleInstance = Vtiger_Module::getInstance('PriceBooks');
 			$field = Vtiger_Field::getInstance('active',$moduleInstance);
 			if ($field) {
-				$this->ExecuteQuery("update vtiger_field set defaultvalue='1' where fieldid=".$field->id);
+				$this->ExecuteQuery("update vtiger_field set defaultvalue='1' where fieldid=?",array($field->id));
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();

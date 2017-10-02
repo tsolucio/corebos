@@ -15,6 +15,24 @@
  *************************************************************************************************/
 -->*}
 {if !empty($ERROR_MESSAGE)}
-<div class="{if empty($ERROR_MESSAGE_CLASS)}cb-alert-danger{else}{$ERROR_MESSAGE_CLASS}{/if}">{$ERROR_MESSAGE}</div>
+{if empty($ERROR_MESSAGE_CLASS) || $ERROR_MESSAGE_CLASS eq "cb-alert-danger"}
+	{assign var="slds_role" value="error"}
+{elseif $ERROR_MESSAGE_CLASS eq "cb-alert-warning"}
+	{assign var="slds_role" value="warning"}
+{elseif $ERROR_MESSAGE_CLASS eq "cb-alert-info"}
+	{assign var="slds_role" value="info"}
+{elseif $ERROR_MESSAGE_CLASS eq "cb-alert-success"}
+	{assign var="slds_role" value="success"}
+{else}
+	{assign var="slds_role" value="error"}
 {/if}
-
+<div class="slds-m-top--x-small slds-m-bottom--x-small">
+	<div class="slds-notify slds-notify--alert slds-theme--{$slds_role} slds-theme--alert-texture" role="alert" style="padding:0.1rem">
+	<h2>
+		<svg class="slds-icon slds-icon--small slds-m-right--x-small" aria-hidden="true">
+		<use xlink:href="include/LD//assets/icons/utility-sprite/svg/symbols.svg#{$slds_role}"></use>
+		</svg>{$ERROR_MESSAGE}
+	</h2>
+	</div>
+</div>
+{/if}

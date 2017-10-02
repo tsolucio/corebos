@@ -13,7 +13,7 @@ class DataTransform{
 	public static $recordString = "record_id";
 	public static $recordModuleString = 'record_module';
 
-	function sanitizeDataWithColumn($row,$meta){
+	public static function sanitizeDataWithColumn($row,$meta){
 		$newRow = array();
 		if(isset($row['count(*)'])){
 			return DataTransform::sanitizeDataWithCountColumn($row,$meta);
@@ -28,7 +28,7 @@ class DataTransform{
 		return $newRow;
 	}
 
-	function sanitizeDataWithCountColumn($row,$meta){
+	public static function sanitizeDataWithCountColumn($row,$meta){
 		$newRow = array();
 		foreach($row as $col=>$val){
 			$newRow['count'] = $val;
@@ -36,13 +36,13 @@ class DataTransform{
 		return $newRow;
 	}
 
-	static function filterAndSanitize($row,$meta){
+	public static function filterAndSanitize($row,$meta){
 		$row = DataTransform::filterAllColumns($row,$meta);
 		$row = DataTransform::sanitizeData($row,$meta);
 		return $row;
 	}
 
-	static function sanitizeData($newRow,$meta,$t=null){
+	public static function sanitizeData($newRow,$meta,$t=null){
 		$newRow = DataTransform::sanitizeReferences($newRow,$meta);
 		$newRow = DataTransform::sanitizeOwnerFields($newRow,$meta,$t);
 		$newRow = DataTransform::sanitizeFields($newRow,$meta);
@@ -50,14 +50,14 @@ class DataTransform{
 		return $newRow;
 	}
 
-	static function sanitizeRetrieveEntityInfo($newRow,$meta){
+	public static function sanitizeRetrieveEntityInfo($newRow,$meta){
 		$newRow = DataTransform::sanitizeDateFieldsForInsert($newRow,$meta);
 		$newRow = DataTransform::sanitizeCurrencyFieldsForInsert($newRow,$meta);
 		$newRow = DataTransform::sanitizeTextFieldsForInsert($newRow,$meta);
 		return $newRow;
 	}
 
-	function sanitizeForInsert($row,$meta){
+	public static function sanitizeForInsert($row,$meta){
 		global $adb;
 		$associatedToUser = false;
 		$parentTypeId = null;
@@ -107,16 +107,16 @@ class DataTransform{
 				}
 				$row['contact_id'] = implode(';', $ctowsids);
 			}
-		} elseif(strtolower($meta->getEntityName()) == "calendar") {
-			if(empty($row['sendnotification']) || strtolower($row['sendnotificaiton'])=='no'
-					|| $row['sendnotificaiton'] == '0' || $row['sendnotificaiton'] == 'false'
-					|| strtolower($row['sendnotificaiton']) == 'n') {
+		} elseif (strtolower($meta->getEntityName()) == "calendar") {
+			if (empty($row['sendnotification']) || strtolower($row['sendnotification'])=='no'
+					|| $row['sendnotification'] == '0' || $row['sendnotification'] == 'false'
+					|| strtolower($row['sendnotification']) == 'n') {
 				unset($row['sendnotification']);
 			}
 		}
 		$references = $meta->getReferenceFieldDetails();
 		foreach($references as $field=>$typeList){
-			if(strpos($row[$field],'x')!==false){
+			if(isset($row[$field]) and strpos($row[$field],'x')!==false){
 				$row[$field] = vtws_getIdComponents($row[$field]);
 				$row[$field] = $row[$field][1];
 			}
@@ -124,7 +124,11 @@ class DataTransform{
 		$ownerFields = $meta->getOwnerFields();
 		foreach($ownerFields as $index=>$field){
 			if(isset($row[$field]) && $row[$field]!=null){
-				$ownerDetails = vtws_getIdComponents($row[$field]);
+				if (strpos($row[$field],'x')!==false) {
+					$ownerDetails = vtws_getIdComponents($row[$field]);
+				} else {
+					$ownerDetails[1] = $row[$field];
+				}
 				$row[$field] = $ownerDetails[1];
 			}
 		}
@@ -142,7 +146,7 @@ class DataTransform{
 				}
 			}
 		}
-		if($row['id']){
+		if (isset($row['id'])) {
 			unset($row['id']);
 		}
 		if(isset($row[$meta->getObectIndexColumn()])){
@@ -155,7 +159,7 @@ class DataTransform{
 		return $row;
 	}
 
-	static function filterAllColumns($row,$meta){
+	public static function filterAllColumns($row,$meta){
 		$recordString = DataTransform::$recordString;
 
 		$allFields = $meta->getFieldColumnMapping();
@@ -169,7 +173,7 @@ class DataTransform{
 		return $newRow;
 	}
 
-	static function sanitizeFields($row,$meta){
+	public static function sanitizeFields($row,$meta){
 		$default_charset = VTWS_PreserveGlobal::getGlobal('default_charset');
 		$recordString = DataTransform::$recordString;
 
@@ -191,11 +195,8 @@ class DataTransform{
 		}
 
 		if(!isset($row['id'])){
-			if($row[$meta->getObectIndexColumn()] ){
+			if (!empty($row[$meta->getObectIndexColumn()])) {
 				$row['id'] = vtws_getId($meta->getEntityId(),$row[$meta->getObectIndexColumn()]);
-			}else{
-				//TODO Handle this.
-				//echo 'error id not set';
 			}
 		}else if(isset($row[$meta->getObectIndexColumn()]) && strcmp($meta->getObectIndexColumn(),"id")!==0){
 			unset($row[$meta->getObectIndexColumn()]);
@@ -207,16 +208,16 @@ class DataTransform{
 		return $row;
 	}
 
-	static function sanitizeReferences($row,$meta){
+	public static function sanitizeReferences($row,$meta){
 		global $adb,$log;
 		$references = $meta->getReferenceFieldDetails();
 		foreach($references as $field=>$typeList){
 			if(strtolower($meta->getEntityName()) == "emails"){
-				if(isset($row['parent_id'])){
+				if(isset($row['parent_id']) and strpos($row['parent_id'], '@')===true){
 					list($row['parent_id'], $fieldId) = explode('@', $row['parent_id']);
 				}
 			}
-			if($row[$field]){
+			if (isset($row[$field])) {
 				$found = false;
 				foreach ($typeList as $entity) {
 					$webserviceObject = VtigerWebserviceObject::fromName($adb,$entity);
@@ -246,7 +247,7 @@ class DataTransform{
 		return $row;
 	}
 
-	static function sanitizeOwnerFields($row,$meta,$t=null){
+	public static function sanitizeOwnerFields($row,$meta,$t=null){
 		global $adb;
 		$ownerFields = $meta->getOwnerFields();
 		foreach($ownerFields as $index=>$field){
@@ -259,7 +260,7 @@ class DataTransform{
 		return $row;
 	}
 
-	function sanitizeDateFieldsForInsert($row,$meta){
+	public static function sanitizeDateFieldsForInsert($row,$meta){
 		global $current_user;
 		$moduleFields = $meta->getModuleFields();
 		foreach($moduleFields as $fieldName=>$fieldObj){
@@ -269,11 +270,17 @@ class DataTransform{
 					$row[$fieldName] = $dateFieldObj->getDisplayDate($current_user);
 				}
 			}
+			if ($fieldObj->getFieldDataType()=="datetime") {
+				if(!empty($row[$fieldName])){
+					$dateFieldObj = new DateTimeField($row[$fieldName]);
+					$row[$fieldName] = substr($dateFieldObj->getDisplayDateTimeValue(),0,16);
+				}
+			}
 		}
 		return $row;
 	}
 
-	function sanitizeCurrencyFieldsForInsert($row,$meta){
+	public static function sanitizeCurrencyFieldsForInsert($row,$meta){
 		global $current_user;
 		$moduleFields = $meta->getModuleFields();
 		foreach($moduleFields as $fieldName=>$fieldObj){
@@ -292,7 +299,7 @@ class DataTransform{
 		return $row;
 	}
 
-	function sanitizeCurrencyFieldsForDisplay($row,$meta){
+	public static function sanitizeCurrencyFieldsForDisplay($row,$meta){
 		global $current_user;
 		$moduleFields = $meta->getModuleFields();
 		foreach($moduleFields as $fieldName=>$fieldObj){
@@ -310,7 +317,7 @@ class DataTransform{
 		return $row;
 	}
 
-	function sanitizeTextFieldsForInsert($row,$meta){
+	public static function sanitizeTextFieldsForInsert($row,$meta){
 		global $current_user, $default_charset;
 		$moduleFields = $meta->getModuleFields();
 		foreach($moduleFields as $fieldName=>$fieldObj){

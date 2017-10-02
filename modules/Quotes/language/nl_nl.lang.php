@@ -1,5 +1,4 @@
 <?php
-
 /*******************************************************************************
  * The contents of this file are subject to the following licences:
  * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
@@ -47,14 +46,6 @@ $mod_strings = Array(
 'LBL_LIST_PHONE'=>'Telefoon',
 'LBL_LIST_EMAIL_ADDRESS'=>'e-mailadres',
 'LBL_LIST_CONTACT_NAME'=>'Contactnaam',
-
-//DON'T CONVERT THESE THEY ARE MAPPINGS
-'db_name' => 'LBL_LIST_ACCOUNT_NAME',
-'db_website' => 'LBL_LIST_WEBSITE',
-'db_billing_address_city' => 'LBL_LIST_CITY',
-
-//END DON'T CONVERT
-
 'LBL_ACCOUNT'=>'Account:',
 'LBL_PHONE'=>'Telefoon:',
 'LBL_WEBSITE'=>'Website:',
@@ -192,7 +183,7 @@ $mod_strings = Array(
 'Adjustment'=>'Bijstelling',
 'Sub Total'=>'Subtotaal',
 'S&H Amount'=>'Handling en Verzendtoeslag',
-                    
+
 //Added after 5.0.4 GA
 'Quote No'=>'Offerte Nr',
 

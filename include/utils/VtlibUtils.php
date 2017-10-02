@@ -53,9 +53,8 @@ function vtlib_getModuleNameById($tabid) {
 function vtlib_getModuleNameForSharing() {
 	global $adb;
 	$std_modules = array('Calendar','Leads','Accounts','Contacts','Potentials',
-			'HelpDesk','Campaigns','Quotes','PurchaseOrder','SalesOrder','Invoice','Events');
-	$modulesList = getSharingModuleList($std_modules);
-	return $modulesList;
+		'HelpDesk','Campaigns','Quotes','PurchaseOrder','SalesOrder','Invoice','Events');
+	return getSharingModuleList($std_modules);
 }
 
 /**
@@ -162,13 +161,7 @@ function vtlib_toggleModuleAccess($module, $enable_disable, $noevents = false) {
 
 	create_tab_data_file();
 	create_parenttab_data_file();
-
-	// UserPrivilege file needs to be regenerated if module state is changed from
-	// vtiger 5.1.0 onwards
-	global $vtiger_current_version;
-	if(version_compare($vtiger_current_version, '5.0.4', '>')) {
-		vtlib_RecreateUserPrivilegeFiles();
-	}
+	vtlib_RecreateUserPrivilegeFiles();
 
 	if (!$noevents) {
 		Vtiger_Module::fireEvent($module, $event_type);
@@ -183,7 +176,7 @@ function vtlib_getToggleModuleInfo() {
 
 	$modinfo = Array();
 
-	$sqlresult = $adb->query("SELECT name, presence, customized, isentitytype FROM vtiger_tab WHERE name NOT IN ('Users') AND presence IN (0,1) ORDER BY name");
+	$sqlresult = $adb->query("SELECT name, presence, customized, isentitytype FROM vtiger_tab WHERE name NOT IN ('Users','Calendar') AND presence IN (0,1) ORDER BY name");
 	$num_rows  = $adb->num_rows($sqlresult);
 	for($idx = 0; $idx < $num_rows; ++$idx) {
 		$module = $adb->query_result($sqlresult, $idx, 'name');
@@ -259,148 +252,21 @@ function vtlib_getFieldHelpInfo($module) {
 }
 
 /**
- * Setup mandatory (requried) module variable values in the module class.
+ * @deprecated: the variables have been moved to each module
  */
 function vtlib_setup_modulevars($module, $focus) {
-
-	$checkfor = Array('table_name', 'table_index', 'related_tables', 'popup_fields', 'IsCustomModule');
-	foreach($checkfor as $check) {
-		if(!isset($focus->$check)) $focus->$check = __vtlib_get_modulevar_value($module, $check);
-	}
+	// left here for backward compatibility
 }
+/**
+ * @deprecated: the variables have been moved to each module
+ */
 function __vtlib_get_modulevar_value($module, $varname) {
-	$mod_var_mapping =
-		Array(
-			'Accounts' =>
-			Array(
-				'IsCustomModule'=>false,
-				'table_name'  => 'vtiger_account',
-				'table_index' => 'accountid',
-				// related_tables variable should define the association (relation) between dependent tables
-				// FORMAT: related_tablename => Array ( related_tablename_column[, base_tablename, base_tablename_column] )
-				// Here base_tablename_column should establish relation with related_tablename_column
-				// NOTE: If base_tablename and base_tablename_column are not specified, it will default to modules (table_name, related_tablename_column)
-				'related_tables' => Array(
-					'vtiger_accountbillads' => Array ('accountaddressid', 'vtiger_account', 'accountid'),
-					'vtiger_accountshipads' => Array ('accountaddressid', 'vtiger_account', 'accountid'),
-				),
-				'popup_fields' => Array('accountname'), // TODO: Add this initialization to all the standard module
-			),
-			'Contacts' =>
-			Array(
-				'IsCustomModule'=>false,
-				'table_name'  => 'vtiger_contactdetails',
-				'table_index' => 'contactid',
-				'related_tables'=> Array( 'vtiger_account' => Array ('accountid' ) ),
-				'popup_fields' => Array ('lastname'),
-			),
-			'Leads' =>
-			Array(
-				'IsCustomModule'=>false,
-				'table_name'  => 'vtiger_leaddetails',
-				'table_index' => 'leadid',
-				'related_tables' => Array (
-					'vtiger_leadsubdetails' => Array ( 'leadsubscriptionid', 'vtiger_leaddetails', 'leadid' ),
-					'vtiger_leadaddress'    => Array ( 'leadaddressid', 'vtiger_leaddetails', 'leadid' ),
-				),
-				'popup_fields'=> Array ('lastname'),
-			),
-			'Campaigns' =>
-			Array(
-				'IsCustomModule'=>false,
-				'table_name'  => 'vtiger_campaign',
-				'table_index' => 'campaignid',
-				'popup_fields' => Array ('campaignname'),
-			),
-			'Potentials' =>
-			Array(
-				'IsCustomModule'=>false,
-				'table_name' => 'vtiger_potential',
-				'table_index'=> 'potentialid',
-				// NOTE: UIType 10 is being used instead of direct relationship from 5.1.0
-				//'related_tables' => Array ('vtiger_account' => Array('accountid')),
-				'popup_fields'=> Array('potentialname'),
-			),
-			'Quotes' =>
-			Array(
-				'IsCustomModule'=>false,
-				'table_name' => 'vtiger_quotes',
-				'table_index'=> 'quoteid',
-				'related_tables' => Array ('vtiger_account' => Array('accountid')),
-				'popup_fields'=>Array('subject'),
-			),
-			'SalesOrder'=>
-			Array(
-				'IsCustomModule'=>false,
-				'table_name' => 'vtiger_salesorder',
-				'table_index'=> 'salesorderid',
-				'related_tables'=> Array ('vtiger_account' => Array('accountid')),
-				'popup_fields'=>Array('subject'),
-			),
-			'PurchaseOrder'=>
-			Array(
-				'IsCustomModule'=>false,
-				'table_name' => 'vtiger_purchaseorder',
-				'table_index'=> 'purchaseorderid',
-				'popup_fields'=>Array('subject'),
-			),
-			'Invoice'=>
-			Array(
-				'IsCustomModule'=>false,
-				'table_name' => 'vtiger_invoice',
-				'table_index'=> 'invoiceid',
-				'popup_fields'=> Array('subject'),
-			),
-			'HelpDesk'=>
-			Array(
-				'IsCustomModule'=>false,
-				'table_name' => 'vtiger_troubletickets',
-				'table_index'=> 'ticketid',
-				'popup_fields'=> Array('ticket_title')
-			),
-			'Faq'=>
-			Array(
-				'IsCustomModule'=>false,
-				'table_name' => 'vtiger_faq',
-				'table_index'=> 'id',
-			),
-			'Documents'=>
-			Array(
-				'IsCustomModule'=>false,
-				'table_name' => 'vtiger_notes',
-				'table_index'=> 'notesid',
-			),
-			'Products'=>
-			Array(
-				'IsCustomModule'=>false,
-				'table_name' => 'vtiger_products',
-				'table_index'=> 'productid',
-				'popup_fields'=> Array('productname'),
-			),
-			'PriceBooks'=>
-			Array(
-				'IsCustomModule'=>false,
-				'table_name' => 'vtiger_pricebook',
-				'table_index'=> 'pricebookid',
-			),
-			'Vendors'=>
-			Array(
-				'IsCustomModule'=>false,
-				'table_name' => 'vtiger_vendor',
-				'table_index'=> 'vendorid',
-				'popup_fields'=>Array('vendorname'),
-			)
-		);
-	if (isset($mod_var_mapping[$module]) and isset($mod_var_mapping[$module][$varname])) {
-		$retval = $mod_var_mapping[$module][$varname];
-	} else {
-		$retval = null;
-	}
-	return $retval;
+	// left here for backward compatibility
+	return null;
 }
 
 /**
- * Convert given text input to singular.
+ * @deprecated: use 'SINGLE_' or cbtranslation
  */
 function vtlib_tosingular($text) {
 	$lastpos = strripos($text, 's');
@@ -494,7 +360,7 @@ function vtlib_isCustomModule($moduleName) {
 }
 
 /**
- * Check for custom module by its name.
+ * Check for entity module by its name.
  */
 function vtlib_isEntityModule($moduleName) {
 	global $adb,$log;
@@ -575,14 +441,15 @@ function vtlib_purify($input, $ignore=false) {
 	if(!$ignore) {
 		// Initialize the instance if it has not yet done
 		if($__htmlpurifier_instance == false) {
-			if(empty($use_charset)) $use_charset = 'UTF-8';
-			if(empty($use_root_directory)) $use_root_directory = dirname(__FILE__) . '/../..';
+			if (empty($use_charset)) $use_charset = 'UTF-8';
+			if (empty($use_root_directory)) $use_root_directory = __DIR__ . '/../..';
 
 			include_once ('include/htmlpurifier/library/HTMLPurifier.auto.php');
 
 			$config = HTMLPurifier_Config::createDefault();
 			$config->set('Core.Encoding', $use_charset);
 			$config->set('Cache.SerializerPath', "$use_root_directory/test/vtlib");
+			$config->set('Attr.AllowedFrameTargets', array('_blank', '_self', '_parent', '_top','_new','_newtc'));
 
 			$__htmlpurifier_instance = new HTMLPurifier($config);
 		}
@@ -599,7 +466,9 @@ function vtlib_purify($input, $ignore=false) {
 		}
 	}
 	$value = str_replace('&amp;','&',$value);
-	$purified_cache[$md5OfInput] = $value;
+	if (!is_array($input)) {
+		$purified_cache[$md5OfInput] = $value;
+	}
 	return $value;
 }
 
@@ -657,6 +526,12 @@ function getvtlib_open_popup_window_function($popupmodule,$fldname,$basemodule) 
 		$mod = new $popupmodule();
 		if (method_exists($mod, 'getvtlib_open_popup_window_function')) {
 			return $mod->getvtlib_open_popup_window_function($fldname,$basemodule);
+		} elseif (file_exists('modules/'.$popupmodule.'/getvtlib_open_popup_window_function.php')) {
+			@include_once 'modules/'.$popupmodule.'/getvtlib_open_popup_window_function.php';
+			if (function_exists('__hook_getvtlib_open_popup_window_function')) {
+				$mod->registerMethod('__hook_getvtlib_open_popup_window_function');
+				return $mod->__hook_getvtlib_open_popup_window_function($fldname,$basemodule);
+			}
 		}
 	}
 	return 'vtlib_open_popup_window';

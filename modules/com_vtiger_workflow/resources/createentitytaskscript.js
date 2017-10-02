@@ -46,7 +46,7 @@ function VTCreateEntityTask($, fieldvaluemapping){
 	}
 
 	function removeFieldValueMapping(mappingno){
-	  $(format("#save_fieldvalues_%s", mappingno)).remove();
+		$(format("#save_fieldvalues_%s", mappingno)).remove();
 	}
 
 	function map(fn, list){
@@ -114,9 +114,9 @@ function VTCreateEntityTask($, fieldvaluemapping){
 		vtinst.describeObject(moduleName, handleError(function(result){
 			var parent = result;
 			var fields = parent['fields'];
-			var referenceFields = filter(function(e){
-				return e['type']['name']=='reference';},
-			  fields);
+			var referenceFields = filter(function(e) {
+					return e['type']['name']=='reference';
+				}, fields);
 			var referenceFieldModules =
 				map(
 					function(e){
@@ -125,8 +125,8 @@ function VTCreateEntityTask($, fieldvaluemapping){
 					referenceFields
 				);
 			function union(a, b){
-			  var newfields = filter(function(e){return !contains(a, e);}, b);
-			  return a.concat(newfields);
+				var newfields = filter(function(e){return !contains(a, e);}, b);
+				return a.concat(newfields);
 			}
 			var relatedModules = reduceR(union, referenceFieldModules, [parent['name']]);
 
@@ -139,12 +139,8 @@ function VTCreateEntityTask($, fieldvaluemapping){
 					var firstFailure = failures[0];
 					callback(false, firstFailure[1]);
 				}else{
-					var moduleDescriptions = map(function(e){
-						return e[1];},
-					  parameters);
-					var modules = dict(map(function(e){
-						  return [e['name'], e];},
-						moduleDescriptions));
+					var moduleDescriptions = map(function(e) { return e[1]; }, parameters);
+					var modules = dict(map(function(e) { return [e['name'], e]; }, moduleDescriptions));
 					callback(true, modules);
 				}
 			}
@@ -155,9 +151,9 @@ function VTCreateEntityTask($, fieldvaluemapping){
 		}));
 	}
 
-    function editFieldExpression(fieldValueNode, fieldType) {
-		editpopupobj.edit(fieldValueNode.attr('id'), fieldValueNode.val(), fieldType);
-    }
+	function editFieldExpression(fieldValueNode, fieldType) {
+		editpopupobj.edit(fieldValueNode.prop('id'), fieldValueNode.val(), fieldType);
+	}
 
 	function resetFields(opType, fieldName, mappingno) {
 		defaultValue(opType.name)(opType, mappingno);
@@ -176,35 +172,34 @@ function VTCreateEntityTask($, fieldvaluemapping){
 				map(function (e){return '<option value="'+e.value+'">'+e.label+'</option>';},
 					opType['picklistValues'])
 			);
-			value.replaceWith('<select id="save_fieldvalues_'+mappingno+'_value" class="expressionvalue">'+
-												options+'</select>');
+			value.replaceWith('<select id="save_fieldvalues_'+mappingno+'_value" class="expressionvalue">' + options + '</select>');
 			$("#save_fieldvalues_"+mappingno+"_value_type").val("rawtext");
-
 			$("#save_fieldvalues_"+mappingno+"_modulename").val($('#entity_type').val());
 			$("#save_fieldvalues_"+mappingno+"_modulename").prop("disabled", "true");
 		}
-		var functions = {
-			string:function(opType, mappingno){
-				var value = $(format("#save_fieldvalues_%s_value", mappingno));
-				value.replaceWith(format('<input type="text" id="save_fieldvalues_%s_value" '+
-													'value="" class="expressionvalue" readonly />', mappingno));
+		function forString(opType, mappingno) {
+			var value = $(format("#save_fieldvalues_%s_value", mappingno));
+			value.replaceWith(format('<input type="text" id="save_fieldvalues_%s_value" '+
+				'value="" class="expressionvalue" readonly />', mappingno));
 
-				$("#save_fieldvalues_"+mappingno+"_modulename").prop("disabled", "");
-				var fv = $(format("#save_fieldvalues_%s_value", mappingno));
-				fv.bind("focus", function() {
-					editpopupobj.setModule($(format("#save_fieldvalues_%s_modulename", mappingno)).val());
-					editFieldExpression($(this), opType);
-				});
-				fv.bind("click", function() {
-					editpopupobj.setModule($(format("#save_fieldvalues_%s_modulename", mappingno)).val());
-					editFieldExpression($(this), opType);
-				});
-				fv.bind("keypress", function() {
-					editpopupobj.setModule($(format("#save_fieldvalues_%s_modulename", mappingno)).val());
-					editFieldExpression($(this), opType);
-				});
-			},
-			picklist:forPicklist,
+			$("#save_fieldvalues_"+mappingno+"_modulename").prop("disabled", "");
+			var fv = $(format("#save_fieldvalues_%s_value", mappingno));
+			fv.bind("focus", function() {
+				editpopupobj.setModule($(format("#save_fieldvalues_%s_modulename", mappingno)).val());
+				editFieldExpression($(this), opType);
+			});
+			fv.bind("click", function() {
+				editpopupobj.setModule($(format("#save_fieldvalues_%s_modulename", mappingno)).val());
+				editFieldExpression($(this), opType);
+			});
+			fv.bind("keypress", function() {
+				editpopupobj.setModule($(format("#save_fieldvalues_%s_modulename", mappingno)).val());
+				editFieldExpression($(this), opType);
+			});
+		}
+		var functions = {
+			string: forString,
+			picklist: forString,
 			multipicklist:forPicklist
 		};
 		var ret = functions[fieldType];
@@ -306,7 +301,7 @@ function VTCreateEntityTask($, fieldvaluemapping){
 				});
 				fe.bind("change", function(){
 					var select = $(this);
-					var mappingno = select.attr("id").match(/save_fieldvalues_(\d+)_fieldname/)[1];
+					var mappingno = select.prop("id").match(/save_fieldvalues_(\d+)_fieldname/)[1];
 					var fullFieldName = $(this).val();
 					resetFields(entityFieldTypes[fullFieldName], fullFieldName, mappingno);
 				});
@@ -353,10 +348,10 @@ function VTCreateEntityTask($, fieldvaluemapping){
 
 	$(document).ready(function(){
 		jQuery("#editpopup").draggable({ handle: "#editpopup_draghandle" });
-        editpopupobj = fieldExpressionPopup(moduleName, $);
-        editpopupobj.setModule(moduleName);
+		editpopupobj = fieldExpressionPopup(moduleName, $);
+		editpopupobj.setModule(moduleName);
 		editpopupobj.close();
-                
+
 		validator.addValidator('validateDuplicateFields', validateDuplicateFields);
 		validator.mandatoryFields = ['summary', 'entity_type'];
 
@@ -411,9 +406,9 @@ function VTCreateEntityTask($, fieldvaluemapping){
 					}
 				});
 				if(fieldvaluemapping.length==0){
-				  var out = "";
+					var out = "";
 				}else{
-				  var out = JSON.stringify(fieldvaluemapping);
+					var out = JSON.stringify(fieldvaluemapping);
 				}
 				$("#save_fieldvaluemapping_json").val(out);
 

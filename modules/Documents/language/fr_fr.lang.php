@@ -103,7 +103,7 @@ $mod_strings = Array(
 	'Download Count'=>'Compteur de téléchargement',
 	'Platform'=>'Platforme',
 	'Assigned To'=>'Assigné à',
-	'Note No' => 'Document N°',
+	'Note No' => 'Document n°',
 
 	'LBL_EMPTY_FOLDERS' => 'Répertoires vides',
 	'LBL_VIEW_EMPTY_FOLDERS' => 'Voir les répertoires vides',
@@ -111,15 +111,15 @@ $mod_strings = Array(
 	'LBL_DESCRIPTION' => 'Description',
 	'FILE_HAS_NO_DATA'=>'Le fichier sé est invalide ou vide',
 
-	'LBL_MAXIMUM_20'=>'Maximum 20',
-	'LBL_MAXIMUM_50'=>'Maximum 50',
+	'LBL_MAXIMUM_20'=>'Max. 20 caractères',
+	'LBL_MAXIMUM_50'=>'Max. 50 caractères',
 
 	'External' => 'Externe',
 	'Internal' => 'Interne',
 
 	'Documents' => 'Documents',
 	'Documents ID' => 'Documents ID',
-	'LBL_FILEUPLOAD_FAILED'=>'File failed to upload',
+	'LBL_FILEUPLOAD_FAILED'=>'Le fichier n\'a pas pu être uploader',
 );
 
 ?>

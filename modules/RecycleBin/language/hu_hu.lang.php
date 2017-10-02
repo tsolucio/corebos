@@ -28,9 +28,5 @@ $mod_strings = array(
 	'Billing City' => 'Város (számlázási cím)',
 	'Website' => 'Weboldal',
 	'Phone' => 'Telefon',
-	'Assigned To' => 'Felelős',
-	'LBL_MANUALRESTORE' => 'Kézi helyreállítás',
-	'LBL_ALREADYEXISTS' => 'Már létezik',
-	'LBL_AUTOMATICRESTORE' => 'Automatikus helyreállítás'
 );
 ?>

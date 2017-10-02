@@ -9,7 +9,7 @@
  * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
 include_once 'include/Webservices/DescribeObject.php';
-include_once dirname(__FILE__) . '/Utils.php';
+include_once __DIR__ . '/Utils.php';
 
 class crmtogo_WS_Describe extends crmtogo_WS_Controller {
 	protected function cacheDescribeInfo($describeInfo) {
@@ -21,47 +21,49 @@ class crmtogo_WS_Describe extends crmtogo_WS_Controller {
 			}
 		}
 	}
-	
-	function process(crmtogo_API_Request $request) {
-		$current_user = $this->getActiveUser();
+
+	public static function process(crmtogo_API_Request $request) {
+		global $current_user;
 		$module = $request->get('module');
 		$newrecord = self::transformToBlocks($module);
 		$response = new crmtogo_API_Response();
 		$response->setResult(array('record' => $newrecord));
 		return $response;
 	}
-	
-	
-	protected function transformToBlocks($module) {
-		$current_user = $this->getActiveUser();
+
+	protected static function transformToBlocks($module) {
+		global $current_language,$current_user;
+		if(empty($current_language))
+			$current_language = crmtogo_WS_Controller::sessionGet('language');
 		$moduleFieldGroups = crmtogo_WS_Utils::gatherModuleFieldGroupInfo($module);
 		$describeInfo = vtws_describe($module, $current_user);
 		crmtogo_WS_Utils::fixDescribeFieldInfo($module, $describeInfo,$current_user);
 		$modifiedResult = array();
-		$blocks = array(); 
+		$blocks = array();
 		$labelFields = false;
 		foreach($moduleFieldGroups as $blocklabel => $fieldgroups) {
 			$fields = array();
 			foreach($fieldgroups as $fieldname => $fieldinfo) {
-				$field['name'] = $fieldname;	
-				$field['value'] = '';	
-				$field['label'] = $fieldinfo['label'];	
-				$field['uitype'] = $fieldinfo['uitype'];	
-				$field['typeofdata'] = $fieldinfo['typeofdata'];	
+				$field['name'] = $fieldname;
+				$field['value'] = '';
+				$field['label'] = $fieldinfo['label'];
+				$field['uitype'] = $fieldinfo['uitype'];
+				$field['typeofdata'] = $fieldinfo['typeofdata'];
 				foreach($describeInfo['fields'] as $describeField) {
 					if ($describeField['name']== $fieldname) {
 						$field['type'] = '';
-						if (isset($describeField['type']) && $describeField['type']!='') {
+						if (!empty($describeField['type']) && !empty($describeField['type']['picklistValues'])) {
 							$picklistValues = $describeField['type']['picklistValues'];
 							$field['type']['value'] = array ('value' =>$picklistValues,'name' => $fieldname);
 						}
 						if (isset($describeField['type']) && $describeField['type']!='') {
 							$field['quickcreate'] = $describeField['quickcreate'];
+							$field['displaytype'] = $describeField['displaytype'];
 						}
 					}
 				}
-				if($field['uitype'] == '51' || $field['uitype'] == '59' || $field['uitype'] == '10'){
-						$field['relatedmodule'] = crmtogo_WS_Utils::getEntityName($field['name'], $module);
+				if ($field['uitype'] == '51' || $field['uitype'] == '59' || $field['uitype'] == '10') {
+					$field['relatedmodule'] = crmtogo_WS_Utils::getEntityName($field['name'], $module);
 				}
 				$fields[] = $field;
 			}
@@ -75,10 +77,10 @@ class crmtogo_WS_Describe extends crmtogo_WS_Controller {
 				$sections[] = array( 'label' => $blocklabel, 'count' => count($groups[$blocklabel]) );
 			}
 		}
-		$modifiedResult = array('blocks' => $blocks, 'id' => $resultRecord['id']);
+		$modifiedResult = array('blocks' => $blocks, 'id' => '');
 		if($labelFields) {
 			$modifiedResult['labelFields'] = $labelFields;
-		} 
+		}
 		return $modifiedResult;
 	}
 

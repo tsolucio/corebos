@@ -47,7 +47,7 @@ $mod_strings = array(
 	'LBL_HOME_STUFFTITLE' => 'Window Title',
 	'LBL_HOME_SHOW' => 'Show',
 	'LBL_HOME_FILTERBY' => 'Filter By',
-	'LBL_HOME_Fields' => 'Fields To Show <br />(select any two)',
+	'LBL_HOME_Fields' => 'Fields To Show',
 	'LBL_HOME_PRESSCTRL' => '(Press "Ctrl" <br /> for multiple selection)',
 	'LBL_HOME_RSSURL' => 'RSS URL',
 	'LBL_HOME_DASHBOARD_NAME' => 'DashBoard Name',
@@ -55,6 +55,10 @@ $mod_strings = array(
 	'LBL_HOME_HORIZONTAL_BARCHART' => 'Horizontal Bar Chart',
 	'LBL_HOME_VERTICAL_BARCHART' => 'Vertical Bar Chart',
 	'LBL_HOME_PIE_CHART' => 'Pie Chart',
+	'LBL_HOME_HORIZONTAL' => 'Horizontal',
+	'LBL_HOME_VERTICAL' => 'Vertical',
+	'LBL_HOME_PIE' => 'Pie',
+	'Layout Saved' => 'Layout Saved',
 	'LBL_HOME_ITEMS' => 'item(s)',
 	'LBL_MORE' => 'More',
 	'LBL_SCROLL' => 'Scroll',
@@ -91,5 +95,7 @@ $mod_strings = array(
 	'LBL_NO_WIDGETS_HIDDEN' => 'No default widgets are hidden',
 	'UpdateExchangeRate' => 'Update Exchange Rate',
 	'LBL_HOME_ADDWINDOW' => 'Add Window',
+	'LBL_GETTING_STARTED' => 'Getting Started',
+	'ExpirePasswordAfterDays' => 'Expire Password After Days',
 );
 ?>

@@ -6,11 +6,10 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
 -->*}
 
-<div id="pickListContents">	
+<div id="pickListContents">
 	<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 		<tr>
 			<td class="small cellLabel" width="20%" nowrap>
@@ -18,9 +17,9 @@
 			</td>
 			<td class="small cellLabel" width="30%">
 				<b>{$MOD_PICKLIST.LBL_SOURCE_FIELD}</b>
-				<select name="sourcefield" id="sourcefield" class="small" {if $DEPENDENCY_MAP.sourcefield neq ''} disabled {/if}>
+				<select name="sourcefield" id="sourcefield" class="small" {if !empty($DEPENDENCY_MAP.sourcefield)} disabled {/if}>
 					{foreach key=fld_nam item=fld_lbl from=$ALL_LISTS}
-						<option value="{$fld_nam}"	{if $DEPENDENCY_MAP neq '' && $DEPENDENCY_MAP.sourcefield eq $fld_nam} selected {/if}>
+						<option value="{$fld_nam}" {if !empty($DEPENDENCY_MAP) && is_array($DEPENDENCY_MAP) && $DEPENDENCY_MAP.sourcefield eq $fld_nam} selected {/if}>
 							{$fld_lbl|getTranslatedString:$MODULE}
 						</option>
 					{/foreach}
@@ -28,9 +27,9 @@
 			</td>
 			<td class="small cellLabel" width="30%">
 				<b>{$MOD_PICKLIST.LBL_TARGET_FIELD}</b>&nbsp;
-				<select name="targetfield" id="targetfield" class="small" {if $DEPENDENCY_MAP.sourcefield neq ''} disabled {/if}>
+				<select name="targetfield" id="targetfield" class="small" {if !empty($DEPENDENCY_MAP.sourcefield)} disabled {/if}>
 					{foreach key=fld_nam item=fld_lbl from=$ALL_LISTS}
-						<option value="{$fld_nam}"	{if $DEPENDENCY_MAP neq '' && $DEPENDENCY_MAP.targetfield eq $fld_nam} selected {/if}>
+						<option value="{$fld_nam}" {if !empty($DEPENDENCY_MAP) && is_array($DEPENDENCY_MAP) && $DEPENDENCY_MAP.targetfield eq $fld_nam} selected {/if}>
 							{$fld_lbl|getTranslatedString:$MODULE}
 						</option>
 					{/foreach}
@@ -42,8 +41,8 @@
 				{else}
 				<input type="submit" value="{$APP.LBL_NEXT_BUTTON_LABEL}" name="next" class="crmButton small save" onclick="editNewDependencyPicklist('{$MODULE}');" />
 				{/if}
-		 		<input type="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" name="cancel" class="crmButton small cancel" onclick="location.href='index.php?module=PickList&action=PickListDependencySetup&parenttab=Settings&moduleName={$MODULE}';" />
-		 	</td>
+				<input type="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" name="cancel" class="crmButton small cancel" onclick="location.href='index.php?module=PickList&action=PickListDependencySetup&parenttab=Settings&moduleName={$MODULE}';" />
+			</td>
 		</tr>
 
 		{if $DEPENDENCY_MAP neq '' && $DEPENDENCY_MAP|@count > 0}
@@ -59,8 +58,8 @@
 			</td>
 			<td align="right" valign="top">
 				<input type="button" class="small create" onclick="show('sourceValuesSelectionDiv');placeAtCenter(document.getElementById('sourceValuesSelectionDiv'));"
-					    value="{'LBL_BUTTON_SELECTED_SOURCE_VALUES'|@getTranslatedString:$PICKLIST_MODULE}"
-						title="{'LBL_BUTTON_SELECTED_SOURCE_VALUES'|@getTranslatedString:$PICKLIST_MODULE}"/>
+					value="{'LBL_BUTTON_SELECTED_SOURCE_VALUES'|@getTranslatedString:$PICKLIST_MODULE}"
+					title="{'LBL_BUTTON_SELECTED_SOURCE_VALUES'|@getTranslatedString:$PICKLIST_MODULE}"/>
 
 				<div style="display:none;position:absolute;" id="sourceValuesSelectionDiv">
 					<div class="layerPopup" style="position:relative; display:block; padding:10px">
@@ -78,8 +77,7 @@
 									</tr><tr>
 								{/if}
 								<td class="small" width="25%">
-									<input type="checkbox" name="selectedSourceValues" id="sourceValue{$SOURCE_INDEX}"
-										   value="{$DEPENDENCY_MAP.sourcefield}{$SOURCE_INDEX}" />
+									<input type="checkbox" name="selectedSourceValues" id="sourceValue{$SOURCE_INDEX}" value="{$DEPENDENCY_MAP.sourcefield}{$SOURCE_INDEX}" />
 									{$SOURCE_VALUE|@getTranslatedString:$MODULE}
 								</td>
 							{/foreach}
@@ -96,7 +94,6 @@
 			</td>
 		</tr>
 	</table>
-	
 	<br />
 	<table class="listTable" cellpadding="5" cellspacing="0" align="center">
 		<tbody id="valueMapping">
@@ -116,10 +113,10 @@
 					<td class="tableHeading big warning" rowspan="{$TARGET_VALUES|@count}" valign="top">
 						{$ALL_LISTS[$DEPENDENCY_MAP.targetfield]|getTranslatedString:$MODULE}</td>
 				{/if}
-				{foreach  key=SOURCE_INDEX item=SOURCE_VALUE from=$SOURCE_VALUES}
-					<td	id='mapping{$DEPENDENCY_MAP.sourcefield}{$SOURCE_INDEX}' onmouseover="handleCellMouseOver(event, this, '{$DEPENDENCY_MAP.sourcefield}{$SOURCE_INDEX|@htmlentities|@addslashes}');"
+				{foreach key=SOURCE_INDEX item=SOURCE_VALUE from=$SOURCE_VALUES}
+					<td id='mapping{$DEPENDENCY_MAP.sourcefield}{$SOURCE_INDEX}' onmouseover="handleCellMouseOver(event, this, '{$DEPENDENCY_MAP.sourcefield}{$SOURCE_INDEX|@htmlentities|@addslashes}');"
 						onmousedown="handleCellMouseDown(event, this);"
-						onmouseup="handleCellMouseUp(event, this);" 
+						onmouseup="handleCellMouseUp(event, this);"
 						class="selectedCell {$DEPENDENCY_MAP.sourcefield}{$SOURCE_INDEX} picklistValueMapping"
 						style="display:none;">
 						<input type="hidden" name="valueMapping{$SOURCE_INDEX}" id="valueMapping{$SOURCE_INDEX}" value="{$TARGET_VALUE}" />

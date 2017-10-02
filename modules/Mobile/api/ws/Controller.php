@@ -9,7 +9,7 @@
  ************************************************************************************/
 include_once 'include/Webservices/Utils.php';
 include_once 'modules/Mobile/Mobile.php';
-include_once dirname(__FILE__) . '/Utils.php';
+include_once __DIR__ . '/Utils.php';
 
 class crmtogo_WS_Controller  {
 	
@@ -49,15 +49,15 @@ class crmtogo_WS_Controller  {
 		$user = $this->getActiveUser();
 		return ($user !== false);
 	}
-	
-	function sessionGet($key, $defvaule = '') {
+
+	public static function sessionGet($key, $defvalue = '') {
 		return coreBOS_Session::get($key, $defvalue);
 	}
-	
+
 	function sessionSet($key, $value) {
 		coreBOS_Session::set($key, $value);
 	}
-	
+
 	function getLanguage() {
 		//cache language
 		static $used_language = NULL;
@@ -84,9 +84,8 @@ class crmtogo_WS_Controller  {
 		}
 		return $crmtogoDefaultsConfigCache;
 	}
-	
-	function getUserConfigSettings() {
 
+	public static function getUserConfigSettings() {
 		//cache config information
 		static $crmtogoConfigCache = NULL;
 		if (is_null($crmtogoConfigCache)) {
@@ -114,6 +113,9 @@ class crmtogo_WS_Controller  {
 	}
 
 	function getUserModule() {
+		global $current_user,$current_language;
+		if(empty($current_language))
+			$current_language = self::sessionGet('language');
 		//vtws_listtypes class is used to get permitted modules and set the language
 		$listresult = vtws_listtypes(null,self::getActiveUser());
 		$modulewsids = crmtogo_WS_Utils::getEntityModuleWSIds();

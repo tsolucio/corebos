@@ -120,7 +120,7 @@ class crxml implements arrayAccess, iterator
 		} else {
 			$this->node=null;
 			$this->parent=$parent;
-			$this->error=&$parent->error;
+			$this->error=$parent->error;
 		}
 		$this->offset=$offset;
 		$this->nodeName=$nodeName;

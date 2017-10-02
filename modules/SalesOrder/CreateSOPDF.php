@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
 include_once 'modules/SalesOrder/SalesOrderPDFController.php';
 
@@ -15,10 +14,10 @@ $controller = new Vtiger_SalesOrderPDFController($currentModule);
 $controller->loadRecord(vtlib_purify($_REQUEST['record']));
 $salesorder_no = getModuleSequenceNumber($currentModule,vtlib_purify($_REQUEST['record']));
 $moduleName = str_replace(' ', '', getTranslatedString('SINGLE_SalesOrder', $currentModule));
-if($purpose == 'webservice') {
-$PDFBuffer = $controller->Output('','S'); // S means send the pdf output in buffer instead of file
+if (isset($purpose) and $purpose == 'webservice') {
+	$PDFBuffer = $controller->Output('','S'); // S means send the pdf output in buffer instead of file
 } else {
-$controller->Output($moduleName.'_'.$salesorder_no.'.pdf', 'D');//added file name to make it work in IE, also forces the download giving the user the option to save
-exit();
+	$controller->Output($moduleName.'_'.$salesorder_no.'.pdf', 'D');//added file name to make it work in IE, also forces the download giving the user the option to save
+	exit();
 }
 ?>

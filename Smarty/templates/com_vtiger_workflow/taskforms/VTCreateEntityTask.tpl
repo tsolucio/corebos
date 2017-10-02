@@ -19,19 +19,19 @@
         var fieldvaluemapping = null;
     {/if}
 	var selectedEntityType = '{$task->entity_type}';
-	var createEntityHeaderTemplate = '<input type="button" class="crmButton create small" value="'+"{'LBL_ADD_FIELD'|@getTranslatedString:$MODULE}"+ '" id="save_fieldvaluemapping_add" />';
+	var createEntityHeaderTemplate = '<input type="button" class="crmButton create small" value="'+"{'LBL_ADD_FIELD'|@getTranslatedString:$MODULE_NAME}"+ '" id="save_fieldvaluemapping_add" />';
 </script>
 <script src="modules/{$module->name}/resources/fieldexpressionpopup.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/createentitytaskscript.js" type="text/javascript" charset="utf-8"></script>
 
 <table border="0" cellpadding="5" cellspacing="0" width="100%" class="small">
 	<tr valign="top">
-		<td class='dvtCellLabel' align="right" width=15% nowrap="nowrap">{'LBL_ENTITY_TYPE'|@getTranslatedString:$MODULE}</td>
+		<td class='dvtCellLabel' align="right" width=15% nowrap="nowrap">{'LBL_ENTITY_TYPE'|@getTranslatedString:$MODULE_NAME}</td>
 		<td class='dvtCellInfo'>
 			<input type="hidden" value='{$task->reference_field}' name='reference_field' id='reference_field' />
 			<span id="entity_type-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
 			<select name="entity_type" id="entity_type" class="small" style="display:none;">
-				<option value=''>{'LBL_SELECT_ENTITY_TYPE'|@getTranslatedString:$MODULE}</option>
+				<option value=''>{'LBL_SELECT_ENTITY_TYPE'|@getTranslatedString:$MODULE_NAME}</option>
 			</select>
 		</td>
 	</tr>
@@ -59,7 +59,7 @@
 							<tr>
 								<td width="25%"><img width="61" height="60" src="{'empty.jpg'|@vtiger_imageUrl:$THEME}"></td>
 								<td width="75%" nowrap="nowrap" style="border-bottom: 1px solid rgb(204, 204, 204);">
-									<span class="genHeaderSmall">{'LBL_NO_ENTITIES_FOUND'|@getTranslatedString:$MODULE}</span>
+									<span class="genHeaderSmall">{'LBL_NO_ENTITIES_FOUND'|@getTranslatedString:$MODULE_NAME}</span>
 								</td>
 							</tr>
 						</tbody>
@@ -71,12 +71,12 @@
 
 	<tr>
 		<td style='padding-top: 10px;' colspan="2">
-			<span class="helpmessagebox">{'LBL_CREATE_ENTITY_NOTE_BUSINESSMAPS'|@getTranslatedString:$MODULE}</span>
+			<span class="helpmessagebox">{'LBL_CREATE_ENTITY_NOTE_BUSINESSMAPS'|@getTranslatedString:$MODULE_NAME}</span>
 		</td>
 	</tr>
 	<tr>
 		<td style='padding-top: 10px;' colspan="2">
-			<span class="helpmessagebox">{'LBL_CREATE_ENTITY_NOTE_ORDER_MATTERS'|@getTranslatedString:$MODULE}</span>
+			<span class="helpmessagebox">{'LBL_CREATE_ENTITY_NOTE_ORDER_MATTERS'|@getTranslatedString:$MODULE_NAME}</span>
 		</td>
 	</tr>
 </table>

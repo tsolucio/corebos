@@ -1,4 +1,4 @@
-<?php 
+<?php
  /*************************************************************************************************
  * Copyright 2016 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
  * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
@@ -17,11 +17,10 @@
  *  Version      : 5.4.0
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************
- * The accepted format is:
- <map>
- 	<originmodule>
-	    <originid>4</originid>
-	    <originname>Contacts</originname> {optional}
+The accepted format is:
+<map>
+	<originmodule>
+		<originname>Contacts</originname> {optional}
 	</originmodule>
 	<relatedmodules>
 		<relatedmodule>
@@ -35,8 +34,8 @@
 		</relatedmodule>
 	</relatedmodules>
 	<DuplicateDirectRelations>false</DuplicateDirectRelations> Allowed values: true, false
- </map>
- *************************************************************************************************/
+</map>
+*************************************************************************************************/
 
 require_once('modules/cbMap/cbMap.php');
 require_once('modules/cbMap/processmap/processMap.php');

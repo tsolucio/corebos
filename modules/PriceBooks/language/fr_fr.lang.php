@@ -11,7 +11,7 @@
 
 
 $mod_strings = array(
-		'LBL_PRICEBOOK_INFORMATION' => 'Grille tarifaire',
+		'LBL_PRICEBOOK_INFORMATION' => 'Détail grille tarifaire',
 		'LBL_CUSTOM_INFORMATION' => 'Information',
 		'LBL_DESCRIPTION_INFORMATION' => 'Information',
 		'Price Book Name' => 'Objet',
@@ -27,6 +27,6 @@ $mod_strings = array(
 		'LBL_ACTION' => 'Action',
 		'PriceBook' => 'Grille tarifaire',
 		'Currency' => 'Devise',
-		'PriceBook No' => 'Grille tarifaire N°',
+		'PriceBook No' => 'Grille tarifaire n°',
 );
 ?>

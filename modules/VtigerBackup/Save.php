@@ -7,18 +7,18 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-global $mod_strings,$adb,$root_directory;
+global $mod_strings, $adb;
 if (isPermitted('VtigerBackup','')=='yes') {
 
-checkFileAccessForInclusion($root_directory."include/database/PearDatabase.php");
-require_once($root_directory."include/database/PearDatabase.php");
+checkFileAccessForInclusion('include/database/PearDatabase.php');
+require_once('include/database/PearDatabase.php');
 
-$server=vtlib_purify($_REQUEST['server']);
+$server = isset($_REQUEST['server']) ? vtlib_purify($_REQUEST['server']) : '';
 $port=(empty($_REQUEST['port']) ? 0 : vtlib_purify($_REQUEST['port']));
-$server_username=vtlib_purify($_REQUEST['server_username']);
-$server_password=vtlib_purify($_REQUEST['server_password']);
-$server_type = vtlib_purify($_REQUEST['server_type']);
-$server_path = vtlib_purify($_REQUEST['server_path']);
+$server_username = isset($_REQUEST['server_username']) ? vtlib_purify($_REQUEST['server_username']) : '';
+$server_password = isset($_REQUEST['server_password']) ? vtlib_purify($_REQUEST['server_password']) : '';
+$server_type = isset($_REQUEST['server_type']) ? vtlib_purify($_REQUEST['server_type']) : '';
+$server_path = isset($_REQUEST['server_path']) ? vtlib_purify($_REQUEST['server_path']) : '';
 $from_email_field = '';
 $smtp_auth = '';
 $db_update = true;
@@ -26,7 +26,7 @@ $db_update = true;
 $error_str = '';
 if($server_type == 'ftp_backup')
 {
-	$action = 'BackupServerConfig&bkp_server_mode=edit&server='.$server.'&server_user='.$server_username.'&password='.$server_password;
+	$action = 'BackupServerConfig&bkp_server_mode=edit&server='.urlencode($server).'&server_user='.urlencode($server_username).'&password='.urlencode($server_password);
 	if(!function_exists('ftp_connect')){
 		$error_str = '&error='.urlencode(getTranslatedString('FTP support is not enabled','VtigerBackup').'.');
 		$db_update = false;
@@ -57,7 +57,7 @@ if($server_type == 'ftp_backup')
 }
 if($server_type == 'local_backup')
 {
-	$action = 'BackupServerConfig&local_server_mode=edit&server_path="'.$server_path.'"';
+	$action = 'BackupServerConfig&local_server_mode=edit&server_path="'.urlencode($server_path).'"';
 	if(!is_dir($server_path)){
 		$error_str = '&error1='.urlencode(getTranslatedString('Incorrect Folder','VtigerBackup'));
 		$db_update = false;

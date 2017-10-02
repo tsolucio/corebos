@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 $mod_strings = Array(
-
+   
     'LBL_MODULE_NAME'=>'Operazioni',
     'LBL_MODULE_TITLE'=>'Operazioni',
     'LBL_NEW_OPERATION'=>'Nuova Operazione',
@@ -19,43 +19,40 @@ $mod_strings = Array(
     'operations' => 'Operazioni',
     //added this to translate the module name in the main app menu
     'Operation'=>'Operazioni',
-    'SINGLE_Operation' => 'Operazione',
+    'SINGLE_ProjectTask' => 'Operazione',
     'LBL_CUSTOM_INFORMATION' => 'Informazioni Addizionali',
     'LBL_OPERATION_INFORMATION' => 'Informazioni Operazione',
     'LBL_DESCRIPTION_INFORMATION' => 'Informazioni Descrizione',
     'Assigned To' => 'Assegnata a',
     //'linktoproject' => 'Relazionata a',
-    'projectid' => 'Progetto Relativo',
     'operationpriority' => 'Priorit&agrave;',
     'operationprogress' => 'Progresso',
     'operationtype'=>'Tipo',
+    'description'=>'Descrizione',
     'operationhours'=>'Ore Lavorate',
     'startdate'=>'Data di Inizio',
     'enddate'=>'Data di Fine',
-    'Related To' => 'Relazionata a',
+    'Related to' => 'Progetto',
     'administrative' => 'amministrativa',
     'operative' => 'operativa',
     'other' => 'altro',
     'low' => 'bassa',
     'normal' => 'normale',
-	'Open' => 'Aperto',
-	'Cancelled' => 'Annullato',
+    'Open' => 'Aperto',
+    'Cancelled' => 'Annullato',
     'high' => 'alta',
-    'Created Time' => 'Data di Creazione',
-    'Modified Time' => 'Data di Modifica',
-    'Description' => 'Descrizione',
-    'description' => 'Descrizione',
     '--none--' => 'nessuno',
+    'Add Note' => 'Aggiungi Nota',
     //added for related lists 
     'OperationName' => 'Nome Operazione',
     'projectname' => 'Nome Progetto',
     'operationnumber' => 'Codice Operazione',
 	
     'LBL_PROJECT_TASK_INFORMATION'=> 'Informazioni Operazione',
-	'Project Task Name' => 'Nome Operazione',
+    'Project Task Name' => 'Nome Operazione',
     'Project Task No' => 'Numero Operazione',
     'Project Task Number' => 'Codice Operazione',
-	'Worked Hours'=>'Ore lavorate',
+    'Worked Hours'=>'Ore lavorate',
     'Progress' => 'Progresso',
 );
 

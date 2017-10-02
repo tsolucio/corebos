@@ -6,10 +6,20 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-document.write("<script type='text/javascript' src='include/js/Inventory.js'></" + "script>");
-document.write("<script type='text/javascript' src='include/js/Mail.js'></" + "script>");
-document.write("<script type='text/javascript' src='include/js/Merge.js'></" + "script>");
-document.write('<div id="setaddressaccountdiv" style="z-index:12;display:none;width:400px;top:30px;left:0;right:0;margin:auto;" class="layerPopup"></div>');
+
+document.addEventListener('DOMContentLoaded', function() {
+	var accdiv = document.createElement("div");
+	accdiv.style.zIndex = "12";
+	accdiv.style.display = "none";
+	accdiv.style.width = "400px";
+	accdiv.style.top = "30px";
+	accdiv.style.left = "0";
+	accdiv.style.right = "0";
+	accdiv.style.margin = "auto";
+	accdiv.id = "setaddressaccountdiv";
+	accdiv.className = "layerPopup";
+	document.body.prepend(accdiv);
+}, false);
 
 function set_return(product_id, product_name) {
 	if (document.getElementById('from_link').value != '') {

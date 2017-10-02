@@ -107,20 +107,14 @@
 	EU_VAT - validate EU VAT number
 		restrictions: none
 	notDuplicate - checks that no other record with the same value exists on the given fieldname
-		restrictions: fieldname
+		restrictions: none
+	custom - launch custom function that can be found in the indicated file
+		restrictions: file name, validation test name, function name and label to show on error (will be translated)
  *************************************************************************************************/
 
-require_once('modules/com_vtiger_workflow/include.inc');
-require_once('modules/com_vtiger_workflow/tasks/VTEntityMethodTask.inc');
-require_once('modules/com_vtiger_workflow/VTEntityMethodManager.inc');
-require_once('modules/com_vtiger_workflow/VTSimpleTemplate.inc');
-require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
-require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
-require_once('modules/com_vtiger_workflow/expression_engine/include.inc');
-require_once 'include/Webservices/Retrieve.php';
 include_once 'include/validation/load_validations.php';
 
-class Mapping extends processcbMap {
+class Validations extends processcbMap {
 
 	/*
 	 * $arguments[0] array with all the values to validate, the fieldname as the index of the array
@@ -130,7 +124,8 @@ class Mapping extends processcbMap {
 		global $adb, $current_user;
 		$mapping=$this->convertMap2Array();
 		$tabid = getTabid($mapping['origin']);
-		$v = new cbValidator($arguments[0]);
+		$screen_values = $arguments[0];
+		$v = new cbValidator($screen_values);
 		$validations = array();
 		foreach ($mapping['fields'] as $valfield => $vals) {
 			$fl = $adb->pquery('select fieldlabel from vtiger_field where tabid=? and columnname=?', array($tabid,$valfield));
@@ -140,6 +135,10 @@ class Mapping extends processcbMap {
 				switch ($rule) {
 					case 'required':
 					case 'accepted':
+						if (isset($screen_values[$valfield])) {
+							$v->rule($rule, $valfield)->label($i18n);
+						}
+						break;
 					case 'numeric':
 					case 'integer':
 					case 'array':
@@ -166,7 +165,12 @@ class Mapping extends processcbMap {
 					case 'dateBefore':
 					case 'dateAfter':
 					case 'contains':
-						$v->rule($rule, $valfield, $restrictions[0])->label($i18n);
+						if (substr($restrictions[0], 0, 2)=='{{' and substr($restrictions[0], -2)=='}}' and isset($screen_values[substr($restrictions[0], 2, strlen($restrictions[0])-4)])) {
+							$rulevalue = $screen_values[substr($restrictions[0], 2, strlen($restrictions[0])-4)];
+						} else {
+							$rulevalue = $restrictions[0];
+						}
+						$v->rule($rule, $valfield, $rulevalue)->label($i18n);
 						break;
 					case 'lengthBetween':
 						if ($restrictions[0]<$restrictions[1]) {
@@ -193,18 +197,31 @@ class Mapping extends processcbMap {
 						}
 						break;
 					case 'notDuplicate':
-						$v->rule($rule, $valfield, $restrictions[0], $mapping['origin'], $arguments[1])->label($i18n);
+						$v->rule($rule, $valfield, $mapping['origin'], $arguments[1])->label($i18n);
+						break;
+					case 'custom':
+						if (file_exists($restrictions[0])) {
+							@include $restrictions[0];
+							if (function_exists($restrictions[2])) {
+								$v->addRule($restrictions[1], $restrictions[2], (isset($restrictions[3]) ? getTranslatedString($restrictions[3]) : getTranslatedString('INVALID')));
+								$v->rule($restrictions[1], $valfield)->label($i18n);
+							}
+						}
 						break;
 					default:
 						continue;
 						break;
 				}
 			}
-			if(!$v->validate()) {
-				$validations[$valfield] = $v->errors();
-			}
 		}
-		return $validations;
+		if(!$v->validate()) {
+			$validations = $v->errors();
+		}
+		if (count($validations)==0) {
+			return true;
+		} else {
+			return $validations;
+		}
 	}
 
 	function convertMap2Array() {
@@ -226,10 +243,67 @@ class Mapping extends processcbMap {
 				}
 				$allvals[$rule]=$rst;
 			}
-			$val_fields[$fieldname]['validations']=$allvals;
+			$val_fields[$fieldname] = $allvals;
 		}
 		$mapping['fields'] = $val_fields;
 		return $mapping;
+	}
+
+	public static function ValidationsExist($module) {
+		global $adb;
+		$q = 'select 1 from vtiger_cbmap
+			inner join vtiger_crmentity on crmid=cbmapid
+			where deleted=0 and maptype=? and targetname=? limit 1';
+		$rs = $adb->pquery($q,array('Validations',$module));
+		return ($rs and $adb->num_rows($rs)==1);
+	}
+
+	public static function processAllValidationsFor($module) {
+		global $adb;
+		$screen_values = json_decode($_REQUEST['structure'],true);
+		if (in_array($module, getInventoryModules())) {
+			$products = array();
+			foreach ($screen_values as $sv_name => $sv) {
+				if (strpos($sv_name, 'hdnProductId') !== false) {
+					$i = substr($sv_name, 12);
+					$qty_i = 'qty'.$i;
+					$name_i = 'productName'.$i;
+					$type_i = 'lineItemType'.$i;
+					$products[$i]['crmid'] = $sv;
+					$products[$i]['qty'] = $screen_values[$qty_i];
+					$products[$i]['name'] = $screen_values[$name_i];
+					$products[$i]['type'] = $screen_values[$type_i];
+				}
+			}
+			$screen_values['pdoInformation'] = $products;
+		}
+		$record = (isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : (isset($screen_values['record']) ? vtlib_purify($screen_values['record']) : 0));
+		$q = 'select cbmapid from vtiger_cbmap
+			inner join vtiger_crmentity on crmid=cbmapid
+			where deleted=0 and maptype=? and targetname=?';
+		$rs = $adb->pquery($q,array('Validations',$module));
+		$focus = new cbMap();
+		$focus->mode = '';
+		$validation = true;
+		while ($val = $adb->fetch_array($rs)) {
+			$focus->id = $val['cbmapid'];
+			$focus->retrieve_entity_info($val['cbmapid'], 'cbMap');
+			$validation = $focus->Validations($screen_values,$record);
+			if ($validation!==true) {
+				break;
+			}
+		}
+		return $validation;
+	}
+
+	public static function formatValidationErrors($errors,$module) {
+		$error = '';
+		foreach ($errors as $field => $errs) {
+			foreach ($errs as $err) {
+				$error.= $err . "\n";
+			}
+		}
+		return $error;
 	}
 
 }

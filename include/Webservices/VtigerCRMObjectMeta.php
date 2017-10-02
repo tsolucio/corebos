@@ -191,13 +191,18 @@ class VtigerCRMObjectMeta extends EntityMeta {
 	}
 
 	function hasPermission($operation,$webserviceId){
-		$idComponents = vtws_getIdComponents($webserviceId);
-		$id=$idComponents[1];
-		$permitted = isPermitted($this->getTabName(),$operation,$id);
-		if(strcmp($permitted,"yes")===0){
-			return true;
+		if (empty($webserviceId)) {
+			$id = '';
+		} else {
+			if (strpos($webserviceId, 'x')>0) {
+				$idComponents = vtws_getIdComponents($webserviceId);
+				$id = $idComponents[1];
+			} else {
+				$id = $webserviceId;
+			}
 		}
-		return false;
+		$permitted = isPermitted($this->getTabName(),$operation,$id);
+		return strcmp($permitted,'yes')===0;
 	}
 
 	function hasAssignPrivilege($webserviceId){
@@ -309,6 +314,13 @@ class VtigerCRMObjectMeta extends EntityMeta {
 			$this->retrieveMeta();
 		}
 		return parent::getEmailFields();
+	}
+
+	function getImageFields() {
+		if (!$this->meta) {
+			$this->retrieveMeta();
+		}
+		return parent::getImageFields();
 	}
 
 	function getFieldIdFromFieldName($fieldName){

@@ -11,7 +11,6 @@
 /*
  * class to manage all the UI related info
  */
-
 class ConvertLeadUI {
 
 	var $current_user;
@@ -28,7 +27,7 @@ class ConvertLeadUI {
 	static $industry = false;
 
 	function __construct($leadid, $current_user) {
-		global$adb;
+		global $adb;
 		$this->leadid = $leadid;
 		$this->current_user = $current_user;
 		$sql = "SELECT * FROM vtiger_leaddetails,vtiger_leadscf,vtiger_crmentity
@@ -45,16 +44,13 @@ class ConvertLeadUI {
 
 	function isModuleActive($module) {
 		include_once 'include/utils/VtlibUtils.php';
-		if (vtlib_isModuleActive($module) && ((isPermitted($module, 'EditView') == 'yes'))) {
-			return true;
-		}
-		return false;
+		return vtlib_isModuleActive($module) && ((isPermitted($module, 'EditView') == 'yes'));
 	}
 
 	function isActive($field, $mod) {
 		global $adb;
 		$tabid = getTabid($mod);
-		$query = 'select * from vtiger_field where fieldname = ?  and tabid = ? and presence in (0,2)';
+		$query = 'select * from vtiger_field where fieldname = ? and tabid = ? and presence in (0,2)';
 		$res = $adb->pquery($query, array($field, $tabid));
 		$rows = $adb->num_rows($res);
 		if ($rows > 0) {
@@ -141,11 +137,9 @@ class ConvertLeadUI {
 	}
 
 	function getIndustryList() {
-		global$adb;
-
+		global $adb;
 		require_once 'modules/PickList/PickListUtils.php';
 
-		global $adb;
 		$industry_list = array();
 		if (is_admin($this->current_user)) {
 			$pick_list_values = getAllPickListValues('industry');
@@ -159,11 +153,9 @@ class ConvertLeadUI {
 	}
 
 	function getSalesStageList() {
-		global$adb;
-
+		global $adb;
 		require_once 'modules/PickList/PickListUtils.php';
 
-		global $adb;
 		$sales_stage_list = array();
 		if (is_admin($this->current_user)) {
 			$pick_list_values = getAllPickListValues('sales_stage');
@@ -188,7 +180,6 @@ class ConvertLeadUI {
 	 * 		[<user/group>name]=>
 	 * )
 	 */
-
 	function getOwnerList($type) {
 		$private = self::checkOwnership($this->current_user);
 		if ($type === 'user')
@@ -239,23 +230,21 @@ class ConvertLeadUI {
 
 		$fieldinfo = $this->getFieldInfo($module, $fieldName);
 		if ($fieldinfo['type']['name'] == 'picklist' || $fieldinfo['type']['name'] == 'multipicklist') {
-			$valuelist = null;
-			switch ($fieldName) {
-				case 'industry':$valuelist = $this->getIndustryList();
-					break;
-				case 'sales_stage':$valuelist = $this->getSalesStageList();
-					break;
-			}
-			foreach ($fieldinfo['type']['picklistValues'] as $key => $values) {
-				if ($values['value'] == $this->row[$leadfname]) {
-					return $this->row[$leadfname];
+			if (!empty($leadfname) and !empty($this->row[$leadfname])) {
+				foreach ($fieldinfo['type']['picklistValues'] as $key => $values) {
+					if ($values['value'] == $this->row[$leadfname]) {
+						return $this->row[$leadfname];
+					}
 				}
 			}
 			return $fieldinfo['default'];
 		}
-		$value = html_entity_decode($this->row[$leadfname], ENT_QUOTES, $default_charset);
-		return htmlentities($value, ENT_QUOTES, $default_charset);
-		//return $this->row[$leadfname];
+		if (empty($leadfname) or empty($this->row[$leadfname])) {
+			return '';
+		} else {
+			$value = html_entity_decode($this->row[$leadfname], ENT_QUOTES, $default_charset);
+			return htmlentities($value, ENT_QUOTES, $default_charset);
+		}
 	}
 
 }

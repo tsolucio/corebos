@@ -21,15 +21,15 @@ class Import_Utils {
 	static $supportedDelimiters = array(','=>'comma', ';'=>'semicolon');
 	static $supportedFileExtensions = array('csv','vcf');
 
-	public function getSupportedFileExtensions() {
+	public static function getSupportedFileExtensions() {
 		return self::$supportedFileExtensions;
 	}
 
-	public function getSupportedFileEncoding() {
+	public static function getSupportedFileEncoding() {
 		return self::$supportedFileEncoding;
 	}
 
-	public function getSupportedDelimiters() {
+	public static function getSupportedDelimiters() {
 		return self::$supportedDelimiters;
 	}
 
@@ -37,11 +37,12 @@ class Import_Utils {
 		return array(
 			self::$AUTO_MERGE_IGNORE => 'Skip',
 			self::$AUTO_MERGE_OVERWRITE => 'Overwrite',
-			self::$AUTO_MERGE_MERGEFIELDS => 'Merge');
+			self::$AUTO_MERGE_MERGEFIELDS => 'Merge',
+		);
 	}
 
 	public static function getMaxUploadSize() {
-		return GlobalVariable::getVariable('Application_Upload_MaxSize',3000000,$currentModule);
+		return GlobalVariable::getVariable('Application_Upload_MaxSize',3000000);
 	}
 
 	public static function getImportDirectory() {
@@ -81,8 +82,9 @@ class Import_Utils {
 		return $userImportTablePrefix . $user->id;
 	}
 
-	public static function showErrorPage($errorMessage, $errorDetails=false, $customActions=false) {
+	public static function showErrorPage($errorMessage, $errorDetails=false, $customActions=false, $moduleName='') {
 		$viewer = new Import_UI_Viewer();
+		$viewer->assign('FOR_MODULE', $moduleName);
 		$viewer->assign('ERROR_MESSAGE', $errorMessage);
 		$viewer->assign('ERROR_DETAILS', $errorDetails);
 		$viewer->assign('CUSTOM_ACTIONS', $customActions);
@@ -104,7 +106,7 @@ class Import_Utils {
 		$errorMessage = getTranslatedString('ERR_UNIMPORTED_RECORDS_EXIST', 'Import');
 		$customActions = array('LBL_CLEAR_DATA' => "location.href='index.php?module={$moduleName}&action=Import&mode=clear_corrupted_data'");
 
-		self::showErrorPage($errorMessage, '', $customActions);
+		self::showErrorPage($errorMessage, '', $customActions, $moduleName);
 	}
 
 	public static function isUserImportBlocked($user) {
@@ -152,7 +154,6 @@ class Import_Utils {
 
 		if(!is_admin($current_user) && $profileGlobalPermission[2] == 1
 				&& ($defaultOrgSharingPermission[$tabId] == 3 or $defaultOrgSharingPermission[$tabId] == 0)) {
-
 			return get_group_array(FALSE, "Active", $current_user->id,'private');
 		} else {
 			return get_group_array(FALSE, "Active", $current_user->id);
@@ -169,7 +170,6 @@ class Import_Utils {
 			return true;
 		}
 		return false;
-
 	}
 
 }

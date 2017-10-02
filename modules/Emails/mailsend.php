@@ -13,10 +13,9 @@ require_once("include/utils/UserInfoUtil.php");
 global $adb, $current_user;
 
 //set the return module and return action and set the return id based on return module and record
-$returnmodule = vtlib_purify($_REQUEST['return_module']);
-$returnaction = vtlib_purify($_REQUEST['return_action']);
-if((($returnmodule != 'Emails') || ($returnmodule == 'Emails' && $_REQUEST['record'] == '')) && $_REQUEST['return_id'] != '')
-{
+$returnmodule = isset($_REQUEST['return_module']) ? vtlib_purify($_REQUEST['return_module']) : '';
+$returnaction = isset($_REQUEST['return_action']) ? vtlib_purify($_REQUEST['return_action']) : '';
+if ((($returnmodule != 'Emails') || ($returnmodule == 'Emails' && empty($_REQUEST['record']))) && !empty($_REQUEST['return_id'])) {
 	$returnid = vtlib_purify($_REQUEST['return_id']);
 }
 else
@@ -26,8 +25,7 @@ else
 
 $adb->println("\n\nMail Sending Process has been started.");
 //This function call is used to send mail to the assigned to user. In this mail CC and BCC addresses will be added.
-if($_REQUEST['assigntype' == 'T'] && $_REQUEST['assigned_group_id']!='')
-{
+if (isset($_REQUEST['assigntype']) && $_REQUEST['assigntype'] == 'T' && !empty($_REQUEST['assigned_group_id'])) {
 	$grp_obj = new GetGroupUsers();
 	$grp_obj->getAllUsersInGroup($_REQUEST['assigned_group_id']);
 	$users_list = constructList($grp_obj->group_users,'INTEGER');
@@ -65,6 +63,8 @@ else
 }
 $cc = $_REQUEST['ccmail'];
 $bcc = $_REQUEST['bccmail'];
+$errorheader1 = 0;
+$errorheader2 = 0;
 if($to_email == '' && $cc == '' && $bcc == '')
 {
 	$adb->println("Mail Error : send_mail function not called because To email id of assigned to user, CC and BCC are empty");
@@ -78,6 +78,7 @@ else
 	$val = $adb->query_result($res1,0,'email1');
 	$query = 'update vtiger_emaildetails set email_flag ="SENT",from_email =? where emailid=?';
 	$adb->pquery($query, array($val, $focus->id));
+	$mail_status_str = '';
 }
 
 $parentid= vtlib_purify($_REQUEST['parent_id']);
@@ -99,7 +100,7 @@ for ($i=0;$i<(count($myids)-1);$i++)
 	$realid=explode("@",$myids[$i]);
 	$nemail=count($realid);
 	$mycrmid=$realid[0];
-	if($realid[1] == -1) {
+	if (getModuleForField($realid[1]) == 'Users') {
 		//handle the mail send to vtiger_users
 		$emailadd = $adb->query_result($adb->pquery("select email1 from vtiger_users where id=?", array($mycrmid)),0,'email1');
 		$pmodule = 'Users';
@@ -108,8 +109,10 @@ for ($i=0;$i<(count($myids)-1);$i++)
 		$all_to_emailids []= $emailadd;
 		$mail_status_str .= $emailadd."=".$mail_status."&&&";
 	} else {
-		//Send mail to vtiger_account or lead or contact based on their ids
+		//Send mail to account, lead or contact based on their ids
 		$pmodule=getSalesEntityType($mycrmid);
+		$subject = $_REQUEST['subject'];
+		$description = $_REQUEST['description'];
 		for ($j=1;$j<$nemail;$j++) {
 			$temp=$realid[$j];
 			$myquery='Select columnname from vtiger_field where fieldid = ? and vtiger_field.presence in (0,2)';
@@ -119,18 +122,39 @@ for ($i=0;$i<(count($myids)-1);$i++)
 				require_once('modules/Contacts/Contacts.php');
 				$myfocus = new Contacts();
 				$myfocus->retrieve_entity_info($mycrmid,"Contacts");
+
+				$subject=getMergedDescription($subject,$mycrmid,$pmodule);
+				$description=getMergedDescription($description,$mycrmid,$pmodule);
+
+				$subject=getMergedDescription($subject,$myfocus->column_fields['account_id'],'Accounts');
+				$description=getMergedDescription($description,$myfocus->column_fields['account_id'],'Accounts');
+
+				$subject=getMergedDescription($subject,$current_user->id,'Users');
+				$description=getMergedDescription($description,$current_user->id,'Users');
 			}
 			elseif ($pmodule=='Accounts')
 			{
 				require_once('modules/Accounts/Accounts.php');
 				$myfocus = new Accounts();
 				$myfocus->retrieve_entity_info($mycrmid,"Accounts");
+
+				$subject=getMergedDescription($subject,$mycrmid,$pmodule);
+				$description=getMergedDescription($description,$mycrmid,$pmodule);
+
+				$subject=getMergedDescription($subject,$current_user->id,'Users');
+				$description=getMergedDescription($description,$current_user->id,'Users');
 			}
 			elseif ($pmodule=='Leads')
 			{
 				require_once('modules/Leads/Leads.php');
 				$myfocus = new Leads();
 				$myfocus->retrieve_entity_info($mycrmid,"Leads");
+
+				$subject=getMergedDescription($subject,$mycrmid,$pmodule);
+				$description=getMergedDescription($description,$mycrmid,$pmodule);
+
+				$subject=getMergedDescription($subject,$current_user->id,'Users');
+				$description=getMergedDescription($description,$current_user->id,'Users');
 			}
 			elseif ($pmodule=='Vendors')
 			{
@@ -143,15 +167,17 @@ for ($i=0;$i<(count($myids)-1);$i++)
 				// vtlib customization: Enabling mail send from other modules
 				$myfocus = CRMEntity::getInstance($pmodule);
 				$myfocus->retrieve_entity_info($mycrmid, $pmodule);
+
+				$subject=getMergedDescription($subject,$mycrmid,$pmodule);
+				$description = getMergedDescription($description,$mycrmid,$pmodule);
+
+				$subject=getMergedDescription($subject,$current_user->id,'Users');
+				$description=getMergedDescription($description,$current_user->id,'Users');
 			}
 			$fldname=$adb->query_result($fresult,0,"columnname");
 			$emailadd=br2nl($myfocus->column_fields[$fldname]);
 
-			//This is to convert the html encoded string to original html entities so that in mail description contents will be displayed correctly
-			//$focus->column_fields['description'] = from_html($focus->column_fields['description']);
-
 			if($emailadd != '') {
-				$description = getMergedDescription($_REQUEST['description'],$mycrmid,$pmodule);
 				//Email Open/Stat Tracking
 				global $site_URL, $application_unique_key;
 				$EMail_OpenTrackingEnabled = GlobalVariable::getVariable('EMail_OpenTrackingEnabled',1,'Emails');
@@ -166,10 +192,12 @@ for ($i=0;$i<(count($myids)-1);$i++)
 				{
 					$description =str_replace('$logo$','<img src="cid:logo" />',$description);
 					$logo=1;
+				} else {
+					$logo = 0;
 				}
 				if(isPermitted($pmodule,'DetailView',$mycrmid) == 'yes')
 				{
-					$mail_status = send_mail('Emails',$emailadd,$from_name,$from_address,$_REQUEST['subject'],$description,'','','all',$focus->id,$logo);
+					$mail_status = send_mail('Emails',$emailadd,$from_name,$from_address,$subject,$description,'','','all',$focus->id,$logo);
 				}
 
 				$all_to_emailids []= $emailadd;

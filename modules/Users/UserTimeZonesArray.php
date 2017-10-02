@@ -13,8 +13,7 @@
  * Contributor(s): ______________________________________.
  ********************************************************************************/
 class UserTimeZones{
-	function __construct(){
-		$arrayOfSupportedTimeZones = array(
+         var $arrayOfSupportedTimeZones = array(
 										'Pacific/Midway',
 										'Pacific/Samoa',
 										'Pacific/Honolulu',
@@ -112,8 +111,8 @@ class UserTimeZones{
 										'Asia/Magadan',
 										'Pacific/Tongatapu'
 		);
-		return $arrayOfSupportedTimeZones;
+	function __construct(){
+		
 	}
 }
-
 ?>

@@ -9,9 +9,8 @@
  ********************************************************************************/
 require_once('include/utils/utils.php');
 require_once('include/logging.php');
-require_once("modules/Potentials/Charts.php");
-require_once("modules/Dashboard/Forms.php");
-global $app_list_strings, $current_language, $tmp_dir, $currentModule, $action, $theme;
+require_once("modules/Dashboard/DashboardCharts.php");
+global $current_language, $currentModule, $action, $theme;
 $current_module_strings = return_module_language($current_language, 'Dashboard');
 require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
 require('user_privileges/user_privileges_'.$current_user->id.'.php');
@@ -23,10 +22,8 @@ else { $refresh = false; }
 
 // added for auto refresh
 $refresh = true;
-//
 
 $date_start = array();
-$datax = array();
 //get the dates to display
 //added to fix the issue4307
 if(isset($_REQUEST['obm_date_start']) && $_REQUEST['obm_date_start'] == '')
@@ -77,7 +74,11 @@ else {
 
 $ids = array();
 //get list of user ids for which to display data
-if (isset($_SESSION['obm_ids']) && count($_SESSION['obm_ids']) != 0 && !isset($_REQUEST['obm_ids'])) {
+if (isset($_REQUEST['showmypipeline'])) {
+	$ids = array($current_user->id);
+} elseif (isset($_REQUEST['showpipelineof']) and is_numeric($_REQUEST['showpipelineof'])) {
+	$ids = array($_REQUEST['showpipelineof']);
+} elseif (isset($_SESSION['obm_ids']) && count($_SESSION['obm_ids']) != 0 && !isset($_REQUEST['obm_ids'])) {
 	$ids = $_SESSION['obm_ids'];
 	$log->debug("_SESSION['obm_ids'] is:");
 	$log->debug($_SESSION['obm_ids']);
@@ -95,30 +96,17 @@ else {
 	$ids = array_keys($ids);
 }
 
-//create unique prefix based on selected users for image files
-$id_hash = '';
-if (isset($ids)) {
-	sort($ids);
-	$id_hash = crc32(implode('',$ids));
-}
-$log->debug("ids is:");
-$log->debug($ids);
-
-$cache_file_name = $id_hash."_outcome_by_month_".$current_language."_".crc32($date_start.$date_end).".png";
-$log->debug("cache file name is: $cache_file_name");
-
 if(isPermitted('Potentials','index')=="yes")
 {
-$draw_this = new jpgraph();
-$width = 850;
-$height = 500;
+$width = 1100;
+$height = 600;
 if(isset($_REQUEST['display_view']) && $_REQUEST['display_view'] == 'MATRIX')
 {
 	$width = 350;
 	$height = 250;
 }
 
-echo $draw_this->outcome_by_month($date_start, $date_end, $ids, $tmp_dir.$cache_file_name, $refresh,$width,$height);
+echo DashboardCharts::outcome_by_month($date_start, $date_end, $ids, $width, $height);
 echo "<P><font size='1'><em>".$current_module_strings['LBL_MONTH_BY_OUTCOME_DESC']."</em></font></P>";
 if (isset($_REQUEST['obm_edit']) && $_REQUEST['obm_edit'] == 'true') {
 	$cal_lang = "en";
@@ -138,17 +126,23 @@ if (isset($_REQUEST['obm_edit']) && $_REQUEST['obm_edit'] == 'true') {
 <table cellpadding="2" border="0"><tbody>
 <tr>
 <td valign='top' nowrap><?php echo $current_module_strings['LBL_DATE_START']?> <br><em><?php echo $app_strings['NTC_DATE_FORMAT']?></em></td>
-<td valign='top' ><input class="text" name="obm_date_start" size='12' maxlength='10' id='date_start'  value='<?php if (isset($_SESSION['obm_date_start'])) echo $_SESSION['obm_date_start']?>'>  <img src="<?php echo vtiger_imageurl('calendar.gif', $theme) ?>" id="date_start_trigger"> </td>
+<td valign='top' ><input class="text" name="obm_date_start" size='12' maxlength='10' id='date_start' value='<?php if (isset($_SESSION['obm_date_start'])) echo vtlib_purify($_SESSION['obm_date_start']); ?>'> <img src="<?php echo vtiger_imageurl('calendar.gif', $theme) ?>" id="date_start_trigger"> </td>
 </tr><tr>
 <tr>
 <td valign='top' nowrap><?php echo $current_module_strings['LBL_DATE_END'];?><br><em><?php echo $app_strings['NTC_DATE_FORMAT']?></em></td>
-<td valign='top' ><input class="text" name="obm_date_end" size='12' maxlength='10' id='date_end' value='<?php if (isset($_SESSION['obm_date_end'])) echo $_SESSION['obm_date_end']?>'>  <img src="<?php echo vtiger_imageurl('calendar.gif', $theme) ?>" id="date_end_trigger"> </td>
+<td valign='top' ><input class="text" name="obm_date_end" size='12' maxlength='10' id='date_end' value='<?php if (isset($_SESSION['obm_date_end'])) echo vtlib_purify($_SESSION['obm_date_end']);?>'> <img src="<?php echo vtiger_imageurl('calendar.gif', $theme) ?>" id="date_end_trigger"> </td>
 </tr><tr>
 <td nowrap><?php echo $current_module_strings['LBL_USERS'];?></td>
 <?php if($is_admin==false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid('Potentials')] == 3 or $defaultOrgSharingPermission[getTabid('Potentials')] == 0)) { ?>
-	<td valign='top' ><select name="obm_ids[]" multiple size='3'><?php echo get_select_options_with_id(get_user_array(FALSE, "Active", $current_user->id,'private'),$_SESSION['obm_ids']); ?></select></td>
+	<td valign='top' ><select name="obm_ids[]" multiple size='3'><?php
+	$usrarray = get_user_array(FALSE, 'Active', $current_user->id,'private');
+	echo get_select_options_with_id($usrarray,(isset($_SESSION['obm_ids']) ? $_SESSION['obm_ids'] : '')); ?>
+	</select></td>
 <?php } else { ?>
-	<td valign='top' ><select name="obm_ids[]" multiple size='3'><?php echo get_select_options_with_id(get_user_array(FALSE, "Active",$current_user->id),$_SESSION['obm_ids']); ?></select></td>
+	<td valign='top' ><select name="obm_ids[]" multiple size='3'><?php
+	$usrarray = get_user_array(FALSE, 'Active',$current_user->id);
+	echo get_select_options_with_id($usrarray,(isset($_SESSION['obm_ids']) ? $_SESSION['obm_ids'] : '')); ?>
+	</select></td>
 <?php } ?>
 </tr><tr>
 <td align="right"><br /> <input class="button" onclick="return verify_chart_data(outcome_by_month);" type="submit" title="<?php echo $app_strings['LBL_SELECT_BUTTON_TITLE']; ?>" accessKey="<?php echo $app_strings['LBL_SELECT_BUTTON_KEY']; ?>" value="<?php echo $app_strings['LBL_SELECT_BUTTON_LABEL']?>" /></td>
@@ -163,26 +157,17 @@ Calendar.setup ({
 });
 </script>
 
-<?php } 
+<?php }
 else {
-	if (file_exists($tmp_dir.$cache_file_name)) {
-		$date = new DateTimeField(date('Y-m-d H:i', filemtime($tmp_dir.$cache_file_name)));
-		$file_date = $date->getDBInsertDateValue();
-	}
-	else {
-		$file_date = '';
-	}
 ?>
 <div align=right><FONT size='1'>
-<em><?php  echo $current_module_strings['LBL_CREATED_ON'].' '.$file_date; ?> 
-</em>[<a href="javascript:;" onClick="changeView('<?php echo vtlib_purify($_REQUEST['display_view']);?>');"><?php echo $current_module_strings['LBL_REFRESH'];?></a>]
-[<a href="index.php?module=<?php echo $currentModule;?>&action=index&obm_edit=true&display_view=<?php echo vtlib_purify($_REQUEST['display_view']);?>"><?php echo $current_module_strings['LBL_EDIT'];?></a>]
+[<a href="javascript:;" onClick="changeView('<?php echo isset($_REQUEST['display_view']) ? vtlib_purify($_REQUEST['display_view']) : '';?>');"><?php echo $current_module_strings['LBL_REFRESH'];?></a>]
+[<a href="index.php?module=<?php echo $currentModule;?>&action=index&obm_edit=true&display_view=<?php echo isset($_REQUEST['display_view']) ? vtlib_purify($_REQUEST['display_view']) : '';?>"><?php echo $current_module_strings['LBL_EDIT'];?></a>]
 </FONT></div>
-<?php } 
+<?php }
 }
 else
 {
-	echo $mod_strings['LBL_NO_PERMISSION'];	
+	echo $mod_strings['LBL_NO_PERMISSION'];
 }
-echo get_validate_chart_js();
 ?>

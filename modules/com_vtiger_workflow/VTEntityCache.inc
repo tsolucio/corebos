@@ -8,6 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 require_once 'data/VTEntityDelta.php';
+require_once('modules/com_vtiger_workflow/VTSimpleTemplate.inc');
 
 class VTWorkflowEntity{
 	private $isDeleted = false;
@@ -21,13 +22,15 @@ class VTWorkflowEntity{
 			$data = vtws_retrieve_deleted($id, $user);
 		else
 			$data = vtws_retrieve($id, $user);
-		foreach($data as $key => $value){
-			if(is_string($value)){
+		if (!is_null($data))
+		foreach ($data as $key => $value) {
+			if (is_string($value)) {
 				$data[$key] = html_entity_decode($value, ENT_QUOTES, 'utf-8');
 			}
 		}
 		$this->data = $data;
 	}
+
 	/**
 	 * Get the data from the entity object as an array.
 	 *
@@ -56,8 +59,7 @@ class VTWorkflowEntity{
 			global $adb;
 			$wsId = $this->data['id'];
 			$parts = explode('x', $wsId);
-			$result = $adb->pquery('select name from vtiger_ws_entity where id=?',
-						 array($parts[0]));
+			$result = $adb->pquery('select name from vtiger_ws_entity where id=?', array($parts[0]));
 			$rowData = $adb->raw_query_result_rowdata($result, 0);
 			$this->moduleName = $rowData['name'];
 		}
@@ -65,11 +67,18 @@ class VTWorkflowEntity{
 	}
 
 	function get($fieldName){
-		return $this->data[$fieldName];
+		preg_match('/\((\w+) : \(([_\w]+)\) (\w+)\)/', $fieldName, $matches);
+		if (count($matches)>0) {
+			global $current_user;
+			$ct = new VTSimpleTemplate($fieldName);
+			$entityCache = new VTEntityCache($current_user);
+			$info = $ct->render($entityCache, $this->getId());
+			return $info;
+		}
+		return (isset($this->data[$fieldName]) ? $this->data[$fieldName] : null);
 	}
 
 	function set($fieldName, $value){
-
 		$this->data[$fieldName] = $value;
 	}
 

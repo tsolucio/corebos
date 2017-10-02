@@ -15,19 +15,20 @@ require_once('include/utils/UserInfoUtil.php');
 require_once('modules/Webmails/MailBox.php');
 require_once('modules/Webmails/Webmails.php');
 
-global $mod_strings, $app_strings, $theme;
+global $mod_strings, $app_strings, $theme, $default_charset;
 
 $focus = new Emails();
 $smarty = new vtigerCRM_Smarty();
+$smarty->assign('APP',$app_strings);
 $smarty->assign('MOD',$mod_strings);
 $smarty->assign('THEME',$theme);
-
-if(isset($_REQUEST['record']) && $_REQUEST['record'] !='' && $_REQUEST['mailbox'] == '') {
+$smarty->assign('LBL_CHARSET', $default_charset);
+if(isset($_REQUEST['record']) && $_REQUEST['record'] !='' && empty($_REQUEST['mailbox'])) {
 	$focus->id = $_REQUEST['record'];
 	$focus->mode = 'edit';
 	$focus->retrieve_entity_info($_REQUEST['record'],"Emails");
 
-	$focus->name=$focus->column_fields['name'];
+	$focus->name = isset($focus->column_fields['name']) ? $focus->column_fields['name'] : $focus->column_fields['subject'];
 	if(isset($_REQUEST['print']) && $_REQUEST['print'] !='')
 	{
 		$query = 'select idlists,from_email,to_email,cc_email,bcc_email from vtiger_emaildetails where emailid =?';

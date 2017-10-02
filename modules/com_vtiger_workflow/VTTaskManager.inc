@@ -28,10 +28,10 @@
 		 */
 		public function saveTask($task){
 			$adb = $this->adb;
-			if(is_numeric($task->id)){//How do I check whether a member exists in php?
+			if(!empty($task->id)){
 				$taskId = $task->id;
 				$adb->pquery("update com_vtiger_workflowtasks set summary=?, task=? where task_id=?",
-							array($task->summary, serialize($task), $taskId));
+					array($task->summary, serialize($task), $taskId));
 				return $taskId;
 			}else{
 				$taskId = $adb->getUniqueID("com_vtiger_workflowtasks");
@@ -65,8 +65,16 @@
 			$this->requireTask($taskClass, $taskTypeInstance);
 			$task = new $taskClass();
 			$task->workflowId=$workflowId;
-			$task->summary = "";
+			$task->summary = '';
 			$task->active=true;
+			$fields = $task->getFieldNames();
+			if (is_array($fields)) {
+				foreach ($fields as $field) {
+					if (!isset($task->{$field})) {
+						$task->{$field} = '';
+					}
+				}
+			}
 			return $task;
 		}
 
@@ -79,12 +87,16 @@
 		public function retrieveTask($taskId){
 			$adb = $this->adb;
 			$result = $adb->pquery("select task from com_vtiger_workflowtasks where task_id=?", array($taskId));
+			if (!$result or $adb->num_rows($result)==0) return false;
 			$data = $adb->raw_query_result_rowdata($result, 0);
 			$task = $data["task"];
 			$task = $this->unserializeTask($task);
 			$timeFieldList = $task->getTimeFieldList();
 			foreach ($timeFieldList as $field) {
 				$task->$field = $task->formatTimeForTimePicker($task->$field);
+			}
+			if (method_exists($task, 'after_retrieve')) {
+				$task->after_retrieve();
 			}
 			return $task;
 		}
@@ -170,11 +182,18 @@
 			return array();
 		}
 
+		public function after_retrieve() {
+		}
+
 		public function formatTimeForTimePicker($time) {
 			$AM_PM = array('am', 'pm');
 			if (in_array(strtolower(substr($time, -2)),$AM_PM))
 				return $time; // ya tiene el formato correcto, devolverlo sin más
-			list($h, $m, $s) = explode(':', $time);
+			if (substr_count($time, ':')==1) {
+				list($h, $m) = explode(':', $time);
+			} else {
+				list($h, $m, $s) = explode(':', $time);
+			}
 			$mn = str_pad($m - $m % 15, 2, 0, STR_PAD_LEFT);
 			return str_pad(($h%12), 2, 0, STR_PAD_LEFT).':'.$mn.$AM_PM[($h/12)%2];
 		}
@@ -204,6 +223,7 @@
 				'Comments' => '(general : (__VtigerMeta__) comments)',
 				'groupEmailList' => '(general : (__VtigerMeta__) groupEmailList_Put_Group_Name_Here)',
 				'invitedUsers' => '(general : (__VtigerMeta__) Events_Users_Invited)',
+				'WorkflowFunction' => '(general : (__WorkflowFunction__) Put_Function_Here ) ',
 			);
 		}
 

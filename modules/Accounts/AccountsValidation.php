@@ -29,14 +29,14 @@ global $log,$currentModule,$adb;
 
 $screen_values = json_decode($_REQUEST['structure'],true);
 $blockDuplicateAccounts = GlobalVariable::getVariable('Accounts_BlockDuplicateName',1,'Accounts');
-if ($blockDuplicateAccounts) {
+if ($blockDuplicateAccounts and isset($screen_values['accountname'])) {
 	$query = 'SELECT accountname FROM vtiger_account,vtiger_crmentity WHERE accountname =? and vtiger_account.accountid = vtiger_crmentity.crmid and vtiger_crmentity.deleted != 1';
 	$value = vtlib_purify($screen_values['accountname']);
 	$params = array($value);
 	$id = vtlib_purify($screen_values['record']);
 	if(!empty($id)) {
 		$query .= ' and vtiger_account.accountid != ?';
-		array_push($params, $id);
+		$params[] = $id;
 	}
 	$result = $adb->pquery($query, $params);
 	if($adb->num_rows($result) > 0) {

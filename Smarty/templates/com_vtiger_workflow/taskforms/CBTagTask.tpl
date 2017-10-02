@@ -22,10 +22,10 @@
 var moduleName = '{$entityName}';
 </script>
 <h2>{'LBL_ACTION'|@getTranslatedString:'com_vtiger_workflow'}</h2>
-&nbsp;&nbsp;<input type="radio" name="addrel" value="1" {if $task->addrel eq 1}checked{/if}> {'Add Tag'|@getTranslatedString:'com_vtiger_workflow'}<br>
-&nbsp;&nbsp;<input type="radio" name="addrel" value="0" {if $task->addrel eq 0}checked{/if}> {'Delete Tag'|@getTranslatedString:'com_vtiger_workflow'}<br><br>
-&nbsp;&nbsp;<input type="radio" name="forallusers" value="1" {if $task->forallusers eq 1}checked{/if}> {'ForAllUsers'|@getTranslatedString:'com_vtiger_workflow'}
+&nbsp;&nbsp;<input type="radio" name="addrel" value="1" {if isset($task->addrel) && $task->addrel eq 1}checked{/if}> {'Add Tag'|@getTranslatedString:'com_vtiger_workflow'}<br>
+&nbsp;&nbsp;<input type="radio" name="addrel" value="0" {if isset($task->addrel) && $task->addrel eq 0}checked{/if}> {'Delete Tag'|@getTranslatedString:'com_vtiger_workflow'}<br><br>
+&nbsp;&nbsp;<input type="radio" name="forallusers" value="1" {if isset($task->forallusers) && $task->forallusers eq 1}checked{/if}> {'ForAllUsers'|@getTranslatedString:'com_vtiger_workflow'}
 &nbsp;&nbsp;{'LBL_OR'|@getTranslatedString}
-&nbsp;&nbsp;<input type="radio" name="forallusers" value="0" {if $task->forallusers eq 0}checked{/if}> {'ForCurrentUser'|@getTranslatedString:'com_vtiger_workflow'}<br>
+&nbsp;&nbsp;<input type="radio" name="forallusers" value="0" {if isset($task->forallusers) && $task->forallusers eq 0}checked{/if}> {'ForCurrentUser'|@getTranslatedString:'com_vtiger_workflow'}<br>
 <h2>{'Tags'|@getTranslatedString:'com_vtiger_workflow'}</h2>
-<input id="listoftags" name="listoftags" type="text" value="{$task->listoftags}">
+<input id="listoftags" name="listoftags" type="text" value="{if isset($task->listoftags)}{$task->listoftags}{/if}">

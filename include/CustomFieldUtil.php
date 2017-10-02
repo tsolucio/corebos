@@ -82,24 +82,25 @@ function getCustomFieldTypeName($uitype)
 }
 
 /**
- * Function to get custom vtiger_fields
- * @param $module :: vtiger_table name -- Type string
+ * Function to get custom fields
+ * @param $module :: Type string
  * returns customfields in key-value pair array format
  */
 function getCustomFieldArray($module)
 {
 	global $log, $adb;
 	$log->debug("Entering getCustomFieldArray(".$module.") method ...");
-	$custquery = "select tablename,fieldname from vtiger_field where tablename=? and vtiger_field.presence in (0,2) order by tablename";
-	$custresult = $adb->pquery($custquery, array('vtiger_'.strtolower($module).'cf'));
+	$custquery = 'select tablename,fieldname from vtiger_field where tablename=? and vtiger_field.presence in (0,2) order by tablename';
+	$mod = CRMEntity::getInstance($module);
+	$param = array($mod->customFieldTable[0]);
+	$custresult = $adb->pquery($custquery, $param);
 	$custFldArray = Array();
 	$noofrows = $adb->num_rows($custresult);
-	for($i=0; $i<$noofrows; $i++)
-	{
+	for ($i=0; $i<$noofrows; $i++) {
 		$colName=$adb->query_result($custresult,$i,"fieldname");
 		$custFldArray[$colName] = $i;
 	}
-	$log->debug("Exiting getCustomFieldArray method ...");
+	$log->debug('Exiting getCustomFieldArray method ...');
 	return $custFldArray;
 }
 
@@ -155,7 +156,6 @@ function getCustomFieldTableInfo($module)
 	global $log;
 	$log->debug("Entering getCustomFieldTableInfo($module) method ...");
 	$primary = CRMEntity::getInstance($module);
-	vtlib_setup_modulevars($module, $primary);
 	if (isset($primary->customFieldTable)) {
 		$cfinfo = $primary->customFieldTable;
 	} else {
@@ -244,10 +244,10 @@ function getFldTypeandLengthValue($label,$typeofdata)
 
 function getCalendarCustomFields($tabid,$mode='edit',$col_fields='') {
 	global $adb, $log, $current_user;
-	$log->debug("Entering getCalendarCustomFields($tabid, $mode, $col_fields)");
+	$log->debug("Entering getCalendarCustomFields($tabid, $mode, " . print_r($col_fields,true) . ')');
 
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
-	$isduplicate = vtlib_purify($_REQUEST['isDuplicate']);
+	$isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : null;
 	$calmode = vtlib_purify($_REQUEST['action']);
 	$block = getBlockId($tabid,"LBL_CUSTOM_INFORMATION");
 	$custparams = array($block, $tabid);
@@ -265,7 +265,7 @@ function getCalendarCustomFields($tabid,$mode='edit',$col_fields='') {
 			$custquery .= "  AND vtiger_profile2field.readonly = 0";
 		}
 		$custquery .= " GROUP BY vtiger_field.fieldid";
-		array_push($custparams, $profileList);
+		$custparams[] = $profileList;
 	}
 	$custresult = $adb->pquery($custquery, $custparams);
 	$custFldArray = Array();

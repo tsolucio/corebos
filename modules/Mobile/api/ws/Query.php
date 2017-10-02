@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-include_once dirname(__FILE__) . '/FetchRecordDetails.php';
+include_once __DIR__ . '/FetchRecordDetails.php';
 
 include_once 'include/Webservices/Query.php';
 
@@ -19,10 +19,6 @@ class crmtogo_WS_Query extends crmtogo_WS_FetchRecordDetails {
 	}
 	
 	function process(crmtogo_API_Request $request) {
-printf("This debug is in %s on line %d\n  for request",__FILE__, __LINE__); 
-print_r("<PRE>");
-print_r($request);
-print_r("</PRE>");
 		$current_user = $this->getActiveUser();
 		
 		$query = $request->get('query', '', false);

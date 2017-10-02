@@ -7,12 +7,9 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('include/database/PearDatabase.php');
 require_once('Smarty_setup.php');
-global $mod_strings, $adb;
-global $app_strings;
-global $app_list_strings, $current_language;
+global $mod_strings, $adb, $app_strings, $current_language;
 
 $tableName=vtlib_purify($_REQUEST["fieldname"]);
 $tableName = $adb->sql_escape_string($tableName);

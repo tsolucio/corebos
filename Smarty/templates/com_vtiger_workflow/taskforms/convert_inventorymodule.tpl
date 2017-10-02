@@ -25,10 +25,10 @@ var moduleName = '{$entityName}';
 	<tr>
 		<td style='padding-top: 10px;' colspan="2">
 			<select name="convertto">
-			<option value='Quotes'{if $task->convertto eq 'Quotes'} selected{/if}{if $entityName eq 'Quotes'} disabled{/if}>{'Quotes'|@getTranslatedString:$MODULE}</option>
-			<option value='SalesOrder'{if $task->convertto eq 'SalesOrder'} selected{/if}{if $entityName eq 'SalesOrder'} disabled{/if}>{'SalesOrder'|@getTranslatedString:$MODULE}</option>
-			<option value='Invoice'{if $task->convertto eq 'Invoice'} selected{/if}{if $entityName eq 'Invoice'} disabled{/if}>{'Invoice'|@getTranslatedString:$MODULE}</option>
-			<option value='PurchaseOrder'{if $task->convertto eq 'PurchaseOrder'} selected{/if}{if $entityName eq 'PurchaseOrder'} disabled{/if}>{'PurchaseOrder'|@getTranslatedString:$MODULE}</option>
+			<option value='Quotes'{if isset($task->convertto) && $task->convertto eq 'Quotes'} selected{/if}{if $entityName eq 'Quotes'} disabled{/if}>{'Quotes'|@getTranslatedString:'Quotes'}</option>
+			<option value='SalesOrder'{if isset($task->convertto) && $task->convertto eq 'SalesOrder'} selected{/if}{if $entityName eq 'SalesOrder'} disabled{/if}>{'SalesOrder'|@getTranslatedString:'SalesOrder'}</option>
+			<option value='Invoice'{if isset($task->convertto) && $task->convertto eq 'Invoice'} selected{/if}{if $entityName eq 'Invoice'} disabled{/if}>{'Invoice'|@getTranslatedString:'Invoice'}</option>
+			<option value='PurchaseOrder'{if isset($task->convertto) && $task->convertto eq 'PurchaseOrder'} selected{/if}{if $entityName eq 'PurchaseOrder'} disabled{/if}>{'PurchaseOrder'|@getTranslatedString:'PurchaseOrder'}</option>
 			</select>
 		</td>
 	</tr>
@@ -37,7 +37,7 @@ var moduleName = '{$entityName}';
 <table border="0" cellpadding="5" cellspacing="0" width="100%" class="small">
 	<tr>
 		<td style='padding-top: 10px;' colspan="2">
-			<span class="helpmessagebox">{'ConvertInventoryModuleMessage'|@getTranslatedString:$MODULE}</span>
+			<span class="helpmessagebox">{'ConvertInventoryModuleMessage'|@getTranslatedString:'com_vtiger_workflow'}</span>
 		</td>
 	</tr>
 </table>

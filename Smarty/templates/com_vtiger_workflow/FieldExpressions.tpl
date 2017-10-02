@@ -14,7 +14,7 @@
         <table width="100%" cellspacing="0" cellpadding="5" border="0" class="layerHeadingULine">
             <tr>
                 <td width="60%" align="left" class="layerPopupHeading">
-                {'LBL_SET_VALUE'|@getTranslatedString:$MODULE}
+                {$MOD.LBL_SET_VALUE}
                 </td>
                 <td width="40%" align="right">
                     <a href="javascript:void(0);" id="editpopup_close">

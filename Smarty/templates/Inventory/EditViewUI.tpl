@@ -8,18 +8,61 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-		{assign var="uitype" value=$maindata[0][0]}
-		{assign var="fldlabel" value=$maindata[1][0]}
-		{assign var="fldlabel_sel" value=$maindata[1][1]}
-		{assign var="fldlabel_combo" value=$maindata[1][2]}
-		{assign var="fldlabel_other" value=$maindata[1][3]}
-		{assign var="fldname" value=$maindata[2][0]|cat:$row_no}
-		{assign var="fldvalue" value=$maindata[3][0]}
-		{assign var="secondvalue" value=$maindata[3][1]}
-		{assign var="thirdvalue" value=$maindata[3][2]}
-		{assign var="typeofdata" value=$maindata[4]}
-		{assign var="vt_tab" value=$maindata[5][0]}
-
+		{if isset($maindata[0][0])}
+			{assign var="uitype" value=$maindata[0][0]}
+		{else}
+			{assign var="uitype" value=''}
+		{/if}
+		{if isset($maindata[1][0])}
+			{assign var="fldlabel" value=$maindata[1][0]}
+		{else}
+			{assign var="fldlabel" value=''}
+		{/if}
+		{if isset($maindata[1][1])}
+			{assign var="fldlabel_sel" value=$maindata[1][1]}
+		{else}
+			{assign var="fldlabel_sel" value=''}
+		{/if}
+		{if isset($maindata[1][2])}
+			{assign var="fldlabel_combo" value=$maindata[1][2]}
+		{else}
+			{assign var="fldlabel_combo" value=''}
+		{/if}
+		{if isset($maindata[1][3])}
+			{assign var="fldlabel_other" value=$maindata[1][3]}
+		{else}
+			{assign var="fldlabel_other" value=''}
+		{/if}
+		{if isset($maindata[2][0])}
+			{assign var="fldname" value=$maindata[2][0]|cat:$row_no}
+		{else}
+			{assign var="fldname" value=''}
+		{/if}
+		{if isset($maindata[3][0])}
+			{assign var="fldvalue" value=$maindata[3][0]}
+		{else}
+			{assign var="fldvalue" value=''}
+		{/if}
+		{if isset($maindata[3][1])}
+			{assign var="secondvalue" value=$maindata[3][1]}
+		{else}
+			{assign var="secondvalue" value=''}
+		{/if}
+		{if isset($maindata[3][2])}
+			{assign var="thirdvalue" value=$maindata[3][2]}
+		{else}
+			{assign var="thirdvalue" value=''}
+		{/if}
+		{if isset($maindata[4])}
+			{assign var="typeofdata" value=$maindata[4]}
+		{else}
+			{assign var="typeofdata" value=''}
+		{/if}
+		{if isset($maindata[5][0])}
+			{assign var="vt_tab" value=$maindata[5][0]}
+		{else}
+			{assign var="vt_tab" value=''}
+		{/if}
 		{if $typeofdata eq 'M'}
 			{assign var="mandatory_field" value="*"}
 		{else}
@@ -29,16 +72,14 @@
 		{* vtlib customization: Help information for the fields *}
 		{assign var="usefldlabel" value=$fldlabel}
 		{assign var="fldhelplink" value=""}
-		{if $FIELDHELPINFO && $FIELDHELPINFO.$fldname}
+		{if isset($FIELDHELPINFO) && isset($FIELDHELPINFO.$fldname)}
 			{assign var="fldhelplinkimg" value='help_icon.gif'|@vtiger_imageurl:$THEME}
 			{assign var="fldhelplink" value="<img style='cursor:pointer' onclick='vtlib_field_help_show(this, \"$fldname\");' border=0 src='$fldhelplinkimg'>"}
 			{if $uitype neq '10'}
 				{assign var="usefldlabel" value="$fldlabel $fldhelplink"}
 			{/if}
 		{/if}
-		{* END *}
 
-		{* vtlib customization *}
 		{if $uitype eq '10'}
 			<span class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
 			<font color="red">{$mandatory_field}</font>
@@ -115,7 +156,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			<span class="mdCellInfo">
 				<textarea value="{$fldvalue}" name="{$fldname}" tabindex="{$vt_tab}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" rows=2>{$fldvalue}</textarea>
 			</span>
-		{elseif $uitype eq 15 || $uitype eq 16  || $uitype eq '31' || $uitype eq '32' || $uitype eq '1613'}
+		{elseif $uitype eq 15 || $uitype eq 16  || $uitype eq '31' || $uitype eq '32' || $uitype eq '1613' || $uitype eq '1614'}
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
 				<font color="red">{$mandatory_field}</font>
 				{$usefldlabel}
@@ -138,7 +179,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				{/foreach}
 				</select>
 			</span>
-		{elseif $uitype eq 33 || $uitype eq 3313 || $uitype eq 1024}
+		{elseif $uitype eq 33 || $uitype eq 3313 || $uitype eq 3314 || $uitype eq 1024}
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
 				<font color="red">{$mandatory_field}</font>{$usefldlabel}
 			</span>
@@ -166,6 +207,8 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 					{/foreach}
 				{/foreach}
 
+				{assign var=select_user value=''}
+				{assign var=select_group value=''}
 				{if $check eq 0}
 					{assign var=select_user value='checked'}
 					{assign var=style_user value='display:block'}
@@ -183,7 +226,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				{/if}
 
 				<span id="assign_user" style="{$style_user}">
-					<select name="{$fldname}" class="small">
+					<select name="{$fldname}" id="{$fldname}" class="small">
 						{foreach key=key_one item=arr from=$fldvalue}
 							{foreach key=sel_value item=value from=$arr}
 								<option value="{$key_one}" {$value}>{$sel_value}</option>
@@ -194,7 +237,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 
 				{if $secondvalue neq ''}
 					<span id="assign_team" style="{$style_group}">
-						<select name="assigned_group_id" class="small">
+						<select name="assigned_group_id" id="assigned_group_id" class="small">
 							{foreach key=key_one item=arr from=$secondvalue}
 								{foreach key=sel_value item=value from=$arr}
 									<option value="{$key_one}" {$value}>{$sel_value}</option>
@@ -210,11 +253,11 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			</span>
 			<span width="30%" class="mdCellInfo">
 				{if $uitype eq 52}
-					<select name="{$fldname}" tabindex="{$vt_tab}" class="small">
+					<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small">
 				{elseif $uitype eq 77}
-					<select name="{$fldname}" tabindex="{$vt_tab}" class="small">
+					<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small">
 				{else}
-					<select name="{$fldname}" tabindex="{$vt_tab}" class="small">
+					<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small">
 				{/if}
 
 				{foreach key=key_one item=arr from=$fldvalue}
@@ -331,19 +374,8 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
 				<font color="red">{$mandatory_field}</font>{$usefldlabel}
 			</span>
-
-			{if $fldname eq 'notime' && $ACTIVITY_MODE eq 'Events'}
-				{if $fldvalue eq 1}
-					<span width="30%" class="mdCellInfo">
-						<input name="{$fldname}" type="checkbox" tabindex="{$vt_tab}" onclick="toggleTime()" checked>
-					</span>
-				{else}
-					<span width="30%" class="mdCellInfo">
-						<input name="{$fldname}" tabindex="{$vt_tab}" type="checkbox" onclick="toggleTime()" >
-					</span>
-				{/if}
 			<!-- For Portal Information we need a hidden field existing_portal with the current portal value -->
-			{elseif $fldname eq 'portal'}
+			{if $fldname eq 'portal'}
 				<span width="30%" class="mdCellInfo">
 					<input type="hidden" name="existing_portal" value="{$fldvalue}">
 					<input name="{$fldname}" type="checkbox" tabindex="{$vt_tab}" {if $fldvalue eq 1}checked{/if}>
@@ -490,45 +522,30 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 		{elseif $uitype eq 69}
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
 				<font color="red">{$mandatory_field}</font>{$usefldlabel}
-			</span>
-			<span colspan="1" width="30%" class="mdCellInfo">
-				{if $MODULE eq 'Products'}
-					<input name="del_file_list" type="hidden" value="">
-					<div id="files_list" style="border: 1px solid grey; width: 500px; padding: 5px; background: rgb(255, 255, 255) none repeat scroll 0%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial; font-size: x-small">
-						<span id="limitmsg" style= "color:red;"> {'LBL_MAX_SIZE'|@getTranslatedString:$MODULE} {$UPLOADSIZE}{'LBL_FILESIZEIN_MB'|@getTranslatedString:$MODULE}, {$APP.Files_Maximum}{$Product_Maximum_Number_Images}</span>
-						<input id="my_file_element" type="file" name="file_1" tabindex="{$vt_tab}"  onchange="validateFilename(this)"/>
-						<!--input type="hidden" name="file_1_hidden" value=""/-->
-						{assign var=image_count value=0}
-						{if isset($maindata[3].0.name) && $maindata[3].0.name neq '' && $DUPLICATE neq 'true'}
-							{foreach name=image_loop key=num item=image_details from=$maindata[3]}
-							<div align="center">
-								<img src="{$image_details.path}{$image_details.name}" height="50">&nbsp;&nbsp;[{$image_details.orgname}]<input id="file_{$num}" value="{'LBL_DELETE_BUTTON'|@getTranslatedString}" type="button" class="crmbutton small delete" onclick='this.parentNode.parentNode.removeChild(this.parentNode);delRowEmt("{$image_details.orgname}")'>
-							</div>
-							{assign var=image_count value=$smarty.foreach.image_loop.iteration}
-							{/foreach}
-						{/if}
-					</div>
-
-					<script>
-						{*<!-- Create an instance of the multiSelector class, pass it the output target and the max number of files -->*}
-						var multi_selector = new MultiSelector( document.getElementById( 'files_list' ), {$Product_Maximum_Number_Images} );
-						multi_selector.count = {$image_count};
-						{*<!-- Pass in the file element -->*}
-						multi_selector.addElement( document.getElementById( 'my_file_element' ) );
-					</script>
+			</span><span colspan="1" width="30%" class="mdCellInfo">
+				<div style="display: flex;flex-direction: row; width:100%">
+				<div width="80%">
+				<span id="limitmsg" style= "color:red;"> {'LBL_MAX_SIZE'|@getTranslatedString:$MODULE} {$UPLOADSIZE}{'LBL_FILESIZEIN_MB'|@getTranslatedString:$MODULE}<br /></span>
+				{if isset($maindata[3].0.name) && $maindata[3].0.name != "" && $DUPLICATE neq 'true'}
+					{assign var=imagevalueexists value=true}
 				{else}
-					<span id="limitmsg" style= "color:red;"> {'LBL_MAX_SIZE'|@getTranslatedString:$MODULE} {$UPLOADSIZE}{'LBL_FILESIZEIN_MB'|@getTranslatedString:$MODULE}<br /></span>
-					{if isset($maindata[3].0.name) && $maindata[3].0.name != "" && $DUPLICATE neq 'true'}
-					  {assign var=imagevalueexists value=true}
-					{else}
-					  {assign var=imagevalueexists value=false}
-					{/if}
-					<input name="{$fldname}"  type="file" value="{if $imagevalueexists}{$maindata[3].0.name}{/if}" tabindex="{$vt_tab}" onchange="validateFilename(this);" />
-					<input name="{$fldname}_hidden"  type="hidden" value="{if $imagevalueexists}{$maindata[3].0.name}{/if}" />
-					{if $imagevalueexists}
-						<div id="{$fldname}_replaceimage">[{$maindata[3].0.orgname}] <input id="{$fldname}_attach" value="{'LBL_DELETE_BUTTON'|@getTranslatedString}" type="button" class="crmbutton small delete" onclick='delimage({$ID},"{$fldname}","{$maindata[3].0.orgname}");'></div>
-					{/if}
+					{assign var=imagevalueexists value=false}
 				{/if}
+				<input name="{$fldname}" type="file" value="{if $imagevalueexists}{$maindata[3].0.name}{/if}" tabindex="{$vt_tab}" onchange="validateFilename(this);" />
+				<input name="{$fldname}_hidden" type="hidden" value="{if $imagevalueexists}{$maindata[3].0.name}{/if}" />
+				<input name="{$fldname}_path_hidden" type="hidden" value="{if $imagevalueexists}{$maindata[3].0.path}{$maindata[3].0.name}{/if}" />
+				{if $imagevalueexists}
+					<div id="{$fldname}_replaceimage">[{$maindata[3].0.orgname}] <input id="{$fldname}_attach" value="{'LBL_DELETE_BUTTON'|@getTranslatedString}" type="button" class="crmbutton small delete" onclick='delimage({$ID},"{$fldname}","{$maindata[3].0.orgname}");'></div>
+				{/if}
+				<div id="displaySize"></div>
+				</div>
+				<div style="width:50px;height:50px;overflow: hidden;">
+					<canvas style="border:1px solid grey;" id="{$fldname}_canvas" tabindex="{$vt_tab}1}"></canvas>
+					<input name="{$fldname}_canvas_image" id="{$fldname}_canvas_image" type="hidden" value="" />
+					<input name="{$fldname}_canvas_image_set" id="{$fldname}_canvas_image_set" type="hidden" value="0" />
+					<script>var {$fldname}_CLIPBOARD = new CLIPBOARD_CLASS("{$fldname}_canvas", true);</script>
+				</div>
+				</div>
 			</span>
 
 		{elseif $uitype eq 61}
@@ -576,11 +593,6 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			{/if}
 			<input name="user_role" id="user_role" value="{$fldvalue}" type="hidden">
 			</span>
-		{elseif $uitype eq 104}<!-- Mandatory Email Fields -->
-			 <span class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-			<font color="red">{$mandatory_field}</font>{$usefldlabel}
-			</span>
-			<span class="mdCellInfo"><input type="text" name="{$fldname}" id ="{$fldname}" value="{$fldvalue}" tabindex="{$vt_tab}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"></span>
 		{elseif $uitype eq 115}<!-- for Status field Disabled for nonadmin -->
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
 				<font color="red">{$mandatory_field}</font>{$usefldlabel}

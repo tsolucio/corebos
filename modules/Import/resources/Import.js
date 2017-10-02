@@ -108,7 +108,7 @@ if (typeof(ImportJs) == 'undefined') {
 				var selectedFieldName = selectedFieldElement.val();
 				var selectedFieldDefaultValueElement = jQuery('#'+selectedFieldName+'_defaultvalue', fieldElement);
 				var defaultValue = '';
-				if(selectedFieldDefaultValueElement.attr('type') == 'checkbox') {
+				if(selectedFieldDefaultValueElement.prop('type') == 'checkbox') {
 					defaultValue = selectedFieldDefaultValueElement.is(':checked');
 				} else {
 					defaultValue = selectedFieldDefaultValueElement.val();
@@ -130,9 +130,7 @@ if (typeof(ImportJs) == 'undefined') {
 			if (mandatoryFields!='') {
 				mandatoryFields = JSON.parse(mandatoryFields);
 				for(var mandatoryFieldName in mandatoryFields) {
-					if(mandatoryFieldName in mappedFields) {
-						continue;
-					} else {
+					if (!(mandatoryFieldName in mappedFields)) {
 						missingMandatoryFields.push('"'+mandatoryFields[mandatoryFieldName]+'"');
 					}
 				}
@@ -168,7 +166,7 @@ if (typeof(ImportJs) == 'undefined') {
 
 		loadSavedMap: function() {
 			var selectedMapElement = jQuery('#saved_maps option:selected');
-			var mapId = selectedMapElement.attr('id');
+			var mapId = selectedMapElement.prop('id');
 			var fieldsList = jQuery('.fieldIdentifier');
 			fieldsList.each(function(i, element) {
 				var fieldElement = jQuery(element);
@@ -200,14 +198,14 @@ if (typeof(ImportJs) == 'undefined') {
 				} else if(rowId in mapping) {
 					jQuery('[name=mapped_fields]', fieldElement).val($rowId);
 				}
-				ImportJs.loadDefaultValueWidget(fieldElement.attr('id'));
+				ImportJs.loadDefaultValueWidget(fieldElement.prop('id'));
 			});
 		},
 
 		deleteMap : function(module) {
 			if(confirm(alert_arr.ARE_YOU_SURE_YOU_WANT_TO_DELETE)) {
 				var selectedMapElement = jQuery('#saved_maps option:selected');
-				var mapId = selectedMapElement.attr('id');
+				var mapId = selectedMapElement.prop('id');
 				jQuery('#status').show();
 				jQuery.ajax( {
 					url  : 'index.php',
@@ -272,7 +270,7 @@ if (typeof(ImportJs) == 'undefined') {
 				var fieldElement = jQuery(element);
 				var mappedFieldName = jQuery('[name=mapped_fields]', fieldElement).val();
 				if(mappedFieldName != '') {
-					ImportJs.loadDefaultValueWidget(fieldElement.attr('id'));
+					ImportJs.loadDefaultValueWidget(fieldElement.prop('id'));
 				}
 			});
 

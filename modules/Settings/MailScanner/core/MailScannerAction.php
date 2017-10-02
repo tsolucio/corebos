@@ -135,6 +135,10 @@ class Vtiger_MailScannerAction {
 				$returnid = $this->__UpdateTicket($mailscanner, $mailrecord,
 					$mailscannerrule->hasRegexMatch($matchresult));
 			}
+			if($this->module == 'Project') {
+				$returnid = $this->__UpdateProject($mailscanner, $mailrecord,
+					$mailscannerrule->hasRegexMatch($matchresult));
+			}
 		}
 		return $returnid;
 	}
@@ -157,15 +161,55 @@ class Vtiger_MailScannerAction {
 			$fromemail = $mailrecord->_from[0];
 
 			$linkfocus = $mailscanner->GetTicketRecord($usesubject, $fromemail);
-			$relatedid = $linkfocus->column_fields[parent_id];
+//			$relatedid = $linkfocus->column_fields['parent_id'];
+			$relatedid = $mailscanner->linkedid;
 
 			// If matching ticket is found, update comment, attach email
 			if($linkfocus) {
 				$timestamp = $adb->formatDate(date('YmdHis'), true);
+//				$adb->pquery("INSERT INTO vtiger_ticketcomments(ticketid, comments, ownerid, ownertype, createdtime) VALUES(?,?,?,?,?)",
+//					Array($linkfocus->id, $mailrecord->getBodyText(), $relatedid, 'customer', $timestamp));
 				$adb->pquery("INSERT INTO vtiger_ticketcomments(ticketid, comments, ownerid, ownertype, createdtime) VALUES(?,?,?,?,?)",
-					Array($linkfocus->id, $mailrecord->getBodyText(), $relatedid, 'customer', $timestamp));
+					Array($linkfocus->id, $mailrecord->getBodyText(), $relatedid,$mailscanner->linkedtype, $timestamp));
 				// Set the ticket status to Open if its Closed
 				$adb->pquery("UPDATE vtiger_troubletickets set status=? WHERE ticketid=? AND status='Closed'", Array('Open', $linkfocus->id));
+
+				$returnid = $this->__CreateNewEmail($mailrecord, $this->module, $linkfocus);
+
+			} else {
+				// TODO If matching ticket was not found, create ticket?
+				// $returnid = $this->__CreateTicket($mailscanner, $mailrecord);
+			}
+		}
+		return $returnid;
+	}
+
+	/**
+	 * Update Project action.
+	 */
+	function __UpdateProject($mailscanner, $mailrecord, $regexMatchInfo) {
+		global $adb;
+		$returnid = false;
+		$usesubject = false;
+		if($this->lookup == 'SUBJECT') {
+			// If regex match was performed on subject use the matched group
+			// to lookup the ticket record
+			if($regexMatchInfo) $usesubject = $regexMatchInfo['matches'];
+			else $usesubject = $mailrecord->_subject;
+
+			// Get the ticket record that was created by SENDER earlier
+			$fromemail = $mailrecord->_from[0];
+			$linkfocus = $mailscanner->GetProjectRecord($usesubject, $fromemail);
+//			$relatedid = $linkfocus->column_fields['parent_id'];
+			$relatedid = (!empty($mailscanner->linkedid) ? $mailscanner->linkedid : 1);
+
+			// If matching ticket is found, update comment, attach email
+			if($linkfocus) {
+				$comment = CRMEntity::getInstance('ModComments');
+				$comment->column_fields['assigned_user_id'] = $relatedid;
+				$comment->column_fields['commentcontent'] = $mailrecord->getBodyText();
+				$comment->column_fields['related_to'] = $linkfocus->id;
+				$comment->save('ModComments');
 
 				$returnid = $this->__CreateNewEmail($mailrecord, $this->module, $linkfocus);
 

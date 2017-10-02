@@ -15,7 +15,7 @@ require_once('include/database/PearDatabase.php');
 require_once 'include/utils/ListViewUtils.php';
 require_once('modules/CustomView/CustomView.php');
 
-global $mod_strings,$app_strings,$app_list_strings,$theme,$adb,$current_user;
+global $mod_strings,$app_strings,$theme,$adb,$current_user;
 
 $theme_path="themes/".$theme."/";
 
@@ -72,7 +72,7 @@ if(!empty($_SESSION[$sModule.'_DetailView_Navigation'.$viewId])){
 	$recordList = array();
 }
 $output = '<table width="100%" border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine"> 
-	<tr><td width="60%" align="left" style="font-size:12px;font-weight:bold;">'.$app_strings['LBL_JUMP_To'].' '.$app_strings[$sModule].':</td>
+	<tr><td width="60%" align="left" style="font-size:12px;font-weight:bold;">'.$app_strings['LBL_JUMP_To'].' '.getTranslatedString($sModule,$sModule).':</td>
 	<td width="5%" align="right"><a href="javascript:fninvsh(\'lstRecordLayout\');"><img src="'. vtiger_imageurl('close.gif', $theme).'" border="0" align="absmiddle" /></a></td>
 	</tr>
 	</table><table border=0 cellspacing=0 cellpadding=0 width=100% align=center>
@@ -113,8 +113,7 @@ if(count($recordList) > 0){
 			$output .= '<tr><td style="text-align:left;font-weight:bold;">'.$recordNameMapping[$id].'</td></tr>';
 		}else{
 			$output .= '<tr><td style="text-align:left;"><a href="index.php?module='.$sModule.
-				'&action=DetailView&parenttab='.vtlib_purify($_REQUEST['CurParentTab']).'&record='.$id.
-				'&start='.$recordPageMapping[$id].'">'.$recordNameMapping[$id].'</a></td></tr>';
+				'&action=DetailView&record='.$id.'&start='.$recordPageMapping[$id].'">'.$recordNameMapping[$id].'</a></td></tr>';
 		}
 	}
 }

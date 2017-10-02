@@ -20,6 +20,9 @@ class ModTracker {
 	public static $CREATED = '2';
 	public static $RESTORED = '3';
 
+	// cache variable
+	public static $__cache_modtracker = array();
+
 	/* Entry point will invoke this function no need to act on */
 	function track_view($user_id, $current_module,$id='') {}
 
@@ -86,9 +89,6 @@ class ModTracker {
 		}
 		return $modules;
 	}
-
-	// cache variable
-	static $__cache_modtracker = array();
 
 	/**
 	 *Invoked to disable tracking for the module.
@@ -217,7 +217,7 @@ class ModTracker {
 	 */
 	static function getVisibilityForModule($tabid){
 		if(isset(self::$__cache_modtracker[$tabid])) {
-			return $__cache_modtracker[$tabid]['visible'];
+			return self::$__cache_modtracker[$tabid]['visible'];
 		}
 		return false;
 	}
@@ -318,7 +318,7 @@ class ModTracker {
 			$modifiedtime = vtws_getSeconds($maxModifiedTime);
 		}
 		if(is_string($modifiedtime)) {
-			$modifiedtime = intval($modifiedtime);
+			$modifiedtime = (int)$modifiedtime;
 		}
 		$output['lastModifiedTime'] = $modifiedtime;
 
@@ -347,10 +347,7 @@ class ModTracker {
 	static function isViewPermitted($linkData) {
 		$moduleName = $linkData->getModule();
 		$recordId = $linkData->getInputParameter('record');
-		if(isPermitted($moduleName, 'DetailView', $recordId) == 'yes') {
-			return true;
-		}
-		return false;
+        return isPermitted($moduleName, 'DetailView', $recordId) == 'yes';
 	}
 }
 ?>

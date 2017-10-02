@@ -27,7 +27,7 @@ class WSAPP_SyncStateModel extends WSAPP_BaseModel{
 	}
 
 	public function hasMoreRecords(){
-		return ($this->get('more')==1) ? true : false;
+		return $this->get('more') == 1;
 	}
 
 	public function getSyncTrackerId(){
@@ -55,16 +55,16 @@ class WSAPP_SyncStateModel extends WSAPP_BaseModel{
 		return $this->type;
 	}
 
-	public function getInstanceFromSyncResult($syncResult){
+	public static function getInstanceFromSyncResult($syncResult){
 		$model = new self();
 		return $model->setLastSyncTime($syncResult['lastModifiedTime'])->setMoreRecords($syncResult['more']);
 	}
 
-	public function getInstanceFromQueryResult($rowData){
+	public static function getInstanceFromQueryResult($rowData){
 		$model = new self();
-		return $model->setSyncTrackerId($rowData['synctrackerid'])->setSyncToken($rowData['synctoken']);
+		return $model->setData($rowData);
 	}
-	
+
 }
 
 ?>

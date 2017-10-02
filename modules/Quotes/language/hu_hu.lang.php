@@ -1,16 +1,11 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
 /*********************************************************************************
  * $Header:  \modules\Quotes\language\hu_hu.lang.php - 22:01 2011.11.12. $
@@ -35,9 +30,6 @@ $mod_strings = array(
 	'LBL_LIST_PHONE' => 'Telefon',
 	'LBL_LIST_EMAIL_ADDRESS' => 'Email cím',
 	'LBL_LIST_CONTACT_NAME' => 'Kapcsolat neve',
-	'db_name' => 'LBL_LIST_ACCOUNT_NAME',
-	'db_website' => 'LBL_LIST_WEBSITE',
-	'db_billing_address_city' => 'LBL_LIST_CITY',
 	'LBL_ACCOUNT' => 'Cég:',
 	'LBL_PHONE' => 'Telefon:',
 	'LBL_WEBSITE' => 'Weboldal:',

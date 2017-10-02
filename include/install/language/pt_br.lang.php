@@ -10,7 +10,6 @@
 
 $optionalModuleStrings = array(
 	'CustomerPortal_description'=>'Interface de Gerenciamento do Portal do Cliente',
-	'FieldFormulas_description'=>'Configurar regras para inserção de fórmulas em campos customizados',
 	'RecycleBin_description'=>'Módulo para administrar registros apagados, fornecendo recursos para restaurar ou removê-los completamente',
 	'Tooltip_description'=>'Configurar Dica Contexto para ser mostrada em um campo, o qual poderá ser combinado com outros campos',
 	'Webforms_description'=>'Este recurso permite a criação de formulários web para captura de dados',

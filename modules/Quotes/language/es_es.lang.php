@@ -1,22 +1,16 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************
 *  Module       : Quotes
 *  Language     : Español
 *  Version      : 5.4.0
 *  Created Date : 2007-03-30
-*  Author       : Rafael Soler
-*  Last change  : 2012-02-27
 *  Author       : Joe Bordes JPL TSolucio, S.L.
  ********************************************************************************/
 
@@ -37,14 +31,6 @@ $mod_strings = Array(
 'LBL_LIST_PHONE'=>'Teléfono',
 'LBL_LIST_EMAIL_ADDRESS'=>'Dirección de Email',
 'LBL_LIST_CONTACT_NAME'=>'Persona de Contacto',
-
-//DON'T CONVERT THESE THEY ARE MAPPINGS
-'db_name' => 'LBL_LIST_ACCOUNT_NAME',
-'db_website' => 'LBL_LIST_WEBSITE',
-'db_billing_address_city' => 'LBL_LIST_CITY',
-
-//END DON'T CONVERT
-
 'LBL_ACCOUNT'=>'Cuenta:',
 'LBL_PHONE'=>'Teléfono:',
 'LBL_WEBSITE'=>'Página Web:',
@@ -149,7 +135,6 @@ $mod_strings = Array(
 'LBL_TERMS_INFORMATION'=>'Condiciones Generales',
 'LBL_QUOTE'=>'Presupuesto:',
 
-//Added during 4.2 release
 'LBL_SUBJECT'=>'Referencia:',
 'LBL_POTENTIAL_NAME'=>'Oportunidad:',
 'LBL_ACCOUNT_NAME'=>'Nombre de la Cuenta:',
@@ -159,7 +144,6 @@ $mod_strings = Array(
 'Quote'=>'Presupuesto',
 
 //Added for existing Picklist Entries
-
 'Created'=>'Creado',
 'Delivered'=>'Enviado',
 'Reviewed'=>'Revisado',
@@ -171,9 +155,8 @@ $mod_strings = Array(
 'USPS'=>'Seur',
 'DHL'=>'DHL',
 'BlueDart'=>'Correos',
-'Sales Tax'=>'Impuesto de Ventas',                 
+'Sales Tax'=>'Impuesto de Ventas',
 
-//Added for Reports (5.0.4)
 'Tax Type'=>'Impuesto',
 'Discount Percent'=>'Descuento %',
 'Discount Amount'=>'Descuento Importe',
@@ -181,8 +164,7 @@ $mod_strings = Array(
 'Adjustment'=>'Ajustes',
 'S&H Amount'=>'Importe Envío y Manipulado',
 
-//Added after 5.0.4 GA
-'Quote No'=>'No Presupuesto',
+'Quote No'=>'Nº Presupuesto',
 'Add Service Contract'=>'Añadir Contrato Servicio',
 'Quotes ID'=>'Id Presupuesto',
 );

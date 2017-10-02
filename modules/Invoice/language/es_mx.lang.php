@@ -41,14 +41,6 @@ $mod_strings = Array(
 'LBL_LIST_PHONE'=>'Teléfono',
 'LBL_LIST_EMAIL_ADDRESS'=>'Direccion de Email',
 'LBL_LIST_CONTACT_NAME'=>'Persona de Contacto',
-
-//DON'T CONVERT THESE THEY ARE MAPPINGS
-'db_name' => 'LBL_LIST_ACCOUNT_NAME',
-'db_website' => 'LBL_LIST_WEBSITE',
-'db_billing_address_city' => 'LBL_LIST_CITY',
-
-//END DON'T CONVERT
-
 'LBL_ACCOUNT'=>'Cuenta:',
 'LBL_ACCOUNT_NAME'=>'Nombre de la cuenta:',
 'LBL_PHONE'=>'Teléfono:',
@@ -170,7 +162,6 @@ $mod_strings = Array(
 //Added in release 4.2
 'LBL_SUBJECT'=>'Referencia:',
 'LBL_SALES_ORDER'=>'Pedido:',
-'Invoice Id'=>'Identificador de la Factura',
 'LBL_MY_TOP_INVOICE'=>'Mis Facturas pendientes',
 'LBL_INVOICE_NAME'=>'Nombre de la Factura:',
 'Purchase Order'=>'Orden de Compra',

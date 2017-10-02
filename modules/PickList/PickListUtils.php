@@ -88,9 +88,8 @@ function getrole2picklist(){
  * @return array $module_pick - the picklists present in the module in an array format
  */
 function get_available_module_picklist($picklist_details){
-	$avail_pick_values = $picklist_details;
-	foreach($avail_pick_values as $key => $val){
-		$module_pick[$avail_pick_values[$key]['fieldname']] = getTranslatedString($avail_pick_values[$key]['fieldlabel']);
+	foreach($picklist_details as $key => $val){
+		$module_pick[$picklist_details[$key]['fieldname']] = getTranslatedString($picklist_details[$key]['fieldlabel']);
 	}
 	return $module_pick;
 }
@@ -109,16 +108,14 @@ function getAllPickListValues($fieldName,$lang = Array() ){
 	$arr = array();
 	for($i=0;$i<$count;$i++){
 		$pick_val = $adb->query_result($result, $i, $fieldName);
-		if($lang[$pick_val] != ''){
+		if (!empty($lang[$pick_val])) {
 			$arr[$pick_val] = $lang[$pick_val];
-		}
-		else{
+		} else {
 			$arr[$pick_val] = $pick_val;
 		}
 	}
 	return $arr;
 }
-
 
 /**
  * this function accepts the fieldname and the language string array and returns all the editable picklist values for that fieldname
@@ -134,13 +131,12 @@ function getEditablePicklistValues($fieldName, $lang= array(), $adb){
 	$res = $adb->query($sql);
 	$RowCount = $adb->num_rows($res);
 	if($RowCount > 0){
+		$frs = $adb->pquery('select fieldid from vtiger_field where fieldname=? limit 1',array($fieldName));
+		$fieldid = $adb->query_result($frs,0,0);
+		$module = getModuleForField($fieldid);
 		for($i=0;$i<$RowCount;$i++){
 			$pick_val = $adb->query_result($res,$i,$fieldName);
-			if($lang[$pick_val] != ''){
-				$values[$pick_val]=$lang[$pick_val];
-			}else{
-				$values[$pick_val]=$pick_val;
-			}
+			$values[$pick_val] = getTranslatedString($pick_val,$module);
 		}
 	}
 	return $values;
@@ -161,7 +157,7 @@ function getNonEditablePicklistValues($fieldName, $lang=array(), $adb){
 	$count = $adb->num_rows($result);
 	for($i=0;$i<$count;$i++){
 		$non_val = $adb->query_result($result,$i,$fieldName);
-		if($lang[$non_val] != ''){
+		if (!empty($lang[$non_val])) {
 			$values[]=$lang[$non_val];
 		}else{
 			$values[]=$non_val;
@@ -233,28 +229,35 @@ function getAssignedPicklistValues($tableName, $roleid, $adb, $lang=array()){
  * It gets all the allowed entities to be shown in a picklist uitype 1613. 1633 and return an array in the following format
  * $modules = Array($index=>$tabname,$index1=>$tabname1)
  */
-function getAllowedPicklistModules() {
+function getAllowedPicklistModules($allowNonEntities=0) {
 	global $adb;
 	//get All the modules the current user is permitted to Access.
 	$allAllowedModules=getPermittedModuleNames();
 	$allEntities = array();
-	$entityQuery = "SELECT name FROM vtiger_tab
-			WHERE isentitytype=1 and name NOT IN ('Rss','Webmails','Recyclebin','Events')";
+	$entitycondition = ($allowNonEntities ? '' : 'isentitytype=1 and ');
+	$entityQuery = "SELECT name FROM vtiger_tab WHERE $entitycondition name NOT IN ('Rss','Webmails','Recyclebin','Events')";
 	$result = $adb->pquery($entityQuery, array());
-	while($result && $row = $adb->fetch_array($result)){
+	while ($result && $row = $adb->fetch_array($result)) {
 		$allEntities[] = $row['name'];
 	}
-	$allowedEntities=array_intersect($allAllowedModules, $allEntities);
-	return $allowedEntities;
+	return array_intersect($allAllowedModules, $allEntities);
 }
 
 function getPicklistValuesSpecialUitypes($uitype,$fieldname,$value,$action='EditView'){
-	global $adb,$log,$current_user;
+	global $adb,$log,$current_user, $default_charset;
 
 	$fieldname = $adb->sql_escape_string($fieldname);
-	$picklistValues = getAllowedPicklistModules();
+	if ($uitype == '1614') {
+		$uitype = '1613';
+		$allowNonEntities = 1;
+	} elseif ($uitype == '3314') {
+		$uitype = '3313';
+		$allowNonEntities = 1;
+	} else {
+		$allowNonEntities = 0;
+	}
+	$picklistValues = getAllowedPicklistModules($allowNonEntities);
 	$options = array();
-	$options[] = "";
 	$pickcount = 0;
 	if($uitype == "1613"){
 		$found = false;
@@ -323,6 +326,37 @@ function getPicklistValuesSpecialUitypes($uitype,$fieldname,$value,$action='Edit
 					$options[$i]='<a href="index.php?module=Settings&action=RoleDetailView&parenttab=Settings&roleid='.$roleid.'">'.$rolename.'</a>';
 				} else {
 					$options[$i]=$rolename;
+				}
+			}
+		}
+	} elseif ($uitype == '1615') {
+		$actual = getPickListModules();
+		$i = 0;
+		foreach ($actual as $mod) {
+			$options[$i++] = array(
+				getTranslatedString($mod,$mod),
+				$mod,
+				$value,
+				get_available_module_picklist(getUserFldArray($mod,$current_user->roleid))
+			);
+		}
+	}
+	elseif ($uitype == '1025') {
+		$values = explode(' |##| ',$value);
+		if (!empty($value) && !empty($values[0])) {
+			$srchmod=  getSalesEntityType($values[0]);
+			for ($i=0;$i<sizeof($values);$i++) {
+				$id = $values[$i];
+				$displayValueArray = getEntityName($srchmod, $id);
+				if (!empty($displayValueArray)) {
+					foreach ($displayValueArray as $key=>$value2) {
+						$shown_val = $value2;
+					}
+				}
+				if (!(vtlib_isModuleActive($srchmod) and isPermitted($srchmod,'DetailView',$id))) {
+					$options[$i]=$shown_val;
+				} else {
+					$options[$i]='<a href="index.php?module='.$srchmod.'&action=DetailView&record='.$id.'">'.$shown_val.'</a>';
 				}
 			}
 		}

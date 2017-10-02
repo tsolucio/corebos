@@ -11,7 +11,7 @@
 /**
  * A wrapper around CRMEntity instances
  */
-class VTEntityData{
+class VTEntityData {
 	private $isNew = false;
 	private $isDeleted = false;
 
@@ -22,13 +22,13 @@ class VTEntityData{
 	 * @param $entityId The id of the entity to load.
 	 * @return The new entity data object.
 	 */
-	static function fromEntityId($adb, $entityId){
+	static function fromEntityId($adb, $entityId) {
 		$obj = new VTEntityData();
 		$obj->entityId = $entityId;
 		$result = $adb->pquery("select setype from vtiger_crmentity where crmid=?", array($entityId));
-		$setype =  $adb->query_result($result,0,"setype");
+		$setype = $adb->query_result($result,0,"setype");
 
-		if($setype == 'Calendar') {
+		if ($setype == 'Calendar') {
 			$setype = vtws_getCalendarEntityType($entityId);
 		}
 
@@ -50,7 +50,7 @@ class VTEntityData{
 	 * @param $userId The id of the entity to load.
 	 * @return The new entity data object.
 	 */
-	static function fromUserId($adb,$userId){
+	static function fromUserId($adb,$userId) {
 		$obj = new VTEntityData();
 		$obj->entityId = $userId;
 
@@ -72,7 +72,7 @@ class VTEntityData{
 	 * @param $crmEntity The CRMEntity instance.
 	 * @return The new entity data object.
 	 */
-	static function fromCRMEntity($crmEntity){
+	static function fromCRMEntity($crmEntity) {
 		$obj = new VTEntityData();
 		$obj->focus = $crmEntity;
 		$obj->isNew = !(isset($crmEntity->id) && $crmEntity->id != null);
@@ -84,7 +84,7 @@ class VTEntityData{
 	 *
 	 * @return An array representation of the module data.
 	 */
-	function getData(){
+	function getData() {
 		return $this->focus->column_fields;
 	}
 
@@ -93,7 +93,7 @@ class VTEntityData{
 	 *
 	 * @return The entity id.
 	 */
-	function getId(){
+	function getId() {
 		return (isset($this->focus->id) ? $this->focus->id : 0);
 	}
 
@@ -102,8 +102,8 @@ class VTEntityData{
 	 *
 	 * @return The module name.
 	 */
-	function getModuleName(){
-		$className =  get_class($this->focus);
+	function getModuleName() {
+		$className = get_class($this->focus);
 		$importModuleMapping = Array(
 			"ImportLead"=>"Leads",
 			"ImportAccount"=>"Accounts",
@@ -114,42 +114,42 @@ class VTEntityData{
 			"ImportVendors"=>"Vendors"
 		);
 		$moduleName = $className;
-		if(array_key_exists($className, $importModuleMapping)){
+		if (array_key_exists($className, $importModuleMapping)) {
 			$moduleName = $importModuleMapping[$className];
 		}
 
-		if($className == 'Activity') {
+		if ($className == 'Activity') {
 			$id = $this->getId();
-			if($id != null || $id != '') {
+			if ($id != null || $id != '') {
 				$moduleName = vtws_getCalendarEntityType($id);
 			}
 		}
 		return $moduleName;
 	}
 
-	function get($fieldName){
-		return $this->focus->column_fields[$fieldName];
+	function get($fieldName) {
+		return (isset($this->focus->column_fields[$fieldName]) ? $this->focus->column_fields[$fieldName] : null);
 	}
 
-	function set($fieldName, $value){
-		$data = $this->focus->column_fields[$fieldName] = $value;
+	function set($fieldName, $value) {
+		$this->focus->column_fields[$fieldName] = $value;
 	}
 
 	/**
 	 * Check whether the object is stored on the database.
-	 * 
+	 *
 	 * @return True if the object is saved false otherwiser.
 	 */
-	function isSaved(){
+	function isSaved() {
 		return isset($this->focus->id);
 	}
 
 	/**
 	* Check whether the object is new.
-	* 
+	*
 	* @return True if the object is new, false otherwise.
 	*/
-	function isNew(){
+	function isNew() {
 		return $this->isNew;
 	}
 
@@ -157,10 +157,11 @@ class VTEntityData{
 	* Check whether the object has been deleted.
 	* @return True if the object has been deleted, false otherwise.
 	*/
-	function isDeleted(){
+	function isDeleted() {
 		return $this->isDeleted;
 	}
-	function SetDeleted($id){
+
+	function SetDeleted($id) {
 		$this->isNew=false;
 		$this->isDeleted=true;
 		$this->focus->id=$id;

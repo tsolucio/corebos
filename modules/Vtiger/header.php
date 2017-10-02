@@ -13,16 +13,15 @@ require_once("data/Tracker.php");
 require_once("include/utils/utils.php");
 require_once("include/calculator/Calc.php");
 
-global $currentModule,$default_charset;
-global $app_strings;
-global $app_list_strings;
-global $moduleList;
-global $theme;
+global $currentModule, $default_charset, $app_strings, $moduleList, $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 $userName = getFullNameFromArray('Users', $current_user->column_fields);
 $smarty = new vtigerCRM_Smarty;
-$header_array = getHeaderArray();
+require_once('modules/evvtMenu/evvtMenu.inc');
+$smarty->assign('MENU', getMenuArray(0));
+$header_array = getAdminevvtMenu();
+$smarty->assign('evvtAdminMenu', $header_array);
 $smarty->assign("HEADERS",$header_array);
 $smarty->assign("THEME",$theme);
 $smarty->assign("IMAGEPATH",$image_path);
@@ -32,7 +31,7 @@ $qc_modules = getQuickCreateModules();
 uasort($qc_modules, function($a,$b) {return (strtolower($a[0]) < strtolower($b[0])) ? -1 : 1;});
 $smarty->assign("QCMODULE", $qc_modules);
 $smarty->assign("APP", $app_strings);
-
+$smarty->assign('LBL_CHARSET', $default_charset);
 $cnt = count($qc_modules);
 $smarty->assign("CNT", $cnt);
 
@@ -42,10 +41,8 @@ $smarty->assign("DATE", $date->getDisplayDateTimeValue());
 $smarty->assign("CURRENT_USER_MAIL", $current_user->email1);
 $smarty->assign("CURRENT_USER", $current_user->user_name);
 $smarty->assign("CURRENT_USER_ID", $current_user->id);
-$smarty->assign("MODULELISTS",$app_list_strings['moduleList']);
 $smarty->assign("CATEGORY",getParentTab());
 $smarty->assign("CALC",get_calc($image_path));
-$smarty->assign("MENUSTRUCTURE",getMenuStructure($currentModule));
 $smarty->assign("ANNOUNCEMENT",get_announcements());
 $smarty->assign("USE_ASTERISK", get_use_asterisk($current_user->id));
 
@@ -72,10 +69,6 @@ $smarty->assign('HEADERLINKS', $COMMONHDRLINKS['HEADERLINK']);
 $smarty->assign('HEADERSCRIPTS', $COMMONHDRLINKS['HEADERSCRIPT']);
 $smarty->assign('HEADERCSS', $COMMONHDRLINKS['HEADERCSS']);
 
-// Pass on the version information
-global $vtiger_current_version;
-$smarty->assign('VERSION', $vtiger_current_version);
-
 // Pass on the authenticated user language
 global $current_language;
 $smarty->assign('LANGUAGE', $current_language);
@@ -83,14 +76,12 @@ $smarty->assign('LANGUAGE', $current_language);
 // Pass on the Application Name
 $smarty->assign('coreBOS_app_name', GlobalVariable::getVariable('Application_UI_Name','coreBOS'));
 
-global $application_unique_key;
-$smarty->assign('application_unique_key', $application_unique_key);
 // We check if we have the two new logo fields > if not we create them
 $cnorg=$adb->getColumnNames('vtiger_organizationdetails');
 if (!in_array('faviconlogo', $cnorg)) {
 	$adb->query('ALTER TABLE `vtiger_organizationdetails` ADD `frontlogo` VARCHAR(150) NOT NULL, ADD `faviconlogo` VARCHAR(150) NOT NULL');
 }
-$sql="select * from vtiger_organizationdetails";
+$sql='select * from vtiger_organizationdetails limit 1';
 $result = $adb->pquery($sql, array());
 //Handle for allowed organization logo/logoname likes UTF-8 Character
 // $organization_logo = decode_html($adb->query_result($result,0,'logoname'));
@@ -109,11 +100,26 @@ $companyDetails['website'] = $adb->query_result($result,0,'website');
 //$companyDetails['logo'] = $organization_logo;
 
 $smarty->assign("COMPANY_DETAILS",$companyDetails);
+
+//Global Search Autocomplete Mapping
+$bmapname = 'GlobalSearchAutocomplete';
+$cbMapGS = array();
+$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+if ($cbMapid) {
+	$cbMap = cbMap::getMapByID($cbMapid);
+	$cbMapGS = $cbMap->GlobalSearchAutocomplete();
+	$cbMapGS['entityfield']='query_string';
+}
+$smarty->assign("GS_AUTOCOMP",$cbMapGS);
+$Application_Global_Search_Active = GlobalVariable::getVariable('Application_Global_Search_Active', 1);
+$smarty->assign('Application_Global_Search_Active',$Application_Global_Search_Active);
+
 $smarty->assign('HELP_URL',GlobalVariable::getVariable('Application_Help_URL','http://corebos.org/documentation'));
 ob_start();
 cbEventHandler::do_action('corebos.header.premenu');
 $smarty->assign("COREBOS_HEADER_PREMENU",ob_get_clean());
 getBrowserVariables($smarty);
+$smarty->assign('Module_Popup_Edit',isset($_REQUEST['Module_Popup_Edit']) ? vtlib_purify($_REQUEST['Module_Popup_Edit']) : 0);
 
 $smarty->display("Header.tpl");
 cbEventHandler::do_action('corebos.header');

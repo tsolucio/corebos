@@ -13,7 +13,6 @@ global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
 
 $smarty = new vtigerCRM_Smarty();
 
-$smarty->assign('USE_ASTERISK', get_use_asterisk($current_user->id));
 if(useInternalMailer() == 1)
 	$smarty->assign('INT_MAILER','true');
 
@@ -39,17 +38,15 @@ if(isPermitted('Emails','EditView','') == 'yes') {
 }
 
 if(isPermitted('Accounts','Merge','') == 'yes') {
-	require("user_privileges/user_privileges_".$current_user->id.".php");
-	require_once('include/utils/UserInfoUtil.php');
 	$wordTemplateResult = fetchWordTemplateList('Accounts');
 	$tempCount = $adb->num_rows($wordTemplateResult);
 	$tempVal = $adb->fetch_array($wordTemplateResult);
-	for($templateCount=0;$templateCount<$tempCount;$templateCount++)
-	{
+	$optionString = array();
+	for($templateCount=0;$templateCount<$tempCount;$templateCount++) {
 		$optionString[$tempVal['templateid']]=$tempVal['filename'];
 		$tempVal = $adb->fetch_array($wordTemplateResult);
 	}
-	if($is_admin)
+	if (is_admin($current_user))
 		$smarty->assign('MERGEBUTTON','permitted');
 	elseif($tempCount >0)
 		$smarty->assign('MERGEBUTTON','permitted');

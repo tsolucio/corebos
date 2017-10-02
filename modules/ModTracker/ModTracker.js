@@ -71,11 +71,6 @@ function getListViewModTrackerEntries_js(reportname, url) {
 		);
 }
 
-
-function goToURL( url ) {
-    document.location.href = url;
-}
-
 function getFilterList() {
     var filterRows = document.getElementById('addModTrackerSrc').rows.length;
     var urlstring = '';

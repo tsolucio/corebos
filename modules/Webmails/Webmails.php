@@ -51,7 +51,7 @@ class Webmails extends CRMEntity {
 	function __construct($mbox='',$mailid='') {
 		$this->db = PearDatabase::getInstance();
 		$this->db->println("Entering Webmail($mbox,$mailid)");
-		$this->log = &LoggerManager::getLogger('WEBMAILS');
+		$this->log = LoggerManager::getLogger('WEBMAILS');
 		$this->mbox=$mbox;
 		$this->mailid=$mailid;
 
@@ -88,13 +88,12 @@ class Webmails extends CRMEntity {
 		}
 		return $this->replyToInformation;
 	}
-	
+
 	function delete() {
 		imap_delete($this->mbox, $this->mailid);
 	}
 
 	function loadMail($attach_tab) {
-		
 		$this->email = $this->load_mail($attach_tab);
 		$this->body = $this->email["body"];
 		$this->attachtab = $this->email["attachtab"];
@@ -131,7 +130,7 @@ class Webmails extends CRMEntity {
 		return $this->dl_attachments();
 	}
 
-    function load_headers() {
+	function load_headers() {
 	// get the header info
 	$mailHeader=Array();
 	$theader = @imap_headerinfo($this->mbox, $this->mailid);
@@ -141,7 +140,7 @@ class Webmails extends CRMEntity {
 		$mailHeader['to'][] = $theader->to[$p]->mailbox.'@'.$theader->to[$p]->host;
 		$mailHeader['to_name'][] = $theader->to[$p]->personal;
 	}
-	$mailHeader['from'] = $theader->from[0]->mailbox.'@'.$theader->from[0]->host;	
+	$mailHeader['from'] = $theader->from[0]->mailbox.'@'.$theader->from[0]->host;
 	$mailHeader['from_name'] = $theader->from[0]->personal;
 	$mailHeader['fromaddr'] = $theader->fromaddress;
 
@@ -156,10 +155,10 @@ class Webmails extends CRMEntity {
 		$mailHeader['cc_list'][] = $theader->cc[$p]->mailbox.'@'.$theader->cc[$p]->host;
 		$mailHeader['cc_list_name'][] = $theader->cc[$p]->personal;
 	}
-    	return $ret = Array("theader"=>$mailHeader);
-    }
+	return $ret = Array("theader"=>$mailHeader);
+	}
 
-    function get_attachments() {
+	function get_attachments($id, $cur_tab_id, $rel_tab_id, $actions = false) {
        $struct = @imap_fetchstructure($this->mbox, $this->mailid);
        $parts = $struct->parts;
 
@@ -206,9 +205,10 @@ class Webmails extends CRMEntity {
         return false;
     }
 
-    function find_relationships() {
+	function find_relationships() {
 	// leads search
-	$sql = "SELECT * from vtiger_leaddetails left join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_leaddetails.leadid where vtiger_leaddetails.email = ? AND vtiger_crmentity.deleted='0' and converted=0";
+	$val_conv = ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true') ? 1 : 0);
+	$sql = "SELECT * from vtiger_leaddetails left join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_leaddetails.leadid where vtiger_leaddetails.email = ? AND vtiger_crmentity.deleted='0' and converted=$val_conv";
 	$res = $this->db->pquery($sql,array(trim($this->from)),true,"Error: "."<BR>$query");
 	$numRows = $this->db->num_rows($res);
 	if($numRows > 0)
@@ -229,56 +229,54 @@ class Webmails extends CRMEntity {
 		return array('type'=>"Accounts",'id'=>$this->db->query_result($res,0,"accountid"),'name'=>$this->db->query_result($res,0,"accountname"));
 
 	return array();
-    }
+	}
 
+	public function searchModule($module) {
+		global $current_user;
+		$queryGenerator = new QueryGenerator($module, $current_user);
+		$queryGenerator->initForGlobalSearchByType('email', trim($this->reply_to[0]), 'e');
+		$query = $queryGenerator->getQuery();
+		$res = $this->db->pquery($query,array(),true,"Error: "."<BR>$query");
+		$meta = $queryGenerator->getMeta($module);
+		$fieldList = $meta->getFieldListByType('email');
+		$found = false;
+		$fieldId = null;
+		$numRows = $this->db->num_rows($res);
+		if($numRows > 0) {
+				foreach ($fieldList as $field) {
+						$value = $this->db->query_result($res,0,$field->getColumnName());
+						if($value == trim($this->reply_to[0])) {
+								$found = true;
+								$fieldId = $field->getFieldId();
+								break;
+						}
+				}
+				$nameListFields = explode(',', $meta->getNameFields());
+				$name = '';
+				foreach ($nameListFields as $nameColumn) {
+						$name .= $this->db->query_result($res,0,$nameColumn);
+				}
+				if($found) {
+						return array('type'=>$module,'fieldId'=>$fieldId ,'id'=>$this->db->query_result($res,0, $meta->getIdColumn()),'name'=>$name);
+				}
+		}
+		return null;
+	}
 
-	public function searchModule($module) { 
-		global $current_user; 
-		$queryGenerator = new QueryGenerator($module, $current_user); 
-		$queryGenerator->initForGlobalSearchByType('email', trim($this->reply_to[0]), 'e'); 
-		$query = $queryGenerator->getQuery(); 
-		$res = $this->db->pquery($query,array(),true,"Error: "."<BR>$query"); 
-		$meta = $queryGenerator->getMeta($module); 
-		$fieldList = $meta->getFieldListByType('email'); 
-		$found = false; 
-		$fieldId = null; 
-		$numRows = $this->db->num_rows($res); 
-		if($numRows > 0) { 
-				foreach ($fieldList as $field) { 
-						$value = from_html($this->db->query_result($res,0,$field->getColumnName())); 
-						if($value == trim($this->reply_to[0])) { 
-								$found = true; 
-								$fieldId = $field->getFieldId(); 
-								break; 
-						} 
-				} 
-				$nameListFields = explode(',', $meta->getNameFields()); 
-				$name = ''; 
-				foreach ($nameListFields as $nameColumn) { 
-						$name .= $this->db->query_result($res,0,$nameColumn); 
-				} 
-				if($found) { 
-						return array('type'=>$module,'fieldId'=>$fieldId ,'id'=>$this->db->query_result($res,0, 
-										$meta->getIdColumn()),'name'=>$name); 
-				} 
-		} 
-		return null; 
-	} 
+	function findRelationshipsForReplyToSender() {
+		$result = $this->searchModule('Contacts');
+		if(empty($result)) {
+			$result = $this->searchModule('Leads');
+		}
+		if(empty($result)) {
+			$result = $this->searchModule('Accounts');
+		}
+		if(empty($result)) {
+			$result = array();
+		}
+		return $result;
+	}
 
-	function findRelationshipsForReplyToSender() { 
-		$result = $this->searchModule('Contacts'); 
-		if(empty($result)) { 
-				$result = $this->searchModule('Leads'); 
-		} 
-		if(empty($result)) { 
-				$result = $this->searchModule('Accounts'); 
-		} 
-		if(empty($result)) { 
-				$result = array(); 
-		} 
-		return $result; 
-	} 
-    
 	function dl_inline()
 	{
 		$struct = @imap_fetchstructure($this->mbox, $this->mailid);
@@ -352,7 +350,6 @@ class Webmails extends CRMEntity {
 
 	function dl_attachments()
 	{
-
 		$struct = @imap_fetchstructure($this->mbox, $this->mailid);
 		$parts = $struct->parts;
 
@@ -395,7 +392,7 @@ class Webmails extends CRMEntity {
 						$filedata = imap_fetchbody($this->mbox, $this->mailid, $partstring);
 						$attachment[] = array("filename" => $parts[$i]->dparameters[0]->value,"filedata"=>$filedata,"subtype"=>$parts[$i]->subtype,"filesize"=>$parts[$i]->bytes);
 					}
-				} 
+				}
 				if ($parts[$i]->parts)
 				{
 					$stack[] = array("p" => $parts, "i" => $i);
@@ -410,10 +407,6 @@ class Webmails extends CRMEntity {
 		}
 		return $attachment;
 	}
-
-
-
-
 
 	function graphicalsmilies($body) {
 		$user_prefs = $_SESSION['nocc_user_prefs'];
@@ -445,9 +438,7 @@ function GetPart(&$attach_tab, &$this_part, $part_no, &$display_rfc822)
     {
         // PHP 5.x doesn't allow to convert a stdClass object to an array
 	// We sometimes have this issue with Mailer daemon reports
-	if (!(get_class($this_part->parameters) == "stdClass") &&
-		!(get_class($this_part->parameters) == "stdclass")) 
-	{ 
+	if (!(get_class($this_part->parameters) == "stdClass") && !(get_class($this_part->parameters) == "stdclass")) {
             $param = $this_part->parameters[$i];
             if ((($param->attribute == 'NAME') || ($param->attribute == 'name')) && ($param->value != ''))
             {
@@ -475,15 +466,14 @@ function GetPart(&$attach_tab, &$this_part, $part_no, &$display_rfc822)
                     // if it's an alternative, we skip the text part to only keep the HTML part
                     if ($this_part->subtype == 'ALTERNATIVE')// && $read == true)
                         $this->GetPart($attach_tab, $this_part->parts[++$i], $part_no . ($i + 1), $display_rfc822);
-                    else 
+                    else
                         $this->GetPart($attach_tab, $this_part->parts[$i], $part_no . ($i + 1), $display_rfc822);
                 }
                 break;
             case 2:
                 $mime_type = 'message';
                 // well it's a message we have to parse it to find attachments or text message
-		if(isset($this_part->parts[0]->parts)) 
-		{
+		if(isset($this_part->parts[0]->parts)) {
                     $num_parts = count($this_part->parts[0]->parts);
 		    for ($i = 0; $i < $num_parts; $i++)
 		{
@@ -511,8 +501,8 @@ function GetPart(&$attach_tab, &$this_part, $part_no, &$display_rfc822)
                 $mime_type = 'unknown';
         }
     }
-			else 
-    {	
+			else
+    {
 		    $mime_type = 'text';
     }
 	$full_mime_type = $mime_type . '/' . $this_part->subtype;
@@ -625,9 +615,8 @@ function GetCodeScoreAll($Data,$beg_charset) {
 		$Mark_koi+=$Cur_mark_koi*$scaleK;
 		$Mark_win+=$Cur_mark_win*$scaleW;
 	}
-	$Mark_list=array($Mark_koi,$Mark_win);
 	//setlocale(LC_CTYPE,$old_locale);
-	return $Mark_list;
+	return array($Mark_koi,$Mark_win);
 }
 
 /* lxnt:  patched to return charset names that iconv() understands*/
@@ -647,12 +636,6 @@ function detect_charset($Data,$dbg_fl = 0) {
 	return $MaxRatioKey;
 }
 
-
-
-
-
-
-
 function mime_header_decode(&$header)
 {
 	$output_charset = $GLOBALS['charset'];
@@ -660,22 +643,18 @@ function mime_header_decode(&$header)
 	$result[] = new result;
 	$result[0]->text='';
 	$result[0]->charset='UTF-8';
-	for ($j = 0; $j < count($source); $j++ )
-       	{
-	$element_charset =  ($source[$j]->charset == "default") ? $this->detect_charset($source[$j]->text) : $source[$j]->charset;
+	for ($j = 0; $j < count($source); $j++ ) {
+		$element_charset =  ($source[$j]->charset == "default") ? $this->detect_charset($source[$j]->text) : $source[$j]->charset;
 		if ($element_charset == 'x-unknown')
 			$element_charset = 'UTF-8';
 
-		if(empty($output_charset)) $output_charset = $default_charset;	
-		$element_converted = function_exists(iconv) ? @iconv( $element_charset, $output_charset, $source[$j]->text): $source[$j]->text ;
+		if(empty($output_charset)) $output_charset = $default_charset;
+		$element_converted = function_exists('iconv') ? @iconv($element_charset, $output_charset, $source[$j]->text) : $source[$j]->text;
 		$result[$j]->text = $element_converted;
 		$result[$j]->charset = $output_charset;
 	}
 	return $result;
 }
-
-
-
 
 function link_att(&$mail, $attach_tab, &$display_part_no,$ev)
 {
@@ -694,10 +673,10 @@ function link_att(&$mail, $attach_tab, &$display_part_no,$ev)
 				$att_name .= $att_name_array[$i]->text;
 			}
 			if(!preg_match("/unknown/",$att_name))
-				$this->attname[$ct] = $att_name;	
+				$this->attname[$ct] = $att_name;
 			$att_name_dl = $att_name;
 			$att_name = $this->convertLang2Html($att_name);
-			if(!preg_match("/unknown/",$att_name)){	
+			if(!preg_match("/unknown/",$att_name)){
 				$link .= ($ct+1).'. <a href="index.php?module=Webmails&action=download&part=' . $tmp['number'] . '&mailid='.$ev.'&transfer=' . $tmp['transfer'] . '&filename=' . base64_encode($att_name_dl) . '&mime=' . $mime . '">' . $att_name . '</a>&nbsp;&nbsp;' . $tmp['mime'] . '&nbsp;&nbsp;' . $tmp['size'] . '<br/>';
 				$this->anchor_arr[$ct] = '<a href="index.php?module=Webmails&action=download&part=' . $tmp['number'] . '&mailid='.$ev.'&transfer=' . $tmp['transfer'] . '&filename=' . base64_encode($att_name_dl) . '&mime=' . $mime . '">';
 				$this->att_details[$ct]['name'] = $att_name;
@@ -712,17 +691,13 @@ function link_att(&$mail, $attach_tab, &$display_part_no,$ev)
 }
 
 // Convert mail data (from, to, ...) to HTML
-function convertMailData2Html($maildata, $cutafter = 0)
-				{
-	if (($cutafter > 0) && (strlen($maildata) > $cutafter)) 
-					{
-       		return htmlspecialchars(substr($maildata, 0, $cutafter)) . '&hellip;';
-					}
-					else
-					{
-             return htmlspecialchars($maildata);
-					}
-				}
+function convertMailData2Html($maildata, $cutafter = 0) {
+	if (($cutafter > 0) && (strlen($maildata) > $cutafter)) {
+		return htmlspecialchars(substr($maildata, 0, $cutafter)) . '&hellip;';
+	} else {
+		return htmlspecialchars($maildata);
+	}
+}
 
 	// Convert a language string to HTML
 	function convertLang2Html($langstring) {
@@ -733,7 +708,7 @@ function convertMailData2Html($maildata, $cutafter = 0)
 	function load_mail($attach_tab)
 	{
 		// parse the message
-		global $default_charset;
+		global $default_charset, $conf;
 		$ref_contenu_message =  @imap_headerinfo($this->mbox, $this->mailid);
 		$struct_msg = @imap_fetchstructure($this->mbox, $this->mailid);
 		$mail = $this->mbox;
@@ -763,10 +738,7 @@ function convertMailData2Html($maildata, $cutafter = 0)
 		else
 		{
 			$body = @imap_fetchbody($mail,$ev,$tmpvar['number']);
-
 		}
-
-
 
 		if (preg_match("/text\/html/i", $tmpvar['mime']) || preg_match("/text\/plain/i", $tmpvar['mime']))
 		{
@@ -776,7 +748,6 @@ function convertMailData2Html($maildata, $cutafter = 0)
 				$body = base64_decode($body);
 			$body = remove_stuff($body, $tmpvar['mime']);
 			$body_charset =  ($tmpvar['charset'] == "default") ? $this->detect_charset($body) : $tmpvar['charset'];
-
 
 			if (strtolower($body_charset) == "us-ascii") {
 				$body_charset = "UTF-8";
@@ -795,13 +766,13 @@ function convertMailData2Html($maildata, $cutafter = 0)
 			}
 			$this->charsets = $body_charset;
 			if(empty($GLOBALS['charset'])) $GLOBALS['charset'] = $default_charset;
-			$body_converted = function_exists(iconv) ? @iconv( $body_charset, $GLOBALS['charset'], $body) : $body;
+			$body_converted = function_exists('iconv') ? @iconv( $body_charset, $GLOBALS['charset'], $body) : $body;
 			$body = ($body_converted===FALSE) ? $body : $body_converted;
 			$tmpvar['charset'] = ($body_converted===FALSE) ? $body_charset : $GLOBALS['charset'];
 		}
 		else
 		{
-			array_push($attach_tab, $tmpvar);
+			$attach_tab[] = $tmpvar;
 		}
 		$link_att = '';
 		$att_links = '';//variable added to display the attachments in full email view
@@ -821,11 +792,11 @@ function convertMailData2Html($maildata, $cutafter = 0)
 				$link_att = '<span id="webmail_cont" style="display:none;"><tr><th class="mailHeaderLabel right">' . $html_atts . ':</th><td class="mailHeaderData">' . $this->link_att($mail, $attach_tab, $conf->display_part_no,$ev) . '</td></tr></span>';
 				$this->att_links .= $this->link_att($mail, $attach_tab, $conf->display_part_no,$ev)."</br>";
 				break;
-			} 
+			}
 		}else
 			{
 				$link_att = '<span id="webmail_cont" style="display:none;"><tr><th class="mailHeaderLabel right"></th><td class="mailHeaderData"></td></tr></span>';
-			} 
+			}
 
 		$struct_msg = @imap_fetchstructure($mail, $ev);
 		$msg_charset = '';
@@ -841,22 +812,21 @@ function convertMailData2Html($maildata, $cutafter = 0)
 			$msg_charset = 'UTF-8';
 		}
 
-
 		$subject_header = str_replace('x-unknown', $msg_charset, $ref_contenu_message->subject);
 		$subject_array = $this->mime_header_decode($subject_header);
 		for ($j = 0; $j < count($subject_array); $j++)
 			$subject .= $subject_array[$j]->text;
-		
+
 		$from_header = str_replace('x-unknown', $msg_charset, $ref_contenu_message->fromaddress);
 		$from_array = $this->mime_header_decode($from_header);
 		for ($j = 0; $j < count($from_array); $j++)
 			$from .= $from_array[$j]->text;
 		//fixed the issue #3235
 		$toheader = @imap_fetchheader($this->mbox, $this->mailid);
-	        $to_arr = explode("To:",$toheader);
-	        if(!stripos($to_arr[1],'mime')){
-	                $to_add = stripos($to_arr[1],"CC:")?explode("CC:",$to_arr[1]):explode("Subject:",$to_arr[1]);
-	                $to_header = trim($to_add[0]);
+		$to_arr = explode("To:",$toheader);
+		if (!stripos($to_arr[1],'mime')) {
+			$to_add = stripos($to_arr[1],"CC:")?explode("CC:",$to_arr[1]):explode("Subject:",$to_arr[1]);
+			$to_header = trim($to_add[0]);
 		}
 		else
 			$to_header = str_replace('x-unknown', $msg_charset, $ref_contenu_message->toaddress);
@@ -953,7 +923,7 @@ function convertMailData2Html($maildata, $cutafter = 0)
 		else
 		{
 			return false;
-		}   
+		}
 	}
 
 	// returns an array with all parts that are
@@ -986,7 +956,7 @@ function convertMailData2Html($maildata, $cutafter = 0)
 			{
 				$returnParts[$i] = $this->mail_mimesub($val);
 				$i++;
-			}           
+			}
 			return $returnParts;
 			}
 			else
@@ -1011,7 +981,7 @@ function convertMailData2Html($maildata, $cutafter = 0)
 			while (list ($key, $val) = each($newParts))
 			{
 				$parts[$i] = $this->mail_mimesub($val);
-				$i++;               
+				$i++;
 			}
 		}
 		else
@@ -1020,19 +990,13 @@ function convertMailData2Html($maildata, $cutafter = 0)
 		}
 		return $parts;
 	}
-
-
-
-
-
-    
 }
-function decode_header($string)
-{
-        $elements = imap_mime_header_decode($string);
-        for ($i=0; $i<count($elements); $i++) {
-                $result .= $elements[$i]->text;
-        }
-        return $result;
+
+function decode_header($string) {
+	$elements = imap_mime_header_decode($string);
+	for ($i=0; $i<count($elements); $i++) {
+		$result .= $elements[$i]->text;
+	}
+	return $result;
 }
 ?>

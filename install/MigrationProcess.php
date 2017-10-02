@@ -138,7 +138,7 @@ if($_REQUEST['migration_start'] != 'true') {
 
 	require_once('include/utils/utils.php');
 	require_once('include/logging.php');
-	$migrationlog = & LoggerManager::getLogger('MIGRATION');
+	$migrationlog = LoggerManager::getLogger('MIGRATION');
 
 	if($_SESSION['authentication_key']==$_REQUEST['auth_key']) {
 		$completed = Migration_Utils::migrate($_SESSION['migration_info']);

@@ -22,7 +22,7 @@ $mod_strings = array(
 	'FTP support is not enabled' => 'No está presente la extensión de FTP en el servidor',
 	'Unable to connect to' => 'No se ha podido conectar con',
 	'User name or password were not accepted' => 'No se ha aceptado el usuario o la contraseña dada',
-	'Incorrect Folder' => 'No esite la carpeta o el camino especificado',
+	'Incorrect Folder' => 'No existe la carpeta o el camino especificado',
 	'Access Denied to write in specified folder' => 'Se ha denegado el acceso de escritura en la carpeta especificada',
 );
 ?>

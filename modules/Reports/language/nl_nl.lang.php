@@ -22,10 +22,10 @@
 /*******************************************************************************
  * Vicus eBusiness Solutions Version Control
  * @package 	NL-Dutch
- * Description	Dutch language pack for vtiger CRM version 5.3.x
+ * Description	Dutch language pack for vtiger CRM version 5.4.x
  * @author	$Author: luuk $
- * @version 	$Revision: 1.2 $ $Date: 2011/11/14 17:07:26 $
- * @source	$Source: /var/lib/cvs/vtiger530/Dutch/modules/Reports/language/nl_nl.lang.php,v $
+ * @version 	$Revision: 1.3 $ $Date: 2014/02/13 21:42:40 $
+ * @source	$Source: /var/lib/cvs/vtiger540/Dutch/modules/Reports/language/nl_nl.lang.php,v $
  * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
  * @license	vtiger CRM Public License Version 1.0 (by definition)
  ********************************************************************************/
@@ -145,7 +145,7 @@ $mod_strings = Array(
 'Contacts related to Potentials'=>'Contacten gerelateerd aan verkoopkansen',
 'Lead by Source'=>'Lead per bron',
 'Lead Status Report'=>'Lead status rapport',
-'Potential Pipeline'=>'Verkoopkans Pipeline',
+'Potential Pipeline'=>'Verkoopkans Pijplijn',
 'Closed Potentials'=>'Gesloten verkoopkansen',
 'Potential that have Won'=>'Gewonnen verkoopkansen',
 'Tickets by Products'=>'Tickets per Product',
@@ -192,6 +192,7 @@ $mod_strings = Array(
 'Current Month'=>'Deze maand',
 'Next Month'=>'Volgende maand',
 'Last 7 Days'=>'Laatste 7 dagen',
+'Last 14 Days' => 'Laatste 14 dagen',
 'Last 30 Days'=>'Laatste 30 dagen',
 'Last 60 Days'=>'Laatste 60 dagen',
 'Last 90 Days'=>'Laatste 90 dagen',
@@ -233,11 +234,12 @@ $mod_strings = Array(
 'LBL_FLDR_NOT_EMPTY'=>'De map die u wilt wijzigen is niet leeg, eerst leegmaken.',
 'NO_REL_MODULES'=>'Er zijn modules om mee te combineren',
 'LBL_REPORT_GENERATION_FAILED'=>'Het rapport kan niet worden gemaakt!',
-
-// since vtiger CRM 5.3 by Vicus
+'ERR_TOO_MANY_ROWS' => 'This report has too many rows. Please add some filters and divide it into various smaller reports.',
+'ERR_INCORRECT_REPORTID' => 'Report cannot be found',
 'LBL_SHARING_TYPE'=>'Deel Type',
 'LBL_SELECT_REPORT_TYPE_TO_CONTROL_ACCESS'=>'Selecteer Type om toegang tot het rapport te regelen',
 'LBL_ACTION' => 'Actie',
+'LBL ACTION' => 'Actie',
 'ACTION' => 'Actie',
 'LBL_VIEW_DETAILS' => 'Toon Details',
 'LBL_SHOW_STANDARD_FILTERS' => 'Toon Standaard Filters',
@@ -264,8 +266,8 @@ $mod_strings = Array(
 'BiWeekly'=>'Twee-Wekelijks',
 'Monthly'=>'Maandelijks',
 'Annually'=>'Jaarlijks',
-'LBL_SCHEDULE_REPORT'=>'Plan Report',
-'ScheduleReports'=>'Plan Report',
+'LBL_SCHEDULE_REPORT'=>'Rapportage inplannen',
+'ScheduleReports'=>'Rapportage inplannen',
 'LBL_SCHEDULE_FREQUENCY'=>'Frequentie',
 'OPTION_SCHEDULE_EMAIL_CHOOSE'=>'Kies ..... ',
 'LBL_SCHEDULE_EMAIL_TIME'=>'Tijd',
@@ -277,10 +279,40 @@ $mod_strings = Array(
 
 'LBL_AUTO_GENERATED_REPORT_EMAIL' => 'Dit is een automatisch gegenereerde e-mail die is verzonden middels een gepland rapport.',
 'LBL_TIME_FORMAT_MSG' => 'hh:mm (24 uurs formaat)',
-
+'LBL_RELOAD_REPORT' => 'Reload Report',
 'LBL_SAVE_REPORT' => 'Opslaan',
 'LBL_SAVE_REPORT_AS' => 'Sla Rapport op als...',
 
+//Report Charts
+'LBL_VIEW_CHARTS' => 'Bekijk grafieken',
+'LBL_ADD_CHARTS' => 'Voeg Grafiek toe aan Homepage',
+'LBL_HOME_REPORT_NAME' => 'Rapportnaam',
+'LBL_HOME_HORIZONTAL_BARCHART' => 'Horizontale Staafgrafiek',
+'LBL_HOME_VERTICAL_BARCHART' => 'Verticale Staafgrafiek',
+'LBL_HOME_PIE_CHART' => 'Taartdiagram',
+'LBL_HOME_REPORT_TYPE' => 'Rapporttype',
+'LBL_HOME_WINDOW_TITLE' => 'Window titel',
+'LBL_GROUPING_TIME' => 'Groepeer op tijd',
+'LBL_WIDGET_ADDED' => 'Widget toevoegen geslaagd.',
+'LBL_UNDEFINED' => 'Niet gedefinieerd',
+'Add ReportCharts' => 'Add Report Charts',
+'Choose Report Type' => 'Choose Report Type',
+'Application Report' => 'Application Report',
+'External Application' => 'External Application',
+'Direct SQL Statement' => 'Direct SQL Statement',
+'Cross Tab' => 'Cross Tab',
+'Pivot Table' => 'Pivot Table',
+'External Report URL' => 'External Report URL',
+'Add User Information' => 'Add User Information',
+'Select One Field of each' => 'You can only select one field from each module for this type of report',
+'Select Only One Module' => 'You can only select one module for this type of report',
+'LBL_AGG_FIELD' => 'Aggregation Field',
+'LBL_AGG_FUNCTION_CHOOSE' => 'Select Aggregation Column and Function',
+'LBL_AGG_COLUMN' => 'Aggregation Column',
+'LBL_AGG_FUNCTION' => 'Aggregation Function',
+'LBL_COLUMNS_COUNT'=>'Count',
+'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Fout bij het wissen van de map.',
+'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Error while deleting the reports of the folder',
 )
 
 ?>

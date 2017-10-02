@@ -115,10 +115,9 @@ function send_mail($module,$to_email,$from_name,$from_email,$subject,$contents,$
 	}
 
 	$mail_status = MailSend($mail);
-
 	if($mail_status != 1)
 	{
-		$mail_error = getMailError($mail,$mail_status,$mailto);
+		$mail_error = getMailError($mail,$mail_status);
 	}
 	else
 	{
@@ -222,13 +221,12 @@ function setMailerProperties($mail,$subject,$contents,$from_email,$from_name,$to
 	if($to_email != '')
 	{
 		if(is_array($to_email)) {
-			for($j=0,$num=count($to_email);$j<$num;$j++) {
-				$mail->addAddress($to_email[$j]);
+			foreach ($to_email as $recip) {
+				$mail->addAddress($recip);
 			}
 		} else {
-			$_tmp = explode(",",$to_email);
-			for($j=0,$num=count($_tmp);$j<$num;$j++) {
-				$mail->addAddress($_tmp[$j]);
+			foreach (explode(",",$to_email) as $recip) {
+				$mail->addAddress($recip);
 			}
 		}
 	}
@@ -267,12 +265,18 @@ function setMailerProperties($mail,$subject,$contents,$from_email,$from_name,$to
 		}
 	}
 
-        //If we send attachments from MarketingDashboard
-	if(is_array($attachment))
-	{
-            foreach($attachment as $file){
-			addAttachment($mail,$file,$emailid);
-            }
+	//If we send attachments from MarketingDashboard
+	if (is_array($attachment)) {
+		if(array_key_exists('direct', $attachment) && $attachment['direct']){
+			//We are sending attachments with direct content, the files are'nt stored
+			foreach ($attachment['files'] as $file) {
+				addStringAttachment($mail,$file['name'],$file['content']);
+			}
+		} else {
+			foreach ($attachment as $file) {
+				addAttachment($mail,$file,$emailid);
+			}
+		}
 	}
 
 	$mail->IsHTML(true);		// set email format to HTML
@@ -285,7 +289,7 @@ function setMailerProperties($mail,$subject,$contents,$from_email,$from_name,$to
   */
 function setMailServerProperties($mail)
 {
-	global $adb;
+	global $adb,$default_charset;
 	$adb->println("Inside the function setMailServerProperties");
 
 	$res = $adb->pquery("select * from vtiger_systems where server_type=?", array('email'));
@@ -300,8 +304,7 @@ function setMailServerProperties($mail)
 	if(isset($_REQUEST['server_password']))
 		$password = $_REQUEST['server_password'];
 	else
-		$password = $adb->query_result($res,0,'server_password');
-	// Prasad: First time read smtp_auth from the request
+		$password = html_entity_decode($adb->query_result($res,0,'server_password'),ENT_QUOTES,$default_charset);
 	if(isset($_REQUEST['smtp_auth'])) {
 		$smtp_auth = $_REQUEST['smtp_auth'];
 	} else {
@@ -329,7 +332,19 @@ function setMailServerProperties($mail)
 	$mail->Username = $username ;	// SMTP username
 	$mail->Password = $password ;	// SMTP password
 
-	return;
+	$debugEmail = GlobalVariable::getVariable('Debug_Email_Sending',0);
+	if ($debugEmail) {
+		global $log;
+		$log->fatal(array(
+			'SMTPOptions' => $mail->SMTPOptions,
+			'SMTPSecure' => $mail->SMTPSecure,
+			'Host' => $mail->Host = $server,
+			'Username' => $mail->Username = $username,
+			'Password' => $mail->Password = $password,
+		));
+		$mail->SMTPDebug = 4;
+		$mail->Debugoutput = function($str, $level) { global $log;$log->fatal($str); };
+	}
 }
 
 /**	Function to add the file as attachment with the mail object
@@ -346,6 +361,19 @@ function addAttachment($mail,$filename,$record)
 	if(is_file($root_directory.$filename) && ($root_directory.$filename) != '') {
 		$mail->AddAttachment($root_directory.$filename);
 	}
+}
+
+/**	Function to add the file as attachment with the mail object
+  *	$mail -- reference of the mail object
+  *	$filename -- filename which is going to added with the mail
+  *	$data -- file contents to attach
+  */
+function addStringAttachment($mail,$filename,$data)
+{
+	global $adb, $root_directory;
+	$adb->println("Inside the function addStringAttachment. The file name is => '".$filename."'");
+
+		$mail->AddStringAttachment($data,$filename);
 }
 
 /**     Function to add all the files as attachment with the mail object
@@ -464,10 +492,9 @@ function getParentMailId($parentmodule,$parentid)
 /**	Function to parse and get the mail error
   *	$mail -- reference of the mail object
   *	$mail_status -- status of the mail which is sent or not
-  *	$to -- the email address to whom we sent the mail and failes
   *	return -- Mail error occured during the mail sending process
   */
-function getMailError($mail,$mail_status,$to)
+function getMailError($mail,$mail_status)
 {
 	//Error types in class.phpmailer.php
 	/*
@@ -495,8 +522,7 @@ function getMailError($mail,$mail_status,$to)
 	}
 	else
 	{
-		$adb->println("Mail error is not as connect_host or from_failed or recipients_failed");
-		//$error_msg = $msg;
+		$error_msg = 'Mail error is not connect_host, from_failed nor recipients_failed';
 	}
 
 	$adb->println("return error => ".$error_msg);
@@ -537,15 +563,14 @@ function getMailErrorString($mail_status_str)
   *	$mail_error_str -- base64 encoded string which contains the mail sending errors as concatenated with &&&
   *	return - Error message to display
   */
-function parseEmailErrorString($mail_error_str)
-{
-	//TODO -- we can modify this function for better email error handling in future
-	global $adb, $mod_strings;
+function parseEmailErrorString($mail_error_str) {
+	global $adb;
 	$adb->println("Inside the parseEmailErrorString function.\n encoded mail error string ==> ".$mail_error_str);
 
 	$mail_error = base64_decode($mail_error_str);
 	$adb->println("Original error string => ".$mail_error);
 	$mail_status = explode("&&&",trim($mail_error,"&&&"));
+	$errorstr = '';
 	foreach($mail_status as $key => $val)
 	{
 		$status_str = explode("=",$val);
@@ -556,13 +581,13 @@ function parseEmailErrorString($mail_error_str)
 			if($status_str[1] == 'connect_host')
 			{
 				$adb->println("if part - Mail sever is not configured");
-				$errorstr .= '<br><b><font color=red>'.$mod_strings['MESSAGE_CHECK_MAIL_SERVER_NAME'].'</font></b>';
+				$errorstr .= '<br><b><font color=red>'.getTranslatedString('MESSAGE_CHECK_MAIL_SERVER_NAME','Emails').'</font></b>';
 				break;
 			}
 			elseif($status_str[1] == '0')
 			{
 				$adb->println("first elseif part - status will be 0 which is the case of assigned to vtiger_users's email is empty.");
-				$errorstr .= '<br><b><font color=red> '.$mod_strings['MESSAGE_MAIL_COULD_NOT_BE_SEND'].' '.$mod_strings['MESSAGE_PLEASE_CHECK_FROM_THE_MAILID'].'</font></b>';
+				$errorstr .= '<br><b><font color=red> '.getTranslatedString('MESSAGE_MAIL_COULD_NOT_BE_SEND','Emails').' '.getTranslatedString('MESSAGE_PLEASE_CHECK_FROM_THE_MAILID','Emails').'</font></b>';
 				//Added to display the message about the CC && BCC mail sending status
 				if($status_str[0] == 'cc_success')
 				{
@@ -574,12 +599,12 @@ function parseEmailErrorString($mail_error_str)
 			{
 				$adb->println("second elseif part - from email id is failed.");
 				$from = explode('from_failed',$status_str[1]);
-				$errorstr .= "<br><b><font color=red>".$mod_strings['MESSAGE_PLEASE_CHECK_THE_FROM_MAILID']." '".$from[1]."'</font></b>";
+				$errorstr .= "<br><b><font color=red>".getTranslatedString('MESSAGE_PLEASE_CHECK_THE_FROM_MAILID','Emails')." '".$from[1]."'</font></b>";
 			}
 			else
 			{
 				$adb->println("else part - mail send process failed due to the following reason.");
-				$errorstr .= "<br><b><font color=red> ".$mod_strings['MESSAGE_MAIL_COULD_NOT_BE_SEND_TO_THIS_EMAILID']." '".$status_str[0]."'. ".$mod_strings['PLEASE_CHECK_THIS_EMAILID']."</font></b>";
+				$errorstr .= "<br><b><font color=red> ".getTranslatedString('MESSAGE_MAIL_COULD_NOT_BE_SEND_TO_THIS_EMAILID','Emails')." '".$status_str[0]."'. ".getTranslatedString('PLEASE_CHECK_THIS_EMAILID','Emails')."</font></b>";
 			}
 		}
 	}
@@ -588,7 +613,8 @@ function parseEmailErrorString($mail_error_str)
 }
 
 function isUserInitiated() {
-	return (($_REQUEST['module'] == 'Emails' || $_REQUEST['module'] == 'Webmails') &&
+	return (isset($_REQUEST['module']) && isset($_REQUEST['action']) &&
+			($_REQUEST['module'] == 'Emails' || $_REQUEST['module'] == 'Webmails') &&
 			($_REQUEST['action'] == 'mailsend' || $_REQUEST['action'] == 'webmailsend' || $_REQUEST['action'] == 'Save'));
 }
 
@@ -617,7 +643,7 @@ function getDefaultAssigneeEmailIds($groupId) {
 					$email = '';
 				}
 			}
-			array_push($emails,$email);
+			$emails[] = $email;
 		}
 		$adb->println("Email ids are selected => '".implode(',', $emails)."'");
 		} else {

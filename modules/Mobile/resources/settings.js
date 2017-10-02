@@ -17,7 +17,7 @@ var crmtogo_Settings_Js = {
 				'containment': 'parent',
 				'opacity': 0.6,
 				update: function(event, ui) {
-					if ($('.ui-page-active').attr('id')=='settings_page') {
+					if ($('.ui-page-active').prop('id')=='settings_page') {
 						var idsInOrder = $("#sortable").sortable("toArray");
 					}
 					else {
@@ -65,7 +65,7 @@ var crmtogo_Settings_Js = {
 			});
         console.log(moduleid + " has been changed! " + checkvalue);
     }
-	console.log($('[id*=flip_]'));
+	//console.log($('[id*=flip_]'));
 	$('[id*=flip_]').on("change", flipChanged);
 
 		$('#navislider').bind('change', function () {
@@ -105,9 +105,9 @@ var crmtogo_Settings_Js = {
 			})
 			.done(function( msg ) {
 				$('#footer').removeAttr('data-theme');
-				$('#footer').attr('data-theme',theme);
+				$('#footer').prop('data-theme',theme);
 				$('#header').removeAttr('data-theme');
-				$('#header').attr('data-theme',theme);
+				$('#header').prop('data-theme',theme);
 				//todo set theme color by trigger
 				//$('#settings_page').trigger('create');
 				var white = '#eee';

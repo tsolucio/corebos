@@ -22,7 +22,7 @@ class mysqlstrictCobroPagoUpdateLog extends cbupdaterWorker {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$this->ExecuteQuery("ALTER TABLE `vtiger_cobropago` CHANGE `update_log` `update_log` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL");
-			if(vtlib_isModuleActive("vtlib_isModuleActive"))
+			if(vtlib_isModuleActive("cbControlIngresoGasto"))
 				$this->ExecuteQuery("ALTER TABLE `vtiger_cbcontrolingresogasto` CHANGE `update_log` `update_log` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL");
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();

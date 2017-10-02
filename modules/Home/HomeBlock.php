@@ -31,6 +31,7 @@ if(!empty($_REQUEST['blockstufftype'])){
 	$stufftype = $_REQUEST['blockstufftype'];
 }
 $dashdet = '';
+$homestuff_values = '';
 if($stufftype=='Tag Cloud'){
 	$freetag = new freetag();
 	$smarty->assign("ALL_TAG",$freetag->get_tag_cloud_html("",$current_user->id));
@@ -55,10 +56,10 @@ if($stufftype=='Tag Cloud'){
 		$homeObj->getDashDetails($stuffid,'type');
 		$dashdet=$homeObj->dashdetails;
 	}
-    if($stufftype=="ReportCharts"){
-    	$homeObj->getReportChartDetails($stuffid,'type');
-        $dashdet = $homeObj->reportdetails;
-    }
+	if($stufftype=="ReportCharts"){
+		$homeObj->getReportChartDetails($stuffid,'type');
+		$dashdet = $homeObj->reportdetails;
+	}
 }
 
 $smarty->assign("DASHDETAILS",$dashdet);

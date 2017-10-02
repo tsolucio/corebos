@@ -38,10 +38,29 @@ class coreBOS_Session {
 	/**
 	 * Initialize session
 	 */
-	static function init($setKCFinder=false) {
+	static function init($setKCFinder=false,$saveTabValues=false) {
 		session_name(self::getSessionName());
 		@session_start();
 		if ($setKCFinder) self::setKCFinderVariables();
+		if ($saveTabValues) self::copyTabVariables();
+	}
+
+	/**
+	 * create session name from given URL or $site_URL
+	 */
+	static function copyTabVariables() {
+		if (!empty($_COOKIE['corebos_browsertabID'])) {
+			$corebos_browsertabID = vtlib_purify($_COOKIE['corebos_browsertabID']);
+			$newvars = array();
+			foreach ($_SESSION as $key => $value) {
+				if (strpos($key, $corebos_browsertabID) !== false and strpos($key, $corebos_browsertabID.'__prev') === false) {
+					$newvars[$key.'__prev'] = $value;
+				}
+			}
+			foreach ($newvars as $key => $value) {
+				$_SESSION[$key] = $value;
+			}
+		}
 	}
 
 	/**
@@ -61,8 +80,9 @@ class coreBOS_Session {
 			}
 		}
 		if (empty($URL)) $URL = $site_URL;
+		if (empty($URL)) $URL = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
 		$purl = parse_url($URL);
-		$sn = preg_replace('/[^A-Za-z0-9]/', '', $purl['host'].$purl['path'].(isset($purl['port'])?$purl['port']:''));
+		$sn = preg_replace('/[^A-Za-z0-9]/', '', (isset($purl['host'])?$purl['host']:'').(isset($purl['path'])?$purl['path']:'').(isset($purl['port'])?$purl['port']:''));
 		if (is_numeric($sn)) $sn = 'cb'.$sn;
 		self::$session_name = $sn;
 		return $sn;
@@ -79,6 +99,7 @@ class coreBOS_Session {
 	 */
 	static function setKCFinderVariables() {
 		global $upload_badext, $site_URL, $root_directory;
+		if (empty($site_URL)) return false;
 		self::init();
 		$_SESSION['KCFINDER'] = array();
 		$_SESSION['KCFINDER']['disabled'] = false;
@@ -124,9 +145,10 @@ class coreBOS_Session {
 			}
 		} else {
 			if (is_null($sespos)) {
-				if (!is_array($_SESSION[$keyparts[0]])) return false;
+				if (!isset($_SESSION[$keyparts[0]]) or !is_array($_SESSION[$keyparts[0]])) return false;
 				$sespos = $_SESSION[$keyparts[0]];
 			} else {
+				if (!isset($sespos[$keyparts[0]]) or !is_array($sespos[$keyparts[0]])) return false;
 				$sespos = $sespos[$keyparts[0]];
 			}
 			$key = substr($key, strpos($key,'^')+1);
@@ -145,7 +167,7 @@ class coreBOS_Session {
 		}
 		if (!isset($_SESSION[$keyparts[0]])) return $defvalue;
 		$sespos = $_SESSION[$keyparts[0]];
-		for ($p=1;$p<count($keyparts);$p++) {
+		for ($p=1, $pMax = count($keyparts); $p< $pMax; $p++) {
 			if (!isset($sespos[$keyparts[$p]])) return $defvalue;
 			$sespos = $sespos[$keyparts[$p]];
 		}
@@ -210,7 +232,7 @@ class coreBOS_Session {
 		} else {
 			$key = substr($key, strpos($key,'^')+1);
 			if (is_null($sespos)) {
-				if (!is_array($_SESSION[$keyparts[0]])) return false; // this should be an exception
+				if (!isset($_SESSION[$keyparts[0]]) or !is_array($_SESSION[$keyparts[0]])) return false; // this should be an exception
 				self::delete($key, $_SESSION[$keyparts[0]]);
 			} else {
 				self::delete($key, $sespos[$keyparts[0]]);

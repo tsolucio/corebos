@@ -32,7 +32,7 @@ function vtws_getfilterfields($module, $user){
 		$finfo=explode(':', $fld);
 		$fields[]=($finfo[1]=='smownerid' ? 'assigned_user_id' : $finfo[2]);
 	}
-		
+
 	return array(
 		'fields'=>$fields,
 		'linkfields'=>$linkfields,

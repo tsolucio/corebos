@@ -55,6 +55,7 @@
 	<td class="big tableHeading" colspan=2 align="center">{$MOD.LBL_LANGUAGES_PACKS}</td>
 	<td class="big tableHeading" colspan=4 width=10% align="center">&nbsp;</td>
 </tr>
+{assign var="totalCustomModules" value=0}
 {foreach key=langprefix item=langinfo from=$TOGGLE_LANGINFO}
 	{assign var="totalCustomModules" value=$totalCustomModules+1}
 	<tr>
@@ -94,7 +95,7 @@
 	<td class="big tableHeading" colspan=4 align="center">&nbsp;</td>
 </tr>
 
-{assign var="totalCustomModules" value="0"}
+{assign var="totalCustomModules" value=0}
 
 {foreach key=modulename item=modinfo from=$TOGGLE_MODINFO}
 {if $modinfo.customized eq true}

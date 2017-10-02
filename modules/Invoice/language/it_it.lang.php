@@ -39,11 +39,6 @@ $mod_strings = array (
   'LBL_LIST_PHONE' => 'Telefono',
   'LBL_LIST_EMAIL_ADDRESS' => 'Indirizzo Email',
   'LBL_LIST_CONTACT_NAME' => 'Nome Contatto',
-
-  'db_name' => 'LBL_LIST_ACCOUNT_NAME',
-  'db_website' => 'LBL_LIST_WEBSITE',
-  'db_billing_address_city' => 'LBL_LIST_CITY',
-
   'LBL_ACCOUNT' => 'Azienda:',
   'LBL_ACCOUNT_NAME' => 'Nome Azienda:',
   'LBL_PHONE' => 'Telefono:',
@@ -157,7 +152,6 @@ $mod_strings = array (
   'LBL_SO' => 'Ordine di Vendita:',
   'LBL_SUBJECT' => 'Soggetto:',
   'LBL_SALES_ORDER' => 'Ordini di vendita:',
-  'Invoice Id' => 'ID Fattura',
   'LBL_MY_TOP_INVOICE' => 'Mie principali Fatture Aperte',
   'LBL_INVOICE_NAME' => 'Nome Fattura:',
   'Purchase Order' => 'Ordini di Acquisto',

@@ -12,10 +12,12 @@ require_once('Smarty_setup.php');
 
 $focus = CRMEntity::getInstance($currentModule);
 $smarty = new vtigerCRM_Smarty();
+// Identify this module as custom module.
+$smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
 
 $category = getParentTab($currentModule);
-$record = vtlib_purify($_REQUEST['record']);
-$isduplicate = vtlib_purify($_REQUEST['isDuplicate']);
+$record = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : null;
+$isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : null;
 
 //added to fix the issue4600
 $searchurl = getBasic_Advance_SearchURL();
@@ -28,16 +30,21 @@ if($record) {
 	$focus->retrieve_entity_info($record, $currentModule);
 }
 
+$contactid = $accountid = '';
 //adding support for uitype 10
-if(!empty($_REQUEST['contact_id'])){
-	$focus->column_fields['related_to'] = vtlib_purify($_REQUEST['contact_id']);
-}elseif(!empty($_REQUEST['account_id'])){
-	$focus->column_fields['related_to'] = vtlib_purify($_REQUEST['account_id']);
+if (!empty($_REQUEST['contact_id'])) {
+	$contactid = vtlib_purify($_REQUEST['contact_id']);
+	$focus->column_fields['related_to'] = $contactid;
+}elseif (!empty($_REQUEST['account_id'])) {
+	$accountid = vtlib_purify($_REQUEST['account_id']);
+	$focus->column_fields['related_to'] = $accountid;
 }
 
 if($isduplicate == 'true') {
 	$focus->id = '';
 	$focus->mode = '';
+	$focus->column_fields['isduplicatedfromrecordid'] = $record; // in order to support duplicate workflows
+	$smarty->assign('__cbisduplicatedfromrecordid', $record);
 }
 $focus->preEditCheck($_REQUEST,$smarty);
 if (!empty($_REQUEST['save_error']) and $_REQUEST['save_error'] == "true") {
@@ -67,6 +74,7 @@ if (!empty($_REQUEST['save_error']) and $_REQUEST['save_error'] == "true") {
 						break;
 					case '33':
 					case '3313':
+					case '3314':
 						if (is_array($field_value)) {
 							$field_value = implode(' |##| ', $field_value);
 						}
@@ -83,11 +91,14 @@ if (!empty($_REQUEST['save_error']) and $_REQUEST['save_error'] == "true") {
 } elseif($focus->mode != 'edit'){
 	setObjectValuesFromRequest($focus);
 }
-
+$smarty->assign('MASS_EDIT','0');
 $disp_view = getView($focus->mode);
-$smarty->assign('BLOCKS', getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields));
-$smarty->assign('BASBLOCKS', getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields, 'BAS'));
-$smarty->assign('ADVBLOCKS',getBlocks($currentModule,$disp_view,$focus->mode,$focus->column_fields,'ADV'));
+$blocks = getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields);
+$smarty->assign('BLOCKS', $blocks);
+$basblocks = getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields, 'BAS');
+$smarty->assign('BASBLOCKS', $basblocks);
+$advblocks = getBlocks($currentModule,$disp_view,$focus->mode,$focus->column_fields,'ADV');
+$smarty->assign('ADVBLOCKS', $advblocks);
 
 $custom_blocks = getCustomBlocks($currentModule,$disp_view);
 $smarty->assign('CUSTOMBLOCKS', $custom_blocks);
@@ -97,7 +108,6 @@ $smarty->assign('OP_MODE',$disp_view);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
-// TODO: Update Single Module Instance name here.
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $smarty->assign('CATEGORY', $category);
 $smarty->assign("THEME", $theme);
@@ -109,9 +119,9 @@ $smarty->assign('CREATEMODE', isset($_REQUEST['createmode']) ? vtlib_purify($_RE
 $smarty->assign('CHECK', Button_Check($currentModule));
 $smarty->assign('DUPLICATE', $isduplicate);
 
-if($focus->mode == 'edit' || $isduplicate) {
+if($focus->mode == 'edit' || $isduplicate == 'true') {
 	$recordName = array_values(getEntityName($currentModule, $record));
-	$recordName = $recordName[0];
+	$recordName = isset($recordName[0]) ? $recordName[0] : '';
 	$smarty->assign('NAME', $recordName);
 	$smarty->assign('UPDATEINFO',updateInfo($record));
 }
@@ -120,11 +130,15 @@ if (isset($_REQUEST['accountname']) && is_null($focus->accountname)) {
 	$focus->accountname = vtlib_purify($_REQUEST['accountname']);
 }
 if (isset($_REQUEST['accountid']) && is_null($focus->related_to)) {
-	$focus->related_to = vtlib_purify($_REQUEST['accountid']);
+	$accountid = vtlib_purify($_REQUEST['account_id']);
+	$focus->related_to = $accountid;
 }
 if (isset($_REQUEST['contactid']) && is_null($focus->related_to)) {
-	$focus->related_to = vtlib_purify($_REQUEST['contactid']);
+	$contactid = vtlib_purify($_REQUEST['contact_id']);
+	$focus->related_to = $contactid;
 }
+$smarty->assign('CONTACT_ID',$contactid);
+$smarty->assign('ACCOUNT_ID',$accountid);
 
 //fix for potential duplicate header
 $smarty->assign('DUPLICATE',$isduplicate);
@@ -169,7 +183,11 @@ if($focus->mode != 'edit' && $mod_seq_field != null) {
 		$smarty->assign("MOD_SEQ_ID",$autostr);
 	}
 } else {
-	$smarty->assign("MOD_SEQ_ID", $focus->column_fields[$mod_seq_field['name']]);
+	if (!empty($mod_seq_field) and !empty($mod_seq_field['name']) and !empty($focus->column_fields[$mod_seq_field['name']])) {
+		$smarty->assign('MOD_SEQ_ID', $focus->column_fields[$mod_seq_field['name']]);
+	} else {
+		$smarty->assign('MOD_SEQ_ID', '');
+	}
 }
 
 // Gather the help information associated with fields

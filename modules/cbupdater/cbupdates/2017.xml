@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<updatesChangeLog>
+<changeSet>
+	<author>joebordes</author>
+	<description>coreBOS Message Queue and Task Manager: Deliver After</description>
+	<filename>build/changeSets/2017/cbmqtmdbdistributordeliverafter.php</filename>
+	<classname>cbmqtmdbdistributordeliverafter</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Install Translation module</description>
+	<filename>build/changeSets/2017/installcbtranslation.php</filename>
+	<classname>installcbtranslation</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Fix Calendar Field Presence Value</description>
+	<filename>build/changeSets/2017/fixCalendarPresenceValue.php</filename>
+	<classname>fixCalendarPresenceValue</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Fix Calendar displaytype Value for location field</description>
+	<filename>build/changeSets/2017/fixCalendarLocationDisplayTypeValue.php</filename>
+	<classname>fixCalendarLocationDisplayTypeValue</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Fix Calendar relations with missing modules</description>
+	<filename>build/changeSets/2017/fixCalendarRelations.php</filename>
+	<classname>fixCalendarRelations</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Update new events created with the new module cbCalendar with vtiger_seactivityrel</description>
+	<filename>build/changeSets/2017/syncSeactivityRelWithAllRelIdOnCbCalendar.php</filename>
+	<classname>syncSeactivityRelWithAllRelIdOnCbCalendar</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>AlbanaCelepija</author>
+	<description>Add uitype 1025 MultiValued Field Webservice Type</description>
+	<filename>build/changeSets/addUIType1025WebserviceFieldType.php</filename>
+	<classname>addUIType1025WebserviceFieldType</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete Email uitype 104 (mostly for users). Use uitype 13.</description>
+	<filename>build/changeSets/2017/delEmail104uitype.php</filename>
+	<classname>delEmail104uitype</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete FieldFormula module: Use workflows.</description>
+	<filename>build/changeSets/2017/delFieldFormula.php</filename>
+	<classname>delFieldFormula</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Database optimizations and support for mass edit on solution and customer portal fields</description>
+	<filename>build/changeSets/2017/cleanoptimizedatabase_200.php</filename>
+	<classname>cleanoptimizedatabase_200</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>User Hour Field and Calendar Quick Create</description>
+	<filename>build/changeSets/2017/UserHourFieldCalendarQuickCreate.php</filename>
+	<classname>UserHourFieldCalendarQuickCreate</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Move Calendar Reports to cbCalendar module</description>
+	<filename>build/changeSets/2017/moveCalendarReport2cbCalendar.php</filename>
+	<classname>moveCalendarReport2cbCalendar</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Activate Calendar All Day option</description>
+	<filename>build/changeSets/2017/activateCalendarAllDay.php</filename>
+	<classname>activateCalendarAllDay</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Check and Restore Email Relations</description>
+	<filename>build/changeSets/2017/checkAndRestoreEmailsRelations.php</filename>
+	<classname>checkAndRestoreEmailsRelations</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Field Relation Information To Related List</description>
+	<filename>build/changeSets/2017/addRelationInformationToRelatedList.php</filename>
+	<classname>addRelationInformationToRelatedList</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+</updatesChangeLog>

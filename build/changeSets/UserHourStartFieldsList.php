@@ -36,7 +36,7 @@ class UserHourStartFieldsList extends cbupdaterWorker {
 			$this->ExecuteQuery('drop table if exists vtiger_start_hour');
 			$field = Vtiger_Field::getInstance('hour_format',$moduleInstance);
 			if ($field) {
-				$this->ExecuteQuery('update vtiger_field set presence=2,uitype=16 where fieldid='.$field->id);
+				$this->ExecuteQuery('update vtiger_field set presence=2,uitype=16 where fieldid=?',array($field->id));
 			} else {
 				$field = new Vtiger_Field();
 				$field->name = 'hour_format';
@@ -52,7 +52,7 @@ class UserHourStartFieldsList extends cbupdaterWorker {
 			$field->setPicklistValues(array('12','24'));
 			$start_hour = Vtiger_Field::getInstance('start_hour',$moduleInstance);
 			if ($start_hour) {
-				$this->ExecuteQuery('update vtiger_field set presence=2,uitype=16 where fieldid='.$start_hour->id);
+				$this->ExecuteQuery('update vtiger_field set presence=2,uitype=16 where fieldid=?',array($start_hour->id));
 			} else {
 				$start_hour = new Vtiger_Field();
 				$start_hour->name = 'start_hour';

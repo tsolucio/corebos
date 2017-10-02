@@ -20,7 +20,7 @@ require_once('include/utils/Session.php');
 global $adb,$current_user;
 
 // Recording Logout Info
-$usip=$_SERVER['REMOTE_ADDR'];
+$usip = Vtiger_Request::get_ip();
 $outtime=date("Y/m/d H:i:s");
 $loghistory=new LoginHistory();
 $loghistory->user_logout($current_user->user_name,$usip,$outtime);

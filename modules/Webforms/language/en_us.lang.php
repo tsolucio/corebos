@@ -3,7 +3,7 @@
 $mod_strings = Array (
 	'Webforms' => 'Webforms',
 	'Allows you to manage Webforms' => 'Create and manage webforms which can be used to capture Leads',
-	'LBL_SUCCESS' => 'entry is added to the application.',
+	'LBL_SUCCESS' => 'entry has been added to the application',
 	'LBL_FAILURE' => 'Failed to add entry in to the application.',
 	'LBL_ERROR_CODE' => 'Error Code',
 	'LBL_ERROR_MESSAGE' => 'Error Message',
@@ -37,7 +37,9 @@ $mod_strings = Array (
 	'LBL_SELECT_VALUE'=>'--Select Value--',
 	'LBL_DUPLICATE_NAME' => 'Webform with same name exists',
 	'ERR_CREATE_WEBFORM' => 'Webform creation failed',
-	'LBL_SELECT_USER' => 'Select User'
+	'LBL_SELECT_USER' => 'Select User',
+	'LBL_WEB_DOMAIN' => 'Web Domain',
+	'LBL_CREATENEW' => 'You can Create a Webform Now. Click the link below',
 );
 
 ?>

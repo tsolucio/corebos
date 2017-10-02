@@ -108,6 +108,7 @@ class ListColumns extends processcbMap {
 	}
 
 	private function convertMap2Array() {
+		global $adb;
 		$xml = $this->getXMLContent();
 		$this->modulename = (String)$xml->originmodule->originname;
 		$this->moduleid = (isset($xml->originmodule->originid) ? (String)$xml->originmodule->originid : 0);
@@ -134,7 +135,16 @@ class ListColumns extends processcbMap {
 				$this->mapping[$modulename]['ListFieldsName'] = array();
 				$this->mapping[$modulename]['LINKFIELD'] = (!empty($v->linkfield) ? (String)$v->linkfield : $f->list_link_field);
 				foreach($v->columns->field as $kl=>$vl) {
-					$this->mapping[$modulename]['ListFields'][(String)$vl->label] = array((String)$vl->table=>(String)$vl->columnname);
+					$table = $vl->table;
+					$columnname = $vl->columnname;
+					$tabid = getTabid($this->modulename);
+					$res = $adb->pquery("SELECT columnname,tablename FROM vtiger_field WHERE fieldname=? AND tabid=?",array((String)$vl->name,$tabid));
+					$nr = $adb->num_rows($res);
+					if($nr > 0){
+						$table = str_replace('vtiger_', '', $adb->query_result($res,0,'tablename'));
+						$columnname = $adb->query_result($res,0,'columnname');
+					}
+					$this->mapping[$modulename]['ListFields'][(String)$vl->label] = array((String)$table=>(String)$columnname);
 					$this->mapping[$modulename]['ListFieldsName'][(String)$vl->label] = (String)$vl->name;
 				}
 			}

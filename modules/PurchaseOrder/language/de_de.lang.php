@@ -1,16 +1,11 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -29,14 +24,6 @@ $mod_strings = Array(
 'LBL_LIST_PHONE'=>'Telefon',
 'LBL_LIST_EMAIL_ADDRESS'=>'E-Mail',
 'LBL_LIST_CONTACT_NAME'=>'Person',
-
-//DON'T CONVERT THESE THEY ARE MAPPINGS
-'db_name' => 'LBL_LIST_ACCOUNT_NAME',
-'db_website' => 'LBL_LIST_WEBSITE',
-'db_billing_address_city' => 'LBL_LIST_CITY',
-
-//END DON'T CONVERT
-
 'LBL_ACCOUNT'=>'Organisation:',
 'LBL_ACCOUNT_NAME'=>'Organisation:',
 'LBL_PHONE'=>'Telefon:',

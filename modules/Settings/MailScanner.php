@@ -10,7 +10,7 @@
 require_once('include/utils/utils.php');
 require_once('Smarty_setup.php');
 
-$mode = vtlib_purify($_REQUEST['mode']);
+$mode = isset($_REQUEST['mode']) ? vtlib_purify($_REQUEST['mode']) : '';
 
 if($mode == 'Ajax' && !empty($_REQUEST['xmode'])) {
 	$mode = vtlib_purify($_REQUEST['xmode']);

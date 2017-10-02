@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *********************************************************************************** */
-include_once dirname(__FILE__) . '/ModTracker_Detail.php';
+include_once __DIR__ . '/ModTracker_Detail.php';
 
 class ModTracker_Basic {
 
@@ -104,8 +104,7 @@ class ModTracker_Basic {
 		// Avoid SQL Injection attacks
 		$purifiedAtPoint = $adb->sql_escape_string($atpoint);
 
-		$result = $adb->pquery("SELECT * FROM vtiger_modtracker_basic WHERE crmid=? ORDER BY changedon DESC LIMIT $purifiedAtPoint, 1",
-						array($crmid));
+		$result = $adb->pquery("SELECT * FROM vtiger_modtracker_basic WHERE crmid=? ORDER BY changedon DESC LIMIT $purifiedAtPoint, 1", array($crmid));
 
 		if ($adb->num_rows($result)) {
 			$rowmap = $adb->fetch_array($result);
@@ -122,11 +121,9 @@ class ModTracker_Basic {
 
 		if ($module) {
 			if ($asc)
-				$result = $adb->pquery('SELECT * FROM vtiger_modtracker_basic
-				WHERE module=? ORDER BY id', Array($module));
+				$result = $adb->pquery('SELECT * FROM vtiger_modtracker_basic WHERE module=? ORDER BY id', Array($module));
 			else
-				$result = $adb->pquery('SELECT * FROM vtiger_modtracker_basic
-				WHERE module=? ORDER BY id DESC', Array($module));
+				$result = $adb->pquery('SELECT * FROM vtiger_modtracker_basic WHERE module=? ORDER BY id DESC', Array($module));
 		}
 
 		if ($result && $adb->num_rows($result)) {

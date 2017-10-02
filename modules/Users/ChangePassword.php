@@ -17,14 +17,14 @@ require_once('include/logging.php');
 
 global $theme, $app_strings, $mod_strings;
 
-$badpassword = $mod_strings["PASSWORD REQUIREMENTS"].'<br>----------------------------------------<br>';
-$badpassword.= $mod_strings["REQUIRED"].':<br>~ ';
-$badpassword.= $mod_strings["Min. 8 characters"].'<br><br>';
-$badpassword.= $mod_strings["Contains3of4"].':<br>~ ';
-$badpassword.= $mod_strings["Min. 1 uppercase"].':<br>~ ';
-$badpassword.= $mod_strings["Min. 1 lowercase"].':<br>~ ';
-$badpassword.= $mod_strings["Min. 1 number"].':<br>~ ';
-$badpassword.= $mod_strings["Min. 1 special character"].'<br>';
+$badpassword = $mod_strings['PASSWORD REQUIREMENTS'].'<br>----------------------------------------<br>';
+$badpassword.= $mod_strings['REQUIRED'].':<br>~ ';
+$badpassword.= $mod_strings['Min. 8 characters'].'<br><br>';
+$badpassword.= $mod_strings['Contains3of4'].'<br>~ ';
+$badpassword.= $mod_strings['Min. 1 uppercase'].'<br>~ ';
+$badpassword.= $mod_strings['Min. 1 lowercase'].'<br>~ ';
+$badpassword.= $mod_strings['Min. 1 number'].'<br>~ ';
+$badpassword.= $mod_strings['Min. 1 special character'].'<br>';
 insert_popup_header($theme);
 ?>
 <link REL="SHORTCUT ICON" HREF="themes/images/blank.gif">

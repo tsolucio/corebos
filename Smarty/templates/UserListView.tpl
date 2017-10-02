@@ -6,7 +6,6 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 
@@ -49,9 +48,6 @@
 				</td>
 				</tr>
 				</table>
-			
-			
-			
 			</td>
 			</tr>
 			</table>
@@ -110,9 +106,7 @@ function transferUser(del_userid)
 				document.getElementById("ListViewContents").innerHTML= response;
 			}
 		);
-
 }
 </script>
 {/literal}
-
 

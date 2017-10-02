@@ -42,11 +42,11 @@ function cbws_getproductimageinfo($id, $user){
 	$handler = new $handlerClass($webserviceObject,$user,$adb,$log);
 	$meta = $handler->getMeta();
 	$entityName = $meta->getObjectEntityName($id);
-	if($entityName!='Products'){
+	if ($entityName!='Products') {
 		throw new WebServiceException(WebServiceErrorCode::$INVALIDID,"Entity ID must be a product");
 	}
 	$log->debug("Leaving function cbws_getproductimageinfo");
-	return cbws_getmoduleimageinfo($id, $user);
+	return cbws_getrecordimageinfo($id, $user);
 }
 
 ?>

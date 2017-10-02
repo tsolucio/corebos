@@ -10,8 +10,8 @@
  ************************************************************************************/
 include_once 'include/Webservices/Retrieve.php';
 include_once 'include/Webservices/DescribeObject.php';
-include_once dirname(__FILE__) . '/FetchRecord.php';
-include_once dirname(__FILE__) . '/Describe.php';
+include_once __DIR__ . '/FetchRecord.php';
+include_once __DIR__ . '/Describe.php';
 
 class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 	
@@ -59,18 +59,16 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 		$result = $response->getResult();
 		$operation = $request->getOperation();
 		$resultRecord = $result['record'];
-		$relatedlistcontent = $result['relatedlistcontent'];
-		$comments = $result['comments'];
+		$relatedlistcontent = isset($result['relatedlistcontent']) ? $result['relatedlistcontent'] : '';
 		$module = $this->detectModuleName($resultRecord['id']);
 		//set download pathinfo
-		
 		$modifiedRecord = $this->transformRecordWithGrouping($resultRecord, $module,$operation);
 		$ret_arr = array('record' => $modifiedRecord);
 		if (is_array ($relatedlistcontent)) {
 			$ret_arr['relatedlistcontent'] = $relatedlistcontent;
 		}
-		if (isset($comments)) {
-			$ret_arr['comments'] = $comments;
+		if (isset($result['comments'])) {
+			$ret_arr['comments'] = $result['comments'];
 		}
 		if (isset($resultRecord['attachmentinfo']) and $resultRecord['attachmentinfo']!='') {
 			$ret_arr['attachmentinfo'] = $resultRecord['attachmentinfo'];
@@ -86,12 +84,17 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 		$blocks = array(); 
 		$labelFields = false;
 
-		if($module == 'Events' || $module == 'Calendar') {
+		if($module == 'Events' || $module == 'Calendar' || $module == 'Timecontrol') {
 			// sets times & dates to local time zone and format
 			$date = new DateTimeField($resultRecord['date_start'].' '.$resultRecord['time_start']);
 			$startDateTime = $date->getDisplayDateTimeValue();	
 			$startDateTimeArray = explode(' ', $startDateTime);
-			$date = new DateTimeField($resultRecord['due_date']." ".$resultRecord['time_end']);
+			if($module == 'Timecontrol'){
+				$endDname = 'date_end';
+			}else{
+				$endDname = 'due_date';
+			}
+			$date = new DateTimeField($resultRecord[$endDname]." ".$resultRecord['time_end']);
 			$endDateTime = $date->getDisplayDateTimeValue();	
 			$endDateTimeArray = explode(' ', $endDateTime);
 			if ($operation =='edit') {
@@ -114,7 +117,7 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 				else {
 					$formated_date =$endDateTimeArray[0];
 				}
-				$resultRecord['due_date'] = date("Y-m-d",strtotime($formated_date));
+				$resultRecord[$endDname] = date("Y-m-d",strtotime($formated_date));
 				//remove trailing seconds
 				$time_arr = explode(':', $endDateTimeArray[1]);
 				$resultRecord['time_end'] = $time_arr[0].':'.$time_arr[1];
@@ -124,7 +127,7 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 				$time_arr = explode(':', $startDateTimeArray[1]);
 				$resultRecord['time_start'] =  $time_arr[0].':'.$time_arr[1];
 				// format end times to local timezone and hour format
-				$resultRecord['due_date'] = $endDateTimeArray[0];
+				$resultRecord[$endDname] = $endDateTimeArray[0];
 				$time_arr = explode(':', $endDateTimeArray[1]);
 				$resultRecord['time_end'] = $time_arr[0].':'.$time_arr[1];
 				if ($current_user->hour_format == '12') {
@@ -138,11 +141,12 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 			$fields = array();
 			
 			foreach($fieldgroups as $fieldname => $fieldinfo) {
-				$value = $resultRecord[$fieldname];
+				$value = '';
 				$fieldlabel = $fieldinfo['label'];
 
 				// get field information
-				if(isset($resultRecord[$fieldname])) {
+				if (isset($resultRecord[$fieldname])) {
+					$value = $resultRecord[$fieldname];
 					//get standard content & perform special settings
 					if($fieldinfo['uitype'] == 17 && strlen($resultRecord[$fieldname]) ) {
 						//www fields
@@ -189,6 +193,7 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 							'label' => $fieldinfo['label'],
 							'uitype'=> $fieldinfo['uitype'],
 							'typeofdata'=> $fieldinfo['typeofdata'],
+							'displaytype'=> $fieldinfo['displaytype'],
 							'mandatory'=> $fieldinfo['mandatory']
 					);
 					//handling for special UI types: modify $field
@@ -239,8 +244,13 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 							}
 						}
 						$editview_label[]=getTranslatedString($fieldlabel, $module);
+						foreach ($valueArr as $key => $value) {
+							$valueArr[$key] = getTranslatedString($value, $module);
+						}
 						if ($field['uitype'] == '33') {
 							$field['value'] = implode ( ',' , $valueArr ) ;
+						}else{
+							$field['value'] = $valueArr[0];
 						}
 	
 						$fieldvalue [] = $options;
@@ -251,20 +261,20 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 						$field['relatedmodule'] = crmtogo_WS_Utils::getEntityName($field['name'], $module);
 					}
 					$fields[] = $field;
-										
-				} 
+				}
 			}
 			// build address for "open address in maps" button
 			// array with all different address fieldnames for each module
 			$fieldnamesByModule = array(
-				"Accounts" 		=> array("bill_street", "ship_street", "bill_city", "ship_city", "bill_state", "ship_state", "bill_code", "ship_code", "bill_country", "ship_country", "ship_address", "bill_address"),
-				"SalesOrder" 	=> array("bill_street", "ship_street", "bill_city", "ship_city", "bill_state", "ship_state", "bill_code", "ship_code", "bill_country", "ship_country", "ship_address", "bill_address"),
-				"Contacts" 		=> array("mailingstreet", "otherstreet", "mailingcity", "othercity", "mailingstate", "otherstate", "mailingzip", "otherzip", "mailingcountry", "othercountry", "mailingaddress", "otheraddress"),
-				"Leads" 			=> array("lane", "", "city", "", "state", "", "code", "", "country", "", "mailingaddress", ""),
+				"Accounts"		=> array("bill_street", "ship_street", "bill_city", "ship_city", "bill_state", "ship_state", "bill_code", "ship_code", "bill_country", "ship_country", "ship_address", "bill_address"),
+				"SalesOrder"	=> array("bill_street", "ship_street", "bill_city", "ship_city", "bill_state", "ship_state", "bill_code", "ship_code", "bill_country", "ship_country", "ship_address", "bill_address"),
+				"Contacts"		=> array("mailingstreet", "otherstreet", "mailingcity", "othercity", "mailingstate", "otherstate", "mailingzip", "otherzip", "mailingcountry", "othercountry", "mailingaddress", "otheraddress"),
+				"Leads"			=> array("lane", "", "city", "", "state", "", "code", "", "country", "", "mailingaddress", ""),
 			);
-			
+
 			// get the right array depending on current module
-			$fieldnames = $fieldnamesByModule[$module];
+			$fieldnames = (isset($fieldnamesByModule[$module]) ? $fieldnamesByModule[$module] : null);
+
 			/*
 			0 = appears if fieldgroup is not address information
 			1 = address values are set, show button
@@ -275,8 +285,9 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 			$mailingAddress = "";
 			$otherAddress = "";
 			// go through all fields
+			if (!empty($fieldnames))
 			foreach($fieldgroups as $fieldname => $fieldinfo) {
-				if(!is_array($resultRecord[$fieldname]) AND !is_object($resultRecord[$fieldname])) {
+				if (!is_array($resultRecord[$fieldname]) AND !is_object($resultRecord[$fieldname])) {
 					$value = trim($resultRecord[$fieldname]);
 					// check street and city for first address
 					if($mailingAddressOK != -1 AND ($fieldname == $fieldnames[0] OR $fieldname == $fieldnames[2])) {

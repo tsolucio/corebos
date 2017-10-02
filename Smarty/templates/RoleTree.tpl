@@ -6,7 +6,6 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="small">

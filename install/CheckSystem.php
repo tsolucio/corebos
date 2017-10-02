@@ -9,7 +9,7 @@
  ************************************************************************************/
 
 ob_start();
-eval ("phpinfo();");
+phpinfo();
 $info = ob_get_contents();
 ob_end_clean();
 
@@ -47,7 +47,6 @@ if (isset ($_REQUEST['filename'])) {
 }
 
 $failed_permissions = Common_Install_Wizard_Utils::getFailedPermissionsFiles();
-$gd_info_alternate = Common_Install_Wizard_Utils::$gdInfoAlternate;
 $directive_recommended = Common_Install_Wizard_Utils::getRecommendedDirectives();
 $directive_array = Common_Install_Wizard_Utils::getCurrentDirectiveValue();
 $check_mysql_extension = Common_Install_Wizard_Utils::check_mysql_extension();
@@ -112,46 +111,45 @@ $check_mysql_extension = Common_Install_Wizard_Utils::check_mysql_extension();
 																<table cellpadding="2" cellspacing="1" align=right width="100%" border="0" class="level1">
 																	<tr class='level1'>
 																		<td valign=top ><?php echo $installationStrings['LBL_PHP_VERSION_GT_5']; ?></td>
-																		<td  valign=top><?php $php_version = phpversion(); 
-																							echo (version_compare($php_version, '5.2.0') == -1) ?
-																								"<strong><font color=\"Red\">{$installationStrings['LBL_NO']}</strong></font>" : 
+																		<td  valign=top><?php $php_version = phpversion();
+																							echo (version_compare($php_version, '5.4.0') == -1) ?
+																								"<strong><font color=\"Red\">{$installationStrings['LBL_NO']}</strong></font>" :
 																								"<strong><font color=\"#46882B\">$php_version</strong></font>";
 																						?>
 																		</td>
 																	</tr>
 																	<tr class='level1'>
 																		<td valign=top ><?php echo $installationStrings['LBL_IMAP_SUPPORT']; ?></td>
-										        						<td valign=top><?php echo function_exists('imap_open') ? 
-																							"<strong><font color=\"#46882B\">{$installationStrings['LBL_YES']}</strong></font>" : 
+																		<td valign=top><?php echo function_exists('imap_open') ?
+																							"<strong><font color=\"#46882B\">{$installationStrings['LBL_YES']}</strong></font>" :
 																							"<strong><font color=\"#FF0000\">{$installationStrings['LBL_NO']}</strong></font>";
 																						?>
 																		</td>
 																	</tr>
 																	<tr class='level1'>
 																		<td valign=top ><?php echo $installationStrings['LBL_ZLIB_SUPPORT']; ?></td>
-										        						<td valign=top><?php echo function_exists('gzinflate') ? 
-																						"<strong><font color=\"#46882B\">{$installationStrings['LBL_YES']}</strong></font>" : 
+																		<td valign=top><?php echo function_exists('gzinflate') ?
+																						"<strong><font color=\"#46882B\">{$installationStrings['LBL_YES']}</strong></font>" :
 																						"<strong><font color=\"#FF0000\">{$installationStrings['LBL_NO']}</strong></font>";
 																					?>
 																		</td>
 																	</tr>
 																	<tr class='level1'>
 																		<td valign=top ><?php echo $installationStrings['LBL_GD_LIBRARY']; ?></td>
-																		<td valign=top><?php				
+																		<td valign=top><?php
 																			if (!extension_loaded('gd')) {
 																			echo "<strong><font size=-1 color=\"#FF0000\">{$installationStrings['LBL_NOT_CONFIGURED']}.</strong></font>";
 																			} else {
 																				if (!function_exists('gd_info')) {
-																				eval ($gd_info_alternate);
-																			}
-																			$gd_info = gd_info();
-																			
-																			if (isset ($gd_info['GD Version'])) {
-																			$gd_version = $gd_info['GD Version'];
-																			$gd_version = preg_replace('%[^0-9.]%', '', $gd_version);
-																			echo "<strong><font color=\"#46882B\">{$installationStrings['LBL_YES']}</strong></font>";
-																			} else {
-																				echo "<strong><font size=-1 color=\"#FF0000\">{$installationStrings['LBL_NO']}</font>";
+																					include_once 'include/install/resources/gdinfo.php';
+																				}
+																				$gd_info = gd_info();
+																				if (isset ($gd_info['GD Version'])) {
+																					$gd_version = $gd_info['GD Version'];
+																					$gd_version = preg_replace('%[^0-9.]%', '', $gd_version);
+																					echo "<strong><font color=\"#46882B\">{$installationStrings['LBL_YES']}</strong></font>";
+																				} else {
+																					echo "<strong><font size=-1 color=\"#FF0000\">{$installationStrings['LBL_NO']}</font>";
 																				}
 																			}
 																		?>
@@ -169,7 +167,7 @@ $check_mysql_extension = Common_Install_Wizard_Utils::check_mysql_extension();
 																		?>
 																		</td>
 																	</tr>
-																</table>  
+																</table>
 															</td>
 														</tr>
 														<tr><td class="small" colspan=2><br></td></tr>
@@ -180,7 +178,7 @@ $check_mysql_extension = Common_Install_Wizard_Utils::check_mysql_extension();
 															$all_directive_recommended_value = false;
 														?>
 														<tr><td align=left width=100%>
-							   	   							<!-- Recommended Settings -->
+															<!-- Recommended Settings -->
 															<table cellpadding="2" cellspacing="1"  width="100%" border="0" class="level1">
 										    					<tr>
 										    						<td valign=top ><strong><?php echo $installationStrings['LBL_DIRECTIVE']; ?></strong></td>
@@ -206,7 +204,7 @@ $check_mysql_extension = Common_Install_Wizard_Utils::check_mysql_extension();
 														}
 														?>
 													</table>
-								    			</td>
+												</td>
 												<td align=left width=50% valign=top>
 													<table cellpadding="2" cellspacing="1" align=right width="100%" border="0" class="level1">
 														<?php
@@ -218,13 +216,13 @@ $check_mysql_extension = Common_Install_Wizard_Utils::check_mysql_extension();
 														?>
 														<tr class='level1'>
 															<td valign=top ><?php echo $index; ?> (<?php echo str_replace("./","",$value); ?>)</td>
-							        						<td valign=top><font color="red"><strong><?php echo $installationStrings['LBL_NO']; ?></strong></font></td>
+															<td valign=top><font color="red"><strong><?php echo $installationStrings['LBL_NO']; ?></strong></font></td>
 														</tr>
-														<?php					
+														<?php
 															}
 														}
 														?>
-				       								</table>
+													</table>
 													<br>
 												</td>
 											</tr>
@@ -234,7 +232,6 @@ $check_mysql_extension = Common_Install_Wizard_Utils::check_mysql_extension();
 								<tr valign=top>
 									<td align=left >
 										<input type="button" class="button" value="&#139;&#139;&nbsp;<?php echo $installationStrings['LBL_BACK']; ?>" title="<?php echo $installationStrings['LBL_BACK']; ?>" onClick="window.history.back();">
-										
 										</td>
 									<td align=right>
 										<form action="install.php" method="post" name="form" id="form">

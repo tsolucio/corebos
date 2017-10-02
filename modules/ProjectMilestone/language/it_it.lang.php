@@ -9,16 +9,18 @@
  ************************************************************************************/
 $mod_strings = Array(
 	 
-	'LBL_MODULE_NAME'=>'Scadenze',
-  	'LBL_MODULE_TITLE'=>'Scadenze',
-	'LBL_NEW_OPERATION'=>'Nuova Scadenza',
+    'LBL_MODULE_NAME'=>'Scadenze',
+    'LBL_MODULE_TITLE'=>'Scadenze',
+    'LBL_NEW_OPERATION'=>'Nuova Scadenza',
     'LBL_DEADLINES'=>'Scadenze',
     'LBL_DEADLINE'=>'Scadenze',
+    'SINGLE_ProjectMilestone'=>'Scadenza',
     'Deadline ID'=>'ID Scadenza', 
-	'deadlinename' => 'Nome Scadenza',
+    'deadlinename' => 'Nome Scadenza',
     'deadlines' => 'Scadenze',
     //added this to translate the module name in the main app menu
     'Deadline'=>'Scadenze',
+    'description'=>'Descrizione',
     //
     'SINGLE_Deadline' => 'Scadenza',
     'LBL_CUSTOM_INFORMATION' => 'Informazioni Addizionali',
@@ -27,27 +29,19 @@ $mod_strings = Array(
     'Assigned To' => 'Assegnata a',
     'deadlinedate' => 'Data Scadenza',
     'milestone' => 'Milestone',
-    'description' => 'Descrizione',
     'deadlinetype'=>'Tipologia Scadenza',
-    //'linktoproject'=>'Relazionata a',
-    'projectid' => 'Progetto Relativo',
-    'Related To' => 'Related To',
+    'Related to' => 'Progetto Relativo',
     'administrative' => 'amministrativa',
     'operative' => 'operativa',
     'other' => 'altro',
-    'Created Time' => 'Data di Creazione',
-    'Modified Time' => 'Data di Modifica',
-    'description' => 'Descrizione',
-    'Description' => 'Descrizione',
     '--none--' => 'nessuno',
     //added for related lists 
     'DeadlineName' => 'Nome Scadenza',
     'LBL_SELECT_DEADLINE_BUTTON_TITLE' => 'Seleziona Scadenza [Alt+T]',
     'LBL_CREATE_DEADLINE_BUTTON_TITLE' => 'Crea Scadenza [Alt+T]',
-
-	'LBL_PROJECT_MILESTONE_INFORMATION'=>'Informazioni Scadenze',
-	'Project Milestone Name'=>'Nome Scadenza',
-	'Project Milestone No'=>'Numero Scadenza',
+    'LBL_PROJECT_MILESTONE_INFORMATION'=>'Informazioni Scadenze',
+    'Project Milestone Name'=>'Nome Scadenza',
+    'Project Milestone No'=>'Numero Scadenza',
     'Milestone Date' => 'Data Scadenza',
 
 );

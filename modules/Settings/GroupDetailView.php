@@ -7,13 +7,10 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('include/database/PearDatabase.php');
 require_once('include/utils/UserInfoUtil.php');
 
-global $mod_strings;
-global $app_strings;
-global $app_list_strings;
+global $mod_strings, $app_strings;
 
 $groupId=vtlib_purify($_REQUEST['groupId']);
 $groupInfoArr=getGroupInfo($groupId);
@@ -93,8 +90,8 @@ $smarty->assign("GROUP_NAME",$groupInfoArr[0]);
 function getStdOutput($groupInfoArr,$groupId, $mod_strings)
 {
 	global $adb;
-    $groupfields['groupname'] = $groupInfoArr[0];    
-    $groupfields['description'] = $groupInfoArr[1];
+	$groupfields['groupname'] = $groupInfoArr[0];    
+	$groupfields['description'] = $groupInfoArr[1];
 
 	$row=1;
 	$groupMember = $groupInfoArr[2];
@@ -144,8 +141,7 @@ function getStdOutput($groupInfoArr,$groupId, $mod_strings)
 		if(sizeof($memberinfo) >0)
 			$information[$memberDisplayType] = $memberinfo;
 	}
-	$returndata=array($groupfields,$information);
-	return $returndata;
+	return array($groupfields,$information);
 }
 
 $smarty->assign("MOD", return_module_language($current_language,'Settings'));
@@ -154,5 +150,4 @@ $smarty->assign("IMAGE_PATH",$image_path);
 $smarty->assign("APP", $app_strings);
 $smarty->assign("CMOD", $mod_strings);
 $smarty->display("GroupDetailview.tpl");
-
 ?>

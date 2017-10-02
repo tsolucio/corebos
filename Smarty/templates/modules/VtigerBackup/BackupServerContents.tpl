@@ -16,7 +16,7 @@
 				<tr>
 					<td width="20%" nowrap class="small cellLabel"><font color="red">*</font><strong>{$MOD.LBL_SERVER_ADDRESS}</strong></td>
 					<td width="80%" class="small cellText">
-					{if $ERROR_MSG}<p style="padding:6px;margin-left:10px;">{$ERROR_MSG}</p>{/if}
+					{if isset($ERROR_MSG)}<p style="padding:6px;margin-left:10px;">{$ERROR_MSG}</p>{/if}
 					<input type="text" class="detailedViewTextBox small" value="{$FTPSERVER}" name="server"></strong>
 					</td>
 				</tr>

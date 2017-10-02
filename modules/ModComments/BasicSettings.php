@@ -22,7 +22,7 @@ function modcomms_changeModuleVisibility($mname, $status) {
 function modcomms_getModuleinfo() {
 	global $adb;
 	$allEntities = array();
-	$entityQuery = "SELECT tabid,name FROM vtiger_tab WHERE isentitytype=1 and name NOT IN ('Rss','Webmails','Recyclebin','Events')";
+	$entityQuery = "SELECT tabid,name FROM vtiger_tab WHERE isentitytype=1 and name NOT IN ('Emails', 'Rss','Webmails','Recyclebin','Events','Calendar')";
 	$result = $adb->pquery($entityQuery, array());
 	while($result && $row = $adb->fetch_array($result)){
 		$allEntities[$row['tabid']] = getTranslatedString($row['name'],$row['name']);
@@ -53,8 +53,8 @@ $smarty->assign('CATEGORY',$category);
 if(!is_admin($current_user)) {
 	$smarty->display(vtlib_getModuleTemplate('Vtiger','OperationNotPermitted.tpl'));
 } else {
-	$tabid = vtlib_purify($_REQUEST['tabid']);
-	$status = vtlib_purify($_REQUEST['status']);
+	$tabid = (isset($_REQUEST['tabid']) ? vtlib_purify($_REQUEST['tabid']) : '');
+	$status = (isset($_REQUEST['status']) ? vtlib_purify($_REQUEST['status']) : '');
 	if($status != '' && $tabid != ''){
 		$mname = getTabModuleName($tabid);
 		modcomms_changeModuleVisibility($mname, $status);
@@ -62,7 +62,7 @@ if(!is_admin($current_user)) {
 	$infomodules = modcomms_getModuleinfo();
 	$smarty->assign('INFOMODULES',$infomodules);
 	$smarty->assign('MODULE',$module);
-	if($_REQUEST['ajax'] != true) {
+	if(empty($_REQUEST['ajax']) || $_REQUEST['ajax'] != true) {
 		$smarty->display(vtlib_getModuleTemplate($currentModule,'BasicSettings.tpl'));
 	} else {
 		$smarty->display(vtlib_getModuleTemplate($currentModule,'BasicSettingsContents.tpl'));

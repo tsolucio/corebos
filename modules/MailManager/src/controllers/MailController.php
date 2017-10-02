@@ -17,14 +17,14 @@ include_once 'modules/MailManager/src/controllers/RelationControllerAction.php';
  */
 class MailManager_MailController extends MailManager_Controller {
 
-    /**
-     * Function which processes request for Mail Operations
-     * @global PearDataBase Instance $adb
-     * @global Users Instance $current_user
-     * @global String $root_directory
-     * @param MailManager_Request $request
-     * @return MailManager_Response
-     */
+	/**
+	* Function which processes request for Mail Operations
+	* @global PearDataBase Instance $adb
+	* @global Users Instance $current_user
+	* @global String $root_directory
+	* @param MailManager_Request $request
+	* @return MailManager_Response
+	*/
 	function process(MailManager_Request $request) {
 		global $adb, $current_user;
 
@@ -47,7 +47,7 @@ class MailManager_MailController extends MailManager_Controller {
 			$viewer->assign('MAIL', $mail);
 			$uicontent = $viewer->fetch($this->getModuleTpl('Mail.Open.tpl'));
 
-			$metainfo  = array(
+			$metainfo = array(
 				'from' => $mail->from(), 'subject' => $mail->subject(),
 				'msgno' => $mail->msgNo(), 'msguid' => $mail->uniqueid(),
 				'folder' => $foldername );
@@ -69,8 +69,7 @@ class MailManager_MailController extends MailManager_Controller {
 			}
 
 			$response->isJson(true);
-			$response->setResult ( array('folder' => $foldername, 'unread' => $folder->unreadCount()+1,
-                'status' => true, 'msgno' => $request->get('_msgno') ));
+			$response->setResult ( array('folder' => $foldername, 'unread' => $folder->unreadCount()+1, 'status' => true, 'msgno' => $request->get('_msgno') ));
 
 		}else if('delete' == $request->getOperationArg()){
 			$msg_no = $request->get('_msgno');
@@ -111,7 +110,7 @@ class MailManager_MailController extends MailManager_Controller {
 							for($i=0; $i<count($relatedtos); $i++) {
 								if($i == count($relatedtos)-1) {
 									$relateto = vtws_getIdComponents($relatedtos[$i]['record']);
-									$parentIds .= $relateto[1]."@1";
+									$parentIds = $relateto[1]."@1";
 								}elseif($relatedtos[$i]['module'] == $val){
 									$relateto = vtws_getIdComponents($relatedtos[$i]['record']);
 									$parentIds = $relateto[1]."@1";
@@ -130,7 +129,7 @@ class MailManager_MailController extends MailManager_Controller {
 							break;
 						}
 					}
-				
+
 					$cc_string = rtrim($request->get('cc'), ',');
 					$bcc_string= rtrim($request->get('bcc'), ',');
 					$subject   = $request->get('subject');
@@ -142,19 +141,25 @@ class MailManager_MailController extends MailManager_Controller {
 						if (!empty($parent_module)) {
 							$description = getMergedDescription($body,$entityId,$parent_module);
 							$subject = getMergedDescription($subject,$entityId,$parent_module);
+							$description = getMergedDescription($description,$current_user->id,'Users');
+							$subject = getMergedDescription($subject,$current_user->id,'Users');
 						} else {
 							$n = MailManager_RelationControllerAction::ws_modulename($relateto[0]);
 							if ($n=='Users') {
 								$description = getMergedDescription($body,$entityId,'Users');
 								$subject = getMergedDescription($subject,$entityId,'Users');
+							} else {
+								$description = getMergedDescription($body,$current_user->id,'Users');
+								$subject = getMergedDescription($subject,$current_user->id,'Users');
 							}
 						}
 					}
 
 					$pos = strpos($description, '$logo$');
+					$logo = 0;
 					if ($pos !== false) {
-						$description =str_replace('$logo$','<img src="cid:logo" />',$description);
-						$logo=1;
+						$description = str_replace('$logo$','<img src="cid:logo" />',$description);
+						$logo = 1;
 					}
 					$fromEmail = $connector->getFromEmailAddress();
 					$userFullName = getFullNameFromArray('Users', $current_user->column_fields);
@@ -166,29 +171,29 @@ class MailManager_MailController extends MailManager_Controller {
 					$mailer->Subject = $subject;
 					$mailer->Body = $description;
 					$mailer->addSignature($userId);
-		            if($mailer->Signature != '') {
-		               $mailer->Body.= $mailer->Signature;
+					if($mailer->Signature != '') {
+						$mailer->Body.= $mailer->Signature;
 					}
 
 					$ccs = empty($cc_string)? array() : explode(',', $cc_string);
 					$bccs= empty($bcc_string)?array() : explode(',', $bcc_string);
 					$emailId = $request->get('emailid');
-		
+
 					$attachments = $connector->getAttachmentDetails($emailId);
 					if($logo){
-					    $logo_attach = array(
-								 'name' => 'logo',
-								 'path' => 'themes/images/',
-								 'attachment' => 'logo_mail.jpg',
-								);
-					    $mailer->AddEmbeddedImage($logo_attach['path'].$logo_attach['attachment'],$logo_attach['name'],$logo_attach['name'].'jpg','base64','image/jpg');
+						$logo_attach = array(
+							'name' => 'logo',
+							'path' => 'themes/images/',
+							'attachment' => 'logo_mail.jpg',
+						);
+						$mailer->AddEmbeddedImage($logo_attach['path'].$logo_attach['attachment'],$logo_attach['name'],$logo_attach['name'].'jpg','base64','image/jpg');
 					}
 
 					$mailer->AddAddress($to);
 					foreach($ccs as $cc) $mailer->AddCC($cc);
 					foreach($bccs as $bcc)$mailer->AddBCC($bcc);
 					global $root_directory;
-		
+
 					if(is_array($attachments)) {
 						foreach($attachments as $attachment){
 							$fileNameWithPath = $root_directory.$attachment['path'].$attachment['fileid']."_".$attachment['attachment'];
@@ -241,20 +246,20 @@ class MailManager_MailController extends MailManager_Controller {
 				$mail->readFromDB($request->get('_muid'));
 				$attachment = $mail->attachments(true, $attachmentName);
 
-                if($attachment[$attachmentName]) {
-                    // Send as downloadable
-                    header("Content-type: application/octet-stream");
-                    header("Pragma: public");
-                    header("Cache-Control: private");
-                    header("Content-Disposition: attachment; filename=$attachmentName");
-                    echo $attachment[$attachmentName];
-                } else {
-                    header("Content-Disposition: attachment; filename=INVALIDFILE");
-                    echo "";
-                }
+				if($attachment[$attachmentName]) {
+					// Send as downloadable
+					header("Content-type: application/octet-stream");
+					header("Pragma: public");
+					header("Cache-Control: private");
+					header("Content-Disposition: attachment; filename=$attachmentName");
+					echo $attachment[$attachmentName];
+				} else {
+					header("Content-Disposition: attachment; filename=INVALIDFILE");
+					echo '';
+				}
 			} else {
 				header("Content-Disposition: attachment; filename=INVALIDFILE");
-				echo "";
+				echo '';
 			}
 			flush();
 			exit;
@@ -305,7 +310,7 @@ class MailManager_MailController extends MailManager_Controller {
 						$document->column_fields['filestatus']       = 1;
 						$document->column_fields['filelocationtype'] = 'I';
 						$document->column_fields['folderid']         = 1; // Default Folder
-						$document->column_fields['filesize']		 = $attachInfo['size'];
+						$document->column_fields['filesize']         = $attachInfo['size'];
 						$document->column_fields['assigned_user_id'] = $current_user->id;
 						$document->save('Documents');
 

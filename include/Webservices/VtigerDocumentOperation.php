@@ -88,11 +88,11 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 		return DataTransform::filterAndSanitize($crmObject->getFields(),$this->meta);
 	}
 
-	public function retrieve($id){
+	public function retrieve($id,$deleted=false){
 		global $adb,$default_charset,$site_URL;
 		$ids = vtws_getIdComponents($id);
 		$elemid = $ids[1];
-		$doc = parent::retrieve($id);
+		$doc = parent::retrieve($id,$deleted);
 		// Add relations
 		$relsrs=$adb->pquery("SELECT crmid FROM vtiger_senotesrel where notesid=?",Array($elemid));
 		$rels=array();
@@ -165,9 +165,8 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 
 	private function vtyiicpng_getWSEntityId($entityName) {
 		global $adb;
-		$rs = $adb->query("select id from vtiger_ws_entity where name='$entityName'");
-		$wsid = @$adb->query_result($rs, 0, 'id').'x';
-		return $wsid;
+		$rs = $adb->pquery('select id from vtiger_ws_entity where name=?',array($entityName));
+		return @$adb->query_result($rs, 0, 'id').'x';
 	}
 
 }

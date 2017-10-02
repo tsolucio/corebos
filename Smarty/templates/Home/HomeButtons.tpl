@@ -1,13 +1,12 @@
 {*<!--
 /*********************************************************************************
-  ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
-   * ("License"); You may not use this file except in compliance with the License
-   * The Original Code is:  vtiger CRM Open Source
-   * The Initial Developer of the Original Code is vtiger.
-   * Portions created by vtiger are Copyright (C) vtiger.
-   * All Rights Reserved.
-  *
- ********************************************************************************/
+ ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
+ * All Rights Reserved.
+********************************************************************************/
 -->*}
 
 {*<!-- buttons for the home page -->*}
@@ -27,26 +26,27 @@
 	</td>
 
 {if $CHECK.Calendar eq 'yes' && $CALENDAR_ACTIVE eq 'yes' && $CALENDAR_DISPLAY eq 'true'}
-	<td>
-		<img width="27" height="27" src="{'btnL3Calendar.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CALENDAR_ALT}" title="{$APP.LBL_CALENDAR_TITLE}" border=0  onClick='fnvshobj(this,"miniCal");getMiniCal();'/>
+	<td id="LB_CalButton" class="LB_Button" style="padding-right:0px;padding-left:10px;">
+		<a href="javascript:;" onclick="fnvshobj(this,'miniCal');getITSMiniCal('');">
+		<img src="{'btnL3Calendar.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CALENDAR_ALT}" title="{$APP.LBL_CALENDAR_TITLE}" border=0>
+		</a>
 	</td>
 {/if}
 {if $WORLD_CLOCK_DISPLAY eq 'true' }
-	<td>
-		<img width="27" height="27" src="{'btnL3Clock.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLOCK_ALT}" title="{$APP.LBL_CLOCK_TITLE}" border=0 onClick="fnvshobj(this,'wclock');">
+	<td id="LB_ClockButton" class="LB_Button" style="padding-right:0px">
+		<a href="javascript:;"><img src="{$IMAGE_PATH}btnL3Clock.gif" alt="{$APP.LBL_CLOCK_ALT}" title="{$APP.LBL_CLOCK_TITLE}" border=0 onClick="fnvshobj(this,'wclock');"></a>
 	</td>
 {/if}
 {if $CALCULATOR_DISPLAY eq 'true' }
 	<td>
-		<img width="27" height="27" src="{'btnL3Calc.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CALCULATOR_ALT}" title="{$APP.LBL_CALCULATOR_TITLE}" border=0 onClick="fnvshobj(this,'calculator_cont');fetch_calc();">
+	<td id="LB_CalcButton" class="LB_Button" style="padding-right:0px">
+		<a href="#"><img src="{$IMAGE_PATH}btnL3Calc.gif" alt="{$APP.LBL_CALCULATOR_ALT}" title="{$APP.LBL_CALCULATOR_TITLE}" border=0 onClick="fnvshobj(this,'calculator_cont');fetch_calc();"></a>
 	</td>
 {/if}
 	<td>
 		<img width="27" height="27" src="{'btnL3Tracker.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_LAST_VIEWED}" title="{$APP.LBL_LAST_VIEWED}" border="0" onClick="fnvshobj(this,'tracker');">
 	</td>
 
-	
-	
 	<td align='left'>
 		<img width="27" height="27" onClick='showOptions("changeLayoutDiv");' src="{'orgshar.gif'|@vtiger_imageurl:$THEME}" border="0" title="{$MOD.LBL_HOME_LAYOUT}" alt"{$MOD.LBL_HOME_LAYOUT}" style="cursor:pointer;">
 	</td>
@@ -88,7 +88,7 @@
 			<a href='javascript:;' class='drop_down' id="addNotebook">
 				{$MOD.LBL_NOTEBOOK}
 			</a>
-               </li>
+		</li>
 
 {if $ALLOW_REPORT eq "yes"}
 		<li>
@@ -97,7 +97,7 @@
 			</a>
 		</li>
 {/if}
-        <li>
+		<li>
 			<a href='javascript:;' class='drop_down' id="defaultwidget">
 				{'LBL_DEFAULT_WIDGET'|@getTranslatedString:$MODULE}
 			</a>

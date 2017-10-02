@@ -1,5 +1,4 @@
 /*********************************************************************************
-
 ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
  * The Original Code is:  vtiger CRM Open Source
@@ -13,17 +12,14 @@ var gselectedrowid = 0;
 function gotoWebmail()
 {
 	jQuery.ajax({
-			method: 'POST',
-			url: "index.php?module=Webmails&action=WebmailsAjax&config_chk=true"
+		method: 'POST',
+		url: "index.php?module=Webmails&action=WebmailsAjax&config_chk=true"
 	}).done(function (response) {
-				if(response.indexOf('SUCCESS') > -1)
-					window.location.href = "index.php?module=Webmails&action=index&parenttab=My Home Page";
-				else
-					document.getElementById('mailconfchk').style.display = 'block';
-					
-			}
-	);
-
+		if(response.indexOf('SUCCESS') > -1)
+			window.location.href = "index.php?module=Webmails&action=index&parenttab=My Home Page";
+		else
+			document.getElementById('mailconfchk').style.display = 'block';
+	});
 }
 
 function getEmailContents(id)
@@ -38,122 +34,102 @@ function getEmailContents(id)
 	}
 	gselectedrowid = id;
 	jQuery.ajax({
-			method: 'POST',
-			url: 'index.php?module=Emails&action=EmailsAjax&file=DetailView&mode=ajax&record='+id
+		method: 'POST',
+		url: 'index.php?module=Emails&action=EmailsAjax&file=DetailView&mode=ajax&record='+id
 	}).done(function (response) {
-						document.getElementById("status").style.display="none";
-						document.getElementById("EmailDetails").innerHTML = response;
-			}
-		);
+		document.getElementById("status").style.display="none";
+		document.getElementById("EmailDetails").innerHTML = response;
+	});
 }
 
 function getListViewEntries_js(module,url)
 {
 	document.getElementById("status").style.display="inline";
 	jQuery.ajax({
-			method: 'POST',
-			url: "index.php?module="+module+"&action="+module+"Ajax&file=ListView&ajax=true&"+url
+		method: 'POST',
+		url: "index.php?module="+module+"&action="+module+"Ajax&file=ListView&ajax=true&"+url
 	}).done(function (response) {
-				document.getElementById("status").style.display="none";
-				document.getElementById("email_con").innerHTML=response;
-				execJS(document.getElementById('email_con'));
-			}
-	);
-
+		document.getElementById("status").style.display="none";
+		document.getElementById("email_con").innerHTML=response;
+		execJS(document.getElementById('email_con'));
+	});
 }
 
 function massDelete()
 {
-		var delete_selected_row = false;
-		//added to fix the issue 4295
-		var select_options  =  document.getElementsByName('selected_id');
-		var x = select_options.length;
+	var delete_selected_row = false;
+	//added to fix the issue 4295
+	var select_options  =  document.getElementsByName('selected_id');
+	var x = select_options.length;
 
 	idstring = "";
-        xx = 0;
-        for(i = 0; i < x ; i++)
-        {
-            if(select_options[i].checked)
-            {
-            	idstring = select_options[i].value +";"+idstring
-		if(select_options[i].value == gselectedrowid)
-		{
-			gselectedrowid = 0;
-			delete_selected_row = true;						
-		}
-                xx++
-            }
-        }
-                if (xx > 0)
-                {
-                        document.massdelete.idlist.value=idstring;
-                }
-                else
-                {
-                        alert(alert_arr.SELECT);
-                        return false;
-                }
-		if(confirm(alert_arr.DELETE + xx + alert_arr.RECORDS))
-		{	
-			getObj('search_text').value = '';
-			show("status");
-			if(!delete_selected_row)
-			{
-				jQuery.ajax({
-						method: 'POST',
-						url: "index.php?module=Users&action=massdelete&folderid="+gFolderid+"&return_module=Emails&idlist="+idstring
-				}).done(function (response) {
-						document.getElementById("status").style.display="none";
-						document.getElementById("email_con").innerHTML=response;
-						execJS(document.getElementById('email_con'));
-						}
-						);
+	xx = 0;
+	for (i = 0; i < x ; i++) {
+		if (select_options[i].checked) {
+			idstring = select_options[i].value +";"+idstring
+			if (select_options[i].value == gselectedrowid) {
+				gselectedrowid = 0;
+				delete_selected_row = true;
 			}
-			else	
-			{
-				jQuery.ajax({
-						method: 'POST',
-						url: "index.php?module=Users&action=massdelete&folderid="+gFolderid+"&return_module=Emails&idlist="+idstring
-				}).done(function (response) {
-							document.getElementById("status").style.display="none";
-							document.getElementById("email_con").innerHTML=response;
-							execJS(document.getElementById('email_con'));
-							document.getElementById('EmailDetails').innerHTML = '<table valign="top" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="forwardBg"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2">&nbsp;</td></tr></tbody></table></td></tr><tr><td style="padding-top: 10px;" bgcolor="#ffffff" height="300" valign="top"></td></tr></tbody></table>';
-							//document.getElementById("subjectsetter").innerHTML='';
-					}
-				);
-			}
+			xx++
 		}
-		else
-		{
-			return false;
+	}
+	if (xx > 0) {
+		document.massdelete.idlist.value=idstring;
+	} else {
+		alert(alert_arr.SELECT);
+		return false;
+	}
+	if (confirm(alert_arr.DELETE + xx + alert_arr.RECORDS)) {
+		getObj('search_text').value = '';
+		show("status");
+		if (!delete_selected_row) {
+			jQuery.ajax({
+				method: 'POST',
+				url: "index.php?module=Users&action=massdelete&folderid="+gFolderid+"&return_module=Emails&idlist="+idstring
+			}).done(function (response) {
+				document.getElementById("status").style.display="none";
+				document.getElementById("email_con").innerHTML=response;
+				execJS(document.getElementById('email_con'));
+			});
+		} else {
+			jQuery.ajax({
+				method: 'POST',
+				url: "index.php?module=Users&action=massdelete&folderid="+gFolderid+"&return_module=Emails&idlist="+idstring
+			}).done(function (response) {
+				document.getElementById("status").style.display="none";
+				document.getElementById("email_con").innerHTML=response;
+				execJS(document.getElementById('email_con'));
+				document.getElementById('EmailDetails').innerHTML = '<table valign="top" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="forwardBg"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2">&nbsp;</td></tr></tbody></table></td></tr><tr><td style="padding-top: 10px;" bgcolor="#ffffff" height="300" valign="top"></td></tr></tbody></table>';
+				//document.getElementById("subjectsetter").innerHTML='';
+			});
 		}
+	} else {
+		return false;
+	}
 }
 
 function DeleteEmail(id)
 {
-	if(confirm(alert_arr.SURE_TO_DELETE))
-	{	
+	if (confirm(alert_arr.SURE_TO_DELETE)) {
 		getObj('search_text').value = '';
 		gselectedrowid = 0;
 		document.getElementById("status").style.display="inline";
-				jQuery.ajax({
-						method: 'POST',
-						url: "index.php?module=Users&action=massdelete&return_module=Emails&folderid="+gFolderid+"&idlist="+id
-				}).done(function (response) {
-						document.getElementById("status").style.display="none";
-						document.getElementById("email_con").innerHTML=response;
-						execJS(document.getElementById('email_con'));
-						document.getElementById('EmailDetails').innerHTML = '<table valign="top" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="forwardBg"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2">&nbsp;</td></tr></tbody></table></td></tr><tr><td style="padding-top: 10px;" bgcolor="#ffffff" height="300" valign="top"></td></tr></tbody></table>';
-						//document.getElementById("subjectsetter").innerHTML='';
-					}
-				);
-	}
-	else
-	{
+		jQuery.ajax({
+			method: 'POST',
+			url: "index.php?module=Users&action=massdelete&return_module=Emails&folderid="+gFolderid+"&idlist="+id
+		}).done(function (response) {
+			document.getElementById("status").style.display="none";
+			document.getElementById("email_con").innerHTML=response;
+			execJS(document.getElementById('email_con'));
+			document.getElementById('EmailDetails').innerHTML = '<table valign="top" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="forwardBg"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2">&nbsp;</td></tr></tbody></table></td></tr><tr><td style="padding-top: 10px;" bgcolor="#ffffff" height="300" valign="top"></td></tr></tbody></table>';
+			//document.getElementById("subjectsetter").innerHTML='';
+		});
+	} else {
 		return false;
 	}
 }
+
 function Searchfn()
 {
 	gselectedrowid = 0;
@@ -169,8 +145,7 @@ function Searchfn()
 		document.getElementById('EmailDetails').innerHTML = '<table valign="top" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="forwardBg"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2">&nbsp;</td></tr></tbody></table></td></tr><tr><td style="padding-top: 10px;" bgcolor="#ffffff" height="300" valign="top"></td></tr></tbody></table>';
 		//document.getElementById("subjectsetter").innerHTML = '';
 		execJS(document.getElementById('email_con'));
-	}
-	);
+	});
 }
 
 function getListViewCount(module,element,parentElement,url){
@@ -194,17 +169,16 @@ function getListViewCount(module,element,parentElement,url){
 		element = document.getElementsByName('search_text')[0];
 		var searchField = document.getElementsByName('search_field')[0];
 		if(element.value.length > 0) {
-			searchURL = '&query=true&searchtype=BasicSearch&search_field='+
-				encodeURIComponent(searchField.value)+'&search_text='+encodeURIComponent(element.value);
+			searchURL = '&query=true&searchtype=BasicSearch&search_field=' + encodeURIComponent(searchField.value)+'&search_text='+encodeURIComponent(element.value);
 		}
 	}else if(document.getElementById('globalSearchText') != null &&
-			typeof document.getElementById('globalSearchText') != 'undefined'){
-            var searchText = document.getElementById('globalSearchText').value;
-            searchURL = '&query=true&globalSearch=true&globalSearchText='+encodeURIComponent(searchText);
-            if(document.getElementById('tagSearchText') != null && typeof document.getElementById('tagSearchText') != 'undefined'){
-                var tagSearch = document.getElementById('tagSearchText').value;
-                searchURL = '&query=true&globalSearch=true&globalSearchText='+encodeURIComponent(searchText)+'&tagSearchText='+encodeURIComponent(tagSearch);
-            }
+		typeof document.getElementById('globalSearchText') != 'undefined'){
+		var searchText = document.getElementById('globalSearchText').value;
+		searchURL = '&query=true&globalSearch=true&globalSearchText='+encodeURIComponent(searchText);
+		if(document.getElementById('tagSearchText') != null && typeof document.getElementById('tagSearchText') != 'undefined'){
+			var tagSearch = document.getElementById('tagSearchText').value;
+			searchURL = '&query=true&globalSearch=true&globalSearchText='+encodeURIComponent(searchText)+'&tagSearchText='+encodeURIComponent(tagSearch);
+		}
 	}
 	if(module != 'Documents'){
 		searchURL += (url);
@@ -215,22 +189,182 @@ function getListViewCount(module,element,parentElement,url){
 		searchURL += gPopupAlphaSearchUrl;
 
 	jQuery.ajax({
-			method: 'POST',
-			url: "index.php?module="+module+"&action="+module+"Ajax&file=ListViewPagging&ajax=true"+searchURL
+		method: 'POST',
+		url: "index.php?module="+module+"&action="+module+"Ajax&file=ListViewPagging&ajax=true"+searchURL
 	}).done(function (response) {
-					var elementList = document.getElementsByName(module+'_listViewCountContainerBusy');
-					for(var i=0;i<elementList.length;++i){
-						elementList[i].style.display = 'none';
-					}
-					elementList = document.getElementsByName(module+'_listViewCountRefreshIcon');
-					if(module != 'Documents' && typeof parentElement != 'undefined' && elementList.length !=0){
-						for(i=0;i<=elementList.length;){
-							//No need to increment the count, as the element will be eliminated in the next step.
-							elementList[i].parentNode.innerHTML = response;
-						}
-					}else{
-						parentElement.innerHTML = response;
+		var elementList = document.getElementsByName(module+'_listViewCountContainerBusy');
+		for (var i=0;i<elementList.length;++i) {
+			elementList[i].style.display = 'none';
+		}
+		elementList = document.getElementsByName(module+'_listViewCountRefreshIcon');
+		if (module != 'Documents' && typeof parentElement != 'undefined' && elementList.length !=0) {
+			for (i=0;i<=elementList.length;) {
+				//No need to increment the count, as the element will be eliminated in the next step.
+				elementList[i].parentNode.innerHTML = response;
+			}
+		} else {
+			parentElement.innerHTML = response;
+		}
+	});
+}
+function searchDocuments() {
+	var emailId = 0;
+	window.open('index.php?module=Documents&return_module=Emails&action=Popup&popuptype=detailview&form=EditView&form_submit=false&parenttab=Marketing&srcmodule=Emails&popupmode=ajax&select=1','test','width=640,height=602,resizable=0,scrollbars=0');
+}
+
+function addOption(id, filename) {
+	var table = document.getElementById("attach_cont");
+	var attachments = document.getElementsByName("doc_attachments[]");
+	if (attachments !== undefined) {
+		for (var i = 0; i < attachments.length; i++) {
+			if (attachments[i].value == id) {
+				return;
+			}
+		}
+	}
+	var newRow = "<div>";
+	newRow += "<a href='javascript:void(0)' onclick='this.parentNode.parentNode.removeChild(this.parentNode);'><img src='" + remove_image_url + "'></a>";
+	newRow += "&nbsp" + filename + "<input type='hidden' name='doc_attachments[]' value='" + id + "'>";
+	newRow += "</div>";
+	table.innerHTML += newRow;
+}
+
+function email_validate(oform,mode)
+{
+	if(trim(mode) == '')
+	{
+		return false;
+	}
+	if(oform.parent_name.value.replace(/^\s+/g, '').replace(/\s+$/g, '').length==0)
+	{
+		//alert('No recipients were specified');
+		alert(no_rcpts_err_msg);
+		return false;
+	}
+	//Changes made to fix tickets #4633, # 5111 to accomodate all possible email formats
+	var email_regex = /^[a-zA-Z0-9]+([\_\-\.]*[a-zA-Z0-9]+[\_\-]?)*@[a-zA-Z0-9]+([\_\-]?[a-zA-Z0-9]+)*\.+([\_\-]?[a-zA-Z0-9])+(\.?[a-zA-Z0-9]+)*$/;
+
+	if(document.EditView.ccmail != null){
+		if(document.EditView.ccmail.value.length >= 1){
+			var str = document.EditView.ccmail.value;
+			arr = new Array();
+			arr = str.split(",");
+			var tmp;
+			for(var i=0; i<=arr.length-1; i++){
+				tmp = arr[i];
+				if(tmp.match('<') && tmp.match('>')) {
+					if(!findAngleBracket(arr[i])) {
+						alert(cc_err_msg+": "+arr[i]);
+						return false;
 					}
 				}
-	);
+				else if(trim(arr[i]) != "" && !(email_regex.test(trim(arr[i]))))
+				{
+					alert(cc_err_msg+": "+arr[i]);
+					return false;
+				}
+			}
+		}
+	}
+	if(document.EditView.bccmail != null){
+		if(document.EditView.bccmail.value.length >= 1){
+			var str = document.EditView.bccmail.value;
+			arr = new Array();
+			arr = str.split(",");
+			var tmp;
+			for(var i=0; i<=arr.length-1; i++){
+				tmp = arr[i];
+				if(tmp.match('<') && tmp.match('>')) {
+					if(!findAngleBracket(arr[i])) {
+						alert(bcc_err_msg+": "+arr[i]);
+						return false;
+					}
+				}
+				else if(trim(arr[i]) != "" && !(email_regex.test(trim(arr[i])))){
+					alert(bcc_err_msg+": "+arr[i]);
+					return false;
+				}
+			}
+		}
+	}
+	if(oform.subject.value.replace(/^\s+/g, '').replace(/\s+$/g, '').length==0)
+	{
+		if(email_sub = prompt(alert_arr.ERR_EMAIL_WITH_NO_SUBJECT,alert_arr.EMAIL_WITH_NO_SUBJECT))
+		{
+			oform.subject.value = email_sub;
+		}else
+		{
+			return false;
+		}
+	}
+	if(mode == 'send')
+	{
+		server_check()
+	}else if(mode == 'save')
+	{
+		oform.action.value='Save';
+		oform.submit();
+	}else
+	{
+		return false;
+	}
 }
+
+//function to extract the mailaddress inside < > symbols.......for the bug fix #3752
+function findAngleBracket(mailadd)
+{
+	var strlen = mailadd.length;
+	var success = 0;
+	var gt = 0;
+	var lt = 0;
+	var ret = '';
+	for (i=0;i<strlen;i++) {
+		if(mailadd.charAt(i) == '<' && gt == 0){
+			lt = 1;
+		}
+		if(mailadd.charAt(i) == '>' && lt == 1){
+			gt = 1;
+		}
+		if(mailadd.charAt(i) != '<' && lt == 1 && gt == 0)
+			ret = ret + mailadd.charAt(i);
+	}
+	if (/^[a-z0-9]([a-z0-9_\-\.]*)@([a-z0-9_\-\.]*)(\.[a-z]{2,3}(\.[a-z]{2}){0,2})$/.test(ret)) {
+		return true;
+	}
+	return false;
+}
+
+function server_check(){
+	var oform = window.document.EditView;
+	jQuery.ajax({
+		method:"POST",
+		url:"index.php?module=Emails&action=EmailsAjax&file=Save&ajax=true&server_check=true",
+	}).done(function(response) {
+		if(response.indexOf('SUCCESS') > -1){
+			oform.send_mail.value='true';
+			oform.action.value='Save';
+			oform.submit();
+		} else {
+			if (response.indexOf('FAILURESTORAGE') > -1) {
+				if (confirm(conf_srvr_storage_err_msg)) {
+					oform.send_mail.value='true';
+					oform.action.value='Save';
+					oform.submit();
+				}
+			} else {
+				alert(conf_mail_srvr_err_msg);
+			}
+			return false;
+		}
+	});
+}
+
+function delAttachments(id) {
+	jQuery.ajax({
+		method:"POST",
+		url:'index.php?module=Contacts&action=ContactsAjax&file=DelImage&attachmodule=Emails&recordid='+id
+	}).done(function(response) {
+		jQuery('#row_'+id).fadeOut();
+	});
+}
+

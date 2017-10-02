@@ -53,7 +53,7 @@ $mod_strings = array(
 	'LBL_HOME_STUFFTITLE' => 'Ablak cím',
 	'LBL_HOME_SHOW' => 'Mutat',
 	'LBL_HOME_FILTERBY' => 'Szűrő: ',
-	'LBL_HOME_Fields' => 'Mutatandó Mezők <br>(válassz ki kettőt)',
+	'LBL_HOME_Fields' => 'Mutatandó Mezők',
 	'LBL_HOME_PRESSCTRL' => '(Nyomd meg a "Ctrl"-t <br> a többszörös kiválasztáshoz)',
 	'LBL_HOME_RSSURL' => 'RSS URL',
 	'LBL_HOME_DASHBOARD_NAME' => 'Műszerfal neve',
@@ -61,6 +61,10 @@ $mod_strings = array(
 	'LBL_HOME_HORIZONTAL_BARCHART' => 'Vízszintes oszlop diagram',
 	'LBL_HOME_VERTICAL_BARCHART' => 'Függőleges oszlop diagram',
 	'LBL_HOME_PIE_CHART' => 'Tortaszelet diagram',
+	'LBL_HOME_HORIZONTAL' => 'Vízszintes',
+	'LBL_HOME_VERTICAL' => 'Függőleges',
+	'LBL_HOME_PIE' => 'Tortaszelet',
+	'Layout Saved' => 'Layout Saved',
 	'LBL_HOME_ITEMS' => 'tétel(ek)',
 	'LBL_MORE' => 'Több',
 	'LBL_SCROLL' => 'Görgess',
@@ -97,5 +101,7 @@ $mod_strings = array(
 	'LBL_NO_WIDGETS_HIDDEN' => 'Nincsen alapértelmezett doboz elrejtve',
 	'UpdateExchangeRate' => 'Update Exchange Rate',
 	'LBL_HOME_ADDWINDOW' => 'Add Window',
+	'LBL_GETTING_STARTED' => 'Getting Started',
+	'ExpirePasswordAfterDays' => 'Expire Password After Days',
 );
 ?>

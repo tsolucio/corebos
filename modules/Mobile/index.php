@@ -8,8 +8,15 @@
  * All Rights Reserved.
  * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
+if ($_SERVER['QUERY_STRING']=='module=Mobile&action=index') {
+?>
+<script type="text/javascript">gotourl('modules/Mobile/index.php');</script>
+<?php
+die();
+}
+define('COREBOS_INSIDE_MOBILE',1);
 header('Content-Type: text/html;charset=utf-8');
-chdir (dirname(__FILE__) . '/../../');
+chdir(__DIR__ . '/../../');
 
 /**
  * URL Verfication - Required to overcome Apache mis-configuration and leading to shared setup mode.
@@ -19,16 +26,16 @@ if (file_exists('config_override.php')) {
 	include_once 'config_override.php';
 }
 //Relations sets the GetRelatedList function to local
-//require_once dirname(__FILE__) . '/api/Relation.php';
-include_once dirname(__FILE__) . '/api/Request.php';
-include_once dirname(__FILE__) . '/api/Response.php';
+//require_once __DIR__ . '/api/Relation.php';
+include_once __DIR__ . '/api/Request.php';
+include_once __DIR__ . '/api/Response.php';
 
 
-include_once dirname(__FILE__) . '/api/ws/Controller.php';
+include_once __DIR__ . '/api/ws/Controller.php';
 
-include_once dirname(__FILE__) . '/Mobile.php';
-include_once dirname(__FILE__) . '/views/Viewer.php';
-include_once dirname(__FILE__) . '/views/models/Module.php'; // Required for auto de-serializatio of session data
+include_once __DIR__ . '/Mobile.php';
+include_once __DIR__ . '/views/Viewer.php';
+include_once __DIR__ . '/views/models/Module.php'; // Required for auto de-serializatio of session data
 
 class crmtogo_Index_Controller {
 
@@ -51,7 +58,8 @@ class crmtogo_Index_Controller {
 		'downloadFile'			  => array('file' => '/actions/getFileForDownload.php', 'class' => 'crmtogo_UI_DownLoadFile'),
 		'getRelatedFieldAjax'  	  => array('file' => '/actions/getRelatedFieldAjax.php', 'class' => 'crmtogo_UI_getRelatedFieldAjax' ), 
 		'getScrollcontent'        => array('file' => '/actions/getScrollContent.php', 'class' => 'crmtogo_UI_GetScrollRecords' ),
-		'changeGUISettings'         => array('file' => '/actions/changeGUISettings.php', 'class' => 'crmtogo_UI_ChangeSettings' ),
+		'changeGUISettings'       => array('file' => '/actions/changeGUISettings.php', 'class' => 'crmtogo_UI_ChangeSettings' ),
+		'saveSignature'			  => array('file' => '/views/saveSignature.php', 'class' => 'UI_saveSignature'),
 	);
 
 	static function process(crmtogo_API_Request $request) {
@@ -63,7 +71,7 @@ class crmtogo_Index_Controller {
 			$operationFile = self::$opControllers[$operation]['file'];
 			$operationClass= self::$opControllers[$operation]['class'];
 
-			include_once dirname(__FILE__) . $operationFile;
+			include_once __DIR__ . $operationFile;
 			$operationController = new $operationClass;
 
 			$operationSession = false;
@@ -95,7 +103,7 @@ class crmtogo_Index_Controller {
 
 		if($response !== false) {
 			if ($response->hasError()) {
-				include_once dirname(__FILE__) . '/views/Error.php';
+				include_once __DIR__ . '/views/Error.php';
 				$errorController = new crmtogo_UI_Error();
 				$errorController->setError($response->getError());
 				echo $errorController->process($request)->emitHTML();

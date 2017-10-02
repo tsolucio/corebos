@@ -7,12 +7,10 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('include/database/PearDatabase.php');
 global $adb, $mod_strings;
 
-$groupName = from_html(trim($_REQUEST['groupName']));
-$description = from_html($_REQUEST['description']);
+$groupName = vtlib_purify(trim($_REQUEST['groupName']));
 $mode = vtlib_purify($_REQUEST['mode']);
 
 if(isset($_REQUEST['dup_check']) && $_REQUEST['dup_check']!='') {
@@ -21,14 +19,14 @@ if(isset($_REQUEST['dup_check']) && $_REQUEST['dup_check']!='') {
 		$params = array($groupName);
 	} else {
 		$groupid = vtlib_purify($_REQUEST['groupid']);
-		$query = 'select groupname from vtiger_groups  where groupname=? and groupid !=?';
+		$query = 'select groupname from vtiger_groups where groupname=? and groupid !=?';
 		$params = array($groupName, $groupid);
 	}
 	$result = $adb->pquery($query, $params);
-	
+
 	$user_query = "SELECT user_name FROM vtiger_users WHERE user_name =?";
 	$user_result = $adb->pquery($user_query, array($groupName));
-        
+
 	if($adb->num_rows($result) > 0) {
 		echo $mod_strings['LBL_GROUPNAME_EXIST'];
 		die;
@@ -41,16 +39,13 @@ if(isset($_REQUEST['dup_check']) && $_REQUEST['dup_check']!='') {
 	}
 }
 
-
-/** returns the group members in an formatted array  
+/** returns the group members in an formatted array
   * @param $member_array -- member_array:: Type varchar
   * @returns $groupMemberArray:: Type varchar
-  
-  	$groupMemberArray['groups'] -- gives the array of sub groups members ;
+	$groupMemberArray['groups'] -- gives the array of sub groups members ;
 	$groupMemberArray['roles'] -- gives the array of roles present in the group ;
 	$groupMemberArray['rs'] -- gives the array of roles & subordinates present in the group ;
 	$groupMemberArray['users'] -- gives the array of roles & subordinates present in the group;
-  *
  */
 function constructGroupMemberArray($member_array)
 {
@@ -67,19 +62,19 @@ function constructGroupMemberArray($member_array)
 		$memSubArray=explode('::',$member);
 		if($memSubArray[0] == 'groups')
 		{
-			$groupArray[]=$memSubArray[1];			
+			$groupArray[]=$memSubArray[1];
 		}
 		if($memSubArray[0] == 'roles')
 		{
-			$roleArray[]=$memSubArray[1];			
+			$roleArray[]=$memSubArray[1];
 		}
 		if($memSubArray[0] == 'rs')
 		{
-			$roleSubordinateArray[]=$memSubArray[1];			
+			$roleSubordinateArray[]=$memSubArray[1];
 		}
 		if($memSubArray[0] == 'users')
 		{
-			$userArray[]=$memSubArray[1];			
+			$userArray[]=$memSubArray[1];
 		}
 	}
 
@@ -89,18 +84,18 @@ function constructGroupMemberArray($member_array)
 	$groupMemberArray['users']=$userArray;
 
 	return $groupMemberArray;
-
 }
 
 	if(isset($_REQUEST['returnaction']) && $_REQUEST['returnaction'] != '')
 	{
-		$returnaction=$_REQUEST['returnaction'].'&roleid='.$_REQUEST['roleid'];
+		$returnaction = urlencode(vtlib_purify($_REQUEST['returnaction'])).'&roleid='.urlencode(vtlib_purify($_REQUEST['roleid']));
 	}
 	else
 	{
 		$returnaction='GroupDetailView';
 	}
 
+	$description = vtlib_purify($_REQUEST['description']);
 	//Inserting values into Role Table
 	if(isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'edit')
 	{
@@ -109,8 +104,6 @@ function constructGroupMemberArray($member_array)
 		$member_array = explode(';',$selected_col_string);
 		$groupMemberArray=constructGroupMemberArray($member_array);
 		updateGroup($groupId,$groupName,$groupMemberArray,$description);
-
-		$loc = "Location: index.php?action=".vtlib_purify($returnaction)."&module=Settings&parenttab=Settings&groupId=".vtlib_purify($groupId);
 	}
 	elseif(isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'create')
 	{
@@ -118,9 +111,7 @@ function constructGroupMemberArray($member_array)
 		$member_array = explode(';',$selected_col_string);
 		$groupMemberArray=constructGroupMemberArray($member_array);
 		$groupId=createGroup($groupName,$groupMemberArray,$description);
-		$loc = "Location: index.php?action=".vtlib_purify($returnaction)."&parenttab=Settings&module=Settings&groupId=".vtlib_purify($groupId); 	 
-
 	}
 
-	header($loc);
+	header("Location: index.php?action=$returnaction&module=Settings&groupId=".urlencode(vtlib_purify($groupId)));
 ?>

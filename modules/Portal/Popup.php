@@ -8,21 +8,26 @@
 * All Rights Reserved.
 ********************************************************************************/
 require_once('modules/Portal/Portal.php');
-global $app_strings,$app_list_strings,$mod_strings,$adb,$theme;
+global $app_strings,$mod_strings,$adb,$theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 if(isset($_REQUEST['record']) && $_REQUEST['record'] !='')
 {
-	$portalid = $_REQUEST['record'];
-	$query="select * from vtiger_portal where portalid =?";
+	$portalid = vtlib_purify($_REQUEST['record']);
+	$query = 'select * from vtiger_portal where portalid =?';
 	$result=$adb->pquery($query, array($portalid));
-	$portalname = $adb->query_result($result,0,'portalname');
-	$portalurl = $adb->query_result($result,0,'portalurl');
-	/* to remove http:// from portal url*/
-	$portalurl = preg_replace("/http:\/\//i","",$portalurl);
+	if ($result and $adb->num_rows($result)==1) {
+		$portalname = $adb->query_result($result,0,'portalname');
+		$portalurl = $adb->query_result($result,0,'portalurl');
+		/* to remove http:// from portal url*/
+		$portalurl = preg_replace("/http:\/\//i","",$portalurl);
+	} else {
+		$portalid = $portalname = $portalurl = '';
+	}
+} else {
+	$portalid = $portalname = $portalurl = '';
 }
-$portal_inputs='';
-$portal_inputs.='<div style="display:block;position:relative;" id="orgLay" class="layerPopup">
+$portal_inputs = '<div style="display:block;position:relative;" id="orgLay" class="layerPopup">
 		<form onSubmit="OnUrlChange(); SaveSite(\''.$portalid.'\');return false;" >
 		<table border="0" cellpadding="3" cellspacing="0" width="100%" class="layerHeadingULine">
 		<tr>

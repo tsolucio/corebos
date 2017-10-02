@@ -144,7 +144,7 @@ if(isset($_REQUEST["command"]) && $_REQUEST["command"] != "") {
 }
 function cal_start($num_mails,$mail_per_page) {
 	if(isset($_REQUEST['start']) && $_REQUEST['start']!=0) {
-        $pre_start = $_REQUEST['start'];
+        $pre_start = vtlib_purify($_REQUEST['start']);
         $cal = (($pre_start-1) * $mail_per_page);
         if($num_mails > $cal)
 			$res = $pre_start;

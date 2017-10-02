@@ -66,7 +66,7 @@ $mod_strings = array (
 'LBL_HOME_STUFFTITLE' => 'Titolo Finestra',
 'LBL_HOME_SHOW' => 'Mostra',
 'LBL_HOME_FILTERBY' => 'Filtra per',
-'LBL_HOME_Fields' => 'Campi da visualizzare<br>(selezionarne due)',
+'LBL_HOME_Fields' => 'Campi da visualizzare',
 'LBL_HOME_PRESSCTRL' => '(Premere "Ctrl" per selezioni multiple)',
 'LBL_HOME_RSSURL' => 'RSS URL',
 'LBL_HOME_DASHBOARD_NAME' => 'Nome Cruscotto',
@@ -74,6 +74,10 @@ $mod_strings = array (
 'LBL_HOME_HORIZONTAL_BARCHART' => 'Grafico a Barre Orizzontali',
 'LBL_HOME_VERTICAL_BARCHART' => 'Grafico a Barre Verticali',
 'LBL_HOME_PIE_CHART' => 'Grafico a Torta',
+'LBL_HOME_HORIZONTAL' => 'Orizzontali',
+'LBL_HOME_VERTICAL' => 'Verticali',
+'LBL_HOME_PIE' => 'Torta',
+'Layout Saved' => 'Layout Saved',
 'LBL_HOME_ITEMS' => 'oggetto/i',
 'LBL_MORE' => 'Di Pi&ugrave;',
 'LBL_SCROLL' => 'Scorri',
@@ -114,7 +118,9 @@ $mod_strings = array (
 'LBL_DEFAULT_WIDGET'=>'Widget Predefiniti',
 'LBL_NO_WIDGETS_HIDDEN'=>'Non ci sono Widget predefiniti nascosti',
 'UpdateExchangeRate' => 'Update Exchange Rate',
-'LBL_HOME_ADDWINDOW' => 'Add Window',
+'LBL_HOME_ADDWINDOW' => 'Aggiungi Finestra',
+'LBL_GETTING_STARTED' => 'Iniziare',
+'ExpirePasswordAfterDays' => 'Far scadere password dopo giorni',
 );
 
 ?>

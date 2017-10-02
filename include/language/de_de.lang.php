@@ -12,7 +12,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 $app_strings = array(
-'LBL_BROWSER_TITLE' => 'vtiger CRM 5 - Commercial Open Source CRM',
+'LBL_BROWSER_TITLE' => 'coreBOS',
 'LBL_MY_ACCOUNT'=>'Mein Konto',
 'LBL_MY_PREFERENCES'=>'Meine Einstellungen',
 'LBL_ADMIN'=>'Admin',
@@ -61,7 +61,7 @@ $app_strings = array(
 'LBL_LISTROLES_BUTTON_LABEL'=>'Rollen zeigen',
 'LBL_FORUM_HIDE_BUTTON_LABEL'=>'Forum verbergen',
 'LBL_FORUM_SHOW_BUTTON_LABEL'=>'Forum zeigen',
-'LBL_NEW_BUTTON_TITLE'=>'Neu [Alt+N]',
+'LBL_NEW_BUTTON_TITLE'=>'Neu',
 'LBL_CHANGE_BUTTON_TITLE'=>'Ändern [Alt+G]',
 'LBL_CANCEL_BUTTON_TITLE'=>'Abbrechen [Alt+X]',
 'LBL_SEARCH_BUTTON_TITLE'=>'Suchen [Alt+Q]',
@@ -134,7 +134,6 @@ $app_strings = array(
 'LBL_LIST_OF'=>'von',
 'LNK_PRINT'=>'Drucken',
 'LNK_HELP'=>'Hilfe',
-'LNK_VTDOCS'=>'vtiger Doku',
 'LNK_ABOUT'=>'Über',
 'LNK_OUTLOOK'=>'./include/images/outlook_download.gif',
 'SINGLE_Accounts' => 'Organisation',
@@ -213,7 +212,6 @@ $app_strings = array(
 'LBL_TAG_SEARCH'=>' -- Tag-Suche für ',
 'LBL_NO_DATA'=>'Keine Daten gefunden',
 'NTC_MERGE_CONFIRMATION' => 'Sind Sie sicher?',
-'LBL_MERGE_BUTTON_TITLE' => 'Zusammenführen',
 'LBL_MERGE_BUTTON_KEY' => 'Zusammenführen',
 'DownloadMergeFile'=>'Download merged document',
 'LBL_SELECTEMAILTEMPLATE_BUTTON_TITLE'=>'E-Mail Vorlage wählen',
@@ -265,7 +263,6 @@ $app_strings = array(
 'LBL_ADV_SEARCH_MSG_ALL'=>'Entspreche allen der folgenden Bedingungen',
 'COMBO_ALL'=>'Alle',
 'LBL_OPEN_ACTIVITIES'=>'Offene Aktivitäten',
-'LBL_HISTORY'=>'Historie',
 'LBL_ACTIVITY_HISTORY'=>'Aktivitätenhistorie',
 'LBL_ATTACHMENTS'=>'Anhänge',
 'LBL_ATTACHMENT'=>'Anhang',
@@ -351,7 +348,6 @@ $app_strings = array(
 'Sales Stage'=>'Verkaufsstufe',
 'Amount'=>'Betrag',
 'Expected Close'=>'Abschluss',
-'Subject'=>'Betreff',
 'Contact Name'=>'Person',
 'Related to'=>'bezogen auf',
 'File'=>'Datei',
@@ -451,7 +447,6 @@ $app_strings = array(
 'LNK_NEW_FAQ'=>'Neue Wissensbasis',
 'Vendor Name'=>'Lieferant',
 'LNK_WEARE'=>'Wir',
-'LBL_ABOUTUS_TITLE'=>'vtiger CRM - Über uns',
 'LBL_DISCUSS'=>'diskutiere mit anderen Benutzern',
 'Quote Stage'=>'Angebotsstufe',
 'Potential Name'=>'Verkaufspotential',
@@ -466,7 +461,6 @@ $app_strings = array(
 'Order No'=>'Bestellnr.',
 'Quote Name'=>'Angebotsname',
 'Invoice No'=>'Rechnungsnr.',
-'Quote No'=>'Angebotsnr.',
 'Sales Order'=>'Kundenbestellung',
 'COMBO_QUOTES'=>'Angebote',
 'End Date'=>'Ende',
@@ -510,6 +504,7 @@ $app_strings = array(
 'LBL_SALES_ORDER_ID'=>'Verkaufsnummer',
 'LBL_PURCHASE_ORDER_ID'=>'Einkaufsnummer',
 'LBL_EXPORT_TO_PDF'=>'Export als PDF',
+'DeletedProducts' => 'This record has deleted product/service lines. Please edit and fix accordingly.',
 'LBL_HOME_KEY_METRICS'=>'benutzerdefinierte Listen',
 'LBL_HOME_METRICS'=>'Listenname',
 'LBL_HOME_COUNT'=>'Anzahl',
@@ -539,7 +534,6 @@ $app_strings = array(
 'Campaign Name'=>'Kampagnenname',
 'Campaign Type'=>'Kampagnentyp',
 'Campaign Status'=>'Kampagnenstatus',
-'Expected Revenue'=>'Erwarteter Umsatz',
 'Expected Close Date'=>'Abschluss',
 'LBL_ACTIONS'=>'Aktionen',
 'TOGGLE_ACTIONS' => 'Toggle Actions',
@@ -567,7 +561,6 @@ $app_strings = array(
 'This Month'=>'Dieser Monat',
 'This Year'=>'Dieses Jahr',
 'LBL_PLEASE_CLICK'=>'Klicken Sie',
-'LBL_TO_CONFIGURE'=>'zur Konfiguration',
 'LBL_HERE'=>'hier',
 'LBL_RECORDS'=>'Datensätze',
 'LBL_SCROLL'=>'[Nach oben]',
@@ -607,7 +600,6 @@ $app_strings = array(
 'LBL_CPY_MAILING_ADDRESS'=>'Kopiere Postadresse',
 'LBL_CPY_OTHER_ADDRESS'=>'Kopiere weitere Adresse',
 'LBL_PERMISSION'=>'Vorgang wurde vom CRM Administrator gesperrt!',
-'VTIGER'=>'vtiger',
 'LBL_DIRECT_AMOUNT_DISCOUNT'=>'direkter Rabatt',
 'LBL_NO_DISCOUNT_FOR_THIS_PRODUCT'=>'kein Rabatt für dieses Produkt',
 'LBL_NO_DISCOUNT_FOR_THIS_LINE_ITEM'=>'kein Rabatt',
@@ -629,6 +621,7 @@ $app_strings = array(
 'LBL_ADDRESS_INF'=>'Adressinformation',
 'yes'=>'ja',
 'no' => 'nein',
+'LBL_WITH' => 'mit',
 'LBL_RENAMEPROFILE_BUTTON_LABEL'=>'Umbenennen',
 'LBL_RENAME_PROFILE'=>'Profil umbenennen',
 'LBL_PROFILE_NAME'=>'Profilname',
@@ -693,7 +686,6 @@ $app_strings = array(
 'Big_Deal_Closed_Successfully' => 'Großes Geschäft erfolgreich abgeschlossen',
 'Dear_Team' => 'Hallo Team,<br>',
 'Potential_Name' => 'Potentialname:',
-'Potential_Id' => 'Potentialnr.:',
 'Dear_Team_Time_to_Party' => 'Hallo Team,<br>Glückwunsch an alle Beteiligten! <br>Wir haben ein Geschäft mit mehr als 10.000 EUR abgeschlossen<br> Sehr schön!<br>',
 'Task_Not_completed' => 'Aufgabe nicht abgeschlossen',
 'Too_many_pending_tickets' => 'Zu viele offene Tickets',
@@ -829,7 +821,7 @@ $app_strings = array(
 'MSG_THANK_YOU'=>'Danke für Ihre Aufmerksamkeit',
 'MSG_HAS_BEEN_CREATED_FOR'=>'wurde erstellt für',
 'MSG_THANKS'=>'Danke,',
-'MSG_VTIGERTEAM'=>' vTiger Team',
+'MSG_VTIGERTEAM'=>' coreBOS Team',
 'MSG_IS_NOT_UPLOADED'=>'wurde nicht geladen. Zulässige Dateitypen - jpeg, png, jpg, pjpeg, x-png oder gif',
 'MSG_IMAGE_ERROR'=>'Das Bild wurde nicht gefunden.',
 
@@ -837,7 +829,6 @@ $app_strings = array(
 'Address'=>'Adresse',
 'Custom Information'=>'Information',
 'Portal Information'=>'- Portalinformation',
-'Description'=>'Beschreibung',
 'Expectations'=>'Erwartungen',
 'Pricing Information'=>'Preisinformation',
 'Stock Information'=>'Lagerinformation',
@@ -871,21 +862,16 @@ $app_strings = array(
 'Sender'=>'Sender',
 'Website'=>'Webseite',
 'Activity Type'=>'Aktivitätentyp',
-'Due Date'=>'zu erledigen bis',
 'Created Time'=>'erstellt',
 'Modified Time'=>'geändert',
 'Last Modified By' => 'Last Modified By',
 'Created By' => 'Created By',
-'FAQ Id'=>'Wissensbasisnr.',
 'Lead Status'=>'Leadstatus',
 'Lead Source'=>'Leadquelle',
 'Quote No'=>'Angebotsnr.',
 'Yahoo Id'=>'Yahoo E-Mail',
 
-// Added/Updated for vtiger CRM 5.0.4
-'LBL_CHARSET' => 'UTF-8',
 'Lost Lead' => 'verlorener Lead',
-'LBL_SEND_EMAIL_PDF' => 'Sende E-Mail mit PDF',
 //Added for incoming mail server settings form js validation
 'ERR_INVALID_PAGE_COUNT' => "Seitenzahl ungültig",
 //'Product Code' => 'Part Number',
@@ -893,21 +879,6 @@ $app_strings = array(
 'PurchaseOrder' => 'Einkaufsbestellung',
 'SalesOrder' => 'Verkaufsbestellung',
 'Invoice' => 'Rechnung',
-//added for #3012
-'LBL_CREATING_NEW_Contact' => 'Neue Person erstellen',
-'LBL_CREATING_NEW_Campaign' => 'Neue Kampagne erstellen',
-'LBL_CREATING_NEW_Lead' => 'Neuen Lead erstellen',
-'LBL_CREATING_NEW_Account' => 'Neue Organisation erstellen',
-'LBL_CREATING_NEW_Potential' => 'Neues Potential erstellen',
-'LBL_CREATING_NEW_Quotes' => 'Neues Angebot erstellen',
-'LBL_CREATING_NEW_SalesOrder' => 'Neue Verkaufsbestellung erstellen',
-'LBL_CREATING_NEW_Invoice' => 'Neue Rechnung erstellen',
-'LBL_CREATING_NEW_Products' => 'Neues Produkt erstellen',
-'LBL_CREATING_NEW_PriceBooks' => 'Neue Preisliste erstellen',
-'LBL_CREATING_NEW_HelpDesk' => 'Neues Ticket erstellen',
-'LBL_CREATING_NEW_Faq' => 'Neue Wissensbasis erstellen',
-'LBL_CREATING_NEW_Vendors' => 'Neuen Lieferanten erstellen',
-'LBL_CREATING_NEW_PurchaseOrder' => 'Neue Einkaufsbestellung erstellen',
 'LBL_SEND_EMAIL_PDF' => 'Sende E-Mail mit PDF',
 'LBL_UPDATE' => 'Update',
 //Added for incoming mail server settings form js validation
@@ -1109,7 +1080,6 @@ $app_strings = array(
 'LBL_TABLE_CREATED'=>'Tabelle wurde erfolgreich erzeugt',
 'LBL_AVAILABLE_FIELDS'=>'vorhandene Felder',
 'LBL_SELECTED_FIELDS'=>' die zu untersuchenden Felder',
-'LBL_MERGE_SELECT'=>'Datensätze auswählen (max: 3)',
 'DuplicatesHandling' => 'Bearbeitung von Duplikaten',
 'LBL_DESC_FOR_MERGE_FIELDS' => 'Die primären Daten bleiben erhalten. Sie können eine Spalte dafür auswählen. Der andere Datensatz wird gelöscht, aber die ausgewählten Informationen bleiben erhalten.',
 'LBL_DUPLICATE_MERGING' => 'Duplikate Zusammenführen',
@@ -1137,7 +1107,6 @@ $app_strings = array(
 'Documents' => 'Dokumente',
 'Document' => 'Dokument',
 'LBL_NOTE' => 'Notiz',
-'LBL_CREATING_NEW_Documents' => 'neues Dokument erstellen',
 'LBL_PLATFORM_INDEPENDENT'=>'Plattform unabhängig',
 'Attachments' => 'Dokumente', //added for list header label in related lists
 'LBL_HIDE'=>'verberge',
@@ -1259,13 +1228,9 @@ $app_strings = array(
 'Service Contracts' => 'Service Verträge',
 'ServiceContracts' => 'Serviceverträge',
 'Services' => 'Services',
-	'LBL_REFRESH' => 'Aktualisieren',
-	'LBL_Reminder' => 'Erinnerung',
-	'LBL_RESET_PASSWORD' => 'Password zurücksetzen',
-	'LBL_PHP_UPGRADE' => 'Wir haben Ihre PHP Version geändert. Durch die neue API zur Verschlüssleung
-		  ist Ihr Passwort nicht länger gültig. Bitte setzen Sie ein neues Passwort.',
-	'LBL_RESET_PASSWORD_DESCRIPTION' => 'Sie können das Passwort für alle Benutzer mit einem Skript zurücksetzten. Als Passwort wird der 
-              Benutzername verwendet',
+'LBL_REFRESH' => 'Aktualisieren',
+'LBL_Reminder' => 'Erinnerung',
+'LBL_RESET_PASSWORD' => 'Password zurücksetzen',
 
 'LBL_CRITERIA_AND'=>'und',
 'LBL_CRITERIA_OR'=>'oder',
@@ -1302,6 +1267,7 @@ $app_strings = array(
 'Quantity' => 'Menge',
 'Net Total' => 'Netto gesamt',
 'Send SMS' => 'Sende SMS',
+'Add Payment' => 'Add Payment',
 
 'LBL_MORE'=>'mehr',
 'LBL_CRM_SETTINGS' => 'CRM Einstellungen',
@@ -1320,104 +1286,9 @@ $app_strings = array(
 'SetReturnAddressTitle' => 'Select Address To Use',
 'SetReturnAddressDescription' => 'Select which address you wish to overwrite, if any',
 'Subscribe' => 'Subscribe',
+'View History' => 'View History',
+'SYNCH_NOW' => 'Sync Now',
 );
-
-$app_list_strings = array (
-  'moduleList' => 
-  array (
-    'Home' => 'Startseite',
-    'Dashboard' => 'Cockpit',
-    'Leads' => 'Leads',
-    'Contacts' => 'Personen',
-    'Accounts' => 'Organisationen',
-    'Potentials' => 'Potentiale',
-    'Campaigns' => 'Kampagnen',
-    'Emails' => 'E-Mails',
-    'Activities' => 'Aktivitäten',
-    'Products' => 'Produkte',
-    'HelpDesk' => 'Trouble Tickets',
-    'Faq' => 'Wissensbasis',
-    'Calendar' => 'Aufgaben',
-    'Quotes' => 'Angebote',
-    'PurchaseOrder' => 'Einkaufsbestellung',
-    'Invoice' => 'Rechnung',
-    'Rss' => 'RSS',
-    'Reports' => 'Berichte',
-    'Vendors' => 'Lieferanten',
-    'PriceBooks' => 'Preislisten',
-    'SalesOrder' => 'Verkaufsbestellungen',
-    'Portal' => 'Meine Seiten',
-	
-	// Added after 5.0.4 GA
-    'Documents' => 'Dokumente',
-  ),
-  'opportunity_relationship_type_default_key' => 'Primary Decision Maker',
-  'opportunity_relationship_type_dom' => 
-  array (
-    '' => '',
-    'Primary Decision Maker' => 'Entscheider',
-    'Business Decision Maker' => 'Geschäftsentscheider',
-    'Business Evaluator' => 'Geschäftsbeurteiler',
-    'Technical Decision Maker' => 'technischer Entscheider',
-    'Technical Evaluator' => 'technischer Beurteiler',
-    'Executive Sponsor' => 'Sponsor',
-    'Influencer' => 'Berater',
-    'Other' => 'andere',
-  ),
-  'case_relationship_type_default_key' => 'Primary Contact',
-  'case_relationship_type_dom' => 
-    array(
-    	''=>'',
-    	'Primary Contact'=>'Primärer Kontakt',
-    	'Alternate Contact'=>'Alternativer Kontakt',
-    	),
-    'task_priority_dom' =>
-    array(
-    	'High'=>'hoch',
-    	'Medium'=>'mittel',
-    	'Low'=>'niedrig',
-    	),
-    'task_status_dom' =>
-	array(
-		'Planned'=>'geplant',
-		'Completed'=>'abgeschlossen',
-		'Deferred'=>'verschoben',
-		),
-'meeting_status_dom' =>
-	array(
-		'Planned'=>'geplant',
-		'Held'=>'durchgeführt',
-		'Not Held'=>'nicht durchgeführt',
-		),
-'call_status_dom' =>
-	array(
-		'Planned'=>'geplant',
-		'Held'=>'durchgeführt',
-		'Not Held'=>'nicht durchgeführt',
-		),
-'case_status_default_key' => 'New',
-'case_status_dom' =>
-	array(
-		'New'=>'neu',
-		'Assigned'=>'zugewiesen',
-		'Closed'=>'abgeschlossen',
-		'Pending Input'=>'erwarte Zuarbeit',
-		'Rejected'=>'zurückgewiesen',
-		),
-'user_status_dom' =>
-	array(
-		'Active'=>'aktiv',
-		'Inactive'=>'inaktiv',
-		),
-'record_type_default_key' => 'Accounts',
-'record_type_display' =>
-	array(
-		'Accounts' => 'Organisationen',
-		'Leads' => 'Lead',
-		'Opportunities' => 'Potentiale',
-),
-
-); 
 
 // Translation for currency names
 $app_currency_strings = array(

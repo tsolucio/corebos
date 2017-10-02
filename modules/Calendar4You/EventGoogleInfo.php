@@ -29,7 +29,7 @@ if ($GoogleSync4You->isLogged()) {
     $c_time_zone = new DateTimeZone($current_user->time_zone);
     
     if($current_user->hour_format == '')
-    	$format = 'am/pm';
+    	$format = '24';
     else
     	$format = $current_user->hour_format;
     

@@ -6,16 +6,9 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  *********************************************************************************/
-
 require_once 'modules/com_vtiger_workflow/VTSimpleTemplate.inc';
 
-/**
- * Description of VTEmailRecipientsTemplate
- *
- * @author MAK
- */
 class VTEmailRecipientsTemplate extends VTSimpleTemplate {
 
 	public function __construct($templateString) {
@@ -23,7 +16,7 @@ class VTEmailRecipientsTemplate extends VTSimpleTemplate {
 	}
 
 	protected function useValue($data, $fieldname) {
-		return !empty($data[$fieldname]) && $data['emailoptout'] == 0;
+		return (!empty($data[$fieldname]) && (!isset($data['emailoptout']) || $data['emailoptout'] == 0));
 	}
 }
 ?>

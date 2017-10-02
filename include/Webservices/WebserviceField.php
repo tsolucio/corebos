@@ -46,7 +46,10 @@ class WebserviceField{
 	private $genericUIType = 10;
 
 	private $readOnly = 0;
-	
+
+	const REFERENCE_TYPE = 'reference';
+	const OWNER_TYPE = 'owner';
+
 	private function __construct($adb,$row){
 		$this->uitype = (isset($row['uitype']))? $row['uitype'] : 0;
 		$this->blockId = (isset($row['block']))? $row['block'] : 0;
@@ -92,7 +95,17 @@ class WebserviceField{
 	public static function fromArray($adb,$row){
 		return new WebserviceField($adb,$row);
 	}
-	
+
+	public static function fromFieldId($adb,$fieldId) {
+		$rs = $adb->pquery('select * from vtiger_field where fieldid=?',array($fieldId));
+		if ($rs and $adb->num_rows($rs)==1) {
+			$row = $adb->fetch_array($rs);
+			return new WebserviceField($adb,$row);
+		} else {
+			return false;
+		}
+	}
+
 	public function getTableName(){
 		return $this->tableName;
 	}
@@ -112,7 +125,23 @@ class WebserviceField{
 	public function isMandatory(){
 		return $this->mandatory;
 	}
-	
+
+	public function isActiveField() {
+		return in_array($this->presence, array(0,2));
+	}
+
+	public function isMassEditable() {
+		return $this->massEditable;
+	}
+
+	public function isReferenceField() {
+		return $this->getFieldDataType() == self::REFERENCE_TYPE;
+	}
+
+	public function isOwnerField() {
+		return $this->getFieldDataType() == self::OWNER_TYPE;
+	}
+
 	public function getTypeOfData(){
 		return $this->typeOfData;
 	}
@@ -216,7 +245,7 @@ class WebserviceField{
 	public function setReferenceList($referenceList){
 		$this->referenceList = $referenceList;
 	}
-	
+
 	public function getTableFields(){
 		$tableFields = null;
 		if(isset(WebserviceField::$tableMeta[$this->getTableName()])){
@@ -224,15 +253,16 @@ class WebserviceField{
 		}else{
 			$dbMetaColumns = $this->pearDB->database->MetaColumns($this->getTableName());
 			$tableFields = array();
-                        if(is_array($dbMetaColumns)){
-                            foreach ($dbMetaColumns as $key => $dbField) {
-                                    $tableFields[$dbField->name] = $dbField;
-                            }
-                        }
+			if(is_array($dbMetaColumns)){
+				foreach ($dbMetaColumns as $key => $dbField) {
+					$tableFields[$dbField->name] = $dbField;
+				}
+			}
 			WebserviceField::$tableMeta[$this->getTableName()] = $tableFields;
 		}
 		return $tableFields;
 	}
+
 	public function fillColumnMeta(){
 		$tableFields = $this->getTableFields();
 		foreach ($tableFields as $fieldName => $dbField) {
@@ -286,7 +316,7 @@ class WebserviceField{
 			$result = $this->pearDB->pquery($sql,$params);
 			$numRows = $this->pearDB->num_rows($result);
 			for($i=0;$i<$numRows;++$i){
-				array_push($referenceTypes,$this->pearDB->query_result($result,$i,"type"));
+				$referenceTypes[] = $this->pearDB->query_result($result,$i,"type");
 			}
 			
 			//to handle hardcoding done for Calendar module todo activities.
@@ -305,7 +335,7 @@ class WebserviceField{
 			$types = vtws_listtypes(null, $current_user);
 			$accessibleTypes = $types['types'];
 			if(!is_admin($current_user)) {
-				array_push($accessibleTypes, 'Users');
+				$accessibleTypes[] = 'Users';
 			}
 			$referenceTypes = array_values(array_intersect($accessibleTypes,$referenceTypes));
 			$referenceList[$this->getFieldId()] = $referenceTypes;
@@ -382,7 +412,10 @@ class WebserviceField{
 		$uitype = $this->getUIType();
 		switch ($uitype) {
 			case '1613':
+			case '1614':
+			case '1615':
 			case '3313':
+			case '3314':
 			case '1024':
 				return $this->getPickListOptionsSpecialUitypes($uitype);
 				break;
@@ -416,11 +449,11 @@ class WebserviceField{
 				$elem = array();
 				$picklistValue = $this->pearDB->query_result($result,$i,$fieldName);
 				$picklistValue = decode_html($picklistValue);
-				$trans_str = ($temp_mod_strings[$picklistValue] != '') ? $temp_mod_strings[$picklistValue] : (($app_strings[$picklistValue] != '') ? $app_strings[$picklistValue] : $picklistValue);
+				$trans_str = (!empty($temp_mod_strings[$picklistValue])) ? $temp_mod_strings[$picklistValue] : ((!empty($app_strings[$picklistValue])) ? $app_strings[$picklistValue] : $picklistValue);
 				while ($trans_str != preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str)) $trans_str = preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str);
 				$elem["label"] = $trans_str;
 				$elem["value"] = $picklistValue;
-				array_push($options,$elem);
+				$options[] = $elem;
 			}
 		}else{
 			$user = VTWS_PreserveGlobal::getGlobal('current_user');
@@ -428,11 +461,11 @@ class WebserviceField{
 			for($i=0;$i<sizeof($details);++$i){
 				$elem = array();
 				$picklistValue = decode_html($details[$i]);
-				$trans_str = ($temp_mod_strings[$picklistValue] != '') ? $temp_mod_strings[$picklistValue] : (($app_strings[$picklistValue] != '') ? $app_strings[$picklistValue] : $picklistValue);
+				$trans_str = (!empty($temp_mod_strings[$picklistValue])) ? $temp_mod_strings[$picklistValue] : ((!empty($app_strings[$picklistValue])) ? $app_strings[$picklistValue] : $picklistValue);
 				while ($trans_str != preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str)) $trans_str = preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str);
 				$elem["label"] = $trans_str;
 				$elem["value"] = $picklistValue;
-				array_push($options,$elem);
+				$options[] = $elem;
 			}
 		}
 		$purified_plcache[$moduleName.$fieldName] = $options;
@@ -461,7 +494,7 @@ class WebserviceField{
 				$elem = array();
 				$elem["label"] = $value[0];
 				$elem["value"] = $value[1];
-				array_push($options,$elem);
+				$options[] = $elem;
 		}
 		$purified_plcache[$moduleName.$fieldName] = $options;
 		return $options;

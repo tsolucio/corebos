@@ -6,7 +6,6 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 <script type="text/javascript" src="modules/Webmails/Webmails.js"></script>
@@ -14,7 +13,7 @@
 <table width="100%" border="0" cellpadding="0" cellspacing="0" valign="top">
 <tr>
 	<td class="hdrNameBg">
-		<table width="100%"  border="0" cellspacing="5" cellpadding="0">
+		<table width="100%" border="0" cellspacing="5" cellpadding="0">
 		<tr>
 		{if $BLOCKS neq ''}
 			<td align="left">
@@ -22,19 +21,19 @@
 				{if $EMAIL_FLAG neq 'WEBMAIL'}
 				<input type="button" name="Send" value=" {$MOD.LBL_SEND} " class="crmbutton small save" onClick="OpenCompose('{$ID}','edit')">&nbsp;
 				<input type="button" name="Reply" value=" {$MOD.LBL_REPLY_BUTTON} " class="crmbutton small edit" onClick="ReplyCompose('{$ID}','reply')">&nbsp;
-				<input type="button" title="{$MOD.LBL_PRINT_EMAIL}" name="{$MOD.LBL_PRINT_EMAIL}" value="{$MOD.LBL_PRINT_EMAIL}" class="crmbutton small edit" onClick="OpenCompose('{$ID}','print')"> 
+				<input type="button" title="{$MOD.LBL_PRINT_EMAIL}" name="{$MOD.LBL_PRINT_EMAIL}" value="{$MOD.LBL_PRINT_EMAIL}" class="crmbutton small edit" onClick="OpenCompose('{$ID}','print')">
 				{else}
 				<input type="button" name="Send" value=" {$MOD.LBL_REPLY_BUTTON} " class="crmbutton small edit" onClick="OpenCompose('{$ID}','edit')">&nbsp;
 				{/if}
-				{foreach item=row from=$BLOCKS}	
-				{foreach item=elements key=title from=$row}	
+				{foreach item=row from=$BLOCKS}
+				{foreach item=elements key=title from=$row}
 					{if $elements.fldname eq 'filename' && $elements.value != ''}
 						<input type="button" name="download" value=" {$MOD.LBL_DOWNLOAD_ATTCH_BUTTON} " class="crmbutton small save" onclick="fnvshobj(this,'reportLay')"/>
 					{/if}
 				{/foreach}
 				{/foreach}
 			</td>
-			<td width="25%" align="right"><input type="button" name="Button" value=" {$APP.LBL_DELETE_BUTTON} "  class="crmbutton small delete" onClick="DeleteEmail('{$ID}')"/></td>
+			<td width="25%" align="right"><input type="button" name="Button" value=" {$APP.LBL_DELETE_BUTTON} " class="crmbutton small delete" onClick="DeleteEmail('{$ID}')"/></td>
 			{else}
 			<td colspan="2">&nbsp;</td>
 			{/if}
@@ -44,7 +43,7 @@
 </tr>
 <tr>
 	<td height="250" bgcolor="#FFFFFF" valign="top" class="MatrixLayer2">
-	{foreach item=row from=$BLOCKS}	
+	{foreach item=row from=$BLOCKS}
 	{foreach item=elements from=$row}
 		{if $elements.fldname eq 'subject'}
 		<table class="tableHeadBg" width="100%" border="0" cellpadding="0" cellspacing="0">

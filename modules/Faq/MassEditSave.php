@@ -12,15 +12,15 @@ global $currentModule, $rstart;
 $focus = CRMEntity::getInstance($currentModule);
 
 $idlist= vtlib_purify($_REQUEST['massedit_recordids']);
-$viewid = vtlib_purify($_REQUEST['viewname']);
-$return_module = vtlib_purify($_REQUEST['massedit_module']);
+$viewid = isset($_REQUEST['viewname']) ? vtlib_purify($_REQUEST['viewname']) : '';
+$return_module = urlencode(vtlib_purify($_REQUEST['massedit_module']));
 $return_action = 'index';
 
 //Added to fix 4600
 $url = getBasic_Advance_SearchURL();
 
 if(isset($_REQUEST['start']) && $_REQUEST['start']!=''){
-	$rstart = "&start=".vtlib_purify($_REQUEST['start']);
+	$rstart = '&start=' . urlencode(vtlib_purify($_REQUEST['start']));
 }
 
 if(isset($idlist)) {
@@ -61,6 +61,5 @@ if(isset($idlist)) {
 	}
 }
 
-$parenttab = getParentTab();
-header("Location: index.php?module=$return_module&action=$return_action&parenttab=$parenttab$rstart");
+header("Location: index.php?module=$return_module&action=$return_action$rstart");
 ?>

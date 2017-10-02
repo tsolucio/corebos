@@ -75,23 +75,8 @@ $smarty->assign('VIEWID', $viewid);
 
 if($viewinfo['viewname'] == 'All') $smarty->assign('ALL', 'All');
 
-if($viewid ==0) {
-	echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>
-		<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
-		<table border='0' cellpadding='5' cellspacing='0' width='98%'>
-		<tbody><tr>
-		<td rowspan='2' width='11%'><img src='". vtiger_imageurl('denied.gif', $theme) ."' ></td>
-		<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span clas
-		s='genHeaderSmall'>".$app_strings['LBL_PERMISSION']."</span></td>
-		</tr>
-		<tr>
-		<td class='small' align='right' nowrap='nowrap'>
-		<a href='javascript:window.history.back();'>".$app_strings['LBL_GO_BACK']."</a><br>
-		</td>
-		</tr>
-		</tbody></table>
-		</div>
-		</td></tr></table>";
+if ($viewid == 0) {
+	$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
 	exit;
 }
 
@@ -135,8 +120,9 @@ $smarty->assign('export_where',to_html($where));
 
 // Sorting
 if(!empty($order_by)) {
-	if($order_by == 'smownerid') $list_query .= ' ORDER BY user_name '.$sorder;
-	else {
+	if($order_by == 'smownerid') {
+		$list_query .= ' ORDER BY vtiger_users.user_name '.$sorder;
+	} else {
 		$tablename = getTableNameForField($currentModule, $order_by);
 		$tablename = ($tablename != '')? ($tablename . '.') : '';
 		$list_query .= ' ORDER BY ' . $tablename . $order_by . ' ' . $sorder;
@@ -146,26 +132,18 @@ if (GlobalVariable::getVariable('Debug_ListView_Query', '0')=='1') {
 	echo '<br>'.$list_query.'<br>';
 }
 try {
-if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true) {
-	list($specialPermissionWithDuplicateRows,$cached) = VTCacheUtils::lookupCachedInformation('SpecialPermissionWithDuplicateRows');
-	if ($specialPermissionWithDuplicateRows) {
-		$count_result = $adb->query(mkCountWithFullQuery($list_query));
-	} else {
-		$count_result = $adb->query(mkCountQuery($list_query));
+	$queryMode = (isset($_REQUEST['query']) && $_REQUEST['query'] == 'true');
+	$start = ListViewSession::getRequestCurrentPage($currentModule, $list_query, $viewid, $queryMode);
+	$limit_start_rec = ($start-1) * $list_max_entries_per_page;
+	$list_query = 'SELECT SQL_CALC_FOUND_ROWS'.substr($list_query, 6);
+	$list_result = $adb->pquery($list_query. " LIMIT $limit_start_rec, $list_max_entries_per_page", array());
+	$count_result = $adb->query('SELECT FOUND_ROWS();');
+	if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0)) {
+		$noofrows = $adb->query_result($count_result,0,0);
+	}else {
+		$noofrows = null;
 	}
-	$noofrows = $adb->query_result($count_result,0,"count");
-}else {
-	$noofrows = null;
-}
-
-$queryMode = (isset($_REQUEST['query']) && $_REQUEST['query'] == 'true');
-$start = ListViewSession::getRequestCurrentPage($currentModule, $list_query, $viewid, $queryMode);
-
-$navigation_array = VT_getSimpleNavigationValues($start,$list_max_entries_per_page,$noofrows);
-
-$limit_start_rec = ($start-1) * $list_max_entries_per_page;
-
-$list_result = $adb->pquery($list_query. " LIMIT $limit_start_rec, $list_max_entries_per_page", array());
+	$navigation_array = VT_getSimpleNavigationValues($start,$list_max_entries_per_page,$noofrows);
 } catch (Exception $e) {
 	$sql_error = true;
 }
@@ -247,6 +225,10 @@ $smarty->assign('DEFAULT_SEARCH_PANEL_STATUS',($DEFAULT_SEARCH_PANEL_STATUS ? 'd
 if(isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '')
 	$smarty->display("ListViewEntries.tpl");
 else
-	$smarty->display('ListView.tpl');
+	if (isset($custom_list_template) && $custom_list_template != '') {
+		$smarty->display($custom_list_template);
+	} else {
+		$smarty->display('ListView.tpl');		
+	}
 
 ?>

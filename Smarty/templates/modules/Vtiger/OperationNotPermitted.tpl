@@ -6,25 +6,18 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 
-<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'>
-<tr><td align='center'>
-	<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 100000020;'>
-
-	<table border='0' cellpadding='5' cellspacing='0' width='98%'>
-	<tr>
-		<td rowspan='2' width='11%'><img src="{'denied.gif'|@vtiger_imageurl:$THEME}" ></td>
-		<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span class='genHeaderSmall'>{$APP.LBL_PERMISSION}</span></td>
-	</tr>
-	<tr>
-		<td class='small' align='right' nowrap='nowrap'>			   	
-			<a href='javascript:window.history.back();'>{$APP.LBL_GO_BACK}</a><br>
-		</td>
-	</tr>
-	</table> 
+<div class="slds-m-top--x-large">
+	<div class="slds-notify slds-notify--alert slds-theme--error slds-theme--alert-texture" role="alert">
+	<h2>
+		<svg class="slds-icon slds-icon--small slds-m-right--x-small" aria-hidden="true">
+		<use xlink:href="include/LD//assets/icons/utility-sprite/svg/symbols.svg#ban"></use>
+		</svg>{if isset($OPERATION_MESSAGE)}{$OPERATION_MESSAGE}{else}{$APP.LBL_PERMISSION}{/if}<br>
+		{if !isset($PUT_BACK_ACTION)}
+		<a href='javascript:window.history.back();'>{$APP.LBL_GO_BACK}</a>
+		{/if}
+	</h2>
 	</div>
-</td></tr>
-</table>
+</div>

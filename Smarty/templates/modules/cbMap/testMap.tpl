@@ -21,7 +21,7 @@
 <table width="100%" cellpadding="2" cellspacing="0" border="0">
 <tr>
 	<td>
-		{include file='Buttons_List1.tpl'}
+		{include file='Buttons_List.tpl'}
 		<table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
 		<tr>
 			<td valign=top><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
@@ -29,10 +29,7 @@
 				<div class="small" style="padding:10px" >
 					<table align="center" border="0" cellpadding="0" cellspacing="0" width="95%">
 					<tr><td>
-						{* Module Record numbering, used MOD_SEQ_ID instead of ID *}
-						{assign var="USE_ID_VALUE" value=$MOD_SEQ_ID}
-						{if $USE_ID_VALUE eq ''} {assign var="USE_ID_VALUE" value=$ID} {/if}
-						<span class="dvHeaderText">[ {$USE_ID_VALUE} ] {$NAME} -  {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</span>&nbsp;&nbsp;&nbsp;<span class="small">{$UPDATEINFO}</span>&nbsp;<span id="vtbusy_info" style="display:none;" valign="bottom"><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
+						<span class="dvHeaderText">[ {$ID} ] {$NAME} -  {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</span>&nbsp;&nbsp;&nbsp;<span class="small">{$UPDATEINFO}</span>&nbsp;<span id="vtbusy_info" style="display:none;" valign="bottom"><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
 					</td></tr>
 					</table>
 					<br>

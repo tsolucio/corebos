@@ -1,5 +1,4 @@
 <?php
-
 /*******************************************************************************
  * The contents of this file are subject to the following licences:
  * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
@@ -32,7 +31,6 @@
  ********************************************************************************/
 
 $mod_strings = Array(
-// added for 5.0 beta
 'LBL_BOOKMARKED_URL'=>"Link URL's",
 'LBL_MANAGE_BOOKMARKS'=>'Bewerk links',
 'LBL_BOOKMARK_LIST'=>'Linklijst',
@@ -48,8 +46,7 @@ $mod_strings = Array(
 'LBL_MANAGE_SITES'=>'Beheer websites',
 'LBL_MY_SITES'=>'Mijn websites',
 
-// Added/Updated for vtiger CRM 5.0.4
-//added as an enhancement
 'LBL_SET_DEFAULT_BUTTON'=>'Instellen als Standaardwaarde',
+'ERR_NOT_PERMITTED_LOAD' => 'The website you have indicated has blocked loading inside another webpage so it has been opened in another tab.',
 );
 ?>

@@ -8,101 +8,118 @@
  * All Rights Reserved.
  *************************************************************************************/
 
-	function vtws_retrieve($id, $user){
-		global $log,$adb;
+function vtws_retrieve($id, $user){
+	global $log,$adb;
+	list($wsid,$crmid) = explode('x', $id);
+	if ((vtws_getEntityId('Calendar')==$wsid or vtws_getEntityId('Events')==$wsid) and getSalesEntityType($crmid)=='cbCalendar') {
+		$id = vtws_getEntityId('cbCalendar') . 'x' . $crmid;
+	}
+	if (vtws_getEntityId('cbCalendar')==$wsid and getSalesEntityType($crmid)=='Calendar') {
+		$rs = $adb->pquery('select activitytype from vtiger_activity where activityid=?', array($crmid));
+		if ($rs and $adb->num_rows($rs)==1) {
+			if ($adb->query_result($rs,0,0)=='Task') {
+				$id = vtws_getEntityId('Calendar') . 'x' . $crmid;
+			} else {
+				$id = vtws_getEntityId('Events') . 'x' . $crmid;
+			}
+		}
+	}
+	$webserviceObject = VtigerWebserviceObject::fromId($adb,$id);
+	$handlerPath = $webserviceObject->getHandlerPath();
+	$handlerClass = $webserviceObject->getHandlerClass();
 
+	require_once $handlerPath;
+
+	$handler = new $handlerClass($webserviceObject,$user,$adb,$log);
+	$meta = $handler->getMeta();
+	$entityName = $meta->getObjectEntityName($id);
+	$types = vtws_listtypes(null, $user);
+	if (!in_array($entityName,$types['types'])) {
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to perform the operation is denied");
+	}
+	if ($meta->hasReadAccess()!==true) {
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to write is denied");
+	}
+
+	if ($entityName !== $webserviceObject->getEntityName()) {
+		throw new WebServiceException(WebServiceErrorCode::$INVALIDID,"Id specified is incorrect");
+	}
+
+	if (!$meta->hasPermission(EntityMeta::$RETRIEVE,$id)) {
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to read given object is denied");
+	}
+
+	$idComponents = vtws_getIdComponents($id);
+	if (!$meta->exists($idComponents[1])) {
+		throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND,"Record you are trying to access is not found");
+	}
+
+	$entity = $handler->retrieve($id);
+	//return product lines
+	if ($entityName == 'Quotes' || $entityName == 'PurchaseOrder' || $entityName == 'SalesOrder' || $entityName == 'Invoice') {
+		$pdowsid = vtws_getEntityId('Products').'x';
+		$srvwsid = vtws_getEntityId('Services').'x';
+		list($wsid,$recordid) = explode('x',$id);
+		$result = $adb->pquery('select * from vtiger_inventoryproductrel where id=?',array($recordid));
+		while ($row=$adb->getNextRow($result, false)) {
+			if ($row['discount_amount'] == NULL && $row['discount_percent'] == NULL) {
+				$discount = 0;$discount_type = 0;
+			} else
+				$discount = 1;
+
+			if ($row['discount_amount'] == NULL)
+				$discount_amount = 0;
+			else {
+				$discount_amount = $row['discount_amount'];
+				$discount_type = 'amount';
+			}
+			if ($row['discount_percent'] == NULL)
+				$discount_percent = 0;
+			else {
+				$discount_percent = $row['discount_percent'];
+				$discount_type = 'percentage';
+			}
+			$ltype = getSalesEntityType($row['productid']);
+			$onlyPrd = Array(
+				"productid"=>$row['productid'],
+				'wsproductid' => ($ltype=='Products' ? $pdowsid : $srvwsid).$row['productid'],
+				'linetype' => $ltype,
+				"comment"=>$row['comment'],
+				"qty"=>$row['quantity'],
+				"listprice"=>$row['listprice'],
+				'discount'=>$discount, // 0 no discount, 1 discount
+				"discount_type"=>$discount_type, // amount/percentage
+				"discount_percentage"=>$discount_percent,
+				"discount_amount"=>$discount_amount,
+			);
+			$entity['pdoInformation'][] = $onlyPrd;
+		}
+	}
+	VTWS_PreserveGlobal::flush();
+	return $entity;
+}
+
+function vtws_retrieve_deleted($id, $user) {
+	global $log,$adb;
+
+	// First we look if it has been totally eliminated
+	$parts = explode('x', $id);
+	$result = $adb->pquery("SELECT count(*) as cnt FROM vtiger_crmentity WHERE crmid=?", array($parts[1]));
+	if ($adb->query_result($result,0,"cnt") == 1) { // If not we can "almost" continue normally
 		$webserviceObject = VtigerWebserviceObject::fromId($adb,$id);
 		$handlerPath = $webserviceObject->getHandlerPath();
 		$handlerClass = $webserviceObject->getHandlerClass();
-
 		require_once $handlerPath;
-
 		$handler = new $handlerClass($webserviceObject,$user,$adb,$log);
 		$meta = $handler->getMeta();
-		$entityName = $meta->getObjectEntityName($id);
-		$types = vtws_listtypes(null, $user);
-		if(!in_array($entityName,$types['types'])){
-			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to perform the operation is denied");
-		}
-		if($meta->hasReadAccess()!==true){
-			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to write is denied");
-		}
-
-		if($entityName !== $webserviceObject->getEntityName()){
-			throw new WebServiceException(WebServiceErrorCode::$INVALIDID,"Id specified is incorrect");
-		}
-		
-		if(!$meta->hasPermission(EntityMeta::$RETRIEVE,$id)){
-			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to read given object is denied");
-		}
-		
-		$idComponents = vtws_getIdComponents($id);
-		if(!$meta->exists($idComponents[1])){
-			throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND,"Record you are trying to access is not found");
-		}
-
-		$entity = $handler->retrieve($id);
-		//return product lines
-		if($entityName == 'Quotes' || $entityName == 'PurchaseOrder' || $entityName == 'SalesOrder' || $entityName == 'Invoice') {
-			list($wsid,$recordid) = explode('x',$id);
-			$result = $adb->pquery('select * from vtiger_inventoryproductrel where id=?',array($recordid));
-			while ($row=$adb->getNextRow($result, false)) {
-				if($row['discount_amount'] == NULL && $row['discount_percent'] == NULL) {
-					$discount = 0;$discount_type = 0;
-				} else
-					$discount = 1;
-
-				if($row['discount_amount'] == NULL)
-					$discount_amount = 0;
-				else {
-					$discount_amount = $row['discount_amount'];
-					$discount_type = 'amount';
-				}
-				if($row['discount_percent'] == NULL)
-					$discount_percent = 0;
-				else {
-					$discount_percent = $row['discount_percent'];
-					$discount_type = 'percentage';
-				}
-
-				$onlyPrd = Array(
-					"productid"=>$row['productid'],
-					"comment"=>$row['comment'],
-					"qty"=>$row['quantity'],
-					"listprice"=>$row['listprice'],
-					'discount'=>$discount,  // 0 no discount, 1 discount
-					"discount_type"=>$discount_type,  //  amount/percentage
-					"discount_percentage"=>$discount_percent,
-					"discount_amount"=>$discount_amount,
-				);
-				$entity['pdoInformation'][] = $onlyPrd;
-			}
-		}
+		$entityName = $meta->getObjectEntityNameDeleted($id);
+		$entity = $handler->retrieve($id,true);
 		VTWS_PreserveGlobal::flush();
-		return $entity;
+	} else { // if it has been eliminated we have to mock up object and return with nothing
+		// here we should return a mock object with empty values.
+		$entity = null; // I am being lazy
 	}
-
-	function vtws_retrieve_deleted($id, $user) {
-		global $log,$adb;
-
-		// First we look if it has been totally eliminated
-		$parts = explode('x', $id);
-		$result = $adb->pquery("SELECT count(*) as cnt FROM vtiger_crmentity WHERE crmid=?", array($parts[1]));
-		if($adb->query_result($result,0,"cnt") == 1) {  // If not we can "almost" continue normally
-			$webserviceObject = VtigerWebserviceObject::fromId($adb,$id);
-			$handlerPath = $webserviceObject->getHandlerPath();
-			$handlerClass = $webserviceObject->getHandlerClass();
-			require_once $handlerPath;
-			$handler = new $handlerClass($webserviceObject,$user,$adb,$log);
-			$meta = $handler->getMeta();
-			$entityName = $meta->getObjectEntityNameDeleted($id);
-			$entity = $handler->retrieve($id,true);
-			VTWS_PreserveGlobal::flush();
-		} else {  // if it has been eliminated we have to mock up object and return with nothing
-			// here we should return a mock object with empty values.
-			$entity = null;  // I am being lazy
-		}
-		return $entity;
-	}
+	return $entity;
+}
 
 ?>

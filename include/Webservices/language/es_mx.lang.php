@@ -18,10 +18,10 @@ $app_strings = array (
 );
 
 $webservice_strings = array(
-	'LBL_INVALID_OLD_PASSWORD' => 'Contraseña anterior inválida.',
-	'LBL_NEW_PASSWORD_MISMATCH' => "Nueva contraseña y confirmación no coinciden.",
-	'LBL_DATABASE_QUERY_ERROR' => 'Error de base de datos al procesar la operación',
-	'LBL_CHANGE_PASSWORD_FAILURE' => 'No se ha podido cambiar la contraseña',
+	'LBL_INVALID_OLD_PASSWORD' => 'ContraseÃ±a anterior invÃ¡lida.',
+	'LBL_NEW_PASSWORD_MISMATCH' => "Nueva contraseÃ±a y confirmaciÃ³n no coinciden.",
+	'LBL_DATABASE_QUERY_ERROR' => 'Error de base de datos al procesar la operaciÃ³n',
+	'LBL_CHANGE_PASSWORD_FAILURE' => 'No se ha podido cambiar la contraseÃ±a',
 );
 
 ?>

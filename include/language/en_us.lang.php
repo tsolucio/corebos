@@ -1,17 +1,13 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-$app_strings = array (
+$app_strings = array(
 'LBL_BROWSER_TITLE' => 'coreBOS',
 'LBL_MY_ACCOUNT' => 'My Organization',
 'LBL_MY_PREFERENCES' => 'My Preferences',
@@ -61,7 +57,7 @@ $app_strings = array (
 'LBL_LISTROLES_BUTTON_LABEL' => 'List Roles',
 'LBL_FORUM_HIDE_BUTTON_LABEL' => 'Hide Forums',
 'LBL_FORUM_SHOW_BUTTON_LABEL' => 'Show Forums',
-'LBL_NEW_BUTTON_TITLE' => 'New [Alt+N]',
+'LBL_NEW_BUTTON_TITLE' => 'New',
 'LBL_CHANGE_BUTTON_TITLE' => 'Change [Alt+G]',
 'LBL_CANCEL_BUTTON_TITLE' => 'Cancel [Alt+X]',
 'LBL_SEARCH_BUTTON_TITLE' => 'Search [Alt+Q]',
@@ -135,7 +131,6 @@ $app_strings = array (
 'LBL_LIST_OF' => 'of',
 'LNK_PRINT' => 'Print',
 'LNK_HELP' => 'Help',
-'LNK_VTDOCS' => 'coreBOS Docs',
 'LNK_ABOUT' => 'About',
 'LNK_OUTLOOK' => './include/images/outlook_download.gif',
 'SINGLE_Accounts' => 'Organization',
@@ -214,7 +209,6 @@ $app_strings = array (
 'LBL_TAG_SEARCH' => ' -- Tag search for ',
 'LBL_NO_DATA' => 'No Data Found',
 'NTC_MERGE_CONFIRMATION' => 'Are you sure you want to merge this record?',
-'LBL_MERGE_BUTTON_TITLE' => 'Merge',
 'LBL_MERGE_BUTTON_KEY' => 'Merge',
 'DownloadMergeFile'=>'Download merged document',
 'LBL_SELECTEMAILTEMPLATE_BUTTON_TITLE' => 'Select Email Template',
@@ -266,7 +260,6 @@ $app_strings = array (
 'LBL_ADV_SEARCH_MSG_ALL' => 'Match All of the Following',
 'COMBO_ALL' => 'All',
 'LBL_OPEN_ACTIVITIES' => 'Open Activities',
-'LBL_HISTORY' => 'History',
 'LBL_ACTIVITY_HISTORY' => 'Activity History',
 'LBL_ATTACHMENTS' => 'File Name',
 'LBL_ATTACHMENT' => 'Attachment',
@@ -452,7 +445,6 @@ $app_strings = array (
 'LNK_NEW_FAQ' => 'New FAQ',
 'Vendor Name' => 'Vendor Name',
 'LNK_WEARE' => 'About Us',
-'LBL_ABOUTUS_TITLE' => 'vtiger CRM - About Us',
 'LBL_DISCUSS' => 'Discuss with other users',
 'Quote Stage' => 'Quote Stage',
 'Potential Name' => 'Opportunity Name',
@@ -467,7 +459,6 @@ $app_strings = array (
 'Order No' => 'Order No',
 'Quote Name' => 'Quote Name',
 'Invoice No' => 'Invoice No',
-'Quote No' => 'Quote No',
 'Sales Order' => 'Sales Order',
 'COMBO_QUOTES' => 'Quotes',
 'End Date' => 'End Date',
@@ -496,7 +487,7 @@ $app_strings = array (
 'LBL_NEW_SORDER_BUTTON_KEY' => 'E',
 'LBL_NEW_SORDER_BUTTON' => 'New Sales Order',
 'LBL_PRODUCT_DETAILS' => 'Product Details',
-'LBL_QTY_IN_STOCK' => 'Qty In Stock',
+'LBL_QTY_IN_STOCK' => 'Qty. In Stock',
 'LBL_QTY' => 'Qty',
 'LBL_UNIT_PRICE' => 'Unit Price',
 'LBL_LIST_PRICE' => 'List Price',
@@ -511,6 +502,7 @@ $app_strings = array (
 'LBL_SALES_ORDER_ID' => 'Sales Order Id',
 'LBL_PURCHASE_ORDER_ID' => 'Purchase Order Id',
 'LBL_EXPORT_TO_PDF' => 'Export To PDF',
+'DeletedProducts' => 'This record has deleted product/service lines. Please edit and fix accordingly.',
 'LBL_HOME_KEY_METRICS' => 'Key Metrics',
 'LBL_HOME_METRICS' => 'Metrics',
 'LBL_HOME_COUNT' => 'Count',
@@ -540,7 +532,6 @@ $app_strings = array (
 'Campaign Name' => 'Campaign Name',
 'Campaign Type' => 'Campaign Type',
 'Campaign Status' => 'Campaign Status',
-'Expected Revenue' => 'Expected Revenue',
 'Expected Close Date' => 'Expected Close Date',
 'LBL_ACTIONS' => 'Actions',
 'TOGGLE_ACTIONS' => 'Toggle Actions',
@@ -568,7 +559,6 @@ $app_strings = array (
 'This Month' => 'This Month',
 'This Year' => 'This Year',
 'LBL_PLEASE_CLICK' => 'Please Click',
-'LBL_TO_CONFIGURE' => 'to Configure',
 'LBL_HERE' => 'here',
 'LBL_RECORDS' => 'Records',
 'LBL_SCROLL' => '[Scroll to Top]',
@@ -629,6 +619,7 @@ $app_strings = array (
 'LBL_ADDRESS_INF' => 'Address Information',
 'yes' => 'yes',
 'no' => 'no',
+'LBL_WITH' => 'with',
 'LBL_RENAMEPROFILE_BUTTON_LABEL'=>'Rename',
 'LBL_RENAME_PROFILE'=>'Rename Profile',
 'LBL_PROFILE_NAME'=>'Profile Name',
@@ -667,7 +658,6 @@ $app_strings = array (
 
 'NO_DATA_AVAILABLE_WITH_SPECIFIED_PERIOD'=>'No data available with the specified time period',
 
-//Added for 5.0.3
 'Files_Maximum_6'=>'Files Maximum 6',
 'Files_Maximum'=>'Files Maximum ',
 'To'=>'To:',
@@ -677,8 +667,6 @@ $app_strings = array (
 'Visit_Link' => 'Kindly visit the link for more details on the activity',
 'Click here' => 'Click here',
 'Activity Reminder Notification' => 'Activity Reminder Notification',
-'This is a reminder notification for the Activity' => 'This is a reminder notification for the Activity',
-'Subject' => 'Subject',
 'Support_starting' => 'Support starting',
 'Congratulations' => 'Congratulations! Your support starts from today',
 'Hello_Support' => 'Hello! Support Starts for',
@@ -693,7 +681,6 @@ $app_strings = array (
 'Big_Deal_Closed_Successfully' => 'Big Deal Closed Successfully',
 'Dear_Team' => 'Dear Team,<br>',
 'Potential_Name' => 'Opportunity Name:',
-'Potential_Id' => 'Opportunity Id:',
 'Dear_Team_Time_to_Party' => '<br>Congratulations!Time to Party! <br>We closed a deal worth more than 10000!!!!<br> Time to hit the dance floor!<br>',
 'Task_Not_completed' => 'Task Not completed',
 'Too_many_pending_tickets' => 'Too many pending tickets',
@@ -725,7 +712,7 @@ $app_strings = array (
 'SHOULDNOTBE_EQUAL' => ' should not be equal to ',
 'PORTAL_PROVIDE_EMAILID' => 'Portal user should provide email Id for portal login',
 'ADD_CONFIRMATION' => 'Are you sure you want to add the selected ',
-'ACCOUNTNAME_CANNOT_EMPTY' => 'OrganizationName Cannot be Empty',
+'ACCOUNTNAME_CANNOT_EMPTY' => 'Organization Name Cannot be Empty',
 'CANT_SELECT_CONTACTS' => "You can\'t select related contacts from Lead",
 'LBL_THIS' => 'This ',
 'DOESNOT_HAVE_MAILIDS' => " doesn\'t have any mail ids",
@@ -837,7 +824,6 @@ $app_strings = array (
 'Address'=>'Address',
 'Custom Information'=>'Custom Information',
 'Portal Information'=>'- Portal Information',
-'Description'=>'Description',
 'Expectations'=>'Expectations',
 'Pricing Information'=>'Pricing Information',
 'Stock Information'=>'Stock Information',
@@ -871,21 +857,16 @@ $app_strings = array (
 'Sender'=>'Sender',
 'Website'=>'Website',
 'Activity Type'=>'Activity Type',
-'Due Date'=>'Due Date',
 'Created Time'=>'Created Time',
 'Modified Time'=>'Modified Time',
 'Last Modified By' => 'Last Modified By',
 'Created By' => 'Created By',
-'FAQ Id'=>'FAQ Id',
 'Lead Status'=>'Lead Status',
 'Lead Source'=>'Lead Source',
 'Quote No'=>'Quote No',
 'Yahoo Id'=>'Yahoo Id',
 
-// Added/Updated for vtiger CRM 5.0.4
-'LBL_CHARSET' => 'UTF-8',
 'Lost Lead' => 'Lost Lead',
-'LBL_SEND_EMAIL_PDF' => 'Send Email With PDF',
 //Added for incoming mail server settings form js validation
 'ERR_INVALID_PAGE_COUNT' => "Invalid Page count",
 //'Product Code' => 'Part Number',
@@ -893,21 +874,6 @@ $app_strings = array (
 'PurchaseOrder' => 'Purchase Order',
 'SalesOrder' => 'Sales Order',
 'Invoice' => 'Invoice',
-//added for #3012
-'LBL_CREATING_NEW_Contacts' => 'Creating New Contact',
-'LBL_CREATING_NEW_Campaigns' => 'Creating New Campaign',
-'LBL_CREATING_NEW_Leads' => 'Creating New Lead',
-'LBL_CREATING_NEW_Accounts' => 'Creating New Organization',
-'LBL_CREATING_NEW_Potentials' => 'Creating New Opportunity',
-'LBL_CREATING_NEW_Quotes' => 'Creating New Quote',
-'LBL_CREATING_NEW_SalesOrder' => 'Creating New Sales Order',
-'LBL_CREATING_NEW_Invoice' => 'Creating New Invoice',
-'LBL_CREATING_NEW_Products' => 'Creating New Product',
-'LBL_CREATING_NEW_PriceBooks' => 'Creating New Pricebook',
-'LBL_CREATING_NEW_HelpDesk' => 'Creating New Ticket',
-'LBL_CREATING_NEW_Faq' => 'Creating New FAQ',
-'LBL_CREATING_NEW_Vendors' => 'Creating New Vendor',
-'LBL_CREATING_NEW_PurchaseOrder' => 'Creating New Purchase Order',
 'LBL_SEND_EMAIL_PDF' => 'Send Email With PDF',
 'LBL_UPDATE' => 'Update',
 //Added for incoming mail server settings form js validation
@@ -1071,7 +1037,7 @@ $app_strings = array (
 // Added after 5.0.4 GA
 
 //Added to Fix i18N issue in Email Template
-'LBL_GENERAL_FIELDS'=>'General Fields', 
+'LBL_GENERAL_FIELDS'=>'General Fields',
 //For Users fields
 'HomePhone'=>'HomePhone',
 'Signature'=>'Signature',
@@ -1109,7 +1075,6 @@ $app_strings = array (
 'LBL_TABLE_CREATED'=>'Table Created Successfully',
 'LBL_AVAILABLE_FIELDS'=>'Available Fields',
 'LBL_SELECTED_FIELDS'=>' Fields to be matched on',
-'LBL_MERGE_SELECT'=>'SelectRecords (max: 3)',
 'DuplicatesHandling' => 'DuplicatesHandling',
 'LBL_DESC_FOR_MERGE_FIELDS' => 'The primary record will be retained after the merge. You can select the column to retain the values. The other record will be deleted but the related information will be merged.',
 'LBL_DUPLICATE_MERGING' => 'Duplicate Merging',
@@ -1137,7 +1102,6 @@ $app_strings = array (
 'Documents' => 'Documents',
 'Document' => 'Document',
 'LBL_NOTE' => 'Note',
-'LBL_CREATING_NEW_Documents' => 'Creating New Document',
 'LBL_PLATFORM_INDEPENDENT'=>'Platform Independent',
 'Attachments' => 'Documents', //added for list header label in related lists
 'LBL_HIDE'=>'Hide',
@@ -1167,7 +1131,7 @@ $app_strings = array (
 'LBL_CREATE_LEAD'=>'Create Lead',
 'LBL_CREATE_CONTACT'=>'Create Contact',
 'LBL_CREATE_ACCOUNT'=>'Create Organization',
-'LBL_CREATE_TICKET'=>'Create Tickets',
+'LBL_CREATE_TICKET'=>'Create Ticket',
 'LBL_INCOMING_CALL'=>'Incoming Call',
 'LBL_CALLER_INFORMATION'=>'Caller Information',
 'LBL_CALLER_NUMBER'=>'Number :',
@@ -1183,7 +1147,7 @@ $app_strings = array (
 // For Privacy Policy
 'LNK_PRIVACY_POLICY'=>'Privacy Policy',
 'LBL_MOVE_BLOCK_FIELD' => 'Move Fields',
- 
+
 //added for find duplicate
 'LBL_DUPLICATE_DATA_IN'=>'Duplicate ',
 'LBL_MERGE_SELECT'=>'Merge Select',
@@ -1192,7 +1156,7 @@ $app_strings = array (
 'LBL_FIELDLISTS'=> 'List Of Fields',
 'LBL_RECORD'=>'Record #',
 'LBL_DUP_PERMISSION' => 'You are not permitted to delete ',
-'recordid' => 'recordid',
+'recordid' => 'Record',
 'Entity Type' => 'Entity Type',
 
 // gmailbookmarklet customization
@@ -1231,7 +1195,7 @@ $app_strings = array (
 
 // Unified Search extended support
 'LBL_SELECT_MODULES_FOR_SEARCH' => 'Select modules to search in',
-'LBL_SELECT_ALL' => 'Select All', 
+'LBL_SELECT_ALL' => 'Select All',
 'LBL_UNSELECT_ALL' => 'UnSelect All',
 'LBL_FIELD_FOR_COMPARISION' => 'Field for Comparision',
 'LBL_DONE' => ' Done ',
@@ -1243,7 +1207,7 @@ $app_strings = array (
 // For note link on the detailview
 'LBL_ADD_NOTE'=>'Add Note',
 
-// For Layout Editor 
+// For Layout Editor
 'LBL_UNHIDE_FIELDS'=>'Unhide Fields',
 
 // For Mass Edit
@@ -1258,13 +1222,9 @@ $app_strings = array (
 'Service Contracts' => 'Service Contracts',
 'ServiceContracts' => 'ServiceContracts',
 'Services' => 'Services',
-	'LBL_REFRESH' => 'Refresh',
-	'LBL_Reminder' => 'Reminder',
-	'LBL_RESET_PASSWORD' => 'Reset Password',
-	'LBL_PHP_UPGRADE' => 'You have updated your php version. due changes in crypt API your password
-		  is no longer applicable, please reset your password.',
-	'LBL_RESET_PASSWORD_DESCRIPTION' => 'you can reset password for all users using a script and set it to thier respective
-			  user names.',
+'LBL_REFRESH' => 'Refresh',
+'LBL_Reminder' => 'Reminder',
+'LBL_RESET_PASSWORD' => 'Reset Password',
 'LBL_CRITERIA_AND'=>'and',
 'LBL_CRITERIA_OR'=>'or',
 'LBL_NEW_GROUP'=>'New Group',
@@ -1293,6 +1253,7 @@ $app_strings = array (
 'Quantity' => 'Quantity',
 'Net Total' => 'Net Total',
 'Send SMS' => 'Send SMS',
+'Add Payment' => 'Add Payment',
 'LBL_MORE'=>'More',
 'LBL_CRM_SETTINGS' => 'CRM Settings',
 'LBL_RELATED_TO_THIS' =>'related to this',
@@ -1309,104 +1270,9 @@ $app_strings = array (
 'SetReturnAddressTitle' => 'Select Address To Use',
 'SetReturnAddressDescription' => 'Select which address you wish to overwrite, if any',
 'Subscribe' => 'Subscribe',
+'View History' => 'View History',
+'SYNCH_NOW' => 'Sync Now',
 );
-
-$app_list_strings = array (
-  'moduleList' => 
-  array (
-    'Home' => 'Home',
-    'Dashboard' => 'Dashboard',
-    'Leads' => 'Leads',
-    'Contacts' => 'Contacts',
-    'Accounts' => 'Organizations',
-    'Potentials' => 'Opportunities',
-    'Campaigns' => 'Campaigns',
-    'Emails' => 'Emails',
-    'Activities' => 'Activities',
-    'Products' => 'Products',
-    'HelpDesk' => 'Trouble Tickets',
-    'Faq' => 'FAQ',
-    'Calendar' => 'Tasks',
-    'Quotes' => 'Quotes',
-    'PurchaseOrder' => 'PurchaseOrder',
-    'Invoice' => 'Invoice',
-    'Rss' => 'RSS',
-    'Reports' => 'Reports',
-    'Vendors' => 'Vendors',
-    'PriceBooks' => 'PriceBooks',
-    'SalesOrder' => 'SalesOrder',
-    'Portal' => 'My Sites',
-	
-	// Added after 5.0.4 GA
-    'Documents' => 'Documents',
-  ),
-  'opportunity_relationship_type_default_key' => 'Primary Decision Maker',
-  'opportunity_relationship_type_dom' => 
-  array (
-    '' => '',
-    'Primary Decision Maker' => 'Primary Decision Maker',
-    'Business Decision Maker' => 'Business Decision Maker',
-    'Business Evaluator' => 'Business Evaluator',
-    'Technical Decision Maker' => 'Technical Decision Maker',
-    'Technical Evaluator' => 'Technical Evaluator',
-    'Executive Sponsor' => 'Executive Sponsor',
-    'Influencer' => 'Influencer',
-    'Other' => 'Other',
-  ),
-  'case_relationship_type_default_key' => 'Primary Contact',
-  'case_relationship_type_dom' => 
-  array (
-    '' => '',
-    'Primary Contact' => 'Primary Contact',
-    'Alternate Contact' => 'Alternate Contact',
-  ),
-  'task_priority_dom' => 
-  array (
-    'High' => 'High',
-    'Medium' => 'Medium',
-    'Low' => 'Low',
-  ),
-  'task_status_dom' => 
-  array (
-    'Planned' => 'Planned',
-    'Completed' => 'Completed',
-    'Deferred' => 'Deferred',
-  ),
-  'meeting_status_dom' => 
-  array (
-    'Planned' => 'Planned',
-    'Held' => 'Held',
-    'Not Held' => 'Not Held',
-  ),
-  'call_status_dom' => 
-  array (
-    'Planned' => 'Planned',
-    'Held' => 'Held',
-    'Not Held' => 'Not Held',
-  ),
-  'case_status_default_key' => 'New',
-  'case_status_dom' => 
-  array (
-    'New' => 'New',
-    'Assigned' => 'Assigned',
-    'Closed' => 'Closed',
-    'Pending Input' => 'Pending Input',
-    'Rejected' => 'Rejected',
-  ),
-  'user_status_dom' => 
-  array (
-    'Active' => 'Active',
-    'Inactive' => 'Inactive',
-  ),
-  'record_type_default_key' => 'Organizations',
-  'record_type_display' => 
-  array (
-    'Accounts' => 'Organization',
-    'Leads' => 'Lead',
-    'Opportunities' => 'Opportunity',
-  ),
-
-); 
 
 // Translation for currency names
 $app_currency_strings = array(

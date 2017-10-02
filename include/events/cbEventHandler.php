@@ -51,7 +51,8 @@ class cbEventHandler {
 		// if vtiger.footer Action is called, output the timings for admins
 		if($eventName == 'corebos.footer') {
 			global $current_user;
-			if($current_user->is_admin == 'on') {
+			$show_response_time = GlobalVariable::getVariable('Debug_Calculate_Response_Time',0);
+			if($current_user->is_admin == 'on' and $show_response_time) {
 				echo "<div style='text-align:left;font-size:11px;padding:0 30px;color:rgb(153, 153, 153);'>Event processing <span title='total time the EventHandler was active' alt='total time the EventHandler was active'>".round(self::$Counter*1000, 1)."</span> / <span title='time Events used internal' alt='time Events used internal'>".round(self::$CounterInternal*1000, 1)." msec (".self::$numCounter[0]." Actions / ".self::$numCounter[1]." Filter)</div>";
 			}
 		}

@@ -10,15 +10,14 @@
 require_once('Smarty_setup.php');
 require('user_privileges/default_module_view.php');
 require_once('modules/CustomView/CustomView.php');
-global $mod_strings, $app_strings, $currentModule, $current_user, $theme;
+global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
 
-$category = getParentTab();
 $action = vtlib_purify($_REQUEST['action']);
 $record = vtlib_purify($_REQUEST['record']);
-$isduplicate = vtlib_purify($_REQUEST['isDuplicate']);
+$isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : false;
 
 if($singlepane_view == 'true' && $action == 'CallRelatedList') {
-	echo "<script>document.location='index.php?action=DetailView&module=$currentModule&record=$record&parenttab=$category';</script>";
+	echo "<script>document.location='index.php?action=DetailView&module=".urlencode($currentModule).'&record='.urlencode($record)."';</script>";
 	die();
 } else {
 
@@ -34,7 +33,7 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 
 	if($isduplicate == 'true') $focus->id = '';
 	if(isset($_REQUEST['mode']) && $_REQUEST['mode'] != ' ') $smarty->assign("OP_MODE",vtlib_purify($_REQUEST['mode']));
-	if(!$_SESSION['rlvs'][$currentModule]) coreBOS_Session::delete('rlvs');
+	if(empty($_SESSION['rlvs'][$currentModule])) coreBOS_Session::delete('rlvs');
 
 	// Identify this module as custom module.
 	$smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
@@ -42,9 +41,8 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	$smarty->assign('APP', $app_strings);
 	$smarty->assign('MOD', $mod_strings);
 	$smarty->assign('MODULE', $currentModule);
-	// TODO: Update Single Module Instance name here.
 	$smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule, $currentModule));
-	$smarty->assign('CATEGORY', $category);
+	$smarty->assign('CATEGORY', getParentTab());
 	$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 	$smarty->assign('THEME', $theme);
 	$smarty->assign('ID', $focus->id);
@@ -66,13 +64,14 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 		$mod_seq_id = $focus->id;
 	}
 	$smarty->assign('MOD_SEQ_ID', $mod_seq_id);
-
-	$related_array = getRelatedLists($currentModule, $focus);
+	$smarty->assign('HASRELATEDPANES', 'false');
+	$restrictedRelations = null;
+	$related_array = getRelatedLists($currentModule, $focus, $restrictedRelations);
 	// vtlib customization: Related module could be disabled, check it
 	if(isset($related_array)) {
 		foreach($related_array as $mod_key=>$mod_val) {
 			if($mod_key == "Contacts" || $mod_key == "Leads") {
-				$rel_checked=$_REQUEST[$mod_key.'_all'];
+				$rel_checked=isset($_REQUEST[$mod_key.'_all']) ? $_REQUEST[$mod_key.'_all'] : '';
 				$rel_check_split=explode(";",$rel_checked);
 				if (is_array($mod_val)) {
 					$mod_val["checked"]=array();

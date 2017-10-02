@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('Smarty_setup.php');
 require_once('modules/Services/Services.php');
 require_once('include/utils/utils.php');
@@ -15,32 +14,32 @@ require_once('include/utils/utils.php');
 global $app_strings,$mod_strings,$current_language,$theme,$log,$current_user,$default_charset,$adb;
 $current_module_strings = return_module_language($current_language, 'Services');
 
-$pricebook_id = $_REQUEST['pricebook_id'];
-$currency_id = $_REQUEST['currency_id'];
+$pricebook_id = vtlib_purify($_REQUEST['pricebook_id']);
+$currency_id = vtlib_purify($_REQUEST['currency_id']);
 if ($currency_id == null) $currency_id = fetchCurrency($current_user->id);
-$parenttab = htmlspecialchars($_REQUEST['parenttab'],ENT_QUOTES,$default_charset);
+$parenttab = getParentTab();
 
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 require_once('modules/Vtiger/layout_utils.php');
 
-if(getFieldVisibilityPermission('Services',$current_user->id,'unit_price') != '0'){
+if (getFieldVisibilityPermission('Services',$current_user->id,'unit_price') != '0') {
+	$theme = vtlib_purify($theme);
 	echo "<link rel='stylesheet' type='text/css' href='themes/$theme/style.css'>";
 	echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
 	echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
-
 		<table border='0' cellpadding='5' cellspacing='0' width='98%'>
 		<tbody><tr>
-		<td rowspan='2' width='11%'><img src='themes/$theme/images/denied.gif' ></td>
-		<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span class='genHeaderSmall'>$app_strings[LBL_UNIT_PRICE_NOT_PERMITTED]</span></td>
+		<td rowspan='2' width='11%'><img src='". vtiger_imageurl('denied.gif', $theme) ."' ></td>
+		<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span class='genHeaderSmall'>".$app_strings['LBL_UNIT_PRICE_NOT_PERMITTED']."</span></td>
 		</tr>
 		<tr>
 		<td class='small' align='right' nowrap='nowrap'>
-		<a href='javascript:window.history.back();'>$app_strings[LBL_GO_BACK]</a><br>								   						     </td>
+		<a href='javascript:window.history.back();'>".$app_strings['LBL_GO_BACK']."</a><br></td>
 		</tr>
 		</tbody></table>
-		</div>";
-	echo "</td></tr></table>";
+		</div>
+		</td></tr></table>";
 	exit();
 }
 
@@ -49,6 +48,7 @@ $pricebookname = getPriceBookName($pricebook_id);
 $smarty= new vtigerCRM_Smarty;
 $smarty->assign("MOD", $mod_strings);
 $smarty->assign("APP", $app_strings);
+$smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH",$image_path);
 
 $focus = new Services();
@@ -70,7 +70,7 @@ if(isset($order_by) && $order_by != '')
 	$list_query .= ' and vtiger_service.discontinued<>0  ORDER BY '.$order_by.' '.$sorder;
 }
 
-$list_query .=  " and vtiger_service.discontinued<>0 group by vtiger_crmentity.crmid";
+$list_query .= ' and vtiger_service.discontinued<>0 group by vtiger_crmentity.crmid';
 $list_result = $adb->query($list_query);
 $num_rows = $adb->num_rows($list_result);
 
@@ -89,7 +89,6 @@ for($i=0; $i<$num_prod_rows; $i++)
 	$prod_array[$prodid] = $prodid;
 }
 
-
 //Buttons Add To PriceBook and Cancel
 $other_text = '
 	<table width="95%" border="0" cellpadding="1" cellspacing="0" align="center">
@@ -103,9 +102,9 @@ $other_text = '
 
 	//we should not display the Add to PriceBook button if there is no services to associate
 	if($num_rows != $num_prod_rows && $num_rows > 0)
-	        $other_text .='<input class="crmbutton small save" type="submit" value="'.$mod_strings['LBL_ADD_PRICEBOOK_BUTTON_LABEL'].'" onclick="return addtopricebook()"/>';
+		$other_text .='<input class="crmbutton small save" type="submit" value="'.$mod_strings['LBL_ADD_PRICEBOOK_BUTTON_LABEL'].'" onclick="return addtopricebook()"/>';
 
-$other_text .='&nbsp;<input title="'.$app_strings[LBL_CANCEL_BUTTON_TITLE].'" accessKey="'.$app_strings['LBL_CANCEL_BUTTON_KEY'].'" class="crmbutton small cancel" onclick="window.history.back()" type="button" name="button" value="'.$app_strings['LBL_CANCEL_BUTTON_LABEL'].'"></td>';
+$other_text .='&nbsp;<input title="'.$app_strings['LBL_CANCEL_BUTTON_TITLE'].'" accessKey="'.$app_strings['LBL_CANCEL_BUTTON_KEY'].'" class="crmbutton small cancel" onclick="window.history.back()" type="button" name="button" value="'.$app_strings['LBL_CANCEL_BUTTON_LABEL'].'"></td>';
 
 $other_text .='
 	   </tr>
@@ -149,7 +148,6 @@ for($i=0; $i<count($new_prod_array); $i++)
 	$log->info("Services :: Showing the List of services to be added in price book");
 	$entity_id = $new_prod_array[$i];
 	if(isPermitted('Services','EditView',$entity_id) == 'yes') {
-
 		$list_body .= '<tr class="lvtColData" onmouseover="this.className=\'lvtColDataHover\'" onmouseout="this.className=\'lvtColData\'" bgcolor="white">';
 		$unit_price = $prod_price_list[$entity_id];
 		$field_name = $entity_id."_listprice";
@@ -183,5 +181,4 @@ $smarty->assign("LISTENTITY", $list_body);
 $smarty->assign("CATEGORY", $parenttab);
 
 $smarty->display("AddProductsToPriceBook.tpl");
-
 ?>

@@ -13,7 +13,7 @@ require_once('include/database/PearDatabase.php');
 require_once('include/nusoap/nusoap.php');
 require_once('include/language/en_us.lang.php');
 
-$log = &LoggerManager::getLogger('vtigerolservice');
+$log = LoggerManager::getLogger('vtigerolservice');
 
 error_reporting(0);
 
@@ -503,7 +503,7 @@ function AddEmailAttachment($emailid,$filedata,$filename,$filesize,$filetype,$us
 	global $adb, $upload_badext;
 	require_once('modules/Users/Users.php');
 	require_once('include/utils/utils.php');
-	$filename = vtlib_purifyForSql(sanitizeUploadFileName(str_replace('..','_',$filename), $upload_badext)); // Avoid relative file path attacks.
+	$filename = sanitizeUploadFileName(str_replace('..','_',$filename), $upload_badext); // Avoid relative file path attacks.
 	$date_var = date('Y-m-d H:i:s');
 
 	$seed_user = new Users();
@@ -663,7 +663,7 @@ function AddContacts($username,$session,$cntdtls)
 		$params1 = array();
 		if (count($profileList) > 0) {
 			$sql1 .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
-			array_push($params1, $profileList);
+			$params1[] = $profileList;
 		}
 	}
 	$result1 = $adb->pquery($sql1, $params1);
@@ -749,14 +749,14 @@ function UpdateContacts($username,$session,$cntdtls)
   		$params1 = array();
 		if (count($profileList) > 0) {
 			$sql1 .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
-			array_push($params1, $profileList);
+			$params1[] = $profileList;
 		}
 	}
 	$result1 = $adb->pquery($sql1, $params1);
 
 	for($i=0;$i < $adb->num_rows($result1);$i++)
 	{
-      $permitted_lists[] = $adb->query_result($result1,$i,'fieldname');
+		$permitted_lists[] = $adb->query_result($result1,$i,'fieldname');
 	}
 
 	foreach($cntdtls as $cntrow)
@@ -974,14 +974,14 @@ function AddTasks($username,$session,$taskdtls)
 		$params1 = array();
 		if (count($profileList) > 0) {
 			$sql1 .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
-			array_push($params1, $profileList);
+			$params1[] = $profileList;
 		}
 	}
 	$result1 = $adb->pquery($sql1, $params1);
 
 	for($i=0;$i < $adb->num_rows($result1);$i++)
 	{
-      $permitted_lists[] = $adb->query_result($result1,$i,'fieldname');
+		$permitted_lists[] = $adb->query_result($result1,$i,'fieldname');
 	}
 
 	$task = new Activity();
@@ -1062,7 +1062,7 @@ function UpdateTasks($username,$session,$taskdtls)
 		$params1 = array();
 		if (count($profileList) > 0) {
 			$sql1 .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
-			array_push($params1, $profileList);
+			$params1[] = $profileList;
 		}
 	}
 	$result1 = $adb->pquery($sql1, $params1);
@@ -1205,7 +1205,6 @@ function GetClndr($username,$session)
 			"category" => "",
 		);
 	}
-	//$log->fatal($output_list);
 	$seed_clndr = $seed_clndr;
 	return $output_list;
 }
@@ -1235,14 +1234,14 @@ function AddClndr($username,$session,$clndrdtls)
 		$params1 = array();
 		if (count($profileList) > 0) {
 			$sql1 .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
-			array_push($params1, $profileList);
+			$params1[] = $profileList;
 		}
 	}
 	$result1 = $adb->pquery($sql1, $params1);
 
 	for($i=0;$i < $adb->num_rows($result1);$i++)
 	{
-      $permitted_lists[] = $adb->query_result($result1,$i,'fieldname');
+		$permitted_lists[] = $adb->query_result($result1,$i,'fieldname');
 	}
 
 	$clndr = new Activity();
@@ -1308,14 +1307,14 @@ function UpdateClndr($username,$session,$clndrdtls)
 		$params1 = array();
 		if (count($profileList) > 0) {
 			$sql1 .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
-			array_push($params1, $profileList);
+			$params1[] = $profileList;
 		}
 	}
 	$result1 = $adb->pquery($sql1, $params1);
 
 	for($i=0;$i < $adb->num_rows($result1);$i++)
 	{
-      $permitted_lists[] = $adb->query_result($result1,$i,'fieldname');
+		$permitted_lists[] = $adb->query_result($result1,$i,'fieldname');
 	}
 
 	$clndr = new Activity();
@@ -1386,13 +1385,13 @@ function get_time_difference( $start, $end )
 		if( $uts['end'] >= $uts['start'] )
 		{
 			$diff    =    $uts['end'] - $uts['start'];
-			if( $days=intval((floor($diff/86400))) )
+			if( $days= (int)(floor($diff/86400)))
 			$diff = $diff % 86400;
-			if( $hours=intval((floor($diff/3600))) )
+			if( $hours= (int)(floor($diff/3600)))
 			$diff = $diff % 3600;
-			if( $minutes=intval((floor($diff/60))) )
+			if( $minutes= (int)(floor($diff/60)))
 			$diff = $diff % 60;
-			$diff    =    intval( $diff );
+			$diff    = (int)$diff;
 			return( array('days'=>$days, 'hours'=>$hours, 'minutes'=>$minutes, 'seconds'=>$diff) );
 		}
 	}

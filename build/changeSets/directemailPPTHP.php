@@ -40,7 +40,7 @@ class directemailPPTHP extends cbupdaterWorker {
 			$block = VTiger_Block::getInstance('LBL_PROJECT_INFORMATION', $modPrj);
 			$field = Vtiger_Field::getInstance('email',$modPrj);
 			if ($field) {
-				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid='.$field->id);
+				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?',array($field->id));
 			} else {
 				$field = new Vtiger_Field();
 				$field->name = 'email';
@@ -51,11 +51,11 @@ class directemailPPTHP extends cbupdaterWorker {
 				$field->displaytype = 2;
 				$block->addField($field);
 			}
-			
+
 			$block = VTiger_Block::getInstance('LBL_PROJECT_TASK_INFORMATION', $modPrjTsk);
 			$field = Vtiger_Field::getInstance('email',$modPrjTsk);
 			if ($field) {
-				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid='.$field->id);
+				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?',array($field->id));
 			} else {
 				$field = new Vtiger_Field();
 				$field->name = 'email';
@@ -66,11 +66,11 @@ class directemailPPTHP extends cbupdaterWorker {
 				$field->displaytype = 2;
 				$block->addField($field);
 			}
-			
+
 			$block = VTiger_Block::getInstance('LBL_OPPORTUNITY_INFORMATION', $modPot);
 			$field = Vtiger_Field::getInstance('email',$modPot);
 			if ($field) {
-				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid='.$field->id);
+				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?',array($field->id));
 			} else {
 				$field = new Vtiger_Field();
 				$field->name = 'email';
@@ -85,7 +85,7 @@ class directemailPPTHP extends cbupdaterWorker {
 			$block = VTiger_Block::getInstance('LBL_TICKET_INFORMATION', $modHD);
 			$field = Vtiger_Field::getInstance('email',$modHD);
 			if ($field) {
-				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid='.$field->id);
+				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?',array($field->id));
 			} else {
 				$field = new Vtiger_Field();
 				$field->name = 'email';
@@ -96,7 +96,7 @@ class directemailPPTHP extends cbupdaterWorker {
 				$field->displaytype = 2;
 				$block->addField($field);
 			}
-			
+
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}

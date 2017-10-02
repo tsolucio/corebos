@@ -247,11 +247,7 @@ class GoogleSync4You {
         $query = "SELECT * FROM `its4you_googlesync4you_dis` WHERE `userid`=? AND `event`=? AND `type` =?";
 		$result = $this->db->pquery($query, array($this->user_id, $this->event, $type));
 		$num_rows = $this->db->num_rows($result);
-		if ($num_rows == 1) {
-            return true;
-        }
-		
-		return false;
+        return $num_rows == 1;
     }
     
     public function loadUserCalendar() {
@@ -293,9 +289,9 @@ class GoogleSync4You {
         $startTime = $Data["time_start"];
         $endTime = $Data["time_end"];
         $event = new Google_Service_Calendar_Event();
-        $event->setSummary(decode_html(trim($Data["subject"])));
-        $event->setDescription(decode_html($Data["description"]));
-        $event->setLocation(decode_html(trim($Data["location"])));
+        $event->setSummary(decode_html(utf8_decode(trim($Data["subject"]))));
+        $event->setDescription(decode_html(utf8_decode($Data["description"])));
+        $event->setLocation(decode_html(utf8_decode(trim($Data["location"]))));
         $start = new Google_Service_Calendar_EventDateTime();
         if(strlen($startTime)>6)
         $start->setDateTime($startDate.'T'.$this->removeLastColon($startTime).':00.000');
@@ -344,9 +340,9 @@ catch(Exception $e){
         $endTime = $Data["time_end"];
         try{
         $event = $this->gService->events->get($this->selected_calendar, $eventOld);
-        $event->setSummary(trim($Data["subject"]));
-        $event->setDescription($Data["description"]);
-        $event->setLocation(trim($Data["location"]));
+        $event->setSummary(decode_html(utf8_decode(trim($Data["subject"]))));
+        $event->setDescription(decode_html(utf8_decode($Data["description"])));
+        $event->setLocation(decode_html(utf8_decode(trim($Data["location"]))));
         $start = new Google_Service_Calendar_EventDateTime();
         $start->setDateTime($startDate.'T'.$this->removeLastColon($startTime).':00.000');
         $start->setTimeZone("$default_timezone");

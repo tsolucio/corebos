@@ -16,5 +16,5 @@ if(!isset($_REQUEST['record']))
 $del_query = 'DELETE FROM vtiger_rss WHERE rssid=?';
 $adb->pquery($del_query, array($_REQUEST['record']));
 
-header("Location: index.php?module=".vtlib_purify($_REQUEST['return_module'])."&action=RssAjax&file=ListView&directmode=ajax");
+header('Location: index.php?module='.urlencode(vtlib_purify($_REQUEST['return_module'])).'&action=RssAjax&file=ListView&directmode=ajax');
 ?>

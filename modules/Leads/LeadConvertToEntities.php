@@ -7,9 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ******************************************************************************* */
-
 global $current_user, $currentModule, $theme, $app_strings,$log;
-$category = getParentTab();
 
 require_once 'include/Webservices/ConvertLead.php';
 require_once 'include/utils/VtlibUtils.php';
@@ -71,18 +69,24 @@ if(!empty($_REQUEST['entities']))
 		die();
 	}
 
-	$accountIdComponents = vtws_getIdComponents($result['Accounts']);
-	$accountId = $accountIdComponents[1];
-	$contactIdComponents = vtws_getIdComponents($result['Contacts']);
-	$contactId = $contactIdComponents[1];
-	$potentialIdComponents = vtws_getIdComponents($result['Potentials']);
-	$potentialId = $potentialIdComponents[1];
+	if (isset($result['Accounts'])) {
+		$accountIdComponents = vtws_getIdComponents($result['Accounts']);
+		$accountId = $accountIdComponents[1];
+	} else {
+		$accountId = 0;
+	}
+	if (isset($result['Contacts'])) {
+		$contactIdComponents = vtws_getIdComponents($result['Contacts']);
+		$contactId = $contactIdComponents[1];
+	} else {
+		$contactId = 0;
+	}
 }
 
 if (!empty($accountId)) {
-	header("Location: index.php?action=DetailView&module=Accounts&record=$accountId&parenttab=$category");
+	header("Location: index.php?action=DetailView&module=Accounts&record=$accountId");
 } elseif (!empty($contactId)) {
-	header("Location: index.php?action=DetailView&module=Contacts&record=$contactId&parenttab=$category");
+	header("Location: index.php?action=DetailView&module=Contacts&record=$contactId");
 } else {
 	showError($entityValues);
 }
@@ -90,6 +94,7 @@ if (!empty($accountId)) {
 function showError($entityValues){
 	require_once 'include/utils/VtlibUtils.php';
 	global $current_user, $currentModule, $theme, $app_strings,$log;
+	$theme = vtlib_purify($theme);
 	echo "<link rel='stylesheet' type='text/css' href='themes/$theme/style.css'>";
 	echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
 	echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>

@@ -24,6 +24,9 @@ class crmtogo_WS_FetchRecord extends crmtogo_WS_Controller {
 	}
 	
 	protected function processRetrieve(crmtogo_API_Request $request,$module) {
+		global $current_language;
+		if(empty($current_language))
+			$current_language = crmtogo_WS_Controller::sessionGet('language');
 		$current_user = $this->getActiveUser();
 		$recordid = $request->get('record');
 		$record = vtws_retrieve($recordid, $current_user);
@@ -53,7 +56,11 @@ class crmtogo_WS_FetchRecord extends crmtogo_WS_Controller {
 			$module = $request->get('module');
 			$moduleWSFieldNames =  crmtogo_WS_Utils::getEntityFieldnames($module);
 			foreach ($moduleWSFieldNames as $key=>$value) {
-				$relatedlistcontent[$key]=$record[$value];
+				if(!is_array($record[$value]))
+					$relatedlistcontent[$key]=$record[$value];
+				else{
+					$relatedlistcontent[$key]=$record[$value]['label'];
+				}
 			}
 			$relatedlistcontent['id']=$record['id'];
 			$ret_arr['relatedlistcontent'] = $relatedlistcontent;

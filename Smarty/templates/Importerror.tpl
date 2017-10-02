@@ -6,11 +6,10 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 
-{include file='Buttons_List1.tpl'}	
+{include file='Buttons_List.tpl'}
 
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%" class="small">
    <tr>
@@ -40,7 +39,7 @@
 				   </tr>
 				   <tr>
 					<td colspan="2" align="left" valign="top" style="padding-left:40px;">
-						<span class="genHeaderSmall">{$MOD.LBL_MODULE_NAME} {$MOD.LBL_ERROR}</span> 
+						<span class="genHeaderSmall">{$MOD.LBL_MODULE_NAME} {$MOD.LBL_ERROR}</span>
 					</td>
 				   </tr>
 	

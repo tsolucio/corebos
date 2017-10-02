@@ -24,7 +24,7 @@ class convertVendorPhoneToCorrectType extends cbupdaterWorker {
 			$moduleInstance = Vtiger_Module::getInstance('Vendors');
 			$field = Vtiger_Field::getInstance('phone',$moduleInstance);
 			if ($field) {
-				$this->ExecuteQuery('update vtiger_field set uitype=11 where fieldid='.$field->id);
+				$this->ExecuteQuery('update vtiger_field set uitype=11 where fieldid=?',array($field->id));
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();

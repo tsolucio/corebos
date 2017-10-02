@@ -110,21 +110,19 @@ function getParentLink($parent_id)
 		return $__cache_listtickets_parentlink[$parent_id];
 	}
 
-	$sql = "select setype from vtiger_crmentity where crmid=?";
-	$parent_module = $adb->query_result($adb->pquery($sql, array($parent_id)),0,'setype');
-
-	if($parent_module == 'Contacts')
-	{
+	$parent_module = getSalesEntityType($parent_id);
+	$parent_name = '';
+	if ($parent_module == 'Contacts') {
 		$sql = "select firstname,lastname from vtiger_contactdetails where contactid=?";
 		$res = $adb->pquery($sql, array($parent_id));
 		$parentname = $adb->query_result($res,0,'firstname');
 		$parentname .= ' '.$adb->query_result($res,0,'lastname');
 		$parent_name = '<a href="index.php?action=DetailView&module='.$parent_module.'&record='.$parent_id.'">'.$parentname.'</a>';
 	}
-	if($parent_module == 'Accounts')
-	{
+	if ($parent_module == 'Accounts') {
 		$sql = "select accountname from vtiger_account where accountid=?";
-		$parentname = $adb->query_result($adb->pquery($sql, array($parent_id)),0,'accountname');
+		$rsac = $adb->pquery($sql, array($parent_id));
+		$parentname = $adb->query_result($rsac,0,'accountname');
 		$parent_name = '<a href="index.php?action=DetailView&module='.$parent_module.'&record='.$parent_id.'">'.$parentname.'</a>';
 	}
 

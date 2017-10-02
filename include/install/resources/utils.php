@@ -47,7 +47,7 @@ class Installation_Utils {
 
 		//Checking for database connection parameters
 		if($db_type) {
-			$conn = &NewADOConnection($db_type);
+			$conn = NewADOConnection($db_type);
 			$db_type_status = true;
 			if(@$conn->Connect($db_hostname,$db_username,$db_password)) {
 				$db_server_status = true;
@@ -57,7 +57,7 @@ class Installation_Utils {
 				}
 				if($create_db) {
 					// drop the current database if it exists
-					$dropdb_conn = &NewADOConnection($db_type);
+					$dropdb_conn = NewADOConnection($db_type);
 					if(@$dropdb_conn->Connect($db_hostname, $root_user, $root_password, $db_name)) {
 						$query = "drop database ".$db_name;
 						$dropdb_conn->Execute($query);
@@ -66,7 +66,7 @@ class Installation_Utils {
 
 					// create the new database
 					$db_creation_failed = true;
-					$createdb_conn = &NewADOConnection($db_type);
+					$createdb_conn = NewADOConnection($db_type);
 					if(@$createdb_conn->Connect($db_hostname, $root_user, $root_password)) {
 						$query = "create database ".$db_name;
 						if($create_utf8_db == 'true') {
@@ -186,7 +186,7 @@ class Migration_Utils {
 		require_once('include/DatabaseUtil.php');
 		//Checking for database connection parameters and copying old database into new database
 		if($db_type) {
-			$conn = &NewADOConnection($db_type);
+			$conn = NewADOConnection($db_type);
 			$db_type_status = true;
 			if(@$conn->Connect($db_hostname,$db_username,$db_password)) {
 				$db_server_status = true;
@@ -196,7 +196,7 @@ class Migration_Utils {
 				}
 
 				// test the connection to the old database
-				$olddb_conn = &NewADOConnection($db_type);
+				$olddb_conn = NewADOConnection($db_type);
 				if(@$olddb_conn->Connect($db_hostname, $db_username, $db_password, $old_db_name))
 				{
 					$old_db_exist_status = true;
@@ -235,7 +235,7 @@ class Migration_Utils {
 				}
 
 				// test the connection to the new database
-				$newdb_conn = &NewADOConnection($db_type);
+				$newdb_conn = NewADOConnection($db_type);
 				if(@$newdb_conn->Connect($db_hostname, $db_username, $db_password, $new_db_name))
 				{
 					$new_db_exist_status = true;
@@ -301,6 +301,8 @@ class Migration_Utils {
 
 	private static function getNumberOfTables($dbConnection) {
 		$metaTablesSql = $dbConnection->metaTablesSQL;
+                if (substr($metaTablesSql,-1)=='=')
+                $metaTablesSql.="'".$dbConnection->database."'";
 		$noOfTables = 0;
 		if(!empty($metaTablesSql)) {
 			$tablesResult = $dbConnection->_Execute($metaTablesSql);
@@ -467,7 +469,7 @@ class Migration_Utils {
 			require_once($source_directory.'user_privileges/CustomInvoiceNo.php');
 		}
 
-		$migrationlog =& LoggerManager::getLogger('MIGRATION');
+		$migrationlog = LoggerManager::getLogger('MIGRATION');
 		if (isset($migrationInfo['old_version'])) $source_version = $migrationInfo['old_version'];
 		if(!isset($source_version) || empty($source_version)) {
 			//If source version is not set then we cannot proceed
@@ -558,7 +560,7 @@ class Migration_Utils {
 			if(!is_object($updateResult)) {
 				$_SESSION['migration_info']['user_messages'][] = array(
 					'status' => "<span style='color: red;font-weight: bold'>Failed: </span>",
-					'msg' => "$sql<br />".var_export(array($encryptedPassword, $userId))
+					'msg' => "$sql<br /> $userId<br />"
 				);
 			}
 		}
@@ -759,7 +761,6 @@ class Common_Install_Wizard_Utils {
 		'Configuration File' => './config.inc.php',
 		'Tabdata File' => './tabdata.php',
 		'Installation File' => './install.php',
-		'Parent Tabdata File' => './parent_tabdata.php',
 		'Cache Directory' => './cache/',
 		'Image Cache Directory' => './cache/images/',
 		'Import Cache Directory' => './cache/import/',
@@ -768,14 +769,11 @@ class Common_Install_Wizard_Utils {
 		'User Privileges Directory' => './user_privileges/',
 		'Smarty Cache Directory' => './Smarty/cache/',
 		'Smarty Compile Directory' => './Smarty/templates_c/',
-		'Email Templates Directory' => './modules/Emails/templates/',
 		'Modules Directory' => './modules/',
 		'Cron Modules Directory' => './cron/modules/',
 		'Vtlib Test Directory' => './test/vtlib/',
-		'Vtlib Test HTML Directory' => './test/vtlib/HTML',
 		'Backup Directory' => './backup/',
 		'Smarty Modules Directory' => './Smarty/templates/modules/',
-		'Mail Merge Template Directory' => './test/wordtemplatedownload/',
 		'Product Image Directory' => './test/product/',
 		'User Image Directory' => './test/user/',
 		'Contact Image Directory' => './test/contact/',
@@ -783,85 +781,6 @@ class Common_Install_Wizard_Utils {
 		'Logs Directory' => './logs/',
 		'Webmail Attachments Directory' => './modules/Webmails/tmp/'
 	);
-
-	public static $gdInfoAlternate = 'function gd_info() {
-		$array = Array(
-	               "GD Version" => "",
-	               "FreeType Support" => 0,
-	               "FreeType Support" => 0,
-	               "FreeType Linkage" => "",
-	               "T1Lib Support" => 0,
-	               "GIF Read Support" => 0,
-	               "GIF Create Support" => 0,
-	               "JPG Support" => 0,
-	               "PNG Support" => 0,
-	               "WBMP Support" => 0,
-	               "XBM Support" => 0
-	             );
-		       $gif_support = 0;
-
-		       ob_start();
-		       eval("phpinfo();");
-		       $info = ob_get_contents();
-		       ob_end_clean();
-
-		       foreach(explode("\n", $info) as $line) {
-		           if(strpos($line, "GD Version")!==false)
-		               $array["GD Version"] = trim(str_replace("GD Version", "", strip_tags($line)));
-		           if(strpos($line, "FreeType Support")!==false)
-		               $array["FreeType Support"] = trim(str_replace("FreeType Support", "", strip_tags($line)));
-		           if(strpos($line, "FreeType Linkage")!==false)
-		               $array["FreeType Linkage"] = trim(str_replace("FreeType Linkage", "", strip_tags($line)));
-		           if(strpos($line, "T1Lib Support")!==false)
-		               $array["T1Lib Support"] = trim(str_replace("T1Lib Support", "", strip_tags($line)));
-		           if(strpos($line, "GIF Read Support")!==false)
-		               $array["GIF Read Support"] = trim(str_replace("GIF Read Support", "", strip_tags($line)));
-		           if(strpos($line, "GIF Create Support")!==false)
-		               $array["GIF Create Support"] = trim(str_replace("GIF Create Support", "", strip_tags($line)));
-		           if(strpos($line, "GIF Support")!==false)
-		               $gif_support = trim(str_replace("GIF Support", "", strip_tags($line)));
-		           if(strpos($line, "JPG Support")!==false)
-		               $array["JPG Support"] = trim(str_replace("JPG Support", "", strip_tags($line)));
-		           if(strpos($line, "PNG Support")!==false)
-		               $array["PNG Support"] = trim(str_replace("PNG Support", "", strip_tags($line)));
-		           if(strpos($line, "WBMP Support")!==false)
-		               $array["WBMP Support"] = trim(str_replace("WBMP Support", "", strip_tags($line)));
-		           if(strpos($line, "XBM Support")!==false)
-		               $array["XBM Support"] = trim(str_replace("XBM Support", "", strip_tags($line)));
-		       }
-
-		       if($gif_support==="enabled") {
-		           $array["GIF Read Support"]  = 1;
-		           $array["GIF Create Support"] = 1;
-		       }
-
-		       if($array["FreeType Support"]==="enabled"){
-		           $array["FreeType Support"] = 1;    }
-
-		       if($array["T1Lib Support"]==="enabled")
-		           $array["T1Lib Support"] = 1;
-
-		       if($array["GIF Read Support"]==="enabled"){
-		           $array["GIF Read Support"] = 1;    }
-
-		       if($array["GIF Create Support"]==="enabled")
-		           $array["GIF Create Support"] = 1;
-
-		       if($array["JPG Support"]==="enabled")
-		           $array["JPG Support"] = 1;
-
-		       if($array["PNG Support"]==="enabled")
-		           $array["PNG Support"] = 1;
-
-		       if($array["WBMP Support"]==="enabled")
-		           $array["WBMP Support"] = 1;
-
-		       if($array["XBM Support"]==="enabled")
-		           $array["XBM Support"] = 1;
-
-		       return $array;
-
-		}';
 
 	function getRecommendedDirectives() {
 		return self::$recommendedDirectives;
@@ -962,7 +881,7 @@ class Common_Install_Wizard_Utils {
 	}
 	// Fix for ticket 6605 : detect mysql extension during installation
 	static function check_mysql_extension() {
-		if(function_exists('mysql_connect')) {
+		if(function_exists('mysql_connect') or function_exists('mysqli_connect')) {
 			$mysql_extension = true;
 		}
 		else {
@@ -1258,6 +1177,17 @@ class Common_Install_Wizard_Utils {
 		if(!@rename("install/", $renamefile."install/")) {
 			if (@copy ("install/", $renamefile."install/")) {
 				if(!@unlink("install/")) {
+					$ins_dir_renamed = false;
+				}
+			} else {
+				$ins_dir_renamed = false;
+			}
+		}
+
+		$ins_dir_renamed = true;
+		if(!@rename("modules/Migration/", $renamefile."Migration/")) {
+			if (@copy ("modules/Migration/", $renamefile."Migration/")) {
+				if(!@unlink("modules/Migration/")) {
 					$ins_dir_renamed = false;
 				}
 			} else {

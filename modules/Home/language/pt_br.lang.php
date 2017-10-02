@@ -70,7 +70,7 @@ $mod_strings = Array(
 'LBL_HOME_STUFFTITLE'=>'Título Janela',
 'LBL_HOME_SHOW'=>'Mostrar',
 'LBL_HOME_FILTERBY'=>'Filtrar por',
-'LBL_HOME_Fields'=>'Campos para Mostrar <br>(no máximo dois)',
+'LBL_HOME_Fields'=>'Campos para Mostrar',
 'LBL_HOME_PRESSCTRL'=>'(Aperte a tecla "Ctrl" <br> para seleção múltipla)',
 'LBL_HOME_RSSURL'=>'URL RSS',
 'LBL_HOME_DASHBOARD_NAME'=>'Nome Painel', 
@@ -78,6 +78,10 @@ $mod_strings = Array(
 'LBL_HOME_HORIZONTAL_BARCHART'=>'Gráfico Barras Horizontal',
 'LBL_HOME_VERTICAL_BARCHART'=>'Gráfico Barras Vertical',
 'LBL_HOME_PIE_CHART'=>'Gráfica Pizza',
+'LBL_HOME_HORIZONTAL' => 'Horizontal',
+'LBL_HOME_VERTICAL' => 'Vertical',
+'LBL_HOME_PIE' => 'Pizza',
+'Layout Saved' => 'Layout Saved',
 'LBL_HOME_ITEMS'=>'item(s)',
 'LBL_MORE'=>'Mais',
 'LBL_SCROLL'=>'Rolar',
@@ -126,6 +130,8 @@ $mod_strings = Array(
 'LBL_NO_WIDGETS_HIDDEN'=>'Nenhum widgets padrão oculto',
 'UpdateExchangeRate' => 'Update Exchange Rate',
 'LBL_HOME_ADDWINDOW' => 'Add Window',
+'LBL_GETTING_STARTED' => 'Getting Started',
+'ExpirePasswordAfterDays' => 'Expire Password After Days',
 );
 
 ?>

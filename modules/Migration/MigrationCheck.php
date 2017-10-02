@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
 
 global $current_user;
@@ -19,7 +18,7 @@ include("config.inc.php");
 $migration_log = '';
 
 //Added for Migration Log
-$migrationlog =& LoggerManager::getLogger('MIGRATION');
+$migrationlog = LoggerManager::getLogger('MIGRATION');
 
 //new database values get from the current vtigerCRM's config.php
 global $dbconfig;

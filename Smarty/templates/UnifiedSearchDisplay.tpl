@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *********************************************************************************/
-
 -->*}
 <script type="text/javascript" src="include/js/general.js"></script>
 <script type="text/javascript" src="include/js/search.js"></script>

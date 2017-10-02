@@ -179,9 +179,9 @@ $mod_strings = array (
 'Product No' => 'Nr. Prodotto',
 'LBL_NO_TAXES_ASSOCIATED' => 'Nessuna tassa associata a questo prodotto',
 'Products ID' => 'ID Prodotti',
-
-
-
+'Divisible' => 'Divisible',
+'DIVISIBLE_WARNING' => 'can only be sold in multiplies of one',
+'DIVISIBLE_WARNING_PURCHASE' => 'can only be purchased in multiplies of one',
 
 );
 

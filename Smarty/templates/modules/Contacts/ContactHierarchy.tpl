@@ -8,12 +8,9 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<link rel="stylesheet" type="text/css" href="themes/{$THEME}/style.css">
 <script type="text/javascript" src="include/js/general.js"></script>
-<script type="text/javascript" src="include/js/{$LANGUAGE}.lang.js?{$VERSION}"></script>
-<script type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
-
-{include file='Buttons_List1.tpl'}
+<script type="text/javascript" src="include/js/{$LANGUAGE}.lang.js"></script>
+{include file='Buttons_List.tpl'}
 		</td>
 	</tr>
 </table>
@@ -40,9 +37,9 @@
 					{/foreach}
 					</tr>
 				{elseif $header eq 'entries'}
-					{foreach key=header item=detail from=$detail}
+					{foreach key=header item=entriesfields from=$detail}
 					<tr bgcolor=white>
-						{foreach key=header item=listfields from=$detail}
+						{foreach key=header item=listfields from=$entriesfields}
 						<td>{$listfields}</td>
 						{/foreach}
 					</tr>

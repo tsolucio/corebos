@@ -6,10 +6,9 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
-{if $smarty.request.ajax neq ''}
+{if isset($smarty.request.ajax) && $smarty.request.ajax neq ''}
 &#&#&#{$ERROR}&#&#&#
 {/if}
 <table class="layerPopupTransport" width="100%">
@@ -17,7 +16,7 @@
         <td class="small" nowrap="" width="25%"></td>
         <td>
             <!-- Filters -->
-            {if $HIDE_CUSTOM_LINKS neq '1'}
+			{if empty($HIDE_CUSTOM_LINKS) || $HIDE_CUSTOM_LINKS neq '1'}
 				<table border=0 cellspacing=0 cellpadding=0 class="small" align="center">
 					<tr>
 						<td align="center" style="padding-left:5px;padding-right:5px">
@@ -54,7 +53,7 @@
 						{/if}
 					</tr>
 				</table>
-            {/if}
+			{/if}
 			<!-- Filters  END-->
 		</td>
 		<td height="38px" class="small" nowrap="" width="25%"> </td>
@@ -68,7 +67,7 @@
 	<input name="action" type="hidden">
 	<input name="where_export" type="hidden" value="{$export_where}">
 	<input name="step" type="hidden">
-	<input name="allids" type="hidden" id="allids" value="{$ALLIDS}">
+	<input name="allids" type="hidden" id="allids" value="{if isset($ALLIDS)}{$ALLIDS}{/if}">
 	<input name="allselectedboxes" id="allselectedboxes" type="hidden" value="">
 	<input name="current_page_boxes" id="current_page_boxes" type="hidden" value="{$CURRENT_PAGE_BOXES}">
 	<!-- List View Master Holder starts -->
@@ -84,7 +83,7 @@
 								</td>
 							</tr>
 						</table>
-                    </div>
+					</div>
 				</td>
 			{else}
 				<td>
@@ -109,7 +108,7 @@
                                 {foreach item=folder from=$FOLDERS}
 									<!-- folder division starts -->
 									{assign var=foldercount value=$FOLDERS|@count}
-		
+
                                     <div id='{$folder.folderid}' class="documentModuleFolderView">
 										<input type="hidden" name="numOfRows" id="numOfRows_selectall{$folder.folderid}" value="">
 										<input type="hidden" name="folderidVal" id="folderid_selectall{$folder.folderid}" value="{$folder.folderid}">
@@ -124,8 +123,8 @@
 														<font class="copy">[<i>{$folder.description}</i>]</font>
 													{/if}
 												</td>
-                                                <td class="mailSubHeader small" align="center" nowrap>{$folder.recordListRange}</td>
-                                                {$folder.record_count}&nbsp;&nbsp;&nbsp;&nbsp;{$folder.navigation}
+												<td class="mailSubHeader small" align="center" nowrap>{$folder.recordListRange}</td>
+												{$folder.navigation}
 											</tr>
                                             <tr>
 												<td colspan="4" >
@@ -242,7 +241,6 @@
 		</tr>
 	</table>
 </form>
-{$SELECT_SCRIPT}
 <div id="basicsearchcolumns" style="display:none;"><select name="search_field" id="bas_searchfield" class="txtBox" style="width:150px">{html_options  options=$SEARCHLISTHEADER}</select></div>
 <script>
 	{literal}

@@ -17,11 +17,14 @@ include('modules/cbupdater/forcedButtons.php');
 
 require_once 'modules/Vtiger/DetailView.php';
 
-$smarty->assign('EDIT_PERMISSION', 'no');
 $singlepane_view = 'true';
 $smarty->assign('SinglePane_View', $singlepane_view);
-$smarty->assign('EDIT_DUPLICATE', 'notpermitted');
+$smarty->assign('TODO_PERMISSION','no');
+$smarty->assign('EVENT_PERMISSION','no');
+$smarty->assign('EDIT_PERMISSION', 'no');
+$smarty->assign('CREATE_PERMISSION', 'no');
 $smarty->assign('DELETE', 'notpermitted');
+$smarty->assign('CONTACT_PERMISSION', 'notpermitted');
 
 $smarty->display('DetailView.tpl');
 ?>

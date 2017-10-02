@@ -63,9 +63,9 @@ $smarty->assign('IMAGE_PATH',$image_path);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('CMOD', $mod_strings);
 
-if($_REQUEST['directmode'] != '')
+if(!empty($_REQUEST['directmode'])) {
 	$smarty->display('modules/CronTasks/CronContents.tpl');
-else {
+} else {
 	$smarty->display('modules/CronTasks/Cron.tpl');
 }
 ?>

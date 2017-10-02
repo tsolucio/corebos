@@ -15,7 +15,7 @@
 *************************************************************************************************/
 
 class UserHourStartFieldsPL16 extends cbupdaterWorker {
-	
+
 	// on some installs the fields are present but not the picklist so I force the picklist creation for those
 	function applyChange() {
 		global $adb;
@@ -35,10 +35,10 @@ class UserHourStartFieldsPL16 extends cbupdaterWorker {
 			$this->ExecuteQuery("delete from vtiger_picklist where name='hour_format'");
 			$this->ExecuteQuery("delete from vtiger_picklist where name='start_hour'");
 			$field = Vtiger_Field::getInstance('hour_format',$moduleInstance);
-			$this->ExecuteQuery('update vtiger_field set presence=2,uitype=16 where fieldid='.$field->id);
+			$this->ExecuteQuery('update vtiger_field set presence=2,uitype=16 where fieldid=?',array($field->id));
 			$field->setPicklistValues(array('am/pm','12','24'));
 			$start_hour = Vtiger_Field::getInstance('start_hour',$moduleInstance);
-			$this->ExecuteQuery('update vtiger_field set presence=2,uitype=16 where fieldid='.$start_hour->id);
+			$this->ExecuteQuery('update vtiger_field set presence=2,uitype=16 where fieldid=?',array($start_hour->id));
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}

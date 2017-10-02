@@ -9,15 +9,36 @@
  ************************************************************************************/
 
 $mod_strings = Array(
-	'ModuleName' => 'Module Name',
-	'SINGLE_ModuleName' => 'Module Name',
-	'ModuleName ID' => 'Module Name ID',
+	'GlobalVariable' => 'Variables Globales',
+	'SINGLE_GlobalVariable' => 'Variable Globale',
+	'GlobalVariable ID' => 'Variable Globale ID',
 
-	'LBL_CUSTOM_INFORMATION' => 'Custom Information',
-	'LBL_MODULEBLOCK_INFORMATION' => 'ModuleBlock Information',
-	'LBL_DESCRIPTION_INFORMATION' => 'Description',
+	'LBL_CUSTOM_INFORMATION' => 'Information Personnalisée',
+	'LBL_GLOBAL_VARIABLE_INFORMATION'=>'Détail variable globale',
+	'LBL_DESCRIPTION_INFORMATION'=>'Description',
+	'Definitions' => 'Définitions',
 
-	'ModuleFieldLabel' => 'ModuleFieldLabel Text',
+	'Name' => 'Nom',
+	'Default' => 'Par défault',
+	'Value' => 'Valeur',
+	'Mandatory' => 'Obligatoire',
+	'User' => 'Utilisateur',
+	'Blocked' => 'Bloquée',
+	'Module List' => 'Liste de modules',
+	'Category' => 'Categorie',
+	'In Module List' => 'Dans la liste de modules',
+	'Globalno' => 'Variable Globale n°',
+	'Test' => 'Test',
+	'Search Value' => 'Chercher Valeur',
+	'LBL_MANDATORY_VALUE'=>'Seule une valeur <b>obligatoire</b> est autorisée par module et variable.',
+	'LBL_MANDATORY_VALUEJS'=>'Seule une valeur "obligatoire" est autorisée par module et variable.',
+
+	'System' => 'Système',
+	'User Interface' => 'Interface Utilisateur',
+	'Performance' => 'Performance',
+	'Module Functionality' => 'Functionalité Module',
+	'Other' => 'Autre',
+	'GVarDefinitions' => 'Définitions',
+	'cbMap' => 'Plan d\'affaire',
 );
-
 ?>

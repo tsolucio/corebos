@@ -11,7 +11,7 @@ global $app_strings, $mod_strings, $current_language, $currentModule, $theme;
 
 require_once('Smarty_setup.php');
 
-include_once dirname(__FILE__) . '/core/ModTracker_Basic.php';
+include_once __DIR__ . '/core/ModTracker_Basic.php';
 
 $smarty = new vtigerCRM_Smarty();
 
@@ -22,7 +22,6 @@ $smarty->assign('MOD', $mod_strings);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', $currentModule);
-$smarty->assign('CATEGORY', $category);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('THEME', $theme);
 
@@ -34,7 +33,7 @@ $prevAtPoint = ($atpoint + 1);
 $nextAtPoint = ($atpoint - 1);
 
 $trackrecord = false;
-if($_REQUEST['mode'] == 'history') {
+if (isset($_REQUEST['mode']) and $_REQUEST['mode'] == 'history') {
 	// Retrieve the track record at required point
 	$trackrecord = ModTracker_Basic::getByCRMId($reqid, $atpoint);
 	// If there is no more older records, show the last record itself
@@ -47,7 +46,7 @@ if($_REQUEST['mode'] == 'history') {
 	$trackrecord = ModTracker_Basic::getById($reqid);
 }
 
-if($trackrecord === false || !$trackrecord->exists()) {
+if ($trackrecord === false || !$trackrecord->exists()) {
 	$smarty->display(vtlib_getModuleTemplate($currentModule, 'ShowDiffNotExist.tpl'));
 } else {
 	if ($trackrecord && $trackrecord->isViewPermitted()) {
@@ -58,8 +57,7 @@ if($trackrecord === false || !$trackrecord->exists()) {
 		$smarty->assign("ATPOINT_NEXT", $nextAtPoint);
 
 		$smarty->display(vtlib_getModuleTemplate($currentModule, 'ShowDiff.tpl'));
-
-	} else{
+	} else {
 		$smarty->display(vtlib_getModuleTemplate($currentModule, 'ShowDiffDenied.tpl'));
 	}
 }

@@ -12,8 +12,8 @@ require_once 'include/events/VTEntityData.inc';
 class VTEntityDelta extends VTEventHandler {
 	private static $oldEntity;
 	private static $newEntity;
-	private static $oldEntity_pimages;
-	private static $newEntity_pimages;
+	private static $oldEntity_pimages = array();
+	private static $newEntity_pimages = array();
 	private static $entityDelta;
 
 	function __construct() {
@@ -124,7 +124,7 @@ class VTEntityDelta extends VTEventHandler {
 
 	function getOldValue($moduleName, $recordId, $fieldName) {
 		$entityDelta = self::$entityDelta[$moduleName][$recordId];
-		return $entityDelta[$fieldName]['oldValue'];
+		return (isset($entityDelta[$fieldName]) ? $entityDelta[$fieldName]['oldValue'] : '');
 	}
 
 	function getCurrentValue($moduleName, $recordId, $fieldName) {
@@ -133,7 +133,7 @@ class VTEntityDelta extends VTEventHandler {
 	}
 
 	function getOldEntity($moduleName, $recordId) {
-		return self::$oldEntity[$moduleName][$recordId];
+		return (isset(self::$oldEntity[$moduleName]) ? self::$oldEntity[$moduleName][$recordId] : '');
 	}
 
 	function getNewEntity($moduleName, $recordId) {

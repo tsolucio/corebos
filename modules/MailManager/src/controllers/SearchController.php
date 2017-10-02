@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-include_once dirname(__FILE__) . '/RelationController.php';
+include_once __DIR__ . '/RelationController.php';
 
 /**
  * Class used to controll search operations

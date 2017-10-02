@@ -75,7 +75,7 @@ class WorkFlowScheduler {
 		$admin = Users::getActiveAdminUser();
 		$adminTimeZone = $admin->time_zone;
 		@date_default_timezone_set($adminTimeZone);
-		$currentTimestamp  = date("Y-m-d H:i:s");
+		$currentTimestamp = date("Y-m-d H:i:s");
 		@date_default_timezone_set($default_timezone);
 
 		$scheduledWorkflows = $vtWorflowManager->getScheduledWorkflows($currentTimestamp);
@@ -88,7 +88,7 @@ class WorkFlowScheduler {
 				$noOfRecords = count($records);
 				for ($j = 0; $j < $noOfRecords; ++$j) {
 					$recordId = $records[$j];
-					// We need to pass proper module name to get the webservice 
+					// We need to pass proper module name to get the webservice
 					if($workflow->moduleName == 'Calendar') {
 						$moduleName = vtws_getCalendarEntityType($recordId);
 					} else {
@@ -99,19 +99,18 @@ class WorkFlowScheduler {
 					$data = $entityData->getData();
 					foreach ($tasks as $task) {
 						if ($task->active) {
-							$trigger = $task->trigger;
+							$trigger = (empty($task->trigger) ? null : $task->trigger);
 							$wfminutes=$workflow->schminuteinterval;
 							if($wfminutes!=null){
 								$time = time();
 								$delay=$time;
-							}
-							else {
-							if ($trigger != null) {
-								$delay = strtotime($data[$trigger['field']]) + $trigger['days'] * 86400;
 							} else {
-								$delay = 0;
+								if ($trigger != null) {
+									$delay = strtotime($data[$trigger['field']]) + $trigger['days'] * 86400;
+								} else {
+									$delay = 0;
+								}
 							}
-						    }
 							if ($task->executeImmediately == true && $wfminutes==null) {
 								if (empty($task->test) or $task->evaluate($entityCache, $entityData->getId())) {
 									$task->doTask($entityData);

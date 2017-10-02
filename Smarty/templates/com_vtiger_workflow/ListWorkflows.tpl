@@ -19,7 +19,7 @@
 			</td>
 		</tr>
 	</table>
-	
+
 	<form action="index.php" method="post" accept-charset="utf-8" onsubmit="VtigerJS_DialogBox.block();">
 		<div class="popup_content">
 			<table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -57,7 +57,7 @@
 			<input type="hidden" name="action" value="editworkflow" id="save_action">
 			<table width="100%" cellspacing="0" cellpadding="5" border="0" class="layerPopupTransport">
 				<tr><td align="center">
-					<input type="submit" class="crmButton small save" value="{$APP.LBL_CREATE_BUTTON_LABEL}" name="save" id='new_workflow_popup_save'/> 
+					<input type="submit" class="crmButton small save" value="{$APP.LBL_CREATE_BUTTON_LABEL}" name="save" id='new_workflow_popup_save'/>
 					<input type="button" class="crmButton small cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL} " name="cancel" id='new_workflow_popup_cancel'/>
 				</td></tr>
 			</table>
@@ -80,7 +80,7 @@
 					<select class="importBox" name="list_module" id='pick_module'>
 						<option value="All">{$APP.LBL_ALL}</option>
 							<option value="All" disabled="disabled" >-----------------------------</option>
-{foreach  item=moduleName from=$moduleNames}
+{foreach item=moduleName from=$moduleNames}
 						<option value="{$moduleName}" {if $moduleName eq $listModule}selected="selected"{/if}>
 							{$moduleName|@getTranslatedString:$moduleName}
 						</option>
@@ -98,8 +98,7 @@
 		<tr>
 			<td class="small"> <span id="status_message"></span> </td>
 			<td class="small" align="right">
-				<input type="button" class="crmButton create small" 
-					value="{$MOD.LBL_NEW_WORKFLOW}" id='new_workflow'/>
+				<input type="button" class="crmButton create small" value="{$MOD.LBL_NEW_WORKFLOW}" id='new_workflow'/>
 			</td>
 		</tr>
 	</table>
@@ -125,10 +124,10 @@
 						style="cursor: pointer;" id="expressionlist_editlink_{$workflow->id}"
 						src="{'editfield.gif'|@vtiger_imageurl:$THEME}"/>
 				</a>
-				{if $workflow->defaultworkflow neq '1' && $workflow->executionConditionAsLabel() neq 'MANUAL'}
+				{if empty($workflow->defaultworkflow) && $workflow->executionConditionAsLabel() neq 'MANUAL'}
 				<a href="{$module->deleteWorkflowUrl($workflow->id)}" onclick="return confirm('{$APP.SURE_TO_DELETE}');">
 					<img border="0" title="{'LBL_DELETE'|@getTranslatedString}" alt="{'LBL_DELETE'|@getTranslatedString}"
-			 			src="{'delete.gif'|@vtiger_imageurl:$THEME}"
+						src="{'delete.gif'|@vtiger_imageurl:$THEME}"
 						style="cursor: pointer;" id="expressionlist_deletelink_{$workflow->id}" />
 				</a>
 				{/if}

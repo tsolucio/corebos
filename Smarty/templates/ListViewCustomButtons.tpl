@@ -3,13 +3,14 @@
 	{foreach item=CUSTOMLINK from=$CUSTOM_LINKS.LISTVIEWBASIC}
 		{assign var="customlink_href" value=$CUSTOMLINK->linkurl}
 		{assign var="customlink_label" value=$CUSTOMLINK->linklabel}
+		{assign var="customlink_id" value=$CUSTOMLINK->linklabel|replace:' ':''}
 		{if $customlink_label eq ''}
 			{assign var="customlink_label" value=$customlink_href}
 		{else}
 			{* Pickup the translated label provided by the module *}
 			{assign var="customlink_label" value=$customlink_label|@getTranslatedString:$CUSTOMLINK->module()}
 		{/if}
-		<input class="crmbutton small edit" type="button" value="{$customlink_label}" onclick="{$customlink_href}" />
+		<input class="crmbutton small edit" type="button" id="LISTVIEWBASIC_{$customlink_id}" value="{$customlink_label}" onclick="{$customlink_href}" />
 	{/foreach}
 {/if}
 

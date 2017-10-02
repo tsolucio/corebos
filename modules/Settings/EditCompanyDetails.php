@@ -7,11 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('Smarty_setup.php');
-global $mod_strings;
-global $app_strings;
-global $app_list_strings;
+global $mod_strings, $app_strings;
 
 $smarty = new vtigerCRM_Smarty;
 //error handling
@@ -34,11 +31,9 @@ if(isset($_REQUEST['flag']) && $_REQUEST['flag'] != '')
 			break;
 		default:
 			$smarty->assign("ERRORFLAG","");
-		
 	}
 }
-global $adb;
-global $theme;
+global $adb, $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 
@@ -75,19 +70,12 @@ if (isset($organization_fax))
 	$smarty->assign("ORGANIZATIONFAX",$organization_fax);
 if (isset($organization_website))
 	$smarty->assign("ORGANIZATIONWEBSITE",$organization_website);
-if ($organization_logoname == '') 
-	$organization_logoname = vtlib_purify($_REQUEST['prev_name']);
-if ($front_logoname == '') 
-	$front_logoname = vtlib_purify($_REQUEST['prev_name']);
-if ($favicon_logoname == '') 
-	$favicon_logoname = vtlib_purify($_REQUEST['prev_name']);
-
 if (isset($organization_logoname)) 
 	$smarty->assign("ORGANIZATIONLOGONAME",$organization_logoname);
 if (isset($front_logoname)) 
 	$smarty->assign("FORNTLOGONAME",$front_logoname);
 if (isset($favicon_logoname)) 
-$smarty->assign("FAVICONLOGONAME",$favicon_logoname);
+	$smarty->assign("FAVICONLOGONAME",$favicon_logoname);
 $smarty->assign("MOD", return_module_language($current_language,'Settings'));
 $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH",$image_path);

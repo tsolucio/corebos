@@ -15,7 +15,7 @@
 *************************************************************************************************/
 
 class UserFailedLoginAttempts extends cbupdaterWorker {
-	
+
 	function applyChange() {
 		global $adb;
 		if ($this->hasError()) $this->sendError();
@@ -26,7 +26,7 @@ class UserFailedLoginAttempts extends cbupdaterWorker {
 			$block = Vtiger_Block::getInstance('LBL_USER_ADV_OPTIONS', $moduleInstance);
 			$field = Vtiger_Field::getInstance('failed_login_attempts',$moduleInstance);
 			if ($field) {
-				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid='.$field->id);
+				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?',array($field->id));
 			} else {
 				$user_field = new Vtiger_Field();
 				$user_field->name = 'failed_login_attempts';

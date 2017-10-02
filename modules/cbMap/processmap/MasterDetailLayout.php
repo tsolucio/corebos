@@ -116,13 +116,15 @@ class MasterDetailLayout extends processcbMap {
 			'create' => (String)$xml->toolbar->create,
 		);
 		$mapping['listview'] = array();
-		$mapping['listview']['toolbar'] = array(
-			'moveup' => (String)$xml->listview->toolbar->moveup,
-			'movedown' => (String)$xml->listview->toolbar->movedown,
-			'delete' => (String)$xml->listview->toolbar->delete,
-		);
+		if (isset($xml->listview->toolbar)) {
+			$mapping['listview']['toolbar'] = array(
+				'moveup' => isset($xml->listview->toolbar->moveup) ? (String)$xml->listview->toolbar->moveup : '1',
+				'movedown' => isset($xml->listview->toolbar->movedown) ? (String)$xml->listview->toolbar->movedown : '1',
+				'delete' => isset($xml->listview->toolbar->delete) ? (String)$xml->listview->toolbar->delete : '1',
+			);
+		}
 		$mapping['listview']['fields'] = array();
-		if (is_array($xml->listview->fields->field))
+		if (isset($xml->listview->fields->field) and is_object($xml->listview->fields->field))
 		foreach($xml->listview->fields->field as $k=>$v) {
 			$fieldtype = isset($v->fieldtype) ? (String)$v->fieldtype : '';
 			$fieldname = isset($v->fieldname) ? (String)$v->fieldname : '';
@@ -155,6 +157,7 @@ class MasterDetailLayout extends processcbMap {
 		$mapping['detailview'] = array();
 		$mapping['detailview']['layout'] = isset($xml->detailview->layout) ? (String)$xml->detailview->layout : '';
 		$mapping['detailview']['fields'] = array();
+		if (is_object($xml->detailview->fields->field))
 		foreach($xml->detailview->fields->field as $k=>$v) {
 			$fieldtype = isset($v->fieldtype) ? (String)$v->fieldtype : '';
 			$fieldname = isset($v->fieldname) ? (String)$v->fieldname : '';
@@ -186,7 +189,7 @@ class MasterDetailLayout extends processcbMap {
 			$mapping['detailview']['fieldnames'][] = $fieldinfo['name'];
 		}
 		$mapping['aggregations'] = array();
-		if (is_array($xml->aggregations->operation))
+		if (is_object($xml->aggregations->operation))
 		foreach($xml->aggregations->operation as $k=>$v) {
 			$mapping['aggregations'][] = array(
 				'type' => isset($v->type) ? (String)$v->type : '',

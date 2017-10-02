@@ -6,9 +6,8 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
-
+include_once 'modules/Migration/migrationutils.php';
 global $current_user;
 if($current_user->is_admin != 'on')
 {
@@ -37,7 +36,7 @@ if($adb->isPostgres())
 	$db_status='1';
 else
 	$db_status=check_db_utf8_support($adb);
-	
+
 $config_status=get_config_status();
 
 $smarty->assign("DB_CHARSET", get_db_charset($adb));
@@ -56,7 +55,7 @@ $data_conversion_msg = array(
 						'4' => array('msg1'=> "UTF-8 should be enabled for database to have complete unicode support. This will be handled in data conversion to UTF-8.", 
 									'msg2' => "De-select the above check box, if you do not need UTF-8 data conversion (Unicode support will be inconsistent).", 
 									'checked' => 'true'));
-						
+
 $db_migration_status = getMigrationCharsetFlag();
 
 if ($db_migration_status == MIG_CHARSET_PHP_UTF8_DB_UTF8) {

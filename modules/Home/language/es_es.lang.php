@@ -72,7 +72,7 @@ $mod_strings = Array(
 'LBL_HOME_STUFFTITLE'=>'Título Ventana',
 'LBL_HOME_SHOW'=>'Mostrar',
 'LBL_HOME_FILTERBY'=>'Filtrar Por',
-'LBL_HOME_Fields'=>'Campos a Mostrar <br>(selecciona dos)',
+'LBL_HOME_Fields'=>'Campos a Mostrar',
 'LBL_HOME_PRESSCTRL'=>'(Pulsa "Ctrl" <br> para seleccionar varios)',
 'LBL_HOME_RSSURL'=>'RSS URL',
 'LBL_HOME_DASHBOARD_NAME'=>'Nombre Análisis', 
@@ -80,6 +80,10 @@ $mod_strings = Array(
 'LBL_HOME_HORIZONTAL_BARCHART'=>'Gráfico Barras Horizontal',
 'LBL_HOME_VERTICAL_BARCHART'=>'Gráfico Barras Vertical',
 'LBL_HOME_PIE_CHART'=>'Gráfico Tarta',
+'LBL_HOME_HORIZONTAL' => 'Horizontal',
+'LBL_HOME_VERTICAL' => 'Vertical',
+'LBL_HOME_PIE' => 'Tarta',
+'Layout Saved' => 'Disposición Guardada',
 'LBL_HOME_ITEMS'=>'elemento(s)',
 'LBL_MORE'=>'Más',
 'LBL_SCROLL'=>'Desplazar',
@@ -128,6 +132,8 @@ $mod_strings = Array(
 'LBL_NO_WIDGETS_HIDDEN'=>'No hay widgets escondidos',
 'UpdateExchangeRate' => 'Actualizar Cotización Moneda',
 'LBL_HOME_ADDWINDOW' => 'Añadir Ventana',
+'LBL_GETTING_STARTED' => 'Empezando',
+'ExpirePasswordAfterDays' => 'Invalida Contraseña Después de Días',
 );
 
 ?>

@@ -32,6 +32,7 @@ $mod_strings = array(
 'LBL_WORKFLOW_LIST'=>'Elenco Workflow',
 'LBL_AVAILABLE_WORKLIST_LIST'=>'Workflow Disponibili',
 'LBL_LOADING'=>'Caricamento...',
+'LBL_REEVALCONDITIONS' => 'Evaluate conditions on execution',
 'LBL_VALIDATION_ERROR'=>'Errore di Validazione',
 'LBL_SELECT_OPTION_DOTDOTDOT'=>'Seleziona Opzione...',
 'LBL_WORKFLOW_NOTE_CRON_CONFIG'=>'NOTA: &Egrave; necessario aver configurato lo script Workflow da crontab.',
@@ -67,7 +68,7 @@ $mod_strings = array(
 'LBL_EMAIL_BCC' => 'BCC',
 'LBL_EMAIL_SUBJECT' => 'Oggetto',
 'LBL_EMAIL_REPLYTO' => 'Rispondere a',
-
+'LBL_AttachmentInField' => 'Attachment In Field',
 'LBL_WORKFLOW_NOTE_EVENT_TASK_TIMEZONE' => 'Nota: tutte le date, gli orari e le informazioni ricorrenti per gli eventi,
 													saranno relativi alla Timezone di default, specificata nel file config.inc.php',
 
@@ -132,7 +133,7 @@ $mod_strings = array(
 'UpdateInventoryProducts On Every Save' => 'Update Product Inventory',
 'Send Email to user when Notifyowner is True' => 'Send Email to user when Notifyowner is True',
 'Send Email to user when Portal User is True' => 'Send Email to user when Portal User is True',
-'Send Email to users on Potential creation' => 'Send Email to users on Potential creation',
+'Send Email to users on Potential creation' => 'Send Email to user on Opportunity creation',
 'Workflow for Contact Creation or Modification' => 'Send Email to Contact with Portal Login information',
 'Workflow for Ticket Created from Portal' => 'Workflow for Ticket Created from Portal',
 'Workflow for Ticket Updated from Portal' => 'Workflow for Ticket Updated from Portal',

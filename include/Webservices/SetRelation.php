@@ -21,31 +21,31 @@ function vtws_setrelation($relateThisId, $withTheseIds, $user) {
 	$webserviceObject = VtigerWebserviceObject::fromId($adb,$moduleId);
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();
-	
+
 	require_once $handlerPath;
-	
+
 	$handler = new $handlerClass($webserviceObject,$user,$adb,$log);
 	$meta = $handler->getMeta();
 	$moduleName = $meta->getObjectEntityName($relateThisId);
-	
+
 	$types = vtws_listtypes(null, $user);
-	if(!in_array($moduleName,$types['types'])){
+	if (!in_array($moduleName,$types['types'])) {
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to perform the operation is denied");
 	}
-	
-	if($moduleName !== $webserviceObject->getEntityName()){
+
+	if ($moduleName !== $webserviceObject->getEntityName()) {
 		throw new WebServiceException(WebServiceErrorCode::$INVALIDID,"Id specified is incorrect");
 	}
-	
-	if(!$meta->hasPermission(EntityMeta::$UPDATE,$relateThisId)){
+
+	if (!$meta->hasPermission(EntityMeta::$UPDATE,$relateThisId)) {
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to read given object is denied");
 	}
-	
-	if(!$meta->exists($elementId)){
+
+	if (!$meta->exists($elementId)) {
 		throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND,"Record you are trying to access is not found");
 	}
-	
-	if($meta->hasWriteAccess()!==true){
+
+	if ($meta->hasWriteAccess()!==true) {
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to write is denied");
 	}
 
@@ -57,13 +57,12 @@ function vtws_setrelation($relateThisId, $withTheseIds, $user) {
 function vtws_internal_setrelation($elementId, $moduleName, $withTheseIds) {
 	global $adb;
 
-	if (!is_array($withTheseIds)) {
-		$withTheseIds = array($withTheseIds);
-	}
+	$withTheseIds = (array)$withTheseIds;
 	$focus = CRMEntity::getInstance($moduleName);
 	foreach ($withTheseIds as $withThisId) {
 		list($withModuleId, $withElementId) = vtws_getIdComponents($withThisId);
-		$withModuleName = $adb->query_result($adb->pquery('select name from vtiger_ws_entity where id=?',array($withModuleId)),0,0);
+		$rsmodname = $adb->pquery('select name from vtiger_ws_entity where id=?',array($withModuleId));
+		$withModuleName = $adb->query_result($rsmodname,0,0);
 		relateEntities($focus, $moduleName, $elementId, $withModuleName, $withElementId);
 	}
 }

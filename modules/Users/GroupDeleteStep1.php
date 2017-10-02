@@ -7,19 +7,14 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('include/utils/utils.php');
 
-global $app_strings;
-global $mod_strings;
-global $theme,$default_charset;
+global $app_strings, $mod_strings, $theme,$default_charset;
 $theme_path="themes/".$theme."/";
 $delete_group_id = vtlib_purify($_REQUEST['groupid']);
 $delete_group_name = fetchGroupName($delete_group_id);
 
-
-$output='';
-$output ='<div id="DeleteLay" class="layerPopup" style="width:400px;">
+$output = '<div id="DeleteLay" class="layerPopup" style="width:400px;">
 <form name="deleteGroupForm" action="index.php" onsubmit="VtigerJS_DialogBox.block();">
 <input type="hidden" name="module" value="Users">
 <input type="hidden" name="action" value="DeleteGroup">
@@ -50,7 +45,6 @@ $output ='<div id="DeleteLay" class="layerPopup" style="width:400px;">
 		$result1= $adb->pquery($sql1, array());
 		$num_users = $adb->num_rows($result1);
 
-
 		$output.= '<input name="assigntype" checked value="U" onclick="toggleAssignType(this.value)" type="radio">&nbsp;User';
 		if($num_groups > 1)
 		{
@@ -65,7 +59,7 @@ $output ='<div id="DeleteLay" class="layerPopup" style="width:400px;">
 		for($i=0;$i<$num_users;$i++)
 		{
 			$user_id=$adb->query_result($result1,$i,"id");
-	    	$output.='<option value="'.$user_id.'">'.  getFullNameFromQResult($result1, $i, 'Users').'</option>';
+			$output.='<option value="'.$user_id.'">'.  getFullNameFromQResult($result1, $i, 'Users').'</option>';
 		}
 
 		$output .='</select></span>';
@@ -73,7 +67,6 @@ $output ='<div id="DeleteLay" class="layerPopup" style="width:400px;">
 		if($num_groups > 1)
 		{
 			$output .= '<span id="assign_team" style="display: none;">';
-
 
 			$output.='<select class="select" name="transfer_group_id">';
 
@@ -88,8 +81,8 @@ $output ='<div id="DeleteLay" class="layerPopup" style="width:400px;">
 					{
 						$group_name=substr($group_name,0,20)."...";
 					}
-    					$output.='<option value="'.$group_id.'">'.$group_name.'</option>';
-	    			}
+					$output.='<option value="'.$group_id.'">'.$group_name.'</option>';
+				}
 			}while($temprow = $adb->fetch_array($result));
 			$output.='</select></span>';
 		}

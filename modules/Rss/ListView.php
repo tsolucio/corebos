@@ -13,12 +13,10 @@ require_once('include/logging.php');
 require_once('include/ListView/ListView.php');
 require_once('include/utils/utils.php');
 require_once('modules/Rss/Rss.php');
-global $app_strings, $app_list_strings, $mod_strings;
+global $app_strings, $mod_strings, $currentModule, $image_path, $theme, $adb;
 
 $current_module_strings = return_module_language($current_language, 'Rss');
 $log = LoggerManager::getLogger('rss_list');
-
-global $currentModule, $image_path, $theme, $cache_dir, $adb;
 
 $oRss = new vtigerRSS();
 if(isset($_REQUEST['folders']) && $_REQUEST['folders'] == 'true')
@@ -39,11 +37,23 @@ $rss_form->assign("THEME",$theme);
 $rss_form->assign("IMAGE_PATH",$image_path);
 $rss_form->assign("MODULE", $currentModule);
 $rss_form->assign("CATEGORY", getParenttab());
-
+$tool_buttons = array(
+	'EditView' => 'no',
+	'CreateView' => 'no',
+	'index' => 'no',
+	'Import' => 'no',
+	'Export' => 'no',
+	'Merge' => 'no',
+	'DuplicatesHandling' => 'no',
+	'Calendar' => 'no',
+	'moduleSettings' => 'no',
+);
+$rss_form->assign('CHECK',$tool_buttons);
+$rss_form->assign('CUSTOM_MODULE',false);
 //<<<<<<<<<<<<<<lastrss>>>>>>>>>>>>>>>>>>//
 //$url = 'http://forums/rss.php?name=forums&file=rss';
 //$url = 'http://forums/weblog_rss.php?w=202';
-if(isset($_REQUEST[record]))
+if(isset($_REQUEST['record']))
 {
 	$recordid = vtlib_purify($_REQUEST['record']);
 	$url = $oRss->getRssUrlfromId($recordid);

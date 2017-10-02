@@ -47,7 +47,7 @@
 							<table cellspacing=0 cellpadding=10 width=90% align=center class='level3'>
 								<tr>
 									<td align=center>
-										<iframe class='licence' frameborder=0 src='licenceAgreement.html' marginwidth=20 scrolling='auto'>
+										<iframe class='licence' frameborder=0 src='licence/copyright.html' marginwidth=20 scrolling='auto'>
 										</iframe>
 									</td>
 								</tr>

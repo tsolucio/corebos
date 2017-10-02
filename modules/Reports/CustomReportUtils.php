@@ -7,16 +7,18 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-
 require_once 'modules/Reports/ReportRun.php';
-require_once 'include/ChartUtils.php';
+require_once 'include/utils/ChartUtils.php';
 require_once 'include/utils/CommonUtils.php';
 
-Class CustomReportUtils {
+class CustomReportUtils {
 
 	public static function getCustomReportsQuery($reportid, $filterlist=null) {
 		global $current_user;
 		$reportnew = new ReportRun($reportid);
+		$cachedInfo = VTCacheUtils::lookupReport_Info($current_user->id, $reportid);
+		if($cachedInfo === false)
+			return '';
 		$groupby = $reportnew->getGroupingList($reportid);
 		$showcharts = false;
 		if (!empty($groupby)) {
@@ -30,6 +32,7 @@ Class CustomReportUtils {
 		global $log, $adb;
 		$oReportRun = new ReportRun($reportid);
 		$groupBy = $oReportRun->getGroupingList($reportid);
+		$module_field = $fieldDetails = '';
 		foreach ($groupBy as $key => $value) {
 			// $groupByConditon = explode(" ",$value);
 			//$groupByNew = explode("'",$groupByConditon[0]);
@@ -39,20 +42,22 @@ Class CustomReportUtils {
 			break;
 		}
 		$queryReports = self::getCustomReportsQuery($reportid);
-
+		if($queryReports == ''){
+			return array('error' => "<h4>".getTranslatedString('LBL_PERMISSION')."</h4>");
+		}
 		$queryResult = $adb->pquery($queryReports, array());
-		//ChartUtils::generateChartDataFromReports($queryResult, strtolower($groupByNew[1]));
 		if ($chartType == 'horizontalbarchart') {
-			$Chart = ChartUtils::getReportBarChart($queryResult, strtolower($module_field), $fieldDetails, $reportid);
+			$Chart = ChartUtils::generateChartDataFromReports($queryResult, strtolower($module_field), $fieldDetails, $reportid);
 		} else if ($chartType == 'verticalbarchart') {
-			$Chart = ChartUtils::getReportBarChart($queryResult, strtolower($module_field), $fieldDetails, $reportid, 'vertical');
+			$Chart = ChartUtils::generateChartDataFromReports($queryResult, strtolower($module_field), $fieldDetails, $reportid);
 		} else if ($chartType == 'piechart') {
-			$Chart = ChartUtils::getReportPieChart($queryResult, strtolower($module_field), $fieldDetails, $reportid);
+			$Chart = ChartUtils::generateChartDataFromReports($queryResult, strtolower($module_field), $fieldDetails, $reportid);
 		}
 		return $Chart;
 	}
 
 	public static function IsDateField($reportColDetails) {
+		if ($reportColDetails=='none') return false;
 		list($tablename, $colname, $module_field, $fieldname, $typeOfData) = explode(":", $reportColDetails);
 		if ($typeOfData == "D") {
 			return true;

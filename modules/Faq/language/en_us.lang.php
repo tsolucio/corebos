@@ -36,14 +36,6 @@ $mod_strings = Array(
 'LBL_LIST_EMAIL_ADDRESS'=>'Email Address',
 'LBL_LIST_CONTACT_NAME'=>'Contact Name',
 'LBL_FAQ_INFORMATION'=>'Faq Information',
-
-//DON'T CONVERT THESE THEY ARE MAPPINGS
-'db_name' => 'LBL_LIST_ACCOUNT_NAME',
-'db_website' => 'LBL_LIST_WEBSITE',
-'db_billing_address_city' => 'LBL_LIST_CITY',
-
-//END DON'T CONVERT
-
 'LBL_ACCOUNT'=>'Faq:',
 'LBL_ACCOUNT_NAME'=>'Faq Name:',
 'LBL_PHONE'=>'Phone:',
@@ -115,7 +107,6 @@ $mod_strings = Array(
 'LBL_TICKETS'=>'Tickets',
 'LBL_FAQ'=>'FAQ',
 'Product Name'=>'Product Name',
-'FAQ Id'=>'FAQ Id',
 'Add Comment'=>'Add Comment',
 'LBL_ADD_COMMENT'=>'Add Comment',//give the same value given to the above string 'Add Comment'
 'LBL_COMMENT_INFORMATION'=>'Comment Information',
@@ -134,7 +125,7 @@ $mod_strings = Array(
 'Reviewed'=>'Reviewed',
 'Published'=>'Published',
 'Obsolete'=>'Obsolete',
-			
+
 // Module Sequence Numbering
 'Faq No' => 'Faq No',
 // END

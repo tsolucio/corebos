@@ -14,6 +14,9 @@
 	jQuery(document).ready(function() {ldelim} (new FieldDependencies({$PICKIST_DEPENDENCY_DATASOURCE})).init() {rdelim});
 </script>
 {/if}
+{if vt_hasRTE()}
+<script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
+{/if}
 
 {include file='Buttons_List.tpl'}
 
@@ -25,10 +28,6 @@
 	<td class="showPanelBg" valign=top width=100%>
 		{*<!-- PUBLIC CONTENTS STARTS-->*}
 		<div class="small" style="padding:20px">
-			{* vtlib customization: use translated label if available *}
-			{assign var="SINGLE_MOD_LABEL" value=$SINGLE_MOD}
-			{if $APP.$SINGLE_MOD} {assign var="SINGLE_MOD_LABEL" value=$APP.SINGLE_MOD} {/if}
-				
 			{if $OP_MODE eq 'edit_view'}
 				{assign var="USE_ID_VALUE" value=$MOD_SEQ_ID}
 				{if $USE_ID_VALUE eq ''} {assign var="USE_ID_VALUE" value=$ID} {/if}
@@ -37,22 +36,15 @@
 			{/if}
 			{if $OP_MODE eq 'create_view'}
 				{if $DUPLICATE neq 'true'}
-					{assign var=create_new value="LBL_CREATING_NEW_"|cat:$SINGLE_MOD}
-					{* vtlib customization: use translation only if present *}
-					{assign var="create_newlabel" value=$APP.$create_new}
-					{if $create_newlabel neq ''}
-						<span class="lvtHeaderText">{$create_newlabel}</span> <br>
-					{else}
-						<span class="lvtHeaderText">{$APP.LBL_CREATING} {$APP.LBL_NEW} {$SINGLE_MOD|@getTranslatedString:$MODULE}</span> <br>
-					{/if}
+					<span class="lvtHeaderText">{$APP.LBL_CREATING} {$SINGLE_MOD|@getTranslatedString:$MODULE}</span> <br>
 				{else}
 					<span class="lvtHeaderText">{$APP.LBL_DUPLICATING} "{$NAME}" </span> <br>
 				{/if}
 			{/if}
 
 			<hr noshade size=1>
-			<br> 
-		
+			<br>
+
 			{include file='EditViewHidden.tpl'}
 
 			{*<!-- Account details tabs -->*}
@@ -90,7 +82,7 @@
 												{else}
 													<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmButton small save" onclick="this.form.action.value='Save'; displaydeleted(); return formValidate();" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
 												{/if}
-													<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="window.history.back()" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
+													<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="{if isset($smarty.request.Module_Popup_Edit)}window.close(){else}window.history.back(){/if};" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
 											</div>
 										</td>
 									   </tr>
@@ -99,11 +91,11 @@
 									   {foreach key=header item=data from=$BLOCKS}
 
 							<!-- This is added to display the existing comments -->
-							{if $header eq $MOD.LBL_COMMENTS || $header eq $MOD.LBL_COMMENT_INFORMATION}
+							{if $header eq $APP.LBL_COMMENTS || (isset($MOD.LBL_COMMENT_INFORMATION) && $header eq $MOD.LBL_COMMENT_INFORMATION)}
 							   <tr><td>&nbsp;</td></tr>
 							   <tr>
 								<td colspan=4 class="dvInnerHeader">
-							        	<b>{$MOD.LBL_COMMENT_INFORMATION}</b>
+									<b>{if isset($MOD.LBL_COMMENT_INFORMATION)}{$MOD.LBL_COMMENT_INFORMATION}{else}{$APP.LBL_COMMENTS}{/if}</b>
 								</td>
 							   </tr>
 							   <tr>
@@ -113,14 +105,14 @@
 							{/if}
 
 										<tr id="tbl{$header|replace:' ':''}Head">
-										{if $header== $MOD.LBL_ADDRESS_INFORMATION && ($MODULE == 'Accounts' || $MODULE == 'Quotes' || $MODULE == 'PurchaseOrder' || $MODULE == 'SalesOrder'|| $MODULE == 'Invoice') && $SHOW_COPY_ADDRESS eq 'yes'}
+										{if isset($MOD.LBL_ADDRESS_INFORMATION) && $header==$MOD.LBL_ADDRESS_INFORMATION && ($MODULE == 'Accounts' || $MODULE == 'Quotes' || $MODULE == 'PurchaseOrder' || $MODULE == 'SalesOrder'|| $MODULE == 'Invoice') && $SHOW_COPY_ADDRESS eq 1}
                                                                                 <td colspan=2 class="detailedViewHeader">
                                                                                 <b>{$header}</b></td>
                                                                                 <td class="detailedViewHeader">
                                                                                 <input name="cpy" onclick="return copyAddressLeft(EditView)" type="radio"><b>{$APP.LBL_RCPY_ADDRESS}</b></td>
                                                                                 <td class="detailedViewHeader">
                                                                                 <input name="cpy" onclick="return copyAddressRight(EditView)" type="radio"><b>{$APP.LBL_LCPY_ADDRESS}</b></td>
-										{elseif $header== $MOD.LBL_ADDRESS_INFORMATION && $MODULE == 'Contacts' && $SHOW_COPY_ADDRESS eq 'yes'}
+										{elseif isset($MOD.LBL_ADDRESS_INFORMATION) && $header== $MOD.LBL_ADDRESS_INFORMATION && $MODULE == 'Contacts' && $SHOW_COPY_ADDRESS eq 1}
 										<td colspan=2 class="detailedViewHeader">
                                                                                 <b>{$header}</b></td>
                                                                                 <td class="detailedViewHeader">
@@ -165,7 +157,7 @@
 										{else}
 											<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.action.value='Save';  displaydeleted();return formValidate();" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
 										{/if}
-                                            <input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="window.history.back()" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
+										<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="{if isset($smarty.request.Module_Popup_Edit)}window.close(){else}window.history.back(){/if};" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
 											</div>
 										</td>
 									   </tr>
@@ -179,7 +171,7 @@
 				</td>
 			   </tr>
 			</table>
-		<div>
+		</div>
 	</td>
 	<td align=right valign=top><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
    </tr>
@@ -188,43 +180,6 @@
 <input name='search_url' id="search_url" type='hidden' value='{$SEARCH}'>
 </form>
 
-{if ($MODULE eq 'Emails' || $MODULE eq 'Documents' || $MODULE eq 'Timecontrol') and ($USE_RTE eq 'true')}
-	<script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
-<script type="text/javascript" defer="1">
-	var textAreaName = null;
-	{if $MODULE eq 'Documents'}
-		textAreaName = "notecontent";
-	{else}
-		textAreaName = 'description';
-	{/if}
-
-	<!-- Solution for ticket #6756-->
-	CKEDITOR.replace( textAreaName,
-	{ldelim}
-		extraPlugins : 'uicolor',
-		uiColor: '#dfdff1',
-			on : {ldelim}
-				instanceReady : function( ev ) {ldelim}
-					 this.dataProcessor.writer.setRules( 'p',  {ldelim}
-						indent : false,
-						breakBeforeOpen : false,
-						breakAfterOpen : false,
-						breakBeforeClose : false,
-						breakAfterClose : false
-				{rdelim});
-			{rdelim}
-		{rdelim}
-	{rdelim});
-	var oCKeditor = CKEDITOR.instances[textAreaName];
-</script>
-{/if}
-
-{if $MODULE eq 'Accounts'}
-<script>
-	ScrollEffect.limit = 201;
-	ScrollEffect.closelimit= 200;
-</script>
-{/if}
 <script>
 	var fieldname = new Array({$VALIDATION_DATA_FIELDNAME});
 	var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
@@ -232,12 +187,10 @@
 
 	var ProductImages=new Array();
 	var count=0;
-
 	function delRowEmt(imagename)
 	{ldelim}
 		ProductImages[count++]=imagename;
 	{rdelim}
-
 	function displaydeleted()
 	{ldelim}
 		var imagelists='';

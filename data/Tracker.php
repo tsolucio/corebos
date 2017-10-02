@@ -88,6 +88,7 @@ function get_recently_viewed($user_id, $module_name = "") {
 	if (empty($user_id)) {
 		return;
 	}
+	global $current_user;
 
 	//$query = "SELECT * from $this->table_name WHERE user_id='$user_id' ORDER BY id DESC";
 	$query = "SELECT * from $this->table_name inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_tracker.item_id WHERE user_id=? and vtiger_crmentity.deleted=0 ORDER BY id DESC";
@@ -102,11 +103,9 @@ function get_recently_viewed($user_id, $module_name = "") {
 			require_once('include/utils/UserInfoUtil.php');
 			$entity_id = $row['item_id'];
 			$module = $row['module_name'];
-			if($module == "Users") {
-				global $current_user;
-				if(is_admin($current_user)) {
-					$per = 'yes';
-				}
+			$per = 'no';
+			if($module == "Users" and is_admin($current_user)) {
+				$per = 'yes';
 			} else {
 				$per = isPermitted($module,'DetailView',$entity_id);
 			}

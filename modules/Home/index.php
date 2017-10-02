@@ -22,7 +22,7 @@ require_once('include/utils/CommonUtils.php');
 require_once('include/freetag/freetag.class.php');
 require_once 'modules/Home/HomeUtils.php';
 
-global $app_strings, $app_list_strings, $mod_strings;
+global $app_strings, $mod_strings;
 global $adb, $current_user, $theme, $current_language;
 
 $theme_path="themes/".$theme."/";
@@ -96,15 +96,13 @@ $smarty->assign("MOD",$mod_strings);
 $smarty->assign("APP",$app_strings);
 $smarty->assign("THEME", $theme);
 $smarty->assign("LAYOUT", $numberofcols);
-$widgetBlockSize = PerformancePrefs::getBoolean('HOME_PAGE_WIDGET_GROUP_SIZE', 12);
+$widgetBlockSize = GlobalVariable::getVariable('HomePage_Widget_Group_Size', 12, 'Home');
 $smarty->assign('widgetBlockSize', $widgetBlockSize);
 
 // First time login check
 include_once 'modules/Users/LoginHistory.php';
 $accept_login_delay_seconds = 5*60; // (use..5*60 for 5 min) to overcome redirection post authentication
 $smarty->assign('FIRST_TIME_LOGIN', LoginHistory::firstTimeLoggedIn($current_user->user_name, $accept_login_delay_seconds));
-// End
 
 $smarty->display("Home/Homestuff.tpl");
-
 ?>

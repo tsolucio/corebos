@@ -42,18 +42,19 @@ require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
 require_once 'modules/com_vtiger_workflow/include.inc';
 require_once('modules/com_vtiger_workflow/WorkFlowScheduler.php');
-/////////////////////////////////////////////////////
-// PARAMETERS TO SET
- $workflowid_to_evaluate = $_REQUEST['workflowid'];
- $crm_record_to_evaluate = $_REQUEST['crmid'];
-/////////////////////////////////////////////////////
-if (empty($workflowid_to_evaluate) or empty($crm_record_to_evaluate)) {
+
+if (empty($_REQUEST['workflowid']) or empty($_REQUEST['crmid'])) {
 	echo "<h2>Parameters required:</h2>";
 	echo "<b>workflowid</b>: ID of the workflow to evaluate. For example: 19<br>";
 	echo "<b>crmid</b>: webservice enhanced ID of the record to evaluate the workflow against. For example: 12x57<br>";
 	echo "?workflowid=19&crmid=12x57";
 	die();
 }
+/////////////////////////////////////////////////////
+// PARAMETERS TO SET
+ $workflowid_to_evaluate = $_REQUEST['workflowid'];
+ $crm_record_to_evaluate = $_REQUEST['crmid'];
+/////////////////////////////////////////////////////
 
 global $currentModule, $adb;
 
@@ -111,7 +112,6 @@ global $currentModule, $adb;
 		);
 	}
 
-
 list($wsmod,$crmid) = explode('x', $crm_record_to_evaluate);
 $wsrs = $adb->pquery('select name FROM vtiger_ws_entity where id=?',array($wsmod));
 if (!$wsrs or $adb->num_rows($wsrs)==0) {
@@ -148,7 +148,7 @@ if ($workflows[$workflowid_to_evaluate]->executionCondition==VTWorkflowManager::
 	$wfcandidatesrs = $adb->pquery('SELECT * FROM com_vtiger_workflows WHERE workflow_id = ?',array($workflowid_to_evaluate));
 	echo '<br><br><table border=1><tr><th>workflow</th><th>module</th><th>next trigger</th></tr>';
 	while ($cwf=$adb->fetch_array($wfcandidatesrs)) {
-		echo '<tr><td><a href="'.$site_url.'index.php?module=com_vtiger_workflow&action=editworkflow&return_url=index.php&workflow_id='.$cwf['workflow_id'].'">'.$cwf['summary'].'</a></td><td>'.$cwf['module_name'].'</td><td>'.$cwf['nexttrigger_time'].'</td></tr>';
+		echo '<tr><td><a href="'.$site_URL.'index.php?module=com_vtiger_workflow&action=editworkflow&return_url=index.php&workflow_id='.$cwf['workflow_id'].'">'.$cwf['summary'].'</a></td><td>'.$cwf['module_name'].'</td><td>'.$cwf['nexttrigger_time'].'</td></tr>';
 	}
 	$ntt = $workflow->getNextTriggerTime();
 	echo '</table><br><br>&nbsp;Next trigger time if launched now: '.$ntt;
@@ -158,14 +158,15 @@ if ($workflows[$workflowid_to_evaluate]->executionCondition==VTWorkflowManager::
 	$test = json_decode($workflow->test,true);
 	$haschanged = false;
 	$newtest = array();
+	if (is_array($test))
 	foreach($test as $tst) {
 		if (substr($tst['operation'],0,11)=='has changed') {
 			$haschanged = true;
 		} else {
 			$newtest[] = $tst;
 		}
-		echo $tst['fieldname'].'('.$data[$tst['fieldname']].') '.$tst['operation'].' '.$tst['value'].' ('.$tst['valuetype'].')<br>';
-		echo $tst['joincondition'].'<br>';
+		echo $tst['fieldname'].'('.$data[$tst['fieldname']].') '.$tst['operation'].' '.$tst['value'].' ('.(isset($tst['valuetype']) ? $tst['valuetype'] : '').')<br>';
+		echo (isset($tst['joincondition']) ? $tst['joincondition'] : '').'<br>';
 	}
 	if ($haschanged) {
 		echo "<br><b>** has changed condition being ignored **</b><br>";
@@ -173,7 +174,7 @@ if ($workflows[$workflowid_to_evaluate]->executionCondition==VTWorkflowManager::
 	}
 	echo '<b>** RESULT:</b><br>';
 	$eval = $workflow->evaluate($entityCache, $crm_record_to_evaluate);
-	var_dump($eval);
+	var_export($eval);
 	echo '</span>';
 }
 $tm = new VTTaskManager($adb);

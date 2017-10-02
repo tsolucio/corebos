@@ -6,11 +6,10 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-document.write("<script type='text/javascript' src='include/js/Inventory.js'></script>");
 
 // Show stock or not
 var hide_stock = 'no';
-ExecuteFunctions('ismoduleactive','Products').then(function(response) {
+ExecuteFunctions('ismoduleactive','checkmodule=Products').then(function(response) {
 	var obj = JSON.parse(response);
 	if(obj.isactive == true)
 		hide_stock = 'no';
@@ -53,5 +52,18 @@ function set_return_todo(product_id, product_name) {
 	} else {
 		window.opener.document.createTodo.task_parent_name.value = product_name;
 		window.opener.document.createTodo.task_parent_id.value = product_id;
+	}
+}
+function SalesOrdersetValueFromCapture(recordid,value,target_fieldname) {
+	if(target_fieldname=="tandc") {
+		var url = "module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getFieldValuesFromRecord&getTheseFields=tandc&getFieldValuesFrom="+recordid;
+
+		jQuery.ajax({
+			method: 'GET',
+			url: "index.php?"+url
+		}).done(function (response) {
+			var str = JSON.parse(response);
+			document.EditView.terms_conditions.value = str['tandc'];
+		});
 	}
 }

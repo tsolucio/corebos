@@ -6,19 +6,16 @@
 * The Initial Developer of the Original Code is vtiger.
 * Portions created by vtiger are Copyright (C) vtiger.
 * All Rights Reserved.
-*
  ********************************************************************************
 *  Module       : Portal
 *  Language     : Español
 *  Version      : 540
 *  Created Date : 2007-03-30 Last change : 2007-10-10
-*  Author       : Rafael Soler
- *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
+*  Author       : Joe Bordes
+*  Author       : Francisco Hernandez Odin Consultores www.odin.mx
  ********************************************************************************/
 
-
 $mod_strings = Array(
-// added for 5.0 beta
 'LBL_BOOKMARKED_URL'=>"Marcadores Favoritos",
 'LBL_MANAGE_BOOKMARKS'=>'Administrar Marcadores',
 'LBL_BOOKMARK_LIST'=>'Lista de Favoritos',
@@ -34,8 +31,7 @@ $mod_strings = Array(
 'LBL_MANAGE_SITES'=>'Administrar Sitios',
 'LBL_MY_SITES'=>'Mis Sitios',
 
-// Added/Updated for vtiger CRM 5.0.4
-//added as an enhancement
 'LBL_SET_DEFAULT_BUTTON'=>'Establecer como Predeterminado',
+'ERR_NOT_PERMITTED_LOAD' => 'Este sitio web no permite cargar el contenido dentro de otra página así que se ha abierto en otra pestaña.',
 );
 ?>

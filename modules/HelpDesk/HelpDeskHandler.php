@@ -123,8 +123,12 @@ function HelpDesk_notifyParentOnTicketChange($entityData) {
 	$entityId = $parts[1];
 
 	$wsParentId = $entityData->get('parent_id');
-	$parentIdParts = explode('x', $wsParentId);
-	$parentId = $parentIdParts[1];
+	if (empty($wsParentId)) {
+		$parentId = 0;
+	} else {
+		$parentIdParts = explode('x', $wsParentId);
+		$parentId = $parentIdParts[1];
+	}
 
 	$isNew = $entityData->isNew();
 
@@ -135,15 +139,15 @@ function HelpDesk_notifyParentOnTicketChange($entityData) {
 	}
 
 	$subject = $entityData->get('ticket_no') . ' [ '.getTranslatedString('LBL_TICKET_ID', $moduleName)
-						.' : '.$entityId.' ] '.$reply.$entityData->get('ticket_title');
+		.' : '.$entityId.' ] '.$reply.$entityData->get('ticket_title');
 	$bodysubject = getTranslatedString('Ticket No', $moduleName) .' : ' . $entityData->get('ticket_no')
-						. "<br>" . getTranslatedString('LBL_TICKET_ID', $moduleName).' : '.$entityId.'<br> '
-						.getTranslatedString('LBL_SUBJECT', $moduleName).$entityData->get('ticket_title');
+		. "<br>" . getTranslatedString('LBL_TICKET_ID', $moduleName).' : '.$entityId.'<br> '
+		.getTranslatedString('LBL_SUBJECT', $moduleName).$entityData->get('ticket_title');
 
 	$emailoptout = 0;
 
 	//To get the emailoptout vtiger_field value and then decide whether send mail about the tickets or not
-	if($parentId != '') {
+	if (!empty($parentId)) {
 		$parent_module = getSalesEntityType($parentId);
 		if($parent_module == 'Contacts') {
 			$result = $adb->pquery('SELECT email, emailoptout FROM vtiger_contactdetails WHERE contactid=?', array($parentId));
@@ -159,8 +163,9 @@ function HelpDesk_notifyParentOnTicketChange($entityData) {
 
 			//Get the status of the vtiger_portal user. if the customer is active then send the vtiger_portal link in the mail
 			if($contact_mailid != '') {
-				$sql = "SELECT * FROM vtiger_portalinfo WHERE user_name=?";
-				$isPortalUser = $adb->query_result($adb->pquery($sql, array($contact_mailid)),0,'isactive');
+				$sql = 'SELECT * FROM vtiger_portalinfo WHERE user_name=?';
+				$rs = $adb->pquery($sql, array($contact_mailid));
+				$isPortalUser = $adb->query_result($rs,0,'isactive');
 			}
 		}
 		if($parent_module == 'Accounts') {
@@ -169,11 +174,11 @@ function HelpDesk_notifyParentOnTicketChange($entityData) {
 			$parent_email = $adb->query_result($result,0,'email1');
 			$parentname = $adb->query_result($result,0,'accountname');
 		}
-
+		$mail_status = '';
 		//added condition to check the emailoptout(this is for contacts and vtiger_accounts.)
 		if($emailoptout == 0) {
 
-			if($isPortalUser == 1){
+			if (isset($isPortalUser) and $isPortalUser == 1) {
 				$PORTAL_URL = GlobalVariable::getVariable('Application_Customer_Portal_URL','http://your_support_domain.tld/customerportal');
 				$url = "<a href='".$PORTAL_URL."/index.php?module=HelpDesk&action=index&ticketid=".$entityId."&fun=detail'>".$mod_strings['LBL_TICKET_DETAILS']."</a>";
 				$email_body = $bodysubject.'<br><br>'.HelpDesk::getPortalTicketEmailContents($entityData);
@@ -193,7 +198,7 @@ function HelpDesk_notifyParentOnTicketChange($entityData) {
 					$mail_status = send_mail('HelpDesk',$parent_email,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID,$subject,$email_body);
 				}
 			}
-			$mail_status_str .= $parent_email."=".$mail_status."&&&";
+			$mail_status_str = $parent_email."=".$mail_status."&&&";
 
 		} else {
 			$adb->println("'".$parentname."' is not want to get the email about the ticket details as emailoptout is selected");
@@ -222,11 +227,10 @@ function HelpDesk_notifyOwnerOnTicketChange($entityData) {
 		$reply = '';
 	}
 
-	$subject = $entityData->get('ticket_no') . ' [ '.getTranslatedString('LBL_TICKET_ID', $moduleName)
-						.' : '.$entityId.' ] '.$reply.$entityData->get('ticket_title');
+	$subject = $entityData->get('ticket_no') . ' [ '.getTranslatedString('LBL_TICKET_ID', $moduleName) .' : '.$entityId.' ] '.$reply.$entityData->get('ticket_title');
 
 	$email_body = HelpDesk::getTicketEmailContents($entityData);
-	if(PerformancePrefs::getBoolean('NOTIFY_OWNER_EMAILS', true) === true){
+	if (GlobalVariable::getVariable('HelpDesk_Notify_Owner_EMail', 1, 'HelpDesk')) {
 		//send mail to the assigned to user and the parent to whom this ticket is assigned
 		require_once('modules/Emails/mail.php');
 		$wsAssignedUserId = $entityData->get('assigned_user_id');
@@ -240,6 +244,7 @@ function HelpDesk_notifyOwnerOnTicketChange($entityData) {
 		if($ownerType == 'Groups') {
 			$to_email = implode(',', getDefaultAssigneeEmailIds($ownerId));
 		}
+		$mail_status = '';
 		if($to_email != '') {
 			if($isNew) {
 				$mail_status = send_mail('HelpDesk',$to_email,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID,$subject,$email_body);

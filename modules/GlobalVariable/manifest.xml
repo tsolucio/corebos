@@ -83,7 +83,6 @@
 <masseditable>1</masseditable>
 <picklistvalues>
 <picklistvalue>--none--</picklistvalue>
-<picklistvalue>preload_jscalendar</picklistvalue>
 </picklistvalues>
 </field>
 <field>
@@ -188,7 +187,7 @@
 </field>
 <field>
 <fieldname>module_list</fieldname>
-<uitype>3313</uitype>
+<uitype>3314</uitype>
 <columnname>module_list</columnname>
 <tablename>vtiger_globalvariable</tablename>
 <generatedtype>1</generatedtype>
@@ -271,7 +270,7 @@
 <displaytype>1</displaytype>
 <info_type>BAS</info_type>
 <helpinfo><![CDATA[]]></helpinfo>
-<masseditable>1</masseditable>
+<masseditable>0</masseditable>
 <entityidentifier>
 <entityidfield>globalvariableid</entityidfield>
 <entityidcolumn>globalvariableid</entityidcolumn>

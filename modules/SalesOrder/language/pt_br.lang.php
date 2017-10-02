@@ -27,14 +27,6 @@ $mod_strings = Array(
 'LBL_LIST_PHONE'=>'Fone',
 'LBL_LIST_EMAIL_ADDRESS'=>'E-mail',
 'LBL_LIST_CONTACT_NAME'=>'Nome Contato',
-
-//DON'T CONVERT THESE THEY ARE MAPPINGS
-'db_name' => 'LBL_LIST_ACCOUNT_NAME',
-'db_website' => 'LBL_LIST_WEBSITE',
-'db_billing_address_city' => 'LBL_LIST_CITY',
-
-//END DON'T CONVERT
-
 'LBL_ACCOUNT'=>'Organização:',
 'LBL_ACCOUNT_NAME'=>'Nome Organização:',
 'LBL_PHONE'=>'Fone:',
@@ -205,6 +197,11 @@ $mod_strings = Array(
 'Net 60 days' => '60 DD',
 'SalesOrder ID' => 'ID Pedido Venda',
 
+'Daily' => 'Daily',
+'Weekly' => 'Weekly',
+'Monthly' => 'Monthly',
+'Quarterly' => 'Quarterly',
+'Yearly' => 'Yearly',
 'half-year'=>'Half Year',
 '2years' => '2 Years',
 '3years' => '3 Years',

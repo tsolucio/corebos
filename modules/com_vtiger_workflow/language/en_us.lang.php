@@ -32,6 +32,7 @@ $mod_strings = array(
 'LBL_WORKFLOW_LIST'=>'Workflow List',
 'LBL_AVAILABLE_WORKLIST_LIST'=>'Available Workflows',
 'LBL_LOADING'=>'Loading...',
+'LBL_REEVALCONDITIONS' => 'Evaluate conditions on execution',
 'LBL_VALIDATION_ERROR'=>'Validation Error',
 'LBL_SELECT_OPTION_DOTDOTDOT'=>'Select Option...',
 'LBL_WORKFLOW_NOTE_CRON_CONFIG'=>'NOTE: You should have Workflow cron script configured.',
@@ -70,7 +71,7 @@ $mod_strings = array(
 'LBL_EMAIL_FROMNAME' => 'From Name',
 'LBL_EMAIL_FROMEMAIL' => 'From Email',
 'LBL_EMAIL_REPLYTO' => 'Reply To',
-
+'LBL_AttachmentInField' => 'Attachment In Field',
 'LBL_WORKFLOW_NOTE_EVENT_TASK_TIMEZONE' => 'Note: All the date, time and recurring information configured for the event,
 													will be with respect to default time zone, configured in config.inc.php',
 
@@ -119,7 +120,7 @@ $mod_strings = array(
 'LBL_START_DATE' => 'Start Date',
 'LBL_END_TIME' => 'End Time',
 'LBL_END_DATE' => 'End Date',
-
+'LBL_SET_DATE'=>'Set Date',
 'LBL_AFTER' => 'After',
 'LBL_BEFORE' => 'Before',
 'LBL_DAYS' => 'days',
@@ -148,7 +149,7 @@ $mod_strings = array(
 'UpdateInventoryProducts On Every Save' => 'Update Product Inventory',
 'Send Email to user when Notifyowner is True' => 'Send Email to user when Notifyowner is True',
 'Send Email to user when Portal User is True' => 'Send Email to user when Portal User is True',
-'Send Email to users on Potential creation' => 'Send Email to users on Potential creation',
+'Send Email to users on Potential creation' => 'Send Email to user on Opportunity creation',
 'Workflow for Contact Creation or Modification' => 'Send Email to Contact with Portal Login information',
 'Workflow for Ticket Created from Portal' => 'Workflow for Ticket Created from Portal',
 'Workflow for Ticket Updated from Portal' => 'Workflow for Ticket Updated from Portal',

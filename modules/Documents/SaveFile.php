@@ -32,7 +32,7 @@ if(isset($_REQUEST['act']) && $_REQUEST['act'] == 'checkFileIntegrityDetailView'
 		$fileid = $adb->query_result($fileidResult,0,'attachmentsid');
 		$folderid = $adb->query_result($result,0,'folderid');
 		$name = $adb->query_result($result,0,'filename');
-
+		$filepath = '';
 		if($download_type == 'I'){
 			$saved_filename = $fileid.'_'.$name;
 			$pathQuery = $adb->pquery('select path from vtiger_attachments where attachmentsid = ?',array($fileid));

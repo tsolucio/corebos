@@ -6,8 +6,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-document.write("<script type='text/javascript' src='include/js/Merge.js'></script>");
-document.write("<script type='text/javascript' src='include/js/Mail.js'></script>");
+
 function set_return(product_id, product_name) {
 	if(document.getElementById('from_link').value != '') {
 		window.opener.document.QcEditView.parent_name.value = product_name;

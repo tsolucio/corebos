@@ -7,24 +7,21 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('RecycleBinUtils.php');
 
-$idlist=vtlib_purify($_REQUEST['idlist']);
-$excludedRecords=vtlib_purify($_REQUEST['excludedRecords']);
+$idlist = vtlib_purify($_REQUEST['idlist']);
+$excludedRecords = isset($_REQUEST['excludedRecords']) ? vtlib_purify($_REQUEST['excludedRecords']) : '';
 $selected_module = vtlib_purify($_REQUEST['selectmodule']);
 $idlists = getSelectedRecordIds($_REQUEST,$selected_module,$idlist,$excludedRecords);
 
 require_once('data/CRMEntity.php');
 $focus = CRMEntity::getInstance($selected_module);
 
-for($i=0;$i<count($idlists);$i++) {
-	if(!empty($idlists[$i])) {
-		$focus->restore($mod_name, $idlists[$i]);
+for ($i=0;$i<count($idlists);$i++) {
+	if (!empty($idlists[$i])) {
+		$focus->restore($selected_module, $idlists[$i]);
 	}
 }
 
-$parenttab = getParentTab();
-
-header("Location: index.php?module=RecycleBin&action=RecycleBinAjax&file=index&parenttab=$parenttab&mode=ajax&selected_module=$selected_module");
+header('Location: index.php?module=RecycleBin&action=RecycleBinAjax&file=index&mode=ajax&selected_module='.urlencode($selected_module));
 ?>

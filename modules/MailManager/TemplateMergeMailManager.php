@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 require_once('include/utils/CommonUtils.php');
 global $default_charset;
@@ -17,9 +16,9 @@ if(isset($_REQUEST['templateid']) && $_REQUEST['templateid'] !='')
 }
 ?>
 <form name="frmrepstr" onsubmit="VtigerJS_DialogBox.block();">
-<input type="hidden" name="subject" value="<?php echo $templatedetails[2];?>"></input>
+<input type="hidden" name="subject" value="<?php echo (isset($templatedetails[2]) ? vtlib_purify($templatedetails[2]) : '');?>"></input>
 <textarea name="repstr" style="visibility:hidden">
-<?php echo htmlentities($templatedetails[1], ENT_NOQUOTES, $default_charset); ?>
+<?php echo (isset($templatedetails[1]) ? htmlentities($templatedetails[1], ENT_NOQUOTES, $default_charset) : ''); ?>
 </textarea>
 </form>
 <script type="text/javascript">

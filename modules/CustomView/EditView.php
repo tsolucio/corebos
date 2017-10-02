@@ -9,7 +9,7 @@
  ********************************************************************************/
 require_once('data/Tracker.php');
 
-global $mod_strings, $app_list_strings, $app_strings, $current_user, $theme, $log, $default_charset;
+global $mod_strings, $app_strings, $current_user, $theme, $log, $default_charset;
 $focus = 0;
 
 //<<<<<>>>>>>
@@ -22,7 +22,7 @@ $image_path=$theme_path."images/";
 require_once('modules/CustomView/CustomView.php');
 
 $cv_module = vtlib_purify($_REQUEST['module']);
-$recordid = vtlib_purify($_REQUEST['record']);
+$recordid = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : '';
 
 $smarty->assign("MOD", $mod_strings);
 $smarty->assign("CATEGORY", getParentTab());
@@ -35,7 +35,9 @@ $smarty->assign("CVMODULE", $cv_module);
 $smarty->assign("CUSTOMVIEWID",$recordid);
 $smarty->assign("DATEFORMAT",$current_user->date_format);
 $smarty->assign("JS_DATEFORMAT",parse_calendardate($app_strings['NTC_DATE_FORMAT']));
-
+$smarty->assign('CHECKED','');
+$smarty->assign('MCHECKED','');
+$smarty->assign('STATUS','');
 if($recordid == "") {
 	$oCustomView = new CustomView();
 	$modulecollist = $oCustomView->getModuleColumnsList($cv_module);
@@ -64,6 +66,7 @@ if($recordid == "") {
 
 	$smarty->assign("MANDATORYCHECK",implode(",",array_unique($oCustomView->mandatoryvalues)));
 	$smarty->assign("SHOWVALUES",implode(",",$oCustomView->showvalues));
+	$smarty->assign('EXIST','false');
 	$data_type[] = $oCustomView->data_type;
 	$smarty->assign("DATATYPE",$data_type);
 } else {
@@ -119,21 +122,7 @@ if($recordid == "") {
 		$data_type[] = $oCustomView->data_type;
 		$smarty->assign("DATATYPE",$data_type);
 	} else {
-		echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
-		echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
-			<table border='0' cellpadding='5' cellspacing='0' width='98%'>
-			<tbody><tr>
-			<td rowspan='2' width='11%'><img src='". vtiger_imageurl('denied.gif', $theme)."' ></td>
-			<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span class='genHeaderSmall'>".$app_strings['LBL_PERMISSION']."</span></td>
-			</tr>
-			<tr>
-			<td class='small' align='right' nowrap='nowrap'>
-			<a href='javascript:window.history.back();'>".$app_strings['LBL_GO_BACK']."</a><br>
-			</td>
-			</tr>
-			</tbody></table>
-			</div>";
-		echo "</td></tr></table>";
+		$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
 		exit;
 	}
 }
@@ -171,7 +160,7 @@ function generateSelectColumnsHTML($columnsList, $module) {
 }
 
 function getByModule_ColumnsList($mod,$columnslist,$selected="") {
-	global $oCustomView, $current_language, $theme, $app_list_strings;
+	global $oCustomView, $current_language, $theme;
 	$advfilter = array();
 	$check_dup = Array();
 	foreach($oCustomView->module_list as $module=>$blks) {
@@ -229,9 +218,7 @@ function getByModule_ColumnsList($mod,$columnslist,$selected="") {
 */
 function getStdFilterHTML($module,$selected="")
 {
-	global $app_list_strings, $current_language,$app_strings,$current_user;
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
-	global $oCustomView;
+	global $current_language, $app_strings, $current_user, $oCustomView;
 	$stdfilter = array();
 	$result = $oCustomView->getStdCriteriaByModule($module);
 	$mod_strings = return_module_language($current_language,$module);
@@ -245,9 +232,6 @@ function getStdFilterHTML($module,$selected="")
 				$value = 'Start Date';
 			}
 			$use_module_label =  getTranslatedString($module, $module);
-			if(isset($app_list_strings['moduleList'][$module])) {
-				$use_module_label = $app_list_strings['moduleList'][$module];
-			}
 			if(isset($mod_strings[$value]))
 			{
 				if($key == $selected)
@@ -279,7 +263,7 @@ function getStdFilterHTML($module,$selected="")
 			}
 			$stdfilter[]=$filter;
 			//added to fix ticket #5117. If a user doesn't have permission for a field and it has been used to fileter a custom view, it should be get displayed to him as Not Accessible.
-			if(!$is_admin && $selected != '' && $filter['selected'] == '')
+			if (!is_admin($current_user) && $selected != '' && $filter['selected'] == '')
 			{
 				$keys = explode(":",$selected);
 				if(getFieldVisibilityPermission($module,$current_user->id,$keys[2]) != '0')
@@ -304,10 +288,9 @@ function getStdFilterHTML($module,$selected="")
 * 	1 => array('value'=>$$tablename1:$colname1:$fieldname1:$fieldlabel1,'text'=>$mod_strings[$field label1],'selected'=>$selected),	
 * 	n => array('value'=>$$tablenamen:$colnamen:$fieldnamen:$fieldlabeln,'text'=>$mod_strings[$field labeln],'selected'=>$selected))	
 */
-function getAdvCriteriaHTML($selected="")
-{
+function getAdvCriteriaHTML($selected='') {
 	global $adv_filter_options;
-
+	$shtml = '';
 	foreach($adv_filter_options as $key=>$value) {
 		if($selected == $key)
 		{

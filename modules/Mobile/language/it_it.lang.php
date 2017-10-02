@@ -86,19 +86,17 @@ $mod_strings = Array (
 	'LBL_NOT_SUPPORTED'=>'This action is currently not supported.',
 	'Faq' => 'Wissensbasis',
 	'LBL_CONFIG'=>'Settings',
-	'LBL_COPYRIGHTS'=>'Copy Right',
+	'LBL_COPYRIGHTS'=>'Copyrights',
 	'LBL_SETTINGS_COMMENT'=>'Login again after modifications!',
 	'LBL_ACTIVE_MODULE'=>'Re-order or disable modules',
 	'LBL_THEME_SELECTION'=>'Choose a Theme:',
 	'LBL_THEME_COLOR_A'=>'black',
 	'LBL_THEME_COLOR_B'=>'blue',
 	'LBL_THEME_COLOR_C'=>'white',
-	'LBL_NAVI_SELECTION'=>'Scroll Fetch Limit:',
-	
-	
-	//5.x special
+	'LBL_NAVI_SELECTION'=>'Maximum Page Elements:',
+
 	'LBL_COMMENTS'=>'Comments',
-	
+	'LBL_SIGNATURE'=>'Signature',
 );
 
 ?>

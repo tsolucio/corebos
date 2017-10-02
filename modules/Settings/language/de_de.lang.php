@@ -68,12 +68,9 @@ $mod_strings = Array(
     'EDITQUOTEPICKLISTVALUES'=>'Bearbeite Angebote',
     'EDITINVOICEPICKLISTVALUES'=>'Bearbeite Rechnungen',
 
-    // Added for Release vtigerCRM 3.2 PATCH 1.0
-
     //Settings/index.php
     'LBL_PICKLIST_FIELD_SETTINGS'=>'Auswahllisten Feldeinstellungen:',
 
-    //SETTINGS/CustomFieldList.php,ComboFieldList.php,CreateCustomField.php
     'Leads'=>'Lead',
     'Accounts'=>'Organisationen',
     'Contacts'=>'Personen',
@@ -135,7 +132,6 @@ $mod_strings = Array(
     'LBL_MAIL_MERGE'=>'Textvorlagen',
     'NOTIFICATIONSCHEDULERS'=>'Benachrichtigungen',
     //currency status
-    'LBL_ACTIVE'=>'Aktiv',
     'LBL_INACTIVE'=>'Inaktiv',
     'LBL_NOTIFICATION'=>'Benachrichtigung',
     'LBL_DESCRIPTION'=>'Beschreibung',
@@ -269,7 +265,6 @@ $mod_strings = Array(
     'LBL_BUSINESS_TYPE'=>'Geschäftsbeziehung',
     'LBL_CURRENCY_TYPE'=>'Währungstyp',
     'LBL_SALES_STAGE'=>'Verkaufsphase',
-    'LBL_PRIORITY'=>'Priorität',
     'LBL_STATUS'=>'Status',
     'LBL_CATEGORY'=>'Kategorie',
     'LBL_MANUFACTURER'=>'Hersteller',
@@ -297,7 +292,7 @@ $mod_strings = Array(
     'LBL_IMAP4'=>'IMAP4',
     'LBL_POP'=>'POP',
     'LBL_IMAP'=>'IMAP',
-    'LBL_MAIL_DISCLAIM'=>'Einträge mit einer <font color="red">*</font> Markierung sind Pflichtangaben<br>Einträge mit einer <font color="red">* *</font> Kennzeichnung werden nicht voll unterstützt',
+    'LBL_MAIL_DISCLAIM'=>'Einträge mit einer <font color="red">*</font> Markierung sind Pflichtangaben',
     'LBL_SSL_OPTIONS'=>'SSL Optionen',
     'LBL_TLS'=>'TLS',
     'LBL_NO_TLS'=>'Kein TLS',
@@ -515,6 +510,7 @@ $mod_strings = Array(
     'LBL_CONTACT_FIELDS'=>'Personenfelder',
     'LBL_LEAD_FIELDS'=>'Leadfelder',
     'LBL_USER_FIELDS'=>'Nutzerfelder',
+	'LBL_HELPDESK_FIELDS'=>'Ticket Fields',
     'LNK_SAMPLE_EMAIL'=>'Beispiel E-Mail ansehen',
     //Added while moving Mail Merge templates from Users to Settings
     'LBL_TEMPLATE_FILE'=>'Vorlagedatei',
@@ -689,7 +685,6 @@ $mod_strings = Array(
     'LBL_MOVE_ROLE'=>'Rolle verschieben',
     'LBL_BACKUP_DESC'=>' Sie können ein vollständiges Backup Ihrer Datenbank auf einen FTP Server machen. Dieses Backup wird dann automatisch ausgeführt, wenn sich der admin Nutzer ausloggt. Sie müssen sicherstellen, dass Ihr FTP Server über ausreichend Speicherplatz verfügt. Die Backup Datei liegt dann im folgenden Format vor: "backup-datum-zeit.sql".',
 
-    // Added/Updated for vtiger CRM 5.0.4
     'LBL_SUPPORT_NOTICIATION'=>'Ende Supportfall',
     'LBL_SUPPORT_NOTICIATION_MONTH'=>'Supportfall ist in einem Monat beendet' ,
     'LBL_SUPPORT_DESCRIPTION'=>'Mitteilung über einen abgeschlossenen Supportfall',
@@ -701,7 +696,9 @@ $mod_strings = Array(
     'ERR_CUSTOM_FIELD_WITH_NAME'=>'Ein benutzerdefiniertes Feld mit dem Namen ',
     'ERR_ALREADY_EXISTS'=>' existiert bereits.',
     'ERR_SPECIFY_DIFFERENT_LABEL'=>'Bitte eine andere Bezeichung auswählen',
-    'LBL_TOOLS_TO_BE_SHOWN'=>'Werkzeuge zur Anzeige',
+	'ROWSIZEERROR' => 'Row size too large. Reached maximum size limit of database table size.',
+	'ADDFIELDERROR' => 'Custom field could not be added due to a database error.',
+	'LBL_TOOLS_TO_BE_SHOWN'=>'Werkzeuge zur Anzeige',
     'LBL_PICKLIST_GLOBAL_DELETE'=>'globales Löschen',
     'LBL_PICKLIST_TRANSFER'=>'übertrage die Einträge von ',
     'LBL_REPLACE_VALUE_WITH'=>'Ersetze Einträge mit ',
@@ -716,11 +713,7 @@ $mod_strings = Array(
     'LBL_EXISTING_PICKLIST_VALUES'=>'vorhandene Listeneinträge',
     'LBL_SELECT_PICKLIST'=>'Liste auswählen',
 
-    // Added after 5.0.4 GA
-
     'LBL_GENERAL_FIELDS'=>'Allgmeine Felder',
-
-    'LBL_CANCEL_BUTTON'=>'Abbrechen',
 
     //Added fields for Inventory Number labels
     'LBL_CUSTOMIZE_INVENTORY_NUMBER'=>'Sequenz bearbeiten',
@@ -740,8 +733,6 @@ $mod_strings = Array(
     'LBL_CUSTOMPO_NUMBER'=>'Nummer',
     'LBL_PO_NUMBER_PREVIEW'=>'Vorschau',
     'LBL_PO_NUMBER_BUTTON'=>'Bestellnummer aktualisieren',
-
-    // Added after 5.0.4 GA
 
     // Added for Multi-Currency Support
     'LBL_TRANSFER_CURRENCY'=>'Währung übertragen',
@@ -795,9 +786,9 @@ $mod_strings = Array(
     'LBL_FROM'=>'Von',
     'LBL_TO'=>'An',
 
-    'LBL_ACTION'=>'Aktion',
     'LBL_CREATE'=>'erstelle',
     'LBL_TICKET'=>'Ticket',
+    'LBL_PROJECT'=>'Project',
     'LBL_ADD'=>'erstelle',
 
     'LBL_CONTACT'=>'Person',
@@ -834,6 +825,7 @@ $mod_strings = Array(
     'LBL_SCANNING'=>'Scannen',
     'LBL_LOOKFOR'=>'suche nach',
     'LBL_UNREAD'=>'ungelesenen',
+    'LBL_ALLUNREAD'=>'ALL Unread',
     'LBL_READ'=>'gelesen',
     'LBL_AFTER_SCAN'=>'nach dem Scan',
     'LBL_MESSAGES_FROM_LASTSCAN'=>'Nachrichten vom letzten Scan',
@@ -870,6 +862,8 @@ $mod_strings = Array(
     // Module Sequence Numbering
     'LBL_CUSTOMIZE_MODENT_NUMBER'=>'Anpassen der Nummerierung',
     'LBL_CUSTOMIZE_MODENT_NUMBER_DESCRIPTION'=>'Nummerieren Sie die Datensätze nach Ihren Vorlagen',
+	'ERR_CUSTOMIZE_MODENT_NUMBER_EMPTY' => 'Start sequence cannot be empty!',
+	'ERR_CUSTOMIZE_MODENT_NUMBER_NUMERIC' => 'Start sequence should be numeric.',
     // END
 
     //added for softphone integration
@@ -969,31 +963,18 @@ $mod_strings = Array(
     //Added for: 5473
     'LBL_SHARING_ACCESS_HELPNOTE' => 'Nachdem Sie Änderungen duchgeführt haben, müssen Sie den Neu Berechnen Button klicken.',
 
-    //for customer portal extension module
-    'PORTAL_EXTENSION_DESCRIPTION'=>'Gestattet das Kundenportal zu konfigurieren',
-    'LBL_CUSTOMER_PORTAL'=> 'Kundenportal',
-
     'LBL_ADD_CUSTOMFIELD' => 'Add Custom Field',
 
     'ERR_INVALID_PROFILE_ID' => 'Invalid Profile Id. Please specify valid Profile Id',
 
-    // Customization
-    'LBL_PUBLISHER' => 'Herausgeber',
-    'LBL_PUBLISHED_ON' => 'veröffentlicht am',
-    'LBL_LICENSE'   => 'Lizenz',
-    'LBL_EXTENSION_FILE_DOWNLOAD_FAILED' => 'Das Erweiterungs-Packet konnte nicht heruntergeladen werden!',
     'LBL_ALREADY_EXISTS' => 'Existiert bereits',
     'LBL_EXTENSION_INCOMPATIBLE' => 'Erweiterung nicht kompatibel',
     'LBL_INSTALL' => 'Installieren',
-    'LBL_DEFAULT_SETTINGS_BUTTON_TITLE' => 'Zum Standard zurücksetzen',
     'LBL_CONFIRM_DEFAULT_SETTINGS' => 'Sind Sie sicher, dass Sie die Server-Einstellungen zum Standard zurück setzen wollen?',
     'EXISTING_DEFAULT_VALUES' => 'Die Server-Einstellungen wurden bereits zum Standard zurückgesetzt.',
     'LBL_NOTE' => 'Hinweis:',
     'LBL_HIDE' => 'Verberge Details',
     'LBL_SHOW' => 'Zeige Details',
-    // END
-    'LBL_USER_ADDITION_INFO'=>"Um einen neuen Benutzer hinzuzufügen, klicken Sie bitte auf  
-                <span style='font-style:italic;color:blue;'>OD-Einstellungsmenü -> On Demand Admin -> Benutzer hinzufügen / einladen </span>",
 
     'LBL_READ_ONLY_ACCESS_MSG' => 'Lesezugriff',
     'LBL_READ_WRITE_ACCESS_MSG' => 'Lese- und Schreibzugriff',
@@ -1012,18 +993,13 @@ $mod_strings = Array(
     'LBL_ERR_TAX_LABEL_ALREADY_EXISTS' => 'Diese Mwst. ist bereits vorhanden.',
     'LBL_ERR_SOME_TAX_LABELS_ALREADY_EXISTS' => 'Einige Mwst. Beschriftungen sind bereits vorhanden, deshalb kann es nicht gespeichert werden.',
 	'LBL_ERR_ADDTAX' => 'There may be some problem in adding the Tax type. Please try again',
-    'LBL_EDIT_COMPANY_INFO' => "To edit company details, please click on
-                <span style='font-style:italic;color:blue;'>Settings Icon > On Demand Admin > Company </span>",
 
     'Configuration Editor'=>'Konfiguration Editor',
 
     'ModTracker' => 'Modulverfolger',
     'LBL_MODTRACKER_DESCRIPTION' => 'Wähle zu verfolgende Module',
 
-    'LBL_MENUS_TO_SHOW'=>'Wähle Module, die im Hauptmenü gezeigt werden sollen',
-    'LBL_MENU_DESC'=>'Menüreihenfolge anpassen',
     'LBL_MENU_EDITOR'=>'Menüeditor',
-    'LBL_MENUS_TO_SHOW_DESCRIPTION' => 'Benutze die Pfeile, um die Menüeinträge zu ordnen. Die ersten 10 erscheinen im Haupmenü, die restlichen sind über <b><i>Mehr</i></b> -Auswahl erreichbar.',
     'LBL_ALL_MODULES' => 'alle Module',
     'LBL_SELECTED_MODULES' => 'gewählte Module',
 
@@ -1049,5 +1025,7 @@ $mod_strings = Array(
 	// language translation strings
 	'SendEmailFrom' => 'Send Email From',
 	'LeaveEmptyForUserEmail' => 'Leave empty to use your user email',
+    'LBL_OPENSSL_SUPPORT' => 'OpenSSL Support',
+    'LBL_IMAP_SUPPORT' => 'IMAP Support',
 );
 ?>

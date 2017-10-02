@@ -13,7 +13,6 @@
 <script type="text/javascript" src="include/js/Merge.js"></script>
 <script type="text/javascript" src="include/js/dtlviewajax.js"></script>
 <script type="text/javascript" src="include/js/FieldDependencies.js"></script>
-<script type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
 {if !isset($Document_Folder_View)}
 	{assign var=Document_Folder_View value=1}
 {/if}
@@ -110,8 +109,8 @@
 </form><br>
 </div>
 {*<!-- Searching UI -->*}
- 
- <div id="mergeDup" style="z-index:1;display:none;position:relative;">
+
+<div id="mergeDup" style="z-index:1;display:none;position:relative;">
 	{include file="MergeColumns.tpl"}
 </div>
 	   <!-- PUBLIC CONTENTS STARTS-->

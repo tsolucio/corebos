@@ -39,16 +39,16 @@ if (isPermitted('Emails', 'CreateView', '') == 'yes') {
 
 if (isPermitted('Leads', 'Merge', '') == 'yes') {
 	global $current_user;
-	require('user_privileges/user_privileges_' . $current_user->id . ".php");
 
 	$wordTemplateResult = fetchWordTemplateList('Leads');
 	$tempCount = $adb->num_rows($wordTemplateResult);
 	$tempVal = $adb->fetch_array($wordTemplateResult);
+	$optionString = array();
 	for ($templateCount = 0; $templateCount < $tempCount; $templateCount++) {
 		$optionString[$tempVal['templateid']] = $tempVal['filename'];
 		$tempVal = $adb->fetch_array($wordTemplateResult);
 	}
-	if ($is_admin)
+	if (is_admin($current_user))
 		$smarty->assign('MERGEBUTTON', 'permitted');
 	elseif ($tempCount > 0)
 		$smarty->assign('MERGEBUTTON', 'permitted');
@@ -58,7 +58,6 @@ if (isPermitted('Leads', 'Merge', '') == 'yes') {
 	$smarty->assign('TOPTIONS', $optionString);
 }
 
-$smarty->assign('USE_ASTERISK', get_use_asterisk($current_user->id));
 if (useInternalMailer() == 1)
 	$smarty->assign('INT_MAILER', 'true');
 
@@ -78,6 +77,7 @@ if(isPermitted($currentModule, 'CreateView', $record) == 'yes') {
 	} else {
 		$smarty->assign('ERROR_MESSAGE', getTranslatedString('LeadAlreadyConverted','Leads'));
 		$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-warning');
+		$smarty->assign('CONVERTLEAD', 'no');
 	}
 }
 

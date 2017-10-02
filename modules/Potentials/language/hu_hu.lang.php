@@ -122,13 +122,5 @@ $mod_strings = array(
 	'Potential No' => 'Lehetőség No.',
 	'Related To' => 'Kapcsolódik hozzá',
 	'Potentials ID' => 'Lehetőségek AZ',
-	'LBL_DUPLICATE_DATA_IN' => 'Duplikált adat ebben:',
-	'LBL_DELETE' => 'Törlés',
-	'LBL_MERGE_SELECT' => 'Válaszd ki az összefűzendő adatokat',
-	'LBL_MERGE_DATA_IN' => 'Adatok összefűzése ebben:',
-	'LBL_MERGE' => 'Összefűzés',
-	'LBL_ACTION' => 'Műveletek',
-	'LBL_FIELDLISTS' => 'Mezőlista',
-	'LBL_RECORD' => 'Rekord'
 );
 ?>

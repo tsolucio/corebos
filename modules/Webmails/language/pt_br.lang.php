@@ -12,10 +12,6 @@
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Emails/language/en_us.lang.php,v 1.17 2005/03/28 06:31:38 rank Exp $
- * Description:  Defines the English language pack for the Webmail.
- ********************************************************************************/
 
 $mod_strings = Array(
 'LBL_MODULE_NAME'=>'Email',
@@ -29,7 +25,6 @@ $mod_strings = Array(
 'LBL_LIST_RELATED_TO'=>'Relacionado à',
 'LBL_LIST_DATE'=>'Data Envio',
 'LBL_LIST_TIME'=>'Hora Envio',
-'LBL_MOVE_TO'=>'Mover Para',
 'LBL_DELETE'=>'Apagar',
       
 'ERR_DELETE_RECORD'=>"Um registro deve ser especificado para apagar a Organização.",
