@@ -140,7 +140,11 @@ class cbCalendar extends CRMEntity {
 		$this->column_fields['time_start'] = $_REQUEST['time_start'] = $ts;
 		$this->column_fields['due_date'] = $_REQUEST['due_date'] = $de;
 		$this->column_fields['time_end'] = $_REQUEST['time_end'] = $te;
-		$adb->pquery('update vtiger_activity set date_start=?, time_start=?, due_date=?, time_end=? where activityid=?',array($ds,$ts,$de,$te,$this->id));
+		$duration = strtotime($this->column_fields['dtend'])-strtotime($this->column_fields['dtstart']);
+		$this->column_fields['duration_hours'] = round($duration/3600,0);
+		$this->column_fields['duration_minutes'] = round($duration % 3600 / 60,0);
+		$adb->pquery('update vtiger_activity set date_start=?, time_start=?, due_date=?, time_end=?, duration_hours=?, duration_minutes=? where activityid=?',
+			array($ds,$ts,$de,$te,$this->column_fields['duration_hours'],$this->column_fields['duration_minutes'],$this->id));
 		// code added to send mail to the invitees
 		if (!empty($_REQUEST['inviteesid'])) {
 			$mail_contents = $this->getRequestData($this->id);
@@ -979,5 +983,10 @@ class cbCalendar extends CRMEntity {
 		$adb->pquery($sql, array($this->id));
 		return true;
 	}
+
+	function clearSingletonSaveFields() {
+		unset($_REQUEST['timefmt_dtstart'],$_REQUEST['timefmt_dtend']);
+	}
+
 }
 ?>
