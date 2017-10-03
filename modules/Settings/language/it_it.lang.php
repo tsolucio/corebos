@@ -1,14 +1,10 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
 
@@ -34,33 +30,6 @@ $mod_strings = array (
   'LBL_CURRENCY_TOOL' => 'Strumenti',
   'LBL_CURRENCY_LIST' => 'Lista Valute',
   'NTC_DELETE_CONFIRMATION' => 'Sei sicuro di voler cancellare questo record?',
-  'LEADCUSTOMFIELDS' => 'Campi Lead Personalizzati',
-  'ACCOUNTCUSTOMFIELDS' => 'Campi Azienda Personalizzati',
-  'CONTACTCUSTOMFIELDS' => 'Campi Contatto Personalizzati',
-  'OPPORTUNITYCUSTOMFIELDS' => 'Campi Opportunit&agrave;  Personalizzati',
-  'HELPDESKCUSTOMFIELDS' => 'Campi Assistenza Clienti Personalizzati',
-  'PRODUCTCUSTOMFIELDS' => 'Campi Prodotti Personalizzati',
-  'VENDORCUSTOMFIELDS' => 'Campi Fornitore Personalizzati',
-  'PRICEBOOKCUSTOMFIELDS' => 'Campi Listino Personalizzati',
-  'POCUSTOMFIELDS' => 'Campi Ordine di Acquisto Personalizzati',
-  'SOCUSTOMFIELDS' => 'Campi Ordine di Vendita Personalizzati',
-  'QUOTESCUSTOMFIELDS' => 'Campi Preventivo Personalizzati',
-  'INVOICECUSTOMFIELDS' => 'Campi Fattura Personalizzati',
-  'EDITLEADPICKLISTVALUES' => 'Modifica la Picklist dei Lead',
-  'EDITACCOUNTPICKLISTVALUES' => 'Modifica la Picklist delle Aziende',
-  'EDITCONTACTPICKLISTVALUES' => 'Modifica la Picklist dei Contatti',
-  'EDITOPPORTUNITYPICKLISTVALUES' => 'Modifica la Picklist Opportunit&agrave;',
-  'EDITHELPDESKPICKLISTVALUES' => 'Modifica la PickList Assistenza Clienti',
-  'EDITPRODUCTPICKLISTVALUES' => 'Modifica la Picklist Prodotti',
-  'EDITEVENTPICKLISTVALUES' => 'Modifica la  Picklist Evento',
-  'EDITTASKPICKLISTVALUES' => 'Modifica la Picklist Compito',
-  'EDITRSSPICKLISTVALUES' => 'Modifica la Picklist Rss',
-  'EDITVENDORPICKLISTVALUES' => 'Modifica la Picklist Fornitore',
-  'EDITPBPICKLISTVALUES' => 'Modifica la Picklist Listino',
-  'EDITPOPICKLISTVALUES' => 'Modifica la Picklist Ordine di Acquisto',
-  'EDITSOPICKLISTVALUES' => 'Modifica la Picklist Ordine di Vendita',
-  'EDITQUOTEPICKLISTVALUES' => 'Modifica la Picklist Preventivo',
-  'EDITINVOICEPICKLISTVALUES' => 'Modifica la Picklist Fattura',
   'LBL_PICKLIST_FIELD_SETTINGS' => 'Impostazioni Campi Picklist:',
   'Leads' => 'Lead',
   'Accounts' => 'Azienda',
@@ -326,7 +295,6 @@ $mod_strings = array (
   'LBL_FIELD_MAPPING' => 'Mappatura Campi',
   'LBL_LEAD_FIELD' => 'Campo Personalizzato Lead',
   'LBL_TEXT_AREA' => 'Area di testo',
-  'NOTESCUSTOMFIELDS' => 'Campi Personalizzati Note',
   'LBL_ASSIGN_MODULE_OWNERS' => 'Assegna proprietari dei moduli',
   'LBL_MODULE_OWNERS' => 'Proprietari Modulo',
   'LBL_ASSIGN_MODULE_OWNERS_INFO' => ' - Assegna Proprietari per ciascun modulo',
@@ -801,8 +769,6 @@ $mod_strings = array (
 'LBL_MAPPED_FIELDS' => 'Campi Mappati',
 'LEADS_CUSTOM_FIELD_MAPPING_DESCRIPTION' => 'Mappa i campi personalizzati dei Leads con Aziende,Contatti e Opportunit&agrave;',
 'LEADS_CUSTOM_FIELD_MAPPING' => 'Mappatura Campi Personalizzati Leads',
-'LBL_CALENDER_CUSTOMFIELDS' => 'Campi Personalizzati Calendario',
-'LBL_CALENDER_CUSTOMFIELDS_DESCRIPTION' => 'Puoi creare Campi Personalizzati per il Calendario',
 'LBL_GO_BACK' => 'Torna Indietro',
 'LBL_USE_PREFIX' => 'Usa Prefisso',
 'LBL_START_SEQ' => 'Personalizza Numero',

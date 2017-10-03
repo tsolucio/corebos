@@ -30,33 +30,6 @@ $mod_strings = Array(
 'LBL_CURRENCY_TOOL'=>'Tools',
 'LBL_CURRENCY_LIST'=>'Currencies List',
 'NTC_DELETE_CONFIRMATION'=>'Are you sure you want to delete this record?',
-'LEADCUSTOMFIELDS'=>'Lead Custom Fields',
-'ACCOUNTCUSTOMFIELDS'=>'Organization Custom Fields',
-'CONTACTCUSTOMFIELDS'=>'Contact Custom Fields',
-'OPPORTUNITYCUSTOMFIELDS'=>'Opportunity Custom Fields',
-'HELPDESKCUSTOMFIELDS'=>'Helpdesk Custom Fields',
-'PRODUCTCUSTOMFIELDS'=>'Product Custom Fields',
-'VENDORCUSTOMFIELDS'=>'Vendor Custom Fields',
-'PRICEBOOKCUSTOMFIELDS'=>'PriceBook Custom Fields',
-'POCUSTOMFIELDS'=>'Purchase Order Custom Fields',
-'SOCUSTOMFIELDS'=>'Sales Order Custom Fields',
-'QUOTESCUSTOMFIELDS'=>'Quotes Custom Fields',
-'INVOICECUSTOMFIELDS'=>'Invoice Custom Fields',
-'EDITLEADPICKLISTVALUES'=>'Edit Lead Picklist ',
-'EDITACCOUNTPICKLISTVALUES'=>'Edit Organization Picklist ',
-'EDITCONTACTPICKLISTVALUES'=>'Edit Contact Picklist ',
-'EDITOPPORTUNITYPICKLISTVALUES'=>'Edit Opportunity Picklist ',
-'EDITHELPDESKPICKLISTVALUES'=>'Edit HelpDesk Picklist ',
-'EDITPRODUCTPICKLISTVALUES'=>'Edit Product Picklist ',
-'EDITEVENTPICKLISTVALUES'=>'Edit Event Picklist ',
-'EDITTASKPICKLISTVALUES'=>'Edit Task Picklist ',
-'EDITRSSPICKLISTVALUES'=>'Edit Rss Picklist',
-'EDITVENDORPICKLISTVALUES'=>'Edit Vendor Picklist',
-'EDITPBPICKLISTVALUES'=>'Edit PriceBook Picklist',
-'EDITPOPICKLISTVALUES'=>'Edit Purchase Order Picklist',
-'EDITSOPICKLISTVALUES'=>'Edit Sales Order Picklist',
-'EDITQUOTEPICKLISTVALUES'=>'Edit Quote Picklist',
-'EDITINVOICEPICKLISTVALUES'=>'Edit Invoice Picklist',
 
 'LBL_PICKLIST_FIELD_SETTINGS'=>'Picklist Field Settings:',
 
@@ -336,8 +309,8 @@ $mod_strings = Array(
 'PurchaseOrder'=>'Purchase Order',
 'SalesOrder'=>'SalesOrder',
 'Invoice'=>'Invoice',
-'LBL_FRONT_LOGO' => 'Front Logo',  
-'LBL_FAVICON_LOGO' => 'Favicon Logo',  
+'LBL_FRONT_LOGO' => 'Front Logo',
+'LBL_FAVICON_LOGO' => 'Favicon Logo',
 
 //For Custom Fields
 'LBL_LEAD_MAP_CUSTOM_FIELD'=>'Mapping Lead Custom Fields',
@@ -350,12 +323,8 @@ $mod_strings = Array(
 'CUSTOMFIELDMAPPING'=>'Custom Field Mapping',
 'LBL_FIELD_MAPPING'=>'Field Mapping',
 'LBL_LEAD_FIELD'=>'Lead Custom Field',
-//After 4.2 GA
 'LBL_TEXT_AREA'=>'Text Area',
-//for Edit ordering the blocks
-'NOTESCUSTOMFIELDS'=>'Documents Custom Fields',
 
-//Added fields after 4.2 ptach 2
 'LBL_ASSIGN_MODULE_OWNERS'=>'Assign Module Owners',
 'LBL_MODULE_OWNERS'=>'Module Owners',
 'LBL_ASSIGN_MODULE_OWNERS_INFO'=>' - Assign Owners for each modules',
@@ -363,8 +332,6 @@ $mod_strings = Array(
 'LBL_OWNER'=>'Assigned Owner',
 'LBL_MIGRATION'=>'Migration Wizard',
 'LBL_MIGRATION_INFO'=>'Migrate your existing CRM data to latest version',
-
-//Added for 5 GA - Description of Settings UI
 
 'LBL_USER_DESCRIPTION'=>'Manage users who can access the application',
 'LBL_ROLE_DESCRIPTION'=>'Set up hierarchy of roles and assign to the users',
@@ -398,7 +365,6 @@ $mod_strings = Array(
 'LBL_GROUP_DESC'=>'Manage different types of user groups within your organization',
 'LBL_MAIL_MERGE_DESC'=>'Manage Mail Merge templates used in CRM modules',
 
-//Added fields after 5.0 Alpha
 'LBL_REQUIRE_SMTP_AUTHENTICATION'=>'Require SMTP Authentication?',
 'LBL_ANNOUNCEMENT'=>'Announcements',
 'LBL_SETTING_ANNOUNCEMENT'=>'Announcement',
@@ -905,11 +871,8 @@ $mod_strings = Array(
 'LBL_MAPPED_FIELDS' => 'Mapped Fields',
 'LEADS_CUSTOM_FIELD_MAPPING_DESCRIPTION' => 'Map Your Leads Customfields with Organizations,Contacts and Opportunities',
 'LEADS_CUSTOM_FIELD_MAPPING'=> 'Leads Field Mapping',
-'LBL_CALENDER_CUSTOMFIELDS' => 'Calendar Custom Fields',
-'LBL_CALENDER_CUSTOMFIELDS_DESCRIPTION' => 'You can Create Custom Fields for Calendar',
 'LBL_GO_BACK'=>'Go Back',
 
-//Added fix for: 5418
 'LBL_USE_PREFIX' => 'Use Prefix',
 'LBL_START_SEQ' => 'Start Sequence',
 'LBL_MODULE_NUMBERING' => 'Module Numbering',
@@ -918,7 +881,6 @@ $mod_strings = Array(
 'LBL_IN_USE' => 'IN USE',
 'LBL_MODULE_NUMBERING_FIX_MISSING' => 'Update Missing Record Sequence Now',
 
-//Added for: 5473
 'LBL_SHARING_ACCESS_HELPNOTE' => 'After making modifications, press Recalculate button to apply the changes.',
 
 'LBL_ADD_CUSTOMFIELD' => 'Add Custom Field',

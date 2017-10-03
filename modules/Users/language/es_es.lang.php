@@ -633,8 +633,6 @@ $mod_strings = Array(
 'Asterisk Extension' => 'Extensión Asterisk',
 'Receive Incoming Calls' => 'Usar Asterisk',
 
-'LBL_USER_CUSTOMFIELDS_DESCRIPTION' => 'Crear Campos Personalizados para Usuarios ',
-'LBL_USER_CUSTOMFIELDS' => 'Campos Personalizados de Usuarios',
 'LBL_CURRENCY_CONFIGURATION'=> 'Configuración Moneda',
 
 //Time zones-Dont change any value

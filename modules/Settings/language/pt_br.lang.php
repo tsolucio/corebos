@@ -1,14 +1,10 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
 
@@ -56,55 +52,8 @@ $mod_strings = Array(
 
 'LBL_CURRENCY_LIST'=>'Lista Moedas',
 
-
 'NTC_DELETE_CONFIRMATION'=>'Tem certeza que deseja deletar este registro?',
 
-'LEADCUSTOMFIELDS'=>'Campos Customizados Lead',
-
-'ACCOUNTCUSTOMFIELDS'=>'Campos Organização Customizados',
-
-'CONTACTCUSTOMFIELDS'=>'Campos Customizados Contato',
-
-'OPPORTUNITYCUSTOMFIELDS'=>'Campos Customizados Oportunidade',
-
-'HELPDESKCUSTOMFIELDS'=>'Campos Customizados Helpdesk',
-
-'PRODUCTCUSTOMFIELDS'=>'Campos Customizados Produto',
-
-'VENDORCUSTOMFIELDS'=>'Campos Customizados Fornecedor',
-
-'PRICEBOOKCUSTOMFIELDS'=>'Campos Customizados Lista Preços',
-
-'POCUSTOMFIELDS'=>'Campos Customizados Pedido Compra',
-'SOCUSTOMFIELDS'=>'Campos Customizados Pedido Vendas',
-'QUOTESCUSTOMFIELDS'=>'Campos Customizados Cotações',
-'INVOICECUSTOMFIELDS'=>'Campos Customizados Fatura',
-
-'EDITLEADPICKLISTVALUES'=>'Editar Lista Opções Lead ',
-
-'EDITACCOUNTPICKLISTVALUES'=>'Editar Lista Opções Organização ',
-
-'EDITCONTACTPICKLISTVALUES'=>'Editar Lista Opções Contato ',
-
-'EDITOPPORTUNITYPICKLISTVALUES'=>'Editar Lista Opções Oportunidade ',
-
-'EDITHELPDESKPICKLISTVALUES'=>'Editar Lista Opções HeldDesk ',
-
-'EDITPRODUCTPICKLISTVALUES'=>'Editar Lista Opções Produto ',
-
-'EDITEVENTPICKLISTVALUES'=>'Editar Lista Opções Evento ',
-
-'EDITTASKPICKLISTVALUES'=>'Editar Lista Opções Tarefa ',
-
-'EDITRSSPICKLISTVALUES'=>'Editar Lista Opções RSS',
-'EDITVENDORPICKLISTVALUES'=>'Editar Lista Opções Fornecedor',
-'EDITPBPICKLISTVALUES'=>'Editar Lista Opções Lista Preços',
-'EDITPOPICKLISTVALUES'=>'Edita Lista Opções Pedido Compras',
-'EDITSOPICKLISTVALUES'=>'Edita Lista Opções Pedido Vendas',
-'EDITQUOTEPICKLISTVALUES'=>'Edita Lista Opções Cotação',
-'EDITINVOICEPICKLISTVALUES'=>'Edita Lista Opções Fatura',
-
-//Settings/index.php
 'LBL_PICKLIST_FIELD_SETTINGS'=>'Configurações Campos Lista de Opções:',
 
 'Leads'=>'Lead',
@@ -570,12 +519,8 @@ $mod_strings = Array(
 'CUSTOMFIELDMAPPING'=>'Mapeando Customizar Campo',
 'LBL_FIELD_MAPPING'=>'Mapeando Campo',
 'LBL_LEAD_FIELD'=>'Customizar Campo Lead',
-//After 4.2 GA
 'LBL_TEXT_AREA'=>'Área de Texto',
-//for Edit ordering the blocks
-'NOTESCUSTOMFIELDS'=>'Campos Customizados de Documentos',
 
-//Added fields after 4.2 ptach 2
 'LBL_ASSIGN_MODULE_OWNERS'=>'Definir Proprietário do Módulo',
 'LBL_MODULE_OWNERS'=>'Proprietário Módulo',
 'LBL_ASSIGN_MODULE_OWNERS_INFO'=>' - Definir Proprietários para cada Módulo',
@@ -583,8 +528,6 @@ $mod_strings = Array(
 'LBL_OWNER'=>'Proprietário Responsável',
 'LBL_MIGRATION'=>'Migração Orientada',
 'LBL_MIGRATION_INFO'=>'Migrar dados da Versão anterior do CRM',
-
-//Added for 5 GA - Description of Settings UI
 
 'LBL_USER_DESCRIPTION'=>'Administrar Usuários que podem acessar o CRM',
 'LBL_ROLE_DESCRIPTION'=>'Definir hierarquia das Funções e Atribuições para Usuários',
@@ -618,8 +561,6 @@ $mod_strings = Array(
 'LBL_GROUP_DESC'=>'Administrar diferentes tipos de Grupos de Usuários na Organização',
 'LBL_MAIL_MERGE_DESC'=>'Administrar modelos de Correspondências utilizadas nos Módulos do CRM',
 
-
-//Added fields after 5.0 Alpha
 'LBL_REQUIRE_SMTP_AUTHENTICATION'=>'Requer Autenticação SMTP?', //Contribuição de Jader Marasca - 25/09/2010
 'LBL_ANNOUNCEMENT'=>'Anúncios',
 'LBL_SETTING_ANNOUNCEMENT'=>'Anúncio',
@@ -1136,11 +1077,8 @@ $mod_strings = Array(
 'LBL_MAPPED_FIELDS' => 'Campos Mapeados',
 'LEADS_CUSTOM_FIELD_MAPPING_DESCRIPTION' => 'Mapear campos customizados de Leads com Organizações, Contatos e Oportunidades',
 'LEADS_CUSTOM_FIELD_MAPPING'=> 'Mapear Campos Customizados de Leads',
-'LBL_CALENDER_CUSTOMFIELDS' => 'Campos Customizados da Agenda',
-'LBL_CALENDER_CUSTOMFIELDS_DESCRIPTION' => 'você pode Criar Campos Customizados para Agenda',
 'LBL_GO_BACK'=>'Voltar',
 
-//Added fix for: 5418
 'LBL_USE_PREFIX' => 'Utizar Prefixo',
 'LBL_START_SEQ' => 'Iniciar Sequência',
 'LBL_MODULE_NUMBERING' => 'Numeração Módulo',
@@ -1149,7 +1087,6 @@ $mod_strings = Array(
 'LBL_IN_USE' => 'EM USO',
 'LBL_MODULE_NUMBERING_FIX_MISSING' => 'Atualizar Sequência de Registros Faltantes Agora',
 
-//Added for: 5473
 'LBL_SHARING_ACCESS_HELPNOTE' => 'Depois que fizer modificações, pressione o botão Recalcular para aplicar as mudanças.',
 
 'LBL_ADD_CUSTOMFIELD' => 'Adicionar Campo Customizado',

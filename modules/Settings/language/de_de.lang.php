@@ -1,16 +1,11 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -37,38 +32,7 @@ $mod_strings = Array(
     'LBL_CURRENCY_LIST'=>'Währungsliste',
 
     'NTC_DELETE_CONFIRMATION'=>'Möchten Sie diesen Eintrag löschen?',
-    'LEADCUSTOMFIELDS'=>'Leads',
-    'ACCOUNTCUSTOMFIELDS'=>'Organisationen',
-    'CONTACTCUSTOMFIELDS'=>'Personen',
-    'OPPORTUNITYCUSTOMFIELDS'=>'Verkaufspotentiale',
-    'HELPDESKCUSTOMFIELDS'=>'Tickets',
-    'PRODUCTCUSTOMFIELDS'=>'Produkte',
-    'VENDORCUSTOMFIELDS'=>'Lieferant',
-    'PRICEBOOKCUSTOMFIELDS'=>'Preisliste',
 
-    'POCUSTOMFIELDS'=>'Bestellungen',
-    'SOCUSTOMFIELDS'=>'Aufträge',
-    'QUOTESCUSTOMFIELDS'=>'Angebote',
-    'INVOICECUSTOMFIELDS'=>'Rechnungen',
-
-    'EDITLEADPICKLISTVALUES'=>'Bearbeite Leads',
-    'EDITACCOUNTPICKLISTVALUES'=>'Bearbeite Organisationen',
-    'EDITCONTACTPICKLISTVALUES'=>'Bearbeite Personen',
-    'EDITOPPORTUNITYPICKLISTVALUES'=>'Bearbeite Verkaufspotentiale',
-    'EDITHELPDESKPICKLISTVALUES'=>'Bearbeite Trouble Tickets',
-    'EDITPRODUCTPICKLISTVALUES'=>'Bearbeite Produkte',
-    'EDITEVENTPICKLISTVALUES'=>'Bearbeite Termine/Anrufe',
-    'EDITTASKPICKLISTVALUES'=>'Bearbeite Aufgaben',
-
-    'EDITRSSPICKLISTVALUES'=>'Bearbeite RSS',
-    'EDITVENDORPICKLISTVALUES'=>'Bearbeite Lieferant',
-    'EDITPBPICKLISTVALUES'=>'Bearbeite Preisliste',
-    'EDITPOPICKLISTVALUES'=>'Bearbeite Bestellungen',
-    'EDITSOPICKLISTVALUES'=>'Bearbeite Aufträge',
-    'EDITQUOTEPICKLISTVALUES'=>'Bearbeite Angebote',
-    'EDITINVOICEPICKLISTVALUES'=>'Bearbeite Rechnungen',
-
-    //Settings/index.php
     'LBL_PICKLIST_FIELD_SETTINGS'=>'Auswahllisten Feldeinstellungen:',
 
     'Leads'=>'Lead',
@@ -380,12 +344,8 @@ $mod_strings = Array(
     'CUSTOMFIELDMAPPING'=>'Zuordnungen der benutzerdefinierten Felder',
     'LBL_FIELD_MAPPING'=>'Feldzuordnung',
     'LBL_LEAD_FIELD'=>'Lead Feld',
-    //After 4.2 GA
     'LBL_TEXT_AREA'=>'Text Bereich',
-    //for Edit ordering the blocks
-    'NOTESCUSTOMFIELDS'=>'Notizen angepasste Felder',
 
-    //Added fields after 4.2 ptach 2
     'LBL_ASSIGN_MODULE_OWNERS'=>'Modulen Besitzer zuweisen',
     'LBL_MODULE_OWNERS'=>'Modulbesitzer',
     'LBL_ASSIGN_MODULE_OWNERS_INFO'=>' - weise einen Besitzer für jedes Modul zu',
@@ -393,8 +353,6 @@ $mod_strings = Array(
     'LBL_OWNER'=>'Besitzer',
     'LBL_MIGRATION'=>'Migriere von vorhergehender Version',
     'LBL_MIGRATION_INFO'=>' - Migration von vorhergehenden Version',
-
-    //Added for 5 GA - Description of Settings UI
 
     'LBL_USER_DESCRIPTION'=>'bearbeiten Sie die CRM Benutzerliste und weisen Sie Benutzern Rollen zu',
     'LBL_ROLE_DESCRIPTION'=>'definieren Sie die Hierarchie von Rollen und weisen Sie diesen Profile zu',
@@ -947,11 +905,8 @@ $mod_strings = Array(
     'LBL_MAPPED_FIELDS' => 'zugeordnete Felder',
     'LEADS_CUSTOM_FIELD_MAPPING_DESCRIPTION' => 'Ordnen Sie Lead Felder Organisationen, Personen und Potentialen zu',
     'LEADS_CUSTOM_FIELD_MAPPING'=> 'Zuordnung von Lead Feldern',
-    'LBL_CALENDER_CUSTOMFIELDS' => 'Kalenderfelder',
-    'LBL_CALENDER_CUSTOMFIELDS_DESCRIPTION' => 'Sie können benutzerdefinierte Felder für die Kalender erstellen.',
     'LBL_GO_BACK'=>'zurück',
 
-    //Added fix for: 5418
     'LBL_USE_PREFIX' => 'Präfix benutzen',
     'LBL_START_SEQ' => 'Startsequenz',
     'LBL_MODULE_NUMBERING' => 'Modul Nummern',
@@ -960,7 +915,6 @@ $mod_strings = Array(
     'LBL_IN_USE' => 'in Benutzung',
     'LBL_MODULE_NUMBERING_FIX_MISSING' => 'fehlende Datensatzsequenz jetzt aktualisieren',
 
-    //Added for: 5473
     'LBL_SHARING_ACCESS_HELPNOTE' => 'Nachdem Sie Änderungen duchgeführt haben, müssen Sie den Neu Berechnen Button klicken.',
 
     'LBL_ADD_CUSTOMFIELD' => 'Add Custom Field',
