@@ -8,68 +8,69 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<br>
-
 <table style="border: 1px solid rgb(0, 0, 0);" align="center" cellpadding="0" cellspacing="0" width="100%">
-	<tbody><tr>
-	<td style="background-repeat: repeat-y;" background="{'report_btn.gif'|@vtiger_imageurl:$THEME}" width="16"></td>
-	<td style="padding: 5px;" valign="top">
-	<table cellpadding="0" cellspacing="0" width="100%">
-		<tbody><tr>
-		<td align="left" width="75%">
-		<span class="genHeaderGray">{$REPORTNAME|@getTranslatedString:'Reports'}</span><br>
-		</td>
-		<td align="right" width="25%">
-		<span class="genHeaderGray">{$APP.LBL_TOTAL} : <span id='_reportrun_total'></span>  {$APP.LBL_RECORDS}</span>
-		</td>
-		</tr>
-		<tr><td id="report_info" align="left" colspan="2">&nbsp;</td></tr>
-		<tr><td colspan="2">&nbsp;</td></tr>
+	<tbody>
 		<tr>
-		<td colspan="2">
-		{if empty($ERROR_MSG)}
-			<div class="rptContainer">
-				<datatable id="rptDatatable" url="index.php?module=Reports&action=ReportsAjax&file=getJSON&record={$REPORTID}" template="report_row_template">
-					<footer>
-						<pagination limit="12" outer></pagination>
-						<stats></stats>
-					</footer>
-					<table class="rptTable">
+			<td style="background-repeat: repeat-y;" background="{'report_btn.gif'|@vtiger_imageurl:$THEME}" width="16"></td>
+			<td style="padding: 5px;" valign="top">
+				<table cellpadding="0" cellspacing="0" width="100%">
+					<tbody>
 						<tr>
-						{foreach item=dtheader from=$TABLEHEADERS}
-							<th class="rptCellLabel">{$dtheader}</th>
-						{/foreach}
+							<td align="left" width="75%">
+								<span class="genHeaderGray">{$REPORTNAME|@getTranslatedString:'Reports'}</span><br>
+							</td>
+							<td align="right" width="25%">
+								<span class="genHeaderGray">{$APP.LBL_TOTAL} : <span id='_reportrun_total'></span>  {$APP.LBL_RECORDS}</span>
+							</td>
 						</tr>
-					</table>
-				</datatable>
-			</div>
-			<table id="report_row_template" hidden>
-				<tr>
-					{foreach item=dtheader from=$JSONHEADERS}
-						{if $dtheader eq 'reportrowaction'}
-						<td class="rptData"><a av="href:reportrowaction">{'LBL_VIEW_DETAILS'|@getTranslatedString:'Reports'}</a></td>
-						{else}
-						<td v="{$dtheader}" class="rptData"></td>
-						{/if}
-					{/foreach}
-				</tr>
-			</table>
-		{else}
-			{$ERROR_MSG}
-		{/if}
-		</td>
+						<tr><td id="report_info" align="left" colspan="2" style="padding: .5rem;">&nbsp;</td></tr>
+						<tr>
+							<td colspan="2">
+								{if empty($ERROR_MSG)}
+									<div class="rptContainer">
+										<datatable id="rptDatatable" url="index.php?module=Reports&action=ReportsAjax&file=getJSON&record={$REPORTID}" template="report_row_template">
+											<footer>
+												<pagination limit="12" outer></pagination>
+												<stats></stats>
+											</footer>
+											<table class="slds-table slds-no-row-hover rptTable">
+												<tr>
+												{foreach item=dtheader from=$TABLEHEADERS}
+													<th class="slds-text-title--caps rptCellLabel" scope="col">
+														<span class="slds-truncate" style="padding: .5rem 0;">
+															{$dtheader}
+														</span>
+													</th>
+												{/foreach}
+												</tr>
+											</table>
+										</datatable>
+									</div>
+									<table id="report_row_template" hidden>
+										<tr>
+											{foreach item=dtheader from=$JSONHEADERS}
+												{if $dtheader eq 'reportrowaction'}
+												<td class="rptData"><a av="href:reportrowaction">{'LBL_VIEW_DETAILS'|@getTranslatedString:'Reports'}</a></td>
+												{else}
+												<td v="{$dtheader}" class="rptData"></td>
+												{/if}
+											{/foreach}
+										</tr>
+									</table>
+								{else}
+									{$ERROR_MSG}
+								{/if}
+							</td>
+						</tr>
+						<tr><td colspan="2">&nbsp;</td></tr>
+						<tr><td colspan="2">&nbsp;</td></tr>
+						<tr><td colspan="2">{$REPORTTOTHTML}</td></tr>
+						<tr><td colspan="2">&nbsp;</td></tr>
+					</tbody>
+				</table>
+			</td>
+			<td style="background-repeat: repeat-y;" background="{'report_btn.gif'|@vtiger_imageurl:$THEME}" width="16"></td>
 		</tr>
-		<tr><td colspan="2">&nbsp;</td></tr>
-		<tr><td colspan="2">&nbsp;</td></tr>
-		<tr><td colspan="2">
-			{$REPORTTOTHTML}
-		</td></tr>
-		<tr><td colspan="2">&nbsp;</td></tr>
-		</tbody>
-	</table>
-	</td>
-	<td style="background-repeat: repeat-y;" background="{'report_btn.gif'|@vtiger_imageurl:$THEME}" width="16"></td>
-	</tr>
 	</tbody>
 </table>
 <br><br>

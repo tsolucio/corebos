@@ -22,94 +22,126 @@
 <script src="include/chart.js/randomColor.js"></script>
 <a name="rpttop"></a>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
-<tbody><tr>
-    <td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
-<table class="small reportGenHdr mailClient mailClientBg" align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
-	<form name="NewReport" action="index.php" method="POST" onsubmit="VtigerJS_DialogBox.block();">
-    <input type="hidden" name="booleanoperator" value="5"/>
-    <input type="hidden" name="record" value="{$REPORTID}"/>
-    <input type="hidden" name="reload" value=""/>    
-    <input type="hidden" name="module" value="Reports"/>
-    <input type="hidden" name="action" value="SaveAndRun"/>
-    <input type="hidden" name="dlgType" value="saveAs"/>
-    <input type="hidden" name="reportName"/>
-    <input type="hidden" name="folderid" value="{$FOLDERID}"/>
-    <input type="hidden" name="reportDesc"/>
-    <input type="hidden" name="folder"/>
-
 	<tbody>
-	<tr>
-	<td style="padding: 10px; text-align: left;" width="70%">
-		<span class="moduleName">{$REPORTNAME|@getTranslatedString:$MODULE}</span>&nbsp;&nbsp;
-		{if $IS_EDITABLE eq 'true'}
-		<input type="button" name="custReport" value="{$MOD.LBL_CUSTOMIZE_REPORT}" class="crmButton small edit" onClick="editReport('{$REPORTID}');">
-		{/if}
-		<br>
-		<a href="index.php?module=Reports&action=ListView" class="reportMnu" style="border-bottom: 0px solid rgb(0, 0, 0);">&lt;{$MOD.LBL_BACK_TO_REPORTS}</a>
-	</td>
-	<td style="border-left: 2px dotted rgb(109, 109, 109); padding: 10px;" width="30%">
-		<b>{$MOD.LBL_SELECT_ANOTHER_REPORT} : </b><br>
-		<select name="another_report" class="detailedViewTextBox" onChange="selectReport()">
-		{foreach key=report_in_fld_id item=report_in_fld_name from=$REPINFOLDER}
-			<option value={$report_in_fld_id} {if $report_in_fld_id eq $REPORTID}selected{/if}>{$report_in_fld_name|@getTranslatedString:$MODULE}</option>
-		{/foreach}
-		</select>&nbsp;&nbsp;
-	</td>
-	</tr>
+		<tr>
+			<td>
+				<table class="small reportGenHdr mailClient " align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+					<tbody>
+						<form name="NewReport" action="index.php" method="POST" onsubmit="VtigerJS_DialogBox.block();">
+							<input type="hidden" name="booleanoperator" value="5"/>
+							<input type="hidden" name="record" value="{$REPORTID}"/>
+							<input type="hidden" name="reload" value=""/>    
+							<input type="hidden" name="module" value="Reports"/>
+							<input type="hidden" name="action" value="SaveAndRun"/>
+							<input type="hidden" name="dlgType" value="saveAs"/>
+							<input type="hidden" name="reportName"/>
+							<input type="hidden" name="folderid" value="{$FOLDERID}"/>
+							<input type="hidden" name="reportDesc"/>
+							<input type="hidden" name="folder"/>
+							<tr>
+								<td valign="top">
+									<div class="forceRelatedListSingleContainer">
+										<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
+											<div class="slds-card__header slds-grid">
+												<header class="slds-media slds-media--center slds-has-flexi-truncate">
+													<div class="slds-media__body">
+														<h2>
+															<span class="slds-text-title--caps slds-truncate slds-m-right--xx-small actionLabel">
+																<b>{$REPORTNAME|@getTranslatedString:$MODULE}</b>
+															</span>
+														</h2>
+													</div>
+												</header>
+												<div class="slds-no-flex" data-aura-rendered-by="1224:0">
+													<div class="actionsContainer">
+														{if $IS_EDITABLE eq 'true'}
+															<input type="button" name="custReport" value="{$MOD.LBL_CUSTOMIZE_REPORT}" class="slds-button slds-button--small slds-button--brand" onClick="editReport('{$REPORTID}');">
+														{/if}
+													</div>
+												</div>
+											</div>
+												<div class="slds-card__body slds-card__body--inner">
+													<div class="commentData back-to-reports">
+														<a href="index.php?module=Reports&action=ListView" class="reportMnu" style="border-bottom: 0px solid rgb(0, 0, 0);">&lt;{$MOD.LBL_BACK_TO_REPORTS}</a>
+													</div>
+												</div>
+										</article>
+									</div>
+								</td>
+								<td class="action-block">
+									<div class="flexipageComponent">
+										<article class="slds-card container MEDIUM forceBaseCard runtime_sales_mergeMergeCandidatesPreviewCard" aria-describedby="header" style="margin: 0;">
+											<div class="slds-card__header slds-grid">
+												<header class="slds-media slds-media--center slds-has-flexi-truncate">
+													<div class="slds-media__body">
+														<h2 class="header-title-container">
+															<span class="slds-text-heading--small slds-truncate actionLabel"><b>{$MOD.LBL_SELECT_ANOTHER_REPORT} : </b></span>
+														</h2>
+													</div>
+												</header>
+											</div>
+											<div class="slds-card__body slds-card__body--inner">
+												<select name="another_report" class="slds-select" onChange="selectReport()">
+													{foreach key=report_in_fld_id item=report_in_fld_name from=$REPINFOLDER}
+														<option value={$report_in_fld_id} {if $report_in_fld_id eq $REPORTID}selected{/if}>{$report_in_fld_name|@getTranslatedString:$MODULE}</option>
+													{/foreach}
+												</select>
+											</div>
+										</article>
+									</div>
+								</td>
+							</tr>
+					</tbody>
+				</table>
+				<br/>
+				<!-- Generate Report UI Filter -->
+				<table class="small" align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+					<tr>
+						<td>
+							{include file='AdvanceFilter.tpl' SOURCE='reports1'}
+						</td>
+					</tr>
+					<tr>
+						<td align="center">
+							<input type="button" class="slds-button slds-button--small slds-button--brand" onclick="generateReport({$REPORTID});" value="{$MOD.LBL_GENERATE_NOW}" title="{$MOD.LBL_GENERATE_NOW}" />
+							&nbsp;
+							<input type="button" class="slds-button slds-button--small slds-button_success" onclick="saveReportAdvFilter({$REPORTID});" value="     {$MOD.LBL_SAVE_REPORT}     " title="{$MOD.LBL_SAVE_REPORT}" />
+							&nbsp;
+							<input type="button" class="slds-button slds-button--small slds-button_success" onclick="SaveAsReport({$REPORTID});" value="     {$APP.LBL_SAVE_AS}     " title="{$APP.LBL_SAVE_AS}" />
+						</td>
+					</tr>
+				</table>
+
+				<table class="small reportGenHdr mailClient report-table-icons" align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+					<tr>
+						<td align="right" valign="bottom" style="padding:5px">
+							<a href="javascript:void(0);" onclick="location.href='index.php?module=Reports&action=SaveAndRun&record={$REPORTID}&folderid={$FOLDERID}'"><img src="{'revert.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{'LBL_RELOAD_REPORT'|@getTranslatedString:$MODULE}" title="{'LBL_RELOAD_REPORT'|@getTranslatedString:$MODULE}" border="0"></a>
+							&nbsp;
+							{if $SHOWCHARTS eq 'true'}
+								<a href="javascript:void(0);" onclick="window.location.href = '#viewcharts'"><img src="{'chart_60.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{'LBL_VIEW_CHARTS'|@getTranslatedString:$MODULE}" title="{'LBL_VIEW_CHARTS'|@getTranslatedString:$MODULE}" border="0" width="24px"></a>
+								&nbsp;
+							{/if}
+							{if TRUE || $CHECK.Export eq 'yes'} {*<!-- temporarily deactivate this check: we need to add a ReportExport action on each module's preferences -->*}
+							<a href="javascript:void(0);" onclick="saveReportAs(this,'duplicateReportLayout');"><img src="{'saveas.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_SAVE_REPORT_AS}" title="{$MOD.LBL_SAVE_REPORT_AS}" border="0"></a>
+							&nbsp;
+							<a href="javascript:void(0);" onclick="gotourl(CrearEnlace('CreatePDF',{$REPORTID}));"><img src="{'pdf-file.jpg'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTPDF_BUTTON}" title="{$MOD.LBL_EXPORTPDF_BUTTON}" border="0"></a>
+							&nbsp;
+							<a href="javascript:void(0);" onclick="gotourl(CrearEnlace('CreateXL',{$REPORTID}));"><img src="{'xls-file.jpg'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTXL_BUTTON}" title="{$MOD.LBL_EXPORTXL_BUTTON}" border="0"></a>
+							&nbsp;
+							<a href="javascript:void(0);" onclick="gotourl(CrearEnlace('CreateCSV',{$REPORTID}));"><img src="{'csv.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTCSV}" title="{$MOD.LBL_EXPORTCSV}" border="0"></a>
+							&nbsp;
+							<a href="javascript:void(0);" onclick="goToPrintReport({$REPORTID});"><img src="{'fileprint.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_PRINT_REPORT}" title="{$MOD.LBL_PRINT_REPORT}" border="0"></a>
+							{/if}
+						</td>
+					</tr>
+				</table>
+
+				<div style="display: block;" id="Generate" align="center">
+					{include file="ReportRunContents.tpl"}
+				</div>
+			</td>
+		</tr>
 	</tbody>
-</table>
-
-<!-- Generate Report UI Filter -->
-<table class="small reportGenerateTable" align="center" cellpadding="5" cellspacing="0" width="95%" border=0>
-	<tr>
-		<td align="left" style="padding:5px" width="80%">
-			{include file='AdvanceFilter.tpl' SOURCE='reports1'}
-		</td>
-	</tr>
-	<tr>
-		<td align="center">
-			<input type="button" class="small create" onclick="generateReport({$REPORTID});" value="{$MOD.LBL_GENERATE_NOW}" title="{$MOD.LBL_GENERATE_NOW}" />
-			&nbsp;
-			<input type="button" class="small edit" onclick="saveReportAdvFilter({$REPORTID});" value="     {$MOD.LBL_SAVE_REPORT}     " title="{$MOD.LBL_SAVE_REPORT}" />
-			&nbsp;
-			<input type="button" class="small edit" onclick="SaveAsReport({$REPORTID});" value="     {$APP.LBL_SAVE_AS}     " title="{$APP.LBL_SAVE_AS}" />
-		</td>
-	</tr>
-</table>
-
-<table class="small reportGenHdr mailClient mailClientBg" align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
-	<tr>
-		<td align="right" valign="bottom" style="padding:5px">
-			<a href="javascript:void(0);" onclick="location.href='index.php?module=Reports&action=SaveAndRun&record={$REPORTID}&folderid={$FOLDERID}'"><img src="{'revert.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{'LBL_RELOAD_REPORT'|@getTranslatedString:$MODULE}" title="{'LBL_RELOAD_REPORT'|@getTranslatedString:$MODULE}" border="0"></a>
-			&nbsp;
-			{if $SHOWCHARTS eq 'true'}
-				<a href="javascript:void(0);" onclick="window.location.href = '#viewcharts'"><img src="{'chart_60.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{'LBL_VIEW_CHARTS'|@getTranslatedString:$MODULE}" title="{'LBL_VIEW_CHARTS'|@getTranslatedString:$MODULE}" border="0" width="24px"></a>
-				&nbsp;
-			{/if}
-			{if TRUE || $CHECK.Export eq 'yes'} {*<!-- temporarily deactivate this check: we need to add a ReportExport action on each module's preferences -->*}
-			<a href="javascript:void(0);" onclick="saveReportAs(this,'duplicateReportLayout');"><img src="{'saveas.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_SAVE_REPORT_AS}" title="{$MOD.LBL_SAVE_REPORT_AS}" border="0"></a>
-			&nbsp;
-			<a href="javascript:void(0);" onclick="gotourl(CrearEnlace('CreatePDF',{$REPORTID}));"><img src="{'pdf-file.jpg'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTPDF_BUTTON}" title="{$MOD.LBL_EXPORTPDF_BUTTON}" border="0"></a>
-			&nbsp;
-			<a href="javascript:void(0);" onclick="gotourl(CrearEnlace('CreateXL',{$REPORTID}));"><img src="{'xls-file.jpg'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTXL_BUTTON}" title="{$MOD.LBL_EXPORTXL_BUTTON}" border="0"></a>
-			&nbsp;
-			<a href="javascript:void(0);" onclick="gotourl(CrearEnlace('CreateCSV',{$REPORTID}));"><img src="{'csv.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTCSV}" title="{$MOD.LBL_EXPORTCSV}" border="0"></a>
-			&nbsp;
-			<a href="javascript:void(0);" onclick="goToPrintReport({$REPORTID});"><img src="{'fileprint.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_PRINT_REPORT}" title="{$MOD.LBL_PRINT_REPORT}" border="0"></a>
-			{/if}
-		</td>
-	</tr>
-</table>
-
-<div style="display: block;" id="Generate" align="center">
-	{include file="ReportRunContents.tpl"}
-</div>
-<br>
-
-</td>
-<td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
-</tr>
 </table>
 
 <!-- Save Report As.. UI -->
@@ -159,6 +191,7 @@
 		</tr>
 	</table>
 </div>
+
 <svg xmlns="http://www.w3.org/2000/svg">
 	<defs id="defs4">
 		<linearGradient id="linearGradient5734">
@@ -200,17 +233,17 @@
 <script src="include/bunnyjs/element.min.js"></script>
 <script src="include/bunnyjs/datatable.scrolltop.min.js"></script>
 <script type="text/javascript">
-var i18nLBL_PRINT_REPORT = "{$MOD.LBL_PRINT_REPORT}";
-Pagination._config.langFirst = "{$APP.LNK_LIST_START}";
-Pagination._config.langLast = "{$APP.LNK_LIST_END}";
-Pagination._config.langPrevious = "< {$APP.LNK_LIST_PREVIOUS}";
-Pagination._config.langNext = "{$APP.LNK_LIST_NEXT} >";
-{literal}
-Template.define('report_row_template', {});
-Pagination._config.langStats = "{from}-{to} {/literal}{$APP.LBL_LIST_OF}{literal} {total} ({/literal}{$APP.Page}{literal} {currentPage} {/literal}{$APP.LBL_LIST_OF}{literal} {lastPage})";
-DataTableConfig.loadingImg = 'themes/images/loading.svg';
-DataTable.onRedraw(document.getElementsByTagName('datatable')[0], (data) => {
-	if(document.getElementById('_reportrun_total')) document.getElementById('_reportrun_total').innerHTML=data.total;
-});
-{/literal}
+	var i18nLBL_PRINT_REPORT = "{$MOD.LBL_PRINT_REPORT}";
+	Pagination._config.langFirst = "{$APP.LNK_LIST_START}";
+	Pagination._config.langLast = "{$APP.LNK_LIST_END}";
+	Pagination._config.langPrevious = "< {$APP.LNK_LIST_PREVIOUS}";
+	Pagination._config.langNext = "{$APP.LNK_LIST_NEXT} >";
+	{literal}
+	Template.define('report_row_template', {});
+	Pagination._config.langStats = "{from}-{to} {/literal}{$APP.LBL_LIST_OF}{literal} {total} ({/literal}{$APP.Page}{literal} {currentPage} {/literal}{$APP.LBL_LIST_OF}{literal} {lastPage})";
+	DataTableConfig.loadingImg = 'themes/images/loading.svg';
+	DataTable.onRedraw(document.getElementsByTagName('datatable')[0], (data) => {
+		if(document.getElementById('_reportrun_total')) document.getElementById('_reportrun_total').innerHTML=data.total;
+	});
+	{/literal}
 </script>

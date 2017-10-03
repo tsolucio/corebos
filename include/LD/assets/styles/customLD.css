@@ -1332,7 +1332,27 @@ tr td.action-block-mailManager {
     border-bottom: 1px solid #d4d4d4;
 }
 
-/* ProductDetails.tpl */
+.advancedfilter-table img {
+    width: 18px!important;
+}
+
+.advancedfilter-table img:hover {
+    opacity: .7;
+}
+
+.back-to-reports {
+    padding: .2rem 0; 
+}
+
+.report-table-icons img {
+    width: 16px;
+}
+
+.report-table-icons img:hover {
+    opacity: .7;
+}
+
+/* ======= ProductDetails.tpl ======= */
 .td-less-padding tr td{
     padding: .1rem 0!important;
 }
