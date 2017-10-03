@@ -1299,8 +1299,12 @@ tr td.action-block-mailManager {
 
 /* Reports module */
 .reports-table .tools-cell img {
-    width: 18px;
-    vertical-align: text-bottom;
+    width: 14px;
+    vertical-align: bottom;
+}
+
+.reports-table .tools-cell img:hover {
+    opacity: .7;
 }
 
 .new-report-table .slds-input,
