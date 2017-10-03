@@ -16,7 +16,7 @@
 			{assign var=poscount value=0}
 			{foreach item=reportfolder from=$REPT_FLDR}
 				{assign var=poscount value=$poscount+1}
-				<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="reportsListTable" style="border:none;">
+				<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="reportsListTable" style="padding: 5px;">
 					<tr>
 						<td class="mailSubHeader">
 							<div class="forceRelatedListSingleContainer">
@@ -37,10 +37,10 @@
 							</div>
 							<table width="100%" border="0" cellpadding="0" cellspacing="0" style="padding: 5px;background-color: #fff;">
 								<tr>
-									<td id="repposition{$poscount}" class="hdrNameBg" width="20%" align="left">
+									<td id="repposition{$poscount}" class="hdrNameBg" width="30%" align="left">
 										<input name="newReportInThisModule" value="{$MOD.LBL_CREATE_REPORT}..." class="slds-button slds-button--small slds-button_success" onclick="gcurrepfolderid={$reportfolder.id};fnvshobj(this,'reportLay')" type="button">
 									</td>
-									<td width="80%" align="right" class="hdrNameBg">
+									<td width="70%" align="right" class="hdrNameBg">
 										<input type="button" name="Edit" value=" {$MOD.LBL_RENAME_FOLDER} " class="slds-button slds-button--small slds-button--brand" onClick='EditFolder("{$reportfolder.id}","{$reportfolder.fname}","{$reportfolder.fdescription}"),fnvshobj(this,"orgLay");'>&nbsp;
 										&nbsp;{if $ISADMIN}<input type="button" name="delete" value=" {$MOD.LBL_DELETE_FOLDER} " class="slds-button slds-button--small slds-button--destructive" onClick="DeleteFolder('{$reportfolder.id}');">{/if}
 									</td>
@@ -58,7 +58,7 @@
 													{$MOD.LBL_REPORT_NAME}
 												</span>
 											</th>
-											<th class="slds-text-title--caps" scope="col">
+											<th class="slds-text-title--caps" scope="col" style="min-width: 100px;">
 												<span class="slds-truncate slds-text-link--reset" style="padding: .5rem 0;">
 													{$MOD.LBL_DESCRIPTION}
 												</span>
@@ -74,7 +74,7 @@
 										{foreach name=reportdtls item=reportdetails from=$reportfolder.details}
 										<tr class="slds-hint-parent slds-line-height--reset" id="row_{$entity_id}">
 											<td role="gridcell" class="slds-text-align--center">{$smarty.foreach.reportdtls.iteration}</td>
-											<td role="gridcell" class="slds-text-align--left">
+											<td role="gridcell" class="slds-text-align--left" style="white-space: initial;">
 												{if $reportdetails.cbreporttype eq 'external'}
 													<a href="{$reportdetails.moreinfo}" target="_blank">{$reportdetails.reportname|@getTranslatedString:$MODULE}</a>
 												{else}
@@ -84,7 +84,7 @@
 													<img src="{'Meetings.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border=0 height=12 width=12 />
 												{/if}
 											</td>
-											<td role="gridcell" class="slds-text-align--left">{$reportdetails.description|@getTranslatedString:$MODULE}</td>
+											<td role="gridcell" class="slds-text-align--left" style="white-space: initial;">{$reportdetails.description|@getTranslatedString:$MODULE}</td>
 											<th scope="row" class="tools-cell" align="center">
 												<div class="slds-truncate">
 												{if $reportdetails.customizable eq '1' && $reportdetails.editable eq 'true'}

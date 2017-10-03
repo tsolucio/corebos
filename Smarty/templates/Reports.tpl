@@ -76,92 +76,134 @@
 
 <!-- POPUP LAYER FOR CREATE NEW REPORT -->
 <div style="display: none; left: 193px; top: 106px;width:300px;" id="reportLay" class="layerPopup">
-	<table border=0 cellspacing=0 cellpadding=5 width=100% class=layerHeadingULine>
-	<tr>
-		<td class="genHeaderSmall" nowrap align="left" width="30%" id="cportatereor_info">{$MOD.LBL_CREATE_REPORT}</td>
-		<td align="right"><a href="javascript:;" onClick="fninvsh('reportLay');"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0"></a></td>
-	</tr>
+	<table class="slds-table slds-no-row-hover layerHeadingULine">
+		<tr class="slds-text-title--header">
+			<th scope="col" class="genHeaderSmall">
+				<div class="slds-truncate moduleName" id="cportatereor_info">{$MOD.LBL_CREATE_REPORT}</div>
+			</th>
+			<th scope="col" style="padding: .5rem;text-align: right;">
+				<div class="slds-truncate">
+					<a href="javascript:;" onClick="fninvsh('reportLay');">
+						<img src="{'close.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0">
+					</a>
+				</div>
+			</th>
+		</tr>
 	</table>
-	<table border=0 cellspacing=0 cellpadding=5 width=96% align=center style="margin-top:4px;">
-	<tr>
-		<td class="cellLabel small" nowrap><b>{$MOD.LBL_REPORT_MODULE}</b></td>
-	</tr>
-	<tr>
-		<td class="cellText small">
-			<select name="selectModuleElement" id="selectModuleElement" class="small" style="width:270px">
-				{foreach item=modulelabel key=modulename from=$REPT_MODULES}
-					<option value="{$modulename}">{$modulelabel}</option>
-				{/foreach}
-			</select>
-		</td>
-	</tr>
-	<tr>
-	<td class="cellLabel small"><b>{'Choose Report Type'|@getTranslatedString:'Reports'}</b></td>
-	</tr>
-	<tr>
-	<td class="small"><input type="radio" name="cbreporttype" value="corebos" checked>&nbsp;{'Application Report'|@getTranslatedString:'Reports'}</td>
-	</tr>
-	<tr>
-	<td class="small"><input type="radio" name="cbreporttype" value="external">&nbsp;{'External Application'|@getTranslatedString:'Reports'}</td>
-	</tr>
-	<tr>
-	<td class="small"><input type="radio" name="cbreporttype" value="crosstabsql">&nbsp;{'Cross Tab'|@getTranslatedString:'Reports'}</td>
-	</tr>
-<!--
-	<tr>
-	<td class="small"><input type="radio" name="cbreporttype" value="pivottable">&nbsp;{'Pivot Table'|@getTranslatedString:'Reports'}</td>
-	</tr>
--->
-	<tr>
-	<td class="small"><input type="radio" name="cbreporttype" value="directsql">&nbsp;{'Direct SQL Statement'|@getTranslatedString:'Reports'}</td>
-	</tr>
+	<table class="slds-table slds-no-row-hover slds-table--bordered new-report-table">
+		<tr class="slds-line-height--reset">
+			<td class="dvtCellLabel text-left" nowrap><b>{$MOD.LBL_REPORT_MODULE}</b></td>
+		</tr>
+		<tr class="slds-line-height--reset">
+			<td class="dvtCellInfo">
+				<select name="selectModuleElement" id="selectModuleElement" class="slds-select">
+					{foreach item=modulelabel key=modulename from=$REPT_MODULES}
+						<option value="{$modulename}">{$modulelabel}</option>
+					{/foreach}
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="dvtCellLabel text-left"><b>{'Choose Report Type'|@getTranslatedString:'Reports'}</b></td>
+		</tr>
+		<tr>
+			<td class="small">
+				<span class="slds-radio">
+					<input type="radio" name="cbreporttype" id="Application Report" value="corebos" checked>
+					<label class="slds-radio__label" for="Application Report">
+						<span class="slds-radio--faux"></span>
+					</label>
+					<span class="slds-form-element__label">&nbsp;{'Application Report'|@getTranslatedString:'Reports'}</span>
+				</span>
+			</td>
+		</tr>
+		<tr>
+			<td class="small">
+				<span class="slds-radio">
+					<input type="radio" name="cbreporttype" id="External Application" value="external">
+					<label class="slds-radio__label" for="External Application">
+						<span class="slds-radio--faux"></span>
+					</label>
+					<span class="slds-form-element__label">&nbsp;{'External Application'|@getTranslatedString:'Reports'}</span>
+				</span>
+			</td>
+		</tr>
+		<tr>
+			<td class="small">
+				<span class="slds-radio">
+					<input type="radio" name="cbreporttype" id="Cross Tab" value="crosstabsql">
+					<label class="slds-radio__label" for="Cross Tab">
+						<span class="slds-radio--faux"></span>
+					</label>
+					<span class="slds-form-element__label">&nbsp;{'Cross Tab'|@getTranslatedString:'Reports'}</span>
+				</span>
+			</td>
+		</tr>
+		<!--
+			<tr>
+			<td class="small"><input type="radio" name="cbreporttype" value="pivottable">&nbsp;{'Pivot Table'|@getTranslatedString:'Reports'}</td>
+			</tr>
+		-->
+		<tr>
+			<td class="small">
+				<span class="slds-radio">
+					<input type="radio" name="cbreporttype" id="Direct SQL Statement" value="directsql">
+					<label class="slds-radio__label" for="Direct SQL Statement">
+						<span class="slds-radio--faux"></span>
+					</label>
+					<span class="slds-form-element__label">&nbsp;{'Direct SQL Statement'|@getTranslatedString:'Reports'}</span>
+				</span>
+			</td>
+		</tr>
 	</table>
-	<table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport">
-	<tr>
-		<td class="small" align="center">
-		<input name="save" value=" &nbsp;{$APP.LBL_CREATE_BUTTON_LABEL}&nbsp; " class="crmbutton small create" onClick="CreateReport('selectModuleElement'); fninvsh('reportLay');" type="button">&nbsp;&nbsp;
-		<input name="cancel" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="crmbutton small cancel" onclick="fninvsh('reportLay');" type="button">
-		</td>
-	</tr>
+	<table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport create-report-table">
+		<tr>
+			<td class="small" align="center">
+				<input name="save" value=" &nbsp;{$APP.LBL_CREATE_BUTTON_LABEL}&nbsp; " class="slds-button--small slds-button  slds-button_success" onClick="CreateReport('selectModuleElement'); fninvsh('reportLay');" type="button">&nbsp;&nbsp;
+				<input name="cancel" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="slds-button--destructive slds-button slds-button--small" onclick="fninvsh('reportLay');" type="button">
+			</td>
+		</tr>
 	</table>
 </div>
 <!-- END OF POPUP LAYER -->
 
 <!-- Add new Folder UI starts -->
 <div id="orgLay" style="display:none;" class="layerPopup">
-	<table border=0 cellspacing=0 cellpadding=5 width=100% class=layerHeadingULine>
-	<tr>
-		<td class="genHeaderSmall" nowrap align="left" width="30%" id="editfolder_info">{$MOD.LBL_ADD_NEW_GROUP}</td>
-		<td align="right"><a href="javascript:;" onClick="closeEditReport();"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0"></a></td>
-	</tr>
+	<table class="slds-table slds-no-row-hover layerHeadingULine">
+		<tr class="slds-text-title--header">
+			<th scope="col" class="genHeaderSmall">
+				<div class="slds-truncate moduleName" id="editfolder_info">{$MOD.LBL_ADD_NEW_GROUP}</div>
+			</th>
+			<th scope="col" style="padding: .5rem;text-align: right;">
+				<div class="slds-truncate">
+					<a href="javascript:;" onClick="closeEditReport();">
+						<img src="{'close.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0">
+					</a>
+				</div>
+			</th>
+		</tr>
 	</table>
-	<table border=0 cellspacing=0 cellpadding=5 width=95% align=center>
-	<tr>
-		<td class="small">
-			<table border=0 celspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
-			<tr>
-				<td align="right" nowrap class="cellLabel small"><b>{$MOD.LBL_REP_FOLDER_NAME} </b></td>
-				<td align="left">
+	<table class="slds-table slds-no-row-hover slds-table--bordered new-report-table">
+		<tr class="slds-line-height--reset">
+			<td align="right" nowrap class="dvtCellLabel small"><b>{$MOD.LBL_REP_FOLDER_NAME} </b></td>
+			<td align="left" class="dvtCellInfo">
 				<input id="folder_id" name="folderId" type="hidden" value=''>
 				<input id="fldrsave_mode" name="folderId" type="hidden" value='save'>
-				<input id="folder_name" name="folderName" type="text" width="100%" solid="#666666" font-family="Arial, Helvetica,sans-serif" font-size="11px">
-				</td>
-			</tr>
-			<tr>
-				<td class="cellLabel small" align="right" nowrap><b>{$MOD.LBL_REP_FOLDER_DESC} </b></td>
-				<td class="cellText small" align="left"><input id="folder_desc" name="folderDesc" type="text" width="100%" solid="#666666" font-family="Arial, Helvetica,sans-serif" font-size="11px"></td>
-			</tr>
-			</table>
-		</td>
-	</tr>
+				<input id="folder_name" name="folderName" type="text" class="slds-input">
+			</td>
+		</tr>
+		<tr class="slds-line-height--reset">
+			<td class="dvtCellLabel" align="right" nowrap><b>{$MOD.LBL_REP_FOLDER_DESC} </b></td>
+			<td class="dvtCellInfo" align="left"><input id="folder_desc" name="folderDesc" type="text" class="slds-input"></td>
+		</tr>
 	</table>
 	<table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport">
-	<tr>
-		<td class="small" align="center">
-		<input name="save" value=" &nbsp;{$APP.LBL_SAVE_BUTTON_LABEL}&nbsp; " class="crmbutton small save" onClick="AddFolder();" type="button">&nbsp;&nbsp;
-		<input name="cancel" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="crmbutton small cancel" onclick="closeEditReport();" type="button">
-		</td>
-	</tr>
+		<tr>
+			<td class="small" align="center" style="padding: 5px;">
+				<input name="save" value=" &nbsp;{$APP.LBL_SAVE_BUTTON_LABEL}&nbsp; " class="slds-button slds-button_success slds-button--small" onClick="AddFolder();" type="button">&nbsp;&nbsp;
+				<input name="cancel" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="slds-button slds-button--destructive slds-button--small" onclick="closeEditReport();" type="button">
+			</td>
+		</tr>
 	</table>
 </div>
 <!-- Add new folder UI ends -->

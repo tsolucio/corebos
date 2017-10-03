@@ -105,15 +105,25 @@
 	</form>
 	<!-- Customized Reports Table Ends Here  -->
 
-<div style="display: none;left:193px;top:106px;width:155px;" id="folderLay" onmouseout="fninvsh('folderLay')" onmouseover="fnvshNrm('folderLay')">
-<table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="100%">
-	<tr><td style="border-bottom: 1px solid rgb(204, 204, 204); padding: 5px;" align="left"><b>{$MOD.LBL_MOVE_TO} :</b></td></tr>
-	<tr>
-	<td align="left">
-	{foreach item=folder from=$REPT_FOLDERS}
-	<a href="javascript:;" onClick='MoveReport("{$folder.id}","{$folder.fname}");' class="drop_down">- {$folder.name}</a>
-	{/foreach}
-	</td>
-	</tr>
-</table>
+<div id="folderLay" class="layerPopup" onmouseout="fninvsh('folderLay')" onmouseover="fnvshNrm('folderLay')" style="display: none;left:193px;top:106px;width:200px;">
+	<table class="slds-table slds-no-row-hover moveTo-report-table">
+		<thead>
+			<tr>
+				<th scope="col" class="slds-text-title--header">
+					<div class="slds-truncate moduleName">
+						<b>{$MOD.LBL_MOVE_TO} :</b>
+					</div>
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="slds-line-height--reset">
+				<td style="padding: 0;">
+					{foreach item=folder from=$REPT_FOLDERS}
+						<a href="javascript:;" onClick='MoveReport("{$folder.id}","{$folder.fname}");' class="drop_down">- {$folder.name}</a>
+					{/foreach}
+				</td>
+			</tr>
+		</tbody>
+	</table>
 </div>

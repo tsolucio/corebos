@@ -62,8 +62,6 @@ span:focus {
 
 .genHeaderSmall{
 	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	line-height: 12px;
 	color: #000000;
 	font-weight:bold;
 }
@@ -1090,15 +1088,11 @@ a.submenu:Hover{
 
 #orgLay{
 	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
-	font-size:11px;
-	text-align:left;
-	width:500px;
+	width:400px;
 	border:3px solid #CCCCCC;
 	background-color:#FFFFFF;
 	display:block;
 	position:absolute;
-	left:0px;
-	top:0px;
 }
 
 /*  Role */
@@ -1197,7 +1191,7 @@ ul li{
 
 #reportLay{
 	width:175px;
-	background-color:#CCCCCC;
+	background-color:#fff;
 	border:1px solid #ddd;
 	padding-top:5px;
 	position:absolute;
@@ -1716,9 +1710,9 @@ datatable stats {
 }
 
 #folderLay{
-	width:175px;
-	background-color:#CCCCCC;
-	border:1px solid #DDDDDD;
+	width:200px;
+	background-color:#fff;
+	/*border:1px solid #DDDDDD;*/
 	padding-top:5px;
 	position:absolute;
 	display:none;
