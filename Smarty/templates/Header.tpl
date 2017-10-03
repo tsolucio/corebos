@@ -99,7 +99,7 @@
 {if empty($Module_Popup_Edit)}
 <TABLE border=0 cellspacing=0 cellpadding=0 width=100% class="small">
 	<tr>
-		<td valign=top align=left><img src="test/logo/{$FRONTLOGO}" alt="{$COMPANY_DETAILS.name}" title="{$COMPANY_DETAILS.name}" border=0 style="width: 15em;height: 4.2em;"></td>
+		<td valign=top align=left style="padding: .5rem;"><img src="test/logo/{$FRONTLOGO}" alt="{$COMPANY_DETAILS.name}" title="{$COMPANY_DETAILS.name}" border=0 style="width: 15em;height: 4.2em;"></td>
 		<td align="center" valign=bottom>
 			{if $Application_Global_Search_Active || (isset($GS_AUTOCOMP) && isset($GS_AUTOCOMP['searchin']))}
 				<div class="slds-combobox_container slds-has-object-switcher" id="search" style="width: 50%;margin: .5rem 0;">
