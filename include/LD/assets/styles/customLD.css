@@ -1409,3 +1409,28 @@ tr td.action-block-mailManager {
     width: 18px;
     margin-left: 5px;
 }
+
+/* ===== Settings SetMenu.tpl ===== */
+.settings-block {
+    width: 15%;
+    vertical-align: top;
+}
+
+.togglePanel img {
+    width: 18px;
+}
+
+.togglePanel img:hover {
+    opacity: .7;
+}
+
+/* ===== Settings - Profiles ===== */
+.listTable img {
+    width: 12px;
+    vertical-align: bottom;
+    cursor: pointer;
+}
+
+.listTable img:hover {
+    opacity: .7;
+}

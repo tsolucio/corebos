@@ -83,73 +83,101 @@ if(typeof(e) != 'undefined')
 
 <br>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
-<tbody><tr>
-	<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
-		<div align=center>
-		<br>
-				{include file="SetMenu.tpl"}
-				<!-- DISPLAY -->
-				<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
-				<tr>
-					<td width=50 rowspan=2 valign=top><img src="{'ico-roles.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_ROLES}" width="48" height="48" border=0 title="{$MOD.LBL_ROLES}"></td>
-					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_ROLES}</b></td>
-				</tr>
-				<tr>
-					<td valign=top class="small">{$MOD.LBL_ROLE_DESCRIPTION}</td>
-				</tr>
-				</table>
+		<tr>
+			<td class=""  valign="top" width="100%">
+				<div align=center>
 				<br>
-				<table border=0 cellspacing=0 cellpadding=10 width=100% >
-				<tr>
-				<td>
-					<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
-					<tr>
-						<td><h4 class="slds-text-title--caps" id="role_treeheading">{$MOD.LBL_ROLE_HIERARCHY_TREE}</h4></td>
-						<td class="small" align=right>&nbsp;</td>
-					</tr>
-					</table>
-
-					<div id='RoleTreeFull' onMouseMove="displayCoords(event)">
-						{include file='RoleTree.tpl'}
-					</div>
-
-{*					<table border=0 cellspacing=0 cellpadding=20 width=100% >
-					<tr>
-						<td>
-							<!-- Home node -->
-							<table cellspacing=0 cellpadding=0 class="treeTable1"><tr><td><img src="images/treeHome.gif"></td><td class="small">&nbsp;<strong>Organization</strong></td><tr></table>
-							<table cellspacing=0 cellpadding=0 class="treeTable1"><tr><td><img src="images/treeExSubNode.gif"><img src="images/treePaper.gif"></td><td class="small">Administrator</td><tr></table>
-							<table cellspacing=0 cellpadding=0 class="treeTable1"><tr><td><img src="images/treeExSubNode.gif"><img src="images/treePaper.gif"></td><td class="small">CEO</td><tr></table>
-							<table cellspacing=0 cellpadding=0 class="treeTable1"><tr><td><img src="images/treeNorthSouth.gif"><img src="images/treeExSubNode.gif"><img src="images/treePaper.gif"></td><td class="small">Manager - Sales</td><tr></table>
-							<table cellspacing=0 cellpadding=0 class="treeTable1"><tr><td><img src="images/treeNorthSouth.gif"><img src="images/treeNorthSouth.gif"><img src="images/treeSubNode.gif"><img src="images/treePaper.gif"></td><td class="small">Asst Manager - Sales</td><tr></table>
-							<table cellspacing=0 cellpadding=0 class="treeTable1"><tr><td><img src="images/treeNorthSouth.gif"><img src="images/treeExSubNode.gif"><img src="images/treePaper.gif"></td><td class="small">Manager - Products</td><tr></table>
-							<table cellspacing=0 cellpadding=0 class="treeTable1"><tr><td><img src="images/treeNorthSouth.gif"><img src="images/treeNorthSouth.gif"><img src="images/treeSubNode.gif"><img src="images/treePaper.gif"></td><td class="small">Asst Manager - Products</td><tr></table>
-							<table cellspacing=0 cellpadding=0 class="treeTable1"><tr><td><img src="images/treeNorthSouth.gif"><img src="images/treeSubNode.gif"><img src="images/treePaper.gif"></td><td class="small">Manager - Office</td><tr></table>
-							<table cellspacing=0 cellpadding=0 class="treeTable1"><tr><td><img src="images/treeNorthSouth.gif"><img src="images/treeGap.gif"><img src="images/treeSubNode.gif"><img src="images/treePaper.gif"></td><td class="small">Asst Manager - Office</td><tr></table>
-							<table cellspacing=0 cellpadding=0 class="treeTable1"><tr><td><img src="images/treeSubNode.gif"><img src="images/treePaper.gif"></td><td class="small">CFO</td><tr></table>
+				{include file="SetMenu.tpl"}
+				<!-- DISPLAY Roles Settings-->
+				<table class="slds-table slds-no-row-hover slds-table--cell-buffer slds-table-moz" style="background-color: #f7f9fb;">
+					<tr class="slds-text-title--caps">
+						<td style="padding: 0;">
+							<div class="slds-page-header s1FixedFullWidth s1FixedTop forceHighlightsStencilSettings" style="height: 70px;">
+								<div class="slds-grid primaryFieldRow" style="transform: translate3d(0, -8.65823px, 0);">
+									<div class="slds-grid slds-col slds-has-flexi-truncate slds-media--center">
+										<div class="slds-media slds-no-space" style="transform: scale3d(0.864715, 0.864715, 1) translate3d(4.32911px, 2.16456px, 0);">
+											<div class="slds-media__figure slds-icon forceEntityIcon">
+												<span class="photoContainer forceSocialPhoto">
+													<div class="small roundedSquare forceEntityIcon">
+														<span class="uiImage">
+															<img src="{'ico-roles.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_ROLES}" title="{$MOD.LBL_ROLES}">
+														</span>
+													</div>
+												</span>
+											</div>
+										</div>
+										<div class="slds-media__body">
+											<h1 class="slds-page-header__title slds-m-right--small slds-truncate slds-align-middle">
+												<span class="uiOutputText"><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_ROLES}</b></span>
+												<span class="small">{$MOD.LBL_ROLE_DESCRIPTION}</span>
+											</h1>
+										</div>
+									</div>
+								</div>
+							</div>
 						</td>
 					</tr>
-					</table> *}
-					<table border=0 cellspacing=0 cellpadding=5 width=100% >
-					<tr><td class="small" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td></tr>
-					</table>
-				</td>
-				</tr>
+				</table>
+				<table border=0 cellspacing=0 cellpadding=10 width=100% >
+					<tr>
+						<td>
+							<div class="forceRelatedListSingleContainer">
+								<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
+									<div class="slds-card__header slds-grid">
+										<header class="slds-media slds-media--center slds-has-flexi-truncate">
+											<div class="slds-media__body">
+												<h2>
+													<span id="role_treeheading" class="slds-text-title--caps slds-truncate slds-m-right--xx-small actionLabel">
+														<b>{$MOD.LBL_ROLE_HIERARCHY_TREE}</b>
+													</span>
+												</h2>
+											</div>
+										</header>
+									</div>
+								</article>
+							</div>
+
+							<div id='RoleTreeFull' onMouseMove="displayCoords(event)">
+								{include file='RoleTree.tpl'}
+							</div>
+
+							<!-- Home node -->
+							<!--{* <table border=0 cellspacing=0 cellpadding=20 width=100% >
+								<tr>
+									<td>
+										<table cellspacing=0 cellpadding=0 class="treeTable1"><tr><td><img src="images/treeHome.gif"></td><td class="small">&nbsp;<strong>Organization</strong></td><tr></table>
+										<table cellspacing=0 cellpadding=0 class="treeTable1"><tr><td><img src="images/treeExSubNode.gif"><img src="images/treePaper.gif"></td><td class="small">Administrator</td><tr></table>
+										<table cellspacing=0 cellpadding=0 class="treeTable1"><tr><td><img src="images/treeExSubNode.gif"><img src="images/treePaper.gif"></td><td class="small">CEO</td><tr></table>
+										<table cellspacing=0 cellpadding=0 class="treeTable1"><tr><td><img src="images/treeNorthSouth.gif"><img src="images/treeExSubNode.gif"><img src="images/treePaper.gif"></td><td class="small">Manager - Sales</td><tr></table>
+										<table cellspacing=0 cellpadding=0 class="treeTable1"><tr><td><img src="images/treeNorthSouth.gif"><img src="images/treeNorthSouth.gif"><img src="images/treeSubNode.gif"><img src="images/treePaper.gif"></td><td class="small">Asst Manager - Sales</td><tr></table>
+										<table cellspacing=0 cellpadding=0 class="treeTable1"><tr><td><img src="images/treeNorthSouth.gif"><img src="images/treeExSubNode.gif"><img src="images/treePaper.gif"></td><td class="small">Manager - Products</td><tr></table>
+										<table cellspacing=0 cellpadding=0 class="treeTable1"><tr><td><img src="images/treeNorthSouth.gif"><img src="images/treeNorthSouth.gif"><img src="images/treeSubNode.gif"><img src="images/treePaper.gif"></td><td class="small">Asst Manager - Products</td><tr></table>
+										<table cellspacing=0 cellpadding=0 class="treeTable1"><tr><td><img src="images/treeNorthSouth.gif"><img src="images/treeSubNode.gif"><img src="images/treePaper.gif"></td><td class="small">Manager - Office</td><tr></table>
+										<table cellspacing=0 cellpadding=0 class="treeTable1"><tr><td><img src="images/treeNorthSouth.gif"><img src="images/treeGap.gif"><img src="images/treeSubNode.gif"><img src="images/treePaper.gif"></td><td class="small">Asst Manager - Office</td><tr></table>
+										<table cellspacing=0 cellpadding=0 class="treeTable1"><tr><td><img src="images/treeSubNode.gif"><img src="images/treePaper.gif"></td><td class="small">CFO</td><tr></table>
+									</td>
+								</tr>
+							</table>*}-->
+							<table border=0 cellspacing=0 cellpadding=5 width=100% >
+								<tr>
+									<td class="small" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td>
+								</tr>
+							</table>
+						</td>
+					</tr>
 				</table>
 			</td>
-			</tr>
-			</table>
-		</td>
-	</tr>
+		</tr>
 	</table>
-	</div>
 </td>
-<td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
+</tr>
+</table>
+</div>
+</td>
 </tr>
 </tbody>
 </table>
-	<div id="Drag_content">&nbsp;</div>
+<div id="Drag_content">&nbsp;</div>
 
 <script type="text/javascript">
 	var hideAll = false;

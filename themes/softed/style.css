@@ -1840,7 +1840,7 @@ ul {
 	font-weight:normal;
 	color:#000000;
 	background-color:#fff;
-	padding-left:30px;
+	padding-left:10px;
 	border-top:1px solid #fff;
 	border-bottom:1px solid #ddd;
 	border-right:1px solid #ddd;
@@ -1855,7 +1855,7 @@ ul {
 	font-weight:bold;
 	color:#000000;
 	background-color:#ffffff;
-	padding-left:30px;
+	padding-left:10px;
 	border-left:3px solid #ddd;
 	border-bottom:3px solid #ddd;
 	border-top:2px solid #ddd;
@@ -1918,15 +1918,9 @@ ul {
 }
 
 .listTable{
-	border-left:1px solid #cccccc;
-	border-right:1px solid #cccccc;
-	border-bottom:1px solid #cccccc;
 }
 
 .listTableRow{
-	border-bottom:1px solid #eaeaea;
-	border-right	:1px solid #eaeaea;
-	border-bottom:1px solid #eaeaea;
 	border-bottom:1px solid #eaeaea;
 }
 
@@ -1936,7 +1930,7 @@ ul {
 
 .listTableTopButtons{
 	background-color:#efefff;
-	background-image:url(images/layerPopupBg.gif);
+	/*background-image:url(images/layerPopupBg.gif);*/
 }
 
 /*  Buttons */
