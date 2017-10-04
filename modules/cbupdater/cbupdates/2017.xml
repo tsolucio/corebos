@@ -112,4 +112,11 @@
 	<classname>makeDurationCalendarFieldVisible</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Fix reports and filters that have taskstatus column to replace to eventstatus</description>
+	<filename>build/changeSets/2017/fixCalendarTaskStatusToEventStatus.php</filename>
+	<classname>fixCalendarTaskStatusToEventStatus</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

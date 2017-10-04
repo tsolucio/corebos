@@ -9,7 +9,7 @@
  ********************************************************************************/
 
 $mod_strings = array(
-	'LBL_MODULE_NAME' => 'Trouble Tickets',
+	'LBL_MODULE_NAME' => 'Support Tickets',
 	'LBL_GROUP' => 'Group',
 	'LBL_ACCOUNT_NAME' => 'Organisation Name',
 	'LBL_CONTACT_NAME' => 'Contact Name',
@@ -165,6 +165,6 @@ $mod_strings = array(
 	'From Portal' => 'From Portal',
 	'From mailscanner' => 'From Mail Converter',
 	'Comment Added' => 'Comment Added',
-	'HelpDesk ID' => 'Trouble Tickets ID',
+	'HelpDesk ID' => 'Support Tickets ID',
 );
 ?>

@@ -1,24 +1,12 @@
 <?php
-/*******************************************************************************
- * The contents of this file are subject to the following licences:
- * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
- * - vtiger CRM Public License Version 1.0 
- * You may not use this file except in compliance with the License
- * Software distributed under the License is distributed on an  "AS IS" basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is: SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
- * Portions created by Vicus are Copyright (C) Vicus.
  * All Rights Reserved.
- * Feel free to use / redistribute these languagefiles under the VPL 1.0.
- * This translations is based on earlier work of: 
- * - IT-Online.nl <www.it-online.nl>
- * - Weltevree.org <www.Weltevree.org>
  ********************************************************************************/
-
 /*******************************************************************************
  * Vicus eBusiness Solutions Version Control
  * @package 	NL-Dutch
@@ -28,6 +16,10 @@
  * @source	$Source: /var/lib/cvs/vtiger540/Dutch/modules/Settings/language/nl_nl.lang.php,v $
  * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
  * @license	vtiger CRM Public License Version 1.0 (by definition)
+ * Feel free to use / redistribute these languagefiles under the VPL 1.0.
+ * This translations is based on earlier work of: 
+ * - IT-Online.nl <www.it-online.nl>
+ * - Weltevree.org <www.Weltevree.org>
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -54,35 +46,6 @@ $mod_strings = Array(
 'LBL_CURRENCY_LIST'=>'Valuta lijst',
 
 'NTC_DELETE_CONFIRMATION'=>'Weet u zeker dat u deze informatie wilt verwijderen?',
-'LEADCUSTOMFIELDS'=>'Lead velden',
-'ACCOUNTCUSTOMFIELDS'=>'Account velden',
-'CONTACTCUSTOMFIELDS'=>'Contact velden',
-'OPPORTUNITYCUSTOMFIELDS'=>'Verkoopkans velden',
-'HELPDESKCUSTOMFIELDS'=>'Helpdesk velden',
-'PRODUCTCUSTOMFIELDS'=>'Product velden',
-'VENDORCUSTOMFIELDS'=>'Leverancier velden',
-'PRICEBOOKCUSTOMFIELDS'=>'Prijslijst velden',
-'POCUSTOMFIELDS'=>'Inkooporder velden',
-'SOCUSTOMFIELDS'=>'Verkooporder velden',
-'QUOTESCUSTOMFIELDS'=>'Offerte velden',
-'INVOICECUSTOMFIELDS'=>'Factuur velden',
-'EDITLEADPICKLISTVALUES'=>'Verander lead selectielijst ',
-'EDITACCOUNTPICKLISTVALUES'=>'Verander account selectielijst ',
-'EDITCONTACTPICKLISTVALUES'=>'Verander contact selectielijst ',
-'EDITOPPORTUNITYPICKLISTVALUES'=>'Verander verkoopkans selectielijst ',
-'EDITHELPDESKPICKLISTVALUES'=>'Verander helddesk selectielijst ',
-'EDITPRODUCTPICKLISTVALUES'=>'Verander product selectielijst ',
-'EDITEVENTPICKLISTVALUES'=>'Verander afspraak selectielijst ',
-'EDITTASKPICKLISTVALUES'=>'Verander taak selectielijst ',
-'EDITRSSPICKLISTVALUES'=>'Verander Rss selectielijst',
-'EDITVENDORPICKLISTVALUES'=>'Verander leverancier selectielijst',
-'EDITPBPICKLISTVALUES'=>'Verander prijslijst selectielijst',
-'EDITPOPICKLISTVALUES'=>'Verander Inkooporder selectielijst',
-'EDITSOPICKLISTVALUES'=>'Verander verkooporder selectielijst',
-'EDITQUOTEPICKLISTVALUES'=>'Verander offerte selectielijst',
-'EDITINVOICEPICKLISTVALUES'=>'Verander factuur selectielijst',
-
-//Settings/index.php
 
 'LBL_PICKLIST_FIELD_SETTINGS'=>'Selectie veld instellingen:',
 
@@ -94,7 +57,6 @@ $mod_strings = Array(
 'Products'=>'Producten',
 'Events'=>'Afspraken',
 'Activities'=>'Activiteiten',
-
 
 'CustomFields'=>' Aangepaste velden',
 'NewCustomField'=>'Nieuw aangepast veld',
@@ -385,11 +347,7 @@ $mod_strings = Array(
 'CUSTOMFIELDMAPPING'=>'Koppel aangepast veld',
 'LBL_FIELD_MAPPING'=>'Koppel veld',
 'LBL_LEAD_FIELD'=>'Aangepast veld lead',
-//After 4.2 GA
 'LBL_TEXT_AREA'=>'Tekst gebied',
-//for Edit ordering the blocks
-'NOTESCUSTOMFIELDS'=>'Aangepaste velden notities',
-//Added fields after 4.2 ptach 2
 'LBL_ASSIGN_MODULE_OWNERS'=>'Benoem module eigenaren',
 'LBL_MODULE_OWNERS'=>'Module eigenaren',
 'LBL_ASSIGN_MODULE_OWNERS_INFO'=>' - Benoem eigenaren voor elke module',
@@ -397,7 +355,6 @@ $mod_strings = Array(
 'LBL_OWNER'=>'Eigenaar',
 'LBL_MIGRATION'=>'Migreer van een vorige versie',
 'LBL_MIGRATION_INFO'=>' - Migreer van een vorige vTiger versie',
-//Added for 5 GA - Description of Settings UI
 'LBL_USER_DESCRIPTION'=>'Definieer de gebruikers die CRM gebruiken',
 'LBL_ROLE_DESCRIPTION'=>'Definieer de hierarchie van de rollen en voeg gebruikers toe',
 'LBL_PROFILE_DESCRIPTION'=>'Definieer profielen om toegangsrechten te geven per rol',
@@ -430,7 +387,6 @@ $mod_strings = Array(
 'LBL_GROUP_DESC'=>'Beheer Gebruikersgroepen',
 'LBL_MAIL_MERGE_DESC'=>'Beheer e-mail merge sjablonen die u gebruikt in de CRM modules',
 
-//Added fields after 5.0 Alpha
 'LBL_REQUIRE_SMTP_AUTHENTICATION'=>'Heeft u SMTP authenticatie?',
 'LBL_ANNOUNCEMENT'=>'Aankondiging',
 'LBL_SETTING_ANNOUNCEMENT'=>'Aankondiging',
@@ -943,11 +899,8 @@ $mod_strings = Array(
 'LBL_MAPPED_FIELDS' => 'Mapped Velden',
 'LEADS_CUSTOM_FIELD_MAPPING_DESCRIPTION' => 'Map uw Leads Maatwerkvelden met Accounts, Contacts en Potentielen',
 'LEADS_CUSTOM_FIELD_MAPPING'=> 'Leads Maatwerk Mapping',
-'LBL_CALENDER_CUSTOMFIELDS' => 'Kalender Maatwerk Velden',
-'LBL_CALENDER_CUSTOMFIELDS_DESCRIPTION' => 'U kunt Maatwerk Velden voor de Kalender aanmaken',
 'LBL_GO_BACK'=>'Ga Terug',
 
-//Added fix for: 5418
 'LBL_USE_PREFIX' => 'Gebruik Voorvoegsel',
 'LBL_START_SEQ' => 'Start Volgorde',
 'LBL_MODULE_NUMBERING' => 'Module Nummering',
@@ -956,7 +909,6 @@ $mod_strings = Array(
 'LBL_IN_USE' => 'IN GEBRUIK',
 'LBL_MODULE_NUMBERING_FIX_MISSING' => 'Update Ontbrekende Record Volgorde',
 
-//Added for: 5473
 'LBL_SHARING_ACCESS_HELPNOTE' => 'Na Wijzigingen: klik op de Herbereken knop om de wijzigen door te voeren.',
 
 'LBL_ADD_CUSTOMFIELD' => 'Add Custom Field',

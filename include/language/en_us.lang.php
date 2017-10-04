@@ -324,7 +324,7 @@ $app_strings = array(
 'COMBO_CONTACTS' => 'Contacts',
 'COMBO_POTENTIALS' => 'Opportunities',
 'COMBO_PRODUCTS' => 'Products',
-'COMBO_HELPDESK' => 'Trouble Tickets',
+'COMBO_HELPDESK' => 'Support Tickets',
 'COMBO_USERS' => 'Users',
 'COMBO_CAMPAIGNS' => 'Campaigns',
 'COMBO_VENDORS' => 'Vendors', //MSL
@@ -376,7 +376,7 @@ $app_strings = array(
 'Potentials' => 'Opportunities',
 'Products' => 'Products',
 'Emails' => 'Email',
-'HelpDesk' => 'Trouble Tickets',
+'HelpDesk' => 'Support Tickets',
 'Activities' => 'Activities',
 'Events' => 'Events',
 'Tasks' => 'Tasks',
@@ -405,7 +405,7 @@ $app_strings = array(
 'SalesOrder Status History' => 'SalesOrder Status History',
 'Quote Stage History' => 'Quote Stage History',
 'Invoice Status History' => 'Invoice Status History',
-'LBL_TROUBLE_TICKET' => 'Trouble Ticket',
+'LBL_TROUBLE_TICKET' => 'Support Ticket',
 'My Home Page' => 'My Home Page',
 'Marketing' => 'Marketing',
 'Sales' => 'Sales',
@@ -478,7 +478,7 @@ $app_strings = array(
 'COMBO_INVOICES' => 'Invoice',
 'LBL_INVOICE_NAME' => 'Invoice',
 'LBL_QUOTES_NAME' => 'Quote',
-'LBL_HELPDESK_NAME' => 'Trouble Ticket',
+'LBL_HELPDESK_NAME' => 'Support Ticket',
 'LBL_CAMPAIGN_NAME' => 'Campaign Name',
 'LBL_NEW_INVOICE_BUTTON_TITLE' => 'New Invoice [Alt+I]',
 'LBL_NEW_INVOICE_BUTTON_KEY' => 'I',
@@ -934,7 +934,7 @@ $app_strings = array(
 'Pending Input'=>'Pending Input',
 //Export Records <-----ENDS
 
-'Trouble Tickets'=>'Trouble Tickets',
+'Trouble Tickets'=>'Support Tickets',
 'LBL_NOT_ACCESSIBLE'=>'Not Accessible',
 
 //Added for Existing Picklist Strings for both Lead module (convert div) and for potential module.
