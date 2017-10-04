@@ -2933,7 +2933,7 @@ function checkFileAccessForDeletion($filepath) {
 
 /** Function to check the file access is made within web root directory. */
 function checkFileAccess($filepath) {
-	if (!isFileAccessible($filepath)) {
+	if (!isInsideApplication($filepath)) {
 		global $default_charset;
 		echo "Sorry! Attempt to access restricted file.<br>";
 		echo 'We are looking for this file path: '.htmlspecialchars($filepath, ENT_QUOTES, $default_charset).'<br>';
@@ -2947,26 +2947,10 @@ function checkFileAccess($filepath) {
  * @global String $root_directory vtiger root directory as given in config.inc.php file.
  * @param String $filepath relative path to the file which need to be verified
  * @return Boolean true if file is a valid file within vtiger root directory, false otherwise.
+ * @deprecated
  */
 function isFileAccessible($filepath) {
-	global $root_directory;
-	// Set the base directory to compare with
-	$use_root_directory = $root_directory;
-	if (empty($use_root_directory)) {
-		$use_root_directory = realpath(__DIR__ . '/../../.');
-	}
-
-	$realfilepath = realpath($filepath);
-
-	/** Replace all \\ with \ first */
-	$realfilepath = str_replace('\\\\', '\\', $realfilepath);
-	$rootdirpath = str_replace('\\\\', '\\', $use_root_directory);
-
-	/** Replace all \ with / now */
-	$realfilepath = str_replace('\\', '/', $realfilepath);
-	$rootdirpath = str_replace('\\', '/', $rootdirpath);
-
-	return !(stripos($realfilepath, $rootdirpath) !== 0);
+	return isInsideApplication($filepath);
 }
 
 /** Function to get the ActivityType for the given entity id
