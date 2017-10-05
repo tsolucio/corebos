@@ -190,8 +190,8 @@ $output.='<div class="layerPopup" id="sharingRule"><form name="newGroupForm" act
 <input type="hidden" name="shareId" value="'.$shareid.'">
 <input type="hidden" name="mode" value="'.$mode.'">
 <input type="hidden" id="rel_module_lists" name="rel_module_lists" value="'.$relatedmodule.'">
-<table border=0 cellspacing=0 cellpadding=5 width=100% class=layerHeadingULine>
-<tr>';
+<table class="slds-table slds-no-row-hover">
+<tr class="slds-text-title--header">';
 
 if($sharing_module == 'Accounts')
 {
@@ -201,66 +201,62 @@ else
 {
 	$display_module = getTranslatedString($sharing_module,$sharing_module);
 }
-$output .= '<td class=layerPopupHeading " align="left">'.$display_module.' - ';
+$output .= '<th scope="col"><div class="slds-truncate moduleName">'.$display_module.' - ';
 if($mode == 'edit')
-	$output .= $mod_strings['LBL_EDIT_CUSTOM_RULE'].'</td>';
+	$output .= $mod_strings['LBL_EDIT_CUSTOM_RULE'].'</div></th>';
 else
-	$output .= $mod_strings['LBL_ADD_CUSTOM_RULE'].'</td>';
-$output .= '<td align="right" class="small"><img src="'. vtiger_imageurl('close.gif', $theme).'" border=0 alt="'.$app_strings["LBL_CLOSE"].'" title="'.$app_strings["LBL_CLOSE"].'" style="cursor:pointer" onClick="hide(\'sharingRule\')";></td>
+	$output .= $mod_strings['LBL_ADD_CUSTOM_RULE'].'</div></th>';
+$output .= '<th scope="col" style="padding:.5rem;text-align:right;"><div class="slds-truncate"><img src="'. vtiger_imageurl('close.gif', $theme).'" border=0 alt="'.$app_strings["LBL_CLOSE"].'" title="'.$app_strings["LBL_CLOSE"].'" style="cursor:pointer" onClick="hide(\'sharingRule\')";></div></th>
 
 </tr>
 </table>
-<table border=0 cellspacing=0 cellpadding=5 width=95% align=center>
+<table class="slds-table slds-no-row-hover">
 <tr>
 	<td class="small">
-	<table border=0 celspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
-	<tr>
-		<td><b>'.$mod_strings['LBL_STEP'].' 1 : '.$display_module.' '.$app_strings['LBL_LIST_OF'].' </b>('.$mod_strings['LBL_SELECT_ENTITY'].')</td>
-		<td>&nbsp;</td>
+	<table class="slds-table slds-table--bordered slds-no-row-hover">
+	<tr class="slds-line-height--reset">
+		<td class="dvtCellLabel text-left" colspan="2"><b>'.$mod_strings['LBL_STEP'].' 1 : '.$display_module.' '.$app_strings['LBL_LIST_OF'].' </b>('.$mod_strings['LBL_SELECT_ENTITY'].')</td>
 	</tr>
-	<tr>
-		<td style="padding-left:20px;text-align:left;">';
+	<tr class="slds-line-height--reset">
+		<td class="dvtCellInfo" colspan="2">';
 //combovalues
 		$i18nmod = getTranslatedString($sharing_module,$sharing_module);
-		$output.='<select id="'.$i18nmod.'_share" name="'.$sharing_module.'_share" onChange="fnwriteRules(\''.$i18nmod.'\',\''.$relatedmodule.'\')";>'.$fromComboValues.'</select>';
+		$output.='<select id="'.$i18nmod.'_share" name="'.$sharing_module.'_share" class="slds-select" onChange="fnwriteRules(\''.$i18nmod.'\',\''.$relatedmodule.'\')";>'.$fromComboValues.'</select>';
 		$output.='</td>
 
-		<td>&nbsp;</td>
 	</tr>
 	<tr><td colspan="2">&nbsp;</td></tr>
-	<tr>
+	<tr class="slds-line-height--reset">
 
-		<td style="text-align:left;"><b>'.$mod_strings['LBL_STEP'].' 2 : '.$mod_strings['LBL_CAN_BE_ACCESSED_BY'].' </b>('.$mod_strings['LBL_SELECT_ENTITY'].')</td>
-		<td align="left"><b>'.$mod_strings['LBL_PERMISSIONS'].'</b></td>
+		<td class="dvtCellLabel text-left"><b>'.$mod_strings['LBL_STEP'].' 2 : '.$mod_strings['LBL_CAN_BE_ACCESSED_BY'].' </b>('.$mod_strings['LBL_SELECT_ENTITY'].')</td>
+		<td class="dvtCellInfo"><b>'.$mod_strings['LBL_PERMISSIONS'].'</b></td>
 	</tr>
-	<tr>
-		<td style="padding-left:20px;text-align:left;">
+	<tr class="slds-line-height--reset">
+		<td class="dvtCellLabel text-left">
 
-		<select id="'.$i18nmod.'_access" name="'.$sharing_module.'_access" onChange="fnwriteRules(\''.$i18nmod.'\',\''.$relatedmodule.'\')";>';
+		<select id="'.$i18nmod.'_access" name="'.$sharing_module.'_access" class="slds-select" onChange="fnwriteRules(\''.$i18nmod.'\',\''.$relatedmodule.'\')";>';
 
 		$output.=$toComboValues.'</select>
 
 		</td>
-		<td>
+		<td class="dvtCellInfo">
 
-		<select	id="share_memberType" name="share_memberType" onChange="fnwriteRules(\''.$i18nmod.'\',\''.$relatedmodule.'\')";>';
+		<select	id="share_memberType" name="share_memberType" class="slds-select" onChange="fnwriteRules(\''.$i18nmod.'\',\''.$relatedmodule.'\')";>';
 		$output .= $sharPerCombo;
 		$output .= '</select>
 
 		</td>
 	</tr>
 	<tr><td colspan="2">&nbsp;</td></tr>
-	<tr><td colspan="2" align="left">&nbsp;</td></tr>
-	<tr>
-		<td colspan="2" class="dvInnerHeader"><b>'.$mod_strings['LBL_RULE_CONSTRUCTION'].'</b></td>
-
+	<tr class="slds-line-height--reset">
+		<td colspan="2" class="dvtCellLabel text-left"><b>'.$mod_strings['LBL_RULE_CONSTRUCTION'].'</b></td>
 	</tr>
 	<tr>
-		<td style="white-space:normal;" colspan="2" id="rules">&nbsp;
+		<td class="dvtCellInfo" style="white-space:normal;" colspan="2" id="rules">
 	</td>
 	</tr>
 	<tr>
-		<td style="white-space:normal;" colspan="2" id="relrules">&nbsp;
+		<td class="dvtCellInfo" style="white-space:normal;" colspan="2" id="relrules">
 		</td>
 	</tr>
 	</table>
@@ -269,9 +265,9 @@ $output .= '<td align="right" class="small"><img src="'. vtiger_imageurl('close.
 </table>
 <table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport">
 	<tr>
-		<td colspan="2" align="center">
-		<input type="submit" class="crmButton small save" name="add" value="'.$mod_strings['LBL_ADD_RULE'].'">&nbsp;&nbsp;
-	</td>
+		<td colspan="2" align="center" style="padding:5px;">
+			<input type="submit" class="slds-button slds-button_success slds-button--small" name="add" value="'.$mod_strings['LBL_ADD_RULE'].'">
+		</td>
 	</tr>
 </table>';
 

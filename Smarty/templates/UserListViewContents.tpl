@@ -16,7 +16,7 @@
 			<header class="slds-media slds-media--center slds-has-flexi-truncate">
 				<div class="slds-media__body">
 					<h2>
-						<span id="role_treeheading" class="slds-text-title--caps slds-truncate slds-m-right--xx-small actionLabel">
+						<span class="slds-text-title--caps slds-truncate slds-m-right--xx-small actionLabel">
 							<strong>{$MOD.LBL_USERS_LIST}</strong>
 						</span>
 					</h2>

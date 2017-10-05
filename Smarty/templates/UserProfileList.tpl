@@ -64,7 +64,7 @@
 												<header class="slds-media slds-media--center slds-has-flexi-truncate">
 													<div class="slds-media__body">
 														<h2>
-															<span id="role_treeheading" class="slds-text-title--caps slds-truncate slds-m-right--xx-small actionLabel">
+															<span class="slds-text-title--caps slds-truncate slds-m-right--xx-small actionLabel">
 																<b>{$MOD.LBL_PROFILES_LIST}</b>
 															</span>
 														</h2>
@@ -89,17 +89,17 @@
 											<tr>
 												<td role="gridcell" class="slds-text-align--center" style="width: 1.5rem;" >{$LIST_HEADER.0}</td>
 												<th class="slds-text-title--caps" scope="col">
-													<span class="slds-truncate slds-text-link--reset" style="padding: .5rem 0;">
+													<span class="slds-truncate" style="padding: .5rem 0;">
 														{$LIST_HEADER.1}
 													</span>
 												</th>
 												<th class="slds-text-title--caps" scope="col">
-													<span class="slds-truncate slds-text-link--reset" style="padding: .5rem 0;">
+													<span class="slds-truncate" style="padding: .5rem 0;">
 														{$LIST_HEADER.2}
 													</span>
 												</th>
 												<th class="slds-text-title--caps" scope="col">
-													<span class="slds-truncate slds-text-link--reset" style="padding: .5rem 0;">
+													<span class="slds-truncate" style="padding: .5rem 0;">
 														{$LIST_HEADER.3}
 													</span>
 												</th>

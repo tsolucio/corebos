@@ -4,6 +4,11 @@
     font-size: 12px!important;
 }
 
+.text-red {
+    color: red;
+}
+
+
 /*========    Header    ==========*/
 
 .headerlink img {
@@ -853,21 +858,13 @@ li[title="More Information"] svg {
     margin: 0!important;
 }
 
-
-
-
-
-
-
-
-
-
-
 /*=========   END DETAIL VIEW  ==========*/
-
 
 /*=========   DetailView - DetailViewUI - DetailViewUIUser  ==========*/
 
+.dvtCellInfo img {
+    width:18px;
+}
 
 /*remove dotted outline/border in Firefox*/
 
@@ -1433,4 +1430,15 @@ tr td.action-block-mailManager {
 
 .listTable img:hover {
     opacity: .7;
+}
+
+/* ===== Settings - OrgSharingDetailView ===== */
+.sharing-rules-img img {
+    width: 12px;
+    vertical-align: middle;
+}
+
+/* ===== Settings - FieldAccess ===== */
+.slds-no-padding td {
+    padding: 0 .5rem;
 }

@@ -12,89 +12,143 @@
 
 <br>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
-<tbody><tr>
-	<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
-	<br>
-
-	<div align=center>
-			{include file='SetMenu.tpl'}
-				<!-- DISPLAY -->
-				<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
-				<form action="index.php" method="post" name="new" id="form" onsubmit="VtigerJS_DialogBox.block();">
-				<input type="hidden" name="module" value="Settings">
-				<input type="hidden" name="action" value="createnewgroup">
-				<input type="hidden" name="mode" value="create">
-				<input type="hidden" name="parenttab" value="Settings">
-				<tr>
-					<td width=50 rowspan=2 valign=top><img src="{'ico-groups.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_GROUPS}" width="48" height="48" border=0 title="{$MOD.LBL_GROUPS}"></td>
-					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$CMOD.LBL_GROUPS}</b></td>
-				</tr>
-				<tr>
-					<td valign=top class="small">{$MOD.LBL_GROUP_DESC}</td>
-				</tr>
-				</table>
-				<br>
-				<table border=0 cellspacing=0 cellpadding=10 width=100% >
-				<tr>
-
-				<td>
-				
-					<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
-					<tr>
-						<td class="big"><strong>{$MOD.LBL_GROUP_LIST}</strong></td>
-						<td class="small" align=right>{$CMOD.LBL_TOTAL} {$GRPCNT} {$CMOD.LBL_GROUPS} </td>
-					</tr>
-					</table>
-					<table border=0 cellspacing=0 cellpadding=5 width=100% class="listTableTopButtons">
-
-					<tr>
-					     <td class=small align=right>
-						<input title="{$CMOD.LBL_NEW_GROUP}" class="crmButton create small" type="submit" name="New" value="{$CMOD.LBL_NEW_GROUP}"/>
-					     </td>
-					</tr>
-					</table>
-						
-					<table border=0 cellspacing=0 cellpadding=5 width=100% class="listTable">
-					<tr>
-						<td class="colHeader small" valign=top width=2%>#</td>
-						<td class="colHeader small" valign=top width=8%>{$LIST_HEADER.0}</td>
-						<td class="colHeader small" valign=top width=30%>{$LIST_HEADER.1}</td>
-						<td class="colHeader small" valign=top width=60%>{$LIST_HEADER.2}</td>
-					  </tr>
-						{foreach name=grouplist item=groupvalues from=$LIST_ENTRIES}
-					  <tr>
-						<td class="listTableRow small" valign=top>{$smarty.foreach.grouplist.iteration}</td>
-						<td class="listTableRow small" valign=top nowrap>
-							<a href="index.php?module=Settings&action=createnewgroup&returnaction=listgroups&parenttab=Settings&mode=edit&groupId={$groupvalues.groupid}"><img src="{'editfield.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LNK_EDIT}" title="{$APP.LNK_EDIT}" border="0" align="absmiddle"></a>&nbsp;|
-							<a href="#" onClick="deletegroup(this,'{$groupvalues.groupid}')";><img src="{'delete.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LNK_DELETE}" title="{$APP.LNK_DELETE}" border="0" align="absmiddle"></a>
-						</td>
-						<td class="listTableRow small" valign=top><strong>
-							<a href="index.php?module=Settings&action=GroupDetailView&parenttab=Settings&groupId={$groupvalues.groupid}">{$groupvalues.groupname}</a></strong>
-						</td>
-						<td class="listTableRow small" valign=top>{$groupvalues.description}</td>
-					  </tr>
-					{/foreach}
-					</table>
-					<table border=0 cellspacing=0 cellpadding=5 width=100% >
-					<tr><td class="small" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td></tr>
-					</table>
-				</td>
-				</tr>
-				</table>
+	<tbody>
+		<tr>
+			<td valign="top" width="100%">
+				<div align=center>
+					<br>
+						{include file='SetMenu.tpl'}
+											<!-- DISPLAY Groups Settings-->
+											<form action="index.php" method="post" name="new" id="form" onsubmit="VtigerJS_DialogBox.block();">
+												<input type="hidden" name="module" value="Settings">
+												<input type="hidden" name="action" value="createnewgroup">
+												<input type="hidden" name="mode" value="create">
+												<input type="hidden" name="parenttab" value="Settings">
+												<table class="slds-table slds-no-row-hover slds-table--cell-buffer slds-table-moz" style="background-color: #f7f9fb;">
+													<tr class="slds-text-title--caps">
+														<td style="padding: 0;">
+															<div class="slds-page-header s1FixedFullWidth s1FixedTop forceHighlightsStencilSettings" style="height: 70px;">
+																<div class="slds-grid primaryFieldRow" style="transform: translate3d(0, -8.65823px, 0);">
+																	<div class="slds-grid slds-col slds-has-flexi-truncate slds-media--center">
+																		<div class="slds-media slds-no-space" style="transform: scale3d(0.864715, 0.864715, 1) translate3d(4.32911px, 2.16456px, 0);">
+																			<div class="slds-media__figure slds-icon forceEntityIcon">
+																				<span class="photoContainer forceSocialPhoto">
+																					<div class="small roundedSquare forceEntityIcon">
+																						<span class="uiImage">
+																							<img src="{'ico-groups.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_GROUPS}" width="48" height="48" border=0 title="{$MOD.LBL_GROUPS}">
+																						</span>
+																					</div>
+																				</span>
+																			</div>
+																		</div>
+																		<div class="slds-media__body">
+																			<h1 class="slds-page-header__title slds-m-right--small slds-truncate slds-align-middle">
+																				<span class="uiOutputText">
+																					<b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$CMOD.LBL_GROUPS}</b>
+																				</span>
+																				<span class="small">{$MOD.LBL_GROUP_DESC}</span>
+																			</h1>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</td>
+													</tr>
+												</table>
+												<table border=0 cellspacing=0 cellpadding=10 width=100% >
+													<tr>
+														<td>
+															<div class="forceRelatedListSingleContainer">
+																<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
+																	<div class="slds-card__header slds-grid">
+																		<header class="slds-media slds-media--center slds-has-flexi-truncate">
+																			<div class="slds-media__body">
+																				<h2>
+																					<span class="slds-text-title--caps slds-truncate slds-m-right--xx-small actionLabel">
+																						<strong>{$MOD.LBL_GROUP_LIST}</strong>
+																					</span>
+																				</h2>
+																			</div>
+																		</header>
+																		<div class="slds-no-flex">
+																			<div class="actionsContainer">
+																				&nbsp;<input title="{$CMOD.LBL_NEW_GROUP}" class="slds-button slds-button--small slds-button_success" type="submit" name="New" value="{$CMOD.LBL_NEW_GROUP}"/>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="slds-card__body slds-card__body--inner">
+																		<div class="commentData">
+																			{$CMOD.LBL_TOTAL} {$GRPCNT} {$CMOD.LBL_GROUPS}
+																		</div>
+																	</div>
+																</article>
+															</div>
+															<br>
+															<table class="slds-table slds-table--bordered listTable">
+																<thead>
+																	<tr>
+																		<td role="gridcell" class="slds-text-align--center" style="width: 1.5rem;" >#</td>
+																		<th class="slds-text-title--caps" scope="col">
+																			<span class="slds-truncate" style="padding: .5rem 0;">
+																				{$LIST_HEADER.0}
+																			</span>
+																		</th>
+																		<th class="slds-text-title--caps" scope="col">
+																			<span class="slds-truncate" style="padding: .5rem 0;">
+																				{$LIST_HEADER.1}
+																			</span>
+																		</th>
+																		<th class="slds-text-title--caps" scope="col">
+																			<span class="slds-truncate" style="padding: .5rem 0;">
+																				{$LIST_HEADER.2}
+																			</span>
+																		</th>
+																	</tr>
+																</thead>
+																<tbody>
+																	{foreach name=grouplist item=groupvalues from=$LIST_ENTRIES}
+																		<tr class="slds-hint-parent slds-line-height--reset">
+																			<td role="gridcell" class="slds-text-align--center">{$smarty.foreach.grouplist.iteration}</td>
+																			<th scope="row">
+																				<div class="slds-truncate">
+																					<a href="index.php?module=Settings&action=createnewgroup&returnaction=listgroups&parenttab=Settings&mode=edit&groupId={$groupvalues.groupid}">
+																						<img src="{'editfield.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LNK_EDIT}" title="{$APP.LNK_EDIT}" border="0" align="absmiddle">
+																					</a>
+																					&nbsp;|
+																					<a href="#" onClick="deletegroup(this,'{$groupvalues.groupid}')";>
+																						<img src="{'delete.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LNK_DELETE}" title="{$APP.LNK_DELETE}" border="0" align="absmiddle">
+																					</a>
+																				</div>
+																			</th>
+																			<th scope="row">
+																				<div class="slds-truncate">
+																					<strong><a href="index.php?module=Settings&action=GroupDetailView&parenttab=Settings&groupId={$groupvalues.groupid}">{$groupvalues.groupname}</a></strong>
+																				</div>
+																			</th>
+																			<th scope="row">
+																				<div class="slds-truncate">{$groupvalues.description}</div>
+																			</th>
+																		</tr>
+																	{/foreach}
+																</tbody>
+															</table>
+															<table border=0 cellspacing=0 cellpadding=5 width=100% >
+															<tr><td class="small" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td></tr>
+															</table>
+														</td>
+													</tr>
+												</table>
+											</form><!-- name="new" id="form" -->
+										</td><!-- /.settingsSelectedUI from SetMenu.tpl-->
+									</tr>
+								</table><!-- 2nd table from SetMenu.tpl -->
+							</td>
+						</tr>
+					</table><!-- 1st table from SetMenu.tpl -->
+				</div><!-- /aling=center -->
 			</td>
-			</tr>
-			</table>
-		</td>
-	</tr>
-	</form>
-	</table>
-
-	</div>
-</td>
-        <td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
-   </tr>
-</tbody>
+		</tr>
+	</tbody>
 </table>
 
 <div id="tempdiv" style="display:block;position:absolute;left:350px;top:200px;"></div>

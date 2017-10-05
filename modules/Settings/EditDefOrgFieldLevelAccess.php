@@ -73,7 +73,14 @@ function getStdOutput($fieldListResult, $noofrows, $module)
 		{
 			$visible = "";
 		}
-		$standCustFld []= '<input type="checkbox" name="'.$adb->query_result($fieldListResult,$i,"fieldid").'" '.$visible.' '.$readonly.'>';
+		$standCustFld []= '
+			<span class="slds-checkbox">
+				<input type="checkbox" id="'.$adb->query_result($fieldListResult,$i,"fieldid").'" name="'.$adb->query_result($fieldListResult,$i,"fieldid").'" '.$visible.' '.$readonly.'>
+				<label class="slds-checkbox__label" for="'.$adb->query_result($fieldListResult,$i,"fieldid").'">
+					<span class="slds-checkbox--faux"></span>
+				</label>
+			</span>
+		';
 	}
 	$standCustFld=array_chunk($standCustFld,2);
 	$standCustFld=array_chunk($standCustFld,4);

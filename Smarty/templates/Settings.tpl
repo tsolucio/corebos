@@ -95,7 +95,7 @@
 																{if $data.description eq $description}
 																{assign var=description value=$data.description|@getTranslatedString:'Settings'}
 																{/if}
-																<td class="small" valign=top>
+																<td class="small" valign=top style="white-space: normal;">
 																	<div class="slds-media__body">
 																		<span class="small">{$description}</span>
 																	</div>
