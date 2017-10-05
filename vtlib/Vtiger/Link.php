@@ -235,7 +235,7 @@ class Vtiger_Link {
 			if($return == false) continue;
 			$instance = new self();
 			$instance->initialize($row);
-			if(!empty($row['handler_path']) && isFileAccessible($row['handler_path'])) {
+			if (!empty($row['handler_path']) && isInsideApplication($row['handler_path'])) {
 				checkFileAccessForInclusion($row['handler_path']);
 				require_once $row['handler_path'];
 				$linkData = new Vtiger_LinkData($instance, $current_user);
