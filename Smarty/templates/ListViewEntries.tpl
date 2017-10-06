@@ -118,7 +118,7 @@
 
 				<!-- =====================LIGHITNG DESGIN LIST VIEW =========== -->
 				<div >
-					<table id="resizableTable" class="slds-table slds-table--bordered slds-table--fixed-layout ld-font">
+					<table id="resizableTable" class="slds-table slds-table--bordered  ld-font">
 						<thead>
 							<!-- Table Headers -->
 							<tr>
@@ -165,7 +165,7 @@
 								</td>
 
 								{foreach item=data from=$entity} {* vtlib customization: Trigger events on listview cell *}
-								<th scope="row">
+								<th scope="row" style="padding-left: .5rem!important;">
 									<div class="slds-truncate" onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">
 										{$data}
 									</div>
@@ -349,4 +349,4 @@
 	</table>
 </form>
 
-<div id="basicsearchcolumns" style="display:none;"><select name="search_field" id="bas_searchfield" class="txtBox" style="width:150px">{html_options options=$SEARCHLISTHEADER}</select></div>
+<div id="basicsearchcolumns" style="display:none;"><select name="search_field" id="bas_searchfield" class="slds-select">{html_options options=$SEARCHLISTHEADER}</select></div>

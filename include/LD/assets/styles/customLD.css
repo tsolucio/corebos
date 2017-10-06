@@ -1408,6 +1408,15 @@ tr td.action-block-mailManager {
 }
 
 /* ===== Settings SetMenu.tpl ===== */
+
+.setMenu-table tr .settingsTabHeader > div {
+    margin-top: 1rem;
+}
+
+.setMenu-table tr:first-child .settingsTabHeader > div {
+    margin-top: 0;
+}
+
 .settings-block {
     width: 15%;
     vertical-align: top;
@@ -1441,4 +1450,12 @@ tr td.action-block-mailManager {
 /* ===== Settings - FieldAccess ===== */
 .slds-no-padding td {
     padding: 0 .5rem;
+}
+
+/* ===== ModuleManagerAjax.tpl ===== */
+#modmgr_standard,
+#modmgr_custom,
+#modmgr_custom tbody tr,
+#modmgr_custom tbody tr th {
+    border-top: 0!important;
 }

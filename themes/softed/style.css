@@ -1884,14 +1884,14 @@ ul {
 }
 
 .tableHeading{
-	background:#FFFFFF url(images/level2Bg.gif) repeat-x scroll center bottom;
-	border:1px solid #DEDEDE;
+	/*background:#FFFFFF url(images/level2Bg.gif) repeat-x scroll center bottom;*/
+	/*border:1px solid #DEDEDE;*/
 }
 
 .colHeader{
 	background-color:#fff;
 	background-repeat:repeat;
-	background-image:url(images/mailSubHeaderBg-grey.gif);
+	/*background-image:url(images/mailSubHeaderBg-grey.gif);*/
 	border-left:1px solid #fff;
 	border-top:1px solid #ddd;
 	border-right:1px solid #ddd;

@@ -58,7 +58,7 @@
 									<div class="slds-form-element">
 										<div class="slds-form-element__control">
 										<div class="slds-select_container">
-										<select class="slds-select txtBox" name="search_field" id="bas_searchfield">
+										<select class="slds-select" name="search_field" id="bas_searchfield">
 											{html_options options=$SEARCHLISTHEADER }
 										</select>
 										</div>
