@@ -1230,7 +1230,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 	$tabid = getTabid($module);
 	$block_detail = Array();
 	$getBlockinfo = "";
-	$query = "select blockid,blocklabel,show_title,display_status from vtiger_blocks where tabid=? and $disp_view=0 and visible = 0 order by sequence";
+	$query = "select blockid,blocklabel,show_title,display_status,isrelatedlist from vtiger_blocks where tabid=? and $disp_view=0 and visible = 0 order by sequence";
 	$result = $adb->pquery($query, array($tabid));
 	$noofrows = $adb->num_rows($result);
 	$prev_header = "";
@@ -1239,8 +1239,12 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 		$blockid = $adb->query_result($result, $i, "blockid");
 		$blockid_list[] = $blockid;
 		$block_label[$blockid] = $adb->query_result($result, $i, "blocklabel");
-
-		$sLabelVal = getTranslatedString($block_label[$blockid], $module);
+		$isrelatedlist = $adb->query_result($result, $i, "isrelatedlist");
+		if(!is_null($isrelatedlist) && $isrelatedlist != 0){
+			$sLabelVal = $block_label[$blockid];
+		}else{
+			$sLabelVal = getTranslatedString($block_label[$blockid], $module);
+		}
 		$aBlockStatus[$sLabelVal] = $adb->query_result($result, $i, "display_status");
 	}
 	if ($mode == 'edit') {
