@@ -17,13 +17,13 @@
 				<tr>
 					<td valign=top id="settingsSideMenu" class="settings-block">
 						<!--Left Side Navigation Table-->
-						<table border=0 cellspacing=0 cellpadding=0 width="100%">
+						<table border=0 cellspacing=0 cellpadding=0 width="100%" class="setMenu-table">
 {foreach key=BLOCKID item=BLOCKLABEL from=$BLOCKS}
 	{if $BLOCKLABEL neq 'LBL_MODULE_MANAGER'}
 	{assign var=blocklabel value=$BLOCKLABEL|@getTranslatedString:'Settings'}
 							<tr>
 								<td class="settingsTabHeader" nowrap style="padding: 0;background-color: #fff;">
-									<div class="flexipageComponent" style="margin-top: .5rem;">
+									<div class="flexipageComponent">
 										<article class="slds-card container MEDIUM forceBaseCard runtime_sales_mergeMergeCandidatesPreviewCard" aria-describedby="header" style="margin: 0;">
 											<div class="slds-card__header slds-grid" style="padding: .5rem; margin: 0;">
 												<header class="slds-media slds-media--center slds-has-flexi-truncate">
