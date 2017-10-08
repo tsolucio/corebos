@@ -7,21 +7,20 @@
  * All Rights Reserved.
 ********************************************************************************/
 
-//to merge a list of acounts with a template
+//to merge a list of records with a template
 function massMerge(module) {
 	var select_options = document.getElementsByName('selected_id');
 	var x = select_options.length;
-	var viewid =getviewId();
-	idstring = "";
+	idstring = '';
 
-	if(getObj('mergefile').value == '') {
+	if (getObj('mergefile').value == '') {
 		alert(alert_arr.SELECT_TEMPLATE_TO_MERGE);
 		return false;
 	}
-	xx = 0;
-	for(i = 0; i < x ; i++) {
+	var xx = 0;
+	for (var i = 0; i < x ; i++) {
 		if(select_options[i].checked) {
-			idstring = select_options[i].value +";"+idstring;
+			idstring = select_options[i].value + ';' + idstring;
 			xx++;
 		}
 	}
@@ -32,19 +31,19 @@ function massMerge(module) {
 		return false;
 	}
 	document.massdelete.action.value = 'Merge';
-	document.getElementById('massdelete').action="index.php?module="+module+"&action=Merge&return_module="+module+"&return_action=index";
+	document.getElementById('massdelete').action='index.php?module='+module+'&action=Merge&return_module='+module+'&return_action=index';
 }
 
 function mergeshowhide(argg) {
 	var x=document.getElementById(argg).style;
-	if (x.display=="none") {
-		x.display="block";
+	if (x.display=='none') {
+		x.display='block';
 	} else {
-		x.display="none";
+		x.display='none';
 	}
 }
 
 function mergehide(argg) {
 	var x=document.getElementById(argg);
-	if (x != null) x.style.display = "none";
+	if (x != null) x.style.display = 'none';
 }
