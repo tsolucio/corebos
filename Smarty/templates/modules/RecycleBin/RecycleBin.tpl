@@ -63,7 +63,7 @@
 					<td class="small" nowrap>
 						<input name="submit" type="button" class="crmbutton small create" onClick="callRBSearch('Basic');" value=" {$APP.LBL_SEARCH_NOW_BUTTON} ">&nbsp;
 					</td>
-					<td class="small" valign="top" onMouseOver="this.style.cursor='pointer';" onclick="moveMe('searchAcc');searchshowhide('searchAcc','')">[x]</td>
+					<td class="small" valign="top" onMouseOver="this.style.cursor='pointer';" onclick="searchshowhide('searchAcc','')">[x]</td>
 				</tr>
 				<tr>
 					<td colspan="7" align="center" class="small">
