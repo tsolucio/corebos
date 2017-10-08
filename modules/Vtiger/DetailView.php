@@ -86,7 +86,16 @@ $smarty->assign('IS_RELBLOCK_LIST', $isPresentRelatedListBlock);
 $singlepane_view = GlobalVariable::getVariable('Application_Single_Pane_View', 0, $currentModule);
 $singlepane_view = empty($singlepane_view) ? 'false' : 'true';
 $smarty->assign('SinglePane_View', $singlepane_view);
-$smarty->assign('HASRELATEDPANES', 'false');
+$bmapname = $currentModule.'RelatedPanes';
+$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+if ($cbMapid) {
+	$cbMap = cbMap::getMapByID($cbMapid);
+	$rltabs = $cbMap->RelatedPanes($focus->id);
+	$smarty->assign('RLTabs', $rltabs['panes']);
+	$smarty->assign('HASRELATEDPANES', 'true');
+} else {
+	$smarty->assign('HASRELATEDPANES', 'false');
+}
 if ($singlepane_view == 'true' or $isPresentRelatedListBlock) {
 	$related_array = getRelatedLists($currentModule, $focus);
 	$smarty->assign("RELATEDLISTS", $related_array);
@@ -99,14 +108,6 @@ if ($singlepane_view == 'true' or $isPresentRelatedListBlock) {
 	$smarty->assign("SELECTEDHEADERS", $open_related_modules);
 } else {
 	$smarty->assign('RELATEDLISTS', array());
-	$bmapname = $currentModule.'RelatedPanes';
-	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
-	if ($cbMapid) {
-		$cbMap = cbMap::getMapByID($cbMapid);
-		$rltabs = $cbMap->RelatedPanes($focus->id);
-		$smarty->assign('RLTabs', $rltabs['panes']);
-		$smarty->assign('HASRELATEDPANES', 'true');
-	}
 }
 
 if (isPermitted($currentModule, 'CreateView', $record) == 'yes') {
