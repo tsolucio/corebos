@@ -189,7 +189,7 @@
 												{if $key_one eq '0'}
 													{foreach key=sel_value1 item=arr1 from=$arr}
 														{foreach key=sel_value2 item=value from=$arr1}
-															<option value="{$sel_value1}" {$value}>{$sel_value2}</option>
+															<option value="{$sel_value1}" {if $mode eq 'create' && $sel_value1 eq $CURRENTUSERwsid}selected{else}{$value}{/if}>{$sel_value2}</option>
 														{/foreach}
 													{/foreach}
 												{/if}

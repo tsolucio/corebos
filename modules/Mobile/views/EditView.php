@@ -95,6 +95,7 @@ class crmtogo_UI_EditView extends crmtogo_WS_FetchRecordDetails {
 			$viewer->assign('COLOR_HEADER_FOOTER', $config['theme']);
 			$viewer->assign('_MODULE', $moduleObj);
 			$viewer->assign('CURRENTMODUL', $currentModule);
+			$viewer->assign('CURRENTUSERwsid', vtws_getEntityId('Users') . 'x' . $current_user->id);
 			$viewer->assign('_RECORD', $record);
 			$viewer->assign('id', $wsResponseResult['record']['id']);
 			$viewer->assign('mode', $request->getOperation());
