@@ -157,7 +157,7 @@ foreach ($ActTypes AS $act_id => $act_name) {
 			"title_color"=>$Modules_Colors['text'],
 			"color"=>$Modules_Colors['bg'],
 			"textColor"=>$Modules_Colors["text"],
-			"checked"=>$invite_checked
+			"checked"=>(empty($Ch_Views['4'][$mname]) ? 'F' : 'T'),
 		);
 	}
 	unset($Colors,$Colors_Palete);

@@ -45,17 +45,18 @@ if ($event_status != "") {
 	$Load_Event_Status = explode(",",$event_status);
 }
 
-$Load_Task_Status = array();
-$task_status = (isset($_REQUEST['task_status']) ? vtlib_purify($_REQUEST['task_status']) : '');
-if ($task_status != "") {
-	$Load_Task_Status = explode(",",$task_status);
+$Load_Modules = array();
+foreach ($Type_Ids as $typeid) {
+	if (!is_numeric($typeid) && $typeid != 'invite') {
+		$Load_Modules[] = $typeid;
+	}
 }
 
 $Calendar4You = new Calendar4You();
 $Calendar4You->GetDefPermission($current_user->id);
 
 if ($record == "" && $save != "") {
-	$Calendar4You->SaveView($Type_Ids, $Users_Ids, $all_users, $Load_Event_Status, $Load_Task_Status, array());
+	$Calendar4You->SaveView($Type_Ids, $Users_Ids, $all_users, $Load_Event_Status, $Load_Modules, array());
 }
 $detailview_permissions = $Calendar4You->CheckPermissions("DETAIL");
 
