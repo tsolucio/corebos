@@ -288,15 +288,12 @@ if(getFieldVisibilityPermission('Events',$current_user->id,'eventstatus', 'readw
 }
 $smarty->assign('EVENT_STATUS', $Events_Status);
 
-if(getFieldVisibilityPermission('Calendar',$current_user->id,'taskstatus', 'readwrite') == '0') {
-	$Task_Status = $Calendar4You->getActStatusFieldValues('taskstatus','vtiger_taskstatus'); 
-}
-$smarty->assign('TASK_STATUS', $Task_Status);
-
 if(getFieldVisibilityPermission('Calendar',$current_user->id,'taskpriority', 'readwrite') == '0') {
-	$Task_Status = $Calendar4You->getActStatusFieldValues('taskpriority','vtiger_taskpriority');
+	$Task_Priority = $Calendar4You->getActStatusFieldValues('taskpriority','vtiger_taskpriority');
+} else {
+	$Task_Priority = array();
 }
-$smarty->assign('TASK_PRIORITY', $Task_Status);
+$smarty->assign('TASK_PRIORITY', $Task_Priority);
 
 $dat_fmt = $current_user->date_format;
 if ($dat_fmt == '') {

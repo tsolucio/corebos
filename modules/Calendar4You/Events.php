@@ -75,9 +75,6 @@ while($u_row = $adb->fetchByAssoc($u_result)) {
 
 $view = convertFullCalendarView($full_calendar_view);
 
-$calendar_tabid = getTabId("Calendar");
-$events_tabid = getTabId("Events");
-
 $Showed_Field = array();
 $Event_Info = array();
 
@@ -141,17 +138,6 @@ if (count($Load_Event_Status) > 0) {
 	}
 }
 
-$Task_Status = array();
-if (count($Load_Task_Status) > 0) {
-	foreach ($Load_Task_Status AS $sid) {
-		$s_sql = "SELECT taskstatus FROM vtiger_taskstatus WHERE picklist_valueid = ?";
-		$s_result = $adb->pquery($s_sql, array($sid));
-		$taskstatus = $adb->query_result($s_result,0,"taskstatus");
-		$Task_Status[] = $taskstatus;
-		$taskstatus = html_entity_decode($taskstatus,ENT_QUOTES,$default_charset);
-		$Task_Status[] = $taskstatus;
-	}
-}
 $showGroupEvents = GlobalVariable::getVariable('Calendar_Show_Group_Events',1);
 $modtab = array_flip($tasklabel);
 foreach($Users_Ids AS $userid) {
@@ -254,10 +240,6 @@ foreach($Users_Ids AS $userid) {
 			if (count($Event_Status) > 0) {
 				$list_query .= " AND (vtiger_activity.eventstatus NOT IN (" . generateQuestionMarks($Event_Status) . ") OR vtiger_activity.eventstatus IS NULL)";
 				$list_array = array_merge($list_array, $Event_Status);
-			}
-			if (count($Task_Status) > 0) {
-				$list_query .= " AND (vtiger_activity.status NOT IN (" . generateQuestionMarks($Task_Status) . ") OR vtiger_activity.status IS NULL)";
-				$list_array = array_merge($list_array, $Task_Status);
 			}
 		}
 		$list_result = $adb->pquery($list_query, $list_array);

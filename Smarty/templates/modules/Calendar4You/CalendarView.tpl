@@ -90,14 +90,6 @@ Calendar_Event_Types = {literal}{
                      {rdelim}
                  {/foreach}
 
-                 var task_status = '';
-                 {foreach name=calendar_task_status item=tstatusdata key=tstatus_key from=$TASK_STATUS}
-                     if(!jQuery('#calendar_task_status_{$tstatusdata.id}').is(':checked')) {ldelim}
-                          if (task_status != "") task_status += ",";
-                          task_status += '{$tstatusdata.id}';
-                     {rdelim}
-                 {/foreach}
-
                  var task_priority = '';
                  {foreach name=calendar_task_priority item=tprioritydata key=tpriority_key from=$TASK_PRIORITY}
                      if(!jQuery('#calendar_task_priority_{$tprioritydata.id}').is(':checked')) {ldelim}
@@ -121,7 +113,6 @@ Calendar_Event_Types = {literal}{
                                 user_view_type: user_view_type,
                                 view: view_val.name,
                                 event_status: event_status,
-                                task_status: task_status,
                                 task_priority: task_priority,
                                 save: loggeduser,
                                 start: Math.round(new Date(start).getTime() / 1000),
@@ -522,17 +513,9 @@ function hideITSEventInfo(){
                                             <tr>
                                                 <td style="padding:5px" class="ui-widget-content">
                                                 	<div id="et_status_wrapper">
-                                                    {$MOD.LBL_EVENT_STATUS}:<br>
                                                     <div id="event_status_list" style="font-size:12px;">
                                                     {foreach name=calendar_event_status item=estatusdata key=estatus_key from=$EVENT_STATUS}
                                                     <table width="98%" style="font-weight:bold;margin:3px;padding:1px;"><tr><td><input type="checkbox" id="calendar_event_status_{$estatusdata.id}" name="calendar_event_status_{$estatusdata.id}" onClick="changeCalendarEvents(this)" value="{$estatusdata.id}" {if $estatusdata.checked eq 'true'}checked="checked"{/if}>{$estatusdata.label}</td></tr></table>
-                                                    {/foreach}
-                                                    </div>
-                                                    <br>
-                                                    {$MOD.LBL_TASK_STATUS}:<br>
-                                                    <div id="task_status_list" style="font-size:12px;">
-                                                    {foreach name=calendar_task_status item=tstatusdata key=tstatus_key from=$TASK_STATUS}
-                                                    <table width="98%" style="font-weight:bold;font-size:12px;margin:3px;padding:1px;"><tr><td><input type="checkbox" id="calendar_task_status_{$tstatusdata.id}" name="calendar_task_status_{$tstatusdata.id}" onClick="changeCalendarEvents(this)" value="{$tstatusdata.id}" {if $tstatusdata.checked eq 'true'}checked="checked"{/if}>{$tstatusdata.label}</td></tr></table>
                                                     {/foreach}
                                                     </div>
                                                     </div>
