@@ -1,9 +1,9 @@
 {strip}
 <!DOCTYPE html>
 <header>
-<title>{$MOD.LBL_SEARCH_RESULTS}</title> 
-<meta name="viewport" content="width=device-width, initial-scale=1"> 
-<link REL="SHORTCUT ICON" HREF="resources/images/crm-now_icon.ico">	
+<title>{$MOD.LBL_SEARCH_RESULTS}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link REL="SHORTCUT ICON" HREF="resources/images/crm-now_icon.ico">
 <script type="text/javascript" src="resources/jquery-1.11.2.min.js"></script>
 <link rel="stylesheet" href="resources/css/jquery.mobile.structure-1.4.5.min.css" >
 <script type="text/javascript" src="resources/jquery.mobile-1.4.5.min.js"></script>
@@ -23,7 +23,7 @@
 	<!-- /header -->
 	{foreach item=module key=modulename from=$LISTENTITY}
 		<a href="?_operation=listModuleRecords&module={$modulename}" data-role="button" data-corners="false" data-icon="bullets" data-iconpos="right">{$MODLABEL.$modulename}</a>
-		<div data-role="collapsible-set"   data-mini="true">	
+		<div data-role="collapsible-set" data-mini="true">
 			<ul data-role="listview" data-theme="c" >
 			{foreach item=reco from=$module}
 				{if $reco.id neq ''}
@@ -32,13 +32,13 @@
 				{assign var="RECORD" value=$reco.id}
 				<li><a href="?_operation=fetchRecord&record={$RECORD}" target="_self">{$output1} {$output2}</a></li>
 				{/if}
-			{/foreach}	
+			{/foreach}
 			</ul>
 		</div>
 	{/foreach}
 	<div data-role="footer" data-theme="{$COLOR_HEADER_FOOTER}" data-position="fixed">
 		<h2></h2>
-	</div
+	</div>
 </div>
 </body>
 {/strip}	

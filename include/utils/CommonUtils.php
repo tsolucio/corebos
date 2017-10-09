@@ -994,11 +994,13 @@ function getValidDisplayDate($cur_date_val) {
 	if ($dat_fmt == '') {
 		$dat_fmt = 'dd-mm-yyyy';
 	}
-	$date_value = explode(' ', $cur_date_val);
-	list($y, $m, $d) = explode('-', $date_value[0]);
-	list($fy, $fm, $fd) = explode('-', $dat_fmt);
-	if ((strlen($fy) == 4 && strlen($y) == 4) || (strlen($fd) == 4 && strlen($d) == 4)) {
-		return "$y-$m-$d";
+	if (!empty($cur_date_val)) {
+		$date_value = explode(' ', $cur_date_val);
+		list($y, $m, $d) = explode('-', $date_value[0]);
+		list($fy, $fm, $fd) = explode('-', $dat_fmt);
+		if ((strlen($fy) == 4 && strlen($y) == 4) || (strlen($fd) == 4 && strlen($d) == 4)) {
+			return "$y-$m-$d";
+		}
 	}
 	$date = new DateTimeField($cur_date_val);
 	return $date->getDisplayDate();

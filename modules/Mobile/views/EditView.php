@@ -16,14 +16,14 @@ class crmtogo_UI_EditView extends crmtogo_WS_FetchRecordDetails {
 
 	function cachedModuleLookupWithRecordId($recordId) {
 		$recordIdComponents = explode('x', $recordId);
-    	$modules = $this->sessionGet('_MODULES'); // Should be available post login
+		$modules = $this->sessionGet('_MODULES'); // Should be available post login
 		foreach($modules as $module) {
 			if ($module->id() == $recordIdComponents[0]) { return $module; };
 		}
 		return false;
 	}
 	function cachedModuleLookup($currentmodule) {
-    	$modules = $this->sessionGet('_MODULES'); // Should be available post login
+		$modules = $this->sessionGet('_MODULES'); // Should be available post login
 		foreach($modules as $module) {
 			if ($module->name() == $currentmodule) { return $module; };
 		}
