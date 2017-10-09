@@ -107,11 +107,23 @@ if ($detailview_permissions) {
 	}
 }
 
-if (isset($_REQUEST["start"]) && $_REQUEST["start"] != "") $start_time = $_REQUEST["start"]; else $start_time = time();
-if (isset($_REQUEST["end"]) && $_REQUEST["end"] != "") $end_time = $_REQUEST["end"]; else $end_time = time();
-
+if (empty($_REQUEST['start'])) {
+	$start_time = time();
+} else {
+	$start_time = $_REQUEST['start'];
+}
+if (empty($_REQUEST['end'])) {
+	$end_time = time();
+} else {
+	$end_time = $_REQUEST['end'];
+}
 $start_date = date("Y-m-d",$start_time);
 $end_date = date("Y-m-d",$end_time);
+$dt = new DateTimeField();
+$usrsttime = $dt->convertToDBTimeZone(date('Y-m-d H:i:s',$start_time));
+$usredtime = $dt->convertToDBTimeZone(date('Y-m-d H:i:s',$end_time));
+$usrsttime = $usrsttime->format('Y-m-d H:i:s');
+$usredtime = $usredtime->format('Y-m-d H:i:s');
 
 $tasklabel = getAllModulesWithDateFields();
 $timeModules = getAllModulesWithDateTimeFields();
@@ -227,8 +239,8 @@ foreach($Users_Ids AS $userid) {
 			if ($record != "") {
 				$list_query .= " AND vtiger_crmentity.crmid = '".$record."'";
 			} else {
-				$list_query .= " AND vtiger_activity.date_start <= '".$end_date."'";
-				$list_query .= " AND vtiger_activity.due_date >= '".$start_date."'";
+				$list_query .= " AND vtiger_activity.dtstart <= '".$usredtime."'";
+				$list_query .= " AND vtiger_activity.dtend >= '".$usrsttime."'";
 			}
 			if (!$invites) {
 				if ($showGroupEvents and $groups != '')
