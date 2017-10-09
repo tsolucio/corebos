@@ -78,7 +78,7 @@
 							<td class="small" nowrap width=40%>
 								<input name="submit" type="button" class="slds-button slds-button--small slds-button--brand" onClick="callSearch('Basic');document.basicSearch.searchtype.searchlaunched='basic';" value=" {$APP.LBL_SEARCH_NOW_BUTTON} ">&nbsp;
 							</td>
-							<td class="small closeX" valign="top" onMouseOver="this.style.cursor='pointer';" onclick="moveMe('searchAcc');searchshowhide('searchAcc','advSearch');document.basicSearch.searchtype.searchlaunched='';">[x]</td>
+							<td class="small closeX" valign="top" onMouseOver="this.style.cursor='pointer';" onclick="searchshowhide('searchAcc','advSearch');document.basicSearch.searchtype.searchlaunched='';">[x]</td>
 						</tr>
 						<tr>
 							<td colspan="7" align="center" class="small">
@@ -103,7 +103,7 @@
 								<br>
 								<span class="small">
 								<a href="#" onClick="show('searchAcc');fnhide('advSearch');document.basicSearch.searchtype.searchlaunched='';">{$APP.LBL_GO_TO} {$APP.LNK_BASIC_SEARCH}</a></span></td>
-							<td class="small closeX" align="right" valign="top" onMouseOver="this.style.cursor='pointer';" onclick="moveMe('searchAcc');searchshowhide('searchAcc','advSearch');document.basicSearch.searchtype.searchlaunched='';">[x]</td>
+							<td class="small closeX" align="right" valign="top" onMouseOver="this.style.cursor='pointer';" onclick="searchshowhide('searchAcc','advSearch');document.basicSearch.searchtype.searchlaunched='';">[x]</td>
 						</tr>
 					</table>
 					<table cellpadding="2" cellspacing="0" width="98%" align="center" class="searchUIAdv2 small" border=0>

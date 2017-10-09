@@ -63,7 +63,7 @@
 										<div class="forceHeaderMenuTrigger">
 											{if $CHECK.index eq 'yes' && ($smarty.request.action eq 'ListView' || $smarty.request.action eq 'index') && $MODULE neq 'Emails' && $MODULE neq 'Webmails' && $MODULE neq 'Calendar4You'}
 												<div id="LB_SearchButton" class="slds-truncate LB_Button">
-													<a href="javascript:;" onClick="moveMe('searchAcc');searchshowhide('searchAcc','advSearch');mergehide('mergeDup')" >
+													<a href="javascript:;" onClick="searchshowhide('searchAcc','advSearch');mergehide('mergeDup')" >
 														<img src="{$IMAGE_PATH}btnL3Search.gif" alt="{$APP.LBL_SEARCH_ALT}{$MODULE|getTranslatedString:$MODULE}..." title="{$APP.LBL_SEARCH_TITLE}{$MODULE|getTranslatedString:$MODULE}..." border=0>
 													</a>
 												</div>
@@ -190,7 +190,7 @@
 									<div class="globalCreateContainer oneGlobalCreate">
 										<div class="forceHeaderMenuTrigger">
 										{if $CHECK.DuplicatesHandling eq 'yes' && ($smarty.request.action eq 'ListView' || $smarty.request.action eq 'index')}
-											<div id="LB_FindDuplButton" class="LB_Button slds-truncate"><a href="javascript:;" onClick="moveMe('mergeDup');mergeshowhide('mergeDup');searchhide('searchAcc','advSearch');"><img src="{'findduplicates.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_FIND_DUPLICATES}" title="{$APP.LBL_FIND_DUPLICATES}" border="0"></a></div>
+											<div id="LB_FindDuplButton" class="LB_Button slds-truncate"><a href="javascript:;" onClick="mergeshowhide('mergeDup');searchhide('searchAcc','advSearch');"><img src="{'findduplicates.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_FIND_DUPLICATES}" title="{$APP.LBL_FIND_DUPLICATES}" border="0"></a></div>
 										{else}
 											<div id="LB_FindDuplButtonFaded" class="LB_Button slds-truncate"><span class="disabled"><img src="{'findduplicates.gif'|@vtiger_imageurl:$THEME}" border="0"></span></div>
 										{/if}
