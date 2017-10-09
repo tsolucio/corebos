@@ -8,18 +8,21 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<div style="position:relative;display: block;" class="layerPopup">
-	<table border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine">
-		<tr>
-			<td class="layerPopupHeading" align="left" nowrap>
-				{$MOD.DELETE_PICKLIST_VALUES} - {$FIELDLABEL}
-			</td>
+<div style="position:relative;display: block;z-index: 999;" class="layerPopup">
+	<table class="slds-table slds-no-row-hover layerHeadingULine">
+		<tr class="slds-text-title--header">
+			<th scope="col">
+				<div class="layerPopupHeading slds-truncate moduleName">
+					{$MOD.DELETE_PICKLIST_VALUES} - {$FIELDLABEL}
+				</div>
+			</th>
 		</tr>
 	</table>
 
-	<table border=0 cellspacing=0 cellpadding=5 >
-		<tr><td valign=top align=left>
-				<select id="delete_availPickList" multiple="multiple" wrap size="20" name="availList" style="width:250px;border:1px solid #666666;font-family:Arial, Helvetica, sans-serif;font-size:11px;">
+	<table class="slds-table slds-no-row-hover">
+		<tr>
+			<td class="dvtCellInfo" valign=top align=left colspan="2">
+				<select id="delete_availPickList" multiple="multiple" class="slds-select" size="5" name="availList">
 					{foreach item=pick_val key=pick_key from=$PICKVAL}
 						<option value="{$pick_key}">{$pick_val}</option>
 					{/foreach}
@@ -27,9 +30,11 @@
 			</td>
 		</tr>
 		<tr>
-			<td nowrap>
-				<b>{$MOD.LBL_REPLACE_WITH}</b>&nbsp;
-				<select id="replace_picklistval" name="replaceList" style="border:1px solid #666666;font-family:Arial, Helvetica, sans-serif;font-size:11px;">
+			<td class="dvtCellLabel">
+				<b>{$MOD.LBL_REPLACE_WITH}</b>
+			</td>
+			<td class="dvtCellInfo">
+				<select id="replace_picklistval" name="replaceList" class="slds-select">
 					<option value=""></option>
 					{foreach item=pick_val key=pick_key from=$PICKVAL}
 						<option value="{$pick_key}">{$pick_val}</option>
@@ -41,9 +46,9 @@
 			</td>
 		</tr>
 		<tr>
-			<td valign=top align=left>
-				<input type="button" value="{$APP.LBL_DELETE_BUTTON_LABEL}" name="del" class="crmButton small delete" onclick="validateDelete('{$FIELDNAME}','{$MODULE}');">
-				<input type="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" name="cancel" class="crmButton small cancel" onclick="fnhide('actiondiv');">
+			<td colspan="2" valign=top align=center>
+				<input type="button" value="{$APP.LBL_DELETE_BUTTON_LABEL}" name="del" class="slds-button slds-button--small slds-button--destructive" onclick="validateDelete('{$FIELDNAME}','{$MODULE}');">
+				<input type="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" name="cancel" class="slds-button slds-button--small slds-button--brand" onclick="fnhide('actiondiv');">
 			</td>
 		</tr>
 

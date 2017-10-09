@@ -58,22 +58,40 @@
 
 														<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 															<tr>
-																<td class="dvtCellLabel" width="40%"><strong>{$MOD.LBL_SELECT_MODULE}</strong></td>
-																<td class="dvtCellInfo" align="left" width="30%">
-																	<select name="pickmodule" id="pickmodule" class="slds-select" onChange="changeModule();">
-																		{html_options options=$MODULE_LISTS selected=$MODULE sortoptions=asc}
-																	</select>
-																</td>
-																<td>&nbsp;</td>
-															</tr>
-														</table>
+																<td>
 
-														<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
-															<tr>
-																<td class="big" rowspan="2" style="padding: .2rem 0;">
-																<div id="picklist_datas">
-																	{include file='modules/PickList/PickListContents.tpl'}
-																</div>
+																	<div class="forceRelatedListSingleContainer">
+																		<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
+																			<div class="slds-card__header slds-grid">
+																				<header class="slds-media slds-media--center slds-has-flexi-truncate">
+																					<div class="slds-media__body">
+																						<h2>
+																							<span class="slds-text-title--caps slds-truncate actionLabel">
+																								<strong>{$MOD.LBL_SELECT_MODULE}</strong>
+																							</span>
+																						</h2>
+																					</div>
+																				</header>
+																			</div>
+																				<div class="slds-card__body slds-card__body--inner">
+																					<div class="commentData">
+																						<select name="pickmodule" id="pickmodule" class="slds-select" onChange="changeModule();">
+																							{html_options options=$MODULE_LISTS selected=$MODULE sortoptions=asc}
+																						</select>
+																						<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
+																							<tr>
+																								<td class="big" rowspan="2" style="padding: .2rem 0;">
+																								<div id="picklist_datas">
+																									{include file='modules/PickList/PickListContents.tpl'}
+																								</div>
+																								</td>
+																							</tr>
+																						</table>
+																					</div>
+																				</div>
+																		</article>
+																	</div>
+
 																</td>
 															</tr>
 														</table>

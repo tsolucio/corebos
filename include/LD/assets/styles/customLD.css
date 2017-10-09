@@ -1459,3 +1459,9 @@ tr td.action-block-mailManager {
 #modmgr_custom tbody tr th {
     border-top: 0!important;
 }
+
+/* ===== AssignPicklistValues ===== */
+#assignPicklistTable img {
+    width:16px;
+    cursor: pointer;
+}

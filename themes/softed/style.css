@@ -1088,7 +1088,7 @@ a.submenu:Hover{
 
 #orgLay{
 	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
-	width:400px;
+	width:500px;
 	border:3px solid #CCCCCC;
 	background-color:#FFFFFF;
 	display:block;
@@ -1929,7 +1929,7 @@ ul {
 }
 
 .listTableTopButtons{
-	background-color:#efefff;
+	/*background-color:#efefff;*/
 	/*background-image:url(images/layerPopupBg.gif);*/
 }
 

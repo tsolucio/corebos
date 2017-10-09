@@ -8,52 +8,71 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<div style="position:relative;display: block;" id="orgLay" class="layerPopup">
-	<table border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine">
-		<tr>
-			<td class="layerPopupHeading" align="left" width="40%" nowrap>{$MOD.ASSIGN_PICKLIST_VALUES} - {$FIELDLABEL}</td>
+<div style="position:relative;display: block;z-index: 999;" id="orgLay" class="layerPopup">
+
+	<table class="slds-table slds-no-row-hover layerHeadingULine">
+		<tr class="slds-text-title--header">
+			<th scope="col">
+				<div class="layerPopupHeading slds-truncate moduleName">
+					{$MOD.ASSIGN_PICKLIST_VALUES} - {$FIELDLABEL}
+				</div>
+			</th>
 		</tr>
 	</table>
-
-	<table border="0" cellspacing="0" cellpadding="5" width="100%" id="assignPicklistTable">
-	<tbody>
-		<tr>
-			<td width="auto;">
-				<b>{$MOD.LBL_PICKLIST_VALUES}</b>
-				<select multiple id="availList" name="availList" class="small crmFormList" style="overflow:auto; height: 150px;width:200px;border:1px solid #666666;font-family:Arial, Helvetica, sans-serif;font-size:11px;">
-					{foreach item=pick_val key=pick_key from=$PICKVAL}
-						<option value="{$pick_key}">{$pick_val}</option>
-					{/foreach}
-				</select>
-			</td>
-			<td align="center" width="25px;">
-				<img border="0" title="right" alt="Move Right" onclick="moveRight();" style="cursor: pointer" src="{'arrow_right.png'|@vtiger_imageurl:$THEME}"/>
-				<img border="0" title="left" alt="Remove" onclick="removeValue();" style="cursor: pointer" src="{'arrow_left.png'|@vtiger_imageurl:$THEME}"/>
-			</td>
-			<td width="auto;">
-				<b>{$MOD.LBL_PICKLIST_VALUES_ASSIGNED_TO} {$ROLENAME}</b>
-				<select multiple id="selectedColumns" name="selectedColumns" class="small crmFormList" style="overflow:auto; height: 150px;width:200px;border:1px solid #666666;font-family:Arial, Helvetica, sans-serif;font-size:11px;">
-					{foreach item=val key=key from=$ASSIGNED_VALUES}
-						<option value="{$key}">{$val}</option>
-					{/foreach}
-				</select>
-			</td>
-			<td align="center">
-				<img border="0" title="up" alt="Move Up" onclick="moveUp();" style="cursor: pointer" src="{'arrow_up.png'|@vtiger_imageurl:$THEME}"/>
-				<img border="0" title="down" alt="Move Down" onclick="moveDown();" style="cursor: pointer" src="{'arrow_down.png'|@vtiger_imageurl:$THEME}"/>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<a href='javascript:;' onclick="showRoleSelectDiv('{$ROLEID}')" id="addRolesLink">
-					<b>{$MOD.LBL_ADD_TO_OTHER_ROLES}</b>
-				</a>
-			</td>
-			<td colspan="3" valign="top" align="center" nowrap>
-				<input type="button" value="{$APP.LBL_SAVE_BUTTON_LABEL}" name="save" class="crmButton small edit" onclick="saveAssignedValues('{$MODULE}','{$FIELDNAME}','{$ROLEID}');">
-				<input type="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" name="cancel" class="crmButton small cancel" onclick="fnhide('actiondiv');">
-			</td>
-		</tr>
-	</tbody>
+	<br/>
+	<table class="slds-table slds-no-row-hover" id="assignPicklistTable">
+		<thead>
+			<tr>
+				<td class="dvtCellLabel text-left" width="40%">
+					<b>{$MOD.LBL_PICKLIST_VALUES}</b>
+				</td>
+				<td width="5%"></td>
+				<td class="dvtCellLabel text-left" width="40%">
+					<b>{$MOD.LBL_PICKLIST_VALUES_ASSIGNED_TO} {$ROLENAME}</b>
+				</td>
+				<td width="5%"></td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td class="dvtCellInfo" width="40%">
+					<select multiple id="availList" name="availList" class="slds-select crmFormList" style="overflow:auto; height: 150px;">
+						{foreach item=pick_val key=pick_key from=$PICKVAL}
+							<option value="{$pick_key}">{$pick_val}</option>
+						{/foreach}
+					</select>
+				</td>
+				<td width="5%">
+					<img border="0" title="Add" alt="Move Right" onclick="moveRight();" src="{'arrow_right.png'|@vtiger_imageurl:$THEME}"/>
+					<br/>
+					<br/>
+					<img border="0" title="Remove" alt="Remove" onclick="removeValue();" src="{'arrow_left.png'|@vtiger_imageurl:$THEME}"/>
+				</td>
+				<td class="dvtCellInfo" width="40%">
+					<select multiple id="selectedColumns" name="selectedColumns" class="slds-select crmFormList" style="overflow:auto; height: 150px;">
+						{foreach item=val key=key from=$ASSIGNED_VALUES}
+							<option value="{$key}">{$val}</option>
+						{/foreach}
+					</select>
+				</td>
+				<td width="5%">
+					<img border="0" title="Move Up" alt="Move Up" onclick="moveUp();" src="{'arrow_up.png'|@vtiger_imageurl:$THEME}"/>
+					<br/>
+					<br/>
+					<img border="0" title="Move Down" alt="Move Down" onclick="moveDown();" src="{'arrow_down.png'|@vtiger_imageurl:$THEME}"/>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href='javascript:;' onclick="showRoleSelectDiv('{$ROLEID}')" id="addRolesLink">
+						<b>{$MOD.LBL_ADD_TO_OTHER_ROLES}</b>
+					</a>
+				</td>
+				<td colspan="3" align="center" nowrap>
+					<input type="button" value="{$APP.LBL_SAVE_BUTTON_LABEL}" name="save" class="slds-button slds-button--small slds-button_success" onclick="saveAssignedValues('{$MODULE}','{$FIELDNAME}','{$ROLEID}');">
+					<input type="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" name="cancel" class="slds-button slds-button--small slds-button--destructive" onclick="fnhide('actiondiv');">
+				</td>
+			</tr>
+		</tbody>
 	</table>
 </div>

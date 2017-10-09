@@ -8,53 +8,73 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<div style="position:relative;display: block;" id="orgLay" class="layerPopup">
-	<table border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine">
-		<tr>
-			<td class="layerPopupHeading" align="left" width="40%" nowrap>{$MOD.ADD_PICKLIST_VALUES} - {$FIELDLABEL}</td>
+<div style="position:relative;display: block;z-index: 999;" id="orgLay" class="layerPopup">
+	<table class="slds-table slds-no-row-hover layerHeadingULine">
+		<tr class="slds-text-title--header">
+			<th scope="col">
+				<div class="layerPopupHeading slds-truncate moduleName">
+					{$MOD.ADD_PICKLIST_VALUES} - {$FIELDLABEL}
+				</div>
+			</th>
 		</tr>
 	</table>
-
-	<table border=0 cellspacing=0 cellpadding=5 width=100%>
+	<br/>
+	<table class="slds-table slds-no-row-hover">
 		<tr>
-			<td rowspan=3 valign=top align=left width=250px;>
+			<td class="dvtCellLabel text-left" valign=top>
 				<b>{$MOD.LBL_EXISTING_PICKLIST_VALUES}</b>
-				<div id="add_availPickList" name="availList" style="overflow:auto; height:150px;width:200px;border:1px solid #666666;font-family:Arial, Helvetica, sans-serif;font-size:11px;">
+			</td>
+			<td class="dvtCellLabel text-left" valign=top>
+				<b>{$MOD.LBL_PICKLIST_ADDINFO}</b>
+			</td>
+		</tr>
+		<tr>
+			<td class="dvtCellInfo" valign=top>
+				<div id="add_availPickList" name="availList">
 					{foreach item=pick_val from=$PICKVAL}
-						<div class="picklist_existing_options" style="background-color: #ffffff;">{$pick_val}</div>
+						<div class="picklist_existing_options">{$pick_val}</div>
 					{/foreach}
 				</div>
 				<br>
 				{if is_array($NONEDITPICKLIST)}
 					<b>{$MOD.LBL_NON_EDITABLE_PICKLIST_ENTRIES} :</b>
-					<div id="nonedit_pl_values" name="availList" style="overflow:auto; height: 150px;width:200px;border:1px solid #666666;font-family:Arial, Helvetica, sans-serif;font-size:11px;">
+					<div id="nonedit_pl_values" name="availList">
 						{foreach item=nonedit from=$NONEDITPICKLIST}
-							<div class="picklist_noneditable_options" style="background-color: #ffffff;">
+							<div class="picklist_noneditable_options">
 								{$nonedit}
 							</div>
 						{/foreach}
 					</div>
 				{/if}
 			</td>
-			<td valign=top align=left width=300px;>
-				<b>{$MOD.LBL_PICKLIST_ADDINFO}</b>
-				<textarea id="add_picklist_values" class="detailedViewTextBox" align="left" rows="10"></textarea>
+			<td valign=top style="padding: 0;">
+				<table class="slds-table">
+					<tr>
+						<td class="dvtCellInfo">
+							<textarea id="add_picklist_values" class="slds-textarea" align="left" rows="10"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="dvtCellLabel text-left">
+							<b>{$MOD.LBL_SELECT_ROLES} </b><br />
+						</td>
+					</tr>
+					<tr>
+						<td class="dvtCellInfo">
+							<select id="add_availRoles" multiple="multiple" wrap size="5" class="slds-select" name="add_availRoles">
+								{foreach key=role_id item=role_details from=$ROLEDETAILS}
+									<option value="{$role_id}">{$role_details.0}</option>
+								{/foreach}
+							</select>
+						</td>
+					</tr>
+				</table>
 			</td>
 		</tr>
 		<tr>
-			<td valign=top align=left width=300px;>
-				<b>{$MOD.LBL_SELECT_ROLES} </b><br />
-				<select id="add_availRoles" multiple="multiple" wrap size="5" name="add_availRoles" style="width:250px;border:1px solid #666666;font-family:Arial, Helvetica, sans-serif;font-size:11px;">
-					{foreach key=role_id item=role_details from=$ROLEDETAILS}
-						<option value="{$role_id}">{$role_details.0}</option>
-					{/foreach}
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td valign=top align=right>
-				<input type="button" value="{$APP.LBL_SAVE_BUTTON_LABEL}" id="saveAddButton" name="save" class="crmButton small edit" onclick="validateAdd('{$FIELDNAME}','{$MODULE}');">
-				<input type="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" name="cancel" class="crmButton small cancel" onclick="fnhide('actiondiv');">
+			<td colspan="2" valign=top align=center>
+				<input type="button" value="{$APP.LBL_SAVE_BUTTON_LABEL}" id="saveAddButton" name="save" class="slds-button slds-button--small slds-button_success" onclick="validateAdd('{$FIELDNAME}','{$MODULE}');">
+				<input type="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" name="cancel" class="slds-button slds-button--small slds-button--destructive" onclick="fnhide('actiondiv');">
 			</td>
 		</tr>
 	</table>

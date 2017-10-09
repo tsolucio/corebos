@@ -604,6 +604,7 @@ function showRoleSelectDiv(roleid){
 			var node = document.getElementById('assignPicklistTable');
 			var tr = document.createElement('tr');
 			var td = document.createElement('td');
+			td.style.padding = "0";
 			td.innerHTML = response;
 			tr.appendChild(td);
 			document.getElementById('addRolesLink').style.display = "none";
