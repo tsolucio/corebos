@@ -8,6 +8,13 @@
     color: red;
 }
 
+.text-center {
+    text-align: center;
+}
+
+.slds-radio--faux {
+    cursor: pointer!important;
+}
 
 /*========    Header    ==========*/
 

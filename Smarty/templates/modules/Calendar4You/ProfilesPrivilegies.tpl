@@ -54,7 +54,7 @@
                         <td valign="top" width="20px"><img src="{'prvPrfHdrArrow.gif'|@vtiger_imageurl:$THEME}"> </td>
                         <td class="prvPrfBigText"><b> {$MOD.LBL_SETPRIVILEGIES} </b></td>
                         <td align="right">
-                            <input type="submit" value="{$APP.LBL_SAVE_BUTTON_LABEL}" class="crmButton small save" />
+                            <input type="submit" value="{$APP.LBL_SAVE_BUTTON_LABEL}" class="slds-button slds-button--small slds-button_success" />
                             &nbsp;
                             <input type="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" class="crmButton small cancel" onClick="window.history.back();" />
                         </td>    

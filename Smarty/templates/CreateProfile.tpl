@@ -13,147 +13,212 @@
 
 <br>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
-<tbody><tr>
-	<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
-	<br>
-	<div align=center>
-		{include file='SetMenu.tpl'}
-		<form action="index.php" method="post" name="profileform" id="form" onSubmit="if (rolevalidate()) { VtigerJS_DialogBox.block();return true; } else { return false; }">
-			<input type="hidden" name="module" value="Settings">
-			<input type="hidden" name="mode" value="{$MODE}">
-			<input type="hidden" name="action" value="profilePrivileges">
-			<input type="hidden" name="parenttab" value="Settings">
-			<input type="hidden" name="parent_profile" value="{$PARENT_PROFILE}">
-			<input type="hidden" name="radio_button" value="{$RADIO_BUTTON}">
+	<tbody>
+		<tr>
+			<td valign="top" width="100%">
+				<div align=center>
+					<br>
+							{include file='SetMenu.tpl'}
 
-			<!-- DISPLAY -->
-			<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
-				<tr>
-					<td width=50 rowspan=2 valign=top><img src="{'ico-profile.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_PROFILES}" width="48" height="48" border=0 title="{$MOD.LBL_PROFILES}"></td>
-					<td class=heading2 valign=bottom><b> <a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > <a href="index.php?module=Settings&action=ListProfiles&parenttab=Settings">{$CMOD.LBL_PROFILE_PRIVILEGES}</a></b></td>
-				</tr>
-				<tr>
-					<td valign=top class="small">{$MOD.LBL_PROFILE_DESCRIPTION}</td>
-				</tr>
-				</table>
-				<table border=0 cellspacing=0 cellpadding=10 width=100% >
-				<tr>
-					<td valign="top">
-					<table border="0" cellpadding="0" cellspacing="0" width="100%">
-					<tbody><tr>
-					<td>
-						<table border="0" cellpadding="0" cellspacing="0" width="100%">
-						<tbody><tr class="small">
-							<td><img src="{'prvPrfTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-							<td class="prvPrfTopBg" width="100%"></td>
-							<td><img src="{'prvPrfTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
+								<!-- DISPLAY Field Access Settings-->
+											<form action="index.php" method="post" name="profileform" id="form" onSubmit="if (rolevalidate()) { VtigerJS_DialogBox.block();return true; } else { return false; }">
+												<input type="hidden" name="module" value="Settings">
+												<input type="hidden" name="mode" value="{$MODE}">
+												<input type="hidden" name="action" value="profilePrivileges">
+												<input type="hidden" name="parenttab" value="Settings">
+												<input type="hidden" name="parent_profile" value="{$PARENT_PROFILE}">
+												<input type="hidden" name="radio_button" value="{$RADIO_BUTTON}">
+
+												<!-- DISPLAY -->
+												<table class="slds-table slds-no-row-hover slds-table--cell-buffer slds-table-moz" style="background-color: #f7f9fb;">
+													<tr class="slds-text-title--caps">
+														<td style="padding: 0;">
+															<div class="slds-page-header s1FixedFullWidth s1FixedTop forceHighlightsStencilSettings" style="height: 70px;">
+																<div class="slds-grid primaryFieldRow" style="transform: translate3d(0, -8.65823px, 0);">
+																	<div class="slds-grid slds-col slds-has-flexi-truncate slds-media--center">
+																		<div class="slds-media slds-no-space" style="transform: scale3d(0.864715, 0.864715, 1) translate3d(4.32911px, 2.16456px, 0);">
+																			<div class="slds-media__figure slds-icon forceEntityIcon">
+																				<span class="photoContainer forceSocialPhoto">
+																					<div class="small roundedSquare forceEntityIcon">
+																						<span class="uiImage">
+																							<img src="{'ico-profile.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_PROFILES}" title="{$MOD.LBL_PROFILES}">
+																						</span>
+																					</div>
+																				</span>
+																			</div>
+																		</div>
+																		<div class="slds-media__body">
+																			<h1 class="slds-page-header__title slds-m-right--small slds-truncate slds-align-middle">
+																				<span class="uiOutputText">
+																					<b> <a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > <a href="index.php?module=Settings&action=ListProfiles&parenttab=Settings">{$CMOD.LBL_PROFILE_PRIVILEGES}</a></b>
+																				</span>
+																				<span class="small">{$MOD.LBL_PROFILE_DESCRIPTION}</span>
+																			</h1>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</td>
+													</tr>
+												</table>
+
+												<br/>
+
+												<table border="0" cellpadding="0" cellspacing="0" width="100%">
+													<tbody>
+														<tr>
+															<td>
+
+																<table class="prvPrfOutline" border="0" cellpadding="0" cellspacing="0" width="100%">
+																	<tbody>
+																		<tr class="small">
+																			<td>
+
+																				<!-- Module name heading -->
+																				<div class="forceRelatedListSingleContainer">
+																					<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
+																						<div class="slds-card__header slds-grid">
+																							<header class="slds-media slds-media--center slds-has-flexi-truncate">
+																								<div class="slds-media__figure">
+																									<div class="extraSmall forceEntityIcon" data-aura-rendered-by="3:1782;a" data-aura-class="forceEntityIcon">
+																										<span data-aura-rendered-by="6:1782;a" class="uiImage" data-aura-class="uiImage">
+																											<img src="{'prvPrfHdrArrow.gif'|@vtiger_imageurl:$THEME}">
+																										</span>
+																									</div>
+																								</div>
+																								<div class="slds-media__body">
+																									<h2>
+																										<span class="prvPrfBigText slds-text-title--caps slds-truncate slds-m-right--xx-small actionLabel">
+																											<b> {$CMOD.LBL_STEP_1_2} : {$CMOD.LBL_WELCOME_PROFILE_CREATE} </b>
+																										</span>
+																									</h2>
+																								</div>
+																							</header>
+																						</div>
+																							<div class="slds-card__body slds-card__body--inner">
+																								<div class="commentData"><font class="small"> {$CMOD.LBL_SELECT_CHOICE_NEW_PROFILE} </font></div>
+																							</div>
+																					</article>
+																				</div>
+
+																			</td>
+																		</tr>
+																	</tbody>
+																</table>
+
+																<table class="slds-table slds-no-row-hover detailview_table">
+																	<!-- Profile name and description -->
+																	<tr class="slds-line-height--reset">
+																		<td class="dvtCellLabel" width="25%">
+																			<b style="color:#FF0000;font-size:16px;">{$APP.LBL_REQUIRED_SYMBOL}</b>&nbsp;<b>{$CMOD.LBL_NEW_PROFILE_NAME} : </b>
+																		</td>
+																		<td class="dvtCellInfo" width="75%">
+																			<input type="text" name="profile_name" id="pobox" value="{$PROFILE_NAME}" class="slds-input" style="width: 100%;" />
+																		</td>
+																	</tr>
+																	<tr class="slds-line-height--reset">
+																		<td class="dvtCellLabel" width="25%"><b>{$CMOD.LBL_DESCRIPTION} : </b></td>
+																		<td class="dvtCellInfo" width="75%">
+																			<textarea name="profile_description" class="slds-textarea">{$PROFILE_DESCRIPTION}</textarea>
+																		</td>
+																	</tr>
+
+																	<tr><td colspan="2">&nbsp;</td></tr>
+
+																	<!-- Radio button selection -->
+																	<tr class="slds-line-height--reset">
+																		<td class="dvtCellLabel" width="25%">
+																			{if $RADIO_BUTTON neq 'newprofile'}
+																				<span class="slds-radio">
+																					<input name="radiobutton" id="baseprofile" checked type="radio" value="baseprofile" />
+																					<label class="slds-radio__label" for="baseprofile">
+																						<span class="slds-radio--faux"></span>
+																					</label>
+																				</span>
+																			{else}
+																				<span class="slds-radio">
+																					<input name="radiobutton" id="baseprofile" type="radio" value="baseprofile" />
+																					<label class="slds-radio__label" for="baseprofile">
+																						<span class="slds-radio--faux"></span>
+																					</label>
+																				</span>
+																			{/if}
+																		</td>
+																		<td class="dvtCellInfo" width="75%">
+																			{$CMOD.LBL_BASE_PROFILE_MESG}
+																			<br/>
+																			{$CMOD.LBL_BASE_PROFILE}
+																			<select name="parentprofile" class="importBox slds-select" style="width: 50%;">
+																				{foreach item=combo from=$PROFILE_LISTS}
+																					{if $PARENT_PROFILE eq $combo.1}
+																						<option selected value="{$combo.1}">{$combo.0}</option>
+																					{else}
+																						<option value="{$combo.1}">{$combo.0}</option>
+																					{/if}
+																				{/foreach}
+																			</select>
+																		</td>
+																	</tr>
+																	<tr><td class="text-center" colspan="2"><b>(&nbsp;{$CMOD.LBL_OR}&nbsp;)</b></td></tr>
+																	<tr>
+																		<td class="dvtCellLabel" align="right">
+																			{if $RADIO_BUTTON eq 'newprofile'}
+																				<span class="slds-radio">
+																					<input name="radiobutton" id="newprofile" checked type="radio" value="newprofile" />
+																					<label class="slds-radio__label" for="newprofile">
+																						<span class="slds-radio--faux"></span>
+																					</label>
+																				</span>
+																			{else}
+																				<span class="slds-radio">
+																					<input name="radiobutton" id="newprofile" type="radio" value="newprofile" />
+																					<label class="slds-radio__label" for="newprofile">
+																						<span class="slds-radio--faux"></span>
+																					</label>
+																				</span>
+																			{/if}
+																		</td>
+																		<td class="dvtCellInfo" align="left">{$CMOD.LBL_BASE_PROFILE_MESG_ADV}</td>
+																	</tr>
+																	<tr>
+																		<!-- Next step and cancel buttons -->
+																		<td colspan="2" align="right">
+																			<input type="button" value=" {$APP.LNK_LIST_NEXT} &rsaquo; " title="{$APP.LNK_LIST_NEXT}" name="Next" class="slds-button slds-button--small slds-button_success" onClick="return rolevalidate();"/>&nbsp;&nbsp;
+																			<input type="button" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " title="{$APP.LBL_CANCEL_BUTTON_TITLE}" name="Cancel" onClick="window.history.back();" class="slds-button slds-button--small slds-button--destructive" />
+																		</td>
+																	</tr>
+																</table>
+
+																<!-- Scroll to top -->
+																<table border="0" cellpadding="5" cellspacing="0" width="100%">
+																	<tbody>
+																		<tr>
+																			<td class="small" align="right" nowrap="nowrap">
+																				<a href="#top">{$APP.LBL_SCROLL}</a>
+																			</td>
+																		</tr>
+																	</tbody>
+																</table>
+
+															</td>
+														</tr>
+													</tbody>
+												</table>
+
+
+											</form>
+										</td>
+									</tr>
+								</table>
+							</td>
 						</tr>
-						</tbody></table>
-						<table class="prvPrfOutline" border="0" cellpadding="0" cellspacing="0" width="100%">
-						<tbody>
-						<tr>
-							<td><!-- Module name heading -->
-								<table class="small" border="0" cellpadding="2" cellspacing="0">
-								<tbody><tr>
-									<td valign="top"><img src="{'prvPrfHdrArrow.gif'|@vtiger_imageurl:$THEME}"> </td>
-									<td class="prvPrfBigText"><b> {$CMOD.LBL_STEP_1_2} : {$CMOD.LBL_WELCOME_PROFILE_CREATE} </b><br>
-										<font class="small"> {$CMOD.LBL_SELECT_CHOICE_NEW_PROFILE} </font> </td>
-									<td class="small" style="padding-left: 10px;" align="right"></td>
-								</tr>
-								</tbody></table></td>
-							<td align="right" valign="bottom">&nbsp; </td>
-						</tr>
-						<tr>
-							<td><!-- tabs -->
-					<table width="95%" border="0" cellpadding="5" cellspacing="0" align="center">
-					<tr><td colspan="2">&nbsp;</td></tr>
-					<tr>
-						<td align="right" width="25%" style="padding-right:10px;">
-						<b style="color:#FF0000;font-size:16px;">{$APP.LBL_REQUIRED_SYMBOL}</b>&nbsp;<b>{$CMOD.LBL_NEW_PROFILE_NAME} : </b></td>
-						<td width="75%" align="left" style="padding-left:10px;">
-						<input type="text" name="profile_name" id="pobox" value="{$PROFILE_NAME}" class="txtBox" /></td>
-					</tr>
-					<tr><td colspan="2">&nbsp;</td></tr>
-					<tr>
-						<td align="right" style="padding-right:10px;" valign="top"><b>{$CMOD.LBL_DESCRIPTION} : </b></td>
-						<td align="left" style="padding-left:10px;"><textarea name="profile_description" class="txtBox">{$PROFILE_DESCRIPTION}</textarea></td>
-					</tr>
-					<tr><td colspan="2" style="border-bottom:1px dashed #CCCCCC;" height="75">&nbsp;</td></tr>
-					<tr>
-						<td align="right" width="10%" style="padding-right:10px;">
-						{if $RADIO_BUTTON neq 'newprofile'}
-						<input name="radiobutton" checked type="radio" value="baseprofile" />
-						{else}
-						<input name="radiobutton" type="radio" value="baseprofile" />
-						{/if}
-						</td>
-						<td width="90%" align="left" style="padding-left:10px;">{$CMOD.LBL_BASE_PROFILE_MESG}</td>
-					</tr>
-					<tr>
-						<td align="right" style="padding-right:10px;">&nbsp;</td>
-						<td align="left" style="padding-left:10px;">{$CMOD.LBL_BASE_PROFILE}
-						<select name="parentprofile" class="importBox">
-							{foreach item=combo from=$PROFILE_LISTS}
-							{if $PARENT_PROFILE eq $combo.1}
-								<option selected value="{$combo.1}">{$combo.0}</option>
-							{else}
-								<option value="{$combo.1}">{$combo.0}</option>
-							{/if}
-							{/foreach}
-						</select>
-						</td>
-					</tr>
-					<tr><td colspan="2">&nbsp;</td></tr>
-					<tr><td align="center" colspan="2"><b>(&nbsp;{$CMOD.LBL_OR}&nbsp;)</b></td></tr>
-					<tr><td colspan="2">&nbsp;</td></tr>
-					<tr>
-						<td align="right" style="padding-right:10px;">
-						{if $RADIO_BUTTON eq 'newprofile'}
-						<input name="radiobutton" checked type="radio" value="newprofile" />
-						{else}
-						<input name="radiobutton" type="radio" value="newprofile" />
-						{/if}
-						</td>
-						<td align="left" style="padding-left:10px;">{$CMOD.LBL_BASE_PROFILE_MESG_ADV}</td>
-					</tr>
-					<tr><td colspan="2" style="border-bottom:1px dashed #CCCCCC;" height="75">&nbsp;</td></tr>
-					<tr>
-						<td colspan="2" align="right">
-						<input type="button" value=" {$APP.LNK_LIST_NEXT} &rsaquo; " title="{$APP.LNK_LIST_NEXT}" name="Next" class="crmButton small create" onClick="return rolevalidate();"/>&nbsp;&nbsp;
-						<input type="button" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " title="{$APP.LBL_CANCEL_BUTTON_TITLE}" name="Cancel" onClick="window.history.back();" class="crmButton small cancel"/>
-						</td>
-					</tr>
 					</table>
-						</td></tr>
-						<table class="small" border="0" cellpadding="0" cellspacing="0" width="100%">
-						<tbody><tr>
-							<td><img src="{'prvPrfBottomLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-							<td class="prvPrfBottomBg" width="100%"></td>
-							<td><img src="{'prvPrfBottomRight.gif'|@vtiger_imageurl:$THEME}"></td>
-						</tr>
-						</tbody></table></td>
-					</tr>
-					</tbody></table>
-					<p>&nbsp;</p>
-					<table border="0" cellpadding="5" cellspacing="0" width="100%">
-					<tbody><tr><td class="small" align="right" nowrap="nowrap"><a href="#top">{$APP.LBL_SCROLL}</a></td></tr>
-					</tbody></table>
-				</td>
-				</table>
-				</td>
-				</tr>
-				</table>
-				</td>
-				</tr>
-				</table>
 				</div>
-				</td>
-				<td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
-				</form>
-	</tr>
-</tbody>
+			</td>
+		</tr>
+	</tbody>
 </table>
+
 <script>
 var profile_err_msg='{$MOD.LBL_ENTER_PROFILE}';
 function rolevalidate()
