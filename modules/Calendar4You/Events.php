@@ -45,17 +45,18 @@ if ($event_status != "") {
 	$Load_Event_Status = explode(",",$event_status);
 }
 
-$Load_Task_Status = array();
-$task_status = (isset($_REQUEST['task_status']) ? vtlib_purify($_REQUEST['task_status']) : '');
-if ($task_status != "") {
-	$Load_Task_Status = explode(",",$task_status);
+$Load_Modules = array();
+foreach ($Type_Ids as $typeid) {
+	if (!is_numeric($typeid) && $typeid != 'invite') {
+		$Load_Modules[] = $typeid;
+	}
 }
 
 $Calendar4You = new Calendar4You();
 $Calendar4You->GetDefPermission($current_user->id);
 
 if ($record == "" && $save != "") {
-	$Calendar4You->SaveView($Type_Ids, $Users_Ids, $all_users, $Load_Event_Status, $Load_Task_Status, array());
+	$Calendar4You->SaveView($Type_Ids, $Users_Ids, $all_users, $Load_Event_Status, $Load_Modules, array());
 }
 $detailview_permissions = $Calendar4You->CheckPermissions("DETAIL");
 
@@ -73,9 +74,6 @@ while($u_row = $adb->fetchByAssoc($u_result)) {
 }
 
 $view = convertFullCalendarView($full_calendar_view);
-
-$calendar_tabid = getTabId("Calendar");
-$events_tabid = getTabId("Events");
 
 $Showed_Field = array();
 $Event_Info = array();
@@ -107,11 +105,23 @@ if ($detailview_permissions) {
 	}
 }
 
-if (isset($_REQUEST["start"]) && $_REQUEST["start"] != "") $start_time = $_REQUEST["start"]; else $start_time = time();
-if (isset($_REQUEST["end"]) && $_REQUEST["end"] != "") $end_time = $_REQUEST["end"]; else $end_time = time();
-
+if (empty($_REQUEST['start'])) {
+	$start_time = time();
+} else {
+	$start_time = $_REQUEST['start'];
+}
+if (empty($_REQUEST['end'])) {
+	$end_time = time();
+} else {
+	$end_time = $_REQUEST['end'];
+}
 $start_date = date("Y-m-d",$start_time);
 $end_date = date("Y-m-d",$end_time);
+$dt = new DateTimeField();
+$usrsttime = $dt->convertToDBTimeZone(date('Y-m-d H:i:s',$start_time));
+$usredtime = $dt->convertToDBTimeZone(date('Y-m-d H:i:s',$end_time));
+$usrsttime = $usrsttime->format('Y-m-d H:i:s');
+$usredtime = $usredtime->format('Y-m-d H:i:s');
 
 $tasklabel = getAllModulesWithDateFields();
 $timeModules = getAllModulesWithDateTimeFields();
@@ -128,17 +138,6 @@ if (count($Load_Event_Status) > 0) {
 	}
 }
 
-$Task_Status = array();
-if (count($Load_Task_Status) > 0) {
-	foreach ($Load_Task_Status AS $sid) {
-		$s_sql = "SELECT taskstatus FROM vtiger_taskstatus WHERE picklist_valueid = ?";
-		$s_result = $adb->pquery($s_sql, array($sid));
-		$taskstatus = $adb->query_result($s_result,0,"taskstatus");
-		$Task_Status[] = $taskstatus;
-		$taskstatus = html_entity_decode($taskstatus,ENT_QUOTES,$default_charset);
-		$Task_Status[] = $taskstatus;
-	}
-}
 $showGroupEvents = GlobalVariable::getVariable('Calendar_Show_Group_Events',1);
 $modtab = array_flip($tasklabel);
 foreach($Users_Ids AS $userid) {
@@ -227,8 +226,8 @@ foreach($Users_Ids AS $userid) {
 			if ($record != "") {
 				$list_query .= " AND vtiger_crmentity.crmid = '".$record."'";
 			} else {
-				$list_query .= " AND vtiger_activity.date_start <= '".$end_date."'";
-				$list_query .= " AND vtiger_activity.due_date >= '".$start_date."'";
+				$list_query .= " AND vtiger_activity.dtstart <= '".$usredtime."'";
+				$list_query .= " AND vtiger_activity.dtend >= '".$usrsttime."'";
 			}
 			if (!$invites) {
 				if ($showGroupEvents and $groups != '')
@@ -241,10 +240,6 @@ foreach($Users_Ids AS $userid) {
 			if (count($Event_Status) > 0) {
 				$list_query .= " AND (vtiger_activity.eventstatus NOT IN (" . generateQuestionMarks($Event_Status) . ") OR vtiger_activity.eventstatus IS NULL)";
 				$list_array = array_merge($list_array, $Event_Status);
-			}
-			if (count($Task_Status) > 0) {
-				$list_query .= " AND (vtiger_activity.status NOT IN (" . generateQuestionMarks($Task_Status) . ") OR vtiger_activity.status IS NULL)";
-				$list_array = array_merge($list_array, $Task_Status);
 			}
 		}
 		$list_result = $adb->pquery($list_query, $list_array);

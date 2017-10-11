@@ -124,7 +124,7 @@ class RelatedPanes extends processcbMap {
 						$row['handler_class'] = (isset($value->handler_class) ? (String)$value->handler_class : '');
 						$row['handler'] = (isset($value->handler) ? (String)$value->handler : '');
 						$instance->initialize($row);
-						if(!empty($row['handler_path']) && isFileAccessible($row['handler_path'])) {
+						if (!empty($row['handler_path']) && isInsideApplication($row['handler_path'])) {
 							checkFileAccessForInclusion($row['handler_path']);
 							require_once $row['handler_path'];
 							$linkData = new Vtiger_LinkData($instance, $current_user);

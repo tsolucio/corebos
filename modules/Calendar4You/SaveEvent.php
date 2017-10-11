@@ -92,12 +92,7 @@ if ($_REQUEST['mode'] == 'event_drop' || $_REQUEST['mode'] == 'event_resize') {
 		$focus->column_fields['dtend'] = $date->format($dt_fmt) . ' ' . DateTimeField::formatUserTimeString($tzendtime, $hr_fmt);
 
 		if ($_REQUEST['mode'] == "event_resize") {
-			$duration_time = $new_time_end_time - $new_time_start_time;
-			$duration_hour = floor($duration_time / 3600);
-			$duration_minutes = ($duration_time - ($duration_hour * 3600 )) / 60;
 			$focus->column_fields["time_end"] = $new_time_end;
-			$focus->column_fields["duration_hours"] = $duration_hour;
-			$focus->column_fields["duration_minutes"] = $duration_minutes;
 		} else {
 			$focus->column_fields['dtstart'] = $newdtstart;
 		}

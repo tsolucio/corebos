@@ -681,12 +681,8 @@ $mod_strings = Array(
 'Asterisk Extension' => 'Extensão Asterisk',
 'Receive Incoming Calls' => 'Receber Chamadas',
 
-// Added for Create Custom Fields 
-'LBL_USER_CUSTOMFIELDS_DESCRIPTION' => 'Criar Campos Customizados para Usuários',
-'LBL_USER_CUSTOMFIELDS' => 'Campos Customizados Usuários',
 'LBL_CURRENCY_CONFIGURATION'=> 'Configuração Moeda',
 
-//vtiger CRM 5.3.0 RC fields translated by Valmir Carlos Trindade | valmir@ttcasolucoes.com.br
 'Digit Grouping Pattern'=>'Padrão Agrupamento Dígitos',
 'Decimal Separator'=>'Separador Decimal',
 'Symbol Placement'=>'Localização Símbolo',

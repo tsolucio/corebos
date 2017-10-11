@@ -994,11 +994,13 @@ function getValidDisplayDate($cur_date_val) {
 	if ($dat_fmt == '') {
 		$dat_fmt = 'dd-mm-yyyy';
 	}
-	$date_value = explode(' ', $cur_date_val);
-	list($y, $m, $d) = explode('-', $date_value[0]);
-	list($fy, $fm, $fd) = explode('-', $dat_fmt);
-	if ((strlen($fy) == 4 && strlen($y) == 4) || (strlen($fd) == 4 && strlen($d) == 4)) {
-		return "$y-$m-$d";
+	if (!empty($cur_date_val)) {
+		$date_value = explode(' ', $cur_date_val);
+		list($y, $m, $d) = explode('-', $date_value[0]);
+		list($fy, $fm, $fd) = explode('-', $dat_fmt);
+		if ((strlen($fy) == 4 && strlen($y) == 4) || (strlen($fd) == 4 && strlen($d) == 4)) {
+			return "$y-$m-$d";
+		}
 	}
 	$date = new DateTimeField($cur_date_val);
 	return $date->getDisplayDate();
@@ -1230,7 +1232,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 	$tabid = getTabid($module);
 	$block_detail = Array();
 	$getBlockinfo = "";
-	$query = "select blockid,blocklabel,show_title,display_status from vtiger_blocks where tabid=? and $disp_view=0 and visible = 0 order by sequence";
+	$query = "select blockid,blocklabel,show_title,display_status,isrelatedlist from vtiger_blocks where tabid=? and $disp_view=0 and visible = 0 order by sequence";
 	$result = $adb->pquery($query, array($tabid));
 	$noofrows = $adb->num_rows($result);
 	$prev_header = "";
@@ -1239,8 +1241,12 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 		$blockid = $adb->query_result($result, $i, "blockid");
 		$blockid_list[] = $blockid;
 		$block_label[$blockid] = $adb->query_result($result, $i, "blocklabel");
-
-		$sLabelVal = getTranslatedString($block_label[$blockid], $module);
+		$isrelatedlist = $adb->query_result($result, $i, "isrelatedlist");
+		if(!is_null($isrelatedlist) && $isrelatedlist != 0){
+			$sLabelVal = $block_label[$blockid];
+		}else{
+			$sLabelVal = getTranslatedString($block_label[$blockid], $module);
+		}
 		$aBlockStatus[$sLabelVal] = $adb->query_result($result, $i, "display_status");
 	}
 	if ($mode == 'edit') {
@@ -2933,7 +2939,7 @@ function checkFileAccessForDeletion($filepath) {
 
 /** Function to check the file access is made within web root directory. */
 function checkFileAccess($filepath) {
-	if (!isFileAccessible($filepath)) {
+	if (!isInsideApplication($filepath)) {
 		global $default_charset;
 		echo "Sorry! Attempt to access restricted file.<br>";
 		echo 'We are looking for this file path: '.htmlspecialchars($filepath, ENT_QUOTES, $default_charset).'<br>';
@@ -2947,26 +2953,10 @@ function checkFileAccess($filepath) {
  * @global String $root_directory vtiger root directory as given in config.inc.php file.
  * @param String $filepath relative path to the file which need to be verified
  * @return Boolean true if file is a valid file within vtiger root directory, false otherwise.
+ * @deprecated
  */
 function isFileAccessible($filepath) {
-	global $root_directory;
-	// Set the base directory to compare with
-	$use_root_directory = $root_directory;
-	if (empty($use_root_directory)) {
-		$use_root_directory = realpath(__DIR__ . '/../../.');
-	}
-
-	$realfilepath = realpath($filepath);
-
-	/** Replace all \\ with \ first */
-	$realfilepath = str_replace('\\\\', '\\', $realfilepath);
-	$rootdirpath = str_replace('\\\\', '\\', $use_root_directory);
-
-	/** Replace all \ with / now */
-	$realfilepath = str_replace('\\', '/', $realfilepath);
-	$rootdirpath = str_replace('\\', '/', $rootdirpath);
-
-	return !(stripos($realfilepath, $rootdirpath) !== 0);
+	return isInsideApplication($filepath);
 }
 
 /** Function to get the ActivityType for the given entity id

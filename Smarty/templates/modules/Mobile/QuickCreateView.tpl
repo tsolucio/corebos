@@ -142,7 +142,7 @@
 									{if $_FIELD->uitype() eq '53'}
 										<div>
 										<label for="assign_user">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
-										{assign var=check value=1}
+										{assign var=check value=0}
 										{foreach key=key_one item=arr from=$_FIELD->value()}
 											{foreach key=sel_value item=value from=$arr}
 												{foreach key=sel_value1 item=value1 from=$value}
@@ -181,7 +181,7 @@
 													{if $key_one eq '0'}
 														{foreach key=sel_value1 item=arr1 from=$arr}
 															{foreach key=sel_value2 item=value from=$arr1}
-																<option value="{$sel_value1}" {$value}>{$sel_value2}</option>
+																<option value="{$sel_value1}" {if $mode eq 'create' && $sel_value1 eq $CURRENTUSERwsid}selected{else}{$value}{/if}>{$sel_value2}</option>
 															{/foreach}
 														{/foreach}
 													{/if}

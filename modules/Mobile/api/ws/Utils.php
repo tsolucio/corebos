@@ -320,7 +320,9 @@ class crmtogo_WS_Utils {
 		}
 		else if($module == 'Calendar' || $module == 'Events') {
 			foreach($describeInfo['fields'] as $index => $fieldInfo) {
-				$fieldInfo['uitype'] = self::fixUIType($module, $fieldInfo['name'], $fieldInfo['uitype']);
+				if (isset($fieldInfo['uitype'])) {
+					$fieldInfo['uitype'] = self::fixUIType($module, $fieldInfo['name'], $fieldInfo['uitype']);
+				}
 				if ($fieldInfo['name'] == 'visibility') {
 					if (empty($fieldInfo['type']['picklistValues'])) {
 						$fieldInfo['type']['picklistValues'] = self::visibilityValues();

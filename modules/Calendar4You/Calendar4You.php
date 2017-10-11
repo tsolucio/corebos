@@ -569,9 +569,9 @@ public function setgoogleaccessparams($userid){
 		return $return_data;
 	}
 
-	function SaveView($Type_Ids, $Users_Ids, $all_users, $Load_Event_Status, $Load_Task_Status, $Load_Task_Priority) {
+	function SaveView($Type_Ids, $Users_Ids, $all_users, $Load_Event_Status, $Load_Modules, $Load_Task_Priority) {
 		global $adb,$current_user;
-		$Save = array('1' => $Type_Ids, '2' => $Users_Ids, '3' => $Load_Event_Status, '4' => $Load_Task_Status, '5' => $Load_Task_Priority);
+		$Save = array('1' => $Type_Ids, '2' => $Users_Ids, '3' => $Load_Event_Status, '4' => $Load_Modules, '5' => $Load_Task_Priority);
 		foreach ($Save AS $type => $Save_Array) {
 			if (($type == 2 && $all_users) || $type != 2) {
 				$d_sql = 'DELETE FROM its4you_calendar4you_view WHERE userid = ? AND type = ?';
