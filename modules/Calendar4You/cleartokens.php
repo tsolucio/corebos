@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2015 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Copyright 2017 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
  * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
  * file except in compliance with the License. You can redistribute it and/or modify it
  * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
@@ -12,11 +12,7 @@
  * either express or implied. See the License for the specific language governing
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
- *************************************************************************************************
- *  Module       : Calendar4You
- *  Version      : 1.0
- *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
-$uid=vtlib_purify($_REQUEST['uid']);
 global $adb;
-$adb->query("update its4you_googlesync4you_access set refresh_token='' , synctoken='' where userid=$uid");
+$uid=vtlib_purify($_REQUEST['uid']);
+$adb->pquery("update its4you_googlesync4you_access set refresh_token='', synctoken='' where userid=?", array($uid));
