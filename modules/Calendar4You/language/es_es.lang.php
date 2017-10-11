@@ -90,6 +90,7 @@ $mod_strings = Array (
 'High'=>'Alto',
 'Medium'=>'Medio',
 'Low'=>'Bajo',
+'Gmail_ChangeAccount'=>'If you want to change the Gmail Account please clear the tokens',
 
 );
 ?>
