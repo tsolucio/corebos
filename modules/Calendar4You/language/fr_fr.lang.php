@@ -73,5 +73,6 @@ $mod_strings = Array (
 "LBL_CONNECT"=>"Authoriser et connecter",
 "LBL_GOOGLEINS"=>"Inserer de Google?",
 "LIST_MODULES" =>"Liste des Modules",
+'Gmail_ChangeAccount'=>'If you want to change the Gmail Account please clear the tokens',
 );
 ?>
