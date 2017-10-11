@@ -2664,6 +2664,9 @@ class ReportRun extends CRMEntity {
 				);
 				if (GlobalVariable::getVariable('Debug_Report_Query', '0')=='1') {
 					$resp['sql'] = $sSQL;
+					foreach ($this->queryPlanner->getTemporaryTables() as $tmptblname => $tmptbldetails) {
+						$resp[$tmptblname] = $tmptbldetails['query'];
+					}
 				}
 				if($outputformat == 'JSONPAGED') {
 					$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize',40);
