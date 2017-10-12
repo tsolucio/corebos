@@ -48,7 +48,7 @@
     <div data-role="collapsible-set"   data-mini="true">	
         <ul data-role="listview" data-theme="c" id="homesortable">
 		{foreach item=_MODULE from=$_MODULES}
-			{if $_MODULE->active() && $_MODULE->name() neq 'Events'}
+			{if $_MODULE->active()}
 			<li id={$_MODULE->name()}><a href="index.php?_operation=listModuleRecords&module={$_MODULE->name()}" class="ui-btn ui-btn-icon-right ui-icon-carat-r" target="_blank">{$_MODULE->label()}</a></li>
 			{/if}
 		{/foreach}	

@@ -16,14 +16,14 @@ class crmtogo_UI_EditView extends crmtogo_WS_FetchRecordDetails {
 
 	function cachedModuleLookupWithRecordId($recordId) {
 		$recordIdComponents = explode('x', $recordId);
-    	$modules = $this->sessionGet('_MODULES'); // Should be available post login
+		$modules = $this->sessionGet('_MODULES'); // Should be available post login
 		foreach($modules as $module) {
 			if ($module->id() == $recordIdComponents[0]) { return $module; };
 		}
 		return false;
 	}
 	function cachedModuleLookup($currentmodule) {
-    	$modules = $this->sessionGet('_MODULES'); // Should be available post login
+		$modules = $this->sessionGet('_MODULES'); // Should be available post login
 		foreach($modules as $module) {
 			if ($module->name() == $currentmodule) { return $module; };
 		}
@@ -45,14 +45,8 @@ class crmtogo_UI_EditView extends crmtogo_WS_FetchRecordDetails {
 			$response = new crmtogo_API_Response();
 			$wsResponseResult = $wsResponse->getResult();
 			$currentModule = $request->get('module');
-			$origmodule = $currentModule;
-			if ( $currentModule == 'Events') {
-				$targetModule = 'Calendar';
-			}
-			else {
-				$targetModule = $currentModule;
-			}
-			
+			$targetModule = $currentModule;
+
 			if($request->getOperation()!='create') {
 				$moduleObj = $this->cachedModuleLookupWithRecordId($wsResponseResult['record']['id']);
 				$record = crmtogo_UI_ModuleRecordModel::buildModelFromResponse($wsResponseResult['record']);
@@ -78,7 +72,7 @@ class crmtogo_UI_EditView extends crmtogo_WS_FetchRecordDetails {
 			$recordIdComponents = explode('x', $wsResponseResult['record']['id']);
 			//this is a temporary fix for invitees for events, must get modified later
 			$invited_users=Array();
-			if ($currentModule == 'Events') {
+			if ($currentModule == 'cbCalendar') {
 				global $adb;
 				$sql = 'select vtiger_users.user_name,vtiger_invitees.* from vtiger_invitees left join vtiger_users on vtiger_invitees.inviteeid=vtiger_users.id where activityid=?';
 				$result = $adb->pquery($sql, array($recordIdComponents[1]));
@@ -95,6 +89,7 @@ class crmtogo_UI_EditView extends crmtogo_WS_FetchRecordDetails {
 			$viewer->assign('COLOR_HEADER_FOOTER', $config['theme']);
 			$viewer->assign('_MODULE', $moduleObj);
 			$viewer->assign('CURRENTMODUL', $currentModule);
+			$viewer->assign('CURRENTUSERwsid', vtws_getEntityId('Users') . 'x' . $current_user->id);
 			$viewer->assign('_RECORD', $record);
 			$viewer->assign('id', $wsResponseResult['record']['id']);
 			$viewer->assign('mode', $request->getOperation());
@@ -103,9 +98,9 @@ class crmtogo_UI_EditView extends crmtogo_WS_FetchRecordDetails {
 			$viewer->assign('SMARTYDATEFORMAT', $target_date_format);
 			$viewer->assign('HOURFORMATFORMAT', $current_user->hour_format);
 			$viewer->assign('LANGFORMATFORMAT', $target_lang_format);
-			$viewer->assign('INVITEES',  implode (",", array_keys($invited_users)));
+			$viewer->assign('INVITEES',  implode (";", array_keys($invited_users)));
 			$viewer->assign('LANGUAGE', $current_language);
-			$viewer->assign('ORIGMODULE', $origmodule);
+
 			//Get PanelMenu data
 			$modules = $this->sessionGet('_MODULES');
 			$viewer->assign('_MODULES', $modules);

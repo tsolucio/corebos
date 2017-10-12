@@ -123,26 +123,30 @@ class Services extends CRMEntity {
 	 *	@param string $module	 - current module name
 	 *	$return void
 	*/
-	function insertTaxInformation($tablename, $module)
-	{
+	function insertTaxInformation($tablename, $module) {
 		global $adb, $log;
 		$log->debug("Entering into insertTaxInformation($tablename, $module) method ...");
 		$tax_details = getAllTaxes();
-
+		$numtaxes = count($tax_details);
 		$tax_per = '';
 		//Save the Product - tax relationship if corresponding tax check box is enabled
 		//Delete the existing tax if any
-		if($this->mode == 'edit')
-		{
-			for($i=0;$i<count($tax_details);$i++)
-			{
-				$taxid = getTaxId($tax_details[$i]['taxname']);
-				$sql = "delete from vtiger_producttaxrel where productid=? and taxid=?";
-				$adb->pquery($sql, array($this->id,$taxid));
+		if ($this->mode == 'edit') {
+			$sql = 'delete from vtiger_producttaxrel where productid=? and taxid=?';
+			for ($i=0;$i<$numtaxes;$i++) {
+				$tax_checkname = $tax_details[$i]['taxname']."_check";
+				if ($_REQUEST['action'] == 'MassEditSave') { // then we only modify the marked taxes
+					if (isset($_REQUEST[$tax_checkname]) and ($_REQUEST[$tax_checkname] == 'on' || $_REQUEST[$tax_checkname] == 1)) {
+						$taxid = getTaxId($tax_details[$i]['taxname']);
+						$adb->pquery($sql, array($this->id,$taxid));
+					}
+				} else {
+					$taxid = getTaxId($tax_details[$i]['taxname']);
+					$adb->pquery($sql, array($this->id,$taxid));
+				}
 			}
 		}
-		for($i=0;$i<count($tax_details);$i++)
-		{
+		for ($i=0;$i<$numtaxes;$i++) {
 			$tax_name = $tax_details[$i]['taxname'];
 			$tax_checkname = $tax_details[$i]['taxname']."_check";
 			if (isset($_REQUEST[$tax_checkname]) && ($_REQUEST[$tax_checkname] == 'on' || $_REQUEST[$tax_checkname] == 1)) {

@@ -2664,6 +2664,9 @@ class ReportRun extends CRMEntity {
 				);
 				if (GlobalVariable::getVariable('Debug_Report_Query', '0')=='1') {
 					$resp['sql'] = $sSQL;
+					foreach ($this->queryPlanner->getTemporaryTables() as $tmptblname => $tmptbldetails) {
+						$resp[$tmptblname] = $tmptbldetails['query'];
+					}
 				}
 				if($outputformat == 'JSONPAGED') {
 					$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize',40);
@@ -2770,8 +2773,8 @@ class ReportRun extends CRMEntity {
 				$arr_val = array();
 				do {
 					$arraylists = Array();
-					for ($i=0; $i<$y-1; $i++) //No tratamos la última columna por ser el ACTION con el CRMID.
-					{
+					for ($i=0; $i<$y-1; $i++) { //No tratamos la última columna por ser el ACTION con el CRMID.
+						$field = null;
 						$fld = $adb->field_name($result, $i);
 						list($module, $fieldLabel) = explode('_', $fld->name, 2);
 						$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
@@ -2823,7 +2826,9 @@ class ReportRun extends CRMEntity {
 							}
 						}
 						$fieldvalue = getReportFieldValue($this, $picklistarray, $fld,$custom_field_values, $i);
-						if (empty($returnfieldinfo[$headerLabel])) $returnfieldinfo[$headerLabel] = $field;
+						if (empty($returnfieldinfo[$headerLabel]) && !empty($field)) {
+							$returnfieldinfo[$headerLabel] = $field;
+						}
 						$arraylists[$headerLabel] = $fieldvalue;
 					}
 					$arr_val[] = $arraylists;

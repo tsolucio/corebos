@@ -74,11 +74,11 @@
 					<input type="hidden" name="{$_FIELD->name()}" id="{$_FIELD->name()}" value="{$_FIELD->valueLabel()}">
 					<div class="ui-grid-a">
 						<div class="ui-block-a">
-							{if $_MODULE->name() eq 'Calendar' || $_MODULE->name() eq 'Events'}
+							{if $_MODULE->name() eq 'cbCalendar'}
 								{if $_FIELD->name() eq 'date_start'}
 									{'Start Date'|@getTranslatedString:$_MODULE->name()}:
-								{elseif $_FIELD->name() neq 'reminder_time' && $_FIELD->name() neq 'recurringtype' && $_FIELD->name() neq 'duration_hours' && $_FIELD->name() neq 'duration_minutes' && $_FIELD->name() neq 'notime' && $_FIELD->name() neq 'location'}
-									{if ($_FIELD->name() neq 'eventstatus' && $_FIELD->name() neq 'taskstatus') || $_FIELD->valueLabel() neq ''}
+								{elseif $_FIELD->name() neq 'reminder_time' && $_FIELD->name() neq 'recurringtype' && $_FIELD->name() neq 'duration_hours' && $_FIELD->name() neq 'duration_minutes' && $_FIELD->name() neq 'notime' && $_FIELD->name() neq 'location' && $_FIELD->name() neq 'dtstart' && $_FIELD->name() neq 'dtend'}
+									{if ($_FIELD->name() neq 'eventstatus') || $_FIELD->valueLabel() neq ''}
 										{$_FIELD->label()}:
 									{/if}
 								{/if}
@@ -100,7 +100,7 @@
 									</a>
 								{/if}
 							{else}
-								{if ($_MODULE->name() eq 'Calendar' || $_MODULE->name() eq 'Events') && $_FIELD->name() neq 'reminder_time' && $_FIELD->name() neq 'recurringtype' && $_FIELD->name() neq 'duration_hours' && $_FIELD->name() neq 'duration_minutes' && $_FIELD->name() neq 'notime' && $_FIELD->name() neq 'location'}
+								{if $_MODULE->name() eq 'cbCalendar' && $_FIELD->name() neq 'reminder_time' && $_FIELD->name() neq 'recurringtype' && $_FIELD->name() neq 'duration_hours' && $_FIELD->name() neq 'duration_minutes' && $_FIELD->name() neq 'notime' && $_FIELD->name() neq 'location' && $_FIELD->name() neq 'dtstart' && $_FIELD->name() neq 'dtend'}
 									{if $_FIELD->name() eq 'date_start' ||$_FIELD->name() eq 'due_date'}
 										{$_FIELD->valueLabel()}
 									{else}
@@ -111,12 +111,12 @@
 												{$MOD.LBL_NO}
 											{/if}
 										{else}
-											{if ($_FIELD->name() neq 'eventstatus' && $_FIELD->name() neq 'taskstatus') || $_FIELD->valueLabel() neq ''}
+											{if $_FIELD->name() neq 'eventstatus' || $_FIELD->valueLabel() neq ''}
 												{$_FIELD->valueLabel()|@getTranslatedString:$_MODULE->name()}
 											{/if}
 										{/if}
 									{/if}
-								{elseif $_MODULE->name() neq 'Calendar' && $_MODULE->name() neq 'Events'}
+								{elseif $_MODULE->name() neq 'cbCalendar'}
 									{if $_FIELD->uitype() eq '56'}
 										{if $_FIELD->valueLabel() eq '1'}
 											{$MOD.LBL_YES}

@@ -79,6 +79,10 @@ class ReportRunQueryPlanner {
 		return $this->tables;
 	}
 
+	function getTemporaryTables() {
+		return $this->tempTables;
+	}
+
 	function newDependencyMatrix() {
 		return new ReportRunQueryDependencyMatrix();
 	}

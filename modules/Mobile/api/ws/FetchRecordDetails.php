@@ -84,7 +84,7 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 		$blocks = array(); 
 		$labelFields = false;
 
-		if($module == 'Events' || $module == 'Calendar' || $module == 'Timecontrol') {
+		if($module == 'Timecontrol' || $module == 'cbCalendar') {
 			// sets times & dates to local time zone and format
 			$date = new DateTimeField($resultRecord['date_start'].' '.$resultRecord['time_start']);
 			$startDateTime = $date->getDisplayDateTimeValue();	

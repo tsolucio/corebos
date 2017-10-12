@@ -119,4 +119,18 @@
 	<classname>fixCalendarTaskStatusToEventStatus</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Mobile: Replace Calendar/Events to cbCalendar</description>
+	<filename>build/changeSets/2017/MobileReplaceCalendarTocbCalendar.php</filename>
+	<classname>MobileReplaceCalendarTocbCalendar</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Replace Calendar/Events to cbCalendar on crmentity</description>
+	<filename>build/changeSets/2017/ReplaceCalendarTocbCalendar.php</filename>
+	<classname>ReplaceCalendarTocbCalendar</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

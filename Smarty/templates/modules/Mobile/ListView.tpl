@@ -16,7 +16,7 @@
 	<script type="text/javascript" src="resources/crmtogo.js"></script>
 	<script type="text/javascript" src="resources/xdate.js"></script>
 	<script type="text/javascript" src="resources/lang/{$LANGUAGE}.lang.js"></script>
-	{if $_MODULE->name() eq 'Calendar'}
+	{if $_MODULE->name() eq 'cbCalendar'}
 		<link rel="stylesheet" href="resources/css/jw-jqm-cal.css" >
 		<script type="text/javascript" src="resources/jw-jqm-cal.js"></script>
 	{/if}
@@ -28,13 +28,13 @@
 	<input type="hidden" name="view" id="view" value="{$_VIEW}">
 	<input type="hidden" name="viewName" id="viewName" value="{if isset($_VIEWNAME)}{$_VIEWNAME}{/if}">
 	<!-- Calendar Settings -->
-	{if $_MODULE->name() eq 'Calendar'}
+	{if $_MODULE->name() eq 'cbCalendar'}
 	<input type="hidden" name="calendarselect" id="calendarselect" value="{$CALENDARSELECT}">
 	<input type="hidden" name="cal_startday" id="cal_startday" value="{$CALSTARTDAY}">
 	{/if}
 	<!-- header -->
 	<div data-role="header" data-theme="{$COLOR_HEADER_FOOTER}" data-position="fixed">
-		{if $_MODULE->name() eq 'Calendar'}
+		{if $_MODULE->name() eq 'cbCalendar'}
 			<div style="position: absolute;right: 35px;text-align: right;"> 
 				<select name="fliptoggle" id="fliptoggle" data-role="slider" data-mini='true'>
 					<option value="off">{$MOD.LBL_OFF}</option> 
@@ -48,17 +48,14 @@
 				</select>
 			</div>
 		{/if}
-		{if $_MODULE->name() neq 'Calendar' AND $_MODULE->name() neq 'Quotes' AND  $_MODULE->name() neq 'SalesOrder' AND  $_MODULE->name() neq 'Invoice' AND  $_MODULE->name() neq 'PurchaseOrder' AND  $_MODULE->name() neq 'Products'}
+		{if $_MODULE->name() neq 'Quotes' AND  $_MODULE->name() neq 'SalesOrder' AND  $_MODULE->name() neq 'Invoice' AND  $_MODULE->name() neq 'PurchaseOrder' AND  $_MODULE->name() neq 'Products'}
 			<a href="?_operation=create&module={$_MODULE->name()}&record=''" class="ui-btn ui-corner-all ui-icon-plus ui-btn-icon-notext" data-transition="turn">{$MOD.LBL_NEW}</a>
-		{elseif $_MODULE->name() eq 'Calendar'}
-			<!-- select task or event -->
-			<a href="?_operation=createActivity&lang={$LANGUAGE}" class="ui-btn ui-corner-all ui-icon-plus ui-btn-icon-notext" data-transition="turn">{$MOD.LBL_NEW}</a>
 		{/if}
 			<a href="#panelmenu" data-mini='true' data-role='button' class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-grid ui-corner-all ui-icon-bars"></a>
 		<h4>{$_MODULE->label()}</h4> 
 	</div>
 	<!-- /header -->
-	{if $_MODULE->name() eq 'Calendar'}	
+	{if $_MODULE->name() eq 'cbCalendar'}	
 	<div id="eventCalendarNoCache" class="ui-input-text ui-body-c" width="100%"></div>
 	<div  id="view-calendar" data-theme="a">
 		<div id="calendardiv" style="display:block;" >

@@ -7,7 +7,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-$mod_strings = Array (
+$mod_strings = array (
 'MyExtension' => 'Mi Extensión',
 "Calendar4You"=>"Calendario",
 "LBL_MODULE_NAME"=>"Calendario",
@@ -16,7 +16,7 @@ $mod_strings = Array (
 "LBL_ADDTODO"=>"Tarea",
 "LBL_SHOW_WEEKENDS"=>"Mostrar Fin de Semana",
 "LBL_USER_SETTINGS"=>"Preferencias Usuario",
-"LBL_EVENT_SETTINGS"=>"Preferencias Evento", 
+"LBL_EVENT_SETTINGS"=>"Preferencias Evento",
 "LBL_COLOR_IN_CALENDAR"=>"Colores en Calendario",
 "LBL_COLOR_IN_CALENDAR_BACKGROUND"=>"Fondo",
 "LBL_COLOR_IN_CALENDAR_TEXT"=>"Texto",
@@ -24,15 +24,15 @@ $mod_strings = Array (
 "LBL_WEEK_EVENT_INFO"=>"Info Visible en Vista Semanal",
 "LBL_MONTH_EVENT_INFO"=>"Info Visible en Vista Mensual",
 "LBL_AVAILABLE_INFO"=>"Informaciones Disponibles",
-"LBL_SELECTED_INFO"=>"Informaciones Seleccionadas",   
+"LBL_SELECTED_INFO"=>"Informaciones Seleccionadas",
 "LBL_PROFILES_DESC"=>"Administrar privilegios de acceso para diferentes Roles.",
 "LBL_PROFILES"=>"Perfiles",
 "LBL_SETPRIVILEGIES"=>"Definir privilegios del Calendario para todos los perfiles",
 "LBL_CREATE_EDIT"=>"Crear/Editar",
 "LBL_VIEW"=>"Ver",
 "LBL_DELETE"=>"Borrar",
-"LBL_LIST"=>"Lista", 
-"LBL_SUCCESSFULY_CREATED"=>"Creado Correctamente", 
+"LBL_LIST"=>"Lista",
+"LBL_SUCCESSFULY_CREATED"=>"Creado Correctamente",
 "MOVE_EVENT_QUESTION" => "¿Seguro que quieres realizar este cambio?",
 "RESIZE_EVENT_QUESTION" => "¿Correcto?",
 "LBL_DEFAULT_USER_VIEW" => "Vista por Defecto del Usuario",
@@ -42,7 +42,7 @@ $mod_strings = Array (
 "LBL_TASK_STATUS" => "Estado Tarea",
 "LBL_DETAIL"=>"detalle",
 "LBL_WEEK_STARTS_AT"=>"Semana empieza en",
-"LBL_INVITE"=>"Invitar", 
+"LBL_INVITE"=>"Invitar",
 "LBL_DISPLAYED_INFO"=>"Información mostrada",
 "LBL_GOOGLE_SYNC"=>"Google Sync",
 'Calendar4You - GoogleSync' => 'Calendario - GoogleSync',
@@ -57,7 +57,7 @@ $mod_strings = Array (
 "LBL_HAVE_NOT_ACCESS_DATA"=>"no ha introducido sus datos de acceso a Google",
 "LBL_EVENTS_TO_GOOGLE"=>"al calendario",
 "LBL_IMPORT_FROM_G_GOOGLE"=>"Importar del calendario a",
-"LBL_TO_GOOGLE_CALENDAR"=>"Sincronizar con calendario", 
+"LBL_TO_GOOGLE_CALENDAR"=>"Sincronizar con calendario",
 "LBL_CONNECTING_WORK_CORRECT"=>"Se ha conectado con Google",
 "LBL_GOOGLE_SYNC_CONTROL_ACCESS_DATA"=>"Verificando acceso a Google",
 "LBL_CHANGE_GOOGLE_ACCOUNT"=>"Cambiar cuenta de Google",
@@ -73,5 +73,6 @@ $mod_strings = Array (
 "LBL_CONNECT"=>"Autoriza y con&eacute;ctate",
 "LBL_GOOGLEINS"=>"¿Insertar desde Google?",
 'LIST_MODULES' => 'Listado de Módulos',
+'Gmail_ChangeAccount'=>'Antes de cambiar tu Cuenta de Google, limpia los datos guardados',
 );
 ?>

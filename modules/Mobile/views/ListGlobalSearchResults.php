@@ -149,15 +149,6 @@ class crmtogo_UI_GlobalSearch extends crmtogo_WS_ListModuleRecords {
 							for($i=0;$i<$noofrows;$i++) {
 								$lstcontent[$module][$i]['entry1'] = $db->query_result($listview_entries,$i,$searchresult[0]);
 								$lstcontent[$module][$i]['entry2'] = $db->query_result($listview_entries,$i,$searchresult[1]);
-								if ($module == 'Calendar') {
-									$eventtask = $db->query_result($listview_entries,$i,'activitytype');
-									if ($acttype!='Task') {
-										$ws_entity2 = 18;
-									}
-									else {
-										$ws_entity2 = 1;
-									}
-								}
 								$lstcontent[$module][$i]['id']= $ws_entity2."x".$db->query_result($listview_entries,$i,'crmid');
 							}
 						}
