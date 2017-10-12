@@ -73,7 +73,11 @@ class crmtogo_WS_SaveRecord extends crmtogo_WS_FetchRecord {
 					$values['dtend'] = $values[$endDname].' '.$values['time_end'];
 				}
 			}
-
+			if ($module == 'cbCalendar') {
+				$date = new DateTimeField($values["followupdt"]. ' ' . $values["followupdt_time"]);
+				$values['followupdt'] = $date->getDBInsertDateValue().' '.$date->getDBInsertTimeValue();
+				$values["followupdt_time"] = '';
+			}
 			// Set the modified values
 			foreach($values as $name => $value) {
 				//for multi picklist remove _empty

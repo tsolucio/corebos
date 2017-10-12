@@ -62,7 +62,7 @@
 					<h3>{$_BLOCKLABEL|@getTranslatedString:$_MODULE->name()}</h3>
 					<p>
 					{foreach item=_FIELD from=$_FIELDS}
-						{if $_FIELD->displaytype() eq '1' || ($_FIELD->name() eq 'time_start' || $_FIELD->name() eq 'time_end' || $_FIELD->name() eq 'date_start' || $_FIELD->name() eq 'due_date')}
+						{if $_FIELD->displaytype() eq '1' || ($_FIELD->name() eq 'time_start' || $_FIELD->name() eq 'time_end' || $_FIELD->name() eq 'date_start' || $_FIELD->name() eq 'due_date' || $_FIELD->name() eq 'followupdt')}
 							<div>   
 								{if $_FIELD->uitype() eq '1' || $_FIELD->uitype() eq '2' || $_FIELD->uitype() eq '55' || $_FIELD->uitype() eq '255' || $_FIELD->uitype() eq '11'  || $_FIELD->uitype() eq '13'  || $_FIELD->uitype() eq '17' || $_FIELD->uitype() eq '72' || $_FIELD->uitype() eq '22'  || $_FIELD->uitype() eq '20'}
 										<label for="{$_FIELD->label()}">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
@@ -76,7 +76,7 @@
 										{assign var=dateFormat value="$SMARTYDATEFORMAT"}
 										{assign var=dateStr value="$HOURFORMATFORMAT"}
 										
-										{if $_FIELD->name() neq 'time_start' &&  $_FIELD->name() neq 'time_end'}
+										{if $_FIELD->name() neq 'time_start' && $_FIELD->name() neq 'time_end' && $_FIELD->name() neq 'followupdt'}
 											{if $_FIELD->name() eq 'date_start'}
 												<input type="hidden" name="dateformat" id="dateformat" value="{$DATEFORMAT}" />
 												<label for="{$_FIELD->name()}">{'Start Date'|@getTranslatedString:$_MODULE->name()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
@@ -96,6 +96,12 @@
 											<label for="{$_FIELD->name()}">{$_FIELD->label()|@getTranslatedString:$_MODULE->name()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
 											<input type="time" name="time_end" id="time_end" value="{$_FIELD->value()}" />
 											<div id="format_note_time_end" style="margin-bottom:25px;font-style:italic;font-size:10px;display:none;">Format: HH:MM (24 H)</div>
+										{/if}
+										{if $_FIELD->uitype() eq '252' && $_FIELD->name() eq 'followupdt' && $_MODULE->name() eq 'cbCalendar'}
+											<label for="{$_FIELD->name()}">{$_FIELD->label()|@getTranslatedString:$_MODULE->name()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
+											<input data-mini="true" type="date" name="{$_FIELD->name()}" id="{$_FIELD->name()}" value="{$_FIELD->value()}" {if $_FIELD->ismandatory() eq 'M'}class="required"{/if} />
+											<input type="time" name="followupdt_time" id="followupdt_time" value="{$_FIELD->value()}" />
+											<div id="format_note_followupdt_time" style="margin-bottom:25px;font-style:italic;font-size:10px;display:none;">Format: HH:MM (24 H)</div>
 										{/if}
 								{/if}	
 								{if $_FIELD->uitype() eq '4'}

@@ -279,7 +279,7 @@ class crmtogo_WS_Utils {
 			}
 		}
 		else if ($module == 'Timecontrol' || $module == 'cbCalendar') {
-			if ($fieldname == 'time_start' || $fieldname == 'time_end') {
+			if ($fieldname == 'time_start' || $fieldname == 'time_end' || $fieldname == 'followupdt') {
 				// Special type for mandatory time type (not defined in product)
 				return 252;
 			}
