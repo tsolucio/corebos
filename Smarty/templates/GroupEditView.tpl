@@ -153,148 +153,238 @@ function validate()
 
 <br>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
-<tr>
-	<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
-	<br>
-
-	<div align=center>
-		{include file='SetMenu.tpl'}
-		<!-- DISPLAY -->
-		<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
-		{literal}
-		<form name="newGroupForm" action="index.php" method="post" onSubmit="if(validate()) { VtigerJS_DialogBox.block();} else { return false; }">
-		{/literal}
-		<input type="hidden" name="module" value="Users">
-		<input type="hidden" name="action" value="SaveGroup">
-		<input type="hidden" name="mode" value="{$MODE}">
-		<input type="hidden" name="parenttab" value="Settings">
-		<input type="hidden" name="groupId" value="{$GROUPID}">
-		<input type="hidden" name="returnaction" value="{$RETURN_ACTION}">
-			<tr>
-				<td width=50 rowspan=2 valign=top><img src="{'ico-groups.gif'|@vtiger_imageurl:$THEME}" alt="{$CMOD.LBL_GROUPS}" title="{$CMOD.LBL_GROUPS}" width="48" height="48" border=0 ></td>
-				{if $MODE eq 'edit'}
-				<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > <a href="index.php?module=Settings&action=listgroups&parenttab=Settings">{$CMOD.LBL_GROUPS}</a> &gt; {$MOD.LBL_EDIT} &quot;{$GROUPNAME}&quot; </b></td>
-				{else}
-				<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > <a href="index.php?module=Settings&action=listgroups&parenttab=Settings">{$CMOD.LBL_GROUPS}</a> &gt; {$CMOD.LBL_CREATE_NEW_GROUP}</b></td>
-				{/if}
-			</tr>
-			<tr>
-				{if $MODE eq 'edit'}
-				<td valign=top class="small">{$MOD.LBL_EDIT} {$CMOD.LBL_PROPERTIES} &quot;{$GROUPNAME}&quot; {$CMOD.LBL_GROUP}</td>
-				{else}
-				<td valign=top class="small">{$CMOD.LBL_NEW_GROUP}</td>
-				{/if}
-			</tr>
-		</table>
-
-		<br>
-		<table border=0 cellspacing=0 cellpadding=10 width=100% >
-			<tr>
-				<td valign=top>
-					<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
-						<tr>
-							{if $MODE eq 'edit'}
-							<td class="big"><strong>{$CMOD.LBL_PROPERTIES} &quot;{$GROUPNAME}&quot; </strong></td>
-							{else}
-							<td class="big"><strong>{$CMOD.LBL_NEW_GROUP}</strong></td>
-							{/if}
-							<td>
-								<div align="right">
-								{if $MODE eq 'edit'}
-								<input type="submit" class="crmButton small save" name="add" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  " onClick="return validate()">
-								{else}
-								<input type="submit" class="crmButton create small" name="add" value="{$CMOD.LBL_ADD_GROUP_BUTTON}" onClick="return validate()">
-								{/if}
-								&nbsp;
-								<input type="button" class="crmButton cancel small" name="cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" onClick="window.history.back()">
-								</div>
-							</td>
-						</tr>
-					</table>
-					<table width="100%" border="0" cellspacing="0" cellpadding="5">
-						<tr class="small">
-							<td width="15%" class="small cellLabel"><font color="red">*</font><strong>{$CMOD.LBL_GROUP_NAME}</strong></td>
-							<td width="85%" class="cellText" ><input id="groupName" name="groupName" type="text" value="{$GROUPNAME}" class="detailedViewTextBox"></td>
-						</tr>
-						<tr class="small">
-							<td class="small cellLabel"><strong>{$CMOD.LBL_DESCRIPTION}</strong></td>
-							<td class="cellText"><input name="description" type="text" value="{$DESCRIPTION}" class="detailedViewTextBox"> </td>
-						</tr>
-						<tr class="small">
-							<td colspan="2" valign=top class="cellLabel"><strong>{$CMOD.LBL_MEMBER}</strong></td>
-						</tr>
-						<tr class="small">
-							<td colspan="2" valign=top class="cellText">
-							<br>
-								<table width="95%" border="0" align="center" cellpadding="5" cellspacing="0">
-								<tr>
-									<td width="40%" valign=top class="cellBottomDotLinePlain small"><strong>{$CMOD.LBL_MEMBER_AVLBL}</strong></td>
-									<td width="10%">&nbsp;</td>
-									<td width="40%" class="cellBottomDotLinePlain small"><strong>{$CMOD.LBL_MEMBER_SELECTED}</strong></td>
-								</tr>
-								<tr>
-									<td valign=top class="small">
-										{$CMOD.LBL_ENTITY}:&nbsp;
-										<select id="memberType" name="memberType" class="small" onchange="showOptions()">
-										<option value="groups" selected>{$CMOD.LBL_GROUPS}</option>
-										<option value="roles">{$CMOD.LBL_ROLES}</option>
-										<option value="rs">{$CMOD.LBL_ROLES_SUBORDINATES}</option>
-										<option value="users">{$MOD.LBL_USERS}</option>
-										</select>
-										<input type="hidden" name="findStr" class="small">&nbsp;
-									</td>
-									<td width="50">&nbsp;</td>
-									<td class="small">&nbsp;</td>
-								</tr>
-								<tr class=small>
-									<td valign=top>{$CMOD.LBL_MEMBER} {$CMOD.LBL_OF} {$CMOD.LBL_ENTITY}<br>
-										<select id="availList" name="availList" multiple size="10" class="small crmFormList"></select>
-										<input type="hidden" name="selectedColumnsString"/>
-									</td>
-									<td width="50">
-										<div align="center">
-											<input type="button" name="Button" value="&nbsp;&rsaquo;&rsaquo;&nbsp;" onClick="addColumn()" class="crmButton small"/><br /><br />
-											<input type="button" name="Button1" value="&nbsp;&lsaquo;&lsaquo;&nbsp;" onClick="delColumn()" class="crmButton small"/>
-										</div>
-									</td>
-									<td class="small" style="background-color:#ddFFdd" valign=top>{$CMOD.LBL_MEMBER} {$CMOD.LBL_OF} &quot;{$GROUPNAME}&quot; <br>
-										<select id="selectedColumns" name="selectedColumns" multiple size="10" class="small crmFormList">
-										{foreach item=element from=$MEMBER}
-										<option value="{$element.0}">{$element.1}</option>
-										{/foreach}
-										</select>
-									</td>
-								</tr>
-								<tr>
-									<td colspan=3>
-										<ul class=small>
-											<li>{$CMOD.LBL_GROUP_MESG1}</li>
-											<li>{$CMOD.LBL_GROUP_MESG2}</li>
-											<li>{$CMOD.LBL_GROUP_MESG3}</li>
-										</ul>
-									</td>
-								</tr>
-								</table>
-							</td>
-						</tr>
-					</table>
+	<tbody>
+		<tr>
+			<td valign="top" width="100%">
+				<div align=center>
 					<br>
-					<table border=0 cellspacing=0 cellpadding=5 width=100% >
-					<tr><td class="small" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td></tr>
-					</table>
-				</td></tr></table>
-				</td></tr></table>
-				</td>
-			</tr>
-		</form>
-		</table>
-	</div>
+						{include file='SetMenu.tpl'}
+							<!-- DISPLAY Groups > Create new group -->
+								<table class="slds-table slds-no-row-hover slds-table--cell-buffer slds-table-moz" style="background-color: #f7f9fb;">
+									{literal}
+									<form name="newGroupForm" action="index.php" method="post" onSubmit="if(validate()) { VtigerJS_DialogBox.block();} else { return false; }">
+									{/literal}
+										<input type="hidden" name="module" value="Users">
+										<input type="hidden" name="action" value="SaveGroup">
+										<input type="hidden" name="mode" value="{$MODE}">
+										<input type="hidden" name="parenttab" value="Settings">
+										<input type="hidden" name="groupId" value="{$GROUPID}">
+										<input type="hidden" name="returnaction" value="{$RETURN_ACTION}">
 
-	</td>
-	<td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
-</tr>
+										<tr class="slds-text-title--caps">
+											<td style="padding: 0;">
+												<div class="slds-page-header s1FixedFullWidth s1FixedTop forceHighlightsStencilSettings" style="height: 70px;">
+													<div class="slds-grid primaryFieldRow" style="transform: translate3d(0, -8.65823px, 0);">
+														<div class="slds-grid slds-col slds-has-flexi-truncate slds-media--center">
+															<div class="slds-media slds-no-space" style="transform: scale3d(0.864715, 0.864715, 1) translate3d(4.32911px, 2.16456px, 0);">
+																<div class="slds-media__figure slds-icon forceEntityIcon">
+																	<span class="photoContainer forceSocialPhoto">
+																		<div class="small roundedSquare forceEntityIcon">
+																			<span class="uiImage">
+																				<img src="{'ico-groups.gif'|@vtiger_imageurl:$THEME}" alt="{$CMOD.LBL_GROUPS}" title="{$CMOD.LBL_GROUPS}">
+																			</span>
+																		</div>
+																	</span>
+																</div>
+															</div>
+															<div class="slds-media__body">
+																<h1 class="slds-page-header__title slds-m-right--small slds-truncate slds-align-middle">
+																	<span class="uiOutputText">
+																		<b>
+																			{if $MODE eq 'edit'}
+																				<a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > <a href="index.php?module=Settings&action=listgroups&parenttab=Settings">{$CMOD.LBL_GROUPS}</a> &gt; {$MOD.LBL_EDIT} &quot;{$GROUPNAME}&quot;
+																			{else}
+																				<a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > <a href="index.php?module=Settings&action=listgroups&parenttab=Settings">{$CMOD.LBL_GROUPS}</a> &gt; {$CMOD.LBL_CREATE_NEW_GROUP}
+																			{/if}
+																		</b>
+																	</span>
+																	<span class="small">
+																		{if $MODE eq 'edit'}
+																			{$MOD.LBL_EDIT} {$CMOD.LBL_PROPERTIES} &quot;{$GROUPNAME}&quot; {$CMOD.LBL_GROUP}
+																		{else}
+																			{$CMOD.LBL_NEW_GROUP}
+																		{/if}
+																	</span>
+																</h1>
+															</div>
+														</div>
+													</div>
+												</div>
+											</td>
+										</tr>
+								</table>
+
+								<table border=0 cellspacing=0 cellpadding=10 width=100% >
+									<tr>
+										<td valign=top>
+
+											<div class="forceRelatedListSingleContainer">
+												<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
+													<div class="slds-card__header slds-grid">
+														<header class="slds-media slds-media--center slds-has-flexi-truncate">
+															<div class="slds-media__figure">
+																<div class="extraSmall forceEntityIcon">
+																	<span class="uiImage">
+																		<img src="{'prvPrfHdrArrow.gif'|@vtiger_imageurl:$THEME}">
+																	</span>
+																</div>
+															</div>
+															<div class="slds-media__body">
+																<h2>
+																	<span class="slds-text-title--caps slds-truncate actionLabel prvPrfBigText">
+																		<strong>
+																			{if $MODE eq 'edit'}
+																				{$CMOD.LBL_PROPERTIES} &quot;{$GROUPNAME}&quot;
+																			{else}
+																				{$CMOD.LBL_NEW_GROUP}
+																			{/if}
+																		</strong>
+																	</span>
+																</h2>
+															</div>
+														</header>
+														<div class="slds-no-flex">
+															<div class="actionsContainer">
+																{if $MODE eq 'edit'}
+																	<input type="submit" class="slds-button slds-button--small slds-button_success" name="add" value="{$APP.LBL_SAVE_BUTTON_LABEL}" onClick="return validate()">
+																{else}
+																	<input type="submit" class="slds-button slds-button--small slds-button_success" name="add" value="{$CMOD.LBL_ADD_GROUP_BUTTON}" onClick="return validate()">
+																{/if}
+																&nbsp;
+																<input type="button" class="slds-button slds-button--small slds-button--destructive" name="cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" onClick="window.history.back()">
+															</div>
+														</div>
+													</div>
+														<div class="slds-card__body slds-card__body--inner">
+															<div class="commentData">
+																<font class="small">{$CMOD.LBL_USE_OPTION_TO_SET_PRIV}</font>
+															</div>
+														</div>
+												</article>
+											</div>
+
+											<div class="slds-truncate">
+												<table class="slds-table slds-no-row-hover detailview_table">
+													<tr class="slds-line-height--reset">
+														<td width="15%" class="dvtCellLabel"><font color="red">*</font><strong>{$CMOD.LBL_GROUP_NAME}</strong></td>
+														<td width="85%" class="dvtCellInfo" ><input id="groupName" name="groupName" type="text" value="{$GROUPNAME}" class="slds-input"></td>
+													</tr>
+													<tr class="slds-line-height--reset">
+														<td class="dvtCellLabel"><strong>{$CMOD.LBL_DESCRIPTION}</strong></td>
+														<td class="dvtCellInfo"><input name="description" type="text" value="{$DESCRIPTION}" class="slds-input"></td>
+													</tr>
+													<tr class="slds-line-height--reset">
+														<td colspan="2" valign=top class="dvtCellLabel text-center big"><strong>{$CMOD.LBL_MEMBER}</strong></td>
+													</tr>
+													<tr class="slds-line-height--reset">
+														<td colspan="2" valign=top>
+
+															<table class="slds-table slds-no-row-hover">
+																<tr class="slds-line-height--reset">
+																	<td width="45%" valign=top class="dvtCellLabel text-left cellBottomDotLinePlain small"><strong>{$CMOD.LBL_MEMBER_AVLBL}</strong></td>
+																	<td width="10%">&nbsp;</td>
+																	<td width="45%" class="dvtCellLabel text-left cellBottomDotLinePlain small"><strong>{$CMOD.LBL_MEMBER_SELECTED}</strong></td>
+																</tr>
+																<tr class="slds-line-height--reset">
+																	<td valign=top class="small" style="padding: 0">
+																		<table class="slds-table slds-no-row-hover">
+																			<tr class="slds-line-height--reset">
+																				<td width="25%" class="dvtCellLabel">
+																					{$CMOD.LBL_ENTITY}:
+																				</td>
+																				<td width="75%" class="dvtCellInfo">
+																					<select id="memberType" name="memberType" class="slds-select" onchange="showOptions()">
+																						<option value="groups" selected>{$CMOD.LBL_GROUPS}</option>
+																						<option value="roles">{$CMOD.LBL_ROLES}</option>
+																						<option value="rs">{$CMOD.LBL_ROLES_SUBORDINATES}</option>
+																						<option value="users">{$MOD.LBL_USERS}</option>
+																					</select>
+																					<input type="hidden" name="findStr" class="small">
+																				</td>
+																			</tr>
+																		</table>
+																	</td>
+																	<td colspan="2">&nbsp;</td>
+																</tr>
+																<tr class="slds-line-height--reset">
+																	<td valign=top width="45%">
+																		<table class="slds-table slds-no-row-hover">
+																			<tr class="slds-line-height--reset">
+																				<td class="dvtCellLabel text-left">
+																					{$CMOD.LBL_MEMBER} {$CMOD.LBL_OF} {$CMOD.LBL_ENTITY}
+																				</td>
+																			</tr>
+																			<tr class="slds-line-height--reset">
+																				<td class="dvtCellInfo">
+																					<select id="availList" name="availList" multiple size="5" style="height: 180px" class="small slds-select crmFormList"></select>
+																					<input type="hidden" name="selectedColumnsString"/>
+																				</td>
+																			</tr>
+																		</table>
+																	</td>
+																	<td>
+																		<div width="10%" align="center">
+																			<input type="button" name="Button" value="&nbsp;&rsaquo;&rsaquo;&nbsp;" onClick="addColumn()" class="slds-button slds-button--small slds-button_success"/><br /><br />
+																			<input type="button" name="Button1" value="&nbsp;&lsaquo;&lsaquo;&nbsp;" onClick="delColumn()" class="slds-button slds-button--small slds-button--destructive"/>
+																		</div>
+																	</td>
+																	<td width="45%" class="small" valign=top>
+																		<table class="slds-table slds-no-row-hover">
+																			<tr class="slds-line-height--reset">
+																				<td width="25%" class="dvtCellLabel text-left">
+																					{$CMOD.LBL_MEMBER} {$CMOD.LBL_OF} &quot;{$GROUPNAME}&quot;
+																				</td>
+																			</tr>
+																			<tr class="slds-line-height--reset">
+																				<td width="75%" class="dvtCellInfo">
+																					<select id="selectedColumns" name="selectedColumns" multiple size="5" style="height: 180px" class="slds-select crmFormList">
+																						{foreach item=element from=$MEMBER}
+																							<option value="{$element.0}">{$element.1}</option>
+																						{/foreach}
+																					</select>
+																				</td>
+																			</tr>
+																		</table>
+																	</td>
+																</tr>
+																<tr class="slds-line-height--reset">
+																	<td colspan=3 class="dvtCellLabel text-left">
+																		<ul class=small>
+																			<li>{$CMOD.LBL_GROUP_MESG1}</li>
+																			<li>{$CMOD.LBL_GROUP_MESG2}</li>
+																			<li>{$CMOD.LBL_GROUP_MESG3}</li>
+																		</ul>
+																	</td>
+																</tr>
+															</table>
+
+															<table class="slds-table slds-no-row-hover">
+																	<tr class="slds-line-height--reset">
+																		<td class="small" nowrap align=right>
+																			<a href="#top">{$MOD.LBL_SCROLL}</a>
+																		</td>
+																	</tr>
+															</table>
+
+														</td>
+													</tr>
+												</table>
+											</div>
+
+										</td>
+									</tr>
+								</table>
+
+								</td></tr></table>
+							</td>
+						</tr>
+					</form>
+				</table>
+			</div>
+		</td>
+	</tr>
 </table>
+
 <script type="text/JavaScript">
 var moveupLinkObj,moveupDisabledObj,movedownLinkObj,movedownDisabledObj;
 function setObjects() {ldelim}
