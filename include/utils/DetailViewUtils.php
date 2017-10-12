@@ -628,12 +628,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 				$image_lists .=implode(',', $images) . ');</script><script type="text/javascript" src="modules/Products/Productsslide.js"></script><script type="text/javascript">Carousel();</script>';
 				$label_fld[] = $image_lists;
 			} elseif (count($image_array) == 1) {
-				list($pro_image_width, $pro_image_height) = getimagesize($imagepath_array[0] . $image_id_array[0] . "_" . $image_orgname_array[0]);
-				if ($pro_image_width > 450 || $pro_image_height > 300) {
-					$label_fld[] = '<img src="' . $imagepath_array[0] . $image_id_array[0] . "_" . $image_array[0] . '" border="0" width="450" height="300">';
-				} else {
-					$label_fld[] = '<img src="' . $imagepath_array[0] . $image_id_array[0] . "_" . $image_array[0] . '" border="0" width="' . $pro_image_width . '" height="' . $pro_image_height . '">';
-				}
+				$label_fld[] = '<img src="' . $imagepath_array[0] . $image_id_array[0] . "_" . $image_array[0] . '" border="0" style="max-width:300px; max-height:300px">';
 			} else {
 				$label_fld[] = '';
 			}
