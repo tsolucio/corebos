@@ -1453,6 +1453,10 @@ tr td.action-block-mailManager {
     width: 12px;
     vertical-align: middle;
 }
+/* ===== Settings - OrgSharingEditView ===== */
+.org-sharing-table select {
+    margin: 0;
+}
 
 /* ===== Settings - FieldAccess ===== */
 .slds-no-padding td {
