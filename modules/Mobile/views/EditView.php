@@ -81,7 +81,7 @@ class crmtogo_UI_EditView extends crmtogo_WS_FetchRecordDetails {
 					$userid=$adb->query_result($result,$i,'inviteeid');
 					$username=$adb->query_result($result,$i,'user_name');
 					$invited_users[$userid]=$username;
-				}global $logbg;$logbg->fatal("INVITEES");$logbg->fatal($invited_users);
+				}
 			}
 			$config = $this->getUserConfigSettings();
 			$viewer = new crmtogo_UI_Viewer();
