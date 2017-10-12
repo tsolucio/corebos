@@ -211,14 +211,12 @@
 										</textarea>
 								    </div>
                                 {/if}
- 								{if $_FIELD->uitype() eq '56' && $_FIELD->name() eq 'sendnotification'}
-								    <div>
-										{if ($_MODULE->name() eq 'cbCalendar' && $_FIELD->name() eq 'sendnotification') || $_MODULE->name() neq 'cbCalendar'}
-										<label for="{$_FIELD->label()}">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label> 
+ 								{if $_FIELD->uitype() eq '56'}
+									<div>
+										<label for="{$_FIELD->label()}">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
 										<input type="checkbox" name="{$_FIELD->name()}" id="{$_FIELD->label()}" class="custom" />
-										{/if}
-								    </div>
-                                {/if}
+									</div>
+								{/if}
 								{if ($_FIELD->uitype() eq '10')||  ($_FIELD->uitype() eq '51')||  ($_FIELD->uitype() eq '59')||  ($_FIELD->uitype() eq '68')}
 									<div class="ui-field-contain">
 										<div>
@@ -228,7 +226,7 @@
 											<option value="{$_FIELD->value()}" selected>{$_FIELD->valueLabel()}</option>
 										</select>
 									</div>
- 							    {/if}							
+ 							    {/if}
  								{if $_FIELD->uitype() eq '16'}
 									{if $_FIELD->name() eq 'recurringtype' || $_FIELD->name() eq 'duration_minutes' || $_FIELD->name() eq 'visibility' }
 										{if $_FIELD->name() eq 'recurringtype'}
