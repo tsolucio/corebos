@@ -34,7 +34,7 @@
 
 <table class="slds-table slds-no-row-hover slds-table--fixed-layout listTableTopButtons">
 	<tr class="slds-line-height--reset">
-		<td class="dvtCellLabel">
+		<td>
 			{$recordListRange}
 		</td>
 		<!-- Page Navigation -->

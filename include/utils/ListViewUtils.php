@@ -3941,7 +3941,7 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '
 	if ($module == 'Documents' and GlobalVariable::getVariable('Document_Folder_View',1,'Documents') and isset($_REQUEST['action']) and $_REQUEST['action']!='UnifiedSearch') {
 		$output = '<td class="mailSubHeader" width="40%" align="right">';
 	} else {
-		$output = '<td class="dvtCellInfo" style="padding: 5px;">';
+		$output = '<td align="right" style="padding: 5px;">';
 	}
 	$tabname = getParentTab();
 	$search_tag = isset($_REQUEST['search_tag']) ? $_REQUEST['search_tag'] : '';

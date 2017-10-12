@@ -11,57 +11,75 @@
 
 <script type="text/javascript" src="include/js/smoothscroll.js"></script>
 
-<br>
+<br/>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
-<tbody><tr>
-        <td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-        <td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
-<form action="index.php" method="post" name="EditView" id="form" onsubmit="VtigerJS_DialogBox.block();">
-<input type='hidden' name='module' value='Users'>
-<input type='hidden' name='action' value='EditView'>
-<input type='hidden' name='return_action' value='ListView'>
-<input type='hidden' name='return_module' value='Users'>
-<input type='hidden' name='parenttab' value='Settings'>
+	<tbody>
+		<tr>
+			<td valign="top" width="100%">
+				<form action="index.php" method="post" name="EditView" id="form" onsubmit="VtigerJS_DialogBox.block();">
+					<input type='hidden' name='module' value='Users'>
+					<input type='hidden' name='action' value='EditView'>
+					<input type='hidden' name='return_action' value='ListView'>
+					<input type='hidden' name='return_module' value='Users'>
+					<input type='hidden' name='parenttab' value='Settings'>
 
-        <br>
+					<div align=center>
+						{include file='SetMenu.tpl'}
+								<!-- DISPLAY Users-->
+								<!-- Users Header-->
+								<table class="slds-table slds-no-row-hover slds-table--cell-buffer slds-table-moz" style="background-color: #f7f9fb;">
+									<tr class="slds-text-title--caps">
+										<td style="padding: 0;">
+											<div class="slds-page-header s1FixedFullWidth s1FixedTop forceHighlightsStencilSettings" style="height: 70px;">
+												<div class="slds-grid primaryFieldRow" style="transform: translate3d(0, -8.65823px, 0);">
+													<div class="slds-grid slds-col slds-has-flexi-truncate slds-media--center">
+														<div class="slds-media slds-no-space" style="transform: scale3d(0.864715, 0.864715, 1) translate3d(4.32911px, 2.16456px, 0);">
+															<div class="slds-media__figure slds-icon forceEntityIcon">
+																<span class="photoContainer forceSocialPhoto">
+																	<div class="small roundedSquare forceEntityIcon">
+																		<span class="uiImage">
+																			<img src="{'ico-users.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" title="{$MOD.LBL_USERS}"/>
+																		</span>
+																	</div>
+																</span>
+															</div>
+														</div>
+														<div class="slds-media__body">
+															<h1 class="slds-page-header__title slds-m-right--small slds-truncate slds-align-middle">
+																<span class="uiOutputText">
+																	<b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_USERS}</b>
+																</span>
+																<span class="small">
+																	{$MOD.LBL_USER_DESCRIPTION}
+																</span>
+															</h1>
+														</div>
+													</div>
+												</div>
+											</div>
+										</td>
+									</tr>
+								</table>
 
-	<div align=center>
-			{include file='SetMenu.tpl'}
-				<!-- DISPLAY -->
-				<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
-				<tr>
-					<td width=50 rowspan=2 valign=top><img src="{'ico-users.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" width="48" height="48" border=0 title="{$MOD.LBL_USERS}"></td>
-					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_USERS}</b></td>
-				</tr>
-				<tr>
-					<td valign=top class="small">{$MOD.LBL_USER_DESCRIPTION}</td>
-				</tr>
-				</table>
-				
-				<br>
-				<table border=0 cellspacing=0 cellpadding=10 width=100% >
-				<tr>
-				<td>
-					<div id="ListViewContents">
-						{include file="UserListViewContents.tpl"}
-					</div>	
-				</td>
-				</tr>
-				</table>
+								<!-- Users List View Content -->
+								<table border=0 cellspacing=0 cellpadding=10 width=100% >
+									<tr>
+										<td>
+											<div id="ListViewContents">
+												{include file="UserListViewContents.tpl"}
+											</div>
+										</td>
+									</tr>
+								</table>
+
+						</td></tr></table><!-- /.close table on setMenu -->
+						</td></tr></table><!-- /.close table on setMenu -->
+					</div>
+
+				</form>
 			</td>
-			</tr>
-			</table>
-		</td>
-	</tr>
-	</table>
-		
-	</div>
-
-</td>
-        <td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
-   </tr>
-</tbody>
-</form>
+		</tr>
+	</tbody>
 </table>
 
 <div id="tempdiv" style="display:block;position:absolute;left:350px;top:200px;"></div>
