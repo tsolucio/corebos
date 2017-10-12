@@ -63,8 +63,7 @@ class crmtogo_UI_FieldModel {
 	
 	function isReferenceType() {
 		static $options = array('101', '116', '117', '357',
-			'50', '51', '52', '53', '57', '59', '66',
-			'73', '75', '76', '77', '78', '80', '81'
+			'51', '52', '53', '57', '59', '66', '73', '75', '76', '77', '78', '80', '81'
 		);
 		if (isset($this->data['uitype'])) {
 			$uitype = $this->data['uitype'];
