@@ -12,8 +12,8 @@ class crmtogo_WS_Utils {
 
 	static function initModuleGlobals($module) {
 		global $mod_strings, $current_language;
-		if ($module == 'Events') {
-			$module = 'Calendar';
+		if ($module == 'Events' || $module == 'Calendar') {
+			$module = 'cbCalendar';
 		}
 	}
 
@@ -117,7 +117,7 @@ class crmtogo_WS_Utils {
 		if(isset(self::$detectFieldnamesToResolveCache[$module])) {
 			return self::$detectFieldnamesToResolveCache[$module];
 		}
-		$resolveUITypes = array(10, 101, 116, 117, 26, 357, 50, 51, 52, 53, 57, 59, 66, 68, 73, 75, 76, 77, 78, 80, 81);
+		$resolveUITypes = array(10, 101, 116, 117, 26, 357, 51, 52, 53, 57, 59, 66, 68, 73, 75, 76, 77, 78, 80, 81);
 		$result = $db->pquery(
 			"SELECT fieldname FROM vtiger_field WHERE uitype IN(".generateQuestionMarks($resolveUITypes) .") AND tabid=?", array($resolveUITypes, getTabid($module))
 		);
@@ -278,7 +278,7 @@ class crmtogo_WS_Utils {
 				return 16;
 			}
 		}
-		else if ($module == 'Calendar' || $module == 'Events' || $module == 'Timecontrol') {
+		else if ($module == 'Timecontrol' || $module == 'cbCalendar') {
 			if ($fieldname == 'time_start' || $fieldname == 'time_end') {
 				// Special type for mandatory time type (not defined in product)
 				return 252;
@@ -318,7 +318,7 @@ class crmtogo_WS_Utils {
 				}
 			}
 		}
-		else if($module == 'Calendar' || $module == 'Events') {
+		else if($module == 'cbCalendar') {
 			foreach($describeInfo['fields'] as $index => $fieldInfo) {
 				if (isset($fieldInfo['uitype'])) {
 					$fieldInfo['uitype'] = self::fixUIType($module, $fieldInfo['name'], $fieldInfo['uitype']);

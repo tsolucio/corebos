@@ -48,7 +48,7 @@ class crmtogo_WS_SaveRecord extends crmtogo_WS_FetchRecord {
 				$this->recordValues = array();
 			}
 		
-			if ($module == 'Events' || $module == 'Calendar' || $module == 'Timecontrol') {
+			if ($module == 'Timecontrol' || $module == 'cbCalendar') {
 				if($module == 'Timecontrol'){
 					$endDname = 'date_end';
 				}else{
@@ -58,6 +58,7 @@ class crmtogo_WS_SaveRecord extends crmtogo_WS_FetchRecord {
 				$date = new DateTimeField($values["date_start"]. ' ' . $values["time_start"]);
 				$values["time_start"] = $date->getDBInsertTimeValue();
 				$values["date_start"] = $date->getDBInsertDateValue();
+				$values['dtstart'] = $values['date_start'].' '.$values['time_start'];
 				//End Date and Time values
 				if (isset ($values["time_end"])) {
 					$endTime = $values["time_end"];
@@ -69,6 +70,7 @@ class crmtogo_WS_SaveRecord extends crmtogo_WS_FetchRecord {
 					$date = new DateTimeField($values[$endDname]. ' ' . $endTime);
 					$values[$endDname] = $date->getDBInsertDateValue();
 					$values["time_end"] = $date->getDBInsertTimeValue();
+					$values['dtend'] = $values[$endDname].' '.$values['time_end'];
 				}
 			}
 
@@ -93,10 +95,7 @@ class crmtogo_WS_SaveRecord extends crmtogo_WS_FetchRecord {
 			} 
 			else {
 				// Set right target module name for Calendar/Event record
-				if ($module == 'Calendar') {
-					if (!empty($this->recordValues['eventstatus']) && $this->recordValues['activitytype'] != 'Task') {
-						$module = 'Events';
-					}
+				if ($module == 'cbCalendar') {
 					// make sure visibility is not NULL
 					if (empty($this->recordValues['visibility'])) {
 						$this->recordValues['visibility'] = 'all';

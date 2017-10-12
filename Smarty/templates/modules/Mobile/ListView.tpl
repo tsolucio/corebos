@@ -16,7 +16,7 @@
 	<script type="text/javascript" src="resources/crmtogo.js"></script>
 	<script type="text/javascript" src="resources/xdate.js"></script>
 	<script type="text/javascript" src="resources/lang/{$LANGUAGE}.lang.js"></script>
-	{if $_MODULE->name() eq 'Calendar'}
+	{if $_MODULE->name() eq 'cbCalendar'}
 		<link rel="stylesheet" href="resources/css/jw-jqm-cal.css" >
 		<script type="text/javascript" src="resources/jw-jqm-cal.js"></script>
 	{/if}
@@ -28,13 +28,13 @@
 	<input type="hidden" name="view" id="view" value="{$_VIEW}">
 	<input type="hidden" name="viewName" id="viewName" value="{if isset($_VIEWNAME)}{$_VIEWNAME}{/if}">
 	<!-- Calendar Settings -->
-	{if $_MODULE->name() eq 'Calendar'}
+	{if $_MODULE->name() eq 'cbCalendar'}
 	<input type="hidden" name="calendarselect" id="calendarselect" value="{$CALENDARSELECT}">
 	<input type="hidden" name="cal_startday" id="cal_startday" value="{$CALSTARTDAY}">
 	{/if}
 	<!-- header -->
 	<div data-role="header" data-theme="{$COLOR_HEADER_FOOTER}" data-position="fixed">
-		{if $_MODULE->name() eq 'Calendar'}
+		{if $_MODULE->name() eq 'cbCalendar'}
 			<div style="position: absolute;right: 35px;text-align: right;"> 
 				<select name="fliptoggle" id="fliptoggle" data-role="slider" data-mini='true'>
 					<option value="off">{$MOD.LBL_OFF}</option> 
@@ -58,7 +58,7 @@
 		<h4>{$_MODULE->label()}</h4> 
 	</div>
 	<!-- /header -->
-	{if $_MODULE->name() eq 'Calendar'}	
+	{if $_MODULE->name() eq 'cbCalendar'}	
 	<div id="eventCalendarNoCache" class="ui-input-text ui-body-c" width="100%"></div>
 	<div  id="view-calendar" data-theme="a">
 		<div id="calendardiv" style="display:block;" >

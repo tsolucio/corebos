@@ -32,7 +32,7 @@ class crmtogo_WS_SearchFilterModel extends crmtogo_WS_FilterModel {
 	function execute($fieldnames, $paging = false, $calwhere ='') {
 		$selectClause = sprintf("SELECT %s", implode(',', $fieldnames));
 		$fromClause = sprintf("FROM %s", $this->moduleName);
-		if (($this->moduleName = 'Calendar' || $this->moduleName = 'Events') and $calwhere !='') {
+		if ($this->moduleName == 'cbCalendar' and $calwhere !='') {
 			$whereClause = " WHERE date_start >= '".$calwhere['start']."' AND date_start <= '".$calwhere['end']."'";
 		}
 		else {
