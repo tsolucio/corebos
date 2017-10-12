@@ -144,7 +144,7 @@ if(isset($_SESSION["authenticated_user_id"]) && (isset($_SESSION["app_unique_key
 {
 	$use_current_login = true;
 }
-$adb->query("SET SESSION sql_mode = ''");
+
 // Prevent loading Login again if there is an authenticated user in the session.
 if (isset($_SESSION["authenticated_user_id"]) && isset($module) && $module == 'Users' && $action == 'Login') {
 	$default_action = GlobalVariable::getVariable('Application_Default_Action','index','',$_SESSION["authenticated_user_id"]);
