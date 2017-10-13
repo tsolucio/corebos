@@ -69,7 +69,6 @@ class VTUpdateFieldsTask extends VTTask {
 				} elseif ($fieldValueType == 'expression' || ($fieldValueType == 'fieldname' && preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', $fieldValue))) {
 					require_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
 					$fieldValue = preg_replace('/<br(\s+)?\/?>/i', ' ', $fieldValue);
-					$fieldValue = str_replace("''", "' '", $fieldValue);
 					if (trim($fieldValue)=='') {
 						$fieldValue = '';
 					} else {
