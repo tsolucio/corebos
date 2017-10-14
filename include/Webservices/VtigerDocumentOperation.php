@@ -97,7 +97,7 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 		$relsrs=$adb->pquery('SELECT crmid FROM vtiger_senotesrel where notesid=?', array($elemid));
 		$rels=array();
 		while ($rl = $adb->fetch_array($relsrs)) {
-			$rels[]=$this->vtyiicpng_getWSEntityId(getSalesEntityType($rl['crmid'])).$rl['crmid'];
+			$rels[] = vtws_getEntityId(getSalesEntityType($rl['crmid'])) . 'x' . $rl['crmid'];
 		}
 		$doc['relations']=$rels;
 		if ($doc['filelocationtype']=='I') { // Add direct download link
@@ -161,12 +161,6 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 		}
 
 		return DataTransform::filterAndSanitize($crmObject->getFields(), $this->meta);
-	}
-
-	private function vtyiicpng_getWSEntityId($entityName) {
-		global $adb;
-		$rs = $adb->pquery('select id from vtiger_ws_entity where name=?', array($entityName));
-		return @$adb->query_result($rs, 0, 'id').'x';
 	}
 }
 ?>

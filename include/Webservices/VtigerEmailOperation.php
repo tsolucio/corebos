@@ -108,7 +108,7 @@ class VtigerEmailOperation extends VtigerModuleOperation {
 		$relsrs=$adb->pquery('SELECT crmid FROM vtiger_senotesrel where notesid=?', array($elemid));
 		$rels=array();
 		while ($rl = $adb->fetch_array($relsrs)) {
-			$rels[]=$this->vtyiicpng_getWSEntityId(getSalesEntityType($rl['crmid'])).$rl['crmid'];
+			$rels[] = vtws_getEntityId(getSalesEntityType($rl['crmid'])) . 'x' . $rl['crmid'];
 		}
 		$data['relations']=$rels;
 		return $data;
@@ -165,17 +165,6 @@ class VtigerEmailOperation extends VtigerModuleOperation {
 		//}
 
 		return DataTransform::filterAndSanitize($crmObject->getFields(), $this->meta);
-	}
-
-	private function vtyiicpng_getWSEntityId($entityName) {
-		global $adb,$log;
-		$wsrs=$adb->pquery('select id from vtiger_ws_entity where name=?', array($entityName));
-		if ($wsrs and $adb->num_rows($wsrs)==1) {
-			$wsid = $adb->query_result($wsrs, 0, 0);
-		} else {
-			$wsid = 0;
-		}
-		return $wsid.'x';
 	}
 }
 ?>
