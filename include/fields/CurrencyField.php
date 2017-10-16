@@ -220,11 +220,10 @@ class CurrencyField {
 			return $number;
 		}
 		$negativeNumber=($value<0);
-		$value=abs($value);
+		// Separate the numeric and decimal parts
+		$numericParts = explode('.', $value);
+		$wholeNumber = abs($numericParts[0]);
 		if($currencyPattern == $this->CURRENCY_PATTERN_SINGLE_GROUPING) {
-			// Separate the numeric and decimal parts
-			$numericParts = explode('.', $value);
-			$wholeNumber = $numericParts[0];
 			// First part of the number which remains intact
 			if(strlen($wholeNumber) > 3) {
 				$wholeNumberFirstPart = substr($wholeNumber,0,strlen($wholeNumber)-3);
@@ -243,9 +242,6 @@ class CurrencyField {
 			return $number;
 		}
 		if($currencyPattern == $this->CURRENCY_PATTERN_THOUSAND_GROUPING) {
-			// Separate the numeric and decimal parts
-			$numericParts = explode('.', $value);
-			$wholeNumber = $numericParts[0];
 			// Pad the rest of the length in the number string with Leading 0, to get it to the multiples of 3
 			$numberLength = strlen($wholeNumber);
 			// First grouping digits length
@@ -268,9 +264,6 @@ class CurrencyField {
 			return $number;
 		}
 		if($currencyPattern == $this->CURRENCY_PATTERN_MIXED_GROUPING) {
-			// Separate the numeric and decimal parts
-			$numericParts = explode('.', $value);
-			$wholeNumber = $numericParts[0];
 			// First part of the number which needs separate division
 			if(strlen($wholeNumber) > 3) {
 				$wholeNumberFirstPart = substr($wholeNumber,0,strlen($wholeNumber)-3);
