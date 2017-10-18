@@ -196,7 +196,7 @@ body {
   background: transparent; }
 
 
-ul {
+#cbmenu > ul {
   margin: 0;
   padding: 0; }
 
@@ -210,8 +210,8 @@ hr {
   padding: 0; }
 
 
-ol,
-ul {
+#cbmenu > ol,
+#cbmenu > ul {
   list-style: none; }
 
 a {
