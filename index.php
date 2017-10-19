@@ -64,12 +64,6 @@ if (!isset($dbconfig['db_hostname']) || $dbconfig['db_status']=='_DB_STAT_') {
 	exit();
 }
 
-// Set the default timezone preferred by user
-global $default_timezone;
-if(isset($default_timezone) && function_exists('date_default_timezone_set')) {
-	@date_default_timezone_set($default_timezone);
-}
-
 require_once('include/logging.php');
 require_once('modules/Users/Users.php');
 $calculate_response_time = GlobalVariable::getVariable('Debug_Calculate_Response_Time',0,'',Users::getActiveAdminId());
