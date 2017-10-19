@@ -196,14 +196,9 @@ body {
   background: transparent; }
 
 
-ul#cbmenu ul {
+ul {
   margin: 0;
   padding: 0; }
-
-ul#cbmenu {
-  margin: 0;
-  padding: 0; }
-
 
 abbr[title],
 fieldset,
@@ -214,8 +209,8 @@ hr {
   padding: 0; }
 
 
-ul#cbmenu ol,
-ul#cbmenu ul {
+ol,
+ul {
   list-style: none; }
 
 a {
