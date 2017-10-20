@@ -765,7 +765,34 @@ class CRMEntity {
 		} else {
 			$sql1 = "insert into $table_name(" . implode(",", $column) . ") values(" . generateQuestionMarks($value) . ")";
 			$adb->pquery($sql1, $value);
-		}
+	 }
+		if(isset($module::$denormalized) && $module::$denormalized==true){
+			 $this->getFieldsFromCrmEntity($module);
+		 }
+	}
+
+
+	/** Function to get specified fields from crmentity table
+	 * @param $module -- module:: Type varchar
+	 * The function will update these fields data on the module's basetable
+	 */
+
+	function getFieldsFromCrmEntity($module) {
+		global $adb;
+		$sql="SELECT* FROM vtiger_crmentity WHERE crmid=?";
+		$res=$adb->pquery($sql,array($this->id));
+		$sql1="SELECT entityidfield,tablename FROM vtiger_entityname WHERE modulename=?";
+		$res1=$adb->pquery($sql1,array($module));
+		$columnid=$adb->query_result($res1,0,'entityidfield');
+		$tablename=$adb->query_result($res1,0,'tablename');
+		$myownerid=$adb->query_result($res,0,'smownerid');
+		$mymodifierid=$adb->query_result($res,0,'modifiedby');
+		$mycreatorid=$adb->query_result($res,0,'smcreatorid');
+		$mymodifiedtime=$adb->query_result($res,0,'modifiedtime');
+		$mycreatedtime=$adb->query_result($res,0,'createdtime');
+		$mydescription=$adb->query_result($res,0,'description');
+	 	$sql2="UPDATE $tablename SET myownerid=?,mymodifierid=?,mycreatorid=?,mymodifiedtime=?,mycreatedtime=?,mydescription=? WHERE $columnid=?";
+		$adb->pquery($sql2,array($myownerid,$mymodifierid,$mycreatorid,$mymodifiedtime,$mycreatedtime,$mydescription,$this->id));
 	}
 
 	/** Function to retrieve maximum decimal values of currency field on save
@@ -1028,6 +1055,23 @@ class CRMEntity {
 		$date_var = date("Y-m-d H:i:s");
 		$query = "UPDATE vtiger_crmentity set deleted=1,modifiedtime=?,modifiedby=? where crmid=?";
 		$this->db->pquery($query, array($this->db->formatDate($date_var, true), $current_user->id, $id), true, "Error marking record deleted: ");
+	}
+
+	/**
+	 * This function marks an item as deleted in the module basetable
+	 * It executes when the $denormalized property of the module is set to true.
+	 */
+
+	function mark_deleted_denorm($module,$id) {
+		global $adb,$current_user;
+		$date_var = date("Y-m-d H:i:s");
+		$sql="SELECT tablename,entityidfield FROM vtiger_entityname WHERE modulename=?";
+		$res=$adb->pquery($sql, array($module));
+		$basetable=$adb->query_result($res,0,'tablename');
+		$columnid=$adb->query_result($res,0,'entityidfield');
+		$query = "UPDATE $basetable set mydeleted=1,mymodifiedtime=?,mymodifierid=? where $columnid=?";
+		$this->db->pquery($query, array($this->db->formatDate($date_var, true), $current_user->id, $id), true, "Error marking record deleted: ");
+
 	}
 
 	// this method is called during an import before inserting a bean
@@ -1440,6 +1484,9 @@ class CRMEntity {
 		$em->triggerEvent("vtiger.entity.beforedelete", $entityData);
 
 		$this->mark_deleted($id);
+		if(isset($module::$denormalized) && $module::$denormalized==true){
+			$this->mark_deleted_denorm($module,$id);
+		}
 		$this->unlinkDependencies($module, $id);
 
 		require_once('include/freetag/freetag.class.php');
@@ -1526,6 +1573,15 @@ class CRMEntity {
 		$date_var = date("Y-m-d H:i:s");
 		$query = 'UPDATE vtiger_crmentity SET deleted=0,modifiedtime=?,modifiedby=? WHERE crmid = ?';
 		$this->db->pquery($query, array($this->db->formatDate($date_var, true), $current_user->id, $id), true, "Error restoring records :");
+		if(isset($module::$denormalized) && $module::$denormalized==true){
+			$sql="SELECT tablename,entityidfield FROM vtiger_entityname WHERE modulename=?";
+			$res=$adb->pquery($sql, array($module));
+			$basetable=$adb->query_result($res,0,'tablename');
+			$columnid=$adb->query_result($res,0,'entityidfield');
+			$query = "UPDATE $basetable SET mydeleted=0,mymodifiedtime=?,mymodifierid=? WHERE $columnid = ?";
+			$this->db->pquery($query, array($this->db->formatDate($date_var, true), $current_user->id, $id), true, "Error restoring records :");
+		}
+
 		//Restore related entities/records
 		$this->restoreRelatedRecords($module, $id);
 

@@ -158,6 +158,10 @@ class ListViewController {
 					}
 				}
 				$fldcolname = $field->getColumnName();
+				if($this->queryGenerator->denormalized){
+					$fldcol=$this->queryGenerator->getDenormalizedFields($fldcolname);
+					$fldcolname=$fldcol[0];
+				}
 				$idList = array();
 				for ($i = 0; $i < $rowCount; $i++) {
 					$id = $this->db->query_result($result, $i, $fldcolname);
@@ -227,7 +231,11 @@ class ListViewController {
 				$baseTableIndex = $moduleTableIndexList[$baseTable];
 
 				$recordId = $db->query_result($result, $i, $baseTableIndex);
-				$ownerId = $db->query_result($result, $i, 'smownerid');
+				if($this->queryGenerator->denormalized){
+					$ownerId = $db->query_result($result,$i,"myownerid");
+				} else {
+					$ownerId = $db->query_result($result,$i,"smownerid");
+				}
 			} else {
 				$recordId = $db->query_result($result, $i, 'id');
 			}
@@ -252,10 +260,22 @@ class ListViewController {
 					if (in_array($relfieldname, $listviewcolumns)) {
 						$rawValue = $this->db->query_result($result, $i, $relfieldname);
 					} else {
+						$colname=$field->getColumnName();
 						$rawValue = $this->db->query_result($result, $i, $field->getColumnName());
+						if($this->queryGenerator->denormalized){
+							list($colname,$check)=$this->queryGenerator->getDenormalizedFields($colname);
+							if($check){
+								$rawValue = $this->db->query_result($result, $i, $colname);
+							}
+						}
 					}
 				} else {
-					$rawValue = $this->db->query_result($result, $i, $field->getColumnName());
+					$columnname=$field->getColumnName();
+					if($this->queryGenerator->denormalized){
+						$col=$this->queryGenerator->getDenormalizedFields($columnname);
+						$columnname=$col[0];
+					}
+          $rawValue = $this->db->query_result($result, $i, $columnname);
 				}
 				if ($module == 'Calendar') {
 					$activityType = $this->db->query_result($result, $i, 'activitytype');

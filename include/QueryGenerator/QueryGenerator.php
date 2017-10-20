@@ -82,6 +82,9 @@ class QueryGenerator {
 		$this->conditionInstanceCount = 0;
 		$this->customViewFields = array();
 		$this->setReferenceFields();
+		if(isset($module::$denormalized)) {
+			$this->denormalized=$module::$denormalized;
+		}
 	}
 
 	/**
@@ -443,7 +446,16 @@ class QueryGenerator {
 		//TODO optimization to eliminate one more lookup of name, in case the field refers to only
 		//one module or is of type owner.
 		$column = $field->getColumnName();
-		return $field->getTableName().'.'.$column;
+		$tablename=$field->getTableName();
+		if($this->denormalized){
+			 list($column,$check)=$this->getDenormalizedFields($column);
+			 if($check) {
+			 	 $tablename=$this->meta->getEntityBaseTable();
+			 } else {
+			 	 $tablename=$field->getTableName();
+			 }
+		 }
+		return $tablename.'.'.$column;
 	}
 
 	public function getSelectClauseColumnSQL(){
@@ -617,20 +629,35 @@ class QueryGenerator {
 		$sql = " FROM $baseTable ";
 		unset($tableList[$baseTable]);
 		foreach ($defaultTableList as $tableName) {
+			if($this->denormalized){
+				$sql.='';
+			} else {
 			$sql .= " $tableJoinMapping[$tableName] $tableName ON $baseTable.".
 					"$baseTableIndex = $tableName.$moduleTableIndexList[$tableName]";
+		  }
 			unset($tableList[$tableName]);
 		}
 		$specialTableJoins = array();
 		foreach ($tableList as $tableName) {
 			if($tableName == 'vtiger_users') {
 				$field = $moduleFields[$ownerField];
-				$sql .= " $tableJoinMapping[$tableName] $tableName ON ".$field->getTableName().".".
-					$field->getColumnName()." = $tableName.id";
+				if($this->denormalized){
+					$denormField='myownerid';
+					$sql.=" $tableJoinMapping[$tableName] $tableName ON ".$baseTable.".".$denormField
+						." = $tableName.id";
+				} else {
+					$sql .= " $tableJoinMapping[$tableName] $tableName ON ".$field->getTableName().".".
+						$field->getColumnName()." = $tableName.id";
+				}
 			} elseif($tableName == 'vtiger_groups') {
 				$field = $moduleFields[$ownerField];
-				$sql .= " $tableJoinMapping[$tableName] $tableName ON ".$field->getTableName().".".
+				if($this->denormalized){
+					$sql.=" $tableJoinMapping[$tableName] $tableName ON ".$baseTable.".".$denormField
+					." = $tableName.groupid";
+			  } else {
+					$sql .= " $tableJoinMapping[$tableName] $tableName ON ".$field->getTableName().".".
 					$field->getColumnName()." = $tableName.groupid";
+				}
 			} else {
 				$sql .= " $tableJoinMapping[$tableName] $tableName ON $baseTable.".
 					"$baseTableIndex = $tableName.$moduleTableIndexList[$tableName]";
@@ -677,10 +704,17 @@ class QueryGenerator {
 			foreach ($this->referenceModuleField as $index=>$conditionInfo) {
 				if ($conditionInfo['relatedModule'] == 'Users' && $baseModule != 'Users'
 				 && !in_array('vtiger_users', $referenceFieldTableList) && !in_array('vtiger_users', $tableList)) {
-					$sql .= ' LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid ';
-					$referenceFieldTableList[] = 'vtiger_users';
-					$sql .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid ';
-					$referenceFieldTableList[] = 'vtiger_groups';
+					 if($this->denormalized){
+						 $sql .= ' LEFT JOIN vtiger_users ON vtiger_users.id ='.$baseTable.'.myownerid ';
+						 $referenceFieldTableList[] = 'vtiger_users';
+						 $sql .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid ='.$baseTable.'.myownerid ';
+						 $referenceFieldTableList[] = 'vtiger_groups';
+					 } else {
+						 $sql .= ' LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid ';
+						 $referenceFieldTableList[] = 'vtiger_users';
+						 $sql .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid ';
+						 $referenceFieldTableList[] = 'vtiger_groups';
+					 }
 					continue;
 				}
 				$handler = vtws_getModuleHandlerFromName($conditionInfo['relatedModule'], $current_user);
@@ -801,7 +835,12 @@ class QueryGenerator {
 			}
 		}
 
-		$sql .= $this->meta->getEntityAccessControlQuery();
+		if($this->denormalized){
+				$denormAccessControlQuery=str_replace('vtiger_crmentity.smownerid',$baseTable.'.myownerid',$this->meta->getEntityAccessControlQuery());
+				$sql .=$denormAccessControlQuery;
+			} else {
+				$sql .= $this->meta->getEntityAccessControlQuery();
+	  }
 		$this->fromClause = $sql;
 		return $sql;
 	}
@@ -818,19 +857,25 @@ class QueryGenerator {
 		$db = PearDatabase::getInstance();
 		$deletedQuery = $this->meta->getEntityDeletedQuery();
 		$sql = '';
+		$baseModule = $this->getModule();
+		$moduleFieldList = $this->getModuleFields();
+		$baseTable = $this->meta->getEntityBaseTable();
+		$moduleTableIndexList = $this->meta->getEntityTableIndexList();
+		$baseTableIndex = $moduleTableIndexList[$baseTable];
 		if(!empty($deletedQuery)) {
-			$sql .= " WHERE $deletedQuery";
+			if($this->denormalized){
+        $denormDeletedQuery=str_replace('vtiger_crmentity.deleted=0',$baseTable.'.mydeleted=0',$deletedQuery);
+				$sql.="WHERE $denormDeletedQuery";
+			} else {
+				$sql .= " WHERE $deletedQuery";
+			}
 		}
 		if($this->conditionInstanceCount > 0) {
 			$sql .= ' AND ';
 		} elseif(empty($deletedQuery)) {
 			$sql .= ' WHERE ';
 		}
-		$baseModule = $this->getModule();
-		$moduleFieldList = $this->getModuleFields();
-		$baseTable = $this->meta->getEntityBaseTable();
-		$moduleTableIndexList = $this->meta->getEntityTableIndexList();
-		$baseTableIndex = $moduleTableIndexList[$baseTable];
+
 		$groupSql = $this->groupInfo;
 		$fieldSqlList = array();
 		foreach ($this->conditionals as $index=>$conditionInfo) {
@@ -918,7 +963,17 @@ class QueryGenerator {
 					if ($fieldName == 'birthday' && !$this->isRelativeSearchOperators($conditionInfo['operator'])) {
 						$fieldSql .= "$fieldGlue DATE_FORMAT(".$field->getTableName().'.'.$field->getColumnName().",'%m%d') ".$valueSql;
 					} else {
-						$fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' '.$valueSql;
+						if($this->denormalized){
+							$denormField=$field->getColumnName();
+              list($denormField,$check)=$this->getDenormalizedFields($denormField);
+							if($check && $field->getTableName()=='vtiger_crmentity'){
+								$fieldSql .= "$fieldGlue ".$baseTable.'.'.$denormField.' '.$valueSql;
+							} else {
+								$fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' '.$valueSql;
+							}
+						} else {
+							$fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' '.$valueSql;
+						}
 					}
 				}
 				if(($conditionInfo['operator'] == 'n' || $conditionInfo['operator'] == 'k') && ($field->getFieldDataType() == 'owner' || $field->getFieldDataType() == 'picklist') ) {
@@ -1524,6 +1579,36 @@ class QueryGenerator {
 			$this->fields[] = 'id';
 		}
 	}
+
+	function getDenormalizedFields($denorm,$check=0) {
+
+				if($denorm=='smownerid'){
+						$denorm='myownerid';
+						$check=1;
+					} else if($denorm=='smcreatorid'){
+						$denorm='mycreatorid';
+						$check=1;
+					} else if($denorm=='modifiedby'){
+						$denorm='mymodifierid';
+						$check=1;
+					} else if($denorm=='createdtime'){
+						$denorm='mycreatedtime';
+						$check=1;
+					} else if($denorm=='modifiedtime'){
+						$denorm='mymodifiedtime';
+						$check=1;
+					} else if($denorm=='deleted'){
+						$denorm='mydeleted';
+						$check=1;
+					} else if($denorm=='description'){
+						$denorm='mydescription';
+						$check=1;
+					}
+
+	   return array($denorm,$check);
+
+  }
+
 
 }
 ?>
