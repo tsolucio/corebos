@@ -82,9 +82,10 @@ class QueryGenerator {
 		$this->conditionInstanceCount = 0;
 		$this->customViewFields = array();
 		$this->setReferenceFields();
-		if(isset($module::$denormalized)) {
+    if (isset($module::$denormalized)) {
 			$this->denormalized=$module::$denormalized;
 		}
+
 	}
 
 	/**
@@ -447,9 +448,9 @@ class QueryGenerator {
 		//one module or is of type owner.
 		$column = $field->getColumnName();
 		$tablename=$field->getTableName();
-		if($this->denormalized){
+		if ($this->denormalized) {
 			 list($column,$check)=$this->getDenormalizedFields($column);
-			 if($check) {
+			 if ($check) {
 			 	 $tablename=$this->meta->getEntityBaseTable();
 			 } else {
 			 	 $tablename=$field->getTableName();
@@ -629,7 +630,7 @@ class QueryGenerator {
 		$sql = " FROM $baseTable ";
 		unset($tableList[$baseTable]);
 		foreach ($defaultTableList as $tableName) {
-			if($this->denormalized){
+			if ($this->denormalized) {
 				$sql.='';
 			} else {
 			$sql .= " $tableJoinMapping[$tableName] $tableName ON $baseTable.".
@@ -641,7 +642,7 @@ class QueryGenerator {
 		foreach ($tableList as $tableName) {
 			if($tableName == 'vtiger_users') {
 				$field = $moduleFields[$ownerField];
-				if($this->denormalized){
+				if ($this->denormalized) {
 					$denormField='myownerid';
 					$sql.=" $tableJoinMapping[$tableName] $tableName ON ".$baseTable.".".$denormField
 						." = $tableName.id";
@@ -651,7 +652,7 @@ class QueryGenerator {
 				}
 			} elseif($tableName == 'vtiger_groups') {
 				$field = $moduleFields[$ownerField];
-				if($this->denormalized){
+				if ($this->denormalized) {
 					$sql.=" $tableJoinMapping[$tableName] $tableName ON ".$baseTable.".".$denormField
 					." = $tableName.groupid";
 			  } else {
@@ -704,7 +705,7 @@ class QueryGenerator {
 			foreach ($this->referenceModuleField as $index=>$conditionInfo) {
 				if ($conditionInfo['relatedModule'] == 'Users' && $baseModule != 'Users'
 				 && !in_array('vtiger_users', $referenceFieldTableList) && !in_array('vtiger_users', $tableList)) {
-					 if($this->denormalized){
+					 if ($this->denormalized) {
 						 $sql .= ' LEFT JOIN vtiger_users ON vtiger_users.id ='.$baseTable.'.myownerid ';
 						 $referenceFieldTableList[] = 'vtiger_users';
 						 $sql .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid ='.$baseTable.'.myownerid ';
@@ -835,7 +836,7 @@ class QueryGenerator {
 			}
 		}
 
-		if($this->denormalized){
+		if ($this->denormalized) {
 				$denormAccessControlQuery=str_replace('vtiger_crmentity.smownerid',$baseTable.'.myownerid',$this->meta->getEntityAccessControlQuery());
 				$sql .=$denormAccessControlQuery;
 			} else {
@@ -863,7 +864,7 @@ class QueryGenerator {
 		$moduleTableIndexList = $this->meta->getEntityTableIndexList();
 		$baseTableIndex = $moduleTableIndexList[$baseTable];
 		if(!empty($deletedQuery)) {
-			if($this->denormalized){
+			if ($this->denormalized) {
         $denormDeletedQuery=str_replace('vtiger_crmentity.deleted=0',$baseTable.'.mydeleted=0',$deletedQuery);
 				$sql.="WHERE $denormDeletedQuery";
 			} else {
@@ -963,7 +964,7 @@ class QueryGenerator {
 					if ($fieldName == 'birthday' && !$this->isRelativeSearchOperators($conditionInfo['operator'])) {
 						$fieldSql .= "$fieldGlue DATE_FORMAT(".$field->getTableName().'.'.$field->getColumnName().",'%m%d') ".$valueSql;
 					} else {
-						if($this->denormalized){
+						if ($this->denormalized) {
 							$denormField=$field->getColumnName();
               list($denormField,$check)=$this->getDenormalizedFields($denormField);
 							if($check && $field->getTableName()=='vtiger_crmentity'){
@@ -1582,30 +1583,20 @@ class QueryGenerator {
 
 	function getDenormalizedFields($denorm,$check=0) {
 
-				if($denorm=='smownerid'){
-						$denorm='myownerid';
-						$check=1;
-					} else if($denorm=='smcreatorid'){
-						$denorm='mycreatorid';
-						$check=1;
-					} else if($denorm=='modifiedby'){
-						$denorm='mymodifierid';
-						$check=1;
-					} else if($denorm=='createdtime'){
-						$denorm='mycreatedtime';
-						$check=1;
-					} else if($denorm=='modifiedtime'){
-						$denorm='mymodifiedtime';
-						$check=1;
-					} else if($denorm=='deleted'){
-						$denorm='mydeleted';
-						$check=1;
-					} else if($denorm=='description'){
-						$denorm='mydescription';
-						$check=1;
-					}
+		$map=array('smownerid'=>'myownerid',
+		           'createdby'=>'mycreatorid',
+		           'createdtime'=>'mycreatedtime',
+		           'modifiedtime'=>'mymodifiedtime',
+		           'modifiedby'=>'mymodifierid',
+	             'description'=>'mydescription',
+               'deleted'=>'mydeleted');
 
-	   return array($denorm,$check);
+		if (!empty($map[$denorm])) {
+    	$denorm = $map[$denorm];
+    	$check = 1;
+	  }
+
+	  return array($denorm,$check);
 
   }
 

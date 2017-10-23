@@ -766,7 +766,7 @@ class CRMEntity {
 			$sql1 = "insert into $table_name(" . implode(",", $column) . ") values(" . generateQuestionMarks($value) . ")";
 			$adb->pquery($sql1, $value);
 	 }
-		if(isset($module::$denormalized) && $module::$denormalized==true){
+		if (isset($module::$denormalized) && $module::$denormalized==true) {
 			 $this->getFieldsFromCrmEntity($module);
 		 }
 	}
@@ -781,10 +781,8 @@ class CRMEntity {
 		global $adb;
 		$sql="SELECT* FROM vtiger_crmentity WHERE crmid=?";
 		$res=$adb->pquery($sql,array($this->id));
-		$sql1="SELECT entityidfield,tablename FROM vtiger_entityname WHERE modulename=?";
-		$res1=$adb->pquery($sql1,array($module));
-		$columnid=$adb->query_result($res1,0,'entityidfield');
-		$tablename=$adb->query_result($res1,0,'tablename');
+		$tablename=$this->table_name;
+		$columnid=$this->table_index;
 		$myownerid=$adb->query_result($res,0,'smownerid');
 		$mymodifierid=$adb->query_result($res,0,'modifiedby');
 		$mycreatorid=$adb->query_result($res,0,'smcreatorid');
@@ -1063,12 +1061,10 @@ class CRMEntity {
 	 */
 
 	function mark_deleted_denorm($module,$id) {
-		global $adb,$current_user;
+		global $current_user;
 		$date_var = date("Y-m-d H:i:s");
-		$sql="SELECT tablename,entityidfield FROM vtiger_entityname WHERE modulename=?";
-		$res=$adb->pquery($sql, array($module));
-		$basetable=$adb->query_result($res,0,'tablename');
-		$columnid=$adb->query_result($res,0,'entityidfield');
+		$basetable=$this->table_name;
+		$columnid=$this->table_index;
 		$query = "UPDATE $basetable set mydeleted=1,mymodifiedtime=?,mymodifierid=? where $columnid=?";
 		$this->db->pquery($query, array($this->db->formatDate($date_var, true), $current_user->id, $id), true, "Error marking record deleted: ");
 
@@ -1484,7 +1480,7 @@ class CRMEntity {
 		$em->triggerEvent("vtiger.entity.beforedelete", $entityData);
 
 		$this->mark_deleted($id);
-		if(isset($module::$denormalized) && $module::$denormalized==true){
+		if (isset($module::$denormalized) && $module::$denormalized==true) {
 			$this->mark_deleted_denorm($module,$id);
 		}
 		$this->unlinkDependencies($module, $id);
@@ -1573,11 +1569,9 @@ class CRMEntity {
 		$date_var = date("Y-m-d H:i:s");
 		$query = 'UPDATE vtiger_crmentity SET deleted=0,modifiedtime=?,modifiedby=? WHERE crmid = ?';
 		$this->db->pquery($query, array($this->db->formatDate($date_var, true), $current_user->id, $id), true, "Error restoring records :");
-		if(isset($module::$denormalized) && $module::$denormalized==true){
-			$sql="SELECT tablename,entityidfield FROM vtiger_entityname WHERE modulename=?";
-			$res=$adb->pquery($sql, array($module));
-			$basetable=$adb->query_result($res,0,'tablename');
-			$columnid=$adb->query_result($res,0,'entityidfield');
+		if (isset($module::$denormalized) && $module::$denormalized==true) {
+			$basetable=$this->table_name;
+			$columnid=$this->table_index;
 			$query = "UPDATE $basetable SET mydeleted=0,mymodifiedtime=?,mymodifierid=? WHERE $columnid = ?";
 			$this->db->pquery($query, array($this->db->formatDate($date_var, true), $current_user->id, $id), true, "Error restoring records :");
 		}

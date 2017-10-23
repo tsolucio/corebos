@@ -158,7 +158,7 @@ class ListViewController {
 					}
 				}
 				$fldcolname = $field->getColumnName();
-				if($this->queryGenerator->denormalized){
+				if ($this->queryGenerator->denormalized) {
 					$fldcol=$this->queryGenerator->getDenormalizedFields($fldcolname);
 					$fldcolname=$fldcol[0];
 				}
@@ -231,7 +231,7 @@ class ListViewController {
 				$baseTableIndex = $moduleTableIndexList[$baseTable];
 
 				$recordId = $db->query_result($result, $i, $baseTableIndex);
-				if($this->queryGenerator->denormalized){
+				if ($this->queryGenerator->denormalized) {
 					$ownerId = $db->query_result($result,$i,"myownerid");
 				} else {
 					$ownerId = $db->query_result($result,$i,"smownerid");
@@ -262,7 +262,7 @@ class ListViewController {
 					} else {
 						$colname=$field->getColumnName();
 						$rawValue = $this->db->query_result($result, $i, $field->getColumnName());
-						if($this->queryGenerator->denormalized){
+						if ($this->queryGenerator->denormalized) {
 							list($colname,$check)=$this->queryGenerator->getDenormalizedFields($colname);
 							if($check){
 								$rawValue = $this->db->query_result($result, $i, $colname);
@@ -271,7 +271,7 @@ class ListViewController {
 					}
 				} else {
 					$columnname=$field->getColumnName();
-					if($this->queryGenerator->denormalized){
+					if ($this->queryGenerator->denormalized) {
 						$col=$this->queryGenerator->getDenormalizedFields($columnname);
 						$columnname=$col[0];
 					}
