@@ -16,6 +16,10 @@
     cursor: pointer!important;
 }
 
+.subheader-image img {
+    width: 20px;
+}
+
 /*========    Header    ==========*/
 
 .headerlink img {
