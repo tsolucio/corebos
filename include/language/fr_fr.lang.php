@@ -199,6 +199,7 @@ $app_strings = array (
 	'Photo2Document' => 'Photo à Document',
 	'Snap Photo' => 'Prendre Photo',
 	'Clear Photo' => 'Autre Photo',
+	'DocumentCreatedRelated' => 'Document added and related',
 	'Export' => 'Exporter',
 	'Import' => 'Importer',
 	'Merge' => 'Fusionner',

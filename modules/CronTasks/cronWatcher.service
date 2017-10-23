@@ -37,15 +37,15 @@ $warningTimeThreshold = $warningMinutes*60; // $warningMinutes minutes.
 //$i18nActive = getTranslatedString('LBL_ACTIVE','CronTasks');
 $i18nRunning = getTranslatedString('LBL_RUNNING','CronTasks');
 
-$cronTasks = Vtiger_Cron::listAllActiveInstances();
+$wcronTasks = Vtiger_Cron::listAllActiveInstances();
 $output = Array();
 $holdCM = $currentModule;
 $currentModule = 'CronTasks';
-foreach ($cronTasks as $cronTask) {
-	$cron_st = $cronTask->getStatus();
+foreach ($wcronTasks as $wcronTask) {
+	$cron_st = $wcronTask->getStatus();
 	if ($cron_st!=Vtiger_Cron::$STATUS_RUNNING) continue;
-	if($cronTask->getLastStart() != 0) {
-		$start_ts = $cronTask->getLastStart();
+	if($wcronTask->getLastStart() != 0) {
+		$start_ts = $wcronTask->getLastStart();
 		$end_ts = time();
 		$elapsed = $end_ts - $start_ts;
 		$cron_started = dateDiffAsString($start_ts, $end_ts);
@@ -55,10 +55,10 @@ foreach ($cronTasks as $cronTask) {
 	}
 	if ($elapsed<$warningTimeThreshold) continue;
 	$out = Array();
-	$cron_id = $cronTask->getId();
-	$cron_mod = $cronTask->getName();
-	$cron_freq = $cronTask->getFrequency();
-	$out['cronname'] = getTranslatedString($cron_mod,$cronTask->getModule());
+	$cron_id = $wcronTask->getId();
+	$cron_mod = $wcronTask->getName();
+	$cron_freq = $wcronTask->getFrequency();
+	$out['cronname'] = getTranslatedString($cron_mod,$wcronTask->getModule());
 	$out['hours'] = str_pad((int)(($cron_freq/(60*60))),2,0,STR_PAD_LEFT);
 	$out['mins'] =str_pad((int)(($cron_freq%(60*60))/60),2,0,STR_PAD_LEFT);
 	$out['laststart']= $cron_started;

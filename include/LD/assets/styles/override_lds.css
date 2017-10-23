@@ -4,6 +4,26 @@ hr {
 	margin: 0px;
 }
 
+
+.dvtCellInfo ul { 
+   list-style-type: disc; 
+   list-style-position: inside; 
+}
+.dvtCellInfo ol { 
+   list-style-type: decimal; 
+   list-style-position: inside; 
+}
+.dvtCellInfo ul ul,.dvtCellInfo  ol ul { 
+   list-style-type: circle; 
+   list-style-position: inside; 
+   margin-left: 15px; 
+}
+.dvtCellInfo ol ol,.dvtCellInfo ul ol { 
+   list-style-type: lower-latin; 
+   list-style-position: inside; 
+   margin-left: 15px; 
+}
+
 .cbslds-button--icon-more {
 	width: 1.875rem;
 	height: 1.875rem;

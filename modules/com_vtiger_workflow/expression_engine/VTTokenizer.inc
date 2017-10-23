@@ -30,7 +30,7 @@ class VTExpressionTokenizer{
 				"ESCAPED_SYMBOL" => array('?:`([^`]+)`', '_vt_processtoken_symbol'),
 				//"STRING" => array('?:(?:"((?:\\\\"|[^"])+)"|'."'((?:\\\\'|[^'])+)')", 'stripcslashes'),
 				//"STRING" => array('?:"((?:\\\\"|[^"])+)"', 'stripcslashes'),
-				"STRING" => array("?:'((?:\\\\'|[^'])+)'", 'stripcslashes'),
+				"STRING" => array("?:'((?:\\\\'|[^'])+)*'", 'stripcslashes'),
 				"FLOAT" => array('\d*[.]\d+', 'floatval'),
 				"INTEGER" => array('\d+', 'intval'),
 				'OPERATOR' => array('[+]|[-]|[*]|>=|<=|[<]|[>]|==|!=|\/', '_vt_processtoken_symbol'),
@@ -53,8 +53,19 @@ class VTExpressionTokenizer{
 		$this->EOF = new VTExpressionToken("EOF");
 		$matches = array();
 		$expr = html_entity_decode($expr, ENT_QUOTES, $default_charset);
-		$expr = str_replace("''", "' '", $expr); // empty strings cannot be empty
 		preg_match_all($tokenRe, $expr, $matches, PREG_SET_ORDER);
+		if (strpos($expr, "''")) {
+			foreach ($matches as &$match) {
+				foreach ($match as $key => $value) {
+					if (count($match) == 1 && $value == "''") {
+						$match[] = '';
+						$match[] = '';
+						$match[] = '';
+						$match[] = '';
+					}
+				}
+			}
+		}
 		$this->matches = $matches;
 		$this->idx = 0;
 	}
@@ -67,7 +78,8 @@ class VTExpressionTokenizer{
 			$match = $matches[$idx];
 			$this->idx = $idx + 1;
 			$i=1;
-			while($match[$i]==null){
+			$nummatch = count($match);
+			while ($match[$i] == null && $i < $nummatch-1) {
 				$i+=1;
 			}
 			$tokenName = $this->tokenNames[$i-1];

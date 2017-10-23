@@ -153,7 +153,7 @@ function createdoc() {
 }
 function afterCreateRecord(result, args) {
 	if(result) {
-		alert('<?php echo $app_strings['LBL_TABLE_CREATED']; ?>!!');
+		alert('<?php echo $app_strings['DocumentCreatedRelated']; ?>!!');
 	} else {
 		alert('<?php echo $app_strings['ERROR'].' '.$app_strings['LBL_CREATING']; ?>!!');
 	}

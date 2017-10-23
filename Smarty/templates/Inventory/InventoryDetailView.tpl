@@ -221,6 +221,7 @@ function DeleteTag(id,recordid)
 									</td>
 								</tr>
 							</table>
+
 							<br>
 								{include file='applicationmessage.tpl'}
 								<!-- Entity and More information tabs -->
@@ -363,6 +364,7 @@ function DeleteTag(id,recordid)
 																															{assign var=keyadmin value=$data.isadmin}
 																															{assign var=display_type value=$data.displaytype}
 																															{assign var=_readonly value=$data.readonly}
+																															{assign var=extendedfieldinfo value=$data.extendedfieldinfo}
 																																{if $label ne ''}
 																																	<td class="dvtCellLabel" align=right width=25%>
 																																		{if $keycntimage ne ''}
