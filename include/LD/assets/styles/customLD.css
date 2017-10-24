@@ -1452,6 +1452,19 @@ tr td.action-block-mailManager {
     opacity: .7;
 }
 
+.privilege-table tr#module-loops td {
+    padding: 0 .5rem;
+}
+
+.privilege-table tr#module-loops td p {
+    margin: 0;
+}
+
+.toggle-access img {
+    height: 18px;
+    vertical-align: middle;
+}
+
 /* ===== Settings - OrgSharingDetailView ===== */
 .sharing-rules-img img {
     width: 12px;

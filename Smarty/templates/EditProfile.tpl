@@ -28,7 +28,7 @@
 				<div align=center>
 					<br>
 							{include file='SetMenu.tpl'}
-							<!-- DISPLAY -->
+							<!-- DISPLAY Edit Profile-->
 								<form action="index.php" method="post" name="profileform" id="form" onsubmit="VtigerJS_DialogBox.block();">
 									<input type="hidden" name="module" value="Users">
 									<input type="hidden" name="parenttab" value="Settings">
@@ -87,8 +87,8 @@
 																<header class="slds-media slds-media--center slds-has-flexi-truncate">
 																	<div class="slds-media__figure">
 																		<div class="extraSmall forceEntityIcon">
-																			<span class="uiImage">
-																				<img src="{'prvPrfHdrArrow.gif'|@vtiger_imageurl:$THEME}">
+																			<span class="uiImage subheader-image">
+																				<img src="{'prvPrfHdrArrow.gif'|@vtiger_imageurl:$THEME}" >
 																			</span>
 																		</div>
 																	</div>
@@ -129,7 +129,7 @@
 																		<div class="slds-table--scoped">
 																			<ul class="slds-tabs--scoped__nav" role="tablist" style="margin-bottom: 0;">
 																				<li class="slds-tabs--scoped__item active" role="presentation">
-																					<a class="slds-tabs--scoped__link " role="tab" tabindex="0" aria-selected="true" aria-controls="globalPrivileges" id="globalPrivileges">
+																					<a class="slds-tabs--scoped__link " role="tab" tabindex="0" aria-selected="true" aria-controls="globalPrivileges" id="globalPrivileges" style="cursor: default;">
 																						{$CMOD.LBL_SUPER_USER_PRIV}
 																					</a>
 																				</li>
@@ -164,101 +164,110 @@
 																		<div class="slds-table--scoped">
 																			<ul class="slds-tabs--scoped__nav" role="tablist" style="margin-bottom: 0;">
 																				<li class="slds-tabs--scoped__item active" role="presentation">
-																					<a class="slds-tabs--scoped__link " role="tab" tabindex="0" aria-selected="true" aria-controls="eachModulePrivilege" id="eachModulePrivilege">
+																					<a class="slds-tabs--scoped__link " role="tab" tabindex="0" aria-selected="true" aria-controls="eachModulePrivilege" id="eachModulePrivilege" style="cursor: default;">
 																						{$CMOD.LBL_SET_PRIV_FOR_EACH_MODULE}
 																					</a>
 																				</li>
 																			</ul>
 
 																			<div id="eachModulePrivilege" role="tabpanel" aria-labelledby="eachModulePrivilege" class="slds-tabs--scoped__content slds-truncate">
-																				<table class="slds-table slds-no-row-hover detailview_table">
+																				<table class="slds-table slds-no-row-hover detailview_table privilege-table">
 																					<tr id="gva">
-																						<td colspan="7" class="dvtCellLabel text-center">
-																							<div align="center"><strong>{$CMOD.LBL_EDIT_PERMISSIONS}</strong></div>
+																						<td colspan="7" class="dvtCellLabel text-left">
+																							<strong>{$CMOD.LBL_EDIT_PERMISSIONS}</strong>
 																						</td>
 																					</tr>
 																					<tr id="gva" class="slds-text-title--caps">
-																						<td colspan="2" class="small dvtCellInfo"><strong> {$CMOD.LBL_TAB_MESG_OPTION} </strong></td>
-																						<td class="small dvtCellInfo"><div align="center"><strong>{$CMOD.LBL_CREATE}</strong></div></td>
-																						<td class="small dvtCellInfo"><div align="center"><strong>{$CMOD.Edit}</strong></div></td>
-																						<td class="small dvtCellInfo"><div align="center"><strong>{$CMOD.LBL_VIEW}</strong></div></td>
-																						<td class="small dvtCellInfo"><div align="center"><strong>{$CMOD.LBL_DELETE}</strong></div></td>
+																						<td colspan="2" class="small dvtCellInfo"> {$CMOD.LBL_TAB_MESG_OPTION} </td>
+																						<td class="small dvtCellInfo" align="center">{$CMOD.LBL_CREATE}</div></td>
+																						<td class="small dvtCellInfo" align="center">{$CMOD.Edit}</div></td>
+																						<td class="small dvtCellInfo" align="center">{$CMOD.LBL_VIEW}</div></td>
+																						<td class="small dvtCellInfo" align="center">{$CMOD.LBL_DELETE}</div></td>
 																						<td class="small dvtCellInfo" nowrap="nowrap">{$CMOD.LBL_FIELDS_AND_TOOLS_SETTINGS}</td>
 																					</tr>
 
 																					<!-- module loops-->
 																					{foreach key=tabid item=elements from=$TAB_PRIV}
-																						<tr>
+																						<tr id="module-loops">
 																							{assign var=modulename value=$TAB_PRIV[$tabid][0]}
 																							{assign var="MODULELABEL" value=$modulename|@getTranslatedString:$modulename}
-																							  <td class="small cellLabel" width="3%"><div align="right">
-																							{$TAB_PRIV[$tabid][1]}
-																							  </div></td>
-																							  <td class="small cellLabel" width="40%"><p>{$MODULELABEL}</p></td>
-																							  <td class="small cellText" width="10%">&nbsp;<div align="center">
-																							{if !empty($STANDARD_PRIV[$tabid][4])}{$STANDARD_PRIV[$tabid][4]}{/if}
-																							  </div></td>
-																							  <td class="small cellText" width="10%">&nbsp;<div align="center">
-																							{if !empty($STANDARD_PRIV[$tabid][1])}{$STANDARD_PRIV[$tabid][1]}{/if}
-																							  </div></td>
-																							  <td class="small cellText" width="10%">&nbsp;<div align="center">
-																							{if !empty($STANDARD_PRIV[$tabid][3])}{$STANDARD_PRIV[$tabid][3]}{/if}
-																							  </div></td>
-																							  <td class="small cellText" width="10%">&nbsp;<div align="center">
-																							{if !empty($STANDARD_PRIV[$tabid][2])}{$STANDARD_PRIV[$tabid][2]}{/if}
-																							  </div></td>
-																							  <td class="small cellText" width="17%">&nbsp;<div align="center">
-																							{if !empty($FIELD_PRIVILEGES[$tabid])}
-																							<img src="{'showDown.gif'|@vtiger_imageurl:$THEME}" id="img_{$tabid}" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" onclick="fnToggleVIew('{$tabid}_view')" border="0" height="16" width="40" style="display:block;">
-																							{/if}</div></td>
+																							<td class="small dvtCellLabel text-center" width="3%">
+																								<div>{$TAB_PRIV[$tabid][1]}</div>
+																							</td>
+																							<td class="small dvtCellLabel text-left" width="40%"><p>{$MODULELABEL}</p></td>
+																							<td class="small dvtCellInfo" width="10%">
+																								<div align="center">{if !empty($STANDARD_PRIV[$tabid][4])}{$STANDARD_PRIV[$tabid][4]}{/if}</div>
+																							</td>
+																							<td class="small dvtCellInfo" width="10%">
+																								<div align="center">{if !empty($STANDARD_PRIV[$tabid][1])}{$STANDARD_PRIV[$tabid][1]}{/if}</div>
+																							</td>
+																							<td class="small dvtCellInfo" width="10%">
+																								<div align="center">{if !empty($STANDARD_PRIV[$tabid][3])}{$STANDARD_PRIV[$tabid][3]}{/if}</div>
+																							</td>
+																							<td class="small dvtCellInfo" width="10%">
+																								<div align="center">{if !empty($STANDARD_PRIV[$tabid][2])}{$STANDARD_PRIV[$tabid][2]}{/if}</div>
+																							</td>
+																							<td class="small dvtCellInfo" width="17%">
+																								<div align="center">
+																								{if !empty($FIELD_PRIVILEGES[$tabid])}
+																									<img src="{'showDown.gif'|@vtiger_imageurl:$THEME}" id="img_{$tabid}" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" onclick="fnToggleVIew('{$tabid}_view')" style="display:block; height: 20px;">
+																								{/if}
+																								</div>
+																							</td>
 																						</tr>
 																						<tr class="hideTable" id="{$tabid}_view" className="hideTable">
 																							<td colspan="7" class="small settingsSelectedUI">
 
-																								<table class="small" border="0" cellpadding="2" cellspacing="0" width="100%">
+																								<!-- Edit Permissions Table -->
+																								<table class="slds-table slds-no-row-hover detailview_table">
 																									<tbody>
 
+																										<!-- Fields to be shown Section-->
 																										{if !empty($FIELD_PRIVILEGES[$tabid])}
-																											<tr>
-																												{if $modulename eq 'Calendar'}
-																													<td class="small colHeader" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN} ({$APP.Tasks})</td>
-																												{else}
-																													<td class="small colHeader" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN}</td>
-																												{/if}
+																											<tr class="slds-line-height--reset">
+																												<td class="small dvtCellLabel text-left" colspan="7" valign="top">
+																													<b>{if $modulename eq 'Calendar'}
+																														{$CMOD.LBL_FIELDS_TO_BE_SHOWN} ({$APP.Tasks})
+																													{else}
+																														{$CMOD.LBL_FIELDS_TO_BE_SHOWN}
+																													{/if}</b>
+																												</td>
 																											</tr>
 																											{foreach item=row_values from=$FIELD_PRIVILEGES[$tabid]}
-																													<tr>
-																												  {foreach item=element from=$row_values}
-																													  <td valign="top">{$element.2}{$element.1}</td>
-																													  <td>{$element.0}</td>
-																												  {/foreach}
-																													</tr>
+																												<tr class="slds-line-height--reset">
+																													{foreach item=element from=$row_values}
+																														<td valign="top" align="right" class="dvtCellInfo toggle-access">{$element.2}{$element.1}</td>
+																														<td class="dvtCellLabel text-left">{$element.0}</td>
+																													{/foreach}
+																												</tr>
 																											{/foreach}
 																										{/if}
 
+																										<!-- Fields to be shown Section for Calendar Module -->
 																										{if $modulename eq 'Calendar'}
-																											<tr>
-																												<td class="small colHeader" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN} ({$APP.Events})</td>
+																											<tr class="slds-line-height--reset">
+																												<td class="small dvtCellLabel text-left" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN} ({$APP.Events})</td>
 																											</tr>
 																											{foreach item=row_values from=$FIELD_PRIVILEGES[16]}
-																													<tr>
-																												  {foreach item=element from=$row_values}
-																													  <td valign="top">{$element.2}{$element.1}</td>
-																													  <td>{$element.0}</td>
-																												  {/foreach}
-																													</tr>
+																												<tr class="slds-line-height--reset">
+																													{foreach item=element from=$row_values}
+																														<td class="dvtCellInfo" align="right" valign="top">{$element.2}{$element.1}</td>
+																														<td class="dvtCellLabel text-left">{$element.0}</td>
+																													{/foreach}
+																												</tr>
 																											{/foreach}
 																										{/if}
 
+																										<!-- Tools to be shown Section -->
 																										{if !empty($UTILITIES_PRIV[$tabid])}
-																											<tr>
-																												  <td colspan="7" class="small colHeader" valign="top">{$CMOD.LBL_TOOLS_TO_BE_SHOWN}</td>
+																											<tr class="slds-line-height--reset">
+																												<td colspan="7" class="small dvtCellLabel text-left"  valign="top"><b>{$CMOD.LBL_TOOLS_TO_BE_SHOWN}</b></td>
 																											</tr>
 																											{foreach item=util_value from=$UTILITIES_PRIV[$tabid]}
-																												<tr>
+																												<tr class="slds-line-height--reset">
 																													{foreach item=util_elements from=$util_value}
-																														<td valign="top">{$util_elements.1}</td>
-																														<td>{$APP[$util_elements.0]}</td>
+																														<td valign="top" align="right" class="dvtCellInfo">{$util_elements.1}</td>
+																														<td class="dvtCellLabel text-left">{$APP[$util_elements.0]}</td>
 																													{/foreach}
 																												</tr>
 																											{/foreach}
