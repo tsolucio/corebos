@@ -1441,6 +1441,12 @@ tr td.action-block-mailManager {
     opacity: .7;
 }
 
+/* ===== Settings - Users ===== */
+
+.empty-table tr td img {
+    width: 20px;
+}
+
 /* ===== Settings - Profiles ===== */
 .listTable img {
     width: 12px;
