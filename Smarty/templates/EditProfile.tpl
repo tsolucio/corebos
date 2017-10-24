@@ -261,7 +261,7 @@
 																										<!-- Tools to be shown Section -->
 																										{if !empty($UTILITIES_PRIV[$tabid])}
 																											<tr class="slds-line-height--reset">
-																												<td colspan="7" class="small dvtCellLabel text-left"  valign="top"><b>{$CMOD.LBL_TOOLS_TO_BE_SHOWN}</b></td>
+																												<td colspan="7" class="small dvtCellLabel text-left" valign="top"><b>{$CMOD.LBL_TOOLS_TO_BE_SHOWN}</b></td>
 																											</tr>
 																											{foreach item=util_value from=$UTILITIES_PRIV[$tabid]}
 																												<tr class="slds-line-height--reset">

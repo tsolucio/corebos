@@ -60,7 +60,7 @@ function validate()
 				<div align=center>
 				<br>
 				{include file='SetMenu.tpl'}
-				<!-- DISPLAY Edit Role-->
+				<!-- DISPLAY Edit Role & DISPLAY View Role-->
 				<table class="slds-table slds-no-row-hover slds-table--cell-buffer slds-table-moz" style="background-color: #f7f9fb;">
 				{literal}
 				<form name="newRoleForm" action="index.php" method="post" onSubmit="if(validate()) { VtigerJS_DialogBox.block();} else { return false;} ">
@@ -210,7 +210,7 @@ function validate()
 																	<table class="slds-table slds-no-row-hover">
 																		<tr class="slds-line-height--reset">
 																			<td width="25%" class="dvtCellLabel text-left">
-																				{$CMOD.LBL_MEMBER} {'LBL_LIST_OF'|@getTranslatedString} &quot;{$ROLENAME}&quot;
+																				{$CMOD.LBL_MEMBER} {'LBL_LIST_OF'|@getTranslatedString} <b>{$ROLENAME}</b>
 																			</td>
 																		</tr>
 																		<tr class="slds-line-height--reset">

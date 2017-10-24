@@ -142,13 +142,13 @@
 		{foreachelse}
 			<tr>
 				<td colspan="7">
-					<table width="100%">
+					<table class="slds-table slds-no-row-hover empty-table" border="0">
 						<tr>
-							<td rowspan="2" width="45%" align="right"><img src="{'empty.jpg'|@vtiger_imageurl:$THEME}" height="60" width="61"></td>
-							<td nowrap="nowrap" width="65%" align="left">
-								<span class="genHeaderSmall">
-									{$APP.LBL_NO} {$MOD.LBL_USERS} {$APP.LBL_FOUND} !
-								</span>
+							<td rowspan="2" align="center">
+							<img src="{'empty.jpg'|@vtiger_imageurl:$THEME}">
+							<span class="genHeaderSmall">
+								{$APP.LBL_NO} {$MOD.LBL_USERS} {$APP.LBL_FOUND} !
+							</span>
 							</td>
 						</tr>
 					</table>

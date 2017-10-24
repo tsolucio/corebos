@@ -224,7 +224,7 @@ function validate()
 														<header class="slds-media slds-media--center slds-has-flexi-truncate">
 															<div class="slds-media__figure">
 																<div class="extraSmall forceEntityIcon">
-																	<span class="uiImage">
+																	<span class="uiImage subheader-image">
 																		<img src="{'prvPrfHdrArrow.gif'|@vtiger_imageurl:$THEME}">
 																	</span>
 																</div>
@@ -332,7 +332,7 @@ function validate()
 																		<table class="slds-table slds-no-row-hover">
 																			<tr class="slds-line-height--reset">
 																				<td width="25%" class="dvtCellLabel text-left">
-																					{$CMOD.LBL_MEMBER} {$CMOD.LBL_OF} &quot;{$GROUPNAME}&quot;
+																					{$CMOD.LBL_MEMBER} {$CMOD.LBL_OF} <b>{$GROUPNAME}</b>
 																				</td>
 																			</tr>
 																			<tr class="slds-line-height--reset">
