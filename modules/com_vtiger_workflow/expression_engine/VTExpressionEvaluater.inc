@@ -58,6 +58,7 @@ class VTFieldExpressionEvaluater{
 				'getCurrentUserID' => '__getCurrentUserID',
 				'getCurrentUserName' => '__getCurrentUserName',
 				'getCurrentUserField' => '__getCurrentUserField',
+				'getEntityType' => '__cbwf_setype',
 				'getLatitude' => '__cb_getLatitude',
 				'getLongitude' => '__cb_getLongitude',
 				'getGEODistance' => '__cb_getGEODistance',
@@ -82,6 +83,7 @@ class VTFieldExpressionEvaluater{
 			'__cb_getGEODistanceFromAssignUser2ContactBilling',
 			'__cb_getGEODistanceFromUser2ContactShipping',
 			'__cb_getGEODistanceFromAssignUser2ContactShipping',
+			'__cbwf_setype',
 		);
 		$wfexpfuncs = $adb->query('select expname,funcname,rawparams from com_vtiger_workflows_expfunctions');
 		while ($func = $adb->fetch_array($wfexpfuncs)) {
