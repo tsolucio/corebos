@@ -9430,7 +9430,7 @@ slds-input-has-icon_left .slds-input__icon, .slds-input-has-icon--left .slds-inp
 
 .slds-table--cell-buffer tr>th:last-child,
 .slds-table--cell-buffer tr>td:last-child {
-    padding-right: 1.5rem;
+    /*padding-right: 1.5rem;*/
 }
 
 .slds-table_cell-buffer tr>th:last-child,
