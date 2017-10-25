@@ -18,66 +18,84 @@ function openPopup(del_roleid){ldelim}
 </script>
 <br>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
-<tr>
-    <td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-    <td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
-    <br>
+	<tbody>
+		<tr>
+			<td valign="top" width="100%">
+				<div align=center>
+					<br>
+						{include file='SetMenu.tpl'}
 
-    <div align=center>
+						{literal}
+						<form name="newProfileForm" action="index.php" onsubmit="if(roleDeleteValidate()) { VtigerJS_DialogBox.block();} else { return false; }">
+						{/literal}
+							<input type="hidden" name="module" value="Users">
+							<input type="hidden" name="action" value="DeleteRole">
+							<input type="hidden" name="delete_role_id" value="{$ROLEID}">
 
-	{include file='SetMenu.tpl'}
+							<!-- Delete Role HEADER -->
+							<table class="slds-table slds-no-row-hover slds-table--cell-buffer slds-table-moz" style="background-color: #f7f9fb;">
+								<tr class="slds-text-title--caps">
+									<td style="padding: 0;">
+										<div class="forceRelatedListSingleContainer">
+											<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
+												<div class="slds-card__header slds-grid">
+													<!-- Delete Role Title -->
+													<header class="slds-media slds-media--center slds-has-flexi-truncate">
+														<div class="slds-media__body">
+															<h2>
+																<span class="slds-text-title--caps slds-truncate slds-m-right--xx-small actionLabel">
+																	<strong>{$CMOD.LBL_DELETE_ROLE}</strong>
+																</span>
+															</h2>
+														</div>
+													</header>
+													<!-- Go back link -->
+													<div class="slds-no-flex">
+														<div class="actionsContainer">
+															<a href="#" onClick="window.history.back();">{$APP.LBL_BACK}</a>
+														</div>
+													</div>
+												</div>
+											</article>
+										</div>
+									</td>
+								</tr>
+							</table>
 
-{literal}
-<form name="newProfileForm" action="index.php" onsubmit="if(roleDeleteValidate()) { VtigerJS_DialogBox.block();} else { return false; }">
-{/literal}
-<input type="hidden" name="module" value="Users">
-<input type="hidden" name="action" value="DeleteRole">
-<input type="hidden" name="delete_role_id" value="{$ROLEID}">	
-<table width="100%" border="0" cellpadding="3" cellspacing="0">
-<tr>
-	<td class="genHeaderSmall" align="left" style="border-bottom:1px solid #CCCCCC;" width="50%">{$CMOD.LBL_DELETE_ROLE}</td>
-	<td style="border-bottom:1px solid #CCCCCC;">&nbsp;</td>
-	<td align="right" style="border-bottom:1px solid #CCCCCC;" width="40%"><a href="#" onClick="window.history.back();">{$APP.LBL_BACK}</a></td>
-</tr>
-<tr>
-	<td colspan="3">&nbsp;</td>
-</tr>
-<tr>
-	<td width="50%"><b>{$CMOD.LBL_ROLE_TO_BE_DELETED}</b></td>
-	<td width="2%"><b>:</b></td>
-	<td width="48%"><b>{$ROLENAME}</b></td>
-</tr>
-<tr>
-	<td style="text-align:left;"><b>{$CMOD.LBL_TRANSFER_USER_ROLE}</b></td>
-	<td ><b>:</b></td>
-	<td align="left">
-	<input type="text" name="role_name"  id="role_name" value="" class="txtBox" readonly="readonly">&nbsp;
-        	{$ROLEPOPUPBUTTON}
-        <input type="hidden" name="user_role" id="user_role" value="">	
-           
-	</td>
-</tr>
-<tr><td colspan="3" style="border-bottom:1px dashed #CCCCCC;">&nbsp;</td></tr>
-<tr>
-    <td colspan="3" align="center"><input type="submit" name="Delete" value="{$APP.LBL_SAVE_BUTTON_LABEL}" class="crmbutton small save">
-	</td>
-</tr>
-</table>
-</form></div>
-</td>
-</tr>
+							<!-- Delete role and transfer section -->
+							<table class="slds-table slds-no-row-hover slds-table--cell-buffer detailview_table">
+								<!-- Delete and transfer labels -->
+								<tr class="slds-line-height--reset">
+									<td class="dvtCellLabel" width="30%"><b>{$CMOD.LBL_ROLE_TO_BE_DELETED}:</b></td>
+									<td class="dvtCellInfo" width="70%"><b>{$ROLENAME}</b></td>
+								</tr>
+
+								<!-- Role and role to transfer -->
+								<tr class="slds-line-height--reset">
+									<td class="dvtCellLabel" width="30%"><b>{$CMOD.LBL_TRANSFER_USER_ROLE}:</b></td>
+									<td class="dvtCellInfo" width="70%">
+										<input type="text" name="role_name"  id="role_name" value="" class="slds-input" readonly="readonly">
+										&nbsp;{$ROLEPOPUPBUTTON}<input type="hidden" name="user_role" id="user_role" value="">
+									</td>
+								</tr>
+
+								<!-- Save button for deleting or transfering role -->
+								<tr class="slds-line-height--reset">
+									<td colspan="2" align="right">
+										<input type="submit" name="Delete" value="{$APP.LBL_SAVE_BUTTON_LABEL}" class="slds-button slds-button--small slds-button_success">
+									</td>
+								</tr>
+							</table>
+						</form>
+
+					</td></tr></table><!-- close table from setMenu -->
+					</td></tr></table><!-- close table from setMenu -->
+
+			</div><!-- close align center -->
+		</td>
+	</tr>
 </table>
 
-</td>
-</tr>
-</table>
-</td>
-</tr>
-</table>
-</div>
-<td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
-</tr>
-</table>
 <br>
 <script>
 {literal}
