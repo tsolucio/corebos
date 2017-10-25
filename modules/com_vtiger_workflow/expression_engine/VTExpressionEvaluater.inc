@@ -73,9 +73,22 @@ class VTFieldExpressionEvaluater{
 				'getGEODistanceFromAssignUser2ContactShipping' => '__cb_getGEODistanceFromAssignUser2ContactShipping',
 				'getGEODistanceFromCoordinates' => '__cb_getGEODistanceFromCoordinates'
 		);
-		$wfexpfuncs = $adb->query('select expname,funcname from com_vtiger_workflows_expfunctions');
+		$this->rawparams = array(
+			'__cb_getGEODistanceFromUser2AccountBilling',
+			'__cb_getGEODistanceFromAssignUser2AccountBilling',
+			'__cb_getGEODistanceFromUser2AccountShipping',
+			'__cb_getGEODistanceFromAssignUser2AccountShipping',
+			'__cb_getGEODistanceFromUser2ContactBilling',
+			'__cb_getGEODistanceFromAssignUser2ContactBilling',
+			'__cb_getGEODistanceFromUser2ContactShipping',
+			'__cb_getGEODistanceFromAssignUser2ContactShipping',
+		);
+		$wfexpfuncs = $adb->query('select expname,funcname,rawparams from com_vtiger_workflows_expfunctions');
 		while ($func = $adb->fetch_array($wfexpfuncs)) {
 			$this->functions[$func['expname']] = $func['funcname'];
+			if ($func['rawparams'] == 1) {
+				$this->rawparams[] = $func['funcname'];
+			}
 		}
 		$this->operations = array_merge($this->functions, $this->operators);
 		$this->expr = $expr;
@@ -110,7 +123,7 @@ class VTFieldExpressionEvaluater{
 				}
 			}else{
 				$func = $this->operations[$op->value];
-				if (substr($func, 0, 28)=='__cb_getGEODistanceFromUser2' || substr($func, 0, 33)=='__cb_getGEODistanceFromAssignUser') {
+				if (in_array($func, $this->rawparams)) {
 					$relto = $expr->getParams();
 					$params = array();
 					foreach ($relto as $key => $value) {
