@@ -87,7 +87,7 @@
 																			</header>
 																			<div class="slds-no-flex">
 																				<div class="actionsContainer">
-																					<input value="   {$APP.LBL_EDIT_BUTTON_LABEL}   " title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" class="slds-button slds-button_success slds-button--small" type="submit" name="Edit" >
+																					<input value="   {$APP.LBL_EDIT_BUTTON_LABEL}   " title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" class="slds-button slds-button--brand slds-button--small" type="submit" name="Edit" >
 																				</div>
 																			</div>
 																		</div>
@@ -114,17 +114,21 @@
 																						<td width="50%" class="dvtCellLabel cellBottomDotLine">
 																							<div align="left"><strong>{$CMOD.LBL_ASSOCIATED_PROFILES}</strong></div>
 																						</td>
-																						<td width="50%" class="dvtCellLabel cellBottomDotLine">
-																							<div align="left"><strong>{$CMOD.LBL_ASSOCIATED_USERS}</strong></div>
-																						</td>
 																					</tr>
-																					
-																					<tr class="small">
+																					<tr>
 																						<td width="50%" class="dvtCellInfo">
 																							{foreach item=elements from=$ROLEINFO.profileinfo}
 																								<a href="index.php?module=Settings&action=profilePrivileges&parenttab=Settings&profileid={$elements.0}&mode=view">{$elements.1}</a><br/>
 																							{/foreach}
 																						</td>
+																					</tr>
+
+																					<tr class="small">
+																						<td width="50%" class="dvtCellLabel cellBottomDotLine">
+																							<div align="left"><strong>{$CMOD.LBL_ASSOCIATED_USERS}</strong></div>
+																						</td>
+																					</tr>
+																					<tr>
 																						<td width="50%" class="dvtCellInfo">
 																							{if !empty($ROLEINFO.userinfo.0)}
 																								{foreach item=elements from=$ROLEINFO.userinfo}
