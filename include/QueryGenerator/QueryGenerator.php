@@ -921,7 +921,7 @@ class QueryGenerator {
 						$fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' '.$valueSql;
 					}
 				}
-				if(($conditionInfo['operator'] == 'n' || $conditionInfo['operator'] == 'k') && ($field->getFieldDataType() == 'owner' || $field->getFieldDataType() == 'picklist') ) {
+				if ($conditionInfo['operator'] == 'n' || $conditionInfo['operator'] == 'k') {
 					$fieldGlue = ' AND';
 				} else {
 					$fieldGlue = ' OR';
