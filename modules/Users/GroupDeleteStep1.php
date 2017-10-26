@@ -21,21 +21,21 @@ $output = '<div id="DeleteLay" class="layerPopup" style="width:400px;">
 <input type="hidden" name="delete_group_id" value="'.$delete_group_id.'">
 <table border=0 cellspacing=0 cellpadding=5 width=100% class=layerHeadingULine>
 <tr>
-	<td class=layerPopupHeading " align="left">'.$mod_strings['LBL_DELETE_GROUP'].'</td>
+	<td class="layerPopupHeading moduleName" align="left">'.$mod_strings['LBL_DELETE_GROUP'].'</td>
 	<td align="right" class="small"><img src="'. vtiger_imageurl('close.gif', $theme) .'" border=0 alt="'.$app_strings["LBL_CLOSE"].'" title="'.$app_strings["LBL_CLOSE"].'" style="cursor:pointer" onClick="document.getElementById(\'DeleteLay\').style.display=\'none\'";></td>
 </tr>
 </table>
 <table border=0 cellspacing=0 cellpadding=5 width=95% align=center>
 <tr>
 	<td class="small">
-	<table border=0 celspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
+	<table class="slds-table slds-no-row-hover">
 	<tr>
-		<td width="50%" class="cellLabel small"><b>'.$mod_strings['LBL_DELETE_GROUPNAME'].'</b></td>
-		<td width="50%" class="cellText small"><b>'.htmlentities($delete_group_name,ENT_QUOTES,$default_charset).'</b></td>
+		<td width="50%" class="dvtCellLabel small"><b>'.$mod_strings['LBL_DELETE_GROUPNAME'].'</b></td>
+		<td width="50%" class="dvtCellInfo small"><b>'.htmlentities($delete_group_name,ENT_QUOTES,$default_charset).'</b></td>
 	</tr>
 	<tr>
-		<td align="left" class="cellLabel small" nowrap><b>'.$mod_strings['LBL_TRANSFER_GROUP'].'</b></td>
-		<td align="left" class="cellText small">';
+		<td align="left" class="dvtCellLabel small" nowrap><b>'.$mod_strings['LBL_TRANSFER_GROUP'].'</b></td>
+		<td align="left" class="dvtCellInfo small">';
 		global $adb;
 		$sql = "select groupid,groupname from vtiger_groups";
 		$result = $adb->pquery($sql, array());
@@ -45,15 +45,26 @@ $output = '<div id="DeleteLay" class="layerPopup" style="width:400px;">
 		$result1= $adb->pquery($sql1, array());
 		$num_users = $adb->num_rows($result1);
 
-		$output.= '<input name="assigntype" checked value="U" onclick="toggleAssignType(this.value)" type="radio">&nbsp;User';
+		$output.= '
+			<span class="slds-radio"><input name="assigntype" id="user-assigntype" checked value="U" onclick="toggleAssignType(this.value)" type="radio">
+				<label class="slds-radio__label" for="user-assigntype"><span class="slds-radio--faux" style="margin-right: 0;"></span></label>
+				<span>User</span>
+			</span>&nbsp;';
+
 		if($num_groups > 1)
 		{
-			$output .= '<input name="assigntype"  value="T" onclick="toggleAssignType(this.value)" type="radio">&nbsp;Group';
+			$output .= '
+					&nbsp;<span class="slds-radio">
+						<input name="assigntype" value="T" id="group" onclick="toggleAssignType(this.value)" type="radio">
+						<label class="slds-radio__label" for="group"><span class="slds-radio--faux" style="margin-right: 0;"></span></label>
+						<span>Group</span>
+					</span>
+					';
 		}
 
 		$output .= '<span id="assign_user" style="display: block;">';
 
-		$output .= '<select class="small" name="transfer_user_id">';
+		$output .= '<select class="slds-select" name="transfer_user_id">';
 
 
 		for($i=0;$i<$num_users;$i++)
@@ -68,7 +79,7 @@ $output = '<div id="DeleteLay" class="layerPopup" style="width:400px;">
 		{
 			$output .= '<span id="assign_team" style="display: none;">';
 
-			$output.='<select class="select" name="transfer_group_id">';
+			$output.='<select class="slds-select" name="transfer_group_id">';
 
 			$temprow = $adb->fetch_array($result);
 			do
@@ -95,7 +106,7 @@ $output = '<div id="DeleteLay" class="layerPopup" style="width:400px;">
 </table>
 <table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport">
 <tr>
-	<td class="small" align="center"><input type="submit" name="Delete" value="'.$app_strings["LBL_SAVE_BUTTON_LABEL"].'" class="crmbutton small save">
+	<td class="small" align="center" style="padding:5px;"><input type="submit" name="Delete" value="'.$app_strings["LBL_SAVE_BUTTON_LABEL"].'" class="slds-button slds-button--small slds-button_success">
 	</td>
 </tr>
 </table>
