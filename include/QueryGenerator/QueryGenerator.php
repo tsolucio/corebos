@@ -1028,7 +1028,7 @@ class QueryGenerator {
 	private function getConditionValue($value, $operator, $field, $referenceFieldName='') {
 		$operator = strtolower($operator);
 		$db = PearDatabase::getInstance();
-		$noncommaSeparatedFieldTypes = array('currency','percentage','double','integer','number');
+		$noncommaSeparatedFieldTypes = array('currency','percentage','double','number');
 
 		if (in_array($field->getFieldDataType(), $noncommaSeparatedFieldTypes)) {
 			$valueArray = (array)$value;
