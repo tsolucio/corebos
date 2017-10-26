@@ -33,14 +33,14 @@
 				</select>
 				&nbsp;&nbsp;{$entries.blocklabel}&nbsp;&nbsp;
 				</td>
-				<td class="colHeader small" id = "blockid_{$entries.blockid}" colspan="2" align='right'>
+				<td class="colHeader small" id="blockid_{$entries.blockid}" colspan="2" align='right'>
 					{if $entries.iscustom == 1 }
-					<img style="cursor:pointer;" onClick=" deleteCustomBlock('{$MODULE}','{$entries.blockid}','{$entries.no}')" src="{'delete.gif'|@vtiger_imageurl:$THEME}" border="0" alt="{$APP.LBL_DELETE}" title="{$APP.LBL_DELETE}"/>&nbsp;&nbsp;
+					<img style="width:18px;cursor :pointer;" onClick=" deleteCustomBlock('{$MODULE}','{$entries.blockid}','{$entries.no}')" src="{'delete.gif'|@vtiger_imageurl:$THEME}" border="0" alt="{$APP.LBL_DELETE}" title="{$APP.LBL_DELETE}"/>&nbsp;&nbsp;
 					{/if}
 					{if $showactionbuttons}
 					<img src="{'hidden_fields.png'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;" onclick="fnvshobj(this,'hiddenfields_{$entries.blockid}');" alt="{$MOD.HIDDEN_FIELDS}" title="{$MOD.HIDDEN_FIELDS}"/>&nbsp;&nbsp;
 					{/if}
-						<div id = "hiddenfields_{$entries.blockid}" style="display:none; position:absolute; width:300px;" class="layerPopup">
+						<div id="hiddenfields_{$entries.blockid}" style="display:none; position:absolute; width:300px;" class="layerPopup">
 							<div style="position:relative; display:block">
 										<table width="100%" border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine">
 											<tr>
@@ -198,7 +198,7 @@
 					{if $showactionbuttons}
 						<img src="{'moveinto.png'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer; height:16px; width:16px" onClick="fnvshobj(this,'movefields_{$entries.blockid}');" alt="{$MOD.LBL_MOVE_FIELDS}" title="{$MOD.LBL_MOVE_FIELDS}"/>&nbsp;&nbsp;
 					{/if}
-					<div id = "movefields_{$entries.blockid}" style="display:none; position:absolute; width:300px;" class="layerPopup">
+					<div id="movefields_{$entries.blockid}" style="display:none; position:absolute; width:300px;" class="layerPopup">
 							<div style="position:relative; display:block">
 										<table width="100%" border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine">
 											<tr>
@@ -465,68 +465,71 @@
 		{/if}
 	{/foreach}
 </table>
-	<div id="addblock" style="display:none; position:absolute; width:500px;" class="layerPopup">
-		<table width="100%" border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine">
-			<tr>
-				<td width="95%" align="left" class="layerPopupHeading">{$MOD.LBL_ADD_BLOCK}
-				</td>
-				<td width="5%" align="right"><a href="javascript:fninvsh('addblock');"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" /></a>
-				</td>
+
+	<div id="addblock" style="display:none; position:absolute; width:500px;" class="addBlockPopup layerPopup">
+
+		<table class="slds-table slds-no-row-hover" width="100%">
+			<tr class="slds-text-title--header">
+				<th scope="col">
+					<div class="slds-truncate moduleName">
+						<b>{$MOD.LBL_ADD_BLOCK}</b>
+					</div>
+				</th>
+				<th scope="col" style="padding: .5rem; text-align: right;">
+					<div class="slds-truncate">
+						<a href="javascript:fninvsh('addblock');"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" /></a>
+					</div>
+				</th>
 			</tr>
 		</table>
-		<table border="0" cellspacing="0" cellpadding="0" width="95%" align="center">
+
+		<table class="slds-table slds-no-row-hover">
 			<tr>
-				<td class="small" >
-					<table border="0" celspacing="0" cellpadding="0" width="100%" align="center" bgcolor="white">
-						<tr>
-							<td width="50%">
-								<table width="100%" border="0" cellpadding="5" cellspacing="0">
-									<tr>
-										<td class="dataLabel" nowrap="nowrap" align="right" width="30%"><b>{$MOD.LBL_BLOCK_NAME}</b></td>
-										<td align="left" width="70%">
-										<input id="blocklabel" value="" type="text" class="txtBox">
-										</td>
-									</tr>
-									<tr>
-										<td class="dataLabel" align="right" width="30%"><b>{$MOD.AFTER}</b></td>
-										<td align="left" width="70%">
-										<select id="after_blockid" name="after_blockid">
-											{foreach key=blockid item=blockname from=$BLOCKS}
-											<option value = {$blockid}> {$blockname} </option>
-											{/foreach}
-										</select>
-										</td>
-									</tr>
-								</table>
+				<td class="small" style="border-top: 1px solid #d4d4d4;">
+
+					<table class="slds-table slds-no-row-hover">
+						<!-- Enter block name -->
+						<tr class="slds-line-height--reset">
+							<td class="dvtCellLabel dataLabel" align="right" nowrap ><b>{$MOD.LBL_BLOCK_NAME}</b></td>
+							<td class="dvtCellInfo" align="left"><input id="blocklabel" value="" type="text" class="slds-input" style="width: 100%;"></td>
+						</tr>
+						<!-- Select after option -->
+						<tr class="slds-line-height--reset">
+							<td class="dvtCellLabel dataLabel" align="right"><b>{$MOD.AFTER}</b></td>
+							<td class="dvtCellInfo" align="left" width="70%">
+								<select id="after_blockid" name="after_blockid" class="slds-select">
+									{foreach key=blockid item=blockname from=$BLOCKS}
+										<option value = {$blockid}> {$blockname} </option>
+									{/foreach}
+								</select>
+							</td>
+						</tr>
+						<tr><td colspan=2><hr width="100%"></td></tr>
+						<!-- Related modules options -->
+						<tr class="slds-line-height--reset">
+							<td class="dvtCellLabel dataLabel" nowrap align="right"><b>{'QuickRelatedList'|@gettranslatedString:$MODULE}:</b></td>
+							<td class="dvtCellInfo" align="left" width="70%">
+								<select name='relatedlistblock' class="slds-select" id='relatedlistblock' onchange="getElementById('blocklabel').value=this.value;">
+									<option value="no" selected>{'LBL_NO'|@gettranslatedString:$MODULE}</option>
+									{foreach key=rlmname item=rllabel from=$NotBlockRelatedModules}
+									<option value="{$rlmname}">{$rlmname|@gettranslatedString:$rlmname}</option>
+									{/foreach}
+								</select>
+							</td>
+						</tr>
+						<!-- Save & Cancel buttons -->
+						<tr class="slds-line-height--reset">
+							<td align="center" colspan="2">
+								<input type="button" name="save" value= "{$APP.LBL_SAVE_BUTTON_LABEL}" class="slds-button slds-button--small slds-button_success" onclick="getCreateCustomBlockForm('{$MODULE}','add');"/>&nbsp;
+								<input type="button" name="cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" class="slds-button slds-button--small slds-button--destructive" onclick= "fninvsh('addblock');" />
 							</td>
 						</tr>
 					</table>
-					<table border=0 cellspacing=0 cellpadding=5 width=100% >
-						<tr>
-						<td colspan=2><hr width="100%"></td>
-						</tr>
-						<tr>
-						<td class="dataLabel" nowrap="nowrap" align="right" width="30%"><b>{'QuickRelatedList'|@gettranslatedString:$MODULE}:</b></td>
-						<td align="left" width="70%">
-							<select name='relatedlistblock' id='relatedlistblock' onchange="getElementById('blocklabel').value=this.value;">
-								<option value="no" selected>{'LBL_NO'|@gettranslatedString:$MODULE}</option>
-								{foreach key=rlmname item=rllabel from=$NotBlockRelatedModules}
-								<option value="{$rlmname}">{$rlmname|@gettranslatedString:$rlmname}</option>
-								{/foreach}
-							</select>
-						</td>
-						</tr>
-					</table>
-					<table border=0 cellspacing=0 cellpadding=5 width=100% >
-						<tr>
-							<td align="center">
-								<input type="button" name="save" value= "{$APP.LBL_SAVE_BUTTON_LABEL}" class="crmButton small save" onclick="getCreateCustomBlockForm('{$MODULE}','add');"/>&nbsp;
-								<input type="button" name="cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" class="crmButton small cancel" onclick= "fninvsh('addblock');" />
-							</td>
-						</tr>
-					</table>
+
 				</td>
 			</tr>
 		</table>
+
 	</div>
+
 </form>

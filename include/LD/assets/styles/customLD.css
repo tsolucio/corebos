@@ -1499,3 +1499,22 @@ tr td.action-block-mailManager {
     width:16px;
     cursor: pointer;
 }
+
+/* ===== OrderRelatedList.tpl ===== */
+#arrangeRelatedListPopup {
+    position:relative;
+    width:545px;
+    z-index:1000;
+    /*background-color: #f7f9fb;*/
+    background-color: #fff;
+}
+
+#arrangeRelatedListPopup img {
+    width: 18px;
+    cursor: pointer;
+}
+
+/* ===== LayoutBlockEntries.tpl ===== */
+.addBlockPopup {
+    z-index: 9999;
+}
