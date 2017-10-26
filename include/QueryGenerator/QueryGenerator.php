@@ -1030,20 +1030,16 @@ class QueryGenerator {
 		$db = PearDatabase::getInstance();
 		$noncommaSeparatedFieldTypes = array('currency','percentage','double','number');
 
-		if (in_array($field->getFieldDataType(), $noncommaSeparatedFieldTypes)) {
-			$valueArray = (array)$value;
-			// if ($field->getFieldDataType() == 'multipicklist' && in_array($operator, array('e', 'n'))) {
-				// $valueArray = getCombinations($valueArray);
-				// foreach ($valueArray as $key => $value) {
-					// $valueArray[$key] = ltrim($value, ' |##| ');
-				// }
+		// if ($field->getFieldDataType() == 'multipicklist' && in_array($operator, array('e', 'n'))) {
+			// $valueArray = getCombinations($valueArray);
+			// foreach ($valueArray as $key => $value) {
+				// $valueArray[$key] = ltrim($value, ' |##| ');
 			// }
-		} elseif (is_string($value) and $operator!='e') {
+		// } else
+		if (is_string($value) && $operator != 'e' && !in_array($field->getFieldDataType(), $noncommaSeparatedFieldTypes)) {
 			$valueArray = explode(',' , $value);
-		} elseif(is_array($value)) {
-			$valueArray = $value;
 		} else {
-			$valueArray = array($value);
+			$valueArray = (array)$value;
 		}
 		$sql = array();
 		if ($operator=='exists') {
