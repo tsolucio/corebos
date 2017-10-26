@@ -98,7 +98,7 @@ class VTConditionalParser{
 		} else {
 			$left = $this->cond();
 		}
-		if (sizeof($this->tokens)>$this->pos and in_array($this->peek(), array($op["and"], $op["or"]))) {
+		if (count($this->tokens)>$this->pos && in_array($this->peek(), array($op['and'], $op['or']))) {
 			$nt = $this->nextToken();
 			return array($nt[1], $left, $this->parse());
 		} else {

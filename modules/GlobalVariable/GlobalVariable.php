@@ -240,7 +240,8 @@ class GlobalVariable extends CRMEntity {
 				$in_module_list=$adb->query_result($query,$i,'in_module_list');
 				$modules_list=array_map('trim', explode('|##|',$adb->query_result($query,$i,'module_list')));
 				if ($in_module_list==1) {
-					for($j=0;$j<sizeof($modules_list);$j++) {
+					$nummods = count($modules_list);
+					for ($j=0; $j < $nummods; $j++) {
 						if ($isBusinessMapping) {
 							$value = $adb->query_result($query,$i,'bmapid');
 						} else {
@@ -254,7 +255,8 @@ class GlobalVariable extends CRMEntity {
 				} else {
 					$all_modules=vtws_getModuleNameList();
 					$other_modules=array_diff($all_modules,$modules_list);
-					for($l=0;$l<sizeof($other_modules);$l++){
+					$nummods = count($other_modules);
+					for ($l=0; $l < $nummods; $l++) {
 						if ($isBusinessMapping) {
 							$value = $adb->query_result($query,$i,'bmapid');
 						} else {
@@ -269,7 +271,7 @@ class GlobalVariable extends CRMEntity {
 			}
 		}
 		$gvvalidationinfo[] = "candidate list of modules to look for $module: ".print_r($list_of_modules,true);
-		if (sizeof($list_of_modules)>0) {
+		if (count($list_of_modules) > 0) {
 			if (array_key_exists($module,$list_of_modules)) {
 				return $list_of_modules[$module];
 			} else {

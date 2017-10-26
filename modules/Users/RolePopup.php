@@ -26,12 +26,11 @@ for($l=0; $l<$num_rows; $l++)
 	$roleid = $adb->query_result($hr_res,$l,'roleid');
 	$parent = $adb->query_result($hr_res,$l,'parentrole');
 	$temp_list = explode('::',$parent);
-	$size = sizeof($temp_list);
+	$size = count($temp_list);
 	$i=0;
 	$k= Array();
 	$y=$hrarray;
-	if(sizeof($hrarray) == 0)
-	{
+	if (count($hrarray) == 0) {
 		$hrarray[$temp_list[0]]= Array();
 	}
 	else
@@ -99,8 +98,7 @@ function indent($hrarray,$roleout,$role_det,$mask_roleid='')
 		$roledepth = $role_det_arr[1];
 		$roleout .= '<ul class="uil" id="'.$roleid.'" style="display:block;list-style-type:none;">';
 		$roleout .= '<li >';
-		if(sizeof($value) >0 && $roledepth != 0)
-		{
+		if (count($value) >0 && $roledepth != 0) {
 			$roleout .= '<img src="' . vtiger_imageurl('minus.gif', $theme) . '" id="img_'.$roleid.'" border="0" alt="'.$app_strings['LBL_EXPAND_COLLAPSE'].'" title="'.$app_strings['LBL_EXPAND_COLLAPSE'].'" align="absmiddle" onClick="showhide(\''.$roleid_arr.'\',\'img_'.$roleid.'\')" style="cursor:pointer;">';
 		}
 		else if($roledepth != 0){
@@ -129,8 +127,7 @@ function indent($hrarray,$roleout,$role_det,$mask_roleid='')
 			}
 		}
 		$roleout .= '</li>';
-		if(sizeof($value) > 0 )
-		{
+		if (count($value) > 0 ) {
 			$roleout = indent($value,$roleout,$role_det,$mask_roleid);
 		}
 

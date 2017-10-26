@@ -308,7 +308,7 @@ function getPicklistValuesSpecialUitypes($uitype,$fieldname,$value,$action='Edit
 			$roleid = $current_user->roleid;
 			$subrole = getRoleSubordinates($roleid);
 			$uservalues = array_merge($subrole,array($roleid));
-			for($i=0;$i<sizeof($uservalues);$i++) {
+			for ($i=0; $i < count($uservalues); $i++) {
 				$currentValId=$uservalues[$i];
 				$currentValName= getRoleName($currentValId);
 				if(in_array(trim($currentValId),$arr_evo)){
@@ -319,7 +319,7 @@ function getPicklistValuesSpecialUitypes($uitype,$fieldname,$value,$action='Edit
 				$options[] = array($currentValName,$currentValId,$chk_val);
 			}
 		}else{
-			for($i=0;$i<sizeof($arr_evo);$i++) {
+			for ($i=0; $i < count($arr_evo); $i++) {
 				$roleid=$arr_evo[$i];
 				$rolename=getRoleName($roleid);
 				if((is_admin($current_user))) {
@@ -345,7 +345,7 @@ function getPicklistValuesSpecialUitypes($uitype,$fieldname,$value,$action='Edit
 		$values = explode(' |##| ',$value);
 		if (!empty($value) && !empty($values[0])) {
 			$srchmod=  getSalesEntityType($values[0]);
-			for ($i=0;$i<sizeof($values);$i++) {
+			for ($i=0; $i < count($values); $i++) {
 				$id = $values[$i];
 				$displayValueArray = getEntityName($srchmod, $id);
 				if (!empty($displayValueArray)) {

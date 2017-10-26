@@ -371,7 +371,7 @@ class crmtogo_WS_Utils {
 						(";
 
 					// Build the query based on the group association of current user.
-			if(sizeof($current_user_groups) > 0) {
+			if (count($current_user_groups) > 0) {
 				$querySuffix .= " vtiger_groups.groupid IN (". implode(",", $current_user_groups) .") OR ";
 			}
 			$querySuffix .= " vtiger_groups.groupid IN
