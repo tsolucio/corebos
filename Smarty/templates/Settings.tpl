@@ -47,7 +47,7 @@
 						</div>
 					<!-- End Head Titles -->
 
-					<!-- End Fields Blocks -->
+					<!-- Start Fields Blocks -->
 						<table class="slds-table slds-no-row-hover slds-table--fixed-layout">
 							<tr class="slds-line-height--reset">
 								{foreach item=data from=$FIELDS.$BLOCKID name=itr}
@@ -83,7 +83,7 @@
 																<td class=big valign=top>
 																	<div class="slds-media__body">
 																		<h2>
-																			<span class="slds-text-title--caps slds-truncate slds-m-right--xx-small" title="{$header}" style="white-space: normal;">
+																			<span class="slds-text-title--caps slds-truncate slds-m-right--xx-small" title="{$label}" style="white-space: normal;">
 																				<a href="{$data.link}">{$label}</a>
 																			</span>
 																		</h2>
