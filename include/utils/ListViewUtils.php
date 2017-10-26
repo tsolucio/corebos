@@ -1081,6 +1081,9 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 			//Getting the entityid
 			if ($module != 'Users') {
 				$entity_id = $adb->query_result($list_result, $i - 1, "crmid");
+				if (isset($module::$denormalized) && $module::$denormalized) {
+					$entity_id = $adb->query_result($list_result, $i - 1, $focus->table_index);
+				}
 			} else {
 				$entity_id = $adb->query_result($list_result, $i - 1, "id");
 			}
@@ -1268,6 +1271,11 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 	$tabname = getParentTab();
 	$tabid = getTabid($module);
 	$current_module_strings = return_module_language($current_language, $module);
+	if (isset($module::$denormalized) && $module::$denormalized) {
+		$obj = new QueryGenerator($module,$current_user);
+		$field = $obj->getDenormalizedFields($fieldname);
+		$fieldname = $field[0];
+	}
 	$uicolarr = isset($field_result[$fieldname]) ? $field_result[$fieldname] : array('1'=>$fieldname);
 	foreach ($uicolarr as $key => $value) {
 		$uitype = $key;
@@ -1326,6 +1334,9 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		// When Assigned To field is used in Popup window
 		if ($value == '') {
 			$user_id = $adb->query_result($list_result, $list_result_count, 'smownerid');
+			if (isset($module::$denormalized) && $module::$denormalized) {
+      	$user_id = $adb->query_result($list_result, $list_result_count, 'myownerid');
+			}
 			if ($user_id != null && $user_id != '') {
 				$value = getOwnerName($user_id);
 				$value = textlength_check($value);
@@ -2759,6 +2770,7 @@ function getListQuery($module, $where = '') {
 	if ($module != 'Users') {
 		$query = listQueryNonAdminChange($query, $module);
 	}
+
 	$log->debug("Exiting getListQuery method ...");
 	return $query;
 }

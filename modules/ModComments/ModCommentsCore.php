@@ -13,7 +13,7 @@ require_once 'vtlib/Vtiger/Module.php';
 
 class ModCommentsCore extends CRMEntity {
 	var $db, $log; // Used in class functions of CRMEntity
-
+ 
 	var $table_name = 'vtiger_modcomments';
 	var $table_index= 'modcommentsid';
 
@@ -118,7 +118,13 @@ class ModCommentsCore extends CRMEntity {
 	 * Get list view query (send more WHERE clause condition if required)
 	 */
 	function getListQuery($module, $usewhere='') {
+		if (isset($module::$denormalized)) {
+			$denorm=$module::$denormalized;
+		}
 		$query = "SELECT vtiger_crmentity.*, $this->table_name.*";
+    if ($denorm) {
+			$query = "SELECT $this->table_name.*";
+		}
 
 		// Keep track of tables joined to avoid duplicates
 		$joinedTables = array();
@@ -128,7 +134,9 @@ class ModCommentsCore extends CRMEntity {
 
 		$query .= " FROM $this->table_name";
 
-		$query .= "	INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
+		if (!$denorm) {
+			$query .= "	INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
+		}
 
 		$joinedTables[] = $this->table_name;
 		$joinedTables[] = 'vtiger_crmentity';
@@ -139,8 +147,13 @@ class ModCommentsCore extends CRMEntity {
 				" = $this->table_name.$this->table_index";
 			$joinedTables[] = $this->customFieldTable[0];
 		}
-		$query .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
-		$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
+		if ($denorm) {
+			$query .= " LEFT JOIN vtiger_users ON vtiger_users.id = $this->table_name.myownerid";
+			$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = $this->table_name.myownerid";
+		} else {
+			$query .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
+			$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
+		}
 
 		$joinedTables[] = 'vtiger_users';
 		$joinedTables[] = 'vtiger_groups';
@@ -163,11 +176,20 @@ class ModCommentsCore extends CRMEntity {
 			}
 		}
 
-		$query .= "	WHERE vtiger_crmentity.deleted = 0 ";
+		if ($denorm) {
+			$query .= "	WHERE $this->table_name.mydeleted = 0 ".$usewhere;
+		} else {
+			$query .= "	WHERE vtiger_crmentity.deleted = 0 ".$usewhere;
+		}
 		if($usewhere) {
 			$query .= $usewhere;
 		}
-		$query .= $this->getListViewSecurityParameter($module);
+
+		if ($denorm) {
+			$query.=str_replace('vtiger_crmentity.smownerid', $this->table_name.'.myownerid', $this->getListViewSecurityParameter($module));
+		} else {
+			$query .= $this->getListViewSecurityParameter($module);
+		}
 		return $query;
 	}
 

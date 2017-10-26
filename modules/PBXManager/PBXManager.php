@@ -85,21 +85,36 @@ class PBXManager extends CRMEntity {
 	 * Get list view query.
 	 */
 	function getListQuery($module, $usewhere='') {
-		$query = "SELECT $this->table_name.*, vtiger_crmentity.*";
-		$query .= " FROM $this->table_name";
+		if (isset($module::$denormalized)) {
+			$denorm=$module::$denormalized;
+		}
 
-		$query .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index
-					LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
+    if ($denorm) {
+			$query = "SELECT $this->table_name.*";
+			$query .= " FROM $this->table_name";
+			$query .= "LEFT JOIN vtiger_groups ON vtiger_groups.groupid = $this->base_table.myownerid";
+		} else {
+			$query = "SELECT vtiger_crmentity.*, $this->table_name.*";
+			$query .= " FROM $this->table_name";
+			$query .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index
+						LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
+		}
 
 		// Consider custom table join as well.
 		if(!empty($this->customFieldTable)) {
 			$query .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
 				" = $this->table_name.$this->table_index";
 		}
-		$query .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid ";
+		if ($denorm) {
+			$query .= " LEFT JOIN vtiger_users ON vtiger_users.id = $this->base_table.myownerid ";
+			$query .= "	WHERE $this->base_table.mydeleted = 0";
+			$query.=str_replace('vtiger_crmentity.smownerid', $this->table_name.'.myownerid', $this->getListViewSecurityParameter($module));
+		} else {
+			$query .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid ";
+			$query .= "	WHERE vtiger_crmentity.deleted = 0";
+			$query .= $this->getListViewSecurityParameter($module);
+		}
 
-		$query .= "	WHERE vtiger_crmentity.deleted = 0";
-		$query .= $this->getListViewSecurityParameter($module);
 		return $query;
 	}
 

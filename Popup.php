@@ -379,12 +379,18 @@ if($currentModule == 'Products' && !empty($_REQUEST['record_id']) && ($popuptype
 	$smarty->assign("RECORD_ID", vtlib_purify($_REQUEST['record_id']));
 }
 //Added to fix the issue #2307
+$queryGenerator = new QueryGenerator($currentModule, $current_user);
 $order_by = $focus->getOrderBy();
+if (isset($module::$denormalized) && $module::$denormalized==true) {
+	list($orderdenorm,$check) = $queryGenerator->getDenormalizedFields($order_by);
+	if ($check) {
+		$order_by = $orderdenorm;
+	}
+}
 $sorder = $focus->getSortOrder();
 $listview_header_search=getSearchListHeaderValues($focus,$currentModule,$url_string,$sorder,$order_by);
 $smarty->assign("SEARCHLISTHEADER", $listview_header_search);
 $smarty->assign("ALPHABETICAL", $alphabetical);
-$queryGenerator = new QueryGenerator($currentModule, $current_user);
 $controller = new ListViewController($adb, $current_user, $queryGenerator);
 $fieldnames = $controller->getAdvancedSearchOptionString();
 $criteria = getcriteria_options();
