@@ -217,6 +217,13 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 
 	public function query($q){
 		$mysql_query = $this->wsVTQL2SQL($q,$meta,$queryRelatedModules);
+		if (strpos($mysql_query, 'vtiger_inventoryproductrel')) {
+			$invlines = true;
+			$pdowsid = vtws_getEntityId('Products');
+			$srvwsid = vtws_getEntityId('Services');
+		} else {
+			$invlines = false;
+		}
 		$this->pearDB->startTransaction();
 		$result = $this->pearDB->pquery($mysql_query, array());
 		$error = $this->pearDB->hasFailedTransaction();
@@ -231,12 +238,16 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$output = array();
 		for($i=0; $i<$noofrows; $i++){
 			$row = $this->pearDB->fetchByAssoc($result,$i);
-			$rowcrmid = (isset($row['crmid']) ? $row['crmid'] : '');
+			$rowcrmid = (isset($row['crmid']) ? $row['crmid'] : (isset($row['id']) ? $row['id'] : ''));
 			if(!$meta->hasPermission(EntityMeta::$RETRIEVE,$rowcrmid)){
 				continue;
 			}
 			$newrow = DataTransform::sanitizeDataWithColumn($row,$meta);
 			if (__FQNExtendedQueryIsFQNQuery($q)) { // related query
+				if ($invlines) {
+					$newrow = $row;
+					$newrow['id'] = (getSalesEntityType($newrow['id']) == 'Products' ? $pdowsid : $srvwsid) . 'x' . $newrow['id'];
+				} else {
 				$relflds = array_diff_key($row,$newrow);
 				foreach ($queryRelatedModules as $relmod => $relmeta) {
 					$lrm = strtolower($relmod);
@@ -254,6 +265,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 						$newrelrow[$lrm.$key] = $value;
 					}
 					$newrow = array_merge($newrow,$newrelrow);
+				}
 				}
 			}
 			$output[] = $newrow;
