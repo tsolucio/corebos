@@ -248,7 +248,7 @@ function QuickViewFieldList($module){
 	$query = "select * from vtiger_field where tabid = ? and columnname not like 'imagename' and uitype not in (61, 122) and vtiger_field.presence in (0,2)";
 	$result = $adb->pquery($query,array($tabid));
 	if($adb->num_rows($result)>0){
-		$fieldlist = '<select onchange="getRelatedFieldInfo(this)" class="importBox" id="pick_field" name="pick_field">';
+		$fieldlist = '<select onchange="getRelatedFieldInfo(this)" class="importBox slds-select" id="pick_field" name="pick_field">';
 		$fieldlist.= 	'<option value="" disabled="true" selected>'
 							.$app_strings['LBL_SELECT'].' '. $mod_strings['LBL_FIELD'].'
 						</option>';
