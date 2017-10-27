@@ -5,36 +5,58 @@
 <script type="text/javascript" charset="utf-8">
 	fn.addStylesheet('modules/{$module->name}/resources/style.css');
 </script>
-<!--New workflow popup-->
-<div id="new_workflow_popup" class="layerPopup" style="display:none;">
-	<table width="100%" cellspacing="0" cellpadding="5" border="0" class="layerHeadingULine">
-		<tr>
-			<td width="80%" align="left" class="layerPopupHeading">
-				{$MOD.LBL_CREATE_WORKFLOW}
-				</td>
-			<td width="20%" align="right">
-				<a href="javascript:void(0);" id="new_workflow_popup_close">
-					<img border="0" align="middle" src="{'close.gif'|@vtiger_imageurl:$THEME}"/>
-				</a>
-			</td>
+<!--Create New workflow popup-->
+<div id="new_workflow_popup" class="layerPopup" style="display:none;z-index: 9999;height: 500px!important;">
+	<!-- Create workflow header and close icon -->
+	<table class="slds-table slds-no-row-hover" style="border-bottom: 1px solid #d4d4d4;">
+		<tr class="slds-text-title--header">
+			<!-- Header -->
+			<th scope="col">
+				<div class="slds-truncate moduleName">{$MOD.LBL_CREATE_WORKFLOW}</div>
+			</th>
+			<!-- Close Icon -->
+			<th scope="col" style="padding: .5rem;text-align: right;">
+				<div class="slds-truncate">
+					<a href="javascript:void(0);" id="new_workflow_popup_close">
+						<img border="0" align="middle" src="{'close.gif'|@vtiger_imageurl:$THEME}"/>
+					</a>
+				</div>
+			</th>
 		</tr>
 	</table>
-
+	<!-- Create workflow form and options content -->
 	<form action="index.php" method="post" accept-charset="utf-8" onsubmit="VtigerJS_DialogBox.block();">
 		<div class="popup_content">
-			<table width="100%" cellpadding="0" cellspacing="0" border="0">
-				<tr align="left">
-					<td><input type="radio" name="source" value="from_module" checked="true" class="workflow_creation_mode">
-						{$MOD.LBL_FOR_MODULE}</td>
-					<td><input type="radio" name="source" value="from_template" class="workflow_creation_mode">
-						{$MOD.LBL_FROM_TEMPLATE}</td>
+			<!-- New workflow for module or from template options -->
+			<table class="slds-table slds-no-row-hover slds-table--cell-buffer">
+				<!-- For module and from template options -->
+				<tr>
+					<!-- For module option -->
+					<td class="dvtCellInfo">
+						<span class="slds-radio">
+							<input type="radio" name="source" id="forModule" value="from_module" checked="true" class="workflow_creation_mode"/>
+							<label class="slds-radio__label" for="forModule">
+								<span class="slds-radio--faux" style="margin-right: 0;"></span>
+							</label>
+							<span class="slds-form-element__label">{$MOD.LBL_FOR_MODULE}</span>
+						</span>
+					</td>
+					<!-- From template option -->
+					<td class="dvtCellInfo">
+						<span class="slds-radio">
+							<input type="radio" name="source" id="fromTemplate" value="from_template" class="workflow_creation_mode">
+							<label class="slds-radio__label" for="fromTemplate">
+								<span class="slds-radio--faux" style="margin-right: 0;"></span>
+							</label>
+							<span class="slds-form-element__label">{$MOD.LBL_FROM_TEMPLATE}</span>
+						</span>
+					</td>
 				</tr>
-			</table>
-			<table width="100%" cellpadding="5" cellspacing="0" border="0">
-				<tr align="left">
-					<td width='10%' nowrap="nowrap">{$MOD.LBL_CREATE_WORKFLOW_FOR}</td>
-					<td>
-						<select name="module_name" id="module_list" class="small">
+				<!-- select module to create workflow -->
+				<tr>
+					<td class="dvtCellLabel" width='10%' nowrap="nowrap">{$MOD.LBL_CREATE_WORKFLOW_FOR}</td>
+					<td class="dvtCellInfo">
+						<select name="module_name" id="module_list" class="slds-select">
 							{foreach item=moduleName from=$moduleNames}
 								<option value="{$moduleName}" {if $moduleName eq $listModule}selected="selected"{/if}>
 									{$moduleName|@getTranslatedString:$moduleName}
@@ -43,9 +65,11 @@
 						</select>
 					</td>
 				</tr>
+				<!-- Show when From template is clicked -->
+				<!-- Choose template te create workflow -->
 				<tr align="left" id="template_select_field" style="display:none;">
-					<td>{$MOD.LBL_CHOOSE_A_TEMPLATE}</td>
-					<td>
+					<td class="dvtCellLabel">{$MOD.LBL_CHOOSE_A_TEMPLATE}</td>
+					<td class="dvtCellInfo">
 						<span id="template_list_busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
 						<span id="template_list_foundnone" style='display:none;'><b>{$MOD.LBL_NO_TEMPLATES}</b></span>
 						<select id="template_list" name="template_id" class="small"></select>
@@ -55,12 +79,16 @@
 			<input type="hidden" name="save_type" value="new" id="save_type_new">
 			<input type="hidden" name="module" value="{$module->name}" id="save_module">
 			<input type="hidden" name="action" value="editworkflow" id="save_action">
-			<table width="100%" cellspacing="0" cellpadding="5" border="0" class="layerPopupTransport">
-				<tr><td align="center">
-					<input type="submit" class="crmButton small save" value="{$APP.LBL_CREATE_BUTTON_LABEL}" name="save" id='new_workflow_popup_save'/>
-					<input type="button" class="crmButton small cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL} " name="cancel" id='new_workflow_popup_cancel'/>
-				</td></tr>
+			<!-- Create & Cancel buttons -->
+			<table width="100%" cellspacing="0" cellpadding="5" border="0">
+				<tr>
+					<td align="center" style="padding: 5px;">
+						<input type="submit" class="slds-button slds-button--small slds-button_success" value="{$APP.LBL_CREATE_BUTTON_LABEL}" name="save" id='new_workflow_popup_save'/>
+						<input type="button" class="slds-button slds-button--small slds-button--destructive" value="{$APP.LBL_CANCEL_BUTTON_LABEL} " name="cancel" id='new_workflow_popup_cancel'/>
+					</td>
+				</tr>
 			</table>
+
 		</div>
 	</form>
 </div>

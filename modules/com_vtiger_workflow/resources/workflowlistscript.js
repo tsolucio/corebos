@@ -27,7 +27,7 @@ function workflowlistscript($){
 	function center(el){
 		el.css({position: 'absolute'});
 		el.width("400px");
-		el.height("175px");
+		el.height("250px");
 		placeAtCenter(el.get(0));
 	}
 

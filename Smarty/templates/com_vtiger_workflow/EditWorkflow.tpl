@@ -13,12 +13,15 @@
 <div id="view">
 	{include file='com_vtiger_workflow/ModuleTitle.tpl'}
 	<form name="edit_workflow_form" action="index.php" method="POST" id="edit_workflow_form" onsubmit="VtigerJS_DialogBox.block();">
+		<!-- Workflow Header/Title -->
 		{include file='com_vtiger_workflow/EditWorkflowMeta.tpl'}
-
+		<!-- Summary  -->
 		{include file='com_vtiger_workflow/EditWorkflowBasicInfo.tpl'}
 		<br>
+		<!-- When to run Workflow -->
 		{include file='com_vtiger_workflow/EditWorkflowTriggerTypes.tpl'}
 		<br>
+		<!--  -->
 		{include file='com_vtiger_workflow/ListConditions.tpl' showreeval='false'}
 	</form>
 

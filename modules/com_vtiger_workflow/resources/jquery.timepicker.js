@@ -67,7 +67,7 @@
 			// build the new DOM objects
 			var output = '';
 
-			output += '<select id="h_' + i + '" class="h timepicker">';
+			output += '<select id="h_' + i + '" class="h timepicker slds-select" style="width:30%">';
 			$.each(hrs, function(hr){
 				output += '<option value="' + hrs[hr] + '"';
 							 if(parseInt(hrs[hr], 10) == h) output += ' selected';
@@ -75,7 +75,7 @@
 			});
 			output += '</select>';
 
-			output += '<select id="m_' + i + '" class="m timepicker">';
+			output += '<select id="m_' + i + '" class="m timepicker slds-select" style="width:30%">';
 			$.each(mins, function(mn){
 				output += '<option value="' + mins[mn] + '"';
 				if(parseInt(mins[mn], 10) == m) output += ' selected';
@@ -83,7 +83,7 @@
 			});
 			output += '</select>';
 
-			output += '<select id="p_' + i + '" class="p timepicker">';
+			output += '<select id="p_' + i + '" class="p timepicker slds-select" style="width:30%">';
 			$.each(ap, function(pp){
 				output += '<option value="' + ap[pp] + '"';
 				if(ap[pp] == p) output += ' selected';

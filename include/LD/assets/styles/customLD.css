@@ -1528,3 +1528,21 @@ tr td.action-block-mailManager {
 .layout-editor-table img:hover {
     opacity: .7;
 }
+/*  ===== EditWorkflowTriggerTypes.tpl ===== */
+.wfslabel {
+    margin:0!important;
+}
+
+#scheduleBox .slds-select,
+#scheduleBox .slds-input {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.weekDays-table td {
+    padding: 0 .5rem 0 0;
+}
+
+.checkbox-inputs {
+    padding: 0!important;
+}
