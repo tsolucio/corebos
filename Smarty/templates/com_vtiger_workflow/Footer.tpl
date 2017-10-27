@@ -1,9 +1,7 @@
-</div>
-</td>
-        <td valign="top"><img src="themes/images/showPanelTopRight.gif"/></td>
-   </tr>
+			</td></tr></table><!-- close table from setMenu -->
+			</td></tr></table><!-- close table from setMenu -->
 
-</table>
-</table>
-
+			</div>
+		</td>
+	</tr>
 </table>
