@@ -204,6 +204,7 @@ $app_strings = array(
 	'Photo2Document' => 'Photo to Document',
 	'Snap Photo' => 'Snap Photo',
 	'Clear Photo' => 'Clear Photo',
+	'DocumentCreatedRelated' => 'Document added and related',
 	'Export' => 'Exportál',
 	'Import' => 'Importál',
 	'Merge' => 'Összefűz',

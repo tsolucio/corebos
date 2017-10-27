@@ -26,16 +26,13 @@ for($l=0; $l<$num_rows; $l++)
 	$roleid = $adb->query_result($hr_res,$l,'roleid');
 	$parent = $adb->query_result($hr_res,$l,'parentrole');
 	$temp_list = explode('::',$parent);
-	$size = sizeof($temp_list);
+	$size = count($temp_list);
 	$i=0;
 	$k= Array();
 	$y=$hrarray;
-	if(sizeof($hrarray) == 0)
-	{
+	if (count($hrarray) == 0) {
 		$hrarray[$temp_list[0]]= Array();
-	}
-	else
-	{
+	} else {
 		while($i<$size-1)
 		{
 			$y=$y[$temp_list[$i]];
@@ -94,8 +91,7 @@ function indent($hrarray,$roleout,$role_det)
 		$roleout .= '<ul class="slds-tree" role="tree" id="'.$roleid.'">';
 		$roleout .= '<li role="treeitem" aria-level="'.$roledepth.'" aria-expanded="true"><div class="slds-tree__item"><table border="0" cellpadding="0" cellspacing="0" onMouseOver="fnVisible(\'layer_'.$roleid.'\')" onMouseOut="fnInVisible(\'layer_'.$roleid.'\')">';
 		$roleout.= '<tr><td nowrap>';
-		if(sizeof($value) >0 && $roledepth != 0)
-		{
+		if (count($value) >0 && $roledepth != 0) {
 			$roleout.='<b style="font-weight:bold;margin:0;padding:0;cursor:pointer;">';
 			$roleout .= '<img src="' . vtiger_imageurl('minus.gif', $theme) . '" id="img_'.$roleid.'" border="0" alt="'.$app_strings['LBL_EXPAND_COLLAPSE'].'" title="'.$app_strings['LBL_EXPAND_COLLAPSE'].'" align="absmiddle" onClick="showhide(\''.$roleid_arr.'\',\'img_'.$roleid.'\')" style="cursor:pointer;">';
 		}
@@ -124,13 +120,11 @@ function indent($hrarray,$roleout,$role_det)
 //			$roleout .=	'&nbsp;<a href="index.php?module=Users&action=createrole&parenttab=Settings&parent='.$roleid.'">Add</a> | <a href="index.php?module=Users&action=createrole&roleid='.$roleid.'&parenttab=Settings&mode=edit">Edit</a> | <a href="index.php?module=Users&action=RoleDeleteStep1&roleid='.$roleid.'&parenttab=Settings">Delete</a> | <a href="index.php?module=Users&action=RoleDetailView&parenttab=Settings&roleid='.$roleid.'">View</a>';
 		}
 		$roleout .= '</li>';
-		if(sizeof($value) > 0 )
-		{
+		if (count($value) > 0 ) {
 			$roleout = indent($value,$roleout,$role_det);
 		}
 
 		$roleout .= '</ul>';
-
 	}
 
 	return $roleout;

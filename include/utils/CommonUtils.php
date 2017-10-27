@@ -1845,7 +1845,7 @@ function getQuickCreateModules() {
 			$return_qcmodule[] = $tabname;
 		}
 	}
-	if (sizeof($return_qcmodule) > 0) {
+	if (count($return_qcmodule) > 0) {
 		$return_qcmodule = array_chunk($return_qcmodule, 2);
 	}
 

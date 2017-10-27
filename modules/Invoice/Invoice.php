@@ -267,7 +267,7 @@ class Invoice extends CRMEntity {
 		$matrix->setDependency('vtiger_crmentityInvoice', array('vtiger_usersInvoice', 'vtiger_groupsInvoice', 'vtiger_lastModifiedByInvoice'));
 		$matrix->setDependency('vtiger_inventoryproductrelInvoice', array('vtiger_productsInvoice', 'vtiger_serviceInvoice'));
 
-		if (!$queryPlanner->requireTable('vtiger_invoice', $matrix) && !$queryplanner->requireTable('vtiger_invoicecf',$matrix)) {
+		if (!$queryPlanner->requireTable('vtiger_invoice', $matrix) && !$queryPlanner->requireTable('vtiger_invoicecf',$matrix)) {
 			return '';
 		}
 		$matrix->setDependency('vtiger_invoice',array('vtiger_crmentityInvoice', "vtiger_currency_info$secmodule",
@@ -538,16 +538,18 @@ class Invoice extends CRMEntity {
 		$log->debug("Exiting create_export_query method ...");
 		return $query;
 	}
+
 	/**
 	 * Handle saving related module information.
 	 * NOTE: This function has been added to CRMEntity (base class).
 	 * You can override the behavior by re-defining it here.
 	 */
-	function save_related_module($module, $crmid, $with_module, $with_crmid) {
+	public function save_related_module($module, $crmid, $with_module, $with_crmid) {
 		global $adb;
-		if($module == 'Invoice' && $with_module == 'Assets')
-			$adb->pquery("UPDATE vtiger_assets SET invoiceid = ? WHERE assetsid = ?",array($crmid,$with_crmid));
+		if ($module == 'Invoice' && $with_module == 'Assets') {
+			$adb->pquery('UPDATE vtiger_assets SET invoiceid = ? WHERE assetsid = ?', array($crmid, $with_crmid));
+		}
+		parent::save_related_module($module, $crmid, $with_module, $with_crmid);
 	}
-
 }
 ?>

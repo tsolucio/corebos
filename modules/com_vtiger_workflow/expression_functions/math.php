@@ -9,7 +9,7 @@
  ******************************************************************************/
 
 function __vt_add($arr) {
-	if (sizeof($arr)==1) {
+	if (count($arr) == 1) {
 		return $arr[0];
 	} else {
 		return $arr[0]+$arr[1];
@@ -17,7 +17,7 @@ function __vt_add($arr) {
 }
 
 function __vt_sub($arr) {
-	if (sizeof($arr)==1) {
+	if (count($arr) == 1) {
 		return -$arr[0];
 	} else {
 		return $arr[0]-$arr[1];
@@ -25,12 +25,16 @@ function __vt_sub($arr) {
 }
 
 function __vt_mul($arr) {
-	if (sizeof($arr)==1) return 0;
+	if (count($arr) == 1) {
+		return 0;
+	}
 	return $arr[0]*$arr[1];
 }
 
 function __vt_div($arr) {
-	if (sizeof($arr)==1 or empty($arr[1])) return 0;
+	if (count($arr) == 1 || empty($arr[1])) {
+		return 0;
+	}
 	return $arr[0]/$arr[1];
 }
 
@@ -61,7 +65,9 @@ function __vt_floor($num) {
 }
 
 function __cb_modulo($arr) {
-	if (sizeof($arr)==1 or empty($arr[1])) return 0;
+	if (count($arr) == 1 || empty($arr[1])) {
+		return 0;
+	}
 	return $arr[0] % $arr[1];
 }
 

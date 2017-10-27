@@ -921,7 +921,7 @@ class QueryGenerator {
 						$fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' '.$valueSql;
 					}
 				}
-				if(($conditionInfo['operator'] == 'n' || $conditionInfo['operator'] == 'k') && ($field->getFieldDataType() == 'owner' || $field->getFieldDataType() == 'picklist') ) {
+				if ($conditionInfo['operator'] == 'n' || $conditionInfo['operator'] == 'k') {
 					$fieldGlue = ' AND';
 				} else {
 					$fieldGlue = ' OR';
@@ -1028,26 +1028,18 @@ class QueryGenerator {
 	private function getConditionValue($value, $operator, $field, $referenceFieldName='') {
 		$operator = strtolower($operator);
 		$db = PearDatabase::getInstance();
-		$noncommaSeparatedFieldTypes = array('currency','percentage','double','integer','number');
+		$noncommaSeparatedFieldTypes = array('currency','percentage','double','number');
 
-		if(in_array($field->getFieldDataType(), $noncommaSeparatedFieldTypes)) {
-			if(is_array($value)) {
-				$valueArray = $value;
-			} else {
-				$valueArray = array($value);
-			}
-			// if ($field->getFieldDataType() == 'multipicklist' && in_array($operator, array('e', 'n'))) {
-				// $valueArray = getCombinations($valueArray);
-				// foreach ($valueArray as $key => $value) {
-					// $valueArray[$key] = ltrim($value, ' |##| ');
-				// }
+		// if ($field->getFieldDataType() == 'multipicklist' && in_array($operator, array('e', 'n'))) {
+			// $valueArray = getCombinations($valueArray);
+			// foreach ($valueArray as $key => $value) {
+				// $valueArray[$key] = ltrim($value, ' |##| ');
 			// }
-		} elseif (is_string($value) and $operator!='e') {
+		// } else
+		if (is_string($value) && $operator != 'e' && !in_array($field->getFieldDataType(), $noncommaSeparatedFieldTypes)) {
 			$valueArray = explode(',' , $value);
-		} elseif(is_array($value)) {
-			$valueArray = $value;
 		} else {
-			$valueArray = array($value);
+			$valueArray = (array)$value;
 		}
 		$sql = array();
 		if ($operator=='exists') {

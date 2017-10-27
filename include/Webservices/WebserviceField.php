@@ -458,7 +458,8 @@ class WebserviceField{
 		}else{
 			$user = VTWS_PreserveGlobal::getGlobal('current_user');
 			$details = getPickListValues($fieldName,$user->roleid);
-			for($i=0;$i<sizeof($details);++$i){
+			$numdetails = count($details);
+			for ($i=0; $i < $numdetails; ++$i) {
 				$elem = array();
 				$picklistValue = decode_html($details[$i]);
 				$trans_str = (!empty($temp_mod_strings[$picklistValue])) ? $temp_mod_strings[$picklistValue] : ((!empty($app_strings[$picklistValue])) ? $app_strings[$picklistValue] : $picklistValue);

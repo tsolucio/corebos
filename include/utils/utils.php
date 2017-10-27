@@ -3574,7 +3574,7 @@ function getSecParameterforMerge($module) {
 					OR (vtiger_crmentity.smownerid in (0)
 					AND (";
 
-			if(sizeof($current_user_groups) > 0) {
+			if (count($current_user_groups) > 0) {
 				$sec_parameter .= " vtiger_groups.groupname IN (
 								SELECT groupname
 								FROM vtiger_groups

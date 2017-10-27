@@ -80,7 +80,7 @@ class Vtiger_Unzip {
 		if($includeExclude === false) $includeExclude = Array();
 
 		$lista = $this->getList();
-		if(sizeof($lista)) {
+		if (count($lista)) {
 			foreach($lista as $fileName=>$trash){
 			// Should the file be ignored?
 			if(isset($includeExclude['include']) && $includeExclude['include'] && !$this->__checkPathInArray($fileName, $includeExclude['include'])) {
@@ -130,7 +130,7 @@ class Vtiger_Unzip {
 	}
 
 	public function getList(){
-		if(sizeof(self::$compressedList)){
+		if (count(self::$compressedList)) {
 			return self::$compressedList;
 		}
 		for ($f=0; $f<$this->zipa->numFiles;$f++) {
@@ -152,7 +152,7 @@ class Vtiger_Unzip {
 			die(get_class($this).":: You called 'each' method, but failed to provide a Callback as argument. Usage: \$zip->each(function(\$filename, \$fileinfo) use (\$zip){ ... \$zip->unzip(\$filename, 'uncompress/\$filename'); }).");
 
 		$lista = $this->getList();
-		if(sizeof($lista)) foreach($lista as $fileName=>$fileInfo){
+		if (count($lista)) foreach($lista as $fileName=>$fileInfo) {
 			if(false === call_user_func($EachCallback, $fileName, $fileInfo)){
 				return false;
 			}
@@ -161,7 +161,7 @@ class Vtiger_Unzip {
 	}
 
 	public function unzip($compressedFileName, $targetFileName=false, $applyChmod=0664) {
-		if(!sizeof(self::$compressedList)){
+		if (!count(self::$compressedList)) {
 			$this->getList();
 		}
 

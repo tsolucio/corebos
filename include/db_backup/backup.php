@@ -276,8 +276,8 @@ class createZip {
             $data.
             $controlDirectory.
             $this -> endOfCentralDirectory.
-            pack("v", sizeof($this -> centralDirectory)).
-            pack("v", sizeof($this -> centralDirectory)).
+            pack("v", count($this -> centralDirectory)).
+            pack("v", count($this -> centralDirectory)).
             pack("V", strlen($controlDirectory)).
             pack("V", strlen($data)).
             "\x00\x00";
