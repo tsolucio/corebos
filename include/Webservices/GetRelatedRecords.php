@@ -271,7 +271,12 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 			}
 			// special product relation with Q/SO/I/PO
 			if ($relatedModule == 'Products' and in_array($module,array('Invoice','Quotes','SalesOrder','PurchaseOrder'))) {
-				$query = 'select productid as id,sequence_no,quantity,listprice,discount_percent,discount_amount,comment,description,tax1,tax2,tax3 FROM vtiger_inventoryproductrel where id='.$crmid;
+				$qparams = ' ' . $queryParameters['columns'] . ' ';
+				$qparams = str_replace(' id ', ' productid as id ', $qparams);
+				$qparams = str_replace(',id ', ',productid as id ', $qparams);
+				$qparams = str_replace(' id,', ' productid as id,', $qparams);
+				$qparams = str_replace(',id,', ',productid as id,', $qparams);
+				$query = 'select ' . $qparams . ' FROM vtiger_inventoryproductrel where id=' . $crmid;
 			} else {
 			$relationResult = $adb->pquery(
 				"SELECT * FROM vtiger_relatedlists WHERE tabid=? AND related_tabid=? $relation_criteria",
