@@ -602,7 +602,7 @@ function __cb_getGEODistanceFromAssignUser2ContactShipping($arr) {
 }
 
 function __cb_getGEODistanceFromCoordinates($arr) {
-	if (sizeof($arr)==2) {
+	if (count($arr) == 2) {
 		$from = $arr[0];
 		$to = $arr[1];
 	} else {

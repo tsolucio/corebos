@@ -267,7 +267,7 @@ class Invoice extends CRMEntity {
 		$matrix->setDependency('vtiger_crmentityInvoice', array('vtiger_usersInvoice', 'vtiger_groupsInvoice', 'vtiger_lastModifiedByInvoice'));
 		$matrix->setDependency('vtiger_inventoryproductrelInvoice', array('vtiger_productsInvoice', 'vtiger_serviceInvoice'));
 
-		if (!$queryPlanner->requireTable('vtiger_invoice', $matrix) && !$queryplanner->requireTable('vtiger_invoicecf',$matrix)) {
+		if (!$queryPlanner->requireTable('vtiger_invoice', $matrix) && !$queryPlanner->requireTable('vtiger_invoicecf',$matrix)) {
 			return '';
 		}
 		$matrix->setDependency('vtiger_invoice',array('vtiger_crmentityInvoice', "vtiger_currency_info$secmodule",

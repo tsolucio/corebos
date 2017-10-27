@@ -114,7 +114,7 @@ if($_POST["command"] == "check_mbox") {
 	$adb->println($search);
 	
 	$data = imap_fetch_overview($MailBox->mbox,implode(',',$search));
-        $num=sizeof($data);
+        $num = count($data);
 
 	$adb->println("fetched data using imap_fetch_overview ==>");
 	$adb->println($data);

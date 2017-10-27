@@ -46,7 +46,7 @@ require_once('Smarty_setup.php');
 
 function webforms_getUserData($ownerId, $describeFields,$source){
 	$userData = Array();
-	$len = sizeof($describeFields);
+	$len = count($describeFields);
 	for($i=0;$i<$len;++$i){
 		$fieldName = $describeFields[$i]['name'];
 		// Handle meta fields right away
@@ -139,14 +139,12 @@ function webforms_init(){
 		if($active === false){
 			webforms_returnError(array('code'=>"WEBFORMS_DISABLED",'message'=>'Webforms module is disabled'),'Webforms');
 		}
-		
 		if($enableAppKeyValidation ==true){
 			if($application_unique_key !== $_REQUEST['appKey']){
 				webforms_returnError(array('code'=>"WEBFORMS_INVALID_APPKEY",'message'=>'AppKey provided is invalid'),null);
 				return ;
 			}
 		}
-		
 		$module = $_REQUEST['moduleName'];
 		$challengeResult = vtws_getchallenge($defaultUserName);
 		$challengeToken = $challengeResult['token'];
@@ -161,9 +159,8 @@ function webforms_init(){
 			webforms_returnError(array('code'=>"WEBFORMS_INVALID_DATA",'message'=>'data provided is invalid'),$module);
 			return ;
 		}
-		
-		if(sizeof($userData)<1){
-			webforms_returnError(array('code'=>"WEBFORMS_INVALID_DATA",'message'=>'data provided is invalid'),$module);
+		if (count($userData)<1) {
+			webforms_returnError(array('code'=>"WEBFORMS_INVALID_DATA", 'message'=>'data provided is invalid'), $module);
 			return ;
 		}
 		$createResult = vtws_create($module,$userData,$user);

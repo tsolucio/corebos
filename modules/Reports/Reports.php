@@ -418,7 +418,7 @@ class Reports extends CRMEntity{
 					if ($minfo['adduserinfo']==1) {
 						$report_details['moreinfo'] = rtrim($report_details['moreinfo'],'/');
 						$report_details['moreinfo'] .= strpos($report_details['moreinfo'], '?') ? '&' : '?';
-						$report_details['moreinfo'] .= 'usrid='.$current_user->id.'&role='.$current_user_parent_role_seq.((isset($current_user_groups) && sizeof($current_user_groups)) > 0 ? '&grpid='.implode(",", $current_user_groups) : '');
+						$report_details['moreinfo'] .= 'usrid='.$current_user->id.'&role='.$current_user_parent_role_seq.((isset($current_user_groups) && count($current_user_groups)) > 0 ? '&grpid='.implode(",", $current_user_groups) : '');
 					}
 				} else {
 					$report_details['moreinfo'] = $report['moreinfo'];
@@ -1215,8 +1215,7 @@ function getEscapedColumns($selectedfields) {
 				list($tablename,$colname,$module_field,$fieldname,$single) = explode(":",$fieldcolname);
 				require('user_privileges/user_privileges_'.$current_user->id.'.php');
 				list($module,$field) = explode("_",$module_field);
-				if(sizeof($permitted_fields) == 0 && $is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1)
-				{
+				if (count($permitted_fields) == 0 && $is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1) {
 					$permitted_fields = $this->getaccesfield($module);
 				}
 				$fieldlabel = trim(str_replace($module," ",$module_field));

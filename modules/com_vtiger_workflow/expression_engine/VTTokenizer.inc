@@ -72,9 +72,9 @@ class VTExpressionTokenizer{
 	function nextToken(){
 		$matches = $this->matches;
 		$idx = $this->idx;
-		if($idx == sizeof($matches)){
+		if ($idx == count($matches)) {
 			return $this->EOF;
-		}else{
+		} else {
 			$match = $matches[$idx];
 			$this->idx = $idx + 1;
 			$i=1;

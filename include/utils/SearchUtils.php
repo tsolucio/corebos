@@ -392,8 +392,7 @@ function BasicSearch($module,$search_field,$search_string,$input=''){
 				{
 					// Get all the keys for the for the Picklist value
 					$mod_keys = array_keys($mod_strings, $search_string);
-					if(sizeof($mod_keys) >= 1)
-					{
+					if (count($mod_keys) >= 1) {
 						// Iterate on the keys, to get the first key which doesn't start with LBL_      (assuming it is not used in PickList)
 						foreach($mod_keys as $mod_idx=>$mod_key)
 						{

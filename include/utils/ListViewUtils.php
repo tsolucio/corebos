@@ -1301,7 +1301,8 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		$parent_id = $temp_val;
 		if (!empty($parent_id)) {
 			$values=explode(' |##| ',$parent_id);
-			for ($fvalues=0; $fvalues<sizeof($values); $fvalues++) {
+			$numvals = count($values);
+			for ($fvalues=0; $fvalues < $numvals; $fvalues++) {
 				$srchmod =  getSalesEntityType($values[$fvalues]);
 				$id = $values[$fvalues];
 				$displayValueArray = getEntityName($srchmod, $id);
