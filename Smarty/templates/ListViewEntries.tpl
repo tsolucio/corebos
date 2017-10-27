@@ -237,68 +237,6 @@
 				</div>
 				<!-- =====================END LIGHITNG DESGIN LIST VIEW =========== -->
 
-				<!-- ===========popover============== -->
-				<section aria-labelledby="panel-heading-id" class="small slds-popover slds-popover_panel slds-nubbin_left-top" role="dialog" style="font-size: .8125rem; line-height: 1.5; color: #16325c; display: none;">
-					<button class="slds-button slds-button_icon slds-button_icon-small slds-float_right slds-popover__close" title="Close dialog">
-						<svg class="slds-button__icon" aria-hidden="true">
-							<use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
-						</svg>
-						<span class="slds-assistive-text">Close dialog</span>
-					</button>
-					<div class="slds-popover__header">
-							<header class="slds-media slds-media_center slds-m-bottom_small">
-								<span class="slds-icon_container slds-icon-standard-account slds-media__figure">
-									<svg class="slds-icon slds-icon_small" aria-hidden="true">
-									<use xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#account"></use>
-									</svg>
-								</span>
-								<div class="slds-media__body">
-									<h2 class="slds-text-heading_medium slds-hyphenate" id="panel-heading-id">
-										<a href="javascript:void(0);">Tesla Motors</a>
-									</h2>
-								</div>
-							</header>
-						<div class="slds-grid slds-wrap slds-grid_pull-padded">
-							<div class="slds-p-horizontal_small slds-size_1-of-2 slds-p-bottom_x-small">
-								<dl>
-									<dt>
-										<p class="slds-text-title_caps slds-truncate" style="margin: 0;" title="Billing Address">Billing Address</p>
-									</dt>
-									<dd>
-										<p class="slds-truncate" style="margin: 0;" title="3500 Deer Creek Rd.">3500 Deer Creek Rd.</p>
-										<p class="slds-truncate" style="margin: 0;" title="Palo Alto, CA 94304">Palo Alto, CA 94304</p>
-									</dd>
-								</dl>
-							</div>
-							<div class="slds-p-horizontal_small slds-size_1-of-2 slds-p-bottom_x-small">
-								<dl>
-									<dt>
-										<p class="slds-text-title_caps slds-truncate" title="Phone">Phone</p>
-									</dt>
-									<dd><a href="javascript:void(0);">212-345-3485</a></dd>
-								</dl>
-							</div>
-							<div class="slds-p-horizontal_small slds-size_1-of-2 slds-p-bottom_x-small">
-								<dl>
-									<dt>
-										<p class="slds-text-title_caps slds-truncate" title="Website">Website</p>
-									</dt>
-									<dd><a href="javascript:void(0);">teslamotors.com</a></dd>
-								</dl>
-							</div>
-							<div class="slds-p-horizontal_small slds-size_1-of-2 slds-p-bottom_x-small">
-								<dl>
-									<dt>
-										<p class="slds-text-title_caps slds-truncate" title="Account Owner">Account Owner</p>
-									</dt>
-									<dd><a href="javascript:void(0);">Jeff Maguire</a></dd>
-								</dl>
-							</div>
-						</div>
-					</div>
-				</section>
-				<!-- ===========END popover============== -->
-
 				<table border=0 cellspacing=0 cellpadding=2 width=100%>
 					<tr>
 						<td style="padding-right:20px" nowrap>{include file='ListViewButtons.tpl'}</td>
