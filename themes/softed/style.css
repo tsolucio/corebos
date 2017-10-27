@@ -2451,8 +2451,8 @@ a.drop_downnew_parent{
 }
 .tooltipClass{
 	padding: 5px;
-	border: 2px solid #b69559;
-	background-color: #e8e4ee;
+	/*border: 2px solid #b69559;
+	background-color: #e8e4ee;*/
 }
 
 .thickborder{

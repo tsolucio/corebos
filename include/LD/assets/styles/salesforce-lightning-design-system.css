@@ -4989,7 +4989,7 @@ slds-input-has-icon_left .slds-input__icon, .slds-input-has-icon--left .slds-inp
     width: 20rem;
     min-height: 2rem;
     z-index: 6000;
-    background-color: #fdfdfd;
+    background-color: #f7f9fb;
     display: inline-block;
     box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16);
     border: 1px solid #d8dde6;

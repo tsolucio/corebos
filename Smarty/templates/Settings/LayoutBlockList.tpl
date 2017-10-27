@@ -20,7 +20,9 @@ function check(){
 	}
 	return true;
 }
-{/literal}</script>
+{/literal}
+</script>
+
 <script>
 
 function getCustomFieldList(customField)
@@ -54,6 +56,7 @@ function changeShowstatus(tabid,blockid,modulename)
 		method:"POST",
 		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=changeOrder&fld_module='+modulename+'&parenttab=Settings&what_to_do='+display_status+'&tabid='+tabid+'&blockid='+blockid+'&ajax=true'
 	{rdelim}).done(function(response) {ldelim}
+		console.log('test: ' + response);
 		document.getElementById("cfList").innerHTML=response;
 	{rdelim});
 {rdelim}
@@ -337,16 +340,16 @@ function callRelatedList(module){
 }
 
 function showProperties(field,man,pres,quickc,massed){
-	var str='<table class="small" cellpadding="2" cellspacing="0" border="0"><tr><th>'+field+'</th></tr>';
+	var str='<section aria-labelledby="panel-heading-id" class="small slds-popover slds-popover_panel slds-nubbin_left-top" role="dialog" style="font-size: .8125rem; width:400px; line-height: 1.5; color: #16325c;"><div class="slds-popover__header"><header class="slds-media slds-media_center slds-m-bottom_small"><div class="slds-media__body"><h2 class="slds-text-heading_medium slds-hyphenate" id="panel-heading-id">'+field+'</h2></div></header><div class="slds-grid slds-wrap slds-grid_pull-padded">';
 	if (man == 0 || man == 2)
-		str = str+'<tr><td>'+alert_arr.FIELD_IS_MANDATORY+'</td></tr>';
+		str = str+'<div class="slds-p-horizontal_small slds-size_1-of-2 slds-p-bottom_x-small"><dl><dd>'+alert_arr.FIELD_IS_MANDATORY+'</dd></dl></div>';
 	if (pres == 0 || pres == 2)
-		str = str+'<tr><td>'+alert_arr.FIELD_IS_ACTIVE+'</td></tr>';
+		str = str+'<div class="slds-p-horizontal_small slds-size_1-of-2 slds-p-bottom_x-small"><dl><dd>'+alert_arr.FIELD_IS_ACTIVE+'</dd></dl></div>';
 	if (quickc == 0 || quickc == 2)
-		str = str+'<tr><td>'+alert_arr.FIELD_IN_QCREATE+'</td></tr>';
+		str = str+'<div class="slds-p-horizontal_small slds-size_1-of-2 slds-p-bottom_x-small"><dl><dd>'+alert_arr.FIELD_IN_QCREATE+'</dd></dl></div>';
 	if(massed == 0 || massed == 1)
-		str = str+'<tr><td>'+alert_arr.FIELD_IS_MASSEDITABLE+'</td></tr>';
-	str = str + '</table>';
+		str = str+'<div class="slds-p-horizontal_small slds-size_1-of-2 slds-p-bottom_x-small"><dl><dd>'+alert_arr.FIELD_IS_MASSEDITABLE+'</dd></dl></div>';
+	str = str + '</div></div></section>';
 	return str;
 }
 
@@ -354,48 +357,74 @@ var gselected_fieldtype = '';
 {/literal}
 </script>
 <div id = "layoutblock">
-<div id="relatedlistdiv" style="display:none; position: absolute; width: 225px; left: 300px; top: 300px;"></div>
-<br>
+	<div id="relatedlistdiv" style="display:none; position: absolute; width: 400px; left:900px;"></div>
+	{assign var=entries value=$CFENTRIES}
+	{if $CFENTRIES.0.tabpresence eq '0' }
 
-{assign var=entries value=$CFENTRIES}
-{if $CFENTRIES.0.tabpresence eq '0' }
-<table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
-	<tr>
-		<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-		<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
-		<br>
-			<table class="settingsSelUITopLine" border="0" cellpadding="5" cellspacing="0" width="100%">
-				<tr>
-					<td rowspan="2" valign="top" width="50"><img src="{'orgshar.gif'|@vtiger_imageurl:$THEME}" alt="Users" title="Users" border="0" height="48" width="48"></td>
-					<td class="heading2" valign="bottom">
-						<b><a href="index.php?module=Settings&action=ModuleManager&parenttab=Settings">{$MOD.VTLIB_LBL_MODULE_MANAGER}</a>
-						&gt;&nbsp;<a href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$MODULE}&parenttab=Settings">{$MODULE|@getTranslatedString:$MODULE}</a> &gt;
-						{$MOD.LBL_LAYOUT_EDITOR}</b>
-					</td>
-				</tr>
-				<tr>
-					<td class="small" valign="top">{$MOD.LBL_LAYOUT_EDITOR_DESCRIPTION}
-					</td>
-					<td align="right" width="15%"><input type="button" class="crmButton create small" onclick="callRelatedList('{$CFENTRIES.0.module}');fnvshNrm('relatedlistdiv');posLay(this,'relatedlistdiv');" alt="{$MOD.ARRANGE_RELATEDLIST}" title="{$MOD.ARRANGE_RELATEDLIST}" value="{$MOD.ARRANGE_RELATEDLIST}"/>
-					</td>
-					<td align="right" width="8%"><input type="button" class="crmButton create small" onclick="fnvshobj(this,'addblock');" alt="{$MOD.ADD_BLOCK}" title="{$MOD.ADD_BLOCK}" value="{$MOD.ADD_BLOCK}"/>
-					</td>
-					&nbsp; <img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" id="vtbusy_info" style="display:none;position:absolute;top:180px;right:100px;" border="0" />
-				</tr>
-			</table>
-			<div id="cfList">
-			{include file="Settings/LayoutBlockEntries.tpl"}
-			</div>
-			<table border="0" cellpadding="5" cellspacing="0" width="100%">
-				<tr>
-					<td class="small" align="right" nowrap="nowrap"><a href="#top">{$MOD.LBL_SCROLL}</a></td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-</table>
-<!-- End of Display for field -->
-{else}
-	{include file='modules/Vtiger/OperationNotPermitted.tpl'}
-{/if}
+		<table border="0" align="center" cellpadding="5" cellspacing="0" width="98%">
+			<tr>
+				<td>
+					<table class="slds-table slds-no-row-hover slds-table--cell-buffer slds-table-moz" style="background-color: #f7f9fb;">
+						<tr class="slds-text-title--caps">
+							<td style="padding: 0;">
+								<div class="slds-page-header s1FixedFullWidth s1FixedTop forceHighlightsStencilSettings" style="height: 70px;">
+									<div class="slds-grid primaryFieldRow" style="transform: translate3d(0, -8.65823px, 0);">
+										<div class="slds-grid slds-col slds-has-flexi-truncate slds-media--center">
+											<!-- Image -->
+											<div class="slds-media slds-no-space" style="transform: scale3d(0.864715, 0.864715, 1) translate3d(4.32911px, 2.16456px, 0);">
+												<div class="slds-media__figure slds-icon forceEntityIcon">
+													<span class="photoContainer forceSocialPhoto">
+														<div class="small roundedSquare forceEntityIcon">
+															<span class="uiImage">
+																<img src="{'orgshar.gif'|@vtiger_imageurl:$THEME}" alt="Users" title="Users"/>
+															</span>
+														</div>
+													</span>
+												</div>
+											</div>
+											<!-- Title and help text -->
+											<div class="slds-media__body">
+												<h1 class="slds-page-header__title slds-m-right--small slds-truncate slds-align-middle">
+													<span class="uiOutputText">
+														<b>
+														<a href="index.php?module=Settings&action=ModuleManager&parenttab=Settings">{$MOD.VTLIB_LBL_MODULE_MANAGER}</a>
+														&nbsp;&gt;&nbsp;
+														<a href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$MODULE}&parenttab=Settings">{$MODULE|@getTranslatedString:$MODULE}</a>
+														&nbsp;&gt;&nbsp;
+														{$MOD.LBL_LAYOUT_EDITOR}</b>
+													</span>
+													<span class="small">{$MOD.LBL_LAYOUT_EDITOR_DESCRIPTION}</span>
+												</h1>
+											</div>
+											<!-- Arrange Related List & Add Block buttons -->
+											<div class="slds-no-flex">
+												<div class="actionsContainer">
+													<input type="button" class="slds-button slds-button--small slds-button--brand" onclick="callRelatedList('{$CFENTRIES.0.module}');fnvshNrm('relatedlistdiv');posLay(this,'relatedlistdiv');" alt="{$MOD.ARRANGE_RELATEDLIST}" title="{$MOD.ARRANGE_RELATEDLIST}" value="{$MOD.ARRANGE_RELATEDLIST}"/>
+													<input type="button" class="slds-button slds-button--small slds-button_success" onclick="fnvshobj(this,'addblock');" alt="{$MOD.ADD_BLOCK}" title="{$MOD.ADD_BLOCK}" value="{$MOD.ADD_BLOCK}"/>
+													&nbsp; <img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" id="vtbusy_info" style="display:none;position:absolute;top:180px;right:100px;" border="0" />
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</table>
+					<br/>
+
+					<div id="cfList">
+					{include file="Settings/LayoutBlockEntries.tpl"}
+					</div>
+					<table border="0" cellpadding="5" cellspacing="0" width="100%">
+						<tr>
+							<td class="small" align="right" nowrap="nowrap"><a href="#top">{$MOD.LBL_SCROLL}</a></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+
+	{else}
+		{include file='modules/Vtiger/OperationNotPermitted.tpl'}
+	{/if}
 </div>

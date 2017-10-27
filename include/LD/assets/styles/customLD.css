@@ -1518,3 +1518,13 @@ tr td.action-block-mailManager {
 .addBlockPopup {
     z-index: 9999;
 }
+
+.layout-editor-table img {
+    width: 20px;
+    cursor :pointer;
+    opacity: 1;
+}
+
+.layout-editor-table img:hover {
+    opacity: .7;
+}
