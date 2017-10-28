@@ -20,6 +20,7 @@ $app_strings = array (
   'LBL_SHOW' => 'Mostra :',
   'today' => 'Oggi',
   'all' => 'Tutti',
+  'Generate Document'=>'Merge Document',
   'LBL_UPCOMING_EVENTS' => 'Prossime attivit&agrave;',
   'LBL_PENDING_EVENTS' => 'Attivit&agrave; Pendenti',
   'NTC_WELCOME_MESSAGE' => 'Benvenuti in coreBOS CRM!',

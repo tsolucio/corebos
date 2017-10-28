@@ -33,7 +33,8 @@ $mod_strings = Array(
 'ERR_DELETE_RECORD'=>"A record number must be specified to delete the organization.",
 'LBL_LIST_FILENAME'=>"File Name",
 
-// Added for Note(3.2-patch 3) 
+'Template'=>'Template',
+'Template For' => 'Template For',
 
 'LBL_FILENAME'=>'Attachment:',
 'LBL_NOTE_INFORMATION'=>'Basic Information',

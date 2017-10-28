@@ -20,6 +20,7 @@ $app_strings = array (
 	'LBL_SHOW' => 'Afficher :',
 	'today' => 'Aujourd\'hui',
 	'all' => 'Tout',
+	'Generate Document'=>'Merge Document',
 	'LBL_UPCOMING_EVENTS' => 'Activités en cours',
 	'LBL_PENDING_EVENTS' => 'Activités en attente',
 	'NTC_WELCOME_MESSAGE' => 'Bienvenue sur coreBOS',

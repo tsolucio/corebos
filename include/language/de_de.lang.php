@@ -24,6 +24,7 @@ $app_strings = array(
 'LBL_SHOW'=>'zeige:',
 'today'=>"heutige",
 'all'=>'Alle',
+'Generate Document'=>'Merge Document',
 'LBL_UPCOMING_EVENTS'=>'aktuelle Aktivitäten',
 'LBL_PENDING_EVENTS'=>'überfällige Aktivitäten',
 'NTC_WELCOME_MESSAGE'=>"Willkommen!",

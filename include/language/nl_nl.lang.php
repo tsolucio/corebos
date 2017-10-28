@@ -32,6 +32,7 @@ $app_strings = array(
 	'LBL_SHOW' => 'Bekijk :',
 	'today' => 'Vandaag',
 	'all' => 'Alle',
+	'Generate Document'=>'Merge Document',
 	'LBL_UPCOMING_EVENTS' => 'Aankomende Afspraken',
 	'LBL_PENDING_EVENTS' => 'Wachtende Afspraken',
 	'NTC_WELCOME_MESSAGE' => 'Welkom bij coreBOS!',
