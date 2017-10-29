@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'ModuleName' => 'Module Name',
 	'SINGLE_ModuleName' => 'Module Name',
 	'ModuleName ID' => 'Module Name ID',
