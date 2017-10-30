@@ -276,7 +276,7 @@
 					<tr>
 						<td class="small" nowrap align="left">{$recordListRange}</td>
 						<td nowrap width="50%" align="right">
-							<table border=0 cellspacing=0 cellpadding=0 class="small">
+							<table border=0 cellspacing=0 cellpadding=0 class="small navigation-arrows">
 							<tr>{$NAVIGATION}</tr>
 							</table>
 						</td>

@@ -205,6 +205,8 @@ function sendfile_email()
 																			<img src="{'project_tasks_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="ProjectTask" title="ProjectTask">
 																		{elseif $MODULE eq 'Project'}
 																			<img src="{'project_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Project" title="Project">
+																		{elseif $MODULE eq 'cbtranslation'}
+																			<img src="{'translations.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Translations" title="Translations">
 																		{/if}
 																	</span>
 																</div>
