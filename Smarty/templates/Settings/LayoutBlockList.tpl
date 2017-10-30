@@ -340,15 +340,15 @@ function callRelatedList(module){
 }
 
 function showProperties(field,man,pres,quickc,massed){
-	var str='<section aria-labelledby="panel-heading-id" class="small slds-popover slds-popover_panel slds-nubbin_left-top" role="dialog" style="font-size: .8125rem; width:400px; line-height: 1.5; color: #16325c;"><div class="slds-popover__header"><header class="slds-media slds-media_center slds-m-bottom_small"><div class="slds-media__body"><h2 class="slds-text-heading_medium slds-hyphenate" id="panel-heading-id">'+field+'</h2></div></header><div class="slds-grid slds-wrap slds-grid_pull-padded">';
+	var str='<section aria-labelledby="panel-heading-id" class="small slds-popover slds-popover_panel slds-nubbin_left-top" role="dialog" style="font-size: .8125rem; width:200px; line-height: 1.5; color: #16325c;"><div class="slds-popover__header"><header class="slds-media slds-media_center slds-m-bottom_small"><div class="slds-media__body"><h4 style="margin-top:0;" class="slds-text-heading-title slds-hyphenate" id="panel-heading-id">'+field+'</h4></div></header><div class="slds-grid slds-wrap slds-grid_pull-padded">';
 	if (man == 0 || man == 2)
-		str = str+'<div class="slds-p-horizontal_small slds-size_1-of-2 slds-p-bottom_x-small"><dl><dd>'+alert_arr.FIELD_IS_MANDATORY+'</dd></dl></div>';
+		str = str+'<div class="slds-p-horizontal_small slds-size_2-of-2 slds-p-bottom_x-small"><dl><dd>'+alert_arr.FIELD_IS_MANDATORY+'</dd></dl></div>';
 	if (pres == 0 || pres == 2)
-		str = str+'<div class="slds-p-horizontal_small slds-size_1-of-2 slds-p-bottom_x-small"><dl><dd>'+alert_arr.FIELD_IS_ACTIVE+'</dd></dl></div>';
+		str = str+'<div class="slds-p-horizontal_small slds-size_2-of-2 slds-p-bottom_x-small"><dl><dd>'+alert_arr.FIELD_IS_ACTIVE+'</dd></dl></div>';
 	if (quickc == 0 || quickc == 2)
-		str = str+'<div class="slds-p-horizontal_small slds-size_1-of-2 slds-p-bottom_x-small"><dl><dd>'+alert_arr.FIELD_IN_QCREATE+'</dd></dl></div>';
+		str = str+'<div class="slds-p-horizontal_small slds-size_2-of-2 slds-p-bottom_x-small"><dl><dd>'+alert_arr.FIELD_IN_QCREATE+'</dd></dl></div>';
 	if(massed == 0 || massed == 1)
-		str = str+'<div class="slds-p-horizontal_small slds-size_1-of-2 slds-p-bottom_x-small"><dl><dd>'+alert_arr.FIELD_IS_MASSEDITABLE+'</dd></dl></div>';
+		str = str+'<div class="slds-p-horizontal_small slds-size_2-of-2 slds-p-bottom_x-small"><dl><dd>'+alert_arr.FIELD_IS_MASSEDITABLE+'</dd></dl></div>';
 	str = str + '</div></div></section>';
 	return str;
 }

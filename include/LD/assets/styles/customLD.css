@@ -1538,6 +1538,18 @@ tr td.action-block-mailManager {
 .layout-editor-table img:hover {
     opacity: .7;
 }
+
+.layout-editor-table .dvtCellLabel,
+.layout-editor-table .dvtCellInfo {
+    padding: 0 .5rem;
+}
+
+/* ===== LayoutBlockList.tpl ===== */
+.slds-popover_panel .slds-popover__header {
+    padding: .5rem;
+    padding-bottom: 0;
+}
+
 /*  ===== EditWorkflowTriggerTypes.tpl ===== */
 .wfslabel {
     margin:0!important;

@@ -26,8 +26,8 @@
 			<tr><td><img src="{'blank.gif'|@vtiger_imageurl:$THEME}" border="0" />&nbsp;&nbsp;</td></tr>
 			{/if}
 			<tr>
-				<td class="small" colspan="2">
-				<!-- Left Header with title and hide/show select -->
+				<td class="small" colspan="2" style="padding: 0 .1rem 0 0;">
+					<!-- Left Header with title and hide/show select -->
 					<div class="forceRelatedListSingleContainer">
 						<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
 							<div class="slds-card__header slds-grid">
@@ -53,7 +53,7 @@
 						</article>
 					</div>
 				</td>
-				<td class="small" id="blockid_{$entries.blockid}" colspan="2" align='right'>
+				<td class="small" id="blockid_{$entries.blockid}" colspan="2" align='right' style="padding: 0 0 0 .1rem;">
 					<!-- Right Header with link icons -->
 					<div class="forceRelatedListSingleContainer">
 						<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
@@ -336,8 +336,8 @@
 						{assign var="rightcellclass" value="class='rightCell'"}
 					{/if}
 					<!-- Labels Value foreach property -->
-					<td class="dvtCellLabel " id="colourButton">
-						<span onmouseover="tooltip.tip(this, showProperties('{$value.label}',{$value.mandatory},{$value.presence},{$value.quickcreate},{$value.massedit}));" onmouseout="tooltip.untip(false);" style="padding: .2rem;">
+					<td class="dvtCellLabel text-left" id="colourButton">
+						<span onmouseover="tooltip.tip(this, showProperties('{$value.label}',{$value.mandatory},{$value.presence},{$value.quickcreate},{$value.massedit}));" onmouseout="tooltip.untip(false);" style="padding: .2rem 0;">
 							{$value.label}
 						</span>
 						{if $value.fieldtype eq 'M'}
@@ -350,14 +350,14 @@
 						<img src="{'editfield.gif'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;" onclick="fnvshNrm('editfield_{$value.fieldselect}'); posLay(this, 'editfield_{$value.fieldselect}');" alt="Popup" title="{$MOD.LBL_EDIT_PROPERTIES}"/>
 						&nbsp;
 						<!-- Edit Field Popup -->
-						<div id="editfield_{$value.fieldselect}" style="display:none; position: absolute; width: 500px; left: 300px; top: 300px;" >
+						<div id="editfield_{$value.fieldselect}" style="display:none; position: absolute; width: 310px; left: 300px; top: 300px;" >
 							<div class="layerPopup" style="position:relative; display:block">
 								<!-- Edit field Header -->
 								<table class="slds-table slds-no-row-hover" style="border-bottom: 1px solid #d4d4d4;">
 									<tr class="slds-text-title--header">
 										<!-- Title -->
 										<th scope="col">
-											<div class="slds-truncate moduleName">
+											<div class="slds-truncate moduleName" style="font-size: 11px;">
 												{$value.label} ({$value.columnname})
 											</div>
 										</th>
@@ -550,10 +550,20 @@
 			<tr><td><img src="{'blank.gif'|@vtiger_imageurl:$THEME}"/>&nbsp;&nbsp;</td></tr>
 			{/if}
 			<tr>
-				<td class="colHeader small" colspan="2">
+				<td class="small" colspan="2" style="padding: 0 0 0 .1rem;">
 					<div class="forceRelatedListSingleContainer">
 						<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
 							<div class="slds-card__header slds-grid">
+								<div class="slds-no-flex">
+									<div class="actionsContainer">
+										<!-- needed for css trick -->
+										<select class="slds-select" style="width:auto;visibility: hidden;">
+											<option></option>
+										</select>
+										<!-- css trick -->
+									</div>
+								</div>
+								&nbsp;&nbsp;&nbsp;&nbsp;
 								<header class="slds-media slds-media--center slds-has-flexi-truncate">
 									<div class="slds-media__body">
 										<h2>
@@ -567,17 +577,33 @@
 						</article>
 					</div>
 				</td>
-				<td class="colHeader small" id = "blockid_dvb{$entries.DVB}" colspan="2" align='right'>
-				{if $smarty.foreach.outer.first}
-					<img src="{'blank.gif'|@vtiger_imageurl:$THEME}" />&nbsp;&nbsp;
-					<img src="{'arrow_down.png'|@vtiger_imageurl:$THEME}" onclick="changeBlockorder('block_down','{$entries.tabid}','dvb{$entries.DVB}','{$MODULE}') " alt="{$MOD.DOWN}" title="{$MOD.DOWN}">&nbsp;&nbsp;
-				{elseif $smarty.foreach.outer.last}
-					<img src="{'arrow_up.png'|@vtiger_imageurl:$THEME}" onclick="changeBlockorder('block_up','{$entries.tabid}','dvb{$entries.DVB}','{$MODULE}') " alt="{$MOD.UP}" title="{$MOD.UP}">&nbsp;&nbsp;
-					<img src="{'blank.gif'|@vtiger_imageurl:$THEME}"/>&nbsp;&nbsp;
-				{else}
-					<img src="{'arrow_up.png'|@vtiger_imageurl:$THEME}" onclick="changeBlockorder('block_up','{$entries.tabid}','dvb{$entries.DVB}','{$MODULE}') " alt="{$MOD.UP}" title="{$MOD.UP}">&nbsp;&nbsp;
-					<img src="{'arrow_down.png'|@vtiger_imageurl:$THEME}" onclick="changeBlockorder('block_down','{$entries.tabid}','dvb{$entries.DVB}','{$MODULE}') " alt="{$MOD.DOWN}" title="{$MOD.DOWN}">&nbsp;&nbsp;
-				{/if}
+				<td class="small" id="blockid_dvb{$entries.DVB}" colspan="2" align='right' style="padding: 0 0 0 .1rem;">
+					<div class="forceRelatedListSingleContainer">
+						<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
+							<div class="slds-card__header slds-grid">
+								<header class="slds-media slds-media--center slds-has-flexi-truncate">
+									<div class="slds-media__body">
+										<h2>
+											&nbsp;
+										</h2>
+									</div>
+								</header>
+								<div class="slds-no-flex">
+									{if $smarty.foreach.outer.first}
+										<img src="{'blank.gif'|@vtiger_imageurl:$THEME}" />&nbsp;&nbsp;
+										<img src="{'arrow_down.png'|@vtiger_imageurl:$THEME}" onclick="changeBlockorder('block_down','{$entries.tabid}','dvb{$entries.DVB}','{$MODULE}') " alt="{$MOD.DOWN}" title="{$MOD.DOWN}">&nbsp;&nbsp;
+									{elseif $smarty.foreach.outer.last}
+										<img src="{'arrow_up.png'|@vtiger_imageurl:$THEME}" onclick="changeBlockorder('block_up','{$entries.tabid}','dvb{$entries.DVB}','{$MODULE}') " alt="{$MOD.UP}" title="{$MOD.UP}">&nbsp;&nbsp;
+										<img src="{'blank.gif'|@vtiger_imageurl:$THEME}"/>&nbsp;&nbsp;
+									{else}
+										<img src="{'arrow_up.png'|@vtiger_imageurl:$THEME}" onclick="changeBlockorder('block_up','{$entries.tabid}','dvb{$entries.DVB}','{$MODULE}') " alt="{$MOD.UP}" title="{$MOD.UP}">&nbsp;&nbsp;
+										<img src="{'arrow_down.png'|@vtiger_imageurl:$THEME}" onclick="changeBlockorder('block_down','{$entries.tabid}','dvb{$entries.DVB}','{$MODULE}') " alt="{$MOD.DOWN}" title="{$MOD.DOWN}">&nbsp;&nbsp;
+									{/if}
+								</div>
+							</div>
+						</article>
+					</div>
+				</td>
 			</tr>
 		{/if}
 	{/foreach}
