@@ -260,18 +260,13 @@ function sendfile_email()
 																	<img align="absmiddle" accessKey="{$APP.LNK_LIST_PREVIOUS}" name="privrecord" value="{$APP.LNK_LIST_PREVIOUS}" src="{'rec_prev.gif'|@vtiger_imageurl:$THEME}"/>
 																</span>&nbsp;
 															{else}
-																<span class="detailview_utils_prev" title="{$APP.LNK_LIST_PREVIOUS}">
-																	<img align="absmiddle" width="23" src="{'rec_prev_disabled.gif'|@vtiger_imageurl:$THEME}">
+																<span class="detailview_utils_prev disabled" title="{$APP.LNK_LIST_PREVIOUS}">
+																	<img align="absmiddle" src="{'rec_prev.gif'|@vtiger_imageurl:$THEME}">
 																</span>&nbsp;
 															{/if} 
 															{if $privrecord neq '' || $nextrecord neq ''}
-															<span class="detailview_utils_jumpto" id="jumpBtnIdTop"
-															onclick="
-															var obj = this;
-															var lhref = getListOfRecords(obj, '{$MODULE}',{$ID},'{$CATEGORY}');"
-															title="{$APP.LBL_JUMP_BTN}">
-																<img align="absmiddle" title="{$APP.LBL_JUMP_BTN}" accessKey="{$APP.LBL_JUMP_BTN}" name="jumpBtnIdTop"
-																src="{'replace_60.png'|@vtiger_imageurl:$THEME}" width="18" id="jumpBtnIdTop"  />
+															<span class="detailview_utils_jumpto" id="jumpBtnIdTop" onclick="var obj = this; var lhref = getListOfRecords(obj, '{$MODULE}',{$ID},'{$CATEGORY}');" title="{$APP.LBL_JUMP_BTN}">
+																<img align="absmiddle" title="{$APP.LBL_JUMP_BTN}" accessKey="{$APP.LBL_JUMP_BTN}" name="jumpBtnIdTop" src="{'replace_60.png'|@vtiger_imageurl:$THEME}" width="18" id="jumpBtnIdTop"  />
 															</span>&nbsp;
 															{/if}
 															{if $nextrecord neq ''}
@@ -279,16 +274,15 @@ function sendfile_email()
 																<img align="absmiddle" accessKey="{$APP.LNK_LIST_NEXT}" name="nextrecord" src="{'rec_next.gif'|@vtiger_imageurl:$THEME}">
 															</span>&nbsp;
 															{else}
-															<span class="detailview_utils_next" title="{$APP.LNK_LIST_NEXT}">
-																<img align="absmiddle" title="{$APP.LNK_LIST_NEXT}"
-																width="23" src="{'rec_next_disabled.gif'|@vtiger_imageurl:$THEME}"/>
+															<span class="detailview_utils_next disabled" title="{$APP.LNK_LIST_NEXT}">
+																<img align="absmiddle" title="{$APP.LNK_LIST_NEXT}" src="{'rec_next.gif'|@vtiger_imageurl:$THEME}"/>
 															</span>&nbsp;
 															{/if}
 														</p>
-													</div> {*/.forceActionsContainer*}
-												</div> {*/#detailview_utils_thirdfiller*}
-											</div> {*/primaryFieldRow*}
-										</div> {*/forceHighlightsStencilDesktop*}
+													</div>
+												</div>
+											</div>
+										</div>
 									</td>
 								</tr>
 							</table>

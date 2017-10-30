@@ -15,7 +15,7 @@
 		</td>
 		<td align="right" class="small">
 			<a href="javascript:;" onClick="ImportJs.loadListViewPage('{$FOR_MODULE}', 1, '{$FOR_USER}');" title="{'LBL_FIRST'|@getTranslatedString:$FOR_MODULE}">
-				<img src="{'start.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{'LBL_FIRST'|@getTranslatedString:$FOR_MODULE}">
+				<img src="{'start.gif'|@vtiger_imageurl:$THEME}" style="-ms-transform: rotate(180deg); -webkit-transform: rotate(180deg); transform: rotate(180deg);" border="0" align="absmiddle" alt="{'LBL_FIRST'|@getTranslatedString:$FOR_MODULE}">
 			</a>
 			<a href="javascript:;" onClick="ImportJs.loadListViewPage('{$FOR_MODULE}', {$CURRENT_PAGE}-1, '{$FOR_USER}');" title="{'LNK_LIST_PREVIOUS'|@getTranslatedString:$FOR_MODULE}">
 				<img src="{'previous.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{'LNK_LIST_PREVIOUS'|@getTranslatedString:$FOR_MODULE}">

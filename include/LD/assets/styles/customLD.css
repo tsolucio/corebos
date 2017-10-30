@@ -218,6 +218,14 @@ ul .slds-tabs--scoped__item {
     font-size: .8rem;
 }
 
+.detailview_utils_next:hover,
+.detailview_utils_prev:hover {
+    opacity: .7;
+}
+
+.slds-text-heading--label img {
+    width: 23px;
+}
 
 
 .slds-tabs--scoped__nav li {
@@ -1040,7 +1048,9 @@ select:-moz-focusring {
     white-space: normal;
 }
 
-
+.navigation-arrows img {
+    width: 16px;
+}
 
 
 

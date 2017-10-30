@@ -161,120 +161,6 @@ Calendar_Event_Types = {literal}{
 						});
 				}
 		 }
-=======
-        events: function(start1, end1, timezone,callback){
-                 var start=start1._d;
-                 var end=end1._d;
-                 var loggeduser = jQuery('#logged_user').val();
-
-                 var user_view_type = jQuery('#user_view_type :selected').val();
-                 typeids_val = '';
-                 {/literal}
-                 {foreach name=act_types item=typedata key=typeid from=$ACTIVITYTYPES}
-                     if(jQuery('#calendar_event_{$typeid}').is(':checked')) {ldelim}
-                          if (typeids_val != "") typeids_val += ",";
-                          typeids_val += '{$typeid}';
-                     {rdelim}
-                 {/foreach}
-                 {foreach name=act_types item=typedata key=typeid from=$MODULETYPES}
-                     if(jQuery('#calendar_event_{$typeid}').is(':checked')) {ldelim}
-                          if (typeids_val != "") typeids_val += ",";
-                          typeids_val += '{$typeid}';
-                     {rdelim}
-                 {/foreach}
-
-                 usersids = '';
-                 if (user_view_type == "all") {ldelim}
-                     {foreach name=act_types item=userdata key=userid from=$CALENDAR_USERS}
-                        if(jQuery('#calendar_user_{$userid}').is(':checked')) {ldelim}
-                           if (usersids != "") usersids +=",";
-                           usersids += '{$userid}';
-                        {rdelim}
-                     {/foreach}
-
-                     if (usersids == "") usersids = '0';
-                 {rdelim}
-
-                 var event_status = '';
-                 {foreach name=calendar_event_status item=estatusdata key=estatus_key from=$EVENT_STATUS}
-                     if(!jQuery('#calendar_event_status_{$estatusdata.id}').is(':checked')) {ldelim}
-                          if (event_status != "") event_status += ",";
-                          event_status += '{$estatusdata.id}';
-                     {rdelim}
-                 {/foreach}
-
-                 var task_priority = '';
-                 {foreach name=calendar_task_priority item=tprioritydata key=tpriority_key from=$TASK_PRIORITY}
-                     if(!jQuery('#calendar_task_priority_{$tprioritydata.id}').is(':checked')) {ldelim}
-                          if (task_priority != "") task_priority += ",";
-                          task_priority += '{$tprioritydata.id}';
-                     {rdelim}
-                 {/foreach}
-                 {literal}
-
-                 var view_val = jQuery('#calendar_div').fullCalendar('getView');
-                 document.getElementById("status").style.display="inline";
-                 jQuery.ajax({
-                            url: 'index.php',
-                            dataType: 'json',
-                            data: {
-                                module: 'Calendar4You',
-                                action: 'Calendar4YouAjax',
-                                file: 'Events',
-                                typeids: typeids_val,
-                                usersids: usersids,
-                                user_view_type: user_view_type,
-                                view: view_val.name,
-                                event_status: event_status,
-                                task_priority: task_priority,
-                                save: loggeduser,
-                                start: Math.round(new Date(start).getTime() / 1000),
-                                end: Math.round(new Date(end).getTime() / 1000)
-                            },
-                            success: function(data){
-                                var events = [];
-
-                                for (var i = 0; i < data.length; i++){
-                                    var object = data[i];
-
-                                    load_typeid = object['typeid'];
-                                    load_userid = object['userid'];
-
-                                    if (user_view_type == "all"){
-                                        event_color = Events_color['user_' + load_userid + '_color'];
-                                        event_textColor = Events_color['user_' + load_userid + '_textColor'];
-                                        event_title_color = Events_color['user_' + load_userid + '_title_color'];
-                                    } else {
-                                        event_color = Events_color[load_typeid + '_color'];
-                                        event_textColor = Events_color[load_typeid + '_textColor'];
-                                        event_title_color = Events_color[load_typeid + '_title_color'];
-                                    }
-
-                                    events.push({
-                                        id: object['id'],
-                                        typeid: object['typeid'],
-                                        userid: object['userid'],
-                                        visibility: object['visibility'],
-                                        editable: object['editable'],
-                                        activity_mode: object['activity_mode'],
-                                        title: object['title'],
-                                        start: object['start'],
-                                        end: object['end'],
-                                        allDay : object['allDay'],
-                                        geventid: object['geventid'],
-                                        color: event_color,
-                                        textColor: event_textColor,
-                                        title_color: event_title_color,
-                                        borderColor: event_title_color
-                                    });
-                                }
-                                callback(events);
-                                document.getElementById("status").style.display="none";
-                            }
-                        });
-                }
-         }
->>>>>>> 69f3ad7e2b7b2d059db0c1622007a646e9fb2be2
 
 jQuery(document).ready(function(){
 	var lastView;
@@ -570,7 +456,7 @@ function ShowHidefn(divid, imgidDown, imgidUp)
 
 </script>
 {include file='Buttons_List.tpl'}
-<<<<<<< HEAD
+
 <br/>
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
 	<tr>
