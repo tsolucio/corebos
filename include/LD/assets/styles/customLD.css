@@ -1546,3 +1546,13 @@ tr td.action-block-mailManager {
 .checkbox-inputs {
     padding: 0!important;
 }
+
+/* ==== EditTasl.tpl ==== */
+.edittask-summary-table .slds-input,
+.edittask-summary-table .slds-select,
+.task-operations-table .slds-select {
+    margin-top: 0;
+    margin-bottom: 0;
+    height: 26px;
+    min-height: 26px;
+}

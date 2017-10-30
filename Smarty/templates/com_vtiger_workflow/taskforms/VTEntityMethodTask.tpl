@@ -52,12 +52,12 @@ var methodName = '{if isset($task->methodName)}{$task->methodName}{/if}';
 entityMethodScript(jQuery);
 </script>
 
-<table border="0" cellpadding="5" cellspacing="0" width="100%" class="small">
-	<tr valign="top">
+<table class="slds-table slds-table--cell-buffer slds-no-row-hover slds-table--fixed-layout detailview_table task-operations-table">
+	<tr>
 		<td class='dvtCellLabel' align="right" width=15% nowrap="nowrap"><b>{$MOD.LBL_METHOD_NAME}</b></td>
 		<td class='dvtCellInfo'>
 			<span id="method_name_select_busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
-			<select name="methodName" id="method_name_select" class="small" style="display: none;"></select>
+			<select name="methodName" id="method_name_select" class="slds-select" style="display: none;"></select>
 			<span id="message_text" style="display: none;">{$MOD.NO_METHOD_AVAILABLE}</span>
 		</td>
 	</tr>

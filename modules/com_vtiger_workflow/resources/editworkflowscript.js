@@ -518,7 +518,7 @@ function editworkflowscript($, conditions){
 							var group_condition_html = '';
 							if($(".condition_group_block").length > 0) {
 								group_condition_html = '<div class="condition_group_join_block" id="condition_group_'+groupid+'_joincondition" > \
-									<select id="save_condition_group_'+groupid+'_joincondition" class="joincondition"></select></div>';
+									<select id="save_condition_group_'+groupid+'_joincondition" class="joincondition slds-select" style="width:50px;text-align:center;"></select></div>';
 							}
 							$("#save_conditions").append(
 								group_condition_html
@@ -531,7 +531,7 @@ function editworkflowscript($, conditions){
 									<div id="save_condition_group_'+groupid+'" class="save_condition_group"> \
 									</div> \
 									<div> \
-										<input type="button" id="add_group_condition_'+groupid+'" value="'+alert_arr.LBL_NEW_CONDITION+'" class="small edit" /> \
+										<input type="button" id="add_group_condition_'+groupid+'" value="'+alert_arr.LBL_NEW_CONDITION+'" class="slds-button slds-button--small slds-button_success" /> \
 									</div> \
 								</div>'
 								);
@@ -562,11 +562,11 @@ function editworkflowscript($, conditions){
 						$("#save_condition_group_"+groupid).append(
 							'<div id="save_condition_'+condid+'" style=\'margin-bottom: 5px\'> \
 								<input type="hidden" id="save_condition_'+condid+'_groupid" class="groupid" value="'+groupid+'" /> \
-								<select id="save_condition_'+condid+'_fieldname" class="fieldname" style="width:300px;"></select> \
-								<select id="save_condition_'+condid+'_operation" class="operation"></select> \
+								<select id="save_condition_'+condid+'_fieldname" class="fieldname slds-select" style="width:300px;"></select> \
+								<select id="save_condition_'+condid+'_operation" class="operation slds-select"></select> \
 								<input type="hidden" id="save_condition_'+condid+'_value_type" class="expressiontype" /> \
-								<input type="text" id="save_condition_'+condid+'_value" class="expressionvalue" readonly /> \
-								<select id="save_condition_'+condid+'_joincondition" class="joincondition"></select> \
+								<input type="text" id="save_condition_'+condid+'_value" class="expressionvalue slds-input" readonly /> \
+								<select id="save_condition_'+condid+'_joincondition" class="joincondition slds-select" style="width:50px;"></select> \
 								<span id="save_condition_'+condid+'_remove" class="link remove-link"> \
 								<img src="modules/com_vtiger_workflow/resources/remove.png"></span> \
 							</div>'

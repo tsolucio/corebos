@@ -302,6 +302,7 @@
 							{/if}
 						</td>
 					</tr>
+					<!-- If Record Access Control is selected -->
 					<tr>
 						<td class="dvtCellLabel text-center" width="5%">
 							<span class="slds-radio">
@@ -314,6 +315,7 @@
 						</td>
 						<td class="dvtCellInfo">{$MOD.LBL_RECORD_ACCESS_CONTROL}.</td>
 					</tr>
+					<!-- If system is selected -->
 					<tr>
 						<td class="dvtCellLabel text-center" width="5%">
 							<span class="slds-radio">

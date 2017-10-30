@@ -8,8 +8,8 @@
  ************************************************************************************/
 
 .popup_content{
-	padding: 0.5em;
-	margin:0.5em;
+	padding: 3px .5em 0 .5em;
+	margin: 0 .5em;
 	background-color: white;
 }
 
@@ -82,11 +82,11 @@
 }
 
 .expressionvalue {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 11px;
-	color: #000000;
-    background-color: #EEEEEE;
-    width: 200px;
+	/*font-family: Arial, Helvetica, sans-serif;*/
+	/*font-size: 11px;*/
+	/*color: #000000;*/
+    /*background-color: #EEEEEE;*/
+    /*width: 200px;*/
 }
 
 .condition_group_block {

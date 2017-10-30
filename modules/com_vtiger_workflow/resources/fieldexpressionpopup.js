@@ -203,7 +203,7 @@ function fieldExpressionPopup(moduleName, $){
 		var functions = {
 			string:function(opType){
 				var value = $("#editpopup_expression");
-				value.replaceWith('<textarea name="Name" rows="10" cols="50" id="editpopup_expression"></textarea>');
+				value.replaceWith('<textarea name="Name" class="slds-textarea" rows="10" cols="50" id="editpopup_expression"></textarea>');
 			},
 			'boolean': function(opType){
 				var value = $("#editpopup_expression");
