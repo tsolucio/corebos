@@ -702,20 +702,6 @@ tr td.table-aside>.detailview_actionlinks {
     margin: .5rem 0;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /**
 - * Creates a green button style
 - *
@@ -737,29 +723,6 @@ tr td.table-aside>.detailview_actionlinks {
     font-weight: bold;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*.slds-button_success:link,
-.slds-button_success:visited,
-.slds-button_success:active,
-.slds-button--success:link,
-.slds-button--success:visited,
-.slds-button--success:active {
-    color: #16325c;
-}*/
-
 .slds-button_success:hover,
 .slds-button_success:focus,
 .slds-button--success:hover,
@@ -774,6 +737,33 @@ tr td.table-aside>.detailview_actionlinks {
     background-color: #04844b;
     border-color: #04844b;
 }
+
+
+/** Creates an orange button style */
+.slds-button--warning {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #f0ad4e;
+    border: 1px solid #eea236;
+    color: #fff;
+    font-weight: bold;
+}
+
+.slds-button--warning:hover,
+.slds-button--warning:focus {
+    background-color: #d58512;
+    border-color: #985f0d;
+    color: #fff;
+}
+
+.slds-button--warning:active {
+    background-color: #ec971f;
+    border-color: #d58512;
+    color: #fff;
+}
+
 
 .slds-button+.slds-button {
     margin-left: 0;

@@ -2104,7 +2104,7 @@ textarea {
 }
 
 .mailSubHeader {
-	background-color:#e2e5ff;
+	/*background-color:#e2e5ff;*/
 }
 
 .mailSubHeader b {
@@ -2116,27 +2116,29 @@ textarea {
 }
 
 .mailClientWriteEmailHeader {
-	font-family:arial, helvetica, sans-serif;
 	font-size:20px;
 	line-height:24px;
 	font-weight:bold;
-	background:#ddd url(images/mailSubHeaderBg.gif) repeat-x;
 	padding:10px;
-	border-left:1px solid #eaeaea;
+	/*background:#ddd url(images/mailSubHeaderBg.gif) repeat-x;*/
+	/*border-left:1px solid #eaeaea;
 	border-top:1px solid #eaeaea;
 	border-right:1px solid #939271;
-	border-left:1px solid #939271;
+	border-left:1px solid #939271;*/
 }
 
 .mailClientCSSButton {
-	border-left:1px solid #fff;
-	border-top:1px solid #fff;
-	border-right:1px solid #333;
-	border-bottom:1px solid #333;
 	padding:2px;
-	background-color:#c3c2b1;
+	/*border-left:1px solid #fff;*/
+	/*border-top:1px solid #fff;*/
+	/*border-right:1px solid #333;*/
+	/*border-bottom:1px solid #333;*/
+	/*background-color:#c3c2b1;*/
 }
 
+.mailClientCSSButton img {
+	width: 18px;
+}
 /* Email Client Classes ends ------------------------------------ */
 
 /* Layer Popup */
