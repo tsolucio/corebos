@@ -1578,3 +1578,19 @@ tr td.action-block-mailManager {
     height: 26px;
     min-height: 26px;
 }
+
+/* ==== Popup.tpl ===== */
+.reportCreateBottom img {
+    width: 16px;
+}
+
+/*==== ConvertLead.tpl=====*/
+.convertLeads-options-table .slds-input,
+.convertLeads-options-table .slds-select {
+    width: 100%;
+    margin: 0;
+}
+
+.convertLeads-options-table .slds-radio--faux {
+    margin-right: 0!important;
+}
