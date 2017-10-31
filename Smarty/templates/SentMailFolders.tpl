@@ -97,21 +97,58 @@ function ShowFolders(folderid)
 {rdelim}
 </script>
 
+<br/>
 <!-- Sent mail -->
-<img src="{'sentmail.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" />&nbsp;<b class="txtGreen">{'LBL_SENT_MAILS'|@getTranslatedString:$MODULE}</b>
-<ul style="list-style-type:none;margin-left:10px;margin-top:5px;padding:2px">
-	<li><img src="{'folder1.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" />&nbsp;&nbsp;
-	<a href="javascript:;" onClick="ShowFolders(1)" class="webMnu">{'LBL_ALLMAILS'|@getTranslatedString:$MODULE}</a>&nbsp;<b></b>
-	<li><img src="{'folder1.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" />&nbsp;&nbsp;
-	<a href="javascript:;" onClick="ShowFolders(2)" class="webMnu">{'LBL_TO_CONTACTS'|@getTranslatedString:$MODULE}</a>&nbsp;<b></b>
-	</li>
-	<li><img src="{'folder1.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" />&nbsp;&nbsp;
-	<a href="javascript:;" onClick="ShowFolders(3)" class="webMnu">{'LBL_TO_ACCOUNTS'|@getTranslatedString:$MODULE}</a>&nbsp;<b></b>
-	</li>
-	<li><img src="{'folder1.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" />&nbsp;&nbsp;
-	<a href="javascript:;" onClick="ShowFolders(4)" class="webMnu">{'LBL_TO_LEADS'|@getTranslatedString:$MODULE}</a>&nbsp;
-	</li>
-	<li><img src="{'folder1.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" />&nbsp;&nbsp;
-	<a href="javascript:;" onClick="ShowFolders(5)" class="webMnu">{'LBL_TO_USERS'|@getTranslatedString:$MODULE}</a>&nbsp;
-	</li>
-</ul>
+<div class="flexipageComponent">
+	<article class="slds-card container MEDIUM forceBaseCard runtime_sales_mergeMergeCandidatesPreviewCard" aria-describedby="header" style="margin: 0;">
+		<div class="slds-card__header slds-grid">
+			<header class="slds-media slds-media--center slds-has-flexi-truncate">
+				<div class="slds-media__body">
+					<h2 class="header-title-container">
+						<span class="slds-text-heading--small slds-truncate">
+							<img src="{'sentmail.gif'|@vtiger_imageurl:$THEME}"/>&nbsp;
+						</span>
+						<span class="slds-text-heading--small slds-truncate actionLabel">
+							<b class="txtGreen">{'LBL_SENT_MAILS'|@getTranslatedString:$MODULE}</b>
+						</span>
+					</h2>
+				</div>
+			</header>
+		</div>
+		<div class="slds-card__body slds-card__body--inner mail-action">
+			<div class="actionList">
+				<ul>
+					<li class="slds-item actionData">
+						<img src="{'folder1.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" />&nbsp;&nbsp;
+						<a href="javascript:;" onClick="ShowFolders(1)" class="webMnu">
+							{'LBL_ALLMAILS'|@getTranslatedString:$MODULE}
+						</a>&nbsp;
+					</li>
+					<li class="slds-item actionData">
+						<img src="{'folder1.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" />&nbsp;&nbsp;
+						<a href="javascript:;" onClick="ShowFolders(2)" class="webMnu">
+							{'LBL_TO_CONTACTS'|@getTranslatedString:$MODULE}
+						</a>&nbsp;
+					</li>
+					<li class="slds-item actionData">
+						<img src="{'folder1.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" />&nbsp;&nbsp;
+						<a href="javascript:;" onClick="ShowFolders(3)" class="webMnu">
+							{'LBL_TO_ACCOUNTS'|@getTranslatedString:$MODULE}
+						</a>&nbsp;
+					</li>
+					<li class="slds-item actionData">
+						<img src="{'folder1.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" />&nbsp;&nbsp;
+						<a href="javascript:;" onClick="ShowFolders(4)" class="webMnu">
+							{'LBL_TO_LEADS'|@getTranslatedString:$MODULE}
+						</a>&nbsp;
+					</li>
+					<li class="slds-item actionData">
+						<img src="{'folder1.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" />&nbsp;&nbsp;
+						<a href="javascript:;" onClick="ShowFolders(5)" class="webMnu">
+							{'LBL_TO_USERS'|@getTranslatedString:$MODULE}
+						</a>&nbsp;
+					</li>
+				</ul>
+			</div>
+	</article>
+</div>
