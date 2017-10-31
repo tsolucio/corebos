@@ -151,8 +151,8 @@
 												<td align="right" class="dvtCellLabel">{if $UIINFO->isMandatory('Potentials','closingdate') eq true}<font color="red">*</font>{/if}{'Expected Close Date'|@getTranslatedString:$MODULE}</td>
 												<td class="dvtCellInfo">
 													<input class="slds-input" name="closingdate" {if $UIINFO->isMandatory('Potentials','closingdate') eq true}record="true"{/if} module="Potentials" id="jscal_field_closedate" type="text" tabindex="4" size="10" maxlength="10" value="{$UIINFO->getMappedFieldValue('Potentials','closingdate',1)}">
-													<br/>
 													<img src="{'miniCalendar.gif'|@vtiger_imageurl:$THEME}" id="jscal_trigger_closedate" style="vertical-align: middle;width: 16px;">
+													<br/>
 													<font size=1><em old="(yyyy-mm-dd)">({$DATE_FORMAT})</em></font>
 													<script id="conv_leadcal">
 														getCalendarPopup('jscal_trigger_closedate','jscal_field_closedate','{$CAL_DATE_FORMAT}')

@@ -3101,8 +3101,8 @@ function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $ac
 			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['prev'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_PREVIOUS'] . '"title="' . $app_strings['LNK_LIST_PREVIOUS'] . '"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		}
 	} else {
-		$output .= '<img src="' . vtiger_imageurl('start_disabled.gif', $theme) . '"  align="absmiddle">&nbsp;';
-		$output .= '<img src="' . vtiger_imageurl('previous_disabled.gif', $theme) . '" align="absmiddle">&nbsp;';
+		$output .= '<img src="' . vtiger_imageurl('start_disabled.gif', $theme) . '"  align="absmiddle" class="disabled" style="width:18px;-webkit-transform: rotate(180deg);transform: rotate(180deg);">&nbsp;';
+		$output .= '<img src="' . vtiger_imageurl('previous_disabled.gif', $theme) . '" class="disabled" style="width:18px;" align="absmiddle">&nbsp;';
 	}
 
 	if ($module == 'Calendar' && $action_val == 'index') {
@@ -3148,8 +3148,8 @@ function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $ac
 			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['verylast'] . $url_string . '\');" alt="' . $app_strings['LBL_LAST'] . '" title="' . $app_strings['LBL_LAST'] . '"><img src="' . vtiger_imageurl('end.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		}
 	} else {
-		$output .= '<img src="' . vtiger_imageurl('next_disabled.gif', $theme) . '" border="0" align="absmiddle">&nbsp;';
-		$output .= '<img src="' . vtiger_imageurl('end_disabled.gif', $theme) . '" border="0" align="absmiddle">&nbsp;';
+		$output .= '<img src="' . vtiger_imageurl('next_disabled.gif', $theme) . '" border="0" class="disabled" style="width:18px;" align="absmiddle">&nbsp;';
+		$output .= '<img src="' . vtiger_imageurl('end_disabled.gif', $theme) . '" border="0" class="disabled" style="width:18px;" align="absmiddle">&nbsp;';
 	}
 	$output .= '</td>';
 	$log->debug("Exiting getTableHeaderNavigation method ...");
@@ -3608,8 +3608,8 @@ function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $
 		$output .= '<a href="javascript:;" onClick="loadRelatedListBlock(\'' . $urldata . '&relstart=1\',\'' . $target . '\',\'' . $imagesuffix . '\');" alt="' . $app_strings['LBL_FIRST'] . '" title="' . $app_strings['LBL_FIRST'] . '"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" style="-webkit-transform: rotate(180deg);transform: rotate(180deg);" align="absmiddle"></a>&nbsp;';
 		$output .= '<a href="javascript:;" onClick="loadRelatedListBlock(\'' . $urldata . '&relstart=' . $navigation_array['prev'] . '\',\'' . $target . '\',\'' . $imagesuffix . '\');" alt="' . $app_strings['LNK_LIST_PREVIOUS'] . '"title="' . $app_strings['LNK_LIST_PREVIOUS'] . '"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 	} else {
-		$output .= '<img src="' . vtiger_imageurl('start_disabled.gif', $theme) . '" border="0" align="absmiddle">&nbsp;';
-		$output .= '<img src="' . vtiger_imageurl('previous_disabled.gif', $theme) . '" border="0" align="absmiddle">&nbsp;';
+		$output .= '<img src="' . vtiger_imageurl('start_disabled.gif', $theme) . '" border="0" class="disabled" style="-webkit-transform: rotate(180deg);transform: rotate(180deg);width:18px;" align="absmiddle">&nbsp;';
+		$output .= '<img src="' . vtiger_imageurl('previous_disabled.gif', $theme) . '" border="0" class="disabled" style="width:18px;" align="absmiddle">&nbsp;';
 	}
 
 	$jsHandler = "return VT_disableFormSubmit(event);";
@@ -3633,8 +3633,8 @@ function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $
 		$output .= '<a href="javascript:;" onClick="loadRelatedListBlock(\'' . $urldata . '&relstart=' . $navigation_array['next'] . '\',\'' . $target . '\',\'' . $imagesuffix . '\');"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		$output .= '<a href="javascript:;" onClick="loadRelatedListBlock(\'' . $urldata . '&relstart=' . $navigation_array['verylast'] . '\',\'' . $target . '\',\'' . $imagesuffix . '\');"><img src="' . vtiger_imageurl('end.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 	} else {
-		$output .= '<img src="' . vtiger_imageurl('next_disabled.gif', $theme) . '" border="0" align="absmiddle">&nbsp;';
-		$output .= '<img src="' . vtiger_imageurl('end_disabled.gif', $theme) . '" border="0" align="absmiddle">&nbsp;';
+		$output .= '<img src="' . vtiger_imageurl('next_disabled.gif', $theme) . '" border="0" class="disabled" style="width:18px;"  align="absmiddle">&nbsp;';
+		$output .= '<img src="' . vtiger_imageurl('end_disabled.gif', $theme) . '" border="0" class="disabled" style="width:18px;"  align="absmiddle">&nbsp;';
 	}
 	$output .= '</td>';
 	$log->debug("Exiting getRelatedTableHeaderNavigation method ...");
@@ -4014,8 +4014,8 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '
 			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['prev'] . $url_string . '\');" alt="' . $app_strings['LNK_LIST_PREVIOUS'] . '"title="' . $app_strings['LNK_LIST_PREVIOUS'] . '"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		}
 	} else {
-		$output .= '<img src="' . vtiger_imageurl('start_disabled.gif', $theme) . '" class="disabled" style="width:16px;-webkit-transform: rotate(180deg);transform: rotate(180deg);" align="absmiddle">&nbsp;';
-		$output .= '<img src="' . vtiger_imageurl('previous_disabled.gif', $theme) . '" class="disabled" style="width:16px;" align="absmiddle">&nbsp;';
+		$output .= '<img src="' . vtiger_imageurl('start_disabled.gif', $theme) . '" class="disabled" style="width:18px;-webkit-transform: rotate(180deg);transform: rotate(180deg);" align="absmiddle">&nbsp;';
+		$output .= '<img src="' . vtiger_imageurl('previous_disabled.gif', $theme) . '" class="disabled" style="width:18px;" align="absmiddle">&nbsp;';
 	}
 	if ($module == 'Calendar' && $action_val == 'index') {
 		$jsNavigate = "cal_navigation('$tab_type','$url_string','&start='+this.value);";
@@ -4067,8 +4067,8 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '
 			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\'' . $module . '\',\'parenttab=' . $tabname . '&start=' . $navigation_array['verylast'] . $url_string . '\');" alt="' . $app_strings['LBL_LAST'] . '" title="' . $app_strings['LBL_LAST'] . '"><img src="' . vtiger_imageurl('end.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		}
 	} else {
-		$output .= '<img src="' . vtiger_imageurl('next_disabled.gif', $theme) . '" align="absmiddle" class="disabled" style="width:16px;">&nbsp;';
-		$output .= '<img src="' . vtiger_imageurl('end_disabled.gif', $theme) . '" align="absmiddle" class="disabled" style="width:16px;">&nbsp;';
+		$output .= '<img src="' . vtiger_imageurl('next_disabled.gif', $theme) . '" align="absmiddle" class="disabled" style="width:18px;">&nbsp;';
+		$output .= '<img src="' . vtiger_imageurl('end_disabled.gif', $theme) . '" align="absmiddle" class="disabled" style="width:18px;">&nbsp;';
 	}
 	$output .= '</td>';
 	if ($navigation_array['first'] == '')
