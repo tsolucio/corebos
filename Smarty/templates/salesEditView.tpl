@@ -37,49 +37,7 @@
 												<span class="photoContainer forceSocialPhoto">
 													<div class="small roundedSquare forceEntityIcon img-background">
 														<span class="uiImage">
-															{if $MODULE eq 'Contacts'}
-																<img src="{'contact_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Contact" title="Contact">
-															{elseif $MODULE eq 'Accounts'}
-																<img src="{'account_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Organization" title="Organization">
-															{elseif $MODULE eq 'Leads'}
-																<img src="{'lead_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Leads" title="Leads">
-															{elseif $MODULE eq 'Campaigns'}
-																<img src="{'campaign_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Campaigns" title="Campaigns">
-															{elseif $MODULE eq 'Potentials'}
-																<img src="{'opportunity_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Opportunity" title="Opportunity">
-															{elseif $MODULE eq 'Quotes'}
-																<img src="{'quotes_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Quotes" title="Quotes">
-															{elseif $MODULE eq 'SalesOrder'}
-																<img src="{'salesorder_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="SalesOrder" title="SalesOrder">
-															{elseif $MODULE eq 'Invoice'}
-																<img src="{'invoice_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Invoice" title="Invoice" style="height:1.8rem; padding-top: 1px;">
-															{elseif $MODULE eq 'PriceBooks'}
-																<img src="{'pricebook_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="PriceBooks" title="PriceBooks">
-															{elseif $MODULE eq 'Documents'}
-																<img src="{'document_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Documents" title="Documents">
-															{elseif $MODULE eq 'cbCalendar'}
-																<img src="{'todo_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Todo" title="Todo">
-															{elseif $MODULE eq 'CobroPago'}
-																<img src="{'payment_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Payment" title="Payment">
-															{elseif $MODULE eq 'Assets'}
-																<img src="{'assets_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Assets" title="Assets">
-															{elseif $MODULE eq 'ModComments'}
-																<img src="{'quick_text_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Comments" title="Comments">
-															{elseif $MODULE eq 'GlobalVariable'}
-																<img src="{'global_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="GlobalVariable" title="GlobalVariable">
-															{elseif $MODULE eq 'HelpDesk'}
-																<img src="{'help_desk_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="HelpDesk" title="HelpDesk">
-															{elseif $MODULE eq 'Faq'}
-																<img src="{'faq_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Faq" title="Faq">
-															{elseif $MODULE eq 'ServiceContracts'}
-																<img src="{'service_contract_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="ServiceContracts" title="ServiceContracts">
-															{elseif $MODULE eq 'ProjectMilestone'}
-																<img src="{'project_milestone_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="ProjectMilestone" title="ProjectMilestone">
-															{elseif $MODULE eq 'ProjectTask'}
-																<img src="{'project_tasks_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="ProjectTask" title="ProjectTask">
-															{elseif $MODULE eq 'Project'}
-																<img src="{'project_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Project" title="Project">
-															{/if}
+															<img src="{$MODULEICON|@vtiger_imageurl:$THEME}" class="icon" alt="{$MODULE}" title="{$MODULE}">
 														</span>
 													</div>
 												</span>

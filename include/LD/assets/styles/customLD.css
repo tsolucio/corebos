@@ -244,12 +244,11 @@ li.active,
 
 .uiOutputText {
     display: block;
-    /* or inline-block */
     text-overflow: ellipsis;
     word-wrap: break-word;
     overflow: hidden;
     width: 850px;
-    white-space: nowrap;
+    white-space: nowrap!important;
 }
 
 

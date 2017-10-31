@@ -412,7 +412,7 @@ a:hover {
 	color: #000000;
 }
 
-td span:not(.search-dropdown) {
+td span:not(.search-dropdown){
     word-wrap: break-word;
     white-space: normal;
 }

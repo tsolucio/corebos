@@ -138,23 +138,7 @@ function DeleteTag(id,recordid)
 															<span class="photoContainer forceSocialPhoto">
 																<div class="small roundedSquare forceEntityIcon img-background">
 																	<span class="uiImage">
-																		{if $MODULE eq 'Quotes'}
-																			<img src="{'quotes_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Quotes" title="Quotes">
-																		{elseif $MODULE eq 'SalesOrder'}
-																			<img src="{'salesorder_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="SalesOrder" title="SalesOrder">
-																		{elseif $MODULE eq 'Invoice'}
-																			<img src="{'invoice_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Invoice" title="Invoice" style="height:1.8rem;">
-																		{elseif $MODULE eq 'PriceBooks'}
-																			<img src="{'pricebook_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="PriceBooks" title="PriceBooks">
-																		{elseif $MODULE eq 'Products'}
-																			<img src="{'product_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Products" title="Products">
-																		{elseif $MODULE eq 'Vendors'}
-																			<img src="{'vendors_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Vendors" title="Vendors">
-																		{elseif $MODULE eq 'Services'}
-																			<img src="{'custom_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Services" title="Services">
-																		{elseif $MODULE eq 'PurchaseOrder'}
-																			<img src="{'purchase_order_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="PurchaseOrder" title="PurchaseOrder">
-																		{/if}
+																		<img src="{$MODULEICON|@vtiger_imageurl:$THEME}" class="icon" alt="{$MODULE}" title="{$MODULE}">
 																	</span>
 																</div>
 															</span>
