@@ -37,6 +37,9 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	if(isset($_REQUEST['mode']) && $_REQUEST['mode'] != ' ') $smarty->assign("OP_MODE",vtlib_purify($_REQUEST['mode']));
 	if(empty($_SESSION['rlvs'][$currentModule])) coreBOS_Session::delete('rlvs');
 
+	// Get detailView header icon dynamically
+	$smarty->assign('MODULEICON', $currentModule.".png");
+
 	// Identify this module as custom module.
 	$smarty->assign('CUSTOM_MODULE', false);
 
