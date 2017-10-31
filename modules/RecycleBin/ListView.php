@@ -102,7 +102,7 @@ if(count($module_name) > 0)
 	$list_query = preg_replace("/vtiger_crmentity.deleted\s*=\s*0/i", 'vtiger_crmentity.deleted = 1', $list_query);
 	$res=$adb->pquery("SELECT tablename FROM vtiger_entityname WHERE modulename =?", array($select_module));
 	$basetable= $adb->query_result($res,0,'tablename');
-	if (isset($select_module::$denormalized) && $select_module::$denormalized==true) {
+	if ($focus->denormalized==true) {
 		$list_query = preg_replace("/$basetable.mydeleted\s*=\s*0/i",$basetable.'.mydeleted = 1', $list_query);
 	}
 	//Search criteria added to the list Query

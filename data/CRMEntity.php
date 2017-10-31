@@ -766,7 +766,7 @@ class CRMEntity {
 			$sql1 = "insert into $table_name(" . implode(",", $column) . ") values(" . generateQuestionMarks($value) . ")";
 			$adb->pquery($sql1, $value);
 	 }
-		if (isset($module::$denormalized) && $module::$denormalized==true) {
+		if ($this->denormalized==true) {
 			 $this->getFieldsFromCrmEntity($module);
 		 }
 	}
@@ -1243,9 +1243,9 @@ class CRMEntity {
 	 */
 	function getListQuery($module, $usewhere='') {
 		global $current_user;
-		if (isset($module::$denormalized)) {
-			$denorm=$module::$denormalized;
-		}
+
+		$denorm=$this->denormalized;
+
 		$query = "SELECT vtiger_crmentity.*, $this->table_name.*";
     if ($denorm) {
 			$query = "SELECT $this->table_name.*";
@@ -1305,7 +1305,7 @@ class CRMEntity {
 		} else {
 			$query .= $this->getNonAdminAccessControlQuery($module,$current_user);
 			$query .= "	WHERE vtiger_crmentity.deleted = 0 ".$usewhere;
-		}  
+		}
 		return $query;
 	}
 
@@ -1498,7 +1498,7 @@ class CRMEntity {
 		$em->triggerEvent("vtiger.entity.beforedelete", $entityData);
 
 		$this->mark_deleted($id);
-		if (isset($module::$denormalized) && $module::$denormalized==true) {
+		if ($this->denormalized==true) {
 			$this->mark_deleted_denorm($module,$id);
 		}
 		$this->unlinkDependencies($module, $id);
@@ -1587,7 +1587,7 @@ class CRMEntity {
 		$date_var = date("Y-m-d H:i:s");
 		$query = 'UPDATE vtiger_crmentity SET deleted=0,modifiedtime=?,modifiedby=? WHERE crmid = ?';
 		$this->db->pquery($query, array($this->db->formatDate($date_var, true), $current_user->id, $id), true, "Error restoring records :");
-		if (isset($module::$denormalized) && $module::$denormalized==true) {
+		if ($this->denormalized==true) {
 			$basetable=$this->table_name;
 			$columnid=$this->table_index;
 			$query = "UPDATE $basetable SET mydeleted=0,mymodifiedtime=?,mymodifierid=? WHERE $columnid = ?";

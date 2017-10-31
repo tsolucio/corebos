@@ -118,9 +118,9 @@ class ModCommentsCore extends CRMEntity {
 	 * Get list view query (send more WHERE clause condition if required)
 	 */
 	function getListQuery($module, $usewhere='') {
-		if (isset($module::$denormalized)) {
-			$denorm=$module::$denormalized;
-		}
+
+		$denorm=$this->denormalized;
+
 		$query = "SELECT vtiger_crmentity.*, $this->table_name.*";
     if ($denorm) {
 			$query = "SELECT $this->table_name.*";

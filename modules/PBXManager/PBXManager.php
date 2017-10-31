@@ -85,9 +85,8 @@ class PBXManager extends CRMEntity {
 	 * Get list view query.
 	 */
 	function getListQuery($module, $usewhere='') {
-		if (isset($module::$denormalized)) {
-			$denorm=$module::$denormalized;
-		}
+
+		$denorm=$this->denormalized;
 
     if ($denorm) {
 			$query = "SELECT $this->table_name.*";

@@ -82,9 +82,8 @@ class QueryGenerator {
 		$this->conditionInstanceCount = 0;
 		$this->customViewFields = array();
 		$this->setReferenceFields();
-    if (isset($module::$denormalized)) {
-			$this->denormalized=$module::$denormalized;
-		}
+		$module=CRMEntity::getInstance($module);
+		$this->denormalized=$module->denormalized;
 
 	}
 
@@ -863,7 +862,7 @@ class QueryGenerator {
 		$baseTable = $this->meta->getEntityBaseTable();
 		$moduleTableIndexList = $this->meta->getEntityTableIndexList();
 		$baseTableIndex = $moduleTableIndexList[$baseTable];
-		if(!empty($deletedQuery)) {
+		if (!empty($deletedQuery)) {
 			if ($this->denormalized) {
         $denormDeletedQuery=str_replace('vtiger_crmentity.deleted=0',$baseTable.'.mydeleted=0',$deletedQuery);
 				$sql.="WHERE $denormDeletedQuery";
@@ -1581,7 +1580,7 @@ class QueryGenerator {
 		}
 	}
 
-	function getDenormalizedFields($denorm,$check=0) {
+  function getDenormalizedFields($denorm,$check=0) {
 
 		$map=array('smownerid'=>'myownerid',
 		           'createdby'=>'mycreatorid',
