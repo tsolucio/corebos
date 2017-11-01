@@ -55,13 +55,14 @@ function getUserFldArray($fld_module,$roleid){
  * It gets the picklist modules and return in an array in the following format
  * $modules = Array($tabid=>$tablabel,$tabid1=>$tablabel1,$tabid2=>$tablabel2,-------------,$tabidn=>$tablabeln)
  */
-function getPickListModules(){
+function getPickListModules() {
 	global $adb;
-	// vtlib customization: Ignore disabled modules.
-	$query = 'select distinct vtiger_field.fieldname,vtiger_field.tabid,vtiger_tab.tablabel, vtiger_tab.name as tabname,uitype from vtiger_field inner join vtiger_tab on vtiger_tab.tabid=vtiger_field.tabid where uitype IN (15,33) and vtiger_field.tabid != 29 and vtiger_tab.presence != 1 and vtiger_field.presence in (0,2) order by vtiger_field.tabid ASC';
-	// END
+	$query = 'select distinct vtiger_tab.tablabel, vtiger_tab.name as tabname
+		from vtiger_field
+		inner join vtiger_tab on vtiger_tab.tabid=vtiger_field.tabid
+		where uitype IN (15,33) and vtiger_field.tabid != 29 and vtiger_tab.presence != 1 and vtiger_field.presence in (0,2)';
 	$result = $adb->pquery($query, array());
-	while($row = $adb->fetch_array($result)){
+	while ($row = $adb->fetch_array($result)) {
 		$modules[$row['tablabel']] = $row['tabname'];
 	}
 	return $modules;
