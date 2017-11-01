@@ -10,13 +10,28 @@
 		<!-- bracers -->
 		<exclude name="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine" />
 		<exclude name="PSR2.Classes.ClassDeclaration.OpenBraceNewLine" />
+		<exclude name="Squiz.Classes.ValidClassName.NotCamelCaps"/>
 		<exclude name="PSR2.Files.EndFileNewline" />
 		<exclude name="PSR2.Files.ClosingTag" />
 
 		<!-- tabs -->
 		<exclude name="Generic.WhiteSpace.DisallowTabIndent"/>
 	</rule>
-	
+	<rule ref="Squiz.WhiteSpace.SuperfluousWhitespace">
+		<properties>
+			<property name="ignoreBlankLines" value="false"/>
+		</properties>
+	</rule>
+	<rule ref="Squiz.WhiteSpace.SuperfluousWhitespace.StartFile">
+		<severity>10</severity>
+	</rule>
+	<rule ref="Squiz.WhiteSpace.SuperfluousWhitespace.EndFile">
+		<severity>10</severity>
+	</rule>
+	<rule ref="Squiz.WhiteSpace.SuperfluousWhitespace.EmptyLines">
+		<severity>10</severity>
+	</rule>
+
 	<!-- tabs -->
 	<rule ref="Generic.WhiteSpace.DisallowSpaceIndent"/>
 	<rule ref="Generic.WhiteSpace.ScopeIndent">
