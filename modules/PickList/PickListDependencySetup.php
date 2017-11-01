@@ -27,11 +27,7 @@ $smarty->assign("MOD", return_module_language($current_language,'Settings'));	//
 $smarty->assign("MOD_PICKLIST", return_module_language($current_language,'PickList'));	//the picklist module language files
 
 $fld_module = (!empty($_REQUEST['moduleName']) ? vtlib_purify($_REQUEST['moduleName']) : '');
-if($fld_module == 'Events') {
-	$temp_module_strings = return_module_language($current_language, 'Calendar');
-}else {
-	$temp_module_strings = return_module_language($current_language, $fld_module);
-}
+$temp_module_strings = return_module_language($current_language, $fld_module);
 
 $modules = Vtiger_DependencyPicklist::getDependentPickListModules();
 $smarty->assign("MODULE_LISTS",$modules);
@@ -115,5 +111,4 @@ if(isset($_REQUEST['directmode']) and $_REQUEST['directmode'] == 'ajax') {
 	$smarty->assign("DEPENDENT_PICKLISTS",$dependentPicklists);
 	$smarty->display("modules/PickList/PickListDependencySetup.tpl");
 }
-
 ?>

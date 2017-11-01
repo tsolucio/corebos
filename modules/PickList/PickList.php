@@ -36,11 +36,7 @@ if(!empty($_REQUEST['roleid'])) {
 	$roleid = 'H2';		//set default to CEO
 }
 
-if($fld_module == 'Events') {
-	$temp_module_strings = return_module_language($current_language, 'Calendar');
-}else {
-	$temp_module_strings = return_module_language($current_language, $fld_module);
-}
+$temp_module_strings = return_module_language($current_language, $fld_module);
 $picklists_entries = getUserFldArray($fld_module,$roleid);
 $value = count($picklists_entries);
 if (($value % 3) != 0) {
@@ -54,6 +50,9 @@ if(!empty($picklists_entries)) {
 }
 $mods = array();
 foreach ($modules as $lbl => $m) {
+	if ($m == 'Calendar' || $m == 'Events') {
+		continue;
+	}
 	$mods[$m] = getTranslatedString($lbl,$m);
 }
 $smarty->assign("MODULE_LISTS",$mods);
@@ -76,5 +75,4 @@ if(empty($_REQUEST['directmode']) or $_REQUEST['directmode'] != 'ajax') {
 }else {
 	$smarty->display("modules/PickList/PickListContents.tpl");
 }
-
 ?>

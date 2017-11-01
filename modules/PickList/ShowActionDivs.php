@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *********************************************************************************/
-
 require_once('include/database/PearDatabase.php');
 require_once 'modules/PickList/PickListUtils.php';
 require_once('Smarty_setup.php');
@@ -24,11 +23,7 @@ $fieldLabel =vtlib_purify($_REQUEST["fieldlabel"]);
 $moduleName=vtlib_purify($_REQUEST["moduleName"]);
 $mode=$_REQUEST["mode"];
 
-if($moduleName == 'Events'){
-	$temp_module_strings = return_module_language($current_language, 'Calendar');
-}else{
-	$temp_module_strings = return_module_language($current_language, $moduleName);
-}
+$temp_module_strings = return_module_language($current_language, $moduleName);
 
 if(isset($fieldName)){
 	$editableValues = getEditablePicklistValues($fieldName, $temp_module_strings, $adb);

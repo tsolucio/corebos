@@ -24,11 +24,7 @@ if(!empty($roleid)){
 	$roleName = getRoleName($roleid);
 }
 
-if($moduleName == 'Events'){
-	$temp_module_strings = return_module_language($current_language, 'Calendar');
-}else{
-	$temp_module_strings = return_module_language($current_language, $moduleName);
-}
+$temp_module_strings = return_module_language($current_language, $moduleName);
 
 if(!empty($fieldName)){
 	foreach (getAllPickListValues($fieldName,$temp_module_strings) as $key => $value) {
@@ -37,7 +33,7 @@ if(!empty($fieldName)){
 }
 
 foreach (getAssignedPicklistValues($fieldName, $roleid, $adb, $temp_module_strings) as $key => $value) {
-		$assignedValues[$key] = $value;
+	$assignedValues[$key] = $value;
 }
 
 $smarty->assign("THEME",$theme);
@@ -53,5 +49,4 @@ $smarty->assign("APP",$app_strings);
 
 $data = $smarty->fetch("modules/PickList/AssignPicklistValues.tpl");
 echo $data;
-
 ?>
