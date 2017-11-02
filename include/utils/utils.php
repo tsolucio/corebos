@@ -2055,6 +2055,9 @@ function getTableNameForField($module,$fieldname)
 function getModuleForField($fieldid) {
 	global $log, $adb;
 	$log->debug("Entering getModuleForField($fieldid) method ...");
+	if ($fieldid == -1) {
+		return 'Users';
+	}
 	$sql = 'SELECT vtiger_tab.name
 		FROM vtiger_field
 		INNER JOIN vtiger_tab on vtiger_tab.tabid=vtiger_field.tabid
