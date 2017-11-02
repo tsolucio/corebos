@@ -381,7 +381,7 @@ if($currentModule == 'Products' && !empty($_REQUEST['record_id']) && ($popuptype
 //Added to fix the issue #2307
 $queryGenerator = new QueryGenerator($currentModule, $current_user);
 $order_by = $focus->getOrderBy();
-if ($focus->denormalized==true) {
+if ($focus->denormalized) {
 	list($orderdenorm,$check) = $queryGenerator->getDenormalizedFields($order_by);
 	if ($check) {
 		$order_by = $orderdenorm;

@@ -1583,7 +1583,7 @@ class QueryGenerator {
   function getDenormalizedFields($denorm,$check=0) {
 
 		$map=array('smownerid'=>'myownerid',
-		           'createdby'=>'mycreatorid',
+		           'smcreatorid'=>'mycreatorid',
 		           'createdtime'=>'mycreatedtime',
 		           'modifiedtime'=>'mymodifiedtime',
 		           'modifiedby'=>'mymodifierid',
