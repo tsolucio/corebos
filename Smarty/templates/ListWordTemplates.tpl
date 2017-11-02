@@ -15,47 +15,47 @@ function massDelete()
 {ldelim}
 	if(typeof(document.massdelete.selected_id) == 'undefined')
 		return false;
-        x = document.massdelete.selected_id.length;
-        idstring = "";
+		x = document.massdelete.selected_id.length;
+		idstring = "";
 
-        if ( x == undefined)
-        {ldelim}
+		if ( x == undefined)
+		{ldelim}
 
-                if (document.massdelete.selected_id.checked)
-               {ldelim}
-                        document.massdelete.idlist.value=document.massdelete.selected_id.value+';';
+				if (document.massdelete.selected_id.checked)
+			   {ldelim}
+						document.massdelete.idlist.value=document.massdelete.selected_id.value+';';
 			xx=1;
-                {rdelim}
-                else
-                {ldelim}
-                        alert("{$APP.SELECT_ATLEAST_ONE}");
-                        return false;
-                {rdelim}
-        {rdelim}
-        else
-        {ldelim}
-                xx = 0;
-                for(i = 0; i < x ; i++)
-                {ldelim}
-                        if(document.massdelete.selected_id[i].checked)
-                        {ldelim}
-                                idstring = document.massdelete.selected_id[i].value +";"+idstring
-                        xx++
-                        {rdelim}
-                {rdelim}
-                if (xx != 0)
-                {ldelim}
-                        document.massdelete.idlist.value=idstring;
-                {rdelim}
-               else
-                {ldelim}
-                        alert("{$APP.SELECT_ATLEAST_ONE}");
-                        return false;
-                {rdelim}
-       {rdelim}
+				{rdelim}
+				else
+				{ldelim}
+						alert("{$APP.SELECT_ATLEAST_ONE}");
+						return false;
+				{rdelim}
+		{rdelim}
+		else
+		{ldelim}
+				xx = 0;
+				for(i = 0; i < x ; i++)
+				{ldelim}
+						if(document.massdelete.selected_id[i].checked)
+						{ldelim}
+								idstring = document.massdelete.selected_id[i].value +";"+idstring
+						xx++
+						{rdelim}
+				{rdelim}
+				if (xx != 0)
+				{ldelim}
+						document.massdelete.idlist.value=idstring;
+				{rdelim}
+			   else
+				{ldelim}
+						alert("{$APP.SELECT_ATLEAST_ONE}");
+						return false;
+				{rdelim}
+	   {rdelim}
 		if(confirm("{$APP.DELETE_CONFIRMATION}"+xx+"{$APP.RECORDS}"))
 		{ldelim}
-	        	document.massdelete.action.value= "deletewordtemplate";
+				document.massdelete.action.value= "deletewordtemplate";
 		{rdelim}
 		else
 		{ldelim}

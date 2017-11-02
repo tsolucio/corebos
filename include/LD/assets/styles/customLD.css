@@ -1583,3 +1583,13 @@ tr td.action-block-mailManager {
 .convertLeads-options-table .slds-radio--faux {
     margin-right: 0!important;
 }
+
+/*==== DetailViewTemplate.tpl=====*/
+.email-body td {
+    white-space: normal!important;
+}
+
+/*==== CreateEmailTemplate.tpl=====*/
+.field-type-table .dvtCellLabel{
+    border: 0;
+}
