@@ -39,10 +39,11 @@ $mod_strings = Array(
 'ERR_DELETE_RECORD'=>"Debe especificar un registro para eliminar la cuenta.",
 'LBL_LIST_FILENAME'=>"Nombre Archivo",
 
-// Added for Note(3.2-patch 3) 
+'Template'=>'Plantilla',
+'Template For' => 'Plantilla Para',
 
 'LBL_FILENAME'=>'Adjunto:',
-'LBL_NOTE_INFORMATION'=>'Información Básica',
+'LBL_NOTE_INFORMATION'=>'Información Documento',
 'File Information'=>'Información Archivo',
 
 // Added for 4GA

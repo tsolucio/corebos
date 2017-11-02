@@ -25,6 +25,7 @@ $app_strings = array(
 	'LBL_SHOW' => 'Mutat :',
 	'today' => 'Ma',
 	'all' => 'Minden',
+	'Generate Document'=>'Merge Document',
 	'LBL_UPCOMING_EVENTS' => 'Esedékes teendők',
 	'LBL_PENDING_EVENTS' => 'Függő teendők',
 	'NTC_WELCOME_MESSAGE' => 'Üdvözlünk a coreBOS-ben!',
