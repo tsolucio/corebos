@@ -1606,3 +1606,12 @@ tr td.action-block-mailManager {
     height: 26px;
     min-height: 26px;
 }
+
+.listRow .slds-select,
+.listRow .slds-input {
+    margin:0;
+}
+
+.listRow .slds-radio--faux {
+    margin-right: 0!important;
+}
