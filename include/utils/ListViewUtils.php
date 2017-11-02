@@ -144,8 +144,8 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 				$fieldname = 'product_id';
 			}
 		}
-		if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0 || in_array($fieldname, $field) || $fieldname == '' || ($name == 'Close' && $module == 'Calendar')) {
-			if (isset($focus->sortby_fields) && $focus->sortby_fields != '' && $name != 'Close') {
+		if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0 || in_array($fieldname, $field) || $fieldname == '') {
+			if (isset($focus->sortby_fields) && $focus->sortby_fields != '') {
 				//Avoid if and else check for every list field for arrow image and change order
 				$change_sorder = array('ASC' => 'DESC', 'DESC' => 'ASC');
 				$arrow_gif = array('ASC' => 'arrow_down.gif', 'DESC' => 'arrow_up.gif');
@@ -197,16 +197,7 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 					}
 				}
 			}
-
-			if ($module == "Calendar" && $name == 'Close') {
-				if (isPermitted("Calendar", "EditView") == 'yes') {
-					if ((getFieldVisibilityPermission('Events', $current_user->id, 'eventstatus') == '0') || (getFieldVisibilityPermission('Calendar', $current_user->id, 'taskstatus') == '0')) {
-						$list_header[] = $app_strings[$name];
-					}
-				}
-			} else {
-				$list_header[] = $name;
-			}
+			$list_header[] = $name;
 		}
 	}
 
@@ -616,7 +607,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 						$fieldname = 'product_id';
 					}
 				}
-				if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0 || in_array($fieldname, $field) || $fieldname == '' || ($name == 'Close' && $module == 'Calendar')) {
+				if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0 || in_array($fieldname, $field) || $fieldname == '') {
 					if ($fieldname == '') {
 						$table_name = '';
 						$column_name = '';
@@ -636,7 +627,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 									$activitytype = $adb->query_result($cal_res, 0, "activitytype");
 							}
 						}
-						if (($module == 'Calendar' || $module == 'Emails' || $module == 'HelpDesk' || $module == 'Invoice' || $module == 'Leads' || $module == 'Contacts') && (($fieldname == 'parent_id') || ($name == 'Contact Name') || ($name == 'Close') || ($fieldname == 'firstname'))) {
+						if (($module == 'Calendar' || $module == 'Emails' || $module == 'HelpDesk' || $module == 'Invoice' || $module == 'Leads' || $module == 'Contacts') && (($fieldname == 'parent_id') || ($name == 'Contact Name') || ($fieldname == 'firstname'))) {
 							if ($module == 'Calendar') {
 								if ($fieldname == 'status') {
 									if ($activitytype == 'Task') {
@@ -682,38 +673,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 								}
 								if ($fieldname == "firstname") {
 									$first_name = textlength_check($adb->query_result($list_result, $i - 1, "firstname"));
-
 									$value = '<a href="index.php?action=DetailView&module=' . $module . '&parenttab=' . $tabname . '&record=' . $entity_id . '">' . $first_name . '</a>';
-								}
-
-								if ($name == 'Close') {
-									$status = $adb->query_result($list_result, $i - 1, "status");
-									$activityid = $adb->query_result($list_result, $i - 1, "activityid");
-									if (empty($activityid)) {
-										$activityid = $adb->query_result($list_result, $i - 1, "tmp_activity_id");
-									}
-									if ($activitytype != 'Task' && $activitytype != 'Emails') {
-										$eventstatus = $adb->query_result($list_result, $i - 1, "eventstatus");
-										if (isset($eventstatus)) {
-											$status = $eventstatus;
-										}
-									}
-									if ($status == 'Deferred' || $status == 'Completed' || $status == 'Held' || $status == '') {
-										$value = "";
-									} else {
-										if ($activitytype == 'Task')
-											$evt_status = '&status=Completed';
-										else
-											$evt_status = '&eventstatus=Held';
-										if (isPermitted("Calendar", 'EditView', $activityid) == 'yes') {
-											if ($returnset == '') {
-												$returnset = '&return_module=Calendar&return_action=ListView&return_id=' . $activityid . '&return_viewname=' . $oCv->setdefaultviewid;
-											}
-											$value = "<a href='index.php?action=Save&module=Calendar&record=" . $activityid . "&parenttab=" . $tabname . "&change_status=true" . $returnset . $evt_status . "&start=" . $navigation_array['current'] . "'>X</a>";
-										} else {
-											$value = "";
-										}
-									}
 								}
 							} else {
 								$value = "";
@@ -913,19 +873,9 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 
 					// vtlib customization: For listview javascript triggers
 					if (strpos($value, 'vtlib_metainfo')===false) {
-					$value = "$value <span type='vtlib_metainfo' vtrecordid='{$entity_id}' vtfieldname='{$fieldname}' vtmodule='$module' style='display:none;'></span>";
+						$value = "$value <span type='vtlib_metainfo' vtrecordid='{$entity_id}' vtfieldname='{$fieldname}' vtmodule='$module' style='display:none;'></span>";
 					}
-					// END
-
-					if ($module == "Calendar" && $name == 'Close') {
-						if (isPermitted("Calendar", "EditView") == 'yes') {
-							if ((getFieldVisibilityPermission('Events', $current_user->id, 'eventstatus') == '0') || (getFieldVisibilityPermission('Calendar', $current_user->id, 'taskstatus') == '0')) {
-								$list_header[] = $value;
-							}
-						}
-					}
-					else
-						$list_header[] = $value;
+					$list_header[] = $value;
 				}
 			}
 			$varreturnset = '';
@@ -1146,9 +1096,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 									$value = "<a href='javascript:if (document.getElementById(\"closewindow\").value==\"true\") {window.close();}' onclick='return vtlib_setvalue_from_popup($entity_id, \"$value\", \"$forfield\"".(empty($forform)?'':',"'.$forform.'"').")' id =$count >$value1</a>";
 								}
 							}
-						}
-						// END
-						else {
+						} else {
 							$list_result_count = $i - 1;
 							$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, "search", $focus->popup_type, $form);
 						}
