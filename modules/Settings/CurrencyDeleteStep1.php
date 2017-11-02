@@ -24,7 +24,7 @@ $output ='<div id="CurrencyDeleteLay" class="layerPopup">
 <input type="hidden" name="delete_currency_id" value="'.$delete_currency_id.'">
 <table width="100%" border="0" cellpadding="3" cellspacing="0" class="layerHeadingULine">
 <tr>
-	<td class="layerPopupHeading" align="left" width="60%">'.$mod_strings["LBL_DELETE_CURRENCY"].'</td>
+	<td class="layerPopupHeading moduleName" align="left" width="60%">'.$mod_strings["LBL_DELETE_CURRENCY"].'</td>
 	<td align="right" width="40%"><img src="'. vtiger_imageurl('close.gif', $theme).'" border=0 alt="'.$app_strings["LBL_CLOSE"].'" title="'.$app_strings["LBL_CLOSE"].'" style="cursor:pointer;" onClick="document.getElementById(\'CurrencyDeleteLay\').style.display=\'none\'";></td>
 </tr>
 <table>
@@ -33,13 +33,13 @@ $output ='<div id="CurrencyDeleteLay" class="layerPopup">
 		<td class=small >
 			<table border=0 celspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
 				<tr>
-					<td width="50%" class="cellLabel small"><b>'.$mod_strings['LBL_CURRDEL'].'</b></td>
-					<td width="50%" class="cellText small"><b>'.getTranslatedCurrencyString($delete_currencyname).'</b></td>
+					<td width="50%" class="dvtCellLabel small"><b>'.$mod_strings['LBL_CURRDEL'].'</b></td>
+					<td width="50%" class="dvtCellInfo small"><b>'.getTranslatedCurrencyString($delete_currencyname).'</b></td>
 				</tr>
 				<tr>
-					<td class="cellLabel small"><b>'.$mod_strings['LBL_TRANSCURR'].'</b></td>
-					<td class="cellText small">';
-$output .= '<select class="select small" name="transfer_currency_id" id="transfer_currency_id">';
+					<td class="dvtCellLabel small"><b>'.$mod_strings['LBL_TRANSCURR'].'</b></td>
+					<td class="dvtCellInfo small">';
+$output .= '<select class="slds-select select small" style="margin:0;" name="transfer_currency_id" id="transfer_currency_id">';
 	global $adb;
 	$sql = "select * from vtiger_currency_info where currency_status = ? and deleted=0";
 	$result = $adb->pquery($sql, array('Active'));
@@ -59,7 +59,7 @@ $output .= '</td>
 </table>
 <table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport">
 	<tr>
-		<td align="center"><input type="button" onclick="transferCurrency('.$delete_currency_id.')" name="Delete" value="'.$app_strings["LBL_SAVE_BUTTON_LABEL"].'" class="crmbutton small save">
+		<td align="center" style="padding:5px;background-color:#f7f9fb;"><input type="button" onclick="transferCurrency('.$delete_currency_id.')" name="Delete" value="'.$app_strings["LBL_SAVE_BUTTON_LABEL"].'" class="slds-button slds-button--small slds-button_success">
 		</td>
 	</tr>
 </table>

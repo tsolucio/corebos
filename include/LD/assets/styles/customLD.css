@@ -1593,3 +1593,8 @@ tr td.action-block-mailManager {
 .field-type-table .dvtCellLabel{
     border: 0;
 }
+
+/*==== CurrencyListViewEntries.tpl=====*/
+.currencies-table th span.slds-truncate {
+    padding: .5rem 0;
+}

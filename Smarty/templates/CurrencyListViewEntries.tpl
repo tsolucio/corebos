@@ -9,31 +9,34 @@
 ********************************************************************************/
 -->
 *}
-<table width="100%" cellpadding="5" cellspacing="0" class="listTable" >
-	<tr>
-		<td class="colHeader small" width="3%">#</td>
-		<td class="colHeader small" width="9%">{$MOD.LBL_CURRENCY_TOOL}</td>
-		<td class="colHeader small" width="23%">{$MOD.LBL_CURRENCY_NAME}</td>
-		<td class="colHeader small" width="15%">{$MOD.LBL_CURRENCY_CODE}</td>
-		<td class="colHeader small" width="10%">{$MOD.LBL_CURRENCY_SYMBOL}</td>
-		<td class="colHeader small" width="16%">{'Symbol Placement'|@getTranslatedString:'Users'}</td>
-		<td class="colHeader small" width="16%">{$MOD.LBL_CURRENCY_CRATE}</td>
-		<td class="colHeader small" width="8%">{$MOD.LBL_CURRENCY_STATUS}</td>
-	</tr>
-	{foreach item=currencyvalues name=currlist key=id from=$CURRENCY_LIST}
-	<tr>
-		<td nowrap class="listTableRow small" valign="top">{$smarty.foreach.currlist.iteration}</td>
-		<td nowrap class="listTableRow small" valign="top">{$currencyvalues.tool}</td>
-		<td nowrap class="listTableRow small" valign="top"><b>{$currencyvalues.name|@getTranslatedCurrencyString}</b></td>
-		<td nowrap class="listTableRow small" valign="top">{$currencyvalues.code}</td>
-		<td nowrap class="listTableRow small" valign="top">{$currencyvalues.symbol}</td>
-		<td nowrap class="listTableRow small" valign="top">{$currencyvalues.position}</td>
-		<td nowrap class="listTableRow small" valign="top">{$currencyvalues.crate}</td>
-		{if $currencyvalues.status eq 'Active'}
-			<td nowrap class="listTableRow small active" valign="top">{$currencyvalues.status|@getTranslatedString}</td>
-		{else}
-			<td nowrap class="listTableRow small inactive" valign="top">{$currencyvalues.status|@getTranslatedString}</td>
-		{/if}
-	</tr>
-	{/foreach}
+<table class="slds-table slds-table--bordered  slds-table--cell-buffer listTable currencies-table">
+	<thead>
+		<tr>
+			<th class="slds-text-title--caps" scope="col"><span class="slds-truncate">#</span></th>
+			<th class="slds-text-title--caps" scope="col"><span class="slds-truncate">{$MOD.LBL_CURRENCY_TOOL}</span></th>
+			<th class="slds-text-title--caps" scope="col"><span class="slds-truncate">{$MOD.LBL_CURRENCY_CODE}</span></th>
+			<th class="slds-text-title--caps" scope="col"><span class="slds-truncate">{$MOD.LBL_CURRENCY_SYMBOL}</span></th>
+			<th class="slds-text-title--caps" scope="col"><span class="slds-truncate">{'Symbol Placement'|@getTranslatedString:'Users'}</span></th>
+			<th class="slds-text-title--caps" scope="col"><span class="slds-truncate">{$MOD.LBL_CURRENCY_CRATE}</span></th>
+			<th class="slds-text-title--caps" scope="col"><span class="slds-truncate">{$MOD.LBL_CURRENCY_STATUS}</span></th>
+		</tr>
+	</thead>
+	<tbody>
+		{foreach item=currencyvalues name=currlist key=id from=$CURRENCY_LIST}
+		<tr class="slds-hint-parent slds-line-height--reset">
+			<th scope="row"><div class="slds-truncate">{$smarty.foreach.currlist.iteration}</div></th>
+			<th scope="row"><div class="slds-truncate">{$currencyvalues.tool}</div></th>
+			<th scope="row"><div class="slds-truncate"><b>{$currencyvalues.name|@getTranslatedCurrencyString}</b></div></th>
+			<th scope="row"><div class="slds-truncate">{$currencyvalues.code}</div></th>
+			<th scope="row"><div class="slds-truncate">{$currencyvalues.symbol}</div></th>
+			<th scope="row"><div class="slds-truncate">{$currencyvalues.position}</div></th>
+			<th scope="row"><div class="slds-truncate">{$currencyvalues.crate}</div></th>
+			{if $currencyvalues.status eq 'Active'}
+				<th scope="row" class="active"><div class="slds-truncate">{$currencyvalues.status|@getTranslatedString}</div></th>
+			{else}
+				<th scope="row" class="inactive"><div class="slds-truncate">{$currencyvalues.status|@getTranslatedString}</div></th>
+			{/if}
+		</tr>
+		{/foreach}
+	</tbody>
 </table>
