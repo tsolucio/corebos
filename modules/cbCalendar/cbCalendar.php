@@ -324,13 +324,11 @@ class cbCalendar extends CRMEntity {
 		}
 	}
 
-
 	/** Function to insert values in vtiger_activity_remainder table for the specified module,
 	  * @param $table_name -- table name:: Type varchar
 	  * @param $module -- module:: Type varchar
 	 */
-	function insertIntoReminderTable($table_name,$recurid)
-	{
+	public function insertIntoReminderTable($table_name, $recurid) {
 		global $log;
 		if (isset($_REQUEST['set_reminder']) and $_REQUEST['set_reminder'] == 'Yes') {
 			coreBOS_Session::delete('next_reminder_time');
@@ -343,25 +341,17 @@ class cbCalendar extends CRMEntity {
 			$log->debug("rem_minutes is ".$rem_min);
 			$reminder_time = $rem_days * 24 * 60 + $rem_hrs * 60 + $rem_min;
 			$log->debug("reminder_time is ".$reminder_time);
-			if ($recurid == 0)
-			{
-				if($_REQUEST['mode'] == 'edit')
-				{
-					$this->activity_reminder($this->id,$reminder_time,0,$recurid,'edit');
+			if ($recurid == 0) {
+				if ($_REQUEST['mode'] == 'edit') {
+					$this->activity_reminder($this->id, $reminder_time, 0, $recurid, 'edit');
+				} else {
+					$this->activity_reminder($this->id, $reminder_time, 0, $recurid, '');
 				}
-				else
-				{
-					$this->activity_reminder($this->id,$reminder_time,0,$recurid,'');
-				}
+			} else {
+				$this->activity_reminder($this->id, $reminder_time, 0, $recurid, '');
 			}
-			else
-			{
-				$this->activity_reminder($this->id,$reminder_time,0,$recurid,'');
-			}
-		}
-		elseif (isset($_REQUEST['set_reminder']) and $_REQUEST['set_reminder'] == 'No')
-		{
-			$this->activity_reminder($this->id,'0',0,$recurid,'delete');
+		} elseif (isset($_REQUEST['set_reminder']) and $_REQUEST['set_reminder'] == 'No') {
+			$this->activity_reminder($this->id, '0', 0, $recurid, 'delete');
 		}
 	}
 
@@ -373,38 +363,30 @@ class cbCalendar extends CRMEntity {
 	 * @param  integer   $recurid         - recuring eventid
 	 * @param  string    $remindermode    - string like 'edit'
 	 */
-	function activity_reminder($activity_id,$reminder_time,$reminder_sent=0,$recurid,$remindermode='')
-	{
+	public function activity_reminder($activity_id, $reminder_time, $reminder_sent = 0, $recurid = 0, $remindermode = '') {
 		global $log;
 		$log->debug("Entering activity_reminder(".$activity_id.",".$reminder_time.",".$reminder_sent.",".$recurid.",".$remindermode.") method ...");
 		// Check for activityid already present in the reminder_table
 		$query_exist = "SELECT activity_id FROM ".$this->reminder_table." WHERE activity_id = ?";
 		$result_exist = $this->db->pquery($query_exist, array($activity_id));
 
-		if($remindermode == 'edit')
-		{
-			if($this->db->num_rows($result_exist) > 0)
-			{
-				$query = "UPDATE ".$this->reminder_table." SET";
-				$query .=" reminder_sent = ?, reminder_time = ? WHERE activity_id =?";
+		if ($remindermode == 'edit') {
+			if ($this->db->num_rows($result_exist) > 0) {
+				$query = 'UPDATE '.$this->reminder_table.' SET reminder_sent = ?, reminder_time = ? WHERE activity_id =?';
 				$params = array($reminder_sent, $reminder_time, $activity_id);
-			}
-			else
-			{
+			} else {
 				$query = "INSERT INTO ".$this->reminder_table." VALUES (?,?,?,?)";
 				$params = array($activity_id, $reminder_time, 0, $recurid);
 			}
-			$this->db->pquery($query,$params,true,"Error in processing table $this->reminder_table");
-		}
-		elseif(($remindermode == 'delete') && ($this->db->num_rows($result_exist) > 0))
-		{
+			$this->db->pquery($query, $params, true, "Error in processing table $this->reminder_table");
+		} elseif (($remindermode == 'delete') && ($this->db->num_rows($result_exist) > 0)) {
 			$query = "DELETE FROM ".$this->reminder_table." WHERE activity_id = ?";
 			$params = array($activity_id);
-			$this->db->pquery($query,$params,true,"Error in processing table $this->reminder_table");
+			$this->db->pquery($query, $params, true, "Error in processing table $this->reminder_table");
 		} elseif ($this->db->num_rows($result_exist) == 0) {
 			$query = "INSERT INTO ".$this->reminder_table." VALUES (?,?,?,?)";
 			$params = array($activity_id, $reminder_time, 0, $recurid);
-			$this->db->pquery($query,$params,true,"Error in processing table $this->reminder_table");
+			$this->db->pquery($query, $params, true, "Error in processing table $this->reminder_table");
 		}
 		$log->debug("Exiting vtiger_activity_reminder method ...");
 	}
