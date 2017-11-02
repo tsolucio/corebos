@@ -394,18 +394,18 @@ class cbCalendar extends CRMEntity {
 				$query = "INSERT INTO ".$this->reminder_table." VALUES (?,?,?,?)";
 				$params = array($activity_id, $reminder_time, 0, $recurid);
 			}
+			$this->db->pquery($query,$params,true,"Error in processing table $this->reminder_table");
 		}
 		elseif(($remindermode == 'delete') && ($this->db->num_rows($result_exist) > 0))
 		{
 			$query = "DELETE FROM ".$this->reminder_table." WHERE activity_id = ?";
 			$params = array($activity_id);
-		}
-		else
-		{
+			$this->db->pquery($query,$params,true,"Error in processing table $this->reminder_table");
+		} elseif ($this->db->num_rows($result_exist) == 0) {
 			$query = "INSERT INTO ".$this->reminder_table." VALUES (?,?,?,?)";
 			$params = array($activity_id, $reminder_time, 0, $recurid);
+			$this->db->pquery($query,$params,true,"Error in processing table $this->reminder_table");
 		}
-		$this->db->pquery($query,$params,true,"Error in processing table $this->reminder_table");
 		$log->debug("Exiting vtiger_activity_reminder method ...");
 	}
 
