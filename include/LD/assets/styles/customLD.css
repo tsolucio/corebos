@@ -1598,3 +1598,11 @@ tr td.action-block-mailManager {
 .currencies-table th span.slds-truncate {
     padding: .5rem 0;
 }
+
+/*==== EditCron.tpl=====*/
+.scheduler-popup .slds-input,
+.scheduler-popup .slds-select {
+    margin: 0;
+    height: 26px;
+    min-height: 26px;
+}
