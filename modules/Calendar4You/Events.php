@@ -310,6 +310,15 @@ foreach ($Users_Ids as $userid) {
 						$Actions[] = "<a target='_new' href='index.php?action=EditView&module=".$activitytypeid."&record=".$record."'>".$app['LNK_EDIT']."</a>";
 					} else {
 						$Actions[] = "<a target='_new' href='index.php?action=EditView&module=cbCalendar&record=".$record."&activity_mode=$activity_mode'>".$app['LNK_EDIT']."</a>";
+						$evstatus = $row['eventstatus'];
+						if (!($evstatus == 'Deferred' || $evstatus == 'Completed' || $evstatus == 'Held' || $evstatus == '')) {
+							if ($row['activitytype'] == 'Task') {
+								$evt_status = 'Completed';
+							} else {
+								$evt_status = 'Held';
+							}
+							$Actions[] = '<a href="javascript:void(0);" onclick="ajaxChangeCalendarStatus(\'' . $evt_status . "'," . $record . ');">'.$app['LBL_CLOSE'].'</a>';
+						}
 					}
 				}
 				if (vtlib_isModuleActive('Timecontrol') and !in_array($activitytypeid, $tasklabel)) {
