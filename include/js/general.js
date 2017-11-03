@@ -3243,6 +3243,29 @@ function ActivityReminderRegisterCallback(timeout) {
 	}
 }
 
+function ajaxChangeCalendarStatus(statusname,activityid) {
+	document.getElementById("status").style.display = "inline";
+	var viewid = document.getElementById('viewname') ? document.getElementById('viewname').options[document.getElementById('viewname').options.selectedIndex].value : '';
+	var idstring = document.getElementById('idlist') ? document.getElementById('idlist').value : '';
+	var searchurl = document.getElementById('search_url') ? document.getElementById('search_url').value : '';
+	var urlstring = "module=cbCalendar&action=cbCalendarAjax&file=calendarops&op=changestatus&ajax=true&newstatus=" + statusname + "&activityid=" + activityid + "&viewname=" + viewid + "&idlist=" + idstring + searchurl;
+	jQuery.ajax({
+		method: 'POST',
+		url: 'index.php?' + urlstring
+	}).done(function (response) {
+		document.getElementById("status").style.display = "none";
+		result = response.split('&#&#&#');
+		if (document.getElementById("ListViewContents")) {
+			document.getElementById("ListViewContents").innerHTML = result[2];
+			document.getElementById('basicsearchcolumns').innerHTML = '';
+		}
+		if (result[1] != '') {
+			alert(result[1]);
+		}
+	});
+	return false;
+}
+
 //added for finding duplicates
 function movefields()
 {

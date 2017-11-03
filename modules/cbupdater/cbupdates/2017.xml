@@ -140,4 +140,11 @@
 	<classname>AddWfFunctionrawparams</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add close action on listview calendar events</description>
+	<filename>build/changeSets/2017/addCalendarCloseAction.php</filename>
+	<classname>addCalendarCloseAction</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
 </updatesChangeLog>

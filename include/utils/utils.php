@@ -1257,26 +1257,6 @@ function getQuickCreate($tabid,$actionid) {
 	return $QuickCreateForm;
 }
 
-/** Function to getQuickCreate for a given tabid
- * @param $tabid -- tab id :: Type string
- * @param $actionid -- action id :: Type integer
- * @returns $QuickCreateForm -- QuickCreateForm :: Type boolean
- */
-function ChangeStatus($status,$activityid,$activity_mode='') {
-	global $log, $adb;
-	$log->debug("Entering ChangeStatus(".$status.",".$activityid.",".$activity_mode."='') method ...");
-
-	if ($activity_mode == 'Task') {
-		$query = "Update vtiger_activity set status=? where activityid = ?";
-	} elseif ($activity_mode == 'Events') {
-		$query = "Update vtiger_activity set eventstatus=? where activityid = ?";
-	}
-	if($query) {
-		$adb->pquery($query, array($status, $activityid));
-	}
-	$log->debug("Exiting ChangeStatus method ...");
-}
-
 /** Function to get unitprice for a given product id
  * @param $productid -- product id :: Type integer
  * @returns $up -- up :: Type string

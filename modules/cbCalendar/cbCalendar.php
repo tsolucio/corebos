@@ -970,5 +970,20 @@ class cbCalendar extends CRMEntity {
 		unset($_REQUEST['timefmt_dtstart'],$_REQUEST['timefmt_dtend']);
 	}
 
+	/** Function to change the status of an event
+	 * @param $status string : new status value
+	 * @param $activityid integer : activity id
+	 */
+	public static function changeStatus($status, $activityid) {
+		global $log, $adb, $current_user;
+		$log->debug("Entering changeStatus($status, $activityid) method");
+		include_once('include/Webservices/Revise.php');
+		$element = array(
+			'id' => vtws_getEntityId('cbCalendar') . 'x' . $activityid,
+			'eventstatus' => $status
+		);
+		vtws_revise($element,$current_user);
+		$log->debug('Exiting changeStatus method');
+	}
 }
 ?>
