@@ -902,7 +902,6 @@ select:-moz-focusring {
 }
 
 
-
 .LD-icons {
     width: 25px;
     vertical-align: top;
@@ -924,17 +923,6 @@ select:-moz-focusring {
 #tagfields span img {
     width: 10px;
 }
-
-
-
-
-
-
-
-
-
-
-
 
 /*=========   END DetailView - DetailViewUI - DetailViewUIUser  ==========*/
 
@@ -1608,10 +1596,18 @@ tr td.action-block-mailManager {
 }
 
 .listRow .slds-select,
-.listRow .slds-input {
+.listRow .slds-input,
+.listTable .slds-input,
+.listTable .slds-select {
     margin:0;
 }
 
 .listRow .slds-radio--faux {
     margin-right: 0!important;
+}
+
+/*======= End Import_Default_Values_widget=============*/
+.JCLRgrip:hover {
+    width: .15rem;
+    background-color: #0070d2;
 }
