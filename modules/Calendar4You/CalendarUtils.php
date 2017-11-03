@@ -430,6 +430,9 @@ function transferForAddIntoTitle($type, $row, $CD) {
 	}
 	if ($CD['module']=='Calendar' or $CD['module']=='Events') {
 		$Cal_Data = getDetailViewOutputHtml($CD['uitype'], $CD['fieldname'], $CD['fieldlabel'], $Col_Field, '2', getTabid('cbCalendar'), 'cbCalendar');
+		if ($CD['fieldname'] == 'subject' && strpos($Cal_Data[1], 'a href') === false) {
+			$Cal_Data[1] = '<a target=_blank href="index.php?module=cbCalendar&action=DetailView&record=' . $row['crmid'] . '">' . $Cal_Data[1] . '</a>';
+		}
 		if (strpos($Cal_Data[1], 'vtlib_metainfo')===false) {
 			$Cal_Data[1] .= "<span type='vtlib_metainfo' vtrecordid='".$row["crmid"]."' vtfieldname='".$CD["fieldname"]."' vtmodule='cbCalendar' style='display:none;'></span>";
 		}
