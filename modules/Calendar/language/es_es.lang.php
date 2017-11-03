@@ -244,8 +244,8 @@ $mod_strings = array (
 //DON'T CONVERT THESE THEY ARE MAPPINGS -ENDS
 'LBL_COMPLETED'=>'Completada',
 'LBL_DEFERRED'=>'Retrasar',
-'LBL_HELD'=>'Realizada',
-'LBL_NOTHELD'=>'Anular',
+'LBL_HELD'=>'Mantenida',
+'LBL_NOTHELD'=>'Pendiente',
 'LBL_POSTPONE'=>'Posponer',
 'LBL_CHANGEOWNER'=>'Cambiar Propietario',
 'LBL_DEL'=>'Borrar',
@@ -397,7 +397,7 @@ $mod_strings = array (
 //Added for existing Picklist entries
 
 'Planned'=>'Planeado',
-'Held'=>'Realizada',
+'Held'=>'Mantenida',
 'Not Held'=>'Pendiente',
 'Completed'=>'Completado',
 'Deferred'=>'Retrasado',
