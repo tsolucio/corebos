@@ -141,7 +141,7 @@
 </table>
 
 <!-- MassEdit Feature -->
-<div id="massedit" class="layerPopup" style="display:none;width:80%;">
+<div id="massedit" class="layerPopup" style="display:none;width:80%;z-index: 99;">
 <table class="slds-table slds-no-row-hover" width="100%" style="border-bottom: 1px solid #ddd;">
 	<tr class="slds-text-title--header">
 		<th scope="col">
