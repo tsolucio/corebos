@@ -37,7 +37,7 @@
 
 								{include file="SetMenu.tpl"}
 
-								<!-- DISPLAY -->
+								<!-- DISPLAY Outgoing server-->
 								<table class="slds-table slds-no-row-hover slds-table--cell-buffer slds-table-moz" style="background-color: #f7f9fb;">
 									<tr class="slds-text-title--caps">
 										<td style="padding: 0;">
