@@ -917,7 +917,6 @@ $app_strings = array (
 		'LBL_REMAINDER_HRS'=>'hrs',
 		'Call'=>'Llamada',
 		'Meeting'=>'Reunión',
-		
 		'High'=>'Alto',
 		'Medium'=>'Medio',
 		'Low'=>'Bajo',

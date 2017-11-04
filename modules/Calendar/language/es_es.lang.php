@@ -231,10 +231,6 @@ $mod_strings = array (
 'LBL_TODONAME'=>'Tarea',
 'LBL_TODODATETIME'=>'Fecha y Hora',
 
-
-
-
-
 //DON'T CONVERT THESE THEY ARE MAPPINGS - STARTS
 'db_last_name' => 'LBL_LIST_LAST_NAME',
 'db_first_name' => 'LBL_LIST_FIRST_NAME',

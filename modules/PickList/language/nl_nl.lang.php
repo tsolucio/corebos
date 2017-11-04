@@ -1,9 +1,8 @@
 <?php
-
 /*******************************************************************************
  * The contents of this file are subject to the following licences:
  * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
- * - vtiger CRM Public License Version 1.0 
+ * - vtiger CRM Public License Version 1.0
  * You may not use this file except in compliance with the License
  * Software distributed under the License is distributed on an  "AS IS" basis,
  * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
@@ -15,7 +14,7 @@
  * Portions created by Vicus are Copyright (C) Vicus.
  * All Rights Reserved.
  * Feel free to use / redistribute these languagefiles under the VPL 1.0.
- * This translations is based on earlier work of: 
+ * This translations is based on earlier work of:
  * - IT-Online.nl <www.it-online.nl>
  * - Weltevree.org <www.Weltevree.org>
  ********************************************************************************/
@@ -31,9 +30,6 @@
  * @license	vtiger CRM Public License Version 1.0 (by definition)
  ********************************************************************************/
 
-/**
- * this file can be used to internationalise the strings present in the picklist
- */
 $mod_strings = array(
 	'LBL_ASSIGN_BUTTON'=>'Toewijzen',
 	'ADD_PICKLIST_VALUES'=>'Voeg waarden toe',
