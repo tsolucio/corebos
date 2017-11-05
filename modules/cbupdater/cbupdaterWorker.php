@@ -238,7 +238,7 @@ class cbupdaterWorker {
 							$newfield->columntype = $fieldinfo['columntype'];
 							$newfield->typeofdata = $fieldinfo['typeofdata'];
 							$newfield->uitype = $fieldinfo['uitype'];
-							$newfield->displaytype = $fieldinfo['displaytype'];
+							$newfield->displaytype = (empty($fieldinfo['displaytype']) ? '1' : $fieldinfo['displaytype']);
 							$newfield->masseditable = (empty($fieldinfo['massedit']) ? '0' : $fieldinfo['massedit']);
 							$block->addField($newfield);
 							if ($fieldinfo['uitype']=='10' and !empty($fieldinfo['mods'])) {
