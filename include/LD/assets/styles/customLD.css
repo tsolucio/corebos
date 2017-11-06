@@ -1029,8 +1029,22 @@ select:-moz-focusring {
     width: 16px;
 }
 
+#resizableTable img {
+    width: 15px;
+    vertical-align: middle;
+}
 
+#no_entries_found {
+    z-index: 99999;
+}
 
+#no_entries_found img {
+    width: auto;
+    background-color: orange;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid orange;
+}
 
 /*=========   END ListView.tpl  ==========*/
 

@@ -118,7 +118,7 @@
 
 				<!-- =====================LIGHITNG DESGIN LIST VIEW =========== -->
 				<div >
-					<table id="resizableTable" class="slds-table slds-table--bordered  ld-font">
+					<table id="resizableTable" class="slds-table slds-table--bordered ld-font">
 						<thead>
 							<!-- Table Headers -->
 							<tr>
@@ -180,7 +180,7 @@
 										{assign var=vowel_conf value='LBL_A'} {if $MODULE eq 'Accounts' || $MODULE eq 'Invoice'} {assign var=vowel_conf value='LBL_AN'} {/if} {assign var=MODULE_CREATE value=$SINGLE_MOD} {if $MODULE eq 'HelpDesk'} {assign var=MODULE_CREATE value='Ticket'} {/if} {if $SQLERROR}
 										<table border="0" cellpadding="5" cellspacing="0" width="98%">
 											<tr>
-												<td rowspan="2" width="25%"><img src="{'empty.png'|@vtiger_imageurl:$THEME}" height="60" width="61"></td>
+												<td rowspan="2" width="25%"><img src="{'empty.png'|@vtiger_imageurl:$THEME}"></td>
 												<td style="border-bottom: 1px solid rgb(204, 204, 204);" nowrap="nowrap" width="75%">
 													<span class="genHeaderSmall">{$APP.LBL_NO_DATA}</span>
 												</td>
@@ -192,7 +192,7 @@
 										{else} {if $CHECK.EditView eq 'yes' && $MODULE neq 'Emails' && $MODULE neq 'Webmails'}
 										<table border="0" cellpadding="5" cellspacing="0" width="98%">
 											<tr>
-												<td rowspan="2" width="25%"><img src="{'empty.png'|@vtiger_imageurl:$THEME}" height="60" width="61"></td>
+												<td rowspan="2" width="25%"><img src="{'empty.png'|@vtiger_imageurl:$THEME}"></td>
 												<td style="border-bottom: 1px solid rgb(204, 204, 204);" nowrap="nowrap" width="75%">
 													<span class="genHeaderSmall">{$APP.LBL_NO_DATA}</span>
 												</td>
