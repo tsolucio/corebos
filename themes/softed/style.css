@@ -2144,7 +2144,7 @@ textarea {
 /* Layer Popup */
 .layerPopup {
 	border:2px solid #ddd;
-	background:#fffff5;
+	background-color: #fff;
 	position:absolute;
 }
 

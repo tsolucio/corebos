@@ -71,17 +71,17 @@ if(!empty($_SESSION[$sModule.'_DetailView_Navigation'.$viewId])){
 }else{
 	$recordList = array();
 }
-$output = '<table width="100%" border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine"> 
-	<tr><td width="60%" align="left" style="font-size:12px;font-weight:bold;">'.$app_strings['LBL_JUMP_To'].' '.getTranslatedString($sModule,$sModule).':</td>
-	<td width="5%" align="right"><a href="javascript:fninvsh(\'lstRecordLayout\');"><img src="'. vtiger_imageurl('close.gif', $theme).'" border="0" align="absmiddle" /></a></td>
+$output = '<table class="slds-table slds-no-row-hover">
+	<tr class="slds-text-title--header"><th scope="col"><div class="slds-truncate moduleName">'.$app_strings['LBL_JUMP_To'].' '.getTranslatedString($sModule,$sModule).':</div></th>
+	<th scope="col" style="padding: .5rem;text-align:right;"><div class="slds-truncate"><a href="javascript:fninvsh(\'lstRecordLayout\');"><img src="'. vtiger_imageurl('close.gif', $theme).'" border="0" align="absmiddle" /></a></div></th>
 	</tr>
 	</table><table border=0 cellspacing=0 cellpadding=0 width=100% align=center>
 		<tr>
 			<td class="small">
 				<table border=0 celspacing=0 cellpadding=0 width=100% align=center>
 					<tr><td>';
-$output .= '<div style="height:270px;overflow-y:auto;">';
-$output .= '<table cellpadding="2">';
+$output .= '<div>';
+$output .= '<table class="slds-table slds-table--bordered">';
 
 if(count($recordList) > 0){
 	$displayRecordCount = 10;
@@ -110,9 +110,9 @@ if(count($recordList) > 0){
 	}
 	foreach ($idsArray as $id) {
 		if($id===$iCurRecord){
-			$output .= '<tr><td style="text-align:left;font-weight:bold;">'.$recordNameMapping[$id].'</td></tr>';
+			$output .= '<tr class="slds-hint-parent slds-line-height--reset"><td style="text-align:left;font-weight:bold;">'.$recordNameMapping[$id].'</td></tr>';
 		}else{
-			$output .= '<tr><td style="text-align:left;"><a href="index.php?module='.$sModule.
+			$output .= '<tr class="slds-hint-parent slds-line-height--reset"><td style="text-align:left;"><a href="index.php?module='.$sModule.
 				'&action=DetailView&record='.$id.'&start='.$recordPageMapping[$id].'">'.$recordNameMapping[$id].'</a></td></tr>';
 		}
 	}

@@ -112,7 +112,7 @@ function DeleteTag(id,recordid)
 
 </script>
 
-<div id="lstRecordLayout" class="layerPopup" style="display:none;width:325px;height:300px;"></div>
+<div id="lstRecordLayout" class="layerPopup" style="display:none;width:325px;"></div>
 <table width="100%" cellpadding="2" cellspacing="0" border="0" class="detailview_wrapper_table">
 	<tr>
 		<td class="detailview_wrapper_cell">

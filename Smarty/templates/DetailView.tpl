@@ -129,7 +129,7 @@ function sendfile_email()
 {rdelim}
 
 </script>
-<div id="lstRecordLayout" class="layerPopup" style="display:none;width:325px;height:300px;"></div>
+<div id="lstRecordLayout" class="layerPopup" style="display:none;width:325px;"></div>
 {if $MODULE eq 'Accounts' || $MODULE eq 'Contacts' || $MODULE eq 'Leads'} {if $MODULE eq 'Accounts'} {assign var=address1 value='$MOD.LBL_BILLING_ADDRESS'} {assign var=address2 value='$MOD.LBL_SHIPPING_ADDRESS'} {/if} {if $MODULE eq 'Contacts'} {assign var=address1 value='$MOD.LBL_PRIMARY_ADDRESS'} {assign var=address2 value='$MOD.LBL_ALTERNATE_ADDRESS'} {/if}
 <div id="locateMap" onMouseOut="fninvsh('locateMap')" onMouseOver="fnvshNrm('locateMap')">
 	<table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="100%">
