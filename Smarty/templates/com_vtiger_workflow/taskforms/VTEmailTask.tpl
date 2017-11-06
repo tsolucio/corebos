@@ -15,103 +15,119 @@ var __attinfo = {$task->attachmentsinfo|json_encode};
 <span id='_progressmsg_'>...</span><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border='0' align='absmiddle'>
 </div>
 
-<table border="0" cellpadding="5" cellspacing="0" width="100%" class="small">
+<table class="slds-table slds-table--cell-buffer slds-no-row-hover slds-table--fixed-layout detailview_table">
 	<tr>
 		<td class='dvtCellLabel' align="right" width=15% nowrap="nowrap"><b>{'LBL_EMAIL_FROMNAME'|@getTranslatedString:$MODULE_NAME}</b></td>
-		<td class='dvtCellInfo'><input type="text" name="fromname" value="{$task->fromname}" id="save_fromname" class="form_input" style='width: 250px;'>
+		<td class='dvtCellInfo' width=85%><input type="text" name="fromname" value="{$task->fromname}" id="save_fromname" class="form_input slds-input">
 			<span id="task-emailfieldsfrmname-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
-			<select id="task-emailfieldsfrmname" class="small" style="display: none;"><option value=''>{$MOD.LBL_SELECT_OPTION_DOTDOTDOT}</option></select></td>
+			<select id="task-emailfieldsfrmname" class="small slds-select" style="display: none; width:50%;"><option value=''>{$MOD.LBL_SELECT_OPTION_DOTDOTDOT}</option></select></td>
 	</tr>
 	<tr>
-		<td class='dvtCellLabel' align="right" width=15% nowrap="nowrap"><b>{'LBL_EMAIL_FROMEMAIL'|@getTranslatedString:$MODULE_NAME}</b></td>
-		<td class='dvtCellInfo'><input type="text" name="fromemail" value="{$task->fromemail}" id="save_fromemail" class="form_input" style='width: 250px;'>
+		<td class='dvtCellLabel' align="right" nowrap="nowrap"><b>{'LBL_EMAIL_FROMEMAIL'|@getTranslatedString:$MODULE_NAME}</b></td>
+		<td class='dvtCellInfo'><input type="text" name="fromemail" value="{$task->fromemail}" id="save_fromemail" class="form_input slds-input">
 			<span id="task-emailfieldsfrmemail-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
-			<select id="task-emailfieldsfrmemail" class="small" style="display: none;"><option value=''>{$MOD.LBL_SELECT_OPTION_DOTDOTDOT}</option></select></td>
+			<select id="task-emailfieldsfrmemail" class="small slds-select" style="display: none; width:50%;"><option value=''>{$MOD.LBL_SELECT_OPTION_DOTDOTDOT}</option></select></td>
 	</tr>
 	<tr>
-		<td class='dvtCellLabel' align="right" width=15% nowrap="nowrap"><b>{'LBL_EMAIL_REPLYTO'|@getTranslatedString:$MODULE_NAME}</b></td>
-		<td class='dvtCellInfo'><input type="text" name="replyto" value="{$task->replyto}" id="save_replyto" class="form_input" style='width: 250px;'>
+		<td class='dvtCellLabel' align="right" nowrap="nowrap"><b>{'LBL_EMAIL_REPLYTO'|@getTranslatedString:$MODULE_NAME}</b></td>
+		<td class='dvtCellInfo'><input type="text" name="replyto" value="{$task->replyto}" id="save_replyto" class="form_input slds-input">
 			<span id="task-emailfieldsreplyto-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
-			<select id="task-emailfieldsreplyto" class="small" style="display: none;"><option value=''>{$MOD.LBL_SELECT_OPTION_DOTDOTDOT}</option></select></td>
+			<select id="task-emailfieldsreplyto" class="small slds-select" style="display: none; width:50%;"><option value=''>{$MOD.LBL_SELECT_OPTION_DOTDOTDOT}</option></select></td>
 	</tr>
 	<tr>
-		<td class='dvtCellLabel' align="right" width=15% nowrap="nowrap"><b><font color=red>*</font> {'LBL_EMAIL_RECIPIENT'|@getTranslatedString:$MODULE_NAME}</b></td>
-		<td class='dvtCellInfo'><input type="text" name="recepient" value="{$task->recepient}" id="save_recepient" class="form_input" style='width: 250px;'>
+		<td class='dvtCellLabel' align="right" nowrap="nowrap"><b><font color=red>*</font> {'LBL_EMAIL_RECIPIENT'|@getTranslatedString:$MODULE_NAME}</b></td>
+		<td class='dvtCellInfo'><input type="text" name="recepient" value="{$task->recepient}" id="save_recepient" class="form_input slds-input">
 			<span id="task-emailfields-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
-			<select id="task-emailfields" class="small" style="display: none;"><option value=''>{$MOD.LBL_SELECT_OPTION_DOTDOTDOT}</option></select></td>
+			<select id="task-emailfields" class="small slds-select" style="display: none; width:50%;"><option value=''>{$MOD.LBL_SELECT_OPTION_DOTDOTDOT}</option></select></td>
 	</tr>
 	<tr>
-		<td class='dvtCellLabel' align="right" width=15% nowrap="nowrap"><b> {'LBL_EMAIL_CC'|@getTranslatedString:$MODULE_NAME}</b></td>
-		<td class='dvtCellInfo'><input type="text" name="emailcc" value="{$task->emailcc}" id="save_emailcc" class="form_input" style='width: 250px;'>
+		<td class='dvtCellLabel' align="right" nowrap="nowrap"><b> {'LBL_EMAIL_CC'|@getTranslatedString:$MODULE_NAME}</b></td>
+		<td class='dvtCellInfo'><input type="text" name="emailcc" value="{$task->emailcc}" id="save_emailcc" class="form_input slds-input">
 			<span id="task-emailfieldscc-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
-			<select id="task-emailfieldscc" class="small" style="display: none;"><option value=''>{$MOD.LBL_SELECT_OPTION_DOTDOTDOT}</option></select></td>
+			<select id="task-emailfieldscc" class="small slds-select" style="display: none; width:50%;"><option value=''>{$MOD.LBL_SELECT_OPTION_DOTDOTDOT}</option></select></td>
 	</tr>
 	<tr>
-		<td class='dvtCellLabel' align="right" width=15% nowrap="nowrap"><b> {'LBL_EMAIL_BCC'|@getTranslatedString:$MODULE_NAME}</b></td>
-		<td class='dvtCellInfo'><input type="text" name="emailbcc" value="{$task->emailbcc}" id="save_emailbcc" class="form_input" style='width: 250px;'>
+		<td class='dvtCellLabel' align="right" nowrap="nowrap"><b> {'LBL_EMAIL_BCC'|@getTranslatedString:$MODULE_NAME}</b></td>
+		<td class='dvtCellInfo'><input type="text" name="emailbcc" value="{$task->emailbcc}" id="save_emailbcc" class="form_input slds-input">
 			<span id="task-emailfieldsbcc-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
-			<select id="task-emailfieldsbcc" class="small" style="display: none;"><option value=''>{$MOD.LBL_SELECT_OPTION_DOTDOTDOT}</option></select></td>
+			<select id="task-emailfieldsbcc" class="small slds-select" style="display: none; width:50%;"><option value=''>{$MOD.LBL_SELECT_OPTION_DOTDOTDOT}</option></select></td>
 	</tr>
 	<tr>
-		<td class='dvtCellLabel' align="right" width=15% nowrap="nowrap"><b><font color=red>*</font> {'LBL_EMAIL_SUBJECT'|@getTranslatedString:$MODULE_NAME}</b></td>
-		<td class='dvtCellInfo'><input type="text" name="subject" value="{$task->subject}" id="save_subject" class="form_input" style='width: 350px;'>
+		<td class='dvtCellLabel' align="right" nowrap="nowrap"><b><font color=red>*</font> {'LBL_EMAIL_SUBJECT'|@getTranslatedString:$MODULE_NAME}</b></td>
+		<td class='dvtCellInfo'><input type="text" name="subject" value="{$task->subject}" id="save_subject" class="form_input slds-input">
 			<span id="task-subjectfields-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
-			<select id="task-subjectfields" class="small" style="display: none;"><option value=''>{$MOD.LBL_SELECT_OPTION_DOTDOTDOT}</option></select></td>
+			<select id="task-subjectfields" class="small slds-select" style="display: none; width:50%;"><option value=''>{$MOD.LBL_SELECT_OPTION_DOTDOTDOT}</option></select></td>
 	</tr>
 </table>
-
-<table border="0" cellpadding="0" cellspacing="0" width="100%" class="small">
+<br/>
+<table class="slds-table slds-table--cell-buffer slds-no-row-hover slds-table--fixed-layout detailview_table">
 	<tr>
-		<td style='padding-top: 10px;'>
+		<td class="dvtCellInfo" width="30%">
 			<span id="task-fieldnames-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
-			<select id='task-fieldnames' class="small" style="display: none;"><option value=''>{$MOD.LBL_SELECT_OPTION_DOTDOTDOT}</option></select>
+			<select id='task-fieldnames' class="small slds-select" style="display: none;"><option value=''>{$MOD.LBL_SELECT_OPTION_DOTDOTDOT}</option></select>
 		</td>
-		<td>&nbsp</td>
-		<td style='padding-top: 10px;'>
-			<b>{$MOD.LBL_SELECT}&nbsp</b>
+		<td class="dvtCellLabel" width="10%">
+			<b>{$MOD.LBL_SELECT}</b>
 		</td>
-		<td style='padding-top: 10px;'>
-			<select class="small" id="task_timefields">
+		<td class="dvtCellInfo" width="30%">
+			<select class="small slds-select" id="task_timefields">
 					<option value="">{'Select Meta Variables'|@getTranslatedString:$MODULE_NAME}</option>
 					{foreach key=META_LABEL item=META_VALUE from=$META_VARIABLES}
 					<option value="{$META_VALUE}">{$META_LABEL|@getTranslatedString:$MODULE_NAME}</option>
 					{/foreach}
 			</select>
 		</td>
-		<td align="right" style='padding-top: 10px;'>
+		<td align="left" width="30%">
 			<span class="helpmessagebox" style="font-style: italic;">{$MOD.LBL_WORKFLOW_NOTE_CRON_CONFIG}</span>
 		</td>
 	</tr>
 	<tr>
-		<td colspan="4">
+		<td colspan="3" class="dvtCellInfo">
 			<span id="_messagediv_" style="display: none;z-index:22;" class="cb-alert-info"></span>
 			<div id="file-uploader" class="dropzone mm-dz-div slds-m-top--xx-small" style="display: none;">
 				<span class="dz-message mmdzmessage"><img alt="{'Drag attachment here or click to upload'|@getTranslatedString}" src="include/dropzone/upload_32.png"></span>
 				<span class="dz-message mmdzmessage" id="file-uploader-message">&nbsp;{'Drag attachment here or click to upload'|@getTranslatedString}</span>
 			</div>
 		</td>
-		<td valign="top" align="left" style="white-space:nowrap;">
+		<td class="dvtCellInfo" valign="top" align="left" style="white-space:nowrap;">
 			<input type="hidden" id="attachmentCount" name="attachmentCount" value="{if isset($task->attachmentids)}{$task->attachmentids|substr_count:','}{else}0{/if}" >
 			<input type="hidden" id="attachmentids"  name="attachmentids" value="{if isset($task->attachmentids)}{$task->attachmentids}{/if}" >
-			<button onclick="jQuery('#file-uploader').show();attachmentManager.getDocuments();return false;" class="crmbutton small edit slds-m-left--xx-small slds-m-top--xx-small">{'LBL_SELECT_DOCUMENTS'|@getTranslatedString:'MailManager'}</button><br>
-			<button onclick="jQuery('#file-uploader').toggle();return false;" class="crmbutton small edit slds-m-left--xx-small slds-m-top--xx-small">{'LBL_Attachments'|@getTranslatedString:'MailManager'}</button><br>
-			<span class="slds-m-left--xx-small slds-m-top--x-small"><b>{'LBL_AttachmentInField'|@getTranslatedString:$MODULE_NAME}</b></span><br>
-			<select id='attfieldnames' name='attfieldnames' class="small slds-m-left--xx-small slds-m-top--xx-small"><option value=''>{$MOD.LBL_SELECT_OPTION_DOTDOTDOT}</option></select><br>
+			<button onclick="jQuery('#file-uploader').show();attachmentManager.getDocuments();return false;" class="slds-button slds-button--small slds-button--brand slds-m-left--xx-small slds-m-top--xx-small">{'LBL_SELECT_DOCUMENTS'|@getTranslatedString:'MailManager'}</button><br>
+			<button onclick="jQuery('#file-uploader').toggle();return false;" class="slds-button slds-button--small slds-button--info slds-m-left--xx-small slds-m-top--xx-small">{'LBL_Attachments'|@getTranslatedString:'MailManager'}</button><br><br/>
+			<span class="slds-m-left--xx-small slds-m-top--x-small"><b>{'LBL_AttachmentInField'|@getTranslatedString:$MODULE_NAME}</b></span><br><br/>
+			<select id='attfieldnames' name='attfieldnames' class="small slds-select slds-m-left--xx-small slds-m-top--xx-small"><option value=''>{$MOD.LBL_SELECT_OPTION_DOTDOTDOT}</option></select><br/>
 		</td>
 	</tr>
 </table>
-<table>
+
+<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 	<tr>
-		<td>&nbsp</td>
-	</tr>
-	<tr>
-		<td><b>{$MOD.LBL_MESSAGE}:</b></td>
+		<td class="big" style="padding:.5rem 0 0 0;">
+			<div class="forceRelatedListSingleContainer">
+				<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
+					<div class="slds-card__header slds-grid">
+						<header class="slds-media slds-media--center slds-has-flexi-truncate">
+							<div class="slds-media__body">
+								<h2>
+									<span class="slds-text-title--caps slds-truncate slds-m-right--xx-small actionLabel">
+										<b>{$MOD.LBL_MESSAGE}:</b>
+									</span>
+								</h2>
+							</div>
+						</header>
+					</div>
+				</article>
+			</div>
+			<div class="slds-truncate">
+				<script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
+				<p style="padding: 0 .5rem;">
+					<textarea style="width:90%;height:200px;" name="content" rows="55" cols="40" id="save_content" class="detailedViewTextBox"> {$task->content} </textarea>
+				</p>
+			</div>
+		</td>
 	</tr>
 </table>
-<script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
-<p style="border:1px solid black;">
-	<textarea style="width:90%;height:200px;" name="content" rows="55" cols="40" id="save_content" class="detailedViewTextBox"> {$task->content} </textarea>
-</p>
+
 <script type="text/javascript" defer="1">
 	var textAreaName = 'save_content';
 	CKEDITOR.replace( textAreaName,	{ldelim}
