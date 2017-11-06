@@ -59,7 +59,7 @@
 												<input type=text name={$myVal.columnname} size=13>
 											{elseif $myVal.uitype == 15 || $myVal.uitype == 56}
 											<td class="dvtCellLabel	">
-												{html_options name=$myVal.columnname  options=$myVal.value}
+												{html_options name=$myVal.columnname class="slds-select" options=$myVal.value}
 											{/if}
 											<td class="dvtCellInfo">
 												<b>{$myVal.fieldlabel}</b>
