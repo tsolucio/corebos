@@ -266,7 +266,7 @@ function getSearchModulesComboList($search_module){
 		<tr>
 		<td colspan="3" id="global_search_total_count" style="padding-left:30px">&nbsp;</td>
 		<td nowrap align="right"><?php echo $app_strings['LBL_SHOW_RESULTS'] ?>&nbsp;
-			<select id="global_search_module" name="global_search_module" onChange="displayModuleList(this);" class="small">
+			<select id="global_search_module" name="global_search_module" onChange="displayModuleList(this);" class="small slds-select" style="width: 30%;">
 			<option value="All"><?php echo $app_strings['COMBO_ALL'] ?></option>
 			<?php
 			foreach($object_array as $module => $object_name){

@@ -953,6 +953,15 @@ select:-moz-focusring {
 .homePageMatrixHdr .slds-select{
     width: 30%;
 }
+
+.headerrow img {
+    width: 18px;
+}
+
+.headerrow a img:hover {
+    opacity: .7;
+}
+
 /*=========   End HomeBlock.tpl ==========*/
 
 /*=========   Inventory DetailView.tpl  ==========*/
