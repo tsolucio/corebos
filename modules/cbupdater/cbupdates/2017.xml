@@ -140,4 +140,18 @@
 	<classname>AddWfFunctionrawparams</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add close action on listview calendar events</description>
+	<filename>build/changeSets/2017/addCalendarCloseAction.php</filename>
+	<classname>addCalendarCloseAction</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Make calendar Completed Status NonEditable as it is used in code</description>
+	<filename>build/changeSets/2017/calendarCompletedStatusNonEditable.php</filename>
+	<classname>calendarCompletedStatusNonEditable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

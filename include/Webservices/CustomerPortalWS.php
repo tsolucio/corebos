@@ -503,7 +503,7 @@ function getSearchingListViewEntries($focus, $module,$list_result,$navigation_ar
 						$fieldname = 'product_id';
 					}
 				}
-				if ($is_admin==true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] ==0 || in_array($fieldname,$field) || $fieldname == '' || ($name=='Close' && $module=='Calendar')) {
+				if ($is_admin==true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] ==0 || in_array($fieldname,$field) || $fieldname == '') {
 					if ($fieldname == '') {
 						$table_name = '';
 						$column_name = '';
@@ -523,7 +523,7 @@ function getSearchingListViewEntries($focus, $module,$list_result,$navigation_ar
 								$activitytype = $adb->query_result($cal_res,0,"activitytype");
 							}
 						}
-						if (($module == 'Calendar' || $module == 'Emails' || $module == 'HelpDesk' || $module == 'Invoice' || $module == 'Leads' || $module == 'Contacts') && (($fieldname=='parent_id') || ($name=='Contact Name') || ($name=='Close') || ($fieldname == 'firstname'))) {
+						if (($module == 'Calendar' || $module == 'Emails' || $module == 'HelpDesk' || $module == 'Invoice' || $module == 'Leads' || $module == 'Contacts') && (($fieldname=='parent_id') || ($name=='Contact Name') || ($fieldname == 'firstname'))) {
 							if ($module == 'Calendar') {
 								if ($fieldname=='status') {
 									if ($activitytype == 'Task') {
@@ -566,39 +566,6 @@ function getSearchingListViewEntries($focus, $module,$list_result,$navigation_ar
 									$first_name = textlength_check($adb->query_result($list_result,$i-1,"firstname"));
 									$value =$first_name;
 								}
-
-								if ($name == 'Close') {
-									$status = $adb->query_result($list_result,$i-1,"status");
-									$activityid = $adb->query_result($list_result,$i-1,"activityid");
-									if (empty($activityid)) {
-										$activityid = $adb->query_result($list_result, $i-1, "tmp_activity_id");
-									}
-									$activitytype = $adb->query_result($list_result,$i-1,"activitytype");
-									// TODO - Picking activitytype when it is not present in the Custom View.
-									// Going forward, this column should be added to the select list if not already present as a performance improvement.
-									if (empty($activitytype)) {
-										$activitytypeRes = $adb->pquery('SELECT activitytype FROM vtiger_activity WHERE activityid=?', array($activityid));
-										if ($adb->num_rows($activitytypeRes) > 0) {
-											$activitytype = $adb->query_result($activitytypeRes, 0, 'activitytype');
-										}
-									}
-									if ($activitytype != 'Task' && $activitytype != 'Emails') {
-										$eventstatus = $adb->query_result($list_result,$i-1,"eventstatus");
-										if (isset($eventstatus)) {
-											$status = $eventstatus;
-										}
-									}
-									if ($status =='Deferred' || $status == 'Completed' || $status == 'Held' || $status == '') {
-										$value="";
-									} else {
-										if ($activitytype=='Task') {
-											$evt_status='&status=Completed';
-										} else {
-											$evt_status='&eventstatus=Held';
-										}
-									}
-								}
-
 							} else {
 								$value = "";
 							}
@@ -791,20 +758,7 @@ function getSearchingListViewEntries($focus, $module,$list_result,$navigation_ar
 							$value = evvt_strip_html_links($value);
 						}
 					}
-
-					// vtlib customization: For listview javascript triggers
-					//$value = "$value <span type='vtlib_metainfo' vtrecordid='{$entity_id}' vtfieldname='{$fieldname}' vtmodule='$module' style='display:none;'></span>";
-					// END
-
-					if ($module == "Calendar" && $name == $app_strings['Close']) {
-						if (isPermitted("Calendar","EditView") == 'yes') {
-							if ((getFieldVisibilityPermission('Events',$current_user->id,'eventstatus') == '0') || (getFieldVisibilityPermission('Calendar',$current_user->id,'taskstatus') == '0')) {
-								$list_header[] = $value;
-							}
-						}
-					} else {
-						$list_header[] = $value;
-					}
+					$list_header[] = $value;
 				}
 			}
 			$varreturnset = '';

@@ -232,10 +232,6 @@ $mod_strings = array (
 'LBL_TODONAME'=>'Tarea',
 'LBL_TODODATETIME'=>'Fecha y Hora',
 
-
-
-
-
 //DON'T CONVERT THESE THEY ARE MAPPINGS - STARTS
 'db_last_name' => 'LBL_LIST_LAST_NAME',
 'db_first_name' => 'LBL_LIST_FIRST_NAME',
@@ -245,8 +241,8 @@ $mod_strings = array (
 //DON'T CONVERT THESE THEY ARE MAPPINGS -ENDS
 'LBL_COMPLETED'=>'Completada',
 'LBL_DEFERRED'=>'Retrasar',
-'LBL_HELD'=>'Realizada',
-'LBL_NOTHELD'=>'Anular',
+'LBL_HELD'=>'Mantenida',
+'LBL_NOTHELD'=>'Pendiente',
 'LBL_POSTPONE'=>'Posponer',
 'LBL_CHANGEOWNER'=>'Cambiar Propietario',
 'LBL_DEL'=>'Borrar',
@@ -398,7 +394,7 @@ $mod_strings = array (
 //Added for existing Picklist entries
 
 'Planned'=>'Planeado',
-'Held'=>'Realizada',
+'Held'=>'Mantenida',
 'Not Held'=>'Pendiente',
 'Completed'=>'Completado',
 'Deferred'=>'Retrasado',

@@ -10,7 +10,7 @@
  * $Header:  \modules\PickList\language\hu_hu.lang.php - 12:08 2011.11.12. $
  * Description:  Defines the Hungarian language pack for the PickList module vtiger 5.3.x
  * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
- ********************************************************************************/ 
+ ********************************************************************************/
 $mod_strings = array(
 	'LBL_ASSIGN_BUTTON' => 'Hozzárendel',
 	'ADD_PICKLIST_VALUES' => 'Kiválasztó lista értéket Hozzáad',

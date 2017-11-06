@@ -75,7 +75,7 @@ $mod_strings = array (
 'LIST_MODULES' => 'Listado de Módulos',
 
 'Planned'=>'Planeado',
-'Held'=>'Realizada',
+'Held'=>'Mantenida',
 'Not Held'=>'Pendiente',
 'Completed'=>'Completado',
 'Deferred'=>'Retrasado',

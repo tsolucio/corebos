@@ -16,7 +16,7 @@ require_once('Smarty_setup.php');
 global $mod_strings, $current_language,$adb;
 
 $roleid = $_REQUEST['roleid'];
-if(empty($roleid)){
+if (empty($roleid)) {
 	echo "role id cannot be empty";
 	exit;
 }
@@ -25,9 +25,9 @@ $otherRoles = getrole2picklist();
 $otherRoles = array_diff($otherRoles, array($roleid=>getRoleName($roleid)));
 
 $smarty = new vtigerCRM_Smarty;
-$smarty->assign("ROLES",$otherRoles);
-$smarty->assign("MOD", return_module_language($current_language,'PickList'));
-$smarty->assign("APP",$app_strings);
+$smarty->assign("ROLES", $otherRoles);
+$smarty->assign("MOD", return_module_language($current_language, 'PickList'));
+$smarty->assign("APP", $app_strings);
 
 $str = $smarty->fetch("modules/PickList/ShowRoleSelect.tpl");
 echo $str;
