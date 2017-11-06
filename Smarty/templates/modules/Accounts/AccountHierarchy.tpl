@@ -31,7 +31,7 @@
 											<span class="photoContainer forceSocialPhoto">
 												<div class="small roundedSquare forceEntityIcon img-background">
 													<span class="uiImage">
-														<img src="{'account_120.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Organization" title="Organization">
+														<img src="{'Accounts.png'|@vtiger_imageurl:$THEME}" class="icon " alt="Organization" title="Organization">
 													</span>
 												</div>
 											</span>
