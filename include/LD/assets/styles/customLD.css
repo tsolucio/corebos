@@ -1634,3 +1634,9 @@ tr td.action-block-mailManager {
     width: .15rem;
     background-color: #0070d2;
 }
+
+/* UserDetailView.tpl */
+.user-preferences input {
+    margin-left: 2px;
+    margin-right: 2px;
+}

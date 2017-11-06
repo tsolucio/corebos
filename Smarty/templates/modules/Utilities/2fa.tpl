@@ -36,10 +36,9 @@
 					<use xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#user"></use>
 				</svg>
 			</div>
-			<div class="slds-input-has-icon slds-input-has-icon--right slds-grow">
-				<svg aria-hidden="true" class="slds-input__icon">
-					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
-				</svg>
+			&nbsp;
+			<div class="slds-input-has-icon slds-input-has-icon--right slds-grow" style="display: flex;">
+				<img src="themes/softed/images/btnL3Search.gif" width="18" height="18" style="margin-top: 3px;">
 				<select name="user_list" id="user_list" class="slds-lookup__search-input slds-input--bare" type="search"
 					onChange="document.getElementById('_op').value='getconfig2fa';document.faform.submit();"
 					aria-owns="user_list" role="combobox" aria-activedescendent="" aria-expanded="false" aria-autocomplete="list">
@@ -50,7 +49,7 @@
 		</div>
 	</div>
 </header>
-<div class="slds-form-element">
+<div class="slds-form-element" style="width: 4%;">
 	<label class="slds-checkbox--toggle slds-grid">
 	<input type="checkbox" name="2faactive" aria-describedby="toggle-desc" {if $isActive}checked{/if} onChange="document.faform.submit();"/>
 	<span id="toggle-desc" class="slds-checkbox--faux_container" aria-live="assertive">

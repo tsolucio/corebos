@@ -96,7 +96,7 @@
 																							</div>
 																						</div>
 																						<div class="slds-col slds-no-flex slds-grid slds-align-middle actionsContainer">
-																							<div class="slds-grid forceActionsContainer">
+																							<div class="slds-grid forceActionsContainer user-preferences">
 																								<input type="button" onclick="gotourl('index.php?module=Utilities&action=integration&_op=getconfig2fa&user_list={$ID}');" value="{'GoTo2FAActivation'|getTranslatedString:'Utilities'}" class="slds-button slds-button--neutral not-selected slds-not-selected uiButton"/>
 																								{if $IS_ADMIN eq 'true' && !$mustChangePassword}
 																									<input type="button" onclick="gotourl('index.php?module=cbLoginHistory&action=ListView&page=1&user_list={$ID}');" value="{$MOD.LBL_LOGIN_HISTORY_DETAILS}" class="slds-button slds-button--neutral not-selected slds-not-selected uiButton" aria-live="assertive"/>

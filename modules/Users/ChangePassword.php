@@ -28,6 +28,8 @@ $badpassword.= $mod_strings['Min. 1 special character'].'<br>';
 insert_popup_header($theme);
 ?>
 <link REL="SHORTCUT ICON" HREF="themes/images/blank.gif">
+<link rel="stylesheet" href="include/LD/assets/styles/salesforce-lightning-design-system.css" type="text/css" />
+<link rel="stylesheet" href="include/LD/assets/styles/customLD.css" type="text/css" />
 <script type='text/javascript' src="include/js/general.js"></script>
 <script type='text/javascript' src="include/js/PasswordManagement.js"></script>
 <script type='text/javascript'>
@@ -82,7 +84,7 @@ function set_password(form) {
 </script>
 <div class="cb-alert-danger" id="chgpasserrmsg" style="display: none;"></div>
 <form name="ChangePassword" onsubmit="VtigerJS_DialogBox.block();">
-<table width='100%' cellspacing='0' cellpadding='5' border='0' class="small">
+<table class="slds-table slds-table--cell-buffer slds-no-row-hover slds-table--fixed-layout detailview_table">
 <tr>
 	<td class="detailedViewHeader" colspan="3"><b><?php echo $mod_strings['LBL_CHANGE_PASSWORD']; ?></b></td>
 </tr>
@@ -96,26 +98,26 @@ function set_password(form) {
 ?>
 <tr>
 <td width='20%' class='dvtCellLabel' nowrap align="right"><b><?php echo $mod_strings['LBL_NEW_PASSWORD']; ?></b></td>
-<td width='50%' class='dvtCellInfo'><input name='new_password' type='password' tabindex='1' size='15'></td>
+<td width='50%' class='dvtCellInfo'><input name='new_password' class="slds-input" type='password' tabindex='1' size='15'></td>
 <td width='30%' class='dvtCellInfo'>
 <?php if (!is_admin($current_user)) { ?>
 	<input name='is_admin' type='hidden' value='1'>
 <?php } else { ?>
 	<input name='old_password' type='hidden'><input name='is_admin' type='hidden' value='0'>
 <?php } ?>
-	<input type=button value='<?php echo $mod_strings['Generate password']; ?>' onClick='document.ChangePassword.new_password.value = corebos_Password.getPassword(12, true, true, true, true, false, true, true, true, false);  document.ChangePassword.confirm_new_password.value = document.ChangePassword.new_password.value;document.getElementById("rndpasswordshow").innerHTML=document.ChangePassword.new_password.value;'>
+	<input type=button class='slds-button slds-button--small slds-button--brand' value='<?php echo $mod_strings['Generate password']; ?>' onClick='document.ChangePassword.new_password.value = corebos_Password.getPassword(12, true, true, true, true, false, true, true, true, false);  document.ChangePassword.confirm_new_password.value = document.ChangePassword.new_password.value;document.getElementById("rndpasswordshow").innerHTML=document.ChangePassword.new_password.value;'>
 </td>
 </tr><tr>
 <td width='20%' class='dvtCellLabel' nowrap align="right"><b><?php echo $mod_strings['LBL_CONFIRM_PASSWORD']; ?></b></td>
-<td width='50%' class='dvtCellInfo'><input name='confirm_new_password' type='password' tabindex='1' size='15'></td>
+<td width='50%' class='dvtCellInfo'><input name='confirm_new_password' class="slds-input" type='password' tabindex='1' size='15'></td>
 <td width='30%' class='dvtCellInfo' id='rndpasswordshow' style="font-size: large;"></td>
 </tr>
 </table>
 <br>
 <table width='100%' cellspacing='0' cellpadding='1' border='0'>
 <tr>
-<td align='right'><input title='<?php echo $app_strings['LBL_SAVE_BUTTON_TITLE']; ?>' accessKey='<?php echo $app_strings['LBL_SAVE_BUTTON_KEY']; ?>' class='crmbutton small save' onclick='if (set_password(this.form)) window.close(); else return false;' type='submit' name='button' value='  <?php echo $app_strings['LBL_SAVE_BUTTON_LABEL']; ?>  '></td>
-<td align='left'><input title='<?php echo $app_strings['LBL_CANCEL_BUTTON_TITLE']; ?>' accessyKey='<?php echo $app_strings['LBL_CANCEL_BUTTON_KEY']; ?>' class='crmbutton small cancel' onclick='window.close()' type='submit' name='button' value='  <?php echo $app_strings['LBL_CANCEL_BUTTON_LABEL']; ?>  '></td>
+<td align='right'><input title='<?php echo $app_strings['LBL_SAVE_BUTTON_TITLE']; ?>' accessKey='<?php echo $app_strings['LBL_SAVE_BUTTON_KEY']; ?>' class='slds-button slds-button--small slds-button_success' onclick='if (set_password(this.form)) window.close(); else return false;' type='submit' name='button' value='  <?php echo $app_strings['LBL_SAVE_BUTTON_LABEL']; ?>  '></td>
+<td align='left'><input title='<?php echo $app_strings['LBL_CANCEL_BUTTON_TITLE']; ?>' accessyKey='<?php echo $app_strings['LBL_CANCEL_BUTTON_KEY']; ?>' class='slds-button slds-button--small slds-button--destructive' onclick='window.close()' type='submit' name='button' value='  <?php echo $app_strings['LBL_CANCEL_BUTTON_LABEL']; ?>  '></td>
 </tr>
 </table>
 </form>

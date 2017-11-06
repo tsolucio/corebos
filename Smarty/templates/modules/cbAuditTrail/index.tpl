@@ -103,10 +103,9 @@
 							<use xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#user"></use>
 						</svg>
 					</div>
-					<div class="slds-input-has-icon slds-input-has-icon--right slds-grow">
-						<svg aria-hidden="true" class="slds-input__icon">
-							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
-						</svg>
+					&nbsp;
+					<div class="slds-input-has-icon slds-input-has-icon--right slds-grow" style="display: flex;">
+						<img src="themes/softed/images/btnL3Search.gif" width="18" height="18" style="margin-top: 3px;">
 						<select name="user_list" id="user_list" class="slds-lookup__search-input slds-input--bare" type="search"
 							aria-owns="user_list" role="combobox" aria-activedescendent="" aria-expanded="false" aria-autocomplete="list">
 							<option value="none" selected="true">{$APP.LBL_NONE}</option>
@@ -120,10 +119,10 @@
 			<pagination limit="12" outer></pagination>
 			<stats></stats>
 		</footer>
-		<table class="rptTable">
+		<table class="rptTable slds-table slds-table--bordered ld-font">
 			<tr>
 			{foreach key=dtkey item=dtheader from=$LIST_HEADER}
-				<th pid="{$dtkey}" class="rptCellLabel">{$dtheader}</th>
+				<th style="text-align: left;" pid="{$dtkey}" class="rptCellLabel">{$dtheader}</th>
 			{/foreach}
 			</tr>
 		</table>
