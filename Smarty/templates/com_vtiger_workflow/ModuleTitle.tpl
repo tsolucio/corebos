@@ -21,7 +21,7 @@
 						<div class="slds-media__body">
 							<h1 class="slds-page-header__title slds-m-right--small slds-truncate slds-align-middle">
 								<!-- Title -->
-								<span class="uiOutputText">
+								<span class="uiOutputText" style="width: 100%;">
 									<b>
 										<a href="index.php?module=Settings&amp;action=index&amp;parenttab=Settings">{'Settings'|@getTranslatedString:$MODULE_NAME}</a> >
 										<a href="index.php?module={$module->name}&amp;action=workflowlist&amp;parenttab=Settings">{$MODULE_NAME|@getTranslatedString:$MODULE_NAME}</a> > {$PAGE_NAME}
