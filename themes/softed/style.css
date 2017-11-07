@@ -412,10 +412,10 @@ a:hover {
 	color: #000000;
 }
 
-td span:not(.search-dropdown){
+/*td span:not(.search-dropdown){
     word-wrap: break-word;
     white-space: normal;
-}
+}*/
 
 .detailedViewTextBox {
 	font-family: 'Salesforce Sans', Arial, Helvetica, sans-serif;
@@ -617,9 +617,9 @@ td span:not(.search-dropdown){
 /* Dashboard CSS */
 a.dash_href{
 	display:block;
-	width:24px;height:24px;
+	/*width:24px;height:24px;*/
 	vertical-align:middle;
-	margin-top:10px;
+	/*margin-top:10px;*/
 }
 
 .dashHeading {
@@ -630,8 +630,8 @@ a.dash_href{
 }
 
 .dashSelectBg{
-	background-image:url(images/dashSelectBg.gif);
-	background-repeat:repeat-x;
+	/*background-image:url(images/dashSelectBg.gif);*/
+	/*background-repeat:repeat-x;*/
 }
 
 .dash_top{
@@ -652,7 +652,7 @@ a.dash_href{
 }
 
 .dash_bdr_btm{
-	border-bottom:2px dotted #939271;
+	/*border-bottom:2px dotted #939271;*/
 }
 
 .dash_count{
@@ -670,7 +670,7 @@ a.dash_href{
 }
 
 .dash_row_sel{
-	background-image:url(../images/dash_sel_chart.jpg);
+	/*background-image:url(../images/dash_sel_chart.jpg);*/
 	background-repeat:no-repeat;
 	background-position:center;
 	width:26px;height:26px;
@@ -682,7 +682,7 @@ a.dash_href{
 }
 
 .dash_row_unsel{
-	background-image:url(../images/dash_unsel_chart.jpg);
+	/*background-image:url(../images/dash_unsel_chart.jpg);*/
 	background-repeat:no-repeat;
 	background-position:center;
 	width:26px;height:26px;

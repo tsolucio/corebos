@@ -175,21 +175,6 @@
     transform: rotate(360deg);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*=========  DETAIL VIEW  ==========*/
 
 ul .slds-tabs--scoped__item {
@@ -753,13 +738,13 @@ tr td.table-aside>.detailview_actionlinks {
 .slds-button--warning:hover,
 .slds-button--warning:focus {
     background-color: #d58512;
-    border-color: #985f0d;
+    /*border-color: #985f0d;*/
     color: #fff;
 }
 
 .slds-button--warning:active {
     background-color: #ec971f;
-    border-color: #d58512;
+    /*border-color: #d58512;*/
     color: #fff;
 }
 
@@ -1639,4 +1624,42 @@ tr td.action-block-mailManager {
 .user-preferences input {
     margin-left: 2px;
     margin-right: 2px;
+}
+
+#miniCal img {
+    width: 15px;
+}
+
+#miniCal img:hover {
+    opacity: .7;
+}
+
+/* Dashboard */
+.description-text {
+    white-space:initial;
+    text-align: center;
+}
+
+.slds-button--x-small {
+    margin: .1rem;
+}
+
+.dash_switch img {
+    height: 22px;
+}
+
+.dash_switch img:hover {
+    opacity: .7;
+}
+
+.list-grid-view img {
+    width: 20px;
+}
+
+.list-grid-view img:hover {
+    opacity: .7;
+}
+
+.chart-numbers {
+    margin-top: 10px;
 }
