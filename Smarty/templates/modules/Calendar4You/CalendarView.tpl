@@ -452,6 +452,8 @@ function hideITSEventInfo(){
                         <tbody>
                             <tr>
                                   <td width="200px" valign="top" class="noprint">
+                                  {foreach item=PANEL_NAME from=$Calendar_Panel_Order}
+                                    {if $PANEL_NAME eq 'ActivityType'}
                                     <table class="dvtContentSpace" border="0" cellpadding="0" cellspacing="0" width="100%">
                                         <tbody>
                                             <tr>
@@ -468,8 +470,8 @@ function hideITSEventInfo(){
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <br>
-                                    {if $Calendar_Modules_Panel_Visible}
+                                    {/if}
+                                    {if $Calendar_Modules_Panel_Visible && $PANEL_NAME eq 'ModulePanel'}
                                     <table class="dvtContentSpace" border="0" cellpadding="0" cellspacing="0" width="100%">
                                         <tbody>
                                             <tr>
@@ -486,8 +488,8 @@ function hideITSEventInfo(){
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <br>
                                     {/if}
+                                    {if $PANEL_NAME eq 'AssignedUser'}
                                     <table class="dvtContentSpace" border="0" cellpadding="0" cellspacing="0" width="100%">
                                         <tbody>
                                             <tr>
@@ -510,8 +512,8 @@ function hideITSEventInfo(){
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <br>
-                                    <br>
+                                    {/if}
+                                    {if $PANEL_NAME eq 'ActivityStatus'}
                                     <table class="dvtContentSpace" border="0" cellpadding="0" cellspacing="0" width="100%">
                                         <tbody>
                                             <tr>
@@ -530,7 +532,8 @@ function hideITSEventInfo(){
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <br>
+                                    {/if}
+                                    {if $PANEL_NAME eq 'ActivityPriority'}
                                     <table class="dvtContentSpace" border="0" cellpadding="0" cellspacing="0" width="100%">
                                         <tbody>
                                             <tr>
@@ -547,6 +550,9 @@ function hideITSEventInfo(){
                                             </tr>
                                         </tbody>
                                     </table>
+                                    {/if}
+                                    <br/>
+                                    {/foreach}
                                   </td>
                                   <td align="left" valign="top"><!-- content cache -->
                                     <div style="padding:0px 10px 0px 10px">
