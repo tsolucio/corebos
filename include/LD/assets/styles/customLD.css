@@ -1668,3 +1668,8 @@ tr td.action-block-mailManager {
 .chart-numbers {
     margin-top: 10px;
 }
+
+/* Our sites */
+.sites-settings img:hover {
+    opacity: .7;
+}
