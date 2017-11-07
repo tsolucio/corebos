@@ -130,6 +130,7 @@ var i18n_DELETE_RSSFEED_CONFIRMATION = '{$APP.DELETE_RSSFEED_CONFIRMATION}';
 	</tr>
 </table>
 
+<!-- Add RSS feed - popup -->
 <div id="PopupLay" class="layerPopup">
 	<form onSubmit="SaveRssFeeds(); return false;">
 		<table width="100%" border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine">
@@ -138,24 +139,18 @@ var i18n_DELETE_RSSFEED_CONFIRMATION = '{$APP.DELETE_RSSFEED_CONFIRMATION}';
 				<td align="right"><a href="javascript:fninvsh('PopupLay');"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" /></a></td>
 			</tr>
 		</table>
-		<table border=0 cellspacing=0 cellpadding=5 width=95% align=center>
+		<!-- popup specific content fill in starts -->
+		<table border=0 celspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
 			<tr>
-				<td class=small >
-					<!-- popup specific content fill in starts -->
-					<table border=0 celspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
-						<tr>
-							<td align="right" width="25%"><b>{$MOD.LBL_FEED}</b></td>
-							<td align="left" width="75%"><input type="text" id="rssurl" class="txtBox" value=""/></td>
-						</tr>
-					</table>
-					<!-- popup specific content fill in ends -->
-				</td>
+				<td class="dvtCellLabel" align="right" width="25%"><b>{$MOD.LBL_FEED}</b></td>
+				<td class="dvtCellInfo" align="left" width="75%"><input type="text" id="rssurl" class="txtBox slds-input" value=""/></td>
 			</tr>
 		</table>
-		<table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport">
+		<!-- popup specific content fill in ends -->
+		<table border=0 cellspacing=0 cellpadding=5 width=100% style="background-color: #f7f9fb;">
 			<tr>
-				<td align="center">
-					<input type="submit" name="save" value=" &nbsp;{$APP.LBL_SAVE_BUTTON_LABEL}&nbsp; " class="crmbutton small save"/>&nbsp;&nbsp;
+				<td align="center" style="padding: 5px;">
+					<input type="submit" name="save" value=" &nbsp;{$APP.LBL_SAVE_BUTTON_LABEL}&nbsp; " class="slds-button slds-button--small slds-button_success"/>&nbsp;&nbsp;
 				</td>
 			</tr>
 		</table>
