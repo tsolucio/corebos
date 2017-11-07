@@ -297,7 +297,7 @@
 <div id="qcform" style="position:absolute;width:910px;top:80px;left:450px;z-index:90000;"></div>
 
 <!-- Unified Search module selection feature -->
-<div id="UnifiedSearch_moduleformwrapper" style="position:absolute;width:417px;z-index:100002;display:none;"></div>
+<div id="UnifiedSearch_moduleformwrapper" style="position:absolute;width:500px;z-index:99999;display:none;"></div>
 
 <div id="status" style="position:absolute;display:none;left:850px;top:95px;height:27px;white-space:nowrap;"><img src="{'status.gif'|@vtiger_imageurl:$THEME}"></div>
 
