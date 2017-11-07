@@ -102,12 +102,12 @@ $width = 1100;
 $height = 600;
 if(isset($_REQUEST['display_view']) && $_REQUEST['display_view'] == 'MATRIX')
 {
-	$width = 350;
-	$height = 250;
+	$width = 500;
+	$height = 300;
 }
 
 echo DashboardCharts::outcome_by_month($date_start, $date_end, $ids, $width, $height);
-echo "<P><font size='1'><em>".$current_module_strings['LBL_MONTH_BY_OUTCOME_DESC']."</em></font></P>";
+echo "<P class='description-text'><font size='1'><em>".$current_module_strings['LBL_MONTH_BY_OUTCOME_DESC']."</em></font></P>";
 if (isset($_REQUEST['obm_edit']) && $_REQUEST['obm_edit'] == 'true') {
 	$cal_lang = "en";
 	$cal_dateformat = parse_calendardate($app_strings['NTC_DATE_FORMAT']);

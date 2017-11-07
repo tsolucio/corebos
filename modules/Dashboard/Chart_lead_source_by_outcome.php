@@ -84,12 +84,12 @@ $width = 1100;
 $height = 600;
 if(isset($_REQUEST['display_view']) && $_REQUEST['display_view'] == 'MATRIX')
 {
-	$width = 350;
-	$height = 250;
+	$width = 500;
+	$height = 300;
 }
 
 echo DashboardCharts::lead_source_by_outcome($datax, $ids, $width, $height);
-echo "<P><font size='1'><em>".$current_module_strings['LBL_LEAD_SOURCE_BY_OUTCOME_DESC']."</em></font></P>";
+echo "<P class='description-text'><font size='1'><em>".$current_module_strings['LBL_LEAD_SOURCE_BY_OUTCOME_DESC']."</em></font></P>";
 if (isset($_REQUEST['lsbo_edit']) && $_REQUEST['lsbo_edit'] == 'true') {
 ?>
 <form action="index.php" method="post" >

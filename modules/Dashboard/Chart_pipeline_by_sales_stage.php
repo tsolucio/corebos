@@ -132,12 +132,12 @@ $width = 1100;
 $height = 600;
 if(isset($_REQUEST['display_view']) && $_REQUEST['display_view'] == 'MATRIX')
 {
-	$width = 350;
-	$height = 250;
+	$width = 500;
+	$height = 300;
 }
 
 echo DashboardCharts::pipeline_by_sales_stage($datax, $date_start, $date_end, $ids, $width, $height);
-echo "<P><font size='1'><em>".$current_module_strings['LBL_SALES_STAGE_FORM_DESC']."</em></font></P>";
+echo "<P class='description-text'><font size='1'><em>".$current_module_strings['LBL_SALES_STAGE_FORM_DESC']."</em></font></P>";
 if (isset($_REQUEST['pbss_edit']) && $_REQUEST['pbss_edit'] == 'true') {
 	$cal_lang = "en";
 	$cal_dateformat = parse_calendardate($app_strings['NTC_DATE_FORMAT']);

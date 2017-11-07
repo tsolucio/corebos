@@ -85,11 +85,11 @@ $height = 600;
 if(isset($_REQUEST['display_view']) && $_REQUEST['display_view'] == 'MATRIX')
 {
 	$width = 500;
-	$height = 300;
+	$height = 320;
 }
 
 echo DashboardCharts::pipeline_by_lead_source($datax, $date_start, $date_end, $ids, $width, $height);
-echo "<P><font size='1'><em>".$current_module_strings['LBL_LEAD_SOURCE_FORM_DESC']."</em></font></P>";
+echo "<P style='white-space:initial;'><font size='1'><em>".$current_module_strings['LBL_LEAD_SOURCE_FORM_DESC']."</em></font></P>";
 if (isset($_REQUEST['pbls_edit']) && $_REQUEST['pbls_edit'] == 'true') {
 ?>
 <form action="index.php" method="post" >
