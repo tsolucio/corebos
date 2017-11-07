@@ -4188,23 +4188,6 @@ function columnExists($columnName, $tableName){
 	}
 }
 
-/* To get modules list for which work flow and field formulas is permitted*/
-function com_vtGetModules($adb) {
-	$sql="select distinct vtiger_field.tabid, name
-		from vtiger_field
-		inner join vtiger_tab
-			on vtiger_field.tabid=vtiger_tab.tabid
-		where vtiger_field.tabid not in(9,10,16,15,8,29) and vtiger_tab.presence = 0 and vtiger_tab.isentitytype=1";
-	$it = new SqlResultIterator($adb, $adb->query($sql));
-	$modules = array();
-	foreach($it as $row) {
-		if(isPermitted($row->name,'index') == "yes") {
-			$modules[$row->name] = getTranslatedString($row->name);
-		}
-	}
-	return $modules;
-}
-
 /**
  * this function accepts a potential id returns the module name and entity value for the related field
  * @param integer $id - the potential id
