@@ -203,7 +203,7 @@ class Validations extends processcbMap {
 						if (file_exists($restrictions[0])) {
 							@include $restrictions[0];
 							if (function_exists($restrictions[2])) {
-								$v->addRule($restrictions[1], $restrictions[2], (isset($restrictions[3]) ? getTranslatedString($restrictions[3]) : getTranslatedString('INVALID')));
+								$v->addRule($restrictions[1], $restrictions[2], (isset($restrictions[3]) ? getTranslatedString($restrictions[3],$mapping['origin']) : getTranslatedString('INVALID',$mapping['origin'])));
 								$v->rule($restrictions[1], $valfield)->label($i18n);
 							}
 						}
