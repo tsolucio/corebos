@@ -11,12 +11,12 @@
 //A collection of util functions for the workflow module
 
 class VTWorkflowUtils {
-	static $userStack;
-	static $loggedInUser;
+	public static $userStack;
+	public static $loggedInUser;
 
-	function __construct() {
+	public function __construct() {
 		global $current_user;
-		if(empty(self::$userStack)) {
+		if (empty(self::$userStack)) {
 			self::$userStack = array();
 		}
 	}
@@ -24,9 +24,9 @@ class VTWorkflowUtils {
 	/**
 	 * Check whether the given identifier is valid.
 	 */
-	function validIdentifier($identifier) {
+	public static function validIdentifier($identifier) {
 		if (is_string($identifier)) {
-			return preg_match("/^[a-zA-Z][a-zA-Z_0-9]+$/", $identifier);
+			return preg_match('/^[a-zA-Z][a-zA-Z_0-9]+$/', $identifier);
 		} else {
 			return false;
 		}
@@ -37,7 +37,7 @@ class VTWorkflowUtils {
 	 * and make it the $current_user
 	 *
 	 */
-	function adminUser() {
+	public static function adminUser() {
 		$user = Users::getActiveAdminUser();
 		global $current_user;
 		if (empty(self::$userStack) || count(self::$userStack) == 0) {
@@ -52,7 +52,7 @@ class VTWorkflowUtils {
 	 * Push the logged in user on the user stack
 	 * and make it the $current_user
 	 */
-	function loggedInUser() {
+	public static function loggedInUser() {
 		$user = self::$loggedInUser;
 		global $current_user;
 		self::$userStack[] = $current_user;
@@ -63,7 +63,7 @@ class VTWorkflowUtils {
 	/**
 	 * Revert to the previous use on the user stack
 	 */
-	function revertUser() {
+	public static function revertUser() {
 		global $current_user;
 		if (count(self::$userStack) != 0) {
 			$current_user = array_pop(self::$userStack);
@@ -86,7 +86,7 @@ class VTWorkflowUtils {
 	/**
 	 * The the webservice entity type of an EntityData object
 	 */
-	function toWSModuleName($entityData) {
+	public static function toWSModuleName($entityData) {
 		$moduleName = $entityData->getModuleName();
 		if ($moduleName == 'Activity') {
 			$arr = array('Task' => 'Calendar', 'Emails' => 'Emails');
@@ -101,7 +101,7 @@ class VTWorkflowUtils {
 	/**
 	 * Insert redirection script
 	 */
-	function redirectTo($to, $message) {
+	public static function redirectTo($to, $message) {
 ?>
 		<script type="text/javascript" charset="utf-8">
 			window.location="<?php echo $to ?>";
@@ -113,7 +113,7 @@ class VTWorkflowUtils {
 	/**
 	 * Check if the current user is admin
 	 */
-	function checkAdminAccess() {
+	public static function checkAdminAccess() {
 		global $current_user;
 		return strtolower($current_user->is_admin) === 'on';
 	}
@@ -125,7 +125,7 @@ class VTWorkflowUtils {
 		global $adb;
 		$tabid = getTabid($modulename);
 		$modules_not_supported = array('Calendar', 'Faq', 'Events', 'PBXManager', 'Users');
-		$query = "SELECT name FROM vtiger_tab WHERE name not in (" . generateQuestionMarks($modules_not_supported) . ") AND isentitytype=1 AND presence = 0 AND tabid = ?";
+		$query = 'SELECT name FROM vtiger_tab WHERE name not in ('.generateQuestionMarks($modules_not_supported).') AND isentitytype=1 AND presence = 0 AND tabid = ?';
 		$result = $adb->pquery($query, array($modules_not_supported, $tabid));
 		$rows = $adb->num_rows($result);
 		if ($rows > 0) {
@@ -135,21 +135,22 @@ class VTWorkflowUtils {
 		}
 	}
 
-	function vtGetModules($adb) {
+	public static function vtGetModules($adb) {
 		$modules_not_supported = array('Calendar', 'Events', 'PBXManager');
-		$sql = "select distinct vtiger_field.tabid, name
+		$sql = 'select distinct vtiger_field.tabid, name
 			from vtiger_field 
 			inner join vtiger_tab 
 				on vtiger_field.tabid=vtiger_tab.tabid 
-			where vtiger_tab.name not in(" . generateQuestionMarks($modules_not_supported) . ") and vtiger_tab.isentitytype=1 and vtiger_tab.presence in (0,2) ";
+			where vtiger_tab.name not in(' . generateQuestionMarks($modules_not_supported) . ') and vtiger_tab.isentitytype=1 and vtiger_tab.presence in (0,2) ';
 		$it = new SqlResultIterator($adb, $adb->pquery($sql, array($modules_not_supported)));
 		$modules = array();
 		foreach ($it as $row) {
 			$modules[] = $row->name;
 		}
-		uasort($modules, function($a,$b) {return (strtolower(getTranslatedString($a,$a)) < strtolower(getTranslatedString($b,$b))) ? -1 : 1;});
+		uasort($modules, function ($a, $b) {
+			return (strtolower(getTranslatedString($a, $a)) < strtolower(getTranslatedString($b, $b))) ? -1 : 1;
+		});
 		return $modules;
 	}
-
 }
 ?>
