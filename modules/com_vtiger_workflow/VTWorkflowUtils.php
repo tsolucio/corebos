@@ -136,7 +136,7 @@ class VTWorkflowUtils {
 	}
 
 	function vtGetModules($adb) {
-		$modules_not_supported = array('PBXManager');
+		$modules_not_supported = array('Calendar', 'Events', 'PBXManager');
 		$sql = "select distinct vtiger_field.tabid, name
 			from vtiger_field 
 			inner join vtiger_tab 
