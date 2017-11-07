@@ -125,6 +125,11 @@
     padding-right: 0;
 }
 
+.slds-table-buttons {
+    background-color: #f7f9fb;
+}
+
+
 .LB_Button {
     padding: .2rem;
 }

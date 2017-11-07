@@ -23,7 +23,7 @@ if(isset($_REQUEST['type']) && $_REQUEST['type'] != '')
 }
 ?>
 
-<TABLE class="slds-table slds-no-row-hover lds-img" style="background-color: #f7f9fb;">
+<TABLE class="slds-table slds-no-row-hover lds-img slds-table-buttons">
 	<tr>
 		<th scope="col" style="padding: 1rem 1.5rem 1rem 1rem;">
 			<div class="slds-truncate moduleName" title="{$MODULELABEL}">
@@ -38,7 +38,7 @@ if(isset($_REQUEST['type']) && $_REQUEST['type'] != '')
 							<tr>
 								<td class=small>
 									<!-- Add and Search -->
-									<table class="slds-table slds-no-row-hover">
+									<table class="slds-table slds-no-row-hover slds-table-buttons">
 										<tr>
 											<th scope="col">
 												<div class="globalCreateContainer oneGlobalCreate">
@@ -67,7 +67,7 @@ if(isset($_REQUEST['type']) && $_REQUEST['type'] != '')
 					<td style="width:20px;" class="LB_Divider">&nbsp;&nbsp;</td>
 					<td class="small">
 						<!-- Calendar, Clock and Calculator -->
-						<table class="slds-table slds-no-row-hover">
+						<table class="slds-table slds-no-row-hover slds-table-buttons">
 							<tr>
 								<?php
 								if(GlobalVariable::getVariable('Application_Display_Mini_Calendar',1,$currentModule)) {
@@ -107,7 +107,7 @@ if(isset($_REQUEST['type']) && $_REQUEST['type'] != '')
 					<td style="width:20px;" class="LB_Divider">&nbsp;</td>
 					<td class="small">
 						<!-- Import / Export / DuplicatesHandling-->
-						<table class="slds-table slds-no-row-hover">
+						<table class="slds-table slds-no-row-hover slds-table-buttons">
 							<tr>
 								<th scope="col">
 									<div class="globalCreateContainer oneGlobalCreate">
