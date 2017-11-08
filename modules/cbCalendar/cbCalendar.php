@@ -140,7 +140,11 @@ class cbCalendar extends CRMEntity {
 		$this->column_fields['time_start'] = $_REQUEST['time_start'] = $ts;
 		$this->column_fields['due_date'] = $_REQUEST['due_date'] = $de;
 		$this->column_fields['time_end'] = $_REQUEST['time_end'] = $te;
-		$adb->pquery('update vtiger_activity set date_start=?, time_start=?, due_date=?, time_end=? where activityid=?',array($ds,$ts,$de,$te,$this->id));
+		$duration = strtotime($this->column_fields['dtend'])-strtotime($this->column_fields['dtstart']);
+		$this->column_fields['duration_hours'] = round($duration/3600,0);
+		$this->column_fields['duration_minutes'] = round($duration % 3600 / 60,0);
+		$adb->pquery('update vtiger_activity set date_start=?, time_start=?, due_date=?, time_end=?, duration_hours=?, duration_minutes=? where activityid=?',
+			array($ds,$ts,$de,$te,$this->column_fields['duration_hours'],$this->column_fields['duration_minutes'],$this->id));
 		// code added to send mail to the invitees
 		if (!empty($_REQUEST['inviteesid'])) {
 			$mail_contents = $this->getRequestData($this->id);
@@ -297,7 +301,7 @@ class cbCalendar extends CRMEntity {
 		$cbrecord = $this->id;
 		coreBOS_Session::delete('next_reminder_time');
 		if(isset($cbmodule) && isset($cbrecord)) {
-			list($cbdate,$cbtime) = explode(' ',getValidDBInsertDateTimeValue($this->column_fields['dtstart']));
+			list($cbdate,$cbtime) = explode(' ',$this->column_fields['dtstart']);
 
 			$reminder_query = "SELECT reminderid FROM vtiger_activity_reminder_popup WHERE recordid = ?";
 			$reminder_params = array($cbrecord);
@@ -320,13 +324,11 @@ class cbCalendar extends CRMEntity {
 		}
 	}
 
-
 	/** Function to insert values in vtiger_activity_remainder table for the specified module,
 	  * @param $table_name -- table name:: Type varchar
 	  * @param $module -- module:: Type varchar
 	 */
-	function insertIntoReminderTable($table_name,$recurid)
-	{
+	public function insertIntoReminderTable($table_name, $recurid) {
 		global $log;
 		if (isset($_REQUEST['set_reminder']) and $_REQUEST['set_reminder'] == 'Yes') {
 			coreBOS_Session::delete('next_reminder_time');
@@ -339,25 +341,17 @@ class cbCalendar extends CRMEntity {
 			$log->debug("rem_minutes is ".$rem_min);
 			$reminder_time = $rem_days * 24 * 60 + $rem_hrs * 60 + $rem_min;
 			$log->debug("reminder_time is ".$reminder_time);
-			if ($recurid == 0)
-			{
-				if($_REQUEST['mode'] == 'edit')
-				{
-					$this->activity_reminder($this->id,$reminder_time,0,$recurid,'edit');
+			if ($recurid == 0) {
+				if ($_REQUEST['mode'] == 'edit') {
+					$this->activity_reminder($this->id, $reminder_time, 0, $recurid, 'edit');
+				} else {
+					$this->activity_reminder($this->id, $reminder_time, 0, $recurid, '');
 				}
-				else
-				{
-					$this->activity_reminder($this->id,$reminder_time,0,$recurid,'');
-				}
+			} else {
+				$this->activity_reminder($this->id, $reminder_time, 0, $recurid, '');
 			}
-			else
-			{
-				$this->activity_reminder($this->id,$reminder_time,0,$recurid,'');
-			}
-		}
-		elseif (isset($_REQUEST['set_reminder']) and $_REQUEST['set_reminder'] == 'No')
-		{
-			$this->activity_reminder($this->id,'0',0,$recurid,'delete');
+		} elseif (isset($_REQUEST['set_reminder']) and $_REQUEST['set_reminder'] == 'No') {
+			$this->activity_reminder($this->id, '0', 0, $recurid, 'delete');
 		}
 	}
 
@@ -369,39 +363,31 @@ class cbCalendar extends CRMEntity {
 	 * @param  integer   $recurid         - recuring eventid
 	 * @param  string    $remindermode    - string like 'edit'
 	 */
-	function activity_reminder($activity_id,$reminder_time,$reminder_sent=0,$recurid,$remindermode='')
-	{
+	public function activity_reminder($activity_id, $reminder_time, $reminder_sent = 0, $recurid = 0, $remindermode = '') {
 		global $log;
 		$log->debug("Entering activity_reminder(".$activity_id.",".$reminder_time.",".$reminder_sent.",".$recurid.",".$remindermode.") method ...");
 		// Check for activityid already present in the reminder_table
 		$query_exist = "SELECT activity_id FROM ".$this->reminder_table." WHERE activity_id = ?";
 		$result_exist = $this->db->pquery($query_exist, array($activity_id));
 
-		if($remindermode == 'edit')
-		{
-			if($this->db->num_rows($result_exist) > 0)
-			{
-				$query = "UPDATE ".$this->reminder_table." SET";
-				$query .=" reminder_sent = ?, reminder_time = ? WHERE activity_id =?";
+		if ($remindermode == 'edit') {
+			if ($this->db->num_rows($result_exist) > 0) {
+				$query = 'UPDATE '.$this->reminder_table.' SET reminder_sent = ?, reminder_time = ? WHERE activity_id =?';
 				$params = array($reminder_sent, $reminder_time, $activity_id);
-			}
-			else
-			{
+			} else {
 				$query = "INSERT INTO ".$this->reminder_table." VALUES (?,?,?,?)";
 				$params = array($activity_id, $reminder_time, 0, $recurid);
 			}
-		}
-		elseif(($remindermode == 'delete') && ($this->db->num_rows($result_exist) > 0))
-		{
+			$this->db->pquery($query, $params, true, "Error in processing table $this->reminder_table");
+		} elseif (($remindermode == 'delete') && ($this->db->num_rows($result_exist) > 0)) {
 			$query = "DELETE FROM ".$this->reminder_table." WHERE activity_id = ?";
 			$params = array($activity_id);
-		}
-		else
-		{
+			$this->db->pquery($query, $params, true, "Error in processing table $this->reminder_table");
+		} elseif ($this->db->num_rows($result_exist) == 0) {
 			$query = "INSERT INTO ".$this->reminder_table." VALUES (?,?,?,?)";
 			$params = array($activity_id, $reminder_time, 0, $recurid);
+			$this->db->pquery($query, $params, true, "Error in processing table $this->reminder_table");
 		}
-		$this->db->pquery($query,$params,true,"Error in processing table $this->reminder_table");
 		$log->debug("Exiting vtiger_activity_reminder method ...");
 	}
 
@@ -557,7 +543,7 @@ class cbCalendar extends CRMEntity {
 					OR (";
 
 					// Build the query based on the group association of current user.
-					if(sizeof($current_user_groups) > 0) {
+					if (count($current_user_groups) > 0) {
 						$sec_query .= " vtiger_groups.groupid IN (". implode(",", $current_user_groups) .") OR ";
 					}
 					$sec_query .= " vtiger_groups.groupid IN
@@ -662,6 +648,7 @@ class cbCalendar extends CRMEntity {
 			// TODO Handle post installation actions
 			//$this->setModuleSeqNumber('configure', $modulename, 'cbcal-', '0000001');
 			global $adb;
+			set_time_limit(0);
 			$rs = $adb->query('select *
 					from vtiger_seactivityrel
 					inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_seactivityrel.crmid
@@ -977,6 +964,26 @@ class cbCalendar extends CRMEntity {
 		$sql = 'update vtiger_activity_reminder_popup set status=1 where recordid=?';
 		$adb->pquery($sql, array($this->id));
 		return true;
+	}
+
+	function clearSingletonSaveFields() {
+		unset($_REQUEST['timefmt_dtstart'],$_REQUEST['timefmt_dtend']);
+	}
+
+	/** Function to change the status of an event
+	 * @param $status string : new status value
+	 * @param $activityid integer : activity id
+	 */
+	public static function changeStatus($status, $activityid) {
+		global $log, $adb, $current_user;
+		$log->debug("Entering changeStatus($status, $activityid) method");
+		include_once('include/Webservices/Revise.php');
+		$element = array(
+			'id' => vtws_getEntityId('cbCalendar') . 'x' . $activityid,
+			'eventstatus' => $status
+		);
+		vtws_revise($element,$current_user);
+		$log->debug('Exiting changeStatus method');
 	}
 }
 ?>

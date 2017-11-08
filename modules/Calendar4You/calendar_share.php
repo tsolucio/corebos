@@ -204,6 +204,7 @@ $Calendar_Settings = $Calendar4You->getSettings();
 			<td align="left"><b>
 			<?php echo $mod_strings["LBL_GOOGLE_SYNC_ACCESS_DATA"]; echo " &quot;".trim($current_user->first_name." ".$current_user->last_name)."&quot;"; ?>
 			</b>
+                        <br /><br /><div><?php echo $mod_strings['Gmail_ChangeAccount']; ?><input type="button" name="clear_tokens" class="crmbutton small save" value="<?php echo $app_strings['LBL_CLEAR_BUTTON_LABEL']; ?>" onclick="cleartokens(<?php echo $current_user->id ?>)"></div>
 			<br /><br /><div id="google_sync_verifying" style="display:none;"><img src="themes/images/vtbusy.gif" align="absmiddle"><? echo $mod_strings["LBL_GOOGLE_SYNC_CONTROL_ACCESS_DATA"]; ?></div><div id="google_sync_text">
 			<?php
 			$GoogleSync4You = new GoogleSync4You();

@@ -39,5 +39,5 @@ echo " - soap/vtigerolservice.php  (I don't think this one is used at all, it is
 echo
 echo "=> Deactivate webservice access with the Webservice_Enabled global variable if you are not using this interface."
 echo
-echo "=> If you are not using the OmniPay Payment Gateway you can delete the Pay.php script
+echo "=> If you are not using the OmniPay Payment Gateway you can delete the Pay.php script"
 echo

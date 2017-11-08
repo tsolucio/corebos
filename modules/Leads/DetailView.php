@@ -77,6 +77,7 @@ if(isPermitted($currentModule, 'CreateView', $record) == 'yes') {
 	} else {
 		$smarty->assign('ERROR_MESSAGE', getTranslatedString('LeadAlreadyConverted','Leads'));
 		$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-warning');
+		$smarty->assign('CONVERTLEAD', 'no');
 	}
 }
 

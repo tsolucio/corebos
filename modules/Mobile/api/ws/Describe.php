@@ -77,7 +77,7 @@ class crmtogo_WS_Describe extends crmtogo_WS_Controller {
 				$sections[] = array( 'label' => $blocklabel, 'count' => count($groups[$blocklabel]) );
 			}
 		}
-		$modifiedResult = array('blocks' => $blocks, 'id' => $resultRecord['id']);
+		$modifiedResult = array('blocks' => $blocks, 'id' => '');
 		if($labelFields) {
 			$modifiedResult['labelFields'] = $labelFields;
 		}

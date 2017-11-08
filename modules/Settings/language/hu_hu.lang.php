@@ -1,18 +1,13 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
- *********************************************************************************
-*********************************************************************************
+ ********************************************************************************
+ ********************************************************************************
  * $Header: /modules/Settings/language/hu_hu.lang.php - 22:17 2011.02.24. $
  * Description:  Defines the Hungarian language pack for the Settings module vtiger 5.2.x
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
@@ -42,33 +37,6 @@ $mod_strings = array(
 	'LBL_CURRENCY_TOOL' => 'Eszközök',
 	'LBL_CURRENCY_LIST' => 'Pénznemek Lista',
 	'NTC_DELETE_CONFIRMATION' => 'Biztos vagy abban, hogy törölni akarod ezt a rekordot?',
-	'LEADCUSTOMFIELDS' => 'Jelöltek Egyedi Mezők',
-	'ACCOUNTCUSTOMFIELDS' => 'Cégek Egyedi Mezők',
-	'CONTACTCUSTOMFIELDS' => 'Kapcsolatok Egyedi Mezők',
-	'OPPORTUNITYCUSTOMFIELDS' => 'Lehetőségek Egyedi Mezők',
-	'HELPDESKCUSTOMFIELDS' => 'Ügyfélszolgálat Egyedi Mezők',
-	'PRODUCTCUSTOMFIELDS' => 'Termékek Egyedi Mezők',
-	'VENDORCUSTOMFIELDS' => 'Beszállítók Egyedi Mezők',
-	'PRICEBOOKCUSTOMFIELDS' => 'Csomagárak Egyedi Mezők',
-	'POCUSTOMFIELDS' => 'Beszerzések Egyedi Mezők',
-	'SOCUSTOMFIELDS' => 'Megrendelések Egyedi Mezők',
-	'QUOTESCUSTOMFIELDS' => 'Ajánlatok Egyedi Mezők',
-	'INVOICECUSTOMFIELDS' => 'Díjbekérők Egyedi Mezők',
-	'EDITLEADPICKLISTVALUES' => 'Jelöltek - Kiválasztólista szerkesztés ',
-	'EDITACCOUNTPICKLISTVALUES' => 'Cégek - Kiválasztólista szerkesztés ',
-	'EDITCONTACTPICKLISTVALUES' => 'Kapcsolatok - Kiválasztólista szerkesztés ',
-	'EDITOPPORTUNITYPICKLISTVALUES' => 'Lehetőségek - Kiválasztólista szerkesztés ',
-	'EDITHELPDESKPICKLISTVALUES' => 'Ügyfélszolgálat - Kiválasztólista szerkesztés ',
-	'EDITPRODUCTPICKLISTVALUES' => 'Termékek - Kiválasztólista szerkesztés ',
-	'EDITEVENTPICKLISTVALUES' => 'Események - Kiválasztólista szerkesztés ',
-	'EDITTASKPICKLISTVALUES' => 'Feladatok - Kiválasztólista szerkesztés ',
-	'EDITRSSPICKLISTVALUES' => 'RSS - Kiválasztólista szerkesztés',
-	'EDITVENDORPICKLISTVALUES' => 'Beszállítók - Kiválasztólista szerkesztés',
-	'EDITPBPICKLISTVALUES' => 'Csomagárak - Kiválasztólista szerkesztés',
-	'EDITPOPICKLISTVALUES' => 'Beszerzések - Kiválasztólista szerkesztés',
-	'EDITSOPICKLISTVALUES' => 'Megrendelések - Kiválasztólista szerkesztés',
-	'EDITQUOTEPICKLISTVALUES' => 'Ajánlatok - Kiválasztólista szerkesztés',
-	'EDITINVOICEPICKLISTVALUES' => 'Díjbekérők - Kiválasztólista szerkesztés',
 	'LBL_PICKLIST_FIELD_SETTINGS' => 'Kiválasztólista Mező Beállítások:',
 	'Leads' => 'Jelölt',
 	'Accounts' => 'Cég',
@@ -340,7 +308,6 @@ $mod_strings = array(
 	'LBL_FIELD_MAPPING' => 'Mező Összekapcsolás',
 	'LBL_LEAD_FIELD' => 'Jelölt Mező',
 	'LBL_TEXT_AREA' => 'Szöveg Terület',
-	'NOTESCUSTOMFIELDS' => 'Dokumentum Egyedi Mezők',
 	'LBL_ASSIGN_MODULE_OWNERS' => 'Modul Tulajdonosok Kijelölése',
 	'LBL_MODULE_OWNERS' => 'Modul Tulajdonosok',
 	'LBL_ASSIGN_MODULE_OWNERS_INFO' => ' - Tulajdonosok Kijelölése minden modulhoz',
@@ -814,8 +781,6 @@ $mod_strings = array(
 	'LBL_MAPPED_FIELDS' => 'Fields Leképezett Mezők',
 	'LEADS_CUSTOM_FIELD_MAPPING_DESCRIPTION' => 'Jelölt Mezők leképzése Cégekre , Kapcsolatokra és Lehetőségekre',
 	'LEADS_CUSTOM_FIELD_MAPPING' => 'Jelölt Mező leképzés',
-	'LBL_CALENDER_CUSTOMFIELDS' => 'Naptár Saját Mezők',
-	'LBL_CALENDER_CUSTOMFIELDS_DESCRIPTION' => 'Létrehozhatsz saját mezőkat a Naptárhoz',
 	'LBL_GO_BACK' => 'Vissza',
 	'LBL_USE_PREFIX' => 'Prefix használata',
 	'LBL_START_SEQ' => 'Sorozat indítása',

@@ -15,7 +15,7 @@
  *************************************************************************************************/
 global $entityDel, $display;
 
-if(version_compare(phpversion(), '5.2.0') < 0 or version_compare(phpversion(), '7.1.0') >= 0) {
+if(version_compare(phpversion(), '5.4.0') < 0 or version_compare(phpversion(), '7.1.0') >= 0) {
 	header('Content-Type: text/html; charset=UTF-8');
 	$serverPhpVersion = phpversion();
 	require_once('phpversionfail.php');
@@ -62,12 +62,6 @@ require_once('config.inc.php');
 if (!isset($dbconfig['db_hostname']) || $dbconfig['db_status']=='_DB_STAT_') {
 	header("Location: install.php");
 	exit();
-}
-
-// Set the default timezone preferred by user
-global $default_timezone;
-if(isset($default_timezone) && function_exists('date_default_timezone_set')) {
-	@date_default_timezone_set($default_timezone);
 }
 
 require_once('include/logging.php');
@@ -195,7 +189,6 @@ if(isset($action) && isset($module))
 		preg_match("/^LeadConvertToEntities/", $action) ||
 		preg_match("/^downloadfile/", $action) ||
 		preg_match("/^massdelete/", $action) ||
-		preg_match("/^updateLeadDBStatus/",$action) ||
 		preg_match("/^updateRole/",$action) ||
 		preg_match("/^UserInfoUtil/",$action) ||
 		preg_match("/^deleteRole/",$action) ||
@@ -554,10 +547,12 @@ if((!$viewAttachment) && (!$viewAttachment && $action != 'home_rss') && $action 
 		$coreBOS_uiapp_url = GlobalVariable::getVariable('Application_UI_URL',$coreBOS_app_url);
 		echo "<br><br><br><table border=0 cellspacing=0 cellpadding=5 width=100% class=settingsSelectedUI >";
 		echo "<tr><td class=small align=left><span style='color: rgb(153, 153, 153);'>".$coreBOS_uiapp_name." <span id='_vtiger_product_version_'>$coreBOS_uiapp_version</span>";
-		$coreBOS_uiapp_showgit = GlobalVariable::getVariable('Application_UI_ShowGITVersion',0);
-		if ($coreBOS_uiapp_showgit) {
-			$gitversion = file_get_contents('include/sw-precache/gitversion');
-			echo "&nbsp;($gitversion)";
+		$coreBOS_uiapp_showgitversion = GlobalVariable::getVariable('Application_UI_ShowGITVersion',0);
+		$coreBOS_uiapp_showgitdate = GlobalVariable::getVariable('Application_UI_ShowGITDate',0);
+		if ($coreBOS_uiapp_showgitversion || $coreBOS_uiapp_showgitdate) {
+			list($gitversion,$gitdate) = explode(' ',file_get_contents('include/sw-precache/gitversion'));
+			$gitdate = trim(str_replace('-','',$gitdate));
+			echo '&nbsp;('.($coreBOS_uiapp_showgitversion ? $gitversion : '').($coreBOS_uiapp_showgitdate ? $gitdate : '').')';
 		}
 		echo '</span></td>';
 		echo "<td class=small align=right><span>&copy; 2004-".date('Y')." <a href='$coreBOS_uiapp_url' target='_blank'>$coreBOS_uiapp_companyname</a></span></td></tr></table>";

@@ -19,10 +19,6 @@
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
 
-// Time Threshold: after these minutes running we will send email
-$warningTimeThreshold = 30*60; // 30 minutes.
-///////////////////////////////////
-
 $Vtiger_Utils_Log = false;
 include_once('vtlib/Vtiger/Module.php');
 require_once('vtlib/Vtiger/Cron.php');
@@ -30,20 +26,26 @@ require_once('modules/Emails/mail.php');
 require_once('modules/Emails/Emails.php');
 global $site_URL, $currentModule;
 
+// Time Threshold: after these minutes running we will send email
+$auser = Users::getActiveAdminUser();
+$warningMinutes = GlobalVariable::getVariable('CronTasks_cronWatcher_TimeThreshold', 30, 'CronTasks', $auser->id);
+$warningTimeThreshold = $warningMinutes*60; // $warningMinutes minutes.
+///////////////////////////////////
+
 // i18n
 //$i18nInactive = getTranslatedString('LBL_INACTIVE','CronTasks');
 //$i18nActive = getTranslatedString('LBL_ACTIVE','CronTasks');
 $i18nRunning = getTranslatedString('LBL_RUNNING','CronTasks');
 
-$cronTasks = Vtiger_Cron::listAllActiveInstances();
+$wcronTasks = Vtiger_Cron::listAllActiveInstances();
 $output = Array();
 $holdCM = $currentModule;
 $currentModule = 'CronTasks';
-foreach ($cronTasks as $cronTask) {
-	$cron_st = $cronTask->getStatus();
+foreach ($wcronTasks as $wcronTask) {
+	$cron_st = $wcronTask->getStatus();
 	if ($cron_st!=Vtiger_Cron::$STATUS_RUNNING) continue;
-	if($cronTask->getLastStart() != 0) {
-		$start_ts = $cronTask->getLastStart();
+	if($wcronTask->getLastStart() != 0) {
+		$start_ts = $wcronTask->getLastStart();
 		$end_ts = time();
 		$elapsed = $end_ts - $start_ts;
 		$cron_started = dateDiffAsString($start_ts, $end_ts);
@@ -53,10 +55,10 @@ foreach ($cronTasks as $cronTask) {
 	}
 	if ($elapsed<$warningTimeThreshold) continue;
 	$out = Array();
-	$cron_id = $cronTask->getId();
-	$cron_mod = $cronTask->getName();
-	$cron_freq = $cronTask->getFrequency();
-	$out['cronname'] = getTranslatedString($cron_mod,$cronTask->getModule());
+	$cron_id = $wcronTask->getId();
+	$cron_mod = $wcronTask->getName();
+	$cron_freq = $wcronTask->getFrequency();
+	$out['cronname'] = getTranslatedString($cron_mod,$wcronTask->getModule());
 	$out['hours'] = str_pad((int)(($cron_freq/(60*60))),2,0,STR_PAD_LEFT);
 	$out['mins'] =str_pad((int)(($cron_freq%(60*60))/60),2,0,STR_PAD_LEFT);
 	$out['laststart']= $cron_started;
@@ -65,7 +67,6 @@ foreach ($cronTasks as $cronTask) {
 $currentModule = $holdCM;
 
 //Send email with error.
-$auser = Users::getActiveAdminUser();
 $mailto = $auser->column_fields['email1'];
 $mailtoDefined = GlobalVariable::getVariable('CronTasks_cronWatcher_mailto', '', 'CronTasks', $auser->id);
 if($mailto != ''){

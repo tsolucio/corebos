@@ -51,11 +51,11 @@ class crmtogo_WS_getScrollContent extends crmtogo_WS_Controller {
 		if ($module =='Contacts' || $module =='Leads') {
 			$list_query .= " AND (lastname LIKE '%$search%' OR firstname LIKE '%$search%') ORDER BY lastname";
 		}
-		elseif ($module !='Calendar' AND $module !='Events') {
+		elseif ($module != 'cbCalendar') {
 			$list_query .= " AND ".$tablename.".".$fieldname." LIKE '%$search%' ORDER BY ".$tablename.".".$fieldname;
 		}
 		//special handling for calendar (currently display tasks only)
-		elseif ($module =='Calendar' || $module =='Events') {
+		elseif ($module == 'cbCalendar') {
 			$list_query .= " AND vtiger_activity.activitytype!='Emails'";
 			$list_query .= " AND subject LIKE '%$search%' ORDER BY date_start DESC";
 		}

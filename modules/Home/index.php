@@ -70,7 +70,7 @@ if(isPermitted('Reports','DetailView') == 'yes' && vtlib_isModuleActive('Reports
 }
 
 $homedetails = $homeObj->getHomePageFrame();
-$maxdiv = sizeof($homedetails)-1;
+$maxdiv = count($homedetails)-1;
 $user_name = $current_user->column_fields['user_name'];
 $buttoncheck['Calendar'] = isPermitted('Calendar','index');
 $freetag = new freetag();

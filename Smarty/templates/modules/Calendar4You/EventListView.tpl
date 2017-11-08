@@ -68,7 +68,7 @@
 		<td class="small" nowrap width=40% >
 			  <input name="submit" type="button" class="crmbutton small create" onClick="callSearch('Basic');" value=" {$APP.LBL_SEARCH_NOW_BUTTON} ">&nbsp;
 		</td>
-		<td class="small" valign="top" onMouseOver="this.style.cursor='pointer';" onclick="moveMe('searchAcc');searchshowhide('searchAcc','advSearch')">[x]</td>
+		<td class="small" valign="top" onMouseOver="this.style.cursor='pointer';" onclick="searchshowhide('searchAcc','advSearch')">[x]</td>
 	</tr>
 	<tr>
 		<td colspan="7" align="center" class="small">
@@ -88,7 +88,7 @@
 	<table  cellspacing=0 cellpadding=5 width=98% class="searchUIAdv1 small" align="center" border=0>
 		<tr>
 			<td class="searchUIName small" nowrap align="left"><span class="moduleName">{$APP.LBL_SEARCH}</span><br><span class="small"><a href="#" onClick="show('searchAcc');fnhide('advSearch')">{$APP.LBL_GO_TO} {$APP.LNK_BASIC_SEARCH}</a></span></td>
-			<td class="small" align="right" valign="top" onMouseOver="this.style.cursor='pointer';" onclick="moveMe('searchAcc');searchshowhide('searchAcc','advSearch')">[x]</td>
+			<td class="small" align="right" valign="top" onMouseOver="this.style.cursor='pointer';" onclick="searchshowhide('searchAcc','advSearch')">[x]</td>
 		</tr>
 	</table>
 	<table cellpadding="2" cellspacing="0" width="98%" align="center" class="searchUIAdv2 small" border=0>
@@ -452,44 +452,3 @@
 </tr>
 </table>
 </div>
-<script>
-{literal}
-function ajaxChangeStatus(statusname){
-	document.getElementById("status").style.display="inline";
-	var viewid = document.massdelete.viewname.value;
-	var excludedRecords=document.getElementById("excludedRecords").value;
-	var idstring = document.getElementById('allselectedboxes').value;
-	if(statusname == 'status'){
-		fninvsh('changestatus');
-		var url='&leadval='+document.getElementById('lead_status').options[document.getElementById('lead_status').options.selectedIndex].value;
-		var urlstring ="module=Users&action=updateLeadDBStatus&return_module=Leads"+url+"&viewname="+viewid+"&idlist="+idstring+"&excludedRecords="+excludedRecords;
-	} else if(statusname == 'owner') {
-		
-	   if(document.getElementById("user_checkbox").checked) {
-		    fninvsh('changeowner');
-		    var url='&owner_id='+document.getElementById('lead_owner').options[document.getElementById('lead_owner').options.selectedIndex].value+'&owner_type=User';
-		    {/literal}
-		        var urlstring ="module=Users&action=updateLeadDBStatus&return_module={$MODULE}"+url+"&viewname="+viewid+"&idlist="+idstring+"&excludedRecords="+excludedRecords;
-		    {literal}
-        } else {
-            fninvsh('changeowner');
-    		    var url='&owner_id='+document.getElementById('lead_group_owner').options[document.getElementById('lead_group_owner').options.selectedIndex].value+'&owner_type=Group';
-    	       {/literal}
-    		        var urlstring ="module=Users&action=updateLeadDBStatus&return_module={$MODULE}"+url+"&viewname="+viewid+"&idlist="+idstring+"&excludedRecords="+excludedRecords;
-    		    {literal}
-        }   
-	}
-	jQuery.ajax({
-			method:"POST",
-			url:'index.php?'+ urlstring
-	}).done(function(response) {
-			document.getElementById("status").style.display="none";
-			result = response.split('&#&#&#');
-			document.getElementById("ListViewContents").innerHTML= result[2];
-			if(result[1] != '')
-				alert(result[1]);
-			document.getElementById('basicsearchcolumns').innerHTML = '';
-	});
-}
-</script>
-{/literal}

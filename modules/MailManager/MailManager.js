@@ -579,7 +579,7 @@ if (typeof(MailManager) == 'undefined') {
         /* Lookup for mail relations in CRM */
         mail_find_relationship: function(){
             jQuery('#_mailrecord_findrel_btn_').html(MailManager.i18n('JSLBL_Finding_Relation') + '...');
-            jQuery("#_mailrecord_findrel_btn_").attr('disabled', true);
+            jQuery("#_mailrecord_findrel_btn_").prop('disabled', true);
 			
             var meta = MailManager.mail_open_meta;
 			
@@ -596,7 +596,7 @@ if (typeof(MailManager) == 'undefined') {
              }).done(function (transport) {
 				
                     jQuery('#_mailrecord_findrel_btn_').html(MailManager.i18n('JSLBL_Find_Relation_Now'));
-                    jQuery("#_mailrecord_findrel_btn_").attr('disabled', false);
+                    jQuery("#_mailrecord_findrel_btn_").prop('disabled', false);
                     jQuery('#_mailrecord_findrel_btn_').hide();
                     var response = MailManager.removeHidElement(transport);
                     var responseJSON = JSON.parse(response);
@@ -1200,7 +1200,7 @@ if (typeof(MailManager) == 'undefined') {
 			
             var elem = jQuery('#_search_popupui_input_');
             if (elem) {
-                if (elem.attr('_tokeninput_init_'))
+                if (elem.prop('_tokeninput_init_'))
                     return;
                 elem.tokenInput(url, {
                     hintText: MailManager.i18n('JSLBL_Search_For_Email') + '...',
@@ -1220,7 +1220,7 @@ if (typeof(MailManager) == 'undefined') {
                         inputToken: "token-input-input-token-facebook"
                     }
                 });
-                elem.attr('_tokeninput_init_', true);
+                elem.prop('_tokeninput_init_', true);
             }
         },
 
@@ -1626,9 +1626,9 @@ if (typeof(MailManager) == 'undefined') {
             for(i=0; i<elements.length; i++) {
                 var element = jQuery(elements[i]);
                 if(state) {
-                    element.attr('checked',state).parent().parent().addClass('mm_lvtColDataHover').removeClass('mm_lvtColData');
+                    element.prop('checked',state).parent().parent().addClass('mm_lvtColDataHover').removeClass('mm_lvtColData');
                 } else {
-                    element.attr('checked',state).parent().parent().removeClass('mm_lvtColDataHover').addClass('mm_lvtColData');
+                    element.prop('checked',state).parent().parent().removeClass('mm_lvtColDataHover').addClass('mm_lvtColData');
                 }
             }
         },

@@ -388,6 +388,15 @@ function changeGoogleAccount(){
 	document.getElementById('update_google_account').value = "1";
 }
 
+function cleartokens(uid){
+	jQuery.ajax({
+			method:"POST",
+			url:'index.php?module=Calendar4You&action=cleartokens&uid='+uid,
+	}).done(function(response) {
+			window.location.reload();
+	});  
+}
+
 function insertIntoCRM(userid,eventid,eventtype,geventid,start_date,end_date,start_hr,start_min,start_fmt,end_hr,end_min,end_fmt){
 	if (eventtype == "todo")
 		el_div = "createTodo";

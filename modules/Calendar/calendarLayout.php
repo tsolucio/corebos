@@ -2160,8 +2160,7 @@ function getCalendarViewSecurityParameter()
 			$condition = "or (vtiger_crmentity.smownerid NOT LIKE ($current_user->id))";
 		$sec_query .= " and (vtiger_crmentity.smownerid in($current_user->id) $condition or vtiger_crmentity.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%')";
 
-		if(sizeof($current_user_groups) > 0)
-		{
+		if (count($current_user_groups) > 0) {
 			$sec_query .= " or (vtiger_groups.groupid in (". implode(",", $current_user_groups) ."))";
 		}
 		$sec_query .= ")";

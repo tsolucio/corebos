@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
 include_once 'modules/PurchaseOrder/PurchaseOrderPDFController.php';
 
@@ -18,8 +17,9 @@ $controller->loadRecord(vtlib_purify($_REQUEST['record']));
 
 $filenameid = vtlib_purify($_REQUEST['record']);
 $purchaseorder_no = getModuleSequenceNumber($currentModule,vtlib_purify($_REQUEST['record']));
+$moduleName = getTranslatedString('SINGLE_PurchaseOrder', $currentModule);
 if(empty($filenameid)) $filenameid = time();
-$filepath=$root_directory."storage/PurchaseOrder_".$purchaseorder_no.".pdf";
+$filepath=$root_directory."storage/".$moduleName.'_'.$purchaseorder_no.".pdf";
 //added file name to make it work in IE, also forces the download giving the user the option to save
 $controller->Output($filepath,'F');
 

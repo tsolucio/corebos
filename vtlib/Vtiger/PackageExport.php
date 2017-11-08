@@ -52,8 +52,7 @@ class Vtiger_PackageExport {
 	}
 
 	/**
-	 * Set the module.xml file path for this export and 
-	 * return its temporary path.
+	 * Set the module.xml file path for this export and return its temporary path.
 	 * @access private
 	 */
 	function __getManifestFilePath() {
@@ -216,7 +215,7 @@ class Vtiger_PackageExport {
 	function export_Dependencies($moduleInstance) {
 		global $vtiger_current_version, $adb;
 		$moduleid = $moduleInstance->id;
-		
+
 		$sqlresult = $adb->pquery("SELECT * FROM vtiger_tab_info WHERE tabid = ?", array($moduleid));
 		$vtigerMinVersion = $vtiger_current_version;
 		$vtigerMaxVersion = false;
@@ -230,9 +229,7 @@ class Vtiger_PackageExport {
 			if($prefName == 'vtiger_max_version') {
 				$vtigerMaxVersion = $prefValue;
 			}
-			
 		}
-		
 		$this->openNode('dependencies');
 		$this->outputNode($vtigerMinVersion, 'vtiger_version');
 		if($vtigerMaxVersion !== false)	$this->outputNode($vtigerMaxVersion, 'vtiger_max_version');
@@ -290,7 +287,7 @@ class Vtiger_PackageExport {
 		$this->export_SharingAccess($moduleInstance);
 
 		// Export Events
-		$this->export_Events($moduleInstance);		
+		$this->export_Events($moduleInstance);
 
 		// Export Actions
 		$this->export_Actions($moduleInstance);
@@ -336,9 +333,8 @@ class Vtiger_PackageExport {
 					$_exportedTables[] = $table;
 				}
 			}
-			
 		}
-		
+
 		// Now export table information recorded in schema file
 		if(file_exists("modules/$modulename/schema.xml")) {
 			$schema = simplexml_load_file("modules/$modulename/schema.xml");
@@ -380,7 +376,7 @@ class Vtiger_PackageExport {
 		for($index = 0; $index < $resultrows; ++$index) {
 			$blockid    = $adb->query_result($sqlresult, $index, 'blockid');
 			$blocklabel = $adb->query_result($sqlresult, $index, 'blocklabel');
-		
+
 			$this->openNode('block');
 			$this->outputNode($blocklabel, 'label');
 			// Export fields associated with the block
@@ -396,7 +392,7 @@ class Vtiger_PackageExport {
 	 */
 	function export_Fields($moduleInstance, $blockid) {
 		global $adb;
-		
+
 		$fieldresult = $adb->pquery("SELECT * FROM vtiger_field WHERE tabid=? AND block=?", Array($moduleInstance->id, $blockid));
 		$fieldcount = $adb->num_rows($fieldresult);
 
@@ -414,22 +410,22 @@ class Vtiger_PackageExport {
 			$uitype = $fieldresultrow['uitype'];
 			$fieldid = $fieldresultrow['fieldid'];
 
-			$this->outputNode($fieldname, 'fieldname');	
-			$this->outputNode($uitype,    'uitype');
-			$this->outputNode($fieldresultrow['columnname'],'columnname');			
-			$this->outputNode($fieldresultrow['tablename'],     'tablename');
+			$this->outputNode($fieldname, 'fieldname');
+			$this->outputNode($uitype, 'uitype');
+			$this->outputNode($fieldresultrow['columnname'], 'columnname');
+			$this->outputNode($fieldresultrow['tablename'], 'tablename');
 			$this->outputNode($fieldresultrow['generatedtype'], 'generatedtype');
-			$this->outputNode($fieldresultrow['fieldlabel'],    'fieldlabel');
-			$this->outputNode($fieldresultrow['readonly'],      'readonly');
-			$this->outputNode($fieldresultrow['presence'],      'presence');
-			$this->outputNode($fieldresultrow['defaultvalue'],  'defaultvalue');
-			$this->outputNode($fieldresultrow['sequence'],      'sequence');
+			$this->outputNode($fieldresultrow['fieldlabel'], 'fieldlabel');
+			$this->outputNode($fieldresultrow['readonly'], 'readonly');
+			$this->outputNode($fieldresultrow['presence'], 'presence');
+			$this->outputNode($fieldresultrow['defaultvalue'], 'defaultvalue');
+			$this->outputNode($fieldresultrow['sequence'], 'sequence');
 			$this->outputNode($fieldresultrow['maximumlength'], 'maximumlength');
-			$this->outputNode($fieldresultrow['typeofdata'],    'typeofdata');
-			$this->outputNode($fieldresultrow['quickcreate'],   'quickcreate');
-			$this->outputNode($fieldresultrow['quickcreatesequence'],   'quickcreatesequence');
-			$this->outputNode($fieldresultrow['displaytype'],   'displaytype');
-			$this->outputNode($fieldresultrow['info_type'],     'info_type');
+			$this->outputNode($fieldresultrow['typeofdata'], 'typeofdata');
+			$this->outputNode($fieldresultrow['quickcreate'], 'quickcreate');
+			$this->outputNode($fieldresultrow['quickcreatesequence'], 'quickcreatesequence');
+			$this->outputNode($fieldresultrow['displaytype'], 'displaytype');
+			$this->outputNode($fieldresultrow['info_type'], 'info_type');
 			$this->outputNode('<![CDATA['.$fieldresultrow['helpinfo'].']]>', 'helpinfo');
 			if(isset($fieldresultrow['masseditable'])) {
 				$this->outputNode($fieldresultrow['masseditable'], 'masseditable');
@@ -438,7 +434,7 @@ class Vtiger_PackageExport {
 			// Export Entity Identifier Information
 			if($fieldname == $entity_fieldname) {
 				$this->openNode('entityidentifier');
-				$this->outputNode($adb->query_result($entityresult, 0, 'entityidfield'),    'entityidfield');
+				$this->outputNode($adb->query_result($entityresult, 0, 'entityidfield'), 'entityidfield');
 				$this->outputNode($adb->query_result($entityresult, 0, 'entityidcolumn'), 'entityidcolumn');
 				$this->closeNode('entityidentifier');
 			}
@@ -505,7 +501,7 @@ class Vtiger_PackageExport {
 			$setmetrics = $adb->query_result($customviewres, $cvindex, 'setmetrics');
 			$setmetrics = ($setmetrics == 1)? 'true' : 'false';
 
-			$this->outputNode($adb->query_result($customviewres, $cvindex, 'viewname'),   'viewname');
+			$this->outputNode($adb->query_result($customviewres, $cvindex, 'viewname'), 'viewname');
 			$this->outputNode($setdefault, 'setdefault');
 			$this->outputNode($setmetrics, 'setmetrics');
 
@@ -522,27 +518,26 @@ class Vtiger_PackageExport {
 				$this->closeNode('field');
 			}
 			$this->closeNode('fields');
-			
-			$cvcolumnruleres = $adb->pquery("SELECT * FROM vtiger_cvadvfilter WHERE cvid=?",
-					Array($cvid));
+
+			$cvcolumnruleres = $adb->pquery("SELECT * FROM vtiger_cvadvfilter WHERE cvid=?", Array($cvid));
 			$cvcolumnrulecount = $adb->num_rows($cvcolumnruleres);
-			
+
 			if($cvcolumnrulecount) {
 				$this->openNode('rules');
 				for($rindex = 0; $rindex < $cvcolumnrulecount; ++$rindex) {
 					$cvcolumnruleindex = $adb->query_result($cvcolumnruleres, $rindex, 'columnindex');
-					
+
 					$cvcolumnrulename = $adb->query_result($cvcolumnruleres, $rindex, 'columnname');
 					$cvcolumnnames= explode(':', $cvcolumnrulename);
 					$cvfieldname = $cvcolumnnames[2];
-					
+
 					$cvcolumnrulecomp  = $adb->query_result($cvcolumnruleres, $rindex, 'comparator');
 					$cvcolumnrulevalue = $adb->query_result($cvcolumnruleres, $rindex, 'value');
 					$cvcolumnrulecomp  = Vtiger_Filter::translateComparator($cvcolumnrulecomp, true);
-					
+
 					$cvcolumnrulegroupid = $adb->query_result($cvcolumnruleres, $rindex, 'groupid');
 					$cvcolumnrulecolumn_condition = $adb->query_result($cvcolumnruleres, $rindex, 'column_condition');
-			
+
 					$this->openNode('rule');
 					$this->outputNode($cvcolumnruleindex, 'columnindex');
 					$this->outputNode($cvfieldname, 'fieldname');
@@ -551,28 +546,25 @@ class Vtiger_PackageExport {
 					$this->outputNode($cvcolumnrulegroupid, 'groupid');
 					$this->outputNode($cvcolumnrulecolumn_condition, 'column_condition');
 					$this->closeNode('rule');
-			
 				}
 				$this->closeNode('rules');
 			}
-			$cvcolumngroups = $adb->pquery("SELECT * FROM vtiger_cvadvfilter_grouping WHERE cvid=?",
-					Array($cvid));
+			$cvcolumngroups = $adb->pquery("SELECT * FROM vtiger_cvadvfilter_grouping WHERE cvid=?", Array($cvid));
 			$cvcolumngroupcount = $adb->num_rows($cvcolumngroups);
-				
+
 			if($cvcolumngroupcount) {
 				$this->openNode('groups');
 				for($rindex = 0; $rindex < $cvcolumngroupcount; ++$rindex) {
 					$cvcolumngroupid = $adb->query_result($cvcolumngroups, $rindex, 'groupid');
-					
+
 					$cvcolumngroup_condition = $adb->query_result($cvcolumngroups, $rindex, 'group_condition');
-					$cvcolumncondition_expression  = $adb->query_result($cvcolumngroups, $rindex, 'condition_expression');
-					
+					$cvcolumncondition_expression = $adb->query_result($cvcolumngroups, $rindex, 'condition_expression');
+
 					$this->openNode('group');
 					$this->outputNode($cvcolumngroupid, 'groupid');
 					$this->outputNode($cvcolumngroup_condition, 'group_condition');
 					$this->outputNode($cvcolumncondition_expression, 'condition_expression');
 					$this->closeNode('group');
-					
 				}
 				$this->closeNode('groups');
 			}
@@ -606,7 +598,7 @@ class Vtiger_PackageExport {
 				$this->outputNode($permissiontext, 'default');
 			}
 		}
-		$this->closeNode('sharingaccess');		
+		$this->closeNode('sharingaccess');
 	}
 
 	/**
@@ -624,6 +616,7 @@ class Vtiger_PackageExport {
 			$this->outputNode('<![CDATA['.$event->classname.']]>', 'classname');
 			$this->outputNode('<![CDATA['.$event->filename.']]>', 'filename');
 			$this->outputNode('<![CDATA['.$event->condition.']]>', 'condition');
+			$this->outputNode('<![CDATA['.$event->dependent.']]>', 'dependent');
 			$this->closeNode('event');
 		}
 		$this->closeNode('events');
@@ -639,7 +632,7 @@ class Vtiger_PackageExport {
 		if(!$moduleInstance->isentitytype) return;
 
 		global $adb;
-		$result = $adb->pquery('SELECT distinct(actionname) FROM vtiger_profile2utility, vtiger_actionmapping 
+		$result = $adb->pquery('SELECT distinct(actionname) FROM vtiger_profile2utility, vtiger_actionmapping
 			WHERE vtiger_profile2utility.activityid=vtiger_actionmapping.actionid and tabid=?', Array($moduleInstance->id));
 
 		if($adb->num_rows($result)) {
@@ -685,7 +678,7 @@ class Vtiger_PackageExport {
 					}
 					$this->closeNode('actions');
 				}
-				
+
 				$relModuleInstance = Vtiger_Module::getInstance($row['related_tabid']);
 				$this->outputNode($relModuleInstance->name, 'relatedmodule');
 

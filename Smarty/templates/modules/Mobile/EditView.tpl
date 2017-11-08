@@ -53,12 +53,8 @@
 			<input type="hidden" name="return_action" value="index">
 			<input type="hidden" name="return_viewname" value="{if isset($RETURN_VIEWNAME)}{$RETURN_VIEWNAME}{/if}">
 			<input type="hidden" name="createmode" value="{if isset($CREATEMODE)}{$CREATEMODE}{/if}" />
-			<input type="hidden" name="origmodule" id="origmodule" value="{$ORIGMODULE}" />
-			{if $ORIGMODULE eq 'Events'}
+			{if $_MODULE->name() eq 'cbCalendar' && isset($INVITEES)}
 				<input type="hidden" name="inviteesid" value="{$INVITEES}">
-			{/if}
-			{if $ORIGMODULE eq 'Calendar'}
-				<input type="hidden" name="activitytype" value="Task">
 			{/if}
 			{foreach item=_BLOCK key=_BLOCKLABEL from=$_RECORD->blocks()}
 			{assign var=_FIELDS value=$_BLOCK->fields()}
@@ -66,15 +62,11 @@
 					<h3>{$_BLOCKLABEL|@getTranslatedString:$_MODULE->name()}</h3>
 					<p>
 					{foreach item=_FIELD from=$_FIELDS}
-						{if $_FIELD->displaytype() eq '1' || ($_FIELD->name() eq 'time_start' || $_FIELD->name() eq 'time_end')}
+						{if $_FIELD->displaytype() eq '1' || ($_FIELD->name() eq 'time_start' || $_FIELD->name() eq 'time_end' || $_FIELD->name() eq 'date_start' || $_FIELD->name() eq 'due_date' || $_FIELD->name() eq 'followupdt')}
 							<div>   
 								{if $_FIELD->uitype() eq '1' || $_FIELD->uitype() eq '2' || $_FIELD->uitype() eq '55' || $_FIELD->uitype() eq '255' || $_FIELD->uitype() eq '11'  || $_FIELD->uitype() eq '13'  || $_FIELD->uitype() eq '17' || $_FIELD->uitype() eq '72' || $_FIELD->uitype() eq '22'  || $_FIELD->uitype() eq '20'}
-									{if $_MODULE->name() eq 'Calendar' && $_FIELD->name() eq 'location'}
-									<!-- location not available for Task -->
-									{else}
 										<label for="{$_FIELD->label()}">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
 										<input  type="text" name="{$_FIELD->name()}" id="{$_FIELD->label()}" value="{$_FIELD->valueLabel()}" {if $_FIELD->ismandatory() eq 'M'}class="required"{/if} />
-									{/if}
 			   				    {/if}
 								{if $_FIELD->uitype() eq '23' || $_FIELD->uitype() eq '5' || $_FIELD->uitype() eq '6' || $_FIELD->uitype() eq '252'}
 										{foreach key=date_value item=time_value from=$_FIELD->value()}
@@ -84,7 +76,7 @@
 										{assign var=dateFormat value="$SMARTYDATEFORMAT"}
 										{assign var=dateStr value="$HOURFORMATFORMAT"}
 										
-										{if $_FIELD->name() neq 'time_start' &&  $_FIELD->name() neq 'time_end'}
+										{if $_FIELD->name() neq 'time_start' && $_FIELD->name() neq 'time_end' && $_FIELD->name() neq 'followupdt'}
 											{if $_FIELD->name() eq 'date_start'}
 												<input type="hidden" name="dateformat" id="dateformat" value="{$DATEFORMAT}" />
 												<label for="{$_FIELD->name()}">{'Start Date'|@getTranslatedString:$_MODULE->name()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
@@ -100,10 +92,16 @@
 											<input type="time" name="time_start" id="time_start" value="{$_FIELD->value()}" class="required" />
 											<div id="format_note_{$_FIELD->name()}" style="margin-bottom:25px;font-style:italic;font-size:10px;display:none;">Format: HH:MM (24 H)</div>
 										{/if}
-										{if $_FIELD->uitype() eq '252' && $_FIELD->name() eq 'time_end' && ($ORIGMODULE eq 'Events' || $ORIGMODULE eq 'Timecontrol')}
+										{if $_FIELD->uitype() eq '252' && $_FIELD->name() eq 'time_end' && ($_MODULE->name() eq 'cbCalendar' || $_MODULE->name() eq 'Timecontrol')}
 											<label for="{$_FIELD->name()}">{$_FIELD->label()|@getTranslatedString:$_MODULE->name()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
 											<input type="time" name="time_end" id="time_end" value="{$_FIELD->value()}" />
 											<div id="format_note_time_end" style="margin-bottom:25px;font-style:italic;font-size:10px;display:none;">Format: HH:MM (24 H)</div>
+										{/if}
+										{if $_FIELD->uitype() eq '252' && $_FIELD->name() eq 'followupdt' && $_MODULE->name() eq 'cbCalendar'}
+											<label for="{$_FIELD->name()}">{$_FIELD->label()|@getTranslatedString:$_MODULE->name()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
+											<input data-mini="true" type="date" name="{$_FIELD->name()}" id="{$_FIELD->name()}" value="{$_FIELD->value()}" {if $_FIELD->ismandatory() eq 'M'}class="required"{/if} />
+											<input type="time" name="followupdt_time" id="followupdt_time" value="{$_FIELD->value()}" />
+											<div id="format_note_followupdt_time" style="margin-bottom:25px;font-style:italic;font-size:10px;display:none;">Format: HH:MM (24 H)</div>
 										{/if}
 								{/if}	
 								{if $_FIELD->uitype() eq '4'}
@@ -150,7 +148,7 @@
 								{if $_FIELD->uitype() eq '53'}
 									<div>
 									<label for="assign_user">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
-									{assign var=check value=1}
+									{assign var=check value=0}
 									{foreach key=key_one item=arr from=$_FIELD->value()}
 										{foreach key=sel_value item=value from=$arr}
 											{foreach key=sel_value1 item=value1 from=$value}
@@ -189,7 +187,7 @@
 												{if $key_one eq '0'}
 													{foreach key=sel_value1 item=arr1 from=$arr}
 														{foreach key=sel_value2 item=value from=$arr1}
-															<option value="{$sel_value1}" {$value}>{$sel_value2}</option>
+															<option value="{$sel_value1}" {if $mode eq 'create' && $sel_value1 eq $CURRENTUSERwsid}selected{else}{$value}{/if}>{$sel_value2}</option>
 														{/foreach}
 													{/foreach}
 												{/if}
@@ -219,14 +217,12 @@
 										</textarea>
 								    </div>
                                 {/if}
- 								{if $_FIELD->uitype() eq '56' && $_FIELD->name() eq 'sendnotification'}
-								    <div>
-										{if ($_MODULE->name() eq 'Calendar' && $_FIELD->name() eq 'sendnotification') || $_MODULE->name() neq 'Calendar'}
-										<label for="{$_FIELD->label()}">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label> 
+ 								{if $_FIELD->uitype() eq '56'}
+									<div>
+										<label for="{$_FIELD->label()}">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
 										<input type="checkbox" name="{$_FIELD->name()}" id="{$_FIELD->label()}" class="custom" />
-										{/if}
-								    </div>
-                                {/if}
+									</div>
+								{/if}
 								{if ($_FIELD->uitype() eq '10')||  ($_FIELD->uitype() eq '51')||  ($_FIELD->uitype() eq '59')||  ($_FIELD->uitype() eq '68')}
 									<div class="ui-field-contain">
 										<div>
@@ -236,7 +232,7 @@
 											<option value="{$_FIELD->value()}" selected>{$_FIELD->valueLabel()}</option>
 										</select>
 									</div>
- 							    {/if}							
+ 							    {/if}
  								{if $_FIELD->uitype() eq '16'}
 									{if $_FIELD->name() eq 'recurringtype' || $_FIELD->name() eq 'duration_minutes' || $_FIELD->name() eq 'visibility' }
 										{if $_FIELD->name() eq 'recurringtype'}

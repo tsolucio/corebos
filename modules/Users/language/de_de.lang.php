@@ -678,9 +678,6 @@ $mod_strings = Array(
     'Asterisk Extension' => 'Asterisk Erweiterung',
     'Receive Incoming Calls' => 'empfange eingehende Anrufe',
 
-    // Added for Create Custom Fields 
-    'LBL_USER_CUSTOMFIELDS_DESCRIPTION' => 'Erstellen Sie benutzerdefinierte Felder für Users ',
-    'LBL_USER_CUSTOMFIELDS' => 'Benutzerdefinierte Felder für das Users-Modul',
     'LBL_CURRENCY_CONFIGURATION'=> 'Währungseinstellungen',
 	'Digit Grouping Pattern' => 'Digit Grouping Pattern',
 	'Decimal Separator' => 'Decimal Separator',

@@ -71,6 +71,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_UI_Name',
 				'Application_UI_CompanyName',
 				'Application_UI_ShowGITVersion',
+				'Application_UI_ShowGITDate',
 				'Application_UI_Version',
 				'Application_UI_URL',
 				'Application_Group_Selection_Permitted',
@@ -86,8 +87,10 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Calendar_Show_Inactive_Users',
 				'Calendar_Show_Group_Events',
 				'Calendar_Push_End_On_Start_Change',
+				'Calendar_PopupReminder_DaysPast',
 
 				'CronTasks_cronWatcher_mailto',
+				'CronTasks_cronWatcher_TimeThreshold',
 
 				'BusinessMapping_SalesOrder2Invoice',
 				'BusinessMapping_PotentialOnCampaignRelation',

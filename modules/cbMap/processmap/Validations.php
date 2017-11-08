@@ -203,7 +203,7 @@ class Validations extends processcbMap {
 						if (file_exists($restrictions[0])) {
 							@include $restrictions[0];
 							if (function_exists($restrictions[2])) {
-								$v->addRule($restrictions[1], $restrictions[2], (isset($restrictions[3]) ? getTranslatedString($restrictions[3]) : getTranslatedString('INVALID')));
+								$v->addRule($restrictions[1], $restrictions[2], (isset($restrictions[3]) ? getTranslatedString($restrictions[3],$mapping['origin']) : getTranslatedString('INVALID',$mapping['origin'])));
 								$v->rule($restrictions[1], $valfield)->label($i18n);
 							}
 						}
@@ -277,7 +277,7 @@ class Validations extends processcbMap {
 			}
 			$screen_values['pdoInformation'] = $products;
 		}
-		$record = (isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : 0);
+		$record = (isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : (isset($screen_values['record']) ? vtlib_purify($screen_values['record']) : 0));
 		$q = 'select cbmapid from vtiger_cbmap
 			inner join vtiger_crmentity on crmid=cbmapid
 			where deleted=0 and maptype=? and targetname=?';

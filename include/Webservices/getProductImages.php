@@ -46,7 +46,7 @@ function cbws_getproductimageinfo($id, $user){
 		throw new WebServiceException(WebServiceErrorCode::$INVALIDID,"Entity ID must be a product");
 	}
 	$log->debug("Leaving function cbws_getproductimageinfo");
-	return cbws_getmoduleimageinfo($id, $user);
+	return cbws_getrecordimageinfo($id, $user);
 }
 
 ?>

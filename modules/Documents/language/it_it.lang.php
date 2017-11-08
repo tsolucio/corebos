@@ -33,7 +33,8 @@ $mod_strings = Array(
 'ERR_DELETE_RECORD'=>"Un record deve essere specificato per cancellare la aziende.",
 'LBL_LIST_FILENAME'=>"Nome File",
 
-// Added for Note(3.2-patch 3) 
+'Template'=>'Template',
+'Template For' => 'Template For',
 
 'LBL_FILENAME'=>'Allegato:',
 'LBL_NOTE_INFORMATION'=>'Informazioni Base',

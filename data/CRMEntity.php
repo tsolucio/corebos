@@ -1280,7 +1280,7 @@ class CRMEntity {
 		$query .= " LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id and vtiger_users.status='Active'";
 		$query .= " LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'";
 
-		$linkedModulesQuery = $this->db->pquery("SELECT distinct fieldname, columnname, relmodule FROM vtiger_field" .
+		$linkedModulesQuery = $this->db->pquery("SELECT distinct fieldname, tablename, columnname, relmodule FROM vtiger_field" .
 			" INNER JOIN vtiger_fieldmodulerel ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid" .
 			" WHERE uitype='10' AND vtiger_fieldmodulerel.module=?", array($thismodule));
 		$linkedFieldsCount = $this->db->num_rows($linkedModulesQuery);
@@ -1290,6 +1290,7 @@ class CRMEntity {
 			$related_module = $this->db->query_result($linkedModulesQuery, $i, 'relmodule');
 			$fieldname = $this->db->query_result($linkedModulesQuery, $i, 'fieldname');
 			$columnname = $this->db->query_result($linkedModulesQuery, $i, 'columnname');
+			$tablename = $this->db->query_result($linkedModulesQuery, $i, 'tablename');
 
 			$other = CRMEntity::getInstance($related_module);
 
@@ -1303,7 +1304,7 @@ class CRMEntity {
 				$rel_mods[$other->table_name] = 1;
 			}
 
-			$query .= " LEFT JOIN $other->table_name $query_append ON $alias.$other->table_index = $this->table_name.$columnname";
+			$query .= " LEFT JOIN $other->table_name $query_append ON $alias.$other->table_index = $tablename.$columnname";
 		}
 
 		$query .= $this->getNonAdminAccessControlQuery($thismodule,$current_user);
@@ -1761,7 +1762,6 @@ class CRMEntity {
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		$other = CRMEntity::getInstance($related_module);
 
-		$singular_modname = vtlib_toSingular($related_module);
 		$button = '';
 		if ($actions) {
 			if (is_string($actions))
@@ -1771,7 +1771,7 @@ class CRMEntity {
 				$wfs = new VTWorkflowManager($adb);
 				$racbr = $wfs->getRACRuleForRecord($currentModule, $id);
 				if (!$racbr or $racbr->hasRelatedListPermissionTo('select',$related_module)) {
-					$button .= "<input title='" . getTranslatedString('LBL_SELECT') . " " . getTranslatedString($related_module) . "' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\" value='" . getTranslatedString('LBL_SELECT') . " " . getTranslatedString($related_module) . "'>&nbsp;";
+					$button .= "<input title='" . getTranslatedString('LBL_SELECT') . " " . getTranslatedString($related_module,$related_module) . "' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\" value='" . getTranslatedString('LBL_SELECT') . " " . getTranslatedString($related_module,$related_module) . "'>&nbsp;";
 				}
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
@@ -1780,10 +1780,11 @@ class CRMEntity {
 					$racbr = $wfs->getRACRuleForRecord($currentModule, $id);
 				}
 				if (!$racbr or $racbr->hasRelatedListPermissionTo('create',$related_module)) {
+					$singular_modname = getTranslatedString('SINGLE_' . $related_module,$related_module);
 					$button .= "<input type='hidden' name='createmode' value='link' />" .
-						"<input title='" . getTranslatedString('LBL_ADD_NEW') . " " . getTranslatedString($singular_modname) . "' class='crmbutton small create'" .
+						"<input title='" . getTranslatedString('LBL_ADD_NEW') . " " . $singular_modname . "' class='crmbutton small create'" .
 						" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
-						" value='" . getTranslatedString('LBL_ADD_NEW') . " " . getTranslatedString($singular_modname) . "'>&nbsp;";
+						" value='" . getTranslatedString('LBL_ADD_NEW') . " " . $singular_modname . "'>&nbsp;";
 				}
 			}
 		}
@@ -1831,7 +1832,6 @@ class CRMEntity {
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once("modules/$related_module/$related_module.php");
 		$other = new $related_module();
-		$singular_modname = vtlib_toSingular($related_module);
 
 		$parenttab = getParentTab();
 
@@ -1846,10 +1846,11 @@ class CRMEntity {
 		if ($actions) {
 			if (is_string($actions)) $actions = explode(',', strtoupper($actions));
 			if (in_array('SELECT', $actions) && isPermitted($related_module,4, '') == 'yes') {
-				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module). "' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module) ."'>&nbsp;";
+				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module,$related_module). "' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module,$related_module) ."'>&nbsp;";
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module,1, '') == 'yes') {
-				$button .= "<input title='". getTranslatedString('LBL_ADD_NEW')." ". getTranslatedString($singular_modname)."' accessyKey='F' class='crmbutton small create' onclick='fnvshobj(this,\"sendmail_cont\");sendmail(\"$this_module\",$id);' type='button' name='button' value='". getTranslatedString('LBL_ADD_NEW')." ". getTranslatedString($singular_modname)."'></td>";
+				$singular_modname = getTranslatedString('SINGLE_' . $related_module,$related_module);
+				$button .= "<input title='". getTranslatedString('LBL_ADD_NEW')." ". $singular_modname."' accessyKey='F' class='crmbutton small create' onclick='fnvshobj(this,\"sendmail_cont\");sendmail(\"$this_module\",$id);' type='button' name='button' value='". getTranslatedString('LBL_ADD_NEW')." ". $singular_modname."'></td>";
 			}
 		}
 
@@ -2003,8 +2004,6 @@ class CRMEntity {
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		$other = CRMEntity::getInstance($related_module);
 
-		$singular_modname = 'SINGLE_' . $related_module;
-
 		$button = '';
 		if ($actions) {
 			if (is_string($actions))
@@ -2014,7 +2013,7 @@ class CRMEntity {
 				$wfs = new VTWorkflowManager($adb);
 				$racbr = $wfs->getRACRuleForRecord($currentModule, $id);
 				if (!$racbr or $racbr->hasRelatedListPermissionTo('select',$related_module)) {
-					$button .= "<input title='" . getTranslatedString('LBL_SELECT') . " " . getTranslatedString($related_module) . "' class='crmbutton small edit' " .
+					$button .= "<input title='" . getTranslatedString('LBL_SELECT') . " " . getTranslatedString($related_module, $related_module) . "' class='crmbutton small edit' " .
 						" type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\"" .
 						" value='" . getTranslatedString('LBL_SELECT') . " " . getTranslatedString($related_module, $related_module) . "'>&nbsp;";
 				}
@@ -2025,10 +2024,11 @@ class CRMEntity {
 					$racbr = $wfs->getRACRuleForRecord($currentModule, $id);
 				}
 				if (!$racbr or $racbr->hasRelatedListPermissionTo('create',$related_module)) {
+					$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
 					$button .= "<input type='hidden' name='createmode' value='link' />" .
-						"<input title='" . getTranslatedString('LBL_ADD_NEW') . " " . getTranslatedString($singular_modname) . "' class='crmbutton small create'" .
+						"<input title='" . getTranslatedString('LBL_ADD_NEW') . " " . $singular_modname . "' class='crmbutton small create'" .
 						" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
-						" value='" . getTranslatedString('LBL_ADD_NEW') . " " . getTranslatedString($singular_modname, $related_module) . "'>&nbsp;";
+						" value='" . getTranslatedString('LBL_ADD_NEW') . " " . $singular_modname . "'>&nbsp;";
 				}
 			}
 		}
@@ -2090,8 +2090,6 @@ class CRMEntity {
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		$other = CRMEntity::getInstance($related_module);
 
-		$singular_modname = 'SINGLE_' . $related_module;
-
 		$button = '';
 
 		// To make the edit or del link actions to return back to same view.
@@ -2113,7 +2111,7 @@ class CRMEntity {
 			if (isset($other->related_tables)) {
 				$otherRelatedTable = (array)$other->related_tables;
 			} else {
-				$otherRelatedTable = '';
+				$otherRelatedTable = array();
 			}
 			if ($dependentTable!=$other->table_name and !in_array($dependentTable, $otherRelatedTable)) {
 				$relidx = isset($other->tab_name_index[$dependentTable]) ? $other->tab_name_index[$dependentTable] : $other->table_index;
@@ -2141,9 +2139,10 @@ class CRMEntity {
 					$wfs = new VTWorkflowManager($adb);
 					$racbr = $wfs->getRACRuleForRecord($currentModule, $id);
 					if (!$racbr or $racbr->hasRelatedListPermissionTo('create',$related_module)) {
-						$button .= "<input title='" . getTranslatedString('LBL_ADD_NEW') . " " . getTranslatedString($singular_modname, $related_module) . "' class='crmbutton small create'" .
+						$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
+						$button .= "<input title='" . getTranslatedString('LBL_ADD_NEW') . " " . $singular_modname . "' class='crmbutton small create'" .
 							" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
-							" value='" . getTranslatedString('LBL_ADD_NEW') . " " . getTranslatedString($singular_modname, $related_module) . "'>&nbsp;";
+							" value='" . getTranslatedString('LBL_ADD_NEW') . " " . $singular_modname . "'>&nbsp;";
 					}
 				}
 			}
@@ -2205,8 +2204,6 @@ class CRMEntity {
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		$other = CRMEntity::getInstance($related_module);
 
-		$singular_modname = 'SINGLE_' . $related_module;
-
 		$button = '';
 
 		// To make the edit or del link actions to return back to same view.
@@ -2265,9 +2262,10 @@ class CRMEntity {
 					$wfs = new VTWorkflowManager($adb);
 					$racbr = $wfs->getRACRuleForRecord($currentModule, $id);
 					if (!$racbr or $racbr->hasRelatedListPermissionTo('create',$related_module)) {
-						$button .= "<input title='" . getTranslatedString('LBL_ADD_NEW') . " " . getTranslatedString($singular_modname, $related_module) . "' class='crmbutton small create'" .
+						$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
+						$button .= "<input title='" . getTranslatedString('LBL_ADD_NEW') . " " . $singular_modname . "' class='crmbutton small create'" .
 							" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
-							" value='" . getTranslatedString('LBL_ADD_NEW') . " " . getTranslatedString($singular_modname, $related_module) . "'>&nbsp;";
+							" value='" . getTranslatedString('LBL_ADD_NEW') . " " . $singular_modname . "'>&nbsp;";
 					}
 				}
 			}
@@ -2307,7 +2305,7 @@ class CRMEntity {
 			} else {
 				$query .= " WHERE vtiger_crmentity.deleted = 0 AND $this->table_name.$this->table_index = $id";
 			}
-
+			$query .= " AND vtiger_activity.activitytype != 'Emails'";
 			if (isset($_REQUEST['cbcalendar_filter']) and $_REQUEST['cbcalendar_filter'] != 'all') {
 				$query .= $adb->convert2Sql(' and vtiger_activity.eventstatus=? ', array(vtlib_purify($_REQUEST['cbcalendar_filter'])));
 			}
@@ -2586,7 +2584,7 @@ class CRMEntity {
 				vtiger_crmentity.smownerid in (select shareduserid from vtiger_tmp_read_user_sharing_per where userid=" . $current_user->id . " and tabid=" . $tabid . ")
 				or (";
 
-			if (sizeof($current_user_groups) > 0) {
+			if (count($current_user_groups) > 0) {
 				$sec_query .= " vtiger_groups.groupid in (" . implode(",", $current_user_groups) . ") or ";
 			}
 			$sec_query .= " vtiger_groups.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=" . $current_user->id . " and tabid=" . $tabid . ")))";
@@ -2608,7 +2606,7 @@ class CRMEntity {
 		}
 		$sec_query .= " and (vtiger_crmentity$module.smownerid in($current_user->id) or vtiger_crmentity$module.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '" . $current_user_parent_role_seq . "::%') or vtiger_crmentity$module.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=" . $current_user->id . " and tabid=" . $tabid . ") or (";
 
-		if (sizeof($current_user_groups) > 0) {
+		if (count($current_user_groups) > 0) {
 			$sec_query .= " vtiger_groups$module.groupid in (" . implode(",", $current_user_groups) . ") or ";
 		}
 		$sec_query .= " vtiger_groups$module.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=" . $current_user->id . " and tabid=" . $tabid . "))) ";
@@ -2960,11 +2958,11 @@ class CRMEntity {
 			} elseif ($module == 'Calendar' || !empty($scope)) {
 				$tableName .= '_t' . $tabId;
 			}
-			list($tsSpecialAccessQuery, $typeOfPermissionOverride, $unused1, $unused2) = cbEventHandler::do_filter('corebos.permissions.accessquery', array(' ', 'none', $module, $user));
+			list($tsSpecialAccessQuery, $typeOfPermissionOverride, $unused1, $unused2, $SpecialPermissionMayHaveDuplicateRows) = cbEventHandler::do_filter('corebos.permissions.accessquery', array(' ', 'none', $module, $user, true));
 			if ($typeOfPermissionOverride=='fullOverride') {
 				// create the default temporary table in case it is needed
 				$this->setupTemporaryTable($tableName, $sharedTabId, $user, $current_user_parent_role_seq, $current_user_groups);
-				VTCacheUtils::updateCachedInformation('SpecialPermissionWithDuplicateRows', true);
+				VTCacheUtils::updateCachedInformation('SpecialPermissionWithDuplicateRows', $SpecialPermissionMayHaveDuplicateRows);
 				return $tsSpecialAccessQuery;
 			}
 			if ($typeOfPermissionOverride=='none' or trim($tsSpecialAccessQuery)=='') {
@@ -2972,7 +2970,7 @@ class CRMEntity {
 				$query = " INNER JOIN $tableName $tableName$scope ON $tableName$scope.id = vtiger_crmentity$scope.smownerid ";
 			} else {
 				global $adb;
-				VTCacheUtils::updateCachedInformation('SpecialPermissionWithDuplicateRows', true);
+				VTCacheUtils::updateCachedInformation('SpecialPermissionWithDuplicateRows', $SpecialPermissionMayHaveDuplicateRows);
 				$tsTableName = "tsolucio_tmp_u{$user->id}";
 				$adb->query("drop table if exists {$tsTableName}");
 				if ($typeOfPermissionOverride=='addToUserPermission') {
@@ -2982,8 +2980,12 @@ class CRMEntity {
 				$adb->query("create temporary table {$tsTableName} (id int primary key) as {$tsSpecialAccessQuery}");
 				if ($typeOfPermissionOverride=='addToUserPermission') {
 					$query = " INNER JOIN {$tsTableName} on ({$tsTableName}.id=vtiger_crmentity.crmid or {$tsTableName}.id = vtiger_crmentity$scope.smownerid) ";
-				} else { // $typeOfPermissionOverride=='showTheseRecords'
+				} elseif ($typeOfPermissionOverride=='showTheseRecords') {
 					$query = " INNER JOIN {$tsTableName} on {$tsTableName}.id=vtiger_crmentity.crmid ";
+				} elseif ($typeOfPermissionOverride=='SubstractFromUserPermission') {
+					$this->setupTemporaryTable($tableName, $sharedTabId, $user, $current_user_parent_role_seq, $current_user_groups);
+					$query = " INNER JOIN $tableName $tableName$scope ON $tableName$scope.id = vtiger_crmentity$scope.smownerid ";
+					$query .= " INNER JOIN {$tsTableName} on {$tsTableName}.id=vtiger_crmentity.crmid ";
 				}
 			}
 		}

@@ -587,19 +587,8 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
 				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
 			</td>
-
-			{if $fldname eq 'notime' && $ACTIVITY_MODE eq 'Events'}
-				{if $fldvalue eq 1}
-					<td width="30%" align=left class="dvtCellInfo">
-						<input name="{$fldname}" type="checkbox" tabindex="{$vt_tab}" onclick="toggleTime()" checked>
-					</td>
-				{else}
-					<td width="30%" align=left class="dvtCellInfo">
-						<input name="{$fldname}" tabindex="{$vt_tab}" type="checkbox" onclick="toggleTime()" >
-					</td>
-				{/if}
 			<!-- For Portal Information we need a hidden field existing_portal with the current portal value -->
-			{elseif $fldname eq 'portal'}
+			{if $fldname eq 'portal'}
 				<td width="30%" align=left class="dvtCellInfo">
 					<input type="hidden" name="existing_portal" value="{$fldvalue}">
 					<input name="{$fldname}" type="checkbox" tabindex="{$vt_tab}" {if $fldvalue eq 1}checked{/if}>
@@ -636,10 +625,10 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 					<input name="time_start" tabindex="{$vt_tab}" style="border:1px solid #bababa;" size="5" maxlength="5" type="text" value="{$time_val}">
 				{/if}
 
-				{if $uitype eq 6 && $QCMODULE eq 'Event'}
+				{if $uitype eq 6 && isset($QCMODULE) && $QCMODULE eq 'Event'}
 					<input name="dateFormat" type="hidden" value="{$dateFormat}">
 				{/if}
-				{if $uitype eq 23 && $QCMODULE eq 'Event'}
+				{if $uitype eq 23 && isset($QCMODULE) && $QCMODULE eq 'Event'}
 					<input name="time_end" style="border:1px solid #bababa;" size="5" maxlength="5" type="text" value="{$time_val}">
 				{/if}
 

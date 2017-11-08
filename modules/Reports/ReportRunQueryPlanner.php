@@ -23,6 +23,28 @@ class ReportRunQueryPlanner {
 	protected $registeredCleanup = false;
 	var $reportRun = false;
 
+	function disablePlanner() {
+		$this->disablePlanner = true;
+		$this->allowTempTables = false;
+	}
+
+	function enablePlanner() {
+		$this->disablePlanner = false;
+		$this->allowTempTables = true;
+	}
+
+	function isDisabled() {
+		return $this->disablePlanner;
+	}
+
+	function disableTempTables() {
+		$this->allowTempTables = false;
+	}
+
+	function enableTempTables() {
+		$this->allowTempTables = true;
+	}
+
 	function addTable($table) {
 		if (!empty($table)) {
 			$this->tables[$table] = $table;
@@ -55,6 +77,10 @@ class ReportRunQueryPlanner {
 
 	function getTables() {
 		return $this->tables;
+	}
+
+	function getTemporaryTables() {
+		return $this->tempTables;
 	}
 
 	function newDependencyMatrix() {

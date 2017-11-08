@@ -317,10 +317,10 @@ class Homestuff{
 					$listview_entries = $controller->getListViewEntries($focus,$modname,$list_result,$navigation_array, true);
 				}
 				$return_value =Array('ModuleName'=>$modname,'cvid'=>$cvid,'Maxentries'=>$maxval,'Header'=>$header,'Entries'=>$listview_entries);
-				if(sizeof($header)!=0){
+				if (count($header) != 0) {
 					return $return_value;
-				}else{
-					return array('Entries'=>"Fields not found in Selected Filter");
+				} else {
+					return array('Entries' => 'Fields not found in Selected Filter');
 				}
 			}
 			else{

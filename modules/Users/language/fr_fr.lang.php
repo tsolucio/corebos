@@ -563,7 +563,7 @@ $mod_strings = array (
 		'LBL_USER_ADV_OPTIONS' => 'Options avancées de l\'utilisateur',
 		'Reminder Interval' => 'Délai de rappel',
 		'Webservice Access Key' => 'Clé d\'accès personnelle au webservice',
-		
+
 		//user-group fixes
 		'LBL_GROUPNAME_EXIST' => 'un groupe avec ce nom existe déjà!',
 		'LBL_PROFILENAME_EXIST' => 'Un profil avec ce nom existe déjà!',
@@ -573,9 +573,6 @@ $mod_strings = array (
 		'Asterisk Extension' => 'Extension Asterisk',
 		'Receive Incoming Calls' => 'Utiliser Asterisk',
 
-		// Added for Create Custom Fields 
-		'LBL_USER_CUSTOMFIELDS_DESCRIPTION' => 'Champs personnalisés pour les collaborateurs',
-		'LBL_USER_CUSTOMFIELDS' => 'Champs personnalisés des collaborateurs',
 		'LBL_CURRENCY_CONFIGURATION' => 'Configuration devises',
 		'Digit Grouping Pattern' => 'Format de groupe de chiffre',
 		'Decimal Separator' => 'Séparateur de décimales',

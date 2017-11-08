@@ -672,10 +672,7 @@
 'Asterisk Extension' => 'Estensione Asterisk',
 'Receive Incoming Calls' => 'Ricevi chiamate in entrata',
 
-'LBL_USER_CUSTOMFIELDS_DESCRIPTION' => 'Crea campi personalizzati utente',
-'LBL_USER_CUSTOMFIELDS' => 'Campi Personalizzati Utente',
 'LBL_CURRENCY_CONFIGURATION'=> 'Configurazione Valuta',
-
 
 'Kwajalein' => '(UTC-12:00) International Date Line West',
 'Pacific/Midway' => '(UTC-11:00) Coordinated Universal Time-11',

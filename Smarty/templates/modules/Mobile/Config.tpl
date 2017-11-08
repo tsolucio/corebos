@@ -36,7 +36,6 @@
 			<ul data-role="listview" data-divider-theme="b" data-inset="true" id="sortable">
             <li data-role="list-divider" role="heading">{$MOD.LBL_ACTIVE_MODULE}</li>
 			{foreach item=_MODULE from=$_MODULES}
-				{if $_MODULE->name() neq 'Events'}
 				<li data-theme="c" id={$_MODULE->name()}>
 					<div data-role="fieldcontain">
 						<label for="flip_{$_MODULE->name()}"><span style="display: inline-block" class="ui-icon ui-icon-arrowthick-2-n-s"></span>{$_MODULE->label()}:</label>
@@ -47,7 +46,6 @@
 						{/if}
 					</div>
 				</li>
-				{/if}
 			{/foreach}
 			</ul>
 			<div>

@@ -140,11 +140,7 @@ function getSearchListHeaderValues($focus, $module,$sort_qry='',$sorder='',$orde
 				$name = $app_strings['LBL_CONTACT_LAST_NAME'];
 				elseif($fieldname == 'contact_id' && $module =="Contacts")
 					$name = $mod_strings['Reports To']." - ".$mod_strings['LBL_LIST_LAST_NAME'];
-				//assign the translated string
-				//added to fix #5205
-				//Added condition to hide the close column in calendar search header
-				if($name != $app_strings['Close'])
-					$search_header[$fld_name] = getTranslatedString($name);
+				$search_header[$fld_name] = getTranslatedString($name);
 			}
 		}
 		if($module == 'HelpDesk' && $fieldname == 'crmid')
@@ -392,8 +388,7 @@ function BasicSearch($module,$search_field,$search_string,$input=''){
 				{
 					// Get all the keys for the for the Picklist value
 					$mod_keys = array_keys($mod_strings, $search_string);
-					if(sizeof($mod_keys) >= 1)
-					{
+					if (count($mod_keys) >= 1) {
 						// Iterate on the keys, to get the first key which doesn't start with LBL_      (assuming it is not used in PickList)
 						foreach($mod_keys as $mod_idx=>$mod_key)
 						{

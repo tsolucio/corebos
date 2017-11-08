@@ -374,19 +374,8 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
 				<font color="red">{$mandatory_field}</font>{$usefldlabel}
 			</span>
-
-			{if $fldname eq 'notime' && $ACTIVITY_MODE eq 'Events'}
-				{if $fldvalue eq 1}
-					<span width="30%" class="mdCellInfo">
-						<input name="{$fldname}" type="checkbox" tabindex="{$vt_tab}" onclick="toggleTime()" checked>
-					</span>
-				{else}
-					<span width="30%" class="mdCellInfo">
-						<input name="{$fldname}" tabindex="{$vt_tab}" type="checkbox" onclick="toggleTime()" >
-					</span>
-				{/if}
 			<!-- For Portal Information we need a hidden field existing_portal with the current portal value -->
-			{elseif $fldname eq 'portal'}
+			{if $fldname eq 'portal'}
 				<span width="30%" class="mdCellInfo">
 					<input type="hidden" name="existing_portal" value="{$fldvalue}">
 					<input name="{$fldname}" type="checkbox" tabindex="{$vt_tab}" {if $fldvalue eq 1}checked{/if}>

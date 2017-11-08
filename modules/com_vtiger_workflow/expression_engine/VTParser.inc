@@ -14,7 +14,7 @@ class VTExpressionTreeNode{
 
 	function getParams(){
 		$arr = $this->arr;
-		return array_slice($arr, 1, sizeof($arr)-1);
+		return array_slice($arr, 1, count($arr)-1);
 	}
 
 	function getName(){
@@ -40,7 +40,7 @@ class VTExpressionParser{
 	}
 
 	function nextToken(){
-		if(sizeof($this->tokenQueue)==0){
+		if (count($this->tokenQueue) == 0) {
 			return $this->tokens->nextToken();
 		}else{
 			return array_shift($this->tokenQueue);
@@ -48,7 +48,7 @@ class VTExpressionParser{
 	}
 
 	function la($n = 1){
-		for($i=sizeof($this->tokenQueue); $i<$n; $i++){
+		for ($i = count($this->tokenQueue); $i<$n; $i++) {
 			$token = $this->tokens->nextToken();
 			$this->tokenQueue[] = $token;
 		}
@@ -157,7 +157,7 @@ class VTExpressionParser{
 	);
 
 	function binOp(){
-		return $this->binOpPrec(sizeof($this->precedence)-1);
+		return $this->binOpPrec(count($this->precedence)-1);
 	}
 
 	private function binOpPrec($prec){

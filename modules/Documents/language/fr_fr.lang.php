@@ -36,6 +36,9 @@ $mod_strings = Array(
 	'LBL_NOTE_INFORMATION'=>'Information document',
 	'File Information'=>'Informations du fichier',
 
+	'Template'=>'Template',
+	'Template For' => 'Template For',
+
 	'LBL_TOOL_FORM_TITLE'=>'Outils documents',
 	'Contact Name'=>'Nom du contact',
 	'Related To'=>'Lié à',

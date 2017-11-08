@@ -13,7 +13,7 @@ include_once __DIR__ . '/models/SearchFilter.php';
 class crmtogo_WS_ListModuleRecords extends crmtogo_WS_Controller {
 
 	function isCalendarModule($module) {
-		return ($module == 'Events' || $module == 'Calendar');
+		return ($module == 'cbCalendar');
 	}
 	
 	function getSearchFilterModel($module, $search) {
@@ -51,7 +51,6 @@ class crmtogo_WS_ListModuleRecords extends crmtogo_WS_Controller {
 		if($filterOrAlertInstance) {
 			$filterOrAlertInstance->setUser($current_user);
 		}
-
 		if($this->isCalendarModule($module)) {
 			if ($request->get('compact')== true) {
 				//no limits for compact calendar
@@ -125,17 +124,15 @@ class crmtogo_WS_ListModuleRecords extends crmtogo_WS_Controller {
             }
 
 			$moreMetaFields = array('date_start', 'time_start', 'activitytype', 'location','time_end','due_date');
-			$eventsRecords = $this->fetchRecordLabelsForModule('Events', $current_user, $moreMetaFields, false, false,$datestoconsider);
-			$calendarRecords=$this->fetchRecordLabelsForModule('Calendar', $current_user, $moreMetaFields, false, false,$datestoconsider);
+			$calendarRecords=$this->fetchRecordLabelsForModule('cbCalendar', $current_user, $moreMetaFields, false, false,$datestoconsider);
 		}
 		else {
 			// with paging
 			$moreMetaFields = array('date_start', 'time_start', 'activitytype', 'location','time_end','due_date');
-			$eventsRecords = $this->fetchRecordLabelsForModule('Events', $current_user, $moreMetaFields, false, $paging);
-			$calendarRecords=$this->fetchRecordLabelsForModule('Calendar', $current_user, $moreMetaFields, false, $paging);
+			$calendarRecords=$this->fetchRecordLabelsForModule('cbCalendar', $current_user, $moreMetaFields, false, $paging);
 		}
 		// Merge the Calendar & Events information
-		$records = array_merge($eventsRecords, $calendarRecords);
+		$records = $calendarRecords;
 
 		$modifiedRecords = array();
 		foreach ($records as $record) {
@@ -154,14 +151,14 @@ class crmtogo_WS_ListModuleRecords extends crmtogo_WS_Controller {
 		}
 
 		$response = new crmtogo_API_Response();
-		$response->setResult(array('records' =>$modifiedRecords, 'module'=>'Calendar'));
+		$response->setResult(array('records' =>$modifiedRecords, 'module'=>'cbCalendar'));
 		
 		return $response;
 	}
 
 	function fetchRecordLabelsForModule($module, $user, $morefields=array(), $filterOrAlertInstance=false, $paging = false, $calfilter='') {
 		if($this->isCalendarModule($module)) {
-			$fieldnames = crmtogo_WS_Utils::getEntityFieldnames('Calendar');
+			$fieldnames = crmtogo_WS_Utils::getEntityFieldnames('cbCalendar');
 		} 
 		else {
 			$fieldnames = crmtogo_WS_Utils::getEntityFieldnames($module);
@@ -179,7 +176,7 @@ class crmtogo_WS_ListModuleRecords extends crmtogo_WS_Controller {
 
 	function queryToSelectFilteredRecords($module, $fieldnames, $filterOrAlertInstance, $paging,$calfilter='') {
 		if ($filterOrAlertInstance instanceof crmtogo_WS_SearchFilterModel) {
-			if (($module == 'Calendar' || $module == 'Events') and $calfilter !='') {
+			if ($module == 'cbCalendar' and $calfilter !='') {
 				return $filterOrAlertInstance->execute($fieldnames, $paging,$calfilter);
 			}
 			else {

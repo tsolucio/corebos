@@ -11,9 +11,9 @@
 ( function( $ ) {
 function pageIsSelectmenuDialog( page ) {
     var isDialog = false,
-        id = page && page.attr( "id" );
+        id = page && page.prop( "id" );
     $( ".filterable-select" ).each( function() {
-        if ( $( this ).attr( "id" ) + "-dialog" === id ) {
+        if ( $( this ).prop( "id" ) + "-dialog" === id ) {
             isDialog = true;
             return false;
         }
@@ -50,7 +50,7 @@ $.mobile.document
 		var selectmenu = $( event.target );
 		//remove not selected options
 		$('option:not(:selected)', selectmenu).remove();
-		var list = $( "#" + selectmenu.attr( "id" ) + "-menu" );
+		var list = $( "#" + selectmenu.prop( "id" ) + "-menu" );
         var form = list.jqmData( "filter-form" );
         // We store the generated form in a variable attached to the popup so we avoid creating a
         // second form/input field when the listview is destroyed/rebuilt during a refresh.
@@ -80,7 +80,7 @@ $.mobile.document
 					url: "index.php?_operation=getRelatedFieldAjax",
 					dataType: "json",
 					data: {
-						parentselector: selectmenu.attr('id'),
+						parentselector: selectmenu.prop('id'),
 						searchvalue: input.val(),
 						modulename : $("#module").val()
 					}
@@ -147,7 +147,7 @@ var crmtogo_Index_Js = {
 		var timer = 0;
 		var module = $("#modulename").val();
 		var view = $("#view").val();
-		if (module != 'Calendar') {
+		if (module != 'Calendar' && module != 'cbCalendar') {
 			$('#searchInputField').css('display','block');
 			$('#inputer').css('display','block');
 			$('#viewname-button').css('display','block');
@@ -235,12 +235,12 @@ var crmtogo_Index_Js = {
 				//get all calendar entries for the selected month
 				//make sure it is called only once
 				if (date.getTime() != tmp_date.getTime()) {
-                    $.get('index.php?_operation=listModuleRecords&module=Calendar&compact=true&datetime='+date+((inWeek===true)?"&inweek=true":""), fillcalendar);
+                    $.get('index.php?_operation=listModuleRecords&module=cbCalendar&compact=true&datetime='+date+((inWeek===true)?"&inweek=true":""), fillcalendar);
 				}
 				tmp_date = date;
 			});
 			//get all calendar entries for this month
-			$.get('index.php?_operation=listModuleRecords&module=Calendar&compact=true&datetime='+new Date(), fillcalendar);
+			$.get('index.php?_operation=listModuleRecords&module=cbCalendar&compact=true&datetime='+new Date(), fillcalendar);
 		}
 		
 		scroller(module, view, '');
@@ -354,7 +354,7 @@ var crmtogo_Index_Js = {
 		$(".ui-icon-check").click(function(){
 			var mandatoryvalid = crmtogo_Index_Js.checkmandatory();
 			if (mandatoryvalid) {
-				if ($("#module").val()=='Calendar' || $("#module").val()=='Events') {
+				if ($("#module").val()=='cbCalendar') {
 					var datetimevaild = crmtogo_Index_Js.calendarvalidation();
 					if (datetimevaild == true) {
 						$( "#EditView" ).submit();
@@ -418,28 +418,27 @@ var crmtogo_Index_Js = {
 	//function to set hidden calendar entries and calculate the duration of an event
 	calendarvalidation: function() {
 		var mode = $("#mode").val();
-		var origmodule = $("#origmodule").val()
 		var time_end = $("#time_end").val();
 		
-		if (origmodule == 'Events') {
-			//we use time_end for events
-			var endtime_arr = $("#time_end").val().split(':');
-			var endhour = parseFloat(endtime_arr[0]);
-			var endmin  = parseFloat(endtime_arr[1]);
-			// check if any variable is NaN
-			if(endhour != endhour || endmin != endmin) {
-				return 'error_time_format_endtime';
-			}
-			
-			// if hour is smaller than 0 or greater than 23 then, throw exception
-			if(endhour < 0 || endhour > 23) {
-				return 'error_time_format_starttime';
-			}
-			// if min is smaller than 0 or greater than 59; throw exception
-			if(endmin < 0 || endmin > 59) {
-				return 'error_time_format_starttime';
-			}
+
+		//we use time_end for events
+		var endtime_arr = $("#time_end").val().split(':');
+		var endhour = parseFloat(endtime_arr[0]);
+		var endmin  = parseFloat(endtime_arr[1]);
+		// check if any variable is NaN
+		if(endhour != endhour || endmin != endmin) {
+			return 'error_time_format_endtime';
 		}
+
+		// if hour is smaller than 0 or greater than 23 then, throw exception
+		if(endhour < 0 || endhour > 23) {
+			return 'error_time_format_starttime';
+		}
+		// if min is smaller than 0 or greater than 59; throw exception
+		if(endmin < 0 || endmin > 59) {
+			return 'error_time_format_starttime';
+		}
+
 		var starttime_arr = $("#time_start").val().split(':');
 		var starthour = parseFloat(starttime_arr[0]);
 		var startmin  = parseFloat(starttime_arr[1]);
@@ -460,12 +459,7 @@ var crmtogo_Index_Js = {
 
 		var dateval1 = $("#date_start").val();
 		var dateval2 = $("#due_date").val();
-		if(!crmtogo_Index_Js.isDate(dateval1)){
-			return 'error_date_format_startdate';
-		}
-		if(!crmtogo_Index_Js.isDate(dateval2)){
-			return 'error_date_format_enddate';
-		}
+
 		var dv1_arr = dateval1.split('-');
 		var y1 = dv1_arr[0];
 		var m1 = dv1_arr[1];
@@ -476,14 +470,13 @@ var crmtogo_Index_Js = {
 		var d2 = dv2_arr[2];
 
 		var date1 = new Date(y1, m1, d1, starthour, startmin, 0);
-		if (origmodule == 'Events') {
-			var date2 = new Date(y1, m1, d1, endhour, endmin, 0);
-			if (date1 - date2 == '0') {
-				//add 5 minutes for create mode for events
-				date2.setMinutes(date2.getMinutes() + 5);
-				var fiveminutes = date2.getHours() + ":" + date2.getMinutes();
-				$("#time_end").val(fiveminutes);
-			}
+
+		var date2 = new Date(y1, m1, d1, endhour, endmin, 0);
+		if (date1 - date2 == '0') {
+			//add 5 minutes for create mode for events
+			date2.setMinutes(date2.getMinutes() + 5);
+			var fiveminutes = date2.getHours() + ":" + date2.getMinutes();
+			$("#time_end").val(fiveminutes);
 		}
 		//must be in the future
 		if(new Date() > date1){
@@ -498,19 +491,19 @@ var crmtogo_Index_Js = {
 		if (secondDate < firstDate) {
 			return 'error_enddate';
 		}
-		
+
 		//duration for events
-		if (origmodule == 'Events') {
-			var diff_ms = Math.abs(date2.getTime()-date1.getTime())/(1000*60);
-			var hour = Math.floor(diff_ms / 60);
-			var minute = Math.floor(diff_ms % 60);
-			//set minimum duration
-			if (hour == 0 && minute == 0) {
-				minute = 5;
-			}
-			$("#duration_hours").val(hour);
-			$("#duration_minutes").val(minute);
+
+		var diff_ms = Math.abs(date2.getTime()-date1.getTime())/(1000*60);
+		var hour = Math.floor(diff_ms / 60);
+		var minute = Math.floor(diff_ms % 60);
+		//set minimum duration
+		if (hour == 0 && minute == 0) {
+			minute = 5;
 		}
+		$("#duration_hours").val(hour);
+		$("#duration_minutes").val(minute);
+
 		return true;
 	},
 	
@@ -619,9 +612,9 @@ $(document).delegate("#login_page", "pageinit", function() {
 			var field = $(settings.field)
 			control.bind('click', function () {
 				if (control.is(':checked')) {
-					field.attr('type', 'text');
+					field.prop('type', 'text');
 				} else {
-					field.attr('type', 'password');
+					field.prop('type', 'password');
 				}
 			})
 		};

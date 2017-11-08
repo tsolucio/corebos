@@ -92,7 +92,7 @@
 			output += '</select>';
 
 			// hide original input and append new replacement inputs
-			//$(this).attr('type','hidden').after(output);
+			//$(this).prop('type','hidden').after(output);
 			$(this).after(output);
 			
 			// Initialize the default value

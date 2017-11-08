@@ -8,7 +8,7 @@
 			<canvas></canvas>
 	</div>
 	<div class="m-signature-pad--footer">
-		<button type="button" data-role='button' class="button ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-refresh ui-btn-icon-left" data-action="clear"</button>
+		<button type="button" data-role='button' class="button ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-refresh ui-btn-icon-left" data-action="clear"></button>
 		<button type="button" data-role='button' class="button ui-btn ui-btn-inline ui-shadow ui-corner-all ui-icon-check ui-btn-icon-left" data-action="save"></button>
 	</div>
 </div>

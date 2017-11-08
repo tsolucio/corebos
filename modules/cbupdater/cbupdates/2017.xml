@@ -84,4 +84,81 @@
 	<classname>moveCalendarReport2cbCalendar</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Activate Calendar All Day option</description>
+	<filename>build/changeSets/2017/activateCalendarAllDay.php</filename>
+	<classname>activateCalendarAllDay</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Check and Restore Email Relations</description>
+	<filename>build/changeSets/2017/checkAndRestoreEmailsRelations.php</filename>
+	<classname>checkAndRestoreEmailsRelations</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Field Relation Information To Related List</description>
+	<filename>build/changeSets/2017/addRelationInformationToRelatedList.php</filename>
+	<classname>addRelationInformationToRelatedList</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Make duration calendar field visible as readonly</description>
+	<filename>build/changeSets/2017/makeDurationCalendarFieldVisible.php</filename>
+	<classname>makeDurationCalendarFieldVisible</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Fix reports and filters that have taskstatus column to replace to eventstatus</description>
+	<filename>build/changeSets/2017/fixCalendarTaskStatusToEventStatus.php</filename>
+	<classname>fixCalendarTaskStatusToEventStatus</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Mobile: Replace Calendar/Events to cbCalendar</description>
+	<filename>build/changeSets/2017/MobileReplaceCalendarTocbCalendar.php</filename>
+	<classname>MobileReplaceCalendarTocbCalendar</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Replace Calendar/Events to cbCalendar on crmentity</description>
+	<filename>build/changeSets/2017/ReplaceCalendarTocbCalendar.php</filename>
+	<classname>ReplaceCalendarTocbCalendar</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add rawparams column to the expression workflowfunctions table</description>
+	<filename>build/changeSets/2017/AddWfFunctionrawparams.php</filename>
+	<classname>AddWfFunctionrawparams</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add close action on listview calendar events</description>
+	<filename>build/changeSets/2017/addCalendarCloseAction.php</filename>
+	<classname>addCalendarCloseAction</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Make calendar Completed Status NonEditable as it is used in code</description>
+	<filename>build/changeSets/2017/calendarCompletedStatusNonEditable.php</filename>
+	<classname>calendarCompletedStatusNonEditable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Set Accounts as default module in relatedto capture field of calendar</description>
+	<filename>build/changeSets/2017/calendarSetAccountsAsDefault.php</filename>
+	<classname>calendarSetAccountsAsDefault</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

@@ -48,8 +48,8 @@ class Vtiger_Filter {
 	 */
 	function initialize($valuemap, $moduleInstance=false) {
 		$this->id = $valuemap[cvid];
-		$this->name= $valuemap[viewname];
-		$this->module=$moduleInstance? $moduleInstance: Vtiger_Module::getInstance($valuemap[tabid]);
+		$this->name = $valuemap[viewname];
+		$this->module = $moduleInstance? $moduleInstance: Vtiger_Module::getInstance($valuemap[tabid]);
 	}
 
 	/**
@@ -62,27 +62,27 @@ class Vtiger_Filter {
 		$this->module = $moduleInstance;
 
 		$this->id = $this->__getUniqueId();
-		$this->isdefault = ($this->isdefault===true||$this->isdefault=='true')?1:0;
-		$this->inmetrics = ($this->inmetrics===true||$this->inmetrics=='true')?1:0;
+		$this->isdefault = ($this->isdefault===true || $this->isdefault=='true') ? 1 : 0;
+		$this->inmetrics = ($this->inmetrics===true || $this->inmetrics=='true') ? 1 : 0;
 
-		$result = $adb->pquery("INSERT INTO vtiger_customview(cvid,viewname,setdefault,setmetrics,entitytype) VALUES(?,?,?,?,?)", 
+		$result = $adb->pquery('INSERT INTO vtiger_customview(cvid,viewname,setdefault,setmetrics,entitytype) VALUES(?,?,?,?,?)',
 			Array($this->id, $this->name, $this->isdefault, $this->inmetrics, $this->module->name));
 
-		if($result)
-		self::log("Creating Filter $this->name ... DONE");
-		else
+		if ($result) {
+			self::log("Creating Filter $this->name ... DONE");
+		} else {
 			self::log("Creating Filter $this->name ... <span style='color:red'>**ERROR**</span>");
-
+		}
 		// Filters are role based from 5.1.0 onwards
-		if(!$this->status) {
-			if(strtoupper(trim($this->name)) == 'ALL') $this->status = '0'; // Default
-			else $this->status = '3'; // Public
+		if (!$this->status) {
+			if (strtoupper(trim($this->name)) == 'ALL') {
+				$this->status = '0'; // Default
+			} else {
+				$this->status = '3'; // Public
+			}
 			$adb->pquery("UPDATE vtiger_customview SET status=? WHERE cvid=?", Array($this->status, $this->id));
-
 			self::log("Setting Filter $this->name to status [$this->status] ... DONE");
 		}
-		// END
-		
 	}
 
 	/**
@@ -110,8 +110,11 @@ class Vtiger_Filter {
 	 * @param Vtiger_Module Instance of the module to use
 	 */
 	function save($moduleInstance=false) {
-		if($this->id) $this->__update();
-		else $this->__create($moduleInstance);
+		if ($this->id) {
+			$this->__update();
+		} else {
+			$this->__create($moduleInstance);
+		}
 		return $this->id;
 	}
 
@@ -145,7 +148,7 @@ class Vtiger_Filter {
 
 		$cvcolvalue = $this->__getColumnValue($fieldInstance);
 
-		$adb->pquery("UPDATE vtiger_cvcolumnlist SET columnindex=columnindex+1 WHERE cvid=? AND columnindex>=? ORDER BY columnindex DESC", 
+		$adb->pquery('UPDATE vtiger_cvcolumnlist SET columnindex=columnindex+1 WHERE cvid=? AND columnindex>=? ORDER BY columnindex DESC',
 			Array($this->id, $index));
 		$adb->pquery("INSERT INTO vtiger_cvcolumnlist(cvid,columnindex,columnname) VALUES(?,?,?)", Array($this->id, $index, $cvcolvalue));
 
@@ -156,7 +159,7 @@ class Vtiger_Filter {
 	/**
 	 * Add rule to this filter instance
 	 * @param Vtiger_Field Instance of the field
-	 * @param String One of [EQUALS, NOT_EQUALS, STARTS_WITH, ENDS_WITH, CONTAINS, DOES_NOT_CONTAINS, LESS_THAN, 
+	 * @param String One of [EQUALS, NOT_EQUALS, STARTS_WITH, ENDS_WITH, CONTAINS, DOES_NOT_CONTAINS, LESS_THAN,
 	 *                       GREATER_THAN, LESS_OR_EQUAL, GREATER_OR_EQUAL]
 	 * @param String Value to use for comparision
 	 * @param Integer Index count to use
@@ -164,7 +167,9 @@ class Vtiger_Filter {
 	function addRule($fieldInstance, $comparator, $comparevalue, $index=0, $group=1, $condition='and') {
 		global $adb;
 
-		if(empty($comparator)) return $this;
+		if (empty($comparator)) {
+			return $this;
+		}
 
 		$comparator = self::translateComparator($comparator);
 		$cvcolvalue = $this->__getColumnValue($fieldInstance);
@@ -175,7 +180,6 @@ class Vtiger_Filter {
 			Array($this->id, $index, $cvcolvalue, $comparator, $comparevalue, $group, $condition));
 		$this->addGroup($group, $condition, '');
 		Vtiger_Utils::Log("Adding Condition " . self::translateComparator($comparator,true) ." on $fieldInstance->name of $this->name filter ... DONE");
-		
 		return $this;
 	}
 
@@ -188,9 +192,8 @@ class Vtiger_Filter {
 	function addGroup($groupid='1', $group_condition='', $condition_expression='') {
 		global $adb;
 		$adb->pquery("INSERT INTO vtiger_cvadvfilter_grouping(groupid, cvid, group_condition, condition_expression) VALUES(?,?,?,?)",
-				Array($groupid, $this->id,$group_condition,$condition_expression));
+			Array($groupid, $this->id,$group_condition,$condition_expression));
 		Vtiger_Utils::Log("Adding Group " . $groupid ." to cvid = ".$this->id." with group condition = ".$group_condition." and condition expresion = ".$condition_expression.".". $this->name." filter ... DONE");
-	
 		return $this;
 	}
 	/**
@@ -200,30 +203,30 @@ class Vtiger_Filter {
 	 */
 	static function translateComparator($value, $tolongform=false) {
 		$comparator = false;
-		if($tolongform) {
+		if ($tolongform) {
 			$comparator = strtolower($value);
-			if($comparator == 'e') $comparator = 'EQUALS';
-			else if($comparator == 'n') $comparator = 'NOT_EQUALS';
-			else if($comparator == 's') $comparator = 'STARTS_WITH';
-			else if($comparator == 'ew') $comparator = 'ENDS_WITH';
-			else if($comparator == 'c') $comparator = 'CONTAINS';
-			else if($comparator == 'k') $comparator = 'DOES_NOT_CONTAINS';
-			else if($comparator == 'l') $comparator = 'LESS_THAN';
-			else if($comparator == 'g') $comparator = 'GREATER_THAN';
-			else if($comparator == 'm') $comparator = 'LESS_OR_EQUAL';
-			else if($comparator == 'h') $comparator = 'GREATER_OR_EQUAL';
+			if ($comparator == 'e') $comparator = 'EQUALS';
+			else if ($comparator == 'n') $comparator = 'NOT_EQUALS';
+			else if ($comparator == 's') $comparator = 'STARTS_WITH';
+			else if ($comparator == 'ew') $comparator = 'ENDS_WITH';
+			else if ($comparator == 'c') $comparator = 'CONTAINS';
+			else if ($comparator == 'k') $comparator = 'DOES_NOT_CONTAINS';
+			else if ($comparator == 'l') $comparator = 'LESS_THAN';
+			else if ($comparator == 'g') $comparator = 'GREATER_THAN';
+			else if ($comparator == 'm') $comparator = 'LESS_OR_EQUAL';
+			else if ($comparator == 'h') $comparator = 'GREATER_OR_EQUAL';
 		} else {
 			$comparator = strtoupper($value);
-			if($comparator == 'EQUALS') $comparator = 'e';
-			else if($comparator == 'NOT_EQUALS') $comparator = 'n';
-			else if($comparator == 'STARTS_WITH') $comparator = 's';
-			else if($comparator == 'ENDS_WITH') $comparator = 'ew';
-			else if($comparator == 'CONTAINS') $comparator = 'c';
-			else if($comparator == 'DOES_NOT_CONTAINS') $comparator = 'k';
-			else if($comparator == 'LESS_THAN') $comparator = 'l';
-			else if($comparator == 'GREATER_THAN') $comparator = 'g';
-			else if($comparator == 'LESS_OR_EQUAL') $comparator = 'm';
-			else if($comparator == 'GREATER_OR_EQUAL') $comparator = 'h';
+			if ($comparator == 'EQUALS') $comparator = 'e';
+			else if ($comparator == 'NOT_EQUALS') $comparator = 'n';
+			else if ($comparator == 'STARTS_WITH') $comparator = 's';
+			else if ($comparator == 'ENDS_WITH') $comparator = 'ew';
+			else if ($comparator == 'CONTAINS') $comparator = 'c';
+			else if ($comparator == 'DOES_NOT_CONTAINS') $comparator = 'k';
+			else if ($comparator == 'LESS_THAN') $comparator = 'l';
+			else if ($comparator == 'GREATER_THAN') $comparator = 'g';
+			else if ($comparator == 'LESS_OR_EQUAL') $comparator = 'm';
+			else if ($comparator == 'GREATER_OR_EQUAL') $comparator = 'h';
 		}
 		return $comparator;
 	}
@@ -249,7 +252,7 @@ class Vtiger_Filter {
 
 		$query = false;
 		$queryParams = false;
-		if(Vtiger_Utils::isNumber($value)) {
+		if (Vtiger_Utils::isNumber($value)) {
 			$query = "SELECT * FROM vtiger_customview WHERE cvid=?";
 			$queryParams = Array($value);
 		} else {
@@ -257,7 +260,7 @@ class Vtiger_Filter {
 			$queryParams = Array($value, $moduleInstance->name);
 		}
 		$result = $adb->pquery($query, $queryParams);
-		if($adb->num_rows($result)) {
+		if ($adb->num_rows($result)) {
 			$instance = new self();
 			$instance->initialize($adb->fetch_array($result), $moduleInstance);
 		}
@@ -274,9 +277,8 @@ class Vtiger_Filter {
 
 		$query = "SELECT * FROM vtiger_customview WHERE entitytype=?";
 		$queryParams = Array($moduleInstance->name);
-		
 		$result = $adb->pquery($query, $queryParams);
-		for($index = 0; $index < $adb->num_rows($result); ++$index) {
+		for ($index = 0; $index < $adb->num_rows($result); ++$index) {
 			$instance = new self();
 			$instance->initialize($adb->fetch_array($result), $moduleInstance);
 			$instances[] = $instance;
@@ -292,12 +294,12 @@ class Vtiger_Filter {
 		global $adb;
 
 		$cvidres = $adb->pquery("SELECT cvid FROM vtiger_customview WHERE entitytype=?", Array($moduleInstance->name));
-		if($adb->num_rows($cvidres)) {
+		if ($adb->num_rows($cvidres)) {
 			$cvids = Array();
-			for($index = 0; $index < $adb->num_rows($cvidres); ++$index) {
+			for ($index = 0; $index < $adb->num_rows($cvidres); ++$index) {
 				$cvids[] = $adb->query_result($cvidres, $index, 'cvid');
 			}
-			if(!empty($cvids)) {
+			if (!empty($cvids)) {
 				$adb->pquery("DELETE FROM vtiger_cvadvfilter WHERE cvid  IN (" . implode(',', $cvids) . ")", array());
 				$adb->pquery("DELETE FROM vtiger_cvcolumnlist WHERE cvid IN (" . implode(',', $cvids) . ")", array());
 				$adb->pquery("DELETE FROM vtiger_customview WHERE cvid   IN (" . implode(',', $cvids) . ")", array());

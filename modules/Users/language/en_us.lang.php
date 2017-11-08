@@ -473,7 +473,7 @@ $mod_strings = Array(
 'PLVT'=>'Top Opportunities',
 'QLTQ'=>'Top Quotes',
 'CVLVT'=>'Key Metrics',
-'HLT'=>'Top Trouble Tickets',
+'HLT'=>'Top Support Tickets',
 'OLV'=>'Upcoming & Pending Activities',
 'GRT'=>'My Group Allocation',
 'OLTSO'=>'Top Sales Orders',
@@ -663,8 +663,6 @@ $mod_strings = Array(
 'User Login Details'=>'User Login Details',
 'LBL_TO_LOGIN' => 'to Login',
 
-// Added after 5.0.4 GA
-
 'LBL_USER_ADV_OPTIONS'=>'User Advanced Options',
 'Reminder Interval'=>'Reminder Interval',
 'Webservice Access Key'=>'Access Key',
@@ -678,9 +676,6 @@ $mod_strings = Array(
 'Asterisk Extension' => 'Asterisk Extension',
 'Receive Incoming Calls' => 'Use Asterisk',
 
-// Added for Create Custom Fields 
-'LBL_USER_CUSTOMFIELDS_DESCRIPTION' => 'Create Custom Fields for Users ',
-'LBL_USER_CUSTOMFIELDS' => 'Users Custom Fields',
 'LBL_CURRENCY_CONFIGURATION'=> 'Currency Configuration',
 'Digit Grouping Pattern' => 'Digit Grouping Pattern',
 'Decimal Separator' => 'Decimal Separator',

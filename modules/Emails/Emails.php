@@ -96,7 +96,7 @@ class Emails extends CRMEntity {
 					$realid = explode("@", $myids[$i]);
 					$mycrmid = $realid[0];
 					//added to handle the relationship of emails with vtiger_users
-					if (getmoduleforfield($realid[1]) == 'Users') {
+					if (getModuleForField($realid[1]) == 'Users') {
 						$del_q = 'delete from vtiger_salesmanactivityrel where smid=? and activityid=?';
 						$adb->pquery($del_q, array($mycrmid, $actid));
 						$mysql = 'insert into vtiger_salesmanactivityrel values(?,?)';
@@ -222,7 +222,7 @@ class Emails extends CRMEntity {
 		$sql = 'select email_flag from vtiger_emaildetails where emailid=?';
 		$result = $adb->pquery($sql, array($emailid));
 		$email_flag = $adb->query_result($result, 0, 'email_flag');
-		return  ($email_flag != 'SAVED');
+		return  ($email_flag == 'SENT');
 	}
 
 	function saveForwardAttachments($id, $module, $file_details) {
@@ -339,7 +339,6 @@ class Emails extends CRMEntity {
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once("modules/$related_module/$related_module.php");
 		$other = new $related_module();
-		$singular_modname = vtlib_toSingular($related_module);
 
 		$parenttab = getParentTab();
 

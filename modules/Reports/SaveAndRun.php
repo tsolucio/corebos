@@ -30,12 +30,6 @@ $Report_ID = $adb->query_result($res,0,'reportid');
 if(empty($folderid)) {
 	$folderid = $adb->query_result($res,0,'folderid');
 }
-$reporttype = $adb->query_result($res,0,'reporttype');
-$showCharts = false;
-if($reporttype == 'summary'){
-	$showCharts = true;
-}
-//END Customization
 $numOfRows = $adb->num_rows($res);
 
 if($numOfRows > 0) {
@@ -64,6 +58,8 @@ if($numOfRows > 0) {
 
 	if(isPermitted($primarymodule,'index') == "yes" && $modules_permitted == true) {
 		$oReportRun = new ReportRun($reportid);
+		$groupBy = $oReportRun->getGroupingList($reportid);
+		$showCharts = (count($groupBy) > 0);
 
 		$advft_criteria = isset($_REQUEST['advft_criteria']) ? $_REQUEST['advft_criteria'] : null;
 		coreBOS_Session::set('ReportAdvCriteria'.$_COOKIE['corebos_browsertabID'], $advft_criteria);
@@ -85,7 +81,7 @@ if($numOfRows > 0) {
 			require_once 'include/utils/ChartUtils.php';
 
 			$groupBy = $oReportRun->getGroupingList($reportid);
-			if(!empty($groupBy)){
+			if (count($groupBy) > 0) {
 				foreach ($groupBy as $key => $value) {
 					//$groupByConditon = explode(" ",$value);
 					//$groupByNew = explode("'",$groupByConditon[0]);

@@ -238,7 +238,7 @@ class cbupdaterWorker {
 							$newfield->columntype = $fieldinfo['columntype'];
 							$newfield->typeofdata = $fieldinfo['typeofdata'];
 							$newfield->uitype = $fieldinfo['uitype'];
-							$newfield->displaytype = $fieldinfo['displaytype'];
+							$newfield->displaytype = (empty($fieldinfo['displaytype']) ? '1' : $fieldinfo['displaytype']);
 							$newfield->masseditable = (empty($fieldinfo['massedit']) ? '0' : $fieldinfo['massedit']);
 							$block->addField($newfield);
 							if ($fieldinfo['uitype']=='10' and !empty($fieldinfo['mods'])) {
@@ -252,6 +252,60 @@ class cbupdaterWorker {
 				}
 			} else {
 				$this->sendMsg('Module not found: '.$mod.'!');
+			}
+		}
+	}
+
+	/* Given an array of field definitions this method will hide the fields.
+	 * The layout is an array of Module Name and Field Definition
+		array(
+			'{modulename}' => array(
+					'{fieldname1}',
+					'{fieldname2}',
+					'{fieldname3}',
+			)
+		),
+	*/
+	function massHideFields($fieldLayout) {
+		global $adb;
+		foreach($fieldLayout as $module => $fields){
+			$moduleInstance = Vtiger_Module::getInstance($module);
+			if ($moduleInstance) {
+				foreach ($fields as $field) {
+					$field = Vtiger_Field::getInstance($field,$moduleInstance);
+					if($field){
+						$this->ExecuteQuery('UPDATE vtiger_field SET presence = 1 WHERE fieldid=?',array($field->id));
+					}
+				}
+			} else {
+				$this->sendMsg('Module not found: '.$module.'!');
+			}
+		}
+	}
+
+	/* Given an array of field definitions this method will delete the fields.
+	 * The layout is an array of Module Name and Field Definition
+		array(
+			'{modulename}' => array(
+					'{fieldname1}',
+					'{fieldname2}',
+					'{fieldname3}',
+			)
+		),
+	*/
+	function massDeleteFields($fieldLayout) {
+		global $adb;
+		foreach($fieldLayout as $module => $fields){
+			$moduleInstance = Vtiger_Module::getInstance($module);
+			if ($moduleInstance) {
+				foreach ($fields as $field) {
+					$field = Vtiger_Field::getInstance($field,$moduleInstance);
+					if($field){
+						$field->delete();
+					}
+				}
+			} else {
+				$this->sendMsg('Module not found: '.$module.'!');
 			}
 		}
 	}

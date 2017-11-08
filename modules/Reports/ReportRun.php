@@ -29,6 +29,7 @@ class ReportRun extends CRMEntity {
 	var $selectcolumns;
 	var $groupbylist;
 	var $reporttype;
+	var $cbreporttype;
 	var $reportname;
 	var $totallist;
 	var $number_of_rows;
@@ -69,6 +70,7 @@ class ReportRun extends CRMEntity {
 		$this->primarymodule = $oReport->primodule;
 		$this->secondarymodule = $oReport->secmodule;
 		$this->reporttype = $oReport->reporttype;
+		$this->cbreporttype = $oReport->cbreporttype;
 		$this->reportname = $oReport->reportname;
 		$this->queryPlanner = new ReportRunQueryPlanner();
 		$this->queryPlanner->reportRun = $this;
@@ -107,8 +109,7 @@ class ReportRun extends CRMEntity {
 			$inventory_fields = array('quantity','listprice','serviceid','productid','discount','comment');
 			$inventory_modules = getInventoryModules();
 			require('user_privileges/user_privileges_'.$current_user->id.'.php');
-			if((!isset($permitted_fields[$module]) || sizeof($permitted_fields[$module]) == 0) && $is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1)
-			{
+			if ((!isset($permitted_fields[$module]) || count($permitted_fields[$module]) == 0) && $is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1) {
 				$permitted_fields[$module] = $this->getaccesfield($module);
 			}
 			if(in_array($module,$inventory_modules) and isset($permitted_fields[$module]) and is_array($permitted_fields[$module])){
@@ -175,12 +176,12 @@ class ReportRun extends CRMEntity {
 					}
 					elseif($selectedfields[0] == 'vtiger_activity' && $selectedfields[1] == 'status')
 					{
-						$columnslist[$fieldcolname] = " case when (vtiger_activity.status not like '') then vtiger_activity.status else vtiger_activity.eventstatus end as Calendar_Status";
+						$columnslist[$fieldcolname] = " case when (vtiger_activity.status not like '') then vtiger_activity.status else vtiger_activity.eventstatus end as cbCalendar_Status";
 						$this->queryPlanner->addTable($selectedfields[0]);
 					}
 					elseif ($selectedfields[0] == 'vtiger_activity' && $selectedfields[1] == 'date_start')
 					{
-						$columnslist[$fieldcolname] = "cast(concat(vtiger_activity.date_start,'  ',vtiger_activity.time_start) as DATETIME) as Calendar_Start_Date_and_Time";
+						$columnslist[$fieldcolname] = "cast(concat(vtiger_activity.date_start,'  ',vtiger_activity.time_start) as DATETIME) as cbCalendar_Start_Date_and_Time";
 						$this->queryPlanner->addTable($selectedfields[0]);
 					}
 					elseif (stristr($selectedfields[0],"vtiger_users") && ($selectedfields[1] == 'user_name'))
@@ -653,10 +654,10 @@ class ReportRun extends CRMEntity {
 	}
 
 	function generateAdvFilterSql($advfilterlist) {
-		global $adb;
+		global $adb, $current_user;
 
 		$advfiltersql = "";
-
+		$currentUserFullName = getUserFullName($current_user->id);
 		foreach($advfilterlist as $groupindex => $groupinfo) {
 			$groupcondition = isset($groupinfo['condition']) ? $groupinfo['condition'] : '';
 			$groupcolumns = $groupinfo['columns'];
@@ -695,23 +696,27 @@ class ReportRun extends CRMEntity {
 
 							$advcolumnsql = "";
 							for($n=0;$n<count($valuearray);$n++) {
+								$valuearray[$n] = trim($valuearray[$n]);
 								if(($selectedfields[0] == 'vtiger_users'.$this->primarymodule || in_array($selectedfields[0],$secondarymodules)) && $selectedfields[1] == 'user_name') {
+									if ($valuearray[$n]=='current_user') {
+										$valuearray[$n] = $currentUserFullName;
+									}
 									$module_from_tablename = str_replace("vtiger_users","",$selectedfields[0]);
-									$advcolsql[] = " trim($concatSql)".$this->getAdvComparator($comparator,trim($valuearray[$n]),$datatype)." or vtiger_groups".$module_from_tablename.".groupname ".$this->getAdvComparator($comparator,trim($valuearray[$n]),$datatype);
+									$advcolsql[] = " trim($concatSql)".$this->getAdvComparator($comparator,$valuearray[$n],$datatype)." or vtiger_groups".$module_from_tablename.".groupname ".$this->getAdvComparator($comparator,$valuearray[$n],$datatype);
 								} elseif($selectedfields[1] == 'status') {//when you use comma seperated values.
-									if($selectedfields[2] == 'Calendar_Status')
-									$advcolsql[] = "(case when (vtiger_activity.status not like '') then vtiger_activity.status else vtiger_activity.eventstatus end)".$this->getAdvComparator($comparator,trim($valuearray[$n]),$datatype);
+									if($selectedfields[2] == 'cbCalendar_Status')
+									$advcolsql[] = "(case when (vtiger_activity.status not like '') then vtiger_activity.status else vtiger_activity.eventstatus end)".$this->getAdvComparator($comparator,$valuearray[$n],$datatype);
 									elseif($selectedfields[2] == 'HelpDesk_Status')
-									$advcolsql[] = "vtiger_troubletickets.status".$this->getAdvComparator($comparator,trim($valuearray[$n]),$datatype);
+									$advcolsql[] = "vtiger_troubletickets.status".$this->getAdvComparator($comparator,$valuearray[$n],$datatype);
 								} elseif($selectedfields[1] == 'description') {//when you use comma seperated values.
 									if($selectedfields[0]=='vtiger_crmentity'.$this->primarymodule)
-										$advcolsql[] = "vtiger_crmentity.description".$this->getAdvComparator($comparator,trim($valuearray[$n]),$datatype);
+										$advcolsql[] = "vtiger_crmentity.description".$this->getAdvComparator($comparator,$valuearray[$n],$datatype);
 									else
-										$advcolsql[] = $selectedfields[0].".".$selectedfields[1].$this->getAdvComparator($comparator,trim($valuearray[$n]),$datatype);
+										$advcolsql[] = $selectedfields[0].".".$selectedfields[1].$this->getAdvComparator($comparator,$valuearray[$n],$datatype);
 								} elseif($selectedfields[2] == 'Quotes_Inventory_Manager'){
-									$advcolsql[] = ("trim($concatSql)".$this->getAdvComparator($comparator,trim($valuearray[$n]),$datatype));
+									$advcolsql[] = ("trim($concatSql)".$this->getAdvComparator($comparator,$valuearray[$n],$datatype));
 								} else {
-									$advcolsql[] = $selectedfields[0].".".$selectedfields[1].$this->getAdvComparator($comparator,trim($valuearray[$n]),$datatype);
+									$advcolsql[] = $selectedfields[0].".".$selectedfields[1].$this->getAdvComparator($comparator,$valuearray[$n],$datatype);
 								}
 							}
 							//If negative logic filter ('not equal to', 'does not contain') is used, 'and' condition should be applied instead of 'or'
@@ -721,12 +726,16 @@ class ReportRun extends CRMEntity {
 								$advcolumnsql = implode(" or ",$advcolsql);
 							$fieldvalue = " (".$advcolumnsql.") ";
 						} elseif(($selectedfields[0] == 'vtiger_users'.$this->primarymodule || in_array($selectedfields[0],$secondarymodules)) && $selectedfields[1] == 'user_name') {
+							$value = trim($value);
+							if ($value=='current_user') {
+								$value = $currentUserFullName;
+							}
 							$module_from_tablename = str_replace("vtiger_users","",$selectedfields[0]);
-							$fieldvalue = " trim(case when (".$selectedfields[0].".last_name NOT LIKE '') then ".$concatSql." else vtiger_groups".$module_from_tablename.".groupname end) ".$this->getAdvComparator($comparator,trim($value),$datatype);
+							$fieldvalue = " trim(case when (".$selectedfields[0].".last_name NOT LIKE '') then ".$concatSql." else vtiger_groups".$module_from_tablename.".groupname end) ".$this->getAdvComparator($comparator,$value,$datatype);
 						} elseif($comparator == 'bw' && count($valuearray) == 2) {
 							if($selectedfields[0] == "vtiger_crmentity".$this->primarymodule) {
 								$fieldvalue = "("."vtiger_crmentity.".$selectedfields[1]." between '".trim($valuearray[0])."' and '".trim($valuearray[1])."')";
-							} elseif($selectedfields[2]=='Calendar_Start_Date_and_Time') {
+							} elseif($selectedfields[2]=='cbCalendar_Start_Date_and_Time') {
 								$fieldvalue = "(cast(concat(vtiger_activity.date_start,'  ',vtiger_activity.time_start) as DATETIME) between '".trim($valuearray[0])."' and '".trim($valuearray[1])."')";
 							} else {
 								$fieldvalue = "(".$selectedfields[0].".".$selectedfields[1]." between '".trim($valuearray[0])."' and '".trim($valuearray[1])."')";
@@ -742,8 +751,12 @@ class ReportRun extends CRMEntity {
 							} else {
 								$tableName = 'vtiger_CreatedBy'.$this->primarymodule;
 							}
+							$value = trim($value);
+							if ($value=='current_user') {
+								$value = $currentUserFullName;
+							}
 							$fieldvalue = getSqlForNameInDisplayFormat(array('last_name'=>"$tableName.last_name",'first_name'=>"$tableName.first_name"), 'Users').
-									$this->getAdvComparator($comparator,trim($value),$datatype);
+									$this->getAdvComparator($comparator,$value,$datatype);
 							$this->queryPlanner->addTable($tableName);
 						} elseif($selectedfields[1]=='modifiedby') {
 							$module_from_tablename = str_replace("vtiger_crmentity","",$selectedfields[0]);
@@ -752,8 +765,12 @@ class ReportRun extends CRMEntity {
 							} else {
 								$tableName = 'vtiger_lastModifiedBy'.$this->primarymodule;
 							}
+							$value = trim($value);
+							if ($value=='current_user') {
+								$value = $currentUserFullName;
+							}
 							$fieldvalue = getSqlForNameInDisplayFormat(array('last_name'=>"$tableName.last_name",'first_name'=>"$tableName.first_name"), 'Users').
-									$this->getAdvComparator($comparator,trim($value),$datatype);
+									$this->getAdvComparator($comparator,$value,$datatype);
 							$this->queryPlanner->addTable($tableName);
 						} elseif($selectedfields[0] == "vtiger_activity" && $selectedfields[1] == 'status') {
 							$fieldvalue = "(case when (vtiger_activity.status not like '') then vtiger_activity.status else vtiger_activity.eventstatus end)".$this->getAdvComparator($comparator,trim($value),$datatype);
@@ -2089,13 +2106,13 @@ class ReportRun extends CRMEntity {
 		return $query;
 	}
 
-	public static function sGetDirectSQL($reportid, $reporttype, $eliminatenewlines=true) {
+	public static function sGetDirectSQL($reportid, $cbreporttype, $eliminatenewlines=true) {
 		global $log, $adb;
 		$rptrs = $adb->pquery('select moreinfo from vtiger_report where reportid=?',array($reportid));
 		if ($rptrs and $adb->num_rows($rptrs)>0) {
 			$minfo = $adb->query_result($rptrs, 0, 0);
 			if (!empty($minfo)) {
-				if ($reporttype == 'crosstabsql') {
+				if ($cbreporttype == 'crosstabsql') {
 					$minfo = unserialize($minfo);
 					$minfo = $minfo['sql'];
 				}
@@ -2118,8 +2135,8 @@ class ReportRun extends CRMEntity {
 	function sGetSQLforReport($reportid,$filtersql,$type='',$chartReport=false) {
 		global $log;
 		$groupsquery = '';
-		if ($this->reporttype == 'directsql' or $this->reporttype == 'crosstabsql') {
-			$reportquery = self::sGetDirectSQL($reportid,$this->reporttype,true);
+		if ($this->cbreporttype == 'directsql' or $this->cbreporttype == 'crosstabsql') {
+			$reportquery = self::sGetDirectSQL($reportid,$this->cbreporttype,true);
 			$columnstotalsql = '';
 			if (stripos($reportquery, ' order by ')) {
 				$groupsquery = substr($reportquery, stripos($reportquery, ' order by ')+10);
@@ -2235,7 +2252,7 @@ class ReportRun extends CRMEntity {
 				$totalsselectedcolumns = implode(', ',$totalsselectedcolumns);
 				$reportquery = "select ".$columnstotalsql.' from (select DISTINCT '.$totalsselectedcolumns.$_columnstotallistaddtoselect." ".$reportquery." ".$wheresql.') as summary_calcs';
 			}
-		} elseif ($this->reporttype != 'directsql' and $this->reporttype != 'crosstabsql') {
+		} elseif ($this->cbreporttype != 'directsql' and $this->cbreporttype != 'crosstabsql') {
 			if($selectedcolumns == '') { // Fix for: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/4758 - Prasad
 				$selectedcolumns = "''"; // "''" to get blank column name
 				$allColumnsRestricted = true;
@@ -2616,6 +2633,9 @@ class ReportRun extends CRMEntity {
 			$sSQL = $this->sGetSQLforReport($this->reportid,$filtersql,($outputformat == 'JSON' ? 'HTML' : 'HTMLPAGED'));
 			$sSQL = 'SELECT SQL_CALC_FOUND_ROWS'.substr($sSQL, 6);
 			$result = $adb->query($sSQL);
+			if ($result) {
+				$count_result = $adb->query('SELECT FOUND_ROWS();');
+			}
 			$error_msg = $adb->database->ErrorMsg();
 			if(!$result && $error_msg!=''){
 				$resp = array(
@@ -2634,7 +2654,6 @@ class ReportRun extends CRMEntity {
 			if($result)
 			{
 				$fldcnt=$adb->num_fields($result);
-				$count_result = $adb->query('SELECT FOUND_ROWS();');
 				$noofrows = $adb->query_result($count_result,0,0);
 				$this->number_of_rows = $noofrows;
 				$resp = array(
@@ -2644,6 +2663,9 @@ class ReportRun extends CRMEntity {
 				);
 				if (GlobalVariable::getVariable('Debug_Report_Query', '0')=='1') {
 					$resp['sql'] = $sSQL;
+					foreach ($this->queryPlanner->getTemporaryTables() as $tmptblname => $tmptbldetails) {
+						$resp[$tmptblname] = $tmptbldetails['query'];
+					}
 				}
 				if($outputformat == 'JSONPAGED') {
 					$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize',40);
@@ -2750,8 +2772,8 @@ class ReportRun extends CRMEntity {
 				$arr_val = array();
 				do {
 					$arraylists = Array();
-					for ($i=0; $i<$y-1; $i++) //No tratamos la última columna por ser el ACTION con el CRMID.
-					{
+					for ($i=0; $i<$y-1; $i++) { //No tratamos la última columna por ser el ACTION con el CRMID.
+						$field = null;
 						$fld = $adb->field_name($result, $i);
 						list($module, $fieldLabel) = explode('_', $fld->name, 2);
 						$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
@@ -2803,7 +2825,9 @@ class ReportRun extends CRMEntity {
 							}
 						}
 						$fieldvalue = getReportFieldValue($this, $picklistarray, $fld,$custom_field_values, $i);
-						if (empty($returnfieldinfo[$headerLabel])) $returnfieldinfo[$headerLabel] = $field;
+						if (empty($returnfieldinfo[$headerLabel]) && !empty($field)) {
+							$returnfieldinfo[$headerLabel] = $field;
+						}
 						$arraylists[$headerLabel] = $fieldvalue;
 					}
 					$arr_val[] = $arraylists;

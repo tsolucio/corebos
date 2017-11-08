@@ -98,7 +98,7 @@ class Mobile {
 				$db->pquery("INSERT INTO `berli_crmtogo_config` (`crmtogouser`, `navi_limit`, `theme_color`, `compact_cal`) VALUES (?, ?, ?, ?)", array('1','25', 'b', '1'));
 				$log->fatal('crmtogo admin config settings are created');
 				$seq = 0;
-				$supported_module = array ('Contacts','Accounts','Leads','Calendar','Potentials','HelpDesk','Vendors','Assets','Faq','Documents','Quotes','SalesOrder','Invoice','Products','Project','ProjectMilestone','ProjectTask','Events');
+				$supported_module = array ('Contacts','Accounts','Leads','cbCalendar','Potentials','HelpDesk','Vendors','Assets','Faq','Documents','Quotes','SalesOrder','Invoice','Products','Project','ProjectMilestone','ProjectTask');
 				foreach ($supported_module as $mdulename) {
 					$db->pquery("INSERT INTO `berli_crmtogo_modules` (`crmtogo_user`, `crmtogo_module`, `crmtogo_active`, `order_num`) VALUES (?, ?, ?, ?)", array('1',$mdulename, '1', $seq));
 					$seq = $seq + 1;

@@ -40,7 +40,8 @@ $mod_strings = Array(
 'ERR_DELETE_RECORD'=>"Defina um número de registro para deletar a organizações.",
 'LBL_LIST_FILENAME'=>"Arquivo",
 
-// Added for Note(3.2-patch 3)
+'Template'=>'Template',
+'Template For' => 'Template For',
 
 'LBL_FILENAME'=>'Anexo:',
 'LBL_NOTE_INFORMATION'=>'Informação do Documento',

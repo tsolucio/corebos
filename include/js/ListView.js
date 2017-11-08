@@ -851,48 +851,6 @@ function alphabetic(module, url, dataid)
 	}
 	);
 }
-function ajaxChangeStatus(statusname)
-{
-	document.getElementById("status").style.display = "inline";
-	var viewid = document.getElementById('viewname').options[document.getElementById('viewname').options.selectedIndex].value;
-	var idstring = document.getElementById('idlist').value;
-	var searchurl = document.getElementById('search_url').value;
-	var tplstart = '&';
-	if (gstart != '')
-	{
-		tplstart = tplstart + gstart;
-	}
-	if (statusname == 'status')
-	{
-		fninvsh('changestatus');
-		var url = '&leadval=' + document.getElementById('lead_status').options[document.getElementById('lead_status').options.selectedIndex].value;
-		var urlstring = "module=Users&action=updateLeadDBStatus&return_module=Leads" + tplstart + url + "&viewname=" + viewid + "&idlist=" + idstring + searchurl;
-	}
-	else if (statusname == 'owner')
-	{
-		if (document.getElementById("user_checkbox").checked) {
-			fninvsh('changeowner');
-			var url = '&owner_id=' + document.getElementById('lead_owner').options[document.getElementById('lead_owner').options.selectedIndex].value;
-			var urlstring = "module=Users&action=updateLeadDBStatus&return_module=" + gVTModule + tplstart + url + "&viewname=" + viewid + "&idlist=" + idstring + searchurl;
-		} else {
-			fninvsh('changeowner');
-			var url = '&owner_id=' + document.getElementById('lead_group_owner').options[document.getElementById('lead_group_owner').options.selectedIndex].value;
-			var urlstring = "module=Users&action=updateLeadDBStatus&return_module=" + gVTModule + tplstart + url + "&viewname=" + viewid + "&idlist=" + idstring + searchurl;
-		}
-	}
-	jQuery.ajax({
-		method: 'POST',
-		url: 'index.php?' + urlstring
-	}).done(function (response) {
-		document.getElementById("status").style.display = "none";
-		result = response.split('&#&#&#');
-		document.getElementById("ListViewContents").innerHTML = result[2];
-		if (result[1] != '')
-			alert(result[1]);
-		document.getElementById('basicsearchcolumns').innerHTML = '';
-	}
-	);
-}
 function modifyimage(imagename)
 {
 	imgArea = getObj('dynloadarea');

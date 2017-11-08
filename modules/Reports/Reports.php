@@ -80,6 +80,7 @@ class Reports extends CRMEntity{
 	var $columnssummary;
 	var $is_editable;
 	var $reporttype;
+	var $cbreporttype;
 	var $reportname;
 	var $reportdescription;
 	var $folderid;
@@ -148,7 +149,8 @@ class Reports extends CRMEntity{
 						$current_user->id, $reportid, $reportmodulesrow["primarymodule"],
 						$reportmodulesrow["secondarymodules"], $reportmodulesrow["reporttype"],
 						$reportmodulesrow["reportname"], $reportmodulesrow["description"],
-						$reportmodulesrow["folderid"], $reportmodulesrow["owner"]
+						$reportmodulesrow["folderid"], $reportmodulesrow["owner"],
+						$reportmodulesrow["cbreporttype"]
 					);
 				}
 
@@ -160,6 +162,8 @@ class Reports extends CRMEntity{
 				$this->primodule = $cachedInfo["primarymodule"];
 				$this->secmodule = $cachedInfo["secondarymodules"];
 				$this->reporttype = $cachedInfo["reporttype"];
+				$this->cbreporttype = $cachedInfo["cbreporttype"];
+
 				$this->reportname = decode_html($cachedInfo["reportname"]);
 				$this->reportdescription = decode_html($cachedInfo["description"]);
 				$this->folderid = $cachedInfo["folderid"];
@@ -407,13 +411,14 @@ class Reports extends CRMEntity{
 				$report_details['reportname'] = $report["reportname"];
 				$report_details['sharingtype'] = $report["sharingtype"];
 				$report_details['reporttype'] = $report['reporttype'];
-				if ($report['reporttype']=='external') {
+				$report_details['cbreporttype'] = $report['cbreporttype'];
+				if ($report['cbreporttype']=='external') {
 					$minfo = unserialize(decode_html($report['moreinfo']));
 					$report_details['moreinfo'] = $minfo['url'];
 					if ($minfo['adduserinfo']==1) {
 						$report_details['moreinfo'] = rtrim($report_details['moreinfo'],'/');
 						$report_details['moreinfo'] .= strpos($report_details['moreinfo'], '?') ? '&' : '?';
-						$report_details['moreinfo'] .= 'usrid='.$current_user->id.'&role='.$current_user_parent_role_seq.((isset($current_user_groups) && sizeof($current_user_groups)) > 0 ? '&grpid='.implode(",", $current_user_groups) : '');
+						$report_details['moreinfo'] .= 'usrid='.$current_user->id.'&role='.$current_user_parent_role_seq.((isset($current_user_groups) && count($current_user_groups)) > 0 ? '&grpid='.implode(",", $current_user_groups) : '');
 					}
 				} else {
 					$report_details['moreinfo'] = $report['moreinfo'];
@@ -1210,8 +1215,7 @@ function getEscapedColumns($selectedfields) {
 				list($tablename,$colname,$module_field,$fieldname,$single) = explode(":",$fieldcolname);
 				require('user_privileges/user_privileges_'.$current_user->id.'.php');
 				list($module,$field) = explode("_",$module_field);
-				if(sizeof($permitted_fields) == 0 && $is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1)
-				{
+				if (count($permitted_fields) == 0 && $is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1) {
 					$permitted_fields = $this->getaccesfield($module);
 				}
 				$fieldlabel = trim(str_replace($module," ",$module_field));

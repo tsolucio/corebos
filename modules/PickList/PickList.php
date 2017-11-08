@@ -23,59 +23,56 @@ if (!is_admin($current_user)) {
 }
 
 $modules = getPickListModules();
-if(!empty($_REQUEST['moduleName'])) {
+if (!empty($_REQUEST['moduleName'])) {
 	$fld_module = vtlib_purify($_REQUEST['moduleName']);
-}else {
+} else {
 	$module = array_keys($modules);
 	$fld_module = $module[0];
 }
 
-if(!empty($_REQUEST['roleid'])) {
+if (!empty($_REQUEST['roleid'])) {
 	$roleid = vtlib_purify($_REQUEST['roleid']);
-}else {
+} else {
 	$roleid = 'H2';		//set default to CEO
 }
 
-if($fld_module == 'Events') {
-	$temp_module_strings = return_module_language($current_language, 'Calendar');
-}else {
-	$temp_module_strings = return_module_language($current_language, $fld_module);
-}
-$picklists_entries = getUserFldArray($fld_module,$roleid);
-if((sizeof($picklists_entries) %3) != 0) {
-	$value = (sizeof($picklists_entries) + 3 - (sizeof($picklists_entries))%3);
-}else {
-	$value = sizeof($picklists_entries);
+$temp_module_strings = return_module_language($current_language, $fld_module);
+$picklists_entries = getUserFldArray($fld_module, $roleid);
+$value = count($picklists_entries);
+if (($value % 3) != 0) {
+	$value = $value + 3 - $value % 3;
 }
 $available_module_picklist = array();
 $picklist_fields = array();
-if(!empty($picklists_entries)) {
+if (!empty($picklists_entries)) {
 	$available_module_picklist = get_available_module_picklist($picklists_entries);
-	$picklist_fields = array_chunk(array_pad($picklists_entries,$value,''),3);
+	$picklist_fields = array_chunk(array_pad($picklists_entries, $value, ''), 3);
 }
 $mods = array();
 foreach ($modules as $lbl => $m) {
-	$mods[$m] = getTranslatedString($lbl,$m);
+	if ($m == 'Calendar' || $m == 'Events') {
+		continue;
+	}
+	$mods[$m] = getTranslatedString($lbl, $m);
 }
-$smarty->assign("MODULE_LISTS",$mods);
-$smarty->assign("ROLE_LISTS",getrole2picklist());
-$smarty->assign("ALL_LISTS",$available_module_picklist);
+$smarty->assign("MODULE_LISTS", $mods);
+$smarty->assign("ROLE_LISTS", getrole2picklist());
+$smarty->assign("ALL_LISTS", $available_module_picklist);
 
-$smarty->assign("MOD", return_module_language($current_language,'Settings'));	//the settings module language file
-$smarty->assign("MOD_PICKLIST", return_module_language($current_language,'PickList'));	//the picklist module language files
+$smarty->assign("MOD", return_module_language($current_language, 'Settings'));	//the settings module language file
+$smarty->assign("MOD_PICKLIST", return_module_language($current_language, 'PickList'));	//the picklist module language files
 $smarty->assign("TEMP_MOD", $temp_module_strings);	//the selected modules' language file
 
-$smarty->assign("MODULE",$fld_module);
-$smarty->assign("PICKLIST_VALUES",$picklist_fields);
-$smarty->assign("THEME",$theme);
+$smarty->assign("MODULE", $fld_module);
+$smarty->assign("PICKLIST_VALUES", $picklist_fields);
+$smarty->assign("THEME", $theme);
 $uitype = (!empty($_REQUEST['uitype']) ? vtlib_purify($_REQUEST['uitype']) : '');
 $smarty->assign("UITYPE", $uitype);
-$smarty->assign("SEL_ROLEID",$roleid);
+$smarty->assign("SEL_ROLEID", $roleid);
 
-if(empty($_REQUEST['directmode']) or $_REQUEST['directmode'] != 'ajax') {
+if (empty($_REQUEST['directmode']) or $_REQUEST['directmode'] != 'ajax') {
 	$smarty->display("modules/PickList/PickList.tpl");
-}else {
+} else {
 	$smarty->display("modules/PickList/PickListContents.tpl");
 }
-
 ?>

@@ -855,28 +855,18 @@ function getTabModuleName($tabid) {
 
 	// Lookup information in cache first
 	$tabname = VTCacheUtils::lookupModulename($tabid);
-	if($tabname === false) {
+	if ($tabname === false) {
 		if (file_exists('tabdata.php') && (filesize('tabdata.php') != 0)) {
 			include('tabdata.php');
 			$tabname = array_search($tabid,$tab_info_array);
-
-			if($tabname == false) {
-				$sql = "select name from vtiger_tab where tabid=?";
-				$result = $adb->pquery($sql, array($tabid));
-				$tabname = $adb->query_result($result,0,"name");
-			}
-
-			// Update information to cache for re-use
-			VTCacheUtils::updateTabidInfo($tabid, $tabname);
-
-		} else {
+		}
+		if ($tabname === false) {
 			$sql = "select name from vtiger_tab where tabid=?";
 			$result = $adb->pquery($sql, array($tabid));
 			$tabname = $adb->query_result($result,0,"name");
-
-			// Update information to cache for re-use
-			VTCacheUtils::updateTabidInfo($tabid, $tabname);
 		}
+		// Update information to cache for re-use
+		VTCacheUtils::updateTabidInfo($tabid, $tabname);
 	}
 	$log->debug("Exiting getTabModuleName ($tabname) ...");
 	return $tabname;
@@ -1265,26 +1255,6 @@ function getQuickCreate($tabid,$actionid) {
 	}
 	$log->debug("Exiting getQuickCreate method ...");
 	return $QuickCreateForm;
-}
-
-/** Function to getQuickCreate for a given tabid
- * @param $tabid -- tab id :: Type string
- * @param $actionid -- action id :: Type integer
- * @returns $QuickCreateForm -- QuickCreateForm :: Type boolean
- */
-function ChangeStatus($status,$activityid,$activity_mode='') {
-	global $log, $adb;
-	$log->debug("Entering ChangeStatus(".$status.",".$activityid.",".$activity_mode."='') method ...");
-
-	if ($activity_mode == 'Task') {
-		$query = "Update vtiger_activity set status=? where activityid = ?";
-	} elseif ($activity_mode == 'Events') {
-		$query = "Update vtiger_activity set eventstatus=? where activityid = ?";
-	}
-	if($query) {
-		$adb->pquery($query, array($status, $activityid));
-	}
-	$log->debug("Exiting ChangeStatus method ...");
 }
 
 /** Function to get unitprice for a given product id
@@ -2065,6 +2035,9 @@ function getTableNameForField($module,$fieldname)
 function getModuleForField($fieldid) {
 	global $log, $adb;
 	$log->debug("Entering getModuleForField($fieldid) method ...");
+	if ($fieldid == -1) {
+		return 'Users';
+	}
 	$sql = 'SELECT vtiger_tab.name
 		FROM vtiger_field
 		INNER JOIN vtiger_tab on vtiger_tab.tabid=vtiger_field.tabid
@@ -3584,7 +3557,7 @@ function getSecParameterforMerge($module) {
 					OR (vtiger_crmentity.smownerid in (0)
 					AND (";
 
-			if(sizeof($current_user_groups) > 0) {
+			if (count($current_user_groups) > 0) {
 				$sec_parameter .= " vtiger_groups.groupname IN (
 								SELECT groupname
 								FROM vtiger_groups
@@ -4213,23 +4186,6 @@ function columnExists($columnName, $tableName){
 	}else{
 		return false;
 	}
-}
-
-/* To get modules list for which work flow and field formulas is permitted*/
-function com_vtGetModules($adb) {
-	$sql="select distinct vtiger_field.tabid, name
-		from vtiger_field
-		inner join vtiger_tab
-			on vtiger_field.tabid=vtiger_tab.tabid
-		where vtiger_field.tabid not in(9,10,16,15,8,29) and vtiger_tab.presence = 0 and vtiger_tab.isentitytype=1";
-	$it = new SqlResultIterator($adb, $adb->query($sql));
-	$modules = array();
-	foreach($it as $row) {
-		if(isPermitted($row->name,'index') == "yes") {
-			$modules[$row->name] = getTranslatedString($row->name);
-		}
-	}
-	return $modules;
 }
 
 /**

@@ -44,6 +44,16 @@ $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('ID', '');
 $smarty->assign('MODE', '');
 
+// Left Panel Order
+$Calendar_Panel_Order = array(
+	'ActivityType',
+	'ModulePanel',
+	'AssignedUser',
+	'ActivityStatus',
+	'ActivityPriority',
+);
+$smarty->assign('Calendar_Panel_Order', $Calendar_Panel_Order);
+
 $viewBox = 'hourview'; 
 $smarty->assign("CREATE_PERMISSION",($Calendar4You->CheckPermissions("CREATE") ? "permitted" : ''));
 
@@ -74,7 +84,7 @@ $smarty->assign("CREATE_PERMISSION",($Calendar4You->CheckPermissions("CREATE") ?
 
 	$eventlist=''; 
 	$eventlists_array='';
-	$abelist = '';
+	$abelist = $btnelist = '';
 	for($i=0; $i<$adb->num_rows($Res);$i++) {
 		$actname = $adb->query_result($Res,$i,'activitytype');
 		$actname = html_entity_decode($actname,ENT_QUOTES,$default_charset);
@@ -82,25 +92,23 @@ $smarty->assign("CREATE_PERMISSION",($Calendar4You->CheckPermissions("CREATE") ?
 		$eventlists_array .= '"'.html_entity_decode($actname,ENT_QUOTES, $default_charset).'",';
 		$i18actname = getTranslatedString($actname,'Calendar');
 		$abelist.='<tr><td><a id="add'.strtolower($actname).'" href="index.php?module=cbCalendar&action=EditView&return_module=Calendar4You&return_action=index&activity_mode=Events&activitytype='.$actname.'" class="drop_down">'.$i18actname.'</a></td></tr>';
+		$btnelist .= '<tr><td><a id="btnadd'.strtolower($actname).'" href="index.php?module=cbCalendar&action=EditView&return_module=Calendar4You&return_action=index&activity_mode=Events&activitytype='.$actname.'" class="drop_down">'.$i18actname.'</a></td></tr>';
 	}
+	$smarty->assign('EVENTLIST', trim($eventlists_array,","));
+	$timeModluleDetails = array();
+	$timeModules_array = '';
 	$timeModules = getAllModulesWithDateTimeFields();
 	foreach ($timeModules as $tmid => $tmmod) {
 		$tmline = getTranslatedString($tmmod,$tmmod);
 		$tmlineid = str_replace(' ', '', $tmmod);
-		$abelist .= '<tr><td><a href="" id="add' . strtolower($tmlineid) . '" class="drop_down">' . $tmline . '</a></td></tr>';
-	}
-	$smarty->assign('ADD_BUTTONEVENTLIST', $abelist);
-	$add_javascript = "onMouseOver='fnAddITSEvent(this,\"addButtonDropDown\",\"".$temp_date."\",\"".$temp_date."\",\"".$time_arr['starthour']."\",\"".$time_arr['startmin']."\",\"".$time_arr['startfmt']."\",\"".$time_arr['endhour']."\",\"".$time_arr['endmin']."\",\"".$time_arr['endfmt']."\",\"".$viewBox."\",\"".(isset($subtab) ? $subtab : '')."\",\"".$eventlist."\");'";
-	$smarty->assign('ADD_ONMOUSEOVER', $add_javascript);
-
-	$smarty->assign('EVENTLIST', trim($eventlists_array,","));
-	$timeModules = getAllModulesWithDateTimeFields();
-	$timeModluleDetails = array();
-	$timeModules_array = '';
-	foreach ($timeModules as $tmid => $tmmod) {
+		$abelist .= '<tr><td><a href="" id="addmod' . strtolower($tmlineid) . '" class="drop_down">' . $tmline . '</a></td></tr>';
 		$timeModluleDetails[$tmmod] = getModuleCalendarFields($tmmod);
 		$timeModules_array.= '"'.html_entity_decode($tmmod,ENT_QUOTES,$default_charset).'",';
 	}
+	$smarty->assign('ADD_BUTTONEVENTLIST', $abelist);
+	$smarty->assign('ADD_ADDEVENTLIST', $btnelist);
+	$add_javascript = "onMouseOver='fnAddITSEvent(this,\"addButtonDropDown\",\"".$temp_date."\",\"".$temp_date."\",\"".$time_arr['starthour']."\",\"".$time_arr['startmin']."\",\"".$time_arr['startfmt']."\",\"".$time_arr['endhour']."\",\"".$time_arr['endmin']."\",\"".$time_arr['endfmt']."\",\"".$viewBox."\",\"".(isset($subtab) ? $subtab : '')."\",\"".$eventlist."\");'";
+	$smarty->assign('ADD_ONMOUSEOVER', $add_javascript);
 	$smarty->assign('TIMEMODULEARRAY', trim($timeModules_array,","));
 	$smarty->assign('TIMEMODULEDETAILS', json_encode($timeModluleDetails));
 //}
@@ -157,7 +165,7 @@ foreach ($ActTypes AS $act_id => $act_name) {
 			"title_color"=>$Modules_Colors['text'],
 			"color"=>$Modules_Colors['bg'],
 			"textColor"=>$Modules_Colors["text"],
-			"checked"=>$invite_checked
+			"checked"=>(empty($Ch_Views['4'][$mname]) ? 'F' : 'T'),
 		);
 	}
 	unset($Colors,$Colors_Palete);
@@ -288,15 +296,12 @@ if(getFieldVisibilityPermission('Events',$current_user->id,'eventstatus', 'readw
 }
 $smarty->assign('EVENT_STATUS', $Events_Status);
 
-if(getFieldVisibilityPermission('Calendar',$current_user->id,'taskstatus', 'readwrite') == '0') {
-	$Task_Status = $Calendar4You->getActStatusFieldValues('taskstatus','vtiger_taskstatus'); 
-}
-$smarty->assign('TASK_STATUS', $Task_Status);
-
 if(getFieldVisibilityPermission('Calendar',$current_user->id,'taskpriority', 'readwrite') == '0') {
-	$Task_Status = $Calendar4You->getActStatusFieldValues('taskpriority','vtiger_taskpriority');
+	$Task_Priority = $Calendar4You->getActStatusFieldValues('taskpriority','vtiger_taskpriority');
+} else {
+	$Task_Priority = array();
 }
-$smarty->assign('TASK_PRIORITY', $Task_Status);
+$smarty->assign('TASK_PRIORITY', $Task_Priority);
 
 $dat_fmt = $current_user->date_format;
 if ($dat_fmt == '') {
@@ -308,5 +313,6 @@ $smarty->assign('USER_DATE_FORMAT', $dat_fmt);
 $smarty->assign('Calendar_Slot_Minutes', "00:".GlobalVariable::getVariable('Calendar_Slot_Minutes', 15).":00");
 $smarty->assign('Calendar_Slot_Event_Overlap', (GlobalVariable::getVariable('Calendar_Slot_Event_Overlap', 1) ? 'true' : 'false'));
 $smarty->assign('Calendar_Modules_Panel_Visible', GlobalVariable::getVariable('Calendar_Modules_Panel_Visible', 1));
+$smarty->assign('Calendar_Other_Default_Duration', GlobalVariable::getVariable('calendar_other_default_duration', 1));
 
 $smarty->display('modules/Calendar4You/CalendarView.tpl');

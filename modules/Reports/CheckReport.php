@@ -12,29 +12,24 @@ require_once('include/database/PearDatabase.php');
 $check=$_REQUEST['check'];
 global $default_charset;
 $id='';
-if($_REQUEST['check']== 'reportCheck')
-{
+if ($_REQUEST['check']== 'reportCheck') {
 	$reportName = vtlib_purify($_REQUEST['reportName']);
-	$reportID = vtlib_purify($_REQUEST['reportid']);
-	$sSQL='select 1 from vtiger_report where reportname=?';
+	$reportID = (isset($_REQUEST['reportid']) ? vtlib_purify($_REQUEST['reportid']) : 0);
+	$sSQL = 'select 1 from vtiger_report where reportname=?';
 	$params = array(trim($reportName));
-	if(!empty($reportID)) {
+	if (!empty($reportID)) {
 		$sSQL .= ' and reportid != ?';
 		$params[] = $reportID;
 	}
 	$sqlresult = $adb->pquery($sSQL,$params);
 	echo $adb->num_rows($sqlresult);
-}
-else if($_REQUEST['check']== 'folderCheck')
-{
+} else if ($_REQUEST['check']== 'folderCheck') {
 	$folderName = function_exists('iconv') ? @iconv('UTF-8',$default_charset, $_REQUEST['folderName']) : $_REQUEST['folderName'];
-	$folderName =str_replace(array("'",'"'),'',$folderName);
-	if($folderName == "" || !$folderName)
-	{
+	$folderName = str_replace(array("'",'"'),'',$folderName);
+	if ($folderName == "" || !$folderName) {
 		echo "999";
-	}else
-	{
-		$SQL="select * from vtiger_reportfolder where foldername=?";
+	} else {
+		$SQL = 'select * from vtiger_reportfolder where foldername=?';
 		$sqlresult = $adb->pquery($SQL, array(trim($folderName)));
 		$id = $adb->query_result($sqlresult,0,"folderid");
 		echo trim($adb->num_rows($sqlresult)."::".$id);

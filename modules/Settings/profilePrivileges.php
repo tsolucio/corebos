@@ -252,7 +252,7 @@ $smarty->assign("STANDARD_PRIV",$privileges_stand);
 if($mode == 'view')
 {
 	$tab_perr_array = getTabsPermission($profileId);
-	$no_of_tabs = sizeof($tab_perr_array);
+	$no_of_tabs = count($tab_perr_array);
 	foreach($tab_perr_array as $tabid=>$tab_perr)
 	{
 		$tab=array();
@@ -267,7 +267,7 @@ if($mode == 'view')
 if($mode == 'edit')
 {
 	$tab_perr_array = getTabsPermission($profileId);
-	$no_of_tabs = sizeof($tab_perr_array);
+	$no_of_tabs = count($tab_perr_array);
 	foreach($tab_perr_array as $tabid=>$tab_perr)
 	{
 		$tab=array();
@@ -284,7 +284,7 @@ if($mode == 'create')
 	if($parentProfileId != '')
 	{
 		$tab_perr_array = getTabsPermission($parentProfileId);
-		$no_of_tabs = sizeof($tab_perr_array);
+		$no_of_tabs = count($tab_perr_array);
 		foreach($tab_perr_array as $tabid=>$tab_perr)
 		{
 			$tab=array();
@@ -299,7 +299,7 @@ if($mode == 'create')
 	else
 	{
 		$tab_perr_array = getTabsPermission(1);
-		$no_of_tabs = sizeof($tab_perr_array);
+		$no_of_tabs = count($tab_perr_array);
 		foreach($tab_perr_array as $tabid=>$tab_perr)
 		{
 			$tab=array();
@@ -323,7 +323,7 @@ if($mode == 'view')
 	{
 		$util=array();
 		$entity_name = getTabModuleName($tabid);
-		$no_of_actions=sizeof($action_array);
+		$no_of_actions = count($action_array);
 		foreach($action_array as $action_id=>$act_per)
 		{
 			$action_name = getActionname($action_id);
@@ -344,7 +344,7 @@ elseif($mode == 'edit')
 	{
 		$util=array();
 		$entity_name = getTabModuleName($tabid);
-		$no_of_actions=sizeof($action_array);
+		$no_of_actions = count($action_array);
 		foreach($action_array as $action_id=>$act_per)
 		{
 			$action_name = getActionname($action_id);
@@ -367,7 +367,7 @@ elseif($mode == 'create')
 		{
 			$util=array();
 			$entity_name = getTabModuleName($tabid);
-			$no_of_actions=sizeof($action_array);
+			$no_of_actions = count($action_array);
 			foreach($action_array as $action_id=>$act_per)
 			{
 				$action_name = getActionname($action_id);
@@ -388,7 +388,7 @@ elseif($mode == 'create')
 		{
 			$util=array();
 			$entity_name = getTabModuleName($tabid);
-			$no_of_actions=sizeof($action_array);
+			$no_of_actions = count($action_array);
 			foreach($action_array as $action_id=>$act_per)
 			{
 				$action_name = getActionname($action_id);
@@ -410,7 +410,7 @@ $smarty->assign("UTILITIES_PRIV",$privilege_util);
 //Field privileges
 $modArr=getModuleAccessArray();
 
-$no_of_mod=sizeof($modArr);
+$no_of_mod = count($modArr);
 for($i=0;$i<$no_of_mod; $i++)
 {
 	$fldModule=key($modArr);

@@ -44,7 +44,11 @@
 									<table border="0" cellspacing="0" cellpadding="5" width="100%" align="center" bgcolor="white">
 										<tr>
 											<td align="right" width="50%" class="dvtCellLabel">{if $UIINFO->isMandatory('Accounts','accountname') eq true}<font color="red">*</font>{/if}{'LBL_ACCOUNT_NAME'|@getTranslatedString:$MODULE}</td>
-											<td class="dvtCellInfo"><input type="text" name="accountname" class="detailedViewTextBox" value="{$UIINFO->getMappedFieldValue('Accounts','accountname',0)}" readonly="readonly" module="Accounts" {if $UIINFO->isMandatory('Accounts','accountname') eq true}record="true"{/if}></td>
+											<td class="dvtCellInfo">
+												<input type="hidden" name="accountname" id="txtbox_accountname" value="{$UIINFO->getMappedFieldValue('Accounts','accountname',0)}" module="Accounts" {if $UIINFO->isMandatory('Accounts','accountname') eq true}record="true"{/if}>
+												<input type="text" name="accountname_display" id="accountname_display" class="detailedViewTextBox" style="width:160px" value="{$UIINFO->getMappedFieldValue('Accounts','accountname',0)}" readonly="readonly">
+												<img src="themes/softed/images/select.gif" tabindex="" alt="{'LBL_SELECT'|@getTranslatedString}" title="{'LBL_SELECT'|@getTranslatedString}" onclick="return window.open('index.php?module=Accounts&action=Popup&html=Popup_picker&form=ConvertLead&forfield=accountname&srcmodule=Leads&forrecord=','convertleadcompany','width=640,height=602,resizable=0,scrollbars=0,top=150,left=200');" style="cursor:hand;cursor:pointer" align="absmiddle">
+											</td>
 										</tr>
 										{if $UIINFO->isActive('industry','Accounts')}
 										<tr>
@@ -222,3 +226,4 @@
 			</table>
 	</div>
 </form>
+<script>jQuery('#orgLay').draggable();</script>

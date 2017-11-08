@@ -18,26 +18,26 @@ $roleid = vtlib_purify($_REQUEST['roleid']);
 $values = vtlib_purify($_REQUEST['values']);
 $otherRoles = vtlib_purify($_REQUEST['otherRoles']);
 
-if(empty($tableName)){
+if (empty($tableName)) {
 	echo "Table name is empty";
 	exit;
 }
 
-$values = json_decode($values,true);
+$values = json_decode($values, true);
 
 $sql = 'SELECT * FROM vtiger_picklist WHERE name = ?';
 $result = $adb->pquery($sql, array($tableName));
-if($adb->num_rows($result) > 0){
+if ($adb->num_rows($result) > 0) {
 	$picklistid = $adb->query_result($result, 0, "picklistid");
 }
 
-if(!empty($roleid)){
+if (!empty($roleid)) {
 	assignValues($picklistid, $roleid, $values, $tableName);
 }
 
-$otherRoles = json_decode($otherRoles,true);
-if(!empty($otherRoles)){
-	foreach($otherRoles as $role){
+$otherRoles = json_decode($otherRoles, true);
+if (!empty($otherRoles)) {
+	foreach ($otherRoles as $role) {
 		assignValues($picklistid, $role, $values, $tableName);
 	}
 }
@@ -45,19 +45,19 @@ if(!empty($otherRoles)){
 echo "SUCCESS";
 
 
-function assignValues($picklistid, $roleid, $values, $tableName){
+function assignValues($picklistid, $roleid, $values, $tableName) {
 	global $adb,$default_charset;
 	$count = count($values);
 	//delete older values
 	$sql = 'DELETE FROM vtiger_role2picklist WHERE roleid=? AND picklistid=?';
 	$adb->pquery($sql, array($roleid,$picklistid));
-	
+
 	//insert the new values
-	for($i=0;$i<$count;$i++){
+	for ($i=0; $i<$count; $i++) {
 		$tableName = $adb->sql_escape_string($tableName);
 		$sql = "SELECT * FROM vtiger_$tableName WHERE $tableName=?";
 		$result = $adb->pquery($sql, array($values[$i]));
-		if($adb->num_rows($result) > 0){
+		if ($adb->num_rows($result) > 0) {
 			$picklistvalueid = $adb->query_result($result, 0, "picklist_valueid");
 			$sortid = $i+1;
 			$sql = 'INSERT INTO vtiger_role2picklist VALUES (?,?,?,?)';
