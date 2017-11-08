@@ -81,10 +81,11 @@ function getMenuJSON2() {
 				'mseq' => $menu['mseq'],
 			);
 			$info = json_encode($info);
+			$label = i18nMenuLabel($menu['mlabel'], $menu['mvalue'], $menu['mtype']);
 			$menustructure[] = array(
 				'id' => $menu['evvtmenuid'],
 				'parent' => $menu['mparent'],
-				'text' => $menu['mlabel'],
+				'text' => $label,
 				'li_attr' => array('class'=>'jstree-drop',),
 				'a_attr' => array('onclick' => 'getMenuInfo('.$info.');', 'mseq' => $menu['mseq'])
 			);
@@ -121,20 +122,7 @@ function getMenuArray($mparent) {
 				$mperm = explode(',',$menu['mpermission']);
 				if (!$is_admin and count(array_intersect($usrprf,$mperm))==0) continue;
 			}
-			switch ($menu['mtype']) {
-				case 'menu':
-				case 'url':
-				case 'headtop':
-				case 'headbottom':
-					$label = getTranslatedString($menu['mlabel'],'evvtMenu');
-					break;
-				case 'separator':
-					$label = '';
-					break;
-				case 'module':
-					$label = getTranslatedString($menu['mvalue'],$menu['mvalue']);
-					break;
-			}
+			$label = i18nMenuLabel($menu['mlabel'], $menu['mvalue'], $menu['mtype']);
 			$submenu = getMenuArray($menu['evvtmenuid']);
 			if ($menu['mparent']>0 or count($submenu)>0 or $menu['mtype']=='module' or $menu['mtype']=='url') {
 				$menustructure[] = array(
@@ -170,10 +158,11 @@ function getMenuHTML($marray) {
 function getMenuPicklist($mparent,$level) {
 	global $adb;
 	$menustructure = array();
-	$menurs = $adb->pquery("SELECT `evvtmenuid`, `mlabel` FROM `vtiger_evvtmenu` where mparent=? order by mseq",array($mparent));
+	$menurs = $adb->pquery('SELECT evvtmenuid, mlabel, mtype, mvalue FROM vtiger_evvtmenu where mparent=? order by mseq', array($mparent));
 	if ($menurs and $adb->num_rows($menurs)>0) {
 		while ($menu = $adb->fetch_array($menurs)) {
-			$menustructure[$menu['evvtmenuid']] = ($level ? str_repeat('>', $level) : '').' '.$menu['mlabel'];
+			$label = i18nMenuLabel($menu['mlabel'], $menu['mvalue'], $menu['mtype']);
+			$menustructure[$menu['evvtmenuid']] = ($level ? str_repeat('>', $level) : '').' '.$label;
 			$menustructure = $menustructure + getMenuPicklist($menu['evvtmenuid'],$level+1);
 		}
 	}
@@ -240,5 +229,24 @@ function checkevvtMenuInstalled() {
 		}
 	}
 }
+
+function i18nMenuLabel($mlabel, $mvalue, $type) {
+	switch ($type) {
+		case 'url':
+		case 'menu':
+		case 'headtop':
+		case 'headbottom':
+			$i18nlabel = getTranslatedString($mlabel, 'evvtMenu');
+			break;
+		case 'module':
+			$i18nlabel = getTranslatedString($mvalue, $mvalue);
+			break;
+		default:
+			$i18nlabel = $mlabel;
+			break;
+	}
+	return $i18nlabel;
+}
+
 checkevvtMenuInstalled();
 ?>

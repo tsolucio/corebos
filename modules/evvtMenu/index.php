@@ -30,12 +30,8 @@ $json = getMenuJSON2();
 $smarty->assign("PARENTS", $elements);
 $smarty->assign("MENUSTRUCTURE", $json);
 $smarty->assign("PROFILES", getAllProfileInfo());
-$result = $adb->query('select name from vtiger_tab where presence = 0 order by name');
-$modulelist = array();
-while($moduleinfo=$adb->fetch_array($result)) {
-	$modulelist[$moduleinfo['name']] = $moduleinfo['name'];
-}
-$smarty->assign("MODNAMES", $modulelist);
+require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
+$smarty->assign('MODNAMES', VTWorkflowUtils::vtGetModulesAndExtensions($adb));
 $smarty->assign("THEME", $theme);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('APP', $app_strings);
