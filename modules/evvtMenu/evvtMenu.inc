@@ -23,26 +23,26 @@ function getMenuBranch($mparent) {
 	$menurs = $adb->query("select * from vtiger_evvtmenu where mparent = $mparent order by mseq");
 	if ($menurs and $adb->num_rows($menurs)>0) {
 		while ($menu = $adb->fetch_array($menurs)) {
-		switch ($menu['mtype']) {
-			case 'menu':
-			case 'separator':
-				$icon = 'folder';
-				break;
-			default:
-				$icon = 'html';
-		}
-		$menustructure[] = array(
-			'evvtmenuid' => $menu['evvtmenuid'],
-			'mparent' =>$menu['mparent'],
-			'mtype' => $menu['mtype'],
-			'micon' => $icon,
-			'mvalue' => $menu['mvalue'],
-			'mlabel' => (empty($menu['mlabel']) ? '----':$menu['mlabel']),
-			'mseq' => $menu['mseq'],
-			'mvisible' => $menu['mvisible'],
-			'mpermission' => $menu['mpermission'],
-			'submenu' => getMenuBranch($menu['evvtmenuid']),
-			'jsoninfo' => json_encode(array(
+			switch ($menu['mtype']) {
+				case 'menu':
+				case 'separator':
+					$icon = 'folder';
+					break;
+				default:
+					$icon = 'html';
+			}
+			$menustructure[] = array(
+				'evvtmenuid' => $menu['evvtmenuid'],
+				'mparent' =>$menu['mparent'],
+				'mtype' => $menu['mtype'],
+				'micon' => $icon,
+				'mvalue' => $menu['mvalue'],
+				'mlabel' => (empty($menu['mlabel']) ? '----':$menu['mlabel']),
+				'mseq' => $menu['mseq'],
+				'mvisible' => $menu['mvisible'],
+				'mpermission' => $menu['mpermission'],
+				'submenu' => getMenuBranch($menu['evvtmenuid']),
+				'jsoninfo' => json_encode(array(
 					'evvtmenuid' => $menu['evvtmenuid'],
 					'mparent' =>$menu['mparent'],
 					'mtype' => $menu['mtype'],
@@ -50,8 +50,8 @@ function getMenuBranch($mparent) {
 					'mlabel' => $menu['mlabel'],
 					'mvisible' => $menu['mvisible'],
 					'mpermission' => $menu['mpermission'],
-			)),
-		);
+				)),
+			);
 		}
 	}
 	return $menustructure;
@@ -67,15 +67,15 @@ function getMenuBranch($mparent) {
 function getMenuJSON2() {
 	global $adb, $default_charset;
 	$menustructure = array(array('id'=>0, 'parent'=>'#', 'text' => 'Menu'));
-	$menurs = $adb->query("SELECT * FROM `vtiger_evvtmenu` ORDER BY mseq ASC");
+	$menurs = $adb->query('SELECT * FROM `vtiger_evvtmenu` ORDER BY mseq ASC');
 	if ($menurs and $adb->num_rows($menurs)>0) {
 		while ($menu = $adb->fetchByAssoc($menurs)) {
 			$info = array(
 				'evvtmenuid' => $menu['evvtmenuid'],
-				'mparent' =>$menu['mparent'],
+				'mparent' => $menu['mparent'],
 				'mtype' => $menu['mtype'],
-				'mvalue' => html_entity_decode($menu['mvalue'],ENT_QUOTES,$default_charset),
-				'mlabel' => html_entity_decode($menu['mlabel'],ENT_QUOTES,$default_charset),
+				'mvalue' => html_entity_decode($menu['mvalue'], ENT_QUOTES, $default_charset),
+				'mlabel' => html_entity_decode($menu['mlabel'], ENT_QUOTES, $default_charset),
 				'mvisible' => $menu['mvisible'],
 				'mpermission' => $menu['mpermission'],
 				'mseq' => $menu['mseq'],
@@ -94,10 +94,10 @@ function getMenuJSON2() {
 	return json_encode($menustructure);
 }
 
-function getMenuElements(){
+function getMenuElements() {
 	global $adb;
 	$menustructure = array();
-	$menurs = $adb->query("SELECT `evvtmenuid`, `mlabel` FROM `vtiger_evvtmenu`");
+	$menurs = $adb->query('SELECT `evvtmenuid`, `mlabel` FROM `vtiger_evvtmenu`');
 	if ($menurs and $adb->num_rows($menurs)>0) {
 		while ($menu = $adb->fetch_array($menurs)) {
 			$menustructure[$menu['evvtmenuid']] = $menu['mlabel'];
@@ -115,12 +115,16 @@ function getMenuArray($mparent) {
 		while ($menu = $adb->fetch_array($menurs)) {
 			if (empty($menu['mpermission']) and $menu['mtype']=='module') {
 				// apply vtiger CRM permissions
-				if (isPermitted($menu['mvalue'],'index')=='no') continue;
+				if (isPermitted($menu['mvalue'], 'index')=='no') {
+					continue;
+				}
 			} elseif (!empty($menu['mpermission'])) {
 				// apply evvtMenu permissions
 				$usrprf = getUserProfile($current_user->id);
-				$mperm = explode(',',$menu['mpermission']);
-				if (!$is_admin and count(array_intersect($usrprf,$mperm))==0) continue;
+				$mperm = explode(',', $menu['mpermission']);
+				if (!$is_admin and count(array_intersect($usrprf, $mperm))==0) {
+					continue;
+				}
 			}
 			$label = i18nMenuLabel($menu['mlabel'], $menu['mvalue'], $menu['mtype']);
 			$submenu = getMenuArray($menu['evvtmenuid']);
@@ -155,7 +159,7 @@ function getMenuHTML($marray) {
 	return $menubranch;
 }
 
-function getMenuPicklist($mparent,$level) {
+function getMenuPicklist($mparent, $level) {
 	global $adb;
 	$menustructure = array();
 	$menurs = $adb->pquery('SELECT evvtmenuid, mlabel, mtype, mvalue FROM vtiger_evvtmenu where mparent=? order by mseq', array($mparent));
@@ -163,7 +167,7 @@ function getMenuPicklist($mparent,$level) {
 		while ($menu = $adb->fetch_array($menurs)) {
 			$label = i18nMenuLabel($menu['mlabel'], $menu['mvalue'], $menu['mtype']);
 			$menustructure[$menu['evvtmenuid']] = ($level ? str_repeat('>', $level) : '').' '.$label;
-			$menustructure = $menustructure + getMenuPicklist($menu['evvtmenuid'],$level+1);
+			$menustructure = $menustructure + getMenuPicklist($menu['evvtmenuid'], $level+1);
 		}
 	}
 	return $menustructure;
@@ -177,7 +181,7 @@ function getAdminevvtMenu() {
 		while ($menu = $adb->fetch_array($menurs)) {
 			switch ($menu['mtype']) {
 				case 'url':
-					$label = getTranslatedString($menu['mlabel'],'evvtMenu');
+					$label = getTranslatedString($menu['mlabel'], 'evvtMenu');
 					$url = $menu['mvalue'];
 					break;
 				case 'separator':
@@ -185,14 +189,14 @@ function getAdminevvtMenu() {
 					continue;
 					break;
 				case 'module':
-					$label = getTranslatedString($menu['mvalue'],$menu['mvalue']);
+					$label = getTranslatedString($menu['mvalue'], $menu['mvalue']);
 					$url = 'index.php?action=index&module='.$menu['mvalue'];
 					break;
 			}
 			$rdo[$label] = $url;
 		}
 	} else {
-		$rdo[getTranslatedString('Settings','Settings')] = 'index.php?module=Settings&action=index';
+		$rdo[getTranslatedString('Settings', 'Settings')] = 'index.php?module=Settings&action=index';
 	}
 	return $rdo;
 }
@@ -206,7 +210,7 @@ function checkevvtMenuInstalled() {
 			ob_start();
 			include 'modules/cbupdater/getupdatescli.php';
 			$rsup = $adb->query("select cbupdaterid from vtiger_cbupdater where classname='installglobalvars'");
-			$updid = $adb->query_result($rsup,0,0);
+			$updid = $adb->query_result($rsup, 0, 0);
 			$argv[0] = 'doworkcli';
 			$argv[1] = 'apply';
 			$argv[2] = $updid;
@@ -219,7 +223,7 @@ function checkevvtMenuInstalled() {
 			ob_start();
 			include 'modules/cbupdater/getupdatescli.php';
 			$rsup = $adb->query("select cbupdaterid from vtiger_cbupdater where classname='ldMenu'");
-			$updid = $adb->query_result($rsup,0,0);
+			$updid = $adb->query_result($rsup, 0, 0);
 			$argv[0] = 'doworkcli';
 			$argv[1] = 'apply';
 			$argv[2] = $updid;

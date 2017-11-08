@@ -138,10 +138,9 @@ class VTWorkflowUtils {
 	public static function vtGetModules($adb) {
 		$modules_not_supported = array('Calendar', 'Events', 'PBXManager');
 		$sql = 'select distinct vtiger_field.tabid, name
-			from vtiger_field 
-			inner join vtiger_tab 
-				on vtiger_field.tabid=vtiger_tab.tabid 
-			where vtiger_tab.name not in(' . generateQuestionMarks($modules_not_supported) . ') and vtiger_tab.isentitytype=1 and vtiger_tab.presence in (0,2) ';
+			from vtiger_field
+			inner join vtiger_tab on vtiger_field.tabid=vtiger_tab.tabid
+			where vtiger_tab.name not in(' . generateQuestionMarks($modules_not_supported) . ') and vtiger_tab.isentitytype=1 and vtiger_tab.presence in (0,2)';
 		$it = new SqlResultIterator($adb, $adb->pquery($sql, array($modules_not_supported)));
 		$modules = array();
 		foreach ($it as $row) {
