@@ -466,183 +466,240 @@ function ShowHidefn(divid, imgidDown, imgidUp)
 				<table class="slds-table slds-no-row-hover slds-table--cell-buffer slds-table-moz">
 					<tr class="slds-text-title--caps">
 						<td class="noprint action-block-calendar" id="activityCalendar" style="padding: 0;{$DEFAULT_ACTION_PANEL_STATUS}">
-							<div class="flexipageComponent">
-								<article class="slds-card container MEDIUM forceBaseCard runtime_sales_mergeMergeCandidatesPreviewCard" aria-describedby="header" style="margin: 0;">
-									<div class="slds-card__header slds-grid">
-										<header class="slds-media slds-media--center slds-has-flexi-truncate">
-											<div class="slds-media__body">
-												<h2 class="header-title-container">
-													<span class="slds-text-heading--small slds-truncate"><b>{$CMOD.LBL_LIST_FORM_TITLE}</b></span>
-												</h2>
-											</div>
-											<div class="slds-media__figure">
-												<div class="extraSmall forceEntityIcon">
-													<span class="uiImage">
-														<a href="javascript:ShowHidefn('event_type_wrapper', 'arrowDownActivity', 'arrowUpActivity');" >
-															<img src="{'showDown.gif'|@vtiger_imageurl:$THEME}" id="arrowDownActivity" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" width="16" style="display: none;">
-															<img src="{'showUp.gif'|@vtiger_imageurl:$THEME}" id="arrowUpActivity" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" width="16">
-														</a>
-													</span>
-												</div>
-											</div>
-										</header>
-									</div>
-									<div class="slds-card__body slds-card__body--inner">
-										<div id="event_type_wrapper" >
-											{foreach name=act_types2 item=typedata key=typeid from=$ACTIVITYTYPES}
-												<table width="98%" id="event_type_{$typeid}" class="calendar-activity-module-blocks" style="{if $USER_VIEW_TYPE neq 'all'}color:{$typedata.textColor};background-color:{$typedata.color};{$typedata.title_color}{else}background-color:#ffffff;border: 2px solid #dedede{/if};" onMouseOver="showEventIcon('event_type_{$typeid}_icon')" onMouseOut="hideEventIcon('event_type_{$typeid}_icon')">
-													<tr class="slds-line-height--reset">
-														<td>
-															<span class="slds-checkbox">
-																<input type="checkbox" id="calendar_event_{$typeid}" name="calendar_event_{$typeid}" onClick="changeCalendarEvents(this)" value="{$typeid}" {if $typedata.checked eq 'true'}checked="checked"{/if}>
-																<label class="slds-checkbox__label" for="calendar_event_{$typeid}">
-																	<span class="slds-checkbox--faux"></span>
-																	<span class="slds-form-element__label-custom">&nbsp;{$typedata.label}</span>
-																</label>
+							{foreach item=PANEL_NAME from=$Calendar_Panel_Order}
+								{if $PANEL_NAME eq 'ActivityType'}
+									<div class="flexipageComponent">
+										<article class="slds-card container MEDIUM forceBaseCard runtime_sales_mergeMergeCandidatesPreviewCard" aria-describedby="header" style="margin: 0;">
+											<div class="slds-card__header slds-grid">
+												<header class="slds-media slds-media--center slds-has-flexi-truncate">
+													<div class="slds-media__body">
+														<h2 class="header-title-container">
+															<span class="slds-text-heading--small slds-truncate"><b>{$CMOD.LBL_LIST_FORM_TITLE}</b></span>
+														</h2>
+													</div>
+													<div class="slds-media__figure">
+														<div class="extraSmall forceEntityIcon">
+															<span class="uiImage">
+																<a href="javascript:ShowHidefn('event_type_wrapper', 'arrowDownActivity', 'arrowUpActivity');" >
+																	<img src="{'showDown.gif'|@vtiger_imageurl:$THEME}" id="arrowDownActivity" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" width="16" style="display: none;">
+																	<img src="{'showUp.gif'|@vtiger_imageurl:$THEME}" id="arrowUpActivity" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" width="16">
+																</a>
 															</span>
-														</td>
-														<td align="right" class="no-padding">
-															<a id="event_type_{$typeid}_icon" href="javascript:;" style="display:none" onClick="loadITSEventSettings(this,'type','{$typeid}')">
-																<img src="themes/images/chevronright_60.png" width="16" border="0">
-															</a>
-														</td>
-													</tr>
-												</table>
-											{/foreach}
-										</div>
-									</div>
-								</article>
-							</div>
-							<br>
-							{if $Calendar_Modules_Panel_Visible}
-							<div class="flexipageComponent">
-								<article class="slds-card container MEDIUM forceBaseCard runtime_sales_mergeMergeCandidatesPreviewCard" aria-describedby="header" style="margin: 0;">
-									<div class="slds-card__header slds-grid">
-										<header class="slds-media slds-media--center slds-has-flexi-truncate">
-											<div class="slds-media__body">
-												<h2 class="header-title-container">
-													<span class="slds-text-heading--small slds-truncate"><b>{'LIST_MODULES'|@getTranslatedString:$MODULE}</b></span>
-												</h2>
+														</div>
+													</div>
+												</header>
 											</div>
-											<div class="slds-media__figure">
-												<div class="extraSmall forceEntityIcon">
-													<span class="uiImage">
-														<a href="javascript:ShowHidefn('module_type_wrapper', 'arrowDownModule', 'arrowUpModule');" >
-															<img src="{'showDown.gif'|@vtiger_imageurl:$THEME}" id="arrowDownModule" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" width="16">
-															<img src="{'showUp.gif'|@vtiger_imageurl:$THEME}" id="arrowUpModule" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" width="16" style="display: none;">
-														</a>
-													</span>
+											<div class="slds-card__body slds-card__body--inner">
+												<div id="event_type_wrapper" >
+													{foreach name=act_types2 item=typedata key=typeid from=$ACTIVITYTYPES}
+														<table width="98%" id="event_type_{$typeid}" class="calendar-activity-module-blocks" style="{if $USER_VIEW_TYPE neq 'all'}color:{$typedata.textColor};background-color:{$typedata.color};{$typedata.title_color}{else}background-color:#ffffff;border: 2px solid #dedede{/if};" onMouseOver="showEventIcon('event_type_{$typeid}_icon')" onMouseOut="hideEventIcon('event_type_{$typeid}_icon')">
+															<tr class="slds-line-height--reset">
+																<td>
+																	<span class="slds-checkbox">
+																		<input type="checkbox" id="calendar_event_{$typeid}" name="calendar_event_{$typeid}" onClick="changeCalendarEvents(this)" value="{$typeid}" {if $typedata.checked eq 'true'}checked="checked"{/if}>
+																		<label class="slds-checkbox__label" for="calendar_event_{$typeid}">
+																			<span class="slds-checkbox--faux"></span>
+																			<span class="slds-form-element__label-custom">&nbsp;{$typedata.label}</span>
+																		</label>
+																	</span>
+																</td>
+																<td align="right" class="no-padding">
+																	<a id="event_type_{$typeid}_icon" href="javascript:;" style="display:none" onClick="loadITSEventSettings(this,'type','{$typeid}')">
+																		<img src="themes/images/chevronright_60.png" width="16" border="0">
+																	</a>
+																</td>
+															</tr>
+														</table>
+													{/foreach}
 												</div>
 											</div>
-										</header>
+										</article>
 									</div>
-									<div class="slds-card__body slds-card__body--inner">
-										<div id="module_type_wrapper" style="display: none;">
-											{foreach name=act_types2 item=typedata key=typeid from=$MODULETYPES}
-											<table width="98%" id="event_type_{$typeid}" class="calendar-activity-module-blocks" style="{if $USER_VIEW_TYPE neq ' all '}color:{$typedata.textColor};background-color:{$typedata.color};border-color: {$typedata.title_color}{else}background-color:#ffffff;border: 2px solid #dedede{/if};">
-												<tr class="slds-line-height--reset">
-													<td>
-														<span class="slds-checkbox">
-															<input type="checkbox" id="calendar_event_{$typeid}" name="calendar_event_{$typeid}" onClick="changeCalendarEvents(this)" value="{$typeid}" {if $typedata.checked eq 'true'}checked="checked" {/if}>
-															<label class="slds-checkbox__label" for="calendar_event_{$typeid}">
-																<span class="slds-checkbox--faux"></span>
-																<span class="slds-form-element__label-custom">&nbsp;{$typedata.label}</span>
-															</label>
+									<br>
+								{/if}
+
+								{if $Calendar_Modules_Panel_Visible && $PANEL_NAME eq 'ModulePanel'}
+									<div class="flexipageComponent">
+										<article class="slds-card container MEDIUM forceBaseCard runtime_sales_mergeMergeCandidatesPreviewCard" aria-describedby="header" style="margin: 0;">
+											<div class="slds-card__header slds-grid">
+												<header class="slds-media slds-media--center slds-has-flexi-truncate">
+													<div class="slds-media__body">
+														<h2 class="header-title-container">
+															<span class="slds-text-heading--small slds-truncate"><b>{'LIST_MODULES'|@getTranslatedString:$MODULE}</b></span>
+														</h2>
+													</div>
+													<div class="slds-media__figure">
+														<div class="extraSmall forceEntityIcon">
+															<span class="uiImage">
+																<a href="javascript:ShowHidefn('module_type_wrapper', 'arrowDownModule', 'arrowUpModule');" >
+																	<img src="{'showDown.gif'|@vtiger_imageurl:$THEME}" id="arrowDownModule" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" width="16">
+																	<img src="{'showUp.gif'|@vtiger_imageurl:$THEME}" id="arrowUpModule" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" width="16" style="display: none;">
+																</a>
+															</span>
+														</div>
+													</div>
+												</header>
+											</div>
+											<div class="slds-card__body slds-card__body--inner">
+												<div id="module_type_wrapper" style="display: none;">
+													{foreach name=act_types2 item=typedata key=typeid from=$MODULETYPES}
+													<table width="98%" id="event_type_{$typeid}" class="calendar-activity-module-blocks" style="{if $USER_VIEW_TYPE neq ' all '}color:{$typedata.textColor};background-color:{$typedata.color};border-color: {$typedata.title_color}{else}background-color:#ffffff;border: 2px solid #dedede{/if};">
+														<tr class="slds-line-height--reset">
+															<td>
+																<span class="slds-checkbox">
+																	<input type="checkbox" id="calendar_event_{$typeid}" name="calendar_event_{$typeid}" onClick="changeCalendarEvents(this)" value="{$typeid}" {if $typedata.checked eq 'true'}checked="checked" {/if}>
+																	<label class="slds-checkbox__label" for="calendar_event_{$typeid}">
+																		<span class="slds-checkbox--faux"></span>
+																		<span class="slds-form-element__label-custom">&nbsp;{$typedata.label}</span>
+																	</label>
+																</span>
+															</td>
+															<td align="right" class="no-padding">
+																<a id="event_type_{$typeid}_icon" href="javascript:;" style="display:none" onClick="loadITSEventSettings(this,'type','{$typeid}')">
+																	<img src="themes/images/chevronright_60.png" width="16" border="0">
+																</a>
+															</td>
+														</tr>
+													</table>
+													{/foreach}
+												</div>
+											</div>
+										</article>
+									</div>
+									<br>
+								{/if}
+
+								{if $PANEL_NAME eq 'AssignedUser'}
+									<div class="flexipageComponent">
+										<article class="slds-card container MEDIUM forceBaseCard runtime_sales_mergeMergeCandidatesPreviewCard" aria-describedby="header" style="margin: 0;">
+											<div class="slds-card__header slds-grid">
+												<header class="slds-media slds-media--center slds-has-flexi-truncate">
+													<div class="slds-media__body">
+														<h2 class="header-title-container">
+															<span class="slds-text-heading--small slds-truncate"><b>{$APP.LBL_ASSIGNED_TO}</b></span>
+														</h2>
+													</div>
+												</header>
+											</div>
+											<div class="slds-card__body slds-card__body--inner">
+												<select id="user_view_type" class="slds-select" onChange="changeCalendarUserView(this.value);">
+													<option value="all" {if $SHOW_ONLY_ME neq "true"}selected{/if}>{$MOD.LBL_ALL_USERS}</option>
+													{foreach name=calendar_users item=userdata key=userid from=$CALENDAR_USERS}
+														<option value="{$userid}" {if $USER_VIEW_TYPE eq $userid}selected{/if}>{$userdata.fullname} {if $userdata.status eq "Inactive"} ({$APP.Inactive}){/if}</option>
+													{/foreach}
+												</select>
+												<br>
+												<br>
+												<div id="users_list" {if $USER_VIEW_TYPE neq "all"}style="display:none"{/if}>
+													{foreach name=calendar_users item=userdata key=userid from=$CALENDAR_USERS}
+														<table width="98%" class="calendar-activity-module-blocks" style="color:{$userdata.textColor};background-color:{$userdata.color};border-color: {$userdata.title_color};" onMouseOver="showEventIcon('event_user_{$userid}_icon')" onMouseOut="hideEventIcon('event_user_{$userid}_icon')">
+															<tr class="slds-line-height--reset">
+																<td>
+																	<span class="slds-checkbox">
+																		<input type="checkbox" id="calendar_user_{$userid}" name="calendar_user_{$userid}" onClick="changeCalendarEvents(this)" value="{$userid}" {if $userdata.checked eq 'true'}checked="checked" {/if}>
+																		<label class="slds-checkbox__label" for="calendar_user_{$userid}">
+																			<span class="slds-checkbox--faux"></span>
+																			<span class="slds-form-element__label-custom">&nbsp;{$userdata.fullname}</span>
+																		</label>
+																	</span>
+																</td>
+																<td align="right" class="no-padding">
+																	<a href="javascript:;" id="event_user_{$userid}_icon" style="display:none">
+																		<img src="themes/images/chevronright_60.png" width="16" onClick="loadITSEventSettings(this,'user','{$userid}')" border="0">
+																	</a>
+																</td>
+															</tr>
+														</table>
+													{/foreach}
+												</div>
+											</div>
+										</article>
+									</div>
+									<br>
+								{/if}
+
+								{if $PANEL_NAME eq 'ActivityStatus'}
+									<div class="flexipageComponent">
+										<article class="slds-card container MEDIUM forceBaseCard runtime_sales_mergeMergeCandidatesPreviewCard" aria-describedby="header" style="margin: 0;">
+											<div class="slds-card__header slds-grid">
+												<header class="slds-media slds-media--center slds-has-flexi-truncate">
+													<div class="slds-media__body">
+														<h2 class="header-title-container">
+															<span class="slds-text-heading--small slds-truncate"><b>{$CMOD.Status}</b></span>
+														</h2>
+													</div>
+													<div class="slds-media__figure">
+														<div class="extraSmall forceEntityIcon">
+															<span class="uiImage">
+																<a href="javascript:ShowHidefn('et_status_wrapper', 'arrowDownStatus', 'arrowUpStatus');" >
+																	<img src="{'showDown.gif'|@vtiger_imageurl:$THEME}" id="arrowDownStatus" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" width="16">
+																	<img src="{'showUp.gif'|@vtiger_imageurl:$THEME}" id="arrowUpStatus" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" width="16" style="display: none;">
+																</a>
+															</span>
+														</div>
+													</div>
+												</header>
+											</div>
+											<div class="slds-card__body slds-card__body--inner">
+												<div id="et_status_wrapper" style="display: none;">
+													<div id="event_status_list">
+														{foreach name=calendar_event_status item=estatusdata key=estatus_key from=$EVENT_STATUS}
+															<table width="98%" class="calendar-activity-blocks">
+																<tr>
+																	<td>
+																		<span class="slds-checkbox">
+																			<input type="checkbox" id="calendar_event_status_{$estatusdata.id}" name="calendar_event_status_{$estatusdata.id}" onClick="changeCalendarEvents(this)" value="{$estatusdata.id}" {if $estatusdata.checked eq 'true'}checked="checked" {/if}>
+																			<label class="slds-checkbox__label" for="calendar_event_status_{$estatusdata.id}">
+																				<span class="slds-checkbox--faux"></span>
+																				<span class="slds-form-element__label-custom">&nbsp;{$estatusdata.label}</span>
+																			</label>
+																		</span>
+																	</td>
+																</tr>
+															</table>
+														{/foreach}
+													</div>
+												</div>
+											</div>
+										</article>
+									</div>
+									<br>
+								{/if}
+
+								<hr>
+								<br/>
+								<div class="flexipageComponent">
+									<article class="slds-card container MEDIUM forceBaseCard runtime_sales_mergeMergeCandidatesPreviewCard" aria-describedby="header" style="margin: 0;">
+										<div class="slds-card__header slds-grid">
+											<header class="slds-media slds-media--center slds-has-flexi-truncate">
+												<div class="slds-media__body">
+													<h2 class="header-title-container">
+														<span class="slds-text-heading--small slds-truncate" onclick="jQuery('#task_priority_list').toggle();"><b>{$CMOD.Priority}</b></span>
+													</h2>
+												</div>
+												<div class="slds-media__figure">
+													<div class="extraSmall forceEntityIcon">
+														<span class="uiImage">
+															<a href="javascript:ShowHidefn('task_priority_list', 'arrowDownPriority', 'arrowUpPriority');" >
+																<img src="{'showDown.gif'|@vtiger_imageurl:$THEME}" id="arrowDownPriority" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" width="16">
+																<img src="{'showUp.gif'|@vtiger_imageurl:$THEME}" id="arrowUpPriority" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" width="16" style="display: none;">
+															</a>
 														</span>
-													</td>
-													<td align="right" class="no-padding">
-														<a id="event_type_{$typeid}_icon" href="javascript:;" style="display:none" onClick="loadITSEventSettings(this,'type','{$typeid}')">
-															<img src="themes/images/chevronright_60.png" width="16" border="0">
-														</a>
-													</td>
-												</tr>
-											</table>
-											{/foreach}
-										</div>
-									</div>
-								</article>
-							</div>
-							<br>
-							{/if}
-							<div class="flexipageComponent">
-								<article class="slds-card container MEDIUM forceBaseCard runtime_sales_mergeMergeCandidatesPreviewCard" aria-describedby="header" style="margin: 0;">
-									<div class="slds-card__header slds-grid">
-										<header class="slds-media slds-media--center slds-has-flexi-truncate">
-											<div class="slds-media__body">
-												<h2 class="header-title-container">
-													<span class="slds-text-heading--small slds-truncate"><b>{$APP.LBL_ASSIGNED_TO}</b></span>
-												</h2>
-											</div>
-										</header>
-									</div>
-									<div class="slds-card__body slds-card__body--inner">
-										<select id="user_view_type" class="slds-select" onChange="changeCalendarUserView(this.value);">
-											<option value="all" {if $SHOW_ONLY_ME neq "true"}selected{/if}>{$MOD.LBL_ALL_USERS}</option>
-											{foreach name=calendar_users item=userdata key=userid from=$CALENDAR_USERS}
-												<option value="{$userid}" {if $USER_VIEW_TYPE eq $userid}selected{/if}>{$userdata.fullname} {if $userdata.status eq "Inactive"} ({$APP.Inactive}){/if}</option>
-											{/foreach}
-										</select>
-										<br>
-										<br>
-										<div id="users_list" {if $USER_VIEW_TYPE neq "all"}style="display:none"{/if}>
-											{foreach name=calendar_users item=userdata key=userid from=$CALENDAR_USERS}
-												<table width="98%" class="calendar-activity-module-blocks" style="color:{$userdata.textColor};background-color:{$userdata.color};border-color: {$userdata.title_color};" onMouseOver="showEventIcon('event_user_{$userid}_icon')" onMouseOut="hideEventIcon('event_user_{$userid}_icon')">
-													<tr class="slds-line-height--reset">
-														<td>
-															<span class="slds-checkbox">
-																<input type="checkbox" id="calendar_user_{$userid}" name="calendar_user_{$userid}" onClick="changeCalendarEvents(this)" value="{$userid}" {if $userdata.checked eq 'true'}checked="checked" {/if}>
-																<label class="slds-checkbox__label" for="calendar_user_{$userid}">
-																	<span class="slds-checkbox--faux"></span>
-																	<span class="slds-form-element__label-custom">&nbsp;{$userdata.fullname}</span>
-																</label>
-															</span>
-														</td>
-														<td align="right" class="no-padding">
-															<a href="javascript:;" id="event_user_{$userid}_icon" style="display:none">
-																<img src="themes/images/chevronright_60.png" width="16" onClick="loadITSEventSettings(this,'user','{$userid}')" border="0">
-															</a>
-														</td>
-													</tr>
-												</table>
-											{/foreach}
-										</div>
-									</div>
-								</article>
-							</div>
-							<br>
-							<div class="flexipageComponent">
-								<article class="slds-card container MEDIUM forceBaseCard runtime_sales_mergeMergeCandidatesPreviewCard" aria-describedby="header" style="margin: 0;">
-									<div class="slds-card__header slds-grid">
-										<header class="slds-media slds-media--center slds-has-flexi-truncate">
-											<div class="slds-media__body">
-												<h2 class="header-title-container">
-													<span class="slds-text-heading--small slds-truncate"><b>{$CMOD.Status}</b></span>
-												</h2>
-											</div>
-											<div class="slds-media__figure">
-												<div class="extraSmall forceEntityIcon">
-													<span class="uiImage">
-														<a href="javascript:ShowHidefn('et_status_wrapper', 'arrowDownStatus', 'arrowUpStatus');" >
-															<img src="{'showDown.gif'|@vtiger_imageurl:$THEME}" id="arrowDownStatus" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" width="16">
-															<img src="{'showUp.gif'|@vtiger_imageurl:$THEME}" id="arrowUpStatus" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" width="16" style="display: none;">
-														</a>
-													</span>
+													</div>
 												</div>
-											</div>
-										</header>
-									</div>
-									<div class="slds-card__body slds-card__body--inner">
-										<div id="et_status_wrapper" style="display: none;">
-											<div id="event_status_list">
-												{foreach name=calendar_event_status item=estatusdata key=estatus_key from=$EVENT_STATUS}
+											</header>
+										</div>
+										<div class="slds-card__body slds-card__body--inner">
+											<div id="task_priority_list" style="display: none;">
+												{foreach name=calendar_task_priority item=tprioritydata key=tpriority_key from=$TASK_PRIORITY}
 													<table width="98%" class="calendar-activity-blocks">
 														<tr>
 															<td>
 																<span class="slds-checkbox">
-																	<input type="checkbox" id="calendar_event_status_{$estatusdata.id}" name="calendar_event_status_{$estatusdata.id}" onClick="changeCalendarEvents(this)" value="{$estatusdata.id}" {if $estatusdata.checked eq 'true'}checked="checked" {/if}>
-																	<label class="slds-checkbox__label" for="calendar_event_status_{$estatusdata.id}">
+																	<input type="checkbox" id="calendar_task_priority_{$tprioritydata.id}" name="calendar_task_priority_{$tprioritydata.id}" onClick="changeCalendarEvents(this)" value="{$tprioritydata.id}" {if $tprioritydata.checked eq 'true'}checked="checked" {/if}>
+																	<label class="slds-checkbox__label" for="calendar_task_priority_{$tprioritydata.id}">
 																		<span class="slds-checkbox--faux"></span>
-																		<span class="slds-form-element__label-custom">&nbsp;{$estatusdata.label}</span>
+																		<span class="slds-form-element__label-custom">&nbsp;{$tprioritydata.label}</span>
 																	</label>
 																</span>
 															</td>
@@ -651,52 +708,10 @@ function ShowHidefn(divid, imgidDown, imgidUp)
 												{/foreach}
 											</div>
 										</div>
-									</div>
-								</article>
-							</div>
-							<br>
-							<div class="flexipageComponent">
-								<article class="slds-card container MEDIUM forceBaseCard runtime_sales_mergeMergeCandidatesPreviewCard" aria-describedby="header" style="margin: 0;">
-									<div class="slds-card__header slds-grid">
-										<header class="slds-media slds-media--center slds-has-flexi-truncate">
-											<div class="slds-media__body">
-												<h2 class="header-title-container">
-													<span class="slds-text-heading--small slds-truncate" onclick="jQuery('#task_priority_list').toggle();"><b>{$CMOD.Priority}</b></span>
-												</h2>
-											</div>
-											<div class="slds-media__figure">
-												<div class="extraSmall forceEntityIcon">
-													<span class="uiImage">
-														<a href="javascript:ShowHidefn('task_priority_list', 'arrowDownPriority', 'arrowUpPriority');" >
-															<img src="{'showDown.gif'|@vtiger_imageurl:$THEME}" id="arrowDownPriority" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" width="16">
-															<img src="{'showUp.gif'|@vtiger_imageurl:$THEME}" id="arrowUpPriority" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" width="16" style="display: none;">
-														</a>
-													</span>
-												</div>
-											</div>
-										</header>
-									</div>
-									<div class="slds-card__body slds-card__body--inner">
-										<div id="task_priority_list" style="display: none;">
-											{foreach name=calendar_task_priority item=tprioritydata key=tpriority_key from=$TASK_PRIORITY}
-												<table width="98%" class="calendar-activity-blocks">
-													<tr>
-														<td>
-															<span class="slds-checkbox">
-																<input type="checkbox" id="calendar_task_priority_{$tprioritydata.id}" name="calendar_task_priority_{$tprioritydata.id}" onClick="changeCalendarEvents(this)" value="{$tprioritydata.id}" {if $tprioritydata.checked eq 'true'}checked="checked" {/if}>
-																<label class="slds-checkbox__label" for="calendar_task_priority_{$tprioritydata.id}">
-																	<span class="slds-checkbox--faux"></span>
-																	<span class="slds-form-element__label-custom">&nbsp;{$tprioritydata.label}</span>
-																</label>
-															</span>
-														</td>
-													</tr>
-												</table>
-											{/foreach}
-										</div>
-									</div>
-								</article>
-							</div>
+									</article>
+								</div>
+								<br/>
+							{/foreach}
 						</td>
 						<td align="left" valign="top" style="padding: 0;">
 							<!-- content cache -->

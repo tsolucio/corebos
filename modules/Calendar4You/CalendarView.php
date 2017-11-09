@@ -44,6 +44,16 @@ $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('ID', '');
 $smarty->assign('MODE', '');
 
+// Left Panel Order
+$Calendar_Panel_Order = array(
+	'ActivityType',
+	'ModulePanel',
+	'AssignedUser',
+	'ActivityStatus',
+	'ActivityPriority',
+);
+$smarty->assign('Calendar_Panel_Order', $Calendar_Panel_Order);
+
 $viewBox = 'hourview'; 
 $smarty->assign("CREATE_PERMISSION",($Calendar4You->CheckPermissions("CREATE") ? "permitted" : ''));
 

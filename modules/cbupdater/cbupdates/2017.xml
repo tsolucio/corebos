@@ -154,4 +154,11 @@
 	<classname>calendarCompletedStatusNonEditable</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Set Accounts as default module in relatedto capture field of calendar</description>
+	<filename>build/changeSets/2017/calendarSetAccountsAsDefault.php</filename>
+	<classname>calendarSetAccountsAsDefault</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
