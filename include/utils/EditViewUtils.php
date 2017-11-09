@@ -1609,6 +1609,28 @@ function getAssociatedProducts($module,$focus,$seid='')
 			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_service.serviceid
 			WHERE vtiger_crmentity.deleted=0 AND serviceid=?";
 			$params = array($seid);
+	} else {
+		$query = "SELECT vtiger_products.productid, vtiger_products.productname, vtiger_products.productcode,
+			vtiger_products.unit_price, vtiger_products.qtyinstock, vtiger_crmentity.description AS product_description,
+			'Products' AS entitytype
+			FROM vtiger_products
+			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_products.productid
+			INNER JOIN vtiger_crmentityrel ON (
+				(vtiger_crmentityrel.crmid=vtiger_products.productid and vtiger_crmentityrel.relcrmid=?) or
+				(vtiger_crmentityrel.crmid=? and vtiger_crmentityrel.relcrmid=vtiger_products.productid)
+			)
+			WHERE vtiger_crmentity.deleted=0";
+		$query.=" UNION SELECT vtiger_service.serviceid AS productid, vtiger_service.servicename AS productname,
+			'NA' AS productcode, vtiger_service.unit_price AS unit_price, 'NA' AS qtyinstock,
+			vtiger_crmentity.description AS product_description, 'Services' AS entitytype
+			FROM vtiger_service
+			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_service.serviceid
+			INNER JOIN vtiger_crmentityrel ON (
+				(vtiger_crmentityrel.crmid=vtiger_service.serviceid and vtiger_crmentityrel.relcrmid=?) or
+				(vtiger_crmentityrel.crmid=? and vtiger_crmentityrel.relcrmid=vtiger_service.serviceid)
+			)
+			WHERE vtiger_crmentity.deleted=0";
+			$params = array($seid, $seid, $seid, $seid);
 	}
 
 	$cbMap = cbMap::getMapByName($module.'InventoryDetails','MasterDetailLayout');
