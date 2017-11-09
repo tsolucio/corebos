@@ -1673,3 +1673,27 @@ tr td.action-block-mailManager {
 .sites-settings img:hover {
     opacity: .7;
 }
+
+/* Calendar Settings popup (calendar_share.php)  */
+.cal-settings-popup-table .slds-select {
+    width: 30%;
+    margin: 0;
+}
+
+.cal-settings-popup-table .slds-input {
+    width: 100%;
+    margin: 0;
+}
+
+.cal-settings-popup-table .slds-select option {
+    margin: 0;
+}
+
+.cal-settings-popup-table .slds-select[multiple] option {
+    padding: .2rem;
+}
+
+.cal-settings-popup-buttons {
+    margin-bottom: .5rem;
+    background-color: #F7F7F7;
+}
