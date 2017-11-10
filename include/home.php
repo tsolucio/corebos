@@ -287,15 +287,15 @@ class Homestuff{
 				if (count($header) != 0) {
 					return $return_value;
 				} else {
-					return array('Entries' => 'Fields not found in Selected Filter');
+					return array('Entries' => getTranslatedString('FieldsNotFoundInFilter', 'Home'));
 				}
 			}
 			else{
-				return array('Entries'=>"<font color='red'>Filter You have Selected is Not Found</font>");
+				return array('Entries' => "<font color='red'>" . getTranslatedString('FilterNotFound', 'Home') . '</font>');
 			}
 		}
 		else{
-			return array('Entries'=>"<font color='red'>Permission Denied</font>");
+			return array('Entries' => "<font color='red'>" . getTranslatedString('Permission Denied', 'Home') . '</font>');
 		}
 	}
 

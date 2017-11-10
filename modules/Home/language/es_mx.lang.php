@@ -135,6 +135,9 @@ $mod_strings = Array(
 'LBL_HOME_ADDWINDOW' => 'Añadir Ventana',
 'LBL_GETTING_STARTED' => 'Empezando',
 'ExpirePasswordAfterDays' => 'Invalida Contraseña Después de Días',
+'FieldsNotFoundInFilter' => 'No se han encontrado campos en el filtro seleccionado',
+'FilterNotFound' => 'No se ha encontrado el filtro seleccionado',
+'Permission Denied' => 'Permiso Denegado',
 );
 
 ?>
