@@ -79,8 +79,8 @@ function homepage_getUpcomingActivities($maxval,$calCnt){
 		}
 	}
 	$values = getActivityEntries($open_activity_list);
-	$values['ModuleName'] = 'Calendar';
-	$values['search_qry'] = "&action=ListView&from_homepage=upcoming_activities";
+	$values['ModuleName'] = 'cbCalendar';
+	$values['search_qry'] = '&action=ListView&from_homepage=upcoming_activities';
 
 	return $values;
 }
@@ -160,7 +160,7 @@ function homepage_getPendingActivities($maxval,$calCnt){
 	"inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid LEFT ".
 	"JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid left outer join ".
 	"vtiger_recurringevents on vtiger_recurringevents.activityid=vtiger_activity.activityid";
-	$list_query .= getNonAdminAccessControlQuery('Calendar',$current_user);
+	$list_query .= getNonAdminAccessControlQuery('cbCalendar',$current_user);
 	$list_query .= "WHERE vtiger_crmentity.deleted=0 and (vtiger_activity.activitytype not in ".
 	"('Emails')) AND (vtiger_activity.status is NULL OR vtiger_activity.status not in ".
 	"('Completed','Deferred')) and (vtiger_activity.eventstatus is NULL OR  vtiger_activity.".
@@ -199,8 +199,8 @@ function homepage_getPendingActivities($maxval,$calCnt){
 		}
 
 	$values = getActivityEntries($open_activity_list);
-	$values['ModuleName'] = 'Calendar';
-	$values['search_qry'] = "&action=ListView&from_homepage=pending_activities";
+	$values['ModuleName'] = 'cbCalendar';
+	$values['search_qry'] = '&action=ListView&from_homepage=pending_activities';
 
 	return $values;
 }

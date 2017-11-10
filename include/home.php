@@ -268,7 +268,7 @@ class Homestuff{
 				$navigation_array = getNavigationValues(1, $noofrows, $maxval);
 
 				if ($modname == 'cbCalendar') {
-					$query .= "AND vtiger_activity.activitytype NOT IN ('Emails')";
+					$query .= " AND vtiger_activity.activitytype NOT IN ('Emails')";
 				}
 
 				$list_result = $adb->query($query . ' LIMIT 0,' . $maxval);
@@ -439,13 +439,13 @@ class Homestuff{
 		}elseif($hometype=="CVLVT"){
 			include_once("modules/CustomView/ListViewTop.php");
 			$home_values = getKeyMetrics($maxval,$calCnt);
-		}elseif($hometype == 'UA' && vtlib_isModuleActive("Calendar")){
-			$details['ModuleName'] = 'Calendar';
-			require_once "modules/Home/HomeUtils.php";
+		} elseif ($hometype == 'UA' && vtlib_isModuleActive('cbCalendar')) {
+			$details['ModuleName'] = 'cbCalendar';
+			require_once 'modules/Home/HomeUtils.php';
 			$home_values = homepage_getUpcomingActivities($maxval, $calCnt);
-		}elseif($hometype == 'PA' && vtlib_isModuleActive("Calendar")){
-			$details['ModuleName'] = 'Calendar';
-			require_once "modules/Home/HomeUtils.php";
+		} elseif ($hometype == 'PA' && vtlib_isModuleActive('cbCalendar')) {
+			$details['ModuleName'] = 'cbCalendar';
+			require_once 'modules/Home/HomeUtils.php';
 			$home_values = homepage_getPendingActivities($maxval, $calCnt);
 		}
 
