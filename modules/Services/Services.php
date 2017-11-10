@@ -12,7 +12,7 @@ require_once('data/Tracker.php');
 
 class Services extends CRMEntity {
 	var $db, $log; // Used in class functions of CRMEntity
-
+ 
 	var $table_name = 'vtiger_service';
 	var $table_index= 'serviceid';
 	var $column_fields = Array();
@@ -712,18 +712,34 @@ class Services extends CRMEntity {
 		$matrix->setDependency('vtiger_seproductsrel',array('vtiger_crmentityRelServices','vtiger_accountRelServices','vtiger_leaddetailsRelServices','vtiger_servicecf','vtiger_potentialRelServices'));
 		$query = "from vtiger_service
 			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_service.serviceid";
+		if ($this->denormalized) {
+			$query = "from vtiger_service";
+		}
 		if ($queryPlanner->requireTable("vtiger_servicecf")) {
 			$query .= " left join vtiger_servicecf on vtiger_service.serviceid = vtiger_servicecf.serviceid";
 		}
-		if ($queryPlanner->requireTable("vtiger_usersServices") || $queryPlanner->requireTable("vtiger_groupsServices")) {
-			$query .= " left join vtiger_users as vtiger_usersServices on vtiger_usersServices.id = vtiger_crmentity.smownerid";
-			$query .= " left join vtiger_groups as vtiger_groupsServices on vtiger_groupsServices.groupid = vtiger_crmentity.smownerid";
+		if ($this->denormalized) {
+			if ($queryPlanner->requireTable("vtiger_usersServices") || $queryPlanner->requireTable("vtiger_groupsServices")) {
+				$query .= " left join vtiger_users as vtiger_usersServices on vtiger_usersServices.id = vtiger_service.myownerid";
+				$query .= " left join vtiger_groups as vtiger_groupsServices on vtiger_groupsServices.groupid = vtiger_service.myownerid";
+			}
+		} else {
+			if ($queryPlanner->requireTable("vtiger_usersServices") || $queryPlanner->requireTable("vtiger_groupsServices")) {
+				$query .= " left join vtiger_users as vtiger_usersServices on vtiger_usersServices.id = vtiger_crmentity.smownerid";
+				$query .= " left join vtiger_groups as vtiger_groupsServices on vtiger_groupsServices.groupid = vtiger_crmentity.smownerid";
+			}
 		}
 		if ($queryPlanner->requireTable("vtiger_seproductsrel")) {
 			$query .= " left join vtiger_seproductsrel on vtiger_seproductsrel.productid= vtiger_service.serviceid";
 		}
-		if ($queryPlanner->requireTable("vtiger_crmentityRelServices")) {
-			$query .= " left join vtiger_crmentity as vtiger_crmentityRelServices on vtiger_crmentityRelServices.crmid = vtiger_seproductsrel.crmid and vtiger_crmentityRelServices.deleted = 0";
+		if ($this->denormalized) {
+			if ($queryPlanner->requireTable("vtiger_crmentityRelServices")) {
+				$query .= "";
+			}
+		} else {
+			if ($queryPlanner->requireTable("vtiger_crmentityRelServices")) {
+				$query .= " left join vtiger_crmentity as vtiger_crmentityRelServices on vtiger_crmentityRelServices.crmid = vtiger_seproductsrel.crmid and vtiger_crmentityRelServices.deleted = 0";
+			}
 		}
 		if ($queryPlanner->requireTable("vtiger_accountRelServices")) {
 			$query .= " left join vtiger_account as vtiger_accountRelServices on vtiger_accountRelServices.accountid=vtiger_seproductsrel.crmid";
@@ -734,11 +750,20 @@ class Services extends CRMEntity {
 		if ($queryPlanner->requireTable("vtiger_potentialRelServices")) {
 			$query .= " left join vtiger_potential as vtiger_potentialRelServices on vtiger_potentialRelServices.potentialid = vtiger_seproductsrel.crmid";
 		}
-		if ($queryPlanner->requireTable("vtiger_lastModifiedByServices")) {
-			$query .= " left join vtiger_users as vtiger_lastModifiedByServices on vtiger_lastModifiedByServices.id = vtiger_crmentity.modifiedby";
-		}
-		if ($queryPlanner->requireTable("vtiger_CreatedByServices")) {
-			$query .= " left join vtiger_users as vtiger_CreatedBy".$module." on vtiger_CreatedBy".$module.".id = vtiger_crmentity.smcreatorid";
+		if ($this->denormalized) {
+			if ($queryPlanner->requireTable("vtiger_lastModifiedByServices")) {
+				$query .= " left join vtiger_users as vtiger_lastModifiedByServices on vtiger_lastModifiedByServices.id = vtiger_service.mymodifierid";
+			}
+			if ($queryPlanner->requireTable("vtiger_CreatedByServices")) {
+				$query .= " left join vtiger_users as vtiger_CreatedBy".$module." on vtiger_CreatedBy".$module.".id = vtiger_service.mycreatorid";
+			}
+		} else {
+			if ($queryPlanner->requireTable("vtiger_lastModifiedByServices")) {
+				$query .= " left join vtiger_users as vtiger_lastModifiedByServices on vtiger_lastModifiedByServices.id = vtiger_crmentity.modifiedby";
+			}
+			if ($queryPlanner->requireTable("vtiger_CreatedByServices")) {
+				$query .= " left join vtiger_users as vtiger_CreatedBy".$module." on vtiger_CreatedBy".$module.".id = vtiger_crmentity.smcreatorid";
+			}
 		}
 		if ($queryPlanner->requireTable("innerService")) {
 			$query .= " LEFT JOIN (
@@ -784,23 +809,45 @@ class Services extends CRMEntity {
 				AND vtiger_productcurrencyrel.currencyid = ". $current_user->currency_id . "
 			) AS innerService ON innerService.serviceid = vtiger_service.serviceid";
 		}
-		if ($queryPlanner->requireTable("vtiger_crmentityServices",$matrix)){
-			$query .= " left join vtiger_crmentity as vtiger_crmentityServices on vtiger_crmentityServices.crmid=vtiger_service.serviceid and vtiger_crmentityServices.deleted=0";
-		}
-		if ($queryPlanner->requireTable("vtiger_servicecf")){
-			$query .= " left join vtiger_servicecf on vtiger_service.serviceid = vtiger_servicecf.serviceid";
-		}
-		if ($queryPlanner->requireTable("vtiger_usersServices")){
-			$query .= " left join vtiger_users as vtiger_usersServices on vtiger_usersServices.id = vtiger_crmentityServices.smownerid";
-		}
-		if ($queryPlanner->requireTable("vtiger_groupsServices")){
-			$query .= " left join vtiger_groups as vtiger_groupsServices on vtiger_groupsServices.groupid = vtiger_crmentityServices.smownerid";
-		}
-		if ($queryPlanner->requireTable("vtiger_lastModifiedByServices")){
-			$query .= " left join vtiger_users as vtiger_lastModifiedByServices on vtiger_lastModifiedByServices.id = vtiger_crmentityServices.modifiedby ";
-		}
-		if ($queryPlanner->requireTable("vtiger_CreatedByServices")){
-			$query .= " left join vtiger_users as vtiger_CreatedByServices on vtiger_CreatedByServices.id = vtiger_crmentityServices.smcreatorid ";
+		if ($this->denormalized) {
+			if ($queryPlanner->requireTable("vtiger_crmentityServices",$matrix)){
+				$query .= "";
+			}
+			if ($queryPlanner->requireTable("vtiger_servicecf")){
+				$query .= " left join vtiger_servicecf on vtiger_service.serviceid = vtiger_servicecf.serviceid";
+			}
+			if ($queryPlanner->requireTable("vtiger_usersServices")){
+				$query .= " left join vtiger_users as vtiger_usersServices on vtiger_usersServices.id = vtiger_service.myownerid";
+			}
+			if ($queryPlanner->requireTable("vtiger_groupsServices")){
+				$query .= " left join vtiger_groups as vtiger_groupsServices on vtiger_groupsServices.groupid = vtiger_service.myownerid";
+			}
+			if ($queryPlanner->requireTable("vtiger_lastModifiedByServices")){
+				$query .= " left join vtiger_users as vtiger_lastModifiedByServices on vtiger_lastModifiedByServices.id = vtiger_service.mymodifierid ";
+			}
+			if ($queryPlanner->requireTable("vtiger_CreatedByServices")){
+     		$prim=CRMEntity::getInstance($module);
+				$query .= " left join vtiger_users as vtiger_CreatedByServices on vtiger_CreatedByServices.id = $prim->table_name.mycreatorid ";
+			}
+		} else {
+			if ($queryPlanner->requireTable("vtiger_crmentityServices",$matrix)){
+				$query .= " left join vtiger_crmentity as vtiger_crmentityServices on vtiger_crmentityServices.crmid=vtiger_service.serviceid and vtiger_crmentityServices.deleted=0";
+			}
+			if ($queryPlanner->requireTable("vtiger_servicecf")){
+				$query .= " left join vtiger_servicecf on vtiger_service.serviceid = vtiger_servicecf.serviceid";
+			}
+			if ($queryPlanner->requireTable("vtiger_usersServices")){
+				$query .= " left join vtiger_users as vtiger_usersServices on vtiger_usersServices.id = vtiger_crmentityServices.smownerid";
+			}
+			if ($queryPlanner->requireTable("vtiger_groupsServices")){
+				$query .= " left join vtiger_groups as vtiger_groupsServices on vtiger_groupsServices.groupid = vtiger_crmentityServices.smownerid";
+			}
+			if ($queryPlanner->requireTable("vtiger_lastModifiedByServices")){
+				$query .= " left join vtiger_users as vtiger_lastModifiedByServices on vtiger_lastModifiedByServices.id = vtiger_crmentityServices.modifiedby ";
+			}
+			if ($queryPlanner->requireTable("vtiger_CreatedByServices")){
+				$query .= " left join vtiger_users as vtiger_CreatedByServices on vtiger_CreatedByServices.id = vtiger_crmentityServices.smcreatorid ";
+			}
 		}
 		return $query;
 	}

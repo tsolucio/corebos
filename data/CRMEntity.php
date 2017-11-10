@@ -766,7 +766,7 @@ class CRMEntity {
 			$sql1 = "insert into $table_name(" . implode(",", $column) . ") values(" . generateQuestionMarks($value) . ")";
 			$adb->pquery($sql1, $value);
 	 }
-		if ($this->denormalized==true) {
+		if ($this->denormalized) {
 			 $this->getFieldsFromCrmEntity($module);
 		 }
 	}
@@ -1498,7 +1498,7 @@ class CRMEntity {
 		$em->triggerEvent("vtiger.entity.beforedelete", $entityData);
 
 		$this->mark_deleted($id);
-		if ($this->denormalized==true) {
+		if ($this->denormalized) {
 			$this->mark_deleted_denorm($module,$id);
 		}
 		$this->unlinkDependencies($module, $id);
@@ -1587,7 +1587,7 @@ class CRMEntity {
 		$date_var = date("Y-m-d H:i:s");
 		$query = 'UPDATE vtiger_crmentity SET deleted=0,modifiedtime=?,modifiedby=? WHERE crmid = ?';
 		$this->db->pquery($query, array($this->db->formatDate($date_var, true), $current_user->id, $id), true, "Error restoring records :");
-		if ($this->denormalized==true) {
+		if ($this->denormalized) {
 			$basetable=$this->table_name;
 			$columnid=$this->table_index;
 			$query = "UPDATE $basetable SET mydeleted=0,mymodifiedtime=?,mymodifierid=? WHERE $columnid = ?";
@@ -2469,7 +2469,11 @@ class CRMEntity {
 					$matrix->addDependency($tab_name, $crmentityRelModuleFieldTable);
 
 					if ($queryPlanner->requireTable($crmentityRelModuleFieldTable, $matrix)) {
-						$relquery.= " left join vtiger_crmentity as $crmentityRelModuleFieldTable on $crmentityRelModuleFieldTable.crmid = $tab_name.$col_name and $crmentityRelModuleFieldTable.deleted=0";
+						if ($rel_obj->denormalized) {
+							$relquery.='';
+						} else {
+							$relquery.= " left join vtiger_crmentity as $crmentityRelModuleFieldTable on $crmentityRelModuleFieldTable.crmid = $tab_name.$col_name and $crmentityRelModuleFieldTable.deleted=0";
+						}
 					}
 
 					for ($j = 0; $j < $adb->num_rows($ui10_modules_query); $j++) {
@@ -2482,7 +2486,11 @@ class CRMEntity {
 						$rel_tab_name_rel_module_table_alias = $rel_tab_name . "Rel$module$field_id";
 
 						if ($queryPlanner->requireTable($rel_tab_name_rel_module_table_alias)) {
-							$relquery.= " left join $rel_tab_name as $rel_tab_name_rel_module_table_alias on $rel_tab_name_rel_module_table_alias.$rel_tab_index = $crmentityRelModuleFieldTable.crmid";
+							if ($rel_obj->denormalized) {
+								$relquery.='';
+							} else {
+								$relquery.= " left join $rel_tab_name as $rel_tab_name_rel_module_table_alias on $rel_tab_name_rel_module_table_alias.$rel_tab_index = $crmentityRelModuleFieldTable.crmid";
+							}
 						}
 					}
 				}
@@ -2490,22 +2498,42 @@ class CRMEntity {
 		}
 
 		$query = "from $moduletable inner join vtiger_crmentity on vtiger_crmentity.crmid=$moduletable.$moduleindex";
-
+    if ($primary->denormalized) {
+			$query = "from $moduletable";
+		}
 		// Add the pre-joined custom table query
 		$query .= ' ' . $cfquery;
 
 		if ($queryPlanner->requireTable('vtiger_users'.$module) || $queryPlanner->requireTable('vtiger_groups'.$module)) {
-			$query .= " left join vtiger_users as vtiger_users" . $module . " on vtiger_users" . $module . ".id = vtiger_crmentity.smownerid";
-			$query .= " left join vtiger_groups as vtiger_groups" . $module . " on vtiger_groups" . $module . ".groupid = vtiger_crmentity.smownerid";
+      if ($primary->denormalized) {
+				$query .= " left join vtiger_users as vtiger_users" . $module . " on vtiger_users" . $module . ".id = $moduletable.myownerid";
+				$query .= " left join vtiger_groups as vtiger_groups" . $module . " on vtiger_groups" . $module . ".groupid = $moduletable.myownerid";
+			} else {
+				$query .= " left join vtiger_users as vtiger_users" . $module . " on vtiger_users" . $module . ".id = vtiger_crmentity.smownerid";
+				$query .= " left join vtiger_groups as vtiger_groups" . $module . " on vtiger_groups" . $module . ".groupid = vtiger_crmentity.smownerid";
+			}
 		}
 		if ($queryPlanner->requireTable('vtiger_lastModifiedBy'.$module)) {
-			$query .= " left join vtiger_users as vtiger_lastModifiedBy" . $module . " on vtiger_lastModifiedBy" . $module . ".id = vtiger_crmentity.modifiedby";
+			if ($primary->denormalized) {
+				$query .= " left join vtiger_users as vtiger_lastModifiedBy" . $module . " on vtiger_lastModifiedBy" . $module . ".id = $moduletable.mymodifierid";
+			} else {
+				$query .= " left join vtiger_users as vtiger_lastModifiedBy" . $module . " on vtiger_lastModifiedBy" . $module . ".id = vtiger_crmentity.modifiedby";
+			}
 		}
 		if ($queryPlanner->requireTable('vtiger_CreatedBy'.$module)) {
-			$query .= " LEFT JOIN vtiger_users AS vtiger_CreatedBy$module ON vtiger_CreatedBy$module.id=vtiger_crmentity.smcreatorid";
+			if ($primary->denormalized) {
+				$query .= " LEFT JOIN vtiger_users AS vtiger_CreatedBy$module ON vtiger_CreatedBy$module.id=$moduletable.mycreatorid";
+			} else {
+				$query .= " LEFT JOIN vtiger_users AS vtiger_CreatedBy$module ON vtiger_CreatedBy$module.id=vtiger_crmentity.smcreatorid";
+			}
 		}
-		$query .= "	left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid";
-		$query .= " left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid";
+		if ($primary->denormalized) {
+			$query .= "	left join vtiger_groups on vtiger_groups.groupid = $moduletable.myownerid";
+			$query .= " left join vtiger_users on vtiger_users.id = $moduletable.myownerid";
+		} else {
+			$query .= "	left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid";
+			$query .= " left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid";
+		}
 
 		// Add the pre-joined relation table query
 		$query .= ' ' . $relquery;
@@ -2534,7 +2562,6 @@ class CRMEntity {
 	function generateReportsSecQuery($module, $secmodule,$queryPlanner,$type = '',$where_condition = '') {
 		global $adb;
 		$secondary = CRMEntity::getInstance($secmodule);
-
 		$tablename = $secondary->table_name;
 		$tableindex = $secondary->table_index;
 		$modulecftable = $secondary->customFieldTable[0];
@@ -2575,7 +2602,11 @@ class CRMEntity {
 					$matrix->addDependency($tab_name, $crmentityRelSecModuleTable);
 
 					if ($queryPlanner->requireTable($crmentityRelSecModuleTable, $matrix)) {
-						$relquery .= " left join vtiger_crmentity as $crmentityRelSecModuleTable on $crmentityRelSecModuleTable.crmid = $tab_name.$col_name and $crmentityRelSecModuleTable.deleted=0";
+						if ($rel_obj->denormalized) {
+							$relquery .= "";
+						} else {
+							$relquery .= " left join vtiger_crmentity as $crmentityRelSecModuleTable on $crmentityRelSecModuleTable.crmid = $tab_name.$col_name and $crmentityRelSecModuleTable.deleted=0";
+						}
 					}
 					for ($j = 0; $j < $adb->num_rows($ui10_modules_query); $j++) {
 						$rel_mod = $adb->query_result($ui10_modules_query, $j, 'relmodule');
@@ -2584,7 +2615,11 @@ class CRMEntity {
 						$rel_tab_index = $rel_obj->table_index;
 						$rel_tab_name_rel_secmodule_table_alias = $rel_tab_name . "Rel$secmodule";
 						if ($queryPlanner->requireTable($rel_tab_name_rel_secmodule_table_alias)) {
+							if ($rel_obj->denormalized) {
+								$relquery .= "";
+							} else {
 							$relquery .= " left join $rel_tab_name as $rel_tab_name_rel_secmodule_table_alias on $rel_tab_name_rel_secmodule_table_alias.$rel_tab_index = $crmentityRelSecModuleTable.crmid";
+              }
 						}
 					}
 				}
@@ -2602,26 +2637,47 @@ class CRMEntity {
 		$query = $this->getRelationQuery($module, $secmodule, "$tablename", "$tableindex", $queryPlanner);
 
 		if ($queryPlanner->requireTable("vtiger_crmentity$secmodule", $matrix)) {
-			$query .= " left join vtiger_crmentity as vtiger_crmentity$secmodule on vtiger_crmentity$secmodule.crmid = $tablename.$tableindex AND vtiger_crmentity$secmodule.deleted=0";
+			if ($secondary->denormalized) {
+	  		$query.="";
+			} else {
+				$query .= " left join vtiger_crmentity as vtiger_crmentity$secmodule on vtiger_crmentity$secmodule.crmid = $tablename.$tableindex AND vtiger_crmentity$secmodule.deleted=0";
+      }
 		}
 
 		// Add the pre-joined custom table query
 		$query .= " ".$cfquery;
 
 		if ($queryPlanner->requireTable("vtiger_groups$secmodule")) {
-			$query .= " left join vtiger_groups as vtiger_groups" . $secmodule . " on vtiger_groups" . $secmodule . ".groupid = vtiger_crmentity$secmodule.smownerid";
+			if ($secondary->denormalized) {
+				$query .= " left join vtiger_groups as vtiger_groups" . $secmodule . " on vtiger_groups" . $secmodule . ".groupid = $tablename.myownerid";
+			} else {
+				$query .= " left join vtiger_groups as vtiger_groups" . $secmodule . " on vtiger_groups" . $secmodule . ".groupid = vtiger_crmentity$secmodule.smownerid";
+			}
 		}
 		if ($queryPlanner->requireTable("vtiger_users$secmodule")) {
-			$query .= " left join vtiger_users as vtiger_users" . $secmodule . " on vtiger_users" . $secmodule . ".id = vtiger_crmentity$secmodule.smownerid";
+			if ($secondary->denormalized) {
+				$query .= " left join vtiger_users as vtiger_users" . $secmodule . " on vtiger_users" . $secmodule . ".id = $tablename.myownerid";
+			} else {
+				$query .= " left join vtiger_users as vtiger_users" . $secmodule . " on vtiger_users" . $secmodule . ".id = vtiger_crmentity$secmodule.smownerid";
+			}
 		}
 		if ($queryPlanner->requireTable("vtiger_currency_info$secmodule")){
 			$query .=" left join vtiger_currency_info as vtiger_currency_info" . $secmodule . " on vtiger_currency_info" . $secmodule . ".id = $tablename.currency_id";
 		}
 		if ($queryPlanner->requireTable("vtiger_lastModifiedBy$secmodule")) {
-			$query .= " left join vtiger_users as vtiger_lastModifiedBy" . $secmodule . " on vtiger_lastModifiedBy" . $secmodule . ".id = vtiger_crmentity" . $secmodule . ".modifiedby";
+			if ($secondary->denormalized) {
+				$query .= " left join vtiger_users as vtiger_lastModifiedBy" . $secmodule . " on vtiger_lastModifiedBy" . $secmodule . ".id = $tablename.mymodifierid";
+			} else {
+				$query .= " left join vtiger_users as vtiger_lastModifiedBy" . $secmodule . " on vtiger_lastModifiedBy" . $secmodule . ".id = vtiger_crmentity" . $secmodule . ".modifiedby";
+			}
 		}
 		if ($queryPlanner->requireTable('vtiger_CreatedBy'.$secmodule)) {
-			$query .= " LEFT JOIN vtiger_users AS vtiger_CreatedBy$secmodule ON vtiger_CreatedBy$secmodule.id=vtiger_crmentity.smcreatorid";
+			$prim=CRMEntity::getInstance($module);
+			if ($prim->denormalized) {
+				$query .= " LEFT JOIN vtiger_users AS vtiger_CreatedBy$secmodule ON vtiger_CreatedBy$secmodule.id=$prim->table_name.mycreatorid";
+			} else {
+				$query .= " LEFT JOIN vtiger_users AS vtiger_CreatedBy$secmodule ON vtiger_CreatedBy$secmodule.id=vtiger_crmentity.smcreatorid";
+			}
 		}
 		// Add the pre-joined relation table query
 		$query .= " " . $relquery;
@@ -3053,7 +3109,6 @@ class CRMEntity {
 				}
 			}
 		}
-
 		return $query;
 	}
 

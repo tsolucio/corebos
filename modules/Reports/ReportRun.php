@@ -83,7 +83,7 @@ class ReportRun extends CRMEntity {
 	 *					|
 	 *					$tablenamen:$columnnamen:$fieldlabeln:$fieldnamen:$typeofdatan=>$tablenamen.$columnnamen As Header value
 	 */
-	function getQueryColumnsList($reportid,$outputformat='')
+	function getQueryColumnsList($reportid,$check,$outputformat='')
 	{
 		// Have we initialized information already?
 		if (!empty($this->_columnslist[$outputformat])) {
@@ -103,6 +103,11 @@ class ReportRun extends CRMEntity {
 			$fieldname = '';
 			$fieldcolname = decode_html($columnslistrow['columnname']);
 			if (strpos($fieldcolname, ':')===false) continue;
+
+			list($fieldnamedenorm, $focus) = $this->getCrmDenormFields($fieldcolname);
+			if ($focus->denormalized) {
+				$fieldcolname = $fieldnamedenorm;
+			}
 			list($tablename,$colname,$module_field,$fieldname,$single) = explode(":",$fieldcolname);
 			$module_field = decode_html($module_field);
 			list($module,$field) = explode("_",$module_field,2);
@@ -112,6 +117,14 @@ class ReportRun extends CRMEntity {
 			if((!isset($permitted_fields[$module]) || sizeof($permitted_fields[$module]) == 0) && $is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1)
 			{
 				$permitted_fields[$module] = $this->getaccesfield($module);
+				if ($focus->denormalized) {
+					$obj = new QueryGenerator($module,$current_user);
+					$num=count($permitted_fields[$module]);
+					for ($i=0; $i<$num; $i++) {
+						$val = $obj->getDenormalizedFields($permitted_fields[$module][$i]);
+						$permitted_fields[$module][$i] = $val[0];
+					}
+				}
 			}
 			if(in_array($module,$inventory_modules) and isset($permitted_fields[$module]) and is_array($permitted_fields[$module])){
 				$permitted_fields[$module] = array_merge($permitted_fields[$module],$inventory_fields);
@@ -168,11 +181,21 @@ class ReportRun extends CRMEntity {
 						$field_label_data = explode("_",$selectedfields[2]);
 						$module= $field_label_data[0];
 						if ($module!=$this->primarymodule) {
-							$columnslist[$fieldcolname] = "case when (".$selectedfields[0].".".$selectedfields[1]."='1')then '".getTranslatedString('LBL_YES')."' else case when (vtiger_crmentity$module.crmid !='') then '".getTranslatedString('LBL_NO')."' else '-' end end as '$selectedfields[2]'";
-							$this->queryPlanner->addTable("vtiger_crmentity$module");
+							if ($focus->denormalized) {
+								$columnslist[$fieldcolname] = "case when (".$selectedfields[0].".".$selectedfields[1]."='1')then '".getTranslatedString('LBL_YES')."' else case when (".$focus->table_name.".".$focus->table_index."!='') then '".getTranslatedString('LBL_NO')."' else '-' end end as '$selectedfields[2]'";
+								$this->queryPlanner->addTable($this->table_name);
+							} else {
+								$columnslist[$fieldcolname] = "case when (".$selectedfields[0].".".$selectedfields[1]."='1')then '".getTranslatedString('LBL_YES')."' else case when (vtiger_crmentity$module.crmid !='') then '".getTranslatedString('LBL_NO')."' else '-' end end as '$selectedfields[2]'";
+								$this->queryPlanner->addTable("vtiger_crmentity$module");
+							}
 						} else {
-							$columnslist[$fieldcolname] = "case when (".$selectedfields[0].".".$selectedfields[1]."='1')then '".getTranslatedString('LBL_YES')."' else case when (vtiger_crmentity.crmid !='') then '".getTranslatedString('LBL_NO')."' else '-' end end as '$selectedfields[2]'";
-							$this->queryPlanner->addTable($selectedfields[0]);
+							if ($focus->denormalized) {
+								$columnslist[$fieldcolname] = "case when (".$selectedfields[0].".".$selectedfields[1]."='1')then '".getTranslatedString('LBL_YES')."' else case when (".$focus->table_name.".".$focus->table_index."!='') then '".getTranslatedString('LBL_NO')."' else '-' end end as '$selectedfields[2]'";
+								$this->queryPlanner->addTable($selectedfields[0]);
+							} else {
+								$columnslist[$fieldcolname] = "case when (".$selectedfields[0].".".$selectedfields[1]."='1')then '".getTranslatedString('LBL_YES')."' else case when (vtiger_crmentity.crmid !='') then '".getTranslatedString('LBL_NO')."' else '-' end end as '$selectedfields[2]'";
+								$this->queryPlanner->addTable($selectedfields[0]);
+							}
 						}
 					}
 					elseif($selectedfields[0] == 'vtiger_activity' && $selectedfields[1] == 'status')
@@ -189,10 +212,19 @@ class ReportRun extends CRMEntity {
 					{
 						$temp_module_from_tablename = str_replace("vtiger_users","",$selectedfields[0]);
 						if ($module!=$this->primarymodule) {
-							$condition = "and vtiger_crmentity".$module.".crmid!=''";
-							$this->queryPlanner->addTable("vtiger_crmentity$module");
+							if ($focus->denormalized) {
+								$condition = "and ".$focus->table_name.".".$focus->table_index."!=''";
+								$this->queryPlanner->addTable($focus->table_name);
+							} else {
+								$condition = "and vtiger_crmentity".$module.".crmid!=''";
+								$this->queryPlanner->addTable("vtiger_crmentity$module");
+							}
 						} else {
-							$condition = "and vtiger_crmentity.crmid!=''";
+							if ($focus->denormalized) {
+								$condition = "and ".$focus->table_name.".".$focus->table_index."!=''";
+							} else {
+								$condition = "and vtiger_crmentity.crmid!=''";
+							}
 						}
 						if ($temp_module_from_tablename == $module) {
 							$concatSql = getSqlForNameInDisplayFormat(array('first_name' => $selectedfields[0] . ".first_name", 'last_name' => $selectedfields[0] . ".last_name"), 'Users');
@@ -212,6 +244,12 @@ class ReportRun extends CRMEntity {
 						// Added when no fields from the secondary module are selected but lastmodifiedby field is selected
 						$moduleInstance = CRMEntity::getInstance($module);
 						$this->queryPlanner->addTable($moduleInstance->table_name);
+					} elseif($focus->denormalized && stristr($selectedfields[0],$focus->table_name) && ($selectedfields[1] == 'mymodifierid')) {
+						$targetTableName = 'vtiger_lastModifiedBy' . $module;
+						$concatSql = getSqlForNameInDisplayFormat(array('last_name'=>$targetTableName.'.last_name', 'first_name'=>$targetTableName.'.first_name'), 'Users');
+						$columnslist[$fieldcolname] = "trim($concatSql) as $header_label";
+						$this->queryPlanner->addTable($focus->table_name);
+						$this->queryPlanner->addTable($targetTableName);
 					}
 					elseif (stristr($selectedfields[0],"vtiger_crmentity") && ($selectedfields[1] == 'smcreatorid')) {
 						$targetTableName = 'vtiger_CreatedBy' . $module;
@@ -222,6 +260,12 @@ class ReportRun extends CRMEntity {
 						// Added when no fields from the secondary module is selected but creator field is selected
 						$moduleInstance = CRMEntity::getInstance($module);
 						$this->queryPlanner->addTable($moduleInstance->table_name);
+					} elseif ($focus->denormalized && stristr($selectedfields[0],$focus->table_name) && ($selectedfields[1] == 'mycreatorid')) {
+						$targetTableName = 'vtiger_CreatedBy' . $module;
+					  $concatSql = getSqlForNameInDisplayFormat(array('last_name'=>$targetTableName.'.last_name', 'first_name'=>$targetTableName.'.first_name'), 'Users');
+					  $columnslist[$fieldcolname] = "trim($concatSql) as $header_label";
+					  $this->queryPlanner->addTable($focus->table_name);
+					  $this->queryPlanner->addTable($targetTableName);
 					}
 					elseif ($selectedfields[0] == "vtiger_crmentity".$this->primarymodule)
 					{
@@ -298,7 +342,12 @@ class ReportRun extends CRMEntity {
 				$this->queryPlanner->addTable($targetTableName);
 			}
 		}
-		$columnslist['vtiger_crmentity:crmid:LBL_ACTION:crmid:I'] = 'vtiger_crmentity.crmid AS "LBL_ACTION"' ;
+		$prim=CRMEntity::getInstance($this->primarymodule);
+		if ($prim->denormalized) {
+			$columnslist[$focus->table_name.':'.$prim->table_index.':LBL_ACTION:'.$prima->table_index.':I'] = $prim->table_name.'.'.$prim->table_index.' AS "LBL_ACTION"' ;
+		} else {
+			$columnslist['vtiger_crmentity:crmid:LBL_ACTION:crmid:I'] = 'vtiger_crmentity.crmid AS "LBL_ACTION"' ;
+		}
 		// Save the information
 		$this->_columnslist[$outputformat] = $columnslist;
 
@@ -672,6 +721,11 @@ class ReportRun extends CRMEntity {
 					$value = $columninfo["value"];
 					$columncondition = $columninfo["column_condition"];
 
+					list($fieldnamedenorm, $focus) = $this->getCrmDenormFields($fieldcolname);
+					if ($focus->denormalized) {
+						$fieldcolname = $fieldnamedenorm;
+					}
+
 					if($fieldcolname != "" && $comparator != "") {
 						$selectedfields = explode(":",$fieldcolname);
 						$moduleFieldLabel = $selectedfields[2];
@@ -877,6 +931,10 @@ class ReportRun extends CRMEntity {
 			$datefilter = $stdfilterrow["datefilter"];
 			$startdate = $stdfilterrow["startdate"];
 			$enddate = $stdfilterrow["enddate"];
+			list($fieldnamedenorm, $focus) = $this->getCrmDenormFields($fieldcolname);
+			if ($focus->denormalized) {
+				$fieldcolname=$fieldnamedenorm;
+			}
 
 			if($fieldcolname != "none") {
 				$selectedfields = explode(":",$fieldcolname);
@@ -1407,6 +1465,10 @@ class ReportRun extends CRMEntity {
 		{
 			$fieldcolname = $reportsortrow['columnname'];
 			if($fieldcolname != 'none') {
+				list($fieldnamedenorm, $focus) = $this->getCrmDenormFields($fieldcolname);
+				if ($focus->denormalized) {
+					$fieldcolname = $fieldnamedenorm;
+				}
 				list($tablename,$colname,$module_field,$fieldname,$single) = explode(":",$fieldcolname);
 				$sortorder = $reportsortrow["sortorder"];
 				if($sortorder == "Ascending")
@@ -1535,9 +1597,19 @@ class ReportRun extends CRMEntity {
 			foreach($secondarymodule as $key=>$value) {
 				$foc = CRMEntity::getInstance($value);
 				// Case handling: Force table requirement ahead of time.
-				$this->queryPlanner->addTable('vtiger_crmentity' . $value);
+				if ($foc->denormalized) {
+					$this->queryPlanner->addTable($foc->table_name);
+				} else {
+					$this->queryPlanner->addTable('vtiger_crmentity' . $value);
+				}
 				$query .= $foc->generateReportsSecQuery($module,$value, $this->queryPlanner,$type,$where_condition);
-				$query .= getNonAdminAccessControlQuery($value,$current_user,$value);
+				$nonAdminAccess=getNonAdminAccessControlQuery($value,$current_user,$value);
+				if ($foc->denormalized) {
+					$denormAccessControlQuery=str_replace('vtiger_crmentity'.$value.'.smownerid',$foc->table_name.'.myownerid',$nonAdminAccess);
+					$query .=$denormAccessControlQuery;
+				} else {
+					$query .= $nonAdminAccess;
+				}
 			}
 		}
 		$log->info("ReportRun :: Successfully returned getRelatedModulesQuery".$secmodule);
@@ -2096,14 +2168,19 @@ class ReportRun extends CRMEntity {
 		} else {
 			if ($module != '') {
 				$focus = CRMEntity::getInstance($module);
+				$nonAdminAccess=getNonAdminAccessControlQuery($this->primarymodule, $current_user);
 				$query = $focus->generateReportsQuery($module, $this->queryPlanner) .
 						$this->getRelatedModulesQuery($module, $this->secondarymodule, $type, $where_condition) .
-						getNonAdminAccessControlQuery($this->primarymodule, $current_user) .
-						" WHERE vtiger_crmentity.deleted=0";
+						$nonAdminAccess ." WHERE vtiger_crmentity.deleted=0";
+				if ($focus->denormalized) {
+					$denormAccessControlQuery=str_replace('vtiger_crmentity.smownerid',$focus->table_name.'.myownerid',$nonAdminAccess);
+					$query = $focus->generateReportsQuery($module, $this->queryPlanner) .
+							$this->getRelatedModulesQuery($module, $this->secondarymodule, $type, $where_condition) .
+							$denormAccessControlQuery ." WHERE $focus->table_name.mydeleted=0";
+				}
 			}
 		}
 		$log->info("ReportRun :: Successfully returned getReportsQuery".$module);
-
 		return $query;
 	}
 
@@ -2168,9 +2245,9 @@ class ReportRun extends CRMEntity {
 		$stdfilterlist = $this->getStdFilterList($reportid);
 		$columnstotallist = $this->getColumnsTotal($reportid,$columnlist);
 		$advfiltersql = $this->getAdvFilterSql($reportid);
-
 		$this->totallist = $columnstotallist;
 		$tab_id = getTabid($this->primarymodule);
+
 		//Fix for ticket #4915.
 		$selectlist = $columnlist;
 		//columns list
@@ -2214,7 +2291,7 @@ class ReportRun extends CRMEntity {
 		}
 
 		$reportquery = $basereportquery = $this->getReportsQuery($this->primarymodule, $type,$where_condition);
-		}
+	}
 		// If we don't have access to any columns, let us select one column and limit result to show we have no results
 		// Fix for: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/4758 - Prasad
 		$allColumnsRestricted = false;
@@ -2964,6 +3041,21 @@ class ReportRun extends CRMEntity {
 					foreach($this->totallist as $key=>$value)
 					{
 						$fieldlist = explode(":",$key);
+						$focus=CRMEntity::getInstance($this->primarymodule);
+						if ($focus->denormalized) {
+							$map=array('smownerid'=>'myownerid',
+						 	'smcreatorid'=>'mycreatorid',
+						 	'createdtime'=>'mycreatedtime',
+						 	'modifiedtime'=>'mymodifiedtime',
+						 	'modifiedby'=>'mymodifierid',
+						 	'description'=>'mydescription');
+						 	foreach ($map as $key => $value) {
+							 	if ($fieldlist[2]==$value) {
+								 	$fieldlist[2]=$key;
+								 	$fieldlist[1]='vtiger_crmentity';
+							 	}
+						 	}
+						}
 						$mod_query = $adb->pquery("SELECT distinct(tabid) as tabid, uitype as uitype from vtiger_field where tablename = ? and columnname=?",array($fieldlist[1],$fieldlist[2]));
 						if($adb->num_rows($mod_query)>0){
 							$module_name = getTabModuleName($adb->query_result($mod_query,0,'tabid'));
@@ -3357,6 +3449,25 @@ class ReportRun extends CRMEntity {
 		while($coltotalrow = $adb->fetch_array($result))
 		{
 			$fieldcolname = $coltotalrow["columnname"];
+			$focus=CRMEntity::getInstance($premod);
+			if ($focus->denormalized) {
+
+				$select = explode(":",$fieldcolname);
+				$crmtablename = $select[1];
+				$crmfieldname=$select[2];
+
+				$obj= new QueryGenerator($premod,$current_user);
+				$col = $obj->getDenormalizedFields($select[2]);
+				$select[2]=$col[0];
+
+				if($select[2]=='crmid') {
+					$select[2]=$focus->table_index;
+				}
+				if ($select[1]== 'vtiger_crmentity') {
+					$select[1]=$focus->table_name;
+				}
+				$fieldcolname=implode(':',$select);
+			}
 			if($fieldcolname != "none")
 			{
 				$sckey = $scval = '';
@@ -3367,6 +3478,9 @@ class ReportRun extends CRMEntity {
 				$cachekey = $field_tablename . ":" . $field_columnname;
 				if (!isset($modulename_cache[$cachekey])) {
 					$mod_query = $adb->pquery("SELECT distinct(tabid) as tabid from vtiger_field where tablename = ? and columnname=?",array($fieldlist[1],$fieldlist[2]));
+					if ($focus->denormalized) {
+						$mod_query = $adb->pquery("SELECT distinct(tabid) as tabid from vtiger_field where tablename = ? and columnname=?",array($crmtablename,$crmfieldname));
+					}
 					if($adb->num_rows($mod_query)>0){
 						$module_name = getTabModuleName($adb->query_result($mod_query,0,'tabid'));
 						$modulename_cache[$cachekey] = $module_name;
@@ -3384,7 +3498,11 @@ class ReportRun extends CRMEntity {
 				$scval = $field_tablename.'.'.$field_columnname." AS '".$query_columnalias."'"; // vtiger_invoice.subject AS 'Invoice_Subject'
 				$seltotalcols[$sckey] = $scval;
 				$field_permitted = false;
-				if(CheckColumnPermission($field_tablename,$field_columnname,$module_name) != "false"){
+				$ColPermission = CheckColumnPermission($field_tablename,$field_columnname,$module_name);
+				if ($focus->denormalized) {
+					$ColPermission = CheckColumnPermission($crmtablename,$crmfieldname,$module_name);
+				}
+				if($ColPermission != "false"){
 					$field_permitted = true;
 				}
 				/* one call to CheckColumnPermission with $module_name is better than the block below
@@ -3463,7 +3581,7 @@ class ReportRun extends CRMEntity {
 	 */
 	function getColumnsToTotalColumns($reportid)
 	{
-		global $adb, $modules, $log;
+		global $adb, $modules, $log,$current_user;
 
 		$sreportstdfiltersql = "select vtiger_reportsummary.* from vtiger_report";
 		$sreportstdfiltersql .= " inner join vtiger_reportsummary on vtiger_report.reportid = vtiger_reportsummary.reportsummaryid";
@@ -3479,6 +3597,7 @@ class ReportRun extends CRMEntity {
 			if($fieldcolname != "none")
 			{
 				$fieldlist = explode(":",$fieldcolname);
+
 				if($fieldlist[4] == 2)
 				{
 					$sSQLList[] = "sum(".$fieldlist[1].".".$fieldlist[2].") ".$fieldlist[3];
@@ -4081,5 +4200,33 @@ class ReportRun extends CRMEntity {
 		}
 		return $columnsSqlList;
 	}
+
+ function getCrmDenormFields($fieldcolname) {
+	 global $current_user;
+	 $select= explode(':',$fieldcolname);
+	 if (strpos($select[2],'_')!==false) {
+			$i=3;
+			$module=strtok($select[2],'_');
+	 } else {
+			$i=2;
+			$module=strtok($select[3],'_');
+	 }
+	 $focus= CRMEntity::getInstance($module);
+	 $obj= new QueryGenerator($module,$current_user);
+	 $col=$obj->getDenormalizedFields($select[1]);
+	 $select[1]=$col[0];
+	 $field=$obj->getDenormalizedFields($select[$i]);
+	 $select[$i]=$field[0];
+	 if($select[1]=='crmid' && $select[$i]=='crmid') {
+		 $select[1]=$select[$i]=$focus->table_index;
+	 }
+	 if ($select[0]== 'vtiger_crmentity'.$module || $select[0]=='vtiger_crmentity') {
+		 $select[0]=$focus->table_name;
+	 }
+	 $fieldcolname=implode(':',$select);
+
+ return array($fieldcolname, $focus);
+ }
+
 }
 ?>
