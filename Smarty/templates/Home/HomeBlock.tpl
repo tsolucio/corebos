@@ -95,9 +95,9 @@
 			{/foreach}
 		</tr>
 		{foreach item=row key=crmid from=$HOME_STUFF.Details.Entries}
-			{if isset($HOME_STUFF.Details.Title)}
 			<tr>
 				<td>
+				{if isset($HOME_STUFF.Details.Title)}
 					{if $HOME_STUFF.Details.Title.1 eq "My Sites"}
 					<img src="{'bookMark.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0" alt="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}" title="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}"/>
 					{elseif $HOME_STUFF.Details.Title.1 neq "Key Metrics" && $HOME_STUFF.Details.Title.1 neq "My Group Allocation"}
@@ -107,12 +107,12 @@
 					{elseif $HOME_STUFF.Details.Title.1 eq "My Group Allocation"}
 					<img src="{'bookMark.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0" alt="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}" title="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}"/>
 					{/if}
+				{/if}
 				</td>
 				{foreach item=element from=$row}
 				<td align="left"/> {$element}</td>
 				{/foreach}
 			</tr>
-			{/if}
 		{/foreach}
 	{else}
 		<div class="componentName">{$APP.LBL_NO_DATA}</div>
