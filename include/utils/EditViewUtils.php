@@ -78,16 +78,10 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	else if($uitype == 5 || $uitype == 6 || $uitype ==23)
 	{
 		$log->info("uitype is ".$uitype);
+		$curr_time = '';
 		if($value == '') {
 			if ($fieldname != 'birthday' && $generatedtype != 2 && getTabid($module_name) != 14)
 				$disp_value = getNewDisplayDate();
-
-			if(($module_name == 'Events' || $module_name == 'Calendar') && $uitype == 6) {
-				$curr_time = date('H:i', strtotime('+5 minutes'));
-			}
-			if(($module_name == 'Events' || $module_name == 'Calendar') && $uitype == 23) {
-				$curr_time = date('H:i', strtotime('+10 minutes'));
-			}
 
 			//Added to display the Contact - Support End Date as one year future instead of
 			//today's date -- 30-11-2005
@@ -99,21 +93,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			}
 		} else {
 			if($uitype == 6) {
-				if ($col_fields['time_start'] != '' && ($module_name == 'Events' || $module_name
-						== 'Calendar')) {
-					$curr_time = $col_fields['time_start'];
-					$value = $value . ' ' . $curr_time;
-				} else {
 				$curr_time = date('H:i', strtotime('+5 minutes'));
-				}
-			}
-			if(($module_name == 'Events' || $module_name == 'Calendar') && $uitype == 23) {
-				if ($col_fields['time_end'] != '') {
-					$curr_time = $col_fields['time_end'];
-					$value = $value . ' ' . $curr_time;
-				} else {
-					$curr_time = date('H:i', strtotime('+10 minutes'));
-				}
 			}
 			$date = new DateTimeField($value);
 			$isodate = $date->convertToDBFormat($value);
@@ -122,28 +102,12 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		}
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$date_format = parse_calendardate($app_strings['NTC_DATE_FORMAT']);
-		if(!empty($curr_time)) {
-			if(($module_name == 'Events' || $module_name == 'Calendar') && ($uitype == 23 ||
-					$uitype == 6)) {
-				$curr_time = DateTimeField::convertToUserTimeZone($curr_time);
-				$curr_time = $curr_time->format('H:i');
-			}
-		} else {
-			$curr_time = '';
-		}
+
 		if (empty($disp_value)) $disp_value = '';
 		$fieldvalue[] = array($disp_value => $curr_time);
-		if($uitype == 5 || $uitype == 23)
-		{
-			if($module_name == 'Events' && $uitype == 23)
-			{
-				$fieldvalue[] = array($date_format=>$current_user->date_format.' '.$app_strings['YEAR_MONTH_DATE']);
-			}
-			else
-				$fieldvalue[] = array($date_format=>$current_user->date_format);
-		}
-		else
-		{
+		if($uitype == 5 || $uitype == 23) {
+			$fieldvalue[] = array($date_format=>$current_user->date_format);
+		} else {
 			$fieldvalue[] = array($date_format=>$current_user->date_format.' '.$app_strings['YEAR_MONTH_DATE']);
 		}
 	}

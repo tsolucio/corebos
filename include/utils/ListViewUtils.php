@@ -1310,30 +1310,15 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		$value = textlength_check($value);
 	} elseif ($uitype == 5 || $uitype == 6 || $uitype == 23 || $uitype == 70) {
 		$temp_val = trim($temp_val);
-		$timeField = 'time_start';
-		if ($fieldname == 'due_date') {
-			$timeField = 'time_end';
-		}
-		if ($temp_val != '' && $module == 'Calendar' && ($uitype == 23 || $uitype == 6) &&
-				$timeField != '' && ($fieldname == 'date_start' || $fieldname == 'due_date' )) {
-			$time = $adb->query_result($list_result, $list_result_count, $timeField);
-			if (empty($time)) {
-				$time = getSingleFieldValue('vtiger_activity', $timeField, 'activityid', $entity_id);
-			}
-		}
+
 		if (empty($temp_val) || $temp_val == '0000-00-00') {
 			$value = '';
 		} else {
-			if (empty($time) && strpos($temp_val, ' ') == false) {
+			if (strpos($temp_val, ' ') == false) {
 				$value = DateTimeField::convertToUserFormat($temp_val);
 			} else {
-				if (!empty($time)) {
-					$date = new DateTimeField($temp_val . ' ' . $time);
-					$value = $date->getDisplayDate();
-				} else {
-					$date = new DateTimeField($temp_val);
-					$value = $date->getDisplayDateTimeValue();
-				}
+				$date = new DateTimeField($temp_val);
+				$value = $date->getDisplayDateTimeValue();
 			}
 		}
 	} elseif ($uitype == 50) {
