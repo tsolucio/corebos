@@ -942,20 +942,13 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 	} elseif ($uitype == 5 || $uitype == 23 || $uitype == 70) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$dateValue = $col_fields[$fieldname];
-		if (isset($col_fields['time_end']) && $col_fields['time_end'] != '' && ($tabid == 9 || $tabid == 16) && $uitype == 23) {
-			$end_time = $col_fields['time_end'];
-		}
 		if (empty($dateValue) || $dateValue == '0000-00-00') {
 			$displayValue = '';
 		} else {
-			if (empty($end_time) && strpos($dateValue, ' ') == false) {
+			if (strpos($dateValue, ' ') == false) {
 				$displayValue = DateTimeField::convertToUserFormat($col_fields[$fieldname]);
 			} else {
-				if (!empty($end_time)) {
-					$date = new DateTimeField($col_fields[$fieldname].' '.$end_time);
-				} else {
-					$date = new DateTimeField($col_fields[$fieldname]);
-				}
+				$date = new DateTimeField($col_fields[$fieldname]);
 				$displayValue = $date->getDisplayDateTimeValue();
 			}
 		}

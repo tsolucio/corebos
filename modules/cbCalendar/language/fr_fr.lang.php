@@ -19,8 +19,8 @@ $mod_strings = Array(
 
 	'Subject' => 'Sujet',
 	'Start Date Time' => 'Date et heure de début',
-	'Time Start' => 'Heure',
-	'End Time' => 'Hora Fin',
+	'Time Start' => 'Heure (System Time)',
+	'End Time' => 'Hora Fin (System Time)',
 	'Due Date' => 'Échéance',
 	'Assigned To' => 'Assigné à',
 	'Related with' => 'Événements Relatif',
