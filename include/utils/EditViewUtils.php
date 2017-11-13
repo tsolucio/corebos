@@ -78,16 +78,10 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	else if($uitype == 5 || $uitype == 6 || $uitype ==23)
 	{
 		$log->info("uitype is ".$uitype);
+		$curr_time = '';
 		if($value == '') {
 			if ($fieldname != 'birthday' && $generatedtype != 2 && getTabid($module_name) != 14)
 				$disp_value = getNewDisplayDate();
-
-			if(($module_name == 'Events' || $module_name == 'Calendar') && $uitype == 6) {
-				$curr_time = date('H:i', strtotime('+5 minutes'));
-			}
-			if(($module_name == 'Events' || $module_name == 'Calendar') && $uitype == 23) {
-				$curr_time = date('H:i', strtotime('+10 minutes'));
-			}
 
 			//Added to display the Contact - Support End Date as one year future instead of
 			//today's date -- 30-11-2005
@@ -99,21 +93,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			}
 		} else {
 			if($uitype == 6) {
-				if ($col_fields['time_start'] != '' && ($module_name == 'Events' || $module_name
-						== 'Calendar')) {
-					$curr_time = $col_fields['time_start'];
-					$value = $value . ' ' . $curr_time;
-				} else {
 				$curr_time = date('H:i', strtotime('+5 minutes'));
-				}
-			}
-			if(($module_name == 'Events' || $module_name == 'Calendar') && $uitype == 23) {
-				if ($col_fields['time_end'] != '') {
-					$curr_time = $col_fields['time_end'];
-					$value = $value . ' ' . $curr_time;
-				} else {
-					$curr_time = date('H:i', strtotime('+10 minutes'));
-				}
 			}
 			$date = new DateTimeField($value);
 			$isodate = $date->convertToDBFormat($value);
@@ -122,28 +102,12 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		}
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$date_format = parse_calendardate($app_strings['NTC_DATE_FORMAT']);
-		if(!empty($curr_time)) {
-			if(($module_name == 'Events' || $module_name == 'Calendar') && ($uitype == 23 ||
-					$uitype == 6)) {
-				$curr_time = DateTimeField::convertToUserTimeZone($curr_time);
-				$curr_time = $curr_time->format('H:i');
-			}
-		} else {
-			$curr_time = '';
-		}
+
 		if (empty($disp_value)) $disp_value = '';
 		$fieldvalue[] = array($disp_value => $curr_time);
-		if($uitype == 5 || $uitype == 23)
-		{
-			if($module_name == 'Events' && $uitype == 23)
-			{
-				$fieldvalue[] = array($date_format=>$current_user->date_format.' '.$app_strings['YEAR_MONTH_DATE']);
-			}
-			else
-				$fieldvalue[] = array($date_format=>$current_user->date_format);
-		}
-		else
-		{
+		if($uitype == 5 || $uitype == 23) {
+			$fieldvalue[] = array($date_format=>$current_user->date_format);
+		} else {
 			$fieldvalue[] = array($date_format=>$current_user->date_format.' '.$app_strings['YEAR_MONTH_DATE']);
 		}
 	}
@@ -1609,6 +1573,28 @@ function getAssociatedProducts($module,$focus,$seid='')
 			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_service.serviceid
 			WHERE vtiger_crmentity.deleted=0 AND serviceid=?";
 			$params = array($seid);
+	} else {
+		$query = "SELECT vtiger_products.productid, vtiger_products.productname, vtiger_products.productcode,
+			vtiger_products.unit_price, vtiger_products.qtyinstock, vtiger_crmentity.description AS product_description,
+			'Products' AS entitytype
+			FROM vtiger_products
+			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_products.productid
+			INNER JOIN vtiger_crmentityrel ON (
+				(vtiger_crmentityrel.crmid=vtiger_products.productid and vtiger_crmentityrel.relcrmid=?) or
+				(vtiger_crmentityrel.crmid=? and vtiger_crmentityrel.relcrmid=vtiger_products.productid)
+			)
+			WHERE vtiger_crmentity.deleted=0";
+		$query.=" UNION SELECT vtiger_service.serviceid AS productid, vtiger_service.servicename AS productname,
+			'NA' AS productcode, vtiger_service.unit_price AS unit_price, 'NA' AS qtyinstock,
+			vtiger_crmentity.description AS product_description, 'Services' AS entitytype
+			FROM vtiger_service
+			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_service.serviceid
+			INNER JOIN vtiger_crmentityrel ON (
+				(vtiger_crmentityrel.crmid=vtiger_service.serviceid and vtiger_crmentityrel.relcrmid=?) or
+				(vtiger_crmentityrel.crmid=? and vtiger_crmentityrel.relcrmid=vtiger_service.serviceid)
+			)
+			WHERE vtiger_crmentity.deleted=0";
+			$params = array($seid, $seid, $seid, $seid);
 	}
 
 	$cbMap = cbMap::getMapByName($module.'InventoryDetails','MasterDetailLayout');

@@ -24,24 +24,20 @@ $category = getParentTab();
 $smarty = new vtigerCRM_Smarty();
 
 $menu_structure = getMenuBranch(0);
-$elements = getMenuPicklist(0,0);
+$elements = getMenuPicklist(0, 0);
 $json = getMenuJSON2();
 
-$smarty->assign("PARENTS", $elements);
-$smarty->assign("MENUSTRUCTURE", $json);
-$smarty->assign("PROFILES", getAllProfileInfo());
-$result = $adb->query('select name from vtiger_tab where presence = 0 order by name');
-$modulelist = array();
-while($moduleinfo=$adb->fetch_array($result)) {
-	$modulelist[$moduleinfo['name']] = $moduleinfo['name'];
-}
-$smarty->assign("MODNAMES", $modulelist);
-$smarty->assign("THEME", $theme);
+$smarty->assign('PARENTS', $elements);
+$smarty->assign('MENUSTRUCTURE', $json);
+$smarty->assign('PROFILES', getAllProfileInfo());
+require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
+$smarty->assign('MODNAMES', VTWorkflowUtils::vtGetModulesAndExtensions($adb));
+$smarty->assign('THEME', $theme);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MODULE', $currentModule);
 $smarty->assign('CATEGORY', $category);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 
-$smarty->display(vtlib_getModuleTemplate($currentModule,'index.tpl'));
+$smarty->display(vtlib_getModuleTemplate($currentModule, 'index.tpl'));
 ?>

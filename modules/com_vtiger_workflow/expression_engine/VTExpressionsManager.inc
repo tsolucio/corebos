@@ -67,6 +67,7 @@ class VTExpressionsManager{
 			'substring' => 'substring(stringfield,start,end)', 'uppercase'=>'uppercase(stringfield)', 'lowercase'=>'lowercase(stringfield)', 'uppercasefirst'=>'uppercasefirst(stringfield)',
 			'uppercasewords'=>'uppercasewords(stringfield)', 'round' => 'round(numericfield,decimals)', 'ceil' => 'ceil(numericfield)', 'floor' => 'floor(numericfield)','modulo' => 'modulo(numericfield)',
 			'aggregation'=>'aggregation(operation,RelatedModule,relatedFieldToAggregate,conditions)',
+			'aggregation_fields_operation'=>'aggregation_fields_operation(operation,RelatedModule,relatedFieldsToAggregateWithOperation,conditions)',
 			'getCurrentUserID' => 'getCurrentUserID()','getCurrentUserName' => 'getCurrentUserName({full})','getCurrentUserField' => 'getCurrentUserField(fieldname)',
 			'getEntityType'=>'getEntityType(field)',
 			'getLatitude' => 'getLatitude(address)', 'getLongitude' => 'getLongitude(address)',

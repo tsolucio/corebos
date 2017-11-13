@@ -108,9 +108,9 @@
               <label class="slds-form-element__label evvtmenu-label" for="modname">{'MenuValue'|getTranslatedString:$MODULE}</label>
               <div class="slds-form-element__control">
                   <div class="slds-select_container">
-                      <select name="modname" id="modname" class="slds-select">
+                      <select name="modname" id="modname" class="slds-select" onchange="document.getElementById('mlabel').value=this.value;">
                           {foreach item=detail from=$MODNAMES }
-                            <option value="{$detail}">{$detail}</option>
+                            <option value="{$detail}">{$detail|getTranslatedString:$detail}</option>
                           {/foreach}
                       </select>
                   </div>

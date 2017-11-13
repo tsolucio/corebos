@@ -161,4 +161,11 @@
 	<classname>calendarSetAccountsAsDefault</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>move Calendar Home Widget to cbCalendar</description>
+	<filename>build/changeSets/2017/moveCalendarHomeWidget2cbCalendar.php</filename>
+	<classname>moveCalendarHomeWidget2cbCalendar</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

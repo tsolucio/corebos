@@ -1,5 +1,4 @@
 <?php
-
 /*******************************************************************************
  * The contents of this file are subject to the following licences:
  * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
@@ -144,6 +143,9 @@ $mod_strings = Array(
 'LBL_HOME_ADDWINDOW' => 'Add Window',
 'LBL_GETTING_STARTED' => 'Getting Started',
 'ExpirePasswordAfterDays' => 'Expire Password After Days',
+'FieldsNotFoundInFilter' => 'Fields not found in Selected Filter',
+'FilterNotFound' => 'Filter You have Selected is Not Found',
+'Permission Denied' => 'Permission Denied',
 );
 
 ?>

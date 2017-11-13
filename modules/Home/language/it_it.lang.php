@@ -121,6 +121,9 @@ $mod_strings = array (
 'LBL_HOME_ADDWINDOW' => 'Aggiungi Finestra',
 'LBL_GETTING_STARTED' => 'Iniziare',
 'ExpirePasswordAfterDays' => 'Far scadere password dopo giorni',
+'FieldsNotFoundInFilter' => 'Fields not found in Selected Filter',
+'FilterNotFound' => 'Filter You have Selected is Not Found',
+'Permission Denied' => 'Permission Denied',
 );
 
 ?>
