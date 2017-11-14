@@ -17,7 +17,8 @@
 function __cb_getLatitude($address) {
 	$addr = urlencode($address);
 	$email = urlencode(GlobalVariable::getVariable('Workflow_GeoDistance_Email',''));
-	$data = file_get_contents("http://nominatim.openstreetmap.org/?format=json&addressdetails=1&q=$addr&format=json&limit=1&email=$email");
+	$nmserverip = GlobalVariable::getVariable('Workflow_GeoDistance_Nominatim_Server','nominatim.openstreetmap.org');
+	$data = file_get_contents("http://$nmserverip/?format=json&addressdetails=1&q=$addr&format=json&limit=1&email=$email");
 	$data = json_decode($data);
 	return $data[0]->lat;
 }
@@ -25,7 +26,8 @@ function __cb_getLatitude($address) {
 function __cb_getLongitude($address) {
 	$addr = urlencode($address);
 	$email = urlencode(GlobalVariable::getVariable('Workflow_GeoDistance_Email',''));
-	$data = file_get_contents("http://nominatim.openstreetmap.org/?format=json&addressdetails=1&q=$addr&format=json&limit=1&email=$email");
+	$nmserverip = GlobalVariable::getVariable('Workflow_GeoDistance_Nominatim_Server','nominatim.openstreetmap.org');
+	$data = file_get_contents("http://$nmserverip/?format=json&addressdetails=1&q=$addr&format=json&limit=1&email=$email");
 	$data = json_decode($data);
 	return $data[0]->lon;
 }
@@ -33,7 +35,8 @@ function __cb_getLongitude($address) {
 function __cb_getLongitudeLatitude($address) {
 	$addr = urlencode($address);
 	$email = urlencode(GlobalVariable::getVariable('Workflow_GeoDistance_Email',''));
-	$data = file_get_contents("http://nominatim.openstreetmap.org/?format=json&addressdetails=1&q=$addr&format=json&limit=1&email=$email");
+	$nmserverip = GlobalVariable::getVariable('Workflow_GeoDistance_Nominatim_Server','nominatim.openstreetmap.org');
+	$data = file_get_contents("http://$nmserverip/?format=json&addressdetails=1&q=$addr&format=json&limit=1&email=$email");
 	$data = json_decode($data);
 	return $data[0]->lon.','.$data[0]->lat;
 }

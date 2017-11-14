@@ -139,6 +139,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Workflow_GeoDistance_Country_Default',
 				'Workflow_GeoDistance_ServerIP',
 				'Workflow_GeoDistance_Email',
+				'Workflow_GeoDistance_Nominatim_Server',
 				'ModComments_DefaultCriteria',
 				'ModComments_DefaultBlockStatus',
 				'EMail_OpenTrackingEnabled',
