@@ -726,7 +726,7 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Chaîne:<br>Nom de pays en Anglais',
 	'category' => 'Application',
 	'values' => 'Example:<br>Spain',
-	'definition' => 'Calcule la GeoDistance des fonctions des flux de travail. Cette variable permet de fixer le pays de référence à utiliser si auncun nom de pays n\'est fourni. Utile pour les entreprises ayant une zone d\'influence.',
+	'definition' => 'Calcule la GeoDistance des fonctions des flux de travail. Cette variable permet de fixer le code de pays de référence à utiliser si auncun nom de pays n\'est fourni. Utile pour les entreprises ayant une zone d\'influence.Exemple: fr,es,gb,de,...',
 ),
 'Application_Billing_Address_Checked' => array(
 	'status' => 'Implémenté',

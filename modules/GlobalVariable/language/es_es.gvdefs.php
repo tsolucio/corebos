@@ -907,8 +907,8 @@ $GlobalVariableDefinitons = array(
 	'status' => 'Implementada',
 	'valuetype' => 'Texto',
 	'category' => 'Aplicación',
-	'values' => 'Country Name',
-	'definition' => 'Para las funciones de flujo de trabajo de cálculo de GeoDistance, esta variable establece el país predeterminado para usar si no se da ninguno. Útil cuando la empresa tiene un área local de influencia.',
+	'values' => 'Country Code',
+	'definition' => 'Para las funciones de flujo de trabajo de cálculo de GeoDistance, esta variable establece el código de país predeterminado para usar si no se da ninguno. Útil cuando la empresa tiene un área local de influencia. Ejemplo: es,fr,gb,de,...',
 ),
 'Workflow_GeoDistance_ServerIP' => array(
 	'status' => 'Implementada',

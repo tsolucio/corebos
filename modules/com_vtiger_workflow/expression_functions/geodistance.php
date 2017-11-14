@@ -17,8 +17,9 @@
 function __cb_getLatitude($address) {
 	$addr = urlencode($address);
 	$email = urlencode(GlobalVariable::getVariable('Workflow_GeoDistance_Email',''));
+	$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
 	$nmserverip = GlobalVariable::getVariable('Workflow_GeoDistance_Nominatim_Server','nominatim.openstreetmap.org');
-	$data = file_get_contents("http://$nmserverip/?format=json&addressdetails=1&q=$addr&format=json&limit=1&email=$email");
+	$data = file_get_contents("http://$nmserverip/?format=json&addressdetails=1&q=$addr&format=json&limit=1&email=$email&countrycodes=$country");
 	$data = json_decode($data);
 	return $data[0]->lat;
 }
@@ -26,8 +27,9 @@ function __cb_getLatitude($address) {
 function __cb_getLongitude($address) {
 	$addr = urlencode($address);
 	$email = urlencode(GlobalVariable::getVariable('Workflow_GeoDistance_Email',''));
+	$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
 	$nmserverip = GlobalVariable::getVariable('Workflow_GeoDistance_Nominatim_Server','nominatim.openstreetmap.org');
-	$data = file_get_contents("http://$nmserverip/?format=json&addressdetails=1&q=$addr&format=json&limit=1&email=$email");
+	$data = file_get_contents("http://$nmserverip/?format=json&addressdetails=1&q=$addr&format=json&limit=1&email=$email&countrycodes=$country");
 	$data = json_decode($data);
 	return $data[0]->lon;
 }
@@ -35,8 +37,9 @@ function __cb_getLongitude($address) {
 function __cb_getLongitudeLatitude($address) {
 	$addr = urlencode($address);
 	$email = urlencode(GlobalVariable::getVariable('Workflow_GeoDistance_Email',''));
+	$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
 	$nmserverip = GlobalVariable::getVariable('Workflow_GeoDistance_Nominatim_Server','nominatim.openstreetmap.org');
-	$data = file_get_contents("http://$nmserverip/?format=json&addressdetails=1&q=$addr&format=json&limit=1&email=$email");
+	$data = file_get_contents("http://$nmserverip/?format=json&addressdetails=1&q=$addr&format=json&limit=1&email=$email&countrycodes=$country");
 	$data = json_decode($data);
 	return $data[0]->lon.','.$data[0]->lat;
 }
@@ -56,15 +59,18 @@ function __cb_getGEODistance($arr) {
 function __cb_getGEODistanceFromCompanyAddress($arr) {
 	global $adb;
 	$compAdr = $adb->query('Select address,city,state,country,code from vtiger_organizationdetails');
-	$from = $adb->query_result($compAdr, 0, 'country');
+	$from = $adb->query_result($compAdr, 0, 'address');
 	$fld = $adb->query_result($compAdr, 0, 'state');
 	$from.= empty($fld) ? '':', '.$fld;
 	$fld = $adb->query_result($compAdr, 0, 'city');
 	$from.= empty($fld) ? '':', '.$fld;
 	$fld = $adb->query_result($compAdr, 0, 'code');
 	$from.= empty($fld) ? '':', '.$fld;
-	$fld = $adb->query_result($compAdr, 0, 'address');
-	$from.= empty($fld) ? '':', '.$fld;
+	$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
+	if ($country == '') {
+		$fld = $adb->query_result($compAdr, 0, 'country');
+		$from.= empty($fld) ? '':', '.$fld;
+	}
 	$array = array($from, $arr[0]);
 	return __cb_getGEODistance($array);
 }
@@ -83,15 +89,18 @@ function __cb_getCurrentUserAddress($userid = '') {
 		list($wsid,$userid) = explode('x', $userid);
 	$compAdr = $adb->pquery('Select address_street,address_city,address_state,address_country,address_postalcode
 		from vtiger_users where id=?',array($userid));
-	$from = $adb->query_result($compAdr, 0, 'address_country');
+	$from = $adb->query_result($compAdr, 0, 'address_street');
 	$fld = $adb->query_result($compAdr, 0, 'address_state');
 	$from.= empty($fld) ? '':', '.$fld;
 	$fld = $adb->query_result($compAdr, 0, 'address_city');
 	$from.= empty($fld) ? '':', '.$fld;
 	$fld = $adb->query_result($compAdr, 0, 'address_postalcode');
 	$from.= empty($fld) ? '':', '.$fld;
-	$fld = $adb->query_result($compAdr, 0, 'address_street');
-	$from.= empty($fld) ? '':', '.$fld;
+	$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
+	if ($country == '') {
+		$fld = $adb->query_result($compAdr, 0, 'address_country');
+		$from.= empty($fld) ? '':', '.$fld;
+	}
 	return $from;
 }
 
@@ -137,20 +146,18 @@ function __cb_getGEODistanceFromUser2AccountBilling($arr) {
 	$compAdr = $adb->pquery('Select '.$columns.' from vtiger_accountbillads
 		where accountaddressid=?',array($accid));
 	if ($compAdr and $adb->num_rows($compAdr)>0) {
-		$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
-		if($country != ''){
-			$to = $country;
-		}else{
-			$to = $adb->query_result($compAdr, 0, 'bill_country');
-		}
+		$to = $adb->query_result($compAdr, 0, 'bill_street');
 		$fld = $adb->query_result($compAdr, 0, 'bill_state');
 		$to.= empty($fld) ? '':', '.$fld;
 		$fld = $adb->query_result($compAdr, 0, 'bill_city');
 		$to.= empty($fld) ? '':', '.$fld;
 		$fld = $adb->query_result($compAdr, 0, 'bill_code');
 		$to.= empty($fld) ? '':', '.$fld;
-		$fld = $adb->query_result($compAdr, 0, 'bill_street');
-		$to.= empty($fld) ? '':', '.$fld;
+		$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
+		if ($country == '') {
+			$fld = $adb->query_result($compAdr, 0, 'bill_country');
+			$to.= empty($fld) ? '':', '.$fld;
+		}
 	} else {
 		return '0';
 	}
@@ -202,20 +209,17 @@ function __cb_getGEODistanceFromAssignUser2AccountBilling($arr) {
 	$compAdr = $adb->pquery('Select '.$columns.' from vtiger_accountbillads
 		where accountaddressid=?',array($accid));
 	if ($compAdr and $adb->num_rows($compAdr)>0) {
-		$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
-		if($country != ''){
-			$to = $country;
-		}else{
-			$to = $adb->query_result($compAdr, 0, 'bill_country');
-		}
+		$to = $adb->query_result($compAdr, 0, 'bill_street');
 		$fld = $adb->query_result($compAdr, 0, 'bill_state');
 		$to.= empty($fld) ? '':', '.$fld;
 		$fld = $adb->query_result($compAdr, 0, 'bill_city');
 		$to.= empty($fld) ? '':', '.$fld;
 		$fld = $adb->query_result($compAdr, 0, 'bill_code');
-		$to.= empty($fld) ? '':', '.$fld;
-		$fld = $adb->query_result($compAdr, 0, 'bill_street');
-		$to.= empty($fld) ? '':', '.$fld;
+		$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
+		if ($country == '') {
+			$fld = $adb->query_result($compAdr, 0, 'bill_country');
+			$to.= empty($fld) ? '':', '.$fld;
+		}
 	} else {
 		return '0';
 	}
@@ -266,20 +270,18 @@ function __cb_getGEODistanceFromUser2AccountShipping($arr) {
 	$compAdr = $adb->pquery('Select '.$columns.' from vtiger_accountshipads
 		where accountaddressid=?',array($accid));
 	if ($compAdr and $adb->num_rows($compAdr)>0) {
-		$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
-		if($country != ''){
-			$to = $country;
-		}else{
-			$to = $adb->query_result($compAdr, 0, 'ship_country');
-		}
+		$to = $adb->query_result($compAdr, 0, 'ship_street');
 		$fld = $adb->query_result($compAdr, 0, 'ship_state');
 		$to.= empty($fld) ? '':', '.$fld;
 		$fld = $adb->query_result($compAdr, 0, 'ship_city');
 		$to.= empty($fld) ? '':', '.$fld;
 		$fld = $adb->query_result($compAdr, 0, 'ship_code');
 		$to.= empty($fld) ? '':', '.$fld;
-		$fld = $adb->query_result($compAdr, 0, 'ship_street');
-		$to.= empty($fld) ? '':', '.$fld;
+		$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
+		if ($country == '') {
+			$fld = $adb->query_result($compAdr, 0, 'ship_country');
+			$to.= empty($fld) ? '':', '.$fld;
+		}
 	} else {
 		return '0';
 	}
@@ -331,20 +333,18 @@ function __cb_getGEODistanceFromAssignUser2AccountShipping($arr) {
 	$compAdr = $adb->pquery('Select '.$columns.' from vtiger_accountshipads
 		where accountaddressid=?',array($accid));
 	if ($compAdr and $adb->num_rows($compAdr)>0) {
-		$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
-		if ($country != '') {
-			$to = $country;
-		} else {
-			$to = $adb->query_result($compAdr, 0, 'ship_country');
-		}
+		$to = $adb->query_result($compAdr, 0, 'ship_street');
 		$fld = $adb->query_result($compAdr, 0, 'ship_state');
 		$to.= empty($fld) ? '':', '.$fld;
 		$fld = $adb->query_result($compAdr, 0, 'ship_city');
 		$to.= empty($fld) ? '':', '.$fld;
 		$fld = $adb->query_result($compAdr, 0, 'ship_code');
 		$to.= empty($fld) ? '':', '.$fld;
-		$fld = $adb->query_result($compAdr, 0, 'ship_street');
-		$to.= empty($fld) ? '':', '.$fld;
+		$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
+		if ($country == '') {
+			$fld = $adb->query_result($compAdr, 0, 'ship_country');
+			$to.= empty($fld) ? '':', '.$fld;
+		}
 	} else {
 		return '0';
 	}
@@ -395,20 +395,18 @@ function __cb_getGEODistanceFromUser2ContactBilling($arr) {
 	$compAdr = $adb->pquery('Select '.$columns.' from vtiger_contactaddress
 		where contactaddressid=?',array($ctoid));
 	if ($compAdr and $adb->num_rows($compAdr)>0) {
-		$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
-		if ($country != '') {
-			$to = $country;
-		} else {
-			$to = $adb->query_result($compAdr, 0, 'mailingcountry');
-		}
+		$to = $adb->query_result($compAdr, 0, 'mailingstreet');
 		$fld = $adb->query_result($compAdr, 0, 'mailingstate');
 		$to.= empty($fld) ? '':', '.$fld;
 		$fld = $adb->query_result($compAdr, 0, 'mailingcity');
 		$to.= empty($fld) ? '':', '.$fld;
 		$fld = $adb->query_result($compAdr, 0, 'mailingzip');
 		$to.= empty($fld) ? '':', '.$fld;
-		$fld = $adb->query_result($compAdr, 0, 'mailingstreet');
-		$to.= empty($fld) ? '':', '.$fld;
+		$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
+		if ($country == '') {
+			$fld = $adb->query_result($compAdr, 0, 'mailingcountry');
+			$to.= empty($fld) ? '':', '.$fld;
+		}
 	} else {
 		return '0';
 	}
@@ -460,20 +458,18 @@ function __cb_getGEODistanceFromAssignUser2ContactBilling($arr) {
 	$compAdr = $adb->pquery('Select '.$columns.' from vtiger_contactaddress
 		where contactaddressid=?',array($ctoid));
 	if ($compAdr and $adb->num_rows($compAdr)>0) {
-		$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
-		if ($country != '') {
-			$to = $country;
-		} else {
-			$to = $adb->query_result($compAdr, 0, 'mailingcountry');
-		}
+		$to = $adb->query_result($compAdr, 0, 'mailingstreet');
 		$fld = $adb->query_result($compAdr, 0, 'mailingstate');
 		$to.= empty($fld) ? '':', '.$fld;
 		$fld = $adb->query_result($compAdr, 0, 'mailingcity');
 		$to.= empty($fld) ? '':', '.$fld;
 		$fld = $adb->query_result($compAdr, 0, 'mailingzip');
 		$to.= empty($fld) ? '':', '.$fld;
-		$fld = $adb->query_result($compAdr, 0, 'mailingstreet');
-		$to.= empty($fld) ? '':', '.$fld;
+		$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
+		if ($country == '') {
+			$fld = $adb->query_result($compAdr, 0, 'mailingcountry');
+			$to.= empty($fld) ? '':', '.$fld;
+		}
 	} else {
 		return '0';
 	}
@@ -524,20 +520,18 @@ function __cb_getGEODistanceFromUser2ContactShipping($arr) {
 	$compAdr = $adb->pquery('Select '.$columns.' from vtiger_contactaddress
 		where contactaddressid=?',array($ctoid));
 	if ($compAdr and $adb->num_rows($compAdr)>0) {
-		$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
-		if ($country != '') {
-			$to = $country;
-		} else {
-			$to = $adb->query_result($compAdr, 0, 'othercountry');
-		}
+		$to = $adb->query_result($compAdr, 0, 'otherstreet');
 		$fld = $adb->query_result($compAdr, 0, 'otherstate');
 		$to.= empty($fld) ? '':', '.$fld;
 		$fld = $adb->query_result($compAdr, 0, 'othercity');
 		$to.= empty($fld) ? '':', '.$fld;
 		$fld = $adb->query_result($compAdr, 0, 'otherzip');
 		$to.= empty($fld) ? '':', '.$fld;
-		$fld = $adb->query_result($compAdr, 0, 'otherstreet');
-		$to.= empty($fld) ? '':', '.$fld;
+		$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
+		if ($country == '') {
+			$fld = $adb->query_result($compAdr, 0, 'othercountry');
+			$to.= empty($fld) ? '':', '.$fld;
+		}
 	} else {
 		return '0';
 	}
@@ -590,20 +584,18 @@ function __cb_getGEODistanceFromAssignUser2ContactShipping($arr) {
 	$compAdr = $adb->pquery('Select '.$columns.' from vtiger_contactaddress
 		where contactaddressid=?',array($ctoid));
 	if ($compAdr and $adb->num_rows($compAdr)>0) {
-		$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
-		if ($country != '') {
-			$to = $country;
-		} else {
-			$to = $adb->query_result($compAdr, 0, 'othercountry');
-		}
+		$to = $adb->query_result($compAdr, 0, 'otherstreet');
 		$fld = $adb->query_result($compAdr, 0, 'otherstate');
 		$to.= empty($fld) ? '':', '.$fld;
 		$fld = $adb->query_result($compAdr, 0, 'othercity');
 		$to.= empty($fld) ? '':', '.$fld;
 		$fld = $adb->query_result($compAdr, 0, 'otherzip');
 		$to.= empty($fld) ? '':', '.$fld;
-		$fld = $adb->query_result($compAdr, 0, 'otherstreet');
-		$to.= empty($fld) ? '':', '.$fld;
+		$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
+		if ($country == '') {
+			$fld = $adb->query_result($compAdr, 0, 'othercountry');
+			$to.= empty($fld) ? '':', '.$fld;
+		}
 	} else {
 		return '0';
 	}
