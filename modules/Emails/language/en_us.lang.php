@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_GENERAL_INFORMATION'=>'General Information',
 
 'LBL_MODULE_NAME'=>'Email',
@@ -137,7 +137,7 @@ $mod_strings = Array(
 'PLEASE_CHECK_THIS_EMAILID'=>'Please check this mail id...',
 'LBL_CC_EMAIL_ERROR'=>'Your cc mailid is not proper',
 'LBL_BCC_EMAIL_ERROR'=>'Your bcc mailid is not proper',
-'LBL_NO_RCPTS_EMAIL_ERROR'=>'No recepients specified',
+'LBL_NO_RCPTS_EMAIL_ERROR'=>'No recipients specified',
 'LBL_CONF_MAILSERVER_ERROR'=>'Please configure your outgoing mailserver under Settings ---> Outgoing Server link',
 'LBL_CONF_SERVERSTORAGE_ERROR'=>'The permissions on your storage directory are insufficient, you will not be able to send attachments!',
 'LBL_MAILSELECT_INFO3'=>'You don\'t have permission to view email id(s) of the selected Record(s).',
