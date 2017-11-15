@@ -37,11 +37,11 @@ if(!empty($fieldname) && !empty($module)){
 				$adb->pquery('update vtiger_field set uitype=15 where fieldid=? and tabid=?',array($field->id,$moduleInstance->id));
 				$field->setPicklistValues($list);
 			}else{
-				echo "<b>The field $field should be uitype 1.</b><br>";
+				echo "<b>The field $fieldname should be uitype 1.</b><br>";
 			}
 		}
 		else{
-			echo "<b>Failed to find $field field.</b><br>";
+			echo "<b>Failed to find $fieldname field.</b><br>";
 		}
 	}else{
 		echo "<b>Failed to find $module module.</b><br>";
