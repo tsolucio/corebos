@@ -908,7 +908,7 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'String',
 	'category' => 'Application',
 	'values' => 'Country Name',
-	'definition' => 'For GeoDistance calculation workflow functions, this variable sets the default country to use if none is given. Useful when the company has a local area of influence.',
+	'definition' => 'For GeoDistance calculation workflow functions, this variable sets the default country coce to use if none is given. Useful when the company has a local area of influence.Example:gb,us,fr,es',
 ),
 'Workflow_GeoDistance_ServerIP' => array(
 	'status' => 'Implemented',

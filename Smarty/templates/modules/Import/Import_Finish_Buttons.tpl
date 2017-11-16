@@ -9,7 +9,7 @@
  ********************************************************************************/
 -->*}
 <input type="button" name="next" value="{'LBL_IMPORT_MORE'|@getTranslatedString:$MODULE}" class="crmButton big create"
-	 onclick="location.href='index.php?module={$FOR_MODULE}&action=Import&return_module={$FOR_MODULE}&return_action=index'" />
+	 onclick="location.href='index.php?module={$FOR_MODULE}&action=Import&step=1&return_module={$FOR_MODULE}&return_action=index'" />
 &nbsp;&nbsp;
 <input type="button" name="next" value="{'LBL_VIEW_LAST_IMPORTED_RECORDS'|@getTranslatedString:$MODULE}" class="crmButton big cancel"
 	 onclick="return window.open('index.php?module={$FOR_MODULE}&action={$FOR_MODULE}Ajax&file=Import&mode=listview&start=1&foruser={$OWNER_ID}','test','width=700,height=650,resizable=1,scrollbars=0,top=150,left=200');" />

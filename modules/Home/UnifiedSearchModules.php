@@ -11,12 +11,12 @@
 global $app_strings, $mod_strings, $current_language, $currentModule, $current_user, $theme, $adb;
 
 $selected_modules = array();
-if(!empty($_SESSION['__UnifiedSearch_SelectedModules__']) && is_array($_SESSION['__UnifiedSearch_SelectedModules__'])) {
+if (!empty($_SESSION['__UnifiedSearch_SelectedModules__']) && is_array($_SESSION['__UnifiedSearch_SelectedModules__'])) {
 	$selected_modules = $_SESSION['__UnifiedSearch_SelectedModules__'];
 } else {
 	$appSearchModules = GlobalVariable::getVariable('Application_Global_Search_SelectedModules', '');
 	if (!empty($appSearchModules)) {
-		$selected_modules = explode(',',$appSearchModules);
+		$selected_modules = explode(',', $appSearchModules);
 		coreBOS_Session::set('__UnifiedSearch_SelectedModules__', $selected_modules);
 	}
 }
@@ -34,9 +34,9 @@ foreach ($doNotSearchThese as $mname) {
 $allowed_modules = array();
 $sql = 'select distinct vtiger_field.tabid,name from vtiger_field inner join vtiger_tab on vtiger_tab.tabid=vtiger_field.tabid
 	where vtiger_tab.tabid not in ('.generateQuestionMarks($doNotSearchTheseTabids).') and vtiger_tab.presence != 1 and vtiger_field.presence in (0,2)';
-$moduleres = $adb->pquery($sql,array($doNotSearchTheseTabids));
-while($modulerow = $adb->fetch_array($moduleres)) {
-	if(is_admin($current_user) || isPermitted($modulerow['name'], 'DetailView') == 'yes') {
+$moduleres = $adb->pquery($sql, array($doNotSearchTheseTabids));
+while ($modulerow = $adb->fetch_array($moduleres)) {
+	if (is_admin($current_user) || isPermitted($modulerow['name'], 'DetailView') == 'yes') {
 		$modulename = $modulerow['name'];
 		$allowed_modules[$modulename] = array(
 			'label' => getTranslatedString($modulename, $modulename),
@@ -44,7 +44,9 @@ while($modulerow = $adb->fetch_array($moduleres)) {
 		);
 	}
 }
-uasort($allowed_modules, function($a,$b) {return (strtolower($a['label']) < strtolower($b['label'])) ? -1 : 1;});
+uasort($allowed_modules, function ($a, $b) {
+	return (strtolower($a['label']) < strtolower($b['label'])) ? -1 : 1;
+});
 
 require_once('Smarty_setup.php');
 

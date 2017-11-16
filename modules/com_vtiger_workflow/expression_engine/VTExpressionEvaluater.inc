@@ -62,6 +62,7 @@ class VTFieldExpressionEvaluater{
 				'getEntityType' => '__cbwf_setype',
 				'getLatitude' => '__cb_getLatitude',
 				'getLongitude' => '__cb_getLongitude',
+				'getLongitudeLatitude' => '__cb_getLongitudeLatitude',
 				'getGEODistance' => '__cb_getGEODistance',
 				'getGEODistanceFromCompanyAddress' => '__cb_getGEODistanceFromCompanyAddress',
 				'getGEODistanceFromUserAddress' => '__cb_getGEODistanceFromUserAddress',
