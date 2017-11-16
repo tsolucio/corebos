@@ -515,7 +515,9 @@ article.container::after {
 }
 
 
-
+.mailMergeFont {
+    font-size: .9rem;
+}
 
 
 
@@ -1091,7 +1093,19 @@ th[scope="col"] {
 
 
 /*===========Related List Data Content===========*/
+.slds-no-flex img,
+.rel_mod_content img,
+.navImgCss img {
+    width: 18px;
+    vertical-align: middle;
+}
 
+.slds-no-flex img:hover,
+.rel_mod_content img:hover,
+.navImgCss img:hover{
+    opacity: .7;
+    cursor: pointer;
+}
 
 /*=======CustomView.tpl=======*/
 
