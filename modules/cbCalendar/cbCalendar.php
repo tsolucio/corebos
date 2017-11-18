@@ -818,7 +818,7 @@ class cbCalendar extends CRMEntity {
 				$calwf['test'] = str_replace('taskstatus','eventstatus', $calwf['test']);
 				$calendarWorkflow = $workflowManager->newWorkFlow("cbCalendar");
 				if ($calwf['summary']=='Notify when a task is delayed beyond 24 hrs') {
-					$calendarWorkflow->test = '[{"fieldname":"date_start","operation":"less than days ago","value":"1","valuetype":"expression","joincondition":"and","groupid":"0"},{"fieldname":"activitytype","operation":"is","value":"Task","valuetype":"rawtext","joincondition":"and","groupid":"0"},{"fieldname":"eventstatus","operation":"is not","value":"Held","valuetype":"rawtext","joincondition":"and","groupid":"0"},{"fieldname":"eventstatus","operation":"is not","value":"Completed","valuetype":"rawtext","joincondition":"and","groupid":"0"}]';
+					$calendarWorkflow->test = '[{"fieldname":"date_start","operation":"days ago","value":"1","valuetype":"expression","joincondition":"and","groupid":"0"},{"fieldname":"activitytype","operation":"is","value":"Task","valuetype":"rawtext","joincondition":"and","groupid":"0"},{"fieldname":"eventstatus","operation":"is not","value":"Held","valuetype":"rawtext","joincondition":"and","groupid":"0"},{"fieldname":"eventstatus","operation":"is not","value":"Completed","valuetype":"rawtext","joincondition":"and","groupid":"0"},{"fieldname":"eventstatus","operation":"is not","value":"In Progress","valuetype":"rawtext","joincondition":"and","groupid":"0"}]';
 				} else {
 					$calendarWorkflow->test = $calwf['test'];
 				}
