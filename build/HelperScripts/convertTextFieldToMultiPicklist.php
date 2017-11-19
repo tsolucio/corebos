@@ -34,7 +34,7 @@ if(!empty($fieldname) && !empty($module)){
 				for($i=0;$i<$adb->num_rows($picklistvalues);$i++){
 					$list[]=$adb->query_result($picklistvalues,$i,$fieldname);
 				}
-				$adb->pquery('update vtiger_field set uitype=15 where fieldid=? and tabid=?',array($field->id,$moduleInstance->id));
+				$adb->pquery('update vtiger_field set uitype=33 where fieldid=? and tabid=?',array($field->id,$moduleInstance->id));
 				$field->setPicklistValues($list);
 			}else{
 				echo "<b>The field $fieldname should be uitype 1.</b><br>";

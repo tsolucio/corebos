@@ -26,11 +26,11 @@ class ModuleClass extends CRMEntity {
 	 */
 	public $customFieldTable = array('vtiger_MODULE_NAME_LOWERCASEcf', 'MODULE_NAME_LOWERCASEid');
 	// related_tables variable should define the association (relation) between dependent tables
-	// FORMAT: related_tablename => Array ( related_tablename_column[, base_tablename, base_tablename_column[, related_module]] )
+	// FORMAT: related_tablename => array(related_tablename_column[, base_tablename, base_tablename_column[, related_module]] )
 	// Here base_tablename_column should establish relation with related_tablename_column
 	// NOTE: If base_tablename and base_tablename_column are not specified, it will default to modules (table_name, related_tablename_column)
 	// Uncomment the line below to support custom field columns on related lists
-	// var $related_tables = Array('vtiger_MODULE_NAME_LOWERCASEcf'=>array('MODULE_NAME_LOWERCASEid','vtiger_MODULE_NAME_LOWERCASE', 'MODULE_NAME_LOWERCASEid', 'MODULE_NAME_LOWERCASE'));
+	// var $related_tables = array('vtiger_MODULE_NAME_LOWERCASEcf' => array('MODULE_NAME_LOWERCASEid', 'vtiger_MODULE_NAME_LOWERCASE', 'MODULE_NAME_LOWERCASEid', 'MODULE_NAME_LOWERCASE'));
 
 	/**
 	 * Mandatory for Saving, Include tables related to this module.
@@ -43,13 +43,14 @@ class ModuleClass extends CRMEntity {
 	public $tab_name_index = array(
 		'vtiger_crmentity' => 'crmid',
 		'vtiger_MODULE_NAME_LOWERCASE'   => 'MODULE_NAME_LOWERCASEid',
-		'vtiger_MODULE_NAME_LOWERCASEcf' => 'MODULE_NAME_LOWERCASEid');
+		'vtiger_MODULE_NAME_LOWERCASEcf' => 'MODULE_NAME_LOWERCASEid',
+	);
 
 	/**
 	 * Mandatory for Listing (Related listview)
 	 */
 	public $list_fields = array (
-		/* Format: Field Label => Array(tablename => columnname) */
+		/* Format: Field Label => array(tablename => columnname) */
 		// tablename should not have prefix 'vtiger_'
 		'MODULE_NAME_LABEL'=> array('MODULE_NAME_LOWERCASE' => 'MODULE_REFERENCE_FIELD'),
 		'Assigned To' => array('crmentity' => 'smownerid')
@@ -65,7 +66,7 @@ class ModuleClass extends CRMEntity {
 
 	// For Popup listview and UI type support
 	public $search_fields = array(
-		/* Format: Field Label => Array(tablename => columnname) */
+		/* Format: Field Label => array(tablename => columnname) */
 		// tablename should not have prefix 'vtiger_'
 		'MODULE_NAME_LABEL'=> array('MODULE_NAME_LOWERCASE' => 'MODULE_REFERENCE_FIELD')
 	);

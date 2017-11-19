@@ -154,9 +154,8 @@ class VTWorkflowUtils {
 
 	public static function vtGetModulesAndExtensions($adb) {
 		$modules_not_supported = array('Calendar', 'Events');
-		$sql = 'select distinct vtiger_field.tabid, name
-			from vtiger_field
-			inner join vtiger_tab on vtiger_field.tabid=vtiger_tab.tabid
+		$sql = 'select tabid, name
+			from vtiger_tab
 			where vtiger_tab.name not in(' . generateQuestionMarks($modules_not_supported) . ') and vtiger_tab.presence in (0,2)';
 		$it = new SqlResultIterator($adb, $adb->pquery($sql, array($modules_not_supported)));
 		$modules = array();
