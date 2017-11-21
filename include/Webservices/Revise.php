@@ -10,6 +10,9 @@
 
 function vtws_revise($element,$user){
 	global $log, $adb, $root_directory;
+	if (empty($element['id'])) {
+		throw new WebServiceException(WebServiceErrorCode::$INVALIDID,'Id specified is incorrect');
+	}
 	$idList = vtws_getIdComponents($element['id']);
 	if ((vtws_getEntityId('Calendar')==$idList[0] or vtws_getEntityId('Events')==$idList[0]) and getSalesEntityType($idList[1])=='cbCalendar') {
 		$idList[0] = vtws_getEntityId('cbCalendar') . 'x' . $idList[1];
