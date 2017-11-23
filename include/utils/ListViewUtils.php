@@ -2481,11 +2481,9 @@ function getListQuery($module, $where = '') {
 				ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 			LEFT JOIN vtiger_salesmanactivityrel
 				ON vtiger_salesmanactivityrel.activityid = vtiger_activity.activityid
-			LEFT JOIN vtiger_emaildetails
-				ON vtiger_emaildetails.emailid = vtiger_activity.activityid
-			WHERE vtiger_activity.activitytype = 'Emails'";
+			LEFT JOIN vtiger_emaildetails ON vtiger_emaildetails.emailid = vtiger_activity.activityid";
 			$query .= getNonAdminAccessControlQuery($module, $current_user);
-			$query .= "AND vtiger_crmentity.deleted = 0 " . $where;
+			$query .= "WHERE vtiger_activity.activitytype = 'Emails' AND vtiger_crmentity.deleted = 0 " . $where;
 			break;
 		Case "Faq":
 			$query = "SELECT vtiger_crmentity.crmid, vtiger_crmentity.createdtime, vtiger_crmentity.modifiedtime,
