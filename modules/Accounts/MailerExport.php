@@ -248,14 +248,13 @@ else
 	exit ();
 }
 
-function getExpWhereClause($fields,$types) {
+function getExpWhereClause($fields, $types) {
 	global $adb;
 	$where_cond = '';
-	foreach ($fields as $myField) {
-		$myType = each($types);
+	foreach ($fields as $key => $myField) {
 		if (strlen($_POST[$myField]) > 0) {
 			// type 1 should use a LIKE search
-			if ($myType['value'] == 1) {
+			if ($types[$key] == 1) {
 				$equals = " LIKE '";
 				$postfix = "%'";
 			} else {
