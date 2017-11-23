@@ -15,12 +15,12 @@ function GetFileExtension($filename) {
 	return $pathinfo['extension'];
 }
 
-function crmmerge($csvheader,$content,$index_in_csvdata,$function_name='') {
+function justReturnParameter($a) {
+	return $a;
+}
+
+function crmmerge($csvheader, $content, $index_in_csvdata, $function_name = 'justReturnParameter') {
 	global $csvdata;
-	$f = $function_name;
-	if (!($function_name) || !is_callable($function_name)) {
-		$f = create_function('$a','return $a;');
-	}
 	$Header = explode (",",$csvheader);
 	$Temp = explode ("###",$csvdata);
 	$Values = explode (",",$Temp[$index_in_csvdata]);
@@ -28,7 +28,7 @@ function crmmerge($csvheader,$content,$index_in_csvdata,$function_name='') {
 	for($i=0;$i<$numfields;$i++) {
 		// if field is RTE, which is defined by FieldInfo Business Map, we have to decode_html() it here, like the line below:
 		// if ($Header[$i]=='TICKET_SOLUTION') $Values[$i] = decode_html($Values[$i]);
-		$content = str_replace($Header[$i], call_user_func($f,$Values[$i]), $content);
+		$content = str_replace($Header[$i], call_user_func($function_name, $Values[$i]), $content);
 	}
 	return $content;
 }
