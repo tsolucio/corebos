@@ -15,7 +15,7 @@
  *************************************************************************************************/
 global $entityDel, $display;
 
-if(version_compare(phpversion(), '5.4.0') < 0 or version_compare(phpversion(), '7.1.0') >= 0) {
+if(version_compare(phpversion(), '5.4.0') < 0 or version_compare(phpversion(), '7.2.0') >= 0) {
 	header('Content-Type: text/html; charset=UTF-8');
 	$serverPhpVersion = phpversion();
 	require_once('phpversionfail.php');
