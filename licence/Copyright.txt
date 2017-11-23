@@ -11,7 +11,7 @@ vtiger.com is not affiliated with nor endorsed by any of the above providers.
 
 4. SugarCRM software used under the SugarCRM Public License SPL 1.1.2 available at <vtiger CRM Home>/vtigerCRM/LICENSE.txt
 
-5. gdwin32 software used under the GNU GPL available at gdwin32 <vtiger CRM Home>/vtigerCRM/gdwin32/gd-license.txt
+5. jscalendar is used under GNU LGPL downloaded from http://www.dynarch.com/projects/calendar/ available at http://www.gnu.org/licenses/lgpl.html
 
 6. nusoap software used under GNU LGPL from http://sourceforge.net/projects/nusoap
 
@@ -19,33 +19,17 @@ vtiger.com is not affiliated with nor endorsed by any of the above providers.
 
 8. ADOdb software used under BSD license downloaded from http://adodb.sourceforge.net available at <vtiger CRM Home>/vtigerCRM/adodb/license.txt
 
+9. htmlpurifier is used under GNU LGPL (v2.1+) from http://htmlpurifier.org/
+
 10. Simplepie software used under BSD downloaded from https://github.com/simplepie
 
-11. FCKeditor software used under GNU LGPL downloaded from http://www.fckeditor.net/download/default.html available at <vtiger CRM Home>/vtigerCRM/includes/FCKeditor/license.txt
+11. Smarty Template Engine for PHP used under the GNU LGPL available at available at <vtiger CRM Home>/vtigerCRM/Smarty/COPYING.lib
 
-12. Mailfeed used under GNU GPL downloaded from http://wiki.wonko.com/software/mailfeed/ available at http://wiki.wonko.com/software/mailfeed/#copyright
+12. freetag is used under dual license BSD and GNU LGPL downloaded from http://www.getluky.net available at <vtiger CRM Home>/vtigerCRM/include/freetag/license.txt
 
-13. Smarty Template Engine for PHP used under the GNU LGPL available at available at <vtiger CRM Home>/vtigerCRM/Smarty/COPYING.lib
+13. log4php is used under GNU LGPL downloaded from http://www.vxr.it/log4php/ available at http://www.vxr.it/log4php/
 
-14. freetag is used under dual license BSD and GNU LGPL downloaded from http://www.getluky.net available at <vtiger CRM Home>/vtigerCRM/include/freetag/license.txt
-
-15. Image_Canvas is used under GNU LGPL downloaded from http://pear.php.net/pepr/pepr-proposal-show.php?id=212 available at http://www.gnu.org/copyleft/lesser.html 
-
-16. Image_Color is used under PHP license 3.0 downloaded from http://pear.php.net/package/Image_Color available at http://www.php.net/license/3_0.txt
-
-17. Graph is used under GNU LGPL downloaded from http://pear.php.net/package/Image_Graph available at http://www.gnu.org/copyleft/lesser.html
-
-18. log4php is used under GNU LGPL downloaded from http://www.vxr.it/log4php/ available at http://www.vxr.it/log4php/
-
-19. jscalendar is used under GNU LGPL downloaded from http://www.dynarch.com/projects/calendar/ available at http://www.gnu.org/licenses/lgpl.html
-
-22. PHP Class mimetype under BSD License from http://www.phpclasses.org/browse/package/834.html
-
-24. htmlpurifier is used under GNU LGPL (v2.1+) from http://htmlpurifier.org/
-
-23. gd 2.0.28 software used "AS IS" available at <vtiger CRM Home>/vtigerCRM_linux/gd-2.0.28/
-
-25. In addition to the above mentioned Open Source components, vtiger provides additional functionality, which is dual-licensed under Mozilla Public License (MPL 1.1) as well as the GNU Public License (GPL)
+14. In addition to the above mentioned Open Source components, vtiger provides additional functionality, which is dual-licensed under Mozilla Public License (MPL 1.1) as well as the GNU Public License (GPL)
 
 The licenses of the Open Source components are reproduced in full below.
 
