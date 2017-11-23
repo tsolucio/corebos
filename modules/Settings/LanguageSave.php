@@ -67,11 +67,6 @@ function cbGetHeaderToUseInLanguageFile($filename) {
 	return $header;
 }
 
-if(get_magic_quotes_gpc() == 1){
-	if(is_array($_REQUEST['translate_value'])) $_REQUEST['translate_value'] = array_map("stripslashes_checkstrings", $_REQUEST['translate_value']);
-	if(is_array($_REQUEST['translate_list_value'])) $_REQUEST['translate_list_value'] = array_map("stripslashes_checkstrings", $_REQUEST['translate_list_value']);
-	if(is_array($_REQUEST['translate_list_value2'])) $_REQUEST['translate_list_value2'] = array_map("stripslashes_checkstrings", $_REQUEST['translate_list_value2']);
-}
 $langid = vtlib_purify($_REQUEST['languageid']);
 $pmodule = vtlib_purify($_REQUEST['pick_module']);
 if(isset($langid) && $langid !='' && $pmodule!='' ){

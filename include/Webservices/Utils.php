@@ -141,15 +141,15 @@ function getEmailFieldId($meta, $entityId) {
 	return $adb->query_result($result,0,'fieldid');
 }
 
-function vtws_getParameter($parameterArray, $paramName,$default=null) {
-	if (!get_magic_quotes_gpc()) {
-		if (isset($parameterArray[$paramName]) and is_array($parameterArray[$paramName])) {
+function vtws_getParameter($parameterArray, $paramName, $default=null) {
+	if (isset($parameterArray[$paramName])) {
+		if (is_array($parameterArray[$paramName])) {
 			$param = array_map('addslashes', $parameterArray[$paramName]);
 		} else {
-			$param = isset($parameterArray[$paramName]) ? addslashes($parameterArray[$paramName]) : '';
+			$param = addslashes($parameterArray[$paramName]);
 		}
 	} else {
-		$param = isset($parameterArray[$paramName]) ? $parameterArray[$paramName] : '';
+		$param = '';
 	}
 	if (!$param) {
 		$param = $default;

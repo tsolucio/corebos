@@ -913,9 +913,6 @@ function addCustomField() {
 		if ($activitytype == 'E') $tabid = '16';
 		if ($activitytype == 'T') $tabid = '9';
 	}
-	if(get_magic_quotes_gpc() == 1) {
-		$fldlabel = stripslashes($fldlabel);
-	}
 
 	$dup_check_tab_id = $tabid;
 	if ($fldmodule == 'Calendar')
