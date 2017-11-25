@@ -88,11 +88,18 @@ class VTFieldExpressionEvaluater{
 			'__cb_getGEODistanceFromAssignUser2ContactShipping',
 			'__cbwf_setype',
 		);
-		$wfexpfuncs = $adb->query('select expname,funcname,rawparams from com_vtiger_workflows_expfunctions');
+		$this->needscontext = array(
+			'__cb_aggregation',
+			'__cb_aggregation_operation',
+		);
+		$wfexpfuncs = $adb->query('select expname,funcname,rawparams,needscontext from com_vtiger_workflows_expfunctions');
 		while ($func = $adb->fetch_array($wfexpfuncs)) {
 			$this->functions[$func['expname']] = $func['funcname'];
 			if ($func['rawparams'] == 1) {
 				$this->rawparams[] = $func['funcname'];
+			}
+			if ($func['needscontext'] == 1) {
+				$this->needscontext[] = $func['funcname'];
 			}
 		}
 		$this->operations = array_merge($this->functions, $this->operators);
@@ -141,9 +148,11 @@ class VTFieldExpressionEvaluater{
 				} elseif ($func == '__cb_aggregation' || $func == '__cb_aggregation_operation') {
 					$params = array_map(array($this, 'exec'), $expr->getParams());
 					if (count($params)==3) $params[] = ''; // no conditions
-					$params[] = $this->env;
 				} else {
 					$params = array_map(array($this, 'exec'), $expr->getParams());
+				}
+				if (in_array($func, $this->needscontext)) {
+					$params[] = $this->env;
 				}
 				$loginfo = print_r($params,true);
 				$logbg->debug("VTExpressionTreeNode: function $func $loginfo");
