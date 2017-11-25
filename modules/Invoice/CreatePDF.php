@@ -16,7 +16,7 @@ $invoice_no = getModuleSequenceNumber($currentModule,vtlib_purify($_REQUEST['rec
 $moduleName = str_replace(' ', '', getTranslatedString('SINGLE_Invoice', $currentModule));
 if(isset($_REQUEST['savemode']) && $_REQUEST['savemode'] == 'file') {
 	$id = vtlib_purify($_REQUEST['record']);
-	$filepath=$root_directory.'test/product/'.$id.'_'.$moduleName.'_'.$invoice_no.'.pdf';
+	$filepath=$root_directory.'cache/'.$id.'_'.$moduleName.'_'.$invoice_no.'.pdf';
 	$controller->Output($filepath,'F'); //added file name to make it work in IE, also forces the download giving the user the option to save
 } elseif (isset($purpose) and $purpose == 'webservice') {
 	$log->debug('Switched to buffer. Purpose = '. $purpose);

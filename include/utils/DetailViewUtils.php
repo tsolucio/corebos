@@ -400,19 +400,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		$label_fld ["options"][] = $users_combo;
 		$label_fld ["options"][] = $groups_combo;
 	} elseif ($uitype == 55 || $uitype == 255) {
-		if ($tabid == 4) {
-			$query = "select vtiger_contactdetails.imagename from vtiger_contactdetails where contactid=?";
-			$result = $adb->pquery($query, array($col_fields['record_id']));
-			$imagename = $adb->query_result($result, 0, 'imagename');
-			if ($imagename != '') {
-				$imgpath = "test/contact/" . $imagename;
-				$label_fld[] = getTranslatedString($fieldlabel, $module);
-			} else {
-				$label_fld[] = getTranslatedString($fieldlabel, $module);
-			}
-		} else {
-			$label_fld[] = getTranslatedString($fieldlabel, $module);
-		}
+		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$value = $col_fields[$fieldname];
 		if ($uitype == 255) {
 			global $currentModule;
@@ -640,7 +628,6 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		} else {
 			$imageattachment = 'Attachment';
 		}
-		//$imgpath = getModuleFileStoragePath('Contacts').$col_fields[$fieldname];
 		$sql = "select vtiger_attachments.*,vtiger_crmentity.setype
 		 from vtiger_attachments
 		 inner join vtiger_seattachmentsrel on vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
@@ -755,7 +742,6 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		}
 	} elseif ($uitype == 105) {//Added for user image
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
-		//$imgpath = getModuleFileStoragePath('Contacts').$col_fields[$fieldname];
 		$sql = "select vtiger_attachments.* from vtiger_attachments left join vtiger_salesmanattachmentsrel on vtiger_salesmanattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid where vtiger_salesmanattachmentsrel.smid=?";
 		$image_res = $adb->pquery($sql, array($col_fields['record_id']));
 		$image_id = $adb->query_result($image_res, 0, 'attachmentsid');

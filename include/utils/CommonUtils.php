@@ -1490,13 +1490,13 @@ function getProductImages($id) {
  * This function is used to save the Images
  * It acceps the File lists,modulename,id and the mode as arguments
  * It returns the array details of the upload
- * Note: this is not used anywhere. deprecated?
+ * @deprecated
  */
 function SaveImage($files, $module, $id, $mode) {
 	global $log, $root_directory;
 	$log->debug("Entering SaveImage(" . $files . "," . $module . "," . $id . "," . $mode . ") method ...");
 	global $adb;
-	$uploaddir = $root_directory . "test/" . $module . "/"; //set this to which location you need to give the contact image
+	$uploaddir = $root_directory . "cache/" . $module . "/"; //set this to which location you need to give the contact image
 	$log->info("The Location to Save the Contact Image is " . $uploaddir);
 	$file_path_name = $files['imagename']['name'];
 	if (isset($_REQUEST['imagename_hidden'])) {
@@ -2118,28 +2118,6 @@ function decideFilePath() {
 	$log->debug("Exiting from decideFilePath() method ...");
 
 	return $filepath;
-}
-
-/**
- * 	This function is used to get the Path in where we store the files based on the module.
- * 	@param string $module   - module name
- * 	return string $storage_path - path inwhere the file will be uploaded (also where it was stored) will be return based on the module
- */
-function getModuleFileStoragePath($module) {
-	global $log;
-	$log->debug("Entering into getModuleFileStoragePath($module) method ...");
-
-	$storage_path = "test/";
-
-	if ($module == 'Products') {
-		$storage_path .= 'product/';
-	}
-	if ($module == 'Contacts') {
-		$storage_path .= 'contact/';
-	}
-
-	$log->debug("Exiting from getModuleFileStoragePath($module) method. return storage_path = \"$storage_path\"");
-	return $storage_path;
 }
 
 /**

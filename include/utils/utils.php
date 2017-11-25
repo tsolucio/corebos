@@ -1280,11 +1280,12 @@ function getUnitPrice($productid, $module='Products') {
  * @param $mode -- mode :: Type string
  * @param $id -- id :: Type integer
  * @returns $ret_array -- return array:: Type array
+ * @deprecated
  */
 function upload_product_image_file($mode,$id) {
 	global $log, $root_directory;
 	$log->debug("Entering upload_product_image_file(".$mode.",".$id.") method ...");
-	$uploaddir = $root_directory ."/test/product/";
+	$uploaddir = $root_directory .'/cache/';
 
 	$file_path_name = $_FILES['imagename']['name'];
 	if (isset($_REQUEST['imagename_hidden'])) {

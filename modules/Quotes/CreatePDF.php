@@ -17,7 +17,7 @@ $quote_no = getModuleSequenceNumber($currentModule,vtlib_purify($_REQUEST['recor
 $moduleName = str_replace(' ', '', getTranslatedString('SINGLE_Quotes', $currentModule));
 if(isset($_REQUEST['savemode']) && $_REQUEST['savemode'] == 'file') {
 	$quote_id = vtlib_purify($_REQUEST['record']);
-	$filepath=$root_directory.'test/product/'.$quote_id.'_'.$moduleName.'_'.$quote_no.'.pdf';
+	$filepath=$root_directory.'cache/'.$quote_id.'_'.$moduleName.'_'.$quote_no.'.pdf';
 	//added file name to make it work in IE, also forces the download giving the user the option to save
 	$controller->Output($filepath,'F');
 } elseif (isset($purpose) and $purpose == 'webservice') {
