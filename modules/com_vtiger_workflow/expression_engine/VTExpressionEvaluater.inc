@@ -57,6 +57,7 @@ class VTFieldExpressionEvaluater{
 				'modulo' => '__cb_modulo',
 				'aggregation' => '__cb_aggregation',
 				'aggregation_fields_operation' => '__cb_aggregation_operation',
+				'getimageurl' => '__cbwf_getimageurl',
 				'getCurrentUserID' => '__getCurrentUserID',
 				'getCurrentUserName' => '__getCurrentUserName',
 				'getCurrentUserField' => '__getCurrentUserField',
@@ -91,6 +92,7 @@ class VTFieldExpressionEvaluater{
 		$this->needscontext = array(
 			'__cb_aggregation',
 			'__cb_aggregation_operation',
+			'__cbwf_getimageurl',
 		);
 		$wfexpfuncs = $adb->query('select expname,funcname,rawparams,needscontext from com_vtiger_workflows_expfunctions');
 		while ($func = $adb->fetch_array($wfexpfuncs)) {

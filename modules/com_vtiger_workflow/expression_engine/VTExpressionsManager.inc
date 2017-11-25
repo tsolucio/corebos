@@ -69,7 +69,7 @@ class VTExpressionsManager{
 			'aggregation'=>'aggregation(operation,RelatedModule,relatedFieldToAggregate,conditions)',
 			'aggregation_fields_operation'=>'aggregation_fields_operation(operation,RelatedModule,relatedFieldsToAggregateWithOperation,conditions)',
 			'getCurrentUserID' => 'getCurrentUserID()','getCurrentUserName' => 'getCurrentUserName({full})','getCurrentUserField' => 'getCurrentUserField(fieldname)',
-			'getEntityType'=>'getEntityType(field)',
+			'getEntityType'=>'getEntityType(field)','getimageurl'=>'getimageurl(field)',
 			'getLatitude' => 'getLatitude(address)', 'getLongitude' => 'getLongitude(address)',
 			'getGEODistance' => 'getGEODistance(address_from,address_to)',
 			'getGEODistanceFromCompanyAddress' => 'getGEODistanceFromCompanyAddress(address)',
