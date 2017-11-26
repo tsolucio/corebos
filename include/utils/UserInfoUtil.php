@@ -523,10 +523,15 @@ function getProfileDescription($profileid)
 }
 
 /** This function is a wrapper that extends the permissions system with a hook to specific functionality **/
-function isPermitted($module, $actionname, $record_id='') {
-	$permission = _vtisPermitted($module,$actionname,$record_id);
-	list($permission, $unused1, $unused2, $unused3) = cbEventHandler::do_filter('corebos.permissions.ispermitted', array($permission, $module, $actionname, $record_id));
-	return $permission;
+function isPermitted($module, $actionname, $record_id = '') {
+	global $current_user;
+	$key = "$module%$actionname%$record_id" . $current_user->id;
+	if (!coreBOS_Session::has($key)) {
+		$permission = _vtisPermitted($module,$actionname,$record_id);
+		list($permission, $unused1, $unused2, $unused3) = cbEventHandler::do_filter('corebos.permissions.ispermitted', array($permission, $module, $actionname, $record_id));
+		coreBOS_Session::set($key, $permission);
+	}
+	return coreBOS_Session::get($key);
 }
 
 /** Function to check if the currently logged in user is permitted to perform the specified action
