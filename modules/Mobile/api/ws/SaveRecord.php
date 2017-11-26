@@ -17,7 +17,7 @@ class crmtogo_WS_SaveRecord extends crmtogo_WS_FetchRecord {
 	protected $recordValues = false;
 
 	// Avoid retrieve and return the value obtained after Create or Update
-	protected function processRetrieve(crmtogo_API_Request $request) {
+	protected function processRetrieve(crmtogo_API_Request $request, $module) {
 		return $this->recordValues;
 	}
 
