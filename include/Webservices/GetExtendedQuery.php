@@ -231,6 +231,7 @@ function __FQNExtendedQueryAddCondition($queryGenerator,$condition,$glue,$mainMo
 	}
 	$val = trim($val);
 	$val = trim($val,"'");
+	$val = str_replace("''", "'", $val);
 	// TODO  add query generator operators for 'bw' = BETWEEN value1 and value2  (between two dates)
 	switch ($op) {
 		case '<':
