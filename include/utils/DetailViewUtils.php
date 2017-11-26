@@ -144,31 +144,32 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		$label_fld[] = $col_fields[$fieldname];
 		$roleid = $current_user->roleid;
 
-		$valueArr = explode("|##|", $col_fields[$fieldname]);
+		$valueArr = trim($col_fields[$fieldname]);
 		$picklistValues = getAssignedPicklistValues($fieldname, $roleid, $adb);
 
-		//Mikecrowe fix to correctly default for custom pick lists
 		$options = array();
-		$count = 0;
-		$found = false;
 		if (!empty($picklistValues)) {
 			$pickcount = 0;
 			foreach ($picklistValues as $order => $pickListValue) {
-				if (in_array(trim($pickListValue), array_map("trim", $valueArr))) {
+				if (trim($pickListValue) == $valueArr) {
 					$chk_val = "selected";
 					$pickcount++;
 				} else {
 					$chk_val = '';
 				}
 				if (isset($_REQUEST['file']) && $_REQUEST['file'] == 'QuickCreate') {
-					$options[] = array(htmlentities(getTranslatedString($pickListValue), ENT_QUOTES, $default_charset), $pickListValue, $chk_val);
+					$options[] = array(htmlentities(getTranslatedString($pickListValue, $module), ENT_QUOTES, $default_charset), $pickListValue, $chk_val);
 				} else {
-					$options[] = array(getTranslatedString($pickListValue), $pickListValue, $chk_val);
+					$options[] = array(getTranslatedString($pickListValue, $module), $pickListValue, $chk_val);
 				}
 			}
 
-			if ($pickcount == 0 && !empty($value)) {
-				$options[] = array($app_strings['LBL_NOT_ACCESSIBLE'], $value, 'selected');
+			if ($pickcount == 0) { // current value not found so this role does not have permission to it > we force it
+				if (isset($_REQUEST['file']) && $_REQUEST['file'] == 'QuickCreate') {
+					$options[] = array(htmlentities(getTranslatedString($valueArr, $module), ENT_QUOTES, $default_charset), $valueArr, 'selected');
+				} else {
+					$options[] = array(getTranslatedString($valueArr, $module), $valueArr, 'selected');
+				}
 			}
 		}
 		$label_fld ["options"] = $options;
@@ -208,14 +209,14 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		$options = array();
 		$selected_entries = array();
 		$selected_entries = explode(' |##| ', $col_fields[$fieldname]);
+		//$selected_entries = array_combine($selected_entries, $selected_entries);
+		//$picklistValues = array_merge($picklistValues, $selected_entries);
 
 		if (!empty($picklistValues)) {
-			$pickcount = 0;
 			foreach ($picklistValues as $order => $pickListValue) {
 				foreach ($selected_entries as $selected_entries_value) {
 					if (trim($selected_entries_value) == trim(htmlentities($pickListValue, ENT_QUOTES, $default_charset))) {
 						$chk_val = 'selected';
-						$pickcount++;
 						break;
 					} else {
 						$chk_val = '';
@@ -226,10 +227,6 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 				} else {
 					$options[] = array(getTranslatedString($pickListValue), $pickListValue, $chk_val);
 				}
-			}
-			if ($pickcount == 0 && !empty($value)) {
-				$not_access_lbl = "<font color='red'>" . $app_strings['LBL_NOT_ACCESSIBLE'] . "</font>";
-				$options[] = array($not_access_lbl, trim($selected_entries_value), 'selected');
 			}
 		}
 		$label_fld ["options"] = $options;

@@ -198,13 +198,15 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		foreach ($valueArr as $key => $value) {
 			$valueArr[$key] = trim(html_entity_decode($value, ENT_QUOTES, $default_charset));
 		}
-		$pickcount = 0;
+		if ($uitype == 15 ) {
+			$valueArr = array_combine($valueArr, $valueArr);
+			$picklistValues = array_merge($picklistValues, $valueArr);
+		}
 		$options = array();
 		if(!empty($picklistValues)){
 			foreach($picklistValues as $order=>$pickListValue){
 				if(in_array(trim($pickListValue),$valueArr)){
 					$chk_val = "selected";
-					$pickcount++;
 				}else{
 					$chk_val = '';
 				}
@@ -213,10 +215,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 				}else{
 					$options[] = array(getTranslatedString($pickListValue),$pickListValue,$chk_val );
 				}
-			}
-
-			if($pickcount == 0 && !empty($value)){
-				$options[] = array($app_strings['LBL_NOT_ACCESSIBLE'],$value,'selected');
 			}
 		}
 		$editview_label[]=getTranslatedString($fieldlabel,$module_name,$value);

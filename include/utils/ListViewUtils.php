@@ -1337,38 +1337,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 				$value = $dt . ' ' . $curr_time . $time_format;
 			}
 		}
-	} elseif ($uitype == 15 || ($uitype == 55 && $fieldname == "salutationtype")) {
-		$temp_val = decode_html_force($adb->query_result($list_result, $list_result_count, $colname));
-		if (($is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1) && $temp_val != '') {
-			$temp_acttype = $adb->query_result($list_result, $list_result_count, 'activitytype');
-			if (($temp_acttype != 'Task') && $fieldname == "taskstatus")
-				$temptable = "eventstatus";
-			else
-				$temptable = $fieldname;
-			$roleid = $current_user->roleid;
-			$roleids = Array();
-			$subrole = getRoleSubordinates($roleid);
-			if (count($subrole) > 0)
-				$roleids = $subrole;
-			$roleids[] = $roleid;
-			$sql = "select * from vtiger_$temptable where $temptable=?";
-			$res = $adb->pquery($sql, array(decode_html_force($temp_val)));
-			$picklistvalueid = $adb->query_result($res, 0, 'picklist_valueid');
-			if ($picklistvalueid != null) {
-				$pick_query = "select * from vtiger_role2picklist where picklistvalueid=$picklistvalueid and roleid in (" . generateQuestionMarks($roleids) . ")";
-				$res_val = $adb->pquery($pick_query, array($roleids));
-				$num_val = $adb->num_rows($res_val);
-			}
-			if ($num_val > 0 || ($temp_acttype == 'Task' && $fieldname == 'activitytype'))
-				$temp_val = $temp_val;
-			else
-				$temp_val = "<font color='red'>" . $app_strings['LBL_NOT_ACCESSIBLE'] . "</font>";
-		}
-		$value = (!empty($current_module_strings[$temp_val])) ? $current_module_strings[$temp_val] : ((!empty($app_strings[$temp_val])) ? ($app_strings[$temp_val]) : $temp_val);
-		if ($value != "<font color='red'>" . $app_strings['LBL_NOT_ACCESSIBLE'] . "</font>") {
-			$value = textlength_check($value);
-		}
-	} elseif ($uitype == 16 || $uitype == 1613 || $uitype == 1614 || $uitype == 1615) {
+	} elseif ($uitype == 15 || ($uitype == 55 && $fieldname == "salutationtype") || $uitype == 16 || $uitype == 1613 || $uitype == 1614 || $uitype == 1615) {
 		$value = getTranslatedString($temp_val, $currentModule);
 		$value = textlength_check($value);
 	} elseif ($uitype == 71 || $uitype == 72) {
@@ -1614,12 +1583,13 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 				$str_c = 0;
 				$listview_max_textlength = GlobalVariable::getVariable('Application_ListView_Max_Text_Length',40,$currentModule);
 				foreach ($value_arr as $ind => $val) {
-					$notaccess = '<font color="red">' . $app_strings['LBL_NOT_ACCESSIBLE'] . "</font>";
+					if (!in_array($val, $picklistarr)) {
+						continue;
+					}
 					if (!$listview_max_textlength || !(strlen(preg_replace("/(<\/?)(\w+)([^>]*>)/i", "", $string_temp)) > $listview_max_textlength)) {
-						$value_temp1 = (in_array(trim($val), $picklistarr)) ? $val : $notaccess;
 						if ($str_c != 0)
 							$string_temp .= ' , ';
-						$string_temp .= $value_temp1;
+						$string_temp .= $val;
 						$str_c++;
 					}
 					else
