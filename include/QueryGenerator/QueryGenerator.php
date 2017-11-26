@@ -53,6 +53,7 @@ class QueryGenerator {
 	public static $AND = 'AND';
 	public static $OR = 'OR';
 	private $customViewFields;
+	public $denormalized = false;
 
 	public function __construct($module, $user) {
 		$db = PearDatabase::getInstance();
