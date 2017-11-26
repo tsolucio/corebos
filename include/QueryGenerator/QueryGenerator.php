@@ -452,10 +452,15 @@ class QueryGenerator {
 		$moduleFields = $this->getModuleFields();
 		$accessibleFieldList = array_keys($moduleFields);
 		$accessibleFieldList[] = 'id';
+		$allfields = $accessibleFieldList;
 		if($this->referenceFieldInfoList) { // Adding support for reference module fields
 			$accessibleFieldList = array_merge($this->referenceFieldNameList,$accessibleFieldList);
 		}
-		$this->fields = array_intersect($this->fields, $accessibleFieldList);
+		if (in_array('*',$this->fields)) {
+			$this->fields = $allfields;
+		} else {
+			$this->fields = array_intersect($this->fields, $accessibleFieldList);
+		}
 		foreach ($this->fields as $field) {
 			$sql = $this->getSQLColumn($field);
 			$columns[] = $sql;
