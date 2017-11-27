@@ -524,9 +524,18 @@ function getProfileDescription($profileid)
 
 /** This function is a wrapper that extends the permissions system with a hook to specific functionality **/
 function isPermitted($module, $actionname, $record_id = '') {
-	global $current_user;
-	$key = "$module%$actionname%$record_id" . $current_user->id;
+	global $current_user, $adb;
+	$lastModified = '';
+	if (!empty($record_id)) {
+		if (strpos($record_id, 'x')>0) { // is webserviceid
+			list($void,$record_id) = explode('x', $record_id);
+		}
+		$rs = $adb->pquery("select date_format(modifiedtime,'%Y%m%d%H%i%s') from vtiger_crmentity where crmid=?", array($record_id));
+		$lastModified = $adb->query_result($rs, 0, 0);
+	}
+	$key = "ispt:$module%$actionname%$record_id%" . $current_user->id . "%$lastModified";
 	if (!coreBOS_Session::has($key)) {
+		coreBOS_Session::deleteStartsWith("ispt:$module%$actionname%$record_id%" . $current_user->id);
 		$permission = _vtisPermitted($module,$actionname,$record_id);
 		list($permission, $unused1, $unused2, $unused3) = cbEventHandler::do_filter('corebos.permissions.ispermitted', array($permission, $module, $actionname, $record_id));
 		coreBOS_Session::set($key, $permission);
