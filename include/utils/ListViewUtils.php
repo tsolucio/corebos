@@ -1151,7 +1151,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 				$sub_products_link = '<a href="index.php?module=Products&action=Popup&html=Popup_picker&return_module=' . vtlib_purify($_REQUEST['return_module']) . '&record_id=' . vtlib_purify($entity_id) . '&form=HelpDeskEditView&select=enable&popuptype=' . $focus->popup_type . '&curr_row=' . vtlib_purify($row_id) . '&currencyid=' . vtlib_purify($_REQUEST['currencyid']) . '" > '.getTranslatedString('Sub Products').'</a>';
 				$SubProductBeParent = GlobalVariable::getVariable('Product_Permit_Subproduct_Be_Parent', 'no');
 				if (!isset($_REQUEST['record_id']) || $SubProductBeParent == 'yes') {
-					$sub_products_query = $adb->pquery("SELECT * from vtiger_seproductsrel WHERE productid=? AND setype='Products'", array($entity_id));
+					$sub_products_query = $adb->pquery("SELECT productid from vtiger_seproductsrel WHERE productid=? AND setype='Products' limit 1", array($entity_id));
 					if ($adb->num_rows($sub_products_query) > 0)
 						$list_header[] = $sub_products_link;
 					else
@@ -1458,7 +1458,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		}
 
 		if ($parentid != '') {
-			$sql = "SELECT * FROM $tablename WHERE $idname = ?";
+			$sql = "SELECT $fieldname FROM $tablename WHERE $idname = ?";
 			$fieldvalue = $adb->query_result($adb->pquery($sql, array($parentid)), 0, $fieldname);
 
 			$value = '<a href=index.php?module=' . $parenttype . '&action=DetailView&record=' . $parentid . '&parenttab=' . urlencode($tabname) . '>' . textlength_check($fieldvalue) . '</a>';
@@ -1486,7 +1486,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 			$idname = "ticketid";
 		}
 		if ($parentid != '') {
-			$sql = "SELECT * FROM $tablename WHERE $idname = ?";
+			$sql = "SELECT $fieldname FROM $tablename WHERE $idname = ?";
 			$fieldvalue = $adb->query_result($adb->pquery($sql, array($parentid)), 0, $fieldname);
 
 			$value = '<a href=index.php?module=' . $parenttype . '&action=DetailView&record=' . $parentid . '&parenttab=' . urlencode($tabname) . '>' . textlength_check($fieldvalue) . '</a>';
@@ -1509,7 +1509,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 			$idname = "contactid";
 		}
 		if ($parentid != '') {
-			$sql = "SELECT * FROM $tablename WHERE $idname = ?";
+			$sql = "SELECT $fieldname FROM $tablename WHERE $idname = ?";
 			$fieldvalue = $adb->query_result($adb->pquery($sql, array($parentid)), 0, $fieldname);
 
 			$value = '<a href=index.php?module=' . $parenttype . '&action=DetailView&record=' . $parentid . '&parenttab=' . urlencode($tabname) . '>' . textlength_check($fieldvalue) . '</a>';
@@ -3744,7 +3744,7 @@ function getMergeFields($module, $str) {
 	if ($str == "available_fields") {
 		$result = getFieldsResultForMerge($tabid);
 	} else { //if($str == fileds_to_merge)
-		$sql = "select * from vtiger_user2mergefields where tabid=? and userid=? and visible=1";
+		$sql = "select fieldid from vtiger_user2mergefields where tabid=? and userid=? and visible=1";
 		$result = $adb->pquery($sql, array($tabid, $current_user->id));
 	}
 
@@ -3793,7 +3793,7 @@ function getFirstModule($module, $fieldname) {
 
 		if ($uitype == 10) {
 			$fieldid = $adb->query_result($result, 0, "fieldid");
-			$sql = "select * from vtiger_fieldmodulerel where fieldid=? order by sequence";
+			$sql = "select relmodule from vtiger_fieldmodulerel where fieldid=? order by sequence";
 			$result = $adb->pquery($sql, array($fieldid));
 			$count = $adb->num_rows($result);
 

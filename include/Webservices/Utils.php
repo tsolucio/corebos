@@ -64,7 +64,7 @@ function vtws_generateRandomAccessKey($length=10) {
  */
 function vtws_getVtigerVersion() {
 	global $adb;
-	$query = 'select * from vtiger_version';
+	$query = 'select current_version from vtiger_version';
 	$result = $adb->pquery($query, array());
 	$version = '';
 	while ($row = $adb->fetch_array($result)) {
@@ -536,7 +536,7 @@ function vtws_getActorEntityNameById ($entityId, $idList) {
 	}
 	$nameList = array();
 	$webserviceObject = VtigerWebserviceObject::fromId($db, $entityId);
-	$query = "select * from vtiger_ws_entity_name where entity_id = ?";
+	$query = "select table_name, index_field, name_fields from vtiger_ws_entity_name where entity_id = ?";
 	$result = $db->pquery($query, array($entityId));
 	if (is_object($result)) {
 		$rowCount = $db->num_rows($result);
@@ -576,7 +576,7 @@ function vtws_isRoleBasedPicklist($name) {
 
 function vtws_getConvertLeadFieldMapping() {
 	global $adb;
-	$sql = "select * from vtiger_convertleadmapping";
+	$sql = "select leadfid, accountfid, potentialfid, contactfid from vtiger_convertleadmapping";
 	$result = $adb->pquery($sql,array());
 	if ($result === false) {
 		return null;
@@ -601,7 +601,7 @@ function vtws_getConvertLeadFieldMapping() {
 function vtws_getRelatedNotesAttachments($id,$relatedId) {
 	global $adb,$log;
 
-	$sql = "select * from vtiger_senotesrel where crmid=?";
+	$sql = "select notesid from vtiger_senotesrel where crmid=?";
 	$result = $adb->pquery($sql, array($id));
 	if ($result === false) {
 		return false;
@@ -617,7 +617,7 @@ function vtws_getRelatedNotesAttachments($id,$relatedId) {
 		}
 	}
 
-	$sql = "select * from vtiger_seattachmentsrel where crmid=?";
+	$sql = "select attachmentsid from vtiger_seattachmentsrel where crmid=?";
 	$result = $adb->pquery($sql, array($id));
 	if ($result === false) {
 		return false;
@@ -643,7 +643,7 @@ function vtws_getRelatedNotesAttachments($id,$relatedId) {
 function vtws_saveLeadRelatedProducts($leadId, $relatedId, $setype) {
 	global $adb;
 
-	$result = $adb->pquery("select * from vtiger_seproductsrel where crmid=?", array($leadId));
+	$result = $adb->pquery("select productid from vtiger_seproductsrel where crmid=?", array($leadId));
 	if ($result === false) {
 		return false;
 	}
@@ -666,7 +666,7 @@ function vtws_saveLeadRelatedProducts($leadId, $relatedId, $setype) {
 function vtws_saveLeadRelations($leadId, $relatedId, $setype) {
 	global $adb;
 
-	$result = $adb->pquery("select * from vtiger_crmentityrel where crmid=?", array($leadId));
+	$result = $adb->pquery("select relcrmid, relmodule from vtiger_crmentityrel where crmid=?", array($leadId));
 	if ($result === false) {
 		return false;
 	}
@@ -679,7 +679,7 @@ function vtws_saveLeadRelations($leadId, $relatedId, $setype) {
 			return false;
 		}
 	}
-	$result = $adb->pquery("select * from vtiger_crmentityrel where relcrmid=?", array($leadId));
+	$result = $adb->pquery("select crmid, module from vtiger_crmentityrel where relcrmid=?", array($leadId));
 	if ($result === false) {
 		return false;
 	}
@@ -718,7 +718,7 @@ function vtws_getRelatedActivities($leadId,$accountId,$contactId,$relatedId) {
 		throw new WebServiceException(WebServiceErrorCode::$LEAD_RELATED_UPDATE_FAILED, "Failed to move related Activities/Emails");
 	}
 	global $adb;
-	$sql = "select * from vtiger_seactivityrel where crmid=?";
+	$sql = "select activityid from vtiger_seactivityrel where crmid=?";
 	$result = $adb->pquery($sql, array($leadId));
 	if ($result === false) {
 		return false;
@@ -775,7 +775,7 @@ function vtws_getRelatedActivities($leadId,$accountId,$contactId,$relatedId) {
 function vtws_saveLeadRelatedCampaigns($leadId, $relatedId, $seType) {
 	global $adb;
 
-	$result = $adb->pquery("select * from vtiger_campaignleadrel where leadid=?", array($leadId));
+	$result = $adb->pquery("select campaignid from vtiger_campaignleadrel where leadid=?", array($leadId));
 	if ($result === false) {
 		return false;
 	}

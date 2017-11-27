@@ -980,7 +980,7 @@ function getActionid($action) {
 		$actionid = (isset($action_id_array[$action]) ? $action_id_array[$action] : '');
 	}
 	if ($actionid == '') {
-		$query="select * from vtiger_actionmapping where actionname=?";
+		$query="select actionid from vtiger_actionmapping where actionname=?";
 		$result =$adb->pquery($query, array($action));
 		$actionid=$adb->query_result($result,0,'actionid');
 	}
@@ -1001,7 +1001,7 @@ function getActionname($actionid) {
 		$actionname = (isset($action_name_array[$actionid]) ? $action_name_array[$actionid] : '');
 	}
 	if ($actionname == '') {
-		$query="select * from vtiger_actionmapping where actionid=? and securitycheck=0";
+		$query="select actionname from vtiger_actionmapping where actionid=? and securitycheck=0";
 		$result =$adb->pquery($query, array($actionid));
 		$actionname=$adb->query_result($result,0,"actionname");
 	}
@@ -1053,7 +1053,7 @@ function insertProfile2field($profileid) {
 	$log->debug("Entering insertProfile2field(".$profileid.") method ...");
 
 	$adb->database->SetFetchMode(ADODB_FETCH_ASSOC);
-	$fld_result = $adb->pquery("select * from vtiger_field where generatedtype=1 and displaytype in (1,2,3) and vtiger_field.presence in (0,2) and tabid != 29", array());
+	$fld_result = $adb->pquery("select tabid, fieldid from vtiger_field where generatedtype=1 and displaytype in (1,2,3) and vtiger_field.presence in (0,2) and tabid != 29", array());
 	$num_rows = $adb->num_rows($fld_result);
 	for($i=0; $i<$num_rows; $i++) {
 		$tab_id = $adb->query_result($fld_result,$i,'tabid');
@@ -1069,7 +1069,7 @@ function insert_def_org_field() {
 	global $log, $adb;
 	$log->debug("Entering insert_def_org_field() method ...");
 	$adb->database->SetFetchMode(ADODB_FETCH_ASSOC);
-	$fld_result = $adb->pquery("select * from vtiger_field where generatedtype=1 and displaytype in (1,2,3) and vtiger_field.presence in (0,2) and tabid != 29", array());
+	$fld_result = $adb->pquery("select tabid, fieldid from vtiger_field where generatedtype=1 and displaytype in (1,2,3) and vtiger_field.presence in (0,2) and tabid != 29", array());
 	$num_rows = $adb->num_rows($fld_result);
 	for($i=0; $i<$num_rows; $i++) {
 		$tab_id = $adb->query_result($fld_result,$i,'tabid');
@@ -1858,7 +1858,7 @@ function getEmailParentsList($module,$id,$focus = false)
 	$fieldname = 'email';
 	if($focus->column_fields['email'] == '' && $focus->column_fields['secondaryemail'] != '' )
 		$fieldname='secondaryemail';
-	$res = $adb->pquery("select * from vtiger_field where tabid = ? and fieldname= ? and vtiger_field.presence in (0,2)", array(getTabid($module), $fieldname));
+	$res = $adb->pquery("select fieldid from vtiger_field where tabid = ? and fieldname= ? and vtiger_field.presence in (0,2)", array(getTabid($module), $fieldname));
 	$fieldid = $adb->query_result($res,0,'fieldid');
 
 	$hidden  = '<input type="hidden" name="emailids" value="'.$id.'@'.$fieldid.'|">';
@@ -2959,7 +2959,7 @@ function getRecordValues($id_array,$module) {
 function is_related($relation_table,$crm_field,$related_module_id,$crmid)
 {
 	global $adb;
-	$check_res = $adb->query("select * from $relation_table where $crm_field=$related_module_id and crmid=$crmid");
+	$check_res = $adb->query("select crmid from $relation_table where $crm_field=$related_module_id and crmid=$crmid limit 1");
 	$count = $adb->num_rows($check_res);
 	if($count > 0)
 		return true;
@@ -3825,7 +3825,7 @@ function addToCallHistory($userExtension, $callfrom, $callto, $status, $adb, $us
  */
 function getSettingsBlocks(){
 	global $adb;
-	$sql = "select * from vtiger_settings_blocks order by sequence";
+	$sql = "select blockid, label from vtiger_settings_blocks order by sequence";
 	$result = $adb->query($sql);
 	$count = $adb->num_rows($result);
 	$blocks = array();
@@ -4489,7 +4489,7 @@ function getInventoryModules() {
 function getActivityRelatedContacts($activityId) {
 	$adb = PearDatabase::getInstance();
 
-	$query = 'SELECT * FROM vtiger_cntactivityrel WHERE activityid=?';
+	$query = 'SELECT contactid FROM vtiger_cntactivityrel WHERE activityid=?';
 	$result = $adb->pquery($query, array($activityId));
 
 	$noOfContacts = $adb->num_rows($result);

@@ -67,7 +67,7 @@ class VtigerCRMObject{
 		if($tid === false) {
 			global $adb;
 
-			$sql = "select * from vtiger_tab where name=?;";
+			$sql = "select tabid from vtiger_tab where name=?;";
 			$params = array($objectName);
 			$result = $adb->pquery($sql, $params);
 			$data1 = $adb->fetchByAssoc($result,1,false);
@@ -176,7 +176,7 @@ class VtigerCRMObject{
 		global $adb;
 
 		$exists = false;
-		$sql = "select * from vtiger_crmentity where crmid=? and deleted=0";
+		$sql = "select crmid from vtiger_crmentity where crmid=? and deleted=0";
 		$result = $adb->pquery($sql , array($id));
 		if ($result != null && isset($result)) {
 			if ($adb->num_rows($result)>0) {
@@ -190,7 +190,7 @@ class VtigerCRMObject{
 		global $adb;
 
 		$seType = null;
-		$sql = "select * from vtiger_crmentity where crmid=? and deleted=0";
+		$sql = "select setype from vtiger_crmentity where crmid=? and deleted=0";
 		$result = $adb->pquery($sql , array($id));
 		if ($result != null && isset($result)) {
 			if ($adb->num_rows($result)>0) {

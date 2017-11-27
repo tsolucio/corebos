@@ -307,7 +307,7 @@ class WebserviceField{
 			$fieldTypeData = WebserviceField::$fieldTypeMapping[$this->getUIType()];
 			$referenceTypes = array();
 			if($this->getUIType() != $this->genericUIType){
-				$sql = "select * from vtiger_ws_referencetype where fieldtypeid=?";
+				$sql = "select type from vtiger_ws_referencetype where fieldtypeid=?";
 				$params = array($fieldTypeData['fieldtypeid']);
 			}else{
 				$sql = 'select relmodule as type from vtiger_fieldmodulerel where fieldid=?';
@@ -375,7 +375,7 @@ class WebserviceField{
 		
 		// Cache all the information for futher re-use
 		if(empty(self::$fieldTypeMapping)) {
-			$result = $this->pearDB->pquery("select * from vtiger_ws_fieldtype", array());
+			$result = $this->pearDB->pquery('select uitype, fieldtype, fieldtypeid from vtiger_ws_fieldtype', array());
 			while($resultrow = $this->pearDB->fetch_array($result)) {
 				self::$fieldTypeMapping[$resultrow['uitype']] = $resultrow;
 			}
@@ -438,11 +438,11 @@ class WebserviceField{
 			return $purified_plcache[$moduleName.$fieldName];
 		}
 		$options = array();
-		$sql = "select * from vtiger_picklist where name=?";
+		$sql = "select picklistid from vtiger_picklist where name=?";
 		$result = $this->pearDB->pquery($sql,array($fieldName));
 		$numRows = $this->pearDB->num_rows($result);
 		if($numRows == 0){
-			$sql = "select * from vtiger_$fieldName";
+			$sql = "select $fieldName from vtiger_$fieldName";
 			$result = $this->pearDB->pquery($sql,array());
 			$numRows = $this->pearDB->num_rows($result);
 			for($i=0;$i<$numRows;++$i){

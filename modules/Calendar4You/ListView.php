@@ -36,7 +36,7 @@ $smarty = new vtigerCRM_Smarty;
 $smarty->assign('ADD_ONMOUSEOVER', "onMouseOver=\"fnvshobj(this,'addButtonDropDown');\"");
 $abelist = '';
 if($current_user->column_fields['is_admin']=='on') {
-	$Res = $adb->pquery('select * from vtiger_activitytype where activitytype!=?',array('Emails'));
+	$Res = $adb->pquery('select activitytype from vtiger_activitytype where activitytype!=?',array('Emails'));
 } else {
 	$role_id=$current_user->roleid;
 	$subrole = getRoleSubordinates($role_id);
