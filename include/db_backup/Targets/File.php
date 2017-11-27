@@ -26,8 +26,7 @@ class File extends Response {
 
 	private function getDefaultFolderPath() {
 		require 'config.inc.php';
-		$rootPath = (strrpos($root_directory, DIRECTORY_SEPARATOR) !== false)? $root_directory.
-				DIRECTORY_SEPARATOR:$root_directory;
+		$rootPath = (strrpos($root_directory, DIRECTORY_SEPARATOR) !== strlen($root_directory) - 1) ? $root_directory.DIRECTORY_SEPARATOR : $root_directory;
 		$rootPath = $this->fixPathSeparator($rootPath);
 		return $rootPath.$this->defaultPath;
 	}
