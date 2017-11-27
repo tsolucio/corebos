@@ -252,7 +252,7 @@ class Vtiger_Link {
 			if($multitype) {
 				$instances[$instance->linktype][] = $instance;
 			} else {
-				$instances[] = $instance;
+				$instances[$instance->linktype] = $instance;
 			}
 		}
 		return $instances;
