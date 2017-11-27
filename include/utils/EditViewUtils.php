@@ -194,7 +194,11 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		require_once 'modules/PickList/PickListUtils.php';
 		$roleid=$current_user->roleid;
 		$picklistValues = getAssignedPicklistValues($fieldname, $roleid, $adb);
-		$valueArr = explode("|##|", $value);
+		if (!empty($value)) {
+			$valueArr = explode('|##|', $value);
+		} else {
+			$valueArr = array();
+		}
 		foreach ($valueArr as $key => $value) {
 			$valueArr[$key] = trim(html_entity_decode($value, ENT_QUOTES, $default_charset));
 		}
