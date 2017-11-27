@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'GlobalVariable' =>'Variabili Globali',
 	'SINGLE_GlobalVariable' => 'Variabile Globale',
 	'GlobalVariable ID' => 'ID Variabile Globale',
