@@ -12,10 +12,10 @@ require_once('include/utils/utils.php');
 require_once('modules/Calendar4You/GoogleSync4You.php');
 
 class GoogleSync4YouHandler extends VTEventHandler {
-	public function handleEvent($handlerType, $entityData){
-		global $log, $adb, $root_directory, $current_user;
+	public function handleEvent($handlerType, $entityData) {
+		global $log, $adb, $current_user;
 
-		if($handlerType == 'vtiger.entity.aftersave' && isset($_REQUEST['geventid']) && $_REQUEST['geventid'] != '') {
+		if ($handlerType == 'vtiger.entity.aftersave' && isset($_REQUEST['geventid']) && $_REQUEST['geventid'] != '') {
 			$q = 'select activitytypeid from vtiger_activitytype where activitytype = ?';
 			$Res = $adb->pquery($q,array($_REQUEST["gevent_type"]));
 			$event = $adb->query_result($Res,0,'activitytypeid');

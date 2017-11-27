@@ -21,7 +21,7 @@ include_once('modules/Users/Users.php');
 require_once('include/logging.php');
 require_once('include/utils/UserInfoUtil.php');
 include_once('config.inc.php');
-global $adb,$root_directory;
+global $adb;
 if (!empty($_REQUEST['language']))
 	$lang = $_REQUEST['language'];
 else
