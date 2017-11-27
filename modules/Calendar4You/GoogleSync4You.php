@@ -8,7 +8,7 @@
  ********************************************************************************/
  
 class GoogleSync4You {
- 	
+
     private $user_id = "";
     private $user_clientsecret = "";
     private $apikey;
@@ -22,16 +22,14 @@ class GoogleSync4You {
     public $is_logged = false;
     public $event = "";
     public $selected_calendar = "";
-    
-      
+
     function __construct() {
-        global $root_directory, $current_language, $mod_strings;	    
+        global $root_directory, $current_language, $mod_strings;
         $this->db = PearDatabase::getInstance();
         $this->root_directory = $root_directory;
-        
         $this->mod_strings = $mod_strings;
-  	}
-	
+	}
+
 	public function getclientsecret() {
              global $adb;
          $q=$adb->query("select google_login from its4you_googlesync4you_access where userid=1");
@@ -40,6 +38,7 @@ class GoogleSync4You {
          else
 		return $this->user_clientsecret;
 	}
+
 	public function getAPI() {
              global $adb;
          $q=$adb->query("select google_apikey from its4you_googlesync4you_access where userid=1");
@@ -102,10 +101,9 @@ class GoogleSync4You {
 
             return true;
         }
-		
 		return false;
 	}
-    
+
    public function setAccessData($userid, $login, $apikey,$keyfile,$clientid,$refresh,$googleinsert){
 
             $this->user_id = $userid;
@@ -139,11 +137,9 @@ class GoogleSync4You {
 	}
 
 	public function connectToGoogle() {
-        
-        $this->connectToGoogleViaAPI3();    
-       
-    }
-    
+		$this->connectToGoogleViaAPI3();
+	}
+
    //new method for API v.3
     private function connectToGoogleViaAPI3() {
 		
@@ -389,7 +385,7 @@ catch(Exception $e){
         catch(Exception $e){
         echo $e->getMessage();
         }
-        set_include_path($this->root_directory); 
+        set_include_path($this->root_directory);
 
 	}
      
@@ -519,7 +515,7 @@ catch(Exception $e){
 //        $event_list = $this->gService->getCalendarEventFeed($query); 
 //        set_include_path($this->root_directory);
         
-        return $events;  
+        return $events;
     }
     
     function getGoogleCalEvent($event_id) {
@@ -548,6 +544,6 @@ catch(Exception $e){
 
         set_include_path($this->root_directory);
 
-        return $event;  
+        return $event;
     }
 }

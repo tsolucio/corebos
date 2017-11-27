@@ -16,9 +16,9 @@ class File extends Response {
 	public function __construct($dbConfig, $fileName=null, $supportUTF8 = true) {
 		parent::__construct($dbConfig, $supportUTF8);
 		$this->defaultPath = 'backup'.DIRECTORY_SEPARATOR;
-		if(empty($fileName)) {
+		if (empty($fileName)) {
 			$this->filePath = $this->getDefaultFilePath();
-		}else{
+		} else {
 			$folder = $this->getDefaultFolderPath();
 			$this->filePath = $folder.$fileName;
 		}
@@ -37,12 +37,12 @@ class File extends Response {
 			$done = false;
 			$index = strpos($path, '/',$start);
 			$start = $index + 1;
-			if($index != false && $path[$index - 1] == '\\'.DIRECTORY_SEPARATOR) {
+			if ($index != false && $path[$index - 1] == '\\'.DIRECTORY_SEPARATOR) {
 				continue;
-			}else if($index != false){
+			} elseif ($index != false) {
 				$path[$index] = DIRECTORY_SEPARATOR;
 			}
-		}while($index != false);
+		} while ($index != false);
 		return $path;
 	}
 

@@ -18,16 +18,15 @@ $module = vtlib_purify($_REQUEST['dmodule']);
 $now_action = vtlib_purify($_REQUEST['action']);
 if (isset($cvid) && $cvid != '') {
 	$oCustomView = new CustomView($module);
-	if ($oCustomView->isPermittedCustomView($cvid,$now_action,$oCustomView->customviewmodule) == 'yes') {
+	if ($oCustomView->isPermittedCustomView($cvid, $now_action, $oCustomView->customviewmodule) == 'yes') {
 		$updateStatusSql = 'update vtiger_customview set status=? where cvid=? and entitytype=?';
 		$updateresult = $adb->pquery($updateStatusSql, array($status, $cvid, $module));
-		if(!$updateresult)
+		if (!$updateresult) {
 			echo ':#:FAILURE:#:';
-		else 
+		} else {
 			echo ':#:SUCCESS:#:';
-	}
-	else
-	{
+		}
+	} else {
 		global $app_strings;
 		require_once('Smarty_setup.php');
 		$smarty = new vtigerCRM_Smarty();
