@@ -430,23 +430,22 @@ public function setgoogleaccessparams($userid){
                             if ($ui) return true;
                         }
                     } else {
-                        return true; 
+                        return true;
                     }
                 }
             }
         }
         return false;
     }
-    
-    function isUserCalendarPermittedByInviti($recordId) {
-    	global $adb;
-    	global $current_user;
 
-    	$query = "select activityid from vtiger_invitees where activityid =? and inviteeid=? limit 1";
-        $result=$adb->pquery($query, array($recordId, $current_user->id));
-        return $adb->num_rows($result) >0;
-    }
-    
+	function isUserCalendarPermittedByInviti($recordId) {
+		global $adb, $current_user;
+
+		$query = 'select activityid from vtiger_invitees where activityid=? and inviteeid=? limit 1';
+		$result = $adb->pquery($query, array($recordId, $current_user->id));
+		return $adb->num_rows($result) > 0;
+	}
+
     function getActStatusFieldValues($fieldname,$tablename) {
     	global $adb, $mod_strings,$current_user,$default_charset;
     	require('user_privileges/user_privileges_'.$current_user->id.'.php');

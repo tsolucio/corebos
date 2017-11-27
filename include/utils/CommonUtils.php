@@ -1639,19 +1639,17 @@ function file_exist_fn($filename, $exist) {
 
 /**
  * This function is used get the User Count.
- * It returns the array which has the total users ,admin users,and the non admin users
+ * @return array which has the total users, total admin users, and the total non admin users
  */
 function UserCount() {
-	global $log;
-	$log->debug("Entering UserCount() method ...");
-	global $adb;
-	$result = $adb->pquery("select count(*) as n from vtiger_users where deleted =0", array());
+	global $log, $adb;
+	$log->debug('Entering UserCount() method ...');
+	$result = $adb->pquery('select count(*) as n from vtiger_users where deleted = 0', array());
 	$user_count = $adb->query_result($result, 0, 'n');
-	$result = $adb->pquery("select count(*) as n from vtiger_users where deleted =0 AND is_admin != 'on'", array());
+	$result = $adb->pquery("select count(*) as n from vtiger_users where deleted = 0 AND is_admin != 'on'", array());
 	$nonadmin_count = $adb->query_result($result, 0, 'n');
-	$admin_count = $user_count - $nonadmin_count;
-	$count = array('user' => $user_count, 'admin' => $admin_count, 'nonadmin' => $nonadmin_count);
-	$log->debug("Exiting UserCount method ...");
+	$count = array('user' => $user_count, 'admin' => $user_count - $nonadmin_count, 'nonadmin' => $nonadmin_count);
+	$log->debug('Exiting UserCount method ...');
 	return $count;
 }
 

@@ -354,7 +354,7 @@ class Potentials extends CRMEntity {
 		$query = 'select vtiger_potstagehistory.*, vtiger_potential.potentialname from vtiger_potstagehistory inner join vtiger_potential on vtiger_potential.potentialid = vtiger_potstagehistory.potentialid inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_potential.potentialid where vtiger_crmentity.deleted = 0 and vtiger_potential.potentialid = ?';
 		$result=$adb->pquery($query, array($id));
 		$noofrows = $adb->num_rows($result);
-
+		$header = array();
 		$header[] = $app_strings['LBL_AMOUNT'];
 		$header[] = $app_strings['LBL_SALES_STAGE'];
 		$header[] = $app_strings['LBL_PROBABILITY'];
@@ -367,9 +367,9 @@ class Potentials extends CRMEntity {
 		//If field is accessible then getFieldVisibilityPermission function will return 0 else return 1
 		$amount_access = (getFieldVisibilityPermission('Potentials', $current_user->id, 'amount') != '0')? 1 : 0;
 		$probability_access = (getFieldVisibilityPermission('Potentials', $current_user->id, 'probability') != '0')? 1 : 0;
-
+		$entries_list = array();
 		while($row = $adb->fetch_array($result)) {
-			$entries = Array();
+			$entries = array();
 
 			$amount = new CurrencyField($row['amount']);
 			$entries[] = ($amount_access != 1)? $amount->getDisplayValueWithSymbol($current_user) : 0;
@@ -382,7 +382,7 @@ class Potentials extends CRMEntity {
 			$entries_list[] = $entries;
 		}
 
-		$return_data = Array('header'=>$header,'entries'=>$entries_list);
+		$return_data = Array('header'=>$header, 'entries'=>$entries_list, 'navigation'=>array('',''));
 		$log->debug("Exiting get_stage_history method ...");
 		return $return_data;
 	}

@@ -370,19 +370,18 @@ class WebserviceField{
 			default: return "string";
 		}
 	}
-	
-	private function getFieldTypeFromUIType(){
-		
+
+	private function getFieldTypeFromUIType() {
 		// Cache all the information for futher re-use
-		if(empty(self::$fieldTypeMapping)) {
+		if (empty(self::$fieldTypeMapping)) {
 			$result = $this->pearDB->pquery('select uitype, fieldtype, fieldtypeid from vtiger_ws_fieldtype', array());
-			while($resultrow = $this->pearDB->fetch_array($result)) {
+			while ($resultrow = $this->pearDB->fetch_array($result)) {
 				self::$fieldTypeMapping[$resultrow['uitype']] = $resultrow;
 			}
 		}
-		
-		if(isset(WebserviceField::$fieldTypeMapping[$this->getUIType()])){
-			if(WebserviceField::$fieldTypeMapping[$this->getUIType()] === false){
+
+		if (isset(WebserviceField::$fieldTypeMapping[$this->getUIType()])) {
+			if (WebserviceField::$fieldTypeMapping[$this->getUIType()] === false) {
 				return null;
 			}
 			$row = WebserviceField::$fieldTypeMapping[$this->getUIType()];
@@ -392,7 +391,7 @@ class WebserviceField{
 			return null;
 		}
 	}
-	
+
 	function getPicklistDetails(){
 		$hardCodedPickListNames = array("hdntaxtype","email_flag");
 		$hardCodedPickListValues = array(
