@@ -276,4 +276,15 @@ class coreBOS_Session {
 		}
 		session_write_close();
 	}
+
+	/**
+	 * Delete all top level values whose key starts with the given string
+	 */
+	public static function deleteStartsWith($startswith) {
+		self::init();
+		$_SESSION = array_filter($_SESSION, function ($key) use ($startswith) {
+			return strpos($key, $startswith)!==0;
+		}, ARRAY_FILTER_USE_KEY);
+		session_write_close();
+	}
 }
