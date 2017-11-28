@@ -1270,6 +1270,8 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 		. 'vtiger_field.block,'
 		. 'vtiger_field.generatedtype,'
 		. 'vtiger_field.tabid,'
+		. 'vtiger_field.defaultvalue,'
+		. 'vtiger_field.typeofdata,'
 		. 'vtiger_field.displaytype';
 
 	if ($disp_view == "detail_view") {
