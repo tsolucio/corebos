@@ -30,8 +30,6 @@ if ($record) {
     $focus->mode = 'edit';
     $focus->retrieve_entity_info($record, $currentModule);
     $focus->name = $focus->column_fields['notes_title'];
-} else {
-    $focus->mode = 'create';
 }
 
 if ($focus->mode != 'edit') {
