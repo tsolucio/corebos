@@ -594,7 +594,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 					<td width="30%" align=left class="dvtCellInfo">
 						<input name="{$fldname}" type="checkbox" tabindex="{$vt_tab}" checked>
 					</td>
-				{elseif $fldname eq 'filestatus'&& $MODE eq 'create'}
+				{elseif $fldname eq 'filestatus'}
 					<td width="30%" align=left class="dvtCellInfo">
 						<input name="{$fldname}" type="checkbox" tabindex="{$vt_tab}" checked>
 					</td>

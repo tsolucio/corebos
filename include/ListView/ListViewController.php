@@ -792,7 +792,7 @@ class ListViewController {
 			if (in_array($field->getColumnName(), $focus->sortby_fields)) {
 				if ($orderBy == $field->getColumnName()) {
 					$temp_sorder = $change_sorder[$sorder];
-					$arrow = "&nbsp;<img src ='".vtiger_imageurl($arrow_gif[$sorder], $theme)."' border='0'>";
+					$arrow = "&nbsp;<img src ='".vtiger_imageurl($arrow_gif[$sorder], $theme)."' border='0'>";				
 				} else {
 					$temp_sorder = $default_sort_order;
 				}
