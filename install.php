@@ -16,23 +16,6 @@ if(version_compare(phpversion(), '5.4') < 0) {
 	die();
 }
 
-/** Function to  return a string with backslashes stripped off
- * @param $value -- value:: Type string
- * @returns $value -- value:: Type string array
- */
-function stripslashes_checkstrings($value){
-	if(is_string($value)){
-		return stripslashes($value);
-	}
-	return $value;
-
-}
-if(get_magic_quotes_gpc() == 1){
-	$_REQUEST = array_map("stripslashes_checkstrings", $_REQUEST);
-	$_POST = array_map("stripslashes_checkstrings", $_POST);
-	$_GET = array_map("stripslashes_checkstrings", $_GET);
-}
-
 require_once('include/install/language/en_us.lang.php');
 require_once('include/install/resources/utils.php');
 require_once('vtigerversion.php');	

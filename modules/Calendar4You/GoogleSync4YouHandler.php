@@ -12,10 +12,10 @@ require_once('include/utils/utils.php');
 require_once('modules/Calendar4You/GoogleSync4You.php');
 
 class GoogleSync4YouHandler extends VTEventHandler {
-	public function handleEvent($handlerType, $entityData){
-		global $log, $adb, $root_directory, $current_user;
+	public function handleEvent($handlerType, $entityData) {
+		global $log, $adb, $current_user;
 
-		if($handlerType == 'vtiger.entity.aftersave' && isset($_REQUEST['geventid']) && $_REQUEST['geventid'] != '') {
+		if ($handlerType == 'vtiger.entity.aftersave' && isset($_REQUEST['geventid']) && $_REQUEST['geventid'] != '') {
 			$q = 'select activitytypeid from vtiger_activitytype where activitytype = ?';
 			$Res = $adb->pquery($q,array($_REQUEST["gevent_type"]));
 			$event = $adb->query_result($Res,0,'activitytypeid');
@@ -31,17 +31,17 @@ class GoogleSync4YouHandler extends VTEventHandler {
 			}
 		}
 
-		if($handlerType == 'vtiger.entity.aftersave' || $handlerType == 'vtiger.entity.beforedelete') {
+		if ($handlerType == 'vtiger.entity.aftersave' || $handlerType == 'vtiger.entity.beforedelete') {
 			$moduleName = $entityData->getModuleName();
 			if ($moduleName == 'Calendar' || $moduleName == 'Events' || $moduleName == 'cbCalendar') {
 				$InGCalendars = array();
 				$id = $entityData->getId();
 				//$Data = $entityData->getData();
-                                $ev=CRMEntity::getInstance("Calendar");
-                                $ev->id=$id;
-                                $ev->mode='edit';
-                                $evv=$ev->retrieve_entity_info($id, "Events");
-                                $Data=$ev->column_fields;
+				$ev=CRMEntity::getInstance("Calendar");
+				$ev->id=$id;
+				$ev->mode='edit';
+				$evv=$ev->retrieve_entity_info($id, "Events");
+				$Data=$ev->column_fields;
 				$sql1 = 'SELECT userid, geventid, eventtype FROM its4you_googlesync4you_events WHERE crmid = ?';
 				$result1 = $adb->pquery($sql1,array($id));
 				$num_rows1 = $adb->num_rows($result1);
@@ -50,7 +50,7 @@ class GoogleSync4YouHandler extends VTEventHandler {
 						$InGCalendars[$row['eventtype']][$row['userid']] = $row['geventid'];
 					}
 				}
-				if($handlerType == 'vtiger.entity.aftersave') {
+				if ($handlerType == 'vtiger.entity.aftersave') {
 					if ($moduleName == 'Calendar') {
 						$event = 'task';
 					} else {
@@ -60,7 +60,7 @@ class GoogleSync4YouHandler extends VTEventHandler {
 					}
 					$assigned_user_id = $entityData->get('assigned_user_id');
 					$user_name = getUserName($assigned_user_id);
-					if($user_name != '') {
+					if ($user_name != '') {
 						$this->AddIntoCalendar($id,$assigned_user_id, $event, $Data);
 						unset($InGCalendars[$event][$assigned_user_id]);
 					} else {

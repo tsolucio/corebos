@@ -182,7 +182,7 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
 					}
 				}
 
-                $sql = "SELECT * FROM its4you_calendar4you_event_fields WHERE userid = ? AND event = ?";
+                $sql = "SELECT fieldname, type, view FROM its4you_calendar4you_event_fields WHERE userid = ? AND event = ?";
                 $result = $adb->pquery($sql,array($current_user->id,$id));
                 $num_rows = $adb->num_rows($result);
                 

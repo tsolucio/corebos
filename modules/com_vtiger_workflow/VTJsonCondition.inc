@@ -314,6 +314,10 @@ class VTJsonCondition {
 				return false;
 			case 'is today':
 				$today = date('Y-m-d');
+				if ($cond['fieldname'] == 'birthday') {
+					$fieldValue = date('m-d', strtotime($fieldValue));
+					$today = date('m-d');
+				}
 				if($fieldValue == $today) {
 					return true;
 				}

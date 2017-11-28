@@ -28,7 +28,7 @@ function send_mail($module,$to_email,$from_name,$from_email,$subject,$contents,$
 	$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail','support@your_support_domain.tld','HelpDesk');
 	$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name','your-support name','HelpDesk');
 
-	$uploaddir = $root_directory ."/test/upload/";
+	$uploaddir = $root_directory ."/cache/upload/";
 
 	$adb->println("To id => '".$to_email."'\nSubject ==>'".$subject."'\nContents ==> '".$contents."'");
 
@@ -397,7 +397,7 @@ function addAllAttachments($mail,$record)
 		$filepath = $adb->query_result($res,$i,'path');
 		$filewithpath = $root_directory.$filepath.$fileid."_".$filename;
 
-		//if the file is exist in test/upload directory then we will add directly
+		//if the file is exist in cache/upload directory then we will add directly
 		//else get the contents of the file and write it as a file and then attach (this will occur when we unlink the file)
 		if(is_file($filewithpath))
 		{

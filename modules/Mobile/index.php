@@ -120,17 +120,6 @@ class crmtogo_Index_Controller {
 	}
 }
 
-/** Take care of stripping the slashes */
-function stripslashes_recursive($value) {
-	$value = is_array($value) ? array_map('stripslashes_recursive', $value) : stripslashes($value);
-	return $value;
-}
-if (get_magic_quotes_gpc()) {
-	//$_GET     = stripslashes_recursive($_GET   );
-	//$_POST    = stripslashes_recursive($_POST  );
-	$_REQUEST = stripslashes_recursive($_REQUEST);
-}
-
 if(!defined('CRMTOGO_INDEX_CONTROLLER_AVOID_TRIGGER')) {
 	crmtogo_Index_Controller::process(new crmtogo_API_Request($_REQUEST));
 }

@@ -1346,8 +1346,7 @@ function get_filecontent($input_array)
 	*/
 function add_ticket_attachment($input_array)
 {
-	global $adb,$log;
-	global $root_directory, $upload_badext;
+	global $adb, $log, $upload_badext;
 	$log->debug("Entering customer portal function add_ticket_attachment");
 	$adb->println("INPUT ARRAY for the function add_ticket_attachment");
 	$adb->println($input_array);
@@ -1960,7 +1959,7 @@ function get_pdf($id,$block,$customerid,$sessionid)
 	$_REQUEST['record']= $id;
 	$_REQUEST['savemode']= 'file';
 	$sequenceNo = getModuleSequenceNumber($block, $id);
-	$filenamewithpath='test/product/'.$id.'_'.getTranslatedString('SINGLE_'.$block,$block).'_'.$sequenceNo.'.pdf';
+	$filenamewithpath='cache/'.$id.'_'.getTranslatedString('SINGLE_'.$block,$block).'_'.$sequenceNo.'.pdf';
 	if (file_exists($filenamewithpath) && (filesize($filenamewithpath) != 0))
 	unlink($filenamewithpath);
 

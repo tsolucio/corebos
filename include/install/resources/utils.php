@@ -771,12 +771,8 @@ class Common_Install_Wizard_Utils {
 		'Smarty Compile Directory' => './Smarty/templates_c/',
 		'Modules Directory' => './modules/',
 		'Cron Modules Directory' => './cron/modules/',
-		'Vtlib Test Directory' => './test/vtlib/',
 		'Backup Directory' => './backup/',
 		'Smarty Modules Directory' => './Smarty/templates/modules/',
-		'Product Image Directory' => './test/product/',
-		'User Image Directory' => './test/user/',
-		'Contact Image Directory' => './test/contact/',
 		'Logo Directory' => './test/logo/',
 		'Logs Directory' => './logs/',
 		'Webmail Attachments Directory' => './modules/Webmails/tmp/'

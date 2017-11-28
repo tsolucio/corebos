@@ -29,7 +29,7 @@ global $adb;
 			$sqlseq="select max(sequence) from vtiger_attachmentsfolder";
 			$sequence=$adb->query_result($adb->pquery($sqlseq,$params),0,'max(sequence)')+1;
 			$params=array();
-			$dbQuery="select * from vtiger_attachmentsfolder";
+			$dbQuery="select foldername from vtiger_attachmentsfolder";
 			$result1=$adb->pquery($dbQuery,array());
 			$flag=0;
 			for($i=0;$i<$adb->num_rows($result1);$i++)

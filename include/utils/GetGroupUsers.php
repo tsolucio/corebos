@@ -27,7 +27,7 @@ class GetGroupUsers {
 		global $adb,$log;
 		$log->debug("Entering getAllUsersInGroup(".$groupid.") method...");
 		//Retreiving from the user2grouptable
-		$query="select * from vtiger_users2group where groupid=?";
+		$query="select userid from vtiger_users2group where groupid=?";
 		$result = $adb->pquery($query, array($groupid));
 		$num_rows=$adb->num_rows($result);
 		for($i=0;$i<$num_rows;$i++)
@@ -40,7 +40,7 @@ class GetGroupUsers {
 		}
 
 		//Retreiving from the vtiger_group2role
-		$query="select * from vtiger_group2role where groupid=?";
+		$query="select roleid from vtiger_group2role where groupid=?";
 		$result = $adb->pquery($query, array($groupid));
 		$num_rows=$adb->num_rows($result);
 		for ($i=0;$i<$num_rows;$i++) {
@@ -57,7 +57,7 @@ class GetGroupUsers {
 		}
 
 		//Retreiving from the vtiger_group2rs
-		$query="select * from vtiger_group2rs where groupid=?";
+		$query="select roleandsubid from vtiger_group2rs where groupid=?";
 		$result = $adb->pquery($query, array($groupid));
 		$num_rows=$adb->num_rows($result);
 		for ($i=0;$i<$num_rows;$i++) {
@@ -71,7 +71,7 @@ class GetGroupUsers {
 			}
 		}
 		//Retreving from group2group
-		$query="select * from vtiger_group2grouprel where groupid=?";
+		$query="select containsgroupid from vtiger_group2grouprel where groupid=?";
 		$result = $adb->pquery($query, array($groupid));
 		$num_rows=$adb->num_rows($result);
 		for ($i=0;$i<$num_rows;$i++) {

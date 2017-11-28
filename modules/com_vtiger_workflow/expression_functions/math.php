@@ -71,4 +71,12 @@ function __cb_modulo($arr) {
 	return $arr[0] % $arr[1];
 }
 
+function __vt_power($elements) {
+	if (!empty($elements[0])) {
+		$exponent = ($elements[1]) ? $elements[1] : 0;
+		return pow($elements[0], $exponent);
+	}
+	return 0;
+}
+
 ?>

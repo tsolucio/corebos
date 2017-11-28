@@ -294,10 +294,6 @@ function getPicklistValuesSpecialUitypes($uitype, $fieldname, $value, $action = 
 					$options[] = array(getTranslatedString($pickListValue, $pickListValue),$pickListValue,$chk_val );
 				}
 			}
-
-			if ($pickcount == 0 && !empty($value)) {
-				$options[] = array($app_strings['LBL_NOT_ACCESSIBLE'],$value,'selected');
-			}
 		}
 	} elseif ($uitype == "1024") {
 		$arr_evo=explode(' |##| ', $value);

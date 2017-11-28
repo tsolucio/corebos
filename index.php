@@ -15,7 +15,7 @@
  *************************************************************************************************/
 global $entityDel, $display;
 
-if(version_compare(phpversion(), '5.4.0') < 0 or version_compare(phpversion(), '7.1.0') >= 0) {
+if(version_compare(phpversion(), '5.4.0') < 0 or version_compare(phpversion(), '7.2.0') >= 0) {
 	header('Content-Type: text/html; charset=UTF-8');
 	$serverPhpVersion = phpversion();
 	require_once('phpversionfail.php');
@@ -25,23 +25,6 @@ if(version_compare(phpversion(), '5.4.0') < 0 or version_compare(phpversion(), '
 require_once('include/utils/utils.php');
 
 global $currentModule;
-
-/** Function to  return a string with backslashes stripped off
- * @param $value -- value:: Type string
- * @returns $value -- value:: Type string array
-*/
-function stripslashes_checkstrings($value){
-	if(is_string($value)){
-		return stripslashes($value);
-	}
-	return $value;
-}
-
-if(get_magic_quotes_gpc() == 1){
-	$_REQUEST = array_map('stripslashes_checkstrings', $_REQUEST);
-	$_POST = array_map('stripslashes_checkstrings', $_POST);
-	$_GET = array_map('stripslashes_checkstrings', $_GET);
-}
 
 header('Content-Type: text/html; charset='. $default_charset);
 

@@ -11,7 +11,7 @@ require_once('include/logging.php');
 require_once('include/database/PearDatabase.php');
 require_once('modules/Documents/Documents.php');
 
-global $adb, $current_user, $root_directory;
+global $adb, $current_user;
 
 if(isset($_REQUEST['act']) && $_REQUEST['act'] == 'updateDldCnt')
 {

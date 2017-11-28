@@ -194,17 +194,23 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		require_once 'modules/PickList/PickListUtils.php';
 		$roleid=$current_user->roleid;
 		$picklistValues = getAssignedPicklistValues($fieldname, $roleid, $adb);
-		$valueArr = explode("|##|", $value);
+		if (!empty($value)) {
+			$valueArr = explode('|##|', $value);
+		} else {
+			$valueArr = array();
+		}
 		foreach ($valueArr as $key => $value) {
 			$valueArr[$key] = trim(html_entity_decode($value, ENT_QUOTES, $default_charset));
 		}
-		$pickcount = 0;
+		if ($uitype == 15 ) {
+			$valueArr = array_combine($valueArr, $valueArr);
+			$picklistValues = array_merge($picklistValues, $valueArr);
+		}
 		$options = array();
 		if(!empty($picklistValues)){
 			foreach($picklistValues as $order=>$pickListValue){
 				if(in_array(trim($pickListValue),$valueArr)){
 					$chk_val = "selected";
-					$pickcount++;
 				}else{
 					$chk_val = '';
 				}
@@ -213,10 +219,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 				}else{
 					$options[] = array(getTranslatedString($pickListValue),$pickListValue,$chk_val );
 				}
-			}
-
-			if($pickcount == 0 && !empty($value)){
-				$options[] = array($app_strings['LBL_NOT_ACCESSIBLE'],$value,'selected');
 			}
 		}
 		$editview_label[]=getTranslatedString($fieldlabel,$module_name,$value);
@@ -401,7 +403,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	{
 		$options = array();
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$pick_query="select * from vtiger_groups";
+		$pick_query="select name from vtiger_groups";
 		$pickListResult = $adb->pquery($pick_query, array());
 		$noofpickrows = $adb->num_rows($pickListResult);
 		for($j = 0; $j < $noofpickrows; $j++)
@@ -483,7 +485,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		if($value=='')
 			$value=1;
 		$options = array();
-		$pick_query="select * from vtiger_duration_minutes order by sortorderid";
+		$pick_query="select duration_minutes from vtiger_duration_minutes order by sortorderid";
 		$pickListResult = $adb->pquery($pick_query, array());
 		$noofpickrows = $adb->num_rows($pickListResult);
 		$salt_value = $col_fields["duration_minutes"];
@@ -586,7 +588,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 				$attachmentid=$adb->query_result($adb->pquery("select * from vtiger_seattachmentsrel where crmid = ?", array($col_fields['record_id'])),0,'attachmentsid');
 				if($col_fields[$fieldname] == '' && $attachmentid != '')
 				{
-					$attachquery = "select * from vtiger_attachments where attachmentsid=?";
+					$attachquery = "select name from vtiger_attachments where attachmentsid=?";
 					$value = $adb->query_result($adb->pquery($attachquery, array($attachmentid)),0,'name');
 				}
 			}
@@ -602,10 +604,10 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	}
 	elseif($uitype == 28){
 		if (!(empty($col_fields['record_id']))) {
-			$attrs = $adb->pquery('select * from vtiger_seattachmentsrel where crmid = ?', array($col_fields['record_id']));
+			$attrs = $adb->pquery('select attachmentsid from vtiger_seattachmentsrel where crmid = ?', array($col_fields['record_id']));
 			$attachmentid=$adb->query_result($attrs,0,'attachmentsid');
 			if ($col_fields[$fieldname] == '' && $attachmentid != '') {
-				$attachquery = "select * from vtiger_attachments where attachmentsid=?";
+				$attachquery = "select name from vtiger_attachments where attachmentsid=?";
 				$attqrs = $adb->pquery($attachquery, array($attachmentid));
 				$value = $adb->query_result($attqrs,0,'name');
 			}
@@ -697,7 +699,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			}
 			elseif($parent_module == "Accounts")
 			{
-				$sql = "select * from vtiger_account where accountid=?";
+				$sql = "select accountname from vtiger_account where accountid=?";
 				$result = $adb->pquery($sql, array($value));
 				$parent_name = $adb->query_result($result,0,"accountname");
 				$account_selected = "selected";
@@ -705,7 +707,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			}
 			elseif($parent_module == "Potentials")
 			{
-				$sql = "select * from vtiger_potential where potentialid=?";
+				$sql = "select potentialname from vtiger_potential where potentialid=?";
 				$result = $adb->pquery($sql, array($value));
 				$parent_name = $adb->query_result($result,0,"potentialname");
 				$potential_selected = "selected";
@@ -713,7 +715,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			}
 			elseif($parent_module == "Products")
 			{
-				$sql = "select * from vtiger_products where productid=?";
+				$sql = "select productname from vtiger_products where productid=?";
 				$result = $adb->pquery($sql, array($value));
 				$parent_name= $adb->query_result($result,0,"productname");
 				$product_selected = "selected";
@@ -721,7 +723,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			}
 			elseif($parent_module == "PurchaseOrder")
 			{
-				$sql = "select * from vtiger_purchaseorder where purchaseorderid=?";
+				$sql = "select subject from vtiger_purchaseorder where purchaseorderid=?";
 				$result = $adb->pquery($sql, array($value));
 				$parent_name= $adb->query_result($result,0,"subject");
 				$porder_selected = "selected";
@@ -729,7 +731,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			}
 			elseif($parent_module == "SalesOrder")
 			{
-				$sql = "select * from vtiger_salesorder where salesorderid=?";
+				$sql = "select subject from vtiger_salesorder where salesorderid=?";
 				$result = $adb->pquery($sql, array($value));
 				$parent_name= $adb->query_result($result,0,"subject");
 				$sorder_selected = "selected";
@@ -737,20 +739,20 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			}
 			elseif($parent_module == "Invoice")
 			{
-				$sql = "select * from vtiger_invoice where invoiceid=?";
+				$sql = "select subject from vtiger_invoice where invoiceid=?";
 				$result = $adb->pquery($sql, array($value));
 				$parent_name= $adb->query_result($result,0,"subject");
 				$invoice_selected = "selected";
 			}
 			elseif($parent_module == "Quotes")
 			{
-				$sql = "select * from vtiger_quotes where quoteid=?";
+				$sql = "select subject from vtiger_quotes where quoteid=?";
 				$result = $adb->pquery($sql, array($value));
 				$parent_name= $adb->query_result($result,0,"subject");
 				$quote_selected = "selected";
 			}elseif($parent_module == "HelpDesk")
 			{
-				$sql = "select * from vtiger_troubletickets where ticketid=?";
+				$sql = "select title from vtiger_troubletickets where ticketid=?";
 				$result = $adb->pquery($sql, array($value));
 				$parent_name= $adb->query_result($result,0,"title");
 				$ticket_selected = "selected";
@@ -957,7 +959,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 						}
 						elseif($parent_module == "Accounts")
 						{
-							$sql = "select * from vtiger_account where accountid=?";
+							$sql = "select accountname, email1 from vtiger_account where accountid=?";
 							$result = $adb->pquery($sql, array($mycrmid));
 							$account_name = $adb->query_result($result,0,"accountname");
 							$myemail=$adb->query_result($result,0,"email1");
@@ -974,7 +976,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 						}
 						elseif($parent_module == "Vendors")
 						{
-							$sql = "select * from vtiger_vendor where vendorid=?";
+							$sql = "select vendorname, email from vtiger_vendor where vendorid=?";
 							$result = $adb->pquery($sql, array($mycrmid));
 							$vendor_name = $adb->query_result($result,0,"vendorname");
 							$myemail=$adb->query_result($result,0,"email");

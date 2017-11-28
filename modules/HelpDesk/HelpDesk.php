@@ -238,7 +238,7 @@ class HelpDesk extends CRMEntity {
 			if($ownertype == 'user') {
 				$name = getUserFullName($ownerid);
 			} elseif($ownertype == 'customer') {
-				$sql1 = 'select * from vtiger_portalinfo where id=?';
+				$sql1 = 'select user_name from vtiger_portalinfo where id=?';
 				$rs = $this->db->pquery($sql1, array($ownerid));
 				if ($rs and $this->db->num_rows($rs)>0) {
 					$name = $this->db->query_result($rs,0,'user_name');
@@ -374,7 +374,7 @@ class HelpDesk extends CRMEntity {
 	{
 		global $log, $adb;
 		$log->debug("Entering getCustomerName(".$id.") method ...");
-		$sql = "select * from vtiger_portalinfo inner join vtiger_troubletickets on vtiger_troubletickets.parent_id = vtiger_portalinfo.id where vtiger_troubletickets.ticketid=?";
+		$sql = "select user_name from vtiger_portalinfo inner join vtiger_troubletickets on vtiger_troubletickets.parent_id = vtiger_portalinfo.id where vtiger_troubletickets.ticketid=?";
 		$result = $adb->pquery($sql, array($id));
 		$customername = $adb->query_result($result,0,'user_name');
 		$log->debug("Exiting getCustomerName method ...");

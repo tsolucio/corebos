@@ -1151,7 +1151,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 				$sub_products_link = '<a href="index.php?module=Products&action=Popup&html=Popup_picker&return_module=' . vtlib_purify($_REQUEST['return_module']) . '&record_id=' . vtlib_purify($entity_id) . '&form=HelpDeskEditView&select=enable&popuptype=' . $focus->popup_type . '&curr_row=' . vtlib_purify($row_id) . '&currencyid=' . vtlib_purify($_REQUEST['currencyid']) . '" > '.getTranslatedString('Sub Products').'</a>';
 				$SubProductBeParent = GlobalVariable::getVariable('Product_Permit_Subproduct_Be_Parent', 'no');
 				if (!isset($_REQUEST['record_id']) || $SubProductBeParent == 'yes') {
-					$sub_products_query = $adb->pquery("SELECT * from vtiger_seproductsrel WHERE productid=? AND setype='Products'", array($entity_id));
+					$sub_products_query = $adb->pquery("SELECT productid from vtiger_seproductsrel WHERE productid=? AND setype='Products' limit 1", array($entity_id));
 					if ($adb->num_rows($sub_products_query) > 0)
 						$list_header[] = $sub_products_link;
 					else
@@ -1337,38 +1337,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 				$value = $dt . ' ' . $curr_time . $time_format;
 			}
 		}
-	} elseif ($uitype == 15 || ($uitype == 55 && $fieldname == "salutationtype")) {
-		$temp_val = decode_html_force($adb->query_result($list_result, $list_result_count, $colname));
-		if (($is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1) && $temp_val != '') {
-			$temp_acttype = $adb->query_result($list_result, $list_result_count, 'activitytype');
-			if (($temp_acttype != 'Task') && $fieldname == "taskstatus")
-				$temptable = "eventstatus";
-			else
-				$temptable = $fieldname;
-			$roleid = $current_user->roleid;
-			$roleids = Array();
-			$subrole = getRoleSubordinates($roleid);
-			if (count($subrole) > 0)
-				$roleids = $subrole;
-			$roleids[] = $roleid;
-			$sql = "select * from vtiger_$temptable where $temptable=?";
-			$res = $adb->pquery($sql, array(decode_html_force($temp_val)));
-			$picklistvalueid = $adb->query_result($res, 0, 'picklist_valueid');
-			if ($picklistvalueid != null) {
-				$pick_query = "select * from vtiger_role2picklist where picklistvalueid=$picklistvalueid and roleid in (" . generateQuestionMarks($roleids) . ")";
-				$res_val = $adb->pquery($pick_query, array($roleids));
-				$num_val = $adb->num_rows($res_val);
-			}
-			if ($num_val > 0 || ($temp_acttype == 'Task' && $fieldname == 'activitytype'))
-				$temp_val = $temp_val;
-			else
-				$temp_val = "<font color='red'>" . $app_strings['LBL_NOT_ACCESSIBLE'] . "</font>";
-		}
-		$value = (!empty($current_module_strings[$temp_val])) ? $current_module_strings[$temp_val] : ((!empty($app_strings[$temp_val])) ? ($app_strings[$temp_val]) : $temp_val);
-		if ($value != "<font color='red'>" . $app_strings['LBL_NOT_ACCESSIBLE'] . "</font>") {
-			$value = textlength_check($value);
-		}
-	} elseif ($uitype == 16 || $uitype == 1613 || $uitype == 1614 || $uitype == 1615) {
+	} elseif ($uitype == 15 || ($uitype == 55 && $fieldname == "salutationtype") || $uitype == 16 || $uitype == 1613 || $uitype == 1614 || $uitype == 1615) {
 		$value = getTranslatedString($temp_val, $currentModule);
 		$value = textlength_check($value);
 	} elseif ($uitype == 71 || $uitype == 72) {
@@ -1489,7 +1458,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		}
 
 		if ($parentid != '') {
-			$sql = "SELECT * FROM $tablename WHERE $idname = ?";
+			$sql = "SELECT $fieldname FROM $tablename WHERE $idname = ?";
 			$fieldvalue = $adb->query_result($adb->pquery($sql, array($parentid)), 0, $fieldname);
 
 			$value = '<a href=index.php?module=' . $parenttype . '&action=DetailView&record=' . $parentid . '&parenttab=' . urlencode($tabname) . '>' . textlength_check($fieldvalue) . '</a>';
@@ -1517,7 +1486,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 			$idname = "ticketid";
 		}
 		if ($parentid != '') {
-			$sql = "SELECT * FROM $tablename WHERE $idname = ?";
+			$sql = "SELECT $fieldname FROM $tablename WHERE $idname = ?";
 			$fieldvalue = $adb->query_result($adb->pquery($sql, array($parentid)), 0, $fieldname);
 
 			$value = '<a href=index.php?module=' . $parenttype . '&action=DetailView&record=' . $parentid . '&parenttab=' . urlencode($tabname) . '>' . textlength_check($fieldvalue) . '</a>';
@@ -1540,7 +1509,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 			$idname = "contactid";
 		}
 		if ($parentid != '') {
-			$sql = "SELECT * FROM $tablename WHERE $idname = ?";
+			$sql = "SELECT $fieldname FROM $tablename WHERE $idname = ?";
 			$fieldvalue = $adb->query_result($adb->pquery($sql, array($parentid)), 0, $fieldname);
 
 			$value = '<a href=index.php?module=' . $parenttype . '&action=DetailView&record=' . $parentid . '&parenttab=' . urlencode($tabname) . '>' . textlength_check($fieldvalue) . '</a>';
@@ -1614,12 +1583,13 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 				$str_c = 0;
 				$listview_max_textlength = GlobalVariable::getVariable('Application_ListView_Max_Text_Length',40,$currentModule);
 				foreach ($value_arr as $ind => $val) {
-					$notaccess = '<font color="red">' . $app_strings['LBL_NOT_ACCESSIBLE'] . "</font>";
+					if (!in_array($val, $picklistarr)) {
+						continue;
+					}
 					if (!$listview_max_textlength || !(strlen(preg_replace("/(<\/?)(\w+)([^>]*>)/i", "", $string_temp)) > $listview_max_textlength)) {
-						$value_temp1 = (in_array(trim($val), $picklistarr)) ? $val : $notaccess;
 						if ($str_c != 0)
 							$string_temp .= ' , ';
-						$string_temp .= $value_temp1;
+						$string_temp .= $val;
 						$str_c++;
 					}
 					else
@@ -2481,11 +2451,9 @@ function getListQuery($module, $where = '') {
 				ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 			LEFT JOIN vtiger_salesmanactivityrel
 				ON vtiger_salesmanactivityrel.activityid = vtiger_activity.activityid
-			LEFT JOIN vtiger_emaildetails
-				ON vtiger_emaildetails.emailid = vtiger_activity.activityid
-			WHERE vtiger_activity.activitytype = 'Emails'";
+			LEFT JOIN vtiger_emaildetails ON vtiger_emaildetails.emailid = vtiger_activity.activityid";
 			$query .= getNonAdminAccessControlQuery($module, $current_user);
-			$query .= "AND vtiger_crmentity.deleted = 0 " . $where;
+			$query .= "WHERE vtiger_activity.activitytype = 'Emails' AND vtiger_crmentity.deleted = 0 " . $where;
 			break;
 		Case "Faq":
 			$query = "SELECT vtiger_crmentity.crmid, vtiger_crmentity.createdtime, vtiger_crmentity.modifiedtime,
@@ -3776,7 +3744,7 @@ function getMergeFields($module, $str) {
 	if ($str == "available_fields") {
 		$result = getFieldsResultForMerge($tabid);
 	} else { //if($str == fileds_to_merge)
-		$sql = "select * from vtiger_user2mergefields where tabid=? and userid=? and visible=1";
+		$sql = "select fieldid from vtiger_user2mergefields where tabid=? and userid=? and visible=1";
 		$result = $adb->pquery($sql, array($tabid, $current_user->id));
 	}
 
@@ -3825,7 +3793,7 @@ function getFirstModule($module, $fieldname) {
 
 		if ($uitype == 10) {
 			$fieldid = $adb->query_result($result, 0, "fieldid");
-			$sql = "select * from vtiger_fieldmodulerel where fieldid=? order by sequence";
+			$sql = "select relmodule from vtiger_fieldmodulerel where fieldid=? order by sequence";
 			$result = $adb->pquery($sql, array($fieldid));
 			$count = $adb->num_rows($result);
 

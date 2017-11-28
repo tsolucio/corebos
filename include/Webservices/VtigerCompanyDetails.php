@@ -12,7 +12,7 @@ require_once 'include/Webservices/VtigerActorOperation.php';
 class VtigerCompanyDetails extends VtigerActorOperation {
 	public function create($elementType, $element) {
 		$db = PearDatabase::getInstance();
-		$sql = 'select * from vtiger_organizationdetails';
+		$sql = 'select organization_id from vtiger_organizationdetails limit 1';
 		$result = $db->pquery($sql,$params);
 		$rowCount = $db->num_rows($result);
 		if ($rowCount > 0) {

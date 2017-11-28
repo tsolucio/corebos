@@ -84,17 +84,7 @@ class ModTracker_Field {
 		}
 
 		if ($fieldInstance->getFieldDataType() == 'picklist') {
-			$isRoleBased = vtws_isRoleBasedPicklist($fieldName);
-			if ($isRoleBased && ($fieldName != 'activitytype' || $value != 'Task')) {
-				$accessiblePicklistValues = getAssignedPicklistValues($fieldName, $current_user->roleid, $adb);
-				if (!empty($value) && !is_admin($current_user) && !in_array($value, $accessiblePicklistValues)) {
-					$value = "<font color='red'>" . getTranslatedString('LBL_NOT_ACCESSIBLE', $moduleName) . "</font>";
-				} else {
-					$value = getTranslatedString($value, $moduleName);
-				}
-			} else {
-				$value = getTranslatedString($value, $moduleName);
-			}
+			$value = getTranslatedString($value, $moduleName);
 		}
 
 		if ($fieldInstance->getFieldDataType() == 'date'
@@ -158,21 +148,6 @@ class ModTracker_Field {
 
 		if ($fieldInstance->getFieldDataType() == 'multipicklist') {
 			$value = ($value != "") ? str_replace(' |##| ', ', ', $value) : "";
-			$isRoleBased = vtws_isRoleBasedPicklist($fieldName);
-			if (!is_admin($current_user) && $value != '' && $isRoleBased) {
-				$accessiblePicklistValues = getAssignedPicklistValues($fieldName, $current_user->roleid, $adb);
-				$valueArray = ($value != "") ? explode(', ', $value) : array();
-				$notaccess = '<font color="red">' . getTranslatedString('LBL_NOT_ACCESSIBLE', $moduleName) . "</font>";
-				$tmpArray = array();
-				foreach ($valueArray as $index => $val) {
-					if (!in_array(trim($val), $accessiblePicklistValues)) {
-						$tmpArray[] = $notaccess;
-					} else {
-						$tmpArray[] = $val;
-					}
-				}
-				$value = implode(', ', $tmpArray);
-			}
 		}
 		if ($fieldInstance->getFieldDataType() == 'reference') {
 			if (!empty($value)) {

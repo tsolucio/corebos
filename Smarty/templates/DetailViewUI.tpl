@@ -13,11 +13,7 @@
 		{if $keyid eq '1' || $keyid eq 2 || $keyid eq '11' || $keyid eq '7' || $keyid eq '9' || $keyid eq '55' || $keyid eq '71' || $keyid eq '72' || $keyid eq '103' || $keyid eq '255' || $keyid eq '14'} <!--TextBox-->
 			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>
 				{if $keyid eq '55' || $keyid eq '255'}<!--SalutationSymbol-->
-					{if $keyaccess eq $APP.LBL_NOT_ACCESSIBLE}
-						<font color='red'>{$APP.LBL_NOT_ACCESSIBLE}</font>
-					{else}
-						{$keysalut}
-					{/if}
+					{$keysalut}
 				{/if}
 
 				{if $keyid eq 11 && $USE_ASTERISK eq 'true'}
@@ -87,22 +83,11 @@
 				<div id="internal_mailer_{$keyfldname}" style="display: none;">{$keyfldid}####{$smarty.session.internal_mailer}</div>
 			</td>
 	{elseif ($keyid eq '15' || $keyid eq '16' || $keyid eq '1613' || $keyid eq '1614') && !picklistHasDependency($keyfldname,$MODULE)} <!--ComboBox-->
-		{assign var=fontval value=''}
-		{foreach item=arr from=$keyoptions}
-			{if $arr[0] eq $APP.LBL_NOT_ACCESSIBLE && $arr[2] eq 'selected'}
-				{assign var=keyval value=$APP.LBL_NOT_ACCESSIBLE}
-				{assign var=fontval value='red'}
-			{/if}
-		{/foreach}
-		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'><span id="dtlview_{$keyfldname}"><font color="{$fontval}">{$keyval|@getTranslatedString:$MODULE}</font></span>
+		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'><span id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$MODULE}</span>
 			<div id="editarea_{$keyfldname}" style="display:none;">
 				<select id="txtbox_{$keyfldname}" name="{$keyfldname}" class="small" style="width:280px;">
 					{foreach item=arr from=$keyoptions}
-						{if $arr[0] eq $APP.LBL_NOT_ACCESSIBLE}
-							<option value="{$arr[0]}" {$arr[2]}>{$arr[0]}</option>
-						{else}
-							<option value="{$arr[1]}" {$arr[2]}>{$arr[0]}</option>
-						{/if}
+						<option value="{$arr[1]}" {$arr[2]}>{$arr[0]}</option>
 					{/foreach}
 				</select>
 				<br><a class="detailview_ajaxbutton ajax_save_detailview" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>

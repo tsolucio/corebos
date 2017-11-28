@@ -25,7 +25,7 @@ class GetUserGroups {
 		global $adb,$log;
 		$log->debug("Entering getAllUserGroups(".$userid.") method...");
 		//Retreiving from the user2grouptable
-		$query="select * from vtiger_users2group where userid=?";
+		$query="select groupid from vtiger_users2group where userid=?";
 		$result = $adb->pquery($query, array($userid));
 		$num_rows=$adb->num_rows($result);
 		for($i=0;$i<$num_rows;$i++) {
@@ -38,7 +38,7 @@ class GetUserGroups {
 		//Setting the User Role
 		$userRole = fetchUserRole($userid);
 		//Retreiving from the vtiger_user2role
-		$query="select * from vtiger_group2role where roleid=?";
+		$query="select groupid from vtiger_group2role where roleid=?";
 		$result = $adb->pquery($query, array($userRole));
 		$num_rows=$adb->num_rows($result);
 		for($i=0;$i<$num_rows;$i++) {
@@ -55,7 +55,7 @@ class GetUserGroups {
 			$parentRolelist[] = $par_rol_id;
 		}
 		$parentRolelist[] = $userRole;
-		$query="select * from vtiger_group2rs where roleandsubid in (". generateQuestionMarks($parentRolelist) .")";
+		$query="select groupid from vtiger_group2rs where roleandsubid in (". generateQuestionMarks($parentRolelist) .")";
 		$result = $adb->pquery($query, array($parentRolelist));
 		$num_rows=$adb->num_rows($result);
 		for($i=0;$i<$num_rows;$i++) {
