@@ -1366,6 +1366,7 @@ function getDetailAssociatedProducts($module, $focus) {
 			$output .= '<b>'.$app_strings['LBL_QTY_IN_STOCK'].':</b>&nbsp;'.$qtyinstock;
 		}
 		if ($MDMapFound) {
+			$invdTabid = getTabid("InventoryDetails");
 			foreach ($cbMapFields['detailview']['fields'] as $mdfield) {
 				$output .= '<br>';
 				$output .= '<b>'.$mdfield['fieldinfo']['label'].'</b>:&nbsp;';
@@ -1380,7 +1381,7 @@ function getDetailAssociatedProducts($module, $focus) {
 					$col_fields = array();
 					$col_fields[$mdfield['fieldinfo']['name']] = $adb->query_result($mdrs, 0, $mdfield['fieldinfo']['name']);
 					$col_fields['record_id'] = $adb->query_result($mdrs, 0, 'inventorydetailsid');
-					$foutput = getDetailViewOutputHtml($mdfield['fieldinfo']['uitype'], $mdfield['fieldinfo']['name'], $mdfield['fieldinfo']['label'], $col_fields, 0, $tabid, $module);
+					$foutput = getDetailViewOutputHtml($mdfield['fieldinfo']['uitype'], $mdfield['fieldinfo']['name'], $mdfield['fieldinfo']['label'], $col_fields, 0, $invdTabid, $module);
 					if ($foutput[2]==69) { // image
 						$foutput = str_replace('style="max-width: 500px;"', 'style="max-width: 100px;"', $foutput[1]);
 					} else {
