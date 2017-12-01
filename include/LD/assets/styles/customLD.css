@@ -1,5 +1,19 @@
 /* Global */
 
+.slds-table--cell-buffer tr > td:last-child .slds-button--brand {
+    padding-right: .5rem!important;
+    padding-left: .5rem!important;
+}
+
+.moveColonsArrows img{
+    width: 18px;
+    cursor: pointer;
+}
+
+.moveColonsArrows img:hover{
+    opacity: .7;
+}
+
 .slds-input {
     font-size: 12px!important;
 }

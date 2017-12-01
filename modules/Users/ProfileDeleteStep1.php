@@ -37,7 +37,7 @@ $output ='<div id="DeleteLay" class="layerPopup" style="width:400px;">
 		<td align="left" class="dvtCellInfo">';
 		$output.='<select class="select slds-select"  name="transfer_prof_id">';
 		global $adb;
-		$sql = "select * from vtiger_profile";
+		$sql = "select profilename, profileid from vtiger_profile";
 		$result = $adb->pquery($sql, array());
 		$temprow = $adb->fetch_array($result);
 		do

@@ -239,9 +239,6 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 								}
 								$options[] = array('label'=>getTranslatedString($pickListValue, $module),'value'=>$pickListValue,'selected'=>$chk_val);
 							}
-							if($pickcount == 0 && !empty($value)){
-								$options[] =  array('label'=>$app_strings['LBL_NOT_ACCESSIBLE'],'value'=>$value,'selected');
-							}
 						}
 						$editview_label[]=getTranslatedString($fieldlabel, $module);
 						foreach ($valueArr as $key => $value) {

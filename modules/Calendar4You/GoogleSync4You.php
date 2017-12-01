@@ -8,7 +8,7 @@
  ********************************************************************************/
  
 class GoogleSync4You {
- 	
+
     private $user_id = "";
     private $user_clientsecret = "";
     private $apikey;
@@ -22,27 +22,26 @@ class GoogleSync4You {
     public $is_logged = false;
     public $event = "";
     public $selected_calendar = "";
-    
-      
+
     function __construct() {
-        global $root_directory, $current_language, $mod_strings;	    
+        global $root_directory, $current_language, $mod_strings;
         $this->db = PearDatabase::getInstance();
         $this->root_directory = $root_directory;
-        
         $this->mod_strings = $mod_strings;
-  	}
-	
+	}
+
 	public function getclientsecret() {
              global $adb;
-         $q=$adb->query("select * from its4you_googlesync4you_access where userid=1");
+         $q=$adb->query("select google_login from its4you_googlesync4you_access where userid=1");
          if($adb->num_rows($q)!=0 && $adb->query_result($q,0,"google_login"))
          return $adb->query_result($q,0,"google_login");
          else
 		return $this->user_clientsecret;
 	}
+
 	public function getAPI() {
              global $adb;
-         $q=$adb->query("select * from its4you_googlesync4you_access where userid=1");
+         $q=$adb->query("select google_apikey from its4you_googlesync4you_access where userid=1");
          if($adb->num_rows($q)!=0 && $adb->query_result($q,0,"google_apikey"))
          return $adb->query_result($q,0,"google_apikey");
          else
@@ -50,7 +49,7 @@ class GoogleSync4You {
 	}
         public function getclientid() {
          global $adb;
-         $q=$adb->query("select * from its4you_googlesync4you_access where userid=1");
+         $q=$adb->query("select google_clientid from its4you_googlesync4you_access where userid=1");
          if($adb->num_rows($q)!=0 && $adb->query_result($q,0,"google_clientid"))
          return $adb->query_result($q,0,"google_clientid");
          else
@@ -64,7 +63,7 @@ class GoogleSync4You {
 	}
         public function getkeyfile() {
              global $adb;
-         $q=$adb->query("select * from its4you_googlesync4you_access where userid=1");
+         $q=$adb->query("select google_keyfile from its4you_googlesync4you_access where userid=1");
          if($adb->num_rows($q)!=0 && $adb->query_result($q,0,"google_keyfile"))
          return $adb->query_result($q,0,"google_keyfile");
          else
@@ -102,10 +101,9 @@ class GoogleSync4You {
 
             return true;
         }
-		
 		return false;
 	}
-    
+
    public function setAccessData($userid, $login, $apikey,$keyfile,$clientid,$refresh,$googleinsert){
 
             $this->user_id = $userid;
@@ -139,11 +137,9 @@ class GoogleSync4You {
 	}
 
 	public function connectToGoogle() {
-        
-        $this->connectToGoogleViaAPI3();    
-       
-    }
-    
+		$this->connectToGoogleViaAPI3();
+	}
+
    //new method for API v.3
     private function connectToGoogleViaAPI3() {
 		
@@ -244,7 +240,7 @@ class GoogleSync4You {
     //$type: 1 = export, 2 = import
     public function isDisabled($type = 1) {
 
-        $query = "SELECT * FROM `its4you_googlesync4you_dis` WHERE `userid`=? AND `event`=? AND `type` =?";
+        $query = "SELECT type FROM `its4you_googlesync4you_dis` WHERE `userid`=? AND `event`=? AND `type` =?";
 		$result = $this->db->pquery($query, array($this->user_id, $this->event, $type));
 		$num_rows = $this->db->num_rows($result);
         return $num_rows == 1;
@@ -389,7 +385,7 @@ catch(Exception $e){
         catch(Exception $e){
         echo $e->getMessage();
         }
-        set_include_path($this->root_directory); 
+        set_include_path($this->root_directory);
 
 	}
      
@@ -459,7 +455,7 @@ catch(Exception $e){
         
         $p = array($recordid, $geventid, $this->user_id, $event);
         
-        $sql1 = "SELECT * FROM its4you_googlesync4you_events WHERE crmid = ? AND geventid = ? AND userid = ? AND eventtype = ?";
+        $sql1 = "SELECT crmid FROM its4you_googlesync4you_events WHERE crmid = ? AND geventid = ? AND userid = ? AND eventtype = ? limit 1";
         $result1 = $this->db->pquery($sql1, $p);
         $num_rows1 = $this->db->num_rows($result1); 
         
@@ -519,7 +515,7 @@ catch(Exception $e){
 //        $event_list = $this->gService->getCalendarEventFeed($query); 
 //        set_include_path($this->root_directory);
         
-        return $events;  
+        return $events;
     }
     
     function getGoogleCalEvent($event_id) {
@@ -548,6 +544,6 @@ catch(Exception $e){
 
         set_include_path($this->root_directory);
 
-        return $event;  
+        return $event;
     }
 }

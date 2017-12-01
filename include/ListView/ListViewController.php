@@ -374,16 +374,8 @@ class ListViewController {
 						$value = ' --';
 					}
 				} elseif ($field->getFieldDataType() == 'picklist') {
-					if ($value != '' && !$is_admin && $this->picklistRoleMap[$fieldName] &&
-							!in_array($value, $this->picklistValueMap[$fieldName])) {
-						$value = "<font color='red'>".getTranslatedString(
-							'LBL_NOT_ACCESSIBLE',
-							$module
-						)."</font>";
-					} else {
-						$value = getTranslatedString($value, $module);
-						$value = textlength_check($value);
-					}
+					$value = getTranslatedString($value, $module);
+					$value = textlength_check($value);
 				} elseif ($field->getFieldDataType() == 'date' || $field->getFieldDataType() == 'datetime') {
 					if (!empty($value) && $value != '0000-00-00' && $value != '0000-00-00 00:00') {
 						$date = new DateTimeField($value);
@@ -508,24 +500,15 @@ class ListViewController {
 					$value = ($value != "") ? str_replace(' |##| ', ', ', $value) : "";
 					if (!$is_admin && $value != '') {
 						$valueArray = ($rawValue != "") ? explode(' |##| ', $rawValue) : array();
-						$notaccess = '<font color="red">'.getTranslatedString(
-							'LBL_NOT_ACCESSIBLE',
-							$module
-						)."</font>";
 						$tmp = '';
 						$tmpArray = array();
 						foreach ($valueArray as $index => $val) {
-							if (!$listview_max_textlength ||
-									!(strlen(preg_replace("/(<\/?)(\w+)([^>]*>)/i", "", $tmp)) >
-											$listview_max_textlength)) {
-								if (!$is_admin && $this->picklistRoleMap[$fieldName] &&
-										!in_array(trim(decode_html($val)), $this->picklistValueMap[$fieldName])) {
-									$tmpArray[] = $notaccess;
-									$tmp .= ', '.$notaccess;
-								} else {
-									$tmpArray[] = $val;
-									$tmp .= ', '.$val;
-								}
+							if (!$is_admin && !in_array(trim(decode_html($val)), $this->picklistValueMap[$fieldName])) {
+								continue;
+							}
+							if (!$listview_max_textlength || !(strlen(preg_replace("/(<\/?)(\w+)([^>]*>)/i", "", $tmp)) > $listview_max_textlength)) {
+								$tmpArray[] = $val;
+								$tmp .= ', '.$val;
 							} else {
 								$tmpArray[] = '...';
 								$tmp .= '...';

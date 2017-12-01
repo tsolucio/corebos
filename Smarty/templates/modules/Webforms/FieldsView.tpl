@@ -189,7 +189,7 @@
 	</tr>
 {/if}
 {/foreach}
-<script type="test/javascript" id="counter">
+<script type="text/javascript" id="counter">
 	var count={$CNT};
 </script>
 </table>

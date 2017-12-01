@@ -97,7 +97,7 @@ class VtigerCRMActorMeta extends EntityMeta {
 		}
 		$fieldTypeData = VtigerCRMActorMeta::$fieldTypeMapping[$tableName][$dbField->name];
 		$referenceTypes = array();
-		$sql = "select * from vtiger_ws_entity_referencetype where fieldtypeid=?";
+		$sql = "select type from vtiger_ws_entity_referencetype where fieldtypeid=?";
 		$result = $this->pearDB->pquery($sql,array($fieldTypeData['fieldtypeid']));
 		$numRows = $this->pearDB->num_rows($result);
 		for ($i=0;$i<$numRows;++$i) {
@@ -223,7 +223,8 @@ class VtigerCRMActorMeta extends EntityMeta {
 
 	function exists($recordId) {
 		$exists = false;
-		$sql = 'select * from '.$this->baseTable.' where '.$this->getObectIndexColumn().'=?';
+		$indexCol = $this->getObectIndexColumn();
+		$sql = 'select '.$indexCol.' from '.$this->baseTable.' where '.$indexCol.'=? limit 1';
 		$result = $this->pearDB->pquery($sql , array($recordId));
 		if ($result != null && isset($result)) {
 			if ($this->pearDB->num_rows($result)>0) {

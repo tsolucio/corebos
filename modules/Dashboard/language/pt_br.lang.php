@@ -18,9 +18,10 @@
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese - Un Assigned | 17/11/2017 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_SALES_STAGE_FORM_TITLE'=>'Funil Estágio de Vendas',
 'LBL_SALES_STAGE_FORM_DESC'=>'Mostra as quantidades acumuladas da Oportunidade, por Estágio de Venda e Usuários selecionados, onde a data prevista de fechamento está dentro do intervalo de data especificado.',
 'LBL_MONTH_BY_OUTCOME'=>'Funil de Vendas por Resultado Mensal',
@@ -50,7 +51,6 @@ $mod_strings = Array(
 'LBL_LEAD_SOURCES'=>'Origem do Lead:',
 'LBL_DATE_START'=>'Data Inicial:',
 'LBL_DATE_END'=>'Data Final:',
-//Added for 5.0
 'LBL_NO_PERMISSION'=>'Seu perfil não permite que você veja o Gráfico deste Módulo',
 'LBL_NO_PERMISSION_FIELD'=>'Seu perfil não permite que você veja o Gráfico deste Módulo ou deste Campo',
 
@@ -95,7 +95,6 @@ $mod_strings = Array(
 'VIEWCHART'=>'Visualizar Gráfico',
 'LBL_DASHBOARD'=>'Painel',
 
-// Added/Updated for vtiger CRM 5.0.4
 "Approved"=>"Aprovado",
 "Created"=>"Criado",
 "Cancelled"=>"Cancelado",
@@ -104,7 +103,7 @@ $mod_strings = Array(
 "Sent"=>"Enviar",
 "Credit Invoice"=>"Crédito Fatura",
 "Paid"=>"Pago",
-"Un Assigned"=>"Un Assigned",
+"Un Assigned"=>"Não Atribuído",
 "Cold Call"=>"Cold Call",
 "Existing Customer"=>"Cliente Existente",
 "Self Generated"=>"Auto-Gerado",
@@ -185,7 +184,6 @@ $mod_strings = Array(
 "Negotiation/Review"=>"Negocição/Análise",
 "Closed Won"=>"Fechado Vencido",
 "Closed Lost"=>"Fechado Perdido",
-
 );
 
 ?>

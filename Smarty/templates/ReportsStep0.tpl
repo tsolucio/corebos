@@ -12,6 +12,8 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset={$LBL_CHARSET}">
 	<title>{$MOD.TITLE_VTIGERCRM_CREATE_REPORT}</title>
+	<link rel="stylesheet" href="include/LD/assets/styles/salesforce-lightning-design-system.css" type="text/css" />
+	<link rel="stylesheet" href="include/LD/assets/styles/customLD.css" type="text/css" />
 	<link href="{$THEME_PATH}style.css" rel="stylesheet" type="text/css">
 	<link href="include/jquery.steps.css" rel="stylesheet">
 	<style>
@@ -74,18 +76,34 @@
 				<table width="100%" border="0" cellpadding="10" cellspacing="0" bgcolor="#FFFFFF" height="500" class="small">
 					<tr>
 						<td colspan="2">
-							<span class="genHeaderGray">{$MOD.LBL_REPORT_DETAILS}</span><br>
-							{$MOD.LBL_TYPE_THE_NAME} &amp; {$MOD.LBL_DESCRIPTION_FOR_REPORT}<hr>
+							<div class="forceRelatedListSingleContainer">
+								<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
+									<div class="slds-card__header slds-grid">
+										<header class="slds-media slds-media--center slds-has-flexi-truncate">
+											<div class="slds-media__body">
+												<h2>
+													<span class="prvPrfBigText slds-text-title--caps slds-truncate slds-m-right--xx-small actionLabel">
+														<span class="genHeaderGray">{$MOD.LBL_REPORT_DETAILS}</span>
+													</span>
+												</h2>
+											</div>
+										</header>
+									</div>
+										<div class="slds-card__body slds-card__body--inner">
+											<div class="commentData"><font class="small"> {$MOD.LBL_TYPE_THE_NAME} &amp; {$MOD.LBL_DESCRIPTION_FOR_REPORT} </font></div>
+										</div>
+								</article>
+							</div>
 						</td>
 					</tr>
 					<tr>
 						<td width="25%" align="right" style="padding-right:5px;"><b>{$MOD.LBL_REPORT_NAME} : </b></td>
-						<td width="75%" align="left" style="padding-left:5px;"><input type="text" name="reportName" class="txtBox" value="{$REPORTNAME}"></td>
+						<td width="75%" align="left" style="padding-left:5px;"><input type="text" name="reportName" class="slds-input" value="{$REPORTNAME}"></td>
 					</tr>
 					<tr>
 						<td width="25%" align="right" style="padding-right:5px;"><b>{$MOD.LBL_REP_FOLDER} : </b></td>
 						<td width="75%" align="left" style="padding-left:5px;">
-							<select name="reportfolder" class="txtBox">
+							<select name="reportfolder" class="slds-select" style="width: 75%;">
 							{foreach item=folder from=$REP_FOLDERS}
 							{if $FOLDERID eq $folder.id}
 								<option value="{$folder.id}" selected>{$folder.name}</option>
@@ -98,7 +116,7 @@
 					</tr>
 					<tr>
 						<td align="right" style="padding-right:5px;" valign="top"><b>{$MOD.LBL_DESCRIPTION}: </b></td>
-						<td align="left" style="padding-left:5px;"><textarea name="reportDesc" class="txtBox" rows="5">{$REPORTDESC}</textarea></td>
+						<td align="left" style="padding-left:5px;"><textarea name="reportDesc" class="slds-textarea" style="width: 75%;" rows="5">{$REPORTDESC}</textarea></td>
 					</tr>
 					{if $REPORTTYPE2 eq 'external'}
 						<tr>
@@ -137,8 +155,24 @@
 					<table class="small" bgcolor="#ffffff" border="0" cellpadding="5" cellspacing="0" width="100%">
 						<tr height='10%'>
 							<td colspan="2">
-								<span class="genHeaderGray">{$MOD.LBL_RELATIVE_MODULE}</span><br>
-								{$MOD.LBL_SELECT_RELATIVE_MODULE_FOR_REPORT}<hr>
+								<div class="forceRelatedListSingleContainer">
+									<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
+										<div class="slds-card__header slds-grid">
+											<header class="slds-media slds-media--center slds-has-flexi-truncate">
+												<div class="slds-media__body">
+													<h2>
+														<span class="prvPrfBigText slds-text-title--caps slds-truncate slds-m-right--xx-small actionLabel">
+															<span class="genHeaderGray">{$MOD.LBL_RELATIVE_MODULE}</span>
+														</span>
+													</h2>
+												</div>
+											</header>
+										</div>
+											<div class="slds-card__body slds-card__body--inner">
+												<div class="commentData"><font class="small"> $MOD.LBL_SELECT_RELATIVE_MODULE_FOR_REPORT} </font></div>
+											</div>
+									</article>
+								</div>
 							</td>
 						</tr>
 						{if $RESTRICTEDMODULES neq ''}
@@ -151,7 +185,7 @@
 								<td style="padding-left: 5px; " align="left" width="100%">
 									<div class="small relmodscolumns">
 									{foreach item=relmod from=$RELATEDMODULES}
-										<input type='checkbox' class="secondarymodule" name="secondarymodule_{$relmod}" {if isset($SEC_MODULE.$relmod) && $SEC_MODULE.$relmod eq 1}checked {/if}value="{$relmod}" />&nbsp;{$relmod|@getTranslatedString:$relmod}<br>
+										<input type='checkbox' class="secondarymodule" id="secondarymodule_{$relmod}" name="secondarymodule_{$relmod}" {if isset($SEC_MODULE.$relmod) && $SEC_MODULE.$relmod eq 1}checked {/if}value="{$relmod}" />&nbsp;{$relmod|@getTranslatedString:$relmod}<br>
 									{/foreach}
 									</div>
 								</td>

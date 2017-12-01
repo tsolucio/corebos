@@ -9,11 +9,10 @@
  ********************************************************************************/
 
 //check for mail server configuration through ajax
-if(isset($_REQUEST['server_check']) && $_REQUEST['server_check'] == 'true')
-{
-	$sql='select * from vtiger_systems where server_type = ?';
+if (isset($_REQUEST['server_check']) && $_REQUEST['server_check'] == 'true') {
+	$sql = 'select 1 from vtiger_systems where server_type = ?';
 	$emailcfg = $adb->pquery($sql, array('email'));
-	if($adb->num_rows($emailcfg)>0) {
+	if ($adb->num_rows($emailcfg)>0) {
 		$upload_file_path = decideFilePath();
 		if (!is_writable($upload_file_path)) {
 			echo 'FAILURESTORAGE';

@@ -117,6 +117,7 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
 							<?php } ?>
 						</ul>
 
+<<<<<<< HEAD
 						<!-- Color In calendat UI -->
 						<div id="TabColorInCalendar" style="display: block;" role="tabpanel" aria-labelledby="TabColorInCalendar" class="slds-tabs--scoped__content slds-truncate">
 							<!-- <table class="slds-table slds-no-row-hover slds-table-moz"> -->
@@ -197,7 +198,7 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
 										}
 									}
 
-									$sql = "SELECT * FROM its4you_calendar4you_event_fields WHERE userid = ? AND event = ?";
+									$sql = "SELECT fieldname, type, view FROM its4you_calendar4you_event_fields WHERE userid = ? AND event = ?";
 									$result = $adb->pquery($sql,array($current_user->id,$id));
 									$num_rows = $adb->num_rows($result);
 									

@@ -77,7 +77,7 @@ if((isset($_REQUEST['change_status']) && $_REQUEST['change_status']) && ($_REQUE
 		</div>
 		</td></tr></table>";die;
 	}
-	$invitee_qry = "select * from vtiger_invitees where activityid=?";
+	$invitee_qry = "select inviteeid from vtiger_invitees where activityid=?";
 	$invitee_res = $adb->pquery($invitee_qry, array($return_id));
 	$count = $adb->num_rows($invitee_res);
 	if($count != 0) {
@@ -180,7 +180,7 @@ if($activity_mode != '')
 
 function getRequestData($return_id) {
 	global $adb;
-	$cont_qry = "select * from vtiger_cntactivityrel where activityid=?";
+	$cont_qry = "select contactid from vtiger_cntactivityrel where activityid=?";
 	$cont_res = $adb->pquery($cont_qry, array($return_id));
 	$noofrows = $adb->num_rows($cont_res);
 	$cont_id = array();

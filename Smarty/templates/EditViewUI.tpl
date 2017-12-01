@@ -332,14 +332,10 @@
 					<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small slds-select">
 				{/if}
 						{foreach item=arr from=$fldvalue}
-							{if $arr[0] eq $APP.LBL_NOT_ACCESSIBLE}
-								<option value="{$arr[0]}" {$arr[2]}>{$arr[0]}</option>
-							{else}
-								<option value="{$arr[1]}" {$arr[2]}>{$arr[0]}</option>
-							{/if}
+							<option value="{$arr[1]}" {$arr[2]}>{$arr[0]}</option>
 						{foreachelse}
-								<option value=""></option>
-								<option value="" style='color: #777777' disabled>{$APP.LBL_NONE}</option>
+							<option value=""></option>
+							<option value="" style='color: #777777' disabled>{$APP.LBL_NONE}</option>
 						{/foreach}
 					</select>
 			</td>

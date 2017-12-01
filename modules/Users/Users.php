@@ -913,7 +913,7 @@ class Users extends CRMEntity {
 			$result[$table_name] = $adb->pquery("select * from " . $table_name . " where " . $index . "=?", array($record));
 		}
 		$tabid = getTabid($module);
-		$sql1 = "select * from vtiger_field where tabid=? and vtiger_field.presence in (0,2)";
+		$sql1 = "select columnname, tablename, fieldname from vtiger_field where tabid=? and vtiger_field.presence in (0,2)";
 		$result1 = $adb->pquery($sql1, array($tabid));
 		$noofrows = $adb->num_rows($result1);
 		for ($i = 0; $i < $noofrows; $i++) {

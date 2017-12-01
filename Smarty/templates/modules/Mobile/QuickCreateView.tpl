@@ -96,15 +96,9 @@
 											<label for="{$_FIELD->label()}">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
 											<select  id="{$_FIELD->name()}" name="{$_FIELD->name()}"   data-mini="true" class="select" data-native-menu="false">
 												{foreach item=arr from=$_FIELD->value()}
-													{if $arr.label eq $MOD.LBL_NOT_ACCESSIBLE}
-														<option value="{$arr.label}" {if isset($arr.selected)}{$arr.selected}{/if}>
-															{$arr.label}
-														</option>
-													{else}
 													<option value="{$arr.value}" {if isset($arr.selected)}{$arr.selected}{/if}>
 														{$arr.label|@getTranslatedString:$_MODULE->name()}
 													</option>
-													{/if}
 												{foreachelse}
 													<option value=""></option>
 													<option value="" style='color: #777777' disabled>{$MOD.LBL_NONE}</option>
@@ -117,15 +111,9 @@
 												<!-- provide content for an empty multi picklist as default -->
 												<option value="_empty" selected="selected" style="display:none;"></option>
 												{foreach item=arr from=$_FIELD->value()}
-													{if $arr.label eq $MOD.LBL_NOT_ACCESSIBLE}
-														<option value="{$arr.label}" {if isset($arr.selected)}{$arr.selected}{/if}>
-															{$arr.label}
-														</option>
-													{else}
 													<option value="{$arr.value}" {if isset($arr.selected)}{$arr.selected}{/if}>
 														{$arr.label|@getTranslatedString:$_MODULE->name()}
 													</option>
-													{/if}
 												{/foreach}
 											</select>
 									{/if}

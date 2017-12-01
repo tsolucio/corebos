@@ -93,13 +93,13 @@ class MasterDetailLayout extends processcbMap {
 	private $relatedfieldsinfo = array();
 	private $detailModule = '';
 
-	function processMap($arguments) {
+	public function processMap($arguments) {
 		global $adb, $current_user;
 		$this->mapping=$this->convertMap2Array();
 		return $this->mapping;
 	}
 
-	function convertMap2Array() {
+	public function convertMap2Array() {
 		$xml = $this->getXMLContent();
 		$mapping=array();
 		$mapping['originmodule'] = (String)$xml->originmodule;
@@ -124,88 +124,91 @@ class MasterDetailLayout extends processcbMap {
 			);
 		}
 		$mapping['listview']['fields'] = array();
-		if (isset($xml->listview->fields->field) and is_object($xml->listview->fields->field))
-		foreach($xml->listview->fields->field as $k=>$v) {
-			$fieldtype = isset($v->fieldtype) ? (String)$v->fieldtype : '';
-			$fieldname = isset($v->fieldname) ? (String)$v->fieldname : '';
-			$fieldinfo = array();
-			if (!empty($fieldname)) {
-				switch (strtolower($fieldtype)) {
-					case 'corebos':
-						$fieldinfo = $this->getFieldInfo($fieldname);
-						break;
-					case 'corebos.related':
-						$fieldinfo = $this->getRelatedFieldInfo($fieldname);
-						break;
-					case 'computed':
-						$fieldinfo['name'] = $fieldname;
-						$fieldinfo['label'] = isset($v->fieldlabel) ? (String)$v->fieldlabel : '';
-						$fieldinfo['uitype'] = 'computed';
-						break;
+		if (isset($xml->listview->fields->field) and is_object($xml->listview->fields->field)) {
+			foreach ($xml->listview->fields->field as $k => $v) {
+				$fieldtype = isset($v->fieldtype) ? (String)$v->fieldtype : '';
+				$fieldname = isset($v->fieldname) ? (String)$v->fieldname : '';
+				$fieldinfo = array();
+				if (!empty($fieldname)) {
+					switch (strtolower($fieldtype)) {
+						case 'corebos':
+							$fieldinfo = $this->getFieldInfo($fieldname);
+							break;
+						case 'corebos.related':
+							$fieldinfo = $this->getRelatedFieldInfo($fieldname);
+							break;
+						case 'computed':
+							$fieldinfo['name'] = $fieldname;
+							$fieldinfo['label'] = isset($v->fieldlabel) ? (String)$v->fieldlabel : '';
+							$fieldinfo['uitype'] = 'computed';
+							break;
+					}
 				}
+				$mapping['listview']['fields'][] = array(
+					'fieldtype' => $fieldtype,
+					'fieldinfo' => $fieldinfo,
+					'editable' => isset($v->editable) ? (String)$v->editable : '',
+					'mandatory' => isset($v->mandatory) ? (String)$v->mandatory : '',
+					'hidden' => isset($v->hidden) ? (String)$v->hidden : '0',
+					'layout' => isset($v->layout) ? (String)$v->layout : '',
+				);
+				$mapping['listview']['fieldnames'][] = $fieldinfo['name'];
 			}
-			$mapping['listview']['fields'][] = array(
-				'fieldtype' => $fieldtype,
-				'fieldinfo' => $fieldinfo,
-				'editable' => isset($v->editable) ? (String)$v->editable : '',
-				'mandatory' => isset($v->mandatory) ? (String)$v->mandatory : '',
-				'hidden' => isset($v->hidden) ? (String)$v->hidden : '0',
-				'layout' => isset($v->layout) ? (String)$v->layout : '',
-			);
-			$mapping['listview']['fieldnames'][] = $fieldinfo['name'];
 		}
 		$mapping['detailview'] = array();
 		$mapping['detailview']['layout'] = isset($xml->detailview->layout) ? (String)$xml->detailview->layout : '';
 		$mapping['detailview']['fields'] = array();
-		if (is_object($xml->detailview->fields->field))
-		foreach($xml->detailview->fields->field as $k=>$v) {
-			$fieldtype = isset($v->fieldtype) ? (String)$v->fieldtype : '';
-			$fieldname = isset($v->fieldname) ? (String)$v->fieldname : '';
-			$fieldinfo = array();
-			if (!empty($fieldname)) {
-				switch (strtolower($fieldtype)) {
-					case 'corebos':
-						$fieldinfo = $this->getFieldInfo($fieldname);
-						break;
-					case 'corebos.related':
-						$fieldinfo = $this->getRelatedFieldInfo($fieldname);
-						break;
-					case 'computed':
-						$fieldinfo['name'] = $fieldname;
-						$fieldinfo['label'] = isset($v->fieldlabel) ? (String)$v->fieldlabel : '';
-						$fieldinfo['uitype'] = 'computed';
-						break;
+		if (is_object($xml->detailview->fields->field)) {
+			foreach ($xml->detailview->fields->field as $k => $v) {
+				$fieldtype = isset($v->fieldtype) ? (String)$v->fieldtype : '';
+				$fieldname = isset($v->fieldname) ? (String)$v->fieldname : '';
+				$fieldinfo = array();
+				if (!empty($fieldname)) {
+					switch (strtolower($fieldtype)) {
+						case 'corebos':
+							$fieldinfo = $this->getFieldInfo($fieldname);
+							break;
+						case 'corebos.related':
+							$fieldinfo = $this->getRelatedFieldInfo($fieldname);
+							break;
+						case 'computed':
+							$fieldinfo['name'] = $fieldname;
+							$fieldinfo['label'] = isset($v->fieldlabel) ? (String)$v->fieldlabel : '';
+							$fieldinfo['uitype'] = 'computed';
+							break;
+					}
 				}
+				$mapping['detailview']['fields'][] = array(
+					'fieldtype' => $fieldtype,
+					'fieldinfo' => $fieldinfo,
+					'editable' => isset($v->editable) ? (String)$v->editable : '',
+					'mandatory' => isset($v->mandatory) ? (String)$v->mandatory : '',
+					'hidden' => isset($v->hidden) ? (String)$v->hidden : '0',
+					'value' => isset($v->value) ? (String)$v->value : '',
+					'layout' => isset($v->layout) ? (String)$v->layout : '',
+				);
+				$mapping['detailview']['fieldnames'][] = $fieldinfo['name'];
 			}
-			$mapping['detailview']['fields'][] = array(
-				'fieldtype' => $fieldtype,
-				'fieldinfo' => $fieldinfo,
-				'editable' => isset($v->editable) ? (String)$v->editable : '',
-				'mandatory' => isset($v->mandatory) ? (String)$v->mandatory : '',
-				'hidden' => isset($v->hidden) ? (String)$v->hidden : '0',
-				'value' => isset($v->value) ? (String)$v->value : '',
-				'layout' => isset($v->layout) ? (String)$v->layout : '',
-			);
-			$mapping['detailview']['fieldnames'][] = $fieldinfo['name'];
 		}
 		$mapping['aggregations'] = array();
-		if (is_object($xml->aggregations->operation))
-		foreach($xml->aggregations->operation as $k=>$v) {
-			$mapping['aggregations'][] = array(
-				'type' => isset($v->type) ? (String)$v->type : '',
-				'items' => isset($v->items) ? (String)$v->items : '',
-				'operation' => isset($v->operation) ? (String)$v->operation : '',
-				'column' => isset($v->column) ? (String)$v->column : '',
-				'variable' => isset($v->variable) ? (String)$v->variable : '0',
-				'label' => isset($v->label) ? (String)$v->label : '',
-				'currency' => isset($v->currency) ? (strtolower((String)$v->currency)=='true' ? 1 : 0) : 0,
-				'position' => isset($v->position) ? (String)$v->position : '',
-			);
+		if (is_object($xml->aggregations->operation)) {
+			foreach ($xml->aggregations->operation as $k => $v) {
+				$mapping['aggregations'][] = array(
+					'type' => isset($v->type) ? (String)$v->type : '',
+					'items' => isset($v->items) ? (String)$v->items : '',
+					'operation' => isset($v->operation) ? (String)$v->operation : '',
+					'column' => isset($v->column) ? (String)$v->column : '',
+					'variable' => isset($v->variable) ? (String)$v->variable : '0',
+					'label' => isset($v->label) ? (String)$v->label : '',
+					'currency' => isset($v->currency) ? (strtolower((String)$v->currency)=='true' ? 1 : 0) : 0,
+					'position' => isset($v->position) ? (String)$v->position : '',
+				);
+			}
 		}
 		return $mapping;
 	}
 
-	function getFieldInfo($fieldname) {
+	public function getFieldInfo($fieldname) {
 		global $current_user;
 		if (count($this->fieldsinfo)==0) {
 			$wsfieldsinfo = vtws_describe($this->detailModule, $current_user);
@@ -215,9 +218,11 @@ class MasterDetailLayout extends processcbMap {
 		//$ret = array_search($fieldname, array_column($this->fieldsinfo, 'name'));
 		// PHP 5.4 search and get fieldinfo
 		foreach ($this->fieldsinfo as $ret => $finfo) {
-			if ($finfo['name']==$fieldname) break;
+			if ($finfo['name']==$fieldname) {
+				break;
+			}
 		}
-		if ($this->fieldsinfo[$ret]['uitype']==10) {
+		if (isset($this->fieldsinfo[$ret]['uitype']) && $this->fieldsinfo[$ret]['uitype']==10) {
 			$refmod = $this->fieldsinfo[$ret]['type']['refersTo'][0];
 			$rmod = CRMEntity::getInstance($refmod);
 			$WSCodeID = vtws_getEntityId($refmod);
@@ -228,7 +233,7 @@ class MasterDetailLayout extends processcbMap {
 		return $this->fieldsinfo[$ret];
 	}
 
-	function getRelatedFieldInfo($fieldname) {
+	public function getRelatedFieldInfo($fieldname) {
 		global $current_user;
 		list($module,$fieldname) = explode('.', $fieldname);
 		if (count($this->relatedfieldsinfo)==0 or !isset($this->relatedfieldsinfo[$module])) {
@@ -239,7 +244,9 @@ class MasterDetailLayout extends processcbMap {
 		//$ret = array_search($fieldname, array_column($this->fieldsinfo, 'name'));
 		// PHP 5.4 search and get fieldinfo
 		foreach ($this->relatedfieldsinfo[$module] as $ret => $finfo) {
-			if ($finfo['name']==$fieldname) break;
+			if ($finfo['name']==$fieldname) {
+				break;
+			}
 		}
 		if ($this->relatedfieldsinfo[$module][$ret]['uitype']==10) {
 			$refmod = $this->relatedfieldsinfo[$module][$ret]['type']['refersTo'][0];
@@ -251,6 +258,5 @@ class MasterDetailLayout extends processcbMap {
 		}
 		return $this->relatedfieldsinfo[$module][$ret];
 	}
-
 }
 ?>

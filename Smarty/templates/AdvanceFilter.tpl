@@ -88,11 +88,11 @@ function addConditionRow(groupIndex) {ldelim}
 	node1.setAttribute('width', '25%');
 	newNode.appendChild(node1);
 	{if $SOURCE eq 'reports'}
-		node1.innerHTML = '<select name="fcol'+columnIndex+'" id="fcol'+columnIndex+'" onchange="updatefOptions(this, \'fop'+columnIndex+'\');addRequiredElements('+columnIndex+');updateRelFieldOptions(this, \'fval_'+columnIndex+'\');" class="detailedViewTextBox">'+
+		node1.innerHTML = '<select name="fcol'+columnIndex+'" class="slds-select" id="fcol'+columnIndex+'" onchange="updatefOptions(this, \'fop'+columnIndex+'\');addRequiredElements('+columnIndex+');updateRelFieldOptions(this, \'fval_'+columnIndex+'\');" class="detailedViewTextBox">'+
 							'<option value="">{'LBL_NONE'|@getTranslatedString:$MODULE}</option>'+COL_BLOCK+
 						'</select>';
 	{else}
-		node1.innerHTML = "<select name='fcol"+columnIndex+"' id='fcol"+columnIndex+"' onchange='updatefOptions(this, \"fop"+columnIndex+"\");addRequiredElements("+columnIndex+");' class='slds-select'>"+
+		node1.innerHTML = "<select name='fcol"+columnIndex+"' class="slds-select" id='fcol"+columnIndex+"' onchange='updatefOptions(this, \"fop"+columnIndex+"\");addRequiredElements("+columnIndex+");' class='slds-select'>"+
 							"<option value=''>{'LBL_NONE'|@getTranslatedString:$MODULE}</option>"+COL_BLOCK+
 						"</select>";
 	{/if}

@@ -17,7 +17,7 @@
  * Description:  Defines the English language pack for Home Module.
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_NEW_FORM_TITLE'=>'Novo Contato',
 'LBL_FIRST_NAME'=>'Nome:',
 'LBL_LAST_NAME'=>'Sobrenome:',
@@ -58,10 +58,7 @@ $mod_strings = Array(
 'Last 2 Days'=>'Últimos 2 Dias',
 'Last Ten Days'=>'Últimos Dez Dias',
 
-// Added/Updated for vtiger CRM 5.0.4
 'User List'=>'Lista Usuários',
-
-// Added after 5.0.4 GA
 
 //ADDED for Home Page Customization
 'LBL_HOME_MODULE' => 'Modulo',
@@ -119,11 +116,9 @@ $mod_strings = Array(
 'MSG_NO_FILTERS' => 'Nenhum Filtro Disponível',
 'MSG_NO_FIELDS' => 'Nenhum Campo Disponível',
 
-//Customization Phase 6 -- Monolithic
 'LBL_REPORTCHARTS' => 'Gráficos Relatórios',
 'LBL_HOME_REPORT_NAME'=> 'Nome Relatório',
 'LBL_HOME_REPORT_TYPE' => 'Tipo Relatório',
-//END
 
 //added for Default Widgets
 'LBL_DEFAULT_WIDGET'=>'Widgets Padrão',

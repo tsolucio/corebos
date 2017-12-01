@@ -503,6 +503,8 @@ class CRMEntity {
 			}
 		}
 
+		$selectFields = 'fieldname, columnname, uitype, generatedtype, typeofdata';
+
 		$tabid = getTabid($module);
 		if ($module == 'Calendar' && $this->column_fields["activitytype"] != null && $this->column_fields["activitytype"] != 'Task') {
 			$tabid = getTabid('Events');
@@ -514,15 +516,15 @@ class CRMEntity {
 			checkFileAccessForInclusion('user_privileges/user_privileges_' . $current_user->id . '.php');
 			require('user_privileges/user_privileges_' . $current_user->id . '.php');
 			if (isset($from_wf) && $from_wf) {
-				$sql = "select * from vtiger_field where $uniqueFieldsRestriction and tablename=? and displaytype in (1,3,4) and presence in (0,2)";
+				$sql = "select $selectFields from vtiger_field where $uniqueFieldsRestriction and tablename=? and displaytype in (1,3,4) and presence in (0,2)";
 				$params = array($tabid, $table_name);
 			} elseif ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
-				$sql = "select * from vtiger_field where $uniqueFieldsRestriction and tablename=? and displaytype in (1,3) and presence in (0,2)";
+				$sql = "select $selectFields from vtiger_field where $uniqueFieldsRestriction and tablename=? and displaytype in (1,3) and presence in (0,2)";
 				$params = array($tabid, $table_name);
 			} else {
 				$profileList = getCurrentUserProfileList();
 				if (count($profileList) > 0) {
-					$sql = "SELECT distinct vtiger_field.*
+					$sql = "SELECT $selectFields
 						FROM vtiger_field
 						INNER JOIN vtiger_profile2field
 						ON vtiger_profile2field.fieldid = vtiger_field.fieldid
@@ -534,7 +536,7 @@ class CRMEntity {
 						AND vtiger_def_org_field.visible = 0 and vtiger_field.tablename=? and vtiger_field.displaytype in (1,3) and vtiger_field.presence in (0,2)";
 					$params = array($tabid, $profileList, $table_name);
 				} else {
-					$sql = "SELECT distinct vtiger_field.*
+					$sql = "SELECT $selectFields
 						FROM vtiger_field
 						INNER JOIN vtiger_profile2field
 						ON vtiger_profile2field.fieldid = vtiger_field.fieldid
@@ -554,7 +556,7 @@ class CRMEntity {
 			}
 			$column = array($table_index_column);
 			$value = array($this->id);
-			$sql = "select * from vtiger_field where $uniqueFieldsRestriction and tablename=? and displaytype in (1,3,4) and vtiger_field.presence in (0,2)";
+			$sql = "select $selectFields from vtiger_field where $uniqueFieldsRestriction and tablename=? and displaytype in (1,3,4) and vtiger_field.presence in (0,2)";
 			$params = array($tabid, $table_name);
 		}
 
@@ -1412,7 +1414,7 @@ class CRMEntity {
 		global $adb;
 
 		$tabid = getTabId($module);
-		$sql = "select * from vtiger_field where tabid= ? and typeofdata like '%M%' and uitype not in ('53','70') and vtiger_field.presence in (0,2)";
+		$sql = "select fieldname from vtiger_field where tabid= ? and typeofdata like '%M%' and uitype not in ('53','70') and vtiger_field.presence in (0,2)";
 		$result = $adb->pquery($sql, array($tabid));
 		$numRows = $adb->num_rows($result);
 		for ($i = 0; $i < $numRows; $i++) {

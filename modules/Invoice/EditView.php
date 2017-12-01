@@ -294,8 +294,8 @@ if (!empty($_REQUEST['contact_id']) && (is_null('record') || (isset($_REQUEST['c
 	$focus->column_fields['ship_street'] = $cto_focus->column_fields['otherstreet'];
 	$focus->column_fields['bill_state'] = $cto_focus->column_fields['mailingstate'];
 	$focus->column_fields['ship_state'] = $cto_focus->column_fields['otherstate'];
-	$focus->column_fields['bill_code'] = $cto_focus->column_fields['mailingcode'];
-	$focus->column_fields['ship_code'] = $cto_focus->column_fields['othercode'];
+	$focus->column_fields['bill_code'] = $cto_focus->column_fields['mailingzip'];
+	$focus->column_fields['ship_code'] = $cto_focus->column_fields['otherzip'];
 	$focus->column_fields['bill_country'] = $cto_focus->column_fields['mailingcountry'];
 	$focus->column_fields['ship_country'] = $cto_focus->column_fields['othercountry'];
 	$focus->column_fields['bill_pobox'] = $cto_focus->column_fields['mailingpobox'];

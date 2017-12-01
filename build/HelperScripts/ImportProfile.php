@@ -22,7 +22,7 @@ require_once('include/logging.php');
 require_once('include/utils/UserInfoUtil.php');
 require_once('include/utils/utils.php');
 include_once('config.inc.php');
-global $adb,$root_directory;
+global $adb;
 
 //$xmlstr = file_get_contents("build/data/$lang/profile.xml");
 //$if = getImportDataFileName('profile.xml',$lang);

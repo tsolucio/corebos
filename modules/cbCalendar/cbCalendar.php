@@ -177,7 +177,7 @@ class cbCalendar extends CRMEntity {
 		}
 		//Insert into seactivity rel
 		if(isset($this->column_fields['rel_id']) && $this->column_fields['rel_id'] != '' && $this->column_fields['rel_id'] != '0') {
-			$res_rel = $adb->pquery('SELECT * FROM vtiger_seactivityrel WHERE activityid = ?',array($this->id));
+			$res_rel = $adb->pquery('SELECT activityid FROM vtiger_seactivityrel WHERE activityid = ? limit 1',array($this->id));
 			if($adb->num_rows($res_rel) > 0) {
 				$adb->pquery('UPDATE vtiger_seactivityrel SET crmid = ? WHERE activityid = ?',array($this->column_fields['rel_id'],$this->id));
 			} else {
@@ -435,7 +435,7 @@ class cbCalendar extends CRMEntity {
 				$invitees_array = explode(';',$selected_users_string);
 				foreach ($invitees_array as $inviteeid) {
 					if ($inviteeid != '') {
-						$resultcheck = $adb->pquery("select * from vtiger_salesmanactivityrel where activityid=? and smid=?",array($this->id,$inviteeid));
+						$resultcheck = $adb->pquery("select 1 from vtiger_salesmanactivityrel where activityid=? and smid=?",array($this->id,$inviteeid));
 						if ($adb->num_rows($resultcheck) != 1) {
 							$query="insert into vtiger_salesmanactivityrel values(?,?)";
 							$adb->pquery($query, array($inviteeid, $this->id));
@@ -448,7 +448,7 @@ class cbCalendar extends CRMEntity {
 
 	function getRequestData($return_id) {
 		global $adb;
-		$cont_qry = "select * from vtiger_cntactivityrel where activityid=?";
+		$cont_qry = "select contactid from vtiger_cntactivityrel where activityid=?";
 		$cont_res = $adb->pquery($cont_qry, array($return_id));
 		$noofrows = $adb->num_rows($cont_res);
 		$cont_id = array();
@@ -649,7 +649,7 @@ class cbCalendar extends CRMEntity {
 			//$this->setModuleSeqNumber('configure', $modulename, 'cbcal-', '0000001');
 			global $adb;
 			set_time_limit(0);
-			$rs = $adb->query('select *
+			$rs = $adb->query('select crmid, activityid
 					from vtiger_seactivityrel
 					inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_seactivityrel.crmid
 					where deleted=0');
@@ -657,7 +657,7 @@ class cbCalendar extends CRMEntity {
 			while ($act = $adb->fetch_array($rs)) {
 				$adb->pquery($upd,array($act['crmid'],$act['activityid']));
 			}
-			$rs = $adb->query('select *
+			$rs = $adb->query('select activityid, contactid
 					from vtiger_cntactivityrel
 					inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cntactivityrel.contactid
 					where deleted=0');
@@ -818,7 +818,7 @@ class cbCalendar extends CRMEntity {
 				$calwf['test'] = str_replace('taskstatus','eventstatus', $calwf['test']);
 				$calendarWorkflow = $workflowManager->newWorkFlow("cbCalendar");
 				if ($calwf['summary']=='Notify when a task is delayed beyond 24 hrs') {
-					$calendarWorkflow->test = '[{"fieldname":"date_start","operation":"less than days ago","value":"1","valuetype":"expression","joincondition":"and","groupid":"0"},{"fieldname":"activitytype","operation":"is","value":"Task","valuetype":"rawtext","joincondition":"and","groupid":"0"},{"fieldname":"eventstatus","operation":"is not","value":"Held","valuetype":"rawtext","joincondition":"and","groupid":"0"},{"fieldname":"eventstatus","operation":"is not","value":"Completed","valuetype":"rawtext","joincondition":"and","groupid":"0"}]';
+					$calendarWorkflow->test = '[{"fieldname":"date_start","operation":"days ago","value":"1","valuetype":"expression","joincondition":"and","groupid":"0"},{"fieldname":"activitytype","operation":"is","value":"Task","valuetype":"rawtext","joincondition":"and","groupid":"0"},{"fieldname":"eventstatus","operation":"is not","value":"Held","valuetype":"rawtext","joincondition":"and","groupid":"0"},{"fieldname":"eventstatus","operation":"is not","value":"Completed","valuetype":"rawtext","joincondition":"and","groupid":"0"},{"fieldname":"eventstatus","operation":"is not","value":"In Progress","valuetype":"rawtext","joincondition":"and","groupid":"0"}]';
 				} else {
 					$calendarWorkflow->test = $calwf['test'];
 				}
@@ -835,7 +835,7 @@ class cbCalendar extends CRMEntity {
 				$workflowManager->save($calendarWorkflow);
 				$adb->pquery("UPDATE com_vtiger_workflows SET nexttrigger_time=? WHERE workflow_id=?", array((isset($calwf['nexttriger_time']) ? $calwf['nexttriger_time'] : null), $calendarWorkflow->id));
 				// get workflow tasks.
-				$rescaltk = $adb->pquery("SELECT * FROM com_vtiger_workflowtasks WHERE workflow_id = ?",array($calwf['workflow_id']));
+				$rescaltk = $adb->pquery("SELECT summary, task_id FROM com_vtiger_workflowtasks WHERE workflow_id = ?",array($calwf['workflow_id']));
 				while ($caltk = $adb->getNextRow($rescaltk, false)) {
 					$task = $taskManager->createTask('VTEmailTask', $calendarWorkflow->id);
 					$task->active = true;

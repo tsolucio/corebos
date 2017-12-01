@@ -252,7 +252,7 @@ class Vtiger_Link {
 			if($multitype) {
 				$instances[$instance->linktype][] = $instance;
 			} else {
-				$instances[] = $instance;
+				$instances[$instance->linktype] = $instance;
 			}
 		}
 		return $instances;
@@ -278,5 +278,29 @@ class Vtiger_Link {
 		return $user->is_admin == 'on' || $user->column_fields['is_admin'] == 'on';
 	}
 
+	public static function updateLink($tabId, $linkId, $linkInfo = array()) {
+		if ($linkInfo && is_array($linkInfo)) {
+			$db = PearDatabase::getInstance();
+			$result = $db->pquery('SELECT 1 FROM vtiger_links WHERE tabid=? AND linkid=?', array($tabId, $linkId));
+			if ($db->num_rows($result)) {
+				$columnsList = $db->getColumnNames('vtiger_links');
+				$isColumnUpdate = false;
+
+				$sql = 'UPDATE vtiger_links SET ';
+				foreach ($linkInfo as $column => $columnValue) {
+					if (in_array($column, $columnsList)) {
+						$columnValue = ($column == 'sequence') ? intval($columnValue) : $columnValue;
+						$sql .= "$column='$columnValue',";
+						$isColumnUpdate = true;
+					}
+				}
+
+				if ($isColumnUpdate) {
+					$sql = trim($sql, ',').' WHERE tabid=? AND linkid=?';
+					$db->pquery($sql, array($tabId, $linkId));
+				}
+			}
+		}
+	}
 }
 ?>

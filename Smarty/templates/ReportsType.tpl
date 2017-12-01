@@ -13,9 +13,24 @@
 	<tbody>
 		<tr>
 			<td colspan="2">
-				<span class="genHeaderGray"> {$MOD.LBL_REPORT_TYPE} </span><br>
-				{$MOD.LBL_SELECT_REPORT_TYPE_BELOW}
-				<hr>
+				<div class="forceRelatedListSingleContainer">
+					<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
+						<div class="slds-card__header slds-grid">
+							<header class="slds-media slds-media--center slds-has-flexi-truncate">
+								<div class="slds-media__body">
+									<h2>
+										<span class="prvPrfBigText slds-text-title--caps slds-truncate slds-m-right--xx-small actionLabel">
+											<span class="genHeaderGray">{$MOD.LBL_REPORT_TYPE}</span>
+										</span>
+									</h2>
+								</div>
+							</header>
+						</div>
+							<div class="slds-card__body slds-card__body--inner">
+								<div class="commentData"><font class="small"> {$MOD.LBL_SELECT_REPORT_TYPE_BELOW} </font></div>
+							</div>
+					</article>
+				</div>
 			</td>
 		</tr>
 		<tr>

@@ -26,7 +26,7 @@ class VTEventsManager{
 	 */
 	function registerHandler($forEvent, $path, $className, $condition='', $depedentOn='[]') {
 		$adb = $this->adb;
-		$result = $adb->pquery("SELECT * FROM vtiger_eventhandlers WHERE event_name=? AND handler_path=? AND handler_class=?",
+		$result = $adb->pquery("SELECT is_active FROM vtiger_eventhandlers WHERE event_name=? AND handler_path=? AND handler_class=? limit 1",
 			array($forEvent, $path, $className));
 		if($adb->num_rows($result)===0){
 			$handlerId = $adb->getUniqueId('vtiger_eventhandlers');
@@ -119,7 +119,7 @@ class VTEventsManager{
 	 */
 	function setModuleForHandler($moduleName, $handlerClass) {
 		$adb = $this->adb;
-		$result = $adb->pquery('SELECT * FROM vtiger_eventhandler_module WHERE handler_class=?', array($handlerClass));
+		$result = $adb->pquery('SELECT eventhandler_module_id FROM vtiger_eventhandler_module WHERE handler_class=? limit 1', array($handlerClass));
 		if ($adb->num_rows($result)===0) {
 			$handlerModuleId = $adb->getUniqueId('vtiger_eventhandler_module');
 			$adb->pquery("insert into vtiger_eventhandler_module

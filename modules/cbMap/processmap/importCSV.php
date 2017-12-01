@@ -26,7 +26,7 @@ require_once('modules/cbMap/processmap/Import.php');
 require_once('include/utils/utils.php');
 require_once('include/database/PearDatabase.php');
 
-global $adb, $log, $root_directory, $current_user;
+global $adb, $log, $current_user;
 $current_user = Users::getActiveAdminUser();
 if (isset($argv) && !empty($argv)) {
 	$csvfile = $argv[1];

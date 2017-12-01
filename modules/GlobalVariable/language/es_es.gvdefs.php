@@ -1026,28 +1026,28 @@ $GlobalVariableDefinitons = array(
 	'status' => 'Implementada',
 	'valuetype' => 'Texto',
 	'category' => 'Integración',
-	'values' => 'ID or name of template to use',
+	'values' => 'ID o nombre de la plantilla a utilizar',
 	'definition' => 'Cuando la variable CustomerPortal_PDF se establece en PDFMaker o GenDoc, esta variable indica qué plantilla se debe utilizar para generar el PDF de presupuestos. Si está vacía, se utilizará la primera plantilla encontrada.',
 ),
 'CustomerPortal_PDFTemplate_SalesOrder'  => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Texto',
 	'category' => 'Integración',
-	'values' => 'ID or name of template to use',
+	'values' => 'ID o nombre de la plantilla a utilizar',
 	'definition' => 'Cuando la variable CustomerPortal_PDF se establece en PDFMaker o GenDoc, esta variable indica qué plantilla se debe utilizar para generar el PDF de ordenes de venta. Si está vacía, se utilizará la primera plantilla encontrada.',
 ),
 'CustomerPortal_PDFTemplate_Invoice'  => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Texto',
 	'category' => 'Integración',
-	'values' => 'ID or name of template to use',
+	'values' => 'ID o nombre de la plantilla a utilizar',
 	'definition' => 'Cuando la variable CustomerPortal_PDF se establece en PDFMaker o GenDoc, esta variable indica qué plantilla se debe utilizar para generar el PDF de facturas. Si está vacía, se utilizará la primera plantilla encontrada.',
 ),
 'CustomerPortal_PDFTemplate_PurchaseOrder'  => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Texto',
 	'category' => 'Integración',
-	'values' => 'ID or name of template to use',
+	'values' => 'ID o nombre de la plantilla a utilizar',
 	'definition' => 'Cuando la variable CustomerPortal_PDF se establece en PDFMaker o GenDoc, esta variable indica qué plantilla se debe utilizar para generar el PDF de ordenes de compra. Si está vacía, se utilizará la primera plantilla encontrada.',
 ),
 'Application_Permit_Assign_Up'  => array(
@@ -1066,7 +1066,7 @@ $GlobalVariableDefinitons = array(
 ),
 );
 
-foreach (glob('modules/GlobalVariable/language/es_es.gvdefs.*.php',GLOB_BRACE) as $tcode) {
+foreach (glob('modules/GlobalVariable/language/es_es.gvdefs.*.php', GLOB_BRACE) as $tcode) {
 	include($tcode);
 }
 

@@ -13,13 +13,7 @@
 		{if $keyid eq '1' || $keyid eq 2 || $keyid eq '11' || $keyid eq '7' || $keyid eq '9' || $keyid eq '55' || $keyid eq '71' || $keyid eq '72' || $keyid eq '255'} <!--TextBox-->
 			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;
 				{if $keyid eq '55' || $keyid eq '255'}<!--SalutationSymbol-->
-					{if $keyaccess eq $APP.LBL_NOT_ACCESSIBLE}
-						<font color='red'>{$APP.LBL_NOT_ACCESSIBLE}</font>
-					{else}
-						{$keysalut}
-					{/if}
-				{*elseif $keyid eq '71' || $keyid eq '72'} <!--CurrencySymbol-->
-					{$keycursymb*}
+					{$keysalut}
 				{/if}
 				{if $keyid eq 11 && $USE_ASTERISK eq 'true'}
 					<span id="dtlview_{$label}"><a href='javascript:;' onclick='startCall("{$keyval}", "{$ID}")'>{$keyval}</a></span>
@@ -74,18 +68,11 @@
 			</td>
 		{elseif $keyid eq '15' || $keyid eq '16' || $keyid eq '1613' || $keyid eq '1614' || $keyid eq '1615'} <!--ComboBox-->
 			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;
-				{assign var=fontval value=''}
-				{foreach item=arr from=$keyoptions}
-					{if $arr[0] eq $APP.LBL_NOT_ACCESSIBLE}
-						{assign var=keyval value=$APP.LBL_NOT_ACCESSIBLE}
-						{assign var=fontval value='red'}
-					{/if}
-				{/foreach}
 				{if $keyid eq '1615' && $keyval!=''}
 					{assign var=plinfo value='::'|explode:$keyval}
 					{$plinfo[0]|@getTranslatedString:$plinfo[0]} {$plinfo[1]|@getTranslatedString:$plinfo[0]}
 				{else}
-				<font color="{$fontval}">{$keyval|@getTranslatedString:$MODULE}</font>
+					{$keyval|@getTranslatedString:$MODULE}
 				{/if}
 			</td>
 		{elseif $keyid eq '33' || $keyid eq '3313' || $keyid eq '3314'}
