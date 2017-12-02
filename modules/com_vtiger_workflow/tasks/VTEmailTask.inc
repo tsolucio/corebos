@@ -11,6 +11,9 @@ require_once('modules/com_vtiger_workflow/VTEntityCache.inc');
 require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
 require_once('modules/com_vtiger_workflow/VTEmailRecipientsTemplate.inc');
 require_once('modules/Emails/mail.php');
+require_once('modules/Emails/mail.php');
+include_once 'include/Webservices/VtigerEmailOperation.php';
+
 class VTEmailTask extends VTTask{
 	// Sending email takes more time, this should be handled via queue all the time.
 	public $executeImmediately = false;
@@ -125,8 +128,51 @@ class VTEmailTask extends VTTask{
 		$content = $ct->render($entityCache, $entity->getId());
 		$logo = (strpos($this->content, '(general : (__VtigerMeta__) logo)')===false) ? '' : '1';
 		$rdo = send_mail($module,$to_email,$from_name,$from_email,$subject,$content, $cc, $bcc,$this->attachmentsinfo,'',$logo,$replyto);
+		$element['saved_toid'] = $to_email;
+		$element['parent_type'] = $module;
+		$element['parent_id'] = $entity->getId();
+		$element['from_email'] = $from_email;
+		$element['ccmail'] = $cc;
+		$element['bccmail'] = $bcc;
+		$element['subject'] = $subject;
+		$element['description'] = $content;
+		$this->createEmailRecord($element);
 		$logbg->debug("VTEmailTask\nTo: $to_email\nFromName: $from_name\nFromEmail: $from_email\nCC: $cc\nBCC: $bcc\nResult: $rdo");
 		$util->revertUser();
+	}
+
+	private function createEmailRecord($element) {
+		global $adb, $log;
+		$user = Users::getActiveAdminUser();
+		$elementType = 'Emails';
+		$webserviceObject = VtigerWebserviceObject::fromName($adb, $elementType);
+		$handlerPath = $webserviceObject->getHandlerPath();
+		$handlerClass = $webserviceObject->getHandlerClass();
+		require_once $handlerPath;
+		$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
+		$date = new DateTimeField(null);
+		$element['date_start'] = $date->getDisplayDate($user);
+		$element['time_start'] = date('H:i:s');
+		$element['activitytype'] = 'Emails';
+		$element['assigned_user_id'] = $user->id;
+		$element['email_flag'] = 'SENT';
+		$result = $handler->create($elementType, $element);
+		if (!empty($result['id']) && !empty($this->attachmentids)) {
+			list($void, $id) = explode('x', $result['id']);
+			$aids = explode(',', trim($this->attachmentids, ','));
+			$query = 'SELECT vtiger_attachments.path, vtiger_attachments.name, vtiger_attachments.attachmentsid
+					FROM vtiger_attachments
+					INNER JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
+					INNER JOIN vtiger_crmentity ON vtiger_attachments.attachmentsid=vtiger_crmentity.crmid
+					WHERE deleted=0 AND vtiger_seattachmentsrel.crmid = ?';
+			$insrel = 'INSERT INTO vtiger_seattachmentsrel(crmid, attachmentsid) VALUES(?,?)';
+			foreach ($aids as $docid) {
+				$docrs = $adb->pquery($query, array($docid));
+				if ($docrs and $adb->num_rows($docrs)==1) {
+					$adb->pquery($insrel, array($id, $adb->query_result($docrs, 0, 'attachmentsid')));
+				}
+			}
+		}
 	}
 }
 ?>
