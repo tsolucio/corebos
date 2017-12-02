@@ -23,14 +23,13 @@ class VTEmailTask extends VTTask{
 		global $adb;
 		$this->attachmentsinfo = array();
 		if (!empty($this->attachmentids)) {
-			$aids = explode(',', $this->attachmentids);
+			$aids = explode(',', trim($this->attachmentids, ','));
 			$query = 'SELECT vtiger_attachments.path, vtiger_attachments.name, vtiger_attachments.attachmentsid
 					FROM vtiger_attachments
 					INNER JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
 					INNER JOIN vtiger_crmentity ON vtiger_attachments.attachmentsid=vtiger_crmentity.crmid
 					WHERE deleted=0 AND vtiger_seattachmentsrel.crmid = ?';
 			foreach ($aids as $docid) {
-				if (empty($docid)) continue;
 				$docrs = $adb->pquery($query,array($docid));
 				if ($docrs and $adb->num_rows($docrs)==1) {
 					$this->attachmentsinfo[] = $adb->query_result($docrs, 0, 'path').$adb->query_result($docrs, 0, 'attachmentsid').'_'.$adb->query_result($docrs, 0, 'name');
