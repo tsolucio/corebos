@@ -27,16 +27,12 @@ class VtigerEmailOperation extends VtigerModuleOperation {
 
 	/*
 	 * This create function supports a few virtual fields for the attachment and the related entities
-	 * so it expects and $element array with the normal Document fields and these additional ones:
-	 * 
-	 * 'attachment'  this is a base64encoded string contaning the full document to be saved internally,
-	 *     this will only be checked if filelocationtype=='I'
-	 * 
-	 * 'attachment_name'  a string with the name of the attachment
-	 * 
+	 * so it expects and $element array with the normal Email fields and these additional ones:
+	 *
+	 * 'files' this is an array of file specifications: filesize, filetype, name, content (base64 encode of file)
+	 *
 	 * 'relations'  this is an array of related entity id's, the id's must be in webservice extended format
 	 *     all the indicated entities will be related to the document being created
-	 * 
 	 */
 	public function create($elementType, $element) {
 		global $adb,$log;
@@ -58,21 +54,21 @@ class VtigerEmailOperation extends VtigerModuleOperation {
 
 		$element = DataTransform::sanitizeForInsert($element, $this->meta);
 
-		$relations = $element['related'];
-		if (!empty($relations) and is_array($relations)) {
+		if (!empty($element['related']) and is_array($element['related'])) {
 			$_REQUEST['parent_id'] = '';
-			foreach ($relations as $rel) {
+			foreach ($element['related'] as $rel) {
 				$ids = vtws_getIdComponents($rel);
 				$relid = $ids[1];
 				if (!empty($relid)) {
 					$tabname = $adb->query_result($adb->pquery('select name from vtiger_ws_entity where id=?', array($ids[0])), 0, 'name');
 					$tabid = getTabid($tabname);
-					$fieldid = $adb->query_result($adb->pquery('select fieldid from vtiger_field where tabid=? and uitype=13 and vtiger_field.presence in (0,2)', array($tabid)), 0, 'fieldid');
+					$rs = $adb->pquery('select fieldid from vtiger_field where tabid=? and uitype=13 and vtiger_field.presence in (0,2)', array($tabid));
+					$fieldid = $adb->query_result($rs, 0, 'fieldid');
 					$_REQUEST['parent_id'] .= $relid.'@'.$fieldid.'|';
 				}
 			}
 		} else {
-			$_REQUEST['parent_id'] = $element['parent_id'];
+			$_REQUEST['parent_id'] = isset($element['parent_id']) ? $element['parent_id'] : '';
 		}
 		$error = $crmObject->create($element);
 		if (!$error) {
@@ -116,12 +112,12 @@ class VtigerEmailOperation extends VtigerModuleOperation {
 
 	/*
 	 * This method accepts the same virtual fields that the create method does (see create)
-	 * 
+	 *
 	 * It will first eliminate the current related attachement and then relate the new attachment
-	 * 
+	 *
 	 * It will first eliminate all the current relations and then establish the new ones being sent in
 	 * so ALL relations that are needed must sent in again each time
-	 * 
+	 *
 	 */
 	public function update($element) {
 		global $adb;
@@ -132,8 +128,8 @@ class VtigerEmailOperation extends VtigerModuleOperation {
 			$element['filetype']=$element['filename']['type'];
 			$element['filename']=$filename = str_replace(' ', '_', $element['filename']['name']);
 		}
-		$relations=$element['relations'];
-		unset($element['relations']);
+		// $relations = isset($element['relations']) ? $element['related'] : null;
+		// unset($element['relations']);
 
 		$element = DataTransform::sanitizeForInsert($element, $this->meta);
 
