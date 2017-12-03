@@ -148,11 +148,17 @@ function set_cookie( name, value, exp_y, exp_m, exp_d, path, domain, secure )
 }
 
 // Retrieving cookies
-function get_cookie(cookie_name)
-{
+function get_cookie(cookie_name) {
 	var results = document.cookie.match('(^| )' + cookie_name + '=(.*?)(;|$)');
-	if (results) return (unescape(results[1]));
-	else return null;
+	if (results) {
+		if (results[1]==' ') {
+			return (unescape(results[2]));
+		} else {
+			return (unescape(results[1]));
+		}
+	} else {
+		return null;
+	}
 }
 
 // Delete cookies
