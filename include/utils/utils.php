@@ -4451,7 +4451,7 @@ function hasEmailField($module) {
 	global $adb;
 	$querystr = 'SELECT fieldid FROM vtiger_field WHERE tabid=? and uitype=13 and vtiger_field.presence in (0,2)';
 	$queryres = $adb->pquery($querystr, array(getTabid($module)));
-	return ($queryres and $adb->num_rows($queryres)>0);
+	return (($queryres && $adb->num_rows($queryres)>0) || $module=='Campaigns');
 }
 
 function getFirstEmailField($module) {
