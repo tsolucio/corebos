@@ -56,21 +56,6 @@ function delete_cookie ( cookie_name )
 	document.cookie = cookie_name += "=; expires=" + cookie_date.toGMTString();
 }
 
-function verify_data(form) {
-	var isError = false;
-	var errorMessage = "";
-	if (trim(form.folderName.value) == "") {
-		isError = true;
-		errorMessage += "\nFolder Name";
-	}
-	// Here we decide whether to submit the form.
-	if (isError == true) {
-		alert(alert_arr.MISSING_FIELDS + errorMessage);
-		return false;
-	}
-	return true;
-}
-
 function setObjects()
 {
 	availListObj=getObj("availList");

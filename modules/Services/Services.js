@@ -19,22 +19,6 @@ function updateListPrice(unitprice,fieldname, oSelect)
 	}
 }
 
-function check4null(form) {
-  var isError = false;
-  var errorMessage = "";
-  if (trim(form.productname.value) =='') {
-	isError = true;
-	errorMessage += "\n Product Name";
-	form.productname.focus();
-  }
-
-  if (isError == true) {
-	alert(alert_arr.MISSING_REQUIRED_FIELDS + errorMessage);
-	return false;
-  }
-  return true;
-}
-
 function set_return(product_id, product_name) {
 	if(document.getElementById('from_link').value != '') {
 		window.opener.document.QcEditView.parent_name.value = product_name;
