@@ -204,7 +204,7 @@ if($isPresentRelatedListBlock) {
 }
 
 // Hide Action Panel
-$DEFAULT_ACTION_PANEL_STATUS = GlobalVariable::getVariable('Application_Action_Panel_Open',1);
+$DEFAULT_ACTION_PANEL_STATUS = GlobalVariable::getVariable('Application_DetailView_ActionPanel_Open',1);
 $smarty->assign('DEFAULT_ACTION_PANEL_STATUS',($DEFAULT_ACTION_PANEL_STATUS ? '' : 'display:none'));
 
 // Record Change Notification
