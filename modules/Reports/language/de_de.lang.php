@@ -1,19 +1,14 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
     'LBL_MODULE_NAME'=>'Berichte',
     'LBL_MODULE_TITLE'=>'Berichte: Home',
     'LBL_CREATE_REPORT'=>'Bericht erstellen',
@@ -67,10 +62,8 @@ $mod_strings = Array(
     'LBL_GENERATED_REPORT'=>'Erstellter Bericht',
     'LBL_GRAND_TOTAL'=>'Gesamtsumme',
 
-    //Added for 4.2 Patch I
     'LBL_EXPORTXL_BUTTON'=>'Export zu Excel',
 	'LBL_EXPORTCSV'=>'Export To CSV',
-    //Added for 5 Beta
     'LBL_NO_PERMISSION'=>'Ihr Profil berechtigt Sie nicht den Bericht von einem dieser Module zu sehen.',
     'LBL_SELECT_COLUMNS_TO_GENERATE_REPORTS'=>'Bitte Spalten auswählen.',
     'LBL_AVAILABLE_FIELDS'=>'verfügbare Felder',
@@ -151,6 +144,14 @@ $mod_strings = Array(
     'This Month Activities'=>'Aktivitäten aus diesem Monat',
     'Campaign Expectations and Actuals'=>'Kampagnenerwartungen und aktuelles', //Added for Campaigns
     'SalesOrder Detailed Report'=>'detaillierter Verkaufsbestellungenbericht', //Added for SO
+'Emails sent to Contacts' => 'Emails sent to Contacts',
+'Emails sent to Organizations' => 'Emails sent to Organizations',
+'Emails sent to Leads' => 'Emails sent to Leads',
+'Emails sent to Vendors' => 'Emails sent to Vendors',
+'Contacts Email Report' => 'Contacts Email Report',
+'Accounts Email Report' => 'Accounts Email Report',
+'Leads Email Report' => 'Leads Email Report',
+'Vendors Email Report' => 'Vendors Email Report',
 
     'LBL_DELETE'=>'Löschen',
     'Create_Reports'=>'neuen Bericht erzeugen',

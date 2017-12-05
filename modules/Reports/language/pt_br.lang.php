@@ -1,27 +1,16 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
- * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header:
- * Description:   Defines the English language pack for the Reports module.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  * Contributor(s): Ranieri/Translate terms | 21/03/2017 |Sao Paulo/SP/Brasil.|www.ecrmweb.com.br
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Relatórios',
 'LBL_MODULE_TITLE'=>'Relatórios: Principal',
 'LBL_CREATE_REPORT'=>'Criar Relatório',
@@ -75,10 +64,8 @@ $mod_strings = Array(
 'LBL_GENERATED_REPORT'=>'Relatório Gerado',
 'LBL_GRAND_TOTAL'=>'Total Geral',
 
-//Added for 4.2 Patch I
 'LBL_EXPORTXL_BUTTON'=>'Exportar para Excel',
 'LBL_EXPORTCSV'=>'Exportar para CSV',
-//Added for 5 Beta
 'LBL_NO_PERMISSION'=>'Seu perfil não permite visualizar os relatórios deste(s) modulo(s)',
 'LBL_SELECT_COLUMNS_TO_GENERATE_REPORTS'=>'Selecione as colunas para gerar relatórios',
 'LBL_AVAILABLE_FIELDS'=>'Campos Disponíveis',
@@ -159,6 +146,14 @@ $mod_strings = Array(
 'This Month Activities'=>'Atividades deste Mês',
 'Campaign Expectations and Actuals'=>'Campanha - Previsto/Realizado', //Added for Campaigns
 'SalesOrder Detailed Report'=>'Relatório Detalhado Pedido de Vendas', //Added for SO
+'Emails sent to Contacts' => 'Emails sent to Contacts',
+'Emails sent to Organizations' => 'Emails sent to Organizations',
+'Emails sent to Leads' => 'Emails sent to Leads',
+'Emails sent to Vendors' => 'Emails sent to Vendors',
+'Contacts Email Report' => 'Contacts Email Report',
+'Accounts Email Report' => 'Accounts Email Report',
+'Leads Email Report' => 'Leads Email Report',
+'Vendors Email Report' => 'Vendors Email Report',
 
 'LBL_DELETE'=>'Apagar',
 'Create_Reports'=>'Criar Relatórios',

@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Reports',
 'LBL_MODULE_TITLE'=>'Reports: Home',
 'LBL_CREATE_REPORT'=>'Create Report',
@@ -62,10 +62,8 @@ $mod_strings = Array(
 'LBL_GENERATED_REPORT'=>'Generated Report',
 'LBL_GRAND_TOTAL'=>'Grand Total',
 
-//Added for 4.2 Patch I
 'LBL_EXPORTXL_BUTTON'=>'Export To Excel',
 'LBL_EXPORTCSV'=>'Export To CSV',
-//Added for 5 Beta
 'LBL_NO_PERMISSION'=>'Your profile dosen\'t allow you to view the reports for one of the  module(s)',
 'LBL_SELECT_COLUMNS_TO_GENERATE_REPORTS'=>'Select columns to generate reports',
 'LBL_AVAILABLE_FIELDS'=>'Available Fields',
@@ -146,6 +144,14 @@ $mod_strings = Array(
 'This Month Activities'=>'This Month Activities',
 'Campaign Expectations and Actuals'=>'Campaign Expectations and Actuals', //Added for Campaigns
 'SalesOrder Detailed Report'=>'SalesOrder Detailed Report', //Added for SO
+'Emails sent to Contacts' => 'Emails sent to Contacts',
+'Emails sent to Organizations' => 'Emails sent to Organizations',
+'Emails sent to Leads' => 'Emails sent to Leads',
+'Emails sent to Vendors' => 'Emails sent to Vendors',
+'Contacts Email Report' => 'Contacts Email Report',
+'Accounts Email Report' => 'Accounts Email Report',
+'Leads Email Report' => 'Leads Email Report',
+'Vendors Email Report' => 'Vendors Email Report',
 
 'LBL_DELETE'=>'Delete',
 'Create_Reports'=>'Create Reports',
