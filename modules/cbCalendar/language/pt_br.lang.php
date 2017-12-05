@@ -9,7 +9,7 @@
  * Contributor: Ranieri Slemer | Translated Brasilizan Portuguese | eCRM web | 14-7-2017 | www.ecrmweb.com.br
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'cbCalendar' => 'Tarefas',
 	'SINGLE_cbCalendar' => 'Tarefas',
 	'cbCalendar ID' => 'ID Tarefas',

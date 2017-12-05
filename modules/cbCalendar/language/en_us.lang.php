@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'cbCalendar' => 'To Dos',
 	'SINGLE_cbCalendar' => 'To Do',
 	'cbCalendar ID' => 'To Do ID',

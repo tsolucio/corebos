@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'cbCalendar' => 'Eventos',
 	'SINGLE_cbCalendar' => 'Evento',
 	'cbCalendar ID' => 'ID Evento',

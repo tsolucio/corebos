@@ -21,7 +21,7 @@ class cbCalendar_addCloseOnListView extends VTEventHandler {
 
 	public function handleFilter($handlerType, $parameter) {
 		global $currentModule, $adb;
-		$relatedList = (isset($_REQUEST['ajxaction']) && isset($_REQUEST['header']) && $_REQUEST['ajxaction'] == 'LOADRELATEDLIST' && $_REQUEST['header'] == 'Activities');
+		$relatedList = (isset($_REQUEST['ajxaction']) && isset($_REQUEST['header']) && $_REQUEST['ajxaction']=='LOADRELATEDLIST' && $_REQUEST['header']=='Activities');
 		if (($currentModule=='cbCalendar' && $handlerType=='corebos.filter.listview.render' &&
 			($_REQUEST['action']=='ListView' || $_REQUEST['action']=='index') || ($_REQUEST['action']=='cbCalendarAjax' && $_REQUEST['file']=='ListView') ||
 				($_REQUEST['action']=='cbCalendarAjax' && $_REQUEST['file']=='calendarops' && $_REQUEST['op']=='changestatus')) || $relatedList
@@ -50,7 +50,7 @@ class cbCalendar_addCloseOnListView extends VTEventHandler {
 							$parameter[0][$actionpos] = '<a href="javascript:void(0);" onclick="' . $lnk . 'return false;">' .
 								getTranslatedString('LBL_CLOSE', 'cbCalendar') . '</a> | ' . $parameter[0][$actionpos];
 						} else {
-							$parameter[0][$actionpos] = '<a href="javascript:void(0);" onclick="ajaxChangeCalendarStatus(\'' . $evt_status . "'," . $parameter[2] . ');">' .
+							$parameter[0][$actionpos] = '<a href="javascript:void(0);" onclick="ajaxChangeCalendarStatus(\''.$evt_status."',".$parameter[2].');">'.
 								getTranslatedString('LBL_CLOSE', 'cbCalendar') . '</a> | ' . $parameter[0][$actionpos];
 						}
 					}
