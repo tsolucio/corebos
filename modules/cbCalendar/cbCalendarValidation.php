@@ -85,6 +85,10 @@ if (empty($screen_values['action']) && !empty($screen_values['record']) && !$edi
 if (isset($screen_values['action']) and $screen_values['action'] == 'MassEditSave') {
 	echo '%%%OK%%%';
 } else {
+	if (isset($screen_values['followupcreate']) && $screen_values['followupcreate'] == '1' && !empty($screen_values['record']) && empty($screen_values['followupdt'])) {
+		$rs = $adb->pquery('select followupdt from vtiger_activity where activityid=?', array($screen_values['record']));
+		$screen_values['followupdt'] = $adb->query_result($rs, 0, 'followupdt');
+	}
 	$v = new cbValidator($screen_values);
 	$v->rule('required', 'dtstart');
 	$v->rule('required', 'dtend');
