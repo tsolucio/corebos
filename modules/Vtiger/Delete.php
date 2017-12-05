@@ -21,8 +21,9 @@ if (!empty($_REQUEST['start']) and !empty($_REQUEST['return_viewname'])) {
 	$relationId = vtlib_purify($_REQUEST['return_viewname']);
 	coreBOS_Session::set('rlvs^'.$return_module.'^'.$relationId.'^start', $start);
 }
-if(isset($_REQUEST['activity_mode']))
+if (isset($_REQUEST['activity_mode'])) {
 	$url .= '&activity_mode='.urlencode(vtlib_purify($_REQUEST['activity_mode']));
+}
 list($delerror,$errormessage) = DeleteEntity($currentModule, $return_module, $focus, $record, $return_id);
 if ($delerror) {
 	header("Location: index.php?module=$module&action=DetailView&record=" . urlencode($record) . '&error_msg=' . urlencode($errormessage) . $url);
