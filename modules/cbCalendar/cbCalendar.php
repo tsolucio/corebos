@@ -207,6 +207,7 @@ class cbCalendar extends CRMEntity {
 				}
 			}
 		}
+		unset($_REQUEST['timefmt_dtstart'], $_REQUEST['timefmt_dtend'], $_REQUEST['timefmt_followupdt']);
 	}
 
 	function trash($module, $id) {
