@@ -11,10 +11,11 @@
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese | 13/04/2012 |Curitiba/Paraná/Brasil.| www.ttcasolucoes.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese | 3/12/2017 |Sao Paulo/SP/Brasil.| www.slemernet.com.br
  ********************************************************************************/
 $app_strings = array (
 'LBL_BROWSER_TITLE' => 'coreBOS',
-'LBL_MY_ACCOUNT' => 'Minha Organização',
+'LBL_MY_ACCOUNT' => 'Minha Conta',
 'LBL_MY_PREFERENCES' => 'Minhas Preferências',
 'LBL_ADMIN' => 'Admin',
 'LBL_LOGOUT' => 'Desconectar',
@@ -115,7 +116,7 @@ $app_strings = array (
 'LBL_LIST_EMAIL' => 'Email',
 'LBL_LIST_PHONE' => 'Telefone',
 'LBL_LIST_CONTACT_NAME' => 'Nome Contato',
-'LBL_LIST_ACCOUNT_NAME' => 'Nome Organização',
+'LBL_LIST_ACCOUNT_NAME' => 'Nome Conta',
 'LBL_USER_LIST' => 'Listar Usuário',
 'LBL_CONTACT_LIST' => 'Listar Contato',
 'LBL_LNK_SETTINGS' => 'Configurações',
@@ -139,7 +140,7 @@ $app_strings = array (
 'LNK_HELP' => 'Ajuda',
 'LNK_ABOUT' => 'Sobre',
 'LNK_OUTLOOK' => './include/images/outlook_download.gif',
-'SINGLE_Accounts' => 'Organização',
+'SINGLE_Accounts' => 'Conta',
 'SINGLE_Contacts' => 'Contato',
 'SINGLE_Campaigns' => 'Campanha',
 'SINGLE_HelpDesk' => 'Ticket',
@@ -172,7 +173,7 @@ $app_strings = array (
 'NTC_TIME_FORMAT' => '(24:00)',
 'NTC_DATE_TIME_FORMAT' => '(yyyy-mm-dd 24:00)',
 'NTC_DELETE_CONFIRMATION' => 'Você tem certeza que deseja apagar este registro?',
-'NTC_ACCOUNT_DELETE_CONFIRMATION' => 'Apagando esta Organização removerá as Oportunidades e Cotações relacionadas. Tem certeza que deseja apagar esta Organização?',
+'NTC_ACCOUNT_DELETE_CONFIRMATION' => 'Apagando esta Conta removerá as Oportunidades e Cotações relacionadas. Tem certeza que deseja apagar esta Conta?',
 'NTC_VENDOR_DELETE_CONFIRMATION' => 'Apagando este Fornecedor serão removidas os Pedidos de Compras relacionados. Tem certeza que deseja apagar este Fornecedor?',
 'ERR_DELETE_RECORD' => 'Um registro dever ser especificado para apagar o Contato.',
 'ERR_CREATING_TABLE' => 'Erro ao criar tabela:',
@@ -303,8 +304,8 @@ $app_strings = array (
 'LBL_POTENTIAL_TITLE' => 'Oportunidades',
 'LBL_NEW_POTENTIAL' => 'Nova Oportunidade',
 'LBL_LEAD_NAME' => 'Nome Lead',
-'LBL_ACCOUNT_NAME' => 'Nome Organização',
-'LBL_ACCOUNT_TYPE' => 'Tipo Organização',
+'LBL_ACCOUNT_NAME' => 'Nome Conta',
+'LBL_ACCOUNT_TYPE' => 'Tipo Conta',
 'LBL_USER_TITLE' => 'Usuários',
 'LBL_CONTACT_TITLE' => 'Contatos',
 'LBL_SHOWING' => 'Exibindo',
@@ -327,15 +328,15 @@ $app_strings = array (
 'LBL_HOUR_AND_MINUTE' => '(horas/minutos)',
 'YEAR_MONTH_DATE' => '24:00',
 'COMBO_LEADS' => 'Leads',
-'COMBO_ACCOUNTS' => 'Organizações',
+'COMBO_ACCOUNTS' => 'Contas',
 'COMBO_CONTACTS' => 'Contatos',
 'COMBO_POTENTIALS' => 'Oportunidades',
 'COMBO_PRODUCTS' => 'Produtos',
 'COMBO_HELPDESK' => 'Tickets',
 'COMBO_USERS' => 'Usuários',
 'COMBO_CAMPAIGNS' => 'Campanhas',
-'COMBO_VENDORS' => 'Vendors', //MSL
-'LBL_VENDOR_NAME' => 'Vendor Name', //MSL
+'COMBO_VENDORS' => 'Vendors',
+'LBL_VENDOR_NAME' => 'Vendor Name',
 'LBL_SELECT' => 'Selecionar',
 'LBL_EDIT' => 'Editar',
 'LBL_DELETE' => 'Apagar',
@@ -345,7 +346,7 @@ $app_strings = array (
 'Website' => 'Website',
 'Email' => 'Email',
 'Assigned To' => 'Responsável',
-'Account Name' => 'Nome Organização',
+'Account Name' => 'Nome Conta',
 'City' => 'Cidade',
 'Title' => 'Título',
 'Potential' => 'Oportunidade',
@@ -376,8 +377,8 @@ $app_strings = array (
 'LBL_CUSTOM_INFORMATION' => 'Informação Customizada',
 'LBL_NONE_SCHEDULED' => 'Nada Agendado',
 'Leads' => 'Leads',
-'Accounts' => 'Organizações',
-'Accounts & Contacts' => 'Contatos & Organizações',
+'Accounts' => 'Contas',
+'Accounts & Contacts' => 'Contatos & Contas',
 'Contacts' => 'Contatos',
 'Potentials' => 'Oportunidade',
 'Products' => 'Produto',
@@ -428,7 +429,7 @@ $app_strings = array (
 'LBL_EDITING' => 'Editando',
 'LBL_NEW' => 'Novo',
 'Lead' => 'Lead',
-'Account' => 'Organização',
+'Account' => 'Conta',
 'Contact' => 'Contato',
 'Opportunity' => 'Oportunidade',
 'Product' => 'Produto',
@@ -640,8 +641,6 @@ $app_strings = array (
 'group'=>'Grupo',
 'individual'=>'individual',
 
-//Added for values of picklist in Advanced Search filter
-//Modified for 5.0.3 GA release
 'contains'=>'contem',
 'does_not_contains'=>'não contem',
 'is'=>'é',
@@ -664,7 +663,6 @@ $app_strings = array (
 
 'NO_DATA_AVAILABLE_WITH_SPECIFIED_PERIOD'=>'Nenhum dado disponível para o período especificado',
 
-//Added for 5.0.3
 'Files_Maximum_6'=>'Máximo 6 Arquivos',
 'Files_Maximum'=>'Máximo Arquivos: ',
 'To'=>'Para:',
@@ -698,10 +696,10 @@ $app_strings = array (
 //Added for java script alerts
 'DELETE_CONFIRMATION' => 'Você tem certeza que deseja apagar o selecionado',
 'SELECT_ATLEAST_ONE' => 'Por favor selecione pelo menos uma entidade',
-'DELETING_ACCOUNT' => 'Apagando esta(s) Organização(s) removerá as Oportunidades, Cotações, Pedidos Vendas e Faturas relacionadas. Tem certeza que deseja apaga-la(s)',
+'DELETING_ACCOUNT' => 'Apagando esta(s) Conta(s) removerá as Oportunidades, Cotações, Pedidos Vendas e Faturas relacionadas. Tem certeza que deseja apaga-la(s)',
 'DELETING_VENDOR' => 'Apagando este(s) Fornecedor(es) você removerá o(s) Pedido de Compra(s) relacionado(s)',
 'PLEASE_SELECT_MAILID' => 'Por favor Selecione um endereço de mensagem',
-'OVERWRITE_EXISTING_ACCOUNT1' => 'Você deseja sobrescrever o endereço existente com o desta Organização selecionada(',
+'OVERWRITE_EXISTING_ACCOUNT1' => 'Você deseja sobrescrever o endereço existente com o desta Conta selecionada(',
 'OVERWRITE_EXISTING_ACCOUNT2' => ') detalhes do endereço?',
 'MISSING_FIELDS' => 'Campos requeridos ausentes:',
 'NOT_ALLOWED_TO_EDIT' => 'você não tem permissão para editar este campo',
@@ -721,7 +719,7 @@ $app_strings = array (
 'SHOULDNOTBE_EQUAL' => ' não deveria ser igual a',
 'PORTAL_PROVIDE_EMAILID' => 'Usuário do Portal deveria fornecer endereço de email para acessá-lo',
 'ADD_CONFIRMATION' => 'Você tem certeza que deseja adicionar o selecionado',
-'ACCOUNTNAME_CANNOT_EMPTY' => 'Nome da Organização não pode estar vazia',
+'ACCOUNTNAME_CANNOT_EMPTY' => 'Nome da Conta não pode estar vazia',
 'CANT_SELECT_CONTACTS' => "Você não pode selecionar os Contatos relacionados ao Lead",
 'LBL_THIS' => 'Este',
 'DOESNOT_HAVE_MAILIDS' => " não existe nenhum endereço de mensagem",
@@ -729,7 +727,7 @@ $app_strings = array (
 'ARE_YOU_SURE' => 'Você tem certeza?',
 'MISSING_REPORT_NAME' => 'Nome do Relatório ausente',
 'REPORT_NAME_EXISTS' => 'Nome do Relatório já existe, tente novamente...',
-'WANT_TO_CHANGE_CONTACT_ADDR' => 'Você deseja mudar o endereço dos Contatos relacionados com esta Organização?',
+'WANT_TO_CHANGE_CONTACT_ADDR' => 'Você deseja mudar o endereço dos Contatos relacionados com esta Conta?',
 'SURE_TO_DELETE' => 'Você tem certeza que deseja apagar?',
 'RECORDS' => ' registros ?',
 'NO_PRODUCT_SELECTED' => 'Nenhum produto foi selecionado. Selecione pelo menos um Produto',
@@ -770,7 +768,7 @@ $app_strings = array (
 'ERROR' => 'Erro',
 'FIELD_TYPE_NOT_SELECTED' => 'Tipo de campo não está selecionado',
 'SPECIAL_CHARACTERS_NOT_ALLOWED' => 'Caracter especial não é permitido no campo Rótulo',
-'DUPLICATE_MAPPING_ACCOUNTS' => 'Mapear duplicados para Organizações!!',
+'DUPLICATE_MAPPING_ACCOUNTS' => 'Mapear duplicados para Contas!!',
 'DUPLICATE_MAPPING_CONTACTS' => 'Mapear duplicados para Contatos!!',
 'DUPLICATE_MAPPING_POTENTIAL' => 'Mapear duplicados para Oportunidades!!',
 'ERROR_WHILE_EDITING' => 'Erro durante a Edição',
@@ -792,7 +790,7 @@ $app_strings = array (
 'DELETE_REPORT_CONFIRMATION' => 'Você tem certeza que deseja apagar este Relatório?',
 'MOVE_REPORT_CONFIRMATION' => 'Você tem certeza que deseja mover este Relatório para',
 'FOLDER' => ' pasta ?',
-'ACCOUNT_ACCESS_INFO' => 'Acesso às Oportunidades, HelpDesk, Cotações, Pedido Vendas e Faturas deve ser configurado como Privado quando o Acesso à Organização for configurado como Privado',
+'ACCOUNT_ACCESS_INFO' => 'Acesso às Oportunidades, HelpDesk, Cotações, Pedido Vendas e Faturas deve ser configurado como Privado quando o Acesso à Conta for configurado como Privado',
 'PROFILENAME_CANNOT_BE_EMPTY' => 'Nome do Perfil não pode estar vazio',
 'PROFILE_DETAILS_UPDATED' => 'Detalhes do Perfil foi atualizado',
 'CURRENCY_CHANGE_INFO' => 'Mudança de Moeda foi realizada com Sucesso',
@@ -812,7 +810,6 @@ $app_strings = array (
 'DELETE_RSSFEED_CONFIRMATION' => 'Você realmente deseja apagar a fonte RSS?',
 'NOT_PERMITTED_TO_EXPORT' => 'você não tem permissão para exportar!',
 
-//Added for 5.0.3
 'MSG_DEAR'=>'Caro',
 'MSG_REGARDING'=>'Respeitosamente',
 'MSG_UPDATION'=>'atualização -',
@@ -842,20 +839,15 @@ $app_strings = array (
 'LBL_SKYPE'=>'Skype',
 'LBL_FIND'=>'Encontrar',
 'LBL_CLEAR'=>'Limpar',
-// Added for display the label of Invoice no
 'invoice no'=>'No. Fatura',
-//Added for title to the button Select Lead
 'LBL_SELECT_LEAD_BUTTON_LABEL'=>'Selecionar Lead',
-//Added for the link Read License in footer
 'LNK_READ_LICENSE'=>'Ler a Licença',
 'ACTIVITIES' => 'Atividades',
 'MAP_NAME_EXISTS'=>'Este nome de mapa já existe. \n Você quer sobrescrever?',
 'FOLDER_NAME_ALLOW_20CHARS'=>'Nome da pasta permite somente 20 caracteres',
 'SPECIAL_CHARS_NOT_ALLOWED'=>'Caracteres especiais não são permitidos. Tente novamente...',
-//Added for title for SignIn Image.
 'LBL_SIGN_IN'=>'Registrar',
 
-//Added for title of Root Image
 'LBL_ROOT'=>'Root',
 'LBL_FIRST'=>'Primeiro',
 'LBL_LAST'=>'Último',
@@ -877,7 +869,7 @@ $app_strings = array (
 
 'Lost Lead' => 'Lead Perdido',
 //Added for incoming mail server settings form js validation
-'ERR_INVALID_PAGE_COUNT' => "Organizaçãogem Página Inválida",
+'ERR_INVALID_PAGE_COUNT' => "Contagem Página Inválida",
 //'Product Code' => 'Part Number',
 'Quotes' => 'Cotações',
 'PurchaseOrder' => 'Pedido Compra',
@@ -888,7 +880,6 @@ $app_strings = array (
 //Added for incoming mail server settings form js validation
 'LBL_CAL_LIMIT_MSG'=>'Desculpe, o ano deve estar entre 1970 e 2037',
 
-//added for fix i18n issue #4038 when importing Contacts
 'Mobile' => 'Celular',
 'Home Phone' => 'Telefone Residencial',
 'Other Phone' => 'Telefone Alternativo',
@@ -959,13 +950,11 @@ $app_strings = array (
 'Closed Won'=>'Fechado Vencido',
 'Closed Lost'=>'Fechado Perdido',
 'NOTE'=>'NOTA',
-//Added for Migration Alert
 'before_migration'=>'antes inicie a migração',
 'Set_the_value_of'=>'Determine o valor de',
 'as'=>'como',
 'ie'=>'ie.,',
 'add_at_end_of_file'=>'Por gentileza, adicione as seguintes linhas no final do arquivo config.inc.php.',
-// Added for Error message on Send Email failure
 'LBL_MAIL_SEND_STATUS' => 'Status Envio Mensagem:',
 'LBL_MAIL_NOT_SENT_TO_USER' => 'A mensagem não pode ser enviada para o Usuário',
 'LBL_PLS_CHECK_EMAIL_N_SERVER' => 'Por gentileza, verifique o email do Usuário e as configurações do Servidor',
@@ -975,13 +964,9 @@ $app_strings = array (
 'RELATED'=>'Relacionado',
 'SHOW_ALL'=>'Mostrar Todos',
 'RELATED_PARENT'=>'Relacionado ao Módulo Pai',
-//Added for select parent role button in picklist
 'LBL_SELECT_PARENTROLE' => 'Selecionar a função pai',
-//Added for migration check
 'LBL_MIGRATION_CHECK'=>'As versões no arquivo e banco de dados são as mesmas. Você não pode realizar a migração. Verifique o BD e execute os passos necessários.',
-//Added for ticket #4595
 'LBL_RECORD_NOT_FOUND'=>'Os registros que você está tentando acessar não foram econtrados',
-//Added for i18n issue (report 06/12/2007)
 'Reorder Level' => 'Nível Reabastecimento',
 'Handler' => 'Responsável',
 'Qty In Demand' => 'Última Compra',
@@ -1004,12 +989,9 @@ $app_strings = array (
 'Actual ROI' => 'ROI Atual',
 'Ascending' => 'Ascendente',
 'Descending' => 'Descendente',
-//Added for Notification
 'Dear_Admin_tasks_not_been_completed' => 'Caro Administrador,<br><br> Por favor observe que existem algumas tarefas no Sistema as quais não foram concluídas dentro do prazo de 24 horas.<br>',
 'Task_sign'=>'Obrigado<br>Equipe HelpDesk<br>',
-//Added for PDF notification
 'LBL_PDF'=>'O PDF não pode ser gerado visto que a largura excede o limite máximo',
-//Added for pdf internalization in 5.0.4
 'Thank You'=>'Obrigado',
 'For Your Business'=>'Pela Preferência',
 'Subtotal'=>'Subtotal',
@@ -1033,7 +1015,7 @@ $app_strings = array (
 'Req. No.'=>'No. Req.',
 'Customer Name'=>'Cliente',
 'SO Number'=>'No. Pedido Venda',
-'Account Number'=>'No. Organização',
+'Account Number'=>'No. Conta',
 'Valid Till'=>'Validade',
 'Quote Number'=>'No. Cotação',
 'Invoice Number'=>'No. Fatura',
@@ -1043,31 +1025,23 @@ $app_strings = array (
 'Discount'=>'Desconto',
 'LBL_ADD_BUTTON' => 'Adicionar',
 
-// Added after 5.0.4 GA
-
-//Added to Fix i18N issue in Email Template
-'LBL_GENERAL_FIELDS'=>'Campos Gerais', 
-//For Users fields
+'LBL_GENERAL_FIELDS'=>'Campos Gerais',
 'HomePhone'=>'Fone Residencial',
 'Signature'=>'Assinatura',
 'Street'=>'Rua',
 'State'=>'Estado',
 'Country'=>'País',
 'PostalCode'=>'CEP',
-//For General fields
 'Current Date'=>'Data Atual',
 'Current Time'=>'Hora Atual',
 
-//Added for Role based Custom filters
 'LBL_PUBLIC'=>'Público',
 'LBL_PENDING'=>'Pendente',
 'LBL_OTHERS'=>'Outros',
 
-//For Configuring/Using PurchaseOrder number
 'PO Number'=>'No. Pedido Compra',
 'MSG_AUTO_GEN_ON_SAVE'=>'GERA NÚMERO AO SALVAR',
 
-//For Duplicate merging feature
 'LBL_MERGE' => 'Mesclar',
 'LBL_MERGE_BUTTON_TITLE' => 'Mesclar',
 'LBL_SAVE_MERGE_BUTTON_TITLE' => 'Localizar Duplicados',
@@ -1139,7 +1113,7 @@ $app_strings = array (
 'LBL_ASTERISK_SET_ERROR'=>'Os detalhes do Servidor Asterisk não estão configurados. Configure primeiro.',
 'LBL_CREATE_LEAD'=>'Criar Lead',
 'LBL_CREATE_CONTACT'=>'Criar Contato',
-'LBL_CREATE_ACCOUNT'=>'Criar Organização',
+'LBL_CREATE_ACCOUNT'=>'Criar Conta',
 'LBL_CREATE_TICKET'=>'Criar Ticket',
 'LBL_INCOMING_CALL'=>'Chamada Recebida',
 'LBL_CALLER_INFORMATION'=>'Informação de quem liga',
@@ -1177,7 +1151,7 @@ $app_strings = array (
 'PUBLIC_FILTER'=>'Público',
 
 // Account Hierarchy
-'LBL_ACCOUNT_HIERARCHY' => 'Hierarquia Organização',
+'LBL_ACCOUNT_HIERARCHY' => 'Hierarquia Conta',
 
 //Prod Bundles
 'LBL_NO_SUB_PRODUCTS'=>'Não é um Pacote',
@@ -1425,7 +1399,7 @@ $app_currency_strings = array(
 	'United Arab Emirates, Dirham' => 'Emirados Árabes Unidos, Dirham',
 	'United Republic of Tanzania, Shilling' => 'República Unida da Tanzania, Shilling',
 	'Yemen, Rials'			=> 'Yemen, Rials',
-	'Zambia, Kwacha' 		=> 'Zambia, Kwacha',	
+	'Zambia, Kwacha' 		=> 'Zambia, Kwacha',
 	'Malawi, kwacha'		=> 'Malawi, kwacha',
 	'Tunisian, Dinar'		=> 'Tunisia, Dinar',
 	'Moroccan, Dirham'		=> 'Morocos, Dirham',
