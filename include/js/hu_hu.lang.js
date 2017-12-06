@@ -6,7 +6,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
    *********************************************************************************
-*  Module       : JavaScript General 
+*  Module       : JavaScript General
 *  Language     : HU Magyar
 *  Version      : 5.3.x
 *  Created Date : 9:39 2011.11.11.
@@ -266,7 +266,7 @@ var alert_arr = {
 	'Default' : 'Alapértelmezett',
 	'Notebook' : 'Jegyzetfüzet',
 	'ReportCharts': 'Jelentés Grafikonok',
-	'SPECIAL_CHARS' : '\ / < > + \' " ',
+	'SPECIAL_CHARS' : '\\ / < > + \' " ',
 	'BETWEEN' : 'közte',
 	'BEFORE' : 'előtt',
 	'AFTER' : 'utána',
