@@ -22,6 +22,7 @@ $mod_strings = array(
 	'End Date Time' => 'End Date Time',
 	'Time Start' => 'Time Start (System Time)',
 	'End Time' => 'End Time (System Time)',
+	'End Date' => 'End Date',
 	'Due Date' => 'Due Date',
 	'Related To' => 'Related To',
 	'Related with' => 'Related To Do',

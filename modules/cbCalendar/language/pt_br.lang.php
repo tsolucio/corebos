@@ -23,6 +23,7 @@ $mod_strings = array(
 	'End Date Time' => 'Dia e Hora Final',
 	'Time Start' => 'Hora Início (Relógio do Sistema)',
 	'End Time' => 'Hora Final (Relógio do Sistema)',
+	'End Date' => 'Dia Final',
 	'Due Date' => 'Data Limite',
 	'Related To' => 'Relacionado à',
 	'Related with' => 'Relacionado a tarefa',

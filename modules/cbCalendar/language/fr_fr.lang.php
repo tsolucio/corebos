@@ -14,13 +14,14 @@ $mod_strings = array(
 	'cbCalendar ID' => 'Événements ID',
 
 	'LBL_CUSTOM_INFORMATION'=>' Information personnalisée',
-	'LBL_TASK_INFORMATION' => 'Información Evento',
-	'EventAdvancedOptions' => 'Información Avanzada',
+	'LBL_TASK_INFORMATION' => 'Information Evenement',
+	'EventAdvancedOptions' => 'Informations avancées',
 
 	'Subject' => 'Sujet',
 	'Start Date Time' => 'Date et heure de début',
-	'Time Start' => 'Heure (System Time)',
-	'End Time' => 'Hora Fin (System Time)',
+	'Time Start' => 'Heure début (System Time)',
+	'End Time' => 'Heure fin (System Time)',
+	'End Date' => 'Date fin',
 	'Due Date' => 'Échéance',
 	'Assigned To' => 'Assigné à',
 	'Related with' => 'Événements Relatif',
