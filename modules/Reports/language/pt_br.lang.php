@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- * Contributor(s): Ranieri/Translate terms | 21/03/2017 |Sao Paulo/SP/Brasil.|www.ecrmweb.com.br
+ * Contributor(s): Ranieri/Translate terms | 6/12/2017 |Sao Paulo/SP/Brasil.|www.ecrmweb.com.br
  ********************************************************************************/
 
 $mod_strings = array(
@@ -146,14 +146,14 @@ $mod_strings = array(
 'This Month Activities'=>'Atividades deste Mês',
 'Campaign Expectations and Actuals'=>'Campanha - Previsto/Realizado', //Added for Campaigns
 'SalesOrder Detailed Report'=>'Relatório Detalhado Pedido de Vendas', //Added for SO
-'Emails sent to Contacts' => 'Emails sent to Contacts',
-'Emails sent to Organizations' => 'Emails sent to Organizations',
-'Emails sent to Leads' => 'Emails sent to Leads',
-'Emails sent to Vendors' => 'Emails sent to Vendors',
-'Contacts Email Report' => 'Contacts Email Report',
-'Accounts Email Report' => 'Accounts Email Report',
-'Leads Email Report' => 'Leads Email Report',
-'Vendors Email Report' => 'Vendors Email Report',
+'Emails sent to Contacts' => 'Emails enviados p/Contatos',
+'Emails sent to Organizations' => 'Emails enviados p/Contas',
+'Emails sent to Leads' => 'Emails enviados p/Leads',
+'Emails sent to Vendors' => 'Emails enviados p/ Fornecedores',
+'Contacts Email Report' => 'Relatório Email p/Contatos',
+'Accounts Email Report' => 'Relatório Email p/Contas',
+'Leads Email Report' => 'Relatório Email p/Leads',
+'Vendors Email Report' => 'Relatório Emails p/Fornecedores',
 
 'LBL_DELETE'=>'Apagar',
 'Create_Reports'=>'Criar Relatórios',
