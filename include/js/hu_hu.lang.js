@@ -378,5 +378,13 @@ var alert_arr = {
 	'JSLBL_Delete': 'Delete',
 	'JSLBL_Loading': 'Loading',
 	'JSLBL_ATTACHMENT_NOT_DELETED': 'Attachment could not be deleted',
-	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'File Upload Limit exceeded!!'
+	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'File Upload Limit exceeded!!',
+	'JSLBL_CANCEL': 'Cancel',
+	'JSLBL_SAVEAS': 'Save as',
+	'JSLBL_SAVE': 'Save',
+	'JSLBL_PREVIOUS': 'Previous',
+	'JSLBL_NEXT': 'Next',
+	'JSLBL_CURRENT': 'current step:',
+	'JSLBL_PAGINATION': 'Pagination',
+	'JSLBL_FINISH': 'Finish'
 };

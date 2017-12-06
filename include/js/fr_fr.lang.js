@@ -395,5 +395,13 @@ var alert_arr = {
 	'JSLBL_Delete': 'Supprimer',
 	'JSLBL_Loading': 'Chargement',
 	'JSLBL_ATTACHMENT_NOT_DELETED': 'Le fichier joint ne peut être supprimé',
-	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'Taille limite de fichier dépassée!!'
+	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'Taille limite de fichier dépassée!!',
+	'JSLBL_CANCEL': 'Cancel',
+	'JSLBL_SAVEAS': 'Save as',
+	'JSLBL_SAVE': 'Save',
+	'JSLBL_PREVIOUS': 'Previous',
+	'JSLBL_NEXT': 'Next',
+	'JSLBL_CURRENT': 'current step:',
+	'JSLBL_PAGINATION': 'Pagination',
+	'JSLBL_FINISH': 'Finish'
 };

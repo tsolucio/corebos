@@ -403,5 +403,13 @@ var alert_arr = {
 	'JSLBL_Delete': 'Eliminar',
 	'JSLBL_Loading': 'Cargando',
 	'JSLBL_ATTACHMENT_NOT_DELETED': 'No se ha podido eliminar el adjunto',
-	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'Límite de carga excedida!!'
+	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'Límite de carga excedida!!',
+	'JSLBL_CANCEL': 'Cancelar',
+	'JSLBL_SAVEAS': 'Guardar como',
+	'JSLBL_SAVE': 'Guardar',
+	'JSLBL_PREVIOUS': 'Anterior',
+	'JSLBL_NEXT': 'Siguiente',
+	'JSLBL_CURRENT': 'paso actual:',
+	'JSLBL_PAGINATION': 'Paginado',
+	'JSLBL_FINISH': 'Terminar'
 };
