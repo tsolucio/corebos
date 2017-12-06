@@ -16,24 +16,29 @@ $action = vtlib_purify($_REQUEST['action']);
 $record = vtlib_purify($_REQUEST['record']);
 $isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : false;
 
-if($singlepane_view == 'true' && $action == 'CallRelatedList') {
+if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	echo "<script>document.location='index.php?action=DetailView&module=".urlencode($currentModule).'&record='.urlencode($record)."';</script>";
 	die();
 } else {
-
 	$tool_buttons = Button_Check($currentModule);
 
 	$focus = CRMEntity::getInstance($currentModule);
-	if($record != '') {
+	if ($record != '') {
 		$focus->retrieve_entity_info($record, $currentModule);
 		$focus->id = $record;
 	}
 
 	$smarty = new vtigerCRM_Smarty;
 
-	if($isduplicate == 'true') $focus->id = '';
-	if(isset($_REQUEST['mode']) && $_REQUEST['mode'] != ' ') $smarty->assign("OP_MODE",vtlib_purify($_REQUEST['mode']));
-	if(empty($_SESSION['rlvs'][$currentModule])) coreBOS_Session::delete('rlvs');
+	if ($isduplicate == 'true') {
+		$focus->id = '';
+	}
+	if (isset($_REQUEST['mode']) && $_REQUEST['mode'] != ' ') {
+		$smarty->assign('OP_MODE', vtlib_purify($_REQUEST['mode']));
+	}
+	if (empty($_SESSION['rlvs'][$currentModule])) {
+		coreBOS_Session::delete('rlvs');
+	}
 
 	// Identify this module as custom module.
 	$smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
@@ -50,9 +55,9 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	$smarty->assign('CHECK', $tool_buttons);
 
 	$smarty->assign('NAME', $focus->column_fields[$focus->def_detailview_recname]);
-	$smarty->assign('UPDATEINFO',updateInfo($focus->id));
-	$smarty->assign('TODO_PERMISSION',CheckFieldPermission('parent_id','Calendar'));
-	$smarty->assign('EVENT_PERMISSION',CheckFieldPermission('parent_id','Events'));
+	$smarty->assign('UPDATEINFO', updateInfo($focus->id));
+	$smarty->assign('TODO_PERMISSION', CheckFieldPermission('parent_id', 'Calendar'));
+	$smarty->assign('EVENT_PERMISSION', CheckFieldPermission('parent_id', 'Events'));
 
 	// Module Sequence Numbering
 	$mod_seq_field = getModuleSequenceField($currentModule);
@@ -69,9 +74,9 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 			$_RelatedPane=vtlib_purify($_SESSION['RelatedPane']);
 		} else {
 			$_RelatedPane=vtlib_purify($_REQUEST['RelatedPane']);
-			coreBOS_Session::set('RelatedPane',$_RelatedPane);
+			coreBOS_Session::set('RelatedPane', $_RelatedPane);
 		}
-		$smarty->assign("RETURN_RELATEDPANE", $_RelatedPane);
+		$smarty->assign('RETURN_RELATEDPANE', $_RelatedPane);
 		$cbMap = cbMap::getMapByID($cbMapid);
 		$rltabs = $cbMap->RelatedPanes($focus->id);
 		$smarty->assign('RLTabs', $rltabs['panes']);
@@ -107,12 +112,12 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	$smarty->assign('RELATEDLISTS', $related_array);
 
 	require_once('include/ListView/RelatedListViewSession.php');
-	if(!empty($_REQUEST['selected_header']) && !empty($_REQUEST['relation_id'])) {
+	if (!empty($_REQUEST['selected_header']) && !empty($_REQUEST['relation_id'])) {
 		$relationId = vtlib_purify($_REQUEST['relation_id']);
-		RelatedListViewSession::addRelatedModuleToSession($relationId,vtlib_purify($_REQUEST['selected_header']));
+		RelatedListViewSession::addRelatedModuleToSession($relationId, vtlib_purify($_REQUEST['selected_header']));
 	}
 	$open_related_modules = RelatedListViewSession::getRelatedModulesFromSession();
-	$smarty->assign("SELECTEDHEADERS", $open_related_modules);
+	$smarty->assign('SELECTEDHEADERS', $open_related_modules);
 
 	$smarty->display('RelatedLists.tpl');
 }
