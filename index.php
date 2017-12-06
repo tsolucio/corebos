@@ -329,8 +329,7 @@ if($use_current_login)
 	//getting the current user info from flat file
 	$result = $current_user->retrieveCurrentUserInfoFromFile($_SESSION['authenticated_user_id']);
 
-	if($result == null)
-	{
+	if ($result == null) {
 		coreBOS_Session::destroy();
 		header("Location: index.php?action=Login&module=Users");
 	}
@@ -341,20 +340,26 @@ if($use_current_login)
 	require_once('user_privileges/audit_trail.php');
 	/* Skip audit trail log for special request types */
 	$skip_auditing = false;
-	if(($action == 'ActivityReminderCallbackAjax' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'ActivityReminderCallbackAjax')) && $module == 'Calendar') {
+	if (($action == 'ActivityReminderCallbackAjax' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'ActivityReminderCallbackAjax')) && $module == 'Calendar') {
 		$skip_auditing = true;
-	} else if(($action == 'TraceIncomingCall' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'TraceIncomingCall')) && $module == 'PBXManager') {
+	} elseif (($action == 'TraceIncomingCall' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'TraceIncomingCall')) && $module == 'PBXManager') {
 		$skip_auditing = true;
 	}
-	/* END */
-	if($audit_trail == 'true' and !$skip_auditing) {
+	if ($audit_trail == 'true' and !$skip_auditing) {
+		if ($action=='Save') {
+			if (empty($record)) {
+				$action = 'Save (Create)';
+			} else {
+				$action = 'Save (Edit)';
+			}
+		}
 		$date_var = $adb->formatDate(date('Y-m-d H:i:s'), true);
-		$query = "insert into vtiger_audit_trial values(?,?,?,?,?,?)";
+		$query = 'insert into vtiger_audit_trial values(?,?,?,?,?,?)';
 		$qparams = array($adb->getUniqueID('vtiger_audit_trial'), $current_user->id, $module, $action, $record, $date_var);
 		$adb->pquery($query, $qparams);
 	}
-	if(!$skip_auditing) {
-		cbEventHandler::do_action('corebos.audit.action',array($current_user->id, $module, $action, $record, date('Y-m-d H:i:s')));
+	if (!$skip_auditing) {
+		cbEventHandler::do_action('corebos.audit.action', array($current_user->id, $module, $action, $record, date('Y-m-d H:i:s')));
 	}
 	$log->debug('Current user is: '.$current_user->user_name);
 }
