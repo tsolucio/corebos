@@ -130,8 +130,6 @@ $mod_strings = array(
 'Related To' => 'Relacionado à',
 'Potentials ID' => 'ID Oportunidades',
 
-'Is Converted From Lead' => 'Foi convertido a partir do lead',
-'Created By'=> 'Criado por',
 );
 
 ?>

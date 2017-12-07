@@ -1,14 +1,10 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese | 13/04/2012 |Curitiba/Paraná/Brasil.| www.ttcasolucoes.com.br
  * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese | 3/12/2017 |Sao Paulo/SP/Brasil.| www.slemernet.com.br
@@ -211,6 +207,8 @@ $app_strings = array (
 'Import' => 'Importar',
 'Merge' => 'Mesclar',
 'ConvertLead' => 'Converter Lead',
+'Is Converted From Lead' => 'Foi convertido a partir do lead',
+'Converted From Lead' => 'Convertido do Lead',
 'LBL_SHOW_RESULTS' => 'Mostrar Resultados em',
 'LBL_TOTAL_RECORDS_FOUND' => 'Total Registros encontrados :',
 'LBL_SEARCH_RESULTS_FOR' => ' -- Procurar resultados para ',
@@ -861,7 +859,7 @@ $app_strings = array (
 'Created Time'=>'Data Criação',
 'Modified Time'=>'Hora Modificação',
 'Last Modified By' => 'Last Modified By',
-'Created By' => 'Created By',
+'Created By' => 'Criado por',
 'Lead Status'=>'Status Lead',
 'Lead Source'=>'Fonte Lead',
 'Quote No'=>'No Cotação',

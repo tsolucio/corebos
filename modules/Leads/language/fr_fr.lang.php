@@ -212,7 +212,5 @@ $mod_strings = Array(
 	'LBL_FIELD_SETTINGS' => 'Réglages des champs',
 	'Leads ID' => 'Prospect ID',
 	'LeadAlreadyConverted' => 'Le propect ne peut être converti. Il a soit déjà été converti, soit vous n\'avez pas les autorisations nécessaires sur un ou plusieurs modules destinataires.',
-	'Is Converted From Lead' => 'Est converti de prospect',
-	'Converted From Lead' => 'Converti de prospect',
 );
 ?>

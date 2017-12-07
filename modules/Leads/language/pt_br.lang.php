@@ -233,9 +233,6 @@ $mod_strings = array(
 
 'Secondary Email'=>'Email Alternativo',
 'LeadAlreadyConverted' => 'O lead não pode ser convertido. Ou já foi convertido ou você não possui permissão em um ou mais dos módulos de destino.',
-'Is Converted From Lead' => 'Convertido a partir do Lead',
-'Converted From Lead' => 'Convertido do Lead',
-'Created By' => 'Criado por',
 );
 
 ?>

@@ -76,7 +76,6 @@ $mod_strings = array(
 'Contacted - Unsuccessful' => 'Contactado - Insucesso',
 'Contacted - Never Contact Again' => 'Contactado - Nunca Contactar Novamente',
 'Campaigns ID' => 'ID Campanhas',
-'Created By' => 'Criado por',
 );
 
 ?>

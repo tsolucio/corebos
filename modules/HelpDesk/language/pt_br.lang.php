@@ -194,7 +194,6 @@ $mod_strings = array(
 'From mailscanner' => 'A partir da conversão de um eMail',
 'Comment Added' => 'Comentário Adicionado',
 'HelpDesk ID' => 'ID Tickets',
-'Created By' => 'Criado por',
 );
 
 ?>

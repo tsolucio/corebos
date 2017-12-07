@@ -262,8 +262,6 @@ $mod_strings = array(
 'SYNC_SETT_TITLE'=>'Defina os parâmetros de usuário padrão para o processo de sincronização',
 'SYNC_RESULTS'=>'Resultado do Sincronismo',
 'ERR_GContactsSync'=>'Ocorreu um erro ao acessar o Google. As configurações foram excluídas, configure novamente o acesso.',
-'Is Converted From Lead' => 'Convertido a partir do Lead',
-'Created By' => 'Criado por',
 );
 
 ?>
