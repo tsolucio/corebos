@@ -1280,7 +1280,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 				$value = textlength_check($value);
 			}
 		}
-	} elseif ($uitype == 52) {
+	} elseif ($uitype == 52 || $uitype == 101) {
 		$value = getOwnerName($adb->query_result($list_result, $list_result_count, $colname));
 		$value = textlength_check($value);
 	} elseif ($uitype == 51) {//Accounts - Member Of
