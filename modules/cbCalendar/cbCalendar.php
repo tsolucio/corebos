@@ -582,7 +582,7 @@ class cbCalendar extends CRMEntity {
 			if (is_string($actions)) {
 				$actions = explode(',', strtoupper($actions));
 			}
-				$wfs = '';
+			$wfs = '';
 			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
 				$wfs = new VTWorkflowManager($adb);
 				$racbr = $wfs->getRACRuleForRecord($currentModule, $id);
@@ -898,8 +898,7 @@ class cbCalendar extends CRMEntity {
 			if ($checkpresence && $adb->num_rows($checkpresence)) {
 				continue;
 			}
-
-				$adb->pquery('INSERT INTO vtiger_cntactivityrel(activityid,contactid) VALUES(?,?)', array($crmid, $relcrmid));
+			$adb->pquery('INSERT INTO vtiger_cntactivityrel(activityid,contactid) VALUES(?,?)', array($crmid, $relcrmid));
 		}
 	}
 
