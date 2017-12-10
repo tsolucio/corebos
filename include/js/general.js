@@ -4304,6 +4304,7 @@ function re_patternValidate(fldval,fldLabel,type) {
 }
 
 function getTranslatedString(key, alertArray){
+	console.log(alertArray);
 	if(alertArray != undefined) {
 		if(alertArray[key] != undefined) {
 			return alertArray[key];
@@ -4988,7 +4989,7 @@ AutocompleteRelation.prototype.get = function(e) {
 		var nr_opt=array.length;
 		term=array[nr_opt-1];
 	}
-	if (term.length > this.mincharstoSearch && (typeof(this.data.searchin) != 'undefined' || typeof(this.data.searchfields) != 'undefined') ) {
+	if (term.length >= this.mincharstoSearch && (typeof(this.data.searchin) != 'undefined' || typeof(this.data.searchfields) != 'undefined') ) {
 		this.data.term = term;
 		var acInstance = this;
 
@@ -5047,6 +5048,12 @@ AutocompleteRelation.prototype.set = function(items) {
 					});
 				}
 			});
+		}
+		if(acInstance.inputField.name==='query_string'){
+			var span = document.createElement("li");
+			span.className= "total_autocomplete";
+			span.innerHTML = getTranslatedString('SHOWING') + " "+ limit +" of "+items[0]['total'];
+			this.targetUL.appendChild(span);
 		}
 	}
 }

@@ -260,6 +260,16 @@
   display: block;
   margin-bottom: 0.125rem; }
 
+.total_autocomplete {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  margin-bottom: 0.125rem;
+  margin-right:5px;
+  float:right; }
+  
 /**
  * The metadata or secondary text of an entity listbox
  *

@@ -963,6 +963,7 @@ function getGlobalSearch($term, $searchin, $limit, $user) {
 
 	$current_user = VTWS_PreserveGlobal::preserveGlobal('current_user',$user);
 	$query = array();
+	$total=0;
 	foreach ($searchin as $key=>$value) {
 		$searchinmodule=$key;
 		$smod = CRMEntity::getInstance($searchinmodule);
@@ -997,7 +998,6 @@ function getGlobalSearch($term, $searchin, $limit, $user) {
 			}
 		}
 		$flds = array_unique(array_merge($sfields,$rfields,array('id')));
-
 		$queryGenerator->setFields($flds);
 		$queryGenerator->startGroup();
 		foreach ($sfields as $sfld) {
@@ -1006,7 +1006,15 @@ function getGlobalSearch($term, $searchin, $limit, $user) {
 		$queryGenerator->endGroup();
 		$query = $queryGenerator->getQuery();
 		$mod_fields = $queryGenerator->getModuleFields();
+		$qryFrom= explode('FROM',$query);
+		$countQry="Select count(*) FROM ".$qryFrom[1];
+		$totalQry=$adb->query($countQry);
+		$total=$total+$adb->query_result($totalQry,0,0);
+
+		$queryGenerator->limit= $limit;
+		$query = $queryGenerator->getQuery(false,$limit);
 		$rsemp=$adb->query($query);
+		
 		while ($emp=$adb->fetch_array($rsemp)) {
 			$rsp = array();
 			foreach ($rfields as $rf) {
@@ -1029,7 +1037,8 @@ function getGlobalSearch($term, $searchin, $limit, $user) {
 		}
 	}
 	VTWS_PreserveGlobal::flush();
-	return $respuesta;
+	$final=array('data'=>$respuesta,'total'=>$total);
+	return $final;
 }
 
 ?>
