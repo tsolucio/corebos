@@ -4304,7 +4304,6 @@ function re_patternValidate(fldval,fldLabel,type) {
 }
 
 function getTranslatedString(key, alertArray){
-	console.log(alertArray);
 	if(alertArray != undefined) {
 		if(alertArray[key] != undefined) {
 			return alertArray[key];
@@ -5052,7 +5051,7 @@ AutocompleteRelation.prototype.set = function(items) {
 		if(acInstance.inputField.name==='query_string'){
 			var span = document.createElement("li");
 			span.className= "total_autocomplete";
-			span.innerHTML = getTranslatedString('SHOWING') + " "+ limit +" of "+items[0]['total'];
+			span.innerHTML = getTranslatedString('SHOWING') + " "+ limit +" "+getTranslatedString('OF')+" "+items[0]['total'];
 			this.targetUL.appendChild(span);
 		}
 	}

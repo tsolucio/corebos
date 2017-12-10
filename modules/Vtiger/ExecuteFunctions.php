@@ -185,12 +185,12 @@ switch ($functiontocall) {
 		include_once 'include/Webservices/CustomerPortalWS.php';
 		$data = json_decode(file_get_contents('php://input'), true);
 		$searchin = vtlib_purify($data['searchin']);
-		$limit = isset($data['maxResults']) ? vtlib_purify($data['maxResults']) : '';
+		$limit = isset($data['maxresults']) ? vtlib_purify($data['maxresults']) : '';
 		$term = vtlib_purify($data['term']);
 		$retvals = getGlobalSearch($term, $searchin, $limit, $current_user);
 		$ret = array();
-		foreach ($retvals as $value) {
-			$ret[] = array('crmid'=>$value['crmid'],'crmmodule'=>$value['crmmodule'],'query_string'=>$value['query_string'])+ $value['crmfields'];
+		foreach ($retvals['data'] as $value) {
+		    $ret[] = array('crmid'=>$value['crmid'],'crmmodule'=>$value['crmmodule'],'query_string'=>$value['query_string'],'total'=>$retvals['total'])+ $value['crmfields'];
 		}
 		break;
 	case 'ismoduleactive':
