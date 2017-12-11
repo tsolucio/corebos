@@ -203,7 +203,9 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			$valueArr[$key] = trim(html_entity_decode($value, ENT_QUOTES, $default_charset));
 		}
 		if ($uitype == 15 ) {
-			$valueArr = array_combine($valueArr, $valueArr);
+			if (count($valueArr)>0) {
+				$valueArr = array_combine($valueArr, $valueArr);
+			}
 			$picklistValues = array_merge($picklistValues, $valueArr);
 		}
 		$options = array();
