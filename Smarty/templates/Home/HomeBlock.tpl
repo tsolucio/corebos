@@ -159,10 +159,12 @@ window.doChart{$HOME_STUFFID} = function(charttype) {ldelim}
 			backgroundColor: [{/literal}{foreach item=CVALUE name=chartvalues from=$HOME_STUFF.yaxisData}getRandomColor(){if not $smarty.foreach.chartvalues.last},{/if}{/foreach}{literal}]
 		}]
 	};
+	var maxnum = Math.max.apply(Math, chartDataObject.datasets[0].data);
+	var maxgrph = Math.ceil(maxnum + (5 * maxnum / 100));
 	Chart.scaleService.updateScaleDefaults('linear', {
 		ticks: {
 			min: 0,
-			max: Math.max.apply(Math, chartDataObject.datasets[0].data)+1
+			max: maxgrph
 		}
 	});
 	window.schart{/literal}{$HOME_STUFFID}{literal} = new Chart(stuffchart,{
