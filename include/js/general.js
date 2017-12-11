@@ -3106,12 +3106,15 @@ function ActivityReminderCallback() {
 		ActivityReminder_regcallback_timer = null;
 	}
 	jQuery.ajax({
-			method: 'POST',
-			url: "index.php?module=Calendar&action=CalendarAjax&file=ActivityReminderCallbackAjax&ajax=true"
+		method: 'POST',
+		url: "index.php?module=Calendar&action=CalendarAjax&file=ActivityReminderCallbackAjax&ajax=true"
 	}).done(function (response) {
+		if (response=='Login') {
+			document.location.href='index.php?module=Users&action=Login';
+		} else {
 			ActivityReminderCallbackProcess(response);
 		}
-	);
+	});
 }
 
 function ActivityReminderCallbackProcess(message) {

@@ -145,6 +145,10 @@ if($use_current_login){
 		coreBOS_Session::set('lastpage', $_SERVER['QUERY_STRING']);
 	}
 	$log->debug('The current user does not have a session. Going to the login page');
+	if (isset($_REQUEST['action']) && substr($_REQUEST['action'], -4)=='Ajax') {
+		echo 'Login';
+		die();
+	}
 	$action = 'Login';
 	$module = 'Users';
 	include 'modules/Users/Login.php';
