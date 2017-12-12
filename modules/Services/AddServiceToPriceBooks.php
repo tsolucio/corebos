@@ -18,7 +18,6 @@ $productid = vtlib_purify($_REQUEST['return_id']);
 $parenttab = getParentTab();
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
-require_once('modules/Vtiger/layout_utils.php');
 $productNameArr = getEntityName($currentModule, array($productid));
 $productname = $productNameArr[$productid];
 
@@ -105,7 +104,7 @@ $other_text .='
 	   </tr>
 	</table>';
 
-$smarty->assign('PRICEBOOKLISTHEADER', get_form_header($current_module_strings['LBL_LIST_PRICEBOOK_FORM_TITLE'], $other_text));
+$smarty->assign('PRICEBOOKLISTHEADER', "<img height='1' src='themes/images/blank.gif'>\n" . $other_text);
 
 
 //List View Table Header

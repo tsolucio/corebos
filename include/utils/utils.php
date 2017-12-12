@@ -3190,7 +3190,6 @@ function getDuplicateRecordsArr($module)
 
 	$nresult=$adb->query($dup_query);
 	$no_rows=$adb->num_rows($nresult);
-	require_once('modules/Vtiger/layout_utils.php');
 	if($no_rows == 0)
 	{
 		if ($_REQUEST['action'] == 'FindDuplicateRecords')
