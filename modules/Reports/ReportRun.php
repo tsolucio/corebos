@@ -1905,9 +1905,8 @@ class ReportRun extends CRMEntity {
 			$matrix = $this->queryPlanner->newDependencyMatrix();
 
 			$matrix->setDependency('vtiger_inventoryproductrelInvoice', array('vtiger_productsInvoice', 'vtiger_serviceInvoice'));
-
-			$query = "from vtiger_invoice
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_invoice.invoiceid";
+			$focus = CRMEntity::getInstance($module);
+			$query = $focus->generateReportsQuery($module, $this->queryPlanner);
 
 			if ($this->queryPlanner->requireTable("vtiger_invoicebillads")) {
 				$query .=" inner join vtiger_invoicebillads on vtiger_invoice.invoiceid=vtiger_invoicebillads.invoicebilladdressid";
@@ -1931,23 +1930,6 @@ class ReportRun extends CRMEntity {
 			}
 			if ($this->queryPlanner->requireTable("vtiger_salesorderInvoice")) {
 				$query .= " left join vtiger_salesorder as vtiger_salesorderInvoice on vtiger_salesorderInvoice.salesorderid=vtiger_invoice.salesorderid";
-			}
-			if ($this->queryPlanner->requireTable("vtiger_invoicecf")) {
-				$query .= " left join vtiger_invoicecf on vtiger_invoice.invoiceid = vtiger_invoicecf.invoiceid";
-			}
-			if ($this->queryPlanner->requireTable("vtiger_usersInvoice") || $this->queryPlanner->requireTable("vtiger_groupsInvoice")) {
-				$query .= " left join vtiger_users as vtiger_usersInvoice on vtiger_usersInvoice.id = vtiger_crmentity.smownerid";
-				$query .= " left join vtiger_groups as vtiger_groupsInvoice on vtiger_groupsInvoice.groupid = vtiger_crmentity.smownerid";
-			}
-
-			$query .= " left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid";
-			$query .= " left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid";
-
-			if ($this->queryPlanner->requireTable("vtiger_lastModifiedByInvoice")) {
-				$query .= " left join vtiger_users as vtiger_lastModifiedByInvoice on vtiger_lastModifiedByInvoice.id = vtiger_crmentity.modifiedby";
-			}
-			if ($this->queryPlanner->requireTable('vtiger_CreatedByInvoice')) {
-				$query .= " left join vtiger_users as vtiger_CreatedByInvoice on vtiger_CreatedByInvoice.id = vtiger_crmentity.smcreatorid";
 			}
 			if ($this->queryPlanner->requireTable("vtiger_accountInvoice")) {
 				$query .= " left join vtiger_account as vtiger_accountInvoice on vtiger_accountInvoice.accountid = vtiger_invoice.accountid";
