@@ -187,6 +187,7 @@ $app_strings = array(
 	'ERR_CREATING_FIELDS' => 'Fout bij het invullen van de extra velden: ',
 	'ERR_MISSING_REQUIRED_FIELDS' => 'Niet alle velden zijn ingevuld:',
 	'ERR_INVALID_EMAIL_ADDRESS' => 'fout e-mailadres.',
+	'ERR_INVALID_SECONDARY_EMAIL_ADDRESS' => 'not a valid secondary email address.',
 	'ERR_INVALID_YAHOO_EMAIL_ADDRESS' => 'Geen geldig Secundair e-mailadres !!',
 	'ERR_INVALID_DATE_FORMAT' => 'De datum moet van het formaat:  dd-mm-jjjj zijn',
 	'ERR_INVALID_MONTH' => 'Een geldige maand aub.',

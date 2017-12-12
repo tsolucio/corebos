@@ -176,6 +176,7 @@ $app_strings = array (
 'ERR_CREATING_FIELDS' => 'Erro ao preencher detalhes adicionais nos campos:',
 'ERR_MISSING_REQUIRED_FIELDS' => 'Campos requeridos ausentes:',
 'ERR_INVALID_EMAIL_ADDRESS' => 'endereço de email inválido.',
+'ERR_INVALID_SECONDARY_EMAIL_ADDRESS' => 'not a valid secondary email address.',
 'ERR_INVALID_YAHOO_EMAIL_ADDRESS' => 'endereço de email do Yahoo inválido.',
 'ERR_INVALID_DATE_FORMAT' => 'O formato de data deve ser: yyyy-mm-dd',
 'ERR_INVALID_MONTH' => 'Por favor entre com um mês válido.',
