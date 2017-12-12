@@ -3106,12 +3106,15 @@ function ActivityReminderCallback() {
 		ActivityReminder_regcallback_timer = null;
 	}
 	jQuery.ajax({
-			method: 'POST',
-			url: "index.php?module=Calendar&action=CalendarAjax&file=ActivityReminderCallbackAjax&ajax=true"
+		method: 'POST',
+		url: "index.php?module=Calendar&action=CalendarAjax&file=ActivityReminderCallbackAjax&ajax=true"
 	}).done(function (response) {
+		if (response=='Login') {
+			document.location.href='index.php?module=Users&action=Login';
+		} else {
 			ActivityReminderCallbackProcess(response);
 		}
-	);
+	});
 }
 
 function ActivityReminderCallbackProcess(message) {
@@ -3143,7 +3146,7 @@ function ActivityReminderCallbackProcess(message) {
 		jQuery("#"+ActivityReminder_Newdelay_response_node).remove();
 	}
 	if(message == '' || trim(message).indexOf('<script') == 0) {
-		// We got only new dealay value but no popup information, let us remove the callback win created
+		// We got only new delay value but no popup information, let us remove the callback win created
 		jQuery("#"+ActivityReminder_callback_win.id).remove();
 		ActivityReminder_callback_win = false;
 		message = '';

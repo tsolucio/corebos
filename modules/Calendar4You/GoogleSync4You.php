@@ -158,8 +158,9 @@ class GoogleSync4You {
             $client->setDeveloperKey($this->apikey);
             $client->setAccessType("offline");
             $client->setScopes(array("https://www.googleapis.com/auth/calendar","https://www.googleapis.com/auth/calendar.readonly"));
-            if (isset($_SESSION['token'])) {
-            $client->setAccessToken($_SESSION['token']);
+            $token=coreBOS_Session::get('token');
+            if (isset($token) && $token!='') {
+            $client->setAccessToken($token);
             $reftoken=$client->getRefreshToken();
             $this->db->pquery("update its4you_googlesync4you_access set refresh_token=? where refresh_token='' or refresh_token is null",array($reftoken));
             }
@@ -169,7 +170,7 @@ class GoogleSync4You {
              try{
              $ref=$client->refreshToken($reftoken);
              if($ref['error']==null)
-             $_SESSION['token'] = $client->getAccessToken();
+             coreBOS_Session::set('token', $client->getAccessToken());
              else {
              $authUrl = $client->createAuthUrl();
              $this->status="No refresh token";
