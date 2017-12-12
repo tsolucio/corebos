@@ -359,5 +359,7 @@ var alert_arr = {
 	'JSLBL_NEXT': 'Next',
 	'JSLBL_CURRENT': 'current step:',
 	'JSLBL_PAGINATION': 'Pagination',
-	'JSLBL_FINISH': 'Finish'
+	'JSLBL_FINISH': 'Finish',
+	'SHOWING' : 'Showing',
+	'OF' : 'of'
 };

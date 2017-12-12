@@ -405,5 +405,7 @@ var alert_arr = {
 	'JSLBL_NEXT': 'Siguiente',
 	'JSLBL_CURRENT': 'paso actual:',
 	'JSLBL_PAGINATION': 'Paginado',
-	'JSLBL_FINISH': 'Terminar'
+	'JSLBL_FINISH': 'Terminar',
+	'SHOWING' : 'Mostrando',
+	'OF' : 'de'
 };
