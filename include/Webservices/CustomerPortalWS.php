@@ -958,7 +958,7 @@ function getGlobalSearch($term, $searchin, $limit, $user) {
 		return $respuesta;
 	}
 	if (empty($limit)) {
-		$limit = 15; // hard coded default
+	    $limit = GlobalVariable::getVariable('Application_Global_Search_Autocomplete_Limit', 15);
 	}
 
 	$current_user = VTWS_PreserveGlobal::preserveGlobal('current_user',$user);
