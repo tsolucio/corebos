@@ -2504,7 +2504,7 @@ class CRMEntity {
 
 						$rel_tab_name = $rel_obj->table_name;
 						$rel_tab_index = $rel_obj->table_index;
-						$crmentityRelSecModuleTableDeps[] = $rel_tab_name . "Rel$secmodule";
+						$crmentityRelSecModuleTableDeps[] = $rel_tab_name . "Rel$secmodule" . $field_id;
 					}
 					$matrix->setDependency($crmentityRelSecModuleTable, $crmentityRelSecModuleTableDeps);
 					$matrix->addDependency($tab_name, $crmentityRelSecModuleTable);
@@ -2517,7 +2517,7 @@ class CRMEntity {
 						$rel_obj = CRMEntity::getInstance($rel_mod);
 						$rel_tab_name = $rel_obj->table_name;
 						$rel_tab_index = $rel_obj->table_index;
-						$rel_tab_name_rel_secmodule_table_alias = $rel_tab_name . "Rel$secmodule";
+						$rel_tab_name_rel_secmodule_table_alias = $rel_tab_name . "Rel$secmodule" . $field_id;
 						if ($queryPlanner->requireTable($rel_tab_name_rel_secmodule_table_alias)) {
 							$relquery .= " left join $rel_tab_name as $rel_tab_name_rel_secmodule_table_alias on $rel_tab_name_rel_secmodule_table_alias.$rel_tab_index = $crmentityRelSecModuleTable.crmid";
 						}

@@ -4040,11 +4040,11 @@ class ReportRun extends CRMEntity {
 				} elseif ($moduleName == 'SalesOrder' && $referenceModule == 'Quotes') {
 					$referenceTableName = 'vtiger_quotesSalesOrder';
 				} elseif (in_array($referenceModule, $reportSecondaryModules) and $moduleName != 'Timecontrol') {
-					if($fieldInstance->getFieldId() != '') $referenceTableName = "{$entityTableName}Rel{$moduleName}{$fieldInstance->getFieldId()}";
-					else $referenceTableName = "{$entityTableName}Rel$referenceModule";
-				} elseif (in_array($moduleName, $reportSecondaryModules) and $moduleName != 'Timecontrol') {
-					$referenceTableName = "{$entityTableName}Rel$moduleName";
-					$dependentTableName = "vtiger_crmentityRel{$moduleName}{$fieldInstance->getFieldId()}";
+					if ($fieldInstance->getFieldId() != '') {
+						$referenceTableName = "{$entityTableName}Rel{$moduleName}{$fieldInstance->getFieldId()}";
+					} else {
+						$referenceTableName = "{$entityTableName}Rel$referenceModule";
+					}
 				} else {
 					$referenceTableName = "{$entityTableName}Rel{$moduleName}{$fieldInstance->getFieldId()}";
 					$dependentTableName = "vtiger_crmentityRel{$moduleName}{$fieldInstance->getFieldId()}";
