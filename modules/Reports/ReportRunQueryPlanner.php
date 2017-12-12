@@ -21,37 +21,37 @@ class ReportRunQueryPlanner {
 	protected $tempTablePrefix = 'vtiger_reptmptbl_';
 	protected static $tempTableCounter = 0;
 	protected $registeredCleanup = false;
-	var $reportRun = false;
+	public $reportRun = false;
 
-	function disablePlanner() {
+	public function disablePlanner() {
 		$this->disablePlanner = true;
 		$this->allowTempTables = false;
 	}
 
-	function enablePlanner() {
+	public function enablePlanner() {
 		$this->disablePlanner = false;
 		$this->allowTempTables = true;
 	}
 
-	function isDisabled() {
+	public function isDisabled() {
 		return $this->disablePlanner;
 	}
 
-	function disableTempTables() {
+	public function disableTempTables() {
 		$this->allowTempTables = false;
 	}
 
-	function enableTempTables() {
+	public function enableTempTables() {
 		$this->allowTempTables = true;
 	}
 
-	function addTable($table) {
+	public function addTable($table) {
 		if (!empty($table)) {
 			$this->tables[$table] = $table;
 		}
 	}
 
-	function requireTable($table, $dependencies = null) {
+	public function requireTable($table, $dependencies = null) {
 
 		if ($this->disablePlanner) {
 			return true;
@@ -66,7 +66,7 @@ class ReportRunQueryPlanner {
 					return true;
 				}
 			}
-		} else if ($dependencies instanceof ReportRunQueryDependencyMatrix) {
+		} elseif ($dependencies instanceof ReportRunQueryDependencyMatrix) {
 			$dependents = $dependencies->getDependents($table);
 			if ($dependents) {
 				return count(array_intersect($this->tables, $dependents)) > 0;
@@ -75,26 +75,26 @@ class ReportRunQueryPlanner {
 		return false;
 	}
 
-	function getTables() {
+	public function getTables() {
 		return $this->tables;
 	}
 
-	function getTemporaryTables() {
+	public function getTemporaryTables() {
 		return $this->tempTables;
 	}
 
-	function newDependencyMatrix() {
+	public function newDependencyMatrix() {
 		return new ReportRunQueryDependencyMatrix();
 	}
 
-	function registerTempTable($query, $keyColumns, $module = null) {
+	public function registerTempTable($query, $keyColumns, $module = null) {
 		if ($this->allowTempTables && !$this->disablePlanner) {
 			global $current_user;
 
 			$keyColumns = is_array($keyColumns) ? array_unique($keyColumns) : array($keyColumns);
 
 			// Minor optimization to avoid re-creating similar temporary table.
-			$uniqueName = NULL;
+			$uniqueName = null;
 			foreach ($this->tempTables as $tmpUniqueName => $tmpTableInfo) {
 				if (strcasecmp($query, $tmpTableInfo['query']) === 0 && $tmpTableInfo['module'] == $module) {
 					// Capture any additional key columns
@@ -105,7 +105,7 @@ class ReportRunQueryPlanner {
 			}
 
 			// Nothing found?
-			if ($uniqueName === NULL) {
+			if ($uniqueName === null) {
 				// TODO Adding randomness in name to avoid concurrency
 				// even when same-user opens the report multiple instances at same-time.
 				$uniqueName = $this->tempTablePrefix . str_replace('.', '', uniqid($current_user->id, true)) . (self::$tempTableCounter++);
@@ -120,7 +120,7 @@ class ReportRunQueryPlanner {
 		return "($query)";
 	}
 
-	function initializeTempTables() {
+	public function initializeTempTables() {
 		global $adb;
 
 		$oldDieOnError = $adb->dieOnError;
@@ -153,7 +153,7 @@ class ReportRunQueryPlanner {
 		}
 	}
 
-	function cleanup() {
+	public function cleanup() {
 		global $adb;
 
 		$oldDieOnError = $adb->dieOnError;
@@ -173,7 +173,7 @@ class ReportRunQueryPlanner {
 	 * @param String $module Module name for which temporary table is generated (Reports secondary module)
 	 * @return string Returns condition query for generating temporary table.
 	 */
-	function getReportConditions($module) {
+	private function getReportConditions($module) {
 		$db = PearDatabase::getInstance();
 		$moduleModel = CRMEntity::getInstance($module);
 		$moduleBaseTable = $moduleModel->table_name;
@@ -204,7 +204,8 @@ class ReportRunQueryPlanner {
 					$fieldTable = $fieldInfo['tablename'];
 					$allowedTables = array('vtiger_crmentity', $moduleBaseTable);
 					$columnCondition = $advfilterlist[$i]['columns'][$j]['column_condition'];
-					if (!in_array($fieldTable, $allowedTables) || $moduleName != $module || isReferenceUIType($uiType) || $columnCondition == 'or' || $oldColumnCondition == 'or' || in_array($dataType, array('reference', 'multireference'))) {
+					if (!in_array($fieldTable, $allowedTables) || $moduleName != $module || isReferenceUIType($uiType) || $columnCondition == 'or' ||
+							$oldColumnCondition == 'or' || in_array($dataType, array('reference', 'multireference'))) {
 						$oldColumnCondition = $advfilterlist[$i]['columns'][$j]['column_condition'];
 					} else {
 						$columnParts[0] = $fieldTable;
@@ -237,7 +238,6 @@ class ReportRunQueryPlanner {
 		}
 		return $advfiltersql;
 	}
-
 }
 
 ?>

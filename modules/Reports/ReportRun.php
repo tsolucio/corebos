@@ -83,8 +83,7 @@ class ReportRun extends CRMEntity {
 	 *					|
 	 *					$tablenamen:$columnnamen:$fieldlabeln:$fieldnamen:$typeofdatan=>$tablenamen.$columnnamen As Header value
 	 */
-	function getQueryColumnsList($reportid,$outputformat='')
-	{
+	public function getQueryColumnsList($reportid, $outputformat = '') {
 		// Have we initialized information already?
 		if (!empty($this->_columnslist[$outputformat])) {
 			return $this->_columnslist[$outputformat];
@@ -96,50 +95,51 @@ class ReportRun extends CRMEntity {
 		$ssql .= " where vtiger_report.reportid = ?";
 		$ssql .= " order by vtiger_selectcolumn.columnindex";
 		$result = $adb->pquery($ssql, array($reportid));
-		$permitted_fields = Array();
+		$permitted_fields = array();
 		$columnslist = array();
-		while($columnslistrow = $adb->fetch_array($result))
-		{
+		while ($columnslistrow = $adb->fetch_array($result)) {
 			$fieldname = '';
 			$fieldcolname = decode_html($columnslistrow['columnname']);
-			if (strpos($fieldcolname, ':')===false) continue;
-			list($tablename,$colname,$module_field,$fieldname,$single) = explode(":",$fieldcolname);
+			if (strpos($fieldcolname, ':')===false) {
+				continue;
+			}
+			list($tablename, $colname, $module_field, $fieldname, $single) = explode(':', $fieldcolname);
 			$module_field = decode_html($module_field);
-			list($module,$field) = explode("_",$module_field,2);
-			$inventory_fields = array('quantity','listprice','serviceid','productid','discount','comment');
+			list($module, $field) = explode('_', $module_field, 2);
+			$inventory_fields = array('quantity', 'listprice', 'serviceid', 'productid', 'discount', 'comment');
 			$inventory_modules = getInventoryModules();
 			require('user_privileges/user_privileges_'.$current_user->id.'.php');
-			if ((!isset($permitted_fields[$module]) || count($permitted_fields[$module]) == 0) && $is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1) {
+			if ((!isset($permitted_fields[$module]) || count($permitted_fields[$module]) == 0) &&
+					$is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1) {
 				$permitted_fields[$module] = $this->getaccesfield($module);
 			}
-			if(in_array($module,$inventory_modules) and isset($permitted_fields[$module]) and is_array($permitted_fields[$module])){
-				$permitted_fields[$module] = array_merge($permitted_fields[$module],$inventory_fields);
+			if (in_array($module, $inventory_modules) && isset($permitted_fields[$module]) && is_array($permitted_fields[$module])) {
+				$permitted_fields[$module] = array_merge($permitted_fields[$module], $inventory_fields);
 			}
-			$selectedfields = explode(":",$fieldcolname);
-			if($is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1
-					&& !in_array($selectedfields[3], $permitted_fields[$module])) {
+			$selectedfields = explode(':', $fieldcolname);
+			if ($is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && !in_array($selectedfields[3], $permitted_fields[$module])) {
 				//user has no access to this field, skip it.
 				continue;
 			}
-			$concatSql = getSqlForNameInDisplayFormat(array('first_name'=>$selectedfields[0].".first_name",'last_name'=>$selectedfields[0].".last_name"), 'Users');
+			$concatSql = getSqlForNameInDisplayFormat(array('first_name'=>$selectedfields[0].'.first_name', 'last_name'=>$selectedfields[0].'.last_name'), 'Users');
 			$querycolumns = $this->getEscapedColumns($selectedfields);
 
-			if(isset($module) && $module!="") {
-				$mod_strings = return_module_language($current_language,$module);
+			if (isset($module) && $module!='') {
+				$mod_strings = return_module_language($current_language, $module);
 			}
 			$targetTableName = $tablename;
-			$fieldlabel = trim(preg_replace("/$module/"," ",$selectedfields[2],1));
-			$mod_arr=explode('_',$fieldlabel);
-			$fieldlabel = trim(str_replace("_"," ",$fieldlabel));
+			$fieldlabel = trim(preg_replace("/$module/", ' ', $selectedfields[2], 1));
+			$mod_arr=explode('_', $fieldlabel);
+			$fieldlabel = trim(str_replace('_', ' ', $fieldlabel));
 			//modified code to support i18n issue
-			$fld_arr = explode(" ",$fieldlabel);
-			if(($mod_arr[0] == '')) {
+			$fld_arr = explode(' ', $fieldlabel);
+			if (($mod_arr[0] == '')) {
 				$mod = $module;
-				$mod_lbl = getTranslatedString($module,$module); //module
+				$mod_lbl = getTranslatedString($module, $module); //module
 			} else {
 				$mod = $mod_arr[0];
 				array_shift($fld_arr);
-				$mod_lbl = getTranslatedString($fld_arr[0],$mod); //module
+				$mod_lbl = getTranslatedString($fld_arr[0], $mod); //module
 			}
 			$fld_lbl_str = implode(" ",$fld_arr);
 			$fld_lbl = getTranslatedString($fld_lbl_str,$module); //fieldlabel
@@ -356,7 +356,7 @@ class ReportRun extends CRMEntity {
 	 *  @ param $selectedfields : Type Array
 	 *  returns the case query for the escaped columns
 	 */
-	function getEscapedColumns($selectedfields) {
+	public function getEscapedColumns($selectedfields) {
 		$tableName = $selectedfields[0];
 		$columnName = $selectedfields[1];
 		$moduleFieldLabel = $selectedfields[2];
@@ -365,16 +365,20 @@ class ReportRun extends CRMEntity {
 		$fieldInfo = getFieldByReportLabel($moduleName, $fieldLabel);
 		$queryColumn = '';
 		if ($moduleName == 'ModComments' && $fieldName == 'creator') {
-			$concatSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_usersModComments.first_name',
-															'last_name' => 'vtiger_usersModComments.last_name'), 'Users');
+			$concatSql = getSqlForNameInDisplayFormat(
+				array(
+					'first_name' => 'vtiger_usersModComments.first_name',
+					'last_name' => 'vtiger_usersModComments.last_name'
+				),
+				'Users'
+			);
 			$queryColumn = "trim(case when (vtiger_usersModComments.user_name not like '' and vtiger_crmentity.crmid!='') then $concatSql end) as 'ModComments_Creator'";
 			$this->queryPlanner->addTable('vtiger_usersModComments');
-		} elseif (($fieldInfo['uitype'] == '10' || isReferenceUIType($fieldInfo['uitype']))
-				&& $fieldInfo['uitype'] != '52' && $fieldInfo['uitype'] != '53') {
+		} elseif (($fieldInfo['uitype'] == '10' || isReferenceUIType($fieldInfo['uitype'])) && $fieldInfo['uitype'] != '52' && $fieldInfo['uitype'] != '53') {
 			$fieldSqlColumns = $this->getReferenceFieldColumnList($moduleName, $fieldInfo);
-			if(count($fieldSqlColumns) > 0) {
+			if (count($fieldSqlColumns) > 0) {
 				$queryColumn = "(CASE WHEN $tableName.$columnName NOT LIKE '' THEN (CASE";
-				foreach($fieldSqlColumns as $columnSql) {
+				foreach ($fieldSqlColumns as $columnSql) {
 					$queryColumn .= " WHEN $columnSql NOT LIKE '' THEN $columnSql";
 				}
 				$queryColumn .= " ELSE '' END) ELSE '' END) AS $moduleFieldLabel";
