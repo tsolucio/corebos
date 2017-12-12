@@ -524,7 +524,7 @@ class CRMEntity {
 			} else {
 				$profileList = getCurrentUserProfileList();
 				if (count($profileList) > 0) {
-					$sql = "SELECT $selectFields
+					$sql = "SELECT distinct $selectFields
 						FROM vtiger_field
 						INNER JOIN vtiger_profile2field
 						ON vtiger_profile2field.fieldid = vtiger_field.fieldid
@@ -536,7 +536,7 @@ class CRMEntity {
 						AND vtiger_def_org_field.visible = 0 and vtiger_field.tablename=? and vtiger_field.displaytype in (1,3) and vtiger_field.presence in (0,2)";
 					$params = array($tabid, $profileList, $table_name);
 				} else {
-					$sql = "SELECT $selectFields
+					$sql = "SELECT distinct $selectFields
 						FROM vtiger_field
 						INNER JOIN vtiger_profile2field
 						ON vtiger_profile2field.fieldid = vtiger_field.fieldid
