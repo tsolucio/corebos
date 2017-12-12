@@ -2642,10 +2642,33 @@ class CRMEntity {
 			$condvalue = $table_name . "." . $column_name;
 			$condition = "$pritablename.$secfieldname=$condvalue";
 		}
-		$secQuery = "select $table_name.* from $table_name inner join vtiger_crmentity on " .
-				"vtiger_crmentity.crmid=$table_name.$column_name and vtiger_crmentity.deleted=0";
 
-		$secQueryTempTableQuery = $queryPlanner->registerTempTable($secQuery, array($column_name, $secfieldname, $prifieldname), $module);
+		$selectColumns = "$table_name.*";
+
+		// Look forward for temporary table usage as defined by the QueryPlanner
+		$secQueryFrom = " FROM $table_name INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=$table_name.$column_name AND vtiger_crmentity.deleted=0 ";
+
+		//The relation field exists in custom field . relation field added from layout editor
+		if ($pritablename != $table_name && $secmodule != 'Emails') {
+			$modulecftable = $this->customFieldTable[0];
+			$modulecfindex = $this->customFieldTable[1];
+
+			if (isset($modulecftable)) {
+				$columns = $this->db->getColumnNames($modulecftable);
+				//remove the primary key since it will conflict with base table column name or else creating temporary table will fail for duplicate columns
+				//eg : vtiger_potential has potentialid and vtiger_potentialscf has same potentialid
+				unset($columns[array_search($modulecfindex,$columns)]);
+				if (count($columns) > 0) {
+					$cfSelectString = implode(',',$columns);
+					$selectColumns .= ','.$cfSelectString;
+				}
+				$cfquery = "LEFT JOIN $modulecftable ON $modulecftable.$modulecfindex=$table_name.$column_name";
+				$secQueryFrom .= $cfquery;
+			}
+		}
+
+		$secQuery = 'SELECT '.$selectColumns.' '.$secQueryFrom;
+		$secQueryTempTableQuery = $queryPlanner->registerTempTable($secQuery, array($column_name, $secfieldname, $prifieldname),$secmodule);
 
 		$query = '';
 		if ($pritablename == 'vtiger_crmentityrel') {
