@@ -132,6 +132,8 @@
 										{elseif $_FIELD->uitype() eq 'crm_app_map'}
 											<a  href="http://maps.google.com/maps?q={$_FIELD->valueLabel()}"  target="_blank" class="ui-btn  ui-corner-all ui-icon-location ui-btn-icon-right" data-rel="dialog">Google Maps: {$_FIELD->label()}
 											</a>
+										{elseif $_FIELD->uitype() eq '13'}
+											<a href="#" onclick="window.location.href ='mailto:{$_FIELD->valueLabel()}';">{$_FIELD->valueLabel()} </a>
 										{elseif $_FIELD->uitype() eq '5' || $_FIELD->uitype() eq '23'}
 											{$_FIELD->valueLabel()}
 										{elseif $_FIELD->uitype() eq '9'}
