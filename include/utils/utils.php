@@ -1207,15 +1207,14 @@ function getProfile2ModuleFieldPermissionList($fld_module, $profileid) {
  * @param $profileid -- profileid :: Type integer
  * @returns $profilelist -- profilelist :: Type string
  */
-function getProfile2AllFieldList($mod_array,$profileid) {
-	global $log, $adb;
+function getProfile2AllFieldList($mod_array, $profileid) {
+	global $log;
 	$log->debug("Entering getProfile2AllFieldList({modules}, $profileid) method ...");
 	$profilelist=array();
-	for($i=0;$i<count($mod_array);$i++) {
-		$profilelist[key($mod_array)]=getProfile2ModuleFieldPermissionList(key($mod_array), $profileid);
-		next($mod_array);
+	foreach ($mod_array as $key => $value) {
+		$profilelist[$key]=getProfile2ModuleFieldPermissionList($key, $profileid);
 	}
-	$log->debug("Exiting getProfile2AllFieldList method ...");
+	$log->debug('Exiting getProfile2AllFieldList method ...');
 	return $profilelist;
 }
 
