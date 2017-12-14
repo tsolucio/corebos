@@ -57,7 +57,12 @@ if (isset($_REQUEST['inventory_currency'])) {
 	$focus->column_fields['conversion_rate'] = $cur_sym_rate['rate'];
 }
 if (empty($_REQUEST['assigned_user_id']) and empty($_REQUEST['assigned_group_id'])) {
-	$focus->column_fields['assigned_user_id'] = $current_user->id;
+	if ($focus->mode != 'edit') {
+		$focus->column_fields['assigned_user_id'] = $current_user->id;
+	} else {
+		$ownerrs = $adb->pquery('select smownerid from vtiger_crmentity where crmid=?', array($focus->id));
+		$focus->column_fields['assigned_user_id'] = $adb->query_result($ownerrs, 0, 0);
+	}
 } else {
 	if ($_REQUEST['assigntype'] == 'U') {
 		$focus->column_fields['assigned_user_id'] = $_REQUEST['assigned_user_id'];

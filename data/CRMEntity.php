@@ -404,8 +404,14 @@ class CRMEntity {
 			$log->info("module is =" . $module);
 			$ownerid = $current_user->id;
 		}
-		if (empty($ownerid))
-			$ownerid = $current_user->id;
+		if (empty($ownerid)) {
+			if ($this->mode != 'edit') {
+				$ownerid = $current_user->id;
+			} else {
+				$ownerrs = $adb->pquery('select smownerid from vtiger_crmentity where crmid=?', array($this->id));
+				$ownerid = $adb->query_result($ownerrs, 0, 0);
+			}
+		}
 
 		if ($module == 'Events') {
 			$module = 'Calendar';
