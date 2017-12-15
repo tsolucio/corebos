@@ -13,7 +13,7 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Users',
 'LBL_MODULE_TITLE'=>'Users: Home',
 'LBL_SEARCH_FORM_TITLE'=>'User Search',
@@ -639,8 +639,15 @@ $mod_strings = Array(
 'LBL_3_MIN'=>'3 minutes',
 'LBL_4_MIN'=>'4 minutes',
 'LBL_5_MIN'=>'5 minutes',
+'None' => 'None',
+'1 Minute' => '1 Minute',
+'5 Minutes' => '5 Minutes',
+'15 Minutes' => '15 Minutes',
+'30 Minutes' => '30 Minutes',
+'45 Minutes' => '45 Minutes',
+'1 Hour' => '1 Hour',
+'1 Day' => '1 Day',
 'LBL_EMAILS_PER_PAGE'=>'Email per Page',
-// Added for 5.0.3
 
 'LBL_ENTER_PROFILE'=>'Enter The Profile Name',
 'TITLE_USER_DOCUMENT'=>'Untitled Document',
@@ -649,17 +656,13 @@ $mod_strings = Array(
 'LBL_NOTIFICATION_ACTIVITY'=>'Notification Activity',
 'LBL_GOTO_LISTVIEW_BUTTON'=>'Goto ListView',
 
-// Added/Updated for vtiger CRM 5.0.4
-
 'LBL_SSL' => 'SSL',
-//Added to fix the issue #4081
 'LBL_USERNAME_EXIST' => 'A User with the specified name Already Exists!',
 'LBL_UNAUTHORIZED_ACCESS' => 'Unauthorized access to user administration',
 //Added to provide User based TagCloud
 'LBL_TAGCLOUD_DISPLAY'=>'Tag Cloud Display',
 'INTERNAL_MAIL_COMPOSER'=>'Internal Mail Composer',
 
-// Added for 5.0.4 to Support Email notication on User Creation
 'User Login Details'=>'User Login Details',
 'LBL_TO_LOGIN' => 'to Login',
 

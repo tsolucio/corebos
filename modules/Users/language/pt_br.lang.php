@@ -1,24 +1,16 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  * Contributor: Ranieri Slemer, translate missing terms to brazilian portuguese | Ago 2016 | www.ecrmweb.com.br
  ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Users/language/en_us.lang.php,v 1.18 2005/04/19 14:45:38 ray Exp $
- * Description:  Defines the English language pack for the Users module.
- ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Usuários',
 'LBL_MODULE_TITLE'=>'Usuários: Principal',
 'LBL_SEARCH_FORM_TITLE'=>'Pesquisa Usuário',
@@ -649,6 +641,14 @@ $mod_strings = Array(
 'LBL_3_MIN'=>'3 minutos',
 'LBL_4_MIN'=>'4 minutos',
 'LBL_5_MIN'=>'5 minutos',
+'None' => 'None',
+'1 Minute' => '1 Minuto',
+'5 Minutes' => '5 Minutos',
+'15 Minutes' => '15 Minutos',
+'30 Minutes' => '30 Minutos',
+'45 Minutes' => '45 Minutos',
+'1 Hour' => '1 Hour',
+'1 Day' => '1 Day',
 'LBL_EMAILS_PER_PAGE'=>'Email por Página',
 
 'LBL_ENTER_PROFILE'=>'Digite o Nome do Perfil',
