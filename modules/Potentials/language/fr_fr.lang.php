@@ -109,5 +109,6 @@ $mod_strings = array (
 	'Potential No' => 'Affaire n°',
 	'Related To' => 'Relatif à',
 	'Potentials ID' => 'Affaire ID',
+	'Forecast Amount'=> 'Forecast Amount',
 );
 ?>
