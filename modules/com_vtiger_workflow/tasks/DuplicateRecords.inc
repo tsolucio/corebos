@@ -21,7 +21,7 @@ require_once('modules/com_vtiger_workflow/VTEntityCache.inc');
 require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
 require_once('include/utils/duplicate.php');
 
-class DuplicateRecords extends VTTask{
+class DuplicateRecords extends VTTask {
 	public $executeImmediately = true;
 
 	public function getFieldNames() {
@@ -29,14 +29,14 @@ class DuplicateRecords extends VTTask{
 	}
 
 	public function doTask(&$recordid) {
-		list($cto,$cto_id) = explode('x',$recordid->getId());
+		list($cto,$cto_id) = explode('x', $recordid->getId());
 		if (!empty($cto_id) and !empty($this->bmapid)) {
 			$module = getSalesEntityType($cto_id);
 			$duplicatedfromfields = $recordid->getData();
 			$duplicatedfrom = (isset($duplicatedfromfields['isduplicatedfromrecordid']) ? $duplicatedfromfields['isduplicatedfromrecordid'] : 0);
 			if (!empty($duplicatedfrom)) {
-				if (strpos($duplicatedfrom,'x')>0) {
-					list($wsdup,$duplicatedfrom) = explode('x',$duplicatedfrom);
+				if (strpos($duplicatedfrom, 'x')>0) {
+					list($wsdup,$duplicatedfrom) = explode('x', $duplicatedfrom);
 				}
 				duplicateRecordRelations($module, $cto_id, $duplicatedfrom, $this->bmapid);
 			} else {

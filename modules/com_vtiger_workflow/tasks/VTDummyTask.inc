@@ -7,11 +7,15 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-class VTDummyTask extends VTTask{
+
+class VTDummyTask extends VTTask {
 	public $executeImmediately = true;
 
-	public function getFieldNames(){return array();}
-	public function doTask(&$entity){
+	public function getFieldNames() {
+		return array();
+	}
+
+	public function doTask(&$entity) {
 		$statement=$this->statement;
 		echo "This is a dummy workflow task with $statement";
 	}

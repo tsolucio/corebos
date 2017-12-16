@@ -19,7 +19,7 @@
 require_once('modules/com_vtiger_workflow/VTEntityCache.inc');
 require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
 
-class CBRelateSales extends VTTask{
+class CBRelateSales extends VTTask {
 	public $executeImmediately = true;
 
 	public function getFieldNames() {
@@ -34,26 +34,26 @@ class CBRelateSales extends VTTask{
 			'Invoice' => array('id'=>'invoiceid','account'=>'accountid','contact'=>'contactid'),
 			'PurchaseOrder' => array('id'=>'purchaseorderid','account'=>'vendorid','contact'=>'contactid'),
 		);
-		list($inv,$inv_id) = explode('x',$entity->getId());
+		list($inv,$inv_id) = explode('x', $entity->getId());
 		if (!empty($inv_id)) {
 			$setype = getSalesEntityType($inv_id);
 			$query = 'select productid from vtiger_inventoryproductrel inner join vtiger_crmentity on crmid=productid where deleted=0 and id=?';
-			$srvs = $adb->pquery($query,array($inv_id));
+			$srvs = $adb->pquery($query, array($inv_id));
 			if ($srvs and $adb->num_rows($srvs) > 0) {
 				if ($setype=='PurchaseOrder') {
 					$acc = CRMEntity::getInstance('Vendors');
-					$accrs = $adb->pquery('select vendorid from vtiger_purchaseorder where purchaseorderid=?',array($inv_id));
-					$accid = $adb->query_result($accrs,0,0);
+					$accrs = $adb->pquery('select vendorid from vtiger_purchaseorder where purchaseorderid=?', array($inv_id));
+					$accid = $adb->query_result($accrs, 0, 0);
 					$accmodule = 'Vendors';
 				} else {
 					$acc = CRMEntity::getInstance('Accounts');
-					$accrs = $adb->pquery('select accountid from vtiger_'.strtolower($setype).' where '.$invinfo[$setype]['id'].'=?',array($inv_id));
-					$accid = $adb->query_result($accrs,0,0);
+					$accrs = $adb->pquery('select accountid from vtiger_'.strtolower($setype).' where '.$invinfo[$setype]['id'].'=?', array($inv_id));
+					$accid = $adb->query_result($accrs, 0, 0);
 					$accmodule = 'Accounts';
 				}
 				$cto = CRMEntity::getInstance('Contacts');
-				$ctors = $adb->pquery('select contactid from vtiger_'.strtolower($setype).' where '.$invinfo[$setype]['id'].'=?',array($inv_id));
-				$ctoid = $adb->query_result($ctors,0,0);
+				$ctors = $adb->pquery('select contactid from vtiger_'.strtolower($setype).' where '.$invinfo[$setype]['id'].'=?', array($inv_id));
+				$ctoid = $adb->query_result($ctors, 0, 0);
 				while ($srv = $adb->fetch_array($srvs)) {
 					$pdosrv = getSalesEntityType($srv['productid']);
 					if (($pdosrv == 'Products' and $this->relpdo) or (($pdosrv == 'Services' and $this->relsrv))) {

@@ -30,13 +30,13 @@ class VTCreateEntityTask extends VTTask {
 		$recordId = $recordId[1];
 
 		$entityType = $this->entity_type;
-		if(!vtlib_isModuleActive($entityType)) {
+		if (!vtlib_isModuleActive($entityType)) {
 			return;
 		}
 
 		$fieldValueMapping = array();
 		if (!empty($this->field_value_mapping)) {
-			$fieldValueMapping = json_decode($this->field_value_mapping,true);
+			$fieldValueMapping = json_decode($this->field_value_mapping, true);
 		}
 
 		if (!empty($entityType) && !empty($fieldValueMapping) && count($fieldValueMapping) > 0) {
@@ -129,13 +129,15 @@ class VTCreateEntityTask extends VTTask {
 			$cbfrom = CRMEntity::getInstance($cbfrommodule);
 			$cbfrom->retrieve_entity_info($cbfromid, $cbfrommodule);
 			$cbMapidFromid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
-			if ($cbMapidFromid) $cbMapid = $cbMapidFromid;
+			if ($cbMapidFromid) {
+				$cbMapid = $cbMapidFromid;
+			}
 			if (!empty($cbMapid)) {
 				$cbMap = cbMap::getMapByID($cbMapid);
-				$newEntity->column_fields = $cbMap->Mapping($cbfrom->column_fields,$newEntity->column_fields);
+				$newEntity->column_fields = $cbMap->Mapping($cbfrom->column_fields, $newEntity->column_fields);
 			}
 
-			$newEntity->column_fields = DataTransform::sanitizeRetrieveEntityInfo($newEntity->column_fields,$handlerMeta);
+			$newEntity->column_fields = DataTransform::sanitizeRetrieveEntityInfo($newEntity->column_fields, $handlerMeta);
 			$logbg->debug($newEntity->column_fields);
 			$newEntity->save($entityType);
 			relateEntities($focus, $moduleName, $recordId, $entityType, $newEntity->id);
@@ -147,7 +149,5 @@ class VTCreateEntityTask extends VTTask {
 		$from_wf = false;
 		$util->revertUser();
 	}
-
 }
-
 ?>
