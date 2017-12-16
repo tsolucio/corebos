@@ -1671,16 +1671,16 @@ class CRMEntity {
 			list($mode, $module, $req_str, $req_no, $result, $returnResult) = cbEventHandler::do_filter('corebos.filter.ModuleSeqNumber.increment', array($mode, $module, $req_str, $req_no, '', false));
 			if ($returnResult) return $result;
 			//when we save new record we will increment the autonumber field
-			$check = $adb->pquery('select cur_id,prefix from vtiger_modentity_num where semodule=? and active = 1 FOR UPDATE', array($module));
-			$prefix = $adb->query_result($check, 0, 'prefix');
+			$check = $adb->pquery(
+				"select prefix, cur_id, concat(repeat('0',greatest(length(cur_id)-length(cur_id+1),0)),cur_id+1) as req_no
+					from vtiger_modentity_num where semodule=? and active = 1 FOR UPDATE",
+				array($module)
+			);
+			$req_no .= $adb->query_result($check, 0, 'req_no');
 			$curid = $adb->query_result($check, 0, 'cur_id');
+			$adb->pquery('UPDATE vtiger_modentity_num SET cur_id=? where cur_id=? and active=1 AND semodule=?', array($req_no, $curid, $module));
+			$prefix = $adb->query_result($check, 0, 'prefix');
 			$prev_inv_no = $prefix . $curid;
-			$strip = strlen($curid) - strlen($curid + 1);
-			if ($strip < 0)
-				$strip = 0;
-			$temp = str_repeat("0", $strip);
-			$req_no.= $temp . ($curid + 1);
-			$adb->pquery("UPDATE vtiger_modentity_num SET cur_id=? where cur_id=? and active=1 AND semodule=?", array($req_no, $curid, $module));
 			return decode_html($prev_inv_no);
 		}
 	}
