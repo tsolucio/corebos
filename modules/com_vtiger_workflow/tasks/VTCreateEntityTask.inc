@@ -105,13 +105,21 @@ class VTCreateEntityTask extends VTTask {
 				$newEntity->column_fields[$fieldName] = $fieldValue;
 			}
 			$newEntity->column_fields[$this->reference_field] = $focus->id;
-			if (($moduleName=='Invoice' or $moduleName=='SalesOrder') and $entityType=='CobroPago') {
-				$newEntity->column_fields['parent_id'] = (empty($focus->column_fields['account_id']) ? $focus->column_fields['contact_id'] : $focus->column_fields['account_id']);
+			if (($moduleName=='Invoice' || $moduleName=='SalesOrder') && $entityType=='CobroPago' && empty($newEntity->column_fields['parent_id'])) {
+				$newEntity->column_fields['parent_id'] = (
+					empty($focus->column_fields['account_id']) ?
+						$focus->column_fields['contact_id'] :
+						$focus->column_fields['account_id']
+				);
 			}
-			if (($moduleName=='Invoice' or $moduleName=='SalesOrder') and $entityType=='Potentials') {
-				$newEntity->column_fields['related_to'] = (empty($focus->column_fields['account_id']) ? $focus->column_fields['contact_id'] : $focus->column_fields['account_id']);
+			if (($moduleName=='Invoice' || $moduleName=='SalesOrder') && $entityType=='Potentials' && empty($newEntity->column_fields['related_to'])) {
+				$newEntity->column_fields['related_to'] = (
+					empty($focus->column_fields['account_id']) ?
+						$focus->column_fields['contact_id'] :
+						$focus->column_fields['account_id']
+				);
 			}
-			if ($moduleName=='PurchaseOrder' and $entityType=='CobroPago') {
+			if ($moduleName=='PurchaseOrder' && $entityType=='CobroPago' && empty($newEntity->column_fields['parent_id'])) {
 				$newEntity->column_fields['parent_id'] = $focus->column_fields['vendor_id'];
 			}
 
