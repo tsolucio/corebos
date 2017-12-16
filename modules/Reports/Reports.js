@@ -237,12 +237,6 @@ function hideTabs()
 	}
 }
 
-function showSaveDialog()
-{
-	url = "index.php?module=Reports&action=SaveReport";
-	window.open(url,"Save_Report","width=550,height=350,top=20,left=20;toolbar=no,status=no,menubar=no,directories=no,resizable=yes,scrollbar=no");
-}
-
 function saveAndRunReport()
 {
 	var cbreporttype = document.getElementById('cbreporttype').value;
