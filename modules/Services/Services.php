@@ -99,9 +99,9 @@ class Services extends CRMEntity {
 	var $default_sort_order='ASC';
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
-	var $mandatory_fields = Array('servicename', 'assigned_user_id');
+	public $mandatory_fields = array('servicename');
 
-	var $unit_price;
+	public $unit_price;
 
 	function save_module($module) {
 		if ($this->HasDirectImageField) {

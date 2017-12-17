@@ -62,7 +62,7 @@ class Documents extends CRMEntity {
 	var $list_link_field= 'notes_title';
 	var $old_filename = '';
 
-	var $mandatory_fields = Array('notes_title','createdtime' ,'modifiedtime','filename','filesize','filetype','filedownloadcount','assigned_user_id');
+	public $mandatory_fields = array('notes_title', 'createdtime', 'modifiedtime', 'filename', 'filesize', 'filetype', 'filedownloadcount');
 
 	//Added these variables which are used as default order by and sortorder in ListView
 	var $default_order_by = 'title';

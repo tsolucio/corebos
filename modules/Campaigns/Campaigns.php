@@ -85,7 +85,7 @@ class Campaigns extends CRMEntity {
 	var $default_sort_order = 'DESC';
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
-	var $mandatory_fields = Array('campaignname','createdtime' ,'modifiedtime','assigned_user_id');
+	public $mandatory_fields = array('campaignname','createdtime' ,'modifiedtime');
 
 	function __construct() {
 		global $log;
