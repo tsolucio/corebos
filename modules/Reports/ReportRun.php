@@ -2560,15 +2560,25 @@ class ReportRun extends CRMEntity {
 			$sSQL = $this->sGetSQLforReport($this->reportid,$filtersql,'HTML');
 			$result = $adb->query($sSQL.' limit 1');
 			$error_msg = $adb->database->ErrorMsg();
-			if(!$result && $error_msg!=''){
-				$resp = array(
-					'has_contents' => false,
-					'jsonheaders' => array(),
-					'i18nheaders' => array(),
-					'error' => true,
-					'error_message' => getTranslatedString('LBL_REPORT_GENERATION_FAILED', 'Reports') . ':' . $error_msg,
-				);
-				return $resp;
+			if (!$result && $error_msg!='') {
+				$tmptables = $this->queryPlanner->getTemporaryTables();
+				if (count($tmptables)>0) {
+					// we have temp tables so we deactivate them and try again
+					$this->queryPlanner->disableTempTables();
+					$sSQL = $this->sGetSQLforReport($this->reportid, $filtersql, 'HTML');
+					$result = $adb->query($sSQL.' limit 1');
+					$error_msg = $adb->database->ErrorMsg();
+				}
+				if (!$result && $error_msg!='') {
+					$resp = array(
+						'has_contents' => false,
+						'jsonheaders' => array(),
+						'i18nheaders' => array(),
+						'error' => true,
+						'error_message' => getTranslatedString('LBL_REPORT_GENERATION_FAILED', 'Reports') . ':' . $error_msg,
+					);
+					return $resp;
+				}
 			}
 			$fldcnt=$adb->num_fields($result);
 			$i18nheader = $jsonheader = array();
@@ -2623,15 +2633,32 @@ class ReportRun extends CRMEntity {
 				$count_result = $adb->query('SELECT FOUND_ROWS();');
 			}
 			$error_msg = $adb->database->ErrorMsg();
-			if(!$result && $error_msg!=''){
-				$resp = array(
-					'total' => 0,
-					'data' => array(),
-					'sql' => $sSQL,
-					'error' => true,
-					'error_message' => getTranslatedString('LBL_REPORT_GENERATION_FAILED', 'Reports') . ':' . $error_msg,
-				);
-				return json_encode($resp);
+			if (!$result && $error_msg!='') {
+				$tmptables = $this->queryPlanner->getTemporaryTables();
+				if (count($tmptables)>0) {
+					// we have temp tables so we deactivate them and try again
+					$this->queryPlanner->disableTempTables();
+					$sSQL = $this->sGetSQLforReport($this->reportid, $filtersql, ($outputformat == 'JSON' ? 'HTML' : 'HTMLPAGED'));
+					$sSQL = 'SELECT SQL_CALC_FOUND_ROWS'.substr($sSQL, 6);
+					$result = $adb->query($sSQL);
+					if ($result) {
+						$count_result = $adb->query('SELECT FOUND_ROWS();');
+					}
+					$error_msg = $adb->database->ErrorMsg();
+				}
+				if (!$result && $error_msg!='') {
+					$resp = array(
+						'total' => 0,
+						'data' => array(),
+						'sql' => $sSQL,
+						'error' => true,
+						'error_message' => getTranslatedString('LBL_REPORT_GENERATION_FAILED', 'Reports') . ':' . $error_msg,
+					);
+					foreach ($tmptables as $tmptblname => $tmptbldetails) {
+						$resp[$tmptblname] = $tmptbldetails['query'];
+					}
+					return json_encode($resp);
+				}
 			}
 
 			if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1) {
