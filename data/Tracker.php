@@ -42,7 +42,7 @@ class Tracker {
 	 * If the new item is the same as the most recent item then do not change the list
 	 */
 	public function track_view($user_id, $current_module, $item_id, $item_summary) {
-		global $adb, $log;
+		global $adb, $log, $default_charset;
 		$log->info("in track view method ".$current_module);
 		$this->delete_history($user_id, $item_id);
 		// change the query so that it puts the tracker entry whenever you touch on the DetailView of the required entity
@@ -67,7 +67,7 @@ class Tracker {
 			}
 			$query1 = "select $fieldsname as entityname from $tablename where $entityidfield = ?";
 			$result = $adb->pquery($query1, array($item_id));
-			$item_summary = $adb->query_result($result, 0, 'entityname');
+			$item_summary = html_entity_decode($adb->query_result($result, 0, 'entityname'), ENT_QUOTES, $default_charset);
 			if (strlen($item_summary) > 30) {
 				$item_summary=substr($item_summary, 0, 30).'...';
 			}
@@ -100,7 +100,7 @@ class Tracker {
 		$list = array();
 		while ($row = $this->db->fetchByAssoc($result, -1, false)) {
 			// If the module was not specified or the module matches the module of the row, add the row to the list
-			if ($module_name == "" || $row[module_name] == $module_name) {
+			if ($module_name == '' || $row['module_name'] == $module_name) {
 				//Adding Security check
 				require_once('include/utils/utils.php');
 				require_once('include/utils/UserInfoUtil.php');
