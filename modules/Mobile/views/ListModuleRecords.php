@@ -29,7 +29,7 @@ class crmtogo_UI_ListModuleRecords extends crmtogo_WS_ListModuleRecords {
 	}
 	
 	function process(crmtogo_API_Request $request) {
-		global $current_user;
+		global $current_user,$default_timezone;
 		$wsResponse = parent::process($request);
 		//delete?
 		if ($request->get('delaction')== 'deleteEntity') {
@@ -82,10 +82,16 @@ class crmtogo_UI_ListModuleRecords extends crmtogo_WS_ListModuleRecords {
 					$cal_startdate = $calarray["eventstartdate"];
 					$cal_starttime = $calarray["eventstarttime"];
 					//consider time zone
-					$start_datetime = $cal_startdate.' '.$cal_starttime;
+					$DBstart_datetime = $cal_startdate.' '.$cal_starttime;
+					if ($default_timezone != 'UTC') {
+						$convertdatetime = DateTimeField::convertTimeZone($DBstart_datetime,$default_timezone,'UTC');
+						$start_datetime = $convertdatetime->format('Y-m-d H:i');
+					} else {
+						$start_datetime = $DBstart_datetime;
+					}
 					$tmp_date_arr = explode(' ', $start_datetime);
 					$formated_date = $tmp_date_arr[0];
-					$userStartDate =date('Y-m-d', strtotime($tmp_date_arr[0])).'T'.$tmp_date_arr[1];
+					$userStartDate =date('Y-m-d', strtotime($tmp_date_arr[0])).'T'.$tmp_date_arr[1].'Z';
 					// format end date and time
 						$cal_enddate = $calarray["eventenddate"];
 					if (isset($calarray["eventendtime"])) {
