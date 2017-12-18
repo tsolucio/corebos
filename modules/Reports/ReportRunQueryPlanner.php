@@ -39,10 +39,12 @@ class ReportRunQueryPlanner {
 
 	public function disableTempTables() {
 		$this->allowTempTables = false;
+		$this->tempTables = array();
 	}
 
 	public function enableTempTables() {
 		$this->allowTempTables = true;
+		$this->tempTables = array();
 	}
 
 	public function addTable($table) {
