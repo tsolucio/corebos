@@ -447,9 +447,9 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 						$chk_val = '';
 					}
 					if(isset($_REQUEST['file']) && $_REQUEST['file'] == 'QuickCreate'){
-						$options[] = array(htmlentities(getTranslatedString($pickListValue),ENT_QUOTES,$default_charset),$pickListValue,$chk_val );
+						$options[] = array(htmlentities(getTranslatedString($pickListValue, 'Contacts'),ENT_QUOTES,$default_charset),$pickListValue,$chk_val );
 					}else{
-						$options[] = array(getTranslatedString($pickListValue),$pickListValue,$chk_val);
+						$options[] = array(getTranslatedString($pickListValue, 'Contacts'),$pickListValue,$chk_val);
 					}
 				}
 				if($pickcount == 0 && $salt_value != ''){
