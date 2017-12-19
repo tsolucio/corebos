@@ -2330,20 +2330,27 @@ class ReportRun extends CRMEntity {
 		if($outputformat == 'HTML' || $outputformat == 'HTMLPAGED')
 		{
 			if ($outputformat=='HTMLPAGED') $directOutput = false;
-			$sSQL = $this->sGetSQLforReport($this->reportid,$filtersql,$outputformat);
+			$sSQL = $this->sGetSQLforReport($this->reportid, $filtersql, $outputformat);
 			$result = $adb->query($sSQL);
 			$error_msg = $adb->database->ErrorMsg();
-			if(!$result && $error_msg!=''){
-				// Performance Optimization: If direct output is requried
-				if($directOutput) {
-					echo getTranslatedString('LBL_REPORT_GENERATION_FAILED', 'Reports') . "<br>" . $error_msg;
-					$error_msg = false;
+			if (!$result && $error_msg!='') {
+				$tmptables = $this->queryPlanner->getTemporaryTables();
+				if (count($tmptables)>0) {
+					$this->queryPlanner->disableTempTables();
+					$sSQL = $this->sGetSQLforReport($this->reportid, $filtersql, $outputformat);
+					$result = $adb->query($sSQL);
 				}
-				return $error_msg;
+				if (!$result) {
+					if ($directOutput) {
+						echo getTranslatedString('LBL_REPORT_GENERATION_FAILED', 'Reports') . '<br>' . $error_msg;
+						$error_msg = false;
+					}
+					return $error_msg;
+				}
 			}
 
 			// Performance Optimization: If direct output is required
-			if($directOutput) {
+			if ($directOutput) {
 				echo '<table cellpadding="5" cellspacing="0" align="center" class="rptTable"><tr>';
 			}
 
@@ -2767,15 +2774,19 @@ class ReportRun extends CRMEntity {
 				$resp['data'] = $data;
 				return json_encode($resp);
 			}
-		}elseif($outputformat == "PDF")
-		{
-			$sSQL = $this->sGetSQLforReport($this->reportid,$filtersql);
-			$result = $adb->pquery($sSQL,array());
-			if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1)
-			$picklistarray = $this->getAccessPickListValues();
-
-			if($result)
-			{
+		} elseif ($outputformat == 'PDF') {
+			$sSQL = $this->sGetSQLforReport($this->reportid, $filtersql);
+			$result = $adb->pquery($sSQL, array());
+			$tmptables = $this->queryPlanner->getTemporaryTables();
+			if (!$result && count($tmptables)>0) {
+				$this->queryPlanner->disableTempTables();
+				$sSQL = $this->sGetSQLforReport($this->reportid, $filtersql);
+				$result = $adb->pquery($sSQL, array());
+			}
+			if ($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1) {
+				$picklistarray = $this->getAccessPickListValues();
+			}
+			if ($result) {
 				$y=$adb->num_fields($result);
 				$noofrows = $adb->num_rows($result);
 				$this->number_of_rows = $noofrows;
