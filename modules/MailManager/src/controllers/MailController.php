@@ -111,7 +111,7 @@ class MailManager_MailController extends MailManager_Controller {
 							for($i=0; $i<$numreltos; $i++) {
 								if ($i == $numreltos-1) {
 									$relateto = vtws_getIdComponents($relatedtos[$i]['record']);
-									$parentIds = $relateto[1]."@1";
+									$parentIds = $relateto[1].'@'.($relatedtos[$i]['module']=='Users' ? '-' : '').'1';
 								}elseif($relatedtos[$i]['module'] == $val){
 									$relateto = vtws_getIdComponents($relatedtos[$i]['record']);
 									$parentIds = $relateto[1]."@1";
@@ -126,7 +126,7 @@ class MailManager_MailController extends MailManager_Controller {
 					if ($parentIds == '') {
 						if ($numreltos > 0) {
 							$relateto = vtws_getIdComponents($relatedtos[0]['record']);
-							$parentIds = $relateto[1]."@1";
+							$parentIds = $relateto[1].'@'.($relatedtos[0]['module']=='Users' ? '-' : '').'1';
 							break;
 						}
 					}
