@@ -120,7 +120,7 @@ if ($sql_error) {
 	}
 	$smarty->assign('export_where', to_html($where));
 
-// Sorting
+	// Sorting
 	if (!empty($order_by)) {
 		if ($order_by == 'smownerid') {
 			$list_query .= ' ORDER BY vtiger_users.user_name '.$sorder;
