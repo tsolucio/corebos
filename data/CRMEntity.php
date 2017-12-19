@@ -2495,9 +2495,10 @@ class CRMEntity {
 
 		$moduletable = $primary->table_name;
 		$moduleindex = $primary->table_index;
-		$modulecftable = $primary->customFieldTable[0];
-		$modulecfindex = $primary->customFieldTable[1];
-
+		if (count($primary->customFieldTable)>0) {
+			$modulecftable = $primary->customFieldTable[0];
+			$modulecfindex = $primary->customFieldTable[1];
+		}
 		if (isset($modulecftable) && $queryPlanner->requireTable($modulecftable)) {
 			$cfquery = "inner join $modulecftable as $modulecftable on $modulecftable.$modulecfindex=$moduletable.$moduleindex";
 		} else {
