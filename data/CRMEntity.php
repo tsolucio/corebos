@@ -3169,14 +3169,14 @@ class CRMEntity {
 	 */
 	public function getSortOrder() {
 		global $log,$currentModule;
-		$log->debug("Entering getSortOrder() method ...");
+		$log->debug('Entering getSortOrder() method ...');
 		$sorder = $this->default_sort_order;
 		if (isset($_REQUEST['sorder'])) {
 			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
 		} elseif (!empty($_SESSION[$currentModule.'_Sort_Order'])) {
 			$sorder = $this->db->sql_escape_string($_SESSION[$currentModule.'_Sort_Order']);
 		}
-		$log->debug("Exiting getSortOrder() method ...");
+		$log->debug('Exiting getSortOrder() method ...');
 		return $sorder;
 	}
 
