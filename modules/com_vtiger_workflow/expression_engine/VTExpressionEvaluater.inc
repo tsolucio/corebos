@@ -51,6 +51,7 @@ class VTFieldExpressionEvaluater{
 				'lowercase' => '__vt_lowercase',
 				'uppercasefirst' => '__vt_uppercasefirst',
 				'uppercasewords' => '__vt_uppercasewords',
+				'num2str' => '__cb_num2str',
 				'round' => '__vt_round',
 				'ceil' => '__vt_ceil',
 				'floor' => '__vt_floor',

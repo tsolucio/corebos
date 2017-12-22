@@ -82,7 +82,10 @@
 				</div>
 				<div id="internal_mailer_{$keyfldname}" style="display: none;">{$keyfldid}####{$smarty.session.internal_mailer}</div>
 			</td>
-	{elseif ($keyid eq '15' || $keyid eq '16' || $keyid eq '1613' || $keyid eq '1614') && !picklistHasDependency($keyfldname,$MODULE)} <!--ComboBox-->
+	{elseif ($keyid eq '15' || $keyid eq '16' || $keyid eq '1613' || $keyid eq '1614')} <!--ComboBox-->
+		{if picklistHasDependency($keyfldname,$MODULE)}
+		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}"><span id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$MODULE}</span>
+		{else}
 		<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'><span id="dtlview_{$keyfldname}">{$keyval|@getTranslatedString:$MODULE}</span>
 			<div id="editarea_{$keyfldname}" style="display:none;">
 				<select id="txtbox_{$keyfldname}" name="{$keyfldname}" class="slds-select">
@@ -94,6 +97,7 @@
 				<a class="slds-button slds-button_success slds-button--x-small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
 					<a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--x-small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
 			</div>
+		{/if}
 		</td>
 	{elseif $keyid eq '1615'}
 		{assign var=plinfo value='::'|explode:$keyval}

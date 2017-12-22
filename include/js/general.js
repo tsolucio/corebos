@@ -148,11 +148,17 @@ function set_cookie( name, value, exp_y, exp_m, exp_d, path, domain, secure )
 }
 
 // Retrieving cookies
-function get_cookie(cookie_name)
-{
+function get_cookie(cookie_name) {
 	var results = document.cookie.match('(^| )' + cookie_name + '=(.*?)(;|$)');
-	if (results) return (unescape(results[1]));
-	else return null;
+	if (results) {
+		if (results[1]==' ') {
+			return (unescape(results[2]));
+		} else {
+			return (unescape(results[1]));
+		}
+	} else {
+		return null;
+	}
 }
 
 // Delete cookies
@@ -1508,7 +1514,7 @@ function expandCont(bn)
 	leftTab.style.display = (leftTab.style.display == "block")?"none":"block";
 	img = document.getElementById("img_"+bn);
 	img.src=(img.src.indexOf("images/toggle1.gif")!=-1)?"themes/images/toggle2.gif":"themes/images/toggle1.gif";
-	set_cookie_gen(bn,leftTab.style.display);
+	set_cookie(bn,leftTab.style.display);
 
 }
 
@@ -1519,7 +1525,7 @@ function setExpandCollapse_gen()
 	{
 		var listObj=getObj(leftpanelistarray[i]);
 		var tgImageObj=getObj("img_"+leftpanelistarray[i]);
-		var status = get_cookie_gen(leftpanelistarray[i]);
+		var status = get_cookie(leftpanelistarray[i]);
 
 		if (status == "block") {
 			listObj.style.display="block";
@@ -1540,48 +1546,6 @@ function toggleDiv(id) {
 		listTableObj.style.display="block";
 	}
 //set_cookie(id,listTableObj.style.display)
-}
-
-//Setting cookies
-function set_cookie_gen( name, value, exp_y, exp_m, exp_d, path, domain, secure )
-{
-	var cookie_string = name + "=" + escape ( value );
-
-	if ( exp_y )
-	{
-		var expires = new Date ( exp_y, exp_m, exp_d );
-		cookie_string += "; expires=" + expires.toGMTString();
-	}
-
-	if ( path )
-		cookie_string += "; path=" + escape ( path );
-
-	if ( domain )
-		cookie_string += "; domain=" + escape ( domain );
-
-	if ( secure )
-		cookie_string += "; secure";
-
-	document.cookie = cookie_string;
-}
-
-// Retrieving cookies
-function get_cookie_gen ( cookie_name )
-{
-	var results = document.cookie.match ( cookie_name + '=(.*?)(;|$)' );
-
-	if ( results )
-		return ( unescape ( results[1] ) );
-	else
-		return null;
-}
-
-// Delete cookies
-function delete_cookie_gen ( cookie_name )
-{
-	var cookie_date = new Date ( );  // current date & time
-	cookie_date.setTime ( cookie_date.getTime() - 1 );
-	document.cookie = cookie_name += "=; expires=" + cookie_date.toGMTString();
 }
 
 /** This is Javascript Function which is used to toogle between
@@ -3146,12 +3110,15 @@ function ActivityReminderCallback() {
 		ActivityReminder_regcallback_timer = null;
 	}
 	jQuery.ajax({
-			method: 'POST',
-			url: "index.php?module=Calendar&action=CalendarAjax&file=ActivityReminderCallbackAjax&ajax=true"
+		method: 'POST',
+		url: "index.php?module=Calendar&action=CalendarAjax&file=ActivityReminderCallbackAjax&ajax=true"
 	}).done(function (response) {
+		if (response=='Login') {
+			document.location.href='index.php?module=Users&action=Login';
+		} else {
 			ActivityReminderCallbackProcess(response);
 		}
-	);
+	});
 }
 
 function ActivityReminderCallbackProcess(message) {
@@ -3183,7 +3150,7 @@ function ActivityReminderCallbackProcess(message) {
 		jQuery("#"+ActivityReminder_Newdelay_response_node).remove();
 	}
 	if(message == '' || trim(message).indexOf('<script') == 0) {
-		// We got only new dealay value but no popup information, let us remove the callback win created
+		// We got only new delay value but no popup information, let us remove the callback win created
 		jQuery("#"+ActivityReminder_callback_win.id).remove();
 		ActivityReminder_callback_win = false;
 		message = '';
@@ -5028,7 +4995,7 @@ AutocompleteRelation.prototype.get = function(e) {
 		var nr_opt=array.length;
 		term=array[nr_opt-1];
 	}
-	if (term.length > this.mincharstoSearch && (typeof(this.data.searchin) != 'undefined' || typeof(this.data.searchfields) != 'undefined') ) {
+	if (term.length >= this.mincharstoSearch && (typeof(this.data.searchin) != 'undefined' || typeof(this.data.searchfields) != 'undefined') ) {
 		this.data.term = term;
 		var acInstance = this;
 
@@ -5087,6 +5054,12 @@ AutocompleteRelation.prototype.set = function(items) {
 					});
 				}
 			});
+		}
+		if(acInstance.inputField.name==='query_string'){
+			var span = document.createElement("li");
+			span.className= "total_autocomplete";
+			span.innerHTML = getTranslatedString('SHOWING') + " "+ limit +" "+getTranslatedString('OF')+" "+items[0]['total'];
+			this.targetUL.appendChild(span);
 		}
 	}
 }

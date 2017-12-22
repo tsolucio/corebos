@@ -36,11 +36,10 @@ $smarty->assign("MODULE", $fld_module);
 $smarty->assign("PICKLIST_MODULE", 'PickList');
 $smarty->assign("THEME", $theme);
 
-$smarty->assign('SUBMODE', (isset($_REQUEST['submode']) ? vtlib_purify($_REQUEST['submode']) : ''));
+$subMode = (isset($_REQUEST['submode']) ? vtlib_purify($_REQUEST['submode']) : '');
+$smarty->assign('SUBMODE', $subMode);
 
 if (isset($_REQUEST['directmode']) and $_REQUEST['directmode'] == 'ajax') {
-	$subMode = vtlib_purify($_REQUEST['submode']);
-
 	if ($subMode == 'getpicklistvalues') {
 		$fieldName = vtlib_purify($_REQUEST['fieldname']);
 		$fieldValues = getAllPickListValues($fieldName);

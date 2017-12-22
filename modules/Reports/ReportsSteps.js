@@ -37,12 +37,21 @@ wizard.steps({
 	bodyTag: "section",
 	transitionEffect: "slideLeft",
 	stepsOrientation: "vertical",
+	labels: {
+		cancel: alert_arr.JSLBL_CANCEL,
+		current: alert_arr.JSLBL_CURRENT,
+		pagination: alert_arr.JSLBL_PAGINATION,
+		finish: alert_arr.JSLBL_FINISH,
+		next: alert_arr.JSLBL_NEXT,
+		previous: alert_arr.JSLBL_PREVIOUS,
+		loading: alert_arr.JSLBL_Loading
+	},
 
 	onInit: function (event, currentIndex) {
 
 		// Add Cancel button
 		var cancel_button = $("<a>",{"type":"button","onclick":"self.close();","href":"#cancel"});
-		cancel_button.html("cancel");
+		cancel_button.html(alert_arr.JSLBL_CANCEL);
 		var li = $("<li>");
 		li.append(cancel_button)
 		$(".actions ul").append(li);
@@ -50,7 +59,7 @@ wizard.steps({
 		//Add <Save As> button
 		if( document.NewReport.record.value !== "") {
 			var save_as_button = $("<a>",{"type":"button","onclick":"saveas();","href":"#saveas"});
-			save_as_button.html("save as");
+			save_as_button.html(alert_arr.JSLBL_SAVEAS);
 			var li = $("<li>",{"style":"display:none","id":"save_as_button"});
 			li.append(save_as_button);
 			$(".actions ul li:nth-child(1)").after(li);

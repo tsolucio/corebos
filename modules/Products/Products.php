@@ -97,9 +97,9 @@ class Products extends CRMEntity {
 	var $default_sort_order='ASC';
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
-	var $mandatory_fields = Array('createdtime', 'modifiedtime', 'productname', 'assigned_user_id');
-	 // Josh added for importing and exporting -added in patch2
-	var $unit_price;
+	public $mandatory_fields = array('createdtime', 'modifiedtime', 'productname');
+
+	public $unit_price; // for importing/exporting
 
 	function __construct() {
 		global $log;

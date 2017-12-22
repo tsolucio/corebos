@@ -16,61 +16,6 @@ GlobalVariable_getVariable('Report_MaxRelated_Modules', 2, 'Reports', gVTUserID)
 	Report_MaxRelated_Modules = 2;
 });
 
-// Setting cookies
-function set_cookie ( name, value, exp_y, exp_m, exp_d, path, domain, secure )
-{
-	var cookie_string = name + "=" + escape ( value );
-
-	if ( exp_y ) {
-		var expires = new Date ( exp_y, exp_m, exp_d );
-		cookie_string += "; expires=" + expires.toGMTString();
-	}
-
-	if ( path )
-		cookie_string += "; path=" + escape ( path );
-
-	if ( domain )
-		cookie_string += "; domain=" + escape ( domain );
-
-	if ( secure )
-		cookie_string += "; secure";
-
-	document.cookie = cookie_string;
-}
-
-// Retrieving cookies
-function get_cookie ( cookie_name )
-{
-	var results = document.cookie.match ( cookie_name + '=(.*?)(;|$)' );
-	if ( results )
-		return ( unescape ( results[1] ) );
-	else
-		return null;
-}
-
-// Delete cookies
-function delete_cookie ( cookie_name )
-{
-	var cookie_date = new Date ( );  // current date & time
-	cookie_date.setTime ( cookie_date.getTime() - 1 );
-	document.cookie = cookie_name += "=; expires=" + cookie_date.toGMTString();
-}
-
-function verify_data(form) {
-	var isError = false;
-	var errorMessage = "";
-	if (trim(form.folderName.value) == "") {
-		isError = true;
-		errorMessage += "\nFolder Name";
-	}
-	// Here we decide whether to submit the form.
-	if (isError == true) {
-		alert(alert_arr.MISSING_FIELDS + errorMessage);
-		return false;
-	}
-	return true;
-}
-
 function setObjects()
 {
 	availListObj=getObj("availList");
@@ -290,12 +235,6 @@ function hideTabs()
 	{
 		divarray = new Array('step1','step2','step3','step4','step5','step6','step7');
 	}
-}
-
-function showSaveDialog()
-{
-	url = "index.php?module=Reports&action=SaveReport";
-	window.open(url,"Save_Report","width=550,height=350,top=20,left=20;toolbar=no,status=no,menubar=no,directories=no,resizable=yes,scrollbar=no");
 }
 
 function saveAndRunReport()

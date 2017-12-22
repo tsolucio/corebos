@@ -59,14 +59,8 @@ class crmtogo_UI_GetScrollRecords extends crmtogo_WS_getScrollContent{
 			if ($module == 'cbCalendar') {
 				//for calendar display date and time
 				$firstname = $firstname." |";
-				$date_start = getValidDisplayDate($adb->query_result($records,$i,'date_start'));
-
-				$timequery = "select time_start from vtiger_activity where activityid =?";
-				$timequeryresult = $adb->pquery($timequery, array($adb->query_result($records,$i,$entityidfield)));
-				$time_start = $adb->query_result($timequeryresult,0,'time_start');
-				//cut seconds if exist
-				$time = (strlen($time_start) > 5) ? substr($time_start,0,5).'' : $time_start;
-				$date = new DateTimeField($date_start.' '.$time);
+				$date_start = $adb->query_result($records,$i,'dtstart');
+				$date = new DateTimeField($date_start);
 				$lastname = $date->getDisplayDateTimeValue();
 
 			}

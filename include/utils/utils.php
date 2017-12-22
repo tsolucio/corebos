@@ -1207,15 +1207,14 @@ function getProfile2ModuleFieldPermissionList($fld_module, $profileid) {
  * @param $profileid -- profileid :: Type integer
  * @returns $profilelist -- profilelist :: Type string
  */
-function getProfile2AllFieldList($mod_array,$profileid) {
-	global $log, $adb;
+function getProfile2AllFieldList($mod_array, $profileid) {
+	global $log;
 	$log->debug("Entering getProfile2AllFieldList({modules}, $profileid) method ...");
 	$profilelist=array();
-	for($i=0;$i<count($mod_array);$i++) {
-		$profilelist[key($mod_array)]=getProfile2ModuleFieldPermissionList(key($mod_array), $profileid);
-		next($mod_array);
+	foreach ($mod_array as $key => $value) {
+		$profilelist[$key]=getProfile2ModuleFieldPermissionList($key, $profileid);
 	}
-	$log->debug("Exiting getProfile2AllFieldList method ...");
+	$log->debug('Exiting getProfile2AllFieldList method ...');
 	return $profilelist;
 }
 
@@ -3190,7 +3189,6 @@ function getDuplicateRecordsArr($module)
 
 	$nresult=$adb->query($dup_query);
 	$no_rows=$adb->num_rows($nresult);
-	require_once('modules/Vtiger/layout_utils.php');
 	if($no_rows == 0)
 	{
 		if ($_REQUEST['action'] == 'FindDuplicateRecords')
@@ -4451,7 +4449,7 @@ function hasEmailField($module) {
 	global $adb;
 	$querystr = 'SELECT fieldid FROM vtiger_field WHERE tabid=? and uitype=13 and vtiger_field.presence in (0,2)';
 	$queryres = $adb->pquery($querystr, array(getTabid($module)));
-	return ($queryres and $adb->num_rows($queryres)>0);
+	return (($queryres && $adb->num_rows($queryres)>0) || $module=='Campaigns');
 }
 
 function getFirstEmailField($module) {

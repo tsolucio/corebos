@@ -1,14 +1,10 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************
 *  Module       : Potentials
@@ -18,10 +14,10 @@
 *  Author       : Rafael Soler
 *  Last change  : 2012-02-27
 *  Author       : Joe Bordes JPL TSolucio, S.L.
- *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
- ********************************************************************************/
+*  Author       : Francisco Hernandez Odin Consultores www.odin.mx
+********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Oportunidades',
 'LBL_MODULE_TITLE'=>'Oportunidades: Inicio',
 'LBL_SEARCH_FORM_TITLE'=>'Buscar Oportunidades',
@@ -62,8 +58,6 @@ $mod_strings = Array(
 'LBL_SELECT_OPPOPTUNITY'=>'Seleccionar Oportunidad',
 'LBL_GENERAL_INFORMATION'=>'Información General',
 
-
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'Nueva Oportunidad',
 'LBL_POTENTIAL_TITLE'=>'Oportunidades',
 
@@ -84,16 +78,13 @@ $mod_strings = Array(
 'LBL_NEW_CONTACT'=>'Nuevo Contacto',
 'LBL_CONTACT_TITLE'=>'Contactos',
 
-//Added vtiger_fields after RC1 - Release
 'LBL_ALL'=>'Todas',
 'LBL_WON'=>'Ganadas',
 'LBL_LOST'=>'Perdidas',
 'LBL_VALUE_PROPOSITION'=>'Cotización',
 'LBL_PROSPECTING'=>'En Analisis',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Herramientas de Oportunidades',
-//Added for 4GA
 'Potential Name'=>'Oportunidad',
 'Amount'=>'Importe',
 'Account Name'=>'Cuenta',
@@ -110,11 +101,8 @@ $mod_strings = Array(
 'Description'=>'Descripción',
 'Created Time'=>'Fecha de Creación',
 'Modified Time'=>'Última Modificación',
-//Added for 4.2 Release -- CustomView
 'Potential'=>'Oportunidad',
 'Expected Close'=>'Fecha estimada de cierre',
-
-//Added for Existing Picklist Strings
 
 'Prospecting'=>'Investigando',
 'Qualification'=>'Calificando',
@@ -145,13 +133,8 @@ $mod_strings = Array(
 'New Business'=>'Nuevo Negocio',
 'Related To'=>'Relacionado con',
 
-// Added after 5.0.4 GA
-
-// Module Sequence Numbering
 'Potential No' => 'Núm. Oportunidad',
 'Potentials ID' => 'Id Oportunidad',
-// END
-
+'Forecast Amount'=> 'Importe Previsto',
 );
-
 ?>

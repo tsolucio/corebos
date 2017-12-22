@@ -88,4 +88,9 @@ function __cb_coalesce($arr) {
 	return $result;
 }
 
+function __cb_num2str($arr) {
+	require_once 'modules/cbtranslation/number2string.php';
+	$lang = (isset($arr[1]) ? $arr[1] : '');
+	return number2string::convert($arr[0], $lang);
+}
 ?>

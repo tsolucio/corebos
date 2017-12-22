@@ -282,9 +282,16 @@ class coreBOS_Session {
 	 */
 	public static function deleteStartsWith($startswith) {
 		self::init();
-		$_SESSION = array_filter($_SESSION, function ($key) use ($startswith) {
-			return strpos($key, $startswith)!==0;
-		}, ARRAY_FILTER_USE_KEY);
+		if (version_compare(phpversion(), '5.6.0') >= 0) {
+			$_SESSION = array_filter($_SESSION, function ($key) use ($startswith) {
+				return strpos($key, $startswith)!==0;
+			}, ARRAY_FILTER_USE_KEY);
+		} else {
+			$matchedKeys = array_filter(array_keys($_SESSION), function ($key) use ($startswith) {
+				return strpos($key, $startswith)!==0;
+			});
+			$_SESSION = array_intersect_key($_SESSION, array_flip($matchedKeys));
+		}
 		session_write_close();
 	}
 }

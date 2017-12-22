@@ -76,16 +76,16 @@ switch ($functiontocall) {
 		if (!empty($crmid)) {
 			$module = getSalesEntityType($crmid);
 			$fields = vtlib_purify($_REQUEST['getTheseFields']);
-			$fields = explode(',',$fields);
+			$fields = explode(',', $fields);
 			$queryGenerator = new QueryGenerator($module, $current_user);
 			$queryGenerator->setFields($fields);
-			$queryGenerator->addCondition('id',$crmid,'e');
+			$queryGenerator->addCondition('id', $crmid, 'e');
 			$query = $queryGenerator->getQuery();
-			$queryres=$adb->pquery($query,array());
+			$queryres=$adb->pquery($query, array());
 			if ($adb->num_rows($queryres)>0) {
 				$col=0;
 				foreach ($fields as $field) {
-					$ret[$field]=$adb->query_result($queryres,0,$col++);
+					$ret[$field]=$adb->query_result($queryres, 0, $col++);
 				}
 			}
 		}
@@ -120,7 +120,7 @@ switch ($functiontocall) {
 		if (Validations::ValidationsExist($valmod)) {
 			$validation = Validations::processAllValidationsFor($valmod);
 			if ($validation!==true) {
-				echo Validations::formatValidationErrors($validation,$valmod);
+				echo Validations::formatValidationErrors($validation, $valmod);
 				die();
 			}
 		}
@@ -154,13 +154,13 @@ switch ($functiontocall) {
 	case 'getEmailTemplateVariables':
 		$module = vtlib_purify($_REQUEST['module_from']);
 		$allOptions=getEmailTemplateVariables(array($module,'Accounts'));
-		$ret = array_merge($allOptions[0],$allOptions[1],$allOptions[2]);
+		$ret = array_merge($allOptions[0], $allOptions[1], $allOptions[2]);
 		break;
 	case 'saveAttachment':
 		include_once 'modules/Settings/MailScanner/core/MailAttachmentMIME.php';
 		include_once 'modules/MailManager/src/controllers/UploadController.php';
 		$allowedFileExtension = array();
-		$upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize',3000000,'Emails');
+		$upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize', 3000000, 'Emails');
 		$upload = new MailManager_Uploader($allowedFileExtension, $upload_maxsize);
 		if ($upload) {
 			$filePath = decideFilePath();
@@ -177,20 +177,20 @@ switch ($functiontocall) {
 			$currencyField = new CurrencyField($value);
 			$decimals = vtlib_purify($_REQUEST['decimals']);
 			$currencyField->initialize($current_user);
-			$currencyField->setNumberofDecimals(min($decimals,$currencyField->getCurrencyDecimalPlaces()));
-			$ret = $currencyField->getDisplayValue(null,true,true);
+			$currencyField->setNumberofDecimals(min($decimals, $currencyField->getCurrencyDecimalPlaces()));
+			$ret = $currencyField->getDisplayValue(null, true, true);
 		}
 		break;
 	case 'getGloalSearch':
 		include_once 'include/Webservices/CustomerPortalWS.php';
-		$data = json_decode(file_get_contents('php://input'), TRUE);
+		$data = json_decode(file_get_contents('php://input'), true);
 		$searchin = vtlib_purify($data['searchin']);
-		$limit = isset($data['maxResults']) ? vtlib_purify($data['maxResults']) : '';
+		$limit = isset($data['maxresults']) ? vtlib_purify($data['maxresults']) : '';
 		$term = vtlib_purify($data['term']);
 		$retvals = getGlobalSearch($term, $searchin, $limit, $current_user);
 		$ret = array();
-		foreach ($retvals as $value) {
-			$ret[] = array('crmid'=>$value['crmid'],'crmmodule'=>$value['crmmodule'],'query_string'=>$value['query_string'])+ $value['crmfields'];
+		foreach ($retvals['data'] as $value) {
+		    $ret[] = array('crmid'=>$value['crmid'],'crmmodule'=>$value['crmmodule'],'query_string'=>$value['query_string'],'total'=>$retvals['total'])+ $value['crmfields'];
 		}
 		break;
 	case 'ismoduleactive':

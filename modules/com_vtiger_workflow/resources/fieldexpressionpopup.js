@@ -188,6 +188,22 @@ function fieldExpressionPopup(moduleName, $){
 				{inputField : "editpopup_expression", ifFormat : "%Y-%m-%d", showsTime : false, button : "jscal_trigger_editpopup_expression", singleClick : true, step : 1}
 			);
 		}
+		function forReferenceField(opType) {
+			var value = $("#editpopup_expression");
+			var refcode = '<span id="editpopup_expression" class="value"><input id="wfrelfield" name="wfrelfield" type="hidden" value="">'
+				+ '<select name="wfrelfield_type" id="wfrelfield_type" class="small" onchange="this.form.wfrelfield.value=\'\';this.form.wfrelfield_display.value=\'\';">';
+			for (var mod=0;mod<opType.refersTo.length;mod++) {
+				refcode = refcode + '<option value="' + opType.refersTo[mod] + '">' + opType.refersTo[mod] + '</option>';
+			}
+			refcode = refcode + '</select>&nbsp;'
+				+ '<input id="wfrelfield_display" name="wfrelfield_display" readonly type="text" style="border:1px solid #bababa;width:200px;" value="">&nbsp;'
+				+ '<img id="entity" src="themes/softed/images/select.gif" alt="SELECT" title="SELECT" align="absmiddle" style="cursor:hand;cursor:pointer" '
+				+ 'onClick=\'return vtlib_open_popup_window("","wfrelfield","com_vtiger_workflow","");\'>'
+				+ '<input type="image" src="themes/images/clear_field.gif"'
+				+ 'alt="CLEAR" title="CLEAR" onClick="this.form.wfrelfield.value=\'\';'
+				+ 'this.form.wfrelfield_display.value=\'\'; return false;" align="absmiddle" style="cursor:hand;cursor:pointer"></span>';
+			value.replaceWith(refcode);
+		}
 		function forTimeField(opType){
 			var value = $("#editpopup_expression");
 			value.replaceWith('<input type="text" id="editpopup_expression" value="0" class="value">');
@@ -219,6 +235,7 @@ function fieldExpressionPopup(moduleName, $){
 			owner: forOwnerField,
 			date: forDateField,
 			datetime: forDateTimeField,
+			reference: forReferenceField,
 			time: forTimeField
 		};
 
@@ -341,4 +358,9 @@ function fieldExpressionPopup(moduleName, $){
 	return fieldExpressionPopup_LOADED;
 }
 
+function com_vtiger_workflowsetValueFromCapture(recordid, value, target_fieldname) {
+	$("#editpopup_expression").val(recordid);
+	document.getElementById("wfrelfield").value = recordid;
+	document.getElementById('wfrelfield_display').value = value;
 
+}

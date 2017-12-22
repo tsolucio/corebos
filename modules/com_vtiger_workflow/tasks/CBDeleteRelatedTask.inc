@@ -18,7 +18,7 @@
 require_once('modules/com_vtiger_workflow/VTEntityCache.inc');
 require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
 
-class CBDeleteRelatedTask extends VTTask{
+class CBDeleteRelatedTask extends VTTask {
 	public $executeImmediately = true;
 
 	public function getFieldNames() {
@@ -26,19 +26,19 @@ class CBDeleteRelatedTask extends VTTask{
 	}
 
 	public function doTask(&$entity) {
-		list($wsid,$crmid) = explode('x',$entity->getId());
+		list($wsid,$crmid) = explode('x', $entity->getId());
 		if (!empty($crmid) and !empty($this->relmodule)) {
-			self::deleteRelatedRecords($crmid,$this->relmodule);
+			self::deleteRelatedRecords($crmid, $this->relmodule);
 		}
 	}
 
-	public static function deleteRelatedRecords($masterRecord,$relatedModule) {
+	public static function deleteRelatedRecords($masterRecord, $relatedModule) {
 		global $adb,$log,$current_user;
 		$module = getSalesEntityType($masterRecord);
-		$webserviceObject = VtigerWebserviceObject::fromName($adb,$relatedModule);
+		$webserviceObject = VtigerWebserviceObject::fromName($adb, $relatedModule);
 		$handlerPath = $webserviceObject->getHandlerPath();
 		$handlerClass = $webserviceObject->getHandlerClass();
-		$handler = new $handlerClass($webserviceObject,$current_user,$adb,$log);
+		$handler = new $handlerClass($webserviceObject, $current_user, $adb, $log);
 		$meta = $handler->getMeta();
 		$refflds = $meta->getReferenceFieldDetails();
 		$reffield = '';
@@ -54,7 +54,7 @@ class CBDeleteRelatedTask extends VTTask{
 		$query = $queryGenerator->getQuery();
 		$updquery = 'UPDATE vtiger_crmentity set deleted=1 where crmid=?';
 		$relrecs = $adb->query($query);
-		for ($relrec=0;$relrec<$adb->num_rows($relrecs);$relrec++) {
+		for ($relrec=0; $relrec<$adb->num_rows($relrecs); $relrec++) {
 			// direct delete to avoid relaunching workflows > I am not sure this is correct (!)
 			$adb->pquery($updquery, array($adb->query_result($relrecs, $relrec, 0)));
 		}

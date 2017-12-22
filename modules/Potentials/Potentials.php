@@ -99,7 +99,7 @@ class Potentials extends CRMEntity {
 	var $default_sort_order = 'ASC';
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
-	var $mandatory_fields = Array('assigned_user_id', 'createdtime', 'modifiedtime', 'potentialname', 'related_to');
+	public $mandatory_fields = array('createdtime', 'modifiedtime', 'potentialname', 'related_to');
 
 	var $sales_stage = '';
 

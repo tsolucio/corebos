@@ -6,6 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger. All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese | 30/12/2010|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese | 15/12/2017|Sao Paulo/SP/Brasil.|www.slemernet.com.br
  ************************************************************************************/
 $mod_strings = Array (
 'ModComments' => 'Comentários',
@@ -29,9 +30,9 @@ $mod_strings = Array (
 'LBL_ON_DATE' => 'sobre',
 'LBL_MINE' => 'Meu',
 'LBL_LAST5'=> 'Últimos 5',
-'Related Assigned Email' => 'Related Assigned Email',
-'LBL_CONFIGURATION_DESCRIPTION' => 'Activate/Deactivate the functionality for each module.',
-'LBL_ModComments_SETTINGS' => 'Activated Modules',
+'Related Assigned Email' => 'Relatecionado Atribuído ao Email',
+'LBL_CONFIGURATION_DESCRIPTION' => 'Ativar / Desativar a funcionalidade de cada módulo.',
+'LBL_ModComments_SETTINGS' => 'Módulos ativados',
 );
 
 ?>

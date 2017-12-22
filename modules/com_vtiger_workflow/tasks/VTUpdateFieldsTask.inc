@@ -37,7 +37,7 @@ class VTUpdateFieldsTask extends VTTask {
 
 		$fieldValueMapping = array();
 		if (!empty($this->field_value_mapping)) {
-			$fieldValueMapping = json_decode($this->field_value_mapping,true);
+			$fieldValueMapping = json_decode($this->field_value_mapping, true);
 		}
 
 		if (!empty($fieldValueMapping) && count($fieldValueMapping) > 0) {
@@ -47,12 +47,14 @@ class VTUpdateFieldsTask extends VTTask {
 			$focus->mode = 'edit';
 			$focus->retrieve_entity_info($recordId, $moduleName);
 			$focus->clearSingletonSaveFields();
-			$logbg->debug('field values pre: '.print_r($focus->column_fields,true));
-			$logbg->debug('update info: '.print_r($fieldValueMapping,true));
+			$logbg->debug('field values pre: '.print_r($focus->column_fields, true));
+			$logbg->debug('update info: '.print_r($fieldValueMapping, true));
 
 			$hold_user = $current_user;
 			$util->loggedInUser();
-			if (is_null($current_user)) $current_user = $hold_user;  // make sure current_user is defined
+			if (is_null($current_user)) {
+				$current_user = $hold_user;  // make sure current_user is defined
+			}
 			foreach ($fieldValueMapping as $fieldInfo) {
 				$fieldName = $fieldInfo['fieldname'];
 				$fieldType = '';
@@ -63,7 +65,7 @@ class VTUpdateFieldsTask extends VTTask {
 				$fieldtype = $fieldInstance->getFieldDataType();
 				if ($fieldValueType == 'fieldname' && !preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', $fieldValue)) {
 					if ($fieldtype === 'currency' or $fieldtype === 'double') {
-						$focus->column_fields[$fieldValue] = $focus->adjustCurrencyField($fieldValue,$focus->column_fields[$fieldValue],$handlerMeta->getTabId());
+						$focus->column_fields[$fieldValue] = $focus->adjustCurrencyField($fieldValue, $focus->column_fields[$fieldValue], $handlerMeta->getTabId());
 					}
 					$fieldValue = $focus->column_fields[$fieldValue];
 				} elseif ($fieldValueType == 'expression' || ($fieldValueType == 'fieldname' && preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', $fieldValue))) {
@@ -79,7 +81,7 @@ class VTUpdateFieldsTask extends VTTask {
 					}
 				} else {
 					if ($fieldtype === 'currency' or $fieldtype === 'double') {
-						$focus->column_fields[$fieldValue] = $focus->adjustCurrencyField($fieldValue,$focus->column_fields[$fieldValue],$handlerMeta->getTabId());
+						$focus->column_fields[$fieldValue] = $focus->adjustCurrencyField($fieldValue, $focus->column_fields[$fieldValue], $handlerMeta->getTabId());
 					}
 					if (preg_match('/([^:]+):boolean$/', $fieldValue, $match)) {
 						$fieldValue = $match[1];
@@ -114,20 +116,19 @@ class VTUpdateFieldsTask extends VTTask {
 				$focus->column_fields[$fieldName] = $fieldValue;
 				$entity->data[$fieldName] = $fieldValue;
 			}
-			$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields,$handlerMeta);
+			$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $handlerMeta);
 			$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
 			$_REQUEST['ajxaction'] = 'Workflow';
-			$logbg->debug('field values presave: '.print_r($focus->column_fields,true));
+			$logbg->debug('field values presave: '.print_r($focus->column_fields, true));
 			$focus->saveentity($moduleName);
 			$_REQUEST['ajxaction'] = $hold_ajxaction;
 			$util->revertUser();
-			$logbg->debug('field values postsave: '.print_r($focus->column_fields,true));
+			$logbg->debug('field values postsave: '.print_r($focus->column_fields, true));
 		}
 		$util->revertUser();
 		$from_wf = false;
 		$logbg->info('Exiting workflow task VTUpdateFieldsTask');
 	}
-
 }
 
 ?>

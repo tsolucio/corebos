@@ -206,8 +206,6 @@ $mod_strings = array(
 	'Timecontrol' => 'Urenregistratie',
 	'InventoryDetails' => 'Voorraad Details',
 	'Exact VAT Code for Account' => 'BTW code voor klant',
-	'Is Converted From Lead' => 'Is gemaakt vanuit lead',
-	'Converted From Lead' => 'Gemaakt vanuit lead',
 	'Exact Payment Condition for Account' => 'Exact betalingsconditie voor klant',
 );
 ?>

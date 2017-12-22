@@ -1,18 +1,14 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
     'LBL_MODULE_NAME'=>'Benutzer',
     'LBL_MODULE_TITLE'=>'Benutzer: Home',
     'LBL_SEARCH_FORM_TITLE'=>'Benutzer suchen',
@@ -41,8 +37,6 @@ $mod_strings = Array(
     'Name'=>'Name',
     'Tools'=>'Werkzeuge',
 
-
-    //added for patch2
     'LBL_GROUP_NAME'=>'Gruppe',
     'LBL_CURRENCY_NAME'=>'Währung',
 
@@ -645,7 +639,15 @@ $mod_strings = Array(
     'LBL_3_MIN'=>'3 Minuten',
     'LBL_4_MIN'=>'4 Minuten',
     'LBL_5_MIN'=>'5 Minuten',
-    'LBL_EMAILS_PER_PAGE'=>'E-Mails pro Seite',
+	'None' => 'None',
+	'1 Minute' => '1 Minute',
+	'5 Minutes' => '5 Minutes',
+	'15 Minutes' => '15 Minutes',
+	'30 Minutes' => '30 Minutes',
+	'45 Minutes' => '45 Minutes',
+	'1 Hour' => '1 Hour',
+	'1 Day' => '1 Day',
+	'LBL_EMAILS_PER_PAGE'=>'E-Mails pro Seite',
 
     'LBL_ENTER_PROFILE'=>'Profilnamen eingeben',
     'TITLE_USER_DOCUMENT'=>'Dokument ohne Namen',

@@ -18,7 +18,7 @@
 require_once('modules/com_vtiger_workflow/VTEntityCache.inc');
 require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
 
-class CBAssignRelatedTask extends VTTask{
+class CBAssignRelatedTask extends VTTask {
 	public $executeImmediately = true;
 
 	public function getFieldNames() {
@@ -27,13 +27,13 @@ class CBAssignRelatedTask extends VTTask{
 
 	public function doTask(&$entity) {
 		global $adb,$default_charset,$log,$current_user;
-		list($cto,$cto_id) = explode('x',$entity->getId());
+		list($cto,$cto_id) = explode('x', $entity->getId());
 		if (!empty($cto_id) and !empty($this->relmodule) and !empty($this->username)) {
 			$module = getSalesEntityType($cto_id);
-			$webserviceObject = VtigerWebserviceObject::fromName($adb,$this->relmodule);
+			$webserviceObject = VtigerWebserviceObject::fromName($adb, $this->relmodule);
 			$handlerPath = $webserviceObject->getHandlerPath();
 			$handlerClass = $webserviceObject->getHandlerClass();
-			$handler = new $handlerClass($webserviceObject,$current_user,$adb,$log);
+			$handler = new $handlerClass($webserviceObject, $current_user, $adb, $log);
 			$meta = $handler->getMeta();
 			$refflds = $meta->getReferenceFieldDetails();
 			$reffield = '';
@@ -47,7 +47,7 @@ class CBAssignRelatedTask extends VTTask{
 			$queryGenerator->setFields(array('id'));
 			$queryGenerator->addReferenceModuleFieldCondition($module, $reffield, 'id', $cto_id, 'e');
 			$query = $queryGenerator->getQuery();
-			if($this->username=="assigneduser") {
+			if ($this->username=="assigneduser") {
 				$usrquery = $adb->pquery("SELECT smownerid FROM vtiger_crmentity WHERE crmid=?", array($cto_id));
 				$usr = $adb->query_result($usrquery, 0, 0);
 			} else {
@@ -56,7 +56,7 @@ class CBAssignRelatedTask extends VTTask{
 
 			$updquery = 'UPDATE vtiger_crmentity set smownerid=? where crmid=?';
 			$relrecs = $adb->query($query);
-			for ($relrec=0;$relrec<$adb->num_rows($relrecs);$relrec++) {
+			for ($relrec=0; $relrec<$adb->num_rows($relrecs); $relrec++) {
 				// direct assignment to avoid relaunching workflows > I am not sure this is correct (!)
 				$adb->pquery($updquery, array($usr, $adb->query_result($relrecs, $relrec, 0)));
 			}

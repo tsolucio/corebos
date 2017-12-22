@@ -167,7 +167,9 @@ class ChartUtils {
 		$vals = str_replace('::',',',$values);
 		$realvals = explode(',',$vals);
 		$minscale = max(0,min($realvals)-2);
-		$maxscale = max($realvals)+1;
+		$maxnum = max($realvals);
+		$maxgrph = ceil($maxnum + (5 * $maxnum / 100));
+		$maxscale = $maxgrph;
 		$lnks = array();
 		$cnt=0;
 		foreach ($target_values as $value) {

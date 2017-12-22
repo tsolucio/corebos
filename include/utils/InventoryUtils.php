@@ -1240,7 +1240,7 @@ function importRecord($obj, $inventoryFieldData, $lineItems) {
 
 function getImportStatusCount($obj) {
 	global $adb;
-	$tableName = Import_Utils_Helper::getDbTableName($obj->user);
+	$tableName = Import_Utils::getDbTableName($obj->user);
 	$result = $adb->query('SELECT status FROM '.$tableName. ' GROUP BY subject,status');
 
 	$statusCount = array('TOTAL' => 0, 'IMPORTED' => 0, 'FAILED' => 0, 'PENDING' => 0,
@@ -1282,14 +1282,17 @@ function undoLastImport($obj, $user) {
 	$owner = new Users();
 	$owner->id = $ownerId;
 	$owner->retrieve_entity_info($ownerId, 'Users');
-	$dbTableName = Import_Utils_Helper::getDbTableName($owner);
-	if(!is_admin($user) && $user->id != $owner->id) {
-		$viewer = new Vtiger_Viewer();
-		$viewer->view('OperationNotPermitted.tpl', 'Vtiger');
+	$dbTableName = Import_Utils::getDbTableName($owner);
+	$viewer = new vtigerCRM_Smarty();
+	if (!is_admin($user) && $user->id != $owner->id) {
+		$viewer->display(vtlib_getModuleTemplate('Vtiger', 'OperationNotPermitted.tpl'));
 		exit;
 	}
-	$result = $adb->query("SELECT recordid FROM $dbTableName WHERE status = ". Import_Data_Controller::$IMPORT_RECORD_CREATED
-			." AND recordid IS NOT NULL GROUP BY subject,recordid");
+	$result = $adb->query(
+		"SELECT recordid
+			FROM $dbTableName
+			WHERE status = ". Import_Data_Controller::$IMPORT_RECORD_CREATED. ' AND recordid IS NOT NULL GROUP BY subject,recordid'
+	);
 	$noOfRecords = $adb->num_rows($result);
 	$noOfRecordsDeleted = 0;
 	for($i=0; $i<$noOfRecords; ++$i) {
@@ -1301,11 +1304,10 @@ function undoLastImport($obj, $user) {
 			$noOfRecordsDeleted++;
 		}
 	}
-	$viewer = new Vtiger_Viewer();
 	$viewer->assign('FOR_MODULE', $moduleName);
 	$viewer->assign('TOTAL_RECORDS', $noOfRecords);
 	$viewer->assign('DELETED_RECORDS_COUNT', $noOfRecordsDeleted);
-	$viewer->view('ImportUndoResult.tpl');
+	$viewer->view(vtlib_getModuleTemplate('Import', 'ImportUndoResult.tpl'));
 }
 
 function getInventoryFieldsForExport($tableName) {

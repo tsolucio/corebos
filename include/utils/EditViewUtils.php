@@ -203,12 +203,14 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			$valueArr[$key] = trim(html_entity_decode($value, ENT_QUOTES, $default_charset));
 		}
 		if ($uitype == 15 ) {
-			$valueArr = array_combine($valueArr, $valueArr);
+			if (count($valueArr)>0) {
+				$valueArr = array_combine($valueArr, $valueArr);
+			}
 			$picklistValues = array_merge($picklistValues, $valueArr);
 		}
 		$options = array();
 		if(!empty($picklistValues)){
-			foreach($picklistValues as $order=>$pickListValue){
+			foreach ($picklistValues as $pickListValue) {
 				if(in_array(trim($pickListValue),$valueArr)){
 					$chk_val = "selected";
 				}else{
@@ -437,7 +439,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 				$picklistValues = getAssignedPicklistValues('salutationtype', $roleid, $adb);
 				$pickcount = 0;
 				$salt_value = (isset($col_fields['salutationtype']) ? $col_fields['salutationtype'] : '');
-				foreach($picklistValues as $order=>$pickListValue){
+				foreach ($picklistValues as $pickListValue) {
 					if($salt_value == trim($pickListValue)){
 						$chk_val = "selected";
 						$pickcount++;
@@ -445,9 +447,9 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 						$chk_val = '';
 					}
 					if(isset($_REQUEST['file']) && $_REQUEST['file'] == 'QuickCreate'){
-						$options[] = array(htmlentities(getTranslatedString($pickListValue),ENT_QUOTES,$default_charset),$pickListValue,$chk_val );
+						$options[] = array(htmlentities(getTranslatedString($pickListValue, 'Contacts'),ENT_QUOTES,$default_charset),$pickListValue,$chk_val );
 					}else{
-						$options[] = array(getTranslatedString($pickListValue),$pickListValue,$chk_val);
+						$options[] = array(getTranslatedString($pickListValue, 'Contacts'),$pickListValue,$chk_val);
 					}
 				}
 				if($pickcount == 0 && $salt_value != ''){

@@ -83,8 +83,7 @@ class ReportRun extends CRMEntity {
 	 *					|
 	 *					$tablenamen:$columnnamen:$fieldlabeln:$fieldnamen:$typeofdatan=>$tablenamen.$columnnamen As Header value
 	 */
-	function getQueryColumnsList($reportid,$outputformat='')
-	{
+	public function getQueryColumnsList($reportid, $outputformat = '') {
 		// Have we initialized information already?
 		if (!empty($this->_columnslist[$outputformat])) {
 			return $this->_columnslist[$outputformat];
@@ -96,50 +95,51 @@ class ReportRun extends CRMEntity {
 		$ssql .= " where vtiger_report.reportid = ?";
 		$ssql .= " order by vtiger_selectcolumn.columnindex";
 		$result = $adb->pquery($ssql, array($reportid));
-		$permitted_fields = Array();
+		$permitted_fields = array();
 		$columnslist = array();
-		while($columnslistrow = $adb->fetch_array($result))
-		{
+		while ($columnslistrow = $adb->fetch_array($result)) {
 			$fieldname = '';
 			$fieldcolname = decode_html($columnslistrow['columnname']);
-			if (strpos($fieldcolname, ':')===false) continue;
-			list($tablename,$colname,$module_field,$fieldname,$single) = explode(":",$fieldcolname);
+			if (strpos($fieldcolname, ':')===false) {
+				continue;
+			}
+			list($tablename, $colname, $module_field, $fieldname, $single) = explode(':', $fieldcolname);
 			$module_field = decode_html($module_field);
-			list($module,$field) = explode("_",$module_field,2);
-			$inventory_fields = array('quantity','listprice','serviceid','productid','discount','comment');
+			list($module, $field) = explode('_', $module_field, 2);
+			$inventory_fields = array('quantity', 'listprice', 'serviceid', 'productid', 'discount', 'comment');
 			$inventory_modules = getInventoryModules();
 			require('user_privileges/user_privileges_'.$current_user->id.'.php');
-			if ((!isset($permitted_fields[$module]) || count($permitted_fields[$module]) == 0) && $is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1) {
+			if ((!isset($permitted_fields[$module]) || count($permitted_fields[$module]) == 0) &&
+					$is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1) {
 				$permitted_fields[$module] = $this->getaccesfield($module);
 			}
-			if(in_array($module,$inventory_modules) and isset($permitted_fields[$module]) and is_array($permitted_fields[$module])){
-				$permitted_fields[$module] = array_merge($permitted_fields[$module],$inventory_fields);
+			if (in_array($module, $inventory_modules) && isset($permitted_fields[$module]) && is_array($permitted_fields[$module])) {
+				$permitted_fields[$module] = array_merge($permitted_fields[$module], $inventory_fields);
 			}
-			$selectedfields = explode(":",$fieldcolname);
-			if($is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1
-					&& !in_array($selectedfields[3], $permitted_fields[$module])) {
+			$selectedfields = explode(':', $fieldcolname);
+			if ($is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && !in_array($selectedfields[3], $permitted_fields[$module])) {
 				//user has no access to this field, skip it.
 				continue;
 			}
-			$concatSql = getSqlForNameInDisplayFormat(array('first_name'=>$selectedfields[0].".first_name",'last_name'=>$selectedfields[0].".last_name"), 'Users');
+			$concatSql = getSqlForNameInDisplayFormat(array('first_name'=>$selectedfields[0].'.first_name', 'last_name'=>$selectedfields[0].'.last_name'), 'Users');
 			$querycolumns = $this->getEscapedColumns($selectedfields);
 
-			if(isset($module) && $module!="") {
-				$mod_strings = return_module_language($current_language,$module);
+			if (isset($module) && $module!='') {
+				$mod_strings = return_module_language($current_language, $module);
 			}
 			$targetTableName = $tablename;
-			$fieldlabel = trim(preg_replace("/$module/"," ",$selectedfields[2],1));
-			$mod_arr=explode('_',$fieldlabel);
-			$fieldlabel = trim(str_replace("_"," ",$fieldlabel));
+			$fieldlabel = trim(preg_replace("/$module/", ' ', $selectedfields[2], 1));
+			$mod_arr=explode('_', $fieldlabel);
+			$fieldlabel = trim(str_replace('_', ' ', $fieldlabel));
 			//modified code to support i18n issue
-			$fld_arr = explode(" ",$fieldlabel);
-			if(($mod_arr[0] == '')) {
+			$fld_arr = explode(' ', $fieldlabel);
+			if (($mod_arr[0] == '')) {
 				$mod = $module;
-				$mod_lbl = getTranslatedString($module,$module); //module
+				$mod_lbl = getTranslatedString($module, $module); //module
 			} else {
 				$mod = $mod_arr[0];
 				array_shift($fld_arr);
-				$mod_lbl = getTranslatedString($fld_arr[0],$mod); //module
+				$mod_lbl = getTranslatedString($fld_arr[0], $mod); //module
 			}
 			$fld_lbl_str = implode(" ",$fld_arr);
 			$fld_lbl = getTranslatedString($fld_lbl_str,$module); //fieldlabel
@@ -356,7 +356,7 @@ class ReportRun extends CRMEntity {
 	 *  @ param $selectedfields : Type Array
 	 *  returns the case query for the escaped columns
 	 */
-	function getEscapedColumns($selectedfields) {
+	public function getEscapedColumns($selectedfields) {
 		$tableName = $selectedfields[0];
 		$columnName = $selectedfields[1];
 		$moduleFieldLabel = $selectedfields[2];
@@ -365,16 +365,20 @@ class ReportRun extends CRMEntity {
 		$fieldInfo = getFieldByReportLabel($moduleName, $fieldLabel);
 		$queryColumn = '';
 		if ($moduleName == 'ModComments' && $fieldName == 'creator') {
-			$concatSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_usersModComments.first_name',
-															'last_name' => 'vtiger_usersModComments.last_name'), 'Users');
+			$concatSql = getSqlForNameInDisplayFormat(
+				array(
+					'first_name' => 'vtiger_usersModComments.first_name',
+					'last_name' => 'vtiger_usersModComments.last_name'
+				),
+				'Users'
+			);
 			$queryColumn = "trim(case when (vtiger_usersModComments.user_name not like '' and vtiger_crmentity.crmid!='') then $concatSql end) as 'ModComments_Creator'";
 			$this->queryPlanner->addTable('vtiger_usersModComments');
-		} elseif (($fieldInfo['uitype'] == '10' || isReferenceUIType($fieldInfo['uitype']))
-				&& $fieldInfo['uitype'] != '52' && $fieldInfo['uitype'] != '53') {
+		} elseif (($fieldInfo['uitype'] == '10' || isReferenceUIType($fieldInfo['uitype'])) && $fieldInfo['uitype'] != '52' && $fieldInfo['uitype'] != '53') {
 			$fieldSqlColumns = $this->getReferenceFieldColumnList($moduleName, $fieldInfo);
-			if(count($fieldSqlColumns) > 0) {
+			if (count($fieldSqlColumns) > 0) {
 				$queryColumn = "(CASE WHEN $tableName.$columnName NOT LIKE '' THEN (CASE";
-				foreach($fieldSqlColumns as $columnSql) {
+				foreach ($fieldSqlColumns as $columnSql) {
 					$queryColumn .= " WHEN $columnSql NOT LIKE '' THEN $columnSql";
 				}
 				$queryColumn .= " ELSE '' END) ELSE '' END) AS $moduleFieldLabel";
@@ -1905,9 +1909,8 @@ class ReportRun extends CRMEntity {
 			$matrix = $this->queryPlanner->newDependencyMatrix();
 
 			$matrix->setDependency('vtiger_inventoryproductrelInvoice', array('vtiger_productsInvoice', 'vtiger_serviceInvoice'));
-
-			$query = "from vtiger_invoice
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_invoice.invoiceid";
+			$focus = CRMEntity::getInstance($module);
+			$query = $focus->generateReportsQuery($module, $this->queryPlanner);
 
 			if ($this->queryPlanner->requireTable("vtiger_invoicebillads")) {
 				$query .=" inner join vtiger_invoicebillads on vtiger_invoice.invoiceid=vtiger_invoicebillads.invoicebilladdressid";
@@ -1931,23 +1934,6 @@ class ReportRun extends CRMEntity {
 			}
 			if ($this->queryPlanner->requireTable("vtiger_salesorderInvoice")) {
 				$query .= " left join vtiger_salesorder as vtiger_salesorderInvoice on vtiger_salesorderInvoice.salesorderid=vtiger_invoice.salesorderid";
-			}
-			if ($this->queryPlanner->requireTable("vtiger_invoicecf")) {
-				$query .= " left join vtiger_invoicecf on vtiger_invoice.invoiceid = vtiger_invoicecf.invoiceid";
-			}
-			if ($this->queryPlanner->requireTable("vtiger_usersInvoice") || $this->queryPlanner->requireTable("vtiger_groupsInvoice")) {
-				$query .= " left join vtiger_users as vtiger_usersInvoice on vtiger_usersInvoice.id = vtiger_crmentity.smownerid";
-				$query .= " left join vtiger_groups as vtiger_groupsInvoice on vtiger_groupsInvoice.groupid = vtiger_crmentity.smownerid";
-			}
-
-			$query .= " left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid";
-			$query .= " left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid";
-
-			if ($this->queryPlanner->requireTable("vtiger_lastModifiedByInvoice")) {
-				$query .= " left join vtiger_users as vtiger_lastModifiedByInvoice on vtiger_lastModifiedByInvoice.id = vtiger_crmentity.modifiedby";
-			}
-			if ($this->queryPlanner->requireTable('vtiger_CreatedByInvoice')) {
-				$query .= " left join vtiger_users as vtiger_CreatedByInvoice on vtiger_CreatedByInvoice.id = vtiger_crmentity.smcreatorid";
 			}
 			if ($this->queryPlanner->requireTable("vtiger_accountInvoice")) {
 				$query .= " left join vtiger_account as vtiger_accountInvoice on vtiger_accountInvoice.accountid = vtiger_invoice.accountid";
@@ -2344,20 +2330,27 @@ class ReportRun extends CRMEntity {
 		if($outputformat == 'HTML' || $outputformat == 'HTMLPAGED')
 		{
 			if ($outputformat=='HTMLPAGED') $directOutput = false;
-			$sSQL = $this->sGetSQLforReport($this->reportid,$filtersql,$outputformat);
+			$sSQL = $this->sGetSQLforReport($this->reportid, $filtersql, $outputformat);
 			$result = $adb->query($sSQL);
 			$error_msg = $adb->database->ErrorMsg();
-			if(!$result && $error_msg!=''){
-				// Performance Optimization: If direct output is requried
-				if($directOutput) {
-					echo getTranslatedString('LBL_REPORT_GENERATION_FAILED', 'Reports') . "<br>" . $error_msg;
-					$error_msg = false;
+			if (!$result && $error_msg!='') {
+				$tmptables = $this->queryPlanner->getTemporaryTables();
+				if (count($tmptables)>0) {
+					$this->queryPlanner->disableTempTables();
+					$sSQL = $this->sGetSQLforReport($this->reportid, $filtersql, $outputformat);
+					$result = $adb->query($sSQL);
 				}
-				return $error_msg;
+				if (!$result) {
+					if ($directOutput) {
+						echo getTranslatedString('LBL_REPORT_GENERATION_FAILED', 'Reports') . '<br>' . $error_msg;
+						$error_msg = false;
+					}
+					return $error_msg;
+				}
 			}
 
 			// Performance Optimization: If direct output is required
-			if($directOutput) {
+			if ($directOutput) {
 				echo '<table cellpadding="5" cellspacing="0" align="center" class="rptTable"><tr>';
 			}
 
@@ -2574,15 +2567,25 @@ class ReportRun extends CRMEntity {
 			$sSQL = $this->sGetSQLforReport($this->reportid,$filtersql,'HTML');
 			$result = $adb->query($sSQL.' limit 1');
 			$error_msg = $adb->database->ErrorMsg();
-			if(!$result && $error_msg!=''){
-				$resp = array(
-					'has_contents' => false,
-					'jsonheaders' => array(),
-					'i18nheaders' => array(),
-					'error' => true,
-					'error_message' => getTranslatedString('LBL_REPORT_GENERATION_FAILED', 'Reports') . ':' . $error_msg,
-				);
-				return $resp;
+			if (!$result && $error_msg!='') {
+				$tmptables = $this->queryPlanner->getTemporaryTables();
+				if (count($tmptables)>0) {
+					// we have temp tables so we deactivate them and try again
+					$this->queryPlanner->disableTempTables();
+					$sSQL = $this->sGetSQLforReport($this->reportid, $filtersql, 'HTML');
+					$result = $adb->query($sSQL.' limit 1');
+					$error_msg = $adb->database->ErrorMsg();
+				}
+				if (!$result && $error_msg!='') {
+					$resp = array(
+						'has_contents' => false,
+						'jsonheaders' => array(),
+						'i18nheaders' => array(),
+						'error' => true,
+						'error_message' => getTranslatedString('LBL_REPORT_GENERATION_FAILED', 'Reports') . ':' . $error_msg,
+					);
+					return $resp;
+				}
 			}
 			$fldcnt=$adb->num_fields($result);
 			$i18nheader = $jsonheader = array();
@@ -2637,15 +2640,32 @@ class ReportRun extends CRMEntity {
 				$count_result = $adb->query('SELECT FOUND_ROWS();');
 			}
 			$error_msg = $adb->database->ErrorMsg();
-			if(!$result && $error_msg!=''){
-				$resp = array(
-					'total' => 0,
-					'data' => array(),
-					'sql' => $sSQL,
-					'error' => true,
-					'error_message' => getTranslatedString('LBL_REPORT_GENERATION_FAILED', 'Reports') . ':' . $error_msg,
-				);
-				return json_encode($resp);
+			if (!$result && $error_msg!='') {
+				$tmptables = $this->queryPlanner->getTemporaryTables();
+				if (count($tmptables)>0) {
+					// we have temp tables so we deactivate them and try again
+					$this->queryPlanner->disableTempTables();
+					$sSQL = $this->sGetSQLforReport($this->reportid, $filtersql, ($outputformat == 'JSON' ? 'HTML' : 'HTMLPAGED'));
+					$sSQL = 'SELECT SQL_CALC_FOUND_ROWS'.substr($sSQL, 6);
+					$result = $adb->query($sSQL);
+					if ($result) {
+						$count_result = $adb->query('SELECT FOUND_ROWS();');
+					}
+					$error_msg = $adb->database->ErrorMsg();
+				}
+				if (!$result && $error_msg!='') {
+					$resp = array(
+						'total' => 0,
+						'data' => array(),
+						'sql' => $sSQL,
+						'error' => true,
+						'error_message' => getTranslatedString('LBL_REPORT_GENERATION_FAILED', 'Reports') . ':' . $error_msg,
+					);
+					foreach ($tmptables as $tmptblname => $tmptbldetails) {
+						$resp[$tmptblname] = $tmptbldetails['query'];
+					}
+					return json_encode($resp);
+				}
 			}
 
 			if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1) {
@@ -2754,15 +2774,19 @@ class ReportRun extends CRMEntity {
 				$resp['data'] = $data;
 				return json_encode($resp);
 			}
-		}elseif($outputformat == "PDF")
-		{
-			$sSQL = $this->sGetSQLforReport($this->reportid,$filtersql);
-			$result = $adb->pquery($sSQL,array());
-			if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1)
-			$picklistarray = $this->getAccessPickListValues();
-
-			if($result)
-			{
+		} elseif ($outputformat == 'PDF') {
+			$sSQL = $this->sGetSQLforReport($this->reportid, $filtersql);
+			$result = $adb->pquery($sSQL, array());
+			$tmptables = $this->queryPlanner->getTemporaryTables();
+			if (!$result && count($tmptables)>0) {
+				$this->queryPlanner->disableTempTables();
+				$sSQL = $this->sGetSQLforReport($this->reportid, $filtersql);
+				$result = $adb->pquery($sSQL, array());
+			}
+			if ($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1) {
+				$picklistarray = $this->getAccessPickListValues();
+			}
+			if ($result) {
 				$y=$adb->num_fields($result);
 				$noofrows = $adb->num_rows($result);
 				$this->number_of_rows = $noofrows;
@@ -4040,11 +4064,11 @@ class ReportRun extends CRMEntity {
 				} elseif ($moduleName == 'SalesOrder' && $referenceModule == 'Quotes') {
 					$referenceTableName = 'vtiger_quotesSalesOrder';
 				} elseif (in_array($referenceModule, $reportSecondaryModules) and $moduleName != 'Timecontrol') {
-					if($fieldInstance->getFieldId() != '') $referenceTableName = "{$entityTableName}Rel{$moduleName}{$fieldInstance->getFieldId()}";
-					else $referenceTableName = "{$entityTableName}Rel$referenceModule";
-				} elseif (in_array($moduleName, $reportSecondaryModules) and $moduleName != 'Timecontrol') {
-					$referenceTableName = "{$entityTableName}Rel$moduleName";
-					$dependentTableName = "vtiger_crmentityRel{$moduleName}{$fieldInstance->getFieldId()}";
+					if ($fieldInstance->getFieldId() != '') {
+						$referenceTableName = "{$entityTableName}Rel{$moduleName}{$fieldInstance->getFieldId()}";
+					} else {
+						$referenceTableName = "{$entityTableName}Rel$referenceModule";
+					}
 				} else {
 					$referenceTableName = "{$entityTableName}Rel{$moduleName}{$fieldInstance->getFieldId()}";
 					$dependentTableName = "vtiger_crmentityRel{$moduleName}{$fieldInstance->getFieldId()}";

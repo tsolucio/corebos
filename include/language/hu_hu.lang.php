@@ -1,14 +1,10 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
  ********************************************************************************/
@@ -210,6 +206,8 @@ $app_strings = array(
 	'Import' => 'Importál',
 	'Merge' => 'Összefűz',
 	'ConvertLead' => 'Jelöltet átalakít Kapcsolattá',
+	'Is Converted From Lead'  => 'Vevőjelöltből konvertált?',
+	'Converted From Lead'  => 'Vevőjelöltből konvertált',
 	'LBL_SHOW_RESULTS' => 'Mutassa az eredményeket:',
 	'LBL_TOTAL_RECORDS_FOUND' => 'Darab rekordot találtam :',
 	'LBL_SEARCH_RESULTS_FOR' => ' -- Keresés eredménye ',

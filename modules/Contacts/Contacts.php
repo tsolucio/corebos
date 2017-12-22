@@ -116,7 +116,7 @@ class Contacts extends CRMEntity {
 	var $default_sort_order = 'ASC';
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
-	var $mandatory_fields = Array('assigned_user_id','lastname','createdtime' ,'modifiedtime');
+	public $mandatory_fields = array('lastname', 'createdtime', 'modifiedtime');
 
 	/** Function to get the number of Contacts assigned to a particular User.
 	*  @param varchar $user name - Assigned to User

@@ -253,8 +253,6 @@ $mod_strings = Array(
 'LBL_MANDATORY_FIELDS_ARE_EMPTY' => 'Enkele van de verplichte velden zijn leeg',
 'LBL_LEADS_FIELD_MAPPING' => 'Leads Maatwerk Veldmapping',
 'LeadAlreadyConverted' => 'Lead cannot be converted. Either it has already been converted or you lack permission on one or more of the destination modules.',
-'Is Converted From Lead' => 'Wordt geconverteerd van Lead',
-'Converted From Lead' => 'Wordt geconverteerd Lead',
 
 );
 

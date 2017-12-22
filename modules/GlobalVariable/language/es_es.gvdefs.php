@@ -490,6 +490,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'CSV lista de módulos',
 	'definition' => 'Lista de módulos separados por coma que la búsqueda global pondrá primero en la lista de resultados.',
 ),
+'Application_Global_Search_Autocomplete_Limit' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Entero',
+	'category' => 'Aplicación',
+	'values' => '',
+	'definition' => 'Número máximo de resultados a mostrar en la pantalla de búsqueda global autocompletada.',
+),
 'Product_Copy_Bundle_OnDuplicate' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',

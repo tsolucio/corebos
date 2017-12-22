@@ -19,8 +19,6 @@ global $mod_strings,$app_strings,$theme,$adb,$current_user;
 
 $theme_path="themes/".$theme."/";
 
-require_once('modules/Vtiger/layout_utils.php');
-
 $iCurRecord = vtlib_purify($_REQUEST['CurRecordId']);
 $sModule = vtlib_purify($_REQUEST['CurModule']);
 

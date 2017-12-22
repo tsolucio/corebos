@@ -160,12 +160,7 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 					}
 					if($fieldinfo['uitype'] == 13 && strlen($resultRecord[$fieldname]) ) {
 						// email fields
-						if ($operation =='edit') {
-							$resultRecord[$fieldname]= $resultRecord[$fieldname];
-						}
-						else {
-							$resultRecord[$fieldname]= "<A HREF=\"#\" onclick=\"window.location.href ='mailto:" . $resultRecord[$fieldname] . "';\">"  . $resultRecord[$fieldname] . "</A>";
-						}
+						$resultRecord[$fieldname]= $resultRecord[$fieldname];
 					}
 					if($fieldinfo['uitype'] == 72 && strlen($resultRecord[$fieldname]) ) {
 						//currency fields

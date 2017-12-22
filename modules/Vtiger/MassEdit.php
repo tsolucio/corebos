@@ -22,39 +22,39 @@ $disp_view = getView($focus->mode);
 $idstring = vtlib_purify($_REQUEST['idstring']);
 
 $smarty = new vtigerCRM_Smarty;
-$smarty->assign('MODULE',$currentModule);
-$smarty->assign('APP',$app_strings);
+$smarty->assign('MODULE', $currentModule);
+$smarty->assign('APP', $app_strings);
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
-$storearray = getSelectedRecords($_REQUEST, $currentModule, vtlib_purify($_REQUEST['idstring']),$excludedRecords);
-$idstringval=implode(';',$storearray);
-$smarty->assign("IDS",$idstringval);
+$storearray = getSelectedRecords($_REQUEST, $currentModule, vtlib_purify($_REQUEST['idstring']), $excludedRecords);
+$idstringval=implode(';', $storearray);
+$smarty->assign("IDS", $idstringval);
 $smarty->assign('ID', 0);
 $smarty->assign('MODE', $focus->mode);
 $smarty->assign('CREATEMODE', '');
-$smarty->assign('MASS_EDIT','1');
-$smarty->assign('BLOCKS',getBlocks($currentModule,$disp_view,$mode,$focus->column_fields));
+$smarty->assign('MASS_EDIT', '1');
+$smarty->assign('BLOCKS', getBlocks($currentModule, $disp_view, $mode, $focus->column_fields));
 if ($currentModule=='Products' || $currentModule=='Services') {
 	$tax_details = getAllTaxes('available');
-	for($i=0;$i<count($tax_details);$i++) {
+	for ($i=0; $i<count($tax_details); $i++) {
 		$tax_details[$i]['check_name'] = $tax_details[$i]['taxname'].'_check';
 		$tax_details[$i]['check_value'] = 0;
 	}
 	$smarty->assign("TAX_DETAILS", $tax_details);
 }
-$smarty->assign("CATEGORY",getParentTab());
-$upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize',3000000,$currentModule);
+$smarty->assign("CATEGORY", getParentTab());
+$upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize', 3000000, $currentModule);
 $smarty->assign("UPLOADSIZE", $upload_maxsize/1000000); //Convert to MB
-$smarty->assign("UPLOAD_MAXSIZE",$upload_maxsize);
+$smarty->assign("UPLOAD_MAXSIZE", $upload_maxsize);
 
 // Field Validation Information
 $tabid = getTabid($currentModule);
-$validationData = getDBValidationData($focus->tab_name,$tabid);
+$validationData = getDBValidationData($focus->tab_name, $tabid);
 $validationArray = split_validationdataArray($validationData);
 
-$smarty->assign("VALIDATION_DATA_FIELDNAME",$validationArray['fieldname']);
-$smarty->assign("VALIDATION_DATA_FIELDDATATYPE",$validationArray['datatype']);
-$smarty->assign("VALIDATION_DATA_FIELDLABEL",$validationArray['fieldlabel']);
+$smarty->assign("VALIDATION_DATA_FIELDNAME", $validationArray['fieldname']);
+$smarty->assign("VALIDATION_DATA_FIELDDATATYPE", $validationArray['datatype']);
+$smarty->assign("VALIDATION_DATA_FIELDLABEL", $validationArray['fieldlabel']);
 $picklistDependencyDatasource = Vtiger_DependencyPicklist::getPicklistDependencyDatasource($currentModule);
 $smarty->assign('PICKIST_DEPENDENCY_DATASOURCE', json_encode($picklistDependencyDatasource));
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));

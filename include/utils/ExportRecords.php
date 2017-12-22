@@ -17,7 +17,6 @@ $category = getParentTab();
 
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
-require_once('modules/Vtiger/layout_utils.php');
 
 $idstring = getSelectedRecords($_REQUEST,$currentModule,(isset($_REQUEST['idstring']) ? $_REQUEST['idstring'] : ''),(isset($_REQUEST['excludedRecords']) ? $_REQUEST['excludedRecords'] : ''));
 $idstring = join(';',$idstring);

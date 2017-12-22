@@ -1,21 +1,10 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
- * All Rights Reserved.
- * Contributor(s): ______________________________________.
- *********************************************************************************
-/*********************************************************************************
- * $Header:  \modules\Reports\language\hu_hu.lang.php - 21:17 2011.11.12. $
- * Description:  Defines the Hungarian language pack for the Reports module vtiger 5.3.x
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
  ********************************************************************************/
@@ -154,6 +143,14 @@ $mod_strings = array(
 	'This Month Activities' => 'Az aktuális Hónap Aktivitásai',
 	'Campaign Expectations and Actuals' => 'Kampány: Elvárt és aktuális adatok',
 	'SalesOrder Detailed Report' => 'Megrendelések: részletes Jelentés',
+	'Emails sent to Contacts' => 'Emails sent to Contacts',
+	'Emails sent to Organizations' => 'Emails sent to Organizations',
+	'Emails sent to Leads' => 'Emails sent to Leads',
+	'Emails sent to Vendors' => 'Emails sent to Vendors',
+	'Contacts Email Report' => 'Contacts Email Report',
+	'Accounts Email Report' => 'Accounts Email Report',
+	'Leads Email Report' => 'Leads Email Report',
+	'Vendors Email Report' => 'Vendors Email Report',
 	'LBL_DELETE' => 'Töröl',
 	'Create_Reports' => 'Új Jelentések',
 	'Create_New_Folder' => 'Új Mappa',

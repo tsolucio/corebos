@@ -15,4 +15,5 @@
  *************************************************************************************************/
 global $adb;
 $uid=vtlib_purify($_REQUEST['uid']);
-$adb->pquery("update its4you_googlesync4you_access set refresh_token='', synctoken='' where userid=?", array($uid));
+$a=$adb->pquery("update its4you_googlesync4you_access set refresh_token='', synctoken='' where userid=?", array($uid));
+$token=coreBOS_Session::set('token','');

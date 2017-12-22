@@ -1,14 +1,10 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************
 *  Module       : Users
@@ -21,7 +17,7 @@
 *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Usuarios',
 'LBL_MODULE_TITLE'=>'Usuarios: Inicio',
 'LBL_SEARCH_FORM_TITLE'=>'Buscar Usuarios',
@@ -605,6 +601,14 @@ $mod_strings = Array(
 'LBL_3_MIN'=>'3 minutos',
 'LBL_4_MIN'=>'4 minutos',
 'LBL_5_MIN'=>'5 minutos',
+'None' => 'Nunca',
+'1 Minute' => '1 Minuto',
+'5 Minutes' => '5 Minutos',
+'15 Minutes' => '15 Minutos',
+'30 Minutes' => '30 Minutos',
+'45 Minutes' => '45 Minutos',
+'1 Hour' => '1 Hora',
+'1 Day' => '1 Día',
 'LBL_EMAILS_PER_PAGE'=>'Emails por Página',
 
 'LBL_ENTER_PROFILE'=>'Introducir Nombre del Perfil',

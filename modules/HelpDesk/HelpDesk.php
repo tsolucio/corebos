@@ -98,7 +98,7 @@ class HelpDesk extends CRMEntity {
 	var $default_sort_order = 'DESC';
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
-	var $mandatory_fields = Array('assigned_user_id', 'createdtime', 'modifiedtime', 'ticket_title', 'update_log');
+	public $mandatory_fields = array('createdtime', 'modifiedtime', 'ticket_title', 'update_log');
 
 	function __construct() {
 		global $log;

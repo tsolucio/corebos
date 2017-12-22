@@ -50,5 +50,4 @@ class PublicInvitePermissionHandler extends VTEventHandler {
 		}
 		return $parameter;
 	}
-
 }

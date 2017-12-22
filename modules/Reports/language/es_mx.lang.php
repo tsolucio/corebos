@@ -15,7 +15,7 @@
 *  Author       : Odin Consultores, Francisco Hernandez
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME' => 'Informes',
 'LBL_MODULE_TITLE'=>'Informes: Inicio',
 'LBL_CREATE_REPORT'=>'Crear Informe',
@@ -69,10 +69,8 @@ $mod_strings = Array(
 'LBL_GENERATED_REPORT'=>'Informe Generado',
 'LBL_GRAND_TOTAL'=>'Importe Total',
 
-//Added for 4.2 Patch I
 'LBL_EXPORTXL_BUTTON'=>'Exportar a Excel',
 'LBL_EXPORTCSV'=>'Exportar a CSV',
-//Added for 5 Beta
 'LBL_NO_PERMISSION'=>'Tu perfil no está autorizado a ver los informes de uno de los módulos',
 'LBL_SELECT_COLUMNS_TO_GENERATE_REPORTS'=>'Seleccione columnas para generar el informe',
 'LBL_AVAILABLE_FIELDS'=>'Campos Disponibles',
@@ -153,6 +151,14 @@ $mod_strings = Array(
 'This Month Activities'=>'Tareas de este Mes',
 'Campaign Expectations and Actuals'=>'Expectativas y Realidad de Campaña',
 'SalesOrder Detailed Report'=>'Informes detallado de Pedidos',
+'Emails sent to Contacts' => 'Emails enviados a Contactos',
+'Emails sent to Organizations' => 'Emails enviados a Cuentas',
+'Emails sent to Leads' => 'Emails enviados a PreContactos',
+'Emails sent to Vendors' => 'Emails enviados a Proveedores',
+'Contacts Email Report' => 'Informe de Emails a Contactos',
+'Accounts Email Report' => 'Informe de Emails a Cuentas',
+'Leads Email Report' => 'Informe de Emails a PreContactos',
+'Vendors Email Report' => 'Informe de Emails a Proveedores',
 
 'LBL_DELETE'=>'Borrar',
 'Create_Reports'=>'Crear Informe',

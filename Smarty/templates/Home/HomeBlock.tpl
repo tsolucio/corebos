@@ -170,6 +170,7 @@
 		<td align="left">
 		<canvas id="homechart{$HOME_STUFFID}" style="width:500px;height:250px;margin:auto;padding:10px;"></canvas>
 <script type="text/javascript">
+
 	window.doChart{$HOME_STUFFID} = function(charttype) {ldelim}
 		let stuffchart = document.getElementById('homechart{$HOME_STUFFID}');
 		let stuffcontext = stuffchart.getContext('2d');
@@ -182,10 +183,12 @@
 				backgroundColor: [{/literal}{foreach item=CVALUE name=chartvalues from=$HOME_STUFF.yaxisData}getRandomColor(){if not $smarty.foreach.chartvalues.last},{/if}{/foreach}{literal}]
 			}]
 		};
+		var maxnum = Math.max.apply(Math, chartDataObject.datasets[0].data);
+		var maxgrph = Math.ceil(maxnum + (5 * maxnum / 100));
 		Chart.scaleService.updateScaleDefaults('linear', {
 			ticks: {
 				min: 0,
-				max: Math.max.apply(Math, chartDataObject.datasets[0].data)+1
+				max: maxgrph
 			}
 		});
 		window.schart{/literal}{$HOME_STUFFID}{literal} = new Chart(stuffchart,{

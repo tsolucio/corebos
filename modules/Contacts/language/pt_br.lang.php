@@ -7,10 +7,10 @@
  * Portions created by JPL TSolucio, S.L are Copyright (C) JPL TSolucio, S.L.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- * Contribuitor: Ranieri Slemer | 23-8-2016 | Translate missing terms | www.ecrmweb.com.br
+ * Contribuitor: Ranieri Slemer | 3-12-2017 | Translate missing terms | www.ecrmweb.com.br
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Contatos',
 'LBL_INVITEE'=>'Subordinado à',
 'LBL_MODULE_TITLE'=>'Contatos: Principal',
@@ -19,42 +19,30 @@ $mod_strings = Array(
 'LBL_NEW_FORM_TITLE'=>'Novo Contato',
 'LBL_CONTACT_OPP_FORM_TITLE'=>'Contato-Oportunidade:',
 'LBL_CONTACT'=>'Contato:',
-      
 'LBL_LIST_NAME'=>'Nome',
 'LBL_LIST_LAST_NAME'=>'Sobrenome',
 'LBL_LIST_FIRST_NAME'=>'Nome',
 'LBL_LIST_CONTACT_NAME'=>'Nome Contato',
 'LBL_LIST_TITLE'=>'Título',
-'LBL_LIST_ACCOUNT_NAME'=>'Nome Organização',
+'LBL_LIST_ACCOUNT_NAME'=>'Nome Conta',
 'LBL_LIST_EMAIL_ADDRESS'=>'Email',
 'LBL_LIST_PHONE'=>'Fone',
 'LBL_LIST_CONTACT_ROLE'=>'Função',
-      
-//DON'T CONVERT THESE THEY ARE MAPPINGS
-'db_last_name' => 'LBL_LIST_LAST_NAME',
-'db_first_name' => 'LBL_LIST_FIRST_NAME',
-'db_title' => 'LBL_LIST_TITLE',
-'db_email1' => 'LBL_LIST_EMAIL_ADDRESS',
-'db_email2' => 'LBL_LIST_EMAIL_ADDRESS',
-//END DON'T CONVERT
-      
 'LBL_EXISTING_CONTACT' => 'Usou um Contato existente',
 'LBL_CREATED_CONTACT' => 'Criou um novo Contato',
-'LBL_EXISTING_ACCOUNT' => 'Usou uma Organização existente',
-'LBL_CREATED_ACCOUNT' => 'Criou uma nova Organização',
+'LBL_EXISTING_ACCOUNT' => 'Usou uma Conta existente',
+'LBL_CREATED_ACCOUNT' => 'Criou uma nova Conta',
 'LBL_CREATED_CALL' => 'Criou uma nova Chamada',
 'LBL_CREATED_MEETING' => 'Criou uma nova Reunião',
 'LBL_ADDMORE_BUSINESSCARD' => 'Adicione outro Cartão Pessoal',
-      
 'LBL_BUSINESSCARD' => 'Cartão Pessoal',
-      
 'LBL_NAME'=>'Nome:',
 'LBL_CONTACT_NAME'=>'Nome Contato:',
 'LBL_CONTACT_INFORMATION'=>'Informação do Contato',
 'LBL_CUSTOM_INFORMATION'=>'Informação Customizada',
 'LBL_FIRST_NAME'=>'Nome:',
 'LBL_OFFICE_PHONE'=>'Telefone Escritório:',
-'LBL_ACCOUNT_NAME'=>'Nome Organização:',
+'LBL_ACCOUNT_NAME'=>'Nome Conta:',
 'LBL_ANY_PHONE'=>'Outro Telefone:',
 'LBL_PHONE'=>'Telefone:',
 'LBL_LAST_NAME'=>'Sobrenome:',
@@ -99,15 +87,10 @@ $mod_strings = Array(
 'ERR_DELETE_RECORD'=>'Defina um número de registro para deletar o Contato.',
 
 'LBL_SELECT_CONTACT'=>'Selecionar Contato',
-//Added for search heading
 'LBL_GENERAL_INFORMATION'=>'Informação Geral',
-      
-      
-      
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'Nova Oportunidade',
 'LBL_POTENTIAL_TITLE'=>'Oportunidades',
-      
+
 'LBL_NEW_TASK'=>'Nova Tarefa',
 'LBL_TASK_TITLE'=>'Tarefa',
 'LBL_NEW_CALL'=>'Nova Chamada',
@@ -119,7 +102,6 @@ $mod_strings = Array(
 'LBL_NEW_NOTE'=>'Novo Documento',
 'LBL_NOTE_TITLE'=>'Documentos',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Ferramentas Contato',
 
 'Salutation'=>'Saudação',
@@ -127,7 +109,7 @@ $mod_strings = Array(
 'Office Phone'=>'Telefone Escritório',
 'Last Name'=>'Sobrenome',
 'Mobile'=>'Celular',
-'Account Name'=>'Nome Organização',
+'Account Name'=>'Nome Conta',
 'Home Phone'=>'Telefone Residencial',
 'Lead Source'=>'Origem do Lead',
 'Other Phone'=>'Telefone Alternativo',
@@ -162,9 +144,8 @@ $mod_strings = Array(
 'Contact Image'=>'Imagem Contato',
 'Description'=>'Descrição',
 
-// Added vtiger_fields for Add Business Card
 'LBL_NEW_CONTACT'=>'Novo Contato',
-'LBL_NEW_ACCOUNT'=>'Nova Organização',
+'LBL_NEW_ACCOUNT'=>'Nova Conta',
 'LBL_NOTE_SUBJECT'=>'Assunto Documento:',
 'LBL_NOTE'=>'Nota:',
 'LBL_WEBSITE'=>'Website:',
@@ -172,32 +153,23 @@ $mod_strings = Array(
 'LBL_SUBJECT'=>'Assunto:',
 'LBL_START_DATE'=>'Data Inicial:',
 'LBL_START_TIME'=>'Hora Inicial:',
-      
-//Added vtiger_field after 4_0_1
 'Portal User'=>'Portal Usuário',
 'LBL_CUSTOMER_PORTAL_INFORMATION'=>'Informação Portal Cliente',
 'Support Start Date'=>'Data Início Suporte',
 'Support End Date'=>'Data Término Suporte',
-//Added for 4.2 Release -- CustomView
 'Name'=>'Nome',
 'LBL_ALL'=>'Todos',
 'LBL_MAXIMUM_LIMIT_ERROR'=>'Desculpe, o arquivo transferido excedeu limite máximo do file size. Por favor, tente um arquivo menor que 800000 bytes',
 'LBL_UPLOAD_ERROR'=>'Problemas na transferência do arquivo. Por favor tente novamente!',
 'LBL_IMAGE_ERROR'=>'O referido arquivo não é do tipo imagem(.gif/.jpg/.png)',
 'LBL_INVALID_IMAGE'=>'Arquivo inválido OU não possui dados',
-      
-//Added after 5Alpha5
 'Notify Owner'=>'Notificar Proprietário',
-      
-//Added for Picklist Values
 '--None--'=>'--Nada--',
-      
 'Mr.'=>'Sr.',
 'Ms.'=>'Sra.',
 'Mrs.'=>'Srta.',
 'Dr.'=>'Dr.',
 'Prof.'=>'Prof.',
-      
 'Cold Call'=>'Cold Call',
 'Existing Customer'=>'Cliente Existente',
 'Self Generated'=>'Auto Gerado',
@@ -212,7 +184,6 @@ $mod_strings = Array(
 'Other'=>'Outro',
 'User List'=>'Lista Usuário',
 
-//Added for 5.0.3
 'Customer Portal Login Details'=>'Detalhes Login Portal Cliente',
 'Dear'=>'Prezado',
 'Your Customer Portal Login details are given below:'=>'Os detalhes do seu Login no Portal do Cliente são apresentados abaixo: ',
@@ -223,77 +194,74 @@ $mod_strings = Array(
 'We suggest you to change your password after logging in first time'=>'Sugerimos que você altere sua senha após o primeiro acesso.',
 'Support Team'=>'Equipe Suporte',
 
-// Module Sequence Numbering
 'Contact Id' => 'Cód. Contato',
 'Secondary Email'=>'Email Alternativo',
 
-// Ranieri - Ago 2016
 'Contacts ID'=>'ID Contatos',
 'LBL_SHOW_CONTACT_HIERARCHY' => 'Exibir Hierarquia do Contato',
 'LBL_CONTACT_HIERARCHY' => 'Hierarquia do Contato',
-'GOOGLE_CONTACTS' => 'Google Contacts',
-'LBL_UPDATES_CRM'	=>	"Updates in CRM",
-'LBL_UPDATES_GOOGLE'	=>	"Updates in Google",
-'LBL_UPDATED'	=>	"Updated",
-'LBL_ADDED'	=>	"Added",
-'LBL_DELETED'	=>	"Deleted",
-'LBL_SYNCRONIZED'	=>	"Synchronized",
-'LBL_NOT_SYNCRONIZED'	=>	"You have not synchronized yet",
-'LBL_SYNC_BUTTON'	=>	"Synchronize Now",
-'LBL_REMOVE_SYNC'	=>	"Remove Sync",
-'LBL_MORE_VTIGER'	=>	"There are more records to be synchronized in the application",
-'LBL_MORE_GOOGLE'	=>	"There are more records to be synchronized in Google Contacts",
-'SYNC_SETTINGS' => 'Sync Settings',
-'LBL_SELECT_GOOGLE_GROUP_TO_SYNC' => 'Select Google Group',
-'LBL_ADD_CUSTOM_FIELD_MAPPING' => 'Add Custom Mapping',
+'GOOGLE_CONTACTS' => 'Google Contatos',
+'LBL_UPDATES_CRM'	=>	"Atualizações no CRM",
+'LBL_UPDATES_GOOGLE'	=>	"Atualizações no Google",
+'LBL_UPDATED'	=>	"Atualizado",
+'LBL_ADDED'	=>	"Adicionado",
+'LBL_DELETED'	=>	"Removido",
+'LBL_SYNCRONIZED'	=>	"Sincronizado",
+'LBL_NOT_SYNCRONIZED'	=>	"Você ainda não sincronizou",
+'LBL_SYNC_BUTTON'	=>	"Sincronizar agora",
+'LBL_REMOVE_SYNC'	=>	"Remover sincronização",
+'LBL_MORE_VTIGER'	=>	"Há mais registros a serem sincronizados no aplicativo",
+'LBL_MORE_GOOGLE'	=>	"Há mais registros a serem sincronizados nos Contatos do Google",
+'SYNC_SETTINGS' => 'Configurações da sincronização',
+'LBL_SELECT_GOOGLE_GROUP_TO_SYNC' => 'Selecione Grupo do Google',
+'LBL_ADD_CUSTOM_FIELD_MAPPING' => 'Adicionar mapeamento personalizado',
 'LBL_EMAIL' => 'Email',
 'LBL_URL' => 'Url',
-'LBL_CUSTOM' => 'Custom',
-'LBL_SELECT_SYNC_DIRECTION' => 'Select Sync Direction',
-'LBL_BI_DIRECTIONAL_SYNC' => 'Sync both ways',
-'LBL_ONLY_SYNC_FROM_GOOGLE_TO_VTIGER' => 'From Google to Application only',
-'LBL_ONLY_SYNC_FROM_VTIGER_TO_GOOGLE' => 'From Application to Google only',
-'Company' => 'Company',
-'Birthday' => 'Birthday',
-'Phone' => 'Phone',
+'LBL_CUSTOM' => 'Customizado',
+'LBL_SELECT_SYNC_DIRECTION' => 'Selecione a Direção da Sincronização',
+'LBL_BI_DIRECTIONAL_SYNC' => 'Sincronizar nos dois sentidos',
+'LBL_ONLY_SYNC_FROM_GOOGLE_TO_VTIGER' => 'Do Google apenas para o aplicativo',
+'LBL_ONLY_SYNC_FROM_VTIGER_TO_GOOGLE' => 'Apenas do aplicativo para Google',
+'Company' => 'Empresa',
+'Birthday' => 'Aniversário',
+'Phone' => 'Telefone',
 'URL' => 'Url',
-'home' => 'Home',
-'work' => 'Work',
-'custom' => 'Custom',
-'mobile' => 'Mobile',
-'main' => 'Main',
+'home' => 'Casa',
+'work' => 'Trabalho',
+'custom' => 'Customizado',
+'mobile' => 'Celular',
+'main' => 'Principal',
 'work_fax' => 'Fax',
-'home_fax' => 'Home Fax',
+'home_fax' => 'Fax Casa',
 'pager' => 'Pager',
-'profile' => 'Profile',
+'profile' => 'Perfil',
 'blog' => 'Blog',
 'home-page' => 'Homepage',
-'LBL_SIGN_IN_WITH_GOOGLE' => 'Sign in with Google',
-'phone' => 'Phone',
+'LBL_SIGN_IN_WITH_GOOGLE' => 'Faça login no Google',
+'phone' => 'Telefone',
 'email' => 'Email',
 'url' => 'Url',
 'EXTENTIONNAME'=>'Google',
-'Name_Prefix' => 'Name Prefix',
-'First_Name' => 'First Name',
-'Last_Name' => 'Last Name',
-'Job_Title' => 'Job Title',
-'Organization_Name' => 'Organization Name',
-'Date_of_Birth'=>'Date of Birth',
-'Secondary_Email'=>'Secondary email',
-'Mobile_Phone'=>'Mobile Phone',
-'Office_Phone'=>'Office Phone',
-'Home_Phone' => 'Home Phone',
-'Mailing_Address' => 'Mailing Address',
-'Other_Address' => 'Other Address',
-'Note' => 'Note',
-'LOGOUT_GOOGLE_TITLE'=>'Change the default google account authorization in order to sign in with a new account',
-'LOGOUT_GOOGLE'=>'Log Out from Google',
-'SYNC_NOW_TITLE'=>'Start the Sync with Google according to the User Settings',
-'SIGN_IN_TITLE'=>'Sign In to the google account to authorize the Sync Process',
-'SYNC_SETT_TITLE'=>'Set default user parameters for the Sync Process',
-'SYNC_RESULTS'=>'Sync Results',
-'ERR_GContactsSync'=>'There has been an error accessing Google. The settings have been deleted, please configure the access again.',
-
+'Name_Prefix' => 'Saudação',
+'First_Name' => 'Primeiro Nome',
+'Last_Name' => 'Último Nome',
+'Job_Title' => 'Cargo',
+'Organization_Name' => 'Nome da Empresa',
+'Date_of_Birth'=>'Data de Aniversário',
+'Secondary_Email'=>'Email alternativo',
+'Mobile_Phone'=>'Celular',
+'Office_Phone'=>'Celular Escritório',
+'Home_Phone' => 'Telefone Casa',
+'Mailing_Address' => 'Endereço de Correspondência',
+'Other_Address' => 'Outro Endereço',
+'Note' => 'Nota',
+'LOGOUT_GOOGLE_TITLE'=>'Altere a autorização padrão da conta google para fazer login com uma nova conta',
+'LOGOUT_GOOGLE'=>'Sair do Google',
+'SYNC_NOW_TITLE'=>'Inicie a sincronização com o Google de acordo com as configurações do usuário',
+'SIGN_IN_TITLE'=>'Faça login na conta do google para autorizar o processo de sincronização',
+'SYNC_SETT_TITLE'=>'Defina os parâmetros de usuário padrão para o processo de sincronização',
+'SYNC_RESULTS'=>'Resultado do Sincronismo',
+'ERR_GContactsSync'=>'Ocorreu um erro ao acessar o Google. As configurações foram excluídas, configure novamente o acesso.',
 );
 
 ?>

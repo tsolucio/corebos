@@ -19,11 +19,11 @@
 require_once('modules/com_vtiger_workflow/VTEntityCache.inc');
 require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
 
-class CBSelectcbMap extends VTTask{
+class CBSelectcbMap extends VTTask {
 	public $executeImmediately = true;
 
 	public function getFieldNames() {
-		return array('bmapid','bmapid_display');
+		return array('bmapid', 'bmapid_display');
 	}
 
 	public function doTask(&$recordid) {
@@ -31,7 +31,7 @@ class CBSelectcbMap extends VTTask{
 		$maprs = $adb->pquery('select 1
 			from vtiger_cbmap
 			inner join vtiger_crmentity on crmid=cbmapid
-			where deleted=0 and cbmapid=?',array($this->bmapid));
+			where deleted=0 and cbmapid=?', array($this->bmapid));
 		if ($maprs and $adb->num_rows($maprs)>0) {
 			require_once('modules/cbMap/cbMap.php');
 			require_once('modules/cbMap/processmap/processMap.php');

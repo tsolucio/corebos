@@ -391,7 +391,7 @@ function changeGoogleAccount(){
 function cleartokens(uid){
 	jQuery.ajax({
 			method:"POST",
-			url:'index.php?module=Calendar4You&action=cleartokens&uid='+uid,
+			url:'index.php?module=Calendar4You&action=Calendar4YouAjax&file=cleartokens&uid='+uid,
 	}).done(function(response) {
 			window.location.reload();
 	});  

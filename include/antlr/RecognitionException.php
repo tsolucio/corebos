@@ -103,10 +103,13 @@ class RecognitionException extends Exception {
 			$this->line = $this->token->getLine();
 			$this->charPositionInLine = $this->token->getCharPositionInLine();
 		}
+		/*
 		if ( $this->input instanceof TreeNodeStream ) {
 			$this->extractInformationFromTreeNodeStream($input);
 		}
-		else if ( $input instanceof CharStream ) {
+		else 
+		*/
+		if ( $input instanceof CharStream ) {
 			$this->c = $input->LA(1);
 			$this->line = $input->getLine();
 			$this->charPositionInLine = $input->getCharPositionInLine();
@@ -145,6 +148,7 @@ class RecognitionException extends Exception {
 				$this->charPositionInLine = $payload->getCharPositionInLine();
 			}
 		}
+		/*
 		else if ( $this->node instanceof Tree) {
 			$this->line = $this->node->getLine();
 			$this->charPositionInLine = $this->node->getCharPositionInLine();
@@ -152,6 +156,7 @@ class RecognitionException extends Exception {
 				$this->token = $this->node->token;
 			}
 		}
+		*/
 		else {
 			$type = $adaptor->getType($this->node);
 			$text = $adaptor->getText($this->node);
@@ -164,11 +169,13 @@ class RecognitionException extends Exception {
 		if ( $this->input instanceof TokenStream ) {
 			return $this->token->getType();
 		}
+		/*
 		else if ( $this->input instanceof TreeNodeStream ) {
 			$nodes = $this->input;
 			$adaptor = $nodes->getTreeAdaptor();
 			return $adaptor->getType($this->node);
 		}
+		*/
 		else {
 			return $this->c;
 		}

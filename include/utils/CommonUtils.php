@@ -20,6 +20,9 @@ require_once 'include/ListView/ListViewController.php';
  */
 function is_admin($user) {
 	global $log;
+	if (empty($user)) {
+		return false;
+	}
 	$log->debug("Entering is_admin(" . $user->user_name . ") method ...");
 
 	if ($user->is_admin == 'on') {
@@ -97,7 +100,7 @@ function get_select_options_array(&$option_list, $selected_key, $advsearch = 'fa
  */
 function get_options_array_seperate_key(&$label_list, &$key_list, $selected_key, $advsearch = 'false') {
 	global $log,  $app_strings;
-	$log->debug("Entering get_options_array_seperate_key (" . print_r($label_list,true) . "," . print_r($key_list,true) . "," . $selected_key . "," . $advsearch . ") method ...");
+	$log->debug('Entering get_options_array_seperate_key ('.print_r($label_list, true).','.print_r($key_list, true).','.$selected_key.','.$advsearch.') method');
 	if ($advsearch == 'true')
 		$select_options = "\n<OPTION value=''>--NA--</OPTION>";
 	else
@@ -433,7 +436,7 @@ function getFieldFromBlockArray($blocks,$fldlabel) {
 		foreach ($blocks as $blklabel => $fieldarray) {
 			foreach ($fieldarray as $key => $value) {
 				$found = array_key_exists($fldlabel,$value);
-				if ($found and is_array($value[$fldlabel]) and isset($value[$fldlabel]['value']) and isset($value[$fldlabel]['fldname'])) {  // this is to avoid false positives
+				if ($found && is_array($value[$fldlabel]) && isset($value[$fldlabel]['value']) && isset($value[$fldlabel]['fldname'])) { // avoid false positives
 					$result['block_label'] = $blklabel;
 					$result['field_key'] = $key;
 					break 2;
@@ -1272,20 +1275,34 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 		. 'vtiger_field.tabid,'
 		. 'vtiger_field.defaultvalue,'
 		. 'vtiger_field.typeofdata,'
+		. 'vtiger_field.sequence,'
 		. 'vtiger_field.displaytype';
 
 	if ($disp_view == "detail_view") {
-		if ($is_admin == true || $profileGlobalPermission[2] == 0 || $module == "Users" || $module == "Emails") {
-			$uniqueFieldsRestriction = 'vtiger_field.fieldid IN (select max(vtiger_field.fieldid) from vtiger_field where vtiger_field.tabid=? GROUP BY vtiger_field.columnname)';
-			$sql = "SELECT $selectSql, '0' as readonly FROM vtiger_field WHERE $uniqueFieldsRestriction AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ") AND vtiger_field.displaytype IN (1,2,4) and vtiger_field.presence in (0,2) ORDER BY block,sequence";
+		if ($is_admin == true || $profileGlobalPermission[2] == 0 || $module == 'Users' || $module == 'Emails') {
+			$uniqueFieldsRestriction = 'vtiger_field.fieldid IN
+				(select max(vtiger_field.fieldid) from vtiger_field where vtiger_field.tabid=? GROUP BY vtiger_field.columnname)';
+			$sql = "SELECT distinct $selectSql, '0' as readonly
+				FROM vtiger_field WHERE $uniqueFieldsRestriction AND vtiger_field.block IN (".
+				generateQuestionMarks($blockid_list) . ') AND vtiger_field.displaytype IN (1,2,4) and vtiger_field.presence in (0,2) ORDER BY block,sequence';
 			$params = array($tabid, $blockid_list);
 		} elseif ($profileGlobalPermission[1] == 0) { // view all
 			$profileList = getCurrentUserProfileList();
-			$sql = "SELECT $selectSql, vtiger_profile2field.readonly FROM vtiger_field INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid WHERE vtiger_field.tabid=? AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ") AND vtiger_field.displaytype IN (1,2,4) and vtiger_field.presence in (0,2) AND vtiger_profile2field.profileid IN (" . generateQuestionMarks($profileList) . ") ORDER BY block,sequence";
+			$sql = "SELECT distinct $selectSql, vtiger_profile2field.readonly
+				FROM vtiger_field
+				INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid
+				WHERE vtiger_field.tabid=? AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ') AND vtiger_field.displaytype IN (1,2,4) and '.
+					'vtiger_field.presence in (0,2) AND vtiger_profile2field.profileid IN (' . generateQuestionMarks($profileList) . ') ORDER BY block,sequence';
 			$params = array($tabid, $blockid_list, $profileList);
 		} else {
 			$profileList = getCurrentUserProfileList();
-			$sql = "SELECT $selectSql, vtiger_profile2field.readonly FROM vtiger_field INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid WHERE vtiger_field.tabid=? AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ") AND vtiger_field.displaytype IN (1,2,4) and vtiger_field.presence in (0,2) AND vtiger_profile2field.visible=0 AND vtiger_def_org_field.visible=0 AND vtiger_profile2field.profileid IN (" . generateQuestionMarks($profileList) . ") ORDER BY block,sequence";
+			$sql = "SELECT distinct $selectSql, vtiger_profile2field.readonly
+				FROM vtiger_field
+				INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid
+				INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid
+				WHERE vtiger_field.tabid=? AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ') AND vtiger_field.displaytype IN (1,2,4) and '.
+					'vtiger_field.presence in (0,2) AND vtiger_profile2field.visible=0 AND vtiger_def_org_field.visible=0 AND vtiger_profile2field.profileid IN ('.
+					generateQuestionMarks($profileList) . ") ORDER BY block,sequence";
 			$params = array($tabid, $blockid_list, $profileList);
 		}
 		$result = $adb->pquery($sql, $params);
@@ -1298,21 +1315,39 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 	else {
 		if ($info_type != '') {
 			if ($is_admin == true || $profileGlobalPermission[2] == 0 || $module == 'Users' || $module == "Emails") {
-				$sql = "SELECT $selectSql, vtiger_field.readonly FROM vtiger_field WHERE vtiger_field.tabid=? AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ") AND $display_type_check AND info_type = ? and vtiger_field.presence in (0,2) ORDER BY block,sequence";
+				$sql = "SELECT $selectSql, vtiger_field.readonly
+					FROM vtiger_field
+					WHERE vtiger_field.tabid=? AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ") AND $display_type_check AND info_type = ? and ".
+						'vtiger_field.presence in (0,2) ORDER BY block,sequence';
 				$params = array($tabid, $blockid_list, $info_type);
 			} else {
 				$profileList = getCurrentUserProfileList();
-				$sql = "SELECT $selectSql, vtiger_field.readonly FROM vtiger_field INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid WHERE vtiger_field.tabid=? AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ") AND $display_type_check AND info_type = ? AND vtiger_profile2field.visible=0 AND vtiger_profile2field.readonly = 0 AND vtiger_def_org_field.visible=0 AND vtiger_profile2field.profileid IN (" . generateQuestionMarks($profileList) . ") and vtiger_field.presence in (0,2) ORDER BY block,sequence";
+				$sql = "SELECT distinct $selectSql, vtiger_field.readonly
+					FROM vtiger_field
+					INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid
+					INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid
+					WHERE vtiger_field.tabid=? AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ") AND $display_type_check AND info_type = ? AND ".
+						'vtiger_profile2field.visible=0 AND vtiger_profile2field.readonly = 0 AND vtiger_def_org_field.visible=0 AND vtiger_profile2field.profileid IN ('.
+						generateQuestionMarks($profileList) . ') and vtiger_field.presence in (0,2) ORDER BY block,sequence';
 				$params = array($tabid, $blockid_list, $info_type, $profileList);
 			}
 		}
 		else {
 			if ($is_admin == true || $profileGlobalPermission[2] == 0 || $module == 'Users' || $module == "Emails") {
-				$sql = "SELECT $selectSql, vtiger_field.readonly FROM vtiger_field WHERE vtiger_field.tabid=? AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ") AND $display_type_check and vtiger_field.presence in (0,2) ORDER BY block,sequence";
+				$sql = "SELECT $selectSql, vtiger_field.readonly
+					FROM vtiger_field
+					WHERE vtiger_field.tabid=? AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ") AND $display_type_check and ".
+						'vtiger_field.presence in (0,2) ORDER BY block,sequence';
 				$params = array($tabid, $blockid_list);
 			} else {
 				$profileList = getCurrentUserProfileList();
-				$sql = "SELECT $selectSql, vtiger_field.readonly FROM vtiger_field INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid WHERE vtiger_field.tabid=? AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ") AND $display_type_check AND vtiger_profile2field.visible=0 AND vtiger_profile2field.readonly = 0 AND vtiger_def_org_field.visible=0 AND vtiger_profile2field.profileid IN (" . generateQuestionMarks($profileList) . ") and vtiger_field.presence in (0,2) ORDER BY block,sequence";
+				$sql = "SELECT distinct $selectSql, vtiger_field.readonly
+					FROM vtiger_field
+					INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid
+					INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid
+					WHERE vtiger_field.tabid=? AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ") AND $display_type_check AND ".
+						'vtiger_profile2field.visible=0 AND vtiger_profile2field.readonly = 0 AND vtiger_def_org_field.visible=0 AND vtiger_profile2field.profileid IN ('.
+						generateQuestionMarks($profileList) . ') and vtiger_field.presence in (0,2) ORDER BY block,sequence';
 				$params = array($tabid, $blockid_list, $profileList);
 			}
 		}
@@ -1354,10 +1389,12 @@ function getCustomBlocks($module, $disp_view) {
 		$block_label[$blockid] = $adb->query_result($result, $i, "blocklabel");
 		$sLabelVal = getTranslatedString($block_label[$blockid], $module);
 		$block_list[] = $sLabelVal;
-		if (($disp_view == 'edit_view' || $disp_view == 'create' || $disp_view == 'create_view') && file_exists("Smarty/templates/modules/$module/{$block_label[$blockid]}_edit.tpl")) {
-			$block_list[$sLabelVal] = array('custom' => true, 'relatedlist' => false, 'tpl' => "modules/$module/{$block_label[$blockid]}_edit.tpl");
-		} elseif ($disp_view == 'detail_view' && file_exists("Smarty/templates/modules/$module/{$block_label[$blockid]}_detail.tpl")) {
-			$block_list[$sLabelVal] = array('custom' => true, 'relatedlist' => false, 'tpl' => "modules/$module/{$block_label[$blockid]}_detail.tpl");
+		$inlineEditBlock = "modules/$module/{$block_label[$blockid]}_edit.tpl";
+		$inlineDetailBlock = "modules/$module/{$block_label[$blockid]}_detail.tpl";
+		if (($disp_view == 'edit_view' || $disp_view == 'create' || $disp_view == 'create_view') && file_exists("Smarty/templates/$inlineEditBlock")) {
+			$block_list[$sLabelVal] = array('custom' => true, 'relatedlist' => false, 'tpl' => $inlineEditBlock);
+		} elseif ($disp_view == 'detail_view' && file_exists("Smarty/templates/$inlineDetailBlock")) {
+			$block_list[$sLabelVal] = array('custom' => true, 'relatedlist' => false, 'tpl' => $inlineDetailBlock);
 		} elseif ($hasrelatedlist>0) {
 			$block_list[$sLabelVal] = array('custom' => false, 'relatedlist' => true, 'tpl' => '');
 		} else {
@@ -1563,7 +1600,8 @@ function SaveImage($files, $module, $id, $mode) {
 		} else {
 			$log->debug("Successfully uploaded the Contact Image.");
 			if ($filesize != 0) {
-				if (($file_type_val == "jpeg" ) || ($file_type_val == "png") || ($file_type_val == "jpg" ) || ($file_type_val == "pjpeg" ) || ($file_type_val == "x-png") || ($file_type_val == "gif")) { //Checking whether the file is an image or not
+				$validExtension = array('jpeg', 'png', 'jpg', 'pjpeg', 'x-png', 'gif');
+				if (in_array($file_type_val, $validExtension)) { //Checking whether the file is an image or not
 					$saveimage = "true";
 					$image_error = "false";
 				} else {
@@ -1880,11 +1918,19 @@ function QuickCreate($module) {
 	//Adding Security Check
 	require('user_privileges/user_privileges_' . $current_user->id . '.php');
 	if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
-		$quickcreate_query = "select * from vtiger_field where (quickcreate in (0,2) or typeofdata like '%~M%') and tabid = ? and vtiger_field.presence in (0,2) and displaytype != 2 order by quickcreatesequence";
+		$quickcreate_query = "select *
+			from vtiger_field
+			where (quickcreate in (0,2) or typeofdata like '%~M%') and tabid = ? and vtiger_field.presence in (0,2) and displaytype != 2 order by quickcreatesequence";
 		$params = array($tabid);
 	} else {
 		$profileList = getCurrentUserProfileList();
-		$quickcreate_query = "SELECT distinct vtiger_field.* FROM vtiger_field INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid WHERE vtiger_field.tabid=? AND quickcreate in (0,2) AND vtiger_profile2field.visible=0 AND vtiger_profile2field.readonly = 0 AND vtiger_def_org_field.visible=0 AND vtiger_profile2field.profileid IN (" . generateQuestionMarks($profileList) . ") and vtiger_field.presence in (0,2) and displaytype != 2 ORDER BY quickcreatesequence";
+		$quickcreate_query = 'SELECT distinct vtiger_field.*
+			FROM vtiger_field
+			INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid
+			INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid
+			WHERE vtiger_field.tabid=? AND quickcreate in (0,2) AND vtiger_profile2field.visible=0 AND vtiger_profile2field.readonly = 0 AND '.
+				'vtiger_def_org_field.visible=0 AND vtiger_profile2field.profileid IN (' . generateQuestionMarks($profileList) . ') and '.
+				'vtiger_field.presence in (0,2) and displaytype != 2 ORDER BY quickcreatesequence';
 		$params = array($tabid, $profileList);
 	}
 	$category = getParentTab();
@@ -2401,7 +2447,8 @@ function getTranslatedCurrencyString($str) {
 
 /** 	function used to get the list of importable fields
  * 	@param string $module - module name
- * 	@return array $fieldslist - array with list of fieldnames and the corresponding translated fieldlabels. The return array will be in the format of [fieldname]=>[fieldlabel] where as the fieldlabel will be translated
+ * 	@return array $fieldslist - array with list of fieldnames and the corresponding translated fieldlabels.
+ *  The return array will be in the format of [fieldname]=>[fieldlabel] where as the fieldlabel will be translated
  */
 function getImportFieldsList($module) {
 	global $adb, $log;
@@ -2539,7 +2586,8 @@ function is_emailId($entity_id) {
 
 	$module = getSalesEntityType($entity_id);
 	if ($module == 'Contacts') {
-		$sql = "select email,secondaryemail from vtiger_contactdetails inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid where contactid = ?";
+		$sql = 'select email,secondaryemail
+			from vtiger_contactdetails inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid where contactid = ?';
 		$result = $adb->pquery($sql, array($entity_id));
 		$email1 = $adb->query_result($result, 0, "email");
 		$emaWil2 = $adb->query_result($result, 0, "secondaryemail");
@@ -2549,7 +2597,7 @@ function is_emailId($entity_id) {
 			$check_mailids = "false";
 		}
 	} elseif ($module == 'Leads') {
-		$sql = "select email,secondaryemail from vtiger_leaddetails inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_leaddetails.leadid where leadid = ?";
+		$sql = 'select email,secondaryemail from vtiger_leaddetails inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_leaddetails.leadid where leadid = ?';
 		$result = $adb->pquery($sql, array($entity_id));
 		$email1 = $adb->query_result($result, 0, "email");
 		$email2 = $adb->query_result($result, 0, "secondaryemail");
@@ -2811,9 +2859,11 @@ function getEmailTemplateVariables($modules_list = null) {
 		}
 		$field = array();
 		$tabid = getTabid($module);
-		//many to many relation information field campaignrelstatus(this is the column name of the
-		//field) has block set to '0', which should be ignored.
-		$result = $adb->pquery("select fieldlabel,columnname,displaytype from vtiger_field where tabid=? and vtiger_field.presence in (0,2) and displaytype in (1,2,3) and block !=0", array($tabid));
+		//many to many relation information field campaignrelstatus(this is the column name of the field) has block set to '0', which should be ignored.
+		$result = $adb->pquery(
+			'select fieldlabel,columnname,displaytype from vtiger_field where tabid=? and vtiger_field.presence in (0,2) and displaytype in (1,2,3) and block !=0',
+			array($tabid)
+		);
 		$norows = $adb->num_rows($result);
 		if ($norows > 0) {
 			$table_index = $focus->table_index;
@@ -2825,7 +2875,10 @@ function getEmailTemplateVariables($modules_list = null) {
 				if ($columnname == 'support_start_date' || $columnname == 'support_end_date') {
 					$tabname = 'vtiger_customerdetails';
 				}
-				$option = array(getTranslatedString($module) . ': ' . getTranslatedString($adb->query_result($result, $i, 'fieldlabel')), "$" . strtolower($module) . "-" . $columnname . "$");
+				$option = array(
+					getTranslatedString($module) . ': ' . getTranslatedString($adb->query_result($result, $i, 'fieldlabel')),
+					'$' . strtolower($module) . '-' . $columnname . '$',
+				);
 				$allFields[] = $option;
 			}
 		}
@@ -2851,7 +2904,10 @@ function getEmailTemplateVariables($modules_list = null) {
  */
 function getPickListValues($tablename, $roleid) {
 	global $adb;
-	$query = "select $tablename from vtiger_$tablename inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$tablename.picklist_valueid where roleid=? and picklistid in (select picklistid from vtiger_picklist) order by sortid";
+	$query = "select $tablename
+		from vtiger_$tablename
+		inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$tablename.picklist_valueid
+		where roleid=? and picklistid in (select picklistid from vtiger_picklist) order by sortid";
 	$result = $adb->pquery($query, array($roleid));
 	$fldVal = Array();
 	while ($row = $adb->fetch_array($result)) {
@@ -3271,7 +3327,10 @@ function getReturnPath($host, $from_email) {
 function picklistHasDependency($keyfldname,$modulename) {
 	global $adb;
 	$tabid = getTabid($modulename);
-	$result = $adb->pquery('SELECT tabid FROM vtiger_picklist_dependency WHERE tabid = ? AND (sourcefield = ? OR targetfield = ?) limit 1',array($tabid,$keyfldname,$keyfldname));
+	$result = $adb->pquery(
+		'SELECT tabid FROM vtiger_picklist_dependency WHERE tabid = ? AND (sourcefield = ? OR targetfield = ?) limit 1',
+		array($tabid, $keyfldname, $keyfldname)
+	);
 	if($adb->num_rows($result) > 0)
 		return true;
 	else
@@ -3280,8 +3339,8 @@ function picklistHasDependency($keyfldname,$modulename) {
 
 function fetch_logo($type) {
 	global $adb;
-	$logodir ="test/logo/";
-	$sql="select logoname,frontlogo,faviconlogo from vtiger_organizationdetails";
+	$logodir ='test/logo/';
+	$sql='select logoname,frontlogo,faviconlogo from vtiger_organizationdetails';
 	$result = $adb->pquery($sql, array());
 	switch ($type) {
 		case 1:
@@ -3299,16 +3358,16 @@ function fetch_logo($type) {
 	return $logodir.$logoname;
 }
 
-//added to get mail info for portal user
-//type argument included when addin customizable tempalte for sending portal login details
-function getmail_contents_portalUser($request_array,$password,$type='')
-{
+/* added to get mail info for portal user
+ * type argument included when addin customizable tempalte for sending portal login details
+ * @deprecated
+ */
+function getmail_contents_portalUser($request_array, $password, $type = '') {
 	global $mod_strings ,$adb;
 
 	$subject = $mod_strings['Customer Portal Login Details'];
 
-	//here id is hardcoded with 5. it is for support start notification in vtiger_notificationscheduler
-
+	// id is hardcoded: it is for support start notification in vtiger_notificationscheduler
 	$query='SELECT subject,body FROM vtiger_emailtemplates WHERE templateid=10';
 
 	$result = $adb->pquery($query, array());
@@ -3321,16 +3380,14 @@ function getmail_contents_portalUser($request_array,$password,$type='')
 	$contents = str_replace('$support_team$',$mod_strings['Support Team'],$contents);
 	$contents = str_replace('$logo$','<img src="cid:logo" />',$contents);
 
-	if($type == "LoginDetails")
-	{
+	if ($type == 'LoginDetails') {
 		$temp=$contents;
-		$value["subject"]=$adb->query_result($result,0,'subject');
-		$value["body"]=$temp;
+		$value['subject']=$adb->query_result($result,0,'subject');
+		$value['body']=$temp;
 		return $value;
 	}
 
 	return $contents;
-
 }
 
 ?>

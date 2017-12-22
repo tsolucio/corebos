@@ -488,7 +488,7 @@ class Users extends CRMEntity {
 		$encrypted_new_password = $this->encrypt_password($new_password, $crypt_type);
 
 		// Set change password at next login to 0 if resetting your own password
-		if ($current_user->id == $this->id) {
+		if (!empty($current_user) && $current_user->id == $this->id) {
 			$change_password_next_login = 0;
 		} else {
 			$change_password_next_login = 1;
