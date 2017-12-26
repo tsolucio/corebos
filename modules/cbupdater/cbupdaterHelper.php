@@ -59,7 +59,7 @@ function cbupdater_show_message($msg) {
 EOM;
 }
 
-function cbupdater_dowork_finishExecution($update_count,$success_count,$failure_count) {
+function cbupdater_dowork_finishExecution($update_count, $success_count, $failure_count) {
 	echo <<<EOT
 <br /><br /><hr>
 <table width="35%" border="0" cellpadding="5" cellspacing="0" align="center" class="small">

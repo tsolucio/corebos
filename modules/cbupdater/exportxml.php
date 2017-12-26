@@ -24,7 +24,9 @@ $ids = vtlib_purify($_REQUEST['idstring']);
 
 if (!empty($ids)) {
 	// Export as Zip
-	if ($todir == '') $todir = 'cache';
+	if ($todir == '') {
+		$todir = 'cache';
+	}
 	if (empty($xmlfilename)) {
 		$xmlfilename = 'coreBOSUpdates.xml';
 	} else {
@@ -42,7 +44,7 @@ if (!empty($ids)) {
 			where deleted=0 ';
 	if ($ids!='all') {
 		$ids = str_replace(';', ',', $ids);
-		$ids = trim($ids,',');
+		$ids = trim($ids, ',');
 		$sql .= $adb->sql_escape_string(" and cbupdaterid in ($ids)");
 	}
 	$rs = $adb->query($sql);
@@ -50,20 +52,20 @@ if (!empty($ids)) {
 		$w=new XMLWriter();
 		$w->openMemory();
 		$w->setIndent(true);
-		$w->startDocument('1.0','UTF-8');
+		$w->startDocument('1.0', 'UTF-8');
 		$w->startElement("updatesChangeLog");
 		while ($upd = $adb->fetch_array($rs)) {
 			$w->startElement("changeSet");
-				if (!empty($upd['author'])) {
-					$w->startElement("author");
-					$w->text($upd['author']);
-					$w->endElement();
-				}
-				if (!empty($upd['description'])) {
-					$w->startElement("description");
-					$w->text($upd['description']);
-					$w->endElement();
-				}
+			if (!empty($upd['author'])) {
+				$w->startElement("author");
+				$w->text($upd['author']);
+				$w->endElement();
+			}
+			if (!empty($upd['description'])) {
+				$w->startElement("description");
+				$w->text($upd['description']);
+				$w->endElement();
+			}
 				$w->startElement("filename");
 				$w->text($upd['pathfilename']);
 				$w->endElement();
@@ -82,7 +84,7 @@ if (!empty($ids)) {
 		$cbxml = $w->outputMemory(true);
 		fwrite($fd, $cbxml);
 		fclose($fd);
-		$zip->addFile($xmlcfn,$xmlfilename);
+		$zip->addFile($xmlcfn, $xmlfilename);
 		$zip->save();
 		$zip->forceDownload($zipfilename);
 		unlink($zipfilename);

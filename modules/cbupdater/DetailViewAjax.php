@@ -10,11 +10,11 @@
 global $currentModule;
 $modObj = CRMEntity::getInstance($currentModule);
 $ajaxaction = $_REQUEST["ajxaction"];
-if($ajaxaction == 'DETAILVIEW') {
+if ($ajaxaction == 'DETAILVIEW') {
 	$crmid = vtlib_purify($_REQUEST['recordid']);
 	$fieldname = vtlib_purify($_REQUEST['fldName']);
 	$fieldvalue = utf8RawUrlDecode($_REQUEST['fieldValue']);
-	if(FALSE and $crmid != '') {
+	if (false and $crmid != '') {
 		$modObj->retrieve_entity_info($crmid, $currentModule);
 		$modObj->column_fields[$fieldname] = $fieldvalue;
 		$modObj->id = $crmid;

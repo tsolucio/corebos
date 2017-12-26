@@ -16,25 +16,25 @@
 *  Version      : 5.5.0
 *  Author       : JPL TSolucio, S. L.
 *************************************************************************************************/
-if(typeof(cbupdater) == 'undefined') {
+if (typeof(cbupdater) == 'undefined') {
 	var cbupdater = {
-		
-		getselected : function(record) {
+
+		getselected : function (record) {
 			var select_options = document.getElementById('allselectedboxes').value;
 			var numOfRows = document.getElementById('numOfRows').value;
 			var excludedRecords = document.getElementById('excludedRecords').value;
-			if(select_options=='all') {
+			if (select_options=='all') {
 				var idstring = select_options;
 				var skiprecords = excludedRecords.split(";");
 				var count = skiprecords.length;
-				if(count > 1) {
+				if (count > 1) {
 					count = numOfRows - count + 1;
 				} else {
 					count = numOfRows;
 				}
-				if(count > getMaxMassOperationLimit()) {
+				if (count > getMaxMassOperationLimit()) {
 					var confirm_str = alert_arr.MORE_THAN_500;
-					if(confirm(confirm_str)) {
+					if (confirm(confirm_str)) {
 						var confirm_status = true;
 					} else {
 						return false;
@@ -42,17 +42,17 @@ if(typeof(cbupdater) == 'undefined') {
 				} else {
 					confirm_status = true;
 				}
-				if(confirm_status) {
+				if (confirm_status) {
 					return idstring;
 				}
 			} else {
 				var x = select_options.split(';');
 				var count = x.length;
-				if(count > 1) {
+				if (count > 1) {
 					idstring = select_options;
-					if(count > getMaxMassOperationLimit()) {
+					if (count > getMaxMassOperationLimit()) {
 						confirm_str = alert_arr.MORE_THAN_500;
-						if(confirm(confirm_str)) {
+						if (confirm(confirm_str)) {
 							confirm_status = true;
 						} else {
 							return false;
@@ -60,7 +60,7 @@ if(typeof(cbupdater) == 'undefined') {
 					} else {
 						confirm_status = true;
 					}
-					if(confirm_status) {
+					if (confirm_status) {
 						return idstring;
 					}
 				} else {
@@ -70,20 +70,20 @@ if(typeof(cbupdater) == 'undefined') {
 			}
 			return false;
 		},
-		
-		applyselected : function() {
+
+		applyselected : function () {
 			if (idstring=this.getselected()) {
 				gotourl('index.php?module=cbupdater&action=dowork&idstring='+idstring);
 			}
 		},
-		
-		undoselected : function() {
+
+		undoselected : function () {
 			if (idstring=this.getselected()) {
 				gotourl('index.php?module=cbupdater&action=dowork&doundo=1&idstring='+idstring);
 			}
 		},
-		
-		exportselected : function() {
+
+		exportselected : function () {
 			if (idstring=this.getselected()) {
 				gotourl('index.php?module=cbupdater&action=cbupdaterAjax&file=exportxml&idstring='+idstring);
 			}

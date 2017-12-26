@@ -43,7 +43,7 @@ function cbupd_getfile() {
 	echo '<input type="hidden" name="action" value="importxml">';
 	echo '<input name="zipfile" type="file" value="" tabindex="1"/>';
 	echo '<input name="zipfile_hidden" type="hidden" value=""/>';
-	echo '<br><br><input type="submit" name="import" class="crmButton small save" value="'.getTranslatedString('ImportXML','cbupdater').'" id="save">';
+	echo '<br><br><input type="submit" name="import" class="crmButton small save" value="'.getTranslatedString('ImportXML', 'cbupdater').'" id="save">';
 	echo '</form></div>';
 }
 
@@ -53,9 +53,9 @@ function cbupd_import($zipfile) {
 	$unzip->unzipAll($cspath);
 	$filelist = $unzip->getList();
 	$csxmlfound = false;
-	echo getTranslatedString('Importing','cbupdater').' '.vtlib_purify($zipfile).'<br>';
-	$processing = getTranslatedString('Processing','cbupdater').' ';
-	foreach($filelist as $filename=>$fileinfo) {
+	echo getTranslatedString('Importing', 'cbupdater').' '.vtlib_purify($zipfile).'<br>';
+	$processing = getTranslatedString('Processing', 'cbupdater').' ';
+	foreach ($filelist as $filename => $fileinfo) {
 		echo $processing.$filename.'<br>';
 		$pinfo = pathinfo($filename);
 		if ($pinfo['extension']=='xml') {
@@ -69,7 +69,7 @@ function cbupd_import($zipfile) {
 					$w=new XMLWriter();
 					$w->openMemory();
 					$w->setIndent(true);
-					$w->startDocument('1.0','UTF-8');
+					$w->startDocument('1.0', 'UTF-8');
 					$w->startElement("updatesChangeLog");
 					$root = $cbupdates->documentElement;
 					foreach ($root->childNodes as $node) {
@@ -84,18 +84,18 @@ function cbupd_import($zipfile) {
 									$upd[$elem->nodeName] = $elem->nodeValue;
 								}
 							}
-							echo $processing.getTranslatedString('ChangeSet','cbupdater').' '.$upd['classname'].'<br>';
+							echo $processing.getTranslatedString('ChangeSet', 'cbupdater').' '.$upd['classname'].'<br>';
 							$w->startElement("changeSet");
-								if (!empty($upd['author'])) {
-									$w->startElement("author");
-									$w->text($upd['author']);
-									$w->endElement();
-								}
-								if (!empty($upd['description'])) {
-									$w->startElement("description");
-									$w->text($upd['description']);
-									$w->endElement();
-								}
+							if (!empty($upd['author'])) {
+								$w->startElement("author");
+								$w->text($upd['author']);
+								$w->endElement();
+							}
+							if (!empty($upd['description'])) {
+								$w->startElement("description");
+								$w->text($upd['description']);
+								$w->endElement();
+							}
 								$w->startElement("filename");
 								$w->text($upd['filename']);
 								$w->endElement();
@@ -119,17 +119,17 @@ function cbupd_import($zipfile) {
 			}
 		}
 	}
-	echo getTranslatedString('ImportDone','cbupdater').'<br>';
+	echo getTranslatedString('ImportDone', 'cbupdater').'<br>';
 	if (!$csxmlfound) {
-		echo getTranslatedString('ImportError','cbupdater').'<br>';
-		echo getTranslatedString('CleanUp','cbupdater').'<br>';
+		echo getTranslatedString('ImportError', 'cbupdater').'<br>';
+		echo getTranslatedString('CleanUp', 'cbupdater').'<br>';
 		cbupd_cleanup($filelist);
 	}
 }
 
 function cbupd_cleanup($filelist) {
-	foreach($filelist as $filename=>$fileinfo) {
-		echo getTranslatedString('Deleting','cbupdater').' '.$filename.'<br>';
+	foreach ($filelist as $filename => $fileinfo) {
+		echo getTranslatedString('Deleting', 'cbupdater').' '.$filename.'<br>';
 		@unlink($filename);
 	}
 }

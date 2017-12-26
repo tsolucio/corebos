@@ -20,15 +20,15 @@
 
 global $adb,$currentModule;
 $record = vtlib_purify($_REQUEST['record']);
-if($record) {
+if ($record) {
 	$set = vtlib_purify($_REQUEST['block']);
 	if ($set) {
-		$rdo = $adb->pquery("update vtiger_cbupdater set blocked='1' where cbupdaterid=?",array($record));
+		$rdo = $adb->pquery("update vtiger_cbupdater set blocked='1' where cbupdaterid=?", array($record));
 	} else {
-		$rdo = $adb->pquery("update vtiger_cbupdater set blocked='0' where cbupdaterid=?",array($record));
+		$rdo = $adb->pquery("update vtiger_cbupdater set blocked='0' where cbupdaterid=?", array($record));
 	}
 	header('Location: index.php?action=DetailView&module=cbupdater&record='.urlencode($record));
 } else {
-	header("Location: index.php?action=ListView&module=cbupdater");
+	header('Location: index.php?action=ListView&module=cbupdater');
 }
 ?>
