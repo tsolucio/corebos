@@ -310,6 +310,34 @@ class cbupdaterWorker {
 		}
 	}
 
+	/* Given an array of field definitions this method will move the fields to specified Block.
+	 * The layout is an array of Module Name and Field Definition
+		array(
+			'{modulename}' => array(
+					'{fieldname1}',
+					'{fieldname2}',
+					'{fieldname3}',
+			)
+		),
+	*/
+	public function massMoveFieldsToBlock($fieldLayout, $newblock) {
+		global $adb;
+		foreach ($fieldLayout as $module => $fields) {
+			$moduleInstance = Vtiger_Module::getInstance($module);
+			$block = Vtiger_Block::getInstance($newblock, $moduleInstance);
+			if ($moduleInstance && $block) {
+				foreach ($fields as $field) {
+					$field = Vtiger_Field::getInstance($field, $moduleInstance);
+					if ($field) {
+						$this->ExecuteQuery('UPDATE vtiger_field SET block = ? WHERE fieldid=?', array($block->id, $field->id));
+					}
+				}
+			} else {
+				$this->sendMsg('Module not found: '.$module.'!');
+			}
+		}
+	}
+
 	function installManifestModule($module) {
 		$package = new Vtiger_Package();
 		ob_start();
