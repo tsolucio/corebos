@@ -338,6 +338,49 @@ class cbupdaterWorker {
 		}
 	}
 
+	/* convert a text field into a picklist
+	 * It will fill the picklist with the distinct values in the text field
+	 * @param fieldname
+	 * @param module
+	 * @param boolean multiple indicate if the new picklist with be multiple (true) or simple (false)
+	 */
+	public function convertTextFieldToPicklist($fieldname, $module, $multiple = false) {
+		global $adb,$log;
+		if (!empty($fieldname) && !empty($module)) {
+			$moduleInstance = Vtiger_Module::getInstance($module);
+			if ($moduleInstance) {
+				$field = Vtiger_Field::getInstance($fieldname, $moduleInstance);
+				if ($field) {
+					$data =$adb->pquery('SELECT uitype,tablename FROM vtiger_field WHERE fieldid = ? and tabid=?', array($field->id, $moduleInstance->id));
+					$uitype =$adb->query_result($data, 0, 'uitype');
+					if ($uitype==1) {
+						$table = $adb->query_result($data, 0, 'tablename');
+						$adb->query("update $table set $fieldname = '--None--' where $fieldname is null or trim($fieldname)=''");
+						$picklistvalues=$adb->query("Select distinct $fieldname from $table");
+						$list=array();
+						for ($i=0; $i<$adb->num_rows($picklistvalues); $i++) {
+							$list[]=$adb->query_result($picklistvalues, $i, $fieldname);
+						}
+						if ($multiple) {
+							$adb->pquery('update vtiger_field set uitype=33 where fieldid=? and tabid=?', array($field->id, $moduleInstance->id));
+						} else {
+							$adb->pquery('update vtiger_field set uitype=15 where fieldid=? and tabid=?', array($field->id, $moduleInstance->id));
+						}
+						$field->setPicklistValues($list);
+					} else {
+						$this->sendMsg("<b>The field $fieldname should be uitype 1.</b><br>");
+					}
+				} else {
+					$this->sendMsg("<b>Failed to find $fieldname field.</b><br>");
+				}
+			} else {
+				$this->sendMsg("<b>Failed to find $module module.</b><br>");
+			}
+		} else {
+			$this->sendMsg("<b>The fieldname and module parameters can't be empty</b><br>");
+		}
+	}
+
 	function installManifestModule($module) {
 		$package = new Vtiger_Package();
 		ob_start();
