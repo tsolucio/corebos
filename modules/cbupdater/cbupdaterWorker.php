@@ -224,7 +224,7 @@ class cbupdaterWorker {
 						'label'=>'', // optional, if empty fieldname will be used
 						'massedit' => 0 | 1  // optional, if empty 0 will be set
 						'mods'=>array(module names), // used if uitype 10
-						'vals'=>array(picklist values), // used if uitype 15 or 16
+						'vals'=>array(picklist values), // used if uitype 15, 16 or 33
 					),
 				)),
 	* See changeset addLeadEmailOptOutAndConversionRelatedFields for an example
@@ -261,7 +261,7 @@ class cbupdaterWorker {
 							if ($fieldinfo['uitype']=='10' and !empty($fieldinfo['mods'])) {
 								$newfield->setRelatedModules($fieldinfo['mods']);
 							}
-							if (($fieldinfo['uitype']=='15' or $fieldinfo['uitype']=='16') and !empty($fieldinfo['vals'])) {
+							if (($fieldinfo['uitype']=='15' || $fieldinfo['uitype']=='16' || $fieldinfo['uitype']=='33') and !empty($fieldinfo['vals'])) {
 								$newfield->setPicklistValues($fieldinfo['vals']);
 							}
 						}
