@@ -154,33 +154,78 @@ class Vtiger_FieldBasic {
 
 		if(!$this->label) $this->label = $this->name;
 
-		$chkrs = $adb->pquery('select 1 from vtiger_field where tabid=? and (columnname=? or fieldlabel=?) limit 1',
-			array($this->getModuleId(), $this->column, $this->label));
+		$chkrs = $adb->pquery(
+			'select 1 from vtiger_field where tabid=? and (columnname=? or fieldlabel=?) limit 1',
+			array($this->getModuleId(), $this->column, $this->label)
+		);
 		if ($adb->num_rows($chkrs)==0) {
-			$result = $adb->pquery("INSERT INTO vtiger_field (tabid, fieldid, columnname, tablename, generatedtype,
-				uitype, fieldname, fieldlabel, readonly, presence, defaultvalue, maximumlength, sequence,
-				block, displaytype, typeofdata, quickcreate, quickcreatesequence, info_type, helpinfo)
-				VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-					Array($this->getModuleId(), $this->id, $this->column, $this->table, (int)$this->generatedtype,
-					$this->uitype, $this->name, $this->label, $this->readonly, $this->presence, $this->defaultvalue,
-					$this->maximumlength, $this->sequence, $this->getBlockId(), $this->displaytype, $this->typeofdata,
-					$this->quickcreate, $this->quicksequence, $this->info_type, $this->helpinfo));
+			$params = array(
+				$this->getModuleId(),
+				$this->id,
+				$this->column,
+				$this->table,
+				(int)$this->generatedtype,
+				$this->uitype,
+				$this->name,
+				$this->label,
+				$this->readonly,
+				$this->presence,
+				$this->defaultvalue,
+				$this->maximumlength,
+				$this->sequence,
+				$this->getBlockId(),
+				$this->displaytype,
+				$this->typeofdata,
+				$this->quickcreate,
+				$this->quicksequence,
+				$this->info_type,
+				$this->helpinfo,
+			);
+			$result = $adb->pquery(
+				'INSERT INTO vtiger_field (
+					tabid,
+					fieldid,
+					columnname,
+					tablename,
+					generatedtype,
+					uitype,
+					fieldname,
+					fieldlabel,
+					readonly,
+					presence,
+					defaultvalue,
+					maximumlength,
+					sequence,
+					block,
+					displaytype,
+					typeofdata,
+					quickcreate,
+					quickcreatesequence,
+					info_type,
+					helpinfo
+				) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+				$params
+			);
 			// Set the field status for mass-edit (if set)
 			$adb->pquery('UPDATE vtiger_field SET masseditable=? WHERE fieldid=?', Array($this->masseditable, $this->id));
 			Vtiger_Profile::initForField($this);
 		}
 		$colrs = $adb->getColumnNames($this->table);
 		if (!in_array($this->column, $colrs)) {
-			if(!empty($this->columntype)) {
+			if (!empty($this->columntype)) {
 				Vtiger_Utils::AddColumn($this->table, $this->column, $this->columntype);
 			}
 		}
-		if(!empty($result)) {
+		if (!empty($result)) {
 			self::log("Creating Field $this->name ... DONE");
 			self::log("Module language mapping for $this->label ... CHECK");
 		} else {
-			self::log("Creating Field $this->name on $moduleInstance->name ... <span style='color:red'>**ERROR**</span>");
-			self::log("Module language mapping for $this->label ... <span style='color:red'>**ERROR**</span>");
+			self::log("Creating Field $this->name ($this->label) on $moduleInstance->name ... <span style='color:red'>**ERROR**</span>");
+			if (!empty($params)) {
+				self::log(print_r($params, true));
+			} else {
+				self::log("A field with that name or label already exists.");
+			}
 		}
 	}
 
