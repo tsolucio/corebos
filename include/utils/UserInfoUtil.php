@@ -10,7 +10,7 @@
 require_once('include/database/PearDatabase.php');
 require_once('include/utils/utils.php');
 require_once('include/utils/GetUserGroups.php');
-include('config.php');
+include('config.inc.php');
 global $log;
 
 /** To retreive the mail server info resultset for the specified user

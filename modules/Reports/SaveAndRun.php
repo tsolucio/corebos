@@ -11,7 +11,7 @@ global $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 require_once('modules/CustomView/CustomView.php');
-require_once("config.php");
+require_once('config.inc.php');
 require_once('modules/Reports/Reports.php');
 require_once('include/logging.php');
 require_once("modules/Reports/ReportRun.php");

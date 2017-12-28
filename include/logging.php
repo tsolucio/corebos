@@ -13,7 +13,7 @@
 * permissions and limitations under the License. You may obtain a copy of the License
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
-require_once('config.php');
+require_once('config.inc.php');
 
 // Performance Optimization: Configure the log folder
 if (!empty($LOG4PHP_DEBUG)) {
