@@ -2889,21 +2889,8 @@ function getRecordValues($id_array,$module) {
 	return $parent_array;
 }
 
-/** Function to check whether the relationship entries are exist or not on elationship tables */
-function is_related($relation_table,$crm_field,$related_module_id,$crmid)
-{
-	global $adb;
-	$check_res = $adb->query("select crmid from $relation_table where $crm_field=$related_module_id and crmid=$crmid limit 1");
-	$count = $adb->num_rows($check_res);
-	if($count > 0)
-		return true;
-	else
-		return false;
-}
-
-/** Get SQL to find duplicates in a particular module*/
-function getDuplicateQuery($module,$field_values,$ui_type_arr)
-{
+/** Get SQL to find duplicates in a particular module */
+function getDuplicateQuery($module, $field_values, $ui_type_arr) {
 	global $current_user;
 	$tbl_col_fld = explode(",", $field_values);
 	$i=0;
