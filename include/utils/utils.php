@@ -699,40 +699,14 @@ function microtime_diff($a, $b) {
  */
 
 /**
- * Return the display name for a theme if it exists.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- */
-function get_theme_display($theme) {
-	global $log;
-	$log->debug("Entering get_theme_display(".$theme.") method ...");
-	global $theme_name, $theme_description;
-	$temp_theme_name = $theme_name;
-	$temp_theme_description = $theme_description;
-
-	if (is_file("./themes/$theme/config.php")) {
-		@include("./themes/$theme/config.php");
-		$return_theme_value = $theme_name;
-	}
-	else {
-		$return_theme_value = $theme;
-	}
-	$theme_name = $temp_theme_name;
-	$theme_description = $temp_theme_description;
-
-	$log->debug("Exiting get_theme_display method ...");
-	return $return_theme_value;
-}
-
-/**
  * Return an array of directory names.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
  */
 function get_themes() {
 	global $log;
-	$log->debug("Entering get_themes() method ...");
-	if ($dir = @opendir("./themes")) {
+	$log->debug('Entering get_themes() method ...');
+	if ($dir = @opendir('./themes')) {
 		while (($file = readdir($dir)) !== false) {
 			if ($file != ".." && $file != "." && $file != "CVS" && $file != "Attic" && $file != "akodarkgem" && $file != "bushtree" && $file != "coolblue" && $file != "Amazon" && $file != "busthree" && $file != "Aqua" && $file != "nature" && $file != "orange" && $file != "blue") {
 				if(is_dir("./themes/".$file)) {
@@ -759,30 +733,6 @@ function get_themes() {
 	ksort($filelist);
 	$log->debug("Exiting get_themes method ...");
 	return $filelist;
-}
-
-/**
- * @deprecated
- */
-function array_csort() {
-}
-
-/** Function to set default varibles on to the global variable
-  * @param $defaults -- default values:: Type array
-*/
-function set_default_config(&$defaults)
-{
-	global $log;
-	$log->debug('Entering set_default_config('.print_r($defaults,true).') method ...');
-
-	foreach ($defaults as $name=>$value)
-	{
-		if ( ! isset($GLOBALS[$name]) )
-		{
-			$GLOBALS[$name] = $value;
-		}
-	}
-	$log->debug('Exiting set_default_config method ...');
 }
 
 //this is an optimisation of the to_html function, here we make the decision
