@@ -706,32 +706,17 @@ function microtime_diff($a, $b) {
 function get_themes() {
 	global $log;
 	$log->debug('Entering get_themes() method ...');
+	$filelist = array();
 	if ($dir = @opendir('./themes')) {
-		while (($file = readdir($dir)) !== false) {
-			if ($file != ".." && $file != "." && $file != "CVS" && $file != "Attic" && $file != "akodarkgem" && $file != "bushtree" && $file != "coolblue" && $file != "Amazon" && $file != "busthree" && $file != "Aqua" && $file != "nature" && $file != "orange" && $file != "blue") {
-				if(is_dir("./themes/".$file)) {
-					if(!($file[0] == '.')) {
-						// set the initial theme name to the filename
-						$name = $file;
-
-						// if there is a configuration class, load that.
-						if(is_file("./themes/$file/config.php"))
-						{
-							require_once("./themes/$file/config.php");
-						}
-
-						if(is_file("./themes/$file/style.css"))
-						{
-							$filelist[$file] = $name;
-						}
-					}
-				}
+		while (($file = readdir($dir))) {
+			if ($file != '..' && $file != '.' && is_dir('./themes/'.$file) && $file[0] != '.' && is_file("./themes/$file/style.css")) {
+				$filelist[$file] = $file;
 			}
 		}
 		closedir($dir);
 	}
 	ksort($filelist);
-	$log->debug("Exiting get_themes method ...");
+	$log->debug('Exiting get_themes method ...');
 	return $filelist;
 }
 
