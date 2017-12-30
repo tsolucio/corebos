@@ -273,10 +273,8 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 	}
 
 	public function describe($elementType){
-		$app_strings = VTWS_PreserveGlobal::getGlobal('app_strings');
 		$current_user = vtws_preserveGlobal('current_user',$this->user);
-
-		$label = (isset($app_strings[$elementType]))? $app_strings[$elementType]:$elementType;
+		$label = getTranslatedString($elementType, $elementType);
 		$createable = strcasecmp(isPermitted($elementType, EntityMeta::$CREATE), 'yes') === 0;
 		$updateable = strcasecmp(isPermitted($elementType, EntityMeta::$UPDATE), 'yes') === 0;
 		$deleteable = $this->meta->hasDeleteAccess();
