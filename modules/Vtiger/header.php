@@ -13,7 +13,7 @@ require_once("data/Tracker.php");
 require_once("include/utils/utils.php");
 require_once("include/calculator/Calc.php");
 
-global $currentModule, $default_charset, $app_strings, $moduleList, $theme;
+global $currentModule, $default_charset, $app_strings, $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 $userName = getFullNameFromArray('Users', $current_user->column_fields);

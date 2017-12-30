@@ -64,7 +64,7 @@ require_once("data/Tracker.php");
 require_once("include/utils/utils.php");
 require_once 'vtigerversion.php';
 
-global $currentModule, $moduleList, $adb, $coreBOS_app_version;
+global $currentModule, $adb, $coreBOS_app_version;
 $image_path="include/images/";
 
 $app_strings = return_application_language('en_us');

@@ -338,7 +338,6 @@ if($use_current_login)
 		header("Location: index.php?action=Login&module=Users");
 	}
 	coreBOS_Session::setUserGlobalSessionVariables();
-	$moduleList = getPermittedModuleNames();
 
 	//auditing
 	require_once('user_privileges/audit_trail.php');
