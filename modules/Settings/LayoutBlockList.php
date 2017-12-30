@@ -470,6 +470,7 @@ function getCustomFieldSupportedModules() {
 		inner join vtiger_tab on vtiger_field.tabid=vtiger_tab.tabid
 		where vtiger_field.tabid not in(9,10,16,15,8,29)';
 	$result = $adb->query($sql);
+	$modulelist = array();
 	while ($moduleinfo=$adb->fetch_array($result)) {
 		$modulelist[$moduleinfo['name']] = $moduleinfo['name'];
 	}

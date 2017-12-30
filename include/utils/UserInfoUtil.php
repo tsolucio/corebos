@@ -3709,48 +3709,40 @@ function getModuleAccessArray() {
 /** Function to get the permitted module name Array with presence as 0
   * @returns permitted module name Array :: Type Array
  */
-function getPermittedModuleNames()
-{
-	global $log,$adb;
-	$log->debug("Entering getPermittedModuleNames() method ...");
-	global $current_user;
-	$permittedModules=Array();
+function getPermittedModuleNames() {
+	global $log, $adb, $current_user;
+	$log->debug('Entering getPermittedModuleNames() method ...');
+	$permittedModules = array();
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	include('tabdata.php');
 
-	if(defined('COREBOS_INSIDE_MOBILE')){
-		if (isset($current_user_profiles))
-		foreach ($current_user_profiles as $profid) {
-			$profilename = '';
-			$resprofile = $adb->pquery("SELECT profilename FROM vtiger_profile WHERE profileid = ?",array($profid));
-			$profilename = $adb->query_result($resprofile, 0, 'profilename');
-			if(strpos($profilename, 'Mobile::') !== false){
-				$profileTabsPermission=getProfileTabsPermission($profid);
+	if (defined('COREBOS_INSIDE_MOBILE')) {
+		if (isset($current_user_profiles)) {
+			foreach ($current_user_profiles as $profid) {
+				$profilename = '';
+				$resprofile = $adb->pquery('SELECT profilename FROM vtiger_profile WHERE profileid = ?', array($profid));
+				$profilename = $adb->query_result($resprofile, 0, 'profilename');
+				if (strpos($profilename, 'Mobile::') !== false) {
+					$profileTabsPermission=getProfileTabsPermission($profid);
+				}
 			}
 		}
 	}
 
-	if($is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1)
-	{
-		foreach($tab_seq_array as $tabid=>$seq_value)
-		{
-			if($seq_value === 0 && isset($profileTabsPermission[$tabid]) && $profileTabsPermission[$tabid] === 0)
-			{
+	if ($is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1) {
+		foreach ($tab_seq_array as $tabid => $seq_value) {
+			if ($seq_value === 0 && isset($profileTabsPermission[$tabid]) && $profileTabsPermission[$tabid] === 0) {
+				$permittedModules[]=getTabModuleName($tabid);
+			}
+		}
+	} else {
+		foreach ($tab_seq_array as $tabid => $seq_value) {
+			if ($seq_value === 0) {
 				$permittedModules[]=getTabModuleName($tabid);
 			}
 		}
 	}
-	else
-	{
-		foreach($tab_seq_array as $tabid=>$seq_value)
-		{
-			if($seq_value === 0)
-			{
-				$permittedModules[]=getTabModuleName($tabid);
-			}
-		}
-	}
-	$log->debug("Exiting getPermittedModuleNames method ...");
+	$log->debug('Exiting getPermittedModuleNames method ...');
 	return $permittedModules;
 }
 
@@ -3760,37 +3752,36 @@ function getPermittedModuleNames()
  */
 function getPermittedModuleIdList() {
 	global $current_user;
-	$permittedModules=Array();
+	$permittedModules=array();
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	include('tabdata.php');
 
-	if(defined('COREBOS_INSIDE_MOBILE')){
+	if (defined('COREBOS_INSIDE_MOBILE')) {
 		foreach ($current_user_profiles as $profid) {
 			$profilename = '';
-			$resprofile = $adb->pquery("SELECT profilename FROM vtiger_profile WHERE profileid = ?",array($profid));
+			$resprofile = $adb->pquery('SELECT profilename FROM vtiger_profile WHERE profileid = ?', array($profid));
 			$profilename = $adb->query_result($resprofile, 0, 'profilename');
-			if(strpos($profilename, 'Mobile::') !== false){
+			if (strpos($profilename, 'Mobile::') !== false) {
 				$profileTabsPermission=getProfileTabsPermission($profid);
 			}
 		}
 	}
 
-	if($is_admin == false && $profileGlobalPermission[1] == 1 &&
-			$profileGlobalPermission[2] == 1) {
-		foreach($tab_seq_array as $tabid=>$seq_value) {
-			if($seq_value === 0 && isset($profileTabsPermission[$tabid]) && $profileTabsPermission[$tabid] === 0) {
+	if ($is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1) {
+		foreach ($tab_seq_array as $tabid => $seq_value) {
+			if ($seq_value === 0 && isset($profileTabsPermission[$tabid]) && $profileTabsPermission[$tabid] === 0) {
 				$permittedModules[]=($tabid);
 			}
 		}
 	} else {
-		foreach($tab_seq_array as $tabid=>$seq_value) {
-			if($seq_value === 0) {
+		foreach ($tab_seq_array as $tabid => $seq_value) {
+			if ($seq_value === 0) {
 				$permittedModules[]=($tabid);
 			}
 		}
 	}
 	$homeTabid = getTabid('Home');
-	if(!in_array($homeTabid, $permittedModules)) {
+	if (!in_array($homeTabid, $permittedModules)) {
 		$permittedModules[] = $homeTabid;
 	}
 	return $permittedModules;
@@ -3799,59 +3790,65 @@ function getPermittedModuleIdList() {
 /** Function to recalculate the Sharing Rules for all the users
   * This function will recalculate all the sharing rules for all the users in the Organization and will write them in flat files
  */
-function RecalculateSharingRules()
-{
+function RecalculateSharingRules() {
 	global $log, $adb;
-	$log->debug("Entering RecalculateSharingRules() method ...");
+	$log->debug('Entering RecalculateSharingRules() method ...');
 	require_once('modules/Users/CreateUserPrivilegeFile.php');
-	$query="select id from vtiger_users where deleted=0";
+	$query='select id from vtiger_users where deleted=0';
 	$result=$adb->pquery($query, array());
 	$num_rows=$adb->num_rows($result);
-	for($i=0;$i<$num_rows;$i++)
-	{
-		$id=$adb->query_result($result,$i,'id');
+	for ($i=0; $i<$num_rows; $i++) {
+		$id=$adb->query_result($result, $i, 'id');
 		createUserPrivilegesfile($id);
 		createUserSharingPrivilegesfile($id);
 	}
-	$log->debug("Exiting RecalculateSharingRules method ...");
+	$log->debug('Exiting RecalculateSharingRules method ...');
 }
 
 /** Function to get the list of module for which the user defined sharing rules can be defined
   * @returns Array:: Type array
   */
-function getSharingModuleList($eliminateModules=false)
-{
-	global $log;
+function getSharingModuleList($eliminateModules = false) {
+	global $log, $adb;
 
-	$sharingModuleArray = Array();
+	$sharingModuleArray = array();
 
-	global $adb;
-	if(empty($eliminateModules)) $eliminateModules = Array();
-
-	// Module that needs to be eliminated explicitly
-	if(!in_array('Calendar', $eliminateModules)) $eliminateModules[] = 'Calendar';
-	if(!in_array('Events', $eliminateModules)) $eliminateModules[] = 'Events';
-
-	$query = "SELECT name FROM vtiger_tab WHERE presence=0 AND ownedby = 0 AND isentitytype = 1";
-	$query .= " AND name NOT IN('" . implode("','", $eliminateModules) . "')";
-
-	$result = $adb->query($query);
-	while($resrow = $adb->fetch_array($result)) {
-		$sharingModuleArray[] = $resrow['name'];
+	if (empty($eliminateModules)) {
+		$eliminateModules = array();
 	}
 
+	// Module that needs to be eliminated explicitly
+	if (!in_array('Calendar', $eliminateModules)) {
+		$eliminateModules[] = 'Calendar';
+	}
+	if (!in_array('Events', $eliminateModules)) {
+		$eliminateModules[] = 'Events';
+	}
+
+	$query = "SELECT name FROM vtiger_tab WHERE presence=0 AND ownedby = 0 AND isentitytype = 1 AND name NOT IN('" . implode("','", $eliminateModules) . "')";
+
+	$result = $adb->query($query);
+	while ($resrow = $adb->fetch_array($result)) {
+		$sharingModuleArray[] = $resrow['name'];
+	}
 	return $sharingModuleArray;
 }
 
-function isCalendarPermittedBySharing($recordId)
-{
+function isCalendarPermittedBySharing($recordId) {
 	global $adb, $current_user;
 	$permission = 'no';
-	$query = "select 1 from vtiger_sharedcalendar where sharedid=? and
-			userid in (select smownerid as usrid from vtiger_activity inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid where vtiger_activity.activityid=? and visibility='Public' and smownerid !=0)
+	$query = "select 1
+			from vtiger_sharedcalendar
+			where sharedid=? and
+			userid in (
+				select smownerid as usrid
+				from vtiger_activity
+				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid
+				where vtiger_activity.activityid=? and visibility='Public' and smownerid !=0
+			)
 		UNION
 			select 1 from vtiger_invitees where vtiger_invitees.activityid=? and inviteeid=?";
-	$result = $adb->pquery($query, array($current_user->id,$recordId,$recordId,$current_user->id));
+	$result = $adb->pquery($query, array($current_user->id, $recordId, $recordId, $current_user->id));
 	if ($adb->num_rows($result) > 0) {
 		$permission = 'yes';
 	}
@@ -3859,8 +3856,7 @@ function isCalendarPermittedBySharing($recordId)
 }
 
 /* Function to populate default entries for the picklist while creating a new role */
-function insertRole2Picklist($roleid,$parentroleid)
-{
+function insertRole2Picklist($roleid, $parentroleid) {
 	global $adb,$log;
 	$log->debug("Entering into the function insertRole2Picklist($roleid,$parentroleid)");
 	$sql = "insert into vtiger_role2picklist select '".$roleid."',picklistvalueid,picklistid,sortid from vtiger_role2picklist where roleid=?";
@@ -3871,8 +3867,7 @@ function insertRole2Picklist($roleid,$parentroleid)
 /** Function to delete group to report relation of the  specified group
  * @param $groupId -- Group Id :: Type integer
  */
-function deleteGroupReportRelations($groupId)
-{
+function deleteGroupReportRelations($groupId) {
 	global $log;
 	$log->debug("Entering deleteGroupReportRelations(".$groupId.") method ...");
 	global $adb;
@@ -3885,7 +3880,7 @@ function deleteGroupReportRelations($groupId)
  *  @params  $modulename -- Module Name :: String Type
  *   		 $fieldname  -- Field Name  :: String Type
  */
-function isFieldActive($modulename,$fieldname){
+function isFieldActive($modulename, $fieldname) {
 	$fieldid = getFieldid(getTabid($modulename), $fieldname, true);
 	return ($fieldid !== false);
 }
@@ -3895,17 +3890,16 @@ function isFieldActive($modulename,$fieldname){
  * @param Users $user - user for which query needs to be generated.
  * @return String Access control Query for the user.
  */
-function getNonAdminAccessControlQuery($module,$user,$scope=''){
+function getNonAdminAccessControlQuery($module, $user, $scope = '') {
 	$instance = CRMEntity::getInstance($module);
-	return $instance->getNonAdminAccessControlQuery($module,$user,$scope);
+	return $instance->getNonAdminAccessControlQuery($module, $user, $scope);
 }
 
-function appendFromClauseToQuery($query,$fromClause) {
+function appendFromClauseToQuery($query, $fromClause) {
 	$query = preg_replace('/\s+/', ' ', $query);
-	$condition = substr($query, strripos($query,' where '),strlen($query));
-	$newQuery = substr($query, 0, strripos($query,' where '));
+	$condition = substr($query, strripos($query, ' where '), strlen($query));
+	$newQuery = substr($query, 0, strripos($query, ' where '));
 	$query = $newQuery.$fromClause.$condition;
 	return $query;
 }
-
 ?>
