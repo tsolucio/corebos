@@ -172,21 +172,14 @@ class VtigerCRMObject{
 		return $this->instance->column_fields;
 	}
 
-	function exists($id) {
+	/* this method just checks if a record exists and is not deleted, it does not obligate that it be the same entity type of the object instantiation */
+	public function exists($id) {
 		global $adb;
-
-		$exists = false;
-		$sql = "select crmid from vtiger_crmentity where crmid=? and deleted=0";
-		$result = $adb->pquery($sql , array($id));
-		if ($result != null && isset($result)) {
-			if ($adb->num_rows($result)>0) {
-				$exists = true;
-			}
-		}
-		return $exists;
+		$result = $adb->pquery('select 1 from vtiger_crmentity where crmid=? and deleted=0 limit 1' , array($id));
+		return ($result && $adb->num_rows($result)>0);
 	}
 
-	function getSEType($id) {
+	public function getSEType($id) {
 		global $adb;
 
 		$seType = null;

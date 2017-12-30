@@ -3324,17 +3324,14 @@ function getReturnPath($host, $from_email) {
 	return $returnpath;
 }
 
-function picklistHasDependency($keyfldname,$modulename) {
+function picklistHasDependency($keyfldname, $modulename) {
 	global $adb;
 	$tabid = getTabid($modulename);
 	$result = $adb->pquery(
 		'SELECT tabid FROM vtiger_picklist_dependency WHERE tabid = ? AND (sourcefield = ? OR targetfield = ?) limit 1',
 		array($tabid, $keyfldname, $keyfldname)
 	);
-	if($adb->num_rows($result) > 0)
-		return true;
-	else
-		return false;
+	return ($adb->num_rows($result) > 0);
 }
 
 function fetch_logo($type) {

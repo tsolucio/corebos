@@ -3186,14 +3186,13 @@ class CRMEntity {
 	 */
 	public function getOrderBy() {
 		global $log, $currentModule;
-		$log->debug("Entering getOrderBy() method ...");
+		$log->debug('Entering getOrderBy() method ...');
 
-		$use_default_order_by = '';
+		$order_by = '';
 		if (GlobalVariable::getVariable('Application_ListView_Default_Sorting', 0, $currentModule)) {
-			$use_default_order_by = $this->default_order_by;
+			$order_by = $this->default_order_by;
 		}
 
-		$order_by = $use_default_order_by;
 		if (isset($_REQUEST['order_by'])) {
 			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
 		} elseif (!empty($_SESSION[$currentModule.'_Order_By'])) {
