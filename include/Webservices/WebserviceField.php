@@ -180,14 +180,18 @@ class WebserviceField{
 		return $this->blockName;
 	}
 
-	public function getBlockSequence(){
-		if(empty($this->blockSequence)) {
-			if(empty($this->blockId)) {
+	public function getBlockSequence() {
+		static $blkcache = array();
+		if (empty($this->blockSequence)) {
+			if (empty($this->blockId)) {
 				$this->blockSequence = 0;
+			} elseif (isset($blkcache[$this->blockId])) {
+				return $blkcache[$this->blockId];
 			} else {
 				global $adb;
 				$blkseqrs = $adb->query('select sequence from vtiger_blocks where blockid='.$this->blockId);
-				$this->blockSequence = $adb->query_result($blkseqrs,0,0);
+				$this->blockSequence = $adb->query_result($blkseqrs, 0, 0);
+				$blkcache[$this->blockId] = $this->blockSequence;
 			}
 		}
 		return $this->blockSequence;
