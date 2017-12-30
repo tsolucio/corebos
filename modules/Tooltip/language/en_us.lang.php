@@ -6,10 +6,9 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-* 
  ********************************************************************************/
 
-$mod_strings = Array (
+$mod_strings = array (
 'Tooltip' => 'ToolTip',
 'LBL_TOOLTIP_MANAGEMENT'=>'Tooltip Management',
 'LBL_TOOLTIP_MANAGEMENT_DESCRIPTION'=>'Manage the tooltip information from here',
