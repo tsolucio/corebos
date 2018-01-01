@@ -6,7 +6,6 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 <script type="text/javascript" src="include/js/smoothscroll.js"></script>
@@ -21,7 +20,7 @@
     	<input type="hidden" name="module" value="Settings">
     	<input type="hidden" name="parenttab" value="Settings">
 	<input type="hidden" name="action">
-			{include file="SetMenu.tpl"}	
+			{include file="SetMenu.tpl"}
 				<!-- DISPLAY -->
 				<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 				<tr>
