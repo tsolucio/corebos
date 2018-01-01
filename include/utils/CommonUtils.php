@@ -1056,9 +1056,8 @@ function getDisplayCurrency() {
  */
 function convertToDollar($amount, $crate) {
 	global $log;
-	$log->debug("Entering convertToDollar(" . $amount . "," . $crate . ") method ...");
-	$log->debug("Exiting convertToDollar method ...");
-	return $amount / $crate;
+	$log->debug('Entering/Exiting convertToDollar(' . $amount . ',' . $crate . ') method ...');
+	return (empty($crate) ? $amount : $amount / $crate);
 }
 
 /** This function returns the amount converted from dollar.
@@ -1067,8 +1066,7 @@ function convertToDollar($amount, $crate) {
  */
 function convertFromDollar($amount, $crate) {
 	global $log;
-	$log->debug("Entering convertFromDollar(" . $amount . "," . $crate . ") method ...");
-	$log->debug("Exiting convertFromDollar method ...");
+	$log->debug('Entering/Exiting convertFromDollar(' . $amount . ',' . $crate . ') method ...');
 	return round($amount * $crate, 2);
 }
 
@@ -1078,8 +1076,7 @@ function convertFromDollar($amount, $crate) {
  */
 function convertFromMasterCurrency($amount, $crate) {
 	global $log;
-	$log->debug("Entering convertFromMasterCurrency(" . $amount . "," . $crate . ") method ...");
-	$log->debug("Exiting convertFromMasterCurrency method ...");
+	$log->debug('Entering/Exiting convertFromMasterCurrency(' . $amount . ',' . $crate . ') method ...');
 	return $amount * $crate;
 }
 
