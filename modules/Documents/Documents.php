@@ -379,6 +379,27 @@ class Documents extends CRMEntity {
 		}
 	}
 
+	public static function createFolder($fname) {
+		global $adb, $current_user;
+		$dbQuery = 'select 1 from vtiger_attachmentsfolder where foldername=?';
+		$rs = $adb->pquery($dbQuery, array($fname));
+		if ($rs && $adb->num_rows($rs)==0) {
+			$params = array();
+			$sqlfid = 'select max(folderid) from vtiger_attachmentsfolder';
+			$rs = $adb->pquery($sqlfid, $params);
+			$fid = $adb->query_result($rs, 0, 0) + 1;
+			$params = array();
+			$sqlseq = 'select max(sequence) from vtiger_attachmentsfolder';
+			$rs = $adb->pquery($sqlseq, $params);
+			$sequence=$adb->query_result($rs, 0, 0) + 1;
+			$sql = 'insert into vtiger_attachmentsfolder (folderid,foldername,description,createdby,sequence) values (?,?,?,?,?)';
+			$params = array($fid, $fname, '', $current_user->id, $sequence);
+			$result = $adb->pquery($sql, $params);
+			return ($result ? $fid : false);
+		}
+		return false;
+	}
+
 	/*function save_related_module($module, $crmid, $with_module, $with_crmid){
 	}*/
 
