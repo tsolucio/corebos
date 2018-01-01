@@ -24,7 +24,6 @@ $mod_strings = array(
 'LBL_PRODUCT_NAME'=>'Name des Produkt',
 'LBL_LIST_AMOUNT'=>'Summe',
 
-'LBL_COBROPAGO_NAME'=>'Zahlung Ref:',
 'LBL_ACCOUNT_NAME'=>'Name der Organisation:',
 'LBL_AMOUNT'=>'Summe:',
 'LBL_TYPE'=>'Typ:',
