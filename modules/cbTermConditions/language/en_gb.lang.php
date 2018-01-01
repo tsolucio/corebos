@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'cbTermConditions' => 'Terms and Conditions',
 	'SINGLE_cbTermConditions' => 'Terms and Conditions',
 	'TandC No' => 'Terms and Conditions No',
@@ -17,8 +17,8 @@ $mod_strings = Array(
 	'Terms and Conditions' => 'Terms and Conditions',
 	'formodule' => 'For Module',
 	'Quotes' => 'Quotes',
-	'SalesOrder' => 'SalesOrder',
-	'PurchaseOrder' => 'PurchaseOrder',
+	'SalesOrder' => 'Sales Order',
+	'PurchaseOrder' => 'Purchase Order',
 	'Invoice' => 'Invoice',
 
 	'LBL_CBTERMCONDITIONS_INFORMATION' => 'Terms and Conditions Information',
@@ -26,5 +26,4 @@ $mod_strings = Array(
 	'LBL_DESCRIPTION_INFORMATION' => 'Description',
 
 );
-
 ?>
