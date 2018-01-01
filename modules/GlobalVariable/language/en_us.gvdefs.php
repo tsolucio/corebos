@@ -462,6 +462,27 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Show Documents list view as separate folders or as a normal list view. Default is 1 = Folder view.',
 ),
+'Document_CreateSelectContactFolder' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'When creating a document from a Contact, create a new folder with the name of the contact and select it by default.',
+),
+'Document_CreateSelectAccountFolder' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'When creating a document from an Account, create a new folder with the name of the account and select it by default.',
+),
+'Document_CreateSelectAccountFolderForContact' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'When creating a document from a Contact, create a new folder with the name of the related account and select it by default. This variable overrides Document_CreateSelectContactFolder',
+),
 'Inventory_Tax_Type_Default' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'String',

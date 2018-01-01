@@ -462,6 +462,27 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Mostrar la vista de lista de documentos como carpetas separadas o como una lista normal. El valor predeterminado es 1 = Vista de carpeta.',
 ),
+'Document_CreateSelectContactFolder' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Al crear un documento desde un contacto, crea una nueva carpeta con el nombre del contacto y la selecciona de manera predeterminada.',
+),
+'Document_CreateSelectAccountFolder' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Al crear un documento desde una cuenta, crea una nueva carpeta con el nombre de la cuenta y la selecciona de manera predeterminada.',
+),
+'Document_CreateSelectAccountFolderForContact' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Al crear un documento desde un contacto, crea una nueva carpeta con el nombre de la cuenta relacionada y la selecciona de manera predeterminada. Esta variable tiene prioridad sobre Document_CreateSelectContactFolder',
+),
 'Inventory_Tax_Type_Default' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Texto',
