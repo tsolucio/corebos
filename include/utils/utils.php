@@ -33,12 +33,6 @@ require_once 'vtlib/Vtiger/Language.php';
 
 // Constants to be defined here
 
-// For Migration status.
-define("MIG_CHARSET_PHP_UTF8_DB_UTF8", 1);
-define("MIG_CHARSET_PHP_NONUTF8_DB_NONUTF8", 2);
-define("MIG_CHARSET_PHP_NONUTF8_DB_UTF8", 3);
-define("MIG_CHARSET_PHP_UTF8_DB_NONUTF8", 4);
-
 // For Customview status.
 define("CV_STATUS_DEFAULT", 0);
 define("CV_STATUS_PRIVATE", 1);
@@ -2727,37 +2721,6 @@ function isValueInPicklist($value,$picklist_name)
 		return true;
 	else
 		return false;
-}
-
-function get_config_status() {
-	global $default_charset;
-	if($default_charset == 'UTF-8')
-		$config_status=1;
-	else
-		$config_status=0;
-	return $config_status;
-}
-
-function getMigrationCharsetFlag() {
-	global $adb;
-
-	$db_status=check_db_utf8_support($adb);
-	$config_status=get_config_status();
-
-	if ($db_status == $config_status) {
-		if ($db_status == 1) { // Both are UTF-8
-			$db_migration_status = MIG_CHARSET_PHP_UTF8_DB_UTF8;
-		} else { // Both are Non UTF-8
-			$db_migration_status = MIG_CHARSET_PHP_NONUTF8_DB_NONUTF8;
-		}
-		} else {
-			if ($db_status == 1) { // Database charset is UTF-8 and CRM charset is Non UTF-8
-				$db_migration_status = MIG_CHARSET_PHP_NONUTF8_DB_UTF8;
-		} else { // Database charset is Non UTF-8 and CRM charset is UTF-8
-			$db_migration_status = MIG_CHARSET_PHP_UTF8_DB_NONUTF8;
-		}
-	}
-	return $db_migration_status;
 }
 
 /** Function to convert a given time string to Minutes */
