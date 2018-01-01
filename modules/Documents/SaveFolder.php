@@ -14,7 +14,7 @@ require_once('include/database/PearDatabase.php');
 global $adb;
 
 	$local_log = LoggerManager::getLogger('index');
-	$folderid = $_REQUEST['record'];
+	$folderid = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : '';
 	$foldername = utf8RawUrlDecode($_REQUEST["foldername"]);
 	$folderdesc = utf8RawUrlDecode($_REQUEST["folderdesc"]);
 
@@ -24,22 +24,18 @@ global $adb;
 		{
 			$params=array();
 			$sqlfid="select max(folderid) from vtiger_attachmentsfolder";
-			$fid=$adb->query_result($adb->pquery($sqlfid,$params),0,'max(folderid)')+1;
+			$rs = $adb->pquery($sqlfid, $params);
+			$fid=$adb->query_result($rs, 0, 0) + 1;
 			$params=array();
 			$sqlseq="select max(sequence) from vtiger_attachmentsfolder";
-			$sequence=$adb->query_result($adb->pquery($sqlseq,$params),0,'max(sequence)')+1;
+			$rs = $adb->pquery($sqlseq, $params);
+			$sequence=$adb->query_result($rs, 0, 0) + 1;
 			$params=array();
-			$dbQuery="select foldername from vtiger_attachmentsfolder";
-			$result1=$adb->pquery($dbQuery,array());
-			$flag=0;
-			for($i=0;$i<$adb->num_rows($result1);$i++)
-			{
-				$dbfldrname=$adb->query_result($result1,$i,'foldername');
-				if($dbfldrname == $foldername)
-					$flag = 1;
-			}
-			if($flag == 0)
-			{
+			$dbQuery = 'select foldername from vtiger_attachmentsfolder where foldername = ?';
+			$result1 = $adb->pquery($dbQuery, array($foldername));
+			if ($result1 && $adb->num_rows($result1)>0) {
+				echo 'DUPLICATE_FOLDERNAME';
+			} else {
 				$sql="insert into vtiger_attachmentsfolder (folderid,foldername,description,createdby,sequence)values ($fid,'".$foldername."','".$folderdesc."',".$current_user->id.",$sequence)";
 				$result=$adb->pquery($sql,$params);
 				if(!$result)
@@ -50,8 +46,6 @@ global $adb;
 					header("Location: index.php?action=DocumentsAjax&file=ListView&mode=ajax&ajax=true&module=Documents");
 				}
 			}
-			elseif($flag == 1)
-				echo "DUPLICATE_FOLDERNAME";
 		}
 		elseif($folderid != "")
 		{
