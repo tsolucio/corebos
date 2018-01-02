@@ -7,6 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
+include_once 'modules/Settings/configod.php';
 require_once('include/utils/Session.php');
 require_once('include/utils/Request.php');
 require_once('include/database/PearDatabase.php');
