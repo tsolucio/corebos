@@ -8,7 +8,7 @@
  * Portions created by Vicus are Copyright (C) Vicus.
  * All Rights Reserved.
  * Feel free to use / redistribute these languagefiles under the VPL 1.0.
- * This translations is based on earlier work of: 
+ * This translations is based on earlier work of:
  * - IT-Online.nl <www.it-online.nl>
  * - Weltevree.org <www.Weltevree.org>
  ********************************************************************************/
@@ -112,5 +112,15 @@ $mod_strings = array(
 	'Documents' => 'Documenten',
 	'LBL_FILEUPLOAD_FAILED' => 'Het is niet gelukt het bestand te uploaden',
 	'Last Modified By' => 'Laatst gewijzigd door',
+	'STORAGESIZE_CONFIGURATION' => 'Storage Size Information and Configuration',
+	'STORAGESIZE_CONFIGURATION_DESCRIPTION' => 'See and increment the space being occupied by your document system.',
+	'StorageMustIncrement' => 'The new storage capacity must always be bigger than the current limit. To reduce the size, physical elimination of the documents must be done by a server administrator. Please contact your service providor.',
+	'StorageLimit' => 'The limit of storage capacity of your application has been reached. Please contact your application administrator to extend this limit.',
+	'ExtendStorageLink' => 'You can extend this limit here.',
+	'Total' => 'Total Disk Allocation',
+	'Occupied' => 'Used Disk Space',
+	'Free' => 'Available Disk Space',
+	'NewSize' => 'New Size',
+	'accept_charge' => 'I accept the license change and the associated charge it may have',
 );
 ?>

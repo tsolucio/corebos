@@ -22,7 +22,7 @@
  * - Weltevree.org <www.Weltevree.org>
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Instellingen',
 'LBL_MODULE_TITLE'=>'Instellingen: Home',
 'LBL_LIST_CONTACT_ROLE'=>'Rol',
@@ -975,5 +975,6 @@ $mod_strings = Array(
 'LeaveEmptyForUserEmail' => 'Leave empty to use your user email',
 'LBL_OPENSSL_SUPPORT' => 'OpenSSL Support',
 'LBL_IMAP_SUPPORT' => 'IMAP Support',
+'StorageSpaceUsage' => 'Storage Space Usage',
 );
 ?>

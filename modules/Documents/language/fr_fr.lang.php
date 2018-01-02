@@ -2,12 +2,12 @@
 /***********************************************************
 *  Module       : Documents
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'LBL_MODULE_NAME'=>'Documents',
 	'LBL_MODULE_TITLE'=>'Documents: accueil',
 	'LBL_SEARCH_FORM_TITLE'=>'Rechercher document',
@@ -123,6 +123,15 @@ $mod_strings = Array(
 	'Documents' => 'Documents',
 	'Documents ID' => 'Documents ID',
 	'LBL_FILEUPLOAD_FAILED'=>'Le fichier n\'a pas pu être uploader',
+	'STORAGESIZE_CONFIGURATION' => 'Storage Size Information and Configuration',
+	'STORAGESIZE_CONFIGURATION_DESCRIPTION' => 'See and increment the space being occupied by your document system.',
+	'StorageMustIncrement' => 'The new storage capacity must always be bigger than the current limit. To reduce the size, physical elimination of the documents must be done by a server administrator. Please contact your service providor.',
+	'StorageLimit' => 'The limit of storage capacity of your application has been reached. Please contact your application administrator to extend this limit.',
+	'ExtendStorageLink' => 'You can extend this limit here.',
+	'Total' => 'Total Disk Allocation',
+	'Occupied' => 'Used Disk Space',
+	'Free' => 'Available Disk Space',
+	'NewSize' => 'New Size',
+	'accept_charge' => 'I accept the license change and the associated charge it may have',
 );
-
 ?>
