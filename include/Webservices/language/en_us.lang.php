@@ -6,7 +6,6 @@
   * The Initial Developer of the Original Code is vtiger.
   * Portions created by vtiger are Copyright (C) vtiger.
   * All Rights Reserved.
- *
   ********************************************************************************/
 $app_strings = array (
 	'Groups'=>'Groups',
@@ -23,5 +22,4 @@ $webservice_strings = array(
 	'LBL_DATABASE_QUERY_ERROR' => 'Database error while performing requested operation',
 	'LBL_CHANGE_PASSWORD_FAILURE' => 'Failed to change password',
 );
-
 ?>

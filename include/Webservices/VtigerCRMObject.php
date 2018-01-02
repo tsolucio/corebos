@@ -126,7 +126,7 @@ class VtigerCRMObject {
 
 		$adb->startTransaction();
 		$this->instance->mode = 'edit';
-		$this->instance->Save($this->getTabName());
+		$this->instance->save($this->getTabName());
 		$error = $adb->hasFailedTransaction();
 		$adb->completeTransaction();
 		return !$error;
