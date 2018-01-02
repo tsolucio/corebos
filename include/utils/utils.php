@@ -1375,6 +1375,14 @@ function get_account_info($parent_id) {
 	return $accountid;
 }
 
+function getFolderSize($dir) {
+	$size = 0;
+	foreach (glob(rtrim($dir, '/').'/*', GLOB_NOSORT) as $each) {
+		$size += is_file($each) ? filesize($each) : getFolderSize($each);
+	}
+	return $size;
+}
+
 /** Function to get email text field
  * @param $module -- module name :: Type name
  * @param $id -- entity id :: Type integer
