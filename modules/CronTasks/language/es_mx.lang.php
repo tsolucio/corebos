@@ -16,7 +16,7 @@
 *  Author       : Odin Consultores S de RL de CV
 *  License      : MPL 1.1
 *  *********************************************************/
-$mod_strings = Array (
+$mod_strings = array (
 	'LBL_ACTIVE' => 'Activo',
 	'LBL_INACTIVE' => 'Inactivo',
 	'LBL_STATUS' => 'Estado',

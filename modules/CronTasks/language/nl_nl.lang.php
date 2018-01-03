@@ -10,7 +10,7 @@
  * @license	vtiger CRM Public License Version 1.0 (by definition)
  ********************************************************************************/
 
-$mod_strings = Array (
+$mod_strings = array (
 	'LBL_ACTIVE' => 'Actief',
 	'LBL_INACTIVE' => 'InActief',
 	'LBL_STATUS' => 'Status',
