@@ -24,3 +24,6 @@ $coreBOSOnDemandActive = false;
 
 // maximum storage space permitted per install in Gb
 $cbodStorageSizeLimit = 5;
+
+// fixed cron tasks
+$cbodFixedCronTasks = array('StorageSpaceUsage');

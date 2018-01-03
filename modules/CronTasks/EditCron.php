@@ -52,7 +52,11 @@ if(isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 	$smarty->assign('APP', $app_strings);
 	$smarty->assign('CMOD', $mod_strings);
 	$smarty->assign('MIN_CRON_FREQUENCY', getMinimumCronFrequency());
-	$smarty->display('modules/CronTasks/EditCron.tpl');
+	if (in_array($cronTask->getName(), $cronTask->fixedTasks) || (!empty($coreBOSOnDemandActive) && in_array($cronTask->getName(), $cbodFixedCronTasks))) {
+		$smarty->display('modules/CronTasks/ShowCron.tpl');
+	} else {
+		$smarty->display('modules/CronTasks/EditCron.tpl');
+	}
 } else {
 	header('Location:index.php?module=CronTasks&action=ListCronJobs&directmode=ajax');
 }
