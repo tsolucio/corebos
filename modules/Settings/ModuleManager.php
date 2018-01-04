@@ -74,7 +74,8 @@ else{
 	
 	$smarty->assign("TOGGLE_MODINFO", vtlib_getToggleModuleInfo());
 	$smarty->assign("TOGGLE_LANGINFO", vtlib_getToggleLanguageInfo());
-	
+	$smarty->assign('coreBOSOnDemandActive', $coreBOSOnDemandActive);
+
 	$mode = !empty($_REQUEST['mode']) ? vtlib_purify($_REQUEST['mode']) : '';
 	$smarty->assign('MODE', $mode);
 	
