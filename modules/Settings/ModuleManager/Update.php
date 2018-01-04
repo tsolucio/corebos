@@ -16,23 +16,25 @@ require_once('vtlib/Vtiger/Language.php');
 
 global $mod_strings,$app_strings,$theme;
 $smarty = new vtigerCRM_Smarty;
-$smarty->assign("MOD",$mod_strings);
-$smarty->assign("APP",$app_strings);
+$smarty->assign("MOD", $mod_strings);
+$smarty->assign("APP", $app_strings);
 $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH", "themes/$theme/images/");
 
 global $modulemanager_uploaddir; // Defined in modules/Settings/ModuleManager.php
 
-$target_modulename = $_REQUEST['target_modulename'];
+$target_modulename = isset($_REQUEST['target_modulename']) ? $_REQUEST['target_modulename'] : '';
 
-if($module_update_step == 'Step2') {
-	if(!is_dir($modulemanager_uploaddir)) mkdir($modulemanager_uploaddir);
+if ($module_update_step == 'Step2') {
+	if (!is_dir($modulemanager_uploaddir)) {
+		mkdir($modulemanager_uploaddir);
+	}
 	$uploadfile = "usermodule_". time() . ".zip";
 	$uploadfilename = "$modulemanager_uploaddir/$uploadfile";
 	checkFileAccess($modulemanager_uploaddir);
 
 	if ($_REQUEST['installtype'] == 'file') {
-		if(!move_uploaded_file($_FILES['module_zipfile']['tmp_name'], $uploadfilename)) {
+		if (!move_uploaded_file($_FILES['module_zipfile']['tmp_name'], $uploadfilename)) {
 			$smarty->assign("MODULEUPDATE_FAILED", "true");
 			$uploadfilename = null;
 		}
@@ -54,7 +56,6 @@ if($module_update_step == 'Step2') {
 		}
 	}
 	if ($uploadfilename) {
-
 		// Check ZIP file contents for extra directory at the top
 		$za = new ZipArchive();
 		$za->open($uploadfilename);
@@ -77,22 +78,21 @@ if($module_update_step == 'Step2') {
 		$package = new Vtiger_Package();
 		$moduleupdate_name = $package->getModuleNameFromZip($uploadfilename);
 
-		if($moduleupdate_name == null) {
+		if ($moduleupdate_name == null) {
 			$smarty->assign("MODULEUPDATE_FAILED", "true");
 			$smarty->assign("MODULEUPDATE_FILE_INVALID", "true");
-		} else if(!$package->isLanguageType() && ($moduleupdate_name != $target_modulename)) {
+		} elseif (!$package->isLanguageType() && ($moduleupdate_name != $target_modulename)) {
 			$smarty->assign("MODULEUPDATE_FAILED", "true");
 			$smarty->assign("MODULEUPDATE_NAME_MISMATCH", "true");
-		} else if($package->isLanguageType() && (trim($package->xpath_value('prefix')) != $target_modulename)) {
+		} elseif ($package->isLanguageType() && (trim($package->xpath_value('prefix')) != $target_modulename)) {
 			$smarty->assign("MODULEUPDATE_FAILED", "true");
 			$smarty->assign("MODULEUPDATE_NAME_MISMATCH", "true");
 		} else {
-
 			$moduleupdate_dep_vtversion = $package->getDependentVtigerVersion();
 			$moduleupdate_license = $package->getLicense();
 			$moduleupdate_version = $package->getVersion();
 
-			if(!$package->isLanguageType()) {
+			if (!$package->isLanguageType()) {
 				$moduleInstance = Vtiger_Module::getInstance($moduleupdate_name);
 				$moduleupdate_exists=($moduleInstance)? "true" : "false";
 				$moduleupdate_dir_name="modules/$moduleupdate_name";
@@ -104,7 +104,7 @@ if($module_update_step == 'Step2') {
 				$smarty->assign("MODULEUPDATE_DIR_NOT_EXISTS", !($moduleupdate_dir_exists));
 
 				// If version is matching, dis-allow migration
-				if(version_compare($moduleupdate_version, $moduleInstance->version, '=')) {
+				if (version_compare($moduleupdate_version, $moduleInstance->version, '=')) {
 					$smarty->assign("MODULEUPDATE_FAILED", "true");
 					$smarty->assign("MODULEUPDATE_SAME_VERSION", "true");
 				}
@@ -118,7 +118,7 @@ if($module_update_step == 'Step2') {
 			$smarty->assign("MODULEUPDATE_LICENSE", $moduleupdate_license);
 		}
 	}
-} else if($module_update_step == 'Step3') {
+} elseif ($module_update_step == 'Step3') {
 	$uploadfile = basename(vtlib_purify($_REQUEST['module_import_file']));
 	$uploadfilename = "$modulemanager_uploaddir/$uploadfile";
 	checkFileAccess($uploadfilename);
@@ -127,7 +127,7 @@ if($module_update_step == 'Step2') {
 	$overwritedir = false; // Disallowing overwrites through Module Manager UI
 
 	$updatetype = $_REQUEST['module_update_type'];
-	if(strtolower($updatetype) == 'language') {
+	if (strtolower($updatetype) == 'language') {
 		$package = new Vtiger_Language();
 	} else {
 		$package = new Vtiger_Package();

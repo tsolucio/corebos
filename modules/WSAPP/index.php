@@ -10,6 +10,6 @@
 echo '<br><br>';
 $smarty = new vtigerCRM_Smarty();
 $smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-info');
-$smarty->assign('ERROR_MESSAGE', getTranslatedString('WSAPPInfo','WSAAPP'));
+$smarty->assign('ERROR_MESSAGE', getTranslatedString('WSAPPInfo', 'WSAPP'));
 $smarty->display('applicationmessage.tpl');
 ?>
