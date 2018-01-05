@@ -161,8 +161,7 @@ $skipFooters=false;
 $viewAttachment = false;
 $skipSecurityCheck= false;
 
-if(isset($action) && isset($module))
-{
+if (isset($action) && isset($module)) {
 	$log->info("About to take action ".$action);
 	if (preg_match("/^Popup/", $action) ||
 		preg_match("/^".$module."Ajax/",$action) ||
@@ -172,17 +171,13 @@ if(isset($action) && isset($module))
 		preg_match("/^ChangePassword/", $action) ||
 		preg_match("/^Authenticate/", $action) ||
 		preg_match("/^Logout/", $action) ||
-		preg_match("/^add2db/", $action) ||
 		preg_match("/^LeadConvertToEntities/", $action) ||
 		preg_match("/^downloadfile/", $action) ||
 		preg_match("/^massdelete/", $action) ||
 		preg_match("/^updateRole/",$action) ||
 		preg_match("/^UserInfoUtil/",$action) ||
 		preg_match("/^deleteRole/",$action) ||
-		preg_match("/^UpdateComboValues/",$action) ||
-		preg_match("/^fieldtypes/",$action) ||
 		preg_match("/^minical/",$action) ||
-		preg_match("/^minitimer/",$action) ||
 		preg_match("/^send_mail/",$action) ||
 		preg_match("/^populatetemplate/",$action) ||
 		preg_match("/^TemplateMerge/",$action) ||
@@ -191,11 +186,9 @@ if(isset($action) && isset($module))
 		preg_match("/^ProcessDuplicates/", $action ) ||
 		preg_match("/^lastImport/", $action ) ||
 		preg_match("/^lookupemailtemplate/",$action) ||
-		preg_match("/^deletewordtemplate/",$action) ||
 		preg_match("/^deleteemailtemplate/",$action) ||
 		preg_match("/^CurrencyDelete/",$action) ||
 		preg_match("/^deleteattachments/",$action) ||
-		preg_match("/^MassDeleteUsers/",$action) ||
 		preg_match("/^UpdateFieldLevelAccess/",$action) ||
 		preg_match("/^UpdateDefaultFieldLevelAccess/",$action) ||
 		preg_match("/^UpdateProfile/",$action) ||
@@ -210,17 +203,11 @@ if(isset($action) && isset($module))
 		preg_match("/^CreateSOPDF/",$action) ||
 		preg_match("/^redirect/",$action) ||
 		preg_match("/^webmail/",$action) ||
-		preg_match("/^left_main/",$action) ||
-		preg_match("/^delete_message/",$action) ||
-		preg_match("/^mime/",$action) ||
-		preg_match("/^move_messages/",$action) ||
 		preg_match("/^folders_create/",$action) ||
 		preg_match("/^imap_general/",$action) ||
-		preg_match("/^mime/",$action) ||
 		preg_match("/^download/",$action) ||
 		preg_match("/^SendMailAction/",$action) ||
 		preg_match("/^CreateXL/",$action) ||
-		preg_match("/^savetermsandconditions/",$action) ||
 		preg_match("/^home_rss/",$action) ||
 		preg_match("/^ConvertAsFAQ/",$action) ||
 		preg_match("/^ActivityAjax/",$action) ||
@@ -232,6 +219,7 @@ if(isset($action) && isset($module))
 		(preg_match("/^dlAttachments/",$action) && preg_match("/^Webmails/",$module)) ||
 		(preg_match("/^DetailView/",$action) && preg_match("/^Webmails/",$module)) ||
 		preg_match("/^savewordtemplate/",$action) ||
+		preg_match("/^deletewordtemplate/",$action) ||
 		preg_match("/^mailmergedownloadfile/",$action) ||
 		(preg_match("/^Webmails/",$module) && preg_match("/^get_img/",$action)) ||
 		preg_match("/^download/",$action) ||
@@ -245,9 +233,7 @@ if(isset($action) && isset($module))
 			preg_match("/^".$module."Ajax/",$action) ||
 			preg_match("/^MassEditSave/", $action) ||
 			preg_match("/^ChangePassword/", $action) ||
-			//preg_match("/^Export/", $action) ||
 			preg_match("/^downloadfile/", $action) ||
-			preg_match("/^fieldtypes/",$action) ||
 			preg_match("/^lookupemailtemplate/",$action) ||
 			preg_match("/^home_rss/",$action) ||
 			preg_match("/^massdelete/", $action) ||
@@ -263,41 +249,31 @@ if(isset($action) && isset($module))
 			$skipFooters=true;
 		//skip footers for all these invocations as they are mostly popups
 		if(preg_match("/^downloadfile/", $action)
-		|| preg_match("/^fieldtypes/",$action)
 		|| preg_match("/^mailmergedownloadfile/",$action)
 		|| preg_match("/^get_img/",$action)
-		|| preg_match("/^MergeFieldLeads/", $action)
-		|| preg_match("/^MergeFieldContacts/", $action )
-		|| preg_match("/^MergeFieldAccounts/", $action )
-		|| preg_match("/^MergeFieldProducts/", $action )
-		|| preg_match("/^MergeFieldHelpDesk/", $action )
-		|| preg_match("/^MergeFieldPotentials/", $action )
-		|| preg_match("/^MergeFieldVendors/", $action )
 		|| preg_match("/^dlAttachments/", $action )
 		|| preg_match("/^iCalExport/", $action)
 		)
 		{
 			$viewAttachment = true;
 		}
-		if(($action == ' Delete ') && (!$entityDel))
-		{
+		if ($action == ' Delete ' && !$entityDel) {
 			$skipHeaders=false;
 		}
 	}
 
-	if($action == 'Save')
-	{
+	if ($action == 'Save') {
 		header( "Expires: Mon, 20 Dec 1998 01:00:00 GMT" );
 		header( "Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT" );
 		header( "Cache-Control: no-cache, must-revalidate" );
 		header( "Pragma: no-cache" );
 	}
 
-	if(($module == 'Users' || $module == 'Home' || $module == 'uploads') && (empty($_REQUEST['parenttab']) || $_REQUEST['parenttab'] != 'Settings')) {
+	if (($module == 'Users' || $module == 'Home' || $module == 'uploads') && (empty($_REQUEST['parenttab']) || $_REQUEST['parenttab'] != 'Settings')) {
 		$skipSecurityCheck=true;
 	}
 
-	if($action == 'UnifiedSearch') {
+	if ($action == 'UnifiedSearch') {
 		$currentModuleFile = 'modules/Home/'.$action.'.php';
 	} else {
 		$currentModuleFile = 'modules/'.$module.'/'.$action.'.php';

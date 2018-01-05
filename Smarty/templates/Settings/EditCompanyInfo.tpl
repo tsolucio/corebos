@@ -15,7 +15,7 @@
         <td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
         <td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
 <br>
-	<form action="index.php?module=Settings&action=add2db" method="post" name="index" enctype="multipart/form-data" onsubmit="VtigerJS_DialogBox.block();">
+	<form action="index.php?module=Settings&action=SettingsAjax&file=add2db" method="post" name="index" enctype="multipart/form-data" onsubmit="VtigerJS_DialogBox.block();">
  	<input type="hidden" name="return_module" value="Settings">
  	<input type="hidden" name="parenttab" value="Settings">
     	<input type="hidden" name="return_action" value="OrganizationConfig">
