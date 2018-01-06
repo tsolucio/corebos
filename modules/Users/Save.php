@@ -68,13 +68,16 @@ if (isset($_POST['record']) && !is_admin($current_user) && $_POST['record'] != $
 elseif (!isset($_POST['record']) && !is_admin($current_user)) echo ("Unauthorized access to user administration.");
 
 $focus = new Users();
-if(isset($_REQUEST["record"]) && $_REQUEST["record"] != '')
-{
+if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
 	$focus->mode='edit';
-	$focus->id = vtlib_purify($_REQUEST["record"]);
-}
-else
-{
+	$focus->id = vtlib_purify($_REQUEST['record']);
+	$userrs = $adb->pquery('SELECT user_name FROM vtiger_users WHERE id=?', array($focus->id));
+	$user_name = $adb->query_result($userrs, 0, 0);
+	if ($current_user->id != $focus->id && in_array($user_name, $cbodBlockedUsers)) {
+		header("Location: index.php?action=Error&module=Users&error_string=Not Permitted. You can't edit this User.");
+		die();
+	}
+} else {
 	$focus->mode='';
 }
 

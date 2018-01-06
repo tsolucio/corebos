@@ -38,8 +38,10 @@ if(!empty($_REQUEST['mail_error'])) {
 $list_query = getListQuery("Users");
 
 $userid = array();
-$userid_Query = "SELECT id,user_name FROM vtiger_users WHERE user_name IN ('admin')";
-$users = $adb->pquery($userid_Query,array());
+$blockedusers = $cbodBlockedUsers;
+$blockedusers[] = 'admin';
+$userid_Query = 'SELECT id,user_name FROM vtiger_users WHERE user_name IN ('.generateQuestionMarks($blockedusers).')';
+$users = $adb->pquery($userid_Query, array($blockedusers));
 $norows = $adb->num_rows($users);
 if($norows  > 0){
 	for($i=0;$i<$norows ;$i++){
@@ -48,6 +50,20 @@ if($norows  > 0){
 	}
 }
 $smarty->assign("USERNODELETE",$userid);
+
+$userid_noedit = array();
+$userid_noedit_Query = 'SELECT id,user_name FROM vtiger_users WHERE user_name IN ('.generateQuestionMarks($cbodBlockedUsers).')';
+$users_noedit = $adb->pquery($userid_noedit_Query, array($cbodBlockedUsers));
+$norows_noedit = $adb->num_rows($users_noedit);
+if ($norows_noedit  > 0) {
+	for ($i=0; $i<$norows_noedit; $i++){
+		$id = $adb->query_result($users_noedit, $i, 'id');
+		if ($current_user->id != $id) {
+			$userid_noedit[$id] = $adb->query_result($users_noedit, $i, 'user_name');
+		}
+	}
+}
+$smarty->assign('USERNOEDIT', $userid_noedit);
 
 if(!empty($_REQUEST['sorder']))
 	$sorder = $adb->sql_escape_string($_REQUEST['sorder']);

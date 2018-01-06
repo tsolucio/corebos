@@ -27,3 +27,6 @@ $cbodStorageSizeLimit = 5;
 
 // fixed cron tasks
 $cbodFixedCronTasks = array('StorageSpaceUsage');
+
+// Blocked users
+$cbodBlockedUsers = array();
