@@ -2994,7 +2994,7 @@ function updateBaseCurrencyValue() {
 	}
 }
 function standarizeFormatCurrencyValue(val) {
-	if(val != undefined && val != null && val != 0) {
+	if (val != undefined && val != null && val != 0 && typeof val != "number") {
 		if(typeof userCurrencySeparator != 'undefined') {
 			while(val.indexOf(userCurrencySeparator) != -1) {
 				val = val.replace(userCurrencySeparator,'');
