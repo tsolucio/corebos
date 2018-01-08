@@ -1064,7 +1064,6 @@ select:-moz-focusring {
 
 td[role="gridcell"] {
     width: 3.25rem;
-    padding: .2REM .5rem;
 }
 
 th[scope="row"] {
