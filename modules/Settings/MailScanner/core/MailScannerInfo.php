@@ -247,14 +247,16 @@ class Vtiger_MailScannerInfo {
 	 * Enable only given folders for scanning
 	 */
 	function enableFoldersForScan($folderinfo) {
-		if($this->scannerid) {
+		if ($this->scannerid) {
 			global $adb;
-			$adb->pquery("UPDATE vtiger_mailscanner_folders set enabled=0 WHERE scannerid=?", Array($this->scannerid));
-			foreach($folderinfo as $foldername=>$foldervalue) {
-				$folderid = $foldervalue[folderid];
-				$enabled  = $foldervalue[enabled];
-				$adb->pquery("UPDATE vtiger_mailscanner_folders set enabled=? WHERE folderid=? AND scannerid=?",
-					Array($enabled,$folderid,$this->scannerid));
+			$adb->pquery('UPDATE vtiger_mailscanner_folders set enabled=0 WHERE scannerid=?', array($this->scannerid));
+			foreach ($folderinfo as $foldername => $foldervalue) {
+				$folderid = $foldervalue['folderid'];
+				$enabled = $foldervalue['enabled'];
+				$adb->pquery(
+					'UPDATE vtiger_mailscanner_folders set enabled=? WHERE folderid=? AND scannerid=?',
+					array($enabled,$folderid,$this->scannerid)
+				);
 			}
 		}
 	}

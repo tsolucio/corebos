@@ -353,7 +353,7 @@ class Vtiger_MailScanner {
 	 */
 	function LookupContact($email) {
 		global $adb;
-		if($this->_cachedContactIds[$email]) {
+		if (isset($this->_cachedContactIds[$email])) {
 			$this->log("Reusing Cached Contact Id for email: $email");
 			return $this->_cachedContactIds[$email];
 		}
@@ -382,7 +382,7 @@ class Vtiger_MailScanner {
 	 */
 	function LookupAccount($email) {
 		global $adb;
-		if($this->_cachedAccountIds[$email]) {
+		if (isset($this->_cachedAccountIds[$email])) {
 			$this->log("Reusing Cached Account Id for email: $email");
 			return $this->_cachedAccountIds[$email];
 		}

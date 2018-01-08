@@ -279,17 +279,21 @@ class Vtiger_MailRecord {
 		// PARAMETERS
 		// get all parameters, like charset, filenames of attachments, etc.
 		$params = array();
-		if ($p->parameters) {
-			foreach ($p->parameters as $x) $params[ strtolower( $x->attribute ) ] = $x->value;
+		if (isset($p->parameters)) {
+			foreach ($p->parameters as $x) {
+				$params[ strtolower( $x->attribute ) ] = $x->value;
+			}
 		}
-		if ($p->dparameters) {
-			foreach ($p->dparameters as $x) $params[ strtolower( $x->attribute ) ] = $x->value;
+		if (isset($p->dparameters)) {
+			foreach ($p->dparameters as $x) {
+				$params[ strtolower( $x->attribute ) ] = $x->value;
+			}
 		}
 
 		// ATTACHMENT
 		// Any part with a filename is an attachment,
 		// so an attached text file (type 0) is not mistaken as the message.
-		if ($params['filename'] || $params['name']) {
+		if (isset($params['filename']) || isset($params['name'])) {
 			// filename may be given as 'Filename' or 'Name' or both
 			$filename = ($params['filename'])? $params['filename'] : $params['name'];
 			// filename may be encoded, so see imap_mime_header_decode()
@@ -317,9 +321,10 @@ class Vtiger_MailRecord {
 		}
 
 		// SUBPART RECURSION
-		if ($p->parts) {
-			foreach ($p->parts as $partno0=>$p2)
-				$this->__getpart($imap,$messageid,$p2,$partno.'.'.($partno0+1));  // 1.2, 1.2.1, etc.
+		if (isset($p->parts)) {
+			foreach ($p->parts as $partno0=>$p2) {
+				$this->__getpart($imap, $messageid, $p2, $partno.'.'.($partno0+1)); // 1.2, 1.2.1, etc.
+			}
 		}
 	}
 }
