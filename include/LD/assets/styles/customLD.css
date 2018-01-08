@@ -779,14 +779,6 @@ ul.slds-tabs--default__nav li {
     padding-top: 0;
 }
 
-.slds-dropdown__item>a {
-    padding: 2px 5px 2px 5px;
-}
-
-.slds-dropdown__list li.slds-dropdown__item {
-    padding: 0;
-}
-
 .assideBtn {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
