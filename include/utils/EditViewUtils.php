@@ -1998,24 +1998,19 @@ function getBlockInformation($module, $result, $col_fields,$tabid,$block_label,$
 		}
 		$editview_arr[$block][]=$custfld;
 	}
-	foreach($editview_arr as $headerid=>$editview_value)
-	{
-		$editview_data = Array();
+	foreach ($editview_arr as $headerid=>$editview_value) {
+		$editview_data = array();
 		for ($i=0, $j=0, $iMax = count($editview_value); $i< $iMax; $j++) {
 			$key1=$editview_value[$i];
-			if(isset($editview_value[$i+1]) && is_array($editview_value[$i+1]) && ($key1[0][0]!=19 && $key1[0][0]!=20))
-			{
+			if (isset($editview_value[$i+1]) && is_array($editview_value[$i+1]) && ($key1[0][0]!=19 && $key1[0][0]!=20)) {
 				$key2=$editview_value[$i+1];
-			}
-			else
-			{
+			} else {
 				$key2 =array();
 			}
-			if($key1[0][0]!=19 && $key1[0][0]!=20){
+			if ($key1[0][0]!=19 && $key1[0][0]!=20) {
 				$editview_data[$j]=array(0 => $key1,1 => $key2);
 				$i+=2;
-			}
-			else{
+			} else {
 				$editview_data[$j]=array(0 => $key1);
 				$i++;
 			}

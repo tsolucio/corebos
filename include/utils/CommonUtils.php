@@ -1933,7 +1933,7 @@ function QuickCreate($module) {
 	$category = getParentTab();
 	$result = $adb->pquery($quickcreate_query, $params);
 	$noofrows = $adb->num_rows($result);
-	$fieldName_array = Array();
+	$fieldName_array = array();
 	for ($i = 0; $i < $noofrows; $i++) {
 		$fieldtablename = $adb->query_result($result, $i, 'tablename');
 		$uitype = $adb->query_result($result, $i, "uitype");
@@ -1946,7 +1946,7 @@ function QuickCreate($module) {
 		$col_fields[$fieldname] = $defaultvalue;
 
 		//to get validationdata
-		$fldLabel_array = Array();
+		$fldLabel_array = array();
 		$fldLabel_array[getTranslatedString($fieldlabel)] = $typeofdata;
 		$fieldName_array[$fieldname] = $fldLabel_array;
 

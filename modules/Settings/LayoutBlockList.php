@@ -342,9 +342,9 @@ function getFieldListEntries($module) {
 			}
 
 			$query_fields_not_in_block ='select fieldid,fieldlabel,block from vtiger_field ' .
-					'inner join vtiger_blocks on vtiger_field.block=vtiger_blocks.blockid ' .
-					'where vtiger_field.block != ? and vtiger_blocks.blocklabel not in ("LBL_TICKET_RESOLUTION","LBL_COMMENTS","LBL_COMMENT_INFORMATION") ' .
-					'AND vtiger_field.tabid = ? and vtiger_field.displaytype IN (1,2,4) order by vtiger_field.sequence';
+				'inner join vtiger_blocks on vtiger_field.block=vtiger_blocks.blockid ' .
+				'where vtiger_field.block != ? and vtiger_blocks.blocklabel not in ("LBL_TICKET_RESOLUTION","LBL_COMMENTS","LBL_COMMENT_INFORMATION") ' .
+				'AND vtiger_field.tabid = ? and vtiger_field.displaytype IN (1,2,4) order by vtiger_field.sequence';
 
 			$params =array($row['blockid'],$tabid);
 			$fields = $adb->pquery($query_fields_not_in_block, $params);
@@ -497,7 +497,7 @@ function changeFieldOrder() {
 		if ($_REQUEST['what_to_do']=='block_down') {
 			$blockid = vtlib_purify($_REQUEST['blockid']);
 			if (substr($blockid, 0, 3)=='dvb') { // detail view block
-				$sql_up_current="update vtiger_links set sequence=sequence+1 where linkid=?";
+				$sql_up_current='update vtiger_links set sequence=sequence+1 where linkid=?';
 				$result_up_current = $adb->pquery($sql_up_current, array(substr($blockid, 3)));
 			} else {  // normal block
 				$sql="select sequence from vtiger_blocks where blockid=?";
@@ -505,16 +505,16 @@ function changeFieldOrder() {
 				$row= $adb->fetch_array($result);
 				$current_sequence=$row['sequence'];
 
-				$sql_next="select * from vtiger_blocks where sequence > ? and tabid=? limit 0,1";
-				$result_next = $adb->pquery($sql_next, array($current_sequence,  vtlib_purify($_REQUEST[tabid])));
+				$sql_next='select * from vtiger_blocks where sequence > ? and tabid=? limit 0,1';
+				$result_next = $adb->pquery($sql_next, array($current_sequence,  vtlib_purify($_REQUEST['tabid'])));
 				$row_next= $adb->fetch_array($result_next);
 				$next_sequence=$row_next['sequence'];
 				$next_id=$row_next['blockid'];
 
-				$sql_up_current="update vtiger_blocks set sequence=? where blockid=?";
+				$sql_up_current='update vtiger_blocks set sequence=? where blockid=?';
 				$result_up_current = $adb->pquery($sql_up_current, array($next_sequence, $blockid));
 
-				$sql_up_next="update vtiger_blocks set sequence=? where blockid=?";
+				$sql_up_next='update vtiger_blocks set sequence=? where blockid=?';
 				$result_up_next = $adb->pquery($sql_up_next, array($current_sequence,$next_id));
 			}
 		}
@@ -522,7 +522,7 @@ function changeFieldOrder() {
 		if ($_REQUEST['what_to_do']=='block_up') {
 			$blockid = vtlib_purify($_REQUEST['blockid']);
 			if (substr($blockid, 0, 3)=='dvb') { // detail view block
-				$sql_up_current="update vtiger_links set sequence=if (sequence-1<0,0,sequence-1) where linkid=?";
+				$sql_up_current='update vtiger_links set sequence=if (sequence-1<0,0,sequence-1) where linkid=?';
 				$result_up_current = $adb->pquery($sql_up_current, array(substr($blockid, 3)));
 			} else {  // normal block
 				$sql="select * from vtiger_blocks where blockid=?";
@@ -530,13 +530,13 @@ function changeFieldOrder() {
 				$row= $adb->fetch_array($result);
 				$current_sequence=$row['sequence'];
 
-				$sql_previous="select * from vtiger_blocks where sequence < ? and tabid=? order by sequence desc limit 0,1";
-				$result_previous = $adb->pquery($sql_previous, array($current_sequence, vtlib_purify($_REQUEST[tabid])));
+				$sql_previous='select * from vtiger_blocks where sequence < ? and tabid=? order by sequence desc limit 0,1';
+				$result_previous = $adb->pquery($sql_previous, array($current_sequence, vtlib_purify($_REQUEST['tabid'])));
 				$row_previous= $adb->fetch_array($result_previous);
 				$previous_sequence=$row_previous['sequence'];
 				$previous_id=$row_previous['blockid'];
 
-				$sql_up_current="update vtiger_blocks set sequence=? where blockid=?";
+				$sql_up_current='update vtiger_blocks set sequence=? where blockid=?';
 				$result_up_current = $adb->pquery($sql_up_current, array($previous_sequence,$blockid));
 
 				$sql_up_previous="update vtiger_blocks set sequence=? where blockid=?";
