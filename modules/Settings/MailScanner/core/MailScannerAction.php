@@ -408,7 +408,11 @@ class Vtiger_MailScannerAction {
 
 				// Link document to Parent entity - Account/Contact/...
 				if (!empty($basefocus->column_fields['parent_id'])) {
-					list($eid,$junk) = explode('@', $basefocus->column_fields['parent_id']);
+					if (strpos($basefocus->column_fields['parent_id'], '@')>0) {
+						list($eid, $junk) = explode('@', $basefocus->column_fields['parent_id']);
+					} else {
+						$eid = $basefocus->column_fields['parent_id'];
+					}
 					$adb->pquery('INSERT INTO vtiger_senotesrel(crmid, notesid) VALUES(?,?)', array($eid, $document->id));
 				}
 				// Link Attachement to the Email
