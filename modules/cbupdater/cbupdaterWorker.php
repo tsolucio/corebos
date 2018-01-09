@@ -327,8 +327,8 @@ class cbupdaterWorker {
 		}
 	}
 
-	/* Given an array of field definitions this method will move the fields to specified Block.
-	 * The layout is an array of Module Name and Field Definition
+	/* Given an array of field names this method will move the fields to the specified Block.
+	 * The layout is an array of Module Name and Field Names
 		array(
 			'{modulename}' => array(
 					'{fieldname1}',
@@ -347,6 +347,65 @@ class cbupdaterWorker {
 					$field = Vtiger_Field::getInstance($field, $moduleInstance);
 					if ($field) {
 						$this->ExecuteQuery('UPDATE vtiger_field SET block = ? WHERE fieldid=?', array($block->id, $field->id));
+					}
+				}
+			} else {
+				$this->sendMsg('Module not found: '.$module.'!');
+			}
+		}
+	}
+
+	/* Given an array of blocks and field names this method will sort the fields in the given order
+	 * All unspecified fields in the block will be moved to the end
+	 * Any field that is not in the block will be ignored
+	 * The layout is an array of Module Name, block and Field Names
+		array(
+			'{modulename}' => array(
+				{block1} => array(
+					'{fieldname1}',
+					'{fieldname2}',
+					'{fieldnamen}',
+				),
+				{block2} => array(
+					'{fieldname1}',
+					'{fieldname2}',
+					'{fieldnamen}',
+				),
+			)
+		),
+	*/
+	public function orderFieldsInBlocks($fieldLayout) {
+		global $adb;
+		foreach ($fieldLayout as $module => $blocks) {
+			$moduleInstance = Vtiger_Module::getInstance($module);
+			if ($moduleInstance) {
+				foreach ($blocks as $blockname => $fields) {
+					$block = Vtiger_Block::getInstance($blockname, $moduleInstance);
+					if ($block) {
+						$currentSequence = array();
+						$rs = $adb->pquery('select fieldname, fieldid from vtiger_field where block=? order by sequence', array($block->id));
+						while ($fld = $adb->fetch_array($rs)) {
+							$currentSequence[$fld['fieldname']] = $fld['fieldid'];
+						}
+						$seq = 1;
+						foreach ($fields as $fname) {
+							$field = Vtiger_Field::getInstance($fname, $moduleInstance);
+							if ($field) {
+								if ($field->block->id == $block->id) {
+									$this->ExecuteQuery('UPDATE vtiger_field SET sequence = ? WHERE fieldid=?', array($seq, $field->id));
+									$seq++;
+									if (isset($currentSequence[$field->name])) {
+										unset($currentSequence[$field->name]);
+									}
+								}
+							}
+						}
+						foreach ($currentSequence as $fname => $fid) {
+							$this->ExecuteQuery('UPDATE vtiger_field SET sequence = ? WHERE fieldid=?', array($seq, $fid));
+							$seq++;
+						}
+					} else {
+						$this->sendMsg('Block ' . $blockname . ' not found in Module ' . $module . '!');
 					}
 				}
 			} else {
