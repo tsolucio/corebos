@@ -1957,14 +1957,20 @@ function QuickCreate($module) {
 		$custfld = getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields, $generatedtype, $module, '', $typeofdata);
 		$qcreate_arr[] = $custfld;
 	}
-	for ($i = 0, $j = 0, $iMax = count($qcreate_arr); $i < $iMax; $i += 2, $j++) {
+	for ($i = 0, $j = 0, $iMax = count($qcreate_arr); $i < $iMax; $j++) {
 		$key1 = $qcreate_arr[$i];
-		if (isset($qcreate_arr[$i + 1]) and is_array($qcreate_arr[$i + 1])) {
+		if (isset($qcreate_arr[$i + 1]) and is_array($qcreate_arr[$i + 1]) && ($key1[0][0]!=19 && $key1[0][0]!=20)) {
 			$key2 = $qcreate_arr[$i + 1];
 		} else {
 			$key2 = array();
 		}
-		$return_data[$j] = array(0 => $key1, 1 => $key2);
+		if ($key1[0][0]!=19 && $key1[0][0]!=20) {
+			$return_data[$j] = array(0 => $key1, 1 => $key2);
+			$i+=2;
+		} else {
+			$return_data[$j] = array(0 => $key1);
+			$i++;
+		}
 	}
 	$form_data['form'] = $return_data;
 	$form_data['data'] = $fieldName_array;
