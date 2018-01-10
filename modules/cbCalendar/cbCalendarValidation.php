@@ -99,8 +99,7 @@ if (isset($screen_values['action']) and $screen_values['action'] == 'MassEditSav
 	$v->rule('dateAfter', 'dtend', $screen_values['dtstart'])->label(getTranslatedString('Due Date', 'cbCalendar'));
 	// Planned must have start date in future
 	if (isset($screen_values['eventstatus']) && $screen_values['eventstatus'] == 'Planned') {
-		$nowdateTime = new DateTimeField(date('Y-m-d H:i:s', strtotime('now')-600)); // 10min to create record
-		$v->rule('dateAfter', 'dtstart', $nowdateTime->getDBInsertDateTimeValue())->label(getTranslatedString('DATE_SHOULDNOT_PAST', 'cbCalendar'));
+		$v->rule('dateAfter', 'dtstart', date('Y-m-d H:i:s', strtotime('now')-600))->label(getTranslatedString('DATE_SHOULDNOT_PAST', 'cbCalendar'));
 	}
 	if (isset($screen_values['recurringcheck']) && $screen_values['recurringcheck'] == '1'
 		&& $screen_values['recurringtype'] == 'Monthly' && $screen_values['repeatMonth'] == 'date') {
