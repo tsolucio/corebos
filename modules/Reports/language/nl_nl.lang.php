@@ -120,7 +120,7 @@ $mod_strings = array(
 'PurchaseOrder Reports'=>'Inkooporder rapport',
 'SalesOrder Reports'=>'Verkooporder rapport', //Added for SO
 'Invoice Reports'=>'Factuur rapport',
-'Campaign Reports'=>'Campagne rapport', //Added for Campaigns 
+'Campaign Reports'=>'Campagne rapport', //Added for Campaigns
 'Contacts by Accounts'=>'Contacten bij accounts',
 'Contacts without Accounts'=>'Contacten zonder accounts',
 'Contacts by Potentials'=>'Contacten bij verkoopkansen',
@@ -165,10 +165,10 @@ $mod_strings = array(
 'Create_Reports'=>'Maak rapport',
 'Create_New_Folder'=>'Maak een nieuwe map',
 'Move_Reports'=>'Verhuis rapport',
-'Delete_Report'=>'Verwijder rapport', 
+'Delete_Report'=>'Verwijder rapport',
 
 'Custom'=>'Op maat',
-'Previous FY'=>'Vorige FY', 
+'Previous FY'=>'Vorige FY',
 'Current FY'=>'Huidig FY',
 'Next FY'=>'Volgende FY',
 'Previous FQ'=>'Vorige FQ',
@@ -209,10 +209,8 @@ $mod_strings = array(
 'ticketid'=>'Ticket Id',
 'NO_COLUMN'=>'Geen totaal kolommen aanwezig',
 
-// Added/Updated for vtiger CRM 5.0.4
 'LBL_REPORT_DELETED' => 'Het rapport dat u wilt bekijken is verwijderd.',
 
-//Added for Reports
 'LBL_SHARING'=>'Combineren',
 'SELECT_FILTER_TYPE'=>'Selecteer Rapporttype',
 'LBL_USERS'=>'Gebruikers',
@@ -306,6 +304,5 @@ $mod_strings = array(
 'LBL_COLUMNS_COUNT'=>'Count',
 'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Fout bij het wissen van de map.',
 'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Error while deleting the reports of the folder',
-)
-
+);
 ?>
