@@ -243,6 +243,7 @@ $mod_strings = array(
 'LBL_SCHEDULE_EMAIL_DESCRIPTION'=>'Schedule Report to be sent to the selected Recipients at regular intervals through email',
 'LBL_USERS_AVAILABEL'=> 'Recipients',
 'LBL_REPORT_FORMAT_PDF'=> 'PDF',
+'LBL_REPORT_FORMAT_URL'=> 'URL',
 'LBL_REPORT_FORMAT_EXCEL'=> 'EXCEL',
 'LBL_REPORT_FORMAT_BOTH'=> 'Both',
 'LBL_REPORT_FORMAT'=> 'Report Format',

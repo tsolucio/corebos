@@ -244,6 +244,7 @@ $mod_strings = array(
     'LBL_SCHEDULE_EMAIL_DESCRIPTION'=>'Zeitplan nach dem der Bericht an ausgewählte Email Empfänger gesendet werden soll.',
     'LBL_USERS_AVAILABEL'=> 'Empfänger',
     'LBL_REPORT_FORMAT_PDF'=> 'PDF',
+	'LBL_REPORT_FORMAT_URL'=> 'URL',
     'LBL_REPORT_FORMAT_EXCEL'=> 'EXCEL',
     'LBL_REPORT_FORMAT_BOTH'=> 'Beides',
     'LBL_REPORT_FORMAT'=> 'Berichtsformat',

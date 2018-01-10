@@ -232,6 +232,7 @@ $mod_strings = array(
 	'LBL_SCHEDULE_EMAIL_DESCRIPTION' => 'Jelentés időzítése a kiválasztott címzetteknek e-mailben való rendszeres elküldésre',
 	'LBL_USERS_AVAILABEL' => 'Címzettek',
 	'LBL_REPORT_FORMAT_PDF' => 'PDF',
+	'LBL_REPORT_FORMAT_URL'=> 'URL',
 	'LBL_REPORT_FORMAT_EXCEL' => 'EXCEL',
 	'LBL_REPORT_FORMAT_BOTH' => 'Mindkettő',
 	'LBL_REPORT_FORMAT' => 'Jelentés formátuma',

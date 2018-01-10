@@ -247,6 +247,7 @@ $mod_strings = array(
 'LBL_SCHEDULE_EMAIL_DESCRIPTION'=>'Plan Rapport in om naar de geselecteerde ontvangers via e-mail te verzenden op regelmatige intervallen.',
 'LBL_USERS_AVAILABEL'=> 'Ontvangers',
 'LBL_REPORT_FORMAT_PDF'=> 'PDF',
+'LBL_REPORT_FORMAT_URL'=> 'URL',
 'LBL_REPORT_FORMAT_EXCEL'=> 'EXCEL',
 'LBL_REPORT_FORMAT_BOTH'=> 'Beiden',
 'LBL_REPORT_FORMAT'=> 'Rapportformaat',

@@ -245,6 +245,7 @@ $mod_strings = array(
 'LBL_SCHEDULE_EMAIL_DESCRIPTION'=>'Agendar Relatório para ser enviado aos Destinatários selecionados em intervalos regulares através de email',
 'LBL_USERS_AVAILABEL'=> 'Destinatários',
 'LBL_REPORT_FORMAT_PDF'=> 'PDF',
+'LBL_REPORT_FORMAT_URL'=> 'URL',
 'LBL_REPORT_FORMAT_EXCEL'=> 'EXCEL',
 'LBL_REPORT_FORMAT_BOTH'=> 'Ambos',
 'LBL_REPORT_FORMAT'=> 'Formato Relatório',

@@ -121,7 +121,7 @@ class VTScheduledReport extends Reports {
 		require_once('modules/Emails/mail.php');
 		require_once('modules/Emails/Emails.php');
 
-		global $currentModule,$root_directory;
+		global $currentModule, $root_directory, $site_URL;
 
 		$recipientEmails = $this->getRecipientEmails();
 		$emails_to = '';
@@ -143,17 +143,21 @@ class VTScheduledReport extends Reports {
 		$reportFormat = $this->scheduledFormat;
 		$attachments = array();
 
-		if($reportFormat == 'pdf' || $reportFormat == 'both') {
+		if ($reportFormat == 'url') {
+			$contents .= '<a href="'.$site_URL.'/index.php?module=Reports&action=SaveAndRun&record='.$this->id.'&folderid='.$this->folderid.'">';
+			$contents .= getTranslatedString('LBL_CLICK_HERE', $currentModule) .'</a>';
+		}
+		if ($reportFormat == 'pdf' || $reportFormat == 'both') {
 			$fileName = $baseFileName.'.pdf';
-			$filePath = $root_directory.'storage/'.$fileName;
-			$attachments[$fileName] = 'storage/'.$fileName;
-			$_REQUEST['filename_hidden_pdf'] = 'storage/'.$fileName;
+			$filePath = $root_directory.'cache/'.$fileName;
+			$attachments[$fileName] = 'cache/'.$fileName;
+			$_REQUEST['filename_hidden_pdf'] = 'cache/'.$fileName;
 			$pdf = $oReportRun->getReportPDF(NULL);
 			$pdf->Output($filePath,'F');
 		}
 		if ($reportFormat == 'excel' || $reportFormat == 'both') {
 			$fileName = $baseFileName.'.xls';
-			$filePath = 'storage/'.$fileName;
+			$filePath = 'cache/'.$fileName;
 			$attachments[$fileName] = $filePath;
 			$_REQUEST['filename_hidden_xls'] = $filePath;
 			$oReportRun->writeReportToExcelFile($filePath, NULL);

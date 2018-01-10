@@ -250,6 +250,7 @@ $mod_strings = array(
 'LBL_SCHEDULE_EMAIL_DESCRIPTION'=>'Programa el Informe para ser enviado via email a los destinatarios seleccionados a intervalos regulares',
 'LBL_USERS_AVAILABEL'=> 'Destinatarios',
 'LBL_REPORT_FORMAT_PDF'=> 'PDF',
+'LBL_REPORT_FORMAT_URL'=> 'URL',
 'LBL_REPORT_FORMAT_EXCEL'=> 'Excel',
 'LBL_REPORT_FORMAT_BOTH'=> 'Ambos',
 'LBL_REPORT_FORMAT'=> 'Formato Informe',
