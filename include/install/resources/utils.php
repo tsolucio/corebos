@@ -753,7 +753,7 @@ class Common_Install_Wizard_Utils {
 		'memory_limit' => '32',
 		'error_reporting' => 'E_ERROR',
 		'allow_call_time_pass_reference' => 'Off',
-		'short_open_tag' => 'On',
+		'short_open_tag' => 'Off',
 		'max_input_vars' => '9000',
 	);
 
@@ -870,8 +870,8 @@ class Common_Install_Wizard_Utils {
 			$directiveValues['error_reporting'] = 'NOT RECOMMENDED';
 		if (ini_get('allow_call_time_pass_reference') == '1' || stripos(ini_get('allow_call_time_pass_reference'), 'On') > -1)
 			$directiveValues['allow_call_time_pass_reference'] = 'On';
-		if (ini_get('short_open_tag') != '1' || stripos(ini_get('short_open_tag'), 'Off') > -1)
-			$directiveValues['short_open_tag'] = 'Off';
+		if (ini_get('short_open_tag') == '1' || stripos(ini_get('short_open_tag'), 'On') > -1)
+			$directiveValues['short_open_tag'] = 'On';
 
 		return $directiveValues;
 	}
