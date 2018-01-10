@@ -261,8 +261,12 @@ class cbupdaterWorker {
 							if ($fieldinfo['uitype']=='10' and !empty($fieldinfo['mods'])) {
 								$newfield->setRelatedModules($fieldinfo['mods']);
 							}
-							if (($fieldinfo['uitype']=='15' || $fieldinfo['uitype']=='16' || $fieldinfo['uitype']=='33') and !empty($fieldinfo['vals'])) {
-								$newfield->setPicklistValues($fieldinfo['vals']);
+							if ($fieldinfo['uitype']=='15' || $fieldinfo['uitype']=='16' || $fieldinfo['uitype']=='33') {
+								if (empty($fieldinfo['vals'])) {
+									$newfield->setPicklistValues(array('--None--'));
+								} else {
+									$newfield->setPicklistValues($fieldinfo['vals']);
+								}
 							}
 						}
 					}
