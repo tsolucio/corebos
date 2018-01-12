@@ -31,7 +31,63 @@ class VTWorkflowUtils {
 			return false;
 		}
 	}
+        /**
+         * Get fieldvalue based on fieldtype
+         */
+        public static function fieldvaluebytype($moduleFields,$fieldValueType,$fieldValue,$fieldName,$focus){
+        $fieldInstance = $moduleFields[$fieldName];
+				$fieldtype = $fieldInstance->getFieldDataType();
+				if ($fieldValueType == 'fieldname' && !preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', $fieldValue)) {
+					if ($fieldtype === 'currency' or $fieldtype === 'double') {
+						$focus->column_fields[$fieldValue] = $focus->adjustCurrencyField($fieldValue, $focus->column_fields[$fieldValue], $handlerMeta->getTabId());
+					}
+					$fieldValue = $focus->column_fields[$fieldValue];
+				} elseif ($fieldValueType == 'expression' || ($fieldValueType == 'fieldname' && preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', $fieldValue))) {
+					require_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
+					$fieldValue = preg_replace('/<br(\s+)?\/?>/i', ' ', $fieldValue);
+					if (trim($fieldValue)=='') {
+						$fieldValue = '';
+					} else {
+						$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($fieldValue)));
+						$expression = $parser->expression();
+						$exprEvaluater = new VTFieldExpressionEvaluater($expression);
+						$fieldValue = $exprEvaluater->evaluate($entity);
+					}
+				} else {
+					if ($fieldtype === 'currency' or $fieldtype === 'double') {
+						$focus->column_fields[$fieldValue] = $focus->adjustCurrencyField($fieldValue, $focus->column_fields[$fieldValue], $handlerMeta->getTabId());
+					}
+					if (preg_match('/([^:]+):boolean$/', $fieldValue, $match)) {
+						$fieldValue = $match[1];
+						if ($fieldValue == 'true') {
+							$fieldValue = '1';
+						} else {
+							$fieldValue = '0';
+						}
+					}
+					if ($fieldInstance->getFieldDataType() === 'date') {
+						$date = new DateTimeField($fieldValue);
+						$fieldValue = $date->getDisplayDate();
+					}
+					if (in_array($fieldInstance->getUIType(), array(19,20,21))) {
+						$fieldValue = str_ireplace($breaks, "\n", $fieldValue);
+					}
+				}
 
+				if ($fieldInstance->getFieldDataType() === 'owner') {
+					$userId = getUserId_Ol($fieldValue);
+					$groupId = getGrpId($fieldValue);
+
+					if ($userId == 0 && $groupId == 0) {
+						$fieldValue = $focus->column_fields[$fieldName];
+					} else {
+						$userEntityId=vtws_getEntityId('Users').'x';
+						$groupEntityId=vtws_getEntityId('Groups').'x';
+						$fieldValue = ($userId == 0) ? $groupEntityId.$groupId : $userEntityId.$userId;
+					}
+				}
+                                return $fieldValue;
+        }
 	/**
 	 * Push the admin user on to the user stack
 	 * and make it the $current_user
