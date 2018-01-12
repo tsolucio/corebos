@@ -433,20 +433,6 @@ class Campaigns extends CRMEntity {
 	}
 
 	/*
-	 * Function to get the secondary query part of a report
-	 * @param - $module primary module name
-	 * @param - $secmodule secondary module name
-	 * returns the query string formed on fetching the related data for report for secondary module
-	 */
-	function generateReportsSecQuery($module,$secmodule,$queryplanner,$type = '',$where_condition = '') {
-		$query = parent::generateReportsSecQuery($module, $secmodule, $queryplanner, $type, $where_condition);
-		if ($queryplanner->requireTable("vtiger_productsCampaigns")) {
-			$query .= ' left join vtiger_products as vtiger_productsCampaigns on vtiger_campaign.product_id = vtiger_productsCampaigns.productid';
-		}
-		return $query;
-	}
-
-	/*
 	 * Function to get the relation tables for related modules
 	 * @param - $secmodule secondary module name
 	 * returns the array with table names and fieldnames storing relations between module and this module

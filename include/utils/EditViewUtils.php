@@ -462,24 +462,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		}
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue[] = $value;
-	}elseif($uitype == 59){
-		if($_REQUEST['module'] == 'HelpDesk')
-		{
-			if(isset($_REQUEST['product_id']) && $_REQUEST['product_id'] != '')
-				$value = $_REQUEST['product_id'];
-		}
-		elseif(isset($_REQUEST['parent_id']) && $_REQUEST['parent_id'] != '')
-			$value = vtlib_purify($_REQUEST['parent_id']);
-
-		if($value != '')
-		{
-			$product_name = getProductName($value);
-		} else {
-			$product_name = '';
-		}
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue[]=$product_name;
-		$fieldvalue[]=$value;
 	}
 	elseif($uitype == 63)
 	{

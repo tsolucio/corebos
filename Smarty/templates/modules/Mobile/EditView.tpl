@@ -211,7 +211,7 @@
 										<input type="checkbox" name="{$_FIELD->name()}" id="{$_FIELD->label()}" class="custom" />
 									</div>
 								{/if}
-								{if ($_FIELD->uitype() eq '10')||  ($_FIELD->uitype() eq '51')||  ($_FIELD->uitype() eq '59')||  ($_FIELD->uitype() eq '68')}
+								{if ($_FIELD->uitype() eq '10')||  ($_FIELD->uitype() eq '51')|| ($_FIELD->uitype() eq '68')}
 									<div class="ui-field-contain">
 										<div>
 										<label for="{$_FIELD->name()}_selector">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>

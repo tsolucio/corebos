@@ -7,4 +7,11 @@
 	<classname>cronCalculateStorageSize</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>migrate uitype 59 (product capture) to uitype 10 (standard capture)</description>
+	<filename>build/changeSets/2018/migrateUIType59to10.php</filename>
+	<classname>migrateUIType59to10</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

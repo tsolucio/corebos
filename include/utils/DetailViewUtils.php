@@ -482,17 +482,6 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		$label_fld[] = $contact_name;
 		$label_fld["secid"] = $contact_id;
 		$label_fld["link"] = "index.php?module=Contacts&action=DetailView&record=" . $contact_id;
-	} elseif ($uitype == 59) {
-		$label_fld[] = getTranslatedString($fieldlabel, $module);
-		$product_id = $col_fields[$fieldname];
-		$product_name = '';
-		if ($product_id != '') {
-			$product_name = getProductName($product_id);
-		}
-		//Account Name View
-		$label_fld[] = $product_name;
-		$label_fld["secid"] = $product_id;
-		$label_fld["link"] = "index.php?module=Products&action=DetailView&record=" . $product_id;
 	} elseif ($uitype == 61) {
 		global $adb;
 		$label_fld[] = getTranslatedString($fieldlabel, $module);

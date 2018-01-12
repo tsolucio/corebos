@@ -39,12 +39,10 @@ $old_related_modules = Array(
 	'Potentials'=>Array('Accounts','Contacts','Quotes'),
 	'Calendar'=>Array('Leads','Accounts','Contacts','Potentials'),
 	'Products'=>Array('Accounts','Contacts'),
-	'HelpDesk'=>Array('Products'),
 	'Quotes'=>Array('Accounts','Contacts','Potentials'),
 	'PurchaseOrder'=>Array('Contacts'),
 	'Invoice'=>Array('Accounts','Contacts'),
 	'SalesOrder'=>Array('Accounts','Contacts','Potentials','Quotes'),
-	'Campaigns'=>Array('Products'),
 	'Timecontrol'=>Array('Leads','Accounts','Contacts','Vendors','Campaigns','Potentials','Quotes','PurchaseOrder','SalesOrder','Invoice','HelpDesk', 'Project', 'ProjectMilestone', 'ProjectTask', 'Assets', 'ServiceContracts','Products','Services'),
 );
 
@@ -614,10 +612,6 @@ class Reports extends CRMEntity{
 			//Here we Changing the displaytype of the field. So that its criteria will be displayed correctly in Reports Advance Filter.
 			$fieldtypeofdata=ChangeTypeOfData_Filter($fieldtablename,$fieldcolname,$fieldtypeofdata);
 
-			if($uitype == 59)
-			{
-				$fieldtypeofdata = 'V';
-			}
 			if($fieldtablename == "vtiger_crmentity")
 			{
 				$fieldtablename = $fieldtablename.$module;
