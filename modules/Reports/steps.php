@@ -385,40 +385,35 @@ function get_Secondmodules($oReport,$primarymodule) {
  *  This function accepts the module name as an argument and generates
  *  the fields for the primary module as an HTML Combo values
  */
-function getPrimaryColumnsHTML($module,$secondmodule) {
+function getPrimaryColumnsHTML($module, $secondmodule) {
 	global $current_language;
 	$id_added=false;
 	$ogReport = new Reports();
 	$ogReport->getPriModuleColumnsList($module);
 	$ogReport->getSecModuleColumnsList($secondmodule);
 
-	$mod_strings = return_module_language($current_language,$module);
 	$block_listed = array();
 	$modules_list = array();
-	foreach($ogReport->module_list[$module] as $key=>$value) {
+	foreach ($ogReport->module_list[$module] as $key => $value) {
 		$modules_optgroup = array();
-		if(isset($ogReport->pri_module_columnslist[$module][$value]) && !isset($block_listed[$value])) {
+		if (isset($ogReport->pri_module_columnslist[$module][$value]) && !isset($block_listed[$value])) {
 			$block_listed[$value] = true;
-			if($id_added==false) {
+			if ($id_added==false) {
 				$v = "vtiger_crmentity:crmid:".$module."_ID:crmid:I";
 				$label = getTranslatedString($module.' ID', $module);
 				$modules_optgroup[] = array("value"=>$v,"label"=>$label);
 				$id_added=true;
 			}
-			foreach($ogReport->pri_module_columnslist[$module][$value] as $field=>$fieldlabel) {
-				if(isset($mod_strings[$fieldlabel]))
-					$modules_optgroup[] = array("value"=>$field,"label"=>$mod_strings[$fieldlabel]);
-				else
-					$modules_optgroup[] = array("value"=>$field,"label"=>$fieldlabel);
+			foreach ($ogReport->pri_module_columnslist[$module][$value] as $field => $fieldlabel) {
+				$modules_optgroup[] = array('value'=>$field, 'label'=>getTranslatedString($fieldlabel, $module));
 			}
 			$modules_list[] = array(
-				"label" => getTranslatedString($module, $module)." ".getTranslatedString($value),
-				"options" => $modules_optgroup,
-				"class" => "select"
+				'label' => getTranslatedString($module, $module).' '.getTranslatedString($value, $module),
+				'options' => $modules_optgroup,
+				'class' => 'select'
 			);
 		}
 	}
-
 	return $modules_list;
 }
 
