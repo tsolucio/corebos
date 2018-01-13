@@ -227,7 +227,9 @@ class Reports extends CRMEntity{
 						array($moduleids));
 				$prev_block_label = '';
 				if($adb->num_rows($reportblocks)) {
-					while($resultrow = $adb->fetch_array($reportblocks)) {
+					global $doconvert;
+					$doconvert = false;
+					while ($resultrow = $adb->fetch_array($reportblocks)) {
 						$blockid = $resultrow['blockid'];
 						$blocklabel = $resultrow['blocklabel'];
 						$module = $this->module_id[$resultrow['tabid']];
