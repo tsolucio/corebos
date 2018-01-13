@@ -423,35 +423,27 @@ function getPrimaryColumnsHTML($module, $secondmodule) {
  *  a HTML Combo values
  */
 function getSecondaryColumnsHTML($module) {
-	global $app_strings, $current_language;
-
 	$module_columslist = array();
-	if($module != "")
-	{
+	if ($module != '') {
 		$ogReport = new Reports();
 		$ogReport->getSecModuleColumnsList($module);
 
-		$secmodule = explode(":",$module);
-		for($i=0;$i < count($secmodule) ;$i++) {
-			if(vtlib_isModuleActive($secmodule[$i])){
-				$i18nModule = getTranslatedString($secmodule[$i],$secmodule[$i]);
-				$mod_strings = return_module_language($current_language,$secmodule[$i]);
+		$secmodule = explode(':', $module);
+		for ($i=0; $i<count($secmodule); $i++) {
+			if (vtlib_isModuleActive($secmodule[$i])) {
+				$i18nModule = getTranslatedString($secmodule[$i], $secmodule[$i]);
 				$block_listed = array();
-				foreach($ogReport->module_list[$secmodule[$i]] as $key=>$value) {
-					if(isset($ogReport->sec_module_columnslist[$secmodule[$i]][$value]) && !isset($block_listed[$value])) {
+				foreach ($ogReport->module_list[$secmodule[$i]] as $key => $value) {
+					if (isset($ogReport->sec_module_columnslist[$secmodule[$i]][$value]) && !isset($block_listed[$value])) {
 						$block_listed[$value] = true;
 						$optgroup = array();
-						foreach($ogReport->sec_module_columnslist[$secmodule[$i]][$value] as $field=>$fieldlabel) {
-							if(isset($mod_strings[$fieldlabel]))
-								$optgroup[] = array("value"=>$field,"label"=>$mod_strings[$fieldlabel]);
-							else
-								$optgroup[] = array("value"=>$field,"label"=>$fieldlabel);
+						foreach ($ogReport->sec_module_columnslist[$secmodule[$i]][$value] as $field => $fieldlabel) {
+							$optgroup[] = array('value'=>$field, 'label'=>getTranslatedString($fieldlabel, $secmodule));
 						}
-
 						$module_columslist[] = array(
-							"label"   => $i18nModule." ".getTranslatedString($value,$secmodule[$i]),
-							"options" => $optgroup,
-							"class"   => "select"
+							'label'   => $i18nModule.' '.getTranslatedString($value, $secmodule[$i]),
+							'options' => $optgroup,
+							'class'   => 'select'
 						);
 					}
 				}
