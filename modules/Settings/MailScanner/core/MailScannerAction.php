@@ -116,7 +116,7 @@ class Vtiger_MailScannerAction {
 	/**
 	 * Get next sequence of Action to use.
 	 */
-	public function __nextsequence() {
+	private function __nextsequence() {
 		global $adb;
 		$seqres = $adb->pquery('SELECT max(sequence) AS max_sequence FROM vtiger_mailscanner_actions', array());
 		$maxsequence = 0;

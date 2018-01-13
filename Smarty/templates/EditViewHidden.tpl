@@ -35,7 +35,7 @@
 	<input type="hidden" name="campaignid" value="{if isset($campaignid)}{$campaignid}{/if}">
 
 {elseif $MODULE eq 'Potentials'}
-	<input type="hidden" name="contact_id" value="{$CONTACT_ID}">
+	<input type="hidden" name="contact_id" value="{if isset($CONTACT_ID)}{$CONTACT_ID}{/if}">
 
 {elseif $MODULE eq 'Calendar'}
 	<input type="hidden" name="activity_mode" value="{$ACTIVITY_MODE}">
