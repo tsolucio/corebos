@@ -849,6 +849,8 @@ $app_strings = array(
 'SPECIAL_CHARS_NOT_ALLOWED' => 'Special characters not allowed. try again...',
 //Added for title for SignIn Image.
 'LBL_SIGN_IN'=>'Sign in',
+'StartSession' => 'Start Session',
+'CapsLockActive' => 'CapsLock is active',
 
 //Added for title of Root Image
 'LBL_ROOT'=>'Root',

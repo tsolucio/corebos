@@ -97,6 +97,7 @@ $smarty->assign('coreBOS_uiapp_name', GlobalVariable::getVariable('Application_U
 $smarty->assign("LOGIN_ERROR", $login_error);
 $currentYear = date('Y');
 $smarty->assign('currentYear',$currentYear);
+$smarty->assign('LoginPage', $cbodLoginPage);
 $smarty->display('Login.tpl');
 coreBOS_Session::delete('login_error');
 ?>

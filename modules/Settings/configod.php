@@ -22,6 +22,9 @@
 // Activate OnDemand
 $coreBOSOnDemandActive = false;
 
+// Login Page
+$cbodLoginPage = 'ldsnoimage';
+
 // maximum storage space permitted per install in Gb
 $cbodStorageSizeLimit = 5;
 

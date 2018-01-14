@@ -846,6 +846,8 @@ $app_strings = array (
 'FOLDER_NAME_ALLOW_20CHARS'=>'Nome da pasta permite somente 20 caracteres',
 'SPECIAL_CHARS_NOT_ALLOWED'=>'Caracteres especiais não são permitidos. Tente novamente...',
 'LBL_SIGN_IN'=>'Registrar',
+'StartSession' => 'Start Session',
+'CapsLockActive' => 'CapsLock is active',
 
 'LBL_ROOT'=>'Root',
 'LBL_FIRST'=>'Primeiro',

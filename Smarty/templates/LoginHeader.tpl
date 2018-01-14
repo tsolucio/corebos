@@ -14,18 +14,4 @@
 <meta http-equiv="Content-Type" content="text/html; charset={$LBL_CHARSET}">
 <title>{$coreBOS_uiapp_name}</title>
 <link REL="SHORTCUT ICON" HREF="{$COMPANY_DETAILS.favicon}">
-<style type="text/css">@import url("include/style.css");</style>
-<script type="text/javascript">
-function set_focus() {ldelim}
-	if (document.DetailView.user_2facode != undefined)
-		document.DetailView.user_2facode.focus();
-	else if (document.DetailView.user_name.value != '') {ldelim}
-		document.DetailView.user_password.focus();
-		document.DetailView.user_password.select();
-	{rdelim}
-	else document.DetailView.user_name.focus();
-{rdelim}
-</script>
-</head>
-<body onload="set_focus()">
-	<div class="loginContainer">
+<script type="text/javascript" src="themes/login/login.js"></script>
