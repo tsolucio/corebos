@@ -1,0 +1,181 @@
+/*********************************************************************************
+** The contents of this file are subject to the vtiger CRM Public License Version 1.0
+* ("License"); You may not use this file except in compliance with the License
+* The Original Code is:  vtiger CRM Open Source
+* The Initial Developer of the Original Code is vtiger.
+* Portions created by vtiger are Copyright (C) vtiger.
+* All Rights Reserved.
+********************************************************************************/
+
+body {
+	font-family: Arial, Helvetica, san-serif;
+	margin: 0;
+}
+
+a {
+	text-decoration: none;
+	color: #000000;
+}
+
+a:hover {
+	text-decoration: underline;
+	color: #0000FF;
+}
+
+.loginContainer {
+    width: 100%;
+	height: 100%;
+}
+
+.loginWrapper {
+	padding: 0px;
+	top: 0;
+	left: 0;
+	position: absolute;
+	background: rgb(255,255,255); /* Old browsers */
+    background:#ffffff url(../../../themes/login/cbcrm/logoportadafondo.png);
+    background-size: cover;
+    -moz-background-size: cover;
+    -webkit-background-size: cover;
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFFFFF', endColorstr='#7ba5d8',GradientType=0 ); /* IE6-9 */
+}
+
+.loginWrapperFondo {
+	padding: 10px;
+	background: rgb(255,255,255); /* Old browsers */
+    background:#ffffff url(../../../themes/login/cbcrm/logoportadafondo.png) repeat;
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFFFFF', endColorstr='#7ba5d8',GradientType=0 ); /* IE6-9 */
+}
+
+.loginForm, .importantLinks {
+	width:400px;
+	float: left;
+	position: absolute;
+	top: 260px;
+	left: 500px;
+}
+
+.loginForm2FA {
+	height: 190px;
+	padding: 6px !important;
+}
+
+.loginForm {
+	padding: 30px;
+	/*background-color: rgba(101,86,20,0.5);*/
+}
+
+#loginTop{
+	height: 60px;
+	padding-top: 69px;
+      /*border: 1px solid black;*/
+}
+
+#loginBody{
+	height: 177px;
+	/*border: 1px solid black;*/
+}
+
+.importantLinks {
+	text-align: center;
+	padding: 30px;
+	padding-top: 10px;
+	font-size: 0.8em;
+}
+
+.pluginsPromotionDiv {
+	background-color: #D0DDED;
+	-webkit-box-shadow: 3px 3px 3px 3px rgba(150, 150, 150, 0.5);
+	-moz-box-shadow: 3px 3px 3px 3px rgba(150, 150, 150, 0.5);
+	box-shadow: 3px 3px 3px 3px rgba(150, 150, 150, 0.5);
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 50px;
+	padding-right: 50px;
+}
+
+/*
+.loginForm {
+	background: rgb(80,133,206); /* Old browsers */
+	background: -moz-linear-gradient(top, rgba(80,133,206,1) 0%, rgba(123,165,216,1) 15%, rgba(255,255,255,1) 50%, rgba(255,255,255,1) 50%, rgba(123,165,216,1) 85%, rgba(80,133,206,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(80,133,206,1)), color-stop(15%,rgba(123,165,216,1)), color-stop(50%,rgba(255,255,255,1)), color-stop(50%,rgba(255,255,255,1)), color-stop(85%,rgba(123,165,216,1)), color-stop(100%,rgba(80,133,206,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, rgba(80,133,206,1) 0%,rgba(123,165,216,1) 15%,rgba(255,255,255,1) 50%,rgba(255,255,255,1) 50%,rgba(123,165,216,1) 85%,rgba(80,133,206,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, rgba(80,133,206,1) 0%,rgba(123,165,216,1) 15%,rgba(255,255,255,1) 50%,rgba(255,255,255,1) 50%,rgba(123,165,216,1) 85%,rgba(80,133,206,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, rgba(80,133,206,1) 0%,rgba(123,165,216,1) 15%,rgba(255,255,255,1) 50%,rgba(255,255,255,1) 50%,rgba(123,165,216,1) 85%,rgba(80,133,206,1) 100%); /* IE10+ */
+	background: linear-gradient(top, rgba(80,133,206,1) 0%,rgba(123,165,216,1) 15%,rgba(255,255,255,1) 50%,rgba(255,255,255,1) 50%,rgba(123,165,216,1) 85%,rgba(80,133,206,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5085ce', endColorstr='#FFFFFF',GradientType=0 ); /* IE6-9 */
+}
+*/
+.loginForm {
+	-webkit-box-shadow: 3px 3px 3px 3px rgba(150, 150, 150, 0.5);
+	-moz-box-shadow: 3px 3px 3px 3px rgba(150, 150, 150, 0.5);
+	box-shadow: 3px 3px 3px 3px rgba(150, 150, 150, 0.5);
+	text-align: left;
+}
+
+.vtmktTitle {
+	width: 560px;
+	font-size: 1.8em;
+	text-align: left;
+	color: whitesmoke;
+	position: absolute;
+	top: 136px;
+	left: 400px;
+	background-color: rgba(60,61,65,0.6);
+}
+
+.vtmktTitle .poweredBy {
+    width: 550px;
+    font-size: 0.4em;
+    text-align: right;
+    color: whitesmoke;
+    position: relative;
+}
+
+.loginForm .poweredBy {
+	width: 100%;
+	font-size: 0.8em;
+	text-align: right;
+	padding-bottom: 1.5em;
+	color: #2d3642;
+}
+
+.loginForm .label {
+	font-weight: bold;
+}
+
+.loginForm .input input {
+	width: 350px;
+	font-size: large;
+	color: #3D698E;
+	border-radius: 8px;
+}
+
+.loginForm .input input:focus {
+	border: 2px solid #3c3d41;
+}
+
+.loginForm .button #submitButton {
+	cursor: pointer;
+	background-color: #3c3d41;
+	color: #ffffff;
+	text-align: center;
+	font-size: medium;
+	font-weight: bold;
+	border: 2px outset #3c3d41;
+	width: 10em;
+}
+
+.importantLinks, .communityLinks {
+	font-size: 0.8em;
+}
+
+.errorMessage {
+	margin-top: 8px;
+	color: #FF0000;
+}
+
+#loginFooter img{
+	padding-right: 20px;
+}
+
