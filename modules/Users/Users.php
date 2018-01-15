@@ -1027,9 +1027,14 @@ class Users extends CRMEntity {
 	 * @param $module -- module name:: Type varchar
 	 */
 	function save($module_name, $fileid = '') {
-		global $log, $adb, $current_user;
+		global $log, $adb, $current_user, $cbodUserLog;
 		if (!is_admin($current_user) and $current_user->id != $this->id) {// only admin users can change other users profile
 			return false;
+		}
+		//Check if status change to notify ODController
+		if ($this->mode == 'edit') {
+			$res_user = $adb->pquery('SELECT status FROM vtiger_users WHERE id=?', array($this->id));
+			$status_prev = $adb->query_result($res_user, 0, 0);
 		}
 		$userrs = $adb->pquery('select roleid from vtiger_user2role where userid = ?', array($this->id));
 		$oldrole = $adb->query_result($userrs, 0, 0);
@@ -1054,6 +1059,32 @@ class Users extends CRMEntity {
 		//createUserPrivilegesfile($this->id); // done in saveentity above
 		if ($this->mode!='edit' or $oldrole != $this->column_fields['roleid']) {
 			createUserSharingPrivilegesfile($this->id);
+		}
+		// ODController
+		if ($cbodUserLog) {
+			if ($this->mode == 'create') { // creating user, we send to ODController
+				$cbmq = coreBOS_MQTM::getInstance();
+				$msg = array(
+					'date' => date('Y-m-d H:i:s'),
+					'currentuser' => $current_user->id,
+					'action' => 'create',
+					'userstatus' => 'active',
+					'oduser' => $this->id,
+				);
+				$cbmq->sendMessage('coreBOSOnDemandChannel', 'Users', 'CentralSync', 'Data', '1:M', 0, 8640000, 0, 0, serialize($msg));
+			} else {
+				if ($status_prev != $this->column_fields['status']) {
+					$cbmq = coreBOS_MQTM::getInstance();
+					$msg = array(
+						'date' => date('Y-m-d H:i:s'),
+						'currentuser' => $current_user->id,
+						'action' => 'edit',
+						'userstatus' => strtolower($this->column_fields['status']),
+						'oduser' => $this->id,
+					);
+					$cbmq->sendMessage('coreBOSOnDemandChannel', 'Users', 'CentralSync', 'Data', '1:M', 0, 8640000, 0, 0, serialize($msg));
+				}
+			}
 		}
 	}
 
@@ -1326,11 +1357,24 @@ class Users extends CRMEntity {
 
 	/** Function to delete an entity with given Id */
 	function trash($module, $id) {
-		global $log, $current_user;
+		global $log, $current_user, $cbodUserLog;
 		$this->mark_deleted($id);
+		// ODController delete user
+		if ($cbodUserLog) {
+			$cbmq = coreBOS_MQTM::getInstance();
+			$msg = array(
+				'date' => date('Y-m-d H:i:s'),
+				'currentuser' => $current_user->id,
+				'action' => 'trash',
+				'userstatus' => 'inactive',
+				'oduser' => $this->id,
+			);
+			$cbmq->sendMessage('coreBOSOnDemandChannel', 'Users', 'CentralSync', 'Data', '1:M', 0, 8640000, 0, 0, serialize($msg));
+		}
 	}
 
 	function transformOwnerShipAndDelete($userId, $transformToUserId) {
+		global $current_user, $cbodUserLog;
 		$adb = PearDatabase::getInstance();
 
 		$em = new VTEventsManager($adb);
@@ -1346,6 +1390,18 @@ class Users extends CRMEntity {
 		$em->triggerEvent("vtiger.entity.beforedelete", $entityData);
 
 		vtws_transferOwnership($userId, $transformToUserId);
+		// ODController delete user
+		if ($cbodUserLog) {
+			$cbmq = coreBOS_MQTM::getInstance();
+			$msg = array(
+				'date' => date('Y-m-d H:i:s'),
+				'currentuser' => $current_user->id,
+				'action' => 'transfer',
+				'userstatus' => 'inactive',
+				'oduser' => $this->id,
+			);
+			$cbmq->sendMessage('coreBOSOnDemandChannel', 'Users', 'CentralSync', 'Data', '1:M', 0, 8640000, 0, 0, serialize($msg));
+		}
 
 		//delete from user vtiger_table;
 		$sql = "delete from vtiger_users where id=?";
