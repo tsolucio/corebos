@@ -98,6 +98,7 @@ $smarty->assign("LOGIN_ERROR", $login_error);
 $currentYear = date('Y');
 $smarty->assign('currentYear',$currentYear);
 $smarty->assign('LoginPage', $cbodLoginPage);
+$smarty->assign('CAN_UNBLOCK', (empty($_SESSION['can_unblock']) ? 'false' : 'true'));
 $smarty->display('Login.tpl');
 coreBOS_Session::delete('login_error');
 ?>

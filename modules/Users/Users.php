@@ -1393,5 +1393,16 @@ class Users extends CRMEntity {
 		return $user;
 	}
 
+	public function loggedIn() {
+		return (coreBOS_Settings::getSetting('cbodUserConnection'.$this->id, -1)!=-1);
+	}
+
+	public function canUnblock() {
+		global $cbodTimeToSessionLogout;
+		$now = time();
+		$ltime = coreBOS_Settings::getSetting('cbodLastLoginTime'.$this->id, $now);
+		$time_noact = ($now-$ltime)/60;
+		return $cbodTimeToSessionLogout < $time_noact;
+	}
 }
 ?>

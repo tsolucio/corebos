@@ -25,6 +25,8 @@ $outtime=date("Y/m/d H:i:s");
 $loghistory=new LoginHistory();
 $loghistory->user_logout($current_user->user_name,$usip,$outtime);
 
+coreBOS_Settings::delSetting('cbodUserConnection'.$current_user->id);
+
 $local_log = LoggerManager::getLogger('Logout');
 
 // clear out the autthenticating flag

@@ -766,6 +766,11 @@ $mod_strings = array(
 'Min. 1 number' => 'Mínimo un número',
 'Min. 1 special character' => 'Mínimo un caracter especial ! ? , ; - @ #',
 'Generate password' => 'Generar contraseña',
+'ERR_USER_LOGGED_IN' => 'El mismo usuario ya ha entrado en el sistema en otro ordenador, para poder acceder, debe salir de la sesión.',
+'ERR_USER_CAN_UNBLOCK' => 'El mismo usuario ya ha entrado en el sistema en otro ordenador pero parece inactivo, puede desbloquear la sesión para acceder.',
+'LBL_USERLOGGEDOUTOK' => 'Se ha cerrado la sesión del usuario.',
+'LBL_USERLOGGEDOUTNOK' => 'No se ha podido cerrar la sesión del usuario.',
+'LBL_UNBLOCK_USR' => 'Desbloquear usuario y permitir la entrada.',
 // LDAP
 'LBL_QUERY' => 'Consulta',
 'LBL_FORE_LASTNAME' => 'Nombre o Apellido',

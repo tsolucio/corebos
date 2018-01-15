@@ -33,3 +33,9 @@ $cbodFixedCronTasks = array('StorageSpaceUsage');
 
 // Blocked users
 $cbodBlockedUsers = array();
+
+// Unique user connection
+$cbodUniqueUserConnection = false;
+
+// Limit to permit unblocking a login session of a user
+$cbodTimeToSessionLogout = 5; // minutes

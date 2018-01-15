@@ -2,7 +2,7 @@
 /***********************************************************
 *  Module       : Users
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
@@ -575,7 +575,7 @@ $mod_strings = array (
 		//user-group fixes
 		'LBL_GROUPNAME_EXIST' => 'un groupe avec ce nom existe déjà!',
 		'LBL_PROFILENAME_EXIST' => 'Un profil avec ce nom existe déjà!',
-		
+
 		//Fixed For Asterisk Configration
 		'Asterisk Configuration' => 'Configuration d\'Asterisk',
 		'Asterisk Extension' => 'Extension Asterisk',
@@ -686,7 +686,7 @@ $mod_strings = array (
 		'Asia/Kamchatka' => '(UTC+12:00) Kamchatka',
 		'Pacific/Auckland' => '(UTC+12:00) Auckland',
 		'Pacific/Tongatapu' => '(UTC+13:00) Nukualofa',
-		
+
 		'Calendar Hour Format' => 'Format heure de Calendrier',
 		'Day ends at' => 'Jour fini à',
 		'Day starts at' => 'Jour commence à',
@@ -694,7 +694,7 @@ $mod_strings = array (
 		'Language'=>'Langue',
 		'Secondary Email' => 'Email secondaire',
 		'Time Zone' => 'Fuseau horaire',
-		
+
 		'flat'=>'Liste',
 		'hring'=>'Anneau Horizontal',
 		'vring'=>'Anneau Vertical',
@@ -710,6 +710,11 @@ $mod_strings = array (
 		'Min. 1 number' => 'Min. 1 caractère numérique',
 		'Min. 1 special character' => 'Min. 1 caractère spécial ! ? , ; - @ #',
 		'Generate password' => 'Générerérateur de mot de passe',
+		'ERR_USER_LOGGED_IN' => 'The User Name is currently in use on another computer. Terminate the session in use or enter a different User Name.',
+		'ERR_USER_CAN_UNBLOCK' => 'An inactive session by the same User Name is blocking your login attempt(s).',
+		'LBL_USERLOGGEDOUTOK' => 'The user has been logged out correctly.',
+		'LBL_USERLOGGEDOUTNOK' => 'The user could not be logged out.',
+		'LBL_UNBLOCK_USR' => 'Unblock the session to login?',
 		// LDAP
 		'LBL_QUERY' => 'Requête',
 		'LBL_FORE_LASTNAME' => 'Prénom ou Nom de Famille',

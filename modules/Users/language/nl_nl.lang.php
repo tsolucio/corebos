@@ -701,6 +701,11 @@ $mod_strings = array(
 	'Decimal Separator' => 'Decimalen scheidingsteken',
 	'Digit Grouping Separator' => 'Duizendtallen groeperings scheidingsteken',
 	'Symbol Placement' => 'Symbool plaatsing',
+	'ERR_USER_LOGGED_IN' => 'The User Name is currently in use on another computer. Terminate the session in use or enter a different User Name.',
+	'ERR_USER_CAN_UNBLOCK' => 'An inactive session by the same User Name is blocking your login attempt(s).',
+	'LBL_USERLOGGEDOUTOK' => 'The user has been logged out correctly.',
+	'LBL_USERLOGGEDOUTNOK' => 'The user could not be logged out.',
+	'LBL_UNBLOCK_USR' => 'Unblock the session to login?',
 	// LDAP
 	'LBL_QUERY' => 'Query',
 	'LBL_FORE_LASTNAME' => 'First or Last name',
