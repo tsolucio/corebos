@@ -39,3 +39,6 @@ $cbodUniqueUserConnection = false;
 
 // Limit to permit unblocking a login session of a user
 $cbodTimeToSessionLogout = 5; // minutes
+
+// Show License on user creation
+$cbodShowLicenseOnUserCreation = false;
