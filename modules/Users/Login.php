@@ -8,10 +8,6 @@
   * All Rights Reserved.
   *********************************************************************************/
 header('X-Frame-Options: DENY');
-//we don't want the parent module's string file, but rather the string file specifc to this subpanel
-global $current_language;
-$current_module_strings = return_module_language($current_language, 'Users');
-
 define("IN_LOGIN", true);
 
 include_once('vtlib/Vtiger/Language.php');
@@ -64,10 +60,14 @@ require_once("data/Tracker.php");
 require_once("include/utils/utils.php");
 require_once 'vtigerversion.php';
 
-global $currentModule, $adb, $coreBOS_app_version;
+global $currentModule, $adb, $coreBOS_app_version, $current_language;
 $image_path="include/images/";
 
-$app_strings = return_application_language('en_us');
+$current_language = $default_language;
+$currentModule = 'Users';
+$app_strings = return_application_language($current_language);
+$mod_strings = return_module_language($current_language, $currentModule);
+$current_module_strings = return_module_language($current_language, $currentModule);
 
 $smarty=new vtigerCRM_Smarty;
 $smarty->assign("APP", $app_strings);
