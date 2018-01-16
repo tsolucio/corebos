@@ -44,7 +44,7 @@ class crmtogo_UI_getRelatedFieldAjax extends crmtogo_WS_Controller{
 		//get relmodule
 		$res_fmrel = $adb->pquery("SELECT relmodule FROM `vtiger_fieldmodulerel`
 							 INNER JOIN vtiger_field ON vtiger_field.fieldid = vtiger_fieldmodulerel.fieldid
-							 WHERE module = ? AND fieldname = ?",array($module,$parentid));
+							 WHERE module = ? AND fieldname = ? ORDER BY vtiger_fieldmodulerel.sequence ASC",array($module,$parentid));
 		// get module fields
 		for ($i = 0;$i<$adb->num_rows($res_fmrel);$i++) {
 			$modulename = $adb->query_result($res_fmrel,$i,'relmodule');
