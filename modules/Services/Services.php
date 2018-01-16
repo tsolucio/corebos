@@ -709,16 +709,12 @@ class Services extends CRMEntity {
 	function generateReportsQuery($module,$queryPlanner){
 		global $current_user;
 		$matrix = $queryPlanner->newDependencyMatrix();
-		$matrix->setDependency('vtiger_seproductsrel',array('vtiger_crmentityRelServices','vtiger_accountRelServices','vtiger_leaddetailsRelServices','vtiger_servicecf','vtiger_potentialRelServices'));
-		$query = "from vtiger_service
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_service.serviceid";
-		if ($queryPlanner->requireTable("vtiger_servicecf")) {
-			$query .= " left join vtiger_servicecf on vtiger_service.serviceid = vtiger_servicecf.serviceid";
-		}
-		if ($queryPlanner->requireTable("vtiger_usersServices") || $queryPlanner->requireTable("vtiger_groupsServices")) {
-			$query .= " left join vtiger_users as vtiger_usersServices on vtiger_usersServices.id = vtiger_crmentity.smownerid";
-			$query .= " left join vtiger_groups as vtiger_groupsServices on vtiger_groupsServices.groupid = vtiger_crmentity.smownerid";
-		}
+		$matrix->setDependency(
+			'vtiger_seproductsrel',
+			array('vtiger_crmentityRelServices', 'vtiger_accountRelServices', 'vtiger_leaddetailsRelServices', 'vtiger_servicecf', 'vtiger_potentialRelServices')
+		);
+		$query = parent::generateReportsQuery($module, $queryPlanner);
+
 		if ($queryPlanner->requireTable("vtiger_seproductsrel")) {
 			$query .= " left join vtiger_seproductsrel on vtiger_seproductsrel.productid= vtiger_service.serviceid";
 		}
@@ -733,12 +729,6 @@ class Services extends CRMEntity {
 		}
 		if ($queryPlanner->requireTable("vtiger_potentialRelServices")) {
 			$query .= " left join vtiger_potential as vtiger_potentialRelServices on vtiger_potentialRelServices.potentialid = vtiger_seproductsrel.crmid";
-		}
-		if ($queryPlanner->requireTable("vtiger_lastModifiedByServices")) {
-			$query .= " left join vtiger_users as vtiger_lastModifiedByServices on vtiger_lastModifiedByServices.id = vtiger_crmentity.modifiedby";
-		}
-		if ($queryPlanner->requireTable("vtiger_CreatedByServices")) {
-			$query .= " left join vtiger_users as vtiger_CreatedBy".$module." on vtiger_CreatedBy".$module.".id = vtiger_crmentity.smcreatorid";
 		}
 		if ($queryPlanner->requireTable("innerService")) {
 			$query .= " LEFT JOIN (
