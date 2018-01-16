@@ -32,8 +32,6 @@ $local_log = LoggerManager::getLogger('Logout');
 // clear out the autthenticating flag
 coreBOS_Session::destroy();
 
-define("IN_LOGIN", true);
-
 // go to the login screen.
-header("Location: index.php?action=Login&module=Users");
+header('Location: index.php?action=Login&module=Users');
 ?>
