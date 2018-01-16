@@ -46,6 +46,7 @@ class crmtogo_UI_getRelatedFieldAjax extends crmtogo_WS_Controller{
 							 INNER JOIN vtiger_field ON vtiger_field.fieldid = vtiger_fieldmodulerel.fieldid
 							 WHERE module = ? AND fieldname = ? ORDER BY vtiger_fieldmodulerel.sequence ASC",array($module,$parentid));
 		// get module fields
+		$res_index = 0;
 		for ($i = 0;$i<$adb->num_rows($res_fmrel);$i++) {
 			$modulename = $adb->query_result($res_fmrel,$i,'relmodule');
 			$query = "SELECT fieldname FROM vtiger_entityname WHERE modulename = ?";
@@ -62,8 +63,9 @@ class crmtogo_UI_getRelatedFieldAjax extends crmtogo_WS_Controller{
 			}
 			else {
 				$searchqueryresult = vtws_query("SELECT ".$fieldname." FROM ".$modulename." WHERE ".$fieldname." like '%".$searchvalue."%' LIMIT ".$limit.";", $current_user);
-				for($i=0;$i<count($searchqueryresult);$i++){
-					$searchresult[] = Array($searchqueryresult[$i]['id'],decode_html(getTranslatedString($modulename)." :: ".$searchqueryresult[$i][$fieldname]));
+				for($j=0;$j<count($searchqueryresult);$j++){
+					$searchresult[] = Array($searchqueryresult[$res_index]['id'],decode_html(getTranslatedString($modulename)." :: ".$searchqueryresult[$res_index][$fieldname]));
+					$res_index++;
 				}
 			}
 		}
