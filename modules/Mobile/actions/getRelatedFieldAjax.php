@@ -54,18 +54,55 @@ class crmtogo_UI_getRelatedFieldAjax extends crmtogo_WS_Controller{
 			$fieldname = $adb->query_result($result,0,'fieldname');
 			$config = crmtogo_WS_Controller::getUserConfigSettings();
 			$limit = $config['NavigationLimit'];
+			if (vtlib_isModuleActive($modulename)) {
 			//START DATABASE SEARCH
-			if ($modulename=='Contacts') {
-				$searchqueryresult = vtws_query("SELECT firstname, lastname FROM Contacts WHERE lastname like '%".$searchvalue."%' OR firstname like  '%".$searchvalue."%' LIMIT ".$limit.";", $current_user);
-				for($i=0;$i<count($searchqueryresult);$i++){
-					$searchresult[] = Array($searchqueryresult[$i]['id'],decode_html($searchqueryresult[$i]['lastname']).', '.decode_html($searchqueryresult[$i]['firstname']));
-				}
-			}
-			else {
-				$searchqueryresult = vtws_query("SELECT ".$fieldname." FROM ".$modulename." WHERE ".$fieldname." like '%".$searchvalue."%' LIMIT ".$limit.";", $current_user);
-				for($j=0;$j<count($searchqueryresult);$j++){
-					$searchresult[] = Array($searchqueryresult[$res_index]['id'],decode_html(getTranslatedString($modulename)." :: ".$searchqueryresult[$res_index][$fieldname]));
-					$res_index++;
+				switch ($modulename) {
+					case 'Contacts':
+					case 'Leads':
+						$searchqueryresult = vtws_query("SELECT firstname, lastname FROM ".$modulename." WHERE lastname like '%".$searchvalue."%' OR firstname like  '%".$searchvalue."%' LIMIT ".$limit.";", $current_user);
+						for($j=0;$j<count($searchqueryresult);$j++){
+							$searchresult[] = Array($searchqueryresult[$res_index]['id'],decode_html(getTranslatedString($modulename)." :: ".decode_html($searchqueryresult[$i]['lastname']).', '.decode_html($searchqueryresult[$res_index]['firstname'])));
+						}
+						break;
+					case 'Users':
+						$searchqueryresult = vtws_query("SELECT first_name, last_name FROM ".$modulename." WHERE last_name like '%".$searchvalue."%' OR first_name like  '%".$searchvalue."%' LIMIT ".$limit.";", $current_user);
+						for($j=0;$j<count($searchqueryresult);$j++){
+							$searchresult[] = Array($searchqueryresult[$res_index]['id'],decode_html(getTranslatedString($modulename)." :: ".decode_html($searchqueryresult[$i]['last_name']).', '.decode_html($searchqueryresult[$res_index]['first_name'])));
+						}
+						break;
+					case 'HelpDesk':
+						if ($fieldname == "title") {
+							$fieldname = "ticket_title";
+						}
+						$searchqueryresult = vtws_query("SELECT ".$fieldname." FROM ".$modulename." WHERE ".$fieldname." like '%".$searchvalue."%' LIMIT ".$limit.";", $current_user);
+						for($j=0;$j<count($searchqueryresult);$j++){
+							$searchresult[] = Array($searchqueryresult[$res_index]['id'],decode_html(getTranslatedString($modulename)." :: ".$searchqueryresult[$res_index][$fieldname]));
+							$res_index++;
+						}
+						break;
+					case 'Documents':
+						if ($fieldname == "title") {
+							$fieldname = "notes_title";
+						}
+						$searchqueryresult = vtws_query("SELECT ".$fieldname." FROM ".$modulename." WHERE ".$fieldname." like '%".$searchvalue."%' LIMIT ".$limit.";", $current_user);
+						for($j=0;$j<count($searchqueryresult);$j++){
+							$searchresult[] = Array($searchqueryresult[$res_index]['id'],decode_html(getTranslatedString($modulename)." :: ".$searchqueryresult[$res_index][$fieldname]));
+							$res_index++;
+						}
+						break;
+					case 'CobroPago':
+						$searchqueryresult = vtws_query("SELECT reference, cyp_no FROM ".$modulename." WHERE reference like '%".$searchvalue."%' OR cyp_no like  '%".$searchvalue."%' LIMIT ".$limit.";", $current_user);
+						for($j=0;$j<count($searchqueryresult);$j++){
+							$searchresult[] = Array($searchqueryresult[$res_index]['id'],decode_html(getTranslatedString($modulename)." :: ".decode_html($searchqueryresult[$i]['reference']).', '.decode_html($searchqueryresult[$res_index]['cyp_no'])));
+						}
+						break;
+					default:
+						$searchqueryresult = vtws_query("SELECT ".$fieldname." FROM ".$modulename." WHERE ".$fieldname." like '%".$searchvalue."%' LIMIT ".$limit.";", $current_user);
+						for($j=0;$j<count($searchqueryresult);$j++){
+							$searchresult[] = Array($searchqueryresult[$res_index]['id'],decode_html(getTranslatedString($modulename)." :: ".$searchqueryresult[$res_index][$fieldname]));
+							$res_index++;
+						}
+						break;
 				}
 			}
 		}
