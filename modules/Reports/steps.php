@@ -425,7 +425,7 @@ function getSecondaryColumnsHTML($module) {
 						$block_listed[$value] = true;
 						$optgroup = array();
 						foreach ($ogReport->sec_module_columnslist[$secmodule[$i]][$value] as $field => $fieldlabel) {
-							$optgroup[] = array('value'=>$field, 'label'=>getTranslatedString($fieldlabel, $secmodule));
+							$optgroup[] = array('value'=>$field, 'label'=>getTranslatedString($fieldlabel, $secmodule[$i]));
 						}
 						$module_columslist[] = array(
 							'label'   => $i18nModule.' '.getTranslatedString($value, $secmodule[$i]),
