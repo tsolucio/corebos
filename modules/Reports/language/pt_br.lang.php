@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- * Contributor(s): Ranieri/Translate terms | 6/12/2017 |Sao Paulo/SP/Brasil.|www.ecrmweb.com.br
+ * Contributor(s): Ranieri/Translate terms | 16/01/2018 |Sao Paulo/SP/Brasil.|www.ecrmweb.com.br
  ********************************************************************************/
 
 $mod_strings = array(
@@ -307,6 +307,7 @@ $mod_strings = array(
 'LBL_AUTO_GENERATED_REPORT_EMAIL' => 'Este é um E-mail gerado automaticamente, enviado por um agendamento de relatório.',
 'LBL_REPORT_NAME' => 'Nome do Relatório',
 'LBL_DESCRIPTION'=>'Descrição',
+'LBL_CLICK_HERE'=>'Para acessar o relatório - clique aqui',
 )
 
 ?>
