@@ -44,4 +44,4 @@ $cbodTimeToSessionLogout = 5; // minutes
 $cbodShowLicenseOnUserCreation = false;
 
 // User Create/Update Log
-$cbodUserLog = true;
+$cbodUserLog = false;
