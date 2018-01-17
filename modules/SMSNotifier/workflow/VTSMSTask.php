@@ -38,7 +38,9 @@ class VTSMSTask extends VTTask {
 			foreach($recepients as $tonumber) {
 				if(!empty($tonumber)) $tonumbers[] = $tonumber;
 			}
-			SMSNotifier::sendsms($content, $tonumbers, $current_user->id, $relatedCRMid, $relatedModule);
+			if (!empty($tonumbers)) {
+				SMSNotifier::sendsms($content, $tonumbers, $current_user->id, $relatedCRMid, $relatedModule);
+			}
 		}
 	}
 }
