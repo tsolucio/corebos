@@ -7,107 +7,113 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('modules/com_vtiger_workflow/VTEntityCache.inc');
-require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
+require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
+require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 
-class VTUpdateFieldsTask extends VTTask {
+class VTUpdateFieldsTask extends VTTask
+{
 
-	public $executeImmediately = true;
+    public $executeImmediately = true;
 
-	public function getFieldNames() {
-		return array('field_value_mapping');
-	}
+    public function getFieldNames() 
+    {
+        return array('field_value_mapping');
+    }
 
-	public function doTask(&$entity) {
-		global $adb, $current_user, $default_charset, $log, $logbg,$from_wf;
-		$breaks = array('<br />','<br>','<br/>');
-		$from_wf = true;
-		$logbg->info('Entering workflow task VTUpdateFieldsTask');
-		$util = new VTWorkflowUtils();
-		$util->adminUser();
+    public function doTask(&$entity) 
+    {
+        global $adb, $current_user, $default_charset, $log, $logbg,$from_wf;
+        $breaks = array('<br />','<br>','<br/>');
+        $from_wf = true;
+        $logbg->info('Entering workflow task VTUpdateFieldsTask');
+        $util = new VTWorkflowUtils();
+        $util->adminUser();
 
-		$moduleName = $entity->getModuleName();
-		$entityId = $entity->getId();
-		$recordId = vtws_getIdComponents($entityId);
-		$recordId = $recordId[1];
-		$logbg->debug("Module: $moduleName, Record: $entityId");
-		$moduleHandler = vtws_getModuleHandlerFromName($moduleName, $current_user);
-		$handlerMeta = $moduleHandler->getMeta();
-		$moduleFields = $handlerMeta->getModuleFields();
+        $moduleName = $entity->getModuleName();
+        $entityId = $entity->getId();
+        $recordId = vtws_getIdComponents($entityId);
+        $recordId = $recordId[1];
+        $logbg->debug("Module: $moduleName, Record: $entityId");
+        $moduleHandler = vtws_getModuleHandlerFromName($moduleName, $current_user);
+        $handlerMeta = $moduleHandler->getMeta();
+        $moduleFields = $handlerMeta->getModuleFields();
 
-		$fieldValueMapping = array();
-		if (!empty($this->field_value_mapping)) {
-			$fieldValueMapping = json_decode($this->field_value_mapping, true);
-		}
+        $fieldValueMapping = array();
+        if (!empty($this->field_value_mapping)) {
+            $fieldValueMapping = json_decode($this->field_value_mapping, true);
+        }
 
-		if (!empty($fieldValueMapping) && count($fieldValueMapping) > 0) {
-			require_once('data/CRMEntity.php');
-			$focus = CRMEntity::getInstance($moduleName);
-			$focus->id = $recordId;
-			$focus->mode = 'edit';
-			$focus->retrieve_entity_info($recordId, $moduleName);
-			$focus->clearSingletonSaveFields();
-			$logbg->debug('field values pre: '.print_r($focus->column_fields, true));
-			$logbg->debug('update info: '.print_r($fieldValueMapping, true));
+        if (!empty($fieldValueMapping) && count($fieldValueMapping) > 0) {
+            include_once 'data/CRMEntity.php';
+            $focus = CRMEntity::getInstance($moduleName);
+            $focus->id = $recordId;
+            $focus->mode = 'edit';
+            $focus->retrieve_entity_info($recordId, $moduleName);
+            $focus->clearSingletonSaveFields();
+            $logbg->debug('field values pre: '.print_r($focus->column_fields, true));
+            $logbg->debug('update info: '.print_r($fieldValueMapping, true));
 
-			$hold_user = $current_user;
-			$util->loggedInUser();
-			if (is_null($current_user)) {
-				$current_user = $hold_user;  // make sure current_user is defined
-			}
-                        $relmodule='';
+            $hold_user = $current_user;
+            $util->loggedInUser();
+            if (is_null($current_user)) {
+                $current_user = $hold_user;  // make sure current_user is defined
+            }
+                        $relmodule=array();
                         $fldrelname='';
                         $fieldmodule='';
-			foreach ($fieldValueMapping as $fieldInfo) {
-				$fieldName = $fieldInfo['fieldname'];
-				$fieldType = '';
-				$fieldValueType = $fieldInfo['valuetype'];
-				$fieldValue = trim($fieldInfo['value']);
-                                if (array_key_exists('fldmodule',$fieldInfo)){
-                                $fieldmodule = trim($fieldInfo['fldmodule']);
-                                }
-                                if (array_key_exists('fldrelname',$fieldInfo)){
-                                $fldrelname = trim($fieldInfo['fldrelname']);
-                                }
-                                if($fldrelname!=''){
-                                $relId=$focus->column_fields["$fieldName"];
-                                if($relmodule==''){
-                                $relmodule=$fieldmodule;
-                                $focusrel = CRMEntity::getInstance($fieldmodule);
-                                $focusrel->id = $relId;
-                                $focusrel->mode = 'edit';
-                                $focusrel->retrieve_entity_info($relId, $fieldmodule);
-                                }
-                                $moduleHandlerrel = vtws_getModuleHandlerFromName($fieldmodule, $current_user);
-                                $handlerMetarel = $moduleHandlerrel->getMeta();
-                                $moduleFieldsrel = $handlerMetarel->getModuleFields();
-                                $fieldValue=$util->fieldvaluebytype($moduleFieldsrel,$fieldValueType,$fieldValue,$fldrelname,$focusrel);
-                                } 
-                                else{
-                                $fieldValue=$util->fieldvaluebytype($moduleFields,$fieldValueType,$fieldValue,$fieldName,$focus);
-                                }
-                                if($fieldmodule==''){
-				$focus->column_fields[$fieldName] = $fieldValue;
-                                $entity->data[$fieldName] = $fieldValue;}
-                                else{
-                                $focusrel->column_fields[$fldrelname]=$fieldValue;}
-                                }
-			
-			$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $handlerMeta);
-			$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
-			$_REQUEST['ajxaction'] = 'Workflow';
-			$logbg->debug('field values presave: '.print_r($focus->column_fields, true));
-			$focus->saveentity($moduleName);
-                        if($relmodule!=''){
-                        $focusrel->saveentity($fieldmodule);}
-			$_REQUEST['ajxaction'] = $hold_ajxaction;
-			$util->revertUser();
-			$logbg->debug('field values postsave: '.print_r($focus->column_fields, true));
-		}
-		$util->revertUser();
-		$from_wf = false;
-		$logbg->info('Exiting workflow task VTUpdateFieldsTask');
-	}
+            foreach ($fieldValueMapping as $fieldInfo) {
+                $fieldName = $fieldInfo['fieldname'];
+                $fieldType = '';
+                $fieldValueType = $fieldInfo['valuetype'];
+                $fieldValue = trim($fieldInfo['value']);
+                if (array_key_exists('fldmodule', $fieldInfo)) {
+                    $fieldmodule = trim($fieldInfo['fldmodule']);
+                }
+                if (array_key_exists('fldrelname', $fieldInfo)) {
+                    $fldrelname = trim($fieldInfo['fldrelname']);
+                    $relId=$focus->column_fields["$fieldName"];
+                }
+                if ($fldrelname!='' && $relId!='' && $relId!=0) {
+                    if (!in_array($fieldmodule, $relmodule)) {
+                        $relmodule[]=$fieldmodule;
+                        $focusrel["$fieldmodule"] = CRMEntity::getInstance($fieldmodule);
+                        $focusrel["$fieldmodule"]->id = $relId;
+                        $focusrel["$fieldmodule"]->mode = 'edit';
+                        $focusrel["$fieldmodule"]->retrieve_entity_info($relId, $fieldmodule);
+                    }
+                         $moduleHandlerrel = vtws_getModuleHandlerFromName($fieldmodule, $current_user);
+                         $handlerMetarel = $moduleHandlerrel->getMeta();
+                         $moduleFieldsrel = $handlerMetarel->getModuleFields();
+                         $fieldValue=$util->fieldvaluebytype($moduleFieldsrel, $fieldValueType, $fieldValue, $fldrelname, $focusrel);
+                } else {
+                    $fieldValue=$util->fieldvaluebytype($moduleFields, $fieldValueType, $fieldValue, $fieldName, $focus);
+                }
+                if ($fieldmodule=='') {
+                    $focus->column_fields[$fieldName] = $fieldValue;
+                    $entity->data[$fieldName] = $fieldValue;
+                } else {
+                    $focusrel["$fieldmodule"]->column_fields[$fldrelname]=$fieldValue;
+                }
+            }
+            
+            $focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $handlerMeta);
+            $hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
+            $_REQUEST['ajxaction'] = 'Workflow';
+            $logbg->debug('field values presave: '.print_r($focus->column_fields, true));
+            $focus->saveentity($moduleName);
+            if (count($relmodule)>0 && $relId!='' && $relId!=0) {
+                foreach ($relmodule as $mod) {
+                    $focusrel["$mod"]->saveentity($mod);
+                }
+            }
+            $_REQUEST['ajxaction'] = $hold_ajxaction;
+            $util->revertUser();
+            $logbg->debug('field values postsave: '.print_r($focus->column_fields, true));
+        }
+        $util->revertUser();
+        $from_wf = false;
+        $logbg->info('Exiting workflow task VTUpdateFieldsTask');
+    }
 }
 
 ?>
