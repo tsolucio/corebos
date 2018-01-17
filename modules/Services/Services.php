@@ -11,8 +11,8 @@ require_once('data/CRMEntity.php');
 require_once('data/Tracker.php');
 
 class Services extends CRMEntity {
-	private $db;
-	private $log;
+	public $db;
+	public $log;
 
 	public $table_name = 'vtiger_service';
 	public $table_index= 'serviceid';
