@@ -468,7 +468,7 @@ function VTUpdateFieldsTask($, fieldvaluemapping){
 						var type = $(this).children('.type').val();
 						var value = $(this).children('.expressionvalue').val();
 						if(fldrelname!='none' && fldrelname!=undefined){
-							var fldmodule=$(this).children('.type').val();
+							var fldmodule=$(this).children('.type1').val();
 							var fieldvaluemap = {
 								fieldname:fieldname,
 								fldrelname:fldrelname,

@@ -59,11 +59,13 @@ class VTUpdateFieldsTask extends VTTask
                 $current_user = $hold_user;  // make sure current_user is defined
             }
                         $relmodule=array();
-                        $fldrelname='';
-                        $fieldmodule='';
+                        
+                        
             foreach ($fieldValueMapping as $fieldInfo) {
                 $fieldName = $fieldInfo['fieldname'];
                 $fieldType = '';
+                $fieldmodule='';
+                $fldrelname='';
                 $fieldValueType = $fieldInfo['valuetype'];
                 $fieldValue = trim($fieldInfo['value']);
                 if (array_key_exists('fldmodule', $fieldInfo)) {
@@ -84,7 +86,7 @@ class VTUpdateFieldsTask extends VTTask
                          $moduleHandlerrel = vtws_getModuleHandlerFromName($fieldmodule, $current_user);
                          $handlerMetarel = $moduleHandlerrel->getMeta();
                          $moduleFieldsrel = $handlerMetarel->getModuleFields();
-                         $fieldValue=$util->fieldvaluebytype($moduleFieldsrel, $fieldValueType, $fieldValue, $fldrelname, $focusrel);
+                         $fieldValue=$util->fieldvaluebytype($moduleFieldsrel, $fieldValueType, $fieldValue, $fldrelname, $focusrel["$fieldmodule"]);
                 } else {
                     $fieldValue=$util->fieldvaluebytype($moduleFields, $fieldValueType, $fieldValue, $fieldName, $focus);
                 }
