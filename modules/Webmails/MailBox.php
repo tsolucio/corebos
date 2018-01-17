@@ -8,7 +8,6 @@
 * Portions created by FOSS Labs are Copyright (C) FOSS Labs.
 * All Rights Reserved.
 ************************************************************************************/
-include_once('config.php');
 require_once('include/logging.php');
 require_once('include/utils/utils.php');
 

@@ -21,10 +21,8 @@ chdir(__DIR__ . '/../../');
 /**
  * URL Verfication - Required to overcome Apache mis-configuration and leading to shared setup mode.
  */
-require_once 'config.php';
-if (file_exists('config_override.php')) {
-	include_once 'config_override.php';
-}
+require_once 'config.inc.php';
+
 //Relations sets the GetRelatedList function to local
 //require_once __DIR__ . '/api/Relation.php';
 include_once __DIR__ . '/api/Request.php';

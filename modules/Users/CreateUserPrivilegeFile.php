@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('config.php');
+require_once('config.inc.php');
 require_once('modules/Users/Users.php');
 require_once('include/utils/UserInfoUtil.php');
 require_once('include/utils/utils.php');
