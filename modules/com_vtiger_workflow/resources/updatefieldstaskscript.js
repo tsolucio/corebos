@@ -464,11 +464,11 @@ function VTUpdateFieldsTask($, fieldvaluemapping){
 					var fieldvaluemapping = [];
 					$('#save_fieldvaluemapping').children().each(function(i){
 						var fieldname = $(this).children('.fieldname').val();
-						var fldrelname=$('#save_fieldvalues10_'+i+'_fieldname option:selected').val();
+						var fldrelname=$(this).children('.fieldname1').val();
 						var type = $(this).children('.type').val();
 						var value = $(this).children('.expressionvalue').val();
 						if(fldrelname!='none' && fldrelname!=undefined){
-							var fldmodule=$('#save_fieldvalues10_'+i+'_module').val();
+							var fldmodule=$(this).children('.type').val();
 							var fieldvaluemap = {
 								fieldname:fieldname,
 								fldrelname:fldrelname,
