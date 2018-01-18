@@ -631,7 +631,7 @@ function _vtisPermitted($module,$actionname,$record_id='') {
 		}
 	}
 	//Checking for vtiger_tab permission
-	if (!is_null($tabid) and $profileTabsPermission[$tabid] != 0) {
+	if (!is_null($tabid) && $profileTabsPermission[$tabid] != 0) {
 		$permission = "no";
 		$log->debug("Exiting isPermitted method ...");
 		return $permission;
@@ -690,7 +690,7 @@ function _vtisPermitted($module,$actionname,$record_id='') {
 		//Checking if the Record Owner is the current User
 		if($current_user->id == $recOwnId)
 		{
-			if (($actionname!='EditView' and $actionname!='Delete' and $actionname!='DetailView' and $actionname!='CreateView') or (!$racbr or $racbr->hasDetailViewPermissionTo($actionname,true))) {
+			if (($actionname!='EditView' && $actionname!='Delete' && $actionname!='DetailView' && $actionname!='CreateView') || (!$racbr || $racbr->hasDetailViewPermissionTo($actionname,true))) {
 				$permission = 'yes';
 			} else {
 				$permission = 'no';
@@ -708,7 +708,7 @@ function _vtisPermitted($module,$actionname,$record_id='') {
 				return $permission;
 			}
 		}
-		if ($racbr!==false and $racbr->hasDetailViewPermissionTo($actionname,false)) {
+		if ($racbr!==false && $racbr->hasDetailViewPermissionTo($actionname,false)) {
 			$log->debug("Exiting isPermitted method via RAC User...");
 			return 'yes';
 		}
@@ -720,7 +720,7 @@ function _vtisPermitted($module,$actionname,$record_id='') {
 		{
 			$wfs = new VTWorkflowManager($adb);
 			$racbr = $wfs->getRACRuleForRecord($module, $record_id);
-			if (($actionname!='EditView' and $actionname!='Delete' and $actionname!='DetailView' and $actionname!='CreateView') or (!$racbr or $racbr->hasDetailViewPermissionTo($actionname))) {
+			if (($actionname!='EditView' && $actionname!='Delete' && $actionname!='DetailView' && $actionname!='CreateView') || (!$racbr || $racbr->hasDetailViewPermissionTo($actionname))) {
 				$permission = 'yes';
 			} else {
 				$permission = 'no';
@@ -785,7 +785,7 @@ function _vtisPermitted($module,$actionname,$record_id='') {
 	{
 		$wfs = new VTWorkflowManager($adb);
 		$racbr = $wfs->getRACRuleForRecord($module, $record_id);
-		if (($actionname!='EditView' and $actionname!='Delete' and $actionname!='DetailView' and $actionname!='CreateView') or (!$racbr or $racbr->hasDetailViewPermissionTo($actionname))) {
+		if (($actionname!='EditView' && $actionname!='Delete' && $actionname!='DetailView' && $actionname!='CreateView') || (!$racbr || $racbr->hasDetailViewPermissionTo($actionname))) {
 			$permission = "yes";
 			$log->debug("Exiting isPermitted method ...");
 			return $permission;
@@ -811,9 +811,9 @@ function _vtisPermitted($module,$actionname,$record_id='') {
 				$wfs = new VTWorkflowManager($adb);
 				$racbr = $wfs->getRACRuleForRecord($module, $record_id);
 				if ($racbr) {
-					if ($actionid == 3 and !$racbr->hasListViewPermissionTo('retrieve')) {
+					if ($actionid == 3 && !$racbr->hasListViewPermissionTo('retrieve')) {
 						return 'no';
-					} elseif ($actionid == 4 and !$racbr->hasDetailViewPermissionTo('retrieve')) {
+					} elseif ($actionid == 4 && !$racbr->hasDetailViewPermissionTo('retrieve')) {
 						return 'no';
 					}
 				}
@@ -833,9 +833,9 @@ function _vtisPermitted($module,$actionname,$record_id='') {
 				$wfs = new VTWorkflowManager($adb);
 				$racbr = $wfs->getRACRuleForRecord($module, $record_id);
 				if ($racbr) {
-					if ($actionid == 0 and !$racbr->hasDetailViewPermissionTo('create')) {
+					if ($actionid == 0 && !$racbr->hasDetailViewPermissionTo('create')) {
 						return 'no';
-					} elseif ($actionid == 1 and !$racbr->hasDetailViewPermissionTo('update')) {
+					} elseif ($actionid == 1 && !$racbr->hasDetailViewPermissionTo('update')) {
 						return 'no';
 					}
 				}
@@ -1267,7 +1267,7 @@ function getProfileTabsPermission($profileid)
 	// Once that is done, Webmails need to be removed permanently.
 	$emailsTabId = getTabid('Emails');
 	$webmailsTabid = getTabid('Webmails');
-	if(array_key_exists($emailsTabId, $copy) and !empty($webmailsTabid)) {
+	if(array_key_exists($emailsTabId, $copy) && !empty($webmailsTabid)) {
 		$copy[$webmailsTabid] = $copy[$emailsTabId];
 	}
 	$log->debug('Exiting getProfileTabsPermission method ...');
@@ -3790,12 +3790,19 @@ function getPermittedModuleIdList() {
 /** Function to recalculate the Sharing Rules for all the users
   * This function will recalculate all the sharing rules for all the users in the Organization and will write them in flat files
  */
-function RecalculateSharingRules() {
+function RecalculateSharingRules($roleId) {
 	global $log, $adb;
 	$log->debug('Entering RecalculateSharingRules() method ...');
 	require_once('modules/Users/CreateUserPrivilegeFile.php');
-	$query='select id from vtiger_users where deleted=0';
-	$result=$adb->pquery($query, array());
+
+	if (empty($roleId)) {
+		$query='SELECT id FROM vtiger_users WHERE deleted=0';
+		$result=$adb->pquery($query, array());
+	} else {
+		$query="SELECT id FROM vtiger_users usr INNER JOIN vtiger_user2role rol ON rol.userid = usr.id WHERE usr.deleted=0 AND usr.status='active' rol.roleid IN (?)";
+		$result=$adb->pquery($query, array($roleId));
+	}
+
 	$num_rows=$adb->num_rows($result);
 	for ($i=0; $i<$num_rows; $i++) {
 		$id=$adb->query_result($result, $i, 'id');
