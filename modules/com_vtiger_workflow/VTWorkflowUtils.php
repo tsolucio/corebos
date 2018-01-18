@@ -37,8 +37,9 @@ class VTWorkflowUtils
         /**
          * Get fieldvalue based on fieldtype
          */
-    public static function fieldvaluebytype($moduleFields,$fieldValueType,$fieldValue,$fieldName,$focus)
-    {
+    public static function fieldvaluebytype($moduleFields,$fieldValueType,$fieldValue,$fieldName,$focus,$entity)
+    {   
+        $breaks = array('<br />','<br>','<br/>');
         $fieldInstance = $moduleFields[$fieldName];
         $fieldtype = $fieldInstance->getFieldDataType();
         if ($fieldValueType == 'fieldname' && !preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', $fieldValue)) {

@@ -168,7 +168,6 @@ function VTUpdateFieldsTask($, fieldvaluemapping){
 	}
 
 	function resetFields(opType, fieldName, mappingno,fldrelname) {
-		defaultValue(opType.name)(opType, mappingno);
 		var fv = $('#save_fieldvalues_'+mappingno+'_value');
 		fv.prop('name', fieldName);
 		if(opType['refersTo']!=undefined){
@@ -215,6 +214,8 @@ function VTUpdateFieldsTask($, fieldvaluemapping){
 						}
 						return moduleFieldTypes[fieldModule][fieldName];
 					}
+                                        if(fldrelname!='' && fldrelname!=undefined && fldrelname!=null)
+                                        defaultValue(getFieldType(fldrelname).name)(getFieldType(fldrelname), mappingno);
 					var parentFields = map(function(e){
 						return[e['name'],e['label']];
 					}, filteredFields(parent['fields']));
@@ -270,8 +271,8 @@ function VTUpdateFieldsTask($, fieldvaluemapping){
 		}
 		function forStringField(opType, mappingno){
 			var value = $(format('#save_fieldvalues_%s_value', mappingno));
-			value.replaceWith(format('<input type="text" id="save_fieldvalues_%s_value" '+
-				'value="" class="expressionvalue" readonly />', mappingno));
+			//value.replaceWith(format('<input type="text" id="save_fieldvalues_%s_value" '+
+			//	'value="" class="expressionvalue" readonly />', mappingno));
 
 			var fv = $(format('#save_fieldvalues_%s_value', mappingno));
 			fv.bind('focus', function() {
