@@ -70,6 +70,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Si el valor de la variable es 1 se escribirá en pantalla, la consulta de obtención de registros para la vista de lista.',
 ),
+'Debug_RelatedList_Query' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Depuración',
+	'values' => '0 | 1',
+	'definition' => 'Si el valor de la variable es 1 se escribirá en pantalla, la consulta de obtención de registros para la lista relacionada.',
+),
 'Debug_Popup_Query' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
