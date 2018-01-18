@@ -45,6 +45,7 @@
 						<td class="big"><strong>{$CMOD.LBL_PROPERTIES} &quot;{$ROLE_NAME}&quot; </strong></td>
 						<td><div align="right">
 							<input value="   {$APP.LBL_EDIT_BUTTON_LABEL}   " title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" class="crmButton small edit" type="submit" name="Edit" >
+							<input type="button" onclick="VtigerJS_DialogBox.block();window.document.location.href = 'index.php?module=Settings&action=SettingsAjax&file=CalculatePrivilegeFilesRole&roleid={$ROLEID}';" value=" {$APP.LBL_RECALCULATE_BUTTON} " class="crmButton small cancel">
 						</div></td>
 					</tr>
 					</table>
