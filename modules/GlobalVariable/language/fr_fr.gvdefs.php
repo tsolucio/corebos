@@ -70,6 +70,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Si la valeur est (1), le résultat de la requête SQL pour trouver les enregistrements en affichage par liste sera affiché à l\'écran.',
 ),
+'Debug_RelatedList_Query' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Debug',
+	'values' => '0 | 1',
+	'definition' => 'If the value of the variable is 1 it will be written on screen, the record query for the related list.',
+),
 'Debug_Popup_Query' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Booléen',

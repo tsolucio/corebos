@@ -72,7 +72,7 @@ $GlobalVariableDefinitons = array(
 ),
 'Debug_RelatedList_Query' => array(
 	'status' => 'Implemented',
-	'valuetype' => 'Booleano',
+	'valuetype' => 'Boolean',
 	'category' => 'Debug',
 	'values' => '0 | 1',
 	'definition' => 'If the value of the variable is 1 it will be written on screen, the record query for the related list.',
