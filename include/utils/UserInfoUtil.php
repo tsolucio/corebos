@@ -3790,7 +3790,7 @@ function getPermittedModuleIdList() {
 /** Function to recalculate the Sharing Rules for all the users
   * This function will recalculate all the sharing rules for all the users in the Organization and will write them in flat files
  */
-function RecalculateSharingRules($roleId) {
+function RecalculateSharingRules($roleId = 0) {
 	global $log, $adb;
 	$log->debug('Entering RecalculateSharingRules() method ...');
 	require_once('modules/Users/CreateUserPrivilegeFile.php');

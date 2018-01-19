@@ -11,9 +11,14 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
-*/
+ */
+global $current_user;
+
 $roleid = vtlib_purify($_REQUEST['roleid']);
-if (!empty($roleid)) {
-	RecalculateSharingRules($roleid);
+
+if (is_admin($current_user)) {
+    if (!empty($roleid)) {
+        RecalculateSharingRules($roleid);
+    }
 }
 header('Location: index.php?action=RoleDetailView&module=Settings&roleid=' . urlencode($roleid));
