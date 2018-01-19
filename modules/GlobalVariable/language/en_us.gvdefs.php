@@ -70,6 +70,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'If set to 1 the SQL query being launched to retrieve records in a List View will be shown on screen.',
 ),
+'Debug_RelatedList_Query' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Booleano',
+	'category' => 'Debug',
+	'values' => '0 | 1',
+	'definition' => 'If the value of the variable is 1 it will be written on screen, the record query for the related list.',
+),
 'Debug_Popup_Query' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
