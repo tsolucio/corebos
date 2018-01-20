@@ -2806,13 +2806,18 @@ class CRMEntity {
 		$prifieldname = $fields[0][0];
 		$secfieldname = $fields[0][1];
 		$tmpname = $pritablename . 'tmp' . $secmodule;
+		if ($pritablename != $table_name && substr($pritablename, -2)=='cf') { // The relation field exists in custom field
+			$condtable = $table_name;
+		} else {
+			$condtable = $pritablename;
+		}
 		$condition = "";
 		if (!empty($tables[1]) && !empty($fields[1])) {
 			$condvalue = $tables[1] . "." . $fields[1];
-			$condition = "$pritablename.$prifieldname=$condvalue";
+			$condition = "$condtable.$prifieldname=$condvalue";
 		} else {
 			$condvalue = $table_name . "." . $column_name;
-			$condition = "$pritablename.$secfieldname=$condvalue";
+			$condition = "$condtable.$secfieldname=$condvalue";
 		}
 
 		$selectColumns = "$table_name.*";
