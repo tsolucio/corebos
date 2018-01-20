@@ -534,7 +534,7 @@ function isPermitted($module, $actionname, $record_id = '') {
 		$lastModified = $adb->query_result($rs, 0, 0);
 	}
 	$key = "ispt:$module%$actionname%$record_id%" . $current_user->id . "%$lastModified";
-	if (!coreBOS_Settings::SettingExists($key)) {
+	if (!coreBOS_Settings::settingExists($key)) {
 		coreBOS_Settings::delSettingStartsWith("ispt:$module%$actionname%$record_id%" . $current_user->id);
 		$permission = _vtisPermitted($module,$actionname,$record_id);
 		list($permission, $unused1, $unused2, $unused3) = cbEventHandler::do_filter('corebos.permissions.ispermitted', array($permission, $module, $actionname, $record_id));
