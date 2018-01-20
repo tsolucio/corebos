@@ -534,13 +534,13 @@ function isPermitted($module, $actionname, $record_id = '') {
 		$lastModified = $adb->query_result($rs, 0, 0);
 	}
 	$key = "ispt:$module%$actionname%$record_id%" . $current_user->id . "%$lastModified";
-	if (!coreBOS_Session::has($key)) {
-		coreBOS_Session::deleteStartsWith("ispt:$module%$actionname%$record_id%" . $current_user->id);
+	if (!coreBOS_Settings::SettingExists($key)) {
+		coreBOS_Settings::delSettingStartsWith("ispt:$module%$actionname%$record_id%" . $current_user->id);
 		$permission = _vtisPermitted($module,$actionname,$record_id);
 		list($permission, $unused1, $unused2, $unused3) = cbEventHandler::do_filter('corebos.permissions.ispermitted', array($permission, $module, $actionname, $record_id));
-		coreBOS_Session::set($key, $permission);
+		coreBOS_Settings::setSetting($key, $permission);
 	}
-	return coreBOS_Session::get($key);
+	return coreBOS_Settings::getSetting($key, 'no');
 }
 
 /** Function to check if the currently logged in user is permitted to perform the specified action
