@@ -2174,8 +2174,10 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 				$value = textlength_check($value);
 			}
 		} else {
-			$value = $temp_val;
-			$value = textlength_check($value);
+			$value = textlength_check($temp_val);
+			if (substr($value, -3) == '...') {
+				$value = '<span title="'.$field_val.'">'.$value.'<span>';
+			}
 		}
 	}
 
