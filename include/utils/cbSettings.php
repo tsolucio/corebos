@@ -52,6 +52,21 @@ class coreBOS_Settings {
 		unset(self::$cached_values[$skey]);
 	}
 
+	public static function delSettingStartsWith($startswith) {
+		global $adb;
+		$adb->pquery('DELETE FROM cb_settings WHERE setting_key LIKE ?',array($startswith.'%'));
+		if (version_compare(phpversion(), '5.6.0') >= 0) {
+			self::$cached_values = array_filter(self::$cached_values, function ($key) use ($startswith) {
+				return strpos($key, $startswith)!==0;
+			}, ARRAY_FILTER_USE_KEY);
+		} else {
+			$matchedKeys = array_filter(array_keys(self::$cached_values), function ($key) use ($startswith) {
+				return strpos($key, $startswith)!==0;
+			});
+			self::$cached_values = array_intersect_key(self::$cached_values, array_flip($matchedKeys));
+		}
+	}
+
 	public static function SettingExists($skey) {
 		global $adb;
 		$cbstrs = $adb->pquery('select 1 from cb_settings where setting_key=?',array($skey));
