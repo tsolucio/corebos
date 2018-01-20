@@ -137,11 +137,11 @@ class VTScheduledReport extends Reports {
 		$emails_to = trim($emails_to, ',');
 
 		$currentTime = date('Y-m-d H:i:s');
-		$subject = $this->reportname .' - '. $currentTime .' ('. DateTimeField::getDBTimeZone() .')';
+		$subject = getTranslatedString($this->reportname, $currentModule) .' - '. $currentTime .' ('. DateTimeField::getDBTimeZone() .')';
 
 		$contents = getTranslatedString('LBL_AUTO_GENERATED_REPORT_EMAIL', $currentModule) .'<br/><br/>';
-		$contents .= '<b>'.getTranslatedString('LBL_REPORT_NAME', $currentModule) .' :</b> '. $this->reportname .'<br/>';
-		$contents .= '<b>'.getTranslatedString('LBL_DESCRIPTION', $currentModule) .' :</b><br/>'. $this->reportdescription .'<br/><br/>';
+		$contents .='<b>'.getTranslatedString('LBL_REPORT_NAME', $currentModule) .' :</b> '. getTranslatedString($this->reportname, $currentModule) .'<br/>';
+		$contents .='<b>'.getTranslatedString('LBL_DESCRIPTION', $currentModule).' :</b><br/>'.getTranslatedString($this->reportdescription, $currentModule).'<br/><br/>';
 
 		$baseFileName = utf8_decode(preg_replace('/[^a-zA-Z0-9_\s]/', '', $this->reportname).'_'. preg_replace('/[^a-zA-Z0-9_\s]/', '', date('YmdHis')));
 
