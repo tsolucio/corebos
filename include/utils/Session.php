@@ -37,6 +37,10 @@ class coreBOS_Session {
 		session_destroy();
 	}
 
+	public static function isSessionStarted () {
+		return function_exists('session_status') ? (PHP_SESSION_ACTIVE == session_status()) : (!empty(session_id()));
+	}
+
 	/**
 	 * Initialize session
 	 */
