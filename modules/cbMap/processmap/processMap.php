@@ -22,10 +22,9 @@ require_once('modules/cbMap/cbMapcore.php');
 
 class processcbMap extends cbMapcore {
 
-	function processMap($arguments) {
+	public function processMap($arguments) {
 		// you have to override this one with the specific functionality of your mapping
 		return true;
 	}
-
 }
 ?>

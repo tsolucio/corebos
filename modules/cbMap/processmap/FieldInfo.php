@@ -20,39 +20,39 @@
  * The accepted format is:
 <map>
   <originmodule>
-    <originname>ServiceContracts</originname>
+	<originname>ServiceContracts</originname>
   </originmodule>
   <fields>
-    <field>
-      <fieldname>description</fieldname>
-      <features>
-        <feature>
-          <name>RTE</name>
-          <value>1</value>
-        </feature>
-      </features>
-    </field>
+	<field>
+	  <fieldname>description</fieldname>
+	  <features>
+		<feature>
+		  <name>RTE</name>
+		  <value>1</value>
+		</feature>
+	  </features>
+	</field>
   </fields>
 </map>
 
 <map>
   <originmodule>
-    <originname>ServiceContracts</originname>
+	<originname>ServiceContracts</originname>
   </originmodule>
   <fields>
-    <field>
-      <fieldname>autocompletefieldx</fieldname>
-      <features>
-        <feature>
-          <name>showfields</name>
-          <value>field1,field2,...,fieldn</value>
-        </feature>
-        <feature>
-          <name>searchfields</name>
-          <value>field1,field2,...,fieldn</value>
-        </feature>
-      </features>
-    </field>
+	<field>
+	  <fieldname>autocompletefieldx</fieldname>
+	  <features>
+		<feature>
+		  <name>showfields</name>
+		  <value>field1,field2,...,fieldn</value>
+		</feature>
+		<feature>
+		  <name>searchfields</name>
+		  <value>field1,field2,...,fieldn</value>
+		</feature>
+	  </features>
+	</field>
   </fields>
 </map>
 
@@ -60,23 +60,23 @@
 
 class FieldInfo extends processcbMap {
 
-	function processMap($arguments) {
+	public function processMap($arguments) {
 		return $this->convertMap2Array();
 	}
 
-	function convertMap2Array() {
+	private function convertMap2Array() {
 		$xml = $this->getXMLContent();
 		$mapping = array();
 		$mapping['origin'] = (String)$xml->originmodule->originname;
 		$target_fields = array();
-		foreach($xml->fields->field as $k=>$v) {
+		foreach ($xml->fields->field as $k => $v) {
 			$fieldname = (String)$v->fieldname;
 			$features = array();
-			foreach($v->features->feature as $key=>$feature) {
-				if(isset($feature->value)) {
-						  $features[(String)$feature->name] = (String)$feature->value;
+			foreach ($v->features->feature as $key => $feature) {
+				if (isset($feature->value)) {
+					$features[(String)$feature->name] = (String)$feature->value;
 				} else {
-					foreach($feature->values->value as $key1 => $single_value) {
+					foreach ($feature->values->value as $key1 => $single_value) {
 						$features[(String)$feature->name][(String)$single_value->module] = (String)$single_value->value;
 					}
 				}
@@ -86,6 +86,5 @@ class FieldInfo extends processcbMap {
 		$mapping['fields'] = $target_fields;
 		return $mapping;
 	}
-
 }
 ?>

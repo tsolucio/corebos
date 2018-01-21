@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'cbMap' => 'Plans d\'Affaire',
 	'SINGLE_cbMap' => 'Plan d\'Affaire',
 	'cbMap ID' => 'Plan d\'Affaire ID',
