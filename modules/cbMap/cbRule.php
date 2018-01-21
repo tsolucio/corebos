@@ -22,11 +22,12 @@ class coreBOS_Rule {
 
 	public static $supportedBusinessMaps = array('Condition Query','Condition Expression');
 
-	static public function evaluate($conditionid,$context) {
+	public static function evaluate($conditionid, $context) {
 		global $log,$adb,$current_user;
 		if (is_array($context)) {
-			if (empty($context['record_id']))
-				throw new WebServiceException(WebServiceErrorCode::$INVALIDID,'No record_id value given in context array.');
+			if (empty($context['record_id'])) {
+				throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'No record_id value given in context array.');
+			}
 			$mergeContextVariables = $context;
 			$contextid = $mergeContextVariables['record_id'];
 		} else {
@@ -38,22 +39,22 @@ class coreBOS_Rule {
 			$contextid = vtws_getEntityId($setype).'x'.$contextid;
 		}
 		// check that $contextid is correct
-		$webserviceObject = VtigerWebserviceObject::fromId($adb,$contextid);
+		$webserviceObject = VtigerWebserviceObject::fromId($adb, $contextid);
 		$handlerPath = $webserviceObject->getHandlerPath();
 		$handlerClass = $webserviceObject->getHandlerClass();
 
 		require_once $handlerPath;
 
-		$handler = new $handlerClass($webserviceObject,$current_user,$adb,$log);
+		$handler = new $handlerClass($webserviceObject, $current_user, $adb, $log);
 		$meta = $handler->getMeta();
 		$entityName = $meta->getObjectEntityName($contextid);
-		if (!$meta->hasPermission(EntityMeta::$RETRIEVE,$contextid)) {
-			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to read given object is denied");
+		if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $contextid)) {
+			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read given object is denied');
 		}
 
 		// check that cbmapid is correct and load it
-		if (preg_match('/^[0-9]+x[0-9]+$/',$conditionid)) {
-			list($cbmapws,$conditionid) = explode('x',$conditionid);
+		if (preg_match('/^[0-9]+x[0-9]+$/', $conditionid)) {
+			list($cbmapws, $conditionid) = explode('x', $conditionid);
 		}
 		if (is_numeric($conditionid)) {
 			$cbmap = cbMap::getMapByID($conditionid);
@@ -61,14 +62,14 @@ class coreBOS_Rule {
 			$cbmapid = GlobalVariable::getVariable('BusinessMapping_'.$conditionid, cbMap::getMapIdByName($conditionid));
 			$cbmap = cbMap::getMapByID($cbmapid);
 		}
-		if (empty($cbmap) or !in_array($cbmap->column_fields['maptype'],self::$supportedBusinessMaps)) {
-			throw new WebServiceException(WebServiceErrorCode::$INVALID_BUSINESSMAP,'Invalid Business Map identifier.');
+		if (empty($cbmap) || !in_array($cbmap->column_fields['maptype'], self::$supportedBusinessMaps)) {
+			throw new WebServiceException(WebServiceErrorCode::$INVALID_BUSINESSMAP, 'Invalid Business Map identifier.');
 		}
 
 		// merge fixed context array values
 		if (is_array($mergeContextVariables)) {
 			foreach ($mergeContextVariables as $key => $value) {
-				$cbmap->column_fields['content'] = str_ireplace('$['.$key.']',$value,$cbmap->column_fields['content']);
+				$cbmap->column_fields['content'] = str_ireplace('$['.$key.']', $value, $cbmap->column_fields['content']);
 			}
 		}
 
@@ -85,5 +86,4 @@ class coreBOS_Rule {
 		}
 		return $ruleinfo;
 	}
-
 }

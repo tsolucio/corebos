@@ -20,7 +20,7 @@ include_once('modules/cbMap/cbMap.php');
 include_once('modules/cbMap/generatemap/generateMap.php');
 $mapid = vtlib_purify($_REQUEST['mapid']);
 $mapInstance = CRMEntity::getInstance('cbMap');
-$mapInstance->retrieve_entity_info($mapid,'cbMap');
+$mapInstance->retrieve_entity_info($mapid, 'cbMap');
 $maptype = $mapInstance->column_fields['maptype'];
 if (file_exists('modules/cbMap/generatemap/'.$maptype.'.php')) {
 	include_once 'modules/cbMap/generatemap/'.$maptype.'.php';
