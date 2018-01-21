@@ -1460,5 +1460,38 @@ class Users extends CRMEntity {
 		$time_noact = ($now-$ltime)/60;
 		return $cbodTimeToSessionLogout < $time_noact;
 	}
+
+	/** Function to export the users records in CSV Format
+	* @param reference variable - where condition is passed when the query is executed
+	* Returns Export Users Query.
+	*/
+	function create_export_query($where = '')
+	{
+	    global $log, $current_user;
+	    $log->debug("Entering create_export_query(" . $where . ") method ...");
+
+	    include "include/utils/ExportUtils.php";
+
+	    $sql = getPermittedFieldsQuery("Users", "detail_view");
+	    $fields_list = getFieldsListFromQuery($sql);
+
+	    $query = "SELECT $fields_list
+						FROM vtiger_crmentity
+						INNER JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.crmid
+						INNER JOIN vtiger_user2role ON vtiger_user2role.userid = vtiger_users.id
+	        			INNER JOIN vtiger_asteriskextensions ON vtiger_asteriskextensions.userid = vtiger_users.id";
+
+	    $query .= $this->getNonAdminAccessControlQuery('Users', $current_user);
+	    $where_auto = " vtiger_crmentity.deleted = 0 ";
+
+	    if ($where != "") {
+	        $query .= " WHERE ($where) AND " . $where_auto;
+	    } else {
+	        $query .= " WHERE " . $where_auto;
+	    }
+
+	    $log->debug("Exiting create_export_query method ...");
+	    return $query;
+	}
 }
 ?>

@@ -22,14 +22,18 @@
 		{$recordListRange}
 	</td>
 	<!-- Page Navigation -->
-	<td nowrap width="100%" align="center">
+	<td nowrap width="35%" align="center">
 		<table border=0 cellspacing=0 cellpadding=0 class="small">
 			<tr>{$NAVIGATION}</tr>
 		</table>
 	</td>
-	<td class=small width="30%" align="right"><input title="{$CMOD.LBL_NEW_USER_BUTTON_TITLE}" accessyKey="{$CMOD.LBL_NEW_USER_BUTTON_KEY}" type="submit" name="button" value="{$CMOD.LBL_NEW_USER_BUTTON_LABEL}" class="crmButton create small"></td>
-</tr>
-
+	<td class="big" nowrap align="right">
+		<div align="right">
+		<input title="{$CMOD.LBL_NEW_USER_BUTTON_TITLE}" accessyKey="{$CMOD.LBL_NEW_USER_BUTTON_KEY}" type="submit" name="button" value="{$CMOD.LBL_NEW_USER_BUTTON_LABEL}" class="crmButton create small">
+		<input title="{$CMOD.LBL_EXPORT_USER_BUTTON_TITLE}" accessyKey="{$CMOD.LBL_EXPORT_USER_BUTTON_KEY}" type="button" onclick="return selectedRecords('Users','ptab')" value="{$CMOD.LBL_EXPORT_USER_BUTTON_LABEL}" class="crmButton small cancel">
+		</div>
+	</td>
+</{$APP.LBL_EXPORT}
 {if !empty($ERROR_MSG)}
 <tr>
 	{$ERROR_MSG}

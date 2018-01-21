@@ -48,6 +48,9 @@
   'LBL_NEW_USER_BUTTON_TITLE' => 'Nuovo Utente [Alt+N]',
   'LBL_NEW_USER_BUTTON_LABEL' => 'Nuovo Utente',
   'LBL_NEW_USER_BUTTON_KEY' => 'N',
+  'LBL_EXPORT_USER_BUTTON_TITLE' => 'Esporta utenti [Alt+E]',
+  'LBL_EXPORT_USER_BUTTON_LABEL' => 'Esporta utenti',
+  'LBL_EXPORT_USER_BUTTON_KEY' => 'E',
   'LBL_DATE_FORMAT' => 'Formato Data',
 
   'LBL_ERROR' => 'Errore:',
