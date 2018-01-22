@@ -64,6 +64,7 @@ class VTUpdateFieldsTask extends VTTask {
 				$fldrelname='';
 				$fieldValueType = $fieldInfo['valuetype'];
 				$fieldValue = trim($fieldInfo['value']);
+                                $focusrel[]=array();
 				if (array_key_exists('fldmodule', $fieldInfo)) {
 					$fieldmodule = trim($fieldInfo['fldmodule']);
 				}
