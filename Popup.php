@@ -251,8 +251,7 @@ if (isset($_REQUEST['select'])) {
 $smarty->assign('RETURN_ACTION',isset($_REQUEST['return_action']) ? vtlib_purify($_REQUEST['return_action']) : '');
 
 //Retreive the list from Database
-if($currentModule == 'PriceBooks' && isset($_REQUEST['productid']))
-{
+if ($currentModule == 'PriceBooks' && isset($_REQUEST['productid'])) {
 	$productid= isset($_REQUEST['productid']) ? vtlib_purify($_REQUEST['productid']) : 0;
 	$currency_id= isset($_REQUEST['currencyid']) ? vtlib_purify($_REQUEST['currencyid']) : fetchCurrency($current_user->id);
 	$query = 'select vtiger_pricebook.*, vtiger_pricebookproductrel.productid, vtiger_pricebookproductrel.listprice, ' .
@@ -267,10 +266,7 @@ if($currentModule == 'PriceBooks' && isset($_REQUEST['productid']))
 	$smarty->assign('mod_var_name', '');
 	$smarty->assign('mod_var_value', '');
 	$smarty->assign('recid_var_name', '');
-	$smarty->assign('recid_var_value', 0);
-}
-else
-{
+} else {
 	$where_relquery = '';
 	if (!empty($_REQUEST['recordid'])) {
 		$recid = vtlib_purify($_REQUEST['recordid']);
@@ -310,7 +306,6 @@ else
 		$smarty->assign('mod_var_name', '');
 		$smarty->assign('mod_var_value', '');
 		$smarty->assign('recid_var_name', '');
-		$smarty->assign('recid_var_value', 0);
 	}
 	if($currentModule == 'Products' && empty($_REQUEST['record_id']) && ($popuptype == 'inventory_prod' || $popuptype == 'inventory_prod_po')){
 		$showSubproducts = GlobalVariable::getVariable('Product_Show_Subproducts_Popup', 'no');

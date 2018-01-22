@@ -384,6 +384,7 @@ function getNavigationValues($display, $noofrows, $limit) {
 		$previous = 0;
 	}
 	$last = $paging;
+	$first = '';
 	if ($noofrows < $limit) {
 		$first = '';
 	} elseif ($noofrows != $limit) {
