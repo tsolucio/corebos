@@ -1932,30 +1932,12 @@ class CRMEntity {
 		$button .= '<input type="hidden" name="email_directing_module"><input type="hidden" name="record">';
 
 		if ($actions) {
-<<<<<<< HEAD
 			if (is_string($actions)) $actions = explode(',', strtoupper($actions));
 			if (in_array('SELECT', $actions) && isPermitted($related_module,4, '') == 'yes') {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module). "' class='slds-button slds-button--small slds-button--brand ' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module) ."'>&nbsp;";
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module,1, '') == 'yes') {
 				$button .= "<input title='". getTranslatedString('LBL_ADD_NEW')." ". getTranslatedString($singular_modname)."' accessyKey='F' class='slds-button slds-button--small slds-button_success ' onclick='fnvshobj(this,\"sendmail_cont\");sendmail(\"$this_module\",$id);' type='button' name='button' value='". getTranslatedString('LBL_ADD_NEW')." ". getTranslatedString($singular_modname)."'></td>";
-=======
-			if (is_string($actions)) {
-				$actions = explode(',', strtoupper($actions));
-			}
-			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
-				$button .= "<input title='".getTranslatedString('LBL_SELECT').' '. getTranslatedString($related_module, $related_module).
-					"' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule".
-					"&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',".
-					"'width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). ' ' .
-					getTranslatedString($related_module, $related_module) ."'>&nbsp;";
-			}
-			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
-				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
-				$button .= "<input title='". getTranslatedString('LBL_ADD_NEW').' '. $singular_modname."' accessyKey='F' class='crmbutton small create' ".
-					"onclick='fnvshobj(this,\"sendmail_cont\");sendmail(\"$this_module\",$id);' type='button' name='button' value='". getTranslatedString('LBL_ADD_NEW').
-					' '. $singular_modname."'></td>";
->>>>>>> c49fe08b4f1f438d1c29d4e55a04ed3e0dd3e642
 			}
 		}
 
@@ -2125,19 +2107,10 @@ class CRMEntity {
 			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
 				$wfs = new VTWorkflowManager($adb);
 				$racbr = $wfs->getRACRuleForRecord($currentModule, $id);
-<<<<<<< HEAD
 				if (!$racbr or $racbr->hasRelatedListPermissionTo('select',$related_module)) {
 					$button .= "<input title='" . getTranslatedString('LBL_SELECT') . " " . getTranslatedString($related_module) . "' class='slds-button slds-button--small slds-button--brand ' " .
 						" type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\"" .
 						" value='" . getTranslatedString('LBL_SELECT') . " " . getTranslatedString($related_module, $related_module) . "'>&nbsp;";
-=======
-				if (!$racbr or $racbr->hasRelatedListPermissionTo('select', $related_module)) {
-					$button .= "<input title='" . getTranslatedString('LBL_SELECT') . ' ' . getTranslatedString($related_module, $related_module).
-						"' class='crmbutton small edit' "." type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule".
-						"&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',".
-						"'width=640,height=602,resizable=0,scrollbars=0');\" value='" . getTranslatedString('LBL_SELECT') . ' '.
-						getTranslatedString($related_module, $related_module) . "'>&nbsp;";
->>>>>>> c49fe08b4f1f438d1c29d4e55a04ed3e0dd3e642
 				}
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
@@ -2266,14 +2239,8 @@ class CRMEntity {
 						&& getFieldVisibilityPermission($related_module, $current_user->id, $dependentField, 'readwrite') == '0') {
 					$wfs = new VTWorkflowManager($adb);
 					$racbr = $wfs->getRACRuleForRecord($currentModule, $id);
-<<<<<<< HEAD
 					if (!$racbr or $racbr->hasRelatedListPermissionTo('create',$related_module)) {
 						$button .= "<input title='" . getTranslatedString('LBL_ADD_NEW') . " " . getTranslatedString($singular_modname, $related_module) . "' class='slds-button slds-button--small slds-button_success '" .
-=======
-					if (!$racbr or $racbr->hasRelatedListPermissionTo('create', $related_module)) {
-						$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
-						$button .= "<input title='" . getTranslatedString('LBL_ADD_NEW') . " " . $singular_modname . "' class='crmbutton small create'" .
->>>>>>> c49fe08b4f1f438d1c29d4e55a04ed3e0dd3e642
 							" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
 							" value='" . getTranslatedString('LBL_ADD_NEW') . " " . $singular_modname . "'>&nbsp;";
 					}
@@ -2382,18 +2349,10 @@ class CRMEntity {
 			}
 			$relationconditions = '('.implode(' or ', $relconds).')';
 			$calStatus = getAssignedPicklistValues('eventstatus', $current_user->roleid, $adb, $app_strings);
-<<<<<<< HEAD
 			$relid = $adb->run_query_field('select relation_id from vtiger_relatedlists where tabid='.$cur_tab_id.' and related_tabid='.$rel_tab_id,'relation_id');
 			$button .= '<select name="cbcalendar_filter" class="slds-select" style="width: 25%; vertical-align: inherit;"
 			 onchange="loadRelatedListBlock(\'module='.$currentModule.'&action='.$currentModule.'Ajax&file=DetailViewAjax&record='.$id.'&ajxaction=LOADRELATEDLIST&header=Activities&relation_id='.$relid.'&cbcalendar_filter=\'+this.options[this.options.selectedIndex].value+\'&actions=add&parenttab=Support\',\'tbl_'.$currentModule.'_Activities\',\''.$currentModule.'_Activities\');">
 			<option value="all">'.getTranslatedString('LBL_ALL').'</option>';
-=======
-			$relid = $adb->run_query_field('select relation_id from vtiger_relatedlists where tabid='.$cur_tab_id.' and related_tabid='.$rel_tab_id, 'relation_id');
-			$button .= '<select name="cbcalendar_filter" class="small" onchange="loadRelatedListBlock(\'module='.$currentModule.'&action='.$currentModule.
-				'Ajax&file=DetailViewAjax&record='.$id.'&ajxaction=LOADRELATEDLIST&header=Activities&relation_id='.$relid.
-				'&cbcalendar_filter=\'+this.options[this.options.selectedIndex].value+\'&actions=add&parenttab=Support\',\'tbl_'.$currentModule.'_Activities\',\''.
-				$currentModule.'_Activities\');"><option value="all">'.getTranslatedString('LBL_ALL').'</option>';
->>>>>>> c49fe08b4f1f438d1c29d4e55a04ed3e0dd3e642
 			foreach ($calStatus as $cstatkey => $cstatvalue) {
 				$button .= '<option value="'.$cstatkey.'" '.
 					((isset($_REQUEST['cbcalendar_filter']) and $_REQUEST['cbcalendar_filter']==$cstatkey) ? 'selected' : '').'>'.
@@ -2409,14 +2368,8 @@ class CRMEntity {
 						&& getFieldVisibilityPermission($related_module, $current_user->id, $dependentField, 'readwrite') == '0') {
 					$wfs = new VTWorkflowManager($adb);
 					$racbr = $wfs->getRACRuleForRecord($currentModule, $id);
-<<<<<<< HEAD
 					if (!$racbr or $racbr->hasRelatedListPermissionTo('create',$related_module)) {
 						$button .= "<input title='" . getTranslatedString('LBL_ADD_NEW') . " " . getTranslatedString($singular_modname, $related_module) . "' class='slds-button slds-button--small slds-button_success '" .
-=======
-					if (!$racbr or $racbr->hasRelatedListPermissionTo('create', $related_module)) {
-						$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
-						$button .= "<input title='" . getTranslatedString('LBL_ADD_NEW') . " " . $singular_modname . "' class='crmbutton small create'" .
->>>>>>> c49fe08b4f1f438d1c29d4e55a04ed3e0dd3e642
 							" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
 							" value='" . getTranslatedString('LBL_ADD_NEW') . " " . $singular_modname . "'>&nbsp;";
 					}
