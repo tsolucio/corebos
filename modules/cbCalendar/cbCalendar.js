@@ -172,6 +172,18 @@ function setCalendarDateFields(date,hour,min,fmt) {
 	document.getElementById('timefmt_dtend').innerHTML = (fmt != '24' ? fmt : '');
 }
 
+function open_filtered_contactsIfAccounts(fromlink, fldname, MODULE, ID) {
+	var rel_id = document.getElementById('rel_id_display').value;
+	var rel_type = document.getElementById('rel_id_type').value;
+	if (rel_id != '' && rel_type=='Accounts') {
+		var BasicSearch = '&query=true&search=true&searchtype=BasicSearch&search_field=account_id&search_text='+encodeURI(rel_id);
+		BasicSearch = BasicSearch + encodeURI('&cbcustompopupinfo=query;search;searchtype;search_field;search_text');
+		window.open("index.php?module=Contacts&action=Popup&html=Popup_picker&form=vtlibPopupView&forfield="+fldname+"&srcmodule="+MODULE+"&forrecord="+ID+BasicSearch,"vtlibui10","width=680,height=602,resizable=0,scrollbars=0,top=150,left=200");
+	} else {
+		vtlib_open_popup_window("", "cto_id", "cbCalendar", "");
+	}
+}
+
 document.addEventListener("DOMContentLoaded", function (event) {
 	let fldstart = document.getElementById('jscal_field_dtstart');
 	if (fldstart != undefined) {
