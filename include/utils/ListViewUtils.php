@@ -174,14 +174,15 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 								$actionsURL = '&actions=' . vtlib_purify($_REQUEST['actions']);
 							}
 							if (empty($_REQUEST['header'])) {
-								$moduleLabel = getTranslatedString($module, $module);
+								$moduleLabel = $module;
+								$moduleHeader = getTranslatedString($module, $module);
 							} else {
-								$moduleLabel = $_REQUEST['header'];
+								$moduleLabel = $moduleHeader = vtlib_purify($_REQUEST['header']);
 							}
-							$moduleLabel = str_replace(' ', '', $moduleLabel);
+							$moduleLabel = str_replace(' ', ':', $moduleLabel);
 							$name = "<a href='javascript:void(0);' onClick='loadRelatedListBlock" .
 									"(\"module=$relatedmodule&action=" . $relatedmodule . "Ajax&" .
-									"file=DetailViewAjax&ajxaction=LOADRELATEDLIST&header=" . $moduleLabel .
+									"file=DetailViewAjax&ajxaction=LOADRELATEDLIST&header=" . $moduleHeader .
 									"&order_by=$col&record=$relatedlist&sorder=$temp_sorder$relationURL" .
 									"$actionsURL\",\"tbl_" . $relatedmodule . "_$moduleLabel\"," .
 									"\"$relatedmodule" . "_$moduleLabel\");' class='listFormHeaderLinks'>" . $lbl_name . "" . $arrow . "</a>";
@@ -3495,7 +3496,7 @@ function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $
 			"ajxaction=LOADRELATEDLIST&header={$header}&relation_id={$relatedListRow['relation_id']}" .
 			"&actions={$actions}&{$url_qry}";
 
-	$formattedHeader = str_replace(' ', '', $header);
+	$formattedHeader = str_replace(' ', ':', $related_module);
 	$target = 'tbl_' . $module . '_' . $formattedHeader;
 	$imagesuffix = $module . '_' . $formattedHeader;
 
