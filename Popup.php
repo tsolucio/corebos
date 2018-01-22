@@ -291,6 +291,12 @@ else
 		$smarty->assign("recid_var_name", "relmod_id");
 		$smarty->assign("recid_var_value",$id);
 		$where_relquery.= getPopupCheckquery($currentModule,$mod,$id);
+	} elseif (isset($_REQUEST['query']) && isset($_REQUEST['search']) && $_REQUEST['query']=='true' && $_REQUEST['search']=='true') {
+		// to show "show all" button on search
+		$smarty->assign('mod_var_name', '');
+		$smarty->assign('mod_var_value', '');
+		$smarty->assign('recid_var_name', '');
+		$smarty->assign('recid_var_value', '0');
 	}
 	else if(isset($_REQUEST['task_relmod_id']))
 	{
