@@ -45,6 +45,9 @@ $mod_strings = array(
 'LBL_NEW_USER_BUTTON_TITLE'=>'Novo Usuário [Alt+N]',
 'LBL_NEW_USER_BUTTON_LABEL'=>'Novo Usuário',
 'LBL_NEW_USER_BUTTON_KEY'=>'N',
+'LBL_EXPORT_USER_BUTTON_TITLE' => 'Exportar usuários [Alt+E]',
+'LBL_EXPORT_USER_BUTTON_LABEL' => 'Exportar usuários',
+'LBL_EXPORT_USER_BUTTON_KEY' => 'E',
 'LBL_DATE_FORMAT'=>'Formato data',
 
 'LBL_ERROR'=>'Erro:',

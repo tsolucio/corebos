@@ -42,12 +42,12 @@
 												{if $SESSION_WHERE neq ''}
 												<td align="right" valign="top" width="50%" class=small>{$APP.LBL_WITH_SEARCH}</td>
 												<td align="left" valign="top" width="5%" class=small>
-													<input type="radio" name="search_type" checked value="includesearch">
+													<input type="radio" name="search_type" checked value="includesearch" {if $MODULE eq 'Users'}disabled{/if}>
 												</td>
 												{else}
 												<td align="right" valign="top" width="50%" class=small>{$APP.LBL_WITH_SEARCH}</td>
 												<td align="left" valign="top" width="5%" class=small>
-													<input type="radio" name="search_type"  value="includesearch">
+													<input type="radio" name="search_type" value="includesearch" {if $MODULE eq 'Users'}disabled{/if}>
 												</td>
 												{/if}
 											</tr>
@@ -78,26 +78,26 @@
 												{else}
 												<td align="right" valign="top" width="50%" class=small>{$APP.LBL_ALL_DATA}</td>
 												<td align="left" valign="top" width="5%" class=small>
-													<input type="radio" name="export_data"  value="all">
+													<input type="radio" name="export_data" value="all">
 												</td>
 												{/if}
 											</tr>
 											<tr>
 												<td align="right" valign="top" width="50%" class=small >{$APP.LBL_DATA_IN_CURRENT_PAGE}</td>
 												<td align="left" valign="top" width="5%" class=small>
-													<input type="radio" name="export_data" value="currentpage">
+													<input type="radio" name="export_data" value="currentpage" {if $MODULE eq 'Users'}disabled{/if}>
 												</td>
 											</tr>
 											<tr>
 												{if !empty($IDSTRING)}
 													<td align="right" valign="top" width="50%" class=small >{$APP.LBL_ONLY_SELECTED_RECORDS}</td>
 												<td align="left" valign="top" width="5%" class=small>
-													<input type="radio" name="export_data" checked value="selecteddata">
+													<input type="radio" name="export_data" checked value="selecteddata" {if $MODULE eq 'Users'}disabled{/if}>
 												</td>
 												{else}
 												<td align="right" valign="top" width="50%" class=small >{$APP.LBL_ONLY_SELECTED_RECORDS}</td>
 												<td align="left" valign="top" width="5%" class=small>
-													<input type="radio" name="export_data"  value="selecteddata">
+													<input type="radio" name="export_data" value="selecteddata" {if $MODULE eq 'Users'}disabled{/if}>
 												</td>
 												{/if}
 											</tr>
