@@ -216,8 +216,15 @@ if($focus->mode != 'edit' && $mod_seq_field != null) {
 // Gather the help information associated with fields
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
 
-$picklistDependencyDatasource = Vtiger_DependencyPicklist::getPicklistDependencyDatasource($currentModule);
-$smarty->assign("PICKIST_DEPENDENCY_DATASOURCE", json_encode($picklistDependencyDatasource));
+$bmapname = $currentModule.'_FieldDependency';
+$cbMapFDEP = array();
+$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+if ($cbMapid) {
+    $cbMap = cbMap::getMapByID($cbMapid);
+    $cbMapFDEP = $cbMap->FieldDependency();
+    $cbMapFDEP = $cbMapFDEP['fields'];
+}
+$smarty->assign("FIELD_DEPENDENCY_DATASOURCE", json_encode($cbMapFDEP));
 //Show or not the Header to copy address to left or right
 $smarty->assign('SHOW_COPY_ADDRESS', GlobalVariable::getVariable('Application_Show_Copy_Address', 1, $currentModule, $current_user->id));
 

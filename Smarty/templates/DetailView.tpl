@@ -9,6 +9,12 @@
  ********************************************************************************/
 -->*}
 <script type="text/javascript" src="include/js/dtlviewajax.js"></script>
+<script type="text/javascript" src="include/js/FieldDependencies.js"></script>
+{if $FIELD_DEPENDENCY_DATASOURCE neq ''}
+<script type="text/javascript">
+	jQuery(document).ready(function() {ldelim} (new FieldDependencies({$FIELD_DEPENDENCY_DATASOURCE})).init(document.forms['DetailView']) {rdelim});
+</script>
+{/if}
 <span id="crmspanid" style="display:none;position:absolute;"  onmouseover="show('crmspanid');">
 	<a class="link" href="javascript:;">{$APP.LBL_EDIT_BUTTON}</a>
 </span>
