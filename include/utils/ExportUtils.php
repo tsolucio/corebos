@@ -74,101 +74,85 @@ function getPermittedFieldsQuery($module, $disp_view) {
 	return $sql;
 }
 
-/**	function used to get the list of fields from the input query as a comma seperated string
- *	@param string $query - field table query which contains the list of fields
- *	@return string $fields - list of fields as a comma seperated string
+/** function used to get the list of fields from the input query as a comma seperated string
+ *  @param string $query - field table query which contains the list of fields
+ *  @return string $fields - list of fields as a comma seperated string
  */
-function getFieldsListFromQuery($query)
-{
+function getFieldsListFromQuery($query) {
     global $adb, $log;
     $log->debug("Entering into the function getFieldsListFromQuery($query)");
 
-    $result   = $adb->query($query);
+    $result = $adb->query($query);
     $num_rows = $adb->num_rows($result);
-    $fields   = '';
-
-    for ($i = 0; $i < $num_rows; $i++) {
-
+    $fields = '';
+    for ($i=0; $i < $num_rows; $i++) {
         $columnName = $adb->query_result($result, $i, 'columnname');
         $fieldlabel = $adb->query_result($result, $i, 'fieldlabel');
         $fieldlabel = str_replace('?', '', $fieldlabel);
-        $tablename  = $adb->query_result($result, $i, 'tablename');
+        $tablename = $adb->query_result($result, $i, 'tablename');
 
         //HANDLE HERE - Mismatch fieldname-tablename in field table, in future we have to avoid these if elses
-        if ($columnName == 'smownerid') {
-            //for all assigned to user name
-            $fields .= "case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as '" . $fieldlabel . "',";
+        if ($columnName == 'smownerid') {//for all assigned to user name
+            $fields .= "case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as '".$fieldlabel."',";
         } elseif ($columnName == 'smcreatorid') {
-            $fields .= "vtigerCreatedBy.user_name as '" . $fieldlabel . "',";
-        } elseif ($tablename == 'vtiger_account' && $columnName == 'parentid') {
-            //Account - Member Of
-            $fields .= "vtiger_account2.accountname as '" . $fieldlabel . "',";
-        } elseif ($tablename == 'vtiger_contactdetails' && $columnName == 'accountid') {
-            //Contact - Account Name
-            $fields .= "vtiger_account.accountname as '" . $fieldlabel . "',";
-        } elseif ($tablename == 'vtiger_contactdetails' && $columnName == 'reportsto') {
-            //Contact - Reports To
+            $fields .= "vtigerCreatedBy.user_name as '".$fieldlabel."',";
+        } elseif ($tablename == 'vtiger_account' && $columnName == 'parentid') {//Account - Member Of
+            $fields .= "vtiger_account2.accountname as '".$fieldlabel."',";
+        } elseif ($tablename == 'vtiger_contactdetails' && $columnName == 'accountid') {//Contact - Account Name
+            $fields .= "vtiger_account.accountname as '".$fieldlabel."',";
+        } elseif ($tablename == 'vtiger_contactdetails' && $columnName == 'reportsto') {//Contact - Reports To
             $fields .= " concat(vtiger_contactdetails2.lastname,' ',vtiger_contactdetails2.firstname) as 'Reports To Contact',";
-        } elseif ($tablename == 'vtiger_potential' && $columnName == 'related_to') {
-            //Potential - Related to (changed for B2C model support)
-            $fields .= "vtiger_potential.related_to as '" . $fieldlabel . "',";
-        } elseif ($tablename == 'vtiger_potential' && $columnName == 'campaignid') {
-            //Potential - Campaign Source
-            $fields .= "vtiger_campaign.campaignname as '" . $fieldlabel . "',";
-        } elseif ($tablename == 'vtiger_seproductsrel' && $columnName == 'crmid') {
-            //Product - Related To
+        } elseif ($tablename == 'vtiger_potential' && $columnName == 'related_to') {//Potential - Related to (changed for B2C model support)
+            $fields .= "vtiger_potential.related_to as '".$fieldlabel."',";
+        } elseif ($tablename == 'vtiger_potential' && $columnName == 'campaignid') {//Potential - Campaign Source
+            $fields .= "vtiger_campaign.campaignname as '".$fieldlabel."',";
+        } elseif ($tablename == 'vtiger_seproductsrel' && $columnName == 'crmid') {//Product - Related To
             $fields .= "case vtiger_crmentityRelatedTo.setype
-				when 'Leads' then concat('Leads::::',vtiger_ProductRelatedToLead.lastname,' ',vtiger_ProductRelatedToLead.firstname)
-				when 'Accounts' then concat('Accounts::::',vtiger_ProductRelatedToAccount.accountname)
-				when 'Potentials' then concat('Potentials::::',vtiger_ProductRelatedToPotential.potentialname)
-				End as 'Related To',";
-        } elseif ($tablename == 'vtiger_products' && $columnName == 'contactid') {
-            //Product - Contact
+                when 'Leads' then concat('Leads::::',vtiger_ProductRelatedToLead.lastname,' ',vtiger_ProductRelatedToLead.firstname)
+                when 'Accounts' then concat('Accounts::::',vtiger_ProductRelatedToAccount.accountname)
+                when 'Potentials' then concat('Potentials::::',vtiger_ProductRelatedToPotential.potentialname)
+                End as 'Related To',";
+        } elseif ($tablename == 'vtiger_products' && $columnName == 'contactid') {//Product - Contact
             $fields .= " concat(vtiger_contactdetails.lastname,' ',vtiger_contactdetails.firstname) as 'Contact Name',";
-        } elseif ($tablename == 'vtiger_products' && $columnName == 'vendor_id') {
-            //Product - Vendor Name
-            $fields .= "vtiger_vendor.vendorname as '" . $fieldlabel . "',";
-        } elseif ($tablename == 'vtiger_producttaxrel' && $columnName == 'taxclass') {
-            //avoid product - taxclass
+        } elseif ($tablename == 'vtiger_products' && $columnName == 'vendor_id') {//Product - Vendor Name
+            $fields .= "vtiger_vendor.vendorname as '".$fieldlabel."',";
+        } elseif ($tablename == 'vtiger_producttaxrel' && $columnName == 'taxclass') {//avoid product - taxclass
             $fields .= "";
-        } elseif ($tablename == 'vtiger_attachments' && $columnName == 'name') {
-            //Emails filename
-            $fields .= $tablename . ".name as '" . $fieldlabel . "',";
-        } elseif ($tablename == 'vtiger_troubletickets' && $columnName == 'product_id') {
-            //By Pavani...Handling mismatch field and table name for trouble tickets
-            //Ticket - Product
-            $fields .= "vtiger_products.productname as '" . $fieldlabel . "',";
-        } elseif ($tablename == 'vtiger_troubletickets' && $columnName == 'parent_id') {
-            //Ticket - Related To
+        } elseif ($tablename == 'vtiger_attachments' && $columnName == 'name') {//Emails filename
+            $fields .= $tablename.".name as '".$fieldlabel."',";
+        } //By Pavani...Handling mismatch field and table name for trouble tickets
+        elseif ($tablename == 'vtiger_troubletickets' && $columnName == 'product_id') {//Ticket - Product
+            $fields .= "vtiger_products.productname as '".$fieldlabel."',";
+        } elseif ($tablename == 'vtiger_troubletickets' && $columnName == 'parent_id') {//Ticket - Related To
             $fields .= "case vtiger_crmentityRelatedTo.setype
-				when 'Accounts' then concat('Accounts::::',vtiger_account.accountname)
-				when 'Contacts' then concat('Contacts::::',vtiger_contactdetails.lastname,' ',vtiger_contactdetails.firstname)
-				End as 'Related To',";
-        } elseif ($tablename == 'vtiger_notes' && ($columnName == 'filename' || $columnName == 'filetype' || $columnName == 'filesize' || $columnName == 'filelocationtype' || $columnName == 'filestatus' || $columnName == 'filedownloadcount' || $columnName == 'folderid')) {
+                when 'Accounts' then concat('Accounts::::',vtiger_account.accountname)
+                when 'Contacts' then concat('Contacts::::',vtiger_contactdetails.lastname,' ',vtiger_contactdetails.firstname)
+                End as 'Related To',";
+        } elseif ($tablename == 'vtiger_notes' && ($columnName == 'filename' || $columnName == 'filetype' || $columnName == 'filesize' || $columnName == 'filelocationtype' || $columnName == 'filestatus' || $columnName == 'filedownloadcount' ||$columnName == 'folderid')) {
             continue;
-        } elseif (($tablename == 'vtiger_invoice' || $tablename == 'vtiger_quotes' || $tablename == 'vtiger_salesorder') && $columnName == 'accountid') {
-            $fields .= 'concat("Accounts::::",vtiger_account.accountname) as "' . $fieldlabel . '",';
+        } elseif (($tablename == 'vtiger_invoice' || $tablename == 'vtiger_quotes' || $tablename == 'vtiger_salesorder')&& $columnName == 'accountid') {
+            $fields .= 'concat("Accounts::::",vtiger_account.accountname) as "'.$fieldlabel.'",';
         } elseif (($tablename == 'vtiger_invoice' || $tablename == 'vtiger_quotes' || $tablename == 'vtiger_salesorder' || $tablename == 'vtiger_purchaseorder') && $columnName == 'contactid') {
-            $fields .= 'concat("Contacts::::",vtiger_contactdetails.lastname," ",vtiger_contactdetails.firstname) as "' . $fieldlabel . '",';
+            $fields .= 'concat("Contacts::::",vtiger_contactdetails.lastname," ",vtiger_contactdetails.firstname) as "'.$fieldlabel.'",';
         } elseif ($tablename == 'vtiger_invoice' && $columnName == 'salesorderid') {
-            $fields .= 'concat("SalesOrder::::",vtiger_salesorder.subject) as "' . $fieldlabel . '",';
+            $fields .= 'concat("SalesOrder::::",vtiger_salesorder.subject) as "'.$fieldlabel.'",';
         } elseif (($tablename == 'vtiger_quotes' || $tablename == 'vtiger_salesorder') && $columnName == 'potentialid') {
-            $fields .= 'concat("Potentials::::",vtiger_potential.potentialname) as "' . $fieldlabel . '",';
+            $fields .= 'concat("Potentials::::",vtiger_potential.potentialname) as "'.$fieldlabel.'",';
         } elseif ($tablename == 'vtiger_quotes' && $columnName == 'inventorymanager') {
             $userNameSql = getSqlForNameInDisplayFormat(
                 array('first_name' => 'vtiger_inventoryManager.first_name', 'last_name' => 'vtiger_inventoryManager.last_name'),
                 'Users'
             );
-            $fields .= $userNameSql . ' as "' . $fieldlabel . '",';
+            $fields .= $userNameSql. ' as "'.$fieldlabel.'",';
         } elseif ($tablename == 'vtiger_salesorder' && $columnName == 'quoteid') {
-            $fields .= 'concat("Quotes::::",vtiger_quotes.subject) as "' . $fieldlabel . '",';
+            $fields .= 'concat("Quotes::::",vtiger_quotes.subject) as "'.$fieldlabel.'",';
         } elseif ($tablename == 'vtiger_purchaseorder' && $columnName == 'vendorid') {
-            $fields .= 'concat("Vendors::::",vtiger_vendor.vendorname) as "' . $fieldlabel . '",';
+            $fields .= 'concat("Vendors::::",vtiger_vendor.vendorname) as "'.$fieldlabel.'",';
         } elseif ($tablename == 'vtiger_users' && ($columnName == 'user_password' || $columnName == 'confirm_password' ||
             $columnName == 'accesskey')) {
             continue;
         } else {
-            $fields .= $tablename . "." . $columnName . " as '" . $fieldlabel . "',";
+            $fields .= $tablename.".".$columnName. " as '" .$fieldlabel."',";
         }
     }
     $fields = trim($fields, ',');
@@ -176,5 +160,4 @@ function getFieldsListFromQuery($query)
     $log->debug("Exit from the function getFieldsListFromQuery($query). Return value = $fields");
     return $fields;
 }
-
 ?>

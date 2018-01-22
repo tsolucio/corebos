@@ -1461,37 +1461,42 @@ class Users extends CRMEntity {
 		return $cbodTimeToSessionLogout < $time_noact;
 	}
 
-	/** Function to export the users records in CSV Format
+	/** Function to export the Users records in CSV Format
 	* @param reference variable - where condition is passed when the query is executed
 	* Returns Export Users Query.
 	*/
 	function create_export_query($where = '')
 	{
-	    global $log, $current_user;
-	    $log->debug("Entering create_export_query(" . $where . ") method ...");
+		global $log, $current_user;
+		$log->debug("Entering create_export_query(".$where.") method ...");
 
-	    include "include/utils/ExportUtils.php";
+		$query = '';
 
-	    $sql = getPermittedFieldsQuery("Users", "detail_view");
-	    $fields_list = getFieldsListFromQuery($sql);
+		if (is_admin($current_user)) {
+			include("include/utils/ExportUtils.php");
 
-	    $query = "SELECT $fields_list
-						FROM vtiger_crmentity
-						INNER JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.crmid
-						INNER JOIN vtiger_user2role ON vtiger_user2role.userid = vtiger_users.id
-	        			INNER JOIN vtiger_asteriskextensions ON vtiger_asteriskextensions.userid = vtiger_users.id";
+			//To get the Permitted fields query and the permitted fields list
+			$sql = getPermittedFieldsQuery("Users", "detail_view");
+			$fields_list = getFieldsListFromQuery($sql);
 
-	    $query .= $this->getNonAdminAccessControlQuery('Users', $current_user);
-	    $where_auto = " vtiger_crmentity.deleted = 0 ";
+			$query = "SELECT $fields_list
+							FROM vtiger_crmentity
+							INNER JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.crmid
+							INNER JOIN vtiger_user2role ON vtiger_user2role.userid = vtiger_users.id
+							INNER JOIN vtiger_asteriskextensions ON vtiger_asteriskextensions.userid = vtiger_users.id";
 
-	    if ($where != "") {
-	        $query .= " WHERE ($where) AND " . $where_auto;
-	    } else {
-	        $query .= " WHERE " . $where_auto;
-	    }
+			$query .= $this->getNonAdminAccessControlQuery('Users', $current_user);
+			$where_auto = " vtiger_crmentity.deleted = 0 ";
 
-	    $log->debug("Exiting create_export_query method ...");
-	    return $query;
+			if($where != "") {
+				$query .= " WHERE ($where) AND ".$where_auto;
+			} else {
+				$query .= " WHERE ".$where_auto;
+			}
+
+			$log->debug("Exiting create_export_query method ...");
+		}
+		return $query;
 	}
 }
 ?>
