@@ -361,7 +361,7 @@ else
 
 	$query = getListQuery($currentModule,$where_relquery);
 }
-$smarty->assign('RECORD_ID', 0);
+$smarty->assign('RECORD_ID', '');
 if($currentModule == 'Products' && !empty($_REQUEST['record_id']) && ($popuptype == 'inventory_prod' || $popuptype == 'inventory_prod_po'))
 {
 	$product_name = getProductName(vtlib_purify($_REQUEST['record_id']));
