@@ -214,8 +214,8 @@ function VTUpdateFieldsTask($, fieldvaluemapping){
 						}
 						return moduleFieldTypes[fieldModule][fieldName];
 					}
-                                        if(fldrelname!='' && fldrelname!=undefined && fldrelname!=null)
-                                        defaultValue(getFieldType(fldrelname).name)(getFieldType(fldrelname), mappingno);
+					if(fldrelname!='' && fldrelname!=undefined && fldrelname!=null)
+						defaultValue(getFieldType(fldrelname).name)(getFieldType(fldrelname), mappingno);
 					var parentFields = map(function(e){
 						return[e['name'],e['label']];
 					}, filteredFields(parent['fields']));
