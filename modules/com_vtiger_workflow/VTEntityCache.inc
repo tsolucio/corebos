@@ -13,11 +13,12 @@ require_once('modules/com_vtiger_workflow/VTSimpleTemplate.inc');
 class VTWorkflowEntity{
 	private $isDeleted = false;
 
-	function __construct($user, $id, $deleted=false){
+	function __construct($user, $id, $deleted=false,$queue=false){
 		$this->moduleName = null;
 		$this->id = $id;
 		$this->user = $user;
 		$this->isDeleted=$deleted;
+                $this->isqueue=$queue;
 		if ($deleted)
 			$data = vtws_retrieve_deleted($id, $user);
 		else

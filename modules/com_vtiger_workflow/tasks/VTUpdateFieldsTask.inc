@@ -9,6 +9,7 @@
  ************************************************************************************/
 require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
+require_once('modules/com_vtiger_workflow/VTTaskQueue.inc');
 
 class VTUpdateFieldsTask extends VTTask {
 
@@ -25,7 +26,8 @@ class VTUpdateFieldsTask extends VTTask {
 		$logbg->info('Entering workflow task VTUpdateFieldsTask');
 		$util = new VTWorkflowUtils();
 		$util->adminUser();
-
+		$isqueue=$entity->isqueue;
+		$taskQueue = new VTTaskQueue($adb);
 		$moduleName = $entity->getModuleName();
 		$entityId = $entity->getId();
 		$recordId = vtws_getIdComponents($entityId);
@@ -34,12 +36,10 @@ class VTUpdateFieldsTask extends VTTask {
 		$moduleHandler = vtws_getModuleHandlerFromName($moduleName, $current_user);
 		$handlerMeta = $moduleHandler->getMeta();
 		$moduleFields = $handlerMeta->getModuleFields();
-
 		$fieldValueMapping = array();
 		if (!empty($this->field_value_mapping)) {
 			$fieldValueMapping = json_decode($this->field_value_mapping, true);
 		}
-
 		if (!empty($fieldValueMapping) && count($fieldValueMapping) > 0) {
 			include_once 'data/CRMEntity.php';
 			$focus = CRMEntity::getInstance($moduleName);
@@ -64,7 +64,7 @@ class VTUpdateFieldsTask extends VTTask {
 				$fldrelname='';
 				$fieldValueType = $fieldInfo['valuetype'];
 				$fieldValue = trim($fieldInfo['value']);
-                                $focusrel[]=array();
+								$focusrel[]=array();
 				if (array_key_exists('fldmodule', $fieldInfo)) {
 					$fieldmodule = trim($fieldInfo['fldmodule']);
 				}
@@ -79,6 +79,11 @@ class VTUpdateFieldsTask extends VTTask {
 						$focusrel["$fieldmodule"]->id = $relId;
 						$focusrel["$fieldmodule"]->mode = 'edit';
 						$focusrel["$fieldmodule"]->retrieve_entity_info($relId, $fieldmodule);
+					}
+					if (count($relmodule)>3 && $isqueue==false) {
+						$delay = strtotime(" +5 minutes");
+						$taskQueue->queueTask($this->id, $entityId, $delay);
+						return;
 					}
 						 $moduleHandlerrel = vtws_getModuleHandlerFromName($fieldmodule, $current_user);
 						 $handlerMetarel = $moduleHandlerrel->getMeta();
