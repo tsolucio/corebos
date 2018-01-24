@@ -167,6 +167,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Inventory_ListPrice_ReadOnly',
 				'GContacts_Max_Results',
 
+				'CustomerPortal_PDF_Modules',
 				'CustomerPortal_PDF',
 				'CustomerPortal_PDFTemplate_Quote',
 				'CustomerPortal_PDFTemplate_SalesOrder',
