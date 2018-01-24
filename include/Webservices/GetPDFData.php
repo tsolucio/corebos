@@ -53,7 +53,7 @@ function cbws_getpdfdata($id, $user){
 
 	$objectName = $webserviceObject->getEntityName();
 	$native_pdf_modules = array('Invoice','Quotes','SalesOrder','PurchaseOrder');
-	$custom_pdf_modules = GlobalVariable::getVariable('CustomerPortal_PDF_Modules',array());
+	$custom_pdf_modules = explode(',', GlobalVariable::getVariable('CustomerPortal_PDF_Modules',''));
 	$pdfmodules = array_merge($native_pdf_modules,$custom_pdf_modules);
 	if(!in_array($objectName, $pdfmodules)){
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Only Inventory & GV defined modules support PDF Output.");
