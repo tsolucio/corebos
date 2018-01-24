@@ -10,22 +10,25 @@
 require_once 'data/VTEntityDelta.php';
 require_once('modules/com_vtiger_workflow/VTSimpleTemplate.inc');
 
-class VTWorkflowEntity{
+class VTWorkflowEntity {
 	private $isDeleted = false;
 
-	function __construct($user, $id, $deleted=false){
+	function __construct($user, $id, $deleted = false, $queue = false) {
 		$this->moduleName = null;
 		$this->id = $id;
 		$this->user = $user;
 		$this->isDeleted=$deleted;
-		if ($deleted)
+				$this->isqueue=$queue;
+		if ($deleted) {
 			$data = vtws_retrieve_deleted($id, $user);
-		else
+		} else {
 			$data = vtws_retrieve($id, $user);
-		if (!is_null($data))
-		foreach ($data as $key => $value) {
-			if (is_string($value)) {
-				$data[$key] = html_entity_decode($value, ENT_QUOTES, 'utf-8');
+		}
+		if (!is_null($data)) {
+			foreach ($data as $key => $value) {
+				if (is_string($value)) {
+					$data[$key] = html_entity_decode($value, ENT_QUOTES, 'utf-8');
+				}
 			}
 		}
 		$this->data = $data;
@@ -36,7 +39,7 @@ class VTWorkflowEntity{
 	 *
 	 * @return An array representation of the module data.
 	 */
-	function getData(){
+	function getData() {
 		return $this->data;
 	}
 
@@ -45,7 +48,7 @@ class VTWorkflowEntity{
 	 *
 	 * @return The entity id.
 	 */
-	function getId(){
+	function getId() {
 		return $this->data['id'];
 	}
 
@@ -54,8 +57,8 @@ class VTWorkflowEntity{
 	 *
 	 * @return The module name.
 	 */
-	function getModuleName(){
-		if($this->moduleName==null){
+	function getModuleName() {
+		if ($this->moduleName==null) {
 			global $adb;
 			$wsId = $this->data['id'];
 			$parts = explode('x', $wsId);
@@ -66,7 +69,7 @@ class VTWorkflowEntity{
 		return $this->moduleName;
 	}
 
-	function get($fieldName){
+	function get($fieldName) {
 		preg_match('/\((\w+) : \(([_\w]+)\) (\w+)\)/', $fieldName, $matches);
 		if (count($matches)>0) {
 			global $current_user;
@@ -78,12 +81,12 @@ class VTWorkflowEntity{
 		return (isset($this->data[$fieldName]) ? $this->data[$fieldName] : null);
 	}
 
-	function set($fieldName, $value){
+	function set($fieldName, $value) {
 		$this->data[$fieldName] = $value;
 	}
 
-	function save(){
-		vtws_update($this->data,$this->user);
+	function save() {
+		vtws_update($this->data, $this->user);
 	}
 
 	function isNew() {
@@ -92,26 +95,26 @@ class VTWorkflowEntity{
 		$recordId = $parts[1];
 		$entityDelta = new VTEntityDelta();
 		$oldEntity = $entityDelta->getOldEntity($this->moduleName, $recordId);
-		if($oldEntity == null) {
+		if ($oldEntity == null) {
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	function isDeleted(){
+	function isDeleted() {
 		return $this->isDeleted;
 	}
 }
 
-class VTEntityCache{
-	function __construct($user){
+class VTEntityCache {
+	function __construct($user) {
 		$this->user = $user;
 		$this->cache = array();
 	}
 
-	function forId($id){
-		if(!isset($this->cache[$id]) or $this->cache[$id]==null){
+	function forId($id) {
+		if (!isset($this->cache[$id]) or $this->cache[$id]==null) {
 			$deleted=!isRecordExists($id);
 			$data  = new VTWorkflowEntity($this->user, $id, $deleted);
 			$this->cache[$id] = $data;

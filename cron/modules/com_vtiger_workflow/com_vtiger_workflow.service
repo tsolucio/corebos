@@ -66,7 +66,7 @@ function vtRunTaskJob($adb){
 		} else {
 			$isDeleted = $adb->query_result($res,0,0);
 		}
-		$entity = new VTWorkflowEntity($adminUser, $entityId, $isDeleted);
+		$entity = new VTWorkflowEntity($adminUser, $entityId, $isDeleted,true);
 		$entityCache = new VTEntityCache($adminUser);
 		$wsModuleName = $util->toWSModuleName($entity);
 		$wsId = vtws_getWebserviceEntityId($wsModuleName, $entity->getId());
