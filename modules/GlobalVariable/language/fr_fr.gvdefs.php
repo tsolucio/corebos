@@ -1050,6 +1050,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'The maximum number of records that will be synchronized in one batch when sending or receiving information from Google Contacts. The default value is 200 records.',
 ),
+'CustomerPortal_PDF_Modules'  => array(
+	'status' => 'Implemented',
+	'valuetype' => 'CSV Modules',
+	'category' => 'Integration',
+	'values' => 'Comma separated values of modules capable of sending PDF data via Webservice',
+	'definition' => 'When using the getpdfdata webservice call, this variable indicates which Modules can generate PDF data.',
+),
 'CustomerPortal_PDF'  => array(
 	'status' => 'Implemented',
 	'valuetype' => 'String',

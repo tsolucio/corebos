@@ -1054,7 +1054,7 @@ $GlobalVariableDefinitons = array(
 	'status' => 'Implemented',
 	'valuetype' => 'CSV Modules',
 	'category' => 'Integration',
-	'values' => 'Comma separated values of Mdules capable to send PDF data via Webservice',
+	'values' => 'Comma separated values of modules capable of sending PDF data via Webservice',
 	'definition' => 'When using the getpdfdata webservice call, this variable indicates which Modules can generate PDF data.',
 ),
 'CustomerPortal_PDF'  => array(
