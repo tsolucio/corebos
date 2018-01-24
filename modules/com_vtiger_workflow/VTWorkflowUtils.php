@@ -35,7 +35,7 @@ class VTWorkflowUtils {
 		/**
 		 * Get fieldvalue based on fieldtype
 		 */
-	public static function fieldvaluebytype($moduleFields, $fieldValueType, $fieldValue, $fieldName, $focus, $entity) {
+	public static function fieldvaluebytype($moduleFields, $fieldValueType, $fieldValue, $fieldName, $focus, $entity, $handlerMeta) {
 		$breaks = array('<br />','<br>','<br/>');
 		$fieldInstance = $moduleFields[$fieldName];
 		$fieldtype = $fieldInstance->getFieldDataType();
@@ -57,7 +57,7 @@ class VTWorkflowUtils {
 			}
 		} else {
 			if ($fieldtype === 'currency' or $fieldtype === 'double') {
-				$focus->column_fields[$fieldValue] = $focus->adjustCurrencyField($fieldValue, $focus->column_fields[$fieldValue], $handlerMeta->getTabId());
+				$focus->column_fields[$fieldName] = $focus->adjustCurrencyField($fieldName, $fieldValue, $handlerMeta->getTabId());
 			}
 			if (preg_match('/([^:]+):boolean$/', $fieldValue, $match)) {
 				$fieldValue = $match[1];
