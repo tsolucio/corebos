@@ -15,7 +15,7 @@ require_once('modules/com_vtiger_workflow/include.inc');
  * This is a utility function to load a dumped templates files
  * @param $filename The name of the file to load.
  */
-function loadTemplates($filename){
+function loadTemplates($filename) {
 	global $adb;
 	$str = file_get_contents('fetchtemplates.out');
 	$tm = new VTWorkflowTemplateManager($adb);
