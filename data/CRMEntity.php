@@ -811,6 +811,7 @@ class CRMEntity {
 	/** Function to retrieve maximum decimal values of currency field on save
 	 * @param $fieldname currency field name
 	 * @param $fldvalue currency value they want to save
+	 * @param $tabid tabID of the module the field is on
 	 * @returns field value from database with maximum decimals if it is the same as value being saved
 	 */
 	public function adjustCurrencyField($fieldname, $fldvalue, $tabid) {
