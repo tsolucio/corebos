@@ -168,6 +168,7 @@ function VTUpdateFieldsTask($, fieldvaluemapping){
 	}
 
 	function resetFields(opType, fieldName, mappingno,fldrelname) {
+		defaultValue(opType.name)(opType, mappingno);
 		var fv = $('#save_fieldvalues_'+mappingno+'_value');
 		fv.prop('name', fieldName);
 		if(opType['refersTo']!=undefined){
