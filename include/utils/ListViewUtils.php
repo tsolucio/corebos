@@ -926,7 +926,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 			$list_block[$entity_id] = $list_header;
 		}
 	}
-	if (count($totals) > 0) {
+	if (count($totals) > 0 && GlobalVariable::getVariable('Application_ListView_Sum_Currency', 1, $module)) {
 		$trow = array();
 		foreach ($focus->list_fields as $name => $tableinfo) {
 			$field_name = $focus->list_fields_name[$name];

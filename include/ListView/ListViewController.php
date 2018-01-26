@@ -681,7 +681,7 @@ class ListViewController {
 			list($row, $unused, $unused2) = cbEventHandler::do_filter('corebos.filter.listview.render', array($row, $this->db->query_result_rowdata($result, $i), $recordId));
 			$data[$recordId] = $row;
 		}
-		if (count($totals) > 0) {
+		if (count($totals) > 0 && GlobalVariable::getVariable('Application_ListView_Sum_Currency', 1, $module)) {
 			$trow = array();
 			foreach ($listViewFields as $fieldName) {
 				if (isset($totals[$fieldName])) {

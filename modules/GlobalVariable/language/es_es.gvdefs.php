@@ -280,6 +280,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Calcular el total de registros en la vista de lista. El valor por defecto es 0',
 ),
+'Application_ListView_Sum_Currency' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Rendimiento',
+	'values' => '0 | 1',
+	'definition' => 'Mostrar la suma total de columnas de tipo moneda. El valor por defecto es 1',
+),
 'Application_DetailView_Record_Navigation' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',

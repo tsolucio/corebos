@@ -280,6 +280,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Compute list view record count while loading listview. The default is 0',
 ),
+'Application_ListView_Sum_Currency' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Performance',
+	'values' => '0 | 1',
+	'definition' => 'Show total sum of currency columns. The default is 1',
+),
 'Application_DetailView_Record_Navigation' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
