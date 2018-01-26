@@ -64,16 +64,17 @@ class VTUpdateFieldsTask extends VTTask {
 				$fldrelname='';
 				$fieldValueType = $fieldInfo['valuetype'];
 				$fieldValue = trim($fieldInfo['value']);
-								$focusrel[]=array();
+				$focusrel[]=array();
 				if (array_key_exists('fldmodule', $fieldInfo)) {
 					$fieldmodule = trim($fieldInfo['fldmodule']);
 				}
 				if (array_key_exists('fldrelname', $fieldInfo)) {
 					$fldrelname = trim($fieldInfo['fldrelname']);
 					$relId=$focus->column_fields["$fieldName"];
+					$setype=getSalesEntityType($relId);
 				}
 				if ($fldrelname!='' && $relId!='' && $relId!=0) {
-					if (!in_array($fieldmodule, $relmodule)) {
+					if (!in_array($fieldmodule, $relmodule) && $setype==$fieldmodule) {
 						$relmodule[]=$fieldmodule;
 						$focusrel["$fieldmodule"] = CRMEntity::getInstance($fieldmodule);
 						$focusrel["$fieldmodule"]->id = $relId;
