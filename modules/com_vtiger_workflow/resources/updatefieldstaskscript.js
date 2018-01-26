@@ -421,6 +421,8 @@ function VTUpdateFieldsTask($, fieldvaluemapping){
 						//set property name on hidden field
 						var fv = $('#save_fieldvalues_'+mappingno+'_value');
 						var fldrelname=$('#save_fieldvalues10_'+mappingno+'_fieldname').val();
+						if(getFieldType(fullFieldName).name!='reference' && $('#save_fieldvalues10_'+mappingno+'_fieldname')!=undefined)
+							$('#save_fieldvalues10_'+mappingno+'_fieldname').hide();
 						if(fldrelname!='' && fldrelname!=undefined && fldrelname!=null)
 							fv.prop('name', fldrelname);
 						else
