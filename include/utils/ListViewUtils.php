@@ -1340,7 +1340,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 			}
 		}
 	} elseif ($uitype == 15 || ($uitype == 55 && $fieldname == "salutationtype") || $uitype == 16 || $uitype == 1613 || $uitype == 1614 || $uitype == 1615) {
-		$value = getTranslatedString($temp_val, $currentModule);
+		$value = getTranslatedString($temp_val, $module);
 		$value = textlength_check($value);
 	} elseif ($uitype == 71 || $uitype == 72) {
 		if ($temp_val != '') {
