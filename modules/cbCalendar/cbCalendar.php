@@ -651,10 +651,10 @@ class cbCalendar extends CRMEntity {
 			//$this->setModuleSeqNumber('configure', $modulename, 'cbcal-', '0000001');
 			global $adb;
 			set_time_limit(0);
-			$rs = $adb->query('select crmid, activityid
+			$rs = $adb->query('select vtiger_seactivityrel.crmid, activityid
 					from vtiger_seactivityrel
 					inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_seactivityrel.crmid
-					where deleted=0');
+					where deleted=0 and activityid>0');
 			$upd = 'update vtiger_activity set rel_id=? where activityid=?';
 			while ($act = $adb->fetch_array($rs)) {
 				$adb->pquery($upd, array($act['crmid'],$act['activityid']));

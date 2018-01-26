@@ -33,12 +33,18 @@ class PublicInvitePermissionHandler extends VTEventHandler {
 					UNION
 					(select vtiger_invitees.activityid as id from vtiger_invitees where inviteeid=".$user->id;
 			} else {
+				require('user_privileges/user_privileges_' . $user->id . '.php');
+				require('user_privileges/sharing_privileges_' . $user->id . '.php');
 				$parameter[1] = 'showTheseRecords'; //Here just show the activities that are assigned to the user or shared/invite to him.
 				$parameter[0] = "select vtiger_activity.activityid as id
 					from vtiger_activity
-					inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid
-					where deleted=0 and smownerid=".$user->id."
-					UNION
+					inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid";
+				if (count($current_user_groups) > 0) {
+					$parameter[0] .= " where deleted=0 and smownerid in (".$user->id.", ".implode(",", $current_user_groups).") ";
+				} else {
+					$parameter[0] .= " where deleted=0 and smownerid=".$user->id." ";
+				}
+				$parameter[0] .= "UNION
 					(select vtiger_activity.activityid as id
 					from vtiger_activity
 					inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid

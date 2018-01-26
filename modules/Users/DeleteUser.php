@@ -21,8 +21,9 @@ $userObj = new Users();
 $userObj->transformOwnerShipAndDelete($del_id, $tran_id);
 
 //if check to delete user from detail view
-if(isset($_REQUEST['ajax_delete']) && $_REQUEST['ajax_delete'] == 'false')
+if (isset($_REQUEST['ajax_delete']) && $_REQUEST['ajax_delete'] == 'false') {
 	header('Location: index.php?action=ListView&module=Users');
-else
+} else {
 	header('Location: index.php?action=UsersAjax&module=Users&file=ListView&ajax=true');
+}
 ?>

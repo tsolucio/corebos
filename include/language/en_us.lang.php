@@ -35,6 +35,7 @@ $app_strings = array(
 'LBL_SEND_MAIL_BUTTON' => 'Send Mail',
 'LBL_SAVE_BUTTON_TITLE' => 'Save [Alt+S]',
 'LBL_EDIT_BUTTON_TITLE' => 'Edit [Alt+E]',
+'LBL_RECALCULATE_BUTTON_TITLE' => 'Recalculate [Alt+R]',
 'LBL_CONVERTSO_BUTTON_TITLE' => 'Create Sales Order',
 'LBL_CONVERTINVOICE_BUTTON_TITLE' => 'Create Invoice',
 'LBL_EDIT_BUTTON' => 'Edit',
@@ -68,6 +69,7 @@ $app_strings = array(
 'LBL_GENERATE' => 'Generate',
 'LBL_SAVE_BUTTON_KEY' => 'S',
 'LBL_EDIT_BUTTON_KEY' => 'E',
+'LBL_RECALCULATE_BUTTON_KEY' => 'R',
 'LBL_CONVERTSO_BUTTON_KEY' => 'S',
 'LBL_CONVERTINVOICE_BUTTON_KEY' => 'I',
 'LBL_DUPLICATE_BUTTON_KEY' => 'U',
@@ -84,6 +86,7 @@ $app_strings = array(
 'LBL_CONVERTINVOICE_BUTTON_LABEL' => 'Create Invoice',
 'LBL_DUPLICATE_BUTTON_LABEL' => 'Duplicate',
 'LBL_DELETE_BUTTON_LABEL' => 'Delete',
+'LBL_RECALCULATE_BUTTON' => 'Recalculate',
 'LBL_NEW_BUTTON_LABEL' => 'New',
 'LBL_CHANGE_BUTTON_LABEL' => 'Change',
 'LBL_CANCEL_BUTTON_LABEL' => 'Cancel',
@@ -849,6 +852,8 @@ $app_strings = array(
 'SPECIAL_CHARS_NOT_ALLOWED' => 'Special characters not allowed. try again...',
 //Added for title for SignIn Image.
 'LBL_SIGN_IN'=>'Sign in',
+'StartSession' => 'Start Session',
+'CapsLockActive' => 'CapsLock is active',
 
 //Added for title of Root Image
 'LBL_ROOT'=>'Root',

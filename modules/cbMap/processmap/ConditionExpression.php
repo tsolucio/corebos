@@ -58,7 +58,7 @@ require_once 'include/Webservices/Retrieve.php';
 
 class ConditionExpression extends processcbMap {
 
-	function processMap($arguments) {
+	public function processMap($arguments) {
 		global $adb, $current_user;
 		$xml = $this->getXMLContent();
 		$entityId = $arguments[0];
@@ -80,14 +80,14 @@ class ConditionExpression extends processcbMap {
 			$entity->data['record_module'] = $entity->getModuleName();
 			$function = (String)$xml->function->name;
 			$testexpression = '$exprEvaluation = ' . $function . '(';
-			foreach($xml->function->parameters->parameter as $k=>$v) {
+			foreach ($xml->function->parameters->parameter as $k => $v) {
 				if (isset($entity->data[(String)$v])) {
 					$testexpression.= "'" . $entity->data[(String)$v] . "',";
 				} else {
 					$testexpression.= "'" . (String)$v . "',";
 				}
 			}
-			$testexpression = trim($testexpression,',') . ');';
+			$testexpression = trim($testexpression, ',') . ');';
 			eval($testexpression);
 		}
 		return $exprEvaluation;

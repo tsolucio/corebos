@@ -609,7 +609,11 @@ class ListViewController {
 				} elseif ($module == 'Emails' && ($fieldName == 'subject')) {
 						$value = '<a href="javascript:;" onClick="ShowEmail(\'' . $recordId . '\');">' . textlength_check($value) . '</a>';
 				} else {
+					$field_val = $value;
 					$value = textlength_check($value);
+					if (substr($value, -3) == '...') {
+						$value = '<span title="'.$field_val.'">'.$value.'<span>';
+					}
 				}
 				if ($field->getFieldDataType() != 'reference') {
 					$parenttab = getParentTab();

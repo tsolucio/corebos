@@ -21,7 +21,9 @@ class Vtiger_MailScanner {
 	private $_mailbox = false;
 
 	// Ignore scanning the folders always
-	private $_generalIgnoreFolders = array( "INBOX.Trash", "INBOX.Drafts", "[Gmail]/Spam", "[Gmail]/Trash", "[Gmail]/Drafts" );
+	private $_generalIgnoreFolders = array(
+		'INBOX.Trash', 'INBOX.Drafts', '[Gmail]/Spam', '[Gmail]/Trash', '[Gmail]/Drafts', '[Gmail]/Important', '[Gmail]/Starred', '[Gmail]/Sent Mail', '[Gmail]/All Mail'
+	);
 
 	/** DEBUG functionality. */
 	public $debug = false;

@@ -1,4 +1,4 @@
-<?php  
+<?php
  /*************************************************************************************************
  * Copyright 2016 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
  * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
@@ -19,16 +19,16 @@
  *************************************************************************************************
  * The accepted format is:
  <map>
- 	<modules>
- 		<module>ModuleName</module>
- 		<module>ModuleName2</module>
- 		.....
- 	</modules> 
+	 <modules>
+		 <module>ModuleName</module>
+		 <module>ModuleName2</module>
+		 .....
+	 </modules>
  </map>
  *************************************************************************************************/
 class ModuleSetMapping extends processcbMap {
 
-	function processMap($arguments) {
+	public function processMap($arguments) {
 		$this->convertMap2Array();
 		return $this;
 	}
@@ -39,7 +39,7 @@ class ModuleSetMapping extends processcbMap {
 
 		$xml = $this->getXMLContent();
 		if (isset($xml->modules)) {
-			foreach($xml->modules->module as $k=>$v) {
+			foreach ($xml->modules->module as $k => $v) {
 				$module_set[] = (String)$v;
 			}
 		}
@@ -47,12 +47,7 @@ class ModuleSetMapping extends processcbMap {
 	}
 
 	public function getFullModuleSet() {
-		return $this->convertMap2Array();;
+		return $this->convertMap2Array();
 	}
-
-
 }
-
-
-
 ?>

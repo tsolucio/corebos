@@ -171,41 +171,18 @@ class Faq extends CRMEntity {
 	}
 
 	/*
-	 * Function to get the primary query part of a report
-	 * @param - $module Primary module name
-	 * returns the query string formed on fetching the related data for report for primary module
-	 */
-	function generateReportsQuery($module, $queryPlanner) {
-		$moduletable = $this->table_name;
-		$moduleindex = $this->table_index;
-		$query = "from $moduletable
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=$moduletable.$moduleindex
-			left join vtiger_products as vtiger_products$module on vtiger_products$module.productid = vtiger_faq.product_id
-			left join vtiger_groups as vtiger_groups$module on vtiger_groups$module.groupid = vtiger_crmentity.smownerid
-			left join vtiger_users as vtiger_users$module on vtiger_users$module.id = vtiger_crmentity.smownerid
-			left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid
-			left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
-			left join vtiger_faqcf on vtiger_faqcf.faqid = vtiger_faq.id
-			left join vtiger_users as vtiger_CreatedBy".$module." on vtiger_CreatedBy".$module.".id = vtiger_crmentity.smcreatorid
-			left join vtiger_users as vtiger_lastModifiedBy".$module." on vtiger_lastModifiedBy".$module.".id = vtiger_crmentity.modifiedby";
-		return $query;
-	}
-
-	/*
 	 * Function to get the relation tables for related modules
 	 * @param - $secmodule secondary module name
 	 * returns the array with table names and fieldnames storing relations between module and this module
 	 */
-	function setRelationTables($secmodule){
-		$rel_tables = array(
-			"Documents" => array("vtiger_senotesrel"=>array("crmid","notesid"),"vtiger_faq"=>"id"),
-		);
-		return $rel_tables[$secmodule];
+	function setRelationTables($secmodule) {
+		$rel_tables = parent::setRelationTables($secmodule);
+		$rel_tables['Documents'] = array('vtiger_senotesrel' => array('crmid', 'notesid'), 'vtiger_faq' => 'id');
+		return (isset($rel_tables[$secmodule]) ? $rel_tables[$secmodule] : '');
 	}
 
 	function clearSingletonSaveFields() {
 		$this->column_fields['comments'] = '';
 	}
-
 }
 ?>

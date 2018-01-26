@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'cbMap' => 'Mapas de Negocio',
 	'SINGLE_cbMap' => 'Mapa de Negocio',
 	'cbMap ID' => 'ID Mapa de Negocio',

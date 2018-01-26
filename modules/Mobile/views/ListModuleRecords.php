@@ -59,6 +59,7 @@ class crmtogo_UI_ListModuleRecords extends crmtogo_WS_ListModuleRecords {
 					$viewid=$id1;
 				}
 				else {
+					$_REQUEST['action'] = 'ListView';
 					$viewid = $customView->getViewId($wsResponseResult['module']);
 				}
 				$customview_html = $customView->getCustomViewCombo($viewid);

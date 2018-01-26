@@ -70,6 +70,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Si el valor de la variable es 1 se escribirá en pantalla, la consulta de obtención de registros para la vista de lista.',
 ),
+'Debug_RelatedList_Query' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Depuración',
+	'values' => '0 | 1',
+	'definition' => 'Si el valor de la variable es 1 se escribirá en pantalla, la consulta de obtención de registros para la lista relacionada.',
+),
 'Debug_Popup_Query' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
@@ -1042,6 +1049,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Integración',
 	'values' => '',
 	'definition' => 'Número máximo de registros que se sincronizarán en un lote al enviar o recibir información de Contactos de Google. El valor predeterminado es 200 registros.',
+),
+'CustomerPortal_PDF_Modules'  => array(
+	'status' => 'Implementada',
+	'valuetype' => 'CSV Modules',
+	'category' => 'Integración',
+	'values' => 'Lista separada por comas de módulos que pueden enviar datos PDF vía Webservice.',
+	'definition' => 'Cuando se utiliza la llamada webservice getpdfdata, esta variable indica qué Módulos pueden generar PDF.',
 ),
 'CustomerPortal_PDF'  => array(
 	'status' => 'Implementada',

@@ -22,6 +22,9 @@
 // Activate OnDemand
 $coreBOSOnDemandActive = false;
 
+// Login Page
+$cbodLoginPage = 'ldsnoimage';
+
 // maximum storage space permitted per install in Gb
 $cbodStorageSizeLimit = 5;
 
@@ -30,3 +33,15 @@ $cbodFixedCronTasks = array('StorageSpaceUsage');
 
 // Blocked users
 $cbodBlockedUsers = array();
+
+// Unique user connection
+$cbodUniqueUserConnection = false;
+
+// Limit to permit unblocking a login session of a user
+$cbodTimeToSessionLogout = 5; // minutes
+
+// Show License on user creation
+$cbodShowLicenseOnUserCreation = false;
+
+// User Create/Update Log
+$cbodUserLog = false;

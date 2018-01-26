@@ -18,34 +18,33 @@ $fname = tempnam($root_directory.$tmp_dir, 'merge2.xls');
 # Write out the data
 $reportid = vtlib_purify($_REQUEST['record']);
 $oReportRun = new ReportRun($reportid);
-if(!empty($_REQUEST['startdate']) && !empty($_REQUEST['enddate']) && $_REQUEST['startdate'] != '0000-00-00' && $_REQUEST['enddate'] != '0000-00-00') {
+if (!empty($_REQUEST['startdate']) && !empty($_REQUEST['enddate']) && $_REQUEST['startdate'] != '0000-00-00' && $_REQUEST['enddate'] != '0000-00-00') {
 	$filtercolumn = $_REQUEST['stdDateFilterField'];
 	$filter = $_REQUEST['stdDateFilter'];
 	$date = new DateTimeField($_REQUEST['startdate']);
 	$endDate = new DateTimeField($_REQUEST['enddate']);
 	$startdate = $date->getDBInsertDateValue();//Convert the user date format to DB date format
 	$enddate = $endDate->getDBInsertDateValue();//Convert the user date format to DB date format
-	$filterlist = $oReportRun->RunTimeFilter($filtercolumn,$filter,$startdate,$enddate);
+	$filterlist = $oReportRun->RunTimeFilter($filtercolumn, $filter, $startdate, $enddate);
 } else {
 	if (empty($_REQUEST['advft_criteria'])) {
 		$advft_criteria = '';
 	} else {
 		$advft_criteria = $_REQUEST['advft_criteria'];
-		$advft_criteria = json_decode($advft_criteria,true);
+		$advft_criteria = json_decode($advft_criteria, true);
 	}
 	if (empty($_REQUEST['advft_criteria_groups'])) {
 		$advft_criteria_groups = '';
 	} else {
 		$advft_criteria_groups = $_REQUEST['advft_criteria_groups'];
-		$advft_criteria_groups = json_decode($advft_criteria_groups,true);
+		$advft_criteria_groups = json_decode($advft_criteria_groups, true);
 	}
-	$filterlist = $oReportRun->RunTimeAdvFilter($advft_criteria,$advft_criteria_groups);
+	$filterlist = $oReportRun->RunTimeAdvFilter($advft_criteria, $advft_criteria_groups);
 }
 
 $oReportRun->writeReportToExcelFile($fname, $filterlist);
 
-if(isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'],'MSIE'))
-{
+if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE')) {
 	header('Pragma: public');
 	header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 }

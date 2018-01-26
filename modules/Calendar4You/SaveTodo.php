@@ -10,7 +10,6 @@
 require_once('modules/Calendar/Activity.php');
 require_once('modules/Calendar/CalendarCommon.php');
 require_once('include/logging.php');
-require_once("config.php");
 require_once('include/database/PearDatabase.php');
 
 global $mod_strings,$adb;

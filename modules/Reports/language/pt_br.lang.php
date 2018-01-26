@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- * Contributor(s): Ranieri/Translate terms | 6/12/2017 |Sao Paulo/SP/Brasil.|www.ecrmweb.com.br
+ * Contributor(s): Ranieri/Translate terms | 19/01/2018 |Sao Paulo/SP/Brasil.|www.ecrmweb.com.br
  ********************************************************************************/
 
 $mod_strings = array(
@@ -88,7 +88,7 @@ $mod_strings = array(
 'LBL_REPORT_DETAILS'=>'Detalhes Relatório',
 'LBL_TYPE_THE_NAME'=>'Tipo Nome',
 'LBL_DESCRIPTION_FOR_REPORT'=>'Descrição Relatório',
-'LBL_REPORT_NAME'=>'Nome Relatório',
+'LBL_REPORT_NAME'=>'Nome do Relatório',
 'LBL_DESCRIPTION'=>'Descrição',
 'LBL_TOOLS'=>'Ferramentas',
 'LBL_AND'=>'e',
@@ -277,7 +277,7 @@ $mod_strings = array(
 //Report Charts
 'LBL_VIEW_CHARTS' => 'Visualizar Gráficos',
 'LBL_ADD_CHARTS' => 'Adicionar Gráfico na Página Principal',
-'LBL_HOME_REPORT_NAME' => 'Nome Relatório',
+'LBL_HOME_REPORT_NAME' => 'Nome do Relatório',
 'LBL_HOME_HORIZONTAL_BARCHART' => 'Gráfico de Barras Horizontal',
 'LBL_HOME_VERTICAL_BARCHART' => 'Gráfico de Barras Vertical',
 'LBL_HOME_PIE_CHART' => 'Gráfico Pizza',
@@ -304,8 +304,7 @@ $mod_strings = array(
 'LBL_COLUMNS_COUNT'=>'Contagem',
 'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Erro enquanto a Pasta era apagada.',
 'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Erro ao excluir os relatórios da pasta',
-'LBL_AUTO_GENERATED_REPORT_EMAIL' => 'Este é um E-mail gerado automaticamente, enviado por um agendamento de relatório.',
-'LBL_REPORT_NAME' => 'Nome do Relatório',
+'LBL_AUTO_GENERATED_REPORT_EMAIL' => 'Este é um email gerado automaticamente em nome de um relatório agendado.',
 'LBL_DESCRIPTION'=>'Descrição',
 )
 

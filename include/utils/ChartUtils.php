@@ -17,7 +17,8 @@ class ChartUtils {
 		require_once 'modules/Reports/CustomReportUtils.php';
 		require_once('include/Webservices/Utils.php');
 		require_once('include/Webservices/Query.php');
-		global $adb, $current_user, $theme, $default_charset;
+		global $adb, $current_user, $theme, $default_charset, $doconvert;
+		$doconvert = false;
 		$inventorymodules = array('Quotes', 'SalesOrder', 'PurchaseOrder', 'Invoice', 'Products', 'PriceBooks', 'Vendors', 'Services');
 		$rows = $adb->num_rows($queryResult);
 		$condition = "is";

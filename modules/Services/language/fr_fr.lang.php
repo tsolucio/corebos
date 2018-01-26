@@ -2,12 +2,12 @@
 /***********************************************************
 *  Module       : Services
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'LBL_MODULE_NAME'=>'Services',
 	'SINGLE_Services'=>'Service',
 	'LBL_LIST_SERVICE_NAME'=>'Service',

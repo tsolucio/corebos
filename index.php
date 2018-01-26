@@ -117,9 +117,22 @@ if(isset($_REQUEST['record']) && !is_numeric($_REQUEST['record']) && $_REQUEST['
 
 // Check to see if there is an authenticated user in the session.
 $use_current_login = false;
-if(isset($_SESSION["authenticated_user_id"]) && (isset($_SESSION["app_unique_key"]) && $_SESSION["app_unique_key"] == $application_unique_key))
-{
-	$use_current_login = true;
+if (isset($_SESSION['authenticated_user_id']) && (isset($_SESSION['app_unique_key']) && $_SESSION['app_unique_key'] == $application_unique_key)) {
+	if ($cbodUniqueUserConnection) {
+		$connection_id = coreBOS_Settings::getSetting('cbodUserConnection'.$_SESSION['authenticated_user_id'], -1);
+		if (isset($_SESSION['conn_unique_key']) && $_SESSION['conn_unique_key'] == $connection_id) {
+			$use_current_login = true;
+		} else {
+			//To prevent showing checkbox if user is forced to log out
+			coreBOS_Session::delete('authenticated_user_id');
+			coreBOS_Session::delete('can_unblock');
+		}
+	} else {
+		$use_current_login = true;
+	}
+	if ($use_current_login) {
+		coreBOS_Settings::setSetting('cbodLastLoginTime'.$_SESSION['authenticated_user_id'], time());
+	}
 }
 
 // Prevent loading Login again if there is an authenticated user in the session.

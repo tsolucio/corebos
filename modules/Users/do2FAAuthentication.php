@@ -111,5 +111,6 @@ $smarty->assign('coreBOS_uiapp_name', GlobalVariable::getVariable('Application_U
 $smarty->assign("LOGIN_ERROR", $login_error);
 $currentYear = date('Y');
 $smarty->assign('currentYear',$currentYear);
-$smarty->display('Login2FA.tpl');
+$smarty->assign('LoginPage', $cbodLoginPage.'2fa');
+$smarty->display('Login.tpl');
 ?>

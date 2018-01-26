@@ -7,9 +7,9 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('modules/com_vtiger_workflow/VTEntityMethodManager.inc');
+require_once 'modules/com_vtiger_workflow/VTEntityMethodManager.inc';
 
-function vtEntityMethodJson($adb, $request){
+function vtEntityMethodJson($adb, $request) {
 	$moduleName = $request['module_name'];
 	$emm = new VTEntityMethodManager($adb);
 	$methodNames = $emm->methodsForModule($moduleName);

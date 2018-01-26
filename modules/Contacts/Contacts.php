@@ -1359,6 +1359,8 @@ function get_contactsforol($user_name)
 	function getvtlib_open_popup_window_function($fieldname,$basemodule) {
 		if ($basemodule=='Issuecards') {
 			return 'set_return_shipbilladdress';
+		} elseif ($fieldname == 'cto_id' && $basemodule == 'cbCalendar') {
+			return 'open_filtered_contactsIfAccounts';
 		} else {
 			return 'vtlib_open_popup_window';
 		}

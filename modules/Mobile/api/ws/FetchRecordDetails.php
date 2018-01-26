@@ -249,7 +249,7 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 						$field['type']['value'] =array('value' =>$options,'name' =>$fieldname);
 						//end picklists	 
 					}
-					else if($field['uitype'] == '51' || $field['uitype'] == '59' || $field['uitype'] == '10'){
+					else if($field['uitype'] == '51' || $field['uitype'] == '10'){
 						$field['relatedmodule'] = crmtogo_WS_Utils::getEntityName($field['name'], $module);
 					}
 					$fields[] = $field;
