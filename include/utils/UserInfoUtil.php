@@ -1482,42 +1482,35 @@ function deleteProfile($prof_id,$transfer_profileid='')
 	$log->debug('Exiting deleteProfile method ...');
 }
 
-/** Function to get all  the vtiger_role information
- * @returns $allRoleDetailArray-- Array will contain the details of all the vtiger_roles. RoleId will be the key:: Type array
+/** Function to get all  the role information
+ * @returns array $allRoleDetailArray -- array will contain the details of all the roles. RoleId will be the key
  */
-function getAllRoleDetails()
-{
+function getAllRoleDetails() {
 	global $log, $adb;
-	$log->debug("Entering getAllRoleDetails() method ...");
-	$role_det = Array();
-	$query = "select * from vtiger_role";
+	$log->debug('Entering getAllRoleDetails() method ...');
+	$role_det = array();
+	$query = 'select * from vtiger_role';
 	$result = $adb->pquery($query, array());
-	$num_rows=$adb->num_rows($result);
-	for($i=0; $i<$num_rows;$i++)
-	{
-		$each_role_det = Array();
-		$roleid=$adb->query_result($result,$i,'roleid');
-		$rolename=$adb->query_result($result,$i,'rolename');
-		$roledepth=$adb->query_result($result,$i,'depth');
+	$num_rows = $adb->num_rows($result);
+	for ($i=0; $i<$num_rows; $i++) {
+		$each_role_det = array();
+		$roleid=$adb->query_result($result, $i, 'roleid');
+		$rolename=$adb->query_result($result, $i, 'rolename');
+		$roledepth=$adb->query_result($result, $i, 'depth');
 		$sub_roledepth=$roledepth + 1;
-		$parentrole=$adb->query_result($result,$i,'parentrole');
+		$parentrole=$adb->query_result($result, $i, 'parentrole');
 		$sub_role='';
 
 		//getting the immediate subordinates
-		$query1="select roleid from vtiger_role where parentrole like ? and depth=?";
+		$query1='select roleid from vtiger_role where parentrole like ? and depth=?';
 		$res1 = $adb->pquery($query1, array($parentrole."::%", $sub_roledepth));
 		$num_roles = $adb->num_rows($res1);
-		if($num_roles > 0)
-		{
-			for($j=0; $j<$num_roles; $j++)
-			{
-				if($j == 0)
-				{
-					$sub_role .= $adb->query_result($res1,$j,'roleid');
-				}
-				else
-				{
-					$sub_role .= ','.$adb->query_result($res1,$j,'roleid');
+		if ($num_roles > 0) {
+			for ($j=0; $j<$num_roles; $j++) {
+				if ($j == 0) {
+					$sub_role .= $adb->query_result($res1, $j, 'roleid');
+				} else {
+					$sub_role .= ','.$adb->query_result($res1, $j, 'roleid');
 				}
 			}
 		}
@@ -1526,53 +1519,50 @@ function getAllRoleDetails()
 		$each_role_det[]=$sub_role;
 		$role_det[$roleid]=$each_role_det;
 	}
-	$log->debug("Exiting getAllRoleDetails method ...");
+	$log->debug('Exiting getAllRoleDetails method ...');
 	return $role_det;
 }
 
-/** Function to get all  the vtiger_profile information
- * @returns $allProfileInfoArray-- Array will contain the details of all the vtiger_profiles. Profile ID will be the key:: Type array
+/** Function to get all the profile information
+ * @returns array $allProfileInfoArray -- Array will contain the details of all the profiles. Profile ID will be the key
  */
-function getAllProfileInfo()
-{
+function getAllProfileInfo() {
 	global $log, $adb;
-	$log->debug("Entering getAllProfileInfo() method ...");
-	$query="select * from vtiger_profile";
+	$log->debug('Entering getAllProfileInfo() method ...');
+	$query='select * from vtiger_profile';
 	$result = $adb->pquery($query, array());
 	$num_rows=$adb->num_rows($result);
-	$prof_details=Array();
-	for($i=0;$i<$num_rows;$i++)
-	{
-		$profileid=$adb->query_result($result,$i,'profileid');
-		$profilename=$adb->query_result($result,$i,'profilename');
+	$prof_details=array();
+	for ($i=0; $i<$num_rows; $i++) {
+		$profileid=$adb->query_result($result, $i, 'profileid');
+		$profilename=$adb->query_result($result, $i, 'profilename');
 		$prof_details[$profileid]=$profilename;
 	}
-	$log->debug("Exiting getAllProfileInfo method ...");
+	$log->debug('Exiting getAllProfileInfo method ...');
 	return $prof_details;
 }
 
-/** Function to get the vtiger_role information of the specified vtiger_role
+/** Function to get the role information of the specified role
  * @param $roleid -- RoleId :: Type varchar
  * @returns $roleInfoArray-- RoleInfoArray in the following format:
- *       $roleInfo=Array($roleId=>Array($rolename,$parentrole,$roledepth,$immediateParent));
+ *       array($roleId=>array($rolename, $parentrole, $roledepth, $immediateParent));
  */
-function getRoleInformation($roleid)
-{
+function getRoleInformation($roleid) {
 	global $log, $adb;
 	$log->debug("Entering getRoleInformation(".$roleid.") method ...");
 	$query = 'select * from vtiger_role where roleid=?';
 	$result = $adb->pquery($query, array($roleid));
-	$rolename=$adb->query_result($result,0,'rolename');
-	$parentrole=$adb->query_result($result,0,'parentrole');
-	$roledepth=$adb->query_result($result,0,'depth');
-	$parentRoleArr=explode('::',$parentrole);
-	$immediateParent = $parentRoleArr[count($parentRoleArr)-2];
-	$roleDet=Array();
+	$rolename=$adb->query_result($result, 0, 'rolename');
+	$parentrole=$adb->query_result($result, 0, 'parentrole');
+	$roledepth=$adb->query_result($result, 0, 'depth');
+	$parentRoleArr=explode('::', $parentrole);
+	$immediateParent = (count($parentRoleArr)>1) ? $parentRoleArr[count($parentRoleArr)-2] : null;
+	$roleDet=array();
 	$roleDet[]=$rolename;
 	$roleDet[]=$parentrole;
 	$roleDet[]=$roledepth;
 	$roleDet[]=$immediateParent;
-	$roleInfo=Array();
+	$roleInfo=array();
 	$roleInfo[$roleid]=$roleDet;
 	$log->debug("Exiting getRoleInformation method ...");
 	return $roleInfo;
