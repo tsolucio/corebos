@@ -202,7 +202,12 @@ switch ($functiontocall) {
 		$retvals = getGlobalSearch($term, $searchin, $limit, $current_user);
 		$ret = array();
 		foreach ($retvals['data'] as $value) {
-		    $ret[] = array('crmid'=>$value['crmid'],'crmmodule'=>$value['crmmodule'],'query_string'=>$value['query_string'],'total'=>$retvals['total'])+ $value['crmfields'];
+			$ret[] = array(
+				'crmid' => $value['crmid'],
+				'crmmodule' => $value['crmmodule'],
+				'query_string' => $value['query_string'],
+				'total' => $retvals['total']
+			) + $value['crmfields'];
 		}
 		break;
 	case 'ismoduleactive':
