@@ -265,18 +265,11 @@ function sendfile_email()
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
                              <td align=right>
-							{if $header eq $MOD.LBL_ADDRESS_INFORMATION && ($MODULE eq 'Accounts' || $MODULE eq 'Contacts' || $MODULE eq 'Leads') }
-                             {if $MODULE eq 'Leads'}
-                             <input name="mapbutton" value="{$APP.LBL_LOCATE_MAP}" class="crmbutton small create" type="button" onClick="searchMapLocation( 'Main' )" title="{$APP.LBL_LOCATE_MAP}">
-                             {else}
-                             <input name="mapbutton" value="{$APP.LBL_LOCATE_MAP}" class="crmbutton small create" type="button" onClick="fnvshobj(this,'locateMap');" onMouseOut="fninvsh('locateMap');" title="{$APP.LBL_LOCATE_MAP}">
-							{/if}
-                             {/if}
                              </td>
                              </tr>
 
 							<!-- This is added to display the existing comments -->
-							{if $header eq $MOD.LBL_COMMENTS || $header eq $MOD.LBL_COMMENT_INFORMATION}
+							{if $header eq $APP.LBL_COMMENTS || (isset($MOD.LBL_COMMENTS) && $header eq $MOD.LBL_COMMENTS) || (isset($MOD.LBL_COMMENT_INFORMATION) && $header eq $MOD.LBL_COMMENT_INFORMATION)}
 							   <tr>
 								<td colspan=4 class="dvInnerHeader">
 						        	<b>{$MOD.LBL_COMMENT_INFORMATION}</b>
@@ -387,10 +380,6 @@ function sendfile_email()
 			{/if}
 			{* END *}
 			</td>
-		</tr>
-		<!-- Inventory - Product Details informations -->
-		<tr>
-			{$ASSOCIATED_PRODUCTS}
 		</tr>
 			</form>
 			<!-- End the form related to detail view -->
@@ -571,7 +560,7 @@ function sendfile_email()
 		{/if}
 			<!-- Mail Merge-->
 				<br>
-				{if $MERGEBUTTON eq 'permitted'}
+				{if isset($MERGEBUTTON) && $MERGEBUTTON eq 'permitted'}
 				<form action="index.php" method="post" name="TemplateMerge" id="form">
 				<input type="hidden" name="module" value="{$MODULE}">
 				<input type="hidden" name="parenttab" value="{$CATEGORY}">

@@ -39,5 +39,4 @@ $mod_strings = array (
 'ReviewModuleSettings' => 'Please review SMS Settings.',
 'ContactAdmin' => 'Please contact your administrator.',
 );
-
 ?>
