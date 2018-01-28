@@ -21,14 +21,12 @@ function DelImage($id) {
 		$imageattachment = 'Attachment';
 	}
 	$aname = vtlib_purify($_REQUEST['attachmentname']);
-	$query= "select vtiger_seattachmentsrel.attachmentsid
+	$query= 'select vtiger_seattachmentsrel.attachmentsid
 	 from vtiger_seattachmentsrel
 	 inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_seattachmentsrel.attachmentsid
 	 inner join vtiger_attachments on vtiger_crmentity.crmid=vtiger_attachments.attachmentsid
-	 where vtiger_crmentity.setype='$imgmod $imageattachment'
-	  and vtiger_attachments.name=?
-	  and vtiger_seattachmentsrel.crmid=?";
-	$result = $adb->pquery($query, array($aname,$id));
+	 where vtiger_crmentity.setype=? and vtiger_attachments.name=? and vtiger_seattachmentsrel.crmid=?';
+	$result = $adb->pquery($query, array($imgmod.' '.$imageattachment, $aname, $id));
 	if ($result and $adb->num_rows($result)==1) {
 		$attachmentsid = $adb->query_result($result, 0, 'attachmentsid');
 		$cntrels = $adb->pquery('select count(*) as cnt from vtiger_seattachmentsrel where attachmentsid=?', array($attachmentsid));
