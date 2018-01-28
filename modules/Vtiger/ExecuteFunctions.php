@@ -156,6 +156,18 @@ switch ($functiontocall) {
 		$allOptions=getEmailTemplateVariables(array($module,'Accounts'));
 		$ret = array_merge($allOptions[0], $allOptions[1], $allOptions[2]);
 		break;
+	case 'delImage':
+		include_once 'include/utils/DelImage.php';
+		$id = vtlib_purify($_REQUEST['recordid']);
+		$id = preg_replace('/[^0-9]/', '', $id);
+		if (isset($_REQUEST['attachmodule']) && $_REQUEST["attachmodule"]=='Emails') {
+			DelAttachment($id);
+		} else {
+			DelImage($id);
+		}
+		echo 'SUCCESS';
+		die();
+		break;
 	case 'saveAttachment':
 		include_once 'modules/Settings/MailScanner/core/MailAttachmentMIME.php';
 		include_once 'modules/MailManager/src/controllers/UploadController.php';

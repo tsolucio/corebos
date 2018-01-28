@@ -2917,12 +2917,13 @@ function delimage(id,fname,aname) {
 	} else {
 	jQuery.ajax({
 		method: 'POST',
-		url: 'index.php?module=Contacts&action=ContactsAjax&file=DelImage&ImageModule='+gVTModule+'&recordid='+id+'&fieldname='+fname+'&attachmentname='+aname,
+		url: 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=delImage&ImageModule='+gVTModule+'&recordid='+id+'&fieldname='+fname+'&attachmentname='+aname,
 	}).done(function (response) {
-		if(response.indexOf("SUCCESS")>-1)
+		if(response.indexOf('SUCCESS')>-1) {
 			document.getElementById(fname+'_replaceimage').innerHTML=alert_arr.LBL_IMAGE_DELETED;
-		else
+		} else {
 			alert(alert_arr.ERROR_WHILE_EDITING);
+		}
 	});
 	}
 	document.getElementById(fname+'_hidden').value = '';
