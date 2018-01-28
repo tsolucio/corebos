@@ -2166,7 +2166,7 @@ function getCurrentModule($perform_set=false) {
 		$is_module = false;
 		$module = vtlib_purify($_REQUEST['module']);
 		$dir = @scandir($root_directory.'modules', SCANDIR_SORT_NONE);
-		$temp_arr = Array('.','..','Vtiger','uploads');
+		$temp_arr = array('.','..','Vtiger');
 		$res_arr = @array_diff($dir,$temp_arr);
 		if (!preg_match("/[\/.]/",$module)) {
 			$is_module = @in_array($module,$res_arr);

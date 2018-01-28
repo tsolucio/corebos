@@ -132,7 +132,7 @@ function vtlib_RecreateUserPrivilegeFiles() {
 function vtlib_moduleAlwaysActive() {
 	$modules = Array (
 		'CustomView', 'Settings', 'Users', 'Migration',
-		'Utilities', 'uploads', 'Import', 'com_vtiger_workflow', 'PickList',
+		'Utilities', 'Import', 'com_vtiger_workflow', 'PickList',
 	);
 	return $modules;
 }

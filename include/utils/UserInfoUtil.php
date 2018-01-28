@@ -562,8 +562,7 @@ function _vtisPermitted($module,$actionname,$record_id='') {
 	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
 	$parenttab = empty($_REQUEST['parenttab']) ? '' : vtlib_purify($_REQUEST['parenttab']);
 	$permission = "no";
-	if(($module == 'Users' || $module == 'Home' || $module == 'uploads' || $module == 'Utilities') && $parenttab != 'Settings')
-	{
+	if (($module == 'Users' || $module == 'Home' || $module == 'Utilities') && $parenttab != 'Settings') {
 		//These modules dont have security right now
 		$permission = "yes";
 		$log->debug("Exiting isPermitted method ...");
@@ -1130,9 +1129,8 @@ function isAllowed_Outlook($module,$action,$user_id,$record_id)
 	$log->debug("Entering isAllowed_Outlook(".$module.",".$action.",".$user_id.",".$record_id.") method ...");
 
 	$permission = "no";
-	if($module == 'Users' || $module == 'Home' || $module == 'uploads' ||  $module == 'Settings' || $module == 'Calendar')
-	{
-		//These modules done have security
+	if ($module == 'Users' || $module == 'Home' ||  $module == 'Settings' || $module == 'Calendar') {
+		//These modules do not have security
 		$permission = "yes";
 	}
 	else
