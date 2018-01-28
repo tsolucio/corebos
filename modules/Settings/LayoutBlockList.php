@@ -1225,11 +1225,6 @@ function createRelatedList() {
 		case 'Documents':
 			$funcname = 'get_attachments';
 			break;
-		case 'cbCalendar':
-		case 'Calendar':
-		case 'Events':
-			$funcname = 'get_activities';
-			break;
 		default:
 			$funcname = 'get_related_list';
 			break;
