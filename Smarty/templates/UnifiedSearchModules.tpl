@@ -26,7 +26,7 @@
 			<table width="100%" cellspacing="0" cellpadding="5" border="0" class="small">
 				{foreach item=SEARCH_MODULEINFO key=SEARCH_MODULENAME from=$ALLOWED_MODULES name=allowed_modulesloop}
 				{if $smarty.foreach.allowed_modulesloop.index % 3 == 0}
-				<tr valign=top>	
+				<tr valign=top>
 				{/if}
 					<td class="dvtCellLabel"><input type='checkbox' name='search_onlyin' class='small' value='{$SEARCH_MODULENAME}'
 					{if $SEARCH_MODULEINFO.selected}checked=true{/if}>{$SEARCH_MODULEINFO.label}</td>
