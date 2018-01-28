@@ -24,7 +24,7 @@
 		</tr>
 	</table>
 
-	<form action="index.php" method="get" accept-charset="utf-8" onsubmit="VtigerJS_DialogBox.block();">
+	<form action="index.php" method="post" accept-charset="utf-8" onsubmit="VtigerJS_DialogBox.block();">
 		<div class="popup_content" align="left">
 			{$MOD.LBL_CREATE_TASK_OF_TYPE}
 			<select name="task_type" class="small">

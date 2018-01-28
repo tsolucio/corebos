@@ -103,5 +103,5 @@
 </table>
 
 {if $MODULE|hasEmailField}
-<form name="SendMail" onsubmit="VtigerJS_DialogBox.block();"><div id="sendmail_cont" style="z-index:100001;position:absolute;width:300px;"></div></form>
+<form name="SendMail" onsubmit="VtigerJS_DialogBox.block();" method="post"><div id="sendmail_cont" style="z-index:100001;position:absolute;width:300px;"></div></form>
 {/if}

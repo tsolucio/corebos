@@ -75,7 +75,7 @@
 				<strong><span id="module_info"></span></strong>
 			</td>
 			<td class="small" align="right">
-				<form action="index.php" method="get" accept-charset="utf-8" id="filter_modules" onsubmit="VtigerJS_DialogBox.block();" style="display: inline;">
+				<form action="index.php" method="post" accept-charset="utf-8" id="filter_modules" onsubmit="VtigerJS_DialogBox.block();" style="display: inline;">
 					<b>{$MOD.LBL_SELECT_MODULE}: </b>
 					<select class="importBox" name="list_module" id='pick_module'>
 						<option value="All">{$APP.LBL_ALL}</option>

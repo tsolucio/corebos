@@ -81,7 +81,7 @@ var i18n_DELETE_RSSFEED_CONFIRMATION = '{$APP.DELETE_RSSFEED_CONFIRMATION}';
 	</table>
 
 	<div id="PopupLay" class="layerPopup">
-	<form onSubmit="SaveRssFeeds(); return false;">
+	<form onSubmit="SaveRssFeeds(); return false;" method="post">
 	<table width="100%" border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine">
 	<tr>
 	<td class="layerPopupHeading" align="left"><img src="{'rssroot.gif'|@vtiger_imageurl:$THEME}" width="24" height="22" align="absmiddle" />&nbsp;{$MOD.LBL_ADD_RSS_FEED}</td>

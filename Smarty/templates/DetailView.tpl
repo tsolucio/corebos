@@ -731,5 +731,5 @@ getTagCloud();
 </tr></table>
 
 {if $MODULE|hasEmailField}
-	<form name="SendMail"><div id="sendmail_cont" style="z-index:100001;position:absolute;"></div></form>
+	<form name="SendMail" method="post"><div id="sendmail_cont" style="z-index:100001;position:absolute;"></div></form>
 {/if}

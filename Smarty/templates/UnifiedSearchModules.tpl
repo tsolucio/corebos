@@ -9,7 +9,7 @@
  ********************************************************************************/
 -->*}
 
-<form id="UnifiedSearch_moduleform" name="UnifiedSearch_moduleform">
+<form id="UnifiedSearch_moduleform" name="UnifiedSearch_moduleform" method="post">
 	<table width="90%" cellspacing="0" cellpadding="0" border="0" align="center" class="mailClient mailClientBg">
 	<tr>
 		<td>
