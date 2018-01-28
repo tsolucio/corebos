@@ -20,9 +20,9 @@
 switch ($_REQUEST['_op']) {
 	case 'Success':
 		$smarty = new vtigerCRM_Smarty();
-		$titlemessage = getTranslatedString('SUCCESSFUL_REGISTRATION_TITLE',$currentModule);
+		$titlemessage = getTranslatedString('SUCCESSFUL_REGISTRATION_TITLE', $currentModule);
 		$smarty->assign('TITLE_MESSAGE', $titlemessage);
-		$smarty->assign('MESSAGE', sprintf(getTranslatedString('SUCCESSFUL_REGISTRATION_MESSAGE',$currentModule),vtlib_purify($_REQUEST['integration'])));
+		$smarty->assign('MESSAGE', sprintf(getTranslatedString('SUCCESSFUL_REGISTRATION_MESSAGE', $currentModule), vtlib_purify($_REQUEST['integration'])));
 		$smarty->assign('ERROR_CLASS', '');
 		$smarty->assign('APP', $app_strings);
 		$smarty->assign('MOD', $mod_strings);
@@ -30,15 +30,15 @@ switch ($_REQUEST['_op']) {
 		$smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 		$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 		$smarty->assign('THEME', $theme);
-		include('modules/cbupdater/forcedButtons.php');
+		include 'modules/cbupdater/forcedButtons.php';
 		$smarty->assign('CHECK', $tool_buttons);
 		$smarty->display('modules/Utilities/integration.tpl');
 		break;
 	case 'Error':
 		$smarty = new vtigerCRM_Smarty();
-		$titlemessage = getTranslatedString('UNSUCCESSFUL_REGISTRATION_TITLE',$currentModule);
+		$titlemessage = getTranslatedString('UNSUCCESSFUL_REGISTRATION_TITLE', $currentModule);
 		$smarty->assign('TITLE_MESSAGE', $titlemessage);
-		$smarty->assign('MESSAGE', sprintf(getTranslatedString('UNSUCCESSFUL_REGISTRATION_MESSAGE',$currentModule),vtlib_purify($_REQUEST['integration'])).
+		$smarty->assign('MESSAGE', sprintf(getTranslatedString('UNSUCCESSFUL_REGISTRATION_MESSAGE', $currentModule), vtlib_purify($_REQUEST['integration'])).
 			'<br>'.vtlib_purify($_REQUEST['error_description']).' ('.vtlib_purify($_REQUEST['error_code']).')');
 		$smarty->assign('ERROR_CLASS', 'slds-theme--error');
 		$smarty->assign('APP', $app_strings);
@@ -47,7 +47,7 @@ switch ($_REQUEST['_op']) {
 		$smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 		$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 		$smarty->assign('THEME', $theme);
-		include('modules/cbupdater/forcedButtons.php');
+		include 'modules/cbupdater/forcedButtons.php';
 		$smarty->assign('CHECK', $tool_buttons);
 		$smarty->display('modules/Utilities/integration.tpl');
 		break;

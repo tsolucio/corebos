@@ -28,9 +28,9 @@ if (Users::is_ActiveUserID($_REQUEST['authuserid'])) {
 	}
 	$code = $tfa->getCode($twofasecret);
 	coreBOS_Settings::setSetting('coreBOS_2FA_Code_'.$_REQUEST['authuserid'], $code);
-	Users::send2FACode($code,$_REQUEST['authuserid']);
-	echo getTranslatedString('2FA_NEWCODESENT','Users');
+	Users::send2FACode($code, $_REQUEST['authuserid']);
+	echo getTranslatedString('2FA_NEWCODESENT', 'Users');
 } else {
-	echo getTranslatedString('ERR_INVALIDUSERID','Users');
+	echo getTranslatedString('ERR_INVALIDUSERID', 'Users');
 }
 die();

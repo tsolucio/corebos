@@ -20,17 +20,17 @@ if (!empty($entityid)) {
 if (!empty($deletecheck) && $adb->query_result($deletecheck, 0, 'deleted') == 1) {
 	echo $app_strings['LBL_RECORD_DELETE'];
 } else {
-	$dbQuery = 'SELECT * FROM vtiger_attachments WHERE attachmentsid = ?' ;
+	$dbQuery = 'SELECT * FROM vtiger_attachments WHERE attachmentsid = ?';
 	$result = $adb->pquery($dbQuery, array($attachmentsid));
-	if ($result and $adb->num_rows($result) == 1) {
+	if ($result && $adb->num_rows($result) == 1) {
 		$fileType = @$adb->query_result($result, 0, 'type');
 		$name = @$adb->query_result($result, 0, 'name');
 		$filepath = @$adb->query_result($result, 0, 'path');
 		$name = html_entity_decode($name, ENT_QUOTES, $default_charset);
-		$saved_filename = $attachmentsid."_".$name;
+		$saved_filename = $attachmentsid.'_'.$name;
 		$disk_file_size = filesize($filepath.$saved_filename);
 		$filesize = $disk_file_size + ($disk_file_size % 1024);
-		$fileContent = fread(fopen($filepath.$saved_filename, "r"), $filesize);
+		$fileContent = fread(fopen($filepath.$saved_filename, 'r'), $filesize);
 		header("Content-type: $fileType");
 		header("Pragma: public");
 		header("Expires: ".gmdate("D, d M Y H:i:s")." GMT");
