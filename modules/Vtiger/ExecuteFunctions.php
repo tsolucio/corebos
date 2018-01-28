@@ -156,6 +156,10 @@ switch ($functiontocall) {
 		$allOptions=getEmailTemplateVariables(array($module,'Accounts'));
 		$ret = array_merge($allOptions[0], $allOptions[1], $allOptions[2]);
 		break;
+	case 'downloadfile':
+		include_once 'include/utils/downloadfile.php';
+		die();
+		break;
 	case 'delImage':
 		include_once 'include/utils/DelImage.php';
 		$id = vtlib_purify($_REQUEST['recordid']);

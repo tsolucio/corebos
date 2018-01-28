@@ -185,7 +185,6 @@ if (isset($action) && isset($module)) {
 		preg_match("/^Authenticate/", $action) ||
 		preg_match("/^Logout/", $action) ||
 		preg_match("/^LeadConvertToEntities/", $action) ||
-		preg_match("/^downloadfile/", $action) ||
 		preg_match("/^massdelete/", $action) ||
 		preg_match("/^updateRole/",$action) ||
 		preg_match("/^UserInfoUtil/",$action) ||
@@ -246,7 +245,6 @@ if (isset($action) && isset($module)) {
 			preg_match("/^".$module."Ajax/",$action) ||
 			preg_match("/^MassEditSave/", $action) ||
 			preg_match("/^ChangePassword/", $action) ||
-			preg_match("/^downloadfile/", $action) ||
 			preg_match("/^lookupemailtemplate/",$action) ||
 			preg_match("/^home_rss/",$action) ||
 			preg_match("/^massdelete/", $action) ||
@@ -261,8 +259,7 @@ if (isset($action) && isset($module)) {
 			)
 			$skipFooters=true;
 		//skip footers for all these invocations as they are mostly popups
-		if(preg_match("/^downloadfile/", $action)
-		|| preg_match("/^mailmergedownloadfile/",$action)
+		if (preg_match("/^mailmergedownloadfile/",$action)
 		|| preg_match("/^get_img/",$action)
 		|| preg_match("/^dlAttachments/", $action )
 		|| preg_match("/^iCalExport/", $action)

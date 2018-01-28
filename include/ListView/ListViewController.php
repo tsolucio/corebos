@@ -323,8 +323,8 @@ class ListViewController {
 					}
 					if ($fileName != '' && $status == 1) {
 						if ($downloadtype == 'I') {
-							$value = "<a href='index.php?module=uploads&action=downloadfile&".
-									"entityid=$docid&fileid=$fileId' title='".
+							$value = "<a href='index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=downloadfile".
+									"&entityid=$docid&fileid=$fileId' title='".
 									getTranslatedString("LBL_DOWNLOAD_FILE", $module).
 									"' onclick='javascript:dldCntIncrease($docid);'>".textlength_check($value).
 									"</a>";

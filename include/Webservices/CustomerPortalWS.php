@@ -634,7 +634,7 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 								$fileid = $adb->query_result($fileidres, 0, 'attachmentsid');
 								if ($file_name != '' && $file_status == 1) {
 									if ($download_type == 'I') {
-										$fld_value = "<a href='index.php?module=uploads&action=downloadfile&entityid=$notes_id&fileid=$fileid' title='".
+										$fld_value = "<a href='index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=downloadfile&entityid=$notes_id&fileid=$fileid' title='".
 											getTranslatedString("LBL_DOWNLOAD_FILE", $module)."' onclick='javascript:dldCntIncrease($notes_id);'>".$fld_value."</a>";
 									} elseif ($download_type == 'E') {
 										$fld_value = "<a target='_blank' href='$file_name' onclick='javascript:dldCntIncrease($notes_id);' title='".

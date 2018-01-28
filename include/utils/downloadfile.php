@@ -7,8 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('include/database/PearDatabase.php');
-
 global $adb, $fileId, $default_charset, $app_strings;
 
 $attachmentsid = vtlib_purify($_REQUEST['fileid']);
