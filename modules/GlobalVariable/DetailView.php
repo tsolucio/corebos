@@ -15,10 +15,12 @@ $smarty = new vtigerCRM_Smarty();
 
 require_once 'modules/Vtiger/DetailView.php';
 require_once 'modules/GlobalVariable/LoadGlobalVariableDefinitions.php';
-$fieldlabel = getTranslatedString('Name',$currentModule);
-$kk = getFieldFromDetailViewBlockArray($blocks,$fieldlabel);
+$fieldlabel = getTranslatedString('Name', $currentModule);
+$kk = getFieldFromDetailViewBlockArray($blocks, $fieldlabel);
 $gvnamearray = $blocks[$kk['block_label']][$kk['field_key']][$fieldlabel]['options'];
-uasort($gvnamearray, function($a,$b) {return strtolower($a[0]) < strtolower($b[0]) ? -1 : 1;});
+uasort($gvnamearray, function ($a, $b) {
+	return strtolower($a[0]) < strtolower($b[0]) ? -1 : 1;
+});
 $blocks[$kk['block_label']][$kk['field_key']][$fieldlabel]['options'] = $gvnamearray;
 $smarty->assign('BLOCKS', $blocks);
 $smarty->display('DetailView.tpl');
