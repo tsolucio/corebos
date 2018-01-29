@@ -224,7 +224,7 @@ function VTUpdateFieldsTask($, fieldvaluemapping){
 							);
 						}
 						var moduleFieldTypes = {};
-						moduleFieldTypes[result.label] = dict(map(function(e){
+						moduleFieldTypes[result.name] = dict(map(function(e){
 							return [e['name'], e['type']];
 						},
 						filteredFields(parent['fields'])));
@@ -232,7 +232,7 @@ function VTUpdateFieldsTask($, fieldvaluemapping){
 						function getFieldType(fullFieldName){
 							var group = fullFieldName.match(/(\w+) : \((\w+)\) (\w+)/);
 							if(group==null){
-								var fieldModule = result.label;
+								var fieldModule = result.name;
 								var fieldName = fullFieldName;
 							}else{
 								var fieldModule = group[2];
@@ -245,7 +245,7 @@ function VTUpdateFieldsTask($, fieldvaluemapping){
 							}
 							return moduleFieldTypes[fieldModule][fieldName];
 						}
-						modtypes[result.label] = moduleFieldTypes[result.label];
+						modtypes[result.name] = moduleFieldTypes[result.name];
 						if(fldrelname!='' && fldrelname!=undefined && fldrelname!=null && modtypes[relmodule]!=undefined && entered==0)
 						{   entered++;
 							defaultValue(getFieldType(fldrelname).name)(getFieldType(fldrelname), mappingno);
@@ -270,7 +270,7 @@ function VTUpdateFieldsTask($, fieldvaluemapping){
 						fieldLabels[result.label]='----'+result.label+'----';
 						var fe = $('#save_fieldvalues10_'+mappingno+'_fieldname');
 						if(relmodule=='')
-							$('#save_fieldvalues10_'+mappingno+'_module').val(result.label);
+							$('#save_fieldvalues10_'+mappingno+'_module').val(result.name);
 						else 
 							$('#save_fieldvalues10_'+mappingno+'_module').val(relmodule);
 						if(k>1) 
