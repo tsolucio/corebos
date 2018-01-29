@@ -14,4 +14,11 @@
 	<classname>migrateUIType59to10</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>make potential forecast field displaytype 4</description>
+	<filename>build/changeSets/2018/makePotentialForecastDisplaytype4.php</filename>
+	<classname>makePotentialForecastDisplaytype4</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
