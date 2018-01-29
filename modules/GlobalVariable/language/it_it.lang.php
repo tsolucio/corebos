@@ -39,5 +39,6 @@ $mod_strings = array(
 	'product_service_default' => 'Prodotti o Servizi default nelle linee prodotto',
 	'GVarDefinitions' => 'Definizione variabile',
 	'cbMap' => 'Business Map',
+	'Role' => 'Ruolo',
 );
 ?>

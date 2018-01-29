@@ -29,5 +29,6 @@ $mod_strings = array(
 	'Modified Time' => 'Gewijzigd op',
 	'Description' => 'Beschrijving',
 	'cbMap' => 'Interne relatie',
+	'Role' => 'Rol',
 );
 ?>

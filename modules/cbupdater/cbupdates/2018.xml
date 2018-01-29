@@ -21,4 +21,11 @@
 	<classname>makePotentialForecastDisplaytype4</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>add Role picklist to Global Variable module</description>
+	<filename>build/changeSets/2018/addRolePicklistToGlobalVariable.php</filename>
+	<classname>addRolePicklistToGlobalVariable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
