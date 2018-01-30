@@ -252,7 +252,7 @@ function VTUpdateFieldsTask($, fieldvaluemapping){
 						}
 						var parentFields = map(function(e){
 							if(refersize>1)
-								return[e['name'],result.label+'-'+e['label']];
+								return[e['name'],result.name+'-'+e['label']];
 							else
 								return[e['name'],e['label']];
 						}, filteredFields(parent['fields']));
