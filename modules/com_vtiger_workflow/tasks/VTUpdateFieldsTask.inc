@@ -55,8 +55,8 @@ class VTUpdateFieldsTask extends VTTask {
 			if (is_null($current_user)) {
 				$current_user = $hold_user;  // make sure current_user is defined
 			}
-						$relmodule=array();
-
+			$relmodule=array();
+			$handlerMetarel[]=array();
 			foreach ($fieldValueMapping as $fieldInfo) {
 				$fieldName = $fieldInfo['fieldname'];
 				$fieldType = '';
@@ -80,6 +80,7 @@ class VTUpdateFieldsTask extends VTTask {
 						$focusrel["$fieldmodule"]->id = $relId;
 						$focusrel["$fieldmodule"]->mode = 'edit';
 						$focusrel["$fieldmodule"]->retrieve_entity_info($relId, $fieldmodule);
+						$focusrel["$fieldmodule"]->clearSingletonSaveFields();
 					}
 					if (count($relmodule)>3 && $isqueue==false) {
 						$delay = strtotime(" +5 minutes");
@@ -87,9 +88,9 @@ class VTUpdateFieldsTask extends VTTask {
 						return;
 					}
 						 $moduleHandlerrel = vtws_getModuleHandlerFromName($fieldmodule, $current_user);
-						 $handlerMetarel = $moduleHandlerrel->getMeta();
-						 $moduleFieldsrel = $handlerMetarel->getModuleFields();
-						 $fieldValue=$util->fieldvaluebytype($moduleFieldsrel, $fieldValueType, $fieldValue, $fldrelname, $focus, $entity, $handlerMetarel);
+						 $handlerMetarel["$fieldmodule"] = $moduleHandlerrel->getMeta();
+						 $moduleFieldsrel = $handlerMetarel["$fieldmodule"]->getModuleFields();
+						 $fieldValue=$util->fieldvaluebytype($moduleFieldsrel, $fieldValueType, $fieldValue, $fldrelname, $focus, $entity, $handlerMetarel["$fieldmodule"]);
 				} else {
 					$fieldValue=$util->fieldvaluebytype($moduleFields, $fieldValueType, $fieldValue, $fieldName, $focus, $entity, $handlerMeta);
 				}
@@ -108,6 +109,7 @@ class VTUpdateFieldsTask extends VTTask {
 			$focus->saveentity($moduleName);
 			if (count($relmodule)>0 && $relId!='' && $relId!=0) {
 				foreach ($relmodule as $mod) {
+					$focusrel["$mod"]->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focusrel["$mod"]->column_fields, $handlerMetarel["$mod"]);
 					$focusrel["$mod"]->saveentity($mod);
 				}
 			}
