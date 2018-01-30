@@ -230,29 +230,30 @@ class Contacts extends CRMEntity {
 			}
 		}
 
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>
-							'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 		$query ='select case when (vtiger_users.user_name not like "") then '.$userNameSql.' else vtiger_groups.groupname end as user_name,
 		vtiger_contactdetails.accountid, vtiger_contactdetails.contactid , vtiger_potential.potentialid, vtiger_potential.potentialname,
 		vtiger_potential.potentialtype, vtiger_potential.sales_stage, vtiger_potential.amount, vtiger_potential.closingdate,
 		vtiger_potential.related_to, vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_account.accountname
 		from vtiger_contactdetails
 		left join vtiger_contpotentialrel on vtiger_contpotentialrel.contactid=vtiger_contactdetails.contactid
-		left join vtiger_potential on (vtiger_potential.potentialid = vtiger_contpotentialrel.potentialid or vtiger_potential.related_to=vtiger_contactdetails.contactid)
+		left join vtiger_potential on (vtiger_potential.potentialid = vtiger_contpotentialrel.potentialid or
+			vtiger_potential.related_to = vtiger_contactdetails.contactid or
+			vtiger_potential.related_to = vtiger_contactdetails.accountid)
 		inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_potential.potentialid
 		left join vtiger_account on vtiger_account.accountid=vtiger_contactdetails.accountid
 		left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
 		left join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid
-		where vtiger_contactdetails.contactid ='.$id.'
-		and (vtiger_contactdetails.accountid = vtiger_potential.related_to or vtiger_contactdetails.contactid=vtiger_potential.related_to)
-		and vtiger_crmentity.deleted=0';
+		where vtiger_contactdetails.contactid ='.$id.' and vtiger_crmentity.deleted=0';
 
 		$return_value = GetRelatedList($this_module, $related_module, $other, $query, $button, $returnset);
 
-		if($return_value == null) $return_value = Array();
+		if ($return_value == null) {
+			$return_value = array();
+		}
 		$return_value['CUSTOM_BUTTON'] = $button;
 
-		$log->debug("Exiting get_opportunities method ...");
+		$log->debug('Exiting get_opportunities method...');
 		return $return_value;
 	}
 
