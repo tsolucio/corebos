@@ -156,10 +156,12 @@ class VTFieldExpressionEvaluater {
 				} else {
 					$params = array_map(array($this, 'exec'), $expr->getParams());
 				}
+				$debugparams = $params;
 				if (in_array($func, $this->needscontext)) {
+					$debugparams[] = 'context is added';
 					$params[] = $this->env;
 				}
-				$loginfo = print_r($params, true);
+				$loginfo = print_r($debugparams, true);
 				$logbg->debug("VTExpressionTreeNode: function $func $loginfo");
 				$this->debug[] = $loginfo;
 				return $func($params);

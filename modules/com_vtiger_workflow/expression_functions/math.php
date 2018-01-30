@@ -39,10 +39,12 @@ function __vt_div($arr) {
 }
 
 function __vt_round($arr) {
-	if (!is_array($arr) or count($arr)==0) return 0;
+	if (!is_array($arr) || count($arr)==0) {
+		return 0;
+	}
 	$decs = (isset($arr[1]) ? $arr[1] : 0);
-	if (is_numeric($arr[0]) and is_numeric($decs)) {
-		return round($arr[0],$decs);
+	if (is_numeric($arr[0]) && is_numeric($decs)) {
+		return round($arr[0], $decs);
 	} else {
 		return $arr[0];
 	}
