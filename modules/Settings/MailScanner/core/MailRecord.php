@@ -52,7 +52,7 @@ class Vtiger_MailRecord {
 
 	/** DEBUG Functionality. */
 	public $debug = false;
-	private function log($message = false) {
+	public function log($message = false) {
 		if (!$message) {
 			$message = $this->__toString();
 		}

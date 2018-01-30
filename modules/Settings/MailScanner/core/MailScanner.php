@@ -27,7 +27,7 @@ class Vtiger_MailScanner {
 
 	/** DEBUG functionality. */
 	public $debug = false;
-	private function log($message) {
+	public function log($message) {
 		global $log;
 		if ($log && $this->debug) {
 			$log->debug($message);
