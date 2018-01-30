@@ -351,6 +351,16 @@ class GlobalVariable extends CRMEntity {
 			return $default;
 		}
 
+		$userrole = $adb->convert2Sql('inner join vtiger_user2role on vtiger_user2role.userid=?', array($gvuserid));
+		$sql=$select.$userrole.$where."and rolegv like concat('%', vtiger_user2role.roleid, '%')";
+		$gvvalidationinfo[] = '---';
+		$value=self::return_global_var_value($sql, $var, $module);
+		$gvvalidationinfo[] = "search as set per user $gvuserid ROLE in module $module: $value";
+		if ($value!='') {
+			VTCacheUtils::updateCachedInformation($key, $value);
+			return $value;
+		}
+
 		$user = $adb->convert2Sql(' and vtiger_crmentity.smownerid=?', array($gvuserid));
 		$sql=$select.$where.$user;
 		$gvvalidationinfo[] = '---';
