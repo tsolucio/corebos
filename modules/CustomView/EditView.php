@@ -196,7 +196,6 @@ function getStdFilterHTML($module, $selected = "") {
 	global $current_language, $app_strings, $current_user, $oCustomView;
 	$stdfilter = array();
 	$result = $oCustomView->getStdCriteriaByModule($module);
-	$mod_strings = return_module_language($current_language, $module);
 
 	if (isset($result)) {
 		foreach ($result as $key => $value) {
@@ -204,27 +203,12 @@ function getStdFilterHTML($module, $selected = "") {
 				$value = 'Start Date';
 			}
 			$use_module_label =  getTranslatedString($module, $module);
-			if (isset($mod_strings[$value])) {
-				if ($key == $selected) {
-					$filter['value'] = $key;
-					$filter['text'] = $use_module_label." - ".getTranslatedString($value);
-					$filter['selected'] = "selected";
-				} else {
-						$filter['value'] = $key;
-						$filter['text'] = $use_module_label." - ".getTranslatedString($value);
-						$filter['selected'] ="";
-				}
+			$filter['value'] = $key;
+			$filter['text'] = $use_module_label.' - '.getTranslatedString($value, $module);
+			if ($key == $selected) {
+				$filter['selected'] = 'selected';
 			} else {
-				if ($key == $selected) {
-					$filter['value'] = $key;
-
-					$filter['text'] = $use_module_label." - ".$value;
-					$filter['selected'] = 'selected';
-				} else {
-					$filter['value'] = $key;
-					$filter['text'] = $use_module_label." - ".$value;
-					$filter['selected'] ='';
-				}
+				$filter['selected'] = '';
 			}
 			$stdfilter[]=$filter;
 			// If a user doesn't have permission for a field and it has been used to filter a custom view, it should be displayed to him as Not Accessible.
