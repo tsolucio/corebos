@@ -137,7 +137,7 @@ class Services extends CRMEntity {
 			for ($i=0; $i<$numtaxes; $i++) {
 				$tax_checkname = $tax_details[$i]['taxname']."_check";
 				if ($_REQUEST['action'] == 'MassEditSave') { // then we only modify the marked taxes
-					if (isset($_REQUEST[$tax_checkname]) and ($_REQUEST[$tax_checkname] == 'on' || $_REQUEST[$tax_checkname] == 1)) {
+					if (isset($_REQUEST[$tax_checkname]) && ($_REQUEST[$tax_checkname] == 'on' || $_REQUEST[$tax_checkname] == 1)) {
 						$taxid = getTaxId($tax_details[$i]['taxname']);
 						$adb->pquery($sql, array($this->id,$taxid));
 					}

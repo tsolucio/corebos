@@ -633,7 +633,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 						and vtiger_attachments.name = ?
 						and vtiger_seattachmentsrel.crmid=?";
 				global $upload_badext;
-				$params = array(sanitizeUploadFileName($col_fields[$fieldname], $upload_badext),$col_fields['record_id']);
+				$params = array(sanitizeUploadFileName(decode_html($col_fields[$fieldname]), $upload_badext), $col_fields['record_id']);
 			}
 			$result_image = $adb->pquery($query, $params);
 			$image_array = array();

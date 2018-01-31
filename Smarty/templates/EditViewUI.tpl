@@ -518,7 +518,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 						<table width="100%" height="100%" class="small" cellpadding="5">
 						<tr class="detailedViewHeader">
 							<th colspan="4">
-								<b>{$MOD.LBL_PRODUCT_PRICES}</b>
+								<b>{'LBL_PRODUCT_PRICES'|@getTranslatedString:'Products'}</b>
 							</th>
 							<th align="right">
 								<img border="0" style="cursor: pointer;" onclick="toggleShowHide('multiple_currencies','currency_class');" src="{'close.gif'|@vtiger_imageurl:$THEME}"/>

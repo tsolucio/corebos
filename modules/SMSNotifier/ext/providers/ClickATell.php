@@ -75,7 +75,9 @@ class ClickATell implements ISMSProvider {
 		$tonumbers = (array)$tonumbers;
 
 		$params = $this->prepareParameters();
-		$params['text'] = $message;
+		$smsarray = $this->smstxtcode($message);
+		$params['text'] = $smsarray[1];
+		$params['unicode'] = $smsarray[0];
 		$params['to'] = implode(',', $tonumbers);
 
 		$serviceURL = $this->getServiceURL(self::SERVICE_SEND);
