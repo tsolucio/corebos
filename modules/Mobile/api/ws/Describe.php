@@ -52,6 +52,7 @@ class crmtogo_WS_Describe extends crmtogo_WS_Controller {
 				foreach($describeInfo['fields'] as $describeField) {
 					if ($describeField['name']== $fieldname) {
 						$field['type'] = '';
+						$field['value'] = $describeField['default'];
 						if (!empty($describeField['type']) && !empty($describeField['type']['picklistValues'])) {
 							$picklistValues = $describeField['type']['picklistValues'];
 							$field['type']['value'] = array ('value' =>$picklistValues,'name' => $fieldname);
