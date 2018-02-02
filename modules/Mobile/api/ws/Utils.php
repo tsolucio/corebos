@@ -319,6 +319,34 @@ class crmtogo_WS_Utils {
 			}
 		}
 		else if($module == 'cbCalendar') {
+			if(isset($_REQUEST['_operation']) && $_REQUEST['_operation']=='create') {
+					//without paging per month
+					$datetimeevent=$_REQUEST['datetime'];
+					if (empty($datetimeevent)) {
+						$stdate = new DateTimeField(date("Y-m-d").' '.date("H:i"));
+						$datestoconsider ['start'] = date("Y-m-d");
+						$datestoconsider ['tstart'] = $stdate->getDisplayTime();
+						$duration = GlobalVariable::getVariable('Calendar_other_default_duration', 1, 'cbCalendar') * 60;
+						$startparts = $stdate->getDisplayDateTimeValueComponents();
+						$datetime_end = date('Y-m-d H:i:s',mktime($startparts['hour'],$startparts['minute']+$duration,$startparts['second'],$startparts['month'],$startparts['day'],$startparts['year']));
+						list($dend,$tend) = explode(' ',$datetime_end);
+						$datestoconsider ['end'] = $dend;
+						$datestoconsider ['tend'] = $tend;
+					}
+					else {
+						$strDate = substr($datetimeevent,4,11);
+						$dstart = date("Y-m-d",strtotime($strDate));
+						$stdate = new DateTimeField($dstart.' '.date("H:i"));
+						$datestoconsider ['start'] = date("Y-m-d",strtotime($strDate));
+						$datestoconsider ['tstart'] = $stdate->getDisplayTime();
+						$duration = GlobalVariable::getVariable('Calendar_other_default_duration', 1, 'cbCalendar') * 60;
+						$startparts = $stdate->getDisplayDateTimeValueComponents();
+						$datetime_end = date('Y-m-d H:i:s',mktime($startparts['hour'],$startparts['minute']+$duration,$startparts['second'],$startparts['month'],$startparts['day'],$startparts['year']));
+						list($dend,$tend) = explode(' ',$datetime_end);
+						$datestoconsider ['end'] = $dend;
+						$datestoconsider ['tend'] = $tend;
+					}
+			}
 			foreach($describeInfo['fields'] as $index => $fieldInfo) {
 				if (isset($fieldInfo['uitype'])) {
 					$fieldInfo['uitype'] = self::fixUIType($module, $fieldInfo['name'], $fieldInfo['uitype']);
@@ -328,6 +356,14 @@ class crmtogo_WS_Utils {
 						$fieldInfo['type']['picklistValues'] = self::visibilityValues();
 						$fieldInfo['type']['defaultValue'] = $fieldInfo['type']['picklistValues'][0]['value'];
 					}
+				} elseif($fieldInfo['name'] == 'date_start') {
+					$fieldInfo['default'] = $datestoconsider ['start'];
+				} elseif($fieldInfo['name'] == 'time_start') {
+					$fieldInfo['default'] = $datestoconsider ['tstart'];
+				} elseif($fieldInfo['name'] == 'due_date') {
+					$fieldInfo['default'] = $datestoconsider ['end'];
+				} elseif($fieldInfo['name'] == 'time_end') {
+					$fieldInfo['default'] = $datestoconsider ['tend'];
 				}
 				$describeInfo['fields'][$index] = $fieldInfo;
 			}
