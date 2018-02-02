@@ -270,6 +270,9 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 					}
 					else if($field['uitype'] == '51' || $field['uitype'] == '10'){
 						$field['relatedmodule'] = crmtogo_WS_Utils::getEntityName($field['name'], $module);
+					} elseif ($field['uitype'] == '70') {
+						$date = new DateTimeField($field['value']);
+						$field['value'] = $date->getDisplayDateTimeValue();
 					}
 					$fields[] = $field;
 				}
