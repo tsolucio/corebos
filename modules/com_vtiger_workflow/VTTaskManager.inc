@@ -268,6 +268,19 @@ class VTTaskType {
 		}
 	}
 
+	/* Delete a task type. NOTE this method does not check if the task type is in use */
+	public static function unregisterTaskType($taskName, $taskLabel, $taskClass) {
+		$adb = PearDatabase::getInstance();
+		$adb->pquery('DELETE FROM com_vtiger_workflow_tasktypes WHERE tasktypename=? and label=? and classname=?', array($taskName, $taskLabel, $taskClass));
+	}
+
+	/* Check if a workflow task that uses the given task type exists */
+	public static function checkTaskTypeUsage($taskName) {
+		$adb = PearDatabase::getInstance();
+		$result = $adb->pquery('SELECT 1 FROM `com_vtiger_workflowtasks` WHERE `task` like ? limit 1', array('%'.$taskName.'%'));
+		return ($result && $adb->num_rows($result)>0);
+	}
+
 	public static function getAll($moduleName = '') {
 		$adb = PearDatabase::getInstance();
 
