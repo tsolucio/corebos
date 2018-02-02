@@ -71,7 +71,7 @@ class VTCreateEntityTask extends VTTask {
 					if ($referenceModule == $entityType) {
 						$fieldValue = $newEntity->column_fields[$fieldValue];
 					} else {
-						$fieldValue = $focus->column_fields[$fieldValue];
+						$fieldValue = ($fieldValue == 'id' ? $focus->column_fields['record_id'] : $focus->column_fields[$fieldValue]);
 					}
 				} elseif ($fieldValueType == 'expression' || ($fieldValueType == 'fieldname' && preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', $fieldValue))) {
 					$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($fieldValue)));
