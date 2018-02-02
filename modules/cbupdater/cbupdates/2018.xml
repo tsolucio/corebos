@@ -28,4 +28,11 @@
 	<classname>addRolePicklistToGlobalVariable</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>fix Create Follow up Workflow Tasks</description>
+	<filename>build/changeSets/2018/fixCreateFollowupWorkflowTasks.php</filename>
+	<classname>fixCreateFollowupWorkflowTasks</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
