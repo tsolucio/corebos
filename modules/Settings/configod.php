@@ -45,3 +45,7 @@ $cbodShowLicenseOnUserCreation = false;
 
 // User Create/Update Log
 $cbodUserLog = false;
+
+// Install database
+$corebosInstallDatabase = 'corebos_justinstalled_empty';
+

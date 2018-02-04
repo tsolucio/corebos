@@ -11,7 +11,6 @@
 class Install_InitSchema {
 
 	protected $sql_directory = 'schema/';
-	protected $corebos_sql = 'corebos_justinstalled_empty';
 	protected $db = false;
 
 	public function __construct($db = '') {
@@ -22,7 +21,8 @@ class Install_InitSchema {
 	 * Function starts applying schema changes
 	 */
 	public function initialize() {
-		$this->initializeDatabase($this->sql_directory, array($this->corebos_sql));
+		include 'modules/Settings/configod.php';
+		$this->initializeDatabase($this->sql_directory, array($corebosInstallDatabase));
 		$this->setDefaultUsersAccess();
 		$currencyName = $_SESSION['installation_info']['currency_name'];
 		$currencyCode = $_SESSION['installation_info']['currency_code'];
