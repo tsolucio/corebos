@@ -169,13 +169,7 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 					//get standard content & perform special settings
 					if($fieldinfo['uitype'] == 17 && strlen($resultRecord[$fieldname]) ) {
 						//www fields
-						if ($operation =='edit') {
-							$resultRecord[$fieldname]= $resultRecord[$fieldname];
-						}
-						else {
-							$htmlstring = str_replace("http://", "", $resultRecord[$fieldname]);
-							$resultRecord[$fieldname]= "<A HREF=\"#\" onclick=\"window.open('http://" . $htmlstring . "','_blank');\" rel=external>"  . $htmlstring . "</A>";
-						}
+						$resultRecord[$fieldname]= $resultRecord[$fieldname];
 					}
 					if($fieldinfo['uitype'] == 13 && strlen($resultRecord[$fieldname]) ) {
 						// email fields
