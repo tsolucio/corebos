@@ -188,13 +188,16 @@ if (typeof(ImportJs) == 'undefined') {
 				header = header.replace(/\/amp\//g, '&');
 				mapping["'"+header+"'"] = mappingPair[1];
 			}
+			var maparray = Object.values(mapping);
 			fieldsList.each(function(i, element) {
 				var fieldElement = jQuery(element);
 				var rowId = jQuery('[name=row_counter]', fieldElement).get(0).value;
 				var headerNameElement = jQuery('[name=header_name]', fieldElement).get(0);
 				var headerName = jQuery(headerNameElement).html();
-				if("'"+headerName+"'" in mapping) {
+				if ("'"+headerName+"'" in mapping) {
 					jQuery('[name=mapped_fields]', fieldElement).val(mapping["'"+headerName+"'"]);
+				} else if (maparray.indexOf(headerName)>-1) {
+						jQuery('[name=mapped_fields]', fieldElement).val(headerName);
 				} else if(rowId in mapping) {
 					jQuery('[name=mapped_fields]', fieldElement).val($rowId);
 				}
