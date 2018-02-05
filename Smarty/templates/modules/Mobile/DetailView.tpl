@@ -139,7 +139,7 @@
 										{elseif $_FIELD->uitype() eq '9'}
 											{$_FIELD->valueLabel()}{if $_FIELD->name() eq 'probability'} %{/if}
 										{elseif $_FIELD->uitype() eq '17'}
-											{$_FIELD->valueLabel()}
+											<a href="#" onclick="window.open('http://{$_FIELD->valueLabel()}','_blank');" rel=external> {$_FIELD->valueLabel()} </a>
 										{elseif $_FIELD->uitype() eq '69'}
 											<!-- do nothing here for image -->
 										{elseif $_FIELD->uitype() eq '70'}
