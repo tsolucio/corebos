@@ -32,7 +32,8 @@ class crmtogo_WS_Query extends crmtogo_WS_FetchRecordDetails {
 			$query = rtrim($query, ";");
 
 			$currentPage = intval($request->get('page', 0));
-			$FETCH_LIMIT = crmtogo::config('API_RECORD_FETCH_LIMIT'); 
+			$config = crmtogo_WS_Controller::getUserConfigSettings();
+			$FETCH_LIMIT = $config['NavigationLimit'];
 			$startLimit = $currentPage * $FETCH_LIMIT;
 			
 			$queryWithLimit = sprintf("%s LIMIT %u,%u;", $query, $startLimit, ($FETCH_LIMIT+1));
