@@ -40,6 +40,17 @@ class crmtogo_UI_getRelatedFieldAjax extends crmtogo_WS_Controller{
 			for($i=0;$i<count($searchqueryresult);$i++){
 				$searchresult[] = Array($searchqueryresult[$i]['id'],decode_html(getTranslatedString($modulename)." :: ".$searchqueryresult[$i][$fieldname]));
 			}
+		} elseif ($parentid == 'account_id' && ($module == 'Contacts' || $module == 'Accounts')){  //Support to uitype 51
+			$query = "SELECT fieldname FROM vtiger_entityname WHERE entityidcolumn = ? AND modulename = 'Accounts'";
+			$result = $adb->pquery($query, array($parentid));
+			$modulename = 'Accounts';
+			$fieldname = $adb->query_result($result,0,'fieldname');
+			$config = crmtogo_WS_Controller::getUserConfigSettings();
+			$limit = $config['NavigationLimit'];
+			$searchqueryresult = vtws_query("SELECT ".$fieldname." FROM ".$modulename." WHERE ".$fieldname." like '%".$searchvalue."%' LIMIT ".$limit.";", $current_user);
+			for($i=0;$i<count($searchqueryresult);$i++){
+				$searchresult[] = Array($searchqueryresult[$i]['id'],decode_html(getTranslatedString($modulename)." :: ".$searchqueryresult[$i][$fieldname]));
+			}
 		}
 		//get relmodule
 		$res_fmrel = $adb->pquery("SELECT relmodule FROM `vtiger_fieldmodulerel`
