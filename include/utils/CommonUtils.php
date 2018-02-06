@@ -7,11 +7,11 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('include/utils/utils.php');
-require_once('include/utils/VTCacheUtils.php');
-require_once('include/utils/VtlibUtils.php');
-require_once('include/utils/RecurringType.php');
-require_once('include/utils/EmailTemplate.php');
+require_once 'include/utils/utils.php';
+require_once 'include/utils/VTCacheUtils.php';
+require_once 'include/utils/VtlibUtils.php';
+require_once 'include/utils/RecurringType.php';
+require_once 'include/utils/EmailTemplate.php';
 require_once 'include/QueryGenerator/QueryGenerator.php';
 require_once 'include/ListView/ListViewController.php';
 
@@ -55,7 +55,7 @@ function isInsideApplication($path2check) {
  */
 function get_select_options(&$option_list, $selected, $advsearch = 'false') {
 	global $log;
-	$log->debug("Entering and Exiting get_select_options (" . print_r($option_list,true) . "," . $selected . "," . $advsearch . ") method ...");
+	$log->debug("Entering and Exiting get_select_options (" . print_r($option_list, true) . "," . $selected . "," . $advsearch . ") method ...");
 	return get_select_options_with_id($option_list, $selected, $advsearch);
 }
 
@@ -69,13 +69,13 @@ function get_select_options(&$option_list, $selected, $advsearch = 'false') {
  */
 function get_select_options_with_id(&$option_list, $selected_key, $advsearch = 'false') {
 	global $log;
-	$log->debug("Entering and Exiting get_select_options_with_id (" . print_r($option_list,true) . "," . print_r($selected_key,true) . "," . $advsearch . ") method ...");
+	$log->debug('Entering/Exiting get_select_options_with_id (' . print_r($option_list, true) . ',' . print_r($selected_key, true) . ',' . $advsearch . ') method ...');
 	return get_select_options_with_id_separate_key($option_list, $option_list, $selected_key, $advsearch);
 }
 
 function get_select_options_with_value(&$option_list, $selected_key, $advsearch = 'false') {
 	global $log;
-	$log->debug("Entering and Exiting get_select_options_with_id (" . print_r($option_list,true) . "," . $selected_key . "," . $advsearch . ") method ...");
+	$log->debug('Entering and Exiting get_select_options_with_id (' . print_r($option_list, true) . ',' . $selected_key . ',' . $advsearch . ') method ...');
 	return get_select_options_with_value_separate_key($option_list, $option_list, $selected_key, $advsearch);
 }
 
@@ -86,7 +86,7 @@ function get_select_options_with_value(&$option_list, $selected_key, $advsearch 
  */
 function get_select_options_array(&$option_list, $selected_key, $advsearch = 'false') {
 	global $log;
-	$log->debug("Entering and Exiting get_select_options_array (" . print_r($option_list,true) . "," . $selected_key . "," . $advsearch . ") method ...");
+	$log->debug('Entering and Exiting get_select_options_array (' . print_r($option_list, true) . ',' . $selected_key . ',' . $advsearch . ') method ...');
 	return get_options_array_seperate_key($option_list, $option_list, $selected_key, $advsearch);
 }
 
@@ -102,10 +102,11 @@ function get_select_options_array(&$option_list, $selected_key, $advsearch = 'fa
 function get_options_array_seperate_key(&$label_list, &$key_list, $selected_key, $advsearch = 'false') {
 	global $log,  $app_strings;
 	$log->debug('Entering get_options_array_seperate_key ('.print_r($label_list, true).','.print_r($key_list, true).','.$selected_key.','.$advsearch.') method');
-	if ($advsearch == 'true')
+	if ($advsearch == 'true') {
 		$select_options = "\n<OPTION value=''>--NA--</OPTION>";
-	else
+	} else {
 		$select_options = "";
+	}
 
 	//for setting null selection values to human readable --None--
 	$pattern = "/'0?'></";
@@ -140,10 +141,11 @@ function get_options_array_seperate_key(&$label_list, &$key_list, $selected_key,
 function get_select_options_with_id_separate_key(&$label_list, &$key_list, $selected_key, $advsearch = 'false') {
 	global $log, $app_strings;
 	$log->debug("Entering get_select_options_with_id_separate_key() method ...");
-	if ($advsearch == 'true')
+	if ($advsearch == 'true') {
 		$select_options = "\n<OPTION value=''>--NA--</OPTION>";
-	else
+	} else {
 		$select_options = "";
+	}
 
 	$pattern = "/'0?'></";
 	$replacement = "''>" . $app_strings['LBL_NONE'] . "<";
@@ -168,10 +170,11 @@ function get_select_options_with_value_separate_key(&$label_list, &$key_list, $s
 	global $log;
 	$log->debug("Entering get_select_options_with_id_separate_key(" . $label_list . "," . $key_list . "," . $selected_key . "," . $advsearch . ") method ...");
 	global $app_strings;
-	if ($advsearch == 'true')
+	if ($advsearch == 'true') {
 		$select_options = "\n<OPTION value=''>--NA--</OPTION>";
-	else
+	} else {
 		$select_options = "";
+	}
 
 	$pattern = "/'0?'></";
 	$replacement = "''>" . $app_strings['LBL_NONE'] . "<";
@@ -285,21 +288,27 @@ function fetchCurrency($id) {
  */
 function getCurrencyName($currencyid, $show_symbol = true) {
 	global $log;
-	$log->debug("Entering getCurrencyName(" . $currencyid . ") method ...");
+	$log->debug('Entering getCurrencyName(' . $currencyid . ') method ...');
 
 	// Look at cache first
 	$currencyinfo = VTCacheUtils::lookupCurrencyInfo($currencyid);
 
 	if ($currencyinfo === false) {
 		global $adb;
-		$sql1 = "select * from vtiger_currency_info where id= ?";
+		$sql1 = 'select * from vtiger_currency_info where id= ?';
 		$result = $adb->pquery($sql1, array($currencyid));
 
 		$resultinfo = $adb->fetch_array($result);
 
 		// Update cache
-		VTCacheUtils::updateCurrencyInfo($currencyid, $resultinfo['currency_name'], $resultinfo['currency_code'],
-			$resultinfo['currency_symbol'], $resultinfo['conversion_rate'], $resultinfo['currency_position']);
+		VTCacheUtils::updateCurrencyInfo(
+			$currencyid,
+			$resultinfo['currency_name'],
+			$resultinfo['currency_code'],
+			$resultinfo['currency_symbol'],
+			$resultinfo['conversion_rate'],
+			$resultinfo['currency_position']
+		);
 
 		// Re-look at the cache now
 		$currencyinfo = VTCacheUtils::lookupCurrencyInfo($currencyid);
@@ -308,11 +317,12 @@ function getCurrencyName($currencyid, $show_symbol = true) {
 	$currencyname = $currencyinfo['name'];
 	$curr_symbol = $currencyinfo['symbol'];
 
-	$log->debug("Exiting getCurrencyName method ...");
-	if ($show_symbol)
+	$log->debug('Exiting getCurrencyName method ...');
+	if ($show_symbol) {
 		return getTranslatedCurrencyString($currencyname) . ' : ' . $curr_symbol;
-	else
+	} else {
 		return $currencyname;
+	}
 	// NOTE: Without symbol the value could be used for filtering/lookup hence avoiding the translation
 }
 
@@ -353,7 +363,9 @@ function getTabid($module) {
 			global $adb;
 			$sql = "select tabid from vtiger_tab where name=?";
 			$result = $adb->pquery($sql, array($module));
-			if (!$result or $adb->num_rows($result)==0) return null;
+			if (!$result || $adb->num_rows($result)==0) {
+				return null;
+			}
 			$tabid = $adb->query_result($result, 0, "tabid");
 		}
 		// Update information to cache for re-use
@@ -391,7 +403,7 @@ function getFieldid($tabid, $fieldname, $onlyactive = true) {
 	return $fieldid;
 }
 
-function getFieldFromEditViewBlockArray($blocks,$fldlabel) {
+function getFieldFromEditViewBlockArray($blocks, $fldlabel) {
 	$result = array();
 	if (is_array($blocks)) {
 		$found = false;
@@ -426,17 +438,17 @@ function getFieldFromEditViewBlockArray($blocks,$fldlabel) {
 	return $result;
 }
 
-function getFieldFromDetailViewBlockArray($blocks,$fldlabel) {
-	return getFieldFromBlockArray($blocks,$fldlabel);
+function getFieldFromDetailViewBlockArray($blocks, $fldlabel) {
+	return getFieldFromBlockArray($blocks, $fldlabel);
 }
 
-function getFieldFromBlockArray($blocks,$fldlabel) {
+function getFieldFromBlockArray($blocks, $fldlabel) {
 	$result = array();
 	if (is_array($blocks)) {
 		$found = false;
 		foreach ($blocks as $blklabel => $fieldarray) {
 			foreach ($fieldarray as $key => $value) {
-				$found = array_key_exists($fldlabel,$value);
+				$found = array_key_exists($fldlabel, $value);
 				if ($found && is_array($value[$fldlabel]) && isset($value[$fldlabel]['value']) && isset($value[$fldlabel]['fldname'])) { // avoid false positives
 					$result['block_label'] = $blklabel;
 					$result['field_key'] = $key;
@@ -495,7 +507,7 @@ function getTabOwnedBy($module) {
 
 /**
  * Function to get the module name/type of a given crmid
- * @param interger $crmid  CRMID of the record we want to know the type
+ * @param int $crmid  CRMID of the record we want to know the type
  * @return string module name of the crmid record
  */
 function getSalesEntityType($crmid) {
@@ -619,7 +631,7 @@ function getFullNameFromQResult($result, $row_count, $module) {
 	$fieldsName = $entity_field_info['fieldname'];
 	$name = '';
 	if ($rowdata != '' && count($rowdata) > 0) {
-		$name = getEntityFieldNameDisplay($module, $fieldsName, $rowdata );
+		$name = getEntityFieldNameDisplay($module, $fieldsName, $rowdata);
 	}
 	$name = textlength_check($name);
 	return $name;
@@ -673,7 +685,7 @@ function getQuoteName($quote_id) {
 	$log->debug("Entering getQuoteName(" . $quote_id . ") method ...");
 	$log->info("in getQuoteName " . $quote_id);
 	global $adb;
-	if ($quote_id != NULL && $quote_id != '') {
+	if ($quote_id != null && $quote_id != '') {
 		$sql = "select subject from vtiger_quotes where quoteid=?";
 		$result = $adb->pquery($sql, array($quote_id));
 		$quote_name = $adb->query_result($result, 0, "subject");
@@ -743,7 +755,7 @@ function getSoName($so_id) {
 function getGroupName($groupid) {
 	global $adb, $log;
 	$log->debug("Entering getGroupName(" . $groupid . ") method ...");
-	$group_info = Array();
+	$group_info = array();
 	$log->info("in getGroupName, entityid is " . $groupid);
 	if ($groupid != '') {
 		$sql = "select groupname,groupid from vtiger_groups where groupid = ?";
@@ -780,7 +792,9 @@ function getUserFullName($userid) {
 	$log->debug("Entering getUserFullName($userid) method ...");
 	$user_name = '';
 	if ($userid != '') {
-		if (strpos($userid,'x')) list($wsid,$userid) = explode('x', $userid);
+		if (strpos($userid, 'x')) {
+			list($wsid,$userid) = explode('x', $userid);
+		}
 		$displayValueArray = getEntityName('Users', $userid);
 		if (!empty($displayValueArray)) {
 			foreach ($displayValueArray as $key => $value) {
@@ -798,7 +812,9 @@ function getParentName($parent_id) {
 	if (empty($parent_id) || $parent_id == 0) {
 		return "";
 	}
-	if (strpos($parent_id,'x')) list($wsid,$parent_id) = explode('x', $parent_id);
+	if (strpos($parent_id, 'x')) {
+		list($wsid,$parent_id) = explode('x', $parent_id);
+	}
 	$seType = getSalesEntityType($parent_id);
 	$entityNames = getEntityName($seType, $parent_id);
 	return $entityNames[$parent_id];
@@ -810,17 +826,17 @@ function getParentName($parent_id) {
  * @param: Accounts | Contacts related entity to return
  * @returns: crmid of the account/contact related to the entityid
  */
-function getRelatedAccountContact($entityid,$module='') {
+function getRelatedAccountContact($entityid, $module = '') {
 	global $adb,$log,$current_user;
-	if ($module=='' or ($module!='Accounts' and $module!='Contacts')) {
+	if ($module=='' || ($module!='Accounts' && $module!='Contacts')) {
 		if (GlobalVariable::getVariable('Application_B2B', '1')) {
 			$module = 'Accounts';
 		} else {
 			$module = 'Contacts';
 		}
 	}
-	if (strpos($entityid,'x')>0 and !is_numeric($entityid)) {
-		list($ent,$crmid) = explode('x',$entityid);
+	if (strpos($entityid, 'x')>0 && !is_numeric($entityid)) {
+		list($ent,$crmid) = explode('x', $entityid);
 	} else {
 		$crmid = $entityid;
 	}
@@ -835,110 +851,110 @@ function getRelatedAccountContact($entityid,$module='') {
 				if ($module=='Contacts') {
 					$acid = $crmid;
 				} else {
-					$rspot = $adb->pquery('select accountid from vtiger_contactdetails where contactid=?',array($crmid));
-					$acid = $adb->query_result($rspot,0,'accountid');
+					$rspot = $adb->pquery('select accountid from vtiger_contactdetails where contactid=?', array($crmid));
+					$acid = $adb->query_result($rspot, 0, 'accountid');
 				}
 				break;
 			case 'Potentials':
-				$rspot = $adb->pquery("select related_to from vtiger_potential where potentialid=?",array($crmid));
-				$acid = $adb->query_result($rspot,0,'related_to');
+				$rspot = $adb->pquery("select related_to from vtiger_potential where potentialid=?", array($crmid));
+				$acid = $adb->query_result($rspot, 0, 'related_to');
 				break;
 			case 'HelpDesk':
-				$rspot = $adb->pquery("select parent_id from vtiger_troubletickets where ticketid=?",array($crmid));
-				$acid = $adb->query_result($rspot,0,'parent_id');
+				$rspot = $adb->pquery("select parent_id from vtiger_troubletickets where ticketid=?", array($crmid));
+				$acid = $adb->query_result($rspot, 0, 'parent_id');
 				break;
 			case 'Quotes':
-				$rspot = $adb->pquery("select accountid,contactid from vtiger_quotes where quoteid=?",array($crmid));
+				$rspot = $adb->pquery("select accountid,contactid from vtiger_quotes where quoteid=?", array($crmid));
 				if ($module=='Accounts') {
-					$acid = $adb->query_result($rspot,0,'accountid');
+					$acid = $adb->query_result($rspot, 0, 'accountid');
 				} else {
-					$acid = $adb->query_result($rspot,0,'contactid');
+					$acid = $adb->query_result($rspot, 0, 'contactid');
 				}
 				break;
 			case 'SalesOrder':
-				$rspot = $adb->pquery("select accountid,contactid from vtiger_salesorder where salesorderid=?",array($crmid));
+				$rspot = $adb->pquery("select accountid,contactid from vtiger_salesorder where salesorderid=?", array($crmid));
 				if ($module=='Accounts') {
-					$acid = $adb->query_result($rspot,0,'accountid');
+					$acid = $adb->query_result($rspot, 0, 'accountid');
 				} else {
-					$acid = $adb->query_result($rspot,0,'contactid');
+					$acid = $adb->query_result($rspot, 0, 'contactid');
 				}
 				break;
 			case 'PurchaseOrder':
-				$rspot = $adb->pquery("select contactid from vtiger_purchaseorder where purchaseorderid=?",array($crmid));
-				$acid = $adb->query_result($rspot,0,'contactid');
+				$rspot = $adb->pquery("select contactid from vtiger_purchaseorder where purchaseorderid=?", array($crmid));
+				$acid = $adb->query_result($rspot, 0, 'contactid');
 				break;
 			case 'Invoice':
-				$rspot = $adb->pquery("select accountid,contactid from vtiger_invoice where invoiceid=?",array($crmid));
+				$rspot = $adb->pquery("select accountid,contactid from vtiger_invoice where invoiceid=?", array($crmid));
 				if ($module=='Accounts') {
-					$acid = $adb->query_result($rspot,0,'accountid');
+					$acid = $adb->query_result($rspot, 0, 'accountid');
 				} else {
-					$acid = $adb->query_result($rspot,0,'contactid');
+					$acid = $adb->query_result($rspot, 0, 'contactid');
 				}
 				break;
 			case 'InventoryDetails':
-				$rspot = $adb->pquery("select account_id,contact_id from vtiger_inventorydetails where inventorydetailsid=?",array($crmid));
+				$rspot = $adb->pquery("select account_id,contact_id from vtiger_inventorydetails where inventorydetailsid=?", array($crmid));
 				if ($module=='Accounts') {
-					$acid = $adb->query_result($rspot,0,'account_id');
+					$acid = $adb->query_result($rspot, 0, 'account_id');
 				} else {
-					$acid = $adb->query_result($rspot,0,'contact_id');
+					$acid = $adb->query_result($rspot, 0, 'contact_id');
 				}
 				break;
 			case 'ServiceContracts':
-				$rspot = $adb->pquery("select sc_related_to from vtiger_servicecontracts where servicecontractsid=?",array($crmid));
-				$acid = $adb->query_result($rspot,0,'sc_related_to');
+				$rspot = $adb->pquery("select sc_related_to from vtiger_servicecontracts where servicecontractsid=?", array($crmid));
+				$acid = $adb->query_result($rspot, 0, 'sc_related_to');
 				break;
 			case 'Assets':
-				$rspot = $adb->pquery("select account from vtiger_assets where assetsid=?",array($crmid));
-				$acid = $adb->query_result($rspot,0,'account');
+				$rspot = $adb->pquery("select account from vtiger_assets where assetsid=?", array($crmid));
+				$acid = $adb->query_result($rspot, 0, 'account');
 				break;
 			case 'ProjectMilestone':
 				$rspot = $adb->pquery("select linktoaccountscontacts
 				from vtiger_project
 				inner join vtiger_projectmilestone on vtiger_project.projectid = vtiger_projectmilestone.projectid
-				where projectmilestoneid=?",array($crmid));
-				$acid = $adb->query_result($rspot,0,'linktoaccountscontacts');
+				where projectmilestoneid=?", array($crmid));
+				$acid = $adb->query_result($rspot, 0, 'linktoaccountscontacts');
 				break;
 			case 'ProjectTask':
 				$rspot = $adb->pquery("select linktoaccountscontacts
 				from vtiger_project
 				inner join vtiger_projecttask on vtiger_project.projectid = vtiger_projecttask.projectid
-				where projecttaskid=?",array($crmid));
-				$acid = $adb->query_result($rspot,0,'linktoaccountscontacts');
+				where projecttaskid=?", array($crmid));
+				$acid = $adb->query_result($rspot, 0, 'linktoaccountscontacts');
 				break;
 			case 'Project':
-				$rspot = $adb->pquery("select linktoaccountscontacts from vtiger_project where projectid=?",array($crmid));
-				$acid = $adb->query_result($rspot,0,'linktoaccountscontacts');
+				$rspot = $adb->pquery("select linktoaccountscontacts from vtiger_project where projectid=?", array($crmid));
+				$acid = $adb->query_result($rspot, 0, 'linktoaccountscontacts');
 				break;
 			case 'CobroPago':
-				$rspot = $adb->pquery("select parent_id from vtiger_cobropago where cobropagoid=?",array($crmid));
-				$acid = $adb->query_result($rspot,0,'parent_id');
+				$rspot = $adb->pquery("select parent_id from vtiger_cobropago where cobropagoid=?", array($crmid));
+				$acid = $adb->query_result($rspot, 0, 'parent_id');
 				break;
 			case 'Calendar':
 			case 'Events':
 				if ($module=='Accounts') {
-					$rspot = $adb->pquery("select crmid from vtiger_seactivityrel where activityid=?",array($crmid));
-					if ($rspot and $adb->num_rows($rspot)>0) {
-						$acid = $adb->query_result($rspot,0,'crmid');
+					$rspot = $adb->pquery("select crmid from vtiger_seactivityrel where activityid=?", array($crmid));
+					if ($rspot && $adb->num_rows($rspot)>0) {
+						$acid = $adb->query_result($rspot, 0, 'crmid');
 					}
 				} else {
-					$rspot = $adb->pquery("select contactid from vtiger_cntactivityrel where activityid=?",array($crmid));
-					if ($rspot and $adb->num_rows($rspot)>0) {
-						$acid = $adb->query_result($rspot,0,'contactid');
+					$rspot = $adb->pquery("select contactid from vtiger_cntactivityrel where activityid=?", array($crmid));
+					if ($rspot && $adb->num_rows($rspot)>0) {
+						$acid = $adb->query_result($rspot, 0, 'contactid');
 					}
 				}
 				break;
 			default:  // we look for uitype 10
 				$rsfld = $adb->pquery('SELECT fieldname from vtiger_fieldmodulerel
 					INNER JOIN vtiger_field on vtiger_field.fieldid=vtiger_fieldmodulerel.fieldid
-					WHERE module=? and relmodule=?',array($setype,$module));
-				if ($rsfld and $adb->num_rows($rsfld)>0) {
-					$fname = $adb->query_result($rsfld,0,'fieldname');
+					WHERE module=? and relmodule=?', array($setype,$module));
+				if ($rsfld && $adb->num_rows($rsfld)>0) {
+					$fname = $adb->query_result($rsfld, 0, 'fieldname');
 					$queryGenerator = new QueryGenerator($setype, $current_user);
 					$queryGenerator->setFields(array($fname));
-					$queryGenerator->addCondition('id',$crmid,'e');
+					$queryGenerator->addCondition('id', $crmid, 'e');
 					$query = $queryGenerator->getQuery();
-					$rspot = $adb->pquery($query,array());
-					$acid = $adb->query_result($rspot,0,$fname);
+					$rspot = $adb->pquery($query, array());
+					$acid = $adb->query_result($rspot, 0, $fname);
 				}
 		}
 	}
@@ -961,10 +977,11 @@ function getURLstring($focus) {
 	$qry = "";
 	foreach ($focus->column_fields as $fldname => $val) {
 		if (isset($_REQUEST[$fldname]) && $_REQUEST[$fldname] != '') {
-			if ($qry == '')
+			if ($qry == '') {
 				$qry = "&" . $fldname . "=" . vtlib_purify($_REQUEST[$fldname]);
-			else
+			} else {
 				$qry .="&" . $fldname . "=" . vtlib_purify($_REQUEST[$fldname]);
+			}
 		}
 	}
 	if (isset($_REQUEST['current_user_only']) && $_REQUEST['current_user_only'] != '') {
@@ -989,8 +1006,8 @@ function getURLstring($focus) {
  * this due to the fact that this API tries to consider the where given date is in user date
  * format. we need a better gauge for this case.
  * @global Users $current_user
- * @param Date $cur_date_val the date which should a changed to user date format.
- * @return Date
+ * @param string $cur_date_val the date which should a changed to user date format.
+ * @return string display date
  */
 function getValidDisplayDate($cur_date_val) {
 	global $current_user;
@@ -1037,7 +1054,7 @@ function getDisplayCurrency() {
 	global $log;
 	global $adb;
 	$log->debug("Entering getDisplayCurrency() method ...");
-	$curr_array = Array();
+	$curr_array = array();
 	$sql1 = "select id, currency_name, currency_symbol from vtiger_currency_info where currency_status=? and deleted=0";
 	$result = $adb->pquery($sql1, array('Active'));
 	$num_rows = $adb->num_rows($result);
@@ -1104,11 +1121,13 @@ function getCurrencySymbolandCRate($id) {
 
 /** This function returns the default terms and condition from the database.
  * @param string module name
- * @return text
+ * @return string
  */
-function getTermsandConditions($module='') {
+function getTermsandConditions($module = '') {
 	global $log, $adb, $currentModule;
-	if (empty($module)) $module = $currentModule;
+	if (empty($module)) {
+		$module = $currentModule;
+	}
 	$log->debug("Entering getTermsandConditions($module) method ...");
 	if (vtlib_isModuleActive('cbTermConditions')) {
 		$result = $adb->pquery('select tandc
@@ -1116,14 +1135,14 @@ function getTermsandConditions($module='') {
 			inner join vtiger_crmentity on crmid=cbtandcid
 			where deleted=0 and formodule=? and isdefault=?
 			limit 1', array($module,'1'));
-		if ($result and $adb->num_rows($result)>0) {
+		if ($result && $adb->num_rows($result)>0) {
 			$tandc = $adb->query_result($result, 0, 'tandc');
 		} else {
 			$tandc = '';
 		}
 	} else {
 		$result = $adb->pquery('select tandc from vtiger_inventory_tandc limit 1', array());
-		if ($result and $adb->num_rows($result)>0) {
+		if ($result && $adb->num_rows($result)>0) {
 			$tandc = $adb->query_result($result, 0, 'tandc');
 		} else {
 			$tandc = '';
@@ -1140,14 +1159,15 @@ function getTermsandConditions($module='') {
  * param $fldname - field name
  * param $selvalue - selected value
  */
-function getReminderSelectOption($start, $end, $fldname, $selvalue = '', $class='') {
+function getReminderSelectOption($start, $end, $fldname, $selvalue = '', $class = '') {
 	global $log, $mod_strings, $app_strings;
 	$log->debug("Entering getReminderSelectOption($start,$end,$fldname,$selvalue) method ...");
 	$def_sel = '';
 	$OPTION_FLD = '<SELECT name=' . $fldname . (!empty($class)?" class='$class' ":'') . '>';
 	for ($i = $start; $i <= $end; $i++) {
-		if ($i == $selvalue)
+		if ($i == $selvalue) {
 			$def_sel = 'SELECTED';
+		}
 		$OPTION_FLD .= '<OPTION VALUE=' . $i . ' ' . $def_sel . '>' . $i . "</OPTION>\n";
 		$def_sel = '';
 	}
@@ -1229,26 +1249,26 @@ function make_clickable($text) {
  */
 function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = '') {
 	global $log, $adb, $current_user, $mod_strings;
-	$log->debug("Entering getBlocks(" . $module . "," . $disp_view . "," . $mode . "," . print_r($col_fields,true) . "," . $info_type . ") method ...");
+	$log->debug("Entering getBlocks(" . $module . "," . $disp_view . "," . $mode . "," . print_r($col_fields, true) . "," . $info_type . ") method ...");
 	$tabid = getTabid($module);
-	$block_detail = Array();
-	$getBlockinfo = "";
+	$block_detail = array();
+	$getBlockinfo = '';
 	$query = "select blockid,blocklabel,display_status,isrelatedlist from vtiger_blocks where tabid=? and $disp_view=0 and visible = 0 order by sequence";
 	$result = $adb->pquery($query, array($tabid));
 	$noofrows = $adb->num_rows($result);
 	$prev_header = "";
 	$blockid_list = array();
 	for ($i = 0; $i < $noofrows; $i++) {
-		$blockid = $adb->query_result($result, $i, "blockid");
+		$blockid = $adb->query_result($result, $i, 'blockid');
 		$blockid_list[] = $blockid;
-		$block_label[$blockid] = $adb->query_result($result, $i, "blocklabel");
-		$isrelatedlist = $adb->query_result($result, $i, "isrelatedlist");
-		if(!is_null($isrelatedlist) && $isrelatedlist != 0){
+		$block_label[$blockid] = $adb->query_result($result, $i, 'blocklabel');
+		$isrelatedlist = $adb->query_result($result, $i, 'isrelatedlist');
+		if (!is_null($isrelatedlist) && $isrelatedlist != 0) {
 			$sLabelVal = $block_label[$blockid];
-		}else{
+		} else {
 			$sLabelVal = getTranslatedString($block_label[$blockid], $module);
 		}
-		$aBlockStatus[$sLabelVal] = $adb->query_result($result, $i, "display_status");
+		$aBlockStatus[$sLabelVal] = $adb->query_result($result, $i, 'display_status');
 	}
 	if ($mode == 'edit') {
 		$display_type_check = 'vtiger_field.displaytype = 1';
@@ -1309,8 +1329,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 		coreBOS_Session::delete('rlvs');
 
 		$getBlockInfo = getDetailBlockInformation($module, $result, $col_fields, $tabid, $block_label);
-	}
-	else {
+	} else {
 		if ($info_type != '') {
 			if ($is_admin == true || $profileGlobalPermission[2] == 0 || $module == 'Users' || $module == "Emails") {
 				$sql = "SELECT $selectSql, vtiger_field.readonly
@@ -1329,8 +1348,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 						generateQuestionMarks($profileList) . ') and vtiger_field.presence in (0,2) ORDER BY block,sequence';
 				$params = array($tabid, $blockid_list, $info_type, $profileList);
 			}
-		}
-		else {
+		} else {
 			if ($is_admin == true || $profileGlobalPermission[2] == 0 || $module == 'Users' || $module == "Emails") {
 				$sql = "SELECT $selectSql, vtiger_field.readonly
 					FROM vtiger_field
@@ -1373,7 +1391,7 @@ function getCustomBlocks($module, $disp_view) {
 	global $log, $adb, $current_user, $mod_strings;
 	$log->debug("Entering getCustomBlocks(" . $module . "," . $disp_view . ") method ...");
 	$tabid = getTabid($module);
-	$block_detail = Array();
+	$block_detail = array();
 	$getBlockinfo = "";
 	$query = "select blockid,blocklabel,isrelatedlist from vtiger_blocks where tabid=? and $disp_view=0 and visible = 0 order by sequence";
 	$result = $adb->pquery($query, array($tabid));
@@ -1404,37 +1422,29 @@ function getCustomBlocks($module, $disp_view) {
 
 /**
  * This function is used to get the display type.
- * Takes the input parameter as $mode - edit  (mostly)
+ * Takes the input parameter as $mode
  * This returns string type value
  */
 function getView($mode) {
 	global $log;
-	$log->debug("Entering getView(" . $mode . ") method ...");
-	if ($mode == "edit")
-		$disp_view = "edit_view";
-	else
-		$disp_view = "create_view";
-	$log->debug("Exiting getView method ...");
-	return $disp_view;
+	$log->debug('Entering/Exiting getView(' . $mode . ') function ...');
+	return ($mode == 'edit' ? 'edit_view' : 'create_view');
 }
 
 /**
- * This function is used to get the blockid of the customblock for a given module.
- * Takes the input parameter as $tabid - module tabid and $label - custom label
- * This returns string type value
+ * This function is used to get the blockid of the block for a given module.
+ * Takes the input parameter as $tabid - module tabid and $label - block label
+ * This returns integer type value
  */
 function getBlockId($tabid, $label) {
-	global $log;
-	$log->debug("Entering getBlockId(" . $tabid . "," . $label . ") method ...");
-	global $adb;
+	global $log, $adb;
+	$log->debug('Entering getBlockId(' . $tabid . ',' . $label . ') method ...');
 	$blockid = '';
-	$query = "select blockid from vtiger_blocks where tabid=? and blocklabel = ?";
-	$result = $adb->pquery($query, array($tabid, $label));
-	$noofrows = $adb->num_rows($result);
-	if ($noofrows == 1) {
-		$blockid = $adb->query_result($result, 0, "blockid");
+	$result = $adb->pquery('select blockid from vtiger_blocks where tabid=? and blocklabel = ?', array($tabid, $label));
+	if ($adb->num_rows($result) == 1) {
+		$blockid = $adb->query_result($result, 0, 'blockid');
 	}
-	$log->debug("Exiting getBlockId method ...");
+	$log->debug('Exiting getBlockId method ...');
 	return $blockid;
 }
 
@@ -1502,12 +1512,13 @@ function updateInfo($id) {
 	$time_modified = strtotime($modifiedtime);
 	$time_now = strtotime($current_time);
 	$days_diff = (int) (($time_now - $time_modified) / (60 * 60 * 24));
-	if ($days_diff == 0)
+	if ($days_diff == 0) {
 		$update_info = $app_strings['LBL_UPDATED_TODAY'] . " (" . $date . ")" . ' ' . $modifiedby;
-	elseif ($days_diff == 1)
+	} elseif ($days_diff == 1) {
 		$update_info = $app_strings['LBL_UPDATED'] . " " . $days_diff . " " . $app_strings['LBL_DAY_AGO'] . " (" . $date . ")" . ' ' . $modifiedby;
-	else
+	} else {
 		$update_info = $app_strings['LBL_UPDATED'] . " " . $days_diff . " " . $app_strings['LBL_DAYS_AGO'] . " (" . $date . ")" . ' ' . $modifiedby;
+	}
 	$log->debug("Exiting updateInfo method ...");
 	return $update_info;
 }
@@ -1526,7 +1537,9 @@ function getProductImages($id) {
 
 	if ($imagename != '') {
 		$script = implode(',', array_map(
-			function ($val) { return "\"$val\""; },
+			function ($val) {
+				return "\"$val\"";
+			},
 			explode('###', $imagename)
 		));
 		$log->debug('Exiting getProductImages method ...');
@@ -1558,7 +1571,6 @@ function SaveImage($files, $module, $id, $mode) {
 	$image_error = "false";
 	$saveimage = "true";
 	if ($file_name != "") {
-
 		$log->debug("Contact Image is given for uploading");
 		$image_name_val = file_exist_fn($file_name, 0);
 
@@ -1586,11 +1598,11 @@ function SaveImage($files, $module, $id, $mode) {
 				$errorcode = "no-image";
 				$saveimage = "false";
 				$image_error = "true";
-			} else if ($errorCode == 2) {
+			} elseif ($errorCode == 2) {
 				$errormessage = 2;
 				$saveimage = "false";
 				$image_error = "true";
-			} else if ($errorCode == 3) {
+			} elseif ($errorCode == 3) {
 				$errormessage = 3;
 				$saveimage = "false";
 				$image_error = "true";
@@ -1616,13 +1628,13 @@ function SaveImage($files, $module, $id, $mode) {
 	} else { //if image is not given
 		$log->debug("Contact Image is not given for uploading.");
 		if ($mode == "edit" && $image_error == "false") {
-			if ($module = 'contact')
+			if ($module = 'contact') {
 				$image_name_val = getContactImageName($id);
-			elseif ($module = 'user')
+			} elseif ($module = 'user') {
 				$image_name_val = getUserImageName($id);
+			}
 			$saveimage = "true";
-		}
-		else {
+		} else {
 			$image_name_val = "";
 		}
 	}
@@ -1702,18 +1714,18 @@ function mkdirs($dir, $mode = 0777, $recursive = true) {
 	$log->debug("Entering mkdirs(" . $dir . "," . $mode . "," . $recursive . ") method ...");
 	if (is_null($dir) || $dir === "") {
 		$log->debug("Exiting mkdirs method ...");
-		return FALSE;
+		return false;
 	}
 	if (is_dir($dir) || $dir === "/") {
 		$log->debug("Exiting mkdirs method ...");
-		return TRUE;
+		return true;
 	}
 	if (mkdirs(dirname($dir), $mode, $recursive)) {
 		$log->debug("Exiting mkdirs method ...");
 		return mkdir($dir, $mode);
 	}
 	$log->debug("Exiting mkdirs method ...");
-	return FALSE;
+	return false;
 }
 
 /**
@@ -1732,10 +1744,11 @@ function setObjectValuesFromRequest($focus) {
 	}
 	foreach ($focus->column_fields as $fieldname => $val) {
 		if (isset($_REQUEST[$fieldname])) {
-			if (is_array($_REQUEST[$fieldname]))
+			if (is_array($_REQUEST[$fieldname])) {
 				$value = $_REQUEST[$fieldname];
-			else
+			} else {
 				$value = trim($_REQUEST[$fieldname]);
+			}
 			$focus->column_fields[$fieldname] = $value;
 		} elseif (isset($_REQUEST[$fieldname.'_hidden'])) {
 			$value = trim($_REQUEST[$fieldname.'_hidden']);
@@ -1754,11 +1767,13 @@ function setObjectValuesFromRequest($focus) {
 			$cbfrom = CRMEntity::getInstance($cbfrommodule);
 			$cbfrom->retrieve_entity_info($cbfromid, $cbfrommodule);
 			$cbMapidFromid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
-			if ($cbMapidFromid) $cbMapid = $cbMapidFromid;
+			if ($cbMapidFromid) {
+				$cbMapid = $cbMapidFromid;
+			}
 		}
 		if ($cbMapid) {
 			$cbMap = cbMap::getMapByID($cbMapid);
-			$focus->column_fields = $cbMap->Mapping($cbfrom->column_fields,$focus->column_fields);
+			$focus->column_fields = $cbMap->Mapping($cbfrom->column_fields, $focus->column_fields);
 		}
 	}
 	$focus = cbEventHandler::do_filter('corebos.filter.editview.setObjectValues', $focus);
@@ -1782,9 +1797,9 @@ function create_tab_data_file() {
 
 	$result = $adb->pquery($sql, array());
 	$num_rows = $adb->num_rows($result);
-	$result_array = Array();
-	$seq_array = Array();
-	$ownedby_array = Array();
+	$result_array = array();
+	$seq_array = array();
+	$ownedby_array = array();
 
 	for ($i = 0; $i < $num_rows; $i++) {
 		$tabid = $adb->query_result($result, $i, 'tabid');
@@ -1797,7 +1812,7 @@ function create_tab_data_file() {
 	}
 
 	//Constructing the actionname=>actionid array
-	$actionid_array = Array();
+	$actionid_array = array();
 	$sql1 = "select * from vtiger_actionmapping";
 	$result1 = $adb->pquery($sql1, array());
 	$num_seq1 = $adb->num_rows($result1);
@@ -1808,7 +1823,7 @@ function create_tab_data_file() {
 	}
 
 	//Constructing the actionid=>actionname array with securitycheck=0
-	$actionname_array = Array();
+	$actionname_array = array();
 	$sql2 = "select * from vtiger_actionmapping where securitycheck=0";
 	$result2 = $adb->pquery($sql2, array());
 	$num_seq2 = $adb->num_rows($result2);
@@ -1825,9 +1840,7 @@ function create_tab_data_file() {
 	}
 
 	if (file_exists($filename)) {
-
 		if (is_writable($filename)) {
-
 			if (!$handle = fopen($filename, 'w+')) {
 				echo "Cannot open file ($filename)";
 				exit;
@@ -1883,7 +1896,7 @@ function getQuickCreateModules() {
 
 	$result = $adb->pquery($qc_query, array());
 	$noofrows = $adb->num_rows($result);
-	$return_qcmodule = Array();
+	$return_qcmodule = array();
 	for ($i = 0; $i < $noofrows; $i++) {
 		$tablabel = $adb->query_result($result, $i, 'tablabel');
 
@@ -1952,15 +1965,16 @@ function QuickCreate($module) {
 		$fieldName_array[$fieldname] = $fldLabel_array;
 
 		// These fields should not be shown in the UI as they are already shown as part of other fields, but are required for validation.
-		if (($fieldname == 'time_start' || $fieldname == 'time_end') && $module!='Timecontrol')
+		if (($fieldname == 'time_start' || $fieldname == 'time_end') && $module!='Timecontrol') {
 			continue;
+		}
 
 		$custfld = getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields, $generatedtype, $module, '', $typeofdata);
 		$qcreate_arr[] = $custfld;
 	}
 	for ($i = 0, $j = 0, $iMax = count($qcreate_arr); $i < $iMax; $j++) {
 		$key1 = $qcreate_arr[$i];
-		if (isset($qcreate_arr[$i + 1]) and is_array($qcreate_arr[$i + 1]) && ($key1[0][0]!=19 && $key1[0][0]!=20)) {
+		if (isset($qcreate_arr[$i + 1]) && is_array($qcreate_arr[$i + 1]) && ($key1[0][0]!=19 && $key1[0][0]!=20)) {
 			$key2 = $qcreate_arr[$i + 1];
 		} else {
 			$key2 = array();
@@ -1985,10 +1999,10 @@ function getUserslist($setdefval = true, $selecteduser = '') {
 	require('user_privileges/user_privileges_' . $current_user->id . '.php');
 	require('user_privileges/sharing_privileges_' . $current_user->id . '.php');
 	$tabid = getTabid($module);
-	if ($is_admin == false && $profileGlobalPermission[2] == 1 && (is_null($tabid) or $defaultOrgSharingPermission[$tabid] == 3 or $defaultOrgSharingPermission[$tabid] == 0)) {
-		$user_array = get_user_array(FALSE, "Active", $current_user->id, 'private');
+	if ($is_admin==false && $profileGlobalPermission[2]==1 && (is_null($tabid) || $defaultOrgSharingPermission[$tabid]==3 || $defaultOrgSharingPermission[$tabid]==0)) {
+		$user_array = get_user_array(false, "Active", $current_user->id, 'private');
 	} else {
-		$user_array = get_user_array(FALSE, "Active", $current_user->id);
+		$user_array = get_user_array(false, "Active", $current_user->id);
 	}
 	$users_combo = get_select_options_array($user_array, $current_user->id);
 	$change_owner = '';
@@ -2014,19 +2028,21 @@ function getGroupslist() {
 	require('user_privileges/sharing_privileges_' . $current_user->id . '.php');
 
 	//Commented to avoid security check for groups
-	if ($is_admin == false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid($module)] == 3 or $defaultOrgSharingPermission[getTabid($module)] == 0)) {
+	$tabid = getTabid($module);
+	if ($is_admin==false && $profileGlobalPermission[2]==1 && ($defaultOrgSharingPermission[$tabid]==3 || $defaultOrgSharingPermission[$tabid]==0)) {
 		$result = get_current_user_access_groups($module);
 	} else {
 		$result = get_group_options();
 	}
 	$groups_combo = array();
-	if ($result)
+	if ($result) {
 		$nameArray = $adb->fetch_array($result);
+	}
 	if (!empty($nameArray)) {
-		if ($is_admin == false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid($module)] == 3 or $defaultOrgSharingPermission[getTabid($module)] == 0)) {
-			$group_array = get_group_array(FALSE, "Active", $current_user->id, 'private');
+		if ($is_admin == false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[$tabid] == 3 || $defaultOrgSharingPermission[$tabid] == 0)) {
+			$group_array = get_group_array(false, "Active", $current_user->id, 'private');
 		} else {
-			$group_array = get_group_array(FALSE, "Active", $current_user->id);
+			$group_array = get_group_array(false, "Active", $current_user->id);
 		}
 		$groups_combo = get_select_options_array($group_array, $current_user->id);
 	}
@@ -2121,7 +2137,9 @@ function decideFilePath() {
 	$log->debug("Entering into decideFilePath() method ...");
 
 	$filepath = GlobalVariable::getVariable('Application_Storage_Directory', 'storage/');
-	if (substr($filepath, -1)!='/') $filepath.='/';
+	if (substr($filepath, -1)!='/') {
+		$filepath.='/';
+	}
 
 	$saveStrategy = GlobalVariable::getVariable('Application_Storage_SaveStrategy', 'dates');
 	switch (strtolower($saveStrategy)) {
@@ -2142,44 +2160,43 @@ function decideFilePath() {
 			break;
 		case 'dates':
 		default:
-	$year = date('Y');
-	$month = date('F');
-	$day = date('j');
-	$week = '';
+			$year = date('Y');
+			$month = date('F');
+			$day = date('j');
+			$week = '';
 
-	if (!is_dir($filepath . $year)) {
-		//create new folder
-		@mkdir($filepath . $year);
+			if (!is_dir($filepath . $year)) {
+				//create new folder
+				@mkdir($filepath . $year);
+			}
+
+			if (!is_dir($filepath . $year . "/" . $month)) {
+				//create new folder
+				@mkdir($filepath . "$year/$month");
+			}
+
+			if ($day > 0 && $day <= 7) {
+				$week = 'week1';
+			} elseif ($day > 7 && $day <= 14) {
+				$week = 'week2';
+			} elseif ($day > 14 && $day <= 21) {
+				$week = 'week3';
+			} elseif ($day > 21 && $day <= 28) {
+				$week = 'week4';
+			} else {
+				$week = 'week5';
+			}
+			$ymw = "$year/$month/$week";
+			if (!is_dir($filepath . $ymw)) {
+				//create new folder
+				@mkdir($filepath . $ymw);
+			}
+
+			$filepath = $filepath . $ymw . '/';
+			$log->debug("Year=$year & Month=$month & week=$week && filepath=\"$filepath\"");
+			break;
 	}
-
-	if (!is_dir($filepath . $year . "/" . $month)) {
-		//create new folder
-		@mkdir($filepath . "$year/$month");
-	}
-
-	if ($day > 0 && $day <= 7)
-		$week = 'week1';
-	elseif ($day > 7 && $day <= 14)
-		$week = 'week2';
-	elseif ($day > 14 && $day <= 21)
-		$week = 'week3';
-	elseif ($day > 21 && $day <= 28)
-		$week = 'week4';
-	else
-		$week = 'week5';
-
-	if (!is_dir($filepath . $year . "/" . $month . "/" . $week)) {
-		//create new folder
-		@mkdir($filepath . "$year/$month/$week");
-	}
-
-	$filepath = $filepath . $year . "/" . $month . "/" . $week . "/";
-	$log->debug("Year=$year & Month=$month & week=$week && filepath=\"$filepath\"");
-		break;
-	}
-
 	$log->debug("Exiting from decideFilePath() method ...");
-
 	return $filepath;
 }
 
@@ -2190,16 +2207,17 @@ function decideFilePath() {
  */
 function validateImageFile($file_details) {
 	global $adb, $log, $app_strings;
-	$fparams = print_r($file_details,true);
+	$fparams = print_r($file_details, true);
 	$log->debug("Entering into validateImageFile($fparams) method.");
 
 	$savefile = 'true';
 	$file_type_details = explode("/", $file_details['type']);
 	$filetype = $file_type_details['1'];
 
-	if (!empty($filetype))
+	if (!empty($filetype)) {
 		$filetype = strtolower($filetype);
-	if (($filetype == "jpeg" ) || ($filetype == "png") || ($filetype == "jpg" ) || ($filetype == "pjpeg" ) || ($filetype == "x-png") || ($filetype == "gif") || ($filetype == 'bmp')) {
+	}
+	if ($filetype == "jpeg" || $filetype == "png" || $filetype == "jpg" || $filetype == "pjpeg" || $filetype == "x-png" || $filetype == "gif" || $filetype == 'bmp') {
 		$saveimage = 'true';
 	} else {
 		$saveimage = 'false';
@@ -2220,9 +2238,9 @@ function validateImageFile($file_details) {
 function getTemplateDetails($templateid) {
 	global $adb, $log;
 	$log->debug("Entering into getTemplateDetails($templateid) method ...");
-	$returndata = Array();
+	$returndata = array();
 	$result = $adb->pquery('select * from vtiger_emailtemplates where templateid=? or templatename=?', array($templateid,$templateid));
-	if ($result and $adb->num_rows($result)>0) {
+	if ($result && $adb->num_rows($result)>0) {
 		$returndata[] = $templateid;
 		$returndata[] = $adb->query_result($result, 0, 'body');
 		$returndata[] = $adb->query_result($result, 0, 'subject');
@@ -2246,19 +2264,21 @@ function getMergedDescription($description, $id, $parent_type) {
 	if (empty($parent_type)) {
 		$parent_type = getSalesEntityType($id);
 	}
-	if (empty($parent_type) or empty($id)) {
-		$log->debug("Exiting from getMergedDescription due to no record information ...");
+	if (empty($parent_type) || empty($id)) {
+		$log->debug('Exiting from getMergedDescription due to no record information ...');
 		return $description;
 	}
-	if($parent_type != 'Users'){
+	if ($parent_type != 'Users') {
 		$emailTemplate = new EmailTemplate($parent_type, $description, $id, $current_user);
 		$description = $emailTemplate->getProcessedDescription();
 	}
 	$templateVariablePair = explode('$', $description);
 	$token_data_pair = explode('$', $description);
-	$fields = Array();
+	$fields = array();
 	for ($i = 1, $iMax = count($token_data_pair); $i < $iMax; $i+=2) {
-		if (strpos($token_data_pair[$i], '-') === false) continue;
+		if (strpos($token_data_pair[$i], '-') === false) {
+			continue;
+		}
 		$module = explode('-', $token_data_pair[$i]);
 		$fields[$module[0]][] = $module[1];
 	}
@@ -2267,13 +2287,12 @@ function getMergedDescription($description, $id, $parent_type) {
 		$description = getMergedDescriptionCustomVars($fields, $description);
 	}
 	if ($parent_type == 'Users' && isset($fields['users']) && is_array($fields['users'])) {
-		$columnfields = implode(',',$fields["users"]);
+		$columnfields = implode(',', $fields['users']);
 		$query = "select $columnfields from vtiger_users where id=?";
 		$result = $adb->pquery($query, array($id));
-		foreach($fields["users"] as $columnname)
-		{
+		foreach ($fields['users'] as $columnname) {
 			$token_data = '$users-'.$columnname.'$';
-			$description = str_replace($token_data,$adb->query_result($result,0,$columnname),$description);
+			$description = str_replace($token_data, $adb->query_result($result, 0, $columnname), $description);
 		}
 	}
 	$log->debug("Exiting from getMergedDescription ...");
@@ -2289,7 +2308,7 @@ function getMergedDescriptionCustomVars($fields, $description) {
 		$token_value = '';
 		switch ($columnname) {
 			case 'currentdate':
-				$dtformat = GlobalVariable::getVariable('EMail_CustomCurrentDate_Format','');
+				$dtformat = GlobalVariable::getVariable('EMail_CustomCurrentDate_Format', '');
 				if ($dtformat=='') {
 					$mes = date('m')-1;
 					$mesi18n = $lang['MONTH_STRINGS'][$mes];
@@ -2298,7 +2317,8 @@ function getMergedDescriptionCustomVars($fields, $description) {
 					$token_value = date($dtformat);
 				}
 				break;
-			case 'currenttime': $token_value = date("G:i:s T");
+			case 'currenttime':
+				$token_value = date('G:i:s T');
 				break;
 		}
 		$description = str_replace($token_data, $token_value, $description);
@@ -2330,7 +2350,7 @@ function getSingleFieldValue($tablename, $fieldname, $idname, $id) {
  */
 function get_announcements() {
 	global $default_charset, $currentModule;
-	$announcement = GlobalVariable::getVariable('Application_Announcement','',$currentModule);
+	$announcement = GlobalVariable::getVariable('Application_Announcement', '', $currentModule);
 	if ($announcement != '') {
 		$announcement = html_entity_decode($announcement, ENT_QUOTES, $default_charset);
 		$announcement = vtlib_purify($announcement);
@@ -2367,52 +2387,59 @@ function getrecurringObjValue() {
 
 		$recurring_data['type'] = $_REQUEST['recurringtype'];
 		if ($_REQUEST['recurringtype'] == 'Weekly') {
-			if (isset($_REQUEST['sun_flag']) && $_REQUEST['sun_flag'] != null)
+			if (isset($_REQUEST['sun_flag']) && $_REQUEST['sun_flag'] != null) {
 				$recurring_data['sun_flag'] = true;
-			if (isset($_REQUEST['mon_flag']) && $_REQUEST['mon_flag'] != null)
-				$recurring_data['mon_flag'] = true;
-			if (isset($_REQUEST['tue_flag']) && $_REQUEST['tue_flag'] != null)
-				$recurring_data['tue_flag'] = true;
-			if (isset($_REQUEST['wed_flag']) && $_REQUEST['wed_flag'] != null)
-				$recurring_data['wed_flag'] = true;
-			if (isset($_REQUEST['thu_flag']) && $_REQUEST['thu_flag'] != null)
-				$recurring_data['thu_flag'] = true;
-			if (isset($_REQUEST['fri_flag']) && $_REQUEST['fri_flag'] != null)
-				$recurring_data['fri_flag'] = true;
-			if (isset($_REQUEST['sat_flag']) && $_REQUEST['sat_flag'] != null)
-				$recurring_data['sat_flag'] = true;
-		}
-		elseif ($_REQUEST['recurringtype'] == 'Monthly') {
-			if (isset($_REQUEST['repeatMonth']) && $_REQUEST['repeatMonth'] != null)
-				$recurring_data['repeatmonth_type'] = $_REQUEST['repeatMonth'];
-			if ($recurring_data['repeatmonth_type'] == 'date') {
-				if (isset($_REQUEST['repeatMonth_date']) && $_REQUEST['repeatMonth_date'] != null)
-					$recurring_data['repeatmonth_date'] = $_REQUEST['repeatMonth_date'];
-				else
-					$recurring_data['repeatmonth_date'] = 1;
 			}
-			elseif ($recurring_data['repeatmonth_type'] == 'day') {
+			if (isset($_REQUEST['mon_flag']) && $_REQUEST['mon_flag'] != null) {
+				$recurring_data['mon_flag'] = true;
+			}
+			if (isset($_REQUEST['tue_flag']) && $_REQUEST['tue_flag'] != null) {
+				$recurring_data['tue_flag'] = true;
+			}
+			if (isset($_REQUEST['wed_flag']) && $_REQUEST['wed_flag'] != null) {
+				$recurring_data['wed_flag'] = true;
+			}
+			if (isset($_REQUEST['thu_flag']) && $_REQUEST['thu_flag'] != null) {
+				$recurring_data['thu_flag'] = true;
+			}
+			if (isset($_REQUEST['fri_flag']) && $_REQUEST['fri_flag'] != null) {
+				$recurring_data['fri_flag'] = true;
+			}
+			if (isset($_REQUEST['sat_flag']) && $_REQUEST['sat_flag'] != null) {
+				$recurring_data['sat_flag'] = true;
+			}
+		} elseif ($_REQUEST['recurringtype'] == 'Monthly') {
+			if (isset($_REQUEST['repeatMonth']) && $_REQUEST['repeatMonth'] != null) {
+				$recurring_data['repeatmonth_type'] = $_REQUEST['repeatMonth'];
+			}
+			if ($recurring_data['repeatmonth_type'] == 'date') {
+				if (isset($_REQUEST['repeatMonth_date']) && $_REQUEST['repeatMonth_date'] != null) {
+					$recurring_data['repeatmonth_date'] = $_REQUEST['repeatMonth_date'];
+				} else {
+					$recurring_data['repeatmonth_date'] = 1;
+				}
+			} elseif ($recurring_data['repeatmonth_type'] == 'day') {
 				$recurring_data['repeatmonth_daytype'] = $_REQUEST['repeatMonth_daytype'];
 				switch ($_REQUEST['repeatMonth_day']) {
-					case 0 :
+					case 0:
 						$recurring_data['sun_flag'] = true;
 						break;
-					case 1 :
+					case 1:
 						$recurring_data['mon_flag'] = true;
 						break;
-					case 2 :
+					case 2:
 						$recurring_data['tue_flag'] = true;
 						break;
-					case 3 :
+					case 3:
 						$recurring_data['wed_flag'] = true;
 						break;
-					case 4 :
+					case 4:
 						$recurring_data['thu_flag'] = true;
 						break;
-					case 5 :
+					case 5:
 						$recurring_data['fri_flag'] = true;
 						break;
-					case 6 :
+					case 6:
 						$recurring_data['sat_flag'] = true;
 						break;
 				}
@@ -2510,8 +2537,9 @@ function getTicketComments($ticketid) {
 			$commentlist .= '<br><br>' . $comment;
 		}
 	}
-	if ($commentlist != '')
+	if ($commentlist != '') {
 		$commentlist = '<br><br>' . getTranslatedString("The comments are", $moduleName) . ' : ' . $commentlist;
+	}
 
 	$log->debug("Exiting getTicketComments method ...");
 	return $commentlist;
@@ -2566,17 +2594,15 @@ function getUItypeByFieldName($module, $fieldname) {
  * returns the uitype, integer type
  */
 function getUItype($module, $columnname) {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getUItype(" . $module . ") method ...");
 	$tabIdList = array();
 	//To find tabid for this module
 	$tabIdList[] = getTabid($module);
-	global $adb;
 	if ($module == 'Calendar') {
 		$tabIdList[] = getTabid('Events');
 	}
-	$sql = "select uitype from vtiger_field where tabid IN (" . generateQuestionMarks($tabIdList) .
-			") and columnname=?";
+	$sql = 'select uitype from vtiger_field where tabid IN (' . generateQuestionMarks($tabIdList) . ') and columnname=?';
 	$result = $adb->pquery($sql, array($tabIdList, $columnname));
 	$uitype = $adb->query_result($result, 0, "uitype");
 	$log->debug("Exiting getUItype method ...");
@@ -2674,7 +2700,7 @@ function SaveTagCloudView($id = "") {
 		$adb->pquery($query, array($tag_cloud_view, $id));
 	}
 
-	if (!empty($id) and !empty($_REQUEST['showtagas'])) {
+	if (!empty($id) && !empty($_REQUEST['showtagas'])) {
 		$tag_cloud_showas = vtlib_purify($_REQUEST['showtagas']);
 		$query = 'update vtiger_users set showtagas = ? where id=?';
 		$adb->pquery($query, array($tag_cloud_showas, $id));
@@ -2695,7 +2721,7 @@ function getTagCloudShowAs($id) {
 		$query = 'select showtagas from vtiger_users where id=?';
 		$rsusr = $adb->pquery($query, array($id));
 		if ($rsusr) {
-			$tag_cloud_status = $adb->query_result($rsusr,0,0);
+			$tag_cloud_status = $adb->query_result($rsusr, 0, 0);
 		} else {
 			$tag_cloud_status = 'hring';
 		}
@@ -2731,7 +2757,7 @@ function ChangeTypeOfData_Filter($table_name, $column_name, $type_of_data) {
 	$field = $table_name . ":" . $column_name;
 	//Add the field details in this array if you want to change the advance filter field details
 
-	$new_field_details = Array(
+	$new_field_details = array(
 		//Contacts Related Fields
 		"vtiger_contactdetails:accountid" => "V",
 		"vtiger_contactsubdetails:birthday" => "D",
@@ -2827,7 +2853,9 @@ function ChangeTypeOfData_Filter($table_name, $column_name, $type_of_data) {
  */
 function getBasic_Advance_SearchURL() {
 	$url = '';
-	if (!isset($_REQUEST['searchtype'])) return $url;
+	if (!isset($_REQUEST['searchtype'])) {
+		return $url;
+	}
 	$url .= (isset($_REQUEST['query'])) ? '&query=' . urlencode(vtlib_purify($_REQUEST['query'])) : '';
 	$url .= (isset($_REQUEST['searchtype'])) ? '&searchtype=' . urlencode(vtlib_purify($_REQUEST['searchtype'])) : '';
 	if ($_REQUEST['searchtype'] == 'BasicSearch') {
@@ -2913,7 +2941,7 @@ function getPickListValues($tablename, $roleid) {
 		inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$tablename.picklist_valueid
 		where roleid=? and picklistid in (select picklistid from vtiger_picklist) order by sortid";
 	$result = $adb->pquery($query, array($roleid));
-	$fldVal = Array();
+	$fldVal = array();
 	while ($row = $adb->fetch_array($result)) {
 		$fldVal [] = $row[$tablename];
 	}
@@ -2999,8 +3027,7 @@ function checkFileAccess($filepath) {
 }
 
 /**
- * function to return whether the file access is made within vtiger root directory
- * and it exists.
+ * function to return whether the file access is made within vtiger root directory and it exists.
  * @global String $root_directory vtiger root directory as given in config.inc.php file.
  * @param String $filepath relative path to the file which need to be verified
  * @return Boolean true if file is a valid file within vtiger root directory, false otherwise.
@@ -3026,7 +3053,7 @@ function getOwnerName($id) {
 	global $log;
 	$log->debug("Entering getOwnerName( $id ) method ...");
 	$oname = $id;
-	if (is_numeric($id) and $id>0) {
+	if (is_numeric($id) && $id>0) {
 		$ownerList = getOwnerNameList(array($id));
 		if (isset($ownerList[$id])) {
 			$oname = $ownerList[$id];
@@ -3166,7 +3193,7 @@ function getEntityFieldValues($entity_field_info, $ids_list) {
 	}
 	$query1 = "SELECT $fieldsNameString,$entityIdField FROM $tableName WHERE " .
 				"$entityIdField IN (" . generateQuestionMarks($ids_list) . ")";
-	if(is_array($ids_list)) {
+	if (is_array($ids_list)) {
 		$params1 = $ids_list;
 	} else {
 		$params1 = array($ids_list);
@@ -3175,8 +3202,8 @@ function getEntityFieldValues($entity_field_info, $ids_list) {
 	$numrows = $adb->num_rows($result);
 	$entity_info = array();
 	for ($i = 0; $i < $numrows; $i++) {
-		if(is_array($fieldsName)) {
-			for($j = 0, $jMax = count($fieldsName); $j < $jMax; $j++) {
+		if (is_array($fieldsName)) {
+			for ($j = 0, $jMax = count($fieldsName); $j < $jMax; $j++) {
 				$entity_id = $adb->query_result($result, $i, $entityIdField);
 				$entity_info[$i][$entity_id][$fieldsName[$j]] = $adb->query_result($result, $i, $fieldsName[$j]);
 			}
@@ -3190,23 +3217,23 @@ function getEntityFieldValues($entity_field_info, $ids_list) {
 
 /**
  * this function returns the entity field name for a given module; for e.g. for Contacts module it return concat(lastname, ' ', firstname)
- * @param1 $module - name of the module
- * @param2 $fieldsName - fieldname with respect to module (ex : 'Accounts' - 'accountname', 'Contacts' - 'lastname','firstname')
- * @param3 $fieldValues - array of fieldname and its value
+ * @param string $module - name of the module
+ * @param array $fieldsName - fieldname with respect to module (ex : 'Accounts' - 'accountname', 'Contacts' - 'lastname','firstname')
+ * @param array $fieldValues - array of fieldname and its value
  * @return string $fieldConcatName - the entity field name for the module
  */
 function getEntityFieldNameDisplay($module, $fieldsName, $fieldValues) {
 	global $current_user;
-	if(!is_array($fieldsName)) {
+	if (!is_array($fieldsName)) {
 		return $fieldValues[$fieldsName];
 	} else {
 		$accessibleFieldNames = array();
-		foreach($fieldsName as $field) {
-			if($module == 'Users' || getColumnVisibilityPermission($current_user->id, $field, $module) == '0') {
+		foreach ($fieldsName as $field) {
+			if ($module == 'Users' || getColumnVisibilityPermission($current_user->id, $field, $module) == '0') {
 				$accessibleFieldNames[] = $fieldValues[$field];
 			}
 		}
-		if(count($accessibleFieldNames) > 0) {
+		if (count($accessibleFieldNames) > 0) {
 			return implode(' ', $accessibleFieldNames);
 		}
 	}
@@ -3218,7 +3245,7 @@ function vt_suppressHTMLTags($string) {
 }
 
 function vt_hasRTE() {
-	return GlobalVariable::getVariable('Application_Use_RTE',1);
+	return GlobalVariable::getVariable('Application_Use_RTE', 1);
 }
 
 function getNameInDisplayFormat($input, $dispFormat = "lf") {
@@ -3249,8 +3276,8 @@ function getSqlForNameInDisplayFormat($input, $module, $glue = ' ') {
 	$entity_field_info = getEntityFieldNames($module);
 	$tableName = $entity_field_info['tablename'];
 	$fieldsName = $entity_field_info['fieldname'];
-	if(is_array($fieldsName)) {
-		foreach($fieldsName as $key => $value) {
+	if (is_array($fieldsName)) {
+		foreach ($fieldsName as $key => $value) {
 			$formattedNameList[] = $input[$value];
 		}
 		$formattedNameListString = implode(",'" . $glue . "',", $formattedNameList);
@@ -3264,19 +3291,19 @@ function getModuleSequenceNumber($module, $recordId) {
 	global $adb;
 	switch ($module) {
 		case "Invoice":
-			$res = $adb->pquery('SELECT invoice_no FROM vtiger_invoice WHERE invoiceid = ?',array($recordId));
+			$res = $adb->pquery('SELECT invoice_no FROM vtiger_invoice WHERE invoiceid = ?', array($recordId));
 			$moduleSeqNo = $adb->query_result($res, 0, 'invoice_no');
 			break;
 		case "PurchaseOrder":
-			$res = $adb->pquery('SELECT purchaseorder_no FROM vtiger_purchaseorder WHERE purchaseorderid = ?',array($recordId));
+			$res = $adb->pquery('SELECT purchaseorder_no FROM vtiger_purchaseorder WHERE purchaseorderid = ?', array($recordId));
 			$moduleSeqNo = $adb->query_result($res, 0, 'purchaseorder_no');
 			break;
 		case "Quotes":
-			$res = $adb->pquery('SELECT quote_no FROM vtiger_quotes WHERE quoteid = ?',array($recordId));
+			$res = $adb->pquery('SELECT quote_no FROM vtiger_quotes WHERE quoteid = ?', array($recordId));
 			$moduleSeqNo = $adb->query_result($res, 0, 'quote_no');
 			break;
 		case "SalesOrder":
-			$res = $adb->pquery('SELECT salesorder_no FROM vtiger_salesorder WHERE salesorderid = ?',array($recordId));
+			$res = $adb->pquery('SELECT salesorder_no FROM vtiger_salesorder WHERE salesorderid = ?', array($recordId));
 			$moduleSeqNo = $adb->query_result($res, 0, 'salesorder_no');
 			break;
 	}
@@ -3306,12 +3333,12 @@ function getReturnPath($host, $from_email) {
 		}
 
 		//strip [,] from domain name in case ip address is used as domain: xyz@[192.45.32.67]
-		preg_replace("/[\[\]]/",$from_domain,$from_domain);
+		preg_replace("/[\[\]]/", $from_domain, $from_domain);
 
 		// If from-email domain is not matching (or sub-domain) of host
 		// reset the return-path
-		if ($from_domain == '' or strpos($host, $from_domain) == false) {
-			if (preg_match( '/^((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))$/', $host)) {
+		if ($from_domain == '' || strpos($host, $from_domain) == false) {
+			if (preg_match('/^((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))$/', $host)) {
 				$returnpath = $returnname . '@[' . $host.']';
 			} else {
 				if (strpos($host, '.')) {
@@ -3345,13 +3372,13 @@ function fetch_logo($type) {
 	$result = $adb->pquery($sql, array());
 	switch ($type) {
 		case 1:
-			$logoname = decode_html($adb->query_result($result,0,'logoname'));
+			$logoname = decode_html($adb->query_result($result, 0, 'logoname'));
 			break;
 		case 2:
-			$logoname = decode_html($adb->query_result($result,0,'frontlogo'));
+			$logoname = decode_html($adb->query_result($result, 0, 'frontlogo'));
 			break;
 		case 3:
-			$logoname = decode_html($adb->query_result($result,0,'faviconlogo'));
+			$logoname = decode_html($adb->query_result($result, 0, 'faviconlogo'));
 			break;
 		default:
 			$logoname = 'app-logo.jpg';
@@ -3372,18 +3399,18 @@ function getmail_contents_portalUser($request_array, $password, $type = '') {
 	$query='SELECT subject,body FROM vtiger_emailtemplates WHERE templateid=10';
 
 	$result = $adb->pquery($query, array());
-	$body=$adb->query_result($result,0,'body');
+	$body=$adb->query_result($result, 0, 'body');
 	$contents=$body;
-	$contents = str_replace('$contact_name$',$request_array['first_name']." ".$request_array['last_name'],$contents);
-	$contents = str_replace('$login_name$',$request_array['username'],$contents);
-	$contents = str_replace('$password$',$password,$contents);
-	$contents = str_replace('$URL$',$request_array['portal_url'],$contents);
-	$contents = str_replace('$support_team$',$mod_strings['Support Team'],$contents);
-	$contents = str_replace('$logo$','<img src="cid:logo" />',$contents);
+	$contents = str_replace('$contact_name$', $request_array['first_name']." ".$request_array['last_name'], $contents);
+	$contents = str_replace('$login_name$', $request_array['username'], $contents);
+	$contents = str_replace('$password$', $password, $contents);
+	$contents = str_replace('$URL$', $request_array['portal_url'], $contents);
+	$contents = str_replace('$support_team$', $mod_strings['Support Team'], $contents);
+	$contents = str_replace('$logo$', '<img src="cid:logo" />', $contents);
 
 	if ($type == 'LoginDetails') {
 		$temp=$contents;
-		$value['subject']=$adb->query_result($result,0,'subject');
+		$value['subject']=$adb->query_result($result, 0, 'subject');
 		$value['body']=$temp;
 		return $value;
 	}
