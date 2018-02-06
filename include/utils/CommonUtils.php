@@ -40,7 +40,8 @@ function is_admin($user) {
 function isInsideApplication($path2check) {
 	global $root_directory;
 	$rp = realpath($path2check);
-	return (strpos($rp,$root_directory)===0);
+	$rt = rtrim($root_directory, '/').DIRECTORY_SEPARATOR;
+	return (strpos($rp, $rt)===0);
 }
 
 /**
