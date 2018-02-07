@@ -92,6 +92,7 @@ $mod_strings = array(
 	'LBL_PARENT_OWNER' => 'Parent Record Owner',
 	'LBL_SPECIAL_OPTIONS' => 'Options Spéciales',
 	'CBTagTask' => 'Ajouter/Supprimer Tag',
+        'CBMassiveUpdateRelatedTask' => 'Massive Update of related records Many to One',
 	'Add Tag' => 'Ajouter Tag',
 	'Delete Tag' => 'Supprimer Tag',
 	'Tags' => 'Tags',

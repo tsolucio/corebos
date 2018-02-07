@@ -97,6 +97,7 @@ $mod_strings = array(
 	'LBL_PARENT_OWNER' => 'Szülő rekord tulajdonosa',
 	'LBL_SPECIAL_OPTIONS' => 'Különleges opciók',
 	'CBTagTask' => 'Add/Delete Tag',
+        'CBMassiveUpdateRelatedTask' => 'Massive Update of related records Many to One',
 	'Add Tag' => 'Add Tag',
 	'Delete Tag' => 'Delete Tag',
 	'Tags' => 'Tags',

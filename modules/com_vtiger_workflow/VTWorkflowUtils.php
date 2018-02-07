@@ -68,8 +68,7 @@ class VTWorkflowUtils {
 				}
 			}
 			if ($fieldInstance->getFieldDataType() === 'date') {
-				$date = new DateTimeField($fieldValue);
-				$fieldValue = $date->getDisplayDate();
+				$fieldValue = date("Y-m-d", strtotime($fieldValue));
 			}
 			if (in_array($fieldInstance->getUIType(), array(19,20,21))) {
 				$fieldValue = str_ireplace($breaks, "\n", $fieldValue);

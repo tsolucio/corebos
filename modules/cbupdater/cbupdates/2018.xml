@@ -28,4 +28,11 @@
 	<classname>addRolePicklistToGlobalVariable</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>loridacito</author>
+	<description>add workflow task for massive update of related records (many)</description>
+	<filename>build/changeSets/2018/add_workflow_massiveupdaterelated.php</filename>
+	<classname>add_workflow_massiveupdaterelated</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

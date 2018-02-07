@@ -93,6 +93,7 @@ $mod_strings = array(
 'LBL_PARENT_OWNER' => 'Dueño del Registro Superior',
 'LBL_SPECIAL_OPTIONS' => 'Opciones Especiales',
 'CBTagTask' => 'Añadir/Eliminar Etiqueta',
+'CBMassiveUpdateRelatedTask' => 'Massive Update of related records Many to One',
 'Add Tag' => 'Añadir Etiqueta',
 'Delete Tag' => 'Eliminar Etiqueta',
 'Tags' => 'Etiquetas',
