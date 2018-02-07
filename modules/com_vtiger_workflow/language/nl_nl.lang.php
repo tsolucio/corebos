@@ -12,7 +12,7 @@
  * Portions created by Vicus are Copyright (C) Vicus.
  * All Rights Reserved.
  * Feel free to use / redistribute these languagefiles under the VPL 1.0.
- * This translations is based on earlier work of: 
+ * This translations is based on earlier work of:
  * - IT-Online.nl <www.it-online.nl>
  * - Weltevree.org <www.Weltevree.org>
  ********************************************************************************/

@@ -1,8 +1,8 @@
 <?php
 /**
   JPL TSolucio, S.L. 2009 MPL
-  
-   * Es_mx Author: Francisco Hernandez Odin Consultores www.odin.mx 
+
+   * Es_mx Author: Francisco Hernandez Odin Consultores www.odin.mx
  **/
 
 $mod_strings = array(
@@ -41,7 +41,7 @@ $mod_strings = array(
 'LBL_MESSAGE'=>'Mensaje',
 'LBL_SEND_ALL_ATTACHMENT'=>'Enviar todos los adjuntos',
 'VTPDFMakerTask'=>'Guardar documento de PDFMaker',  // ITS4YOU-CR PDF Maker
-'LBL_SEND_ALL_ATTACHMENT'=>'Enviar todos los adjuntos', 
+'LBL_SEND_ALL_ATTACHMENT'=>'Enviar todos los adjuntos',
 'LBL_SET_FIELD_VALUES'=>'Establecer valor de campo',
 'LBL_ADD_FIELD'=>'Agregar campo',
 
