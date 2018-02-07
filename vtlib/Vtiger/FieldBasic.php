@@ -96,7 +96,7 @@ class Vtiger_FieldBasic {
 		$result = $adb->pquery('SELECT MAX(sequence) AS max_seq FROM vtiger_field WHERE tabid=? AND block=?', array($this->getModuleId(), $this->getBlockId()));
 		$maxseq = 0;
 		if ($result && $adb->num_rows($result)) {
-			$maxseq = $adb->query_result($result, 0, 'max_seq');
+			$maxseq = (int)$adb->query_result($result, 0, 'max_seq');
 			$maxseq += 1;
 		}
 		return $maxseq;
@@ -345,9 +345,9 @@ class Vtiger_FieldBasic {
 	 * Helper function to log messages
 	 * @param String Message to log
 	 * @param Boolean true appends linebreak, false to avoid it
-	 * @access private
+	 * @access public
 	 */
-	private static function log($message, $delim = true) {
+	public static function log($message, $delim = true) {
 		Vtiger_Utils::Log($message, $delim);
 	}
 }
