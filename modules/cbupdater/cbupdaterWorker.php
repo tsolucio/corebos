@@ -506,6 +506,36 @@ class cbupdaterWorker {
 		}
 	}
 
+	/* Mass define tooltip for fields
+	 * The layout is an array of Module Name, hover fields and Field Names
+		array(
+			'module' => '{modulename}',
+			'hoverfield' => 'fieldname that triggers the tooltip',
+			'fields2show' => array(
+				'{list of field names to show in tooltip',
+				'{fieldname1}',
+				'{fieldname2}',
+				'{fieldnamen}',
+			),
+		),
+	*/
+	public function setTooltip($tooltips) {
+		$inssql = 'INSERT INTO `vtiger_quickview` (`fieldid`, `related_fieldid`, `sequence`, `currentview`) VALUES (?,?,?,1)';
+		foreach ($tooltips as $ttflds) {
+			$mname = $ttflds['module'];
+			if (vtlib_isModuleActive($mname)) {
+				$modttip = VTiger_Module::getInstance($mname);
+				$fldttiph = VTiger_Field::getInstance($ttflds['hoverfield'], $modttip);
+				$sort = 1;
+				foreach ($ttflds['fields2show'] as $fldtt) {
+					$fldttips = VTiger_Field::getInstance($fldtt, $modttip);
+					$this->ExecuteQuery($inssql, array($fldttiph->id, $fldttips->id, $sort));
+					$sort++;
+				}
+			}
+		}
+	}
+
 	public function installManifestModule($module) {
 		$package = new Vtiger_Package();
 		ob_start();
