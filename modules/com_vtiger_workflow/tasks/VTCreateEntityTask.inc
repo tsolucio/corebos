@@ -58,6 +58,12 @@ class VTCreateEntityTask extends VTTask {
 			$entityModuleHandler = vtws_getModuleHandlerFromName($entityType, $current_user);
 			$handlerMeta = $entityModuleHandler->getMeta();
 			$ownerFields = $handlerMeta->getOwnerFields();
+			$dtFields = $handlerMeta->getFieldListByType('datetime');
+			$datetimeFields = array();
+			foreach ($dtFields as $webserviceField) {
+				$datetimeFields[] = $webserviceField->getFieldName();
+			}
+			unset($dtFields);
 			$logbg->debug($focus->column_fields);
 			$logbg->debug($fieldValueMapping);
 			foreach ($fieldValueMapping as $fieldInfo) {
@@ -100,6 +106,10 @@ class VTCreateEntityTask extends VTTask {
 					} else {
 						$fieldValue = ($userId == 0) ? $groupId : $userId;
 					}
+				}
+				if (in_array($fieldName, $datetimeFields) && strpos($fieldValue, ' ')===false) {
+					$rs = $adb->pquery('select start_hour from vtiger_users where id=?', array($current_user->id));
+					$fieldValue = $fieldValue.' '.$adb->query_result($rs, 0, 'start_hour');
 				}
 
 				$newEntity->column_fields[$fieldName] = $fieldValue;
