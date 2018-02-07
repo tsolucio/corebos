@@ -211,6 +211,51 @@ class cbupdaterWorker {
 		$this->ExecuteQuery('DELETE FROM com_vtiger_workflows WHERE workflow_id=?', array($wfid));
 	}
 
+	public function deleteAllPicklistValues($tableName, $moduleName) {
+		global $adb, $default_charset;
+		$tabid = getTabid($moduleName);
+		$result = $adb->query("select picklist_valueid,$tableName from vtiger_$tableName");
+		$delrol = 'delete from vtiger_role2picklist where picklistvalueid=?';
+		$deldep = 'DELETE FROM vtiger_picklist_dependency WHERE sourcevalue=? AND sourcefield=? AND tabid=?';
+		while ($plrow=$adb->fetch_array($result)) {
+			$origPicklistID = $plrow['picklist_valueid'];
+			$value = htmlentities($plrow[$tableName], ENT_QUOTES, $default_charset);
+			$adb->pquery($delrol, array($origPicklistID));
+			$adb->pquery($deldep, array($value, $tableName, $tabid));
+		}
+		$adb->query("delete from vtiger_$tableName"); // delete all entries
+	}
+
+	public function deletePicklistValues($values, $tableName, $moduleName) {
+		global $adb, $default_charset;
+		$tabid = getTabid($moduleName);
+		$delrol = 'delete from vtiger_role2picklist where picklistvalueid=?';
+		$deldep = 'DELETE FROM vtiger_picklist_dependency WHERE sourcevalue=? AND sourcefield=? AND tabid=?';
+		for ($i=0; $i<count($values); $i++) {
+			$sql = "select picklist_valueid from vtiger_$tableName where $tableName=?";
+			$result = $adb->pquery($sql, array($values[$i]));
+			$origPicklistID = $adb->query_result($result, 0, 'picklist_valueid');
+			$values[$i] = array('encodedValue'=>htmlentities($values[$i], ENT_QUOTES, $default_charset), 'rawValue'=>$values[$i]);
+			$sql = "delete from vtiger_$tableName where $tableName=?";
+			$adb->pquery($sql, array($values[$i]['encodedValue']));
+			$adb->pquery($delrol, array($origPicklistID));
+			$adb->pquery($deldep, array($values[$i]['encodedValue'], $tableName, $tabid));
+		}
+	}
+
+	public function setQuickCreateFields($moduleName, $qcfields) {
+		global $adb;
+		$module = VTiger_Module::getInstance($moduleName);
+		$adb->pquery('UPDATE vtiger_field SET quickcreate=1 WHERE quickcreate=2 and tabid=?', array($module->id));
+		$order = 1;
+		$upd = 'UPDATE vtiger_field SET quickcreate=2, quickcreatesequence=? WHERE fieldid=?';
+		foreach ($qcfields as $fldname) {
+			$field = VTiger_Field::getInstance($fldname, $module);
+			$adb->pquery($upd, array($order, $field->id));
+			$order++;
+		}
+	}
+
 	/* Given an array of field definitions this method will create or activate the fields.
 	 * The layout is an array of Module Name, Block Name and Field Definition
 		array(
