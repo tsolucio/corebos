@@ -94,6 +94,7 @@ class VTExpressionsManager {
 			'uppercasefirst'=>'uppercasefirst(stringfield)',
 			'uppercasewords'=>'uppercasewords(stringfield)',
 			'num2str' => 'num2str(number|field, language)',
+			'translate' => 'translate(string|field)',
 			'round' => 'round(numericfield,decimals)',
 			'ceil' => 'ceil(numericfield)',
 			'floor' => 'floor(numericfield)',

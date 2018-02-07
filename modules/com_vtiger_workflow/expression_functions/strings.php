@@ -97,4 +97,9 @@ function __cb_num2str($arr) {
 	$lang = (isset($arr[1]) ? $arr[1] : '');
 	return number2string::convert($arr[0], $lang);
 }
+
+function __cb_translate($arr) {
+	require_once 'modules/cbtranslation/cbtranslation.php';
+	return cbtranslation::get($arr[0]);
+}
 ?>
