@@ -25,15 +25,13 @@
 
 $mod_strings = array(
 	'LBL_MODULE_NAME'=>'Project Mijlpalen',
-	  'LBL_MODULE_TITLE'=>'Project Mijlpalen',
+	'LBL_MODULE_TITLE'=>'Project Mijlpalen',
 	'LBL_NEW_OPERATION'=>'Nieuw Project Mijlpaal',
 	'LBL_MILESTONES'=>'Project Mijlpalen',
 	'LBL_MILESTONE'=>'Project Mijlpaal',
 	'Project Milestone ID'=>'Mijlpaal ID',
 	'projectmilestones' => 'Project Mijlpalen',
-	//added this to translate the module name in the main app menu
 	'ProjectMilestone'=>'Project Mijlpalen',
-	//
 	'SINGLE_ProjectMilestone' => 'Project Mijlpaal',
 	'LBL_CUSTOM_INFORMATION' => 'Aangepaste Informatie',
 	'LBL_PROJECT_MILESTONE_INFORMATION' => 'Project Mijlpaal Informatie',
@@ -43,11 +41,10 @@ $mod_strings = array(
 	'Milestone' => 'Mijlpaal',
 	'Type'=>'Type',
 	'Related to' => 'Project',
-	  'administrative' => 'administratief',
+	'administrative' => 'administratief',
 	'operative' => 'operationeel',
 	'other' => 'anders',
 	'--none--' => '--None--',
-	//added for related lists
 	'Project Milestone Name' => 'Mijlpaal Naam',
 	'Project Milestone No' => 'Mijlpaal Nr',
 );

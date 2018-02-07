@@ -20,9 +20,7 @@ $mod_strings = array(
 	'Deadline ID'=>'Идентификатор критического срока',
 	'deadlinename' => 'Наименование критического срока',
 	'deadlines' => 'критические сроки',
-	//added this to translate the module name in the main app menu
 	'Deadline'=>'Критические сроки',
-	//
 	'SINGLE_Deadline' => 'Критический срок',
 	'LBL_CUSTOM_INFORMATION' => 'Пользовательская информация',
 	'LBL_DEADLINE_INFORMATION' => 'Информация о критическом сроке',
@@ -31,13 +29,11 @@ $mod_strings = array(
 	'deadlinedate' => 'Критический срок',
 	'milestone' => 'Веха',
 	'deadlinetype'=>'Тип',
-	//'linktoproject'=>'Link To',
 	'projectid' => 'Проект',
 	'Related to' => 'Относится к',
 	'administrative' => 'административный',
 	'operative' => 'оперативный',
 	'other' => 'другой',
-	//added for related lists
 	'DeadlineName' => 'Наименование критического срока',
 	'--none--' => '--ничего--',
 );

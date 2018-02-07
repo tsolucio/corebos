@@ -9,15 +9,13 @@
  ************************************************************************************/
 $mod_strings = array(
 	'LBL_MODULE_NAME'=>'Jalons',
-	  'LBL_MODULE_TITLE'=>'Jalons',
+	'LBL_MODULE_TITLE'=>'Jalons',
 	'LBL_NEW_OPERATION'=>'Nouveau jalon',
 	'LBL_MILESTONES'=>'Jalons',
 	'LBL_MILESTONE'=>'Jalon',
 	'Project Milestone ID'=>'Jalon ID',
 	'projectmilestones' => 'Jalons Projet ',
-	//added this to translate the module name in the main app menu
 	'ProjectMilestone'=>'Jalons Projet',
-
 	'SINGLE_ProjectMilestone' => 'Jalon',
 	'LBL_CUSTOM_INFORMATION' => 'Information Spécifique',
 	'LBL_PROJECT_MILESTONE_INFORMATION' => 'Information sur le Jalon',
@@ -27,11 +25,10 @@ $mod_strings = array(
 	'Milestone' => 'Etape-Clé',
 	'Type'=> 'Type',
 	'Related to' => 'Relatif à',
-	  'administrative' => 'administratif',
+	'administrative' => 'administratif',
 	'operative' => 'operationnel',
 	'other' => 'autre',
 	'--none--' => '--aucun--',
-	//added for related lists
 	'Project Milestone Name' => 'Nom du jalon',
 	'Project Milestone No' => 'Jalon n°',
 	'ProjectMilestone ID' => 'Jalon ID',

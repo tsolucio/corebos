@@ -16,7 +16,7 @@
  ************************************************************************************/
 $mod_strings = array(
 	'LBL_MODULE_NAME'=>'Hitos',
-	  'LBL_MODULE_TITLE'=>'Hitos',
+	'LBL_MODULE_TITLE'=>'Hitos',
 	'LBL_NEW_OPERATION'=>'Nuevo Hito',
 	'LBL_MILESTONES'=>'Hitos',
 	'LBL_MILESTONE'=>'Hito',
@@ -32,11 +32,10 @@ $mod_strings = array(
 	'Type'=>'Tipo',
 	'Related to' => 'Proyecto',
 	'projectid' => 'Relacionado con',
-	  'administrative' => 'administrativo',
+	'administrative' => 'administrativo',
 	'operative' => 'operativo',
 	'other' => 'otro',
 	'--none--' => '--ninguno--',
-	//added for related lists
 	'Project Milestone Name' => 'Nombre Hito',
 	'Project Milestone No' => 'Nº Hito',
 	'Milestone Date'=>'Fecha Hito',

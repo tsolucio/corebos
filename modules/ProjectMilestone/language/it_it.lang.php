@@ -17,10 +17,8 @@ $mod_strings = array(
 	'Deadline ID'=>'ID Scadenza',
 	'deadlinename' => 'Nome Scadenza',
 	'deadlines' => 'Scadenze',
-	//added this to translate the module name in the main app menu
 	'Deadline'=>'Scadenze',
 	'description'=>'Descrizione',
-	//
 	'SINGLE_Deadline' => 'Scadenza',
 	'LBL_CUSTOM_INFORMATION' => 'Informazioni Addizionali',
 	'LBL_DEADLINE_INFORMATION' => 'Informationi Scadenza',
@@ -34,7 +32,6 @@ $mod_strings = array(
 	'operative' => 'operativa',
 	'other' => 'altro',
 	'--none--' => 'nessuno',
-	//added for related lists
 	'DeadlineName' => 'Nome Scadenza',
 	'LBL_SELECT_DEADLINE_BUTTON_TITLE' => 'Seleziona Scadenza [Alt+T]',
 	'LBL_CREATE_DEADLINE_BUTTON_TITLE' => 'Crea Scadenza [Alt+T]',

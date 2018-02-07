@@ -9,7 +9,7 @@
  ************************************************************************************/
 $mod_strings = array(
 	'LBL_MODULE_NAME'=>'Marco Projeto',
-	  'LBL_MODULE_TITLE'=>'Marcos Projeto',
+	'LBL_MODULE_TITLE'=>'Marcos Projeto',
 	'LBL_NEW_OPERATION'=>'Novo Marco Projeto',
 	'LBL_MILESTONES'=>'Marco Projeto',
 	'LBL_MILESTOME'=>'Marco Projeto',

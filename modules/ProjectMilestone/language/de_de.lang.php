@@ -9,15 +9,13 @@
  ************************************************************************************/
 $mod_strings = array(
 	'LBL_MODULE_NAME'=>'Projektmeilensteine',
-	  'LBL_MODULE_TITLE'=>'Projektmeilensteine',
+	'LBL_MODULE_TITLE'=>'Projektmeilensteine',
 	'LBL_NEW_OPERATION'=>'neuer Projektmeilenstein',
 	'LBL_MILESTONES'=>'Projektmeilensteine',
 	'LBL_MILESTONE'=>'Projektmeilenstein',
 	'Project Milestone ID'=>'Meilenstein ID',
 	'projectmilestones' => 'Projektmeilensteine',
-	//added this to translate the module name in the main app menu
 	'ProjectMilestone'=>'Projektmeilensteine',
-	//
 	'SINGLE_ProjectMilestone' => 'Projektmeilenstein',
 	'LBL_CUSTOM_INFORMATION' => 'zusätzlich Information',
 	'LBL_PROJECT_MILESTONE_INFORMATION' => 'Meilensteininformation',
@@ -27,11 +25,10 @@ $mod_strings = array(
 	'Milestone' => 'Meilenstein',
 	'Type'=>'Typ',
 	'Related to' => 'Projekt',
-	  'administrative' => 'administrativ',
+	'administrative' => 'administrativ',
 	'operative' => 'operativ',
 	'other' => 'andere',
 	'--none--' => '--None--',
-	//added for related lists
 	'Project Milestone Name' => 'Meilensteinname',
 	'Project Milestone No' => 'Meilenstein Nr',
 	'ProjectMilestone ID' => 'Meilenstein ID',
