@@ -44,7 +44,7 @@
 					{/if}
 						<div id = "hiddenfields_{$entries.blockid}" style="display:none; position:absolute; width:300px;" class="layerPopup">
 							<div style="position:relative; display:block">
-										<table width="100%" border="5" cellpadding="5" cellspacing="0" class="layerHeadingULine">
+										<table width="100%" border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine">
 											<tr>
 												<td width="95%" align="left" class="layerPopupHeading">
 													{$MOD.HIDDEN_FIELDS}
@@ -389,7 +389,7 @@
 									<td colspan="3" class="dvtCellInfo" align="center">
 										<input type="button" name="save" value=" &nbsp; {$APP.LBL_SAVE_BUTTON_LABEL} &nbsp; " class="crmButton small save" onclick="saveFieldInfo('{$value.fieldselect}','{$MODULE}','updateFieldProperties','{$value.typeofdata}');" />&nbsp;
 										{if $value.customfieldflag neq 0}
-											<input type="button" name="delete" value="{$value.label}" id="fieldname" class="crmButton small delete"  onclick="getData(this.value, '{$value.label}'); fnvshobj(this,'hiddenfield_{$value.label}'); " />
+											<input type="button" name="delete" value=" {$APP.LBL_DELETE_BUTTON_LABEL} " id="fieldname" class="crmButton small delete" onclick="getData('{$value.label}', '{$value.label}'); fnvshobj(this,'hiddenfield_{$value.label}');" />
 										{/if}
 										<input type="button" name="cancel" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="crmButton small cancel" onclick="fninvsh('editfield_{$value.fieldselect}');" />
 									</td>
@@ -400,7 +400,6 @@
 
 					<div id = "hiddenfield_{$value.label}" style="display:none; position:absolute; width:500px; height: 500px; margin-top: -400px" class="layerPopup">
 						<div style="position:relative; display:block">
-       
 							<div>
 								<table cellpadding="0px" cellspacing="0px" style="width:100%">
 									<tr height="300">
@@ -412,12 +411,10 @@
 									</tr>
 								</table>
 							</div>
-
-
 					{if $value.customfieldflag neq 0}
 						<input type="button" name="delete" value=" {$APP.LBL_DELETE_BUTTON_LABEL} " class="crmButton small delete" onclick="deleteCustomField('{$value.fieldselect}','{$MODULE}','{$value.columnname}','{$value.uitype}')" />
 					{/if}
-						<input type="button" name="cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" class="crmButton small cancel" onclick= "fninvsh('hiddenfield_{$value.label}');" />
+						<input type="button" name="cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" class="crmButton small cancel" onclick= "fninvsh('hiddenfield_{$value.label}');" />&nbsp;&nbsp;
 						</div>
 					</div>
 
