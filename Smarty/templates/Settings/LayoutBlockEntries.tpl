@@ -14,7 +14,8 @@
 <input type="hidden" name="mode">
 <script type="text/javascript" src="include/js/customview.js"></script>
 <script type="text/javascript" src="include/js/general.js"></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script type="text/javascript" src="modules/Settings/Settings.js"></script>
+<script src="include/jquery/jquery.js"></script>
 <table class="listTable" border="0" cellpadding="3" cellspacing="0" width="100%">
 	{foreach item=entries key=id from=$CFENTRIES name=outer}
 		{if isset($entries.blockid) && $entries.blockid ne $RELPRODUCTSECTIONID && isset($entries.blocklabel) && $entries.blocklabel neq '' }
@@ -388,7 +389,7 @@
 									<td colspan="3" class="dvtCellInfo" align="center">
 										<input type="button" name="save" value=" &nbsp; {$APP.LBL_SAVE_BUTTON_LABEL} &nbsp; " class="crmButton small save" onclick="saveFieldInfo('{$value.fieldselect}','{$MODULE}','updateFieldProperties','{$value.typeofdata}');" />&nbsp;
 										{if $value.customfieldflag neq 0}
-											<input type="button" name="delete" value="{$value.label}" id="empid" class="crmButton small delete"  onclick="getData(this.value, '{$value.label}'); fnvshobj(this,'hiddenfield_{$value.label}'); " />
+											<input type="button" name="delete" value="{$value.label}" id="fieldname" class="crmButton small delete"  onclick="getData(this.value, '{$value.label}'); fnvshobj(this,'hiddenfield_{$value.label}'); " />
 										{/if}
 										<input type="button" name="cancel" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="crmButton small cancel" onclick="fninvsh('editfield_{$value.fieldselect}');" />
 									</td>
@@ -397,70 +398,28 @@
 						</div>
 					</div>
 
-<script type="text/javascript" src="modules/Settings/script.js"></script>
-
-<div id = "hiddenfield_{$value.label}" style="display:none; position:absolute; width:500px; height: 500px; margin-top: -400px" class="layerPopup">
-	<div style="position:relative; display:block">
+					<div id = "hiddenfield_{$value.label}" style="display:none; position:absolute; width:500px; height: 500px; margin-top: -400px" class="layerPopup">
+						<div style="position:relative; display:block">
        
-<div>
-	<table cellpadding="0px" cellspacing="0px" style="width:100%">
-			<tr height="300">
-				<td align="left" valign="middle" style="padding-top:15px; padding-bottom:10px;">
-
-    <div style="width:100%;height:400px; overflow:auto;" onscroll="OnScrollDiv (this)">
-
-	<div id="{$value.label}">
-
-        </div>
-
-    </div>
-
-			  </td>
-			</tr>
-
-		</table>
-	</div>
+							<div>
+								<table cellpadding="0px" cellspacing="0px" style="width:100%">
+									<tr height="300">
+										<td align="left" valign="middle" style="padding-top:15px; padding-bottom:10px;">
+											<div style="width:100%;height:400px; overflow:auto;" onscroll="OnScrollDiv (this)">
+												<div id="{$value.label}"></div>
+											</div>
+										</td>
+									</tr>
+								</table>
+							</div>
 
 
-	{if $value.customfieldflag neq 0}
-		<input type="button" name="delete" value=" {$APP.LBL_DELETE_BUTTON_LABEL} " class="crmButton small delete" onclick="deleteCustomField('{$value.fieldselect}','{$MODULE}','{$value.columnname}','{$value.uitype}')"" />
-	{/if}
-
-
-		<input type="button" name="cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" class="crmButton small cancel" onclick= "fninvsh('hiddenfield_{$value.label}');" />
-
-									
-	</div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+					{if $value.customfieldflag neq 0}
+						<input type="button" name="delete" value=" {$APP.LBL_DELETE_BUTTON_LABEL} " class="crmButton small delete" onclick="deleteCustomField('{$value.fieldselect}','{$MODULE}','{$value.columnname}','{$value.uitype}')" />
+					{/if}
+						<input type="button" name="cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" class="crmButton small cancel" onclick= "fninvsh('hiddenfield_{$value.label}');" />
+						</div>
+					</div>
 
 					{if $smarty.foreach.inner.first}
 						{if $value.no % 2 != 0}

@@ -1,24 +1,42 @@
+<!--*************************************************************************************************
+ * Copyright 2018 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
+ * file except in compliance with the License. You can redistribute it and/or modify it
+ * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
+ * granted by the License. coreBOS distributed by JPL TSolucio S.L. is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. Unless required by
+ * applicable law or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT ANY WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language governing
+ * permissions and limitations under the License. You may obtain a copy of the License
+ * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
+ *************************************************************************************************
+ *  Module       : OOMerge GENDOC
+ *  Version      : 5.4.0
+ *  Author       : JPL TSolucio, S. L.
+ *************************************************************************************************-->
+
+
 <?php
 $Vtiger_Utils_Log = true;
 include_once('vtlib/Vtiger/Module.php');
 global $current_user,$adb;
 set_time_limit(0);
 ini_set('memory_limit','1024M');
-$fldname = $_GET['empid'];
+$fldname = vtlib_purify($_GET['fieldname']);
 ?>
 
 
 <?php
 
 // Workflow Conditions
-       $crs = $adb->query("SELECT workflow_id,summary
-                FROM `com_vtiger_workflows`
-                WHERE test like '%$fldname%'");
+$crs = $adb->pquery('SELECT workflow_id,summary FROM `com_vtiger_workflows` WHERE test like ?', array('%'.$fldname.'%'));
             if ($crs and $adb->num_rows($crs)>0) {
                 while ($fnd=$adb->fetch_array($crs)) {
-
-        echo $fnd['workflow_id']. " / " .$fnd['summary'];
-        echo "<br>";
+                echo "Field found in workflow condtions: ";
+                echo $fnd['workflow_id']. " / " .$fnd['summary'];
+                echo "<br>";
                 }
             } else {
 
@@ -28,9 +46,9 @@ $fldname = $_GET['empid'];
 
 
             // Workflow Tasks
-            $crs = $adb->query("SELECT workflow_id,task_id,summary
+            $crs = $adb->pquery('SELECT workflow_id,task_id,summary
                 FROM `com_vtiger_workflowtasks`
-                WHERE task like '%$fldname%'");
+                WHERE task like  ?', array('%'.$fldname.'%'));
             if ($crs and $adb->num_rows($crs)>0) {
                 while ($fnd=$adb->fetch_array($crs)) {
                     echo "Field found in workflow (".$fnd['workflow_id'].") task (".$fnd['task_id']."): ";
@@ -43,10 +61,10 @@ $fldname = $_GET['empid'];
 
 
                 // Custom View Columns
-            $crs = $adb->query("SELECT vtiger_customview.viewname
+            $crs = $adb->pquery('SELECT vtiger_customview.viewname
                 FROM `vtiger_cvcolumnlist`
                 INNER JOIN vtiger_customview on vtiger_customview.cvid=vtiger_cvcolumnlist.cvid
-                WHERE columnname like '%$fldname%'");
+                WHERE columnname like ?', array('%'.$fldname.'%'));
             if ($crs and $adb->num_rows($crs)>0) {
                 while ($fnd=$adb->fetch_array($crs)) {
                     echo "Field found in custom view columns: ".$fnd['viewname'];
@@ -57,10 +75,10 @@ $fldname = $_GET['empid'];
             }
 
             // Custom View Conditions
-            $crs = $adb->query("SELECT vtiger_customview.viewname
+            $crs = $adb->pquery('SELECT vtiger_customview.viewname
                 FROM `vtiger_cvadvfilter`
                 INNER JOIN vtiger_customview on vtiger_customview.cvid=vtiger_cvadvfilter.cvid
-                WHERE columnname like '%$fldname%'");
+                WHERE columnname like ?', array('%'.$fldname.'%'));
             if ($crs and $adb->num_rows($crs)>0) {
                 while ($fnd=$adb->fetch_array($crs)) {
                     echo "Field found in custom view conditions: ".$fnd['viewname'];
@@ -71,10 +89,10 @@ $fldname = $_GET['empid'];
             }
 
             // Custom View Date Filters
-            $crs = $adb->query("SELECT vtiger_customview.viewname
+            $crs = $adb->pquery('SELECT vtiger_customview.viewname
                 FROM `vtiger_cvstdfilter`
                 INNER JOIN vtiger_customview on vtiger_customview.cvid=vtiger_cvstdfilter.cvid
-                WHERE columnname like '%$fldname%'");
+                WHERE columnname like ?', array('%'.$fldname.'%'));
             if ($crs and $adb->num_rows($crs)>0) {
                 while ($fnd=$adb->fetch_array($crs)) {
                     echo "Field found in custom view date conditions: ".$fnd['viewname'];
@@ -85,9 +103,9 @@ $fldname = $_GET['empid'];
             }
 
             // Email Templates
-            $crs = $adb->query("SELECT templateid,templatename
+            $crs = $adb->pquery('SELECT templateid,templatename
                 FROM `vtiger_emailtemplates`
-                WHERE subject like '%$fldname%' or body like '%$fldname%'");
+                WHERE subject like ? or body like ?', array('%'.$fldname.'%', '%'.$fldname.'%'));
             if ($crs and $adb->num_rows($crs)>0) {
                 while ($fnd=$adb->fetch_array($crs)) {
                     echo "Field found in Email Template: ".$fnd['templateid'].' :: '.$fnd['templatename'];
@@ -98,10 +116,10 @@ $fldname = $_GET['empid'];
             }
 
             // Report Fields
-            $crs = $adb->query("SELECT vtiger_report.reportid,vtiger_report.reportname
+            $crs = $adb->pquery('SELECT vtiger_report.reportid,vtiger_report.reportname
                 FROM `vtiger_selectcolumn`
                 INNER JOIN vtiger_report on vtiger_report.queryid=vtiger_selectcolumn.queryid
-                WHERE columnname like '%$fldname%'");
+                WHERE columnname like ?', array('%'.$fldname.'%'));
             if ($crs and $adb->num_rows($crs)>0) {
                 while ($fnd=$adb->fetch_array($crs)) {
                     echo "Field found in Report (columns): ".$fnd['reportid'].' :: '.$fnd['reportname'];
@@ -112,10 +130,10 @@ $fldname = $_GET['empid'];
             }
 
             // Report Date Filters
-            $crs = $adb->query("SELECT vtiger_report.reportid,vtiger_report.reportname
+            $crs = $adb->pquery('SELECT vtiger_report.reportid,vtiger_report.reportname
                 FROM `vtiger_reportdatefilter`
                 INNER JOIN vtiger_report on vtiger_report.reportid=vtiger_reportdatefilter.datefilterid
-                WHERE datecolumnname like '%$fldname%'");
+                WHERE datecolumnname like ?', array('%'.$fldname.'%'));
             if ($crs and $adb->num_rows($crs)>0) {
                 while ($fnd=$adb->fetch_array($crs)) {
                     echo "Field found in Report (Date Filters): ".$fnd['reportid'].' :: '.$fnd['reportname'];
@@ -126,10 +144,10 @@ $fldname = $_GET['empid'];
             }
 
             // Report Group By
-            $crs = $adb->query("SELECT vtiger_report.reportid,vtiger_report.reportname
+            $crs = $adb->pquery('SELECT vtiger_report.reportid,vtiger_report.reportname
                 FROM `vtiger_reportgroupbycolumn`
                 INNER JOIN vtiger_report on vtiger_report.reportid=vtiger_reportgroupbycolumn.reportid
-                WHERE sortcolname like '%$fldname%'");
+                WHERE sortcolname like ?', array('%'.$fldname.'%'));
             if ($crs and $adb->num_rows($crs)>0) {
                 while ($fnd=$adb->fetch_array($crs)) {
                     echo "Field found in Report (Group By): ".$fnd['reportid'].' :: '.$fnd['reportname'];
@@ -140,10 +158,10 @@ $fldname = $_GET['empid'];
             }
 
             // Report Sort By
-            $crs = $adb->query("SELECT vtiger_report.reportid,vtiger_report.reportname
+            $crs = $adb->pquery('SELECT vtiger_report.reportid,vtiger_report.reportname
                 FROM `vtiger_reportsortcol`
                 INNER JOIN vtiger_report on vtiger_report.reportid=vtiger_reportsortcol.reportid
-                WHERE columnname like '%$fldname%'");
+                WHERE columnname like ?', array('%'.$fldname.'%'));
             if ($crs and $adb->num_rows($crs)>0) {
                 while ($fnd=$adb->fetch_array($crs)) {
                     echo "Field found in Report (Sort By): ".$fnd['reportid'].' :: '.$fnd['reportname'];
@@ -154,10 +172,10 @@ $fldname = $_GET['empid'];
             }
 
             // Report Summary
-            $crs = $adb->query("SELECT vtiger_report.reportid,vtiger_report.reportname
+            $crs = $adb->pquery('SELECT vtiger_report.reportid,vtiger_report.reportname
                 FROM `vtiger_reportsummary`
                 INNER JOIN vtiger_report on vtiger_report.reportid=vtiger_reportsummary.reportsummaryid
-                WHERE columnname like '%$fldname%'");
+                WHERE columnname like ?', array('%'.$fldname.'%'));
             if ($crs and $adb->num_rows($crs)>0) {
                 while ($fnd=$adb->fetch_array($crs)) {
                     echo "Field found in Report (Summary): ".$fnd['reportid'].' :: '.$fnd['reportname'];
