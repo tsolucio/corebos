@@ -2,7 +2,7 @@
 /***********************************************************
 *  Module       : Reports
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
@@ -216,7 +216,7 @@ $mod_strings = array (
 	'LBL_DELETE_GROUP'=>'Suppresion groupe',
 	'LBL_NEW_CONDITION'=>'Nouvelle condition',
 	'LBL_SHARING_TYPE'=>'Type de partage',
-	'LBL_SELECT_REPORT_TYPE_TO_CONTROL_ACCESS'=>'Choix du type de partage pour définir les accès à ce rapport', 
+	'LBL_SELECT_REPORT_TYPE_TO_CONTROL_ACCESS'=>'Choix du type de partage pour définir les accès à ce rapport',
 	'LBL_ACTION' => 'Action',
 	'LBL ACTION' => 'Action',
 	'ACTION' => 'Action',
@@ -224,7 +224,7 @@ $mod_strings = array (
 	'LBL_SHOW_STANDARD_FILTERS' => 'Afficher les filtres standards',
 	'LBL_YEAR' => 'Année',
 	'LBL_MONTH'=> 'Mois',
-        'LBL_DAY'=> 'Jour',
+		'LBL_DAY'=> 'Jour',
 	'LBL_QUARTER'=> 'Trimestre',
 	'LBL_NONE'=> 'Aucun',
 
@@ -234,6 +234,7 @@ $mod_strings = array (
 	'LBL_SCHEDULE_EMAIL_DESCRIPTION'=>'Les rapports planifiés par email peuvent être envoyés à intervalles réguliers à des destinataires prédéfinis',
 	'LBL_USERS_AVAILABEL'=> 'Destinataires',
 	'LBL_REPORT_FORMAT_PDF'=> 'PDF',
+	'LBL_REPORT_FORMAT_URL'=> 'URL',
 	'LBL_REPORT_FORMAT_EXCEL'=> 'EXCEL',
 	'LBL_REPORT_FORMAT_BOTH'=> 'Les deux',
 	'LBL_REPORT_FORMAT'=> 'Format du rapport',
@@ -261,7 +262,7 @@ $mod_strings = array (
 	'LBL_RELOAD_REPORT' => 'Recharger le Rapport',
 	'LBL_SAVE_REPORT' => 'Enregistrer',
 	'LBL_SAVE_REPORT_AS' => 'Enregistrer le rapport en tant que...',
-	
+
 	//Report Charts
 	'LBL_VIEW_CHARTS' => 'Afficher les graphiques',
 	'LBL_ADD_CHARTS' => 'Ajouter le graphique en page d\'accueil',

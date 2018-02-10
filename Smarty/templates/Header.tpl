@@ -299,7 +299,7 @@
 <!-- Unified Search module selection feature -->
 <div id="UnifiedSearch_moduleformwrapper" style="position:absolute;width:500px;z-index:99999;display:none;"></div>
 
-<div id="status" style="position:absolute;display:none;left:850px;top:95px;height:27px;white-space:nowrap;"><img src="{'status.gif'|@vtiger_imageurl:$THEME}"></div>
+<div id="status" style="position:absolute;display:none;left:850px;top:{if $ANNOUNCEMENT}130{else}95{/if}px;height:27px;white-space:nowrap;"><img src="{'status.gif'|@vtiger_imageurl:$THEME}"></div>
 
 <div id="tracker" style="display:none;position:absolute;z-index:100000001;" class="layerPopup">
 	<table class="slds-table slds-no-row-hover" width="200">

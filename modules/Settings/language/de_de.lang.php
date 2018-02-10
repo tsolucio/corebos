@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
     'LBL_MODULE_NAME'=>'Einstellungen',
     'LBL_MODULE_TITLE'=>'Einstellungen: Startseite',
     'LBL_LIST_CONTACT_ROLE'=>'Rolle',
@@ -979,7 +979,8 @@ $mod_strings = Array(
 	// language translation strings
 	'SendEmailFrom' => 'Send Email From',
 	'LeaveEmptyForUserEmail' => 'Leave empty to use your user email',
-    'LBL_OPENSSL_SUPPORT' => 'OpenSSL Support',
-    'LBL_IMAP_SUPPORT' => 'IMAP Support',
+	'LBL_OPENSSL_SUPPORT' => 'OpenSSL Support',
+	'LBL_IMAP_SUPPORT' => 'IMAP Support',
+	'StorageSpaceUsage' => 'Storage Space Usage',
 );
 ?>

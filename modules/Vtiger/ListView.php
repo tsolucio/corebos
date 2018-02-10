@@ -118,7 +118,7 @@ if ($sql_error) {
 		$addseactrel = false;
 		$addsemanrel = false;
 		switch ($_REQUEST['folderid']) {
-			case  '2':
+			case '2':
 				$emailwhere .= " AND vtiger_seactivityrel.crmid in (select contactid from vtiger_contactdetails) AND vtiger_emaildetails.email_flag !='WEBMAIL'";
 				$addseactrel = true;
 				break;
@@ -129,7 +129,7 @@ if ($sql_error) {
 			case '4':
 				$emailwhere .= ' AND vtiger_seactivityrel.crmid in (select leadid from vtiger_leaddetails)';
 				$addseactrel = true;
-				breaK;
+				break;
 			case '5':
 				$emailwhere .= ' AND vtiger_salesmanactivityrel.smid in (select id from vtiger_users)';
 				$addsemanrel = true;

@@ -1,20 +1,14 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
- * Greek translation by Trinity Networks - www.trinity-networks.gr
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
+ ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Έσοδα/Έξοδα',
 'SINGLE_CobroPago'=>'Έσοδα/Έξοδα',
 'LBL_MODULE_TITLE'=>'Έσοδα/Έξοδα: Αρχική',
@@ -29,7 +23,6 @@ $mod_strings = Array(
 'LBL_PRODUCT_NAME'=>'Ονομασία Προϊόντος',
 'LBL_LIST_AMOUNT'=>'Ποσότητα',
 
-'LBL_COBROPAGO_NAME'=>'Ονομασία Πληρωμής:',
 'LBL_ACCOUNT_NAME'=>'Ονομασία Εταιρείας:',
 'LBL_AMOUNT'=>'Ποσότητα:',
 'LBL_TYPE'=>'Τύπος:',
@@ -72,12 +65,7 @@ $mod_strings = Array(
 'Category'=>'Κατηγορία Πληρωμής',
 'CobroPago Type'=>'Τύπος Πληρωμής',
 'Type'=>'Τύπος',
-'Assigned To'=>'Ανάθεση σε',
 'Probability'=>'Πιθανότητα (%)',
-'Description'=>'Περιγραφή',
-'Created Time'=>'Χρόνος Δημιουργίας',
-'Modified Time'=>'Χρόνος Τροποποίησης',
-'SINGLE_CobroPago'=>'Έσοδα/Έξοδα',
 'CobroPago'=>'Έσοδα/Έξοδα',
 'CobroPago ID'=>'Κωδικός Πληρωμής',
 'cobropagoid'=>'Κωδικός Πληρωμής',

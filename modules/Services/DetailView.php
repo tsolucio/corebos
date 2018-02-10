@@ -18,9 +18,8 @@ require_once 'modules/Vtiger/DetailView.php';
 //Added to display the Tax informations
 $tax_details = getTaxDetailsForProduct($focus->id);
 
-for($i=0;$i<count($tax_details);$i++)
-{
-	$tax_details[$i]['percentage'] = getProductTaxPercentage($tax_details[$i]['taxname'],$focus->id);
+for ($i=0; $i<count($tax_details); $i++) {
+	$tax_details[$i]['percentage'] = getProductTaxPercentage($tax_details[$i]['taxname'], $focus->id);
 }
 $smarty->assign('TAX_DETAILS', $tax_details);
 

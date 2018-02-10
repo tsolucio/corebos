@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-include_once('config.php');
 require_once('include/logging.php');
 require_once('include/logging.php');
 require_once('include/ListView/ListView.php');
@@ -18,65 +17,71 @@ require_once('include/database/PearDatabase.php');
   * StandardUser is allowed to view only his login history details.
 **/
 class LoginHistory {
-	var $log;
-	var $db;
+	private $log;
+	private $db;
 
-	// Stored vtiger_fields
-	var $login_id;
-	var $user_name;
-	var $user_ip;
-	var $login_time;
-	var $logout_time;
-	var $status;
-	var $module_name = "Users";
+	// Stored fields
+	public $login_id;
+	public $user_name;
+	public $user_ip;
+	public $login_time;
+	public $logout_time;
+	public $status;
+	public $module_name = 'Users';
 
-	var $table_name = "vtiger_loginhistory";
+	public $table_name = 'vtiger_loginhistory';
 
-	var $column_fields = Array("id"
-		,"login_id"
-		,"user_name"
-		,"user_ip"
-		,"login_time"
-		,"logout_time"
-		,"status"
-		);
+	public $column_fields = array(
+		'id',
+		'login_id',
+		'user_name',
+		'user_ip',
+		'login_time',
+		'logout_time',
+		'status',
+	);
 
-	function __construct() {
+	public function __construct() {
 		$this->log = LoggerManager::getLogger('loginhistory');
 		$this->db = PearDatabase::getInstance();
 	}
 
-	var $sortby_fields = Array('user_name', 'user_ip', 'login_time', 'logout_time', 'status');
+	public $sortby_fields = array('user_name', 'user_ip', 'login_time', 'logout_time', 'status');
 
 	// This is the list of vtiger_fields that are in the lists.
-	var $list_fields = Array(
-			'User Name'=>Array('vtiger_loginhistory'=>'user_name'),
-			'User IP'=>Array('vtiger_loginhistory'=>'user_ip'),
-			'Signin Time'=>Array('vtiger_loginhistory'=>'login_time'),
-			'Signout Time'=>Array('vtiger_loginhistory'=>'logout_time'),
-			'Status'=>Array('vtiger_loginhistory'=>'status'),
+	public $list_fields = array(
+			'User Name'=>array('vtiger_loginhistory'=>'user_name'),
+			'User IP'=>array('vtiger_loginhistory'=>'user_ip'),
+			'Signin Time'=>array('vtiger_loginhistory'=>'login_time'),
+			'Signout Time'=>array('vtiger_loginhistory'=>'logout_time'),
+			'Status'=>array('vtiger_loginhistory'=>'status'),
 		);
 
-	var $list_fields_name = Array(
+	public $list_fields_name = array(
 		'User Name'=>'user_name',
 		'User IP'=>'user_ip',
 		'Signin Time'=>'login_time',
 		'Signout Time'=>'logout_time',
 		'Status'=>'status'
 		);
-	var $default_order_by = "login_time";
-	var $default_sort_order = 'DESC';
+	public $default_order_by = "login_time";
+	public $default_sort_order = 'DESC';
 
 	/**
 	 * Function to get the Header values of Login History.
 	 * Returns Header Values like UserName, IP, LoginTime etc in an array format.
 	**/
-	function getHistoryListViewHeader()
-	{
-		global $log,$app_strings;
-		$log->debug("Entering getHistoryListViewHeader method ...");
-		$header_array = array($app_strings['LBL_LIST_USER_NAME'], $app_strings['LBL_LIST_USERIP'], $app_strings['LBL_LIST_SIGNIN'], $app_strings['LBL_LIST_SIGNOUT'], $app_strings['LBL_LIST_STATUS']);
-		$log->debug("Exiting getHistoryListViewHeader method ...");
+	public function getHistoryListViewHeader() {
+		global $log, $app_strings;
+		$log->debug('Entering getHistoryListViewHeader method ...');
+		$header_array = array(
+			$app_strings['LBL_LIST_USER_NAME'],
+			$app_strings['LBL_LIST_USERIP'],
+			$app_strings['LBL_LIST_SIGNIN'],
+			$app_strings['LBL_LIST_SIGNOUT'],
+			$app_strings['LBL_LIST_STATUS'],
+		);
+		$log->debug('Exiting getHistoryListViewHeader method ...');
 		return $header_array;
 	}
 
@@ -87,24 +92,23 @@ class LoginHistory {
 	  * @param $orderby - login_time
 	  * Returns the login history entries in an array format.
 	**/
-	function getHistoryListViewEntries($username, $navigation_array, $sorder='', $orderby='')
-	{
+	public function getHistoryListViewEntries($username, $navigation_array, $sorder = '', $orderby = '') {
 		global $log, $adb, $current_user;
-		$log->debug("Entering getHistoryListViewEntries() method ...");
+		$log->debug('Entering getHistoryListViewEntries() method ...');
 
-		if($sorder != '' && $order_by != '')
+		if ($sorder != '' && $order_by != '') {
 			$list_query = "Select * from vtiger_loginhistory where user_name=? order by ".$order_by." ".$sorder;
-		else
+		} else {
 			$list_query = "Select * from vtiger_loginhistory where user_name=? order by ".$this->default_order_by." ".$this->default_sort_order;
+		}
 
 		$result = $adb->pquery($list_query, array($username));
 		$entries_list = array();
 
-		if($navigation_array['end_val'] != 0) {
+		if ($navigation_array['end_val'] != 0) {
 			$in = getTranslatedString('Signed in');
 			$out = getTranslatedString('Signed off');
-			for($i = $navigation_array['start']; $i <= $navigation_array['end_val']; $i++)
-			{
+			for ($i = $navigation_array['start']; $i <= $navigation_array['end_val']; $i++) {
 				$entries = array();
 				$loginid = $adb->query_result($result, $i-1, 'login_id');
 				$entries[] = $adb->query_result($result, $i-1, 'user_name');
@@ -115,14 +119,13 @@ class LoginHistory {
 				$entries_list[] = $entries;
 			}
 		}
-		$log->debug("Exiting getHistoryListViewEntries() method ...");
+		$log->debug('Exiting getHistoryListViewEntries() method ...');
 		return $entries_list;
 	}
 
-	function getHistoryJSON($userid, $page, $order_by='login_time', $sorder='DESC')
-	{
+	public function getHistoryJSON($userid, $page, $order_by = 'login_time', $sorder = 'DESC') {
 		global $log, $adb, $current_user;
-		$log->debug("Entering getHistoryJSON() method ...");
+		$log->debug('Entering getHistoryJSON() method ...');
 
 		if (empty($userid)) {
 			$where = '';
@@ -132,17 +135,18 @@ class LoginHistory {
 			$username = getUserName($userid);
 			$params = array($username);
 		}
-		if($sorder != '' && $order_by != '')
+		if ($sorder != '' && $order_by != '') {
 			$list_query = "Select * from vtiger_loginhistory $where order by $order_by $sorder";
-		else
+		} else {
 			$list_query = "Select * from vtiger_loginhistory $where order by ".$this->default_order_by." ".$this->default_sort_order;
-		$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize',40);
+		}
+		$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize', 40);
 		$from = ($page-1)*$rowsperpage;
 		$limit = " limit $from,$rowsperpage";
 
 		$result = $adb->pquery($list_query.$limit, $params);
 		$rscnt = $adb->pquery("select count(*) from vtiger_loginhistory $where", array($params));
-		$noofrows = $adb->query_result($rscnt, 0,0);
+		$noofrows = $adb->query_result($rscnt, 0, 0);
 		$last_page = ceil($noofrows/$rowsperpage);
 		if ($page*$rowsperpage>$noofrows-($noofrows % $rowsperpage)) {
 			$islastpage = true;
@@ -170,7 +174,7 @@ class LoginHistory {
 		$entries_list['prev_page_url'] = 'index.php?module=cbLoginHistory&action=cbLoginHistoryAjax&file=getJSON&page='.($page == 1 ? 1 : $page-1);
 		$in = getTranslatedString('Signed in');
 		$out = getTranslatedString('Signed off');
-		while($lgn = $adb->fetch_array($result)) {
+		while ($lgn = $adb->fetch_array($result)) {
 			$entry = array();
 			$entry['User Name'] = $lgn['user_name'];
 			$entry['User IP'] = $lgn['user_ip'];
@@ -189,11 +193,11 @@ class LoginHistory {
 	 *  @param ref variable $intime :: Type timestamp
 	 *  Returns the query result which contains the details of User Login Info
 	*/
-	function user_login(&$usname,&$usip,&$intime) {
+	public function user_login(&$usname, &$usip, &$intime) {
 		global $adb;
-		cbEventHandler::do_action('corebos.audit.login',array($usname, 'Users', 'Login', $usname, date("Y-m-d H:i:s")));
-		$query = "Insert into vtiger_loginhistory (user_name, user_ip, logout_time, login_time, status) values (?,?,?,?,?)";
-		$params = array($usname,$usip,null, $this->db->formatDate($intime, true),'Signed in');
+		cbEventHandler::do_action('corebos.audit.login', array($usname, 'Users', 'Login', $usname, date('Y-m-d H:i:s')));
+		$query = 'Insert into vtiger_loginhistory (user_name, user_ip, logout_time, login_time, status) values (?,?,?,?,?)';
+		$params = array($usname, $usip, null, $this->db->formatDate($intime, true), 'Signed in');
 		return $adb->pquery($query, $params);
 	}
 
@@ -203,17 +207,17 @@ class LoginHistory {
 	 *  @param ref variable $outime :: Type timestamp
 	 *  Returns the query result which contains the details of User Logout Info
 	*/
-	function user_logout(&$usname,&$usip,&$outtime) {
+	public function user_logout($usname, $usip, $outtime) {
 		global $adb;
-		cbEventHandler::do_action('corebos.audit.logout',array($usname, 'Users', 'Logout', $usname, date("Y-m-d H:i:s")));
-		$logid_qry = "SELECT max(login_id) AS login_id from vtiger_loginhistory where user_name=? and user_ip=?";
+		cbEventHandler::do_action('corebos.audit.logout', array($usname, 'Users', 'Logout', $usname, date('Y-m-d H:i:s')));
+		$logid_qry = 'SELECT max(login_id) AS login_id from vtiger_loginhistory where user_name=? and user_ip=?';
 		$result = $adb->pquery($logid_qry, array($usname, $usip));
-		$loginid = $adb->query_result($result,0,"login_id");
+		$loginid = $adb->query_result($result, 0, "login_id");
 		if ($loginid == '') {
 			return;
 		}
 		// update the user login info.
-		$query = "Update vtiger_loginhistory set logout_time =?, status=? where login_id = ?";
+		$query = 'Update vtiger_loginhistory set logout_time =?, status=? where login_id = ?';
 		$result = $adb->pquery($query, array($this->db->formatDate($outtime, true), 'Signed off', $loginid));
 	}
 
@@ -222,7 +226,7 @@ class LoginHistory {
 	 * @param accept_delay_seconds Allow the delay (in seconds) between login_time recorded and current time as first time.
 	 * This will be helpful if login is performed and client is redirected for home page where this function is invoked.
 	 */
-	static function firstTimeLoggedIn($user_name, $accept_delay_seconds=10) {
+	public static function firstTimeLoggedIn($user_name, $accept_delay_seconds = 10) {
 		global $adb;
 		$firstTimeLoginStatus = false;
 
@@ -233,7 +237,7 @@ class LoginHistory {
 
 		if ($recordCount === 0) {
 			$firstTimeLoginStatus = true;
-			cbEventHandler::do_action('corebos.audit.firsttime.login',array($user_name, 'Users', 'FirstTimeLogin', $user_name, date("Y-m-d H:i:s")));
+			cbEventHandler::do_action('corebos.audit.firsttime.login', array($user_name, 'Users', 'FirstTimeLogin', $user_name, date("Y-m-d H:i:s")));
 		} else {
 			if ($recordCount == 1) { // Only first time?
 				$row = $adb->fetch_array($result);
@@ -247,5 +251,4 @@ class LoginHistory {
 		return $firstTimeLoginStatus;
 	}
 }
-
 ?>

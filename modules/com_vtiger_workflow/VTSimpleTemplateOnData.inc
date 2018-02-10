@@ -16,7 +16,7 @@
  *  Version      : 1.0
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
-require_once('modules/com_vtiger_workflow/VTSimpleTemplate.inc');
+require_once 'modules/com_vtiger_workflow/VTSimpleTemplate.inc';
 
 /**
  * This class renders a text template with data passed in as an array
@@ -26,7 +26,7 @@ require_once('modules/com_vtiger_workflow/VTSimpleTemplate.inc');
  */
 class VTSimpleTemplateOnData extends VTSimpleTemplate {
 
-	function render($entityCache, $modulename, $data=array()) {
+	public function render($entityCache, $modulename, $data = array()) {
 		$this->cache = $entityCache;
 		$this->parent = $this;
 		$this->data = $data;
@@ -34,18 +34,18 @@ class VTSimpleTemplateOnData extends VTSimpleTemplate {
 		return $this->parseTemplate();
 	}
 
-	function getData(){
+	public function getData() {
 		return $this->data;
 	}
 
-	function get($fieldName){
+	public function get($fieldName) {
 		return isset($this->data[$fieldName]) ? $this->data[$fieldName] : '';
 	}
 
-	function getId(){
-		if (isset($this->data['record_id']) and is_numeric($this->data['record_id'])) {
+	public function getId() {
+		if (isset($this->data['record_id']) && is_numeric($this->data['record_id'])) {
 			$id = $this->data['record_id'];
-		} elseif (isset($this->data['id']) and is_numeric($this->data['id'])) {
+		} elseif (isset($this->data['id']) && is_numeric($this->data['id'])) {
 			$id = $this->data['id'];
 		} else {
 			$id = 0;
@@ -53,9 +53,8 @@ class VTSimpleTemplateOnData extends VTSimpleTemplate {
 		return $id;
 	}
 
-	function getModuleName(){
+	public function getModuleName() {
 		return $this->moduleName;
 	}
-
 }
 ?>

@@ -265,18 +265,11 @@ function sendfile_email()
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
                              <td align=right>
-							{if $header eq $MOD.LBL_ADDRESS_INFORMATION && ($MODULE eq 'Accounts' || $MODULE eq 'Contacts' || $MODULE eq 'Leads') }
-                             {if $MODULE eq 'Leads'}
-                             <input name="mapbutton" value="{$APP.LBL_LOCATE_MAP}" class="crmbutton small create" type="button" onClick="searchMapLocation( 'Main' )" title="{$APP.LBL_LOCATE_MAP}">
-                             {else}
-                             <input name="mapbutton" value="{$APP.LBL_LOCATE_MAP}" class="crmbutton small create" type="button" onClick="fnvshobj(this,'locateMap');" onMouseOut="fninvsh('locateMap');" title="{$APP.LBL_LOCATE_MAP}">
-							{/if}
-                             {/if}
                              </td>
                              </tr>
 
 							<!-- This is added to display the existing comments -->
-							{if $header eq $MOD.LBL_COMMENTS || $header eq $MOD.LBL_COMMENT_INFORMATION}
+							{if $header eq $APP.LBL_COMMENTS || (isset($MOD.LBL_COMMENTS) && $header eq $MOD.LBL_COMMENTS) || (isset($MOD.LBL_COMMENT_INFORMATION) && $header eq $MOD.LBL_COMMENT_INFORMATION)}
 							   <tr>
 								<td colspan=4 class="dvInnerHeader">
 						        	<b>{$MOD.LBL_COMMENT_INFORMATION}</b>
@@ -388,10 +381,6 @@ function sendfile_email()
 			{* END *}
 			</td>
 		</tr>
-		<!-- Inventory - Product Details informations -->
-		<tr>
-			{$ASSOCIATED_PRODUCTS}
-		</tr>
 			</form>
 			<!-- End the form related to detail view -->
 
@@ -427,7 +416,7 @@ function sendfile_email()
 					</td>
 				</tr>
 						{/if}
-				{elseif $TODO_PERMISSION eq 'true' || $EVENT_PERMISSION eq 'true' || $CONTACT_PERMISSION eq 'true'|| $MODULE eq 'Contacts' || ($MODULE eq 'Documents')}
+				{elseif $TODO_PERMISSION eq 'true' || $EVENT_PERMISSION eq 'true' || $CONTACT_PERMISSION eq 'true'|| $MODULE eq 'Contacts'}
 				<tr><td align="left" class="genHeaderSmall">{$APP.LBL_ACTIONS}</td></tr>
 					{if $MODULE eq 'Contacts'}
 						{assign var=subst value="contact_id"}
@@ -486,38 +475,7 @@ function sendfile_email()
 						{/if}
 					{/if}
 
-					<!-- Start: Actions for Documents Module -->
-					{if $MODULE eq 'Documents'}
-						<tr><td align="left" style="padding-left:10px;">
-						{if $DLD_TYPE eq 'I' && $FILE_STATUS eq '1'}
-							<br><a href="index.php?module=uploads&action=downloadfile&fileid={$FILEID}&entityid={$NOTESID}"  onclick="javascript:dldCntIncrease({$NOTESID});" class="webMnu"><img src="{'fbDownload.gif'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle" title="{$APP.LNK_DOWNLOAD}" border="0"/></a>
-							<a href="index.php?module=uploads&action=downloadfile&fileid={$FILEID}&entityid={$NOTESID}" onclick="javascript:dldCntIncrease({$NOTESID});">{$MOD.LBL_DOWNLOAD_FILE}</a>
-						{elseif $DLD_TYPE eq 'E' && $FILE_STATUS eq '1'}
-							<br><a target="_blank" href="{$DLD_PATH}" onclick="javascript:dldCntIncrease({$NOTESID});"><img src="{'fbDownload.gif'|@vtiger_imageurl:$THEME}"" align="absmiddle" title="{$APP.LNK_DOWNLOAD}" border="0"></a>
-							<a target="_blank" href="{$DLD_PATH}" onclick="javascript:dldCntIncrease({$NOTESID});">{$MOD.LBL_DOWNLOAD_FILE}</a>
-						{/if}
-						</td></tr>
-						{if $CHECK_INTEGRITY_PERMISSION eq 'yes'}
-							<tr><td align="left" style="padding-left:10px;">
-							<br><a href="javascript:;" onClick="checkFileIntegrityDetailView({$NOTESID});"><img id="CheckIntegrity_img_id" src="{'yes.gif'|@vtiger_imageurl:$THEME}" alt="Check integrity of this file" title="Check integrity of this file" hspace="5" align="absmiddle" border="0"/></a>
-		                    <a href="javascript:;" onClick="checkFileIntegrityDetailView({$NOTESID});">{$MOD.LBL_CHECK_INTEGRITY}</a>&nbsp;
-		                    <input type="hidden" id="dldfilename" name="dldfilename" value="{$FILEID}-{$FILENAME}">
-		                    <span id="vtbusy_integrity_info" style="display:none;">
-								<img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
-							<span id="integrity_result" style="display:none"></span>
-							</td></tr>
-						{/if}
-						<tr><td align="left" style="padding-left:10px;">
-						{if $DLD_TYPE eq 'I'}
-							<input type="hidden" id="dldfilename" name="dldfilename" value="{$FILENAME}">
-							<br><a href="javascript: document.DetailView.return_module.value='Documents'; document.DetailView.return_action.value='DetailView'; document.DetailView.module.value='Documents'; document.DetailView.action.value='EmailFile'; document.DetailView.record.value={$NOTESID}; document.DetailView.return_id.value={$NOTESID}; sendfile_email();" class="webMnu"><img src="{'attachment.gif'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle" border="0"/></a>
-		                    <a href="javascript: document.DetailView.return_module.value='Documents'; document.DetailView.return_action.value='DetailView'; document.DetailView.module.value='Documents'; document.DetailView.action.value='EmailFile'; document.DetailView.record.value={$NOTESID}; document.DetailView.return_id.value={$NOTESID}; sendfile_email();">{$MOD.LBL_EMAIL_FILE}</a>
-						{/if}
-						</td></tr>
-						<tr><td>&nbsp;</td></tr>
-						{/if}
 					{/if}
-				<!-- End: Actions for Documents Module -->
                   </table>
                 {* vtlib customization: Avoid line break if custom links are present *}
                 {if !isset($CUSTOM_LINKS) || empty($CUSTOM_LINKS)}
@@ -602,7 +560,7 @@ function sendfile_email()
 		{/if}
 			<!-- Mail Merge-->
 				<br>
-				{if $MERGEBUTTON eq 'permitted'}
+				{if isset($MERGEBUTTON) && $MERGEBUTTON eq 'permitted'}
 				<form action="index.php" method="post" name="TemplateMerge" id="form">
 				<input type="hidden" name="module" value="{$MODULE}">
 				<input type="hidden" name="parenttab" value="{$CATEGORY}">
@@ -705,11 +663,6 @@ function sendfile_email()
 	</tr>
 </table>
 
-{if $MODULE eq 'Products'}
-<script type="text/javascript" src="modules/Products/Productsslide.js"></script>
-<script type="text/javascript">Carousel();</script>
-{/if}
-
 <script>
 
 function getTagCloud()
@@ -737,10 +690,6 @@ getTagCloud();
 </td>
 <td align=right valign=top><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
 </tr></table>
-
-{if $MODULE eq 'Leads' or $MODULE eq 'Contacts' or $MODULE eq 'Accounts' or $MODULE eq 'Campaigns' or $MODULE eq 'Vendors'}
-	<form name="SendMail"><div id="sendmail_cont" style="z-index:100001;position:absolute;"></div></form>
-{/if}
 
 <!-- SMSNotifier customization -->
 <script type="text/javascript">

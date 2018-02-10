@@ -201,67 +201,63 @@
 										{$keyval|regex_replace:"/(^|[\n ])([\w]+?:\/\/.*?[^ \"\n\r\t<]*)/":"\\1<a href=\"\\2\" target=\"_blank\">\\2</a>"|regex_replace:"/(^|[\n ])((www|ftp)\.[\w\-]+\.[\w\-.\~]+(?:\/[^ \"\t\n\r<]*)?)/":"\\1<a href=\"http://\\2\" target=\"_blank\">\\2</a>"|regex_replace:"/(^|[\n ])([a-z0-9&\-_.]+?)@([\w\-]+\.([\w\-\.]+\.)*[\w]+)/i":"\\1<a href=\"mailto:\\2@\\3\">\\2@\\3</a>"|regex_replace:"/,\"|\.\"|\)\"|\)\.\"|\.\)\"/":"\""|replace:"\n":"<br>&nbsp;"}
 									</span>
 									<div id="editarea_{$keyfldname}" style="display:none;">
-									<textarea id="txtbox_{$keyfldname}" name="{$keyfldname}"	class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'"onBlur="this.className='detailedViewTextBox'" cols="90" rows="8">{$keyval|replace:"<br>":"\n"}</textarea>
-									<br><a class="slds-button slds-button_success slds-button--x-small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
-									<a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--x-small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
+									<textarea id="txtbox_{$keyfldname}" name="{$keyfldname}"  class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'"onBlur="this.className='detailedViewTextBox'" cols="90" rows="8">{$keyval|replace:"<br>":"\n"}</textarea>
+									<br><a class="detailview_ajaxbutton ajax_save_detailview" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
+									<a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
 									</div>
 								</td>
 							{/if}
-											 {elseif $keyid eq '21' || $keyid eq '24' || $keyid eq '22'} <!--TextArea/Street-->
-													<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'><span id="dtlview_{$keyfldname}">{$keyval}</span>
-														<div id="editarea_{$keyfldname}" style="display:none;">
-															<textarea id="txtbox_{$keyfldname}" name="{$keyfldname}"	class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'"onBlur="this.className='detailedViewTextBox'" rows=2>{$keyval|regex_replace:"/<br\s*\/>/":""}</textarea>
-															<br><a class="slds-button slds-button_success slds-button--x-small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
-															<a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--x-small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
-														</div>
-													</td>
-											 {elseif $keyid eq '73' || $keyid eq '51'} <!--AccountPopup-->
-													<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="vtlib_listview.trigger('cell.onmouseover', this);" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">&nbsp;<a href="{$keyseclink}">{$keyval}</a>
-													</td>
-											 {elseif $keyid eq '57'} <!--ContactPopup-->
+                                             {elseif $keyid eq '21' || $keyid eq '24' || $keyid eq '22'} <!--TextArea/Street-->
+                                                  <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}">{$keyval}</span>
+                                              		<div id="editarea_{$keyfldname}" style="display:none;">
+                                              		  <textarea id="txtbox_{$keyfldname}" name="{$keyfldname}"  class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'"onBlur="this.className='detailedViewTextBox'" rows=2>{$keyval|regex_replace:"/<br\s*\/>/":""}</textarea>
+                                              		  <br><a class="detailview_ajaxbutton ajax_save_detailview" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
+                                              		  <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
+                                                       </div>
+                                                  </td>
+                                             {elseif $keyid eq '73' || $keyid eq '51'} <!--AccountPopup-->
+                                                  <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="vtlib_listview.trigger('cell.onmouseover', this);" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">&nbsp;<a href="{$keyseclink}">{$keyval}</a>
+                                                  </td>
+                                             {elseif $keyid eq '57'} <!--ContactPopup-->
 						<!-- Ajax edit link not provided for contact - Reports To -->
-														<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<a href="{$keyseclink}">{$keyval}</a></td>
-											 {elseif $keyid eq '59'} <!--ProductPopup-->
-													<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'><span id="dtlview_{$keyfldname}"><a href="{$keyseclink}" onclick="event.stopPropagation();">{$keyval}</a></span>
-														<div id="editarea_{$keyfldname}" style="display:none;">
-														 <input id="popuptxt_{$keyfldname}" name="product_name" readonly type="text" value="{$keyval}" class="slds-input">
-														 <input id="txtbox_{$keyfldname}" name="{$keyfldname}" type="hidden" value="{$keysecid}">
-														 <img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module=Products&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=specific","test","width=600,height=602,resizable=1,scrollbars=1,top=150,left=200");' align="absmiddle" style='width:18px;cursor:pointer;'>
-														 <input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}"	onClick="this.form.product_id.value=''; this.form.product_name.value=''; return false;" align="absmiddle" style='width:18px;cursor:pointer;'>
-														 <br>
-														 <a class="slds-button slds-button_success slds-button--x-small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
-															<a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--x-small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
-														</div>
-													</td>
-											 {elseif $keyid eq '75' || $keyid eq '81'} <!--VendorPopup-->
-													<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<a href="{$keyseclink}">{$keyval}</a>
-													</td>
-											 {elseif $keyid eq 76} <!--PotentialPopup-->
-													<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<a href="{$keyseclink}">{$keyval}</a>
-													</td>
-											 {elseif $keyid eq 78} <!--QuotePopup-->
-													<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<a href="{$keyseclink}">{$keyval}</a>
-													</td>
-											 {elseif $keyid eq 82} <!--Email Body-->
-													<td colspan="3" width=100% class="dvtCellInfo" align="left"><div id="dtlview_{$keyfldname}" style="width:100%;height:200px;overflow:hidden;border:1px solid gray" class="detailedViewTextBox slds-input" onmouseover="this.className='detailedViewTextBoxOn'" onmouseout="this.className='detailedViewTextBox'">{$keyval}</div>
-													</td>
-											 {elseif $keyid eq 80} <!--SalesOrderPopup-->
-													<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<a href="{$keyseclink}">{$keyval}</a>
-													</td>
-						 {elseif $keyid eq '52' || $keyid eq '77'}
-																<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}">{$keyval}</span>
-														<div id="editarea_{$keyfldname}" style="display:none;">
-																			<select id="txtbox_{$keyfldname}" name="{$keyfldname}" class="slds-select">
-																				{foreach item=arr key=uid from=$keyoptions}
-																						{foreach key=sel_value item=value from=$arr}
-																								<option value="{$uid}" {$value}>{$sel_value}</option>
-																						{/foreach}
-																				{/foreach}
-																			</select>
-																			<a class="slds-button slds-button_success slds-button--x-small" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
-															<a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="slds-button slds-button--destructive slds-button--x-small">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
-																		</div>
-																</td>
+                                                  	<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<a href="{$keyseclink}">{$keyval}</a></td>
+                                             {elseif $keyid eq '59'} <!--ProductPopup-->
+                                                  <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}"><a href="{$keyseclink}" onclick="event.stopPropagation();">{$keyval}</a></span>
+                                              		<div id="editarea_{$keyfldname}" style="display:none;">
+                                                         <input id="popuptxt_{$keyfldname}" name="product_name" readonly type="text" value="{$keyval}"><input id="txtbox_{$keyfldname}" name="{$keyfldname}" type="hidden" value="{$keysecid}">&nbsp;<img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}"  onclick='return window.open("index.php?module=Products&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=specific","test","width=600,height=602,resizable=1,scrollbars=1,top=150,left=200");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}"  onClick="document.getElementById('txtbox_product_id').value='0'; document.getElementById('popuptxt_product_id').value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
+                                                         <br><a class="detailview_ajaxbutton ajax_save_detailview" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
+                                              		  <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
+                                                       </div>
+                                                  </td>
+                                             {elseif $keyid eq '75' || $keyid eq '81'} <!--VendorPopup-->
+                                                  <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<a href="{$keyseclink}">{$keyval}</a>
+                                                  </td>
+                                             {elseif $keyid eq 76} <!--PotentialPopup-->
+                                                  <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<a href="{$keyseclink}">{$keyval}</a>
+                                                  </td>
+                                             {elseif $keyid eq 78} <!--QuotePopup-->
+                                                  <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<a href="{$keyseclink}">{$keyval}</a>
+                                                  </td>
+                                             {elseif $keyid eq 82} <!--Email Body-->
+                                                  <td colspan="3" width=100% class="dvtCellInfo" align="left"><div id="dtlview_{$keyfldname}" style="width:100%;height:200px;overflow:hidden;border:1px solid gray" class="detailedViewTextBox" onmouseover="this.className='detailedViewTextBoxOn'" onmouseout="this.className='detailedViewTextBox'">{$keyval}</div>
+                                                  </td>
+                                             {elseif $keyid eq 80} <!--SalesOrderPopup-->
+                                                  <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<a href="{$keyseclink}">{$keyval}</a>
+                                                  </td>
+					     {elseif $keyid eq '52' || $keyid eq '77'}
+                                                                <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}">{$keyval}</span>
+                                                        <div id="editarea_{$keyfldname}" style="display:none;">
+                                                                           <select id="txtbox_{$keyfldname}" name="{$keyfldname}" class="small">
+                                                                                {foreach item=arr key=uid from=$keyoptions}
+                                                                                        {foreach key=sel_value item=value from=$arr}
+                                                                                                <option value="{$uid}" {$value}>{$sel_value}</option>
+                                                                                        {/foreach}
+                                                                                {/foreach}
+                                                                           </select>
+                                                                           <br><a class="detailview_ajaxbutton ajax_save_detailview" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
+                                                           <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
+                                                                        </div>
+                                                                </td>
 						{elseif $keyid eq '53'} <!--Assigned To-->
 							<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}">
 							{if $keyadmin eq 1}

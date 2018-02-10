@@ -8,7 +8,7 @@
  * All Rights Reserved.
  **********************************************************************************/
 
-require_once("config.php");
+require_once('config.inc.php');
 require_once("include/database/PearDatabase.php");
 define("dbserver", $dbconfig['db_hostname']);
 define("dbuser", $dbconfig['db_username']);

@@ -40,5 +40,6 @@ $mod_strings = array(
 	'Other' => 'Other',
 	'GVarDefinitions' => 'Variable Definitions',
 	'cbMap' => 'Business Map',
+	'Role' => 'Role',
 );
 ?>

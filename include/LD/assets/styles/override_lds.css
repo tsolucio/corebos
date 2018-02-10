@@ -394,3 +394,9 @@ hr {
     transform: translateX(0.75rem); }
   100% {
     transform: translateX(0); } }
+
+@media print {
+	a[href]:after {
+		content: none;
+	}
+}

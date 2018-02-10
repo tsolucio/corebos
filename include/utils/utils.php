@@ -7,6 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
+include_once 'modules/Settings/configod.php';
 require_once('include/utils/Session.php');
 require_once('include/utils/Request.php');
 require_once('include/database/PearDatabase.php');
@@ -32,12 +33,6 @@ require_once('data/CRMEntity.php');
 require_once 'vtlib/Vtiger/Language.php';
 
 // Constants to be defined here
-
-// For Migration status.
-define("MIG_CHARSET_PHP_UTF8_DB_UTF8", 1);
-define("MIG_CHARSET_PHP_NONUTF8_DB_NONUTF8", 2);
-define("MIG_CHARSET_PHP_NONUTF8_DB_UTF8", 3);
-define("MIG_CHARSET_PHP_UTF8_DB_NONUTF8", 4);
 
 // For Customview status.
 define("CV_STATUS_DEFAULT", 0);
@@ -699,90 +694,25 @@ function microtime_diff($a, $b) {
  */
 
 /**
- * Return the display name for a theme if it exists.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- */
-function get_theme_display($theme) {
-	global $log;
-	$log->debug("Entering get_theme_display(".$theme.") method ...");
-	global $theme_name, $theme_description;
-	$temp_theme_name = $theme_name;
-	$temp_theme_description = $theme_description;
-
-	if (is_file("./themes/$theme/config.php")) {
-		@include("./themes/$theme/config.php");
-		$return_theme_value = $theme_name;
-	}
-	else {
-		$return_theme_value = $theme;
-	}
-	$theme_name = $temp_theme_name;
-	$theme_description = $temp_theme_description;
-
-	$log->debug("Exiting get_theme_display method ...");
-	return $return_theme_value;
-}
-
-/**
  * Return an array of directory names.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
  */
 function get_themes() {
 	global $log;
-	$log->debug("Entering get_themes() method ...");
-	if ($dir = @opendir("./themes")) {
-		while (($file = readdir($dir)) !== false) {
-			if ($file != ".." && $file != "." && $file != "CVS" && $file != "Attic" && $file != "akodarkgem" && $file != "bushtree" && $file != "coolblue" && $file != "Amazon" && $file != "busthree" && $file != "Aqua" && $file != "nature" && $file != "orange" && $file != "blue") {
-				if(is_dir("./themes/".$file)) {
-					if(!($file[0] == '.')) {
-						// set the initial theme name to the filename
-						$name = $file;
-
-						// if there is a configuration class, load that.
-						if(is_file("./themes/$file/config.php"))
-						{
-							require_once("./themes/$file/config.php");
-						}
-
-						if(is_file("./themes/$file/style.css"))
-						{
-							$filelist[$file] = $name;
-						}
-					}
-				}
+	$log->debug('Entering get_themes() method ...');
+	$filelist = array();
+	if ($dir = @opendir('./themes')) {
+		while (($file = readdir($dir))) {
+			if ($file != '..' && $file != '.' && is_dir('./themes/'.$file) && $file[0] != '.' && is_file("./themes/$file/style.css")) {
+				$filelist[$file] = $file;
 			}
 		}
 		closedir($dir);
 	}
 	ksort($filelist);
-	$log->debug("Exiting get_themes method ...");
+	$log->debug('Exiting get_themes method ...');
 	return $filelist;
-}
-
-/**
- * @deprecated
- */
-function array_csort() {
-}
-
-/** Function to set default varibles on to the global variable
-  * @param $defaults -- default values:: Type array
-*/
-function set_default_config(&$defaults)
-{
-	global $log;
-	$log->debug('Entering set_default_config('.print_r($defaults,true).') method ...');
-
-	foreach ($defaults as $name=>$value)
-	{
-		if ( ! isset($GLOBALS[$name]) )
-		{
-			$GLOBALS[$name] = $value;
-		}
-	}
-	$log->debug('Exiting set_default_config method ...');
 }
 
 //this is an optimisation of the to_html function, here we make the decision
@@ -1438,400 +1368,20 @@ function updateProductQty($product_id, $upd_qty) {
  */
 function get_account_info($parent_id) {
 	global $log, $adb;
-	$log->debug("Entering get_account_info(".$parent_id.") method ...");
-	$query = "select related_to from vtiger_potential where potentialid=?";
+	$log->debug('Entering get_account_info('.$parent_id.') method ...');
+	$query = 'select related_to from vtiger_potential where potentialid=?';
 	$result = $adb->pquery($query, array($parent_id));
 	$accountid=$adb->query_result($result,0,'related_to');
-	$log->debug("Exiting get_account_info method ...");
+	$log->debug('Exiting get_account_info method ...');
 	return $accountid;
 }
 
-/** Function to get quick create form fields
-  * @param $fieldlabel -- field label :: Type string
-  * @param $uitype -- uitype :: Type integer
-  * @param $fieldname -- field name :: Type string
-  * @param $tabid -- tabid :: Type integer
-  * @returns $return_field -- return field:: Type string
-  */
-
-//for Quickcreate-Form
-
-function get_quickcreate_form($fieldlabel,$uitype,$fieldname,$tabid)
-{
-	global $log;
-	$log->debug("Entering get_quickcreate_form(".$fieldlabel.",".$uitype.",".$fieldname.",".$tabid.") method ...");
-	$return_field ='';
-	switch($uitype)
-	{
-		case 1: $return_field .=get_textField($fieldlabel,$fieldname);
-			$log->debug("Exiting get_quickcreate_form method ...");
-			return $return_field;
-			break;
-		case 2: $return_field .=get_textmanField($fieldlabel,$fieldname,$tabid);
-			$log->debug("Exiting get_quickcreate_form method ...");
-			return $return_field;
-			break;
-		case 6: $return_field .=get_textdateField($fieldlabel,$fieldname,$tabid);
-			$log->debug("Exiting get_quickcreate_form method ...");
-			return $return_field;
-			break;
-		case 11: $return_field .=get_textField($fieldlabel,$fieldname);
-			$log->debug("Exiting get_quickcreate_form method ...");
-			return $return_field;
-			break;
-		case 13: $return_field .=get_textField($fieldlabel,$fieldname);
-			$log->debug("Exiting get_quickcreate_form method ...");
-			return $return_field;
-			break;
-		case 15: $return_field .=get_textcomboField($fieldlabel,$fieldname);
-			$log->debug("Exiting get_quickcreate_form method ...");
-			return $return_field;
-			break;
-		case 16: $return_field .=get_textcomboField($fieldlabel,$fieldname);
-			$log->debug("Exiting get_quickcreate_form method ...");
-			return $return_field;
-			break;
-		case 17: $return_field .=get_textwebField($fieldlabel,$fieldname);
-			$log->debug("Exiting get_quickcreate_form method ...");
-			return $return_field;
-			break;
-		case 19: $return_field .=get_textField($fieldlabel,$fieldname);
-			$log->debug("Exiting get_quickcreate_form method ...");
-			return $return_field;
-			break;
-		case 22: $return_field .=get_textmanField($fieldlabel,$fieldname,$tabid);
-			$log->debug("Exiting get_quickcreate_form method ...");
-			return $return_field;
-			break;
-		case 23: $return_field .=get_textdateField($fieldlabel,$fieldname,$tabid);
-			$log->debug("Exiting get_quickcreate_form method ...");
-			return $return_field;
-			break;
-		case 50: $return_field .=get_textaccField($fieldlabel,$fieldname,$tabid);
-			$log->debug("Exiting get_quickcreate_form method ...");
-			return $return_field;
-			break;
-		case 51: $return_field .=get_textaccField($fieldlabel,$fieldname,$tabid);
-			$log->debug("Exiting get_quickcreate_form method ...");
-			return $return_field;
-			break;
-		case 55: $return_field .=get_textField($fieldlabel,$fieldname);
-			$log->debug("Exiting get_quickcreate_form method ...");
-			return $return_field;
-			break;
-		case 63: $return_field .=get_textdurationField($fieldlabel,$fieldname,$tabid);
-			$log->debug("Exiting get_quickcreate_form method ...");
-			return $return_field;
-			break;
-		case 71: $return_field .=get_textField($fieldlabel,$fieldname);
-			$log->debug("Exiting get_quickcreate_form method ...");
-			return $return_field;
-			break;
+function getFolderSize($dir) {
+	$size = 0;
+	foreach (glob(rtrim($dir, '/').'/*', GLOB_NOSORT) as $each) {
+		$size += is_file($each) ? filesize($each) : getFolderSize($each);
 	}
-}
-
-/** Function to get quick create form fields
-  * @param $label -- field label :: Type string
-  * @param $name -- field name :: Type string
-  * @param $tid -- tabid :: Type integer
-  * @returns $form_field -- return field:: Type string
-  */
-function get_textmanField($label,$name,$tid)
-{
-	global $log;
-	$log->debug("Entering get_textmanField(".$label.",".$name.",".$tid.") method ...");
-	$form_field='';
-	if($tid == 9)
-	{
-		$form_field .='<td>';
-		$form_field .= '<font color="red">*</font>';
-		$form_field .= $label.':<br>';
-		$form_field .='<input name="'.$name.'" id="QCK_T_'.$name.'" type="text" size="20" maxlength="" value=""></td>';
-		$log->debug("Exiting get_textmanField method ...");
-		return $form_field;
-	}
-	if($tid == 16)
-	{
-		$form_field .='<td>';
-		$form_field .= '<font color="red">*</font>';
-		$form_field .= $label.':<br>';
-		$form_field .='<input name="'.$name.'" id="QCK_E_'.$name.'" type="text" size="20" maxlength="" value=""></td>';
-		$log->debug("Exiting get_textmanField method ...");
-		return $form_field;
-	}
-	else
-	{
-		$form_field .='<td>';
-		$form_field .= '<font color="red">*</font>';
-		$form_field .= $label.':<br>';
-		$form_field .='<input name="'.$name.'" id="QCK_'.$name.'" type="text" size="20" maxlength="" value=""></td>';
-		$log->debug("Exiting get_textmanField method ...");
-		return $form_field;
-	}
-}
-
-/** Function to get textfield for website field
- * @param $label -- field label :: Type string
- * @param $name -- field name :: Type string
- * @returns $form_field -- return field:: Type string
- */
-function get_textwebField($label,$name)
-{
-	global $log;
-	$log->debug("Entering get_textwebField(".$label.",".$name.") method ...");
-
-	$form_field='';
-	$form_field .='<td>';
-	$form_field .= $label.':<br>http://<br>';
-	$form_field .='<input name="'.$name.'" id="QCK_'.$name.'" type="text" size="20" maxlength="" value=""></td>';
-	$log->debug("Exiting get_textwebField method ...");
-	return $form_field;
-}
-
-/** Function to get textfield
- * @param $label -- field label :: Type string
- * @param $name -- field name :: Type string
- * @returns $form_field -- return field:: Type string
- */
-function get_textField($label,$name)
-{
-	global $log;
-	$log->debug("Entering get_textField(".$label.",".$name.") method ...");
-	$form_field='';
-	if($name == "amount")
-	{
-		$form_field .='<td>';
-		$form_field .= $label.':(U.S Dollar:$)<br>';
-		$form_field .='<input name="'.$name.'" id="QCK_'.$name.'" type="text" size="20" maxlength="" value=""></td>';
-		$log->debug("Exiting get_textField method ...");
-		return $form_field;
-	}
-	else
-	{
-		$form_field .='<td>';
-		$form_field .= $label.':<br>';
-		$form_field .='<input name="'.$name.'" id="QCK_'.$name.'" type="text" size="20" maxlength="" value=""></td>';
-		$log->debug("Exiting get_textField method ...");
-		return $form_field;
-	}
-}
-
-/** Function to get account textfield
- * @param $label -- field label :: Type string
- * @param $name -- field name :: Type string
- * @param $tid -- tabid :: Type integer
- * @returns $form_field -- return field:: Type string
- */
-function get_textaccField($label,$name,$tid)
-{
-	global $log, $app_strings;
-	$log->debug("Entering get_textaccField(".$label.",".$name.",".$tid.") method ...");
-
-	$form_field='';
-	if($tid == 2)
-	{
-		$form_field .='<td>';
-		$form_field .= '<font color="red">*</font>';
-		$form_field .= $label.':<br>';
-		$form_field .='<input name="account_name" type="text" size="20" maxlength="" id="account_name" value="" readonly><br>';
-		$form_field .='<input name="account_id" id="QCK_'.$name.'" type="hidden" value="">&nbsp;<input title="'.$app_strings[LBL_CHANGE_BUTTON_TITLE].'" accessKey="'.$app_strings[LBL_CHANGE_BUTTON_KEY].'" type="button" tabindex="3" class="button" value="'.$app_strings[LBL_CHANGE_BUTTON_LABEL].'" name="btn1" onclick=\'return window.open("index.php?module=Accounts&action=Popup&popuptype=specific&form=EditView&form_submit=false","test","width=600,height=400,resizable=1,scrollbars=1");\'></td>';
-		$log->debug("Exiting get_textaccField method ...");
-		return $form_field;
-	}
-	else
-	{
-		$form_field .='<td>';
-		$form_field .= $label.':<br>';
-		$form_field .='<input name="account_name" type="text" size="20" maxlength="" value="" readonly><br>';
-		$form_field .='<input name="'.$name.'" id="QCK_'.$name.'" type="hidden" value="">&nbsp;<input title="'.$app_strings[LBL_CHANGE_BUTTON_TITLE].'" accessKey="'.$app_strings[LBL_CHANGE_BUTTON_KEY].'" type="button" tabindex="3" class="button" value="'.$app_strings[LBL_CHANGE_BUTTON_LABEL].'" name="btn1" onclick=\'return window.open("index.php?module=Accounts&action=Popup&popuptype=specific&form=EditView&form_submit=false","test","width=600,height=400,resizable=1,scrollbars=1");\'></td>';
-		$log->debug("Exiting get_textaccField method ...");
-		return $form_field;
-	}
-}
-
-/** Function to get combo field values
- * @param $label -- field label :: Type string
- * @param $name -- field name :: Type string
- * @returns $form_field -- return field:: Type string
- */
-function get_textcomboField($label,$name)
-{
-	global $log;
-	$log->debug("Entering get_textcomboField(".$label.",".$name.") method ...");
-	$form_field='';
-	if($name == "sales_stage")
-	{
-		$comboFieldNames = Array(
-			'leadsource'=>'leadsource_dom',
-			'opportunity_type'=>'opportunity_type_dom',
-			'sales_stage'=>'sales_stage_dom'
-		);
-		$comboFieldArray = getComboArray($comboFieldNames);
-		$form_field .='<td>';
-		$form_field .= '<font color="red">*</font>';
-		$form_field .= $label.':<br>';
-		$form_field .='<select name="'.$name.'">';
-		$form_field .=get_select_options_with_id($comboFieldArray['sales_stage_dom'], "");
-		$form_field .='</select></td>';
-		$log->debug("Exiting get_textcomboField method ...");
-		return $form_field;
-	}
-	if($name == "productcategory")
-	{
-		$comboFieldNames = Array('productcategory'=>'productcategory_dom');
-		$comboFieldArray = getComboArray($comboFieldNames);
-		$form_field .='<td>';
-		$form_field .= $label.':<br>';
-		$form_field .='<select name="'.$name.'">';
-		$form_field .=get_select_options_with_id($comboFieldArray['productcategory_dom'], "");
-		$form_field .='</select></td>';
-		$log->debug("Exiting get_textcomboField method ...");
-		return $form_field;
-	}
-	if($name == "ticketpriorities")
-	{
-		$comboFieldNames = Array('ticketpriorities'=>'ticketpriorities_dom');
-		$comboFieldArray = getComboArray($comboFieldNames);
-		$form_field .='<td>';
-		$form_field .= $label.':<br>';
-		$form_field .='<select name="'.$name.'">';
-		$form_field .=get_select_options_with_id($comboFieldArray['ticketpriorities_dom'], "");
-		$form_field .='</select></td>';
-		$log->debug("Exiting get_textcomboField method ...");
-		return $form_field;
-	}
-	if($name == "activitytype")
-	{
-		$comboFieldNames = Array('activitytype'=>'activitytype_dom', 'duration_minutes'=>'duration_minutes_dom');
-		$comboFieldArray = getComboArray($comboFieldNames);
-		$form_field .='<td>';
-		$form_field .= $label.'<br>';
-		$form_field .='<select name="'.$name.'">';
-		$form_field .=get_select_options_with_id($comboFieldArray['activitytype_dom'], "");
-		$form_field .='</select></td>';
-		$log->debug("Exiting get_textcomboField method ...");
-		return $form_field;
-	}
-	if($name == "eventstatus")
-	{
-		$comboFieldNames = Array('eventstatus'=>'eventstatus_dom');
-		$comboFieldArray = getComboArray($comboFieldNames);
-		$form_field .='<td>';
-		$form_field .= $label.'<br>';
-		$form_field .='<select name="'.$name.'">';
-		$form_field .=get_select_options_with_id($comboFieldArray['eventstatus_dom'], "");
-		$form_field .='</select></td>';
-		$log->debug("Exiting get_textcomboField method ...");
-		return $form_field;
-	}
-	if($name == "taskstatus")
-	{
-		$comboFieldNames = Array('taskstatus'=>'taskstatus_dom');
-		$comboFieldArray = getComboArray($comboFieldNames);
-		$form_field .='<td>';
-		$form_field .= $label.'<br>';
-		$form_field .='<select name="'.$name.'">';
-		$form_field .=get_select_options_with_id($comboFieldArray['taskstatus_dom'], "");
-		$form_field .='</select></td>';
-		$log->debug("Exiting get_textcomboField method ...");
-		return $form_field;
-	}
-}
-
-/** Function to get date field
- * @param $label -- field label :: Type string
- * @param $name -- field name :: Type string
- * @param $tid -- tabid :: Type integer
- * @returns $form_field -- return field:: Type string
- */
-function get_textdateField($label,$name,$tid)
-{
-	global $log;
-	$log->debug("Entering get_textdateField(".$label.",".$name.",".$tid.") method ...");
-	global $theme;
-	global $app_strings;
-	global $current_user;
-
-	$ntc_date_format = $app_strings['NTC_DATE_FORMAT'];
-	$ntc_time_format = $app_strings['NTC_TIME_FORMAT'];
-
-	$form_field='';
-	$default_date_start = date('Y-m-d');
-	$default_time_start = date('H:i');
-	$dis_value=getNewDisplayDate();
-
-	if($tid == 2)
-	{
-		$form_field .='<td>';
-		$form_field .= '<font color="red">*</font>';
-		$form_field .= $label.':<br>';
-		$form_field .='<font size="1"><em old="ntc_date_format">('.$current_user->date_format.')</em></font><br>';
-		$form_field .='<input name="'.$name.'" size="12" maxlength="10" id="QCK_'.$name.'" type="text" value="">&nbsp';
-		$form_field .='<img src="themes/'.$theme.'/images/btnL3Calendar.gif" id="jscal_trigger"></td>';
-		$log->debug("Exiting get_textdateField method ...");
-		return $form_field;
-	}
-	if($tid == 9)
-	{
-		$form_field .='<td>';
-		$form_field .= '<font color="red">*</font>';
-		$form_field .= $label.':<br>';
-		$form_field .='<input name="'.$name.'" id="QCK_T_'.$name.'" tabindex="2" type="text" size="10" maxlength="10" value="'.$default_date_start.'">&nbsp';
-		$form_field.= '<img src="themes/'.$theme.'/images/btnL3Calendar.gif" id="jscal_trigger_date_start">&nbsp';
-		$form_field.='<input name="time_start" id="task_time_start" tabindex="1" type="text" size="5" maxlength="5" type="text" value="'.$default_time_start.'"><br><font size="1"><em old="ntc_date_format">('.$current_user->date_format.')</em></font>&nbsp<font size="1"><em>'.$ntc_time_format.'</em></font></td>';
-		$log->debug("Exiting get_textdateField method ...");
-		return $form_field;
-	}
-	if($tid == 16)
-	{
-		$form_field .='<td>';
-		$form_field .= '<font color="red">*</font>';
-		$form_field .= $label.':<br>';
-		$form_field .='<input name="'.$name.'" id="QCK_E_'.$name.'" tabindex="2" type="text" size="10" maxlength="10" value="'.$default_date_start.'">&nbsp';
-		$form_field.= '<img src="themes/'.$theme.'/images/btnL3Calendar.gif" id="jscal_trigger_event_date_start">&nbsp';
-		$form_field.='<input name="time_start" id="event_time_start" tabindex="1" type="text" size="5" maxlength="5" type="text" value="'.$default_time_start.'"><br><font size="1"><em old="ntc_date_format">('.$current_user->date_format.')</em></font>&nbsp<font size="1"><em>'.$ntc_time_format.'</em></font></td>';
-		$log->debug("Exiting get_textdateField method ...");
-		return $form_field;
-	}
-	else
-	{
-		$form_field .='<td>';
-		$form_field .= '<font color="red">*</font>';
-		$form_field .= $label.':<br>';
-		$form_field .='<input name="'.$name.'" id="QCK_'.$name.'" type="text" size="10" maxlength="10" value="'.$default_date_start.'">&nbsp';
-		$form_field.= '<img src="themes/'.$theme.'/images/btnL3Calendar.gif" id="jscal_trigger">&nbsp';
-		$form_field.='<input name="time_start" type="text" size="5" maxlength="5" type="text" value="'.$default_time_start.'"><br><font size="1"><em old="ntc_date_format">('.$current_user->date_format.')</em></font>&nbsp<font size="1"><em>'.$ntc_time_format.'</em></font></td>';
-		$log->debug("Exiting get_textdateField method ...");
-		return $form_field;
-	}
-
-}
-
-/** Function to get duration text field in activity
- * @param $label -- field label :: Type string
- * @param $name -- field name :: Type string
- * @param $tid -- tabid :: Type integer
- * @returns $form_field -- return field:: Type string
- */
-function get_textdurationField($label,$name,$tid)
-{
-	global $log;
-	$log->debug("Entering get_textdurationField(".$label.",".$name.",".$tid.") method ...");
-	$form_field='';
-	if($tid == 16)
-	{
-		$comboFieldNames = Array('activitytype'=>'activitytype_dom', 'duration_minutes'=>'duration_minutes_dom');
-		$comboFieldArray = getComboArray($comboFieldNames);
-
-		$form_field .='<td>';
-		$form_field .= $label.'<br>';
-		$form_field .='<input name="'.$name.'" id="QCK_'.$name.'" type="text" size="2" value="1">&nbsp;';
-		$form_field .='<select name="duration_minutes">';
-		$form_field .=get_select_options_with_id($comboFieldArray['duration_minutes_dom'], "");
-		$form_field .='</select><br>(hours/minutes)<br></td>';
-		$log->debug("Exiting get_textdurationField method ...");
-		return $form_field;
-	}
+	return $size;
 }
 
 /** Function to get email text field
@@ -1840,15 +1390,14 @@ function get_textdurationField($label,$name,$tid)
  * @returns $hidden -- hidden:: Type string
  */
 //Added to get the parents list as hidden for Emails -- 09-11-2005
-function getEmailParentsList($module,$id,$focus = false)
-{
+function getEmailParentsList($module,$id,$focus = false) {
 	global $log, $adb;
 	$log->debug("Entering getEmailParentsList(".$module.",".$id.") method ...");
 	// If the information is not sent then read it
-	if($focus === false) {
-		if($module == 'Contacts')
+	if ($focus === false) {
+		if ($module == 'Contacts')
 			$focus = new Contacts();
-		if($module == 'Leads')
+		if ($module == 'Leads')
 			$focus = new Leads();
 		$focus->retrieve_entity_info($id,$module);
 	}
@@ -2550,7 +2099,7 @@ function generateQuestionMarks($items_list) {
 function is_uitype($uitype, $reqtype) {
 	$ui_type_arr = array(
 		'_date_' => array(5, 6, 23, 70),
-		'_picklist_' => array(15, 16, 52, 53, 54, 55, 59, 62, 63, 66, 76, 77, 78, 80, 98, 101, 115, 357),
+		'_picklist_' => array(15, 16, 52, 53, 54, 55, 62, 63, 66, 76, 77, 78, 80, 98, 101, 115, 357),
 		'_users_list_' => array(52),
 	);
 
@@ -2617,7 +2166,7 @@ function getCurrentModule($perform_set=false) {
 		$is_module = false;
 		$module = vtlib_purify($_REQUEST['module']);
 		$dir = @scandir($root_directory.'modules', SCANDIR_SORT_NONE);
-		$temp_arr = Array('.','..','Vtiger','uploads');
+		$temp_arr = array('.','..','Vtiger');
 		$res_arr = @array_diff($dir,$temp_arr);
 		if (!preg_match("/[\/.]/",$module)) {
 			$is_module = @in_array($module,$res_arr);
@@ -2757,7 +2306,7 @@ function getTranslationKeyFromTranslatedValue($module, $translated) {
 	$modstrs = array_merge($app_strings,$modstrs);
 	$values = array();
 	$strings = explode(',' , $translated);
-	foreach($strings as $string) {
+	foreach ($strings as $string) {
 		$new_value = $string;
 		// Get all the keys for the translated value
 		$mod_keys = array_keys($modstrs, $string);
@@ -2768,7 +2317,7 @@ function getTranslationKeyFromTranslatedValue($module, $translated) {
 			}
 		}
 		// Iterate on the keys, to get the first key which doesn't start with LBL_ (assuming it is not used in PickList)
-		foreach($mod_keys as $mod_idx=>$mod_key) {
+		foreach ($mod_keys as $mod_idx=>$mod_key) {
 			$stridx = strpos($mod_key, 'LBL_');
 			if ($stridx !== 0) {
 				$new_value = $mod_key;
@@ -2781,53 +2330,22 @@ function getTranslationKeyFromTranslatedValue($module, $translated) {
 	$purified_cache[$module.$translated] = $translated;
 	return $translated;
 }
-/** Search a value in the picklist and if exists return this value
+
+/** Search for value in the picklist and return if it is present or not
  * @param string $value - value to search in the picklist
  * @param string $picklist_name - picklist name where we will search
+ * @return boolean
  **/
-function isValueInPicklist($value,$picklist_name)
-{
+function isValueInPicklist($value, $picklist_name) {
 	$picklistvalues = vtlib_getPicklistValues($picklist_name);
-	if(in_array($value, $picklistvalues))
-		return true;
-	else
-		return false;
-}
-
-function get_config_status() {
-	global $default_charset;
-	if($default_charset == 'UTF-8')
-		$config_status=1;
-	else
-		$config_status=0;
-	return $config_status;
-}
-
-function getMigrationCharsetFlag() {
-	global $adb;
-
-	$db_status=check_db_utf8_support($adb);
-	$config_status=get_config_status();
-
-	if ($db_status == $config_status) {
-		if ($db_status == 1) { // Both are UTF-8
-			$db_migration_status = MIG_CHARSET_PHP_UTF8_DB_UTF8;
-		} else { // Both are Non UTF-8
-			$db_migration_status = MIG_CHARSET_PHP_NONUTF8_DB_NONUTF8;
-		}
-		} else {
-			if ($db_status == 1) { // Database charset is UTF-8 and CRM charset is Non UTF-8
-				$db_migration_status = MIG_CHARSET_PHP_NONUTF8_DB_UTF8;
-		} else { // Database charset is Non UTF-8 and CRM charset is UTF-8
-			$db_migration_status = MIG_CHARSET_PHP_UTF8_DB_NONUTF8;
-		}
-	}
-	return $db_migration_status;
+	return in_array($value, $picklistvalues);
 }
 
 /** Function to convert a given time string to Minutes */
 function ConvertToMinutes($time_string) {
-	if (empty($time_string)) return 0;
+	if (empty($time_string)) {
+		return 0;
+	}
 	$interval = explode(' ', $time_string);
 	$interval_minutes = (int)$interval[0];
 	$interval_string = strtolower($interval[1]);
@@ -2842,26 +2360,27 @@ function ConvertToMinutes($time_string) {
 //added to find duplicates
 /** To get the converted record values which have to be display in duplicates merging tpl*/
 function getRecordValues($id_array,$module) {
-	global $adb,$current_user;
-	global $app_strings;
+	global $adb,$current_user, $app_strings;
 	$tabid=getTabid($module);
-	$query="select fieldname,fieldlabel,uitype from vtiger_field where tabid=? and fieldname not in ('createdtime','modifiedtime') and vtiger_field.presence in (0,2) and uitype not in('4')";
+	$query="select fieldname,fieldlabel,uitype
+		from vtiger_field
+		where tabid=? and fieldname not in ('createdtime','modifiedtime') and vtiger_field.presence in (0,2) and uitype not in('4')";
 	$result=$adb->pquery($query, array($tabid));
 	$no_rows=$adb->num_rows($result);
 
 	$focus = new $module();
-	if(isset($id_array) && $id_array !='') {
-		foreach($id_array as $value_pair['disp_value']) {
+	if (isset($id_array) && $id_array !='') {
+		foreach ($id_array as $value_pair['disp_value']) {
 			$focus->id=$value_pair['disp_value'];
-			$focus->retrieve_entity_info($value_pair['disp_value'],$module);
+			$focus->retrieve_entity_info($value_pair['disp_value'], $module);
 			$field_values[]=$focus->column_fields;
 		}
 	}
 
-	$labl_array=array();
+	$labl_array = array();
 	$value_pair = array();
 	$c = 0;
-	for($i=0;$i<$no_rows;$i++) {
+	for ($i=0;$i<$no_rows;$i++) {
 		$fld_name=$adb->query_result($result,$i,"fieldname");
 		$fld_label=$adb->query_result($result,$i,"fieldlabel");
 		$ui_type=$adb->query_result($result,$i,"uitype");
@@ -2910,11 +2429,6 @@ function getRecordValues($id_array,$module) {
 					$user_id = $field_values[$j][$fld_name];
 					$user_name=getUserFullName($user_id);
 					$value_pair['disp_value']=$user_name;
-				} elseif($ui_type ==59) {
-					$product_name=getProductName($field_values[$j][$fld_name]);
-					if($product_name != '')
-						$value_pair['disp_value']=$product_name;
-					else $value_pair['disp_value']='';
 				} elseif($ui_type == 10) {
 					$value_pair['disp_value'] = getRecordInfoFromID($field_values[$j][$fld_name]);
 				}elseif($ui_type == 5 || $ui_type == 6 || $ui_type == 23){
@@ -2954,21 +2468,8 @@ function getRecordValues($id_array,$module) {
 	return $parent_array;
 }
 
-/** Function to check whether the relationship entries are exist or not on elationship tables */
-function is_related($relation_table,$crm_field,$related_module_id,$crmid)
-{
-	global $adb;
-	$check_res = $adb->query("select crmid from $relation_table where $crm_field=$related_module_id and crmid=$crmid limit 1");
-	$count = $adb->num_rows($check_res);
-	if($count > 0)
-		return true;
-	else
-		return false;
-}
-
-/** Get SQL to find duplicates in a particular module*/
-function getDuplicateQuery($module,$field_values,$ui_type_arr)
-{
+/** Get SQL to find duplicates in a particular module */
+function getDuplicateQuery($module, $field_values, $ui_type_arr) {
 	global $current_user;
 	$tbl_col_fld = explode(",", $field_values);
 	$i=0;
@@ -3312,13 +2813,6 @@ function getDuplicateRecordsArr($module)
 				} else {
 					$result[$col_arr[$k]]='';
 				}
-			}
-			if($ui_type[$fld_arr[$k]] == 59)
-			{
-				$product_name=getProductName($result[$col_arr[$k]]);
-				if($product_name != '')
-					$result[$col_arr[$k]]=$product_name;
-				else $result[$col_arr[$k]]='';
 			}
 			/*uitype 10 handling*/
 			if($ui_type[$fld_arr[$k]] == 10){

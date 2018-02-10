@@ -97,6 +97,11 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 			$date = new DateTimeField($resultRecord[$endDname]." ".$resultRecord['time_end']);
 			$endDateTime = $date->getDisplayDateTimeValue();	
 			$endDateTimeArray = explode(' ', $endDateTime);
+			if ($module == 'cbCalendar') {
+				$date = new DateTimeField($resultRecord['followupdt']);
+				$followDateTime = $date->getDisplayDateTimeValue();
+				$followDateTimeArray = explode(' ', $followDateTime);
+			}
 			if ($operation =='edit') {
 				//dates always in yyyy-mm-dd format
 				//needed for strtotime for none European formats
@@ -121,6 +126,17 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 				//remove trailing seconds
 				$time_arr = explode(':', $endDateTimeArray[1]);
 				$resultRecord['time_end'] = $time_arr[0].':'.$time_arr[1];
+				if ($module == 'cbCalendar') {
+					if ($current_user->date_format != 'dd-mm-yyyy') {
+						$formated_date = str_replace('-', '/', $followDateTimeArray[0]);
+					}
+					else {
+						$formated_date =$followDateTimeArray[0];
+					}
+					//remove trailing seconds
+					$time_arr = explode(':', $followDateTimeArray[1]);
+					$resultRecord['followupdt'] = date("Y-m-d",strtotime($formated_date))." ".$time_arr[0].':'.$time_arr[1];
+				}
 			}
 			else {
 				$resultRecord['date_start'] = $startDateTimeArray[0];
@@ -134,6 +150,9 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 					// add AM/PM to time strings
 					$resultRecord['time_start'] .= " ".$startDateTimeArray[2]; 
 					$resultRecord['time_end'] .= " ".$endDateTimeArray[2]; 
+				}
+				if ($module == 'cbCalendar') {
+					$resultRecord['followupdt'] = $followDateTime;
 				}
 			}
 		}
@@ -150,13 +169,7 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 					//get standard content & perform special settings
 					if($fieldinfo['uitype'] == 17 && strlen($resultRecord[$fieldname]) ) {
 						//www fields
-						if ($operation =='edit') {
-							$resultRecord[$fieldname]= $resultRecord[$fieldname];
-						}
-						else {
-							$htmlstring = str_replace("http://", "", $resultRecord[$fieldname]);
-							$resultRecord[$fieldname]= "<A HREF=\"#\" onclick=\"window.open('http://" . $htmlstring . "','_blank');\" rel=external>"  . $htmlstring . "</A>";
-						}
+						$resultRecord[$fieldname]= $resultRecord[$fieldname];
 					}
 					if($fieldinfo['uitype'] == 13 && strlen($resultRecord[$fieldname]) ) {
 						// email fields
@@ -249,8 +262,11 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 						$field['type']['value'] =array('value' =>$options,'name' =>$fieldname);
 						//end picklists	 
 					}
-					else if($field['uitype'] == '51' || $field['uitype'] == '59' || $field['uitype'] == '10'){
+					else if($field['uitype'] == '51' || $field['uitype'] == '10'){
 						$field['relatedmodule'] = crmtogo_WS_Utils::getEntityName($field['name'], $module);
+					} elseif ($field['uitype'] == '70') {
+						$date = new DateTimeField($field['value']);
+						$field['value'] = $date->getDisplayDateTimeValue();
 					}
 					$fields[] = $field;
 				}

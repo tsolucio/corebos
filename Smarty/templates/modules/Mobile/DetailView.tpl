@@ -139,7 +139,7 @@
 										{elseif $_FIELD->uitype() eq '9'}
 											{$_FIELD->valueLabel()}{if $_FIELD->name() eq 'probability'} %{/if}
 										{elseif $_FIELD->uitype() eq '17'}
-											{$_FIELD->valueLabel()}
+											<a href="#" onclick="window.open('http://{$_FIELD->valueLabel()}','_blank');" rel=external> {$_FIELD->valueLabel()} </a>
 										{elseif $_FIELD->uitype() eq '69'}
 											<!-- do nothing here for image -->
 										{elseif $_FIELD->uitype() eq '70'}
@@ -163,7 +163,7 @@
 	<div data-role="footer" data-theme="{$COLOR_HEADER_FOOTER}" data-position="fixed">
 		<a href="?_operation=deleteConfirmation&module={$_MODULE->name()}&record={$_RECORD->id()}&&lang={$LANGUAGE}" class="ui-btn ui-corner-all ui-icon-delete ui-btn-icon-notext" data-rel="dialog" data-iconpos="left" data-prefetch>{$MOD.LBL_DELETE}</a>
 		{if $_MODULE->name() eq "HelpDesk" && 'Timecontrol'|vtlib_isModuleActive}
-		<a href="?_operation=create&module=Timecontrol&record=''&relatedto={$_RECORD->id()}" class="ui-btn ui-btn-right ui-corner-all ui-icon-clock ui-btn-icon-notext" data-transition="turn" data-iconpos="right">{$MOD.LBL_NEW}</a>
+		<a href="?_operation=create&module=Timecontrol&record=''&relatedto={$_RECORD->id()}" class="ui-btn ui-btn-right ui-corner-all ui-icon-clock ui-btn-icon-notext" rel="external" data-transition="slideup" data-iconpos="right">{$MOD.LBL_NEW}</a>
 		{/if}
 	</div>
 	{include file="modules/Mobile/PanelMenu.tpl"}

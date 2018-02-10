@@ -7,10 +7,10 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * Portions created by jpl tsolucio,s.l. are Copyright (C) jpl tsolucio, s.l.
  * All Rights Reserved.
-*  Author       : Francisco Hernandez Odin Consultores www.odin.mx 
+*  Author       : Francisco Hernandez Odin Consultores www.odin.mx
  ********************************************************************************/
 
-$mod_strings = Array (
+$mod_strings = array (
 'Tooltip' => 'Ayuda rápida',
 'SINGLE_Tooltip' => 'Ayuda rápida',
 'LBL_TOOLTIP_MANAGEMENT'=>'Administración de Ayudas',

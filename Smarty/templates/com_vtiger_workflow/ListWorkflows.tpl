@@ -5,9 +5,8 @@
 <script type="text/javascript" charset="utf-8">
 	fn.addStylesheet('modules/{$module->name}/resources/style.css');
 </script>
-<!--Create New workflow popup-->
-<div id="new_workflow_popup" class="layerPopup" style="display:none;z-index: 9999;height: 500px!important;">
-	<!-- Create workflow header and close icon -->
+<!--New workflow popup-->
+<div id="new_workflow_popup" class="layerPopup" style="display:none;">
 	<table class="slds-table slds-no-row-hover" style="border-bottom: 1px solid #d4d4d4;">
 		<tr class="slds-text-title--header">
 			<!-- Header -->
@@ -24,7 +23,7 @@
 			</th>
 		</tr>
 	</table>
-	<!-- Create workflow form and options content -->
+
 	<form action="index.php" method="post" accept-charset="utf-8" onsubmit="VtigerJS_DialogBox.block();">
 		<div class="popup_content">
 			<!-- New workflow for module or from template options -->
@@ -65,8 +64,6 @@
 						</select>
 					</td>
 				</tr>
-				<!-- Show when From template is clicked -->
-				<!-- Choose template te create workflow -->
 				<tr align="left" id="template_select_field" style="display:none;">
 					<td class="dvtCellLabel">{$MOD.LBL_CHOOSE_A_TEMPLATE}</td>
 					<td class="dvtCellInfo">
@@ -88,17 +85,14 @@
 					</td>
 				</tr>
 			</table>
-
 		</div>
 	</form>
 </div>
+<!--Done Popups-->
 
 {include file='SetMenu.tpl'}
 <div id="view">
-	<!-- Workflow Title -->
 	{include file='com_vtiger_workflow/ModuleTitle.tpl'}
-
-	<!-- Workflow body container -->
 	<table class="tableHeading" width="100%" border="0" cellspacing="0" cellpadding="5">
 		<tr>
 			<td class="big" nowrap="nowrap">
@@ -120,7 +114,7 @@
 							<!-- Select Modules combobox -->
 							<div class="slds-no-flex">
 								<div class="actionsContainer">
-									<form action="index.php" method="get" accept-charset="utf-8" id="filter_modules" onsubmit="VtigerJS_DialogBox.block();" style="display: inline;">
+									<form action="index.php" method="post" accept-charset="utf-8" id="filter_modules" onsubmit="VtigerJS_DialogBox.block();" style="display: inline;">
 										<b>{$MOD.LBL_SELECT_MODULE}: </b>
 										<select class="importBox slds-select" name="list_module" id='pick_module' style="width: 65%;">
 											<option value="All">{$APP.LBL_ALL}</option>
@@ -223,5 +217,4 @@
 	</table>
 
 </div>
-
 {include file='com_vtiger_workflow/Footer.tpl'}

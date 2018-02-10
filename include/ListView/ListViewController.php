@@ -323,8 +323,8 @@ class ListViewController {
 					}
 					if ($fileName != '' && $status == 1) {
 						if ($downloadtype == 'I') {
-							$value = "<a href='index.php?module=uploads&action=downloadfile&".
-									"entityid=$docid&fileid=$fileId' title='".
+							$value = "<a href='index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=downloadfile".
+									"&entityid=$docid&fileid=$fileId' title='".
 									getTranslatedString("LBL_DOWNLOAD_FILE", $module).
 									"' onclick='javascript:dldCntIncrease($docid);'>".textlength_check($value).
 									"</a>";
@@ -609,7 +609,11 @@ class ListViewController {
 				} elseif ($module == 'Emails' && ($fieldName == 'subject')) {
 						$value = '<a href="javascript:;" onClick="ShowEmail(\'' . $recordId . '\');">' . textlength_check($value) . '</a>';
 				} else {
+					$field_val = $value;
 					$value = textlength_check($value);
+					if (substr($value, -3) == '...') {
+						$value = '<span title="'.$field_val.'">'.$value.'<span>';
+					}
 				}
 				if ($field->getFieldDataType() != 'reference') {
 					$parenttab = getParentTab();
@@ -677,7 +681,7 @@ class ListViewController {
 			list($row, $unused, $unused2) = cbEventHandler::do_filter('corebos.filter.listview.render', array($row, $this->db->query_result_rowdata($result, $i), $recordId));
 			$data[$recordId] = $row;
 		}
-		if (count($totals) > 0) {
+		if (count($totals) > 0 && GlobalVariable::getVariable('Application_ListView_Sum_Currency', 1, $module)) {
 			$trow = array();
 			foreach ($listViewFields as $fieldName) {
 				if (isset($totals[$fieldName])) {

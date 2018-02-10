@@ -7,37 +7,36 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-$mod_strings = Array (
-    'SMSNotifier'                 => 'SMS',
-    'SINGLE_SMSNotifier'          => 'SMS Info',
-    'LBL_SMSNOTIFIER_INFORMATION' => 'SMS Information',
-    'LBL_CUSTOM_INFORMATION'      => 'zusätzlicheInformation',
-    'Assigned To'                 => 'zuständig',
-    'Created Time'                => 'erstellt',
-    'Modified Time'               => 'geändert',
-    'message'                     => 'Nachricht',
+$mod_strings = array (
+	'SMSNotifier'                 => 'SMS',
+	'SINGLE_SMSNotifier'          => 'SMS Info',
+	'LBL_SMSNOTIFIER_INFORMATION' => 'SMS Information',
+	'LBL_CUSTOM_INFORMATION'      => 'zusätzlicheInformation',
+	'Assigned To'                 => 'zuständig',
+	'Created Time'                => 'erstellt',
+	'Modified Time'               => 'geändert',
+	'message'                     => 'Nachricht',
 
-    'Related To'                  => 'bezogen auf',
-    'Status'                      => 'Status',
+	'Related To'                  => 'bezogen auf',
+	'Status'                      => 'Status',
 
-    'LBL_CHECK_STATUS'            => 'prüfe Status',
+	'LBL_CHECK_STATUS'            => 'prüfe Status',
 
-    'SERVER_CONFIGURATION'        => 'Server Konfiguration',
-    'SERVER_CONFIGURATION_DESCRIPTION' => 'konfiguriere SMS Server',
+	'SERVER_CONFIGURATION'        => 'Server Konfiguration',
+	'SERVER_CONFIGURATION_DESCRIPTION' => 'konfiguriere SMS Server',
 
-    'LBL_ADDNEW'                  => 'neu',
-    'LBL_UPDATE'                  => 'Update',
-    'LBL_PROVIDER'                => 'Lieferant',
-    'LBL_SELECT_ONE'              => 'einen auswählen',
+	'LBL_ADDNEW'                  => 'neu',
+	'LBL_UPDATE'                  => 'Update',
+	'LBL_PROVIDER'                => 'Lieferant',
+	'LBL_SELECT_ONE'              => 'einen auswählen',
 
-    'LBL_RECEPIENTS'              => 'Empfänger',
-    'SMSCheckStatus'              => 'prüfe Status',
-    'StatusInformation'           => 'Status Information',
-    'SMSNotifier ID'			  => 'SMS Info ID',
+	'LBL_RECEPIENTS'              => 'Empfänger',
+	'SMSCheckStatus'              => 'prüfe Status',
+	'StatusInformation'           => 'Status Information',
+	'SMSNotifier ID'			  => 'SMS Info ID',
 	'NO_ACTIVE_SERVER' => 'We could not find any active server configuration.',
 	'ServerNotConfigured' => 'Server Not Configured?',
 	'ReviewModuleSettings' => 'Please review SMS Settings.',
 	'ContactAdmin' => 'Please contact your administrator.',
 );
-
 ?>

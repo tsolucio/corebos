@@ -25,6 +25,12 @@ foreach ($_SESSION as $key => $value) {
 $total_record_count = 0;
 
 $query_string = trim($_REQUEST['query_string']);
+if (substr($query_string, 0, 5)=='tag::') {
+	$query_string = substr($query_string, 5);
+	$_REQUEST['search_tag'] = 'tag_search';
+	$_REQUEST['search_module'] = 'All';
+	unset($_REQUEST['search_onlyin']);
+}
 $curModule = vtlib_purify($_REQUEST['module']);
 $search_tag = isset($_REQUEST['search_tag']) ? vtlib_purify($_REQUEST['search_tag']) : '';
 

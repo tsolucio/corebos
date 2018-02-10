@@ -101,34 +101,26 @@
 											</li>
 										</ul>
 
-										<div id="tab--scoped-1" role="tabpanel" aria-labelledby="tab--scoped-1__item" class="slds-tabs--scoped__content slds-truncate">
-											<!-- Content here -->
-											<table class="slds-table slds-no-row-hover slds-table-moz" style="border-collapse: separate;border-spacing: 1rem 2rem;" ng-controller="editViewng">
-												<!-- included to handle the edit fields based on ui types -->
-												{foreach key=header item=data from=$BLOCKS}
-												<tr class="blockStyleCss">
-													<td class="detailViewContainer" valign="top">
-														<!-- This is added to display the existing comments -->
-														{if $header eq $APP.LBL_COMMENTS || (isset($MOD.LBL_COMMENT_INFORMATION) && $header eq $MOD.LBL_COMMENT_INFORMATION)}
-														<div class="flexipageComponent" style="background-color: #fff;">
-															<article class="slds-card container MEDIUM forceBaseCard runtime_sales_mergeMergeCandidatesPreviewCard" aria-describedby="header" style="margin: 0;">
-																<div class="slds-card__header slds-grid">
-																	<header class="slds-media slds-media--center slds-has-flexi-truncate">
-																		<div class="slds-media__body">
-																			<h2 class="header-title-container" >
-																				<span class="slds-text-heading--small slds-truncate actionLabel">
-																					<b>{if isset($MOD.LBL_COMMENT_INFORMATION)}{$MOD.LBL_COMMENT_INFORMATION}{else}{$APP.LBL_COMMENTS}{/if}</b>
-																				</span>
-																			</h2>
-																		</div>
-																	</header>
-																</div>
-																<div class="slds-card__body slds-card__body--inner">
-																	<div class="commentData">{$COMMENT_BLOCK}</div>
-																</div>
-															</article>
-														</div>
-														{/if}
+						<td align=left>
+							{*<!-- content cache -->*}
+					
+							<table border=0 cellspacing=0 cellpadding=0 width=100%>
+							   <tr>
+								<td style="padding:10px">
+									<!-- General details -->
+									<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small createview_table">
+									   <tr>
+										<td  colspan=4 style="padding:5px">
+											<div align="center">
+												{if $MODULE eq 'Webmails'}
+													<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.action.value='Save';this.form.module.value='Webmails';this.form.send_mail.value='true';this.form.record.value='{$ID}'" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
+												{else}
+													<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmButton small save" onclick="this.form.action.value='Save'; displaydeleted(); return formValidate();" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
+												{/if}
+													<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="{if isset($smarty.request.Module_Popup_Edit)}window.close(){else}window.history.back(){/if};" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
+											</div>
+										</td>
+									   </tr>
 
 														<div class="slds-truncate" id="tbl{$header|replace:' ':''}Head">
 															{if isset($MOD.LBL_ADDRESS_INFORMATION) && $header==$MOD.LBL_ADDRESS_INFORMATION && ($MODULE == 'Accounts' || $MODULE == 'Quotes' || $MODULE == 'PurchaseOrder' || $MODULE == 'SalesOrder'|| $MODULE == 'Invoice') && $SHOW_COPY_ADDRESS eq 1}
@@ -257,8 +249,11 @@
 										{else}
 											<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="slds-button slds-button_success slds-button--small" onclick="this.form.action.value='Save';  displaydeleted();return formValidate();" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
 										{/if}
-											<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="slds-button slds-button--destructive slds-button--small" onclick="{if isset($smarty.request.Module_Popup_Edit)}window.close(){else}window.history.back(){/if};" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
-									</div>
+										<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="{if isset($smarty.request.Module_Popup_Edit)}window.close(){else}window.history.back(){/if};" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
+											</div>
+										</td>
+									   </tr>
+									</table>
 								</td>
 							</tr>
 							<!-- End Bottom buttons -->

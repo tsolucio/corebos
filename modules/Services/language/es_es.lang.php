@@ -6,16 +6,15 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * 
  *  ********************************************************************************
  *  Module       : Services
  *  Language     : Español
- *  Version      : 5.4.0 
+ *  Version      : 5.4.0
  *  Last change  : 2012-02-27
  *  Author       : Joe Bordes JPL TSolucio, S.L.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'Services'=>'Servicios',
 'SINGLE_Services'=>'Servicio',
 'LBL_LIST_SERVICE_NAME'=>'Nombre Servicio',
@@ -127,5 +126,4 @@ $mod_strings = Array(
 'Services ID'=>'Id Servicio',
 'Divisible'=>'Divisible',
 );
-
 ?>

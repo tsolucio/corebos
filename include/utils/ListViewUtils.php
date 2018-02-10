@@ -174,14 +174,15 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 								$actionsURL = '&actions=' . vtlib_purify($_REQUEST['actions']);
 							}
 							if (empty($_REQUEST['header'])) {
-								$moduleLabel = getTranslatedString($module, $module);
+								$moduleLabel = $module;
+								$moduleHeader = getTranslatedString($module, $module);
 							} else {
-								$moduleLabel = $_REQUEST['header'];
+								$moduleLabel = $moduleHeader = vtlib_purify($_REQUEST['header']);
 							}
-							$moduleLabel = str_replace(' ', '', $moduleLabel);
+							$moduleLabel = str_replace(' ', ':', $moduleLabel);
 							$name = "<a href='javascript:void(0);' onClick='loadRelatedListBlock" .
 									"(\"module=$relatedmodule&action=" . $relatedmodule . "Ajax&" .
-									"file=DetailViewAjax&ajxaction=LOADRELATEDLIST&header=" . $moduleLabel .
+									"file=DetailViewAjax&ajxaction=LOADRELATEDLIST&header=" . $moduleHeader .
 									"&order_by=$col&record=$relatedlist&sorder=$temp_sorder$relationURL" .
 									"$actionsURL\",\"tbl_" . $relatedmodule . "_$moduleLabel\"," .
 									"\"$relatedmodule" . "_$moduleLabel\");' class='listFormHeaderLinks'>" . $lbl_name . "" . $arrow . "</a>";
@@ -383,6 +384,7 @@ function getNavigationValues($display, $noofrows, $limit) {
 		$previous = 0;
 	}
 	$last = $paging;
+	$first = '';
 	if ($noofrows < $limit) {
 		$first = '';
 	} elseif ($noofrows != $limit) {
@@ -730,7 +732,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 								$fileid = $adb->query_result($fileidres, 0, 'attachmentsid');
 								if ($file_name != '' && $file_status == 1) {
 									if ($download_type == 'I') {
-										$fld_value = "<a href='index.php?module=uploads&action=downloadfile&entityid=$notes_id&fileid=$fileid' title='" . getTranslatedString("LBL_DOWNLOAD_FILE", $module) . "' onclick='javascript:dldCntIncrease($notes_id);'>" . textlength_check($fld_value) . "</a>";
+										$fld_value = "<a href='index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=downloadfile&entityid=$notes_id&fileid=$fileid' title='" . getTranslatedString("LBL_DOWNLOAD_FILE", $module) . "' onclick='javascript:dldCntIncrease($notes_id);'>" . textlength_check($fld_value) . "</a>";
 									} elseif ($download_type == 'E') {
 										$fld_value = "<a target='_blank' href='$file_name' onclick='javascript:dldCntIncrease($notes_id);' title='" . getTranslatedString("LBL_DOWNLOAD_FILE", $module) . "'>" . textlength_check($fld_value) . "</a>";
 									} else {
@@ -924,7 +926,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 			$list_block[$entity_id] = $list_header;
 		}
 	}
-	if (count($totals) > 0) {
+	if (count($totals) > 0 && GlobalVariable::getVariable('Application_ListView_Sum_Currency', 1, $module)) {
 		$trow = array();
 		foreach ($focus->list_fields as $name => $tableinfo) {
 			$field_name = $focus->list_fields_name[$name];
@@ -1338,7 +1340,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 			}
 		}
 	} elseif ($uitype == 15 || ($uitype == 55 && $fieldname == "salutationtype") || $uitype == 16 || $uitype == 1613 || $uitype == 1614 || $uitype == 1615) {
-		$value = getTranslatedString($temp_val, $currentModule);
+		$value = getTranslatedString($temp_val, $module);
 		$value = textlength_check($value);
 	} elseif ($uitype == 71 || $uitype == 72) {
 		if ($temp_val != '') {
@@ -1417,16 +1419,9 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		else
 			$value = '';
 	}
-	elseif ($uitype == 59) {
-		if ($temp_val != '') {
-			$value = getProductName($temp_val);
-		} else {
-			$value = '';
-		}
-	}
 	elseif ($uitype == 61) {
 		$attachmentid = $adb->query_result($adb->pquery("SELECT * FROM vtiger_seattachmentsrel WHERE crmid = ?", array($entity_id)), 0, 'attachmentsid');
-		$value = '<a href = "index.php?module=uploads&action=downloadfile&return_module=' . $module . '&fileid=' . $attachmentid . '&filename=' . $temp_val . '">' . textlength_check($temp_val) . '</a>';
+		$value = '<a href = "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=downloadfile&return_module=' . $module . '&fileid=' . $attachmentid . '&filename=' . $temp_val . '">' . textlength_check($temp_val) . '</a>';
 	} elseif ($uitype == 62) {
 		$parentid = $adb->query_result($list_result, $list_result_count, "parent_id");
 		$parenttype = $adb->query_result($list_result, $list_result_count, "parent_type");
@@ -2181,8 +2176,10 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 				$value = textlength_check($value);
 			}
 		} else {
-			$value = $temp_val;
-			$value = textlength_check($value);
+			$value = textlength_check($temp_val);
+			if (substr($value, -3) == '...') {
+				$value = '<span title="'.$field_val.'">'.$value.'<span>';
+			}
 		}
 	}
 
@@ -3500,7 +3497,7 @@ function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $
 			"ajxaction=LOADRELATEDLIST&header={$header}&relation_id={$relatedListRow['relation_id']}" .
 			"&actions={$actions}&{$url_qry}";
 
-	$formattedHeader = str_replace(' ', '', $header);
+	$formattedHeader = str_replace(' ', ':', $related_module);
 	$target = 'tbl_' . $module . '_' . $formattedHeader;
 	$imagesuffix = $module . '_' . $formattedHeader;
 
@@ -3893,7 +3890,7 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '
 	if(isset($_REQUEST['cbcustompopupinfo']) && $_REQUEST['cbcustompopupinfo'] != ''){
 		$cbcustompopupinfo = explode(';',$_REQUEST['cbcustompopupinfo']);
 		foreach ($cbcustompopupinfo as $param_name) {
-			$url_string .= '&'.$param_name.'=' . (isset($_REQUEST[$param_name]) ? vtlib_purify($_REQUEST[$param_name]) : '');
+			$url_string .= '&'.$param_name.'=' . (isset($_REQUEST[$param_name]) ? urlencode(vtlib_purify($_REQUEST[$param_name])) : '');
 		}
 	}
 

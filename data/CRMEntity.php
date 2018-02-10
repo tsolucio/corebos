@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-include_once('config.php');
+include_once('config.inc.php');
 require_once('include/logging.php');
 require_once('data/Tracker.php');
 require_once('include/utils/utils.php');
@@ -645,7 +645,7 @@ class CRMEntity {
 			}
 			if (isset($this->column_fields[$fieldname])) {
 				if ($uitype == 56) {
-					if ($this->column_fields[$fieldname] == 'on' || $this->column_fields[$fieldname] == 1) {
+					if ($this->column_fields[$fieldname] === 'on' || $this->column_fields[$fieldname] == 1) {
 						$fldvalue = '1';
 					} else {
 						$fldvalue = '0';
@@ -811,6 +811,7 @@ class CRMEntity {
 	/** Function to retrieve maximum decimal values of currency field on save
 	 * @param $fieldname currency field name
 	 * @param $fldvalue currency value they want to save
+	 * @param $tabid tabID of the module the field is on
 	 * @returns field value from database with maximum decimals if it is the same as value being saved
 	 */
 	public function adjustCurrencyField($fieldname, $fldvalue, $tabid) {
@@ -2164,6 +2165,11 @@ class CRMEntity {
 		$query .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
 		$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
 		$query .= " WHERE vtiger_crmentity.deleted = 0 AND (vtiger_crmentityrel.crmid = $id OR vtiger_crmentityrel.relcrmid = $id)";
+
+		if (GlobalVariable::getVariable('Debug_RelatedList_Query', '0') == '1') {
+			echo '<br>'.$query.'<br>';
+		}
+
 		$return_value = GetRelatedList($currentModule, $related_module, $other, $query, $button, $returnset);
 
 		if ($return_value == null) {
@@ -2788,13 +2794,18 @@ class CRMEntity {
 		$prifieldname = $fields[0][0];
 		$secfieldname = $fields[0][1];
 		$tmpname = $pritablename . 'tmp' . $secmodule;
+		if ($pritablename != $table_name && substr($pritablename, -2)=='cf') { // The relation field exists in custom field
+			$condtable = $table_name;
+		} else {
+			$condtable = $pritablename;
+		}
 		$condition = "";
 		if (!empty($tables[1]) && !empty($fields[1])) {
 			$condvalue = $tables[1] . "." . $fields[1];
-			$condition = "$pritablename.$prifieldname=$condvalue";
+			$condition = "$condtable.$prifieldname=$condvalue";
 		} else {
 			$condvalue = $table_name . "." . $column_name;
-			$condition = "$pritablename.$secfieldname=$condvalue";
+			$condition = "$condtable.$secfieldname=$condvalue";
 		}
 
 		$selectColumns = "$table_name.*";
@@ -3156,14 +3167,14 @@ class CRMEntity {
 	 */
 	public function getSortOrder() {
 		global $log,$currentModule;
-		$log->debug("Entering getSortOrder() method ...");
+		$log->debug('Entering getSortOrder() method ...');
 		$sorder = $this->default_sort_order;
 		if (isset($_REQUEST['sorder'])) {
 			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
 		} elseif (!empty($_SESSION[$currentModule.'_Sort_Order'])) {
 			$sorder = $this->db->sql_escape_string($_SESSION[$currentModule.'_Sort_Order']);
 		}
-		$log->debug("Exiting getSortOrder() method ...");
+		$log->debug('Exiting getSortOrder() method ...');
 		return $sorder;
 	}
 
@@ -3173,14 +3184,13 @@ class CRMEntity {
 	 */
 	public function getOrderBy() {
 		global $log, $currentModule;
-		$log->debug("Entering getOrderBy() method ...");
+		$log->debug('Entering getOrderBy() method ...');
 
-		$use_default_order_by = '';
+		$order_by = '';
 		if (GlobalVariable::getVariable('Application_ListView_Default_Sorting', 0, $currentModule)) {
-			$use_default_order_by = $this->default_order_by;
+			$order_by = $this->default_order_by;
 		}
 
-		$order_by = $use_default_order_by;
 		if (isset($_REQUEST['order_by'])) {
 			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
 		} elseif (!empty($_SESSION[$currentModule.'_Order_By'])) {

@@ -361,10 +361,9 @@ function server_check(){
 
 function delAttachments(id) {
 	jQuery.ajax({
-		method:"POST",
-		url:'index.php?module=Contacts&action=ContactsAjax&file=DelImage&attachmodule=Emails&recordid='+id
+		method:'POST',
+		url:'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=delImage&attachmodule=Emails&recordid='+id
 	}).done(function(response) {
 		jQuery('#row_'+id).fadeOut();
 	});
 }
-

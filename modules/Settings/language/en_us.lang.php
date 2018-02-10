@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Settings',
 'LBL_MODULE_TITLE'=>'Settings: Home',
 'LBL_LIST_CONTACT_ROLE'=>'Role',
@@ -299,7 +299,7 @@ $mod_strings = Array(
 'LBL_OTHER_SETTINGS'=>'Other Settings',
 'LBL_SCROLL'=>'[Scroll to Top]',
 
-'LBL_INV_NOT_DESC'=>'The following is the list of notifications that are sent to the product handler regarding the demand and the current quantity in hand during the creation of a Quote, SalesOrder and Invoice.',
+'LBL_INV_NOT_DESC'=>'The following is the list of notifications that are sent to the product handler regarding the demand and the current quantity in hand during the creation of a Quote, Sales Order and Invoice.',
 
 'InvoiceNotification'=>'Product Stock Notification during Invoice Generation',
 'InvoiceNotificationDescription'=>'When the product stock level goes below the re-order level, notification will be sent to the product handler',
@@ -307,7 +307,7 @@ $mod_strings = Array(
 'PriceBook'=>'PriceBook',
 'Quotes'=>'Quote',
 'PurchaseOrder'=>'Purchase Order',
-'SalesOrder'=>'SalesOrder',
+'SalesOrder'=>'Sales Order',
 'Invoice'=>'Invoice',
 'LBL_FRONT_LOGO' => 'Front Logo',
 'LBL_FAVICON_LOGO' => 'Favicon Logo',
@@ -653,16 +653,16 @@ $mod_strings = Array(
 'LBL_CUSTOMQUOTE_NUMBER'=>'Custom Quote Number',
 'LBL_QUOTE_NUMBER_PREVIEW'=>'Preview',
 'LBL_QUOTE_NUMBER_BUTTON'=>'Update Quote Number',
-'LBL_CUSTOM_SO_NUMBER_VIEW'=>'SalesOrder Number Customization',
-'LBL_CUSTOMSO_STRING'=>'Custom SalesOrder String',
-'LBL_CUSTOMSO_NUMBER'=>'Custom SalesOrder Number',
+'LBL_CUSTOM_SO_NUMBER_VIEW'=>'Sales Order Number Customization',
+'LBL_CUSTOMSO_STRING'=>'Custom Sales Order String',
+'LBL_CUSTOMSO_NUMBER'=>'Custom Sales Order Number',
 'LBL_SO_NUMBER_PREVIEW'=>'Preview',
-'LBL_SO_NUMBER_BUTTON'=>'Update SalesOrder Number',
-'LBL_CUSTOM_PO_NUMBER_VIEW'=>'PurchaseOrder Number Customization',
-'LBL_CUSTOMPO_STRING'=>'Custom PurchaseOrder String',
-'LBL_CUSTOMPO_NUMBER'=>'Custom PurchaseOrder Number',
+'LBL_SO_NUMBER_BUTTON'=>'Update Sales Order Number',
+'LBL_CUSTOM_PO_NUMBER_VIEW'=>'Purchase Order Number Customization',
+'LBL_CUSTOMPO_STRING'=>'Custom Purchase Order String',
+'LBL_CUSTOMPO_NUMBER'=>'Custom Purchase Order Number',
 'LBL_PO_NUMBER_PREVIEW'=>'Preview',
-'LBL_PO_NUMBER_BUTTON'=>'Update PurchaseOrder Number',
+'LBL_PO_NUMBER_BUTTON'=>'Update Purchase Order Number',
 
 // Added for Multi-Currency Support
 'LBL_TRANSFER_CURRENCY'=>'Transfer Currency',
@@ -947,5 +947,6 @@ $mod_strings = Array(
 'LeaveEmptyForUserEmail' => 'Leave empty to use your user email',
 'LBL_OPENSSL_SUPPORT' => 'OpenSSL Support',
 'LBL_IMAP_SUPPORT' => 'IMAP Support',
+'StorageSpaceUsage' => 'Storage Space Usage',
 );
 ?>

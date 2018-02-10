@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- * Contributor: Ranieri Slemer, translate missing terms to brazilian portuguese | Ago 2016 | www.ecrmweb.com.br
+ * Contributor: Ranieri Slemer, translate missing terms to brazilian portuguese | 22-Jan-2018 | www.ecrmweb.com.br
  ********************************************************************************/
 
 $mod_strings = array(
@@ -45,6 +45,9 @@ $mod_strings = array(
 'LBL_NEW_USER_BUTTON_TITLE'=>'Novo Usuário [Alt+N]',
 'LBL_NEW_USER_BUTTON_LABEL'=>'Novo Usuário',
 'LBL_NEW_USER_BUTTON_KEY'=>'N',
+'LBL_EXPORT_USER_BUTTON_TITLE' => 'Exportar usuários [Alt+E]',
+'LBL_EXPORT_USER_BUTTON_LABEL' => 'Exportar usuários',
+'LBL_EXPORT_USER_BUTTON_KEY' => 'E',
 'LBL_DATE_FORMAT'=>'Formato data',
 
 'LBL_ERROR'=>'Erro:',
@@ -647,8 +650,8 @@ $mod_strings = array(
 '15 Minutes' => '15 Minutos',
 '30 Minutes' => '30 Minutos',
 '45 Minutes' => '45 Minutos',
-'1 Hour' => '1 Hour',
-'1 Day' => '1 Day',
+'1 Hour' => '1 Hora',
+'1 Day' => '1 Dia',
 'LBL_EMAILS_PER_PAGE'=>'Email por Página',
 
 'LBL_ENTER_PROFILE'=>'Digite o Nome do Perfil',
@@ -802,19 +805,23 @@ $mod_strings = array(
 'hcylinder'=>'Cilindro Horizontal',
 'vcylinder'=>'Cilindro Vertical',
 'LBL_SEND_EMAIL_TO_SENDER' => 'Enviar uma cópia do eMail',
-'PASSWORD REQUIREMENTS' => 'EXIGÊNCIAS PARA A SENHA',
-'REQUIRED' => 'EXIGIDO',
+'PASSWORD REQUIREMENTS' => 'Exigências para a Senha',
+'REQUIRED' => 'Exigido',
 'Min. 8 characters' => 'Min. 8 caracteres',
-'Contains3of4' => 'SENHA CONTÉM AO MENOS TRES DOS SEGUINTES QUATRO GRUPOS DE CARACTERES',
+'Contains3of4' => 'Senha deve conter ao menos três dos seguintes grupos de caracteres',
 'Min. 1 uppercase' => 'Min. 1 letra maiúscula',
 'Min. 1 lowercase' => 'Min. 1 letra minúscula',
 'Min. 1 number' => 'Min. 1 número',
 'Min. 1 special character' => 'Min. 1 caracter especial , ! ? , ; - @ #',
 'Generate password' => 'Gerar senha',
+'ERR_USER_LOGGED_IN' => 'O nome de usuário está atualmente em uso em outro computador. Terminar a sessão em uso ou inserir um nome de usuário diferente.',
+'ERR_USER_CAN_UNBLOCK' => 'Uma sessão inativa pelo mesmo nome de usuário está bloqueando sua (s) tentativa (s) de login.',
+'LBL_USERLOGGEDOUTOK' => 'O usuário foi desconectado corretamente.',
+'LBL_USERLOGGEDOUTNOK' => 'O usuário não pode ser desconectado.',
+'LBL_UNBLOCK_USR' => 'Desbloquear a sessão para iniciar nova sessão?',
 // LDAP
-'LBL_QUERY' => 'Query',
-'LBL_FORE_LASTNAME' => 'First or Last name',
-'LBL_NO_LDAP_MATCHES' => 'No matches found on the LDAP server!',
+'LBL_QUERY' => 'Pergunta',
+'LBL_FORE_LASTNAME' => 'Nome ou Sobrenome',
+'LBL_NO_LDAP_MATCHES' => 'Nenhuma correspondência encontrada no servidor LDAP!',
 );
-
 ?>

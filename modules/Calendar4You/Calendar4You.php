@@ -571,14 +571,21 @@ public function setgoogleaccessparams($userid){
 	function SaveView($Type_Ids, $Users_Ids, $all_users, $Load_Event_Status, $Load_Modules, $Load_Task_Priority) {
 		global $adb,$current_user;
 		$Save = array('1' => $Type_Ids, '2' => $Users_Ids, '3' => $Load_Event_Status, '4' => $Load_Modules, '5' => $Load_Task_Priority);
+		$block_status = json_decode($_REQUEST['block_status'],true);
+		$Save['6'] = array(vtlib_purify($block_status['event_type']));
+		$Save['7'] = array(vtlib_purify($block_status['module_type']));
+		$Save['8'] = array(vtlib_purify($block_status['et_status']));
+		$Save['9'] = array(vtlib_purify($block_status['task_priority']));
+		$d_sql = 'DELETE FROM its4you_calendar4you_view WHERE userid = ? AND type = ?';
+		$i_sql = 'INSERT its4you_calendar4you_view (userid,type,parent) VALUES (?,?,?)';
 		foreach ($Save AS $type => $Save_Array) {
 			if (($type == 2 && $all_users) || $type != 2) {
-				$d_sql = 'DELETE FROM its4you_calendar4you_view WHERE userid = ? AND type = ?';
 				$adb->pquery($d_sql,array($current_user->id,$type));
 				if (count($Save_Array) > 0) {
-					$i_sql = 'INSERT its4you_calendar4you_view (userid,type,parent) VALUES (?,?,?)';
 					foreach ($Save_Array AS $parent) {
-						if ($parent != '') $adb->pquery($i_sql,array($current_user->id,$type,$parent));
+						if ($parent != '') {
+							$adb->pquery($i_sql, array($current_user->id, $type, $parent));
+						}
 					}
 				}
 			}
@@ -593,7 +600,11 @@ public function setgoogleaccessparams($userid){
 		$num_rows = $adb->num_rows($result);
 		if ($num_rows > 0) {
 			while ($row = $adb->fetchByAssoc($result)) {
-				$this->View[$row['type']][$row['parent']] = true;
+				if ($row['type']>5 && $row['type']<10) {
+					$this->View[$row['type']] = $row['parent'];
+				} else {
+					$this->View[$row['type']][$row['parent']] = true;
+				}
 			}
 		}
 		return $this->View;

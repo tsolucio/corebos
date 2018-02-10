@@ -99,8 +99,9 @@
 										{/if}
 										{if $_FIELD->uitype() eq '252' && $_FIELD->name() eq 'followupdt' && $_MODULE->name() eq 'cbCalendar'}
 											<label for="{$_FIELD->name()}">{$_FIELD->label()|@getTranslatedString:$_MODULE->name()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
-											<input data-mini="true" type="date" name="{$_FIELD->name()}" id="{$_FIELD->name()}" value="{$_FIELD->value()}" {if $_FIELD->ismandatory() eq 'M'}class="required"{/if} />
-											<input type="time" name="followupdt_time" id="followupdt_time" value="{$_FIELD->value()}" />
+											{assign var=fldtime value=" "|explode:$_FIELD->value()}
+											<input data-mini="true" type="date" name="{$_FIELD->name()}" id="{$_FIELD->name()}" value="{$fldtime[0]}" {if $_FIELD->ismandatory() eq 'M'}class="required"{/if} />
+											<input type="time" name="followupdt_time" id="followupdt_time" value="{$fldtime[1]}" />
 											<div id="format_note_followupdt_time" style="margin-bottom:25px;font-style:italic;font-size:10px;display:none;">Format: HH:MM (24 H)</div>
 										{/if}
 								{/if}	
@@ -211,7 +212,7 @@
 										<input type="checkbox" name="{$_FIELD->name()}" id="{$_FIELD->label()}" class="custom" />
 									</div>
 								{/if}
-								{if ($_FIELD->uitype() eq '10')||  ($_FIELD->uitype() eq '51')||  ($_FIELD->uitype() eq '59')||  ($_FIELD->uitype() eq '68')}
+								{if ($_FIELD->uitype() eq '10')||  ($_FIELD->uitype() eq '51')|| ($_FIELD->uitype() eq '68')}
 									<div class="ui-field-contain">
 										<div>
 										<label for="{$_FIELD->name()}_selector">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>

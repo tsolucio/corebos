@@ -130,7 +130,7 @@ class BURAK_Gantt {
 		$this->colors["month"] = "F0F0F0";
 		$this->colors["day"] = "E1E1E1";
 		$this->colors["day"] = "FFFFFF";
-		$this->colors["weekend"] = "FAFAFA";
+		$this->colors["weekend"] = "CFCFCF";
 		$this->colors["today"] = "F7F5DC";
 		$this->colors["grid"] = "E6E6E6";
 		$this->colors["task"] = "C8C8C8";

@@ -36,7 +36,7 @@ foreach ($xmlreader->vtcrm_profile as $profile) {
 	$pfrs = $adb->pquery('select count(*) as cnt from vtiger_profile where profilename=?',array($prfname));
 	$pfcnt = $adb->fetch_array($pfrs);
 	if (!empty($pfcnt['cnt'])) {
-		echo("$prfname already exists!");
+		echo "$prfname already exists!";
 		continue;
 	}
 	$profile_id = $adb->getUniqueID("vtiger_profile");

@@ -8,15 +8,13 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 
 'LBL_MODULE_NAME'=>'Configurações',
 
 'LBL_MODULE_TITLE'=>'Configurações: Principal',
 
 'LBL_LIST_CONTACT_ROLE'=>'Função',
-
-
 
 'LBL_LIST_LAST_NAME'=>'Sobrenome',
 
@@ -1157,5 +1155,6 @@ $mod_strings = Array(
 'LeaveEmptyForUserEmail' => 'Leave empty to use your user email',
 'LBL_OPENSSL_SUPPORT' => 'Suporte OpenSSL',
 'LBL_IMAP_SUPPORT' => 'Suporte IMAP',
+'StorageSpaceUsage' => 'Storage Space Usage',
 );
 ?>

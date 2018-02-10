@@ -85,28 +85,28 @@ $wsrecid = vtws_getEntityId($formodule).'x'.$forrecord;
 	</div>
 </div>
 <div class="fieldrow">
-	<span class="fieldlabel"><?php echo getTranslatedString('Subject','Documents'); ?></span>
+	<span class="fieldlabel"><?php echo getTranslatedString('Subject', 'Documents'); ?></span>
 	<span class="fieldinput"><input type="text" id="docname" name="docname"></span>
 </div>
 <div class="fieldrow">
-	<span class="fieldlabel"><?php echo getTranslatedString('LBL_FILE_NAME','Documents'); ?></span>
+	<span class="fieldlabel"><?php echo getTranslatedString('LBL_FILE_NAME', 'Documents'); ?></span>
 	<span class="fieldinput"><input type="text" id="filename" name="filename" value="Photo2Document.png"></span>
 </div>
 <div class="fieldrow">
-	<span class="fieldlabel"><?php echo getTranslatedString('LBL_FOLDER_NAME','Documents'); ?></span>
+	<span class="fieldlabel"><?php echo getTranslatedString('LBL_FOLDER_NAME', 'Documents'); ?></span>
 	<span class="fieldinput"><select id="docfolder" name="docfolder">
 <?php
 $sql='select foldername,folderid from vtiger_attachmentsfolder order by foldername';
-$res=$adb->pquery($sql,array());
-for($i=0;$i<$adb->num_rows($res);$i++) {
-	echo '<option value="'.$adb->query_result($res,$i,'folderid').'">'.$adb->query_result($res,$i,'foldername').'</option>';
+$res=$adb->pquery($sql, array());
+for ($i=0; $i<$adb->num_rows($res); $i++) {
+	echo '<option value="'.$adb->query_result($res, $i, 'folderid').'">'.$adb->query_result($res, $i, 'foldername').'</option>';
 }
 ?>
 	</select>
 	</span>
 </div>
 <div class="fieldrow">
-	<span class="fieldlabel"><?php echo getTranslatedString('LBL_DESCRIPTION','Documents'); ?></span>
+	<span class="fieldlabel"><?php echo getTranslatedString('LBL_DESCRIPTION', 'Documents'); ?></span>
 	<span class="fieldinput"><textarea id="docdesc" name="docdesc" row=3></textarea></span>
 </div>
 <div align="center" style="padding:10px;">
@@ -159,7 +159,7 @@ function afterCreateRecord(result, args) {
 	}
 }
 
-if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 	// Not adding `{ audio: true }` since we only want video now
 	navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
 		video.src = window.URL.createObjectURL(stream);

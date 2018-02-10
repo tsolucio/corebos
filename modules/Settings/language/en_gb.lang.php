@@ -833,7 +833,8 @@ $mod_strings = array(
 	// language translation strings
 	'SendEmailFrom' => 'Send Email From',
 	'LeaveEmptyForUserEmail' => 'Leave empty to use your user email',
-    'LBL_OPENSSL_SUPPORT' => 'OpenSSL Support',
-    'LBL_IMAP_SUPPORT' => 'IMAP Support',
+	'LBL_OPENSSL_SUPPORT' => 'OpenSSL Support',
+	'LBL_IMAP_SUPPORT' => 'IMAP Support',
+	'StorageSpaceUsage' => 'Storage Space Usage',
 );
 ?>

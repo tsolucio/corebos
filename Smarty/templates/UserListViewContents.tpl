@@ -10,42 +10,55 @@
 -->*}
 <script type="text/javascript" src="include/js/ListView.js"></script>
 
-<div class="forceRelatedListSingleContainer">
-	<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
-		<div class="slds-card__header slds-grid">
-			<header class="slds-media slds-media--center slds-has-flexi-truncate">
-				<div class="slds-media__body">
-					<h2>
-						<span class="slds-text-title--caps slds-truncate slds-m-right--xx-small actionLabel">
-							<strong>{$MOD.LBL_USERS_LIST}</strong>
-						</span>
-					</h2>
-				</div>
-			</header>
-			<div class="slds-no-flex">
-				<div class="actionsContainer">
-					<input title="{$CMOD.LBL_NEW_USER_BUTTON_TITLE}" accessyKey="{$CMOD.LBL_NEW_USER_BUTTON_KEY}" type="submit" name="button" value="{$CMOD.LBL_NEW_USER_BUTTON_LABEL}" class="slds-button slds-button--small slds-button_success">
-				</div>
-			</div>
-		</div>
-	</article>
-</div>
+<table border=0 cellspacing=0 cellpadding=5 width=100% class="listTableTopButtons">
+<tr>
+	<td class="small" nowrap align="left">
+		{$recordListRange}
+	</td>
+	<!-- Page Navigation -->
+	<td nowrap width="100%" align="center">
+		<table border=0 cellspacing=0 cellpadding=0 class="small">
+			<tr>{$NAVIGATION}</tr>
+		</table>
+	</td>
+	<td class=small width="30%" align="right"><input title="{$CMOD.LBL_NEW_USER_BUTTON_TITLE}" accessyKey="{$CMOD.LBL_NEW_USER_BUTTON_KEY}" type="submit" name="button" value="{$CMOD.LBL_NEW_USER_BUTTON_LABEL}" class="crmButton create small"></td>
+</tr>
 
 
-<table class="slds-table slds-no-row-hover slds-table--fixed-layout listTableTopButtons">
-	<tr class="slds-line-height--reset">
-		<td>
-			{$recordListRange}
-		</td>
-		<!-- Page Navigation -->
-		{$NAVIGATION}
-	</tr>
-	{if !empty($ERROR_MSG)}
-	<tr class="slds-line-height--reset">
-		{$ERROR_MSG}
-	</tr>
+<table border=0 cellspacing=0 cellpadding=5 width=100% class="listTable">
+<tr>
+	<td class="colHeader small" valign=top>#</td>
+	<td class="colHeader small" valign=top>{$APP.Tools}</td>
+	<td class="colHeader small" valign=top>{$LIST_HEADER.3}</td>
+	<td class="colHeader small" valign=top>{$LIST_HEADER.5}</td>
+	<td class="colHeader small" valign=top>{$LIST_HEADER.7}</td>
+	<td class="colHeader small" valign=top>{$LIST_HEADER.6}</td>
+	<td class="colHeader small" valign=top>{$LIST_HEADER.4}</td>
+</tr>
+	{foreach name=userlist item=listvalues key=userid from=$LIST_ENTRIES}
+		{assign var=flag value=0}
+<tr>
+	<td class="listTableRow small" valign=top>{math equation="x + y" x=$smarty.foreach.userlist.iteration y=$PAGE_START_RECORD}</td>
+	<td class="listTableRow small" nowrap valign=top><a href="index.php?action=EditView&return_action=ListView&return_module=Users&module=Users&parenttab=Settings&record={$userid}"><img src="{'editfield.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_EDIT_BUTTON}" title="{$APP.LBL_EDIT_BUTTON}" border="0"></a>
+	{foreach item=name key=id from=$USERNODELETE}
+		{if $userid eq $id || $userid eq $CURRENT_USERID}
+			{assign var=flag value=1}
+		{/if}
+	{/foreach}
+	{if $flag eq 0 && $listvalues.4|@strip_tags|@trim eq 'Active'}
+		<img src="{'delete.gif'|@vtiger_imageurl:$THEME}" onclick="deleteUser(this,'{$userid}')" border="0"  alt="{$APP.LBL_DELETE_BUTTON}" title="{$APP.LBL_DELETE_BUTTON}" style="cursor:pointer;"/>
 	{/if}
-</table>
+	<a href="index.php?action=EditView&return_action=ListView&return_module=Users&module=Users&parenttab=Settings&record={$userid}&isDuplicate=true"><img src="{'settingsActBtnDuplicate.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_DUPLICATE_BUTTON}" title="{$APP.LBL_DUPLICATE_BUTTON}" border="0"></a>
+</td>
+	<td class="listTableRow small" valign=top><b><a href="index.php?module=Users&action=DetailView&parenttab=Settings&record={$userid}"> {$listvalues.3} </a></b><br><a href="index.php?module=Users&action=DetailView&parenttab=Settings&record={$userid}"> {$listvalues.1} </a> ({$listvalues.2})</td>
+	<td class="listTableRow small" valign=top>{$listvalues.5}&nbsp;</td>
+	<td class="listTableRow small" valign=top>{$listvalues.7}&nbsp;</td>
+	<td class="listTableRow small" valign=top>{$listvalues.6}&nbsp;</td>
+	{if $listvalues.4|@strip_tags|@trim eq 'Active'}
+	<td class="listTableRow small active" valign=top>{$APP.Active}</td>
+	{else}
+	<td class="listTableRow small inactive" valign=top>{$APP.Inactive}</td>
+	{/if}	
 
 <table class="slds-table slds-table--bordered listTable">
 	<thead>

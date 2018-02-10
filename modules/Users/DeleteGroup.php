@@ -19,7 +19,7 @@ if ($assignType == 'T') {
 	$transferId = vtlib_purify($_REQUEST['transfer_user_id']);
 }
 
-deleteGroup($del_id,$transferId);
+deleteGroup($del_id, $transferId);
 
-header("Location: index.php?action=listgroups&module=Settings&parenttab=Settings");
+header('Location: index.php?action=listgroups&module=Settings&parenttab=Settings');
 ?>

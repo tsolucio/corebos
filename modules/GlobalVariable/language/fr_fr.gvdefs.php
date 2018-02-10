@@ -70,6 +70,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Si la valeur est (1), le résultat de la requête SQL pour trouver les enregistrements en affichage par liste sera affiché à l\'écran.',
 ),
+'Debug_RelatedList_Query' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Debug',
+	'values' => '0 | 1',
+	'definition' => 'If the value of the variable is 1 it will be written on screen, the record query for the related list.',
+),
 'Debug_Popup_Query' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Booléen',
@@ -273,6 +280,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Compute list view record count while loading listview. The default is 0',
 ),
+'Application_ListView_Sum_Currency' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Performance',
+	'values' => '0 | 1',
+	'definition' => 'Show total sum of currency columns. The default is 1',
+),
 'Application_DetailView_Record_Navigation' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
@@ -461,6 +475,27 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => '0 | 1',
 	'definition' => 'Dans le module "Documents", les documents sont affichés sous forme de liste (0) ou par répertoire (1). La valeur par défaut est (1).',
+),
+'Document_CreateSelectContactFolder' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'When creating a document from a Contact, create a new folder with the name of the contact and select it by default.',
+),
+'Document_CreateSelectAccountFolder' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'When creating a document from an Account, create a new folder with the name of the account and select it by default.',
+),
+'Document_CreateSelectAccountFolderForContact' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'When creating a document from a Contact, create a new folder with the name of the related account and select it by default. This variable overrides Document_CreateSelectContactFolder',
 ),
 'Inventory_Tax_Type_Default' => array(
 	'status' => 'Implémenté',
@@ -1021,6 +1056,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Integration',
 	'values' => '',
 	'definition' => 'The maximum number of records that will be synchronized in one batch when sending or receiving information from Google Contacts. The default value is 200 records.',
+),
+'CustomerPortal_PDF_Modules'  => array(
+	'status' => 'Implemented',
+	'valuetype' => 'CSV Modules',
+	'category' => 'Integration',
+	'values' => 'Comma separated values of modules capable of sending PDF data via Webservice',
+	'definition' => 'When using the getpdfdata webservice call, this variable indicates which Modules can generate PDF data.',
 ),
 'CustomerPortal_PDF'  => array(
 	'status' => 'Implemented',

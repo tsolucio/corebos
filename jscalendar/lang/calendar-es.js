@@ -90,7 +90,7 @@ Calendar._TT["ABOUT"] =
 "- Mantenga pulsado el ratón en cualquiera de estos botones para una selección rápida.";
 Calendar._TT["ABOUT_TIME"] = "\n\n" +
 "Selección de hora:\n" +
-"- Pulse en cualquiera de las Partes de la hora para incrementarla\n" +
+"- Pulse en cualquiera de las partes de la hora para incrementarla\n" +
 "- pulse las mayúsculas mientras hace clic para decrementarla\n" +
 "- haga clic y arrastre el ratón para una selección más rápida.";
 

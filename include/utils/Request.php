@@ -56,8 +56,8 @@ class Vtiger_Request {
 				$value = trim($value);
 			}
 		}
-		if($isJSON) {
-			$decodeValue = json_decode($value,true);
+		if ($isJSON) {
+			$decodeValue = json_decode($value, true);
 			if (isset($decodeValue)) {
 				$value = $decodeValue;
 			}
@@ -81,8 +81,7 @@ class Vtiger_Request {
 	/**
 	 * Get data map Raw
 	 */
-	public function getAllRaw()
-	{
+	public function getAllRaw() {
 		return $this->rawvaluemap;
 	}
 
@@ -91,7 +90,7 @@ class Vtiger_Request {
 	 */
 	public function getAll() {
 		$vals = array();
-		$keys = array_merge($this->defaultmap,$this->valuemap);
+		$keys = array_merge($this->defaultmap, $this->valuemap);
 		foreach ($keys as $k => $v) {
 			$vals[$k] = $this->get($k);
 		}
@@ -134,7 +133,7 @@ class Vtiger_Request {
 	 * Delete the value for key
 	 */
 	public function delete($key) {
-		unset($this->valuemap[$key],$this->rawvaluemap[$key]);
+		unset($this->valuemap[$key], $this->rawvaluemap[$key]);
 	}
 
 	/**
@@ -171,8 +170,9 @@ class Vtiger_Request {
 
 	public function validateWriteAccess($skipRequestTypeCheck = false) {
 		if (!$skipRequestTypeCheck) {
-			if ($_SERVER['REQUEST_METHOD'] != 'POST')
+			if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 				throw new Exception('Invalid request - validate Write Access');
+			}
 		}
 		$this->validateReadAccess();
 		$this->validateCSRF();
@@ -200,35 +200,43 @@ class Vtiger_Request {
 	public static function get_ip() {
 		$headers = $_SERVER;
 		// check for shared internet/ISP IP
-		if (!empty($headers['HTTP_CLIENT_IP']) && self::validate_ip($headers['HTTP_CLIENT_IP']))
+		if (!empty($headers['HTTP_CLIENT_IP']) && self::validate_ip($headers['HTTP_CLIENT_IP'])) {
 			return $headers['HTTP_CLIENT_IP'];
+		}
 
 		// check for IPs passing through proxies
 		if (!empty($headers['HTTP_X_FORWARDED_FOR'])) {
 			// check if multiple ips exist in var
 			$iplist = explode(',', $headers['HTTP_X_FORWARDED_FOR']);
 			foreach ($iplist as $ip) {
-				if (self::validate_ip($ip))
+				if (self::validate_ip($ip)) {
 					return $ip;
+				}
 			}
 		}
 
-		if (!empty($headers['X-Forwarded-For']) && self::validate_ip($headers['X-Forwarded-For']))
+		if (!empty($headers['X-Forwarded-For']) && self::validate_ip($headers['X-Forwarded-For'])) {
 			return $headers['X-Forwarded-For'];
-		if (!empty($headers['HTTP_X_FORWARDED']) && self::validate_ip($headers['HTTP_X_FORWARDED']))
+		}
+		if (!empty($headers['HTTP_X_FORWARDED']) && self::validate_ip($headers['HTTP_X_FORWARDED'])) {
 			return $headers['HTTP_X_FORWARDED'];
-		if (!empty($headers['HTTP_X_CLUSTER_CLIENT_IP']) && self::validate_ip($headers['HTTP_X_CLUSTER_CLIENT_IP']))
+		}
+		if (!empty($headers['HTTP_X_CLUSTER_CLIENT_IP']) && self::validate_ip($headers['HTTP_X_CLUSTER_CLIENT_IP'])) {
 			return $headers['HTTP_X_CLUSTER_CLIENT_IP'];
-		if (!empty($headers['HTTP_FORWARDED_FOR']) && self::validate_ip($headers['HTTP_FORWARDED_FOR']))
+		}
+		if (!empty($headers['HTTP_FORWARDED_FOR']) && self::validate_ip($headers['HTTP_FORWARDED_FOR'])) {
 			return $headers['HTTP_FORWARDED_FOR'];
-		if (!empty($headers['HTTP_FORWARDED']) && self::validate_ip($headers['HTTP_FORWARDED']))
+		}
+		if (!empty($headers['HTTP_FORWARDED']) && self::validate_ip($headers['HTTP_FORWARDED'])) {
 			return $headers['HTTP_FORWARDED'];
+		}
 
 		// return unreliable ip since all else failed
 		$iplist = explode(',', $headers['REMOTE_ADDR']);
 		foreach ($iplist as $ip) {
-			if (self::validate_ip($ip))
+			if (self::validate_ip($ip)) {
 				return $ip;
+			}
 		}
 		return $iplist[0];
 	}
@@ -254,14 +262,13 @@ class Vtiger_Request {
 		$returnURL = array();
 		foreach ($data as $key => $value) {
 			if (stripos($key, 'return_') === 0 && isset($value) && $value != '/') {
-				$newKey = str_replace_once('return_','',$key);
+				$newKey = str_replace_once('return_', '', $key);
 				$returnURL[strtolower($newKey)] = $value;
 			} elseif (stripos($key, 'return') === 0 && isset($value) && $value != '/') {
-				$newKey = str_replace_once('return','',$key);
+				$newKey = str_replace_once('return', '', $key);
 				$returnURL[strtolower($newKey)] = $value;
 			}
 		}
 		return http_build_query($returnURL);
 	}
-
 }

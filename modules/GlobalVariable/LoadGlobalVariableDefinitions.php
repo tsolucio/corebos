@@ -20,7 +20,7 @@
 global $current_language;
 $moduleFilepath = 'modules/GlobalVariable/language/'.$current_language.'.gvdefs.php';
 
-if(file_exists($moduleFilepath) == false) {
+if (file_exists($moduleFilepath) == false) {
 	$moduleFilepath = 'modules/GlobalVariable/language/en_us.gvdefs.php';
 }
 require_once $moduleFilepath;

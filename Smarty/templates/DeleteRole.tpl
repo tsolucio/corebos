@@ -1,5 +1,4 @@
 {*<!--
-
 /*********************************************************************************
 ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
@@ -7,14 +6,12 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
-
 -->*}
 <script type="text/javascript">
-function openPopup(del_roleid){ldelim}
-                window.open("index.php?module=Users&action=UsersAjax&file=RolePopup&maskid="+del_roleid+"&parenttab=Settings","roles_popup_window","height=425,width=640,toolbar=no,menubar=no,dependent=yes,resizable =no");
-        {rdelim}
+function openPopup(del_roleid) {ldelim}
+	window.open("index.php?module=Users&action=UsersAjax&file=RolePopup&maskid="+del_roleid+"&parenttab=Settings","roles_popup_window","height=425,width=640,toolbar=no,menubar=no,dependent=yes,resizable =no");
+{rdelim}
 </script>
 <br>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
@@ -99,17 +96,14 @@ function openPopup(del_roleid){ldelim}
 <br>
 <script>
 {literal}
-function roleDeleteValidate()
-{
-	if(document.getElementById('role_name').value == '')
-	{
-		{/literal}
-                alert('{$APP.SPECIFY_ROLE_INFO}');
-                return false;
-                {literal}
+function roleDeleteValidate() {
+	if (document.getElementById('role_name').value == '') {
+{/literal}
+		alert('{$APP.SPECIFY_ROLE_INFO}');
+		return false;
+{literal}
 	}
 	return true;
 }
 {/literal}
 </script>
-

@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  ********************************************************************************/
 
-$mod_strings = Array (
+$mod_strings = array (
 	'Tooltip' => 'Kurzinfo',
 	'LBL_TOOLTIP_MANAGEMENT'=>'Kurzinfo Management',
 	'LBL_TOOLTIP_MANAGEMENT_DESCRIPTION'=>'kontrollieren Sie die Anzeige von Kurzinfos von hier',

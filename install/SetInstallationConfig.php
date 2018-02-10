@@ -214,7 +214,10 @@ function verify_data(form) {
 												<?php if(!$db_options) : ?>
 													<?php echo $installationStrings['LBL_NO_DATABASE_SUPPORT']; ?>
 												<?php elseif(count($db_options) == 1) : ?>
-													<?php list($db_type, $label) = each($db_options); ?>
+													<?php
+														$label = reset($db_options);
+														$db_type = key($db_options);
+													?>
 													<input type="hidden" name="db_type" value="<?php echo $db_type ?>"><?php echo $label ?>
 												<?php else : ?>
 													<select class="small" length=40 name="db_type">

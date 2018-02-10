@@ -25,6 +25,12 @@ class Vtiger_PackageExport {
 	 * Constructor
 	 */
 	function __construct() {
+		global $coreBOSOnDemandActive, $default_language;
+		if ($coreBOSOnDemandActive) {
+			$app_strings = return_application_language($default_language);
+			echo $app_strings['LBL_PERMISSION'];
+			exit;
+		}
 		if(is_dir($this->_export_tmpdir) === FALSE) {
 			mkdir($this->_export_tmpdir);
 		}

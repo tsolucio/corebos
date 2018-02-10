@@ -199,10 +199,13 @@ if (isset($_REQUEST["viewOption"]) && $_REQUEST["viewOption"]!= "") {
 }
 
 $mysel = convertFullCalendarView($default_view);
-
 $smarty->assign('DEFAULTVIEW', $default_view);
 $smarty->assign('ACTIVITYTYPES', $Activity_Types);
 $smarty->assign('MODULETYPES', $Module_Types);
+$smarty->assign('upEVENTBLOCK_DISPLAY', isset($Ch_Views['6']) ? $Ch_Views['6'] : 'block');
+$smarty->assign('upMODULEBLOCK_DISPLAY', isset($Ch_Views['7']) ? $Ch_Views['7'] : 'block');
+$smarty->assign('upESTATUSBLOCK_DISPLAY', isset($Ch_Views['8']) ? $Ch_Views['8'] : 'block');
+$smarty->assign('upTPRIORITYBLOCK_DISPLAY', isset($Ch_Views['9']) ? $Ch_Views['9'] : 'block');
 if (isset($_REQUEST["user_view_type"]) && $_REQUEST["user_view_type"] != "") {
 	$user_view_type = $_REQUEST["user_view_type"];
 } else {

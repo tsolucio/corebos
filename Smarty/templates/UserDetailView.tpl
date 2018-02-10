@@ -51,74 +51,49 @@
 														{include file='applicationmessage.tpl'}
 														<table width="100%" border="0" cellpadding="0" cellspacing="0">
 
-															<tr>
-																<td valign=top align=left>
-																	<!-- Heading and Icons -->
-																	<table class="slds-table slds-no-row-hover dvtContentSpace">
-																		<tr>
-																			<td valign="top" style="padding: 0;">
-																				<div class="slds-page-header s1FixedFullWidth s1FixedTop forceHighlightsStencilSettings" style="height: 70px;">
-																					<div class="slds-grid primaryFieldRow" style="transform: translate3d(0, -8.65823px, 0);">
-																						<div class="slds-grid slds-col slds-has-flexi-truncate slds-media--center">
-																							<div class="profilePicWrapper slds-media slds-no-space" style="transform: scale3d(0.864715, 0.864715, 1) translate3d(4.32911px, 2.16456px, 0);">
-																								<div class="slds-media__figure slds-icon forceEntityIcon">
-																									<span class="photoContainer forceSocialPhoto">
-																										<div class="small roundedSquare forceEntityIcon">
-																											<span class="uiImage">
-																												<img src="{'ico-users.gif'|@vtiger_imageurl:$THEME}" align="absmiddle"/>
-																											</span>
-																										</div>
-																									</span>
-																								</div>
-																							</div>
-																							<div class="slds-media__body">
-																								<h1 class="slds-page-header__title slds-m-right--small slds-truncate slds-align-middle">
-																									{if $CATEGORY eq 'Settings'}
-																										<span class="uiOutputText" style="display: initial;">
-																											<b>
-																												<a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString} </a>
-																												&gt; 
-																												<a href="index.php?module=Users&action=index&parenttab=Settings"> {$MOD.LBL_USERS} </a>
-																												&gt;"{$USERNAME}" 
-																											</b>
-																										</span>
-																									{else}
-																										<span class="uiOutputText" style="display: initial;">
-																											<b>{$APP.LBL_MY_PREFERENCES}</b>
-																										</span>
-																									{/if}
-																									<br/>
-																									<span class="small"">{$UMOD.LBL_USERDETAIL_INFO} "{$USERNAME}"</span>
-																									<span id="vtbusy_info" style="display:none;" valign="bottom">
-																										<img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0">
-																									</span>
-																								</h1>
-																							</div>
-																						</div>
-																						<div class="slds-col slds-no-flex slds-grid slds-align-middle actionsContainer">
-																							<div class="slds-grid forceActionsContainer user-preferences">
-																								<input type="button" onclick="gotourl('index.php?module=Utilities&action=integration&_op=getconfig2fa&user_list={$ID}');" value="{'GoTo2FAActivation'|getTranslatedString:'Utilities'}" class="slds-button slds-button--neutral not-selected slds-not-selected uiButton"/>
-																								{if $IS_ADMIN eq 'true' && !$mustChangePassword}
-																									<input type="button" onclick="gotourl('index.php?module=cbLoginHistory&action=ListView&page=1&user_list={$ID}');" value="{$MOD.LBL_LOGIN_HISTORY_DETAILS}" class="slds-button slds-button--neutral not-selected slds-not-selected uiButton" aria-live="assertive"/>
-																									<input type="button" onclick="gotourl('index.php?module=cbAuditTrail&action=ListView&page=1&user_list={$ID}');" value="{$MOD.LBL_VIEW_AUDIT_TRAIL}" class="slds-button slds-button--neutral not-selected slds-not-selected uiButton" aria-live="assertive"/>
-																									<input type="button" onclick="VtigerJS_DialogBox.block();window.document.location.href = 'index.php?module=Users&action=UsersAjax&file=CalculatePrivilegeFiles&record={$ID}';" value="{$MOD.LBL_RECALCULATE_BUTTON}" class="slds-button slds-button--neutral not-selected slds-not-selected uiButton" aria-live="assertive"/>
-																								{/if}
-																								{if $IS_ADMIN eq 'true'}
-																									{$DUPLICATE_BUTTON}
-																								{/if}
-																									{$EDIT_BUTTON}
-																								{if $CATEGORY eq 'Settings' && $ID neq 1 && $ID neq $CURRENT_USERID}
-																									<input type="button" onclick="deleteUser({$ID});" class="slds-button slds-button--neutral not-selected slds-not-selected uiButton" aria-live="assertive" value="{$UMOD.LBL_DELETE}"/>
-																								{/if}
-																							</div>
-																						</div>
-																					</div>
-																				</div>
-																			</td>
-																		</tr>
-																	</table>
-																</td>
-															</tr>
+									</tr>
+									<tr>
+										<td>{$UMOD.LBL_USERDETAIL_INFO} "{$USERNAME}"</td>
+									</tr>
+									</table>
+								</td>
+							</tr>
+							<tr><td colspan="2">&nbsp;</td></tr>
+							<tr>
+								<td colspan="2" nowrap align="right">
+									<input type="button" onclick="gotourl('index.php?module=Utilities&action=integration&_op=getconfig2fa&user_list={$ID}');" value="{'GoTo2FAActivation'|getTranslatedString:'Utilities'}" class="crmButton small save"></input>
+									{if $IS_ADMIN eq 'true' && !$mustChangePassword}
+									<input type="button" onclick="gotourl('index.php?module=cbLoginHistory&action=ListView&page=1&user_list={$ID}');" value="{$MOD.LBL_LOGIN_HISTORY_DETAILS}" class="crmButton small save"></input>
+									<input type="button" onclick="gotourl('index.php?module=cbAuditTrail&action=ListView&page=1&user_list={$ID}');" value="{$MOD.LBL_VIEW_AUDIT_TRAIL}" class="crmButton small save"></input>
+									<input type="button" onclick="VtigerJS_DialogBox.block();window.document.location.href = 'index.php?module=Users&action=UsersAjax&file=CalculatePrivilegeFiles&record={$ID}';" value="{$MOD.LBL_RECALCULATE_BUTTON}" class="crmButton small cancel"></input>
+									{/if}
+									{if $IS_ADMIN eq 'true'}
+										{$DUPLICATE_BUTTON}
+									{/if}
+									{$EDIT_BUTTON}
+									{if $CATEGORY eq 'Settings' && $ID neq 1 && $ID neq $CURRENT_USERID}
+									<input type="button" onclick="deleteUser({$ID});" class="crmButton small cancel" value="{$UMOD.LBL_DELETE}"></input>
+									{/if}
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2" align=left>
+								<!-- User detail blocks -->
+								<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+								<tr>
+								<td align="left" valign="top">
+									{foreach key=header name=blockforeach item=detail from=$BLOCKS}
+									<br>
+									<table class="tableHeading" border="0" cellpadding="5" cellspacing="0" width="100%">
+									<tr>
+										{strip}
+										 <td class="big">
+										<strong>{$smarty.foreach.blockforeach.iteration}. {$header}</strong>
+										 </td>
+										 <td class="small" align="right">&nbsp;</td>
+										{/strip}
+									</tr>
+									</table>
 
 															<tr>
 																<td valign="top" style="padding: 0;">
@@ -148,39 +123,19 @@
 																									</div>
 																									{/strip}
 
-																									<div class="slds-truncate">
-																										<table class="slds-table slds-table--cell-buffer slds-no-row-hover slds-table--fixed-layout small detailview_table">
-																											{foreach item=detailInfo from=$detail}
-																												<tr>
-																													{foreach key=label item=data from=$detailInfo}
-																														{assign var=keyid value=$data.ui}
-																														{assign var=keyval value=$data.value}
-																														{assign var=keytblname value=$data.tablename}
-																														{assign var=keyfldname value=$data.fldname}
-																														{assign var=keyfldid value=$data.fldid}
-																														{assign var=keyoptions value=$data.options}
-																														{assign var=keysecid value=$data.secid}
-																														{assign var=keyseclink value=$data.link}
-																														{assign var=keycursymb value=$data.cursymb}
-																														{assign var=keysalut value=$data.salut}
-																														{assign var=keycntimage value=$data.cntimage}
-																														{assign var=keyadmin value=$data.isadmin}
-																															{if $label ne ''}
-																																<td class="dvtCellLabel" align=right width=25%>{$label}</td>
-																																	{include file="DetailViewUI.tpl"}
-																															{else}
-																																<td class="dvtCellLabel" align=right>&nbsp;</td>
-																																<td class="dvtCellInfo" align=left >&nbsp;</td>
-																															{/if}
-																													{/foreach}
-																												</tr>
-																											{/foreach}
-																										</table>
-																									</div>
-																								</td>
-																							</tr>
-																						{assign var=list_numbering value=$smarty.foreach.blockforeach.iteration}
-																					{/foreach}
+										   {if $label ne ''}
+										   <td class="dvtCellLabel" align=right width=25%>{$label}</td>
+											{include file="DetailViewUI.tpl"}
+										   {else}
+										   <td class="dvtCellLabel" align=right>&nbsp;</td>
+										   <td class="dvtCellInfo" align=left >&nbsp;</td>
+										   {/if}
+										{/foreach}
+									</tr>
+									{/foreach}
+									</table>
+									{assign var=list_numbering value=$smarty.foreach.blockforeach.iteration}
+									{/foreach}
 
 																					<!-- Home page components -->
 																					<tr class="blockStyleCss">

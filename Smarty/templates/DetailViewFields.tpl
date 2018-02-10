@@ -100,7 +100,7 @@
 			{if isset($MOD.LBL_ADD_COMMENT) && $label eq $MOD.LBL_ADD_COMMENT}
 				{assign var=keyval value=''}
 			{/if}
-			<td width=75% colspan="3" class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;
+			<td width=75% colspan="3" class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" style="word-break:break-word;">&nbsp;
 				<!--To give hyperlink to URL-->
 				{if isset($extendedfieldinfo['RTE']) && $extendedfieldinfo['RTE'] eq '1'}
 					{$keyval|regex_replace:"/(^|[\n ])([\w]+?:\/\/.*?[^ \"\n\r\t<]*)/":"\\1<a href=\"\\2\" target=\"_blank\">\\2</a>"|regex_replace:"/(^|[\n ])((www|ftp)\.[\w\-]+\.[\w\-.\~]+(?:\/[^ \"\t\n\r<]*)?)/":"\\1<a href=\"http://\\2\" target=\"_blank\">\\2</a>"|regex_replace:"/(^|[\n ])([a-z0-9&\-_.]+?)@([\w\-]+\.([\w\-\.]+\.)*[\w]+)/i":"\\1<a href=\"mailto:\\2@\\3\">\\2@\\3</a>"|regex_replace:"/,\"|\.\"|\)\"|\)\.\"|\.\)\"/":"\""}
@@ -110,8 +110,8 @@
 
 			</td>
 		{elseif $keyid eq '21' || $keyid eq '24' || $keyid eq '22'} <!--TextArea/Street-->
-			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<span id ="dtlview_{$label}">{$keyval}</span></td>
-		{elseif $keyid eq '73' || $keyid eq '51' || $keyid eq '57' || $keyid eq '59' || $keyid eq '75' || $keyid eq '81' || $keyid eq '76' || $keyid eq '78' || $keyid eq '80'} <!--AccountPopup-->
+			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<span id="dtlview_{$label}" style="word-break:break-word;">{$keyval}</span></td>
+		{elseif $keyid eq '73' || $keyid eq '51' || $keyid eq '57' || $keyid eq '75' || $keyid eq '81' || $keyid eq '76' || $keyid eq '78' || $keyid eq '80'}
 			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="vtlib_listview.trigger('cell.onmouseover', this);" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">&nbsp;<a href="{$keyseclink}">{$keyval}</a></td>
 		{elseif $keyid eq 82} <!--Email Body-->
 			<td colspan="3" width=100% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;{$keyval}</td>

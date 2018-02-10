@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('data/CRMEntity.php');
-require_once('data/Tracker.php');
+require_once 'data/CRMEntity.php';
+require_once 'data/Tracker.php';
 
 class ModuleClass extends CRMEntity {
 	public $db;

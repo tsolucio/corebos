@@ -9,30 +9,40 @@
  ******************************************************************************/
 require_once("include/events/SqlResultIterator.inc");
 
-class VTEntityMethodManager{
+class VTEntityMethodManager {
 
-	function __construct($adb){
+	private $adb;
+
+	public function __construct($adb) {
 		$this->adb = $adb;
 	}
 
-	function addEntityMethod($moduleName, $methodName, $functionPath, $functionName){
+	public function addEntityMethod($moduleName, $methodName, $functionPath, $functionName) {
 		$adb = $this->adb;
-		$rs = $adb->pquery('select count(*)
+		$rs = $adb->pquery(
+			'select count(*)
 			from com_vtiger_workflowtasks_entitymethod
 			where module_name=? and function_path=? and function_name=? and method_name=?',
-			array($moduleName, $functionPath, $functionName, $methodName));
-		$cnt = $adb->query_result($rs,0,0);
+			array($moduleName, $functionPath, $functionName, $methodName)
+		);
+		$cnt = $adb->query_result($rs, 0, 0);
 		if ($cnt==0) {
-			$id = $adb->getUniqueId("com_vtiger_workflowtasks_entitymethod");
-			$adb->pquery("insert into com_vtiger_workflowtasks_entitymethod (workflowtasks_entitymethod_id, module_name, function_path, function_name, method_name) values (?,?,?,?,?)", array($id, $moduleName, $functionPath, $functionName, $methodName));
+			$id = $adb->getUniqueId('com_vtiger_workflowtasks_entitymethod');
+			$adb->pquery(
+				'insert into com_vtiger_workflowtasks_entitymethod (workflowtasks_entitymethod_id, module_name, function_path, function_name, method_name) values (?,?,?,?,?)',
+				array($id, $moduleName, $functionPath, $functionName, $methodName)
+			);
 		}
 	}
 
-	function executeMethod($entityData, $methodName){
+	public function executeMethod($entityData, $methodName) {
 		$adb = $this->adb;
 		$moduleName = $entityData->getModuleName();
-		$result = $adb->pquery("select function_path, function_name from com_vtiger_workflowtasks_entitymethod where module_name=? and method_name=?", array($moduleName, $methodName));
-		if($adb->num_rows($result)!=0){
+		$result = $adb->pquery(
+			'select function_path, function_name from com_vtiger_workflowtasks_entitymethod where module_name=? and method_name=?',
+			array($moduleName, $methodName)
+		);
+		if ($adb->num_rows($result)!=0) {
 			$data = $adb->raw_query_result_rowdata($result, 0);
 			$functionPath = $data['function_path'];
 			$functionName = $data['function_name'];
@@ -41,12 +51,11 @@ class VTEntityMethodManager{
 		}
 	}
 
-	function methodsForModule($moduleName){
-		$adb = $this->adb;
-		$result = $adb->pquery("select method_name from com_vtiger_workflowtasks_entitymethod where module_name=?", array($moduleName));
-		$it = new SqlResultIterator($adb, $result);
+	public function methodsForModule($moduleName) {
+		$result = $this->adb->pquery('select method_name from com_vtiger_workflowtasks_entitymethod where module_name=?', array($moduleName));
+		$it = new SqlResultIterator($this->adb, $result);
 		$methodNames = array();
-		foreach($it as $row){
+		foreach ($it as $row) {
 			$methodNames[] = $row->method_name;
 		}
 		return $methodNames;
@@ -57,9 +66,8 @@ class VTEntityMethodManager{
 	 * @param <String> Module Name
 	 * @param <String> Entity Method Name.
 	 */
-	function removeEntityMethod($moduleName, $methodName){
-		$adb = $this->adb;
-		$adb->pquery("DELETE FROM com_vtiger_workflowtasks_entitymethod WHERE module_name = ? and method_name= ?", array($moduleName, $methodName));
+	public function removeEntityMethod($moduleName, $methodName) {
+		$this->adb->pquery('DELETE FROM com_vtiger_workflowtasks_entitymethod WHERE module_name = ? and method_name= ?', array($moduleName, $methodName));
 	}
 }
 ?>

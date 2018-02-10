@@ -27,60 +27,60 @@
   </linkfields>
   <sortfield>designquotesid</sortfield>
   <toolbar>
-    <title></title>
-    <expandall>1</expandall>
-    <create>1</create>
+	<title></title>
+	<expandall>1</expandall>
+	<create>1</create>
   </toolbar>
   <listview>
-    <toolbar>
-      <moveup>1</moveup>
-      <movedown>1</movedown>
-      <delete>1</delete>
-    </toolbar>
-    <fields>
-      <field>
-        <fieldtype>corebos</fieldtype>
-        <fieldname>fname</fieldname>
-        <editable>1</editable>
-        <mandatory>1</mandatory>
-        <hidden>1</hidden>
-        <layout></layout>
-      </field>
-      <field>
-        <fieldtype>computed</fieldtype>
-        <fieldname>put your operation here</fieldname>
-        <fieldlabel></fieldlabel>
-        <editable>1</editable>
-        <mandatory>1</mandatory>
-        <hidden>1</hidden>
-      </field>
-    </fields>
+	<toolbar>
+	  <moveup>1</moveup>
+	  <movedown>1</movedown>
+	  <delete>1</delete>
+	</toolbar>
+	<fields>
+	  <field>
+		<fieldtype>corebos</fieldtype>
+		<fieldname>fname</fieldname>
+		<editable>1</editable>
+		<mandatory>1</mandatory>
+		<hidden>1</hidden>
+		<layout></layout>
+	  </field>
+	  <field>
+		<fieldtype>computed</fieldtype>
+		<fieldname>put your operation here</fieldname>
+		<fieldlabel></fieldlabel>
+		<editable>1</editable>
+		<mandatory>1</mandatory>
+		<hidden>1</hidden>
+	  </field>
+	</fields>
   </listview>
   <detailview>
    <layout></layout>
-    <fields>
-      <field>
-        <fieldtype>corebos</fieldtype>
-        <fieldname>fname</fieldname>
-        <value>xxx</value>
-        <editable>1</editable>
-        <mandatory>1</mandatory>
-        <hidden>1</hidden>
-        <layout></layout>
-      </field>
-    </fields>
+	<fields>
+	  <field>
+		<fieldtype>corebos</fieldtype>
+		<fieldname>fname</fieldname>
+		<value>xxx</value>
+		<editable>1</editable>
+		<mandatory>1</mandatory>
+		<hidden>1</hidden>
+		<layout></layout>
+	  </field>
+	</fields>
   </detailview>
   <aggregations>
-      <operation>
-        <type>aggregation | calculation</type>
-        <items>callresponse</items>
-        <operation>sum</operation>
-        <column>linetotal</column>
-        <variable>dqlinestotal</variable>
-        <label>Subtotal</label>
-        <currency>true | false</currency>
-        <position>top</position>
-      </operation>
+	  <operation>
+		<type>aggregation | calculation</type>
+		<items>callresponse</items>
+		<operation>sum</operation>
+		<column>linetotal</column>
+		<variable>dqlinestotal</variable>
+		<label>Subtotal</label>
+		<currency>true | false</currency>
+		<position>top</position>
+	  </operation>
   </aggregations>
 </map>
  *************************************************************************************************/

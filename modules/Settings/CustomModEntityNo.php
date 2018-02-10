@@ -99,13 +99,12 @@ if(isset($_REQUEST['ajax']) and $_REQUEST['ajax'] == 'true')
 else
 	$smarty->display('Settings/CustomModEntityNo.tpl');
 
-function getCRMSupportedModules()
-{
+function getCRMSupportedModules() {
 	global $adb;
 	$sql="select tabid,name from vtiger_tab where isentitytype = 1 and presence = 0 and tabid in(select distinct tabid from vtiger_field where uitype='4')";
 	$result = $adb->pquery($sql, array());
-	while($moduleinfo=$adb->fetch_array($result))
-	{
+	$modulelist = array();
+	while ($moduleinfo=$adb->fetch_array($result)) {
 		$modulelist[$moduleinfo['name']] = $moduleinfo['name'];
 	}
 	return $modulelist;

@@ -16,17 +16,21 @@
 
 class cbmqtmdbdistributordeliverafter extends cbupdaterWorker {
 
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$this->ExecuteQuery('ALTER TABLE `cb_messagequeue` ADD `deliverafter` DATETIME NULL AFTER `senton`, ADD INDEX `cbmqdeliver` (`deliverafter`);', array());
+			$table_cols = $adb->getColumnNames('cb_messagequeue');
+			if (!in_array('deliverafter', $table_cols)) {
+				$this->ExecuteQuery('ALTER TABLE `cb_messagequeue` ADD `deliverafter` DATETIME NULL AFTER `senton`, ADD INDEX `cbmqdeliver` (`deliverafter`);', array());
+			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}
-
 }

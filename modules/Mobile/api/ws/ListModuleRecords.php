@@ -27,14 +27,10 @@ class crmtogo_WS_ListModuleRecords extends crmtogo_WS_Controller {
 	function processSearchRecordLabel(crmtogo_API_Request $request) {
 		$current_user = $this->getActiveUser();
 		$module = $request->get('module');
-		$alertid = $request->get('alertid');
 		$filterid = $request->get('filterid');
 		$search = $request->get('search');
 		$filterOrAlertInstance = false;
-		if(!empty($alertid)) {
-			$filterOrAlertInstance = crmtogo_WS_AlertModel::modelWithId($alertid);
-		}
-		else if(!empty($filterid)) {
+		if(!empty($filterid)) {
 			$filterOrAlertInstance = crmtogo_WS_FilterModel::modelWithId($module, $filterid);
 		}
 		else if(!empty($search)) {

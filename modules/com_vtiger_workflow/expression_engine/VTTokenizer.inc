@@ -7,43 +7,45 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ******************************************************************************/
-class VTExpressionToken{
-	function __construct($label){
+class VTExpressionToken {
+
+	public function __construct($label) {
 		$this->label = $label;
 	}
 }
 
-function _vt_processtoken_id($token){
+function _vt_processtoken_id($token) {
 	return $token;
 }
 
-function _vt_processtoken_symbol($token){
+function _vt_processtoken_symbol($token) {
 	return new VTEXpressionSymbol($token);
 }
 
-class VTExpressionTokenizer{
-	function __construct($expr){
+class VTExpressionTokenizer {
+
+	public function __construct($expr) {
 		global $default_charset;
 		$tokenTypes = array(
-				"SPACE" => array('\s+', '_vt_processtoken_id'),
-				"SYMBOL" => array('[a-zA-Z][\w]*', '_vt_processtoken_symbol'),
-				"ESCAPED_SYMBOL" => array('?:`([^`]+)`', '_vt_processtoken_symbol'),
-				//"STRING" => array('?:(?:"((?:\\\\"|[^"])+)"|'."'((?:\\\\'|[^'])+)')", 'stripcslashes'),
-				//"STRING" => array('?:"((?:\\\\"|[^"])+)"', 'stripcslashes'),
-				"STRING" => array("?:'((?:\\\\'|[^'])+)*'", 'stripcslashes'),
-				"FLOAT" => array('\d*[.]\d+', 'floatval'),
-				"INTEGER" => array('\d+', 'intval'),
-				'OPERATOR' => array('[+]|[-]|[*]|>=|<=|[<]|[>]|==|!=|\/', '_vt_processtoken_symbol'),
-				// NOTE: Any new Operator added should be updated in VTParser.inc::$precedence and operation at VTExpressionEvaluater
-				'OPEN_BRACKET' => array('[(]', '_vt_processtoken_symbol'),
-				'CLOSE_BRACKET' => array('[)]', '_vt_processtoken_symbol'),
-				'COMMA' => array('[,]', '_vt_processtoken_symbol'),
-				"REFERENCE" => array('\$\((\w+) : \(([_\w]+)\) (\w+)\)', '_vt_processtoken_symbol'),
+			"SPACE" => array('\s+', '_vt_processtoken_id'),
+			"SYMBOL" => array('[a-zA-Z][\w]*', '_vt_processtoken_symbol'),
+			"ESCAPED_SYMBOL" => array('?:`([^`]+)`', '_vt_processtoken_symbol'),
+			//"STRING" => array('?:(?:"((?:\\\\"|[^"])+)"|'."'((?:\\\\'|[^'])+)')", 'stripcslashes'),
+			//"STRING" => array('?:"((?:\\\\"|[^"])+)"', 'stripcslashes'),
+			"STRING" => array("?:'((?:\\\\'|[^'])+)*'", 'stripcslashes'),
+			"FLOAT" => array('\d*[.]\d+', 'floatval'),
+			"INTEGER" => array('\d+', 'intval'),
+			'OPERATOR' => array('[+]|[-]|[*]|>=|<=|[<]|[>]|==|!=|\/', '_vt_processtoken_symbol'),
+			// NOTE: Any new Operator added should be updated in VTParser.inc::$precedence and operation at VTExpressionEvaluater
+			'OPEN_BRACKET' => array('[(]', '_vt_processtoken_symbol'),
+			'CLOSE_BRACKET' => array('[)]', '_vt_processtoken_symbol'),
+			'COMMA' => array('[,]', '_vt_processtoken_symbol'),
+			"REFERENCE" => array('\$\((\w+) : \(([_\w]+)\) (\w+)\)', '_vt_processtoken_symbol'),
 		);
 		$tokenReArr = array();
 		$tokenNames = array();
 		$this->tokenTypes = $tokenTypes;
-		foreach($tokenTypes as $tokenName => $code){
+		foreach ($tokenTypes as $tokenName => $code) {
 			list($re, $processtoken) = $code;
 			$tokenReArr[] = '('.$re.')';
 			$tokenNames[] = $tokenName;
@@ -69,7 +71,8 @@ class VTExpressionTokenizer{
 		$this->matches = $matches;
 		$this->idx = 0;
 	}
-	function nextToken(){
+
+	public function nextToken() {
 		$matches = $this->matches;
 		$idx = $this->idx;
 		if ($idx == count($matches)) {
@@ -90,17 +93,17 @@ class VTExpressionTokenizer{
 	}
 }
 
-class VTExpressionSpaceFilter{
-	function __construct($tokens){
+class VTExpressionSpaceFilter {
+
+	public function __construct($tokens) {
 		$this->tokens = $tokens;
 	}
 
-	function nextToken(){
-		do{
+	public function nextToken() {
+		do {
 			$token = $this->tokens->nextToken();
-		}while($token->label == "SPACE");
+		} while ($token->label == "SPACE");
 		return $token;
 	}
 }
-
 ?>

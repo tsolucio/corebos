@@ -431,99 +431,87 @@
 											{if $value.quickcreate eq '3'}
 												 disabled
 											{/if}
-											 >
-										</td>
-										<!-- Quick Create Field -->
-										<td class="dvtCellInfo" align="left">
-											<label for="quickcreate_check_{$value.fieldselect}"> {$MOD.LBL_QUICK_CREATE}</label>
-										</td>
-									</tr>
-									<!-- Checkbox and Mass Edit option -->
-									<tr class="slds-line-height--reset">
-										<!-- Field to check option-->
-										<td valign="top" class="dvtCellInfo" align="left" width="10px">
-											<input id="massedit_check_{$value.fieldselect}" type="checkbox"
-											{if $value.massedit eq '0'}
-												 disabled
-											{/if}
-											{if $value.massedit eq '1'}
-												 checked
-											{/if}
-											{if $value.displaytype neq '1' || $value.massedit eq '3'}
-												 disabled
-											{/if}>
-										</td>
-										<!-- Mass Edit Field -->
-										<td class="dvtCellInfo" align="left">
-											<label for="massedit_check_{$value.fieldselect}"> {$MOD.LBL_MASS_EDIT}</label>
-										</td>
-									</tr>
-									<!-- Checkbox and Quick Create option -->
-									<tr>
-										<!-- Field to check option-->
-										<td valign="top" class="dvtCellInfo" align="left" width="10px">
-											{assign var="defaultsetting" value=$value.defaultvalue}
-											<input id="defaultvalue_check_{$value.fieldselect}" type="checkbox"
-											{if $defaultsetting.permitted eq false} disabled{/if}
-											{if $defaultsetting.value neq ''} checked{/if}>
-										</td>
-										<!-- Default value Field -->
-										<td class="dvtCellInfo" align="left">
-											<label for="defaultvalue_check_{$value.fieldselect}"> {$MOD.LBL_DEFAULT_VALUE}</label><br>
-											{assign var="fieldElementId" value='defaultvalue_'|cat:$value.fieldselect}
-											{if $defaultsetting.permitted eq true}
-												{include file="Settings/FieldUI.tpl"
-													_FIELD_UI_TYPE=$value.uitype
-													_FIELD_SELECTED_VALUE=$defaultsetting.value
-													_FIELD_ELEMENT_ID=$fieldElementId
-													_ALL_AVAILABLE_VALUES=$defaultsetting._allvalues
-												}
-											{/if}
-										</td>
-									</tr>
-									<!-- Save and Cancel buttons -->
-									<tr>
-										<td colspan="3" class="dvtCellInfo" align="center">
-											<input type="button" name="save" value=" &nbsp; {$APP.LBL_SAVE_BUTTON_LABEL} &nbsp; " class="slds-button slds-button--small slds-button_success" onclick="saveFieldInfo('{$value.fieldselect}','{$MODULE}','updateFieldProperties','{$value.typeofdata}');" />&nbsp;
-											{if $value.customfieldflag neq 0}
-												<input type="button" name="delete" value=" {$APP.LBL_DELETE_BUTTON_LABEL} " class="slds-button slds-button--small slds-button--destructive" onclick="deleteCustomField('{$value.fieldselect}','{$MODULE}','{$value.columnname}','{$value.uitype}')" />
-											{/if}
-											<input type="button" name="cancel" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="slds-button slds-button--small slds-button--destructive" onclick="fninvsh('editfield_{$value.fieldselect}');" />
-										</td>
-									</tr>
-								</table>
-							</div>
+										{/if}
+										 >
+									</td>
+									<td valign="top" class="dvtCellInfo" align="left">
+										&nbsp;<label for="presence_check_{$value.fieldselect}">{$MOD.LBL_ACTIVE}</label>
+									</td>
+								</tr>
+								<tr>
+									<td valign="top" class="dvtCellInfo" align="left" width="10px">
+										<input id="quickcreate_check_{$value.fieldselect}" type="checkbox"
+										{if $value.quickcreate eq '0'|| $value.quickcreate eq '2' && ($value.mandatory eq '0' || $value.mandatory eq '2')}
+											 checked disabled
+										{/if}
+										{if $value.quickcreate eq '2'}
+											 checked
+										{/if}
+										{if $value.quickcreate eq '3'}
+											 disabled
+										{/if}
+										 >
+									</td>
+									<td valign="top" class="dvtCellInfo" align="left">
+										&nbsp;<label for="quickcreate_check_{$value.fieldselect}">{$MOD.LBL_QUICK_CREATE}</label>
+									</td>
+								</tr>
+								<tr>
+									<td valign="top" class="dvtCellInfo" align="left" width="10px">
+										<input id="massedit_check_{$value.fieldselect}" type="checkbox"
+										{if $value.massedit eq '0'}
+											 disabled
+										{/if}
+										{if $value.massedit eq '1'}
+											 checked
+										{/if}
+										{if $value.displaytype neq '1' || $value.massedit eq '3'}
+											 disabled
+										{/if}>
+									</td>
+									<td valign="top" class="dvtCellInfo" align="left">
+									&nbsp;<label for="massedit_check_{$value.fieldselect}">{$MOD.LBL_MASS_EDIT}</label>
+									</td>
+								</tr>
+								<tr>
+									<td valign="top" class="dvtCellInfo" align="left" width="10px">
+										{assign var="defaultsetting" value=$value.defaultvalue}
+										<input id="defaultvalue_check_{$value.fieldselect}" type="checkbox"
+										{if $defaultsetting.permitted eq false} disabled{/if}
+										{if $defaultsetting.value neq ''} checked{/if}>
+									</td>
+									<td valign="top" class="dvtCellInfo" align="left">
+										&nbsp;<label for="defaultvalue_check_{$value.fieldselect}">{$MOD.LBL_DEFAULT_VALUE}</label><br>
+										{assign var="fieldElementId" value='defaultvalue_'|cat:$value.fieldselect}
+										{if $defaultsetting.permitted eq true}
+											{include file="Settings/FieldUI.tpl"
+												_FIELD_UI_TYPE=$value.uitype
+												_FIELD_SELECTED_VALUE=$defaultsetting.value
+												_FIELD_ELEMENT_ID=$fieldElementId
+												_ALL_AVAILABLE_VALUES=$defaultsetting._allvalues
+											}
+										{/if}
+									</td>
+								</tr>
+								<tr>
+									<td colspan="3" class="dvtCellInfo" align="center">
+										<input type="button" name="save" value=" &nbsp; {$APP.LBL_SAVE_BUTTON_LABEL} &nbsp; " class="crmButton small save" onclick="saveFieldInfo('{$value.fieldselect}','{$MODULE}','updateFieldProperties','{$value.typeofdata}');" />&nbsp;
+										{if $value.customfieldflag neq 0}
+											<input type="button" name="delete" value=" {$APP.LBL_DELETE_BUTTON_LABEL} " class="crmButton small delete" onclick="deleteCustomField('{$value.fieldselect}','{$MODULE}','{$value.columnname}','{$value.uitype}')" />
+										{/if}
+										<input type="button" name="cancel" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="crmButton small cancel" onclick="fninvsh('editfield_{$value.fieldselect}');" />
+									</td>
+								</tr>
+							</table>
 						</div>
-
-						<!-- Blank field, (Up, Down, Left, Right) arrows for each condition -->
-						{if $smarty.foreach.inner.first}
-							{if $value.no % 2 != 0}
-								<img src="{'blank.gif'|@vtiger_imageurl:$THEME}"  border="0" />&nbsp;&nbsp;
-							{/if}
-							<img src="{'blank.gif'|@vtiger_imageurl:$THEME}"  border="0" />&nbsp;&nbsp;
-							{if $value.no != ($entries.field|@count - 2) && $entries.no!=1}
-								<img src="{'arrow_down.png'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;" onclick="changeFieldorder('down','{$value.fieldselect}','{$value.blockid}','{$MODULE}') " alt="{$MOD.DOWN}" title="{$MOD.DOWN}">&nbsp;&nbsp;
-							{else}
-								<img src="{'blank.gif'|@vtiger_imageurl:$THEME}"  border="0" />&nbsp;&nbsp;
-							{/if}
-							{if $entries.no!=1}
-								<img src="{'arrow_right.png'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;" onclick="changeFieldorder('Right','{$value.fieldselect}','{$value.blockid}','{$MODULE}')" alt="{$MOD.RIGHT}" title="{$MOD.RIGHT}"/>&nbsp;&nbsp;
-							{else}
-								<img src="{'blank.gif'|@vtiger_imageurl:$THEME}"  border="0" />&nbsp;&nbsp;
-							{/if}
-						{elseif $smarty.foreach.inner.last}
-							{if $value.no % 2 != 0}
-								<img src="{'arrow_left.png'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;" onclick="changeFieldorder('Left','{$value.fieldselect}','{$value.blockid}','{$MODULE}')" alt="{$MOD.LEFT}" title="{$MOD.LEFT}"/>&nbsp;&nbsp;
-							{/if}
-							{if $value.no != 1}
-								<img src="{'arrow_up.png'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;" onclick="changeFieldorder('up','{$value.fieldselect}','{$value.blockid}','{$MODULE}') " alt="{$MOD.UP}" title="{$MOD.UP}"/>&nbsp;&nbsp;
-							{else}
-								<img src="{'blank.gif'|@vtiger_imageurl:$THEME}"  border="0" />&nbsp;&nbsp;
-							{/if}
-							<img src="{'blank.gif'|@vtiger_imageurl:$THEME}"  border="0" />&nbsp;&nbsp;
-							{if $value.no % 2 == 0}
-								<img src="{'blank.gif'|@vtiger_imageurl:$THEME}"  border="0" />&nbsp;&nbsp;
-							{/if}
+					</div>
+					{if $smarty.foreach.inner.first}
+						{if $value.no % 2 != 0}
+							<img src="{'blank.gif'|@vtiger_imageurl:$THEME}" style="width:16px;height:16px;" border="0" />&nbsp;&nbsp;
+						{/if}
+						<img src="{'blank.gif'|@vtiger_imageurl:$THEME}" style="width:16px;height:16px;" border="0" />&nbsp;&nbsp;
+						{if $value.no != ($entries.field|@count - 2) && $entries.no!=1}
+							<img src="{'arrow_down.png'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;" onclick="changeFieldorder('down','{$value.fieldselect}','{$value.blockid}','{$MODULE}') " alt="{$MOD.DOWN}" title="{$MOD.DOWN}">&nbsp;&nbsp;
 						{else}
 							{if $value.no % 2 != 0}
 								<img src="{'arrow_left.png'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;" onclick="changeFieldorder('Left','{$value.fieldselect}','{$value.blockid}','{$MODULE}')" alt="{$MOD.LEFT}" title="{$MOD.LEFT}"/>&nbsp;&nbsp;

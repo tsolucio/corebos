@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-include_once('config.php');
 require_once('include/logging.php');
 require_once('include/utils/utils.php');
 require_once('modules/Contacts/Contacts.php');
@@ -435,20 +434,6 @@ class Campaigns extends CRMEntity {
 			}
 		}
 		return $related_list;
-	}
-
-	/*
-	 * Function to get the secondary query part of a report
-	 * @param - $module primary module name
-	 * @param - $secmodule secondary module name
-	 * returns the query string formed on fetching the related data for report for secondary module
-	 */
-	function generateReportsSecQuery($module,$secmodule,$queryplanner,$type = '',$where_condition = '') {
-		$query = parent::generateReportsSecQuery($module, $secmodule, $queryplanner, $type, $where_condition);
-		if ($queryplanner->requireTable("vtiger_productsCampaigns")) {
-			$query .= ' left join vtiger_products as vtiger_productsCampaigns on vtiger_campaign.product_id = vtiger_productsCampaigns.productid';
-		}
-		return $query;
 	}
 
 	/*

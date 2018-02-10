@@ -23,7 +23,7 @@
 		</tr>
 	</table>
 
-	<form action="index.php" method="get" accept-charset="utf-8" onsubmit="VtigerJS_DialogBox.block();">
+	<form action="index.php" method="post" accept-charset="utf-8" onsubmit="VtigerJS_DialogBox.block();">
 	<div class="popup_content">
 		<table width="100%" cellspacing="0" cellpadding="5" border="0" class="small">
 		<tr align="left">

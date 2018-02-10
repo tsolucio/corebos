@@ -7,35 +7,32 @@
  * Portions created by vtiger are Copyright (C) vtiger. All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|30/12/2010|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ************************************************************************************/
-$mod_strings = Array(
-	 
+$mod_strings = array(
 	'LBL_MODULE_NAME'=>'Marco Projeto',
-  	'LBL_MODULE_TITLE'=>'Marcos Projeto',
+	'LBL_MODULE_TITLE'=>'Marcos Projeto',
 	'LBL_NEW_OPERATION'=>'Novo Marco Projeto',
-    'LBL_MILESTONES'=>'Marco Projeto',
-    'LBL_MILESTOME'=>'Marco Projeto',
-    'Project Milestone ID'=>'ID Marco', 
-    'projectmilestones' => 'Marcos Projeto',
-    //added this to translate the module name in the main app menu
-    'ProjectMilestone'=>'Marcos Projeto',
-    //
-    'SINGLE_ProjectMilestone' => 'Marco Projeto',
-    'LBL_CUSTOM_INFORMATION' => 'Informação Customizada',
-    'LBL_PROJECT_MILESTONE_INFORMATION' => 'Informação Marco Projeto',
-    'LBL_DESCRIPTION_INFORMATION' => 'Descrição',
-    'Assigned To' => 'Atribuído à',
-    'Milestone Date' => 'Data Marco',
-    'Milestone' => 'Marco',
-    'Type'=>'Tipo',
-    'Related to' => 'Projeto',
+	'LBL_MILESTONES'=>'Marco Projeto',
+	'LBL_MILESTOME'=>'Marco Projeto',
+	'Project Milestone ID'=>'ID Marco',
+	'projectmilestones' => 'Marcos Projeto',
+	//added this to translate the module name in the main app menu
+	'ProjectMilestone'=>'Marcos Projeto',
+	//
+	'SINGLE_ProjectMilestone' => 'Marco Projeto',
+	'LBL_CUSTOM_INFORMATION' => 'Informação Customizada',
+	'LBL_PROJECT_MILESTONE_INFORMATION' => 'Informação Marco Projeto',
+	'LBL_DESCRIPTION_INFORMATION' => 'Descrição',
+	'Assigned To' => 'Atribuído à',
+	'Milestone Date' => 'Data Marco',
+	'Milestone' => 'Marco',
+	'Type'=>'Tipo',
+	'Related to' => 'Projeto',
 	'administrative' => 'administrativo',
-    'operative' => 'operacional',
-    'other' => 'outro',
+	'operative' => 'operacional',
+	'other' => 'outro',
 	'--none--' => '--None--',
-    //added for related lists 
-    'Project Milestone Name' => 'Nome Marco',
-    'Project Milestone No' => 'No. Marco',
-
+	//added for related lists
+	'Project Milestone Name' => 'Nome Marco',
+	'Project Milestone No' => 'No. Marco',
 );
-
 ?>

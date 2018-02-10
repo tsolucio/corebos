@@ -6,3 +6,18 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
+
+function getData(fieldname, divid){
+	$.ajax({
+		url: 'index.php?module=Settings&action=SettingsAjax&file=loaddata&fieldname='+fieldname,
+		success: function(html) {
+			var ajaxDisplay = document.getElementById(divid);
+			ajaxDisplay.innerHTML = html;
+		}
+	});
+}
+
+function OnScrollDiv (div) {
+	var info = document.getElementById ('info');
+	info.innerHTML = 'Horizontal: ' + div.scrollLeft + 'px<br/>Vertical: ' + div.scrollTop + 'px';
+}

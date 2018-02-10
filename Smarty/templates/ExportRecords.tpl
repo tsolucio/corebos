@@ -23,118 +23,96 @@
 							<input type="hidden" name="module" value="{$MODULE}">
 							<input type="hidden" name="action" value="Export">
 							<input type="hidden" name="idstring" value="{if isset($IDSTRING)}{$IDSTRING}{/if}">
-							<table class="slds-table slds-no-row-hover slds-table-moz" align="center" style="border-collapse:separate; border-spacing: 1rem;">
-								<tr class="blockStyleCss slds-line-height--reset">
-									<td class="detailViewContainer" valign="top">
-										<div class="forceRelatedListSingleContainer">
-											<article class="slds-card forceRelatedListCardDesktop" aria-describedby="header">
-												<div class="slds-card__header slds-grid">
-													<header class="slds-media slds-media--center slds-has-flexi-truncate">
-														<div class="slds-media__body">
-															<h2>
-																<span class="slds-text-title--caps slds-truncate heading2 actionLabel">
-																	<b>{$MODULELABEL} >> {$APP.LBL_EXPORT}</b>
-																</span>
-															</h2>
-														</div>
-
-													</header>
-												</div>
-											</article>
-										</div>
-										<div class="slds-truncate" style="display:block;">
-											<table class="slds-table slds-table--cell-buffer slds-no-row-hover slds-table--fixed-layout small detailview_table">
-												<tr class="slds-line-height--reset">
-													<td class="dvtCellLabel text-left" valign="top">
-														<span class="genHeaderSmall">{$APP.LBL_SEARCH_CRITERIA_RECORDS}:</span>
-													</td>
-													<td class="dvtCellLabel text-left" valign="top">
-														<span class="genHeaderSmall">{$APP.LBL_EXPORT_RECORDS}:</span>
-													</td>
-												</tr>
-											</table>
-											<table class="slds-table slds-table--cell-buffer slds-no-row-hover slds-table--fixed-layout small detailview_table">
-												<tr class="slds-line-height--reset">
-													<td valign="top" style="padding-top: 0;">
-														<table class="slds-table slds-table--cell-buffer slds-no-row-hover slds-table--fixed-layout">
-															<tr class="slds-line-height--reset">
-																{if $SESSION_WHERE neq ''}
-																<td class="dvtCellLabel" valign="top" style="width: 30%;">{$APP.LBL_WITH_SEARCH}</td>
-																<td class="dvtCellInfo" valign="top" style="width: 25%;">
-																	<input type="radio" name="search_type" checked value="includesearch">
-																</td>
-																{else}
-																<td class="dvtCellLabel" valign="top" style="width: 30%;">{$APP.LBL_WITH_SEARCH}</td>
-																<td class="dvtCellInfo" valign="top" style="width: 25%;">
-																	<input type="radio" name="search_type"  value="includesearch">
-																</td>
-																{/if}
-															</tr>
-															<tr class="slds-line-height--reset">
-																{if $SESSION_WHERE eq ''}
-																<td class="dvtCellLabel" valign="top" style="width: 30%;">{$APP.LBL_WITHOUT_SEARCH}</td>
-																<td class="dvtCellInfo" valign="top" style="width: 25%;">
-																	<input type="radio" name="search_type" checked value="withoutsearch">
-																</td>
-																{else}
-																<td class="dvtCellLabel" valign="top" style="width: 30%;">{$APP.LBL_WITHOUT_SEARCH}</td>
-																<td class="dvtCellInfo" valign="top" style="width: 25%;">
-																	<input type="radio" name="search_type" value="withoutsearch">
-																</td>
-																{/if}
-															</tr>
-														</table>
-													</td>
-													<td valign="top" style="padding-top: 0;padding-right: .5rem;">
-														<table class="slds-table slds-table--cell-buffer slds-no-row-hover slds-table--fixed-layout">
-															<tr class="slds-line-height--reset">
-																{if empty($IDSTRING)}
-																	<td class="dvtCellLabel" valign="top" style="width: 30%;">{$APP.LBL_ALL_DATA}</td>
-																	<td class="dvtCellInfo" valign="top" style="width: 25%;">
-																		<input type="radio" name="export_data" checked value="all">
-																	</td>
-																{else}
-																	<td class="dvtCellLabel" valign="top" style="width: 30%;">{$APP.LBL_ALL_DATA}</td>
-																	<td class="dvtCellInfo" valign="top" style="width: 25%;">
-																		<input type="radio" name="export_data"  value="all">
-																	</td>
-																{/if}
-															</tr>
-															<tr class="slds-line-height--reset">
-																<td class="dvtCellLabel" valign="top" style="width: 30%;">{$APP.LBL_DATA_IN_CURRENT_PAGE}</td>
-																<td class="dvtCellInfo" valign="top" style="width: 25%;">
-																	<input type="radio" name="export_data" value="currentpage">
-																</td>
-															</tr>
-															<tr>
-																{if !empty($IDSTRING)}
-																	<td class="dvtCellLabel" valign="top" style="width: 30%;">{$APP.LBL_ONLY_SELECTED_RECORDS}</td>
-																	<td class="dvtCellInfo" valign="top" style="width: 25%;">
-																		<input type="radio" name="export_data" checked value="selecteddata">
-																	</td>
-																{else}
-																	<td class="dvtCellLabel" valign="top" style="width: 30%;">{$APP.LBL_ONLY_SELECTED_RECORDS}</td>
-																	<td class="dvtCellInfo" valign="top" style="width: 25%;">
-																		<input type="radio" name="export_data"  value="selecteddata">
-																	</td>
-																{/if}
-															</tr>
-														</table>
-													</td>
-												</tr>
-												<tr class="slds-line-height--reset">
-													<td colspan="2" align="center">
-														<div id="not_search" style="position:absolute;display:none;width:400px;height:25px;"></div>
-													</td>
-												</tr>
-												<tr class="slds-line-height--reset">
-													<td colspan="2" align="center">
-														<input type="button" name="{$APP.LBL_EXPORT}" value="{$APP.LBL_EXPORT} {$MODULELABEL} " class="slds-button slds-button--small slds-button_success" onclick="record_export('{$MODULELABEL}','{$CATEGORY}',this.form,'{if isset($smarty.request.idstring)}{$smarty.request.idstring}{/if}')"/>&nbsp;&nbsp;
-														<input type="button" name="{$APP.LBL_CANCEL_BUTTON_LABEL}" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="slds-button slds-button--small slds-button--destructive" onclick="window.history.back()" />
-													</td>
-												</tr>
-											</table>
-										</div>
+							<table align="center" cellpadding="15" cellspacing="0" width="85%" class="mailClient importLeadUI small" border="0">
+								<tr>
+									<td colspan="2" valign="middle" align="left" class="mailClientBg  genHeaderSmall">{$MODULELABEL} >> {$APP.LBL_EXPORT} </td>
+									<br>
+								</tr>
+								<tr>
+									<td border="0" cellpadding="5" cellspacing="0" width="50%">
+										<table>
+											<tr>
+												<td colspan="2" align="left" valign="top" style="padding-left:40px;">
+													<span class="genHeaderSmall">{$APP.LBL_SEARCH_CRITERIA_RECORDS}:</span>
+												</td>
+											</tr>
+											<tr>
+												{if $SESSION_WHERE neq ''}
+												<td align="right" valign="top" width="50%" class=small>{$APP.LBL_WITH_SEARCH}</td>
+												<td align="left" valign="top" width="5%" class=small>
+													<input type="radio" name="search_type" checked value="includesearch">
+												</td>
+												{else}
+												<td align="right" valign="top" width="50%" class=small>{$APP.LBL_WITH_SEARCH}</td>
+												<td align="left" valign="top" width="5%" class=small>
+													<input type="radio" name="search_type"  value="includesearch">
+												</td>
+												{/if}
+											</tr>
+											<tr>
+												{if $SESSION_WHERE eq ''}
+												<td align="right" valign="top" width="50%" class=small>{$APP.LBL_WITHOUT_SEARCH}</td>
+												<td align="left" valign="top" width="5%" class=small>
+													<input type="radio" name="search_type" checked value="withoutsearch">
+												</td>
+												{else}
+												<td align="right" valign="top" width="50%" class=small>{$APP.LBL_WITHOUT_SEARCH}</td>
+												<td align="left" valign="top" width="5%" class=small>
+													<input type="radio" name="search_type" value="withoutsearch">
+												</td>
+												{/if}
+											</tr>
+											<tr>
+												<td colspan="2" align="left" valign="top" style="padding-left:40px;">
+													<span class="genHeaderSmall">{$APP.LBL_EXPORT_RECORDS}:</span>
+												</td>
+											</tr>
+											<tr>
+												{if empty($IDSTRING)}
+												<td align="right" valign="top" width="50%" class=small>{$APP.LBL_ALL_DATA}</td>
+												<td align="left" valign="top" width="5%" class=small>
+													<input type="radio" name="export_data" checked value="all">
+												</td>
+												{else}
+												<td align="right" valign="top" width="50%" class=small>{$APP.LBL_ALL_DATA}</td>
+												<td align="left" valign="top" width="5%" class=small>
+													<input type="radio" name="export_data"  value="all">
+												</td>
+												{/if}
+											</tr>
+											<tr>
+												<td align="right" valign="top" width="50%" class=small >{$APP.LBL_DATA_IN_CURRENT_PAGE}</td>
+												<td align="left" valign="top" width="5%" class=small>
+													<input type="radio" name="export_data" value="currentpage">
+												</td>
+											</tr>
+											<tr>
+												{if !empty($IDSTRING)}
+													<td align="right" valign="top" width="50%" class=small >{$APP.LBL_ONLY_SELECTED_RECORDS}</td>
+												<td align="left" valign="top" width="5%" class=small>
+													<input type="radio" name="export_data" checked value="selecteddata">
+												</td>
+												{else}
+												<td align="right" valign="top" width="50%" class=small >{$APP.LBL_ONLY_SELECTED_RECORDS}</td>
+												<td align="left" valign="top" width="5%" class=small>
+													<input type="radio" name="export_data"  value="selecteddata">
+												</td>
+												{/if}
+											</tr>
+										</table>
+									</td>
+									<td border="0" cellpadding="5" cellspacing="0" width="50%">
+										<table >
+											<tr>
+												<td><div id="not_search" style="position:absolute;display:none;width:400px;height:25px;"></div></td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr>
+									<td align="center" colspan="2" border=0 cellspacing=0 cellpadding=5 width=98% class="layerPopupTransport">
+										<input type="button" name="{$APP.LBL_EXPORT}" value="{$APP.LBL_EXPORT} {$MODULELABEL} " class="crmbutton small create" onclick="record_export('{$MODULELABEL}','{$CATEGORY}',this.form,'{if isset($smarty.request.idstring)}{$smarty.request.idstring}{/if}')"/>&nbsp;&nbsp;
+										<input type="button" name="{$APP.LBL_CANCEL_BUTTON_LABEL}" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="crmbutton small cancel" onclick="window.history.back()" />
 									</td>
 								</tr>
 							</table>

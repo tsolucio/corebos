@@ -12,7 +12,11 @@ global $currentModule;
 $module = urlencode(vtlib_purify($_REQUEST['module']));
 $return_module = urlencode(vtlib_purify($_REQUEST['return_module']));
 $return_action = urlencode(vtlib_purify($_REQUEST['return_action']));
-$return_id = (isset($_REQUEST['return_id']) ? urlencode(vtlib_purify($_REQUEST['return_id'])) : (isset($_REQUEST['record']) ? urlencode(vtlib_purify($_REQUEST['record'])) : 0));
+if (isset($_REQUEST['return_id'])) {
+	$return_id = urlencode(vtlib_purify($_REQUEST['return_id']));
+} else {
+	$return_id = (isset($_REQUEST['record']) ? urlencode(vtlib_purify($_REQUEST['record'])) : 0);
+}
 $url = getBasic_Advance_SearchURL();
 header("Location: index.php?module=$return_module&action=$return_action&record=$return_id&relmodule=$module".$url);
 ?>

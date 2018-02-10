@@ -221,17 +221,10 @@ class VtigerCRMActorMeta extends EntityMeta {
 		return null;
 	}
 
-	function exists($recordId) {
-		$exists = false;
-		$indexCol = $this->getObectIndexColumn();
-		$sql = 'select '.$indexCol.' from '.$this->baseTable.' where '.$indexCol.'=? limit 1';
-		$result = $this->pearDB->pquery($sql , array($recordId));
-		if ($result != null && isset($result)) {
-			if ($this->pearDB->num_rows($result)>0) {
-				$exists = true;
-			}
-		}
-		return $exists;
+	public function exists($recordId) {
+		$sql = 'select 1 from '.$this->baseTable.' where '.$this->getObectIndexColumn().'=? limit 1';
+		$result = $this->pearDB->pquery($sql, array($recordId));
+		return ($result && $this->pearDB->num_rows($result)>0);
 	}
 
 	public function getNameFields() {

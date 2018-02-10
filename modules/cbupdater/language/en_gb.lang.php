@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'cbupdater' => 'coreBOS Updater',
 	'SINGLE_cbupdater' => 'coreBOS Updater',
 	'cbupdater ID' => 'coreBOS Update ID',

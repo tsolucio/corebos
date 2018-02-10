@@ -832,5 +832,6 @@ $mod_strings = array (
 'LeaveEmptyForUserEmail' => 'Lascia vuoto per usare il tuo indirizzo mail',
 'LBL_OPENSSL_SUPPORT' => 'Supporto OpenSSL',
 'LBL_IMAP_SUPPORT' => 'Supporto IMAP',
+'StorageSpaceUsage' => 'Storage Space Usage',
 );
 ?>

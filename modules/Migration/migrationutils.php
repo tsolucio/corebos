@@ -14,6 +14,39 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 
+// For Migration status.
+define("MIG_CHARSET_PHP_UTF8_DB_UTF8", 1);
+define("MIG_CHARSET_PHP_NONUTF8_DB_NONUTF8", 2);
+define("MIG_CHARSET_PHP_NONUTF8_DB_UTF8", 3);
+define("MIG_CHARSET_PHP_UTF8_DB_NONUTF8", 4);
+
+function get_config_status() {
+	global $default_charset;
+	return ($default_charset == 'UTF-8' ? 1 : 0);
+}
+
+function getMigrationCharsetFlag() {
+	global $adb;
+
+	$db_status=check_db_utf8_support($adb);
+	$config_status=get_config_status();
+
+	if ($db_status == $config_status) {
+		if ($db_status == 1) { // Both are UTF-8
+			$db_migration_status = MIG_CHARSET_PHP_UTF8_DB_UTF8;
+		} else { // Both are Non UTF-8
+			$db_migration_status = MIG_CHARSET_PHP_NONUTF8_DB_NONUTF8;
+		}
+	} else {
+		if ($db_status == 1) { // Database charset is UTF-8 and CRM charset is Non UTF-8
+			$db_migration_status = MIG_CHARSET_PHP_NONUTF8_DB_UTF8;
+		} else { // Database charset is Non UTF-8 and CRM charset is UTF-8
+			$db_migration_status = MIG_CHARSET_PHP_UTF8_DB_NONUTF8;
+		}
+	}
+	return $db_migration_status;
+}
+
 /** Get Smarty compiled file for the specified template filename.
  * * @param $template_file Template filename for which the compiled file has to be returned.
  * * @return Compiled file for the specified template file.

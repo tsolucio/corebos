@@ -156,6 +156,22 @@ switch ($functiontocall) {
 		$allOptions=getEmailTemplateVariables(array($module,'Accounts'));
 		$ret = array_merge($allOptions[0], $allOptions[1], $allOptions[2]);
 		break;
+	case 'downloadfile':
+		include_once 'include/utils/downloadfile.php';
+		die();
+		break;
+	case 'delImage':
+		include_once 'include/utils/DelImage.php';
+		$id = vtlib_purify($_REQUEST['recordid']);
+		$id = preg_replace('/[^0-9]/', '', $id);
+		if (isset($_REQUEST['attachmodule']) && $_REQUEST["attachmodule"]=='Emails') {
+			DelAttachment($id);
+		} else {
+			DelImage($id);
+		}
+		echo 'SUCCESS';
+		die();
+		break;
 	case 'saveAttachment':
 		include_once 'modules/Settings/MailScanner/core/MailAttachmentMIME.php';
 		include_once 'modules/MailManager/src/controllers/UploadController.php';
@@ -190,7 +206,12 @@ switch ($functiontocall) {
 		$retvals = getGlobalSearch($term, $searchin, $limit, $current_user);
 		$ret = array();
 		foreach ($retvals['data'] as $value) {
-		    $ret[] = array('crmid'=>$value['crmid'],'crmmodule'=>$value['crmmodule'],'query_string'=>$value['query_string'],'total'=>$retvals['total'])+ $value['crmfields'];
+			$ret[] = array(
+				'crmid' => $value['crmid'],
+				'crmmodule' => $value['crmmodule'],
+				'query_string' => $value['query_string'],
+				'total' => $retvals['total']
+			) + $value['crmfields'];
 		}
 		break;
 	case 'ismoduleactive':

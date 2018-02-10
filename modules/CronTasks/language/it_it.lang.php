@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-$mod_strings = Array (
+$mod_strings = array (
 	'LBL_ACTIVE' => 'Attivo',
 	'LBL_INACTIVE' => 'Inattivo',
 	'LBL_STATUS' => 'Stato',

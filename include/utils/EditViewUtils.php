@@ -462,24 +462,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		}
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue[] = $value;
-	}elseif($uitype == 59){
-		if($_REQUEST['module'] == 'HelpDesk')
-		{
-			if(isset($_REQUEST['product_id']) && $_REQUEST['product_id'] != '')
-				$value = $_REQUEST['product_id'];
-		}
-		elseif(isset($_REQUEST['parent_id']) && $_REQUEST['parent_id'] != '')
-			$value = vtlib_purify($_REQUEST['parent_id']);
-
-		if($value != '')
-		{
-			$product_name = getProductName($value);
-		} else {
-			$product_name = '';
-		}
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue[]=$product_name;
-		$fieldvalue[]=$value;
 	}
 	elseif($uitype == 63)
 	{
@@ -651,7 +633,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 						and vtiger_attachments.name = ?
 						and vtiger_seattachmentsrel.crmid=?";
 				global $upload_badext;
-				$params = array(sanitizeUploadFileName($col_fields[$fieldname], $upload_badext),$col_fields['record_id']);
+				$params = array(sanitizeUploadFileName(decode_html($col_fields[$fieldname]), $upload_badext), $col_fields['record_id']);
 			}
 			$result_image = $adb->pquery($query, $params);
 			$image_array = array();
@@ -1998,24 +1980,19 @@ function getBlockInformation($module, $result, $col_fields,$tabid,$block_label,$
 		}
 		$editview_arr[$block][]=$custfld;
 	}
-	foreach($editview_arr as $headerid=>$editview_value)
-	{
-		$editview_data = Array();
+	foreach ($editview_arr as $headerid=>$editview_value) {
+		$editview_data = array();
 		for ($i=0, $j=0, $iMax = count($editview_value); $i< $iMax; $j++) {
 			$key1=$editview_value[$i];
-			if(isset($editview_value[$i+1]) && is_array($editview_value[$i+1]) && ($key1[0][0]!=19 && $key1[0][0]!=20))
-			{
+			if (isset($editview_value[$i+1]) && is_array($editview_value[$i+1]) && ($key1[0][0]!=19 && $key1[0][0]!=20)) {
 				$key2=$editview_value[$i+1];
-			}
-			else
-			{
+			} else {
 				$key2 =array();
 			}
-			if($key1[0][0]!=19 && $key1[0][0]!=20){
+			if ($key1[0][0]!=19 && $key1[0][0]!=20) {
 				$editview_data[$j]=array(0 => $key1,1 => $key2);
 				$i+=2;
-			}
-			else{
+			} else {
 				$editview_data[$j]=array(0 => $key1);
 				$i++;
 			}

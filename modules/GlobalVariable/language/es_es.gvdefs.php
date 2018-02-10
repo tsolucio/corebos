@@ -70,6 +70,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Si el valor de la variable es 1 se escribirá en pantalla, la consulta de obtención de registros para la vista de lista.',
 ),
+'Debug_RelatedList_Query' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Depuración',
+	'values' => '0 | 1',
+	'definition' => 'Si el valor de la variable es 1 se escribirá en pantalla, la consulta de obtención de registros para la lista relacionada.',
+),
 'Debug_Popup_Query' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
@@ -273,6 +280,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Calcular el total de registros en la vista de lista. El valor por defecto es 0',
 ),
+'Application_ListView_Sum_Currency' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Rendimiento',
+	'values' => '0 | 1',
+	'definition' => 'Mostrar la suma total de columnas de tipo moneda. El valor por defecto es 1',
+),
 'Application_DetailView_Record_Navigation' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
@@ -461,6 +475,27 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => '0 | 1',
 	'definition' => 'Mostrar la vista de lista de documentos como carpetas separadas o como una lista normal. El valor predeterminado es 1 = Vista de carpeta.',
+),
+'Document_CreateSelectContactFolder' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Al crear un documento desde un contacto, crea una nueva carpeta con el nombre del contacto y la selecciona de manera predeterminada.',
+),
+'Document_CreateSelectAccountFolder' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Al crear un documento desde una cuenta, crea una nueva carpeta con el nombre de la cuenta y la selecciona de manera predeterminada.',
+),
+'Document_CreateSelectAccountFolderForContact' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Al crear un documento desde un contacto, crea una nueva carpeta con el nombre de la cuenta relacionada y la selecciona de manera predeterminada. Esta variable tiene prioridad sobre Document_CreateSelectContactFolder',
 ),
 'Inventory_Tax_Type_Default' => array(
 	'status' => 'Implementada',
@@ -1021,6 +1056,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Integración',
 	'values' => '',
 	'definition' => 'Número máximo de registros que se sincronizarán en un lote al enviar o recibir información de Contactos de Google. El valor predeterminado es 200 registros.',
+),
+'CustomerPortal_PDF_Modules'  => array(
+	'status' => 'Implementada',
+	'valuetype' => 'CSV Modules',
+	'category' => 'Integración',
+	'values' => 'Lista separada por comas de módulos que pueden enviar datos PDF vía Webservice.',
+	'definition' => 'Cuando se utiliza la llamada webservice getpdfdata, esta variable indica qué Módulos pueden generar PDF.',
 ),
 'CustomerPortal_PDF'  => array(
 	'status' => 'Implementada',

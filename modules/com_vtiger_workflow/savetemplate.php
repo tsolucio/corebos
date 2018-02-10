@@ -7,21 +7,21 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once "include/utils/CommonUtils.php";
-require_once "include/events/SqlResultIterator.inc";
-require_once "VTWorkflowApplication.inc";
-require_once "VTWorkflowManager.inc";
-require_once "VTWorkflowTemplateManager.inc";
-require_once "VTTaskManager.inc";
-require_once "VTWorkflowUtils.php";
+require_once 'include/utils/CommonUtils.php';
+require_once 'include/events/SqlResultIterator.inc';
+require_once 'VTWorkflowApplication.inc';
+require_once 'VTWorkflowManager.inc';
+require_once 'VTWorkflowTemplateManager.inc';
+require_once 'VTTaskManager.inc';
+require_once 'VTWorkflowUtils.php';
 
-function vtSaveWorkflowTemplate($adb, $request){
+function vtSaveWorkflowTemplate($adb, $request) {
 	global $current_language;
 	$util = new VTWorkflowUtils();
-	$module = new VTWorkflowApplication("savetemplate");
+	$module = new VTWorkflowApplication('savetemplate');
 	$mod = return_module_language($current_language, $module->name);
 	$request = vtlib_purify($request);  // this cleans all values of the array
-	if(!$util->checkAdminAccess()){
+	if (!$util->checkAdminAccess()) {
 		$errorUrl = $module->errorPageUrl($mod['LBL_ERROR_NOT_ADMIN']);
 		$util->redirectTo($errorUrl, $mod['LBL_ERROR_NOT_ADMIN']);
 		return;

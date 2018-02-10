@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<updatesChangeLog>
+<changeSet>
+	<author>joebordes</author>
+	<description>CRON to calculate storage disk space usage and save in database</description>
+	<filename>build/changeSets/2018/cronCalculateStorageSize.php</filename>
+	<classname>cronCalculateStorageSize</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>migrate uitype 59 (product capture) to uitype 10 (standard capture)</description>
+	<filename>build/changeSets/2018/migrateUIType59to10.php</filename>
+	<classname>migrateUIType59to10</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>make potential forecast field displaytype 4</description>
+	<filename>build/changeSets/2018/makePotentialForecastDisplaytype4.php</filename>
+	<classname>makePotentialForecastDisplaytype4</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>add Role picklist to Global Variable module</description>
+	<filename>build/changeSets/2018/addRolePicklistToGlobalVariable.php</filename>
+	<classname>addRolePicklistToGlobalVariable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>fix Create Follow up Workflow Tasks</description>
+	<filename>build/changeSets/2018/fixCreateFollowupWorkflowTasks.php</filename>
+	<classname>fixCreateFollowupWorkflowTasks</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+</updatesChangeLog>

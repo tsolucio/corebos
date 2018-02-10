@@ -208,10 +208,8 @@ $mod_strings = array(
 'ticketid'=>'Id de Caso',
 'NO_COLUMN'=>'No Hay Columnas disponibles para Total',
 
-// Added/Updated for vtiger CRM 5.0.4
 'LBL_REPORT_DELETED' => 'El Informe que intentas ver ha sido eliminado.',
 
-//Added for Reports
 'LBL_SHARING'=>'Compartir',
 'SELECT_FILTER_TYPE'=>'Selecciona Tipo Informe',
 'LBL_USERS'=>'Usuarios',
@@ -232,7 +230,7 @@ $mod_strings = array(
 'LBL_DELETE_GROUP'=>'Eliminar Grupo',
 'LBL_NEW_CONDITION'=>'Agregar Condición',
 'LBL_SHARING_TYPE'=>'Compartir',
-'LBL_SELECT_REPORT_TYPE_TO_CONTROL_ACCESS'=>'Selecciona el método de compartir para controlar el acceso al Informe', 
+'LBL_SELECT_REPORT_TYPE_TO_CONTROL_ACCESS'=>'Selecciona el método de compartir para controlar el acceso al Informe',
 'LBL_ACTION' => 'Acción',
 'LBL ACTION' => 'Acción',
 'ACTION' => 'Acción',
@@ -250,6 +248,7 @@ $mod_strings = array(
 'LBL_SCHEDULE_EMAIL_DESCRIPTION'=>'Programa el Informe para ser enviado via email a los destinatarios seleccionados a intervalos regulares',
 'LBL_USERS_AVAILABEL'=> 'Destinatarios',
 'LBL_REPORT_FORMAT_PDF'=> 'PDF',
+'LBL_REPORT_FORMAT_URL'=> 'URL',
 'LBL_REPORT_FORMAT_EXCEL'=> 'Excel',
 'LBL_REPORT_FORMAT_BOTH'=> 'Ambos',
 'LBL_REPORT_FORMAT'=> 'Formato Informe',
@@ -308,5 +307,4 @@ $mod_strings = array(
 'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Error eliminando la carpeta.',
 'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Error eliminando los informes de la carpeta',
 );
-
 ?>

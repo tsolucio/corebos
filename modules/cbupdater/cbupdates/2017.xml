@@ -175,4 +175,11 @@
 	<classname>AddWfFunctionneedscontext</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Increment size of fieldname and fieldlabel meta-data</description>
+	<filename>build/changeSets/2017/incFieldMetadatasize.php</filename>
+	<classname>incFieldMetadatasize</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

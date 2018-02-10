@@ -562,10 +562,6 @@ class ReportRun extends CRMEntity {
 			else
 				$value = $adb->query_result($field_query,0,'tablename').$tr[0].".".$adb->query_result($field_query,0,'columnname');
 			*/
-			if($uitype == 59)
-			{
-				$fieldtypeofdata = 'V';
-			}
 			if($fieldtablename == "vtiger_crmentity")
 			{
 				$fieldtablename = $fieldtablename.$module;
@@ -1673,15 +1669,12 @@ class ReportRun extends CRMEntity {
 				getNonAdminAccessControlQuery($this->primarymodule,$current_user).
 				" where vtiger_crmentity.deleted=0";
 		} else if ($module == "HelpDesk") {
+			$focus = CRMEntity::getInstance($module);
+			$query = $focus->generateReportsQuery($module, $this->queryPlanner);
 			$matrix = $this->queryPlanner->newDependencyMatrix();
 
 			$matrix->setDependency('vtiger_crmentityRelHelpDesk', array('vtiger_accountRelHelpDesk', 'vtiger_contactdetailsRelHelpDesk'));
 
-			$query = "from vtiger_troubletickets inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_troubletickets.ticketid";
-
-			if ($this->queryPlanner->requireTable('vtiger_ticketcf')) {
-				$query .= " inner join vtiger_ticketcf on vtiger_ticketcf.ticketid = vtiger_troubletickets.ticketid";
-			}
 			if ($this->queryPlanner->requireTable('vtiger_crmentityRelHelpDesk', $matrix)) {
 				$query .= " left join vtiger_crmentity as vtiger_crmentityRelHelpDesk on vtiger_crmentityRelHelpDesk.crmid = vtiger_troubletickets.parent_id";
 			}
@@ -1691,23 +1684,7 @@ class ReportRun extends CRMEntity {
 			if ($this->queryPlanner->requireTable('vtiger_contactdetailsRelHelpDesk')) {
 				$query .= " left join vtiger_contactdetails as vtiger_contactdetailsRelHelpDesk on vtiger_contactdetailsRelHelpDesk.contactid= vtiger_crmentityRelHelpDesk.crmid";
 			}
-			if ($this->queryPlanner->requireTable('vtiger_productsRel')) {
-				$query .= " left join vtiger_products as vtiger_productsRel on vtiger_productsRel.productid = vtiger_troubletickets.product_id";
-			}
-			if ($this->queryPlanner->requireTable('vtiger_usersHelpDesk') || $this->queryPlanner->requireTable('vtiger_groupsHelpDesk')) {
-				$query .= " left join vtiger_users as vtiger_usersHelpDesk on vtiger_crmentity.smownerid=vtiger_usersHelpDesk.id";
-				$query .= " left join vtiger_groups as vtiger_groupsHelpDesk on vtiger_groupsHelpDesk.groupid = vtiger_crmentity.smownerid";
-			}
 
-			$query .= " left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid";
-			$query .= " left join vtiger_users on vtiger_crmentity.smownerid=vtiger_users.id";
-
-			if ($this->queryPlanner->requireTable('vtiger_lastModifiedByHelpDesk')) {
-				$query .= "  left join vtiger_users as vtiger_lastModifiedByHelpDesk on vtiger_lastModifiedByHelpDesk.id = vtiger_crmentity.modifiedby";
-			}
-			if ($this->queryPlanner->requireTable('vtiger_CreatedByHelpDesk')) {
-				$query .= " left join vtiger_users as vtiger_CreatedByHelpDesk on vtiger_CreatedByHelpDesk.id = vtiger_crmentity.smcreatorid";
-			}
 			$query .= " ".$this->getRelatedModulesQuery($module,$this->secondarymodule,$type,$where_condition).
 				getNonAdminAccessControlQuery($this->primarymodule,$current_user).
 				" where vtiger_crmentity.deleted=0 ";
@@ -2011,33 +1988,6 @@ class ReportRun extends CRMEntity {
 			}
 			$query .= " " . $this->getRelatedModulesQuery($module, $this->secondarymodule,$type,$where_condition) .
 				getNonAdminAccessControlQuery($this->primarymodule, $current_user) .
-				" where vtiger_crmentity.deleted=0";
-		} else if ($module == "Campaigns") {
-			$query = "from vtiger_campaign
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_campaign.campaignid";
-			if ($this->queryPlanner->requireTable("vtiger_campaignscf")) {
-				$query .= " inner join vtiger_campaignscf as vtiger_campaignscf on vtiger_campaignscf.campaignid=vtiger_campaign.campaignid";
-			}
-			if ($this->queryPlanner->requireTable("vtiger_productsCampaigns")) {
-				$query .= " left join vtiger_products as vtiger_productsCampaigns on vtiger_productsCampaigns.productid = vtiger_campaign.product_id";
-			}
-			if ($this->queryPlanner->requireTable("vtiger_usersCampaigns") || $this->queryPlanner->requireTable("vtiger_groupsCampaigns")) {
-				$query .= " left join vtiger_users as vtiger_usersCampaigns on vtiger_usersCampaigns.id = vtiger_crmentity.smownerid";
-				$query .= " left join vtiger_groups as vtiger_groupsCampaigns on vtiger_groupsCampaigns.groupid = vtiger_crmentity.smownerid";
-			}
-
-			$query .= " left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid";
-			$query .= " left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid";
-
-			if ($this->queryPlanner->requireTable("vtiger_lastModifiedBy$module")) {
-				$query .= " left join vtiger_users as vtiger_lastModifiedBy" . $module . " on vtiger_lastModifiedBy" . $module . ".id = vtiger_crmentity.modifiedby";
-			}
-			if ($this->queryPlanner->requireTable("vtiger_CreatedBy$module")) {
-				$query .= " left join vtiger_users as vtiger_CreatedBy$module on vtiger_CreatedBy$module.id = vtiger_crmentity.smcreatorid";
-			}
-
-			$query .= " ".$this->getRelatedModulesQuery($module,$this->secondarymodule,$type,$where_condition).
-				getNonAdminAccessControlQuery($this->primarymodule,$current_user).
 				" where vtiger_crmentity.deleted=0";
 		} else if ($module == "Emails") {
 			$query = "from vtiger_activity
@@ -4003,8 +3953,6 @@ class ReportRun extends CRMEntity {
 					$referenceTableName = 'vtiger_accountRelHelpDesk';
 				} elseif ($moduleName == 'HelpDesk' && $referenceModule == 'Contacts') {
 					$referenceTableName = 'vtiger_contactdetailsRelHelpDesk';
-				} elseif ($moduleName == 'HelpDesk' && $referenceModule == 'Products') {
-					$referenceTableName = 'vtiger_productsRel';
 				} elseif ($moduleName == 'Calendar' && $referenceModule == 'Accounts') {
 					$referenceTableName = 'vtiger_accountRelCalendar';
 				} elseif ($moduleName == 'Calendar' && $referenceModule == 'Contacts') {
@@ -4033,10 +3981,6 @@ class ReportRun extends CRMEntity {
 					$referenceTableName = 'vtiger_contactdetailsContacts';
 				} elseif ($moduleName == 'Accounts' && $referenceModule == 'Accounts') {
 					$referenceTableName = 'vtiger_accountAccounts';
-				} elseif ($moduleName == 'Campaigns' && $referenceModule == 'Products') {
-					$referenceTableName = 'vtiger_productsCampaigns';
-				} elseif ($moduleName == 'Faq' && $referenceModule == 'Products') {
-					$referenceTableName = 'vtiger_productsFaq';
 				} elseif ($moduleName == 'Invoice' && $referenceModule == 'SalesOrder') {
 					$referenceTableName = 'vtiger_salesorderInvoice';
 				} elseif ($moduleName == 'Invoice' && $referenceModule == 'Contacts') {

@@ -48,6 +48,10 @@ $mod_strings = array(
 'LBL_NEW_USER_BUTTON_TITLE'=>'New User [Alt+N]',
 'LBL_NEW_USER_BUTTON_LABEL'=>'New User',
 'LBL_NEW_USER_BUTTON_KEY'=>'N',
+'LBL_EXPORT_USER_BUTTON_TITLE' => 'Export Users [Alt+E]',
+'LBL_EXPORT_USER_BUTTON_LABEL' => 'Export Users',
+'LBL_EXPORT_USER_BUTTON_KEY' => 'E',
+
 'LBL_DATE_FORMAT'=>'Date Format',
 
 'LBL_ERROR'=>'Error:',
@@ -210,8 +214,6 @@ $mod_strings = array(
 'LBL_VIEWING'=>'Viewing',
 'LBL_PROPERTIES'=>'Properties of',
 
-
-//added to fix the issue #6630
 'LBL_ASTERISKEXTENSIONS_EXIST' => 'Asterisk Extension Already Exists!',
 'LBL_CURRENCY_SEPARATORS_INCORRECT' => 'Decimal Separator and Digit Grouping Separator cannot be the same.',
 
@@ -360,22 +362,20 @@ $mod_strings = array(
 'LBL_BUTTON_UPDATE'=>'Update',
 'LBL_MODULENAMES'=>'Module',
 
-//Added fields in ListFieldPermissions.html
+//Added fields in ListFieldPermissions
 'LBL_FIELD_PERMISSION_FIELD_NAME'=>'Field Name',
 'LBL_FIELD_PERMISSION_VISIBLE'=>'Visible',
 'LBL_FIELD_PERMISSIOM_TABLE_HEADER'=>'Standard Fields',
 'LBL_FIELD_LEVEL_ACCESS'=>'Field Level Access',
 
-//Added fields after 4.0.1
 'LBL_SIGNATURE'=>'Signature',
 
-//Added for Event Reminder 4.2 Alpha release
+//Added for Event Reminder
 'LBL_ACTIVITY_NOTIFICATION'=>'Event Reminder Notification',
 'LBL_ACTIVITY_REMINDER_DESCRIPTION'=>'Notify before an event to occur based on the reminder set',
 'LBL_MESSAGE'=>'Message',
 
 //Added for Global Privileges
-
 'Public: Read Only'=>'Public: Read Only',
 'Public: Read, Create/Edit'=>'Public: Read, Create/Edit',
 'Public: Read, Create/Edit, Delete'=>'Public: Read, Create/Edit, Delete',
@@ -400,7 +400,6 @@ $mod_strings = array(
 'LBL_PRIVILEGES'=>'Privileges',
 'LBL_OF'=>'of',
 
-//Added for 4.2GA support for mail server integration
 'LBL_ADD_MAILSERVER_BUTTON_TITLE'=>'Add Mail Server',
 'LBL_ADD_MAILSERVER_BUTTON_KEY'=>'M',
 'LBL_ADD_MAILSERVER_BUTTON_LABEL'=>'Add Mail Server',
@@ -411,12 +410,11 @@ $mod_strings = array(
 //added for inventory terms and conditions
 'INV_TANDC'=>'Terms & Conditions',
 'INV_TERMSANDCONDITIONS'=>'Inventory Terms & Conditions',
-'LBL_INV_TERMSANDCONDITIONS'=>'Inventory Management', 
-
+'LBL_INV_TERMSANDCONDITIONS'=>'Inventory Management',
 
 'INVENTORYNOTIFICATION'=>'Inventory Notifications',
 'LBL_INVENTORY_NOTIFICATIONS'=>'Edit Inventory Email Notifications',
-'LBL_INV_NOT_DESC'=>'The following are the list of notifications that are sent to the product handler regarding the demand and the current quantity in hand during the creation of a Quote, SalesOrder and Invoice.',
+'LBL_INV_NOT_DESC'=>'The following are the list of notifications that are sent to the product handler regarding the demand and the current quantity in hand during the creation of a Quote, Sales Order and Invoice.',
 
 'InvoiceNotification'=>'Product Stock Notification during Invoice Generation',
 'InvoiceNotificationDescription'=>'When the product stock level goes below the re-order level, notification will be sent to the product handler',
@@ -427,32 +425,18 @@ $mod_strings = array(
 'SalesOrderNotification'=>'Product Stock Notification during Sales Order Generation',
 'SalesOrderNotificationDescription'=>'During sales order generation if the product stock in warehouse is lesser than the quantity mentioned in sales order then this notification will be sent to the product handler',
 
-//New addition for 4.2 GA
 'LBL_USER_FIELDS'=>'User Fields',
 'LBL_NOTE_DO_NOT_REMOVE_INFO'=>'Note: Donot remove or alter the values within {  }',
-
-//Added for patch2
 'LBL_FILE_INFORMATION'=>'File Information',
-
-//Added after pathc2
 'LBL_LEAD_FIELD_ACCESS'=>'Lead Field Access',
-
 'LBL_ACCOUNT_FIELD_ACCESS'=>'Organization Field Access',
-
 'LBL_CONTACT_FIELD_ACCESS'=>'Contact Field Access',
-
 'LBL_OPPORTUNITY_FIELD_ACCESS'=>'Opportunity Field Access',
-
 'LBL_HELPDESK_FIELD_ACCESS'=>'HelpDesk Field Access',
-
 'LBL_PRODUCT_FIELD_ACCESS'=>'Product Field Access',
-
 'LBL_NOTE_FIELD_ACCESS'=>'Document Field Access',
-
 'LBL_EMAIL_FIELD_ACCESS'=>'Email Field Access',
-
 'LBL_TASK_FIELD_ACCESS'=>'Task Field Access',
-
 'LBL_EVENT_FIELD_ACCESS'=>'Event Field Access',
 'LBL_VENDOR_FIELD_ACCESS'=>'Vendor Field Access',
 'LBL_PB_FIELD_ACCESS'=>'PriceBook Field Access',
@@ -461,11 +445,8 @@ $mod_strings = array(
 'LBL_SO_FIELD_ACCESS'=>'Sales Order Access',
 'LBL_INVOICE_FIELD_ACCESS'=>'Invoice Field Access',
 
-//given for calendar color for an user user
 'LBL_COLOR'=>'Color in Calendar',
-//added for activity view in home page
 'LBL_ACTIVITY_VIEW'=>'Default Activity View',
-//Added to change Home page order
 'LBL_HOMEPAGE_ORDER_UPDATE'=>'Update Home Page Block Order',
 'LBL_HOMEPAGE_ID'=>'Block Order',
 'ERR_INVALID_USER'=>'Invalid access--Please call from My Organizations',
@@ -484,7 +465,6 @@ $mod_strings = array(
 'UA'=>'Upcoming Activities',
 'PA'=>'Pending Activities',
 
-//Added for 5.0 alpha
 'LBL_GROUP_NAME_ERROR'=>'Group Name already exists!',
 'MNL'=>'My New Leads',
 'LBL_LEAD_VIEW'=>'Default Leads View',
@@ -508,9 +488,7 @@ $mod_strings = array(
 'LBL_CHANGE_PHOTO'=>'Change Photo...',
 'LBL_CHANGE'=>'Change',
 
-
 //Added for Access Privileges
-
 'LBL_GLOBAL_FIELDS_MANAGER'=>'Global Fields Manager',
 'LBL_GLOBAL_ACCESS_PRIVILEGES'=>'Organization-level Sharing Rules',
 'LBL_CUSTOM_ACCESS_PRIVILEGES'=>'Custom Sharing Rules',
@@ -530,7 +508,6 @@ $mod_strings = array(
 'LBL_USERLOGIN_ROLE'=>'User Login & Role',
 'LBL_USER_IMAGE_INFORMATION'=>'User Photograph',
 
-//Added for 5.0 for all fields
 'Role'=>'Role',
 'Email'=>'Email',
 'Admin'=>'Admin',
@@ -807,6 +784,11 @@ $mod_strings = array(
 'Min. 1 number' => 'Minimum one number',
 'Min. 1 special character' => 'Minimum one special character ! ? , ; - @ #',
 'Generate password' => 'Generate password',
+'ERR_USER_LOGGED_IN' => 'The User Name is currently in use on another computer. Terminate the session in use or enter a different User Name.',
+'ERR_USER_CAN_UNBLOCK' => 'An inactive session by the same User Name is blocking your login attempt(s).',
+'LBL_USERLOGGEDOUTOK' => 'The user has been logged out correctly.',
+'LBL_USERLOGGEDOUTNOK' => 'The user could not be logged out.',
+'LBL_UNBLOCK_USR' => 'Unblock the session to login?',
 
 // LDAP
 'LBL_QUERY' => 'Query',
@@ -814,5 +796,4 @@ $mod_strings = array(
 'LBL_NO_LDAP_MATCHES' => 'No matches found on the LDAP server!',
 
 );
-
 ?>

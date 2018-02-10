@@ -9,7 +9,6 @@
  ************************************************************************************/
 require_once('data/CRMEntity.php');
 require_once('data/Tracker.php');
-include_once('config.php');
 require_once('include/logging.php');
 require_once('modules/Contacts/Contacts.php');
 require_once('modules/Calendar/Activity.php');

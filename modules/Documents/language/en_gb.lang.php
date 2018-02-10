@@ -106,5 +106,15 @@ $mod_strings = array(
 	'Documents' => 'Documents',
 	'Documents ID' => 'Documents ID',
 	'LBL_FILEUPLOAD_FAILED'=>'File failed to upload',
+	'STORAGESIZE_CONFIGURATION' => 'Storage Size Information and Configuration',
+	'STORAGESIZE_CONFIGURATION_DESCRIPTION' => 'See and increment the space being occupied by your document system.',
+	'StorageMustIncrement' => 'The new storage capacity must always be bigger than the current limit. To reduce the size, physical elimination of the documents must be done by a server administrator. Please contact your service providor.',
+	'StorageLimit' => 'The limit of storage capacity of your application has been reached. Please contact your application administrator to extend this limit.',
+	'ExtendStorageLink' => 'You can extend this limit here.',
+	'Total' => 'Total Disk Allocation',
+	'Occupied' => 'Used Disk Space',
+	'Free' => 'Available Disk Space',
+	'NewSize' => 'New Size',
+	'accept_charge' => 'I accept the license change and the associated charge it may have',
 );
 ?>

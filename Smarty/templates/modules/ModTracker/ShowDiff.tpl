@@ -67,8 +67,8 @@ ins { text-decoration: none; background-color: #FDFF00; }
 		{foreach item=DETAIL from=$TRACKRECORD->getDetails()}
 		<tr valign=top>
 			<td class='dvtCellLabel'>{$DETAIL->getDisplayName()}</td>
-			<td class='lvtColData'>{$DETAIL->getDisplayLabelForPreValue()}</td>
-			<td class='lvtColData'>{if $smarty.request.highlight eq 'true'}{$DETAIL->diffHighlight()}{else}{$DETAIL->getDisplayLabelForPostValue()}{/if}</td>
+			<td class='lvtColData' style="word-break:break-word;">{$DETAIL->getDisplayLabelForPreValue()}</td>
+			<td class='lvtColData' style="word-break:break-word;">{if $smarty.request.highlight eq 'true'}{$DETAIL->diffHighlight()}{else}{$DETAIL->getDisplayLabelForPostValue()}{/if}</td>
 		</tr>
 		{foreachelse}
 		<tr>

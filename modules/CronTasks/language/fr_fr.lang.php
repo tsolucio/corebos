@@ -10,12 +10,12 @@
 /***********************************************************
 *  Module       : CronTasks
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
 
-$mod_strings = Array (
+$mod_strings = array (
 	'LBL_ACTIVE' => 'Actif',
 	'LBL_INACTIVE' => 'Inactif',
 	'LBL_STATUS' => 'Statut',

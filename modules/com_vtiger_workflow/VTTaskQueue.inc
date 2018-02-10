@@ -11,9 +11,9 @@
 /**
  * Time based Queue of tasks ready for execution.
  */
-class VTTaskQueue{
+class VTTaskQueue {
 
-	public function __construct($adb){
+	public function __construct($adb) {
 		$this->adb = $adb;
 	}
 
@@ -24,13 +24,13 @@ class VTTaskQueue{
 	 * @param $entityId The id of the crm entity the task is assiciated with.
 	 * @param $when The time after which the task should be executed. This is an optional value with a default value of 0.
 	 */
-	public function queueTask($taskId, $entityId, $when=0){
+	public function queueTask($taskId, $entityId, $when = 0) {
 		$adb = $this->adb;
-		$result = $adb->pquery("select * from com_vtiger_workflowtask_queue where task_id=? and entity_id=?", array($taskId, $entityId));
-		if($adb->num_rows($result)==1){
+		$result = $adb->pquery('select * from com_vtiger_workflowtask_queue where task_id=? and entity_id=?', array($taskId, $entityId));
+		if ($adb->num_rows($result)==1) {
 			return false;
-		}else{
-			$adb->pquery("insert into com_vtiger_workflowtask_queue (task_id, entity_id, do_after) values (?,?,?)", array($taskId, $entityId, $when));
+		} else {
+			$adb->pquery('insert into com_vtiger_workflowtask_queue (task_id, entity_id, do_after) values (?,?,?)', array($taskId, $entityId, $when));
 			return true;
 		}
 	}
@@ -42,18 +42,17 @@ class VTTaskQueue{
 	 *
 	 * @return A list of pairs of the form array(taskId, entityId)
 	 */
-	public function getReadyTasks(){
+	public function getReadyTasks() {
 		$adb = $this->adb;
 		$time = time();
-		$result = $adb->pquery("select task_id, entity_id from com_vtiger_workflowtask_queue where do_after<?", array($time));
+		$result = $adb->pquery('select task_id, entity_id from com_vtiger_workflowtask_queue where do_after<?', array($time));
 		$it =  new SqlResultIterator($adb, $result);
 		$arr = array();
-		foreach($it as $row){
+		foreach ($it as $row) {
 			$arr[]=array($row->task_id, $row->entity_id);
 		}
-		$adb->pquery("delete from com_vtiger_workflowtask_queue where do_after<?", array($time));
+		$adb->pquery('delete from com_vtiger_workflowtask_queue where do_after<?', array($time));
 		return $arr;
 	}
-
 }
 ?>

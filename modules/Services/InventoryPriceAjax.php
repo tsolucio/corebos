@@ -1,20 +1,20 @@
 <?php
 /*********************************************************************************
 ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
- * ("License"); You may not use this file except in compliance with the License
+ * ('License'); You may not use this file except in compliance with the License
  * The Original Code is:  vtiger CRM Open Source
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
 global $theme, $log;
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
+$theme_path='themes/'.$theme.'/';
+$image_path=$theme_path.'images/';
 
 $currencyid = vtlib_purify($_REQUEST['currencyid']);
 $products_list = vtlib_purify($_REQUEST['productsList']);
 
-$product_ids = explode("::", $products_list);
+$product_ids = explode('::', $products_list);
 
 $price_list = array();
 
@@ -23,11 +23,11 @@ if (count($product_ids) > 0) {
 }
 
 // To get the Price Values in the same order as the Products
-for ($i=0;$i<count($product_ids);++$i) {
+for ($i=0; $i<count($product_ids); ++$i) {
 	$product_id = $product_ids[$i];
 	$price_list[] = $product_prices[$product_id];
 }
 
-$price_values = implode("::", $price_list);
-echo "SUCCESS$".$price_values;
+$price_values = implode('::', $price_list);
+echo 'SUCCESS$'.$price_values;
 ?>

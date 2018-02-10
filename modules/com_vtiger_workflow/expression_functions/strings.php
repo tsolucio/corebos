@@ -14,22 +14,26 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 
-function __vt_concat($arr){
+function __vt_concat($arr) {
 	return implode($arr);
 }
 
 function __vt_substring($arr) {
-	if (count($arr)<2 or count($arr)>3) return $arr[0];
+	if (count($arr)<2 || count($arr)>3) {
+		return $arr[0];
+	}
 	if (count($arr)==2) {
-		return substr($arr[0],$arr[1]);
+		return substr($arr[0], $arr[1]);
 	} else {
-		return substr($arr[0],$arr[1],$arr[2]);
+		return substr($arr[0], $arr[1], $arr[2]);
 	}
 }
 
 function __cb_stringposition($arr) {
-	if (count($arr)!=2) return -1;
-	$ret = stripos($arr[0],$arr[1]);
+	if (count($arr)!=2) {
+		return -1;
+	}
+	$ret = stripos($arr[0], $arr[1]);
 	if ($ret === false) {
 		return -1;
 	} else {
@@ -92,5 +96,10 @@ function __cb_num2str($arr) {
 	require_once 'modules/cbtranslation/number2string.php';
 	$lang = (isset($arr[1]) ? $arr[1] : '');
 	return number2string::convert($arr[0], $lang);
+}
+
+function __cb_translate($arr) {
+	require_once 'modules/cbtranslation/cbtranslation.php';
+	return cbtranslation::get($arr[0]);
 }
 ?>

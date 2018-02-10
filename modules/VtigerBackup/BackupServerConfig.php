@@ -93,7 +93,6 @@ $smarty->assign("LOCAL_BACKUP_STATUS", $local_backup_status);
 require_once('include/logging.php');
 require_once('modules/Users/LoginHistory.php');
 require_once('modules/Users/Users.php');
-require_once('config.php');
 require_once('include/db_backup/backup.php');
 require_once('include/db_backup/ftp.php');
 require_once('include/database/PearDatabase.php');

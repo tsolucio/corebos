@@ -565,14 +565,57 @@ function sendfile_email()
 																			{/if}
 
 
-																			<div class="actionData actionlink_emaildocument">
-																				{if $DLD_TYPE eq 'I' && $FILE_STATUS eq '1' && $FILE_EXIST eq 'yes'}
-																					<input type="hidden" id="dldfilename" name="dldfilename" value="{$FILEID}-{$FILENAME}">
-																						<a href="javascript: document.DetailView.return_module.value='Documents'; document.DetailView.return_action.value='DetailView'; document.DetailView.module.value='Documents'; document.DetailView.action.value='EmailFile'; document.DetailView.record.value={$NOTESID}; document.DetailView.return_id.value={$NOTESID}; sendfile_email();" class="webMnu"><img src="{'attachment.gif'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle" border="0"/></a>
-																						<a href="javascript: document.DetailView.return_module.value='Documents'; document.DetailView.return_action.value='DetailView'; document.DetailView.module.value='Documents'; document.DetailView.action.value='EmailFile'; document.DetailView.record.value={$NOTESID}; document.DetailView.return_id.value={$NOTESID}; sendfile_email();">{$MOD.LBL_EMAIL_FILE}</a> 
-																				{/if}
-																			</div>
-																		{/if}
+														{if $MODULE eq 'Contacts'}
+															{assign var=subst value="cto_id"}
+															{assign var=acc value="&rel_id=$accountid"}
+														{else}
+															{assign var=subst value="rel_id"}
+															{assign var=acc value=""}
+														{/if}
+
+														{if $MODULE eq 'Leads' || $MODULE eq 'Contacts' || $MODULE eq 'Accounts'}
+															{if $SENDMAILBUTTON eq 'permitted'}
+																<tr class="actionlink actionlink_sendemail">
+																	<td align="left" style="padding-left:10px;">
+																		{foreach key=index item=email from=$EMAILS}
+																			<input type="hidden" name="email_{$index}" value="{$email}"/>
+																		{/foreach}
+																		<a href="javascript:void(0);" class="webMnu" onclick="{$JS}"><img src="{'sendmail.png'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle"  border="0"/></a>
+																		<a href="javascript:void(0);" class="webMnu" onclick="{$JS}">{$APP.LBL_SENDMAIL_BUTTON_LABEL}</a>
+																	</td>
+																</tr>
+															{/if}
+														{/if}
+
+														{if $MODULE eq 'Contacts' || $EVENT_PERMISSION eq 'true'}
+															<tr class="actionlink actionlink_addevent">
+																<td align="left" style="padding-left:10px;">
+																	<a href="index.php?module=cbCalendar&action=EditView&return_module={$MODULE}&return_action=DetailView&return_id={$ID}&{$subst}={$ID}{$acc}&cbfromid={$ID}&parenttab={$CATEGORY}" class="webMnu"><img src="{'AddEvent.gif'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle"  border="0"/></a>
+																	<a href="index.php?module=cbCalendar&action=EditView&return_module={$MODULE}&return_action=DetailView&return_id={$ID}&{$subst}={$ID}{$acc}&cbfromid={$ID}&parenttab={$CATEGORY}" class="webMnu">{$APP.LBL_ADD_NEW} {$APP.Event}</a>
+																</td>
+															</tr>
+														{/if}
+
+														{if $MODULE eq 'Leads'}
+															{if $CONVERTLEAD eq 'permitted'}
+																<tr class="actionlink actionlink_convertlead">
+																	<td align="left" style="padding-left:10px;">
+																		<a href="javascript:void(0);" class="webMnu" onclick="callConvertLeadDiv('{$ID}');"><img src="{'Leads.gif'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle"  border="0"/></a>
+																		<a href="javascript:void(0);" class="webMnu" onclick="callConvertLeadDiv('{$ID}');">{$APP.LBL_CONVERT_BUTTON_LABEL}</a>
+																	</td>
+																</tr>
+															{/if}
+														{/if}
+
+														<!-- Start: Actions for Documents Module -->
+														{if $MODULE eq 'Documents'}
+															<tr class="actionlink actionlink_downloaddocument"><td align="left" style="padding-left:10px;">
+																	{if $DLD_TYPE eq 'I' && $FILE_STATUS eq '1' && $FILE_EXIST eq 'yes'}
+																		<br><a href="index.php?module=uploads&action=downloadfile&fileid={$FILEID}&entityid={$NOTESID}"  onclick="javascript:dldCntIncrease({$NOTESID});" class="webMnu"><img src="{'fbDownload.gif'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle" title="{$MOD.LNK_DOWNLOAD}" border="0"/></a>
+																		<a href="index.php?module=uploads&action=downloadfile&fileid={$FILEID}&entityid={$NOTESID}" onclick="javascript:dldCntIncrease({$NOTESID});">{$MOD.LBL_DOWNLOAD_FILE}</a>
+																	{elseif $DLD_TYPE eq 'E' && $FILE_STATUS eq '1'}
+																		<br><a target="_blank" href="{$DLD_PATH}" onclick="javascript:dldCntIncrease({$NOTESID});"><img src="{'fbDownload.gif'|@vtiger_imageurl:$THEME}"" align="absmiddle" title="{$MOD.LNK_DOWNLOAD}" border="0"></a>
+																		<a target="_blank" href="{$DLD_PATH}" onclick="javascript:dldCntIncrease({$NOTESID});">{$MOD.LBL_DOWNLOAD_FILE}</a>
 																	{/if}
 
 																	{if $MODULE eq 'Contacts'}
@@ -773,7 +816,5 @@ function sendfile_email()
 			</table>
 }
 {if $MODULE|hasEmailField}
-	<form name="SendMail">
-		<div id="sendmail_cont" style="z-index:100001;position:absolute;"></div>
-	</form>
+	<form name="SendMail" method="post"><div id="sendmail_cont" style="z-index:100001;position:absolute;"></div></form>
 {/if}

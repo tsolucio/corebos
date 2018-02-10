@@ -63,7 +63,7 @@ require_once("data/Tracker.php");
 require_once("include/utils/utils.php");
 require_once 'vtigerversion.php';
 
-global $currentModule, $moduleList, $adb, $coreBOS_app_version;
+global $currentModule, $adb, $coreBOS_app_version;
 $image_path="include/images/";
 
 $app_strings = return_application_language('en_us');
@@ -111,5 +111,6 @@ $smarty->assign('coreBOS_uiapp_name', GlobalVariable::getVariable('Application_U
 $smarty->assign("LOGIN_ERROR", $login_error);
 $currentYear = date('Y');
 $smarty->assign('currentYear',$currentYear);
-$smarty->display('Login2FA.tpl');
+$smarty->assign('LoginPage', $cbodLoginPage.'2fa');
+$smarty->display('Login.tpl');
 ?>
