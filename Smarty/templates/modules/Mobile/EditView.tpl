@@ -101,7 +101,7 @@
 											<label for="{$_FIELD->name()}">{$_FIELD->label()|@getTranslatedString:$_MODULE->name()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
 											{assign var=fldtime value=" "|explode:$_FIELD->value()}
 											<input data-mini="true" type="date" name="{$_FIELD->name()}" id="{$_FIELD->name()}" value="{$fldtime[0]}" {if $_FIELD->ismandatory() eq 'M'}class="required"{/if} />
-											<input type="time" name="followupdt_time" id="followupdt_time" value="{$fldtime[1]}" />
+											<input type="time" name="followupdt_time" id="followupdt_time" value="{if isset($fldtime[1])}{$fldtime[1]}{/if}" />
 											<div id="format_note_followupdt_time" style="margin-bottom:25px;font-style:italic;font-size:10px;display:none;">Format: HH:MM (24 H)</div>
 										{/if}
 								{/if}	
