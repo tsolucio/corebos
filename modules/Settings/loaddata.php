@@ -38,7 +38,7 @@ if (!empty($fldname) and !empty($modname)) {
         if ($field) {
 
 // Workflow Conditions
-$crs = $adb->pquery('SELECT workflow_id,summary FROM `com_vtiger_workflows` WHERE test=?', array('%'.$fldname.'%'));
+$crs = $adb->pquery('SELECT workflow_id,summary FROM `com_vtiger_workflows` WHERE test like ?', array('%'.$fldname.'%'));
             if ($crs and $adb->num_rows($crs)>0) {
                 while ($fnd=$adb->fetch_array($crs)) {
                 echo "Field found in workflow condtions: ";
@@ -112,7 +112,7 @@ $crs = $adb->pquery('SELECT workflow_id,summary FROM `com_vtiger_workflows` WHER
             // Email Templates
             $crs = $adb->pquery('SELECT templateid,templatename
                 FROM `vtiger_emailtemplates`
-                WHERE subject like ? or body like ?', array('%'.$fldname.'%', '%'.$fldname.'%'));
+                WHERE subject = ? or body = ?', array($fldname, $fldname));
             if ($crs and $adb->num_rows($crs)>0) {
                 while ($fnd=$adb->fetch_array($crs)) {
                     echo "Field found in Email Template: ".$fnd['templateid'].' :: '.$fnd['templatename'];
