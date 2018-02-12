@@ -389,7 +389,8 @@
 									<td colspan="3" class="dvtCellInfo" align="center">
 										<input type="button" name="save" value=" &nbsp; {$APP.LBL_SAVE_BUTTON_LABEL} &nbsp; " class="crmButton small save" onclick="saveFieldInfo('{$value.fieldselect}','{$MODULE}','updateFieldProperties','{$value.typeofdata}');" />&nbsp;
 										{if $value.customfieldflag neq 0}
-											<input type="button" name="delete" value="{$value.label}" id="fieldname" class="crmButton small delete"  onclick="getData(this.value, '{$value.label}'); fnvshobj(this,'hiddenfield_{$value.label}'); " />
+											
+											<input type="button" name="delete" value="{$APP.LBL_OPEN_BUTTON_LABEL}" id="fieldname" class="crmButton small delete"  onclick="getData('{$value.columnname}','{$MODULE}','{$value.label}'); fnvshobj(this,'hiddenfield_{$value.label}'); " />
 										{/if}
 										<input type="button" name="cancel" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="crmButton small cancel" onclick="fninvsh('editfield_{$value.fieldselect}');" />
 									</td>
@@ -398,28 +399,27 @@
 						</div>
 					</div>
 
-					<div id = "hiddenfield_{$value.label}" style="display:none; position:absolute; width:500px; height: 500px; margin-top: -400px" class="layerPopup">
-						<div style="position:relative; display:block">
-       
-							<div>
-								<table cellpadding="0px" cellspacing="0px" style="width:100%">
-									<tr height="300">
-										<td align="left" valign="middle" style="padding-top:15px; padding-bottom:10px;">
-											<div style="width:100%;height:400px; overflow:auto;" onscroll="OnScrollDiv (this)">
-												<div id="{$value.label}"></div>
-											</div>
-										</td>
-									</tr>
-								</table>
+
+
+				<div class="demo-only" id="hiddenfield_{$value.label}"  style="display:none; position:absolute; width:500px; height: 500px; margin-top: -400px" >
+						<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+							<div class="slds-modal__container">
+								<header class="slds-modal__header">
+									<h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{$value.label}</h2>
+								</header>
+							<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+								<p id="{$value.label}" style="text-align: left"></p>
 							</div>
-
-
+							<footer class="slds-modal__footer">
 					{if $value.customfieldflag neq 0}
-						<input type="button" name="delete" value=" {$APP.LBL_DELETE_BUTTON_LABEL} " class="crmButton small delete" onclick="deleteCustomField('{$value.fieldselect}','{$MODULE}','{$value.columnname}','{$value.uitype}')" />
+						<input type="button" name="delete" value="{$APP.LBL_DELETE_BUTTON_LABEL} " class="slds-button slds-button_brand" onclick="deleteCustomField('{$value.fieldselect}','{$MODULE}','{$value.columnname}','{$value.uitype}')" />
 					{/if}
-						<input type="button" name="cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" class="crmButton small cancel" onclick= "fninvsh('hiddenfield_{$value.label}');" />
+						<input type="button" name="cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" class="slds-button slds-button_neutral" onclick= "fninvsh('hiddenfield_{$value.label}');" style="background: #0070d2;color: white" />
+							</footer>
 						</div>
-					</div>
+					</section>
+						<div class="slds-backdrop slds-backdrop_open"></div>
+				</div>
 
 					{if $smarty.foreach.inner.first}
 						{if $value.no % 2 != 0}

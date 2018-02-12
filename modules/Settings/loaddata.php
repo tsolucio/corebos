@@ -25,13 +25,20 @@ global $current_user,$adb;
 set_time_limit(0);
 ini_set('memory_limit','1024M');
 $fldname = vtlib_purify($_GET['fieldname']);
+$modname = vtlib_purify($_GET['modulename']);
 ?>
 
 
 <?php
 
+if (!empty($fldname) and !empty($modname)) {
+    $mod = Vtiger_Module::getInstance($modname);
+    if ($mod) {
+        $field = Vtiger_Field::getInstance($fldname,$mod);
+        if ($field) {
+
 // Workflow Conditions
-$crs = $adb->pquery('SELECT workflow_id,summary FROM `com_vtiger_workflows` WHERE test like ?', array('%'.$fldname.'%'));
+$crs = $adb->pquery('SELECT workflow_id,summary FROM `com_vtiger_workflows` WHERE test=?', array('%'.$fldname.'%'));
             if ($crs and $adb->num_rows($crs)>0) {
                 while ($fnd=$adb->fetch_array($crs)) {
                 echo "Field found in workflow condtions: ";
@@ -48,7 +55,7 @@ $crs = $adb->pquery('SELECT workflow_id,summary FROM `com_vtiger_workflows` WHER
             // Workflow Tasks
             $crs = $adb->pquery('SELECT workflow_id,task_id,summary
                 FROM `com_vtiger_workflowtasks`
-                WHERE task like  ?', array('%'.$fldname.'%'));
+                WHERE task like ?', array('%'.$fldname.'%'));
             if ($crs and $adb->num_rows($crs)>0) {
                 while ($fnd=$adb->fetch_array($crs)) {
                     echo "Field found in workflow (".$fnd['workflow_id'].") task (".$fnd['task_id']."): ";
@@ -186,6 +193,38 @@ $crs = $adb->pquery('SELECT workflow_id,summary FROM `com_vtiger_workflows` WHER
             }
 
 
+            // Lead Mapping
+            if (in_array($modname,array('Contacts','Accounts','Potentials','Leads'))) {
+                switch ($modname) {
+                    case 'Contacts':
+                        $searchon = 'contactfid';
+                        break;
+                    case 'Accounts':
+                        $searchon = 'accountfid';
+                        break;
+                    case 'Potentials':
+                        $searchon = 'potentialfid';
+                        break;
+                    case 'Leads':
+                        $searchon = 'leadfid';
+                        break;
+                }
+                $crs = $adb->pquery("SELECT 1
+                    FROM `vtiger_convertleadmapping`
+                    WHERE $searchon = ?",array($field->id));
+                if ($crs and $adb->num_rows($crs)>0) {
+                    echo "Field found in Lead Conversion Mapping<br>";
+                } else {
+                    echo "Field not found in Lead Conversion Mapping<br>";
+                }
+            }
+        } else {
+            echo "<br><b>Field $fldname could not be found on module $modname!</b><br>";
+        }
+    } else {
+        echo "<br><b>Module $modname could not be found!</b><br>";
+    }
+}
 
 
 ?>

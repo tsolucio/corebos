@@ -7,9 +7,9 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-function getData(fieldname, divid){
+function getData(fieldname, modulename, divid){
 	$.ajax({
-		url: 'index.php?module=Settings&action=SettingsAjax&file=loaddata&fieldname='+fieldname,
+		url: 'index.php?module=Settings&action=SettingsAjax&file=loaddata&fieldname='+fieldname+'&modulename='+modulename,
 		success: function(html) {
 			var ajaxDisplay = document.getElementById(divid);
 			ajaxDisplay.innerHTML = html;
@@ -17,8 +17,3 @@ function getData(fieldname, divid){
 	});
 }
 
-function OnScrollDiv (div) {
-	var info = document.getElementById ('info');
-	info.innerHTML = 'Horizontal: ' + div.scrollLeft
-						+ 'px<br/>Vertical: ' + div.scrollTop + 'px';
-}
