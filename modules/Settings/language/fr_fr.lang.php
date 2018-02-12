@@ -2,7 +2,7 @@
 /***********************************************************
 *  Module       : Settings
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
@@ -807,7 +807,7 @@ $mod_strings = array (
 		'LBL_DESCRIPTION_Public: Read Only'=>'Droits de lecture seul des données entre utilisateurs ',
 		'LBL_DESCRIPTION_Public: Read, Create/Edit'=>'Droit de lecture/écriture des données entre utilisateurs  ',
 		'LBL_DESCRIPTION_Public: Read, Create/Edit, Delete'=>'Droit de lecture/écriture/suppression des données entre utilisateurs ',
-		
+
 		// For Dependency picklist
 		'LBL_PICKLIST_DEPENDENCY_SETUP' => 'Editeur de listes dépendantes',
 		'LBL_PICKLIST_DEPENDENCY_DESCRIPTION' => 'Réglages des dépendances entre les listes déroulantes',

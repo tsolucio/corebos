@@ -9,216 +9,112 @@
  ********************************************************************************/
 
 $mod_strings = array(
-
 'LBL_MODULE_NAME'=>'Configurações',
-
 'LBL_MODULE_TITLE'=>'Configurações: Principal',
-
 'LBL_LIST_CONTACT_ROLE'=>'Função',
-
 'LBL_LIST_LAST_NAME'=>'Sobrenome',
-
 'LBL_FIRST_NAME'=>'Nome:',
-
 'LBL_LAST_NAME'=>'Sobrenome:',
-
 'LBL_PHONE'=>'Fone:',
-
 'LBL_EMAIL_ADDRESS'=>'E-mail',
-
 'LBL_TRANSCURR'=>'Transferir Moeda Usuário para',
-
 'LBL_CURRDEL'=>'Moeda a ser Apagada',
-
 'LBL_NEW_FORM_TITLE'=>'Novo Contato',
-
 'LBL_NEW_CURRENCY'=>'Nova Moeda',
-
 'LBL_VIEWING'=>'Visualizar',
-
 'LBL_CURRENCY_NAME'=>'Nome Moeda',
-
 'LBL_CURRENCY_CODE'=>'Código Moeda',
-
 'LBL_CURRENCY_SYMBOL'=>'Símbolo',
-
 'LBL_CURRENCY_CRATE'=>'Taxa Câmbio',
-
 'LBL_CURRENCY_STATUS'=>'Status',
-
 'LBL_CURRENCY_TOOL'=>'Ferramentas',
-
 'LBL_CURRENCY_LIST'=>'Lista Moedas',
-
 'NTC_DELETE_CONFIRMATION'=>'Tem certeza que deseja deletar este registro?',
-
 'LBL_PICKLIST_FIELD_SETTINGS'=>'Configurações Campos Lista de Opções:',
-
 'Leads'=>'Lead',
-
 'Accounts'=>'Organização',
-
 'Contacts'=>'Contato',
-
 'Potentials'=>'Oportunidade',
-
 'HelpDesk'=>'HelpDesk',
-
 'Products'=>'Produto',
-
 'Events'=>'Evento',
-
 'Activities'=>'Tarefa',
-
 'CustomFields'=>'Campos Customizados',
-
 'NewCustomField'=>'Novo Campo Customizado',
-
 'NewCustomFieldAltC'=>'Novo Campo Customizado [Alt+c]:',
-
 'FieldName'=>'Nome Campo',
-
 'FieldType'=>'Tipo Campo',
-
 'FieldLabel'=>'Rótulo Campo',
-
 'Delete'=>'Apagar',
-
 'NEW'=>'Novo',
-
 'CUSTOMFIELD'=>'Campo Customizado',
-
 'LBL_CUSTOM_FIELDS'=>'Customizar Campos',
-
 'LBL_ADD_FIELD'=>'Adicionar Campo',
-
 'LBL_CUSTM_MSG'=>'permite-lhe....',
-
 'PicklistFields'=>'Campos Lista Opções',
-
-
 'Edit'=>'Editar',
-
 'LBL_EDIT_FIELD_TYPE'=>'Editar Tipo Campo',
 
 //Settings/CustomField.html
-
 'LBL_PROVIDE_FIELD_INFORMATION'=>'Forneça Informação do Campo:',
-
 'LBL_SELECT_FIELD_TYPE'=>'Selecione Tipo Campo: ',
-
 'LBL_PROVIDE_FIELD_DETAILS'=>'Forneça Detalhes Campo: ',
-
 'LBL_LABEL'=>'Rótulo: ',
-
 'LBL_LENGTH'=>'Tamanho: ',
-
 'LBL_DECIMAL_PLACES'=>'Casas Decimais: ',
-
 'LBL_PICK_LIST_VALUES'=>'Valores Lista Opções: ',
 
-
-
 //Settings/EditComboField.php
-
 'EditPickListValues'=>'Editar Lista Opções ',
 
-
-
 //Settings/EditField.html
-
 'LBL_FIELD_INFORMATION'=>'Informação do Campo:',
-
 'Values'=>'Valores',
-
 'EnterListOfValues'=>'Por favor, insira a lista de valores abaixo. Um valor por linha.',
 
-
-
 //Settings/fieldtypes.php
-
 'Text'=>'Texto',
-
 'Number'=>'Número',
-
 'Percent'=>'Percentual',
-
 'Currency'=>'Moeda',
-
 'Date'=>'Data',
-
 'Email'=>'E-mail',
-
 'Phone'=>'Fone',
-
 'PickList'=>'Lista de Opções',
-
 'LBL_MULTISELECT_COMBO'=>'Caixa Combinação Multi-Seleção',
-
 'Skype'=>'Skype',
-
 'Time'=>'Hora',
-
 'Relation'=>'Relation',
-
 'USERGROUPLIST'=>'Grupos',
-
 'EMAILTEMPLATES'=>'Modelos E-mail',
-
 'WORDINTEGRATION'=>'Mesclar Modelos Correspondências',
-
 'LBL_MAIL_MERGE'=>'Mesclar Correspondência',
-
 'NOTIFICATIONSCHEDULERS'=>'Sistema Agendamento Notificação',
 //currency status
-
 'LBL_INACTIVE'=>'Inativo',
-
 'LBL_NOTIFICATION'=>'Notificação',
 'LBL_DESCRIPTION'=>'Descrição',
 'LBL_TOOL'=>'Ferramenta',
 
-
-//Added fields for Title Informations -- after 4 Beta
-
+//Added fields for Title Informations
 'LBL_EMAIL_CONFIG'=>'Configuração Servidor Envio Mensagem',
-
 'LBL_WORD_INTEGRATION'=>'Integraçào com MS Word:',
-
 'LBL_GROUP_SETTINGS'=>'Configuração de Grupos:',
-
 'LBL_TEMPLATE_SETTINGS'=>'Configuração de Modelos:',
-
 'LBL_NOTIFICATION_SETTINGS'=>'Configuração de Notificações:',
-
 'LBL_EMAIL_SETTINGS'=>'Configuração de E-mails:',
-
 'LBL_SECURITY_SETTINGS'=>'Configuração de Segurança:',
-
-//Added fields after RC1 - Release
-
 'LBL_MAIL_SERVER_INFO'=>'Informação Servidor Envio Mensagem',
-
 'LBL_OUTGOING_MAIL_SERVER'=>'Nome Servidor',
-
 'LBL_OUTGOING_MAIL_SERVER_LOGIN_USER_NAME'=>'Login do Usuário no Servidor de Envio Mensagem',
-
 'LBL_OUTGOING_MAIL_SERVER_PASSWORD'=>'Senha Servidor Envio Mensagem',
-
 'LBL_MAIL_SERVER_SMTP'=>'Configurações Servidor Mensagem (SMTP)',
-
 'LBL_BACKUP_SERVER_CONFIG'=>'Configuração Servidor de Backup',
-
 'LBL_SERVER_ADDRESS'=>'Endereço Servidor',
-
 'LBL_FTP_SERVER_NAME'=>'Nome Servidor FTP',
-
 'LBL_FTP_USER_NAME'=>'Nome Usuário FTP',
-
 'LBL_FTP_PASSWORD'=>'Senha FTP',
-
 'LBL_FTP'=>'FTP',
-
 'LBL_SYSTEM_CONFIG'=>'Configuração do Sistema',
 'LBL_SYSTEM_INFO'=>'Informação Sistema',
 'LBL_AUDIT_TRAIL'=>'Informação Auditoria',
@@ -229,185 +125,97 @@ $mod_strings = array(
 'LBL_VIEW_AUDIT_TRAIL'=>'Visualizar Auditoria',
 'LBL_AUDIT_TRAIL_DESC'=>'Tela de Auditoria de Usuários que acessam o CRM',
 'LBL_NO_DATA'=>'Nenhum Dado',
-
 'LBL_CURRENCY_CONFIGURATION'=>'- Informação da Moeda',
-
 'LBL_CURRENCY_CONFIG'=>'Configuração da Moeda',
-
 'LBL_CURRENCY_INFO'=>'Informação da Moeda',
-
 'LBL_CURRENCY_TITLE'=>'Moeda',
-
 'LBL_CURRENCY_SETTINGS'=>'Moedas',
-
-
 'LBL_USERNAME'=>'Nome Usuário',
 'LBL_PASWRD'=>'Senha',
 'LBL_REQUIRES_AUTHENT'=>'Requer Autenticação?',
 'LBL_FROM_EMAIL_FIELD'=>'Do Email',
 
 //Fields for Settings
-
 'LBL_USER_MANAGEMENT'=>'Administração de Usuário & Acessos',
-
 'LBL_USERS'=>'Usuários',
-
 'LBL_USERS_LIST'=>'Lista Usuários',
 'LBL_GROUP_LIST'=>'Lista Grupos',
-
 'LBL_CREATE_AND_MANAGE_USERS'=>'- Criar e Administrar Usuários (ex., admin)',
-
-
 'LBL_CREATE_AND_MANAGE_USER_ROLES'=>'- Criar e Administrar Funções de Usuário (ex., Administrador, Usuário Padrão, etc.)',
-
 'LBL_PROFILES'=>'Perfis',
-
 'LBL_PROFILES_LIST'=>'Lista Perfis',
-
 'LBL_CREATE_AND_MANAGE_USER_PROFILES'=>'- Criar e Administrar Perfis de Usuários (ex., CEO, Gerente de Vendas, etc.)',
-
 'LBL_CREATE_AND_MANAGE_USER_GROUPS'=>'- Criar e Administrar Grupos de Usuários',
-
 'LBL_SHARING_ACCESS'=>'Compartilhar Acesso',
-
 'LBL_FIELDS_ACCESS'=>'Acesso Campos',
-
 'LBL_DEFAULT_ORGANIZATION_FIELDS'=>'Padrão Acesso Campos Organização',
-
 'LBL_SETTING_DEFAULT_ORGANIZATION_FIELDS'=>' - Configurar Padrão Acesso Campos na Organização',
-
 'LBL_SETTING_DEFAULT_SHARING_ACCESS'=>'- Configurar Padrão Acesso Compartilhado na Organização',
-
 'LBL_FIELD_ACCESSIBILITY'=>'Acessibilidade aos Campos',
-
 'LBL_SETTING_FIELD_ACCESSIBILITY'=>' - Configurar Acessibilidade Campos para cada Perfil',
 //<<<<<<<<for edit ordering blocks>>>>>>
 'LBL_FIELD_ORDERING_DESC'=>' - Editar Ordem do Campo',
-
 'LBL_FIELD_ORDERING'=>'Editar Blocos do Campo',
 //<<<<<<<<<<end>>>>>>>>>>>>>
 'LBL_LEAD_FIELD_ACCESS'=>'Acesso Campo Lead',
-
 'LBL_ACCOUNT_FIELD_ACCESS'=>'Acesso Campo Organização',
-
 'LBL_CONTACT_FIELD_ACCESS'=>'Acesso Campo Contato',
-
 'LBL_OPPORTUNITY_FIELD_ACCESS'=>'Acesso Campo Oportunidade',
-
 'LBL_HELPDESK_FIELD_ACCESS'=>'Acesso Campo HelpDesk',
-
 'LBL_PRODUCT_FIELD_ACCESS'=>'Acesso Campo Produto',
-
 'LBL_NOTE_FIELD_ACCESS'=>'Acesso Campo Documento',
-
 'LBL_EMAIL_FIELD_ACCESS'=>'Acesso Campo E-mail',
-
 'LBL_TASK_FIELD_ACCESS'=>'Acesso Campo Tarefa',
-
 'LBL_EVENT_FIELD_ACCESS'=>'Acesso Campo Evento',
-
 'LBL_DELETE_DEMO_DATA'=>'Apagar Dados de Demonstração',
-
 'LBL_DELETE_DEMO_DATA_INFO'=>'- Apagar os dados de Demonstração criados durante a instalação',
-
-
-
 'LBL_STUDIO'=>'Estudio',
-
 'LBL_CUSTOM_FIELD_SETTINGS'=>'Configurações Campo Customizado',
-
 'LBL_CREATE_AND_MANAGE_USER_DEFINED_FIELDS'=>'Administrar campos customizados para sua Empresa',
-
 'LBL_SELECT_MODULE'=>'Selecionar Módulo',
-
 'LBL_SELECT_CF_TEXT'=>'<b>Selecionar Módulo:</b>',
-
-
-
 'LBL_PICKLIST_SETTINGS'=>'Configuração Lista de Opções',
-
 'LBL_EDIT_PICKLIST_VALUES'=>' - Editar valores dos Campos da Lista de Opções',
-
 'LBL_EDIT'=>'Editando',
-
 'LBL_COMMUNICATION_TEMPLATES'=>'Modelos de Comunicação',
-
 'LBL_CREATE_EMAIL_TEMPLATES'=>'Novo Modelo de E-mail',
-
 'LBL_UPLOAD_MSWORD_TEMPLATES'=>' - Transferir Modelos do MS Word para Mesclar Correspondência',
-
 'LBL_SCHEDULE_EMAIL_NOTIFICATION'=>' - Agendar Notificações por E-mail',
-
 'LBL_EXPAND_CLOSE_MENU'=>'Expandir/Fechar Menu',
-
 'LBL_CONFIGURATION'=>'Configuração',
-
 'LBL_CONFIGURE_MAIL_SERVER'=>' - Configurar Servidor Envio de Mensagem',
-
 'LBL_BACKUP_SERVER_CONFIGURATION'=>'Configuração Servidor de Backup',
-
 'LBL_BACKUP_SERVER_INFO'=>'Informação Servidor de Backup',
-
 'LBL_BACKUP_SERVER_SETTINGS'=>'Configuração Servidor de Backup',
-
 'LBL_CONFIGURE_BACKUP_SERVER'=>' - Configurar Servidor de Backup',
-
 'LBL_SYSTEM_CONFIGURATION'=>' - Configuração do Sistema',
-
 'LBL_PROXY_SERVER_CONFIGURATION'=>'Configuração Servidor Proxy',
-
 'LBL_PROXY_SERVER_INFO'=>'Informação Servidor Proxy',
-
 'LBL_PROXY_SERVER_SETTINGS'=>'Servidor Proxy',
-
 'LBL_CONFIGURE_PROXY_SERVER'=>' - Configurar Servidor Proxy',
-
 'LBL_PROXY_PORT'=>'Número Porta',
 
-
-
 //Field Types for custom fields
-
 'LBL_URL'=>'URL',
-
 'LBL_CHECK_BOX'=>'Checkbox',
 
-
-
 //PickList Settings
-
 'LBL_STANDARD_FIELDS'=>'Campos Padrões',
-
 'LBL_LEAD_SOURCE'=>'Fonte Lead',
-
 'LBL_SALUTATION'=>'Saudação',
-
 'LBL_LEAD_STATUS'=>'Status Lead',
-
 'LBL_INDUSTRY'=>'Atividade',
-
 'LBL_RATING'=>'Avaliação',
-
 'LBL_ACCOUNT_TYPE'=>'Tipo Organização',
-
 'LBL_BUSINESS_TYPE'=>'Tipo Negócio',
-
 'LBL_CURRENCY_TYPE'=>'Tipo Moeda',
-
 'LBL_SALES_STAGE'=>'Estágio Vendas',
-
 'LBL_STATUS'=>'Status',
-
 'LBL_CATEGORY'=>'Categoria Ticket',
-
 'LBL_MANUFACTURER'=>'Fabricante',
-
 'LBL_PRODUCT_CATEGORY'=>'Categoria de Produto',
-
 'LBL_RSS_CATEGORY'=>'Categoria de RSS',
-
 //Added for Web based Email client integration
-
 'LBL_ADD_MAIL_ACCOUNT'=>'Adiciona Conta Correio',
 'LBL_NEW_MAIL_ACCOUNT_TITLE'=>'Nova Conta Correio [Alt+M]',
 'LBL_NEW_MAIL_ACCOUNT_KEY'=>'M',
@@ -457,7 +265,7 @@ $mod_strings = array(
 'LBL_5_MIN'=>'5 minutos',
 'LBL_EMAILS_PER_PAGE'=>'Emails por Página',
 
-//Added for Organization Details (4.2 release)
+//Added for Organization Details
 'LBL_ORGANIZATION_NAME'=>'Nome Empresa',
 'LBL_ORGANIZATION_ADDRESS'=>'Endereço',
 'LBL_ORGANIZATION_CITY'=>'Cidade',
@@ -596,7 +404,6 @@ $mod_strings = array(
 'LBL_DELETE_CURRENCY'=>'Apagar Moeda',
 
 //Added for singlepane view in modules
-
 'LBL_DEFAULT_DETAIL_VIEW'=>'Padrão Detalhes Visualização',
 'LBL_DEFAULT_MODULE_VIEW'=>'Padrão Visualização Módulo',
 'LBL_DEFAULT_MODULE_VIEW_DESC'=>'Configurar Padrão Visualização',
@@ -739,13 +546,9 @@ $mod_strings = array(
 'LBL_EDIT_CREATE_ONLY'=>'Público: Ler, Criar/Editar',
 'LBL_READ_CREATE_EDIT_DEL'=>'Público: Ler, Criar/Editar, Del',
 'LBL_PRIVATE'=>'Particular',
-
 'Public: Read Only'=>'Público: Só Leitura',
-
 'Public: Read, Create/Edit'=>'Público: Ler, Criar/Editar',
-
 'Public: Read, Create/Edit, Delete'=>'Público: Ler, Criar/Editar, Del',
-
 'Private'=>'Particular',
 'Hide Details'=>'Omitir Detalhes',
 'Hide Details and Add Events'=>'Omitir Detalhes e Adicionar Eventos',
@@ -908,33 +711,24 @@ $mod_strings = array(
 'LBL_DISABLED'=>'Desabilitado',
 'LBL_RULES'=>'Regras',
 'LBL_FOR'=>'Para',
-
 'LBL_FROM'=>'De',
 'LBL_TO'=>'Para',
-
 'LBL_CREATE'=>'Criar',
 'LBL_TICKET'=>'Ticket',
 'LBL_PROJECT'=>'Project',
 'LBL_ADD'=>'Adicionar',
-
 'LBL_CONTACT'=>'Contato',
 'LBL_ACCOUNT'=>'Organização',
-
 'LBL_FROM_CAPS'=>'DE',
 'LBL_TO_CAPS'=>'PARA',
 'LBL_TO_SMALL'=>'para',
-
 'LBL_CONTAINS'=>'Contém',
 'LBL_EQUALS'=>'Igual',
-
 'LBL_BEGINS'=>'Inicia',
-
 'LBL_REGEX'=>'Regex',
 'LBL_ENDS'=>'Final',
 'LBL_BODY'=>'Corpo',
-
 'LBL_NOT'=>'não',
-
 'LBL_ALL' => 'Todas',
 'LBL_ANY'=>'Qualquer uma das',
 'LBL_CONDITION'=>'Condições',
@@ -1071,7 +865,6 @@ $mod_strings = array(
 'LEADS_CUSTOM_FIELD_MAPPING_DESCRIPTION' => 'Mapear campos customizados de Leads com Organizações, Contatos e Oportunidades',
 'LEADS_CUSTOM_FIELD_MAPPING'=> 'Mapear Campos Customizados de Leads',
 'LBL_GO_BACK'=>'Voltar',
-
 'LBL_USE_PREFIX' => 'Utizar Prefixo',
 'LBL_START_SEQ' => 'Iniciar Sequência',
 'LBL_MODULE_NUMBERING' => 'Numeração Módulo',
@@ -1079,13 +872,9 @@ $mod_strings = array(
 'LBL_DONE' => 'Concluído',
 'LBL_IN_USE' => 'EM USO',
 'LBL_MODULE_NUMBERING_FIX_MISSING' => 'Atualizar Sequência de Registros Faltantes Agora',
-
 'LBL_SHARING_ACCESS_HELPNOTE' => 'Depois que fizer modificações, pressione o botão Recalcular para aplicar as mudanças.',
-
 'LBL_ADD_CUSTOMFIELD' => 'Adicionar Campo Customizado',
-
 'ERR_INVALID_PROFILE_ID' => 'ID Perfil Inválido. Por favor, especifique um ID do Perfil válido.',
-
 'LBL_ALREADY_EXISTS' => 'Já Existe',
 'LBL_EXTENSION_INCOMPATIBLE' => 'Extensão Incompatível',
 'LBL_INSTALL' => 'Instalar',
@@ -1094,12 +883,9 @@ $mod_strings = array(
 'LBL_NOTE' => 'Nota:',
 'LBL_HIDE' => 'Ocultar Detalhes',
 'LBL_SHOW' => 'Mostrar Detalhes',
-
 'LBL_READ_ONLY_ACCESS_MSG' => 'Acesso Somente Leitura',
 'LBL_READ_WRITE_ACCESS_MSG' => 'Acesso Leitura-Escrita',
-
 'LBL_DEFAULT_VALUE' => 'Valor Padrão',
-
 'LBL_DESCRIPTION_Public: Read Only'=>'Usuários podem acessar outros Usuários com privilégio "Somente Leitura"',
 'LBL_DESCRIPTION_Public: Read, Create/Edit'=>'Usuários podem acessar outros Usuários com privilégio "Ler, Criar/Editar"',
 'LBL_DESCRIPTION_Public: Read, Create/Edit, Delete'=>'Usuários podem acessar outros Usuários com privilégio "Ler, Criar/Editar, Apagar"',
@@ -1107,26 +893,20 @@ $mod_strings = array(
 // For Dependency picklist
 'LBL_PICKLIST_DEPENDENCY_SETUP' => 'Configuração Dependência Lista Opções',
 'LBL_PICKLIST_DEPENDENCY_DESCRIPTION' => 'Configuração Dependência entre valores Lista Opções em cada módulo',
-
 'Settings' => 'Configurações',
 'LBL_ERR_TAX_LABEL_ALREADY_EXISTS' => 'Este imposto já está disponível.',
 'LBL_ERR_SOME_TAX_LABELS_ALREADY_EXISTS' => 'Alguns rótulos de impostos já estão disponíveis, portanto não foram salvos.',
 'LBL_ERR_ADDTAX' => 'There may be some problem in adding the Tax type. Please try again',
-
 'Configuration Editor'=>'Editor Configuração',
-
 'ModTracker' => 'Rastreador de Módulo',
 'LBL_MODTRACKER_DESCRIPTION' => 'Selecionar Módulos para rastrear',
-
 'LBL_MENU_EDITOR'=>'Editor de Menu',
 'LBL_ALL_MODULES' => 'Todos os Módulos',
 'LBL_SELECTED_MODULES' => 'Módulos Selecionados',
-
 'LBL_CRM_SETTINGS' => 'Configurações CRM',
 
-//Fields missing vtiger CRM
-'Add New'=> 'Adicionar Novo', // Added by Valmir Carlos Trindade - valmir@ttcasolucoes.com.br
-'SMSNotifier'=>'Notificador SMS', // Added by Valmir Carlos Trindade - valmir@ttcasolucoes.com.br
+'Add New'=> 'Adicionar Novo',
+'SMSNotifier'=>'Notificador SMS',
 // language translation strings
 'LBL_LANGUAGES_PACKS' => 'Language Extension',
 'LBL_EDIT_LANGUAGE_FILE' => 'Translate modules strings',

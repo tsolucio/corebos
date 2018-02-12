@@ -17,7 +17,7 @@
  * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
  * @license	vtiger CRM Public License Version 1.0 (by definition)
  * Feel free to use / redistribute these languagefiles under the VPL 1.0.
- * This translations is based on earlier work of: 
+ * This translations is based on earlier work of:
  * - IT-Online.nl <www.it-online.nl>
  * - Weltevree.org <www.Weltevree.org>
  ********************************************************************************/
@@ -76,7 +76,7 @@ $mod_strings = array(
 'LBL_EDIT_FIELD_TYPE'=>'Bewerk veldtype',
 //Settings/CustomField.html
 'LBL_PROVIDE_FIELD_INFORMATION'=>'Veld informatie: ',
-'LBL_SELECT_FIELD_TYPE'=>'Selecteer veld type: ', 
+'LBL_SELECT_FIELD_TYPE'=>'Selecteer veld type: ',
 'LBL_PROVIDE_FIELD_DETAILS'=>'Veld details: ',
 'LBL_LABEL'=>'Label: ',
 'LBL_LENGTH'=>'Lengte: ',
@@ -555,7 +555,7 @@ $mod_strings = array(
 'LBL_USR_CAN_ACCESS'=>'Gebruikers kunnen',
 'LBL_USR_OTHERS'=>' Andere gebruikers',
 'LBL_USR_CANNOT_ACCESS'=>'Gebruikers kunnen geen toegang verkrijgen tot andere gebruikers',
- 
+
 'LBL_ORG_SHARING_PRIVILEGES'=>'Gedeelde organisatie privileges',
 'LBL_EDIT_PERMISSIONS'=>'Bewerk permissies',
 'LBL_SAVE_PERMISSIONS'=>'Bewaar permissie',
@@ -563,7 +563,7 @@ $mod_strings = array(
 'LBL_EDIT_CREATE_ONLY'=>'Publiek: Lezen, Bewerken',
 'LBL_READ_CREATE_EDIT_DEL'=>'Publiek: Lezen, Bewerken, Verwijder',
 'LBL_PRIVATE'=>'Prive',
- 
+
 'Public: Read Only'=>'Publiek: Alleen lezen',
 'Public: Read, Create/Edit'=>'Publiek: Lezen, Verander/Wijzig',
 'Public: Read, Create/Edit, Delete'=>'Publiek: Lezen, Verander/Wijzig, Verwijder',
