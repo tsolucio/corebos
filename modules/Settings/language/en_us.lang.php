@@ -114,7 +114,6 @@ $mod_strings = array(
 'LBL_FTP'=>'FTP',
 'LBL_SYSTEM_CONFIG'=>'System Configuration',
 'LBL_SYSTEM_INFO'=>'System Details',
-'LBL_PROXY_SETTINGS'=>'Proxy Server',
 'LBL_AUDIT_TRAIL'=>'Audit Trails',
 'LBL_ENABLE_AUDIT_TRAIL'=>'Enable Audit Trail',
 'AuditTrailEnabled' => 'Audit Trail Enabled',

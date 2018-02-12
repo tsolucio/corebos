@@ -76,7 +76,6 @@ $mod_strings = array(
     'Values'=>'Werte',
     'EnterListOfValues'=>'Werte unten eingeben. Jeder Wert muss in einer einzelnen Zeile stehen.',
 
-    //Settings/fieldtypes.php
     'Text'=>'Text',
     'Number'=>'Zahl',
     'Percent'=>'Prozent',
@@ -101,7 +100,7 @@ $mod_strings = array(
     'LBL_DESCRIPTION'=>'Beschreibung',
     'LBL_TOOL'=>'Werkzeug',
 
-    //Added fields for Title Informations -- after 4 Beta
+    //Added fields for Title Informations
     'LBL_EMAIL_CONFIG'=>'E-Mail Server Konfiguration',
     'LBL_WORD_INTEGRATION'=>'Word Integration:',
     'LBL_GROUP_SETTINGS'=>'Gruppen Einstellungen:',
@@ -110,7 +109,6 @@ $mod_strings = array(
     'LBL_EMAIL_SETTINGS'=>'E-Mail Einstellungen:',
     'LBL_SECURITY_SETTINGS'=>'Sicherheits Einstellungen:',
 
-    //Added fields after RC1 - Release
     'LBL_MAIL_SERVER_INFO'=>'Information über ausgehenden Mailserver',
     'LBL_OUTGOING_MAIL_SERVER'=>'Servername',
     'LBL_OUTGOING_MAIL_SERVER_LOGIN_USER_NAME'=>'Benutzername für Mailserver',
@@ -125,7 +123,6 @@ $mod_strings = array(
 
     'LBL_SYSTEM_CONFIG'=>'Systemkonfiguration',
     'LBL_SYSTEM_INFO'=>'Systeminformation',
-    'LBL_PROXY_SETTINGS'=>'Proxy Server Einstellungen',
     'LBL_AUDIT_TRAIL'=>'Audit Trail',
     'LBL_ENABLE_AUDIT_TRAIL'=>'Audit Trail zulassen',
     'AuditTrailEnabled' => 'Audit Trail Enabled',
@@ -140,7 +137,6 @@ $mod_strings = array(
     'LBL_CURRENCY_INFO'=>'Währungen',
     'LBL_CURRENCY_TITLE'=>'Währungen',
     'LBL_CURRENCY_SETTINGS'=>'Währungseinstellungen',
-
 
     'LBL_USERNAME'=>'Nutzername',
     'LBL_PASWRD'=>'Passwort',
@@ -285,7 +281,7 @@ $mod_strings = array(
     'LBL_5_MIN'=>'5 Minuten',
     'LBL_EMAILS_PER_PAGE'=>'E-Mails pro Seite',
 
-    //Added for Organization Details (4.2 release)
+    //Added for Organization Details
     'LBL_ORGANIZATION_NAME'=>'Organisation',
     'LBL_ORGANIZATION_ADDRESS'=>'Addresse',
     'LBL_ORGANIZATION_CITY'=>'Ort',
@@ -312,8 +308,8 @@ $mod_strings = array(
     'LBL_INVOICE_FIELD_ACCESS'=>'Rechnungen Feldzugang',
     'INVENTORYNOTIFICATION'=>'Bestandsnachrichten',
     'LBL_INVENTORY_NOTIFICATIONS'=>'Bearbeite Bestandsnachrichten',
-    'INVENTORYTERMSANDCONDITIONS'=>'Geschäftsbedingungen',//newly added for Inventory terms and conditions
-    'LBL_INVENTORY_TERMSANDCONDITIONS'=>' - Bearbeite Geschäftsbedingungen',//newly added
+    'INVENTORYTERMSANDCONDITIONS'=>'Geschäftsbedingungen',
+    'LBL_INVENTORY_TERMSANDCONDITIONS'=>' - Bearbeite Geschäftsbedingungen',
     'LBL_TANDC_TEXT'=>'Text für Geschäftsbedingungen',
     'LBL_INVENTORY_TANDC'=>'Geschäftsbedingungen',
 
@@ -386,8 +382,6 @@ $mod_strings = array(
     'LBL_GROUP_DESC'=>'bearbeiten Sie die Nutzergruppen',
     'LBL_MAIL_MERGE_DESC'=>'bearbeiten Sie die Vorlagen für das Zusammenführen von Dokumenten',
 
-
-    //Added fields after 5.0 Alpha
     'LBL_REQUIRE_SMTP_AUTHENTICATION'=>'SMTP Authentifizierung verlangen?',
     'LBL_ANNOUNCEMENT'=>'Bekanntgaben',
     'LBL_SETTING_ANNOUNCEMENT'=>'Bekanntgabe',
@@ -813,7 +807,6 @@ $mod_strings = array(
     'LBL_TASKS'=>'Aufgaben',
     'LBL_NEW_TASK_BUTTON_LABEL'=>'neue Aufgabe',
     'LBL_TASK'=>'Aufgabe',
-    // END
     //Added for vantage customization (Mandatory fields) -- Pavani
     'LBL_MANDATORY_FIELDS'=>'Pflichtfelder',
     'LBL_MANDATORY_FIELDS_DESCRIPTION'=>'Verwalte die Pflichtfelder für alle Module',
@@ -822,7 +815,6 @@ $mod_strings = array(
     'LBL_CUSTOMIZE_MODENT_NUMBER_DESCRIPTION'=>'Nummerieren Sie die Datensätze nach Ihren Vorlagen',
 	'ERR_CUSTOMIZE_MODENT_NUMBER_EMPTY' => 'Start sequence cannot be empty!',
 	'ERR_CUSTOMIZE_MODENT_NUMBER_NUMERIC' => 'Start sequence should be numeric.',
-    // END
 
     //added for softphone integration
     'LBL_SOFTPHONE_SERVER_SETTINGS'=>'SoftPhone Server Einstellungen',
@@ -875,7 +867,6 @@ $mod_strings = array(
     'VTLIB_LBL_INST_VERSION'=>'installierte Version',
     'VTLIB_LBL_MATCHES_PACKAGE_VERSION'=>'Paketversion stimmt überein',
     'VTLIB_LBL_CANNOT_UPGRADE'=>'Upgrade nicht möglich!',
-    // END
 
     //User group fixes
     'LBL_USERNAME_EXIST' => 'Es gibt bereits einen Nutzer mit diesem Namen!',

@@ -114,7 +114,6 @@ $mod_strings = array(
 	'LBL_FTP' => 'FTP',
 	'LBL_SYSTEM_CONFIG' => 'Rendszer Konfiguráció',
 	'LBL_SYSTEM_INFO' => 'Rendszer Részletek',
-	'LBL_PROXY_SETTINGS' => 'Proxy Szerver',
 	'LBL_AUDIT_TRAIL' => 'Nyomkövetések',
 	'LBL_ENABLE_AUDIT_TRAIL' => 'Nyomkövetés engedélyezés',
 	'AuditTrailEnabled' => 'Audit Trail Enabled',

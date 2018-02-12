@@ -221,7 +221,6 @@ $mod_strings = array(
 
 'LBL_SYSTEM_CONFIG'=>'Configuração do Sistema',
 'LBL_SYSTEM_INFO'=>'Informação Sistema',
-'LBL_PROXY_SETTINGS'=>'Servidor Proxy',
 'LBL_AUDIT_TRAIL'=>'Informação Auditoria',
 'LBL_ENABLE_AUDIT_TRAIL'=>'Habilitar Auditoria',
 'AuditTrailEnabled' => 'Audit Trail Enabled',
@@ -407,7 +406,7 @@ $mod_strings = array(
 
 'LBL_RSS_CATEGORY'=>'Categoria de RSS',
 
-//Added for Web based Email client integration (post 4.0.1 release)
+//Added for Web based Email client integration
 
 'LBL_ADD_MAIL_ACCOUNT'=>'Adiciona Conta Correio',
 'LBL_NEW_MAIL_ACCOUNT_TITLE'=>'Nova Conta Correio [Alt+M]',
@@ -485,8 +484,8 @@ $mod_strings = array(
 'LBL_INVOICE_FIELD_ACCESS'=>'Acesso Campo Fatura',
 'INVENTORYNOTIFICATION'=>'Notificações Estoque',
 'LBL_INVENTORY_NOTIFICATIONS'=>' - Edita Email Notificação Estoque',
-'INVENTORYTERMSANDCONDITIONS'=>'Estoque: Prazos e Condições', //newly added for Inventory terms and conditions
-'LBL_INVENTORY_TERMSANDCONDITIONS'=>' - Editar Prazos e Condições', //newly added
+'INVENTORYTERMSANDCONDITIONS'=>'Estoque: Prazos e Condições',
+'LBL_INVENTORY_TERMSANDCONDITIONS'=>' - Editar Prazos e Condições',
 'LBL_TANDC_TEXT'=>'Texto Prazos & Condições',
 'LBL_INVENTORY_TANDC'=>'Prazos & Condições',
 
@@ -559,7 +558,7 @@ $mod_strings = array(
 'LBL_GROUP_DESC'=>'Administrar diferentes tipos de Grupos de Usuários na Organização',
 'LBL_MAIL_MERGE_DESC'=>'Administrar modelos de Correspondências utilizadas nos Módulos do CRM',
 
-'LBL_REQUIRE_SMTP_AUTHENTICATION'=>'Requer Autenticação SMTP?', //Contribuição de Jader Marasca - 25/09/2010
+'LBL_REQUIRE_SMTP_AUTHENTICATION'=>'Requer Autenticação SMTP?',
 'LBL_ANNOUNCEMENT'=>'Anúncios',
 'LBL_SETTING_ANNOUNCEMENT'=>'Anúncio',
 'LBL_ANNOUNCE_TEXT'=>'Texto do Anúncio',
@@ -780,7 +779,6 @@ $mod_strings = array(
 'try_file_smaller'=>'Por favor tente um arquivo menor que 800000 bytes',
 'Problems_in_upload'=>'Problemas na transferência do arquivo',
 'Please_try_again'=>'Por favor tente novamente!',
-//5.0.3 fixes
 'LBL_TESTMAILSTATUS'=>'Status Teste Mensagem:',
 'LBL_CHECK_ASSIGNEDTO_MAILID'=>'Por favor, verifique o Endereço de e-mail determinado',
 'LBL_MAILSENDERROR'=>'A mensagem não pode ser enviada para o Usuário admin. Por favor verifique o Endereço de e-mail do admin',
@@ -983,7 +981,6 @@ $mod_strings = array(
 'LBL_TASKS'=>'Tarefas',
 'LBL_NEW_TASK_BUTTON_LABEL'=>'Nova Tarefa',
 'LBL_TASK'=>'Tarefa',
-// END
 //Added for vantage customization (Mandatory fields) -- Pavani
 'LBL_MANDATORY_FIELDS'=>'Campos Obrigatórios',
 'LBL_MANDATORY_FIELDS_DESCRIPTION'=>'Administrar campos Obrigatórios de todos os Módulos',
@@ -992,7 +989,6 @@ $mod_strings = array(
 'LBL_CUSTOMIZE_MODENT_NUMBER_DESCRIPTION'=>'Customizar Número Entidade do Módulo',
 'ERR_CUSTOMIZE_MODENT_NUMBER_EMPTY' => 'Start sequence cannot be empty!',
 'ERR_CUSTOMIZE_MODENT_NUMBER_NUMERIC' => 'Start sequence should be numeric.',
-// END
 
 //added for softphone integration
 'LBL_SOFTPHONE_SERVER_SETTINGS'=>'Configurações Servidor SoftPhone',
@@ -1045,7 +1041,6 @@ $mod_strings = array(
 'VTLIB_LBL_INST_VERSION'=>'Versão Instalada',
 'VTLIB_LBL_MATCHES_PACKAGE_VERSION'=>'compatibilidade Versão Pacote',
 'VTLIB_LBL_CANNOT_UPGRADE'=>'não é possível atualizar!',
-// END
 
 //User group fixes
 'LBL_USERNAME_EXIST' => 'Um Usuário com o nome especificado já existe!',

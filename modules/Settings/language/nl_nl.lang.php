@@ -117,7 +117,7 @@ $mod_strings = array(
 'LBL_DESCRIPTION'=>'Omschrijving',
 'LBL_TOOL'=>'Gereedschap',
 
-//Added fields for Title Informations -- after 4 Beta
+//Added fields for Title Informations
 'LBL_EMAIL_CONFIG'=>'Uitgaande e-mail server configuratie',
 'LBL_WORD_INTEGRATION'=>'WORD integratie:',
 'LBL_GROUP_SETTINGS'=>'Groep instellingen:',
@@ -126,7 +126,6 @@ $mod_strings = array(
 'LBL_EMAIL_SETTINGS'=>'E-mail instellingen:',
 'LBL_SECURITY_SETTINGS'=>'Veiligheids instellingen:',
 
-//Added fields after RC1 - Release
 'LBL_MAIL_SERVER_INFO'=>'E-mail server informatie',
 'LBL_OUTGOING_MAIL_SERVER'=>'Uitgaande e-mail server',
 'LBL_OUTGOING_MAIL_SERVER_LOGIN_USER_NAME'=>'Uitgaande e-mail server login gebruikersnaam',
@@ -140,7 +139,6 @@ $mod_strings = array(
 'LBL_FTP'=>'FTP',
 'LBL_SYSTEM_CONFIG'=>'Systeem configuratie',
 'LBL_SYSTEM_INFO'=>'Systeem informatie',
-'LBL_PROXY_SETTINGS'=>'Proxy server instellingen',
 'LBL_AUDIT_TRAIL'=>'Controle informatie',
 'LBL_ENABLE_AUDIT_TRAIL'=>'Controle aanzetten',
 'AuditTrailEnabled' => 'Audit Trail Enabled',
@@ -242,7 +240,7 @@ $mod_strings = array(
 'LBL_MANUFACTURER'=>'Fabrikant',
 'LBL_PRODUCT_CATEGORY'=>'Productcategorie',
 'LBL_RSS_CATEGORY'=>'Rss categorie',
-//Added for Web based Email client integration (post 4.0.1 release)
+//Added for Web based Email client integration
 'LBL_ADD_MAIL_ACCOUNT'=>'E-mail account toevoegen',
 'LBL_NEW_MAIL_ACCOUNT_TITLE'=>'Nieuw e-mail account [Alt+M]',
 'LBL_NEW_MAIL_ACCOUNT_KEY'=>'M',
@@ -318,8 +316,8 @@ $mod_strings = array(
 'LBL_INVOICE_FIELD_ACCESS'=>'Toegang veld factuur',
 'INVENTORYNOTIFICATION'=>'Voorraad notificatie',
 'LBL_INVENTORY_NOTIFICATIONS'=>' - Verander voorraad e-mail notificatie',
-'INVENTORYTERMSANDCONDITIONS'=>'Algemene Voorwaarden',//newly added for Inventory terms and conditions
-'LBL_INVENTORY_TERMSANDCONDITIONS'=>' - Verander Algemene Voorwaarden',//newly added
+'INVENTORYTERMSANDCONDITIONS'=>'Algemene Voorwaarden',
+'LBL_INVENTORY_TERMSANDCONDITIONS'=>' - Verander Algemene Voorwaarden',
 'LBL_TANDC_TEXT'=>'Tekst Algemene Voorwaarden',
 'LBL_INVENTORY_TANDC'=>'Algemene Voorwaarden',
 'LBL_OTHER_SETTINGS'=>'Oude instellingen',
@@ -807,7 +805,6 @@ $mod_strings = array(
 'LBL_TASKS'=>'Taken',
 'LBL_NEW_TASK_BUTTON_LABEL'=>'Nieuwe taak',
 'LBL_TASK'=>'Taak',
-// END
 //Added for vantage customization (Mandatory fields) -- Pavani
 'LBL_MANDATORY_FIELDS'=>'Verplichte Velden',
 'LBL_MANDATORY_FIELDS_DESCRIPTION'=>'Manage Verplichte velden van alle modulen',
@@ -816,7 +813,6 @@ $mod_strings = array(
 'LBL_CUSTOMIZE_MODENT_NUMBER_DESCRIPTION'=>'Op maat instellen van nummerschema\'s',
 'ERR_CUSTOMIZE_MODENT_NUMBER_EMPTY' => 'Start sequence cannot be empty!',
 'ERR_CUSTOMIZE_MODENT_NUMBER_NUMERIC' => 'Start sequence should be numeric.',
-// END
 
 //added for softphone integration
 'LBL_SOFTPHONE_SERVER_SETTINGS'=>'SoftPhone Server Instellingen',
@@ -869,7 +865,6 @@ $mod_strings = array(
 'VTLIB_LBL_INST_VERSION'=>'Geinstalleerde Versie',
 'VTLIB_LBL_MATCHES_PACKAGE_VERSION'=>'komt overeen met Package Versie',
 'VTLIB_LBL_CANNOT_UPGRADE'=>'Upgrade niet mogelijk!',
-// END
 
 //User group fixes
 'LBL_USERNAME_EXIST' => 'Een gebruiker met de gegeven naam bestaat reeds!',
