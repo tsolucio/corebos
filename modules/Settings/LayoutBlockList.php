@@ -120,10 +120,12 @@ $notRelatedModules = array_diff_key($entityrelmods, $relmods);
 $smarty->assign('NotRelatedModules', $notRelatedModules);
 
 $blockrelmods = array();
-$brmrs = $adb->query('SELECT vtiger_tab.name
+$fld_tabid = getTabid($fld_module);
+$brmrs = $adb->pquery('SELECT vtiger_tab.name
 	FROM vtiger_blocks
 	INNER JOIN vtiger_relatedlists ON vtiger_blocks.isrelatedlist=vtiger_relatedlists.relation_id
-	INNER JOIN vtiger_tab ON vtiger_relatedlists.related_tabid = vtiger_tab.tabid');
+	INNER JOIN vtiger_tab ON vtiger_relatedlists.related_tabid = vtiger_tab.tabid
+	WHERE vtiger_relatedlists.tabid = ?',array($fld_tabid));
 while ($rl = $adb->fetch_array($brmrs)) {
 	$blockrelmods[$rl['name']] = 1;
 }
