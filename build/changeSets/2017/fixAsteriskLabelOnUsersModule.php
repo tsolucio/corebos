@@ -16,9 +16,11 @@
 
 class fixAsteriskLabelOnUsersModule extends cbupdaterWorker {
 
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -26,7 +28,7 @@ class fixAsteriskLabelOnUsersModule extends cbupdaterWorker {
 			if ($fieldId) {
 				$fieldModel = Vtiger_Field::getInstance($fieldId);
 				$fieldModel->label = 'Receive Incoming Calls';
-				$fieldModel->__update();
+				$fieldModel->save();
 			}
 
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
@@ -34,5 +36,4 @@ class fixAsteriskLabelOnUsersModule extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-
 }
