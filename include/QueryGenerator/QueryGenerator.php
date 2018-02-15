@@ -522,10 +522,28 @@ class QueryGenerator {
 				$fldcolname = $field->getColumnName();
 				foreach ($moduleList as $module) {
 					if ($module == 'Users' && $baseModule != 'Users') {
-						$tableJoinCondition[$fieldName]['vtiger_users'.$fieldName] = $baseTable.
-							".".$fldcolname." = vtiger_users".$fieldName.".id";
-						$tableJoinCondition[$fieldName]['vtiger_groups'.$fieldName] = $baseTable.
-							".".$fldcolname." = vtiger_groups".$fieldName.".groupid";
+
+						if ($this->denormalized) {
+							if ($baseTable=='vtiger_crmentity') {
+								$baseTable=$this->meta->getEntityBaseTable();
+								$col = $this->getDenormalizedFields($fldcolname);
+								$column = $col[0];
+								$tableJoinCondition[$fieldName]['vtiger_users'.$fieldName] = $baseTable.
+									".".$column." = vtiger_users".$fieldName.".id";
+								$tableJoinCondition[$fieldName]['vtiger_groups'.$fieldName] = $baseTable.
+									".".$column." = vtiger_groups".$fieldName.".groupid";
+							} else {
+								$tableJoinCondition[$fieldName]['vtiger_users'.$fieldName] = $baseTable.
+									".".$fldcolname." = vtiger_users".$fieldName.".id";
+								$tableJoinCondition[$fieldName]['vtiger_groups'.$fieldName] = $baseTable.
+									".".$fldcolname." = vtiger_groups".$fieldName.".groupid";
+							}
+						} else {
+							$tableJoinCondition[$fieldName]['vtiger_users'.$fieldName] = $baseTable.
+								".".$fldcolname." = vtiger_users".$fieldName.".id";
+							$tableJoinCondition[$fieldName]['vtiger_groups'.$fieldName] = $baseTable.
+								".".$fldcolname." = vtiger_groups".$fieldName.".groupid";
+						}
 						$tableJoinMapping['vtiger_users'.$fieldName] = 'LEFT JOIN vtiger_users AS';
 						$tableJoinMapping['vtiger_groups'.$fieldName] = 'LEFT JOIN vtiger_groups AS';
 					}
@@ -597,9 +615,22 @@ class QueryGenerator {
 						//should always be left join for cases where we are checking for null
 						//reference field values.
 						if(!array_key_exists($referenceTable, $tableJoinMapping)) { // table already added in from clause
-						$tableJoinMapping[$referenceTableName] = $joinas;
-						$tableJoinCondition[$fieldName][$referenceTableName] = $baseTable.'.'.
-							$field->getColumnName().' = '.$referenceTable.'.'.$referenceTableIndex;
+							$tableJoinMapping[$referenceTableName] = $joinas;
+							if ($this->denormalized) {
+								if ($baseTable=='vtiger_crmentity') {
+									$baseTable=$this->meta->getEntityBaseTable();
+									$col = $this->getDenormalizedFields($field->getColumnName());
+									$column = $col[0];
+									$tableJoinCondition[$fieldName][$referenceTableName] = $baseTable.'.'.
+										$column.' = '.$referenceTable.'.'.$referenceTableIndex;
+								} else {
+									$tableJoinCondition[$fieldName][$referenceTableName] = $baseTable.'.'.
+										$field->getColumnName().' = '.$referenceTable.'.'.$referenceTableIndex;
+								}
+							} else {
+								$tableJoinCondition[$fieldName][$referenceTableName] = $baseTable.'.'.
+									$field->getColumnName().' = '.$referenceTable.'.'.$referenceTableIndex;
+							}
 						}
 					}
 				}

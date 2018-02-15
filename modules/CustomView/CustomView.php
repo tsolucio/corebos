@@ -1051,7 +1051,10 @@ class CustomView extends CRMEntity {
 	 *
 	 */
 	function getCVStdFilterSQL($cvid) {
-		global $adb;
+		global $adb, $current_user;
+
+		$focus=CRMEntity::getInstance($this->customviewmodule);
+		$generator= new QueryGenerator($this->customviewmodule, $current_user);
 
 		$stdfiltersql = '';
 		$stdfilterlist = array();
@@ -1100,6 +1103,13 @@ class CustomView extends CRMEntity {
 				}
 				if ($startDateTime != "" && $endDateTime != "") {
 					$columns = explode(":", $filtercolumn);
+					if ($focus->denormalized) {
+						if ($columns[0]=='vtiger_crmentity') {
+							$columns[0]=$focus->table_name;
+							$col=$generator->getDenormalizedFields($columns[1]);
+							$columns[1] = $col[0];
+						}
+					}
 					// Fix for http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/5423
 					if ($columns[1] == 'birthday') {
 						$tableColumnSql = "DATE_FORMAT(" . $columns[0] . "." . $columns[1] . ", '%m%d')";
@@ -1140,6 +1150,9 @@ class CustomView extends CRMEntity {
 
 		$advcvsql = "";
 
+		$focus=CRMEntity::getInstance($this->customviewmodule);
+		$generator= new QueryGenerator($this->customviewmodule, $current_user);
+
 		foreach ($advfilter as $groupid => $groupinfo) {
 
 			$groupcolumns = $groupinfo["columns"];
@@ -1153,6 +1166,14 @@ class CustomView extends CRMEntity {
 				$columncondition = $columninfo['column_condition'];
 
 				$columns = explode(":", $columnname);
+				if ($focus->denormalized) {
+					$firstMod = strstr($columns[3], '_', true);  
+					if ($columns[0]=='vtiger_crmentity' && $firstMod==$this->customviewmodule) {
+						$columns[0]=$focus->table_name;
+						$col=$generator->getDenormalizedFields($columns[1]);
+						$columns[1] = $col[0];
+					}
+				}
 				$datatype = (isset($columns[4])) ? $columns[4] : "";
 
 				if ($columnname != "" && $comparator != "") {

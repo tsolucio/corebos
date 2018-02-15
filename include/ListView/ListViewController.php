@@ -67,6 +67,10 @@ class ListViewController {
 				$colname=strtolower($modrel).$field->getColumnName();
 			} else {
 				$colname=$field->getColumnName();
+				if ($this->queryGenerator->denormalized) {
+					$col = $this->queryGenerator->getDenormalizedFields($colname);
+					$colname = $col[0];
+			 }
 			}
 			$id = $this->db->query_result($result, $i, $colname);
 			if (!isset($this->nameList[$fieldName][$id])) {

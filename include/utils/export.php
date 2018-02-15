@@ -174,7 +174,7 @@ function export($type){
 	}
 
 	if(isset($order_by) && $order_by != ''){
-		if($order_by == 'smownerid'){
+		if($order_by == 'smownerid'|| $order_by == 'myownerid'){
 			$query .= ' ORDER BY vtiger_users.user_name '.$sorder;
 		}elseif($order_by == 'lastname' && $type == 'Documents'){
 			$query .= ' ORDER BY vtiger_contactdetails.lastname '. $sorder;
@@ -241,6 +241,7 @@ function export($type){
 	return true;
 }
 
+ 
 /** Send the output header and invoke function for contents output */
 $moduleName = vtlib_purify($_REQUEST['module']);
 $moduleName = getTranslatedString($moduleName, $moduleName);

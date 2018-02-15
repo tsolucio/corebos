@@ -73,7 +73,7 @@ function getPermittedFieldsQuery($module, $disp_view)
  *	@param string $query - field table query which contains the list of fields
  *	@return string $fields - list of fields as a comma seperated string
  */
-function getFieldsListFromQuery($query)
+function getFieldsListFromQuery($query, $focus, $generator)
 {
 	global $adb, $log;
 	$log->debug("Entering into the function getFieldsListFromQuery($query)");
@@ -87,13 +87,20 @@ function getFieldsListFromQuery($query)
 		$fieldlabel = $adb->query_result($result,$i,"fieldlabel");
 		$fieldlabel = str_replace('?', '', $fieldlabel);
 		$tablename = $adb->query_result($result,$i,"tablename");
+		if ($focus->denormalized) {
+			if ($tablename=='vtiger_crmentity') {
+				 $tablename=$focus->table_name;
+				 $col= $generator->getDenormalizedFields($columnName);
+				 $columnName=$col[0];
+			}
+		}
 
 		//HANDLE HERE - Mismatch fieldname-tablename in field table, in future we have to avoid these if elses
-		if($columnName == 'smownerid')//for all assigned to user name
+		if($columnName == 'smownerid' || $columnName == 'myownerid')//for all assigned to user name
 		{
 			$fields .= "case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as '".$fieldlabel."',";
 		}
-		elseif($columnName == 'smcreatorid')
+		elseif($columnName == 'smcreatorid'|| $columnName == 'mycreatorid')
 		{
 			$fields .= "vtigerCreatedBy.user_name as '".$fieldlabel."',";
 		}

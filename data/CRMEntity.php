@@ -1320,23 +1320,35 @@ class CRMEntity {
 
 		//To get the Permitted fields query and the permitted fields list
 		$sql = getPermittedFieldsQuery($thismodule, "detail_view");
+		$focus=CRMEntity::getInstance($thismodule);
+		$generator= new QueryGenerator($thismodule,$current_user);
+		$fields_list = getFieldsListFromQuery($sql, $focus, $generator);
 
-		$fields_list = getFieldsListFromQuery($sql);
 		if ($thismodule=='Faq') {
 			$fields_list = str_replace(",vtiger_faqcomments.comments as 'Add Comment'",' ',$fields_list);
 		}
 
 		$query = "SELECT $fields_list, vtiger_users.user_name AS user_name
 			FROM vtiger_crmentity INNER JOIN $this->table_name ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
-
+		if ($this->denormalized) {
+			$query = "SELECT $fields_list, vtiger_users.user_name AS user_name
+				FROM $this->table_name";
+		}
 		if (!empty($this->customFieldTable)) {
 			$query .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
 				" = $this->table_name.$this->table_index";
 		}
 
-		$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
-		$query .= " LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id and vtiger_users.status='Active'";
-		$query .= " LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'";
+		if ($this->denormalized) {
+			$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = $this->table_name.myownerid";
+			$query .= " LEFT JOIN vtiger_users ON $this->table_name.myownerid = vtiger_users.id and vtiger_users.status='Active'";
+			$query .= " LEFT JOIN vtiger_users as vtigerCreatedBy ON $this->table_name.mycreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'";
+
+		} else {
+			$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
+			$query .= " LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id and vtiger_users.status='Active'";
+			$query .= " LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'";
+		}
 
 		$linkedModulesQuery = $this->db->pquery("SELECT distinct fieldname, tablename, columnname, relmodule FROM vtiger_field" .
 			" INNER JOIN vtiger_fieldmodulerel ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid" .
@@ -1365,12 +1377,20 @@ class CRMEntity {
 			$query .= " LEFT JOIN $other->table_name $query_append ON $alias.$other->table_index = $tablename.$columnname";
 		}
 
-		$query .= $this->getNonAdminAccessControlQuery($thismodule,$current_user);
+		if ($this->denormalized) {
+			$denormAccessControlQuery=str_replace('vtiger_crmentity.smownerid',$this->table_name.'.myownerid',$this->getNonAdminAccessControlQuery($thismodule,$current_user));
+		  $query .= $denormAccessControlQuery;
+		} else {
+			$query .= $this->getNonAdminAccessControlQuery($thismodule,$current_user);
+		}
 		$where_auto = " vtiger_crmentity.deleted=0";
+		if ($this->denormalized) {
+			$where_auto = " $this->table_name.mydeleted=0";
+		}
 
 		if ($where != '') $query .= " WHERE ($where) AND $where_auto";
 		else $query .= " WHERE $where_auto";
-
+ 
 		return $query;
 	}
 

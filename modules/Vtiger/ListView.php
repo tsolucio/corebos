@@ -125,7 +125,14 @@ if(!empty($order_by)) {
 	} else {
 		$tablename = getTableNameForField($currentModule, $order_by);
 		$tablename = ($tablename != '')? ($tablename . '.') : '';
-		$list_query .= ' ORDER BY ' . $tablename . $order_by . ' ' . $sorder;
+		if ($focus->denormalized) {
+			if ($tablename=='vtiger_crmentity.') {
+				$tablename = $focus->table_name.'.';
+				$order = $queryGenerator->getDenormalizedFields($order_by);
+				$orderby=$order[0];
+			}
+		}
+		$list_query .= ' ORDER BY ' . $tablename . $orderby . ' ' . $sorder;
 	}
 }
 if (GlobalVariable::getVariable('Debug_ListView_Query', '0')=='1') {
@@ -228,7 +235,7 @@ else
 	if (isset($custom_list_template) && $custom_list_template != '') {
 		$smarty->display($custom_list_template);
 	} else {
-		$smarty->display('ListView.tpl');		
+		$smarty->display('ListView.tpl');
 	}
 
 ?>
