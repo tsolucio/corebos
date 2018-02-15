@@ -130,9 +130,13 @@ if(!empty($order_by)) {
 				$tablename = $focus->table_name.'.';
 				$order = $queryGenerator->getDenormalizedFields($order_by);
 				$orderby=$order[0];
+				$list_query .= ' ORDER BY ' . $tablename . $orderby . ' ' . $sorder;
+			} else {
+				$list_query .= ' ORDER BY ' . $tablename . $order_by . ' ' . $sorder;
 			}
+		} else {
+			$list_query .= ' ORDER BY ' . $tablename . $order_by . ' ' . $sorder;
 		}
-		$list_query .= ' ORDER BY ' . $tablename . $orderby . ' ' . $sorder;
 	}
 }
 if (GlobalVariable::getVariable('Debug_ListView_Query', '0')=='1') {
