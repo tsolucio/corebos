@@ -15,8 +15,11 @@
 *************************************************************************************************/
 $Vtiger_Utils_Log = true;
 include_once 'vtlib/Vtiger/Module.php';
-global $current_user,$adb;
+global $current_user, $adb;
 $fldname = vtlib_purify($_GET['fieldname']);
+$modname = vtlib_purify($_GET['modulename']);
+$mod = Vtiger_Module::getInstance($modname);
+$field = Vtiger_Field::getInstance($fldname,$mod);
 
 // Workflow Conditions
 $crs = $adb->pquery('SELECT workflow_id,summary FROM `com_vtiger_workflows` WHERE test like ?', array('%'.$fldname.'%'));
@@ -178,5 +181,29 @@ if ($crs and $adb->num_rows($crs)>0) {
 	}
 } else {
 	echo 'Field not found in Report Summary<br>';
+}
+
+// Lead Mapping
+if (in_array($modname, array('Contacts','Accounts','Potentials','Leads'))) {
+	switch ($modname) {
+		case 'Contacts':
+			$searchon = 'contactfid';
+			break;
+		case 'Accounts':
+			$searchon = 'accountfid';
+			break;
+		case 'Potentials':
+			$searchon = 'potentialfid';
+			break;
+		case 'Leads':
+			$searchon = 'leadfid';
+			break;
+	}
+	$crs = $adb->pquery("SELECT 1 FROM `vtiger_convertleadmapping` WHERE $searchon = ?", array($field->id));
+	if ($crs && $adb->num_rows($crs)>0) {
+		echo 'Field found in Lead Conversion Mapping<br>';
+	} else {
+		echo 'Field not found in Lead Conversion Mapping<br>';
+	}
 }
 ?>
