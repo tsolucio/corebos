@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'evvtMenu' => 'Menu Editor',
 	'SINGLE_evvtMenu' => 'Menu Editor',
 	'evvtMenu ID' => 'Menu Editor ID',
@@ -30,5 +30,4 @@ $mod_strings = Array(
 	'MenuItemPermissions' => 'When profile permissions are applied to a menu element, they will override the existing permissions settings.',
 	'MenuParent' => 'Parent',
 );
-
 ?>
