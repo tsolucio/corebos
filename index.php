@@ -496,7 +496,7 @@ else if(!vtlib_isModuleActive($currentModule)
 		require_once('Smarty_setup.php');
 		$smarty = new vtigerCRM_Smarty();
 		$smarty->assign('APP', $app_strings);
-		$smarty->assign('OPERATION_MESSAGE', $currentModule . $app_strings['VTLIB_MOD_NOT_ACTIVE']);
+		$smarty->assign('OPERATION_MESSAGE', getTranslatedString($currentModule, $currentModule) . $app_strings['VTLIB_MOD_NOT_ACTIVE']);
 		$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
 }
 else
