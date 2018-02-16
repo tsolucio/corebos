@@ -16,7 +16,7 @@ require_once('VTWorkflowUtils.php');
 function vtDeleteWorkflow($adb, $request) {
 	global $current_language;
 	$util = new VTWorkflowUtils();
-	$module = new VTWorkflowApplication("deltetask");
+	$module = new VTWorkflowApplication('deletetask');
 	$mod = return_module_language($current_language, $module->name);
 	$request = vtlib_purify($request);  // this cleans all values of the array
 	if (!$util->checkAdminAccess()) {
