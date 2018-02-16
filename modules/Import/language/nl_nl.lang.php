@@ -1,20 +1,13 @@
 <?php
-/*******************************************************************************
- * The contents of this file are subject to the following licences:
- * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
- * - vtiger CRM Public License Version 1.0 
- * You may not use this file except in compliance with the License
- * Software distributed under the License is distributed on an  "AS IS" basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is: SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+***********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
- * Portions created by Vicus are Copyright (C) Vicus.
  * All Rights Reserved.
  * Feel free to use / redistribute these languagefiles under the VPL 1.0.
- * This translations is based on earlier work of: 
+ * This translations is based on earlier work of:
  * - IT-Online.nl <www.it-online.nl>
  * - Weltevree.org <www.Weltevree.org>
  ********************************************************************************/
@@ -30,7 +23,7 @@
  * @license	vtiger CRM Public License Version 1.0 (by definition)
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_IMPORT_MODULE_NO_DIRECTORY'=>'De bestanden index ',
 'LBL_IMPORT_MODULE_NO_DIRECTORY_END'=>' Deze bestaat niet of is niet overschrijfbaar',
 'LBL_IMPORT_MODULE_ERROR_NO_UPLOAD'=>'Het bestand is niet succesvol verstuurd, probeer nog een keer',
@@ -153,11 +146,9 @@ $mod_strings = Array(
 'LBL_SUCCESS_1' => 'Aantal records succesvol geimporteerd : ',
 'LBL_SKIPPED_1' => 'Aantal records overgeslagen aangezien 1 of meer verplichte velden missen : ',
 
-//Added for patch2 - Products Import Notes
 'LBL_PRODUCTS_NOTE_1'=>'Productnaam moet gekoppeld zijn',
 'LBL_PRODUCTS_NOTE_2'=>'Voor het importeren nakijken of een enkele kolom twee keer gekoppeld is. ',
 
-//Added for version 5
 'LBL_FILE_LOCATION'=>'Bestandslocatie :',
 'LBL_STEP_2_3'=>'Stap 2 of 3 :',
 'LBL_LIST_MAPPING'=>'Lijst & koppelen',
@@ -171,19 +162,14 @@ $mod_strings = Array(
 'LBL_STEP_3_3'=>'Stap 3 van 3 : ',
 'LBL_MAPPING_RESULTS'=>'Koppelings resultaten',
 'LBL_LAST_IMPORTED'=>'Laatst geimporteerd',
-//Added for sript alerts
 'PLEASE_CHECK_MAPPING' => "' is meerdere keren gekoppeld. S.v.p. koppelingen nakijken.",
 'MAP_MANDATORY_FIELD' => 'U dient de verplichte velden te koppelen "',
 'ENTER_SAVEMAP_NAME' => 'Geef een naam aan deze koppelings lijst',
 
-//Added for 5.0.3
 'to'=>'aan',
 'of'=>'van',
 'are_imported_succesfully'=>'is succesvol geimporteerd',
 
-// Added after 5.0.4 GA
-
-//added for duplicate handling 
 'LBL_LAST_IMPORT'=>'Laatst Geimporteerd',
 'Select_Criteria_For_Duplicate' => 'Selecteer Criteria voor Afhandeling Dubbele Records',
 'Manual_Merging' => 'Handmatig Merging',

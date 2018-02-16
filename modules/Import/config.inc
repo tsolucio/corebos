@@ -16,6 +16,6 @@ $ImportConfig = array(
 					),
 	'userImportTablePrefix' => 'vtiger_import_',
 );
-$ImportConfig['importBatchLimit'] = GlobalVariable::getVariable('Import_Batch_Limit','250');
-$ImportConfig['immediateImportLimit'] = GlobalVariable::getVariable('Import_Scheduled_Limit',1000);
+$ImportConfig['importBatchLimit'] = GlobalVariable::getVariable('Import_Batch_Limit', '250');
+$ImportConfig['immediateImportLimit'] = GlobalVariable::getVariable('Import_Scheduled_Limit', 1000);
 ?>

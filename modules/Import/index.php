@@ -8,28 +8,23 @@
  * All Rights Reserved.
  *************************************************************************************/
 
-if (!isset($_REQUEST['step']) and !isset($_REQUEST['mode'])) {
+if (!isset($_REQUEST['step']) && !isset($_REQUEST['mode'])) {
 	echo '<br><br>';
 	$smarty = new vtigerCRM_Smarty();
 	$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-info');
-	$smarty->assign('ERROR_MESSAGE', getTranslatedString('ImportInfo','Import'));
+	$smarty->assign('ERROR_MESSAGE', getTranslatedString('ImportInfo', 'Import'));
 	$smarty->display('applicationmessage.tpl');
 } else {
+	require_once 'modules/Import/api/Request.php';
+	require_once 'modules/Import/controllers/Import_Index_Controller.php';
+	require_once 'modules/Import/controllers/Import_ListView_Controller.php';
+	require_once 'modules/Import/controllers/Import_Controller.php';
+	global $current_user, $VTIGER_BULK_SAVE_MODE;
 
-require_once 'modules/Import/api/Request.php';
-require_once 'modules/Import/controllers/Import_Index_Controller.php';
-require_once 'modules/Import/controllers/Import_ListView_Controller.php';
-require_once 'modules/Import/controllers/Import_Controller.php';
-
-global $current_user, $VTIGER_BULK_SAVE_MODE;
-
-$previousBulkSaveMode = isset($VTIGER_BULK_SAVE_MODE) ? $VTIGER_BULK_SAVE_MODE : false;
-$VTIGER_BULK_SAVE_MODE = true;
-
-$requestObject = new Import_API_Request($_REQUEST);
-
-Import_Index_Controller::process($requestObject, $current_user);
-
-$VTIGER_BULK_SAVE_MODE = $previousBulkSaveMode;
+	$previousBulkSaveMode = isset($VTIGER_BULK_SAVE_MODE) ? $VTIGER_BULK_SAVE_MODE : false;
+	$VTIGER_BULK_SAVE_MODE = true;
+	$requestObject = new Import_API_Request($_REQUEST);
+	Import_Index_Controller::process($requestObject, $current_user);
+	$VTIGER_BULK_SAVE_MODE = $previousBulkSaveMode;
 }
 ?>
