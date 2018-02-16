@@ -3893,13 +3893,17 @@ function getTabInfo($tabId) {
  */
 function getBlockName($blockid) {
 	global $adb;
-	if (!empty($blockid)) {
-		$block_res = $adb->pquery('SELECT blocklabel FROM vtiger_blocks WHERE blockid = ?',array($blockid));
+	$blockname = VTCacheUtils::lookupBlockLabelWithId($blockid);
+	if ($blockname === false && !empty($blockid)) {
+		$block_res = $adb->pquery('SELECT blocklabel FROM vtiger_blocks WHERE blockid = ?', array($blockid));
 		if ($adb->num_rows($block_res)) {
-			return $adb->query_result($block_res,0,'blocklabel');
+			$blockname = $adb->query_result($block_res, 0, 'blocklabel');
+		} else {
+			$blockname = '';
 		}
+		VTCacheUtils::updateBlockLabelWithId($blockname, $blockid);
 	}
-	return '';
+	return $blockname;
 }
 
 function validateAlphaNumericInput($string){
