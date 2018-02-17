@@ -13,7 +13,6 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
-global $entityDel, $display;
 
 if(version_compare(phpversion(), '5.4.0') < 0 or version_compare(phpversion(), '7.2.0') >= 0) {
 	header('Content-Type: text/html; charset=UTF-8');
@@ -267,7 +266,7 @@ if (isset($action) && isset($module)) {
 		{
 			$viewAttachment = true;
 		}
-		if ($action == ' Delete ' && !$entityDel) {
+		if ($action == ' Delete ') {
 			$skipHeaders=false;
 		}
 	}
@@ -452,8 +451,7 @@ if(!$skipHeaders) {
 //logging the security Information
 $seclog->debug('########  Module -->  '.$module.'  :: Action --> '.$action.' ::  UserID --> '.$current_user->id.' :: RecordID --> '.$record.' #######');
 
-if(!$skipSecurityCheck && $use_current_login)
-{
+if (!$skipSecurityCheck && $use_current_login) {
 	require_once('include/utils/UserInfoUtil.php');
 	if(preg_match('/Ajax/',$action)) {
 		if(isset($_REQUEST['ajxaction']) and $_REQUEST['ajxaction'] == 'LOADRELATEDLIST'){
@@ -473,35 +471,32 @@ if(!$skipSecurityCheck && $use_current_login)
 	}
 	$seclog->debug('########### Pemitted ---> '.$display.'  ##############');
 } else {
+	$display = 'yes';
 	$seclog->debug('########### Pemitted ---> yes  ##############');
 }
 
-if($display == "no"
-		and !(($currentModule=='Tooltip' and $action==$module."Ajax" and $_REQUEST['file']=='ComputeTooltip')
-			or ($currentModule=='GlobalVariable' and $action==$module."Ajax" and $_REQUEST['file']=='SearchGlobalVar'))
+if ($display == 'no'
+		&& !(($currentModule=='Tooltip' && $action==$module.'Ajax' && $_REQUEST['file']=='ComputeTooltip')
+			|| ($currentModule=='GlobalVariable' && $action==$module.'Ajax' && $_REQUEST['file']=='SearchGlobalVar'))
 	) {
-		require_once('Smarty_setup.php');
+		require_once 'Smarty_setup.php';
 		$smarty = new vtigerCRM_Smarty();
 		$smarty->assign('APP', $app_strings);
-		if ($action==$module."Ajax") {
+		if ($action==$module.'Ajax') {
 			$smarty->assign('PUT_BACK_ACTION', false);
 		}
 		$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
-}
-// vtlib customization: Check if module has been de-activated
-else if(!vtlib_isModuleActive($currentModule)
-		and !(($currentModule=='Tooltip' and $action==$module."Ajax" and $_REQUEST['file']=='ComputeTooltip')
-			or ($currentModule=='GlobalVariable' and $action==$module."Ajax" and $_REQUEST['file']=='SearchGlobalVar'))
+} elseif (!vtlib_isModuleActive($currentModule)
+		&& !(($currentModule=='Tooltip' and $action==$module.'Ajax' && $_REQUEST['file']=='ComputeTooltip')
+			|| ($currentModule=='GlobalVariable' && $action==$module.'Ajax' && $_REQUEST['file']=='SearchGlobalVar'))
 	) {
-		require_once('Smarty_setup.php');
+		require_once 'Smarty_setup.php';
 		$smarty = new vtigerCRM_Smarty();
 		$smarty->assign('APP', $app_strings);
 		$smarty->assign('OPERATION_MESSAGE', getTranslatedString($currentModule, $currentModule) . $app_strings['VTLIB_MOD_NOT_ACTIVE']);
 		$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
-}
-else
-{
-	include_once($currentModuleFile);
+} else {
+	include_once $currentModuleFile;
 }
 
 //added to get the theme . This is a bad fix as we need to know where the problem lies yet
