@@ -26,12 +26,12 @@ function vtDeleteWorkflow($adb, $request) {
 	}
 
 	$wm = new VTTaskManager($adb);
-	$wm->deleteTask($request['task_id']);
+	$wfid = $wm->deleteTask($request['task_id']);
 
 	if (isset($request["return_url"])) {
 		$returnUrl=$request["return_url"];
 	} else {
-		$returnUrl=$module->editWorkflowUrl($wf->id);
+		$returnUrl=$module->editWorkflowUrl($wfid);
 	}
 ?>
 	<script type="text/javascript" charset="utf-8">

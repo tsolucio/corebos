@@ -28,7 +28,7 @@
  * @param array[4] environment data, this is automatically added by the application
  */
 function __cb_aggregation($arr) {
-	global $adb, $current_user, $GetRelatedList_ReturnOnlyQuery;
+	global $adb, $GetRelatedList_ReturnOnlyQuery;
 	$validoperations = array('sum', 'min', 'max', 'avg', 'count', 'std', 'variance');
 	$operation = strtolower($arr[0]);
 	if (!in_array($operation, $validoperations)) {
@@ -101,7 +101,7 @@ function __cb_aggregation($arr) {
  * @param array[4] environment data, this is automatically added but the application
  */
 function __cb_aggregation_operation($arr) {
-	global $adb, $current_user, $GetRelatedList_ReturnOnlyQuery;
+	global $adb, $GetRelatedList_ReturnOnlyQuery;
 	$validoperations = array('sum', 'min', 'max', 'avg', 'count', 'std', 'variance');
 	$operation = strtolower($arr[0]);
 	if (!in_array($operation, $validoperations)) {
@@ -119,7 +119,6 @@ function __cb_aggregation_operation($arr) {
 	list($wsid,$crmid) = explode('x', $recordid);
 	$relmodule = $arr[1];
 	$relatedModuleId = getTabid($relmodule);
-	$relatedmoduleInstance = Vtiger_Module::getInstance($relmodule);
 	$relfields_operation = $arr[2];
 
 	$relationResult = $adb->pquery('SELECT * FROM vtiger_relatedlists WHERE tabid=? AND related_tabid=?', array($moduleId, $relatedModuleId));

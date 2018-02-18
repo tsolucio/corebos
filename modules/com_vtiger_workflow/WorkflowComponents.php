@@ -71,7 +71,7 @@ function vtJsonDependentModules($adb, $request) {
 	echo json_encode($returnValue);
 }
 
-function vtJsonOwnersList($adb) {
+function vtJsonOwnersList() {
 	$ownersList = array();
 	$activeUsersList = get_user_array(false);
 	$allGroupsList = get_group_array(false);
@@ -118,6 +118,6 @@ if ($mode == 'getfieldsjson') {
 } elseif ($mode == 'moveWorkflowTaskUpDown') {
 	moveWorkflowTaskUpDown($adb, $_REQUEST);
 } elseif ($mode == 'getownerslist') {
-	vtJsonOwnersList($adb);
+	vtJsonOwnersList();
 }
 ?>

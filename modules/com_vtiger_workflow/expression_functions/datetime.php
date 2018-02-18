@@ -59,8 +59,8 @@ function __vt_time_diffdays($arr) {
 
 function __cb_getWeekdayDifference($arr) {
 	if (count($arr) > 1) {
-		$time_operand1 = $time1 = $arr[0];
-		$time_operand2 = $time2 = $arr[1];
+		$time_operand1 = $arr[0];
+		$time_operand2 = $arr[1];
 	} else {
 		$time_operand1 = date('Y-m-d H:i:s'); // Current time
 		$time_operand2 = $arr[0];
@@ -225,7 +225,6 @@ function __cb_next_dateLaborable($arr) {
 	}
 	$interval = new DateInterval('P1D'); // set the interval as 1 day
 	$daterange = new DatePeriod($startDate, $interval, $endDate);
-	$result = '';
 	$found = false;
 	foreach ($daterange as $date) {
 		if (in_array($date->format('d'), $nextDays)) {

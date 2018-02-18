@@ -27,7 +27,7 @@ class CBRelateSales extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb,$default_charset,$log,$current_user;
+		global $adb;
 		$invinfo = array(
 			'Quotes' => array('id'=>'quoteid','account'=>'accountid','contact'=>'contactid'),
 			'SalesOrder' => array('id'=>'salesorderid','account'=>'accountid','contact'=>'contactid'),

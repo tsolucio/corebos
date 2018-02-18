@@ -53,6 +53,7 @@ class VTTaskManager {
 		$wfid = $adb->query_result($orderrs, 0, 1);
 		$orderrs = $adb->pquery('update com_vtiger_workflowtasks set executionorder=executionorder-1 where workflow_id=? and executionorder>?', array($wfid, $order));
 		$adb->pquery('delete from com_vtiger_workflowtasks where task_id=?', array($taskId));
+		return $wfid;
 	}
 
 	/**

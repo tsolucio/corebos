@@ -143,7 +143,7 @@ class VTFieldExpressionEvaluater {
 				if (in_array($func, $this->rawparams)) {
 					$relto = $expr->getParams();
 					$params = array();
-					foreach ($relto as $key => $value) {
+					foreach ($relto as $value) {
 						if (is_object($value)) {
 							$params[] = $this->env($value, true);
 						} else {
@@ -186,7 +186,7 @@ class VTFieldExpressionEvaluater {
 			}
 			$field = Vtiger_Field::getInstance($sym->value, $module);
 			if ($field && !$raw) {
-				global $adb,$log;
+				global $adb;
 				$rsfld = $adb->pquery('select * from vtiger_field where fieldid=?', array($field->id));
 				$field = WebserviceField::fromQueryResult($adb, $rsfld, 0);
 				$fieldType = $field->getFieldDataType();
