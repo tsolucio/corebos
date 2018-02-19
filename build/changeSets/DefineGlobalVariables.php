@@ -103,6 +103,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 
 				'Mobile_Module_by_default',
 				'Mobile_Related_Modules',
+				'Mobile_UI_Enabled',
 
 				'Webservice_showUserAdvancedBlock',
 				'Webservice_CORS_Enabled_Domains',
@@ -110,6 +111,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'WebService_Session_Life_Span',
 				'WebService_Session_Idle_Time',
 				'SOAP_CustomerPortal_Enabled',
+				'SOAP_Outlook_Enabled',
 
 				'Users_ReplyTo_SecondEmail',
 				'Users_Default_Send_Email_Template',

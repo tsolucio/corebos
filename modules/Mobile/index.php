@@ -22,6 +22,13 @@ chdir(__DIR__ . '/../../');
  * URL Verfication - Required to overcome Apache mis-configuration and leading to shared setup mode.
  */
 require_once 'config.inc.php';
+require_once 'include/utils/CommonUtils.php';
+require_once 'modules/Users/Users.php';
+$adminid = Users::getActiveAdminId();
+if (!GlobalVariable::getVariable('Mobile_UI_Enabled', 1, 'Users', $adminid)) {
+	echo 'Mobile UI is not active';
+	return;
+}
 
 //Relations sets the GetRelatedList function to local
 //require_once __DIR__ . '/api/Relation.php';

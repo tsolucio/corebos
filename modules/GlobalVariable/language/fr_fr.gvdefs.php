@@ -217,6 +217,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Active ou désactive complètement l\'accés au Portail Client. Activé par défaut (1).',
 ),
+'SOAP_Outlook_Enabled' => array(
+	'status' => 'Implémenté',
+	'valuetype' => 'Booléen',
+	'category' => 'Webservice',
+	'values' => '0 | 1',
+	'definition' => 'Active ou désactive complètement l\'accés au Outlook. Activé par défaut (1).',
+),
 'Application_Default_Action' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Chaîne',
@@ -622,6 +629,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Fonctionnalité Mobile',
 	'values' => 'Calendar | HelpDesk | Contacts ...',
 	'definition' => 'Permet d\'établir le module à afficher par défaut lors de l\'accés au module Mobile (version mobile de l\'application).',
+),
+'Mobile_UI_Enabled' => array(
+	'status' => 'Implémenté',
+	'valuetype' => 'Chaîne',
+	'category' => 'Fonctionnalité Mobile',
+	'values' => '0 | 1',
+	'definition' => 'Active ou désactive complètement l\'accés au interfaz Mobile. Activé par défaut (1).',
 ),
 'Application_Storage_Directory' => array(
 	'status' => 'Implémenté',

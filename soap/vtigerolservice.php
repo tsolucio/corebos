@@ -12,7 +12,13 @@ require_once('include/logging.php');
 require_once('include/database/PearDatabase.php');
 require_once('include/nusoap/nusoap.php');
 require_once('include/language/en_us.lang.php');
-
+require_once 'include/utils/CommonUtils.php';
+require_once 'modules/Users/Users.php';
+$adminid = Users::getActiveAdminId();
+if (!GlobalVariable::getVariable('SOAP_Outlook_Enabled', 1, 'Users', $adminid)) {
+	echo 'SOAP - Service is not active';
+	return;
+}
 $log = LoggerManager::getLogger('vtigerolservice');
 
 error_reporting(0);
