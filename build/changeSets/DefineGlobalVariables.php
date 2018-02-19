@@ -15,9 +15,11 @@
 *************************************************************************************************/
 
 class DefineGlobalVariables extends cbupdaterWorker {
-	
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -38,7 +40,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_Global_Search_Binary',
 				'Application_Global_Search_TopModules',
 				'Application_Global_Search_Active',
-			    'Application_Global_Search_Autocomplete_Limit',
+				'Application_Global_Search_Autocomplete_Limit',
 				'Application_Storage_Directory',
 				'Application_Storage_SaveStrategy',
 				'Application_OpenRecordInNewXOnRelatedList',
@@ -304,12 +306,12 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				),
 			);
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');
-			$field = Vtiger_Field::getInstance('gvname',$moduleInstance);
+			$field = Vtiger_Field::getInstance('gvname', $moduleInstance);
 			if ($field) {
 				foreach ($rename_these as $gvar => $change) {
-					$rschk = $adb->pquery('select count(*) from vtiger_gvname where BINARY gvname=?',array($gvar));
+					$rschk = $adb->pquery('select count(*) from vtiger_gvname where BINARY gvname=?', array($gvar));
 					$checkold = $adb->query_result($rschk, 0, 0);
-					$rschk = $adb->pquery('select count(*) from vtiger_gvname where BINARY gvname=?',array($change['to']));
+					$rschk = $adb->pquery('select count(*) from vtiger_gvname where BINARY gvname=?', array($change['to']));
 					$checknew = $adb->query_result($rschk, 0, 0);
 					if ($checkold > 0) {
 						if ($checknew > 0) {
@@ -365,5 +367,4 @@ class DefineGlobalVariables extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
 }
