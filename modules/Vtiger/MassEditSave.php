@@ -28,7 +28,7 @@ if (isset($idlist)) {
 	$recordids = explode(';', $idlist);
 	for ($index = 0; $index < count($recordids); ++$index) {
 		$recordid = $recordids[$index];
-		if ($recordid == '' or in_array(getSalesEntityType($recordid), $nonSupportedMassEdit)) {
+		if ($recordid == '' || in_array(getSalesEntityType($recordid), $nonSupportedMassEdit)) {
 			continue;
 		}
 		if (isPermitted($currentModule, 'EditView', $recordid) == 'yes') {
