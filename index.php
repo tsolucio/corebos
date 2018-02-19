@@ -64,6 +64,9 @@ if (!isset($_SERVER['REQUEST_URI'])) {
 	$_SERVER['REQUEST_URI'] = '';
 }
 
+//Initialise CSRFGuard library
+include_once 'include/csrfmagic/csrf-magic.php';
+
 $action = '';
 if (isset($_REQUEST['action'])) {
 	$action = vtlib_purify($_REQUEST['action']);
