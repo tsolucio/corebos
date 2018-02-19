@@ -28,7 +28,7 @@ function vtws_login($username, $pwd) {
 
 	$accessCrypt = md5($token.$accessKey);
 	if (strcmp($accessCrypt, $pwd)!==0) {
-		$userpass = vtws_getUserPasswordFromInput($token, $pwd, $username);
+		$userpass = vtws_getUserPasswordFromInput($token, $pwd);
 		$user->column_fields['user_name']=$username;
 		if ($userpass['token']!=$token || !$user->doLogin($userpass['password'])) {
 			throw new WebServiceException(WebServiceErrorCode::$INVALIDUSERPWD, 'Invalid username or password');
@@ -66,7 +66,7 @@ function vtws_getUserAccessKey($userId) {
 	return null;
 }
 
-function vtws_getUserPasswordFromInput($token, $pwd, $username) {
+function vtws_getUserPasswordFromInput($token, $pwd) {
 	$utoken = substr($pwd, 0, strlen($token));
 	$upass = substr($pwd, strlen($token));
 	return array('token' => $utoken, 'password' => $upass);
