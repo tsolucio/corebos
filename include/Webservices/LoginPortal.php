@@ -14,38 +14,40 @@
 *************************************************************************************************/
 include_once 'include/Webservices/AuthToken.php';
 
-function vtws_loginportal($username,$password) {
+function vtws_loginportal($username, $password) {
 	$uname = 'portal';
 	$user = new Users();
 	$userId = $user->retrieve_user_id($uname);
 
 	if (empty($userId)) {
-		throw new WebServiceException(WebServiceErrorCode::$INVALIDUSERPWD,"User $uname does not exist");
+		throw new WebServiceException(WebServiceErrorCode::$INVALIDUSERPWD, "User $uname does not exist");
 	}
 	global $adb, $log;
 	$log->debug('Entering LoginPortal function with parameter username: '.$username);
 
-	$ctors = $adb->pquery('select id
+	$ctors = $adb->pquery(
+		'select id
 		from vtiger_portalinfo
 		inner join vtiger_customerdetails on vtiger_portalinfo.id=vtiger_customerdetails.customerid
 		inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_portalinfo.id
-		where vtiger_crmentity.deleted=0 and user_name=? and user_password=?
-		  and isactive=1 and vtiger_customerdetails.portal=1',array($username,$password));
-	if ($ctors and $adb->num_rows($ctors)==1) {
+		where vtiger_crmentity.deleted=0 and user_name=? and user_password=? and isactive=1 and vtiger_customerdetails.portal=1',
+		array($username, $password)
+	);
+	if ($ctors && $adb->num_rows($ctors)==1) {
 		$user = $user->retrieveCurrentUserInfoFromFile($userId);
 		if ($user->status != 'Inactive') {
 			$result = $adb->query("SELECT id FROM vtiger_ws_entity WHERE name = 'Contacts'");
-			$ctowsid = $adb->query_result($result,0,'id');
-			$ctocmrid = $adb->query_result($ctors,0,'id');
+			$ctowsid = $adb->query_result($result, 0, 'id');
+			$ctocmrid = $adb->query_result($ctors, 0, 'id');
 			$result = $adb->query("SELECT id FROM vtiger_ws_entity WHERE name = 'Users'");
-			$wsid = $adb->query_result($result,0,'id');
+			$wsid = $adb->query_result($result, 0, 'id');
 			$accessinfo = vtws_getchallenge($uname);
 			$sessionManager = new SessionManager();
-			$sid = $sessionManager->startSession(null,false);
+			$sid = $sessionManager->startSession(null, false);
 			if (!$sid) {
-				throw new WebServiceException(WebServiceErrorCode::$SESSIONIDINVALID,'Could not create session');
+				throw new WebServiceException(WebServiceErrorCode::$SESSIONIDINVALID, 'Could not create session');
 			}
-			$sessionManager->set("authenticatedUserId", $userId);
+			$sessionManager->set('authenticatedUserId', $userId);
 			$accessinfo['sessionName'] = $sessionManager->getSessionId();
 			$accessinfo['user'] = array(
 				'id' => $wsid.'x'.$userId,
@@ -55,10 +57,9 @@ function vtws_loginportal($username,$password) {
 			);
 			return $accessinfo;
 		} else {
-			throw new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED,'Given user is inactive');
+			throw new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED, 'Given user is inactive');
 		}
 	}
-	throw new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED,"Given contact is inactive");
+	throw new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED, 'Given contact is inactive');
 }
-
 ?>
