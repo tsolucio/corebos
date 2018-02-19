@@ -14,6 +14,7 @@ module.exports = {
     'include/js/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
     'include/chart.js/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
     'include/jquery/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
+    'include/csrfmagic/csrf-magic.js',
     'include/style.css',
     'include/print.css',
     'include/jquery.steps.css',
