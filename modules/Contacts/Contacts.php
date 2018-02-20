@@ -1152,9 +1152,9 @@ function get_contactsforol($user_name)
 				}
 				$adb->pquery("insert into vtiger_campaigncontrel values(?,?,1)", array($with_crmid, $crmid));
 			} elseif($with_module == 'Potentials') {
-				$adb->pquery('insert into vtiger_contpotentialrel values(?,?)', array($crmid, $with_crmid));
+				$adb->pquery('insert ignore into vtiger_contpotentialrel values(?,?)', array($crmid, $with_crmid));
 			} elseif($with_module == 'Vendors') {
-				$adb->pquery('insert into vtiger_vendorcontactrel values (?,?)', array($with_crmid, $crmid));
+				$adb->pquery('insert ignore into vtiger_vendorcontactrel values (?,?)', array($with_crmid, $crmid));
 			} else {
 				parent::save_related_module($module, $crmid, $with_module, $with_crmid);
 			}

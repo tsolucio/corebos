@@ -611,11 +611,11 @@ class Potentials extends CRMEntity {
 		$with_crmids = (array)$with_crmids;
 		foreach ($with_crmids as $with_crmid) {
 			if ($with_module == 'Contacts') { //When we select contact from potential related list
-				$sql = 'insert into vtiger_contpotentialrel values (?,?)';
+				$sql = 'insert ignore into vtiger_contpotentialrel values (?,?)';
 				$adb->pquery($sql, array($with_crmid, $crmid));
 			} elseif ($with_module == 'Products') {//when we select product from potential related list
-				$sql = 'insert into vtiger_seproductsrel values (?,?,?)';
-				$adb->pquery($sql, array($crmid, $with_crmid,'Potentials'));
+				$sql = 'insert ignore into vtiger_seproductsrel values (?,?,?)';
+				$adb->pquery($sql, array($crmid, $with_crmid, 'Potentials'));
 			} else {
 				parent::save_related_module($module, $crmid, $with_module, $with_crmid);
 			}
