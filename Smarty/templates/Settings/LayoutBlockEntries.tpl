@@ -403,10 +403,10 @@
 						<div class="slds-modal__container">
 							<div class="slds-box--border">
 							<header class="slds-modal__header">
-								<h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{$value.label}</h2>
+								<h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{$value.label} ({$value.columnname})</h2>
 							</header>
 							<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
-								<p id="{$value.label}" style="text-align: left"></p>
+								<p id="{$value.label}" style="text-align: left; padding-left: 6px;"></p>
 							</div>
 							<footer class="slds-modal__footer" style="width:100%">
 								{if $value.customfieldflag neq 0}
