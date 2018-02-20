@@ -108,9 +108,8 @@ $mod_strings = array (
   'Existing Business' => 'Business Esistente',
   'New Business' => 'Nuovo Business',
 'Potential No' => 'Nr. Opportunit&agrave;',
-'Related To' => 'Collegato a', 
+'Related To' => 'Collegato a',
 'Potentials ID' => 'ID Opportunita',
 	'Forecast Amount'=> 'Forecast Amount',
 );
-
 ?>
