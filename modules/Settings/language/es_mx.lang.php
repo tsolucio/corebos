@@ -1,14 +1,14 @@
 <?php
 /***********************************************************
-*  Module       : Settings
-*  Language     : ES Spanish
-*  Version      : vt5.4.0
-*  Created Date : 2008-01-18 17:46:07
-*  Author       : JPL TSolucio, S.L.  -  rasomu
-*  Last change  : 2012-02-28
-*  Author       : Joe Bordes JPL TSolucio, S.L.
-*  Author       : Francisco Hernandez Odin Consultores www.odin.mx
-***********************************************************/
+ *  Module       : Settings
+ *  Language     : ES Spanish
+ *  Version      : vt5.4.0
+ *  Created Date : 2008-01-18 17:46:07
+ *  Author       : JPL TSolucio, S.L.  -  rasomu
+ *  Last change  : 2012-02-28
+ *  Author       : Joe Bordes JPL TSolucio, S.L.
+ *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
+ ***********************************************************/
 
 $mod_strings = array (
       'LBL_MODULE_NAME' => 'Configuración',
@@ -287,8 +287,8 @@ $mod_strings = array (
       'PurchaseOrder' => 'Órdenes de Compra',
       'SalesOrder' => 'Pedidos',
       'Invoice' => 'Facturas',
-	'LBL_FRONT_LOGO' => 'Logo Aplicación',
-	'LBL_FAVICON_LOGO' => 'Favicon',
+    'LBL_FRONT_LOGO' => 'Logo Aplicación',
+    'LBL_FAVICON_LOGO' => 'Favicon',
       'LBL_LEAD_MAP_CUSTOM_FIELD' => 'Crear correspondencia de campos personalizados',
       'leadCustomFieldDescription' => 'Crear correspondencias entre un campo personalizado de los Prospectos y otro de Contacto',
       'LBL_MAPPING_INFO' => 'Información de correspondencias',
@@ -408,7 +408,7 @@ $mod_strings = array (
       'LBL_CONTACT_FIELDS' => 'Campos de Contacto',
       'LBL_LEAD_FIELDS' => 'Campos de Prospecto',
       'LBL_USER_FIELDS' => 'Campos de Usuario',
-		'LBL_HELPDESK_FIELDS'=>'Campos de Incidencia',
+        'LBL_HELPDESK_FIELDS'=>'Campos de Incidencia',
       'LNK_SAMPLE_EMAIL' => 'Ver Email de ejemplo',
       'LBL_TEMPLATE_FILE' => 'Archivo de plantilla',
       'LBL_MODULENAMES' => 'Módulo',
@@ -566,9 +566,9 @@ $mod_strings = array (
       'ERR_CUSTOM_FIELD_WITH_NAME' => 'Un campo personalizado de nombre ',
       'ERR_ALREADY_EXISTS' => 'ya existe.',
       'ERR_SPECIFY_DIFFERENT_LABEL' => 'Por favor introduzca una etiqueta distinta',
-	'ROWSIZEERROR' => 'Fila demasiado grande. Se ha alcanzado el tamaño máximo para una tabla en la base de datos.',
-	'ADDFIELDERROR' => 'No se ha podido añadir el campo personalizado debido a un error en la base de datos.',
-	'LBL_TOOLS_TO_BE_SHOWN'=>'Herramientas a mostrar',
+    'ROWSIZEERROR' => 'Fila demasiado grande. Se ha alcanzado el tamaño máximo para una tabla en la base de datos.',
+    'ADDFIELDERROR' => 'No se ha podido añadir el campo personalizado debido a un error en la base de datos.',
+    'LBL_TOOLS_TO_BE_SHOWN'=>'Herramientas a mostrar',
       'LBL_PICKLIST_TRANSFER'=>'Transfiriendo los valores de ',
       'LBL_REPLACE_VALUE_WITH'=>'Sustituir valor con ',
       'LBL_EDIT_CUSTOM_RULE'=>'Editar Regla de Privilegio Personalizada',
@@ -734,9 +734,9 @@ $mod_strings = array (
       // Module Sequence Numbering
       'LBL_CUSTOMIZE_MODENT_NUMBER'=>'Personaliza Numeración Registro',
       'LBL_CUSTOMIZE_MODENT_NUMBER_DESCRIPTION'=>'Personalización Número de Entidad',
-	'ERR_CUSTOMIZE_MODENT_NUMBER_EMPTY' => 'La secuencia de inicio no puede quedar vacía!',
-	'ERR_CUSTOMIZE_MODENT_NUMBER_NUMERIC' => 'La secuencia de inicio debe ser numérica.',
-	// END
+    'ERR_CUSTOMIZE_MODENT_NUMBER_EMPTY' => 'La secuencia de inicio no puede quedar vacía!',
+    'ERR_CUSTOMIZE_MODENT_NUMBER_NUMERIC' => 'La secuencia de inicio debe ser numérica.',
+    // END
 
       //added for softphone integration
       'LBL_SOFTPHONE_SERVER_SETTINGS'=>'Configuración Servidor Telefonía IP',
@@ -755,7 +755,7 @@ $mod_strings = array (
       'ASTERISK_CONFIGURATION'=>'Configuración Asterisk',
       //softphone integration ends
 
-	'LBL_SELECT_FIELD_TO_MOVE' => 'Selecciona el campo a mover',
+    'LBL_SELECT_FIELD_TO_MOVE' => 'Selecciona el campo a mover',
       'VTLIB_LBL_SELECT_PACKAGE_FILE'=>'Selecciona el Módulo Empaquetado',
       'VTLIB_LBL_FILE_LOCATION'=>'Cargar archivo:',
       'VTLIB_LBL_PACKAGE_URL' => 'Instalar desde URL:',
@@ -874,29 +874,59 @@ $mod_strings = array (
       'LBL_SELECTED_MODULES' => 'Módulos Seleccionados',
 
       'LBL_CRM_SETTINGS' => 'Configuración CRM',
-		// language translation strings
-		'LBL_LANGUAGES_PACKS' => 'Extensión de Idioma',
-		'LBL_EDIT_LANGUAGE_FILE' => 'Traducir etiquetas de módulo',
-		'LBL_SELECT_TRANSLATE_MODULE' => 'Selecciona un módulo para traducir :',
-		'LBL_TRANSLATE' => 'Traducción de módulo ',
-		'LBL_TRADE_PERCENTAGE' => 'Porcentaje de traducción (aprox) :',
-		'ERROR_MODULE_FILE_WRITE' => 'El fichero de idioma del módulo no es escribible!!',
-		'ERROR_GENERAL_FILE_WRITE' => 'El fichero de idioma general no es escribible!!',
-		'General' => 'General',
-		'JavaScript' => 'JavaScript ',
-		'LBL_KEY' => 'Clave',
-		'LBL_SINGLEVALUE_STRINGS' => 'Etiquetas Sueltas',
-		'LBL_MULTIVALUE_STRINGS' => 'Etiquetas Multiples',
-		'Legend' => 'Leyenda',
-		'RLTranslated' => 'Títulos de Listas Traducidas',
-		'RLNotTranslated' => 'Títulos de Listas No Traducidas',
-		'FieldsTranslated' => 'Campos Traducidas',
-		'FieldsNotTranslated' => 'Campos No Traducidas',
-		// language translation strings
-		'SendEmailFrom' => 'Remitente',
-		'LeaveEmptyForUserEmail' => 'Deja vacío para utilizar el email de tu usuario',
-	'LBL_OPENSSL_SUPPORT' => 'Soporte OpenSSL',
-	'LBL_IMAP_SUPPORT' => 'Soporte IMAP',
-	'StorageSpaceUsage' => 'Consumo Espacio Almacenamiento',
+        // language translation strings
+        'LBL_LANGUAGES_PACKS' => 'Extensión de Idioma',
+        'LBL_EDIT_LANGUAGE_FILE' => 'Traducir etiquetas de módulo',
+        'LBL_SELECT_TRANSLATE_MODULE' => 'Selecciona un módulo para traducir :',
+        'LBL_TRANSLATE' => 'Traducción de módulo ',
+        'LBL_TRADE_PERCENTAGE' => 'Porcentaje de traducción (aprox) :',
+        'ERROR_MODULE_FILE_WRITE' => 'El fichero de idioma del módulo no es escribible!!',
+        'ERROR_GENERAL_FILE_WRITE' => 'El fichero de idioma general no es escribible!!',
+        'General' => 'General',
+        'JavaScript' => 'JavaScript ',
+        'LBL_KEY' => 'Clave',
+        'LBL_SINGLEVALUE_STRINGS' => 'Etiquetas Sueltas',
+        'LBL_MULTIVALUE_STRINGS' => 'Etiquetas Multiples',
+        'Legend' => 'Leyenda',
+        'RLTranslated' => 'Títulos de Listas Traducidas',
+        'RLNotTranslated' => 'Títulos de Listas No Traducidas',
+        'FieldsTranslated' => 'Campos Traducidas',
+        'FieldsNotTranslated' => 'Campos No Traducidas',
+        // language translation strings
+        'SendEmailFrom' => 'Remitente',
+        'LeaveEmptyForUserEmail' => 'Deja vacío para utilizar el email de tu usuario',
+    'LBL_OPENSSL_SUPPORT' => 'Soporte OpenSSL',
+    'LBL_IMAP_SUPPORT' => 'Soporte IMAP',
+    'StorageSpaceUsage' => 'Consumo Espacio Almacenamiento',
+
+
+      //loaddata language translation strings
+      'wf_conditions_found' => 'Field found in workflow condtions: ',
+      'wf conditions' => 'Field not found in workflow condtions. <br>',
+      'wf_tasks' => 'Field not found in workflow tasks. <br>',
+      'wf_tasks_found' => 'Field found in workflow ',
+      'cv_column' => 'Field found in custom view columns: ',
+      'cv_column_nf' => 'Field not found in custom view columns<br>',
+      'cv_advfilter' => 'Field found in custom view conditions: ',
+      'cv_advfilter_nf' => 'Field not found in custom view conditions<br>',
+      'cv_stdfilter' => 'Field found in custom view date conditions: ',
+      'cv_stdfilter_nf' => 'Field not found in custom view date conditions<br>',
+      'email_templates' => 'Field found in Email Template: ',
+      'email_templates_nf' => 'Field not found in Email Templates<br>',
+      'select_column' => 'Field found in Report (columns): ',
+      'select_column_nf' => 'Field not found in Report Columns<br>',
+      'report_dtfilter' => 'Field found in Report (Date Filters): ',
+      'report_dtfilter_nf' => 'Field not found in Report Date Filters<br>',
+      'report' => 'Field found in Report (Group By): ',
+      'report_nf' => 'Field not found in Report Group By<br>',
+      'report_sort' => 'Field found in Report (Sort By): ',
+      'report_sort_nf' => 'Field not found in Report Sort By<br>',
+      'report_summary' => 'Field found in Report (Summary): ',
+      'report_summary_nf' => 'Field not found in Report Summary<br>',
+      'cl_mapping' => 'Field found in Lead Conversion Mapping<br>',
+      'cl_mapping_nf' => 'Field not found in Lead Conversion Mapping<br>',
+      'fld_nf' => '<br><b>Field $fldname could not be found on module $modname!</b><br>',
+      'mod_nf' => '<br><b>Module $modname could not be found!</b><br>',
+      'break' => '<br>'
 );
 ?>

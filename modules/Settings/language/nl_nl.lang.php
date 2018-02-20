@@ -9,13 +9,14 @@
  ********************************************************************************/
 /*******************************************************************************
  * Vicus eBusiness Solutions Version Control
- * @package 	NL-Dutch
- * Description	Dutch language pack for vtiger CRM version 5.4.x
- * @author	$Author: luuk $
- * @version 	$Revision: 1.3 $ $Date: 2014/02/13 21:42:40 $
- * @source	$Source: /var/lib/cvs/vtiger540/Dutch/modules/Settings/language/nl_nl.lang.php,v $
- * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
- * @license	vtiger CRM Public License Version 1.0 (by definition)
+ *
+ * @package   NL-Dutch
+ * Description    Dutch language pack for vtiger CRM version 5.4.x
+ * @author    $Author: luuk $
+ * @version   $Revision: 1.3 $ $Date: 2014/02/13 21:42:40 $
+ * @source    $Source: /var/lib/cvs/vtiger540/Dutch/modules/Settings/language/nl_nl.lang.php,v $
+ * @copyright Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
+ * @license   vtiger CRM Public License Version 1.0 (by definition)
  * Feel free to use / redistribute these languagefiles under the VPL 1.0.
  * This translations is based on earlier work of: 
  * - IT-Online.nl <www.it-online.nl>
@@ -976,5 +977,34 @@ $mod_strings = array(
 'LBL_OPENSSL_SUPPORT' => 'OpenSSL Support',
 'LBL_IMAP_SUPPORT' => 'IMAP Support',
 'StorageSpaceUsage' => 'Storage Space Usage',
+
+//loaddata language translation strings
+'wf_conditions_found' => 'Field found in workflow condtions: ',
+'wf conditions' => 'Field not found in workflow condtions. <br>',
+'wf_tasks' => 'Field not found in workflow tasks. <br>',
+'wf_tasks_found' => 'Field found in workflow ',
+'cv_column' => 'Field found in custom view columns: ',
+'cv_column_nf' => 'Field not found in custom view columns<br>',
+'cv_advfilter' => 'Field found in custom view conditions: ',
+'cv_advfilter_nf' => 'Field not found in custom view conditions<br>',
+'cv_stdfilter' => 'Field found in custom view date conditions: ',
+'cv_stdfilter_nf' => 'Field not found in custom view date conditions<br>',
+'email_templates' => 'Field found in Email Template: ',
+'email_templates_nf' => 'Field not found in Email Templates<br>',
+'select_column' => 'Field found in Report (columns): ',
+'select_column_nf' => 'Field not found in Report Columns<br>',
+'report_dtfilter' => 'Field found in Report (Date Filters): ',
+'report_dtfilter_nf' => 'Field not found in Report Date Filters<br>',
+'report' => 'Field found in Report (Group By): ',
+'report_nf' => 'Field not found in Report Group By<br>',
+'report_sort' => 'Field found in Report (Sort By): ',
+'report_sort_nf' => 'Field not found in Report Sort By<br>',
+'report_summary' => 'Field found in Report (Summary): ',
+'report_summary_nf' => 'Field not found in Report Summary<br>',
+'cl_mapping' => 'Field found in Lead Conversion Mapping<br>',
+'cl_mapping_nf' => 'Field not found in Lead Conversion Mapping<br>',
+'fld_nf' => '<br><b>Field $fldname could not be found on module $modname!</b><br>',
+'mod_nf' => '<br><b>Module $modname could not be found!</b><br>',
+'break' => '<br>'
 );
 ?>
