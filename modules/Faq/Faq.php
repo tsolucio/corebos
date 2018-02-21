@@ -103,7 +103,9 @@ class Faq extends CRMEntity {
 			$this->insertIntoAttachment($this->id,$module);
 		}
 		//Inserting into Faq comment table
-		$this->insertIntoFAQCommentTable('vtiger_faqcomments', $module);
+		if (!((isset($_REQUEST['mode']) && $_REQUEST['mode'] =='Import') || $_REQUEST['action'] =='MassEditSave')) {
+			$this->insertIntoFAQCommentTable('vtiger_faqcomments', $module);
+		}
 	}
 
 
