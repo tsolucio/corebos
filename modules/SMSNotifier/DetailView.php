@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('Smarty_setup.php');
+require_once 'Smarty_setup.php';
 
 global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
 
@@ -16,7 +16,7 @@ $smarty = new vtigerCRM_Smarty();
 require_once 'modules/Vtiger/DetailView.php';
 
 // This might not be picked up in getBlocks as we do not have a field in it.
-if(empty($blocks[getTranslatedString('StatusInformation', $currentModule)])) {
+if (empty($blocks[getTranslatedString('StatusInformation', $currentModule)])) {
 	$blocks[getTranslatedString('StatusInformation', $currentModule)] = array();
 	$smarty->assign('BLOCKS', $blocks);
 }
