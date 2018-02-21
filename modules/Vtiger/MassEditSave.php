@@ -17,7 +17,6 @@ $viewid = isset($_REQUEST['viewname']) ? vtlib_purify($_REQUEST['viewname']) : '
 $return_module = urlencode(vtlib_purify($_REQUEST['massedit_module']));
 $return_action = 'index';
 
-//Added to fix 4600
 $url = getBasic_Advance_SearchURL();
 
 if (isset($_REQUEST['start']) && $_REQUEST['start']!='') {
