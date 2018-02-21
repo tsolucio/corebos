@@ -168,7 +168,7 @@ class Potentials extends CRMEntity {
 
 	/** Returns a list of the associated contacts */
 	public function get_contacts($id, $cur_tab_id, $rel_tab_id, $actions = false) {
-		global $adb,$log, $singlepane_view,$currentModule,$current_user;
+		global $adb,$log, $singlepane_view,$currentModule;
 		$log->debug("Entering get_contacts(".$id.") method ...");
 		$this_module = $currentModule;
 
@@ -257,7 +257,7 @@ class Potentials extends CRMEntity {
 	 * returns related Products record in array format
 	 */
 	public function get_products($id, $cur_tab_id, $rel_tab_id, $actions = false) {
-		global $log, $singlepane_view,$currentModule,$current_user;
+		global $log, $singlepane_view, $currentModule;
 		$log->debug("Entering get_products(".$id.") method ...");
 		$this_module = $currentModule;
 
@@ -322,7 +322,7 @@ class Potentials extends CRMEntity {
 	 *	 where as $header and $entries_list are array which contains all the column values of an row
 	 */
 	public function get_stage_history($id) {
-		global $log, $adb, $mod_strings, $app_strings, $current_user;
+		global $log, $adb, $app_strings, $current_user;
 		$log->debug("Entering get_stage_history(".$id.") method ...");
 
 		$query = 'select vtiger_potstagehistory.*, vtiger_potential.potentialname
@@ -331,7 +331,6 @@ class Potentials extends CRMEntity {
 			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_potential.potentialid
 			where vtiger_crmentity.deleted = 0 and vtiger_potential.potentialid = ?';
 		$result=$adb->pquery($query, array($id));
-		$noofrows = $adb->num_rows($result);
 		$header = array();
 		$header[] = $app_strings['LBL_AMOUNT'];
 		$header[] = $app_strings['LBL_SALES_STAGE'];
@@ -361,7 +360,7 @@ class Potentials extends CRMEntity {
 		}
 
 		$return_data = array('header'=>$header, 'entries'=>$entries_list, 'navigation'=>array('',''));
-		$log->debug("Exiting get_stage_history method ...");
+		$log->debug('Exiting get_stage_history method ...');
 		return $return_data;
 	}
 
@@ -517,7 +516,7 @@ class Potentials extends CRMEntity {
 						"vtiger_senotesrel"=>"crmid");
 
 		foreach ($transferEntityIds as $transferId) {
-			foreach ($rel_table_arr as $rel_module => $rel_table) {
+			foreach ($rel_table_arr as $rel_table) {
 				$id_field = $tbl_field_arr[$rel_table];
 				$entity_id_field = $entity_tbl_field_arr[$rel_table];
 				// IN clause to avoid duplicate entries
@@ -556,7 +555,6 @@ class Potentials extends CRMEntity {
 
 	// Function to unlink all the dependent entities of the given Entity by Id
 	public function unlinkDependencies($module, $id) {
-		global $log;
 		/*//Backup Activity-Potentials Relation
 		$act_q = "select activityid from vtiger_seactivityrel where crmid = ?";
 		$act_res = $this->db->pquery($act_q, array($id));
@@ -576,7 +574,6 @@ class Potentials extends CRMEntity {
 
 	// Function to unlink an entity with given Id from another entity
 	public function unlinkRelationship($id, $return_module, $return_id) {
-		global $log;
 		if (empty($return_module) || empty($return_id)) {
 			return;
 		}
