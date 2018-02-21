@@ -13,20 +13,19 @@ require_once 'modules/Calendar4You/Calendar4You.php';
 require_once 'modules/Calendar4You/CalendarUtils.php';
 
 global $mod_strings, $app_strings, $currentModule, $current_user, $theme;
-$currentmodule = vtlib_purify($_REQUEST['module']);
 $action = vtlib_purify($_REQUEST['action']);
-$RECORD = vtlib_purify($_REQUEST['record']);
+$record = vtlib_purify($_REQUEST['record']);
 
 if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
-	echo "<script>document.location='index.php?action=DetailView&module=cbCalendar&record=".urlencode($RECORD)."';</script>";
+	echo "<script>document.location='index.php?action=DetailView&module=cbCalendar&record=".urlencode($record)."';</script>";
 	die();
 } else {
 	$c_mod_strings = return_specified_module_language($current_language, "Calendar");
 
-	$focus = CRMEntity::getInstance("Calendar");
+	$focus = CRMEntity::getInstance('cbCalendar');
 	if (isset($_REQUEST['record']) && $_REQUEST['record']!='') {
-		$focus->retrieve_entity_info($RECORD, 'Calendar');
-		$focus->id = $RECORD;
+		$focus->retrieve_entity_info($record, 'cbCalendar');
+		$focus->id = $record;
 		$focus->name=$focus->column_fields['subject'];
 	}
 
@@ -61,7 +60,7 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 
 	$smarty->assign('APP', $app_strings);
 	$smarty->assign('MOD', $mod_strings);
-	$smarty->assign('MODULE', $currentmodule);
+	$smarty->assign('MODULE', $currentModule);
 	$smarty->assign('CATEGORY', getParentTab());
 	$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 	$smarty->assign('THEME', $theme);
