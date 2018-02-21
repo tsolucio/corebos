@@ -885,14 +885,18 @@ class cbCalendar extends CRMEntity {
 	 */
 	public function save_related_module($module, $crmid, $with_module, $with_crmid) {
 		global $adb;
-		$with_crmid = (array)$with_crmid;
-		foreach ($with_crmid as $relcrmid) {
-			$checkpresence = $adb->pquery('SELECT contactid FROM vtiger_cntactivityrel WHERE activityid = ? AND contactid = ?', array($crmid, $relcrmid));
-			// Relation already exists? No need to add again
-			if ($checkpresence && $adb->num_rows($checkpresence)) {
-				continue;
+		if ($with_module == 'Contacts') {
+			$with_crmid = (array)$with_crmid;
+			foreach ($with_crmid as $relcrmid) {
+				$checkpresence = $adb->pquery('SELECT contactid FROM vtiger_cntactivityrel WHERE activityid = ? AND contactid = ?', array($crmid, $relcrmid));
+				// Relation already exists? No need to add again
+				if ($checkpresence && $adb->num_rows($checkpresence)) {
+					continue;
+				}
+				$adb->pquery('INSERT INTO vtiger_cntactivityrel(activityid,contactid) VALUES(?,?)', array($crmid, $relcrmid));
 			}
-			$adb->pquery('INSERT INTO vtiger_cntactivityrel(activityid,contactid) VALUES(?,?)', array($crmid, $relcrmid));
+		} else {
+			parent::save_related_module($module, $crmid, $with_module, $with_crmid);
 		}
 	}
 
