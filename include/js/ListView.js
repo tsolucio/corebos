@@ -10,10 +10,10 @@
 // MassEdit Feature
 function massedit_togglediv(curTabId,total){
 	for(var i=0;i<total;i++){
-	tagName = document.getElementById('massedit_div'+i);
-	tagName1 = document.getElementById('tab'+i);
-	tagName.style.display = 'none';
-	tagName1.className = 'dvtUnSelectedCell';
+		var tagName = document.getElementById('massedit_div'+i);
+		var tagName1 = document.getElementById('tab'+i);
+		tagName.style.display = 'none';
+		tagName1.className = 'dvtUnSelectedCell';
 	}
 	tagName = document.getElementById('massedit_div'+curTabId);
 	tagName.style.display = 'block';
