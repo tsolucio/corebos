@@ -304,5 +304,6 @@ $mod_strings = array(
 'LBL_COLUMNS_COUNT'=>'Count',
 'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Fout bij het wissen van de map.',
 'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Error while deleting the reports of the folder',
+'ERR_CREATE_REPORT' => 'Error creating the report.',
 );
 ?>

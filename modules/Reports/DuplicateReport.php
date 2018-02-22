@@ -106,16 +106,12 @@ if($numOfRows > 0) {
 					}
 
 				} else {
-					$errormessage = "<font color='red'><B>Error Message<ul>
-						<li><font color='red'>Error while inserting the record</font>
-						</ul></B></font> <br>" ;
-					$response_array['errormessage'] = $errormessage;
+					$log->info('Reports :: Save->ERROR saving report info');
+					$response_array['errormessage'] = $mod_strings['ERR_CREATE_REPORT'];
 				}
 			} else {
-				$errormessage = "<font color='red'><B>Error Message<ul>
-					<li><font color='red'>Error while inserting the record</font>
-					</ul></B></font> <br>" ;
-				$response_array['errormessage'] = $errormessage;
+				$log->info('Reports :: Save->ERROR saving report query');
+				$response_array['errormessage'] = $mod_strings['ERR_CREATE_REPORT'];
 			}
 		}
 

@@ -293,6 +293,6 @@ $mod_strings = array (
 	'LBL_COLUMNS_COUNT'=>'Compter',
 	'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Erreur lors de la suppression du répertoire.',
 	'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Erreur lors de la suppression des rapports du répertoire',
+	'ERR_CREATE_REPORT' => 'Error creating the report.',
 );
-
 ?>

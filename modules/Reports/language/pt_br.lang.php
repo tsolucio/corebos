@@ -306,6 +306,6 @@ $mod_strings = array(
 'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Erro ao excluir os relatórios da pasta',
 'LBL_AUTO_GENERATED_REPORT_EMAIL' => 'Este é um email gerado automaticamente em nome de um relatório agendado.',
 'LBL_DESCRIPTION'=>'Descrição',
+'ERR_CREATE_REPORT' => 'Error creating the report.',
 )
-
 ?>
