@@ -7,10 +7,10 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('include/logging.php');
-require_once('include/database/PearDatabase.php');
-require_once('modules/CustomView/CustomView.php');
-global $adb,$log;
+require_once 'include/logging.php';
+require_once 'include/database/PearDatabase.php';
+require_once 'modules/CustomView/CustomView.php';
+global $adb, $log;
 
 $cvid = vtlib_purify($_REQUEST['record']);
 $status = vtlib_purify($_REQUEST['status']);
@@ -28,7 +28,7 @@ if (isset($cvid) && $cvid != '') {
 		}
 	} else {
 		global $app_strings;
-		require_once('Smarty_setup.php');
+		require_once 'Smarty_setup.php';
 		$smarty = new vtigerCRM_Smarty();
 		$smarty->assign('APP', $app_strings);
 		$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');

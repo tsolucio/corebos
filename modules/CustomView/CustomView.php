@@ -8,9 +8,9 @@
  * All Rights Reserved.
  * ****************************************************************************** */
 global $app_strings, $mod_strings, $theme;
-$theme_path = "themes/" . $theme . "/";
-$image_path = $theme_path . "images/";
-require_once('include/utils/utils.php');
+$theme_path = 'themes/' . $theme . '/';
+$image_path = $theme_path . 'images/';
+require_once 'include/utils/utils.php';
 require_once 'include/Webservices/Utils.php';
 
 global $adv_filter_options;
@@ -142,10 +142,9 @@ class CustomView extends CRMEntity {
 	public function getViewIdByName($viewname, $module) {
 		global $adb;
 		if (isset($viewname)) {
-			$query = "select cvid from vtiger_customview where viewname=? and entitytype=?";
+			$query = 'select cvid from vtiger_customview where viewname=? and entitytype=?';
 			$cvresult = $adb->pquery($query, array($viewname, $module));
 			$viewid = $adb->query_result($cvresult, 0, 'cvid');
-			;
 			return $viewid;
 		} else {
 			return 0;
@@ -164,7 +163,7 @@ class CustomView extends CRMEntity {
 		global $adb, $current_user;
 		$tabid = getTabid($this->customviewmodule);
 
-		require('user_privileges/user_privileges_' . $current_user->id . '.php');
+		require 'user_privileges/user_privileges_' . $current_user->id . '.php';
 
 		$ssql = 'select vtiger_customview.*
 			from vtiger_customview inner join vtiger_tab on vtiger_tab.name = vtiger_customview.entitytype where vtiger_customview.cvid=?';
@@ -204,11 +203,10 @@ class CustomView extends CRMEntity {
 	 * @returns  $customviewCombo :: Type String
 	 */
 	public function getCustomViewCombo($viewid = '', $markselected = true) {
-		global $adb, $current_user;
-		global $app_strings;
+		global $adb, $current_user, $app_strings;
 		$tabid = getTabid($this->customviewmodule);
 
-		require('user_privileges/user_privileges_' . $current_user->id . '.php');
+		require 'user_privileges/user_privileges_' . $current_user->id . '.php';
 
 		$shtml_user = '';
 		$shtml_pending = '';
@@ -278,7 +276,7 @@ class CustomView extends CRMEntity {
 					}
 					$shtml_public .= $option;
 				} elseif ($cvrow['status'] == CV_STATUS_PENDING) {
-					if (in_array($cvrow['userid'], $cuserroles) or $is_admin) {
+					if (in_array($cvrow['userid'], $cuserroles) || $is_admin) {
 						if ($shtml_pending == '') {
 							$shtml_pending = "<option disabled>--- " . $app_strings['LBL_PENDING'] . " ---</option>";
 						}
@@ -311,7 +309,7 @@ class CustomView extends CRMEntity {
 		global $adb, $mod_strings, $app_strings, $current_user;
 		$block_ids = explode(",", $block);
 		$tabid = getTabid($module);
-		require('user_privileges/user_privileges_' . $current_user->id . '.php');
+		require 'user_privileges/user_privileges_' . $current_user->id . '.php';
 		if (empty($this->meta) && $module != 'Calendar') {
 			$this->meta = $this->getMeta($module, $current_user);
 		}
@@ -491,7 +489,7 @@ class CustomView extends CRMEntity {
 		global $adb, $current_user;
 		$tabid = getTabid($module);
 
-		require('user_privileges/user_privileges_' . $current_user->id . '.php');
+		require 'user_privileges/user_privileges_' . $current_user->id . '.php';
 
 		$module_info = $this->getCustomViewModuleInfo($module);
 		foreach ($this->module_list[$module] as $key => $blockid) {
@@ -697,7 +695,7 @@ class CustomView extends CRMEntity {
 			$pFqStartDateTime = new DateTimeField($pFq . ' ' . date('H:i:s'));
 			$pFq1 = date("Y-m-d", mktime(0, 0, 0, "12", "31", date("Y") - 1));
 			$pFqEndDateTime = new DateTimeField($pFq1 . ' ' . date('H:i:s'));
-		} elseif (date("m") > 3 and date("m") <= 6) {
+		} elseif (date("m") > 3 && date("m") <= 6) {
 			$pFq = date("Y-m-d", mktime(0, 0, 0, "01", "01", date("Y")));
 			$pFqStartDateTime = new DateTimeField($pFq . ' ' . date('H:i:s'));
 			$pFq1 = date("Y-m-d", mktime(0, 0, 0, "03", "31", date("Y")));
@@ -712,7 +710,7 @@ class CustomView extends CRMEntity {
 			$nFqStartDateTime = new DateTimeField($nFq . ' ' . date('H:i:s'));
 			$nFq1 = date("Y-m-d", mktime(0, 0, 0, "09", "30", date("Y")));
 			$nFqEndDateTime = new DateTimeField($nFq1 . ' ' . date('H:i:s'));
-		} elseif (date("m") > 6 and date("m") <= 9) {
+		} elseif (date("m") > 6 && date("m") <= 9) {
 			$nFq = date("Y-m-d", mktime(0, 0, 0, "10", "01", date("Y")));
 			$nFqStartDateTime = new DateTimeField($nFq . ' ' . date('H:i:s'));
 			$nFq1 = date("Y-m-d", mktime(0, 0, 0, "12", "31", date("Y")));
@@ -727,7 +725,7 @@ class CustomView extends CRMEntity {
 			$cFqStartDateTime = new DateTimeField($cFq . ' ' . date('H:i:s'));
 			$cFq1 = date("Y-m-d", mktime(0, 0, 0, "09", "30", date("Y")));
 			$cFqEndDateTime = new DateTimeField($cFq1 . ' ' . date('H:i:s'));
-		} elseif (date("m") > 9 and date("m") <= 12) {
+		} elseif (date("m") > 9 && date("m") <= 12) {
 			$nFq = date("Y-m-d", mktime(0, 0, 0, "01", "01", date("Y") + 1));
 			$nFqStartDateTime = new DateTimeField($nFq . ' ' . date('H:i:s'));
 			$nFq1 = date("Y-m-d", mktime(0, 0, 0, "03", "31", date("Y") + 1));
@@ -1625,7 +1623,7 @@ class CustomView extends CRMEntity {
 			$nFq1 = date("Y-m-d", mktime(0, 0, 0, "08", "31", date("Y")));
 			$pFq = date("Y-m-d", mktime(0, 0, 0, "09", "01", date("Y") - 1));
 			$pFq1 = date("Y-m-d", mktime(0, 0, 0, "12", "31", date("Y") - 1));
-		} elseif (date("m") > 4 and date("m") <= 8) {
+		} elseif (date("m") > 4 && date("m") <= 8) {
 			$pFq = date("Y-m-d", mktime(0, 0, 0, "01", "01", date("Y")));
 			$pFq1 = date("Y-m-d", mktime(0, 0, 0, "04", "30", date("Y")));
 			$cFq = date("Y-m-d", mktime(0, 0, 0, "05", "01", date("Y")));
@@ -1962,7 +1960,7 @@ class CustomView extends CRMEntity {
 			$cuserroles = getSubordinateUsersList($current_user->column_fields['roleid']);
 			$status_userid_info = $this->getStatusAndUserid($viewid);
 		}
-		if (is_admin($current_user) or ($viewid>0 and in_array($status_userid_info['userid'], $cuserroles))) {
+		if (is_admin($current_user) || ($viewid>0 && in_array($status_userid_info['userid'], $cuserroles))) {
 			if ($status == CV_STATUS_PENDING) {
 				$changed_status = CV_STATUS_PUBLIC;
 				$status_label = $custom_strings['LBL_STATUS_PUBLIC_APPROVE'];

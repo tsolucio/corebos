@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('data/Tracker.php');
+require_once 'data/Tracker.php';
 
 global $mod_strings, $app_strings, $current_user, $theme, $log, $default_charset;
 $focus = 0;
@@ -19,7 +19,7 @@ global $oCustomView;
 $error_msg = '';
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
-require_once('modules/CustomView/CustomView.php');
+require_once 'modules/CustomView/CustomView.php';
 
 $cv_module = vtlib_purify($_REQUEST['module']);
 $recordid = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : '';

@@ -34,10 +34,10 @@
 *	)
 */
 function getKeyMetrics($maxval, $calCnt) {
-	require_once("data/Tracker.php");
-	require_once('modules/CustomView/CustomView.php');
-	require_once('include/logging.php');
-	require_once('include/ListView/ListView.php');
+	require_once 'data/Tracker.php';
+	require_once 'modules/CustomView/CustomView.php';
+	require_once 'include/logging.php';
+	require_once 'include/ListView/ListView.php';
 
 	global $app_strings, $adb, $log, $current_language;
 	$metricviewnames = "'Hot Leads'";
@@ -116,7 +116,7 @@ function getKeyMetrics($maxval, $calCnt) {
 */
 function getMetricList() {
 	global $adb, $current_user;
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
+	require 'user_privileges/user_privileges_'.$current_user->id.'.php';
 
 	$ssql = "select vtiger_customview.* from vtiger_customview inner join vtiger_tab on vtiger_tab.name = vtiger_customview.entitytype";
 	$ssql .= " where vtiger_customview.setmetrics = 1 ";
@@ -146,8 +146,6 @@ function getMetricList() {
 			}
 		}
 	}
-
 	return $metriclists;
 }
-
 ?>
