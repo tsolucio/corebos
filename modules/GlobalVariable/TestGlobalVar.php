@@ -23,7 +23,7 @@ function gv_getGVVarNames() {
 	$roleid=$current_user->roleid;
 	$picklistValues = getAssignedPicklistValues('gvname', $roleid, $adb);
 	if (!empty($picklistValues)) {
-		foreach ($picklistValues as $order => $pickListValue) {
+		foreach ($picklistValues as $pickListValue) {
 			$options[$pickListValue] = getTranslatedString($pickListValue, 'GlobalVariable');
 		}
 	}

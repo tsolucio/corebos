@@ -159,7 +159,7 @@ class GlobalVariable extends CRMEntity {
 				}
 				$existmodul = array_merge($existmodul, $module_list);
 			}
-			$existmodules = array_unique($existmodul);
+			$existmodul = array_unique($existmodul);
 			$other_modules=array_diff($all_modules, $modulelist);
 			if ($inmodule == 'on' || $inmodule == '1') {
 				$intersect = array_intersect($existmodul, $modulelist);
@@ -221,7 +221,7 @@ class GlobalVariable extends CRMEntity {
 	}
 
 	public static function return_global_var_value($sql, $var, $module) {
-		global $log,$adb,$gvvalidationinfo;
+		global $adb, $gvvalidationinfo;
 		$list_of_modules=array();
 		$list_of_modules['Default'] = '';
 		$isBusinessMapping = (substr($var, 0, 16) == 'BusinessMapping_');
@@ -325,7 +325,6 @@ class GlobalVariable extends CRMEntity {
 			return $value;
 		}
 		$value='';
-		$list_of_modules=array();
 		$join = ' FROM vtiger_globalvariable INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_globalvariable.globalvariableid ';
 		$select = 'select * '.$join;
 		$where = ' where vtiger_crmentity.deleted=0 and gvname=? ';
