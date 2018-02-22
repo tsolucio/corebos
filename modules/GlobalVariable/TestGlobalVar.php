@@ -68,7 +68,10 @@ function gv_getGVVarNames() {
 <tbody><tr><td style="height:2px"></td></tr>
 <tr>
 	<td nowrap="" class="moduleName" style="padding-left:36px;padding-right:50px;height:32px;background: url(modules/GlobalVariable/GlobalVariable.png) left center no-repeat;">
-	<?php echo getTranslatedString('GlobalVariable', 'GlobalVariable').'&nbsp;-&nbsp;'.getTranslatedString('Test', 'GlobalVariable');?></td>
+	<a href="index.php?module=GlobalVariable&action=index">
+	<?php echo getTranslatedString('GlobalVariable', 'GlobalVariable').'&nbsp;-&nbsp;'.getTranslatedString('Test', 'GlobalVariable');?>
+	</a>
+	</td>
 </tr>
 <tr><td style="height:2px"></td></tr>
 </tbody></table>
