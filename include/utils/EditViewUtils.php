@@ -185,10 +185,10 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		}
 		$fieldvalue [] = $options;
 	}
-	elseif($uitype == 1613 || $uitype == 1614 || $uitype == 1615) {
+	elseif($uitype == 1613 || $uitype == 1614 || $uitype == 1615 || $uitype == 1616) {
 		require_once 'modules/PickList/PickListUtils.php';
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue [] = getPicklistValuesSpecialUitypes($uitype,$fieldname,$value);
+		$fieldvalue[] = getPicklistValuesSpecialUitypes($uitype, $fieldname, $value);
 	}
 	elseif($uitype == 15 || $uitype == 33){
 		require_once 'modules/PickList/PickListUtils.php';

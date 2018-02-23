@@ -150,6 +150,15 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 		require_once 'modules/PickList/PickListUtils.php';
 		$content = getPicklistValuesSpecialUitypes($field->getUIType(), $field->getFieldName(), $value, 'DetailView');
 		$fieldvalue = strip_tags(implode(', ', $content));
+	} elseif ($fieldInfo['uitype'] == '1616' && !empty($value)) {
+		global $adb;
+		$cvrs = $adb->pquery('select viewname,entitytype from vtiger_customview where cvid=?', array($value));
+		if ($cvrs && $adb->num_rows($cvrs)>0) {
+			$cv = $adb->fetch_array($cvrs);
+			$fieldvalue = $cv['viewname'].' ('.getTranslatedString($cv['entitytype'], $cv['entitytype']).')';
+		} else {
+			$fieldvalue = $value;
+		}
 	}
 	if ($fieldvalue == "") {
 		return "-";

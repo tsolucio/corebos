@@ -138,6 +138,15 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		$label_fld[] = getTranslatedString($col_fields[$fieldname], $module);
 		//get All the modules the current user is permitted to Access.
 		$label_fld ["options"] = getPicklistValuesSpecialUitypes($uitype, $fieldname, $col_fields[$fieldname], 'DetailView');
+	} elseif ($uitype == 1616) {
+		$label_fld[] = getTranslatedString($fieldlabel, $module);
+		$cvrs = $adb->pquery('select viewname, entitytype from vtiger_customview where cvid=?', array($col_fields[$fieldname]));
+		if ($cvrs && $adb->num_rows($cvrs)>0) {
+			$cv = $adb->fetch_array($cvrs);
+			$label_fld[] = $cv['viewname'].' ('.getTranslatedString($cv['entitytype'], $cv['entitytype']).')';
+		} else {
+			$label_fld[] = getTranslatedString($col_fields[$fieldname], $module);
+		}
 	} elseif ($uitype == 15) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$col_fields[$fieldname] = trim(html_entity_decode($col_fields[$fieldname], ENT_QUOTES, $default_charset));

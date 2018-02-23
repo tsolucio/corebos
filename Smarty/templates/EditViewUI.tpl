@@ -321,6 +321,19 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				{/foreach}
 				</select>
 			</td>
+		{elseif $uitype eq '1616'}
+			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
+				<font color="red">{$mandatory_field}</font>
+				{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
+			</td>
+			<td width="30%" align=left class="dvtCellInfo">
+				<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small" style="width:280px;">
+				<option value="">{$APP.LBL_NONE}</option>
+				{foreach item=arr from=$fldvalue}
+					<option value="{$arr[1]}" {$arr[3]}>{$arr[2]}</option>
+				{/foreach}
+				</select>
+			</td>
 		{elseif $uitype eq 33 || $uitype eq 3313 || $uitype eq 3314 || $uitype eq 1024}
 			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
 				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}

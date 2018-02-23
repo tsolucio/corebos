@@ -517,6 +517,12 @@ class ListViewController {
 						$value = implode(', ', $tmpArray);
 						$value = textlength_check($value);
 					}
+				} elseif ($uitype == 1616) {
+					$cvrs = $adb->pquery('select viewname,entitytype from vtiger_customview where cvid=?', array($value));
+					if ($cvrs && $adb->num_rows($cvrs)>0) {
+						$cv = $adb->fetch_array($cvrs);
+						$value = $cv['viewname'].' ('.getTranslatedString($cv['entitytype'], $cv['entitytype']).')';
+					}
 				} elseif ($field->getUIType() == 1024) {
 					if ($value != '') {
 						$value = textlength_check(implode(', ', array_map('getRoleName', explode(' |##| ', $value))));
