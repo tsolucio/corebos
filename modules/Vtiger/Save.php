@@ -10,7 +10,7 @@
 global $current_user, $currentModule, $singlepane_view;
 
 checkFileAccessForInclusion("modules/$currentModule/$currentModule.php");
-require_once("modules/$currentModule/$currentModule.php");
+require_once "modules/$currentModule/$currentModule.php";
 
 if (isset($_REQUEST['search_url'])) {
 	$search = vtlib_purify($_REQUEST['search_url']);
@@ -30,7 +30,7 @@ if (!empty($_REQUEST['return_action'])) {
 	$req->set('return_action', $_REQUEST['return_action']);
 }
 //code added for returning back to the current view after edit from list view
-if (empty($_REQUEST['return_viewname']) or $singlepane_view == 'true') {
+if (empty($_REQUEST['return_viewname']) || $singlepane_view == 'true') {
 	$req->set('return_viewname', '0');
 } else {
 	$req->set('return_viewname', $_REQUEST['return_viewname']);

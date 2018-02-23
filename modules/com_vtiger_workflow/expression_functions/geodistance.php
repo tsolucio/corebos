@@ -117,7 +117,7 @@ function __cb_getCurrentUserAddress($userid = '') {
  * @return int km distance
  */
 function __cb_getGEODistanceFromUser2AccountBilling($arr) {
-	global $adb,$current_user;
+	global $adb;
 	$accid = $arr[0];
 	if (empty($accid)) {
 		return '0';
@@ -180,7 +180,7 @@ function __cb_getGEODistanceFromUser2AccountBilling($arr) {
  * @return int km distance
  */
 function __cb_getGEODistanceFromAssignUser2AccountBilling($arr) {
-	global $adb,$current_user;
+	global $adb;
 	$accid = $arr[0];
 	$userid = $arr[1];
 	if (empty($accid)) {
@@ -243,7 +243,7 @@ function __cb_getGEODistanceFromAssignUser2AccountBilling($arr) {
  * @return int km distance
  */
 function __cb_getGEODistanceFromUser2AccountShipping($arr) {
-	global $adb,$current_user;
+	global $adb;
 	$accid = $arr[0];
 	if (empty($accid)) {
 		return '0';
@@ -306,7 +306,7 @@ function __cb_getGEODistanceFromUser2AccountShipping($arr) {
  * @return int km distance
  */
 function __cb_getGEODistanceFromAssignUser2AccountShipping($arr) {
-	global $adb,$current_user;
+	global $adb;
 	$accid = $arr[0];
 	$userid = $arr[1];
 	if (empty($accid)) {
@@ -370,7 +370,7 @@ function __cb_getGEODistanceFromAssignUser2AccountShipping($arr) {
  * @return int km distance
  */
 function __cb_getGEODistanceFromUser2ContactBilling($arr) {
-	global $adb,$current_user;
+	global $adb;
 	$ctoid = $arr[0];
 	if (empty($ctoid)) {
 		return '0';
@@ -433,7 +433,7 @@ function __cb_getGEODistanceFromUser2ContactBilling($arr) {
  * @return int km distance
  */
 function __cb_getGEODistanceFromAssignUser2ContactBilling($arr) {
-	global $adb,$current_user;
+	global $adb;
 	$ctoid = $arr[0];
 	$userid = $arr[1];
 	if (empty($ctoid)) {
@@ -497,7 +497,7 @@ function __cb_getGEODistanceFromAssignUser2ContactBilling($arr) {
  * @return int km distance
  */
 function __cb_getGEODistanceFromUser2ContactShipping($arr) {
-	global $adb,$current_user;
+	global $adb;
 	$ctoid = $arr[0];
 	if (empty($ctoid)) {
 		return '0';
@@ -561,7 +561,7 @@ function __cb_getGEODistanceFromUser2ContactShipping($arr) {
  * @return int km distance
  */
 function __cb_getGEODistanceFromAssignUser2ContactShipping($arr) {
-	global $adb,$current_user;
+	global $adb;
 	$ctoid = $arr[0];
 	$userid = $arr[1];
 	if (empty($ctoid)) {

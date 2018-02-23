@@ -96,7 +96,7 @@ if ($cbMapid) {
 } else {
 	$smarty->assign('HASRELATEDPANES', 'false');
 }
-if ($singlepane_view == 'true' or $isPresentRelatedListBlock) {
+if ($singlepane_view == 'true' || $isPresentRelatedListBlock) {
 	$related_array = getRelatedLists($currentModule, $focus);
 	$smarty->assign("RELATEDLISTS", $related_array);
 

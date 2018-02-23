@@ -57,6 +57,34 @@ function __vt_time_diffdays($arr) {
 	return $days_diff;
 }
 
+function __cb_getWeekdayDifference($arr) {
+	if (count($arr) > 1) {
+		$time_operand1 = $arr[0];
+		$time_operand2 = $arr[1];
+	} else {
+		$time_operand1 = date('Y-m-d H:i:s'); // Current time
+		$time_operand2 = $arr[0];
+	}
+
+	if (empty($time_operand1) || empty($time_operand2)) {
+		return 0;
+	}
+	$startDate = new DateTime($time_operand1);
+	$endDate = new DateTime($time_operand2);
+	if ($startDate>$endDate) {
+		$h = $startDate;
+		$startDate = $endDate;
+		$endDate = $h;
+	}
+	$days = 0;
+	$oneDay = new DateInterval('P1D');
+	while ($startDate->diff($endDate)->days > 0) {
+		$days += $startDate->format('N') < 6 ? 1 : 0;
+		$startDate = $startDate->add($oneDay);
+	}
+	return $days;
+}
+
 function __vt_add_days($arr) {
 	if (count($arr) > 1) {
 		$baseDate = $arr[0];
@@ -197,7 +225,6 @@ function __cb_next_dateLaborable($arr) {
 	}
 	$interval = new DateInterval('P1D'); // set the interval as 1 day
 	$daterange = new DatePeriod($startDate, $interval, $endDate);
-	$result = '';
 	$found = false;
 	foreach ($daterange as $date) {
 		if (in_array($date->format('d'), $nextDays)) {

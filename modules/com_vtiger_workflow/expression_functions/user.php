@@ -38,7 +38,6 @@ function __getCurrentUserName($arr) {
 function __getCurrentUserField($arr) {
 	global $current_user;
 	$user = VTWorkflowUtils::previousUser();
-	$userid = ($user ? $user->id : $current_user->id);
 	if (isset($arr[0]) && isset($current_user->column_fields[$arr[0]])) {
 		return $current_user->column_fields[$arr[0]];
 	} else {

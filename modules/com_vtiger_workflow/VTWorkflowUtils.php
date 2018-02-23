@@ -16,7 +16,6 @@ class VTWorkflowUtils {
 	public static $loggedInUser;
 
 	public function __construct() {
-		global $current_user;
 		if (empty(self::$userStack)) {
 			self::$userStack = array();
 		}

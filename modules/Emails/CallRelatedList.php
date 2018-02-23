@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('Smarty_setup.php');
-require('user_privileges/default_module_view.php');
+require_once 'Smarty_setup.php';
+require 'user_privileges/default_module_view.php';
 
 global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
 
@@ -16,45 +16,47 @@ $action = vtlib_purify($_REQUEST['action']);
 $record = vtlib_purify($_REQUEST['record']);
 $isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : false;
 
-	$tool_buttons = Button_Check($currentModule);
+$tool_buttons = Button_Check($currentModule);
 
-	$focus = CRMEntity::getInstance($currentModule);
-	if($record != '') {
-		$focus->retrieve_entity_info($record, $currentModule);
-		$focus->id = $record;
-	}
+$focus = CRMEntity::getInstance($currentModule);
+if ($record != '') {
+	$focus->retrieve_entity_info($record, $currentModule);
+	$focus->id = $record;
+}
 
-	$smarty = new vtigerCRM_Smarty;
+$smarty = new vtigerCRM_Smarty;
 
-	if(isset($_REQUEST['mode']) && $_REQUEST['mode'] != ' ') $smarty->assign("OP_MODE",vtlib_purify($_REQUEST['mode']));
+if (isset($_REQUEST['mode']) && $_REQUEST['mode'] != ' ') {
+	$smarty->assign('OP_MODE', vtlib_purify($_REQUEST['mode']));
+}
 
-	// Identify this module as custom module.
-	$smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
+// Identify this module as custom module.
+$smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
 
-	$smarty->assign('APP', $app_strings);
-	$smarty->assign('MOD', $mod_strings);
-	$smarty->assign('MODULE', $currentModule);
-	$smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule, $currentModule));
-	$smarty->assign('CATEGORY', getParentTab());
-	$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
-	$smarty->assign('THEME', $theme);
-	$smarty->assign('ID', $focus->id);
-	$smarty->assign('MODE', $focus->mode);
-	$smarty->assign('CHECK', $tool_buttons);
+$smarty->assign('APP', $app_strings);
+$smarty->assign('MOD', $mod_strings);
+$smarty->assign('MODULE', $currentModule);
+$smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule, $currentModule));
+$smarty->assign('CATEGORY', getParentTab());
+$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
+$smarty->assign('THEME', $theme);
+$smarty->assign('ID', $focus->id);
+$smarty->assign('MODE', $focus->mode);
+$smarty->assign('CHECK', $tool_buttons);
 
-	$smarty->assign('NAME', $focus->column_fields[$focus->def_detailview_recname]);
-	$smarty->assign('UPDATEINFO',updateInfo($focus->id));
+$smarty->assign('NAME', $focus->column_fields[$focus->def_detailview_recname]);
+$smarty->assign('UPDATEINFO', updateInfo($focus->id));
 
-	$related_array = getRelatedLists($currentModule, $focus);
-	$smarty->assign('RELATEDLISTS', $related_array);
+$related_array = getRelatedLists($currentModule, $focus);
+$smarty->assign('RELATEDLISTS', $related_array);
 
-	require_once('include/ListView/RelatedListViewSession.php');
-	if(!empty($_REQUEST['selected_header']) && !empty($_REQUEST['relation_id'])) {
-		$relationId = vtlib_purify($_REQUEST['relation_id']);
-		RelatedListViewSession::addRelatedModuleToSession($relationId,vtlib_purify($_REQUEST['selected_header']));
-	}
-	$open_related_modules = RelatedListViewSession::getRelatedModulesFromSession();
-	$smarty->assign("SELECTEDHEADERS", $open_related_modules);
+require_once 'include/ListView/RelatedListViewSession.php';
+if (!empty($_REQUEST['selected_header']) && !empty($_REQUEST['relation_id'])) {
+	$relationId = vtlib_purify($_REQUEST['relation_id']);
+	RelatedListViewSession::addRelatedModuleToSession($relationId, vtlib_purify($_REQUEST['selected_header']));
+}
+$open_related_modules = RelatedListViewSession::getRelatedModulesFromSession();
+$smarty->assign('SELECTEDHEADERS', $open_related_modules);
 
-	$smarty->display('RelatedLists.tpl');
+$smarty->display('RelatedLists.tpl');
 ?>

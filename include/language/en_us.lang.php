@@ -90,7 +90,6 @@ $app_strings = array(
 'LBL_NEW_BUTTON_LABEL' => 'New',
 'LBL_CHANGE_BUTTON_LABEL' => 'Change',
 'LBL_CANCEL_BUTTON_LABEL' => 'Cancel',
-'LBL_OPEN_BUTTON_LABEL' => 'Open',
 'LBL_SEARCH_BUTTON_LABEL' => 'Search',
 'LBL_CLEAR_BUTTON_LABEL' => 'Clear',
 'LBL_SELECT_BUTTON_LABEL' => 'Select',

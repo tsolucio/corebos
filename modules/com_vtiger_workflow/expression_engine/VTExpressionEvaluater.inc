@@ -34,6 +34,7 @@ class VTFieldExpressionEvaluater {
 			'coalesce'=>'__cb_coalesce',
 			'time_diff' => '__vt_time_diff',
 			'time_diffdays' => '__vt_time_diffdays',
+			'time_diffweekdays' => '__cb_getWeekdayDifference',
 			'add_days' => '__vt_add_days',
 			'sub_days' => '__vt_sub_days',
 			'get_date' => '__vt_get_date',
@@ -142,7 +143,7 @@ class VTFieldExpressionEvaluater {
 				if (in_array($func, $this->rawparams)) {
 					$relto = $expr->getParams();
 					$params = array();
-					foreach ($relto as $key => $value) {
+					foreach ($relto as $value) {
 						if (is_object($value)) {
 							$params[] = $this->env($value, true);
 						} else {
@@ -185,7 +186,7 @@ class VTFieldExpressionEvaluater {
 			}
 			$field = Vtiger_Field::getInstance($sym->value, $module);
 			if ($field && !$raw) {
-				global $adb,$log;
+				global $adb;
 				$rsfld = $adb->pquery('select * from vtiger_field where fieldid=?', array($field->id));
 				$field = WebserviceField::fromQueryResult($adb, $rsfld, 0);
 				$fieldType = $field->getFieldDataType();

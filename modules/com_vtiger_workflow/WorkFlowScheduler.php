@@ -79,7 +79,6 @@ class WorkFlowScheduler {
 		@date_default_timezone_set($default_timezone);
 
 		$scheduledWorkflows = $vtWorflowManager->getScheduledWorkflows($currentTimestamp);
-		$noOfScheduledWorkflows = count($scheduledWorkflows);
 		foreach ($scheduledWorkflows as $workflow) {
 			$tm = new VTTaskManager($adb);
 			$tasks = $tm->getTasksForWorkflow($workflow->id);

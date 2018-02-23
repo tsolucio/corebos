@@ -19,7 +19,7 @@ return array(
     'alpha'         => "deve conter as letras a-z",
     'alphaNum'      => "deve conter apenas letras a-z e/ou números 0-9",
     'slug'          => "deve conter apenas letras a-z, números 0-9, ou os caracteres - ou _",
-    'regex'         => "contém caracteres inválidos",
+    'regex'         => "contém caracteres inválidos, ou está fora do padrão",
     'date'          => "não é uma data válida",
     'dateFormat'    => "deve ser uma data no formato '%s'",
     'dateBefore'    => "deve ser uma data anterior a '%s'",

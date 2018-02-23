@@ -138,7 +138,7 @@
 </div>
 <script type="text/javascript" src="include/js/clock.js"></script>
 <div id="theDate" class="datestyle">\!</div>
-<div id="amOrPm" class="ampmstyle" style="color:'+aCol+'">\!</div>
+<div id="amOrPm" class="ampmstyle">\!</div>
 <div id="theFace0" class="facestyle" style="color: rgb(0, 0, 0); top: 81px; left: 96px;">3</div>
 <div id="theFace1" class="facestyle" style="color: rgb(0, 0, 0); top: 102px; left: 90.3731px;">4</div>
 <div id="theFace2" class="facestyle" style="color: rgb(0, 0, 0); top: 117.373px; left: 75px;">5</div>

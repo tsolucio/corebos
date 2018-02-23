@@ -36,7 +36,6 @@ class CBDeleteRelatedTask extends VTTask {
 		global $adb,$log,$current_user;
 		$module = getSalesEntityType($masterRecord);
 		$webserviceObject = VtigerWebserviceObject::fromName($adb, $relatedModule);
-		$handlerPath = $webserviceObject->getHandlerPath();
 		$handlerClass = $webserviceObject->getHandlerClass();
 		$handler = new $handlerClass($webserviceObject, $current_user, $adb, $log);
 		$meta = $handler->getMeta();

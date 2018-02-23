@@ -17,19 +17,22 @@ function getFieldByReportLabel($module, $label) {
 	getColumnFields($module);
 	//lookup all the accessible fields
 	$cachedModuleFields = VTCacheUtils::lookupFieldInfo_Module($module);
-	if($module == 'Calendar') {
+	if ($module == 'Calendar') {
 		$cachedEventsFields = VTCacheUtils::lookupFieldInfo_Module('Events');
-		if($cachedModuleFields == false) $cachedModuleFields = $cachedEventsFields;
-		else $cachedModuleFields = array_merge($cachedModuleFields, $cachedEventsFields);
+		if ($cachedModuleFields == false) {
+			$cachedModuleFields = $cachedEventsFields;
+		} else {
+			$cachedModuleFields = array_merge($cachedModuleFields, $cachedEventsFields);
+		}
 	}
-	if(empty($cachedModuleFields)) {
+	if (empty($cachedModuleFields)) {
 		return null;
 	}
 	$label = str_replace('&', 'and', decode_html($label));
 	foreach ($cachedModuleFields as $fieldInfo) {
 		$fieldLabel = str_replace(' ', '_', $fieldInfo['fieldlabel']);
 		$fieldLabel = str_replace('&', 'and', $fieldLabel);
-		if($label == $fieldLabel) {
+		if ($label == $fieldLabel) {
 			return $fieldInfo;
 		}
 	}
@@ -39,7 +42,7 @@ function getFieldByReportLabel($module, $label) {
 function isReferenceUIType($uitype) {
 	static $options = array('101', '116', '117', '26', '357', '51', '52', '53', '57', '66', '73', '75', '76', '77', '78', '80', '81');
 
-	if(in_array($uitype, $options)) {
+	if (in_array($uitype, $options)) {
 		return true;
 	}
 	return false;
@@ -48,7 +51,7 @@ function isReferenceUIType($uitype) {
 function isPicklistUIType($uitype) {
 	static $options = array('15','16','1613','1614','1615','33','3313','3314','1024');
 
-	if(in_array($uitype, $options)) {
+	if (in_array($uitype, $options)) {
 		return true;
 	}
 	return false;
@@ -82,19 +85,19 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 	$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
 	$fieldType = null;
 	$fieldvalue = $value;
-	if(!empty($fieldInfo)) {
+	if (!empty($fieldInfo)) {
 		$field = WebserviceField::fromArray($db, $fieldInfo);
 		$fieldType = $field->getFieldDataType();
 	}
 
 	if ($fieldType == 'currency' && $value != '') {
 		// Some of the currency fields like Unit Price, Total, Sub-total etc of Inventory modules, do not need currency conversion
-		if($field->getUIType() == '72') {
+		if ($field->getUIType() == '72') {
 			$curid_value = explode("::", $value);
 			$currency_id = $curid_value[0];
 			$currency_value = $curid_value[1];
 			$cur_sym_rate = getCurrencySymbolandCRate($currency_id);
-			if($value!='') {
+			if ($value!='') {
 				$formattedCurrencyValue = CurrencyField::convertToUserFormat($currency_value, null, true);
 				$fieldvalue = CurrencyField::appendCurrencySymbol($formattedCurrencyValue, $cur_sym_rate['symbol']);
 			}
@@ -102,56 +105,53 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 			$currencyField = new CurrencyField($value);
 			$fieldvalue = $currencyField->getDisplayValue();
 		}
-
 	} elseif ($dbField->name == "PurchaseOrder_Currency" || $dbField->name == "SalesOrder_Currency"
 				|| $dbField->name == "Invoice_Currency" || $dbField->name == "Quotes_Currency" || $dbField->name == "PriceBooks_Currency") {
-		if($value!='') {
+		if ($value!='') {
 			$fieldvalue = getTranslatedCurrencyString($value);
 		}
-	} elseif ((in_array($dbField->name,$report->ui101_fields) or (isset($field) and $field->getUIType() == '52')) && !empty($value)) {
-		if(is_numeric($value))
-		{
+	} elseif ((in_array($dbField->name, $report->ui101_fields) || (isset($field) && $field->getUIType() == '52')) && !empty($value)) {
+		if (is_numeric($value)) {
 			$entityNames = getEntityName('Users', $value);
 			$fieldvalue = $entityNames[$value];
-		}
-		else {
+		} else {
 			$fieldvalue = $value;
 		}
-	} elseif( $fieldType == 'date' && !empty($value)) {
+	} elseif ($fieldType == 'date' && !empty($value)) {
 			$fieldvalue = DateTimeField::convertToUserFormat($value);
-	} elseif( $fieldType == "datetime" && !empty($value)) {
+	} elseif ($fieldType == "datetime" && !empty($value)) {
 		$date = new DateTimeField($value);
 		$fieldvalue = $date->getDisplayDateTimeValue();
 		$user_format = ($current_user->hour_format=='24' ? '24' : '12');
 		if ($user_format != '24') {
 			$curr_time = DateTimeField::formatUserTimeString($fieldvalue, '12');
-			list($dt,$tm) = explode(' ',$fieldvalue);
+			list($dt,$tm) = explode(' ', $fieldvalue);
 			$fieldvalue = $dt . ' ' . $curr_time;
 		}
-	} elseif( $fieldType == "picklist" && !empty($value) ) {
+	} elseif ($fieldType == "picklist" && !empty($value)) {
 		$fieldvalue = getTranslatedString($value, $module);
-	} elseif( $fieldType == "multipicklist" && !empty($value) ) {
-		if(is_array($picklistArray[1])) {
+	} elseif ($fieldType == "multipicklist" && !empty($value)) {
+		if (count($picklistArray)>0 && is_array($picklistArray[1])) {
 			$valueList = explode(' |##| ', $value);
 			$translatedValueList = array();
-			foreach ( $valueList as $value) {
+			foreach ($valueList as $value) {
 				if (is_array($picklistArray[1][$dbField->name]) && !in_array($value, $picklistArray[1][$dbField->name])) {
 					continue;
 				}
 				$translatedValueList[] = getTranslatedString($value, $module);
 			}
 		}
-		if (!is_array($picklistArray[1]) || !is_array($picklistArray[1][$dbField->name])) {
+		if (count($picklistArray)==0 || !is_array($picklistArray[1]) || !is_array($picklistArray[1][$dbField->name])) {
 			$fieldvalue = str_replace(' |##| ', ', ', $value);
 		} else {
 			$fieldvalue = implode(', ', $translatedValueList);
 		}
-	} elseif( $fieldType == "multireference" && !empty($value)){
+	} elseif ($fieldType == "multireference" && !empty($value)) {
 		require_once 'modules/PickList/PickListUtils.php';
-		$content = getPicklistValuesSpecialUitypes($field->getUIType(),$field->getFieldName(),$value,'DetailView');
-		$fieldvalue = strip_tags(implode(', ',$content));
+		$content = getPicklistValuesSpecialUitypes($field->getUIType(), $field->getFieldName(), $value, 'DetailView');
+		$fieldvalue = strip_tags(implode(', ', $content));
 	}
-	if($fieldvalue == "") {
+	if ($fieldvalue == "") {
 		return "-";
 	}
 	$fieldvalue = str_replace("<", "&lt;", $fieldvalue);
@@ -170,10 +170,10 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 	return $fieldvalue;
 }
 
-function report_getMoreInfoFromRequest($cbreporttype,$pmodule,$smodule,$pivotcolumns) {
+function report_getMoreInfoFromRequest($cbreporttype, $pmodule, $smodule, $pivotcolumns) {
 	global $adb;
 	if (isset($_REQUEST['cbreporttype']) && $_REQUEST['cbreporttype']=='external') {
-		if (isset($_REQUEST['adduserinfo']) and ($_REQUEST['adduserinfo'] == 'on' || $_REQUEST['adduserinfo'] == 1)) {
+		if (isset($_REQUEST['adduserinfo']) && ($_REQUEST['adduserinfo'] == 'on' || $_REQUEST['adduserinfo'] == 1)) {
 			$aui = 1;
 		} else {
 			$aui = 0;
@@ -194,8 +194,8 @@ function report_getMoreInfoFromRequest($cbreporttype,$pmodule,$smodule,$pivotcol
 		$refs = $moduleInstance->getFieldsByType('reference');
 		$found = false;
 		foreach ($refs as $fname => $field) {
-			$rs = $adb->pquery('select relmodule from vtiger_fieldmodulerel where fieldid=?',array($field->id));
-			$relmod = $adb->query_result($rs,0,0);
+			$rs = $adb->pquery('select relmodule from vtiger_fieldmodulerel where fieldid=?', array($field->id));
+			$relmod = $adb->query_result($rs, 0, 0);
 			if ($relmod==$smodule) {
 				$found = $field;
 				break;
@@ -208,24 +208,25 @@ function report_getMoreInfoFromRequest($cbreporttype,$pmodule,$smodule,$pivotcol
 		$aggfield = $colinfo[0].'.'.$colinfo[1];
 		switch ($_REQUEST['crosstabaggfunction']) {
 			case 'sum':
-				$agglabel = getTranslatedString('LBL_COLUMNS_SUM','Reports');
-			break;
+				$agglabel = getTranslatedString('LBL_COLUMNS_SUM', 'Reports');
+				break;
 			case 'avg':
-				$agglabel = getTranslatedString('LBL_COLUMNS_AVERAGE','Reports');
-			break;
+				$agglabel = getTranslatedString('LBL_COLUMNS_AVERAGE', 'Reports');
+				break;
 			case 'min':
-				$agglabel = getTranslatedString('LBL_COLUMNS_LOW_VALUE','Reports');
-			break;
+				$agglabel = getTranslatedString('LBL_COLUMNS_LOW_VALUE', 'Reports');
+				break;
 			case 'max':
-				$agglabel = getTranslatedString('LBL_COLUMNS_LARGE_VALUE','Reports');
-			break;
+				$agglabel = getTranslatedString('LBL_COLUMNS_LARGE_VALUE', 'Reports');
+				break;
 			default:
 				$aggfield = false;
 				$agglabel = 'Sum';
 				$_REQUEST['crosstabaggfunction'] = 'sum';
-			break;
+				break;
 		}
-		$sql = PivotTableSQL($adb->database, // adodb connection
+		$sql = PivotTableSQL(
+			$adb->database, // adodb connection
 			$pmod->table_name.',vtiger_crmentity,'.$smod->table_name, // tables
 			$pivotcolumns, // rows (multiple fields allowed)
 			$pivotfield, // column to pivot on

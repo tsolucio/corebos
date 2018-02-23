@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-@include('user_privileges/default_module_view.php');
+@include 'user_privileges/default_module_view.php';
 
 global $currentModule;
 $idlist            = isset($_REQUEST['idlist']) ? vtlib_purify($_REQUEST['idlist']) : '';
@@ -17,7 +17,7 @@ $forCRMRecord = vtlib_purify($_REQUEST['parentid']);
 $mode = isset($_REQUEST['mode']) ? $_REQUEST['mode'] : '';
 if (isset($override_action)) {
 	$action = $override_action;
-} elseif ($singlepane_view == 'true' or isPresentRelatedListBlockWithModule($currentModule, $destinationModule)) {
+} elseif ($singlepane_view == 'true' || isPresentRelatedListBlockWithModule($currentModule, $destinationModule)) {
 	$action = 'DetailView';
 } else {
 	$action = 'CallRelatedList';

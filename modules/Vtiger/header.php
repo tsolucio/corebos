@@ -8,10 +8,9 @@
 * All Rights Reserved.
 ************************************************************************************/
 header('X-Frame-Options: DENY');
-require_once('Smarty_setup.php');
-require_once("data/Tracker.php");
-require_once("include/utils/utils.php");
-require_once("include/calculator/Calc.php");
+require_once 'Smarty_setup.php';
+require_once 'include/utils/utils.php';
+require_once 'include/calculator/Calc.php';
 
 global $currentModule, $default_charset, $app_strings, $theme;
 $theme_path="themes/".$theme."/";
@@ -64,7 +63,7 @@ if (isset($_REQUEST['query_string']) and $_REQUEST['query_string'] != '') {
 require_once('data/Tracker.php');
 $tracFocus=new Tracker();
 $list = $tracFocus->get_recently_viewed($current_user->id);
-$smarty->assign("TRACINFO", $list);
+$smarty->assign('TRACINFO', $list);
 
 // Gather the custom link information to display
 include_once('vtlib/Vtiger/Link.php');
@@ -98,18 +97,18 @@ if ($favicon=='') {
 } else {
 	$favicon='test/logo/'.$favicon;
 }
-$smarty->assign("FAVICON", $favicon);
+$smarty->assign('FAVICON', $favicon);
 $frontlogo = decode_html($adb->query_result($result, 0, 'frontlogo'));
 if ($frontlogo=='') {
 	$frontlogo='noimageloaded.png';
 }
-$smarty->assign("FRONTLOGO", $frontlogo);
+$smarty->assign('FRONTLOGO', $frontlogo);
 $companyDetails = array();
 $companyDetails['name'] = $adb->query_result($result, 0, 'organizationname');
 $companyDetails['website'] = $adb->query_result($result, 0, 'website');
 //$companyDetails['logo'] = $organization_logo;
 
-$smarty->assign("COMPANY_DETAILS", $companyDetails);
+$smarty->assign('COMPANY_DETAILS', $companyDetails);
 
 //Global Search Autocomplete Mapping
 $bmapname = 'GlobalSearchAutocomplete';

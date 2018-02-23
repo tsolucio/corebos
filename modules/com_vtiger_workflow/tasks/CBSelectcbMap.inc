@@ -27,7 +27,7 @@ class CBSelectcbMap extends VTTask {
 	}
 
 	public function doTask(&$recordid) {
-		global $adb,$default_charset,$log,$current_user;
+		global $adb;
 		$maprs = $adb->pquery('select 1
 			from vtiger_cbmap
 			inner join vtiger_crmentity on crmid=cbmapid

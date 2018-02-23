@@ -21,7 +21,7 @@ class VTUpdateFieldsTask extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $current_user, $default_charset, $log, $logbg,$from_wf;
+		global $adb, $current_user, $logbg,$from_wf;
 		$from_wf = true;
 		$logbg->info('Entering workflow task VTUpdateFieldsTask');
 		$util = new VTWorkflowUtils();
@@ -59,7 +59,6 @@ class VTUpdateFieldsTask extends VTTask {
 			$handlerMetarel[]=array();
 			foreach ($fieldValueMapping as $fieldInfo) {
 				$fieldName = $fieldInfo['fieldname'];
-				$fieldType = '';
 				$fieldmodule='';
 				$fldrelname='';
 				$fieldValueType = $fieldInfo['valuetype'];

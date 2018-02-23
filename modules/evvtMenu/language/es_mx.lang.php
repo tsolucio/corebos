@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'evvtMenu' => 'Editor Menú',
 	'SINGLE_evvtMenu' => 'Editor Menú',
 	'evvtMenu ID' => 'ID Editor Menú',
@@ -32,5 +32,4 @@ $mod_strings = Array(
 	'MenuItemPermissions' => 'Cuando se definen permisos de perfil a un elemento de menú, tendrán preferencia sobre los permisos de la aplicación.',
 	'MenuParent' => 'Superior',
 );
-
 ?>

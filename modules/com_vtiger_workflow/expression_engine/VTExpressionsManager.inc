@@ -71,6 +71,8 @@ class VTExpressionsManager {
 			'coalesce' => 'coalesce(a,...,n)',
 			'time_diffdays(a,b)' => 'time_diffdays(a,b)',
 			'time_diffdays(a)' => 'time_diffdays(a)',
+			'time_diffweekdays(a,b)' => 'time_diffweekdays(a,b)',
+			'time_diffweekdays(a)' => 'time_diffweekdays(a)',
 			'time_diff(a,b)' => 'time_diff(a,b)',
 			'time_diff(a)' => 'time_diff(a)',
 			'add_days' => 'add_days(datefield, noofdays)',

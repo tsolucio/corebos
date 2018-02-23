@@ -10,12 +10,12 @@
  ************************************************************************************/
 
 class crmtogo_WS_AddComment extends crmtogo_WS_Controller {
-	
-	function process(crmtogo_API_Request $request) {
+
+	public function process(crmtogo_API_Request $request) {
 		return $this->getContent($request);
 	}
-	
-	function getContent(crmtogo_API_Request $request) {
+
+	public function getContent(crmtogo_API_Request $request) {
 		$comment = $request->get('comment');
 		$parentid = $request->get('parentid');
 		if (isset($comment) && !empty($comment)) {
@@ -28,18 +28,15 @@ class crmtogo_WS_AddComment extends crmtogo_WS_Controller {
 				$arr_comment = array('commentcontent' => $comment, 'related_to' => $parentid, 'creator' => $userid, 'assigned_user_id'=> $userid);
 				$ele = vtws_create('ModComments', $arr_comment, $current_user);
 				$ele['createdtime'] = DateTimeField::convertToUserFormat($ele['createdtime']);
-			}
-			else {
+			} else {
 				$parentrecordid = vtws_getIdComponents($parentid);
 				$parentrecordid = $parentrecordid[1];
 
 				//there is currently no vtws service available for ticket comments
-				$current_user_id = $current_user ->id;
-				$userrecordid = vtws_getIdComponents($current_user_id);
-				$userrecordid = $userrecordid[1];
+				$current_user_id = $current_user->id;
 				$arr_comment = array('commentcontent' => $comment, 'related_to' => $parentrecordid, 'creator' => $current_user_id);
 				//$ele = vtws_create('ModComments', $arr_comment, $current_user);
-				$saverecord = crmtogo_WS_Utils::createTicketComment($parentrecordid,$comment,$current_user);
+				$saverecord = crmtogo_WS_Utils::createTicketComment($parentrecordid, $comment, $current_user);
 				$current_date_time = date('Y-m-d H:i:s');
 				if ($saverecord == true) {
 					$userid = crmtogo_WS_Utils::getEntityModuleWSId('Users')."x".$current_user_id;

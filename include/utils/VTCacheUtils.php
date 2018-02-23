@@ -62,6 +62,18 @@ class VTCacheUtils {
 		self::$_alltabrows_cache = $tabrows;
 	}
 
+	/** Block information caching */
+	static private $_blocklabel_cache = array();
+	static public function updateBlockLabelWithId($label, $id) {
+		self::$_blocklabel_cache[$id] = $label;
+	}
+	static public function lookupBlockLabelWithId($id) {
+		if (isset(self::$_blocklabel_cache[$id])) {
+			return self::$_blocklabel_cache[$id];
+		}
+		return false;
+	}
+
 	/** Field information caching */
 	static $_fieldinfo_cache = array();
 	static function updateFieldInfo($tabid, $fieldname, $fieldid, $fieldlabel,

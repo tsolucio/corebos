@@ -38,10 +38,9 @@ function vtDisplayTaskList($adb, $requestUrl, $current_language) {
 	$smarty->assign('APP', $app_strings);
 	$smarty->assign('THEME', $theme);
 	$smarty->assign('IMAGE_PATH', $image_path);
-	$smarty->assign('MODULE_NAME', $module->label);
+	$smarty->assign('MODULE_NAME', $module->name);
 	$smarty->assign('PAGE_NAME', 'Task List');
 	$smarty->assign('PAGE_TITLE', 'List available tasks');
-	$smarty->assign('moduleName', $moduleName);
 	$smarty->display("{$module->name}/ListTasks.tpl");
 }
 $returl = 'index.php?'.$_SERVER['QUERY_STRING'];

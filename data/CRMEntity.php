@@ -2912,11 +2912,11 @@ class CRMEntity {
 		}
 
 		if (isset($this->list_fields)) {
-			$this->list_fields = array_diff_assoc($this->list_fields, $hiddenFields);
+			$this->list_fields = array_diff_key($this->list_fields, $hiddenFields);
 		}
 
 		if (isset($this->search_fields)) {
-			$this->search_fields = array_diff_assoc($this->search_fields, $hiddenFields);
+			$this->search_fields = array_diff_key($this->search_fields, $hiddenFields);
 		}
 
 		// To avoid re-initializing everytime.
