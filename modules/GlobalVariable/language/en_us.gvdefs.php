@@ -217,6 +217,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Completely disables or enables SOAP Customer Portal access.',
 ),
+'SOAP_Outlook_Enabled' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Webservice',
+	'values' => '0 | 1',
+	'definition' => 'Completely disables or enables SOAP Outlook access.',
+),
 'Application_Default_Action' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'String',
@@ -622,6 +629,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Mobile Functionality',
 	'values' => 'Calendar | HelpDesk | Contacts ...',
 	'definition' => 'Set the default module to show when accessing the Mobile module.',
+),
+'Mobile_UI_Enabled' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Mobile Functionality',
+	'values' => '0 | 1',
+	'definition' => 'Completely disables or enables Mobile UI access.',
 ),
 'Application_Storage_Directory' => array(
 	'status' => 'Implemented',

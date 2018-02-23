@@ -26,12 +26,11 @@ class CBAssignRelatedTask extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb,$default_charset,$log,$current_user;
+		global $adb, $log, $current_user;
 		list($cto,$cto_id) = explode('x', $entity->getId());
 		if (!empty($cto_id) and !empty($this->relmodule) and !empty($this->username)) {
 			$module = getSalesEntityType($cto_id);
 			$webserviceObject = VtigerWebserviceObject::fromName($adb, $this->relmodule);
-			$handlerPath = $webserviceObject->getHandlerPath();
 			$handlerClass = $webserviceObject->getHandlerClass();
 			$handler = new $handlerClass($webserviceObject, $current_user, $adb, $log);
 			$meta = $handler->getMeta();

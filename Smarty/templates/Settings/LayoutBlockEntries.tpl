@@ -44,7 +44,7 @@
 					{/if}
 						<div id = "hiddenfields_{$entries.blockid}" style="display:none; position:absolute; width:300px;" class="layerPopup">
 							<div style="position:relative; display:block">
-										<table width="100%" border="5" cellpadding="5" cellspacing="0" class="layerHeadingULine">
+										<table width="100%" border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine">
 											<tr>
 												<td width="95%" align="left" class="layerPopupHeading">
 													{$MOD.HIDDEN_FIELDS}
@@ -389,8 +389,7 @@
 									<td colspan="3" class="dvtCellInfo" align="center">
 										<input type="button" name="save" value=" &nbsp; {$APP.LBL_SAVE_BUTTON_LABEL} &nbsp; " class="crmButton small save" onclick="saveFieldInfo('{$value.fieldselect}','{$MODULE}','updateFieldProperties','{$value.typeofdata}');" />&nbsp;
 										{if $value.customfieldflag neq 0}
-											
-											<input type="button" name="delete" value="{$APP.LBL_OPEN_BUTTON_LABEL}" id="fieldname" class="crmButton small delete"  onclick="getData('{$value.columnname}','{$MODULE}','{$value.label}'); fnvshobj(this,'hiddenfield_{$value.label}'); " />
+											<input type="button" name="delete" value="{$APP.LBL_DELETE_BUTTON_LABEL}" id="fieldname" class="crmButton small delete" onclick="getData('{$value.columnname}', '{$MODULE}', '{$value.label}'); fnvshobj(this,'hiddenfield_{$value.label}');" />
 										{/if}
 										<input type="button" name="cancel" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="crmButton small cancel" onclick="fninvsh('editfield_{$value.fieldselect}');" />
 									</td>
@@ -399,26 +398,26 @@
 						</div>
 					</div>
 
-
-
-				<div class="demo-only" id="hiddenfield_{$value.label}"  style="display:none; position:absolute; width:500px; height: 500px; margin-top: -400px" >
-						<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
-							<div class="slds-modal__container">
-								<header class="slds-modal__header">
-									<h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{$value.label}</h2>
-								</header>
+				<div id="hiddenfield_{$value.label}" style="display:none; position:absolute; width:500px; height: 500px; margin-top: -400px">
+					<section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+						<div class="slds-modal__container">
+							<div class="slds-box--border">
+							<header class="slds-modal__header">
+								<h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{$value.label} ({$value.columnname})</h2>
+							</header>
 							<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
-								<p id="{$value.label}" style="text-align: left"></p>
+								<p id="{$value.label}" style="text-align: left; padding-left: 6px;"></p>
 							</div>
-							<footer class="slds-modal__footer">
-					{if $value.customfieldflag neq 0}
-						<input type="button" name="delete" value="{$APP.LBL_DELETE_BUTTON_LABEL} " class="slds-button slds-button_brand" onclick="deleteCustomField('{$value.fieldselect}','{$MODULE}','{$value.columnname}','{$value.uitype}')" />
-					{/if}
-						<input type="button" name="cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" class="slds-button slds-button_neutral" onclick= "fninvsh('hiddenfield_{$value.label}');" style="background: #0070d2;color: white" />
+							<footer class="slds-modal__footer" style="width:100%">
+								{if $value.customfieldflag neq 0}
+								<button class="slds-button slds-button--destructive" onclick="deleteCustomField('{$value.fieldselect}','{$MODULE}','{$value.columnname}','{$value.uitype}'); return false;"> {$APP.LBL_DELETE_BUTTON_LABEL} </button>
+								{/if}
+								<button class="slds-button slds-button--neutral" onclick="fninvsh('hiddenfield_{$value.label}');return false;">{$APP.LBL_CANCEL_BUTTON_LABEL}</button>
 							</footer>
+							</div>
 						</div>
 					</section>
-						<div class="slds-backdrop slds-backdrop_open"></div>
+					<div class="slds-backdrop slds-backdrop_open"></div>
 				</div>
 
 					{if $smarty.foreach.inner.first}

@@ -99,7 +99,7 @@ $.mobile.document
 					return false;
 				})
 				.fail(function() {
-					alert( "Select related entries error, please contact crm-now." );
+					alert('Select related entries error, please contact your CRM Administrator.');
 					return false;
 				});
             });
@@ -574,7 +574,7 @@ var crmtogo_Index_Js = {
 					return false;
 				})
 				.fail(function() {
-					alert( "Comment Save Error, please contact crm-now." );
+					alert('Comment Save Error, please contact your CRM Administrator.');
 					return false;
 				});
 			}

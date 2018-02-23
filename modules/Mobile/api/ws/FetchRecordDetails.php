@@ -14,47 +14,46 @@ include_once __DIR__ . '/FetchRecord.php';
 include_once __DIR__ . '/Describe.php';
 
 class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
-	
+
 	private $_cachedDescribeInfo = false;
 	private $_cachedDescribeFieldInfo = false;
-	
+
 	protected function cacheDescribeInfo($describeInfo) {
 		$this->_cachedDescribeInfo = $describeInfo;
 		$this->_cachedDescribeFieldInfo = array();
-		if(!empty($describeInfo['fields'])) {
-			foreach($describeInfo['fields'] as $describeFieldInfo) {
+		if (!empty($describeInfo['fields'])) {
+			foreach ($describeInfo['fields'] as $describeFieldInfo) {
 				$this->_cachedDescribeFieldInfo[$describeFieldInfo['name']] = $describeFieldInfo;
 			}
 		}
 	}
-	
+
 	protected function cachedDescribeInfo() {
 		return $this->_cachedDescribeInfo;
 	}
-	
+
 	protected function cachedDescribeFieldInfo($fieldname) {
 		if ($this->_cachedDescribeFieldInfo !== false) {
-			if(isset($this->_cachedDescribeFieldInfo[$fieldname])) {
+			if (isset($this->_cachedDescribeFieldInfo[$fieldname])) {
 				return $this->_cachedDescribeFieldInfo[$fieldname];
 			}
 		}
 		return false;
 	}
-	
-	function process(crmtogo_API_Request $request) {
+
+	public function process(crmtogo_API_Request $request) {
 		$operation = $request->getOperation();
 		if ($operation =='create') {
 			$newrecord = crmtogo_WS_Describe::process($request);
 			$response = new crmtogo_API_Response();
 			$response->setResult(array('record' => $newrecord));
 			return $response;
-		}
-		else {
+		} else {
 			$response = parent::process($request);
 			return $this->processWithGrouping($request, $response);
 		}
 	}
-	
+
 	protected function processWithGrouping(crmtogo_API_Request $request, $response) {
 		$result = $response->getResult();
 		$operation = $request->getOperation();
@@ -62,40 +61,40 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 		$relatedlistcontent = isset($result['relatedlistcontent']) ? $result['relatedlistcontent'] : '';
 		$module = $this->detectModuleName($resultRecord['id']);
 		//set download pathinfo
-		$modifiedRecord = $this->transformRecordWithGrouping($resultRecord, $module,$operation);
+		$modifiedRecord = $this->transformRecordWithGrouping($resultRecord, $module, $operation);
 		$ret_arr = array('record' => $modifiedRecord);
-		if (is_array ($relatedlistcontent)) {
+		if (is_array($relatedlistcontent)) {
 			$ret_arr['relatedlistcontent'] = $relatedlistcontent;
 		}
 		if (isset($result['comments'])) {
 			$ret_arr['comments'] = $result['comments'];
 		}
-		if (isset($resultRecord['attachmentinfo']) and $resultRecord['attachmentinfo']!='') {
+		if (isset($resultRecord['attachmentinfo']) && $resultRecord['attachmentinfo']!='') {
 			$ret_arr['attachmentinfo'] = $resultRecord['attachmentinfo'];
 		}
 		$response->setResult($ret_arr);
 		return $response;
 	}
-	
-	protected function transformRecordWithGrouping($resultRecord, $module, $operation='') {
+
+	protected function transformRecordWithGrouping($resultRecord, $module, $operation = '') {
 		$current_user = $this->getActiveUser();
 		$moduleFieldGroups = crmtogo_WS_Utils::gatherModuleFieldGroupInfo($module);
 		$modifiedResult = array();
-		$blocks = array(); 
+		$blocks = array();
 		$labelFields = false;
 
-		if($module == 'Timecontrol' || $module == 'cbCalendar') {
+		if ($module == 'Timecontrol' || $module == 'cbCalendar') {
 			// sets times & dates to local time zone and format
 			$date = new DateTimeField($resultRecord['date_start'].' '.$resultRecord['time_start']);
-			$startDateTime = $date->getDisplayDateTimeValue();	
+			$startDateTime = $date->getDisplayDateTimeValue();
 			$startDateTimeArray = explode(' ', $startDateTime);
-			if($module == 'Timecontrol'){
+			if ($module == 'Timecontrol') {
 				$endDname = 'date_end';
-			}else{
+			} else {
 				$endDname = 'due_date';
 			}
 			$date = new DateTimeField($resultRecord[$endDname]." ".$resultRecord['time_end']);
-			$endDateTime = $date->getDisplayDateTimeValue();	
+			$endDateTime = $date->getDisplayDateTimeValue();
 			$endDateTimeArray = explode(' ', $endDateTime);
 			if ($module == 'cbCalendar') {
 				$date = new DateTimeField($resultRecord['followupdt']);
@@ -107,38 +106,34 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 				//needed for strtotime for none European formats
 				if ($current_user->date_format != 'dd-mm-yyyy') {
 					$formated_date = str_replace('-', '/', $startDateTimeArray[0]);
-				}
-				else {
+				} else {
 					$formated_date =$startDateTimeArray[0];
 				}
-				$resultRecord['date_start'] = date("Y-m-d",strtotime($formated_date));
+				$resultRecord['date_start'] = date("Y-m-d", strtotime($formated_date));
 				//remove trailing seconds
 				$time_arr = explode(':', $startDateTimeArray[1]);
 				$resultRecord['time_start'] =  $time_arr[0].':'.$time_arr[1];
-				
+
 				if ($current_user->date_format != 'dd-mm-yyyy') {
 					$formated_date = str_replace('-', '/', $endDateTimeArray[0]);
-				}
-				else {
+				} else {
 					$formated_date =$endDateTimeArray[0];
 				}
-				$resultRecord[$endDname] = date("Y-m-d",strtotime($formated_date));
+				$resultRecord[$endDname] = date("Y-m-d", strtotime($formated_date));
 				//remove trailing seconds
 				$time_arr = explode(':', $endDateTimeArray[1]);
 				$resultRecord['time_end'] = $time_arr[0].':'.$time_arr[1];
 				if ($module == 'cbCalendar') {
 					if ($current_user->date_format != 'dd-mm-yyyy') {
 						$formated_date = str_replace('-', '/', $followDateTimeArray[0]);
-					}
-					else {
+					} else {
 						$formated_date =$followDateTimeArray[0];
 					}
 					//remove trailing seconds
 					$time_arr = explode(':', $followDateTimeArray[1]);
-					$resultRecord['followupdt'] = date("Y-m-d",strtotime($formated_date))." ".$time_arr[0].':'.$time_arr[1];
+					$resultRecord['followupdt'] = date("Y-m-d", strtotime($formated_date))." ".$time_arr[0].':'.$time_arr[1];
 				}
-			}
-			else {
+			} else {
 				$resultRecord['date_start'] = $startDateTimeArray[0];
 				$time_arr = explode(':', $startDateTimeArray[1]);
 				$resultRecord['time_start'] =  $time_arr[0].':'.$time_arr[1];
@@ -148,18 +143,18 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 				$resultRecord['time_end'] = $time_arr[0].':'.$time_arr[1];
 				if ($current_user->hour_format == '12') {
 					// add AM/PM to time strings
-					$resultRecord['time_start'] .= " ".$startDateTimeArray[2]; 
-					$resultRecord['time_end'] .= " ".$endDateTimeArray[2]; 
+					$resultRecord['time_start'] .= isset($startDateTimeArray[2]) ? ' '.$startDateTimeArray[2] : '';
+					$resultRecord['time_end'] .= isset($endDateTimeArray[2]) ? ' '.$endDateTimeArray[2] : '';
 				}
 				if ($module == 'cbCalendar') {
 					$resultRecord['followupdt'] = $followDateTime;
 				}
 			}
 		}
-		foreach($moduleFieldGroups as $blocklabel => $fieldgroups) {
+		foreach ($moduleFieldGroups as $blocklabel => $fieldgroups) {
 			$fields = array();
-			
-			foreach($fieldgroups as $fieldname => $fieldinfo) {
+
+			foreach ($fieldgroups as $fieldname => $fieldinfo) {
 				$value = '';
 				$fieldlabel = $fieldinfo['label'];
 
@@ -167,31 +162,29 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 				if (isset($resultRecord[$fieldname])) {
 					$value = $resultRecord[$fieldname];
 					//get standard content & perform special settings
-					if($fieldinfo['uitype'] == 17 && strlen($resultRecord[$fieldname]) ) {
+					if ($fieldinfo['uitype'] == 17 && strlen($resultRecord[$fieldname])) {
 						//www fields
 						$resultRecord[$fieldname]= $resultRecord[$fieldname];
 					}
-					if($fieldinfo['uitype'] == 13 && strlen($resultRecord[$fieldname]) ) {
+					if ($fieldinfo['uitype'] == 13 && strlen($resultRecord[$fieldname])) {
 						// email fields
 						$resultRecord[$fieldname]= $resultRecord[$fieldname];
 					}
-					if($fieldinfo['uitype'] == 72 && strlen($resultRecord[$fieldname]) ) {
+					if ($fieldinfo['uitype'] == 72 && strlen($resultRecord[$fieldname])) {
 						//currency fields
-						$resultRecord[$fieldname]= round($resultRecord[$fieldname],2);
+						$resultRecord[$fieldname]= round($resultRecord[$fieldname], 2);
 					}
-					if($fieldinfo['uitype'] == 83 && strlen($resultRecord[$fieldname]) ) {
+					if ($fieldinfo['uitype'] == 83 && strlen($resultRecord[$fieldname])) {
 						//tax fields
-						$resultRecord[$fieldname]= round($resultRecord[$fieldname],2);
+						$resultRecord[$fieldname]= round($resultRecord[$fieldname], 2);
 					}
-					if($fieldinfo['uitype'] == 69 && strlen($resultRecord[$fieldname]) ) {
+					if ($fieldinfo['uitype'] == 69 && strlen($resultRecord[$fieldname])) {
 						//image --> get it base64 coded
 						if ($module =='Contacts') {
 							$resultRecord[$fieldname]= crmtogo_WS_Utils::getContactBase64Image($resultRecord['id']);
-						}
-						elseif ($module =='Products') {
+						} elseif ($module =='Products') {
 							$resultRecord[$fieldname]= crmtogo_WS_Utils::getProductBase64Image($resultRecord['id']);
-						}
-						else {
+						} else {
 							$resultRecord[$fieldname]= '';
 						}
 					}
@@ -211,38 +204,34 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 						$recordarray=explode('x', $output[0][0]);
 						$recordprefix=$recordarray[0];
 						$value = $output[0][0];
-		                if($value != '' && $value != 0) {
-			                    $assigned_user_id = $value;
-						}		
-	                    else {
+						if ($value != '' && $value != 0) {
+								$assigned_user_id = $value;
+						} else {
 							$assigned_user_id = $current_user->id;
-						}		
-						$fieldvalue = crmtogo_WS_Utils::getassignedtoValues($current_user,$module,$assigned_user_id);
-			            $field['type']['value'] = array('value' => $fieldvalue, 'name' =>$fieldname);
+						}
+						$fieldvalue = crmtogo_WS_Utils::getassignedtoValues($current_user, $module, $assigned_user_id);
+						$field['type']['value'] = array('value' => $fieldvalue, 'name' =>$fieldname);
 					//end UI 53
-					} 
-					else if($field['uitype'] == '117') {
+					} elseif ($field['uitype'] == '117') {
 						$field['type']['defaultValue'] = $field['value'];
-					} 
-					else if($field['uitype'] == '15' || $field['uitype'] == '16'  || $field['uitype'] == '33')   {
+					} elseif ($field['uitype'] == '15' || $field['uitype'] == '16'  || $field['uitype'] == '33') {
 						//picklists
-						$fieldvalue = Array();
+						$fieldvalue = array();
 						$options = array();
 						$chk_val="";
 						$picklistValues = vtlib_getPicklistValues($fieldname);
-						foreach($picklistValues as $pickkey => $pickvalue) {
+						foreach ($picklistValues as $pickkey => $pickvalue) {
 							$picklistValues[$pickkey] = decode_html($pickvalue);
 						}
 						$valueArr = explode("|##|", $value);
 						$pickcount = 0;
 						//get values
-						if(!empty($picklistValues)){
-							foreach($picklistValues as $order=>$pickListValue){
-								if(in_array(trim($pickListValue),array_map("trim", $valueArr))){
+						if (!empty($picklistValues)) {
+							foreach ($picklistValues as $order => $pickListValue) {
+								if (in_array(trim($pickListValue), array_map("trim", $valueArr))) {
 									$chk_val = "selected";
 									$pickcount++;
-								}
-								else {
+								} else {
 									$chk_val = '';
 								}
 								$options[] = array('label'=>getTranslatedString($pickListValue, $module),'value'=>$pickListValue,'selected'=>$chk_val);
@@ -253,16 +242,15 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 							$valueArr[$key] = getTranslatedString($value, $module);
 						}
 						if ($field['uitype'] == '33') {
-							$field['value'] = implode ( ',' , $valueArr ) ;
-						}else{
+							$field['value'] = implode(',', $valueArr) ;
+						} else {
 							$field['value'] = $valueArr[0];
 						}
-	
+
 						$fieldvalue [] = $options;
 						$field['type']['value'] =array('value' =>$options,'name' =>$fieldname);
-						//end picklists	 
-					}
-					else if($field['uitype'] == '51' || $field['uitype'] == '10'){
+						//end picklists
+					} elseif ($field['uitype'] == '51' || $field['uitype'] == '10') {
 						$field['relatedmodule'] = crmtogo_WS_Utils::getEntityName($field['name'], $module);
 					} elseif ($field['uitype'] == '70') {
 						$date = new DateTimeField($field['value']);
@@ -274,10 +262,10 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 			// build address for "open address in maps" button
 			// array with all different address fieldnames for each module
 			$fieldnamesByModule = array(
-				"Accounts"		=> array("bill_street", "ship_street", "bill_city", "ship_city", "bill_state", "ship_state", "bill_code", "ship_code", "bill_country", "ship_country", "ship_address", "bill_address"),
-				"SalesOrder"	=> array("bill_street", "ship_street", "bill_city", "ship_city", "bill_state", "ship_state", "bill_code", "ship_code", "bill_country", "ship_country", "ship_address", "bill_address"),
-				"Contacts"		=> array("mailingstreet", "otherstreet", "mailingcity", "othercity", "mailingstate", "otherstate", "mailingzip", "otherzip", "mailingcountry", "othercountry", "mailingaddress", "otheraddress"),
-				"Leads"			=> array("lane", "", "city", "", "state", "", "code", "", "country", "", "mailingaddress", ""),
+				'Accounts'	=> array('bill_street', 'ship_street', 'bill_city', 'ship_city', 'bill_state', 'ship_state', 'bill_code', 'ship_code', 'bill_country', 'ship_country', 'ship_address', 'bill_address'),
+				'SalesOrder'=> array('bill_street', 'ship_street', 'bill_city', 'ship_city', 'bill_state', 'ship_state', 'bill_code', 'ship_code', 'bill_country', 'ship_country', 'ship_address', 'bill_address'),
+				'Contacts'	=> array('mailingstreet', 'otherstreet', 'mailingcity', 'othercity', 'mailingstate', 'otherstate', 'mailingzip', 'otherzip', 'mailingcountry', 'othercountry', 'mailingaddress', 'otheraddress'),
+				'Leads'		=> array('lane', '', 'city', '', 'state', '', 'code', '', 'country', '', 'mailingaddress', ''),
 			);
 
 			// get the right array depending on current module
@@ -286,79 +274,87 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 			/*
 			0 = appears if fieldgroup is not address information
 			1 = address values are set, show button
-			-1 = city or street is missing, don't show the button and avoid set back to 1 
+			-1 = city or street is missing, don't show the button and avoid set back to 1
 			*/
 			$mailingAddressOK = 0;
 			$otherAddressOK = 0;
 			$mailingAddress = "";
 			$otherAddress = "";
 			// go through all fields
-			if (!empty($fieldnames))
-			foreach($fieldgroups as $fieldname => $fieldinfo) {
-				if (!is_array($resultRecord[$fieldname]) AND !is_object($resultRecord[$fieldname])) {
-					$value = trim($resultRecord[$fieldname]);
-					// check street and city for first address
-					if($mailingAddressOK != -1 AND ($fieldname == $fieldnames[0] OR $fieldname == $fieldnames[2])) {
-						$mailingAddressOK = 1;
-						if(strlen($value)>0){
+			if (!empty($fieldnames)) {
+				foreach ($fieldgroups as $fieldname => $fieldinfo) {
+					if (!is_array($resultRecord[$fieldname]) && !is_object($resultRecord[$fieldname])) {
+						$value = trim($resultRecord[$fieldname]);
+						// check street and city for first address
+						if ($mailingAddressOK != -1 && ($fieldname == $fieldnames[0] || $fieldname == $fieldnames[2])) {
+							$mailingAddressOK = 1;
+							if (strlen($value)>0) {
+								$mailingAddress .= $value.' ';
+							} else {
+								$mailingAddressOK = -1;
+							}
+						} // check street and city for second address
+						elseif ($otherAddressOK != -1 && ($fieldname == $fieldnames[1] || $fieldname == $fieldnames[3])) {
+							$otherAddressOK = 1;
+							if (strlen($value)>0) {
+								$otherAddress .= $value.' ';
+							} else {
+								$otherAddressOK = -1;
+							}
+						} // check state and ZIP for first address
+						elseif (in_array($fieldname, array($fieldnames[4], $fieldnames[6])) && strlen($value)>0) {
 							$mailingAddress .= $value." ";
-						}
-						else {
-							$mailingAddressOK = -1;
-						}
-					}
-					// check street and city for second address 
-					else if($otherAddressOK != -1 AND ($fieldname == $fieldnames[1] OR $fieldname == $fieldnames[3])) {
-						$otherAddressOK = 1;
-						if(strlen($value)>0) {
+						} // check state and ZIP for second address
+						elseif (in_array($fieldname, array($fieldnames[5],$fieldnames[7])) && strlen($value)>0) {
 							$otherAddress .= $value." ";
 						}
-						else {
-							$otherAddressOK = -1;
-						}
-					}
-					// check state and ZIP for first address 
-					else if(in_array($fieldname, array($fieldnames[4], $fieldnames[6])) AND strlen($value)>0) {
-						$mailingAddress .= $value." ";
-					}
-					// check state and ZIP for second address 
-					else if(in_array($fieldname, array($fieldnames[5],$fieldnames[7])) AND strlen($value)>0) {
-						$otherAddress .= $value." ";
 					}
 				}
 			}
-			if($mailingAddressOK == 1) {
-				if($module == 'Contacts') {
-					$label = getTranslatedString("address", "Mobile");
-				} 
-				else {
-					$label = getTranslatedString("bill_address", "Mobile");
+			if ($mailingAddressOK == 1) {
+				if ($module == 'Contacts') {
+					$label = getTranslatedString('address', 'Mobile');
+				} else {
+					$label = getTranslatedString('bill_address', 'Mobile');
 				}
-				$fields[] = array("name" => $fieldnames[10], "value" => $mailingAddress, "label" => $label, "uitype" => "crm_app_map", "typeofdata" => "O");
+				$fields[] = array(
+					'name' => $fieldnames[10],
+					'value' => $mailingAddress,
+					'label' => $label,
+					'uitype' => 'crm_app_map',
+					'typeofdata' => 'O',
+					'displaytype' => 1,
+				);
 			}
-			if($otherAddressOK == 1) {
-				if($module == 'Contacts') {
-					$label = getTranslatedString("otheraddress", "Mobile");
+			if ($otherAddressOK == 1) {
+				if ($module == 'Contacts') {
+					$label = getTranslatedString('otheraddress', 'Mobile');
+				} else {
+					$label = getTranslatedString('ship_address', 'Mobile');
 				}
-				else {
-					$label = getTranslatedString("ship_address", "Mobile");
-				}
-				$fields[] = array("name" => $fieldnames[11], "value" => $otherAddress, "label" => $label, "uitype" => "crm_app_map", "typeofdata" => "O");
+				$fields[] = array(
+					'name' => $fieldnames[11],
+					'value' => $otherAddress,
+					'label' => $label,
+					'uitype' => 'crm_app_map',
+					'typeofdata' => 'O',
+					'displaytype' => 1,
+				);
 			}
 			$blocks[] = array( 'label' => $blocklabel, 'fields' => $fields );
 		}
 		$sections = array();
 		$moduleFieldGroupKeys = array_keys($moduleFieldGroups);
-		foreach($moduleFieldGroupKeys as $blocklabel) {
+		foreach ($moduleFieldGroupKeys as $blocklabel) {
 			// eliminate empty blocks
-			if(isset($groups[$blocklabel]) && !empty($groups[$blocklabel])) {
+			if (isset($groups[$blocklabel]) && !empty($groups[$blocklabel])) {
 				$sections[] = array( 'label' => $blocklabel, 'count' => count($groups[$blocklabel]) );
 			}
 		}
 		$modifiedResult = array('blocks' => $blocks, 'id' => $resultRecord['id']);
-		if($labelFields) {
+		if ($labelFields) {
 			$modifiedResult['labelFields'] = $labelFields;
-		} 
+		}
 		return $modifiedResult;
 	}
 }

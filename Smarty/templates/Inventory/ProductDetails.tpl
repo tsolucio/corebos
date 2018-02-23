@@ -150,10 +150,10 @@ function displayCoords(currObj,obj,mode,curr_row)
 				<input type="hidden" id="hdnProductId1" name="hdnProductId1" value="{if isset($PRODUCT_ID)}{$PRODUCT_ID}{/if}" />
 				{if $PRODUCT_OR_SERVICE eq 'Services'}
 					<input type="hidden" id="lineItemType1" name="lineItemType1" value="Services" />
-					&nbsp;<img id="searchIcon1" title="Services" src="{'services.gif'|@vtiger_imageurl:$THEME}" style="cursor: pointer;" align="absmiddle" onclick="servicePickList(this,'{$MODULE}',1)" />
+					&nbsp;<img id="searchIcon1" title="{'Services'|@getTranslatedString:'Services'}" src="{'services.gif'|@vtiger_imageurl:$THEME}" style="cursor: pointer;" align="absmiddle" onclick="servicePickList(this,'{$MODULE}',1)" />
 				{else}
 					<input type="hidden" id="lineItemType1" name="lineItemType1" value="Products" />
-					&nbsp;<img id="searchIcon1" title="Products" src="{'products.gif'|@vtiger_imageurl:$THEME}" style="cursor: pointer;" align="absmiddle" onclick="productPickList(this,'{$MODULE}',1)" />
+					&nbsp;<img id="searchIcon1" title="{'Products'|@getTranslatedString:'Products'}" src="{'products.gif'|@vtiger_imageurl:$THEME}" style="cursor: pointer;" align="absmiddle" onclick="productPickList(this,'{$MODULE}',1)" />
 				{/if}
 			</td>
 		</tr>

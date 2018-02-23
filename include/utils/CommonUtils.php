@@ -1252,7 +1252,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 	$log->debug("Entering getBlocks(" . $module . "," . $disp_view . "," . $mode . "," . print_r($col_fields, true) . "," . $info_type . ") method ...");
 	$tabid = getTabid($module);
 	$block_detail = array();
-	$getBlockinfo = '';
+	$getBlockInfo = array();
 	$query = "select blockid,blocklabel,display_status,isrelatedlist from vtiger_blocks where tabid=? and $disp_view=0 and visible = 0 order by sequence";
 	$result = $adb->pquery($query, array($tabid));
 	$noofrows = $adb->num_rows($result);
@@ -3310,49 +3310,13 @@ function getModuleSequenceNumber($module, $recordId) {
 	return $moduleSeqNo;
 }
 
+/* tries to return info@your_domain email for return path
+ * but it doesn't get it right because the only way to get a TLD is comparing against a list of existing ones
+ * not used anywhere anymore due to RFC5321 section 4.4
+ * @deprecated
+ */
 function getReturnPath($host, $from_email) {
-	$returnname = 'info';
-	$returnpath = $from_email;
-	// Remove the trailing protocol information
-	if (preg_match("/[^:]+:\/\/(.*)/", $host, $m)) {
-		$host = $m[1];
-	}
-	// Remove the port address if any
-	if (preg_match("/([^:]+):.*/", $host, $m)) {
-		$host = $m[1];
-	}
-	// Remove any extra-spaces
-	$host = trim($host);
-
-	// Review if the host is not local
-	if ('localhost' != strtolower($host)) {
-		if (strpos($from_email, '@')) {
-			list($from_name, $from_domain) = explode('@', $from_email);
-		} else {
-			$from_name = $from_domain = '';
-		}
-
-		//strip [,] from domain name in case ip address is used as domain: xyz@[192.45.32.67]
-		preg_replace("/[\[\]]/", $from_domain, $from_domain);
-
-		// If from-email domain is not matching (or sub-domain) of host
-		// reset the return-path
-		if ($from_domain == '' || strpos($host, $from_domain) == false) {
-			if (preg_match('/^((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))$/', $host)) {
-				$returnpath = $returnname . '@[' . $host.']';
-			} else {
-				if (strpos($host, '.')) {
-					$cmps = explode('.', $host);
-					while (count($cmps)>2) {
-						array_shift($cmps);
-					}
-					$host = implode('.', $cmps);
-				}
-				$returnpath = $returnname . '@' . $host;
-			}
-		}
-	}
-	return $returnpath;
+	return '';
 }
 
 function picklistHasDependency($keyfldname, $modulename) {

@@ -29,7 +29,7 @@ function vtDeleteWorkflow($adb, $request) {
 	if (isset($request['return_url'])) {
 		$returnUrl=$request['return_url'];
 	} else {
-		$returnUrl=$module->listViewUrl($wf->id);
+		$returnUrl=$module->listViewUrl();
 	}
 ?>
 	<script type="text/javascript" charset="utf-8">

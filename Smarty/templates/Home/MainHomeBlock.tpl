@@ -102,6 +102,6 @@
 
 <script>
 	{*<!-- position the div in the page -->*}
-	window.onresize = function(){ldelim}positionDivInAccord('stuff_{$tablestuff.Stuffid}','{$tablestuff.Stufftitle}','{$tablestuff.Stufftype}');{rdelim};
-	positionDivInAccord('stuff_{$tablestuff.Stuffid}','{$tablestuff.Stufftitle}','{$tablestuff.Stufftype}');
+	window.onresize = function(){ldelim}positionDivInAccord('stuff_{$tablestuff.Stuffid}','{$tablestuff.Stufftitle|escape:'quotes'}','{$tablestuff.Stufftype}');{rdelim};
+	positionDivInAccord('stuff_{$tablestuff.Stuffid}','{$tablestuff.Stufftitle|escape:'quotes'}','{$tablestuff.Stufftype}');
 </script>

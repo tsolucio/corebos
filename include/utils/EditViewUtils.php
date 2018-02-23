@@ -1978,6 +1978,9 @@ function getBlockInformation($module, $result, $col_fields,$tabid,$block_label,$
 		} else {
 			$custfld = getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields,$generatedtype,$module,$mode,$typeofdata);
 		}
+		if ($uitype==10 && count($custfld[1][0]['options'])==0) {
+			continue;
+		}
 		$editview_arr[$block][]=$custfld;
 	}
 	foreach ($editview_arr as $headerid=>$editview_value) {

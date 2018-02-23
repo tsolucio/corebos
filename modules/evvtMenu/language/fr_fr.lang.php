@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'evvtMenu' => 'Éditeur Menu',
 	'SINGLE_evvtMenu' => 'Éditeur Menu',
 	'evvtMenu ID' => 'Éditeur Menu ID',
@@ -32,5 +32,4 @@ $mod_strings = Array(
 	'MenuItemPermissions' => 'Lorsque des permissions sont appliquées à un élément, celles ci outrepassent les permissions existantes de l\'application.',
 	'MenuParent' => 'Parent',
 );
-
 ?>

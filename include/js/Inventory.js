@@ -718,6 +718,14 @@ function cloneMoreInfoNode(newRowId) {
 			if (domflddisp) {
 				domflddisp.value = '';
 			}
+			var domfldhidden = document.getElementById(moreInfoFields[i]+ newRowId+ '_hidden');
+			if (domfldhidden) {
+				domfldhidden.value = '';
+			}
+			var domfldpathhidden = document.getElementById(moreInfoFields[i]+ newRowId+ '_path_hidden');
+			if (domfldpathhidden) {
+				domfldpathhidden.value = '';
+			}
 		} else {
 			var domfld = document.getElementById('jscal_field_'+ moreInfoFields[i]+ newRowId);
 			if (domfld) {

@@ -12,17 +12,13 @@ require_once 'include/Webservices/ModuleTypes.php';
 require_once 'include/utils/CommonUtils.php';
 
 function vtws_sync($mtime,$elementType,$syncType='',$user=''){
-	global $adb, $recordString,$modifiedTimeString;
+	global $adb;
 
 	$numRecordsLimit = 100;
 	$ignoreModules = array("Users");
 	$typed = true;
 	$dformat = "Y-m-d H:i:s";
 	$datetime = date($dformat, $mtime);
-	$setypeArray = array();
-	$setypeData = array();
-	$setypeHandler = array();
-	$setypeNoAccessArray = array();
 
 	$output = array();
 	$output["updated"] = array();
@@ -50,7 +46,6 @@ function vtws_sync($mtime,$elementType,$syncType='',$user=''){
 	$accessableModules = array();
 	$entityModules = array();
 	$modulesDetails = vtws_listtypes(null,$user);
-	$moduleTypes = $modulesDetails['types'];
 	$modulesInformation = $modulesDetails["information"];
 
 	foreach($modulesInformation as $moduleName=>$entityInformation){
@@ -126,7 +121,6 @@ function vtws_sync($mtime,$elementType,$syncType='',$user=''){
 		$params = array($moduleMeta->getTabName(),$datetime,$maxModifiedTime);
 
 		$queryGenerator = new QueryGenerator($elementType, $user);
-		$fields = array();
 		$moduleFeilds = $moduleMeta->getModuleFields();
 		$moduleFeildNames = array_keys($moduleFeilds);
 		$moduleFeildNames[]='id';
@@ -151,8 +145,6 @@ function vtws_sync($mtime,$elementType,$syncType='',$user=''){
 		$fromClause.= ' ) vtiger_ws_sync ON (vtiger_crmentity.crmid = vtiger_ws_sync.crmid)';
 		$q = $selectClause." ".$fromClause;
 		$result = $adb->pquery($q, $params);
-		$recordDetails = array();
-		$deleteRecordDetails = array();
 		while($arre = $adb->fetchByAssoc($result)){
 			$key = $arre[$moduleMeta->getIdColumn()];
 			if (vtws_isRecordDeleted($arre,$deleteColumnNames,$deleteFieldValues)) {
@@ -224,7 +216,7 @@ function vtws_getSeconds($mtimeString){
 function vtws_isRecordDeleted($recordDetails,$deleteColumnDetails,$deletedValues){
 	$deletedRecord = false;
 	$i=0;
-	foreach ($deleteColumnDetails as $tableName_fieldName=>$columnName) {
+	foreach ($deleteColumnDetails as $columnName) {
 		if ($recordDetails[$columnName]!=$deletedValues[$i++]) {
 			$deletedRecord = true;
 			break;

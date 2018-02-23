@@ -42,8 +42,6 @@
 </div>
 {literal}
 <script type="text/javascript">
-<!--
 jQuery('#gvdefstable').tablesorter();
-//-->
 </script>
 {/literal}

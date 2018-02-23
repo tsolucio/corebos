@@ -31,7 +31,7 @@ class ConvertInventoryModule extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $current_user, $logbg, $from_wf;
+		global $current_user, $logbg, $from_wf;
 		$from_wf = true;
 		$util = new VTWorkflowUtils();
 		$admin = $util->adminUser();

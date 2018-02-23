@@ -50,7 +50,7 @@
 							<li >
 								<a class="ui-btn ui-btn-icon-right ui-icon-carat-r" href="?_operation=fetchRecord&record={$_FIELD.relatedlistcontent.id}&lang={$LANGUAGE}" target="_self">
 									{$_FIELD.relatedlistcontent.0}
-									{if $_FIELD.relatedlistcontent.1 neq ''},
+									{if isset($_FIELD.relatedlistcontent.1) && $_FIELD.relatedlistcontent.1 neq ''},
 										 {$_FIELD.relatedlistcontent.1}
 									{/if}
 									{if $_MODULE eq 'Timecontrol'}

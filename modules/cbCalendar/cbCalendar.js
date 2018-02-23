@@ -173,8 +173,22 @@ function setCalendarDateFields(date,hour,min,fmt) {
 }
 
 function open_filtered_contactsIfAccounts(fromlink, fldname, MODULE, ID) {
-	var rel_id = document.getElementById('rel_id').value;
-	var rel_type = document.getElementById('rel_id_type').value;
+	var rel_type = '';
+	var rel_id = '';
+	var rel_id_elem = document.getElementById('rel_id');
+	if (rel_id_elem) {
+		rel_id = rel_id_elem.value;
+		rel_type = document.getElementById('rel_id_type').value;
+	} else {
+		rel_id_elem = document.getElementById('dtlview_rel_id');
+		if (rel_id_elem) {
+			rel_id_elem = rel_id_elem.querySelector('span[type=vtlib_metainfo]')
+			if (rel_id_elem) {
+				rel_id = rel_id_elem.getAttribute('vtrecordid');
+				rel_type = rel_id_elem.getAttribute('vtmodule');
+			}
+		}
+	}
 	var valmod = (rel_type=='Accounts' || rel_type=='Potentials' || rel_type=='Quotes' || rel_type=='PurchaseOrder' || rel_type=='Vendors' || rel_type=='SalesOrder' || rel_type=='Invoice' || rel_type=='Campaigns' || rel_type=='Products');
 	if (rel_id != '' && valmod) {
 		var BasicSearch = '&parent_module='+rel_type+'&relmod_id='+rel_id; // special hard coded contact search
