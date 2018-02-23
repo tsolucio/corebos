@@ -1597,7 +1597,8 @@ function getRelatedLists($module, $focus, $restrictedRelations = null) {
 
 	//$sql1 = "select * from vtiger_relatedlists where tabid=? order by sequence";
 	// vtlib customization: Do not picklist module which are set as in-active
-	$sql1 = "select * from vtiger_relatedlists where tabid=? and related_tabid not in (SELECT tabid FROM vtiger_tab WHERE presence = 1) $sel_list order by sequence";
+	// $sql1 = "select * from vtiger_relatedlists where tabid=? and related_tabid not in (SELECT tabid FROM vtiger_tab WHERE presence = 1) $sel_list order by sequence";
+	$sql1 = "select rl.*,tab.name as tabname from vtiger_relatedlists rl LEFT JOIN vtiger_tab tab ON rl.related_tabid=tab.tabid where rl.tabid=? and rl.related_tabid not in (SELECT tabid FROM vtiger_tab WHERE presence = 1) $sel_list order by rl.sequence";
 	// END
 	$result = $adb->pquery($sql1, array($cur_tab_id));
 	$num_row = $adb->num_rows($result);
@@ -1605,7 +1606,7 @@ function getRelatedLists($module, $focus, $restrictedRelations = null) {
 	for ($i = 0; $i < $num_row; $i++) {
 		$rel_tab_id = $adb->query_result($result, $i, "related_tabid");
 		$function_name = $adb->query_result($result, $i, "name");
-		$label = $adb->query_result($result, $i, "label");
+		$label = $adb->query_result($result, $i, "tabname");
 		$actions = $adb->query_result($result, $i, "actions");
 		$relationId = $adb->query_result($result, $i, "relation_id");
 		if ($rel_tab_id != 0) {
