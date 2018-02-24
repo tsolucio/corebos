@@ -143,7 +143,7 @@ switch ($functiontocall) {
 		$newssid = vtlib_purify($_REQUEST['newtabssid']);
 		$oldssid = vtlib_purify($_REQUEST['oldtabssid']);
 		foreach ($_SESSION as $key => $value) {
-			if (strpos($key, $oldssid) !== false and strpos($key, $oldssid.'__prev') === false) {
+			if (strpos($key, $oldssid) !== false && strpos($key, $oldssid.'__prev') === false) {
 				$newkey = str_replace($oldssid, $newssid, $key);
 				coreBOS_Session::set($newkey, $value);
 				coreBOS_Session::set($key, (isset($_SESSION[$key.'__prev']) ? $_SESSION[$key.'__prev'] : ''));

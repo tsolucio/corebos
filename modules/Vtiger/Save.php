@@ -56,7 +56,7 @@ if (isset($_REQUEST['inventory_currency'])) {
 	$cur_sym_rate = getCurrencySymbolandCRate(vtlib_purify($_REQUEST['inventory_currency']));
 	$focus->column_fields['conversion_rate'] = $cur_sym_rate['rate'];
 }
-if (empty($_REQUEST['assigned_user_id']) and empty($_REQUEST['assigned_group_id'])) {
+if (empty($_REQUEST['assigned_user_id']) && empty($_REQUEST['assigned_group_id'])) {
 	if ($focus->mode != 'edit') {
 		$focus->column_fields['assigned_user_id'] = $current_user->id;
 	} else {
@@ -73,7 +73,7 @@ if (empty($_REQUEST['assigned_user_id']) and empty($_REQUEST['assigned_group_id'
 list($saveerror,$errormessage,$error_action,$returnvalues) = $focus->preSaveCheck($_REQUEST);
 if ($saveerror) { // there is an error so we go back to EditView.
 	$return_module=$return_id=$return_action='';
-	if (isset($_REQUEST['return_id']) and $_REQUEST['return_id'] != '') {
+	if (isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != '') {
 		$req->set('RETURN_ID', $_REQUEST['return_id']);
 	}
 	$field_values_passed = '';
@@ -114,7 +114,7 @@ if (isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != '') {
 }
 
 if (!isset($__cbSaveSendHeader) || $__cbSaveSendHeader) {
-	if (isset($_REQUEST['Module_Popup_Edit']) and $_REQUEST['Module_Popup_Edit']==1) {
+	if (isset($_REQUEST['Module_Popup_Edit']) && $_REQUEST['Module_Popup_Edit']==1) {
 		echo '<script>window.close();</script>';
 	} else {
 		header('Location: index.php?' . $req->getReturnURL() . $search);

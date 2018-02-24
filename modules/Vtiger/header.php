@@ -17,7 +17,7 @@ $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 $userName = getFullNameFromArray('Users', $current_user->column_fields);
 $smarty = new vtigerCRM_Smarty;
-require_once('modules/evvtMenu/evvtMenu.inc');
+require_once 'modules/evvtMenu/evvtMenu.inc';
 $smarty->assign('MENU', getMenuArray(0));
 $header_array = getAdminevvtMenu();
 $smarty->assign('evvtAdminMenu', $header_array);
@@ -54,19 +54,19 @@ if (is_admin($current_user)) {
 $module_path="modules/".$currentModule."/";
 
 //Assign the entered global search string to a variable and display it again
-if (isset($_REQUEST['query_string']) and $_REQUEST['query_string'] != '') {
+if (isset($_REQUEST['query_string']) && $_REQUEST['query_string'] != '') {
 	$smarty->assign("QUERY_STRING", htmlspecialchars($_REQUEST['query_string'], ENT_QUOTES, $default_charset));//BUGIX " Cross-Site-Scripting "
 } else {
 	$smarty->assign("QUERY_STRING", "$app_strings[LBL_SEARCH_STRING]");
 }
 
-require_once('data/Tracker.php');
+require_once 'data/Tracker.php';
 $tracFocus=new Tracker();
 $list = $tracFocus->get_recently_viewed($current_user->id);
 $smarty->assign('TRACINFO', $list);
 
 // Gather the custom link information to display
-include_once('vtlib/Vtiger/Link.php');
+include_once 'vtlib/Vtiger/Link.php';
 $hdrcustomlink_params = array('MODULE'=>$currentModule);
 $COMMONHDRLINKS = Vtiger_Link::getAllByType(Vtiger_Link::IGNORE_MODULE, array('HEADERLINK','HEADERSCRIPT', 'HEADERCSS'), $hdrcustomlink_params);
 $smarty->assign('HEADERLINKS', $COMMONHDRLINKS['HEADERLINK']);

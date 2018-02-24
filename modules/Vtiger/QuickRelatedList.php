@@ -18,9 +18,9 @@ $formodule = vtlib_purify($_REQUEST['formodule']);
 $singlepane_view = GlobalVariable::getVariable('Application_Single_Pane_View', 0, $formodule);
 $singlepane_view = empty($singlepane_view) ? 'false' : 'true';
 if (file_exists('tabdata.php') && (filesize('tabdata.php') != 0)) {
-	include('tabdata.php');
+	include 'tabdata.php';
 }
-require('user_privileges/user_privileges_' . $current_user->id . '.php');
+require 'user_privileges/user_privileges_' . $current_user->id . '.php';
 $fortabid = getTabid($formodule);
 $forrecord = vtlib_purify($_REQUEST['forrecord']);
 $rls = array();

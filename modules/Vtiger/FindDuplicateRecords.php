@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
-require_once('Smarty_setup.php');
-require_once('include/utils/utils.php');
+require_once 'Smarty_setup.php';
+require_once 'include/utils/utils.php';
 
 global $mod_strings, $app_strings, $current_language, $theme;
 $image_path = "themes/$theme/images/";
@@ -71,7 +71,7 @@ if (isset($_REQUEST['del_rec'])) {
 	}
 }
 
-include('include/saveMergeCriteria.php');
+include 'include/saveMergeCriteria.php';
 $ret_arr=getDuplicateRecordsArr($req_module);
 
 $fld_values=$ret_arr[0];

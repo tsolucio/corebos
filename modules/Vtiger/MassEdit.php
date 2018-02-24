@@ -9,8 +9,8 @@
  ************************************************************************************/
 global $mod_strings,$app_strings,$theme,$currentModule,$current_user;
 
-require_once('Smarty_setup.php');
-require_once('include/utils/utils.php');
+require_once 'Smarty_setup.php';
+require_once 'include/utils/utils.php';
 
 $excludedRecords = vtlib_purify($_REQUEST['excludedRecords']);
 
