@@ -505,6 +505,7 @@ so we will get that array, parse that array and fill the details
 	{if $MODULE eq 'Invoice' && $data.$entityIndentifier neq 'Services'}
 		<script>stock_alert('{$row_no}');</script>
 	{/if}
+	<script>rowCnt={$row_no};</script>
 {/foreach}
 
 <!-- Added to calculate the tax and total values when page loads -->
