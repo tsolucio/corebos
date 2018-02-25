@@ -29,7 +29,7 @@ function getMailServerInfo($user)
 
 /** To get the Role of the specified user
   * @param $userid -- The user Id:: Type integer
-  * @returns  vtiger_roleid :: Type String
+  * @returns roleid :: Type String
  */
 function fetchUserRole($userid)
 {
@@ -358,7 +358,7 @@ function insertRole2ProfileRelation($roleId,$profileId)
 	$log->debug('Exiting insertRole2ProfileRelation method ...');
 }
 
-/** Function to get the vtiger_roleid from vtiger_rolename
+/** Function to get the roleid from rolename
  * @param $rolename -- Role Name:: Type varchar
  * @returns Role Id:: Type varchar
  */
