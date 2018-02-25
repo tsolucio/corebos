@@ -16,44 +16,7 @@ $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 
 //Retreiving the hierarchy
-$hquery = 'select * from vtiger_role order by parentrole asc';
-$hr_res = $adb->pquery($hquery, array());
-$num_rows = $adb->num_rows($hr_res);
-$hrarray= array();
-
-for ($l=0; $l<$num_rows; $l++) {
-	$roleid = $adb->query_result($hr_res, $l, 'roleid');
-	$parent = $adb->query_result($hr_res, $l, 'parentrole');
-	$temp_list = explode('::', $parent);
-	$size = count($temp_list);
-	$i=0;
-	$k=array();
-	$y=$hrarray;
-	if (count($hrarray) == 0) {
-		$hrarray[$temp_list[0]]= array();
-	} else {
-		while ($i<$size-1) {
-			$y=$y[$temp_list[$i]];
-			$k[$temp_list[$i]] = $y;
-			$i++;
-		}
-		$y[$roleid] = array();
-		$k[$roleid] = array();
-
-		//Reversing the Array
-		$rev_temp_list=array_reverse($temp_list);
-		$j=0;
-		//Now adding this into the main array
-		foreach ($rev_temp_list as $value) {
-			if ($j == $size-1) {
-				$hrarray[$value]=$k[$value];
-			} else {
-				$k[$rev_temp_list[$j+1]][$value]=$k[$value];
-			}
-			$j++;
-		}
-	}
-}
+$hrarray = getRoleAndSubordinatesHierarchy();
 //Constructing the Roledetails array
 $role_det = getAllRoleDetails();
 $query = 'select * from vtiger_role';
