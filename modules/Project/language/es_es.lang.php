@@ -14,7 +14,7 @@
 *  Author	   : JPL TSolucio, S.L.
 *  License	  : MPL 1.1
  ************************************************************************************/
-$mod_strings = Array(
+$mod_strings = array(
 	'LBL_MODULE_NAME'=>'Proyectos',
 	'LBL_MODULE_TITLE'=>'Proyectos',
 	'LBL_NEW_PROJECT'=>'Nuevo Proyecto',
@@ -27,7 +27,6 @@ $mod_strings = Array(
 	'LBL_PROJECT_INFORMATION' => 'Información Proyecto',
 	'LBL_DESCRIPTION_INFORMATION' => 'Descripción',
 
-	'projectid' => 'ID Proyecto',
 	'Project ID'=>'ID Proyecto',
 	'Assigned To' => 'Asignado a',
 	'Start Date' => 'Fecha inicio',
@@ -65,9 +64,7 @@ $mod_strings = Array(
 	'Project Milestones' => 'Hitos Proyecto',
 	'Project Tasks' => 'Actividades Proyecto',
 	'Project Team' => 'Equipo Proyecto',
-	'Project ID' => 'Id Proyecto',
 	'Add Project Task' => 'Añadir Actividad al Proyecto',
 	'Add Note' => 'Añadir Documento',
 );
-
 ?>

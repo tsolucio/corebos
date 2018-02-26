@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-$mod_strings = Array (
+$mod_strings = array (
 	'MailManager' => 'Administrador Correo',
 	
 	// Translations for JS (please use the prefix JSLBL in key)
@@ -51,7 +51,6 @@ $mod_strings = Array (
 	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED'=>'Límite de carga excedida!!',
 	'JSLBL_MAIL_SENT'=>'Correo Enviado',
 	'JSLBL_EMAIL_FORMAT_INCORRECT'=>'Por favor, introduce dirección de email correcta',
-	'JSLBL_Saving'=>'Guardando',
 	'JSLBL_SaveWith_EmptySubject'=>'¿Guardar sin asunto?',
 	'JSLBL_Delete'            =>  'Eliminar',
 	'JSLBL_Drafts'=>'Borradores',
@@ -170,5 +169,4 @@ $mod_strings = Array (
 	'LBL_TO_USERS' => 'A Usuarios',
 	'LBL_SENT_MAILS' => 'Correos Enviados'
 );
-
 ?>
