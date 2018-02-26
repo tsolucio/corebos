@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
     'LBL_MODULE_NAME'=>'Trouble Tickets',
     'LBL_GROUP'=>'Gruppe',
     'LBL_ACCOUNT_NAME'=>'Organisation',
@@ -153,10 +153,8 @@ $mod_strings = Array(
     'Dear'=> 'Hallo',
     'LBL_PORTAL_BODY_MAILINFO'=> 'Ein Ticket wurde',
     'LBL_DETAIL' => 'Hier sind die Details dazu :',
-    'LBL_REGARDS'=> 'Danke',
     'LBL_TEAM'=> 'HelpDesk Team',
     'LBL_TICKET_DETAILS' => 'Ticket Details',
-    'LBL_SUBJECT' => 'Betreff : ',
     'created' => 'erzeugt.',
     'replied' => 'beantwortet.',
     'reply'=>'Es gibt eine Antwort zu Ihrem Anliegen ',
@@ -200,5 +198,4 @@ $mod_strings = Array(
 	'Comment Added' => 'Comment Added',
 	'HelpDesk ID' => 'Trouble Ticket ID',
 );
-
 ?>

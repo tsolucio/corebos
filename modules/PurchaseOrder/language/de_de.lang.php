@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Bestellungen',
 'LBL_RELATED_PRODUCTS'=>'Artikel',
 'LBL_MODULE_TITLE'=>'Bestellungen: Home',
@@ -68,7 +68,6 @@ $mod_strings = Array(
 'LBL_SELECT_ACCOUNT'=>'Organisation wählen',
 'LBL_GENERAL_INFORMATION'=>'Allgemein',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'Neues Verkaufspotential',
 'LBL_POTENTIAL_TITLE'=>'Verkaufspotentiale',
 
@@ -83,16 +82,13 @@ $mod_strings = Array(
 'LBL_NEW_CONTACT'=>'neue Person',
 'LBL_CONTACT_TITLE'=>'Personen',
 
-//Added fields after RC1 - Release
 'LBL_ALL'=>'All',
 'LBL_PROSPECT'=>'potentieller Kunde',
 'LBL_INVESTOR'=>'Investor',
 'LBL_RESELLER'=>'Wiederverkäufer',
 'LBL_PARTNER'=>'Partner',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Account Tools',
-//Added for 4GA
 'Subject'=>'Titel',
 'Quote Name'=>'Angebot',
 'Vendor Name'=>'Lieferant',
@@ -133,12 +129,10 @@ $mod_strings = Array(
 'Vendor Terms'=>'Lieferbedingungen',
 'Pending'=>'hängig',
 'Account Name'=>'Organisation',
-'Terms & Conditions'=>'Zahlungs- und Lieferbedingungen',
 //Quote Info
 'LBL_PO_INFORMATION'=>'Einkauf',
 'LBL_PO'=>'Einkauf:',
 
- //Added for 4.2 GA
 'LBL_SO_FORM_TITLE'=>'Verkauf',
 'LBL_PO_FORM_TITLE'=>'Einkauf',
 'LBL_SUBJECT_TITLE'=>'Titel',
@@ -166,7 +160,6 @@ $mod_strings = Array(
 'Cancelled'=>'abgebrochen',
 'Received Shipment'=>'Lieferung empfangen',
 
-//Added for Reports (5.0.4)
 'Tax Type'=>'Steuertyp',
 'Discount Percent'=>'Rabatt (%)',
 'Discount Amount'=>'Rabatt',
@@ -174,7 +167,6 @@ $mod_strings = Array(
 'Sub Total'=>'Sub Total',
 'S&H Amount'=>'Versandkosten',
 
-//Added after 5.0.4 GA
 'PurchaseOrder No'=>'Einkaufsbestellungen Nr.',
 
 'SINGLE_PurchaseOrder'=>'Einkaufsbestellung',
@@ -182,5 +174,4 @@ $mod_strings = Array(
 
 'Terms & Conditions'=>'Geschäftsbedingungen',
 );
-
 ?>

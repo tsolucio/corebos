@@ -24,7 +24,6 @@ $mod_strings = array(
 	'LBL_PICKLIST_VALUES_ASSIGNED_TO'=>'Listeneintrag zuweisen für ',
 	'LBL_ADD_TO_OTHER_ROLES'=>'zu anderen Rollen hinzufügen',
 	'LBL_OK_BUTTON_LABEL'=>'OK',
-	'LBL_SELECT_ROLES'=>'Rollen auswählen',
 	'LBL_DISPLAYED_VALUES'=>'Alle Listeneinträge für die Rolle sind unten angezeigt',
 
 	// For Dependency picklist

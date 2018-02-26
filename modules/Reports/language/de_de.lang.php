@@ -42,7 +42,6 @@ $mod_strings = array(
 	'LBL_COLUMNS_AVERAGE'=>'Durchschnitt',
 	'LBL_COLUMNS_LOW_VALUE'=>'kleinster Wert',
 	'LBL_COLUMNS_LARGE_VALUE'=>'größter Wert',
-	'LBL_NONE'=>'ohne',
 	'LBL_GROUPING_SORT'=>'Sortierung:',
 	'LBL_GROUPING_SUMMARIZE'=>'Zwischensumme nach:',
 	'LBL_GROUPING_THEN_BY'=>'und dann nach:',
