@@ -29,7 +29,6 @@ $mod_strings = array(
 	'Asset Name' => 'Activa Naam',
 	'Customer Name' => 'Klant Naam',
 	'Product Name' => 'Product Naam',
-	'Serial Nummer' => 'Serienummer',
 	'Asset No' => 'Activa nummer',
 	'Date Sold' => 'Datum Verkocht',
 	'Date in Service' => 'Datum in Service',
