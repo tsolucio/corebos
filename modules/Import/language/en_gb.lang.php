@@ -94,7 +94,6 @@ $mod_strings = array(
 	'LBL_SELECT_FILE' => 'Select file:',
 	'LBL_CUSTOM' => 'Custom',
 	'LBL_DONT_MAP' => '-- Do not map this field --',
-	'LBL_STEP_1_TITLE' => 'Select the .CSV File',
 	'LBL_WHAT_IS' => 'Please select a data source from the following:',
 	'LBL_MICROSOFT_OUTLOOK' => 'Microsoft Outlook',
 	'LBL_ACT' => 'Act!',
