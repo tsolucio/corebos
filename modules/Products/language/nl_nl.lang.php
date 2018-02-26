@@ -1,5 +1,4 @@
 <?php
-
 /*******************************************************************************
  * The contents of this file are subject to the following licences:
  * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
@@ -31,7 +30,7 @@
  * @license	vtiger CRM Public License Version 1.0 (by definition)
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Producten',
 'SINGLE_Products'=>'Product',
 'LBL_LIST_PRODUCT_NAME'=>'Productnaam',
@@ -45,7 +44,6 @@ $mod_strings = Array(
 'LBL_VENDOR_INFORMATION'=>'Leveranciers informatie:',
 'LBL_PRICEBOOK_INFORMATION'=>'Prijslijst informatie:',
 'LBL_VENDOR_ADDRESS_INFORMATION'=>'Adresinformatie:',
-'LBL_DESCRIPTION_INFORMATION'=>'Omschrijving naam:',
 'LBL_PRICING_INFORMATION'=>'Prijs informatie:',
 'LBL_STOCK_INFORMATION'=>'Voorraad informatie:',
 'LBL_LIST_FORM_TITLE'=>'Productlijst',
@@ -96,15 +94,12 @@ $mod_strings = Array(
 'LBL_NEW_ATTACHMENT'=>'Nieuwe bijlage',
 'LBL_ATTACHMENT_TITLE'=>'Bijlagen',
 
-//Added fields after RC1 - Release
 'LBL_MANUFACTURER'=>'Producent',
 'LBL_PRODUCTCATEGORY'=>'Product categorie',
 'LBL_SUPPORT_START_DATE'=>'Ondersteuning startdatum',
 'LBL_SUPPORT_EXPIRY_DATE'=>'Ondersteuning einddatum',
 'LBL_PURCHASE_DATE'=>'Inkoopdatum',
 
-//Added for 4GA
-'Product Name'=>'Productnaam',
 //'Product Code'=>'Product code',
 'Part Number'=>'Partnummer',
 'Product Active'=>'Product actief',

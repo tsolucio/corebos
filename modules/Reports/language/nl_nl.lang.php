@@ -50,7 +50,6 @@ $mod_strings = array(
 'LBL_COLUMNS_AVERAGE'=>'Gemiddeld',
 'LBL_COLUMNS_LOW_VALUE'=>'Laagste getal',
 'LBL_COLUMNS_LARGE_VALUE'=>'Hoogste getal',
-'LBL_NONE'=>'Geen',
 'LBL_GROUPING_SORT'=>'Sorteer order:',
 'LBL_GROUPING_SUMMARIZE'=>'Samenvatting informatie door:',
 'LBL_GROUPING_THEN_BY'=>'en toen door:',

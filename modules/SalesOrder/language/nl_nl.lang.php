@@ -130,7 +130,6 @@ $mod_strings = array(
 'Vendor Terms'=>'Voorwaarden leverancier',
 'Pending'=>'Wacht op',
 'Account Name'=>'Accountnaam',
-'Terms & Conditions'=>'Algemene Voorwaarden',
 //Quote Info
 'LBL_SO_INFORMATION'=>'Verkooporder information',
 'LBL_SO'=>'Verkooporder:',

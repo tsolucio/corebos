@@ -6,19 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- ********************************************************************************
-* This translations is based on earlier work of:
- * - IT-Online.nl <www.it-online.nl>
- * - Weltevree.org <www.Weltevree.org>
-/*******************************************************************************
- * Vicus eBusiness Solutions Version Control
- * @package 	NL-Dutch
- * Description	Dutch language pack for vtiger CRM version 5.3.x
- * @author	$Author: luuk $
- * @version 	$Revision: 1.4 $ $Date: 2011/11/14 17:07:26 $
- * @source	$Source: /var/lib/cvs/vtiger530/Dutch/modules/Potentials/language/nl_nl.lang.php,v $
- * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
- * @license	vtiger CRM Public License Version 1.0 (by definition)
  ********************************************************************************/
 
 $mod_strings = array(
@@ -100,7 +87,6 @@ $mod_strings = array(
 'Lead Source'=>'Lead bron',
 'Sales Stage'=>'Verkoop stadium',
 'Assigned To'=>'Toegewezen aan',
-'Related To' => 'Gerelateerd Aan',
 'Probability'=>'Waarschijnlijkheid (%)',
 'Campaign Source'=>'Bron campagne',
 'Description'=>'Omschrijving',
@@ -142,5 +128,4 @@ $mod_strings = array(
 'Related To' => 'Gerelateerd aan',
 'Forecast Amount'=> 'Forecast Amount',
 );
-
 ?>
