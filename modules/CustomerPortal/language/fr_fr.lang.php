@@ -2,12 +2,12 @@
 /***********************************************************
 *  Module       : CustomerPortal
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
 
-$mod_strings = Array (
+$mod_strings = array (
 	'CustomerPortal' => 'Portail Client',
 	'LBL_BASIC_SETTINGS'=>'Configuration de base',
 	'LBL_ADVANCED_SETTINGS'=>'Configuration Avancée',
@@ -17,14 +17,14 @@ $mod_strings = Array (
 	'NO'=>'Non',
 	'LBL_USER_DESCRIPTION'=>'Le profil d\'utilisateur choisi controlera les champs apparaissant dans le portail client.
 					Vous pouvez activer ou désactiver les champs visibles dans le portail client.',
-	'SELECT_USERS'=>'Choisir parmi les utilisateurs',				
+	'SELECT_USERS'=>'Choisir parmi les utilisateurs',
 	'LBL_DISABLE'=>'Inactif',
 	'LBL_ENABLE' =>'Actif',
 	'Module' => 'Module',
 	'Sequence' =>'Séquence',
 	'Visible'=>'Visible',
 	'CustomerPortal' => 'Portail Client',
-	
+
 	'LBL_CUSTOMERPORTAL_SETTINGS'=>'Réglages Portail Client',
 	'LBL_MODULE'=>'Module',
 	'LBL_VIEW_ALL_RECORD'=>'Voir tous les enregistrement liés ?',
@@ -39,5 +39,4 @@ $mod_strings = Array (
 	'LBL_SEQUENCE' =>'Séquence',
 	'LBL_VISIBLE'=>'Visible',
 );
-
 ?>

@@ -1,12 +1,14 @@
 <?php
-/** YOUR LICENSE TEXT HERE **/
-/******************************************************************************************
-*
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
+ * All Rights Reserved.
 * Contributor: Ranieri Slemer | missing terms - translate portuguese | www.ecrmweb.com.br
-*
-*******************************************************************************************
-**/
-$mod_strings = Array (
+ ********************************************************************************/
+$mod_strings = array (
 'CustomerPortal' => 'Portal do Cliente',
 'LBL_BASIC_SETTINGS'=>'Configurações Básicas',
 'LBL_ADVANCED_SETTINGS'=>'Configurações Avançadas',
@@ -34,7 +36,5 @@ $mod_strings = Array (
 'LBL_SELECT_USERS'=>'Perfil do Usuário',
 'LBL_DEFAULT_USERS'=>'Usuário Modelo',
 'LBL_GROUP_DESCRIPTION'=>'NOTA: Os Tickets serão atribuídos ao usuário selecionado acima, por padrão grupo / usuário a partir do Portal do Cliente.',
-
 );
-
 ?>

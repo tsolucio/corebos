@@ -3,7 +3,7 @@
 ** Author: JPL TSolucio, S.L. Joe Bordes
 ** Distributed under MPL 1.1
 */
-$mod_strings = Array (
+$mod_strings = array (
 'CustomerPortal' => 'Portal Cliente',
 'LBL_BASIC_SETTINGS'=>'Configuración Básica',
 'LBL_CUSTOMERPORTAL_SETTINGS'=>'Configuración Portal',
@@ -24,5 +24,4 @@ $mod_strings = Array (
 'LBL_SEQUENCE' =>'Secuencia',
 'LBL_VISIBLE'=>'Visible'
 );
-
 ?>
