@@ -24,7 +24,6 @@ $mod_strings = array(
 	'LBL_CUSTOM_INFORMATION' => 'Egyéb adatok',
 	'LBL_PROJECT_INFORMATION' => 'Projekt adatok',
 	'LBL_DESCRIPTION_INFORMATION' => 'Leírás',
-	'projectid' => 'Projekt AZ',
 	'Project ID' => 'Projekt AZ',
 	'Assigned To' => 'Felelős',
 	'Start Date' => 'Kezdő dátum',
