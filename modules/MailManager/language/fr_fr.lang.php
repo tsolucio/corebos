@@ -7,7 +7,7 @@
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
 
-$mod_strings = Array (
+$mod_strings = array (
 	'MailManager' => 'Mail Manager',
 	
 	// Translations for JS (please use the prefix JSLBL in key)
@@ -40,7 +40,7 @@ $mod_strings = Array (
 	'JSLBL_Delete_Mails_Confirm'      => 'Voulez-vous supprimer ces messages définitivement?',
 	'JSLBL_Receipents_Warning_Message'=> 'Veuillez choisir un destinataire',
 	'JSLBL_NO_MATCH'				  => 'Aucun résultat',
-	'JSLBL_Saving'					=> 'Sauvez',
+	'JSLBL_Saving'					=> 'Sauvegarde',
 	'JSLBL_Failed_To_Save_Mail'		=>	'Erreur pendant la sauvegarde du message',
 	'JSLBL_ATTACHMENT_NOT_DELETED'	=>	'Le fichier joint ne peut être supprimé',
 	'JSLBL_UPLOAD_CANCEL'	=> 'Annuler',
@@ -51,7 +51,6 @@ $mod_strings = Array (
 	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED'=>'Taille limite de fichier dépassée!!',
 	'JSLBL_MAIL_SENT'=>'Message envoyé',
 	'JSLBL_EMAIL_FORMAT_INCORRECT'=>'Saisir un format correct d email',
-	'JSLBL_Saving'=>'Sauvegarde',
 	'JSLBL_SaveWith_EmptySubject'=>'Sauver un message avec un objet vide?',
 	'JSLBL_Delete'            =>  'Supprimer',
 	'JSLBL_Drafts'=>'Brouillons',
@@ -169,5 +168,4 @@ $mod_strings = Array (
 	'LBL_TO_USERS' => 'Aux Utilisateurs',
 	'LBL_SENT_MAILS' => 'Emails Envoyés',
 );
-
 ?>

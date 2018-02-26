@@ -7,7 +7,7 @@
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
 
-$app_strings = array (
+$app_strings = array(
 	'LBL_BROWSER_TITLE' => 'coreBOS',
 	'LBL_MY_ACCOUNT' => 'Mon compte',
 	'LBL_MY_PREFERENCES' => 'Mes préférences',
@@ -352,7 +352,6 @@ $app_strings = array (
 	'Sales Stage' => 'Phase de vente',
 	'Amount' => 'Montant',
 	'Expected Close' => 'Échéance',
-	'Contact Name' => 'Contact',
 	'Related to' => 'Relatif à',
 	'File' => 'Fichier',
 	'Last Modified' => 'Modifié le',
@@ -387,7 +386,6 @@ $app_strings = array (
 	'Events' => 'Activités',
 	'Tasks' => 'Tâches',
 	'Todo' => 'Tâche en attente',
-	'Meeting' => 'Rencontre',
 	'PriceBook' => 'Grille tarifaire',
 	'Calendar' => 'Tâches Agenda',
 	'Home' => 'Accueil',
@@ -447,7 +445,6 @@ $app_strings = array (
 	'LBL_RSS_FEEDS' => 'Canal RSS',
 	'LBL_ADD_RSS_FEEDS' => 'Ajouter canal RSS',
 	'LNK_NEW_FAQ' => 'Nouvelle FAQ',
-	'Vendor Name' => 'Nom fournisseur',
 	'LNK_WEARE' => 'A propos',
 	'LBL_DISCUSS' => 'Discuter avec d\'autres utilisateurs',
 	'Quote Stage' => 'Phase devis',
@@ -1187,7 +1184,6 @@ $app_strings = array (
 	'Net Total' => 'Total Net',
 	'Send SMS' => 'Envoyer un SMS',
 
-	'LBL_MORE'=>'Plus',
 	'LBL_CRM_SETTINGS' => 'Configuration CRM ',
 	'LBL_RELATED_TO_THIS' =>'relatif à ce(tte)',
 	'LBL_DESELECT_ALL' => 'Désélectionner tout',
@@ -1328,7 +1324,6 @@ $app_currency_strings = array(
 	'Venezuela, Bolivares Fuertes' => 'Venezuela, Bolivares Fuertes',
 	'Vietnam, Dong' 		=> 'Vietnam, Dong',
 	'Zimbabwe Dollars' 		=> 'Zimbabwe Dollars',
-	'China, Yuan Renminbi' 	=> 'China, Yuan Renminbi',
 	'Afghanistan, Afghanis' => 'Afghanistan, Afghanis',
 	'Cambodia, Riels' 		=> 'Cambodia, Riels',
 	'China, Yuan Renminbi'	=> 'China, Yuan Renminbi',

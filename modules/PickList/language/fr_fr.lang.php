@@ -24,7 +24,6 @@ $mod_strings = array(
 	'LBL_PICKLIST_VALUES_ASSIGNED_TO'=>'Valeurs assignées pour ',
 	'LBL_ADD_TO_OTHER_ROLES'=>'Ajouter aux autres rôles',
 	'LBL_OK_BUTTON_LABEL'=>'OK',
-	'LBL_SELECT_ROLES'=>'Sélectionner un rôle',
 	'LBL_DISPLAYED_VALUES'=>'Toutes les valeurs disponibles pour ce rôle sont affichées ci-dessous',
 
 	// For Dependency picklist
