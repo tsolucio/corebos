@@ -16,7 +16,7 @@ require_once 'include/QueryGenerator/QueryGenerator.php';
 require_once 'include/ListView/ListViewController.php';
 
 /**
- * Check if user id belongs to a system admin.
+ * Check if user object belongs to a system admin.
  */
 function is_admin($user) {
 	global $log;
@@ -32,6 +32,23 @@ function is_admin($user) {
 		$log->debug("Exiting is_admin method ...");
 		return false;
 	}
+}
+
+/**
+ * Check if user id belongs to a system admin.
+ */
+function is_adminID($userID) {
+	global $log;
+	if (empty($userID) || !is_numeric($userID)) {
+		return false;
+	}
+	$log->debug('Entering is_adminID(' . $userID . ') method ...');
+	$is_admin = false;
+	if (file_exists('user_privileges/user_privileges_' . $userID . '.php')) {
+		require 'user_privileges/user_privileges_' . $userID . '.php';
+	}
+	$log->debug('Exiting is_adminID method ...');
+	return ($is_admin == true);
 }
 
 /**
