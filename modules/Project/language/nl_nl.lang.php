@@ -65,7 +65,6 @@ $mod_strings = array(
 	'Project No' => 'Project Nr',
 	'Project Milestones' => 'Project Mijlpalen',
 	'Project Tasks' => 'Projecttaken',
-	'Project Team' => 'Project Team', 
+	'Project Team' => 'Project Team',
 );
-
 ?>
