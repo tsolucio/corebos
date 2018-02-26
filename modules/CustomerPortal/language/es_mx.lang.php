@@ -21,7 +21,6 @@ $mod_strings = array (
 'LBL_DEFAULT_USERS'=>'Asignado por defecto',
 'LBL_DISABLE'=>'Deshabilitar',
 'LBL_ENABLE' =>'Habilitar',
-'LBL_MODULE' => 'Módulo',
 'LBL_SEQUENCE' =>'Secuencia',
 'LBL_VISIBLE'=>'Visible'
 );

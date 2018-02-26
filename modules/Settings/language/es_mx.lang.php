@@ -831,8 +831,6 @@ $mod_strings = array (
 
 	  'LBL_SHARING_ACCESS_HELPNOTE' => 'Trás las modificaciones, pulsa el botón de Recalcular para aplicar los cambios.',
 
-	  'ERR_INVALID_PROFILE_ID' => 'Identificador perfil inválido. Por favor, indique un identificador válido',
-
 	  'LBL_ADD_CUSTOMFIELD' => 'Agregar Campo Personalizado',
 
 	  'ERR_INVALID_PROFILE_ID' => 'Identificador perfil inválido. Por favor, indica un identificador válido',
