@@ -1,6 +1,13 @@
 <?php
-/** YOUR LICENSE TEXT HERE **/
-$mod_strings = Array (
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
+ * All Rights Reserved.
+ ************************************************************************************/
+$mod_strings = array (
 	'Webforms' => 'Webforms',
 	'Allows you to manage Webforms' => 'Create and manage webforms which can be used to capture Leads',
 	'LBL_SUCCESS' => 'entry has been added to the application',
@@ -13,8 +20,6 @@ $mod_strings = Array (
 	'LBL_RETURNURL'=>'Return URL',
 	'LBL_ACTION'=>'Action',
 	'LBL_ASSIGNED_TO'=>'Assigned To',
-	'LBL_EDIT'=>'edit',
-	'LBL_DELETE'=>'del',
 	'LBL_SOURCE'=>'Show Form',
 	'LBL_MODULE_INFORMATION'=>'Webforms Information',
 	'LBL_FIELD_INFORMATION'=>'Field Information',
@@ -41,5 +46,4 @@ $mod_strings = Array (
 	'LBL_WEB_DOMAIN' => 'Web Domain',
 	'LBL_CREATENEW' => 'You can Create a Webform Now. Click the link below',
 );
-
 ?>

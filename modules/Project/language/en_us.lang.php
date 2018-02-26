@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-$mod_strings = Array(
+$mod_strings = array(
 	'LBL_MODULE_NAME'=>'Projects',
 	'LBL_MODULE_TITLE'=>'Projects',
 	'LBL_NEW_PROJECT'=>'New Project',
@@ -56,7 +56,5 @@ $mod_strings = Array(
 	'Project Milestones' => 'Project Milestones',
 	'Project Tasks' => 'Project Tasks',
 	'Project Team' => 'Project Team',
-	'Project ID' => 'Project ID',
 );
-
 ?>

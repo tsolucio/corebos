@@ -18,7 +18,6 @@ $mod_strings = array (
 'LBL_BASIC_SETTINGS'=>'Basic Settings',
 'LBL_CUSTOMERPORTAL_SETTINGS'=>'CustomerPortal Settings',
 'LBL_ADVANCED_SETTINGS'=>'Advanced Settings',
-'LBL_MODULE'=>'Module',
 'LBL_VIEW_ALL_RECORD'=>'View All Related Records ?',
 'LBL_MODULE_INFORMATION'=>'Module Information',
 'LBL_USER_INFORMATION'=>'User Information',

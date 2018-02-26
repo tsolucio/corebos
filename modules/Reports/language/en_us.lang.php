@@ -233,7 +233,6 @@ $mod_strings = array(
 'LBL_MONTH'=> 'Month',
 'LBL_DAY'=> 'Day',
 'LBL_QUARTER'=> 'Quarter',
-'LBL_NONE'=> 'None',
 
 'LBL_ROLES'=>'Roles',
 'LBL_ROLES_SUBORDINATES'=>'Roles and Subordinates',
