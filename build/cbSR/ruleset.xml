@@ -51,4 +51,20 @@
 		</properties>
 	</rule>
 
+	<rule ref="Generic.Strings.UnnecessaryStringConcat">
+		<properties>
+			<property name="allowMultiline" value="true" />
+			<property name="error" value="false" />
+		</properties>
+	</rule>
+
+	<rule ref="PEAR.Files.IncludingFile">
+		<exclude name="PEAR.Files.IncludingFile.UseRequire" />
+		<exclude name="PEAR.Files.IncludingFile.UseRequireOnce" />
+		<exclude name="PEAR.Files.IncludingFile.UseInclude" />
+		<exclude name="PEAR.Files.IncludingFile.UseIncludeOnce" />
+	</rule>
+
+	<rule ref="Squiz.Operators.ValidLogicalOperators" />
+
 </ruleset>

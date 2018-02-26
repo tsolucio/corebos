@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('Smarty_setup.php');
-require('user_privileges/default_module_view.php');
+require_once 'Smarty_setup.php';
+require 'user_privileges/default_module_view.php';
 
 global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
 
@@ -111,7 +111,7 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	}
 	$smarty->assign('RELATEDLISTS', $related_array);
 
-	require_once('include/ListView/RelatedListViewSession.php');
+	require_once 'include/ListView/RelatedListViewSession.php';
 	if (!empty($_REQUEST['selected_header']) && !empty($_REQUEST['relation_id'])) {
 		$relationId = vtlib_purify($_REQUEST['relation_id']);
 		RelatedListViewSession::addRelatedModuleToSession($relationId, vtlib_purify($_REQUEST['selected_header']));

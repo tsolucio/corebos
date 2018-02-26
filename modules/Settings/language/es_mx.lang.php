@@ -831,8 +831,6 @@ $mod_strings = array (
 
 	  'LBL_SHARING_ACCESS_HELPNOTE' => 'Trás las modificaciones, pulsa el botón de Recalcular para aplicar los cambios.',
 
-	  'ERR_INVALID_PROFILE_ID' => 'Identificador perfil inválido. Por favor, indique un identificador válido',
-
 	  'LBL_ADD_CUSTOMFIELD' => 'Agregar Campo Personalizado',
 
 	  'ERR_INVALID_PROFILE_ID' => 'Identificador perfil inválido. Por favor, indica un identificador válido',
@@ -897,5 +895,29 @@ $mod_strings = array (
 	'LBL_OPENSSL_SUPPORT' => 'Soporte OpenSSL',
 	'LBL_IMAP_SUPPORT' => 'Soporte IMAP',
 	'StorageSpaceUsage' => 'Consumo Espacio Almacenamiento',
+	'wf_conditions_found' => 'Campo encontrado en las condiciones de flujo de trabajo: ',
+	'wf conditions' => 'Campo NO encontrado en las condiciones de flujo de trabajo.',
+	'wf_tasks' => 'Campo NO encontrado en las tareas de flujo de trabajo.',
+	'wf_tasks_found' => 'Campo encontrado en el flujo de trabajo ',
+	'cv_column' => 'Campo encontrado en las columnas de filtros: ',
+	'cv_column_nf' => 'Campo NO encontrado en las columnas de filtros',
+	'cv_advfilter' => 'Campo encontrado en las condiciones de filtros: ',
+	'cv_advfilter_nf' => 'Campo NO encontrado en las condiciones de filtros',
+	'cv_stdfilter' => 'Campo encontrado en las condiciones de fecha de filtros: ',
+	'cv_stdfilter_nf' => 'Campo NO encontrado en las condiciones de fecha de filtros',
+	'email_templates' => 'Campo encontrado en la plantilla de EMail: ',
+	'email_templates_nf' => 'Campo NO encontrado en las plantillas de EMail',
+	'select_column' => 'Campo encontrado en Informes (Columnas): ',
+	'select_column_nf' => 'Campo NO encontrado en Informes (Columnas)',
+	'report_dtfilter' => 'Campo encontrado en Informes (Filtro de Fechas): ',
+	'report_dtfilter_nf' => 'Campo NO encontrado en Informes (Filtro de Fechas)',
+	'report' => 'Campo encontrado en Informes (Agrupación): ',
+	'report_nf' => 'Campo NO encontrado en Informes (Agrupación)',
+	'report_sort' => 'Campo encontrado en Informes (Ordenación): ',
+	'report_sort_nf' => 'Campo NO encontrado en Informes (Ordenación)',
+	'report_summary' => 'Campo encontrado en Informes (Agregaciones): ',
+	'report_summary_nf' => 'Campo NO encontrado en Informes (Agregaciones)',
+	'cl_mapping' => 'Campo encontrado en la Conversión de PreContactos',
+	'cl_mapping_nf' => 'Campo NO encontrado en la Conversión de PreContactos',
 );
 ?>

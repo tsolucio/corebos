@@ -1,4 +1,16 @@
-<?php // $Id: iCalendar_parameters.php,v 1.7 2005/07/21 23:17:21 defacer Exp $
+<?php
+/**
+ *  BENNU - PHP iCalendar library
+ *  (c) 2005-2006 Ioannis Papaioannou (pj@moodle.org). All rights reserved.
+ *
+ *  Released under the LGPL.
+ *
+ *  See http://bennu.sourceforge.net/ for more information and downloads.
+ *
+ * @author Ioannis Papaioannou
+ * @version $Id: iCalendar_parameters.php,v 1.8 2006/01/13 14:10:43 defacer Exp $
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ */
 
 class iCalendar_parameter {
     function multiple_values_allowed($parameter) {

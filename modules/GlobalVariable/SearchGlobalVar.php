@@ -23,13 +23,12 @@ $gvuserid = vtlib_purify($_REQUEST['gvuserid']);
 $gvmod = vtlib_purify($_REQUEST['gvmodule']);
 $retval = vtlib_purify($_REQUEST['returnvalidation']);
 $defval = vtlib_purify($_REQUEST['gvdefault']);
-global $gvvalidationinfo;
-$gvvalidationinfo = array();
 $startTime = microtime(true);
 $rdo = GlobalVariable::getVariable($gvname, $defval, $gvmod, $gvuserid);
 $counter = (microtime(true) - $startTime);
 $ret = array($gvname=>$rdo);
 if ($retval) {
+	$gvvalidationinfo = GlobalVariable::getValidationInfo();
 	$gvvalidationinfo[] = "<h2 align='center'>RESULT: $rdo</H2>";
 	$ret['validation'] = $gvvalidationinfo;
 	$ret['timespent'] = round($counter*1000, 1);

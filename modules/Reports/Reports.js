@@ -1087,7 +1087,7 @@ function createDuplicateReport(id) {
 		var responseArray = JSON.parse(response);
 		if(trim(responseArray['errormessage']) != '') {
 			VtigerJS_DialogBox.unblock();
-			alert(resonseArray['errormessage']);
+			alert(responseArray['errormessage']);
 		}
 		var reportid = responseArray['reportid'];
 		var folderid = responseArray['folderid'];

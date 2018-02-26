@@ -6,12 +6,10 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 global $current_language;
 
-$mod_strings = return_module_language($current_language, "CustomView");
+$mod_strings = return_module_language($current_language, 'CustomView');
 
-include_once('modules/CustomView/EditView.php');
-
+include_once 'modules/CustomView/EditView.php';
 ?>

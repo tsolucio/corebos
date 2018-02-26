@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-$mod_strings = Array (
+$mod_strings = array (
 	'MailManager' => 'Mail Manager',
 	
 	// Translations for JS (please use the prefix JSLBL in key)
@@ -51,7 +51,6 @@ $mod_strings = Array (
 	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED'=>'Limite di file upload superato!!',
 	'JSLBL_MAIL_SENT'=>'Mail Inviata',
 	'JSLBL_EMAIL_FORMAT_INCORRECT'=>'Si prega di fornire un indirizzo di posta elettronica corretto',
-	'JSLBL_Saving'=>'Salvataggio',
 	'JSLBL_SaveWith_EmptySubject'=>'Salvare con Oggetto vuoto?',
 	'JSLBL_Delete'  =>  'Cancella',
 	'JSLBL_Drafts'=>'Bozze',
@@ -178,5 +177,4 @@ $mod_strings = Array (
     'CC'=>'CC',
     'FROM'=>'DA',
 );
-
 ?>

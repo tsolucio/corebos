@@ -1,19 +1,15 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific apmt_locationuage governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+* Contributor: Ranieri Slemer | missing terms - translate portuguese | www.ecrmweb.com.br
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Agenda',
 'LBL_MODULE_TITLE'=>'Agenda: Principal',
 'LBL_MODULE_APPOINTMENT'=>'Agenda: Compromisso',
@@ -32,7 +28,6 @@ $mod_strings = Array(
 'LBL_TIMESETTINGS'=>'Configurações Data',
 'LBL_HOLDFOLLOWUP'=>'Realizar acompanhamento sobre',
 'LBL_FOLLOWUP' => 'Acompanhamento',
-'LBL_CALL' => 'Chamada',
 'LBL_MEET' => 'Reunião',
 'LBL_APPNT' => 'Compromisso',
 'LBL_NEW_APPNT' => 'Novo Compromisso',
@@ -64,13 +59,11 @@ $mod_strings = Array(
 'LBL_WEEK' => 'Semana',
 'LBL_WEEK_BUTTON_KEY' => 'W',
 'LBL_WEEK_BUTTON_TITLE' => 'Semana [Alt+W]',
-'LBL_WEEKS' => 'Semanas',
 'LBL_NEXT_WEEK' => 'próxima semana',
 'LBL_LAST_WEEK' => 'última semana',
 'LBL_4WEEKS_BACK' => 'Últimas 4 semanas',
 'LBL_4WEEKS_PLUS' => 'Próximas 4 semanas',
 'LBL_RELOAD' => 'Atualizar',
-
 
 'LBL_APPCREATED_BY' => 'Criado por',
 'LBL_AT_DATE_TIME' => 'em',
@@ -98,8 +91,7 @@ $mod_strings = Array(
 'LBL_APP_ERR002' =>'iniciar após o final!',
 'LBL_APP_ERR003' =>'Sem Contato!',
 'LBL_APP_ERR004' =>'Sem Assunto!',
-'ERR_DELETE_RECORD'=>"Defina um registro para apagar o Compromisso.",
-'DELETE_CONFIRMATION'=>"Você tem certeza que deseja apagar este Compromisso?",
+'DELETE_CONFIRMATION'=>'Você tem certeza que deseja apagar este Compromisso?',
 
 'AppLoc'=> Array('0' => 'Escritório'
             		, '1' => 'Ausente'
@@ -281,7 +273,6 @@ $mod_strings = Array(
 'LBL_LIST_CLOSE'=>'Fechar',
 'LBL_LIST_STATUS'=>'Status',
 'LBL_LIST_CONTACT'=>'Contato',
-//Added for 4.2 release for Account column support as shown by Fredy
 'LBL_LIST_ACCOUNT'=>'Organização',
 'LBL_LIST_RELATED_TO'=>'Relacionar com',
 'LBL_LIST_DUE_DATE'=>'Data Vencimento',
@@ -293,17 +284,14 @@ $mod_strings = Array(
 'ERR_DELETE_RECORD'=>'Um registro deve ser especificado para apagar Organização.',
 'NTC_NONE_SCHEDULED'=>'Nada agendado.',
 
-// Added vtiger_fields for Attachments in Activities/SubPanelView.php
 'LBL_ATTACHMENTS'=>'Anexos',
 'LBL_NEW_ATTACHMENT'=>'Novo Anexo',
 
-//Added vtiger_fields after RC1 - Release
 'LBL_ALL'=>'Todos',
 'LBL_CALL'=>'Chamada',
 'LBL_MEETING'=>'Reunião',
 'LBL_TASK'=>'Tarefa',
 
-//Added for 4GA Release
 'Subject'=>'Assunto',
 'Assigned To'=>'Responsável',
 'Start Date & Time'=>'Data & Hora Início',
@@ -323,7 +311,6 @@ $mod_strings = Array(
 'Duration Minutes'=>'Duração em Minutos',
 'Location'=>'Local',
 'No Time'=>'Sem Hora',
-//Added for Send Reminder 4.2 release
 'Send Reminder'=>'Enviar Lembrete',
 'SendReminder'=>'Enviar Lembrete',
 'LBL_YES'=>'Sim',
@@ -332,16 +319,13 @@ $mod_strings = Array(
 'LBL_MINUTES'=>'minutos',
 'LBL_HOURS'=>'horas',
 'LBL_BEFORE_EVENT'=>'antes do evento',
-//Added for CustomView 4.2 Release
 'Close'=>'Fechar',
 'Start Date'=>'Data Início',
 'Type'=>'Tipo',
 'End Date'=>'Data Final',
-'Recurrence'=>'Eventos Recorrentes',
 'Recurring Type'=>'Tipo Recorrência',
 //Activities - Notification Error
 'LBL_NOTIFICATION_ERROR'=>'Mensagem Erro: Por favor checar a configuração do seu Servidor de Mensagem em Configurações->Configuração Servidor Mensagem OU ID de mensagem para o atual usuário não está Configurado.',
-// Mike Crowe Mod --------------------------------------------------------added for generic search
 'LBL_GENERAL_INFORMATION'=>'Informação Geral',
 
 'LBL_EVENTTYPE'=>'Tipo Evento',
@@ -383,9 +367,8 @@ $mod_strings = Array(
 'day of the month'=>'dia do mês',
 'Private'=>'Privado',
 'Public'=>'Público',
-      
+
 //Added for existing Picklist entries
-      
 'Planned'=>'Planejado',
 'Held'=>'Confirmado',
 'Not Held'=>'Não Confirmado',
@@ -412,15 +395,12 @@ $mod_strings = Array(
 //added to send invitation mail Subject.
 'INVITATION'=>' Convite ',
 
-// Added/Updated for vtiger CRM 5.0.4
 'LBL_YEAR_BUTTON_TITLE'=>'Ano [Alt+Y]',
 'LBL_SELECT_CONTACT'=>'Selecionar Contatos',
 'SHARED_EVENT_DEL_MSG'=>'O Usuário não tem permissão para Editar/Apagar Evento Compartilhado.',
-//added to fix ticket#4525
 'LBL_CREATED'=>'criado',
 'LBL_UPDATED'=>'atualizado',
 
-//Added after 5.0.4 GA
 'LBL_BUSY' => 'Ocupado',
 
 //Custom Fields support for Calendar
@@ -446,5 +426,4 @@ $mod_strings = Array(
 'LBL_ARE_YOU_SURE'=>'Tem certeza?',
 'Calendar ID' => 'ID Agenda',
 );
-
 ?>

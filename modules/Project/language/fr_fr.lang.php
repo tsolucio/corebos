@@ -2,12 +2,12 @@
 /***********************************************************
 *  Module	   : Projects
 *  Language	 : French
-*  Version	  : 5.4.0 
+*  Version	  : 5.4.0
 *  License	  : GPL
 *  Author	   : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'LBL_MODULE_NAME'=>'Projets',
 	'LBL_MODULE_TITLE'=>'Projets',
 	'LBL_NEW_PROJECT'=>'Nouveau Project',
@@ -19,7 +19,6 @@ $mod_strings = Array(
 	'LBL_CUSTOM_INFORMATION' => 'Informations spécifiques',
 	'LBL_PROJECT_INFORMATION' => 'Détails projet',
 	'LBL_DESCRIPTION_INFORMATION' => 'Description',
-	'projectid' => 'Projet ID',
 	'Assigned To' => 'Assigné à',
 	'Start Date' => 'Début',
 	'Target End Date' => 'Date de fin prévue',
@@ -58,5 +57,4 @@ $mod_strings = Array(
 	'Project Team' => 'Equipe projet',
 	'Project ID' => 'Projet ID',
 );
-
 ?>

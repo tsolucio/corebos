@@ -23,7 +23,6 @@ $mod_strings = array (
   'LBL_SELECT_FILE' => 'Seleziona file:',
   'LBL_CUSTOM' => 'Customizzato',
   'LBL_DONT_MAP' => '-- Non mappare questo campo -',
-  'LBL_STEP_1_TITLE' => 'Seleziona il file .CSV',
   'LBL_WHAT_IS' => 'Seleziona un fonte dati tra le seguenti:',
   'LBL_MICROSOFT_OUTLOOK' => 'Microsoft Outlook',
   'LBL_ACT' => 'Act!',

@@ -51,7 +51,6 @@ $mod_strings = array (
 	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED'=>'File Upload Limit exceeded!!',
 	'JSLBL_MAIL_SENT'=>'Mail Sent',
 	'JSLBL_EMAIL_FORMAT_INCORRECT'=>'Please provide proper email address',
-	'JSLBL_Saving'=>'Saving',
 	'JSLBL_SaveWith_EmptySubject'=>'Save with subject empty?',
 	'JSLBL_Delete'            =>  'Delete',
 	'JSLBL_Drafts'=>'Drafts',
@@ -170,5 +169,4 @@ $mod_strings = array (
 	'LBL_TO_USERS' => 'To Users',
 	'LBL_SENT_MAILS' => 'Sent Mails'
 );
-
 ?>

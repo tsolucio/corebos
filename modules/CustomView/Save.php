@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('include/logging.php');
-require_once('include/utils/utils.php');
+require_once 'include/logging.php';
+require_once 'include/utils/utils.php';
 global $adb, $log, $current_user;
 
 $cvid = (int) vtlib_purify($_REQUEST["record"]);
@@ -168,9 +168,9 @@ if ($cvmodule != "") {
 							}
 							$fieldType = $fieldObj->getFieldDataType();
 
-							if ($fieldType == 'currency' or $fieldType == 'double') {
+							if ($fieldType == 'currency' || $fieldType == 'double') {
 								$flduitype = $fieldObj->getUIType();
-								if ($flduitype == '72' or $flduitype == 9 or $flduitype ==7) {
+								if ($flduitype == '72' || $flduitype == 9 || $flduitype ==7) {
 									$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value, null, true);
 								} else {
 									$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value);
@@ -334,10 +334,10 @@ if ($cvmodule != "") {
 							}
 							$fieldType = $fieldObj->getFieldDataType();
 
-							if ($fieldType == 'currency' or $fieldType == 'double') {
+							if ($fieldType == 'currency' || $fieldType == 'double') {
 								// Some currency fields like Unit Price, Total, Sub-total etc of Inventory modules and normal numbers do not need currency conversion
 								$flduitype = $fieldObj->getUIType();
-								if ($flduitype == '72' or $flduitype == 9 or $flduitype ==7) {
+								if ($flduitype == '72' || $flduitype == 9 || $flduitype ==7) {
 									$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value, null, true);
 								} else {
 									$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value);

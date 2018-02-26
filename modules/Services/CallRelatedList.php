@@ -121,7 +121,7 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 		RelatedListViewSession::addRelatedModuleToSession($relationId, vtlib_purify($_REQUEST['selected_header']));
 	}
 	$open_related_modules = RelatedListViewSession::getRelatedModulesFromSession();
-	$smarty->assign("SELECTEDHEADERS", $open_related_modules);
+	$smarty->assign('SELECTEDHEADERS', $open_related_modules);
 
 	$smarty->display('RelatedLists.tpl');
 }

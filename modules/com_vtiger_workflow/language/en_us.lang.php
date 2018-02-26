@@ -38,7 +38,6 @@ $mod_strings = array(
 'LBL_WORKFLOW_NOTE_CRON_CONFIG'=>'NOTE: You should have Workflow cron script configured.',
 'LBL_NO_TEMPLATES'=>'No Templates',
 'LBL_SELECT'=>'Select',
-'LBL_MESSAGE'=>'Message',
 'LBL_SET_FIELD_VALUES'=>'Set Field Values',
 'LBL_ADD_FIELD'=>'Add Field',
 

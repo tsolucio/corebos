@@ -566,7 +566,6 @@
   'Symbol Placement' => 'Posizione Simbolo Valuta',
   'Digit Grouping Separator' => 'Separatore delle Migliaia',
   'Digit Grouping Pattern' => 'Modello Raggruppamento delle Migliaia',
-  'Number Of Currency Decimals'  =>  'Number Of Currency Decimals',
   'LBL_SHOWN' => 'Mostrato',
   'LBL_HIDDEN' => 'Nascosto',
   'LBL_SHOW' => 'Mostra',
@@ -814,6 +813,5 @@
 'LBL_QUERY' => 'Query',
 'LBL_FORE_LASTNAME' => 'Nome o Cognome',
 'LBL_NO_LDAP_MATCHES' => 'Combinazione non trovata nel server LDAP!',
- );
-
+);
 ?>

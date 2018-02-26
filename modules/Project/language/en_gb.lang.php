@@ -19,7 +19,6 @@ $mod_strings = array(
 	'LBL_CUSTOM_INFORMATION' => 'Custom Information',
 	'LBL_PROJECT_INFORMATION' => 'Project Information',
 	'LBL_DESCRIPTION_INFORMATION' => 'Description Information',
-	'projectid' => 'Project ID',
 	'Project ID' => 'Project ID',
 	'Assigned To' => 'Assigned To',
 	'Start Date' => 'Start Date',

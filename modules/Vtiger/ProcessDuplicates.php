@@ -7,9 +7,9 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('Smarty_setup.php');
-require_once('modules/Users/Users.php');
-require_once('include/utils/utils.php');
+require_once 'Smarty_setup.php';
+require_once 'modules/Users/Users.php';
+require_once 'include/utils/utils.php';
 
 $module = vtlib_purify($_REQUEST['module']);
 $focus = CRMEntity::getInstance($module);

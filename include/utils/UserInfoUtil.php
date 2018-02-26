@@ -29,7 +29,7 @@ function getMailServerInfo($user)
 
 /** To get the Role of the specified user
   * @param $userid -- The user Id:: Type integer
-  * @returns  vtiger_roleid :: Type String
+  * @returns roleid :: Type String
  */
 function fetchUserRole($userid)
 {
@@ -358,7 +358,7 @@ function insertRole2ProfileRelation($roleId,$profileId)
 	$log->debug('Exiting insertRole2ProfileRelation method ...');
 }
 
-/** Function to get the vtiger_roleid from vtiger_rolename
+/** Function to get the roleid from rolename
  * @param $rolename -- Role Name:: Type varchar
  * @returns Role Id:: Type varchar
  */
@@ -1737,6 +1737,50 @@ function getRoleAndSubordinatesRoleIds($roleId) {
 	}
 	$log->debug('Exiting getRoleAndSubordinatesRoleIds method...');
 	return $roleInfo;
+}
+
+/** Function to get the role and subordinate hierarchy
+ * @returns $roleSubRoleIds-- Role and Subordinates RoleIds in an Array tree of hierarchy dependencies
+ */
+function getRoleAndSubordinatesHierarchy() {
+	global $log, $adb;
+	$hquery = 'select * from vtiger_role order by parentrole asc';
+	$hr_res = $adb->pquery($hquery, array());
+	$num_rows = $adb->num_rows($hr_res);
+	$hrarray = array();
+	for ($l=0; $l<$num_rows; $l++) {
+		$roleid = $adb->query_result($hr_res, $l, 'roleid');
+		$parent = $adb->query_result($hr_res, $l, 'parentrole');
+		$temp_list = explode('::', $parent);
+		$size = count($temp_list);
+		$i=0;
+		$k=array();
+		$y=$hrarray;
+		if (count($hrarray) == 0) {
+			$hrarray[$temp_list[0]]= array();
+		} else {
+			while ($i<$size-1) {
+				$y=$y[$temp_list[$i]];
+				$k[$temp_list[$i]] = $y;
+				$i++;
+			}
+			$y[$roleid] = array();
+			$k[$roleid] = array();
+			//Reversing the Array
+			$rev_temp_list=array_reverse($temp_list);
+			$j=0;
+			//Now adding this into the main array
+			foreach ($rev_temp_list as $value) {
+				if ($j == $size-1) {
+					$hrarray[$value]=$k[$value];
+				} else {
+					$k[$rev_temp_list[$j+1]][$value]=$k[$value];
+				}
+				$j++;
+			}
+		}
+	}
+	return $hrarray;
 }
 
 /** Function to get delete the spcified role

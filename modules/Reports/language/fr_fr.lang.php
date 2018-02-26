@@ -41,7 +41,6 @@ $mod_strings = array (
 	'LBL_COLUMNS_AVERAGE' => 'Moyenne',
 	'LBL_COLUMNS_LOW_VALUE' => 'Valeur la plus basse',
 	'LBL_COLUMNS_LARGE_VALUE' => 'Valeur la plus élevée',
-	'LBL_NONE' => 'Aucun',
 	'LBL_GROUPING_SORT' => 'Ordre :',
 	'LBL_GROUPING_SUMMARIZE' => 'Grouper par :',
 	'LBL_GROUPING_THEN_BY' => 'puis par :',
@@ -293,6 +292,6 @@ $mod_strings = array (
 	'LBL_COLUMNS_COUNT'=>'Compter',
 	'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Erreur lors de la suppression du répertoire.',
 	'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Erreur lors de la suppression des rapports du répertoire',
+	'ERR_CREATE_REPORT' => 'Error creating the report.',
 );
-
 ?>

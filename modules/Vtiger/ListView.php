@@ -9,13 +9,13 @@
  ************************************************************************************/
 global $app_strings, $mod_strings, $current_language, $currentModule, $theme;
 $list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $currentModule);
-require_once('Smarty_setup.php');
-require_once('include/ListView/ListView.php');
-require_once('modules/CustomView/CustomView.php');
-require_once('include/DatabaseUtil.php');
+require_once 'Smarty_setup.php';
+require_once 'include/ListView/ListView.php';
+require_once 'modules/CustomView/CustomView.php';
+require_once 'include/DatabaseUtil.php';
 
 checkFileAccessForInclusion("modules/$currentModule/$currentModule.php");
-require_once("modules/$currentModule/$currentModule.php");
+require_once "modules/$currentModule/$currentModule.php";
 
 $category = getParentTab();
 $url_string = '';
@@ -101,7 +101,7 @@ if ($sql_error) {
 } else {
 // Enabling Module Search
 	$url_string = '';
-	if (isset($_REQUEST['query']) and $_REQUEST['query'] == 'true') {
+	if (isset($_REQUEST['query']) && $_REQUEST['query'] == 'true') {
 		$queryGenerator->addUserSearchConditions($_REQUEST);
 		$ustring = getSearchURL($_REQUEST);
 		$url_string .= "&query=true$ustring";
@@ -235,7 +235,7 @@ if ($sql_error) {
 		ListViewSession::setSessionQuery($currentModule, $list_query, $viewid);
 
 	// Gather the custom link information to display
-		include_once('vtlib/Vtiger/Link.php');
+		include_once 'vtlib/Vtiger/Link.php';
 		$customlink_params = array('MODULE'=>$currentModule, 'ACTION'=>vtlib_purify($_REQUEST['action']), 'CATEGORY'=> $category);
 		$smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), array('LISTVIEWBASIC','LISTVIEW'), $customlink_params));
 	// END

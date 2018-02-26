@@ -13,36 +13,40 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
-$Vtiger_Utils_Log = true;
+////////////////////////
+// NOTE: this code only works correctly for fields whose name is not repeated in any module, for example custom fields.
+//   if you have a field called name or something similar that can be on a lot of modules you will get false positives
+////////////////////////
+
+$Vtiger_Utils_Log = false;
 include_once 'vtlib/Vtiger/Module.php';
 global $current_user, $adb;
-$fldname = vtlib_purify($_GET['fieldname']);
-$modname = vtlib_purify($_GET['modulename']);
+$fldname = vtlib_purify($_REQUEST['fieldname']);
+$modname = vtlib_purify($_REQUEST['modulename']);
 $mod = Vtiger_Module::getInstance($modname);
-$field = Vtiger_Field::getInstance($fldname,$mod);
+$field = Vtiger_Field::getInstance($fldname, $mod);
 
 // Workflow Conditions
 $crs = $adb->pquery('SELECT workflow_id,summary FROM `com_vtiger_workflows` WHERE test like ?', array('%'.$fldname.'%'));
 if ($crs and $adb->num_rows($crs)>0) {
 	while ($fnd=$adb->fetch_array($crs)) {
-		echo 'Field found in workflow condtions: ';
+		echo $mod_strings['wf_conditions_found'];
 		echo $fnd['workflow_id']. ' / ' .$fnd['summary'];
 		echo '<br>';
 	}
 } else {
-	echo 'Field not found in workflow condtions<br>';
+	echo $mod_strings['wf conditions'].'<br>';
 }
 
 // Workflow Tasks
-$crs = $adb->pquery('SELECT workflow_id,task_id,summary FROM `com_vtiger_workflowtasks` WHERE task like  ?', array('%'.$fldname.'%'));
+$crs = $adb->pquery('SELECT workflow_id,task_id,summary FROM `com_vtiger_workflowtasks` WHERE task like ?', array('%'.$fldname.'%'));
 if ($crs and $adb->num_rows($crs)>0) {
 	while ($fnd=$adb->fetch_array($crs)) {
-		echo 'Field found in workflow ('.$fnd['workflow_id'].') task ('.$fnd['task_id'].'): ';
-		echo $fnd['summary'];
-		echo '<br>';
+		echo $mod_strings['wf_tasks_found'].'('.$fnd['workflow_id'].') '.$mod_strings['LBL_TASK'].' ('.$fnd['task_id'].'): ';
+		echo $fnd['summary'].'<br>';
 	}
 } else {
-	echo 'Field not found in workflow tasks<br>';
+	echo $mod_strings['wf_tasks'].'<br>';
 }
 
 // Custom View Columns
@@ -52,11 +56,10 @@ $crs = $adb->pquery(
 );
 if ($crs and $adb->num_rows($crs)>0) {
 	while ($fnd=$adb->fetch_array($crs)) {
-		echo 'Field found in custom view columns: '.$fnd['viewname'];
-		echo '<br>';
+		echo $mod_strings['cv_column'].$fnd['viewname'].'<br>';
 	}
 } else {
-	echo 'Field not found in custom view columns<br>';
+	echo  $mod_strings['cv_column_nf'].'<br>';
 }
 
 // Custom View Conditions
@@ -66,11 +69,10 @@ $crs = $adb->pquery(
 );
 if ($crs and $adb->num_rows($crs)>0) {
 	while ($fnd=$adb->fetch_array($crs)) {
-		echo 'Field found in custom view conditions: '.$fnd['viewname'];
-		echo '<br>';
+		echo $mod_strings['cv_advfilter'].$fnd['viewname'].'<br>';
 	}
 } else {
-	echo 'Field not found in custom view conditions<br>';
+	echo $mod_strings['cv_advfilter_nf'].'<br>';
 }
 
 // Custom View Date Filters
@@ -80,22 +82,20 @@ $crs = $adb->pquery(
 );
 if ($crs and $adb->num_rows($crs)>0) {
 	while ($fnd=$adb->fetch_array($crs)) {
-		echo 'Field found in custom view date conditions: '.$fnd['viewname'];
-		echo '<br>';
+		echo $mod_strings['cv_stdfilter'].$fnd['viewname'].'<br>';
 	}
 } else {
-	echo 'Field not found in custom view date conditions<br>';
+	echo $mod_strings['cv_stdfilter_nf'].'<br>';
 }
 
 // Email Templates
 $crs = $adb->pquery('SELECT templateid,templatename FROM `vtiger_emailtemplates` WHERE subject like ? or body like ?', array('%'.$fldname.'%', '%'.$fldname.'%'));
 if ($crs and $adb->num_rows($crs)>0) {
 	while ($fnd=$adb->fetch_array($crs)) {
-		echo 'Field found in Email Template: '.$fnd['templateid'].' :: '.$fnd['templatename'];
-		echo '<br>';
+		echo $mod_strings['email_templates'].$fnd['templateid'].' :: '.$fnd['templatename'].'<br>';
 	}
 } else {
-	echo 'Field not found in Email Templates<br>';
+	echo $mod_strings['email_templates_nf'].'<br>';
 }
 
 // Report Fields
@@ -108,11 +108,10 @@ $crs = $adb->pquery(
 );
 if ($crs and $adb->num_rows($crs)>0) {
 	while ($fnd=$adb->fetch_array($crs)) {
-		echo 'Field found in Report (columns): '.$fnd['reportid'].' :: '.$fnd['reportname'];
-		echo '<br>';
+		echo $mod_strings['select_column'].$fnd['reportid'].' :: '.$fnd['reportname'].'<br>';
 	}
 } else {
-	echo 'Field not found in Report Columns<br>';
+	echo $mod_strings['select_column_nf'].'<br>';
 }
 
 // Report Date Filters
@@ -125,11 +124,10 @@ $crs = $adb->pquery(
 );
 if ($crs and $adb->num_rows($crs)>0) {
 	while ($fnd=$adb->fetch_array($crs)) {
-		echo 'Field found in Report (Date Filters): '.$fnd['reportid'].' :: '.$fnd['reportname'];
-		echo '<br>';
+		echo $mod_strings['report_dtfilter'].$fnd['reportid'].' :: '.$fnd['reportname'].'<br>';
 	}
 } else {
-	echo 'Field not found in Report Date Filters<br>';
+	echo $mod_strings['report_dtfilter_nf'].'<br>';
 }
 
 // Report Group By
@@ -142,11 +140,10 @@ $crs = $adb->pquery(
 );
 if ($crs and $adb->num_rows($crs)>0) {
 	while ($fnd=$adb->fetch_array($crs)) {
-		echo 'Field found in Report (Group By): '.$fnd['reportid'].' :: '.$fnd['reportname'];
-		echo '<br>';
+		echo $mod_strings['report'].$fnd['reportid'].' :: '.$fnd['reportname'].'<br>';
 	}
 } else {
-	echo 'Field not found in Report Group By<br>';
+	echo $mod_strings['report_nf'].'<br>';
 }
 
 // Report Sort By
@@ -159,11 +156,10 @@ $crs = $adb->pquery(
 );
 if ($crs and $adb->num_rows($crs)>0) {
 	while ($fnd=$adb->fetch_array($crs)) {
-		echo 'Field found in Report (Sort By): '.$fnd['reportid'].' :: '.$fnd['reportname'];
-		echo '<br>';
+		echo $mod_strings['report_sort'].$fnd['reportid'].' :: '.$fnd['reportname'].'<br>';
 	}
 } else {
-	echo 'Field not found in Report Sort By<br>';
+	echo $mod_strings['report_sort_nf'].'<br>';
 }
 
 // Report Summary
@@ -176,11 +172,10 @@ $crs = $adb->pquery(
 );
 if ($crs and $adb->num_rows($crs)>0) {
 	while ($fnd=$adb->fetch_array($crs)) {
-		echo 'Field found in Report (Summary): '.$fnd['reportid'].' :: '.$fnd['reportname'];
-		echo '<br>';
+		echo $mod_strings['report_summary'].$fnd['reportid'].' :: '.$fnd['reportname'].'<br>';
 	}
 } else {
-	echo 'Field not found in Report Summary<br>';
+	echo $mod_strings['report_summary_nf'].'<br>';
 }
 
 // Lead Mapping
@@ -201,9 +196,9 @@ if (in_array($modname, array('Contacts','Accounts','Potentials','Leads'))) {
 	}
 	$crs = $adb->pquery("SELECT 1 FROM `vtiger_convertleadmapping` WHERE $searchon = ?", array($field->id));
 	if ($crs && $adb->num_rows($crs)>0) {
-		echo 'Field found in Lead Conversion Mapping<br>';
+		echo $mod_strings['cl_mapping'].'<br>';
 	} else {
-		echo 'Field not found in Lead Conversion Mapping<br>';
+		echo $mod_strings['cl_mapping_nf'].'<br>';
 	}
 }
 ?>

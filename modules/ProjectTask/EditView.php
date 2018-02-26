@@ -9,6 +9,5 @@
  ************************************************************************************/
 require_once 'modules/Vtiger/EditView.php';
 
-	$smarty->display('salesEditView.tpl');
-
+$smarty->display('salesEditView.tpl');
 ?>

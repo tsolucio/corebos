@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 global $app_strings, $mod_strings, $current_language, $currentModule, $theme, $adb;
-require_once('Smarty_setup.php');
+require_once 'Smarty_setup.php';
 
 $focus = CRMEntity::getInstance($currentModule);
 $smarty = new vtigerCRM_Smarty();
@@ -34,7 +34,7 @@ if ($isduplicate == 'true') {
 	$smarty->assign('__cbisduplicatedfromrecordid', $record);
 }
 $focus->preEditCheck($_REQUEST, $smarty);
-if (!empty($_REQUEST['save_error']) and $_REQUEST['save_error'] == "true") {
+if (!empty($_REQUEST['save_error']) && $_REQUEST['save_error'] == "true") {
 	if (!empty($_REQUEST['encode_val'])) {
 		global $current_user;
 		$encode_val = vtlib_purify($_REQUEST['encode_val']);
@@ -161,7 +161,7 @@ if ($focus->mode != 'edit' && $mod_seq_field != null) {
 		$smarty->assign("MOD_SEQ_ID", $autostr);
 	}
 } else {
-	if (!empty($mod_seq_field) and !empty($mod_seq_field['name']) and !empty($focus->column_fields[$mod_seq_field['name']])) {
+	if (!empty($mod_seq_field) && !empty($mod_seq_field['name']) && !empty($focus->column_fields[$mod_seq_field['name']])) {
 		$smarty->assign('MOD_SEQ_ID', $focus->column_fields[$mod_seq_field['name']]);
 	} else {
 		$smarty->assign('MOD_SEQ_ID', '');

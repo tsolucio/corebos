@@ -1,4 +1,16 @@
-<?php // $Id: iCalendar_rfc2445.php,v 1.7 2005/07/21 23:23:48 defacer Exp $
+<?php
+/**
+ *  BENNU - PHP iCalendar library
+ *  (c) 2005-2006 Ioannis Papaioannou (pj@moodle.org). All rights reserved.
+ *
+ *  Released under the LGPL.
+ *
+ *  See http://bennu.sourceforge.net/ for more information and downloads.
+ *
+ * @author Ioannis Papaioannou
+ * @version $Id$
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ */
 
 /*
 
@@ -13,6 +25,9 @@ define('RFC2445_CRLF',               "\r\n");
 define('RFC2445_WSP',                "\t ");
 define('RFC2445_WEEKDAYS',           'MO,TU,WE,TH,FR,SA,SU');
 define('RFC2445_FOLDED_LINE_LENGTH', 75);
+
+define('RFC2445_PARAMETER_SEPARATOR',	';');
+define('RFC2445_VALUE_SEPARATOR',    	':');
 
 define('RFC2445_REQUIRED', 0x01);
 define('RFC2445_OPTIONAL', 0x02);

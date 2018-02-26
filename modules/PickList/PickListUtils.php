@@ -333,6 +333,17 @@ function getPicklistValuesSpecialUitypes($uitype, $fieldname, $value, $action = 
 				get_available_module_picklist(getUserFldArray($mod, $current_user->roleid))
 			);
 		}
+	} elseif ($uitype == '1616') {
+		$cvrs = $adb->query('select cvid, viewname, entitytype from vtiger_customview order by viewname');
+		while ($cv = $adb->fetch_array($cvrs)) {
+			$i18nmod = getTranslatedString($cv['entitytype'], $cv['entitytype']);
+			$options[] = array(
+				$cv['viewname'].$i18nmod,
+				$cv['cvid'],
+				$cv['viewname'].' ('.$i18nmod.')',
+				($cv['cvid']==$value ? 'selected' : ''),
+			);
+		}
 	} elseif ($uitype == '1025') {
 		$values = explode(' |##| ', $value);
 		if (!empty($value) && !empty($values[0])) {

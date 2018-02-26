@@ -53,7 +53,6 @@ $mod_strings = array (
 	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED'=>'Limite de Envio de Arquivo excedido!!',
 	'JSLBL_MAIL_SENT'=>'Mensagem Enviada',
 	'JSLBL_EMAIL_FORMAT_INCORRECT'=>'Por favor, forneça um endereço de eMail apropriado',
-	'JSLBL_Saving'=>'Salvando',
 	'JSLBL_SaveWith_EmptySubject'=>'Salvar com Assunto vazio?',
 	'JSLBL_Delete'            =>  'Apagar',
 	'JSLBL_Drafts'=>'Rascunhos',
@@ -160,9 +159,6 @@ $mod_strings = array (
 	'LBL_MAILMANAGER_ADD_ProjectTask' => 'Adic. Tarefa Projeto',
 	'LBL_ADD' => 'Adicionar',
 
-		// Ranieri
-
-		'LBL_SENT_MAILS' => 'Pasta Enviadas',
 	'JSLBL_SendWith_EmptyText' => 'Enviar sem nenhum texto no corpo do eMail?',
 	'LBL_ALLMAILS' => 'Todos eMails',
 	'LBL_TO_CONTACTS' => 'P/ Contatos',
@@ -180,7 +176,5 @@ $mod_strings = array (
 	'Junk E-Mail'	=> 'Spam',
 	'Sent Items'	=> 'Enviadas',
 	'Drafts'		=> 'Rascunho',
-
 );
-
 ?>

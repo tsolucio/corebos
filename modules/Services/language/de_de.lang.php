@@ -58,7 +58,6 @@ $mod_strings = array(
 '--None--'=>'--ohne--',
 'Installation'=>'Installation',
 'Migration'=>'Migration',
-'Training'=>'Schulung',
 'Customization'=>'Anpassung',
 'Training'=>'Schulung',
 'Services ID'=>'Dienstleistungs-ID',

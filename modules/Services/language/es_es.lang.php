@@ -39,7 +39,6 @@ $mod_strings = array(
 'LBL_NEW_FORM_TITLE'=>'Nuevo Servicio',
 'LBL_SERVICE_INFORMATION'=>'Información Servicio',
 'LBL_CUSTOM_INFORMATION'=>'Información Personalizada',
-'LBL_DESCRIPTION_INFORMATION'=>'Descripción',
 
 'LBL_SERVICE'=>'Servicio',
 'LBL_NEW_SERVICE'=>'Nuevo Servicio',
@@ -110,7 +109,6 @@ $mod_strings = array(
 'LBL_ADD_SERVICE_PRICEBOOKS'=>'Añadir Servicio a Tarifas',
 'LBL_ADD_SERVICES_PRICEBOOK'=>'Añadir Servicios a Tarifa',
 'LBL_SERVICE_PRICES'=>'Precios Servicio',
-'Services'=>'Servicios',
 
 // Picklist
 '--None--' => '--Ninguno--',

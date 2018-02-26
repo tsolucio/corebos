@@ -1,5 +1,5 @@
 <?php
-/*+********************************************************************************
+/*********************************************************************************
  * The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
  * The Original Code is:  vtiger CRM Open Source
@@ -29,7 +29,6 @@ exemplo: PR, SP, MG, RS para procurar PR ou SP ou MG ou RS.',
 'LBL_AF_HDR4'=>'Se "Tipo Atividade" for selecionado, atribua um dos
 seguintes valores "Chamada", "Reunião" ou "Tarefa".',
 
-//strings added for vtiger 5, date format...
 'LBL_NONE'=>'Nada',
 'View_Name'=>'View_Name',
 'LBL_AND'=>'E',
@@ -136,7 +135,6 @@ seguintes valores "Chamada", "Reunião" ou "Tarefa".',
 'Billing Country'=>'País Faturamento',
 
 //Strings added for Contacts module fields
-
 'Office Phone'=>'Fone Escritório',
 'Home Phone'=>'Fone Residencial',
 'Birthdate'=>'Aniversário',
@@ -233,7 +231,6 @@ seguintes valores "Chamada", "Reunião" ou "Tarefa".',
 'Actual ROI'=>'ROI Atual',
 
 //Added for customview.tpl
-
 'LBL_Select_a_Column'=>'Selecione uma Coluna',
 'Missing_required_fields'=>'Campos requeridos ausentes',
 'Details'=>'Detalhes',
@@ -247,13 +244,10 @@ seguintes valores "Chamada", "Reunião" ou "Tarefa".',
 'End_Date'=>'Data Final',
 'LBL_RULE'=>'REGRA',
 
-// Added/Updated for vtiger CRM 5.0.4
 'not equal to'=>'Diferente de',
 'starts with'=>'Início com',
 'ends with'=>'Final com',
 //'Product Code'=>'Product Code',
-
-// Added after 5.0.4 GA
 
 //Added for Role based Custom filters
 'LBL_SET_AS_PUBLIC'=>'Definir como Público',

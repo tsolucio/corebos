@@ -25,7 +25,7 @@
  *  the default value given: if a variable record is not found or the current user does not have access to the Global Variable module
 */
 function cbws_SearchGlobalVar($gvname, $defaultvalue, $gvmodule, $user) {
-	global $log, $adb, $current_user;
+	global $log, $adb;
 
 	$entityName = 'GlobalVariable';
 	$webserviceObject = VtigerWebserviceObject::fromName($adb, $entityName);

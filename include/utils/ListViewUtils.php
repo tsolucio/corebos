@@ -1342,6 +1342,14 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 	} elseif ($uitype == 15 || ($uitype == 55 && $fieldname == "salutationtype") || $uitype == 16 || $uitype == 1613 || $uitype == 1614 || $uitype == 1615) {
 		$value = getTranslatedString($temp_val, $module);
 		$value = textlength_check($value);
+	} elseif ($uitype == 1616) {
+		$cvrs = $adb->pquery('select viewname,entitytype from vtiger_customview where cvid=?', array($temp_val));
+		if ($cvrs && $adb->num_rows($cvrs)>0) {
+			$cv = $adb->fetch_array($cvrs);
+			$value = $cv['viewname'].' ('.getTranslatedString($cv['entitytype'], $cv['entitytype']).')';
+		} else {
+			$value = $temp_val;
+		}
 	} elseif ($uitype == 71 || $uitype == 72) {
 		if ($temp_val != '') {
 			// Some of the currency fields like Unit Price, Total, Sub-total etc of Inventory modules, do not need currency conversion

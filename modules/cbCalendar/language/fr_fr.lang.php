@@ -40,7 +40,6 @@ $mod_strings = array(
 	'LBL_SENDREMINDER' => 'Envoyer rappel',
 	'Created Time' => 'Créé le',
 	'Modified Time' => 'Modifié le',
-	'Activity Type' => 'Type',
 	'Description' => 'Description ',
 	'Recurrence' => 'Récurence',
 	'LBL_RELATEDTO' => 'Relatif à',

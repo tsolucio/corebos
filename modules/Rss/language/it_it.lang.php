@@ -1,17 +1,11 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Description:  Defines the English language pack for the RSS module.
- * Contributor(s): ______________________________________..
  ********************************************************************************/
 
 $mod_strings = array (
@@ -36,10 +30,9 @@ $mod_strings = array (
   'LBL_FEEDS_LIST' => 'Lista Feed da:',
   'LBL_ERROR_MSG' => 'Nessun RSS Feed &egrave; stato selezionato oppure le tue impostazioni di Proxy non sono corrette',
   'LBL_REGRET_MSG' => 'Spiacente: Non &egrave; possibile raggiungere l`URL RSS',
-  'UNABLE_TO_SAVE' => 'Impossibile salvare l`url del feed Rss',
   'NOT_A_VALID' => 'Non &egrave; un feed Rss valido o i settaggi del tuo Proxy non sono corretti',
 'INVALID_RSS_URL' => 'URL RSS non valido',
-'UNABLE_TO_SAVE' => 'Impossibile Salvare URL',
+'UNABLE_TO_SAVE' => 'Impossibile salvare l`url del feed Rss',
 
 );
 ?>

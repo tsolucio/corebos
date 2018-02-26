@@ -352,7 +352,6 @@ $app_strings = array(
 'Sales Stage'=>'Verkaufsstufe',
 'Amount'=>'Betrag',
 'Expected Close'=>'Abschluss',
-'Contact Name'=>'Person',
 'Related to'=>'bezogen auf',
 'File'=>'Datei',
 'Last Modified'=>'letzte Änderung',
@@ -388,7 +387,6 @@ $app_strings = array(
 'Tasks'=>'Aufgaben',
 'Todo'=>'Aufgabe',
 'Call'=>'Anruf',
-'Meeting'=>'Meeting',
 'PriceBook'=>'Preisliste',
 'Calendar'=>'Aufgaben',
 'Home'=>'Home',
@@ -401,7 +399,6 @@ $app_strings = array(
 'Rss'=>'RSS',
 'Portal'=>'Meine Seiten',
 'Webmails'=>'Webmail',
-'Attachments'=>'Anhänge',
 'Ticket History'=>'Ticket-Historie',
 'Purchase Order'=>'Einkaufsbestellung',
 'Sales Stage History'=>'Verkaufshistorie',
@@ -421,7 +418,6 @@ $app_strings = array(
 'Tools'=>'Werkzeuge',
 'Settings'=>'Einstellungen',
 'LBL_INFORMATION'=>'Information',
-'LBL_MORE'=>'mehr',
 'LBL_BASIC'=>'Stammdaten',
 'LBL_CREATING'=>'erstelle',
 'LBL_DUPLICATING' => 'Klonen von',
@@ -434,7 +430,6 @@ $app_strings = array(
 'Product'=>'Produkt',
 'Activity'=>'Aktivität',
 'Event'=>'Ereignis',
-'Task'=>'Aufgabe',
 'Quote'=>'Angebot',
 'Ticket'=>'Ticket',
 'Campaign'=>'Kampagne',
@@ -449,12 +444,10 @@ $app_strings = array(
 'LBL_RSS_FEEDS'=>'RSS Feeds',
 'LBL_ADD_RSS_FEEDS'=>'Neuer RSS Feed',
 'LNK_NEW_FAQ'=>'Neue Wissensbasis',
-'Vendor Name'=>'Lieferant',
 'LNK_WEARE'=>'Wir',
 'LBL_DISCUSS'=>'diskutiere mit anderen Benutzern',
 'Quote Stage'=>'Angebotsstufe',
 'Potential Name'=>'Verkaufspotential',
-'Total'=>'Total',
 'First Name'=>'Vorname',
 'Last Name'=>'Nachname',
 'User Name'=>'Benutzername',
@@ -472,7 +465,6 @@ $app_strings = array(
 'Start Date'=>'Start',
 'Start Date & Time' => 'Termin beginnt (System Date)',
 'Recurring Type'=> 'Wiederholungsart',
-'SalesOrder'=> 'Verkäufe',
 'LBL_QUOTE_NAME'=>'Angebotsname',
 'LBL_NEW_QUOTE_BUTTON_TITLE'=>'Neues Angebot [Alt+Q]',
 'LBL_NEW_QUOTE_BUTTON_KEY'=>'Q',
@@ -866,7 +858,6 @@ $app_strings = array(
 'LBL_CONTACT_FIRST_NAME'=>'Person - Vorname',
 'Office Phone'=>'Tel. direkt',
 'Sender'=>'Sender',
-'Website'=>'Webseite',
 'Activity Type'=>'Aktivitätentyp',
 'Created Time'=>'erstellt',
 'Modified Time'=>'geändert',
@@ -935,7 +926,6 @@ $app_strings = array(
 'Planned'=>'geplant',
 'Held'=>'durchgeführt',
 'Not Held'=>'nicht durchgeführt',
-'Call'=>'Anruf',
 'Meeting'=>'Meeting',
 'Task'=>'Aufgabe',
 'Completed'=>'erledigt',
@@ -943,7 +933,6 @@ $app_strings = array(
 'Not Started'=>'Nicht begonnen',
 'In Progress'=>'In Bearbeitung',
 'Pending Input'=>'erwarte Zuarbeit',
-//Export Records <-----ENDS
 
 'Trouble Tickets'=>'Trouble Tickets',
 'LBL_NOT_ACCESSIBLE'=>'Ansicht gesperrt',
@@ -979,11 +968,8 @@ $app_strings = array(
 'RELATED_PARENT'=>'bezogen auf übergeordnetes Modul',
 //Added for select parent role button in picklist
 'LBL_SELECT_PARENTROLE' => 'Die übergeordnete Rolle selektieren',
-//Added for migration check
 'LBL_MIGRATION_CHECK'=>'Versionen in der Datenbank und der Datei sind gleich. Es kann keine Migration gemacht werden.',
-//Added for ticket #4595
 'LBL_RECORD_NOT_FOUND'=>'Der Eintrag wurde nicht gefunden',
-//Added for i18n issue (report 06/12/2007)
 'Reorder Level' => 'Reorder Level',
 'Handler' => 'Verantwortlich',
 'Qty In Demand' => 'Minimalmenge',
@@ -1045,9 +1031,6 @@ $app_strings = array(
 'Discount'=>'Rabatt',
 'LBL_ADD_BUTTON' => 'erstelle',
 
-// Added after 5.0.4 GA
-
-//Added to Fix i18N issue in Email Template
 'LBL_GENERAL_FIELDS'=>'Allgemeine Felder', 
 //For Users fields
 'HomePhone'=>'Telefon privat',
@@ -1070,7 +1053,6 @@ $app_strings = array(
 'MSG_AUTO_GEN_ON_SAVE'=>'AUTOMATISCHE NUMMERVERGABE BEIM SPEICHERN',
 
 //For Duplicate merging feature
-'LBL_MERGE' => 'Merge',
 'LBL_MERGE_BUTTON_TITLE' => 'Zusammenführen',
 'LBL_SAVE_MERGE_BUTTON_TITLE' => 'Duplikate suchen',
 'LBL_SELECT_MERGECRITERIA_HEADER' => 'Auswahl der Kriterien',
@@ -1415,7 +1397,6 @@ $app_currency_strings = array(
 	'Venezuela, Bolivares Fuertes' => 'Venezuela, Bolivares Fuertes',
 	'Vietnam, Dong' 		=> 'Vietnam, Dong',
 	'Zimbabwe Dollars' 		=> 'Zimbabwe Dollars',
-	'China, Yuan Renminbi' 	=> 'China, Yuan Renminbi',
 	'Afghanistan, Afghanis' => 'Afghanistan, Afghanis',
 	'Cambodia, Riels' 		=> 'Cambodia, Riels',
 	'China, Yuan Renminbi' => 'China, Yuan Renminbi',
