@@ -919,5 +919,8 @@ $mod_strings = array (
 	'report_summary_nf' => 'Campo NO encontrado en Informes (Agregaciones)',
 	'cl_mapping' => 'Campo encontrado en la Conversión de PreContactos',
 	'cl_mapping_nf' => 'Campo NO encontrado en la Conversión de PreContactos',
+	'Site Maintenance' => 'Mantenimiento Aplicación',
+	'SM_BeBackSoon' => 'Volveremos pronto!',
+	'SM_SorryInconvenience' => 'Disculpa las molestias, pero estamos realizando un mantenimiento en este momento. ¡Pronto volveremos a estar en línea!',
 );
 ?>

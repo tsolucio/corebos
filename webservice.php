@@ -27,7 +27,7 @@
 
 	$API_VERSION = "0.22";
 	$adminid = Users::getActiveAdminId();
-	if (!GlobalVariable::getVariable('Webservice_Enabled',1,'Users',$adminid)) {
+	if (!GlobalVariable::getVariable('Webservice_Enabled', 1, 'Users', $adminid) || coreBOS_Settings::getSetting('cbSMActive', 0)) {
 		echo 'Webservice - Service is not active';
 		return;
 	}

@@ -997,5 +997,8 @@ $mod_strings = array(
 	'report_summary_nf' => 'Field not found in Report Summary',
 	'cl_mapping' => 'Field found in Lead Conversion Mapping',
 	'cl_mapping_nf' => 'Field not found in Lead Conversion Mapping',
+	'Site Maintenance' => 'Site Maintenance',
+	'SM_BeBackSoon' => 'We&rsquo;ll be back soon!',
+	'SM_SorryInconvenience' => 'Sorry for the inconvenience but we&rsquo;re performing some maintenance at the moment. We&rsquo;ll be back online shortly!',
 );
 ?>

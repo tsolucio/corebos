@@ -17,7 +17,7 @@ require_once('include/utils/CommonUtils.php');
 require_once('include/utils/VtlibUtils.php');
 require_once 'modules/Users/Users.php';
 $adminid = Users::getActiveAdminId();
-if (!GlobalVariable::getVariable('SOAP_CustomerPortal_Enabled',1,'Users',$adminid)) {
+if (!GlobalVariable::getVariable('SOAP_CustomerPortal_Enabled', 1, 'Users', $adminid) || coreBOS_Settings::getSetting('cbSMActive', 0)) {
 	echo 'SOAP - Service is not active';
 	return;
 }

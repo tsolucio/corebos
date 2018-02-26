@@ -150,7 +150,11 @@ if ($use_current_login) {
 		$qry_res = $adb->pquery("select internal_mailer from vtiger_users where id=?", array($_SESSION["authenticated_user_id"]));
 		coreBOS_Session::set('internal_mailer', $adb->query_result($qry_res, 0, 'internal_mailer'));
 	}
-	$log->debug("We have an authenticated user id: ".$_SESSION["authenticated_user_id"]);
+	$log->debug('We have an authenticated user id: '.$_SESSION['authenticated_user_id']);
+	if (coreBOS_Settings::getSetting('cbSMActive', 0) && !is_adminID($_SESSION['authenticated_user_id'])) {
+		include 'modules/Vtiger/maintenance.php';
+		exit;
+	}
 } elseif (isset($action) && isset($module) && $action=="Authenticate" && $module=="Users") {
 	$log->debug("We are authenticating user now");
 } else {
