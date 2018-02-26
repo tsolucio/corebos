@@ -12,7 +12,6 @@ $mod_strings = array(
 	'ADD_PICKLIST_VALUES'=>'Aggiungi valori picklist',
 	'LBL_EXISTING_PICKLIST_VALUES'=>'Valori esistenti',
 	'LBL_PICKLIST_ADDINFO'=>'Aggiungi qui nuove voci',
-//	'LBL_SELECT_ROLES'=>'Select roles',
 	'LBL_NON_EDITABLE_PICKLIST_ENTRIES'=>'Valore non modificabile',
 	'EDIT_PICKLIST_VALUE'=>'Modifica valori nella picklist',
 	'LBL_EDIT_HERE'=>'Sostituisci con: ',

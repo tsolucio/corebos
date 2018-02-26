@@ -1,14 +1,10 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific apmt_locationuage governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
 
@@ -63,13 +59,11 @@ $mod_strings = array (
   'LBL_WEEK' => 'Settimana',
   'LBL_WEEK_BUTTON_KEY' => 'S',
   'LBL_WEEK_BUTTON_TITLE' => 'Settimana [Alt+W]',
-  'LBL_WEEKS' => 'Settimana(e)',
   'LBL_NEXT_WEEK' => 'prossima Settimana',
   'LBL_LAST_WEEK' => 'scorsa Settimana',
   'LBL_4WEEKS_BACK' => '4 settimane indietro',
   'LBL_4WEEKS_PLUS' => '4 settimane avanti',
   'LBL_RELOAD' => 'Ricarica',
-  
 
   'LBL_APPCREATED_BY' => 'Creato da',
   'LBL_AT_DATE_TIME' => 'al',
@@ -92,14 +86,13 @@ $mod_strings = array (
   'LBL_CONTACT_LIST'=>'Lista contatti:',  
 
 'LBL_APP_IGNORE_TIME2' => '(es.l`appuntamento ha luogo senza particolare periodo in questi giorni',
-  
+
   'LBL_APP_ERR001' => 'Data Invalida nel campo %s !',
   'LBL_APP_ERR002' => 'inizio dopo la fine !',
   'LBL_APP_ERR003' => 'Contatto Mancante!',
   'LBL_APP_ERR004' => 'Soggetto Mancante!',
-  'ERR_DELETE_RECORD' => 'Un numero di record deve essere specificato per cancellare l`azienda',
   'DELETE_CONFIRMATION' => 'Sei sicuro di volet cancella questo appuntamento?',
-  
+
 'AppLoc'=> Array('0' => 'Ufficio'
 			, '1' => 'Fuori'
 			, '2' => 'Vacanza'
@@ -291,16 +284,12 @@ $mod_strings = array (
   'ERR_DELETE_RECORD'=>"Bisogna specificare un record per eliminare un account.",
   'NTC_NONE_SCHEDULED' => 'Nulla di pianificato.',
 
-
   'LBL_ATTACHMENTS' => 'Allegati',
   'LBL_NEW_ATTACHMENT' => 'Nuovo Allegato',
 
-
   'LBL_ALL' => 'Tutti',
-  'LBL_CALL'=>'Chiamata',
   'LBL_MEETING' => 'Riunione',
   'LBL_TASK' => 'Compito',
-
 
   'Subject' => 'Oggetto',
   'Assigned To' => 'Assegnato a',
@@ -335,7 +324,6 @@ $mod_strings = array (
   'Start Date' => 'Data di inizio',
   'Type' => 'Tipo',
   'End Date' => 'Data di chiusura',
-  'Recurrence' => 'Ricorrenza',
   'Recurring Type' => 'Tipo Ricorrenza',
 
   'LBL_NOTIFICATION_ERROR' => 'Errore nella mail: controlla la configurazione del server di posta in uscita, in IMPOSTAZIONI > CONFIGURAZIONE SERVER DI POSTA. Oppure la presente Mail non e configurata per la tua utenza',
@@ -409,7 +397,6 @@ $mod_strings = array (
   'LBL_CREATED' => 'creato',
   'LBL_UPDATED' => 'aggiornato',
 
-//Added after 5.0.4 GA
 'LBL_BUSY' => 'Occupato',
 
 //Custom Fields support for Calendar
@@ -435,5 +422,4 @@ $mod_strings = array (
 'LBL_ARE_YOU_SURE'=>'Sei sicuro?',
 'Calendar ID' => 'ID Calendario',
 );
-
 ?>

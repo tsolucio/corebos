@@ -42,7 +42,6 @@ $mod_strings = array (
   'LBL_COLUMNS_AVERAGE' => 'Media',
   'LBL_COLUMNS_LOW_VALUE' => 'Valore pi&ugrave; basso',
   'LBL_COLUMNS_LARGE_VALUE' => 'Valore pi&ugrave; alto',
-  'LBL_NONE' => 'Nessuno',
   'LBL_GROUPING_SORT' => 'Ordine dell`elenco:',
   'LBL_GROUPING_SUMMARIZE' => 'Riassumi le informazioni per:',
   'LBL_GROUPING_THEN_BY' => 'e quindi per:',
