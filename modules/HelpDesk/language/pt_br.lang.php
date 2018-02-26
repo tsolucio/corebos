@@ -150,10 +150,8 @@ $mod_strings = array(
 'Dear'=> 'Prezado(a)',
 'LBL_PORTAL_BODY_MAILINFO' => 'O Ticket em referência foi',
 'LBL_DETAIL' => 'e os detalhes do mesmo são apresentados abaixo:',
-'LBL_REGARDS'=> 'Cordialmente',
 'LBL_TEAM'=> 'Equipe HelpDesk',
 'LBL_TICKET_DETAILS' => 'Detalhes Ticket',
-'LBL_SUBJECT' => 'Assunto : ',
 'created' => 'criado',
 'replied' => 'respondido',
 'reply'=>'Existe uma resposta para',
@@ -195,5 +193,4 @@ $mod_strings = array(
 'Comment Added' => 'Comentário Adicionado',
 'HelpDesk ID' => 'ID Tickets',
 );
-
 ?>

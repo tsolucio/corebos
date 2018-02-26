@@ -6,12 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Notes/language/en_us.lang.php,v 1.10 2005/03/28 06:33:37 rank Exp $
- * Description:  Defines the English language pack for the Documents module.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
 
@@ -72,14 +66,11 @@ $mod_strings = array(
 'os'=>'Plataforma',
 'LBL_FOLDER_NAME'=>'Nome Pasta',
 'LBL_DOWNLOAD_TYPE'=>'Tipo Download',
-'LBL_INTERNAL'=>'Interno',
-'LBL_EXTERNAL'=>'Externo',
 'LBL_EXTERNAL_FILE_NAME'=>'Nome Arquivo',
 'LBL_FILE_LOCATION'=>'Localização Arquivo',
 'LBL_PD'=>'Plataforma Dependente',
 'LBL_PIND'=>'Plataforma Independente',
 'ChoosePlatform'=>'Escolha Plataforma',
-'LBL_INACTIVE'=>'Inativo',
 'LBL_UPLOAD_BUTTON'=>'Transferir',
 'architecture'=>'Arquitetura',
 'LBL_DOWNLOAD_FILE'=>'Download Arquivo',

@@ -8,9 +8,6 @@
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 13/04/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
-/**
- * this file can be used to internationalise the strings present in the picklist
- */
 $mod_strings = array(
 	'LBL_ASSIGN_BUTTON'=>'Designar',
 	'ADD_PICKLIST_VALUES'=>'Adicionar valores Lista Opções',
@@ -28,7 +25,6 @@ $mod_strings = array(
 	'LBL_PICKLIST_VALUES_ASSIGNED_TO'=>'Valores Lista de Opções designados para ',
 	'LBL_ADD_TO_OTHER_ROLES'=>'Adicionar outra Função',
 	'LBL_OK_BUTTON_LABEL'=>'Ok',
-	'LBL_SELECT_ROLES'=>'Selecionar Função',
 	'LBL_DISPLAYED_VALUES'=>'Todos os valores acessíveis para a função estão apresentados abaixo',
 
 	// For Dependency picklist

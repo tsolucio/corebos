@@ -12,7 +12,6 @@ $mod_strings = array (
 'CustomerPortal' => 'Portal do Cliente',
 'LBL_BASIC_SETTINGS'=>'Configurações Básicas',
 'LBL_ADVANCED_SETTINGS'=>'Configurações Avançadas',
-'LBL_MODULE'=>'Módulo',
 'LBL_VIEW_ALL_RECORD'=>'Visualizar Todos os Registros Relacionados?',
 'YES'=>'Sim',
 'NO'=>'Não',
@@ -24,8 +23,6 @@ $mod_strings = array (
 'Module' => 'Módulo',
 'Sequence' =>'Sequência',
 'Visible'=>'Visível',
-
-// Ranieri 20-8-16
 
 'LBL_CUSTOMERPORTAL_SETTINGS'=>'Configurações Portal do Cliente',
 'LBL_MODULE_INFORMATION'=>'Informação Módulo',

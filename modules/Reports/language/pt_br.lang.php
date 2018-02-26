@@ -44,7 +44,6 @@ $mod_strings = array(
 'LBL_COLUMNS_AVERAGE'=>'Média',
 'LBL_COLUMNS_LOW_VALUE'=>'Valor Mínimo',
 'LBL_COLUMNS_LARGE_VALUE'=>'Valor Máximo',
-'LBL_NONE'=>'Nada',
 'LBL_GROUPING_SORT'=>'Ordem Classificação:',
 'LBL_GROUPING_SUMMARIZE'=>'Informação Resumida por:',
 'LBL_GROUPING_THEN_BY'=>'e então por:',
@@ -89,7 +88,6 @@ $mod_strings = array(
 'LBL_TYPE_THE_NAME'=>'Tipo Nome',
 'LBL_DESCRIPTION_FOR_REPORT'=>'Descrição Relatório',
 'LBL_REPORT_NAME'=>'Nome do Relatório',
-'LBL_DESCRIPTION'=>'Descrição',
 'LBL_TOOLS'=>'Ferramentas',
 'LBL_AND'=>'e',
 'LBL_ADD_NEW_GROUP'=>'Adicionar Novo Grupo',
@@ -203,7 +201,6 @@ $mod_strings = array(
 'ticketid'=>'No. Ticket',
 'NO_COLUMN'=>'Nenhuma Coluna disponível para Total',
 
-// Added/Updated for vtiger CRM 5.0.4
 'LBL_REPORT_DELETED' => 'O Relatório que você está tentando visualizar foi apagado.',
 
 //Added for Reports
@@ -268,7 +265,6 @@ $mod_strings = array(
 'WEEKDAY_STRINGS' => array('Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'),
 'MONTH_STRINGS' => array('Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'),
 
-'LBL_AUTO_GENERATED_REPORT_EMAIL' => 'Este é um email auto-gerado enviado a partir de um relatório agendado.',
 'LBL_TIME_FORMAT_MSG' => 'hh:mm (Formato 24 horas)',
 'LBL_RELOAD_REPORT' => 'Reload Report',
 'LBL_SAVE_REPORT' => 'Salvar',
@@ -307,5 +303,5 @@ $mod_strings = array(
 'LBL_AUTO_GENERATED_REPORT_EMAIL' => 'Este é um email gerado automaticamente em nome de um relatório agendado.',
 'LBL_DESCRIPTION'=>'Descrição',
 'ERR_CREATE_REPORT' => 'Error creating the report.',
-)
+);
 ?>
