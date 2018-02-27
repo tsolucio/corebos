@@ -326,7 +326,11 @@ if ($reportid == '' || ($reportid!='' && isset($_REQUEST['saveashidden']) && $_R
 			echo $errormessage;
 			die;
 		}
-		echo '<script>window.location.href ="index.php?module=Reports&action=SaveAndRun&record='.$genQueryId.'";</script>';
+		if ($cbreporttype == 'external') {
+			echo '<script>window.location.href ="index.php?module=Reports&action=SaveAndRun&record='.$genQueryId.'";</script>';
+		} else {
+			echo '<script>window.opener.location.href ="index.php?module=Reports&action=SaveAndRun&record='.$genQueryId.'";self.close();</script>';
+		}
 	}
 }else
 {

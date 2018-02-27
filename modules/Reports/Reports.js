@@ -454,12 +454,25 @@ function CreateReport(element)
 {
 	if(document.getElementById(element) == null) return;
 	var module = document.getElementById(element).value;
+	if (document.querySelectorAll('input[name="cbreporttype"]:checked')[0].value == 'external') {
 	var arg ='index.php?module=Reports&action=ReportsAjax&file=NewReport0&folder='+gcurrepfolderid+'&reportmodule='+module+'&cbreporttype='+document.querySelectorAll('input[name="cbreporttype"]:checked')[0].value;
 	fnPopupWin(arg);
+    }
+    else {
+    var arg ='index.php?module=Reports&action=ReportsAjax&file=NewReport0&folder='+gcurrepfolderid+'&reportmodule='+module+'&cbreporttype='+document.querySelectorAll('input[name="cbreporttype"]:checked')[0].value;
+    fbPopupWin(arg);
+    }
 }
+
 function fnPopupWin(winName){
-	window.open(winName, "ReportWindow","width=1020px,height=680px,scrollbars=yes");
+	window.open(winName, "_blank");
 }
+
+function fbPopupWin(arg){
+	window.open(arg, "ReportWindow","width=1020px,height=680px,scrollbars=yes");
+}
+
+
 function re_dateValidate(fldval,fldLabel,type) {
 	if(re_patternValidate(fldval,fldLabel,"DATE")==false)
 		return false;
@@ -1151,7 +1164,7 @@ function selectReport() {
 	var id = document.NewReport.another_report.options  [document.NewReport.another_report.selectedIndex].value;
 	var folderid = getObj('folderid').value;
 	url ='index.php?action=SaveAndRun&module=Reports&record='+id+'&folderid='+folderid;
-	gotourl(url);
+	window.open(url, "_blank");
 }
 
 function SaveAsReport(id) {
