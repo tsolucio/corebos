@@ -1767,9 +1767,8 @@ class ReportRun extends CRMEntity {
 			$matrix = $this->queryPlanner->newDependencyMatrix();
 
 			$matrix->setDependency('vtiger_inventoryproductrelQuotes', array('vtiger_productsQuotes', 'vtiger_serviceQuotes'));
-
-			$query = "from vtiger_quotes
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_quotes.quoteid";
+			$focus = CRMEntity::getInstance($module);
+			$query = $focus->generateReportsQuery($module, $this->queryPlanner);
 
 			if ($this->queryPlanner->requireTable('vtiger_quotesbillads')) {
 				$query .= " inner join vtiger_quotesbillads on vtiger_quotes.quoteid=vtiger_quotesbillads.quotebilladdressid";
@@ -1790,23 +1789,6 @@ class ReportRun extends CRMEntity {
 				if ($this->queryPlanner->requireTable("vtiger_serviceQuotes")) {
 					$query .= " left join vtiger_service as vtiger_serviceQuotes on vtiger_serviceQuotes.serviceid = vtiger_inventoryproductrelQuotes.productid";
 				}
-			}
-			if ($this->queryPlanner->requireTable("vtiger_quotescf")) {
-				$query .= " left join vtiger_quotescf on vtiger_quotes.quoteid = vtiger_quotescf.quoteid";
-			}
-			if ($this->queryPlanner->requireTable("vtiger_usersQuotes") || $this->queryPlanner->requireTable("vtiger_groupsQuotes")) {
-				$query .= " left join vtiger_users as vtiger_usersQuotes on vtiger_usersQuotes.id = vtiger_crmentity.smownerid";
-				$query .= " left join vtiger_groups as vtiger_groupsQuotes on vtiger_groupsQuotes.groupid = vtiger_crmentity.smownerid";
-			}
-
-			$query .= " left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid";
-			$query .= " left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid";
-
-			if ($this->queryPlanner->requireTable("vtiger_lastModifiedByQuotes")) {
-				$query .= " left join vtiger_users as vtiger_lastModifiedByQuotes on vtiger_lastModifiedByQuotes.id = vtiger_crmentity.modifiedby";
-			}
-			if ($this->queryPlanner->requireTable('vtiger_CreatedByQuotes')) {
-				$query .= " left join vtiger_users as vtiger_CreatedByQuotes on vtiger_CreatedByQuotes.id = vtiger_crmentity.smcreatorid";
 			}
 			if ($this->queryPlanner->requireTable("vtiger_usersRel1")) {
 				$query .= " left join vtiger_users as vtiger_usersRel1 on vtiger_usersRel1.id = vtiger_quotes.inventorymanager";
@@ -1831,9 +1813,8 @@ class ReportRun extends CRMEntity {
 			$matrix = $this->queryPlanner->newDependencyMatrix();
 
 			$matrix->setDependency('vtiger_inventoryproductrelPurchaseOrder', array('vtiger_productsPurchaseOrder', 'vtiger_servicePurchaseOrder'));
-
-			$query = "from vtiger_purchaseorder
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_purchaseorder.purchaseorderid";
+			$focus = CRMEntity::getInstance($module);
+			$query = $focus->generateReportsQuery($module, $this->queryPlanner);
 
 			if ($this->queryPlanner->requireTable("vtiger_pobillads")) {
 				$query .= " inner join vtiger_pobillads on vtiger_purchaseorder.purchaseorderid=vtiger_pobillads.pobilladdressid";
@@ -1855,26 +1836,10 @@ class ReportRun extends CRMEntity {
 					$query .= " left join vtiger_service as vtiger_servicePurchaseOrder on vtiger_servicePurchaseOrder.serviceid = vtiger_inventoryproductrelPurchaseOrder.productid";
 				}
 			}
-			if ($this->queryPlanner->requireTable("vtiger_purchaseordercf")) {
-				$query .= " left join vtiger_purchaseordercf on vtiger_purchaseorder.purchaseorderid = vtiger_purchaseordercf.purchaseorderid";
-			}
-			if ($this->queryPlanner->requireTable("vtiger_usersPurchaseOrder") || $this->queryPlanner->requireTable("vtiger_groupsPurchaseOrder")) {
-				$query .= " left join vtiger_users as vtiger_usersPurchaseOrder on vtiger_usersPurchaseOrder.id = vtiger_crmentity.smownerid";
-				$query .= " left join vtiger_groups as vtiger_groupsPurchaseOrder on vtiger_groupsPurchaseOrder.groupid = vtiger_crmentity.smownerid";
-			}
 			if ($this->queryPlanner->requireTable("vtiger_accountsPurchaseOrder")) {
 				$query .= " left join vtiger_account as vtiger_accountsPurchaseOrder on vtiger_accountsPurchaseOrder.accountid = vtiger_purchaseorder.accountid";
 			}
 
-			$query .= " left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid";
-			$query .= " left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid";
-
-			if ($this->queryPlanner->requireTable("vtiger_lastModifiedByPurchaseOrder")) {
-				$query .= " left join vtiger_users as vtiger_lastModifiedByPurchaseOrder on vtiger_lastModifiedByPurchaseOrder.id = vtiger_crmentity.modifiedby";
-			}
-			if ($this->queryPlanner->requireTable('vtiger_CreatedByPurchaseOrder')) {
-				$query .= " left join vtiger_users as vtiger_CreatedByPurchaseOrder on vtiger_CreatedByPurchaseOrder.id = vtiger_crmentity.smcreatorid";
-			}
 			if ($this->queryPlanner->requireTable("vtiger_vendorRelPurchaseOrder")) {
 				$query .= " left join vtiger_vendor as vtiger_vendorRelPurchaseOrder on vtiger_vendorRelPurchaseOrder.vendorid = vtiger_purchaseorder.vendorid";
 			}
@@ -1933,9 +1898,9 @@ class ReportRun extends CRMEntity {
 			$matrix = $this->queryPlanner->newDependencyMatrix();
 
 			$matrix->setDependency('vtiger_inventoryproductrelSalesOrder', array('vtiger_productsSalesOrder', 'vtiger_serviceSalesOrder'));
+			$focus = CRMEntity::getInstance($module);
+			$query = $focus->generateReportsQuery($module, $this->queryPlanner);
 
-			$query = "from vtiger_salesorder
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_salesorder.salesorderid";
 			if ($this->queryPlanner->requireTable("vtiger_sobillads")) {
 				$query .= " inner join vtiger_sobillads on vtiger_salesorder.salesorderid=vtiger_sobillads.sobilladdressid";
 			}
@@ -1956,9 +1921,6 @@ class ReportRun extends CRMEntity {
 					$query .= " left join vtiger_service as vtiger_serviceSalesOrder on vtiger_serviceSalesOrder.serviceid = vtiger_inventoryproductrelSalesOrder.productid";
 				}
 			}
-			if ($this->queryPlanner->requireTable("vtiger_salesordercf")) {
-				$query .=" left join vtiger_salesordercf on vtiger_salesorder.salesorderid = vtiger_salesordercf.salesorderid";
-			}
 			if ($this->queryPlanner->requireTable("vtiger_contactdetailsSalesOrder")) {
 				$query .= " left join vtiger_contactdetails as vtiger_contactdetailsSalesOrder on vtiger_contactdetailsSalesOrder.contactid = vtiger_salesorder.contactid";
 			}
@@ -1973,20 +1935,6 @@ class ReportRun extends CRMEntity {
 			}
 			if ($this->queryPlanner->requireTable("vtiger_invoice_recurring_info")) {
 				$query .= " left join vtiger_invoice_recurring_info on vtiger_invoice_recurring_info.salesorderid = vtiger_salesorder.salesorderid";
-			}
-			if ($this->queryPlanner->requireTable("vtiger_usersSalesOrder") || $this->queryPlanner->requireTable("vtiger_groupsSalesOrder")) {
-				$query .= " left join vtiger_users as vtiger_usersSalesOrder on vtiger_usersSalesOrder.id = vtiger_crmentity.smownerid";
-				$query .= " left join vtiger_groups as vtiger_groupsSalesOrder on vtiger_groupsSalesOrder.groupid = vtiger_crmentity.smownerid";
-			}
-
-			$query .= " left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid";
-			$query .= " left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid";
-
-			if ($this->queryPlanner->requireTable("vtiger_lastModifiedBySalesOrder")) {
-				$query .= " left join vtiger_users as vtiger_lastModifiedBySalesOrder on vtiger_lastModifiedBySalesOrder.id = vtiger_crmentity.modifiedby";
-			}
-			if ($this->queryPlanner->requireTable('vtiger_CreatedBySalesOrder')) {
-				$query .= " left join vtiger_users as vtiger_CreatedBySalesOrder on vtiger_CreatedBySalesOrder.id = vtiger_crmentity.smcreatorid";
 			}
 			if ($this->queryPlanner->requireTable('vtiger_currency_info')) {
 				$query .= ' LEFT JOIN vtiger_currency_info ON vtiger_currency_info.id = vtiger_salesorder.currency_id';

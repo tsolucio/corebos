@@ -235,13 +235,7 @@ class PurchaseOrder extends CRMEntity {
 		$matrix->setDependency('vtiger_purchaseorder',array('vtiger_crmentityPurchaseOrder', "vtiger_currency_info$secmodule",
 				'vtiger_purchaseordercf', 'vtiger_vendorRelPurchaseOrder', 'vtiger_pobillads',
 				'vtiger_poshipads', 'vtiger_inventoryproductrelPurchaseOrder', 'vtiger_contactdetailsPurchaseOrder'));
-		$query = $this->getRelationQuery($module,$secmodule,"vtiger_purchaseorder","purchaseorderid",$queryPlanner);
-		if ($queryPlanner->requireTable("vtiger_crmentityPurchaseOrder", $matrix)) {
-			$query .= " left join vtiger_crmentity as vtiger_crmentityPurchaseOrder on vtiger_crmentityPurchaseOrder.crmid=vtiger_purchaseorder.purchaseorderid and vtiger_crmentityPurchaseOrder.deleted=0";
-		}
-		if ($queryPlanner->requireTable("vtiger_purchaseordercf")) {
-			$query .= " left join vtiger_purchaseordercf on vtiger_purchaseorder.purchaseorderid = vtiger_purchaseordercf.purchaseorderid";
-		}
+		$query = parent::generateReportsSecQuery($module, $secmodule, $queryPlanner, $type, $where_condition);
 		if ($queryPlanner->requireTable("vtiger_pobillads")) {
 			$query .= " left join vtiger_pobillads on vtiger_purchaseorder.purchaseorderid=vtiger_pobillads.pobilladdressid";
 		}
@@ -268,23 +262,11 @@ class PurchaseOrder extends CRMEntity {
 				$query .= " left join vtiger_service as vtiger_servicePurchaseOrder on vtiger_servicePurchaseOrder.serviceid = vtiger_inventoryproductrelPurchaseOrder.productid";
 			}
 		}
-		if ($queryPlanner->requireTable("vtiger_usersPurchaseOrder")) {
-			$query .= " left join vtiger_users as vtiger_usersPurchaseOrder on vtiger_usersPurchaseOrder.id = vtiger_crmentityPurchaseOrder.smownerid";
-		}
-		if ($queryPlanner->requireTable("vtiger_groupsPurchaseOrder")) {
-			$query .= " left join vtiger_groups as vtiger_groupsPurchaseOrder on vtiger_groupsPurchaseOrder.groupid = vtiger_crmentityPurchaseOrder.smownerid";
-		}
 		if ($queryPlanner->requireTable("vtiger_vendorRelPurchaseOrder")) {
 			$query .= " left join vtiger_vendor as vtiger_vendorRelPurchaseOrder on vtiger_vendorRelPurchaseOrder.vendorid = vtiger_purchaseorder.vendorid";
 		}
 		if ($queryPlanner->requireTable("vtiger_contactdetailsPurchaseOrder")) {
 			$query .= " left join vtiger_contactdetails as vtiger_contactdetailsPurchaseOrder on vtiger_contactdetailsPurchaseOrder.contactid = vtiger_purchaseorder.contactid";
-		}
-		if ($queryPlanner->requireTable("vtiger_lastModifiedByPurchaseOrder")) {
-			$query .= " left join vtiger_users as vtiger_lastModifiedByPurchaseOrder on vtiger_lastModifiedByPurchaseOrder.id = vtiger_crmentityPurchaseOrder.modifiedby ";
-		}
-		if ($queryPlanner->requireTable("vtiger_CreatedByPurchaseOrder")) {
-			$query .= " left join vtiger_users as vtiger_CreatedByPurchaseOrder on vtiger_CreatedByPurchaseOrder.id = vtiger_crmentityPurchaseOrder.smcreatorid ";
 		}
 		return $query;
 	}
