@@ -13,8 +13,8 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
-require_once('include/utils/utils.php');
-require_once('modules/Reports/Reports.php');
+require_once 'include/utils/utils.php';
+require_once 'modules/Reports/Reports.php';
 
 header('Content-Type: application/json');
 
@@ -68,7 +68,7 @@ if (isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 		}
 	} //  ======== STEP 4 ==========
 	elseif ($step == 4) {
-		if (isset($_REQUEST['cbreporttype']) and ($_REQUEST['cbreporttype']=='external' or $_REQUEST['cbreporttype']=='directsql')) {
+		if (isset($_REQUEST['cbreporttype']) && ($_REQUEST['cbreporttype']=='external' || $_REQUEST['cbreporttype']=='directsql')) {
 			echo json_encode(array('permission'=>1));
 			die();
 		}
@@ -88,7 +88,7 @@ if (isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 			if ($permission == false) {
 				echo json_encode(array("permission"=>0));
 			} else {
-				if (isset($_REQUEST['cbreporttype']) and $_REQUEST['cbreporttype']=='crosstabsql') {
+				if (isset($_REQUEST['cbreporttype']) && $_REQUEST['cbreporttype']=='crosstabsql') {
 					echo json_encode(array(
 						'permission'=>1,
 						'BLOCK1' => $SECMODFIELDS,
@@ -113,7 +113,7 @@ if (isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 			if ($permission == false) {
 				echo json_encode(array('permission'=>0));
 			} else {
-				if (isset($_REQUEST['cbreporttype']) and $_REQUEST['cbreporttype']=='crosstabsql') {
+				if (isset($_REQUEST['cbreporttype']) && $_REQUEST['cbreporttype']=='crosstabsql') {
 					echo json_encode(array('permission'=>1,'BLOCK1'=>$SECMODFIELDS,'AGGFIELDS'=>$AGGFIELDS));
 				} else {
 					echo json_encode(array('permission'=>1,'BLOCK1'=>$BLOCK1));
@@ -129,7 +129,7 @@ if (isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 
 			$oReport->secmodule = $secondarymodule;
 			$BLOCK1 = $oReport->sgetColumntoTotalSelected($oReport->primodule, $oReport->secmodule, $recordid);
-			if (isset($_REQUEST['cbreporttype']) and $_REQUEST['cbreporttype']=='crosstabsql') {
+			if (isset($_REQUEST['cbreporttype']) && $_REQUEST['cbreporttype']=='crosstabsql') {
 				echo json_encode(array(
 					'aggfield' => $minfo['aggfield'],
 					'crosstabaggfunction' => $minfo['crosstabaggfunction'],
@@ -152,7 +152,7 @@ if (isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 			echo json_encode(array("BLOCK1"=>$BLOCK1));
 		}
 	} elseif ($step == 6) {
-		require_once('modules/CustomView/CustomView.php');
+		require_once 'modules/CustomView/CustomView.php';
 
 		if (isset($recordid)) {
 			//added to fix the ticket #5117
@@ -355,11 +355,11 @@ function get_Secondmodules($oReport, $primarymodule) {
 	$permission = true;
 	$secondarymodules =array();
 	if (!empty($oReport->related_modules[$primarymodule])) {
-		foreach ($oReport->related_modules[$primarymodule] as $key => $value) {
-			if (isset($_REQUEST["secondarymodule_".$value])) {
-				$secondarymodules []= $_REQUEST["secondarymodule_".$value];
-				$oReport->getSecModuleColumnsList($_REQUEST["secondarymodule_".$value]);
-				if (!isPermitted($_REQUEST["secondarymodule_".$value], 'index')== "yes" && !empty($_REQUEST["secondarymodule_".$value])) {
+		foreach ($oReport->related_modules[$primarymodule] as $value) {
+			if (isset($_REQUEST['secondarymodule_'.$value])) {
+				$secondarymodules []= $_REQUEST['secondarymodule_'.$value];
+				$oReport->getSecModuleColumnsList($_REQUEST['secondarymodule_'.$value]);
+				if (!isPermitted($_REQUEST['secondarymodule_'.$value], 'index')== 'yes' && !empty($_REQUEST['secondarymodule_'.$value])) {
 					$permission = false;
 				}
 			}
@@ -381,7 +381,7 @@ function getPrimaryColumnsHTML($module, $secondmodule) {
 
 	$block_listed = array();
 	$modules_list = array();
-	foreach ($ogReport->module_list[$module] as $key => $value) {
+	foreach ($ogReport->module_list[$module] as $value) {
 		$modules_optgroup = array();
 		if (isset($ogReport->pri_module_columnslist[$module][$value]) && !isset($block_listed[$value])) {
 			$block_listed[$value] = true;
@@ -420,7 +420,7 @@ function getSecondaryColumnsHTML($module) {
 			if (vtlib_isModuleActive($secmodule[$i])) {
 				$i18nModule = getTranslatedString($secmodule[$i], $secmodule[$i]);
 				$block_listed = array();
-				foreach ($ogReport->module_list[$secmodule[$i]] as $key => $value) {
+				foreach ($ogReport->module_list[$secmodule[$i]] as $value) {
 					if (isset($ogReport->sec_module_columnslist[$secmodule[$i]][$value]) && !isset($block_listed[$value])) {
 						$block_listed[$value] = true;
 						$optgroup = array();
@@ -456,7 +456,7 @@ function getPrimaryColumns_GroupingHTML($module, $selected = "") {
 
 	$oReport->getPriModuleColumnsList($module);
 	$list = array();
-	foreach ($oReport->module_list[$module] as $key => $value) {
+	foreach ($oReport->module_list[$module] as $value) {
 		if (isset($oReport->pri_module_columnslist[$module][$value]) && !isset($block_listed[$value])) {
 			$block_listed[$value] = true;
 
@@ -520,7 +520,7 @@ function getSecondaryColumns_GroupingHTML($module, $selected = "") {
 				$i18nModule = getTranslatedString($mod, $mod);
 				$mod_strings = return_module_language($current_language, $mod);
 				$block_listed = array();
-				foreach ($oReport->module_list[$mod] as $key => $value) {
+				foreach ($oReport->module_list[$mod] as $value) {
 					if (isset($oReport->sec_module_columnslist[$mod][$value]) && empty($block_listed[$value])) {
 						$block_listed[$value] = true;
 
@@ -562,13 +562,9 @@ function getSecondaryColumns_GroupingHTML($module, $selected = "") {
 function getGroupByTimeDiv($sortid, $reportid = '') {
 	require_once 'include/utils/CommonUtils.php';
 	global $adb, $mod_strings;
-	$query = "select * from vtiger_reportgroupbycolumn where reportid=? and sortid=?";
+	$query = 'select * from vtiger_reportgroupbycolumn where reportid=? and sortid=?';
 	$result = $adb->pquery($query, array($reportid,$sortid));
 	$rows = $adb->num_rows($result);
-	$yearselected = '';
-	$monthselected = '';
-	$quarterselected = '';
-	$noneselected='';
 
 	$options = array(
 		array("value" => "None","label" => $mod_strings['LBL_NONE']),
@@ -589,10 +585,10 @@ function getGroupByTimeDiv($sortid, $reportid = '') {
 		}
 	} else {
 		$displaystyle = 'none';
-		$options[0]["selected"] = true;
+		$options[0]['selected'] = true;
 	}
 
-	return array("display"=>$displaystyle,"options" => $options);
+	return array('display'=>$displaystyle, 'options' => $options);
 }
 
 /**
@@ -603,7 +599,6 @@ function getGroupByTimeDiv($sortid, $reportid = '') {
 function getOrderGrouping($sortorder = "") {
 	global $app_strings;
 
-	$list = array();
 	$ascending = array("value"=>"Ascending","label"=>$app_strings['Ascending']);
 	$descending = array("value"=>"Descending","label"=>$app_strings['Descending']);
 	$selected = array("selected"=>true);
@@ -634,9 +629,7 @@ function getOrderGrouping($sortorder = "") {
  *  This Returns a HTML combo srings
  */
 function getPrimaryStdFilterHTML($module, $selected = "") {
-	global $current_language;
 	$ogReport = new Reports();
-
 	$ogReport->oCustomView=new CustomView();
 	$result = $ogReport->oCustomView->getStdCriteriaByModule($module);
 	$filters = array();
@@ -703,7 +696,7 @@ function getPrimaryColumns_AdvFilterHTML($module, $selected = "") {
 	$ogReport = new Reports();
 	$filters = array();
 	$ogReport->getPriModuleColumnsList($module);
-	foreach ($ogReport->module_list[$module] as $key => $value) {
+	foreach ($ogReport->module_list[$module] as $value) {
 		if (isset($ogReport->pri_module_columnslist[$module][$value]) && empty($block_listed[$value])) {
 			$block_listed[$value] = true;
 			$optgroup = array(
@@ -740,7 +733,7 @@ function getSecondaryColumns_AdvFilterHTML($module, $selected = "") {
 			if (vtlib_isModuleActive($secmodule[$i])) {
 				$block_listed = array();
 				$i18nModule = getTranslatedString($secmodule[$i], $secmodule[$i]);
-				foreach ($ogReport->module_list[$secmodule[$i]] as $key => $value) {
+				foreach ($ogReport->module_list[$secmodule[$i]] as $value) {
 					if (isset($ogReport->sec_module_columnslist[$secmodule[$i]][$value]) && empty($block_listed[$value])) {
 						$block_listed[$value] = true;
 						$optgroup = array(
@@ -781,8 +774,7 @@ function getRelatedColumns($selected = "") {
 	}
 	$related_fields = array();
 	foreach ($rel_fields as $i => $index) {
-		$shtml='';
-		foreach ($index as $key => $value) {
+		foreach ($index as $value) {
 			$fieldarray = explode("::", $value);
 			$rel_colums = array("value"=>$fieldarray[0], "label"=>$fieldarray[1]);
 		}
@@ -802,7 +794,7 @@ function getRelatedColumns($selected = "") {
  * @param  string $selected [description]
  * @return [type]           [description]
  */
-function getRelatedFieldColumns($selected = "") {
+function getRelatedFieldColumns() {
 	global $oReport;
 	$ogReport = new Reports();
 	$ogReport->getPriModuleColumnsList($oReport->primodule);
@@ -815,7 +807,7 @@ function getRelatedFieldColumns($selected = "") {
  *  It returns a array of selected option of sharing along with other options
  */
 function getVisibleCriteria($recordid = '') {
-	global $mod_strings, $app_strings, $adb, $current_user;
+	global $adb;
 
 	$filter = array();
 	$selcriteria = "";
@@ -826,12 +818,10 @@ function getVisibleCriteria($recordid = '') {
 	if ($selcriteria == "") {
 		$selcriteria = 'Public';
 	}
-	$filter_result = $adb->query("select * from vtiger_reportfilters");
+	$filter_result = $adb->query('select name from vtiger_reportfilters');
 	$numrows = $adb->num_rows($filter_result);
 	for ($j=0; $j<$numrows; $j++) {
-		$filter_id = $adb->query_result($filter_result, $j, "filterid");
-		$filtername = $adb->query_result($filter_result, $j, "name");
-		$name=str_replace(' ', '_', $filtername);
+		$filtername = $adb->query_result($filter_result, $j, 'name');
 		if ($filtername == 'Private') {
 			$FilterKey='Private';
 			$FilterValue=getTranslatedString('PRIVATE_FILTER');

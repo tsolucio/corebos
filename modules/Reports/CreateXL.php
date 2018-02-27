@@ -10,8 +10,8 @@
 global $php_max_execution_time, $tmp_dir, $root_directory;
 set_time_limit($php_max_execution_time);
 
-require_once('modules/Reports/ReportRun.php');
-require_once('modules/Reports/Reports.php');
+require_once 'modules/Reports/ReportRun.php';
+require_once 'modules/Reports/Reports.php';
 
 $fname = tempnam($root_directory.$tmp_dir, 'merge2.xls');
 

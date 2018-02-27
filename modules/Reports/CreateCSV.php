@@ -14,13 +14,12 @@
  * at <http://www.gnu.org/licenses/>
  *************************************************************************************************
  *  Module       : Reports
- *  Author       : Opencubed
  *************************************************************************************************/
 global $php_max_execution_time;
 set_time_limit($php_max_execution_time);
 
-require_once('modules/Reports/ReportRun.php');
-require_once('modules/Reports/Reports.php');
+require_once 'modules/Reports/ReportRun.php';
+require_once 'modules/Reports/Reports.php';
 
 global $tmp_dir, $root_directory;
 $fname = tempnam($root_directory.$tmp_dir, 'merge2.csv');
