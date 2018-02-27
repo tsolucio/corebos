@@ -179,7 +179,7 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 							} else {
 								$moduleLabel = $moduleHeader = vtlib_purify($_REQUEST['header']);
 							}
-							$moduleLabel = str_replace(' ', ':', $moduleLabel);
+							$moduleLabel = str_replace(' ', '', $moduleLabel);
 							$name = "<a href='javascript:void(0);' onClick='loadRelatedListBlock" .
 									"(\"module=$relatedmodule&action=" . $relatedmodule . "Ajax&" .
 									"file=DetailViewAjax&ajxaction=LOADRELATEDLIST&header=" . $moduleHeader .
