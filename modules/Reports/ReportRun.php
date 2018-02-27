@@ -76,6 +76,11 @@ class ReportRun extends CRMEntity {
 		$this->queryPlanner->reportRun = $this;
 	}
 
+	public function getReportName($nospaces = false, $i18n = false) {
+		$rep = ($i18n ? getTranslatedString($this->reportname, 'Reports') : $this->reportname);
+		return ($nospaces ? str_replace(' ', '_', $rep) : $rep);
+	}
+
 	/** Function to get the columns for the reportid
 	 *  This function accepts the $reportid and $outputformat (optional)
 	 *  This function returns  $columnslist Array: $tablename:$columnname:$fieldlabel:$fieldname:$typeofdata=>$tablename.$columnname As Header value,
