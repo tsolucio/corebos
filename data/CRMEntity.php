@@ -2796,6 +2796,7 @@ class CRMEntity {
 	 * returns the query string formed on relating the primary module and secondary module
 	 */
 	public function getRelationQuery($module, $secmodule, $table_name, $column_name, $queryPlanner) {
+		global $adb;
 		$tab = getRelationTables($module, $secmodule);
 
 		foreach ($tab as $key => $value) {
@@ -2807,20 +2808,25 @@ class CRMEntity {
 		$prifieldname = $fields[0][0];
 		$secfieldname = $fields[0][1];
 		$tmpname = $pritablename . 'tmp' . $secmodule;
-		if ($pritablename != $table_name && substr($pritablename, -2)=='cf') { // The relation field exists in custom field
-			$condtable = $table_name;
-		} else {
-			$condtable = $pritablename;
-		}
-		$condition = "";
+		$condition = '';
 		if (!empty($tables[1]) && !empty($fields[1])) {
-			$condvalue = $tables[1] . "." . $fields[1];
+			$condvalue = $tables[1] . '.' . $fields[1];
+			$condtable = $table_name;
+			$cntbl = $adb->getColumnNames($condtable);
+			if (!in_array($prifieldname, $cntbl)) {
+				$condtable = $pritablename;
+			}
 			$condition = "$condtable.$prifieldname=$condvalue";
 		} else {
-			$condvalue = $table_name . "." . $column_name;
+			$condvalue = $table_name . '.' . $column_name;
+			$condtable = $pritablename;
+			$cntbl = $adb->getColumnNames($condtable);
+			if (!in_array($secfieldname, $cntbl)) {
+				$condtable = $table_name;
+			}
 			$condition = "$condtable.$secfieldname=$condvalue";
 		}
-
+		$queryPlanner->addTable($condtable);
 		$selectColumns = "$table_name.*";
 
 		// Look forward for temporary table usage as defined by the QueryPlanner
