@@ -41,7 +41,7 @@ if (!empty($_REQUEST['startdate']) && !empty($_REQUEST['enddate']) && $_REQUEST[
 }
 
 $pdf = $oReportRun->getReportPDF($filterlist);
-$pdf->Output('Reports.pdf', 'D');
+$pdf->Output($oReportRun->getReportName(true, true).'.pdf', 'D');
 
 exit();
 ?>

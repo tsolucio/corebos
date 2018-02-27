@@ -49,7 +49,7 @@ if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'M
 }
 header('Content-Type: application/csv;charset=utf-8');
 header('Content-Length: '.@filesize($fname));
-header("Content-disposition: attachment; filename='Reports.csv'");
+header("Content-disposition: attachment; filename='".$oReportRun->getReportName(true, true).".csv'");
 $fh=fopen($fname, 'rb');
 fpassthru($fh);
 exit();

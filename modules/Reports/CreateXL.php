@@ -50,7 +50,7 @@ if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'M
 }
 header('Content-Type: application/x-msexcel');
 header('Content-Length: '.@filesize($fname));
-header('Content-disposition: attachment; filename="Reports.xls"');
+header('Content-disposition: attachment; filename="'.$oReportRun->getReportName(true, true).'.xls"');
 $fh=fopen($fname, 'rb');
 fpassthru($fh);
 //unlink($fname);
