@@ -199,10 +199,7 @@ class Import_Data_Controller {
 					$queryGenerator->setFields($fieldsList);
 
 					$mergeFields = $this->mergeFields;
-					foreach ($mergeFields as $index => $mergeField) {
-						if ($index != 0) {
-							$queryGenerator->addConditionGlue(QueryGenerator::$AND);
-						}
+					foreach ($mergeFields as $mergeField) {
 						$comparisonValue = $fieldData[$mergeField];
 						$fieldInstance = $moduleFields[$mergeField];
 						if ($fieldInstance->getFieldDataType() == 'owner') {
