@@ -326,7 +326,16 @@ if ($reportid == '' || ($reportid!='' && isset($_REQUEST['saveashidden']) && $_R
 			echo $errormessage;
 			die;
 		}
-		echo '<script>window.location.href ="index.php?module=Reports&action=SaveAndRun&record='.$genQueryId.'";</script>';
+		$var = unserialize($minfo);
+
+		$var_one = $var[url];
+
+		echo ' 
+			<script>
+				window.opener.location.href = "'.$var_one.'";
+				window.open("index.php?module=Reports&action=ListView", "_blank");
+				self.close();
+		 	</script>';
 	}
 }else
 {
