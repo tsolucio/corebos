@@ -651,7 +651,6 @@ $mod_strings = array(
 	'ROWSIZEERROR' => 'Row size too large. Reached maximum size limit of database table size.',
 	'ADDFIELDERROR' => 'Custom field could not be added due to a database error.',
 	'LBL_TOOLS_TO_BE_SHOWN'=>'Werkzeuge zur Anzeige',
-	'LBL_PICKLIST_GLOBAL_DELETE'=>'globales Löschen',
 	'LBL_PICKLIST_TRANSFER'=>'übertrage die Einträge von ',
 	'LBL_REPLACE_VALUE_WITH'=>'Ersetze Einträge mit ',
 	'LBL_EDIT_CUSTOM_RULE'=>'Bearbeite die benutzerdefinierte Rolle',
@@ -782,7 +781,7 @@ $mod_strings = array(
 	'LBL_AFTER_SCAN'=>'nach dem Scan',
 	'LBL_MESSAGES_FROM_LASTSCAN'=>'Nachrichten vom letzten Scan',
 	'LBL_MARK_MESSAGE_AS'=>'markiere die Nachricht als',
-
+	'LBL_ASSIGN' => 'Assign to',
 	//Added for the workflow module
 	'LBL_LIST_WORKFLOWS'=>'Liste der Workflows',
 	'LBL_LIST_WORKFLOWS_DESCRIPTION' => 'Anzeige und Gestaltung von Workflows für das CRM',
@@ -807,7 +806,6 @@ $mod_strings = array(
 	'LBL_TASKS'=>'Aufgaben',
 	'LBL_NEW_TASK_BUTTON_LABEL'=>'neue Aufgabe',
 	'LBL_TASK'=>'Aufgabe',
-	//Added for vantage customization (Mandatory fields) -- Pavani
 	'LBL_MANDATORY_FIELDS'=>'Pflichtfelder',
 	'LBL_MANDATORY_FIELDS_DESCRIPTION'=>'Verwalte die Pflichtfelder für alle Module',
 	// Module Sequence Numbering

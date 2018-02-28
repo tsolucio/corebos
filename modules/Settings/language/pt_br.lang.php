@@ -750,7 +750,7 @@ $mod_strings = array(
 'LBL_AFTER_SCAN'=>'Rastrear depois',
 'LBL_MESSAGES_FROM_LASTSCAN'=>'Mensagens do último rastreamento',
 'LBL_MARK_MESSAGE_AS'=>'Marcar mensagem como',
-
+'LBL_ASSIGN' => 'Assign to',
 //Added for the workflow module
 'LBL_LIST_WORKFLOWS'=>'Workflows',
 'LBL_LIST_WORKFLOWS_DESCRIPTION' => 'Criar e Editar Workflows',

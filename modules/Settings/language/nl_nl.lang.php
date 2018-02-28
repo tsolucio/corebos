@@ -304,7 +304,6 @@ $mod_strings = array(
 'LBL_ORGANIZATION_LOGO'=>'Logo',
 'LBL_UPLOAD'=>'Versturen',
 'LBL_FILENAME'=>'Bestandsnaam',
-'LBL_COMPANY_INFO'=>'Bedrijfsinformatie',
 'LBL_COMPANY_DETAILS'=>'Bedrijfsinformatie',
 'LBL_SEVERITY'=>'Ernstigheid',
 'LBL_FAQ_CATEGORY'=>'Categorie FAQ',
@@ -644,7 +643,6 @@ $mod_strings = array(
 'ROWSIZEERROR' => 'Row size too large. Reached maximum size limit of database table size.',
 'ADDFIELDERROR' => 'Custom field could not be added due to a database error.',
 'LBL_TOOLS_TO_BE_SHOWN'=>'Gereedschap zichtbaar',
-'LBL_PICKLIST_GLOBAL_DELETE'=>'Globaal Wissen',
 'LBL_PICKLIST_TRANSFER'=>'Transporteren waardes Van ',
 'LBL_REPLACE_VALUE_WITH'=>'Vervangen waarde van ',
 'LBL_EDIT_CUSTOM_RULE'=>'Bewerk Maatwerk Privilege Regel',
@@ -775,7 +773,7 @@ $mod_strings = array(
 'LBL_AFTER_SCAN'=>'Na scan',
 'LBL_MESSAGES_FROM_LASTSCAN'=>'Bericht van laatste scan',
 'LBL_MARK_MESSAGE_AS'=>'Markeer bericht als',
-
+'LBL_ASSIGN' => 'Assign to',
 //Added for the workflow module
 'LBL_LIST_WORKFLOWS'=>'Werkstromen',
 'LBL_LIST_WORKFLOWS_DESCRIPTION' => 'Maak en bewerk de CRM werkstromen',
@@ -932,7 +930,6 @@ $mod_strings = array(
 'LBL_ERR_SOME_TAX_LABELS_ALREADY_EXISTS' => 'Sommige belastinglabels bestaan al, maar nog niet opgeslagen.',
 'LBL_ERR_ADDTAX' => 'There may be some problem in adding the Tax type. Please try again',
 'Configuration Editor' => 'Configuratie bewerker',
-'Update configuration file of the application' => 'Bewerk de configuratie van deze toepassing.',
 
 'ModTracker' => 'ModTracker',
 'LBL_MODTRACKER_DESCRIPTION' => 'Selecteer modules voor tracking',
@@ -942,7 +939,6 @@ $mod_strings = array(
 'LBL_SELECTED_MODULES' => 'Geselecteerde Modules',
 
 'LBL_CRM_SETTINGS' => 'CRM Instellingen',
-// language translation strings
 'LBL_LANGUAGES_PACKS' => 'Language Extension',
 'LBL_EDIT_LANGUAGE_FILE' => 'Translate modules strings',
 'LBL_SELECT_TRANSLATE_MODULE' => 'Select a module to translate :',
@@ -960,7 +956,6 @@ $mod_strings = array(
 'RLNotTranslated' => 'List Title Not Translated',
 'FieldsTranslated' => 'Fields Translated',
 'FieldsNotTranslated' => 'Fields Not Translated',
-// language translation strings
 'SendEmailFrom' => 'Send Email From',
 'LeaveEmptyForUserEmail' => 'Leave empty to use your user email',
 'LBL_OPENSSL_SUPPORT' => 'OpenSSL Support',
