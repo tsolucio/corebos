@@ -39,7 +39,6 @@ if (isset($_SESSION['installation_info']['currency_code'])) $currency_code = $_S
 if (isset($_SESSION['installation_info']['currency_symbol'])) $currency_symbol = $_SESSION['installation_info']['currency_symbol'];
 if (isset($_SESSION['installation_info']['selected_optional_modules'])) $selected_optional_modules = $_SESSION['installation_info']['selected_optional_modules'];
 
-//require_once('install/CreateTables.inc.php');
 include 'install/InitSchema.php';
 global $adb;
 $adb = PearDatabase::getInstance();
