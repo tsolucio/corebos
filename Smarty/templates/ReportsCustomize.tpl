@@ -67,9 +67,9 @@
 			</td>
 			<td align="left">
 			{if $reportdetails.cbreporttype eq 'external'}
-				<a href="{$reportdetails.moreinfo}" target="_blank">{$reportdetails.reportname|@getTranslatedString:$MODULE}</a>
+				<a href="index.php?module=Reports&action=SaveAndRun&record={$reportdetails.reportid}&folderid={$reportfolder.id}" target="_blank">{$reportdetails.reportname|@getTranslatedString:$MODULE}</a>
 			{else}
-				<a href="index.php?module=Reports&action=SaveAndRun&record={$reportdetails.reportid}&folderid={$reportfolder.id}">{$reportdetails.reportname}</a>
+				<a href="index.php?module=Reports&action=SaveAndRun&record={$reportdetails.reportid}&folderid={$reportfolder.id}" target="_blank">{$reportdetails.reportname}</a>
 			{/if}
 			{if $reportdetails.sharingtype eq 'Shared'}
 				<img src="{'Meetings.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border=0 height=12 width=12 />

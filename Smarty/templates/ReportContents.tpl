@@ -56,9 +56,9 @@
 				<td>{$smarty.foreach.reportdtls.iteration}</td>
 				<td>
 				{if $reportdetails.cbreporttype eq 'external'}
-					<a href="{$reportdetails.moreinfo}" target="_blank">{$reportdetails.reportname|@getTranslatedString:$MODULE}</a>
+					<a href="index.php?module=Reports&action=SaveAndRun&record={$reportdetails.reportid}&folderid={$reportfolder.id}" target="_blank">{$reportdetails.reportname|@getTranslatedString:$MODULE}</a>
 				{else}
-					<a href="index.php?module=Reports&action=SaveAndRun&record={$reportdetails.reportid}&folderid={$reportfolder.id}">{$reportdetails.reportname|@getTranslatedString:$MODULE}</a>
+					<a href="index.php?module=Reports&action=SaveAndRun&record={$reportdetails.reportid}&folderid={$reportfolder.id}" target="_blank">{$reportdetails.reportname|@getTranslatedString:$MODULE}</a>
 				{/if}
 				{if $reportdetails.sharingtype eq 'Shared'}
 					<img src="{'Meetings.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border=0 height=12 width=12 />
@@ -67,7 +67,7 @@
 				<td>{$reportdetails.description|@getTranslatedString:$MODULE}</td>
 				<td align="center" nowrap>
 					{if $reportdetails.customizable eq '1' && $reportdetails.editable eq 'true'}
-						<a href="javascript:;" onClick="editReport('{$reportdetails.reportid}');"><img src="{'editfield.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" title="{$MOD.LBL_CUSTOMIZE_BUTTON}..." border="0"></a>
+						<a href="index.php?module=Reports&action=ReportsAjax&file=NewReport0&record={$reportdetails.reportid}" target="_blank"><img src="{'editfield.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" title="{$MOD.LBL_CUSTOMIZE_BUTTON}..." border="0"></a>
 					{/if}
 					{if $ISADMIN || ($reportdetails.state neq 'SAVED' && $reportdetails.editable eq 'true')}
 						&nbsp;|&nbsp;<a href="javascript:;" onclick="DeleteReport('{$reportdetails.reportid}');"><img src="{'delete.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" title="{$MOD.LBL_DELETE}..." border="0"></a>
