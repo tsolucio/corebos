@@ -175,37 +175,37 @@ if ($reportid == '' || ($reportid!='' && isset($_REQUEST['saveashidden']) && $_R
 				$log->info('Reports :: Save->Successfully saved vtiger_report');
 				if ($ireportresult!=false) {
 					//<<<<reportmodules>>>>>>>
-					$ireportmodulesql = "insert into vtiger_reportmodules (REPORTMODULESID,PRIMARYMODULE,SECONDARYMODULES) values (?,?,?)";
+					$ireportmodulesql = 'insert into vtiger_reportmodules (REPORTMODULESID,PRIMARYMODULE,SECONDARYMODULES) values (?,?,?)';
 					$ireportmoduleresult = $adb->pquery($ireportmodulesql, array($genQueryId, $pmodule, $smodule));
-					$log->info("Reports :: Save->Successfully saved vtiger_reportmodules");
+					$log->info('Reports :: Save->Successfully saved vtiger_reportmodules');
 					//<<<<reportmodules>>>>>>>
 
 					//<<<<step3 vtiger_reportsortcol>>>>>>>
-					if ($sort_by1 != "") {
-						$sort_by1sql = "insert into vtiger_reportsortcol (SORTCOLID,REPORTID,COLUMNNAME,SORTORDER) values (?,?,?,?)";
+					if ($sort_by1 != '') {
+						$sort_by1sql = 'insert into vtiger_reportsortcol (SORTCOLID,REPORTID,COLUMNNAME,SORTORDER) values (?,?,?,?)';
 						$sort_by1result = $adb->pquery($sort_by1sql, array(1, $genQueryId, $sort_by1, $sort_order1));
-						if (CustomReportUtils::IsDateField($sort_by1)) {
-							$groupByTime1Sql = "INSERT INTO vtiger_reportgroupbycolumn(REPORTID,SORTID,SORTCOLNAME,DATEGROUPBYCRITERIA) values(?,?,?,?)";
+						if (CustomReportUtils::isDateField($sort_by1)) {
+							$groupByTime1Sql = 'INSERT INTO vtiger_reportgroupbycolumn(REPORTID,SORTID,SORTCOLNAME,DATEGROUPBYCRITERIA) values(?,?,?,?)';
 							$groupByTime1Res = $adb->pquery($groupByTime1Sql, array($genQueryId,1,$sort_by1,$groupTime1));
 						}
 					}
-					if ($sort_by2 != "") {
-						$sort_by2sql = "insert into vtiger_reportsortcol (SORTCOLID,REPORTID,COLUMNNAME,SORTORDER) values (?,?,?,?)";
+					if ($sort_by2 != '') {
+						$sort_by2sql = 'insert into vtiger_reportsortcol (SORTCOLID,REPORTID,COLUMNNAME,SORTORDER) values (?,?,?,?)';
 						$sort_by2result = $adb->pquery($sort_by2sql, array(2,$genQueryId,$sort_by2,$sort_order2));
-						if (CustomReportUtils::IsDateField($sort_by2)) {
+						if (CustomReportUtils::isDateField($sort_by2)) {
 							$groupByTime2Sql = 'INSERT INTO vtiger_reportgroupbycolumn(REPORTID,SORTID,SORTCOLNAME,DATEGROUPBYCRITERIA) values(?,?,?,?)';
 							$groupByTime2Res = $adb->pquery($groupByTime2Sql, array($genQueryId,2,$sort_by2,$groupTime2));
 						}
 					}
-					if ($sort_by3 != "") {
-						$sort_by3sql = "insert into vtiger_reportsortcol (SORTCOLID,REPORTID,COLUMNNAME,SORTORDER) values (?,?,?,?)";
+					if ($sort_by3 != '') {
+						$sort_by3sql = 'insert into vtiger_reportsortcol (SORTCOLID,REPORTID,COLUMNNAME,SORTORDER) values (?,?,?,?)';
 						$sort_by3result = $adb->pquery($sort_by3sql, array(3,$genQueryId,$sort_by3,$sort_order3));
-						if (CustomReportUtils::IsDateField($sort_by3)) {
+						if (CustomReportUtils::isDateField($sort_by3)) {
 							$groupByTime3Sql = 'INSERT INTO vtiger_reportgroupbycolumn(REPORTID,SORTID,SORTCOLNAME,DATEGROUPBYCRITERIA) values(?,?,?,?)';
 							$groupByTime3Res = $adb->pquery($groupByTime3Sql, array($genQueryId,3,$sort_by3,$groupTime3));
 						}
 					}
-					$log->info("Reports :: Save->Successfully saved vtiger_reportsortcol");
+					$log->info('Reports :: Save->Successfully saved vtiger_reportsortcol');
 					//<<<<step3 vtiger_reportsortcol>>>>>>>
 
 					//<<<<step5 standarfilder>>>>>>>
@@ -394,26 +394,26 @@ if ($reportid == '' || ($reportid!='' && isset($_REQUEST['saveashidden']) && $_R
 
 		if ($idelreportsortcolsqlresult!=false) {
 			//<<<<step3 vtiger_reportsortcol>>>>>>>
-			if ($sort_by1 != "") {
-				$sort_by1sql = "insert into vtiger_reportsortcol (SORTCOLID,REPORTID,COLUMNNAME,SORTORDER) values (?,?,?,?)";
+			if ($sort_by1 != '') {
+				$sort_by1sql = 'insert into vtiger_reportsortcol (SORTCOLID,REPORTID,COLUMNNAME,SORTORDER) values (?,?,?,?)';
 				$sort_by1result = $adb->pquery($sort_by1sql, array(1, $reportid, $sort_by1, $sort_order1));
-				if (CustomReportUtils::IsDateField($sort_by1)) {
+				if (CustomReportUtils::isDateField($sort_by1)) {
 					$groupByTime1Sql = 'INSERT INTO vtiger_reportgroupbycolumn(REPORTID,SORTID,SORTCOLNAME,DATEGROUPBYCRITERIA) values(?,?,?,?)';
 					$groupByTime1Res = $adb->pquery($groupByTime1Sql, array($reportid,1,$sort_by1,$groupTime1));
 				}
 			}
-			if ($sort_by2 != "") {
-				$sort_by2sql = "insert into vtiger_reportsortcol (SORTCOLID,REPORTID,COLUMNNAME,SORTORDER) values (?,?,?,?)";
+			if ($sort_by2 != '') {
+				$sort_by2sql = 'insert into vtiger_reportsortcol (SORTCOLID,REPORTID,COLUMNNAME,SORTORDER) values (?,?,?,?)';
 				$sort_by2result = $adb->pquery($sort_by2sql, array(2, $reportid, $sort_by2, $sort_order2));
-				if (CustomReportUtils::IsDateField($sort_by2)) {
+				if (CustomReportUtils::isDateField($sort_by2)) {
 					$groupByTime2Sql = 'INSERT INTO vtiger_reportgroupbycolumn(REPORTID,SORTID,SORTCOLNAME,DATEGROUPBYCRITERIA) values(?,?,?,?)';
 					$groupByTime2Res = $adb->pquery($groupByTime2Sql, array($reportid,2,$sort_by2,$groupTime2));
 				}
 			}
-			if ($sort_by3 != "") {
-				$sort_by3sql = "insert into vtiger_reportsortcol (SORTCOLID,REPORTID,COLUMNNAME,SORTORDER) values (?,?,?,?)";
+			if ($sort_by3 != '') {
+				$sort_by3sql = 'insert into vtiger_reportsortcol (SORTCOLID,REPORTID,COLUMNNAME,SORTORDER) values (?,?,?,?)';
 				$sort_by3result = $adb->pquery($sort_by3sql, array(3, $reportid, $sort_by3, $sort_order3));
-				if (CustomReportUtils::IsDateField($sort_by3)) {
+				if (CustomReportUtils::isDateField($sort_by3)) {
 					$groupByTime3Sql = 'INSERT INTO vtiger_reportgroupbycolumn(REPORTID,SORTID,SORTCOLNAME,DATEGROUPBYCRITERIA) values(?,?,?,?)';
 					$groupByTime3Res = $adb->pquery($groupByTime3Sql, array($reportid,3,$sort_by3,$groupTime3));
 				}

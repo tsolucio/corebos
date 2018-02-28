@@ -57,7 +57,7 @@ class CustomReportUtils {
 		return $Chart;
 	}
 
-	public static function IsDateField($reportColDetails) {
+	public static function isDateField($reportColDetails) {
 		if ($reportColDetails=='none') {
 			return false;
 		}
