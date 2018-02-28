@@ -68,8 +68,7 @@ class crmtogo_UI_FieldModel {
 			if (in_array($uitype, $options)) {
 				return true;
 			}
-		} 
-		else if(isset($this->data['type'])) {
+		} else if(isset($this->data['type'])) {
 			switch($this->data['type']['name']) {
 				case 'reference':
 				case 'owner':

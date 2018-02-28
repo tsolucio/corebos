@@ -85,7 +85,6 @@ class crmtogo_UI_FieldModel {
 	
 	function isMultiReferenceType() {
 		static $options = array('10', '68');
-		
 		$uitype = $this->data['uitype'];
 		if (in_array($uitype, $options)) {
 			return true;
@@ -95,7 +94,6 @@ class crmtogo_UI_FieldModel {
 	
 	static function buildModelsFromResponse($fields) {
 		$instances = array();
-
 		foreach($fields as $fieldData) {
 			$instance = new self();
 			$instance->initData($fieldData);
