@@ -315,16 +315,14 @@ if ($reportid == '' || ($reportid!='' && isset($_REQUEST['saveashidden']) && $_R
 			echo $errormessage;
 			die;
 		}
-		$var = unserialize($minfo);
 
-		$var_one = $var[url];
-
-		echo ' 
-			<script>
-				window.opener.location.href = "'.$var_one.'";
-				window.open("index.php?module=Reports&action=ListView", "_blank");
-				self.close();
-		 	</script>';
+	$var = unserialize($minfo);
+	$var_one = $var[url];
+	echo '<script>
+			window.opener.location.href = "'.$var_one.'";
+			window.open("index.php?module=Reports&action=ListView", "_blank");
+			self.close();
+		 </script>';
 	}
 } else {
 	if ($reportid != "") {
