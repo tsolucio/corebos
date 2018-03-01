@@ -32,11 +32,10 @@ $cbreporttype = $adb->query_result($res, 0, 'cbreporttype');
 
 if ($cbreporttype == 'external') {
 	$url = $adb->query_result($res, 0, 'moreinfo');
-	$str = "$url";
-	$str_one = html_entity_decode($str);
+	$str_one = html_entity_decode($url);
 	$result = unserialize($str_one);
-	$url = $result[url];
-	echo "<script>window.open('".$url."', '_blank');</script>";
+	$url = vtlib_purify($result['url']);
+	echo "<script>window.open('".$url."', '_blank');window.close();</script>";
 }
 
 if (empty($folderid)) {
