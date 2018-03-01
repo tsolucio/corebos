@@ -26,7 +26,19 @@ $now_action = vtlib_purify($_REQUEST['action']);
 
 $sql = "select * from vtiger_report where reportid=?";
 $res = $adb->pquery($sql, array($reportid));
+
 $Report_ID = $adb->query_result($res,0,'reportid');
+$cbreporttype = $adb->query_result($res,0,'cbreporttype');
+
+if($cbreporttype == 'external') {
+	$url = $adb->query_result($res,0,'moreinfo');
+	$str = "$url";
+	$str_one = html_entity_decode($str);
+	$result = unserialize ($str_one);
+	$url = $result[url];
+	echo "<script>window.open('".$url."', '_blank');</script>";
+} 
+
 if(empty($folderid)) {
 	$folderid = $adb->query_result($res,0,'folderid');
 }
