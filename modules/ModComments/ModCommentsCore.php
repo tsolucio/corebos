@@ -117,58 +117,14 @@ class ModCommentsCore extends CRMEntity {
 	/**
 	 * Get list view query (send more WHERE clause condition if required)
 	 */
-	function getListQuery($module, $usewhere='') {
-		$query = "SELECT vtiger_crmentity.*, $this->table_name.*";
-
-		// Keep track of tables joined to avoid duplicates
-		$joinedTables = array();
-
-		// Select Custom Field Table Columns if present
-		if(!empty($this->customFieldTable)) $query .= ", " . $this->customFieldTable[0] . ".* ";
-
-		$query .= " FROM $this->table_name";
-
-		$query .= "	INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
-
-		$joinedTables[] = $this->table_name;
-		$joinedTables[] = 'vtiger_crmentity';
-
-		// Consider custom table join as well.
-		if(!empty($this->customFieldTable)) {
-			$query .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
-				" = $this->table_name.$this->table_index";
-			$joinedTables[] = $this->customFieldTable[0];
-		}
-		$query .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
-		$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
-
-		$joinedTables[] = 'vtiger_users';
-		$joinedTables[] = 'vtiger_groups';
-
-		$linkedModulesQuery = $this->db->pquery("SELECT distinct tablename, columnname, relmodule FROM vtiger_field" .
-				" INNER JOIN vtiger_fieldmodulerel ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid" .
-				" WHERE uitype='10' AND vtiger_fieldmodulerel.module=?", array($module));
-		$linkedFieldsCount = $this->db->num_rows($linkedModulesQuery);
-
-		for($i=0; $i<$linkedFieldsCount; $i++) {
-			$related_module = $this->db->query_result($linkedModulesQuery, $i, 'relmodule');
-			$tablename = $this->db->query_result($linkedModulesQuery, $i, 'tablename');
-			$columnname = $this->db->query_result($linkedModulesQuery, $i, 'columnname');
-
-			$other = CRMEntity::getInstance($related_module);
-
-			if(!in_array($other->table_name, $joinedTables)) {
-				$query .= " LEFT JOIN $other->table_name ON $other->table_name.$other->table_index = $tablename.$columnname";
-				$joinedTables[] = $other->table_name;
-			}
-		}
-
-		$query .= "	WHERE vtiger_crmentity.deleted = 0 ";
-		if($usewhere) {
-			$query .= $usewhere;
-		}
+	public function getListQuery($module, $usewhere='') {
+		$query = parent::getListQuery($module, $usewhere);
 		$query .= $this->getListViewSecurityParameter($module);
 		return $query;
+	}
+
+	public function getNonAdminAccessControlQuery($module, $current_user) {
+		return ''; // so getListQuery doesn't get permission restriction joins added
 	}
 
 	/**
