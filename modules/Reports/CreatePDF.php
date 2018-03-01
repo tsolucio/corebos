@@ -12,7 +12,7 @@ require_once 'modules/Reports/ReportRun.php';
 require_once 'modules/Reports/Reports.php';
 require 'include/tcpdf/tcpdf.php';
 $language = $_SESSION['authenticated_user_language'].'.lang.php';
-require_once 'include/language/$language';
+require_once "include/language/$language";
 $reportid = vtlib_purify($_REQUEST["record"]);
 $oReportRun = new ReportRun($reportid);
 
