@@ -8,15 +8,15 @@
  * All Rights Reserved.
  ********************************************************************************/
 global $theme;
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
-require_once('modules/CustomView/CustomView.php');
-require_once('config.inc.php');
-require_once('modules/Reports/Reports.php');
-require_once('include/logging.php');
-require_once("modules/Reports/ReportRun.php");
-require_once('include/utils/utils.php');
-require_once('Smarty_setup.php');
+$theme_path='themes/'.$theme.'/';
+$image_path=$theme_path.'images/';
+require_once 'modules/CustomView/CustomView.php';
+require_once 'config.inc.php';
+require_once 'modules/Reports/Reports.php';
+require_once 'include/logging.php';
+require_once 'modules/Reports/ReportRun.php';
+require_once 'include/utils/utils.php';
+require_once 'Smarty_setup.php';
 
 global $adb,$mod_strings,$app_strings;
 
@@ -84,7 +84,7 @@ if ($numOfRows > 0) {
 			$advft_criteria_groups = json_decode($advft_criteria_groups, true);
 		}
 
-		if (isset($_REQUEST['submode']) and $_REQUEST['submode'] == 'saveCriteria') {
+		if (isset($_REQUEST['submode']) && $_REQUEST['submode'] == 'saveCriteria') {
 			updateAdvancedCriteria($reportid, $advft_criteria, $advft_criteria_groups);
 		}
 
@@ -109,7 +109,7 @@ if ($numOfRows > 0) {
 				//$groupByField = $oReportRun->GetFirstSortByField($reportid);
 				$queryReports = CustomReportUtils::getCustomReportsQuery($Report_ID, $filtersql);
 				$queryResult = $adb->pquery($queryReports, array());
-				if ($queryResult and $adb->num_rows($queryResult)) {
+				if ($queryResult && $adb->num_rows($queryResult)) {
 					$ChartDetails = ChartUtils::generateChartDataFromReports($queryResult, strtolower($module_field), $fieldDetails, $reportid);
 					$list_report_form->assign('CHARTDATA', $ChartDetails);
 				} else {
@@ -121,7 +121,7 @@ if ($numOfRows > 0) {
 		}
 		$list_report_form->assign("SHOWCHARTS", $showCharts);
 
-		if (isset($_REQUEST['submode']) and $_REQUEST['submode'] == 'generateReport' && empty($advft_criteria)) {
+		if (isset($_REQUEST['submode']) && $_REQUEST['submode'] == 'generateReport' && empty($advft_criteria)) {
 			$filtersql = '';
 		}
 		$ogReport->getPriModuleColumnsList($ogReport->primodule);
@@ -174,23 +174,25 @@ if ($numOfRows > 0) {
 			$reports_array[$rep_id]=$rep_name;
 		}
 		$list_report_form->assign('CHECK', Button_Check($ogReport->primodule));
-		if (empty($_REQUEST['mode']) or $_REQUEST['mode'] != 'ajax') {
-			$list_report_form->assign("REPINFOLDER", $reports_array);
-			include('modules/Vtiger/header.php');
+		if (empty($_REQUEST['mode']) || $_REQUEST['mode'] != 'ajax') {
+			$list_report_form->assign('REPINFOLDER', $reports_array);
+			include 'modules/Vtiger/header.php';
 			$list_report_form->display('ReportRun.tpl');
 		} else {
 			$list_report_form->display('ReportRunContents.tpl');
 		}
 	} else {
-		if (empty($_REQUEST['mode']) or $_REQUEST['mode'] != 'ajax') {
-			include('modules/Vtiger/header.php');
+		if (empty($_REQUEST['mode']) || $_REQUEST['mode'] != 'ajax') {
+			include 'modules/Vtiger/header.php';
 		}
 		echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
 		echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 80%; position: relative; z-index: 10000000;'>
 		<table border='0' cellpadding='5' cellspacing='0' width='98%'>
 		<tbody><tr>
 		<td rowspan='2' width='11%'><img src='". vtiger_imageurl('denied.gif', $theme) ."' ></td>
-		<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span class='genHeaderSmall'>".$mod_strings['LBL_NO_ACCESS']." : ".implode(",", $restrictedmodules)." </span></td>
+		<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'>
+			<span class='genHeaderSmall'>".$mod_strings['LBL_NO_ACCESS']." : ".implode(',', $restrictedmodules)." </span>
+		</td>
 		</tr>
 		<tr>
 		<td class='small' align='right' nowrap='nowrap'>
@@ -291,7 +293,7 @@ function getPrimaryColumns_AdvFilter_HTML($module, $ogReport, $selected = '') {
 	$mod_strings = return_module_language($current_language, $module);
 	$block_listed = array();
 	$shtml = '';
-	foreach ($ogReport->module_list[$module] as $key => $value) {
+	foreach ($ogReport->module_list[$module] as $value) {
 		if (isset($ogReport->pri_module_columnslist[$module][$value]) && empty($block_listed[$value])) {
 			$block_listed[$value] = true;
 			$shtml .= '<optgroup label="'.getTranslatedString($module, $module).' '.getTranslatedString($value).'" class="select" style="border:none">';
@@ -328,7 +330,7 @@ function getSecondaryColumns_AdvFilter_HTML($module, $ogReport, $selected = "") 
 			$mod_strings = return_module_language($current_language, $secmodule[$i]);
 			if (vtlib_isModuleActive($secmodule[$i])) {
 				$block_listed = array();
-				foreach ($ogReport->module_list[$secmodule[$i]] as $key => $value) {
+				foreach ($ogReport->module_list[$secmodule[$i]] as $value) {
 					if (isset($ogReport->sec_module_columnslist[$secmodule[$i]][$value]) && empty($block_listed[$value])) {
 						$block_listed[$value] = true;
 						$shtml .= '<optgroup label="'.getTranslatedString($secmodule[$i], $secmodule[$i]).' '.getTranslatedString($value).'" class="select" style="border:none">';
