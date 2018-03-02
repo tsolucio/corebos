@@ -6,7 +6,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-function showMapWindow(mapid){
+function showMapWindow(mapid) {
 	var url = 'index.php?module=cbMap&action=cbMapAjax&file=generateMap&mapid='+mapid;
-	window.open(url,"Create Mapping","width=940,height=800,resizable=1,scrollbars=1");
+	window.open(url, 'Create Mapping', 'width=940,height=800,resizable=1,scrollbars=1');
 }

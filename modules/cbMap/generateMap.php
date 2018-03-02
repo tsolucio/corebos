@@ -16,8 +16,8 @@
  *  Version      : 5.5.0
  *  Author       : TSolucio.
  *************************************************************************************************/
-include_once('modules/cbMap/cbMap.php');
-include_once('modules/cbMap/generatemap/generateMap.php');
+include_once 'modules/cbMap/cbMap.php';
+include_once 'modules/cbMap/generatemap/generateMap.php';
 $mapid = vtlib_purify($_REQUEST['mapid']);
 $mapInstance = CRMEntity::getInstance('cbMap');
 $mapInstance->retrieve_entity_info($mapid, 'cbMap');

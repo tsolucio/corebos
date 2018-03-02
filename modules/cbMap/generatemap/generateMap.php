@@ -18,7 +18,7 @@
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
 
-require_once('modules/cbMap/cbMapcore.php');
+require_once 'modules/cbMap/cbMapcore.php';
 
 class generatecbMap extends cbMapcore {
 
