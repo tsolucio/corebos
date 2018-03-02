@@ -35,6 +35,7 @@ $mod_strings = array(
 	'Record Access Control' => 'Control de Acceso a Registro',
 	'Record Set Mapping' => 'Conjunto de Registros',
 	'Module Set Mapping' => 'Conjunto de Módulos',
+	'Field Set Mapping' => 'Conjunto de Campos',
 	'ListColumns' => 'Columnas de Listas',
 	'DuplicateRelations' => 'Duplicar Relaciones',
 	'MasterDetailLayout' => 'Disposición Maestro-Detalle',

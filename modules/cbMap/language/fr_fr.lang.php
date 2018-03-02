@@ -35,6 +35,7 @@ $mod_strings = array(
 	'Record Access Control' => 'Controle d\'Accès aux Enregistrements',
 	'Record Set Mapping' => 'Mappage Enregistrements',
 	'Module Set Mapping' => 'Mappage Module',
+	'Field Set Mapping' => 'Field Set Mapping',
 	'ListColumns' => 'Colonne de Listes',
 	'DuplicateRelations' => 'Dupliquer Relations',
 	'MasterDetailLayout' => 'Master Detail Layout',

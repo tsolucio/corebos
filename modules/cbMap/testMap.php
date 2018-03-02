@@ -163,6 +163,10 @@ switch ($focus->column_fields['maptype']) {
 			74
 		);
 		break;
+	case 'Field Set Mapping':
+			$fsm = $focus->FieldSetMapping();
+			$mapinfo = $fsm->getFieldSet();
+		break;
 	default:
 		break;
 }
