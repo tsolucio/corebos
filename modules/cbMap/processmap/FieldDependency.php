@@ -65,8 +65,8 @@
 </map>
  *************************************************************************************************/
 
-require_once('modules/cbMap/cbMap.php');
-require_once('modules/cbMap/processmap/processMap.php');
+require_once 'modules/cbMap/cbMap.php';
+require_once 'modules/cbMap/processmap/processMap.php';
 
 class FieldDependency extends processcbMap {
 	private $mapping = array();
@@ -83,29 +83,29 @@ class FieldDependency extends processcbMap {
 	}
 
 	public function readResponsibleField() {
-		if (isset($this->mapping["fields"]['field']["Orgfields"]['Responsiblefield'])) {
-			return $this->mapping["fields"]['field']["Orgfields"]['Responsiblefield'];
+		if (isset($this->mapping['fields']['field']['Orgfields']['Responsiblefield'])) {
+			return $this->mapping['fields']['field']['Orgfields']['Responsiblefield'];
 		}
 		return array();
 	}
 
 	public function readOrgfield() {
-		if (isset($this->mapping["fields"]['field']["Orgfields"]['Orgfield'])) {
-			return $this->mapping["fields"]['field']["Orgfields"]['Orgfield'];
+		if (isset($this->mapping['fields']['field']['Orgfields']['Orgfield'])) {
+			return $this->mapping['fields']['field']['Orgfields']['Orgfield'];
 		}
 		return array();
 	}
 
 	public function readPicklist() {
-		if (isset($this->mapping["fields"]['field']["Orgfields"]['Picklist'])) {
-			return $this->mapping["fields"]['field']["Orgfields"]['Picklist'];
+		if (isset($this->mapping['fields']['field']['Orgfields']['Picklist'])) {
+			return $this->mapping['fields']['field']['Orgfields']['Picklist'];
 		}
 		return array();
 	}
 
 	public function getMapTargetModule() {
-		if (isset($this->mapping["targetmodule"])) {
-			return $this->mapping["targetmodule"];
+		if (isset($this->mapping['targetmodule'])) {
+			return $this->mapping['targetmodule'];
 		}
 		return array();
 	}

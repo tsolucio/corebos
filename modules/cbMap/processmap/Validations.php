@@ -20,26 +20,26 @@
  * The accepted format is:
  <map>
   <originmodule>
-    <originid>22</originid>  {optional}
-    <originname>SalesOrder</originname>
+	<originid>22</originid>  {optional}
+	<originname>SalesOrder</originname>
   </originmodule>
   <fields>
-    <field>
-      <fieldname>subject</fieldname>   {field to validate}
-      <fieldID>999</fieldID>  {optional}
-      <validations>  {if more than one is present they must all pass to accept the value}
-        <validation>
-          <rule>{rule_name}</rule>
-          <restrictions>
-          <restriction>{values depend on the rule}</restriction>
-          </restrictions>
-        </validation>
-        .....
-      </validations>
-    </field>
-    <field>
-     .....
-    </field>
+	<field>
+	  <fieldname>subject</fieldname>   {field to validate}
+	  <fieldID>999</fieldID>  {optional}
+	  <validations>  {if more than one is present they must all pass to accept the value}
+		<validation>
+		  <rule>{rule_name}</rule>
+		  <restrictions>
+		  <restriction>{values depend on the rule}</restriction>
+		  </restrictions>
+		</validation>
+		.....
+	  </validations>
+	</field>
+	<field>
+	 .....
+	</field>
   </fields>
 
   where {rule_name} can be:
@@ -120,7 +120,7 @@ class Validations extends processcbMap {
 	 * $arguments[0] array with all the values to validate, the fieldname as the index of the array
 	 * $arguments[1] crmid of the record being validated
 	 */
-	function processMap($arguments) {
+	public function processMap($arguments) {
 		global $adb, $current_user;
 		$mapping=$this->convertMap2Array();
 		$tabid = getTabid($mapping['origin']);
@@ -130,7 +130,7 @@ class Validations extends processcbMap {
 		foreach ($mapping['fields'] as $valfield => $vals) {
 			$fl = $adb->pquery('select fieldlabel from vtiger_field where tabid=? and columnname=?', array($tabid,$valfield));
 			$fieldlabel = $adb->query_result($fl, 0, 0);
-			$i18n = getTranslatedString($fieldlabel,$mapping['origin']);
+			$i18n = getTranslatedString($fieldlabel, $mapping['origin']);
 			foreach ($vals as $rule => $restrictions) {
 				switch ($rule) {
 					case 'required':
@@ -165,7 +165,9 @@ class Validations extends processcbMap {
 					case 'dateBefore':
 					case 'dateAfter':
 					case 'contains':
-						if (substr($restrictions[0], 0, 2)=='{{' and substr($restrictions[0], -2)=='}}' and isset($screen_values[substr($restrictions[0], 2, strlen($restrictions[0])-4)])) {
+						if (substr($restrictions[0], 0, 2)=='{{' && substr($restrictions[0], -2)=='}}'
+							&& isset($screen_values[substr($restrictions[0], 2, strlen($restrictions[0])-4)])
+						) {
 							$rulevalue = $screen_values[substr($restrictions[0], 2, strlen($restrictions[0])-4)];
 						} else {
 							$rulevalue = $restrictions[0];
@@ -203,7 +205,8 @@ class Validations extends processcbMap {
 						if (file_exists($restrictions[0])) {
 							@include_once $restrictions[0];
 							if (function_exists($restrictions[2])) {
-								$v->addRule($restrictions[1], $restrictions[2], (isset($restrictions[3]) ? getTranslatedString($restrictions[3],$mapping['origin']) : getTranslatedString('INVALID',$mapping['origin'])));
+								$lbl = (isset($restrictions[3]) ? getTranslatedString($restrictions[3], $mapping['origin']) : getTranslatedString('INVALID', $mapping['origin']));
+								$v->addRule($restrictions[1], $restrictions[2], $lbl);
 								$v->rule($restrictions[1], $valfield)->label($i18n);
 							}
 						}
@@ -214,7 +217,7 @@ class Validations extends processcbMap {
 				}
 			}
 		}
-		if(!$v->validate()) {
+		if (!$v->validate()) {
 			$validations = $v->errors();
 		}
 		if (count($validations)==0) {
@@ -224,20 +227,24 @@ class Validations extends processcbMap {
 		}
 	}
 
-	function convertMap2Array() {
+	private function convertMap2Array() {
 		$xml = $this->getXMLContent();
 		$mapping=$val_fields=array();
 		$mapping['origin'] = (String)$xml->originmodule->originname;
-		foreach($xml->fields->field as $k=>$v) {
+		foreach ($xml->fields->field as $k => $v) {
 			$fieldname = (String)$v->fieldname;
-			if(empty($fieldname)) continue;
+			if (empty($fieldname)) {
+				continue;
+			}
 			$allvals=array();
-			foreach($v->validations->validation as $key=>$val) {
+			foreach ($v->validations->validation as $key => $val) {
 				$rule = (String)$val->rule;
-				if(empty($rule)) continue;
+				if (empty($rule)) {
+					continue;
+				}
 				$rst = array();
 				if (isset($val->restrictions)) {
-					foreach($val->restrictions->restriction as $rk=>$rv) {
+					foreach ($val->restrictions->restriction as $rk => $rv) {
 						$rst[]=(String)$rv;
 					}
 				}
@@ -254,13 +261,13 @@ class Validations extends processcbMap {
 		$q = 'select 1 from vtiger_cbmap
 			inner join vtiger_crmentity on crmid=cbmapid
 			where deleted=0 and maptype=? and targetname=? limit 1';
-		$rs = $adb->pquery($q,array('Validations',$module));
-		return ($rs and $adb->num_rows($rs)==1);
+		$rs = $adb->pquery($q, array('Validations',$module));
+		return ($rs && $adb->num_rows($rs)==1);
 	}
 
 	public static function processAllValidationsFor($module) {
 		global $adb;
-		$screen_values = json_decode($_REQUEST['structure'],true);
+		$screen_values = json_decode($_REQUEST['structure'], true);
 		if (in_array($module, getInventoryModules())) {
 			$products = array();
 			foreach ($screen_values as $sv_name => $sv) {
@@ -281,14 +288,14 @@ class Validations extends processcbMap {
 		$q = 'select cbmapid from vtiger_cbmap
 			inner join vtiger_crmentity on crmid=cbmapid
 			where deleted=0 and maptype=? and targetname=?';
-		$rs = $adb->pquery($q,array('Validations',$module));
+		$rs = $adb->pquery($q, array('Validations',$module));
 		$focus = new cbMap();
 		$focus->mode = '';
 		$validation = true;
 		while ($val = $adb->fetch_array($rs)) {
 			$focus->id = $val['cbmapid'];
 			$focus->retrieve_entity_info($val['cbmapid'], 'cbMap');
-			$validation = $focus->Validations($screen_values,$record);
+			$validation = $focus->Validations($screen_values, $record);
 			if ($validation!==true) {
 				break;
 			}
@@ -296,7 +303,7 @@ class Validations extends processcbMap {
 		return $validation;
 	}
 
-	public static function formatValidationErrors($errors,$module) {
+	public static function formatValidationErrors($errors, $module) {
 		$error = '';
 		foreach ($errors as $field => $errs) {
 			foreach ($errs as $err) {
@@ -305,6 +312,5 @@ class Validations extends processcbMap {
 		}
 		return $error;
 	}
-
 }
 ?>

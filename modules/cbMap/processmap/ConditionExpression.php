@@ -47,13 +47,13 @@
 
  *************************************************************************************************/
 
-require_once('modules/com_vtiger_workflow/include.inc');
-require_once('modules/com_vtiger_workflow/tasks/VTEntityMethodTask.inc');
-require_once('modules/com_vtiger_workflow/VTEntityMethodManager.inc');
-require_once('modules/com_vtiger_workflow/VTSimpleTemplate.inc');
+require_once 'modules/com_vtiger_workflow/include.inc';
+require_once 'modules/com_vtiger_workflow/tasks/VTEntityMethodTask.inc';
+require_once 'modules/com_vtiger_workflow/VTEntityMethodManager.inc';
+require_once 'modules/com_vtiger_workflow/VTSimpleTemplate.inc';
 require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
-require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
-require_once('modules/com_vtiger_workflow/expression_engine/include.inc');
+require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
+require_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
 require_once 'include/Webservices/Retrieve.php';
 
 class ConditionExpression extends processcbMap {

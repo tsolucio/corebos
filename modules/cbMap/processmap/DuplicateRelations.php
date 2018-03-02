@@ -37,8 +37,8 @@ The accepted format is:
 </map>
 *************************************************************************************************/
 
-require_once('modules/cbMap/cbMap.php');
-require_once('modules/cbMap/processmap/processMap.php');
+require_once 'modules/cbMap/cbMap.php';
+require_once 'modules/cbMap/processmap/processMap.php';
 
 class DuplicateRelations extends processcbMap {
 	private $mapping = array();
