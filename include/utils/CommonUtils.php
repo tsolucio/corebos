@@ -2933,7 +2933,7 @@ function getEmailTemplateVariables($modules_list = null) {
 		}
 
 		$allOptions[] = $allFields;
-		$allFields = "";
+		$allFields = array();
 	}
 	$option = array(getTranslatedString('Current Date'), '$custom-currentdate$');
 	$allFields[] = $option;
