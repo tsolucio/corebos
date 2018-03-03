@@ -13,7 +13,7 @@ class MailManager_Utils {
 		global $root_directory;
 		include_once ('include/htmlpurifier/library/HTMLPurifier.auto.php');
 		$config = HTMLPurifier_Config::createDefault();
-		$config->set('Core.Encoding', 'UTF8');
+		$config->set('Core.Encoding', 'UTF-8');
 		$config->set('Cache.SerializerPath', "$root_directory/cache");
 		$htmlpurifier_instance = new HTMLPurifier($config);
 		return $htmlpurifier_instance->purify($string);
