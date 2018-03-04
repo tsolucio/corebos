@@ -69,6 +69,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			$displayValue='';
 			$valueType='';
 			$value='';
+			$parent_id = '';
 		}
 
 		$editview_label[] = Array('options'=>$entityTypes, 'selected'=>$valueType, 'displaylabel'=>getTranslatedString($fieldlabel, $module_name));

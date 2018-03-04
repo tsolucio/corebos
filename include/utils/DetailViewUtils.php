@@ -71,6 +71,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 				$moduleSpecificMessage = $mod_strings[$moduleSpecificMessage];
 			}
 			$label_fld = array($fieldlabel, '');
+			$parent_id = '';
 		}
 	} elseif ($uitype == 99) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
