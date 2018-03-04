@@ -261,21 +261,18 @@ if (isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 			$l++;
 		}
 
-		$result["GROUPNAMESTR"] = $groupNameStr;
-		$result["USERNAMESTR"] = $userNameStr;
-		$result["GROUPIDSTR"] = $groupIdStr;
-		$result["USERIDSTR"] = $userIdStr;
+		$result['GROUPNAMESTR'] = $groupNameStr;
+		$result['USERNAMESTR'] = $userNameStr;
+		$result['GROUPIDSTR'] = $groupIdStr;
+		$result['USERIDSTR'] = $userIdStr;
 		if (isset($recordid)) {
-			$visiblecriteria=getVisibleCriteria($recordid);
-			$member = getShareInfo($recordid);
-			$result["VISIBLECRITERIA"] = $visiblecriteria;
-			$result["MEMBER"] = $member;
+			$result['VISIBLECRITERIA'] = getVisibleCriteria($recordid);
+			$result['MEMBER'] = getShareInfo($recordid);
 		} else {
-			$visiblecriteria=getVisibleCriteria();
-			$result["VISIBLECRITERIA"] = $visiblecriteria;
+			$result['VISIBLECRITERIA'] = getVisibleCriteria();
 		}
 		echo json_encode($result);
-	} elseif ($step == "grouping") {
+	} elseif ($step == 'grouping') {
 		if (isset($recordid)) {
 			$list_array = $oReport->getSelctedSortingColumns($recordid);
 

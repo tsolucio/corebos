@@ -12,7 +12,6 @@
  * Function to get the field information from module name and field label
  */
 function getFieldByReportLabel($module, $label) {
-
 	// this is required so the internal cache is populated or reused.
 	getColumnFields($module);
 	//lookup all the accessible fields
@@ -41,20 +40,12 @@ function getFieldByReportLabel($module, $label) {
 
 function isReferenceUIType($uitype) {
 	static $options = array('101', '116', '117', '26', '357', '51', '52', '53', '57', '66', '73', '75', '76', '77', '78', '80', '81');
-
-	if (in_array($uitype, $options)) {
-		return true;
-	}
-	return false;
+	return in_array($uitype, $options);
 }
 
 function isPicklistUIType($uitype) {
 	static $options = array('15','16','1613','1614','1615','33','3313','3314','1024');
-
-	if (in_array($uitype, $options)) {
-		return true;
-	}
-	return false;
+	return in_array($uitype, $options);
 }
 
 /**
@@ -202,7 +193,7 @@ function report_getMoreInfoFromRequest($cbreporttype, $pmodule, $smodule, $pivot
 		$moduleInstance = Vtiger_Module::getInstance($pmodule);
 		$refs = $moduleInstance->getFieldsByType('reference');
 		$found = false;
-		foreach ($refs as $fname => $field) {
+		foreach ($refs as $field) {
 			$rs = $adb->pquery('select relmodule from vtiger_fieldmodulerel where fieldid=?', array($field->id));
 			$relmod = $adb->query_result($rs, 0, 0);
 			if ($relmod==$smodule) {

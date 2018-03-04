@@ -60,13 +60,10 @@ foreach ($user_groups as $grpid => $groupname) {
 }
 if (isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 	$reportid = vtlib_purify($_REQUEST['record']);
-	$visiblecriteria=getVisibleCriteria($recordid);
-	$report_std_filter->assign('VISIBLECRITERIA', $visiblecriteria);
-	$member = getShareInfo($recordid);
-	$report_std_filter->assign('MEMBER', $member);
+	$report_std_filter->assign('VISIBLECRITERIA', getVisibleCriteria($recordid));
+	$report_std_filter->assign('MEMBER', getShareInfo($recordid));
 } else {
-	$visiblecriteria=getVisibleCriteria();
-	$report_std_filter->assign('VISIBLECRITERIA', $visiblecriteria);
+	$report_std_filter->assign('VISIBLECRITERIA', getVisibleCriteria());
 }
 $report_std_filter->assign('GROUPNAMESTR', $groupNameStr);
 $report_std_filter->assign('USERNAMESTR', $userNameStr);
