@@ -26,15 +26,14 @@ if(isset($_SESSION['next_reminder_time']) && $_SESSION['next_reminder_time'] == 
 $log = LoggerManager::getLogger('Activity_Reminder');
 $smarty = new vtigerCRM_Smarty;
 if(isPermitted('Calendar','index') == 'yes'){
-	$active = $adb->pquery("select * from vtiger_users where id=?",array($current_user->id));
-	$active_res = $adb->query_result($active,0,'reminder_interval');
-	if($active_res == 'None') {
+	$active = $adb->pquery('select reminder_interval from vtiger_users where id=?', array($current_user->id));
+	$interval = $adb->query_result($active, 0, 'reminder_interval');
+	if ($interval == 'None') {
 		coreBOS_Session::set('next_reminder_time', 'None');
 	}
-	if($active_res!='None'){
+	if ($interval!='None') {
 		$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',10,'Calendar');
 		$Calendar_PopupReminder_DaysPast = GlobalVariable::getVariable('Calendar_PopupReminder_DaysPast',7,'Calendar');
-		$interval=$adb->query_result($active,0,"reminder_interval");
 		$intervalInMinutes = ConvertToMinutes($interval);
 		// check for reminders every minute
 		$time = time();
