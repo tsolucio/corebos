@@ -312,7 +312,11 @@ function fieldExpressionPopup(moduleName, $){
 		create: show,
 		edit: function(fieldelementid, expression, fieldtype){
 			$("#editpopup_field").val(fieldelementid);
-			$("#editpopup_field_type").val(fieldtype.name);
+			if (fieldtype.realname != undefined && fieldtype.realname == 'owner') {
+				$("#editpopup_field_type").val(fieldtype.realname);
+			} else {
+				$("#editpopup_field_type").val(fieldtype.name);
+			}
 
 			opType = fieldtype;
 			var expressionTypeElement = $("#"+fieldelementid+"_type");
