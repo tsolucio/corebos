@@ -10,7 +10,7 @@
 header('X-Frame-Options: DENY');
 define('IN_LOGIN', true);
 
-include_once('vtlib/Vtiger/Language.php');
+include_once 'vtlib/Vtiger/Language.php';
 
 // Retrieve username and password from the session if possible.
 if (isset($_SESSION['login_user_name'])) {
@@ -46,9 +46,9 @@ if (isset($_SESSION['login_error'])) {
 	$login_error = '';
 }
 
-require_once('Smarty_setup.php');
-require_once('data/Tracker.php');
-require_once('include/utils/utils.php');
+require_once 'Smarty_setup.php';
+require_once 'data/Tracker.php';
+require_once 'include/utils/utils.php';
 require_once 'vtigerversion.php';
 
 global $currentModule, $adb, $coreBOS_app_version, $current_language;

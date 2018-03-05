@@ -2812,10 +2812,10 @@ class CRMEntity {
 		if (!empty($tables[1]) && !empty($fields[1])) {
 			$condvalue = $tables[1] . '.' . $fields[1];
 			$condtable = $table_name;
-			$cntbl = $adb->getColumnNames($condtable);
-			if (!in_array($prifieldname, $cntbl)) {
-				$condtable = $pritablename;
-			}
+// 			$cntbl = $adb->getColumnNames($condtable);
+// 			if (!in_array($prifieldname, $cntbl)) {
+// 				$condtable = $pritablename;
+// 			}
 			$condition = "$condtable.$prifieldname=$condvalue";
 		} else {
 			$condvalue = $table_name . '.' . $column_name;

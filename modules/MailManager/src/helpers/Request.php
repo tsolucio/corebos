@@ -9,16 +9,16 @@
  ************************************************************************************/
 class MailManager_Request {
 	protected $valuemap;
-	
-	function __construct($values) {
+
+	public function __construct($values) {
 		$this->valuemap = $values;
 	}
-	
-	function has($key) {
+
+	public function has($key) {
 		return isset($this->valuemap[$key]);
 	}
-	
-	function get($key, $defvalue='') {
+
+	public function get($key, $defvalue = '') {
 		$value = $defvalue;
 		if (isset($this->valuemap[$key])) {
 			$value = $this->valuemap[$key];
@@ -28,24 +28,24 @@ class MailManager_Request {
 		}
 		return urldecode($value);
 	}
-	
-	function set($key, $value) {
+
+	public function set($key, $value) {
 		$this->valuemap[$key] = $value;
 	}
-	
-	function values() {
+
+	public function values() {
 		return $this->valuemap;
 	}
-	
-	function keys() {
+
+	public function keys() {
 		return array_keys($this->valuemap);
 	}
-	
-	function getOperation($defvalue='') {
+
+	public function getOperation($defvalue = '') {
 		return $this->get('_operation', $defvalue);
 	}
-	
-	function getOperationArg($defvalue='') {
+
+	public function getOperationArg($defvalue = '') {
 		return $this->get('_operationarg', $defvalue);
 	}
 }

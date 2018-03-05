@@ -103,6 +103,7 @@ function ShowFolders(folderid)
 </script>
 
 <!-- Sent mail -->
+{if $SHOW_SENTTO_LINKS}
 <img src="{'sentmail.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" />&nbsp;<b class="txtGreen">{'LBL_SENT_MAILS'|@getTranslatedString:$MODULE}</b>
 <ul style="list-style-type:none;margin-left:10px;margin-top:5px;padding:2px">
 	<li><img src="{'folder1.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" />&nbsp;&nbsp;
@@ -120,3 +121,4 @@ function ShowFolders(folderid)
 	<a href="javascript:;" onClick="ShowFolders(5)" class="webMnu">{'LBL_TO_USERS'|@getTranslatedString:$MODULE}</a>&nbsp;
 	</li>
 </ul>
+{/if}

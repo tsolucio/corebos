@@ -41,6 +41,7 @@ if (!empty($_REQUEST['startdate']) && !empty($_REQUEST['enddate']) && $_REQUEST[
 }
 
 $pdf = $oReportRun->getReportPDF($filterlist);
+setlocale(LC_ALL,'en_US.UTF-8');
 $pdf->Output($oReportRun->getReportName(true, true).'.pdf', 'D');
 
 exit();

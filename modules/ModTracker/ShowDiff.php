@@ -9,7 +9,7 @@
  ************************************************************************************/
 global $app_strings, $mod_strings, $current_language, $currentModule, $theme;
 
-require_once('Smarty_setup.php');
+require_once 'Smarty_setup.php';
 
 include_once __DIR__ . '/core/ModTracker_Basic.php';
 
@@ -33,11 +33,11 @@ $prevAtPoint = ($atpoint + 1);
 $nextAtPoint = ($atpoint - 1);
 
 $trackrecord = false;
-if (isset($_REQUEST['mode']) and $_REQUEST['mode'] == 'history') {
+if (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'history') {
 	// Retrieve the track record at required point
 	$trackrecord = ModTracker_Basic::getByCRMId($reqid, $atpoint);
 	// If there is no more older records, show the last record itself
-	if($trackrecord === false && $atpoint > 0) {
+	if ($trackrecord === false && $atpoint > 0) {
 		$atpoint = $atpoint - 1;
 		$prevAtPoint = $atpoint; // Singal no more previous
 		$trackrecord = ModTracker_Basic::getByCRMId($reqid, $atpoint);
@@ -51,11 +51,9 @@ if ($trackrecord === false || !$trackrecord->exists()) {
 } else {
 	if ($trackrecord && $trackrecord->isViewPermitted()) {
 		$smarty->assign('TRACKRECORD', $trackrecord);
-
-		$smarty->assign("ATPOINT", $atpoint);
-		$smarty->assign("ATPOINT_PREV", $prevAtPoint);
-		$smarty->assign("ATPOINT_NEXT", $nextAtPoint);
-
+		$smarty->assign('ATPOINT', $atpoint);
+		$smarty->assign('ATPOINT_PREV', $prevAtPoint);
+		$smarty->assign('ATPOINT_NEXT', $nextAtPoint);
 		$smarty->display(vtlib_getModuleTemplate($currentModule, 'ShowDiff.tpl'));
 	} else {
 		$smarty->display(vtlib_getModuleTemplate($currentModule, 'ShowDiffDenied.tpl'));

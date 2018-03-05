@@ -261,21 +261,18 @@ if (isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 			$l++;
 		}
 
-		$result["GROUPNAMESTR"] = $groupNameStr;
-		$result["USERNAMESTR"] = $userNameStr;
-		$result["GROUPIDSTR"] = $groupIdStr;
-		$result["USERIDSTR"] = $userIdStr;
+		$result['GROUPNAMESTR'] = $groupNameStr;
+		$result['USERNAMESTR'] = $userNameStr;
+		$result['GROUPIDSTR'] = $groupIdStr;
+		$result['USERIDSTR'] = $userIdStr;
 		if (isset($recordid)) {
-			$visiblecriteria=getVisibleCriteria($recordid);
-			$member = getShareInfo($recordid);
-			$result["VISIBLECRITERIA"] = $visiblecriteria;
-			$result["MEMBER"] = $member;
+			$result['VISIBLECRITERIA'] = getVisibleCriteria($recordid);
+			$result['MEMBER'] = getShareInfo($recordid, false);
 		} else {
-			$visiblecriteria=getVisibleCriteria();
-			$result["VISIBLECRITERIA"] = $visiblecriteria;
+			$result['VISIBLECRITERIA'] = getVisibleCriteria();
 		}
 		echo json_encode($result);
-	} elseif ($step == "grouping") {
+	} elseif ($step == 'grouping') {
 		if (isset($recordid)) {
 			$list_array = $oReport->getSelctedSortingColumns($recordid);
 
@@ -800,93 +797,5 @@ function getRelatedFieldColumns() {
 	$ogReport->getPriModuleColumnsList($oReport->primodule);
 	$ogReport->getSecModuleColumnsList($oReport->secmodule);
 	return $ogReport->adv_rel_fields;
-}
-
-/** Function to get visible criteria for a report
- *  This function accepts The reportid as an argument
- *  It returns a array of selected option of sharing along with other options
- */
-function getVisibleCriteria($recordid = '') {
-	global $adb;
-
-	$filter = array();
-	$selcriteria = "";
-	if ($recordid!='') {
-		$result = $adb->pquery("select sharingtype from vtiger_report where reportid=?", array($recordid));
-		$selcriteria=$adb->query_result($result, 0, "sharingtype");
-	}
-	if ($selcriteria == "") {
-		$selcriteria = 'Public';
-	}
-	$filter_result = $adb->query('select name from vtiger_reportfilters');
-	$numrows = $adb->num_rows($filter_result);
-	for ($j=0; $j<$numrows; $j++) {
-		$filtername = $adb->query_result($filter_result, $j, 'name');
-		if ($filtername == 'Private') {
-			$FilterKey='Private';
-			$FilterValue=getTranslatedString('PRIVATE_FILTER');
-		} elseif ($filtername=='Shared') {
-			$FilterKey='Shared';
-			$FilterValue=getTranslatedString('SHARE_FILTER');
-		} else {
-			$FilterKey='Public';
-			$FilterValue=getTranslatedString('PUBLIC_FILTER');
-		}
-		if ($FilterKey == $selcriteria) {
-			$shtml['value'] = $FilterKey;
-			$shtml['label'] = $FilterValue;
-			$shtml['selected'] = true;
-		} else {
-			$shtml['value'] = $FilterKey;
-			$shtml['label'] = $FilterValue;
-			$shtml['selected'] = false;
-		}
-		$filter[] = $shtml;
-	}
-	return $filter;
-}
-
-/**
- * [getShareInfo description]
- * @param  string $recordid
- * @return array
- */
-function getShareInfo($recordid = '') {
-	global $adb;
-	$member_data = array();
-	$member_query = $adb->pquery(
-		"SELECT vtiger_reportsharing.setype,vtiger_users.id,vtiger_users.user_name
-		FROM vtiger_reportsharing
-		INNER JOIN vtiger_users on vtiger_users.id = vtiger_reportsharing.shareid
-		WHERE vtiger_reportsharing.setype='users' AND vtiger_reportsharing.reportid = ?",
-		array($recordid)
-	);
-	$noofrows = $adb->num_rows($member_query);
-	if ($noofrows > 0) {
-		for ($i=0; $i<$noofrows; $i++) {
-			$userid = $adb->query_result($member_query, $i, 'id');
-			$username = $adb->query_result($member_query, $i, 'user_name');
-			$setype = $adb->query_result($member_query, $i, 'setype');
-			$member_data[] = array('value'=>$setype."::".$userid,'label'=>$setype."::".$username);
-		}
-	}
-
-	$member_query = $adb->pquery(
-		"SELECT vtiger_reportsharing.setype,vtiger_groups.groupid,vtiger_groups.groupname
-		FROM vtiger_reportsharing
-		INNER JOIN vtiger_groups on vtiger_groups.groupid = vtiger_reportsharing.shareid
-		WHERE vtiger_reportsharing.setype='groups' AND vtiger_reportsharing.reportid = ?",
-		array($recordid)
-	);
-	$noofrows = $adb->num_rows($member_query);
-	if ($noofrows > 0) {
-		for ($i=0; $i<$noofrows; $i++) {
-			$grpid = $adb->query_result($member_query, $i, 'groupid');
-			$grpname = $adb->query_result($member_query, $i, 'groupname');
-			$setype = $adb->query_result($member_query, $i, 'setype');
-			$member_data[] = array('value'=>$setype.'::'.$grpid, 'label'=>$setype.'::'.$grpname);
-		}
-	}
-	return $member_data;
 }
 ?>
