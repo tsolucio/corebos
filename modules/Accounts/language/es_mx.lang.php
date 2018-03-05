@@ -209,15 +209,22 @@ $mod_strings = array(
 'LBL_MAILER_EXPORT_CHECKED' =>'Marcado',
 'LBL_MAILER_EXPORT_NOTCHECKED' => 'No Marcado',
 
-// Added after 5.0.4 GA
-
 //Module Sequence Numbering
 'Account No'=>'Núm. Cuenta',
-// END
 
 // Account Hierarchy
 'LBL_SHOW_ACCOUNT_HIERARCHY' => 'Mostrar Jerarquía de Cuentas',
 'Accounts ID' => 'Id Cuenta',
-);
 
+'LBL_ONDEMAND_CONTROL_INFORMATION' => 'Control Servicio Online',
+'Start Date OD' => 'Inicio Servicio Online',
+'End Date OD' => 'Fin Servicio Online',
+'OD Service Active' => 'Servicio Online Activo',
+'OD Sync Module Active' => 'Sincronización Activa',
+'OD Sync Modules' => 'Módulos a Sincronizar',
+'Invoice With Tax' => 'Factura con IVA',
+'Free Space' => 'Espacio Libre',
+'Space Consumed' => 'Espacio Consumido',
+'Frequency' => 'Frecuencia de Facturación',
+);
 ?>
