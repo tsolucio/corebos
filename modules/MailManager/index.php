@@ -60,6 +60,7 @@ class MailManager_IndexController extends MailManager_Controller {
 		);
 		$viewer->assign('CHECK',$tool_buttons);
 		$viewer->assign('ERROR','');
+		$viewer->assign('SHOW_SENTTO_LINKS', GlobalVariable::getVariable('MailManager_Show_SentTo_Links', 0));
 		$viewer->display( $this->getModuleTpl('index.tpl') );
 		return true;
 	}
