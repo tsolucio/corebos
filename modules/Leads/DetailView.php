@@ -61,8 +61,7 @@ if (isPermitted('Leads', 'Merge', '') == 'yes') {
 
 require_once 'modules/Vtiger/DetailView.php';
 
-if (isPermitted($currentModule, 'CreateView', $record) == 'yes') {
-	$smarty->assign('CREATE_PERMISSION', 'permitted');
+if (isPermitted($currentModule, 'EditView', $record) == 'yes') {
 	require_once 'modules/Leads/ConvertLeadUI.php';
 	$uiinfo = new ConvertLeadUI($record, $current_user);
 	if (isPermitted('Leads', 'ConvertLead') == 'yes'
@@ -77,6 +76,8 @@ if (isPermitted($currentModule, 'CreateView', $record) == 'yes') {
 		$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-warning');
 		$smarty->assign('CONVERTLEAD', 'no');
 	}
+} else {
+	$smarty->assign('CONVERTLEAD', 'no');
 }
 
 $smarty->display('DetailView.tpl');
