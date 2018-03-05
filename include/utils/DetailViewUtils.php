@@ -1607,8 +1607,7 @@ function getRelatedLists($module, $focus, $restrictedRelations = null) {
 
 	//$sql1 = "select * from vtiger_relatedlists where tabid=? order by sequence";
 	// vtlib customization: Do not picklist module which are set as in-active
-	// $sql1 = "select * from vtiger_relatedlists where tabid=? and related_tabid not in (SELECT tabid FROM vtiger_tab WHERE presence = 1) $sel_list order by sequence";
-	$sql1 = "select rl.*,tab.name as tabname from vtiger_relatedlists rl LEFT JOIN vtiger_tab tab ON rl.related_tabid=tab.tabid where rl.tabid=? and rl.related_tabid not in (SELECT tabid FROM vtiger_tab WHERE presence = 1) $sel_list order by rl.sequence";
+	$sql1 = "select * from vtiger_relatedlists where tabid=? and related_tabid not in (SELECT tabid FROM vtiger_tab WHERE presence = 1) $sel_list order by sequence";
 	// END
 	$result = $adb->pquery($sql1, array($cur_tab_id));
 	$num_row = $adb->num_rows($result);
@@ -1616,7 +1615,7 @@ function getRelatedLists($module, $focus, $restrictedRelations = null) {
 	for ($i = 0; $i < $num_row; $i++) {
 		$rel_tab_id = $adb->query_result($result, $i, "related_tabid");
 		$function_name = $adb->query_result($result, $i, "name");
-		$label = $adb->query_result($result, $i, "tabname");
+		$label = $adb->query_result($result, $i, "label");
 		$actions = $adb->query_result($result, $i, "actions");
 		$relationId = $adb->query_result($result, $i, "relation_id");
 		if ($rel_tab_id != 0) {
@@ -1678,7 +1677,7 @@ function isPresentRelatedLists($module, $activity_mode = '') {
 	require('user_privileges/user_privileges_' . $current_user->id . '.php');
 	$tab_id = getTabid($module);
 	// We need to check if there is atleast 1 relation, no need to use count(*)
-	$query = "select rl.relation_id,rl.related_tabid,rl.label, tab.name from vtiger_relatedlists rl LEFT JOIN vtiger_tab tab ON rl.related_tabid=tab.tabid where rl.tabid=? order by rl.sequence";
+	$query = "select relation_id,related_tabid,label from vtiger_relatedlists where tabid=? order by sequence";
 	$result = $adb->pquery($query, array($tab_id));
 	$count = $adb->num_rows($result);
 	if ($count < 1 || ($module == 'Calendar' && $activity_mode == 'task')) {
@@ -1686,7 +1685,7 @@ function isPresentRelatedLists($module, $activity_mode = '') {
 	} elseif (empty($moduleRelatedListCache[$module])) {
 		for ($i = 0; $i < $count; ++$i) {
 			$relatedId = $adb->query_result($result, $i, 'relation_id');
-			$relationLabel = $adb->query_result($result, $i, 'name');
+			$relationLabel = $adb->query_result($result, $i, 'label');
 			$relatedTabId = $adb->query_result($result, $i, 'related_tabid');
 			//check for module disable.
 			if (empty($relatedTabId)) {
