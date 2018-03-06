@@ -49,7 +49,7 @@ class ModuleClass extends CRMEntity {
 	/**
 	 * Mandatory for Listing (Related listview)
 	 */
-	public $list_fields = array (
+	public $list_fields = array(
 		/* Format: Field Label => array(tablename => columnname) */
 		// tablename should not have prefix 'vtiger_'
 		'MODULE_NAME_LABEL'=> array('MODULE_NAME_LOWERCASE' => 'MODULE_REFERENCE_FIELD'),
