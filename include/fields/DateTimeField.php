@@ -449,6 +449,23 @@ class DateTimeField {
 		return str_replace(array('yyyy', 'mm','dd'), array('Y', 'm', 'd'), $user->date_format);
 	}
 
+	public static function sanitizeTime($time) {
+		if (empty($time)) {
+			return '00:00:00';
+		}
+		$len = strlen($time);
+		$colon = substr_count($time, ':');
+		if ($len < 3) { // minutes
+			return '00:'.substr('0'.$time, -2).':00';
+		}
+		if ($len < 6 && $colon == 1) { // hour:minutes
+			list($h, $m) = explode(':', $time);
+			return substr('0'.$h, -2).':'.substr('0'.$m, -2).':00';
+		}
+		list($h, $m, $s) = explode(':', $time);
+		return substr('0'.$h, -2).':'.substr('0'.$m, -2).':'.substr('0'.$s, -2);
+	}
+
 	private static function sanitizeDate($value, $user) {
 		global $current_user;
 		if (empty($user)) {
