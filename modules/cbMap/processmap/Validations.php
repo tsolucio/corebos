@@ -121,7 +121,7 @@ class Validations extends processcbMap {
 	 * $arguments[1] crmid of the record being validated
 	 */
 	public function processMap($arguments) {
-		global $adb, $current_user;
+		global $adb;
 		$mapping=$this->convertMap2Array();
 		$tabid = getTabid($mapping['origin']);
 		$screen_values = $arguments[0];
@@ -234,20 +234,20 @@ class Validations extends processcbMap {
 		$xml = $this->getXMLContent();
 		$mapping=$val_fields=array();
 		$mapping['origin'] = (String)$xml->originmodule->originname;
-		foreach ($xml->fields->field as $k => $v) {
+		foreach ($xml->fields->field as $v) {
 			$fieldname = (String)$v->fieldname;
 			if (empty($fieldname)) {
 				continue;
 			}
 			$allvals=array();
-			foreach ($v->validations->validation as $key => $val) {
+			foreach ($v->validations->validation as $val) {
 				$rule = (String)$val->rule;
 				if (empty($rule)) {
 					continue;
 				}
 				$rst = array();
 				if (isset($val->restrictions)) {
-					foreach ($val->restrictions->restriction as $rk => $rv) {
+					foreach ($val->restrictions->restriction as $rv) {
 						$rst[]=(String)$rv;
 					}
 				}
@@ -291,7 +291,7 @@ class Validations extends processcbMap {
 		$q = 'select cbmapid from vtiger_cbmap
 			inner join vtiger_crmentity on crmid=cbmapid
 			where deleted=0 and maptype=? and targetname=?';
-		$rs = $adb->pquery($q, array('Validations',$module));
+		$rs = $adb->pquery($q, array('Validations', $module));
 		$focus = new cbMap();
 		$focus->mode = '';
 		$validation = true;
@@ -308,7 +308,7 @@ class Validations extends processcbMap {
 
 	public static function formatValidationErrors($errors, $module) {
 		$error = '';
-		foreach ($errors as $field => $errs) {
+		foreach ($errors as $errs) {
 			foreach ($errs as $err) {
 				$error.= $err . "\n";
 			}

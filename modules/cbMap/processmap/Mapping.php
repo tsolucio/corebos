@@ -93,7 +93,7 @@ class Mapping extends processcbMap {
 	 * $arguments[1] target column_fields array
 	 */
 	public function processMap($arguments) {
-		global $adb, $current_user;
+		global $current_user;
 		$mapping=$this->convertMap2Array();
 		$ofields = $arguments[0];
 		if (!empty($ofields['record_id'])) {
@@ -108,7 +108,7 @@ class Mapping extends processcbMap {
 		foreach ($mapping['fields'] as $targetfield => $sourcefields) {
 			$value = '';
 			$delim = (isset($sourcefields['delimiter']) ? $sourcefields['delimiter'] : '');
-			foreach ($sourcefields['merge'] as $pos => $fieldinfo) {
+			foreach ($sourcefields['merge'] as $fieldinfo) {
 				$idx = array_keys($fieldinfo);
 				if (strtoupper($idx[0])=='CONST') {
 					$const = array_pop($fieldinfo);
@@ -169,13 +169,13 @@ class Mapping extends processcbMap {
 		$mapping=$target_fields=array();
 		$mapping['origin'] = (String)$xml->originmodule->originname;
 		$mapping['target'] = (String)$xml->targetmodule->targetname;
-		foreach ($xml->fields->field as $k => $v) {
+		foreach ($xml->fields->field as $v) {
 			$fieldname = (String)$v->fieldname;
 			if (!empty($v->value)) {
 				$target_fields[$fieldname]['value'] = (String)$v->value;
 			}
 			$allmergeFields=array();
-			foreach ($v->Orgfields->Orgfield as $key => $value) {
+			foreach ($v->Orgfields->Orgfield as $value) {
 				$allmergeFields[]=array((String)$value->OrgfieldID=>(String)$value->OrgfieldName);
 			}
 			if (isset($v->Orgfields->delimiter)) {

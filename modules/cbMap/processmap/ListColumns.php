@@ -136,7 +136,7 @@ class ListColumns extends processcbMap {
 				$this->mapping[$modulename]['ListFields'] = array();
 				$this->mapping[$modulename]['ListFieldsName'] = array();
 				$this->mapping[$modulename]['LINKFIELD'] = (!empty($v->linkfield) ? (String)$v->linkfield : $f->list_link_field);
-				foreach ($v->columns->field as $kl => $vl) {
+				foreach ($v->columns->field as $vl) {
 					$table = $vl->table;
 					$columnname = $vl->columnname;
 					$tabid = getTabid($this->modulename);
