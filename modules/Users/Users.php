@@ -1125,7 +1125,7 @@ class Users extends CRMEntity {
 					'date' => date('Y-m-d H:i:s'),
 					'currentuser' => $current_user->id,
 					'action' => 'create',
-					'userstatus' => 'active',
+					'userstatus' => 'Active',
 					'oduser' => $this->id,
 				);
 				$cbmq->sendMessage('coreBOSOnDemandChannel', 'Users', 'CentralSync', 'Data', '1:M', 0, 8640000, 0, 0, serialize($msg));
@@ -1136,7 +1136,7 @@ class Users extends CRMEntity {
 						'date' => date('Y-m-d H:i:s'),
 						'currentuser' => $current_user->id,
 						'action' => 'edit',
-						'userstatus' => strtolower($this->column_fields['status']),
+						'userstatus' => $this->column_fields['status'],
 						'oduser' => $this->id,
 					);
 					$cbmq->sendMessage('coreBOSOnDemandChannel', 'Users', 'CentralSync', 'Data', '1:M', 0, 8640000, 0, 0, serialize($msg));
@@ -1438,13 +1438,17 @@ class Users extends CRMEntity {
 		$this->mark_deleted($id);
 		// ODController delete user
 		if ($cbodUserLog) {
+			global $adb;
+			$uinf = $adb->pquery('select user_name, last_name from vtiger_users where id=?', array($id));
 			$cbmq = coreBOS_MQTM::getInstance();
 			$msg = array(
 				'date' => date('Y-m-d H:i:s'),
 				'currentuser' => $current_user->id,
 				'action' => 'trash',
-				'userstatus' => 'inactive',
-				'oduser' => $this->id,
+				'userstatus' => 'Inactive',
+				'username' => $adb->query_result($uinf, 0, 'user_name'),
+				'lastname' => $adb->query_result($uinf, 0, 'last_name'),
+				'oduser' => $id,
 			);
 			$cbmq->sendMessage('coreBOSOnDemandChannel', 'Users', 'CentralSync', 'Data', '1:M', 0, 8640000, 0, 0, serialize($msg));
 		}
@@ -1469,13 +1473,16 @@ class Users extends CRMEntity {
 		vtws_transferOwnership($userId, $transformToUserId);
 		// ODController delete user
 		if ($cbodUserLog) {
+			$uinf = $adb->pquery('select user_name, last_name from vtiger_users where id=?', array($userId));
 			$cbmq = coreBOS_MQTM::getInstance();
 			$msg = array(
 				'date' => date('Y-m-d H:i:s'),
 				'currentuser' => $current_user->id,
 				'action' => 'transfer',
-				'userstatus' => 'inactive',
-				'oduser' => $this->id,
+				'userstatus' => 'Inactive',
+				'username' => $adb->query_result($uinf, 0, 'user_name'),
+				'lastname' => $adb->query_result($uinf, 0, 'last_name'),
+				'oduser' => $userId,
 			);
 			$cbmq->sendMessage('coreBOSOnDemandChannel', 'Users', 'CentralSync', 'Data', '1:M', 0, 8640000, 0, 0, serialize($msg));
 		}
