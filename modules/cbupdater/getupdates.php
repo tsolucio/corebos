@@ -49,7 +49,7 @@ if (count($cbupdate_files)>0) {
 				$root = $cbupdates->documentElement;
 				$execorder = cbupdater::getMaxExecutionOrder()+1;
 				foreach ($root->childNodes as $node) {
-					if (get_class($node)=='DOMElement' and $node->nodeName=='changeSet') {
+					if (get_class($node)=='DOMElement' && $node->nodeName=='changeSet') {
 						$elems = $node->getElementsByTagName('*');
 						$cbupd = array();
 						foreach ($elems as $elem) {
@@ -116,7 +116,7 @@ $smarty->assign('THEME', $theme);
 $smarty->assign('ERROR', $error);
 $smarty->assign('ERRORMSG', $errmsg);
 $smarty->assign('CBUPDATES', $cbupdatesfound);
-include('modules/cbupdater/forcedButtons.php');
+include 'modules/cbupdater/forcedButtons.php';
 $smarty->assign('CHECK', $tool_buttons);
 $smarty->display('modules/cbupdater/getupdates.tpl');
 ?>

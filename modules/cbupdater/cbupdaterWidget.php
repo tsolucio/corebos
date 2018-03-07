@@ -21,15 +21,14 @@
 global $currentModule;
 
 $focus = CRMEntity::getInstance($currentModule);
-
 $record = vtlib_purify($_REQUEST['record']);
 
 if ($record) {
 	$focus->id = $record;
 	$focus->mode = 'edit';
 	$focus->retrieve_entity_info($record, $currentModule);
-	if ($focus->column_fields['execstate']=='Pending' or $focus->column_fields['execstate']=='Continuous') {
-		if (isset($focus->column_fields['blocked']) and $focus->column_fields['blocked']!='1') {
+	if ($focus->column_fields['execstate']=='Pending' || $focus->column_fields['execstate']=='Continuous') {
+		if (isset($focus->column_fields['blocked']) && $focus->column_fields['blocked']!='1') {
 			echo '<a href="index.php?module=cbupdater&action=dowork&idstring='.$record.'">'.getTranslatedString("Apply", $currentModule).'</a>';
 		}
 		if ($focus->column_fields['systemupdate']=='1') {
@@ -38,7 +37,7 @@ if ($record) {
 	} elseif ($focus->column_fields['systemupdate']=='1') {
 		echo '<strong>'.getTranslatedString('systemupdate', $currentModule).'</strong>';
 	} else {
-		if (isset($focus->column_fields['blocked']) and $focus->column_fields['blocked']!='1') {
+		if (isset($focus->column_fields['blocked']) && $focus->column_fields['blocked']!='1') {
 			echo '<a href="index.php?module=cbupdater&action=dowork&doundo=1&idstring='.$record.'">'.getTranslatedString("Undo", $currentModule).'</a>';
 		}
 	}

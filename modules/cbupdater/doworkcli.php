@@ -29,7 +29,7 @@ if (count($argv)!=3) {
 	$ids = strtolower(vtlib_purify($argv[2]));
 	$whattodo = strtolower($argv[1]);
 
-	if (!empty($ids) and ($whattodo=='undo' or $whattodo=='apply')) {
+	if (!empty($ids) && ($whattodo=='undo' || $whattodo=='apply')) {
 		require_once 'modules/cbupdater/cbupdater.php';
 		require_once 'modules/cbupdater/cbupdaterWorker.php';
 		global $adb, $log, $mod_strings, $app_strings, $currentModule, $current_user;

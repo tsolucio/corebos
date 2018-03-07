@@ -7,6 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-//require_once('modules/Vtiger/MassEditSave.php');
+//require_once 'modules/Vtiger/MassEditSave.php';
 header('Location: index.php?module=cbupdater&action=index');
 ?>

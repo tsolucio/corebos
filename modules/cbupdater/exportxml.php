@@ -17,7 +17,7 @@
 *  Version      : 5.5.0
 *  Author       : JPL TSolucio, S. L.
 *************************************************************************************************/
-include_once('vtlib/Vtiger/Zip.php');
+include_once 'vtlib/Vtiger/Zip.php';
 
 global $adb;
 $ids = vtlib_purify($_REQUEST['idstring']);
@@ -48,7 +48,7 @@ if (!empty($ids)) {
 		$sql .= $adb->sql_escape_string(" and cbupdaterid in ($ids)");
 	}
 	$rs = $adb->query($sql);
-	if ($rs and $adb->num_rows($rs)>0) {
+	if ($rs && $adb->num_rows($rs)>0) {
 		$w=new XMLWriter();
 		$w->openMemory();
 		$w->setIndent(true);

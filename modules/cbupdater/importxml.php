@@ -17,7 +17,7 @@
 *  Version      : 5.5.0
 *  Author       : JPL TSolucio, S. L.
 *************************************************************************************************/
-require_once('vtlib/Vtiger/Unzip.php');
+require_once 'vtlib/Vtiger/Unzip.php';
 
 global $adb;
 $cspath = 'build/changeSets/imported';
@@ -25,9 +25,9 @@ if (!is_dir($cspath)) {
 	mkdir($cspath);
 }
 $zipfile = '';
-if (count($_FILES)==1 and !empty($_FILES['zipfile'])
- and !empty($_FILES['zipfile']['tmp_name']) and !empty($_FILES['zipfile']['type'])
- and $_FILES['zipfile']['type']=='application/zip') {
+if (count($_FILES)==1 && !empty($_FILES['zipfile'])
+ && !empty($_FILES['zipfile']['tmp_name']) && !empty($_FILES['zipfile']['type'])
+ && $_FILES['zipfile']['type']=='application/zip') {
 	$zipfile = $_FILES['zipfile']['tmp_name'];
 }
 
@@ -73,7 +73,7 @@ function cbupd_import($zipfile) {
 					$w->startElement("updatesChangeLog");
 					$root = $cbupdates->documentElement;
 					foreach ($root->childNodes as $node) {
-						if (get_class($node)=='DOMElement' and $node->nodeName=='changeSet') {
+						if (get_class($node)=='DOMElement' && $node->nodeName=='changeSet') {
 							$elems = $node->getElementsByTagName('*');
 							$upd = array();
 							foreach ($elems as $elem) {

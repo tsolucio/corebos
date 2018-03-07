@@ -18,8 +18,7 @@
 *  Author       : JPL TSolucio, S. L.
 *************************************************************************************************/
 
-//error_reporting(E_ALL); ini_set('display_errors', 'on');
-include_once('vtlib/Vtiger/Module.php');
+include_once 'vtlib/Vtiger/Module.php';
 global $adb, $log, $mod_strings, $app_strings, $currentModule, $current_user;
 $currentModule = 'cbupdater';
 set_time_limit(0);
@@ -45,7 +44,7 @@ $cbupdatesfound = array();
 $cbupdate_files = array();
 $cbupdate_ids = '';
 
-if (isset($argv) and count($argv)==2) {
+if (isset($argv) && count($argv)==2) {
 	$cbupdate_files[] = vtlib_purify($argv[1]);
 } else {
 	$cbupdate_files[] = 'modules/cbupdater/cbupdater.xml';
@@ -67,7 +66,7 @@ if (count($cbupdate_files)>0) {
 				$root = $cbupdates->documentElement;
 				$execorder = cbupdater::getMaxExecutionOrder()+1;
 				foreach ($root->childNodes as $node) {
-					if (get_class($node)=='DOMElement' and $node->nodeName=='changeSet') {
+					if (get_class($node)=='DOMElement' && $node->nodeName=='changeSet') {
 						$elems = $node->getElementsByTagName('*');
 						$cbupd = array();
 						foreach ($elems as $elem) {

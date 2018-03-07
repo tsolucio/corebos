@@ -14,7 +14,7 @@ if ($ajaxaction == 'DETAILVIEW') {
 	$crmid = vtlib_purify($_REQUEST['recordid']);
 	$fieldname = vtlib_purify($_REQUEST['fldName']);
 	$fieldvalue = utf8RawUrlDecode($_REQUEST['fieldValue']);
-	if (false and $crmid != '') {
+	if (false && $crmid != '') {
 		$modObj->retrieve_entity_info($crmid, $currentModule);
 		$modObj->column_fields[$fieldname] = $fieldvalue;
 		$modObj->id = $crmid;
