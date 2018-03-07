@@ -97,12 +97,20 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 					ON vtiger_profile2field.fieldid = vtiger_field.fieldid
 				INNER JOIN vtiger_def_org_field
 					ON vtiger_def_org_field.fieldid = vtiger_field.fieldid";
-			if ($module == "Calendar") {
-				$query .=" WHERE vtiger_field.tabid in (9,16) and vtiger_field.presence in (0,2)";
-			} else {
-				$query .=" WHERE vtiger_field.tabid = ? and vtiger_field.presence in (0,2)";
-				$params[] = $tabid;
+
+			$tabids = array($tabid);
+			if (isset($focus->related_tables)) {
+				foreach ($focus->related_tables as $reltable => $reltableinfo) {
+					if (isset($reltableinfo[3]) and is_string($reltableinfo[3])) {
+						$tid = getTabid($reltableinfo[3]);
+						if (is_numeric($tid) and $tid>0) {
+							$tabids[] = $tid;
+						}
+					}
+				}
 			}
+			$query .=" WHERE vtiger_field.tabid in (" . generateQuestionMarks($tabids) . ") and vtiger_field.presence in (0,2)";
+			$params[] = $tabids;
 
 			$query.=" AND vtiger_profile2field.visible = 0
 				AND vtiger_def_org_field.visible = 0
@@ -278,13 +286,25 @@ function getSearchListViewHeader($focus, $module, $sort_qry = '', $sorder = '', 
 				INNER JOIN vtiger_profile2field
 					ON vtiger_profile2field.fieldid = vtiger_field.fieldid
 				INNER JOIN vtiger_def_org_field
-					ON vtiger_def_org_field.fieldid = vtiger_field.fieldid
-				WHERE vtiger_field.tabid = ?
-				AND vtiger_profile2field.visible=0
+					ON vtiger_def_org_field.fieldid = vtiger_field.fieldid";
+			$tabids = array($tabid);
+			if (isset($focus->related_tables)) {
+				foreach ($focus->related_tables as $reltable => $reltableinfo) {
+					if (isset($reltableinfo[3]) and is_string($reltableinfo[3])) {
+						$tid = getTabid($reltableinfo[3]);
+						if (is_numeric($tid) and $tid>0) {
+							$tabids[] = $tid;
+						}
+					}
+				}
+			}
+			$query .=" WHERE vtiger_field.tabid in (" . generateQuestionMarks($tabids) . ") ";
+			$params[] = $tabids;
+			$query .=" AND vtiger_profile2field.visible=0
 				AND vtiger_def_org_field.visible=0
 				AND vtiger_profile2field.profileid IN (" . generateQuestionMarks($profileList) . ")
 				AND vtiger_field.fieldname IN (" . generateQuestionMarks($field_list) . ") and vtiger_field.presence in (0,2)";
-			$params = array($tabid, $profileList, $field_list);
+			$params = array($params, $profileList, $field_list);
 		}
 
 		$result = $adb->pquery($query, $params);
@@ -504,15 +524,21 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 				INNER JOIN vtiger_def_org_field
 					ON vtiger_def_org_field.fieldid = vtiger_field.fieldid";
 
-			if ($module == "Calendar")
-				$query .=" WHERE vtiger_field.tabid in (9,16) and vtiger_field.presence in (0,2)";
-			else {
-				$query .=" WHERE vtiger_field.tabid = ? and vtiger_field.presence in (0,2)";
-				$params[] = $tabid;
+			$tabids = array($tabid);
+			if (isset($focus->related_tables)) {
+				foreach ($focus->related_tables as $reltable => $reltableinfo) {
+					if (isset($reltableinfo[3]) and is_string($reltableinfo[3])) {
+						$tid = getTabid($reltableinfo[3]);
+						if (is_numeric($tid) and $tid>0) {
+							$tabids[] = $tid;
+						}
+					}
+				}
 			}
+			$query .=" WHERE vtiger_field.tabid in (" . generateQuestionMarks($tabids) . ") and vtiger_field.presence in (0,2)";
+			$params[] = $tabids;
 
 			$query .=" AND vtiger_profile2field.visible = 0
-					AND vtiger_profile2field.visible = 0
 					AND vtiger_def_org_field.visible = 0
 					AND vtiger_profile2field.profileid IN (" . generateQuestionMarks($profileList) . ")
 					AND vtiger_field.fieldname IN (" . generateQuestionMarks($field_list) . ")";
@@ -994,13 +1020,26 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 				INNER JOIN vtiger_profile2field
 					ON vtiger_profile2field.fieldid = vtiger_field.fieldid
 				INNER JOIN vtiger_def_org_field
-					ON vtiger_def_org_field.fieldid = vtiger_field.fieldid
-				WHERE vtiger_field.tabid = ?
-				AND vtiger_profile2field.visible = 0
+					ON vtiger_def_org_field.fieldid = vtiger_field.fieldid";
+			$tabids = array($tabid);
+			if (isset($focus->related_tables)) {
+				foreach ($focus->related_tables as $reltable => $reltableinfo) {
+					if (isset($reltableinfo[3]) and is_string($reltableinfo[3])) {
+						$tid = getTabid($reltableinfo[3]);
+						if (is_numeric($tid) and $tid>0) {
+							$tabids[] = $tid;
+						}
+					}
+				}
+			}
+			$query .=" WHERE vtiger_field.tabid in (" . generateQuestionMarks($tabids) . ") ";
+			$params[] = $tabids;
+
+			$query .=" AND vtiger_profile2field.visible = 0
 				AND vtiger_def_org_field.visible = 0
 				AND vtiger_profile2field.profileid IN (" . generateQuestionMarks($profileList) . ")
 				AND vtiger_field.fieldname IN (" . generateQuestionMarks($field_list) . ") and vtiger_field.presence in (0,2)";
-			$params = array($tabid, $profileList, $field_list);
+			$params = array($params, $profileList, $field_list);
 		}
 
 		$result = $adb->pquery($query, $params);
