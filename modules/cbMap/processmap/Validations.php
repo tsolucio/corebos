@@ -132,6 +132,9 @@ class Validations extends processcbMap {
 			$fieldlabel = $adb->query_result($fl, 0, 0);
 			$i18n = getTranslatedString($fieldlabel, $mapping['origin']);
 			foreach ($vals as $rule => $restrictions) {
+				if (isset($screen_values['action']) && $screen_values['action']=='MassEditSave' && empty($screen_values[$valfield.'_mass_edit_check'])) {
+					continue; // we are not saving this field in mass edit save so we don't have to check it
+				}
 				switch ($rule) {
 					case 'required':
 					case 'accepted':
