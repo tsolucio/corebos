@@ -166,7 +166,12 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 		$date = new DateTimeField($fieldvalue);
 		$fieldvalue = $date->getDisplayDateTimeValue();
 	}
-
+	if ($module != 'Reports') {
+		$modobj = CRMEntity::getInstance($module);
+		if (!empty($valueArray['lbl_action']) && method_exists($modobj, 'formatValueForReport')) {
+			$fieldvalue = $modobj->formatValueForReport($dbField, $fieldType, $value, $valueArray['lbl_action']);
+		}
+	}
 	return $fieldvalue;
 }
 
