@@ -111,6 +111,7 @@ $mod_strings = array(
 	'LBL_IN_SUBJECT' => 'In onderwerp',
 	'LBL_IN_SENDER' => 'In van',
 	'LBL_IN_SUBJECT_OR_SENDER' => 'In onderwerp of van',
+	'SELECT_EMAIL'=>'Select Email IDs',
 	'CHOSE_EMAIL' => 'Kies e-mailadres',
 	'Sender' => 'Van',
 	'LBL_CONFIGURE_MAIL_SETTINGS' => 'Uw inkomende e-mailserver is niet geconfigureerd',
