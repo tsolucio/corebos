@@ -235,10 +235,8 @@ class Emails extends CRMEntity {
 	}
 
 	public function saveForwardAttachments($id, $module, $file_details) {
-		global $log;
+		global $log, $adb, $current_user, $upload_badext;
 		$log->debug("Entering into saveForwardAttachments($id,$module,$file_details) method.");
-		global $adb, $current_user;
-		global $upload_badext;
 		require_once 'modules/Webmails/MailBox.php';
 		$mailbox = $_REQUEST['mailbox'];
 		$MailBox = new MailBox($mailbox);
@@ -465,9 +463,9 @@ class Emails extends CRMEntity {
 			$entries = array();
 
 			if (is_admin($current_user)) {
-				$entries[] = getFullNameFromarray('Users', $row);
+				$entries[] = getFullNameFromArray('Users', $row);
 			} else {
-				$entries[] = getFullNameFromarray('Users', $row);
+				$entries[] = getFullNameFromArray('Users', $row);
 			}
 
 			$entries[] = $row['user_name'];
