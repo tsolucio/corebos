@@ -10,6 +10,8 @@
 -->*}
 {if !empty($smarty.request.ajax)}
 &#&#&#{if isset($ERROR)}{$ERROR}{/if}&#&#&#
+{else}
+{include file='applicationmessage.tpl'}
 {/if}
 <script type="text/javascript" src="include/js/ListView.js"></script>
 <form name="massdelete" method="POST" id="massdelete" onsubmit="VtigerJS_DialogBox.block();">
