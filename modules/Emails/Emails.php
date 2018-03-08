@@ -462,11 +462,7 @@ class Emails extends CRMEntity {
 		while ($row = $adb->fetch_array($result)) {
 			$entries = array();
 
-			if (is_admin($current_user)) {
-				$entries[] = getFullNameFromArray('Users', $row);
-			} else {
-				$entries[] = getFullNameFromArray('Users', $row);
-			}
+			$entries[] = getFullNameFromArray('Users', $row);
 
 			$entries[] = $row['user_name'];
 			$entries[] = $row['email1'];
