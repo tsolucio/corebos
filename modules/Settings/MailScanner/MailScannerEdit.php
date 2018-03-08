@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('modules/Settings/MailScanner/core/MailScannerInfo.php');
-require_once('Smarty_setup.php');
+require_once 'modules/Settings/MailScanner/core/MailScannerInfo.php';
+require_once 'Smarty_setup.php';
 
 global $app_strings, $mod_strings, $currentModule, $theme, $current_language;
 
