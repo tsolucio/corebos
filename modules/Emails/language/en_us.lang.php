@@ -31,8 +31,8 @@ $mod_strings = array(
 'LBL_SUBJECT'=>'Subject:',
 'LBL_BODY'=>'Body:',
 'LBL_CONTACT_NAME'=>' Contact Name: ',
-'LBL_EMAIL'=>'Email:', 
-'LBL_DETAILVIEW_EMAIL'=>'E-Mail', 
+'LBL_EMAIL'=>'Email:',
+'LBL_DETAILVIEW_EMAIL'=>'E-Mail',
 'LBL_COLON'=>':',
 'LBL_CHK_MAIL'=>'Check Mail',
 'LBL_COMPOSE'=>'Compose',
@@ -158,5 +158,4 @@ or an update!',
 'LBL_ATTACH_DOCUMENTS' => 'Attach documents',
 'Access Count' => 'Access Count',
 );
-
 ?>
