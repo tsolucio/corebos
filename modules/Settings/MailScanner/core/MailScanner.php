@@ -532,7 +532,7 @@ class Vtiger_MailScanner {
 		}
 		if ($projectid) {
 			$this->log("Caching Project Id found for: $subjectOrId");
-			$this->_cachedProjectIds[$checkProjectId] = $ticketid;
+			$this->_cachedProjectIds[$checkProjectId] = $projectid;
 		} else {
 			$this->log("No matching Project found for: $subjectOrId");
 		}
@@ -654,7 +654,7 @@ class Vtiger_MailScanner {
 				if ($fromemail && !$this->LookupContactOrAccount($fromemail, $project_focus->column_fields['linktoaccountscontacts']) &&
 					!$this->LookupUser($fromemail, $usrlist) &&
 					!$this->LookupEmployee($fromemail, $employeelist)) {
-					$ticket_focus = false;
+					$project_focus = false;
 				}
 				if ($project_focus) {
 					$this->log("Reusing Cached Project [" . $project_focus->column_fields['project_name'] ."]");
