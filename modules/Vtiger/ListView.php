@@ -100,7 +100,24 @@ try {
 $smarty->assign('SQLERROR', $sql_error);
 if ($sql_error) {
 	$smarty->assign('ERROR', getTranslatedString('ERROR_GETTING_FILTER'));
-	$smarty->assign("CUSTOMVIEW_OPTION", $customview_html);
+	$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-error');
+	$smarty->assign('ERROR_MESSAGE', getTranslatedString('ERROR_GETTING_FILTER', $currentModule));
+	$smarty->assign('CUSTOMVIEW_OPTION', $customview_html);
+	$smarty->assign('SEARCHLISTHEADER', array());
+	$alphabetical = AlphabeticalSearch($currentModule, 'index', $focus->def_basicsearch_col, 'true', 'basic', '', '', '', '', $viewid);
+	$smarty->assign('ALPHABETICAL', $alphabetical);
+	$smarty->assign('FIELDNAMES', array());
+	$smarty->assign('CRITERIA', array());
+	$smarty->assign('SEARCH_URL', '');
+	$smarty->assign('export_where', '');
+	$smarty->assign('SELECTEDIDS', '');
+	$smarty->assign('ALLSELECTEDIDS', '');
+	$smarty->assign('CURRENT_PAGE_BOXES', '');
+	$smarty->assign('NAVIGATION', '');
+	$smarty->assign('recordListRange', '');
+	$smarty->assign('CUSTOM_LINKS', '');
+	$smarty->assign('LISTHEADER', '');
+	$smarty->assign('LISTENTITY', '');
 } else {
 // Enabling Module Search
 	$url_string = '';
