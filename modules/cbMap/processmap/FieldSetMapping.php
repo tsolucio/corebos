@@ -47,7 +47,7 @@ class FieldSetMapping extends processcbMap {
 			foreach ($xml->module as $v) {
 				$mname = (String)$v->name;
 				$this->mapping[$mname] = array();
-				foreach ($xml->module->fields->field as $fv) {
+				foreach ($v->fields->field as $fv) {
 					$this->mapping[$mname][] = array(
 						'name' => (String)$fv->name,
 						'info' => (String)$fv->info,
