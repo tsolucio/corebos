@@ -29,7 +29,6 @@ if (empty($current_language)) {
 $app_strings = return_application_language($current_language);
 $mod_strings = return_module_language($current_language, 'Settings');
 $smarty = new vtigerCRM_Smarty;
-require_once('modules/evvtMenu/evvtMenu.inc');
 $date = new DateTimeField(null);
 $smarty->assign('DATE', $date->getDisplayDateTimeValue());
 $smarty->assign('CURRENT_USER_MAIL', $current_user->email1);

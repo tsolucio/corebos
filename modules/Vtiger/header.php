@@ -13,11 +13,11 @@ require_once 'include/utils/utils.php';
 require_once 'include/calculator/Calc.php';
 
 global $currentModule, $default_charset, $app_strings, $theme;
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
+$theme_path='themes/'.$theme.'/';
+$image_path=$theme_path.'images/';
 $userName = getFullNameFromArray('Users', $current_user->column_fields);
 $smarty = new vtigerCRM_Smarty;
-require_once 'modules/evvtMenu/evvtMenu.inc';
+require_once 'modules/evvtMenu/evvtMenuUtils.php';
 $smarty->assign('MENU', getMenuArray(0));
 $header_array = getAdminevvtMenu();
 $smarty->assign('evvtAdminMenu', $header_array);

@@ -19,7 +19,7 @@
 global $app_strings, $mod_strings, $current_language, $currentModule, $theme, $current_user;
 
 require_once 'Smarty_setup.php';
-require_once 'modules/evvtMenu/evvtMenu.inc';
+require_once 'modules/evvtMenu/evvtMenuUtils.php';
 $category = getParentTab();
 $smarty = new vtigerCRM_Smarty();
 
