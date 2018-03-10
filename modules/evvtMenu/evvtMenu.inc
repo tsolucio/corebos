@@ -21,7 +21,7 @@ function getMenuBranch($mparent) {
 	global $adb;
 	$menustructure = array();
 	$menurs = $adb->query("select * from vtiger_evvtmenu where mparent = $mparent order by mseq");
-	if ($menurs and $adb->num_rows($menurs)>0) {
+	if ($menurs && $adb->num_rows($menurs)>0) {
 		while ($menu = $adb->fetch_array($menurs)) {
 			switch ($menu['mtype']) {
 				case 'menu':
@@ -68,7 +68,7 @@ function getMenuJSON2() {
 	global $adb, $default_charset;
 	$menustructure = array(array('id'=>0, 'parent'=>'#', 'text' => 'Menu'));
 	$menurs = $adb->query('SELECT * FROM `vtiger_evvtmenu` ORDER BY mseq ASC');
-	if ($menurs and $adb->num_rows($menurs)>0) {
+	if ($menurs && $adb->num_rows($menurs)>0) {
 		while ($menu = $adb->fetchByAssoc($menurs)) {
 			$info = array(
 				'evvtmenuid' => $menu['evvtmenuid'],
@@ -98,7 +98,7 @@ function getMenuElements() {
 	global $adb;
 	$menustructure = array();
 	$menurs = $adb->query('SELECT `evvtmenuid`, `mlabel` FROM `vtiger_evvtmenu`');
-	if ($menurs and $adb->num_rows($menurs)>0) {
+	if ($menurs && $adb->num_rows($menurs)>0) {
 		while ($menu = $adb->fetch_array($menurs)) {
 			$menustructure[$menu['evvtmenuid']] = $menu['mlabel'];
 		}
@@ -111,9 +111,9 @@ function getMenuArray($mparent) {
 	$is_admin = is_admin($current_user);
 	$menustructure = array();
 	$menurs = $adb->query("select * from vtiger_evvtmenu where mparent = $mparent and mvisible=1 order by mseq");
-	if ($menurs and $adb->num_rows($menurs)>0) {
+	if ($menurs && $adb->num_rows($menurs)>0) {
 		while ($menu = $adb->fetch_array($menurs)) {
-			if (empty($menu['mpermission']) and $menu['mtype']=='module') {
+			if (empty($menu['mpermission']) && $menu['mtype']=='module') {
 				// apply vtiger CRM permissions
 				if (isPermitted($menu['mvalue'], 'index')=='no') {
 					continue;
@@ -122,13 +122,13 @@ function getMenuArray($mparent) {
 				// apply evvtMenu permissions
 				$usrprf = getUserProfile($current_user->id);
 				$mperm = explode(',', $menu['mpermission']);
-				if (!$is_admin and count(array_intersect($usrprf, $mperm))==0) {
+				if (!$is_admin && count(array_intersect($usrprf, $mperm))==0) {
 					continue;
 				}
 			}
 			$label = i18nMenuLabel($menu['mlabel'], $menu['mvalue'], $menu['mtype']);
 			$submenu = getMenuArray($menu['evvtmenuid']);
-			if ($menu['mparent']>0 or count($submenu)>0 or $menu['mtype']=='module' or $menu['mtype']=='url') {
+			if ($menu['mparent']>0 || count($submenu)>0 || $menu['mtype']=='module' || $menu['mtype']=='url') {
 				$menustructure[] = array(
 					'evvtmenuid' => $menu['evvtmenuid'],
 					'mparent' => $menu['mparent'],
@@ -149,7 +149,7 @@ function getMenuHTML($marray) {
 	$menubranch = '';
 	foreach ($marray as $item) {
 		$menubranch.= '<li>'.$item['mlabel'];
-		if (!empty($item['submenu']) and count($item['submenu'])>0) {
+		if (!empty($item['submenu']) && count($item['submenu'])>0) {
 			$menubranch.= '<ul>';
 			$menubranch.= getMenuHTML($item['submenu']);
 			$menubranch.= '</ul>';
@@ -163,7 +163,7 @@ function getMenuPicklist($mparent, $level) {
 	global $adb;
 	$menustructure = array();
 	$menurs = $adb->pquery('SELECT evvtmenuid, mlabel, mtype, mvalue FROM vtiger_evvtmenu where mparent=? order by mseq', array($mparent));
-	if ($menurs and $adb->num_rows($menurs)>0) {
+	if ($menurs && $adb->num_rows($menurs)>0) {
 		while ($menu = $adb->fetch_array($menurs)) {
 			$label = i18nMenuLabel($menu['mlabel'], $menu['mvalue'], $menu['mtype']);
 			$menustructure[$menu['evvtmenuid']] = ($level ? str_repeat('>', $level) : '').' '.$label;
@@ -177,7 +177,7 @@ function getAdminevvtMenu() {
 	global $adb;
 	$rdo = array();
 	$menurs = $adb->query("select * from vtiger_evvtmenu where mparent = (select evvtmenuid from vtiger_evvtmenu where mlabel ='Settings') and mvisible=1 order by mseq");
-	if ($menurs and $adb->num_rows($menurs)>0) {
+	if ($menurs && $adb->num_rows($menurs)>0) {
 		while ($menu = $adb->fetch_array($menurs)) {
 			switch ($menu['mtype']) {
 				case 'url':
@@ -202,7 +202,7 @@ function getAdminevvtMenu() {
 }
 
 function checkevvtMenuInstalled() {
-	global $log, $adb, $current_user;
+	global $adb, $current_user;
 	if (vtlib_isModuleActive('cbupdater')) {
 		// first we make sure we have Global Variable
 		if (!vtlib_isModuleActive('GlobalVariable')) {

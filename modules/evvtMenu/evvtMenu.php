@@ -35,7 +35,7 @@ class evvtMenu {
 			$mainmenucnt=0;
 			$submenucnt=1;
 			while ($menu = $adb->fetch_array($menus)) {
-				if ($mainmenucnt==0 or $mainmenucnt!=$menu['parenttabid']) {
+				if ($mainmenucnt==0 || $mainmenucnt!=$menu['parenttabid']) {
 					$mainmenucnt++;
 					$adb->query("insert into vtiger_evvtmenu (mtype,mvalue,mlabel,mparent,mseq,mvisible,mpermission) values
 							('menu','','".$menu['parenttab_label']."',0,$mainmenucnt,1,'')");
