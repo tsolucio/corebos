@@ -40,9 +40,7 @@ function getKeyMetrics($maxval, $calCnt) {
 	require_once 'include/ListView/ListView.php';
 
 	global $app_strings, $adb, $log, $current_language;
-	$metricviewnames = "'Hot Leads'";
 
-	$current_module_strings = return_module_language($current_language, 'CustomView');
 	$log = LoggerManager::getLogger('metrics');
 
 	$metriclists = getMetricList();
@@ -90,7 +88,6 @@ function getKeyMetrics($maxval, $calCnt) {
 	$header[]=$app_strings['LBL_HOME_COUNT'];
 	$entries=array();
 	if (isset($metriclists)) {
-		$oddRow = true;
 		foreach ($metriclists as $metriclist) {
 			$value=array();
 			$CVname = (strlen($metriclist['name']) > 20) ? (substr($metriclist['name'], 0, 20).'...') : $metriclist['name'];
