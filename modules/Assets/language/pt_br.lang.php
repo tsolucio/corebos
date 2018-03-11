@@ -8,17 +8,14 @@
  * All Rights Reserved. | Contributor: Valmir Carlos Trindade - 30/12/2010 - www.ttcasolucoes.com.br
  ************************************************************************************/
 
-$mod_strings = Array(
-/*some general information*/
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Ativos',
 'SINGLE_Assets'=>'Ativo',
 
-/*blocks for the module*/
 'LBL_ASSET_INFORMATION'=>'Informação Ativo',
 'LBL_CUSTOM_INFORMATION'=>'Informação Customizada',
 'LBL_DESCRIPTION_INFORMATION'=>'Notas',
 
-/*fields for the module*/
 'Assets'=>'Ativos',
 'Asset Name' => 'Nome Ativo',
 'Customer Name'=>'Nome Cliente',
@@ -34,10 +31,7 @@ $mod_strings = Array(
 'Notes'=>'Notas',
 'Invoice Name'=>'Nome Fatura',
 
-/*picklist values*/
 'In Service'=>'Em Serviço',
 'Out-of-service'=>'Fora Serviço',
-
-
 );
 ?>
