@@ -19,5 +19,4 @@ $mod_strings = array(
 
 	'ModuleFieldLabel' => 'ModuleFieldLabel Text',
 );
-
 ?>

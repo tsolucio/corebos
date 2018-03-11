@@ -19,5 +19,4 @@ $mod_strings = array(
 
 	'ModuleFieldLabel' => 'Texto Etiqueta Campo Módulo',
 );
-
 ?>
