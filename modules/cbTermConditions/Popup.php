@@ -7,5 +7,5 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('Popup.php');
+require_once 'Popup.php';
 ?>

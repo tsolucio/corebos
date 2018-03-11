@@ -24,6 +24,5 @@ $mod_strings = array(
 	'LBL_CBTERMCONDITIONS_INFORMATION' => 'Terms and Conditions Information',
 	'LBL_TERMANDCONDITIONS' => 'Terms and Conditions',
 	'LBL_DESCRIPTION_INFORMATION' => 'Description',
-
 );
 ?>
