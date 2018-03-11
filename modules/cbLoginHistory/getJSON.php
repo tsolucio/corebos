@@ -16,7 +16,7 @@
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
 require_once 'include/utils/utils.php';
-require_once('modules/Users/LoginHistory.php');
+require_once 'modules/Users/LoginHistory.php';
 
 $response = array(
 	'total' => 0,
@@ -29,12 +29,12 @@ if (isset($_REQUEST['page'])) {
 } else {
 	$page = 1;
 }
-if (isset($_REQUEST['user_list']) and is_numeric($_REQUEST['user_list'])) {
+if (isset($_REQUEST['user_list']) && is_numeric($_REQUEST['user_list'])) {
 	$userid = vtlib_purify($_REQUEST['user_list']);
 } else {
 	$userid = 0;
 }
-if (isset($_REQUEST['order_by']) and is_numeric($_REQUEST['order_by'])) {
+if (isset($_REQUEST['order_by']) && is_numeric($_REQUEST['order_by'])) {
 	$order_by = vtlib_purify($_REQUEST['order_by']);
 	switch ($order_by) {
 		case 1:
