@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('data/CRMEntity.php');
-require_once('data/Tracker.php');
+require_once 'data/CRMEntity.php';
+require_once 'data/Tracker.php';
 
 class cbCalendar extends CRMEntity {
 	public $db;
@@ -167,7 +167,7 @@ class cbCalendar extends CRMEntity {
 			unset($_REQUEST['recurringcheck']);
 			$this->column_fields['parent_id'] = $this->column_fields['rel_id'];
 			$this->column_fields['contact_id'] = $this->column_fields['cto_id'];
-			include_once('modules/Calendar/RepeatEvents.php');
+			include_once 'modules/Calendar/RepeatEvents.php';
 			Calendar_RepeatEvents::repeatFromRequest($this);
 			//Insert into vtiger_recurring event table
 			if (isset($this->column_fields['recurringtype']) && $this->column_fields['recurringtype']!='' && $this->column_fields['recurringtype']!='--None--') {
@@ -490,7 +490,7 @@ class cbCalendar extends CRMEntity {
 
 	public function sendInvitation($inviteesid, $subject, $desc) {
 		global $current_user;
-		require_once('modules/Emails/mail.php');
+		require_once 'modules/Emails/mail.php';
 		$invites = getTranslatedString('INVITATION', 'cbCalendar');
 		$invitees_array = explode(';', $inviteesid);
 		$subject = $invites.' : '.$subject;
@@ -556,7 +556,7 @@ class cbCalendar extends CRMEntity {
 		$this_module = $currentModule;
 
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
-		require_once("modules/$related_module/$related_module.php");
+		require_once "modules/$related_module/$related_module.php";
 		$other = new $related_module();
 
 		// To make the edit or del link actions to return back to same view.
@@ -731,7 +731,7 @@ class cbCalendar extends CRMEntity {
 			$task->reevaluate = 0;
 			$taskManager->saveTask($task);
 			$calendarWorkflow = $workflowManager->newWorkFlow("cbCalendar");
-			$calendarWorkflow->test = '[{"fieldname":"followupcreate","operation":"is","value":"true:boolean","valuetype":"rawtext","joincondition":"and","groupid":"0"}]';
+			$calendarWorkflow->test='[{"fieldname":"followupcreate","operation":"is","value":"true:boolean","valuetype":"rawtext","joincondition":"and","groupid":"0"}]';
 			$calendarWorkflow->description = "Create Calendar Follow Up on create";
 			$calendarWorkflow->executionCondition = VTWorkflowManager::$ON_FIRST_SAVE;
 			$calendarWorkflow->defaultworkflow = 1;
@@ -770,7 +770,7 @@ class cbCalendar extends CRMEntity {
 				$field1->helpinfo = $fldrow['helpinfo'];
 				$block->addField($field1);
 			}
-			require_once('include/events/include.inc');
+			require_once 'include/events/include.inc';
 			$em = new VTEventsManager($adb);
 			$em->registerHandler('corebos.permissions.accessquery', 'modules/cbCalendar/PublicInvitePermission.php', 'PublicInvitePermissionHandler');
 			echo "<h4>Permission Event accessquery registered.</h4>";
@@ -833,7 +833,10 @@ class cbCalendar extends CRMEntity {
 				$calendarWorkflow->schannualdates = $calwf['schannualdates'];
 				$calendarWorkflow->schminuteinterval = $calwf['schminuteinterval'];
 				$workflowManager->save($calendarWorkflow);
-				$adb->pquery("UPDATE com_vtiger_workflows SET nexttrigger_time=? WHERE workflow_id=?", array((isset($calwf['nexttriger_time']) ? $calwf['nexttriger_time'] : null), $calendarWorkflow->id));
+				$adb->pquery(
+					'UPDATE com_vtiger_workflows SET nexttrigger_time=? WHERE workflow_id=?',
+					array((isset($calwf['nexttriger_time']) ? $calwf['nexttriger_time'] : null), $calendarWorkflow->id)
+				);
 				// get workflow tasks.
 				$rescaltk = $adb->pquery("SELECT summary, task_id FROM com_vtiger_workflowtasks WHERE workflow_id = ?", array($calwf['workflow_id']));
 				while ($caltk = $adb->getNextRow($rescaltk, false)) {

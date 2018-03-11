@@ -24,7 +24,7 @@ switch ($op) {
 			include_once 'modules/cbCalendar/cbCalendar.php';
 			cbCalendar::changeStatus($status, $activityid);
 		}
-		include_once('modules/Vtiger/ListView.php');
+		include_once 'modules/Vtiger/ListView.php';
 		break;
 	default:
 		break;

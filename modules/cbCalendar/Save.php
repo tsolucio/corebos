@@ -8,16 +8,15 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-if (isset($_REQUEST['activitytype']) and $_REQUEST['activitytype']=='Emails') {
+if (isset($_REQUEST['activitytype']) && $_REQUEST['activitytype']=='Emails') {
 	$_REQUEST['activitytype'] = 'Task'; // cbCalendar Emails cannot be created through this GUI
 }
 $__cbSaveSendHeader = false;
-require_once('modules/Vtiger/Save.php');
+require_once 'modules/Vtiger/Save.php';
 
-if (isset($_REQUEST['Module_Popup_Edit']) and $_REQUEST['Module_Popup_Edit']==1) {
+if (isset($_REQUEST['Module_Popup_Edit']) && $_REQUEST['Module_Popup_Edit']==1) {
 	echo "<script>if (typeof window.opener.graphicalCalendarRefresh == 'function') window.opener.graphicalCalendarRefresh();window.close();</script>";
 } else {
 	header('Location: index.php?' . $req->getReturnURL() . $search);
 }
-
 ?>
