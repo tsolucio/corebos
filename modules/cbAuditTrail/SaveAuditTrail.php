@@ -7,36 +7,30 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 global $root_directory;
 $filename = $root_directory.'user_privileges/audit_trail.php';
 if (is_writable($filename)) {
-	$readhandle = @fopen($filename, "r+");
+	$readhandle = @fopen($filename, 'r+');
 
-	if($readhandle)
-	{
+	if ($readhandle) {
 		$buffer = '';
 		$new_buffer = '';
-		while(!feof($readhandle))
-		{
+		while (!feof($readhandle)) {
 			$buffer = fgets($readhandle, 5200);
 			list($starter, $tmp) = explode(" = ", $buffer);
 
-			if($starter == '$audit_trail' && stristr($tmp,'false'))
-			{
+			if ($starter == '$audit_trail' && stristr($tmp, 'false')) {
 				$new_buffer .= "\$audit_trail = 'true';\n";
-			}
-			elseif($starter == '$audit_trail' && stristr($tmp,'true'))
-			{
+			} elseif ($starter == '$audit_trail' && stristr($tmp, 'true')) {
 				$new_buffer .= "\$audit_trail = 'false';\n";
-			}
-			else
+			} else {
 				$new_buffer .= $buffer;
+			}
 		}
 		fclose($readhandle);
 	}
 
-	$handle = fopen($filename, "w");
+	$handle = fopen($filename, 'w');
 	fputs($handle, $new_buffer);
 	fflush($handle);
 	fclose($handle);

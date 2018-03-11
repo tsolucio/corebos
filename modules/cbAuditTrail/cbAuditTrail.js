@@ -16,12 +16,12 @@ function auditdisable() {
 }
 
 function setAuditStatus(status) {
-	document.getElementById("status").style.display = "block";
+	document.getElementById('status').style.display = 'block';
 	jQuery.ajax({
-		method:"POST",
+		method:'POST',
 		url:'index.php?module=cbAuditTrail&action=cbAuditTrailAjax&file=SaveAuditTrail&ajax=true&audit_trail=' + status,
-	}).done(function(response) {
-		document.getElementById("status").style.display = "none";
+	}).done(function (response) {
+		document.getElementById('status').style.display = 'none';
 		location.reload(true);
 	});
 }
