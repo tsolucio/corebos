@@ -7,29 +7,27 @@
  * All Rights Reserved.
  ************************************************************************************/
 function exportLanguageCSV() {
-    select_options = document.getElementById('allselectedboxes').value;
-    var x = select_options.split(';');
-    var count = x.length;
-    if (count > 1) {
-        idString = select_options;
-        gotourl('index.php?module=cbtranslation&action=cbtranslationAjax&file=exportToCSV&allrecords=' + idString);
-    }
-    else {
-        alert(alert_arr.SELECT);
-        return false;
-    }
+	select_options = document.getElementById('allselectedboxes').value;
+	var x = select_options.split(';');
+	var count = x.length;
+	if (count > 1) {
+		idString = select_options;
+		gotourl('index.php?module=cbtranslation&action=cbtranslationAjax&file=exportToCSV&allrecords=' + idString);
+	} else {
+		alert(alert_arr.SELECT);
+		return false;
+	}
 }
 
 function exportLanguageJSON() {
-    select_options = document.getElementById('allselectedboxes').value;
-    var x = select_options.split(';');
-    var count = x.length;
-    if (count > 1) {
-        idString = select_options;
-        gotourl('index.php?module=cbtranslation&action=cbtranslationAjax&file=exportToJSON&allrecords=' + idString);
-    }
-    else {
-        alert(alert_arr.SELECT);
-        return false;
-    }
+	select_options = document.getElementById('allselectedboxes').value;
+	var x = select_options.split(';');
+	var count = x.length;
+	if (count > 1) {
+		idString = select_options;
+		gotourl('index.php?module=cbtranslation&action=cbtranslationAjax&file=exportToJSON&allrecords=' + idString);
+	} else {
+		alert(alert_arr.SELECT);
+		return false;
+	}
 }
