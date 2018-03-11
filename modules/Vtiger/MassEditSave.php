@@ -57,7 +57,10 @@ if (isset($idlist)) {
 					$focus->column_fields[$fieldname] = decode_html($focus->column_fields[$fieldname]);
 				}
 			}
-			$focus->save($currentModule);
+			list($saveerror,$errormessage,$error_action,$returnvalues) = $focus->preSaveCheck($_REQUEST);
+			if (!$saveerror) { // if there is an error we ignore this record
+				$focus->save($currentModule);
+			}
 		}
 	}
 }
