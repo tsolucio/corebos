@@ -7,15 +7,17 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('modules/Rss/Rss.php');
-require_once('include/logging.php');
+require_once 'modules/Rss/Rss.php';
+require_once 'include/logging.php';
 global $mod_strings;
 
-if (isset($_REQUEST["rssurl"])) $newRssUrl = $_REQUEST["rssurl"];
+if (isset($_REQUEST['rssurl'])) {
+	$newRssUrl = $_REQUEST["rssurl"];
+}
 
 $oRss = new vtigerRSS();
-if($oRss->setRSSUrl($newRssUrl)) {
-	if($oRss->saveRSSUrl($newRssUrl) == false) {
+if ($oRss->setRSSUrl($newRssUrl)) {
+	if ($oRss->saveRSSUrl($newRssUrl) == false) {
 		echo $mod_strings['UNABLE_TO_SAVE'];
 	}
 } else {

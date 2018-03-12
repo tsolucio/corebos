@@ -7,8 +7,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-function star(id, starred)
-{
+function star(id, starred) {
 	location.href = "index.php?module=Rss&action=Star&record="+id+"&starred="+starred;
 	var elem = document.getElementById("star-"+id);
 	if (elem.src.indexOf("onstar.gif") != -1) {
@@ -27,7 +26,7 @@ function makeRequest(targetUrl) {
 	var httpRequest = getRequest();
 	httpRequest.open("GET", targetUrl, false, false, false);
 	httpRequest.send("");
-	switch ( httpRequest.status ) {
+	switch (httpRequest.status) {
 		case 200:
 			return httpRequest.responseText;
 			break;
@@ -51,35 +50,33 @@ function verify_data(form) {
 	}
 	return true;
 }
-function display(url,id)
-{
+
+function display(url,id) {
 	document.getElementById('rsstitle').innerHTML = document.getElementById(id).innerHTML;
 	document.getElementById('mysite').src = url;
 }
-function GetRssFeedList(id)
-{
-	document.getElementById("status").style.display="inline";
-		jQuery.ajax({
-				method:"POST",
-				url:'index.php?module=Rss&action=RssAjax&file=ListView&directmode=ajax&record='+id
-		}).done(function(response) {
-				document.getElementById("status").style.display="none";
-				document.getElementById("rssfeedscont").innerHTML=response;
-			}
-		);
+
+function GetRssFeedList(id) {
+	document.getElementById('status').style.display='inline';
+	jQuery.ajax({
+		method:'POST',
+		url:'index.php?module=Rss&action=RssAjax&file=ListView&directmode=ajax&record='+id
+	}).done(function (response) {
+		document.getElementById('status').style.display='none';
+		document.getElementById('rssfeedscont').innerHTML=response;
+	});
 }
 
-function DeleteRssFeeds(id)
-{
+function DeleteRssFeeds(id) {
 	if (id != '') {
-		if(confirm(i18n_DELETE_RSSFEED_CONFIRMATION)) {
+		if (confirm(i18n_DELETE_RSSFEED_CONFIRMATION)) {
 			show('status');
 			var feed = 'feed_'+id;
 			document.getElementById(feed).parentNode.removeChild(document.getElementById(feed));
 			jQuery.ajax({
 				method:"POST",
 				url:'index.php?module=Rss&return_module=Rss&action=RssAjax&file=Delete&directmode=ajax&record='+id,
-			}).done(function(response) {
+			}).done(function (response) {
 				document.getElementById("status").style.display="none";
 				document.getElementById("rssfeedscont").innerHTML=response;
 				document.getElementById("mysite").src = '';
@@ -90,17 +87,17 @@ function DeleteRssFeeds(id)
 		alert(alert_arr.LBL_NO_FEEDS_SELECTED);
 	}
 }
-function SaveRssFeeds()
-{
+
+function SaveRssFeeds() {
 	document.getElementById("status").style.display="inline";
 	var rssurl = document.getElementById('rssurl').value;
 	rssurl = rssurl.replace(/&/gi,"##amp##");
 	jQuery.ajax({
 		method:"POST",
 		url:'index.php?module=Rss&action=RssAjax&file=Popup&directmode=ajax&rssurl='+rssurl
-	}).done(function(response) {
+	}).done(function (response) {
 		document.getElementById("status").style.display="none";
-		if(isNaN(parseInt(response))) {
+		if (isNaN(parseInt(response))) {
 			var rrt = response;
 			document.getElementById("temp_alert").innerHTML = rrt;
 			removeHTMLTags();
@@ -119,7 +116,7 @@ function makedefaultRss(id) {
 		jQuery.ajax({
 			method:"POST",
 			url:'index.php?module=Rss&action=RssAjax&file=Popup&directmode=ajax&record='+id
-		}).done(function(response) {
+		}).done(function (response) {
 			document.getElementById("status").style.display="none";
 			getrssfolders();
 		});
@@ -129,7 +126,7 @@ function getrssfolders() {
 	jQuery.ajax({
 		method:"POST",
 		url:'index.php?module=Rss&action=RssAjax&file=ListView&folders=true'
-	}).done(function(response) {
+	}).done(function (response) {
 		document.getElementById("status").style.display="none";
 		document.getElementById("rssfolders").innerHTML=response;
 	});
@@ -142,4 +139,3 @@ function removeHTMLTags() {
 		alert("Output Message:\n" + strTagStrippedText);
 	}
 }
-
