@@ -497,7 +497,7 @@ class CobroPago extends CRMEntity {
 	public function preEditCheck($request, $smarty) {
 		global $log, $app_strings;
 		$isduplicate = isset($_REQUEST['isDuplicate']) ? $_REQUEST['isDuplicate'] : null;
-		if (!$this->permissiontoedit() && $isduplicate != 'true') {
+		if ($this->mode == 'edit' && !$this->permissiontoedit() && $isduplicate != 'true') {
 			$log->debug("You don't have permission to edit cobropago");
 			$smarty->assign('APP', $app_strings);
 			$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
@@ -505,6 +505,17 @@ class CobroPago extends CRMEntity {
 		}
 		list($request,$smarty,$void) = cbEventHandler::do_filter('corebos.filter.preEditCheck', array($request,$smarty,$this));
 		return '';
+	}
+
+	public function preSaveCheck($request) {
+		global $log, $app_strings;
+		if ($this->mode == 'edit' && !$this->permissiontoedit()) {
+			$log->debug("You don't have permission to save cobropago");
+			return array(true, $app_strings['LBL_PERMISSION'], 'index', array());
+		}
+		list($request,$void,$saveerror,$errormessage,$error_action,$returnvalues) =
+			cbEventHandler::do_filter('corebos.filter.preSaveCheck', array($request, $this, false, '', '', ''));
+		return array($saveerror, $errormessage, $error_action, $returnvalues);
 	}
 
 	/**
