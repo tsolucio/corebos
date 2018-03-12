@@ -67,8 +67,6 @@ function isInsideApplication($path2check) {
  * of a select statement in a form.
  * param $option_list - the array of strings to that contains the option list
  * param $selected - the string which contains the default value
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
  */
 function get_select_options(&$option_list, $selected, $advsearch = 'false') {
 	global $log;
@@ -81,8 +79,6 @@ function get_select_options(&$option_list, $selected, $advsearch = 'false') {
  * of a select statement in a form.   This method expects the option list to have keys and values.  The keys are the ids.  The values is an array of the datas
  * param $option_list - the array of strings to that contains the option list
  * param $selected - the string which contains the default value
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
  */
 function get_select_options_with_id(&$option_list, $selected_key, $advsearch = 'false') {
 	global $log;
@@ -113,8 +109,6 @@ function get_select_options_array(&$option_list, $selected_key, $advsearch = 'fa
  * param $label_list - the array of strings to that contains the option list
  * param $key_list - the array of strings to that contains the values list
  * param $selected - the string which contains the default value
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
  */
 function get_options_array_seperate_key(&$label_list, &$key_list, $selected_key, $advsearch = 'false') {
 	global $log,  $app_strings;
@@ -371,7 +365,7 @@ function getTabid($module) {
 	$tabid = VTCacheUtils::lookupTabid($module);
 	if ($tabid === false) {
 		if (file_exists('tabdata.php') && (filesize('tabdata.php') != 0)) {
-			include('tabdata.php');
+			include 'tabdata.php';
 			if (!empty($tab_info_array[$module])) {
 				$tabid = $tab_info_array[$module];
 			}
@@ -509,7 +503,7 @@ function getTabOwnedBy($module) {
 	$tabid = getTabid($module);
 
 	if (file_exists('tabdata.php') && (filesize('tabdata.php') != 0)) {
-		include('tabdata.php');
+		include 'tabdata.php';
 		$tab_ownedby = $tab_ownedby_array[$tabid];
 	} else {
 		$log->info("module is " . $module);
@@ -1296,7 +1290,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 	}
 
 	// Retrieve the profile list from database
-	require('user_privileges/user_privileges_' . $current_user->id . '.php');
+	require 'user_privileges/user_privileges_' . $current_user->id . '.php';
 
 	$selectSql = 'vtiger_field.tablename,'
 		. 'vtiger_field.columnname,'
@@ -1862,7 +1856,7 @@ function create_tab_data_file() {
 				echo "Cannot open file ($filename)";
 				exit;
 			}
-			require_once('modules/Users/CreateUserPrivilegeFile.php');
+			require_once 'modules/Users/CreateUserPrivilegeFile.php';
 			$newbuf = '';
 			$newbuf .="<?php\n\n";
 			$newbuf .="\n";
@@ -1944,7 +1938,7 @@ function QuickCreate($module) {
 	$tabid = getTabid($module);
 
 	//Adding Security Check
-	require('user_privileges/user_privileges_' . $current_user->id . '.php');
+	require 'user_privileges/user_privileges_' . $current_user->id . '.php';
 	if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
 		$quickcreate_query = "select *
 			from vtiger_field
@@ -2013,8 +2007,8 @@ function QuickCreate($module) {
 function getUserslist($setdefval = true, $selecteduser = '') {
 	global $log, $current_user, $module, $adb, $assigned_user_id;
 	$log->debug("Entering getUserslist() method ...");
-	require('user_privileges/user_privileges_' . $current_user->id . '.php');
-	require('user_privileges/sharing_privileges_' . $current_user->id . '.php');
+	require 'user_privileges/user_privileges_' . $current_user->id . '.php';
+	require 'user_privileges/sharing_privileges_' . $current_user->id . '.php';
 	$tabid = getTabid($module);
 	if ($is_admin==false && $profileGlobalPermission[2]==1 && (is_null($tabid) || $defaultOrgSharingPermission[$tabid]==3 || $defaultOrgSharingPermission[$tabid]==0)) {
 		$user_array = get_user_array(false, "Active", $current_user->id, 'private');
@@ -2041,8 +2035,8 @@ function getUserslist($setdefval = true, $selecteduser = '') {
 function getGroupslist() {
 	global $log, $adb, $module, $current_user;
 	$log->debug("Entering getGroupslist() method ...");
-	require('user_privileges/user_privileges_' . $current_user->id . '.php');
-	require('user_privileges/sharing_privileges_' . $current_user->id . '.php');
+	require 'user_privileges/user_privileges_' . $current_user->id . '.php';
+	require 'user_privileges/sharing_privileges_' . $current_user->id . '.php';
 
 	//Commented to avoid security check for groups
 	$tabid = getTabid($module);
