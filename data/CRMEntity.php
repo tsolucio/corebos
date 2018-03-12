@@ -538,7 +538,7 @@ class CRMEntity {
 			}
 		}
 
-		$selectFields = 'fieldname, columnname, uitype, generatedtype, typeofdata';
+		$selectFields = 'fieldname, columnname, uitype, typeofdata';
 
 		$tabid = getTabid($module);
 		if ($module == 'Calendar' && $this->column_fields["activitytype"] != null && $this->column_fields["activitytype"] != 'Task') {
@@ -620,7 +620,7 @@ class CRMEntity {
 			$fieldname = $this->resolve_query_result_value($result, $i, "fieldname");
 			$columname = $this->resolve_query_result_value($result, $i, "columnname");
 			$uitype = $this->resolve_query_result_value($result, $i, "uitype");
-			$generatedtype = $this->resolve_query_result_value($result, $i, "generatedtype");
+			//$generatedtype = $this->resolve_query_result_value($result, $i, "generatedtype");
 			$typeofdata = $this->resolve_query_result_value($result, $i, "typeofdata");
 
 			$typeofdata_array = explode("~", $typeofdata);
@@ -1336,7 +1336,7 @@ class CRMEntity {
 		$rel_mods[$this->table_name] = 1;
 		for ($i=0; $i<$linkedFieldsCount; $i++) {
 			$related_module = $this->db->query_result($linkedModulesQuery, $i, 'relmodule');
-			$fieldname = $this->db->query_result($linkedModulesQuery, $i, 'fieldname');
+			//$fieldname = $this->db->query_result($linkedModulesQuery, $i, 'fieldname');
 			$columnname = $this->db->query_result($linkedModulesQuery, $i, 'columnname');
 			$tablename = $this->db->query_result($linkedModulesQuery, $i, 'tablename');
 
