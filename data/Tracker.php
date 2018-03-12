@@ -7,9 +7,9 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-include_once('config.inc.php');
-require_once('include/logging.php');
-require_once('include/database/PearDatabase.php');
+include_once 'config.inc.php';
+require_once 'include/logging.php';
+require_once 'include/database/PearDatabase.php';
 
 /** This class is used to track the recently viewed items on a per user basis.
  * It is intended to be called by each module when rendering the detail form.
@@ -57,7 +57,7 @@ class Tracker {
 				// concatenate multiple fields with an whitespace between them
 				$fieldlists = explode(',', $fieldsname);
 				$fl = array();
-				foreach ($fieldlists as $w => $c) {
+				foreach ($fieldlists as $c) {
 					if (count($fl)) {
 						$fl[] = "' '";
 					}
@@ -75,7 +75,7 @@ class Tracker {
 		#if condition added to skip faq in last viewed history
 		$query = "INSERT into $this->table_name (user_id, module_name, item_id, item_summary) values (?,?,?,?)";
 		$qparams = array($user_id, $current_module, $item_id, $item_summary);
-		$this->log->info("Track Item View: ".$query);
+		$this->log->info('Track Item View: '.$query);
 		$this->db->pquery($query, $qparams, true);
 		$this->prune_history($user_id);
 	}
@@ -85,7 +85,7 @@ class Tracker {
 	 * param $module_name - Filter the history to only return records from the specified module. If not specified all records are returned
 	 * return - return the array of result set rows from the query. All of the table fields are included
 	 */
-	public function get_recently_viewed($user_id, $module_name = "") {
+	public function get_recently_viewed($user_id, $module_name = '') {
 		if (empty($user_id)) {
 			return;
 		}
@@ -102,12 +102,12 @@ class Tracker {
 			// If the module was not specified or the module matches the module of the row, add the row to the list
 			if ($module_name == '' || $row['module_name'] == $module_name) {
 				//Adding Security check
-				require_once('include/utils/utils.php');
-				require_once('include/utils/UserInfoUtil.php');
+				require_once 'include/utils/utils.php';
+				require_once 'include/utils/UserInfoUtil.php';
 				$entity_id = $row['item_id'];
 				$module = $row['module_name'];
 				$per = 'no';
-				if ($module == "Users" and is_admin($current_user)) {
+				if ($module == 'Users' && is_admin($current_user)) {
 					$per = 'yes';
 				} else {
 					$per = isPermitted($module, 'DetailView', $entity_id);
