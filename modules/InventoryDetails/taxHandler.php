@@ -13,13 +13,12 @@
 * permissions and limitations under the License. You may obtain a copy of the License
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
-Class addTaxHandler extends VTEventHandler {
+class addTaxHandler extends VTEventHandler {
 
-	public function handleEvent($eventName, $eventData){
+	public function handleEvent($eventName, $eventData) {
 
 		if ($eventData['tax_type'] == 'tax') {
-			global $adb;
-			require_once('vtlib/Vtiger/Module.php');
+			require_once 'vtlib/Vtiger/Module.php';
 
 			$mod = Vtiger_Module::getInstance('InventoryDetails');
 			$block = Vtiger_Block::getInstance('InventoryDetailsTaxBlock', $mod);
@@ -33,18 +32,16 @@ Class addTaxHandler extends VTEventHandler {
 			$field->typeofdata = 'V~O';
 			$block->addField($field);
 		}
-
 	}
-
 }
 
-Class changeStatusTaxHandler extends VTEventHandler {
+class changeStatusTaxHandler extends VTEventHandler {
 
 	public function handleEvent($eventName, $eventData) {
 
 		if ($eventData['tax_type'] == 'tax') {
 			global $adb;
-			require_once('vtlib/Vtiger/Module.php');
+			require_once 'vtlib/Vtiger/Module.php';
 
 			$r = $adb->pquery('SELECT taxid FROM vtiger_inventorytaxinfo WHERE taxname = ?', array($eventData['tax_name']));
 			$taxid = $adb->query_result($r, 0, 'taxid');
@@ -55,18 +52,16 @@ Class changeStatusTaxHandler extends VTEventHandler {
 			$field->presence = $eventData['status'] == 'disabled' ? 1 : 2;
 			$field->save();
 		}
-
 	}
-
 }
 
-Class changeLabelTaxHandler extends VTEventHandler {
+class changeLabelTaxHandler extends VTEventHandler {
 
 	public function handleEvent($eventName, $eventData) {
 
 		if ($eventData['tax_type'] == 'tax') {
 			global $adb;
-			require_once('vtlib/Vtiger/Module.php');
+			require_once 'vtlib/Vtiger/Module.php';
 
 			$r = $adb->pquery('SELECT taxid FROM vtiger_inventorytaxinfo WHERE taxlabel = ?', array($eventData['new_label']));
 			$taxid = $adb->query_result($r, 0, 'taxid');
@@ -81,7 +76,5 @@ Class changeLabelTaxHandler extends VTEventHandler {
 			$field->presence = $presence;
 			$field->save();
 		}
-
 	}
-
 }
