@@ -170,6 +170,13 @@ function updateTaxLabels($new_labels, $sh='')
 			else
 				$query = "update vtiger_inventorytaxinfo set taxlabel = ? where taxid=?";
 			$adb->pquery($query, array($new_val, $taxid));
+
+			$event_data = array(
+				'tax_type' => $sh == 'sh' ? 'sh' : 'tax',
+				'tax_id' => $taxid,
+				'new_label' => $new_val
+			);
+			cbEventHandler::do_action('corebos.changelabel.tax',$event_data);
 		}
 	}
 	if($duplicateTaxLabels > 0) {
@@ -262,10 +269,17 @@ function changeDeleted($taxname, $deleted, $sh='')
 	global $log, $adb;
 	$log->debug("Entering into function changeDeleted($taxname, $deleted, $sh)");
 
-	if($sh == 'sh')
+	if($sh == 'sh') {
 		$adb->pquery("update vtiger_shippingtaxinfo set deleted=? where taxname=?", array($deleted, $taxname));
-	else
+	} else {
 		$adb->pquery("update vtiger_inventorytaxinfo set deleted=? where taxname=?", array($deleted, $taxname));
+	}
+	$event_data = array(
+		'tax_type' => $sh == 'sh' ? 'sh' : 'tax',
+		'tax_name' => $taxname,
+		'status' => $deleted == 1 ? 'disabled' : 'enabled'
+	);
+	cbEventHandler::do_action('corebos.changestatus.tax',$event_data);
 	$log->debug("Exit from function changeDeleted($taxname, $deleted, $sh)");
 }
 
