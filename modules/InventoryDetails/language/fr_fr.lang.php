@@ -36,5 +36,6 @@ $mod_strings = array(
 	'Line Completed' => 'Ligne complété',
 	'Total Stock' => 'Stock total',
 	'Description' => 'Description',
+	'InventoryDetailsTaxBlock' => 'Impôt'
 );
 ?>
