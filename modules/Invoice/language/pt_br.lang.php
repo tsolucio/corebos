@@ -1,26 +1,15 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
- * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  Defines the English language pack for Invoice module.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- ********************************************************************************/
+ * All Rights Reserved.
+ ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Fatura',
 'LBL_SO_MODULE_NAME'=>'Fatura',
 'LBL_RELATED_PRODUCTS'=>'Detalhes do Produto',
@@ -83,7 +72,6 @@ $mod_strings = Array(
 'LBL_SELECT_ACCOUNT'=>'Selecione a Organização',
 'LBL_GENERAL_INFORMATION'=>'Informação Geral',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'Nova Oportunidade',
 'LBL_POTENTIAL_TITLE' => 'Oportunidades',
 
@@ -98,21 +86,18 @@ $mod_strings = Array(
 'LBL_NEW_CONTACT'=>'Novo Contato',
 'LBL_CONTACT_TITLE'=>'Contatos',
 
-//Added vtiger_fields after RC1 - Release
 'LBL_ALL'=>'Todos',
 'LBL_PROSPECT'=>'Prospect',
 'LBL_INVESTOR'=>'Investidor',
 'LBL_RESELLER'=>'Revendedor',
 'LBL_PARTNER'=>'Parceiro',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Ferramentas Organização',
-//Added for 4GA
 'Subject'=>'Assunto',
 'Quote Name'=>'Nome Cotação',
 'Vendor Name'=>'Nome Fornecedor',
 'Invoice Terms'=>'Condições Fatura',
-'Contact Name'=>'Nome Contato', //to include contact name vtiger_field in Invoice
+'Contact Name'=>'Nome Contato',
 'Invoice Date'=>'Data Fatura',
 'Sub Total'=>'Sub-Total',
 'S&H Amount' => 'Total Frete',
@@ -150,13 +135,11 @@ $mod_strings = Array(
 'Pending'=>'Pendente',
 'Account Name'=>'Nome Organização',
 'Terms & Conditions'=>'Prazos & Condições',
-//Quote Info
 'LBL_INVOICE_INFORMATION'=>'Informação Fatura',
 'LBL_INVOICE'=>'Fatura:',
 'LBL_SO_INFORMATION'=>'Dados do Pedido de Vendas',
 'LBL_SO'=>'Pedido Vendas:',
 
-//Added in release 4.2
 'LBL_SUBJECT'=>'Assunto:',
 'LBL_SALES_ORDER'=>'Pedido Vendas:',
 'LBL_MY_TOP_INVOICE'=>'Principais Faturas Abertas',
@@ -166,31 +149,24 @@ $mod_strings = Array(
 'Id'=>'No. Fatura',
 'Invoice'=>'Fatura',
 
-//Added for existing Picklist Entries
-
 'Created'=>'Criada',
 'Approved'=>'Aprovada',
 'Sent'=>'Enviada',
 'Credit Invoice'=>'Creditar Fatura',
 'Paid'=>'Paga',
 'AutoCreated'=>'Auto Criado',
-//Added to Custom Invoice Number
 'Invoice No'=>'No. Fatura',
 'Adjustment'=>'Ajuste',
 
-//Added for Reports (5.0.4)
 'Tax Type'=>'Tipo Imposto',
 'Discount Percent'=>'Percentual Desconto',
 'Discount Amount'=>'Total Desconto',
 'No'=>'Não',
 'Date'=>'Data',
 
-// Added affter 5.0.4 GA
-//Added for Documents module
 'Documents'=>'Documentos',
 
 'SINGLE_Invoice'=>'Fatura',
 'Invoice ID'=>'ID Fatura',
 );
-
 ?>

@@ -16,7 +16,7 @@
 *  Author       : Joe Bordes  JPL TSolucio, S.L.
 *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
  ********************************************************************************/
- 
+
 $mod_strings = array(
 'LBL_MODULE_NAME'=>'Facturas',
 'SINGLE_Invoice'=>'Factura',
@@ -106,7 +106,7 @@ $mod_strings = array(
 'Quote Name'=>'Nombre de la Cotización',
 'Vendor Name'=>'Nombre del Proveedor',
 'Invoice Terms'=>'Condiciones Generales de Facturación',
-'Contact Name'=>'Persona de Contacto',//to include contact name field in Invoice
+'Contact Name'=>'Persona de Contacto',
 'Invoice Date'=>'Fecha de Factura',
 'Sub Total'=>'Sub Total',
 'S&H Amount' => 'Importe Envío y Manipulado',
