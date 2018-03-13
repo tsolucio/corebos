@@ -20,7 +20,7 @@
 *  Author       : Joe Bordes
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_SALES_STAGE_FORM_TITLE'=>'Oportunidades por fase de venta',
 'LBL_SALES_STAGE_FORM_DESC'=>'Muestra suma acumulada de oportunidades de negocio por etapa para los usuarios seleccionados con fecha estimada de cierre dentro del tiempo especificado.',
 'LBL_MONTH_BY_OUTCOME'=>'Oportunidades por resultados mensuales',
@@ -50,7 +50,6 @@ $mod_strings = Array(
 'LBL_LEAD_SOURCES'=>'Origen de los Pre-Contactos:',
 'LBL_DATE_START'=>'Fecha de inicio:',
 'LBL_DATE_END'=>'Fecha de fin:',
-//Added for 5.0 
 'LBL_NO_PERMISSION'=>'Su perfil no permite ver la gráfica de este módulo',
 'LBL_NO_PERMISSION_FIELD'=>'Su perfil no permite ver la gráfica de este módulo o campo',
 
@@ -95,7 +94,6 @@ $mod_strings = Array(
 'VIEWCHART'=>'Ver Gráfica',
 'LBL_DASHBOARD'=>'Estadísticas',
 
-// Added/Updated for vtiger CRM 5.0.4
 "Approved"=>"Aprobado",
 "Created"=>"Creado",
 "Cancelled"=>"Cancelado",
@@ -185,7 +183,5 @@ $mod_strings = Array(
 "Negotiation/Review"=>"Negociando/Revisando",
 "Closed Won"=>"Cerrado Ganado",
 "Closed Lost"=>"Cerrado Perdido",
-
 );
-
 ?>

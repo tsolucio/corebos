@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-$mod_strings = Array (
-	
+
+$mod_strings = array(
 	'ConfigEditor' => 'Konfigurationseditor',
 	'LBL_CONFIG_EDITOR' => 'Konfigurations Editor',
 	'LBL_CONFIG_EDIT'=>'Bearbeiten der Konfigurationsdetails',
@@ -42,5 +42,4 @@ $mod_strings = Array (
 	'LBL_CORS_ENABLED_DOMAINS' => 'Domains authorized for CORS',
 	'disable_stats_tracking' => 'Disable Email Statistics Tracking',
 );
-
 ?>

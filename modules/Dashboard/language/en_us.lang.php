@@ -171,6 +171,5 @@ $mod_strings = array(
 "Negotiation/Review"=>"Negotiation/Review",
 "Closed Won"=>"Closed Won",
 "Closed Lost"=>"Closed Lost",
-
 );
 ?>
