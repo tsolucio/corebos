@@ -3523,15 +3523,20 @@ function setSessionVar($lv_array, $noofrows, $max_ent, $module = '', $related = 
  */
 function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $related_module, $recordid) {
 	global $log, $app_strings, $adb, $theme;
+	$relation_id = $_REQUEST['relation_id'];
 	$log->debug("Entering getRelatedTableHeaderNavigation(" . $url_qry . "," . $module . "," . $related_module . "," . $recordid . ") method ...");
 	$tabid = getTabid($module);
-	if($related_module == 'Parent Product'){
-		$relatedListResult = $adb->pquery('SELECT * FROM vtiger_relatedlists WHERE tabid=? AND
-			label=?', array($tabid, $related_module));
-	}else{
-		$relatedTabId = getTabid($related_module);
-		$relatedListResult = $adb->pquery('SELECT * FROM vtiger_relatedlists WHERE tabid=? AND
-			related_tabid=?', array($tabid, $relatedTabId));
+	$relatedListResult = $adb->pquery('SELECT * FROM vtiger_relatedlists WHERE relation_id=?', array($relation_id));
+	//Old code to prevent any error if $_REQUEST['relation_id'] is empty;
+	if (empty($relatedListResult)){
+		if($related_module == 'Parent Product' || $related_module == 'Product Bundles'){
+			$relatedListResult = $adb->pquery('SELECT * FROM vtiger_relatedlists WHERE tabid=? AND
+				label=?', array($tabid, $related_module));
+		}else{
+			$relatedTabId = getTabid($related_module);
+			$relatedListResult = $adb->pquery('SELECT * FROM vtiger_relatedlists WHERE tabid=? AND
+				related_tabid=?', array($tabid, $relatedTabId));
+		}
 	}
 	if (empty($relatedListResult))
 		return;
@@ -3543,8 +3548,8 @@ function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $
 	$urldata = "module=$module&action={$module}Ajax&file=DetailViewAjax&record={$recordid}&" .
 			"ajxaction=LOADRELATEDLIST&header={$header}&relation_id={$relatedListRow['relation_id']}" .
 			"&actions={$actions}&{$url_qry}";
-
-	$formattedHeader = str_replace(' ', ':', $related_module);
+	// $formattedHeader = str_replace(' ', '', $related_module);
+	$formattedHeader = str_replace(' ', '', $header);
 	$target = 'tbl_' . $module . '_' . $formattedHeader;
 	$imagesuffix = $module . '_' . $formattedHeader;
 

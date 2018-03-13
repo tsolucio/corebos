@@ -8,38 +8,32 @@
  * Portions created by Different Solutions GmbH are Copyright (C) Different Solutions GmbH
  * All Rights Reserved.
  ************************************************************************************/
-//ds@em91n - German language file for new module "Assets" -> translation is based on "Inventory Management"
-$mod_strings = Array(
-    /*some general information*/
-    'LBL_MODULE_NAME'=>'Bestandsverwaltung',
-    'SINGLE_Assets'=>'Bestandsverwaltung',
 
-    /*blocks for the module*/
-    'LBL_ASSET_INFORMATION'=>'Bestandsverwaltung Information',
-    'LBL_CUSTOM_INFORMATION'=>'Custom Information',
-    'LBL_DESCRIPTION_INFORMATION'=>'Beschreibung',
+$mod_strings = array(
+	'LBL_MODULE_NAME'=>'Bestandsverwaltung',
+	'SINGLE_Assets'=>'Bestandsverwaltung',
 
-    /*fields for the module*/
-    'Assets'=>'Bestandsverwaltung',
-    'Asset Name' => 'Titel Bestandsverwaltung',
-    'Customer Name'=>'Organisation',
-    'Product Name'=>'Produkt',
-    'Serial Number'=>'Seriennummer',
-    'Asset No'=>'Bestandsverwaltung Nr',
-    'Date Sold'=>'Verkaufsdatum',
-    'Date in Service'=>'Servicedatum',
-    'Status'=>'Status',
-    'Shipping Method'=>'Versandmethode',
-    'Shipping Tracking Number'=>'Sendungsverfolgungsnummer',
-    'Tag Number'=>'Tag-Nummer',
-    'Notes'=>'Beschreibung',
-    'Invoice Name'=>'Rechnung',
+	'LBL_ASSET_INFORMATION'=>'Bestandsverwaltung Information',
+	'LBL_CUSTOM_INFORMATION'=>'Custom Information',
+	'LBL_DESCRIPTION_INFORMATION'=>'Beschreibung',
 
-    /*picklist values*/
-    '--none--'=>'--ohne--',
-    'In Service'=>'unterstützt',
-    'Out-of-service'=>'wird nicht mehr unterstützt',
-    
-    /* additional related lists */
+	'Assets'=>'Bestandsverwaltung',
+	'Asset Name' => 'Titel Bestandsverwaltung',
+	'Customer Name'=>'Organisation',
+	'Product Name'=>'Produkt',
+	'Serial Number'=>'Seriennummer',
+	'Asset No'=>'Bestandsverwaltung Nr',
+	'Date Sold'=>'Verkaufsdatum',
+	'Date in Service'=>'Servicedatum',
+	'Status'=>'Status',
+	'Shipping Method'=>'Versandmethode',
+	'Shipping Tracking Number'=>'Sendungsverfolgungsnummer',
+	'Tag Number'=>'Tag-Nummer',
+	'Notes'=>'Beschreibung',
+	'Invoice Name'=>'Rechnung',
+
+	'--none--'=>'--ohne--',
+	'In Service'=>'unterstützt',
+	'Out-of-service'=>'wird nicht mehr unterstützt',
 );
 ?>

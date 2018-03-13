@@ -10,8 +10,8 @@
 $candelete = true;
 $cyp = CRMEntity::getInstance('CobroPago');
 $record = vtlib_purify($_REQUEST['record']);
-$cyprs = $adb->pquery('select paid from vtiger_cobropago where cobropagoid=?',array($record));
-if ($cyprs and $adb->num_rows($cyprs)==1) {
+$cyprs = $adb->pquery('select paid from vtiger_cobropago where cobropagoid=?', array($record));
+if ($cyprs && $adb->num_rows($cyprs)==1) {
 	$cyp->column_fields['paid'] = $adb->query_result($cyprs, 0, 0);
 	$candelete = $cyp->permissiontoedit();
 } else {
@@ -19,12 +19,12 @@ if ($cyprs and $adb->num_rows($cyprs)==1) {
 }
 if (!$candelete) {
 	$log->debug("You don't have permission to deleted CobroPago $record");
-	require_once('Smarty_setup.php');
+	require_once 'Smarty_setup.php';
 	$smarty = new vtigerCRM_Smarty();
 	global $app_strings;
 	$smarty->assign('APP', $app_strings);
 	$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
 	exit;
 }
-require_once('modules/Vtiger/Delete.php');
+require_once 'modules/Vtiger/Delete.php';
 ?>

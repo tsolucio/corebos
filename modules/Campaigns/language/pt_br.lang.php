@@ -77,5 +77,4 @@ $mod_strings = array(
 'Contacted - Never Contact Again' => 'Contactado - Nunca Contactar Novamente',
 'Campaigns ID' => 'ID Campanhas',
 );
-
 ?>

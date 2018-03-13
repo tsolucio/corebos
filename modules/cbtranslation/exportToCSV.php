@@ -19,10 +19,10 @@
  *************************************************************************************************/
 global $adb, $log;
 $allrecords = substr($_REQUEST['allrecords'], 0, -1);
-$allids = str_replace(";", ",", $allrecords);
-$allids = explode(',',$allids);
+$allids = str_replace(';', ',', $allrecords);
+$allids = explode(',', $allids);
 if (!empty($allids)) {
-	$filename = "cbtranslationExport.csv";
+	$filename = 'cbtranslationExport.csv';
 	$fp = fopen('php://output', 'w');
 	header('Content-type: application/csv');
 	header('Content-Disposition: attachment; filename=' . $filename);
@@ -30,7 +30,7 @@ if (!empty($allids)) {
 		FROM vtiger_cbtranslation
 		INNER JOIN vtiger_crmentity ce ON ce.crmid=vtiger_cbtranslation.cbtranslationid
 		WHERE vtiger_cbtranslation.cbtranslationid IN (' . generateQuestionMarks($allids) . ')';
-	$cbtranslationQuery = $adb->pquery($queryString,$allids);
+	$cbtranslationQuery = $adb->pquery($queryString, $allids);
 	if ($cbtranslationQuery && $adb->num_rows($cbtranslationQuery) > 0) {
 		while ($cbtranslationQuery && $row = $adb->fetch_array($cbtranslationQuery)) {
 			$csvContent = array();

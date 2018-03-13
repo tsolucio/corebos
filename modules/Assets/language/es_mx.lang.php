@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * Translated to mexican spanish by Francisco Hernandez Odin Consultores Odin.mx
  * All Rights Reserved.
- * 
  * ***********************************************************
 *  Module       : Assets
 *  Language     : ES Mexico
@@ -17,17 +16,14 @@
 *  License      : MPL 1.1
  ************************************************************************************/
 
-$mod_strings = Array(
-/*some general information*/
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Activos',
 'SINGLE_Assets'=>'Activo',
 
-/*blocks for the module*/
 'LBL_ASSET_INFORMATION'=>'Información de Activo',
 'LBL_CUSTOM_INFORMATION'=>'Información Personalizada',
 'LBL_DESCRIPTION_INFORMATION'=>'Descripción Adicional',
 
-/*fields for the module*/
 'Assets'=>'Activos',
 'Asset Name'=>'Nombre Activo',
 'Customer Name'=>'Instalado en',
@@ -43,7 +39,6 @@ $mod_strings = Array(
 'Notes'=>'Notas',
 'Invoice Name'=>'Ref. Factura',
 
-/*picklist values*/
 'In Service'=>'En Servicio',
 'Out-of-service'=>'Fuera de servicio',
 'Assets ID'=>'Id de Activo',

@@ -19,7 +19,7 @@
  * $fieldlist = Array(Array('fieldlabel'=>$fieldlabel,'generatedtype'=>$generatedtype,'columnname'=>$columnname,'fieldname'=>$fieldname,'value'=>picklistvalues))
  */
 function getUserFldArray($fld_module, $roleid) {
-	global $adb, $log;
+	global $adb;
 	$user_fld = array();
 	$tabid = getTabid($fld_module);
 
@@ -36,7 +36,6 @@ function getUserFldArray($fld_module, $roleid) {
 		$fieldlist = array();
 		for ($i=0; $i<$noofrows; $i++) {
 			$user_fld = array();
-			$fld_name = $adb->query_result($result, $i, 'fieldname');
 			$user_fld['fieldlabel'] = $adb->query_result($result, $i, 'fieldlabel');
 			$user_fld['generatedtype'] = $adb->query_result($result, $i, 'generatedtype');
 			$user_fld['columnname'] = $adb->query_result($result, $i, 'columnname');
@@ -189,19 +188,16 @@ function getAssignedPicklistValues($tableName, $roleid, $adb, $lang = array()) {
 	$subRoles = array($roleid);
 	$subRoles = array_merge($subRoles, array_keys($sub));
 
-	$sql = 'select picklistid from vtiger_picklist where name = ?';
-	$result = $adb->pquery($sql, array($tableName));
+	$result = $adb->pquery('select 1 from vtiger_picklist where name = ?', array($tableName));
 	if ($adb->num_rows($result)) {
-		$picklistid = $adb->query_result($result, 0, 'picklistid');
-
 		$roleids = array();
 		foreach ($subRoles as $role) {
 			$roleids[] = $role;
 		}
-
-		$sql = "SELECT ".$adb->sql_escape_string($tableName)." FROM ". $adb->sql_escape_string("vtiger_$tableName")
-				. " inner join vtiger_role2picklist on ".$adb->sql_escape_string("vtiger_$tableName").".picklist_valueid=vtiger_role2picklist.picklistvalueid"
-				. " and roleid in (".generateQuestionMarks($roleids).") order by field(roleid,".generateQuestionMarks($roleids)."), sortid";
+		$tname = $adb->sql_escape_string("vtiger_$tableName");
+		$sql = 'SELECT '.$adb->sql_escape_string($tableName).' FROM '. $tname
+			. ' inner join vtiger_role2picklist on '.$tname.'.picklist_valueid=vtiger_role2picklist.picklistvalueid'
+			. ' and roleid in ('.generateQuestionMarks($roleids).') order by field(roleid,'.generateQuestionMarks($roleids).'), sortid';
 		$result = $adb->pquery($sql, array_merge($roleids, $roleids));
 		$count = $adb->num_rows($result);
 
@@ -209,7 +205,7 @@ function getAssignedPicklistValues($tableName, $roleid, $adb, $lang = array()) {
 			while ($resultrow = $adb->fetch_array($result)) {
 				$pick_val = decode_html($resultrow[$tableName]);
 				//$pick_val = decode_html($pick_val);  // we have to do it twice for it to work on listview!!
-				if (isset($lang[$pick_val]) and $lang[$pick_val] != '') {
+				if (isset($lang[$pick_val]) && $lang[$pick_val] != '') {
 					$arr[$pick_val] = $lang[$pick_val];
 				} else {
 					$arr[$pick_val] = $pick_val;
@@ -241,7 +237,7 @@ function getAllowedPicklistModules($allowNonEntities = 0) {
 }
 
 function getPicklistValuesSpecialUitypes($uitype, $fieldname, $value, $action = 'EditView') {
-	global $adb,$log,$current_user, $default_charset;
+	global $adb, $current_user, $default_charset;
 
 	$fieldname = $adb->sql_escape_string($fieldname);
 	if ($uitype == '1614') {
@@ -258,7 +254,7 @@ function getPicklistValuesSpecialUitypes($uitype, $fieldname, $value, $action = 
 	$pickcount = 0;
 	if ($uitype == "1613") {
 		$found = false;
-		foreach ($picklistValues as $pKey => $pValue) {
+		foreach ($picklistValues as $pValue) {
 			$value = decode_html($value);
 			$pickListValue = decode_html($pValue);
 			if ($value == trim($pickListValue)) {
@@ -281,7 +277,7 @@ function getPicklistValuesSpecialUitypes($uitype, $fieldname, $value, $action = 
 			$valueArr[$key] = trim(html_entity_decode($value, ENT_QUOTES, $default_charset));
 		}
 		if (!empty($picklistValues)) {
-			foreach ($picklistValues as $order => $pickListValue) {
+			foreach ($picklistValues as $pickListValue) {
 				if (in_array(trim($pickListValue), $valueArr)) {
 					$chk_val = 'selected';
 					$pickcount++;
@@ -356,7 +352,7 @@ function getPicklistValuesSpecialUitypes($uitype, $fieldname, $value, $action = 
 						$shown_val = $value2;
 					}
 				}
-				if (!(vtlib_isModuleActive($srchmod) and isPermitted($srchmod, 'DetailView', $id))) {
+				if (!(vtlib_isModuleActive($srchmod) && isPermitted($srchmod, 'DetailView', $id))) {
 					$options[$i]=$shown_val;
 				} else {
 					$options[$i]='<a href="index.php?module='.$srchmod.'&action=DetailView&record='.$id.'">'.$shown_val.'</a>';

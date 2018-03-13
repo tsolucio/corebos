@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'InventoryDetails' => 'Dettagli Inventario',
 	'SINGLE_InventoryDetails' => 'Dettagli Inventario',
 	'InventoryDetails ID' => 'ID Dettagli Inventario',
@@ -38,5 +38,4 @@ $mod_strings = Array(
 	'Description' => 'Descrizione',
 	'InventoryDetailsTaxBlock' => 'Imposta'
 );
-
 ?>

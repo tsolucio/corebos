@@ -22,7 +22,7 @@ class PublicInvitePermissionHandler extends VTEventHandler {
 	}
 
 	public function handleFilter($handlerType, $parameter) {
-		if ($handlerType == 'corebos.permissions.accessquery' and $parameter[2] == 'cbCalendar') {
+		if ($handlerType == 'corebos.permissions.accessquery' && $parameter[2] == 'cbCalendar') {
 			$user = $parameter[3];
 			if (!GlobalVariable::getVariable('Calendar_Show_Only_My_Events', 0, 'cbCalendar')) {
 				$parameter[1] = 'addToUserPermission';
@@ -33,8 +33,8 @@ class PublicInvitePermissionHandler extends VTEventHandler {
 					UNION
 					(select vtiger_invitees.activityid as id from vtiger_invitees where inviteeid=".$user->id;
 			} else {
-				require('user_privileges/user_privileges_' . $user->id . '.php');
-				require('user_privileges/sharing_privileges_' . $user->id . '.php');
+				require 'user_privileges/user_privileges_' . $user->id . '.php';
+				require 'user_privileges/sharing_privileges_' . $user->id . '.php';
 				$parameter[1] = 'showTheseRecords'; //Here just show the activities that are assigned to the user or shared/invite to him.
 				$parameter[0] = "select vtiger_activity.activityid as id
 					from vtiger_activity

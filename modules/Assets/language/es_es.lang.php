@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * 
  * ***********************************************************
 *  Module       : Assets
 *  Language     : ES Spanish
@@ -16,17 +15,14 @@
 *  License      : MPL 1.1
  ************************************************************************************/
 
-$mod_strings = Array(
-/*some general information*/
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Recursos',
 'SINGLE_Assets'=>'Recurso',
 
-/*blocks for the module*/
 'LBL_ASSET_INFORMATION'=>'Información Recurso',
 'LBL_CUSTOM_INFORMATION'=>'Información Personalizada',
 'LBL_DESCRIPTION_INFORMATION'=>'Notas',
 
-/*fields for the module*/
 'Assets'=>'Recursos',
 'Asset Name'=>'Nombre Recurso',
 'Customer Name'=>'Instalado en',
@@ -42,7 +38,6 @@ $mod_strings = Array(
 'Notes'=>'Notas',
 'Invoice Name'=>'Ref. Factura',
 
-/*picklist values*/
 'In Service'=>'En Servicio',
 'Out-of-service'=>'Fuera de servicio',
 'Assets ID'=>'Id Recurso',
