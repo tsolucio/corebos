@@ -28,7 +28,7 @@ Class addTaxHandler extends VTEventHandler {
 			$field->label = $eventData['tax_label'];
 			$field->name = 'id_tax' . $eventData['tax_id'] . '_perc';
 			$field->column = 'id_tax' . $eventData['tax_id'] . '_perc';
-			$field->columntype = 'INT(11)';
+			$field->columntype = 'DECIMAL(7,3)';
 			$field->uitype = 9;
 			$field->typeofdata = 'V~O';
 			$block->addField($field);

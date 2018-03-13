@@ -37,7 +37,7 @@ class inventoryDetailsTaxBlock extends cbupdaterWorker {
 				$field->label = $tax['taxlabel'];
 				$field->name = 'id_tax' . $tax['taxid'] . '_perc';
 				$field->column = 'id_tax' . $tax['taxid'] . '_perc';
-				$field->columntype = 'INT(11)';
+				$field->columntype = 'DECIMAL7,3';
 				$field->uitype = 9;
 				$field->typeofdata = 'V~O';
 				$block->addField($field);
