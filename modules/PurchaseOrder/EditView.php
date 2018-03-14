@@ -141,10 +141,9 @@ if (!empty ($_REQUEST['parent_id']) && !empty ($_REQUEST['return_module'])) {
 	}
 }
 
-if(isset($_REQUEST['vendor_id']) && $_REQUEST['vendor_id']!='' && $_REQUEST['record']==''){
-	require_once('modules/Vendors/Vendors.php');
-	$vend_focus = new Vendors();
-	$vend_focus->retrieve_entity_info($_REQUEST['vendor_id'],"Vendors");
+if (!empty($_REQUEST['vendor_id']) && $_REQUEST['record']=='') {
+	$vend_focus = CRMEntity::getInstance('Vendors');
+	$vend_focus->retrieve_entity_info($_REQUEST['vendor_id'], 'Vendors');
 	$focus->column_fields['bill_city']=$vend_focus->column_fields['city'];
 	$focus->column_fields['ship_city']=$vend_focus->column_fields['city'];
 	$focus->column_fields['bill_street']=$vend_focus->column_fields['street'];
