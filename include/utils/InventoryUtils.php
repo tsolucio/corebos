@@ -921,7 +921,7 @@ function getBaseConversionRateForProduct($productid, $mode='edit', $module='Prod
  *	@param array $product_ids - List of product id's for which we want to get the price based on given currency
  *  @return array $prices_list - List of prices for the given list of products based on the given currency in the form of 'product id' mapped to 'price value'
  */
-function getPricesForProducts($currencyid, $product_ids, $module='Products') {
+function getPricesForProducts($currencyid, $product_ids, $module = 'Products', $unitprice = true) {
 	global $adb,$log,$current_user;
 
 	$price_list = array();
@@ -929,7 +929,7 @@ function getPricesForProducts($currencyid, $product_ids, $module='Products') {
 		if ($module == 'Services') {
 			$query = "SELECT vtiger_currency_info.id, vtiger_currency_info.conversion_rate, " .
 					"vtiger_service.serviceid AS productid, vtiger_service.unit_price, " .
-					"vtiger_productcurrencyrel.actual_price " .
+					"vtiger_productcurrencyrel.actual_price, vtiger_service.cost_price " .
 					"FROM (vtiger_currency_info, vtiger_service) " .
 					"left join vtiger_productcurrencyrel on vtiger_service.serviceid = vtiger_productcurrencyrel.productid " .
 					"and vtiger_currency_info.id = vtiger_productcurrencyrel.currencyid " .
@@ -937,7 +937,7 @@ function getPricesForProducts($currencyid, $product_ids, $module='Products') {
 		} else {
 			$query = "SELECT vtiger_currency_info.id, vtiger_currency_info.conversion_rate, " .
 					"vtiger_products.productid, vtiger_products.unit_price, " .
-					"vtiger_productcurrencyrel.actual_price " .
+					"vtiger_productcurrencyrel.actual_price, vtiger_products.cost_price " .
 					"FROM (vtiger_currency_info, vtiger_products) " .
 					"left join vtiger_productcurrencyrel on vtiger_products.productid = vtiger_productcurrencyrel.productid " .
 					"and vtiger_currency_info.id = vtiger_productcurrencyrel.currencyid " .
@@ -945,15 +945,16 @@ function getPricesForProducts($currencyid, $product_ids, $module='Products') {
 		}
 		$params = array($product_ids, $currencyid);
 		$result = $adb->pquery($query, $params);
-
+		$uppermission = getFieldVisibilityPermission($module, $current_user->id, 'unit_price');
+		$cppermission = getFieldVisibilityPermission($module, $current_user->id, 'cost_price');
 		for($i=0;$i<$adb->num_rows($result);$i++)
 		{
 			$product_id = $adb->query_result($result, $i, 'productid');
-			if(getFieldVisibilityPermission($module,$current_user->id,'unit_price') == '0') {
+			if (($unitprice && $uppermission == '0') || (!$unitprice && $cppermission == '0')) {
 				$actual_price = (float)$adb->query_result($result, $i, 'actual_price');
 
 				if ($actual_price == null || $actual_price == '') {
-					$unit_price = $adb->query_result($result, $i, 'unit_price');
+					$unit_price = $adb->query_result($result, $i, ($unitprice ? 'unit_price' : 'cost_price'));
 					$product_conv_rate = $adb->query_result($result, $i, 'conversion_rate');
 					$product_base_conv_rate = getBaseConversionRateForProduct($product_id,'edit',$module);
 					$conversion_rate = $product_conv_rate * $product_base_conv_rate;
