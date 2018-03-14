@@ -77,9 +77,6 @@ class Users extends CRMEntity {
 
 	public $encodeFields = array('first_name', 'last_name', 'description');
 
-	// This is used to retrieve related fields from form posts.
-	public $additional_column_fields = array('reports_to_name');
-
 	public $sortby_fields = array('status', 'email1', 'email2', 'phone_work', 'is_admin', 'user_name', 'last_name');
 
 	// This is the list of fields that are in the lists.

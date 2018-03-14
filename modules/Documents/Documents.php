@@ -28,9 +28,6 @@ class Documents extends CRMEntity {
 	var $popup_fields = Array('notes_title');
 	var $sortby_fields = Array('title','modifiedtime','filename','createdtime','lastname','filedownloadcount','smownerid');
 
-	// This is used to retrieve related vtiger_fields from form posts.
-	var $additional_column_fields = Array('', '', '', '');
-
 	// This is the list of vtiger_fields that are in the lists.
 	var $list_fields = Array(
 		'Title'=>Array('notes'=>'title'),
