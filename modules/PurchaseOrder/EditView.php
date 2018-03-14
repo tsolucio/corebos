@@ -116,7 +116,7 @@ if(isset($_REQUEST['product_id']) && $_REQUEST['product_id'] !='')
 	$associated_prod = getAssociatedProducts("Products", $focus, $focus->column_fields['product_id']);
 	for ($i=1; $i<=count($associated_prod);$i++) {
 		$associated_prod_id = $associated_prod[$i]['hdnProductId'.$i];
-		$associated_prod_prices = getPricesForProducts($currencyid,array($associated_prod_id),'Products');
+		$associated_prod_prices = getPricesForProducts($currencyid, array($associated_prod_id), 'Products', false);
 		$associated_prod[$i]['listPrice'.$i] = $associated_prod_prices[$associated_prod_id];
 	}
 	$smarty->assign("ASSOCIATEDPRODUCTS", $associated_prod);
