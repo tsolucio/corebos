@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('include/utils/utils.php');
+require_once 'include/utils/utils.php';
 require_once 'include/utils/CommonUtils.php';
 
 class ChartUtils {
@@ -54,7 +54,7 @@ class ChartUtils {
 
 		if ($fieldDetails != '') {
 			list($tablename, $colname, $module_field, $fieldname, $single) = explode(":", $fieldDetails);
-			list($module, $field) = explode("_", $module_field);
+			list($module, $field) = explode('_', $module_field);
 			$dateField = false;
 			if ($single == 'D') {
 				$dateField = true;
