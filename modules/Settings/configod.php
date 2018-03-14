@@ -49,3 +49,7 @@ $cbodUserLog = false;
 // Install database
 $corebosInstallDatabase = 'corebos_justinstalled_empty';
 
+// Connection to Central Server
+$cbodCSURL = '';
+$cbodCSUsr = '';
+$cbodCSKey = '';
