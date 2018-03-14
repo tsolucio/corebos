@@ -14,7 +14,7 @@
 *  Author       : Joe Bordes JPL TSolucio, S.L.
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Ordenes de Compra',
 'SINGLE_PurchaseOrder'=>'Orden de Compra',
 'LBL_RELATED_PRODUCTS'=>'Detalles',
@@ -75,7 +75,6 @@ $mod_strings = Array(
 'LBL_SELECT_ACCOUNT'=>'Seleccionar Cuenta',
 'LBL_GENERAL_INFORMATION'=>'Información General',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'Nueva Oportunidad',
 'LBL_POTENTIAL_TITLE'=>'Oportunidad',
 
@@ -90,16 +89,13 @@ $mod_strings = Array(
 'LBL_NEW_CONTACT'=>'Nuevo Contacto',
 'LBL_CONTACT_TITLE'=>'Contactos',
 
-//Added vtiger_fields after RC1 - Release
 'LBL_ALL'=>'Toda',
 'LBL_PROSPECT'=>'Perspectiva',
 'LBL_INVESTOR'=>'Inversionista',
 'LBL_RESELLER'=>'Revendedor',
 'LBL_PARTNER'=>'Socio',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Herramientas de la Cuenta',
-//Added for 4GA
 'Subject'=>'Referencia',
 'Quote Name'=>'Referencia del presupuesto',
 'Vendor Name'=>'Nombre del Proveedor',
@@ -140,11 +136,9 @@ $mod_strings = Array(
 'Vendor Terms'=>'Condiciones del Proveedor',
 'Pending'=>'Pendiente',
 'Account Name'=>'Nombre de la Cuenta',
-//Quote Info
 'LBL_PO_INFORMATION'=>'Información de la Orden de Compra',
 'LBL_PO'=>'Orden de Compra:',
 
- //Added for 4.2 GA
 'LBL_SO_FORM_TITLE'=>'Ordenes de Venta',
 'LBL_PO_FORM_TITLE'=>'Ordenes de Compras',
 'LBL_SUBJECT_TITLE'=>'Referencia',
@@ -158,8 +152,6 @@ $mod_strings = Array(
 'PurchaseOrder'=>'Orden de Compra',
 'LBL_MY_TOP_PO'=>'Mis Principales Ordenes de Compra',
 
-//Added for existing Picklist Entries
-
 'FedEx'=>'FedEx',
 'UPS'=>'UPS',
 'USPS'=>'Seur',
@@ -172,7 +164,6 @@ $mod_strings = Array(
 'Cancelled'=>'Cancelado',
 'Received Shipment'=>'Recibido',
 
-//Added for Reports (5.0.4)
 'Tax Type'=>'Impuesto',
 'Discount Percent'=>'Descuento %',
 'Discount Amount'=>'Descuento Importe',
@@ -181,9 +172,7 @@ $mod_strings = Array(
 'Sub Total'=>'Subtotal',
 'S&H Amount'=>'Importe Envío y Manipulado',
 
-//Added after 5.0.4 GA
 'PurchaseOrder No'=>'No Orden Compra',
 'PurchaseOrder ID'=>'Id Orden Compra',
 );
-
 ?>

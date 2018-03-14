@@ -76,7 +76,6 @@ $mod_strings = array(
 'LBL_SELECT_ACCOUNT'=>'Seleccionar Cuenta',
 'LBL_GENERAL_INFORMATION'=>'Información General',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'Nueva Oportunidad',
 'LBL_POTENTIAL_TITLE'=>'Oportunidades',
 
@@ -91,16 +90,13 @@ $mod_strings = array(
 'LBL_NEW_CONTACT'=>'Nuevo Contacto',
 'LBL_CONTACT_TITLE'=>'Contactos',
 
-//Added vtiger_fields after RC1 - Release
 'LBL_ALL'=>'Todo',
 'LBL_PROSPECT'=>'Investigador',
 'LBL_INVESTOR'=>'Inversionista',
 'LBL_RESELLER'=>'Revendedor ',
 'LBL_PARTNER'=>'Socio',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Herramientas de Cuenta',
-//Added for 4GA
 'Subject'=>'Referencia',
 'Potential Name'=>'Oportunidad',
 'Quote Stage'=>'Estado de la Cotización',
@@ -133,7 +129,6 @@ $mod_strings = array(
 'Modified Time'=>'Última Modificación',
 'Description'=>'Descripción',
 'Account Name'=>'Nombre de la Cuenta',
-//Quote Info
 'LBL_QUOTE_INFORMATION'=>'Información de la Cotización',
 'LBL_TERMS_INFORMATION'=>'Condiciones Generales',
 'LBL_QUOTE'=>'Cotización:',
@@ -145,8 +140,6 @@ $mod_strings = array(
 'LBL_MY_TOP_QUOTE'=>'Mis Cotizaciones Pendientes',
 //'Quote ID'=>'Id Cotización',
 'Quote'=>'Cotización',
-
-//Added for existing Picklist Entries
 
 'Created'=>'Creado',
 'Delivered'=>'Enviado',
@@ -172,5 +165,4 @@ $mod_strings = array(
 'Add Service Contract'=>'Añadir Contrato de Servicio',
 'Quotes ID'=>'Id Cotización',
 );
-
 ?>

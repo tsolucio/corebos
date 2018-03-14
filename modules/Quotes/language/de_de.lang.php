@@ -119,7 +119,6 @@ $mod_strings = array(
 'Modified Time'=>'geändert',
 'Description'=>'Beschreibung',
 'Account Name'=>'Organisation',
-//Quote Info
 'LBL_QUOTE_INFORMATION'=>'Angebot',
 'LBL_TERMS_INFORMATION'=>'Liefer- und Zahlungsbedingungen',
 'LBL_QUOTE'=>'Angebot:',
@@ -129,10 +128,7 @@ $mod_strings = array(
 'LBL_ACCOUNT_NAME'=>'Organisation:',
 'LBL_QUOTE_STAGE'=>'Angebotsstufe:',
 'LBL_MY_TOP_QUOTE'=>'meine top Angebote',
-//'Quote ID'=>'Angebots-ID',
 'Quote'=>'Angebot',
-
-//Added for existing Picklist Entries
 
 'Created'=>'erzeugt',
 'Delivered'=>'geliefert',
@@ -147,7 +143,6 @@ $mod_strings = array(
 'BlueDart'=>'Post',
 'Sales Tax'=>'MwSt.',
 
-//fehlende Einträge für Berichte
 'Tax Type'=>'Steuertyp',
 'Discount Percent'=>'Rabatt (%)',
 'Discount Amount'=>'Rabatt',

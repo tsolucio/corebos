@@ -17,7 +17,7 @@
 *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Órdenes de Compra',
 'LBL_RELATED_PRODUCTS'=>'Detalles',
 'LBL_MODULE_TITLE'=>'Ordenes de Compra: Inicio',
