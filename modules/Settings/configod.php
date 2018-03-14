@@ -53,3 +53,6 @@ $corebosInstallDatabase = 'corebos_justinstalled_empty';
 $cbodCSURL = '';
 $cbodCSUsr = '';
 $cbodCSKey = '';
+
+// User IDs with permission to get full sync information
+$cbodCSAppSyncUser = array(1);
