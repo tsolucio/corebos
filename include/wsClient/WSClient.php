@@ -13,11 +13,7 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
-global $coreBOS_Basedir;
-if (empty($coreBOS_Basedir)) {
-	$coreBOS_Basedir = __DIR__;
-}
-require_once $coreBOS_Basedir.'/Net/HTTP_Client.php';
+require_once 'include/wsClient/Net/HTTP_Client.php';
 
 /**
  * Vtiger Webservice Client
