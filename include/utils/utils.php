@@ -498,30 +498,6 @@ function return_specified_module_language($language, $module) {
 	return $return_value;
 }
 
-/** This function retrieves a theme's language file and returns the array of strings included. */
-function return_theme_language($language, $theme) {
-	global $log;
-	$log->debug("Entering return_theme_language(".$language.",". $theme.") method ...");
-	global $mod_strings, $default_language, $log, $currentModule;
-
-	@include "themes/$theme/language/$current_language.lang.php";
-	if (!isset($theme_strings)) {
-		$log->warn("Unable to find the theme file for language: ".$language." and theme: ".$theme);
-		require "themes/$theme/language/$default_language.lang.php";
-	}
-
-	if (!isset($theme_strings)) {
-		$log->fatal("Unable to load the theme($theme) language file for the selected language($language) or the default language($default_language)");
-		$log->debug("Exiting return_theme_language method ...");
-		return null;
-	}
-
-	$log->debug("Exiting return_theme_language method ...");
-	return $theme_strings;
-}
-
-
-
 /** If the session variable is defined and is not equal to "" then return it. Otherwise, return the default value. */
 function return_session_value_or_default($varname, $default) {
 	global $log;
@@ -3510,30 +3486,6 @@ function relateEntities($focus, $sourceModule, $sourceRecordId, $destinationModu
 	}
 }
 
-/* Function to only initialize the update of Vtlib Compliant modules
- * @param - $module - Name of the module
- * @param - $packagepath - Complete path to the zip file of the Module
- */
-function initUpdateVtlibModule($module, $packagepath) {
-	global $log;
-	require_once 'vtlib/Vtiger/Package.php';
-	require_once 'vtlib/Vtiger/Module.php';
-	$Vtiger_Utils_Log = true;
-	$package = new Vtiger_Package();
-
-	if ($module == null) {
-		$log->fatal('Module name is invalid');
-	} else {
-		$moduleInstance = Vtiger_Module::getInstance($module);
-		if ($moduleInstance) {
-			$log->debug("$module - Module instance found - Init Update starts here");
-			$package->initUpdate($moduleInstance, $packagepath, true);
-		} else {
-			$log->fatal("$module doesn't exists!");
-		}
-	}
-}
-
 /**
  * this function checks if a given column exists in a given table or not
  * @param string $columnName - the columnname
@@ -3542,14 +3494,8 @@ function initUpdateVtlibModule($module, $packagepath) {
  */
 function columnExists($columnName, $tableName) {
 	global $adb;
-	$columnNames = array();
 	$columnNames = $adb->getColumnNames($tableName);
-
-	if (in_array($columnName, $columnNames)) {
-		return true;
-	} else {
-		return false;
-	}
+	return in_array($columnName, $columnNames);
 }
 
 /**
@@ -3560,16 +3506,14 @@ function columnExists($columnName, $tableName) {
 function getRelatedInfo($id) {
 	global $adb;
 	$data = array();
-	$sql = "select related_to from vtiger_potential where potentialid=?";
-	$result = $adb->pquery($sql, array($id));
+	$result = $adb->pquery('select related_to from vtiger_potential where potentialid=?', array($id));
 	if ($adb->num_rows($result)>0) {
 		$relID = $adb->query_result($result, 0, "related_to");
-		$sql = "select setype from vtiger_crmentity where crmid=?";
-		$result = $adb->pquery($sql, array($relID));
+		$result = $adb->pquery('select setype from vtiger_crmentity where crmid=?', array($relID));
 		if ($adb->num_rows($result)>0) {
-			$setype = $adb->query_result($result, 0, "setype");
+			$setype = $adb->query_result($result, 0, 'setype');
 		}
-		$data = array("setype"=>$setype, "relID"=>$relID);
+		$data = array('setype'=>$setype, 'relID'=>$relID);
 	}
 	return $data;
 }
@@ -3582,10 +3526,9 @@ function getRelatedInfo($id) {
 function getRecordInfoFromID($id) {
 	global $adb;
 	$data = array();
-	$sql = "select setype from vtiger_crmentity where crmid=?";
-	$result = $adb->pquery($sql, array($id));
+	$result = $adb->pquery('select setype from vtiger_crmentity where crmid=?', array($id));
 	if ($adb->num_rows($result)>0) {
-		$setype = $adb->query_result($result, 0, "setype");
+		$setype = $adb->query_result($result, 0, 'setype');
 		$data = getEntityName($setype, $id);
 	}
 	if (count($data)>0) {
