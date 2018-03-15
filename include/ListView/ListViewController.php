@@ -816,13 +816,13 @@ class ListViewController {
 				}
 				if ($module == 'Users' && $fieldName == 'User Name') {
 					$name = "<a href='javascript:;' onClick='getListViewEntries_js(\"".$module.
-						"\",\"parenttab=".$tabname."&order_by=".$field->getColumnName()."&sorder=".
+						"\",\"parenttab=".$tabname."&order_by=".$field->getFieldName()."&sorder=".
 						$temp_sorder.$sort_qry."\");' class='listFormHeaderLinks'>".
 						getTranslatedString('LBL_LIST_USER_NAME_ROLE', $module)."".$arrow."</a>";
 				} else {
 					if ($this->isHeaderSortingEnabled()) {
 						$name = "<a href='javascript:;' onClick='getListViewEntries_js(\"".$module.
-							"\",\"parenttab=".$tabname."&foldername=Default&order_by=".$field->getColumnName()."&start=".
+							"\",\"parenttab=".$tabname."&foldername=Default&order_by=".$field->getFieldName()."&start=".
 							(isset($_SESSION['lvs'][$module]['start']) ? $_SESSION['lvs'][$module]['start'] : '').
 							"&sorder=".$temp_sorder."".$sort_qry."\");' class='listFormHeaderLinks'>".$label."".$arrow."</a>";
 					} else {
