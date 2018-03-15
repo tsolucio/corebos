@@ -1030,6 +1030,76 @@ class QueryGenerator {
 	}
 
 	/**
+	 * Function returns table column for the given sort field name
+	 * @param <String> $fieldName
+	 * @return <String> columnname
+	 */
+	function getOrderByColumn($fieldName) {
+		$fieldList = $this->getModuleFields();
+		if (empty($fieldList[$fieldName])) {
+			// we may have been given a columnname directly, but we still need to check so we try to convert it to a field name
+			global $adb;
+			$rs = $adb->pquery('select fieldname from vtiger_field where columnname=? and tabid=?', array($fieldName, getTabid($this->module)));
+			if ($rs && $adb->num_rows($rs)>0) {
+				$fname = $adb->query_result($rs, 0, 0);
+				if (empty($fieldList[$fname])) {
+					return $fieldName;
+				} else {
+					$fieldName = $fname;
+				}
+			} else {
+				return $fieldName;
+			}
+		}
+		$orderByFieldModel = $fieldList[$fieldName];
+
+		$parentReferenceField = '';
+		preg_match('/(\w+) ; \((\w+)\) (\w+)/', $fieldName, $matches);
+		if (count($matches) != 0) {
+			list($full, $parentReferenceField, $referenceModule, $fieldName) = $matches;
+		}
+		if ($orderByFieldModel && $orderByFieldModel->getFieldDataType() == 'reference') {
+			$referenceModules = $orderByFieldModel->getReferenceList();
+			if (in_array('DocumentFolders', $referenceModules)) {
+				$orderByColumn = 'vtiger_attachmentsfolder.foldername';
+			} else if (in_array('Currency', $referenceModules)) {
+				if ($parentReferenceField) {
+					$orderByColumn = 'vtiger_currency_info'.$parentReferenceField.$orderByFieldModel->getFieldName().'.currency_name';
+				} else {
+					$orderByColumn = 'vtiger_currency_info.currency_name';
+				}
+			} else if (in_array('Users', $referenceModules)) {
+				$columnSqlTable = 'vtiger_users'.$parentReferenceField.$fieldName;
+				$orderByColumn = getSqlForNameInDisplayFormat(array('first_name' => $columnSqlTable.'.first_name',
+					'last_name' => $columnSqlTable.'.last_name'), 'Users');
+			} else {
+				$orderByColumn = '';
+				foreach ($referenceModules as $mod) {
+					$efinfo = getEntityField($mod, true);
+					$orderByColumn .= $efinfo['fieldname'].',';
+				}
+				if (count($referenceModules)>1) {
+					$orderByColumn = 'COALESCE('.trim($orderByColumn,',').')';
+				} else {
+					$orderByColumn = trim($orderByColumn,',');
+				}
+				//$orderByColumn = $orderByFieldModel->getColumnName(); //'vtiger_crmentity'.$parentReferenceField.$orderByFieldModel->getFieldName().'.label'; //.$fieldModel->get('column');
+			}
+		} else if ($orderByFieldModel && $orderByFieldModel->getFieldDataType() == 'owner') {
+			if ($parentReferenceField) {
+				$userTableName = 'vtiger_users'.$parentReferenceField.$orderByFieldModel->getFieldName();
+				$groupTableName = 'vtiger_groups'.$parentReferenceField.$orderByFieldModel->getFieldName();
+				$orderByColumn = "COALESCE(CONCAT($userTableName.first_name,$userTableName.last_name),$groupTableName.groupname)";
+			} else {
+				$orderByColumn = 'COALESCE(CONCAT(vtiger_users.first_name,vtiger_users.last_name),vtiger_groups.groupname)';
+			}
+		} else if ($orderByFieldModel) {
+			$orderByColumn = $orderByFieldModel->getTableName().$parentReferenceField.'.'.$orderByFieldModel->getColumnName();
+		}
+		return $orderByColumn;
+	}
+
+	/**
 	 *
 	 * @param mixed $value
 	 * @param String $operator
