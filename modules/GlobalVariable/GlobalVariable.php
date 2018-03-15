@@ -262,7 +262,7 @@ class GlobalVariable extends CRMEntity {
 					$all_modules=vtws_getModuleNameList();
 					$other_modules=array_diff($all_modules, $modules_list);
 					$nummods = count($other_modules);
-					for ($l=0; $l < $nummods; $l++) {
+					foreach ($other_modules as $omod) {
 						if ($isBusinessMapping) {
 							$value = $adb->query_result($query, $i, 'bmapid');
 						} else {
@@ -271,7 +271,7 @@ class GlobalVariable extends CRMEntity {
 								$value = $adb->query_result($query, $i, 'description');
 							}
 						}
-						$list_of_modules[$other_modules[$l]]=$value;
+						$list_of_modules[$omod]=$value;
 					}
 				}
 			}
