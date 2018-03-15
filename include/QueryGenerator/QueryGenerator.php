@@ -14,9 +14,6 @@ require_once 'include/Webservices/RelatedModuleMeta.php';
 
 /**
  * QueryGenerator: class to obtain SQL queries from CRM objects
- *
- * @author MAK
- * @modified Joe Bordes
  */
 class QueryGenerator {
 	private $module;
@@ -55,7 +52,7 @@ class QueryGenerator {
 	private $customViewFields;
 	public $denormalized = false;
 	public $limit = '';
-	
+
 	public function __construct($module, $user) {
 		$db = PearDatabase::getInstance();
 		$this->module = $module;
@@ -1529,6 +1526,5 @@ class QueryGenerator {
 			$this->fields[] = 'id';
 		}
 	}
-
 }
 ?>

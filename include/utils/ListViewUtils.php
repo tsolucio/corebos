@@ -7,10 +7,10 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('include/database/PearDatabase.php');
-require_once('include/ComboUtil.php');
-require_once('include/utils/CommonUtils.php');
-require_once('include/utils/UserInfoUtil.php');
+require_once 'include/database/PearDatabase.php';
+require_once 'include/ComboUtil.php';
+require_once 'include/utils/CommonUtils.php';
+require_once 'include/utils/UserInfoUtil.php';
 require_once 'include/CustomFieldUtil.php';
 
 /** This function is used to get the list view header values in a list view
@@ -174,8 +174,7 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 						if ($relatedlist != '' && $relatedlist != 'global') {
 							$relationURL = '';
 							if (!empty($_REQUEST['relation_id'])) {
-								$relationURL = '&relation_id=' . vtlib_purify(
-												$_REQUEST['relation_id']);
+								$relationURL = '&relation_id=' . vtlib_purify($_REQUEST['relation_id']);
 							}
 							$actionsURL = '';
 							if (!empty($_REQUEST['actions'])) {
@@ -194,12 +193,16 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 									"&order_by=$col&record=$relatedlist&sorder=$temp_sorder$relationURL" .
 									"$actionsURL\",\"tbl_" . $relatedmodule . "_$moduleLabel\"," .
 									"\"$relatedmodule" . "_$moduleLabel\");' class='listFormHeaderLinks'>" . $lbl_name . "" . $arrow . "</a>";
-						} elseif ($module == 'Users' && $name == 'User Name')
-							$name = "<a href='javascript:;' onClick='getListViewEntries_js(\"" . $module . "\",\"parenttab=" . $tabname . "&order_by=" . $col . "&start=1&sorder=" . $temp_sorder . "" . $sort_qry . "\");' class='listFormHeaderLinks'>" . getTranslatedString('LBL_LIST_USER_NAME_ROLE', $module) . "" . $arrow . "</a>";
-						elseif ($relatedlist == "global")
+						} elseif ($module == 'Users' && $name == 'User Name') {
+							$name  = "<a href='javascript:;' onClick='getListViewEntries_js(\"" . $module . "\",\"parenttab=" . $tabname . "&order_by=" . $col;
+							$name .= "&start=1&sorder=" . $temp_sorder . $sort_qry . "\");' class='listFormHeaderLinks'>";
+							$name .= getTranslatedString('LBL_LIST_USER_NAME_ROLE', $module) . $arrow . '</a>';
+						} elseif ($relatedlist == 'global') {
 							$name = $lbl_name;
-						else
-							$name = "<a href='javascript:;' onClick='getListViewEntries_js(\"" . $module . "\",\"parenttab=" . $tabname . "&order_by=" . $col . "&start=1&sorder=" . $temp_sorder . "" . $sort_qry . "\");' class='listFormHeaderLinks'>" . $lbl_name . "" . $arrow . "</a>";
+						} else {
+							$name  = "<a href='javascript:;' onClick='getListViewEntries_js(\"" . $module . "\",\"parenttab=" . $tabname . "&order_by=" . $col;
+							$name .= "&start=1&sorder=" . $temp_sorder . $sort_qry . "\");' class='listFormHeaderLinks'>" . $lbl_name . $arrow . '</a>';
+						}
 						$arrow = '';
 					} else {
 						$name = getTranslatedString($name, $module);
@@ -3474,7 +3477,6 @@ function getRelCheckquery($currentmodule, $returnmodule, $recordid) {
  * Param $related - related module
  * Return type void.
  */
-
 function setSessionVar($lv_array, $noofrows, $max_ent, $module = '', $related = '') {
 	$start = '';
 	if ($noofrows >= 1) {
@@ -3523,23 +3525,22 @@ function setSessionVar($lv_array, $noofrows, $max_ent, $module = '', $related = 
  */
 function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $related_module, $recordid) {
 	global $log, $app_strings, $adb, $theme;
-	$relation_id = $_REQUEST['relation_id'];
+	$relation_id = vtlib_purify($_REQUEST['relation_id']);
 	$log->debug("Entering getRelatedTableHeaderNavigation(" . $url_qry . "," . $module . "," . $related_module . "," . $recordid . ") method ...");
 	$tabid = getTabid($module);
 	$relatedListResult = $adb->pquery('SELECT * FROM vtiger_relatedlists WHERE relation_id=?', array($relation_id));
 	//Old code to prevent any error if $_REQUEST['relation_id'] is empty;
 	if (empty($relatedListResult)){
 		if($related_module == 'Parent Product' || $related_module == 'Product Bundles'){
-			$relatedListResult = $adb->pquery('SELECT * FROM vtiger_relatedlists WHERE tabid=? AND
-				label=?', array($tabid, $related_module));
+			$relatedListResult = $adb->pquery('SELECT * FROM vtiger_relatedlists WHERE tabid=? AND label=?', array($tabid, $related_module));
 		}else{
 			$relatedTabId = getTabid($related_module);
-			$relatedListResult = $adb->pquery('SELECT * FROM vtiger_relatedlists WHERE tabid=? AND
-				related_tabid=?', array($tabid, $relatedTabId));
+			$relatedListResult = $adb->pquery('SELECT * FROM vtiger_relatedlists WHERE tabid=? AND related_tabid=?', array($tabid, $relatedTabId));
 		}
 	}
-	if (empty($relatedListResult))
+	if (empty($relatedListResult)) {
 		return;
+	}
 	$relatedListRow = $adb->fetch_row($relatedListResult);
 	$header = $relatedListRow['label'];
 	$actions = $relatedListRow['actions'];

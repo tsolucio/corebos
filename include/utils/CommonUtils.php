@@ -3140,7 +3140,7 @@ function getEntityField($module, $fqn = false) {
 	global $adb;
 	$data = array();
 	if (!empty($module)) {
-		$query = "select fieldname,tablename,entityidfield from vtiger_entityname where modulename = ?";
+		$query = 'select fieldname,tablename,entityidfield from vtiger_entityname where modulename = ?';
 		$result = $adb->pquery($query, array($module));
 		$fieldsname = $adb->query_result($result, 0, 'fieldname');
 		$tablename = $adb->query_result($result, 0, 'tablename');
@@ -3152,16 +3152,14 @@ function getEntityField($module, $fqn = false) {
 					$elem = $tablename.'.'.$elem;
 				});
 			}
-			$fieldsname = "concat(";
-			$fieldsname = $fieldsname . implode(",' ',", $fieldlists);
-			$fieldsname = $fieldsname . ")";
+			$fieldsname = 'concat(' . implode(",' ',", $fieldlists) . ')';
 		} elseif ($fqn) {
 			$fieldsname = $tablename.'.'.$fieldsname;
 		}
 	} else {
 		$tablename  = $fieldsname = $entityidfield = '';
 	}
-	$data = array("tablename" => $tablename, "fieldname" => $fieldsname,"entityid"=>$entityidfield);
+	$data = array('tablename' => $tablename, 'fieldname' => $fieldsname, 'entityid' => $entityidfield);
 	return $data;
 }
 
