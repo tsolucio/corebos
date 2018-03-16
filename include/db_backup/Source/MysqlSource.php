@@ -166,13 +166,10 @@ class MysqlSource extends BackupSource {
 	static $cacheCols;
 
 
-	function getInsertNames(&$zthis,&$rs,$arrFields,$magicq=false,$force=2) {
+	public function getInsertNames(&$zthis, &$rs, $arrFields, $magicq = false, $force=2) {
 		$tableName = '';
-		$values = '';
-		$fields = '';
 		$recordSet = null;
 		$arrFields = _array_change_key_case($arrFields);
-		$fieldInsertedCount = 0;
 
 		if (is_string($rs)) {
 			//ok we have a table name
@@ -211,21 +208,21 @@ class MysqlSource extends BackupSource {
 		}
 
 		// Loop through all of the fields in the recordset
-		foreach( $columns as $field ) {
+		$fields = array();
+		foreach ($columns as $field) {
 			$upperfname = strtoupper($field->name);
 			if (adodb_key_exists($upperfname,$arrFields,$force)) {
-				$bad = false;
-				if (strpos($upperfname,' ') !== false)
+				if (strpos($upperfname, ' ') !== false) {
 					$fnameq = $zthis->nameQuote.$upperfname.$zthis->nameQuote;
-				else
+				} else {
 					$fnameq = $upperfname;
-
+				}
 				// Get the name of the fields to insert
 				$fields[] = $fnameq;
 			}
 		}
 
-		$fields = implode(', ',$fields);
+		$fields = implode(', ', $fields);
 		return $fields;
 	}
 
