@@ -2,7 +2,7 @@
 /***********************************************************
 *  Module       : VtigerBackup
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
