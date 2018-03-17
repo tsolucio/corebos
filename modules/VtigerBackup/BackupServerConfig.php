@@ -99,12 +99,19 @@ require_once('include/database/PearDatabase.php');
 
 global $adb, $enable_backup;
 
-if((isset($_REQUEST['backupnow'])))
-{
-	defined('dbserver') or define('dbserver', $dbconfig['db_hostname']);
-	defined('dbuser') or define('dbuser', $dbconfig['db_username']);
-	defined('dbpass') or define('dbpass', $dbconfig['db_password']);
-	defined('dbname') or define('dbname', $dbconfig['db_name']);
+if (isset($_REQUEST['backupnow'])) {
+	if (!defined('DBSERVER')) {
+		define('DBSERVER', $dbconfig['db_hostname']);
+	}
+	if (!defined('DBUSER')) {
+		define('DBUSER', $dbconfig['db_username']);
+	}
+	if (!defined('DBPASS')) {
+		define('DBPASS', $dbconfig['db_password']);
+	}
+	if (!defined('DBNAME')) {
+		define('DBNAME', $dbconfig['db_name']);
+	}
 
 	$path_query = $adb->pquery("SELECT * FROM vtiger_systems WHERE server_type = ?",array('local_backup'));
 	$path = $adb->query_result($path_query,0,'server_path');

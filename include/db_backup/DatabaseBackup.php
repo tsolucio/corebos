@@ -9,13 +9,6 @@
  ********************************************************************************/
 include_once 'include/adodb/adodb.inc.php';
 
-$langString = array(
-	'SourceConnectFailed'=>'Source database connect failed',
-	'DestConnectFailed'=>'Destination database connect failed',
-	'TableListFetchError'=>'Failed to get Table List for database',
-	'SqlExecutionError'=>'Execution of following query failed',
-);
-
 class DatabaseConfig {
 	private $hostName = null;
 	private $username = null;
@@ -117,12 +110,14 @@ class DatabaseBackup {
 	private $source = null;
 	private $target = null;
 	private $skipStages = null;
-	public static $langString = null;
+	public static $langString = array(
+		'SourceConnectFailed'=>'Source database connect failed',
+		'DestConnectFailed'=>'Destination database connect failed',
+		'TableListFetchError'=>'Failed to get Table List for database',
+		'SqlExecutionError'=>'Execution of following query failed',
+	);
 
 	public function __construct($source, $target, $skipStages = array()) {
-		if (!is_array(DatabaseBackup::$langString)) {
-			DatabaseBackup::$langString = getLanguageStrings();
-		}
 		$this->skipStages = $skipStages;
 		$this->source = $source;
 		$this->target = $target;
@@ -144,10 +139,5 @@ class DatabaseBackup {
 			}
 		}
 	}
-}
-
-function getLanguageStrings() {
-	global $langString;
-	return $langString;
 }
 ?>

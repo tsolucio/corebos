@@ -7,20 +7,19 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  **********************************************************************************/
-
 require_once 'config.inc.php';
-require_once "include/database/PearDatabase.php";
-define("dbserver", $dbconfig['db_hostname']);
-define("dbuser", $dbconfig['db_username']);
-define("dbpass", $dbconfig['db_password']);
-define("dbname", $dbconfig['db_name']);
+require_once 'include/database/PearDatabase.php';
+define('DBSERVER', $dbconfig['db_hostname']);
+define('DBUSER', $dbconfig['db_username']);
+define('DBPASS', $dbconfig['db_password']);
+define('DBNAME', $dbconfig['db_name']);
 
 function save_structure($filename, $root_directory) {
 	global $log;
 	$log->debug("Entering save_structure(".$filename.",".$root_directory.") method ...");
-	$dbdump = new DatabaseDump(dbserver, dbuser, dbpass);
+	$dbdump = new DatabaseDump(DBSERVER, DBUSER, DBPASS);
 	$dumpfile = $root_directory.'/'.$filename;
-	$dbdump->save(dbname, $dumpfile) ;
+	$dbdump->save(DBNAME, $dumpfile) ;
 	$log->debug('Exiting save_structure method ...');
 }
 
