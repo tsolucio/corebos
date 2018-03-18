@@ -181,15 +181,7 @@
 	{elseif isset($elements.2) && isset($elements.2.0) && $elements.2.0 eq 'description'}
 	<tr>
 	<td colspan="3" align="center" valign="top" height="320">
-	{if (isset($WEBMAIL) && $WEBMAIL eq 'true') or (isset($RET_ERROR) && $RET_ERROR eq 1)}
-		<input type="hidden" name="from_add" value="{$from_add}">
-		<input type="hidden" name="att_module" value="Webmails">
-		<input type="hidden" name="mailid" value="{$mailid}">
-		<input type="hidden" name="mailbox" value="{$mailbox}">
-		<textarea style="display: none;" class="detailedViewTextBox" id="description" name="description" cols="90" rows="8">{$DESCRIPTION}</textarea>
-	{else}
-		<textarea style="display: none;" class="detailedViewTextBox" id="description" name="description" cols="90" rows="16">{if isset($elements.3) && isset($elements.3.0)}{$elements.3.0}{/if}</textarea>
-	{/if}
+	<textarea style="display: none;" class="detailedViewTextBox" id="description" name="description" cols="90" rows="16">{if isset($elements.3) && isset($elements.3.0)}{$elements.3.0}{/if}</textarea>
 	</td>
 	</tr>
 	{/if}

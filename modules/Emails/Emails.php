@@ -84,7 +84,7 @@ class Emails extends CRMEntity {
 				$actid = $_REQUEST['record'];
 			}
 			$parentid = $_REQUEST['parent_id'];
-			if ($_REQUEST['module'] != 'Emails' && $_REQUEST['module'] != 'Webmails') {
+			if ($_REQUEST['module'] != 'Emails') {
 				if (!$parentid) {
 					$parentid = $adb->getUniqueID('vtiger_seactivityrel');
 				}
@@ -199,27 +199,6 @@ class Emails extends CRMEntity {
 				$adb->pquery($query, array($id,$attachmentId));
 			}
 		}
-		if (isset($_REQUEST['att_module']) && $_REQUEST['att_module'] == 'Webmails') {
-			require_once 'modules/Webmails/Webmails.php';
-			require_once 'modules/Webmails/MailParse.php';
-			require_once 'modules/Webmails/MailBox.php';
-			//$mailInfo = getMailServerInfo($current_user);
-			//$temprow = $adb->fetch_array($mailInfo);
-
-			$MailBox = new MailBox($_REQUEST["mailbox"]);
-			$mbox = $MailBox->mbox;
-			$webmail = new Webmails($mbox, $_REQUEST['mailid']);
-			$array_tab = array();
-			$webmail->loadMail($array_tab);
-			if (isset($webmail->att_details)) {
-				foreach ($webmail->att_details as $fileindex => $files) {
-					if ($files['name'] != '' && $files['size'] > 0) {
-						//print_r($files);
-						$file_saved = $this->saveForwardAttachments($id, $module, $files);
-					}
-				}
-			}
-		}
 		$log->debug("Exiting from insertIntoAttachment($id,$module) method.");
 	}
 
@@ -232,56 +211,6 @@ class Emails extends CRMEntity {
 		$result = $adb->pquery($sql, array($emailid));
 		$email_flag = $adb->query_result($result, 0, 'email_flag');
 		return  ($email_flag == 'SENT');
-	}
-
-	public function saveForwardAttachments($id, $module, $file_details) {
-		global $log, $adb, $current_user, $upload_badext;
-		$log->debug("Entering into saveForwardAttachments($id,$module,$file_details) method.");
-		require_once 'modules/Webmails/MailBox.php';
-		$mailbox = $_REQUEST['mailbox'];
-		$MailBox = new MailBox($mailbox);
-		$mail = $MailBox->mbox;
-		$binFile = sanitizeUploadFileName($file_details['name'], $upload_badext);
-		$filename = ltrim(basename(' ' . $binFile)); //allowed filename like UTF-8 characters
-		$filetype = $file_details['type'];
-		//$filesize = $file_details['size'];
-		$filepart = $file_details['part'];
-		$transfer = $file_details['transfer'];
-		$file = imap_fetchbody($mail, $_REQUEST['mailid'], $filepart);
-		if ($transfer == 'BASE64') {
-			$file = imap_base64($file);
-		} elseif ($transfer == 'QUOTED-PRINTABLE') {
-			$file = imap_qprint($file);
-		}
-		$current_id = $adb->getUniqueID("vtiger_crmentity");
-		$date_var = date('Y-m-d H:i:s');
-		//to get the owner id
-		$ownerid = $this->column_fields['assigned_user_id'];
-		if (!isset($ownerid) || $ownerid == '') {
-			$ownerid = $current_user->id;
-		}
-		$upload_file_path = decideFilePath();
-		file_put_contents($upload_file_path . $current_id . "_" . $filename, $file);
-
-		$sql1 = 'insert into vtiger_crmentity (crmid,smcreatorid,smownerid,setype,description,createdtime,modifiedtime) values(?,?,?,?,?,?,?)';
-		$dv = $adb->formatDate($date_var, true);
-		$params1 = array($current_id, $current_user->id, $ownerid, $module . " Attachment", $this->column_fields['description'], $dv, $dv);
-		$adb->pquery($sql1, $params1);
-
-		$sql2 = 'insert into vtiger_attachments(attachmentsid, name, description, type, path) values(?,?,?,?,?)';
-		$params2 = array($current_id, $filename, $this->column_fields['description'], $filetype, $upload_file_path);
-		$adb->pquery($sql2, $params2);
-
-		if ($_REQUEST['mode'] == 'edit') {
-			if ($id != '' && $_REQUEST['fileid'] != '') {
-				$delquery = 'delete from vtiger_seattachmentsrel where crmid = ? and attachmentsid = ?';
-				$adb->pquery($delquery, array($id, $_REQUEST['fileid']));
-			}
-		}
-		$sql3 = 'insert into vtiger_seattachmentsrel values(?,?)';
-		$adb->pquery($sql3, array($id, $current_id));
-		return true;
-		$log->debug("exiting from  saveforwardattachment function.");
 	}
 
 	/*

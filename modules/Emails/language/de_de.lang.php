@@ -105,10 +105,8 @@ $mod_strings = array(
 'MESSAGE_ADD_USER_OR_CONTACT'=>'Bitte Nutzer oder Person hinzufügen...',
 'MESSAGE_MAIL_SENT_SUCCESSFULLY'=>' E-Mail(s) erfolgreich versendet!',
 
-'LBL_FETCH_WEBMAIL'=>'Fetch WebMail',
 'LBL_ALL'=>'Alle',
 'MESSAGE_CONTACT_NOT_WANT_MAIL'=>'Dieser Kontakt möchte keine E-Mails empfangen.',
-'LBL_WEBMAILS_TITLE'=>'WebMails',
 'LBL_EMAILS_TITLE'=>'E-Mails',
 'LBL_MAIL_CONNECT_ERROR_INFO'=>'Fehler in der Verbindung zum Mail Server!<br> Überprüfen Sie die Servereinstellung in Startseite->E-Mails -> Einstellungen',
 'LBL_ALLMAILS'=>'Alle Mails',
@@ -140,7 +138,6 @@ $mod_strings = array(
 'LBL_CONF_SERVERSTORAGE_ERROR'=>'The permissions on your storage directory are insufficient, you will not be able to send attachments!',
 'LBL_VTIGER_EMAIL_CLIENT'=>'E-Mail Client',
 'LBL_MAILSELECT_INFO3'=>'Sie haben nicht die Berechtigung, auf die E-Mail Adresse zuzugreifen.',
-'FEATURE_AVAILABLE_INFO' => 'Diese Funktion ist ggw. nur für den Microsoft Internet Explorer 5.5+ verfügbar\n\nBitte haben Sie etwas Geduld, wir werden das verbessern!',
 'DOWNLOAD_CONFIRAMATION' => 'Wollen Sie die Datei auf Ihren Computer laden?',
 'LBL_PLEASE_ATTACH' => 'Bitte geben Sie eine Datei für den Anhang an.',
 'LBL_KINDLY_UPLOAD' => 'Bitte konfigurieren Sie die <font color="red">upload_tmp_dir</font> Variable in der php.ini Datei.',

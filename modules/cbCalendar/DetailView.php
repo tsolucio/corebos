@@ -33,7 +33,6 @@ if ($activitytype == 'Emails') {
 	$currentModule = 'Emails';
 	$emailStrings = return_module_language($current_language, $currentModule);
 	$mod_strings = array_merge($mod_strings, $emailStrings);
-	$_REQUEST['mode'] = 'ajax';
 	include 'modules/Emails/DetailView.php';
 } else {
 	require_once 'modules/Vtiger/DetailView.php';
