@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'RecycleBin' => 'Papierkorb',
 'MSG_EMPTY_RB_CONFIRMATION'=>'Sind Sie sicher, dass Sie die gelöschten Einträge entgültig aus Ihrem CRM entfernen wollen? Diese Aktion kann nicht rückgängig gemacht werden.',
 'LBL_SELECT_MODULE'=>'Modul auswählen',
@@ -18,5 +18,4 @@ $mod_strings = Array(
 'LNK_RESTORE'=>'wiederherstellen',
 'LBL_NO_PERMITTED_MODULES'=>'keine berechtigte Module vorhanden',
 );
-
 ?>

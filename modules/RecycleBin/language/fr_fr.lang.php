@@ -2,13 +2,13 @@
 /***********************************************************
 *  Module       : RecycleBin
 *  Language     : French
-*  Version      : 5.3.0 
+*  Version      : 5.3.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 
 ***********************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'MSG_EMPTY_RB_CONFIRMATION'=>'Etes-vous sûr de vouloir supprimer définitivement tous les enregistrements de la corbeille?',
 	'LBL_SELECT_MODULE'=>'Sélectionnez un module',
 	'RecycleBin' => 'Corbeille',
@@ -19,5 +19,4 @@ $mod_strings = Array(
 	'LNK_RESTORE'=>'restaurer',
 	'LBL_NO_PERMITTED_MODULES'=>'Vous n\'êtes autorisé à modifier aucun module ',
 );
-
 ?>
