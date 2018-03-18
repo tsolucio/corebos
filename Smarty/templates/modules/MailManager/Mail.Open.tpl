@@ -18,18 +18,17 @@
 		<td align="right" nowrap="nowrap">
 			{if $MAIL->msgno() < $FOLDER->count()}
 				<a href='javascript:void(0);' onclick="MailManager.mail_open( '{$FOLDER->name()}', {$MAIL->msgno(1)} );">
-					<img border="0" src="modules/Webmails/images/previous.gif" title="{'LBL_Previous'|@getTranslatedString}"></a>
+					<img border="0" src="themes/images/previous.gif" title="{'LBL_Previous'|@getTranslatedString}"></a>
 			{/if}
 			{if $MAIL->msgno() > 1}
 				<a href='javascript:void(0);' onclick="MailManager.mail_open( '{$FOLDER->name()}', {$MAIL->msgno(-1)} );">
-				<img border="0" src="modules/Webmails/images/next.gif" title="{'LBL_Next'|@getTranslatedString}"></a>
+				<img border="0" src="themes/images/next.gif" title="{'LBL_Next'|@getTranslatedString}"></a>
 			{/if}
 		</td>
 	</tr>
 {strip}
 <tr valign=top>
 	<td>
-		 
 		&nbsp;<button class="crmbutton small edit" onclick="MailManager.mail_reply(true);">{'LBL_Reply_All'|@getTranslatedString}</button>
 		&nbsp;<button class="crmbutton small edit" onclick="MailManager.mail_reply(false);">{'LBL_Reply'|@getTranslatedString}</button>
 		&nbsp;<button class="crmbutton small edit" onclick="MailManager.mail_forward({$MAIL->msgno()});">{'LBL_Forward'|@getTranslatedString}</button>
@@ -56,7 +55,6 @@
 		</table>
 	</td>
 </tr>
-		
 <tr valign=top>
 	<td>
 		<span id="_mailopen_msgid_" style="display:none;">{$MAIL->_uniqueid|@escape:'UTF-8'}</span>

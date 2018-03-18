@@ -21,7 +21,7 @@
 			{if $FOLDER->hasPrevPage()}
 				<td>
 					<a href="#{$FOLDER->name()}/page/{$FOLDER->pageCurrent(-1)}" onclick="MailManager.folder_open('{$FOLDER->name()}', {$FOLDER->pageCurrent(-1)});">
-					<img border="0" src="modules/Webmails/images/previous.gif" title="{'LBL_Previous'|@getTranslatedString}"></a>
+					<img border="0" src="themes/images/previous.gif" title="{'LBL_Previous'|@getTranslatedString}"></a>
 				</td>
 			{/if}
 
@@ -29,7 +29,7 @@
 
 			{if $FOLDER->hasNextPage()}
 				<td><a href="#{$FOLDER->name()}/page/{$FOLDER->pageCurrent(1)}" onclick="MailManager.folder_open('{$FOLDER->name()}', {$FOLDER->pageCurrent(1)});">
-					<img border="0" src="modules/Webmails/images/next.gif" title="{'LBL_Next'|@getTranslatedString}"></a>
+					<img border="0" src="themes/images/next.gif" title="{'LBL_Next'|@getTranslatedString}"></a>
 				</td>
 			{/if}
 			</tr>
@@ -76,8 +76,7 @@
 	{foreach item=MAIL from=$FOLDER->mails()}
 	<tr class="mm_lvtColData {if $MAIL->isRead()}mm_normal{else}mm_bold{/if} mm_clickable"
 		 id="_mailrow_{$MAIL->msgNo()}" onmouseover='MailManager.highLightListMail(this);' onmouseout='MailManager.unHighLightListMail(this);'>
-		<td width="3%"><input type='checkbox' value = "{$MAIL->msgNo()}" name = 'mc_box' class='small'
-                              onclick='MailManager.toggleSelectMail(this.checked, this);'></td>
+		<td width="3%"><input type='checkbox' value = "{$MAIL->msgNo()}" name = 'mc_box' class='small' onclick='MailManager.toggleSelectMail(this.checked, this);'></td>
 		<td width="27%" onclick="MailManager.mail_open('{$FOLDER->name()}', {$MAIL->msgNo()});">{$MAIL->from(30)}</td>
 		<td onclick="MailManager.mail_open('{$FOLDER->name()}', {$MAIL->msgNo()});">{$MAIL->subject()}</td>
 		<td width="17%" align="right" onclick="MailManager.mail_open('{$FOLDER->name()}', {$MAIL->msgNo()});">{$MAIL->date(true)}</td>
