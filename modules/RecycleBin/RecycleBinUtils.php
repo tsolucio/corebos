@@ -8,12 +8,8 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-//For Search....
-$rb_column_array=array('accountid','contact_id','product_id','campaignid','quoteid','vendorid','potentialid','salesorderid','vendor_id','contactid');
-$rb_table_col_array=array('vtiger_account.accountname','vtiger_contactdetails.firstname,vtiger_contactdetails.lastname','vtiger_products.productname','vtiger_campaign.campaignname','vtiger_quotes.subject','vtiger_vendor.vendorname','vtiger_potential.potentialname','vtiger_salesorder.subject','vtiger_vendor.vendorname','vtiger_contactdetails.firstname,vtiger_contactdetails.lastname');
-
 function getValuesforRBColumns($column_name, $search_string) {
-	global $log, $adb, $rb_column_array, $rb_table_col_array;
+	global $log, $adb;
 	$log->debug("Entering getValuesforRBColumns(".$column_name.",".$search_string.") method ...");
 	$sql = "select concat(tablename,':',fieldname) as tablename from vtiger_entityname where entityidfield=? or entityidcolumn=?";
 	$result = $adb->pquery($sql, array($column_name));
@@ -59,7 +55,7 @@ function RBSearch($module) {
 }
 
 function basicRBsearch($module, $search_field, $search_string) {
-	global $log, $adb, $rb_column_array,$rb_table_col_array;
+	global $log, $adb;
 	$log->debug("Entering basicRBsearch(".$module.",".$search_field.",".$search_string.") method ...");
 	if ($search_field =='crmid') {
 		$column_name='crmid';
