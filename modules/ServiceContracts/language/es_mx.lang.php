@@ -6,16 +6,15 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * 
  *  ********************************************************************************
  *  Module       : ServiceContracts
  *  Language     : Español
- *  Version      : 5.4.0 
+ *  Version      : 5.4.0
  *  Last change  : 2012-02-27
  *  Author       : Odin Consultores Francisco Hernandez.
  ************************************************************************************/
 
-$mod_strings = Array (
+$mod_strings = array (
 'Service Contracts' => 'Contratos de Servicio',
 'ServiceContracts' => 'Contratos de Servicio',
 'SINGLE_ServiceContracts' => 'Contrato de Servicio',
@@ -62,12 +61,8 @@ $mod_strings = Array (
 'Incidents'=>'Incidentes',
 'Service Requests'=>'Incidencias',
 
-/*
- * 5.2.0 changes 
- */
 'LBL_MODULE_NAME'=>'Contratos de Servicio',
 
 'ServiceContracts ID'=>'Id Contrato Servicio',
 );
-
 ?>
