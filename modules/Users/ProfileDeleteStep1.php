@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('include/utils/utils.php');
+require_once 'include/utils/utils.php';
 
 global $mod_strings, $app_strings, $theme, $default_charset;
 $delete_prof_id = vtlib_purify($_REQUEST['profileid']);

@@ -7,9 +7,9 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('modules/Users/Users.php');
-require_once('include/logging.php');
-require_once('include/utils/UserInfoUtil.php');
+require_once 'modules/Users/Users.php';
+require_once 'include/logging.php';
+require_once 'include/utils/UserInfoUtil.php';
 $log = LoggerManager::getLogger('index');
 
 global $adb;
@@ -167,9 +167,9 @@ $log->debug('Saved record with id of '.$return_id);
 
 // Check to see if the mode is User Creation and if yes, then sending the email notification to the User with Login details.
 $error_str = '';
-if (isset($_REQUEST['mode']) and $_REQUEST['mode'] == 'create') {
+if (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'create') {
 	global $app_strings, $mod_strings, $default_charset;
-	require_once('modules/Emails/mail.php');
+	require_once 'modules/Emails/mail.php';
 	$user_emailid = $focus->column_fields['email1'];
 
 	$subject = $mod_strings['User Login Details'];
