@@ -25,7 +25,7 @@ if ($current_user->is_admin != 'on') {
 		for ($i = 0; $i < count($id_array); $i++) {
 			$adb->pquery($sql, array($new_folderid, $id_array[$i]));
 		}
-		if (!isset($_REQUEST['__NoREload'])) {
+		if (!isset($_REQUEST['__NoReload'])) {
 			header('Location: index.php?action=DocumentsAjax&file=ListView&mode=ajax&ajax=true&module=Documents');
 		}
 	}

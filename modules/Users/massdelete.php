@@ -61,9 +61,9 @@ if ($returnmodule == 'Emails') {
 	$req->set('return_onlyforuser', $_REQUEST['onlyforuser']);
 	$urlpart = $req->getReturnURL();
 	header('Location: index.php?module='.$returnmodule.'&action='.$return_action.$rstart.$urlpart.'&viewOption='.urlencode(vtlib_purify($_REQUEST['viewOption'])).$url);
-} elseif ($returnmodule!='Faq') {
-	header("Location: index.php?module=".$returnmodule."&action=".$returnmodule."Ajax&ajax=delete".$rstart."&file=ListView&viewname=$viewid&errormsg=$errormsg".$url);
 } else {
-	header("Location: index.php?module=".$returnmodule."&action=".$returnmodule."Ajax&ajax=delete".$rstart."&file=ListView&errormsg=".$errormsg.$url);
+	if (!isset($_REQUEST['__NoReload'])) {
+		header("Location: index.php?module=".$returnmodule."&action=".$returnmodule."Ajax&ajax=delete".$rstart."&file=ListView&errormsg=".$errormsg.$url);
+	}
 }
 ?>
