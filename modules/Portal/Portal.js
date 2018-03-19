@@ -8,12 +8,12 @@
  ********************************************************************************/
 
 function fetchAddSite(id) {
-	document.getElementById("status").style.display = "inline";
+	document.getElementById('status').style.display = 'inline';
 	jQuery.ajax({
 		method: 'POST',
 		url: 'index.php?module=Portal&action=PortalAjax&file=Popup&record=' + id
 	}).done(function (response) {
-		document.getElementById("status").style.display = "none";
+		document.getElementById('status').style.display = 'none';
 		document.getElementById('editportal_cont').innerHTML = response;
 	});
 }
@@ -25,24 +25,24 @@ function fetchContents(mode) {
 		window.location.href = 'index.php?module=Portal&action=ListView&parenttab=Tools';
 		return;
 	}
-	document.getElementById("status").style.display = "inline";
+	document.getElementById('status').style.display = 'inline';
 	jQuery.ajax({
 		method: 'POST',
 		url: 'index.php?action=PortalAjax&mode=ajax&module=Portal&file=ListView&datamode=' + mode
 	}).done(function (response) {
-		document.getElementById("status").style.display = "none";
+		document.getElementById('status').style.display = 'none';
 		document.getElementById('portalcont').innerHTML = response;
 	});
 }
 
 function DeleteSite(id) {
 	if (confirm(alert_arr.SURE_TO_DELETE)) {
-		document.getElementById("status").style.display = "inline";
+		document.getElementById('status').style.display = 'inline';
 		jQuery.ajax({
 			method: 'POST',
 			url: 'index.php?action=PortalAjax&mode=ajax&file=Delete&module=Portal&record=' + id
 		}).done(function (response) {
-			document.getElementById("status").style.display = "none";
+			document.getElementById('status').style.display = 'none';
 			document.getElementById('portalcont').innerHTML = response;
 		});
 	}
@@ -57,21 +57,21 @@ function SaveSite(id) {
 		alert(alert_arr.SITENAME_CANNOT_BE_EMPTY);
 		return false;
 	}
-	jQuery('#orgLay').toggle("puff");
-	document.getElementById("status").style.display = "inline";
+	jQuery('#orgLay').toggle('puff');
+	document.getElementById('status').style.display = 'inline';
 	var portalurl = document.getElementById('portalurl').value;
-	var portalurl = portalurl.replace(/&/g, "#$#$#");
+	portalurl = portalurl.replace(/&/g, '#$#$#');
 	var portalname = document.getElementById('portalname').value;
 	jQuery.ajax({
 		method: 'POST',
 		url: 'index.php?action=PortalAjax&mode=ajax&file=Save&module=Portal&portalname=' + portalname + '&portalurl=' + portalurl + '&record=' + id
 	}).done(function (response) {
-		if (response.indexOf(":#:FAILURE") > -1) {
+		if (response.indexOf(':#:FAILURE') > -1) {
 			alert(alert_arr.VALID_DATA);
 		} else {
 			document.getElementById('portalcont').innerHTML = response;
 		}
-		document.getElementById("status").style.display = "none";
+		document.getElementById('status').style.display = 'none';
 	});
 }
 
@@ -82,7 +82,7 @@ function setSite(oUrllist) {
 	document.getElementById('mysites_noload_message').style.display = 'none';
 
 	//many sites do not allow embedded display
-	if (mysitesArray[id].embed == 1){
+	if (mysitesArray[id].embed == 1) {
 		document.getElementById('locatesite').src = url;
 	} else {
 		document.getElementById('locatesite').src = '';
@@ -93,14 +93,14 @@ function setSite(oUrllist) {
 
 //added as an enhancement to set default value
 function defaultMysites(oSelectlist) {
-	var id = document.getElementById("urllist").value;
-	document.getElementById("status").style.display = "block";
+	var id = document.getElementById('urllist').value;
+	document.getElementById('status').style.display = 'block';
 	jQuery.ajax({
 		method: 'POST',
 		url: 'index.php?action=PortalAjax&mode=ajax&file=Save&module=Portal&check=true&passing_var=' + id
 	}).done(function (response) {
 		//alert(response);
-		document.getElementById("status").style.display = "none";
+		document.getElementById('status').style.display = 'none';
 	});
 }
 
@@ -114,10 +114,10 @@ oRegex.UrlOnChangeProtocol.compile('^(ftp|news)://(?=.)', 'gi');
 function OnUrlChange() {
 	var sUrl;
 	var sProtocol;
-	sUrl = document.getElementById("portalurl").value;
+	sUrl = document.getElementById('portalurl').value;
 	sProtocol = oRegex.UrlOnChangeProtocol.exec(sUrl);
 	if (sProtocol) {
 		sUrl = sUrl.substr(sProtocol[0].length);
-		document.getElementById("portalurl").value = sUrl;
+		document.getElementById('portalurl').value = sUrl;
 	}
 }
