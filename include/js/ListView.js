@@ -35,7 +35,7 @@ function massedit_initOnChangeHandlers() {
 	}
 	// Setup change handlers for select boxes
 	var selects = form.getElementsByTagName('select');
-	for(var index = 0; index < selects.length; ++index) {
+	for(index = 0; index < selects.length; ++index) {
 		var massedit_select = selects[index];
 		massedit_select.onchange = function() {
 			var checkbox = document.getElementById(this.name + '_mass_edit_check');
@@ -48,16 +48,16 @@ function mass_edit(obj,divid,module,parenttab) {
 	var select_options = document.getElementById('allselectedboxes').value;
 	var numOfRows = document.getElementById('numOfRows').value;
 	var excludedRecords = document.getElementById('excludedRecords').value;
-	if(select_options=='all') {
+	if (select_options=='all') {
 		var idstring = select_options;
-		var skiprecords = excludedRecords.split(";");
+		var skiprecords = excludedRecords.split(';');
 		var count = skiprecords.length;
-		if(count > 1) {
+		if (count > 1) {
 			count = numOfRows - count + 1;
 		} else {
 			count = numOfRows;
 		}
-		if(count > getMaxMassOperationLimit()) {
+		if (count > getMaxMassOperationLimit()) {
 			var confirm_str = alert_arr.MORE_THAN_500;
 			if(confirm(confirm_str)) {
 				var confirm_status = true;
@@ -74,11 +74,11 @@ function mass_edit(obj,divid,module,parenttab) {
 	} else {
 		var x = select_options.split(';');
 		var count = x.length;
-		if(count > 1) {
+		if (count > 1) {
 			idstring = select_options;
-			if(count > getMaxMassOperationLimit()) {
+			if (count > getMaxMassOperationLimit()) {
 				confirm_str = alert_arr.MORE_THAN_500;
-				if(confirm(confirm_str)) {
+				if (confirm(confirm_str)) {
 					confirm_status = true;
 				} else {
 					return false;
@@ -87,7 +87,7 @@ function mass_edit(obj,divid,module,parenttab) {
 				confirm_status = true;
 			}
 
-			if(confirm_status) {
+			if (confirm_status) {
 				mass_edit_formload(idstring,module,parenttab);
 			}
 		} else {
@@ -97,6 +97,7 @@ function mass_edit(obj,divid,module,parenttab) {
 	}
 	fnvshobj(obj, divid);
 }
+
 function mass_edit_formload(idstring, module, parenttab) {
 	if (typeof (parenttab) == 'undefined')
 		parenttab = '';
