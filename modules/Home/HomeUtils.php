@@ -9,18 +9,14 @@
  *******************************************************************************/
 
 /**
- * this file will contain the utility functions for Home module
- */
-
-/**
  * function to get upcoming activities for today
  * @param integer $maxval - the maximum number of records to display
  * @param integer $calCnt - returns the count query if this is set
  * return array    $values   - activities record in array format
  */
-function homepage_getUpcomingActivities($maxval,$calCnt){
-	require_once("data/Tracker.php");
-	require_once('include/utils/utils.php');
+function homepage_getUpcomingActivities($maxval, $calCnt) {
+	require_once 'data/Tracker.php';
+	require_once 'include/utils/utils.php';
 
 	global $adb, $current_user;
 
@@ -33,7 +29,7 @@ function homepage_getUpcomingActivities($maxval,$calCnt){
 	$endDateTime = $userEndDateTime->getDBInsertDateTimeValue();
 
 	$upcoming_condition = " AND (CAST((CONCAT(date_start,' ',time_start)) AS DATETIME) BETWEEN '$startDateTime' AND '$endDateTime'
-									OR CAST((CONCAT(vtiger_recurringevents.recurringdate,' ',time_start)) AS DATETIME) BETWEEN '$startDateTime' AND '$endDateTime')";
+							OR CAST((CONCAT(vtiger_recurringevents.recurringdate,' ',time_start)) AS DATETIME) BETWEEN '$startDateTime' AND '$endDateTime')";
 
 	$list_query = " select vtiger_crmentity.crmid,vtiger_crmentity.smownerid,".
 		"vtiger_crmentity.setype, vtiger_recurringevents.recurringdate, vtiger_activity.* ".
@@ -47,7 +43,7 @@ function homepage_getUpcomingActivities($maxval,$calCnt){
 	"vtiger_activity.eventstatus not in ('Completed','Deferred','Held','Not Held'))".$upcoming_condition;
 
 	$list_query.= ' GROUP BY vtiger_activity.activityid,vtiger_recurringevents.recurringdate';
-	$list_query.= " ORDER BY date_start,time_start ASC";
+	$list_query.= ' ORDER BY date_start,time_start ASC';
 	$list_query.= " limit $maxval";
 
 	$res = $adb->query($list_query);
@@ -57,24 +53,24 @@ function homepage_getUpcomingActivities($maxval,$calCnt){
 	}
 
 	$open_activity_list = array();
-	if ($noofrecords>0){
+	if ($noofrecords>0) {
 		for ($i=0; $i<$noofrecords; $i++) {
-			$dateValue = $adb->query_result($res,$i,'date_start') . ' ' . $adb->query_result($res,$i,'time_start');
-			$endDateValue = $adb->query_result($res,$i,'due_date') . ' ' . $adb->query_result($res,$i,'time_end');
-			$recurringDateValue = $adb->query_result($res,$i,'due_date') . ' ' . $adb->query_result($res,$i,'time_start');
+			$dateValue = $adb->query_result($res, $i, 'date_start') . ' ' . $adb->query_result($res, $i, 'time_start');
+			$endDateValue = $adb->query_result($res, $i, 'due_date') . ' ' . $adb->query_result($res, $i, 'time_end');
+			$recurringDateValue = $adb->query_result($res, $i, 'due_date') . ' ' . $adb->query_result($res, $i, 'time_start');
 			$date = new DateTimeField($dateValue);
 			$endDate = new DateTimeField($endDateValue);
 			$recurringDate = new DateTimeField($recurringDateValue);
 
 			$open_activity_list[] = array(
-				'name' => $adb->query_result($res,$i,'subject'),
-				'id' => $adb->query_result($res,$i,'activityid'),
-				'type' => $adb->query_result($res,$i,'activitytype'),
-				'module' => $adb->query_result($res,$i,'setype'),
+				'name' => $adb->query_result($res, $i, 'subject'),
+				'id' => $adb->query_result($res, $i, 'activityid'),
+				'type' => $adb->query_result($res, $i, 'activitytype'),
+				'module' => $adb->query_result($res, $i, 'setype'),
 				'date_start' => $date->getDisplayDate(),
 				'due_date' => $endDate->getDisplayDate(),
 				'recurringdate' => $recurringDate->getDisplayDate(),
-				'priority' => $adb->query_result($res,$i,'priority'),
+				'priority' => $adb->query_result($res, $i, 'priority'),
 			);
 		}
 	}
@@ -91,7 +87,7 @@ function homepage_getUpcomingActivities($maxval,$calCnt){
  * @param array $open_activity_list - the array containing activity details
  * return array $values - activities record in array format
  */
-function getActivityEntries($open_activity_list){
+function getActivityEntries($open_activity_list) {
 	global $current_language, $app_strings;
 	$current_module_strings = return_module_language($current_language, 'Calendar');
 	if (!empty($open_activity_list)) {
@@ -101,14 +97,14 @@ function getActivityEntries($open_activity_list){
 
 		$entries = array();
 		foreach ($open_activity_list as $event) {
-			$recur_date=preg_replace('/--/','',$event['recurringdate']);
-			if($recur_date!=""){
+			$recur_date=preg_replace('/--/', '', $event['recurringdate']);
+			if ($recur_date!="") {
 				$event['date_start']=$event['recurringdate'];
 			}
 			$font_color_high = "color:#00DD00;";
 			$font_color_medium = "color:#DD00DD;";
 
-			switch ($event['priority']){
+			switch ($event['priority']) {
 				case 'High':
 					$font_color=$font_color_high;
 					break;
@@ -125,7 +121,7 @@ function getActivityEntries($open_activity_list){
 			);
 		}
 		$values = array('noofactivities'=>count($open_activity_list),'Header'=>$header,'Entries'=>$entries);
-	}else{
+	} else {
 		$values = array('noofactivities'=>count($open_activity_list),'Header'=>'', 'Entries' => '<div class="componentName">'.$app_strings['LBL_NO_DATA'].'</div>');
 	}
 	return $values;
@@ -137,10 +133,10 @@ function getActivityEntries($open_activity_list){
  * @param integer $calCnt - returns the count query if this is set
  * return array    $values   - activities record in array format
  */
-function homepage_getPendingActivities($maxval,$calCnt){
-	require_once("data/Tracker.php");
-	require_once("include/utils/utils.php");
-	require_once('include/utils/CommonUtils.php');
+function homepage_getPendingActivities($maxval, $calCnt) {
+	require_once 'data/Tracker.php';
+	require_once 'include/utils/utils.php';
+	require_once 'include/utils/CommonUtils.php';
 
 	global $adb, $current_user;
 
@@ -160,17 +156,17 @@ function homepage_getPendingActivities($maxval,$calCnt){
 	"inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid LEFT ".
 	"JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid left outer join ".
 	"vtiger_recurringevents on vtiger_recurringevents.activityid=vtiger_activity.activityid";
-	$list_query .= getNonAdminAccessControlQuery('cbCalendar',$current_user);
+	$list_query .= getNonAdminAccessControlQuery('cbCalendar', $current_user);
 	$list_query .= "WHERE vtiger_crmentity.deleted=0 and vtiger_activity.activitytype != 'Emails' ".
 	"and (vtiger_activity.eventstatus is NULL OR vtiger_activity.".
 	"eventstatus not in ('Completed','Deferred','Held','Not Held')) ".$pending_condition;
 
 	$list_query.= ' GROUP BY vtiger_activity.activityid,vtiger_recurringevents.recurringdate';
-	$list_query.= " ORDER BY date_start,time_start ASC";
+	$list_query.= ' ORDER BY date_start,time_start ASC';
 	$list_query.= " limit $maxval";
 	$res = $adb->query($list_query);
 	$noofrecords = $adb->num_rows($res);
-	if($calCnt == 'calculateCnt'){
+	if ($calCnt == 'calculateCnt') {
 		return $noofrecords;
 	}
 
@@ -178,22 +174,22 @@ function homepage_getPendingActivities($maxval,$calCnt){
 	$noofrows = $adb->num_rows($res);
 	if (count($res)>0) {
 		for ($i=0; $i<$noofrows; $i++) {
-			$dateValue = $adb->query_result($res,$i,'date_start') . ' ' . $adb->query_result($res,$i,'time_start');
-			$endDateValue = $adb->query_result($res,$i,'due_date') . ' ' . $adb->query_result($res,$i,'time_end');
-			$recurringDateValue = $adb->query_result($res,$i,'due_date') . ' ' . $adb->query_result($res,$i,'time_start');
+			$dateValue = $adb->query_result($res, $i, 'date_start') . ' ' . $adb->query_result($res, $i, 'time_start');
+			$endDateValue = $adb->query_result($res, $i, 'due_date') . ' ' . $adb->query_result($res, $i, 'time_end');
+			$recurringDateValue = $adb->query_result($res, $i, 'due_date') . ' ' . $adb->query_result($res, $i, 'time_start');
 			$date = new DateTimeField($dateValue);
 			$endDate = new DateTimeField($endDateValue);
 			$recurringDate = new DateTimeField($recurringDateValue);
 
 			$open_activity_list[] = array(
-				'name' => $adb->query_result($res,$i,'subject'),
-				'id' => $adb->query_result($res,$i,'activityid'),
-				'type' => $adb->query_result($res,$i,'activitytype'),
-				'module' => $adb->query_result($res,$i,'setype'),
+				'name' => $adb->query_result($res, $i, 'subject'),
+				'id' => $adb->query_result($res, $i, 'activityid'),
+				'type' => $adb->query_result($res, $i, 'activitytype'),
+				'module' => $adb->query_result($res, $i, 'setype'),
 				'date_start' => $date->getDisplayDate(),
 				'due_date' => $endDate->getDisplayDate(),
 				'recurringdate' => $recurringDate->getDisplayDate(),
-				'priority' => $adb->query_result($res,$i,'priority'),
+				'priority' => $adb->query_result($res, $i, 'priority'),
 			);
 		}
 	}
@@ -210,15 +206,14 @@ function homepage_getPendingActivities($maxval,$calCnt){
  * if nothing is found in the database it returns 4 by default
  * return integer $data - the number of columns
  */
-function getNumberOfColumns(){
+function getNumberOfColumns() {
 	global $current_user, $adb;
 
-	$sql = "select * from vtiger_home_layout where userid=?";
-	$result = $adb->pquery($sql, array($current_user->id));
+	$result = $adb->pquery('select * from vtiger_home_layout where userid=?', array($current_user->id));
 
-	if($adb->num_rows($result)>0){
-		$data = $adb->query_result($result,0,"layout");
-	}else{
+	if ($adb->num_rows($result)>0) {
+		$data = $adb->query_result($result, 0, 'layout');
+	} else {
 		$data = 4;	//default is 4 column layout for now
 	}
 	return $data;

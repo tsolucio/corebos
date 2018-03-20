@@ -48,7 +48,7 @@ if (isset($_REQUEST['search_onlyin'])) {
 			);
 		} else {
 			$wsrs=$adb->pquery('select id from vtiger_ws_entity where name=?', array('Users'));
-			if ($wsrs and $adb->num_rows($wsrs)==1) {
+			if ($wsrs && $adb->num_rows($wsrs)==1) {
 				$usrwsid = $adb->query_result($wsrs, 0, 0).'x';
 			}
 			vtws_create('GlobalVariable', array(
