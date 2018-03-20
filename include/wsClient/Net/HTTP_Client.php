@@ -1,7 +1,5 @@
 <?php
-
-global $coreBOS_Basedir;
-require_once $coreBOS_Basedir.'/Net/curl_http_client.php';
+require_once 'include/wsClient/Net/curl_http_client.php';
 
 class cbHTTP_Client extends Curl_HTTP_Client {
 	var $_serviceurl = '';

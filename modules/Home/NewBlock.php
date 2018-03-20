@@ -7,27 +7,26 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 global $mod_strings, $app_strings, $theme;
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
+$theme_path='themes/'.$theme.'/';
+$image_path=$theme_path.'images/';
 
-require_once('include/home.php');
-require_once('Smarty_setup.php');
+require_once 'include/home.php';
+require_once 'Smarty_setup.php';
 
-$stuffid = $_REQUEST['stuffid'];
-$stufftype = $_REQUEST['stufftype'];
+$stuffid = vtlib_purify($_REQUEST['stuffid']);
+$stufftype = vtlib_purify($_REQUEST['stufftype']);
 
 $homeObj=new Homestuff();
 $smarty=new vtigerCRM_Smarty;
 
-$smarty->assign("MOD",$mod_strings);
-$smarty->assign("APP",$app_strings);
-$smarty->assign("THEME", $theme);
-$smarty->assign("IMAGE_PATH",$image_path);
-$homeselectedframe = $homeObj->getSelectedStuff($stuffid,$stufftype);
+$smarty->assign('MOD', $mod_strings);
+$smarty->assign('APP', $app_strings);
+$smarty->assign('THEME', $theme);
+$smarty->assign('IMAGE_PATH', $image_path);
+$homeselectedframe = $homeObj->getSelectedStuff($stuffid, $stufftype);
 
-$smarty->assign("tablestuff",$homeselectedframe);
-$smarty->assign("IMAGE_PATH", $image_path);
-$smarty->display("Home/MainHomeBlock.tpl");
+$smarty->assign('tablestuff', $homeselectedframe);
+$smarty->assign('IMAGE_PATH', $image_path);
+$smarty->display('Home/MainHomeBlock.tpl');
 ?>

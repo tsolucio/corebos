@@ -48,7 +48,7 @@ uasort($allowed_modules, function ($a, $b) {
 	return (strtolower($a['label']) < strtolower($b['label'])) ? -1 : 1;
 });
 
-require_once('Smarty_setup.php');
+require_once 'Smarty_setup.php';
 
 $smarty = new vtigerCRM_Smarty();
 $smarty->assign('MOD', $mod_strings);

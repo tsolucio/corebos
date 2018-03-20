@@ -34,6 +34,10 @@ function vtws_sync($mtime,$elementType,$syncType='',$user=''){
 	if ($applicationSync && !is_admin($user)) {
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Only admin users can perform application sync");
 	}
+	global $cbodCSAppSyncUser;
+	if (in_array($user->id, $cbodCSAppSyncUser)) {
+		$applicationSync = true;
+	}
 
 	$ownerIds = array($user->id);
 
