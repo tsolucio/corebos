@@ -41,11 +41,10 @@ function homepage_getUpcomingActivities($maxval,$calCnt){
 		"vtiger_activity.activityid LEFT JOIN vtiger_groups ON vtiger_groups.groupid = ".
 		"vtiger_crmentity.smownerid left outer join vtiger_recurringevents on ".
 		"vtiger_recurringevents.activityid=vtiger_activity.activityid";
-	$list_query .= getNonAdminAccessControlQuery('Calendar',$current_user);
-	$list_query .= "WHERE vtiger_crmentity.deleted=0 and vtiger_activity.activitytype not in ".
-	"('Emails') AND ( vtiger_activity.status is NULL OR vtiger_activity.status not in ".
-	"('Completed','Deferred')) and  (  vtiger_activity.eventstatus is NULL OR ".
-	"vtiger_activity.eventstatus not in ('Held','Not Held') )".$upcoming_condition;
+	$list_query .= getNonAdminAccessControlQuery('cbCalendar', $current_user);
+	$list_query .= "WHERE vtiger_crmentity.deleted=0 and vtiger_activity.activitytype != 'Emails'".
+	" and (vtiger_activity.eventstatus is NULL OR ".
+	"vtiger_activity.eventstatus not in ('Completed','Deferred','Held','Not Held'))".$upcoming_condition;
 
 	$list_query.= ' GROUP BY vtiger_activity.activityid,vtiger_recurringevents.recurringdate';
 	$list_query.= " ORDER BY date_start,time_start ASC";
@@ -162,10 +161,9 @@ function homepage_getPendingActivities($maxval,$calCnt){
 	"JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid left outer join ".
 	"vtiger_recurringevents on vtiger_recurringevents.activityid=vtiger_activity.activityid";
 	$list_query .= getNonAdminAccessControlQuery('cbCalendar',$current_user);
-	$list_query .= "WHERE vtiger_crmentity.deleted=0 and (vtiger_activity.activitytype not in ".
-	"('Emails')) AND (vtiger_activity.status is NULL OR vtiger_activity.status not in ".
-	"('Completed','Deferred')) and (vtiger_activity.eventstatus is NULL OR  vtiger_activity.".
-	"eventstatus not in ('Held','Not Held')) ".$pending_condition;
+	$list_query .= "WHERE vtiger_crmentity.deleted=0 and vtiger_activity.activitytype != 'Emails' ".
+	"and (vtiger_activity.eventstatus is NULL OR vtiger_activity.".
+	"eventstatus not in ('Completed','Deferred','Held','Not Held')) ".$pending_condition;
 
 	$list_query.= ' GROUP BY vtiger_activity.activityid,vtiger_recurringevents.recurringdate';
 	$list_query.= " ORDER BY date_start,time_start ASC";
