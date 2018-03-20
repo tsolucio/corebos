@@ -17,13 +17,13 @@
 				<table><tr>
 				{if $FOLDER->hasPrevPage()}
 				<td><a href="#{$FOLDER->name()}/page/{$FOLDER->pageCurrent(-1)}" onclick="MailManager.folder_drafts({$FOLDER->pageCurrent(-1)});">
-					<img border="0" src="modules/Webmails/images/previous.gif" title="{'LBL_Previous'|@getTranslatedString}"></a>
+					<img border="0" src="themes/images/previous.gif" title="{'LBL_Previous'|@getTranslatedString}"></a>
 				</td>
 				{/if}
 				<td><b>{$FOLDER->pageInfo()}</b></td>
 				{if $FOLDER->hasNextPage()}
 				<td><a href="#{$FOLDER->name()}/page/{$FOLDER->pageCurrent(1)}" onclick="MailManager.folder_drafts({$FOLDER->pageCurrent(1)});">
-					<img border="0" src="modules/Webmails/images/next.gif" title="{'LBL_Next'|@getTranslatedString}"></a>
+					<img border="0" src="themes/images/next.gif" title="{'LBL_Next'|@getTranslatedString}"></a>
 				</td>
 				{/if}
 				</tr>

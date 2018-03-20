@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('include/utils/UserInfoUtil.php');
+require_once 'include/utils/UserInfoUtil.php';
 
 global $adb;
 $del_id = vtlib_purify($_REQUEST['delete_group_id']);

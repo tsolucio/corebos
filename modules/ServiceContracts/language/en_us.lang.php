@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array (
+$mod_strings = array (
 'Service Contracts' => 'Service Contracts',
 'ServiceContracts' => 'Service Contracts',
 'SINGLE_ServiceContracts' => 'Service Contract',
@@ -53,12 +53,8 @@ $mod_strings = Array (
 'Hours'=>'Hours',
 'Days'=>'Days',
 'Incidents'=>'Incidents',
-/*
- * 5.2.0 changes 
- */
 'LBL_MODULE_NAME'=>'Service Contracts',
 'ServiceContracts ID'=>'ServiceContracts ID',
 'Service Requests'=>'Support Tickets',
 );
-
 ?>

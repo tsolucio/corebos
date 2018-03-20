@@ -112,10 +112,8 @@ $mod_strings = array(
 'MESSAGE_ADD_USER_OR_CONTACT'=>'Por favor, agregue usuarios y contactos...',
 'MESSAGE_MAIL_SENT_SUCCESSFULLY'=>' ¡El Correo ha sido enviado con exito!',
 
-'LBL_FETCH_WEBMAIL'=>'Cargar WebMail',
 'LBL_ALL'=>'Todos',
 'MESSAGE_CONTACT_NOT_WANT_MAIL'=>'Este contacto no desea recibir correos.',
-'LBL_WEBMAILS_TITLE'=>'Email',
 'LBL_EMAILS_TITLE'=>'Email',
 'LBL_MAIL_CONNECT_ERROR_INFO'=>'¡Error conectando con el servidor de email!<br> Compruebe en Configuración -> Lista de Servidores de Correo -> Lista de cuentas de correo',
 'LBL_ALLMAILS'=>'Todos los Correos',
@@ -147,8 +145,6 @@ $mod_strings = array(
 'LBL_CONF_MAILSERVER_ERROR'=>'Configura el servidor de correo saliente en Herramientas --> Servidor de Correo',
 'LBL_CONF_SERVERSTORAGE_ERROR'=>'Los permisos en tu directorio storage son insuficientes, no podrás enviar adjuntos!',
 'LBL_MAILSELECT_INFO3'=>'No tienes permiso para visualizar las cuentas de correo del registro seleccionado.',
-'FEATURE_AVAILABLE_INFO' => 'Característica disponible sólo para Microsoft Internet Explorer 5.5+\n\n 
-¡Actualice su navegador!',
 'DOWNLOAD_CONFIRAMATION' => '¿Descargar Archivo?',
 'LBL_PLEASE_ATTACH' => '¡Adjunte un archivo permitido!',
 'LBL_KINDLY_UPLOAD' => '¡Configure la variable<font color="red">upload_tmp_dir</font> en el php.ini',

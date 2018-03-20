@@ -107,7 +107,7 @@ class UserTimeZones {
 		'Pacific/Tongatapu'
 	);
 
-	function __construct(){
+	public function __construct() {
 	}
 }
 ?>

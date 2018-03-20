@@ -7,16 +7,16 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('include/logging.php');
-require_once('include/database/PearDatabase.php');
-require_once('include/utils/UserInfoUtil.php');
+require_once 'include/logging.php';
+require_once 'include/database/PearDatabase.php';
+require_once 'include/utils/UserInfoUtil.php';
 require_once 'data/CRMEntity.php';
-require_once('modules/Calendar/Activity.php');
-require_once('modules/Contacts/Contacts.php');
-require_once('data/Tracker.php');
+require_once 'modules/Calendar/Activity.php';
+require_once 'modules/Contacts/Contacts.php';
+require_once 'data/Tracker.php';
 require_once 'include/utils/CommonUtils.php';
 require_once 'include/Webservices/Utils.php';
-require_once('modules/Users/UserTimeZonesArray.php');
+require_once 'modules/Users/UserTimeZonesArray.php';
 include_once 'modules/Users/authTypes/TwoFactorAuth/autoload.php';
 use \RobThree\Auth\TwoFactorAuth;
 
@@ -217,8 +217,6 @@ class Users extends CRMEntity {
 	 * @param string $user_name - Must be non null and at least 2 characters
 	 * @param string $user_password - Must be non null and at least 1 character.
 	 * @desc Take an unencrypted username and password and return the encrypted password
-	 * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc..
-	 * All Rights Reserved.
 	 */
 	public function encrypt_password($user_password, $crypt_type = '') {
 		// encrypt the password.
@@ -274,7 +272,7 @@ class Users extends CRMEntity {
 		switch (strtoupper($authType)) {
 			case 'LDAP':
 				$this->log->debug("Using LDAP authentication");
-				require_once('modules/Users/authTypes/LDAP.php');
+				require_once 'modules/Users/authTypes/LDAP.php';
 				$result = ldapAuthenticate($this->column_fields["user_name"], $user_password);
 				if ($result == null) {
 					return false;
@@ -285,7 +283,7 @@ class Users extends CRMEntity {
 
 			case 'AD':
 				$this->log->debug("Using Active Directory authentication");
-				require_once('modules/Users/authTypes/adLDAP.php');
+				require_once 'modules/Users/authTypes/adLDAP.php';
 				$adldap = new adLDAP();
 				if ($adldap->authenticate($this->column_fields["user_name"], $user_password)) {
 					return true;
@@ -344,8 +342,8 @@ class Users extends CRMEntity {
 				break;
 			case 'EMAIL':
 			default:
-				require_once('modules/Emails/mail.php');
-				require_once('modules/Emails/Emails.php');
+				require_once 'modules/Emails/mail.php';
+				require_once 'modules/Emails/Emails.php';
 				$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail', 'support@your_support_domain.tld', 'HelpDesk', $userid);
 				$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name', 'your-support name', 'HelpDesk', $userid);
 				$mailto = getUserEmail($userid);
@@ -359,8 +357,6 @@ class Users extends CRMEntity {
 	/**
 	 * Load a user based on the user_name in $this
 	 * @return -- this if load was successul and null if load failed.
-	 * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc..
-	 * All Rights Reserved.
 	 */
 	public function load_user($user_password) {
 		$usr_name = $this->column_fields["user_name"];
@@ -434,8 +430,8 @@ class Users extends CRMEntity {
 				// Send email with authentification error.
 				$mailto = GlobalVariable::getVariable('Debug_Send_UserLoginIPAuth_Error', '', 'Users');
 				if ($mailto != '') {
-					require_once('modules/Emails/mail.php');
-					require_once('modules/Emails/Emails.php');
+					require_once 'modules/Emails/mail.php';
+					require_once 'modules/Emails/Emails.php';
 					$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail', 'support@your_support_domain.tld', 'HelpDesk');
 					$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name', 'your-support name', 'HelpDesk');
 					$mailcontent = $mailsubject. "\n";
@@ -458,8 +454,8 @@ class Users extends CRMEntity {
 					// Send email with authentification error.
 					$mailto = GlobalVariable::getVariable('Debug_Send_AdminLoginIPAuth_Error', '', 'Users');
 					if ($mailto != '') {
-						require_once('modules/Emails/mail.php');
-						require_once('modules/Emails/Emails.php');
+						require_once 'modules/Emails/mail.php';
+						require_once 'modules/Emails/Emails.php';
 						$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail', 'support@your_support_domain.tld', 'HelpDesk');
 						$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name', 'your-support name', 'HelpDesk');
 						$mailcontent = $mailsubject. "\n";
@@ -515,8 +511,6 @@ class Users extends CRMEntity {
 	 * @param string $new_password - Must be non null and at least 1 character.
 	 * @return boolean - If passwords pass verification and query succeeds, return true, else return false.
 	 * @desc Verify that the current password is correct and write the new password to the DB.
-	 * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc..
-	 * All Rights Reserved.
 	 */
 	public function change_password($user_password, $new_password, $dieOnError = true) {
 		global $mod_strings, $current_user;
@@ -556,7 +550,7 @@ class Users extends CRMEntity {
 			where id=?";
 		$this->db->pquery($query, array($encrypted_new_password, $encrypted_new_password, $crypt_type, $change_password_next_login, $this->id));
 		$this->createAccessKey();
-		require_once('modules/Users/CreateUserPrivilegeFile.php');
+		require_once 'modules/Users/CreateUserPrivilegeFile.php';
 		createUserPrivilegesfile($this->id);
 		return true;
 	}
@@ -571,7 +565,7 @@ class Users extends CRMEntity {
 	}
 
 	public function de_cryption($data) {
-		require_once('include/utils/encryption.php');
+		require_once 'include/utils/encryption.php';
 		$de_crypt = new Encryption();
 		if (isset($data)) {
 			$decrypted_password = $de_crypt->decrypt($data);
@@ -580,7 +574,7 @@ class Users extends CRMEntity {
 	}
 
 	public function changepassword($newpassword) {
-		require_once('include/utils/encryption.php');
+		require_once 'include/utils/encryption.php';
 		$en_crypt = new Encryption();
 		if (isset($newpassword)) {
 			$encrypted_password = $en_crypt->encrypt($newpassword);
@@ -641,8 +635,6 @@ class Users extends CRMEntity {
 
 	/**
 	 * @return -- returns a list of all users in the system.
-	 * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc..
-	 * All Rights Reserved.
 	 */
 	public function verify_data() {
 		$usr_name = $this->column_fields["user_name"];
@@ -706,7 +698,7 @@ class Users extends CRMEntity {
 	 */
 	public function retrieveCurrentUserInfoFromFile($userid) {
 		checkFileAccessForInclusion('user_privileges/user_privileges_' . $userid . '.php');
-		require('user_privileges/user_privileges_' . $userid . '.php');
+		require 'user_privileges/user_privileges_' . $userid . '.php';
 		foreach ($this->column_fields as $field => $value_iter) {
 			if (isset($user_info[$field])) {
 				$this->$field = $user_info[$field];
@@ -745,7 +737,7 @@ class Users extends CRMEntity {
 				$this->insertIntoEntityTable($table_name, $module, $fileid);
 			}
 		}
-		require_once('modules/Users/CreateUserPrivilegeFile.php');
+		require_once 'modules/Users/CreateUserPrivilegeFile.php';
 		createUserPrivilegesfile($this->id);
 		coreBOS_Session::delete('next_reminder_interval');
 		coreBOS_Session::delete('next_reminder_time');
@@ -1109,7 +1101,7 @@ class Users extends CRMEntity {
 		if (isset($this->column_fields['roleid'])) {
 			updateUser2RoleMapping($this->column_fields['roleid'], $this->id);
 		}
-		require_once('modules/Users/CreateUserPrivilegeFile.php');
+		require_once 'modules/Users/CreateUserPrivilegeFile.php';
 		//createUserPrivilegesfile($this->id); // done in saveentity above
 		if ($this->mode!='edit' || $oldrole != $this->column_fields['roleid']) {
 			createUserSharingPrivilegesfile($this->id);
@@ -1553,7 +1545,7 @@ class Users extends CRMEntity {
 		$query = '';
 
 		if (is_admin($current_user)) {
-			include("include/utils/ExportUtils.php");
+			include "include/utils/ExportUtils.php";
 
 			//To get the Permitted fields query and the permitted fields list
 			$sql = getPermittedFieldsQuery('Users', 'detail_view');

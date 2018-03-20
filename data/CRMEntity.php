@@ -1646,16 +1646,14 @@ class CRMEntity {
 		global $adb, $log;
 		$log->debug("Entering function initSortByField ($module)");
 		// Define the columnname's and uitype's which needs to be excluded
-		$exclude_columns = array('parent_id', 'quoteid', 'vendorid', 'access_count');
+		$exclude_columns = array('quoteid', 'vendorid', 'access_count');
 		$exclude_uitypes = array();
 
 		$tabid = getTabId($module);
 		if ($module == 'Calendar') {
 			$tabid = array('9', '16');
 		}
-		$sql = "SELECT columnname FROM vtiger_field " .
-				" WHERE (fieldname not like '%\_id' OR fieldname in ('assigned_user_id'))" .
-				" AND tabid in (" . generateQuestionMarks($tabid) . ") and vtiger_field.presence in (0,2)";
+		$sql = 'SELECT columnname FROM vtiger_field WHERE tabid in (' . generateQuestionMarks($tabid) . ') and vtiger_field.presence in (0,2)';
 		$params = array($tabid);
 		if (count($exclude_columns) > 0) {
 			$sql .= " AND columnname NOT IN (" . generateQuestionMarks($exclude_columns) . ")";

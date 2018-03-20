@@ -85,9 +85,6 @@ if (isset($_REQUEST['filename']) && is_null($focus->filename)) {
 	$focus->filename = $_REQUEST['filename'];
 }
 
-$submenu = array('LBL_EMAILS_TITLE'=>'index.php?module=Emails&action=index','LBL_WEBMAILS_TITLE'=>'index.php?module=squirrelmail-1.4.4&action=redirect');
-$sec_arr = array('index.php?module=Emails&action=index'=>'Emails','index.php?module=squirrelmail-1.4.4&action=redirect'=>'Emails');
-
 $smarty->assign("MOD", $mod_strings);
 $smarty->assign("APP", $app_strings);
 $smarty->assign('LBL_CHARSET', $default_charset);
@@ -119,9 +116,8 @@ $check_button = Button_Check($module);
 $smarty->assign("CHECK", $check_button);
 
 $smarty->assign("MODULE",$currentModule);
-
-if(empty($_REQUEST['mode']) or $_REQUEST['mode'] != 'ajax')
-	$smarty->display("EmailDetailView.tpl");
-else
-	$smarty->display("EmailDetails.tpl")
+if ($_REQUEST['module']=='cbCalendar') {
+	$smarty->assign('FROMCALENDAR', 'true');
+}
+$smarty->display('EmailDetailView.tpl');
 ?>

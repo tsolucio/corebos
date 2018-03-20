@@ -127,7 +127,9 @@ if ($sql_error) {
 		$url_string .= "&query=true$ustring";
 	}
 	$smarty->assign('SEARCH_URL', $url_string);
-
+	if (!empty($order_by)) {
+		$queryGenerator->addWhereField($order_by);
+	}
 	$queryGenerator = cbEventHandler::do_filter('corebos.filter.listview.querygenerator.before', $queryGenerator);
 	$list_query = $queryGenerator->getQuery();
 	$queryGenerator = cbEventHandler::do_filter('corebos.filter.listview.querygenerator.after', $queryGenerator);
@@ -177,13 +179,7 @@ if ($sql_error) {
 
 	// Sorting
 	if (!empty($order_by)) {
-		if ($order_by == 'smownerid') {
-			$list_query .= ' ORDER BY vtiger_users.user_name '.$sorder;
-		} else {
-			$tablename = getTableNameForField($currentModule, $order_by);
-			$tablename = ($tablename != '')? ($tablename . '.') : '';
-			$list_query .= ' ORDER BY ' . $tablename . $order_by . ' ' . $sorder;
-		}
+		$list_query .= ' ORDER BY '.$queryGenerator->getOrderByColumn($order_by).' '.$sorder;
 	}
 	if (GlobalVariable::getVariable('Debug_ListView_Query', '0')=='1') {
 		echo '<br>'.$list_query.'<br>';

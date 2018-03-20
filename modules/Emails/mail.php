@@ -611,8 +611,7 @@ function parseEmailErrorString($mail_error_str) {
 }
 
 function isUserInitiated() {
-	return (isset($_REQUEST['module']) && isset($_REQUEST['action']) &&
-			($_REQUEST['module'] == 'Emails' || $_REQUEST['module'] == 'Webmails') &&
+	return (isset($_REQUEST['module']) && isset($_REQUEST['action']) && $_REQUEST['module'] == 'Emails' &&
 			($_REQUEST['action'] == 'mailsend' || $_REQUEST['action'] == 'webmailsend' || $_REQUEST['action'] == 'Save'));
 }
 

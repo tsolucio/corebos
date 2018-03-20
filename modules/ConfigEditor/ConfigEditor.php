@@ -15,26 +15,25 @@ class ConfigEditor {
 	 * @param String Module name
 	 * @param String Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
 	 */
-	function vtlib_handler($modulename, $event_type) {
-		
-		$registerLink = false; 
-		
-		if($event_type == 'module.postinstall') {
+	public function vtlib_handler($modulename, $event_type) {
+
+		$registerLink = false;
+
+		if ($event_type == 'module.postinstall') {
 			$registerLink = true;
-		} else if($event_type == 'module.disabled') {
+		} elseif ($event_type == 'module.disabled') {
 			// TODO Handle actions when this module is disabled.
 			$registerLink = false;
-		} else if($event_type == 'module.enabled') {
+		} elseif ($event_type == 'module.enabled') {
 			// TODO Handle actions when this module is enabled
 			$registerLink = true;
-		} else if($event_type == 'module.preuninstall') {
+		} elseif ($event_type == 'module.preuninstall') {
 			return;
-		} else if($event_type == 'module.preupdate') {
+		} elseif ($event_type == 'module.preupdate') {
 			return;
-		} else if($event_type == 'module.postupdate') {
+		} elseif ($event_type == 'module.postupdate') {
 			return;
 		}
 	}
 }
-
 ?>

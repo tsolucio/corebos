@@ -1848,8 +1848,7 @@ function fnvshNrm(Lay){
 	tagName.style.display = 'block';
 }
 
-function cancelForm(frm)
-{
+function cancelForm() {
 	window.history.back();
 }
 

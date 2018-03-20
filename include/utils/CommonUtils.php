@@ -3136,23 +3136,30 @@ function isModuleSettingPermitted($module) {
  * @param string $module - the module name
  * @return string $fieldsname - the entity field name for the module
  */
-function getEntityField($module) {
+function getEntityField($module, $fqn = false) {
 	global $adb;
 	$data = array();
 	if (!empty($module)) {
-		$query = "select fieldname,tablename,entityidfield from vtiger_entityname where modulename = ?";
+		$query = 'select fieldname,tablename,entityidfield from vtiger_entityname where modulename = ?';
 		$result = $adb->pquery($query, array($module));
 		$fieldsname = $adb->query_result($result, 0, 'fieldname');
 		$tablename = $adb->query_result($result, 0, 'tablename');
 		$entityidfield = $adb->query_result($result, 0, 'entityidfield');
 		if (!(strpos($fieldsname, ',') === false)) {
 			$fieldlists = explode(',', $fieldsname);
-			$fieldsname = "concat(";
-			$fieldsname = $fieldsname . implode(",' ',", $fieldlists);
-			$fieldsname = $fieldsname . ")";
+			if ($fqn) {
+				array_walk($fieldlists, function (&$elem, $key) use ($tablename) {
+					$elem = $tablename.'.'.$elem;
+				});
+			}
+			$fieldsname = 'concat(' . implode(",' ',", $fieldlists) . ')';
+		} elseif ($fqn) {
+			$fieldsname = $tablename.'.'.$fieldsname;
 		}
+	} else {
+		$tablename  = $fieldsname = $entityidfield = '';
 	}
-	$data = array("tablename" => $tablename, "fieldname" => $fieldsname,"entityid"=>$entityidfield);
+	$data = array('tablename' => $tablename, 'fieldname' => $fieldsname, 'entityid' => $entityidfield);
 	return $data;
 }
 

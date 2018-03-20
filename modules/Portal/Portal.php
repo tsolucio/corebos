@@ -14,17 +14,15 @@
  *  This function saves the portal with the given $portalname,$portalurl
  *  This Returns $portalid
  */
-function SavePortal($portalname,$portalurl)
-{
+function SavePortal($portalname, $portalurl) {
 	global $adb;
-	$adb->println("just entered the SavePortal method");
+	$adb->println('just entered the SavePortal method');
 	$portalid=$adb->getUniqueID('vtiger_portal');
-	$query="insert into vtiger_portal values(?,?,?,?,?)";
-	$params=array($portalid,$portalname,$portalurl,0,0);
-	$adb->println($query);
-	$result=$adb->pquery($query,$params);
+	$params=array($portalid, $portalname, $portalurl, 0, 0);
+	$adb->pquery('insert into vtiger_portal values(?,?,?,?,?)', $params);
 	return $portalid;
 }
+
 /** Function to update the portal in database
  *  @param $portalname : Type String
  *  @param $portalurl : Type String
@@ -32,14 +30,11 @@ function SavePortal($portalname,$portalurl)
  *  This function updates the portal with the given $portalname,$portalurl
  *  This Returns $portalid
  */
-function UpdatePortal($portalname,$portalurl,$portalid)
-{
+function UpdatePortal($portalname, $portalurl, $portalid) {
 	global $adb;
-	$adb->println("just entered the SavePortal method");
-	$query="update vtiger_portal set portalname=? ,portalurl=? where portalid=?";
+	$adb->println('just entered the SavePortal method');
 	$params=array($portalname, $portalurl, $portalid);
-	$adb->println($query);
-	$result=$adb->pquery($query, $params);
+	$adb->pquery('update vtiger_portal set portalname=? ,portalurl=? where portalid=?', $params);
 	return $portalid;
 }
 ?>

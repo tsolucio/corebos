@@ -536,54 +536,51 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$fieldvalue[] = $contact_name;
 		$fieldvalue[] = $value;
 	}
-
-	elseif($uitype == 61)
-	{
-		if($value != '')
-		{
+	elseif ($uitype == 61) {
+		if ($value != '') {
 			$assigned_user_id = $value;
-		}
-		else
-		{
+		} else {
 			$assigned_user_id = $current_user->id;
 		}
-		if($module_name == 'Emails' && !empty($col_fields['record_id']))
-		{
-			$attach_result = $adb->pquery("select * from vtiger_seattachmentsrel where crmid = ?", array($col_fields['record_id']));
+		if ($module_name == 'Emails' && !empty($col_fields['record_id'])) {
+			$attach_result = $adb->pquery('select * from vtiger_seattachmentsrel where crmid = ?', array($col_fields['record_id']));
 			//to fix the issue in mail attachment on forwarding mails
-			if(isset($_REQUEST['forward']) && $_REQUEST['forward'] != '')
+			if (isset($_REQUEST['forward']) && $_REQUEST['forward'] != '') {
 				global $att_id_list;
-			for($ii=0;$ii < $adb->num_rows($attach_result);$ii++)
-			{
-				$attachmentid = $adb->query_result($attach_result,$ii,'attachmentsid');
-				if($attachmentid != '')
-				{
-					$attachquery = "select * from vtiger_attachments where attachmentsid=?";
-					$attachmentsname = $adb->query_result($adb->pquery($attachquery, array($attachmentid)),0,'name');
-					if($attachmentsname != '')
+			}
+			$attachquery = 'select * from vtiger_attachments where attachmentsid=?';
+			for ($ii=0; $ii < $adb->num_rows($attach_result); $ii++) {
+				$attachmentid = $adb->query_result($attach_result, $ii, 'attachmentsid');
+				if ($attachmentid != '') {
+					$rsatt = $adb->pquery($attachquery, array($attachmentid));
+					$attachmentsname = $adb->query_result($rsatt, 0, 'name');
+					if ($attachmentsname != '') {
 						$fieldvalue[$attachmentid] = '[ '.$attachmentsname.' ]';
-					if(isset($_REQUEST['forward']) && $_REQUEST['forward'] != '')
+					}
+					if (isset($_REQUEST['forward']) && $_REQUEST['forward'] != '') {
 						$att_id_list .= $attachmentid.';';
+					}
 				}
 			}
-		}else
-		{
-			if(!empty($col_fields['record_id']))
-			{
-				$attachmentid=$adb->query_result($adb->pquery("select * from vtiger_seattachmentsrel where crmid = ?", array($col_fields['record_id'])),0,'attachmentsid');
-				if($col_fields[$fieldname] == '' && $attachmentid != '')
-				{
-					$attachquery = "select name from vtiger_attachments where attachmentsid=?";
-					$value = $adb->query_result($adb->pquery($attachquery, array($attachmentid)),0,'name');
+		} else {
+			if (!empty($col_fields['record_id'])) {
+				$rsatt = $adb->pquery('select * from vtiger_seattachmentsrel where crmid = ?', array($col_fields['record_id']));
+				$attachmentid=$adb->query_result($rsatt, 0, 'attachmentsid');
+				if ($col_fields[$fieldname] == '' && $attachmentid != '') {
+					$attachquery = 'select name from vtiger_attachments where attachmentsid=?';
+					$rsattn = $adb->pquery($attachquery, array($attachmentid));
+					$value = $adb->query_result($rsattn, 0, 'name');
 				}
 			}
-			if($value!='')
+			if ($value!='') {
 				$filename=' [ '.$value. ' ]';
-
-			if(!empty($filename))
+			}
+			if (!empty($filename)) {
 				$fieldvalue[] = $filename;
-			if($value != '')
+			}
+			if ($value != '') {
 				$fieldvalue[] = $value;
+			}
 		}
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 	}

@@ -19,14 +19,14 @@ abstract class Vtiger_Location {
 		$this->limit = $limit;
 	}
 
-	public static function getInstance($type, $limit){
-		if($type == self::$FTP) {
-			if(empty(self::$ftpBackup)) {
+	public static function getInstance($type, $limit) {
+		if ($type == self::$FTP) {
+			if (empty(self::$ftpBackup)) {
 				self::$ftpBackup = new Vtiger_FTPBackup($limit);
 			}
 			return self::$ftpBackup;
 		}
-		if(empty(self::$localBackup)) {
+		if (empty(self::$localBackup)) {
 			self::$localBackup = new Vtiger_LocalBackup($limit);
 		}
 		return self::$localBackup;
@@ -36,11 +36,11 @@ abstract class Vtiger_Location {
 		do {
 			$done = false;
 			$index = strrpos($filePath, $sep);
-			if($index !== false && $filePath[$index - 1] == '\\'.$sep) {
+			if ($index !== false && $filePath[$index - 1] == '\\'.$sep) {
 				$done = true;
 			}
-		}while($done);
-		if($index == -1) {
+		} while ($done);
+		if ($index == -1) {
 			return $filePath;
 		}
 		return substr($filePath, $index+1);
