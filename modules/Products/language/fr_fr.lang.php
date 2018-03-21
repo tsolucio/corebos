@@ -149,7 +149,6 @@ $mod_strings = Array (
 	'308-Sales-Books' => '308-Ventes-Livres',
 	'Box' => 'Boîte',
 	'Carton' => 'Carton',
-	'Caton' => 'Palette',
 	'Dozen' => 'Douzaine',
 	'Each' => 'Unité',
 	'Hours' => 'Heures',

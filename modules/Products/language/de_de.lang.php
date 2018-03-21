@@ -177,7 +177,6 @@ $mod_strings = array(
 
     'Box'=>'Box',
     'Carton'=>'Karton',
-    'Caton'=>'Kiste',
     'Dozen'=>'Dutzend',
     'Each'=>'Paket',
     'Hours'=>'Stunden',

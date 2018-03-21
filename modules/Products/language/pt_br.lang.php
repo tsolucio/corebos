@@ -172,7 +172,6 @@ $mod_strings = array(
 
 'Box'=>'Cx',
 'Carton'=>'Cartão',
-'Caton'=>'',
 'Dozen'=>'Dz',
 'Each'=>'Cada',
 'Hours'=>'Hora',
