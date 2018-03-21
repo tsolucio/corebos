@@ -7,9 +7,9 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('include/database/PearDatabase.php');
-require_once('include/ComboUtil.php');
-require_once('include/utils/CommonUtils.php');
+require_once 'include/database/PearDatabase.php';
+require_once 'include/ComboUtil.php';
+require_once 'include/utils/CommonUtils.php';
 require_once 'modules/PickList/DependentPickListUtils.php';
 
 /** This function returns the field details for a given fieldname.
@@ -22,48 +22,55 @@ require_once 'modules/PickList/DependentPickListUtils.php';
   * Param $module_name - module name
   * Return type is an array
   */
-function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields,$generatedtype,$module_name,$mode='', $typeofdata=null, $cbMapFI=array())
-{
+function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields, $generatedtype, $module_name, $mode = '', $typeofdata = null, $cbMapFI = array()) {
 	global $log,$app_strings, $adb,$default_charset, $theme, $mod_strings, $current_user;
-	$log->debug("Entering getOutputHtml(".$uitype.",". $fieldname.",". $fieldlabel.",". $maxlength.",". print_r($col_fields,true).",".$generatedtype.",".$module_name.") method ...");
+	$log->debug('getOutputHtml('.$uitype.",". $fieldname.",". $fieldlabel.",". $maxlength.",". print_r($col_fields,true).",".$generatedtype.",".$module_name.')');
 
-	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
+	require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
+	require 'user_privileges/user_privileges_'.$current_user->id.'.php';
 
-	$theme_path="themes/".$theme."/";
-	$image_path=$theme_path."images/";
-	$fieldvalue = Array();
-	$final_arr = Array();
+	$theme_path='themes/'.$theme.'/';
+	$image_path=$theme_path.'images/';
+	$fieldvalue = array();
+	$final_arr = array();
 	$value = $col_fields[$fieldname];
 	$ui_type[]= $uitype;
 	$editview_fldname[] = $fieldname;
 
 	// vtlib customization: Related type field
-	if($uitype == '10') {
-		$fldmod_result = $adb->pquery('SELECT relmodule, status
-				FROM vtiger_fieldmodulerel
-				INNER JOIN vtiger_tab ON vtiger_fieldmodulerel.relmodule=vtiger_tab.name and vtiger_tab.presence=0
-				WHERE fieldid=
-				(SELECT fieldid FROM vtiger_field, vtiger_tab WHERE vtiger_field.tabid=vtiger_tab.tabid AND fieldname=? AND name=? and vtiger_field.presence in (0,2) and vtiger_tab.presence=0) order by sequence',
-			Array($fieldname, $module_name));
-
-		$entityTypes = Array();
+	if ($uitype == '10') {
+		$fldmod_result = $adb->pquery(
+			'SELECT relmodule, status
+			FROM vtiger_fieldmodulerel
+			INNER JOIN vtiger_tab ON vtiger_fieldmodulerel.relmodule=vtiger_tab.name and vtiger_tab.presence=0
+			WHERE fieldid=
+				(SELECT fieldid FROM vtiger_field, vtiger_tab
+				WHERE vtiger_field.tabid=vtiger_tab.tabid AND fieldname=? AND name=? and vtiger_field.presence in (0,2) and vtiger_tab.presence=0)
+			order by sequence',
+			array($fieldname, $module_name)
+		);
+		$entityTypes = array();
 		$parent_id = $value;
-		for($index = 0; $index < $adb->num_rows($fldmod_result); ++$index) {
+		for ($index = 0; $index < $adb->num_rows($fldmod_result); ++$index) {
 			$entityTypes[] = $adb->query_result($fldmod_result, $index, 'relmodule');
 		}
 
-		if(!empty($value)) {
+		if (!empty($value)) {
 			if ($adb->num_rows($fldmod_result)==1) {
 				$valueType = $adb->query_result($fldmod_result, 0, 0);
 			} else {
 				$valueType = getSalesEntityType($value);
 			}
 			$displayValueArray = getEntityName($valueType, $value);
-			if(!empty($displayValueArray)){
-				foreach($displayValueArray as $key=>$value){
+			if (!empty($displayValueArray)) {
+				foreach ($displayValueArray as $value){
 					$displayValue = $value;
 				}
+			} else {
+				$displayValue='';
+				$valueType='';
+				$value='';
+				$parent_id = '';
 			}
 		} else {
 			$displayValue='';
@@ -72,15 +79,12 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			$parent_id = '';
 		}
 
-		$editview_label[] = Array('options'=>$entityTypes, 'selected'=>$valueType, 'displaylabel'=>getTranslatedString($fieldlabel, $module_name));
-		$fieldvalue[] = Array('displayvalue'=>$displayValue,'entityid'=>$parent_id);
-
-	} // END
-	else if($uitype == 5 || $uitype == 6 || $uitype ==23)
-	{
+		$editview_label[] = array('options'=>$entityTypes, 'selected'=>$valueType, 'displaylabel'=>getTranslatedString($fieldlabel, $module_name));
+		$fieldvalue[] = array('displayvalue'=>$displayValue,'entityid'=>$parent_id);
+	} else if ($uitype == 5 || $uitype == 6 || $uitype ==23) {
 		$log->info("uitype is ".$uitype);
 		$curr_time = '';
-		if($value == '') {
+		if ($value == '') {
 			if ($fieldname != 'birthday' && $generatedtype != 2 && getTabid($module_name) != 14)
 				$disp_value = getNewDisplayDate();
 
@@ -106,13 +110,12 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 
 		if (empty($disp_value)) $disp_value = '';
 		$fieldvalue[] = array($disp_value => $curr_time);
-		if($uitype == 5 || $uitype == 23) {
+		if ($uitype == 5 || $uitype == 23) {
 			$fieldvalue[] = array($date_format=>$current_user->date_format);
 		} else {
 			$fieldvalue[] = array($date_format=>$current_user->date_format.' '.$app_strings['YEAR_MONTH_DATE']);
 		}
-	}
-	elseif($uitype == 50) {
+	} elseif ($uitype == 50) {
 		$user_format = ($current_user->hour_format=='24' ? '24' : '12');
 		if (empty($value)) {
 			if ($generatedtype != 2) {
