@@ -410,12 +410,13 @@ function return_application_language($language) {
 	global $app_strings, $default_language, $log;
 	$log->debug("Entering return_application_language(".$language.") method ...");
 	$temp_app_strings = $app_strings;
-
+	$languagefound = $language;
 	checkFileAccessForInclusion("include/language/$language.lang.php");
 	@include "include/language/$language.lang.php";
 	if (!isset($app_strings)) {
 		$log->warn("Unable to find the application language file for language: ".$language);
 		require "include/language/$default_language.lang.php";
+		$languagefound = $default_language;
 	}
 
 	if (!isset($app_strings)) {
@@ -424,6 +425,10 @@ function return_application_language($language) {
 		return null;
 	}
 
+	if (file_exists("include/language/$languagefound.custom.php")) {
+		@include "include/language/$languagefound.custom.php";
+		$app_strings = array_merge($app_strings, $custom_strings);
+	}
 	$return_value = $app_strings;
 	$app_strings = $temp_app_strings;
 
@@ -444,16 +449,19 @@ function return_module_language($language, $module) {
 	}
 
 	$temp_mod_strings = $mod_strings;
-
+	$languagefound = $language;
 	@include "modules/$module/language/$language.lang.php";
 	if (!isset($mod_strings)) {
 		$log->warn("Unable to find the module language file for language: ".$language." and module: ".$module);
 		if ($default_language == 'en_us') {
 			require "modules/$module/language/$default_language.lang.php";
+			$languagefound = $default_language;
 		} else {
 			@include "modules/$module/language/$default_language.lang.php";
+			$languagefound = $default_language;
 			if (!isset($mod_strings)) {
 				require "modules/$module/language/en_us.lang.php";
+				$languagefound = 'en_us';
 			}
 		}
 	}
@@ -464,6 +472,10 @@ function return_module_language($language, $module) {
 		return null;
 	}
 
+	if (file_exists("modules/$module/language/$languagefound.custom.php")) {
+		@include "modules/$module/language/$languagefound.custom.php";
+		$mod_strings = array_merge($mod_strings, $custom_strings);
+	}
 	$return_value = $mod_strings;
 	$mod_strings = $temp_mod_strings;
 
@@ -475,11 +487,12 @@ function return_module_language($language, $module) {
 /*This function returns the mod_strings for the given language and module: it does not update the current mod_strings contents */
 function return_specified_module_language($language, $module) {
 	global $log, $default_language;
-
+	$languagefound = $language;
 	@include "modules/$module/language/$language.lang.php";
 	if (!isset($mod_strings)) {
 		$log->warn("Unable to find the module language file for language: ".$language." and module: ".$module);
 		require "modules/$module/language/$default_language.lang.php";
+		$languagefound = $default_language;
 	}
 
 	if (!isset($mod_strings)) {
@@ -488,6 +501,10 @@ function return_specified_module_language($language, $module) {
 		return null;
 	}
 
+	if (file_exists("modules/$module/language/$languagefound.custom.php")) {
+		@include "modules/$module/language/$languagefound.custom.php";
+		$mod_strings = array_merge($mod_strings, $custom_strings);
+	}
 	$return_value = $mod_strings;
 
 	$log->debug('Exiting return_module_language method ...');
