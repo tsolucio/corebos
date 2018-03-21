@@ -210,7 +210,8 @@ function get_user_array($add_blank = true, $status = "Active", $assigned_user = 
 				$query = "select id as id,user_name as user_name,first_name,last_name
 					from vtiger_users
 					where id=? and status='Active'
-					union select vtiger_user2role.userid as id,vtiger_users.user_name as user_name, vtiger_users.first_name as first_name, vtiger_users.last_name as last_name
+					union
+					select vtiger_user2role.userid as id,vtiger_users.user_name as user_name, vtiger_users.first_name as first_name, vtiger_users.last_name as last_name
 					from vtiger_user2role
 					inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid
 					inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid
@@ -380,9 +381,8 @@ function return_app_list_strings_language($language) {
  * Retrieve the app_currency_strings for the required language.
  */
 function return_app_currency_strings_language($language) {
-	global $log;
+	global $log, $app_currency_strings, $default_language, $log;
 	$log->debug("Entering return_app_currency_strings_language(".$language.") method ...");
-	global $app_currency_strings, $default_language, $log;
 	// Backup the value first
 	$temp_app_currency_strings = $app_currency_strings;
 	@include "include/language/$language.lang.php";
@@ -392,7 +392,7 @@ function return_app_currency_strings_language($language) {
 	}
 	if (!isset($app_currency_strings)) {
 		$log->fatal("Unable to load the application language file for the selected language($language) or the default language($default_language)");
-		$log->debug("Exiting return_app_currency_strings_language method ...");
+		$log->debug('Exiting return_app_currency_strings_language method ...');
 		return null;
 	}
 	$return_value = $app_currency_strings;
@@ -400,7 +400,7 @@ function return_app_currency_strings_language($language) {
 	// Restore the value back
 	$app_currency_strings = $temp_app_currency_strings;
 
-	$log->debug("Exiting return_app_currency_strings_language method ...");
+	$log->debug('Exiting return_app_currency_strings_language method ...');
 	return $return_value;
 }
 
@@ -420,14 +420,14 @@ function return_application_language($language) {
 
 	if (!isset($app_strings)) {
 		$log->fatal("Unable to load the application language file for the selected language($language) or the default language($default_language)");
-		$log->debug("Exiting return_application_language method ...");
+		$log->debug('Exiting return_application_language method ...');
 		return null;
 	}
 
 	$return_value = $app_strings;
 	$app_strings = $temp_app_strings;
 
-	$log->debug("Exiting return_application_language method ...");
+	$log->debug('Exiting return_application_language method ...');
 	return $return_value;
 }
 
@@ -436,13 +436,10 @@ function return_application_language($language) {
 function return_module_language($language, $module) {
 	global $mod_strings, $default_language, $log;
 	$log->debug("Entering return_module_language(".$language.",". $module.") method ...");
-	if ($module == 'Events') {
-		$module = 'Calendar';
-	}
 	static $cachedModuleStrings = array();
 
 	if (!empty($cachedModuleStrings[$module])) {
-		$log->debug("Exiting return_module_language method ...");
+		$log->debug('Exiting return_module_language method ...');
 		return $cachedModuleStrings[$module];
 	}
 
@@ -457,26 +454,25 @@ function return_module_language($language, $module) {
 			@include "modules/$module/language/$default_language.lang.php";
 			if (!isset($mod_strings)) {
 				require "modules/$module/language/en_us.lang.php";
-			} else {
 			}
 		}
 	}
 
 	if (!isset($mod_strings)) {
 		$log->fatal("Unable to load the module($module) language file for the selected language($language) or the default language($default_language)");
-		$log->debug("Exiting return_module_language method ...");
+		$log->debug('Exiting return_module_language method ...');
 		return null;
 	}
 
 	$return_value = $mod_strings;
 	$mod_strings = $temp_mod_strings;
 
-	$log->debug("Exiting return_module_language method ...");
+	$log->debug('Exiting return_module_language method ...');
 	$cachedModuleStrings[$module] = $return_value;
 	return $return_value;
 }
 
-/*This function returns the mod_strings for the current language and the specified module */
+/*This function returns the mod_strings for the given language and module: it does not update the current mod_strings contents */
 function return_specified_module_language($language, $module) {
 	global $log, $default_language;
 
@@ -488,13 +484,13 @@ function return_specified_module_language($language, $module) {
 
 	if (!isset($mod_strings)) {
 		$log->fatal("Unable to load the module($module) language file for the selected language($language) or the default language($default_language)");
-		$log->debug("Exiting return_module_language method ...");
+		$log->debug('Exiting return_module_language method ...');
 		return null;
 	}
 
 	$return_value = $mod_strings;
 
-	$log->debug("Exiting return_module_language method ...");
+	$log->debug('Exiting return_module_language method ...');
 	return $return_value;
 }
 
@@ -2600,7 +2596,7 @@ function getDuplicateRecordsArr($module) {
 	$dup_count_query = substr($dup_query, stripos($dup_query, 'FROM'), strlen($dup_query));
 	$dup_count_query = "SELECT count(*) as count ".$dup_count_query;
 	$count_res = $adb->query($dup_count_query);
-	$no_of_rows = $adb->query_result($count_res, 0, "count");
+	$no_of_rows = $adb->query_result($count_res, 0, 'count');
 
 	if ($no_of_rows <= $list_max_entries_per_page) {
 		coreBOS_Session::set('dup_nav_start'.$module, 1);
