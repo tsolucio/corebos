@@ -8,7 +8,7 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-
+<link rel="stylesheet" type="text/css" href="include/LD/assets/styles/salesforce-lightning-design-system.css" />
 <div class="slds-m-top--x-large">
 	<div class="slds-notify slds-notify--alert slds-theme--error slds-theme--alert-texture" role="alert">
 	<h2>
