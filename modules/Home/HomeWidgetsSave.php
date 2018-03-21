@@ -17,13 +17,13 @@ HomeDefaultWidgets::saveSelected($val);
 class HomeDefaultWidgets {
 	public static function saveSelected($values) {
 		global $adb, $current_user;
+		// To show the default Homestuff on the the Home Page
 		$userId = $current_user->id;
+		$query = 'update vtiger_homestuff,vtiger_homedefault set vtiger_homestuff.visible=0
+			where vtiger_homestuff.stuffid=vtiger_homedefault.stuffid and vtiger_homestuff.userid=? and vtiger_homedefault.hometype=?';
 		for ($i = 0; $i < count($values); $i++) {
 			if ($values[$i] != null) {
-				//To show the default Homestuff on the the Home Page
-				$query = 'update vtiger_homestuff,vtiger_homedefault set vtiger_homestuff.visible=0
-					where vtiger_homestuff.stuffid=vtiger_homedefault.stuffid and vtiger_homestuff.userid=? and vtiger_homedefault.hometype=?';
-				$result = $adb->pquery($query, array($userId, $values[$i]));
+				$adb->pquery($query, array($userId, $values[$i]));
 			}
 		}
 	}

@@ -179,7 +179,9 @@ if (isset($query_string) && $query_string != '') {
 
 				$moduleRecordCount[$module]['recordListRangeMessage'] = getRecordRangeMessage($list_result, $limitStartRecord, $noofrows);
 
-				$info_message='&recordcount='.(isset($_REQUEST['recordcount']) ? $_REQUEST['recordcount'] : 0).'&noofrows='.(isset($_REQUEST['noofrows']) ? $_REQUEST['noofrows'] : 0).'&message='.(isset($_REQUEST['message']) ? $_REQUEST['message'] : '').'&skipped_record_count='.(isset($_REQUEST['skipped_record_count']) ? $_REQUEST['skipped_record_count'] : 0);
+				$info_message='&recordcount='.(isset($_REQUEST['recordcount']) ? $_REQUEST['recordcount'] : 0)
+					.'&noofrows='.(isset($_REQUEST['noofrows']) ? $_REQUEST['noofrows'] : 0).'&message='.(isset($_REQUEST['message']) ? $_REQUEST['message'] : '').
+					'&skipped_record_count='.(isset($_REQUEST['skipped_record_count']) ? $_REQUEST['skipped_record_count'] : 0);
 				$url_string = '&modulename='.(isset($_REQUEST['modulename']) ? $_REQUEST['modulename'] : '').'&nav_module='.$module.$info_message;
 				$viewid = '';
 
@@ -250,7 +252,7 @@ document.getElementById("global_search_total_count").innerHTML = " <?php echo $a
  * @param string $search_module -- search module, this module result will be shown defaultly
  */
 function getSearchModulesComboList($search_module) {
-	global $object_array, $app_strings, $mod_strings;
+	global $object_array, $app_strings;
 ?>
 		<script>
 		function displayModuleList(selectmodule_view) {
