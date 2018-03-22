@@ -199,7 +199,7 @@ switch ($functiontocall) {
 		break;
 	case 'getGloalSearch':
 		include_once 'include/Webservices/CustomerPortalWS.php';
-		$data = json_decode(file_get_contents('php://input'), true);
+		$data = json_decode($_REQUEST['data'], true);
 		$searchin = vtlib_purify($data['searchin']);
 		$limit = isset($data['maxresults']) ? vtlib_purify($data['maxresults']) : '';
 		$term = vtlib_purify($data['term']);

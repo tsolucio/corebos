@@ -5010,13 +5010,13 @@ AutocompleteRelation.prototype.get = function(e) {
 					acInstance.set(json_data)
 			}
 		};
+		var params='data='+encodeURIComponent(JSON.stringify(this.data));
 		if (e.target.name==='query_string') {
-			var params=JSON.stringify(this.data);
-			r.open("POST", "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getGloalSearch", true);
-			r.setRequestHeader( "Content-type", "application/json;charset=UTF-8" );
+			r.open('POST', 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getGloalSearch', true);
+			r.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 			r.send(params);
 		} else {
-			r.open("GET", "index.php?module=Utilities&action=UtilitiesAjax&file=getAutocomplete&data="+encodeURIComponent(JSON.stringify(this.data)), true);
+			r.open('GET', 'index.php?module=Utilities&action=UtilitiesAjax&file=getAutocomplete&'+params, true);
 			r.send();
 		}
 	} else {
