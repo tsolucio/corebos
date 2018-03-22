@@ -104,6 +104,10 @@ var alert_arr = {
 	'GREATER_THAN':'supérieur à',
 	'LESS_OR_EQUALS':'inférieur ou égal',
 	'GREATER_OR_EQUALS':'supérieur ou égal',
+	'LBL_DOES_NOT_START_WITH' : 'does not start with',
+	'LBL_DOES_NOT_END_WITH' : 'does not end with',
+	'DOES_NOT_START_WITH':'does not start with',
+	'DOES_NOT_END_WITH':'does not end with',
 
 	'NO_SPECIAL_CHARS':'Les caractères spéciaux comme les guillemets, backslash, symboles mathématiques, pourcentages et de ponctuation ne sont pas autorisés',
 	'PLS_SELECT_VALID_FILE':'Choisir un fichier avec l\'extension suivante:\n',

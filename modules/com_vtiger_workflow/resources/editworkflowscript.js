@@ -210,7 +210,7 @@ function editworkflowscript($, conditions){
 
 	var operations = function(){
 		var op = {
-			string:["is", "contains", "does not contain", "starts with", "ends with", "has changed", 'is empty', 'is not empty','exists'],
+			string:["is", "contains", "does not contain", "starts with", "ends with", "has changed", 'is empty', 'is not empty','exists', 'does not start with','does not end with'],
 			number:["equal to", "less than", "greater than", "does not equal", "less than or equal to", "greater than or equal to", "has changed",'exists'],
 			value:['is', 'is not', "has changed", 'has changed to', 'is empty', 'is not empty', 'exists'],
 			multipicklist:['is', 'is not'],
@@ -239,7 +239,7 @@ function editworkflowscript($, conditions){
 	var transOperations = function(){
 		var op = {
 			string:[alert_arr.LBL_IS, alert_arr.LBL_CONTAINS, alert_arr.LBL_DOES_NOT_CONTAIN, alert_arr.LBL_STARTS_WITH,
-					alert_arr.LBL_ENDS_WITH, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_IS_EMPTY, alert_arr.LBL_IS_NOT_EMPTY, alert_arr.LBL_EXISTS],
+					alert_arr.LBL_ENDS_WITH, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_IS_EMPTY, alert_arr.LBL_IS_NOT_EMPTY, alert_arr.LBL_EXISTS, alert_arr.DOES_NOT_START_WITH, alert_arr.DOES_NOT_END_WITH],
 			number:[alert_arr.LBL_EQUAL_TO, alert_arr.LBL_LESS_THAN, alert_arr.LBL_GREATER_THAN, alert_arr.LBL_DOEST_NOT_EQUAL,
 					alert_arr.LBL_LESS_THAN_OR_EQUAL_TO, alert_arr.LBL_GREATER_THAN_OR_EQUAL_TO, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_EXISTS],
 			value:[alert_arr.LBL_IS, alert_arr.LBL_IS_NOT, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_HAS_CHANGED_TO, alert_arr.LBL_IS_EMPTY, alert_arr.LBL_IS_NOT_EMPTY, alert_arr.LBL_EXISTS],

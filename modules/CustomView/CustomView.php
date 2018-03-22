@@ -19,6 +19,8 @@ $adv_filter_options = array("e" => "" . $mod_strings['equals'] . "",
 	"n" => "" . $mod_strings['not equal to'] . "",
 	"s" => "" . $mod_strings['starts with'] . "",
 	"ew" => "" . $mod_strings['ends with'] . "",
+	"dnsw" => "" . $mod_strings['does not start with'] . "",
+	"dnew" => "" . $mod_strings['does not end with'] . "",
 	"c" => "" . $mod_strings['contains'] . "",
 	"k" => "" . $mod_strings['does not contain'] . "",
 	"l" => "" . $mod_strings['less than'] . "",
@@ -1548,6 +1550,20 @@ class CustomView extends CRMEntity {
 				$rtvalue = " not like ''";
 			} else {
 				$rtvalue = " not like '" . formatForSqlLike($value) . "'";
+			}
+		}
+		if ($comparator == "dnsw") {
+			if (trim($value) == "" && ($datatype == "V" || $datatype == "E")) {
+				$rtvalue = " not like '" . formatForSqlLike($value, 3) . "'";
+			} else {
+				$rtvalue = " not like '" . formatForSqlLike($value, 2) . "'";
+			}
+		}
+		if ($comparator == "dnew") {
+			if (trim($value) == "" && ($datatype == "V" || $datatype == "E")) {
+				$rtvalue = " not like '" . formatForSqlLike($value, 3) . "'";
+			} else {
+				$rtvalue = " not like '" . formatForSqlLike($value, 1) . "'";
 			}
 		}
 		if ($comparator == "l") {

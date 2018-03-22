@@ -670,6 +670,8 @@ function getcriteria_options()
 			"</option><option value=\'n\'>".str_replace("'","`",$app_strings['is_not']).
 			"</option><option value=\'s\'>".str_replace("'","`",$app_strings['begins_with']).
 			"</option><option value=\'ew\'>".str_replace("'","`",$app_strings['ends_with']).
+			"</option><option value=\'dnsw\'>".str_replace("'","`",$app_strings['does_not_start_with']).
+			"</option><option value=\'dnew\'>".str_replace("'","`",$app_strings['does_not_end_with']).
 			"</option><option value=\'g\'>".str_replace("'","`",$app_strings['greater_than']).
 			"</option><option value=\'l\'>".str_replace("'","`",$app_strings['less_than']).
 			"</option><option value=\'h\'>".str_replace("'","`",$app_strings['greater_or_equal']).
@@ -1263,6 +1265,20 @@ function getAdvancedSearchComparator($comparator,$value,$datatype = '') {
 			$rtvalue = " not like ''";
 		} else {
 			$rtvalue = " not like '". formatForSqlLike($value) ."'";
+		}
+	}
+	if($comparator == "dnsw") {
+		if(trim($value) == "" && ($datatype == "V" || $datatype == "E")) {
+			$rtvalue = " not like '". formatForSqlLike($value, 3) ."'";
+		} else {
+			$rtvalue = " not like '". formatForSqlLike($value, 2) ."'";
+		}
+	}
+	if($comparator == "dnew") {
+		if(trim($value) == "" && ($datatype == "V" || $datatype == "E")) {
+			$rtvalue = " not like '". formatForSqlLike($value, 3) ."'";
+		} else {
+			$rtvalue = " not like '". formatForSqlLike($value, 1) ."'";
 		}
 	}
 	if($comparator == "l") {

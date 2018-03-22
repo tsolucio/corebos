@@ -112,7 +112,6 @@ class VTJsonCondition {
 			return FALSE;
 		}
 	}
-
 	function checkCondition($entityData, $cond, $referredEntityData=null) {
 		$data = $entityData->getData();
 
@@ -266,6 +265,26 @@ class VTJsonCondition {
 				return $this->startsWith($fieldValue, $value);
 			case "ends with":
 				return $this->endsWith($fieldValue, $value);
+			case "does not start with":
+				$val = subStr($fieldValue,0, 1);
+				$val2 = subStr($value,0, 1);
+				if ($val === $val2) {
+					return false;
+				}
+				else
+				{
+					return !in_array($fieldValue, $value);
+				}
+			case "does not end with":
+				$val = subStr($fieldValue, -1);
+				$val2 = subStr($value, -1);
+				if ($val === $val2) {
+					return false;
+				}
+				else
+				{
+					return !in_array($fieldValue, $value);
+				}
 			case "matches":
 				return preg_match($value, $fieldValue);
 			case "has changed" :

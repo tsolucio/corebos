@@ -934,7 +934,7 @@ class QueryGenerator {
 						$fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' '.$valueSql;
 					}
 				}
-				if ($conditionInfo['operator'] == 'n' || $conditionInfo['operator'] == 'k') {
+				if ($conditionInfo['operator'] == 'n' || $conditionInfo['operator'] == 'k' || $conditionInfo['operator'] == 'dnsw') {
 					$fieldGlue = ' AND';
 				} else {
 					$fieldGlue = ' OR';
@@ -1167,6 +1167,12 @@ class QueryGenerator {
 					break;
 				case 'k': $sqlOperator = "NOT LIKE";
 					$value = "%$value%";
+					break;
+				case 'dnsw': $sqlOperator = "NOT LIKE";
+					$value = "$value%";
+					break;
+				case 'dnew': $sqlOperator = "NOT LIKE";
+					$value = "%$value";
 					break;
 				case 'l': $sqlOperator = "<";
 					break;

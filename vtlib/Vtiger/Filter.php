@@ -209,6 +209,8 @@ class Vtiger_Filter {
 			else if ($comparator == 'n') $comparator = 'NOT_EQUALS';
 			else if ($comparator == 's') $comparator = 'STARTS_WITH';
 			else if ($comparator == 'ew') $comparator = 'ENDS_WITH';
+			else if ($comparator == 'dnsw') $comparator = 'DOES_NOT_START_WITH';
+			else if ($comparator == 'dnew') $comparator = 'DOES_NOT_END_WITH';
 			else if ($comparator == 'c') $comparator = 'CONTAINS';
 			else if ($comparator == 'k') $comparator = 'DOES_NOT_CONTAINS';
 			else if ($comparator == 'l') $comparator = 'LESS_THAN';
@@ -221,6 +223,8 @@ class Vtiger_Filter {
 			else if ($comparator == 'NOT_EQUALS') $comparator = 'n';
 			else if ($comparator == 'STARTS_WITH') $comparator = 's';
 			else if ($comparator == 'ENDS_WITH') $comparator = 'ew';
+			else if ($comparator == 'DOES_NOT_START_WITH') $comparator = 'dnsw';
+			else if ($comparator == 'DOES_NOT_END_WITH') $comparator = 'dnew';
 			else if ($comparator == 'CONTAINS') $comparator = 'c';
 			else if ($comparator == 'DOES_NOT_CONTAINS') $comparator = 'k';
 			else if ($comparator == 'LESS_THAN') $comparator = 'l';

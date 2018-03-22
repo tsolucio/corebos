@@ -104,6 +104,10 @@ var alert_arr = {
 	'DOES_NOT_CONTAINS':'não contem',
 	'LESS_THAN':'menor que',
 	'GREATER_THAN':'maior que',
+	'LBL_DOES_NOT_START_WITH' : 'does not start with',
+	'LBL_DOES_NOT_END_WITH' : 'does not end with',
+	'DOES_NOT_START_WITH':'does not start with',
+	'DOES_NOT_END_WITH':'does not end with',
 	'LESS_OR_EQUALS':'menor ou igual',
 	'GREATER_OR_EQUALS':'maior ou igual',
 

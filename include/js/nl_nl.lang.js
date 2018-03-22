@@ -106,6 +106,10 @@ var alert_arr = {
 	'LESS_THAN':'kleiner dan',
 	'GREATER_THAN':'groter dan',
 	'LESS_OR_EQUALS':'kleiner of gelijk',
+	'LBL_DOES_NOT_START_WITH' : 'does not start with',
+	'LBL_DOES_NOT_END_WITH' : 'does not end with',
+	'DOES_NOT_START_WITH':'does not start with',
+	'DOES_NOT_END_WITH':'does not end with',
 	'GREATER_OR_EQUALS':'groter of gelijk',
 
 	'NO_SPECIAL_CHARS':'Speciale Karakters zijn niet toegestaan in de factuur String',
