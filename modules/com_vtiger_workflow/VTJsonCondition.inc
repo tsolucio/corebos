@@ -11,13 +11,12 @@
 class VTJsonCondition {
 
 	function __construct() {
-
 	}
 
 	function evaluate($condition, $entityCache, $id) {
 		global $logbg;
 		$logbg->debug("Entering evaluate($condition,$id) method ...");
-		$expr = json_decode($condition,true);
+		$expr = json_decode($condition, true);
 		$entityData = $entityCache->forId($id);
 		$data = $entityData->getData();
 
@@ -26,8 +25,9 @@ class VTJsonCondition {
 		$i = 0;
 		foreach ($expr as $cond) {
 			$conditionGroup = isset($cond['groupid']) ? $cond['groupid'] : '';
-			if (empty($conditionGroup))
+			if (empty($conditionGroup)) {
 				$conditionGroup = 0;
+			}
 			preg_match('/(\w+) : \((\w+)\) (\w+)/', $cond['fieldname'], $matches);
 			if (count($matches) == 0) {
 				$expressionResults[$conditionGroup][$i]['result'] = $this->checkCondition($entityData, $cond);
@@ -52,15 +52,17 @@ class VTJsonCondition {
 		}
 
 		foreach ($expressionResults as $groupId => $groupExprResultSet) {
-			$groupResult = TRUE;
+			$groupResult = true;
 			foreach ($groupExprResultSet as $exprResult) {
 				if (isset($exprResult['result'])) { // Condition to skip last condition
 					$result = $exprResult['result'];
 					if (!empty($exprResult['logicaloperator'])) {
 						switch ($exprResult['logicaloperator']) {
-							case 'and' : $groupResult = ($groupResult && $result);
+							case 'and':
+								$groupResult = ($groupResult && $result);
 								break;
-							case 'or' : $groupResult = ($groupResult || $result);
+							case 'or':
+								$groupResult = ($groupResult || $result);
 								break;
 						}
 					} else { // Case for the first condition
@@ -71,15 +73,17 @@ class VTJsonCondition {
 			$groupResults[$groupId]['result'] = $groupResult;
 		}
 
-		$finalResult = TRUE;
+		$finalResult = true;
 		foreach ($groupResults as $groupId => $groupResult) {
 			if (isset($groupResult['result'])) { // Condition to skip last condition
 				$result = $groupResult['result'];
 				if (!empty($groupResult['logicaloperator'])) {
 					switch ($groupResult['logicaloperator']) {
-						case 'and' : $finalResult = ($finalResult && $result);
+						case 'and':
+							$finalResult = ($finalResult && $result);
 							break;
-						case 'or' : $finalResult = ($finalResult || $result);
+						case 'or':
+							$finalResult = ($finalResult || $result);
 							break;
 					}
 				} else { // Case for the first condition
@@ -87,9 +91,9 @@ class VTJsonCondition {
 				}
 			}
 		}
-		$logbg->debug('expressionResults: '.var_export($expressionResults,TRUE));
-		$logbg->debug('groupResults: '.var_export($groupResults,TRUE));
-		$logbg->debug('Exiting evaluate(): '.var_export($finalResult,true));
+		$logbg->debug('expressionResults: '.var_export($expressionResults, true));
+		$logbg->debug('groupResults: '.var_export($groupResults, true));
+		$logbg->debug('Exiting evaluate(): '.var_export($finalResult, true));
 		return $finalResult;
 	}
 
@@ -99,7 +103,7 @@ class VTJsonCondition {
 		if ($sl >= $ssl) {
 			return substr_compare($str, $subStr, 0, $ssl) == 0;
 		} else {
-			return FALSE;
+			return false;
 		}
 	}
 
@@ -109,14 +113,16 @@ class VTJsonCondition {
 		if ($sl >= $ssl) {
 			return substr_compare($str, $subStr, $sl - $ssl, $ssl) == 0;
 		} else {
-			return FALSE;
+			return false;
 		}
 	}
-	function checkCondition($entityData, $cond, $referredEntityData=null) {
+	function checkCondition($entityData, $cond, $referredEntityData = null) {
 		$data = $entityData->getData();
 
 		$condition = $cond['operation'];
-		if(empty($condition)) return false;
+		if (empty($condition)) {
+			return false;
+		}
 		$fieldValue = $data[$cond['fieldname']];
 		$value = trim(html_entity_decode($cond['value']));
 		$expressionType = isset($cond['valuetype']) ? $cond['valuetype'] : '';
@@ -149,14 +155,18 @@ class VTJsonCondition {
 				}
 			}
 		} else {
-			if ($value=='true:boolean') $value = '1';
-			if ($value=='false:boolean') $value = '0';
+			if ($value=='true:boolean') {
+				$value = '1';
+			}
+			if ($value=='false:boolean') {
+				$value = '0';
+			}
 		}
 
 		switch ($condition) {
 			case "exists":
 				global $current_user,$adb;
-				$qg = new QueryGenerator($entityData->getModuleName(),$current_user);
+				$qg = new QueryGenerator($entityData->getModuleName(), $current_user);
 				$qg->addCondition($cond['fieldname'], $value, 'e');
 				list($mid,$crmid) = explode('x', $data['id']);
 				$qg->addCondition('id', $crmid, 'n', $qg::$AND);
@@ -193,22 +203,24 @@ class VTJsonCondition {
 					$tabid = getTabid($entityData->getModuleName());
 					$sql = "select *, '0' as readonly from vtiger_field where tabid = ? and fieldname=?";
 					$result = $adb->pquery($sql, array($tabid, $cond['fieldname']));
-					$webserviceField = WebserviceField::fromQueryResult($adb,$result,0);
+					$webserviceField = WebserviceField::fromQueryResult($adb, $result, 0);
 					$ftype = $webserviceField->getFieldDataType();
 					if ($ftype=='multipicklist') {
 						$flvals = explode('|##|', $fieldValue);
-						$flvals = array_map('trim',$flvals);
+						$flvals = array_map('trim', $flvals);
 						return in_array($value, $flvals);
 					} elseif ($ftype=='reference') {
 						$isthesame = false;
 						$rlist = $webserviceField->getReferenceList();
 						foreach ($rlist as $modName) {
-							$wsidrs = $adb->pquery('SELECT id FROM vtiger_ws_entity WHERE name=?',array($modName));
+							$wsidrs = $adb->pquery('SELECT id FROM vtiger_ws_entity WHERE name=?', array($modName));
 							if ($wsidrs and $adb->num_rows($wsidrs)>0) {
-								$wsid = $adb->query_result($wsidrs, 0,0);
+								$wsid = $adb->query_result($wsidrs, 0, 0);
 								$isthesame = ($fieldValue == $wsid.'x'.$value);
 							}
-							if ($isthesame) break;
+							if ($isthesame) {
+								break;
+							}
 						}
 						return $isthesame || ($fieldValue == $value);
 					} else {
@@ -228,22 +240,24 @@ class VTJsonCondition {
 					$tabid = getTabid($entityData->getModuleName());
 					$sql = "select *, '0' as readonly from vtiger_field where tabid = ? and fieldname=?";
 					$result = $adb->pquery($sql, array($tabid, $cond['fieldname']));
-					$webserviceField = WebserviceField::fromQueryResult($adb,$result,0);
+					$webserviceField = WebserviceField::fromQueryResult($adb, $result, 0);
 					$ftype = $webserviceField->getFieldDataType();
 					if ($ftype=='multipicklist') {
 						$flvals = explode('|##|', $fieldValue);
-						$flvals = array_map('trim',$flvals);
+						$flvals = array_map('trim', $flvals);
 						return !in_array($value, $flvals);
 					} elseif ($ftype=='reference') {
 						$isthesame = false;
 						$rlist = $webserviceField->getReferenceList();
 						foreach ($rlist as $modName) {
-							$wsidrs = $adb->pquery('SELECT id FROM vtiger_ws_entity WHERE name=?',array($modName));
+							$wsidrs = $adb->pquery('SELECT id FROM vtiger_ws_entity WHERE name=?', array($modName));
 							if ($wsidrs and $adb->num_rows($wsidrs)>0) {
-								$wsid = $adb->query_result($wsidrs, 0,0);
+								$wsid = $adb->query_result($wsidrs, 0, 0);
 								$isthesame = ($fieldValue == $wsid.'x'.$value);
 							}
-							if ($isthesame) break;
+							if ($isthesame) {
+								break;
+							}
 						}
 						return !$isthesame && ($fieldValue != $value);
 					} else {
@@ -251,28 +265,28 @@ class VTJsonCondition {
 					}
 				}
 			case "contains":
-				if(is_array($value)) {
+				if (is_array($value)) {
 					return in_array($fieldValue, $value);
 				}
-				return strpos($fieldValue, $value) !== FALSE;
+				return strpos($fieldValue, $value) !== false;
 			case "does not contain":
-				if(empty($value)) unset($value);
-				if(is_array($value)) {
+				if (empty($value)) {
+					unset($value);
+				}
+				if (is_array($value)) {
 					return !in_array($fieldValue, $value);
 				}
-				return strpos($fieldValue, $value) === FALSE;
+				return strpos($fieldValue, $value) === false;
 			case "starts with":
 				return $this->startsWith($fieldValue, $value);
 			case "ends with":
 				return $this->endsWith($fieldValue, $value);
 			case "does not start with":
-				$val = subStr($fieldValue,0, 1);
-				$val2 = subStr($value,0, 1);
+				$val = subStr($fieldValue, 0, 1);
+				$val2 = subStr($value, 0, 1);
 				if ($val === $val2) {
 					return false;
-				}
-				else
-				{
+				} else {
 					return !in_array($fieldValue, $value);
 				}
 			case "does not end with":
@@ -280,54 +294,52 @@ class VTJsonCondition {
 				$val2 = subStr($value, -1);
 				if ($val === $val2) {
 					return false;
-				}
-				else
-				{
+				} else {
 					return !in_array($fieldValue, $value);
 				}
 			case "matches":
 				return preg_match($value, $fieldValue);
-			case "has changed" :
+			case "has changed":
 				$entityDelta = new VTEntityDelta();
 				$idParts = vtws_getIdComponents($entityData->getId());
 				return $entityDelta->hasChanged($entityData->getModuleName(), $idParts[1], $cond['fieldname']);
-			case 'has changed to' :
+			case 'has changed to':
 				$entityDelta = new VTEntityDelta();
 				$idParts = vtws_getIdComponents($entityData->getId());
 				return $entityDelta->hasChanged($entityData->getModuleName(), $idParts[1], $cond['fieldname'], $value);
 			case "is empty":
-				if(empty($fieldValue)) {
+				if (empty($fieldValue)) {
 					return true;
 				}
 				return false;
 			case "is not empty":
-				if(empty($fieldValue)) {
+				if (empty($fieldValue)) {
 					return false;
 				}
 				return true;
 			case "before":
-				if(empty($fieldValue)) {
+				if (empty($fieldValue)) {
 					return false;
 				}
-				if($fieldValue < $value) {
+				if ($fieldValue < $value) {
 					return true;
 				}
 				return false;
 			case "after":
-				if(empty($fieldValue)) {
+				if (empty($fieldValue)) {
 					return false;
 				}
-				if($fieldValue > $value) {
+				if ($fieldValue > $value) {
 					return true;
 				}
 				return false;
 			case "between":
-				if(empty($fieldValue)) {
+				if (empty($fieldValue)) {
 					return false;
 				}
 				$values = explode(',', $value);
-				$values = array_map('getValidDBInsertDateValue',$values);
-				if($fieldValue > $values[0] && $fieldValue < $values[1]) {
+				$values = array_map('getValidDBInsertDateValue', $values);
+				if ($fieldValue > $values[0] && $fieldValue < $values[1]) {
 					return true;
 				}
 				return false;
@@ -337,104 +349,104 @@ class VTJsonCondition {
 					$fieldValue = date('m-d', strtotime($fieldValue));
 					$today = date('m-d');
 				}
-				if($fieldValue == $today) {
+				if ($fieldValue == $today) {
 					return true;
 				}
 				return false;
 			case 'less than days ago':
-				if(empty($fieldValue) || !isset($value)) {
+				if (empty($fieldValue) || !isset($value)) {
 					return false;
 				}
 				$today = date('Y-m-d');
 				$olderDate = date('Y-m-d', strtotime('-'.$value.' days'));
-				if($olderDate <= $fieldValue && $fieldValue <= $today) {
+				if ($olderDate <= $fieldValue && $fieldValue <= $today) {
 					return true;
 				}
 				return false;
 			case 'more than days ago':
-				if(empty($fieldValue) || !isset($value)) {
+				if (empty($fieldValue) || !isset($value)) {
 					return false;
 				}
 				$olderDate = date('Y-m-d', strtotime('-'.$value.' days'));
-				if($fieldValue <= $olderDate) {
+				if ($fieldValue <= $olderDate) {
 					return true;
 				}
 				return false;
 			case 'in less than':
-				if(empty($fieldValue) || !isset($value)) {
+				if (empty($fieldValue) || !isset($value)) {
 					return false;
 				}
 				$today = date('Y-m-d');
 				$futureDate = date('Y-m-d', strtotime('+'.$value.' days'));
-				if($today <= $fieldValue && $fieldValue <= $futureDate) {
+				if ($today <= $fieldValue && $fieldValue <= $futureDate) {
 					return true;
 				}
 				return false;
 			case 'in more than':
-				if(empty($fieldValue) || !isset($value)) {
+				if (empty($fieldValue) || !isset($value)) {
 					return false;
 				}
 				$futureDate = date('Y-m-d', strtotime('+'.$value.' days'));
-				if($fieldValue >= $futureDate) {
+				if ($fieldValue >= $futureDate) {
 					return true;
 				}
 				return false;
 			case 'days ago':
-				if(empty($fieldValue) || !isset($value)) {
+				if (empty($fieldValue) || !isset($value)) {
 					return false;
 				}
 				$olderDate = date('Y-m-d', strtotime('-'.$value.' days'));
-				if($fieldValue == $olderDate) {
+				if ($fieldValue == $olderDate) {
 					return true;
 				}
 				return false;
 			case 'days later':
-				if(empty($fieldValue) || !isset($value)) {
+				if (empty($fieldValue) || !isset($value)) {
 					return false;
 				}
 				$futureDate = date('Y-m-d', strtotime('+'.$value.' days'));
-				if($fieldValue == $futureDate) {
+				if ($fieldValue == $futureDate) {
 					return true;
 				}
 				return false;
 
 			case 'less than hours before':
-				if(empty($fieldValue) || !isset($value)) {
+				if (empty($fieldValue) || !isset($value)) {
 					return false;
 				}
 				$currentTime = date('Y-m-d H:i:s');
 				$olderDateTime = date('Y-m-d H:i:s', strtotime('-'.$value.' hours'));
-				if($olderDateTime <= $fieldValue && $fieldValue <= $currentTime) {
+				if ($olderDateTime <= $fieldValue && $fieldValue <= $currentTime) {
 					return true;
 				}
 				return false;
 
 			case 'less than hours later':
-				if(empty($fieldValue) || !isset($value)) {
+				if (empty($fieldValue) || !isset($value)) {
 					return false;
 				}
 				$currentTime = date('Y-m-d H:i:s');
 				$futureDateTime = date('Y-m-d H:i:s', strtotime('+'.$value.' hours'));
-				if($currentTime <= $fieldValue && $fieldValue <= $futureDateTime) {
+				if ($currentTime <= $fieldValue && $fieldValue <= $futureDateTime) {
 					return true;
 				}
 				return false;
 
 			case 'more than hours before':
-				if(empty($fieldValue) || !isset($value)) {
+				if (empty($fieldValue) || !isset($value)) {
 					return false;
 				}
 				$olderDateTime = date('Y-m-d H:i:s', strtotime('-'.$value.' hours'));
-				if($fieldValue <= $olderDateTime) {
+				if ($fieldValue <= $olderDateTime) {
 					return true;
 				}
 				return false;
 			case 'more than hours later':
-				if(empty($fieldValue) || !isset($value)) {
+				if (empty($fieldValue) || !isset($value)) {
 					return false;
 				}
 				$futureDateTime = date('Y-m-d H:i:s', strtotime('+'.$value.' hours'));
-				if($fieldValue >= $futureDateTime) {
+				if ($fieldValue >= $futureDateTime) {
 					return true;
 				}
 				return false;
@@ -443,7 +455,6 @@ class VTJsonCondition {
 				throw new Exception("Found an unexpected condition: " . $condition);
 		}
 	}
-
 }
 
 ?>
