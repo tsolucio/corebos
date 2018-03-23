@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('modules/com_vtiger_workflow/VTEntityCache.inc');
-require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
+require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
+require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 
 class VTCreateEntityTask extends VTTask {
 
@@ -41,7 +41,7 @@ class VTCreateEntityTask extends VTTask {
 
 		if (!empty($entityType) && !empty($fieldValueMapping) && count($fieldValueMapping) > 0) {
 			$logbg->debug('CreateEntityTask: create '.$entityType);
-			require_once('data/CRMEntity.php');
+			require_once 'data/CRMEntity.php';
 			require_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
 
 			$focus = CRMEntity::getInstance($moduleName);

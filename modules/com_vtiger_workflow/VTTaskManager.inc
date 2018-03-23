@@ -149,10 +149,10 @@ class VTTaskManager {
 	private function requireTask($taskType, $taskTypeInstance = '') {
 		if (!empty($taskTypeInstance)) {
 			$taskClassPath = $taskTypeInstance->get('classpath');
-			require_once($taskClassPath);
+			require_once $taskClassPath;
 		} else {
 			if (!empty($taskType)) {
-				require_once("tasks/".$taskType.".inc");
+				require_once 'tasks/'.$taskType.'.inc';
 			}
 		}
 	}

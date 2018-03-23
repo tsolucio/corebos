@@ -78,8 +78,8 @@ function vtSaveTask($adb, $request) {
 			$task->$fieldName = (isset($_REQUEST[$fieldName]) ? $_REQUEST[$fieldName] : '');
 		}
 	}
-	$task->test = $request["conditions"];
-	$task->reevaluate = ((isset($request['reevaluate']) and $request['reevaluate']=='on') ? 1 : 0);
+	$task->test = $request['conditions'];
+	$task->reevaluate = ((isset($request['reevaluate']) && $request['reevaluate']=='on') ? 1 : 0);
 	$tm->saveTask($task);
 
 	if (isset($request['return_url'])) {

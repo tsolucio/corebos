@@ -7,11 +7,10 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('modules/com_vtiger_workflow/VTEntityCache.inc');
-require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
-require_once('modules/com_vtiger_workflow/VTEmailRecipientsTemplate.inc');
-require_once('modules/Emails/mail.php');
-require_once('modules/Emails/mail.php');
+require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
+require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
+require_once 'modules/com_vtiger_workflow/VTEmailRecipientsTemplate.inc';
+require_once 'modules/Emails/mail.php';
 include_once 'include/Webservices/VtigerEmailOperation.php';
 
 class VTEmailTask extends VTTask {
@@ -21,7 +20,7 @@ class VTEmailTask extends VTTask {
 	public $dzattinfo = array();
 
 	public function getFieldNames() {
-		return array("fromname", "fromemail", "replyto", "subject", "content", "recepient", 'emailcc', 'emailbcc', 'attfieldnames', 'attachmentids');
+		return array('fromname', 'fromemail', 'replyto', 'subject', 'content', 'recepient', 'emailcc', 'emailbcc', 'attfieldnames', 'attachmentids');
 	}
 	public function after_retrieve() {
 		global $adb;
@@ -30,20 +29,20 @@ class VTEmailTask extends VTTask {
 		if (!empty($this->attachmentids)) {
 			$aids = explode(',', trim($this->attachmentids, ','));
 			$query = 'SELECT vtiger_attachments.path, vtiger_attachments.name, vtiger_attachments.attachmentsid, vtiger_notes.filename, vtiger_notes.filesize
-					FROM vtiger_attachments
-					INNER JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
-					INNER JOIN vtiger_crmentity ON vtiger_attachments.attachmentsid=vtiger_crmentity.crmid
-					INNER JOIN vtiger_notes ON vtiger_notes.notesid=vtiger_seattachmentsrel.crmid
-					WHERE deleted=0 AND vtiger_seattachmentsrel.crmid = ?';
+				FROM vtiger_attachments
+				INNER JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
+				INNER JOIN vtiger_crmentity ON vtiger_attachments.attachmentsid=vtiger_crmentity.crmid
+				INNER JOIN vtiger_notes ON vtiger_notes.notesid=vtiger_seattachmentsrel.crmid
+				WHERE deleted=0 AND vtiger_seattachmentsrel.crmid = ?';
 			foreach ($aids as $docid) {
 				$docrs = $adb->pquery($query, array($docid));
-				if ($docrs and $adb->num_rows($docrs)==1) {
+				if ($docrs && $adb->num_rows($docrs)==1) {
 					$attname = $adb->query_result($docrs, 0, 'path').$adb->query_result($docrs, 0, 'attachmentsid').'_'.$adb->query_result($docrs, 0, 'name');
 					$this->attachmentsinfo[] = $attname;
 					$this->dzattinfo[] = array(
-							'docid' => $docid,
-							'name' => $adb->query_result($docrs, 0, 'filename'),
-							'size' => $adb->query_result($docrs, 0, 'filesize'),
+						'docid' => $docid,
+						'name' => $adb->query_result($docrs, 0, 'filename'),
+						'size' => $adb->query_result($docrs, 0, 'filesize'),
 					);
 				} else {
 					$this->attachmentids = str_replace($docid.',', '', $this->attachmentids);
@@ -118,7 +117,7 @@ class VTEmailTask extends VTTask {
 					where vtiger_fieldmodulerel.module=? and vtiger_fieldmodulerel.relmodule = ? and uitype=10 and tabid=? and fieldname=?',
 					array($module,'Documents',getTabid($module),$this->attfieldnames)
 				);
-				if ($rsfld and $adb->num_rows($rsfld, 0, 'uitype') == 1) {
+				if ($rsfld && $adb->num_rows($rsfld, 0, 'uitype') == 1) {
 					$query = 'SELECT vtiger_attachments.path, vtiger_attachments.name, vtiger_attachments.attachmentsid
 						FROM vtiger_attachments
 						INNER JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
@@ -128,7 +127,7 @@ class VTEmailTask extends VTTask {
 					if (!empty($docid)) {
 						list($void,$docid) = explode('x', $docid);
 						$docrs = $adb->pquery($query, array($docid));
-						if ($docrs and $adb->num_rows($docrs)==1) {
+						if ($docrs && $adb->num_rows($docrs)==1) {
 							$attname = $adb->query_result($docrs, 0, 'path').$adb->query_result($docrs, 0, 'attachmentsid').'_'.$adb->query_result($docrs, 0, 'name');
 							$this->attachmentsinfo[] = $attname;
 						}
@@ -186,7 +185,7 @@ class VTEmailTask extends VTTask {
 			$insrel = 'INSERT INTO vtiger_seattachmentsrel(crmid, attachmentsid) VALUES(?,?)';
 			foreach ($aids as $docid) {
 				$docrs = $adb->pquery($query, array($docid));
-				if ($docrs and $adb->num_rows($docrs)==1) {
+				if ($docrs && $adb->num_rows($docrs)==1) {
 					$adb->pquery($insrel, array($id, $adb->query_result($docrs, 0, 'attachmentsid')));
 				}
 			}

@@ -9,7 +9,7 @@
  ************************************************************************************/
 require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
-require_once('modules/com_vtiger_workflow/VTTaskQueue.inc');
+require_once 'modules/com_vtiger_workflow/VTTaskQueue.inc';
 
 class VTUpdateFieldsTask extends VTTask {
 
@@ -86,10 +86,10 @@ class VTUpdateFieldsTask extends VTTask {
 						$taskQueue->queueTask($this->id, $entityId, $delay);
 						return;
 					}
-						 $moduleHandlerrel = vtws_getModuleHandlerFromName($fieldmodule, $current_user);
-						 $handlerMetarel["$fieldmodule"] = $moduleHandlerrel->getMeta();
-						 $moduleFieldsrel = $handlerMetarel["$fieldmodule"]->getModuleFields();
-						 $fieldValue=$util->fieldvaluebytype($moduleFieldsrel, $fieldValueType, $fieldValue, $fldrelname, $focus, $entity, $handlerMetarel["$fieldmodule"]);
+					$moduleHandlerrel = vtws_getModuleHandlerFromName($fieldmodule, $current_user);
+					$handlerMetarel["$fieldmodule"] = $moduleHandlerrel->getMeta();
+					$moduleFieldsrel = $handlerMetarel["$fieldmodule"]->getModuleFields();
+					$fieldValue=$util->fieldvaluebytype($moduleFieldsrel, $fieldValueType, $fieldValue, $fldrelname, $focus, $entity, $handlerMetarel[$fieldmodule]);
 				} else {
 					$fieldValue=$util->fieldvaluebytype($moduleFields, $fieldValueType, $fieldValue, $fieldName, $focus, $entity, $handlerMeta);
 				}

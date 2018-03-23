@@ -39,7 +39,7 @@ class VTWorkflowUtils {
 		$fieldInstance = $moduleFields[$fieldName];
 		$fieldtype = $fieldInstance->getFieldDataType();
 		if ($fieldValueType == 'fieldname' && !preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', $fieldValue)) {
-			if ($fieldtype === 'currency' or $fieldtype === 'double') {
+			if ($fieldtype === 'currency' || $fieldtype === 'double') {
 				$focus->column_fields[$fieldValue] = $focus->adjustCurrencyField($fieldValue, $focus->column_fields[$fieldValue], $handlerMeta->getTabId());
 			}
 			$fieldValue = $focus->column_fields[$fieldValue];
@@ -55,7 +55,7 @@ class VTWorkflowUtils {
 				$fieldValue = $exprEvaluater->evaluate($entity);
 			}
 		} else {
-			if ($fieldtype === 'currency' or $fieldtype === 'double') {
+			if ($fieldtype === 'currency' || $fieldtype === 'double') {
 				$focus->column_fields[$fieldName] = $focus->adjustCurrencyField($fieldName, $fieldValue, $handlerMeta->getTabId());
 			}
 			if (preg_match('/([^:]+):boolean$/', $fieldValue, $match)) {
@@ -87,7 +87,7 @@ class VTWorkflowUtils {
 				$fieldValue = ($userId == 0) ? $groupEntityId.$groupId : $userEntityId.$userId;
 			}
 		}
-							return $fieldValue;
+		return $fieldValue;
 	}
 	/**
 	 * Push the admin user on to the user stack
@@ -158,11 +158,11 @@ class VTWorkflowUtils {
 	 * Insert redirection script
 	 */
 	public static function redirectTo($to, $message) {
-	?>
-	 <script type="text/javascript" charset="utf-8">
-	  window.location="<?php echo $to ?>";
-		</script>
-		<a href="<?php echo $to ?>"><?php echo $message ?></a>
+?>
+	<script type="text/javascript" charset="utf-8">
+	window.location="<?php echo $to ?>";
+	</script>
+	<a href="<?php echo $to ?>"><?php echo $message ?></a>
 <?php
 	}
 
@@ -184,11 +184,7 @@ class VTWorkflowUtils {
 		$query = 'SELECT name FROM vtiger_tab WHERE name not in ('.generateQuestionMarks($modules_not_supported).') AND isentitytype=1 AND presence = 0 AND tabid = ?';
 		$result = $adb->pquery($query, array($modules_not_supported, $tabid));
 		$rows = $adb->num_rows($result);
-		if ($rows > 0) {
-			return true;
-		} else {
-			return false;
-		}
+		return ($rows > 0);
 	}
 
 	public static function vtGetModules($adb) {

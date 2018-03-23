@@ -15,8 +15,8 @@
  *************************************************************************************************
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
-require_once('modules/com_vtiger_workflow/VTEntityCache.inc');
-require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
+require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
+require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 
 class CBDeleteRelatedTask extends VTTask {
 	public $executeImmediately = true;
@@ -27,7 +27,7 @@ class CBDeleteRelatedTask extends VTTask {
 
 	public function doTask(&$entity) {
 		list($wsid,$crmid) = explode('x', $entity->getId());
-		if (!empty($crmid) and !empty($this->relmodule)) {
+		if (!empty($crmid) && !empty($this->relmodule)) {
 			self::deleteRelatedRecords($crmid, $this->relmodule);
 		}
 	}
@@ -59,5 +59,4 @@ class CBDeleteRelatedTask extends VTTask {
 		}
 	}
 }
-
 ?>

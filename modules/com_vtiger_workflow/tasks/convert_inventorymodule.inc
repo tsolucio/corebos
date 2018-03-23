@@ -15,12 +15,12 @@
  *************************************************************************************************
  *  Author       : MajorLabel
  *************************************************************************************************/
-require_once('modules/com_vtiger_workflow/VTEntityCache.inc');
-require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
-require_once('include/Webservices/Retrieve.php');
-require_once('include/Webservices/Create.php');
-require_once('modules/Users/Users.php');
-require_once('include/utils/EditViewUtils.php');
+require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
+require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
+require_once 'include/Webservices/Retrieve.php';
+require_once 'include/Webservices/Create.php';
+require_once 'modules/Users/Users.php';
+require_once 'include/utils/EditViewUtils.php';
 
 class ConvertInventoryModule extends VTTask {
 
@@ -42,21 +42,21 @@ class ConvertInventoryModule extends VTTask {
 		// Start with the inventory module values and overwrite what's needed to overwrite
 		$data = $wsso;
 		$cbfrommodule = $entity->getModuleName();
-		if ($cbfrommodule=='Quotes' and $this->convertto=='Invoice') {
+		if ($cbfrommodule=='Quotes' && $this->convertto=='Invoice') {
 			$fromEntity = CRMEntity::getInstance($cbfrommodule);
 			$toEntity = CRMEntity::getInstance($this->convertto);
 			$fromEntity->column_fields = $data;
 			$toEntity->column_fields = $data;
 			$result = getConvertQuoteToInvoice($toEntity, $fromEntity, $entity->getId());
 			$data = $result->column_fields;
-		} elseif ($cbfrommodule=='Quotes' and $this->convertto=='SalesOrder') {
+		} elseif ($cbfrommodule=='Quotes' && $this->convertto=='SalesOrder') {
 			$fromEntity = CRMEntity::getInstance($cbfrommodule);
 			$toEntity = CRMEntity::getInstance($this->convertto);
 			$fromEntity->column_fields = $data;
 			$toEntity->column_fields = $data;
 			$result = getConvertQuoteToSoObject($toEntity, $fromEntity, $entity->getId());
 			$data = $result->column_fields;
-		} elseif ($cbfrommodule=='SalesOrder' and $this->convertto=='Invoice') {
+		} elseif ($cbfrommodule=='SalesOrder' && $this->convertto=='Invoice') {
 			$fromEntity = CRMEntity::getInstance($cbfrommodule);
 			$toEntity = CRMEntity::getInstance($this->convertto);
 			$fromEntity->column_fields = $data;

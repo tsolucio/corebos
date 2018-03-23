@@ -2,7 +2,7 @@
 /***********************************************************
 *  Module       : com_vtiger_workflow
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
@@ -40,10 +40,8 @@ $mod_strings = array(
 	'LBL_MESSAGE'=>'Message',
 	'LBL_SET_FIELD_VALUES'=>'Définir la valeur du champ',
 	'LBL_ADD_FIELD'=>'Ajouter un champ',
-	
 	'LBL_USE_FIELD_VALUE_DASHDASH'=>'-- Utiliser la valeur du Champ --',
 	'LBL_USE_FUNCTION_DASHDASH'=>'-- Utiliser une fonction --',
-	
 	'LBL_RAW_TEXT'=>'Texte brut',
 	'LBL_FIELD'=>'Champ',
 	'LBL_EXPRESSION'=>'Expression',
@@ -60,7 +58,6 @@ $mod_strings = array(
 												Prévoir de fournir des valeurs de champ avant de les utiliser dans une exxpression.',
 	'LBL_CREATE_ENTITY_NOTE_BUSINESSMAPS' => 'Note: You can use a Field Business Map to map fields from one entity to the other, in that case the business map definitions will overwrite the ones defined here.',
 	'LBL_SET_VALUE' => 'Définir la valeur',
-	
 	'LBL_EMAIL_RECIPIENT' => 'Destinataires',
 	'LBL_EMAIL_CC' => 'CC',
 	'LBL_EMAIL_BCC' => 'BCC',
@@ -80,9 +77,7 @@ $mod_strings = array(
 	'Site Url' => 'URL du CRM',
 	'Portal Url' => 'URL du portail CRM',
 	'groupEmailList' => 'Group Email List',
-
 	'Workflow'=>'Flux de travail',
-	
 	'VTCreateEntityTask' => 'Créer une entité',
 	'LBL_ENTITY_TYPE' => 'Type d\'entité',
 	'LBL_SELECT_ENTITY_TYPE' => '-- Choix du type d\'entité --',

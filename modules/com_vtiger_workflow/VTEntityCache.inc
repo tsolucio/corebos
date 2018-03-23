@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 require_once 'data/VTEntityDelta.php';
-require_once('modules/com_vtiger_workflow/VTSimpleTemplate.inc');
+require_once 'modules/com_vtiger_workflow/VTSimpleTemplate.inc';
 
 class VTWorkflowEntity {
 	private $isDeleted = false;
@@ -95,11 +95,7 @@ class VTWorkflowEntity {
 		$recordId = $parts[1];
 		$entityDelta = new VTEntityDelta();
 		$oldEntity = $entityDelta->getOldEntity($this->moduleName, $recordId);
-		if ($oldEntity == null) {
-			return true;
-		} else {
-			return false;
-		}
+		return ($oldEntity == null);
 	}
 
 	public function isDeleted() {
