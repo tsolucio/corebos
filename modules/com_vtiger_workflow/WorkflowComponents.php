@@ -26,7 +26,13 @@ function vtJsonFunctions($adb) {
 }
 
 function vtJsonRelatedModules($adb, $request) {
-	$relrs = $adb->pquery('SELECT * FROM vtiger_relatedlists WHERE tabid=?', array(getTabid($request['modulename'])));
+	$params = array(getTabid($request['modulename']));
+	$reltype = '';
+	if (isset($request['relationtype'])) {
+		$reltype = ' and relationtype = ?';
+		$params[] = vtlib_purify($request['relationtype']);
+	}
+	$relrs = $adb->pquery('SELECT * FROM vtiger_relatedlists WHERE tabid=?'.$reltype, $params);
 	$relmods = array();
 	while ($rel = $adb->fetch_array($relrs)) {
 		$mname = getTabModuleName($rel['related_tabid']);

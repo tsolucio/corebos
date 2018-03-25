@@ -43,9 +43,13 @@
 			jQuery.get('index.php', {
 					module:'com_vtiger_workflow',
 					action:'com_vtiger_workflowAjax',
-					file:'WorkflowComponents', ajax:'true',
-					modulename:moduleName, mode:'getrelatedmodules'},
-				function(result){
+					file:'WorkflowComponents',
+					ajax:'true',
+					modulename:moduleName,
+					mode:'getrelatedmodules',
+					relationtype:'1:N'
+				},
+				function (result) {
 					result = JSON.parse(result);
 					var entitytypes = jQuery('#relmodule');
 					if(result != null) {

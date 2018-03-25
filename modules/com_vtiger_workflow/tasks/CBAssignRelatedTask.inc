@@ -42,25 +42,25 @@ class CBAssignRelatedTask extends VTTask {
 					break;
 				}
 			}
-			$queryGenerator = new QueryGenerator($this->relmodule, $current_user);
-			$queryGenerator->setFields(array('id'));
-			$queryGenerator->addReferenceModuleFieldCondition($module, $reffield, 'id', $cto_id, 'e');
-			$query = $queryGenerator->getQuery();
-			if ($this->username=='assigneduser') {
-				$usrquery = $adb->pquery('SELECT smownerid FROM vtiger_crmentity WHERE crmid=?', array($cto_id));
-				$usr = $adb->query_result($usrquery, 0, 0);
-			} else {
-				$usr = $this->username;
-			}
-
-			$updquery = 'UPDATE vtiger_crmentity set smownerid=? where crmid=?';
-			$relrecs = $adb->query($query);
-			for ($relrec=0; $relrec<$adb->num_rows($relrecs); $relrec++) {
-				// direct assignment to avoid relaunching workflows > I am not sure this is correct (!)
-				$adb->pquery($updquery, array($usr, $adb->query_result($relrecs, $relrec, 0)));
+			if ($reffield != '') {
+				$queryGenerator = new QueryGenerator($this->relmodule, $current_user);
+				$queryGenerator->setFields(array('id'));
+				$queryGenerator->addReferenceModuleFieldCondition($module, $reffield, 'id', $cto_id, 'e');
+				$query = $queryGenerator->getQuery();
+				if ($this->username=='assigneduser') {
+					$usrquery = $adb->pquery('SELECT smownerid FROM vtiger_crmentity WHERE crmid=?', array($cto_id));
+					$usr = $adb->query_result($usrquery, 0, 0);
+				} else {
+					$usr = $this->username;
+				}
+				$updquery = 'UPDATE vtiger_crmentity set smownerid=? where crmid=?';
+				$relrecs = $adb->query($query);
+				for ($relrec=0; $relrec<$adb->num_rows($relrecs); $relrec++) {
+					// direct assignment to avoid relaunching workflows > I am not sure this is correct (!)
+					$adb->pquery($updquery, array($usr, $adb->query_result($relrecs, $relrec, 0)));
+				}
 			}
 		}
 	}
 }
-
 ?>
