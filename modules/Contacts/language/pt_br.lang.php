@@ -8,6 +8,7 @@
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  * Contribuitor: Ranieri Slemer | 3-12-2017 | Translate missing terms | www.ecrmweb.com.br
+ * Contribuitor: Ranieri Slemer | 25-03-2018 | Translate Portal as Autoatendimento | www.ecrmweb.com.br
  ********************************************************************************/
 
 $mod_strings = array(
@@ -153,10 +154,10 @@ $mod_strings = array(
 'LBL_SUBJECT'=>'Assunto:',
 'LBL_START_DATE'=>'Data Inicial:',
 'LBL_START_TIME'=>'Hora Inicial:',
-'Portal User'=>'Portal Usuário',
-'LBL_CUSTOMER_PORTAL_INFORMATION'=>'Informação Portal Cliente',
-'Support Start Date'=>'Data Início Suporte',
-'Support End Date'=>'Data Término Suporte',
+'Portal User'=>'Autoatendimento',
+'LBL_CUSTOMER_PORTAL_INFORMATION'=>'Informação Autoatendimento',
+'Support Start Date'=>'Data Início Acesso ao Autoatendimento',
+'Support End Date'=>'Data Fim Acesso ao Autoatendimento',
 'Name'=>'Nome',
 'LBL_ALL'=>'Todos',
 'LBL_MAXIMUM_LIMIT_ERROR'=>'Desculpe, o arquivo transferido excedeu limite máximo do file size. Por favor, tente um arquivo menor que 800000 bytes',
@@ -184,15 +185,15 @@ $mod_strings = array(
 'Other'=>'Outro',
 'User List'=>'Lista Usuário',
 
-'Customer Portal Login Details'=>'Detalhes Login Portal Cliente',
+'Customer Portal Login Details'=>'Detalhes Login no Autoatendimento',
 'Dear'=>'Prezado',
-'Your Customer Portal Login details are given below:'=>'Os detalhes do seu Login no Portal do Cliente são apresentados abaixo: ',
+'Your Customer Portal Login details are given below:'=>'Os detalhes do seu Login no Autoatendimento são apresentados abaixo: ',
 'User Id :'=>'Usuário:',
 'Password :'=>'Senha:',
-'Please Login Here'=>'Por gentileza, faça o Login aqui',
+'Please Login Here'=>'Por favor, faça o Login aqui',
 'Note :'=>'Nota :',
 'We suggest you to change your password after logging in first time'=>'Sugerimos que você altere sua senha após o primeiro acesso.',
-'Support Team'=>'Equipe Suporte',
+'Support Team'=>'Serviço de Atendimento ao Cliente',
 
 'Contact Id' => 'Cód. Contato',
 'Secondary Email'=>'Email Alternativo',
