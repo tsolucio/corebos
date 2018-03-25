@@ -7,16 +7,15 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ******************************************************************************* */
-
-require_once('data/Tracker.php');
-require_once('include/utils/utils.php');
-require_once('include/utils/UserInfoUtil.php');
+require_once 'data/Tracker.php';
+require_once 'include/utils/utils.php';
+require_once 'include/utils/UserInfoUtil.php';
 require_once 'include/Webservices/DescribeObject.php';
-require_once('Smarty_setup.php');
+require_once 'Smarty_setup.php';
 
 global $currentModule, $app_strings, $log, $current_user, $theme;
 
-$theme_path = "themes/" . $theme . "/";
+$theme_path = 'themes/' . $theme . '/';
 
 if (isset($_REQUEST['record'])) {
 	$id = vtlib_purify($_REQUEST['record']);

@@ -13,41 +13,41 @@
  */
 class ConvertLeadUI {
 
-	var $current_user;
-	var $leadid;
-	var $row;
-	var $leadowner = '';
-	var $userselected = '';
-	var $userdisplay = 'none';
-	var $groupselected = '';
-	var $groupdisplay = 'none';
-	var $account_fields;
-	var $contact_fields;
-	var $potential_fields;
-	static $industry = false;
+	public $current_user;
+	public $leadid;
+	public $row;
+	public $leadowner = '';
+	public $userselected = '';
+	public $userdisplay = 'none';
+	public $groupselected = '';
+	public $groupdisplay = 'none';
+	public $account_fields;
+	public $contact_fields;
+	public $potential_fields;
+	public static $industry = false;
 
-	function __construct($leadid, $current_user) {
+	public function __construct($leadid, $current_user) {
 		global $adb;
 		$this->leadid = $leadid;
 		$this->current_user = $current_user;
-		$sql = "SELECT * FROM vtiger_leaddetails,vtiger_leadscf,vtiger_crmentity
+		$sql = 'SELECT * FROM vtiger_leaddetails,vtiger_leadscf,vtiger_crmentity
 			WHERE vtiger_leaddetails.leadid=vtiger_leadscf.leadid
 			AND vtiger_leaddetails.leadid=vtiger_crmentity.crmid
-			AND vtiger_leaddetails.leadid =?";
+			AND vtiger_leaddetails.leadid =?';
 		$result = $adb->pquery($sql, array($this->leadid));
 		$this->row = $adb->fetch_array($result);
 		if (getFieldVisibilityPermission('Leads', $current_user->id, 'company') == '1') {
-			$this->row["company"] = '';
+			$this->row['company'] = '';
 		}
 		$this->setAssignedToInfo();
 	}
 
-	function isModuleActive($module) {
+	public function isModuleActive($module) {
 		include_once 'include/utils/VtlibUtils.php';
 		return vtlib_isModuleActive($module) && ((isPermitted($module, 'EditView') == 'yes'));
 	}
 
-	function isActive($field, $mod) {
+	public function isActive($field, $mod) {
 		global $adb;
 		$tabid = getTabid($mod);
 		$query = 'select * from vtiger_field where fieldname = ? and tabid = ? and presence in (0,2)';
@@ -55,11 +55,12 @@ class ConvertLeadUI {
 		$rows = $adb->num_rows($res);
 		if ($rows > 0) {
 			return true;
-		}else
+		} else {
 			return false;
+		}
 	}
 
-	function isMandatory($module, $fieldname) {
+	public function isMandatory($module, $fieldname) {
 		$fieldInfo = $this->getFieldInfo($module, $fieldname);
 		if ($fieldInfo['mandatory']) {
 			return true;
@@ -67,10 +68,10 @@ class ConvertLeadUI {
 		return false;
 	}
 
-	function getFieldInfo($module, $fieldname) {
+	public function getFieldInfo($module, $fieldname) {
 		global $current_user;
 		$describe = vtws_describe($module, $current_user);
-		foreach ($describe['fields'] as $index => $fieldInfo) {
+		foreach ($describe['fields'] as $fieldInfo) {
 			if ($fieldInfo['name'] == $fieldname) {
 				return $fieldInfo;
 			}
@@ -78,13 +79,12 @@ class ConvertLeadUI {
 		return false;
 	}
 
-	function setAssignedToInfo() {
-		$userid = $this->row["smownerid"];
+	public function setAssignedToInfo() {
+		$userid = $this->row['smownerid'];
 		//Retreiving the current user id
 		if ($userid != '') {
 			global $adb;
-			$query = "SELECT * from vtiger_users WHERE id = ?";
-			$res = $adb->pquery($query, array($userid));
+			$res = $adb->pquery('SELECT * from vtiger_users WHERE id = ?', array($userid));
 			$rows = $adb->num_rows($res);
 			$this->leadowner = $userid;
 			if ($rows > 0) {
@@ -101,42 +101,42 @@ class ConvertLeadUI {
 		}
 	}
 
-	function getUserSelected() {
+	public function getUserSelected() {
 		return $this->userselected;
 	}
 
-	function getUserDisplay() {
+	public function getUserDisplay() {
 		return $this->userdisplay;
 	}
 
-	function getGroupSelected() {
+	public function getGroupSelected() {
 		return $this->groupselected;
 	}
 
-	function getGroupDisplay() {
+	public function getGroupDisplay() {
 		return $this->groupdisplay;
 	}
 
-	function getLeadInfo() {
+	public function getLeadInfo() {
 		//Retreive lead details from database
 		return $this->row;
 	}
 
-	function getDateFormat() {
+	public function getDateFormat() {
 		return $this->current_user->date_format;
 	}
 
-	function getleadId() {
+	public function getleadId() {
 		return $this->leadid;
 	}
 
-	function getCompany() {
+	public function getCompany() {
 		global $default_charset;
 		$value = html_entity_decode($this->row['company'], ENT_QUOTES, $default_charset);
 		return htmlentities($value, ENT_QUOTES, $default_charset);
 	}
 
-	function getIndustryList() {
+	public function getIndustryList() {
 		global $adb;
 		require_once 'modules/PickList/PickListUtils.php';
 
@@ -152,7 +152,7 @@ class ConvertLeadUI {
 		return $industry_list;
 	}
 
-	function getSalesStageList() {
+	public function getSalesStageList() {
 		global $adb;
 		require_once 'modules/PickList/PickListUtils.php';
 
@@ -168,7 +168,7 @@ class ConvertLeadUI {
 		return $sales_stage_list;
 	}
 
-	function getUserId() {
+	public function getUserId() {
 		return $this->current_user->id;
 	}
 
@@ -180,23 +180,25 @@ class ConvertLeadUI {
 	 * 		[<user/group>name]=>
 	 * )
 	 */
-	function getOwnerList($type) {
+	public function getOwnerList($type) {
 		$private = self::checkOwnership($this->current_user);
-		if ($type === 'user')
-			$owner = get_user_array(false, "Active", $this->row["smownerid"], $private);
-		else
-			$owner = get_group_array(false, "Active", $this->row["smownerid"], $private);
+		if ($type === 'user') {
+			$owner = get_user_array(false, 'Active', $this->row['smownerid'], $private);
+		} else {
+			$owner = get_group_array(false, 'Active', $this->row['smownerid'], $private);
+		}
 		$owner_list = array();
 		foreach ($owner as $id => $name) {
-			if ($id == $this->row['smownerid'])
+			if ($id == $this->row['smownerid']) {
 				$owner_list[] = array($type . 'id' => $id, $type . 'name' => $name, 'selected' => true);
-			else
+			} else {
 				$owner_list[] = array($type . 'id' => $id, $type . 'name' => $name, 'selected' => false);
+			}
 		}
 		return $owner_list;
 	}
 
-	static function checkOwnership($user) {
+	public static function checkOwnership($user) {
 		$private = '';
 		if ($user->id != 1) {
 			include 'user_privileges/sharing_privileges_' . $user->id . '.php';
@@ -211,27 +213,22 @@ class ConvertLeadUI {
 		return $private;
 	}
 
-	function getMappedFieldValue($module, $fieldName, $editable) {
+	public function getMappedFieldValue($module, $fieldName, $editable) {
 		global $adb,$default_charset;
 
 		$fieldid = getFieldid(getTabid($module), $fieldName);
 
-		$sql = "SELECT leadfid FROM vtiger_convertleadmapping
-			WHERE (accountfid=?
-			OR contactfid=?
-			OR potentialfid=?)
-			AND editable=?";
+		$sql = 'SELECT leadfid FROM vtiger_convertleadmapping WHERE (accountfid=? OR contactfid=? OR potentialfid=?) AND editable=?';
 		$result = $adb->pquery($sql, array($fieldid, $fieldid, $fieldid, $editable));
 		$leadfid = $adb->query_result($result, 0, 'leadfid');
 
-		$sql = "SELECT fieldname FROM vtiger_field WHERE fieldid=? AND tabid=?";
-		$result = $adb->pquery($sql, array($leadfid, getTabid('Leads')));
+		$result = $adb->pquery('SELECT fieldname FROM vtiger_field WHERE fieldid=? AND tabid=?', array($leadfid, getTabid('Leads')));
 		$leadfname = $adb->query_result($result, 0, 'fieldname');
 
 		$fieldinfo = $this->getFieldInfo($module, $fieldName);
 		if ($fieldinfo['type']['name'] == 'picklist' || $fieldinfo['type']['name'] == 'multipicklist') {
-			if (!empty($leadfname) and !empty($this->row[$leadfname])) {
-				foreach ($fieldinfo['type']['picklistValues'] as $key => $values) {
+			if (!empty($leadfname) && !empty($this->row[$leadfname])) {
+				foreach ($fieldinfo['type']['picklistValues'] as $values) {
 					if ($values['value'] == $this->row[$leadfname]) {
 						return $this->row[$leadfname];
 					}
@@ -239,14 +236,12 @@ class ConvertLeadUI {
 			}
 			return $fieldinfo['default'];
 		}
-		if (empty($leadfname) or empty($this->row[$leadfname])) {
+		if (empty($leadfname) || empty($this->row[$leadfname])) {
 			return '';
 		} else {
 			$value = html_entity_decode($this->row[$leadfname], ENT_QUOTES, $default_charset);
 			return htmlentities($value, ENT_QUOTES, $default_charset);
 		}
 	}
-
 }
-
 ?>

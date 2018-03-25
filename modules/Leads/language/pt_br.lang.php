@@ -217,13 +217,9 @@ $mod_strings = array(
 'Pre Qualified'=>'Pré-Qualificado',
 'Qualified'=>'Qualificado',
 'Warm'=>'Morno',
-
 'Designation'=>'Função',
-
 'Lead No'=>'Cod. Lead',
-
 'LBL_TRANSFER_RELATED_RECORDS_TO' => 'Transferir registros relacionados para',
-
 'LBL_FOLLOWING_ARE_POSSIBLE_REASONS' => 'O seguinte pode ser uma das possíveis razões',
 'LBL_LEADS_FIELD_MAPPING_INCOMPLETE' => 'Todos os campos obrigatórios não são mapeados',
 'LBL_MANDATORY_FIELDS_ARE_EMPTY' => 'Alguns dos valores dos campos obrigatórios estão vazios',
@@ -234,5 +230,4 @@ $mod_strings = array(
 'Secondary Email'=>'Email Alternativo',
 'LeadAlreadyConverted' => 'O lead não pode ser convertido. Ou já foi convertido ou você não possui permissão em um ou mais dos módulos de destino.',
 );
-
 ?>

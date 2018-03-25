@@ -24,7 +24,7 @@ if ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true')) {
 	$toggle_name = 'Prospectos';
 }
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_TGL_HISTORICOS' => $toggle_historicos,
 'LBL_MODULE_NAME'=>$toggle_name,
 'Leads' => $toggle_name,
@@ -245,5 +245,4 @@ $mod_strings = Array(
 'Leads ID' => 'Id Prospecto',
 'LeadAlreadyConverted' => 'Este PreContacto no se puede convertir. O bien ya ha sido convertido, o te faltan permisos en uno de los módulos dependientes.',
 );
-
 ?>

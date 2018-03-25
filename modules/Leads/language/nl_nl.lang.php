@@ -16,7 +16,7 @@ if ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true')) {
 	$toggle_name = 'Leads';
 }
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_TGL_HISTORICOS' => $toggle_historicos,
 'LBL_MODULE_NAME'=>$toggle_name,
 'Leads' => $toggle_name,
@@ -83,7 +83,7 @@ $mod_strings = Array(
 'NTC_REMOVE_OPP_CONFIRMATION'=>'Wilt u dit verwijderen?',
 'ERR_DELETE_RECORD'=>'Een veld moet gespecificeerd zijn om een contact te verwijderen.',
 
-'LBL_COLON'=>' : ', 
+'LBL_COLON'=>' : ',
 'LBL_IMPORT_LEADS'=>'Importeer Leads',
 'LBL_LEADS_FILE_LIST'=>'Bestandslijst Lead',
 'LBL_INSTRUCTIONS'=>'Instructies',
