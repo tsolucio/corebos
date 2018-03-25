@@ -77,9 +77,8 @@ function verifyConvertLeadData(form) {
 				}
 			}
 		}
-		var emailpattern=/^[a-zA-Z0-9]+([!"#$%&'()*+,./:;<=>?@\^_`{|}~-]?[a-zA-Z0-9])*@[a-zA-Z0-9]+([\_\-\.]?[a-zA-Z0-9]+)*\.([\-\_]?[a-zA-Z0-9])+(\.?[a-zA-Z0-9]+)?$/;
 		if (form.email.value!='') {
-			if (!patternValidate('email',alert_arr['LBL_EMAIL'],'email')) {
+			if (!patternValidateObject(form.email, alert_arr['LBL_EMAIL'], 'EMAIL')) {
 				return false;
 			}
 		}
