@@ -270,7 +270,7 @@ class Leads extends CRMEntity {
 	public function get_lead_field_options($list_option) {
 		global $log;
 		$log->debug('Entering get_lead_field_options('.$list_option.') method ...');
-		$comboFieldArray = getComboarray($this->combofieldNames);
+		$comboFieldArray = getComboArray($this->combofieldNames);
 		$log->debug('Exiting get_lead_field_options method ...');
 		return $comboFieldArray[$list_option];
 	}
