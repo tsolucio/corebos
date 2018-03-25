@@ -205,15 +205,15 @@ function emptyCheck(fldName,fldLabel, fldType) {
 	}
 }
 
-function patternValidateObject(fldObject,fldLabel,type) {
+function patternValidateObject(fldObject, fldLabel, type) {
 	fldObject.value = trim(fldObject.value);
 	let checkval = fldObject.value;
-	if (type.toUpperCase()=="EMAIL") //Email ID validation
-	{
+	let typeUC = type.toUpperCase();
+	if (typeUC=='EMAIL') { //Email ID validation
 		var re=new RegExp(/^[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i);
 	}
 
-	if (type.toUpperCase()=="DATE") {//DATE validation
+	if (typeUC=='DATE') { //DATE validation
 		//YMD
 		//var reg1 = /^\d{2}(\-|\/|\.)\d{1,2}\1\d{1,2}$/ //2 digit year
 		//var re = /^\d{4}(\-|\/|\.)\d{1,2}\1\d{1,2}$/ //4 digit year
@@ -227,11 +227,11 @@ function patternValidateObject(fldObject,fldLabel,type) {
 		//var reg2 = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{4}$/
 
 		switch (userDateFormat) {
-			case "yyyy-mm-dd" :
+			case 'yyyy-mm-dd' :
 				var re = /^\d{4}(\-|\/|\.)\d{1,2}\1\d{1,2}$/;
 				break;
-			case "mm-dd-yyyy" :
-			case "dd-mm-yyyy" :
+			case 'mm-dd-yyyy' :
+			case 'dd-mm-yyyy' :
 				var re = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{4}$/;
 		}
 		if (checkval.indexOf(' ')>0) {
@@ -240,64 +240,7 @@ function patternValidateObject(fldObject,fldLabel,type) {
 		}
 	}
 
-	if (type.toUpperCase()=="TIME") {//TIME validation
-		var re = /^\d{1,2}\:\d{2}:\d{2}$|^\d{1,2}\:\d{2}$/;
-		if (checkval.indexOf(' ')>0) {
-			var dt = checkval.split(' ');
-			checkval = dt[1];
-		}
-	}
-	if (!re.test(checkval)) {
-		alert(alert_arr.ENTER_VALID + fldLabel + " ("+type+")");
-		try {
-			fldObject.focus();
-		} catch(error) {
-		// Fix for IE: If element or its wrapper around it is hidden, setting focus will fail
-		// So using the try { } catch(error) { }
-		}
-		return false;
-	}
-	else return true;
-}
-
-function patternValidate(fldName,fldLabel,type) {
-	var currObj=getObj(fldName);
-	currObj.value = trim(currObj.value);
-	let checkval = currObj.value;
-
-	if (type.toUpperCase()=="EMAIL") //Email ID validation
-	{
-		var re=new RegExp(/^[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i);
-	}
-
-	if (type.toUpperCase()=="DATE") {//DATE validation
-		//YMD
-		//var reg1 = /^\d{2}(\-|\/|\.)\d{1,2}\1\d{1,2}$/ //2 digit year
-		//var re = /^\d{4}(\-|\/|\.)\d{1,2}\1\d{1,2}$/ //4 digit year
-
-		//MYD
-		//var reg1 = /^\d{1,2}(\-|\/|\.)\d{2}\1\d{1,2}$/
-		//var reg2 = /^\d{1,2}(\-|\/|\.)\d{4}\1\d{1,2}$/
-
-		//DMY
-		//var reg1 = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{2}$/
-		//var reg2 = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{4}$/
-
-		switch (userDateFormat) {
-			case "yyyy-mm-dd" :
-				var re = /^\d{4}(\-|\/|\.)\d{1,2}\1\d{1,2}$/;
-				break;
-			case "mm-dd-yyyy" :
-			case "dd-mm-yyyy" :
-				var re = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{4}$/;
-		}
-		if (checkval.indexOf(' ')>0) {
-			var dt = checkval.split(' ');
-			checkval = dt[0];
-		}
-	}
-
-	if (type.toUpperCase()=="TIME") {//TIME validation
+	if (typeUC=='TIME') { //TIME validation
 		var re = /^\d{1,2}\:\d{2}:\d{2}$|^\d{1,2}\:\d{2}$/;
 		if (checkval.indexOf(' ')>0) {
 			var dt = checkval.split(' ');
@@ -305,16 +248,22 @@ function patternValidate(fldName,fldLabel,type) {
 		}
 	}
 	if (typeof(re) != 'undefined' && !re.test(checkval)) {
-		alert(alert_arr.ENTER_VALID + fldLabel + " ("+type+")");
+		alert(alert_arr.ENTER_VALID + fldLabel + ' ('+type+')');
 		try {
-			currObj.focus();
+			fldObject.focus();
 		} catch(error) {
 		// Fix for IE: If element or its wrapper around it is hidden, setting focus will fail
 		// So using the try { } catch(error) { }
 		}
 		return false;
+	} else {
+		return true;
 	}
-	else return true;
+}
+
+function patternValidate(fldName, fldLabel, type) {
+	var currObj=getObj(fldName);
+	return patternValidateObject(currObj, fldLabel, type);
 }
 
 function splitDateVal(dateval) {
