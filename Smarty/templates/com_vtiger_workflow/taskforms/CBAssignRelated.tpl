@@ -58,7 +58,7 @@
 							entitytypes.append('<option value="'+entityname+'">'+enamei18n+'</option>');
 						});
 
-						if(selectedEntityType != "") {
+						if (selectedEntityType != '') {
 							entitytypes.val(selectedEntityType);
 						}
 					}
@@ -92,8 +92,8 @@
 
 			jQuery("#save").bind("click", function(){
 				var validateFieldValues = new Array();
-				for(var fieldName in validator.validateFieldData) {
-					if(validateFieldValues.indexOf(fieldName) < 0) {
+				for (var fieldName in validator.validateFieldData) {
+					if (validateFieldValues.indexOf(fieldName) < 0) {
 						delete validator.validateFieldData[fieldName];
 					}
 				}
