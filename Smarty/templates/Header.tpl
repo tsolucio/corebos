@@ -283,7 +283,7 @@
 				</a>
 			</div>
 			<span class="slds-context-bar__label-action slds-context-bar__app-name">
-				<span class="slds-truncate" title="{$coreBOS_app_name}">{$coreBOS_app_name|decode_html|vtlib_purify}</span>
+				<span class="slds-truncate" title="{$coreBOS_app_name}">{$coreBOS_app_nameHTML}</span>
 			</span>
 		</div>
 	</div>

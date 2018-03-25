@@ -78,7 +78,10 @@ global $current_language;
 $smarty->assign('LANGUAGE', $current_language);
 
 // Pass on the Application Name
-$smarty->assign('coreBOS_app_name', GlobalVariable::getVariable('Application_UI_Name', 'coreBOS'));
+$appUIName = GlobalVariable::getVariable('Application_UI_Name', 'coreBOS');
+$smarty->assign('coreBOS_app_name', $appUIName);
+$appUINameHTML = decode_html(vtlib_purify(GlobalVariable::getVariable('Application_UI_NameHTML', $appUIName)));
+$smarty->assign('coreBOS_app_nameHTML', $appUINameHTML);
 
 // We check if we have the two new logo fields > if not we create them
 $cnorg=$adb->getColumnNames('vtiger_organizationdetails');
