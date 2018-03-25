@@ -9,13 +9,10 @@
 * Contributor: Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
 
-
 $mod_strings = array(
-
 'LBL_PRICEBOOK_INFORMATION'=>'Informação Lista de Preço:',
 'LBL_CUSTOM_INFORMATION'=>'Informação Customizada',
 'LBL_DESCRIPTION_INFORMATION'=>'Nome Descrição:',
-//Mapping for price book
 'Price Book Name'=>'Nome Lista Preço',
 'Product Name'=>'Nome Produto',
 'Active'=>'Ativo',
@@ -28,15 +25,7 @@ $mod_strings = array(
 'LBL_PB_LIST_PRICE'=>'Lista de Preços',
 'LBL_ACTION'=>'Ação',
 'PriceBook'=>'Lista de Preços',
-
-// Added after 5.0.4 GA
 'Currency'=>'Moeda',
-
-// Module Sequence Numbering
 'PriceBook No' => 'No. Lista Preços',
-// END
 );
-
-
-
 ?>
