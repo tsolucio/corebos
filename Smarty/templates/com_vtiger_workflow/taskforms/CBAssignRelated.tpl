@@ -19,6 +19,7 @@
 <script type="text/javascript" charset="utf-8">
 	var moduleName = '{$entityName}';
 	var selectedEntityType = '{if isset($task->relmodule)}{$task->relmodule}{/if}';
+	var selectedUser = '{if isset($task->username)}{$task->username}{/if}';
 {literal}
 	var vtinst = new VtigerWebservices('webservice.php');
 	function errorDialog(message){
@@ -72,19 +73,18 @@
 					action:'com_vtiger_workflowAjax',
 					file:'WorkflowComponents', ajax:'true',
 					modulename:moduleName, mode:'getownerslist'},
-				function(result){
+				function (result){
 					result = JSON.parse(result);
 					var uname = jQuery('#username');
-					if(result != null) {
-						jQuery.each(result, function(entityid, enamei18n){
+					if (result != null) {
+						jQuery.each(result, function (entityid, enamei18n) {
 							uname.append('<option value="'+enamei18n.id+'">'+enamei18n.label+'</option>');
 						});
-
-						if(selectedEntityType != "") {
-							uname.val(selectedEntityType);
-						}
 					}
 					uname.append('<option value="assigneduser">{/literal}{'Assigned User'|@getTranslatedString:$module->name}{literal}</option>');
+					if (selectedUser != '') {
+						uname.val(selectedUser);
+					}
 					jQuery('#entity_type-busyicon').hide();
 					uname.show();
 				}
@@ -109,7 +109,7 @@
 		<option value=''>{'LBL_SELECT_ENTITY_TYPE'|@getTranslatedString:$module->name}</option>
 	</select>
 </div>
-<div style="float: left;">
+<div style="float: left;margin-left:10px;">
 	<h2>{'LBL_SELECT_USER_BUTTON_LABEL'|@getTranslatedString:$module->name}</h2>
 	<select id="username" name="username" style="display:none;">
 		<option value=''>-- {'LBL_SELECT_USER_BUTTON_LABEL'|@getTranslatedString:$module->name} --</option>
