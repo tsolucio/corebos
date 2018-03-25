@@ -2527,79 +2527,63 @@ function selectedRecords(module,category)
 	return false;
 }
 
-function record_export(module,category,exform,idstring)
-{
+function record_export(module, category, exform, idstring) {
 	var searchType = document.getElementsByName('search_type');
 	var exportData = document.getElementsByName('export_data');
-	for(i=0;i<2;i++){
-		if(searchType[i].checked == true)
+	for (var i=0; i<2; i++) {
+		if (searchType[i].checked == true) {
 			var sel_type = searchType[i].value;
+		}
 	}
-	for(i=0;i<3;i++){
-		if(exportData[i].checked == true)
+	for (i=0; i<3; i++) {
+		if (exportData[i].checked == true) {
 			var exp_type = exportData[i].value;
+		}
 	}
 	jQuery.ajax({
-			method: 'POST',
-			url: "index.php?module="+module+"&action=ExportAjax&export_record=true&search_type="+sel_type+"&export_data="+exp_type+"&idstring="+idstring
+		method: 'POST',
+		url: "index.php?module="+module+"&action=ExportAjax&export_record=true&search_type="+sel_type+"&export_data="+exp_type+"&idstring="+idstring
 	}).done(function (response) {
-				if(response == 'NOT_SEARCH_WITHSEARCH_ALL')
-				{
-					document.getElementById('not_search').style.display = 'block';
-					document.getElementById('not_search').innerHTML="<font color='red'><b>"+alert_arr.LBL_NOTSEARCH_WITHSEARCH_ALL+" "+module+"</b></font>";
-					setTimeout(hideErrorMsg1,6000);
-
-					exform.submit();
-				}
-				else if(response == 'NOT_SEARCH_WITHSEARCH_CURRENTPAGE')
-				{
-					document.getElementById('not_search').style.display = 'block';
-					document.getElementById('not_search').innerHTML="<font color='red'><b>"+alert_arr.LBL_NOTSEARCH_WITHSEARCH_CURRENTPAGE+" "+module+"</b></font>";
-					setTimeout(hideErrorMsg1,7000);
-
-					exform.submit();
-				}
-				else if(response == 'NO_DATA_SELECTED')
-				{
-					document.getElementById('not_search').style.display = 'block';
-					document.getElementById('not_search').innerHTML="<font color='red'><b>"+alert_arr.LBL_NO_DATA_SELECTED+"</b></font>";
-					setTimeout(hideErrorMsg1,3000);
-				}
-				else if(response == 'SEARCH_WITHOUTSEARCH_ALL')
-				{
-					if(confirm(alert_arr.LBL_SEARCH_WITHOUTSEARCH_ALL))
-					{
-						exform.submit();
-					}
-				}
-				else if(response == 'SEARCH_WITHOUTSEARCH_CURRENTPAGE')
-				{
-					if(confirm(alert_arr.LBL_SEARCH_WITHOUTSEARCH_CURRENTPAGE))
-					{
-						exform.submit();
-					}
-				}
-				else
-				{
-					exform.submit();
-				}
+		if (response == 'NOT_SEARCH_WITHSEARCH_ALL') {
+			document.getElementById('not_search').style.display = 'block';
+			document.getElementById('not_search').innerHTML="<font color='red'><b>"+alert_arr.LBL_NOTSEARCH_WITHSEARCH_ALL+' '+module+'</b></font>';
+			setTimeout(hideErrorMsg1,6000);
+			exform.submit();
+		} else if (response == 'NOT_SEARCH_WITHSEARCH_CURRENTPAGE') {
+			document.getElementById('not_search').style.display = 'block';
+			document.getElementById('not_search').innerHTML="<font color='red'><b>"+alert_arr.LBL_NOTSEARCH_WITHSEARCH_CURRENTPAGE+' '+module+'</b></font>';
+			setTimeout(hideErrorMsg1,7000);
+			exform.submit();
+		} else if (response == 'NO_DATA_SELECTED') {
+			document.getElementById('not_search').style.display = 'block';
+			document.getElementById('not_search').innerHTML="<font color='red'><b>"+alert_arr.LBL_NO_DATA_SELECTED+'</b></font>';
+			setTimeout(hideErrorMsg1,3000);
+		} else if (response == 'SEARCH_WITHOUTSEARCH_ALL') {
+			if (confirm(alert_arr.LBL_SEARCH_WITHOUTSEARCH_ALL)) {
+				exform.submit();
 			}
-		);
+		} else if (response == 'SEARCH_WITHOUTSEARCH_CURRENTPAGE') {
+			if (confirm(alert_arr.LBL_SEARCH_WITHOUTSEARCH_CURRENTPAGE)) {
+				exform.submit();
+			}
+		} else {
+			exform.submit();
+		}
+	});
 }
 
-function hideErrorMsg1()
-{
+function hideErrorMsg1() {
 	document.getElementById('not_search').style.display = 'none';
 }
 
 // Replace the % sign with %25 to make sure the AJAX url is going wel.
-function escapeAll(tagValue)
-{
+function escapeAll(tagValue) {
 	//return escape(tagValue.replace(/%/g, '%25'));
-	if(default_charset.toLowerCase() == 'utf-8')
+	if (default_charset.toLowerCase() == 'utf-8') {
 		return encodeURIComponent(tagValue.replace(/%/g, '%25'));
-	else
+	} else {
 		return escape(tagValue.replace(/%/g, '%25'));
+	}
 }
 
 function removeHTMLFormatting(str) {
@@ -2608,100 +2592,90 @@ function removeHTMLFormatting(str) {
 	return str;
 }
 
-function get_converted_html(str)
-{
+function get_converted_html(str) {
 	var temp = str.toLowerCase();
-	if(temp.indexOf('<') != '-1' || temp.indexOf('>') != '-1')
-	{
+	if (temp.indexOf('<') != '-1' || temp.indexOf('>') != '-1') {
 		str = str.replace(/</g,'&lt;');
 		str = str.replace(/>/g,'&gt;');
 	}
-	if( temp.match(/(script).*(\/script)/))
-	{
+	if (temp.match(/(script).*(\/script)/)) {
 		str = str.replace(/&/g,'&amp;');
-	}
-	else if(temp.indexOf('&') != '-1')
-	{
+	} else if (temp.indexOf('&') != '-1') {
 		str = str.replace(/&/g,'&amp;');
 	}
 	return str;
 }
 
 //To select the select all check box(if all the items are selected) when the form loads.
-function default_togglestate(obj_id,elementId)
-{
+function default_togglestate(obj_id, elementId) {
 	var all_state=true;
 	var groupElements = document.getElementsByName(obj_id);
 	for (var i=0;i<groupElements.length;i++) {
 		var state=groupElements[i].checked;
-		if (state == false)
-		{
+		if (state == false) {
 			all_state=false;
 			break;
 		}
 	}
-	if(typeof elementId=='undefined'){
+	if (typeof elementId=='undefined') {
 		elementId = 'selectall';
 	}
-	if(getObj(elementId)) {
+	if (getObj(elementId)) {
 		getObj(elementId).checked=all_state;
 	}
 }
 
 //for select multiple check box in multiple pages for Campaigns related list:
-function rel_check_object(sel_id,module)
-{
+function rel_check_object(sel_id, module) {
 	var selected;
 	var select_global = new Array();
-	var cookie_val = get_cookie(module+"_all");
-	if(cookie_val == null)
-		selected = sel_id.value+";";
-	else
+	var cookie_val = get_cookie(module+'_all');
+	if (cookie_val == null) {
+		selected = sel_id.value+';';
+	} else {
 		selected = trim(cookie_val);
-	select_global = selected.split(";");
+	}
+	select_global = selected.split(';');
 	var box_value = sel_id.checked;
 	var id = sel_id.value;
 	var duplicate = select_global.indexOf(id);
 	var size = select_global.length-1;
-	var result = "";
+	var result = '';
 	var currentModule = document.getElementById('return_module').value;
 	var excluded = document.getElementById(currentModule+'_'+module+'_excludedRecords').value;
-	if(box_value == true)
-	{
-		if(document.getElementById(currentModule+'_'+module+'_selectallActivate').value == 'true') {
+	if (box_value == true) {
+		if (document.getElementById(currentModule+'_'+module+'_selectallActivate').value == 'true') {
 			document.getElementById(currentModule+'_'+module+'_excludedRecords').value = excluded.replace(excluded.match(id+";"),'');
 		} else {
-			if(duplicate == "-1")
-			{
+			if (duplicate == '-1') {
 				select_global[size]=id;
 			}
-
 			size = select_global.length-1;
 			var i=0;
-			for(i=0;i<=size;i++) {
-				if(trim(select_global[i])!='')
-					result = select_global[i]+";"+result;
+			for (i=0; i<=size; i++) {
+				if (trim(select_global[i])!='') {
+					result = select_global[i]+';'+result;
+				}
 			}
 		}
 		rel_default_togglestate(module);
-	}
-	else
-	{
-		if(document.getElementById(currentModule+'_'+module+'_selectallActivate').value == 'true'){
+	} else {
+		if (document.getElementById(currentModule+'_'+module+'_selectallActivate').value == 'true') {
 			document.getElementById(currentModule+'_'+module+'_excludedRecords').value= id+";"+excluded;
 		}
-		if(duplicate != "-1")
+		if (duplicate != '-1') {
 			select_global.splice(duplicate,1);
-
+		}
 		size=select_global.length-1;
 		var i=0;
-		for(i=size;i>=0;i--) {
-			if(trim(select_global[i])!='')
-				result=select_global[i]+";"+result;
+		for (i=size; i>=0; i--) {
+			if (trim(select_global[i])!='') {
+				result=select_global[i]+';'+result;
+			}
 		}
-		getObj(module+"_selectall").checked=false;
+		getObj(module+'_selectall').checked=false;
 	}
-	set_cookie(module+"_all",result);
+	set_cookie(module+'_all',result);
 }
 
 //Function to select all the items in the current page for Campaigns related list:.

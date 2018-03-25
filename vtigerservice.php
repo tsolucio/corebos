@@ -9,9 +9,9 @@
  ********************************************************************************/
 if (isset($_REQUEST['service'])) {
 	if ($_REQUEST['service'] == 'outlook') {
-		include('soap/vtigerolservice.php');
+		include 'soap/vtigerolservice.php';
 	} elseif ($_REQUEST['service'] == 'customerportal') {
-		include('soap/customerportal.php');
+		include 'soap/customerportal.php';
 	} else {
 		echo 'No Service Configured for '. vtlib_purify($_REQUEST['service']);
 	}
