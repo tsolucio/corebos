@@ -10,7 +10,7 @@
 
 $moduleFilepath = 'modules/'.$_REQUEST['module'].'/'.$_REQUEST['file'].'.php';
 
-if(file_exists($moduleFilepath) == false) {
+if (file_exists($moduleFilepath) == false) {
 	$moduleFilepath = 'modules/Vtiger/'.$_REQUEST['file'].'.php';
 }
 
