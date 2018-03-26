@@ -2,7 +2,7 @@
 /***********************************************************
 *  Module       : Helpdesk
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
@@ -160,7 +160,7 @@ $mod_strings = array (
 	'LBL_ALTBODY' => 'Ceci est le corps du mail texte pour les clients mails non-HTML',
 	'Ticket No' => 'Ticket n°',
 	'Hours' => 'Heures',
-	'Days' => 'Jours',	
+	'Days' => 'Jours',
 	'From Portal' => 'Provient du Portail',
 	'From mailscanner' => 'Provient du Convertisseur Mail',
 	'Comment Added' => 'Commentaire ajouté',
