@@ -64,7 +64,7 @@ class coreBOS_Session {
 			$corebos_browsertabID = vtlib_purify($_COOKIE['corebos_browsertabID']);
 			$newvars = array();
 			foreach ($_SESSION as $key => $value) {
-				if (strpos($key, $corebos_browsertabID) !== false and strpos($key, $corebos_browsertabID.'__prev') === false) {
+				if (strpos($key, $corebos_browsertabID) !== false && strpos($key, $corebos_browsertabID.'__prev') === false) {
 					$newvars[$key.'__prev'] = $value;
 				}
 			}
@@ -79,8 +79,7 @@ class coreBOS_Session {
 	 */
 	public static function getSessionName($URL = '', $force = false) {
 		global $site_URL;
-		static $session_name = '';
-		if (self::$session_name!='' and !$force) {
+		if (self::$session_name!='' && !$force) {
 			return self::$session_name;
 		}
 		if (empty($site_URL)) {
@@ -166,12 +165,12 @@ class coreBOS_Session {
 			}
 		} else {
 			if (is_null($sespos)) {
-				if (!isset($_SESSION[$keyparts[0]]) or !is_array($_SESSION[$keyparts[0]])) {
+				if (!isset($_SESSION[$keyparts[0]]) || !is_array($_SESSION[$keyparts[0]])) {
 					return false;
 				}
 				$sespos = $_SESSION[$keyparts[0]];
 			} else {
-				if (!isset($sespos[$keyparts[0]]) or !is_array($sespos[$keyparts[0]])) {
+				if (!isset($sespos[$keyparts[0]]) || !is_array($sespos[$keyparts[0]])) {
 					return false;
 				}
 				$sespos = $sespos[$keyparts[0]];
@@ -271,7 +270,7 @@ class coreBOS_Session {
 		} else {
 			$key = substr($key, strpos($key, '^')+1);
 			if (is_null($sespos)) {
-				if (!isset($_SESSION[$keyparts[0]]) or !is_array($_SESSION[$keyparts[0]])) {
+				if (!isset($_SESSION[$keyparts[0]]) || !is_array($_SESSION[$keyparts[0]])) {
 					return false; // this should be an exception
 				}
 				self::delete($key, $_SESSION[$keyparts[0]]);
