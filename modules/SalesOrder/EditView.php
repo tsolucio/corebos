@@ -226,24 +226,39 @@ if (!empty ($_REQUEST['parent_id']) && !empty ($_REQUEST['return_module'])) {
 	}
 }
 
-// Get Account address if vtiger_account is given
-if (!empty($_REQUEST['account_id']) && is_null($record) && isset($_REQUEST['convertmode']) && $_REQUEST['convertmode'] != 'update_quote_val') {
-	require_once ('modules/Accounts/Accounts.php');
-	$acct_focus = new Accounts();
-	$acct_focus->retrieve_entity_info($_REQUEST['account_id'], "Accounts");
-	$focus->column_fields['bill_city'] = $acct_focus->column_fields['bill_city'];
-	$focus->column_fields['ship_city'] = $acct_focus->column_fields['ship_city'];
-	//added to fix the issue 4526
-	$focus->column_fields['bill_pobox'] = $acct_focus->column_fields['bill_pobox'];
-	$focus->column_fields['ship_pobox'] = $acct_focus->column_fields['ship_pobox'];
-	$focus->column_fields['bill_street'] = $acct_focus->column_fields['bill_street'];
-	$focus->column_fields['ship_street'] = $acct_focus->column_fields['ship_street'];
-	$focus->column_fields['bill_state'] = $acct_focus->column_fields['bill_state'];
-	$focus->column_fields['ship_state'] = $acct_focus->column_fields['ship_state'];
-	$focus->column_fields['bill_code'] = $acct_focus->column_fields['bill_code'];
-	$focus->column_fields['ship_code'] = $acct_focus->column_fields['ship_code'];
-	$focus->column_fields['bill_country'] = $acct_focus->column_fields['bill_country'];
-	$focus->column_fields['ship_country'] = $acct_focus->column_fields['ship_country'];
+// Get address if account or contact is given
+if (is_null($record) && isset($_REQUEST['convertmode']) && $_REQUEST['convertmode'] != 'update_quote_val') {
+	if (!empty($_REQUEST['account_id'])) {
+		$acct_focus = CRMEntity::getInstance('Accounts');
+		$acct_focus->retrieve_entity_info($_REQUEST['account_id'], 'Accounts');
+		$focus->column_fields['bill_city'] = $acct_focus->column_fields['bill_city'];
+		$focus->column_fields['ship_city'] = $acct_focus->column_fields['ship_city'];
+		$focus->column_fields['bill_pobox'] = $acct_focus->column_fields['bill_pobox'];
+		$focus->column_fields['ship_pobox'] = $acct_focus->column_fields['ship_pobox'];
+		$focus->column_fields['bill_street'] = $acct_focus->column_fields['bill_street'];
+		$focus->column_fields['ship_street'] = $acct_focus->column_fields['ship_street'];
+		$focus->column_fields['bill_state'] = $acct_focus->column_fields['bill_state'];
+		$focus->column_fields['ship_state'] = $acct_focus->column_fields['ship_state'];
+		$focus->column_fields['bill_code'] = $acct_focus->column_fields['bill_code'];
+		$focus->column_fields['ship_code'] = $acct_focus->column_fields['ship_code'];
+		$focus->column_fields['bill_country'] = $acct_focus->column_fields['bill_country'];
+		$focus->column_fields['ship_country'] = $acct_focus->column_fields['ship_country'];
+	} elseif (!empty($_REQUEST['contact_id'])) {
+		$cto_focus = CRMEntity::getInstance('Contacts');
+		$cto_focus->retrieve_entity_info($_REQUEST['contact_id'], 'Contacts');
+		$focus->column_fields['bill_city'] = $cto_focus->column_fields['mailingcity'];
+		$focus->column_fields['ship_city'] = $cto_focus->column_fields['othercity'];
+		$focus->column_fields['bill_pobox'] = $cto_focus->column_fields['mailingpobox'];
+		$focus->column_fields['ship_pobox'] = $cto_focus->column_fields['otherpobox'];
+		$focus->column_fields['bill_street'] = $cto_focus->column_fields['mailingstreet'];
+		$focus->column_fields['ship_street'] = $cto_focus->column_fields['otherstreet'];
+		$focus->column_fields['bill_state'] = $cto_focus->column_fields['mailingstate'];
+		$focus->column_fields['ship_state'] = $cto_focus->column_fields['otherstate'];
+		$focus->column_fields['bill_code'] = $cto_focus->column_fields['mailingzip'];
+		$focus->column_fields['ship_code'] = $cto_focus->column_fields['otherzip'];
+		$focus->column_fields['bill_country'] = $cto_focus->column_fields['mailingcountry'];
+		$focus->column_fields['ship_country'] = $cto_focus->column_fields['othercountry'];
+	}
 }
 $smarty->assign('MASS_EDIT','0');
 $disp_view = getView($focus->mode);
