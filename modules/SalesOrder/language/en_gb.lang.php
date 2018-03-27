@@ -179,6 +179,5 @@ $mod_strings = array(
 	'3years' => '3 Years',
 	'4years' => '4 Years',
 	'5years' => '5 Years',
-
 );
 ?>

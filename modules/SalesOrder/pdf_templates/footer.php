@@ -6,15 +6,13 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
 
+define('USD', '$');
+define('EURO', chr(128));
 
-define('USD',"$");
-define('EURO', chr(128) );
-
-$desc=explode("\n",$description);
-$cond=explode("\n",$conditions);
+$desc=explode("\n", $description);
+$cond=explode("\n", $conditions);
 $num=230;
 
 /* **************** Begin Description ****************** */
@@ -23,13 +21,9 @@ $pdf->addDescBlock($description, $app_strings["Description"], $descBlock);
 
 /* ************** End Description *********************** */
 
-
-
 /* **************** Begin Terms ****************** */
 $termBlock=array("107",$top,"53", $num);
 $pdf->addDescBlock($conditions, $app_strings["Terms & Conditions"], $termBlock);
 
 /* ************** End Terms *********************** */
-
-
 ?>
