@@ -63,8 +63,8 @@ if(isset($_REQUEST['act']) && $_REQUEST['act'] == 'massDldCnt')
 {
 	$all_files = vtlib_purify($_REQUEST['file_id']);
 	$zipfilename = "cache/Documents".$current_user->id.".zip";
-	$zip = new Vtiger_Zip($zipfilename);
 	if (file_exists($zipfilename)) @unlink($zipfilename);
+	$zip = new Vtiger_Zip($zipfilename);
 	$dec_files =json_decode($all_files,true);
 	foreach ($dec_files as $folder_id => $files_id) {
 		if ($files_id) {
