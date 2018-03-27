@@ -8,12 +8,11 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'cbAuditTrail' => 'Journal d\'audit utilisateur',
 	'SINGLE_cbAuditTrail' => 'Journal d\'audit utilisateur',
 	'LBL_AUDIT_TRAIL' => 'Journal d\'audit',
 	'AuditTrailEnabled' => 'Audit Activé',
 	'AuditTrailDisabled' => 'Audit Désactivé',
 );
-
 ?>

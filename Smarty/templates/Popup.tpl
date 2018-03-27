@@ -19,6 +19,12 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 var gVTUserID = "{$CURRENT_USER_ID}";
 var userFirstDayOfWeek = {$USER_FIRST_DOW};
 var image_pth = '{$IMAGE_PATH}';
+var userDateFormat = "{$USER_DATE_FORMAT}";
+var userHourFormat = "{$USER_HOUR_FORMAT}";
+var userCurrencySeparator = "{$USER_CURRENCY_SEPARATOR}";
+var userDecimalSeparator = "{$USER_DECIMAL_FORMAT}";
+var userNumberOfDecimals = "{$USER_NUMBER_DECIMALS}";
+var gVTuserLanguage = "{$USER_LANGUAGE}";
 var product_default_units = '{if isset($Product_Default_Units)}{$Product_Default_Units}{else}1{/if}';
 var service_default_units = '{if isset($Service_Default_Units)}{$Service_Default_Units}{else}1{/if}';
 var gPopupAlphaSearchUrl = '';
@@ -42,6 +48,7 @@ var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 </script>
 <link rel="stylesheet" type="text/css" href="{$THEME_PATH}style.css">
 <link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
+<link rel="stylesheet" type="text/css" href="include/LD/assets/styles/salesforce-lightning-design-system.css" />
 {* corebos customization: Inclusion of custom javascript and css as registered in popup *}
 {if $HEADERCSS}
 	<!-- Custom Header CSS -->

@@ -6,16 +6,15 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * 
  *  ********************************************************************************
  *  Module       : Services
  *  Language     : Español
- *  Version      : 5.4.0 
+ *  Version      : 5.4.0
  *  Last change  : 2012-02-27
  *  Author       : Odin Consultores, Francisco Hernandez
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'Services'=>'Servicios',
 'SINGLE_Services'=>'Servicio',
 'LBL_LIST_SERVICE_NAME'=>'Nombre Servicio',
@@ -40,7 +39,6 @@ $mod_strings = Array(
 'LBL_NEW_FORM_TITLE'=>'Nuevo Servicio',
 'LBL_SERVICE_INFORMATION'=>'Información Servicio',
 'LBL_CUSTOM_INFORMATION'=>'Información Personalizada',
-'LBL_DESCRIPTION_INFORMATION'=>'Descripción',
 
 'LBL_SERVICE'=>'Servicio',
 'LBL_NEW_SERVICE'=>'Nuevo Servicio',
@@ -111,7 +109,6 @@ $mod_strings = Array(
 'LBL_ADD_SERVICE_PRICEBOOKS'=>'Agregar Servicio a Listas de precios',
 'LBL_ADD_SERVICES_PRICEBOOK'=>'Agregar Servicios a Lista de precios',
 'LBL_SERVICE_PRICES'=>'Precios Servicio',
-'Services'=>'Servicios',
 
 // Picklist
 '--None--' => '--Ninguno--',
@@ -127,5 +124,4 @@ $mod_strings = Array(
 'Services ID'=>'Id Servicio',
 'Divisible'=>'Divisible',
 );
-
 ?>

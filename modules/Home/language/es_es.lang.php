@@ -1,14 +1,10 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************
 *  Module       : Home
@@ -20,7 +16,7 @@
 *  Author       : Joe Bordes JPL TSolucio, S.L.
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_NEW_FORM_TITLE'=>'Nuevo Contacto',
 'LBL_FIRST_NAME'=>'Nombre:',
 'LBL_LAST_NAME'=>'Apellidos:',
@@ -60,10 +56,7 @@ $mod_strings = Array(
 'Last Week'=>'Esta Semana',
 'Last 2 Days'=>'Últimos 2 días',
 'Last Ten Days'=>'Últimos 10 días',
-// Added/Updated for vtiger CRM 5.0.4 
 'User List'=>'Lista de Usuarios',
-
-// Added after 5.0.4 GA
 
 //ADDED for Home Page Customization
 'LBL_HOME_MODULE' => 'Módulo',
@@ -75,7 +68,7 @@ $mod_strings = Array(
 'LBL_HOME_Fields'=>'Campos a Mostrar',
 'LBL_HOME_PRESSCTRL'=>'(Pulsa "Ctrl" <br> para seleccionar varios)',
 'LBL_HOME_RSSURL'=>'RSS URL',
-'LBL_HOME_DASHBOARD_NAME'=>'Nombre Análisis', 
+'LBL_HOME_DASHBOARD_NAME'=>'Nombre Análisis',
 'LBL_HOME_DASHBOARD_TYPE'=>'Tipo Análisis',
 'LBL_HOME_HORIZONTAL_BARCHART'=>'Gráfico Barras Horizontal',
 'LBL_HOME_VERTICAL_BARCHART'=>'Gráfico Barras Vertical',
@@ -99,7 +92,6 @@ $mod_strings = Array(
 'LBL_TWO_COLUMN'=>'Dos Columnas',
 'LBL_THREE_COLUMN'=>'Tres Columnas',
 'LBL_FOUR_COLUMN'=>'Cuatro Columnas',
-// END
 
 // Default home page widget's title
 'Top Accounts'=>'Cuentas Importantes',
@@ -121,11 +113,9 @@ $mod_strings = Array(
 'MSG_NO_FILTERS' => 'Ningún Filtro Disponible',
 'MSG_NO_FIELDS' => 'Ningún Campo Disponible',
 
-//Customization Phase 6 -- Monolithic
 'LBL_REPORTCHARTS' => 'Informes Gráficos',
 'LBL_HOME_REPORT_NAME'=> 'Nombre Informe',
 'LBL_HOME_REPORT_TYPE' => 'Tipo Informe',
-//END
 
 //added for Default Widgets
 'LBL_DEFAULT_WIDGET'=>'Widgets por Defecto',
@@ -134,6 +124,8 @@ $mod_strings = Array(
 'LBL_HOME_ADDWINDOW' => 'Añadir Ventana',
 'LBL_GETTING_STARTED' => 'Empezando',
 'ExpirePasswordAfterDays' => 'Invalida Contraseña Después de Días',
+'FieldsNotFoundInFilter' => 'No se han encontrado campos en el filtro seleccionado',
+'FilterNotFound' => 'No se ha encontrado el filtro seleccionado',
+'Permission Denied' => 'Permiso Denegado',
 );
-
 ?>

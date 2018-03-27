@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Documenti',
 'LBL_MODULE_TITLE'=>'Documenti: Home',
 'LBL_SEARCH_FORM_TITLE'=>'Cerca Documento',
@@ -33,15 +33,14 @@ $mod_strings = Array(
 'ERR_DELETE_RECORD'=>"Un record deve essere specificato per cancellare la aziende.",
 'LBL_LIST_FILENAME'=>"Nome File",
 
-// Added for Note(3.2-patch 3) 
+'Template'=>'Template',
+'Template For' => 'Template For',
 
 'LBL_FILENAME'=>'Allegato:',
 'LBL_NOTE_INFORMATION'=>'Informazioni Base',
 'File Information'=>'Informazioni File',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Strumenti Documenti',
-// Added for 4GA
 'Contact Name'=>'Nome Contatto',
 'Related To'=>'Relazionato a',
 'Subject'=>'Soggetto',
@@ -49,14 +48,12 @@ $mod_strings = Array(
 'Modified Time'=>'Data Modifica',
 'Document'=>'Documento',
 'Note'=>'Note',
-//Added for 4.2 Release -- CustomView
 'Related to'=>'Relazionato a',
 'Last Modified'=>'Ultima Modifica',
 'File'=>'File',
 'LBL_ALL'=>'Tutto',
 'Title'=>'Titolo',
 
-//Added after 504 for Downloads Module
 'LBL_FILE_INFORMATION'=>'Informationi File',
 'LBL_FILE_NAME'=>'Nome File',
 'LBL_FILE_TYPE'=>'Tipo File',
@@ -91,12 +88,9 @@ $mod_strings = Array(
 'File Name'=>'Nome File',
 'File Type'=>'Tipo File',
 'File Size'=>'Dimensione',
-'LBL_INTERNAL'=>'Interno',
 'LBL_URL'=>'URL',
-'LBL_EXTERNAL'=>'Esterno',
 'LBL_EXTERNAL_LNK'=>'Link Esterno',
 'LBL_ACTIVE'=>'Attivo',
-'LBL_INACTIVE'=>'Inattivo',
 'LBL_PLATFORM_INDEPENDENT'=>'Piattaforma Dipendente',
 'LNK_DOWNLOAD'=>'Scarica',
 'LBL_MOVE_DOCUMENTS'=>'Sposta Documento/i',
@@ -107,11 +101,7 @@ $mod_strings = Array(
 'Download Count'=>'Contatore Download',
 'Platform'=>'Piattaforma',
 'Assigned To'=>'Assegnato a',
-// Module Sequence Numbering
-'Document No' => 'Nr. Documento',
-// END
 
-// Documents module
 'LBL_EMPTY_FOLDERS' => 'Cartelle Vuote',
 'LBL_VIEW_EMPTY_FOLDERS' => 'Visualizza Cartelle Vuote',
 'LBL_NO_DOCUMENTS' => 'Nessun Documento',
@@ -127,6 +117,15 @@ $mod_strings = Array(
 'Documents' => 'Documenti',
 'Documents ID' => 'ID Documenti',
 'LBL_FILEUPLOAD_FAILED'=>'File failed to upload',
+'STORAGESIZE_CONFIGURATION' => 'Storage Size Information and Configuration',
+'STORAGESIZE_CONFIGURATION_DESCRIPTION' => 'See and increment the space being occupied by your document system.',
+'StorageMustIncrement' => 'The new storage capacity must always be bigger than the current limit. To reduce the size, physical elimination of the documents must be done by a server administrator. Please contact your service providor.',
+'StorageLimit' => 'The limit of storage capacity of your application has been reached. Please contact your application administrator to extend this limit.',
+'ExtendStorageLink' => 'You can extend this limit here.',
+'Total' => 'Total Disk Allocation',
+'Occupied' => 'Used Disk Space',
+'Free' => 'Available Disk Space',
+'NewSize' => 'New Size',
+'accept_charge' => 'I accept the license change and the associated charge it may have',
 );
-
 ?>

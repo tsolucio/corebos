@@ -1,26 +1,16 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
- * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Dashboard/language/en_us.lang.php,v 1.4 2005/01/25 06:01:38 jack Exp $
- * Description:  Defines the English language pack for the DashBoard module.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese - Un Assigned | 17/11/2017 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
+ * All Rights Reserved.
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_SALES_STAGE_FORM_TITLE'=>'Funil Estágio de Vendas',
 'LBL_SALES_STAGE_FORM_DESC'=>'Mostra as quantidades acumuladas da Oportunidade, por Estágio de Venda e Usuários selecionados, onde a data prevista de fechamento está dentro do intervalo de data especificado.',
 'LBL_MONTH_BY_OUTCOME'=>'Funil de Vendas por Resultado Mensal',
@@ -50,7 +40,6 @@ $mod_strings = Array(
 'LBL_LEAD_SOURCES'=>'Origem do Lead:',
 'LBL_DATE_START'=>'Data Inicial:',
 'LBL_DATE_END'=>'Data Final:',
-//Added for 5.0
 'LBL_NO_PERMISSION'=>'Seu perfil não permite que você veja o Gráfico deste Módulo',
 'LBL_NO_PERMISSION_FIELD'=>'Seu perfil não permite que você veja o Gráfico deste Módulo ou deste Campo',
 
@@ -95,7 +84,6 @@ $mod_strings = Array(
 'VIEWCHART'=>'Visualizar Gráfico',
 'LBL_DASHBOARD'=>'Painel',
 
-// Added/Updated for vtiger CRM 5.0.4
 "Approved"=>"Aprovado",
 "Created"=>"Criado",
 "Cancelled"=>"Cancelado",
@@ -104,7 +92,7 @@ $mod_strings = Array(
 "Sent"=>"Enviar",
 "Credit Invoice"=>"Crédito Fatura",
 "Paid"=>"Pago",
-"Un Assigned"=>"Un Assigned",
+"Un Assigned"=>"Não Atribuído",
 "Cold Call"=>"Cold Call",
 "Existing Customer"=>"Cliente Existente",
 "Self Generated"=>"Auto-Gerado",
@@ -185,7 +173,5 @@ $mod_strings = Array(
 "Negotiation/Review"=>"Negocição/Análise",
 "Closed Won"=>"Fechado Vencido",
 "Closed Lost"=>"Fechado Perdido",
-
 );
-
 ?>

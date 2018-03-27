@@ -604,9 +604,10 @@ Calendar.cellClick = function(el, ev) {
 		function setMonth(m) {
 			var day = date.getDate();
 			var max = date.getMonthDays(m);
-			if (day > max) {
-				date.setDate(max);
-			}
+			//if (day > max) {
+			//	date.setDate(max);
+			//}
+			date.setDate(1); // always set to first day of next month
 			date.setMonth(m);
 		};
 		switch (el.navtype) {

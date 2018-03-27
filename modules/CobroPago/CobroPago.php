@@ -7,52 +7,54 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('data/CRMEntity.php');
-require_once('data/Tracker.php');
-require_once('modules/Invoice/Invoice.php');
+require_once 'data/CRMEntity.php';
+require_once 'data/Tracker.php';
+require_once 'modules/Invoice/Invoice.php';
 
 class CobroPago extends CRMEntity {
-	var $db, $log; // Used in class functions of CRMEntity
+	public $db;
+	public $log;
 
-	var $table_name = 'vtiger_cobropago';
-	var $table_index= 'cobropagoid';
-	var $column_fields = Array();
+	public $table_name = 'vtiger_cobropago';
+	public $table_index= 'cobropagoid';
+	public $column_fields = array();
 
 	/** Indicator if this is a custom module or standard module */
-	var $IsCustomModule = true;
-	var $HasDirectImageField = false;
+	public $IsCustomModule = true;
+	public $HasDirectImageField = false;
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
-	var $customFieldTable = Array('vtiger_cobropagocf', 'cobropagoid');
+	public $customFieldTable = array('vtiger_cobropagocf', 'cobropagoid');
 	// Uncomment the line below to support custom field columns on related lists
-	var $related_tables = Array('vtiger_cobropagocf'=>array('cobropagoid','vtiger_cobropago', 'cobropagoid'));
+	public $related_tables = array('vtiger_cobropagocf'=>array('cobropagoid','vtiger_cobropago', 'cobropagoid'));
 
 	/**
 	 * Mandatory for Saving, Include tables related to this module.
 	 */
-	var $tab_name = Array('vtiger_crmentity', 'vtiger_cobropago', 'vtiger_cobropagocf');
+	public $tab_name = array('vtiger_crmentity', 'vtiger_cobropago', 'vtiger_cobropagocf');
 
 	/**
 	 * Mandatory for Saving, Include tablename and tablekey columnname here.
 	 */
-	var $tab_name_index = Array(
+	public $tab_name_index = array(
 		'vtiger_crmentity' => 'crmid',
 		'vtiger_cobropago'   => 'cobropagoid',
-		'vtiger_cobropagocf' => 'cobropagoid');
+		'vtiger_cobropagocf' => 'cobropagoid',
+	);
 
 	/**
 	 * Mandatory for Listing (Related listview)
 	 */
-	var $list_fields = Array (
-		'CyP No'=>Array('cobropago'=>'cyp_no'),
-		'Reference'=>Array('cobropago'=>'reference'),
-		'PaymentMode'=>Array('cobropago'=>'paymentmode'),
-		'Amount'=>Array('cobropago'=>'amount'),
-		'DueDate'=>Array('cobropago'=>'duedate'),
-		'Assigned To' => Array('crmentity' => 'smownerid')
+	public $list_fields = array(
+		'CyP No'=>array('cobropago'=>'cyp_no'),
+		'Reference'=>array('cobropago'=>'reference'),
+		'PaymentMode'=>array('cobropago'=>'paymentmode'),
+		'Amount'=>array('cobropago'=>'amount'),
+		'DueDate'=>array('cobropago'=>'duedate'),
+		'Assigned To' => array('crmentity' => 'smownerid')
 	);
-	var $list_fields_name = Array(
+	public $list_fields_name = array(
 		'CyP No'=>'cyp_no',
 		'Reference'=>'reference',
 		'PaymentMode'=>'paymentmode',
@@ -62,17 +64,17 @@ class CobroPago extends CRMEntity {
 	);
 
 	// Make the field link to detail view from list view (Fieldname)
-	var $list_link_field = 'cyp_no';
+	public $list_link_field = 'cyp_no';
 
 	// For Popup listview and UI type support
-	var $search_fields = Array(
-		'CyP No'=>Array('cobropago'=>'cyp_no'),
-		'Reference'=>Array('cobropago'=>'reference'),
-		'PaymentMode'=>Array('cobropago'=>'paymentmode'),
-		'Amount'=>Array('cobropago'=>'amount'),
-		'DueDate'=>Array('cobropago'=>'duedate')
+	public $search_fields = array(
+		'CyP No'=>array('cobropago'=>'cyp_no'),
+		'Reference'=>array('cobropago'=>'reference'),
+		'PaymentMode'=>array('cobropago'=>'paymentmode'),
+		'Amount'=>array('cobropago'=>'amount'),
+		'DueDate'=>array('cobropago'=>'duedate')
 	);
-	var $search_fields_name = Array(
+	public $search_fields_name = array(
 		'CyP No'=>'cyp_no',
 		'Reference'=>'reference',
 		'PaymentMode'=>'paymentmode',
@@ -81,78 +83,78 @@ class CobroPago extends CRMEntity {
 	);
 
 	// For Popup window record selection
-	var $popup_fields = Array('cyp_no');
+	public $popup_fields = array('cyp_no');
 
 	// Placeholder for sort fields - All the fields will be initialized for Sorting through initSortFields
-	var $sortby_fields = Array();
+	public $sortby_fields = array();
 
 	// For Alphabetical search
-	var $def_basicsearch_col = 'reference';
+	public $def_basicsearch_col = 'reference';
 
 	// Column value to use on detail view record text display
-	var $def_detailview_recname = 'cyp_no';
+	public $def_detailview_recname = 'cyp_no';
 
 	// Required Information for enabling Import feature
-	var $required_fields = Array('reference'=>1);
+	public $required_fields = array('reference'=>1);
 
 	// Callback function list during Importing
-	var $special_functions = Array('set_import_assigned_user');
+	public $special_functions = array('set_import_assigned_user');
 
-	var $default_order_by = 'cyp_no';
-	var $default_sort_order='ASC';
+	public $default_order_by = 'cyp_no';
+	public $default_sort_order='ASC';
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
-	var $mandatory_fields = Array('createdtime', 'modifiedtime','cyp_no');
+	public $mandatory_fields = array('createdtime', 'modifiedtime','cyp_no');
 
-	function save($module, $fileid = '') {
+	public function save($module, $fileid = '') {
 		global $adb, $current_user;
 		$update_after = false;
-		if ($this->column_fields['paid'] == 'on' or $this->column_fields['paid'] == '1'){
-			if($this->mode != 'edit'){
+		if ($this->column_fields['paid'] == 'on' || $this->column_fields['paid'] == '1') {
+			if ($this->mode != 'edit') {
 				$update_after = true;
-				$update_log = getTranslatedString('Payment Paid','CobroPago').$current_user->user_name.getTranslatedString('PaidOn','CobroPago').date("l dS F Y h:i:s A").'--//--';
-			}else{
-				$SQL = 'SELECT paid,update_log FROM vtiger_cobropago WHERE cobropagoid=?';
-				$result = $adb->pquery($SQL,array($this->id));
-				$old_paid = $adb->query_result($result,0,'paid');
-				if ($old_paid == '0'){
+				$update_log = getTranslatedString('Payment Paid', 'CobroPago').$current_user->user_name.getTranslatedString('PaidOn', 'CobroPago');
+				$update_log .= date("l dS F Y h:i:s A").'--//--';
+			} else {
+				$result = $adb->pquery('SELECT paid,update_log FROM vtiger_cobropago WHERE cobropagoid=?', array($this->id));
+				$old_paid = $adb->query_result($result, 0, 'paid');
+				if ($old_paid == '0') {
 					$update_after = true;
-					$update_log = $adb->query_result($result,0,'update_log');
-					$update_log .= getTranslatedString('Payment Paid','CobroPago').$current_user->user_name.getTranslatedString('PaidOn','CobroPago').date("l dS F Y h:i:s A").'--//--';
+					$update_log = $adb->query_result($result, 0, 'update_log');
+					$update_log .= getTranslatedString('Payment Paid', 'CobroPago').$current_user->user_name.getTranslatedString('PaidOn', 'CobroPago');
+					$update_log .= date("l dS F Y h:i:s A").'--//--';
 				}
 			}
 		}
 		parent::save($module, $fileid);
-		if ($update_after){
-			$SQL_UPD = 'UPDATE vtiger_cobropago SET update_log=? WHERE cobropagoid=?';
-			$adb->pquery($SQL_UPD,array($update_log,$this->id));
+		if ($update_after) {
+			$adb->pquery('UPDATE vtiger_cobropago SET update_log=? WHERE cobropagoid=?', array($update_log, $this->id));
 		}
 	}
 
-	function save_module($module) {
-		global $current_user,$log,$adb;
+	public function save_module($module) {
+		global $current_user, $adb;
 		if ($this->HasDirectImageField) {
-			$this->insertIntoAttachment($this->id,$module);
+			$this->insertIntoAttachment($this->id, $module);
 		}
 		$cypid = $this->id;
 		$data = $this->column_fields;
 		// Entity has been saved, take next action
-		if (empty($data['register']) and $this->mode=='') {
+		if (empty($data['register']) && $this->mode=='') {
 			$refDateValue = new DateTimeField();  // right now
 			$this->column_fields['register'] = $refDateValue->getDisplayDate();
-			$adb->pquery('update vtiger_cobropago set register=? where cobropagoid=?',array($refDateValue->getDBInsertDateValue(),$cypid));
+			$adb->pquery('update vtiger_cobropago set register=? where cobropagoid=?', array($refDateValue->getDBInsertDateValue(), $cypid));
 		}
 		$currencyid=fetchCurrency($current_user->id);
 		$rate_symbol = getCurrencySymbolandCRate($currencyid);
 		$rate = $rate_symbol['rate'];
 		$value=0;
-		if(isset($data['amount']) and isset($data['cost'])) {
-			$value = CurrencyField::convertToDollar($data['amount']-$data['cost'],$rate);
+		if (isset($data['amount']) && isset($data['cost'])) {
+			$value = CurrencyField::convertToDollar($data['amount']-$data['cost'], $rate);
 		}
-		$adb->pquery('update vtiger_cobropago set benefit=? where cobropagoid=?',array($value,$cypid));
+		$adb->pquery('update vtiger_cobropago set benefit=? where cobropagoid=?', array($value, $cypid));
 
 		$relatedId = $this->column_fields['related_id'];
-		if (!empty($relatedId) and self::invoice_control_installed()) {
+		if (!empty($relatedId) && self::invoice_control_installed()) {
 			Invoice::updateAmountDue($relatedId);
 		}
 		// Calculate related module balance
@@ -160,60 +162,96 @@ class CobroPago extends CRMEntity {
 	}
 
 	public static function calculateRelatedTotals($pid) {
-	  global $adb;
-	  $parent_module = getSalesEntityType($pid);
-	  if ($parent_module=='Accounts' and self::account_control_installed()) {
-		$rs = $adb->pquery('select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=1 and parent_id=?',array($pid));
-		$sumamountcredit =$adb->query_result($rs,0,0);
-		$rs = $adb->pquery('select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=0 and parent_id=?',array($pid));
-		$sumamountdebit =$adb->query_result($rs,0,0);
-		$rs = $adb->pquery("select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=1 and paid='0' and parent_id=?",array($pid));
-		$sumpendingcredit=$adb->query_result($rs,0,0);
-		$rs = $adb->pquery("select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=0 and paid='0' and parent_id=?",array($pid));
-		$sumpendingdebit=$adb->query_result($rs,0,0);
-		$sumamount=$sumamountcredit-$sumamountdebit;
-		$sumpending=$sumpendingcredit-$sumpendingdebit;
-		$balance=$sumamount-$sumpending;
-		$adb->pquery("update vtiger_account set balance=?,totalamount=?,totalpending=? where accountid=?",array($balance,$sumamount,$sumpending,$pid));
-	  }
-	  if ($parent_module=='Contacts' and self::contact_control_installed()) {
-		$rs = $adb->pquery('select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=1 and parent_id=?',array($pid));
-		$sumamountcredit =$adb->query_result($rs,0,0);
-		$rs = $adb->pquery('select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=0 and parent_id=?',array($pid));
-		$sumamountdebit =$adb->query_result($rs,0,0);
-		$rs = $adb->pquery("select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=1 and paid='0' and parent_id=?",array($pid));
-		$sumpendingcredit=$adb->query_result($rs,0,0);
-		$rs = $adb->pquery("select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=0 and paid='0' and parent_id=?",array($pid));
-		$sumpendingdebit=$adb->query_result($rs,0,0);
-		$sumamount=$sumamountcredit-$sumamountdebit;
-		$sumpending=$sumpendingcredit-$sumpendingdebit;
-		$balance=$sumamount-$sumpending;
-		$adb->pquery("update vtiger_contactdetails set balance=?,totalamount=?,totalpending=? where contactid=?",array($balance,$sumamount,$sumpending,$pid));
-	  }
-	  if ($parent_module=='Vendors' and self::vendor_control_installed()) {
-		$rs = $adb->pquery('select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=1 and parent_id=?',array($pid));
-		$sumamountcredit =$adb->query_result($rs,0,0);
-		$rs = $adb->pquery('select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=0 and parent_id=?',array($pid));
-		$sumamountdebit =$adb->query_result($rs,0,0);
-		$rs = $adb->pquery("select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=1 and paid='0' and parent_id=?",array($pid));
-		$sumpendingcredit=$adb->query_result($rs,0,0);
-		$rs = $adb->pquery("select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=0 and paid='0' and parent_id=?",array($pid));
-		$sumpendingdebit=$adb->query_result($rs,0,0);
-		$sumamount=$sumamountcredit-$sumamountdebit;
-		$sumpending=$sumpendingcredit-$sumpendingdebit;
-		$balance=$sumamount-$sumpending;
-		$adb->pquery("update vtiger_vendor set balance=?,totalamount=?,totalpending=? where vendorid=?",array($balance,$sumamount,$sumpending,$pid));
-	  }
+		global $adb;
+		$parent_module = getSalesEntityType($pid);
+		if ($parent_module=='Accounts' && self::account_control_installed()) {
+			$rs = $adb->pquery(
+				'select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=1 and parent_id=?',
+				array($pid)
+			);
+			$sumamountcredit =$adb->query_result($rs, 0, 0);
+			$rs = $adb->pquery(
+				'select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=0 and parent_id=?',
+				array($pid)
+			);
+			$sumamountdebit =$adb->query_result($rs, 0, 0);
+			$rs = $adb->pquery(
+				"select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=1 and paid='0' and parent_id=?",
+				array($pid)
+			);
+			$sumpendingcredit=$adb->query_result($rs, 0, 0);
+			$rs = $adb->pquery(
+				"select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=0 and paid='0' and parent_id=?",
+				array($pid)
+			);
+			$sumpendingdebit=$adb->query_result($rs, 0, 0);
+			$sumamount=$sumamountcredit-$sumamountdebit;
+			$sumpending=$sumpendingcredit-$sumpendingdebit;
+			$balance=$sumamount-$sumpending;
+			$adb->pquery('update vtiger_account set balance=?,totalamount=?,totalpending=? where accountid=?', array($balance,$sumamount,$sumpending,$pid));
+		}
+		if ($parent_module=='Contacts' && self::contact_control_installed()) {
+			$rs = $adb->pquery(
+				'select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=1 and parent_id=?',
+				array($pid)
+			);
+			$sumamountcredit =$adb->query_result($rs, 0, 0);
+			$rs = $adb->pquery(
+				'select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=0 and parent_id=?',
+				array($pid)
+			);
+			$sumamountdebit =$adb->query_result($rs, 0, 0);
+			$rs = $adb->pquery(
+				"select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=1 and paid='0' and parent_id=?",
+				array($pid)
+			);
+			$sumpendingcredit=$adb->query_result($rs, 0, 0);
+			$rs = $adb->pquery(
+				"select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=0 and paid='0' and parent_id=?",
+				array($pid)
+			);
+			$sumpendingdebit=$adb->query_result($rs, 0, 0);
+			$sumamount=$sumamountcredit-$sumamountdebit;
+			$sumpending=$sumpendingcredit-$sumpendingdebit;
+			$balance=$sumamount-$sumpending;
+			$adb->pquery('update vtiger_contactdetails set balance=?,totalamount=?,totalpending=? where contactid=?', array($balance,$sumamount,$sumpending,$pid));
+		}
+		if ($parent_module=='Vendors' && self::vendor_control_installed()) {
+			$rs = $adb->pquery(
+				'select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=1 and parent_id=?',
+				array($pid)
+			);
+			$sumamountcredit =$adb->query_result($rs, 0, 0);
+			$rs = $adb->pquery(
+				'select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=0 and parent_id=?',
+				array($pid)
+			);
+			$sumamountdebit =$adb->query_result($rs, 0, 0);
+			$rs = $adb->pquery(
+				"select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=1 and paid='0' and parent_id=?",
+				array($pid)
+			);
+			$sumpendingcredit=$adb->query_result($rs, 0, 0);
+			$rs = $adb->pquery(
+				"select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=0 and paid='0' and parent_id=?",
+				array($pid)
+			);
+			$sumpendingdebit=$adb->query_result($rs, 0, 0);
+			$sumamount=$sumamountcredit-$sumamountdebit;
+			$sumpending=$sumpendingcredit-$sumpendingdebit;
+			$balance=$sumamount-$sumpending;
+			$adb->pquery('update vtiger_vendor set balance=?,totalamount=?,totalpending=? where vendorid=?', array($balance, $sumamount, $sumpending, $pid));
+		}
 	}
 
-	function trash($module,$record) {
+	public function trash($module, $record) {
 		global $adb;
-		parent::trash($module,$record);
-		$rs = $adb->pquery("select related_id,parent_id from vtiger_cobropago where cobropagoid=?",array($record));
-		if ($rs and $adb->num_rows($rs)==1) {
-			$relatedId = $adb->query_result($rs,0,'related_id');
-			$pid = $adb->query_result($rs,0,'parent_id');
-			if (!empty($relatedId) and self::invoice_control_installed()) {
+		parent::trash($module, $record);
+		$rs = $adb->pquery('select related_id,parent_id from vtiger_cobropago where cobropagoid=?', array($record));
+		if ($rs && $adb->num_rows($rs)==1) {
+			$relatedId = $adb->query_result($rs, 0, 'related_id');
+			$pid = $adb->query_result($rs, 0, 'parent_id');
+			if (!empty($relatedId) && self::invoice_control_installed()) {
 				Invoice::updateAmountDue($relatedId);
 			}
 			// Calculate related module balance
@@ -221,14 +259,14 @@ class CobroPago extends CRMEntity {
 		}
 	}
 
-	function unlinkRelationship($id, $return_module, $return_id) {
+	public function unlinkRelationship($id, $return_module, $return_id) {
 		global $adb;
 		parent::unlinkRelationship($id, $return_module, $return_id);
-		$rs = $adb->pquery("select related_id,parent_id from vtiger_cobropago where cobropagoid=?",array($id));
-		if ($rs and $adb->num_rows($rs)==1) {
-			$relatedId = $adb->query_result($rs,0,'related_id');
-			$pid = $adb->query_result($rs,0,'parent_id');
-			if (!empty($relatedId) and self::invoice_control_installed()) {
+		$rs = $adb->pquery('select related_id,parent_id from vtiger_cobropago where cobropagoid=?', array($id));
+		if ($rs && $adb->num_rows($rs)==1) {
+			$relatedId = $adb->query_result($rs, 0, 'related_id');
+			$pid = $adb->query_result($rs, 0, 'parent_id');
+			if (!empty($relatedId) && self::invoice_control_installed()) {
 				Invoice::updateAmountDue($relatedId);
 			}
 			// Calculate related module balance
@@ -239,34 +277,22 @@ class CobroPago extends CRMEntity {
 	public static function account_control_installed() {
 		global $adb;
 		$cnacc=$adb->getColumnNames('vtiger_account');
-		if (in_array('balance', $cnacc)
-		and in_array('totalamount', $cnacc)
-		and in_array('totalpending', $cnacc)) return true;
-		return false;
+		return (in_array('balance', $cnacc) && in_array('totalamount', $cnacc) && in_array('totalpending', $cnacc));
 	}
 	public static function contact_control_installed() {
 		global $adb;
 		$cnacc=$adb->getColumnNames('vtiger_contactdetails');
-		if (in_array('balance', $cnacc)
-		and in_array('totalamount', $cnacc)
-		and in_array('totalpending', $cnacc)) return true;
-		return false;
+		return (in_array('balance', $cnacc) && in_array('totalamount', $cnacc) && in_array('totalpending', $cnacc));
 	}
 	public static function vendor_control_installed() {
 		global $adb;
 		$cnacc=$adb->getColumnNames('vtiger_vendor');
-		if (in_array('balance', $cnacc)
-				and in_array('totalamount', $cnacc)
-				and in_array('totalpending', $cnacc)) return true;
-		return false;
+		return (in_array('balance', $cnacc) && in_array('totalamount', $cnacc) && in_array('totalpending', $cnacc));
 	}
 	public static function invoice_control_installed() {
 		global $adb;
 		$cninv=$adb->getColumnNames('vtiger_invoice');
-		if (in_array('amount_due', $cninv)
-		and in_array('amount_paid', $cninv)
-		and in_array('total_amount', $cninv)) return true;
-		return false;
+		return (in_array('amount_due', $cninv) && in_array('amount_paid', $cninv) && in_array('total_amount', $cninv));
 	}
 
 	/**
@@ -274,8 +300,8 @@ class CobroPago extends CRMEntity {
 	 * @param String Module name
 	 * @param String Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
 	 */
-	function vtlib_handler($modulename, $event_type) {
-		if($event_type == 'module.postinstall') {
+	public function vtlib_handler($modulename, $event_type) {
+		if ($event_type == 'module.postinstall') {
 			// TODO Handle post installation actions
 			$modAccounts=Vtiger_Module::getInstance('Accounts');
 			$modContacts=Vtiger_Module::getInstance('Contacts');
@@ -291,32 +317,80 @@ class CobroPago extends CRMEntity {
 			$modPrjTask=Vtiger_Module::getInstance('ProjectTask');
 			$modCyP=Vtiger_Module::getInstance('CobroPago');
 
-			if ($modAccounts) $modAccounts->setRelatedList($modCyP, 'CobroPago', Array('ADD'),'get_dependents_list');
-			if ($modContacts) $modContacts->setRelatedList($modCyP, 'CobroPago', Array('ADD'),'get_dependents_list');
-			if ($modVnd) $modVnd->setRelatedList($modCyP, 'CobroPago', Array('ADD'),'get_dependents_list');
-			if ($modInvoice) $modInvoice->setRelatedList($modCyP, 'CobroPago', Array('ADD'),'get_dependents_list');
-			if ($modInvoice) $modInvoice->addLink('DETAILVIEWBASIC','Add Payment','index.php?module=CobroPago&action=EditView&related_id=$RECORD$&return_module=Invoice&return_id=$RECORD$&return_action=DetailView');
-			if ($modSO) $modSO->setRelatedList($modCyP, 'CobroPago', Array('ADD'),'get_dependents_list');
-			if ($modSO) $modSO->addLink('DETAILVIEWBASIC','Add Payment','index.php?module=CobroPago&action=EditView&related_id=$RECORD$&return_module=SalesOrder&return_id=$RECORD$&return_action=DetailView');
-			if ($modPO) $modPO->setRelatedList($modCyP, 'CobroPago', Array('ADD'),'get_dependents_list');
-			if ($modPO) $modPO->addLink('DETAILVIEWBASIC','Add Payment','index.php?module=CobroPago&action=EditView&related_id=$RECORD$&return_module=PurchaseOrder&return_id=$RECORD$&return_action=DetailView');
-			if ($modQt) $modQt->setRelatedList($modCyP, 'CobroPago', Array('ADD'),'get_dependents_list');
-			if ($modQt) $modQt->addLink('DETAILVIEWBASIC','Add Payment','index.php?module=CobroPago&action=EditView&related_id=$RECORD$&return_module=Quotes&return_id=$RECORD$&return_action=DetailView');
-			if ($modCpg) $modCpg->setRelatedList($modCyP, 'CobroPago', Array('ADD'),'get_dependents_list');
-			if ($modPot) $modPot->setRelatedList($modCyP, 'CobroPago', Array('ADD'),'get_dependents_list');
-			if ($modHD) $modHD->setRelatedList($modCyP, 'CobroPago', Array('ADD'),'get_dependents_list');
-			if ($modPrj) $modPrj->setRelatedList($modCyP, 'CobroPago', Array('ADD'),'get_dependents_list');
-			if ($modPrjTask) $modPrjTask->setRelatedList($modCyP, 'CobroPago', Array('ADD'),'get_dependents_list');
+			if ($modAccounts) {
+				$modAccounts->setRelatedList($modCyP, 'CobroPago', array('ADD'), 'get_dependents_list');
+			}
+			if ($modContacts) {
+				$modContacts->setRelatedList($modCyP, 'CobroPago', array('ADD'), 'get_dependents_list');
+			}
+			if ($modVnd) {
+				$modVnd->setRelatedList($modCyP, 'CobroPago', array('ADD'), 'get_dependents_list');
+			}
+			if ($modInvoice) {
+				$modInvoice->setRelatedList($modCyP, 'CobroPago', array('ADD'), 'get_dependents_list');
+			}
+			if ($modInvoice) {
+				$modInvoice->addLink(
+					'DETAILVIEWBASIC',
+					'Add Payment',
+					'index.php?module=CobroPago&action=EditView&related_id=$RECORD$&return_module=Invoice&return_id=$RECORD$&return_action=DetailView'
+				);
+			}
+			if ($modSO) {
+				$modSO->setRelatedList($modCyP, 'CobroPago', array('ADD'), 'get_dependents_list');
+			}
+			if ($modSO) {
+				$modSO->addLink(
+					'DETAILVIEWBASIC',
+					'Add Payment',
+					'index.php?module=CobroPago&action=EditView&related_id=$RECORD$&return_module=SalesOrder&return_id=$RECORD$&return_action=DetailView'
+				);
+			}
+			if ($modPO) {
+				$modPO->setRelatedList($modCyP, 'CobroPago', array('ADD'), 'get_dependents_list');
+			}
+			if ($modPO) {
+				$modPO->addLink(
+					'DETAILVIEWBASIC',
+					'Add Payment',
+					'index.php?module=CobroPago&action=EditView&related_id=$RECORD$&return_module=PurchaseOrder&return_id=$RECORD$&return_action=DetailView'
+				);
+			}
+			if ($modQt) {
+				$modQt->setRelatedList($modCyP, 'CobroPago', array('ADD'), 'get_dependents_list');
+			}
+			if ($modQt) {
+				$modQt->addLink(
+					'DETAILVIEWBASIC',
+					'Add Payment',
+					'index.php?module=CobroPago&action=EditView&related_id=$RECORD$&return_module=Quotes&return_id=$RECORD$&return_action=DetailView'
+				);
+			}
+			if ($modCpg) {
+				$modCpg->setRelatedList($modCyP, 'CobroPago', array('ADD'), 'get_dependents_list');
+			}
+			if ($modPot) {
+				$modPot->setRelatedList($modCyP, 'CobroPago', array('ADD'), 'get_dependents_list');
+			}
+			if ($modHD) {
+				$modHD->setRelatedList($modCyP, 'CobroPago', array('ADD'), 'get_dependents_list');
+			}
+			if ($modPrj) {
+				$modPrj->setRelatedList($modCyP, 'CobroPago', array('ADD'), 'get_dependents_list');
+			}
+			if ($modPrjTask) {
+				$modPrjTask->setRelatedList($modCyP, 'CobroPago', array('ADD'), 'get_dependents_list');
+			}
 			$this->setModuleSeqNumber('configure', $modulename, 'PAY-', '0000001');
-		} else if($event_type == 'module.disabled') {
+		} elseif ($event_type == 'module.disabled') {
 			// TODO Handle actions when this module is disabled.
-		} else if($event_type == 'module.enabled') {
+		} elseif ($event_type == 'module.enabled') {
 			// TODO Handle actions when this module is enabled.
-		} else if($event_type == 'module.preuninstall') {
+		} elseif ($event_type == 'module.preuninstall') {
 			// TODO Handle actions when this module is about to be deleted.
-		} else if($event_type == 'module.preupdate') {
+		} elseif ($event_type == 'module.preupdate') {
 			// TODO Handle actions before this module is updated.
-		} else if($event_type == 'module.postupdate') {
+		} elseif ($event_type == 'module.postupdate') {
 			// TODO Handle actions after this module is updated.
 		}
 	}
@@ -326,21 +400,21 @@ class CobroPago extends CRMEntity {
 	 * NOTE: This function has been added to CRMEntity (base class).
 	 * You can override the behavior by re-defining it here.
 	 */
-	// function save_related_module($module, $crmid, $with_module, $with_crmid) { }
+	// public function save_related_module($module, $crmid, $with_module, $with_crmid) { }
 
 	/**
 	 * Handle deleting related module information.
 	 * NOTE: This function has been added to CRMEntity (base class).
 	 * You can override the behavior by re-defining it here.
 	 */
-	//function delete_related_module($module, $crmid, $with_module, $with_crmid) { }
+	//public function delete_related_module($module, $crmid, $with_module, $with_crmid) { }
 
 	/**
 	 * Handle getting related list information.
 	 * NOTE: This function has been added to CRMEntity (base class).
 	 * You can override the behavior by re-defining it here.
 	 */
-	//function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
+	//public function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
 
 	/**
 	 * Handle getting dependents list information.
@@ -351,16 +425,19 @@ class CobroPago extends CRMEntity {
 
 	/**	Function used to get the Payments Stage history of the CobroPago
 	 *	@param $id - cobropagoid
-	 *	return $return_data - array with header and the entries in format Array('header'=>$header,'entries'=>$entries_list) where as $header and $entries_list are array which contains all the column values of an row
+	 *	return $return_data - array with header and the entries in format
+	 *		array('header'=>$header,'entries'=>$entries_list) where as $header and $entries_list are array which contains all the column values of an row
 	 */
-	function get_payment_history($id)
-	{
+	public function get_payment_history($id) {
 		global $log, $adb, $app_strings;
 		$log->debug("Entering get_stage_history(".$id.") method ...");
 
-		$query = 'select vtiger_potstagehistory.*, vtiger_cobropago.reference from vtiger_potstagehistory inner join vtiger_cobropago on vtiger_cobropago.cobropagoid = vtiger_potstagehistory.cobropagoid inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cobropago.cobropagoid where vtiger_crmentity.deleted = 0 and vtiger_cobropago.cobropagoid = ?';
+		$query = 'select vtiger_potstagehistory.*, vtiger_cobropago.reference
+			from vtiger_potstagehistory
+			inner join vtiger_cobropago on vtiger_cobropago.cobropagoid = vtiger_potstagehistory.cobropagoid
+			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cobropago.cobropagoid
+			where vtiger_crmentity.deleted = 0 and vtiger_cobropago.cobropagoid = ?';
 		$result=$adb->pquery($query, array($id));
-		$noofrows = $adb->num_rows($result);
 
 		$header[] = $app_strings['LBL_AMOUNT'];
 		$header[] = $app_strings['LBL_SALES_STAGE'];
@@ -382,9 +459,8 @@ class CobroPago extends CRMEntity {
 		//Not Accessible - picklist is permitted in profile but picklist value is not permitted
 		$error_msg = 'Not Accessible';
 
-		while($row = $adb->fetch_array($result))
-		{
-			$entries = Array();
+		while ($row = $adb->fetch_array($result)) {
+			$entries = array();
 
 			$entries[] = ($amount_access != 1)? $row['amount'] : 0;
 			$entries[] = (in_array($row['stage'], $potential_stage_array))? $row['stage']: $error_msg;
@@ -395,35 +471,33 @@ class CobroPago extends CRMEntity {
 			$entries_list[] = $entries;
 		}
 
-		$return_data = Array('header'=>$header,'entries'=>$entries_list,'navigation'=>array('',''));
+		$return_data = array('header'=>$header,'entries'=>$entries_list,'navigation'=>array('',''));
 
-		$log->debug("Exiting get_stage_history method ...");
+		$log->debug('Exiting get_stage_history method ...');
 		return $return_data;
 	}
 
-	function get_history_cobropago($cobropagoid){
+	public function get_history_cobropago($cobropagoid) {
 		global $log, $adb;
 		$log->debug("Entering into get_history_cobropago($cobropagoid) method ...");
 
-		$query="select reference,update_log from vtiger_cobropago where cobropagoid=?";
-		$result=$adb->pquery($query, array($cobropagoid));
-		$update_log = $adb->query_result($result,0,"update_log");
+		$result=$adb->pquery('select reference,update_log from vtiger_cobropago where cobropagoid=?', array($cobropagoid));
+		$update_log = $adb->query_result($result, 0, 'update_log');
 
-		$splitval = explode('--//--',trim($update_log,'--//--'));
+		$splitval = explode('--//--', trim($update_log, '--//--'));
 
-		$header[] = $adb->query_result($result,0,"reference");
+		$header[] = $adb->query_result($result, 0, 'reference');
 
-		$return_value = Array('header'=>$header,'entries'=>$splitval,'navigation'=>array('',''));
+		$return_value = array('header'=>$header,'entries'=>$splitval,'navigation'=>array('',''));
 
 		$log->debug("Exiting from get_history_cobropago($cobropagoid) method ...");
-
 		return $return_value;
 	}
 
-	function preEditCheck($request,$smarty) {
+	public function preEditCheck($request, $smarty) {
 		global $log, $app_strings;
 		$isduplicate = isset($_REQUEST['isDuplicate']) ? $_REQUEST['isDuplicate'] : null;
-		if (!$this->permissiontoedit() and $isduplicate != 'true') {
+		if ($this->mode == 'edit' && !$this->permissiontoedit() && $isduplicate != 'true') {
 			$log->debug("You don't have permission to edit cobropago");
 			$smarty->assign('APP', $app_strings);
 			$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
@@ -433,25 +507,37 @@ class CobroPago extends CRMEntity {
 		return '';
 	}
 
+	public function preSaveCheck($request) {
+		global $log, $app_strings;
+		if ($this->mode == 'edit' && !$this->permissiontoedit()) {
+			$log->debug("You don't have permission to save cobropago");
+			return array(true, $app_strings['LBL_PERMISSION'], 'index', array());
+		}
+		list($request,$void,$saveerror,$errormessage,$error_action,$returnvalues) =
+			cbEventHandler::do_filter('corebos.filter.preSaveCheck', array($request, $this, false, '', '', ''));
+		return array($saveerror, $errormessage, $error_action, $returnvalues);
+	}
+
 	/**
 	 *	This function check is this payment is paid or not, to haver permission to edit
 	**/
-	function permissiontoedit()
-	{
+	public function permissiontoedit() {
 		global $log,$current_user,$adb;
-		$log->debug("Entering permissiontoedit() method ...");
+		$log->debug('Entering permissiontoedit() method ...');
 
-		$res = $adb->pquery("select block_paid from vtiger_cobropagoconfig",array());
-		$Block_paid = $adb->query_result($res,0,'block_paid');
+		$res = $adb->pquery('select block_paid from vtiger_cobropagoconfig', array());
+		$Block_paid = $adb->query_result($res, 0, 'block_paid');
 
-		if (is_admin($current_user) or $Block_paid!='on') return true;
+		if (is_admin($current_user) || $Block_paid!='on') {
+			return true;
+		}
 
-		if($this->column_fields['paid'] == 1)
+		if ($this->column_fields['paid'] == 1) {
 			$permiso = false;
-		else
+		} else {
 			$permiso = true;
-
-		$log->debug("Exiting permissiontoedit method ...");
+		}
+		$log->debug('Exiting permissiontoedit method ...');
 		return $permiso;
 	}
 }

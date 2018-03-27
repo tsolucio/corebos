@@ -46,30 +46,30 @@ WHERE ce.deleted=0 AND vtiger_account.accountid =?
 </map>
 
  *************************************************************************************************/
-require_once('include/events/SqlResultIterator.inc');
-require_once('modules/com_vtiger_workflow/VTWorkflowManager.inc');
-require_once('modules/com_vtiger_workflow/VTSimpleTemplate.inc');
+require_once 'include/events/SqlResultIterator.inc';
+require_once 'modules/com_vtiger_workflow/VTWorkflowManager.inc';
+require_once 'modules/com_vtiger_workflow/VTSimpleTemplate.inc';
 require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
-require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
+require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 require_once 'modules/com_vtiger_workflow/include.inc';
-require_once('modules/com_vtiger_workflow/WorkFlowScheduler.php');
+require_once 'modules/com_vtiger_workflow/WorkFlowScheduler.php';
 
 class ConditionQuery extends processcbMap {
 
-	function processMap($arguments) {
+	public function processMap($arguments) {
 		$xml = $this->getXMLContent();
 		if (isset($xml->sql)) {
-			return $this->processSQL($xml,$arguments);
+			return $this->processSQL($xml, $arguments);
 		} elseif (isset($xml->conditions)) {
-			return $this->processQuery($xml,$arguments);
+			return $this->processQuery($xml, $arguments);
 		} else {
 			return false;
 		}
 	}
 
-	private function executeSQL($sql,$arguments,$return) {
+	private function executeSQL($sql, $arguments, $return) {
 		global $adb;
-		$rs = $adb->pquery($sql,$arguments);
+		$rs = $adb->pquery($sql, $arguments);
 		if ($rs) {
 			if (strtolower($return)=='count') {
 				return $adb->num_rows($rs);
@@ -91,11 +91,11 @@ class ConditionQuery extends processcbMap {
 		}
 	}
 
-	private function processSQL($xml,$arguments) {
+	private function processSQL($xml, $arguments) {
 		return $this->executeSQL((String)$xml->sql, $arguments, (String)$xml->return);
 	}
 
-	private function processQuery($xml,$arguments) {
+	private function processQuery($xml, $arguments) {
 		$query = $this->getExpressionQuery($xml);
 		return $this->executeSQL($query, array(), (String)$xml->return);
 	}
@@ -108,27 +108,26 @@ class ConditionQuery extends processcbMap {
 		$conditions = (String)$xml->conditions;
 		$conditions = json_decode(decode_html($conditions));
 		if (isset($xml->fields)) {
-			$fields = explode(',',trim((String)$xml->fields));
+			$fields = explode(',', trim((String)$xml->fields));
 			$queryGenerator->setFields($fields);
 		} else {
 			$queryGenerator->setFields(array('id'));
 		}
 		$workflowScheduler->addWorkflowConditionsToQueryGenerator($queryGenerator, $conditions);
-		if($moduleName == 'Calendar' || $moduleName == 'Events') {
-			if($conditions){
+		if ($moduleName == 'Calendar' || $moduleName == 'Events') {
+			if ($conditions) {
 				$queryGenerator->addConditionGlue('AND');
 			}
 			// We should only get the records related to proper activity type
-			if($moduleName == 'Calendar'){
-				$queryGenerator->addCondition('activitytype','Emails','n');
-				$queryGenerator->addCondition('activitytype','Task','e','AND');
-			}else if($moduleName == "Events"){
-				$queryGenerator->addCondition('activitytype','Emails','n');
-				$queryGenerator->addCondition('activitytype','Task','n','AND');
+			if ($moduleName == 'Calendar') {
+				$queryGenerator->addCondition('activitytype', 'Emails', 'n');
+				$queryGenerator->addCondition('activitytype', 'Task', 'e', 'AND');
+			} elseif ($moduleName == "Events") {
+				$queryGenerator->addCondition('activitytype', 'Emails', 'n');
+				$queryGenerator->addCondition('activitytype', 'Task', 'n', 'AND');
 			}
 		}
 		return $queryGenerator->getQuery();
 	}
-
 }
 ?>

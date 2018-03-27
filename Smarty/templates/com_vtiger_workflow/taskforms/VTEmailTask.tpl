@@ -8,7 +8,7 @@ var moduleName = '{$entityName}';
 var __attfieldnames = '{if isset($task->attfieldnames)}{$task->attfieldnames}{/if}';
 var __attdocids = '{if isset($task->attachmentids)}{$task->attachmentids}{/if}';
 var __attdocidcnt = {if isset($task->attachmentids)}(__attdocids.match(/,/g) || []).length{else}0{/if};
-var __attinfo = {$task->attachmentsinfo|json_encode};
+var __attinfo = {$task->dzattinfo|json_encode};
 </script>
 <script src="modules/com_vtiger_workflow/resources/emailtaskscript.js" type="text/javascript" charset="utf-8"></script>
 <div id='_progress_' style='float: right; display: none; position: absolute; right: 35px; font-weight: bold;'>

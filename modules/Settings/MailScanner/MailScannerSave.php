@@ -7,19 +7,19 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('modules/Settings/MailScanner/core/MailScannerInfo.php');
-require_once('modules/Settings/MailScanner/core/MailBox.php');
+require_once 'modules/Settings/MailScanner/core/MailScannerInfo.php';
+require_once 'modules/Settings/MailScanner/core/MailBox.php';
 
 $scannername = vtlib_purify(trim($_REQUEST['mailboxinfo_scannername']));
-if(!empty($scannername) && !validateAlphanumericInput($scannername)) {
+if (!empty($scannername) && !validateAlphanumericInput($scannername)) {
 	$scannername = '';
 }
 $server = vtlib_purify(trim($_REQUEST['mailboxinfo_server']));
-if(!empty($server) && !validateServerName($server)) {
+if (!empty($server) && !validateServerName($server)) {
 	$server = '';
 }
 $username = vtlib_purify(trim($_REQUEST['mailboxinfo_username']));
-if(!empty($username) && !validateEmailId($username) && !validateAlphanumericInput($username)) {
+if (!empty($username) && !validateEmailId($username) && !validateAlphanumericInput($username)) {
 	$username = '';
 }
 
@@ -42,40 +42,44 @@ $isconnected = false;
 
 $scannerinfo = new Vtiger_MailScannerInfo(vtlib_purify(trim($_REQUEST['hidden_scannername'])));
 
-if(!$scannerinfo->compare($newscannerinfo)) {
+if (!$scannerinfo->compare($newscannerinfo)) {
 	$mailbox = new Vtiger_MailBox($newscannerinfo);
 
 	$isconnected = $mailbox->connect();
-	if($isconnected) $newscannerinfo->connecturl = $mailbox->_imapurl;
+	if ($isconnected) {
+		$newscannerinfo->connecturl = $mailbox->_imapurl;
+	}
 } else {
 	$isconnected = true;
 	$scannerinfo->isvalid = $newscannerinfo->isvalid; // Copy new value
 	$newscannerinfo = $scannerinfo;
 }
 
-if(!$isconnected) {
-	require_once('Smarty_setup.php');
+if (!$isconnected) {
+	require_once 'Smarty_setup.php';
 	global $app_strings, $mod_strings, $currentModule, $theme, $current_language;
 
 	$smarty = new vtigerCRM_Smarty;
-	$smarty->assign("MOD", return_module_language($current_language,'Settings'));
-	$smarty->assign("CMOD", $mod_strings);
-	$smarty->assign("APP", $app_strings);
-	$smarty->assign("THEME", $theme);
-	$smarty->assign("IMAGE_PATH","themes/$theme/images/");
-	$smarty->assign("SCANNERINFO", $newscannerinfo->getAsMap());
-	$smarty->assign("CONNECTFAIL", "Connecting to mailbox failed!");
+	$smarty->assign('MOD', return_module_language($current_language, 'Settings'));
+	$smarty->assign('CMOD', $mod_strings);
+	$smarty->assign('APP', $app_strings);
+	$smarty->assign('THEME', $theme);
+	$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
+	$smarty->assign('SCANNERINFO', $newscannerinfo->getAsMap());
+	$smarty->assign('CONNECTFAIL', 'Connecting to mailbox failed!');
 	$smarty->display('MailScanner/MailScannerEdit.tpl');
 } else {
 	$mailServerChanged = $scannerinfo->update($newscannerinfo);
 	$scannerinfo->updateAllFolderRescan($rescanfolder);
 
 	// Update lastscan on all the available folders.
-	if($mailServerChanged && $mailbox) {
+	if ($mailServerChanged && $mailbox) {
 		$folders = $mailbox->getFolders();
-		foreach($folders as $folder) $scannerinfo->updateLastscan($folder);
+		foreach ($folders as $folder) {
+			$scannerinfo->updateLastscan($folder);
+		}
 	}
 
-	require('modules/Settings/MailScanner/MailScannerInfo.php');
+	require 'modules/Settings/MailScanner/MailScannerInfo.php';
 }
 ?>

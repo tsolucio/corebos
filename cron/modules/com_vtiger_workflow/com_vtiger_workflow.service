@@ -8,76 +8,77 @@
  * All Rights Reserved.
  *************************************************************************************/
 
-ini_set('include_path',ini_get('include_path'). PATH_SEPARATOR . '../..');
+ini_set('include_path', ini_get('include_path'). PATH_SEPARATOR . '../..');
 
 require_once 'include/utils/utils.php';
-require_once('include/utils/CommonUtils.php');
-require_once("config.inc.php");
+require_once 'include/utils/CommonUtils.php';
+require_once 'config.inc.php';
 require_once 'include/Webservices/Utils.php';
-require_once("modules/Users/Users.php");
-require_once("include/Webservices/State.php");
-require_once("include/Webservices/OperationManager.php");
-require_once("include/Webservices/SessionManager.php");
+require_once 'modules/Users/Users.php';
+require_once 'include/Webservices/State.php';
+require_once 'include/Webservices/OperationManager.php';
+require_once 'include/Webservices/SessionManager.php';
 require_once 'include/Webservices/WebserviceField.php';
 require_once 'include/Webservices/EntityMeta.php';
 require_once 'include/Webservices/VtigerWebserviceObject.php';
-require_once("include/Webservices/VtigerCRMObject.php");
-require_once("include/Webservices/VtigerCRMObjectMeta.php");
-require_once("include/Webservices/DataTransform.php");
-require_once("include/Webservices/WebServiceError.php");
+require_once 'include/Webservices/VtigerCRMObject.php';
+require_once 'include/Webservices/VtigerCRMObjectMeta.php';
+require_once 'include/Webservices/DataTransform.php';
+require_once 'include/Webservices/WebServiceError.php';
 require_once 'include/utils/UserInfoUtil.php';
 require_once 'include/Webservices/ModuleTypes.php';
 require_once 'include/utils/VtlibUtils.php';
-require_once('include/logging.php');
+require_once 'include/logging.php';
 require_once 'include/Webservices/WebserviceEntityOperation.php';
 require_once "include/language/$default_language.lang.php";
 require_once 'include/Webservices/Retrieve.php';
 require_once 'include/Webservices/Update.php';
-require_once('modules/Emails/mail.php');
+require_once 'modules/Emails/mail.php';
 require_once 'modules/Users/Users.php';
-require_once('modules/com_vtiger_workflow/VTSimpleTemplate.inc');
+require_once 'modules/com_vtiger_workflow/VTSimpleTemplate.inc';
 require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
-require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
+require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 require_once 'modules/com_vtiger_workflow/include.inc';
 
-function vtRunTaskJob($adb){
+function vtRunTaskJob($adb) {
 	global $logbg;
 	$util = new VTWorkflowUtils();
 	$adminUser = $util->adminUser();
 	$tq = new VTTaskQueue($adb);
 	$readyTasks = $tq->getReadyTasks();
-	$logbg->debug("WF Cron:: Ready Tasks from the queue");
+	$logbg->debug('WF Cron:: Ready Tasks from the queue');
 	$logbg->debug($readyTasks);
 	$tm = new VTTaskManager($adb);
-	foreach($readyTasks as $pair){
+	foreach ($readyTasks as $pair) {
 		list($taskId, $entityId) = $pair;
-		$logbg->debug("WF Cron:: Task ".$taskId." will be executed with entityId: ".$entityId);
+		$logbg->debug('WF Cron:: Task '.$taskId.' will be executed with entityId: '.$entityId);
 		$task = $tm->retrieveTask($taskId);
 		if (empty($task)) {  //If task is not there then continue
-			$logbg->debug("WF Cron:: Task: ".$taskId." fail when was retrieve");
+			$logbg->debug('WF Cron:: Task: '.$taskId.' fail when was retrieve');
 			continue;
 		}
 		list($moduleId, $crmId) = explode('x', $entityId);
 		$query = "select deleted from vtiger_crmentity where crmid={$crmId}";
 		$res = $adb->query($query);
 		if ($adb->num_rows($res) == 0) {
-			$logbg->debug("WF Cron:: CRMID ".$crmId." was totally deleted");
+			$logbg->debug('WF Cron:: CRMID '.$crmId.' was totally deleted');
 			continue;
 		} else {
-			$isDeleted = $adb->query_result($res,0,0);
+			$isDeleted = $adb->query_result($res, 0, 0);
 		}
-		$entity = new VTWorkflowEntity($adminUser, $entityId, $isDeleted);
+		$entity = new VTWorkflowEntity($adminUser, $entityId, $isDeleted, true);
 		$entityCache = new VTEntityCache($adminUser);
 		$wsModuleName = $util->toWSModuleName($entity);
 		$wsId = vtws_getWebserviceEntityId($wsModuleName, $entity->getId());
 		if (empty($task->test)
-				or (isset($task->reevaluate) and $task->reevaluate==0)
-				or ((!isset($task->reevaluate) or $task->reevaluate==1) and $task->evaluate($entityCache, $entity->getId()))) {
-			$logbg->debug("WF Cron:: Task ".$taskId." will call function doTask with entityId: ".$entityId);
+			|| (isset($task->reevaluate) && $task->reevaluate==0)
+			|| ((!isset($task->reevaluate) || $task->reevaluate==1) && $task->evaluate($entityCache, $entity->getId()))
+		) {
+			$logbg->debug('WF Cron:: Task '.$taskId.' will call function doTask with entityId: '.$entityId);
 			$task->doTask($entity);
-			$logbg->debug("WF Cron:: Task ".$taskId." executed with success the function doTask with entityId: ".$entityId);
+			$logbg->debug('WF Cron:: Task '.$taskId.' executed with success the function doTask with entityId: '.$entityId);
 		} else {
-			$logbg->debug("WF Cron:: Task ".$taskId." was skipped due to unsatisfied conditions: ".$entityId);
+			$logbg->debug('WF Cron:: Task '.$taskId.' was skipped due to unsatisfied conditions: '.$entityId);
 		}
 	}
 }

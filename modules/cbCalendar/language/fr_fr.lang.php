@@ -8,19 +8,20 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'cbCalendar' => 'Événements',
 	'SINGLE_cbCalendar' => 'Événements',
 	'cbCalendar ID' => 'Événements ID',
 
 	'LBL_CUSTOM_INFORMATION'=>' Information personnalisée',
-	'LBL_TASK_INFORMATION' => 'Información Evento',
-	'EventAdvancedOptions' => 'Información Avanzada',
+	'LBL_TASK_INFORMATION' => 'Information Evenement',
+	'EventAdvancedOptions' => 'Informations avancées',
 
 	'Subject' => 'Sujet',
 	'Start Date Time' => 'Date et heure de début',
-	'Time Start' => 'Heure',
-	'End Time' => 'Hora Fin',
+	'Time Start' => 'Heure début (System Time)',
+	'End Time' => 'Heure fin (System Time)',
+	'End Date' => 'Date fin',
 	'Due Date' => 'Échéance',
 	'Assigned To' => 'Assigné à',
 	'Related with' => 'Événements Relatif',
@@ -39,7 +40,6 @@ $mod_strings = Array(
 	'LBL_SENDREMINDER' => 'Envoyer rappel',
 	'Created Time' => 'Créé le',
 	'Modified Time' => 'Modifié le',
-	'Activity Type' => 'Type',
 	'Description' => 'Description ',
 	'Recurrence' => 'Récurence',
 	'LBL_RELATEDTO' => 'Relatif à',

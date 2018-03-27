@@ -15,9 +15,11 @@
 *************************************************************************************************/
 
 class DefineGlobalVariables extends cbupdaterWorker {
-	
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -26,6 +28,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Debug_Record_Not_Found',
 				'Debug_Report_Query',
 				'Debug_ListView_Query',
+				'Debug_RelatedList_Query',
 				'Debug_Popup_Query',
 				'Debug_Email_Sending',
 				'Debug_Send_VtigerCron_Error',
@@ -37,6 +40,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_Global_Search_Binary',
 				'Application_Global_Search_TopModules',
 				'Application_Global_Search_Active',
+				'Application_Global_Search_Autocomplete_Limit',
 				'Application_Storage_Directory',
 				'Application_Storage_SaveStrategy',
 				'Application_OpenRecordInNewXOnRelatedList',
@@ -63,12 +67,14 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_ListView_Record_Change_Indicator',
 				'Application_ListView_Default_Sorting',
 				'Application_ListView_Compute_Page_Count',
+				'Application_ListView_Sum_Currency',
 				'Application_Upload_MaxSize',
 				'Application_Single_Pane_View',
 				'Application_Minimum_Cron_Frequency',
 				'Application_Customer_Portal_URL',
 				'Application_Help_URL',
 				'Application_UI_Name',
+				'Application_UI_NameHTML',
 				'Application_UI_CompanyName',
 				'Application_UI_ShowGITVersion',
 				'Application_UI_ShowGITDate',
@@ -88,6 +94,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Calendar_Show_Group_Events',
 				'Calendar_Push_End_On_Start_Change',
 				'Calendar_PopupReminder_DaysPast',
+				'Calendar_Show_Only_My_Events',
 
 				'CronTasks_cronWatcher_mailto',
 				'CronTasks_cronWatcher_TimeThreshold',
@@ -99,6 +106,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 
 				'Mobile_Module_by_default',
 				'Mobile_Related_Modules',
+				'Mobile_UI_Enabled',
 
 				'Webservice_showUserAdvancedBlock',
 				'Webservice_CORS_Enabled_Domains',
@@ -106,6 +114,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'WebService_Session_Life_Span',
 				'WebService_Session_Idle_Time',
 				'SOAP_CustomerPortal_Enabled',
+				'SOAP_Outlook_Enabled',
 
 				'Users_ReplyTo_SecondEmail',
 				'Users_Default_Send_Email_Template',
@@ -138,18 +147,23 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Workflow_GeoDistance_Country_Default',
 				'Workflow_GeoDistance_ServerIP',
 				'Workflow_GeoDistance_Email',
+				'Workflow_GeoDistance_Nominatim_Server',
 				'ModComments_DefaultCriteria',
 				'ModComments_DefaultBlockStatus',
 				'EMail_OpenTrackingEnabled',
 				'Email_Attachments_Folder',
 				'EMail_Maximum_Number_Attachments',
 				'EMail_CustomCurrentDate_Format',
+				'MailManager_Show_SentTo_Links',
 				'ToolTip_MaxFieldValueLength',
 				'HelpDesk_Support_EMail',
 				'HelpDesk_Support_Name',
 				'HelpDesk_Support_Reply_EMail',
 				'HelpDesk_Notify_Owner_EMail',
 				'Document_Folder_View',
+				'Document_CreateSelectContactFolder',
+				'Document_CreateSelectAccountFolder',
+				'Document_CreateSelectAccountFolderForContact',
 				'HomePage_Widget_Group_Size',
 
 				'Report_Send_Scheduled_ifEmpty',
@@ -160,6 +174,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Inventory_ListPrice_ReadOnly',
 				'GContacts_Max_Results',
 
+				'CustomerPortal_PDF_Modules',
 				'CustomerPortal_PDF',
 				'CustomerPortal_PDFTemplate_Quote',
 				'CustomerPortal_PDFTemplate_SalesOrder',
@@ -293,12 +308,12 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				),
 			);
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');
-			$field = Vtiger_Field::getInstance('gvname',$moduleInstance);
+			$field = Vtiger_Field::getInstance('gvname', $moduleInstance);
 			if ($field) {
 				foreach ($rename_these as $gvar => $change) {
-					$rschk = $adb->pquery('select count(*) from vtiger_gvname where BINARY gvname=?',array($gvar));
+					$rschk = $adb->pquery('select count(*) from vtiger_gvname where BINARY gvname=?', array($gvar));
 					$checkold = $adb->query_result($rschk, 0, 0);
-					$rschk = $adb->pquery('select count(*) from vtiger_gvname where BINARY gvname=?',array($change['to']));
+					$rschk = $adb->pquery('select count(*) from vtiger_gvname where BINARY gvname=?', array($change['to']));
 					$checknew = $adb->query_result($rschk, 0, 0);
 					if ($checkold > 0) {
 						if ($checknew > 0) {
@@ -354,5 +369,4 @@ class DefineGlobalVariables extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
 }

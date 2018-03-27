@@ -10,7 +10,7 @@
 require_once 'include/utils/utils.php';
 require_once 'modules/PickList/PickListUtils.php';
 
-global $adb, $current_user,$default_charset;
+global $adb, $current_user;
 
 $moduleName = vtlib_purify($_REQUEST['moduleName']);
 $tableName = vtlib_purify($_REQUEST['fieldname']);
@@ -18,52 +18,47 @@ $roleid = vtlib_purify($_REQUEST['roleid']);
 $values = vtlib_purify($_REQUEST['values']);
 $otherRoles = vtlib_purify($_REQUEST['otherRoles']);
 
-if(empty($tableName)){
-	echo "Table name is empty";
+if (empty($tableName)) {
+	echo 'Table name is empty';
 	exit;
 }
 
-$values = json_decode($values,true);
+$values = json_decode($values, true);
 
-$sql = 'SELECT * FROM vtiger_picklist WHERE name = ?';
-$result = $adb->pquery($sql, array($tableName));
-if($adb->num_rows($result) > 0){
-	$picklistid = $adb->query_result($result, 0, "picklistid");
+$result = $adb->pquery('SELECT * FROM vtiger_picklist WHERE name = ?', array($tableName));
+if ($adb->num_rows($result) > 0) {
+	$picklistid = $adb->query_result($result, 0, 'picklistid');
 }
 
-if(!empty($roleid)){
+if (!empty($roleid)) {
 	assignValues($picklistid, $roleid, $values, $tableName);
 }
 
-$otherRoles = json_decode($otherRoles,true);
-if(!empty($otherRoles)){
-	foreach($otherRoles as $role){
+$otherRoles = json_decode($otherRoles, true);
+if (!empty($otherRoles)) {
+	foreach ($otherRoles as $role) {
 		assignValues($picklistid, $role, $values, $tableName);
 	}
 }
 
-echo "SUCCESS";
+echo 'SUCCESS';
 
-
-function assignValues($picklistid, $roleid, $values, $tableName){
-	global $adb,$default_charset;
+function assignValues($picklistid, $roleid, $values, $tableName) {
+	global $adb;
 	$count = count($values);
 	//delete older values
-	$sql = 'DELETE FROM vtiger_role2picklist WHERE roleid=? AND picklistid=?';
-	$adb->pquery($sql, array($roleid,$picklistid));
-	
+	$adb->pquery('DELETE FROM vtiger_role2picklist WHERE roleid=? AND picklistid=?', array($roleid,$picklistid));
+
 	//insert the new values
-	for($i=0;$i<$count;$i++){
+	$inssql = 'INSERT INTO vtiger_role2picklist VALUES (?,?,?,?)';
+	for ($i=0; $i<$count; $i++) {
 		$tableName = $adb->sql_escape_string($tableName);
-		$sql = "SELECT * FROM vtiger_$tableName WHERE $tableName=?";
-		$result = $adb->pquery($sql, array($values[$i]));
-		if($adb->num_rows($result) > 0){
-			$picklistvalueid = $adb->query_result($result, 0, "picklist_valueid");
+		$result = $adb->pquery("SELECT * FROM vtiger_$tableName WHERE $tableName=?", array($values[$i]));
+		if ($adb->num_rows($result) > 0) {
+			$picklistvalueid = $adb->query_result($result, 0, 'picklist_valueid');
 			$sortid = $i+1;
-			$sql = 'INSERT INTO vtiger_role2picklist VALUES (?,?,?,?)';
-			$adb->pquery($sql, array($roleid, $picklistvalueid, $picklistid, $sortid));
+			$adb->pquery($inssql, array($roleid, $picklistvalueid, $picklistid, $sortid));
 		}
 	}
 }
-
 ?>

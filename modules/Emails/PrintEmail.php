@@ -12,8 +12,6 @@ require_once('data/Tracker.php');
 require_once('modules/Emails/Emails.php');
 require_once('include/utils/utils.php');
 require_once('include/utils/UserInfoUtil.php');
-require_once('modules/Webmails/MailBox.php');
-require_once('modules/Webmails/Webmails.php');
 
 global $mod_strings, $app_strings, $theme, $default_charset;
 
@@ -45,41 +43,4 @@ if(isset($_REQUEST['record']) && $_REQUEST['record'] !='' && empty($_REQUEST['ma
 	}
 	$smarty->display('PrintEmail.tpl');
 }
-
-if(isset($_REQUEST['record']) && isset($_REQUEST['mailbox']) && $_REQUEST['print'])
-{
-	if(isset($_REQUEST["mailbox"]) && $_REQUEST["mailbox"] != "")
-{
-	$mailbox=$_REQUEST["mailbox"];
-}
-else
-{
-	$mailbox="INBOX";
-}
-$mailid = $_REQUEST['record'];
-$MailBox = new MailBox($mailbox);
-$mail = $MailBox->mbox;
-$email = new Webmails($MailBox->mbox,$mailid);
-$status=imap_setflag_full($MailBox->mbox,$mailid,"\\Seen");
-$attach_tab=array();
-$email->loadMail($attach_tab);
-echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=".$email->charsets."\">\n";
-$subject = utf8_decode(utf8_encode(imap_utf8($email->subject)));
-$from = decode_header($email->from);
-$to = decode_header($email->to[0]);
-$cc = decode_header($email->cc_header);
-$date = decode_header($email->date);
-for($i=0;$i<count($email->attname);$i++){
-	$attachment_links .= $email->anchor_arr[$i].decode_header($email->attname[$i])."</a></br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-}
-$content['body'] = $email->body;
-$content['attachtab'] = $email->attachtab;
-
-$smarty->assign('FROM_MAIL',$from);
-$smarty->assign('TO_MAIL',trim($to,",").",");
-$smarty->assign('SUBJECT',$subject);
-$smarty->assign('DESCRIPTION',$content['body']);
-$smarty->display('PrintEmail.tpl');
-}
-
 ?>

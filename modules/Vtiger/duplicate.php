@@ -23,7 +23,7 @@ require_once 'include/utils/utils.php';
 require_once 'include/utils/duplicate.php';
 require_once 'include/utils/CommonUtils.php';
 
-if(isset($_REQUEST['module_name']) && isset($_REQUEST['record_id'])) {
+if (isset($_REQUEST['module_name']) && isset($_REQUEST['record_id'])) {
 	$module = vtlib_purify($_REQUEST['module_name']);
 	$rec_id = vtlib_purify($_REQUEST['record_id']);
 	$map = $module.'_DuplicateRelations';

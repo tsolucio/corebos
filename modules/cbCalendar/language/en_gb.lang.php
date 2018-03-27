@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'cbCalendar' => 'To Dos',
 	'SINGLE_cbCalendar' => 'To Do',
 	'cbCalendar ID' => 'To Do ID',
@@ -20,8 +20,9 @@ $mod_strings = Array(
 	'Subject' => 'Subject',
 	'Start Date Time' => 'Start Date Time',
 	'End Date Time' => 'End Date Time',
-	'Time Start' => 'Time Start',
-	'End Time' => 'End Time',
+	'Time Start' => 'Time Start (System Time)',
+	'End Time' => 'End Time (System Time)',
+	'End Date' => 'End Date',
 	'Due Date' => 'Due Date',
 	'Related To' => 'Related To',
 	'Related with' => 'Related To Do',

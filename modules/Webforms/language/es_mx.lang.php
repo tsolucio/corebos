@@ -1,8 +1,15 @@
 <?php
-/** YOUR LICENSE TEXT HERE **/
-/*  Author       : Francisco Hernandez Odin Consultores www.odin.mx*/
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
+ * All Rights Reserved.
+ *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
+ ************************************************************************************/
 
-$mod_strings = Array (
+$mod_strings = array (
 'Webforms' => 'formulario Web',
 'Allows you to manage Webforms' => 'Crea y administra formularios web para capturar oportunidades de negocio',
 'LBL_SUCCESS' => 'ha sido agregado a la aplicación.',
@@ -15,8 +22,6 @@ $mod_strings = Array (
 'LBL_RETURNURL'=>'URL de retorno',
 'LBL_ACTION'=>'Acción',
 'LBL_ASSIGNED_TO'=>'Asignado a',
-'LBL_EDIT'=>'editar',
-'LBL_DELETE'=>'borrar',
 'LBL_SOURCE'=>'Mostrar Formulario',
 'LBL_MODULE_INFORMATION'=>'Información Formulario',
 'LBL_FIELD_INFORMATION'=>'Información Campos',
@@ -41,5 +46,4 @@ $mod_strings = Array (
 'LBL_WEB_DOMAIN' => 'Web Domain',
 'LBL_CREATENEW' => 'Pulsa el siguiente enlace para crear un formulatio web',
 );
-
 ?>

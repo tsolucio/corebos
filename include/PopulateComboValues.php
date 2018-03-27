@@ -11,7 +11,7 @@ include_once('config.php');
 require_once('include/logging.php');
 require_once('include/language/en_us.lang.php');
 require_once('include/database/PearDatabase.php');
-require_once('include/ComboStrings.php');
+require_once('modules/Migration/ComboStrings.php');
 require_once('include/ComboUtil.php');
 
 /**

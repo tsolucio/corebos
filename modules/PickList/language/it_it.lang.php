@@ -6,17 +6,12 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
-/**
- * this file can be used to internationalise the strings present in the picklist
- */
 $mod_strings = array(
 	'LBL_ASSIGN_BUTTON'=>'Assegna',
 	'ADD_PICKLIST_VALUES'=>'Aggiungi valori picklist',
 	'LBL_EXISTING_PICKLIST_VALUES'=>'Valori esistenti',
 	'LBL_PICKLIST_ADDINFO'=>'Aggiungi qui nuove voci',
-//	'LBL_SELECT_ROLES'=>'Select roles',
 	'LBL_NON_EDITABLE_PICKLIST_ENTRIES'=>'Valore non modificabile',
 	'EDIT_PICKLIST_VALUE'=>'Modifica valori nella picklist',
 	'LBL_EDIT_HERE'=>'Sostituisci con: ',
@@ -49,6 +44,6 @@ $mod_strings = array(
 	'LBL_ADD_BUTTON' => 'Aggiungi Oggetto',
 	'LBL_EDIT_BUTTON' => 'Rinomina Oggetto',
 	'LBL_DELETE_BUTTON' => 'Elimina Oggetto',
-	'NTC_DELETE_CONFIRMATION'=>'Sei sicuro di voler eliminare dallalista questo oggetto?', 
+	'NTC_DELETE_CONFIRMATION'=>'Sei sicuro di voler eliminare dallalista questo oggetto?',
 );
 ?>

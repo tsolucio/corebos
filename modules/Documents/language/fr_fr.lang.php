@@ -2,19 +2,18 @@
 /***********************************************************
 *  Module       : Documents
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'LBL_MODULE_NAME'=>'Documents',
 	'LBL_MODULE_TITLE'=>'Documents: accueil',
 	'LBL_SEARCH_FORM_TITLE'=>'Rechercher document',
 	'LBL_LIST_FORM_TITLE'=>'Liste des documents',
 	'LBL_NEW_FORM_TITLE'=>'Nouveau document',
 	'LBL_LAST_MODIFIED' => 'Modifié le',
-	'Last Modified' => 'Modifié le',
 	'LBL_LIST_SUBJECT'=>'Sujet',
 	'LBL_LIST_CONTACT_NAME'=>'Nom du contact',
 	'LBL_LIST_RELATED_TO'=>'Lié à',
@@ -35,6 +34,9 @@ $mod_strings = Array(
 	'LBL_FILENAME'=>'Pièce jointe',
 	'LBL_NOTE_INFORMATION'=>'Information document',
 	'File Information'=>'Informations du fichier',
+
+	'Template'=>'Template',
+	'Template For' => 'Template For',
 
 	'LBL_TOOL_FORM_TITLE'=>'Outils documents',
 	'Contact Name'=>'Nom du contact',
@@ -87,12 +89,8 @@ $mod_strings = Array(
 	'File Name'=>'Nom du fichier',
 	'File Type'=>'Type du fichier',
 	'File Size'=>'Taille',
-	'LBL_INTERNAL'=>'Interne',
 	'LBL_URL'=>'url',
-	'LBL_EXTERNAL'=>'Externe',
 	'LBL_EXTERNAL_LNK'=>'Lien externe',
-	'LBL_ACTIVE'=>'Actif',
-	'LBL_INACTIVE'=>'Inactif',
 	'LBL_PLATFORM_INDEPENDENT'=>'Indépendant de la plateforme',
 	'LNK_DOWNLOAD'=>'Télécharger',
 	'LBL_MOVE_DOCUMENTS'=>'Déplacer le(s) document(s)',
@@ -120,6 +118,15 @@ $mod_strings = Array(
 	'Documents' => 'Documents',
 	'Documents ID' => 'Documents ID',
 	'LBL_FILEUPLOAD_FAILED'=>'Le fichier n\'a pas pu être uploader',
+	'STORAGESIZE_CONFIGURATION' => 'Storage Size Information and Configuration',
+	'STORAGESIZE_CONFIGURATION_DESCRIPTION' => 'See and increment the space being occupied by your document system.',
+	'StorageMustIncrement' => 'The new storage capacity must always be bigger than the current limit. To reduce the size, physical elimination of the documents must be done by a server administrator. Please contact your service providor.',
+	'StorageLimit' => 'The limit of storage capacity of your application has been reached. Please contact your application administrator to extend this limit.',
+	'ExtendStorageLink' => 'You can extend this limit here.',
+	'Total' => 'Total Disk Allocation',
+	'Occupied' => 'Used Disk Space',
+	'Free' => 'Available Disk Space',
+	'NewSize' => 'New Size',
+	'accept_charge' => 'I accept the license change and the associated charge it may have',
 );
-
 ?>

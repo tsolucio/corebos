@@ -9,7 +9,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-$mod_strings = Array (
+$mod_strings = array (
 'Tooltip' => 'Ayuda rápida',
 'SINGLE_Tooltip' => 'Ayuda rápida',
 'LBL_TOOLTIP_MANAGEMENT'=>'Administración de Ayudas',

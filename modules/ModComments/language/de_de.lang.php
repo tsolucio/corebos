@@ -6,7 +6,8 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  ************************************************************************************/
-$mod_strings = Array (
+
+$mod_strings = array (
 'ModComments' => 'Kommentare',
 'SINGLE_ModComments' => 'Kommentar',
 
@@ -34,5 +35,4 @@ $mod_strings = Array (
 'LBL_CONFIGURATION_DESCRIPTION' => 'Activate/Deactivate the functionality for each module.',
 'LBL_ModComments_SETTINGS' => 'Activated Modules',
 );
-
 ?>

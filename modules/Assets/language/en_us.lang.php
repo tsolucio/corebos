@@ -8,17 +8,14 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
-/*some general information*/
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Assets',
 'SINGLE_Assets'=>'Asset',
 
-/*blocks for the module*/
 'LBL_ASSET_INFORMATION'=>'Asset Information',
 'LBL_CUSTOM_INFORMATION'=>'Custom Information',
 'LBL_DESCRIPTION_INFORMATION'=>'Notes',
 
-/*fields for the module*/
 'Assets'=>'Assets',
 'Asset Name' => 'Asset Name',
 'Customer Name'=>'Customer Name',
@@ -34,10 +31,8 @@ $mod_strings = Array(
 'Notes'=>'Notes',
 'Invoice Name'=>'Invoice Name',
 
-/*picklist values*/
 'In Service'=>'In Service',
 'Out-of-service'=>'Out-of-service',
 'Assets ID'=>'Assets ID',
-
 );
 ?>

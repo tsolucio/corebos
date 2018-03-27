@@ -1,14 +1,10 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************
 *  Module       : invoice
@@ -20,8 +16,8 @@
 *  Author       : Joe Bordes  JPL TSolucio, S.L.
 *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
  ********************************************************************************/
- 
-$mod_strings = Array(
+
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Facturas',
 'SINGLE_Invoice'=>'Factura',
 'LBL_SO_MODULE_NAME'=>'Factura',
@@ -85,7 +81,6 @@ $mod_strings = Array(
 'LBL_SELECT_ACCOUNT'=>'Seleccionar cuenta',
 'LBL_GENERAL_INFORMATION'=>'Informació General',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'Nueva Oportunidad',
 'LBL_POTENTIAL_TITLE'=>'Oportunidades',
 
@@ -100,21 +95,18 @@ $mod_strings = Array(
 'LBL_NEW_CONTACT'=>'Nuevo Contacto',
 'LBL_CONTACT_TITLE'=>'Contactos',
 
-//Added vtiger_fields after RC1 - Release
 'LBL_ALL'=>'Todos',
 'LBL_PROSPECT'=>'Prospecto',
 'LBL_INVESTOR'=>'Inversionista',
 'LBL_RESELLER'=>'Revendedor',
 'LBL_PARTNER'=>'Socio',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Herramientas de Cuenta',
-//Added for 4GA
 'Subject'=>'Referencia',
 'Quote Name'=>'Nombre de la Cotización',
 'Vendor Name'=>'Nombre del Proveedor',
 'Invoice Terms'=>'Condiciones Generales de Facturación',
-'Contact Name'=>'Persona de Contacto',//to include contact name field in Invoice
+'Contact Name'=>'Persona de Contacto',
 'Invoice Date'=>'Fecha de Factura',
 'Sub Total'=>'Sub Total',
 'S&H Amount' => 'Importe Envío y Manipulado',
@@ -152,14 +144,12 @@ $mod_strings = Array(
 'Sales Order'=>'Pedido',
 'Pending'=>'Pendientes',
 'Account Name'=>'Nombre de la cuenta',
-'Terms & Conditions'=>'Condiciones Generales',
 //Quote Info
 'LBL_INVOICE_INFORMATION'=>'Información de la Facturación',
 'LBL_INVOICE'=>'Facturación:',
 'LBL_SO_INFORMATION'=>'Información de Pedido',
 'LBL_SO'=>'Pedido:',
 
-//Added in release 4.2
 'LBL_SUBJECT'=>'Referencia:',
 'LBL_SALES_ORDER'=>'Pedido:',
 'LBL_MY_TOP_INVOICE'=>'Mis Facturas pendientes',
@@ -181,7 +171,6 @@ $mod_strings = Array(
 'Invoice No'=>'Nº Factura',
 'Adjustment'=>'Ajuste',
 
-//Added for Reports (5.0.4)
 'Tax Type'=>'Impuesto',
 'Discount Percent'=>'Descuento %',
 'Discount Amount'=>'Descuento Importe',
@@ -189,10 +178,8 @@ $mod_strings = Array(
 'No'=>'No',
 'Date'=>'Fecha',
 
-// Added affter 5.0.4 GA
 //Added for Documents module
 'Documents'=>'Documentos',
 'Invoice ID'=>'Id Factura',
 );
-
 ?>

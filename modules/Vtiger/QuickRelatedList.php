@@ -18,9 +18,9 @@ $formodule = vtlib_purify($_REQUEST['formodule']);
 $singlepane_view = GlobalVariable::getVariable('Application_Single_Pane_View', 0, $formodule);
 $singlepane_view = empty($singlepane_view) ? 'false' : 'true';
 if (file_exists('tabdata.php') && (filesize('tabdata.php') != 0)) {
-	include('tabdata.php');
+	include 'tabdata.php';
 }
-require('user_privileges/user_privileges_' . $current_user->id . '.php');
+require 'user_privileges/user_privileges_' . $current_user->id . '.php';
 $fortabid = getTabid($formodule);
 $forrecord = vtlib_purify($_REQUEST['forrecord']);
 $rls = array();
@@ -37,7 +37,13 @@ while ($rel = $adb->fetch_array($result)) {
 	$permitted = $tab_seq_array[$relatedTabId];
 	if ($permitted === 0 || empty($relatedTabId)) {
 		if ($is_admin || $profileTabsPermission[$relatedTabId] === 0 || empty($relatedTabId)) {
-			$rls[$relatedId] = array('label'=>$relationLabel,'tabid'=>$relatedTabId,'module'=>$rel['name'],'actions'=>$rel['actions'],'relationfieldid'=>$rel['relationfieldid']);
+			$rls[$relatedId] = array(
+				'label'=>$relationLabel,
+				'tabid'=>$relatedTabId,
+				'module'=>$rel['name'],
+				'actions'=>$rel['actions'],
+				'relationfieldid'=>$rel['relationfieldid'],
+			);
 		}
 	}
 }
@@ -56,15 +62,19 @@ foreach ($rls as $relid => $relinfo) {
 	$label = urlencode($label);
 	$actions = urlencode($actions);
 	if ($singlepane_view=='true') {
+		$url = "module=$formodule&action={$formodule}Ajax&file=DetailViewAjax&record={$forrecord}";
+		$url.= "&ajxaction=LOADRELATEDLIST&header={$label}&relation_id={$relid}&actions={$actions}";
 		$onclick = "onclick=\"javascript:loadRelatedListBlock(".
-				"'module=$formodule&action={$formodule}Ajax&file=DetailViewAjax&record={$forrecord}&ajxaction=LOADRELATEDLIST&header={$label}&relation_id={$relid}&actions={$actions}',".
+				"'$url',".
 				"'tbl_{$formodule}_{$labelnospace}','{$formodule}_{$labelnospace}');document.location='#tbl_".$formodule.'_'.$labelnospace.'\';"';
-		echo '<td><a title="'.$goto.'" href="javascript:;" '.$onclick.'>'.getTranslatedString($relinfo['label'],$module).'</a></td>';
+		echo '<td><a title="'.$goto.'" href="javascript:;" '.$onclick.'>'.getTranslatedString($relinfo['label'], $module).'</a></td>';
 	} else {
-		echo '<td><a title="'.$goto.'" href="index.php?action=CallRelatedList&module='.$formodule.'&record='.$forrecord.'&selected_header='.$label.'&relation_id='.$relid.'#tbl_'.$formodule.'_'.$labelnospace.'">'.getTranslatedString($relinfo['label'],$module).'</a></td>';
+		$url = "index.php?action=CallRelatedList&module=$formodule&record=$forrecord&selected_header=$label&relation_id=$relid#tbl_".$formodule.'_'.$labelnospace;
+		echo '<td><a title="'.$goto.'" href="'.$url.'">'.getTranslatedString($relinfo['label'], $module).'</a></td>';
 	}
 	if ($module=='Emails') {
-		echo '<td><img align="absmiddle" width="20px" title="'.$add.'" src="themes/softed/images/btnL3Add.gif" onclick="fnvshobj(this,\'sendmail_cont\');sendmail(\''.$formodule."',$forrecord);".'"></td>';
+		$url = "fnvshobj(this,'sendmail_cont');sendmail('$formodule',$forrecord);";
+		echo '<td><img align="absmiddle" width="20px" title="'.$add.'" src="themes/softed/images/btnL3Add.gif" onclick="'.$url.'"></td>';
 	} else {
 		if (empty($relinfo['relationfieldid'])) {
 			$linkmode = '&createmode=link';
@@ -76,7 +86,9 @@ foreach ($rls as $relid => $relinfo) {
 				$linkmode = '';
 			}
 		}
-		echo '<td><img align="absmiddle" width="20px" title="'.$add.'" src="themes/softed/images/btnL3Add.gif" onclick="document.location=\'index.php?module='.urlencode($module).'&action=EditView'.$linkmode.'&return_id='.$forrecord.'&return_action=DetailView&return_module='.$formodule.'&cbfromid='.$forrecord.'\'"></td>';
+		$url = "document.location='index.php?module=".urlencode($module).'&action=EditView'.$linkmode.'&return_id='.$forrecord;
+		$url.= '&return_action=DetailView&return_module='.$formodule.'&cbfromid='.$forrecord."'";
+		echo '<td><img align="absmiddle" width="20px" title="'.$add.'" src="themes/softed/images/btnL3Add.gif" onclick="'.$url.'"></td>';
 	}
 	echo '</tr>';
 }

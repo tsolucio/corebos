@@ -7,12 +7,18 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('config.php');
+require_once('config.inc.php');
 require_once('include/logging.php');
 require_once('include/database/PearDatabase.php');
 require_once('include/nusoap/nusoap.php');
 require_once('include/language/en_us.lang.php');
-
+require_once 'include/utils/CommonUtils.php';
+require_once 'modules/Users/Users.php';
+$adminid = Users::getActiveAdminId();
+if (!GlobalVariable::getVariable('SOAP_Outlook_Enabled', 1, 'Users', $adminid) || coreBOS_Settings::getSetting('cbSMActive', 0)) {
+	echo 'SOAP - Service is not active';
+	return;
+}
 $log = LoggerManager::getLogger('vtigerolservice');
 
 error_reporting(0);

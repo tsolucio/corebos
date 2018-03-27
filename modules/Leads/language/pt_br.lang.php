@@ -7,17 +7,18 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 03/12/2017 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
  ********************************************************************************/
 
 if ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true')) {
-	$toggle_historicos = 'See Non Converted Leads';
-	$toggle_name = 'Converted Leads';
+	$toggle_historicos = 'Ver leads não convertidos';
+	$toggle_name = 'Leads Convertidos';
 } else {
-	$toggle_historicos = 'See Converted Leads';
+	$toggle_historicos = 'Ver leads convertidos';
 	$toggle_name = 'Leads';
 }
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_TGL_HISTORICOS' => $toggle_historicos,
 'LBL_MODULE_NAME'=>$toggle_name,
 'Leads' => $toggle_name,
@@ -45,7 +46,7 @@ $mod_strings = Array(
 'LBL_LEAD_INFORMATION'=>'Informação Lead',
 'LBL_FIRST_NAME'=>'Nome:',
 'LBL_COMPANY'=>'Empresa:',
-'LBL_DESIGNATION'=>'Função:', //Contribuição de Neimar Hahmeier
+'LBL_DESIGNATION'=>'Função:',
 'LBL_PHONE'=>'Fone:',
 'LBL_LAST_NAME'=>'Sobrenome:',
 'LBL_MOBILE'=>'Celular:',
@@ -148,25 +149,19 @@ $mod_strings = Array(
 'Description'=>'Descrição',
 'Po Box'=>'Cx Postal',
 'Campaign Source'=>'Origem Campanha',
-//Added for CustomView 4.2 Release
 'Name'=>'Nome',
 'LBL_NEW_LEADS'=>'Meus Novos Leads',
-
-//Added for Existing Picklist Entries
-
 '--None--'=>'--Nada--',
 'Mr.'=>'Sr.',
 'Ms.'=>'Sra.',
 'Mrs.'=>'Srta.',
 'Dr.'=>'Dr',
 'Prof.'=>'Prof.',
-
 'Acquired'=>'Adquirido',
 'Active'=>'Ativo',
 'Market Failed'=>'Negócio Perdido',
 'Project Cancelled'=>'Projeto Cancelado',
 'Shutdown'=>'Fechado',
-
 'Apparel'=>'Vestuário',
 'Banking'=>'Bancos',
 'Biotechnology'=>'Biotecnologia',
@@ -222,13 +217,9 @@ $mod_strings = Array(
 'Pre Qualified'=>'Pré-Qualificado',
 'Qualified'=>'Qualificado',
 'Warm'=>'Morno',
-
-'Designation'=>'Título',
-
+'Designation'=>'Função',
 'Lead No'=>'Cod. Lead',
-
 'LBL_TRANSFER_RELATED_RECORDS_TO' => 'Transferir registros relacionados para',
-
 'LBL_FOLLOWING_ARE_POSSIBLE_REASONS' => 'O seguinte pode ser uma das possíveis razões',
 'LBL_LEADS_FIELD_MAPPING_INCOMPLETE' => 'Todos os campos obrigatórios não são mapeados',
 'LBL_MANDATORY_FIELDS_ARE_EMPTY' => 'Alguns dos valores dos campos obrigatórios estão vazios',
@@ -236,11 +227,7 @@ $mod_strings = Array(
 'LBL_FIELD_SETTINGS' => 'Configurações do Campo',
 'Leads ID' => 'ID Leads',
 
-//Missing label in vtiger CRM
-'Secondary Email'=>'Email Alternativo', 
-'LeadAlreadyConverted' => 'Lead cannot be converted. Either it has already been converted or you lack permission on one or more of the destination modules.',
-'Is Converted From Lead' => 'Convertido a partir do Lead',
-'Converted From Lead' => 'Convertido do Lead',
+'Secondary Email'=>'Email Alternativo',
+'LeadAlreadyConverted' => 'O lead não pode ser convertido. Ou já foi convertido ou você não possui permissão em um ou mais dos módulos de destino.',
 );
-
 ?>

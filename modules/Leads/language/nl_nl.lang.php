@@ -6,25 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
- * Portions created by vtiger are Copyright (C) vtiger.
- * Portions created by Vicus are Copyright (C) Vicus.
- * All Rights Reserved.
- * Feel free to use / redistribute these languagefiles under the VPL 1.0.
- * This translations is based on earlier work of: 
- * - IT-Online.nl <www.it-online.nl>
- * - Weltevree.org <www.Weltevree.org>
- ********************************************************************************/
-
-/*******************************************************************************
- * Vicus eBusiness Solutions Version Control
- * @package 	NL-Dutch
- * Description	Dutch language pack for vtiger CRM version 5.3.x
- * @author	$Author: luuk $
- * @version 	$Revision: 1.6 $ $Date: 2012/02/28 23:40:22 $
- * @source	$Source: /var/lib/cvs/vtiger530/Dutch/modules/Leads/language/nl_nl.lang.php,v $
- * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
- * @license	vtiger CRM Public License Version 1.0 (by definition)
  ********************************************************************************/
 
 if ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true')) {
@@ -35,7 +16,7 @@ if ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true')) {
 	$toggle_name = 'Leads';
 }
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_TGL_HISTORICOS' => $toggle_historicos,
 'LBL_MODULE_NAME'=>$toggle_name,
 'Leads' => $toggle_name,
@@ -102,7 +83,7 @@ $mod_strings = Array(
 'NTC_REMOVE_OPP_CONFIRMATION'=>'Wilt u dit verwijderen?',
 'ERR_DELETE_RECORD'=>'Een veld moet gespecificeerd zijn om een contact te verwijderen.',
 
-'LBL_COLON'=>' : ', 
+'LBL_COLON'=>' : ',
 'LBL_IMPORT_LEADS'=>'Importeer Leads',
 'LBL_LEADS_FILE_LIST'=>'Bestandslijst Lead',
 'LBL_INSTRUCTIONS'=>'Instructies',
@@ -146,7 +127,6 @@ $mod_strings = Array(
 'Mobile'=>'Telefoon Mobiel',
 'Company'=>'Bedrijf',
 'Fax'=>'Fax',
-'Designation'=>'Functie',
 'Email'=>'E-mail',
 'Secondary Email' => 'Tweede E-mail',
 'Lead Source'=>'Bron lead',
@@ -253,9 +233,5 @@ $mod_strings = Array(
 'LBL_MANDATORY_FIELDS_ARE_EMPTY' => 'Enkele van de verplichte velden zijn leeg',
 'LBL_LEADS_FIELD_MAPPING' => 'Leads Maatwerk Veldmapping',
 'LeadAlreadyConverted' => 'Lead cannot be converted. Either it has already been converted or you lack permission on one or more of the destination modules.',
-'Is Converted From Lead' => 'Wordt geconverteerd van Lead',
-'Converted From Lead' => 'Wordt geconverteerd Lead',
-
 );
-
 ?>

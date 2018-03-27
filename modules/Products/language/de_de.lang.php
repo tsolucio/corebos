@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
     'LBL_MODULE_NAME'=>'Produkte',
     'SINGLE_Products'=>'Produkt',
     'LBL_LIST_PRODUCT_NAME'=>'Produktname',
@@ -22,7 +22,6 @@ $mod_strings = Array(
     'LBL_VENDOR_INFORMATION'=>'Lieferant:',
     'LBL_PRICEBOOK_INFORMATION'=>'Preisliste:',
     'LBL_VENDOR_ADDRESS_INFORMATION'=>'Adresse:',
-    'LBL_DESCRIPTION_INFORMATION'=>'Beschreibung:',
     'LBL_PRICING_INFORMATION'=>'Preise:',
     'LBL_STOCK_INFORMATION'=>'Lager:',
     'LBL_LIST_FORM_TITLE'=>'Produkte',
@@ -72,15 +71,12 @@ $mod_strings = Array(
     'LBL_NEW_ATTACHMENT'=>'Neuer Anhang',
     'LBL_ATTACHMENT_TITLE'=>'Anhänge',
 
-    //Added fields after RC1 - Release
     'LBL_MANUFACTURER'=>'Hersteller',
     'LBL_PRODUCTCATEGORY'=>'Produktkategorie',
     'LBL_SUPPORT_START_DATE'=>'Support Start',
     'LBL_SUPPORT_EXPIRY_DATE'=>'Support Ende',
     'LBL_PURCHASE_DATE'=>'Kaufdatum',
 
-    //Added for 4GA
-    'Product Name'=>'Produktname',
     //'Product Code'=>'Part Number',
     'Part Number'=>'Produktcode',
     'Product Active'=>'Aktiv',
@@ -181,7 +177,6 @@ $mod_strings = Array(
 
     'Box'=>'Box',
     'Carton'=>'Karton',
-    'Caton'=>'Kiste',
     'Dozen'=>'Dutzend',
     'Each'=>'Paket',
     'Hours'=>'Stunden',

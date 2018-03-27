@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('Smarty_setup.php');
+require_once 'Smarty_setup.php';
 
 global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
 
@@ -15,10 +15,10 @@ $smarty = new vtigerCRM_Smarty();
 
 require_once 'modules/Vtiger/DetailView.php';
 
-if ($focus->permissiontoedit())
+if ($focus->permissiontoedit()) {
 	$smarty->assign('DETAILVIEW_AJAX_EDIT', GlobalVariable::getVariable('Application_DetailView_Inline_Edit', 1));
-else
+} else {
 	$smarty->assign('DETAILVIEW_AJAX_EDIT', false); // no permission
-
+}
 $smarty->display('DetailView.tpl');
 ?>

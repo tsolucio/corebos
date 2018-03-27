@@ -6,7 +6,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
    *********************************************************************************
-*  Module       : JavaScript General 
+*  Module       : JavaScript General
 *  Language     : HU Magyar
 *  Version      : 5.3.x
 *  Created Date : 9:39 2011.11.11.
@@ -24,6 +24,9 @@ var alert_arr = {
 	'DELETE' : 'Biztos vagy abban, hogy törölni kívánod a kiválasztott ',
 	'RECORDS' : ' rekordo(ka)t?',
 	'SELECT' : 'Válassz ki legalább egy tételt!',
+	'SELECTTEMPLATE':'Please select at least one document Template',
+	'SELECTMERGE':'Please select an entity to merge!',
+	'GENDOCSAVED':'Document saved. Please verify that it has been created correctly.',
 	'DELETE_ACCOUNT' : 'A Cég(ek) törlése el fogja távolítani a kapcsolódó Lehetőségeket és Árajánlatokat is. Biztos vagy abban, hogy törölni kívánod a kiválasztott ',
 	'DELETE_VENDOR' : 'A Szállító(k) törlése el fogja távolítani a kapcsolódó Beszerzés rendeléseket is. Biztos vagy abban, hogy törölni kívánod a kiválasztott ',
 	'SELECT_MAILID' : 'Kérjük, hogy válassz ki egy email azonosítót',
@@ -263,7 +266,7 @@ var alert_arr = {
 	'Default' : 'Alapértelmezett',
 	'Notebook' : 'Jegyzetfüzet',
 	'ReportCharts': 'Jelentés Grafikonok',
-	'SPECIAL_CHARS' : '\ / < > + \' " ',
+	'SPECIAL_CHARS' : '\\ / < > + \' " ',
 	'BETWEEN' : 'közte',
 	'BEFORE' : 'előtt',
 	'AFTER' : 'utána',
@@ -375,5 +378,15 @@ var alert_arr = {
 	'JSLBL_Delete': 'Delete',
 	'JSLBL_Loading': 'Loading',
 	'JSLBL_ATTACHMENT_NOT_DELETED': 'Attachment could not be deleted',
-	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'File Upload Limit exceeded!!'
+	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'File Upload Limit exceeded!!',
+	'JSLBL_CANCEL': 'Cancel',
+	'JSLBL_SAVEAS': 'Save as',
+	'JSLBL_SAVE': 'Save',
+	'JSLBL_PREVIOUS': 'Previous',
+	'JSLBL_NEXT': 'Next',
+	'JSLBL_CURRENT': 'current step:',
+	'JSLBL_PAGINATION': 'Pagination',
+	'JSLBL_FINISH': 'Finish',
+	'SHOWING' : 'Showing',
+	'OF' : 'of'
 };

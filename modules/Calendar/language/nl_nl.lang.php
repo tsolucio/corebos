@@ -1,35 +1,14 @@
 <?php
-/*******************************************************************************
- * The contents of this file are subject to the following licences:
- * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
- * - vtiger CRM Public License Version 1.0 
- * You may not use this file except in compliance with the License
- * Software distributed under the License is distributed on an  "AS IS" basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is: SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
- * Portions created by Vicus are Copyright (C) Vicus.
  * All Rights Reserved.
- * Feel free to use / redistribute these languagefiles under the VPL 1.0.
- * This translations is based on earlier work of: 
- * - IT-Online.nl <www.it-online.nl>
- * - Weltevree.org <www.Weltevree.org>
- ********************************************************************************
- *******************************************************************************
- * Vicus eBusiness Solutions Version Control
- * @package 	NL-Dutch
- * Description	Dutch language pack for vtiger CRM version 5.3.x
- * @author	$Author: luuk $
- * @version 	$Revision: 1.3 $ $Date: 2011/11/14 17:07:26 $
- * @source	$Source: /var/lib/cvs/vtiger530/Dutch/modules/Calendar/language/nl_nl.lang.php,v $
- * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
- * @license	vtiger CRM Public License Version 1.0 (by definition)
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Agenda',
 'LBL_MODULE_TITLE'=>'Agenda: Home',
 'LBL_MODULE_APPOINTMENT'=>'Agenda: Afspraak',
@@ -80,13 +59,11 @@ $mod_strings = Array(
 'LBL_WEEK' => 'Week',
 'LBL_WEEK_BUTTON_KEY' => 'W',
 'LBL_WEEK_BUTTON_TITLE' => 'Week [Alt+W]',
-'LBL_WEEKS' => 'Weken',
 'LBL_NEXT_WEEK' => 'Volgende week',
 'LBL_LAST_WEEK' => 'Verleden week',
 'LBL_4WEEKS_BACK' => '4 Weken terug',
 'LBL_4WEEKS_PLUS' => '4 Weken vooruit',
 'LBL_RELOAD' => 'Vernieuwen',
-
 
 'LBL_APPCREATED_BY' => 'Gemaakt door',
 'LBL_AT_DATE_TIME' => 'Aan',
@@ -98,7 +75,6 @@ $mod_strings = Array(
 'LBL_NEXT_MON' => 'Volgende maand',
 
 'LBL_YEAR_BUTTON_KEY'=>'J',
-'LBL_MON_BUTTON_TITLE'=>'Jaar [Alt+J]',
 'LBL_PREV_YEAR'=>'Vorig jaar',
 'LBL_NEXT_YEAR' => 'Volgend jaar',
 
@@ -234,7 +210,6 @@ $mod_strings = Array(
 'LBL_ADD_BUTTON'=>'Toevoegen',
 'LBL_USERS'=>'Gebruikers',
 'LBL_RMV_BUTTON'=>'Verwijder',
-'LBL_RMD_ON'=>'Herinner op',
 'LBL_SDRMD'=>'Stuur herinnnering aan',
 'LBL_ENABLE_REPEAT'=>'Herhaling aanzetten',
 'LBL_REPEAT_ONCE'=>'Herhaal een keer per',
@@ -310,17 +285,13 @@ $mod_strings = Array(
 
 'NTC_NONE_SCHEDULED'=>'Niets gepland.',
 
-// Added vtiger_fields for Attachments in Activities/SubPanelView.php
 'LBL_ATTACHMENTS'=>'Bijlage',
 'LBL_NEW_ATTACHMENT'=>'Bijlage',
 
-//Added vtiger_fields after RC1 - Release
 'LBL_ALL'=>'Alles',
-'LBL_CALL'=>'Telefoongesprek',
 'LBL_MEETING'=>'Vergadering',
 'LBL_TASK'=>'Taken',
 
-//Added for 4GA Release
 'Subject'=>'Onderwerp',
 'Assigned To'=>'Toegewezen aan',
 'Start Date & Time'=>'Startdatum & tijd',
@@ -340,7 +311,6 @@ $mod_strings = Array(
 'Duration Minutes'=>'Minuten',
 'Location'=>'Locatie',
 'No Time'=>'Geen tijd',
-//Added for Send Reminder 4.2 release
 'Send Reminder'=>'Stuur herinnering',
 'SendReminder'=>'Stuur herinnering',
 'LBL_YES'=>'Ja',
@@ -349,16 +319,13 @@ $mod_strings = Array(
 'LBL_MINUTES'=>'Minuten',
 'LBL_HOURS'=>'Uren',
 'LBL_BEFORE_EVENT'=>'Voor de afspraak',
-//Added for CustomView 4.2 Release
 'Close'=>'Sluiten',
 'Start Date'=>'Startdatum',
 'Type'=>'Type',
 'End Date'=>'Einddatum',
-'Recurrence'=> 'Herhaalde afspraken',
 'Recurring Type'=> 'Herhaalype',
 //Activities - Notification Error
 'LBL_NOTIFICATION_ERROR'=>'E-mailserver Error : U heeft uw uitgaande e-mailserver nog niet geconfigureerd',
-// Mike Crowe Mod --------------------------------------------------------added for generic search
 'LBL_GENERAL_INFORMATION'=>'Algemene informatie',
 
 'LBL_EVENTTYPE'=>'Afspraak type',
@@ -368,14 +335,12 @@ $mod_strings = Array(
 'LBL_INVITE'=>'Uitnodigen',
 'LBL_REPEAT'=>'Herhalen',
 'LBL_REMINDER'=>'Herinnering',
-'LBL_ENABLE_REPEAT'=>'Herhalen',
 'LBL_SENDREMINDER'=>'Stuur herinnering',
 'LBL_NOTIFICATION'=>'Notificatie',
 'LBL_SENDNOTIFICATION'=>'Stuur notificatie',
 'LBL_RMD_ON'=>'Herinner',
 'LBL_REPEATEVENT'=>'Herhaal om de',
 'LBL_TIMEDATE'=>'Tijd & Datum',
-'LBL_TODO'=>'Actie',
 'LBL_HR'=>'uur',
 'LBL_MIN'=>'min',
 'LBL_EVENT'=>'Afspraak',
@@ -393,7 +358,6 @@ $mod_strings = Array(
 'Medium'=>'Medium',
 'Low'=>'Laag',
 'LBL_SELECT'=>'Selecteer',
-'LBL_SELECT_CONTACT'=>'Selecteer contact',
 'LBL_ALL_EVENTS_TODOS'=>'Alle Afspraken en Acties',
 'First'=>'Eerste', 
 'Second'=>'Second',
@@ -432,7 +396,6 @@ $mod_strings = Array(
 //added to send invitation mail Subject.
 'INVITATION'=>' Uitnodiging',
 
-// Added/Updated for vtiger CRM 5.0.4
 'LBL_YEAR_BUTTON_TITLE'=>'Jaar [Alt+Y]',
 'LBL_SELECT_CONTACT'=>'Selecteer Contactpersonen',
 'SHARED_EVENT_DEL_MSG'=>'De gebruiker heeft geen toestemming om gedeelde activiteiten te wijzigen/ verwijderen.',
@@ -440,7 +403,6 @@ $mod_strings = Array(
 'LBL_CREATED'=>'aangemaakt',
 'LBL_UPDATED'=>'bijgewerkt',
 
-//Added after 5.0.4 GA
 'LBL_BUSY' => 'Bezet',
 
 //Custom Fields support for Calendar
@@ -463,5 +425,4 @@ $mod_strings = Array(
 'LBL_NO_IMPORT_TO_UNDO'=>'Er Is Geen Import Om Ongedaan Te Maken.',
 'LBL_FAILURE'=>'Fout!',
 );
-
 ?>

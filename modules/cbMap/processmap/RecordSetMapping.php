@@ -41,7 +41,7 @@ class RecordSetMapping extends processcbMap {
 	private $actions = array('include','exclude','group');
 	private $default_action = 'exclude';
 
-	function processMap($arguments) {
+	public function processMap($arguments) {
 		$this->convertMap2Array();
 		return $this;
 	}
@@ -50,35 +50,41 @@ class RecordSetMapping extends processcbMap {
 		global $adb, $current_user;
 		$xml = $this->getXMLContent();
 		if (isset($xml->records)) {
-			foreach($xml->records->record as $k=>$v) {
+			foreach ($xml->records->record as $k => $v) {
 				if (isset($v->action)) {
 					$action = strtolower((String)$v->action);
-					if (!in_array($action,$this->actions)) $action = $this->default_action;
+					if (!in_array($action, $this->actions)) {
+						$action = $this->default_action;
+					}
 				} else {
 					$action = $this->default_action;
 				}
 				if (isset($v->id)) {
-					$rs = $adb->pquery('select setype from vtiger_crmentity where crmid=? and deleted=0',array((Integer)$v->id));
+					$rs = $adb->pquery('select setype from vtiger_crmentity where crmid=? and deleted=0', array((Integer)$v->id));
 					if ($adb->num_rows($rs)==1) {
 						$recinfo = $adb->fetch_array($rs);
 						$this->mapping[$action]['ids'][] = (Integer)$v->id;
 						$this->mapping[$action][$recinfo['setype']][] = (Integer)$v->id;
-						if (!in_array($recinfo['setype'],$this->mapping['modules'])) $this->mapping['modules'][] = $recinfo['setype'];
+						if (!in_array($recinfo['setype'], $this->mapping['modules'])) {
+							$this->mapping['modules'][] = $recinfo['setype'];
+						}
 					}
 				} else {
 					$tabid = getTabid((String)$v->module);
-					$ui4rs = $adb->pquery('select fieldname from vtiger_field where uitype=4 and tabid=?',array($tabid));
-					$ui4 = $adb->query_result($ui4rs,0,0);
+					$ui4rs = $adb->pquery('select fieldname from vtiger_field where uitype=4 and tabid=?', array($tabid));
+					$ui4 = $adb->query_result($ui4rs, 0, 0);
 					$queryGenerator = new QueryGenerator((String)$v->module, $current_user);
 					$queryGenerator->setFields(array('id'));
-					$queryGenerator->addCondition($ui4,(String)$v->value,'e');
+					$queryGenerator->addCondition($ui4, (String)$v->value, 'e');
 					$query = $queryGenerator->getQuery();
-					$idrs = $adb->pquery($query,array());
-					if ($idrs and $adb->num_rows($idrs)>0) {
-						$id = $adb->query_result($idrs,0,0);
+					$idrs = $adb->pquery($query, array());
+					if ($idrs && $adb->num_rows($idrs)>0) {
+						$id = $adb->query_result($idrs, 0, 0);
 						$this->mapping[$action]['ids'][] = (Integer)$id;
 						$this->mapping[$action][(String)$v->module][] = (Integer)$id;
-						if (!in_array($recinfo['setype'],$this->mapping['modules'])) $this->mapping['modules'][] = $recinfo['setype'];
+						if (!in_array($recinfo['setype'], $this->mapping['modules'])) {
+							$this->mapping['modules'][] = $recinfo['setype'];
+						}
 					}
 				}
 			}
@@ -100,7 +106,7 @@ class RecordSetMapping extends processcbMap {
 	* param $action: include | exclude | group
 	* param $module
 	*/
-	public function getRecordSetModule($action,$module) {
+	public function getRecordSetModule($action, $module) {
 		return $this->mapping[strtolower($action)][$module];
 	}
 
@@ -115,8 +121,8 @@ class RecordSetMapping extends processcbMap {
 	* param $action: include | exclude | group
 	* param $id
 	*/
-	public function isInRecordSet($action,$id) {
-		return in_array($id,$this->mapping[strtolower($action)]['ids']);
+	public function isInRecordSet($action, $id) {
+		return in_array($id, $this->mapping[strtolower($action)]['ids']);
 	}
 
 	/**
@@ -124,9 +130,8 @@ class RecordSetMapping extends processcbMap {
 	* param $module
 	* param $id
 	*/
-	public function isInRecordSetModule($action,$module,$id) {
-		return in_array($id,$this->mapping[strtolower($action)][$module]);
+	public function isInRecordSetModule($action, $module, $id) {
+		return in_array($id, $this->mapping[strtolower($action)][$module]);
 	}
-
 }
 ?>

@@ -25,7 +25,6 @@
 	'values' => 'list of possible values',
 	'definition' => 'explanation and purpose',
 ),
-
  *************************************************************************************************/
 $GlobalVariableDefinitonsHeader = array(
 	'valuetype' => 'Value Type',
@@ -69,6 +68,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Debug',
 	'values' => '0 | 1',
 	'definition' => 'If set to 1 the SQL query being launched to retrieve records in a List View will be shown on screen.',
+),
+'Debug_RelatedList_Query' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Debug',
+	'values' => '0 | 1',
+	'definition' => 'If the value of the variable is 1 it will be written on screen, the record query for the related list.',
 ),
 'Debug_Popup_Query' => array(
 	'status' => 'Implemented',
@@ -210,6 +216,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Completely disables or enables SOAP Customer Portal access.',
 ),
+'SOAP_Outlook_Enabled' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Webservice',
+	'values' => '0 | 1',
+	'definition' => 'Completely disables or enables SOAP Outlook access.',
+),
 'Application_Default_Action' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'String',
@@ -272,6 +285,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Performance',
 	'values' => '0 | 1',
 	'definition' => 'Compute list view record count while loading listview. The default is 0',
+),
+'Application_ListView_Sum_Currency' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Performance',
+	'values' => '0 | 1',
+	'definition' => 'Show total sum of currency columns. The default is 1',
 ),
 'Application_DetailView_Record_Navigation' => array(
 	'status' => 'Implemented',
@@ -462,6 +482,27 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Show Documents list view as separate folders or as a normal list view. Default is 1 = Folder view.',
 ),
+'Document_CreateSelectContactFolder' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'When creating a document from a Contact, create a new folder with the name of the contact and select it by default.',
+),
+'Document_CreateSelectAccountFolder' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'When creating a document from an Account, create a new folder with the name of the account and select it by default.',
+),
+'Document_CreateSelectAccountFolderForContact' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'When creating a document from a Contact, create a new folder with the name of the related account and select it by default. This variable overrides Document_CreateSelectContactFolder',
+),
 'Inventory_Tax_Type_Default' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'String',
@@ -489,6 +530,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => 'CSV list of modules',
 	'definition' => 'Comma Separated List of modules that the global search will put first in the result list.',
+),
+'Application_Global_Search_Autocomplete_Limit' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'Maximum númber of results to be shown in autocomplete global search.',
 ),
 'Product_Copy_Bundle_OnDuplicate' => array(
 	'status' => 'Implemented',
@@ -580,6 +628,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Mobile Functionality',
 	'values' => 'Calendar | HelpDesk | Contacts ...',
 	'definition' => 'Set the default module to show when accessing the Mobile module.',
+),
+'Mobile_UI_Enabled' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Mobile Functionality',
+	'values' => '0 | 1',
+	'definition' => 'Completely disables or enables Mobile UI access.',
 ),
 'Application_Storage_Directory' => array(
 	'status' => 'Implemented',
@@ -777,6 +832,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Maximum number of days in the past to search for events that will appear in the reminder pop-up. The default is 7 days.',
 ),
+'Calendar_Show_Only_My_Events' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Show only the events assign to me, shared with me and in which I am invited.',
+),
 'CronTasks_cronWatcher_mailto' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'CSV emails',
@@ -901,7 +963,7 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'String',
 	'category' => 'Application',
 	'values' => 'Country Name',
-	'definition' => 'For GeoDistance calculation workflow functions, this variable sets the default country to use if none is given. Useful when the company has a local area of influence.',
+	'definition' => 'For GeoDistance calculation workflow functions, this variable sets the default country coce to use if none is given. Useful when the company has a local area of influence.Example:gb,us,fr,es',
 ),
 'Workflow_GeoDistance_ServerIP' => array(
 	'status' => 'Implemented',
@@ -1008,6 +1070,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'The maximum number of records that will be synchronized in one batch when sending or receiving information from Google Contacts. The default value is 200 records.',
 ),
+'CustomerPortal_PDF_Modules'  => array(
+	'status' => 'Implemented',
+	'valuetype' => 'CSV Modules',
+	'category' => 'Integration',
+	'values' => 'Comma separated values of modules capable of sending PDF data via Webservice',
+	'definition' => 'When using the getpdfdata webservice call, this variable indicates which Modules can generate PDF data.',
+),
 'CustomerPortal_PDF'  => array(
 	'status' => 'Implemented',
 	'valuetype' => 'String',
@@ -1059,7 +1128,6 @@ $GlobalVariableDefinitons = array(
 ),
 );
 
-foreach (glob('modules/GlobalVariable/language/en_us.gvdefs.*.php',GLOB_BRACE) as $tcode) {
-	include($tcode);
+foreach (glob('modules/GlobalVariable/language/en_us.gvdefs.*.php', GLOB_BRACE) as $tcode) {
+	include $tcode;
 }
-

@@ -7,7 +7,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-var mod_alert_arr = {       
+var mod_alert_arr = {
 	SELECT_ATLEAST_ONE_ENTITY:'Veuillez sélectionner au moins une entité.',
 	MSG_EMPTY_CONFIRMATION:'Êtes vous sûr de vouloir supprimer définitivement le(s)',
 	MSG_RESTORE_CONFIRMATION:'Êtes vous sûr de vouloir restaurer le(s)'

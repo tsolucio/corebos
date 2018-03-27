@@ -7,87 +7,71 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-if (isPermitted('VtigerBackup','')=='yes') {
-if(isset($_REQUEST['enable_ftp_backup']) && vtlib_purify($_REQUEST['enable_ftp_backup']) != '')
-{
-	global $root_directory;
-	$filename = $root_directory.'user_privileges/enable_backup.php';
+if (isPermitted('VtigerBackup', '')=='yes') {
+	if (isset($_REQUEST['enable_ftp_backup']) && vtlib_purify($_REQUEST['enable_ftp_backup']) != '') {
+		global $root_directory;
+		$filename = $root_directory.'user_privileges/enable_backup.php';
 
-	$readhandle = @fopen($filename, "r+");
+		$readhandle = @fopen($filename, "r+");
 
-	if($readhandle)
-	{
-		$buffer = '';
-		$new_buffer = '';
-		while(!feof($readhandle))
-		{
-			$buffer = fgets($readhandle, 5200);
-			list($starter, $tmp) = explode(" = ", $buffer);
+		if ($readhandle) {
+			$buffer = '';
+			$new_buffer = '';
+			while (!feof($readhandle)) {
+				$buffer = fgets($readhandle, 5200);
+				list($starter, $tmp) = explode(" = ", $buffer);
 
-			if($starter == '$enable_ftp_backup' && stristr($tmp,'false'))
-			{
-				$new_buffer .= "\$enable_ftp_backup = 'true';\n";
+				if ($starter == '$enable_ftp_backup' && stristr($tmp, 'false')) {
+					$new_buffer .= "\$enable_ftp_backup = 'true';\n";
+				} elseif ($starter == '$enable_ftp_backup' && stristr($tmp, 'true')) {
+					$new_buffer .= "\$enable_ftp_backup = 'false';\n";
+				} else {
+					$new_buffer .= $buffer;
+				}
 			}
-			elseif($starter == '$enable_ftp_backup' && stristr($tmp,'true'))
-			{
-				$new_buffer .= "\$enable_ftp_backup = 'false';\n";
-			}
-			else
-				$new_buffer .= $buffer;
-
+			fclose($readhandle);
 		}
-		fclose($readhandle);
-	}
 
-	$handle = fopen($filename, "w");
-	fputs($handle, $new_buffer);
-	fclose($handle);
-}
-elseif(isset($_REQUEST['enable_local_backup']) && vtlib_purify($_REQUEST['enable_local_backup']) != '')
-{
-	global $root_directory;
-	$filename = $root_directory.'user_privileges/enable_backup.php';
+		$handle = fopen($filename, "w");
+		fputs($handle, $new_buffer);
+		fclose($handle);
+	} elseif (isset($_REQUEST['enable_local_backup']) && vtlib_purify($_REQUEST['enable_local_backup']) != '') {
+		global $root_directory;
+		$filename = $root_directory.'user_privileges/enable_backup.php';
 
-	$readhandle = @fopen($filename, "r+");
+		$readhandle = @fopen($filename, "r+");
 
-	if($readhandle)
-	{
-		$buffer = '';
-		$new_buffer = '';
-		while(!feof($readhandle))
-		{
-			$buffer = fgets($readhandle, 5200);
-			list($starter, $tmp) = explode(" = ", $buffer);
-
-			if($starter == '$enable_local_backup' && stristr($tmp,'false'))
-			{
-				$new_buffer .= "\$enable_local_backup = 'true';\n";
+		if ($readhandle) {
+			$buffer = '';
+			$new_buffer = '';
+			while (!feof($readhandle)) {
+				$buffer = fgets($readhandle, 5200);
+				list($starter, $tmp) = explode(" = ", $buffer);
+				if ($starter == '$enable_local_backup' && stristr($tmp, 'false')) {
+					$new_buffer .= "\$enable_local_backup = 'true';\n";
+				} elseif ($starter == '$enable_local_backup' && stristr($tmp, 'true')) {
+					$new_buffer .= "\$enable_local_backup = 'false';\n";
+				} else {
+					$new_buffer .= $buffer;
+				}
 			}
-			elseif($starter == '$enable_local_backup' && stristr($tmp,'true'))
-			{
-				$new_buffer .= "\$enable_local_backup = 'false';\n";
-			}
-			else
-				$new_buffer .= $buffer;
+			fclose($readhandle);
 		}
-		fclose($readhandle);
-	}
 
-	$handle = fopen($filename, "w");
-	fputs($handle, $new_buffer);
-	fclose($handle);
-}
-elseif(isset($_REQUEST['GetBackupDetail']) && vtlib_purify($_REQUEST['GetBackupDetail']) != '' && ($_REQUEST['servertype'] == 'local_backup' || $_REQUEST['servertype'] == 'ftp_backup'))
-{
-	require_once("include/database/PearDatabase.php");
-	global $mod_strings,$adb;
-	$servertype = vtlib_purify($_REQUEST['servertype']);
-	$GetBackup = $adb->pquery('select * from vtiger_systems where server_type = ?', array($servertype));
-	$BackRowsCheck = $adb->num_rows($GetBackup);
-	if($BackRowsCheck > 0)
-		echo "SUCCESS";
-	else
-		echo "FAILURE";
-}
+		$handle = fopen($filename, "w");
+		fputs($handle, $new_buffer);
+		fclose($handle);
+	} elseif (!empty($_REQUEST['GetBackupDetail']) && ($_REQUEST['servertype'] == 'local_backup' || $_REQUEST['servertype'] == 'ftp_backup')) {
+		require_once 'include/database/PearDatabase.php';
+		global $mod_strings,$adb;
+		$servertype = vtlib_purify($_REQUEST['servertype']);
+		$GetBackup = $adb->pquery('select * from vtiger_systems where server_type = ?', array($servertype));
+		$BackRowsCheck = $adb->num_rows($GetBackup);
+		if ($BackRowsCheck > 0) {
+			echo 'SUCCESS';
+		} else {
+			echo 'FAILURE';
+		}
+	}
 } // ispermitted
 ?>

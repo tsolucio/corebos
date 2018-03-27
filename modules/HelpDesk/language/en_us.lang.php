@@ -8,8 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-$mod_strings = Array(
-// Added in release 4.0
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Support Tickets',
 'LBL_GROUP'=>'Group',
 'LBL_ACCOUNT_NAME'=>'Organization Name',
@@ -50,12 +49,10 @@ $mod_strings = Array(
 'LBL_AUTHOR'=>'Author',
 'LBL_QUESTION'=>'Question',
 
-//Added vtiger_fields for File Attachment and Mail send in Tickets
 'LBL_ATTACHMENTS'=>'Attachments',
 'LBL_NEW_ATTACHMENT'=>'New Attachment',
 'LBL_SEND_MAIL'=>'Send Mail',
 
-//Added vtiger_fields for search option  in TicketsList -- 4Beta
 'LBL_CREATED_DATE'=>'Created Date',
 'LBL_IS'=>'is',
 'LBL_IS_NOT'=>'is not',
@@ -74,21 +71,18 @@ $mod_strings = Array(
 'LBL_TICKET_CATEGORY'=>'Category',
 'LBL_TICKET_PRIORITY'=>'Priority',
 
-//Added vtiger_fields after 4 -- Beta
 'LBL_NEW_TICKET'=>'New Ticket',
 'LBL_TICKET_INFORMATION'=>'Ticket Information',
 
 'LBL_LIST_FORM_TITLE'=>'Tickets List',
 'LBL_SEARCH_FORM_TITLE'=>'Ticket Search',
 
-//Added vtiger_fields after RC1 - Release
 'LBL_CHOOSE_A_VIEW'=>'Choose a View...',
 'LBL_ALL'=>'All',
 'LBL_LOW'=>'Low',
 'LBL_MEDIUM'=>'Medium',
 'LBL_HIGH'=>'High',
 'LBL_CRITICAL'=>'Critical',
-//Added vtiger_fields for 4GA
 'Assigned To'=>'Assigned To',
 'Contact Name'=>'Contact Name',
 'Priority'=>'Priority',
@@ -110,17 +104,14 @@ $mod_strings = Array(
 'LBL_PRIORITIES'=>'Priorities',
 'LBL_SUPPORTERS'=>'Supporters',
 
-//Added vtiger_fields after 4_0_1
 'LBL_TICKET_RESOLUTION'=>'Solution Information',
 'Solution'=>'Solution',
 'Add Comment'=>'Add Comment',
-'LBL_ADD_COMMENT'=>'Add Comment',//give the same value given to the above string 'Add Comment'
+'LBL_ADD_COMMENT'=>'Add Comment',
 
-//Added for 4.2 Release -- CustomView
 'Ticket ID'=>'Ticket ID',
 'Subject'=>'Subject',
 
-//Added after 4.2 alpha
 'Severity'=>'Severity',
 'Product Name'=>'Product Name',
 'Related To'=>'Related To',
@@ -128,10 +119,8 @@ $mod_strings = Array(
 
 'LBL_TICKETS'=>'Tickets',
 
-//Added on 09-12-2005
 'LBL_CUMULATIVE_STATISTICS'=>'Cumulative Statistics',
 
-//Added on 12-12-2005
 'LBL_CONVERT_AS_FAQ_BUTTON_TITLE'=>'Convert As FAQ',
 'LBL_CONVERT_AS_FAQ_BUTTON_KEY'=>'C',
 'LBL_CONVERT_AS_FAQ_BUTTON_LABEL'=>'Convert As FAQ',
@@ -139,7 +128,6 @@ $mod_strings = Array(
 'LBL_COMMENT_INFORMATION'=>'Comment Information',
 
 //Added for existing picklist entries
-
 'Big Problem'=>'Big Problem',
 'Small Problem'=>'Small Problem',
 'Other Problem'=>'Other Problem',
@@ -164,10 +152,8 @@ $mod_strings = Array(
 'Dear'=> 'Dear',
 'LBL_PORTAL_BODY_MAILINFO'=> 'The Ticket is',
 'LBL_DETAIL' => 'the details are :',
-'LBL_REGARDS'=> 'Regards',
 'LBL_TEAM'=> 'HelpDesk Team',
 'LBL_TICKET_DETAILS' => 'Ticket Details',
-'LBL_SUBJECT' => 'Subject : ',
 'created' => 'created',
 'replied' => 'replied',
 'reply'=>'There is a reply to',
@@ -178,7 +164,6 @@ $mod_strings = Array(
 'The comments are' => 'The comments are',
 'Ticket Title' => 'Ticket Title',
 'Re' => 'Re :',
-// Added/Updated for vtiger CRM 5.0.4
 
 //this label for customerportal.
 'LBL_STATUS_CLOSED' =>'Closed',//Do not convert this label. This is used to check the status. If the status 'Closed' is changed in vtigerCRM server side then you have to change in customerportal language file also.
@@ -201,11 +186,8 @@ $mod_strings = Array(
 'LBL_MAIL_SENT' => 'Mail has been sent to your mail id with the customer portal login details',
 'LBL_ALTBODY' => 'This is the body in plain text for non-HTML mail clients',
 
-// Added after 5.0.4 GA
-
 // Module Sequence Numbering
 'Ticket No' => 'Ticket No',
-// END
 
 'Hours' => 'Hours',
 'Days' => 'Days',
@@ -215,5 +197,4 @@ $mod_strings = Array(
 'Comment Added' => 'Comment Added',
 'HelpDesk ID' => 'Support Tickets ID',
 );
-
 ?>

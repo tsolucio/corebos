@@ -140,7 +140,6 @@
 			}
 			$rrs = $adb->pquery('select setype,deleted from vtiger_crmentity where crmid=?', array($recordid));
 			if (!$rrs) return false;
-			$rec = $adb->fetch_array($rrs);
 			$moduleName = $adb->query_result($rrs, 0, 'setype');
 			$deleted = $adb->query_result($rrs, 0, 'deleted');
 			if ($deleted!=0 or in_array($moduleName, $not_supported)) {
@@ -200,7 +199,6 @@
 		function executeRACWorkflow($workflow,$recordid) {
 			$adb=$this->adb;
 			$tm = new VTTaskManager($adb);
-			$taskQueue = new VTTaskQueue($adb);
 			$tasks = $tm->getTasksForWorkflow($workflow->id);
 			foreach($tasks as $task){
 				if(is_object($task) and $task->active and get_class($task) == 'CBSelectcbMap') {
@@ -641,10 +639,10 @@
 					$nextTriggerDay = null;
 					sort($scheduledDaysOfMonth);
 					foreach ($scheduledDaysOfMonth as $day) {
-						if($day == $currentDayOfMonth) {
+						if ($day == $currentDayOfMonth) {
 							$currentTime = time();
-							$schTime = strtotime($date = date('Y').'-'.date('m').'-'.$day.' '.$scheduledTime);
-							if($schTime > $currentTime) {
+							$schTime = strtotime(date('Y-m-').$day.' '.$scheduledTime);
+							if ($schTime > $currentTime) {
 								$nextTriggerDay = $day;
 								break;
 							}

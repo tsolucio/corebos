@@ -296,11 +296,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 					<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small" style="width:280px;">
 				{/if}
 				{foreach item=arr from=$fldvalue}
-					{if $arr[0] eq $APP.LBL_NOT_ACCESSIBLE}
-					<option value="{$arr[0]}" {$arr[2]}>{$arr[0]}</option>
-					{else}
 					<option value="{$arr[1]}" {$arr[2]}>{$arr[0]}</option>
-					{/if}
 				{foreachelse}
 					<option value=""></option>
 					<option value="" style='color: #777777' disabled>{$APP.LBL_NONE}</option>
@@ -322,6 +318,19 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 						<option value="{$plvalue}" {if $plvalue eq $arr[2]}selected{/if}>{$plarr|@getTranslatedString:$arr[0]}</option>
 					{/foreach}
 					</optgroup>
+				{/foreach}
+				</select>
+			</td>
+		{elseif $uitype eq '1616'}
+			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
+				<font color="red">{$mandatory_field}</font>
+				{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
+			</td>
+			<td width="30%" align=left class="dvtCellInfo">
+				<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small" style="width:280px;">
+				<option value="">{$APP.LBL_NONE}</option>
+				{foreach item=arr from=$fldvalue}
+					<option value="{$arr[1]}" {$arr[3]}>{$arr[2]}</option>
 				{/foreach}
 				</select>
 			</td>
@@ -522,7 +531,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 						<table width="100%" height="100%" class="small" cellpadding="5">
 						<tr class="detailedViewHeader">
 							<th colspan="4">
-								<b>{$MOD.LBL_PRODUCT_PRICES}</b>
+								<b>{'LBL_PRODUCT_PRICES'|@getTranslatedString:'Products'}</b>
 							</th>
 							<th align="right">
 								<img border="0" style="cursor: pointer;" onclick="toggleShowHide('multiple_currencies','currency_class');" src="{'close.gif'|@vtiger_imageurl:$THEME}"/>
@@ -747,15 +756,6 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				<input name="bccmail" type="text" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"  value="">
 			</td>
 		   </tr>
-
-		{elseif $uitype eq 59}
-			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
-				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
-			</td>
-			<td width="30%" align=left class="dvtCellInfo">
-				<input name="{$fldname}" type="hidden" value="{$secondvalue}">
-				<input name="product_name" readonly type="text" value="{$fldvalue}">&nbsp;<img tabindex="{$vt_tab}" src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module=Products&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=specific&fromlink={$fromlink}","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.product_id.value=''; this.form.product_name.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
-			</td>
 
 		{elseif $uitype eq 55 || $uitype eq 255}
 			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>

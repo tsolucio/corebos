@@ -15,14 +15,14 @@
  *************************************************************************************************
  *  Author       : MajorLabel
  *************************************************************************************************/
-require_once('modules/com_vtiger_workflow/VTEntityCache.inc');
-require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
-require_once('include/Webservices/Retrieve.php');
-require_once('include/Webservices/Create.php');
-require_once('modules/Users/Users.php');
-require_once('include/utils/EditViewUtils.php');
+require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
+require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
+require_once 'include/Webservices/Retrieve.php';
+require_once 'include/Webservices/Create.php';
+require_once 'modules/Users/Users.php';
+require_once 'include/utils/EditViewUtils.php';
 
-class ConvertInventoryModule extends VTTask{
+class ConvertInventoryModule extends VTTask {
 
 	public $executeImmediately = true;
 
@@ -31,44 +31,44 @@ class ConvertInventoryModule extends VTTask{
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $current_user, $logbg, $from_wf;
+		global $current_user, $logbg, $from_wf;
 		$from_wf = true;
 		$util = new VTWorkflowUtils();
 		$admin = $util->adminUser();
 
-		// Get the salesorder in question
+		// Get the origin record in question
 		$wsso = vtws_retrieve($entity->getId(), $current_user);
 
 		// Start with the inventory module values and overwrite what's needed to overwrite
 		$data = $wsso;
 		$cbfrommodule = $entity->getModuleName();
-		if ($cbfrommodule=='Quotes' and $this->convertto=='Invoice') {
+		if ($cbfrommodule=='Quotes' && $this->convertto=='Invoice') {
 			$fromEntity = CRMEntity::getInstance($cbfrommodule);
 			$toEntity = CRMEntity::getInstance($this->convertto);
 			$fromEntity->column_fields = $data;
 			$toEntity->column_fields = $data;
-			$result = getConvertQuoteToInvoice($toEntity,$fromEntity,$entity->getId());
+			$result = getConvertQuoteToInvoice($toEntity, $fromEntity, $entity->getId());
 			$data = $result->column_fields;
-		} elseif ($cbfrommodule=='Quotes' and $this->convertto=='SalesOrder') {
+		} elseif ($cbfrommodule=='Quotes' && $this->convertto=='SalesOrder') {
 			$fromEntity = CRMEntity::getInstance($cbfrommodule);
 			$toEntity = CRMEntity::getInstance($this->convertto);
 			$fromEntity->column_fields = $data;
 			$toEntity->column_fields = $data;
-			$result = getConvertQuoteToSoObject($toEntity,$fromEntity,$entity->getId());
+			$result = getConvertQuoteToSoObject($toEntity, $fromEntity, $entity->getId());
 			$data = $result->column_fields;
-		} elseif ($cbfrommodule=='SalesOrder' and $this->convertto=='Invoice') {
+		} elseif ($cbfrommodule=='SalesOrder' && $this->convertto=='Invoice') {
 			$fromEntity = CRMEntity::getInstance($cbfrommodule);
 			$toEntity = CRMEntity::getInstance($this->convertto);
 			$fromEntity->column_fields = $data;
 			$toEntity->column_fields = $data;
-			$result = getConvertSoToInvoice($toEntity,$fromEntity,$entity->getId());
+			$result = getConvertSoToInvoice($toEntity, $fromEntity, $entity->getId());
 			$data = $result->column_fields;
 		} else {
 			$bmapname = $cbfrommodule.'2'.$this->convertto;
 			$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 			if ($cbMapid) {
 				$cbMap = cbMap::getMapByID($cbMapid);
-				$data = $cbMap->Mapping($data,$data);
+				$data = $cbMap->Mapping($data, $data);
 			}
 		}
 
@@ -84,9 +84,9 @@ class ConvertInventoryModule extends VTTask{
 		$from_wf = false;
 		$util->revertUser();
 		$logbg->debug('ConvertInventoryModule: From '.$cbfrommodule.' '.$entity->getId().' to '.$this->convertto);
-		$logbg->debug('ConvertInventoryModule: From '.print_r($wsso,true));
-		$logbg->debug('ConvertInventoryModule: To '.print_r($data,true));
-		$logbg->debug('ConvertInventoryModule: Result '.print_r($invmod,true));
+		$logbg->debug('ConvertInventoryModule: From '.print_r($wsso, true));
+		$logbg->debug('ConvertInventoryModule: To '.print_r($data, true));
+		$logbg->debug('ConvertInventoryModule: Result '.print_r($invmod, true));
 	}
 }
 ?>

@@ -1,22 +1,13 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Home/language/en_us.lang.php,v 1.5 2005/03/04 15:18:47 jack Exp $
- * Description:  Defines the English language pack for Home Module.
- ********************************************************************************/
- 
+ ************************************************************************************/
+
 $mod_strings = array (
   'LBL_NEW_FORM_TITLE' => 'Nuovo Contatto',
   'LBL_FIRST_NAME' => 'Nome',
@@ -121,6 +112,8 @@ $mod_strings = array (
 'LBL_HOME_ADDWINDOW' => 'Aggiungi Finestra',
 'LBL_GETTING_STARTED' => 'Iniziare',
 'ExpirePasswordAfterDays' => 'Far scadere password dopo giorni',
+'FieldsNotFoundInFilter' => 'Fields not found in Selected Filter',
+'FilterNotFound' => 'Filter You have Selected is Not Found',
+'Permission Denied' => 'Permission Denied',
 );
-
 ?>

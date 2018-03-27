@@ -116,7 +116,7 @@ class Contacts extends CRMEntity {
 	var $default_sort_order = 'ASC';
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
-	var $mandatory_fields = Array('assigned_user_id','lastname','createdtime' ,'modifiedtime');
+	public $mandatory_fields = array('lastname', 'createdtime', 'modifiedtime');
 
 	/** Function to get the number of Contacts assigned to a particular User.
 	*  @param varchar $user name - Assigned to User
@@ -193,35 +193,39 @@ class Contacts extends CRMEntity {
 	}
 
 	/** Returns a list of the associated opportunities */
-	function get_opportunities($id, $cur_tab_id, $rel_tab_id, $actions=false) {
+	public function get_opportunities($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view,$currentModule,$current_user, $adb;
 		$log->debug("Entering get_opportunities(".$id.") method ...");
 		$this_module = $currentModule;
 
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
-		require_once("modules/$related_module/$related_module.php");
+		require_once "modules/$related_module/$related_module.php";
 		$other = new $related_module();
 
 		$parenttab = getParentTab();
 
-		if($singlepane_view == 'true')
+		if ($singlepane_view == 'true') {
 			$returnset = '&return_module='.$this_module.'&return_action=DetailView&return_id='.$id;
-		else
+		} else {
 			$returnset = '&return_module='.$this_module.'&return_action=CallRelatedList&return_id='.$id;
-
+		}
 		$button = '';
 
 		if ($actions) {
 			if (is_string($actions)) {
 				$actions = explode(',', strtoupper($actions));
 			}
-			if (in_array('SELECT', $actions) && isPermitted($related_module,4, '') == 'yes') {
-				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module). "' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
+			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
+				$button .= "<input title='".getTranslatedString('LBL_SELECT').' '. getTranslatedString($related_module, $related_module).
+					"' class='crmbutton small edit' type='button' ".
+					"onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable".
+					"&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\" value='".
+					getTranslatedString('LBL_SELECT'). ' ' . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
-			if (in_array('ADD', $actions) && isPermitted($related_module,1, '') == 'yes') {
+			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
 				$wfs = new VTWorkflowManager($adb);
 				$racbr = $wfs->getRACRuleForRecord($currentModule, $id);
-				if (!$racbr or $racbr->hasRelatedListPermissionTo('create',$related_module)) {
+				if (!$racbr || $racbr->hasRelatedListPermissionTo('create', $related_module)) {
 					$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
 					$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). " ". $singular_modname ."' class='crmbutton small create'" .
 						" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\";' type='submit' name='button'" .
@@ -230,29 +234,30 @@ class Contacts extends CRMEntity {
 			}
 		}
 
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>
-							'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=> 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 		$query ='select case when (vtiger_users.user_name not like "") then '.$userNameSql.' else vtiger_groups.groupname end as user_name,
 		vtiger_contactdetails.accountid, vtiger_contactdetails.contactid , vtiger_potential.potentialid, vtiger_potential.potentialname,
 		vtiger_potential.potentialtype, vtiger_potential.sales_stage, vtiger_potential.amount, vtiger_potential.closingdate,
 		vtiger_potential.related_to, vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_account.accountname
 		from vtiger_contactdetails
 		left join vtiger_contpotentialrel on vtiger_contpotentialrel.contactid=vtiger_contactdetails.contactid
-		left join vtiger_potential on (vtiger_potential.potentialid = vtiger_contpotentialrel.potentialid or vtiger_potential.related_to=vtiger_contactdetails.contactid)
+		left join vtiger_potential on (vtiger_potential.potentialid = vtiger_contpotentialrel.potentialid or
+			vtiger_potential.related_to = vtiger_contactdetails.contactid or
+			vtiger_potential.related_to = vtiger_contactdetails.accountid)
 		inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_potential.potentialid
 		left join vtiger_account on vtiger_account.accountid=vtiger_contactdetails.accountid
 		left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
 		left join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid
-		where vtiger_contactdetails.contactid ='.$id.'
-		and (vtiger_contactdetails.accountid = vtiger_potential.related_to or vtiger_contactdetails.contactid=vtiger_potential.related_to)
-		and vtiger_crmentity.deleted=0';
+		where vtiger_contactdetails.contactid ='.$id.' and vtiger_crmentity.deleted=0';
 
 		$return_value = GetRelatedList($this_module, $related_module, $other, $query, $button, $returnset);
 
-		if($return_value == null) $return_value = Array();
+		if ($return_value == null) {
+			$return_value = array();
+		}
 		$return_value['CUSTOM_BUTTON'] = $button;
 
-		$log->debug("Exiting get_opportunities method ...");
+		$log->debug('Exiting get_opportunities method...');
 		return $return_value;
 	}
 
@@ -1132,25 +1137,24 @@ function get_contactsforol($user_name)
 
 	function save_related_module($module, $crmid, $with_module, $with_crmids) {
 		$adb = PearDatabase::getInstance();
-
 		$with_crmids = (array)$with_crmids;
-		foreach($with_crmids as $with_crmid) {
-			if($with_module == 'Products') {
+		foreach ($with_crmids as $with_crmid) {
+			if ($with_module == 'Products') {
 				$checkResult = $adb->pquery('SELECT 1 FROM vtiger_seproductsrel WHERE productid = ? AND crmid = ?', array($with_crmid, $crmid));
 				if($checkResult && $adb->num_rows($checkResult) > 0) {
 					continue;
 				}
-				$adb->pquery("insert into vtiger_seproductsrel values (?,?,?)", array($crmid, $with_crmid, 'Contacts'));
-			} elseif($with_module == 'Campaigns') {
+				$adb->pquery('insert into vtiger_seproductsrel values (?,?,?)', array($crmid, $with_crmid, 'Contacts'));
+			} elseif ($with_module == 'Campaigns') {
 				$checkResult = $adb->pquery('SELECT 1 FROM vtiger_campaigncontrel WHERE campaignid = ? AND contacrid = ?', array($with_crmid, $crmid));
 				if($checkResult && $adb->num_rows($checkResult) > 0) {
 					continue;
 				}
 				$adb->pquery("insert into vtiger_campaigncontrel values(?,?,1)", array($with_crmid, $crmid));
 			} elseif($with_module == 'Potentials') {
-				$adb->pquery("insert into vtiger_contpotentialrel values(?,?)", array($crmid, $with_crmid));
+				$adb->pquery('insert ignore into vtiger_contpotentialrel values(?,?)', array($crmid, $with_crmid));
 			} elseif($with_module == 'Vendors') {
-				$adb->pquery("insert into vtiger_vendorcontactrel values (?,?)", array($with_crmid, $crmid));
+				$adb->pquery('insert ignore into vtiger_vendorcontactrel values (?,?)', array($with_crmid, $crmid));
 			} else {
 				parent::save_related_module($module, $crmid, $with_module, $with_crmid);
 			}
@@ -1359,6 +1363,8 @@ function get_contactsforol($user_name)
 	function getvtlib_open_popup_window_function($fieldname,$basemodule) {
 		if ($basemodule=='Issuecards') {
 			return 'set_return_shipbilladdress';
+		} elseif ($fieldname == 'cto_id' && $basemodule == 'cbCalendar') {
+			return 'open_filtered_contactsIfAccounts';
 		} else {
 			return 'vtlib_open_popup_window';
 		}

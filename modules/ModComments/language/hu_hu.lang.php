@@ -5,13 +5,10 @@
  * The Original Code is:  vtiger CRM Open Source
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
+ * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
  * All Rights Reserved.
  ************************************************************************************/
-/*********************************************************************************
- * $Header:  \modules\ModComments\language\hu_hu.lang.php - 17:58 2011.11.12. $
- * Description:  Defines the Hungarian language pack for the ModComments module vtiger 5.3.x
- * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
- ********************************************************************************/ 
+
 $mod_strings = array(
 	'ModComments' => 'Feljegyzések',
 	'SINGLE_ModComments' => 'Feljegyzés',

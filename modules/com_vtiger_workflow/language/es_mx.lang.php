@@ -1,8 +1,7 @@
 <?php
 /**
-  JPL TSolucio, S.L. 2009 MPL
-  
-   * Es_mx Author: Francisco Hernandez Odin Consultores www.odin.mx 
+ * JPL TSolucio, S.L. 2009 MPL
+ * Es_mx Author: Francisco Hernandez Odin Consultores www.odin.mx
  **/
 
 $mod_strings = array(
@@ -37,11 +36,8 @@ $mod_strings = array(
 'LBL_NO_TEMPLATES'=>'Sin Plantillas',
 'LBL_SELECT'=>'Selecciona',
 'LBL_MESSAGE'=>'Mensaje',
-'LBL_SELECT'=>'Selecciona',
-'LBL_MESSAGE'=>'Mensaje',
-'LBL_SEND_ALL_ATTACHMENT'=>'Enviar todos los adjuntos',
 'VTPDFMakerTask'=>'Guardar documento de PDFMaker',  // ITS4YOU-CR PDF Maker
-'LBL_SEND_ALL_ATTACHMENT'=>'Enviar todos los adjuntos', 
+'LBL_SEND_ALL_ATTACHMENT'=>'Enviar todos los adjuntos',
 'LBL_SET_FIELD_VALUES'=>'Establecer valor de campo',
 'LBL_ADD_FIELD'=>'Agregar campo',
 
@@ -134,7 +130,6 @@ $mod_strings = array(
 'LBL_SELECTED_DATES' => 'Fechas seleccionadas',
 'LBL_EXCEEDING_MAXIMUM_LIMIT' => 'Se ha excedido el límite máximo permtido',
 'LBL_NEXT_TRIGGER_TIME' => 'Próxima ejecución',
-'LBL_MESSAGE' => 'Mensaje',
 'UpdateInventoryProducts On Every Save' => 'Actualizar inventario de productos',
 'Send Email to user when Notifyowner is True' => 'Envíar Email al usuario cuando Notificación Propietario está activado',
 'Send Email to user when Portal User is True' => 'Envíar Email al usuario cuando Portal de Usuario está activado',

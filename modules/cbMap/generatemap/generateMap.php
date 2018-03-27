@@ -18,16 +18,15 @@
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
 
-require_once('modules/cbMap/cbMapcore.php');
+require_once 'modules/cbMap/cbMapcore.php';
 
 class generatecbMap extends cbMapcore {
 
-	function generateMap() {
+	public function generateMap() {
 		// you have to override this one with the specific functionality of your mapping
 		$Map = $this->getMap();
 		echo '<br><h3>Create here your process to generate mappings for '.$Map->column_fields['maptype'].'</h3>';
 		return true;
 	}
-
 }
 ?>

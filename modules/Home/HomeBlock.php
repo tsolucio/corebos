@@ -7,67 +7,66 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *********************************************************************************/
-
 global $mod_strings, $app_strings, $theme, $current_user;
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
+$theme_path='themes/'.$theme.'/';
+$image_path=$theme_path.'images/';
 
-require_once('include/home.php');
-require_once('Smarty_setup.php');
-require_once('include/freetag/freetag.class.php');
+require_once 'include/home.php';
+require_once 'Smarty_setup.php';
+require_once 'include/freetag/freetag.class.php';
 
 $homeObj=new Homestuff();
 $smarty=new vtigerCRM_Smarty();
-$smarty->assign("MOD",$mod_strings);
-$smarty->assign("APP",$app_strings);
-$smarty->assign("THEME", $theme);
-$smarty->assign("IMAGE_PATH",$image_path);
+$smarty->assign('MOD', $mod_strings);
+$smarty->assign('APP', $app_strings);
+$smarty->assign('THEME', $theme);
+$smarty->assign('IMAGE_PATH', $image_path);
 $stuffid = '';
-if(!empty($_REQUEST['homestuffid'])){
-	$stuffid = $_REQUEST['homestuffid'];
+if (!empty($_REQUEST['homestuffid'])) {
+	$stuffid = vtlib_purify($_REQUEST['homestuffid']);
 }
 $stufftype = '';
-if(!empty($_REQUEST['blockstufftype'])){
-	$stufftype = $_REQUEST['blockstufftype'];
+if (!empty($_REQUEST['blockstufftype'])) {
+	$stufftype = vtlib_purify($_REQUEST['blockstufftype']);
 }
 $dashdet = '';
 $homestuff_values = '';
-if($stufftype=='Tag Cloud'){
+if ($stufftype=='Tag Cloud') {
 	$freetag = new freetag();
-	$smarty->assign("ALL_TAG",$freetag->get_tag_cloud_html("",$current_user->id));
-	$smarty->assign("USER_TAG_SHOWAS",getTagCloudShowAs($current_user->id));
-	$smarty->display("Home/TagCloud.tpl");
-}elseif($stufftype == 'Notebook'){
+	$smarty->assign('ALL_TAG', $freetag->get_tag_cloud_html('', $current_user->id));
+	$smarty->assign('USER_TAG_SHOWAS', getTagCloudShowAs($current_user->id));
+	$smarty->display('Home/TagCloud.tpl');
+} elseif ($stufftype == 'Notebook') {
 	$contents = $homeObj->getNoteBookContents($stuffid);
-	$smarty->assign("NOTEBOOK_CONTENTS",$contents);
-	$smarty->assign("NOTEBOOKID", $stuffid);
-	$smarty->display("Home/notebook.tpl");
-}elseif($stufftype == 'URL'){
+	$smarty->assign('NOTEBOOK_CONTENTS', $contents);
+	$smarty->assign('NOTEBOOKID', $stuffid);
+	$smarty->display('Home/notebook.tpl');
+} elseif ($stufftype == 'URL') {
 	$url = $homeObj->getWidgetURL($stuffid);
-	if(strpos($url, "://") === false){
-		$url = "http://".trim($url);
+	if (strpos($url, '://') === false) {
+		$url = 'http://'.trim($url);
 	}
-	$smarty->assign("URL",$url);
-	$smarty->assign("WIDGETID", $stuffid);
-	$smarty->display("Home/HomeWidgetURL.tpl");
-}else{
-	$homestuff_values=$homeObj->getHomePageStuff($stuffid,$stufftype);
-	if($stufftype=="DashBoard"){
-		$homeObj->getDashDetails($stuffid,'type');
+	$smarty->assign('URL', $url);
+	$smarty->assign('WIDGETID', $stuffid);
+	$smarty->display('Home/HomeWidgetURL.tpl');
+} else {
+	$homestuff_values=$homeObj->getHomePageStuff($stuffid, $stufftype);
+	if ($stufftype=='DashBoard') {
+		$homeObj->getDashDetails($stuffid, 'type');
 		$dashdet=$homeObj->dashdetails;
 	}
-	if($stufftype=="ReportCharts"){
-		$homeObj->getReportChartDetails($stuffid,'type');
+	if ($stufftype=='ReportCharts') {
+		$homeObj->getReportChartDetails($stuffid, 'type');
 		$dashdet = $homeObj->reportdetails;
 	}
 }
 
-$smarty->assign("DASHDETAILS",$dashdet);
-$smarty->assign("HOME_STUFFTYPE",$stufftype);
-$smarty->assign("HOME_STUFFID",$stuffid);
-$smarty->assign("HOME_STUFF",$homestuff_values);
-$smarty->assign("THEME", $theme);
-$smarty->assign("IMAGE_PATH", $image_path);
+$smarty->assign('DASHDETAILS', $dashdet);
+$smarty->assign('HOME_STUFFTYPE', $stufftype);
+$smarty->assign('HOME_STUFFID', $stuffid);
+$smarty->assign('HOME_STUFF', $homestuff_values);
+$smarty->assign('THEME', $theme);
+$smarty->assign('IMAGE_PATH', $image_path);
 
-$smarty->display("Home/HomeBlock.tpl");
+$smarty->display('Home/HomeBlock.tpl');
 ?>

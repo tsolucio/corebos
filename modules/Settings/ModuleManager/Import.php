@@ -16,21 +16,23 @@ require_once('vtlib/Vtiger/Language.php');
 
 global $mod_strings,$app_strings,$theme;
 $smarty = new vtigerCRM_Smarty;
-$smarty->assign("MOD",$mod_strings);
-$smarty->assign("APP",$app_strings);
+$smarty->assign("MOD", $mod_strings);
+$smarty->assign("APP", $app_strings);
 $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH", "themes/$theme/images/");
 
 global $modulemanager_uploaddir; // Defined in modules/Settings/ModuleManager.php
 
-if($module_import_step == 'Step2') {
-	if(!is_dir($modulemanager_uploaddir)) mkdir($modulemanager_uploaddir);
+if ($module_import_step == 'Step2') {
+	if (!is_dir($modulemanager_uploaddir)) {
+		mkdir($modulemanager_uploaddir);
+	}
 	$uploadfile = "usermodule_". time() . ".zip";
 	$uploadfilename = "$modulemanager_uploaddir/$uploadfile";
 	checkFileAccess($modulemanager_uploaddir);
 
 	if ($_REQUEST['installtype'] == 'file') {
-		if(!move_uploaded_file($_FILES['module_zipfile']['tmp_name'], $uploadfilename)) {
+		if (!move_uploaded_file($_FILES['module_zipfile']['tmp_name'], $uploadfilename)) {
 			$smarty->assign("MODULEIMPORT_FAILED", "true");
 			$uploadfilename = null;
 		}
@@ -52,7 +54,6 @@ if($module_import_step == 'Step2') {
 		}
 	}
 	if ($uploadfilename) {
-
 		// Check ZIP file contents for extra directory at the top
 		$za = new ZipArchive();
 		$za->open($uploadfilename);
@@ -70,19 +71,19 @@ if($module_import_step == 'Step2') {
 				$za->deleteIndex($i);
 			}
 		}
-		$za->close();
+		@$za->close();
 
 		$package = new Vtiger_Package();
 		$moduleimport_name = $package->getModuleNameFromZip($uploadfilename);
 
-		if($moduleimport_name == null) {
+		if ($moduleimport_name == null) {
 			$smarty->assign("MODULEIMPORT_FAILED", "true");
 			$smarty->assign("MODULEIMPORT_FILE_INVALID", "true");
 		} else {
 			$smarty->assign('MODULEIMPORT_FAILED', '');
 			$smarty->assign('MODULEIMPORT_FILE_INVALID', '');
 
-			if(!$package->isLanguageType() && !$package->isModuleBundle()) {
+			if (!$package->isLanguageType() && !$package->isModuleBundle()) {
 				$moduleInstance = Vtiger_Module::getInstance($moduleimport_name);
 				$moduleimport_exists=($moduleInstance)? "true" : "false";
 				$moduleimport_dir_name="modules/$moduleimport_name";
@@ -103,7 +104,7 @@ if($module_import_step == 'Step2') {
 			$smarty->assign("MODULEIMPORT_LICENSE", $moduleimport_license);
 		}
 	}
-} else if($module_import_step == 'Step3') {
+} elseif ($module_import_step == 'Step3') {
 	$uploadfile = basename(vtlib_purify($_REQUEST['module_import_file']));
 	$uploadfilename = "$modulemanager_uploaddir/$uploadfile";
 	checkFileAccess($uploadfilename);
@@ -112,7 +113,7 @@ if($module_import_step == 'Step2') {
 	$overwritedir = false; // Disallowing overwrites through Module Manager UI
 
 	$importtype = $_REQUEST['module_import_type'];
-	if(strtolower($importtype) == 'language') {
+	if (strtolower($importtype) == 'language') {
 		$package = new Vtiger_Language();
 	} else {
 		$package = new Vtiger_Package();

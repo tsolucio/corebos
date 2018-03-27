@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-$mod_strings = Array(
+$mod_strings = array(
 	'LBL_MODULE_NAME'=>'Projetos',
 	'LBL_MODULE_TITLE'=>'Projetos',
 	'LBL_NEW_PROJECT'=>'Novo projeto',
@@ -19,7 +19,6 @@ $mod_strings = Array(
 	'LBL_CUSTOM_INFORMATION' => 'Informações complementares',
 	'LBL_PROJECT_INFORMATION' => 'Informações sobre o Projeto',
 	'LBL_DESCRIPTION_INFORMATION' => 'Descrição',
-	'projectid' => 'Id do Projeto',
 	'Project ID'=>'Id do Projeto',
 	'Assigned To' => 'Responsável',
 	'startdate' => 'Data de início',
@@ -44,7 +43,5 @@ $mod_strings = Array(
 	'complete' => 'concluído',
 	'--none--' => '----',
 	'Project Name' => 'Nome do Projeto',
-
 );
-
 ?>

@@ -16,31 +16,23 @@
 *  Author       : Joe Bordes JPL TSolucio, S.L.
  ********************************************************************************/
 
-
 $mod_strings = array(
-
-'LBL_PRICEBOOK_INFORMATION'=>'Información de Tarifa:',
-'LBL_CUSTOM_INFORMATION'=>'Información Personalizada',
-'LBL_DESCRIPTION_INFORMATION'=>'Nombre:',
-//Mapping for price book
-'Price Book Name'=>'Nombre de Tarifa',
-'Product Name'=>'Nombre de Producto',
-'Active'=>'Activo',
-'Description'=>'Descripción',
-'Created Time'=>'Creado',
-'Modified Time'=>'Modificado',
-'LBL_LIST_PRODUCT_NAME'=>'Nombre de Producto',
-'LBL_PRODUCT_CODE'=>'Código de Producto',
-'LBL_PRODUCT_UNIT_PRICE'=>'Precio Unitario',
-'LBL_PB_LIST_PRICE'=>'Precio Tarifa',
-'LBL_ACTION'=>'Acción',
-'PriceBook'=>'Tarifa',
-
-// Added after 5.0.4 GA
-'Currency'=>'Moneda',
-
-'PriceBook No' => 'Nº Tarifa',
-
+	'LBL_PRICEBOOK_INFORMATION'=>'Información de Tarifa:',
+	'LBL_CUSTOM_INFORMATION'=>'Información Personalizada',
+	'LBL_DESCRIPTION_INFORMATION'=>'Nombre:',
+	'Price Book Name'=>'Nombre de Tarifa',
+	'Product Name'=>'Nombre de Producto',
+	'Active'=>'Activo',
+	'Description'=>'Descripción',
+	'Created Time'=>'Creado',
+	'Modified Time'=>'Modificado',
+	'LBL_LIST_PRODUCT_NAME'=>'Nombre de Producto',
+	'LBL_PRODUCT_CODE'=>'Código de Producto',
+	'LBL_PRODUCT_UNIT_PRICE'=>'Precio Unitario',
+	'LBL_PB_LIST_PRICE'=>'Precio Tarifa',
+	'LBL_ACTION'=>'Acción',
+	'PriceBook'=>'Tarifa',
+	'Currency'=>'Moneda',
+	'PriceBook No' => 'Nº Tarifa',
 );
-
 ?>

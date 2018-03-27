@@ -8,7 +8,7 @@
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Produtos',
 'SINGLE_Products'=>'Produto',
 'LBL_LIST_PRODUCT_NAME'=>'Nome Produto',
@@ -22,7 +22,6 @@ $mod_strings = Array(
 'LBL_VENDOR_INFORMATION'=>'Dados do Fornecedor:',
 'LBL_PRICEBOOK_INFORMATION'=>'Dados da Lista de Preços:',
 'LBL_VENDOR_ADDRESS_INFORMATION'=>'Dados do Endereço:',
-'LBL_DESCRIPTION_INFORMATION'=>'Descrição',
 'LBL_PRICING_INFORMATION'=>'Informação de Preços:',
 'LBL_STOCK_INFORMATION'=>'Informação do Estoque:',
 'LBL_LIST_FORM_TITLE'=>'Lista de Produtos',
@@ -44,7 +43,6 @@ $mod_strings = Array(
 'LBL_CUSTOM_INFORMATION'=>'Informação Customizada',
 'LBL_DESCRIPTION_INFORMATION'=>'Descrição',
 
-//New entry
 'LBL_UPLOAD'=>'Transferir Arquivo',
 
 'LBL_PRODUCT'=>'Produto',
@@ -56,7 +54,6 @@ $mod_strings = Array(
 'LBL_DESCRIPTION'=>'Descrição',
 'LBL_FILE'=>'Nome Arquivo',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'Nova Oportunidade',
 'LBL_POTENTIAL_TITLE'=>'Oportunidades',
 
@@ -72,15 +69,12 @@ $mod_strings = Array(
 'LBL_NEW_ATTACHMENT'=>'Novo Anexo',
 'LBL_ATTACHMENT_TITLE'=>'Anexos',
 
-//Added vtiger_fields after RC1 - Release
 'LBL_MANUFACTURER'=>'Fabricante',
 'LBL_PRODUCTCATEGORY'=>'Categoria Produto',
 'LBL_SUPPORT_START_DATE'=>'Data Início Suporte',
 'LBL_SUPPORT_EXPIRY_DATE'=>'Data Expira Suporte',
 'LBL_PURCHASE_DATE'=>'Data Compra',
 
-//Added for 4GA
-'Product Name'=>'Nome Produto',
 //'Product Code'=>'Part Number',
 'Part Number'=>'Part Number',
 'Product Active'=>'Produto Ativo',
@@ -133,7 +127,6 @@ $mod_strings = Array(
 'Product Name'=>'Nome Produto',
 'Active'=>'Ativo',
 
-//Added for 4.2 Release -- CustomView
 'LBL_ALL'=>'Todos',
 'LBL_VENDOR_SEARCH_FORM_TITLE'=>'Pesquisar Fornecedor',
 'LBL_PRICEBOOK_SEARCH_FORM_TITLE'=>'Pesquisar Lista Preços',
@@ -152,7 +145,6 @@ $mod_strings = Array(
 'LBL_ADD_PRODUCT_PRICEBOOKS'=>'Adicionar Produto na Lista de Preços',
 'LBL_ADD_PRODUCTS_PRICEBOOK'=>'Adicionar Produtos na Lista de Preços',
 
-//Added for 4.2 patch2 release
 'LBL_MAXIMUM_LIMIT_ERROR'=>'Desculpe, os arquivos transferidos excederam o limite máximo file size. Por favor, tente um arquivo menor que 800000 bytes',
 'LBL_UPLOAD_ERROR'=>'Problemas na transferência do arquivo. Por favor tente novamente!',
 'LBL_IMAGE_ERROR'=>'O arquivo não é do tipo imagem(.gif/.jpg/.png)',
@@ -162,7 +154,6 @@ $mod_strings = Array(
 'LBL_EDITLISTPRICE'=>'Editar Lista Preço',
 
 //Added for existing picklist entries
-
 '--None--'=>'--Nada--',
 
 'Hardware'=>'Hardware',
@@ -181,7 +172,6 @@ $mod_strings = Array(
 
 'Box'=>'Cx',
 'Carton'=>'Cartão',
-'Caton'=>'',
 'Dozen'=>'Dz',
 'Each'=>'Cada',
 'Hours'=>'Hora',
@@ -197,7 +187,6 @@ $mod_strings = Array(
 'Spiral Binder'=>'',
 'Sq Ft'=>'', // Square Foot = Pé quadrado
 
-//Added for 5.0.3
 'MSG_STOCK_LEVEL'=>'O Nível de Estoque está baixo',
 'MSG_DEAR'=>'Caro',
 'MSG_CURRENT_STOCK'=>'O estoque atual de',
@@ -206,14 +195,11 @@ $mod_strings = Array(
 'MSG_SEVERITY'=>'Gravidade: Elevada',
 'MSG_THANKS'=>'Obrigado,',
 
-// Added after 5.0.4 GA
-
 'LBL_PRODUCT_PRICES'=>'Preços Produtos',
 'Member Of'=>'Membro de',
 
 // Module Sequence Numbering
 'Product No' => 'Cod. Produto',
-// END
 
 'LBL_NO_TAXES_ASSOCIATED'=>'Nenhum Imposto associado a este Produto',
 'Parent Product' => 'Produto Pai',
@@ -223,5 +209,4 @@ $mod_strings = Array(
 'DIVISIBLE_WARNING' => 'can only be sold in multiplies of one',
 'DIVISIBLE_WARNING_PURCHASE' => 'can only be purchased in multiplies of one',
 );
-
 ?>

@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Documents',
 'LBL_MODULE_TITLE'=>'Documents: Home',
 'LBL_SEARCH_FORM_TITLE'=>'Document Search',
@@ -33,15 +33,14 @@ $mod_strings = Array(
 'ERR_DELETE_RECORD'=>"A record number must be specified to delete the organization.",
 'LBL_LIST_FILENAME'=>"File Name",
 
-// Added for Note(3.2-patch 3) 
+'Template'=>'Template',
+'Template For' => 'Template For',
 
 'LBL_FILENAME'=>'Attachment:',
 'LBL_NOTE_INFORMATION'=>'Basic Information',
 'File Information'=>'File Information',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Documents Tools',
-// Added for 4GA
 'Contact Name'=>'Contact Name',
 'Related To'=>'Related to',
 'Subject'=>'Subject',
@@ -49,14 +48,12 @@ $mod_strings = Array(
 'Modified Time'=>'Modified Time',
 'Document'=>'Document',
 'Note'=>'Notes',
-//Added for 4.2 Release -- CustomView
 'Related to'=>'Related to',
 'Last Modified'=>'Last Modified',
 'File'=>'File',
 'LBL_ALL'=>'All',
 'Title'=>'Title',
 
-//Added after 504 for Downloads Module
 'LBL_FILE_INFORMATION'=>'File Information',
 'LBL_FILE_NAME'=>'File Name',
 'LBL_FILE_TYPE'=>'File Type',
@@ -75,7 +72,6 @@ $mod_strings = Array(
 'LBL_PD'=>'Platform Dependent',
 'LBL_PIND'=>'Platform Independent',
 'ChoosePlatform'=>'Choose Platform',
-'LBL_INACTIVE'=>'Inactive',
 'LBL_UPLOAD_BUTTON'=>'Upload',
 'architecture'=>'Architecture',
 'LBL_DOWNLOAD_FILE'=>'Download file',
@@ -91,9 +87,7 @@ $mod_strings = Array(
 'File Name'=>'File Name',
 'File Type'=>'File Type',
 'File Size'=>'Size',
-'LBL_INTERNAL'=>'Internal',
 'LBL_URL'=>'URL',
-'LBL_EXTERNAL'=>'External',
 'LBL_EXTERNAL_LNK'=>'External Link',
 'LBL_ACTIVE'=>'Active',
 'LBL_INACTIVE'=>'Inactive',
@@ -107,11 +101,8 @@ $mod_strings = Array(
 'Download Count'=>'Download Count',
 'Platform'=>'Platform',
 'Assigned To'=>'Assigned To',
-// Module Sequence Numbering
 'Note No' => 'Document No',
-// END
 
-// Documents module
 'LBL_EMPTY_FOLDERS' => 'Empty Folders',
 'LBL_VIEW_EMPTY_FOLDERS' => 'View Empty Folders',
 'LBL_NO_DOCUMENTS' => 'No Documents',
@@ -121,13 +112,21 @@ $mod_strings = Array(
 'LBL_MAXIMUM_20'=>'Maximum 20',
 'LBL_MAXIMUM_50'=>'Maximum 50',
 
-// Added after 5.1.0 GA
 'Folder Name'=>'Folder Name',
 'Document No'=>'Document No',
 
 'Documents' => 'Documents',
 'Documents ID' => 'Documents ID',
 'LBL_FILEUPLOAD_FAILED'=>'File failed to upload',
+'STORAGESIZE_CONFIGURATION' => 'Storage Size Information and Configuration',
+'STORAGESIZE_CONFIGURATION_DESCRIPTION' => 'See and increment the space being occupied by your document system.',
+'StorageMustIncrement' => 'The new storage capacity must always be bigger than the current limit. To reduce the size, physical elimination of the documents must be done by a server administrator. Please contact your service providor.',
+'StorageLimit' => 'The limit of storage capacity of your application has been reached. Please contact your application administrator to extend this limit.',
+'ExtendStorageLink' => 'You can extend this limit here.',
+'Total' => 'Total Disk Allocation',
+'Occupied' => 'Used Disk Space',
+'Free' => 'Available Disk Space',
+'NewSize' => 'New Size',
+'accept_charge' => 'I accept the license change and the associated charge it may have',
 );
-
 ?>

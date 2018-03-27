@@ -1,16 +1,11 @@
 <?php
 /*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-
  ********************************************************************************
 *  Module       : Faq
 *  Language     : Español
@@ -20,7 +15,7 @@
 *  Author       : JPL TSolucio, S.L. Joe Bordes
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME' => 'FAQ',
 'LBL_MODULE_TITLE'=>'FAQ: Inicio',
 'LBL_SEARCH_FORM_TITLE'=>'Buscar FAQ',
@@ -78,7 +73,6 @@ $mod_strings = Array(
 'LBL_SELECT_ACCOUNT'=>'Seleccionar Faq',
 'LBL_GENERAL_INFORMATION'=>'Información General',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'Nueva Oportunidad',
 'LBL_POTENTIAL_TITLE'=>'Oportunidad',
 
@@ -93,7 +87,6 @@ $mod_strings = Array(
 'LBL_NEW_CONTACT'=>'Nuevo Contacto',
 'LBL_CONTACT_TITLE'=>'Contactos',
 
-//Added for 4GA Release
 'Category'=>'Categoría',
 'Related To'=>'Relacionado con',
 'Question'=>'Pregunta',
@@ -103,7 +96,6 @@ $mod_strings = Array(
 'Created Time'=>'Fecha de Creación',
 'Modified Time'=>'Fecha de Modificación',
 
-//Added vtiger_fields after 4.2 alpha
 'LBL_TICKETS'=>'Incidencias',
 'LBL_FAQ'=>'FAQ',
 'Product Name'=>'Nombre del Producto',
@@ -112,25 +104,18 @@ $mod_strings = Array(
 'LBL_COMMENT_INFORMATION'=>'Información del Comentario',
 'Status'=>'Estado',
 
-//Added on 10-12-2005
 'LBL_QUESTION'=>'Pregunta',
 'LBL_CATEGORY'=>'Categoría',
 'LBL_MY_FAQ'=>'Mis FAQs Recientes',
 
 //Added for existing Picklist Entries
-
 'General'=>'General',
-
 'Draft'=>'Borrador',
 'Reviewed'=>'Revisada',
 'Published'=>'Publicada',
 'Obsolete'=>'Obsoleta',
 
-// Module Sequence Numbering
 'Faq No' => 'Núm. FAQ',
-// END
-
 'Faq ID' => 'Id FAQ',
 );
-
 ?>

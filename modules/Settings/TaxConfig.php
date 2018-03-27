@@ -7,47 +7,40 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('Smarty_setup.php');
+require_once 'Smarty_setup.php';
 global $mod_strings, $app_strings, $adb, $log, $theme;
 
 $smarty = new vtigerCRM_Smarty;
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
+$theme_path='themes/'.$theme.'/';
+$image_path=$theme_path.'images/';
 
 $tax_details = getAllTaxes();
-$sh_tax_details = getAllTaxes('all','sh');
+$sh_tax_details = getAllTaxes('all', 'sh');
 $getlist = false;
 //To save the edited value
-if(isset($_REQUEST['save_tax']) and $_REQUEST['save_tax'] == 'true')
-{
-	for($i=0;$i<count($tax_details); $i++) {
+if (isset($_REQUEST['save_tax']) && $_REQUEST['save_tax'] == 'true') {
+	for ($i=0; $i<count($tax_details); $i++) {
 		$new_labels[$tax_details[$i]['taxid']] = vtlib_purify($_REQUEST[bin2hex($tax_details[$i]['taxlabel'])]);
 		$new_percentages[$tax_details[$i]['taxid']] = vtlib_purify($_REQUEST[$tax_details[$i]['taxname']]);
 	}
 	updateTaxPercentages($new_percentages);
 	echo updateTaxLabels($new_labels);
 	$getlist = true;
-}
-elseif(isset($_REQUEST['sh_save_tax']) and $_REQUEST['sh_save_tax'] == 'true')
-{
-	for($i=0;$i<count($sh_tax_details);$i++)
-	{
+} elseif (isset($_REQUEST['sh_save_tax']) && $_REQUEST['sh_save_tax'] == 'true') {
+	for ($i=0; $i<count($sh_tax_details); $i++) {
 		$new_labels[$sh_tax_details[$i]['taxid']] = vtlib_purify($_REQUEST[bin2hex($sh_tax_details[$i]['taxlabel'])]);
 		$new_percentages[$sh_tax_details[$i]['taxid']] = vtlib_purify($_REQUEST[$sh_tax_details[$i]['taxname']]);
 	}
-	updateTaxPercentages($new_percentages,'sh');
-	echo updateTaxLabels($new_labels,'sh');
+	updateTaxPercentages($new_percentages, 'sh');
+	echo updateTaxLabels($new_labels, 'sh');
 	$getlist = true;
 }
 
 //To edit
-if(isset($_REQUEST['edit_tax']) and $_REQUEST['edit_tax'] == 'true')
-{
+if (isset($_REQUEST['edit_tax']) && $_REQUEST['edit_tax'] == 'true') {
 	$smarty->assign("EDIT_MODE", 'true');
 	$smarty->assign('SH_EDIT_MODE', 'false');
-}
-elseif(isset($_REQUEST['sh_edit_tax']) and $_REQUEST['sh_edit_tax'] == 'true')
-{
+} elseif (isset($_REQUEST['sh_edit_tax']) && $_REQUEST['sh_edit_tax'] == 'true') {
 	$smarty->assign('EDIT_MODE', 'false');
 	$smarty->assign("SH_EDIT_MODE", 'true');
 } else {
@@ -56,61 +49,58 @@ elseif(isset($_REQUEST['sh_edit_tax']) and $_REQUEST['sh_edit_tax'] == 'true')
 }
 
 //To add tax
-if(isset($_REQUEST['add_tax_type']) and $_REQUEST['add_tax_type'] == 'true')
-{
+if (isset($_REQUEST['add_tax_type']) && $_REQUEST['add_tax_type'] == 'true') {
 	//Add the given tax name and value as a new tax type
 	echo addTaxType(vtlib_purify($_REQUEST['addTaxLabel']), vtlib_purify($_REQUEST['addTaxValue']));
 	$getlist = true;
-}
-elseif(isset($_REQUEST['sh_add_tax_type']) and $_REQUEST['sh_add_tax_type'] == 'true')
-{
-	echo addTaxType($_REQUEST['sh_addTaxLabel'],$_REQUEST['sh_addTaxValue'],'sh');
+} elseif (isset($_REQUEST['sh_add_tax_type']) && $_REQUEST['sh_add_tax_type'] == 'true') {
+	echo addTaxType($_REQUEST['sh_addTaxLabel'], $_REQUEST['sh_addTaxValue'], 'sh');
 	$getlist = true;
 }
 
 //To Disable ie., delete or enable
-if(((isset($_REQUEST['disable']) and $_REQUEST['disable'] == 'true') || (isset($_REQUEST['enable']) and $_REQUEST['enable'] == 'true')) && !empty($_REQUEST['taxname']))
-{
-	if($_REQUEST['disable'] == 'true')
-		changeDeleted(vtlib_purify($_REQUEST['taxname']),1);
-	else
-		changeDeleted(vtlib_purify($_REQUEST['taxname']),0);
+if (((isset($_REQUEST['disable']) && $_REQUEST['disable'] == 'true') || (isset($_REQUEST['enable']) && $_REQUEST['enable'] == 'true')) && !empty($_REQUEST['taxname'])) {
+	if ($_REQUEST['disable'] == 'true') {
+		changeDeleted(vtlib_purify($_REQUEST['taxname']), 1);
+	} else {
+		changeDeleted(vtlib_purify($_REQUEST['taxname']), 0);
+	}
 	$getlist = true;
-}
-elseif(((isset($_REQUEST['sh_disable']) and $_REQUEST['sh_disable'] == 'true') || (isset($_REQUEST['sh_enable']) and $_REQUEST['sh_enable'] == 'true')) && !empty($_REQUEST['sh_taxname']))
-{
-	if($_REQUEST['sh_disable'] == 'true')
-		changeDeleted(vtlib_purify($_REQUEST['sh_taxname']),1,'sh');
-	else
-		changeDeleted(vtlib_purify($_REQUEST['sh_taxname']),0,'sh');
+} elseif (((isset($_REQUEST['sh_disable']) && $_REQUEST['sh_disable']=='true') || (isset($_REQUEST['sh_enable']) && $_REQUEST['sh_enable']=='true')) && !empty($_REQUEST['sh_taxname'])) {
+	if ($_REQUEST['sh_disable'] == 'true') {
+		changeDeleted(vtlib_purify($_REQUEST['sh_taxname']), 1, 'sh');
+	} else {
+		changeDeleted(vtlib_purify($_REQUEST['sh_taxname']), 0, 'sh');
+	}
 	$getlist = true;
 }
 
 //after done save or enable/disable or added new tax the list will be retrieved again from db
-if($getlist)
-{
+if ($getlist) {
 	$tax_details = getAllTaxes();
-	$sh_tax_details = getAllTaxes('all','sh');
+	$sh_tax_details = getAllTaxes('all', 'sh');
 }
 
-$smarty->assign("TAX_COUNT", count($tax_details));
-$smarty->assign("SH_TAX_COUNT", count($sh_tax_details));
+$smarty->assign('TAX_COUNT', count($tax_details));
+$smarty->assign('SH_TAX_COUNT', count($sh_tax_details));
 
-if(count($tax_details) == 0)
-	$smarty->assign("TAX_COUNT", 0);
-if(count($sh_tax_details) == 0)
-	$smarty->assign("SH_TAX_COUNT", 0);
+if (count($tax_details) == 0) {
+	$smarty->assign('TAX_COUNT', 0);
+}
+if (count($sh_tax_details) == 0) {
+	$smarty->assign('SH_TAX_COUNT', 0);
+}
 
-$smarty->assign("TAX_VALUES", $tax_details);
+$smarty->assign('TAX_VALUES', $tax_details);
 
-$smarty->assign("SH_TAX_VALUES", $sh_tax_details);
+$smarty->assign('SH_TAX_VALUES', $sh_tax_details);
 
-$smarty->assign("MOD", return_module_language($current_language,'Settings'));
-$smarty->assign("THEME", $theme);
-$smarty->assign("IMAGE_PATH",$image_path);
-$smarty->assign("APP", $app_strings);
-$smarty->assign("MOD", $mod_strings);
-$smarty->display("Settings/TaxConfig.tpl");
+$smarty->assign('MOD', return_module_language($current_language, 'Settings'));
+$smarty->assign('THEME', $theme);
+$smarty->assign('IMAGE_PATH', $image_path);
+$smarty->assign('APP', $app_strings);
+$smarty->assign('MOD', $mod_strings);
+$smarty->display('Settings/TaxConfig.tpl');
 
 
 /**	Function to update the list of Tax percentages for the passed tax types
@@ -118,24 +108,22 @@ $smarty->display("Settings/TaxConfig.tpl");
  *	@param string $sh - sh or empty, if sh passed then update will be done in shipping and handling related table
  *	@return void
  */
-function updateTaxPercentages($new_percentages, $sh='')
-{
+function updateTaxPercentages($new_percentages, $sh = '') {
 	global $adb, $log;
-	$log->debug("Entering into the function updateTaxPercentages");
+	$log->debug('Entering into the function updateTaxPercentages');
 
-	foreach($new_percentages as $taxid => $new_val)
-	{
-		if($new_val != '')
-		{
-			if($sh != '' && $sh == 'sh')
-				$query = "update vtiger_shippingtaxinfo set percentage=? where taxid=?";
-			else
-				$query = "update vtiger_inventorytaxinfo set percentage =? where taxid=?";
+	foreach ($new_percentages as $taxid => $new_val) {
+		if ($new_val != '') {
+			if ($sh != '' && $sh == 'sh') {
+				$query = 'update vtiger_shippingtaxinfo set percentage=? where taxid=?';
+			} else {
+				$query = 'update vtiger_inventorytaxinfo set percentage =? where taxid=?';
+			}
 			$adb->pquery($query, array($new_val, $taxid));
 		}
 	}
 
-	$log->debug("Exiting from the function updateTaxPercentages");
+	$log->debug('Exiting from the function updateTaxPercentages');
 }
 
 /**	Function to update the list of Tax Labels for the taxes
@@ -143,36 +131,42 @@ function updateTaxPercentages($new_percentages, $sh='')
  *	@param string $sh - sh or empty, if sh passed then update will be done in shipping and handling related table
  *	@return void
  */
-function updateTaxLabels($new_labels, $sh='')
-{
+function updateTaxLabels($new_labels, $sh = '') {
 	global $adb, $log, $currentModule;
 	$log->debug("Entering into the function updateTaxPercentages");
 
 	$duplicateTaxLabels = 0;
-	foreach($new_labels as $taxid => $new_val)
-	{
-		if($new_val != '')
-		{
+	foreach ($new_labels as $taxid => $new_val) {
+		if ($new_val != '') {
 			//First we will check whether the tax is already available or not
-			if($sh != '' && $sh == 'sh')
+			if ($sh != '' && $sh == 'sh') {
 				$check_query = "select taxlabel from vtiger_shippingtaxinfo where taxlabel = ? and taxid != ?";
-			else
+			} else {
 				$check_query = "select taxlabel from vtiger_inventorytaxinfo where taxlabel = ? and taxid != ?";
+			}
 			$check_res = $adb->pquery($check_query, array($new_val, $taxid));
 
-			if($adb->num_rows($check_res) > 0) {
+			if ($adb->num_rows($check_res) > 0) {
 				$duplicateTaxLabels++;
 				continue;
 			}
 
-			if($sh != '' && $sh == 'sh')
+			if ($sh != '' && $sh == 'sh') {
 				$query = "update vtiger_shippingtaxinfo set taxlabel= ? where taxid=?";
-			else
+			} else {
 				$query = "update vtiger_inventorytaxinfo set taxlabel = ? where taxid=?";
+			}
 			$adb->pquery($query, array($new_val, $taxid));
+
+			$event_data = array(
+				'tax_type' => $sh == 'sh' ? 'sh' : 'tax',
+				'tax_id' => $taxid,
+				'new_label' => $new_val
+			);
+			cbEventHandler::do_action('corebos.changelabel.tax', $event_data);
 		}
 	}
-	if($duplicateTaxLabels > 0) {
+	if ($duplicateTaxLabels > 0) {
 		return "<font color='red'>".getTranslatedString('LBL_ERR_SOME_TAX_LABELS_ALREADY_EXISTS', $currentModule)."</font>";
 	}
 
@@ -184,25 +178,25 @@ function updateTaxLabels($new_labels, $sh='')
  *	@param string $sh - sh or empty , if sh passed then the tax will be added in shipping and handling related table
  *	@return void
  */
-function addTaxType($taxlabel, $taxvalue, $sh='')
-{
+function addTaxType($taxlabel, $taxvalue, $sh = '') {
 	global $adb, $log, $currentModule;
 	$log->debug("Entering into function addTaxType($taxlabel, $taxvalue, $sh)");
 
 	//First we will check whether the tax is already available or not
-	if($sh != '' && $sh == 'sh')
+	if ($sh != '' && $sh == 'sh') {
 		$check_query = "select taxlabel from vtiger_shippingtaxinfo where taxlabel=?";
-	else
+	} else {
 		$check_query = "select taxlabel from vtiger_inventorytaxinfo where taxlabel=?";
+	}
 	$check_res = $adb->pquery($check_query, array($taxlabel));
 
-	if($adb->num_rows($check_res) > 0)
+	if ($adb->num_rows($check_res) > 0) {
 		return "<font color='red'>".getTranslatedString('LBL_ERR_TAX_LABEL_ALREADY_EXISTS', $currentModule)."</font>";
+	}
 
 	//if the tax is not available then add this tax.
 	//Add this tax as a column in related table
-	if($sh != '' && $sh == 'sh')
-	{
+	if ($sh != '' && $sh == 'sh') {
 		$taxid = $adb->getUniqueID("vtiger_shippingtaxinfo");
 		$taxname = "shtax".$taxid;
 		$query = "alter table vtiger_inventoryshippingrel add column $taxname decimal(7,3) default NULL";
@@ -213,9 +207,7 @@ function addTaxType($taxlabel, $taxvalue, $sh='')
 			'tax_label' => $taxlabel,
 			'tax_value' => $taxvalue
 		);
-	}
-	else
-	{
+	} else {
 		$taxid = $adb->getUniqueID("vtiger_inventorytaxinfo");
 		$taxname = "tax".$taxid;
 		$query = "alter table vtiger_inventoryproductrel add column $taxname decimal(7,3) default NULL";
@@ -228,45 +220,52 @@ function addTaxType($taxlabel, $taxvalue, $sh='')
 		);
 	}
 
-	cbEventHandler::do_action('corebos.add.tax',$event_data);
+	cbEventHandler::do_action('corebos.add.tax', $event_data);
 
 	$res = $adb->pquery($query, array());
 
 	//if the tax is added as a column then we should add this tax in the list of taxes
-	if($res)
-	{
-		if($sh != '' && $sh == 'sh')
+	if ($res) {
+		if ($sh != '' && $sh == 'sh') {
 			$query1 = "insert into vtiger_shippingtaxinfo values(?,?,?,?,?)";
-		else
+		} else {
 			$query1 = "insert into vtiger_inventorytaxinfo values(?,?,?,?,?)";
+		}
 
 		$params1 = array($taxid, $taxname, $taxlabel, $taxvalue, 0);
 		$res1 = $adb->pquery($query1, $params1);
 	}
 
 	$log->debug("Exit from function addTaxType($taxlabel, $taxvalue)");
-	if($res1)
+	if ($res1) {
 		return '';
-	else
-		return getTranslatedString('LBL_ERR_ADDTAX','Settings');
+	} else {
+		return getTranslatedString('LBL_ERR_ADDTAX', 'Settings');
+	}
 }
 
 /**	Function used to Enable or Disable the tax type
  *	@param string $taxname - taxname to enable or disble
  *	@param int $deleted - 0 or 1 where 0 to enable and 1 to disable
- *	@param string $sh - sh or empty, if sh passed then the enable/disable will be done in shipping and handling tax table ie.,vtiger_shippingtaxinfo else this enable/disable will be done in Product tax table ie., in vtiger_inventorytaxinfo
+ *	@param string $sh - sh or empty, if sh passed then the enable/disable will be done in shipping and handling tax table ie.,vtiger_shippingtaxinfo
+ *		 else this enable/disable will be done in Product tax table ie., in vtiger_inventorytaxinfo
  *	@return void
  */
-function changeDeleted($taxname, $deleted, $sh='')
-{
+function changeDeleted($taxname, $deleted, $sh = '') {
 	global $log, $adb;
 	$log->debug("Entering into function changeDeleted($taxname, $deleted, $sh)");
 
-	if($sh == 'sh')
+	if ($sh == 'sh') {
 		$adb->pquery("update vtiger_shippingtaxinfo set deleted=? where taxname=?", array($deleted, $taxname));
-	else
+	} else {
 		$adb->pquery("update vtiger_inventorytaxinfo set deleted=? where taxname=?", array($deleted, $taxname));
+	}
+	$event_data = array(
+		'tax_type' => $sh == 'sh' ? 'sh' : 'tax',
+		'tax_name' => $taxname,
+		'status' => $deleted == 1 ? 'disabled' : 'enabled'
+	);
+	cbEventHandler::do_action('corebos.changestatus.tax', $event_data);
 	$log->debug("Exit from function changeDeleted($taxname, $deleted, $sh)");
 }
-
 ?>

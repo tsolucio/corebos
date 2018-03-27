@@ -1,23 +1,14 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Home/language/en_us.lang.php,v 1.5 2005/03/04 15:18:47 jack Exp $
- * Description:  Defines the English language pack for Home Module.
- ********************************************************************************/
+ ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_NEW_FORM_TITLE'=>'Novo Contato',
 'LBL_FIRST_NAME'=>'Nome:',
 'LBL_LAST_NAME'=>'Sobrenome:',
@@ -58,12 +49,8 @@ $mod_strings = Array(
 'Last 2 Days'=>'Últimos 2 Dias',
 'Last Ten Days'=>'Últimos Dez Dias',
 
-// Added/Updated for vtiger CRM 5.0.4
 'User List'=>'Lista Usuários',
 
-// Added after 5.0.4 GA
-
-//ADDED for Home Page Customization
 'LBL_HOME_MODULE' => 'Modulo',
 'LBL_HOME_RSS' => 'RSS',
 'LBL_HOME_DASHBOARD' => 'Painel',
@@ -73,7 +60,7 @@ $mod_strings = Array(
 'LBL_HOME_Fields'=>'Campos para Mostrar',
 'LBL_HOME_PRESSCTRL'=>'(Aperte a tecla "Ctrl" <br> para seleção múltipla)',
 'LBL_HOME_RSSURL'=>'URL RSS',
-'LBL_HOME_DASHBOARD_NAME'=>'Nome Painel', 
+'LBL_HOME_DASHBOARD_NAME'=>'Nome Painel',
 'LBL_HOME_DASHBOARD_TYPE'=>'Tipo Painel',
 'LBL_HOME_HORIZONTAL_BARCHART'=>'Gráfico Barras Horizontal',
 'LBL_HOME_VERTICAL_BARCHART'=>'Gráfico Barras Vertical',
@@ -86,7 +73,6 @@ $mod_strings = Array(
 'LBL_MORE'=>'Mais',
 'LBL_SCROLL'=>'Rolar',
 
-//added for home page changes
 'LBL_NOTEBOOK'=>'Bloco Notas',
 'LBL_NOTEBOOK_TITLE'=>'Duplo clique para editar.',
 'LBL_NOTEBOOK_SAVE_TITLE'=>'Clique em qualquer lugar sobre a página para salvar.',
@@ -97,9 +83,7 @@ $mod_strings = Array(
 'LBL_TWO_COLUMN'=>'Duas Colunas',
 'LBL_THREE_COLUMN'=>'Três Colunas',
 'LBL_FOUR_COLUMN'=>'Quatro Colunas',
-// END
 
-// Default home page widget's title
 'Top Accounts'=>'Principais Organizações',
 'Top Potentials'=>'Principais Oportunidades',
 'Top Quotes'=>'Principais Cotações',
@@ -119,19 +103,18 @@ $mod_strings = Array(
 'MSG_NO_FILTERS' => 'Nenhum Filtro Disponível',
 'MSG_NO_FIELDS' => 'Nenhum Campo Disponível',
 
-//Customization Phase 6 -- Monolithic
 'LBL_REPORTCHARTS' => 'Gráficos Relatórios',
 'LBL_HOME_REPORT_NAME'=> 'Nome Relatório',
 'LBL_HOME_REPORT_TYPE' => 'Tipo Relatório',
-//END
 
-//added for Default Widgets
 'LBL_DEFAULT_WIDGET'=>'Widgets Padrão',
 'LBL_NO_WIDGETS_HIDDEN'=>'Nenhum widgets padrão oculto',
 'UpdateExchangeRate' => 'Update Exchange Rate',
 'LBL_HOME_ADDWINDOW' => 'Add Window',
 'LBL_GETTING_STARTED' => 'Getting Started',
 'ExpirePasswordAfterDays' => 'Expire Password After Days',
+'FieldsNotFoundInFilter' => 'Fields not found in Selected Filter',
+'FilterNotFound' => 'Filter You have Selected is Not Found',
+'Permission Denied' => 'Permission Denied',
 );
-
 ?>

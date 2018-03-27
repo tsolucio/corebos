@@ -17,7 +17,7 @@ class crmtogo_WS_SaveRecord extends crmtogo_WS_FetchRecord {
 	protected $recordValues = false;
 
 	// Avoid retrieve and return the value obtained after Create or Update
-	protected function processRetrieve(crmtogo_API_Request $request) {
+	protected function processRetrieve(crmtogo_API_Request $request, $module) {
 		return $this->recordValues;
 	}
 
@@ -55,9 +55,6 @@ class crmtogo_WS_SaveRecord extends crmtogo_WS_FetchRecord {
 					$endDname = 'due_date';
 				}
 				//Start Date and Time values
-				$date = new DateTimeField($values["date_start"]. ' ' . $values["time_start"]);
-				$values["time_start"] = $date->getDBInsertTimeValue();
-				$values["date_start"] = $date->getDBInsertDateValue();
 				$values['dtstart'] = $values['date_start'].' '.$values['time_start'];
 				//End Date and Time values
 				if (isset ($values["time_end"])) {
@@ -67,15 +64,11 @@ class crmtogo_WS_SaveRecord extends crmtogo_WS_FetchRecord {
 					$endTime = '00:00:00';
 				}
 				if(!empty($values[$endDname])){
-					$date = new DateTimeField($values[$endDname]. ' ' . $endTime);
-					$values[$endDname] = $date->getDBInsertDateValue();
-					$values["time_end"] = $date->getDBInsertTimeValue();
 					$values['dtend'] = $values[$endDname].' '.$values['time_end'];
 				}
 			}
 			if ($module == 'cbCalendar') {
-				$date = new DateTimeField($values["followupdt"]. ' ' . $values["followupdt_time"]);
-				$values['followupdt'] = $date->getDBInsertDateValue().' '.$date->getDBInsertTimeValue();
+				$values['followupdt'] = $values["followupdt"]. ' ' . $values["followupdt_time"];
 				$values["followupdt_time"] = '';
 			}
 			// Set the modified values

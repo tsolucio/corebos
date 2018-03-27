@@ -1,7 +1,7 @@
 /***********************************************************
 *  Module       : General
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
@@ -10,10 +10,13 @@ var alert_arr = {
 	'DELETE':'Voulez-vous supprimer ',
 	'RECORDS':' enregistrement(s) ?',
 	'SELECT':'Merci de sélectionner au moins une entité',
+	'SELECTTEMPLATE':'Please select at least one document Template',
+	'SELECTMERGE':'Please select an entity to merge!',
+	'GENDOCSAVED':'Document saved. Please verify that it has been created correctly.',
 	'DELETE_ACCOUNT':'Supprimer ce(s) compte(s) va supprimer les affaires et devis liés. Etes-vous sûr de vouloir supprimer  ',
 	'DELETE_VENDOR':'Supprimer ce fournisseur va supprimer les commandes fournisseur liée. Etes vous sûr de vouloir supprimer  ',
 	'SELECT_MAILID':'Selectionnez un email',
-	'OVERWRITE_EXISTING_ACCOUNT1':'Ecraser l\'adresse existante avec le compte sélectionné (',
+	'OVERWRITE_EXISTING_ACCOUNT1':'Souhaitez-vous utiliser l\'adresse du compte en remplacement (',
 	'OVERWRITE_EXISTING_ACCOUNT2':') détails de l\'adresse ?',
 	'OVERWRITE_EXISTING_CONTACT1':'Ecraser l\'adresse existante avec le contact sélectionné (',
 	'OVERWRITE_EXISTING_CONTACT2':') détails de l\'adresse ?',
@@ -39,7 +42,6 @@ var alert_arr = {
 	'CANT_SELECT_CONTACTS':'Vous ne pouvez pas sélectionner les contacts liés aux leads',
 	'LBL_THIS':'Ce',
 	'DOESNOT_HAVE_MAILIDS':'n\'a aucun email',
-	'ARE_YOU_SURE':'Êtes vous sûr(e) ?',
 	'DOESNOT_HAVE_AN_MAILID':'" n\'a aucun email',
 	'MISSING_REQUIRED_FIELDS':'Champs requis manquants :',
 	'READONLY':'est en lecture seule',
@@ -49,7 +51,6 @@ var alert_arr = {
 	'ENDTIME_GREATER_THAN_STARTTIME':'La date de fin doit être postérieure a celle de début',
 	'MISSING_EVENT_NAME':'Nom évènement non renseigné',
 	'EVENT_TYPE_NOT_SELECTED':'Le type d\'activité n\'est pas sélectionné',
-	'CLOSEDATE_CANNOT_BE_EMPTY':'La date de fin doit être renseignée',
 	'SITEURL_CANNOT_BE_EMPTY':'L\'adresse du site doit être renseignée',
 	'SITENAME_CANNOT_BE_EMPTY':'Le nom du site doit être renseigné',
 	'LISTPRICE_CANNOT_BE_EMPTY':'La grille tarifaire ne peut être vide',
@@ -63,16 +64,14 @@ var alert_arr = {
 	'SPECIAL_CHARACTERS_NOT_ALLOWED':'Les caractères spéciaux ne sont pas autorisés dans ce champ',
 	'SPECIAL_CHARACTERS':'Caractères spéciaux',
 	'NOT_ALLOWED':'n\'est pas permis. Essayez de nouveau avec une nouvelle valeur',
-	'PICKLIST_CANNOT_BE_EMPTY':'La liste de choix ne peut être vide',
-	'DUPLICATE_VALUES_FOUND':'Doublons détectés',
 	'DUPLICATE_MAPPING_ACCOUNTS':'Mapping en doublon pour les comptes!',
 	'DUPLICATE_MAPPING_CONTACTS':'Mapping en doublon pour les contacts!',
 	'DUPLICATE_MAPPING_POTENTIAL':'Mapping en doublon pour les affaires!',
 	'ERROR_WHILE_EDITING':'Erreur d\'édition',
 	'CURRENCY_CHANGE_INFO':'Le changement de taux de change a été effectué avec succès',
 	'CURRENCY_CONVERSION_INFO':'Utilisez vous des Dollar $ comme devise? \n Cliquez OK pour rester en $, Annulez pour changer le taux de change',
-	'THE_EMAILID':"L\'email \\\'",
-	'EMAIL_FIELD_INVALID':"\\\' dans le mail est invalide",
+	'THE_EMAILID':'L\'email \\\'',
+	'EMAIL_FIELD_INVALID':'\\\' dans le mail est invalide',
 	'MISSING_REPORT_NAME':'Nom de rapport manquant',
 	'REPORT_NAME_EXISTS':'Nom de rapport déja existant, essayez de nouveau...',
 	'WANT_TO_CHANGE_CONTACT_ADDR':'Souhaitez vous modifier l\'adresse du contact par l\'adresse du compte ?',
@@ -99,7 +98,7 @@ var alert_arr = {
 	'EQUALS':'égal à',
 	'NOT_EQUALS_TO':'différent de',
 	'STARTS_WITH':'commence par',
-	'CONTAINS':'contient',	
+	'CONTAINS':'contient',
 	'DOES_NOT_CONTAINS':'ne contient pas',
 	'LESS_THAN':'inférieur à',
 	'GREATER_THAN':'supérieur à',
@@ -131,11 +130,9 @@ var alert_arr = {
 	'LBL_PROVIDE_YES_NO':'Valeur incorrecte.\n Répondez par oui ou par non',
 	'LBL_SELECT_CRITERIA':'Critère invalide.\n Sélectionnez un autre critère',
 	'OPPORTUNITYNAME_CANNOT_BE_EMPTY':'Le nom de l\'affaire doit être renseigné',
-	'OVERWRITE_EXISTING_ACCOUNT1':'Souhaitez-vous utiliser l\'adresse du compte en remplacement (',
 	'NAME_DESC':' pour le nom et la description du répertoire',
 	'ENDS_WITH':' fini par ',
 	'SHARED_EVENT_DEL_MSG':'L\'utilisateur n\'a pas l\'autorisation d\'éditer/supprimer cette tâche',
-
 
 	'LBL_WRONG_IMAGE_TYPE':'Les extensions autorisées pour les contacts sont :- jpeg, png, jpg, pjpeg, x-png et gif',
 	'SELECT_MAIL_MOVE':'Sélectionnez un email à déplacer',
@@ -184,8 +181,8 @@ var alert_arr = {
 	'FOLDERNAME_EMPTY':'Le nom du répertoire ne peut être vide',
 	'DUPLICATE_FOLDER_NAME':'Le nom du répertoire existe déjà. Réesssayez',
 	'FOLDER_DESCRIPTION_TOO_LONG':'La description du répertoire est trop longue. Réessayez',
-	'NOT_PERMITTED':"Vous n\'êtes pas autorisé à effectuer cette opération.",		
-			
+	'NOT_PERMITTED':'Vous n\'êtes pas autorisé à effectuer cette opération.',
+
 	'ALL_FILTER_CREATION_DENIED':'Vtiger ne peut pas créer de vue personnalisée en utilisant le terme "All", utilisez un autre nom pour cette vue',
 	'OPERATION_DENIED':'Vous n\'avez pas les droits pour effectuer cette action',
 	'EMAIL_CHECK_MSG': 'Désactiver l\'accès au portail qui permet de conserver le champ email vide',
@@ -215,8 +212,7 @@ var alert_arr = {
 	'FIELD_IS_MANDATORY' : 'Champ obligatoire',
 	'FIELD_IS_ACTIVE' : 'Le champ est prêt à être utilisé',
 	'FIELD_IN_QCREATE' : 'Présent dans la création rapide',
-	'FIELD_IS_MASSEDITABLE' : 'Disponible pour l\'édition de masse',	
-		
+	'FIELD_IS_MASSEDITABLE' : 'Disponible pour l\'édition de masse',
 	'IS_MANDATORY_FIELD' : ' est un champ obligatoire',
 	'CLOSEDATE_CANNOT_BE_EMPTY' : 'La date de fermeture ne peut être vide',
 	'AMOUNT_CANNOT_BE_EMPTY' : 'Le montant ne peut être vide',
@@ -231,46 +227,44 @@ var alert_arr = {
 	'LBL_DOCUMENT_LOST_INTEGRITY':'Ce document n\'est pas disponible. Il est peut-être marqué indisponible',
 	'LBL_DOCUMENT_NOT_AVAILABLE' : 'Ce document n\'est pas disponible au téléchargement',
 	'LBL_FOLDER_SHOULD_BE_EMPTY' : 'Le répertoire doit être vide pour être supprimé!',
-	
+
 	'LBL_PLEASE_SELECT_FILE_TO_UPLOAD' : 'Sélectionnez le fichier à télécharger.',
 	'LBL_ARE_YOU_SURE_TO_MOVE_TO' : 'Etes-vous sûr de vouloir déplacer le(s)fichiers(s) vers ',
 	'LBL_FOLDER' : ' répertoire ',
 	'LBL_UNABLE_TO_UPDATE' : 'Impossible de mettre à jour! Réessayez.',
-	'LBL_BLANK_REPLACEMENT': "Vous ne pouvez sélectionner des valeurs vides pour le déplacement",
-	
+	'LBL_BLANK_REPLACEMENT': 'Vous ne pouvez sélectionner des valeurs vides pour le déplacement',
+
 	'LBL_IMAGE_DELETED' : 'Suppression d\'image',
 
 	'ERR_FIELD_SELECTION' : 'Erreurs dans la sélection des champs',
 	'NO_LINE_ITEM_SELECTED' : 'Aucune ligne d\'article sélectionnée. Sélectionnez au moins une ligne.',
 	'LINE_ITEM' : 'Rubrique',
 	'LIST_PRICE': 'Liste des prix',
-			
-	'LBL_PRINT_EMAIL' : 'Imprimer', 
-	'LBL_DELETE_EMAIL' : 'Supprimer', 
-	'LBL_DOWNLOAD_ATTACHMENTS' : 'Télécharger pièce jointe', 
-	'LBL_QUALIFY_EMAIL' : 'Qualifier', 
-	'LBL_FORWARD_EMAIL' : 'Transférer', 
-	'LBL_REPLY_TO_SENDER' : 'Répondre', 
+
+	'LBL_PRINT_EMAIL' : 'Imprimer',
+	'LBL_DELETE_EMAIL' : 'Supprimer',
+	'LBL_DOWNLOAD_ATTACHMENTS' : 'Télécharger pièce jointe',
+	'LBL_QUALIFY_EMAIL' : 'Qualifier',
+	'LBL_FORWARD_EMAIL' : 'Transférer',
+	'LBL_REPLY_TO_SENDER' : 'Répondre',
 	'LBL_REPLY_TO_ALL' : 'Repondre à tous',
-	
-	
+
 	'LBL_WIDGET_HIDDEN' : 'Widget vide',
 	'LBL_RESTORE_FROM_PREFERENCES' : 'Vous pourrez restaurer à partir de vos préférences',
 	'ERR_HIDING' : 'Erreur de masquage',
 	'MSG_TRY_AGAIN' : 'Merci de réessayer',
-	
+
 	'MSG_ENABLE_SINGLEPANE_VIEW' : 'Vue linéaire activée',
 	'MSG_DISABLE_SINGLEPANE_VIEW' : 'Vue linéaire désactivée',
-	
+
 	'MSG_FTP_BACKUP_DISABLED' : 'Backup FTP Désactivé',
 	'MSG_LOCAL_BACKUP_DISABLED' : 'Local Backup Désactivé',
 	'MSG_FTP_BACKUP_ENABLED' : 'Backup FTP Activé',
 	'MSG_LOCAL_BACKUP_ENABLED' : 'Backup local Activé',
 	'MSG_CONFIRM_PATH' : 'Confirmer avec les détails du chemin',
 	'MSG_CONFIRM_FTP_DETAILS' : 'Confirmer avec les détails FTP',
-	
+
 	'START_PERIOD_END_PERIOD_CANNOT_BE_EMPTY' : 'Les périodes de début ou de fin ne peuvent pas être vide',
-		
 	'LBL_ADD': 'Ajouter ',
 	'Module': 'Module',
 	'DashBoard': 'Tableau de bord',
@@ -279,7 +273,7 @@ var alert_arr = {
 	'Notebook': 'Bloc note',
 	'ReportCharts': 'Rapport graphique',
 	'SPECIAL_CHARS':'\\ / < > + \' " ',
-	
+
 	'BETWEEN': 'entre',
 	'BEFORE': 'avant',
 	'AFTER': 'après',
@@ -288,7 +282,7 @@ var alert_arr = {
 	'LBL_SELECT_ONLY_FIELDS': 'Choisissez seulement 2 champs.',
 	'LBL_ENTER_RSS_URL':'Saisissez une adresse de flux RSS',
 	'LBL_ADD_HOME_WIDGET': 'Impossible d\'ajouter ce bloc! Réessayez',
-	
+
 	'LBL_DEFAULT_VALUE_FOR_THIS_FIELD' : 'Valeur par défaut pour ce champ',
 
 	'RECIPIENTS_CANNOT_BE_EMPTY' : 'Les destinataires sélectionnés ne peuvent être vide',
@@ -296,7 +290,6 @@ var alert_arr = {
 	'ERR_SAME_SOURCE_AND_TARGET' : 'La source et la destination doivent être différentes',
 	'ERR_ATLEAST_ONE_VALUE_FOR' : 'Sélectionnez au moins une valeur pour ',
 	'ERR_SELECT_MODULE_FOR_DEPENDENCY' : 'Sélectionnez un module pour ajouter la dépendance',
-	
 
 	'LBL_SIZE_SHOULDNOTBE_GREATER':'La taille du fichier ne doit pas être supérieure à ', //added for upload error message
 	'LBL_MAX_SIZE':'La taille maximum de chargement est de', //added for display file size limit
@@ -304,11 +297,11 @@ var alert_arr = {
 	'LBL_FILESIZEIN_KB':'Ko', // added to show filesize limit in KB
 	'LBL_FILESIZEIN_B':'o', // added to show filesize limit in B
 	//Contexual help page
-    'LBL_HELP_TITLE' : 'Aide',
-    'LBL_WIKI_TITLE' : 'Manuels',
-    'LBL_FAQ_TITLE'   : 'FAQ',
-    'LBL_VIDEO_TITLE' : 'Video',
-    'LBL_CLOSE_TITLE' : 'Fermer',
+	'LBL_HELP_TITLE' : 'Aide',
+	'LBL_WIKI_TITLE' : 'Manuels',
+	'LBL_FAQ_TITLE'   : 'FAQ',
+	'LBL_VIDEO_TITLE' : 'Video',
+	'LBL_CLOSE_TITLE' : 'Fermer',
 	'LBL_SELECT':'Choisir les widgets visibles par défaut',
 
 	'ERR_SELECT_ATLEAST_ONE_MERGE_CRITERIA_FIELD' : 'Choisir au moins un champ de fusion',
@@ -320,7 +313,7 @@ var alert_arr = {
 	'MAP_NAME_EXISTS' : 'Ce nom existe déjà. \\n Voulez-vous écraser ?',
 	'MAP_DELETED_INFO' : 'Ce mapping a été supprimé. Il est maintenant inutilisable',
 
-	//arror messages for lead conversion
+	//error messages for lead conversion
 	'ERR_SELECT_EITHER':'Choisir un compte ou un contact lors de la conversion du prospect',
 	'ERR_SELECT_ACCOUNT':'Choisir un compte',
 	'ERR_SELECT_CONTACT':'Choisir un contact',
@@ -392,5 +385,15 @@ var alert_arr = {
 	'JSLBL_Delete': 'Supprimer',
 	'JSLBL_Loading': 'Chargement',
 	'JSLBL_ATTACHMENT_NOT_DELETED': 'Le fichier joint ne peut être supprimé',
-	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'Taille limite de fichier dépassée!!'
+	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'Taille limite de fichier dépassée!!',
+	'JSLBL_CANCEL': 'Cancel',
+	'JSLBL_SAVEAS': 'Save as',
+	'JSLBL_SAVE': 'Save',
+	'JSLBL_PREVIOUS': 'Previous',
+	'JSLBL_NEXT': 'Next',
+	'JSLBL_CURRENT': 'current step:',
+	'JSLBL_PAGINATION': 'Pagination',
+	'JSLBL_FINISH': 'Finish',
+	'SHOWING' : 'Showing',
+	'OF' : 'of'
 };

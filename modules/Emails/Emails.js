@@ -9,18 +9,6 @@
 
 var gFolderid = 1;
 var gselectedrowid = 0;
-function gotoWebmail()
-{
-	jQuery.ajax({
-		method: 'POST',
-		url: "index.php?module=Webmails&action=WebmailsAjax&config_chk=true"
-	}).done(function (response) {
-		if(response.indexOf('SUCCESS') > -1)
-			window.location.href = "index.php?module=Webmails&action=index&parenttab=My Home Page";
-		else
-			document.getElementById('mailconfchk').style.display = 'block';
-	});
-}
 
 function getEmailContents(id)
 {
@@ -361,10 +349,9 @@ function server_check(){
 
 function delAttachments(id) {
 	jQuery.ajax({
-		method:"POST",
-		url:'index.php?module=Contacts&action=ContactsAjax&file=DelImage&attachmodule=Emails&recordid='+id
+		method:'POST',
+		url:'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=delImage&attachmodule=Emails&recordid='+id
 	}).done(function(response) {
 		jQuery('#row_'+id).fadeOut();
 	});
 }
-

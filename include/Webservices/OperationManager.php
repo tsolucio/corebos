@@ -77,7 +77,7 @@ class OperationManager{
 	}
 
 	private function fillOperationParameters(){
-		$sql = "select * from vtiger_ws_operation_parameters where operationid=? order by sequence";
+		$sql = "select name, type from vtiger_ws_operation_parameters where operationid=? order by sequence";
 		$result = $this->pearDB->pquery($sql,array($this->operationId));
 		$this->operationParams = array();
 		if($result){

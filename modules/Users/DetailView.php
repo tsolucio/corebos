@@ -77,7 +77,7 @@ if(!empty($_REQUEST['modechk']))
 }
 
 $smarty->assign("PARENTTAB", $parenttab);
-
+$smarty->assign('CHANGE_PW_BUTTON', '');
 if ((is_admin($current_user) || $_REQUEST['record'] == $current_user->id)
 		&& isset($default_user_name)
 		&& $default_user_name == $focus->user_name
@@ -85,8 +85,7 @@ if ((is_admin($current_user) || $_REQUEST['record'] == $current_user->id)
 		&& $lock_default_user_name == true) {
 	$buttons = "<input title='".$app_strings['LBL_EDIT_BUTTON_TITLE']."' accessKey='".$app_strings['LBL_EDIT_BUTTON_KEY']."' class='crmButton small edit' onclick=\"this.form.return_module.value='Users'; this.form.return_action.value='DetailView'; this.form.return_id.value='$focus->id'; this.form.action.value='EditView';\" type='submit' name='Edit' value='  ".$app_strings['LBL_EDIT_BUTTON_LABEL']."  '>";
 	$smarty->assign('EDIT_BUTTON',$buttons);
-}
-elseif (is_admin($current_user) || $_REQUEST['record'] == $current_user->id) {
+} elseif ((is_admin($current_user) && !in_array($focus->user_name, $cbodBlockedUsers)) || $_REQUEST['record'] == $current_user->id) {
 	$buttons = "<input title='".$app_strings['LBL_EDIT_BUTTON_TITLE']."' accessKey='".$app_strings['LBL_EDIT_BUTTON_KEY']."' class='crmButton small edit' onclick=\"this.form.return_module.value='Users'; this.form.return_action.value='DetailView'; this.form.return_id.value='$focus->id'; this.form.action.value='EditView';\" type='submit' name='Edit' value='  ".$app_strings['LBL_EDIT_BUTTON_LABEL']."  '>";
 	$smarty->assign('EDIT_BUTTON',$buttons);
 	$authType = GlobalVariable::getVariable('User_AuthenticationType', 'SQL');
@@ -104,8 +103,7 @@ elseif (is_admin($current_user) || $_REQUEST['record'] == $current_user->id) {
 	}
 	$smarty->assign('CHANGE_PW_BUTTON',$buttons);
 }
-if (is_admin($current_user))
-{
+if (is_admin($current_user) && !in_array($focus->user_name, $cbodBlockedUsers)) {
 	$buttons = "<input title='".$app_strings['LBL_DUPLICATE_BUTTON_TITLE']."' accessKey='".$app_strings['LBL_DUPLICATE_BUTTON_KEY']."' class='crmButton small create' onclick=\"this.form.return_module.value='Users'; this.form.return_action.value='DetailView'; this.form.isDuplicate.value=true; this.form.return_id.value='".vtlib_purify($_REQUEST['record'])."';this.form.action.value='EditView'\" type='submit' name='Duplicate' value=' ".$app_strings['LBL_DUPLICATE_BUTTON_LABEL']."'   >";
 	$smarty->assign('DUPLICATE_BUTTON',$buttons);
 
@@ -133,6 +131,7 @@ $smarty->assign("VALIDATION_DATA_FIELDNAME",$data['fieldname']);
 $smarty->assign("VALIDATION_DATA_FIELDDATATYPE",$data['datatype']);
 $smarty->assign("VALIDATION_DATA_FIELDLABEL",$data['fieldlabel']);
 $smarty->assign("MODULE", 'Users');
+$smarty->assign('cbodUserBlocked', in_array($focus->user_name, $cbodBlockedUsers));
 $smarty->assign("CURRENT_USERID", $current_user->id);
 $HomeValues = $focus->getHomeStuffOrder($focus->id);
 $smarty->assign("TAGCLOUDVIEW",$HomeValues['Tag Cloud']);

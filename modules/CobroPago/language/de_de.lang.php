@@ -1,26 +1,14 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Payments/language/en_us.lang.php,v 1.18 2005/04/28 14:05:53 ray Exp $
- * Description:  Defines the German language pack for the Account module.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
+ ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'CobroPago'=>'Zahlungswesen',
 'CobroPago ID'=>'Zahlung ID',
 'SINGLE_CobroPago'=>'Zahlung',
@@ -36,7 +24,6 @@ $mod_strings = Array(
 'LBL_PRODUCT_NAME'=>'Name des Produkt',
 'LBL_LIST_AMOUNT'=>'Summe',
 
-'LBL_COBROPAGO_NAME'=>'Zahlung Ref:',
 'LBL_ACCOUNT_NAME'=>'Name der Organisation:',
 'LBL_AMOUNT'=>'Summe:',
 'LBL_TYPE'=>'Typ:',
@@ -58,13 +45,10 @@ $mod_strings = Array(
 'LBL_SELECT_COBROPAGO'=>'Zahlung auswählen',
 'LBL_GENERAL_INFORMATION'=>'Allgemeine Informationen',
 
-//for v4 release added
 'LBL_NEW_CobroPago'=>'Neue Zahlung',
 'LBL_CobroPago_TITLE'=>'Zahlungswesen',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Zahlungswesen Tools',
-//Added for 4GA
 'CobroPago Name'=>'Zahlung Ref',
 'Reference'=>'Zahlung Ref',
 'Register'=>'Zahlung Datum',
@@ -81,14 +65,7 @@ $mod_strings = Array(
 'Category'=>'Zahlungs Kategorie',
 'CobroPago Type'=>'Zahlungs Typ',
 'Type'=>'Typ',
-'Assigned To'=>'zuständig',
 'Probability'=>'Wahrscheinlichkeit (%)',
-'Description'=>'Beschreibung',
-'Created Time'=>'Erstellt',
-'Modified Time'=>'Bearbeitet',
-'SINGLE_CobroPago'=>'Zahlung',
-'CobroPago'=>'Zahlungswesen',
-'CobroPago ID'=>'Zahlung Id',
 'cobropagoid'=>'Zahlung Id',
 'DueDate'=>'Zu zahlen bis',
 'Comercial'=>'Zugehöriger user',

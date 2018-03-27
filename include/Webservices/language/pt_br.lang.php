@@ -23,5 +23,4 @@ $webservice_strings = array(
 	'LBL_DATABASE_QUERY_ERROR' => 'Erro na base de dados ao executar a operação solicitada',
 	'LBL_CHANGE_PASSWORD_FAILURE' => 'Falha ao alterar a Senha',
 );
-
 ?>

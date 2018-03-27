@@ -10,5 +10,5 @@
 global $currentModule;
 
 checkFileAccessForInclusion("modules/$currentModule/ListCronJobs.php");
-include_once("modules/$currentModule/ListCronJobs.php");
+include_once "modules/$currentModule/ListCronJobs.php";
 ?>

@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('modules/com_vtiger_workflow/VTEntityCache.inc');
-require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
+require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
+require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 
 class VTCreateEntityTask extends VTTask {
 
@@ -30,18 +30,18 @@ class VTCreateEntityTask extends VTTask {
 		$recordId = $recordId[1];
 
 		$entityType = $this->entity_type;
-		if(!vtlib_isModuleActive($entityType)) {
+		if (!vtlib_isModuleActive($entityType)) {
 			return;
 		}
 
 		$fieldValueMapping = array();
 		if (!empty($this->field_value_mapping)) {
-			$fieldValueMapping = json_decode($this->field_value_mapping,true);
+			$fieldValueMapping = json_decode($this->field_value_mapping, true);
 		}
 
 		if (!empty($entityType) && !empty($fieldValueMapping) && count($fieldValueMapping) > 0) {
 			$logbg->debug('CreateEntityTask: create '.$entityType);
-			require_once('data/CRMEntity.php');
+			require_once 'data/CRMEntity.php';
 			require_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
 
 			$focus = CRMEntity::getInstance($moduleName);
@@ -58,12 +58,17 @@ class VTCreateEntityTask extends VTTask {
 			$entityModuleHandler = vtws_getModuleHandlerFromName($entityType, $current_user);
 			$handlerMeta = $entityModuleHandler->getMeta();
 			$ownerFields = $handlerMeta->getOwnerFields();
+			$dtFields = $handlerMeta->getFieldListByType('datetime');
+			$datetimeFields = array();
+			foreach ($dtFields as $webserviceField) {
+				$datetimeFields[] = $webserviceField->getFieldName();
+			}
+			unset($dtFields);
 			$logbg->debug($focus->column_fields);
 			$logbg->debug($fieldValueMapping);
 			foreach ($fieldValueMapping as $fieldInfo) {
 				$fieldName = $fieldInfo['fieldname'];
 				$referenceModule = $fieldInfo['modulename'];
-				$fieldType = '';
 				$fieldValueType = $fieldInfo['valuetype'];
 				$fieldValue = trim($fieldInfo['value']);
 
@@ -71,7 +76,7 @@ class VTCreateEntityTask extends VTTask {
 					if ($referenceModule == $entityType) {
 						$fieldValue = $newEntity->column_fields[$fieldValue];
 					} else {
-						$fieldValue = $focus->column_fields[$fieldValue];
+						$fieldValue = ($fieldValue == 'id' ? $focus->column_fields['record_id'] : $focus->column_fields[$fieldValue]);
 					}
 				} elseif ($fieldValueType == 'expression' || ($fieldValueType == 'fieldname' && preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', $fieldValue))) {
 					$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($fieldValue)));
@@ -101,17 +106,29 @@ class VTCreateEntityTask extends VTTask {
 						$fieldValue = ($userId == 0) ? $groupId : $userId;
 					}
 				}
+				if (in_array($fieldName, $datetimeFields) && strpos($fieldValue, ' ')===false) {
+					$rs = $adb->pquery('select start_hour from vtiger_users where id=?', array($current_user->id));
+					$fieldValue = $fieldValue.' '.$adb->query_result($rs, 0, 'start_hour');
+				}
 
 				$newEntity->column_fields[$fieldName] = $fieldValue;
 			}
 			$newEntity->column_fields[$this->reference_field] = $focus->id;
-			if (($moduleName=='Invoice' or $moduleName=='SalesOrder') and $entityType=='CobroPago') {
-				$newEntity->column_fields['parent_id'] = (empty($focus->column_fields['account_id']) ? $focus->column_fields['contact_id'] : $focus->column_fields['account_id']);
+			if (($moduleName=='Invoice' || $moduleName=='SalesOrder') && $entityType=='CobroPago' && empty($newEntity->column_fields['parent_id'])) {
+				$newEntity->column_fields['parent_id'] = (
+					empty($focus->column_fields['account_id']) ?
+						$focus->column_fields['contact_id'] :
+						$focus->column_fields['account_id']
+				);
 			}
-			if (($moduleName=='Invoice' or $moduleName=='SalesOrder') and $entityType=='Potentials') {
-				$newEntity->column_fields['related_to'] = (empty($focus->column_fields['account_id']) ? $focus->column_fields['contact_id'] : $focus->column_fields['account_id']);
+			if (($moduleName=='Invoice' || $moduleName=='SalesOrder') && $entityType=='Potentials' && empty($newEntity->column_fields['related_to'])) {
+				$newEntity->column_fields['related_to'] = (
+					empty($focus->column_fields['account_id']) ?
+						$focus->column_fields['contact_id'] :
+						$focus->column_fields['account_id']
+				);
 			}
-			if ($moduleName=='PurchaseOrder' and $entityType=='CobroPago') {
+			if ($moduleName=='PurchaseOrder' && $entityType=='CobroPago' && empty($newEntity->column_fields['parent_id'])) {
 				$newEntity->column_fields['parent_id'] = $focus->column_fields['vendor_id'];
 			}
 
@@ -121,13 +138,15 @@ class VTCreateEntityTask extends VTTask {
 			$cbfrom = CRMEntity::getInstance($cbfrommodule);
 			$cbfrom->retrieve_entity_info($cbfromid, $cbfrommodule);
 			$cbMapidFromid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
-			if ($cbMapidFromid) $cbMapid = $cbMapidFromid;
+			if ($cbMapidFromid) {
+				$cbMapid = $cbMapidFromid;
+			}
 			if (!empty($cbMapid)) {
 				$cbMap = cbMap::getMapByID($cbMapid);
-				$newEntity->column_fields = $cbMap->Mapping($cbfrom->column_fields,$newEntity->column_fields);
+				$newEntity->column_fields = $cbMap->Mapping($cbfrom->column_fields, $newEntity->column_fields);
 			}
 
-			$newEntity->column_fields = DataTransform::sanitizeRetrieveEntityInfo($newEntity->column_fields,$handlerMeta);
+			$newEntity->column_fields = DataTransform::sanitizeRetrieveEntityInfo($newEntity->column_fields, $handlerMeta);
 			$logbg->debug($newEntity->column_fields);
 			$newEntity->save($entityType);
 			relateEntities($focus, $moduleName, $recordId, $entityType, $newEntity->id);
@@ -139,7 +158,5 @@ class VTCreateEntityTask extends VTTask {
 		$from_wf = false;
 		$util->revertUser();
 	}
-
 }
-
 ?>

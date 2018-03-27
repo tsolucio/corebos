@@ -14,7 +14,8 @@
 *  Author       : JPL TSolucio, S.L.
 *  License      : MPL 1.1
  ************************************************************************************/
-$mod_strings = Array (
+
+$mod_strings = array(
 	'ConfigEditor' => 'Editor Configuración',
 	'LBL_CONFIG_EDITOR' => 'Editor Configuración',
 	'LBL_CONFIG_EDIT'=>'Editar la Configuración',
@@ -43,10 +44,9 @@ $mod_strings = Array (
 	'LBL_CONFIG_EDIT_CAUTION_INFO' =>'Estás editando la configuración.',
 	'LBL_DOUBLE_CHECK_INFO'=>'Por favor, verifica los valores introducidos antes de guardar.',
 	'LBL_HELP_INFO'=>"Esto se utiliza como correo de respuesta al notificar un usuario recién creado,
-					notificar de la asignación de una incidencia y otras notificaciones y recordatorios en general.",
+		notificar de la asignación de una incidencia y otras notificaciones y recordatorios en general.",
 	'LBL_RESTRICTED_CHARACTERS'=>"Caracteres especiales como ' &#34 y ; no son permitidos",
 	'LBL_CORS_ENABLED_DOMAINS' => 'Dominios autorizados CORS',
 	'disable_stats_tracking' => 'Deshabilitar Estadísticas de Acceso a Emails',
 );
-
 ?>

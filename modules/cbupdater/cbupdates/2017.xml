@@ -140,4 +140,46 @@
 	<classname>AddWfFunctionrawparams</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add close action on listview calendar events</description>
+	<filename>build/changeSets/2017/addCalendarCloseAction.php</filename>
+	<classname>addCalendarCloseAction</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Make calendar Completed Status NonEditable as it is used in code</description>
+	<filename>build/changeSets/2017/calendarCompletedStatusNonEditable.php</filename>
+	<classname>calendarCompletedStatusNonEditable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Set Accounts as default module in relatedto capture field of calendar</description>
+	<filename>build/changeSets/2017/calendarSetAccountsAsDefault.php</filename>
+	<classname>calendarSetAccountsAsDefault</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>move Calendar Home Widget to cbCalendar</description>
+	<filename>build/changeSets/2017/moveCalendarHomeWidget2cbCalendar.php</filename>
+	<classname>moveCalendarHomeWidget2cbCalendar</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add needscontext column to the expression workflowfunctions table</description>
+	<filename>build/changeSets/2017/AddWfFunctionneedscontext.php</filename>
+	<classname>AddWfFunctionneedscontext</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Increment size of fieldname and fieldlabel meta-data</description>
+	<filename>build/changeSets/2017/incFieldMetadatasize.php</filename>
+	<classname>incFieldMetadatasize</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

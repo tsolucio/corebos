@@ -22,7 +22,7 @@ require_once('include/logging.php');
 require_once('include/utils/UserInfoUtil.php');
 require_once('include/utils/utils.php');
 include_once('config.inc.php');
-global $adb,$root_directory;
+global $adb;
 
 //$xmlstr = file_get_contents("build/data/$lang/profile.xml");
 //$if = getImportDataFileName('profile.xml',$lang);
@@ -36,7 +36,7 @@ foreach ($xmlreader->vtcrm_profile as $profile) {
 	$pfrs = $adb->pquery('select count(*) as cnt from vtiger_profile where profilename=?',array($prfname));
 	$pfcnt = $adb->fetch_array($pfrs);
 	if (!empty($pfcnt['cnt'])) {
-		echo("$prfname already exists!");
+		echo "$prfname already exists!";
 		continue;
 	}
 	$profile_id = $adb->getUniqueID("vtiger_profile");

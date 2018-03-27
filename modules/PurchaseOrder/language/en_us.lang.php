@@ -7,9 +7,9 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
- 
-$mod_strings = Array(
-'LBL_MODULE_NAME'=>'PurchaseOrder',
+
+$mod_strings = array(
+'LBL_MODULE_NAME'=>'Purchase Order',
 'LBL_RELATED_PRODUCTS'=>'Product Details',
 'LBL_MODULE_TITLE'=>'Purchase Order: Home',
 'LBL_SEARCH_FORM_TITLE'=>'Purchase Order Search',
@@ -68,7 +68,6 @@ $mod_strings = Array(
 'LBL_SELECT_ACCOUNT'=>'Select Organization',
 'LBL_GENERAL_INFORMATION'=>'General Information',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'New Opportunity',
 'LBL_POTENTIAL_TITLE'=>'Opportunities',
 
@@ -83,16 +82,13 @@ $mod_strings = Array(
 'LBL_NEW_CONTACT'=>'New Contact',
 'LBL_CONTACT_TITLE'=>'Contacts',
 
-//Added vtiger_fields after RC1 - Release
 'LBL_ALL'=>'All',
 'LBL_PROSPECT'=>'Prospect',
 'LBL_INVESTOR'=>'Investor',
 'LBL_RESELLER'=>'Reseller',
 'LBL_PARTNER'=>'Partner',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Organization Tools',
-//Added for 4GA
 'Subject'=>'Subject',
 'Quote Name'=>'Quote Name',
 'Vendor Name'=>'Vendor Name',
@@ -138,7 +134,6 @@ $mod_strings = Array(
 'LBL_PO_INFORMATION'=>'Purchase Order Information',
 'LBL_PO'=>'Purchase Order:',
 
- //Added for 4.2 GA
 'LBL_SO_FORM_TITLE'=>'Sales',
 'LBL_PO_FORM_TITLE'=>'Purchase',
 'LBL_SUBJECT_TITLE'=>'Subject',
@@ -153,7 +148,6 @@ $mod_strings = Array(
 'LBL_MY_TOP_PO'=>'My Top Open Purchase Orders',
 
 //Added for existing Picklist Entries
-
 'FedEx'=>'FedEx',
 'UPS'=>'UPS',
 'USPS'=>'USPS',
@@ -166,7 +160,6 @@ $mod_strings = Array(
 'Cancelled'=>'Cancelled',
 'Received Shipment'=>'Received Shipment',
 
-//Added for Reports (5.0.4)
 'Tax Type'=>'Tax Type',
 'Discount Percent'=>'Discount Percent',
 'Discount Amount'=>'Discount Amount',
@@ -174,11 +167,9 @@ $mod_strings = Array(
 'Sub Total'=>'Sub Total',
 'S&H Amount'=>'S&H Amount',
 
-//Added after 5.0.4 GA
-'PurchaseOrder No'=>'PurchaseOrder No',
+'PurchaseOrder No'=>'Purchase Order No',
 
 'SINGLE_PurchaseOrder'=>'Purchase Order',
 'PurchaseOrder ID'=>'Purchase Order ID',
 );
-
 ?>

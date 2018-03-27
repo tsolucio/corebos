@@ -2,7 +2,7 @@
 /***********************************************************
 *  Module       : Potentials
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
@@ -109,5 +109,6 @@ $mod_strings = array (
 	'Potential No' => 'Affaire n°',
 	'Related To' => 'Relatif à',
 	'Potentials ID' => 'Affaire ID',
+	'Forecast Amount'=> 'Forecast Amount',
 );
 ?>

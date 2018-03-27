@@ -14,7 +14,7 @@
 *  Author       : JPL TSolucio, S.L.
 *  License      : MPL 1.1
  ************************************************************************************/
-$mod_strings = Array (
+$mod_strings = array (
 'SMSNotifier'                 => 'Mensajeria SMS',
 'SINGLE_SMSNotifier'          => 'SMS Info',
 'LBL_SMSNOTIFIER_INFORMATION' => 'Información SMS',
@@ -46,5 +46,4 @@ $mod_strings = Array (
 'ReviewModuleSettings' => 'Revisa la configuración SMS.',
 'ContactAdmin' => 'Contacta con tu administrador.',
 );
-
 ?>

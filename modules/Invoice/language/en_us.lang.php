@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
- 
-$mod_strings = Array(
+
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Invoice',
 'LBL_SO_MODULE_NAME'=>'Invoice',
 'LBL_RELATED_PRODUCTS'=>'Product Details',
@@ -71,7 +71,6 @@ $mod_strings = Array(
 'LBL_SELECT_ACCOUNT'=>'Select Organization',
 'LBL_GENERAL_INFORMATION'=>'General Information',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'New Opportunity',
 'LBL_POTENTIAL_TITLE'=>'Opportunities',
 
@@ -86,21 +85,18 @@ $mod_strings = Array(
 'LBL_NEW_CONTACT'=>'New Contact',
 'LBL_CONTACT_TITLE'=>'Contacts',
 
-//Added vtiger_fields after RC1 - Release
 'LBL_ALL'=>'All',
 'LBL_PROSPECT'=>'Prospect',
 'LBL_INVESTOR'=>'Investor',
 'LBL_RESELLER'=>'Reseller',
 'LBL_PARTNER'=>'Partner',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Organization Tools',
-//Added for 4GA
 'Subject'=>'Subject',
 'Quote Name'=>'Quote Name',
 'Vendor Name'=>'Vendor Name',
 'Invoice Terms'=>'Invoice Terms',
-'Contact Name'=>'Contact Name',//to include contact name field in Invoice
+'Contact Name'=>'Contact Name',
 'Invoice Date'=>'Invoice Date',
 'Sub Total'=>'Sub Total',
 'S&H Amount' => 'S&H Amount',
@@ -138,13 +134,11 @@ $mod_strings = Array(
 'Pending'=>'Pending',
 'Account Name'=>'Organization Name',
 'Terms & Conditions'=>'Terms & Conditions',
-//Quote Info
 'LBL_INVOICE_INFORMATION'=>'Invoice Information',
 'LBL_INVOICE'=>'Invoice:',
 'LBL_SO_INFORMATION'=>'Sales Order Information',
 'LBL_SO'=>'Sales Order:',
 
-//Added in release 4.2
 'LBL_SUBJECT'=>'Subject:',
 'LBL_SALES_ORDER'=>'Sales order:',
 'LBL_MY_TOP_INVOICE'=>'My Top Open Invoice',
@@ -154,31 +148,24 @@ $mod_strings = Array(
 'Id'=>'Invoice Id',
 'Invoice'=>'Invoice',
 
-//Added for existing Picklist Entries
-
 'Created'=>'Created',
 'Approved'=>'Approved',
 'Sent'=>'Sent',
 'Credit Invoice'=>'Credit Invoice',
 'Paid'=>'Paid',
 'AutoCreated'=>'AutoCreated',
-//Added to Custom Invoice Number
 'Invoice No'=>'Invoice No',
 'Adjustment'=>'Adjustment',
 
-//Added for Reports (5.0.4)
 'Tax Type'=>'Tax Type',
 'Discount Percent'=>'Discount Percent',
 'Discount Amount'=>'Discount Amount',
 'No'=>'No',
 'Date'=>'Date',
 
-// Added affter 5.0.4 GA
-//Added for Documents module
 'Documents'=>'Documents',
 
 'SINGLE_Invoice'=>'Invoice',
 'Invoice ID'=>'Invoice ID',
 );
-
 ?>

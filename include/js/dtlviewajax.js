@@ -413,10 +413,6 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 		{
 			getObj(dtlView).innerHTML = "<a href=\"index.php?module=Contacts&action=DetailView&record="+tagValue+"\">"+popObj.value+"&nbsp;</a>";
 		}
-		else if(uitype == '59')
-		{
-			getObj(dtlView).innerHTML = "<a href=\"index.php?module=Products&action=DetailView&record="+tagValue+"\" onclick='event.stopPropagation();'>"+popObj.value+"&nbsp;</a>";
-		}
 		else if(uitype == '75' || uitype == '81' )
 		{
 			getObj(dtlView).innerHTML = "<a href=\"index.php?module=Vendors&action=DetailView&record="+tagValue+"\">"+popObj.value+"&nbsp;</a>";

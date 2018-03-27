@@ -133,7 +133,6 @@ $mod_strings = array(
 	'LBL_SELECTED_DATES' => 'Selected Dates',
 	'LBL_EXCEEDING_MAXIMUM_LIMIT' => 'Maximum limit exceeded',
 	'LBL_NEXT_TRIGGER_TIME' => 'Next trigger time on',
-	'LBL_MESSAGE' => 'Message',
 	'UpdateInventoryProducts On Every Save' => 'Update Product Inventory',
 	'Send Email to user when Notifyowner is True' => 'Send Email to user when Notifyowner is True',
 	'Send Email to user when Portal User is True' => 'Send Email to user when Portal User is True',

@@ -11,10 +11,9 @@
 class Install_InitSchema {
 
 	protected $sql_directory = 'schema/';
-	protected $corebos_sql = 'corebos_justinstalled_empty';
 	protected $db = false;
 
-	function __construct($db = '') {
+	public function __construct($db = '') {
 		$this->db = $db;
 	}
 
@@ -22,27 +21,29 @@ class Install_InitSchema {
 	 * Function starts applying schema changes
 	 */
 	public function initialize() {
-		$this->initializeDatabase($this->sql_directory, array($this->corebos_sql));
+		include 'modules/Settings/configod.php';
+		$this->initializeDatabase($this->sql_directory, array($corebosInstallDatabase));
 		$this->setDefaultUsersAccess();
 		$currencyName = $_SESSION['installation_info']['currency_name'];
 		$currencyCode = $_SESSION['installation_info']['currency_code'];
 		$currencySymbol = $_SESSION['installation_info']['currency_symbol'];
-		$this->db->pquery('UPDATE vtiger_currency_info SET currency_name = ?, currency_code = ?, currency_symbol = ?', array($currencyName, $currencyCode, $currencySymbol));
-
+		$this->db->pquery(
+			'UPDATE vtiger_currency_info SET currency_name = ?, currency_code = ?, currency_symbol = ?',
+			array($currencyName, $currencyCode, $currencySymbol)
+		);
 		// recalculate all sharing rules for users
 		require_once 'include/utils/UserInfoUtil.php';
 		RecalculateSharingRules();
 	}
 
-	public function initializeDatabase($location, $filesName = array())
-	{
+	public function initializeDatabase($location, $filesName = array()) {
 		$this->db->query('SET FOREIGN_KEY_CHECKS = 0;');
 		if (!$filesName) {
 			echo 'No files';
 			return false;
 		}
 		$splitQueries = '';
-		foreach ($filesName AS $name) {
+		foreach ($filesName as $name) {
 			$sql_file = $location . $name . '.sql';
 			$return = true;
 			if (!($fileBuffer = file_get_contents($sql_file))) {
@@ -55,7 +56,7 @@ class Install_InitSchema {
 		$insert_query = substr_count($splitQueries, 'INSERT INTO');
 		$alter_query = substr_count($splitQueries, 'ALTER TABLE');
 		$executed_query = 0;
-		$queries = $this->_splitQueries($splitQueries);
+		$queries = $this->splitQueries($splitQueries);
 		foreach ($queries as $query) {
 			// Trim any whitespace.
 			$query = trim($query);
@@ -76,20 +77,18 @@ class Install_InitSchema {
 	/**
 	 * Function creates default user's Role, Profiles
 	 */
-	public function setDefaultUsersAccess()
-	{
+	public function setDefaultUsersAccess() {
 		$adminPassword = $_SESSION['installation_info']['admin_password'];
-		$this->db->pquery('update vtiger_users set email1=? where id=1',array($_SESSION['installation_info']['admin_email']));
+		$this->db->pquery('update vtiger_users set email1=? where id=1', array($_SESSION['installation_info']['admin_email']));
 		$newUser = new Users();
 		$newUser->retrieve_entity_info(1, 'Users');
 		$newUser->change_password('admin', $adminPassword, false);
-		$this->db->pquery('UPDATE `vtiger_users` SET `change_password` = ? where id=1',array(($adminPassword=='admin' ? 1 : 0)));
+		$this->db->pquery('UPDATE `vtiger_users` SET `change_password` = ? where id=1', array(($adminPassword=='admin' ? 1 : 0)));
 		require_once('modules/Users/CreateUserPrivilegeFile.php');
 		createUserPrivilegesfile(1);
 	}
 
-	public function _splitQueries($query)
-	{
+	private function splitQueries($query) {
 		$buffer = array();
 		$queries = array();
 		$in_string = false;
@@ -132,5 +131,4 @@ class Install_InitSchema {
 		}
 		return $queries;
 	}
-
 }

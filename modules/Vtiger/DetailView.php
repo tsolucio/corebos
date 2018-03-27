@@ -96,11 +96,11 @@ if ($cbMapid) {
 } else {
 	$smarty->assign('HASRELATEDPANES', 'false');
 }
-if ($singlepane_view == 'true' or $isPresentRelatedListBlock) {
+if ($singlepane_view == 'true' || $isPresentRelatedListBlock) {
 	$related_array = getRelatedLists($currentModule, $focus);
 	$smarty->assign("RELATEDLISTS", $related_array);
 
-	require_once('include/ListView/RelatedListViewSession.php');
+	require_once 'include/ListView/RelatedListViewSession.php';
 	if (!empty($_REQUEST['selected_header']) && !empty($_REQUEST['relation_id'])) {
 		RelatedListViewSession::addRelatedModuleToSession(vtlib_purify($_REQUEST['relation_id']), vtlib_purify($_REQUEST['selected_header']));
 	}
@@ -134,7 +134,7 @@ if (is_admin($current_user)) {
 
 $smarty->assign('BLOCKINITIALSTATUS', $_SESSION['BLOCKINITIALSTATUS']);
 // Gather the custom link information to display
-include_once('vtlib/Vtiger/Link.php');
+include_once 'vtlib/Vtiger/Link.php';
 $customlink_params = array('MODULE'=>$currentModule, 'RECORD'=>$focus->id, 'ACTION'=>vtlib_purify($_REQUEST['action']));
 $smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), array('DETAILVIEWBASIC', 'DETAILVIEW', 'DETAILVIEWWIDGET'), $customlink_params));
 if ($isPresentRelatedListBlock) {
@@ -160,7 +160,7 @@ if ($isPresentRelatedListBlock) {
 }
 
 // Hide Action Panel
-$DEFAULT_ACTION_PANEL_STATUS = GlobalVariable::getVariable('Application_Action_Panel_Open', 1);
+$DEFAULT_ACTION_PANEL_STATUS = GlobalVariable::getVariable('Application_DetailView_ActionPanel_Open', 1);
 $smarty->assign('DEFAULT_ACTION_PANEL_STATUS', ($DEFAULT_ACTION_PANEL_STATUS ? '' : 'display:none'));
 $smarty->assign('Module_Popup_Edit', isset($_REQUEST['Module_Popup_Edit']) ? vtlib_purify($_REQUEST['Module_Popup_Edit']) : 0);
 

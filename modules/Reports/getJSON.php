@@ -16,8 +16,8 @@
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
 require_once 'include/utils/utils.php';
-require_once('modules/Reports/Reports.php');
-include_once('modules/Reports/ReportRun.php');
+require_once 'modules/Reports/Reports.php';
+include_once 'modules/Reports/ReportRun.php';
 
 $response = array(
 	'total' => 0,
@@ -28,37 +28,43 @@ $response = array(
 $reportid = (isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : 0);
 $sql = 'select * from vtiger_report where reportid=?';
 $res = $adb->pquery($sql, array($reportid));
-if($res and $adb->num_rows($res) > 0) {
-	$reporttype = $adb->query_result($res,0,'reporttype');
+if ($res && $adb->num_rows($res) > 0) {
+	$reporttype = $adb->query_result($res, 0, 'reporttype');
 
 	$ogReport = new Reports($reportid);
 	$primarymodule = $ogReport->primodule;
 	$restrictedmodules = array();
-	if($ogReport->secmodule!='')
-		$rep_modules = explode(":",$ogReport->secmodule);
-	else
+	if ($ogReport->secmodule!='') {
+		$rep_modules = explode(":", $ogReport->secmodule);
+	} else {
 		$rep_modules = array();
+	}
 
 	$rep_modules[] = $primarymodule;
 	$modules_permitted = true;
 	$modules_export_permitted = true;
-	foreach($rep_modules as $mod){
-		if(isPermitted($mod,'index')!= 'yes' || vtlib_isModuleActive($mod)==false){
+	foreach ($rep_modules as $mod) {
+		if (isPermitted($mod, 'index')!= 'yes' || vtlib_isModuleActive($mod)==false) {
 			$modules_permitted = false;
 			$restrictedmodules[] = $mod;
 		}
-		if(isPermitted("$mod",'Export','')!='yes')
+		if (isPermitted("$mod", 'Export', '')!='yes') {
 			$modules_export_permitted = false;
+		}
 	}
 
-	if(isPermitted($primarymodule,'index') == 'yes' && $modules_permitted == true) {
+	if (isPermitted($primarymodule, 'index') == 'yes' && $modules_permitted == true) {
 		$oReportRun = new ReportRun($reportid);
 		$advft_criteria = coreBOS_Session::get('ReportAdvCriteria'.$_COOKIE['corebos_browsertabID'], '');
-		if(!empty($advft_criteria)) $advft_criteria = json_decode($advft_criteria,true);
+		if (!empty($advft_criteria)) {
+			$advft_criteria = json_decode($advft_criteria, true);
+		}
 		$advft_criteria_groups = coreBOS_Session::get('ReportAdvCriteriaGrp'.$_COOKIE['corebos_browsertabID'], '');
-		if(!empty($advft_criteria_groups)) $advft_criteria_groups = json_decode($advft_criteria_groups,true);
+		if (!empty($advft_criteria_groups)) {
+			$advft_criteria_groups = json_decode($advft_criteria_groups, true);
+		}
 
-		$filtersql = $oReportRun->RunTimeAdvFilter($advft_criteria,$advft_criteria_groups);
+		$filtersql = $oReportRun->RunTimeAdvFilter($advft_criteria, $advft_criteria_groups);
 		if (isset($_REQUEST['page'])) {
 			$oReportRun->page = vtlib_purify($_REQUEST['page']);
 			$output = 'JSONPAGED';

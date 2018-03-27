@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger. All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|30/12/2010|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ************************************************************************************/
-$mod_strings = Array (
+$mod_strings = array (
 'SMSNotifier'                 => 'Notificador SMS',
 'SINGLE_SMSNotifier'          => 'Info SMS',
 'LBL_SMSNOTIFIER_INFORMATION' => 'Informação SMS',
@@ -38,5 +38,4 @@ $mod_strings = Array (
 'ReviewModuleSettings' => 'Please review SMS Settings.',
 'ContactAdmin' => 'Please contact your administrator.',
 );
-
 ?>

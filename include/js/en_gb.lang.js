@@ -11,6 +11,9 @@ var alert_arr = {
 	'DELETE' : 'Are you sure you want to delete the selected ',
 	'RECORDS' : 'records?',
 	'SELECT' : 'Please select at least one entity',
+	'SELECTTEMPLATE':'Please select at least one document Template',
+	'SELECTMERGE':'Please select an entity to merge!',
+	'GENDOCSAVED':'Document saved. Please verify that it has been created correctly.',
 	'DELETE_ACCOUNT' : 'Deleting Organisation(s) will remove related Opportunities & Quotes. Are you sure you want to delete the selected',
 	'DELETE_VENDOR' : 'Deleting Vendor(s) will remove related Purchase Orders. Are you sure you want to delete the selected ',
 	'SELECT_MAILID' : 'Please Select a mailid',
@@ -361,5 +364,15 @@ var alert_arr = {
 	'JSLBL_Delete': 'Delete',
 	'JSLBL_Loading': 'Loading',
 	'JSLBL_ATTACHMENT_NOT_DELETED': 'Attachment could not be deleted',
-	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'File Upload Limit exceeded!!'
+	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'File Upload Limit exceeded!!',
+	'JSLBL_CANCEL': 'Cancel',
+	'JSLBL_SAVEAS': 'Save as',
+	'JSLBL_SAVE': 'Save',
+	'JSLBL_PREVIOUS': 'Previous',
+	'JSLBL_NEXT': 'Next',
+	'JSLBL_CURRENT': 'current step:',
+	'JSLBL_PAGINATION': 'Pagination',
+	'JSLBL_FINISH': 'Finish',
+	'SHOWING' : 'Showing',
+	'OF' : 'of'
 };

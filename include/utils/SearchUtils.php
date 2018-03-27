@@ -140,11 +140,7 @@ function getSearchListHeaderValues($focus, $module,$sort_qry='',$sorder='',$orde
 				$name = $app_strings['LBL_CONTACT_LAST_NAME'];
 				elseif($fieldname == 'contact_id' && $module =="Contacts")
 					$name = $mod_strings['Reports To']." - ".$mod_strings['LBL_LIST_LAST_NAME'];
-				//assign the translated string
-				//added to fix #5205
-				//Added condition to hide the close column in calendar search header
-				if($name != $app_strings['Close'])
-					$search_header[$fld_name] = getTranslatedString($name);
+				$search_header[$fld_name] = getTranslatedString($name);
 			}
 		}
 		if($module == 'HelpDesk' && $fieldname == 'crmid')
@@ -217,53 +213,48 @@ function get_usersid($table_name,$column_name,$search_string)
 *Param $search_string - searchstring value (username)
 *Returns the where conditions for list query in string format
 */
-function getValuesforColumns($column_name,$search_string,$criteria='cts',$input='')
-{
+function getValuesforColumns($column_name, $search_string, $criteria = 'cts', $input = '') {
 	global $log, $current_user, $column_array,$table_col_array;
 	$log->debug("Entering getValuesforColumns(".$column_name.",".$search_string.") method ...");
 
-	if(empty($input)) {
+	if (empty($input)) {
 		$input = $_REQUEST;
 	}
 
-	if($input['type'] == "entchar")
-		$criteria = "is";
+	if (isset($input['type']) && $input['type'] == 'entchar') {
+		$criteria = 'is';
+	}
 
 	for ($i=0, $iMax = count($column_array); $i< $iMax; $i++) {
-		if($column_name == $column_array[$i])
-		{
-			$val=$table_col_array[$i];
-			$explode_column=explode(",",$val);
-			$x=count($explode_column);
-			if($x == 1 )
-			{
-				$where=getSearch_criteria($criteria,$search_string,$val);
-			}
-			else
-			{
-				if($column_name == "contact_id" && $input['type'] == "entchar") {
+		if ($column_name == $column_array[$i]) {
+			$val = $table_col_array[$i];
+			$explode_column = explode(',', $val);
+			$x = count($explode_column);
+			if ($x == 1) {
+				$where = getSearch_criteria($criteria, $search_string, $val);
+			} else {
+				if ($column_name == 'contact_id' && isset($input['type']) && $input['type'] == 'entchar') {
 					$concatSql = getSqlForNameInDisplayFormat(array('lastname'=>'vtiger_contactdetails.lastname', 'firstname'=>'vtiger_contactdetails.firstname'), 'Contacts');
 					$where = "$concatSql = '$search_string'";
-				}
-				else {
-					$where="(";
+				} else {
+					$where = '(';
 					for ($j=0, $jMax = count($explode_column); $j< $jMax; $j++) {
-						$where .=getSearch_criteria($criteria,$search_string,$explode_column[$j]);
-						if($j != $x-1)
-						{
-							if($criteria == 'dcts' || $criteria == 'isn')
-								$where .= " and ";
-							else
-								$where .= " or ";
+						$where .= getSearch_criteria($criteria, $search_string, $explode_column[$j]);
+						if ($j != $x-1) {
+							if ($criteria == 'dcts' || $criteria == 'isn') {
+								$where .= ' and ';
+							} else {
+								$where .= ' or ';
+							}
 						}
 					}
-					$where.=")";
+					$where .= ')';
 				}
 			}
 			break 1;
 		}
 	}
-	$log->debug("Exiting getValuesforColumns method ...");
+	$log->debug('Exiting getValuesforColumns method ...');
 	return $where;
 }
 

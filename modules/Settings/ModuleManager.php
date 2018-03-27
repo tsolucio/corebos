@@ -20,8 +20,11 @@ if(isset($_REQUEST['module_settings']) and $_REQUEST['module_settings'] == 'true
 	}
 }
 else{
-	$modulemanager_uploaddir = 'test/vtlib';
-	
+	$modulemanager_uploaddir = 'cache/vtlib';
+	if (!is_dir($modulemanager_uploaddir)) {
+		@unlink($modulemanager_uploaddir);
+		mkdir($modulemanager_uploaddir);
+	}
 	if(!empty($_REQUEST['module_import'])) {
 		require_once('modules/Settings/ModuleManager/Import.php');
 		exit;
@@ -61,7 +64,7 @@ else{
 	
 	// Check write permissions on the required directories
 	$dir_notwritable = Array();
-	if(!vtlib_isDirWriteable('test/vtlib')) $dir_notwritable[] = 'test/vtlib';
+	if(!vtlib_isDirWriteable('cache/vtlib')) $dir_notwritable[] = 'cache/vtlib';
 	if(!vtlib_isDirWriteable('cron/modules')) $dir_notwritable[] = 'cron/modules';
 	if(!vtlib_isDirWriteable('modules')) $dir_notwritable[] = 'modules';
 	if(!vtlib_isDirWriteable('Smarty/templates/modules')) $dir_notwritable[] = 'Smarty/templates/modules';
@@ -71,7 +74,8 @@ else{
 	
 	$smarty->assign("TOGGLE_MODINFO", vtlib_getToggleModuleInfo());
 	$smarty->assign("TOGGLE_LANGINFO", vtlib_getToggleLanguageInfo());
-	
+	$smarty->assign('coreBOSOnDemandActive', $coreBOSOnDemandActive);
+
 	$mode = !empty($_REQUEST['mode']) ? vtlib_purify($_REQUEST['mode']) : '';
 	$smarty->assign('MODE', $mode);
 	

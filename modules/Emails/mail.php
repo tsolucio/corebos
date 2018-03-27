@@ -28,7 +28,7 @@ function send_mail($module,$to_email,$from_name,$from_email,$subject,$contents,$
 	$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail','support@your_support_domain.tld','HelpDesk');
 	$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name','your-support name','HelpDesk');
 
-	$uploaddir = $root_directory ."/test/upload/";
+	$uploaddir = $root_directory ."/cache/upload/";
 
 	$adb->println("To id => '".$to_email."'\nSubject ==>'".$subject."'\nContents ==> '".$contents."'");
 
@@ -216,8 +216,6 @@ function setMailerProperties($mail,$subject,$contents,$from_email,$from_name,$to
 
 	$mail->FromName = decode_html($from_name);
 
-	$mail->Sender= getReturnPath($mail->Host, $from_email);
-
 	if($to_email != '')
 	{
 		if(is_array($to_email)) {
@@ -397,7 +395,7 @@ function addAllAttachments($mail,$record)
 		$filepath = $adb->query_result($res,$i,'path');
 		$filewithpath = $root_directory.$filepath.$fileid."_".$filename;
 
-		//if the file is exist in test/upload directory then we will add directly
+		//if the file is exist in cache/upload directory then we will add directly
 		//else get the contents of the file and write it as a file and then attach (this will occur when we unlink the file)
 		if(is_file($filewithpath))
 		{
@@ -613,8 +611,7 @@ function parseEmailErrorString($mail_error_str) {
 }
 
 function isUserInitiated() {
-	return (isset($_REQUEST['module']) && isset($_REQUEST['action']) &&
-			($_REQUEST['module'] == 'Emails' || $_REQUEST['module'] == 'Webmails') &&
+	return (isset($_REQUEST['module']) && isset($_REQUEST['action']) && $_REQUEST['module'] == 'Emails' &&
 			($_REQUEST['action'] == 'mailsend' || $_REQUEST['action'] == 'webmailsend' || $_REQUEST['action'] == 'Save'));
 }
 
@@ -623,29 +620,31 @@ function isUserInitiated() {
  */
 function getDefaultAssigneeEmailIds($groupId) {
 	global $adb;
-	$emails = Array();
-	if($groupId != '') {
+	$emails = array();
+	if ($groupId != '') {
 		require_once 'include/utils/GetGroupUsers.php';
 		$userGroups = new GetGroupUsers();
 		$userGroups->getAllUsersInGroup($groupId);
-		if(count($userGroups->group_users) > 0) {
-		$result = $adb->pquery('SELECT email1,email2,secondaryemail FROM vtiger_users WHERE vtiger_users.id IN
-						('. generateQuestionMarks($userGroups->group_users).') AND vtiger_users.status= ?',
-						array($userGroups->group_users, 'Active'));
-		$rows = $adb->num_rows($result);
-		for($i = 0;$i < $rows; $i++) {
-			$email = $adb->query_result($result,$i,'email1');
-			if($email == '') {
-				$email = $adb->query_result($result,$i,'email2');
-				if($email == '') {
-					$email = $adb->query_result($result,$i,'secondaryemail');
-				} else {
-					$email = '';
+		if (count($userGroups->group_users) > 0) {
+			$result = $adb->pquery(
+				'SELECT email1,email2,secondaryemail FROM vtiger_users WHERE vtiger_users.id IN ('.
+					generateQuestionMarks($userGroups->group_users).') AND vtiger_users.status= ?',
+				array($userGroups->group_users, 'Active')
+			);
+			$rows = $adb->num_rows($result);
+			for ($i = 0;$i < $rows; $i++) {
+				$email = $adb->query_result($result,$i,'email1');
+				if ($email == '') {
+					$email = $adb->query_result($result,$i,'email2');
+					if ($email == '') {
+						$email = $adb->query_result($result,$i,'secondaryemail');
+					} else {
+						$email = '';
+					}
 				}
+				$emails[] = $email;
 			}
-			$emails[] = $email;
-		}
-		$adb->println("Email ids are selected => '".implode(',', $emails)."'");
+			$adb->println("Email ids are selected => '".implode(',', $emails)."'");
 		} else {
 			$adb->println("No users found in Group id $groupId");
 		}
@@ -654,5 +653,4 @@ function getDefaultAssigneeEmailIds($groupId) {
 	}
 	return $emails;
 }
-
 ?>

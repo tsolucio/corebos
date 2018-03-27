@@ -6,17 +6,12 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
-/**
- * this file can be used to internationalise the strings present in the picklist
- */
 $mod_strings = array(
 	'LBL_ASSIGN_BUTTON'=>'Assign',
 	'ADD_PICKLIST_VALUES'=>'Add picklist values',
 	'LBL_EXISTING_PICKLIST_VALUES'=>'Existing picklist values',
 	'LBL_PICKLIST_ADDINFO'=>'Add new entries here',
-	'LBL_SELECT_ROLES'=>'Select roles',
 	'LBL_NON_EDITABLE_PICKLIST_ENTRIES'=>'Non-editable values',
 	'EDIT_PICKLIST_VALUE'=>'Edit picklist values',
 	'LBL_EDIT_HERE'=>'Replace with: ',
@@ -30,7 +25,7 @@ $mod_strings = array(
 	'LBL_OK_BUTTON_LABEL'=>'Ok',
 	'LBL_SELECT_ROLES'=>'Select roles',
 	'LBL_DISPLAYED_VALUES'=>'All accessible values for the role are shown below',
-	
+
 	// For Dependency picklist
 	'LBL_PICKLIST_DEPENDENCY_SETUP' => 'Picklist Dependency Setup',
 	'LBL_PICKLIST_DEPENDENCY_DESCRIPTION' => 'Setup Dependency between Picklist values in each module',
@@ -49,6 +44,6 @@ $mod_strings = array(
 	'LBL_ADD_BUTTON' => 'Add Item',
 	'LBL_EDIT_BUTTON' => 'Rename Item',
 	'LBL_DELETE_BUTTON' => 'Delete Item',
-	'NTC_DELETE_CONFIRMATION'=>'Are you sure you want to delete this picklist dependency?', 
+	'NTC_DELETE_CONFIRMATION'=>'Are you sure you want to delete this picklist dependency?',
 );
 ?>

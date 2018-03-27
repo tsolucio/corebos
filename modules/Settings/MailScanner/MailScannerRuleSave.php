@@ -6,12 +6,11 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
-require_once('modules/Settings/MailScanner/core/MailScannerInfo.php');
-require_once('modules/Settings/MailScanner/core/MailScannerRule.php');
-require_once('modules/Settings/MailScanner/core/MailScannerAction.php');
-require_once('Smarty_setup.php');
+require_once 'modules/Settings/MailScanner/core/MailScannerInfo.php';
+require_once 'modules/Settings/MailScanner/core/MailScannerRule.php';
+require_once 'modules/Settings/MailScanner/core/MailScannerAction.php';
+require_once 'Smarty_setup.php';
 
 global $app_strings, $mod_strings, $currentModule, $theme, $current_language;
 
@@ -36,6 +35,5 @@ $scannerrule->update();
 
 $scannerrule->updateAction($scanneractionid, vtlib_purify($_REQUEST['rule_actiontext']));
 
-include('modules/Settings/MailScanner/MailScannerRule.php');
-
+include 'modules/Settings/MailScanner/MailScannerRule.php';
 ?>

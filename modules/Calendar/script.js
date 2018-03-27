@@ -507,63 +507,6 @@ function checkgroup() {
 	}
 }
 
-function calendarChangeOwner()
-{
-	var idlist = document.change_owner.idlist.value;
-	var view   = document.change_owner.view.value;
-	var day    = document.change_owner.day.value;
-	var month  = document.change_owner.month.value;
-	var year   = document.change_owner.year.value;
-	var hour   = document.change_owner.hour.value;
-	var subtab = document.change_owner.subtab.value;
-
-	//var checked = document.change_owner.user_lead_owner[0].checked;
-	if(document.getElementById("user_checkbox").checked) {
-		var user_id = document.getElementById('lead_owner').options[document.getElementById('lead_owner').options.selectedIndex].value;
-		var url = 'module=Users&action=updateLeadDBStatus&return_module=Calendar&return_action=ActivityAjax&owner_id='+user_id+'&idlist='+idlist+'&view='+view+'&hour='+hour+'&day='+day+'&month='+month+'&year='+year+'&type=change_owner&owner_type=User';
-	} else {
-		var group_id = document.getElementById('lead_group_owner').options[document.getElementById('lead_group_owner').options.selectedIndex].value;
-		var url = 'module=Users&action=updateLeadDBStatus&return_module=Calendar&return_action=ActivityAjax&owner_id='+group_id+'&idlist='+idlist+'&view='+view+'&hour='+hour+'&day='+day+'&month='+month+'&year='+year+'&type=change_owner&owner_type=Group';
-	}
-
-	if (subtab == 'event') {
-		var OptionData = document.getElementById('view_Option').options[document.getElementById('view_Option').selectedIndex].value;
-		var eventurl = url + '&viewOption=' + OptionData + '&subtab=event&ajax=true';
-		jQuery.ajax({
-			method: 'POST',
-			url: "index.php?"+eventurl
-		}).done(function (response) {
-				if (OptionData == 'listview') {
-					result = response.split('####');
-					document.getElementById("total_activities").innerHTML = result[1];
-					document.getElementById("listView").innerHTML = result[0];
-					document.EventViewOption.action.value = "index";
-					window.document.EventViewOption.submit();
-				}
-				if (OptionData == 'hourview') {
-					result = response.split('####');
-					document.getElementById("total_activities").innerHTML = result[1];
-					document.getElementById("hrView").innerHTML = result[0];
-					document.EventViewOption.action.value = "index";
-					window.document.EventViewOption.submit();
-				}
-			}
-		);
-	}
-	if (subtab == 'todo') {
-		var todourl = url + '&subtab=todo&ajax=true';
-		jQuery.ajax({
-			method: 'POST',
-			url: "index.php?"+todourl
-		}).done(function (response) {
-				result = response.split('####');
-				document.getElementById("total_activities").innerHTML = result[1];
-				document.getElementById("mnuTab2").innerHTML = result[0];
-			}
-		);
-	}
-}
-
 function delActivity(id,view,hour,day,month,year,subtab) {
 	if (subtab == 'event') {
 		var users = document.getElementsByName('onlyforuser');

@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger. All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|10/11/2011 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ************************************************************************************/
-$mod_strings = Array (
-	
+
+$mod_strings = array (
 	'ConfigEditor' => 'Editor Configuração',
 	'LBL_CONFIG_EDITOR' => 'Editor Configuração',
 	'LBL_CONFIG_EDIT'=>'Editar detalhes da Configuração do vtiger CRM',
@@ -37,8 +37,7 @@ $mod_strings = Array (
 	'LBL_CONFIG_EDIT_CAUTION_INFO' =>'Você está editando os detalhes da configuração do vtiger CRM.',
 	'LBL_DOUBLE_CHECK_INFO'=>' Por favor, verifique com atenção antes de salvar os dados.',
 	'LBL_HELP_INFO'=>"Este e-mail é utilizado como 'Remetente' no envio de mensagens, com as credenciais de acesso de um novo usuário cadastrado,
- 					para enviar mensagem a usuário que tenha um Ticket a ele designado e para envio de mensagens de lembrete e notificação.",
+		para enviar mensagem a usuário que tenha um Ticket a ele designado e para envio de mensagens de lembrete e notificação.",
 
 );
-
 ?>

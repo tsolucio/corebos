@@ -6,21 +6,18 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
-
-require_once('modules/Settings/MailScanner/core/MailScannerRule.php');
+require_once 'modules/Settings/MailScanner/core/MailScannerRule.php';
 
 $mode = vtlib_purify($_REQUEST['mode']);
 $targetruleid = vtlib_purify($_REQUEST['targetruleid']);
 $ruleid = vtlib_purify($_REQUEST['ruleid']);
-	
-if($mode == 'rulemove_up') {
+
+if ($mode == 'rulemove_up') {
 	Vtiger_MailScannerRule::resetSequence($ruleid, $targetruleid);
-} else if($mode == 'rulemove_down') {
+} elseif ($mode == 'rulemove_down') {
 	Vtiger_MailScannerRule::resetSequence($ruleid, $targetruleid);
 }
 
-include('modules/Settings/MailScanner/MailScannerRule.php');
-
+include 'modules/Settings/MailScanner/MailScannerRule.php';
 ?>

@@ -16,7 +16,7 @@ if ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true')) {
 	$toggle_name = 'Leads';
 }
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_TGL_HISTORICOS' => $toggle_historicos,
 'LBL_MODULE_NAME'=>$toggle_name,
 'Leads' => $toggle_name,
@@ -83,7 +83,7 @@ $mod_strings = Array(
 'NTC_REMOVE_OPP_CONFIRMATION'=>'Are you sure you want to remove this contact from this opportunity?',
 'ERR_DELETE_RECORD'=>'A record number must be specified to delete the contact.',
 
-'LBL_COLON'=>' : ', 
+'LBL_COLON'=>' : ',
 'LBL_IMPORT_LEADS'=>'Import Leads',
 'LBL_LEADS_FILE_LIST'=>'Leads File List',
 'LBL_INSTRUCTIONS'=>'Instructions',
@@ -236,8 +236,5 @@ $mod_strings = Array(
 'LBL_FIELD_SETTINGS' => 'Field Settings',
 'Leads ID' => 'Leads ID',
 'LeadAlreadyConverted' => 'Lead cannot be converted. Either it has already been converted or you lack permission on one or more of the destination modules.',
-'Is Converted From Lead' => 'Is Converted From Lead',
-'Converted From Lead' => 'Converted From Lead',
 );
-
 ?>

@@ -117,7 +117,7 @@ require_once("VTWorkflowUtils.php");
 		$smarty->assign("PAGE_NAME", $mod['LBL_EDIT_TASK']);
 		$smarty->assign("PAGE_TITLE", $mod['LBL_EDIT_TASK_TITLE']);
 
-		$users = $group = array();
+		$users = array();
 		$users['user'] = get_user_array();
 		$users['group'] = get_group_array();
 		$smarty->assign('ASSIGNED_TO', $users);

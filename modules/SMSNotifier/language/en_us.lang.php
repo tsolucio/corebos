@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-$mod_strings = Array (
+$mod_strings = array (
 'SMSNotifier'                 => 'SMSNotifier',
 'SINGLE_SMSNotifier'          => 'SMS Info',
 'LBL_SMSNOTIFIER_INFORMATION' => 'SMS Information',
@@ -30,7 +30,7 @@ $mod_strings = Array (
 'LBL_PROVIDER'                => 'Provider',
 'LBL_SELECT_ONE'              => 'Select One',
 
-'LBL_RECEPIENTS'              => 'Recepients',
+'LBL_RECEPIENTS'              => 'Recipients',
 'SMSCheckStatus'              => 'Check Status',
 'StatusInformation'           => 'Status Information',
 'SMSNotifier ID'			  => 'SMSNotifier ID',
@@ -39,5 +39,4 @@ $mod_strings = Array (
 'ReviewModuleSettings' => 'Please review SMS Settings.',
 'ContactAdmin' => 'Please contact your administrator.',
 );
-
 ?>

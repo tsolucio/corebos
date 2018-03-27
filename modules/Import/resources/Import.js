@@ -187,16 +187,20 @@ if (typeof(ImportJs) == 'undefined') {
 				header = header.replace(/\/eq\//g, '=');
 				header = header.replace(/\/amp\//g, '&');
 				mapping["'"+header+"'"] = mappingPair[1];
+				mapping[i] = mappingPair[1]; /* To make Row based match when there is no header */
 			}
+			var maparray = Object.values(mapping);
 			fieldsList.each(function(i, element) {
 				var fieldElement = jQuery(element);
 				var rowId = jQuery('[name=row_counter]', fieldElement).get(0).value;
 				var headerNameElement = jQuery('[name=header_name]', fieldElement).get(0);
 				var headerName = jQuery(headerNameElement).html();
-				if("'"+headerName+"'" in mapping) {
+				if ("'"+headerName+"'" in mapping) {
 					jQuery('[name=mapped_fields]', fieldElement).val(mapping["'"+headerName+"'"]);
-				} else if(rowId in mapping) {
-					jQuery('[name=mapped_fields]', fieldElement).val($rowId);
+				} else if (maparray.indexOf(headerName)>-1) {
+						jQuery('[name=mapped_fields]', fieldElement).val(headerName);
+				} else if(rowId-1 in mapping) { /* Row based match when there is no header - but saved map is loaded. */
+					jQuery('[name=mapped_fields]', fieldElement).val(mapping[rowId-1]);
 				}
 				ImportJs.loadDefaultValueWidget(fieldElement.prop('id'));
 			});

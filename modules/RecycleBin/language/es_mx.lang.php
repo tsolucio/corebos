@@ -9,7 +9,7 @@
 *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'RecycleBin' => 'Papelera de Reciclaje',
 'Recycle Bin' => 'Papelera de Reciclaje',
 'MSG_EMPTY_RB_CONFIRMATION'=>'¿Estás seguro que quieres eliminar Permanentemente TODOS los registros borrados de la base de datos?',
@@ -21,5 +21,4 @@ $mod_strings = Array(
 'LNK_RESTORE'=>'restaurar',
 'LBL_NO_PERMITTED_MODULES'=>'No hay modulos permitidos',
 );
-
 ?>

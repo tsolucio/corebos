@@ -8,11 +8,11 @@
  * All Rights Reserved.
  *********************************************************************************/
 
-class VtigerBackupException extends Exception{
+class VtigerBackupException extends Exception {
 	public $code;
 	public $message;
 
-	function __construct($errCode,$msg){
+	public function __construct($errCode, $msg) {
 		$this->code = $errCode;
 		$this->message = $msg;
 	}
@@ -22,8 +22,7 @@ class VtigerBackupErrorCode {
 	public static $ZIP_CREATE_FAILED = 'CONNECT_ERROR';
 	public static $TABLE_NAME_ERROR = 'TABLE_LIST_FETCH_ERROR';
 	public static $SQL_EXECUTION_ERROR = 'SQL_EXECUTION_ERROR';
-	public static  $FTP_CONNECT_FAILED = 'FTP_CONNECT_FAILED';
-	public static  $FTP_LOGIN_FAILED = 'FTP_LOGIN_FAILED';
+	public static $FTP_CONNECT_FAILED = 'FTP_CONNECT_FAILED';
+	public static $FTP_LOGIN_FAILED = 'FTP_LOGIN_FAILED';
 }
-
 ?>

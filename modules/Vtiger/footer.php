@@ -7,8 +7,8 @@
 * Portions created by vtiger are Copyright (C) vtiger.
 * All Rights Reserved.
 ************************************************************************************/
-if (isset($adb) and !empty($current_user->id)) {
-	$COMMONFTRLINKS = Vtiger_Link::getAllByType(Vtiger_Link::IGNORE_MODULE, Array('FOOTERSCRIPT'), array('MODULE'=>$currentModule));
+if (isset($adb) && !empty($current_user->id)) {
+	$COMMONFTRLINKS = Vtiger_Link::getAllByType(Vtiger_Link::IGNORE_MODULE, array('FOOTERSCRIPT'), array('MODULE'=>$currentModule));
 	foreach ($COMMONFTRLINKS['FOOTERSCRIPT'] as $fscript) {
 		echo '<script type="text/javascript" src="' . $fscript->linkurl . '"></script>';
 	}

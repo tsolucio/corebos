@@ -7,10 +7,10 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-function vtSortFieldsJson($request){
+function vtSortFieldsJson($request) {
 	$moduleName = vtlib_purify($request['module_name']);
 	checkFileAccessForInclusion("modules/$moduleName/$moduleName.php");
-	require_once("modules/$moduleName/$moduleName.php");
+	require_once "modules/$moduleName/$moduleName.php";
 	$focus = new $moduleName();
 	echo json_encode($focus->sortby_fields);
 }

@@ -15,7 +15,7 @@
  *************************************************************************************************/
 global $log,$currentModule,$adb,$current_user;
 
-$screen_values = json_decode($_REQUEST['structure'],true);
+$screen_values = json_decode($_REQUEST['structure'], true);
 $products = array();
 $message = '%%%OK%%%';
 foreach ($screen_values as $sv_name => $sv) {
@@ -43,8 +43,8 @@ foreach ($products as $product) {
 	} else {
 		$divisible = true;
 	}
-	if ( !$divisible && floatval($product['qty']) != intval($product['qty']) ) {
-		$message = $product['name'].' '.getTranslatedString('DIVISIBLE_WARNING','Products');
+	if (!$divisible && floatval($product['qty']) != intval($product['qty'])) {
+		$message = $product['name'].' '.getTranslatedString('DIVISIBLE_WARNING', 'Products');
 		break;
 	}
 }

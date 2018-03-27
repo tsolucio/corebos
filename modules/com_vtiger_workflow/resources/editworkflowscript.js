@@ -388,6 +388,7 @@ function editworkflowscript($, conditions){
 			var field = fields[i];
 			var type = field['type'];
 			if(type['name']=='owner'){
+				type['realname']='owner';
 				type['name']='reference';
 				type['refersTo']=['Users'];
 			}

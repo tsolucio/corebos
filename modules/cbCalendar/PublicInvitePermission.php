@@ -22,18 +22,38 @@ class PublicInvitePermissionHandler extends VTEventHandler {
 	}
 
 	public function handleFilter($handlerType, $parameter) {
-		if ($handlerType == 'corebos.permissions.accessquery' and $parameter[2] == 'cbCalendar') {
+		if ($handlerType == 'corebos.permissions.accessquery' && $parameter[2] == 'cbCalendar') {
 			$user = $parameter[3];
-			$parameter[1] = 'addToUserPermission';
-			$parameter[0] = "select vtiger_activity.activityid as id
-				from vtiger_activity
-				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid
-				where deleted=0 and visibility='Public' and smownerid in (select userid from vtiger_sharedcalendar where sharedid=".$user->id."))
-				UNION
-				(select vtiger_invitees.activityid as id from vtiger_invitees where inviteeid=".$user->id;
+			if (!GlobalVariable::getVariable('Calendar_Show_Only_My_Events', 0, 'cbCalendar')) {
+				$parameter[1] = 'addToUserPermission';
+				$parameter[0] = "select vtiger_activity.activityid as id
+					from vtiger_activity
+					inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid
+					where deleted=0 and visibility='Public' and smownerid in (select userid from vtiger_sharedcalendar where sharedid=".$user->id."))
+					UNION
+					(select vtiger_invitees.activityid as id from vtiger_invitees where inviteeid=".$user->id;
+			} else {
+				require 'user_privileges/user_privileges_' . $user->id . '.php';
+				require 'user_privileges/sharing_privileges_' . $user->id . '.php';
+				$parameter[1] = 'showTheseRecords'; //Here just show the activities that are assigned to the user or shared/invite to him.
+				$parameter[0] = "select vtiger_activity.activityid as id
+					from vtiger_activity
+					inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid";
+				if (count($current_user_groups) > 0) {
+					$parameter[0] .= " where deleted=0 and smownerid in (".$user->id.", ".implode(",", $current_user_groups).") ";
+				} else {
+					$parameter[0] .= " where deleted=0 and smownerid=".$user->id." ";
+				}
+				$parameter[0] .= "UNION
+					(select vtiger_activity.activityid as id
+					from vtiger_activity
+					inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid
+					where deleted=0 and visibility='Public' and smownerid in (select userid from vtiger_sharedcalendar where sharedid=".$user->id."))
+					UNION
+					(select vtiger_invitees.activityid as id from vtiger_invitees where inviteeid=".$user->id.")";
+			}
 			$parameter[4] = false;
 		}
 		return $parameter;
 	}
-
 }

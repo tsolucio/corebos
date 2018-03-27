@@ -7,14 +7,15 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once("include/utils/CommonUtils.php");
-require_once("include/events/SqlResultIterator.inc");
-require_once("VTWorkflowApplication.inc");
-require_once("VTWorkflowManager.inc");
-require_once("VTWorkflowUtils.php");
-function vtDeleteWorkflow($adb, $request){
+require_once 'include/utils/CommonUtils.php';
+require_once 'include/events/SqlResultIterator.inc';
+require_once 'VTWorkflowApplication.inc';
+require_once 'VTWorkflowManager.inc';
+require_once 'VTWorkflowUtils.php';
+
+function vtDeleteWorkflow($adb, $request) {
 	$util = new VTWorkflowUtils();
-	$module = new VTWorkflowApplication("deleteworkflow");
+	$module = new VTWorkflowApplication('deleteworkflow');
 
 	if (!$util->checkAdminAccess()) {
 		$errorUrl = $module->errorPageUrl(getTranslatedString('LBL_ERROR_NOT_ADMIN', $module->name));
@@ -25,10 +26,10 @@ function vtDeleteWorkflow($adb, $request){
 	$wm = new VTWorkflowManager($adb);
 	$wm->delete($request['workflow_id']);
 
-	if (isset($request["return_url"])) {
-		$returnUrl=$request["return_url"];
+	if (isset($request['return_url'])) {
+		$returnUrl=$request['return_url'];
 	} else {
-		$returnUrl=$module->listViewUrl($wf->id);
+		$returnUrl=$module->listViewUrl();
 	}
 ?>
 	<script type="text/javascript" charset="utf-8">

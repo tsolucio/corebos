@@ -1,26 +1,15 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
- * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Payments/language/en_us.lang.php,v 1.18 2005/04/28 14:05:53 ray Exp $
- * Description:  Defines the English language pack for the Account module.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s) - Brazilian Portuguese Translator: Valmir Carlos Trindade | TTCA Soluções - www.ttcasolucoes.com.br - 19/12/2011.
- ********************************************************************************/
+ ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'CobroPago'=>'Contas Pagar/Receber',
 'SINGLE_CobroPago'=>'Contas Pagar/Receber',
 'LBL_MODULE_TITLE'=>'Contas Pagar/Receber: Principal',
@@ -35,7 +24,6 @@ $mod_strings = Array(
 'LBL_PRODUCT_NAME'=>'Nome Produto',
 'LBL_LIST_AMOUNT'=>'Valor',
 
-'LBL_COBROPAGO_NAME'=>'Ref. Contas Pagar/Receber:',
 'LBL_ACCOUNT_NAME'=>'Nome Conta:',
 'LBL_AMOUNT'=>'Valor:',
 'LBL_TYPE'=>'Tipo:',
@@ -55,13 +43,10 @@ $mod_strings = Array(
 'LBL_SELECT_COBROPAGO'=>'Selecionar Contas Pagar/Receber',
 'LBL_GENERAL_INFORMATION'=>'Informação Geral',
 
-//for v4 release added
 'LBL_NEW_CobroPago'=>'Novo Contas Pagar/Receber',
 'LBL_CobroPago_TITLE'=>'Contas Pagar/Receber',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Ferramentas Contas Pagar/Receber',
-//Added for 4GA
 'CobroPago Name'=>'Ref. Contas Pagar/Receber',
 'Reference'=>'Ref. Contas Pagar/Receber',
 'Register'=>'Data Registro',
@@ -78,11 +63,7 @@ $mod_strings = Array(
 'Category'=>'Categoria Contas Pagar/Receber',
 'CobroPago Type'=>'Tipo Contas Pagar/Receber',
 'Type'=>'Tipo',
-'Assigned To'=>'Responsável',
 'Probability'=>'Probabilidade (%)',
-'Description'=>'Descrição',
-'Created Time'=>'Data Criação',
-'Modified Time'=>'Data Modificação',
 'CobroPago ID'=>'Cód. Contas Pagar/Receber',
 'cobropagoid'=>'Cód. Contas Pagar/Receber',
 'DueDate'=>'Data Vencimento',

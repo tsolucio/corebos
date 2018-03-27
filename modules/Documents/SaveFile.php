@@ -11,7 +11,7 @@ require_once('include/logging.php');
 require_once('include/database/PearDatabase.php');
 require_once('modules/Documents/Documents.php');
 
-global $adb, $current_user, $root_directory;
+global $adb, $current_user;
 
 if(isset($_REQUEST['act']) && $_REQUEST['act'] == 'updateDldCnt')
 {
@@ -63,8 +63,8 @@ if(isset($_REQUEST['act']) && $_REQUEST['act'] == 'massDldCnt')
 {
 	$all_files = vtlib_purify($_REQUEST['file_id']);
 	$zipfilename = "cache/Documents".$current_user->id.".zip";
-	$zip = new Vtiger_Zip($zipfilename);
 	if (file_exists($zipfilename)) @unlink($zipfilename);
+	$zip = new Vtiger_Zip($zipfilename);
 	$dec_files =json_decode($all_files,true);
 	foreach ($dec_files as $folder_id => $files_id) {
 		if ($files_id) {

@@ -1,14 +1,10 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************
 *  Module       : Rss
@@ -45,14 +41,9 @@ $mod_strings = array (
 'LBL_ERROR_MSG'=>'No hay RSS seleccionados o la configuración del proxy no es correcta',
 'LBL_REGRET_MSG'=>'No es posible cargar el RSS',
 
-'UNABLE_TO_SAVE'=>'Imposible guardar la URL del RSS',
-
-// Added/Updated for vtiger CRM 5.0.4
 'NOT_A_VALID'=>'URL del RSS Inválida',
 
-// Added after 5.0.4 GA
 'INVALID_RSS_URL' => 'URL de RSS inválida',
 'UNABLE_TO_SAVE' => 'No se ha podido guardar la Url',
-
 );
 ?>

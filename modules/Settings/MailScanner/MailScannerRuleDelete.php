@@ -6,15 +6,13 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
-require_once('modules/Settings/MailScanner/core/MailScannerRule.php');
+require_once 'modules/Settings/MailScanner/core/MailScannerRule.php';
 
 $scannername = vtlib_purify($_REQUEST['scannername']);
 $scannerruleid= vtlib_purify($_REQUEST['ruleid']);
 $scannerrule = new Vtiger_MailScannerRule($scannerruleid);
 $scannerrule->delete();
 
-include('modules/Settings/MailScanner/MailScannerRule.php');
-
+include 'modules/Settings/MailScanner/MailScannerRule.php';
 ?>

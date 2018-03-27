@@ -7,9 +7,9 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-$mod_strings = Array (
+$mod_strings = array (
 	'MailManager' => 'Mail Manager',
-	
+
 	// Translations for JS (please use the prefix JSLBL in key)
 	'JSLBL_Loading_Please_Wait'  => 'Loading Please Wait',
 	'JSLBL_Loading'              => 'Loading',
@@ -38,7 +38,7 @@ $mod_strings = Array (
 	'JSLBL_Nothing_Found'             => 'Nothing found',
 	'JSLBL_Delete_Confirm'            =>'Do you want to delete the Emails permanently?',
 	'JSLBL_Delete_Mails_Confirm'      =>'Do you want to delete the Emails?',
-	'JSLBL_Receipents_Warning_Message'=>'Please select recepients',
+	'JSLBL_Receipents_Warning_Message'=>'Please select recipients',
 	'JSLBL_NO_MATCH'				  => 'No match found',
 	'JSLBL_Saving'					=> 'Saving',
 	'JSLBL_Failed_To_Save_Mail'		=>	'Failed to save the mail',
@@ -51,7 +51,6 @@ $mod_strings = Array (
 	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED'=>'File Upload Limit exceeded!!',
 	'JSLBL_MAIL_SENT'=>'Mail Sent',
 	'JSLBL_EMAIL_FORMAT_INCORRECT'=>'Please provide proper email address',
-	'JSLBL_Saving'=>'Saving',
 	'JSLBL_SaveWith_EmptySubject'=>'Save with subject empty?',
 	'JSLBL_Delete'            =>  'Delete',
 	'JSLBL_Drafts'=>'Drafts',
@@ -71,12 +70,12 @@ $mod_strings = Array (
 	'JSLBL_MOVING'=>'Moving Mail(s)',
 	'JSLBL_LOADING_FOLDERS' => 'Loading Folders..',
 	'JSLBL_ADD_COMMENT'=>'Add Comment',
-    'JSLBL_Yahoo'=>'Yahoo',
-    'JSLBL_CANNOT_ADD_EMPTY_COMMENT' => 'Comment cannot be empty',
-    'JSLBL_NO_EMAILS_SELECTED' => 'No Emails Selected.',
-    'JSLBL_ENTER_SOME_VALUE' => 'Enter some string to search',
-    'JSLBL_DRAFT_MAIL_SAVED'=>'Mail is saved under Drafts',
-    
+	'JSLBL_Yahoo'=>'Yahoo',
+	'JSLBL_CANNOT_ADD_EMPTY_COMMENT' => 'Comment cannot be empty',
+	'JSLBL_NO_EMAILS_SELECTED' => 'No Emails Selected.',
+	'JSLBL_ENTER_SOME_VALUE' => 'Enter some string to search',
+	'JSLBL_DRAFT_MAIL_SAVED'=>'Mail is saved under Drafts',
+
 	// General translations
 	'LBL_Folders'         => 'Folders',
 	'LBL_Newer'           => 'Newer',
@@ -105,7 +104,7 @@ $mod_strings = Array (
 	'LBL_ACTIONS'         => 'Actions',
 	'LBL_Search'          => 'Search',
 	'LBL_Delete'            =>  'Delete',
-	
+
 	'LBL_Username'             => 'User Name',
 	'LBL_Your_Mailbox_Account' => 'your mailbox account',
 	'LBL_Password'             => 'Password',
@@ -121,7 +120,7 @@ $mod_strings = Array (
 	'LBL_Validate_Cert'           => 'Validate cert',
 	'LBL_Do_Not_Validate_Cert'    => 'Do not validate cert',
 	'LBL_SELECT_ACCOUNT_TYPE'     => 'Select Organization Type',
-	
+
 	'LBL_FROM'        => 'From',
 	'LBL_TO'          => 'To',
 	'LBL_CC'          => 'CC',
@@ -151,17 +150,17 @@ $mod_strings = Array (
 	'LBL_5_MIN' => '5 Minutes',
 	'LBL_10_MIN' => '10 Minutes',
 	'LBL_MOVE_TO'=>'Move To...',
-    'LBL_MAILMANAGER_ADD_Contacts' => 'Add Contact',
-    'LBL_MAILMANAGER_ADD_Accounts' => 'Add Organization',
-    'LBL_MAILMANAGER_ADD_Leads' => 'Add Lead',
-    'LBL_MAILMANAGER_ADD_Calendar' => 'Add ToDo',
-    'LBL_MAILMANAGER_ADD_HelpDesk' => 'Add Ticket',
-    'LBL_MAILMANAGER_ADD_Emails' => 'Attach Email',
-    'LBL_MAILMANAGER_ADD_ModComments' => 'Add Comment',
-    'LBL_MAILMANAGER_ADD_Potentials' => 'Add Potential',
-    'LBL_MAILMANAGER_ADD_Project' => 'Add Project',
-    'LBL_MAILMANAGER_ADD_ProjectTask' => 'Add Project Task',
-    'LBL_ADD' => 'Add',
+	'LBL_MAILMANAGER_ADD_Contacts' => 'Add Contact',
+	'LBL_MAILMANAGER_ADD_Accounts' => 'Add Organization',
+	'LBL_MAILMANAGER_ADD_Leads' => 'Add Lead',
+	'LBL_MAILMANAGER_ADD_Calendar' => 'Add ToDo',
+	'LBL_MAILMANAGER_ADD_HelpDesk' => 'Add Ticket',
+	'LBL_MAILMANAGER_ADD_Emails' => 'Attach Email',
+	'LBL_MAILMANAGER_ADD_ModComments' => 'Add Comment',
+	'LBL_MAILMANAGER_ADD_Potentials' => 'Add Potential',
+	'LBL_MAILMANAGER_ADD_Project' => 'Add Project',
+	'LBL_MAILMANAGER_ADD_ProjectTask' => 'Add Project Task',
+	'LBL_ADD' => 'Add',
 	'JSLBL_SendWith_EmptyText' => 'Send without text in the body?',
 	'LBL_ALLMAILS' => 'All Mails',
 	'LBL_TO_CONTACTS' => 'To Contacts',
@@ -170,5 +169,4 @@ $mod_strings = Array (
 	'LBL_TO_USERS' => 'To Users',
 	'LBL_SENT_MAILS' => 'Sent Mails'
 );
-
 ?>

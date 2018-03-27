@@ -30,10 +30,10 @@ class VtigerBackup {
 	public function __construct() {
 		$path = null;
 		$limit = $this->getBackupLimit();
-		if($this->isLocalBackupEnabled()) {
+		if ($this->isLocalBackupEnabled()) {
 			$this->location = Vtiger_Location::getInstance(Vtiger_Location::$LOCAL, $limit);
 			$path = $this->location->getPath();
-		}else{
+		} else {
 			$this->location = Vtiger_Location::getInstance(Vtiger_Location::$FTP, $limit);
 		}
 		$this->zip = Vtiger_BackupZip::getInstance($path);
@@ -42,7 +42,7 @@ class VtigerBackup {
 	}
 
 	public function backup() {
-		if($this->isLocalBackupEnabled() || $this->isFTPBackupEnabled()) {
+		if ($this->isLocalBackupEnabled() || $this->isFTPBackupEnabled()) {
 			$sourceConfig = DatabaseConfig::getInstanceFromConfigFile();
 			$source = new MysqlSource($sourceConfig);
 			$fileDest = new File($sourceConfig);
@@ -59,7 +59,7 @@ class VtigerBackup {
 			}
 			$this->zip->close();
 			$this->location->save($this->getBackupFileName());
-			if(file_exists($fileDest->getFilePath())) {
+			if (file_exists($fileDest->getFilePath())) {
 				//unlink($fileDest->getFilePath());
 			}
 		}
@@ -88,10 +88,13 @@ class VtigerBackup {
 	}
 
 	private function getFolderPath($folder) {
-		switch($folder) {
-			case 'storage': return $this->getStorageFolderPath();
-			case 'test': return $this->getTestFolderPath();
-			case 'user_privileges': return $this->getUserPreviligesPath();
+		switch ($folder) {
+			case 'storage':
+				return $this->getStorageFolderPath();
+			case 'test':
+				return $this->getTestFolderPath();
+			case 'user_privileges':
+				return $this->getUserPreviligesPath();
 		}
 	}
 
@@ -102,15 +105,14 @@ class VtigerBackup {
 	public function fixPathSeparator($path) {
 		$start = 0;
 		do {
-			$done = false;
-			$index = strpos($path, '/',$start);
+			$index = strpos($path, '/', $start);
 			$start = $index + 1;
-			if($index != false && $path[$index - 1] == '\\'.DIRECTORY_SEPARATOR) {
+			if ($index != false && $path[$index - 1] == '\\'.DIRECTORY_SEPARATOR) {
 				continue;
-			}else if($index != false){
+			} elseif ($index != false) {
 				$path[$index] = DIRECTORY_SEPARATOR;
 			}
-		}while($index != false);
+		} while ($index != false);
 		return $path;
 	}
 
@@ -143,27 +145,26 @@ class VtigerBackup {
 	}
 
 	 /**
-     * Invoked when special actions are performed on the module.
-     * @param String Module name
-     * @param String Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
-     */
-    function vtlib_handler($modulename, $event_type) {
-        if($event_type == 'module.postinstall') {
+	 * Invoked when special actions are performed on the module.
+	 * @param String Module name
+	 * @param String Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
+	 */
+	public function vtlib_handler($modulename, $event_type) {
+		if ($event_type == 'module.postinstall') {
 			global $adb;
 			// Mark the module as Standard module
 			$adb->pquery('UPDATE vtiger_tab SET customized=0 WHERE name=?', array($modulename));
-        } else if($event_type == 'module.disabled') {
-            // TODO Handle actions when this module is disabled.
-        } else if($event_type == 'module.enabled') {
-            // TODO Handle actions when this module is enabled.
-        } else if($event_type == 'module.preuninstall') {
-            // TODO Handle actions when this module is about to be deleted.
-        } else if($event_type == 'module.preupdate') {
-            // TODO Handle actions before this module is updated.
-        } else if($event_type == 'module.postupdate') {
-            // TODO Handle actions after this module is updated.
-        }
-    }
-
+		} elseif ($event_type == 'module.disabled') {
+			// TODO Handle actions when this module is disabled.
+		} elseif ($event_type == 'module.enabled') {
+			// TODO Handle actions when this module is enabled.
+		} elseif ($event_type == 'module.preuninstall') {
+			// TODO Handle actions when this module is about to be deleted.
+		} elseif ($event_type == 'module.preupdate') {
+			// TODO Handle actions before this module is updated.
+		} elseif ($event_type == 'module.postupdate') {
+			// TODO Handle actions after this module is updated.
+		}
+	}
 }
 ?>

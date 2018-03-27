@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-$mod_strings = Array (
+$mod_strings = array (
 'WSAPP' => 'WSAPP',
 'WSAPPInfo' => 'Cette extension rajoute à l\'application un ensemble de functions permettant une synchronisation avec Outlook. Celle ci n\'a aucune fonction visible et peut donc être retirée du menu.',
 );

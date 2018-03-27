@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Organizations',
 'LBL_MODULE_TITLE'=>'Organizations: Home',
 'LBL_SEARCH_FORM_TITLE'=>'Organization Search',
@@ -208,16 +208,22 @@ $mod_strings = Array(
 'LBL_MAILER_EXPORT_CHECKED' =>'Checked',
 'LBL_MAILER_EXPORT_NOTCHECKED' => 'Not Checked',
 
-// Added after 5.0.4 GA
-
 //Module Sequence Numbering
 'Account No'=>'Organization No',
-// END
 
 // Organization Hierarchy
 'LBL_SHOW_ACCOUNT_HIERARCHY' => 'Show Organization Hierarchy',
 'Accounts ID' => 'Organizations ID',
 
+'LBL_ONDEMAND_CONTROL_INFORMATION' => 'On Demand Control',
+'Start Date OD' => 'On Demand Start',
+'End Date OD' => 'On Demand End',
+'OD Service Active' => 'On Demand Active',
+'OD Sync Module Active' => 'On Demand Sync Active',
+'OD Sync Modules' => 'On Demand Sync Modules',
+'Invoice With Tax' => 'Invoice With Tax',
+'Free Space' => 'Free Space',
+'Space Consumed' => 'Space Consumed',
+'Frequency' => 'Invoice Frequency',
 );
-
 ?>

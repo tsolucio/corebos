@@ -24,6 +24,7 @@ class Vtiger_Cron {
     static $STATUS_RUNNING = 2;
     protected $data;
     protected $bulkMode = false;
+	public $fixedTasks = array();
 
     /**
      * Constructor

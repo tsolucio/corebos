@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Servizi',
 'SINGLE_Services'=>'Servizio',
 'LBL_LIST_SERVICE_NAME'=>'Nome Servizio',
@@ -62,5 +62,4 @@ $mod_strings = Array(
 'Training'=>'Formazione',
 'Divisible'=>'Divisible',
 );
-
 ?>

@@ -2,7 +2,7 @@
 /***********************************************************
 *  Module       : Leads
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
@@ -15,7 +15,7 @@ if ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true')) {
 	$toggle_name = 'Prospects';
 }
 
-$mod_strings = Array(
+$mod_strings = array(
 	'LBL_TGL_HISTORICOS' => $toggle_historicos,
 	'LBL_MODULE_NAME'=>$toggle_name,
 	'Leads' => $toggle_name,
@@ -203,7 +203,7 @@ $mod_strings = Array(
 	'Designation' => 'Titre',
 	'Lead No' => 'Prospect n°',
 	'Secondary Email' => 'Email secondaire',
-	
+
 	'LBL_TRANSFER_RELATED_RECORDS_TO' => 'Transférer les enregistrements relatifs à',
 	'LBL_FOLLOWING_ARE_POSSIBLE_REASONS' => 'Voici les raisons possibles',
 	'LBL_LEADS_FIELD_MAPPING_INCOMPLETE' => 'Tous les champs obligatoires ne sont pas mappés',
@@ -212,7 +212,5 @@ $mod_strings = Array(
 	'LBL_FIELD_SETTINGS' => 'Réglages des champs',
 	'Leads ID' => 'Prospect ID',
 	'LeadAlreadyConverted' => 'Le propect ne peut être converti. Il a soit déjà été converti, soit vous n\'avez pas les autorisations nécessaires sur un ou plusieurs modules destinataires.',
-	'Is Converted From Lead' => 'Est converti de prospect',
-	'Converted From Lead' => 'Converti de prospect',
 );
 ?>

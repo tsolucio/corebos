@@ -1,26 +1,14 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Dashboard/language/en_us.lang.php,v 1.4 2005/01/25 06:01:38 jack Exp $
- * Description:  Defines the English language pack for the DashBoard module.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
- 
-$mod_strings = Array(
+
+$mod_strings = array(
 'LBL_SALES_STAGE_FORM_TITLE'=>'Pipeline By Sales Stage',
 'LBL_SALES_STAGE_FORM_DESC'=>'Shows cumulative opportunity amounts by selected sales stages for selected users where the expected closed date is within the specificed date range.',
 'LBL_MONTH_BY_OUTCOME'=>'Pipeline By Month By Outcome',
@@ -50,7 +38,6 @@ $mod_strings = Array(
 'LBL_LEAD_SOURCES'=>'Lead Sources:',
 'LBL_DATE_START'=>'Begin Date:',
 'LBL_DATE_END'=>'End Date:',
-//Added for 5.0 
 'LBL_NO_PERMISSION'=>'Sorry, you don\'t have access to view the Graph for this module',
 'LBL_NO_PERMISSION_FIELD'=>'Sorry, you don\'t have access to view the Graph for this module or for the Field',
 
@@ -64,7 +51,7 @@ $mod_strings = Array(
 "accountindustry" => "Organization By Industry",
 "productcategory" => "Products by Category",
 "productbyqtyinstock" => "Products by Quantity in stock",
-"productbypo" => "Products by PurchaseOrder",
+"productbypo" => "Products by Purchase Order",
 "productbyquotes" => "Products by Quotes",
 "productbyinvoice" => "Products by Invoice",
 "sobyaccounts" => "Sales Order by Organizations",
@@ -95,7 +82,6 @@ $mod_strings = Array(
 'VIEWCHART'=>'View Chart',
 'LBL_DASHBOARD'=>'Dashboard',
 
-// Added/Updated for vtiger CRM 5.0.4
 "Approved"=>"Approved",
 "Created"=>"Created",
 "Cancelled"=>"Cancelled",
@@ -185,7 +171,5 @@ $mod_strings = Array(
 "Negotiation/Review"=>"Negotiation/Review",
 "Closed Won"=>"Closed Won",
 "Closed Lost"=>"Closed Lost",
-
 );
-
 ?>

@@ -48,6 +48,9 @@
   'LBL_NEW_USER_BUTTON_TITLE' => 'Nuovo Utente [Alt+N]',
   'LBL_NEW_USER_BUTTON_LABEL' => 'Nuovo Utente',
   'LBL_NEW_USER_BUTTON_KEY' => 'N',
+  'LBL_EXPORT_USER_BUTTON_TITLE' => 'Esporta utenti [Alt+E]',
+  'LBL_EXPORT_USER_BUTTON_LABEL' => 'Esporta utenti',
+  'LBL_EXPORT_USER_BUTTON_KEY' => 'E',
   'LBL_DATE_FORMAT' => 'Formato Data',
 
   'LBL_ERROR' => 'Errore:',
@@ -563,7 +566,6 @@
   'Symbol Placement' => 'Posizione Simbolo Valuta',
   'Digit Grouping Separator' => 'Separatore delle Migliaia',
   'Digit Grouping Pattern' => 'Modello Raggruppamento delle Migliaia',
-  'Number Of Currency Decimals'  =>  'Number Of Currency Decimals',
   'LBL_SHOWN' => 'Mostrato',
   'LBL_HIDDEN' => 'Nascosto',
   'LBL_SHOW' => 'Mostra',
@@ -640,7 +642,15 @@
   'LBL_3_MIN' => '3 minuti',
   'LBL_4_MIN' => '4 minuti',
   'LBL_5_MIN' => '5 minuti',
-  'LBL_EMAILS_PER_PAGE' => 'Email per pagina',
+	'None' => 'None',
+	'1 Minute' => '1 Minuto',
+	'5 Minutes' => '5 Minuti',
+	'15 Minutes' => '15 Minuti',
+	'30 Minutes' => '30 Minuti',
+	'45 Minutes' => '45 Minuti',
+	'1 Hour' => '1 Hour',
+	'1 Day' => '1 Day',
+	'LBL_EMAILS_PER_PAGE' => 'Email per pagina',
 
   'LBL_ENTER_PROFILE' => 'Inserisci il nome del profilo',
   'TITLE_USER_DOCUMENT' => 'Documento senza nome',
@@ -652,7 +662,7 @@
   'LBL_SSL' => 'SSL',
 
   'LBL_USERNAME_EXIST' => 'Nome utente gi&agrave; esistente!',
- 
+
  'LBL_UNAUTHORIZED_ACCESS' => 'Accesso non autorizzato all`amministrazione utenti',
 
   'LBL_TAGCLOUD_DISPLAY' => 'Tag Cloud Display',
@@ -794,10 +804,14 @@
 'Min. 1 number' => 'Minimo un numero',
 'Min. 1 special character' => 'Minimo un carattere speciale ! ? , ; - @ #',
 'Generate password' => 'Genera password',
+'ERR_USER_LOGGED_IN' => 'The User Name is currently in use on another computer. Terminate the session in use or enter a different User Name.',
+'ERR_USER_CAN_UNBLOCK' => 'An inactive session by the same User Name is blocking your login attempt(s).',
+'LBL_USERLOGGEDOUTOK' => 'The user has been logged out correctly.',
+'LBL_USERLOGGEDOUTNOK' => 'The user could not be logged out.',
+'LBL_UNBLOCK_USR' => 'Unblock the session to login?',
 // LDAP
 'LBL_QUERY' => 'Query',
 'LBL_FORE_LASTNAME' => 'Nome o Cognome',
 'LBL_NO_LDAP_MATCHES' => 'Combinazione non trovata nel server LDAP!',
- );
-
+);
 ?>

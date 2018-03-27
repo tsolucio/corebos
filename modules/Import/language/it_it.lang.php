@@ -23,7 +23,6 @@ $mod_strings = array (
   'LBL_SELECT_FILE' => 'Seleziona file:',
   'LBL_CUSTOM' => 'Customizzato',
   'LBL_DONT_MAP' => '-- Non mappare questo campo -',
-  'LBL_STEP_1_TITLE' => 'Seleziona il file .CSV',
   'LBL_WHAT_IS' => 'Seleziona un fonte dati tra le seguenti:',
   'LBL_MICROSOFT_OUTLOOK' => 'Microsoft Outlook',
   'LBL_ACT' => 'Act!',
@@ -143,10 +142,6 @@ $mod_strings = array (
   'to' => 'a',
   'of' => 'di',
   'are_imported_succesfully' => 'sono stati importati con successo',
-
-
-// Aggiunti per la versione 5.40
-
 	'Import' => 'Importa',
 	'LBL_IMPORT_STEP_1' => 'Passo 1',
 	'LBL_IMPORT_STEP_2' => 'Passo 2',
@@ -171,11 +166,6 @@ $mod_strings = array (
 	'LBL_CRM_FIELDS' => 'Campi CRM',
 	'LBL_DEFAULT_VALUE' => 'Valore Default',
 	'LBL_SAVE_AS_CUSTOM_MAPPING' => 'Salva come Mappatura Personalizzata',
-
-//aggiunti da beppoit
-
-
-
 	'LBL_SPECIFY_MERGE_TYPE' => 'Seleziona come gestire i record duplicati',
 	'LBL_SELECT_MERGE_FIELDS' => 'Seleziona i campi che devono corrispondere per trovare i record duplicati',
 	'LBL_AVAILABLE_FIELDS' => 'Campi Disponibili',

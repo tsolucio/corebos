@@ -21,7 +21,6 @@ $parenttab = getParentTab();
 
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
-require_once('modules/Vtiger/layout_utils.php');
 
 if (getFieldVisibilityPermission('Services',$current_user->id,'unit_price') != '0') {
 	$theme = vtlib_purify($theme);
@@ -110,7 +109,7 @@ $other_text .='
 	   </tr>
 	</table>';
 
-$smarty->assign('PRODUCTLISTHEADER', get_form_header($current_module_strings['LBL_LIST_FORM_TITLE'], $other_text));
+$smarty->assign('PRODUCTLISTHEADER', "<img height='1' src='themes/images/blank.gif'>\n" . $other_text);
 
 //Retreive the List View Table Header
 

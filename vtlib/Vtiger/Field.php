@@ -94,6 +94,34 @@ class Vtiger_Field extends Vtiger_FieldBasic {
 	}
 
 	/**
+	 * Delete values for picklist field (for all the roles)
+	 * @param Array List of values to delete. 'value_to_delete' => 'substitute_value'
+	 *
+	 * @internal Creates picklist base if it does not exists
+	 */
+	function delPicklistValues($values) {
+		global $adb,$default_charset;
+
+		foreach ($values as $gvar => $newval) {
+			$sql = 'select * from vtiger_'.$this->name.' where BINARY '.$this->name.'=?';
+			$result = $adb->pquery($sql, array($gvar));
+			if ($adb->num_rows($result)>0) {
+				$origPicklistID = $adb->query_result($result, 0, 'picklist_valueid');
+				$sql = 'delete from vtiger_'.$this->name.' where BINARY '.$this->name.'=?';
+				$adb->pquery($sql, array($gvar));
+				$sql = 'delete from vtiger_role2picklist where picklistvalueid=?';
+				$adb->pquery($sql, array($origPicklistID));
+				$sql = 'DELETE FROM vtiger_picklist_dependency WHERE sourcevalue=? AND sourcefield=? AND tabid=?';
+				$adb->pquery($sql, array($gvar, $this->name, $this->getModuleId()));
+				if(!empty($newval)){
+					$updsql = "UPDATE {$this->table} SET {$this->column}=? WHERE {$this->column}=?";
+					$adb->pquery($updsql,array($newval,$gvar));
+				}
+			}
+		}
+	}
+
+	/**
 	 * Set values for picklist field (non-role based)
 	 * @param Array List of values to add
 	 *

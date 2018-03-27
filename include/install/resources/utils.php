@@ -753,7 +753,7 @@ class Common_Install_Wizard_Utils {
 		'memory_limit' => '32',
 		'error_reporting' => 'E_ERROR',
 		'allow_call_time_pass_reference' => 'Off',
-		'short_open_tag' => 'On',
+		'short_open_tag' => 'Off',
 		'max_input_vars' => '9000',
 	);
 
@@ -771,12 +771,8 @@ class Common_Install_Wizard_Utils {
 		'Smarty Compile Directory' => './Smarty/templates_c/',
 		'Modules Directory' => './modules/',
 		'Cron Modules Directory' => './cron/modules/',
-		'Vtlib Test Directory' => './test/vtlib/',
 		'Backup Directory' => './backup/',
 		'Smarty Modules Directory' => './Smarty/templates/modules/',
-		'Product Image Directory' => './test/product/',
-		'User Image Directory' => './test/user/',
-		'Contact Image Directory' => './test/contact/',
 		'Logo Directory' => './test/logo/',
 		'Logs Directory' => './logs/',
 		'Webmail Attachments Directory' => './modules/Webmails/tmp/'
@@ -874,8 +870,8 @@ class Common_Install_Wizard_Utils {
 			$directiveValues['error_reporting'] = 'NOT RECOMMENDED';
 		if (ini_get('allow_call_time_pass_reference') == '1' || stripos(ini_get('allow_call_time_pass_reference'), 'On') > -1)
 			$directiveValues['allow_call_time_pass_reference'] = 'On';
-		if (ini_get('short_open_tag') != '1' || stripos(ini_get('short_open_tag'), 'Off') > -1)
-			$directiveValues['short_open_tag'] = 'Off';
+		if (ini_get('short_open_tag') == '1' || stripos(ini_get('short_open_tag'), 'On') > -1)
+			$directiveValues['short_open_tag'] = 'On';
 
 		return $directiveValues;
 	}
@@ -1060,9 +1056,9 @@ class Common_Install_Wizard_Utils {
 					if($module != null) {
 						$moduleInstance = Vtiger_Module::getInstance($module);
 						if($moduleInstance) {
-							updateVtlibModule($module, $packagepath);
+							self::updateVtlibModule($module, $packagepath);
 						} else {
-							installVtlibModule($module, $packagepath);
+							self::installVtlibModule($module, $packagepath);
 						}
 					}
 				}
@@ -1133,17 +1129,17 @@ class Common_Install_Wizard_Utils {
 								$subModuleName = $subModule->getModuleNameFromZip($packagepath);
 								$moduleInstance = Vtiger_Module::getInstance($subModuleName);
 								if($moduleInstance) {
-									updateVtlibModule($subModuleName, $packagepath);
+									self::updateVtlibModule($subModuleName, $packagepath);
 								} else {
-									installVtlibModule($subModuleName, $packagepath);
+									self::installVtlibModule($subModuleName, $packagepath);
 								}
 							}
 						} else {
 							$moduleInstance = Vtiger_Module::getInstance($module);
 							if($moduleInstance) {
-								updateVtlibModule($module, $packagepath);
+								self::updateVtlibModule($module, $packagepath);
 							} else {
-								installVtlibModule($module, $packagepath);
+								self::installVtlibModule($module, $packagepath);
 							}
 						}
 					}
@@ -1153,8 +1149,81 @@ class Common_Install_Wizard_Utils {
 		}
 
 		foreach($languagePacks as $module => $packagepath) {
-			installVtlibModule($module, $packagepath);
+			self::installVtlibModule($module, $packagepath);
 			continue;
+		}
+	}
+
+	/* Function to install Vtlib Compliant modules
+	 * @param - $packagename - Name of the module
+	 * @param - $packagepath - Complete path to the zip file of the Module
+	 */
+	public static function installVtlibModule($packagename, $packagepath) {
+		global $log;
+		require_once 'vtlib/Vtiger/Package.php';
+		require_once 'vtlib/Vtiger/Module.php';
+		$Vtiger_Utils_Log = true;
+		$package = new Vtiger_Package();
+
+		if ($package->isLanguageType($packagepath)) {
+			$package = new Vtiger_Language();
+			$package->import($packagepath, true);
+			return;
+		}
+		$module = $package->getModuleNameFromZip($packagepath);
+
+		if ($package->isLanguageType()) {
+			require_once 'vtlib/Vtiger/Language.php';
+			$languagePack = new Vtiger_Language();
+			@$languagePack->import($packagepath, true);
+			return;
+		}
+
+		$module_exists = false;
+		if ($module == null) {
+			$log->fatal("$packagename Module zipfile is not valid!");
+		} elseif (Vtiger_Module::getInstance($module)) {
+			$log->fatal("$module already exists!");
+			$module_exists = true;
+		}
+		if ($module_exists == false) {
+			$log->debug("$module - Installation starts here");
+			$package->import($packagepath, true);
+			$moduleInstance = Vtiger_Module::getInstance($module);
+			if (empty($moduleInstance)) {
+				$log->fatal("$module module installation failed!");
+			}
+		}
+	}
+
+	/* Function to update Vtlib Compliant modules
+	 * @param - $module - Name of the module
+	 * @param - $packagepath - Complete path to the zip file of the Module
+	 */
+	public static function updateVtlibModule($module, $packagepath) {
+		global $log;
+		require_once 'vtlib/Vtiger/Package.php';
+		require_once 'vtlib/Vtiger/Module.php';
+		$Vtiger_Utils_Log = true;
+		$package = new Vtiger_Package();
+
+		if ($package->isLanguageType($packagepath)) {
+			require_once 'vtlib/Vtiger/Language.php';
+			$languagePack = new Vtiger_Language();
+			$languagePack->update(null, $packagepath, true);
+			return;
+		}
+
+		if ($module == null) {
+			$log->fatal('Module name is invalid');
+		} else {
+			$moduleInstance = Vtiger_Module::getInstance($module);
+			if ($moduleInstance || $package->isModuleBundle($packagepath)) {
+				$log->debug("$module - Module instance found - Update starts here");
+				$package->update($moduleInstance, $packagepath);
+			} else {
+				$log->fatal("$module doesn't exists!");
+			}
 		}
 	}
 

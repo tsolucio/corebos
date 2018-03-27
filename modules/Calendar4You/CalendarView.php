@@ -44,6 +44,16 @@ $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('ID', '');
 $smarty->assign('MODE', '');
 
+// Left Panel Order
+$Calendar_Panel_Order = array(
+	'ActivityType',
+	'ModulePanel',
+	'AssignedUser',
+	'ActivityStatus',
+	'ActivityPriority',
+);
+$smarty->assign('Calendar_Panel_Order', $Calendar_Panel_Order);
+
 $viewBox = 'hourview'; 
 $smarty->assign("CREATE_PERMISSION",($Calendar4You->CheckPermissions("CREATE") ? "permitted" : ''));
 
@@ -59,7 +69,7 @@ $smarty->assign("CREATE_PERMISSION",($Calendar4You->CheckPermissions("CREATE") ?
 	$temp_date = $date->getDisplayDate();
 
 	if($current_user->column_fields['is_admin']=='on')
-		$Res = $adb->pquery('select * from vtiger_activitytype where activitytype!=?',array('Emails'));
+		$Res = $adb->pquery('select activitytype from vtiger_activitytype where activitytype!=?',array('Emails'));
 	else {
 		$roleid=$current_user->roleid;
 		$subrole = getRoleSubordinates($roleid);
@@ -69,7 +79,7 @@ $smarty->assign("CREATE_PERMISSION",($Calendar4You->CheckPermissions("CREATE") ?
 		} else {
 			$roleids = array($roleid);
 		}
-		$Res=$adb->pquery("select distinct activitytype,sortid from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where activitytype!=? and roleid in (". generateQuestionMarks($roleids) .") and picklistid in (select picklistid from vtiger_picklist) order by sortid asc", array('Emails',$roleids));
+		$Res=$adb->pquery("select distinct activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where activitytype!=? and roleid in (". generateQuestionMarks($roleids) .") and picklistid in (select picklistid from vtiger_picklist) order by sortid asc", array('Emails',$roleids));
 	}
 
 	$eventlist=''; 
@@ -189,10 +199,13 @@ if (isset($_REQUEST["viewOption"]) && $_REQUEST["viewOption"]!= "") {
 }
 
 $mysel = convertFullCalendarView($default_view);
-
 $smarty->assign('DEFAULTVIEW', $default_view);
 $smarty->assign('ACTIVITYTYPES', $Activity_Types);
 $smarty->assign('MODULETYPES', $Module_Types);
+$smarty->assign('upEVENTBLOCK_DISPLAY', isset($Ch_Views['6']) ? $Ch_Views['6'] : 'block');
+$smarty->assign('upMODULEBLOCK_DISPLAY', isset($Ch_Views['7']) ? $Ch_Views['7'] : 'block');
+$smarty->assign('upESTATUSBLOCK_DISPLAY', isset($Ch_Views['8']) ? $Ch_Views['8'] : 'block');
+$smarty->assign('upTPRIORITYBLOCK_DISPLAY', isset($Ch_Views['9']) ? $Ch_Views['9'] : 'block');
 if (isset($_REQUEST["user_view_type"]) && $_REQUEST["user_view_type"] != "") {
 	$user_view_type = $_REQUEST["user_view_type"];
 } else {

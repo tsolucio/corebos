@@ -24,8 +24,8 @@
  *  value of the variable: if a variable record is found
  *  the default value given: if a variable record is not found or the current user does not have access to the Global Variable module
 */
-function cbws_SearchGlobalVar($gvname, $defaultvalue, $gvmodule, $user){
-	global $log, $adb, $current_user;
+function cbws_SearchGlobalVar($gvname, $defaultvalue, $gvmodule, $user) {
+	global $log, $adb;
 
 	$entityName = 'GlobalVariable';
 	$webserviceObject = VtigerWebserviceObject::fromName($adb, $entityName);
@@ -34,10 +34,10 @@ function cbws_SearchGlobalVar($gvname, $defaultvalue, $gvmodule, $user){
 
 	require_once $handlerPath;
 
-	$handler = new $handlerClass($webserviceObject,$user,$adb,$log);
+	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
 	$meta = $handler->getMeta();
 
-	if($meta->hasReadAccess()!==true){
+	if ($meta->hasReadAccess()!==true) {
 		return $defaultvalue;
 	}
 

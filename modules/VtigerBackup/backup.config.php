@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *********************************************************************************/
-
 $backupLimit = 14;
 $executionTimeLimit = 5000;
 $memoryLimit = '1000M';

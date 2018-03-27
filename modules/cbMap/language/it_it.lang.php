@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'cbMap' => 'Mappe',
 	'SINGLE_cbMap' => 'Mappa',
 	'cbMap ID' => 'ID Mappa',
@@ -16,7 +16,7 @@ $mod_strings = Array(
 	'LBL_CUSTOM_INFORMATION' => 'Informazione Personalizzata',
 	'LBL_MAP_INFORMATION' => 'Informazione Blocco Mappa',
 	'LBL_CREATE_BUTTON_KEY'=>'Genera Mappa',
-        'LBL_DESCRIPTION_INFORMATION'=>'Descrizione',
+	'LBL_DESCRIPTION_INFORMATION'=>'Descrizione',
 	'Map Name' => 'Nome Mappa',
 	'Map Number' => 'Numero Mappa',
 	'Map Type' => 'Tipo Mappa',
@@ -35,6 +35,7 @@ $mod_strings = Array(
 	'Record Access Control' => 'Controllo Accesso Record',
 	'Record Set Mapping' => 'Record Set Mapping',
 	'Module Set Mapping' => 'Module Set Mapping',
+	'Field Set Mapping' => 'Field Set Mapping',
 	'ListColumns' => 'Lista colonne',
 	'DuplicateRelations' => 'Relazioni Duplicate',
 	'MasterDetailLayout' => 'Layout Master Dettaglio',

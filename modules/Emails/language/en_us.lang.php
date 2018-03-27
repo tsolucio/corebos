@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_GENERAL_INFORMATION'=>'General Information',
 
 'LBL_MODULE_NAME'=>'Email',
@@ -31,8 +31,8 @@ $mod_strings = Array(
 'LBL_SUBJECT'=>'Subject:',
 'LBL_BODY'=>'Body:',
 'LBL_CONTACT_NAME'=>' Contact Name: ',
-'LBL_EMAIL'=>'Email:', 
-'LBL_DETAILVIEW_EMAIL'=>'E-Mail', 
+'LBL_EMAIL'=>'Email:',
+'LBL_DETAILVIEW_EMAIL'=>'E-Mail',
 'LBL_COLON'=>':',
 'LBL_CHK_MAIL'=>'Check Mail',
 'LBL_COMPOSE'=>'Compose',
@@ -106,10 +106,8 @@ $mod_strings = Array(
 'MESSAGE_ADD_USER_OR_CONTACT'=>'Please Add any User(s) or Contact(s)...',
 'MESSAGE_MAIL_SENT_SUCCESSFULLY'=>' Mail(s) sent successfully!',
 
-'LBL_FETCH_WEBMAIL'=>'Fetch Web Mail',
 'LBL_ALL'=>'All',
 'MESSAGE_CONTACT_NOT_WANT_MAIL'=>'This Contact does not want to receive mails.',
-'LBL_WEBMAILS_TITLE'=>'WebMails',
 'LBL_EMAILS_TITLE'=>'Email',
 'LBL_MAIL_CONNECT_ERROR_INFO'=>'Error connecting mail server!<br> Check in My Accounts->List Mail Server -> List Mail Account',
 'LBL_ALLMAILS'=>'All Mails',
@@ -137,12 +135,10 @@ $mod_strings = Array(
 'PLEASE_CHECK_THIS_EMAILID'=>'Please check this mail id...',
 'LBL_CC_EMAIL_ERROR'=>'Your cc mailid is not proper',
 'LBL_BCC_EMAIL_ERROR'=>'Your bcc mailid is not proper',
-'LBL_NO_RCPTS_EMAIL_ERROR'=>'No recepients specified',
+'LBL_NO_RCPTS_EMAIL_ERROR'=>'No recipients specified',
 'LBL_CONF_MAILSERVER_ERROR'=>'Please configure your outgoing mailserver under Settings ---> Outgoing Server link',
 'LBL_CONF_SERVERSTORAGE_ERROR'=>'The permissions on your storage directory are insufficient, you will not be able to send attachments!',
 'LBL_MAILSELECT_INFO3'=>'You don\'t have permission to view email id(s) of the selected Record(s).',
-'FEATURE_AVAILABLE_INFO' => 'This feature is currently only available for Microsoft Internet Explorer 5.5+ users\n\nWait f
-or an update!',
 'DOWNLOAD_CONFIRAMATION' => 'Do you want to download the file ?',
 'LBL_PLEASE_ATTACH' => 'Please give a valid file to attach and try again!',
 'LBL_KINDLY_UPLOAD' => 'Please configure <font color="red">upload_tmp_dir</font> variable in php.ini file.',
@@ -158,5 +154,4 @@ or an update!',
 'LBL_ATTACH_DOCUMENTS' => 'Attach documents',
 'Access Count' => 'Access Count',
 );
-
 ?>

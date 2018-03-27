@@ -54,15 +54,15 @@
 </map>
  *************************************************************************************************/
 
-require_once('modules/cbMap/cbMap.php');
-require_once('modules/cbMap/processmap/processMap.php');
+require_once 'modules/cbMap/cbMap.php';
+require_once 'modules/cbMap/processmap/processMap.php';
 
 class Import extends processcbMap {
 	private $mapping = array();
 	private $input = array();
 	private $output = array();
 
-	function processMap($arguments) {
+	public function processMap($arguments) {
 		$this->convertMap2Array();
 		$contentok = processcbMap::isXML(htmlspecialchars_decode($this->Map->column_fields['content']));
 		if ($contentok !== true) {
@@ -78,27 +78,31 @@ class Import extends processcbMap {
 		return $this->mapping;
 	}
 
-	public function getMapTargetModule(){
-		if(isset($this->mapping["targetmodule"]))
-			return $this->mapping["targetmodule"];
+	public function getMapTargetModule() {
+		if (isset($this->mapping['targetmodule'])) {
+			return $this->mapping['targetmodule'];
+		}
 		return array();
 	}
 
-	public function getMapUpdateFld(){
-		if(isset($this->mapping["target"]))
-			return $this->mapping["target"];
+	public function getMapUpdateFld() {
+		if (isset($this->mapping['target'])) {
+			return $this->mapping['target'];
+		}
 		return array();
 	}
 
-	public function getMapMatchFld(){
-		if(isset($this->mapping["match"]))
-			return $this->mapping["match"];
+	public function getMapMatchFld() {
+		if (isset($this->mapping['match'])) {
+			return $this->mapping['match'];
+		}
 		return array();
 	}
 
-	public function getMapOptions(){
-		if(isset($this->mapping["options"]))
-			return $this->mapping["options"];
+	public function getMapOptions() {
+		if (isset($this->mapping['options'])) {
+			return $this->mapping['options'];
+		}
 		return array();
 	}
 
@@ -110,8 +114,7 @@ class Import extends processcbMap {
 			$predefined= isset($v->predefined) ? (String)$v->predefined : '';
 			if (empty($v->Orgfields[0]->Relfield)) {
 				$fieldinfo[$fieldname] = array('value'=>$value,'predefined'=>$predefined);
-			}
-			elseif (!empty($v->Orgfields[0]->Relfield) && isset($v->Orgfields[0]->Relfield) ) {
+			} elseif (!empty($v->Orgfields[0]->Relfield) && isset($v->Orgfields[0]->Relfield)) {
 				$allRelValues=array();
 				foreach ($v->Orgfields[0]->Relfield as $key => $value1) {
 					if ($key == 'RelfieldName') {
@@ -153,7 +156,7 @@ class Import extends processcbMap {
 		$filename = "import/$csvfile";
 		$table = pathinfo($filename);
 
-		$tb=explode("=",$table['filename']);
+		$tb=explode("=", $table['filename']);
 		$table = "massivelauncher_" . $tb[0];
 		$drop = "drop table if exists $table;";
 		$adb->query($drop);
@@ -165,15 +168,17 @@ class Import extends processcbMap {
 		$allHeaders = implode(",", $frow);
 		$columns = "`id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY, `selected` varchar(3) ";
 		foreach ($frow as $column) {
-			if($column=='') $column='lastvalue';
+			if ($column=='') {
+				$column='lastvalue';
+			}
 			$columns .= ", `$column` varchar(250)";
 		}
 		$create = "create table if not exists $table ($columns);";
 		$adb->query($create);
 
 		$irow=0;
-		while (($data = fgetcsv($fp, 1000, $delimiter)) !== FALSE) {
-			$row_vals=implode("','",$data);
+		while (($data = fgetcsv($fp, 1000, $delimiter)) !== false) {
+			$row_vals=implode("','", $data);
 			$str="INSERT INTO $table  VALUES ('','','$row_vals')";
 			echo $str;
 			$adb->query($str);
@@ -183,7 +188,7 @@ class Import extends processcbMap {
 	}
 
 	private function doImport($table) {
-		include_once('modules/Users/Users.php');
+		include_once 'modules/Users/Users.php';
 		global $adb,$current_user;
 		$adminUser = Users::getActiveAdminUser();
 		$dataQuery = $adb->query("SELECT * FROM $table");
@@ -221,13 +226,15 @@ class Import extends processcbMap {
 				}
 				for ($el = 0; $el < count($allids); $el++) {
 					$index_result = $adb->query_result($index_query, $el, $focus->table_index);
-					if($nr_rows>0)  $focus->retrieve_entity_info($index_result, $module);
+					if ($nr_rows>0) {
+						$focus->retrieve_entity_info($index_result, $module);
+					}
 					foreach ($updateFld as $upkey => $upVal) {
 						$predefined = $upVal['predefined'];
 						$value = $upVal['value'];
-						if ($predefined == 'AUTONUM')
+						if ($predefined == 'AUTONUM') {
 							$focus->column_fields[$upkey] = $el;
-						else if(isset($upVal['relatedFields']) && !empty($upVal['relatedFields'])) {
+						} elseif (isset($upVal['relatedFields']) && !empty($upVal['relatedFields'])) {
 							$relInformation = $upVal['relatedFields'][0];
 							$relModule = $relInformation['relmodule'];
 							$linkField = $relInformation['linkfield'];
@@ -243,21 +250,20 @@ class Import extends processcbMap {
 									INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=$otherModule->table_name.$otherModule->table_index
 									INNER JOIN $customfld1[0] ON $customfld1[0].$customfld1[1]=$otherModule->table_name.$otherModule->table_index
 									WHERE vtiger_crmentity.deleted=0 and $fieldName='$otherid'");
-								$focus->column_fields[$upkey] =$adb->query_result($index_rel,0);
-
+								$focus->column_fields[$upkey] =$adb->query_result($index_rel, 0);
 							}
-						}
-						elseif (!empty($data[$value]))
+						} elseif (!empty($data[$value])) {
 							$focus->column_fields[$upkey] = $data[$value];
-						else
+						} else {
 							$focus->column_fields[$upkey] = $predefined;
+						}
 					}
 					$focus->mode = 'edit';
 					$focus->id = $index_result;
 					$handler = vtws_getModuleHandlerFromName($module, $adminUser);
 					$meta = $handler->getMeta();
-					$focus->column_fields = DataTransform::sanitizeForInsert($focus->column_fields,$meta);
-					$focus->column_fields = DataTransform::sanitizeTextFieldsForInsert($focus->column_fields,$meta);
+					$focus->column_fields = DataTransform::sanitizeForInsert($focus->column_fields, $meta);
+					$focus->column_fields = DataTransform::sanitizeTextFieldsForInsert($focus->column_fields, $meta);
 
 					$focus->saveentity($module);
 					if (!empty($focus->id)) {
@@ -285,22 +291,22 @@ class Import extends processcbMap {
 								INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=$otherModule->table_name.$otherModule->table_index
 								INNER JOIN $customfld1[0] ON $customfld1[0].$customfld1[1]=$otherModule->table_name.$otherModule->table_index
 								WHERE vtiger_crmentity.deleted=0 and $fieldName='$otherid'");
-							$focus1->column_fields[$upkey] =$adb->query_result($index_rel,0);
+							$focus1->column_fields[$upkey] =$adb->query_result($index_rel, 0);
 						}
-					} elseif (!empty($data[$value]))
+					} elseif (!empty($data[$value])) {
 						$focus1->column_fields[$upkey] = $data[$value];
-					else
+					} else {
 						$focus1->column_fields[$upkey] = $predefined;
+					}
 				}
 				$focus1->column_fields["assigned_user_id"]=$current_user->id;
-				$focus1->saveentity($module); $r++;
+				$focus1->saveentity($module);
+				$r++;
 				if (!empty($focus1->id)) {
 					$adb->pquery("UPDATE $table SET selected=1 WHERE id=?", array($id));
 				}
 			}
 		}
 	}
-
 }
-
 ?>

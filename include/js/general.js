@@ -148,11 +148,17 @@ function set_cookie( name, value, exp_y, exp_m, exp_d, path, domain, secure )
 }
 
 // Retrieving cookies
-function get_cookie(cookie_name)
-{
+function get_cookie(cookie_name) {
 	var results = document.cookie.match('(^| )' + cookie_name + '=(.*?)(;|$)');
-	if (results) return (unescape(results[1]));
-	else return null;
+	if (results) {
+		if (results[1]==' ') {
+			return (unescape(results[2]));
+		} else {
+			return (unescape(results[1]));
+		}
+	} else {
+		return null;
+	}
 }
 
 // Delete cookies
@@ -199,15 +205,15 @@ function emptyCheck(fldName,fldLabel, fldType) {
 	}
 }
 
-function patternValidateObject(fldObject,fldLabel,type) {
+function patternValidateObject(fldObject, fldLabel, type) {
 	fldObject.value = trim(fldObject.value);
 	let checkval = fldObject.value;
-	if (type.toUpperCase()=="EMAIL") //Email ID validation
-	{
+	let typeUC = type.toUpperCase();
+	if (typeUC=='EMAIL') { //Email ID validation
 		var re=new RegExp(/^[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i);
 	}
 
-	if (type.toUpperCase()=="DATE") {//DATE validation
+	if (typeUC=='DATE') { //DATE validation
 		//YMD
 		//var reg1 = /^\d{2}(\-|\/|\.)\d{1,2}\1\d{1,2}$/ //2 digit year
 		//var re = /^\d{4}(\-|\/|\.)\d{1,2}\1\d{1,2}$/ //4 digit year
@@ -221,11 +227,11 @@ function patternValidateObject(fldObject,fldLabel,type) {
 		//var reg2 = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{4}$/
 
 		switch (userDateFormat) {
-			case "yyyy-mm-dd" :
+			case 'yyyy-mm-dd' :
 				var re = /^\d{4}(\-|\/|\.)\d{1,2}\1\d{1,2}$/;
 				break;
-			case "mm-dd-yyyy" :
-			case "dd-mm-yyyy" :
+			case 'mm-dd-yyyy' :
+			case 'dd-mm-yyyy' :
 				var re = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{4}$/;
 		}
 		if (checkval.indexOf(' ')>0) {
@@ -234,64 +240,7 @@ function patternValidateObject(fldObject,fldLabel,type) {
 		}
 	}
 
-	if (type.toUpperCase()=="TIME") {//TIME validation
-		var re = /^\d{1,2}\:\d{2}:\d{2}$|^\d{1,2}\:\d{2}$/;
-		if (checkval.indexOf(' ')>0) {
-			var dt = checkval.split(' ');
-			checkval = dt[1];
-		}
-	}
-	if (!re.test(checkval)) {
-		alert(alert_arr.ENTER_VALID + fldLabel + " ("+type+")");
-		try {
-			fldObject.focus();
-		} catch(error) {
-		// Fix for IE: If element or its wrapper around it is hidden, setting focus will fail
-		// So using the try { } catch(error) { }
-		}
-		return false;
-	}
-	else return true;
-}
-
-function patternValidate(fldName,fldLabel,type) {
-	var currObj=getObj(fldName);
-	currObj.value = trim(currObj.value);
-	let checkval = currObj.value;
-
-	if (type.toUpperCase()=="EMAIL") //Email ID validation
-	{
-		var re=new RegExp(/^[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i);
-	}
-
-	if (type.toUpperCase()=="DATE") {//DATE validation
-		//YMD
-		//var reg1 = /^\d{2}(\-|\/|\.)\d{1,2}\1\d{1,2}$/ //2 digit year
-		//var re = /^\d{4}(\-|\/|\.)\d{1,2}\1\d{1,2}$/ //4 digit year
-
-		//MYD
-		//var reg1 = /^\d{1,2}(\-|\/|\.)\d{2}\1\d{1,2}$/
-		//var reg2 = /^\d{1,2}(\-|\/|\.)\d{4}\1\d{1,2}$/
-
-		//DMY
-		//var reg1 = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{2}$/
-		//var reg2 = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{4}$/
-
-		switch (userDateFormat) {
-			case "yyyy-mm-dd" :
-				var re = /^\d{4}(\-|\/|\.)\d{1,2}\1\d{1,2}$/;
-				break;
-			case "mm-dd-yyyy" :
-			case "dd-mm-yyyy" :
-				var re = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{4}$/;
-		}
-		if (checkval.indexOf(' ')>0) {
-			var dt = checkval.split(' ');
-			checkval = dt[0];
-		}
-	}
-
-	if (type.toUpperCase()=="TIME") {//TIME validation
+	if (typeUC=='TIME') { //TIME validation
 		var re = /^\d{1,2}\:\d{2}:\d{2}$|^\d{1,2}\:\d{2}$/;
 		if (checkval.indexOf(' ')>0) {
 			var dt = checkval.split(' ');
@@ -299,16 +248,22 @@ function patternValidate(fldName,fldLabel,type) {
 		}
 	}
 	if (typeof(re) != 'undefined' && !re.test(checkval)) {
-		alert(alert_arr.ENTER_VALID + fldLabel + " ("+type+")");
+		alert(alert_arr.ENTER_VALID + fldLabel + ' ('+type+')');
 		try {
-			currObj.focus();
+			fldObject.focus();
 		} catch(error) {
 		// Fix for IE: If element or its wrapper around it is hidden, setting focus will fail
 		// So using the try { } catch(error) { }
 		}
 		return false;
+	} else {
+		return true;
 	}
-	else return true;
+}
+
+function patternValidate(fldName, fldLabel, type) {
+	var currObj=getObj(fldName);
+	return patternValidateObject(currObj, fldLabel, type);
 }
 
 function splitDateVal(dateval) {
@@ -1508,7 +1463,7 @@ function expandCont(bn)
 	leftTab.style.display = (leftTab.style.display == "block")?"none":"block";
 	img = document.getElementById("img_"+bn);
 	img.src=(img.src.indexOf("images/toggle1.gif")!=-1)?"themes/images/toggle2.gif":"themes/images/toggle1.gif";
-	set_cookie_gen(bn,leftTab.style.display);
+	set_cookie(bn,leftTab.style.display);
 
 }
 
@@ -1519,7 +1474,7 @@ function setExpandCollapse_gen()
 	{
 		var listObj=getObj(leftpanelistarray[i]);
 		var tgImageObj=getObj("img_"+leftpanelistarray[i]);
-		var status = get_cookie_gen(leftpanelistarray[i]);
+		var status = get_cookie(leftpanelistarray[i]);
 
 		if (status == "block") {
 			listObj.style.display="block";
@@ -1540,48 +1495,6 @@ function toggleDiv(id) {
 		listTableObj.style.display="block";
 	}
 //set_cookie(id,listTableObj.style.display)
-}
-
-//Setting cookies
-function set_cookie_gen( name, value, exp_y, exp_m, exp_d, path, domain, secure )
-{
-	var cookie_string = name + "=" + escape ( value );
-
-	if ( exp_y )
-	{
-		var expires = new Date ( exp_y, exp_m, exp_d );
-		cookie_string += "; expires=" + expires.toGMTString();
-	}
-
-	if ( path )
-		cookie_string += "; path=" + escape ( path );
-
-	if ( domain )
-		cookie_string += "; domain=" + escape ( domain );
-
-	if ( secure )
-		cookie_string += "; secure";
-
-	document.cookie = cookie_string;
-}
-
-// Retrieving cookies
-function get_cookie_gen ( cookie_name )
-{
-	var results = document.cookie.match ( cookie_name + '=(.*?)(;|$)' );
-
-	if ( results )
-		return ( unescape ( results[1] ) );
-	else
-		return null;
-}
-
-// Delete cookies
-function delete_cookie_gen ( cookie_name )
-{
-	var cookie_date = new Date ( );  // current date & time
-	cookie_date.setTime ( cookie_date.getTime() - 1 );
-	document.cookie = cookie_name += "=; expires=" + cookie_date.toGMTString();
 }
 
 /** This is Javascript Function which is used to toogle between
@@ -1884,8 +1797,7 @@ function fnvshNrm(Lay){
 	tagName.style.display = 'block';
 }
 
-function cancelForm(frm)
-{
+function cancelForm() {
 	window.history.back();
 }
 
@@ -2615,79 +2527,63 @@ function selectedRecords(module,category)
 	return false;
 }
 
-function record_export(module,category,exform,idstring)
-{
+function record_export(module, category, exform, idstring) {
 	var searchType = document.getElementsByName('search_type');
 	var exportData = document.getElementsByName('export_data');
-	for(i=0;i<2;i++){
-		if(searchType[i].checked == true)
+	for (var i=0; i<2; i++) {
+		if (searchType[i].checked == true) {
 			var sel_type = searchType[i].value;
+		}
 	}
-	for(i=0;i<3;i++){
-		if(exportData[i].checked == true)
+	for (i=0; i<3; i++) {
+		if (exportData[i].checked == true) {
 			var exp_type = exportData[i].value;
+		}
 	}
 	jQuery.ajax({
-			method: 'POST',
-			url: "index.php?module="+module+"&action=ExportAjax&export_record=true&search_type="+sel_type+"&export_data="+exp_type+"&idstring="+idstring
+		method: 'POST',
+		url: "index.php?module="+module+"&action=ExportAjax&export_record=true&search_type="+sel_type+"&export_data="+exp_type+"&idstring="+idstring
 	}).done(function (response) {
-				if(response == 'NOT_SEARCH_WITHSEARCH_ALL')
-				{
-					document.getElementById('not_search').style.display = 'block';
-					document.getElementById('not_search').innerHTML="<font color='red'><b>"+alert_arr.LBL_NOTSEARCH_WITHSEARCH_ALL+" "+module+"</b></font>";
-					setTimeout(hideErrorMsg1,6000);
-
-					exform.submit();
-				}
-				else if(response == 'NOT_SEARCH_WITHSEARCH_CURRENTPAGE')
-				{
-					document.getElementById('not_search').style.display = 'block';
-					document.getElementById('not_search').innerHTML="<font color='red'><b>"+alert_arr.LBL_NOTSEARCH_WITHSEARCH_CURRENTPAGE+" "+module+"</b></font>";
-					setTimeout(hideErrorMsg1,7000);
-
-					exform.submit();
-				}
-				else if(response == 'NO_DATA_SELECTED')
-				{
-					document.getElementById('not_search').style.display = 'block';
-					document.getElementById('not_search').innerHTML="<font color='red'><b>"+alert_arr.LBL_NO_DATA_SELECTED+"</b></font>";
-					setTimeout(hideErrorMsg1,3000);
-				}
-				else if(response == 'SEARCH_WITHOUTSEARCH_ALL')
-				{
-					if(confirm(alert_arr.LBL_SEARCH_WITHOUTSEARCH_ALL))
-					{
-						exform.submit();
-					}
-				}
-				else if(response == 'SEARCH_WITHOUTSEARCH_CURRENTPAGE')
-				{
-					if(confirm(alert_arr.LBL_SEARCH_WITHOUTSEARCH_CURRENTPAGE))
-					{
-						exform.submit();
-					}
-				}
-				else
-				{
-					exform.submit();
-				}
+		if (response == 'NOT_SEARCH_WITHSEARCH_ALL') {
+			document.getElementById('not_search').style.display = 'block';
+			document.getElementById('not_search').innerHTML="<font color='red'><b>"+alert_arr.LBL_NOTSEARCH_WITHSEARCH_ALL+' '+module+'</b></font>';
+			setTimeout(hideErrorMsg1,6000);
+			exform.submit();
+		} else if (response == 'NOT_SEARCH_WITHSEARCH_CURRENTPAGE') {
+			document.getElementById('not_search').style.display = 'block';
+			document.getElementById('not_search').innerHTML="<font color='red'><b>"+alert_arr.LBL_NOTSEARCH_WITHSEARCH_CURRENTPAGE+' '+module+'</b></font>';
+			setTimeout(hideErrorMsg1,7000);
+			exform.submit();
+		} else if (response == 'NO_DATA_SELECTED') {
+			document.getElementById('not_search').style.display = 'block';
+			document.getElementById('not_search').innerHTML="<font color='red'><b>"+alert_arr.LBL_NO_DATA_SELECTED+'</b></font>';
+			setTimeout(hideErrorMsg1,3000);
+		} else if (response == 'SEARCH_WITHOUTSEARCH_ALL') {
+			if (confirm(alert_arr.LBL_SEARCH_WITHOUTSEARCH_ALL)) {
+				exform.submit();
 			}
-		);
+		} else if (response == 'SEARCH_WITHOUTSEARCH_CURRENTPAGE') {
+			if (confirm(alert_arr.LBL_SEARCH_WITHOUTSEARCH_CURRENTPAGE)) {
+				exform.submit();
+			}
+		} else {
+			exform.submit();
+		}
+	});
 }
 
-function hideErrorMsg1()
-{
+function hideErrorMsg1() {
 	document.getElementById('not_search').style.display = 'none';
 }
 
 // Replace the % sign with %25 to make sure the AJAX url is going wel.
-function escapeAll(tagValue)
-{
+function escapeAll(tagValue) {
 	//return escape(tagValue.replace(/%/g, '%25'));
-	if(default_charset.toLowerCase() == 'utf-8')
+	if (default_charset.toLowerCase() == 'utf-8') {
 		return encodeURIComponent(tagValue.replace(/%/g, '%25'));
-	else
+	} else {
 		return escape(tagValue.replace(/%/g, '%25'));
+	}
 }
 
 function removeHTMLFormatting(str) {
@@ -2696,100 +2592,90 @@ function removeHTMLFormatting(str) {
 	return str;
 }
 
-function get_converted_html(str)
-{
+function get_converted_html(str) {
 	var temp = str.toLowerCase();
-	if(temp.indexOf('<') != '-1' || temp.indexOf('>') != '-1')
-	{
+	if (temp.indexOf('<') != '-1' || temp.indexOf('>') != '-1') {
 		str = str.replace(/</g,'&lt;');
 		str = str.replace(/>/g,'&gt;');
 	}
-	if( temp.match(/(script).*(\/script)/))
-	{
+	if (temp.match(/(script).*(\/script)/)) {
 		str = str.replace(/&/g,'&amp;');
-	}
-	else if(temp.indexOf('&') != '-1')
-	{
+	} else if (temp.indexOf('&') != '-1') {
 		str = str.replace(/&/g,'&amp;');
 	}
 	return str;
 }
 
 //To select the select all check box(if all the items are selected) when the form loads.
-function default_togglestate(obj_id,elementId)
-{
+function default_togglestate(obj_id, elementId) {
 	var all_state=true;
 	var groupElements = document.getElementsByName(obj_id);
 	for (var i=0;i<groupElements.length;i++) {
 		var state=groupElements[i].checked;
-		if (state == false)
-		{
+		if (state == false) {
 			all_state=false;
 			break;
 		}
 	}
-	if(typeof elementId=='undefined'){
+	if (typeof elementId=='undefined') {
 		elementId = 'selectall';
 	}
-	if(getObj(elementId)) {
+	if (getObj(elementId)) {
 		getObj(elementId).checked=all_state;
 	}
 }
 
 //for select multiple check box in multiple pages for Campaigns related list:
-function rel_check_object(sel_id,module)
-{
+function rel_check_object(sel_id, module) {
 	var selected;
 	var select_global = new Array();
-	var cookie_val = get_cookie(module+"_all");
-	if(cookie_val == null)
-		selected = sel_id.value+";";
-	else
+	var cookie_val = get_cookie(module+'_all');
+	if (cookie_val == null) {
+		selected = sel_id.value+';';
+	} else {
 		selected = trim(cookie_val);
-	select_global = selected.split(";");
+	}
+	select_global = selected.split(';');
 	var box_value = sel_id.checked;
 	var id = sel_id.value;
 	var duplicate = select_global.indexOf(id);
 	var size = select_global.length-1;
-	var result = "";
+	var result = '';
 	var currentModule = document.getElementById('return_module').value;
 	var excluded = document.getElementById(currentModule+'_'+module+'_excludedRecords').value;
-	if(box_value == true)
-	{
-		if(document.getElementById(currentModule+'_'+module+'_selectallActivate').value == 'true') {
+	if (box_value == true) {
+		if (document.getElementById(currentModule+'_'+module+'_selectallActivate').value == 'true') {
 			document.getElementById(currentModule+'_'+module+'_excludedRecords').value = excluded.replace(excluded.match(id+";"),'');
 		} else {
-			if(duplicate == "-1")
-			{
+			if (duplicate == '-1') {
 				select_global[size]=id;
 			}
-
 			size = select_global.length-1;
 			var i=0;
-			for(i=0;i<=size;i++) {
-				if(trim(select_global[i])!='')
-					result = select_global[i]+";"+result;
+			for (i=0; i<=size; i++) {
+				if (trim(select_global[i])!='') {
+					result = select_global[i]+';'+result;
+				}
 			}
 		}
 		rel_default_togglestate(module);
-	}
-	else
-	{
-		if(document.getElementById(currentModule+'_'+module+'_selectallActivate').value == 'true'){
+	} else {
+		if (document.getElementById(currentModule+'_'+module+'_selectallActivate').value == 'true') {
 			document.getElementById(currentModule+'_'+module+'_excludedRecords').value= id+";"+excluded;
 		}
-		if(duplicate != "-1")
+		if (duplicate != '-1') {
 			select_global.splice(duplicate,1);
-
+		}
 		size=select_global.length-1;
 		var i=0;
-		for(i=size;i>=0;i--) {
-			if(trim(select_global[i])!='')
-				result=select_global[i]+";"+result;
+		for (i=size; i>=0; i--) {
+			if (trim(select_global[i])!='') {
+				result=select_global[i]+';'+result;
+			}
 		}
-		getObj(module+"_selectall").checked=false;
+		getObj(module+'_selectall').checked=false;
 	}
-	set_cookie(module+"_all",result);
+	set_cookie(module+'_all',result);
 }
 
 //Function to select all the items in the current page for Campaigns related list:.
@@ -2953,12 +2839,13 @@ function delimage(id,fname,aname) {
 	} else {
 	jQuery.ajax({
 		method: 'POST',
-		url: 'index.php?module=Contacts&action=ContactsAjax&file=DelImage&ImageModule='+gVTModule+'&recordid='+id+'&fieldname='+fname+'&attachmentname='+aname,
+		url: 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=delImage&ImageModule='+gVTModule+'&recordid='+id+'&fieldname='+fname+'&attachmentname='+aname,
 	}).done(function (response) {
-		if(response.indexOf("SUCCESS")>-1)
+		if(response.indexOf('SUCCESS')>-1) {
 			document.getElementById(fname+'_replaceimage').innerHTML=alert_arr.LBL_IMAGE_DELETED;
-		else
+		} else {
 			alert(alert_arr.ERROR_WHILE_EDITING);
+		}
 	});
 	}
 	document.getElementById(fname+'_hidden').value = '';
@@ -3030,7 +2917,7 @@ function updateBaseCurrencyValue() {
 	}
 }
 function standarizeFormatCurrencyValue(val) {
-	if(val != undefined && val != null && val != 0) {
+	if (val != undefined && val != null && val != 0 && typeof val != "number") {
 		if(typeof userCurrencySeparator != 'undefined') {
 			while(val.indexOf(userCurrencySeparator) != -1) {
 				val = val.replace(userCurrencySeparator,'');
@@ -3142,12 +3029,15 @@ function ActivityReminderCallback() {
 		ActivityReminder_regcallback_timer = null;
 	}
 	jQuery.ajax({
-			method: 'POST',
-			url: "index.php?module=Calendar&action=CalendarAjax&file=ActivityReminderCallbackAjax&ajax=true"
+		method: 'POST',
+		url: "index.php?module=Calendar&action=CalendarAjax&file=ActivityReminderCallbackAjax&ajax=true"
 	}).done(function (response) {
+		if (response=='Login') {
+			document.location.href='index.php?module=Users&action=Login';
+		} else {
 			ActivityReminderCallbackProcess(response);
 		}
-	);
+	});
 }
 
 function ActivityReminderCallbackProcess(message) {
@@ -3179,7 +3069,7 @@ function ActivityReminderCallbackProcess(message) {
 		jQuery("#"+ActivityReminder_Newdelay_response_node).remove();
 	}
 	if(message == '' || trim(message).indexOf('<script') == 0) {
-		// We got only new dealay value but no popup information, let us remove the callback win created
+		// We got only new delay value but no popup information, let us remove the callback win created
 		jQuery("#"+ActivityReminder_callback_win.id).remove();
 		ActivityReminder_callback_win = false;
 		message = '';
@@ -3241,6 +3131,29 @@ function ActivityReminderRegisterCallback(timeout) {
 	if(ActivityReminder_regcallback_timer == null) {
 		ActivityReminder_regcallback_timer = setTimeout("ActivityReminderCallback()", timeout);
 	}
+}
+
+function ajaxChangeCalendarStatus(statusname,activityid) {
+	document.getElementById("status").style.display = "inline";
+	var viewid = document.getElementById('viewname') ? document.getElementById('viewname').options[document.getElementById('viewname').options.selectedIndex].value : '';
+	var idstring = document.getElementById('idlist') ? document.getElementById('idlist').value : '';
+	var searchurl = document.getElementById('search_url') ? document.getElementById('search_url').value : '';
+	var urlstring = "module=cbCalendar&action=cbCalendarAjax&file=calendarops&op=changestatus&ajax=true&newstatus=" + statusname + "&activityid=" + activityid + "&viewname=" + viewid + "&idlist=" + idstring + searchurl;
+	jQuery.ajax({
+		method: 'POST',
+		url: 'index.php?' + urlstring
+	}).done(function (response) {
+		document.getElementById("status").style.display = "none";
+		result = response.split('&#&#&#');
+		if (document.getElementById("ListViewContents")) {
+			document.getElementById("ListViewContents").innerHTML = result[2];
+			document.getElementById('basicsearchcolumns').innerHTML = '';
+		}
+		if (result[1] != '') {
+			alert(result[1]);
+		}
+	});
+	return false;
 }
 
 //added for finding duplicates
@@ -5001,7 +4914,7 @@ AutocompleteRelation.prototype.get = function(e) {
 		var nr_opt=array.length;
 		term=array[nr_opt-1];
 	}
-	if (term.length > this.mincharstoSearch && (typeof(this.data.searchin) != 'undefined' || typeof(this.data.searchfields) != 'undefined') ) {
+	if (term.length >= this.mincharstoSearch && (typeof(this.data.searchin) != 'undefined' || typeof(this.data.searchfields) != 'undefined') ) {
 		this.data.term = term;
 		var acInstance = this;
 
@@ -5020,13 +4933,13 @@ AutocompleteRelation.prototype.get = function(e) {
 					acInstance.set(json_data)
 			}
 		};
+		var params='data='+encodeURIComponent(JSON.stringify(this.data));
 		if (e.target.name==='query_string') {
-			var params=JSON.stringify(this.data);
-			r.open("POST", "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getGloalSearch", true);
-			r.setRequestHeader( "Content-type", "application/json;charset=UTF-8" );
+			r.open('POST', 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getGloalSearch', true);
+			r.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 			r.send(params);
 		} else {
-			r.open("GET", "index.php?module=Utilities&action=UtilitiesAjax&file=getAutocomplete&data="+encodeURIComponent(JSON.stringify(this.data)), true);
+			r.open('GET', 'index.php?module=Utilities&action=UtilitiesAjax&file=getAutocomplete&'+params, true);
 			r.send();
 		}
 	} else {
@@ -5060,6 +4973,12 @@ AutocompleteRelation.prototype.set = function(items) {
 					});
 				}
 			});
+		}
+		if(acInstance.inputField.name==='query_string'){
+			var span = document.createElement("li");
+			span.className= "total_autocomplete";
+			span.innerHTML = getTranslatedString('SHOWING') + " "+ limit +" "+getTranslatedString('OF')+" "+items[0]['total'];
+			this.targetUL.appendChild(span);
 		}
 	}
 }

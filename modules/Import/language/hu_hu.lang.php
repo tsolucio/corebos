@@ -95,7 +95,6 @@ $mod_strings = array(
 	'LBL_SELECT_FILE' => 'Fájl kiválasztása:',
 	'LBL_CUSTOM' => 'Egyedi',
 	'LBL_DONT_MAP' => '-- Ezt a mezőt ne feleltesse meg --',
-	'LBL_STEP_1_TITLE' => 'Válaszd ki a .CSV fájlt',
 	'LBL_WHAT_IS' => 'Válaszd ki az adatok forrását a következőkből:',
 	'LBL_MICROSOFT_OUTLOOK' => 'Microsoft Outlook',
 	'LBL_ACT' => 'Act!',

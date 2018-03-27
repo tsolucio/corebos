@@ -228,6 +228,17 @@ if (isset ($_REQUEST['opportunity_id']) && $_REQUEST['opportunity_id'] != '') {
 	$smarty->assign("AVAILABLE_PRODUCTS", count($associated_prod)>0 ? 'true' : 'false');
 	$smarty->assign("MODE", $focus->mode);
 }
+if (isset($_REQUEST['convertfromid']) && $_REQUEST['convertfromid'] != '') {
+	$cfromid = vtlib_purify($_REQUEST['convertfromid']);
+	$cfrom = getSalesEntityType($cfromid);
+	$cffocus = CRMEntity::getInstance($cfrom);
+	$associated_prod = getAssociatedProducts($cfrom, $cffocus, $cfromid);
+	$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
+	$smarty->assign('AVAILABLE_PRODUCTS', count($associated_prod)>0 ? 'true' : 'false');
+	$smarty->assign('MODE', $focus->mode);
+	$_REQUEST['account_id'] = getRelatedAccountContact($cfromid, 'Accounts');
+	$_REQUEST['contact_id'] = getRelatedAccountContact($cfromid, 'Contacts');
+}
 if (isset ($_REQUEST['product_id']) && $_REQUEST['product_id'] != '') {
 	$focus->column_fields['product_id'] = $_REQUEST['product_id'];
 	$log->debug("Invoice EditView: Product Id from the request is " . $_REQUEST['product_id']);
@@ -283,8 +294,8 @@ if (!empty($_REQUEST['contact_id']) && (is_null('record') || (isset($_REQUEST['c
 	$focus->column_fields['ship_street'] = $cto_focus->column_fields['otherstreet'];
 	$focus->column_fields['bill_state'] = $cto_focus->column_fields['mailingstate'];
 	$focus->column_fields['ship_state'] = $cto_focus->column_fields['otherstate'];
-	$focus->column_fields['bill_code'] = $cto_focus->column_fields['mailingcode'];
-	$focus->column_fields['ship_code'] = $cto_focus->column_fields['othercode'];
+	$focus->column_fields['bill_code'] = $cto_focus->column_fields['mailingzip'];
+	$focus->column_fields['ship_code'] = $cto_focus->column_fields['otherzip'];
 	$focus->column_fields['bill_country'] = $cto_focus->column_fields['mailingcountry'];
 	$focus->column_fields['ship_country'] = $cto_focus->column_fields['othercountry'];
 	$focus->column_fields['bill_pobox'] = $cto_focus->column_fields['mailingpobox'];

@@ -17,7 +17,9 @@
  * Session class
  */
 class coreBOS_Session {
-		static $session_name = '';
+
+	private static $session_name = '';
+
 	/**
 	 * Constructor
 	 * Avoid creation of instances.
@@ -28,32 +30,41 @@ class coreBOS_Session {
 	/**
 	 * Destroy session
 	 */
-	static function destroy() {
+	public static function destroy() {
 		self::init();
 		session_regenerate_id(true);
 		session_unset();
 		session_destroy();
 	}
 
-	/**
-	 * Initialize session
-	 */
-	static function init($setKCFinder=false,$saveTabValues=false) {
-		session_name(self::getSessionName());
-		@session_start();
-		if ($setKCFinder) self::setKCFinderVariables();
-		if ($saveTabValues) self::copyTabVariables();
+	public static function isSessionStarted() {
+		$sid = session_id();
+		return function_exists('session_status') ? (PHP_SESSION_ACTIVE == session_status()) : (!empty($sid));
 	}
 
 	/**
-	 * create session name from given URL or $site_URL
+	 * Initialize session
 	 */
-	static function copyTabVariables() {
+	public static function init($setKCFinder = false, $saveTabValues = false) {
+		session_name(self::getSessionName());
+		@session_start();
+		if ($setKCFinder) {
+			self::setKCFinderVariables();
+		}
+		if ($saveTabValues) {
+			self::copyTabVariables();
+		}
+	}
+
+	/**
+	 * Copy Browser Tab variables to session
+	 */
+	public static function copyTabVariables() {
 		if (!empty($_COOKIE['corebos_browsertabID'])) {
 			$corebos_browsertabID = vtlib_purify($_COOKIE['corebos_browsertabID']);
 			$newvars = array();
 			foreach ($_SESSION as $key => $value) {
-				if (strpos($key, $corebos_browsertabID) !== false and strpos($key, $corebos_browsertabID.'__prev') === false) {
+				if (strpos($key, $corebos_browsertabID) !== false && strpos($key, $corebos_browsertabID.'__prev') === false) {
 					$newvars[$key.'__prev'] = $value;
 				}
 			}
@@ -66,10 +77,11 @@ class coreBOS_Session {
 	/**
 	 * create session name from given URL or $site_URL
 	 */
-	static function getSessionName($URL='',$force=false) {
+	public static function getSessionName($URL = '', $force = false) {
 		global $site_URL;
-		static $session_name = '';
-		if (self::$session_name!='' and !$force) return self::$session_name;
+		if (self::$session_name!='' && !$force) {
+			return self::$session_name;
+		}
 		if (empty($site_URL)) {
 			if (file_exists('config.inc.php')) {
 				include 'config.inc.php';
@@ -79,11 +91,17 @@ class coreBOS_Session {
 				@include '../config-dev.inc.php';
 			}
 		}
-		if (empty($URL)) $URL = $site_URL;
-		if (empty($URL)) $URL = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
+		if (empty($URL)) {
+			$URL = $site_URL;
+		}
+		if (empty($URL)) {
+			$URL = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
+		}
 		$purl = parse_url($URL);
 		$sn = preg_replace('/[^A-Za-z0-9]/', '', (isset($purl['host'])?$purl['host']:'').(isset($purl['path'])?$purl['path']:'').(isset($purl['port'])?$purl['port']:''));
-		if (is_numeric($sn)) $sn = 'cb'.$sn;
+		if (is_numeric($sn)) {
+			$sn = 'cb'.$sn;
+		}
 		self::$session_name = $sn;
 		return $sn;
 	}
@@ -91,15 +109,17 @@ class coreBOS_Session {
 	/**
 	* set session name
 	*/
-	static function setSessionName($session_name) {
+	public static function setSessionName($session_name) {
 		self::$session_name = $session_name;
 	}
 	/**
 	 * set KCFinder session variables
 	 */
-	static function setKCFinderVariables() {
+	public static function setKCFinderVariables() {
 		global $upload_badext, $site_URL, $root_directory;
-		if (empty($site_URL)) return false;
+		if (empty($site_URL)) {
+			return false;
+		}
 		self::init();
 		$_SESSION['KCFINDER'] = array();
 		$_SESSION['KCFINDER']['disabled'] = false;
@@ -109,7 +129,7 @@ class coreBOS_Session {
 		$_SESSION['KCFINDER']['deniedExts'] = $deniedExts;
 
 		list($http,$urldomain) = explode('://', $site_URL);
-		if(strpos($urldomain,':') !== false){
+		if (strpos($urldomain, ':') !== false) {
 			list($domain,$port) = explode(':', $urldomain);
 			$_SESSION['KCFINDER']['cookieDomain'] = $domain;
 		}
@@ -119,11 +139,11 @@ class coreBOS_Session {
 	/**
 	 * set global User session variables
 	 */
-	static function setUserGlobalSessionVariables() {
+	public static function setUserGlobalSessionVariables() {
 		if (empty($_SESSION['__UnifiedSearch_SelectedModules__'])) {
 			$appSearchModules = GlobalVariable::getVariable('Application_Global_Search_SelectedModules', '');
 			if (!empty($appSearchModules)) {
-				$selected_modules = explode(',',$appSearchModules);
+				$selected_modules = explode(',', $appSearchModules);
 				self::init();
 				$_SESSION['__UnifiedSearch_SelectedModules__'] = $selected_modules;
 				session_write_close();
@@ -135,7 +155,7 @@ class coreBOS_Session {
 	 * Is key defined in session?
 	 * Array elements can be specified by separating them with a caret ^
 	 */
-	static function has($key,$sespos=null) {
+	public static function has($key, $sespos = null) {
 		$keyparts = explode('^', $key);
 		if (count($keyparts)==1) {
 			if (is_null($sespos)) {
@@ -145,14 +165,18 @@ class coreBOS_Session {
 			}
 		} else {
 			if (is_null($sespos)) {
-				if (!isset($_SESSION[$keyparts[0]]) or !is_array($_SESSION[$keyparts[0]])) return false;
+				if (!isset($_SESSION[$keyparts[0]]) || !is_array($_SESSION[$keyparts[0]])) {
+					return false;
+				}
 				$sespos = $_SESSION[$keyparts[0]];
 			} else {
-				if (!isset($sespos[$keyparts[0]]) or !is_array($sespos[$keyparts[0]])) return false;
+				if (!isset($sespos[$keyparts[0]]) || !is_array($sespos[$keyparts[0]])) {
+					return false;
+				}
 				$sespos = $sespos[$keyparts[0]];
 			}
-			$key = substr($key, strpos($key,'^')+1);
-			return self::has($key,$sespos);
+			$key = substr($key, strpos($key, '^')+1);
+			return self::has($key, $sespos);
 		}
 	}
 
@@ -160,15 +184,19 @@ class coreBOS_Session {
 	 * Get value for the key.
 	 * Array elements can be specified by separating them with a caret ^
 	 */
-	static function get($key, $defvalue = '') {
+	public static function get($key, $defvalue = '') {
 		$keyparts = explode('^', $key);
 		if (count($keyparts)==1) {
 			return (isset($_SESSION[$key]) ? $_SESSION[$key] : $defvalue);
 		}
-		if (!isset($_SESSION[$keyparts[0]])) return $defvalue;
+		if (!isset($_SESSION[$keyparts[0]])) {
+			return $defvalue;
+		}
 		$sespos = $_SESSION[$keyparts[0]];
 		for ($p=1, $pMax = count($keyparts); $p< $pMax; $p++) {
-			if (!isset($sespos[$keyparts[$p]])) return $defvalue;
+			if (!isset($sespos[$keyparts[$p]])) {
+				return $defvalue;
+			}
 			$sespos = $sespos[$keyparts[$p]];
 		}
 		return $sespos;
@@ -178,23 +206,29 @@ class coreBOS_Session {
 	 * Set value for the key.
 	 * Array elements can be specified by separating them with a caret ^
 	 */
-	static function set($key, $value,&$sespos=null) {
+	public static function set($key, $value, &$sespos = null) {
 		$keyparts = explode('^', $key);
 		self::init();
 		if (count($keyparts)==1) {
 			if (is_null($sespos)) {
 				$_SESSION[$key] = $value;
 			} else {
-				if (!is_array($sespos)) $sespos = array();
+				if (!is_array($sespos)) {
+					$sespos = array();
+				}
 				$sespos[$key] = $value;
 			}
 		} else {
-			$key = substr($key, strpos($key,'^')+1);
+			$key = substr($key, strpos($key, '^')+1);
 			if (is_null($sespos)) {
-				if (!isset($_SESSION[$keyparts[0]]) || !is_array($_SESSION[$keyparts[0]])) $_SESSION[$keyparts[0]] = array();
+				if (!isset($_SESSION[$keyparts[0]]) || !is_array($_SESSION[$keyparts[0]])) {
+					$_SESSION[$keyparts[0]] = array();
+				}
 				self::set($key, $value, $_SESSION[$keyparts[0]]);
 			} else {
-				if (!isset($sespos[$keyparts[0]]) || !is_array($sespos[$keyparts[0]])) $sespos[$keyparts[0]] = array();
+				if (!isset($sespos[$keyparts[0]]) || !is_array($sespos[$keyparts[0]])) {
+					$sespos[$keyparts[0]] = array();
+				}
 				self::set($key, $value, $sespos[$keyparts[0]]);
 			}
 		}
@@ -206,7 +240,7 @@ class coreBOS_Session {
 	 * @param Array of key=>value to add to the SESSION
 	 * @param boolean, if true array values have precedence, else the existing SESSION values have precedence
 	 */
-	static function merge($values,$overwrite_session=false) {
+	public static function merge($values, $overwrite_session = false) {
 		self::init();
 		if ($overwrite_session) {
 			$_SESSION = array_merge($_SESSION, $values);
@@ -220,19 +254,25 @@ class coreBOS_Session {
 	 * Delete value for the key.
 	 * Array elements can be specified by separating them with a caret ^
 	 */
-	static function delete($key,&$sespos=null) {
+	public static function delete($key, &$sespos = null) {
 		$keyparts = explode('^', $key);
 		self::init();
 		if (count($keyparts)==1) {
 			if (is_null($sespos)) {
-				if (isset($_SESSION[$key])) unset($_SESSION[$key]);
+				if (isset($_SESSION[$key])) {
+					unset($_SESSION[$key]);
+				}
 			} else {
-				if (isset($sespos[$key])) unset($sespos[$key]);
+				if (isset($sespos[$key])) {
+					unset($sespos[$key]);
+				}
 			}
 		} else {
-			$key = substr($key, strpos($key,'^')+1);
+			$key = substr($key, strpos($key, '^')+1);
 			if (is_null($sespos)) {
-				if (!isset($_SESSION[$keyparts[0]]) or !is_array($_SESSION[$keyparts[0]])) return false; // this should be an exception
+				if (!isset($_SESSION[$keyparts[0]]) || !is_array($_SESSION[$keyparts[0]])) {
+					return false; // this should be an exception
+				}
 				self::delete($key, $_SESSION[$keyparts[0]]);
 			} else {
 				self::delete($key, $sespos[$keyparts[0]]);
@@ -241,4 +281,21 @@ class coreBOS_Session {
 		session_write_close();
 	}
 
+	/**
+	 * Delete all top level values whose key starts with the given string
+	 */
+	public static function deleteStartsWith($startswith) {
+		self::init();
+		if (version_compare(phpversion(), '5.6.0') >= 0) {
+			$_SESSION = array_filter($_SESSION, function ($key) use ($startswith) {
+				return strpos($key, $startswith)!==0;
+			}, ARRAY_FILTER_USE_KEY);
+		} else {
+			$matchedKeys = array_filter(array_keys($_SESSION), function ($key) use ($startswith) {
+				return strpos($key, $startswith)!==0;
+			});
+			$_SESSION = array_intersect_key($_SESSION, array_flip($matchedKeys));
+		}
+		session_write_close();
+	}
 }

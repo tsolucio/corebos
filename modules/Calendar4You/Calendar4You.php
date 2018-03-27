@@ -143,7 +143,7 @@ public function setgoogleaccessparams($userid){
 			} else {
 				$sqllshowinactiveusers = "and status='Active'";
 			}
-			$query = "SELECT * FROM vtiger_users WHERE deleted=0 $sqllshowinactiveusers ORDER BY $sortusersby";
+			$query = "SELECT id, user_name, first_name, last_name, status FROM vtiger_users WHERE deleted=0 $sqllshowinactiveusers ORDER BY $sortusersby";
 			$params = array();
 		} else {
 			if (empty($this->tabid)) $this->tabid = getTabid("Calendar4You");
@@ -241,7 +241,7 @@ public function setgoogleaccessparams($userid){
 		for($index = 0; $index < $adb->num_rows($result1); ++$index) {
 			$actionid = $adb->query_result($result1, $index, 'share_action_id');
 			
-            $sql2 = "SELECT * FROM vtiger_org_share_action2tab WHERE share_action_id = ? AND tabid = ?";
+            $sql2 = "SELECT tabid FROM vtiger_org_share_action2tab WHERE share_action_id = ? AND tabid = ? limit 1";
             $result2 = $adb->pquery($sql2,array($actionid,$this->tabid));
             $num_rows2 = $adb->num_rows($result2);
             
@@ -310,7 +310,7 @@ public function setgoogleaccessparams($userid){
         $Settings["show_weekends"] = "true"; 
         $Settings["user_view"] = "me"; 
         
-        $sql1 = "SELECT * FROM its4you_calendar4you_settings WHERE userid=?";
+        $sql1 = "SELECT user_view, dayoftheweek, show_weekends FROM its4you_calendar4you_settings WHERE userid=?";
         $result1 = $adb->pquery($sql1, array($current_user->id));
         $num_rows1 = $adb->num_rows($result1);
         
@@ -330,7 +330,7 @@ public function setgoogleaccessparams($userid){
 
     public function getEventColors() {
         global $adb,$current_user;
-        $sql1 = "SELECT * FROM its4you_calendar4you_colors WHERE userid=?";
+        $sql1 = "SELECT mode, entity, type, color FROM its4you_calendar4you_colors WHERE userid=?";
         $result1 = $adb->pquery($sql1, array($current_user->id));
         $num_rows1 = $adb->num_rows($result1);
         $Colors = array();
@@ -344,7 +344,7 @@ public function setgoogleaccessparams($userid){
 
     public function getEventColor($mode,$entity) {
         global $adb,$current_user;
-        $sql1 = "SELECT * FROM its4you_calendar4you_colors WHERE userid=? AND mode=? AND entity=?";
+        $sql1 = "SELECT type, color FROM its4you_calendar4you_colors WHERE userid=? AND mode=? AND entity=?";
         $result1 = $adb->pquery($sql1, array($current_user->id, $mode, $entity));
         $num_rows1 = $adb->num_rows($result1);
         $Colors = array();
@@ -430,23 +430,22 @@ public function setgoogleaccessparams($userid){
                             if ($ui) return true;
                         }
                     } else {
-                        return true; 
+                        return true;
                     }
                 }
             }
         }
         return false;
     }
-    
-    function isUserCalendarPermittedByInviti($recordId) {
-    	global $adb;
-    	global $current_user;
 
-    	$query = "select * from vtiger_invitees where activityid =? and inviteeid=?";
-        $result=$adb->pquery($query, array($recordId, $current_user->id));
-        return $adb->num_rows($result) >0;
-    }
-    
+	function isUserCalendarPermittedByInviti($recordId) {
+		global $adb, $current_user;
+
+		$query = 'select activityid from vtiger_invitees where activityid=? and inviteeid=? limit 1';
+		$result = $adb->pquery($query, array($recordId, $current_user->id));
+		return $adb->num_rows($result) > 0;
+	}
+
     function getActStatusFieldValues($fieldname,$tablename) {
     	global $adb, $mod_strings,$current_user,$default_charset;
     	require('user_privileges/user_privileges_'.$current_user->id.'.php');
@@ -572,14 +571,21 @@ public function setgoogleaccessparams($userid){
 	function SaveView($Type_Ids, $Users_Ids, $all_users, $Load_Event_Status, $Load_Modules, $Load_Task_Priority) {
 		global $adb,$current_user;
 		$Save = array('1' => $Type_Ids, '2' => $Users_Ids, '3' => $Load_Event_Status, '4' => $Load_Modules, '5' => $Load_Task_Priority);
+		$block_status = json_decode($_REQUEST['block_status'],true);
+		$Save['6'] = array(vtlib_purify($block_status['event_type']));
+		$Save['7'] = array(vtlib_purify($block_status['module_type']));
+		$Save['8'] = array(vtlib_purify($block_status['et_status']));
+		$Save['9'] = array(vtlib_purify($block_status['task_priority']));
+		$d_sql = 'DELETE FROM its4you_calendar4you_view WHERE userid = ? AND type = ?';
+		$i_sql = 'INSERT its4you_calendar4you_view (userid,type,parent) VALUES (?,?,?)';
 		foreach ($Save AS $type => $Save_Array) {
 			if (($type == 2 && $all_users) || $type != 2) {
-				$d_sql = 'DELETE FROM its4you_calendar4you_view WHERE userid = ? AND type = ?';
 				$adb->pquery($d_sql,array($current_user->id,$type));
 				if (count($Save_Array) > 0) {
-					$i_sql = 'INSERT its4you_calendar4you_view (userid,type,parent) VALUES (?,?,?)';
 					foreach ($Save_Array AS $parent) {
-						if ($parent != '') $adb->pquery($i_sql,array($current_user->id,$type,$parent));
+						if ($parent != '') {
+							$adb->pquery($i_sql, array($current_user->id, $type, $parent));
+						}
 					}
 				}
 			}
@@ -589,12 +595,16 @@ public function setgoogleaccessparams($userid){
 	function GetView() {
 		global $adb,$current_user;
 		$View = array();
-		$sql = 'SELECT * FROM its4you_calendar4you_view WHERE userid = ?';
+		$sql = 'SELECT type, parent FROM its4you_calendar4you_view WHERE userid = ?';
 		$result = $adb->pquery($sql,array($current_user->id));
 		$num_rows = $adb->num_rows($result);
 		if ($num_rows > 0) {
 			while ($row = $adb->fetchByAssoc($result)) {
-				$this->View[$row['type']][$row['parent']] = true;
+				if ($row['type']>5 && $row['type']<10) {
+					$this->View[$row['type']] = $row['parent'];
+				} else {
+					$this->View[$row['type']][$row['parent']] = true;
+				}
 			}
 		}
 		return $this->View;

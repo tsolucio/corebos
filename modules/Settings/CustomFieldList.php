@@ -157,15 +157,15 @@ function getListLeadMapping($cfid) {
 	return $label;
 }
 
-/* function to get the modules supports Custom Fields
- */
-
+/* function to get the modules supports Custom Fields */
 function getCustomFieldSupportedModules() {
 	global $adb;
-
-	$sql = "SELECT distinct vtiger_field.tabid,name FROM vtiger_field INNER JOIN vtiger_tab ON vtiger_field.tabid=vtiger_tab.tabid WHERE vtiger_field.tabid NOT IN(9,10,16,15,8,29) AND vtiger_tab.presence != 1"; // Both 9 and 16 point to Calendar itself
-	// END
+	$sql = 'SELECT distinct vtiger_field.tabid,name
+		FROM vtiger_field
+		INNER JOIN vtiger_tab ON vtiger_field.tabid=vtiger_tab.tabid
+		WHERE vtiger_field.tabid NOT IN(9,10,16,29) AND vtiger_tab.presence != 1'; // Both 9 and 16 point to Calendar itself
 	$result = $adb->pquery($sql, array());
+	$modulelist = array();
 	while ($moduleinfo = $adb->fetch_array($result)) {
 		$modulelist[$moduleinfo['name']] = $moduleinfo['name'];
 	}

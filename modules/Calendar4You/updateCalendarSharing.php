@@ -48,7 +48,7 @@ if (isset($_REQUEST["show_weekends"]) && $_REQUEST["show_weekends"] == "1")
 else
 	$show_weekends = "0";
 
-$sql2 = "SELECT * FROM its4you_calendar4you_settings WHERE userid=?";
+$sql2 = "SELECT show_weekends FROM its4you_calendar4you_settings WHERE userid=? limit 1";
 $result2 = $adb->pquery($sql2, array($current_user->id));
 $num_rows2 = $adb->num_rows($result2);
 
@@ -70,7 +70,7 @@ if ($update_google_account == "1") {
 	$google_clientid = vtlib_purify($_REQUEST['google_clientid']);
 	$googleinsert1 = (isset($_REQUEST['googleinsert']) ? vtlib_purify($_REQUEST['googleinsert']) : '');
 
-	$us=$adb->query("select * from vtiger_users where deleted=0");
+	$us=$adb->query("select id from vtiger_users where deleted=0");
 	for ($i=0;$i<$adb->num_rows($us);$i++) {
 		$userid=$adb->query_result($us,$i,'id');
 		$q=$adb->pquery("select refresh_token,googleinsert from its4you_googlesync4you_access WHERE userid = ?",array($userid));

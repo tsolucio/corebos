@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Reports',
 'LBL_MODULE_TITLE'=>'Reports: Home',
 'LBL_CREATE_REPORT'=>'Create Report',
@@ -62,10 +62,8 @@ $mod_strings = Array(
 'LBL_GENERATED_REPORT'=>'Generated Report',
 'LBL_GRAND_TOTAL'=>'Grand Total',
 
-//Added for 4.2 Patch I
 'LBL_EXPORTXL_BUTTON'=>'Export To Excel',
 'LBL_EXPORTCSV'=>'Export To CSV',
-//Added for 5 Beta
 'LBL_NO_PERMISSION'=>'Your profile dosen\'t allow you to view the reports for one of the  module(s)',
 'LBL_SELECT_COLUMNS_TO_GENERATE_REPORTS'=>'Select columns to generate reports',
 'LBL_AVAILABLE_FIELDS'=>'Available Fields',
@@ -111,8 +109,8 @@ $mod_strings = Array(
 'HelpDesk Reports'=>'Support Tickets Reports',
 'Product Reports'=>'Product Reports',
 'Quote Reports'=>'Quote Reports',
-'PurchaseOrder Reports'=>'PurchaseOrder Reports',
-'SalesOrder Reports'=>'SalesOrder Reports', //Added for SO
+'PurchaseOrder Reports'=>'Purchase Order Reports',
+'SalesOrder Reports'=>'Sales Order Reports', //Added for SO
 'Invoice Reports'=>'Invoice Reports',
 'Campaign Reports'=>'Campaign Reports', //Added for Campaigns
 'Contacts by Accounts'=>'Contacts by Organizations',
@@ -138,14 +136,22 @@ $mod_strings = Array(
 'Open Quotes'=>'Open Quotes',
 'Quotes Detailed Report'=>'Quotes Detailed Report',
 'Quotes that are Open'=>'Quotes that are Open',
-'PurchaseOrder by Contacts'=>'PurchaseOrder by Contacts',
-'PurchaseOrder Detailed Report'=>'PurchaseOrder Detailed Report',
-'PurchaseOrder related to Contacts'=>'PurchaseOrder related to Contacts',
+'PurchaseOrder by Contacts'=>'Purchase Order by Contacts',
+'PurchaseOrder Detailed Report'=>'Purchase Order Detailed Report',
+'PurchaseOrder related to Contacts'=>'Purchase Order related to Contacts',
 'Invoice Detailed Report'=>'Invoice Detailed Report',
 'Last Month Activities'=>'Last Month Activities',
 'This Month Activities'=>'This Month Activities',
 'Campaign Expectations and Actuals'=>'Campaign Expectations and Actuals', //Added for Campaigns
-'SalesOrder Detailed Report'=>'SalesOrder Detailed Report', //Added for SO
+'SalesOrder Detailed Report'=>'Sales Order Detailed Report', //Added for SO
+'Emails sent to Contacts' => 'Emails sent to Contacts',
+'Emails sent to Organizations' => 'Emails sent to Organizations',
+'Emails sent to Leads' => 'Emails sent to Leads',
+'Emails sent to Vendors' => 'Emails sent to Vendors',
+'Contacts Email Report' => 'Contacts Email Report',
+'Accounts Email Report' => 'Accounts Email Report',
+'Leads Email Report' => 'Leads Email Report',
+'Vendors Email Report' => 'Vendors Email Report',
 
 'LBL_DELETE'=>'Delete',
 'Create_Reports'=>'Create Reports',
@@ -195,10 +201,8 @@ $mod_strings = Array(
 'ticketid'=>'Ticket Id',
 'NO_COLUMN'=>'No Columns available to Total',
 
-// Added/Updated for vtiger CRM 5.0.4
 'LBL_REPORT_DELETED' => 'The report you are trying to view has been deleted.',
 
-//Added for Reports
 'LBL_SHARING'=>'Sharing',
 'SELECT_FILTER_TYPE'=>'Select Report Type',
 'LBL_USERS'=>'Users',
@@ -229,7 +233,6 @@ $mod_strings = Array(
 'LBL_MONTH'=> 'Month',
 'LBL_DAY'=> 'Day',
 'LBL_QUARTER'=> 'Quarter',
-'LBL_NONE'=> 'None',
 
 'LBL_ROLES'=>'Roles',
 'LBL_ROLES_SUBORDINATES'=>'Roles and Subordinates',
@@ -237,6 +240,7 @@ $mod_strings = Array(
 'LBL_SCHEDULE_EMAIL_DESCRIPTION'=>'Schedule Report to be sent to the selected Recipients at regular intervals through email',
 'LBL_USERS_AVAILABEL'=> 'Recipients',
 'LBL_REPORT_FORMAT_PDF'=> 'PDF',
+'LBL_REPORT_FORMAT_URL'=> 'URL',
 'LBL_REPORT_FORMAT_EXCEL'=> 'EXCEL',
 'LBL_REPORT_FORMAT_BOTH'=> 'Both',
 'LBL_REPORT_FORMAT'=> 'Report Format',
@@ -295,6 +299,6 @@ $mod_strings = Array(
 'LBL_COLUMNS_COUNT'=>'Count',
 'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Error while deleting the folder.',
 'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Error while deleting the reports of the folder',
+'ERR_CREATE_REPORT' => 'Error creating the report.',
 );
-
 ?>

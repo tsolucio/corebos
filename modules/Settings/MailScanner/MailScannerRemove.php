@@ -6,16 +6,13 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
-
-require_once('modules/Settings/MailScanner/core/MailScannerInfo.php');
-require_once('modules/Settings/MailScanner/core/MailBox.php');
+require_once 'modules/Settings/MailScanner/core/MailScannerInfo.php';
+require_once 'modules/Settings/MailScanner/core/MailBox.php';
 
 $scannerinfo = new Vtiger_MailScannerInfo(trim(vtlib_purify($_REQUEST['scannername'])));
 
 $scannerinfo->delete();
 
 header('Location: index.php?module=Settings&action=MailScanner&parenttab=Settings');
-
 ?>

@@ -99,7 +99,7 @@ $.mobile.document
 					return false;
 				})
 				.fail(function() {
-					alert( "Select related entries error, please contact crm-now." );
+					alert('Select related entries error, please contact your CRM Administrator.');
 					return false;
 				});
             });
@@ -235,6 +235,10 @@ var crmtogo_Index_Js = {
 				//get all calendar entries for the selected month
 				//make sure it is called only once
 				if (date.getTime() != tmp_date.getTime()) {
+					$("#date_selected").val(date);
+					var create_link = document.getElementById('create_link').href;
+					var create_link_arr = create_link.split('&datetime');
+					document.getElementById('create_link').href=create_link_arr[0]+'&datetime='+date;
                     $.get('index.php?_operation=listModuleRecords&module=cbCalendar&compact=true&datetime='+date+((inWeek===true)?"&inweek=true":""), fillcalendar);
 				}
 				tmp_date = date;
@@ -570,7 +574,7 @@ var crmtogo_Index_Js = {
 					return false;
 				})
 				.fail(function() {
-					alert( "Comment Save Error, please contact crm-now." );
+					alert('Comment Save Error, please contact your CRM Administrator.');
 					return false;
 				});
 			}

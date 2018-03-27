@@ -16,38 +16,37 @@ function chooseType(typeName){
 	document.getElementById('stufftype_id').value=typeName;
 
 	var typeLabel = typeName;
-	if(alert_arr[typeName] != null && alert_arr[typeName] != "" && alert_arr[typeName] != 'undefined'){
+	if (alert_arr[typeName] != null && alert_arr[typeName] != "" && alert_arr[typeName] != 'undefined') {
 		typeLabel = alert_arr[typeName];
 	}
-	if(typeLabel == 'defaultwidget'){
+	if (typeLabel == 'defaultwidget') {
 		document.getElementById('divHeader').innerHTML="<b>"+alert_arr.LBL_SELECT+"</b>";
 		document.getElementById('vtbusy_info').style.display="inline";
 		jQuery.ajax({
-				method: 'POST',
-				url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&home=homewidget'
+			method: 'POST',
+			url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&home=homewidget'
 		}).done(function (response) {
-				var responseVal=response;
-				document.getElementById('home').innerHTML=response;
-				show('addWidgetsDiv');
-				placeAtCenter(document.getElementById('addWidgetsDiv'));
-				document.getElementById('homewidget').style.display="block";
-				document.getElementById('moduleNameRow').style.display="none";
-				document.getElementById('moduleFilterRow').style.display="none";
-				document.getElementById('modulePrimeRow').style.display="none";
-				document.getElementById('rssRow').style.display="none";
-				document.getElementById('showrow').style.display="none";
-				document.getElementById('dashTypeRow').style.display="none";
-				document.getElementById('dashNameRow').style.display="none";
-				document.getElementById('StuffTitleId').style.display="none";
-				document.getElementById('vtbusy_info').style.display="none";
-				document.getElementById('reportNameRow').style.display="none";
-				document.getElementById('reportTypeRow').style.display="none";
-			}
-		);
-	}else{
-			document.getElementById('divHeader').innerHTML="<b>"+alert_arr.LBL_ADD+typeLabel+"</b>";
+			var responseVal=response;
+			document.getElementById('home').innerHTML=response;
+			show('addWidgetsDiv');
+			placeAtCenter(document.getElementById('addWidgetsDiv'));
+			document.getElementById('homewidget').style.display="block";
+			document.getElementById('moduleNameRow').style.display="none";
+			document.getElementById('moduleFilterRow').style.display="none";
+			document.getElementById('modulePrimeRow').style.display="none";
+			document.getElementById('rssRow').style.display="none";
+			document.getElementById('showrow').style.display="none";
+			document.getElementById('dashTypeRow').style.display="none";
+			document.getElementById('dashNameRow').style.display="none";
+			document.getElementById('StuffTitleId').style.display="none";
+			document.getElementById('vtbusy_info').style.display="none";
+			document.getElementById('reportNameRow').style.display="none";
+			document.getElementById('reportTypeRow').style.display="none";
+		});
+	} else {
+		document.getElementById('divHeader').innerHTML="<b>"+alert_arr.LBL_ADD+typeLabel+"</b>";
 	}
-	if(typeName=='Module'){
+	if (typeName=='Module') {
 		document.getElementById('moduleNameRow').style.display="block";
 		document.getElementById('moduleFilterRow').style.display="block";
 		document.getElementById('modulePrimeRow').style.display="block";
@@ -60,7 +59,7 @@ function chooseType(typeName){
 		document.getElementById('reportNameRow').style.display="none";
 		document.getElementById('reportTypeRow').style.display="none";
 		//document.getElementById('homeURLField').style.display = "none";
-	}else if(typeName=='DashBoard'){
+	} else if (typeName=='DashBoard') {
 		document.getElementById('moduleNameRow').style.display="none";
 		document.getElementById('moduleFilterRow').style.display="none";
 		document.getElementById('modulePrimeRow').style.display="none";
@@ -74,17 +73,16 @@ function chooseType(typeName){
 		document.getElementById('homewidget').style.display="none";
 		//document.getElementById('homeURLField').style.display = "none";
 		jQuery.ajax({
-				method: 'POST',
-				url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&dash=dashboard'
+			method: 'POST',
+			url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&dash=dashboard'
 		}).done(function (response) {
-					var responseVal=response;
-					document.getElementById('selDashName').innerHTML=response;
-					show('addWidgetsDiv');
-					placeAtCenter(document.getElementById('addWidgetsDiv'));
-					document.getElementById('vtbusy_info').style.display="none";
-				}
-		);
-	}else if(typeName=='RSS'){
+			var responseVal=response;
+			document.getElementById('selDashName').innerHTML=response;
+			show('addWidgetsDiv');
+			placeAtCenter(document.getElementById('addWidgetsDiv'));
+			document.getElementById('vtbusy_info').style.display="none";
+		});
+	} else if (typeName=='RSS') {
 		document.getElementById('moduleNameRow').style.display="none";
 		document.getElementById('moduleFilterRow').style.display="none";
 		document.getElementById('modulePrimeRow').style.display="none";
@@ -98,7 +96,7 @@ function chooseType(typeName){
 		document.getElementById('reportNameRow').style.display="none";
 		document.getElementById('reportTypeRow').style.display="none";
 		//document.getElementById('homeURLField').style.display = "none";
-	}else if(typeName=='Default'){
+	} else if (typeName=='Default') {
 		document.getElementById('moduleNameRow').style.display="none";
 		document.getElementById('moduleFilterRow').style.display="none";
 		document.getElementById('modulePrimeRow').style.display="none";
@@ -111,7 +109,7 @@ function chooseType(typeName){
 		document.getElementById('url_id').style.display = "none";
 		document.getElementById('reportNameRow').style.display="none";
 		document.getElementById('reportTypeRow').style.display="none";
-	}else if(typeName == 'Notebook'){
+	} else if (typeName == 'Notebook') {
 		document.getElementById('moduleNameRow').style.display="none";
 		document.getElementById('moduleFilterRow').style.display="none";
 		document.getElementById('modulePrimeRow').style.display="none";
@@ -125,8 +123,7 @@ function chooseType(typeName){
 		document.getElementById('reportNameRow').style.display="none";
 		document.getElementById('reportTypeRow').style.display="none";
 		//document.getElementById('homeURLField').style.display = "none";
-	}
-	else if(typeName == 'ReportCharts'){
+	} else if (typeName == 'ReportCharts') {
 		document.getElementById('moduleNameRow').style.display="none";
 		document.getElementById('moduleFilterRow').style.display="none";
 		document.getElementById('modulePrimeRow').style.display="none";
@@ -140,15 +137,14 @@ function chooseType(typeName){
 		document.getElementById('dashTypeRow').style.display="none";
 		document.getElementById('homewidget').style.display="none";
 		jQuery.ajax({
-				method: 'POST',
-				url: 'index.php?module=Home&action=HomeAjax&file=HomeReportChart&ajax=true'
+			method: 'POST',
+			url: 'index.php?module=Home&action=HomeAjax&file=HomeReportChart&ajax=true'
 		}).done(function (response) {
-					document.getElementById('selReportName').innerHTML=response;
-					show('addWidgetsDiv');
-					placeAtCenter(document.getElementById('addWidgetsDiv'));
-					document.getElementById('vtbusy_info').style.display="none";
-				}
-			);
+			document.getElementById('selReportName').innerHTML=response;
+			show('addWidgetsDiv');
+			placeAtCenter(document.getElementById('addWidgetsDiv'));
+			document.getElementById('vtbusy_info').style.display="none";
+		});
 	}
 	/*else if(typeName == 'URL'){
 		document.getElementById('moduleNameRow').style.display="none";
@@ -171,18 +167,17 @@ function chooseType(typeName){
 function setFilter(modName){
 	var modval=modName.value;
 	document.getElementById('savebtn').disabled = true;
-	if(modval!=""){
+	if (modval!='') {
 		jQuery.ajax({
-				method: 'POST',
-				url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&modname='+modval
+			method: 'POST',
+			url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&modname='+modval
 		}).done(function (response) {
-					var responseVal=response;
-					document.getElementById('selModFilter_id').innerHTML=response;
-					setPrimaryFld(document.getElementById('selFilterid'));
-					show('addWidgetsDiv');
-					placeAtCenter(document.getElementById('addWidgetsDiv'));
-				}
-		);
+			var responseVal=response;
+			document.getElementById('selModFilter_id').innerHTML=response;
+			setPrimaryFld(document.getElementById('selFilterid'));
+			show('addWidgetsDiv');
+			placeAtCenter(document.getElementById('addWidgetsDiv'));
+		});
 	}
 }
 
@@ -194,16 +189,15 @@ function setPrimaryFld(Primeval){
 	primecvid=Primeval.value;
 	var fldmodule = document.getElementById('selmodule_id').options[document.getElementById('selmodule_id').selectedIndex].value;
 	jQuery.ajax({
-			method: 'POST',
-			url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&primecvid='+primecvid+'&fieldmodname='+fldmodule
+		method: 'POST',
+		url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&primecvid='+primecvid+'&fieldmodname='+fldmodule
 	}).done(function (response) {
-			var responseVal=response;
-			document.getElementById('selModPrime_id').innerHTML=response;
-			document.getElementById('selPrimeFldid').selectedIndex = 0;
-			document.getElementById('vtbusy_info').style.display="none";
-			document.getElementById('savebtn').disabled = false;
-		}
-	);
+		var responseVal=response;
+		document.getElementById('selModPrime_id').innerHTML=response;
+		document.getElementById('selPrimeFldid').selectedIndex = 0;
+		document.getElementById('vtbusy_info').style.display="none";
+		document.getElementById('savebtn').disabled = false;
+	});
 }
 
 /**
@@ -233,14 +227,13 @@ function saveEntries(selMaxName){
 	cancelEntries('editRowmodrss_'+sid);
 	showmax=document.getElementById(selMaxName).value;
 	jQuery.ajax({
-			method: 'POST',
-			url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&showmaxval='+showmax+'&sid='+sid
+		method: 'POST',
+		url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&showmaxval='+showmax+'&sid='+sid
 	}).done(function (response) {
-				var responseVal=response;
-				eval(response);
-				document.getElementById('refresh_'+sid).innerHTML='';
-			}
-	);
+		var responseVal=response;
+		eval(response);
+		document.getElementById('refresh_'+sid).innerHTML='';
+	});
 }
 
 /**
@@ -251,20 +244,20 @@ function saveEditDash(dashRowId){
 	cancelEntries('editRowmodrss_'+dashRowId);
 	var dashVal='';
 	var iter=0;
-	for(iter=0;iter<3;iter++){
-		if(document.getElementById('dashradio_'+[iter]).checked)
+	for (iter=0; iter<3; iter++) {
+		if (document.getElementById('dashradio_'+[iter]).checked) {
 			dashVal=document.getElementById('dashradio_'+[iter]).value;
+		}
 	}
 	did=dashRowId;
 	jQuery.ajax({
-			method: 'POST',
-			url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&dashVal='+dashVal+'&did='+did
+		method: 'POST',
+		url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&dashVal='+dashVal+'&did='+did
 	}).done(function (response) {
-				var responseVal=response;
-				eval(response);
-				document.getElementById('refresh_'+did).innerHTML='';
-			}
-	);
+		var responseVal=response;
+		eval(response);
+		document.getElementById('refresh_'+did).innerHTML='';
+	});
 }
 
 /**
@@ -272,26 +265,26 @@ function saveEditDash(dashRowId){
  * @param string sid - the stuffid of the widget
  */
 function DelStuff(sid){
-	if(confirm(alert_arr.SURE_TO_DELETE)){
+	if (confirm(alert_arr.SURE_TO_DELETE)) {
 		jQuery.ajax({
-				method: 'POST',
-				url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&homestuffid='+sid,
+			method: 'POST',
+			url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&homestuffid='+sid,
 		}).done(function (response) {
-					var responseVal=response;
-					if(response.indexOf('SUCCESS') > -1){
-						var delchild = document.getElementById('stuff_'+sid);
-						odeletedChild = document.getElementById('MainMatrix').removeChild(delchild);
-						document.getElementById('seqSettings').innerHTML= '<table cellpadding="10" cellspacing="0" border="0" width="100%" class="vtResultPop small"><tr><td align="center">Widget deleted sucessfully.</td></tr></table>';
-						document.getElementById('seqSettings').style.display = 'block';
-						document.getElementById('seqSettings').style.display = 'none';
-						placeAtCenter(document.getElementById('seqSettings'));
-						jQuery('#seqSettings').fadeIn();
-						setTimeout(hideSeqSettings,3000);
-					}else{
-						alert(alert_arr.ERROR_DELETING_TRY_AGAIN);
-					}
-				}
-		);
+			var responseVal=response;
+			if (response.indexOf('SUCCESS') > -1) {
+				var delchild = document.getElementById('stuff_'+sid);
+				odeletedChild = document.getElementById('MainMatrix').removeChild(delchild);
+				document.getElementById('seqSettings').innerHTML= '<table cellpadding="10" cellspacing="0" border="0" width="100%" class="vtResultPop small"><tr>'
+					+ '<td align="center">Widget deleted sucessfully.</td></tr></table>';
+				document.getElementById('seqSettings').style.display = 'block';
+				document.getElementById('seqSettings').style.display = 'none';
+				placeAtCenter(document.getElementById('seqSettings'));
+				jQuery('#seqSettings').fadeIn();
+				setTimeout(hideSeqSettings,3000);
+			} else {
+				alert(alert_arr.ERROR_DELETING_TRY_AGAIN);
+			}
+		});
 	}
 }
 
@@ -303,18 +296,17 @@ function DelStuff(sid){
 function loadAddedDiv(stuffid,stufftype){
 	gstuffId = stuffid;
 	jQuery.ajax({
-			method: 'POST',
-			url: 'index.php?module=Home&action=HomeAjax&file=NewBlock&stuffid='+stuffid+'&stufftype='+stufftype
+		method: 'POST',
+		url: 'index.php?module=Home&action=HomeAjax&file=NewBlock&stuffid='+stuffid+'&stufftype='+stufftype
 	}).done(function (response) {
-				var responseVal=response;
-				document.getElementById('MainMatrix').style.display= 'none';
-				document.getElementById('MainMatrix').innerHTML = response + document.getElementById('MainMatrix').innerHTML;
-				positionDivInAccord('stuff_'+gstuffId,'',stufftype);
-				initHomePage();
-				loadStuff(stuffid,stufftype);
-				document.getElementById('MainMatrix').style.display='block';
-			}
-	);
+		var responseVal=response;
+		document.getElementById('MainMatrix').style.display= 'none';
+		document.getElementById('MainMatrix').innerHTML = response + document.getElementById('MainMatrix').innerHTML;
+		positionDivInAccord('stuff_'+gstuffId,'',stufftype);
+		initHomePage();
+		loadStuff(stuffid,stufftype);
+		document.getElementById('MainMatrix').style.display='block';
+	});
 }
 
 /**
@@ -325,38 +317,102 @@ function loadAddedDiv(stuffid,stufftype){
 function loadStuff(stuffid,stufftype){
 	document.getElementById('refresh_'+stuffid).innerHTML=document.getElementById('vtbusy_homeinfo').innerHTML;
 	jQuery.ajax({
-			method: 'POST',
-			url: 'index.php?module=Home&action=HomeAjax&file=HomeBlock&homestuffid='+stuffid+'&blockstufftype='+stufftype
+		method: 'POST',
+		url: 'index.php?module=Home&action=HomeAjax&file=HomeBlock&homestuffid='+stuffid+'&blockstufftype='+stufftype
 	}).done(function (response) {
-				var responseVal=response;
-				document.getElementById('stuffcont_'+stuffid).innerHTML=response;
-				vtlib_executeJavascriptInElement(document.getElementById('stuffcont_'+stuffid));
-				if(stufftype=="Module"){
-					if(document.getElementById('more_'+stuffid).value != null && document.getElementById('more_'+stuffid).value != '')
-						document.getElementById('a_'+stuffid).href = "index.php?module="+document.getElementById('more_'+stuffid).value+"&action=ListView&viewname="+document.getElementById('cvid_'+stuffid).value;
+		var responseVal=response;
+		document.getElementById('stuffcont_'+stuffid).innerHTML=response;
+		vtlib_executeJavascriptInElement(document.getElementById('stuffcont_'+stuffid));
+		if (stufftype=="Module") {
+			if (document.getElementById('more_'+stuffid).value != null && document.getElementById('more_'+stuffid).value != '') {
+				document.getElementById('a_'+stuffid).href = "index.php?module="+document.getElementById('more_'+stuffid).value+"&action=ListView&viewname="
+					+ document.getElementById('cvid_'+stuffid).value;
+			}
+		}
+		if (stufftype=="Default" && typeof(document.getElementById('a_'+stuffid)) != 'undefined') {
+			if (document.getElementById('more_'+stuffid).value != '') {
+				document.getElementById('a_'+stuffid).style.display = 'block';
+				var url = "index.php?module="+document.getElementById('more_'+stuffid).value+"&action=index";
+				if (document.getElementById('search_qry_'+stuffid)!='') {
+					url += document.getElementById('search_qry_'+stuffid).value;
 				}
-				if(stufftype=="Default" && typeof(document.getElementById('a_'+stuffid)) != 'undefined'){
-					if(document.getElementById('more_'+stuffid).value != ''){
-						document.getElementById('a_'+stuffid).style.display = 'block';
-						var url = "index.php?module="+document.getElementById('more_'+stuffid).value+"&action=index";
-						if(document.getElementById('search_qry_'+stuffid)!=''){
-							url += document.getElementById('search_qry_'+stuffid).value;
+				document.getElementById('a_'+stuffid).href = url;
+			} else {
+				if (document.getElementById('a_'+stuffid)) {
+					document.getElementById('a_'+stuffid).display = 'none';
+				}
+			}
+		}
+		if (stufftype=="RSS") {
+			document.getElementById('a_'+stuffid).href = document.getElementById('more_'+stuffid).value;
+		}
+		if (stufftype=="DashBoard") {
+			document.getElementById('a_'+stuffid).href = "index.php?module=Dashboard&action=index&type="+document.getElementById('more_'+stuffid).value;
+		}
+		if (stufftype=="ReportCharts") {
+			document.getElementById('a_'+stuffid).href = "index.php?module=Reports&action=SaveAndRun&record="+document.getElementById('more_'+stuffid).value;
+		}
+		if (stufftype=="Tag Cloud") {
+			TagCanvas.Start('tagcloudCanvas', '', {
+				shape: user_tag_showas,
+				lock: ((user_tag_showas=='vcylinder' || user_tag_showas=='vring') ? "y" : "x"),
+				weight: true,
+				weightMode: 'both'
+			});
+		}
+		document.getElementById('refresh_'+stuffid).innerHTML='';
+	});
+}
+
+function loadAllWidgets(widgetInfoList, batchSize){
+	var batchWidgetInfoList = [];
+	var widgetInfo = {};
+	for (var index =0; index < widgetInfoList.length; ++index) {
+		var widgetId = widgetInfoList[index].widgetId;
+		var widgetType = widgetInfoList[index].widgetType;
+		widgetInfo[widgetId] = widgetType;
+		document.getElementById('refresh_'+widgetId).innerHTML=document.getElementById('vtbusy_homeinfo').innerHTML;
+		batchWidgetInfoList.push(widgetInfoList[index]);
+		if ((index > 0 && (index+1) % batchSize == 0) || index+1 == widgetInfoList.length) {
+			jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?module=Home&action=HomeAjax&file=HomeWidgetBlockList&widgetInfoList=' + JSON.stringify(batchWidgetInfoList)
+			}).done(function (response) {
+				var responseVal=JSON.parse(response);
+				var tagcloudfound = false;
+				for (var widgetId in responseVal) {
+					if (responseVal.hasOwnProperty(widgetId)) {
+						document.getElementById('stuffcont_'+widgetId).innerHTML = responseVal[widgetId];
+						document.getElementById('refresh_'+widgetId).innerHTML='';
+						var widgetType = widgetInfo[widgetId];
+						if (widgetType=="Module" && document.getElementById('more_'+widgetId).value != null &&
+								document.getElementById('more_'+widgetId).value != '') {
+							document.getElementById('a_'+widgetId).href = "index.php?module="+
+							document.getElementById('more_'+widgetId).value+"&action=ListView&viewname="+
+							document.getElementById('cvid_'+widgetId).value;
+						} else if (widgetType=='Default' && typeof(document.getElementById('a_'+widgetId))!='undefined' && document.getElementById('a_'+widgetId)!=null) {
+							if (typeof document.getElementById('more_'+widgetId) != 'undefined' && document.getElementById('more_'+widgetId).value != '') {
+								document.getElementById('a_'+widgetId).style.display = 'block';
+								var url = "index.php?module="+document.getElementById('more_'+widgetId).value+
+									"&action=index";
+								if (document.getElementById('search_qry_'+widgetId)!='') {
+									url += document.getElementById('search_qry_'+widgetId).value;
+								}
+								document.getElementById('a_'+widgetId).href = url;
+							} else {
+								document.getElementById('a_'+widgetId).style.display = 'none';
+							}
+						} else if (widgetType=="RSS") {
+							document.getElementById('a_'+widgetId).href = document.getElementById('more_'+widgetId).value;
+						} else if (widgetType=="DashBoard") {
+							document.getElementById('a_'+widgetId).href = "index.php?module=Dashboard&action="+
+								"index&type="+document.getElementById('more_'+stuffid).value;
+						} else if (widgetType=="Tag Cloud") {
+							tagcloudfound = true;
 						}
-						document.getElementById('a_'+stuffid).href = url;
-					}else{
-						if (document.getElementById('a_'+stuffid)) document.getElementById('a_'+stuffid).display = 'none';
 					}
 				}
-				if(stufftype=="RSS"){
-					document.getElementById('a_'+stuffid).href = document.getElementById('more_'+stuffid).value;
-				}
-				if(stufftype=="DashBoard"){
-					document.getElementById('a_'+stuffid).href = "index.php?module=Dashboard&action=index&type="+document.getElementById('more_'+stuffid).value;
-				}
-				if(stufftype=="ReportCharts"){
-					document.getElementById('a_'+stuffid).href = "index.php?module=Reports&action=SaveAndRun&record="+document.getElementById('more_'+stuffid).value;
-				}
-				if(stufftype=="Tag Cloud"){
+				if (tagcloudfound) {
 					TagCanvas.Start('tagcloudCanvas', '', {
 						shape: user_tag_showas,
 						lock: ((user_tag_showas=='vcylinder' || user_tag_showas=='vring') ? "y" : "x"),
@@ -364,116 +420,50 @@ function loadStuff(stuffid,stufftype){
 						weightMode: 'both'
 					});
 				}
-				document.getElementById('refresh_'+stuffid).innerHTML='';
-			}
-	);
-}
-
-function loadAllWidgets(widgetInfoList, batchSize){
-	var batchWidgetInfoList = [];
-	var widgetInfo = {};
-	for(var index =0 ; index < widgetInfoList.length;++index) {
-		var widgetId = widgetInfoList[index].widgetId;
-		var widgetType = widgetInfoList[index].widgetType;
-		widgetInfo[widgetId] = widgetType;
-		document.getElementById('refresh_'+widgetId).innerHTML=document.getElementById('vtbusy_homeinfo').innerHTML;
-		batchWidgetInfoList.push(widgetInfoList[index]);
-		if((index > 0 && (index+1) % batchSize == 0) || index+1 == widgetInfoList.length) {
-			jQuery.ajax({
-					method: 'POST',
-					url: 'index.php?module=Home&action=HomeAjax&file=HomeWidgetBlockList&widgetInfoList='
-						+ JSON.stringify(batchWidgetInfoList)
-			}).done(function (response) {
-						var responseVal=JSON.parse(response);
-						var tagcloudfound = false;
-						for(var widgetId in responseVal) {
-							if(responseVal.hasOwnProperty(widgetId)) {
-								document.getElementById('stuffcont_'+widgetId).innerHTML = responseVal[widgetId];
-								document.getElementById('refresh_'+widgetId).innerHTML='';
-								var widgetType = widgetInfo[widgetId];
-								if(widgetType=="Module" && document.getElementById('more_'+widgetId).value != null &&
-										document.getElementById('more_'+widgetId).value != '') {
-									document.getElementById('a_'+widgetId).href = "index.php?module="+
-									document.getElementById('more_'+widgetId).value+"&action=ListView&viewname="+
-									document.getElementById('cvid_'+widgetId).value;
-								} else if(widgetType == "Default" && typeof(document.getElementById('a_'+widgetId)) != 'undefined'
-									&& document.getElementById('a_'+widgetId) != null){
-									if(typeof document.getElementById('more_'+widgetId) != 'undefined' &&
-											document.getElementById('more_'+widgetId).value != ''){
-										document.getElementById('a_'+widgetId).style.display = 'block';
-										var url = "index.php?module="+document.getElementById('more_'+widgetId).value+
-											"&action=index";
-										if(document.getElementById('search_qry_'+widgetId)!=''){
-											url += document.getElementById('search_qry_'+widgetId).value;
-										}
-										document.getElementById('a_'+widgetId).href = url;
-									}else{
-										document.getElementById('a_'+widgetId).style.display = 'none';
-									}
-								} else if(widgetType=="RSS"){
-									document.getElementById('a_'+widgetId).href = document.getElementById('more_'+widgetId).value;
-								} else if(widgetType=="DashBoard"){
-									document.getElementById('a_'+widgetId).href = "index.php?module=Dashboard&action="+
-										"index&type="+document.getElementById('more_'+stuffid).value;
-								} else if(widgetType=="Tag Cloud"){
-									tagcloudfound = true;
-								}
-							}
-						}
-						if (tagcloudfound) {
-							TagCanvas.Start('tagcloudCanvas', '', {
-								shape: user_tag_showas,
-								lock: ((user_tag_showas=='vcylinder' || user_tag_showas=='vring') ? "y" : "x"),
-								weight: true,
-								weightMode: 'both'
-							});
-						}
-					}
-			);
+			});
 			batchWidgetInfoList = [];
 		}
 	}
 }
 
 var Application_ListView_MaxColumns = 12;
-GlobalVariable_getVariable('Application_ListView_MaxColumns', 12, 'Home', gVTUserID).then(function(response) {
+GlobalVariable_getVariable('Application_ListView_MaxColumns', 12, 'Home', gVTUserID).then(function (response) {
 	var obj = JSON.parse(response);
 	Application_ListView_MaxColumns = parseInt(obj.Application_ListView_MaxColumns);
-}, function(error) {
+}, function (error) {
 	Application_ListView_MaxColumns = 12;
 });
 /**
  * this function validates the form for creating a new widget
  */
 function frmValidate(){
-	if(document.getElementById('stufftype_id').value=="defaultwidget"){
+	if (document.getElementById('stufftype_id').value=='defaultwidget') {
 		var namelist = new Array();
-		document.getElementById('vtbusy_info').style.display="block";
+		document.getElementById('vtbusy_info').style.display='block';
 		var elem = document.getElementsByName("names");
-		for(var i = 0; i < elem.length; i++){
-			if(elem[i].checked) {
+		for (var i = 0; i < elem.length; i++) {
+			if (elem[i].checked) {
 				namelist[i] = elem[i].value;
 			}
 		}
 
 		var values = JSON.stringify(namelist);
 		jQuery.ajax({
-				method: 'POST',
-				url: 'index.php?action=HomeAjax&module=Home&file=HomeWidgetsSave&values='+encodeURIComponent(values)
+			method: 'POST',
+			url: 'index.php?action=HomeAjax&module=Home&file=HomeWidgetsSave&values='+encodeURIComponent(values)
 		}).done(function (response) {
-				document.getElementById('addWidgetsDiv').style.display="none";
-				document.getElementById('vtbusy_info').style.display="none";
-				window.location.reload();
-			}
-	);
-	}else{
-		if(trim(document.getElementById('stufftitle_id').value)==""){
+			document.getElementById('addWidgetsDiv').style.display="none";
+			document.getElementById('vtbusy_info').style.display="none";
+			window.location.reload();
+		});
+	} else {
+		if (trim(document.getElementById('stufftitle_id').value)=="") {
 			alert(alert_arr.LBL_ENTER_WINDOW_TITLE);
 			document.getElementById('stufftitle_id').focus();
 			return false;
 		}
-		if(document.getElementById('stufftype_id').value=="RSS"){
-			if(document.getElementById('txtRss_id').value==""){
+		if (document.getElementById('stufftype_id').value=='RSS') {
+			if (document.getElementById('txtRss_id').value=='') {
 				alert(alert_arr.LBL_ENTER_RSS_URL);
 				document.getElementById('txtRss_id').focus();
 				return false;
@@ -486,13 +476,13 @@ function frmValidate(){
 				return false;
 			}
 		}*/
-		if(document.getElementById('stufftype_id').value=="Module"){
+		if (document.getElementById('stufftype_id').value=="Module") {
 			var selLen;
 			var fieldval=new Array();
 			var cnt=0;
 			selVal=document.Homestuff.PrimeFld;
-			for(k=0;k<selVal.options.length;k++){
-				if(selVal.options[k].selected){
+			for (k=0; k<selVal.options.length; k++) {
+				if (selVal.options[k].selected) {
 					fieldval[cnt]=selVal.options[k].value;
 					cnt= cnt+1;
 				}
@@ -501,7 +491,7 @@ function frmValidate(){
 				alert(alert_arr.LBL_SELECT_ONLY_FIELDS);
 				selVal.focus();
 				return false;
-			}else{
+			} else {
 				document.Homestuff.fldname.value=fieldval;
 			}
 		}
@@ -520,51 +510,51 @@ function frmValidate(){
 		var selreportcharttype='';
 		//var txtURL = '';
 
-		if(stufftype=="Module"){
+		if (stufftype=="Module") {
 			selFiltername =document.Homestuff.selFiltername[document.Homestuff.selFiltername.selectedIndex].value;
 			fldname = fieldval;
 			selmodule =document.getElementById('selmodule_id').value;
 			maxentries =document.getElementById('maxentryid').value;
-		}else if(stufftype=="RSS"){
+		} else if (stufftype=="RSS") {
 			txtRss=document.getElementById('txtRss_id').value;
 			maxentries =document.getElementById('maxentryid').value;
-		}/*else if(stufftype=="URL"){
-			txtURL=document.getElementById('url_id').value;
-		}*/else if(stufftype=="DashBoard"){
+		} else if (stufftype=="DashBoard") {
 			seldashbd=document.getElementById('seldashbd_id').value;
 			seldashtype=document.getElementById('seldashtype_id').value;
-		}else if(stufftype=="Default"){
+		} else if (stufftype=="Default") {
 			seldeftype=document.Homestuff.seldeftype[document.Homestuff.seldeftype.selectedIndex].value;
-		}
-	else if(stufftype=="ReportCharts"){
-		selreport = document.getElementById('selreportchart_id').value;
-		selreportcharttype = document.getElementById('selreportcharttype_id').value;
-	}
+		} else if (stufftype=="ReportCharts") {
+			selreport = document.getElementById('selreportchart_id').value;
+			selreportcharttype = document.getElementById('selreportcharttype_id').value;
+		}/*else if (stufftype=="URL") {
+			txtURL=document.getElementById('url_id').value;
+		}*/
 
-	var url="stufftype="+stufftype+"&stufftitle="+stufftitle+"&selmodule="+selmodule+"&maxentries="+maxentries+"&selFiltername="+selFiltername+"&fldname="+encodeURIComponent(fldname)+"&txtRss="+txtRss+"&seldashbd="+seldashbd+"&seldashtype="+seldashtype+"&seldeftype="+seldeftype+"&selreport="+selreport+"&selreportcharttype="+selreportcharttype;//+'&txtURL='+txtURL;
+		var url="stufftype="+stufftype+"&stufftitle="+stufftitle+"&selmodule="+selmodule+"&maxentries="+maxentries+"&selFiltername="+selFiltername+"&fldname="
+			+ encodeURIComponent(fldname)+"&txtRss="+txtRss+"&seldashbd="+seldashbd+"&seldashtype="+seldashtype+"&seldeftype="+seldeftype+"&selreport="+selreport
+			+ "&selreportcharttype="+selreportcharttype;//+'&txtURL='+txtURL;
 		var stuffarr=new Array();
 		document.getElementById('vtbusy_info').style.display="inline";
 
 		jQuery.ajax({
-				method: 'POST',
-				url: 'index.php?module=Home&action=HomeAjax&file=Homestuff&'+url
+			method: 'POST',
+			url: 'index.php?module=Home&action=HomeAjax&file=Homestuff&'+url
 		}).done(function (response) {
-					var responseVal=response;
-					if(!response){
-						alert(alert_arr.LBL_ADD_HOME_WIDGET);
-						document.getElementById('vtbusy_info').style.display="none";
-						document.getElementById('stufftitle_id').value='';
-						document.getElementById('txtRss_id').value='';
-						return false;
-					}else{
-						hide('addWidgetsDiv');
-						document.getElementById('vtbusy_info').style.display="none";
-						document.getElementById('stufftitle_id').value='';
-						document.getElementById('txtRss_id').value='';
-						eval(response);
-					}
-				}
-		);
+			var responseVal=response;
+			if (!response) {
+				alert(alert_arr.LBL_ADD_HOME_WIDGET);
+				document.getElementById('vtbusy_info').style.display="none";
+				document.getElementById('stufftitle_id').value='';
+				document.getElementById('txtRss_id').value='';
+				return false;
+			} else {
+				hide('addWidgetsDiv');
+				document.getElementById('vtbusy_info').style.display="none";
+				document.getElementById('stufftitle_id').value='';
+				document.getElementById('txtRss_id').value='';
+				eval(response);
+			}
+		});
 	}
 }
 
@@ -574,24 +564,23 @@ function frmValidate(){
  */
 function HideDefault(sid){
 	jQuery.ajax({
-			method: 'POST',
-			url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&stuffid='+sid+"&act=hide"
+		method: 'POST',
+		url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&stuffid='+sid+"&act=hide"
 	}).done(function (response) {
-				var responseVal=response;
-				if(response.indexOf('SUCCESS') > -1){
-					var delchild = document.getElementById('stuff_'+sid);
-					odeletedChild = document.getElementById('MainMatrix').removeChild(delchild);
-					document.getElementById('seqSettings').innerHTML= '<table cellpadding="10" cellspacing="0" border="0" width="100%" class="vtResultPop small"><tr><td align="center">'+alert_arr.LBL_WIDGET_HIDDEN+'.'+alert_arr.LBL_RESTORE_FROM_PREFERENCES+'.</td></tr></table>';
-					document.getElementById('seqSettings').style.display = 'block';
-					document.getElementById('seqSettings').style.display = 'none';
-					placeAtCenter(document.getElementById('seqSettings'));
-					jQuery('#seqSettings').fadeIn();
-					setTimeout(hideSeqSettings,5000);
-				}else{
-					alert(alert_arr.ERR_HIDING + '.'+ alert_arr.MSG_TRY_AGAIN + '.');
-				}
-			}
-	);
+		var responseVal=response;
+		if (response.indexOf('SUCCESS') > -1) {
+			var delchild = document.getElementById('stuff_'+sid);
+			odeletedChild = document.getElementById('MainMatrix').removeChild(delchild);
+			document.getElementById('seqSettings').innerHTML= '<table cellpadding="10" cellspacing="0" border="0" width="100%" class="vtResultPop small"><tr><td align="center">'+alert_arr.LBL_WIDGET_HIDDEN+'.'+alert_arr.LBL_RESTORE_FROM_PREFERENCES+'.</td></tr></table>';
+			document.getElementById('seqSettings').style.display = 'block';
+			document.getElementById('seqSettings').style.display = 'none';
+			placeAtCenter(document.getElementById('seqSettings'));
+			jQuery('#seqSettings').fadeIn();
+			setTimeout(hideSeqSettings,5000);
+		} else {
+			alert(alert_arr.ERR_HIDING + '.'+ alert_arr.MSG_TRY_AGAIN + '.');
+		}
+	});
 }
 
 
@@ -620,7 +609,7 @@ function positionDivInAccord(targetDiv,stufftitle,stufftype){
 	var widgetWidth;
 	var dashWidth;
 
-	switch(layout){
+	switch (layout) {
 		case '2':
 			widgetWidth = 49;
 			dashWidth = 98.6;
@@ -639,9 +628,9 @@ function positionDivInAccord(targetDiv,stufftitle,stufftype){
 			break;
 	}
 	var mainX = parseInt(document.getElementById("MainMatrix").style.width);
-	if(stufftitle != vtdashboard_defaultDashbaordWidgetTitle && stufftype != "DashBoard" && stufftype != "ReportCharts" && stufftype != "Module"){
+	if (stufftitle != vtdashboard_defaultDashbaordWidgetTitle && stufftype != "DashBoard" && stufftype != "ReportCharts" && stufftype != "Module") {
 		var dx = mainX * widgetWidth/ 100;
-	}else{
+	} else {
 		var dx = mainX * dashWidth / 100;
 	}
 	document.getElementById(targetDiv).style.width=dx + "%";
@@ -665,12 +654,11 @@ function fetch_homeDB(stuffid){
 		method: 'POST',
 		url: 'index.php?module=Dashboard&action=DashboardAjax&file=HomepageDB'
 	}).done(function (response) {
-				document.getElementById('stuffcont_'+stuffid).innerHTML=response;
-				vtlib_executeJavascriptInElement(document.getElementById('stuffcont_'+stuffid));
-				document.getElementById('refresh_'+stuffid).innerHTML='';
-				jQuery('#stuffcont_'+stuffid).fadeIn();
-			}
-	);
+		document.getElementById('stuffcont_'+stuffid).innerHTML=response;
+		vtlib_executeJavascriptInElement(document.getElementById('stuffcont_'+stuffid));
+		document.getElementById('refresh_'+stuffid).innerHTML='';
+		jQuery('#stuffcont_'+stuffid).fadeIn();
+	});
 }
 
 /**
@@ -688,8 +676,7 @@ initHomePage = function () {
 			}
 			BlockSorting(matrixseqarr);
 		}
-	}
-	);
+	});
 };
 
 /**
@@ -699,17 +686,16 @@ initHomePage = function () {
 function BlockSorting(matrixseqarr){
 	var sequence = matrixseqarr.join("_");
 	jQuery.ajax({
-			method: 'POST',
-			url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&matrixsequence='+sequence
+		method: 'POST',
+		url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&matrixsequence='+sequence
 	}).done(function (response) {
-				document.getElementById('seqSettings').innerHTML=response;
-				document.getElementById('seqSettings').style.display = 'block';
-				document.getElementById('seqSettings').style.display = 'none';
-				placeAtCenter(document.getElementById('seqSettings'));
-				jQuery('#seqSettings').fadeIn();
-				setTimeout(hideSeqSettings,3000);
-			}
-	);
+		document.getElementById('seqSettings').innerHTML=response;
+		document.getElementById('seqSettings').style.display = 'block';
+		document.getElementById('seqSettings').style.display = 'none';
+		placeAtCenter(document.getElementById('seqSettings'));
+		jQuery('#seqSettings').fadeIn();
+		setTimeout(hideSeqSettings,3000);
+	});
 }
 
 /**
@@ -724,17 +710,16 @@ function isIE(){
  */
 function addNotebookWidget(){
 	jQuery.ajax({
-			method: 'POST',
-			url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&matrixsequence='+sequence
+		method: 'POST',
+		url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&matrixsequence='+sequence
 	}).done(function (response) {
-				document.getElementById('seqSettings').innerHTML=response;
-				document.getElementById('seqSettings').style.display = 'block';
-				document.getElementById('seqSettings').style.display = 'none';
-				placeAtCenter(document.getElementById('seqSettings'));
-				jQuery('#seqSettings').fadeIn();
-				setTimeout(hideSeqSettings,3000);
-			}
-	);
+		document.getElementById('seqSettings').innerHTML=response;
+		document.getElementById('seqSettings').style.display = 'block';
+		document.getElementById('seqSettings').style.display = 'none';
+		placeAtCenter(document.getElementById('seqSettings'));
+		jQuery('#seqSettings').fadeIn();
+		setTimeout(hideSeqSettings,3000);
+	});
 	loadAddedDiv(stuffid,stufftype);
 }
 
@@ -771,47 +756,45 @@ function saveLayout(){
 	var sel = document.getElementById('layoutSelect');
 	var layout = sel.options[sel.selectedIndex].value;
 	jQuery.ajax({
-			method: 'POST',
-			url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&layout='+layout
+		method: 'POST',
+		url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&layout='+layout
 	}).done(function (response) {
-				var responseVal=response;
-				window.location.href = window.location.href;
-			}
-	);
+		var responseVal=response;
+		window.location.href = window.location.href;
+	});
 }
 function saveEditReportCharts(dashRowId){
 	document.getElementById('refresh_'+dashRowId).innerHTML=document.getElementById('vtbusy_homeinfo').innerHTML;
 	cancelEntries('editRowmodrss_'+dashRowId);
 	var reportVal='';
 	var iter=0;
-	for(iter=0;iter<3;iter++){
-		if(document.getElementById('reportradio_'+dashRowId+'_'+iter).checked){
+	for (iter=0; iter<3; iter++) {
+		if (document.getElementById('reportradio_'+dashRowId+'_'+iter).checked) {
 			reportVal=document.getElementById('reportradio_'+dashRowId+'_'+iter).value;
 		}
 	}
 	jQuery.ajax({
-			method: 'POST',
-			url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&reportVal='+reportVal+'&stuffid='+dashRowId
+		method: 'POST',
+		url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&reportVal='+reportVal+'&stuffid='+dashRowId
 	}).done(function (response) {
-				var responseVal=response;
-				eval(response);
-				document.getElementById('refresh_'+dashRowId).innerHTML='';
-			}
-	);
+		var responseVal=response;
+		eval(response);
+		document.getElementById('refresh_'+dashRowId).innerHTML='';
+	});
 }
 
 function changeGraphType(chartid,type) {
 	let ctype = 'pie';
 	switch (trim(type)) {
-	case 'piechart':
-		ctype = 'pie';
-		break;
-	case 'verticalbarchart':
-		ctype = 'bar';
-		break;
-	case 'horizontalbarchart':
-		ctype = 'horizontalBar';
-		break;
+		case 'piechart':
+			ctype = 'pie';
+			break;
+		case 'verticalbarchart':
+			ctype = 'bar';
+			break;
+		case 'horizontalbarchart':
+			ctype = 'horizontalBar';
+			break;
 	}
 	let chart_object = window['schart'+chartid];
 	chart_object.destroy();

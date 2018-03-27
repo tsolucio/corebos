@@ -7,6 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-include('modules/cbupdater/forcedButtons.php');
-include_once('modules/Vtiger/ListView.php');
+include 'modules/cbupdater/forcedButtons.php';
+include_once 'modules/Vtiger/ListView.php';
 ?>

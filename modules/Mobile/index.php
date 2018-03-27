@@ -21,10 +21,15 @@ chdir(__DIR__ . '/../../');
 /**
  * URL Verfication - Required to overcome Apache mis-configuration and leading to shared setup mode.
  */
-require_once 'config.php';
-if (file_exists('config_override.php')) {
-	include_once 'config_override.php';
+require_once 'config.inc.php';
+require_once 'include/utils/CommonUtils.php';
+require_once 'modules/Users/Users.php';
+$adminid = Users::getActiveAdminId();
+if (!GlobalVariable::getVariable('Mobile_UI_Enabled', 1, 'Users', $adminid) || coreBOS_Settings::getSetting('cbSMActive', 0)) {
+	echo 'Mobile UI is not active';
+	return;
 }
+
 //Relations sets the GetRelatedList function to local
 //require_once __DIR__ . '/api/Relation.php';
 include_once __DIR__ . '/api/Request.php';
@@ -118,17 +123,6 @@ class crmtogo_Index_Controller {
 			}
 		}
 	}
-}
-
-/** Take care of stripping the slashes */
-function stripslashes_recursive($value) {
-	$value = is_array($value) ? array_map('stripslashes_recursive', $value) : stripslashes($value);
-	return $value;
-}
-if (get_magic_quotes_gpc()) {
-	//$_GET     = stripslashes_recursive($_GET   );
-	//$_POST    = stripslashes_recursive($_POST  );
-	$_REQUEST = stripslashes_recursive($_REQUEST);
 }
 
 if(!defined('CRMTOGO_INDEX_CONTROLLER_AVOID_TRIGGER')) {

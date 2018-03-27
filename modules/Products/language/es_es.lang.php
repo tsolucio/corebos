@@ -15,7 +15,7 @@
 *  Author       : Joe Bordes JPL TSolucio, S.L.
 ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Productos',
 'SINGLE_Products'=>'Producto',
 'LBL_LIST_PRODUCT_NAME'=>'Producto',
@@ -29,7 +29,6 @@ $mod_strings = Array(
 'LBL_VENDOR_INFORMATION'=>'Información del Proveedor:',
 'LBL_PRICEBOOK_INFORMATION'=>'Información de las Tarifas:',
 'LBL_VENDOR_ADDRESS_INFORMATION'=>'Información de la Dirección:',
-'LBL_DESCRIPTION_INFORMATION'=>'Información Adicional',
 'LBL_PRICING_INFORMATION'=>'Información de Precios:',
 'LBL_STOCK_INFORMATION'=>'Información del Stock:',
 'LBL_LIST_FORM_TITLE'=>'Lista de productos',
@@ -80,15 +79,12 @@ $mod_strings = Array(
 'LBL_NEW_ATTACHMENT'=>'Nuevo Adjunto',
 'LBL_ATTACHMENT_TITLE'=>'Adjuntos',
 
-//Added vtiger_fields after RC1 - Release
 'LBL_MANUFACTURER'=>'Fabricante',
 'LBL_PRODUCTCATEGORY'=>'Categoría',
 'LBL_SUPPORT_START_DATE'=>'Fecha de inicio del Soporte',
 'LBL_SUPPORT_EXPIRY_DATE'=>'Fecha de fin del Soporte',
 'LBL_PURCHASE_DATE'=>'Fecha de compra',
 
-//Added for 4GA
-'Product Name'=>'Nombre del Producto',
 //'Product Code'=>'Part Number',
 'Part Number'=>'Código de Producto',
 'Product Active'=>'Producto Activo',
@@ -189,7 +185,6 @@ $mod_strings = Array(
 
 'Box'=>'Caja',
 'Carton'=>'Cartón',
-'Caton'=>'Caton',
 'Dozen'=>'Docena',
 'Each'=>'Unidad',
 'Hours'=>'Horas',

@@ -172,93 +172,6 @@ if(!empty($_REQUEST['forward'])) {
 		$focus->column_fields['subject'] = "$fwdstr: ".$focus->column_fields['subject'];
 }
 
-// Webmails
-if(isset($_REQUEST["mailid"]) && $_REQUEST["mailid"] != "") {
-	$mailid = $_REQUEST["mailid"];
-	$mailbox = $_REQUEST["mailbox"];
-	require_once('include/utils/UserInfoUtil.php');
-	require_once("modules/Webmails/Webmails.php");
-	require_once("modules/Webmails/MailParse.php");
-	require_once('modules/Webmails/MailBox.php');
-
-	$mailInfo = getMailServerInfo($current_user);
-	$temprow = $adb->fetch_array($mailInfo);
-
-	$MailBox = new MailBox($mailbox);
-	$mbox = $MailBox->mbox;
-
-	$webmail = new Webmails($mbox,$mailid);
-	$array_tab = Array();
-	$webmail->loadMail($array_tab);
-	$hdr = @imap_headerinfo($mbox, $mailid);
-	$smarty->assign('WEBMAIL',"true");
-	$smarty->assign('mailid',$mailid);
-	$smarty->assign('mailbox',$mailbox);
-	$temp_id = $MailBox->boxinfo['mail_id'];
-	$smarty->assign('from_add',$temp_id);
-	$webmail->subject = utf8_decode(utf8_encode(imap_utf8($webmail->subject)));
-	if($_REQUEST["reply"] == "all") {
-		$smarty->assign('TO_MAIL',$webmail->from.",");
-		//added to remove the emailid of webmail client from cc list....to fix the issue #3818
-		$cc_address = '';
-		$use_to_header = htmlentities($webmail->to_header, ENT_QUOTES, $default_charset);
-		$use_cc_address= htmlentities($hdr->ccaddress, ENT_QUOTES, $default_charset);
-		$cc_array = explode(',',$use_to_header.','.$use_cc_address);
-		for($i=0;$i<count($cc_array);$i++) {
-			if(trim($cc_array[$i]) != trim($temp_id)) {
-				$cc_address .= $cc_array[$i];
-				$cc_address = ($i != (count($cc_array)-1))?($cc_address.','):$cc_address;
-			}
-		}
-		if(trim($cc_address) != '')
-			$cc_address = trim($cc_address,",").",";
-		$smarty->assign('CC_MAIL',$cc_address);
-		// fix #3818 ends
-		/*if(is_array($webmail->cc_list))
-		{
-			$smarty->assign('CC_MAIL',implode(",",$webmail->cc_list).",".implode(",",$webmail->to));
-		}
-		else
-		{
-			//Commenting this to fix #3231
-		//	$smarty->assign('CC_MAIL',implode(",",$webmail->to));
-		}*/
-		if(preg_match("/RE:/i", $webmail->subject))
-			$smarty->assign('SUBJECT',$webmail->subject);
-		else
-			$smarty->assign('SUBJECT',"RE: ".$webmail->subject);
-
-	} elseif($_REQUEST["reply"] == "single"){
-		$replyToInfo = $webmail->getReplyToInformation();
-		if(!empty($replyToInfo)){
-			$smarty->assign('TO_MAIL',$replyToInfo['name']."<".$webmail->reply_to[0].">".",");
-			$smarty->assign('IDLISTS',$replyToInfo['id'].'@'.$replyToInfo['fieldId'].'|');
-		}
-		else
-			$smarty->assign('TO_MAIL',$replyToInfo['name']."<".$webmail->reply_to[0].">".",");
-
-		//$smarty->assign('BCC_MAIL',$webmail->to[0]);
-		if(preg_match("/RE:/i", $webmail->subject))
-			$smarty->assign('SUBJECT',$webmail->subject);
-		else
-			$smarty->assign('SUBJECT',"RE: ".$webmail->subject);
-
-	} elseif($_REQUEST["forward"] == "true" ) {
-		//added for attachment handling
-		$attachment_links = Array();
-		for($i=0;$i<count($webmail->attname);$i++){
-			$attachment_links[$i] = $webmail->anchor_arr[$i].decode_header($webmail->attname[$i])."</a></br>";
-		}
-		$smarty->assign('webmail_attachments',$attachment_links);
-		if(preg_match("/FW:/i", $webmail->subject))
-			$smarty->assign('SUBJECT',$webmail->subject);
-		else
-			$smarty->assign('SUBJECT',"FW: ".$webmail->subject);
-	}
-	$smarty->assign('DESCRIPTION',$webmail->replyBody());
-	$focus->mode='';
-}
-
 global $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
@@ -351,7 +264,6 @@ else
 	$smarty->assign("FILENAME", $focus->filename);
 }
 if(isset($ret_error) and $ret_error == 1) {
-	require_once('modules/Webmails/MailBox.php');
 	$smarty->assign("RET_ERROR",$ret_error);
 	if($ret_parentid != ''){
 		$smarty->assign("IDLISTS",$ret_parentid);
@@ -369,13 +281,6 @@ if(isset($ret_error) and $ret_error == 1) {
 		$smarty->assign("DESCRIPTION", $ret_description);
 	$smarty->assign('mailid','');
 	$smarty->assign('mailbox','');
-	$temp_obj = new MailBox();
-	$temp_id = $temp_obj->boxinfo['mail_id'];
-	if ($temp_id != '') {
-		$smarty->assign('from_add',$temp_id);
-	} else {
-		$smarty->assign('from_add','');
-	}
 }
 $check_button = Button_Check($module);
 $smarty->assign("CHECK", $check_button);

@@ -17,10 +17,16 @@ abstract class StagedBackup {
 	public $finishTableBackupStage = 4;
 	public $finishBackupStage = 5;
 	public $stageList = null;
+
 	public function __construct() {
-		$this->stageList = array($this->startBackupStage,$this->tableCreateStage,
-			$this->startTableBackupStage,$this->processStatementStage,$this->finishTableBackupStage,
-			$this->finishBackupStage);
+		$this->stageList = array(
+			$this->startBackupStage,
+			$this->tableCreateStage,
+			$this->startTableBackupStage,
+			$this->processStatementStage,
+			$this->finishTableBackupStage,
+			$this->finishBackupStage,
+		);
 	}
 
 	public function getNextStage($stage) {
@@ -31,9 +37,8 @@ abstract class StagedBackup {
 		//nothing to do.
 	}
 
-	public function addStageData($stage,$data) {
+	public function addStageData($stage, $data) {
 		//nothing to do.
 	}
-
 }
 ?>

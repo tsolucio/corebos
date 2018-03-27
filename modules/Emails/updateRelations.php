@@ -7,31 +7,28 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('include/database/PearDatabase.php');
+require_once 'include/database/PearDatabase.php';
 global $adb, $currentModule;
 $idlist = vtlib_purify($_REQUEST['idlist']);
 $record = vtlib_purify($_REQUEST["parentid"]);
 
 $storearray = array();
-if(!empty($_REQUEST['idlist'])) {
+if (!empty($_REQUEST['idlist'])) {
 	// Split the string of ids
-	$storearray = explode (";",trim($idlist,";"));
-} else if(!empty($_REQUEST['entityid'])){
+	$storearray = explode(";", trim($idlist, ";"));
+} elseif (!empty($_REQUEST['entityid'])) {
 	$storearray = array($_REQUEST['entityid']);
 }
-foreach($storearray as $id)
-{
-	if($id != '')
-	{
-		$sql = "insert into vtiger_seactivityrel values (?,?)";
+foreach ($storearray as $id) {
+	if ($id != '') {
+		$sql = 'insert into vtiger_seactivityrel values (?,?)';
 		$adb->pquery($sql, array($id, $record));
 	}
 }
-if(isset($_REQUEST['user_id']) && $_REQUEST['user_id'] != '')
-{
+if (isset($_REQUEST['user_id']) && $_REQUEST['user_id'] != '') {
 	$record = vtlib_purify($_REQUEST['record']);
-	$sql = "insert into vtiger_salesmanactivityrel values (?,?)";
-	$adb->pquery($sql, array($_REQUEST["user_id"], $record));
+	$sql = 'insert into vtiger_salesmanactivityrel values (?,?)';
+	$adb->pquery($sql, array(vtlib_purify($_REQUEST['user_id']), $record));
 }
 
 header('Location: index.php?action=CallRelatedList&module=Emails&record='.urlencode($record));

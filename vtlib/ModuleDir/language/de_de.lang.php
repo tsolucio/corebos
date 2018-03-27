@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'ModuleName' => 'Modulname',
 	'SINGLE_ModuleName' => 'Modulname',
 	'ModuleName ID' => 'Modulname ID',
@@ -17,7 +17,6 @@ $mod_strings = Array(
 	'LBL_MODULEBLOCK_INFORMATION' => 'ModuleBlock Information',
 	'LBL_DESCRIPTION_INFORMATION' => 'Beschreibung',
 
-	'ModuleFieldLabel' => 'ModuleFieldLabel Text',	
+	'ModuleFieldLabel' => 'ModuleFieldLabel Text',
 );
-
 ?>

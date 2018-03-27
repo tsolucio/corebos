@@ -1,19 +1,14 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
 
-$mod_strings = Array(
-// Added in release 5.0
+$mod_strings = array(
 'LBL_CAMPAIGN_INFORMATION'=>'Campaign Information',
 'LBL_CUSTOM_INFORMATION'=>'Custom Information',
 'LBL_DESCRIPTION_INFORMATION'=>'Description Information',
@@ -50,7 +45,6 @@ $mod_strings = Array(
 'LBL_EMPTY_LIST'=>'Empty List',
 
 //Added for existing Picklist Entries
-
 'Conference'=>'Conference',
 'Webinar'=>'Webinar',
 'Trade Show'=>'Trade Show',
@@ -65,7 +59,7 @@ $mod_strings = Array(
 'Others'=>'Others',
 
 'Planning'=>'Planning',
-'Active'=>'Active',	
+'Active'=>'Active',
 'Inactive'=>'Inactive',
 'Complete'=>'Complete',
 'Cancelled'=>'Cancelled',
@@ -75,15 +69,12 @@ $mod_strings = Array(
 'Average'=>'Average',
 'Poor'=>'Poor',
 
-//Module Sequence Numbering
 'Campaign No'=>'Campaign No',
-// status fields 
+// status fields
 '--None--'=>'--None--',
 'Contacted - Successful' => 'Contacted - Successful',
 'Contacted - Unsuccessful' => 'Contacted - Unsuccessful',
 'Contacted - Never Contact Again' => 'Contacted - Never Contact Again',
-// END
 'Campaigns ID' => 'Campaigns ID',
 );
-
 ?>

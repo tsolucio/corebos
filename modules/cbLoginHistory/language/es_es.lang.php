@@ -8,9 +8,8 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'cbLoginHistory' => 'Histórico Accesos Usuario',
 	'SINGLE_cbLoginHistory' => 'Histórico Accesos Usuario',
 );
-
 ?>

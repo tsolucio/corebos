@@ -14,7 +14,7 @@
 *  Author       : Joe Bordes JPL TSolucio, S.L.
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Presupuestos',
 'SINGLE_Quotes'=>'Presupuesto',
 'LBL_MODULE_TITLE'=>'Presupuestos: Inicio',
@@ -73,7 +73,6 @@ $mod_strings = Array(
 'LBL_SELECT_ACCOUNT'=>'Seleccionar Cuenta',
 'LBL_GENERAL_INFORMATION'=>'Información General',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'Nueva Oportunidad',
 'LBL_POTENTIAL_TITLE'=>'Oportunidades',
 
@@ -88,16 +87,13 @@ $mod_strings = Array(
 'LBL_NEW_CONTACT'=>'Nuevo Contacto',
 'LBL_CONTACT_TITLE'=>'Contactos',
 
-//Added vtiger_fields after RC1 - Release
 'LBL_ALL'=>'Todo',
 'LBL_PROSPECT'=>'Investigador',
 'LBL_INVESTOR'=>'Inversor',
 'LBL_RESELLER'=>'Revendedor ',
 'LBL_PARTNER'=>'Socio',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Herramientas de Cuenta',
-//Added for 4GA
 'Subject'=>'Referencia',
 'Potential Name'=>'Oportunidad',
 'Quote Stage'=>'Estado del Presupuesto',
@@ -130,7 +126,6 @@ $mod_strings = Array(
 'Modified Time'=>'Última Modificación',
 'Description'=>'Descripción',
 'Account Name'=>'Nombre de la Cuenta',
-//Quote Info
 'LBL_QUOTE_INFORMATION'=>'Información del Presupuesto',
 'LBL_TERMS_INFORMATION'=>'Condiciones Generales',
 'LBL_QUOTE'=>'Presupuesto:',
@@ -140,10 +135,8 @@ $mod_strings = Array(
 'LBL_ACCOUNT_NAME'=>'Nombre de la Cuenta:',
 'LBL_QUOTE_STAGE'=>'Estado del Presupuesto:',
 'LBL_MY_TOP_QUOTE'=>'Mis Presupuestos Pendientes',
-//'Quote ID'=>'Id Presupuesto',
 'Quote'=>'Presupuesto',
 
-//Added for existing Picklist Entries
 'Created'=>'Creado',
 'Delivered'=>'Enviado',
 'Reviewed'=>'Revisado',
@@ -168,5 +161,4 @@ $mod_strings = Array(
 'Add Service Contract'=>'Añadir Contrato Servicio',
 'Quotes ID'=>'Id Presupuesto',
 );
-
 ?>

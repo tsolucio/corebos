@@ -1,14 +1,10 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
  ********************************************************************************/
@@ -25,6 +21,7 @@ $app_strings = array(
 	'LBL_SHOW' => 'Mutat :',
 	'today' => 'Ma',
 	'all' => 'Minden',
+	'Generate Document'=>'Merge Document',
 	'LBL_UPCOMING_EVENTS' => 'Esedékes teendők',
 	'LBL_PENDING_EVENTS' => 'Függő teendők',
 	'NTC_WELCOME_MESSAGE' => 'Üdvözlünk a coreBOS-ben!',
@@ -39,6 +36,7 @@ $app_strings = array(
 	'LBL_SEND_MAIL_BUTTON' => 'Email küldés',
 	'LBL_SAVE_BUTTON_TITLE' => 'Mentés [Alt+S]',
 	'LBL_EDIT_BUTTON_TITLE' => 'Szerkesztés [Alt+E]',
+	'LBL_RECALCULATE_BUTTON_TITLE' => 'Újraszámolja [Alt+R]',
 	'LBL_CONVERTSO_BUTTON_TITLE' => 'Új Rendelés',
 	'LBL_CONVERTINVOICE_BUTTON_TITLE' => 'Új Díjbekérő',
 	'LBL_EDIT_BUTTON' => 'Szerkesztés',
@@ -75,6 +73,7 @@ $app_strings = array(
 	'LBL_CONVERTSO_BUTTON_KEY' => 'S',
 	'LBL_CONVERTINVOICE_BUTTON_KEY' => 'I',
 	'LBL_DUPLICATE_BUTTON_KEY' => 'U',
+	'LBL_RECALCULATE_BUTTON_KEY' => 'R',
 	'LBL_DELETE_BUTTON_KEY' => 'D',
 	'LBL_NEW_BUTTON_KEY' => 'N',
 	'LBL_CHANGE_BUTTON_KEY' => 'G',
@@ -87,6 +86,7 @@ $app_strings = array(
 	'LBL_CONVERTSO_BUTTON_LABEL' => 'Új Rendelés',
 	'LBL_CONVERTINVOICE_BUTTON_LABEL' => 'Új Díjbekérő',
 	'LBL_DUPLICATE_BUTTON_LABEL' => 'Másol',
+	'LBL_RECALCULATE_BUTTON' => 'Újraszámolja',
 	'LBL_DELETE_BUTTON_LABEL' => 'Töröl',
 	'LBL_NEW_BUTTON_LABEL' => 'Új',
 	'LBL_CHANGE_BUTTON_LABEL' => 'Módosít',
@@ -209,6 +209,8 @@ $app_strings = array(
 	'Import' => 'Importál',
 	'Merge' => 'Összefűz',
 	'ConvertLead' => 'Jelöltet átalakít Kapcsolattá',
+	'Is Converted From Lead'  => 'Vevőjelöltből konvertált?',
+	'Converted From Lead'  => 'Vevőjelöltből konvertált',
 	'LBL_SHOW_RESULTS' => 'Mutassa az eredményeket:',
 	'LBL_TOTAL_RECORDS_FOUND' => 'Darab rekordot találtam :',
 	'LBL_SEARCH_RESULTS_FOR' => ' -- Keresés eredménye ',
@@ -468,10 +470,10 @@ $app_strings = array(
 	'Quote No' => 'Ajánlat No.',
 	'Sales Order' => 'Megrendelések',
 	'COMBO_QUOTES' => 'Ajánlatok',
-	'End Date' => 'Befejezés dátuma',
-	'End Date & Time' => 'Befejezés dátuma és ideje',
+	'End Date' => 'Befejezés dátuma (System Date)',
+	'End Date & Time' => 'Befejezés dátuma és ideje (System Date)',
 	'Start Date' => 'Kezdés dátuma',
-	'Start Date & Time' => 'Kezdés dátuma és ideje',
+	'Start Date & Time' => 'Kezdés dátuma és ideje (System Date)',
 	'Recurring Type' => 'Ismétlődés típusa',
 	'SalesOrders' => 'Megrendelések',
 	'LBL_QUOTE_NAME' => 'Ajánlat Neve',
@@ -632,9 +634,9 @@ $app_strings = array(
 	'LBL_RENAME_PROFILE' => 'Profil átnevezése',
 	'LBL_PROFILE_NAME' => 'Profil név',
 	'LBL_START_DATE' => 'Kezdő dátum',
-	'LBL_START_DATE_TIME' => 'Kezdő dátum és idő',
-	'LBL_END_DATE' => 'Befejező dátum',
-	'LBL_END_DATE_TIME' => 'Befejező dátum és idő',
+	'LBL_START_DATE_TIME' => 'Kezdő dátum és idő (System Date)',
+	'LBL_END_DATE' => 'Befejező dátum (System Date)',
+	'LBL_END_DATE_TIME' => 'Befejező dátum és idő (System Date)',
 	'LBL_CREATE_MERGE_TEMPLATE' => 'Új dokumentum-összefűzés sablon ',
 	'LBL_IMG_FORMATS' => '(Csak jpg, gif, bmp és png képek)',
 	'group' => 'csoportos',
@@ -832,6 +834,8 @@ $app_strings = array(
 	'FOLDER_NAME_ALLOW_20CHARS' => 'A mappa név maximum 20 karakter hosszú lehet',
 	'SPECIAL_CHARS_NOT_ALLOWED' => 'Különleges karakterek nem megengedettek, próbáld újra...',
 	'LBL_SIGN_IN' => 'Belépés',
+	'StartSession' => 'Start Session',
+	'CapsLockActive' => 'CapsLock is active',
 	'LBL_ROOT' => 'Gyökér',
 	'LBL_FIRST' => 'Első',
 	'LBL_LAST' => 'Utolsó',

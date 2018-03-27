@@ -8,68 +8,67 @@
  * All Rights Reserved.
  *************************************************************************************/
 
-function vtws_login($username,$pwd){
+function vtws_login($username, $pwd) {
 
 	$user = new Users();
 	$userId = $user->retrieve_user_id($username);
 
 	if (empty($userId)) {
-		throw new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED,'Given user cannot be found');
+		throw new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED, 'Given user cannot be found');
 	}
 	$token = vtws_getActiveToken($userId);
-	if($token == null){
-		throw new WebServiceException(WebServiceErrorCode::$INVALIDTOKEN,"Specified token is invalid or expired");
+	if ($token == null) {
+		throw new WebServiceException(WebServiceErrorCode::$INVALIDTOKEN, 'Specified token is invalid or expired');
 	}
 
 	$accessKey = vtws_getUserAccessKey($userId);
-	if($accessKey == null){
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSKEYUNDEFINED,"Access key for the user is undefined");
+	if ($accessKey == null) {
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSKEYUNDEFINED, 'Access key for the user is undefined');
 	}
 
 	$accessCrypt = md5($token.$accessKey);
-	if(strcmp($accessCrypt,$pwd)!==0){
-		$userpass = vtws_getUserPasswordFromInput($token,$pwd,$username);
-		$user->column_fields["user_name"]=$username;
-		if($userpass['token']!=$token or !$user->doLogin($userpass['password'])){
-			throw new WebServiceException(WebServiceErrorCode::$INVALIDUSERPWD,"Invalid username or password");
+	if (strcmp($accessCrypt, $pwd)!==0) {
+		$userpass = vtws_getUserPasswordFromInput($token, $pwd);
+		$user->column_fields['user_name']=$username;
+		if ($userpass['token']!=$token || !$user->doLogin($userpass['password'])) {
+			throw new WebServiceException(WebServiceErrorCode::$INVALIDUSERPWD, 'Invalid username or password');
 		}
 	}
 	$user = $user->retrieveCurrentUserInfoFromFile($userId);
-	if($user->status != 'Inactive'){
+	if ($user->status != 'Inactive') {
 		return $user;
 	}
-	throw new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED,'Given user is inactive');
+	throw new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED, 'Given user is inactive');
 }
 
-function vtws_getActiveToken($userId){
+function vtws_getActiveToken($userId) {
 	global $adb;
 
-	$sql = "select * from vtiger_ws_userauthtoken where userid=? and expiretime >= ?";
-	$result = $adb->pquery($sql,array($userId,time()));
-	if($result != null && isset($result)){
-		if($adb->num_rows($result)>0){
-			return $adb->query_result($result,0,"token");
+	$sql = 'select token from vtiger_ws_userauthtoken where userid=? and expiretime >= ?';
+	$result = $adb->pquery($sql, array($userId,time()));
+	if ($result != null && isset($result)) {
+		if ($adb->num_rows($result)>0) {
+			return $adb->query_result($result, 0, "token");
 		}
 	}
 	return null;
 }
 
-function vtws_getUserAccessKey($userId){
+function vtws_getUserAccessKey($userId) {
 	global $adb;
-
-	$sql = "select * from vtiger_users where id=?";
-	$result = $adb->pquery($sql,array($userId));
-	if($result != null && isset($result)){
-		if($adb->num_rows($result)>0){
-			return $adb->query_result($result,0,"accesskey");
+	$sql = 'select accesskey from vtiger_users where id=?';
+	$result = $adb->pquery($sql, array($userId));
+	if ($result != null && isset($result)) {
+		if ($adb->num_rows($result)>0) {
+			return $adb->query_result($result, 0, 'accesskey');
 		}
 	}
 	return null;
 }
 
-function vtws_getUserPasswordFromInput($token,$pwd,$username) {
+function vtws_getUserPasswordFromInput($token, $pwd) {
 	$utoken = substr($pwd, 0, strlen($token));
-	$upass = substr($pwd,strlen($token));
-	return array('token'=>$utoken,'password'=>$upass);
+	$upass = substr($pwd, strlen($token));
+	return array('token' => $utoken, 'password' => $upass);
 }
 ?>

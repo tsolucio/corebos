@@ -184,6 +184,16 @@ $mod_strings = array(
 	'Accounts ID' => 'Organisations ID',
 	'Send SMS' => 'Send SMS',
 	'Projects' => 'Projects',
-	'Service Places' => 'Service Places'
+	'Service Places' => 'Service Places',
+	'LBL_ONDEMAND_CONTROL_INFORMATION' => 'On Demand Control',
+	'Start Date OD' => 'On Demand Start',
+	'End Date OD' => 'On Demand End',
+	'OD Service Active' => 'On Demand Active',
+	'OD Sync Module Active' => 'On Demand Sync Active',
+	'OD Sync Modules' => 'On Demand Sync Modules',
+	'Invoice With Tax' => 'Invoice With Tax',
+	'Free Space' => 'Free Space',
+	'Space Consumed' => 'Space Consumed',
+	'Frequency' => 'Invoice Frequency',
 );
 ?>

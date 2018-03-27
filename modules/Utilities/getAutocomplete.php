@@ -20,11 +20,11 @@ include_once 'include/Webservices/CustomerPortalWS.php';
 header('Content-Type: application/json');
 global $current_user;
 
-$data = json_decode(vtlib_purify($_REQUEST['data']), TRUE);
+$data = json_decode(vtlib_purify($_REQUEST['data']), true);
 
-if(isReferenceField($data))
+if (isReferenceField($data)) {
 	limitSearch($data);
-
+}
 $search_value = getSearchValue($data);
 $limit = 10;
 
@@ -40,11 +40,11 @@ $filters = array(
 	)
 );
 
-$res = getAutocomplete($data,$limit,$filters);
+$res = getAutocomplete($data, $limit, $filters);
 
-if(isReferenceField($data))
+if (isReferenceField($data)) {
 	extendFields($res, $data);
-
+}
 echo json_encode($res);
 
 function isReferenceField($data) {
@@ -53,8 +53,8 @@ function isReferenceField($data) {
 
 function getSearchValue($data) {
 	$search_value = $data['term'];
-	$search_fields = explode(",", $data['searchfields']);
-	$search_value .= str_repeat("," . $search_value, count($search_fields) - 1 );
+	$search_fields = explode(',', $data['searchfields']);
+	$search_value .= str_repeat(',' . $search_value, count($search_fields) - 1);
 
 	return $search_value;
 }
@@ -74,27 +74,27 @@ function extendFields(&$res, $data) {
 	foreach ($res as $key => $value) {
 		$id = explode('x', $value['crmid'])[1];
 
-		$result = getEntityFieldValues($field_val, array($id) );
+		$result = getEntityFieldValues($field_val, array($id));
 		$field_name_display = getEntityFieldNameDisplay(
 			$ref_field['module'],
 			$field_val['fieldname'],
 			$result[0][$id]
 		);
-		$res[$key][$ref_field['fieldname'] . "_display"] = $field_name_display;
+		$res[$key][$ref_field['fieldname'] . '_display'] = $field_name_display;
 		$res[$key][$ref_field['fieldname']] = $id;
 	}
 }
 
-function getAutocomplete($data,$limit,$fltr) {
-	global $adb, $log, $current_user;
+function getAutocomplete($data, $limit, $fltr) {
+	global $current_user;
 
-	$searchinmodule = vtlib_purify($data["searchmodule"]);
+	$searchinmodule = vtlib_purify($data['searchmodule']);
 	$fields = vtlib_purify($data['searchfields']);
 	$returnfields = vtlib_purify($data['showfields']);
 
-	$fill_fields = explode(",", $data['fillfields']);
+	$fill_fields = explode(',', $data['fillfields']);
 	foreach ($fill_fields as $field) {
-		$returnfields .= "," . substr($field, strpos($field, "=") + 1);
+		$returnfields .= ',' . substr($field, strpos($field, '=') + 1);
 	}
 
 	$limit = vtlib_purify($limit);

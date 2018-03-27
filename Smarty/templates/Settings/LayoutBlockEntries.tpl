@@ -14,6 +14,8 @@
 <input type="hidden" name="mode">
 <script type="text/javascript" src="include/js/customview.js"></script>
 <script type="text/javascript" src="include/js/general.js"></script>
+<script type="text/javascript" src="modules/Settings/Settings.js"></script>
+<script src="include/jquery/jquery.js"></script>
 <table class="listTable" border="0" cellpadding="3" cellspacing="0" width="100%">
 	{foreach item=entries key=id from=$CFENTRIES name=outer}
 		{if isset($entries.blockid) && $entries.blockid ne $RELPRODUCTSECTIONID && isset($entries.blocklabel) && $entries.blocklabel neq '' }
@@ -387,7 +389,7 @@
 									<td colspan="3" class="dvtCellInfo" align="center">
 										<input type="button" name="save" value=" &nbsp; {$APP.LBL_SAVE_BUTTON_LABEL} &nbsp; " class="crmButton small save" onclick="saveFieldInfo('{$value.fieldselect}','{$MODULE}','updateFieldProperties','{$value.typeofdata}');" />&nbsp;
 										{if $value.customfieldflag neq 0}
-											<input type="button" name="delete" value=" {$APP.LBL_DELETE_BUTTON_LABEL} " class="crmButton small delete" onclick="deleteCustomField('{$value.fieldselect}','{$MODULE}','{$value.columnname}','{$value.uitype}')" />
+											<input type="button" name="delete" value="{$APP.LBL_DELETE_BUTTON_LABEL}" id="fieldname" class="crmButton small delete" onclick="getData('{$value.columnname}', '{$MODULE}', '{$value.label}'); fnvshobj(this,'hiddenfield_{$value.label}');" />
 										{/if}
 										<input type="button" name="cancel" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="crmButton small cancel" onclick="fninvsh('editfield_{$value.fieldselect}');" />
 									</td>
@@ -395,6 +397,29 @@
 							</table>
 						</div>
 					</div>
+
+				<div id="hiddenfield_{$value.label}" style="display:none; position:absolute; width:500px; height: 500px; margin-top: -400px">
+					<section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+						<div class="slds-modal__container">
+							<div class="slds-box--border">
+							<header class="slds-modal__header">
+								<h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{$value.label} ({$value.columnname})</h2>
+							</header>
+							<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+								<p id="{$value.label}" style="text-align: left; padding-left: 6px;"></p>
+							</div>
+							<footer class="slds-modal__footer" style="width:100%">
+								{if $value.customfieldflag neq 0}
+								<button class="slds-button slds-button--destructive" onclick="deleteCustomField('{$value.fieldselect}','{$MODULE}','{$value.columnname}','{$value.uitype}'); return false;"> {$APP.LBL_DELETE_BUTTON_LABEL} </button>
+								{/if}
+								<button class="slds-button slds-button--neutral" onclick="fninvsh('hiddenfield_{$value.label}');return false;">{$APP.LBL_CANCEL_BUTTON_LABEL}</button>
+							</footer>
+							</div>
+						</div>
+					</section>
+					<div class="slds-backdrop slds-backdrop_open"></div>
+				</div>
+
 					{if $smarty.foreach.inner.first}
 						{if $value.no % 2 != 0}
 							<img src="{'blank.gif'|@vtiger_imageurl:$THEME}" style="width:16px;height:16px;" border="0" />&nbsp;&nbsp;

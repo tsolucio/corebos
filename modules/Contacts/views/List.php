@@ -107,21 +107,6 @@ class Google_List_View  {
     }
 
     /**
-     * Sync Calendar Records
-     * @return <array> Count of Calendar Records
-     */
-    public function Calendar($userId = false) {
-        global $current_user;
-        $user = $current_user;
-        $controller = new Google_Calendar_Controller($user);
-        $records = $controller->synchronize();
-        $syncRecords = $this->getSyncRecordsCount($records);
-        $syncRecords['vtiger']['more'] = $controller->targetConnector->moreRecordsExits();
-        $syncRecords['google']['more'] = $controller->sourceConnector->moreRecordsExits();
-        return $syncRecords;
-    }
-
-    /**
      * Removes Synchronization
      */
     function removeSynchronization($request) {

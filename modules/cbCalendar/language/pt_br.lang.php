@@ -6,10 +6,10 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor: Ranieri Slemer | Translated Brasilizan Portuguese | eCRM web | 14-7-2017 | www.ecrmweb.com.br
+ * Contributor: Ranieri Slemer | Translated Brasilizan Portuguese | eCRM web | 3-12-2017 | www.slemernet.com.br
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'cbCalendar' => 'Tarefas',
 	'SINGLE_cbCalendar' => 'Tarefas',
 	'cbCalendar ID' => 'ID Tarefas',
@@ -19,11 +19,12 @@ $mod_strings = Array(
 	'EventAdvancedOptions' => 'Informações avançadas',
 
 	'Subject' => 'Assunto',
-	'Start Date Time' => 'Dia e Hora de Início',
-	'End Date Time' => 'Dia e Hora de Fin',
-	'Time Start' => 'Hora Início',
-	'End Time' => 'Hora Final',
-	'Due Date' => 'Data de Vencimento',
+	'Start Date Time' => 'Dia e Hora Inicial',
+	'End Date Time' => 'Dia e Hora Final',
+	'Time Start' => 'Hora Início (Relógio do Sistema)',
+	'End Time' => 'Hora Final (Relógio do Sistema)',
+	'End Date' => 'Dia Final',
+	'Due Date' => 'Data Limite',
 	'Related To' => 'Relacionado à',
 	'Related with' => 'Relacionado a tarefa',
 	'Contact Name' => 'Nome Contato',
@@ -92,7 +93,6 @@ $mod_strings = Array(
 	'Weekly'=>'Semana(s)',
 	'Monthly'=>'Mês(s)',
 	'Yearly'=>'Ano',
-// Add new labels
 	'High' => 'Alta',
 	'Medium' => 'Média',
 	'Low' => 'Baixa',

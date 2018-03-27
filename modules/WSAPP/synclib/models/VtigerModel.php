@@ -9,8 +9,8 @@
  *************************************************************************************/
 require_once 'modules/WSAPP/synclib/models/SyncRecordModel.php';
 
-// place holder vtiger type models 
-class WSAPP_VtigerModel extends WSAPP_SyncRecordModel{
-	
+// place holder vtiger type models
+class WSAPP_VtigerModel extends WSAPP_SyncRecordModel {
+
 }
 ?>

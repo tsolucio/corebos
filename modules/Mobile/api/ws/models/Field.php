@@ -62,16 +62,13 @@ class crmtogo_UI_FieldModel {
 	}
 	
 	function isReferenceType() {
-		static $options = array('101', '116', '117', '357',
-			'51', '52', '53', '57', '59', '66', '73', '75', '76', '77', '78', '80', '81'
-		);
+		static $options = array('101', '116', '117', '357', '51', '52', '53', '57', '66', '73', '75', '76', '77', '78', '80', '81');
 		if (isset($this->data['uitype'])) {
 			$uitype = $this->data['uitype'];
 			if (in_array($uitype, $options)) {
 				return true;
 			}
-		} 
-		else if(isset($this->data['type'])) {
+		} else if(isset($this->data['type'])) {
 			switch($this->data['type']['name']) {
 				case 'reference':
 				case 'owner':

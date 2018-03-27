@@ -8,7 +8,7 @@
 * All Rights Reserved.
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_BOOKMARKED_URL'=>"URL's mit Lesezeichen",
 'LBL_MANAGE_BOOKMARKS'=>'Bearbeite Lesezeichen',
 'LBL_BOOKMARK_LIST'=>'Lesezeichenliste',

@@ -14,7 +14,7 @@
 *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Documentos',
 'LBL_MODULE_TITLE'=>'Documentos: Inicio',
 'LBL_SEARCH_FORM_TITLE'=>'Buscar Documentos',
@@ -39,15 +39,14 @@ $mod_strings = Array(
 'ERR_DELETE_RECORD'=>"Debe especificar un registro para eliminar la cuenta.",
 'LBL_LIST_FILENAME'=>"Nombre Archivo",
 
-// Added for Note(3.2-patch 3) 
+'Template'=>'Plantilla',
+'Template For' => 'Plantilla Para',
 
 'LBL_FILENAME'=>'Adjunto:',
-'LBL_NOTE_INFORMATION'=>'Información Básica',
+'LBL_NOTE_INFORMATION'=>'Información Documento',
 'File Information'=>'Información Archivo',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Herramientas de Documentos',
-// Added for 4GA
 'Contact Name'=>'Nombre del Contacto',
 'Related To'=>'Relacionado con',
 'Subject'=>'Asunto',
@@ -55,14 +54,12 @@ $mod_strings = Array(
 'Modified Time'=>'Última Modificación',
 'Document'=>'Documento',
 'Note'=>'Notas',
-//Added for 4.2 Release -- CustomView
 'Related to'=>'Relacionado con',
 'Last Modified'=>'Última Modificación',
 'File'=>'Archivo',
 'LBL_ALL'=>'Todo',
 'Title'=>' Asunto',
 
-//Added after 504 for Downloads Module
 'LBL_FILE_INFORMATION'=>'Información Archivo',
 'LBL_FILE_NAME'=>'Nombre Archivo',
 'LBL_FILE_TYPE'=>'Tipo Archivo',
@@ -99,12 +96,9 @@ $mod_strings = Array(
 'File Name'=>'Nombre Archivo',
 'File Type'=>'Tipo Archivo',
 'File Size'=>'Tamaño',
-'LBL_INTERNAL'=>'Interno',
 'LBL_URL'=>'URL',
-'LBL_EXTERNAL'=>'Externo',
 'LBL_EXTERNAL_LNK'=>'Enlace Externo',
 'LBL_ACTIVE'=>'Activo',
-'LBL_INACTIVE'=>'Inactivo',
 'LBL_PLATFORM_INDEPENDENT'=>'Plataforma Independiente',
 'LNK_DOWNLOAD'=>'descarga',
 'LBL_MOVE_DOCUMENTS'=>'Mover Documento(s)',
@@ -115,11 +109,8 @@ $mod_strings = Array(
 'Download Count'=>'Número Descargas',
 'Platform'=>'Plataforma',
 'Assigned To'=>'Asignado a',
-// Module Sequence Numbering
 'Note No' => 'Núm. Documento',
-// END
 
-// Documents module
 'LBL_EMPTY_FOLDERS' => 'Carpetas Vacías',
 'LBL_VIEW_EMPTY_FOLDERS' => 'Ver Carpetas Vacías',
 'LBL_NO_DOCUMENTS' => 'Sin Documentos',
@@ -134,6 +125,15 @@ $mod_strings = Array(
 'Documents' => 'Documentos',
 'Documents ID'=>'Id Documento',
 'LBL_FILEUPLOAD_FAILED'=>'No se ha podido cargar el fichero. Revisa los permisos de los directorios!',
+'STORAGESIZE_CONFIGURATION' => 'Información y Configuración Espacio',
+'STORAGESIZE_CONFIGURATION_DESCRIPTION' => 'Permite ver e incrementar el espacio utilizado por la aplicación.',
+'StorageMustIncrement' => 'El nuevo límite de capacidad debe ser mayor al actual. Para reducir el tamaño ocupado, los documentos deben ser eliminados por un administrador del servidor. Por favor ponte en contacto con tu proveedor de servicio.',
+'StorageLimit' => 'El límite de capacidad de almacenamiento de tu aplicación ha sido alcanzado. Por favor, contacta con el administrador de la aplicación para poder ampliar la capacidad de almacenamiento.',
+'ExtendStorageLink' => 'Puedes ampliar este límite aquí.',
+'Total' => 'Total Espacio',
+'Occupied' => 'Espacio ocupado',
+'Free' => 'Espacio disponible',
+'NewSize' => 'Nuevo Tamaño',
+'accept_charge' => 'Acepto el cambio de licencia y el recargo que pueda llevar asociado',
 );
-
 ?>

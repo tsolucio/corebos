@@ -7,17 +7,17 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once("Smarty_setup.php");
-require_once("include/utils/CommonUtils.php");
-require_once("include/events/SqlResultIterator.inc");
-require_once("VTTaskManager.inc");
-require_once("VTWorkflowUtils.php");
-require_once("VTWorkflowApplication.inc");
+require_once 'Smarty_setup.php';
+require_once 'include/utils/CommonUtils.php';
+require_once 'include/events/SqlResultIterator.inc';
+require_once 'VTTaskManager.inc';
+require_once 'VTWorkflowUtils.php';
+require_once 'VTWorkflowApplication.inc';
 
-function vtSaveTask($adb, $request){
+function vtSaveTask($adb, $request) {
 	global $current_language;
 	$util = new VTWorkflowUtils();
-	$module = new VTWorkflowApplication("savetask");
+	$module = new VTWorkflowApplication('savetask');
 	$mod = return_module_language($current_language, $module->name);
 	if (!$util->checkAdminAccess()) {
 		$errorUrl = $module->errorPageUrl($mod['LBL_ERROR_NOT_ADMIN']);
@@ -27,18 +27,18 @@ function vtSaveTask($adb, $request){
 
 	$request = vtlib_purify($request);  // this cleans all values of the array
 	$tm = new VTTaskManager($adb);
-	if (isset($request["task_id"])) {
-		$task = $tm->retrieveTask($request["task_id"]);
+	if (isset($request['task_id'])) {
+		$task = $tm->retrieveTask($request['task_id']);
 	} else {
-		$taskType = $request["task_type"];
-		$workflowId = $request["workflow_id"];
+		$taskType = $request['task_type'];
+		$workflowId = $request['workflow_id'];
 		$task = $tm->createTask($taskType, $workflowId);
 	}
-	$task->summary = $request["summary"];
+	$task->summary = $request['summary'];
 
-	if ($request["active"]=="true") {
+	if ($request['active']=='true') {
 		$task->active=true;
-	} else if ($request["active"]=="false") {
+	} elseif ($request['active']=='false') {
 		$task->active=false;
 	}
 	if (isset($request['check_select_date'])) {
@@ -54,14 +54,14 @@ function vtSaveTask($adb, $request){
 	$fieldNames = $task->getFieldNames();
 	foreach ($fieldNames as $fieldName) {
 		if (isset($request[$fieldName])) {
-			$result = json_decode($_REQUEST[$fieldName],true);
+			$result = json_decode($_REQUEST[$fieldName], true);
 			if (json_last_error() === JSON_ERROR_NONE) { // JSON is valid
 				if (is_array($result)) {
 					$cleanarray = array();
 					foreach ($result as $key => $value) {
 						$cleanarray[$key] = vtlib_purify($value);
 					}
-					$task->$fieldName = json_encode($cleanarray,JSON_UNESCAPED_UNICODE);
+					$task->$fieldName = json_encode($cleanarray, JSON_UNESCAPED_UNICODE);
 				} else {
 					$task->$fieldName = $request[$fieldName];
 				}
@@ -78,12 +78,12 @@ function vtSaveTask($adb, $request){
 			$task->$fieldName = (isset($_REQUEST[$fieldName]) ? $_REQUEST[$fieldName] : '');
 		}
 	}
-	$task->test = $request["conditions"];
-	$task->reevaluate = ((isset($request['reevaluate']) and $request['reevaluate']=='on') ? 1 : 0);
+	$task->test = $request['conditions'];
+	$task->reevaluate = ((isset($request['reevaluate']) && $request['reevaluate']=='on') ? 1 : 0);
 	$tm->saveTask($task);
 
-	if (isset($request["return_url"])) {
-		$returnUrl=$request["return_url"];
+	if (isset($request['return_url'])) {
+		$returnUrl=$request['return_url'];
 	} else {
 		$returnUrl=$module->editTaskUrl($task->id);
 	}

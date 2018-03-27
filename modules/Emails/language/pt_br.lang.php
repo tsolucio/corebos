@@ -8,9 +8,10 @@
  * All Rights Reserved.
  ********************************************************************************
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 04/12/2017 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_GENERAL_INFORMATION'=>'Informação Geral',
 
 'LBL_MODULE_NAME'=>'Email',
@@ -25,7 +26,7 @@ $mod_strings = Array(
 'LBL_LIST_DATE'=>'Data Envio',
 'LBL_LIST_TIME'=>'Hora Envio',
 
-'ERR_DELETE_RECORD'=>"Defina um número de registro para apagar a Organização.",
+'ERR_DELETE_RECORD'=>"Defina um número de registro para apagar a Conta.",
 'LBL_DATE_SENT'=>'Data Envio:',
 'LBL_DATE_AND_TIME'=>'Data & Hora Envio:',
 'LBL_DATE'=>'Data Envio:',
@@ -46,7 +47,7 @@ $mod_strings = Array(
 'LBL_JUNK_MAILS'=>'Mensagens não Solicitadas ',
 'LBL_TO_LEADS'=>'Para Leads',
 'LBL_TO_CONTACTS'=>'Para Contatos',
-'LBL_TO_ACCOUNTS'=>'Para Organizações',
+'LBL_TO_ACCOUNTS'=>'Para Contas',
 'LBL_MY_MAILS'=>'Meus Emails',
 'LBL_QUAL_CONTACT'=>'Emails Qualificados',
 'LBL_MAILS'=>'Mensagens',
@@ -59,45 +60,30 @@ $mod_strings = Array(
 'LBL_FROM'=>'De :',
 'LBL_CC'=>'Cc :',
 'LBL_BCC'=>'Bcc :',
-      
+
 'NTC_REMOVE_INVITEE'=>'Você tem certeza que deseja remover este destinatário do email?',
 'LBL_INVITEE'=>'Destinatários',
-      
-// Added Fields
-// Contacts-SubPanelViewContactsAndUsers.php
 'LBL_BULK_MAILS'=>'Mensagens em Massa',
 'LBL_ATTACHMENT'=>'Anexos',
 'LBL_UPLOAD'=>'Upload',
 'LBL_FILE_NAME'=>'Nome Arquivo',
 'LBL_SEND'=>'Enviar',
-      
 'LBL_EMAIL_TEMPLATES'=>'Modelo Email',
 'LBL_TEMPLATE_NAME'=>'Nome Modelo',
 'LBL_DESCRIPTION'=>'Descrição',
 'LBL_EMAIL_TEMPLATES_LIST'=>'Lista Modelos Email',
 'LBL_EMAIL_INFORMATION'=>'Informação Email',
-      
-      
-      
-      
-//for v4 release added
 'LBL_NEW_LEAD'=>'Novo Lead',
 'LBL_LEAD_TITLE'=>'Leads',
-
 'LBL_NEW_PRODUCT'=>'Novo Produto',
 'LBL_PRODUCT_TITLE'=>'Produtos',
 'LBL_NEW_CONTACT'=>'Novo Contato',
 'LBL_CONTACT_TITLE'=>'Contatos',
-'LBL_NEW_ACCOUNT'=>'Nova Organização',
-'LBL_ACCOUNT_TITLE'=>'Organizações',
-      
-// Added vtiger_fields after vtiger4 - Beta
+'LBL_NEW_ACCOUNT'=>'Nova Conta',
+'LBL_ACCOUNT_TITLE'=>'Contas',
 'LBL_USER_TITLE'=>'Usuários',
 'LBL_NEW_USER'=>'Novo Usuário',
-      
-// Added for 4 GA
 'LBL_TOOL_FORM_TITLE'=>'Ferramentas Email',
-//Added for 4GA
 'Date & Time Sent'=>'Data & Hora Envio',
 'Sales Enity Module'=>'Módulo de Vendas',
 'Related To'=>'Relacionado à',
@@ -108,7 +94,6 @@ $mod_strings = Array(
 'Time Start'=>'Hora Inicio',
 'Created Time'=>'Hora Criação',
 'Modified Time'=>'Hora Modificação',
-      
 'MESSAGE_CHECK_MAIL_SERVER_NAME'=>'Por favor, verifique o Nome Servidor de Correio...',
 'MESSAGE_CHECK_MAIL_ID'=>'Por favor, verifique o Email do Usuário <b>Destinatário</b>...',
 'MESSAGE_MAIL_HAS_SENT_TO_USERS'=>'A mensagem está sendo enviada para o(s) seguinte(s) Usuário(s) :',
@@ -116,13 +101,8 @@ $mod_strings = Array(
 'MESSAGE_MAIL_ID_IS_INCORRECT'=>'O endereço da mensagem está incorreto. Por favor, verifique este endereço...',
 'MESSAGE_ADD_USER_OR_CONTACT'=>'Por favor, adicione algum(s) Usuário(s) ou Contato(s)...',
 'MESSAGE_MAIL_SENT_SUCCESSFULLY'=>' Mensagem(s) enviada(s) com sucesso!!',
-      
-// Added for web mail post 4.0.1 release
-'LBL_FETCH_WEBMAIL'=>'Obter Email',
-//Added for 4.2 Release -- CustomView
 'LBL_ALL'=>'Todos',
 'MESSAGE_CONTACT_NOT_WANT_MAIL'=>'Este Contato não deseja receber Emails.',
-'LBL_WEBMAILS_TITLE'=>'WebMails',
 'LBL_EMAILS_TITLE'=>'Email',
 'LBL_MAIL_CONNECT_ERROR_INFO'=>'Erro ao conectar Servidor de Mensagem!<br> Verifique em Minhas Organizações->Lista Servidor de Mensagem -> Lista Organizações de Email',
 'LBL_ALLMAILS'=>'Todos Emails',
@@ -139,39 +119,31 @@ $mod_strings = Array(
 'LBL_MULTIPLE'=>'Multiplo',
 'LBL_COMPOSE_EMAIL'=>'Novo E-Mail',
 'LBL_VTIGER_EMAIL_CLIENT'=>'Cliente Webmail',
-      
-//Added for 5.0.3
 'TITLE_VTIGERCRM_MAIL'=>'Correio',
 'TITLE_COMPOSE_MAIL'=>'Nova Mensagem',
-      
 'MESSAGE_MAIL_COULD_NOT_BE_SEND'=>'A mensagem não pode ser enviada para o usuário responsável.',
 'MESSAGE_PLEASE_CHECK_ASSIGNED_USER_EMAILID'=>'Por favor verifique o endereço de email atribuído ao usuário....',
 'MESSAGE_PLEASE_CHECK_THE_FROM_MAILID'=>'Por favor verifique o endereço de email',
 'MESSAGE_MAIL_COULD_NOT_BE_SEND_TO_THIS_EMAILID'=>'Mensagem não pode ser enviada para este endereço de email',
 'PLEASE_CHECK_THIS_EMAILID'=>'Por favor verifique o endereço deste email...',
 'LBL_CC_EMAIL_ERROR'=>'Seu endereço de email CC não está correto',
-'LBL_BCC_EMAIL_ERROR'=>'Seu endereço de email BCC não está correto',
+'LBL_BCC_EMAIL_ERROR'=>'Seu endereço de email CCO não está correto',
 'LBL_NO_RCPTS_EMAIL_ERROR'=>'Nenhum destinatário epecificado',
 'LBL_CONF_MAILSERVER_ERROR'=>'Por favor configure seu servidor de envio de mensagens em Configurações --> link Servidor de Envio',
-'LBL_CONF_SERVERSTORAGE_ERROR'=>'The permissions on your storage directory are insufficient, you will not be able to send attachments!',
+'LBL_CONF_SERVERSTORAGE_ERROR'=>'As permissões no seu diretório de armazenamento são insuficientes, você não poderá enviar anexos!',
 'LBL_MAILSELECT_INFO3'=>'Você não tem permissão para visualizar endereço(s) de emai(s)l nos Registro(s) selecionado(s)',
-//Added  for script alerts
-'FEATURE_AVAILABLE_INFO' => 'Este atributo está disponível atualmente somente para usuários do Microsoft Internet Explorer 5.5+  \n\nAguarde
-por uma atualização!',
 'DOWNLOAD_CONFIRAMATION' => 'Você deseja fazer o download do arquivo?',
 'LBL_PLEASE_ATTACH' => 'Por favor, anexe um arquivo válido e tente novamente!',
 'LBL_KINDLY_UPLOAD' => 'Por favor, configure a variável <font color="red">upload_tmp_dir</font> no arquivo php.ini',
 'LBL_EXCEED_MAX' => 'Desculpe, o arquivo transferido excedeu o limite máximo. Por gentileza, tente um arquivo menor',
 'LBL_BYTES' => ' bytes',
 'LBL_CHECK_USER_MAILID' => 'Por favor verifique a identificação do usuário atual. É necessário um nome válido para enviar Mensagens',
-
-// Added/Updated for vtiger CRM 5.0.4
 'Activity Type'=>'Tipo Atividade',
 'LBL_MAILSELECT_INFO'=>'os seguintes Emails foram associados. Por favor selecione o ID do Email para o qual deve ser enviado',
 'LBL_NO_RECORDS' => 'Nenhum Registro encontrado',
 'LBL_PRINT_EMAIL'=> 'Imprimir',
-'LBL_ATTACH_DOCUMENTS' => 'Attach documents',
-'Access Count' => 'Access Count',
+'LBL_ATTACH_DOCUMENTS' => 'Anexar documentos',
+'Access Count' => 'Contador de Acessos',
 );
 
 ?>

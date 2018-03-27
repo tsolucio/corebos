@@ -2,7 +2,7 @@
 /***********************************************************
 *  Module       : Home
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
@@ -39,9 +39,9 @@ $mod_strings = array (
 	'Last Week' => 'La semaine dernière',
 	'Last 2 Days' => 'Les 2 derniers jours',
 	'Last Ten Days' => 'Les 10 derniers jours',
-	
+
 	'User List' => 'Liste des utilisateurs',
-	
+
 	'LBL_HOME_MODULE' => 'Module',
 	'LBL_HOME_RSS' => 'RSS',
 	'LBL_HOME_DASHBOARD' => 'Tableau de bord',
@@ -107,5 +107,8 @@ $mod_strings = array (
 	'LBL_HOME_ADDWINDOW' => 'Ajouter Fenêtre',
 	'LBL_GETTING_STARTED' => 'Démarrage...',
 	'ExpirePasswordAfterDays' => 'Expire Password After Days',
+	'FieldsNotFoundInFilter' => 'Fields not found in Selected Filter',
+	'FilterNotFound' => 'Filter You have Selected is Not Found',
+	'Permission Denied' => 'Permission Denied',
 );
 ?>

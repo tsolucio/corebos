@@ -16,7 +16,7 @@ if ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true')) {
 	$toggle_name = 'Leads';
 }
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_TGL_HISTORICOS' => $toggle_historicos,
 'LBL_MODULE_NAME'=>$toggle_name,
 'Leads' => $toggle_name,
@@ -214,8 +214,5 @@ $mod_strings = Array(
 'LBL_FIELD_SETTINGS' => 'Field Settings',
 'Leads ID' => 'Leads ID',
 'LeadAlreadyConverted' => 'Lead cannot be converted. Either it has already been converted or you lack permission on one or more of the destination modules.',
-'Is Converted From Lead' => 'Viene convertito da Lead',
-'Converted From Lead' => 'Convertito da Lead',
 );
-
 ?>

@@ -7,8 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
-require_once('config.php');
 require_once('include/database/PearDatabase.php');
 
 global $adb, $mod_strings, $default_charset;

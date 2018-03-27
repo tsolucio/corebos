@@ -2877,7 +2877,7 @@ foreach($alter_query_array as $query)
 
 
 //To populate the comboStrings for Campaigns module which are added newly
-require_once('include/ComboStrings.php');
+require_once('modules/Migration/ComboStrings.php');
 global $combo_strings;
 
 $comboTables = Array('campaigntype','campaignstatus','expectedresponse');

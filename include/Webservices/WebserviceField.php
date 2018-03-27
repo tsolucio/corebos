@@ -180,14 +180,18 @@ class WebserviceField{
 		return $this->blockName;
 	}
 
-	public function getBlockSequence(){
-		if(empty($this->blockSequence)) {
-			if(empty($this->blockId)) {
+	public function getBlockSequence() {
+		static $blkcache = array();
+		if (empty($this->blockSequence)) {
+			if (empty($this->blockId)) {
 				$this->blockSequence = 0;
+			} elseif (isset($blkcache[$this->blockId])) {
+				return $blkcache[$this->blockId];
 			} else {
 				global $adb;
 				$blkseqrs = $adb->query('select sequence from vtiger_blocks where blockid='.$this->blockId);
-				$this->blockSequence = $adb->query_result($blkseqrs,0,0);
+				$this->blockSequence = $adb->query_result($blkseqrs, 0, 0);
+				$blkcache[$this->blockId] = $this->blockSequence;
 			}
 		}
 		return $this->blockSequence;
@@ -307,7 +311,7 @@ class WebserviceField{
 			$fieldTypeData = WebserviceField::$fieldTypeMapping[$this->getUIType()];
 			$referenceTypes = array();
 			if($this->getUIType() != $this->genericUIType){
-				$sql = "select * from vtiger_ws_referencetype where fieldtypeid=?";
+				$sql = "select type from vtiger_ws_referencetype where fieldtypeid=?";
 				$params = array($fieldTypeData['fieldtypeid']);
 			}else{
 				$sql = 'select relmodule as type from vtiger_fieldmodulerel where fieldid=?';
@@ -370,19 +374,18 @@ class WebserviceField{
 			default: return "string";
 		}
 	}
-	
-	private function getFieldTypeFromUIType(){
-		
+
+	private function getFieldTypeFromUIType() {
 		// Cache all the information for futher re-use
-		if(empty(self::$fieldTypeMapping)) {
-			$result = $this->pearDB->pquery("select * from vtiger_ws_fieldtype", array());
-			while($resultrow = $this->pearDB->fetch_array($result)) {
+		if (empty(self::$fieldTypeMapping)) {
+			$result = $this->pearDB->pquery('select uitype, fieldtype, fieldtypeid from vtiger_ws_fieldtype', array());
+			while ($resultrow = $this->pearDB->fetch_array($result)) {
 				self::$fieldTypeMapping[$resultrow['uitype']] = $resultrow;
 			}
 		}
-		
-		if(isset(WebserviceField::$fieldTypeMapping[$this->getUIType()])){
-			if(WebserviceField::$fieldTypeMapping[$this->getUIType()] === false){
+
+		if (isset(WebserviceField::$fieldTypeMapping[$this->getUIType()])) {
+			if (WebserviceField::$fieldTypeMapping[$this->getUIType()] === false) {
 				return null;
 			}
 			$row = WebserviceField::$fieldTypeMapping[$this->getUIType()];
@@ -392,7 +395,7 @@ class WebserviceField{
 			return null;
 		}
 	}
-	
+
 	function getPicklistDetails(){
 		$hardCodedPickListNames = array("hdntaxtype","email_flag");
 		$hardCodedPickListValues = array(
@@ -438,11 +441,11 @@ class WebserviceField{
 			return $purified_plcache[$moduleName.$fieldName];
 		}
 		$options = array();
-		$sql = "select * from vtiger_picklist where name=?";
+		$sql = "select picklistid from vtiger_picklist where name=?";
 		$result = $this->pearDB->pquery($sql,array($fieldName));
 		$numRows = $this->pearDB->num_rows($result);
 		if($numRows == 0){
-			$sql = "select * from vtiger_$fieldName";
+			$sql = "select $fieldName from vtiger_$fieldName";
 			$result = $this->pearDB->pquery($sql,array());
 			$numRows = $this->pearDB->num_rows($result);
 			for($i=0;$i<$numRows;++$i){

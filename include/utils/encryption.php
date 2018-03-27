@@ -9,7 +9,7 @@
 ********************************************************************************/
 
 class Encryption {
-	function encrypt($message) {
+	public function encrypt($message) {
 		//converting a string to binary
 		$enc_message = $this->asc2bin($message);
 		$enc_message = $this -> xor_string($enc_message);
@@ -17,7 +17,7 @@ class Encryption {
 		return $enc_message;
 	}
 
-	function asc2bin($inputString, $byteLength=8) {
+	public function asc2bin($inputString, $byteLength = 8) {
 		$binaryOutput = '';
 		$strSize = strlen($inputString);
 		for ($x=0; $x<$strSize; $x++) {
@@ -28,7 +28,7 @@ class Encryption {
 		return $binaryOutput;
 	}
 
-	function bin2asc($binaryInput, $byteLength=8) {
+	public function bin2asc($binaryInput, $byteLength = 8) {
 		if (strlen($binaryInput) % $byteLength) {
 			return false;
 		}
@@ -43,14 +43,14 @@ class Encryption {
 		return $origStr;
 	}
 
-	function decrypt($message) {
+	public function decrypt($message) {
 		$dec_message = $this -> urlsafe_b64decode($message);
 		$dec_message = $this -> xor_string($dec_message);
 		$dec_message = $this->bin2asc($dec_message);
 		return $dec_message;
 	}
 
-	function xor_string($string) {
+	public function xor_string($string) {
 		$buf = '';
 		$size = strlen($string);
 		for ($i=0; $i<$size; $i++) {
@@ -59,14 +59,14 @@ class Encryption {
 		return $buf;
 	}
 
-	function urlsafe_b64encode($string) {
+	public function urlsafe_b64encode($string) {
 		$data = base64_encode($string);
-		$data = str_replace(array('+','/','='),array('-','_','.'),$data);
+		$data = str_replace(array('+','/','='), array('-','_','.'), $data);
 		return $data;
 	}
 
-	function urlsafe_b64decode($string) {
-		$data = str_replace(array('-','_'),array('+','/'),$string);
+	public function urlsafe_b64decode($string) {
+		$data = str_replace(array('-','_'), array('+','/'), $string);
 		$mod4 = strlen($data) % 4;
 		if ($mod4) {
 			$data .= substr('====', $mod4);
@@ -74,7 +74,7 @@ class Encryption {
 		return base64_decode($data);
 	}
 
-	function x_Encrypt($string, $key) {
+	public function x_Encrypt($string, $key) {
 		for ($i=0; $i<strlen($string); $i++) {
 			for ($j=0; $j<strlen($key); $j++) {
 				$string[$i] = $string[$i]^$key[$j];
@@ -83,7 +83,7 @@ class Encryption {
 		return $string;
 	}
 
-	function x_Decrypt($string, $key) {
+	public function x_Decrypt($string, $key) {
 		for ($i=0; $i<strlen($string); $i++) {
 			for ($j=0; $j<strlen($key); $j++) {
 				$string[$i] = $key[$j]^$string[$i];

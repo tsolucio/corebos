@@ -1,20 +1,14 @@
 <?php
-/*******************************************************************************
- * The contents of this file are subject to the following licences:
- * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
- * - vtiger CRM Public License Version 1.0 
- * You may not use this file except in compliance with the License
- * Software distributed under the License is distributed on an  "AS IS" basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is: SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * Portions created by Vicus are Copyright (C) Vicus.
  * All Rights Reserved.
  * Feel free to use / redistribute these languagefiles under the VPL 1.0.
- * This translations is based on earlier work of: 
+ * This translations is based on earlier work of:
  * - IT-Online.nl <www.it-online.nl>
  * - Weltevree.org <www.Weltevree.org>
  ********************************************************************************/
@@ -32,6 +26,7 @@ $app_strings = array(
 	'LBL_SHOW' => 'Bekijk :',
 	'today' => 'Vandaag',
 	'all' => 'Alle',
+	'Generate Document'=>'Merge Document',
 	'LBL_UPCOMING_EVENTS' => 'Aankomende Afspraken',
 	'LBL_PENDING_EVENTS' => 'Wachtende Afspraken',
 	'NTC_WELCOME_MESSAGE' => 'Welkom bij coreBOS!',
@@ -186,6 +181,7 @@ $app_strings = array(
 	'ERR_CREATING_FIELDS' => 'Fout bij het invullen van de extra velden: ',
 	'ERR_MISSING_REQUIRED_FIELDS' => 'Niet alle velden zijn ingevuld:',
 	'ERR_INVALID_EMAIL_ADDRESS' => 'fout e-mailadres.',
+	'ERR_INVALID_SECONDARY_EMAIL_ADDRESS' => 'not a valid secondary email address.',
 	'ERR_INVALID_YAHOO_EMAIL_ADDRESS' => 'Geen geldig Secundair e-mailadres !!',
 	'ERR_INVALID_DATE_FORMAT' => 'De datum moet van het formaat:  dd-mm-jjjj zijn',
 	'ERR_INVALID_MONTH' => 'Een geldige maand aub.',
@@ -217,6 +213,8 @@ $app_strings = array(
 	'Import' => 'Importeer',
 	'Merge' => 'Samenvoegen',
 	'ConvertLead' => 'Converteer lead',
+	'Is Converted From Lead' => 'Is gemaakt vanuit lead',
+	'Converted From Lead' => 'Gemaakt vanuit lead',
 	'LBL_SHOW_RESULTS' => 'Laat resultaten zien in',
 	'LBL_TOTAL_RECORDS_FOUND' => 'Totaal gevonden :',
 	'LBL_SEARCH_RESULTS_FOR' => ' -- Zoek resultaten voor ',
@@ -487,10 +485,10 @@ $app_strings = array(
 	'Quote No' => 'Offertenummer',
 	'Sales Order' => 'Verkooporder',
 	'COMBO_QUOTES' => 'Offerte',
-	'End Date' => 'Einddatum',
-	'End Date & Time' => 'Einddatum & tijd',
+	'End Date' => 'Einddatum (System Date)',
+	'End Date & Time' => 'Einddatum & tijd (System Date)',
 	'Start Date' => 'Startdatum',
-	'Start Date & Time' => 'Startdatum & tijd',
+	'Start Date & Time' => 'Startdatum & tijd (System Date)',
 	'Recurring Type' => 'Herhaaltype',
 	'SalesOrders' => 'Verkooporder',
 	'LBL_QUOTE_NAME' => 'Offerte naam',
@@ -655,9 +653,9 @@ $app_strings = array(
 	'LBL_RENAME_PROFILE' => 'Nieuw profiel',
 	'LBL_PROFILE_NAME' => 'Profielnaam',
 	'LBL_START_DATE' => 'Startdatum',
-	'LBL_START_DATE_TIME' => 'Startdatum & tijd',
-	'LBL_END_DATE' => 'Einddatum',
-	'LBL_END_DATE_TIME' => 'Einddatum & tijd',
+	'LBL_START_DATE_TIME' => 'Startdatum & tijd (System Date)',
+	'LBL_END_DATE' => 'Einddatum (System Date)',
+	'LBL_END_DATE_TIME' => 'Einddatum & tijd (System Date)',
 	'LBL_CREATE_MERGE_TEMPLATE' => 'Nieuw samenvoegsjabloon ',
 	'LBL_IMG_FORMATS' => '(Alleen jpg, gif, bmp en png afbeeldingen)',
 	'group' => 'Groep',
@@ -859,6 +857,8 @@ $app_strings = array(
 	'FOLDER_NAME_ALLOW_20CHARS' => 'Mapnaam is beperkt tot 20 characters',
 	'SPECIAL_CHARS_NOT_ALLOWED' => 'Speciale characters niet geoorloofd. Probeer opnieuw...',
 	'LBL_SIGN_IN' => 'Inloggen',
+	'StartSession' => 'Start Session',
+	'CapsLockActive' => 'CapsLock is active',
 	'LBL_ROOT' => 'Root',
 	'LBL_FIRST' => 'Eerste',
 	'LBL_LAST' => 'Laatste',

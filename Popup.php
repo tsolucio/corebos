@@ -35,22 +35,14 @@ $smarty->assign('THEME_PATH', "themes/$theme/");
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign("MODULE",$currentModule);
 $smarty->assign('coreBOS_uiapp_name', GlobalVariable::getVariable('Application_UI_Name',$coreBOS_app_name));
-$sql = 'SELECT dayoftheweek FROM its4you_calendar4you_settings WHERE userid=?';
-$result = $adb->pquery($sql, array($current_user->id));
-if ($result and $adb->num_rows($result)>0) {
-	$fDOW = $adb->query_result($result, 0,0);
-	$userFirstDOW = ($fDOW=='Monday' ? 1 : 0);
-} else {
-	$userFirstDOW = 0;
-}
-$smarty->assign('USER_FIRST_DOW',$userFirstDOW);
+getBrowserVariables($smarty);
+
 // Gather the custom link information to display
 include_once('vtlib/Vtiger/Link.php');
 $hdrcustomlink_params = Array('MODULE'=>$currentModule);
 $COMMONHDRLINKS = Vtiger_Link::getAllByType(Vtiger_Link::IGNORE_MODULE, Array('HEADERSCRIPT_POPUP', 'HEADERCSS_POPUP'), $hdrcustomlink_params);
 $smarty->assign('HEADERSCRIPTS', $COMMONHDRLINKS['HEADERSCRIPT_POPUP']);
 $smarty->assign('HEADERCSS', $COMMONHDRLINKS['HEADERCSS_POPUP']);
-// END
 
 $qc_modules = getQuickCreateModules();
 for ($i=0;$i<count($qc_modules);$i++)  $qcmod[$i]=$qc_modules[$i][1];
@@ -251,8 +243,7 @@ if (isset($_REQUEST['select'])) {
 $smarty->assign('RETURN_ACTION',isset($_REQUEST['return_action']) ? vtlib_purify($_REQUEST['return_action']) : '');
 
 //Retreive the list from Database
-if($currentModule == 'PriceBooks' && isset($_REQUEST['productid']))
-{
+if ($currentModule == 'PriceBooks' && isset($_REQUEST['productid'])) {
 	$productid= isset($_REQUEST['productid']) ? vtlib_purify($_REQUEST['productid']) : 0;
 	$currency_id= isset($_REQUEST['currencyid']) ? vtlib_purify($_REQUEST['currencyid']) : fetchCurrency($current_user->id);
 	$query = 'select vtiger_pricebook.*, vtiger_pricebookproductrel.productid, vtiger_pricebookproductrel.listprice, ' .
@@ -267,10 +258,7 @@ if($currentModule == 'PriceBooks' && isset($_REQUEST['productid']))
 	$smarty->assign('mod_var_name', '');
 	$smarty->assign('mod_var_value', '');
 	$smarty->assign('recid_var_name', '');
-	$smarty->assign('recid_var_value', 0);
-}
-else
-{
+} else {
 	$where_relquery = '';
 	if (!empty($_REQUEST['recordid'])) {
 		$recid = vtlib_purify($_REQUEST['recordid']);
@@ -291,6 +279,12 @@ else
 		$smarty->assign("recid_var_name", "relmod_id");
 		$smarty->assign("recid_var_value",$id);
 		$where_relquery.= getPopupCheckquery($currentModule,$mod,$id);
+	} elseif (isset($_REQUEST['query']) && isset($_REQUEST['search']) && $_REQUEST['query']=='true' && $_REQUEST['search']=='true') {
+		// to show "show all" button on search
+		$smarty->assign('mod_var_name', '');
+		$smarty->assign('mod_var_value', '');
+		$smarty->assign('recid_var_name', '');
+		$smarty->assign('recid_var_value', '0');
 	}
 	else if(isset($_REQUEST['task_relmod_id']))
 	{
@@ -304,7 +298,6 @@ else
 		$smarty->assign('mod_var_name', '');
 		$smarty->assign('mod_var_value', '');
 		$smarty->assign('recid_var_name', '');
-		$smarty->assign('recid_var_value', 0);
 	}
 	if($currentModule == 'Products' && empty($_REQUEST['record_id']) && ($popuptype == 'inventory_prod' || $popuptype == 'inventory_prod_po')){
 		$showSubproducts = GlobalVariable::getVariable('Product_Show_Subproducts_Popup', 'no');
@@ -361,7 +354,7 @@ else
 
 	$query = getListQuery($currentModule,$where_relquery);
 }
-$smarty->assign('RECORD_ID', 0);
+$smarty->assign('RECORD_ID', '');
 if($currentModule == 'Products' && !empty($_REQUEST['record_id']) && ($popuptype == 'inventory_prod' || $popuptype == 'inventory_prod_po'))
 {
 	$product_name = getProductName(vtlib_purify($_REQUEST['record_id']));

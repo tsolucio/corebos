@@ -69,7 +69,6 @@ $mod_strings = array (
   'LBL_SELECT_ACCOUNT' => 'Seleziona Azienda',
   'LBL_GENERAL_INFORMATION' => 'Informazioni Generali',
 
-
   'LBL_NEW_POTENTIAL' => 'Nuova Opportunit&agrave;',
   'LBL_POTENTIAL_TITLE' => 'Opportunit&agrave;',
 
@@ -84,13 +83,11 @@ $mod_strings = array (
   'LBL_NEW_CONTACT' => 'Nuovo Contatto',
   'LBL_CONTACT_TITLE' => 'Contatti',
 
-
   'LBL_ALL' => 'Tutti',
   'LBL_PROSPECT' => 'Prospect',
   'LBL_INVESTOR' => 'Investitore',
   'LBL_RESELLER' => 'Rivenditore',
   'LBL_PARTNER' => 'Partner',
-
 
   'LBL_TOOL_FORM_TITLE' => 'Strumenti Azienda',
 
@@ -127,17 +124,10 @@ $mod_strings = array (
   'Shipping Po Box' => 'BOX (spedizione)',
   'Billing Po Box' => 'BOX (fatturazione)',
 
-
-
   'Email Opt Out' => 'Blocca Email',
   'LBL_EMAIL_OPT_OUT' => 'Blocca Email',
-
   'Notify Owner' => 'Notifica Proprietario',
-
-
-
   '--None--' => '--Nessuno--',
-
   'Acquired' => 'Acquisito',
   'Active' => 'Attivo',
   'Market Failed' => 'Market Fallito',
@@ -188,12 +178,7 @@ $mod_strings = array (
   'LBL_START_DATE' => 'Data Inizio',
   'LBL_END_DATE' => 'Data Fine',
 
-
-
-
   'LBL_ACCOUNT_EXIST' => 'Il Nome Azienda esiste gia` !',
-
-
   'LBL_MAILER_EXPORT' => 'E-Mailer Export',
   'LBL_MAILER_EXPORT_CONTACTS_TYPE' => 'Seleziona i Contatti:',
   'LBL_MAILER_EXPORT_CONTACTS_DESCR' => 'I Contatti possono essere selezionati attraverso i Campi Personalizzati e alcuni campi standard.',
@@ -207,20 +192,21 @@ $mod_strings = array (
   'LBL_MAILER_EXPORT_CHECKED' => 'Selezionato',
   'LBL_MAILER_EXPORT_NOTCHECKED' => 'Non Selezionato',
 
-
-
-
-//crmv@510translation start
 'Account No' => 'Nr. Azienda',
-'LBL_SHOW_ACCOUNT_HIERARCHY' => 'Mostra Gerarchia Aziende',
-
-//crmv@510translation end
 'LBL_SHOW_ACCOUNT_HIERARCHY' => 'Mostra Gerarchia Azienda',
 'Projects' => 'Progetti',
-//crmv@521translation end
 
 'Accounts ID' => 'ID Azienda',
 
+'LBL_ONDEMAND_CONTROL_INFORMATION' => 'On Demand Control',
+'Start Date OD' => 'On Demand Start',
+'End Date OD' => 'On Demand End',
+'OD Service Active' => 'On Demand Active',
+'OD Sync Module Active' => 'On Demand Sync Active',
+'OD Sync Modules' => 'On Demand Sync Modules',
+'Invoice With Tax' => 'Invoice With Tax',
+'Free Space' => 'Free Space',
+'Space Consumed' => 'Space Consumed',
+'Frequency' => 'Invoice Frequency',
 );
-
 ?>

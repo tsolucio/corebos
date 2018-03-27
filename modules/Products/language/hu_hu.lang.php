@@ -154,7 +154,6 @@ $mod_strings = array(
 	'308-Sales-Books' => '308-Könyv-Értékesítés',
 	'Box' => 'Doboz',
 	'Carton' => 'Karton',
-	'Caton' => 'Caton',
 	'Dozen' => 'Tucat',
 	'Each' => 'Mindegyik',
 	'Hours' => 'Órák',

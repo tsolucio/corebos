@@ -134,12 +134,12 @@ function get_next_its_cal(& $cal) {
 
 function getActTypeForCalendar($activitytypeid, $translate = true) {
 	global $adb,$default_charset;
-	$q = 'select * from vtiger_activitytype where activitytypeid = ?';
+	$q = 'select activitytype from vtiger_activitytype where activitytypeid = ?';
 	$Res = $adb->pquery($q,array($activitytypeid));
 	if($adb->num_rows($Res)>0){
 		$value = $adb->query_result($Res,0,'activitytype');
 	} else {
-		$q1 = 'select * from vtiger_activitytype order by activitytypeid limit 1';
+		$q1 = 'select activitytype from vtiger_activitytype order by activitytypeid limit 1';
 		$Res1 = $adb->pquery($q1,array());
 		$value = $adb->query_result($Res1,0,'activitytype');
 	}
@@ -155,7 +155,7 @@ function getActTypesForCalendar() {
 
 	$ActTypes = $params = array();
 	if (is_admin($current_user)) {
-		$q = 'select * from vtiger_activitytype where activitytype!=?';
+		$q = 'select activitytypeid, activitytype from vtiger_activitytype where activitytype!=?';
 		$params = array('Emails');
 	} else {
 		$roleid=$current_user->roleid;
@@ -328,7 +328,7 @@ function getCalendar4YouNonAdminAccessControlQuery($userid,$scope='') {
 
 function getCalendar4YouSharedCalendarId($sharedid) {
 	global $adb;
-	$query = "SELECT * from vtiger_sharedcalendar where sharedid=?";
+	$query = "SELECT userid from vtiger_sharedcalendar where sharedid=?";
 	$result = $adb->pquery($query, array($sharedid));
 	if($adb->num_rows($result)!=0)
 	{
@@ -430,6 +430,9 @@ function transferForAddIntoTitle($type, $row, $CD) {
 	}
 	if ($CD['module']=='Calendar' or $CD['module']=='Events') {
 		$Cal_Data = getDetailViewOutputHtml($CD['uitype'], $CD['fieldname'], $CD['fieldlabel'], $Col_Field, '2', getTabid('cbCalendar'), 'cbCalendar');
+		if ($CD['fieldname'] == 'subject' && strpos($Cal_Data[1], 'a href') === false) {
+			$Cal_Data[1] = '<a target=_blank href="index.php?module=cbCalendar&action=DetailView&record=' . $row['crmid'] . '">' . $Cal_Data[1] . '</a>';
+		}
 		if (strpos($Cal_Data[1], 'vtlib_metainfo')===false) {
 			$Cal_Data[1] .= "<span type='vtlib_metainfo' vtrecordid='".$row["crmid"]."' vtfieldname='".$CD["fieldname"]."' vtmodule='cbCalendar' style='display:none;'></span>";
 		}

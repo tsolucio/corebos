@@ -5,14 +5,8 @@
  * The Original Code is:  vtiger CRM Open Source
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
- * All Rights Reserved.
- ********************************************************************************/
-/*********************************************************************************
- * $Header:  \modules\Leads\language\hu_hu.lang.php - 21:38 2011.11.12. $
- * Description:  Defines the Hungarian language pack for the Leads module vtiger 5.3.x
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
  * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
+ * All Rights Reserved.
  ********************************************************************************/
 
 if ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true')) {
@@ -23,10 +17,10 @@ if ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true')) {
 	$toggle_name = 'Jelöltek';
 }
 
-$mod_strings = Array(
-'LBL_TGL_HISTORICOS' => $toggle_historicos,
-'LBL_MODULE_NAME'=>$toggle_name,
-'Leads' => $toggle_name,
+$mod_strings = array(
+	'LBL_TGL_HISTORICOS' => $toggle_historicos,
+	'LBL_MODULE_NAME'=>$toggle_name,
+	'Leads' => $toggle_name,
 	'LBL_DIRECT_REPORTS_FORM_NAME' => 'Közvetlen Jelentések',
 	'LBL_MODULE_TITLE' => 'Jelöltek: Kezdőlap',
 	'LBL_SEARCH_FORM_TITLE' => 'Jelöltek Keresés',
@@ -220,7 +214,5 @@ $mod_strings = Array(
 	'Leads ID' => 'Jelöltek AZ',
 	'Send SMS' => 'SMS küldés',
 	'LeadAlreadyConverted' => 'Lead cannot be converted. Either it has already been converted or you lack permission on one or more of the destination modules.',
-	'Is Converted From Lead'  => 'Vevőjelöltből konvertált?',
-	'Converted From Lead'  => 'Vevőjelöltből konvertált',
 );
 ?>

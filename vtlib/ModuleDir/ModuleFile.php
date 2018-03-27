@@ -7,99 +7,101 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('data/CRMEntity.php');
-require_once('data/Tracker.php');
+require_once 'data/CRMEntity.php';
+require_once 'data/Tracker.php';
 
 class ModuleClass extends CRMEntity {
-	var $db, $log; // Used in class functions of CRMEntity
+	public $db;
+	public $log;
 
-	var $table_name = 'vtiger_payslip';
-	var $table_index= 'payslipid';
-	var $column_fields = Array();
+	public $table_name = 'vtiger_MODULE_NAME_LOWERCASE';
+	public $table_index= 'MODULE_NAME_LOWERCASEid';
+	public $column_fields = array();
 
 	/** Indicator if this is a custom module or standard module */
-	var $IsCustomModule = true;
-	var $HasDirectImageField = false;
+	public $IsCustomModule = true;
+	public $HasDirectImageField = false;
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
-	var $customFieldTable = Array('vtiger_payslipcf', 'payslipid');
+	public $customFieldTable = array('vtiger_MODULE_NAME_LOWERCASEcf', 'MODULE_NAME_LOWERCASEid');
 	// related_tables variable should define the association (relation) between dependent tables
-	// FORMAT: related_tablename => Array ( related_tablename_column[, base_tablename, base_tablename_column[, related_module]] )
+	// FORMAT: related_tablename => array(related_tablename_column[, base_tablename, base_tablename_column[, related_module]] )
 	// Here base_tablename_column should establish relation with related_tablename_column
 	// NOTE: If base_tablename and base_tablename_column are not specified, it will default to modules (table_name, related_tablename_column)
 	// Uncomment the line below to support custom field columns on related lists
-	// var $related_tables = Array('vtiger_payslipcf'=>array('payslipid','vtiger_payslip', 'payslipid', 'PaySlip'));
+	// var $related_tables = array('vtiger_MODULE_NAME_LOWERCASEcf' => array('MODULE_NAME_LOWERCASEid', 'vtiger_MODULE_NAME_LOWERCASE', 'MODULE_NAME_LOWERCASEid', 'MODULE_NAME_LOWERCASE'));
 
 	/**
 	 * Mandatory for Saving, Include tables related to this module.
 	 */
-	var $tab_name = Array('vtiger_crmentity', 'vtiger_payslip', 'vtiger_payslipcf');
+	public $tab_name = array('vtiger_crmentity', 'vtiger_MODULE_NAME_LOWERCASE', 'vtiger_MODULE_NAME_LOWERCASEcf');
 
 	/**
 	 * Mandatory for Saving, Include tablename and tablekey columnname here.
 	 */
-	var $tab_name_index = Array(
+	public $tab_name_index = array(
 		'vtiger_crmentity' => 'crmid',
-		'vtiger_payslip'   => 'payslipid',
-		'vtiger_payslipcf' => 'payslipid');
+		'vtiger_MODULE_NAME_LOWERCASE'   => 'MODULE_NAME_LOWERCASEid',
+		'vtiger_MODULE_NAME_LOWERCASEcf' => 'MODULE_NAME_LOWERCASEid',
+	);
 
 	/**
 	 * Mandatory for Listing (Related listview)
 	 */
-	var $list_fields = Array (
-		/* Format: Field Label => Array(tablename => columnname) */
+	public $list_fields = array(
+		/* Format: Field Label => array(tablename => columnname) */
 		// tablename should not have prefix 'vtiger_'
-		'Payslip Name'=> Array('payslip' => 'payslipname'),
-		'Assigned To' => Array('crmentity' => 'smownerid')
+		'MODULE_NAME_LABEL'=> array('MODULE_NAME_LOWERCASE' => 'MODULE_REFERENCE_FIELD'),
+		'Assigned To' => array('crmentity' => 'smownerid')
 	);
-	var $list_fields_name = Array(
+	public $list_fields_name = array(
 		/* Format: Field Label => fieldname */
-		'Payslip Name'=> 'payslipname',
+		'MODULE_NAME_LABEL'=> 'MODULE_REFERENCE_FIELD',
 		'Assigned To' => 'assigned_user_id'
 	);
 
 	// Make the field link to detail view from list view (Fieldname)
-	var $list_link_field = 'payslipname';
+	public $list_link_field = 'MODULE_REFERENCE_FIELD';
 
 	// For Popup listview and UI type support
-	var $search_fields = Array(
-		/* Format: Field Label => Array(tablename => columnname) */
+	public $search_fields = array(
+		/* Format: Field Label => array(tablename => columnname) */
 		// tablename should not have prefix 'vtiger_'
-		'Payslip Name'=> Array('payslip' => 'payslipname')
+		'MODULE_NAME_LABEL'=> array('MODULE_NAME_LOWERCASE' => 'MODULE_REFERENCE_FIELD')
 	);
-	var $search_fields_name = Array(
+	public $search_fields_name = array(
 		/* Format: Field Label => fieldname */
-		'Payslip Name'=> 'payslipname'
+		'MODULE_NAME_LABEL Name'=> 'MODULE_REFERENCE_FIELD'
 	);
 
 	// For Popup window record selection
-	var $popup_fields = Array('payslipname');
+	public $popup_fields = array('MODULE_REFERENCE_FIELD');
 
 	// Placeholder for sort fields - All the fields will be initialized for Sorting through initSortFields
-	var $sortby_fields = Array();
+	public $sortby_fields = array();
 
 	// For Alphabetical search
-	var $def_basicsearch_col = 'payslipname';
+	public $def_basicsearch_col = 'MODULE_REFERENCE_FIELD';
 
 	// Column value to use on detail view record text display
-	var $def_detailview_recname = 'payslipname';
+	public $def_detailview_recname = 'MODULE_REFERENCE_FIELD';
 
 	// Required Information for enabling Import feature
-	var $required_fields = Array('payslipname'=>1);
+	public $required_fields = array('MODULE_REFERENCE_FIELD'=>1);
 
 	// Callback function list during Importing
-	var $special_functions = Array('set_import_assigned_user');
+	public $special_functions = array('set_import_assigned_user');
 
-	var $default_order_by = 'payslipname';
-	var $default_sort_order='ASC';
+	public $default_order_by = 'MODULE_REFERENCE_FIELD';
+	public $default_sort_order='ASC';
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
-	var $mandatory_fields = Array('createdtime', 'modifiedtime', 'payslipname');
+	public $mandatory_fields = array('createdtime', 'modifiedtime', 'MODULE_REFERENCE_FIELD');
 
-	function save_module($module) {
+	public function save_module($module) {
 		if ($this->HasDirectImageField) {
-			$this->insertIntoAttachment($this->id,$module);
+			$this->insertIntoAttachment($this->id, $module);
 		}
 	}
 
@@ -108,19 +110,19 @@ class ModuleClass extends CRMEntity {
 	 * @param String Module name
 	 * @param String Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
 	 */
-	function vtlib_handler($modulename, $event_type) {
-		if($event_type == 'module.postinstall') {
+	public function vtlib_handler($modulename, $event_type) {
+		if ($event_type == 'module.postinstall') {
 			// TODO Handle post installation actions
 			$this->setModuleSeqNumber('configure', $modulename, $modulename.'-', '0000001');
-		} else if($event_type == 'module.disabled') {
+		} elseif ($event_type == 'module.disabled') {
 			// TODO Handle actions when this module is disabled.
-		} else if($event_type == 'module.enabled') {
+		} elseif ($event_type == 'module.enabled') {
 			// TODO Handle actions when this module is enabled.
-		} else if($event_type == 'module.preuninstall') {
+		} elseif ($event_type == 'module.preuninstall') {
 			// TODO Handle actions when this module is about to be deleted.
-		} else if($event_type == 'module.preupdate') {
+		} elseif ($event_type == 'module.preupdate') {
 			// TODO Handle actions before this module is updated.
-		} else if($event_type == 'module.postupdate') {
+		} elseif ($event_type == 'module.postupdate') {
 			// TODO Handle actions after this module is updated.
 		}
 	}
@@ -130,27 +132,27 @@ class ModuleClass extends CRMEntity {
 	 * NOTE: This function has been added to CRMEntity (base class).
 	 * You can override the behavior by re-defining it here.
 	 */
-	// function save_related_module($module, $crmid, $with_module, $with_crmid) { }
+	// public function save_related_module($module, $crmid, $with_module, $with_crmid) { }
 
 	/**
 	 * Handle deleting related module information.
 	 * NOTE: This function has been added to CRMEntity (base class).
 	 * You can override the behavior by re-defining it here.
 	 */
-	//function delete_related_module($module, $crmid, $with_module, $with_crmid) { }
+	//public function delete_related_module($module, $crmid, $with_module, $with_crmid) { }
 
 	/**
 	 * Handle getting related list information.
 	 * NOTE: This function has been added to CRMEntity (base class).
 	 * You can override the behavior by re-defining it here.
 	 */
-	//function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
+	//public function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
 
 	/**
 	 * Handle getting dependents list information.
 	 * NOTE: This function has been added to CRMEntity (base class).
 	 * You can override the behavior by re-defining it here.
 	 */
-	//function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
+	//public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
 }
 ?>

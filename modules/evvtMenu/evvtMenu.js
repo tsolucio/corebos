@@ -22,8 +22,12 @@ function getMenuInfo(info){
 	$('#mtype').val(info['mtype']);
 	$('#mlabel').val(info['mlabel']);
 	document.getElementById("mvisible").checked = (info['mvisible']=='1');
-	if(info.mtype==='module') $('#modname').val(info['mvalue']);
-	if(info.mtype==='url') $('#mvalue').val(info['mvalue']);
+	if (info.mtype==='module') {
+		$('#modname').val(info['mvalue']);
+	}
+	if (info.mtype==='url') {
+		$('#mvalue').val(info['mvalue']);
+	}
 	$('#mpermission').val(info['mpermission'].split(','));
 	showFormParts(info['mtype']);
 }
@@ -43,7 +47,7 @@ function clearForm(){
 
 function showFormParts(mtype){
 	var element;
-	switch (mtype){
+	switch (mtype) {
 		case 'module':
 			element = document.getElementById('moduleForm');
 			element.classList.remove("hide");

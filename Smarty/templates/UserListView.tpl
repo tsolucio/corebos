@@ -93,6 +93,19 @@ function deleteUser(obj,userid)
 			}
 		);
 }
+
+function logoutUser(userid) {
+	document.getElementById("status").style.display="inline";
+	jQuery.ajax({
+		method:"POST",
+		url:'index.php?module=Users&action=UsersAjax&file=LogoutUser&logoutuserid='+userid
+	}).done(function(response) {
+		console.log(userid,response);
+		document.getElementById("status").style.display="none";
+		alert(response);
+	});
+}
+
 function transferUser(del_userid)
 {
 		document.getElementById("status").style.display="inline";

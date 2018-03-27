@@ -31,6 +31,7 @@
 	{if $_MODULE->name() eq 'cbCalendar'}
 	<input type="hidden" name="calendarselect" id="calendarselect" value="{$CALENDARSELECT}">
 	<input type="hidden" name="cal_startday" id="cal_startday" value="{$CALSTARTDAY}">
+	<input type="hidden" name="datetime" id="datetime" value="">
 	{/if}
 	<!-- header -->
 	<div data-role="header" data-theme="{$COLOR_HEADER_FOOTER}" data-position="fixed">
@@ -49,7 +50,7 @@
 			</div>
 		{/if}
 		{if $_MODULE->name() neq 'Quotes' AND  $_MODULE->name() neq 'SalesOrder' AND  $_MODULE->name() neq 'Invoice' AND  $_MODULE->name() neq 'PurchaseOrder' AND  $_MODULE->name() neq 'Products'}
-			<a href="?_operation=create&module={$_MODULE->name()}&record=''" class="ui-btn ui-corner-all ui-icon-plus ui-btn-icon-notext" data-transition="turn">{$MOD.LBL_NEW}</a>
+			<a id="create_link" href="?_operation=create&module={$_MODULE->name()}&record=''" class="ui-btn ui-corner-all ui-icon-plus ui-btn-icon-notext" data-transition="turn">{$MOD.LBL_NEW}</a>
 		{/if}
 			<a href="#panelmenu" data-mini='true' data-role='button' class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-grid ui-corner-all ui-icon-bars"></a>
 		<h4>{$_MODULE->label()}</h4> 

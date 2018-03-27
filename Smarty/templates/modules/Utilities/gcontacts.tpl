@@ -35,7 +35,7 @@
 <br>
 -->
 {if $ISADMIN}
-<form role="form" style="margin:0 100px;">
+<form role="form" style="margin:0 100px;" method="post">
 <input type="hidden" name="module" value="Utilities">
 <input type="hidden" name="action" value="integration">
 <input type="hidden" name="_op" value="setconfiggcontact">

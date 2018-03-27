@@ -193,7 +193,10 @@ class Google_Oauth2_Connector {
     }
 
     public function retreiveToken() {
-        if(!$this->user_id) $this->user_id = Users_Record_Model::getCurrentUserModel()->getId();
+		global $current_user;
+		if (empty($this->user_id)) {
+			$this->user_id = $current_user->id;
+		}
         $query = 'SELECT synctoken,refresh_token FROM ' . $this->table_name . ' WHERE userid=? AND service =?';
         $params = array($this->user_id, $this->service_name);
         $result = $this->db->pquery($query, $params);
@@ -225,7 +228,9 @@ class Google_Oauth2_Connector {
     }
 
     public function refreshToken() {
-        if($this->token['refresh_token'] == null) throw new AppException('refresh token is null');
+		if ($this->token['refresh_token'] == null) {
+			throw new Exception('refresh token is null');
+		}
         $params = array(
             'grant_type' => 'refresh_token',
             'refresh_token' => $this->token['refresh_token'],

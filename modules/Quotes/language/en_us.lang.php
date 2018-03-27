@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
- 
-$mod_strings = Array(
+
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Quotes',
 'LBL_MODULE_TITLE'=>'Quotes: Home',
 'LBL_SEARCH_FORM_TITLE'=>'Quotes Search',
@@ -66,7 +66,6 @@ $mod_strings = Array(
 'LBL_SELECT_ACCOUNT'=>'Select Organization',
 'LBL_GENERAL_INFORMATION'=>'General Information',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'New Opportunity',
 'LBL_POTENTIAL_TITLE'=>'Opportunities',
 
@@ -81,16 +80,13 @@ $mod_strings = Array(
 'LBL_NEW_CONTACT'=>'New Contact',
 'LBL_CONTACT_TITLE'=>'Contacts',
 
-//Added vtiger_fields after RC1 - Release
 'LBL_ALL'=>'All',
 'LBL_PROSPECT'=>'Prospect',
 'LBL_INVESTOR'=>'Investor',
 'LBL_RESELLER'=>'Reseller',
 'LBL_PARTNER'=>'Partner',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Organization Tools',
-//Added for 4GA
 'Subject'=>'Subject',
 'Potential Name'=>'Opportunity Name',
 'Quote Stage'=>'Quote Stage',
@@ -124,21 +120,16 @@ $mod_strings = Array(
 'Description'=>'Description',
 'Account Name'=>'Organization Name',
 'Terms & Conditions'=>'Terms & Conditions',
-//Quote Info
 'LBL_QUOTE_INFORMATION'=>'Quote Information',
 'LBL_TERMS_INFORMATION'=>'Terms & Conditions',
 'LBL_QUOTE'=>'Quote:',
 
-//Added during 4.2 release
 'LBL_SUBJECT'=>'Subject:',
 'LBL_POTENTIAL_NAME'=>'Opportunity Name:',
 'LBL_ACCOUNT_NAME'=>'Organization Name:',
 'LBL_QUOTE_STAGE'=>'Quote Stage:',
 'LBL_MY_TOP_QUOTE'=>'My Top Open Quotes',
-//'Quote ID'=>'Quote Id',
 'Quote'=>'Quote',
-
-//Added for existing Picklist Entries
 
 'Created'=>'Created',
 'Delivered'=>'Delivered',
@@ -165,5 +156,4 @@ $mod_strings = Array(
 'Add Service Contract'=>'Add Service Contract',
 'Quotes ID'=>'Quotes ID',
 );
-
 ?>

@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'GlobalVariable' =>'Variabili Globali',
 	'SINGLE_GlobalVariable' => 'Variabile Globale',
 	'GlobalVariable ID' => 'ID Variabile Globale',
@@ -39,5 +39,6 @@ $mod_strings = Array(
 	'product_service_default' => 'Prodotti o Servizi default nelle linee prodotto',
 	'GVarDefinitions' => 'Definizione variabile',
 	'cbMap' => 'Business Map',
+	'Role' => 'Ruolo',
 );
 ?>

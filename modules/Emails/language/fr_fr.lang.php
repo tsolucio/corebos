@@ -2,7 +2,7 @@
 /***********************************************************
 *  Module       : Emails
 *  Language     : French
-*  Version      : 5.3.0 
+*  Version      : 5.3.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
@@ -93,10 +93,8 @@ $mod_strings = array (
 	'MESSAGE_MAIL_ID_IS_INCORRECT' => 'Adresse email incorrecte. Veuillez vérifier l\'adresse email du destinataire...',
 	'MESSAGE_ADD_USER_OR_CONTACT' => 'Veuillez sélectionner des collaborateurs ou contacts...',
 	'MESSAGE_MAIL_SENT_SUCCESSFULLY' => ' Message(s) envoyé(s)!',
-	'LBL_FETCH_WEBMAIL' => 'Rapatrier',
 	'LBL_ALL' => 'Tout',
 	'MESSAGE_CONTACT_NOT_WANT_MAIL' => 'Ce contact ne désire pas être contacté par email.',
-	'LBL_WEBMAILS_TITLE' => 'Messagerie',
 	'LBL_EMAILS_TITLE' => 'Emails',
 	'LBL_MAIL_CONNECT_ERROR_INFO' => 'Erreur de connexion au serveur de mail !
 	Vérifiez votre configuration dans Mes préférences -> Ma configuration email',
@@ -126,7 +124,6 @@ $mod_strings = array (
 	'LBL_CONF_MAILSERVER_ERROR' => 'Veuillez signaler à votre administrateur de configurer le serveur de messagerie sortant',
 	'LBL_CONF_SERVERSTORAGE_ERROR'=>'The permissions on your storage directory are insufficient, you will not be able to send attachments!',
 	'LBL_MAILSELECT_INFO3' => 'Vous n\'avez pas les autorisations nécessaires pour consulter les adresses email des enregistrements sélectionnés.',
-	'FEATURE_AVAILABLE_INFO' => 'Cette fonctionnalité n\'est actuellement disponible que pour les utilisateurs d\'Internet Explorer 5.5 et supérieur.',
 	'DOWNLOAD_CONFIRAMATION' => 'Voulez-vous télécharger le fichier ?',
 	'LBL_PLEASE_ATTACH' => 'Veuillez spécifier un fichier correct !',
 	'LBL_KINDLY_UPLOAD' => 'Veuillez configurer la variable upload_tmp_dir de votre fichier php.ini.',

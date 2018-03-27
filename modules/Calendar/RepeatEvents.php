@@ -139,7 +139,7 @@ class Calendar_RepeatEvents {
 
 		$interval = strtotime($focus->column_fields['dtend']) - strtotime($focus->column_fields['dtstart']);
 		$numberOfRepeats = count($recurObj->recurringdates);
-		unset($_REQUEST['timefmt_dtstart'],$_REQUEST['timefmt_dtend']);
+		unset($_REQUEST['timefmt_dtstart'], $_REQUEST['timefmt_dtend'], $_REQUEST['timefmt_followupdt']);
 		foreach ($recurObj->recurringdates as $index => $startDate) {
 			if ($index == 0 && $focus->column_fields['date_start'] == $startDate) {
 				continue;

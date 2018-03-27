@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'cbCalendar' => 'Eventos',
 	'SINGLE_cbCalendar' => 'Evento',
 	'cbCalendar ID' => 'ID Evento',
@@ -20,8 +20,9 @@ $mod_strings = Array(
 	'Subject' => 'Asunto',
 	'Start Date Time' => 'Fecha Hora Inicio',
 	'End Date Time' => 'Fecha Hora Fin',
-	'Time Start' => 'Hora Inicio',
-	'End Time' => 'Hora Fin',
+	'Time Start' => 'Hora Inicio (System Time)',
+	'End Time' => 'Hora Fin (System Time)',
+	'End Date' => 'Fecha Fin',
 	'Due Date' => 'Fecha Vencimiento',
 	'Related with' => 'Evento Relacionado',
 	'Related To' => 'Relacionado con',

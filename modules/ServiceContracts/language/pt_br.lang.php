@@ -8,7 +8,7 @@
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|30/12/2010|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ************************************************************************************/
 
-$mod_strings = Array (
+$mod_strings = array (
 'Service Contracts' => 'Contratos Serviços',
 'ServiceContracts' => 'Contratos Serviços',
 'SINGLE_ServiceContracts' => 'Contrato Serviço',
@@ -53,11 +53,7 @@ $mod_strings = Array (
 'Hours'=>'Horas',
 'Days'=>'Dias',
 'Incidents'=>'Incidentes',
-/*
- * 5.2.0 changes 
- */
 'LBL_MODULE_NAME'=>'Contratos Serviços',
 'Service Requests'=>'Tickets',
 );
-
 ?>

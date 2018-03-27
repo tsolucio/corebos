@@ -35,9 +35,6 @@ class SalesOrder extends CRMEntity {
 
 	var $sortby_fields = Array('subject','smownerid','accountname','lastname');
 
-	// This is used to retrieve related vtiger_fields from form posts.
-	var $additional_column_fields = Array('assigned_user_name', 'smownerid', 'opportunity_id', 'case_id', 'contact_id', 'task_id', 'note_id', 'meeting_id', 'call_id', 'email_id', 'parent_name', 'member_id' );
-
 	// This is the list of vtiger_fields that are in the lists.
 	var $list_fields = Array(
 		'Order No'=>Array('salesorder' => 'salesorder_no'),
@@ -120,7 +117,7 @@ class SalesOrder extends CRMEntity {
 		}
 		$updateInventoryProductRel_deduct_stock = true;
 		//Checking if quote_id is present and updating the quote status
-		if($this->column_fields['quote_id'] != '') {
+		if (!empty($this->column_fields['quote_id'])) {
 			$newStatus = GlobalVariable::getVariable('Quote_StatusOnSalesOrderSave', 'Accepted');
 			if ($newStatus!='DoNotChange') {
 				$qt_id = $this->column_fields['quote_id'];
@@ -296,13 +293,7 @@ class SalesOrder extends CRMEntity {
 				'vtiger_salesordercf', 'vtiger_potentialRelSalesOrder', 'vtiger_sobillads','vtiger_soshipads',
 				'vtiger_inventoryproductrelSalesOrder', 'vtiger_contactdetailsSalesOrder', 'vtiger_accountSalesOrder',
 				'vtiger_invoice_recurring_info','vtiger_quotesSalesOrder'));
-		$query = $this->getRelationQuery($module,$secmodule,"vtiger_salesorder","salesorderid", $queryPlanner);
-		if ($queryPlanner->requireTable("vtiger_crmentitySalesOrder",$matrix)){
-			$query .= " left join vtiger_crmentity as vtiger_crmentitySalesOrder on vtiger_crmentitySalesOrder.crmid=vtiger_salesorder.salesorderid and vtiger_crmentitySalesOrder.deleted=0";
-		}
-		if ($queryPlanner->requireTable("vtiger_salesordercf")){
-			$query .= " left join vtiger_salesordercf on vtiger_salesorder.salesorderid = vtiger_salesordercf.salesorderid";
-		}
+		$query = parent::generateReportsSecQuery($module, $secmodule, $queryPlanner, $type, $where_condition);
 		if ($queryPlanner->requireTable("vtiger_sobillads")){
 			$query .= " left join vtiger_sobillads on vtiger_salesorder.salesorderid=vtiger_sobillads.sobilladdressid";
 		}
@@ -329,12 +320,6 @@ class SalesOrder extends CRMEntity {
 				$query .= " left join vtiger_service as vtiger_serviceSalesOrder on vtiger_serviceSalesOrder.serviceid = vtiger_inventoryproductrelSalesOrder.productid";
 			}
 		}
-		if ($queryPlanner->requireTable("vtiger_groupsSalesOrder")){
-			$query .= " left join vtiger_groups as vtiger_groupsSalesOrder on vtiger_groupsSalesOrder.groupid = vtiger_crmentitySalesOrder.smownerid";
-		}
-		if ($queryPlanner->requireTable("vtiger_usersSalesOrder")){
-			$query .= " left join vtiger_users as vtiger_usersSalesOrder on vtiger_usersSalesOrder.id = vtiger_crmentitySalesOrder.smownerid";
-		}
 		if ($queryPlanner->requireTable("vtiger_potentialRelSalesOrder")){
 			$query .= " left join vtiger_potential as vtiger_potentialRelSalesOrder on vtiger_potentialRelSalesOrder.potentialid = vtiger_salesorder.potentialid";
 		}
@@ -349,12 +334,6 @@ class SalesOrder extends CRMEntity {
 		}
 		if ($queryPlanner->requireTable("vtiger_accountSalesOrder")){
 			$query .= " left join vtiger_account as vtiger_accountSalesOrder on vtiger_accountSalesOrder.accountid = vtiger_salesorder.accountid";
-		}
-		if ($queryPlanner->requireTable("vtiger_lastModifiedBySalesOrder")){
-			$query .= " left join vtiger_users as vtiger_lastModifiedBySalesOrder on vtiger_lastModifiedBySalesOrder.id = vtiger_crmentitySalesOrder.modifiedby ";
-		}
-		if ($queryPlanner->requireTable("vtiger_CreatedBySalesOrder")){
-			$query .= " left join vtiger_users as vtiger_CreatedBySalesOrder on vtiger_CreatedBySalesOrder.id = vtiger_crmentitySalesOrder.smcreatorid ";
 		}
 		return $query;
 	}

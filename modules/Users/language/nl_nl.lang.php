@@ -1,22 +1,11 @@
 <?php
-/*******************************************************************************
- * The contents of this file are subject to the following licences:
- * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
- * - vtiger CRM Public License Version 1.0 
- * You may not use this file except in compliance with the License
- * Software distributed under the License is distributed on an  "AS IS" basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is: SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
- * Portions created by Vicus are Copyright (C) Vicus.
  * All Rights Reserved.
- * Feel free to use / redistribute these languagefiles under the VPL 1.0.
- * This translations is based on earlier work of: 
- * - IT-Online.nl <www.it-online.nl>
- * - Weltevree.org <www.Weltevree.org>
  ********************************************************************************/
 
 $mod_strings = array(
@@ -50,6 +39,9 @@ $mod_strings = array(
 	'LBL_NEW_USER_BUTTON_TITLE' => 'Nieuwe gebruiker [Alt+N]',
 	'LBL_NEW_USER_BUTTON_LABEL' => 'Nieuwe gebruiker',
 	'LBL_NEW_USER_BUTTON_KEY' => 'N',
+	'LBL_EXPORT_USER_BUTTON_TITLE' => 'Exporteer gebruikers [Alt+E]',
+	'LBL_EXPORT_USER_BUTTON_LABEL' => 'Exporteer gebruikers',
+	'LBL_EXPORT_USER_BUTTON_KEY' => 'E',
 	'LBL_DATE_FORMAT' => 'Datum formaat',
 	'LBL_ERROR' => 'Fout:',
 	'LBL_PASSWORD' => 'Wachtwoord:',
@@ -556,6 +548,14 @@ $mod_strings = array(
 	'LBL_3_MIN' => '3 minuten',
 	'LBL_4_MIN' => '4 minuten',
 	'LBL_5_MIN' => '5 minuten',
+	'None' => 'None',
+	'1 Minute' => '1 Minuut',
+	'5 Minutes' => '5 Minuten',
+	'15 Minutes' => '15 Minuten',
+	'30 Minutes' => '30 Minuten',
+	'45 Minutes' => '45 Minuten',
+	'1 Hour' => '1 Hour',
+	'1 Day' => '1 Day',
 	'LBL_EMAILS_PER_PAGE' => 'E-mails per pagina',
 	'LBL_ENTER_PROFILE' => 'Geef het profiel op',
 	'TITLE_USER_DOCUMENT' => 'Document zonder titel',
@@ -704,6 +704,11 @@ $mod_strings = array(
 	'Decimal Separator' => 'Decimalen scheidingsteken',
 	'Digit Grouping Separator' => 'Duizendtallen groeperings scheidingsteken',
 	'Symbol Placement' => 'Symbool plaatsing',
+	'ERR_USER_LOGGED_IN' => 'The User Name is currently in use on another computer. Terminate the session in use or enter a different User Name.',
+	'ERR_USER_CAN_UNBLOCK' => 'An inactive session by the same User Name is blocking your login attempt(s).',
+	'LBL_USERLOGGEDOUTOK' => 'The user has been logged out correctly.',
+	'LBL_USERLOGGEDOUTNOK' => 'The user could not be logged out.',
+	'LBL_UNBLOCK_USR' => 'Unblock the session to login?',
 	// LDAP
 	'LBL_QUERY' => 'Query',
 	'LBL_FORE_LASTNAME' => 'First or Last name',

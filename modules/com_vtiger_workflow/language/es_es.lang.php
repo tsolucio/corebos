@@ -142,7 +142,6 @@ $mod_strings = array(
 'LBL_SELECTED_DATES' => 'Fechas seleccionadas',
 'LBL_EXCEEDING_MAXIMUM_LIMIT' => 'Se ha excedido el límite máximo permtido',
 'LBL_NEXT_TRIGGER_TIME' => 'Próxima ejecución',
-'LBL_MESSAGE' => 'Mensaje',
 'UpdateInventoryProducts On Every Save' => 'Actualizar inventario de productos',
 'Send Email to user when Notifyowner is True' => 'Envíar Email al usuario cuando Notificación Propietario está activado',
 'Send Email to user when Portal User is True' => 'Envíar Email al usuario cuando Portal de Usuario está activado',

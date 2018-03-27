@@ -10,7 +10,7 @@
  * @license	vtiger CRM Public License Version 1.0 (by definition)
  ********************************************************************************/
 
-$mod_strings = Array (
+$mod_strings = array (
 	'LBL_ACTIVE' => 'Actief',
 	'LBL_INACTIVE' => 'InActief',
 	'LBL_STATUS' => 'Status',
@@ -22,14 +22,12 @@ $mod_strings = Array (
 	'LAST_END'=>'Laatst Ge&euml;indigd',
 	'LBL_SEQUENCE'=>'Volgorde',
 	'LBL_TOOLS' =>'Gereedschap',
-	'LBL_DAYS'=>'Dagen',
 	'LBL_HOURS'=>'Uren',
 	'LBL_MINS'=>'Minuten',
 	'LBL_RUNNING'=>'Loopt',
 	'LBL_MINIMUM_FREQUENCY'=>'De frequentie van elke cron job is ingesteld om groter te zijn dan',
 	'LBL_SECONDS'=>'sec geleden',
 	'LBL_MINUTES'=>'min(u)ut(en) geleden',
-	'LBL_HOURS'=>'uur(en) geleden',
 	'LBL_DAYS'=>'dag(en) geleden',
 	'LBL_MONTHS'=>'maand(en) geleden',
 	'LBL_YEARS'=>'ja(a)r(en) geleden',

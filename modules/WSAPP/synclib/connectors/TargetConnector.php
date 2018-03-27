@@ -9,11 +9,11 @@
  *************************************************************************************/
 require_once 'modules/WSAPP/synclib/connectors/BaseConnector.php';
 
-abstract class WSAPP_TargetConnector extends WSAPP_BaseConnector{
+abstract class WSAPP_TargetConnector extends WSAPP_BaseConnector {
 
-	public function transformToTargetRecord($sourceRecords){
+	public function transformToTargetRecord($sourceRecords) {
 		$destinationRecordList = array();
-		foreach($sourceRecords as $record){
+		foreach ($sourceRecords as $record) {
 			$destinationRecord = clone $record;
 
 			$destinationRecord->setId($record->getOtherAppId());
@@ -25,9 +25,9 @@ abstract class WSAPP_TargetConnector extends WSAPP_BaseConnector{
 		}
 		return $destinationRecordList;
 	}
-	public function transformToSourceRecord($targetRecords){
+	public function transformToSourceRecord($targetRecords) {
 		$sourceRcordList = array();
-		foreach($targetRecords as $record){
+		foreach ($targetRecords as $record) {
 			$sourceRecord = clone $record;
 
 			$sourceRecord->setId($record->getOtherAppId())

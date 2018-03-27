@@ -9,12 +9,12 @@
  ************************************************************************************/
 global $currentModule;
 $modObj = CRMEntity::getInstance($currentModule);
-$ajaxaction = $_REQUEST["ajxaction"];
-if($ajaxaction == 'DETAILVIEW') {
+$ajaxaction = $_REQUEST['ajxaction'];
+if ($ajaxaction == 'DETAILVIEW') {
 	$crmid = vtlib_purify($_REQUEST['recordid']);
 	$fieldname = vtlib_purify($_REQUEST['fldName']);
 	$fieldvalue = utf8RawUrlDecode($_REQUEST['fieldValue']);
-	if($crmid != '') {
+	if ($crmid != '') {
 		$modObj->retrieve_entity_info($crmid, $currentModule);
 		$modObj->column_fields[$fieldname] = $fieldvalue;
 		$modObj->id = $crmid;
@@ -33,7 +33,7 @@ if($ajaxaction == 'DETAILVIEW') {
 	} else {
 		echo ':#:FAILURE';
 	}
-} elseif ($ajaxaction == "LOADRELATEDLIST" || $ajaxaction == "DISABLEMODULE") {
+} elseif ($ajaxaction == 'LOADRELATEDLIST' || $ajaxaction == 'DISABLEMODULE') {
 	require_once 'include/ListView/RelatedListViewContents.php';
 }
 ?>

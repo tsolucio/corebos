@@ -9,7 +9,7 @@
 * Contributor: Valmir Carlos Trindade | 30/12/2010 - www.ttcasolucoes.com.br
  ********************************************************************************/
 
-$mod_strings = Array (
+$mod_strings = array (
 'Tooltip' => 'Dica Contexto',
 'LBL_TOOLTIP_MANAGEMENT'=>'Administrar Dica Contexto',
 'LBL_TOOLTIP_MANAGEMENT_DESCRIPTION'=>'Administrar Informações Dica Contexto aqui',

@@ -9,17 +9,18 @@
  ************************************************************************************/
 
 class MailManager_Utils {
-	static function safe_html_string($string) {
+
+	public static function safe_html_string($string) {
 		global $root_directory;
-		include_once ('include/htmlpurifier/library/HTMLPurifier.auto.php');
+		include_once 'include/htmlpurifier/library/HTMLPurifier.auto.php';
 		$config = HTMLPurifier_Config::createDefault();
-		$config->set('Core.Encoding', 'UTF8');
+		$config->set('Core.Encoding', 'UTF-8');
 		$config->set('Cache.SerializerPath', "$root_directory/cache");
 		$htmlpurifier_instance = new HTMLPurifier($config);
 		return $htmlpurifier_instance->purify($string);
 	}
 
-	static function allowedFileExtension($filename) {
+	public static function allowedFileExtension($filename) {
 		global $upload_badext;
 		$parts = explode('.', $filename);
 		if (count($parts) > 1) {
@@ -29,9 +30,8 @@ class MailManager_Utils {
 		return false;
 	}
 
-	static function emitJSON($object) {
+	public static function emitJSON($object) {
 		echo json_encode($object);
 	}
 }
-
 ?>

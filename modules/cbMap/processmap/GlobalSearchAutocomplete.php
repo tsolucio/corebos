@@ -1,6 +1,4 @@
 <?php
-use phpDocumentor\Reflection\Types\Integer;
-
 /*************************************************************************************************
  * Copyright 2017 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
  * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
@@ -24,12 +22,12 @@ use phpDocumentor\Reflection\Types\Integer;
   <mincharstosearch>3</mincharstosearch>
   <maxresults>10</maxresults>
   <searchin>
-    <module>
-      <name>Potentials</name>
-      <searchfields>field1,field2,...,fieldn</searchfields>
-      <searchcondition>startswith|contains</searchcondition>
-      <showfields>field1,field2,...,fieldn</showfields>
-    </module>
+	<module>
+	  <name>Potentials</name>
+	  <searchfields>field1,field2,...,fieldn</searchfields>
+	  <searchcondition>startswith|contains</searchcondition>
+	  <showfields>field1,field2,...,fieldn</showfields>
+	</module>
    ...
   </searchin>
 </map>
@@ -38,20 +36,22 @@ use phpDocumentor\Reflection\Types\Integer;
 
 class GlobalSearchAutocomplete extends processcbMap {
 
-	function processMap($arguments) {
+	public function processMap($arguments) {
 		return $this->convertMap2Array();
 	}
 
-	function convertMap2Array() {
+	private function convertMap2Array() {
 		$xml = $this->getXMLContent();
 		$mapping = array();
 		$mapping['mincharstosearch'] = (isset($xml->mincharstosearch) ? (Integer)$xml->mincharstosearch : 3);
-		$mapping['maxresults'] = (isset($xml->maxresults) ? (Integer)$xml->maxresults : 15);
+		$mapping['maxresults'] = (
+			isset($xml->maxresults) ? (Integer)$xml->maxresults : GlobalVariable::getVariable('Application_Global_Search_Autocomplete_Limit', 15)
+		);
 		$searchin = array();
-		foreach($xml->searchin->module as $k=>$v) {
-			$searchfields = explode(',',(String)$v->searchfields);
+		foreach ($xml->searchin->module as $k => $v) {
+			$searchfields = explode(',', (String)$v->searchfields);
 			$searchfields = array_map('trim', $searchfields);
-			$showfields = explode(',',(String)$v->showfields);
+			$showfields = explode(',', (String)$v->showfields);
 			$showfields = array_map('trim', $showfields);
 			$searchin[(String)$v->name] = array(
 				'searchfields' => $searchfields,
@@ -62,6 +62,5 @@ class GlobalSearchAutocomplete extends processcbMap {
 		$mapping['searchin'] = $searchin;
 		return $mapping;
 	}
-
 }
 ?>

@@ -1558,9 +1558,9 @@ if (typeof(MailManager) == 'undefined') {
                 }
 				
                 function requestOnComplete(response) {
-                    var str = response;
+                    var str = response.responseText;
                     VtigerJS_DialogBox.unblock();
-                    if(str.indexOf('SUCCESS') > -1) {
+                    if (str.indexOf('SUCCESS') > -1) {
                         deferred.resolve(form);
                     } else {
                         alert(str);

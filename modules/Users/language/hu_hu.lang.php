@@ -1,22 +1,14 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *********************************************************************************
- * $Header:  \modules\Users\language\hu_hu.lang.php - 12:14 2011.02.27. $
- * Description:  Defines the Hungarian language pack for the Users module vtiger 5.2.x
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
+ ********************************************************************************
  * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
- ********************************************************************************/ 
+ ********************************************************************************/
 $mod_strings = array(
 	'LBL_MODULE_NAME' => 'Felhasználók',
 	'LBL_MODULE_TITLE' => 'Felhasználók: Kezdőlap',
@@ -48,6 +40,9 @@ $mod_strings = array(
 	'LBL_NEW_USER_BUTTON_TITLE' => 'Új Felhasználó [Alt+N]',
 	'LBL_NEW_USER_BUTTON_LABEL' => 'Új Felhasználó',
 	'LBL_NEW_USER_BUTTON_KEY' => 'N',
+	'LBL_EXPORT_USER_BUTTON_TITLE' => 'Felhasználók exportálása [Alt+E]',
+	'LBL_EXPORT_USER_BUTTON_LABEL' => 'Felhasználók exportálása',
+	'LBL_EXPORT_USER_BUTTON_KEY' => 'E',
 	'LBL_DATE_FORMAT' => 'Dátum Formátum',
 	'LBL_ERROR' => 'Hiba:',
 	'LBL_PASSWORD' => 'Jelszó',
@@ -556,6 +551,14 @@ $mod_strings = array(
 	'LBL_3_MIN' => '3 perc',
 	'LBL_4_MIN' => '4 perc',
 	'LBL_5_MIN' => '5 perc',
+	'None' => 'None',
+	'1 Minute' => '1 Minute',
+	'5 Minutes' => '5 Minutes',
+	'15 Minutes' => '15 Minutes',
+	'30 Minutes' => '30 Minutes',
+	'45 Minutes' => '45 Minutes',
+	'1 Hour' => '1 Hour',
+	'1 Day' => '1 Day',
 	'LBL_EMAILS_PER_PAGE' => 'Email oldalanként',
 	'LBL_ENTER_PROFILE' => 'Add meg a  Profil Nevét',
 	'TITLE_USER_DOCUMENT' => 'Jelöletlen Dokumentum',
@@ -708,6 +711,11 @@ $mod_strings = array(
 	'Min. 1 number' => 'Min. 1 Number',
 	'Min. 1 special character' => 'Min. 1 special character , ! ? , ; - @ #',
 	'Generate password' => 'Generate password',
+	'ERR_USER_LOGGED_IN' => 'The User Name is currently in use on another computer. Terminate the session in use or enter a different User Name.',
+	'ERR_USER_CAN_UNBLOCK' => 'An inactive session by the same User Name is blocking your login attempt(s).',
+	'LBL_USERLOGGEDOUTOK' => 'The user has been logged out correctly.',
+	'LBL_USERLOGGEDOUTNOK' => 'The user could not be logged out.',
+	'LBL_UNBLOCK_USR' => 'Unblock the session to login?',
 	// LDAP
 	'LBL_QUERY' => 'Query',
 	'LBL_FORE_LASTNAME' => 'First or Last name',

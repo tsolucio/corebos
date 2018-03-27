@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('include/utils/UserInfoUtil.php');
+require_once 'include/utils/UserInfoUtil.php';
 
 global $adb;
 $del_id = vtlib_purify($_REQUEST['delete_group_id']);
@@ -19,7 +19,7 @@ if ($assignType == 'T') {
 	$transferId = vtlib_purify($_REQUEST['transfer_user_id']);
 }
 
-deleteGroup($del_id,$transferId);
+deleteGroup($del_id, $transferId);
 
-header("Location: index.php?action=listgroups&module=Settings&parenttab=Settings");
+header('Location: index.php?action=listgroups&module=Settings&parenttab=Settings');
 ?>

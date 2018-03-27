@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('data/Tracker.php');
+require_once 'data/Tracker.php';
 
 global $mod_strings, $app_strings, $current_user, $theme, $log, $default_charset;
 $focus = 0;
@@ -19,264 +19,209 @@ global $oCustomView;
 $error_msg = '';
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
-require_once('modules/CustomView/CustomView.php');
+require_once 'modules/CustomView/CustomView.php';
 
 $cv_module = vtlib_purify($_REQUEST['module']);
 $recordid = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : '';
 
-$smarty->assign("MOD", $mod_strings);
-$smarty->assign("CATEGORY", getParentTab());
-$smarty->assign("APP", $app_strings);
-$smarty->assign("THEME", $theme);
-$smarty->assign("IMAGE_PATH", $image_path);
-$smarty->assign("MODULE",$cv_module);
-$smarty->assign("MODULELABEL",getTranslatedString($cv_module,$cv_module));
-$smarty->assign("CVMODULE", $cv_module);
-$smarty->assign("CUSTOMVIEWID",$recordid);
-$smarty->assign("DATEFORMAT",$current_user->date_format);
-$smarty->assign("JS_DATEFORMAT",parse_calendardate($app_strings['NTC_DATE_FORMAT']));
-$smarty->assign('CHECKED','');
-$smarty->assign('MCHECKED','');
-$smarty->assign('STATUS','');
-if($recordid == "") {
+$smarty->assign('MOD', $mod_strings);
+$smarty->assign('CATEGORY', getParentTab());
+$smarty->assign('APP', $app_strings);
+$smarty->assign('THEME', $theme);
+$smarty->assign('IMAGE_PATH', $image_path);
+$smarty->assign('MODULE', $cv_module);
+$smarty->assign('MODULELABEL', getTranslatedString($cv_module, $cv_module));
+$smarty->assign('CVMODULE', $cv_module);
+$smarty->assign('CUSTOMVIEWID', $recordid);
+$smarty->assign('DATEFORMAT', $current_user->date_format);
+$smarty->assign('JS_DATEFORMAT', parse_calendardate($app_strings['NTC_DATE_FORMAT']));
+$smarty->assign('CHECKED', '');
+$smarty->assign('MCHECKED', '');
+$smarty->assign('STATUS', '');
+if ($recordid == '') {
 	$oCustomView = new CustomView();
 	$modulecollist = $oCustomView->getModuleColumnsList($cv_module);
 	$log->info('CustomView :: Successfully got ColumnsList for the module'.$cv_module);
-	if(isset($modulecollist)) {
-		$choosecolslist = getByModule_ColumnsList($cv_module,$modulecollist);
+	if (isset($modulecollist)) {
+		$choosecolslist = getByModule_ColumnsList($cv_module, $modulecollist);
 	}
-	$smarty->assign('CHOOSECOLUMN',$choosecolslist);
-	$smarty->assign('SELECTEDCOLUMN',array('none'));
+	$smarty->assign('CHOOSECOLUMN', $choosecolslist);
+	$smarty->assign('SELECTEDCOLUMN', array('none'));
 	$Application_ListView_MaxColumns = GlobalVariable::getVariable('Application_ListView_MaxColumns', 12);
-	$smarty->assign('ListView_MaxColumns',$Application_ListView_MaxColumns);
-	$smarty->assign('FILTERROWS',ceil($Application_ListView_MaxColumns/4)+1);
+	$smarty->assign('ListView_MaxColumns', $Application_ListView_MaxColumns);
+	$smarty->assign('FILTERROWS', ceil($Application_ListView_MaxColumns/4)+1);
 	$stdfilterhtml = $oCustomView->getStdFilterCriteria();
 	$stdfiltercolhtml = getStdFilterHTML($cv_module);
 	$stdfilterjs = $oCustomView->getCriteriaJS();
 
-	$smarty->assign("STDFILTERCOLUMNS",$stdfiltercolhtml);
-	$smarty->assign("STDCOLUMNSCOUNT",count($stdfiltercolhtml));
-	$smarty->assign("STDFILTERCRITERIA",$stdfilterhtml);
-	$smarty->assign("STDFILTER_JAVASCRIPT",$stdfilterjs);
+	$smarty->assign("STDFILTERCOLUMNS", $stdfiltercolhtml);
+	$smarty->assign("STDCOLUMNSCOUNT", count($stdfiltercolhtml));
+	$smarty->assign("STDFILTERCRITERIA", $stdfilterhtml);
+	$smarty->assign("STDFILTER_JAVASCRIPT", $stdfilterjs);
 
 	$advfilterhtml = getAdvCriteriaHTML();
-	$modulecolumnshtml = getByModule_ColumnsHTML($cv_module,$modulecollist);
-	$smarty->assign("FOPTION",$advfilterhtml);
-	$smarty->assign("COLUMNS_BLOCK",$modulecolumnshtml);
+	$modulecolumnshtml = getByModule_ColumnsHTML($cv_module, $modulecollist);
+	$smarty->assign("FOPTION", $advfilterhtml);
+	$smarty->assign("COLUMNS_BLOCK", $modulecolumnshtml);
 
-	$smarty->assign("MANDATORYCHECK",implode(",",array_unique($oCustomView->mandatoryvalues)));
-	$smarty->assign("SHOWVALUES",implode(",",$oCustomView->showvalues));
-	$smarty->assign('EXIST','false');
+	$smarty->assign("MANDATORYCHECK", implode(",", array_unique($oCustomView->mandatoryvalues)));
+	$smarty->assign("SHOWVALUES", implode(",", $oCustomView->showvalues));
+	$smarty->assign('EXIST', 'false');
 	$data_type[] = $oCustomView->data_type;
-	$smarty->assign("DATATYPE",$data_type);
+	$smarty->assign("DATATYPE", $data_type);
 } else {
 	$oCustomView = new CustomView($cv_module);
 	$now_action = vtlib_purify($_REQUEST['action']);
-	if($oCustomView->isPermittedCustomView($recordid,$now_action,$oCustomView->customviewmodule) == 'yes') {
+	if ($oCustomView->isPermittedCustomView($recordid, $now_action, $oCustomView->customviewmodule) == 'yes') {
 		$customviewdtls = $oCustomView->getCustomViewByCvid($recordid);
 		$log->info('CustomView :: Successfully got ViewDetails for the Viewid'.$recordid);
 		$modulecollist = $oCustomView->getModuleColumnsList($cv_module);
 		$selectedcolumnslist = $oCustomView->getColumnsListByCvid($recordid);
 		$log->info('CustomView :: Successfully got ColumnsList for the Viewid'.$recordid);
 
-		$smarty->assign("VIEWNAME",$customviewdtls["viewname"]);
+		$smarty->assign("VIEWNAME", $customviewdtls["viewname"]);
 
-		if($customviewdtls["setdefault"] == 1) {
-			$smarty->assign("CHECKED","checked");
+		if ($customviewdtls["setdefault"] == 1) {
+			$smarty->assign("CHECKED", "checked");
 		}
-		if($customviewdtls["setmetrics"] == 1) {
-			$smarty->assign("MCHECKED","checked");
+		if ($customviewdtls["setmetrics"] == 1) {
+			$smarty->assign("MCHECKED", "checked");
 		}
 		$status = $customviewdtls["status"];
-		$smarty->assign("STATUS",$status);
-		$choosecolslist = getByModule_ColumnsList($cv_module,$modulecollist);
-		$smarty->assign('CHOOSECOLUMN',$choosecolslist);
-		$smarty->assign('SELECTEDCOLUMN',$selectedcolumnslist);
+		$smarty->assign("STATUS", $status);
+		$choosecolslist = getByModule_ColumnsList($cv_module, $modulecollist);
+		$smarty->assign('CHOOSECOLUMN', $choosecolslist);
+		$smarty->assign('SELECTEDCOLUMN', $selectedcolumnslist);
 		$Application_ListView_MaxColumns = GlobalVariable::getVariable('Application_ListView_MaxColumns', 12);
-		$smarty->assign('ListView_MaxColumns',$Application_ListView_MaxColumns);
-		$smarty->assign('FILTERROWS',ceil($Application_ListView_MaxColumns/4)+1);
+		$smarty->assign('ListView_MaxColumns', $Application_ListView_MaxColumns);
+		$smarty->assign('FILTERROWS', ceil($Application_ListView_MaxColumns/4)+1);
 		$stdfilterlist = $oCustomView->getStdFilterByCvid($recordid);
 		$log->info('CustomView :: Successfully got Standard Filter for the Viewid'.$recordid);
 		$stdfilterlist["stdfilter"] = ($stdfilterlist["stdfilter"] != "") ? ($stdfilterlist["stdfilter"]) : ("custom");
 		$stdfilterhtml = $oCustomView->getStdFilterCriteria($stdfilterlist["stdfilter"]);
-		$stdfiltercolhtml = getStdFilterHTML($cv_module,$stdfilterlist["columnname"]);
+		$stdfiltercolhtml = getStdFilterHTML($cv_module, $stdfilterlist["columnname"]);
 		$stdfilterjs = $oCustomView->getCriteriaJS();
 
-		$smarty->assign("STARTDATE",$stdfilterlist["startdate"]);
-		$smarty->assign("ENDDATE",$stdfilterlist["enddate"]);
-		$smarty->assign("STDFILTERCOLUMNS",$stdfiltercolhtml);
-		$smarty->assign("STDCOLUMNSCOUNT",count($stdfiltercolhtml));
-		$smarty->assign("STDFILTERCRITERIA",$stdfilterhtml);
-		$smarty->assign("STDFILTER_JAVASCRIPT",$stdfilterjs);
+		$smarty->assign('STARTDATE', $stdfilterlist['startdate']);
+		$smarty->assign('ENDDATE', $stdfilterlist['enddate']);
+		$smarty->assign('STDFILTERCOLUMNS', $stdfiltercolhtml);
+		$smarty->assign('STDCOLUMNSCOUNT', count($stdfiltercolhtml));
+		$smarty->assign('STDFILTERCRITERIA', $stdfilterhtml);
+		$smarty->assign('STDFILTER_JAVASCRIPT', $stdfilterjs);
 
 		$advfilterlist = $oCustomView->getAdvFilterByCvid($recordid);
 		$advfilterhtml = getAdvCriteriaHTML();
-		$modulecolumnshtml = getByModule_ColumnsHTML($cv_module,$modulecollist);
-		$smarty->assign("FOPTION",$advfilterhtml);
-		$smarty->assign("COLUMNS_BLOCK",$modulecolumnshtml);
-		$smarty->assign("CRITERIA_GROUPS",$advfilterlist);
+		$modulecolumnshtml = getByModule_ColumnsHTML($cv_module, $modulecollist);
+		$smarty->assign('FOPTION', $advfilterhtml);
+		$smarty->assign('COLUMNS_BLOCK', $modulecolumnshtml);
+		$smarty->assign('CRITERIA_GROUPS', $advfilterlist);
 
-		$smarty->assign("MANDATORYCHECK",implode(",",array_unique($oCustomView->mandatoryvalues)));
-		$smarty->assign("SHOWVALUES",implode(",",$oCustomView->showvalues));
-		$smarty->assign("EXIST","true");
+		$smarty->assign('MANDATORYCHECK', implode(',', array_unique($oCustomView->mandatoryvalues)));
+		$smarty->assign('SHOWVALUES', implode(',', $oCustomView->showvalues));
+		$smarty->assign('EXIST', 'true');
 		$data_type[] = $oCustomView->data_type;
-		$smarty->assign("DATATYPE",$data_type);
+		$smarty->assign("DATATYPE", $data_type);
 	} else {
 		$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
 		exit;
 	}
 }
 
-$smarty->assign("RETURN_MODULE", $cv_module);
-if($cv_module == "Calendar")
-	$return_action = "ListView";
-else
-	$return_action = "index";
+$smarty->assign('RETURN_MODULE', $cv_module);
+$return_action = 'index';
 
-if($recordid == '')
+if ($recordid == '') {
 	$act = $mod_strings['LBL_NEW'];
-else
+} else {
 	$act = $mod_strings['LBL_EDIT'];
+}
 
 $smarty->assign("ACT", $act);
 $smarty->assign("RETURN_ACTION", $return_action);
 
 $smarty->display("CustomView.tpl");
 
-function getByModule_ColumnsHTML($module,$columnslist,$selected="") {
-	$columnsList = getByModule_ColumnsList($module,$columnslist,$selected);
-	return generateSelectColumnsHTML($columnsList,$module);
+function getByModule_ColumnsHTML($module, $columnslist, $selected = "") {
+	$columnsList = getByModule_ColumnsList($module, $columnslist, $selected);
+	return generateSelectColumnsHTML($columnsList, $module);
 }
 
 function generateSelectColumnsHTML($columnsList, $module) {
 	$shtml = '';
-	foreach($columnsList as $blocklabel=>$blockcolumns) {
-		$shtml .= "<optgroup label='".getTranslatedString($blocklabel,$module)."' class='select' style='border:none'>";
-		foreach($blockcolumns as $columninfo) {
+	foreach ($columnsList as $blocklabel => $blockcolumns) {
+		$shtml .= "<optgroup label='".getTranslatedString($blocklabel, $module)."' class='select' style='border:none'>";
+		foreach ($blockcolumns as $columninfo) {
 			$shtml .= "<option ".$columninfo['selected']." value='".$columninfo['value']."'>".$columninfo['text']."</option>";
 		}
 	}
 	return $shtml;
 }
 
-function getByModule_ColumnsList($mod,$columnslist,$selected="") {
-	global $oCustomView, $current_language, $theme;
+function getByModule_ColumnsList($mod, $columnslist, $selected = '') {
+	global $oCustomView;
 	$advfilter = array();
-	$check_dup = Array();
-	foreach($oCustomView->module_list as $module=>$blks) {
-	  $modname = getTranslatedString($module,$module);
-	  foreach($blks as $key=>$value) {
-		$advfilter = array();
-		$label = $key;
-		if(isset($columnslist[$module][$key]))
-		{
-			foreach($columnslist[$module][$key] as $field=>$fieldlabel)
-			{
-				if(!in_array($module.$fieldlabel,$check_dup))
-				{
-					$advfilter_option['value'] = $field;
-					$advfilter_option['text'] = getTranslatedString($fieldlabel,$module);
-					$advfilter_option['selected'] = ($selected == $field ? 'selected' : '');
-					$advfilter[] = $advfilter_option;
-					$check_dup [] = $module.$fieldlabel;
+	$check_dup = array();
+	foreach ($oCustomView->module_list as $module => $blks) {
+		$modname = getTranslatedString($module, $module);
+		foreach ($blks as $key => $value) {
+			$advfilter = array();
+			$label = $key;
+			if (isset($columnslist[$module][$key])) {
+				foreach ($columnslist[$module][$key] as $field => $fieldlabel) {
+					if (!in_array($module.$fieldlabel, $check_dup)) {
+						$advfilter_option['value'] = $field;
+						$advfilter_option['text'] = getTranslatedString($fieldlabel, $module);
+						$advfilter_option['selected'] = ($selected == $field ? 'selected' : '');
+						$advfilter[] = $advfilter_option;
+						$check_dup [] = $module.$fieldlabel;
+					}
+				}
+				if (count($advfilter)>0) {
+					$advfilter_out[$modname.' - '.$label]= $advfilter;
 				}
 			}
-			if (count($advfilter)>0)
-				$advfilter_out[$modname.' - '.$label]= $advfilter;
 		}
-	}}
-	// Special case handling only for Calendar module - Not required for other modules.
-	if($mod == 'Calendar') {
-		$mod_strings = return_specified_module_language($current_language,$mod);
-		$modname = getTranslatedString($mod,$mod);
-		$finalfield = Array();
-		$finalfield1 = Array();
-		$finalfield2 = Array();
-		$newLabel = $mod_strings['LBL_CALENDAR_INFORMATION'];
-
-		if(isset($advfilter_out[$modname.' - '.$mod_strings['LBL_TASK_INFORMATION']])) {
-			$finalfield1 = $advfilter_out[$modname.' - '.$mod_strings['LBL_TASK_INFORMATION']];
-		}
-		if(isset($advfilter_out[$modname.' - '.$mod_strings['LBL_EVENT_INFORMATION']])) {
-			$finalfield2 = $advfilter_out[$modname.' - '.$mod_strings['LBL_EVENT_INFORMATION']];
-		}
-		$finalfield[$newLabel] = array_merge($finalfield1,$finalfield2);
-		if (isset ($advfilter_out[$modname.' - '.$mod_strings['LBL_CUSTOM_INFORMATION']])) {
-			$finalfield[$mod_strings['LBL_CUSTOM_INFORMATION']] = $advfilter_out[$modname.' - '.$mod_strings['LBL_CUSTOM_INFORMATION']];
-		}
-		$advfilter_out=$finalfield;
 	}
 	return $advfilter_out;
 }
 
-/** to get the standard filter criteria  
-* @param $module(module name) :: Type String 
+/** to get the standard filter criteria
+* @param $module(module name) :: Type String
 * @param $elected (selection status) :: Type String (optional)
 * @returns  $filter Array in the following format
 * $filter = Array( 0 => array('value'=>$tablename:$colname:$fieldname:$fieldlabel,'text'=>$mod_strings[$field label],'selected'=>$selected),
-*	1 => array('value'=>$$tablename1:$colname1:$fieldname1:$fieldlabel1,'text'=>$mod_strings[$field label1],'selected'=>$selected),	
+*	1 => array('value'=>$$tablename1:$colname1:$fieldname1:$fieldlabel1,'text'=>$mod_strings[$field label1],'selected'=>$selected),
 */
-function getStdFilterHTML($module,$selected="")
-{
-	global $current_language, $app_strings, $current_user, $oCustomView;
+function getStdFilterHTML($module, $selected = '') {
+	global $app_strings, $current_user, $oCustomView;
 	$stdfilter = array();
 	$result = $oCustomView->getStdCriteriaByModule($module);
-	$mod_strings = return_module_language($current_language,$module);
 
-	if(isset($result))
-	{
-		foreach($result as $key=>$value)
-		{
-			if($value == 'Start Date & Time')
-			{
+	if (isset($result)) {
+		foreach ($result as $key => $value) {
+			if ($value == 'Start Date & Time') {
 				$value = 'Start Date';
 			}
 			$use_module_label =  getTranslatedString($module, $module);
-			if(isset($mod_strings[$value]))
-			{
-				if($key == $selected)
-				{
-					$filter['value'] = $key;
-					$filter['text'] = $use_module_label." - ".getTranslatedString($value);
-					$filter['selected'] = "selected";
-				}else
-				{
-						$filter['value'] = $key;
-						$filter['text'] = $use_module_label." - ".getTranslatedString($value);
-						$filter['selected'] ="";
-				}
-			}
-			else
-			{
-				if($key == $selected)
-				{
-					$filter['value'] = $key;
-					
-					$filter['text'] = $use_module_label." - ".$value;
-					$filter['selected'] = 'selected';
-				}else
-				{
-					$filter['value'] = $key;
-					$filter['text'] = $use_module_label." - ".$value;
-					$filter['selected'] ='';
-				}
+			$filter['value'] = $key;
+			$filter['text'] = $use_module_label.' - '.getTranslatedString($value, $module);
+			if ($key == $selected) {
+				$filter['selected'] = 'selected';
+			} else {
+				$filter['selected'] = '';
 			}
 			$stdfilter[]=$filter;
-			//added to fix ticket #5117. If a user doesn't have permission for a field and it has been used to fileter a custom view, it should be get displayed to him as Not Accessible.
-			if (!is_admin($current_user) && $selected != '' && $filter['selected'] == '')
-			{
-				$keys = explode(":",$selected);
-				if(getFieldVisibilityPermission($module,$current_user->id,$keys[2]) != '0')
-				{
+			// If a user doesn't have permission for a field and it has been used to filter a custom view, it should be displayed to him as Not Accessible.
+			if (!is_admin($current_user) && $selected != '' && $filter['selected'] == '') {
+				$keys = explode(":", $selected);
+				if (getFieldVisibilityPermission($module, $current_user->id, $keys[2]) != '0') {
 					$filter['value'] = "not_accessible";
 					$filter['text'] = $app_strings["LBL_NOT_ACCESSIBLE"];
 					$filter['selected'] = "selected";
 					$stdfilter[]=$filter;
 				}
 			}
-
 		}
-
 	}
 	return $stdfilter;
 }
@@ -285,21 +230,19 @@ function getStdFilterHTML($module,$selected="")
 * @param $selected :: Type String (optional)
 * @returns  $AdvCriteria Array in the following format
 * $AdvCriteria = Array( 0 => array('value'=>$tablename:$colname:$fieldname:$fieldlabel,'text'=>$mod_strings[$field label],'selected'=>$selected),
-* 	1 => array('value'=>$$tablename1:$colname1:$fieldname1:$fieldlabel1,'text'=>$mod_strings[$field label1],'selected'=>$selected),	
-* 	n => array('value'=>$$tablenamen:$colnamen:$fieldnamen:$fieldlabeln,'text'=>$mod_strings[$field labeln],'selected'=>$selected))	
+* 	1 => array('value'=>$$tablename1:$colname1:$fieldname1:$fieldlabel1,'text'=>$mod_strings[$field label1],'selected'=>$selected),
+* 	n => array('value'=>$$tablenamen:$colnamen:$fieldnamen:$fieldlabeln,'text'=>$mod_strings[$field labeln],'selected'=>$selected))
 */
-function getAdvCriteriaHTML($selected='') {
+function getAdvCriteriaHTML($selected = '') {
 	global $adv_filter_options;
 	$shtml = '';
-	foreach($adv_filter_options as $key=>$value) {
-		if($selected == $key)
-		{
+	foreach ($adv_filter_options as $key => $value) {
+		if ($selected == $key) {
 			$shtml .= "<option selected value=\"".$key."\">".$value."</option>";
-		}else
-		{
+		} else {
 			$shtml .= "<option value=\"".$key."\">".$value."</option>";
 		}
-	 }
+	}
 	return $shtml;
 }
 ?>

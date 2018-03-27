@@ -109,9 +109,9 @@ class InventoryLineField {
 			'presence' => 0,
 		),
 	);
-	var $fieldname;
+	public $fieldname;
 
-	function __construct($fieldname='') {
+	public function __construct($fieldname = '') {
 		InventoryLineField::$ILFieldsLabel = array(
 			'item name' => InventoryLineField::$ILFieldsName['productid'],
 			'quantity' => InventoryLineField::$ILFieldsName['quantity'],
@@ -121,7 +121,7 @@ class InventoryLineField {
 			'item discount percent' => InventoryLineField::$ILFieldsName['discount_percent'],
 		);
 		$taxes = getAllTaxes('all');
-		foreach ($taxes as $key => $tax) {
+		foreach ($taxes as $tax) {
 			$fieldlabel = strtolower($tax['taxlabel']);
 			InventoryLineField::$ILFieldsLabel[$fieldlabel] = array(
 				'uitype' => 7,
@@ -138,19 +138,19 @@ class InventoryLineField {
 		$this->fieldname = $fieldname;
 	}
 
-	function getInventoryLineFieldsByLabel() {
+	public function getInventoryLineFieldsByLabel() {
 		return InventoryLineField::$ILFieldsLabel;
 	}
 
-	function getInventoryLineFieldsByName() {
+	public function getInventoryLineFieldsByName() {
 		return InventoryLineField::$ILFieldsName;
 	}
 
-	function getInventoryLineProductServiceNameFields() {
+	public function getInventoryLineProductServiceNameFields() {
 		return InventoryLineField::$ILProductServiceNameFields;
 	}
 
-	function getInventoryLineFieldsByObject() {
+	public function getInventoryLineFieldsByObject() {
 		$ilonjs = array();
 		foreach (InventoryLineField::$ILFieldsName as $fname => $fdesc) {
 			$ilonjs[$fname] = new InventoryLineField($fname);
@@ -158,27 +158,27 @@ class InventoryLineField {
 		return $ilonjs;
 	}
 
-	function getFieldLabelKey() {
+	public function getFieldLabelKey() {
 		return InventoryLineField::$ILFieldsName[$this->fieldname]['fieldlabel'];
 	}
 
-	function isMandatory() {
+	public function isMandatory() {
 		return InventoryLineField::$ILFieldsName[$this->fieldname]['mandatory'];
 	}
 
-	function getFieldDataType() {
+	public function getFieldDataType() {
 		return InventoryLineField::$ILFieldsName[$this->fieldname]['fieldtype'];
 	}
 
-	function getUIType() {
+	public function getUIType() {
 		return InventoryLineField::$ILFieldsName[$this->fieldname]['uitype'];
 	}
 
-	function getReferenceList() {
+	public function getReferenceList() {
 		return array('Products','Services');
 	}
 
-	function getTableName() {
+	public function getTableName() {
 		return InventoryLineField::$ILFieldsName[$this->fieldname]['tablename'];
 	}
 }

@@ -9,17 +9,17 @@
 
 //// Get User Default calendar variables
 var calendar_call_default_duration = 5; // minutes
-GlobalVariable_getVariable('Calendar_call_default_duration', 5, 'Calendar', gVTUserID).then(function(response) {
+GlobalVariable_getVariable('Calendar_call_default_duration', 5, 'Calendar', gVTUserID).then(function (response) {
 	var obj = JSON.parse(response);
 	calendar_call_default_duration = obj.Calendar_call_default_duration;
-}, function(error) {
+}, function (error) {
 	calendar_call_default_duration = 5; // minutes
 });
 var calendar_other_default_duration = 1; // hours
-GlobalVariable_getVariable('Calendar_other_default_duration', 1, 'Calendar', gVTUserID).then(function(response) {
+GlobalVariable_getVariable('Calendar_other_default_duration', 1, 'Calendar', gVTUserID).then(function (response) {
 	var obj = JSON.parse(response);
 	calendar_other_default_duration = obj.Calendar_other_default_duration;
-}, function(error) {
+}, function (error) {
 	calendar_other_default_duration = 1; // hours
 });
 
@@ -59,8 +59,9 @@ function changeEndtime_StartTime() {
 				hour = 1;
 				min = min;
 				fmt = 'PM';
-			} else
+			} else {
 				hour = +hour + +calendar_other_default_duration;
+			}
 			hour = _2digit(hour);
 			min = _2digit(min);
 			setCalendarDateFields(date,hour,min,fmt);
@@ -73,8 +74,9 @@ function changeEndtime_StartTime() {
 				hour = 1;
 				min = min;
 				fmt = 'AM';
-			} else
+			} else {
 				hour = +hour + +calendar_other_default_duration;
+			}
 			hour = _2digit(hour);
 			min = _2digit(min);
 			setCalendarDateFields(date,hour,min,fmt);
@@ -105,8 +107,9 @@ function changeEndtime_StartTime() {
 				if (min >= hour_change_minute) {
 					min = min - hour_change_minute;
 					hour = hour + 1;
-				} else
+				} else {
 					min = +min + +calendar_call_default_duration;
+				}
 			}
 			hour = _2digit(hour);
 			min = _2digit(min);
@@ -124,8 +127,9 @@ function changeEndtime_StartTime() {
 				if (min >= hour_change_minute) {
 					min = min - hour_change_minute;
 					hour = hour + 1;
-				} else
+				} else {
 					min = +min + +calendar_call_default_duration;
+				}
 			}
 			hour = _2digit(hour);
 			min = _2digit(min);
@@ -134,8 +138,9 @@ function changeEndtime_StartTime() {
 			if (min >= hour_change_minute) {
 				min = min - hour_change_minute;
 				hour = hour + 1;
-			} else
+			} else {
 				min = +min + +calendar_call_default_duration;
+			}
 			if (hour == 24) {
 				hour = 0;
 				date = tempdate;
@@ -167,7 +172,33 @@ function setCalendarDateFields(date,hour,min,fmt) {
 	document.getElementById('timefmt_dtend').innerHTML = (fmt != '24' ? fmt : '');
 }
 
-document.addEventListener("DOMContentLoaded", function(event) {
+function open_filtered_contactsIfAccounts(fromlink, fldname, MODULE, ID) {
+	var rel_type = '';
+	var rel_id = '';
+	var rel_id_elem = document.getElementById('rel_id');
+	if (rel_id_elem) {
+		rel_id = rel_id_elem.value;
+		rel_type = document.getElementById('rel_id_type').value;
+	} else {
+		rel_id_elem = document.getElementById('dtlview_rel_id');
+		if (rel_id_elem) {
+			rel_id_elem = rel_id_elem.querySelector('span[type=vtlib_metainfo]')
+			if (rel_id_elem) {
+				rel_id = rel_id_elem.getAttribute('vtrecordid');
+				rel_type = rel_id_elem.getAttribute('vtmodule');
+			}
+		}
+	}
+	var valmod = (rel_type=='Accounts' || rel_type=='Potentials' || rel_type=='Quotes' || rel_type=='PurchaseOrder' || rel_type=='Vendors' || rel_type=='SalesOrder' || rel_type=='Invoice' || rel_type=='Campaigns' || rel_type=='Products');
+	if (rel_id != '' && valmod) {
+		var BasicSearch = '&parent_module='+rel_type+'&relmod_id='+rel_id; // special hard coded contact search
+		window.open("index.php?module=Contacts&action=Popup&html=Popup_picker&form=vtlibPopupView&forfield="+fldname+"&srcmodule="+MODULE+"&forrecord="+ID+BasicSearch,"vtlibui10","width=780,height=652,resizable=0,scrollbars=0,top=150,left=200");
+	} else {
+		vtlib_open_popup_window("", "cto_id", "cbCalendar", "");
+	}
+}
+
+document.addEventListener("DOMContentLoaded", function (event) {
 	let fldstart = document.getElementById('jscal_field_dtstart');
 	if (fldstart != undefined) {
 		fldstart.onchange = changeEndtime_StartTime;
@@ -175,4 +206,3 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		timefmtstart.onchange = changeEndtime_StartTime;
 	}
 });
-

@@ -11,35 +11,35 @@ require_once 'Smarty_setup.php';
 require_once 'include/utils/utils.php';
 require_once 'modules/Tooltip/TooltipUtils.php';
 
-global $mod_strings,$app_strings,$theme,$currentModule;
+global $mod_strings, $app_strings, $theme, $currentModule;
 $smarty=new vtigerCRM_Smarty;
-$smarty->assign("MOD",$mod_strings);
-$smarty->assign("APP",$app_strings);
-$smarty->assign("THEME", $theme);
+$smarty->assign('MOD', $mod_strings);
+$smarty->assign('APP', $app_strings);
+$smarty->assign('THEME', $theme);
 
-$module_array=moduleList();
-$smarty->assign("MODULES",$module_array);
+// $module_array=moduleList();
+// $smarty->assign('MODULES', $module_array);
 
-if(!empty($_REQUEST['formodule'])){
+if (!empty($_REQUEST['formodule'])) {
 	$fld_module = vtlib_purify($_REQUEST['formodule']);
-}
-else{
-	echo getTranslatedString('LBL_NO_MODULES_TO_SELECT');
+} else {
+	$smarty->assign('OPERATION_MESSAGE', getTranslatedString('LBL_NO_MODULES_TO_SELECT', 'Tooltip'));
+	$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
 	exit;
 }
-$smarty->assign("MODULE",$fld_module);
+$smarty->assign('MODULE', $fld_module);
 
 $fieldsDropDown = QuickViewFieldList($fld_module);
-$smarty->assign("FIELDNAMES",$fieldsDropDown);
+$smarty->assign('FIELDNAMES', $fieldsDropDown);
 
 if (!empty($_REQUEST['mode'])) {
 	$mode = $_REQUEST['mode'];
 } else {
 	$mode = '';
 }
-$smarty->assign("MODE", $mode);
-$smarty->assign("FORMODULE", $fld_module);
-$smarty->assign("MOD",$mod_strings);
+$smarty->assign('MODE', $mode);
+$smarty->assign('FORMODULE', $fld_module);
+$smarty->assign('MOD', $mod_strings);
 
-$smarty->display(vtlib_getModuleTemplate($currentModule,'Quickview.tpl'));
+$smarty->display(vtlib_getModuleTemplate($currentModule, 'Quickview.tpl'));
 ?>

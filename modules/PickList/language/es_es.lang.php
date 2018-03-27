@@ -6,11 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
-/**
- * this file can be used to internationalise the strings present in the picklist
- */
 $mod_strings = array(
 	'LBL_ASSIGN_BUTTON'=>'Asignar',
 	'ADD_PICKLIST_VALUES'=>'Añadir valores de selección',
@@ -28,7 +24,6 @@ $mod_strings = array(
 	'LBL_PICKLIST_VALUES_ASSIGNED_TO'=>'Asigna valores de selección para ',
 	'LBL_ADD_TO_OTHER_ROLES'=>'Añade a otros roles',
 	'LBL_OK_BUTTON_LABEL'=>'Vale',
-	'LBL_SELECT_ROLES'=>'Selecciona roles',
 	'LBL_DISPLAYED_VALUES'=>'Los valores accesibles por el rol están abajo',
 
 	// For Dependency picklist

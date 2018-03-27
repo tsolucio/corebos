@@ -28,9 +28,6 @@ class Documents extends CRMEntity {
 	var $popup_fields = Array('notes_title');
 	var $sortby_fields = Array('title','modifiedtime','filename','createdtime','lastname','filedownloadcount','smownerid');
 
-	// This is used to retrieve related vtiger_fields from form posts.
-	var $additional_column_fields = Array('', '', '', '');
-
 	// This is the list of vtiger_fields that are in the lists.
 	var $list_fields = Array(
 		'Title'=>Array('notes'=>'title'),
@@ -62,7 +59,7 @@ class Documents extends CRMEntity {
 	var $list_link_field= 'notes_title';
 	var $old_filename = '';
 
-	var $mandatory_fields = Array('notes_title','createdtime' ,'modifiedtime','filename','filesize','filetype','filedownloadcount','assigned_user_id');
+	public $mandatory_fields = array('notes_title', 'createdtime', 'modifiedtime', 'filename', 'filesize', 'filetype', 'filedownloadcount');
 
 	//Added these variables which are used as default order by and sortorder in ListView
 	var $default_order_by = 'title';
@@ -162,18 +159,19 @@ class Documents extends CRMEntity {
 	 * Return query to use based on given modulename, fieldname
 	 * Useful to handle specific case handling for Popup
 	 */
-	function getQueryByModuleField($module, $fieldname, $srcrecord, $query='') {
-		if($module == "MailManager") {
+	public function getQueryByModuleField($module, $fieldname, $srcrecord, $query = '') {
+		if ($module == "MailManager") {
 			$tempQuery = explode('WHERE', $query);
-			if(!empty($tempQuery[1])) {
+			if (!empty($tempQuery[1])) {
 				$where = " vtiger_notes.filelocationtype = 'I' AND vtiger_notes.filename != '' AND vtiger_notes.filestatus != 0 AND ";
 				$query = $tempQuery[0].' WHERE '.$where.$tempQuery[1];
-			} else{
+			} else {
 				$query = $tempQuery[0].' WHERE '.$tempQuery;
 			}
 			return $query;
 		}
 	}
+
 	/* Validate values trying to be saved.
 	 * @param array $_REQUEST input values. Note: column_fields array is already loaded
 	 * @return array
@@ -182,36 +180,50 @@ class Documents extends CRMEntity {
 	 *   error_action: action to redirect to inside the same module in case of error. if redirected to EditView (default action)
 	 *                 all values introduced by the user will be preloaded
 	 */
-	function preSaveCheck($request) {
-		global $adb,$log;
+	public function preSaveCheck($request) {
+		global $adb, $log, $coreBOSOnDemandActive, $cbodStorageSizeLimit, $current_user, $site_URL;
 		if (isset($_REQUEST['parentid']) && $_REQUEST['parentid'] != '') {
 			$this->parentid = vtlib_purify($_REQUEST['parentid']);
 		}
 		$saveerror = false;
 		$errmsg = '';
-		if ($this->mode=='' && $_REQUEST['filelocationtype'] == 'I' && $_REQUEST['action'] != 'DocumentsAjax') {
+		if (!empty($coreBOSOnDemandActive) && $_REQUEST['filelocationtype'] == 'I' && $_REQUEST['action'] != 'DocumentsAjax') {
+			$sistoragesize = coreBOS_Settings::getSetting('cbod_storagesize', 0);
+			$sistoragesizelimit = coreBOS_Settings::getSetting('cbod_storagesizelimit', $cbodStorageSizeLimit);
+			if ($sistoragesize > $sistoragesizelimit) {
+				$adminlink = '';
+				if (is_admin($current_user)) {
+					$adminlink = '<a href="'.$site_URL.'/index.php?module=Documents&action=StorageConfig&parenttab=Settings&formodule=Documents">';
+					$adminlink.= getTranslatedString('ExtendStorageLink', 'Documents').'</a>';
+				}
+				$saveerror = true;
+				$errmsg = getTranslatedString('StorageLimit', 'Documents').' '.$adminlink;
+			}
+		}
+		if (!$saveerror && $this->mode=='' && $_REQUEST['filelocationtype'] == 'I' && $_REQUEST['action'] != 'DocumentsAjax') {
 			$upload_file_path = decideFilePath();
 			$dirpermission = is_writable($upload_file_path);
 			$upload = is_uploaded_file($_FILES['filename']['tmp_name']);
 			$ferror = (isset($_FILES['error']) ? $_FILES['error'] : $_FILES['filename']['error']);
-			if (!$dirpermission || ($ferror!=0 and $ferror!=4) || (!$upload and $ferror!=4)){
+			if (!$dirpermission || ($ferror!=0 && $ferror!=4) || (!$upload && $ferror!=4)) {
 				$saveerror = true;
-				$errmsg = getTranslatedString('LBL_FILEUPLOAD_FAILED','Documents');
+				$errmsg = getTranslatedString('LBL_FILEUPLOAD_FAILED', 'Documents');
 			}
 		}
 		if ($saveerror) {
-			return array($saveerror,$errmsg,'EditView','');
+			return array($saveerror, $errmsg, 'EditView', '');
 		} else {
 			return parent::preSaveCheck($request);
 		}
 	}
 
 	/**
-	 * This function is used to add the attachments. This will call the function uploadAndSaveFile which will upload the attachment into the server and save that attachment information in the database.
+	 * This function is used to add attachments.
+	 * This will call the function uploadAndSaveFile which will upload the attachment into the server and save that attachment information in the database.
 	 * @param int $id  - entity id to which the files to be uploaded
 	 * @param string $module  - the current module name
 	*/
-	function insertIntoAttachment($id,$module, $direct_import=false) {
+	public function insertIntoAttachment($id, $module, $direct_import = false) {
 		global $log, $adb;
 		$log->debug("Entering into insertIntoAttachment($id,$module) method.");
 
@@ -377,6 +389,27 @@ class Documents extends CRMEntity {
 				$insertresult = $adb->pquery($insertQuery,array());
 			}
 		}
+	}
+
+	public static function createFolder($fname) {
+		global $adb, $current_user;
+		$dbQuery = 'select 1 from vtiger_attachmentsfolder where foldername=?';
+		$rs = $adb->pquery($dbQuery, array($fname));
+		if ($rs && $adb->num_rows($rs)==0) {
+			$params = array();
+			$sqlfid = 'select max(folderid) from vtiger_attachmentsfolder';
+			$rs = $adb->pquery($sqlfid, $params);
+			$fid = $adb->query_result($rs, 0, 0) + 1;
+			$params = array();
+			$sqlseq = 'select max(sequence) from vtiger_attachmentsfolder';
+			$rs = $adb->pquery($sqlseq, $params);
+			$sequence=$adb->query_result($rs, 0, 0) + 1;
+			$sql = 'insert into vtiger_attachmentsfolder (folderid,foldername,description,createdby,sequence) values (?,?,?,?,?)';
+			$params = array($fid, $fname, '', $current_user->id, $sequence);
+			$result = $adb->pquery($sql, $params);
+			return ($result ? $fid : false);
+		}
+		return false;
 	}
 
 	/*function save_related_module($module, $crmid, $with_module, $with_crmid){

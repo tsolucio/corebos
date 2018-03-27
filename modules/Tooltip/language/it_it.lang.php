@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-$mod_strings = Array (
+$mod_strings = array (
 'Tooltip' => 'ToolTip',
 'LBL_TOOLTIP_MANAGEMENT'=>'Gestione Tooltip',
 'LBL_TOOLTIP_MANAGEMENT_DESCRIPTION'=>'Gestisci le informazioni dei tooltip da qui',

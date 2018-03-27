@@ -7,19 +7,20 @@
  * Portions created by JPL TSolucio, S.L are Copyright (C) JPL TSolucio, S.L.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 03/12/2017 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
  ********************************************************************************/
 
-$mod_strings = Array(
-'LBL_MODULE_NAME'=>'Organizações',
-'LBL_MODULE_TITLE'=>'Organizações: Home',
+$mod_strings = array(
+'LBL_MODULE_NAME'=>'Contas',
+'LBL_MODULE_TITLE'=>'Contas: Home',
 'LBL_SEARCH_FORM_TITLE'=>'Pesquisar Organizações',
-'LBL_LIST_FORM_TITLE'=>'Listar Organizações',
-'LBL_NEW_FORM_TITLE'=>'Nova Organização',
-'LBL_MEMBER_ORG_FORM_TITLE'=>'Organizações Membro',
-// Label for Top Accounts in Home Page, added for 4.2 GA
-'LBL_TOP_ACCOUNTS'=>'Minhas Principais Organizações',
+'LBL_LIST_FORM_TITLE'=>'Listar Contas',
+'LBL_NEW_FORM_TITLE'=>'Nova Conta',
+'LBL_MEMBER_ORG_FORM_TITLE'=>'Contas Membro',
+// Label for Top Accounts in Home Page
+'LBL_TOP_ACCOUNTS'=>'Minhas Principais Contas',
 'LBL_TOP_AMOUNT'=>'Quantidade',
-'LBL_LIST_ACCOUNT_NAME'=>'Nome Organização',
+'LBL_LIST_ACCOUNT_NAME'=>'Nome Contas',
 'LBL_LIST_CITY'=>'Cidade',
 'LBL_LIST_WEBSITE'=>'Website',
 'LBL_LIST_STATE'=>'Estado',
@@ -27,8 +28,8 @@ $mod_strings = Array(
 'LBL_LIST_EMAIL_ADDRESS'=>'Endereço Email',
 'LBL_LIST_CONTACT_NAME'=>'Nome Contato',
 'LBL_LIST_AMOUNT' => 'Total',
-'LBL_ACCOUNT'=>'Organização:',
-'LBL_ACCOUNT_NAME'=>'Nome Organização:',
+'LBL_ACCOUNT'=>'Conta:',
+'LBL_ACCOUNT_NAME'=>'Nome Contas:',
 'LBL_PHONE'=>'Telefone:',
 'LBL_WEBSITE'=>'Website:',
 'LBL_FAX'=>'Fax:',
@@ -47,7 +48,7 @@ $mod_strings = Array(
 'LBL_TYPE'=>'Tipo:',
 'LBL_ANNUAL_REVENUE'=>'Receita Anual:',
 'LBL_ADDRESS_INFORMATION'=>'Informação Endereço',
-'LBL_ACCOUNT_INFORMATION'=>'Informação Organização',
+'LBL_ACCOUNT_INFORMATION'=>'Informação Conta',
 'LBL_CUSTOM_INFORMATION'=>'Informação Customizada',
 'LBL_BILLING_ADDRESS'=>'Endereço Faturamento:',
 'LBL_SHIPPING_ADDRESS'=>'Endereço Entrega:',
@@ -60,17 +61,16 @@ $mod_strings = Array(
 'LBL_DESCRIPTION'=>'Descrição:',
 'NTC_COPY_BILLING_ADDRESS'=>'Copiar Endereço Faturamento',
 'NTC_COPY_SHIPPING_ADDRESS'=>'Copiar Endereço Entrega',
-'NTC_REMOVE_MEMBER_ORG_CONFIRMATION'=>'Você tem certeza que deseja remover este registro enquanto um membro da organização?',
-'LBL_DUPLICATE'=>'Organizações com Possibilidade de Duplicação',
-'MSG_DUPLICATE' => 'Criando esta organização poderá criar uma potentialy Organização duplicada. Você pode também selecionar uma organização da lista abaixo ou clicar sobre Criar Nova Organização para continuar criando uma nova organização com os dados anteriores.',
+'NTC_REMOVE_MEMBER_ORG_CONFIRMATION'=>'Você tem certeza que deseja remover este registro enquanto um membro da Conta?',
+'LBL_DUPLICATE'=>'Contas com Possibilidade de Duplicação',
+'MSG_DUPLICATE' => 'Criando esta Conta poderá criar uma potentialy Contas duplicada. Você pode também selecionar uma contas da lista abaixo ou clicar sobre Criar Nova contas para continuar criando uma nova conta com os dados anteriores.',
 
 'LBL_INVITEE'=>'Contatos',
-'ERR_DELETE_RECORD'=>"Defina um registro para apagar organização.",
+'ERR_DELETE_RECORD'=>"Defina um registro para apagar Conta.",
 
-'LBL_SELECT_ACCOUNT'=>'Selecionar Organização',
+'LBL_SELECT_ACCOUNT'=>'Selecionar Conta',
 'LBL_GENERAL_INFORMATION'=>'Informação Geral',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'Nova Oportunidade',
 'LBL_POTENTIAL_TITLE'=>'Oportunidades',
 
@@ -85,17 +85,14 @@ $mod_strings = Array(
 'LBL_NEW_CONTACT'=>'Novo Contato',
 'LBL_CONTACT_TITLE'=>'Contatos',
 
-//Added vtiger_fields after RC1 - Release
 'LBL_ALL'=>'Todos',
 'LBL_PROSPECT'=>'Prospect',
 'LBL_INVESTOR'=>'Investidor',
 'LBL_RESELLER'=>'Revendedor',
 'LBL_PARTNER'=>'Parceiro',
 
-// Added for 4GA
-'LBL_TOOL_FORM_TITLE'=>'Ferramentas da Organização',
-//Added for 4GA
-'Account Name'=>'Nome Organização',
+'LBL_TOOL_FORM_TITLE'=>'Ferramentas da Conta',
+'Account Name'=>'Nome Conta',
 'Phone'=>'Telefone',
 'Website'=>'Website',
 'Fax'=>'Fax',
@@ -127,24 +124,15 @@ $mod_strings = Array(
 'Description'=>'Descrição',
 'Shipping Po Box'=>'Cx Postal Entrega',
 'Billing Po Box'=>'Cx Postal Faturamento',
-
-//Added after 4.2 patch 2
 'Email Opt Out'=>'Rejeita Email',
 'LBL_EMAIL_OPT_OUT'=>'Rejeita Email:',
-
-//Added after 5Alpha5
 'Notify Owner'=>'Notificar Proprietário',
-
-//Added for existing picklist entries
-      
 '--None--'=>'--Nada--',
-      
 'Acquired'=>'Aquirido',
 'Active'=>'Ativo',
 'Market Failed'=>'Venda não realizada',
 'Project Cancelled'=>'Projeto Cancelado',
 'Shutdown'=>'Encerrado',
-      
 'Apparel'=>'Vestuário',
 'Banking'=>'Bancos',
 'Biotechnology'=>'Biotecnologia',
@@ -176,8 +164,8 @@ $mod_strings = Array(
 'Transportation'=>'Transportes',
 'Utilities'=>'Serviço Público',
 'Other'=>'Outro',
-      
-'Analyst'=>'Analista',
+
+	  'Analyst'=>'Analista',
 'Competitor'=>'Concorrente',
 'Customer'=>'Cliente',
 'Integrator'=>'Integrador',
@@ -189,36 +177,36 @@ $mod_strings = Array(
 'LBL_START_DATE' => 'Data Inicial',
 'LBL_END_DATE' => 'Data Final',
 
-// Added/Updated for vtiger CRM 5.0.4
-
-//added to fix the issue #4081
-'LBL_ACCOUNT_EXIST' => 'O Nome da Organização já Existe!',
+'LBL_ACCOUNT_EXIST' => 'O Nome da Conta já Existe!',
 
 // mailer export
 'LBL_MAILER_EXPORT' => 'Exportar',
 'LBL_MAILER_EXPORT_CONTACTS_TYPE'=>'Selecione Contatos:',
 'LBL_MAILER_EXPORT_CONTACTS_DESCR'=>'Os Contatos também podem ser selecionados a partir dos "Campos Customizados" e através de qualquer campo padrão.',
 'LBL_MAILER_EXPORT_RESULTS_TYPE'=>'Selecione o tipo de Exportação:',
-'LBL_MAILER_EXPORT_RESULTS_DESCR'=>'Os dados serão obtidos a partir das Organizações e seus Contatos, que retornarem
+'LBL_MAILER_EXPORT_RESULTS_DESCR'=>'Os dados serão obtidos a partir das Contas e seus Contatos, que retornarem
  a partir da pesquisa realizada.',
 'LBL_EXPORT_RESULTS_EMAIL' => 'Exportar Contato e E-mail',
 'LBL_EXPORT_RESULTS_EMAIL_CORP'=>'Exportar Contatos e E-mails, utilizando o "E-mail da Empresa" se o "E-mail" do Contato estiver vazio',
-'LBL_EXPORT_RESULTS_FULL'=>'Exportar dados com Contatos, E-mail, Organização, Endereço, Telefone, etc.',
+'LBL_EXPORT_RESULTS_FULL'=>'Exportar dados com Contatos, E-mail, Conta, Endereço, Telefone, etc.',
 'LBL_EXPORT_RESULTS_GO'=>'Executar Exportação',
 'LBL_MAILER_EXPORT_IGNORE' => '--ignorar--',
 'LBL_MAILER_EXPORT_CHECKED' =>'Checado',
 'LBL_MAILER_EXPORT_NOTCHECKED' => 'Não Checado',
 
-// Added after 5.0.4 GA
+'Account No'=>'Cód. Conta',
+'LBL_SHOW_ACCOUNT_HIERARCHY' => 'Mostrar Hierarquia da Conta',
+'Accounts ID' => 'ID Contas',
 
-//Module Sequence Numbering
-'Account No'=>'Cód. Organização',
-// END
-
-// Organization Hierarchy
-'LBL_SHOW_ACCOUNT_HIERARCHY' => 'Mostrar Hierarquia da Organização',
-'Accounts ID' => 'ID Organizações',
-
+'LBL_ONDEMAND_CONTROL_INFORMATION' => 'On Demand Control',
+'Start Date OD' => 'On Demand Start',
+'End Date OD' => 'On Demand End',
+'OD Service Active' => 'On Demand Active',
+'OD Sync Module Active' => 'On Demand Sync Active',
+'OD Sync Modules' => 'On Demand Sync Modules',
+'Invoice With Tax' => 'Invoice With Tax',
+'Free Space' => 'Free Space',
+'Space Consumed' => 'Space Consumed',
+'Frequency' => 'Invoice Frequency',
 );
-
 ?>

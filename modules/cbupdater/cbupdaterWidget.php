@@ -21,31 +21,32 @@
 global $currentModule;
 
 $focus = CRMEntity::getInstance($currentModule);
-
 $record = vtlib_purify($_REQUEST['record']);
 
-if($record) {
+if ($record) {
 	$focus->id = $record;
 	$focus->mode = 'edit';
 	$focus->retrieve_entity_info($record, $currentModule);
-	if ($focus->column_fields['execstate']=='Pending' or $focus->column_fields['execstate']=='Continuous') {
-		if (isset($focus->column_fields['blocked']) and $focus->column_fields['blocked']!='1') {
-		echo '<a href="index.php?module=cbupdater&action=dowork&idstring='.$record.'">'.getTranslatedString("Apply",$currentModule).'</a>';
+	if ($focus->column_fields['execstate']=='Pending' || $focus->column_fields['execstate']=='Continuous') {
+		if (isset($focus->column_fields['blocked']) && $focus->column_fields['blocked']!='1') {
+			echo '<a href="index.php?module=cbupdater&action=dowork&idstring='.$record.'">'.getTranslatedString("Apply", $currentModule).'</a>';
 		}
-		if ($focus->column_fields['systemupdate']=='1') echo '<br><strong>'.getTranslatedString('systemupdate',$currentModule).'</strong>';
+		if ($focus->column_fields['systemupdate']=='1') {
+			echo '<br><strong>'.getTranslatedString('systemupdate', $currentModule).'</strong>';
+		}
 	} elseif ($focus->column_fields['systemupdate']=='1') {
-		echo '<strong>'.getTranslatedString('systemupdate',$currentModule).'</strong>';
+		echo '<strong>'.getTranslatedString('systemupdate', $currentModule).'</strong>';
 	} else {
-		if (isset($focus->column_fields['blocked']) and $focus->column_fields['blocked']!='1') {
-		echo '<a href="index.php?module=cbupdater&action=dowork&doundo=1&idstring='.$record.'">'.getTranslatedString("Undo",$currentModule).'</a>';
+		if (isset($focus->column_fields['blocked']) && $focus->column_fields['blocked']!='1') {
+			echo '<a href="index.php?module=cbupdater&action=dowork&doundo=1&idstring='.$record.'">'.getTranslatedString("Undo", $currentModule).'</a>';
 		}
 	}
 	if (isset($focus->column_fields['blocked'])) {
 		echo '<br><a href="index.php?module=cbupdater&action=cbupdaterAjax&file=setBlock&record='.$record.'&block=';
 		if ($focus->column_fields['blocked']!='1') {
-			echo '1">'.getTranslatedString('Block Changeset',$currentModule).'</a>';
+			echo '1">'.getTranslatedString('Block Changeset', $currentModule).'</a>';
 		} else {
-			echo '0">'.getTranslatedString('UnBlock Changeset',$currentModule).'</a>';
+			echo '0">'.getTranslatedString('UnBlock Changeset', $currentModule).'</a>';
 		}
 	}
 } else {

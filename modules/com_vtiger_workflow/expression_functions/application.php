@@ -23,4 +23,49 @@ function __cbwf_setype($arr) {
 	return $ret;
 }
 
+function __cbwf_getimageurl($arr) {
+	global $adb;
+	$env = $arr[1];
+	if (isset($env->moduleName)) {
+		$module = $env->moduleName;
+	} else {
+		$module = $env->getModuleName();
+	}
+	$data = $env->getData();
+	$recordid = $data['id'];
+	list($wsid,$crmid) = explode('x', $recordid);
+	if ($module == 'Contacts') {
+		$imageattachment = 'Image';
+	} else {
+		$imageattachment = 'Attachment';
+	}
+	$sql = "select vtiger_attachments.*,vtiger_crmentity.setype
+		from vtiger_attachments
+		inner join vtiger_seattachmentsrel on vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
+		inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
+		where vtiger_crmentity.setype='$module $imageattachment' and vtiger_attachments.name = ? and vtiger_seattachmentsrel.crmid=?";
+	$image_res = $adb->pquery($sql, array(str_replace(' ', '_', decode_html($arr[0])),$crmid));
+	if ($adb->num_rows($image_res)==0) {
+		$sql = 'select vtiger_attachments.*,vtiger_crmentity.setype
+			from vtiger_attachments
+			inner join vtiger_seattachmentsrel on vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
+			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
+			where vtiger_attachments.name = ? and vtiger_seattachmentsrel.crmid=?';
+		$image_res = $adb->pquery($sql, array(str_replace(' ', '_', $arr[0]),$crmid));
+	}
+	if ($adb->num_rows($image_res)>0) {
+		$image_id = $adb->query_result($image_res, 0, 'attachmentsid');
+		$image_path = $adb->query_result($image_res, 0, 'path');
+		$image_name = decode_html($adb->query_result($image_res, 0, 'name'));
+		if ($image_name != '') {
+			$imageurl = $image_path . $image_id . '_' . urlencode($image_name);
+		} else {
+			$imageurl = '';
+		}
+	} else {
+		$imageurl = '';
+	}
+	return $imageurl;
+}
+
 ?>

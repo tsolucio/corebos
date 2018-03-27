@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'cbMap' => 'Business Maps',
 	'SINGLE_cbMap' => 'Business Map',
 	'cbMap ID' => 'Business Map ID',
@@ -35,6 +35,7 @@ $mod_strings = Array(
 	'Record Access Control' => 'Record Access Control',
 	'Record Set Mapping' => 'Record Set Mapping',
 	'Module Set Mapping' => 'Module Set Mapping',
+	'Field Set Mapping' => 'Field Set Mapping',
 	'ListColumns' => 'List Columns',
 	'DuplicateRelations' => 'Duplicate Relations',
 	'MasterDetailLayout' => 'Master Detail Layout',

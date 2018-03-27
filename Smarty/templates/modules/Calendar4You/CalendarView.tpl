@@ -99,6 +99,12 @@ Calendar_Event_Types = {literal}{
                  {/foreach}
                  {literal}
 
+                 var block_status = {};
+                 block_status.event_type = jQuery('#event_type_wrapper').css('display');
+                 block_status.module_type = jQuery('#module_type_wrapper').css('display');
+                 block_status.et_status = jQuery('#et_status_wrapper').css('display');
+                 block_status.task_priority = jQuery('#task_priority_list').css('display');
+
                  var view_val = jQuery('#calendar_div').fullCalendar('getView');
                  document.getElementById("status").style.display="inline";
                  jQuery.ajax({
@@ -114,6 +120,7 @@ Calendar_Event_Types = {literal}{
                                 view: view_val.name,
                                 event_status: event_status,
                                 task_priority: task_priority,
+                                block_status: JSON.stringify(block_status),
                                 save: loggeduser,
                                 start: Math.round(new Date(start).getTime() / 1000),
                                 end: Math.round(new Date(end).getTime() / 1000)
@@ -452,6 +459,8 @@ function hideITSEventInfo(){
                         <tbody>
                             <tr>
                                   <td width="200px" valign="top" class="noprint">
+                                  {foreach item=PANEL_NAME from=$Calendar_Panel_Order}
+                                    {if $PANEL_NAME eq 'ActivityType'}
                                     <table class="dvtContentSpace" border="0" cellpadding="0" cellspacing="0" width="100%">
                                         <tbody>
                                             <tr>
@@ -459,7 +468,7 @@ function hideITSEventInfo(){
                                             </tr>
                                             <tr>
                                                 <td style="padding:5px" class="ui-widget-content">
-                                                  <div id="event_type_wrapper">
+                                                  <div id="event_type_wrapper" style="display:{$upEVENTBLOCK_DISPLAY}">
                                                     {foreach name=act_types2 item=typedata key=typeid from=$ACTIVITYTYPES}
                                                     <table width="98%" id="event_type_{$typeid}" style="font-weight:bold;font-size:12px;{if $USER_VIEW_TYPE neq "all"}color:{$typedata.textColor};background-color:{$typedata.color};border: 2px solid {$typedata.title_color}{else}background-color:#ffffff;border: 2px solid #dedede{/if};margin:0px 3px 3px 3px;padding:1px;border-top-left-radius: 3px;border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px;" onMouseOver="showEventIcon('event_type_{$typeid}_icon')" onMouseOut="hideEventIcon('event_type_{$typeid}_icon')"><tr><td><input type="checkbox" id="calendar_event_{$typeid}" name="calendar_event_{$typeid}" onClick="changeCalendarEvents(this)" value="{$typeid}" {if $typedata.checked eq 'true'}checked="checked"{/if}>{$typedata.label}<td><td align="right"><a id="event_type_{$typeid}_icon" href="javascript:;" style="display:none" onClick="loadITSEventSettings(this,'type','{$typeid}')"><img src="themes/images/activate.gif" border="0"></a></td></tr></table>
                                                     {/foreach}
@@ -468,8 +477,8 @@ function hideITSEventInfo(){
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <br>
-                                    {if $Calendar_Modules_Panel_Visible}
+                                    {/if}
+                                    {if $Calendar_Modules_Panel_Visible && $PANEL_NAME eq 'ModulePanel'}
                                     <table class="dvtContentSpace" border="0" cellpadding="0" cellspacing="0" width="100%">
                                         <tbody>
                                             <tr>
@@ -477,7 +486,7 @@ function hideITSEventInfo(){
                                             </tr>
                                             <tr>
                                                 <td style="padding:5px" class="ui-widget-content">
-                                                  <div id="module_type_wrapper">
+                                                  <div id="module_type_wrapper" style="display:{$upMODULEBLOCK_DISPLAY}">
                                                     {foreach name=act_types2 item=typedata key=typeid from=$MODULETYPES}
                                                     <table width="98%" id="event_type_{$typeid}" style="font-weight:bold;font-size:12px;{if $USER_VIEW_TYPE neq "all"}color:{$typedata.textColor};background-color:{$typedata.color};border: 2px solid {$typedata.title_color}{else}background-color:#ffffff;border: 2px solid #dedede{/if};margin:0px 3px 3px 3px;padding:1px;border-top-left-radius: 3px;border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px;"><tr><td><input type="checkbox" id="calendar_event_{$typeid}" name="calendar_event_{$typeid}" onClick="changeCalendarEvents(this)" value="{$typeid}" {if $typedata.checked eq 'T'}checked="checked"{/if}>{$typedata.label}<td><td align="right"><a id="event_type_{$typeid}_icon" href="javascript:;" style="display:none" onClick="loadITSEventSettings(this,'type','{$typeid}')"><img src="themes/images/activate.gif" border="0"></a></td></tr></table>
                                                     {/foreach}
@@ -486,8 +495,8 @@ function hideITSEventInfo(){
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <br>
                                     {/if}
+                                    {if $PANEL_NAME eq 'AssignedUser'}
                                     <table class="dvtContentSpace" border="0" cellpadding="0" cellspacing="0" width="100%">
                                         <tbody>
                                             <tr>
@@ -510,8 +519,8 @@ function hideITSEventInfo(){
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <br>
-                                    <br>
+                                    {/if}
+                                    {if $PANEL_NAME eq 'ActivityStatus'}
                                     <table class="dvtContentSpace" border="0" cellpadding="0" cellspacing="0" width="100%">
                                         <tbody>
                                             <tr>
@@ -519,7 +528,7 @@ function hideITSEventInfo(){
                                             </tr>
                                             <tr>
                                                 <td style="padding:5px" class="ui-widget-content">
-                                                	<div id="et_status_wrapper">
+                                                	<div id="et_status_wrapper" style="display:{$upESTATUSBLOCK_DISPLAY}">
                                                     <div id="event_status_list" style="font-size:12px;">
                                                     {foreach name=calendar_event_status item=estatusdata key=estatus_key from=$EVENT_STATUS}
                                                     <table width="98%" style="font-weight:bold;margin:3px;padding:1px;"><tr><td><input type="checkbox" id="calendar_event_status_{$estatusdata.id}" name="calendar_event_status_{$estatusdata.id}" onClick="changeCalendarEvents(this)" value="{$estatusdata.id}" {if $estatusdata.checked eq 'true'}checked="checked"{/if}>{$estatusdata.label}</td></tr></table>
@@ -530,7 +539,8 @@ function hideITSEventInfo(){
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <br>
+                                    {/if}
+                                    {if $PANEL_NAME eq 'ActivityPriority'}
                                     <table class="dvtContentSpace" border="0" cellpadding="0" cellspacing="0" width="100%">
                                         <tbody>
                                             <tr>
@@ -538,7 +548,7 @@ function hideITSEventInfo(){
                                             </tr>
                                             <tr>
                                                 <td style="padding:5px" class="ui-widget-content">
-                                                 <div id="task_priority_list" style="font-size:12px;">
+                                                 <div id="task_priority_list" style="font-size:12px;display:{$upTPRIORITYBLOCK_DISPLAY};">
                                                     {foreach name=calendar_task_priority item=tprioritydata key=tpriority_key from=$TASK_PRIORITY}
                                                     <table width="98%" style="font-weight:bold;font-size:12px;margin:3px;padding:1px;"><tr><td><input type="checkbox" id="calendar_task_priority_{$tprioritydata.id}" name="calendar_task_priority_{$tprioritydata.id}" onClick="changeCalendarEvents(this)" value="{$tprioritydata.id}" {if $tprioritydata.checked eq 'true'}checked="checked"{/if}>{$tprioritydata.label}</td></tr></table>
                                                     {/foreach}
@@ -547,6 +557,9 @@ function hideITSEventInfo(){
                                             </tr>
                                         </tbody>
                                     </table>
+                                    {/if}
+                                    <br/>
+                                    {/foreach}
                                   </td>
                                   <td align="left" valign="top"><!-- content cache -->
                                     <div style="padding:0px 10px 0px 10px">
