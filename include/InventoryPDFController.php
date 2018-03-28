@@ -189,13 +189,13 @@ class Vtiger_InventoryPDFController {
 		$group_total_tax_percent = '0.00';
 		//To calculate the group tax amount
 		if($final_details['taxtype'] == 'group') {
-			foreach ($final_details['taxes'] as $detail) {
+			foreach ($final_details['taxes'] as $details) {
 				$group_total_tax_percent += $details['percentage'];
 			}
 			$summaryModel->set(getTranslatedString("Tax:", $this->moduleName)."($group_total_tax_percent%)", $this->formatPrice($final_details['tax_totalamount']));
 		}
 		//Shipping & Handling taxes
-		foreach ($final_details['sh_taxes'] as $detail) {
+		foreach ($final_details['sh_taxes'] as $details) {
 			$sh_tax_percent = $sh_tax_percent + $details['percentage'];
 		}
 		//obtain the Currency Symbol
