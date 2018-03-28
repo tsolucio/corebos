@@ -309,6 +309,7 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 					if(getObj(dtlView) != null) getObj(dtlView).innerHTML = "";
 					if(getObj("comments") != null) getObj("comments").value = "";
 				}
+				if (typeof colorizer_after_change === "function") { colorizer_after_change(fieldName, tagValue); }
 				document.getElementById("vtbusy_info").style.display="none";
 			}
 		}

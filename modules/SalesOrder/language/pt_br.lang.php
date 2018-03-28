@@ -10,7 +10,7 @@
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Pedido Vendas',
 'LBL_SO_MODULE_NAME'=>'Pedido Vendas',
 'LBL_RELATED_PRODUCTS'=>'Detalhes do Produto',
@@ -71,7 +71,6 @@ $mod_strings = Array(
 'LBL_SELECT_ACCOUNT'=>'Selecione a Organização',
 'LBL_GENERAL_INFORMATION'=>'Informação Geral',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'Nova Oportunidade',
 'LBL_POTENTIAL_TITLE'=>'Oportunidades',
 
@@ -86,16 +85,13 @@ $mod_strings = Array(
 'LBL_NEW_CONTACT'=>'Novo Contato',
 'LBL_CONTACT_TITLE'=>'Contatos',
 
-//Added vtiger_fields after RC1 - Release
 'LBL_ALL'=>'Todos',
 'LBL_PROSPECT'=>'Prospect',
 'LBL_INVESTOR'=>'Investidor',
 'LBL_RESELLER'=>'Revendedor',
 'LBL_PARTNER'=>'Parceiro',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Ferramentas Organização',
-//Added for 4GA
 'Subject'=>'Assunto',
 'Quote Name'=>'Nome Cotação',
 'Vendor Name'=>'Nome Fornecedor',
@@ -141,7 +137,6 @@ $mod_strings = Array(
 'LBL_SO_INFORMATION'=>'Informação Pedido Venda',
 'LBL_SO'=>'Pedido Venda:',
 
- //Added for 5.0 GA
 'LBL_SO_FORM_TITLE'=>'Vendas',
 'LBL_SUBJECT_TITLE'=>'Assunto',
 'LBL_VENDOR_NAME_TITLE'=>'Nome Fornecedor',
@@ -172,14 +167,11 @@ $mod_strings = Array(
 'Credit Invoice'=>'Fatura Crédito',
 'Paid'=>'Pago',
 
-
-//Added for Reports (5.0.4)
 'Tax Type'=>'Tipo Imposto',
 'Discount Percent'=>'Percentual Desconto',
 'Discount Amount'=>'Total Desconto',
 'S&H Amount'=>'Total Frete',
 
-//Added after 5.0.4 GA
 'SalesOrder No'=>'No. Pedido Vendas',
 
 'Recurring Invoice Information' => 'Informação Fatura Recorrente',
@@ -208,5 +200,4 @@ $mod_strings = Array(
 '4years' => '4 Years',
 '5years' => '5 Years',
 );
-
 ?>

@@ -9,41 +9,33 @@
  ************************************************************************************/
 
 /**	function used to get the top 5 sales orders from Listview query
- *	@return array $values - array with the title, header and entries like  Array('Title'=>$title,'Header'=>$listview_header,'Entries'=>$listview_entries) where as listview_header and listview_entries are arrays of header and entity values which are returned from function getListViewHeader and getListViewEntries
+ *	@return array $values - array with the title, header and entries like  Array('Title'=>$title,'Header'=>$listview_header,'Entries'=>$listview_entries)
+ *	 where as listview_header and listview_entries are arrays of header and entity values which are returned from function getListViewHeader and getListViewEntries
  */
-function getTopSalesOrder($maxval,$calCnt)
-{
-	require_once("data/Tracker.php");
-	require_once('modules/SalesOrder/SalesOrder.php');
-	require_once('include/logging.php');
-	require_once('include/ListView/ListView.php');
-	require_once('include/utils/utils.php');
-	require_once('modules/CustomView/CustomView.php');
+function getTopSalesOrder($maxval, $calCnt) {
+	require_once 'data/Tracker.php';
+	require_once 'modules/SalesOrder/SalesOrder.php';
+	require_once 'include/logging.php';
+	require_once 'include/ListView/ListView.php';
+	require_once 'include/utils/utils.php';
+	require_once 'modules/CustomView/CustomView.php';
 
-	global $current_language,$current_user,$theme,$adb;
-	$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,'SalesOrder');
+	global $current_language, $current_user, $adb;
+	$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 20, 'SalesOrder');
 	$current_module_strings = return_module_language($current_language, 'SalesOrder');
-
-	$log = LoggerManager::getLogger('so_list');
 
 	$url_string = '';
 	$sorder = '';
 	$order_by = '';
 	$oCustomView = new CustomView("SalesOrder");
-	$customviewcombo_html = $oCustomView->getCustomViewCombo();
-	if(isset($_REQUEST['viewname']) == false || $_REQUEST['viewname']=='')
-	{
-		if($oCustomView->setdefaultviewid != "")
-		{
+	$oCustomView->getCustomViewCombo();
+	if (isset($_REQUEST['viewname']) == false || $_REQUEST['viewname']=='') {
+		if ($oCustomView->setdefaultviewid != "") {
 			$viewid = $oCustomView->setdefaultviewid;
-		}else
-		{
-			$viewid = "0";
+		} else {
+			$viewid = '0';
 		}
 	}
-
-	$theme_path="themes/".$theme."/";
-	$image_path=$theme_path."images/";
 
 	//Retreive the list from Database
 	//<<<<<<<<<customview>>>>>>>>>
@@ -61,7 +53,7 @@ function getTopSalesOrder($maxval,$calCnt)
 	$widgetSelectedFields = array_chunk(array_intersect($customViewFields, $widgetFieldsList), 2);
 	//select the first chunk of two fields
 	$widgetSelectedFields = $widgetSelectedFields[0];
-	if(count($widgetSelectedFields) < 2) {
+	if (count($widgetSelectedFields) < 2) {
 		$widgetSelectedFields = array_chunk(array_merge($widgetSelectedFields, $accessibleFieldNameList), 2);
 		//select the first chunk of two fields
 		$widgetSelectedFields = $widgetSelectedFields[0];
@@ -77,7 +69,7 @@ function getTopSalesOrder($maxval,$calCnt)
 
 	$query .= " LIMIT " . $adb->sql_escape_string($maxval);
 
-	if($calCnt == 'calculateCnt') {
+	if ($calCnt == 'calculateCnt') {
 		$list_result_rows = $adb->query(mkCountQuery($query));
 		return $adb->query_result($list_result_rows, 0, 'count');
 	}
@@ -88,7 +80,7 @@ function getTopSalesOrder($maxval,$calCnt)
 	$noofrows = $adb->num_rows($list_result);
 
 	//Retreiving the start value from request
-	if(isset($_REQUEST['start']) && $_REQUEST['start'] != '') {
+	if (isset($_REQUEST['start']) && $_REQUEST['start'] != '') {
 		$start = vtlib_purify($_REQUEST['start']);
 	} else {
 		$start = 1;
@@ -97,30 +89,22 @@ function getTopSalesOrder($maxval,$calCnt)
 	//Retreive the Navigation array
 	$navigation_array = getNavigationValues($start, $noofrows, $list_max_entries_per_page);
 
-	if ($navigation_array['start'] == 1)
-	{
-		if($noofrows != 0)
+	if ($navigation_array['start'] == 1) {
+		if ($noofrows != 0) {
 			$start_rec = $navigation_array['start'];
-		else
+		} else {
 			$start_rec = 0;
-		if($noofrows > $list_max_entries_per_page)
-		{
-			$end_rec = $navigation_array['start'] + $list_max_entries_per_page - 1;
 		}
-		else
-		{
+		if ($noofrows > $list_max_entries_per_page) {
+			$end_rec = $navigation_array['start'] + $list_max_entries_per_page - 1;
+		} else {
 			$end_rec = $noofrows;
 		}
-	}
-	else
-	{
-		if($navigation_array['next'] > $list_max_entries_per_page)
-		{
+	} else {
+		if ($navigation_array['next'] > $list_max_entries_per_page) {
 			$start_rec = $navigation_array['next'] - $list_max_entries_per_page;
 			$end_rec = $navigation_array['next'] - 1;
-		}
-		else
-		{
+		} else {
 			$start_rec = $navigation_array['prev'] + $list_max_entries_per_page;
 			$end_rec = $noofrows;
 		}
@@ -132,11 +116,11 @@ function getTopSalesOrder($maxval,$calCnt)
 	$title=array('myTopSalesOrders.gif',$current_module_strings['LBL_MY_TOP_SO'],'home_mytopso');
 	$controller = new ListViewController($adb, $current_user, $queryGenerator);
 	$controller->setHeaderSorting(false);
-	$header = $controller->getListViewHeader($focus,$currentModule,$url_string,$sorder,$order_by, true);
+	$header = $controller->getListViewHeader($focus, $currentModule, $url_string, $sorder, $order_by, true);
 
-	$entries = $controller->getListViewEntries($focus,$currentModule,$list_result,$navigation_array, true);
+	$entries = $controller->getListViewEntries($focus, $currentModule, $list_result, $navigation_array, true);
 
-	$values=Array('ModuleName'=>'SalesOrder','Title'=>$title,'Header'=>$header,'Entries'=>$entries,'search_qry'=>$search_qry);
+	$values=array('ModuleName'=>'SalesOrder','Title'=>$title,'Header'=>$header,'Entries'=>$entries,'search_qry'=>$search_qry);
 	return $values;
 }
 
@@ -170,5 +154,4 @@ function getTopSalesOrderSearch($output) {
 
 	return $output;
 }
-
 ?>

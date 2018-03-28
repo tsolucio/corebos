@@ -15,7 +15,7 @@
  *************************************************************************************************/
 global $log,$currentModule,$adb,$current_user;
 
-$screen_values = json_decode($_REQUEST['structure'],true);
+$screen_values = json_decode($_REQUEST['structure'], true);
 $products = array();
 $message = '%%%OK%%%';
 foreach ($screen_values as $sv_name => $sv) {
@@ -33,18 +33,18 @@ foreach ($screen_values as $sv_name => $sv) {
 
 foreach ($products as $product) {
 	if ($product['type'] == 'Products') {
-		$q = $adb->pquery("SELECT divisible FROM vtiger_products WHERE productid = ?", array($product['crmid']));
+		$q = $adb->pquery('SELECT divisible FROM vtiger_products WHERE productid = ?', array($product['crmid']));
 	} else {
 		// Was a service
-		$q = $adb->pquery("SELECT divisible FROM vtiger_service WHERE serviceid = ?", array($product['crmid']));
+		$q = $adb->pquery('SELECT divisible FROM vtiger_service WHERE serviceid = ?', array($product['crmid']));
 	}
 	if ($adb->query_result($q, 0, 'divisible') === '0') {
 		$divisible = false;
 	} else {
 		$divisible = true;
 	}
-	if ( !$divisible && (float)$product['qty'] != (int)$product['qty']) {
-		$message = $product['name'].' '.getTranslatedString('DIVISIBLE_WARNING','Products');
+	if (!$divisible && (float)$product['qty'] != (int)$product['qty']) {
+		$message = $product['name'].' '.getTranslatedString('DIVISIBLE_WARNING', 'Products');
 		break;
 	}
 }

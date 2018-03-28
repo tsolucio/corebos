@@ -18,7 +18,8 @@ $cur_time = time();
 coreBOS_Session::set('last_reminder_check_time', $cur_time);
 coreBOS_Session::set('next_reminder_interval', 60);
 if (isset($_SESSION['next_reminder_time']) && $_SESSION['next_reminder_time'] == 'None') {
-	return;
+	echo 'None';
+	die();
 } elseif (isset($_SESSION['next_reminder_time']) && (($_SESSION['next_reminder_time'] - $_SESSION['next_reminder_interval']) > $cur_time)) {
 	echo "<script type='text/javascript' id='_vtiger_activityreminder_callback_interval_'>".($_SESSION['next_reminder_interval'] * 1000)."</script>";
 	return;
