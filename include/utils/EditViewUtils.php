@@ -1336,10 +1336,13 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 * Param $soid - sales order id
 * Return type is an object array
 */
-function getConvertSoToInvoice($focus,$so_focus,$soid) {
+function getConvertSoToInvoice($focus, $so_focus, $soid) {
 	global $log,$current_user;
-	$log->debug("Entering getConvertSoToInvoice(".get_class($focus).",".get_class($so_focus).",".$soid.") method ...");
-	$fields = array('bill_street','bill_city','bill_code','bill_pobox','bill_country','bill_state','ship_street','ship_city','ship_code','ship_pobox','ship_country','ship_state');
+	$log->debug('Entering getConvertSoToInvoice('.get_class($focus).','.get_class($so_focus).','.$soid.') method ...');
+	$fields = array(
+		'bill_street','bill_city','bill_code','bill_pobox','bill_country','bill_state',
+		'ship_street','ship_city','ship_code','ship_pobox','ship_country','ship_state'
+	);
 	foreach ($fields as $fieldname) {
 		if (getFieldVisibilityPermission('SalesOrder', $current_user->id, $fieldname) == '0') {
 			$so_focus->column_fields[$fieldname] = $so_focus->column_fields[$fieldname];
@@ -1348,36 +1351,36 @@ function getConvertSoToInvoice($focus,$so_focus,$soid) {
 		}
 	}
 	$focus->column_fields['salesorder_id'] = $soid;
-	$focus->column_fields['subject'] = $so_focus->column_fields['subject'];
-	$focus->column_fields['customerno'] = $so_focus->column_fields['customerno'];
-	$focus->column_fields['duedate'] = $so_focus->column_fields['duedate'];
-	$focus->column_fields['contact_id'] = $so_focus->column_fields['contact_id'];//to include contact name in Invoice
-	$focus->column_fields['account_id'] = $so_focus->column_fields['account_id'];
-	$focus->column_fields['exciseduty'] = $so_focus->column_fields['exciseduty'];
-	$focus->column_fields['salescommission'] = $so_focus->column_fields['salescommission'];
-	$focus->column_fields['purchaseorder'] = $so_focus->column_fields['vtiger_purchaseorder'];
-	$focus->column_fields['bill_street'] = $so_focus->column_fields['bill_street'];
-	$focus->column_fields['ship_street'] = $so_focus->column_fields['ship_street'];
-	$focus->column_fields['bill_city'] = $so_focus->column_fields['bill_city'];
-	$focus->column_fields['ship_city'] = $so_focus->column_fields['ship_city'];
-	$focus->column_fields['bill_state'] = $so_focus->column_fields['bill_state'];
-	$focus->column_fields['ship_state'] = $so_focus->column_fields['ship_state'];
-	$focus->column_fields['bill_code'] = $so_focus->column_fields['bill_code'];
-	$focus->column_fields['ship_code'] = $so_focus->column_fields['ship_code'];
-	$focus->column_fields['bill_country'] = $so_focus->column_fields['bill_country'];
-	$focus->column_fields['ship_country'] = $so_focus->column_fields['ship_country'];
-	$focus->column_fields['bill_pobox'] = $so_focus->column_fields['bill_pobox'];
-	$focus->column_fields['ship_pobox'] = $so_focus->column_fields['ship_pobox'];
-	$focus->column_fields['description'] = $so_focus->column_fields['description'];
-	$focus->column_fields['terms_conditions'] = $so_focus->column_fields['terms_conditions'];
-	$focus->column_fields['currency_id'] = $so_focus->column_fields['currency_id'];
-	$focus->column_fields['conversion_rate'] = $so_focus->column_fields['conversion_rate'];
+	$focus->column_fields['subject'] = isset($so_focus->column_fields['subject']) ? $so_focus->column_fields['subject'] : '';
+	$focus->column_fields['customerno'] = isset($so_focus->column_fields['customerno']) ? $so_focus->column_fields['customerno'] : '';
+	$focus->column_fields['duedate'] = isset($so_focus->column_fields['duedate']) ? $so_focus->column_fields['duedate'] : '';
+	$focus->column_fields['contact_id'] = isset($so_focus->column_fields['contact_id']) ? $so_focus->column_fields['contact_id'] : '';
+	$focus->column_fields['account_id'] = isset($so_focus->column_fields['account_id']) ? $so_focus->column_fields['account_id'] : '';
+	$focus->column_fields['exciseduty'] = isset($so_focus->column_fields['exciseduty']) ? $so_focus->column_fields['exciseduty'] : '';
+	$focus->column_fields['salescommission'] = isset($so_focus->column_fields['salescommission']) ? $so_focus->column_fields['salescommission'] : '';
+	$focus->column_fields['purchaseorder'] = isset($so_focus->column_fields['vtiger_purchaseorder']) ? $so_focus->column_fields['vtiger_purchaseorder'] : '';
+	$focus->column_fields['bill_street'] = isset($so_focus->column_fields['bill_street']) ? $so_focus->column_fields['bill_street'] : '';
+	$focus->column_fields['ship_street'] = isset($so_focus->column_fields['ship_street']) ? $so_focus->column_fields['ship_street'] : '';
+	$focus->column_fields['bill_city'] = isset($so_focus->column_fields['bill_city']) ? $so_focus->column_fields['bill_city'] : '';
+	$focus->column_fields['ship_city'] = isset($so_focus->column_fields['ship_city']) ? $so_focus->column_fields['ship_city'] : '';
+	$focus->column_fields['bill_state'] = isset($so_focus->column_fields['bill_state']) ? $so_focus->column_fields['bill_state'] : '';
+	$focus->column_fields['ship_state'] = isset($so_focus->column_fields['ship_state']) ? $so_focus->column_fields['ship_state'] : '';
+	$focus->column_fields['bill_code'] = isset($so_focus->column_fields['bill_code']) ? $so_focus->column_fields['bill_code'] : '';
+	$focus->column_fields['ship_code'] = isset($so_focus->column_fields['ship_code']) ? $so_focus->column_fields['ship_code'] : '';
+	$focus->column_fields['bill_country'] = isset($so_focus->column_fields['bill_country']) ? $so_focus->column_fields['bill_country'] : '';
+	$focus->column_fields['ship_country'] = isset($so_focus->column_fields['ship_country']) ? $so_focus->column_fields['ship_country'] : '';
+	$focus->column_fields['bill_pobox'] = isset($so_focus->column_fields['bill_pobox']) ? $so_focus->column_fields['bill_pobox'] : '';
+	$focus->column_fields['ship_pobox'] = isset($so_focus->column_fields['ship_pobox']) ? $so_focus->column_fields['ship_pobox'] : '';
+	$focus->column_fields['description'] = isset($so_focus->column_fields['description']) ? $so_focus->column_fields['description'] : '';
+	$focus->column_fields['terms_conditions'] = isset($so_focus->column_fields['terms_conditions']) ? $so_focus->column_fields['terms_conditions'] : '';
+	$focus->column_fields['currency_id'] = isset($so_focus->column_fields['currency_id']) ? $so_focus->column_fields['currency_id'] : '';
+	$focus->column_fields['conversion_rate'] = isset($so_focus->column_fields['conversion_rate']) ? $so_focus->column_fields['conversion_rate'] : '';
 	$cbMapid = GlobalVariable::getVariable('BusinessMapping_SalesOrder2Invoice', cbMap::getMapIdByName('SalesOrder2Invoice'));
 	if ($cbMapid) {
 		$cbMap = cbMap::getMapByID($cbMapid);
-		$focus->column_fields = $cbMap->Mapping($so_focus->column_fields,$focus->column_fields);
+		$focus->column_fields = $cbMap->Mapping($so_focus->column_fields, $focus->column_fields);
 	}
-	$log->debug("Exiting getConvertSoToInvoice method ...");
+	$log->debug('Exiting getConvertSoToInvoice method ...');
 	return $focus;
 }
 
@@ -1387,43 +1390,45 @@ function getConvertSoToInvoice($focus,$so_focus,$soid) {
 * Param $quoteid - quote id
 * Return type is an object array
 */
-function getConvertQuoteToInvoice($focus,$quote_focus,$quoteid)
-{
+function getConvertQuoteToInvoice($focus, $quote_focus, $quoteid) {
 	global $log,$current_user;
-	$log->debug("Entering getConvertQuoteToInvoice(".get_class($focus).",".get_class($quote_focus).",".$quoteid.") method ...");
-	$fields = array('bill_street','bill_city','bill_code','bill_pobox','bill_country','bill_state','ship_street','ship_city','ship_code','ship_pobox','ship_country','ship_state');
+	$log->debug('Entering getConvertQuoteToInvoice('.get_class($focus).','.get_class($quote_focus).','.$quoteid.') method ...');
+	$fields = array(
+		'bill_street','bill_city','bill_code','bill_pobox','bill_country','bill_state',
+		'ship_street','ship_city','ship_code','ship_pobox','ship_country','ship_state'
+	);
 	foreach ($fields as $fieldname) {
-		if (getFieldVisibilityPermission('Quotes', $current_user->id,$fieldname) == '0'){
+		if (getFieldVisibilityPermission('Quotes', $current_user->id, $fieldname) == '0') {
 			$quote_focus->column_fields[$fieldname] = $quote_focus->column_fields[$fieldname];
-		}
-		else
+		} else {
 			$quote_focus->column_fields[$fieldname] = '';
+		}
 	}
-	$focus->column_fields['subject'] = $quote_focus->column_fields['subject'];
-	$focus->column_fields['account_id'] = $quote_focus->column_fields['account_id'];
-	$focus->column_fields['contact_id'] = $quote_focus->column_fields['contact_id'];
-	$focus->column_fields['bill_street'] = $quote_focus->column_fields['bill_street'];
-	$focus->column_fields['ship_street'] = $quote_focus->column_fields['ship_street'];
-	$focus->column_fields['bill_city'] = $quote_focus->column_fields['bill_city'];
-	$focus->column_fields['ship_city'] = $quote_focus->column_fields['ship_city'];
-	$focus->column_fields['bill_state'] = $quote_focus->column_fields['bill_state'];
-	$focus->column_fields['ship_state'] = $quote_focus->column_fields['ship_state'];
-	$focus->column_fields['bill_code'] = $quote_focus->column_fields['bill_code'];
-	$focus->column_fields['ship_code'] = $quote_focus->column_fields['ship_code'];
-	$focus->column_fields['bill_country'] = $quote_focus->column_fields['bill_country'];
-	$focus->column_fields['ship_country'] = $quote_focus->column_fields['ship_country'];
-	$focus->column_fields['bill_pobox'] = $quote_focus->column_fields['bill_pobox'];
-	$focus->column_fields['ship_pobox'] = $quote_focus->column_fields['ship_pobox'];
-	$focus->column_fields['description'] = $quote_focus->column_fields['description'];
-	$focus->column_fields['terms_conditions'] = $quote_focus->column_fields['terms_conditions'];
-	$focus->column_fields['currency_id'] = $quote_focus->column_fields['currency_id'];
-	$focus->column_fields['conversion_rate'] = $quote_focus->column_fields['conversion_rate'];
+	$focus->column_fields['subject'] = isset($quote_focus->column_fields['subject']) ? $quote_focus->column_fields['subject'] : '';
+	$focus->column_fields['account_id'] = isset($quote_focus->column_fields['account_id']) ? $quote_focus->column_fields['account_id'] : '';
+	$focus->column_fields['contact_id'] = isset($quote_focus->column_fields['contact_id']) ? $quote_focus->column_fields['contact_id'] : '';
+	$focus->column_fields['bill_street'] = isset($quote_focus->column_fields['bill_street']) ? $quote_focus->column_fields['bill_street'] : '';
+	$focus->column_fields['ship_street'] = isset($quote_focus->column_fields['ship_street']) ? $quote_focus->column_fields['ship_street'] : '';
+	$focus->column_fields['bill_city'] = isset($quote_focus->column_fields['bill_city']) ? $quote_focus->column_fields['bill_city'] : '';
+	$focus->column_fields['ship_city'] = isset($quote_focus->column_fields['ship_city']) ? $quote_focus->column_fields['ship_city'] : '';
+	$focus->column_fields['bill_state'] = isset($quote_focus->column_fields['bill_state']) ? $quote_focus->column_fields['bill_state'] : '';
+	$focus->column_fields['ship_state'] = isset($quote_focus->column_fields['ship_state']) ? $quote_focus->column_fields['ship_state'] : '';
+	$focus->column_fields['bill_code'] = isset($quote_focus->column_fields['bill_code']) ? $quote_focus->column_fields['bill_code'] : '';
+	$focus->column_fields['ship_code'] = isset($quote_focus->column_fields['ship_code']) ? $quote_focus->column_fields['ship_code'] : '';
+	$focus->column_fields['bill_country'] = isset($quote_focus->column_fields['bill_country']) ? $quote_focus->column_fields['bill_country'] : '';
+	$focus->column_fields['ship_country'] = isset($quote_focus->column_fields['ship_country']) ? $quote_focus->column_fields['ship_country'] : '';
+	$focus->column_fields['bill_pobox'] = isset($quote_focus->column_fields['bill_pobox']) ? $quote_focus->column_fields['bill_pobox'] : '';
+	$focus->column_fields['ship_pobox'] = isset($quote_focus->column_fields['ship_pobox']) ? $quote_focus->column_fields['ship_pobox'] : '';
+	$focus->column_fields['description'] = isset($quote_focus->column_fields['description']) ? $quote_focus->column_fields['description'] : '';
+	$focus->column_fields['terms_conditions'] = isset($quote_focus->column_fields['terms_conditions']) ? $quote_focus->column_fields['terms_conditions'] : '';
+	$focus->column_fields['currency_id'] = isset($quote_focus->column_fields['currency_id']) ? $quote_focus->column_fields['currency_id'] : '';
+	$focus->column_fields['conversion_rate'] = isset($quote_focus->column_fields['conversion_rate']) ? $quote_focus->column_fields['conversion_rate'] : '';
 	$cbMapid = GlobalVariable::getVariable('BusinessMapping_Quotes2Invoice', cbMap::getMapIdByName('Quotes2Invoice'));
 	if ($cbMapid) {
 		$cbMap = cbMap::getMapByID($cbMapid);
-		$focus->column_fields = $cbMap->Mapping($quote_focus->column_fields,$focus->column_fields);
+		$focus->column_fields = $cbMap->Mapping($quote_focus->column_fields, $focus->column_fields);
 	}
-	$log->debug("Exiting getConvertQuoteToInvoice method ...");
+	$log->debug('Exiting getConvertQuoteToInvoice method ...');
 	return $focus;
 }
 
@@ -1433,46 +1438,48 @@ function getConvertQuoteToInvoice($focus,$quote_focus,$quoteid)
 * Param $quoteid - quote id
 * Return type is an object array
 */
-function getConvertQuoteToSoObject($focus,$quote_focus,$quoteid)
-{
+function getConvertQuoteToSoObject($focus, $quote_focus, $quoteid) {
 	global $log,$current_user;
-	$log->debug("Entering getConvertQuoteToSoObject(".get_class($focus).",".get_class($quote_focus).",".$quoteid.") method ...");
-	$fields = array('bill_street','bill_city','bill_code','bill_pobox','bill_country','bill_state','ship_street','ship_city','ship_code','ship_pobox','ship_country','ship_state');
+	$log->debug('Entering getConvertQuoteToSoObject('.get_class($focus).','.get_class($quote_focus).','.$quoteid.') method ...');
+	$fields = array(
+		'bill_street','bill_city','bill_code','bill_pobox','bill_country','bill_state',
+		'ship_street','ship_city','ship_code','ship_pobox','ship_country','ship_state'
+	);
 	foreach ($fields as $fieldname) {
-		if (getFieldVisibilityPermission('Quotes', $current_user->id,$fieldname) == '0'){
+		if (getFieldVisibilityPermission('Quotes', $current_user->id, $fieldname) == '0') {
 			$quote_focus->column_fields[$fieldname] = $quote_focus->column_fields[$fieldname];
-		}
-		else
+		} else {
 			$quote_focus->column_fields[$fieldname] = '';
+		}
 	}
 	$focus->column_fields['quote_id'] = $quoteid;
-	$focus->column_fields['subject'] = $quote_focus->column_fields['subject'];
-	$focus->column_fields['contact_id'] = $quote_focus->column_fields['contact_id'];
-	$focus->column_fields['potential_id'] = $quote_focus->column_fields['potential_id'];
-	$focus->column_fields['account_id'] = $quote_focus->column_fields['account_id'];
-	$focus->column_fields['carrier'] = $quote_focus->column_fields['carrier'];
-	$focus->column_fields['bill_street'] = $quote_focus->column_fields['bill_street'];
-	$focus->column_fields['ship_street'] = $quote_focus->column_fields['ship_street'];
-	$focus->column_fields['bill_city'] = $quote_focus->column_fields['bill_city'];
-	$focus->column_fields['ship_city'] = $quote_focus->column_fields['ship_city'];
-	$focus->column_fields['bill_state'] = $quote_focus->column_fields['bill_state'];
-	$focus->column_fields['ship_state'] = $quote_focus->column_fields['ship_state'];
-	$focus->column_fields['bill_code'] = $quote_focus->column_fields['bill_code'];
-	$focus->column_fields['ship_code'] = $quote_focus->column_fields['ship_code'];
-	$focus->column_fields['bill_country'] = $quote_focus->column_fields['bill_country'];
-	$focus->column_fields['ship_country'] = $quote_focus->column_fields['ship_country'];
-	$focus->column_fields['bill_pobox'] = $quote_focus->column_fields['bill_pobox'];
-	$focus->column_fields['ship_pobox'] = $quote_focus->column_fields['ship_pobox'];
-	$focus->column_fields['description'] = $quote_focus->column_fields['description'];
-	$focus->column_fields['terms_conditions'] = $quote_focus->column_fields['terms_conditions'];
-	$focus->column_fields['currency_id'] = $quote_focus->column_fields['currency_id'];
-	$focus->column_fields['conversion_rate'] = $quote_focus->column_fields['conversion_rate'];
+	$focus->column_fields['subject'] = isset($quote_focus->column_fields['subject']) ? $quote_focus->column_fields['subject'] : '';
+	$focus->column_fields['contact_id'] = isset($quote_focus->column_fields['contact_id']) ? $quote_focus->column_fields['contact_id'] : '';
+	$focus->column_fields['potential_id'] = isset($quote_focus->column_fields['potential_id']) ? $quote_focus->column_fields['potential_id'] : '';
+	$focus->column_fields['account_id'] = isset($quote_focus->column_fields['account_id']) ? $quote_focus->column_fields['account_id'] : '';
+	$focus->column_fields['carrier'] = isset($quote_focus->column_fields['carrier']) ? $quote_focus->column_fields['carrier'] : '';
+	$focus->column_fields['bill_street'] = isset($quote_focus->column_fields['bill_street']) ? $quote_focus->column_fields['bill_street'] : '';
+	$focus->column_fields['ship_street'] = isset($quote_focus->column_fields['ship_street']) ? $quote_focus->column_fields['ship_street'] : '';
+	$focus->column_fields['bill_city'] = isset($quote_focus->column_fields['bill_city']) ? $quote_focus->column_fields['bill_city'] : '';
+	$focus->column_fields['ship_city'] = isset($quote_focus->column_fields['ship_city']) ? $quote_focus->column_fields['ship_city'] : '';
+	$focus->column_fields['bill_state'] = isset($quote_focus->column_fields['bill_state']) ? $quote_focus->column_fields['bill_state'] : '';
+	$focus->column_fields['ship_state'] = isset($quote_focus->column_fields['ship_state']) ? $quote_focus->column_fields['ship_state'] : '';
+	$focus->column_fields['bill_code'] = isset($quote_focus->column_fields['bill_code']) ? $quote_focus->column_fields['bill_code'] : '';
+	$focus->column_fields['ship_code'] = isset($quote_focus->column_fields['ship_code']) ? $quote_focus->column_fields['ship_code'] : '';
+	$focus->column_fields['bill_country'] = isset($quote_focus->column_fields['bill_country']) ? $quote_focus->column_fields['bill_country'] : '';
+	$focus->column_fields['ship_country'] = isset($quote_focus->column_fields['ship_country']) ? $quote_focus->column_fields['ship_country'] : '';
+	$focus->column_fields['bill_pobox'] = isset($quote_focus->column_fields['bill_pobox']) ? $quote_focus->column_fields['bill_pobox'] : '';
+	$focus->column_fields['ship_pobox'] = isset($quote_focus->column_fields['ship_pobox']) ? $quote_focus->column_fields['ship_pobox'] : '';
+	$focus->column_fields['description'] = isset($quote_focus->column_fields['description']) ? $quote_focus->column_fields['description'] : '';
+	$focus->column_fields['terms_conditions'] = isset($quote_focus->column_fields['terms_conditions']) ? $quote_focus->column_fields['terms_conditions'] : '';
+	$focus->column_fields['currency_id'] = isset($quote_focus->column_fields['currency_id']) ? $quote_focus->column_fields['currency_id'] : '';
+	$focus->column_fields['conversion_rate'] = isset($quote_focus->column_fields['conversion_rate']) ? $quote_focus->column_fields['conversion_rate'] : '';
 	$cbMapid = GlobalVariable::getVariable('BusinessMapping_Quotes2SalesOrder', cbMap::getMapIdByName('Quotes2SalesOrder'));
 	if ($cbMapid) {
 		$cbMap = cbMap::getMapByID($cbMapid);
-		$focus->column_fields = $cbMap->Mapping($quote_focus->column_fields,$focus->column_fields);
+		$focus->column_fields = $cbMap->Mapping($quote_focus->column_fields, $focus->column_fields);
 	}
-	$log->debug("Exiting getConvertQuoteToSoObject method ...");
+	$log->debug('Exiting getConvertQuoteToSoObject method ...');
 	return $focus;
 }
 
