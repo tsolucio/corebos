@@ -34,19 +34,20 @@ class inventoryDetailsTaxBlock extends cbupdaterWorker {
 			$mod->addBlock($block);
 
 			$r = $adb->pquery('SELECT * FROM vtiger_inventorytaxinfo WHERE deleted=?', array(0));
-			while($tax=$adb->fetch_array($r)) {
+			while ($tax=$adb->fetch_array($r)) {
 				$field = new Vtiger_Field();
 				$field->label = $tax['taxlabel'];
 				$field->name = 'id_tax' . $tax['taxid'] . '_perc';
 				$field->column = 'id_tax' . $tax['taxid'] . '_perc';
 				$field->columntype = 'DECIMAL(7,3)';
 				$field->uitype = 9;
-				$field->typeofdata = 'V~O';
+				$field->typeofdata = 'N~O';
 				$block->addField($field);
+				$adb->query('ALTER TABLE vtiger_inventorydetails CHANGE id_tax'.$tax['taxid'].'_perc id_tax'.$tax['taxid']."_perc DECIMAL(7,3) NOT NULL DEFAULT '0'");
 			}
 
 			// Install event handler for when taxes are created, changed and renamed
-			require_once('include/events/include.inc');
+			require_once 'include/events/include.inc';
 			$em = new VTEventsManager($adb);
 			$eventName = 'corebos.add.tax';
 			$fileName = 'modules/InventoryDetails/taxHandler.php';

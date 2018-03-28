@@ -29,8 +29,10 @@ class addTaxHandler extends VTEventHandler {
 			$field->column = 'id_tax' . $eventData['tax_id'] . '_perc';
 			$field->columntype = 'DECIMAL(7,3)';
 			$field->uitype = 9;
-			$field->typeofdata = 'V~O';
+			$field->typeofdata = 'N~O';
 			$block->addField($field);
+			global $adb;
+			$adb->query('ALTER TABLE vtiger_inventorydetails CHANGE id_tax'.$eventData['tax_id'].'_perc id_tax'.$eventData['tax_id']."_perc DECIMAL(7,3) NOT NULL DEFAULT '0'");
 		}
 	}
 }

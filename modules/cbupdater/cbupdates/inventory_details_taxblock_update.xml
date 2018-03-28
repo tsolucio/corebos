@@ -7,4 +7,11 @@
 	<classname>inventoryDetailsTaxBlock</classname>
 	<systemupdate>false</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>make inventory tax fields not null and set default value to 0</description>
+	<filename>build/changeSets/2018/inventoryDetailsTaxBlockDValue.php</filename>
+	<classname>inventoryDetailsTaxBlockDValue</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
 </updatesChangeLog>
