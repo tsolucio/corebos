@@ -14,9 +14,11 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 class inventoryDetailsTaxBlock extends cbupdaterWorker {
-	
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -65,9 +67,11 @@ class inventoryDetailsTaxBlock extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
-	function undoChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function undoChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			global $adb;
 			require_once('vtlib/Vtiger/Module.php');
@@ -77,26 +81,16 @@ class inventoryDetailsTaxBlock extends cbupdaterWorker {
 			$block->delete(true);
 
 			// Remove the registered events
-			require_once('include/events/include.inc');
+			require_once 'include/events/include.inc';
 			$em = new VTEventsManager($adb);
 			$em->unregisterHandler('addTaxHandler');
 			$em->unregisterHandler('changeStatusTaxHandler');
 			$em->unregisterHandler('changeLabelTaxHandler');
 
 			$this->markUndone(false);
-
 		} else {
 			$this->sendMsg('Changeset '.get_class($this).' not applied, it cannot be undone!');
 		}
 		$this->finishExecution();
 	}
-	
-	function isApplied() {
-		$done = parent::isApplied();
-		if (!$done) {
-
-		}
-		return $done;
-	}
-	
 }

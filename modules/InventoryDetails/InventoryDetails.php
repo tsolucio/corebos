@@ -384,7 +384,7 @@ class InventoryDetails extends CRMEntity {
 			$handler = vtws_getModuleHandlerFromName('InventoryDetails', $current_user);
 			$meta = $handler->getMeta();
 			$invdet_focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($invdet_focus->column_fields, $meta);
-			$invdet_focus->save("InventoryDetails");
+			$invdet_focus->save('InventoryDetails');
 			$requestindex++;
 			while (isset($_REQUEST['deleted'.$requestindex]) && $_REQUEST['deleted'.$requestindex] == 1) {
 				$requestindex++;
