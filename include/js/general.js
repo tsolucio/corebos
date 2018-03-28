@@ -3068,15 +3068,21 @@ function ActivityReminderCallbackProcess(message) {
 		// We don't need the no any longer, it will be sent from server for next Popup
 		jQuery("#"+ActivityReminder_Newdelay_response_node).remove();
 	}
-	if(message == '' || trim(message).indexOf('<script') == 0) {
+	if (message == '' || trim(message).indexOf('<script') == 0) {
 		// We got only new delay value but no popup information, let us remove the callback win created
 		jQuery("#"+ActivityReminder_callback_win.id).remove();
 		ActivityReminder_callback_win = false;
 		message = '';
 	}
 
-	if(message != "") ActivityReminderCallbackRollout(ActivityReminder_popup_maxheight, ActivityReminder_callback_win);
-	else {
+	if (message == 'None') {
+		if (ActivityReminder_timer) {
+			window.clearTimeout(ActivityReminder_timer);
+			ActivityReminder_timer = null;
+		}
+	} else if (message != '') {
+		ActivityReminderCallbackRollout(ActivityReminder_popup_maxheight, ActivityReminder_callback_win);
+	} else {
 		ActivityReminderCallbackReset(0, ActivityReminder_callback_win);
 	}
 }
