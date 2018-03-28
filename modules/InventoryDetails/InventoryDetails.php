@@ -260,7 +260,7 @@ class InventoryDetails extends CRMEntity {
 		$taxtype = getInventoryTaxType($module, $related_to);
 		if ($taxtype == 'group') {
 			$query = "SELECT id as related_to, vtiger_inventoryproductrel.productid, sequence_no, lineitem_id, quantity, listprice, comment as description,
-			quantity * listprice AS extgross,
+			quantity * listprice AS extgross, coalesce(tax1, 0) AS id_tax1_perc, coalesce(tax2, 0) AS id_tax2_perc, coalesce(tax3, 0) AS id_tax3_perc,
 			COALESCE( discount_percent, COALESCE( discount_amount *100 / ( quantity * listprice ) , 0 ) ) AS discount_percent,
 			COALESCE( discount_amount, COALESCE( discount_percent * quantity * listprice /100, 0 ) ) AS discount_amount,
 			(quantity * listprice) - COALESCE( discount_amount, COALESCE( discount_percent * quantity * listprice /100, 0 )) AS extnet,
@@ -273,7 +273,7 @@ class InventoryDetails extends CRMEntity {
 			WHERE id = ?";
 		} elseif ($taxtype == 'individual') {
 			$query = "SELECT id as related_to, vtiger_inventoryproductrel.productid, sequence_no, lineitem_id, quantity, listprice, comment as description,
-			coalesce( tax1 , 0 ) AS tax1, coalesce( tax2 , 0 ) AS tax2, coalesce( tax3 , 0 ) AS tax3,
+			coalesce(tax1, 0) AS id_tax1_perc, coalesce(tax2, 0) AS id_tax2_perc, coalesce(tax3, 0) AS id_tax3_perc,
 			( COALESCE( tax1, 0 ) + COALESCE( tax2, 0 ) + COALESCE( tax3, 0 ) ) as tax_percent,
 			quantity * listprice AS extgross,
 			COALESCE( discount_percent, COALESCE( discount_amount *100 / ( quantity * listprice ) , 0 ) ) AS discount_percent,
