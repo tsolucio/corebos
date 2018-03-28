@@ -14,11 +14,11 @@
  * See the License for the specific language governing permissions and limitations under the
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
  *************************************************************************************/
-require_once('Smarty_setup.php');
+require_once 'Smarty_setup.php';
 
 global $theme, $currentModule, $mod_strings, $app_strings, $current_user, $current_language;
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
+$theme_path='themes/'.$theme.'/';
+$image_path=$theme_path.'images/';
 
 $smarty = new vtigerCRM_Smarty();
 $smarty->assign('MOD', return_module_language($current_language, 'Settings'));
@@ -55,8 +55,12 @@ if (!is_admin($current_user)) {
 ?>
 <table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 <tr>
-	<td width=50 rowspan=2 valign=top><img src="modules/Documents/images/HardDrive4848.png" alt="<?php echo getTranslatedString('STORAGESIZE_CONFIGURATION');?>" width="48" height="48" border=0 title="<?php echo getTranslatedString('STORAGESIZE_CONFIGURATION');?>"></td>
-	<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings"><?php echo getTranslatedString('LBL_SETTINGS');?></a> > <?php echo getTranslatedString('STORAGESIZE_CONFIGURATION');?> </b></td>
+	<td width=50 rowspan=2 valign=top>
+	<img src="modules/Documents/images/HardDrive4848.png" alt="<?php echo getTranslatedString('STORAGESIZE_CONFIGURATION');?>" width="48" height="48" border=0 title="<?php echo getTranslatedString('STORAGESIZE_CONFIGURATION');?>">
+	</td>
+	<td class=heading2 valign=bottom>
+	<b><a href="index.php?module=Settings&action=index&parenttab=Settings"><?php echo getTranslatedString('LBL_SETTINGS');?></a> > <?php echo getTranslatedString('STORAGESIZE_CONFIGURATION');?> </b>
+	</td>
 </tr>
 <tr>
 	<td valign=top class="small"><?php echo getTranslatedString('STORAGESIZE_CONFIGURATION_DESCRIPTION');?></td>

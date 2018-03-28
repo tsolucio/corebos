@@ -7,10 +7,10 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-$Document_Folder_View = GlobalVariable::getVariable('Document_Folder_View',1,'Documents');
+$Document_Folder_View = GlobalVariable::getVariable('Document_Folder_View', 1, 'Documents');
 if ($Document_Folder_View) {
-	include_once('modules/Documents/FoldersListView.php');
+	include_once 'modules/Documents/FoldersListView.php';
 } else {
-	include_once('modules/Vtiger/ListView.php');
+	include_once 'modules/Vtiger/ListView.php';
 }
 ?>

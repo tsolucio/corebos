@@ -215,15 +215,19 @@ switch ($functiontocall) {
 		}
 		break;
 	case 'getRelatedListInfo':
-		$sql = "SELECT rl.tabid,rl.related_tabid,rl.label,tab.name as name, tabrel.name as relname FROM vtiger_relatedlists rl LEFT JOIN vtiger_tab tab ON rl.tabid=tab.tabid LEFT JOIN vtiger_tab tabrel ON rl.related_tabid=tabrel.tabid WHERE relation_id=?";
-		$res = $adb->pquery($sql,array($_REQUEST['relation_id']));
+		$sql = 'SELECT rl.tabid,rl.related_tabid,rl.label,tab.name as name, tabrel.name as relname
+			FROM vtiger_relatedlists rl
+			LEFT JOIN vtiger_tab tab ON rl.tabid=tab.tabid
+			LEFT JOIN vtiger_tab tabrel ON rl.related_tabid=tabrel.tabid
+			WHERE relation_id=?';
+		$res = $adb->pquery($sql, array($_REQUEST['relation_id']));
 		$ret = array();
-		if($adb->num_rows($res) > 0){
-			$tabid = $adb->query_result($res,0,'tabid');
-			$tabidrel = $adb->query_result($res,0,'related_tabid');
-			$label = $adb->query_result($res,0,'label');
-			$mod = $adb->query_result($res,0,'name');
-			$modrel = $adb->query_result($res,0,'relname');
+		if ($adb->num_rows($res) > 0) {
+			$tabid = $adb->query_result($res, 0, 'tabid');
+			$tabidrel = $adb->query_result($res, 0, 'related_tabid');
+			$label = $adb->query_result($res, 0, 'label');
+			$mod = $adb->query_result($res, 0, 'name');
+			$modrel = $adb->query_result($res, 0, 'relname');
 			$ret = array(
 				'tabid'=>$tabid,
 				'tabidrel'=>$tabidrel,
