@@ -7,7 +7,7 @@
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
 
-$mod_strings = array (
+$mod_strings = array(
 	'LBL_MODULE_NAME' => 'Facture',
 	'LBL_SO_MODULE_NAME' => 'Facture',
 	'LBL_RELATED_PRODUCTS' => 'Produits en relation',
