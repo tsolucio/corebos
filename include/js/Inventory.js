@@ -262,7 +262,9 @@ function calcGrandTotal() {
 		finalTax = document.getElementById("tax_final").innerHTML;
 
 	sh_amount = getObj("shipping_handling_charge").value;
-	sh_tax = document.getElementById("shipping_handling_tax").innerHTML;
+	if (document.getElementById('shipping_handling_tax')) {
+		sh_tax = eval(document.getElementById('shipping_handling_tax').innerHTML);
+	}
 
 	adjustment = getObj("adjustment").value;
 
@@ -271,7 +273,7 @@ function calcGrandTotal() {
 
 	grandTotal = eval(netTotal)-eval(discountTotal_final)+eval(finalTax);
 	if (sh_amount != '') {
-		grandTotal = grandTotal + eval(sh_amount)+eval(sh_tax);
+		grandTotal = grandTotal + eval(sh_amount) + sh_tax;
 	}
 	if (adjustment != '') {
 		if(adj_type == '+') {
@@ -398,14 +400,14 @@ function validateInventoryLines(module) {
 	}
 
 	//Taxes for Shippring and Handling  validation - not allow negative values
-	var shtax_count=document.getElementById("sh_tax_count").value;
-	for(var i=1;i<=shtax_count;i++)
-	{
-		temp = /^(0|[1-9]{1}\d{0,})(\.(\d{1}\d{0,}))?$/.test(document.getElementById("sh_tax_percentage"+i).value);
-		if(!temp)
-		{
-			alert(alert_arr.VALID_SH_TAX);
-			return false;
+	if (document.getElementById('sh_tax_count')) {
+		var shtax_count=document.getElementById('sh_tax_count').value;
+		for (var i=1; i<=shtax_count; i++) {
+			temp = /^(0|[1-9]{1}\d{0,})(\.(\d{1}\d{0,}))?$/.test(document.getElementById('sh_tax_percentage'+i).value);
+			if (!temp) {
+				alert(alert_arr.VALID_SH_TAX);
+				return false;
+			}
 		}
 	}
 	calcTotal(); /* Product Re-Ordering Feature Code Addition */
@@ -891,8 +893,10 @@ function calcGroupTax()
 	document.getElementById("tax_final").innerHTML = roundValue(group_tax_total);
 }
 
-function calcSHTax()
-{
+function calcSHTax() {
+	if (!document.getElementById('sh_tax_count')) {
+		return;
+	}
 	var sh_tax_count = document.getElementById("sh_tax_count").value;
 	var sh_charge = document.getElementById("shipping_handling_charge").value;
 	var sh_tax_total = 0.00, tax_amount=0.00;

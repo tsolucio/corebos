@@ -432,7 +432,7 @@ so we will get that array, parse that array and fill the details
 		<input id="shipping_handling_charge" name="shipping_handling_charge" type="text" class="small" style="width:75px;text-align:right" align="right" value="{$FINAL.shipping_handling_charge}" onBlur="calcSHTax();">
 	</td>
    </tr>
-
+{if !empty($FINAL.sh_taxes)}
    <tr valign="top">
 	<td class="crmTableRow small" style="border-right:1px #dadada;">&nbsp;</td>
 	<td class="crmTableRow small" align="right">
@@ -464,10 +464,10 @@ so we will get that array, parse that array and fill the details
 					</table>
 				</div>
 				<!-- End Popup Div for Shipping and Handling TAX -->
-
 	</td>
 	<td id="shipping_handling_tax" class="crmTableRow small" align="right">{$FINAL.shtax_totalamount}</td>
    </tr>
+{/if}
    <tr valign="top">
 	<td class="crmTableRow small" style="border-right:1px #dadada;">&nbsp;</td>
 	<td class="crmTableRow small" align="right">

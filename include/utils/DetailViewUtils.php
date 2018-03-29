@@ -1510,7 +1510,9 @@ function getDetailAssociatedProducts($module, $focus) {
 	//First we should get all available taxes and then retrieve the corresponding tax values
 	//if taxtype is group then the tax should be same for all products in vtiger_inventoryproductrel table
 	$shtax_info_message = $app_strings['LBL_SHIPPING_AND_HANDLING_CHARGE'] . " = ". CurrencyField::convertToUserFormat($shAmount, null, true) ."\\n";
+	$shtaxexist = false;
 	foreach (getAllTaxes('available', 'sh', 'edit', $focus->id) as $taxItem) {
+		$shtaxexist = true;
 		$shtax_name = $taxItem['taxname'];
 		$shtax_label = $taxItem['taxlabel'];
 		$shtax_percent = getInventorySHTaxPercent($focus->id, $shtax_name);
@@ -1520,10 +1522,13 @@ function getDetailAssociatedProducts($module, $focus) {
 	}
 	$shtax_info_message .= "\\n " . $app_strings['LBL_TOTAL_TAX_AMOUNT'] . " = ". CurrencyField::convertToUserFormat($shtaxtotal, null, true);
 
-	$output .= '<tr id="detailview_inventory_shiptaxrow">';
-	$output .= '<td align="right" class="crmTableRow small">(+)&nbsp;<b><a href="javascript:;" onclick="alert(\'' . $shtax_info_message . '\')">' . $app_strings['LBL_TAX_FOR_SHIPPING_AND_HANDLING'] . '</a></b></td>';
-	$output .= '<td align="right" class="crmTableRow small">' . CurrencyField::convertToUserFormat($shtaxtotal, null, true) . '</td>';
-	$output .= '</tr>';
+	if ($shtaxexist) {
+		$output .= '<tr id="detailview_inventory_shiptaxrow">';
+		$output .= '<td align="right" class="crmTableRow small">(+)&nbsp;<b><a href="javascript:;" onclick="alert(\'' . $shtax_info_message . '\')">';
+		$output .= $app_strings['LBL_TAX_FOR_SHIPPING_AND_HANDLING'] . '</a></b></td>';
+		$output .= '<td align="right" class="crmTableRow small">' . CurrencyField::convertToUserFormat($shtaxtotal, null, true) . '</td>';
+		$output .= '</tr>';
+	}
 
 	$adjustment = ($focus->column_fields['txtAdjustment'] != '') ? $focus->column_fields['txtAdjustment'] : '0.00';
 	$output .= '<tr id="detailview_inventory_adjustrow">';
