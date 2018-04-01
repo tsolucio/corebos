@@ -15,17 +15,15 @@ function getTopInvoice($maxval, $calCnt) {
 	require_once 'include/utils/utils.php';
 	require_once 'modules/CustomView/CustomView.php';
 
-	global $app_strings,$current_language,$current_user,$adb,$theme;
+	global $current_language, $current_user, $adb;
 	$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 20, 'Invoice');
 	$current_module_strings = return_module_language($current_language, 'Invoice');
-
-	$log = LoggerManager::getLogger('invoice_list');
 
 	$url_string = '';
 	$sorder = '';
 	$order_by = '';
 	$oCustomView = new CustomView('Invoice');
-	$customviewcombo_html = $oCustomView->getCustomViewCombo();
+	$oCustomView->getCustomViewCombo();
 	if (isset($_REQUEST['viewname']) == false || $_REQUEST['viewname']=='') {
 		if ($oCustomView->setdefaultviewid != "") {
 			$viewid = $oCustomView->setdefaultviewid;
@@ -34,12 +32,8 @@ function getTopInvoice($maxval, $calCnt) {
 		}
 	}
 
-	$theme_path='themes/'.$theme.'/';
-	$image_path=$theme_path.'images/';
-
 	//Retreive the list from Database
 	//<<<<<<<<<customview>>>>>>>>>
-	$date_var = date('Y-m-d');
 	$currentModule = 'Invoice';
 	$viewId = getCvIdOfAll($currentModule);
 	$queryGenerator = new QueryGenerator($currentModule, $current_user);
