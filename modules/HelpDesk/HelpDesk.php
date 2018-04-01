@@ -643,7 +643,7 @@ class HelpDesk extends CRMEntity {
 		$desc .= '<br><br>' . getTranslatedString('Solution', $moduleName) . ' : <br>' . $entityData->get('solution');
 		$desc .= getTicketComments($entityId);
 
-		$sql = "SELECT * FROM vtiger_ticketcf WHERE ticketid = ?";
+		$sql = 'SELECT * FROM vtiger_ticketcf WHERE ticketid = ?';
 		$result = $adb->pquery($sql, array($entityId));
 		$cffields = $adb->getFieldsarray($result);
 		$sql = 'SELECT fieldlabel FROM vtiger_field WHERE columnname = ? and vtiger_field.presence in (0,2)';
@@ -674,14 +674,14 @@ class HelpDesk extends CRMEntity {
 			$parentId = $parentIdParts[1];
 		}
 		$PORTAL_URL = GlobalVariable::getVariable('Application_Customer_Portal_URL', 'http://your_support_domain.tld/customerportal');
-		$portalUrl = "<a href='" . $PORTAL_URL . "/index.php?module=HelpDesk&action=index&ticketid=" . $entityId . "&fun=detail'>"
+		$portalUrl = "<a href='" . $PORTAL_URL . '/index.php?module=HelpDesk&action=index&ticketid=' . $entityId . "&fun=detail'>"
 			. getTranslatedString('LBL_TICKET_DETAILS', $moduleName) . "</a>";
-		$contents = getTranslatedString('Dear', $moduleName) . " " . getParentName(parentId) . ",<br><br>";
+		$contents = getTranslatedString('Dear', $moduleName) . " " . getParentName(parentId) . ',<br><br>';
 		$contents .= getTranslatedString('reply', $moduleName) . ' <b>' . $entityData->get('ticket_title')
 			. '</b>' . getTranslatedString('customer_portal', $moduleName);
-		$contents .= getTranslatedString("link", $moduleName) . '<br>';
+		$contents .= getTranslatedString('link', $moduleName) . '<br>';
 		$contents .= $portalUrl;
-		$contents .= '<br><br>' . getTranslatedString("Thanks", $moduleName) . '<br><br>' . getTranslatedString("Support_team", $moduleName);
+		$contents .= '<br><br>' . getTranslatedString('Thanks', $moduleName) . '<br><br>' . getTranslatedString('Support_team', $moduleName);
 		return $contents;
 	}
 
