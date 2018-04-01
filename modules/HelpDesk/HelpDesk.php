@@ -632,15 +632,15 @@ class HelpDesk extends CRMEntity {
 		}
 		$desc = getTranslatedString('Ticket ID', $moduleName) . ' : ' . $entityId . '<br>'
 			. getTranslatedString('Ticket Title', $moduleName) . ' : ' . $temp . ' ' . $entityData->get('ticket_title');
-		$desc .= "<br><br>" . getTranslatedString('Hi', $moduleName) . " " . getParentName($parentId) . ",<br><br>"
-			. getTranslatedString('LBL_PORTAL_BODY_MAILINFO', $moduleName) . " " . $reply . " " . getTranslatedString('LBL_DETAIL', $moduleName) . "<br>";
-		$desc .= "<br>" . getTranslatedString('Ticket No', $moduleName) . " : " . $entityData->get('ticket_no');
-		$desc .= "<br>" . getTranslatedString('Status', $moduleName) . " : " . $entityData->get('ticketstatus');
-		$desc .= "<br>" . getTranslatedString('Category', $moduleName) . " : " . $entityData->get('ticketcategories');
-		$desc .= "<br>" . getTranslatedString('Severity', $moduleName) . " : " . $entityData->get('ticketseverities');
-		$desc .= "<br>" . getTranslatedString('Priority', $moduleName) . " : " . $entityData->get('ticketpriorities');
-		$desc .= "<br><br>" . getTranslatedString('Description', $moduleName) . " : <br>" . $entityData->get('description');
-		$desc .= "<br><br>" . getTranslatedString('Solution', $moduleName) . " : <br>" . $entityData->get('solution');
+		$desc .= '<br><br>' . getTranslatedString('Hi', $moduleName) . ' ' . getParentName($parentId) . ',<br><br>'
+			. getTranslatedString('LBL_PORTAL_BODY_MAILINFO', $moduleName) . ' ' . $reply . ' ' . getTranslatedString('LBL_DETAIL', $moduleName) . '<br>';
+		$desc .= '<br>' . getTranslatedString('Ticket No', $moduleName) . ' : ' . $entityData->get('ticket_no');
+		$desc .= '<br>' . getTranslatedString('Status', $moduleName) . ' : ' . getTranslatedString($entityData->get('ticketstatus'), $moduleName);
+		$desc .= '<br>' . getTranslatedString('Category', $moduleName) . ' : ' . getTranslatedString($entityData->get('ticketcategories'), $moduleName);
+		$desc .= '<br>' . getTranslatedString('Severity', $moduleName) . ' : ' . getTranslatedString($entityData->get('ticketseverities'), $moduleName);
+		$desc .= '<br>' . getTranslatedString('Priority', $moduleName) . ' : ' . getTranslatedString($entityData->get('ticketpriorities'), $moduleName);
+		$desc .= '<br><br>' . getTranslatedString('Description', $moduleName) . ' : <br>' . $entityData->get('description');
+		$desc .= '<br><br>' . getTranslatedString('Solution', $moduleName) . ' : <br>' . $entityData->get('solution');
 		$desc .= getTicketComments($entityId);
 
 		$sql = "SELECT * FROM vtiger_ticketcf WHERE ticketid = ?";
