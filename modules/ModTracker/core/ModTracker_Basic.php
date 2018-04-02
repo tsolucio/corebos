@@ -11,22 +11,21 @@ include_once __DIR__ . '/ModTracker_Detail.php';
 
 class ModTracker_Basic {
 
-	var $id;
-	var $crmid;
-	var $module;
-	var $whodid;
-	var $changedon;
-	var $status;
+	public $id;
+	public $crmid;
+	public $module;
+	public $whodid;
+	public $changedon;
+	public $status;
 
-	function __construct() {
-
+	public function __construct() {
 	}
 
-	function exists() {
+	public function exists() {
 		return!empty($this->id);
 	}
 
-	function initialize($valuemap) {
+	public function initialize($valuemap) {
 		$this->id = $valuemap['id'];
 		$this->crmid = $valuemap['crmid'];
 		$this->module = $valuemap['module'];
@@ -35,11 +34,11 @@ class ModTracker_Basic {
 		$this->status = $valuemap['status'];
 	}
 
-	function getTabid() {
+	public function getTabid() {
 		return getTabid($this->module);
 	}
 
-	function getDisplayName() {
+	public function getDisplayName() {
 		if (!isset($this->_entityName)) {
 			$entityName = getEntityName($this->module, array($this->crmid));
 			$this->_entityName = $entityName[$this->crmid];
@@ -47,7 +46,7 @@ class ModTracker_Basic {
 		return $this->_entityName;
 	}
 
-	function getViewLink() {
+	public function getViewLink() {
 		if (!isset($this->_viewlink)) {
 			$entityName = $this->getDisplayName();
 			$this->_viewlink = "<a href='index.php?module=$this->module&action=DetailView&record=$this->crmid'>" . $entityName . "</a>";
@@ -55,27 +54,28 @@ class ModTracker_Basic {
 		return $this->_viewlink;
 	}
 
-	function getModifiedOn() {
+	public function getModifiedOn() {
 		$changedOn = new DateTimeField($this->changedon);
 		return $changedOn->getDisplayDateTimeValue();
 	}
 
-	function getModifiedByLabel() {
-		global $current_user, $currentModule;
+	public function getModifiedByLabel() {
+		global $current_user;
 		if (isset($current_user) && $current_user->id == $this->whodid) {
 			return getFullNameFromArray('Users', $current_user->column_fields);
 		}
 		return getUserFullName($this->whodid);
 	}
 
-	function getDetails() {
+	public function getDetails() {
 		return ModTracker_Detail::listAll($this);
 	}
 
-	function isViewPermitted() {
+	public function isViewPermitted() {
 		global $current_user;
-		if (isset($current_user) && is_admin($current_user))
+		if (isset($current_user) && is_admin($current_user)) {
 			return true;
+		}
 		// Does current user has access to view the record that was tracked?
 		if ($this->module == 'Events') {
 			$moduleName = 'Calendar';
@@ -85,10 +85,10 @@ class ModTracker_Basic {
 		return (isPermitted($moduleName, 'DetailView', $this->crmid) == "yes");
 	}
 
-	static function getById($id) {
+	public static function getById($id) {
 		global $adb;
 		$instance = false;
-		$result = $adb->pquery('SELECT * FROM vtiger_modtracker_basic WHERE id=?', Array($id));
+		$result = $adb->pquery('SELECT * FROM vtiger_modtracker_basic WHERE id=?', array($id));
 		if ($adb->num_rows($result)) {
 			$rowmap = $adb->fetch_array($result);
 			$instance = new self();
@@ -97,8 +97,8 @@ class ModTracker_Basic {
 		return $instance;
 	}
 
-	static function getByCRMId($crmid, $atpoint) {
-		global $adb, $current_user, $log;
+	public static function getByCRMId($crmid, $atpoint) {
+		global $adb;
 		$instance = false;
 
 		// Avoid SQL Injection attacks
@@ -114,16 +114,17 @@ class ModTracker_Basic {
 		return $instance;
 	}
 
-	static function listAll($module=false, $asc=true) {
+	public static function listAll($module = false, $asc = true) {
 		global $adb;
-		$instances = Array();
+		$instances = array();
 		$result = false;
 
 		if ($module) {
-			if ($asc)
-				$result = $adb->pquery('SELECT * FROM vtiger_modtracker_basic WHERE module=? ORDER BY id', Array($module));
-			else
-				$result = $adb->pquery('SELECT * FROM vtiger_modtracker_basic WHERE module=? ORDER BY id DESC', Array($module));
+			if ($asc) {
+				$result = $adb->pquery('SELECT * FROM vtiger_modtracker_basic WHERE module=? ORDER BY id', array($module));
+			} else {
+				$result = $adb->pquery('SELECT * FROM vtiger_modtracker_basic WHERE module=? ORDER BY id DESC', array($module));
+			}
 		}
 
 		if ($result && $adb->num_rows($result)) {
@@ -136,7 +137,5 @@ class ModTracker_Basic {
 		}
 		return $instances;
 	}
-
 }
-
 ?>
