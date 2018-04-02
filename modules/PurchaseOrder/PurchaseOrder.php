@@ -139,7 +139,7 @@ class PurchaseOrder extends CRMEntity {
 	 * Customizing the restore procedure.
 	 */
 	public function restore($module, $id) {
-		global $adb, $updateInventoryProductRel_deduct_stock;
+		global $adb;
 		parent::restore($module, $id);
 		$result = $adb->pquery('SELECT postatus FROM vtiger_purchaseorder where purchaseorderid=?', array($id));
 		$poStatus = $adb->query_result($result, 0, 'postatus');
@@ -209,8 +209,8 @@ class PurchaseOrder extends CRMEntity {
 			$entries_list[] = $entries;
 		}
 
-		$return_data = array('header'=>$header,'entries'=>$entries_list,'navigation'=>array('',''));
-		$log->debug("Exiting get_postatushistory method ...");
+		$return_data = array('header'=>$header, 'entries'=>$entries_list, 'navigation'=>array('',''));
+		$log->debug('Exiting get_postatushistory method ...');
 		return $return_data;
 	}
 
@@ -242,27 +242,35 @@ class PurchaseOrder extends CRMEntity {
 			$query .= " left join vtiger_currency_info as vtiger_currency_info$secmodule on vtiger_currency_info$secmodule.id = vtiger_purchaseorder.currency_id";
 		}
 		if (($type !== 'COLUMNSTOTOTAL') || ($type == 'COLUMNSTOTOTAL' && $where_condition == 'add')) {
-			if ($queryPlanner->requireTable("vtiger_inventoryproductrelPurchaseOrder", $matrix)) {
+			if ($queryPlanner->requireTable('vtiger_inventoryproductrelPurchaseOrder', $matrix)) {
 				if ($module == 'Products') {
-					$query .= " left join vtiger_inventoryproductrel as vtiger_inventoryproductrelPurchaseOrder on vtiger_purchaseorder.purchaseorderid = vtiger_inventoryproductrelPurchaseOrder.id and vtiger_inventoryproductrelPurchaseOrder.productid=vtiger_products.productid ";
+					$query .= ' left join vtiger_inventoryproductrel as vtiger_inventoryproductrelPurchaseOrder on'
+						.' vtiger_purchaseorder.purchaseorderid = vtiger_inventoryproductrelPurchaseOrder.id'
+						.' and vtiger_inventoryproductrelPurchaseOrder.productid=vtiger_products.productid ';
 				} elseif ($module == 'Services') {
-					$query .= " left join vtiger_inventoryproductrel as vtiger_inventoryproductrelPurchaseOrder on vtiger_purchaseorder.purchaseorderid = vtiger_inventoryproductrelPurchaseOrder.id and vtiger_inventoryproductrelPurchaseOrder.productid=vtiger_service.serviceid ";
+					$query .= ' left join vtiger_inventoryproductrel as vtiger_inventoryproductrelPurchaseOrder on'
+						.' vtiger_purchaseorder.purchaseorderid = vtiger_inventoryproductrelPurchaseOrder.id'
+						.' and vtiger_inventoryproductrelPurchaseOrder.productid=vtiger_service.serviceid ';
 				} else {
-					$query .= " left join vtiger_inventoryproductrel as vtiger_inventoryproductrelPurchaseOrder on vtiger_purchaseorder.purchaseorderid = vtiger_inventoryproductrelPurchaseOrder.id ";
+					$query .= ' left join vtiger_inventoryproductrel as vtiger_inventoryproductrelPurchaseOrder on'
+						.' vtiger_purchaseorder.purchaseorderid = vtiger_inventoryproductrelPurchaseOrder.id ';
 				}
 			}
-			if ($queryPlanner->requireTable("vtiger_productsPurchaseOrder")) {
-				$query .= " left join vtiger_products as vtiger_productsPurchaseOrder on vtiger_productsPurchaseOrder.productid = vtiger_inventoryproductrelPurchaseOrder.productid";
+			if ($queryPlanner->requireTable('vtiger_productsPurchaseOrder')) {
+				$query .= ' left join vtiger_products as vtiger_productsPurchaseOrder on'
+					.' vtiger_productsPurchaseOrder.productid = vtiger_inventoryproductrelPurchaseOrder.productid';
 			}
-			if ($queryPlanner->requireTable("vtiger_servicePurchaseOrder")) {
-				$query .= " left join vtiger_service as vtiger_servicePurchaseOrder on vtiger_servicePurchaseOrder.serviceid = vtiger_inventoryproductrelPurchaseOrder.productid";
+			if ($queryPlanner->requireTable('vtiger_servicePurchaseOrder')) {
+				$query .= ' left join vtiger_service as vtiger_servicePurchaseOrder on'
+					.' vtiger_servicePurchaseOrder.serviceid = vtiger_inventoryproductrelPurchaseOrder.productid';
 			}
 		}
-		if ($queryPlanner->requireTable("vtiger_vendorRelPurchaseOrder")) {
-			$query .= " left join vtiger_vendor as vtiger_vendorRelPurchaseOrder on vtiger_vendorRelPurchaseOrder.vendorid = vtiger_purchaseorder.vendorid";
+		if ($queryPlanner->requireTable('vtiger_vendorRelPurchaseOrder')) {
+			$query .= ' left join vtiger_vendor as vtiger_vendorRelPurchaseOrder on vtiger_vendorRelPurchaseOrder.vendorid = vtiger_purchaseorder.vendorid';
 		}
-		if ($queryPlanner->requireTable("vtiger_contactdetailsPurchaseOrder")) {
-			$query .= " left join vtiger_contactdetails as vtiger_contactdetailsPurchaseOrder on vtiger_contactdetailsPurchaseOrder.contactid = vtiger_purchaseorder.contactid";
+		if ($queryPlanner->requireTable('vtiger_contactdetailsPurchaseOrder')) {
+			$query .= ' left join vtiger_contactdetails as vtiger_contactdetailsPurchaseOrder on'
+				.' vtiger_contactdetailsPurchaseOrder.contactid = vtiger_purchaseorder.contactid';
 		}
 		return $query;
 	}
@@ -274,9 +282,9 @@ class PurchaseOrder extends CRMEntity {
 	 */
 	public function setRelationTables($secmodule) {
 		$rel_tables = array (
-			"Calendar" =>array("vtiger_seactivityrel"=>array("crmid","activityid"),"vtiger_purchaseorder"=>"purchaseorderid"),
-			"Documents" => array("vtiger_senotesrel"=>array("crmid","notesid"),"vtiger_purchaseorder"=>"purchaseorderid"),
-			"Contacts" => array("vtiger_purchaseorder"=>array("purchaseorderid","contactid")),
+			'Calendar' =>array('vtiger_seactivityrel'=>array('crmid','activityid'),'vtiger_purchaseorder'=>'purchaseorderid'),
+			'Documents' => array('vtiger_senotesrel'=>array('crmid','notesid'),'vtiger_purchaseorder'=>'purchaseorderid'),
+			'Contacts' => array('vtiger_purchaseorder'=>array('purchaseorderid','contactid')),
 		);
 		return isset($rel_tables[$secmodule]) ? $rel_tables[$secmodule] : '';
 	}
@@ -329,12 +337,12 @@ class PurchaseOrder extends CRMEntity {
 	*/
 	public function create_export_query($where) {
 		global $log, $current_user;
-		$log->debug("Entering create_export_query(".$where.") method ...");
+		$log->debug("Entering create_export_query($where) method ...");
 
-		include "include/utils/ExportUtils.php";
+		include 'include/utils/ExportUtils.php';
 
 		//To get the Permitted fields query and the permitted fields list
-		$sql = getPermittedFieldsQuery("PurchaseOrder", "detail_view");
+		$sql = getPermittedFieldsQuery('PurchaseOrder', 'detail_view');
 		$fields_list = getFieldsListFromQuery($sql);
 		$fields_list .= getInventoryFieldsForExport($this->table_name);
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
@@ -355,15 +363,15 @@ class PurchaseOrder extends CRMEntity {
 			LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
 
 		$query .= $this->getNonAdminAccessControlQuery('PurchaseOrder', $current_user);
-		$where_auto = " vtiger_crmentity.deleted=0";
+		$where_auto = ' vtiger_crmentity.deleted=0';
 
-		if ($where != "") {
+		if ($where != '') {
 			$query .= " where ($where) AND ".$where_auto;
 		} else {
-			$query .= " where ".$where_auto;
+			$query .= ' where '.$where_auto;
 		}
 
-		$log->debug("Exiting create_export_query method ...");
+		$log->debug('Exiting create_export_query method ...');
 		return $query;
 	}
 }
