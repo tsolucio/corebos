@@ -33,5 +33,4 @@ $mod_strings = array(
 	'received' => 'Recebida',
 	'OutgoingCall' => 'Ligação Saída de',
 );
-
 ?>

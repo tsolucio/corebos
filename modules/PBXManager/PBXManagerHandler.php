@@ -10,24 +10,23 @@
 
 class PBXManagerAfterSaveCreateActivity extends VTEventHandler {
 
-	function handleEvent($eventName, $entityData) {
-		global $log, $adb, $current_user;
+	public function handleEvent($eventName, $entityData) {
+		global $adb, $current_user;
 		$moduleName = $entityData->getModuleName();
-		if($eventName == 'vtiger.entity.aftersave' and isset($_REQUEST['cbcustominfo1']) and
+		if ($eventName == 'vtiger.entity.aftersave' && isset($_REQUEST['cbcustominfo1']) &&
 			in_array($moduleName, array('Accounts','Contacts','Leads','HelpDesk','Potentials'))
 		) {
 			$act = urldecode($_REQUEST['cbcustominfo1']);
 			$act = unserialize($act);
-			if (is_array($act) and isset($act['action']) and $act['action']=='asterisk_addToActivityHistory') {
-				require_once('modules/PBXManager/AsteriskUtils.php');
+			if (is_array($act) && isset($act['action']) && $act['action']=='asterisk_addToActivityHistory') {
+				require_once 'modules/PBXManager/AsteriskUtils.php';
 				$callerName = $act['callerName'];
 				$callerNumber = $act['callerNumber'];
 				$callerType = $act['callerType'];
 				$relcrmid = $entityData->getId();
-				$activityid = asterisk_addToActivityHistory($callerName, $callerNumber, $callerType, $adb, $current_user->id, $relcrmid, $act);
+				asterisk_addToActivityHistory($callerName, $callerNumber, $callerType, $adb, $current_user->id, $relcrmid, $act);
 			}
 		}
 	}
 }
-
 ?>

@@ -7,7 +7,7 @@
 *  Author       : JPL TSolucio, S.L.
 *  License      : MPL 1.1
 ***********************************************************/
-$mod_strings = Array(
+$mod_strings = array(
 	'PBX Manager' => 'Administrador PBX',
 	'PBXManager' => 'Administrador PBX',
 	'SINGLE_PBXManager' => 'Administrador PBX',
@@ -31,5 +31,4 @@ $mod_strings = Array(
 	'received' => 'Recibida',
 	'OutgoingCall' => 'Llamada de salida de',
 );
-
 ?>
