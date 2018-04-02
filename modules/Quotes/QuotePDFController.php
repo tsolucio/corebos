@@ -7,39 +7,38 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-	
 include_once 'include/InventoryPDFController.php';
 
-class Vtiger_QuotePDFController extends Vtiger_InventoryPDFController{
-	function buildHeaderModelTitle() {
+class Vtiger_QuotePDFController extends Vtiger_InventoryPDFController {
+
+	public function buildHeaderModelTitle() {
 		$singularModuleNameKey = 'SINGLE_'.$this->moduleName;
 		$translatedSingularModuleLabel = getTranslatedString($singularModuleNameKey, $this->moduleName);
-		if($translatedSingularModuleLabel == $singularModuleNameKey) {
+		if ($translatedSingularModuleLabel == $singularModuleNameKey) {
 			$translatedSingularModuleLabel = getTranslatedString($this->moduleName, $this->moduleName);
 		}
-		return sprintf("%s: %s", $translatedSingularModuleLabel, $this->focusColumnValue('quote_no'));
+		return sprintf('%s: %s', $translatedSingularModuleLabel, $this->focusColumnValue('quote_no'));
 	}
 
-	function getWatermarkContent() {
+	public function getWatermarkContent() {
 		return $this->focusColumnValue('quotestatus');
 	}
 
-	function buildHeaderModelColumnRight() {
+	public function buildHeaderModelColumnRight() {
 		$issueDateLabel = getTranslatedString('Issued Date', $this->moduleName);
 		$validDateLabel = getTranslatedString('Valid Date', $this->moduleName);
 		$billingAddressLabel = getTranslatedString('Billing Address', $this->moduleName);
 		$shippingAddressLabel = getTranslatedString('Shipping Address', $this->moduleName);
 
 		$modelColumn2 = array(
-				'dates' => array(
-					$issueDateLabel  => $this->formatDate(date("Y-m-d")),
-					$validDateLabel => $this->formatDate($this->focusColumnValue('validtill')),
-				),
-				$billingAddressLabel  => $this->buildHeaderBillingAddress(),
-				$shippingAddressLabel => $this->buildHeaderShippingAddress()
-			);
+			'dates' => array(
+				$issueDateLabel  => $this->formatDate(date('Y-m-d')),
+				$validDateLabel => $this->formatDate($this->focusColumnValue('validtill')),
+			),
+			$billingAddressLabel  => $this->buildHeaderBillingAddress(),
+			$shippingAddressLabel => $this->buildHeaderShippingAddress()
+		);
 		return $modelColumn2;
 	}
 }
-
 ?>
