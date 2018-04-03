@@ -708,7 +708,7 @@ class QueryGenerator {
 				}
 
 				if(!in_array($tableName, $referenceFieldTableList)) {
-					if ($baseTable != $referenceFieldObject->getTableName() && !in_array($referenceFieldObject->getTableName(),$tableJoinMapping)) {
+					if ($baseTable != $referenceFieldObject->getTableName() && !in_array($referenceFieldObject->getTableName(), $alreadyinfrom)) {
 						if($this->getModule() == 'Emails') {
 							$join = "INNER JOIN ";
 						} else {
