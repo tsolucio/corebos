@@ -21,5 +21,4 @@ $mod_strings = array (
 'TooltipInfo' => 'Esta extensión añade información adicional en forma de popup al pasar el ratón por encima de los campos de un módulo. Se accede en la confguración de cada módulo no directamente, así que puedes eliminarlo del menu.',
 'No Fields Selected' => 'No hay ningún campo seleccionado',
 );
-
 ?>
