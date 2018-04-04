@@ -28,7 +28,6 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 	$log->debug("Entering getListViewHeader(" . $module . "," . $sort_qry . "," . $sorder . "," . $order_by . "," . $relatedlist . "," . (is_object($oCv) ? get_class($oCv) : $oCv) . ") method ...");
 
 	$arrow = '';
-	$qry = getURLstring($focus);
 	$theme_path = "themes/" . $theme . "/";
 	$image_path = $theme_path . "images/";
 	$list_header = Array();

@@ -748,7 +748,6 @@ class ListViewController {
 		global $theme, $current_user;
 
 		$arrow='';
-		//$qry = getURLstring($focus);
 		$header = array();
 
 		//$tabid = getTabid($module);
