@@ -105,6 +105,8 @@ var alert_arr = {
 	'GREATER_THAN':'greater than',
 	'LESS_OR_EQUALS':'less or equal',
 	'GREATER_OR_EQUALS':'greater or equal',
+	'DOES_NOT_START_WITH':'does not start with',
+	'DOES_NOT_END_WITH':'does not end with',
 
 	'NO_SPECIAL_CHARS':'Special Characters are not allowed in Invoice String',
 	'PLS_SELECT_VALID_FILE':'Please select a file with the following extension:\n',
@@ -352,6 +354,8 @@ var alert_arr = {
 	'LBL_HAS_CHANGED_TO' : 'has changed to',
 	'LBL_IS_EMPTY': 'is empty',
 	'LBL_IS_NOT_EMPTY' : 'is not empty',
+	'LBL_DOES_NOT_START_WITH' : 'does not start with',
+	'LBL_DOES_NOT_END_WITH' : 'does not end with',
 	'LBL_EQUAL_TO' : 'equal to',
 	'LBL_LESS_THAN' : 'less than',
 	'LBL_GREATER_THAN' : 'greater than',

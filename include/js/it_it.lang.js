@@ -129,6 +129,10 @@ var alert_arr = {
 	'LBL_ENTER_VALID_NO':'Prego inseire un numero valido',
 	'LBL_PROVIDE_YES_NO':' Valore non valido.\n Prego inserire Yes o No',
 	'LBL_SELECT_CRITERIA':' Criterio non valido.\n Prego selezionare un criterio',
+	'LBL_DOES_NOT_START_WITH' : 'does not start with',
+	'LBL_DOES_NOT_END_WITH' : 'does not end with',
+	'DOES_NOT_START_WITH':'does not start with',
+	'DOES_NOT_END_WITH':'does not end with',
 
 	'OPPORTUNITYNAME_CANNOT_BE_EMPTY':'Il campo nome per le opportunit&egrave; non deve essere vuoto',
 	'NAME_DESC':' per Nome Cartella & Descrizione',
