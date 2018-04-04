@@ -370,8 +370,6 @@ $smarty->assign("ALPHABETICAL", $alphabetical);
 $queryGenerator = new QueryGenerator($currentModule, $current_user);
 $controller = new ListViewController($adb, $current_user, $queryGenerator);
 $fieldnames = $controller->getAdvancedSearchOptionString();
-$criteria = getcriteria_options();
-$smarty->assign("CRITERIA", $criteria);
 $smarty->assign("FIELDNAMES", $fieldnames);
 
 if(isset($_REQUEST['query']) && $_REQUEST['query'] == 'true')

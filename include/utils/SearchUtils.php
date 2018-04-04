@@ -626,30 +626,6 @@ function getAdvSearchfields($module) {
 	return $OPTION_SET;
 }
 
-/**This function is returns the search criteria options for Advance Search
-*takes no parameter
-*Returns the criteria option in html format
-*/
-function getcriteria_options() {
-	global $log,$app_strings;
-	$log->debug("Entering getcriteria_options() method ...");
-	$CRIT_OPT = "<option value=\'c\'>".str_replace("'", "`", $app_strings['contains']).
-			"</option><option value=\'k\'>".str_replace("'", "`", $app_strings['does_not_contains']).
-			"</option><option value=\'e\'>".str_replace("'", "`", $app_strings['is']).
-			"</option><option value=\'n\'>".str_replace("'", "`", $app_strings['is_not']).
-			"</option><option value=\'s\'>".str_replace("'", "`", $app_strings['begins_with']).
-			"</option><option value=\'ew\'>".str_replace("'", "`", $app_strings['ends_with']).
-			"</option><option value=\'dnsw\'>".str_replace("'", "`", $app_strings['does_not_start_with']).
-			"</option><option value=\'dnew\'>".str_replace("'", "`", $app_strings['does_not_end_with']).
-			"</option><option value=\'g\'>".str_replace("'", "`", $app_strings['greater_than']).
-			"</option><option value=\'l\'>".str_replace("'", "`", $app_strings['less_than']).
-			"</option><option value=\'h\'>".str_replace("'", "`", $app_strings['greater_or_equal']).
-			"</option><option value=\'m\'>".str_replace("'", "`", $app_strings['less_or_equal']).
-			"</option>";
-	$log->debug("Exiting getcriteria_options method ...");
-	return $CRIT_OPT;
-}
-
 /**This function is returns the where conditions for each search criteria option in Advance Search
 *Param $criteria - search criteria option
 *Param $searchstring - search string

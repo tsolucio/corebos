@@ -271,10 +271,8 @@ ListViewSession::setSessionQuery($currentModule, $focus->query, $viewid);
 
 $alphabetical = AlphabeticalSearch($currentModule, 'index', 'notes_title', 'true', 'basic', '', '', '', '', $viewid);
 $fieldnames = $controller->getAdvancedSearchOptionString();
-$criteria = getcriteria_options();
 $smarty->assign('ALPHABETICAL', $alphabetical);
 $smarty->assign('FIELDNAMES', $fieldnames);
-$smarty->assign('CRITERIA', $criteria);
 $adminuser = is_admin($current_user);
 $smarty->assign('IS_ADMIN', $adminuser);
 

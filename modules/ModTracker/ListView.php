@@ -158,10 +158,8 @@ $smarty->assign('SEARCHLISTHEADER', $listview_header_search);
 // Module Search
 $alphabetical = AlphabeticalSearch($currentModule, 'index', $focus->def_basicsearch_col, 'true', 'basic', '', '', '', '', $viewid);
 $fieldnames = $controller->getAdvancedSearchOptionString();
-$criteria = getcriteria_options();
 $smarty->assign('ALPHABETICAL', $alphabetical);
 $smarty->assign('FIELDNAMES', $fieldnames);
-$smarty->assign('CRITERIA', $criteria);
 
 $smarty->assign('AVALABLE_FIELDS', getMergeFields($currentModule, 'available_fields'));
 $smarty->assign('FIELDS_TO_MERGE', getMergeFields($currentModule, 'fileds_to_merge'));
