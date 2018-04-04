@@ -169,7 +169,7 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 	if ($module != 'Reports') {
 		$modobj = CRMEntity::getInstance($module);
 		if (!empty($valueArray['lbl_action']) && method_exists($modobj, 'formatValueForReport')) {
-			$fieldvalue = $modobj->formatValueForReport($dbField, $fieldType, $value, $valueArray['lbl_action']);
+			$fieldvalue = $modobj->formatValueForReport($dbField, $fieldType, $value, $fieldvalue, $valueArray['lbl_action']);
 		}
 	}
 	return $fieldvalue;
