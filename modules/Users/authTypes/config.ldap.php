@@ -21,7 +21,7 @@ $AUTH_LDAP_CFG['ldap_basedn']   = 'ou=People,dc=localhost,dc=localdomain';
 $AUTH_LDAP_CFG['ldap_username'] = 'cn=admin,dc=localhost,dc=localdomain';   // set = NULL if not required
 $AUTH_LDAP_CFG['ldap_pass']     = 'admin'; // set = NULL if not required
 
-// Predefined LDAP fields (these settings work on Win 2003 Domain Controler)
+// Predefined LDAP fields (these settings work on Win 2003 Domain Controller)
 $AUTH_LDAP_CFG['ldap_objclass']    = 'objectClass';
 $AUTH_LDAP_CFG['ldap_account']     = 'cn';
 $AUTH_LDAP_CFG['ldap_forename']    = 'givenName';
@@ -31,9 +31,21 @@ $AUTH_LDAP_CFG['ldap_email']       = 'mail';
 $AUTH_LDAP_CFG['ldap_tel_work']    = 'telephoneNumber';
 $AUTH_LDAP_CFG['ldap_department']  = 'physicalDeliveryOfficeName';
 $AUTH_LDAP_CFG['ldap_description'] = 'description';
+$AUTH_LDAP_CFG['ldap_street']      = 'street';
+$AUTH_LDAP_CFG['ldap_city']        = 'l';
 
 // Required to search users: the array defined in ldap_objclass must contain at least one of the following values
 $AUTH_LDAP_CFG['ldap_userfilter']  = 'user|person|organizationalPerson|account';
+
+// Default user pass
+$AUTH_LDAP_CFG['pass_userpass']    = 'vtiger';
+
+// Configurable to generate more secure password
+// Take Full Name, remove space, lowercase, Capitalise first letter, take first four letters
+// intersperse numbers, add char e.g. JoeBlogs = J0o0e0b0#
+$AUTH_LDAP_CFG['pass_usernumber']  = '0000';
+$AUTH_LDAP_CFG['pass_userchar']    = '#';
+$AUTH_LDAP_CFG['pass_password']    = 'generated'; // NULL defaults to ldap_userpassword
 
 // ------------ Configuration AD (Active Directory) --------------
 
