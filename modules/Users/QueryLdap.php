@@ -45,7 +45,7 @@ function uiLDAPQuerySearchUser($user)
 	if (count($userArray) == 1)
 	{
 		$accounts = array_keys($userArray);
-		return GetUserValues($accounts[0]);
+		return uiLDAPQueryGetUserValues($accounts[0]);
 	}
 
 	asort($userArray);
@@ -71,6 +71,8 @@ function uiLDAPQueryGetUserValues($account)
 	$fields['ldap_tel_work']    = 'phone_work';
 	$fields['ldap_department']  = 'department';
 	$fields['ldap_description'] = 'description';
+    $fields['ldap_street']      = 'address_street';
+    $fields['ldap_city']        = 'address_city';
 
 	$authType = GlobalVariable::getVariable('User_AuthenticationType', 'SQL');
 	switch (strtoupper($authType)) {
@@ -87,7 +89,7 @@ function uiLDAPQueryGetUserValues($account)
 
 	// Some users only have a fullname but the forename and/or lastname is not stored on the server.
 	// In this case write the full name into the lastname field. The admin has to correct this manually.
-	// It is not possible to do this automaticallly because a user may have two forenames and one lastname or vice versa!
+	// It is not possible to do this automatically because a user may have two forenames and one lastname or vice versa!
 	if (($valueArray['ldap_forename'] == "" || $valueArray['ldap_lastname'] == "") && $valueArray['ldap_fullname'] != "")
 		$valueArray['ldap_lastname'] = $valueArray['ldap_fullname'];
 
@@ -97,9 +99,17 @@ function uiLDAPQueryGetUserValues($account)
 		$sVal .= "\n$input\t$value";
 	}
 
+	// Here we could check the password setup
+	// either a stock password set in Global Config
+	// Or a standard password geneneration policy
+	// These could all be Globals - currently in config.php.ldap
+
+    $passwd = makePass($valueArray['ldap_fullname']);
+
 	// LDAP does not require to store a password, but it is a mandatory field -> store dummy password into mySql base
-	$sVal .= "\nuser_password\tvtiger";
-	$sVal .= "\nconfirm_password\tvtiger";
+	
+    $sVal .= "\nuser_password\t$passwd";
+	$sVal .= "\nconfirm_password\t$passwd";
 
 	return "Values=" . $sVal;
 }

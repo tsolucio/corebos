@@ -142,4 +142,39 @@ function ldapGetUserValues($account, $fields)
 	return $valueArray;
 }
 
+
+function makePass ($name)
+{
+	
+	global $AUTH_LDAP_CFG;
+//  If we had first/lastnames
+//	$first = 'Joe';
+//	$last = 'Blogs';
+//	$name = $first . $last;
+
+	if ($AUTH_LDAP_CFG['pass_password']  != 'generated') {
+	return $AUTH_LDAP_CFG['pass_userpass'];
+	}
+
+	else {
+	$pass = "";		
+	$number    = strtolower($AUTH_LDAP_CFG['pass_usernumber']);
+	$char      = strtolower($AUTH_LDAP_CFG['pass_userchar']);
+	
+	$name = strtolower ($name);
+	$name = preg_replace('/\s+/', '', $name); //remove whitespace
+	$name = ucfirst ($name); // Lowercase
+	$name = substr($name, 0, 4); // First 4 letters
+	
+	$nameArr = str_split ($name); // Split Letters to array
+	$digitArr = str_split ($number); // Split Numbers to array
+	
+	for ($i=0; $i< count($nameArr); $i++) {
+        $pass = $pass . $nameArr[$i] . $digitArr[$i];
+    }
+	
+	$pass = $pass . $char; // Add character
+	}
+	return $pass;
+}
 ?>
