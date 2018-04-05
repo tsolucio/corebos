@@ -1126,6 +1126,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'En módulos con privilegios de compartición privados, permite asignar el registro a cualquier usuario activo de la aplicación con el mismo rol que el usuario actual.',
 ),
+'MailManager_Show_SentTo_Links' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Boolean',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'MailManager muestra, de manera predeterminada, en el panel izquierdo un conjunto de enlaces para filtrar los correos electrónicos relacionados con Cuentas, Contactos y algunos otros módulos. Establecer esta variable a 0 ocultará esas acciones rápidas.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/es_es.gvdefs.*.php', GLOB_BRACE) as $tcode) {
