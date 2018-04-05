@@ -6,12 +6,11 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * @Contributor - Elmue 2008
  ************************************************************************************/
 
 // ----------- Configuration LDAP -------------
 $AUTH_LDAP_CFG['ldap_host']     = 'localhost';	//system where ldap is running (e.g. ldap://localhost)
-$AUTH_LDAP_CFG['ldap_port']     = '389';			//port of the ldap service
+$AUTH_LDAP_CFG['ldap_port']     = '389';		//port of the ldap service
 
 // The LDAP branch which stores the User Information
 // This branch may have subfolders. PHP will search in all subfolders.
@@ -51,10 +50,12 @@ $AUTH_LDAP_CFG['pass_password']    = 'generated'; // NULL defaults to ldap_userp
 
 $AUTH_LDAP_CFG['ad_accountSuffix'] = '@localhost.localdomain';
 $AUTH_LDAP_CFG['ad_basedn']        = 'DC=localhost,DC=localdomain';
-$AUTH_LDAP_CFG['ad_dc']            = array ( "dc.localhost.localdomain" ); //array of domain controllers
-$AUTH_LDAP_CFG['ad_username']      = NULL; //optional user/pass for searching
-$AUTH_LDAP_CFG['ad_pass']          = NULL;
-$AUTH_LDAP_CFG['ad_realgroup']     = true; //AD does not return the primary group.  Setting this to false will fudge "Domain Users" and is much faster.  True will resolve the real primary group, but may be resource intensive.
+$AUTH_LDAP_CFG['ad_dc']            = array('dc.localhost.localdomain'); //array of domain controllers
+$AUTH_LDAP_CFG['ad_username']      = null; //optional user/pass for searching
+$AUTH_LDAP_CFG['ad_pass']          = null;
+$AUTH_LDAP_CFG['ad_realgroup']     = true; //AD does not return the primary group.
+		// Setting this to false will fudge "Domain Users" and is much faster.
+		// True will resolve the real primary group, but may be resource intensive.
 
 // #########################################################################
 ?>
