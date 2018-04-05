@@ -3041,8 +3041,17 @@ function ActivityReminderCallback() {
 }
 
 function ActivityReminderCallbackProcess(message) {
-	ActivityReminder_callback = document.getElementById("ActivityRemindercallback");
-	if(ActivityReminder_callback == null) return;
+	ActivityReminder_callback = document.getElementById('ActivityRemindercallback');
+	if(ActivityReminder_callback == null) {
+		return;
+	}
+	if (message == 'None') {
+		if (ActivityReminder_timer) {
+			window.clearTimeout(ActivityReminder_timer);
+			ActivityReminder_timer = null;
+		}
+		return;
+	}
 	ActivityReminder_callback.style.display = 'block';
 
 	var winuniqueid = 'ActivityReminder_callback_win_' + (new Date()).getTime();
@@ -3075,12 +3084,7 @@ function ActivityReminderCallbackProcess(message) {
 		message = '';
 	}
 
-	if (message == 'None') {
-		if (ActivityReminder_timer) {
-			window.clearTimeout(ActivityReminder_timer);
-			ActivityReminder_timer = null;
-		}
-	} else if (message != '') {
+	if (message != '') {
 		ActivityReminderCallbackRollout(ActivityReminder_popup_maxheight, ActivityReminder_callback_win);
 	} else {
 		ActivityReminderCallbackReset(0, ActivityReminder_callback_win);
