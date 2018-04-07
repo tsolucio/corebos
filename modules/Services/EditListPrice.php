@@ -8,24 +8,26 @@
  * All Rights Reserved.
  ********************************************************************************/
 global $mod_strings, $app_strings, $theme;
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
+$theme_path='themes/'.$theme.'/';
+$image_path=$theme_path.'images/';
 
-if (isset($_REQUEST['return_module']) && $_REQUEST['return_module']=="PriceBooks") {
+if (isset($_REQUEST['return_module']) && $_REQUEST['return_module']=='PriceBooks') {
 	$pricebook_id = vtlib_purify($_REQUEST['pricebook_id']);
 	$product_id = vtlib_purify($_REQUEST['record']);
 	$listprice = vtlib_purify($_REQUEST['listprice']);
-	$return_action = "CallRelatedList";
+	$return_action = 'CallRelatedList';
 	$return_id = vtlib_purify($_REQUEST['pricebook_id']);
 } else {
 	$product_id = vtlib_purify($_REQUEST['record']);
 	$pricebook_id = vtlib_purify($_REQUEST['pricebook_id']);
 	$listprice = getListPrice($product_id, $pricebook_id);
-	$return_action = "CallRelatedList";
+	$return_action = 'CallRelatedList';
 	$return_id = vtlib_purify($_REQUEST['pricebook_id']);
 }
+$onSubmit = 'if(verify_data(index) == true) gotoUpdateListPrice('.$return_id.','.$pricebook_id.','.$product_id
+	.'); else document.getElementById(\'roleLay\').style.display=\'inline\'; return false;';
 $output ='<div id="roleLay" style="display:block;" class="layerPopup">
-	<form action="index.php" name="index" onSubmit="if(verify_data(index) == true) gotoUpdateListPrice('.$return_id.','.$pricebook_id.','.$product_id.'); else document.getElementById(\'roleLay\').style.display=\'inline\'; return false;" >
+	<form action="index.php" name="index" onSubmit="'.$onSubmit.'" >
 	<input type="hidden" name="module" value="Products">
 	<input type="hidden" name="action" value="UpdateListPrice">
 	<input type="hidden" name="record" value="'.$return_id.'">
@@ -62,6 +64,5 @@ $output ='<div id="roleLay" style="display:block;" class="layerPopup">
 </table>
 </form>
 </div>';
-
 echo $output;
 ?>
