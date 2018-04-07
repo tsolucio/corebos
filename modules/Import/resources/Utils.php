@@ -52,7 +52,7 @@ class Import_Utils {
 
 	public static function getImportFilePath($user) {
 		$importDirectory = self::getImportDirectory();
-		return $importDirectory. "IMPORT_".$user->id;
+		return $importDirectory. 'IMPORT_'.$user->id;
 	}
 
 
@@ -102,10 +102,8 @@ class Import_Utils {
 	}
 
 	public static function showImportTableBlockedError($moduleName, $user) {
-
 		$errorMessage = getTranslatedString('ERR_UNIMPORTED_RECORDS_EXIST', 'Import');
 		$customActions = array('LBL_CLEAR_DATA' => "location.href='index.php?module={$moduleName}&action=Import&mode=clear_corrupted_data'");
-
 		self::showErrorPage($errorMessage, '', $customActions, $moduleName);
 	}
 
@@ -133,8 +131,8 @@ class Import_Utils {
 
 	public static function getAssignedToUserList($module) {
 		global $current_user;
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
-		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+		require 'user_privileges/user_privileges_'.$current_user->id.'.php';
+		require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
 		$tabId = getTabid($module);
 
 		if (!is_admin($current_user) && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[$tabId] == 3 || $defaultOrgSharingPermission[$tabId] == 0)) {
