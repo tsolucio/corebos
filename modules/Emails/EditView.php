@@ -175,6 +175,12 @@ $image_path=$theme_path.'images/';
 
 $disp_view = getView($focus->mode);
 $details = getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields);
+$emaildescfield = getFieldFromEditViewBlockArray($details, $mod_strings['Description']);
+$details[$emaildescfield['block_label']][$emaildescfield['row_key']][$emaildescfield['field_key']][3][0] = preg_replace(
+	'/\<!--\[if .+ mso .*endif\]--\>/s',
+	'',
+	$details[$emaildescfield['block_label']][$emaildescfield['row_key']][$emaildescfield['field_key']][3][0]
+);
 $smarty->assign('BLOCKS', isset($details[$mod_strings['LBL_EMAIL_INFORMATION']]) ? $details[$mod_strings['LBL_EMAIL_INFORMATION']] : $details);
 $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', $app_strings['Email']);
