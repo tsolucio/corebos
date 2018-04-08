@@ -28,11 +28,8 @@ example: CA, NY, TX, FL searches for CA or NY or TX or FL.',
 'LBL_AF_HDR4'=>'If "Activity Type" is selected, give any one of the  
 following values "Call","Meeting" or "Task".',
 
-//strings added for vtiger 5, date format...
 'LBL_NONE'=>'None',
-'View_Name'=>'View_Name',
 'LBL_AND'=>'And',
-'LBL_DATE_FORMAT_CUSTOMVIEW'=>'Y-m-d',
 //Strings added for filter
 'Custom'=>'Custom',
 'Previous FY'=>'Previous FY',
@@ -68,7 +65,7 @@ following values "Call","Meeting" or "Task".',
 'less or equal'=>'less or equal',
 'greater or equal'=>'greater or equal',
 
-//Strings added to translate field label vtiger_groups
+//Strings added to translate field label groups
 'Address'=>'Address',
 'Information'=>'Information',
 'Description'=>'Description',
@@ -156,7 +153,6 @@ following values "Call","Meeting" or "Task".',
 'Mailing Country'=>'Mailing Country',
 'Other Country'=>'Other Country',
 
-
 //Strings added for Potential module fields
 
 'Potential Name'=>'Opportunity Name',
@@ -165,7 +161,6 @@ following values "Call","Meeting" or "Task".',
 'Next Step'=>'Next Step',
 'Sales Stage'=>'Sales Stage',
 'Probability'=>'Probability',
-
 
 //Strings added for Quotes module fields
 'Subject'=>'Subject',
@@ -234,8 +229,6 @@ following values "Call","Meeting" or "Task".',
 'Actual Response Count'=>'Actual Response Count',
 'Actual ROI'=>'Actual ROI',
 
-
-
 //Added for customview.tpl
 
 'LBL_Select_a_Column'=>'Select a Column',
@@ -251,13 +244,10 @@ following values "Call","Meeting" or "Task".',
 'End_Date'=>'End Date',
 'LBL_RULE'=>'RULE',
 
-// Added/Updated for vtiger CRM 5.0.4
 'not equal to'=>'Not equal to',
 'starts with'=>'Starts with',
 'ends with'=>'Ends with',
 //'Product Code'=>'Product Code',
-
-// Added after 5.0.4 GA
 
 //Added for Role based Custom filters
 'LBL_SET_AS_PUBLIC'=>'Set as Public ',

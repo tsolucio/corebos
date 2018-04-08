@@ -31,9 +31,7 @@ exemplo: PR, SP, MG, RS para procurar PR ou SP ou MG ou RS.',
 seguintes valores "Chamada", "Reunião" ou "Tarefa".',
 
 'LBL_NONE'=>'Nada',
-'View_Name'=>'View_Name',
 'LBL_AND'=>'E',
-'LBL_DATE_FORMAT_CUSTOMVIEW'=>'Y-m-d',
 //Strings added for filter
 'Custom'=>'Customizar',
 'Previous FY'=>'Ano anterior',
@@ -69,7 +67,7 @@ seguintes valores "Chamada", "Reunião" ou "Tarefa".',
 'less or equal'=>'menor ou igual',
 'greater or equal'=>'maior ou igual',
 
-//Strings added to translate field label vtiger_groups
+//Strings added to translate field label groups
 'Address'=>'Endereço',
 'Information'=>'Informação',
 'Description'=>'Descrição',
