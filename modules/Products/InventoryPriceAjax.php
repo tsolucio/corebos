@@ -14,7 +14,7 @@ $image_path=$theme_path."images/";
 $currencyid = vtlib_purify($_REQUEST['currencyid']);
 $products_list = vtlib_purify($_REQUEST['productsList']);
 
-$product_ids = explode("::", $products_list);
+$product_ids = explode('::', $products_list);
 
 $price_list = array();
 
@@ -24,12 +24,12 @@ if (count($product_ids) > 0) {
 }
 
 // To get the Price Values in the same order as the Products
-for ($i=0;$i<count($product_ids);++$i) {
+for ($i=0; $i<count($product_ids); ++$i) {
 	$product_id = $product_ids[$i];
 	// Pick the price for the product_id from service prices/ product prices based on which array it is set.
 	$price_list[] = empty($prices_for_services[$product_id]) ? $prices_for_products[$product_id] : $prices_for_services[$product_id];
 }
 
-$price_values = implode("::", $price_list);
-echo "SUCCESS$".$price_values;
+$price_values = implode('::', $price_list);
+echo 'SUCCESS$'.$price_values;
 ?>
