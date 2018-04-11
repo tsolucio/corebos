@@ -21,7 +21,7 @@ class ClickATell implements ISMSProvider {
 	const SERVICE_URI = 'http://api.clickatell.com';
 	private static $REQUIRED_PARAMETERS = array('api_id', 'from', 'mo');
 
-	function __construct() {
+	public function __construct() {
 	}
 
 	/**
@@ -42,7 +42,7 @@ class ClickATell implements ISMSProvider {
 	}
 
 	public function getParameter($key, $defvalue = false) {
-		if(isset($this->_parameters[$key])) {
+		if (isset($this->_parameters[$key])) {
 			return $this->_parameters[$key];
 		}
 		return $defvalue;
@@ -53,11 +53,14 @@ class ClickATell implements ISMSProvider {
 	}
 
 	public function getServiceURL($type = false) {
-		if($type) {
-			switch(strtoupper($type)) {
-				case self::SERVICE_AUTH: return  self::SERVICE_URI . '/http/auth';
-				case self::SERVICE_SEND: return  self::SERVICE_URI . '/http/sendmsg';
-				case self::SERVICE_QUERY: return self::SERVICE_URI . '/http/querymsg';
+		if ($type) {
+			switch (strtoupper($type)) {
+				case self::SERVICE_AUTH:
+					return  self::SERVICE_URI . '/http/auth';
+				case self::SERVICE_SEND:
+					return  self::SERVICE_URI . '/http/sendmsg';
+				case self::SERVICE_QUERY:
+					return self::SERVICE_URI . '/http/querymsg';
 			}
 		}
 		return false;
@@ -87,21 +90,22 @@ class ClickATell implements ISMSProvider {
 
 		$results = array();
 		$i=0;
-		foreach($responseLines as $responseLine) {
-
+		foreach ($responseLines as $responseLine) {
 			$responseLine = trim($responseLine);
-			if(empty($responseLine)) continue;
+			if (empty($responseLine)) {
+				continue;
+			}
 
 			$result = array( 'error' => false, 'statusmessage' => '' );
-			if(preg_match("/ERR:(.*)/", trim($responseLine), $matches)) {
+			if (preg_match("/ERR:(.*)/", trim($responseLine), $matches)) {
 				$result['error'] = true;
 				$result['to'] = $tonumbers[$i++];
 				$result['statusmessage'] = $matches[0]; // Complete error message
-			} else if(preg_match("/ID: ([^ ]+)TO:(.*)/", $responseLine, $matches)) {
+			} elseif (preg_match("/ID: ([^ ]+)TO:(.*)/", $responseLine, $matches)) {
 				$result['id'] = trim($matches[1]);
 				$result['to'] = trim($matches[2]);
 				$result['status'] = self::MSG_STATUS_PROCESSING;
-			} else if(preg_match("/ID: (.*)/", $responseLine, $matches)) {
+			} elseif (preg_match("/ID: (.*)/", $responseLine, $matches)) {
 				$result['id'] = trim($matches[1]);
 				$result['to'] = $tonumbers[0];
 				$result['status'] = self::MSG_STATUS_PROCESSING;
@@ -112,7 +116,6 @@ class ClickATell implements ISMSProvider {
 	}
 
 	public function query($messageid) {
-
 		$params = $this->prepareParameters();
 		$params['apimsgid'] = $messageid;
 
@@ -123,34 +126,55 @@ class ClickATell implements ISMSProvider {
 
 		$result = array( 'error' => false, 'needlookup' => 1, 'statusmessage' => '' );
 
-		if(preg_match("/ERR: (.*)/", $response, $matches)) {
+		if (preg_match("/ERR: (.*)/", $response, $matches)) {
 			$result['error'] = true;
 			$result['needlookup'] = 0;
 			$result['statusmessage'] = $matches[0];
-		} else if(preg_match("/ID: ([^ ]+) Status: ([^ ]+)/", $response, $matches)) {
+		} elseif (preg_match("/ID: ([^ ]+) Status: ([^ ]+)/", $response, $matches)) {
 			$result['id'] = trim($matches[1]);
 			$status = trim($matches[2]);
 
 			// Capture the status code as message by default.
 			$result['statusmessage'] = "CODE: $status";
 
-			if($status == '002' || $status == '008' || $status == '011' ) {
+			if ($status == '002' || $status == '008' || $status == '011') {
 				$result['status'] = self::MSG_STATUS_PROCESSING;
-			} else if($status == '003' || $status == '004') {
+			} elseif ($status == '003' || $status == '004') {
 				$result['status'] = self::MSG_STATUS_DISPATCHED;
 				$result['needlookup'] = 0;
 			} else {
 				$statusMessage = "";
-				switch($status) {
-				case '001': $statusMessage = 'Message unknown';                 $needlookup = 0; break;
-				case '005': $statusMessage = 'Error with message';              $needlookup = 0; break;
-				case '006': $statusMessage = 'User cancelled message delivery'; $needlookup = 0; break;
-				case '007': $statusMessage = 'Error delivering message';        $needlookup = 0; break;
-				case '009': $statusMessage = 'Routing error';                   $needlookup = 0; break;
-				case '010': $statusMessage = 'Message expired';                 $needlookup = 0; break;
-				case '012': $statusMessage = 'Out of credit';                   $needlookup = 0; break;
+				switch ($status) {
+					case '001':
+						$statusMessage = 'Message unknown';
+						$needlookup = 0;
+						break;
+					case '005':
+						$statusMessage = 'Error with message';
+						$needlookup = 0;
+						break;
+					case '006':
+						$statusMessage = 'User cancelled message delivery';
+						$needlookup = 0;
+						break;
+					case '007':
+						$statusMessage = 'Error delivering message';
+						$needlookup = 0;
+						break;
+					case '009':
+						$statusMessage = 'Routing error';
+						$needlookup = 0;
+						break;
+					case '010':
+						$statusMessage = 'Message expired';
+						$needlookup = 0;
+						break;
+					case '012':
+						$statusMessage = 'Out of credit';
+						$needlookup = 0;
+						break;
 				}
-				if(!empty($statusMessage)) {
+				if (!empty($statusMessage)) {
 					$result['error'] = true;
 					$result['needlookup'] = $needlookup;
 					$result['statusmessage'] = $statusmessage;
@@ -167,18 +191,18 @@ class ClickATell implements ISMSProvider {
 	public function smstxtcode($data) {
 		$mb_hex = '';
 		$utf = 0;
-		for($i = 0; $i < strlen ( $data ); $i ++) {
-			$c = mb_substr ( $data, $i, 1, 'UTF-8' );
-			$o = unpack ( 'N', mb_convert_encoding ( $c, 'UCS-4BE', 'UTF-8' ) );
-			$hx = sprintf ( '%04X', $o [1] );
-			$utf += intval ( substr ( $hx, 0, 2 ) );
+		for ($i = 0; $i < strlen($data); $i ++) {
+			$c = mb_substr($data, $i, 1, 'UTF-8');
+			$o = unpack('N', mb_convert_encoding($c, 'UCS-4BE', 'UTF-8'));
+			$hx = sprintf('%04X', $o [1]);
+			$utf += intval(substr($hx, 0, 2));
 			$mb_hex .= $hx;
 		}
 		if ($utf > 0) {
 			$return = $mb_hex;
 			$utf = 1;
 		} else {
-			$return = utf8_decode ( $data );
+			$return = utf8_decode($data);
 			$utf = 0;
 		}
 		return array (
@@ -186,20 +210,19 @@ class ClickATell implements ISMSProvider {
 			$return
 		);
 	}
-
 }
 
 /*
  * On vtiger CRM forum: Nuri Unver February 2014
 
-For those who need to send UTF-8 messages. The ClickATell extension, as it is, just sends whatever text you type. So, you get garbage when you use extended character sets.
+For those who need to send UTF-8 messages. The ClickATell extension, as it is, just sends whatever text you type. So you get garbage when you use extended character sets.
 I changed the ClickATell.php file so that
 
 1) It checks whether the message contains any extended characters
 2) If it does, in converts the message into unicode hex format (credits for conversion code goes to Dagon on phpbuilder forum)
 3) If the message contains extended characters, it sets unicode setting when sending message to ClickATell, that knows it is receiving unicode hex instead of plain text.
 4) If the message does not contain extended characters, it does a utf8 decoding just in case you have characters that are not extended but not latin either.
-5) Finally, I also added concat parameter so that if the message is long, it can send it as two or three messages. This is important especially for UTF-8 messages as the maximum you can get is 70 chars per message.
+5) Added concat parameter so the message can be sent in various messages if it is to long. This is necessary for UTF-8 messages where the maximum is 70 chars per message.
 
 CODE
 
