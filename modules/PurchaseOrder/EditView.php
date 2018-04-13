@@ -203,7 +203,7 @@ $smarty->assign('moreinfofields', '');
 if ($cbMap!=null) {
 	$cbMapFields = $cbMap->MasterDetailLayout();
 	$smarty->assign('moreinfofields', "'".implode("','", $cbMapFields['detailview']['fieldnames'])."'");
-	if (empty($associated_prod)) { // creating
+	if (empty($associated_prod) && $isduplicate != 'true') { // creating
 		$product_Detail = $col_fields = array();
 		foreach ($cbMapFields['detailview']['fields'] as $mdfield) {
 			$col_fields[$mdfield['fieldinfo']['name']] = '';
