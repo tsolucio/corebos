@@ -12,7 +12,7 @@ class Google_Module_Model   {
 
     public static function removeSync($module, $id) {
         $db = PearDatabase::getInstance();
-        $query = "DELETE FROM vtiger_google_oauth WHERE service = ? AND userid = ?";
+        $query = "DELETE FROM its4you_googlesync4you_access WHERE service = ? AND userid = ?";
         $db->pquery($query, array($module, $id));
     }
 
