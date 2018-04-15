@@ -52,6 +52,8 @@ class Google_Oauth2_Connector {
     const OAUTH2_TOKEN_URI = 'https://accounts.google.com/o/oauth2/token';
 
     const OAUTH2_REVOKE_URI = 'https://accounts.google.com/o/oauth2/revoke';
+    
+    public $responseError;
 
     public function __construct($module,$userId=false) {
         global $site_URL;
@@ -136,14 +138,6 @@ class Google_Oauth2_Connector {
         header('Location: ' . $this->getAuthUrl());
     }
 
-    public function decryptAuthCode($cipherText) {
-        $publicKey = VtigerConfig::getOD('OAUTHREDIR_PUBK');
-        $pubkey_res = openssl_get_publickey($publicKey);
-        $base64Decoded = base64_decode($cipherText);
-        openssl_public_decrypt($base64Decoded,$decipheredText,$pubkey_res);
-        return $decipheredText;
-    }
-
     public function fireRequest($url,$headers,$params=array(),$method='POST') {
         $httpClient = new Vtiger_Net_Client($url);
         if(count($headers)) $httpClient->setHeaders($headers);
@@ -154,6 +148,9 @@ class Google_Oauth2_Connector {
             case 'GET':
                 $response = $httpClient->doGet($params);
                 break;
+        }
+        if($httpClient->wasError()){ 
+            $this->responseError = $httpClient->getErrorMessage();
         }
         return $response;
     }
@@ -178,6 +175,11 @@ class Google_Oauth2_Connector {
         	echo '<script>window.close();window.opener.location.href="index.php?module=Utilities&action=integration&integration=GoogleContacts&_op=Error&error_description='.
         	urlencode($decodedToken['error']).'&error_code=";</script>';
         	exit;
+        }
+        if(!empty($this->responseError)){
+            echo '<script>window.close();window.opener.location.href="index.php?module=Utilities&action=integration&_op=Error&integration=GoogleContacts&error_description='.
+            $this->responseError.'&error_code=";</script>';
+            exit;
         }
         if (empty($decodedToken['refresh_token'])) {
         	echo '<script>window.close();window.opener.location.href="index.php?module=Utilities&action=integration&_op=Error&integration=GoogleContacts&error_description=No Refresh Token&error_code=";</script>';
