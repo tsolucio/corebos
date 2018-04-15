@@ -62,15 +62,13 @@ class Google_List_View  {
         if (!empty($sourceModule)) {
             try {
                 $records = $this->Contacts();
-            } catch (Zend_Gdata_App_HttpException $e) {
-                $errorCode = $e->getResponse()->getStatus();
-                if($errorCode == 401) {
-                    $this->removeSynchronization($request);
-					$viewer->assign('ERROR_MESSAGE_CLASS', 'cb-alert-danger');
-					$viewer->assign('ERROR_MESSAGE', getTranslatedString('ERR_GContactsSync','Contacts'));
-					$viewer->display('applicationmessage.tpl');
-                    return false;
-                }
+            } catch (Exception $e) {
+                $errorMessage = $e->getMessage();
+                $this->removeSynchronization($request);
+				$viewer->assign('ERROR_MESSAGE_CLASS', 'cb-alert-danger');
+				$viewer->assign('ERROR_MESSAGE', getTranslatedString('ERR_GContactsSync','Contacts')." ".$errorMessage);
+				$viewer->display('applicationmessage.tpl');
+                return false;
             }
         }
         $firstime = $oauth2->hasStoredToken();
@@ -82,12 +80,8 @@ class Google_List_View  {
         global $mod_strings, $app_strings;
         $viewer->assign('APP', $app_strings);
         $viewer->assign('MOD', $mod_strings);
-        //$viewer->assign('SYNCTIME', Google_Utils_Helper::getLastSyncTime($sourceModule));
-        //$viewer->assign('STATE', $request->get('operation'));
         $viewer->assign('SOURCEMODULE', 'Contacts');
         $viewer->display("modules/Contacts/ContentDetails.tpl");
-//            $viewer->fetch(vtlib_getModuleTemplate("Contacts","ContentDetails.tpl"));
-            //echo $viewer->view('ContentDetails.tpl', $request->getModule(), true);
     }
 
     /**
