@@ -284,9 +284,11 @@ function getFieldListEntries($module) {
 					}
 					
 					$fieldinfors = $adb->pquery('select character_maximum_length from information_schema.columns where table_name=? and column_name=? and table_schema=?',array($row_field['tablename'], $row_field['columnname'], $dbconfig['db_name']));
-					if ($fieldinfors and $adb->num_rows($fieldinfors)>0) {
+					if ($fieldinfors && $adb->num_rows($fieldinfors)>0) {
 							$fieldsize = $adb->query_result($fieldinfors, 0, 'character_maximum_length'); 
 					}
+					  else { $fieldsize = '';
+							}
 
 					$fieldlabel = getTranslatedString($row_field['fieldlabel'], $module);
 					
