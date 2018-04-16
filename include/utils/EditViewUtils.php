@@ -56,6 +56,9 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		}
 
 		if (!empty($value)) {
+			if (strpos($value, 'x')) {
+				list($wsid, $value) = explode('x', $value);
+			}
 			if ($adb->num_rows($fldmod_result)==1) {
 				$valueType = $adb->query_result($fldmod_result, 0, 0);
 			} else {
