@@ -19,6 +19,7 @@ $controltime = strtotime('-'.$controlmonths.' month');
 $controldate = date('Y-m-d',$controltime);
 $controlheldtime = strtotime('-15 day');
 $controlhelddate = date('Y-m-d',$controlheldtime);
+$service="GoogleCalendar";
 
 $c_time_zone = new DateTimeZone($default_timezone);
 
@@ -26,7 +27,7 @@ $sql1 = 'SELECT a.userid ,synctoken,cal.calendar,cal.event
 	FROM its4you_googlesync4you_access a
 	INNER JOIN vtiger_users ON id = a.userid
 	INNER JOIN its4you_googlesync4you_calendar cal on cal.userid=a.userid
-	WHERE googleinsert=1 and deleted=0';
+	WHERE googleinsert=1 and deleted=0 and service = "'.$service.'" ';
 $result1 = $adb->pquery($sql1,array());
 $num_rows1 = $adb->num_rows($result1);
 
@@ -126,7 +127,7 @@ if ($num_rows1 > 0) {
 						$focus->saveentity($currentModule);
 						$sql3 = 'insert into its4you_googlesync4you_events (crmid,geventid,userid,eventtype,lastmodified) values (?,?,?,?,?)';
 						$adb->pquery($sql3,array($focus->id, $event->getId(),$userid,$type,$event->getUpdated()));
-						$adb->pquery("update its4you_googlesync4you_access set synctoken='$synctoken2' where userid=$userid",array());
+						$adb->pquery("update its4you_googlesync4you_access set synctoken='$synctoken2' where userid=$userid and service=?",array($service));
 					 }
                                         } 
                                         else $repeated++;

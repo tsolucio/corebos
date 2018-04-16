@@ -22,6 +22,7 @@ class GoogleSync4You {
     public $is_logged = false;
     public $event = "";
     public $selected_calendar = "";
+    private $service="GoogleCalendar";
 
     function __construct() {
         global $root_directory, $current_language, $mod_strings;
@@ -32,7 +33,7 @@ class GoogleSync4You {
 
 	public function getclientsecret() {
              global $adb;
-         $q=$adb->query("select google_login from its4you_googlesync4you_access where userid=1");
+             $q=$adb->query("select google_login from its4you_googlesync4you_access where userid=1 and service=$this->service");
          if($adb->num_rows($q)!=0 && $adb->query_result($q,0,"google_login"))
          return $adb->query_result($q,0,"google_login");
          else
@@ -41,7 +42,7 @@ class GoogleSync4You {
 
 	public function getAPI() {
              global $adb;
-         $q=$adb->query("select google_apikey from its4you_googlesync4you_access where userid=1");
+         $q=$adb->query("select google_apikey from its4you_googlesync4you_access where userid=1 and service=$this->service");
          if($adb->num_rows($q)!=0 && $adb->query_result($q,0,"google_apikey"))
          return $adb->query_result($q,0,"google_apikey");
          else
@@ -49,7 +50,7 @@ class GoogleSync4You {
 	}
         public function getclientid() {
          global $adb;
-         $q=$adb->query("select google_clientid from its4you_googlesync4you_access where userid=1");
+         $q=$adb->query("select google_clientid from its4you_googlesync4you_access where userid=1 and service=$this->service");
          if($adb->num_rows($q)!=0 && $adb->query_result($q,0,"google_clientid"))
          return $adb->query_result($q,0,"google_clientid");
          else
@@ -63,7 +64,7 @@ class GoogleSync4You {
 	}
         public function getkeyfile() {
              global $adb;
-         $q=$adb->query("select google_keyfile from its4you_googlesync4you_access where userid=1");
+         $q=$adb->query("select google_keyfile from its4you_googlesync4you_access where userid=1 and service=$this->service");
          if($adb->num_rows($q)!=0 && $adb->query_result($q,0,"google_keyfile"))
          return $adb->query_result($q,0,"google_keyfile");
          else
@@ -82,7 +83,7 @@ class GoogleSync4You {
         $sql = "SELECT gad.google_login ,gad.google_apikey, gad.google_keyfile, gad.google_clientid,gad.refresh_token,googleinsert FROM vtiger_users  
         INNER JOIN its4you_googlesync4you_access AS gad ON gad.userid = vtiger_users.id
         WHERE vtiger_users.id=? AND gad.google_login != '' 
-        and gad.google_apikey != '' and gad.google_keyfile != '' and gad.google_clientid != ''";
+        and gad.google_apikey != '' and gad.google_keyfile != '' and gad.google_clientid != '' and gad.service=$this->service";
 		
         if ($only_active) $sql .= " AND vtiger_users.status = 'Active'";
         
@@ -162,7 +163,7 @@ class GoogleSync4You {
             if (isset($token) && $token!='') {
             $client->setAccessToken($token);
             $reftoken=$client->getRefreshToken();
-            $this->db->pquery("update its4you_googlesync4you_access set refresh_token=? where refresh_token='' or refresh_token is null",array($reftoken));
+            $this->db->pquery("update its4you_googlesync4you_access set refresh_token=? where (refresh_token='' or refresh_token is null) and service=?",array($reftoken,$this->service));
             }
             else if($client->isAccessTokenExpired())
             {
