@@ -286,9 +286,7 @@ function getFieldListEntries($module) {
 					$fieldinfors = $adb->pquery('select character_maximum_length from information_schema.columns where table_name=? and column_name=? and table_schema=?',array($row_field['tablename'], $row_field['columnname'], $dbconfig['db_name']));
 	               			$fieldsize = $adb->query_result($fieldinfors, 0, 'character_maximum_length'); 
 					$fieldlabel = getTranslatedString($row_field['fieldlabel'], $module);
-
-					$fieldlabel = getTranslatedString($row_field['fieldlabel'], $module);
-
+					
 					$defaultPermitted = true;
 					$strictlyMandatory = false;
 					if (isset($focus->mandatory_fields) && (!empty($focus->mandatory_fields)) && in_array($fieldname, $focus->mandatory_fields)) {
