@@ -313,7 +313,7 @@ function getSearchModulesComboList($search_module) {
 function getSearchModules($filter = array()) {
 	global $adb;
 	// Ignore disabled administrative modules
-	$doNotSearchThese = array('Dashboard','Home','Calendar','Events','Rss','Reports','Portal','Webmails','Users','ConfigEditor','Import','MailManager','Mobile','ModTracker',
+	$doNotSearchThese = array('Dashboard','Home','Calendar','Events','Rss','Reports','Portal','Users','ConfigEditor','Import','MailManager','Mobile','ModTracker',
 		'PBXManager','VtigerBackup','WSAPP','cbupdater','CronTasks','RecycleBin','Tooltip','Webforms','Calendar4You','GlobalVariable','cbMap','evvtMenu','cbAuditTrail',
 		'cbLoginHistory','cbtranslation');
 	$doNotSearchTheseTabids = array();

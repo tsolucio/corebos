@@ -49,7 +49,9 @@ if(isset($_REQUEST['edit']) && $_REQUEST['edit'] && $_REQUEST['record']!='') {
 $adb->pquery($sql, $params);
 
 $return_module = vtlib_purify($_REQUEST['return_module']);
-if(empty($return_module)) $return_module = 'Webmails';
+if (empty($return_module)) {
+	$return_module = 'Emails';
+}
 
 $return_action = vtlib_purify($_REQUEST['return_action']);
 if(empty($return_action)) $return_action = 'index';

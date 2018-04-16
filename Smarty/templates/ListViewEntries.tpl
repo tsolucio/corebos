@@ -148,7 +148,7 @@
 					</tr>
 					</table>
 				{else}
-					{if $CHECK.EditView eq 'yes' && $MODULE neq 'Emails' && $MODULE neq 'Webmails'}
+					{if $CHECK.EditView eq 'yes' && $MODULE neq 'Emails'}
 						<table border="0" cellpadding="5" cellspacing="0" width="98%">
 						<tr>
 							<td rowspan="2" width="25%"><img src="{'empty.png'|@vtiger_imageurl:$THEME}" height="60" width="61"></td>

@@ -187,7 +187,7 @@ class Reports extends CRMEntity{
 	function initListOfModules() {
 		global $adb, $current_user, $old_related_modules;
 
-		$restricted_modules = array('Events','Webmails');
+		$restricted_modules = array('Events');
 		$restricted_blocks = array('LBL_IMAGE_INFORMATION','LBL_COMMENTS','LBL_COMMENT_INFORMATION');
 
 		$this->module_id = array();

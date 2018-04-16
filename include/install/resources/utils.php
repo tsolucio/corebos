@@ -827,7 +827,6 @@ class Common_Install_Wizard_Utils {
 		'Smarty Modules Directory' => './Smarty/templates/modules/',
 		'Logo Directory' => './test/logo/',
 		'Logs Directory' => './logs/',
-		'Webmail Attachments Directory' => './modules/Webmails/tmp/'
 	);
 
 	public static function getRecommendedDirectives() {
