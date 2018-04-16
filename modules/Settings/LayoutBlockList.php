@@ -180,7 +180,7 @@ function InStrCount($String, $Find, $CaseSensitive = false) {
  */
 function getFieldListEntries($module) {
 	$tabid = getTabid($module);
-	global $adb, $smarty,$log,$current_user;
+	global $adb, $smarty,$log,$current_user, $dbconfig;
 	global $theme;
 	$theme_path="themes/".$theme."/";
 	$image_path="themes/images/";
@@ -282,6 +282,10 @@ function getFieldListEntries($module) {
 					if (!empty($defaultValue) && ($uitype == '5' || $uitype == '6' || $uitype == '23')) {
 						$defaultValue = getValidDisplayDate($defaultValue);
 					}
+					
+					$fieldinfors = $adb->pquery('select character_maximum_length from information_schema.columns where table_name=? and column_name=? and table_schema=?',array($row_field['tablename'], $row_field['columnname'], $dbconfig['db_name']));
+	               			$fieldsize = $adb->query_result($fieldinfors, 0, 'character_maximum_length'); 
+					$fieldlabel = getTranslatedString($row_field['fieldlabel'], $module);
 
 					$fieldlabel = getTranslatedString($row_field['fieldlabel'], $module);
 
@@ -315,6 +319,7 @@ function getFieldListEntries($module) {
 						$cf_element[$count]['typeofdata']=$typeofdata;
 						$cf_element[$count]['uitype']=$uitype;
 						$cf_element[$count]['columnname']=$row_field['columnname'];
+						$cf_element[$count]['fieldsize']=$fieldsize;
 						$cf_element[$count]['defaultvalue']= array('permitted' => $defaultPermitted, 'value' => $defaultValue, '_allvalues' => $allValues);
 						$cf_element[$count] = array_merge($cf_element[$count], $visibility);
 
@@ -330,6 +335,7 @@ function getFieldListEntries($module) {
 						$cf_hidden_element[$hiddencount]['typeofdata']=$typeofdata;
 						$cf_hidden_element[$hiddencount]['uitype']=$uitype;
 						$cf_hidden_element[$hiddencount]['columnname']=$row_field['columnname'];
+						$cf_hidden_element[$hiddencount]['fieldsize']=$fieldsize;
 						$cf_hidden_element[$hiddencount]['defaultvalue']= array('permitted' => $defaultPermitted, 'value' => $defaultValue, '_allvalues' => $allValues);
 						$cf_hidden_element[$hiddencount] = array_merge($cf_hidden_element[$hiddencount], $visibility);
 
