@@ -278,14 +278,21 @@
 					<img src="{'editfield.gif'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;" onclick="fnvshNrm('editfield_{$value.fieldselect}'); posLay(this, 'editfield_{$value.fieldselect}');" alt="Popup" title="{$MOD.LBL_EDIT_PROPERTIES}"/>&nbsp;&nbsp;
 					<div id="editfield_{$value.fieldselect}" style="display:none; position: absolute; width: 225px; left: 300px; top: 300px;" >
 						<div class="layerPopup" style="position:relative; display:block">
-									<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small">
+									<table width="100%" border="0" cellpadding="5" cellspacing="0" class="			small">
 										<tr class="detailedViewHeader">
 											<th width="95%" align="left">
-												{$value.label} ({$value.columnname})
+												{$value.label}
 											</th>
 											<th width="5%" align="right">
 												<a href="javascript:fninvsh('editfield_{$value.fieldselect}');"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" /></a>
 											</th>
+										</tr>
+										<tr>
+											<td colspan="2" style="margin:auto; valign="top" class="dvtCellInfo" width="10px">
+											<span> {$value.columnname}</span>
+											<span> {$value.type}</span>
+											<span> {$value.fieldsize}</span>
+											</td>
 										</tr>
 									</table>
 									<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small">
