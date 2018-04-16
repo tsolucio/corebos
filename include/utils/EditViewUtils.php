@@ -1593,11 +1593,18 @@ function getAssociatedProducts($module,$focus,$seid='')
 			WHERE vtiger_crmentity.deleted=0";
 			$params = array($seid, $seid, $seid, $seid);
 	}
-
-	$cbMap = cbMap::getMapByName($module.'InventoryDetails','MasterDetailLayout');
-	$MDMapFound = ($cbMap!=null);
-	if ($MDMapFound) {
-		$cbMapFields = $cbMap->MasterDetailLayout();
+	if ($module != $currentModule && in_array($currentModule, getInventoryModules())) {
+		$cbMap = cbMap::getMapByName($currentModule.'InventoryDetails','MasterDetailLayout');
+		$MDMapFound = ($cbMap!=null);
+		if ($MDMapFound) {
+			$cbMapFields = $cbMap->MasterDetailLayout();
+		}
+	} else {
+		$cbMap = cbMap::getMapByName($module.'InventoryDetails','MasterDetailLayout');
+		$MDMapFound = ($cbMap!=null);
+		if ($MDMapFound) {
+			$cbMapFields = $cbMap->MasterDetailLayout();
+		}
 	}
 
 	$result = $adb->pquery($query, $params);

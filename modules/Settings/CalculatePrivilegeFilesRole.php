@@ -17,8 +17,8 @@ global $current_user;
 $roleid = vtlib_purify($_REQUEST['roleid']);
 
 if (is_admin($current_user)) {
-    if (!empty($roleid)) {
-        RecalculateSharingRules($roleid);
-    }
+	if (!empty($roleid)) {
+		RecalculateSharingRules($roleid);
+	}
 }
 header('Location: index.php?action=RoleDetailView&module=Settings&roleid=' . urlencode($roleid));
