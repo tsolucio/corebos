@@ -7,22 +7,22 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('Smarty_setup.php');
-require_once('include/CustomFieldUtil.php');
-require_once('include/utils/UserInfoUtil.php');
-require_once('include/utils/utils.php');
+require_once 'Smarty_setup.php';
+require_once 'include/CustomFieldUtil.php';
+require_once 'include/utils/UserInfoUtil.php';
+require_once 'include/utils/utils.php';
 require_once 'modules/PickList/PickListUtils.php';
 
 global $mod_strings,$app_strings,$log,$theme;
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
+$theme_path='themes/'.$theme.'/';
+$image_path=$theme_path.'images/';
 $smarty=new vtigerCRM_Smarty;
 
 $subMode = isset($_REQUEST['sub_mode']) ? vtlib_purify($_REQUEST['sub_mode']) : '';
-$smarty->assign("MOD", $mod_strings);
-$smarty->assign("APP", $app_strings);
-$smarty->assign("THEME", $theme);
-$smarty->assign("JS_DATEFORMAT", parse_calendardate($app_strings['NTC_DATE_FORMAT']));
+$smarty->assign('MOD', $mod_strings);
+$smarty->assign('APP', $app_strings);
+$smarty->assign('THEME', $theme);
+$smarty->assign('JS_DATEFORMAT', parse_calendardate($app_strings['NTC_DATE_FORMAT']));
 $duplicate = 'no';
 if ($subMode == 'updateFieldProperties') {
 	updateFieldProperties();
@@ -62,7 +62,7 @@ $cfimagecombo = array(
 	$image_path."text.gif",
 	$image_path."picklist.gif",
 	$image_path."time.PNG"
-	);
+);
 
 $cftextcombo = array(
 	$mod_strings['Text'],
@@ -78,7 +78,7 @@ $cftextcombo = array(
 	$mod_strings['LBL_TEXT_AREA'],
 	$mod_strings['LBL_MULTISELECT_COMBO'],
 	$mod_strings['Time']
-	);
+);
 
 $smarty->assign("MODULES", $module_array);
 $smarty->assign("CFTEXTCOMBO", $cftextcombo);
@@ -121,32 +121,36 @@ $smarty->assign('NotRelatedModules', $notRelatedModules);
 
 $blockrelmods = array();
 $fld_tabid = getTabid($fld_module);
-$brmrs = $adb->pquery('SELECT vtiger_tab.name
+$brmrs = $adb->pquery(
+	'SELECT vtiger_tab.name
 	FROM vtiger_blocks
 	INNER JOIN vtiger_relatedlists ON vtiger_blocks.isrelatedlist=vtiger_relatedlists.relation_id
 	INNER JOIN vtiger_tab ON vtiger_relatedlists.related_tabid = vtiger_tab.tabid
-	WHERE vtiger_relatedlists.tabid = ?',array($fld_tabid));
+	WHERE vtiger_relatedlists.tabid = ?',
+	array($fld_tabid)
+);
 while ($rl = $adb->fetch_array($brmrs)) {
 	$blockrelmods[$rl['name']] = 1;
 }
 $notBlockRelatedModules = array_diff_key($relmods, $blockrelmods);
 $smarty->assign('NotBlockRelatedModules', $notBlockRelatedModules);
 
-if (isset($_REQUEST["duplicate"]) && $_REQUEST["duplicate"] == "yes" || $duplicate == 'yes') {
-	echo "ERROR";
+if ((isset($_REQUEST['duplicate']) && $_REQUEST['duplicate'] == 'yes') || $duplicate == 'yes') {
+	echo 'ERROR';
 	exit;
 }
 if ($duplicate == 'LENGTH_ERROR') {
-	echo "LENGTH_ERROR";
+	echo 'LENGTH_ERROR';
 	exit;
 }
 $mode = isset($_REQUEST['mode']) ? vtlib_purify($_REQUEST['mode']) : '';
-$smarty->assign("MODE", $mode);
+$smarty->assign('MODE', $mode);
 
-if (!isset($_REQUEST['ajax']) or $_REQUEST['ajax'] != 'true') {
+if (!isset($_REQUEST['ajax']) || $_REQUEST['ajax'] != 'true') {
 	$smarty->display('Settings/LayoutBlockList.tpl');
-} elseif ($_REQUEST['ajax'] == 'true' &&
-		($subMode == 'getRelatedInfoOrder' || $subMode == 'changeRelatedInfoOrder' || $subMode == 'createRelatedList' || $subMode == 'deleteRelatedList')) {
+} elseif ($_REQUEST['ajax'] == 'true'
+	&& ($subMode == 'getRelatedInfoOrder' || $subMode == 'changeRelatedInfoOrder' || $subMode == 'createRelatedList' || $subMode == 'deleteRelatedList')
+) {
 	$smarty->display('Settings/OrderRelatedList.tpl');
 } else {
 	$smarty->display('Settings/LayoutBlockEntries.tpl');
@@ -169,7 +173,7 @@ function InStrCount($String, $Find, $CaseSensitive = false) {
 		}
 		$i++;
 	}
-	$log->debug("In InStrCount function".$String, $Find);
+	$log->debug("In InStrCount function $String, $Find");
 	return $x;
 }
 
@@ -180,14 +184,14 @@ function InStrCount($String, $Find, $CaseSensitive = false) {
  */
 function getFieldListEntries($module) {
 	$tabid = getTabid($module);
-	global $adb, $smarty,$log,$current_user, $dbconfig;
-	global $theme;
+	global $adb, $smarty,$log,$current_user, $dbconfig, $theme;
 	$theme_path="themes/".$theme."/";
 	$image_path="themes/images/";
 
-	$dbQuery = "select vtiger_blocks.*,vtiger_tab.presence as tabpresence  from vtiger_blocks" .
-			" inner join vtiger_tab on vtiger_tab.tabid = vtiger_blocks.tabid" .
-			" where vtiger_blocks.tabid=?  and vtiger_tab.presence = 0 order by sequence";
+	$dbQuery = 'select vtiger_blocks.*,vtiger_tab.presence as tabpresence
+		from vtiger_blocks
+		inner join vtiger_tab on vtiger_tab.tabid = vtiger_blocks.tabid
+		where vtiger_blocks.tabid=?  and vtiger_tab.presence = 0 order by sequence';
 	$result = $adb->pquery($dbQuery, array($tabid));
 	$row = $adb->fetch_array($result);
 
@@ -196,7 +200,7 @@ function getFieldListEntries($module) {
 	$nonEditableUiTypes = array('4','70');
 
 	// To get reference field names
-	require_once('include/Webservices/Utils.php');
+	require_once 'include/Webservices/Utils.php';
 	$handler = vtws_getModuleHandlerFromName($module, $current_user);
 
 	$meta = $handler->getMeta();
@@ -206,16 +210,16 @@ function getFieldListEntries($module) {
 	$i=0;
 	if ($row!='') {
 		do {
-			if ($row["blocklabel"] == 'LBL_CUSTOM_INFORMATION') {
-				$smarty->assign("CUSTOMSECTIONID", $row["blockid"]);
+			if ($row['blocklabel'] == 'LBL_CUSTOM_INFORMATION') {
+				$smarty->assign('CUSTOMSECTIONID', $row['blockid']);
 			}
-			if ($row["blocklabel"] == 'LBL_RELATED_PRODUCTS') {
-				$smarty->assign("RELPRODUCTSECTIONID", $row["blockid"]);
+			if ($row['blocklabel'] == 'LBL_RELATED_PRODUCTS') {
+				$smarty->assign('RELPRODUCTSECTIONID', $row['blockid']);
 			} else {
 				$smarty->assign('RELPRODUCTSECTIONID', '');
 			}
-			if ($row["blocklabel"] == 'LBL_COMMENTS' || $row['blocklabel'] == 'LBL_COMMENT_INFORMATION') {
-				$smarty->assign("COMMENTSECTIONID", $row["blockid"]);
+			if ($row['blocklabel'] == 'LBL_COMMENTS' || $row['blocklabel'] == 'LBL_COMMENT_INFORMATION') {
+				$smarty->assign('COMMENTSECTIONID', $row['blockid']);
 			} else {
 				$smarty->assign('COMMENTSECTIONID', 0);
 			}
@@ -236,7 +240,7 @@ function getFieldListEntries($module) {
 					INNER JOIN vtiger_relatedlists ON vtiger_blocks.isrelatedlist=vtiger_relatedlists.relation_id
 					INNER JOIN vtiger_tab ON vtiger_relatedlists.related_tabid = vtiger_tab.tabid
 					LIMIT 1');
-				if ($brmrs and $adb->num_rows($brmrs)>0) {
+				if ($brmrs && $adb->num_rows($brmrs)>0) {
 					$i18nMod = $adb->query_result($brmrs, 0, 0);
 				}
 			}
@@ -282,16 +286,16 @@ function getFieldListEntries($module) {
 					if (!empty($defaultValue) && ($uitype == '5' || $uitype == '6' || $uitype == '23')) {
 						$defaultValue = getValidDisplayDate($defaultValue);
 					}
-					
-					$fieldinfors = $adb->pquery('select character_maximum_length from information_schema.columns where table_name=? and column_name=? and table_schema=?',array($row_field['tablename'], $row_field['columnname'], $dbconfig['db_name']));
+					$fieldinfors = $adb->pquery(
+						'select character_maximum_length from information_schema.columns where table_name=? and column_name=? and table_schema=?',
+						array($row_field['tablename'], $row_field['columnname'], $dbconfig['db_name'])
+					);
 					if ($fieldinfors && $adb->num_rows($fieldinfors)>0) {
-							$fieldsize = $adb->query_result($fieldinfors, 0, 'character_maximum_length'); 
+						$fieldsize = $adb->query_result($fieldinfors, 0, 'character_maximum_length');
+					} else {
+						$fieldsize = '';
 					}
-					  else { $fieldsize = '';
-							}
-
 					$fieldlabel = getTranslatedString($row_field['fieldlabel'], $module);
-					
 					$defaultPermitted = true;
 					$strictlyMandatory = false;
 					if (isset($focus->mandatory_fields) && (!empty($focus->mandatory_fields)) && in_array($fieldname, $focus->mandatory_fields)) {
@@ -397,10 +401,11 @@ function insertDetailViewBlockWidgets($cfentries, $fld_module) {
 		for ($cnt = 1; $cnt <= $totalcnt; $cnt++) {
 			$retarr[$idx++] = $cfentries[$cnt-1];
 			foreach ($dvb as $key => $CUSTOM_LINK_DETAILVIEWWIDGET) {
-				if (preg_match("/^block:\/\/.*/", $CUSTOM_LINK_DETAILVIEWWIDGET->linkurl, $matches) and
-				 (($cnt==1 and $CUSTOM_LINK_DETAILVIEWWIDGET->sequence <= 1)
-				  or ($CUSTOM_LINK_DETAILVIEWWIDGET->sequence == $cnt)
-				  or ($cnt==$totalcnt and $CUSTOM_LINK_DETAILVIEWWIDGET->sequence >= $cnt))) {
+				if (preg_match("/^block:\/\/.*/", $CUSTOM_LINK_DETAILVIEWWIDGET->linkurl, $matches)
+					&& (($cnt==1 && $CUSTOM_LINK_DETAILVIEWWIDGET->sequence <= 1)
+						|| ($CUSTOM_LINK_DETAILVIEWWIDGET->sequence == $cnt)
+						|| ($cnt==$totalcnt && $CUSTOM_LINK_DETAILVIEWWIDGET->sequence >= $cnt))
+				) {
 					list($void, $widgetControllerClass, $widgetControllerClassFile) = explode(':', $matches[0]);
 					$widgetControllerClass = substr($widgetControllerClass, 2);
 					if (!class_exists($widgetControllerClass)) {
@@ -880,25 +885,25 @@ function addblock() {
 				'select relation_id,label from vtiger_relatedlists where tabid=? and related_tabid=?',
 				array($tabid,$related_moduleid)
 			);
-			if ($rlrs and $adb->num_rows($rlrs)>0) {
+			if ($rlrs && $adb->num_rows($rlrs)>0) {
 				$relatedlistid = $adb->query_result($rlrs, 0, 'relation_id');
 				$newblocklabel = $adb->query_result($rlrs, 0, 'label');
 			} else {
 				$relatedlistid = 0;
 			}
 		}
-		$sql_seq="select sequence from vtiger_blocks where blockid=?";
+		$sql_seq='select sequence from vtiger_blocks where blockid=?';
 		$res_seq= $adb->pquery($sql_seq, array($after_block));
 		$row_seq=$adb->fetch_array($res_seq);
 		$block_sequence=$row_seq['sequence'];
 		$newblock_sequence=$block_sequence+1;
 
-		$sql_up="update vtiger_blocks set sequence=sequence+1 where tabid=? and sequence > ?";
+		$sql_up='update vtiger_blocks set sequence=sequence+1 where tabid=? and sequence > ?';
 		$adb->pquery($sql_up, array($tabid,$block_sequence));
 
 		$max_blockid=$adb->getUniqueID('vtiger_blocks');
 		$iscustom = 1;
-		$sql="INSERT INTO vtiger_blocks (tabid, blockid, sequence, blocklabel,iscustom,isrelatedlist) values (?,?,?,?,?,?)";
+		$sql='INSERT INTO vtiger_blocks (tabid, blockid, sequence, blocklabel,iscustom,isrelatedlist) values (?,?,?,?,?,?)';
 		$params = array($tabid,$max_blockid,$newblock_sequence,$newblocklabel,$iscustom,$relatedlistid);
 		$adb->pquery($sql, $params);
 	}
