@@ -280,7 +280,7 @@ class WebserviceField{
 		}
 		$this->dataFromMeta = true;
 	}
-	
+
 	public function getFieldDataType(){
 		if($this->fieldDataType === null){
 			$fieldDataType = $this->getFieldTypeFromUIType();
@@ -297,7 +297,7 @@ class WebserviceField{
 		}
 		return $this->fieldDataType;
 	}
-	
+
 	public function getReferenceList(){
 		static $referenceList = array();
 		if($this->referenceList === null){
@@ -322,7 +322,7 @@ class WebserviceField{
 			for($i=0;$i<$numRows;++$i){
 				$referenceTypes[] = $this->pearDB->query_result($result,$i,"type");
 			}
-			
+
 			//to handle hardcoding done for Calendar module todo activities.
 			if($this->tabid == 9 && $this->fieldName =='parent_id'){
 				$referenceTypes[] = 'Invoice';
@@ -334,7 +334,6 @@ class WebserviceField{
 			if ($this->getUIType()==26) { // DocumentFolders
 				$referenceTypes[] = 'DocumentFolders';
 			}
-			
 			global $current_user;
 			$types = vtws_listtypes(null, $current_user);
 			$accessibleTypes = $types['types'];
@@ -396,19 +395,19 @@ class WebserviceField{
 		}
 	}
 
-	function getPicklistDetails(){
-		$hardCodedPickListNames = array("hdntaxtype","email_flag");
+	public function getPicklistDetails(){
+		$hardCodedPickListNames = array('hdntaxtype','email_flag');
 		$hardCodedPickListValues = array(
-				"hdntaxtype"=>array(
-					array("label"=>"Individual","value"=>"individual"),
-					array("label"=>"Group","value"=>"group")
-				),
-				"email_flag" => array(
-					array('label'=>'SAVED','value'=>'SAVED'),
-					array('label'=>'SENT','value' => 'SENT'),
-					array('label'=>'MAILSCANNER','value' => 'MAILSCANNER')
-				)
-			);
+			'hdntaxtype'=>array(
+				array('label'=>'Individual','value'=>'individual'),
+				array('label'=>'Group','value'=>'group')
+			),
+			'email_flag' => array(
+				array('label'=>'SAVED','value'=>'SAVED'),
+				array('label'=>'SENT','value' => 'SENT'),
+				array('label'=>'MAILSCANNER','value' => 'MAILSCANNER')
+			)
+		);
 		if(in_array(strtolower($this->getFieldName()),$hardCodedPickListNames)){
 			return $hardCodedPickListValues[strtolower($this->getFieldName())];
 		}
@@ -428,7 +427,7 @@ class WebserviceField{
 		}
 	}
 
-	function getPickListOptions(){
+	public function getPickListOptions(){
 		global $app_strings, $mod_strings, $log, $current_language;
 		static $purified_plcache = array();
 		$fieldName = $this->getFieldName();
@@ -441,34 +440,36 @@ class WebserviceField{
 			return $purified_plcache[$moduleName.$fieldName];
 		}
 		$options = array();
-		$sql = "select picklistid from vtiger_picklist where name=?";
-		$result = $this->pearDB->pquery($sql,array($fieldName));
+		$result = $this->pearDB->pquery('select picklistid from vtiger_picklist where name=?', array($fieldName));
 		$numRows = $this->pearDB->num_rows($result);
-		if($numRows == 0){
-			$sql = "select $fieldName from vtiger_$fieldName";
-			$result = $this->pearDB->pquery($sql,array());
+		if ($numRows == 0) {
+			$result = $this->pearDB->pquery("select $fieldName from vtiger_$fieldName", array());
 			$numRows = $this->pearDB->num_rows($result);
 			for($i=0;$i<$numRows;++$i){
 				$elem = array();
 				$picklistValue = $this->pearDB->query_result($result,$i,$fieldName);
 				$picklistValue = decode_html($picklistValue);
 				$trans_str = (!empty($temp_mod_strings[$picklistValue])) ? $temp_mod_strings[$picklistValue] : ((!empty($app_strings[$picklistValue])) ? $app_strings[$picklistValue] : $picklistValue);
-				while ($trans_str != preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str)) $trans_str = preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str);
-				$elem["label"] = $trans_str;
-				$elem["value"] = $picklistValue;
+				while ($trans_str != preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str)) {
+					$trans_str = preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str);
+				}
+				$elem['label'] = $trans_str;
+				$elem['value'] = $picklistValue;
 				$options[] = $elem;
 			}
-		}else{
+		} else {
 			$user = VTWS_PreserveGlobal::getGlobal('current_user');
-			$details = getPickListValues($fieldName,$user->roleid);
+			$details = getPickListValues($fieldName, $user->roleid);
 			$numdetails = count($details);
 			for ($i=0; $i < $numdetails; ++$i) {
 				$elem = array();
 				$picklistValue = decode_html($details[$i]);
 				$trans_str = (!empty($temp_mod_strings[$picklistValue])) ? $temp_mod_strings[$picklistValue] : ((!empty($app_strings[$picklistValue])) ? $app_strings[$picklistValue] : $picklistValue);
-				while ($trans_str != preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str)) $trans_str = preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str);
-				$elem["label"] = $trans_str;
-				$elem["value"] = $picklistValue;
+				while ($trans_str != preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str)) {
+					$trans_str = preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str);
+				}
+				$elem['label'] = $trans_str;
+				$elem['value'] = $picklistValue;
 				$options[] = $elem;
 			}
 		}
@@ -476,11 +477,11 @@ class WebserviceField{
 		return $options;
 	}
 
-	function getPresence() {
+	public function getPresence() {
 		return $this->presence;
 	}
 
-	function getPickListOptionsSpecialUitypes($uitype){
+	public function getPickListOptionsSpecialUitypes($uitype){
 		global $log, $current_language;
 		require_once 'modules/PickList/PickListUtils.php';
 		static $purified_plcache = array();
@@ -495,14 +496,13 @@ class WebserviceField{
 		$options = array();
 		$list_options = getPicklistValuesSpecialUitypes($uitype,$fieldName,'');
 		foreach ($list_options as $key => $value) {
-				$elem = array();
-				$elem["label"] = $value[0];
-				$elem["value"] = $value[1];
-				$options[] = $elem;
+			$elem = array();
+			$elem['label'] = $value[0];
+			$elem['value'] = $value[1];
+			$options[] = $elem;
 		}
 		$purified_plcache[$moduleName.$fieldName] = $options;
 		return $options;
 	}
 }
-
 ?>

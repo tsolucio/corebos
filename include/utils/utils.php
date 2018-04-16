@@ -1375,16 +1375,16 @@ function getEmailParentsList($module, $id, $focus = false) {
 
 	$fieldid = 0;
 	$fieldname = 'email';
-	if ($focus->column_fields['email'] == '' && $focus->column_fields['secondaryemail'] != '') {
+	if ($focus->column_fields['email'] == '' && !empty($focus->column_fields['secondaryemail'])) {
 		$fieldname='secondaryemail';
 	}
-	$res = $adb->pquery("select fieldid from vtiger_field where tabid = ? and fieldname= ? and vtiger_field.presence in (0,2)", array(getTabid($module), $fieldname));
+	$res = $adb->pquery('select fieldid from vtiger_field where tabid = ? and fieldname= ? and vtiger_field.presence in (0,2)', array(getTabid($module), $fieldname));
 	$fieldid = $adb->query_result($res, 0, 'fieldid');
 
 	$hidden  = '<input type="hidden" name="emailids" value="'.$id.'@'.$fieldid.'|">';
 	$hidden .= '<input type="hidden" name="pmodule" value="'.$module.'">';
 
-	$log->debug("Exiting getEmailParentsList method ...");
+	$log->debug('Exiting getEmailParentsList method ...');
 	return $hidden;
 }
 
