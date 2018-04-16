@@ -280,12 +280,19 @@
 						<div class="layerPopup" style="position:relative; display:block">
 									<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small">
 										<tr class="detailedViewHeader">
-											<th width="95%" align="left">
-												{$value.label} ({$value.columnname})
+											<th width="95%" align="center">
+												{$value.label}
 											</th>
 											<th width="5%" align="right">
 												<a href="javascript:fninvsh('editfield_{$value.fieldselect}');"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" /></a>
 											</th>
+										</tr>
+										<tr>
+											<td colspan="2" style="margin:auto; valign="top" class="dvtCellInfo" width="10px">
+											<span style="float: left; width: 34%; text-align: left;"> {$value.columnname}</span>
+											<span style="float: left; width: 33%; text-align: center;"> {$value.type}    </span>
+											<span style="float: left; width: 33%; text-align: right;"> Varchar({$value.fieldsize})</span>
+											</td>
 										</tr>
 									</table>
 									<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small">
