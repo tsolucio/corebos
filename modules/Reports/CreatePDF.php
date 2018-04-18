@@ -13,7 +13,7 @@ require_once 'modules/Reports/Reports.php';
 require 'include/tcpdf/tcpdf.php';
 $language = $_SESSION['authenticated_user_language'].'.lang.php';
 require_once "include/language/$language";
-$reportid = vtlib_purify($_REQUEST["record"]);
+$reportid = vtlib_purify($_REQUEST['record']);
 $oReportRun = new ReportRun($reportid);
 
 if (!empty($_REQUEST['startdate']) && !empty($_REQUEST['enddate']) && $_REQUEST['startdate'] != '0000-00-00' && $_REQUEST['enddate'] != '0000-00-00') {
@@ -41,8 +41,7 @@ if (!empty($_REQUEST['startdate']) && !empty($_REQUEST['enddate']) && $_REQUEST[
 }
 
 $pdf = $oReportRun->getReportPDF($filterlist);
-setlocale(LC_ALL,'en_US.UTF-8');
+setlocale(LC_ALL, 'en_US.UTF-8');
 $pdf->Output($oReportRun->getReportName(true, true).'.pdf', 'D');
-
 exit();
 ?>

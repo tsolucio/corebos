@@ -37,14 +37,14 @@ class CustomReportUtils {
 		foreach ($groupBy as $key => $value) {
 			// $groupByConditon = explode(" ",$value);
 			//$groupByNew = explode("'",$groupByConditon[0]);
-			list($tablename, $colname, $module_field, $fieldname, $single) = explode(":", $key);
-			//list($module, $field) = explode("_", $module_field);
+			list($tablename, $colname, $module_field, $fieldname, $single) = explode(':', $key);
+			//list($module, $field) = explode('_', $module_field);
 			$fieldDetails = $key;
 			break;
 		}
 		$queryReports = self::getCustomReportsQuery($reportid);
 		if ($queryReports == '') {
-			return array('error' => "<h4>".getTranslatedString('LBL_PERMISSION')."</h4>");
+			return array('error' => '<h4>'.getTranslatedString('LBL_PERMISSION').'</h4>');
 		}
 		$queryResult = $adb->pquery($queryReports, array());
 		if ($chartType == 'horizontalbarchart') {
@@ -61,7 +61,7 @@ class CustomReportUtils {
 		if ($reportColDetails=='none') {
 			return false;
 		}
-		list($tablename, $colname, $module_field, $fieldname, $typeOfData) = explode(":", $reportColDetails);
+		list($tablename, $colname, $module_field, $fieldname, $typeOfData) = explode(':', $reportColDetails);
 		if ($typeOfData == 'D') {
 			return true;
 		} else {
@@ -127,9 +127,9 @@ class CustomReportUtils {
 				)
 			);
 			$conditionJson = urlencode(json_encode($condition));
-			$condition = "query=true&searchtype=advance&advft_criteria=" . $conditionJson . "&advft_criteria_groups=" . urlencode(json_encode($advft_criteria_groups));
+			$condition = 'query=true&searchtype=advance&advft_criteria=' . $conditionJson . '&advft_criteria_groups=' . urlencode(json_encode($advft_criteria_groups));
 		} elseif (strtolower($criteria) == 'quarter') {
-			$condition = "";
+			$condition = '';
 			$quraterNum = $month / 3;
 			if ($month % 3 == 0) {
 				$quraterNum = $quraterNum - 1;
@@ -137,14 +137,14 @@ class CustomReportUtils {
 			$startingMonth = 3 * ($quraterNum);
 			$quarterMonth = $startingMonth;
 			if ($quarterMonth < 10) {
-				$quarterMonth = "0" . $quarterMonth;
+				$quarterMonth = '0' . $quarterMonth;
 			}
-			$date = DateTimeField::convertToUserFormat($year . "-" . $quarterMonth . "-01");
+			$date = DateTimeField::convertToUserFormat($year . '-' . $quarterMonth . '-01');
 			$quarterMonth +=3;
 			if ($quarterMonth < 10) {
-				$quarterMonth = "0" . $quarterMonth;
+				$quarterMonth = '0' . $quarterMonth;
 			}
-			$date1 = DateTimeField::convertToUserFormat($year . "-" . $quarterMonth . "-01");
+			$date1 = DateTimeField::convertToUserFormat($year . '-' . $quarterMonth . '-01');
 			$condition = array(
 				array(
 					'groupid' => 1,
