@@ -438,8 +438,10 @@ class cbCalendar extends CRMEntity {
 
 	private function getRequestData($return_id) {
 		global $adb;
-		$cont_qry = "select contactid from vtiger_cntactivityrel where activityid=?";
-		$cont_res = $adb->pquery($cont_qry, array($return_id));
+		$cont_qry = 'select contactid from vtiger_cntactivityrel where activityid=?
+			UNION
+			select cto_id from vtiger_activity where activityid=?';
+		$cont_res = $adb->pquery($cont_qry, array($return_id, $return_id));
 		$noofrows = $adb->num_rows($cont_res);
 		$cont_id = array();
 		if ($noofrows > 0) {
