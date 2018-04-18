@@ -34,7 +34,7 @@ class ConvertInventoryModule extends VTTask {
 		global $current_user, $logbg, $from_wf;
 		$from_wf = true;
 		$util = new VTWorkflowUtils();
-		$admin = $util->adminUser();
+		$util->adminUser();
 
 		// Get the origin record in question
 		$wsso = vtws_retrieve($entity->getId(), $current_user);

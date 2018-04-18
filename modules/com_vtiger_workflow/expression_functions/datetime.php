@@ -20,8 +20,6 @@ function __vt_time_diff($arr) {
 		$time_operand1 = $time1 = $arr[0];
 		$time_operand2 = $time2 = $arr[1];
 	} else {
-		// Added as we need to compare with the values based on the user date format and timezone
-		global $default_timezone;
 		$time_operand1 = date('Y-m-d H:i:s'); // Current time
 		$time_operand2 = $arr[0];
 	}
@@ -129,7 +127,6 @@ function __vt_get_date($arr) {
 			return date('Y-m-d', strtotime('-1 day'));
 			break;
 		case 'time':
-			global $default_timezone;
 			return date('H:i:s');
 			break;
 		default:

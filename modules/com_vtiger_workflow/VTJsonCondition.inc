@@ -10,10 +10,10 @@
 
 class VTJsonCondition {
 
-	function __construct() {
+	public function __construct() {
 	}
 
-	function evaluate($condition, $entityCache, $id) {
+	public function evaluate($condition, $entityCache, $id) {
 		global $logbg;
 		$logbg->debug("Entering evaluate($condition,$id) method ...");
 		$expr = json_decode($condition, true);
@@ -97,7 +97,7 @@ class VTJsonCondition {
 		return $finalResult;
 	}
 
-	function startsWith($str, $subStr) {
+	public function startsWith($str, $subStr) {
 		$sl = strlen($str);
 		$ssl = strlen($subStr);
 		if ($sl >= $ssl) {
@@ -107,7 +107,7 @@ class VTJsonCondition {
 		}
 	}
 
-	function endsWith($str, $subStr) {
+	public function endsWith($str, $subStr) {
 		$sl = strlen($str);
 		$ssl = strlen($subStr);
 		if ($sl >= $ssl) {
@@ -116,7 +116,8 @@ class VTJsonCondition {
 			return false;
 		}
 	}
-	function checkCondition($entityData, $cond, $referredEntityData = null) {
+
+	public function checkCondition($entityData, $cond, $referredEntityData = null) {
 		$data = $entityData->getData();
 
 		$condition = $cond['operation'];
@@ -164,7 +165,7 @@ class VTJsonCondition {
 		}
 
 		switch ($condition) {
-			case "exists":
+			case 'exists':
 				global $current_user,$adb;
 				$qg = new QueryGenerator($entityData->getModuleName(), $current_user);
 				$qg->addCondition($cond['fieldname'], $value, 'e');
@@ -178,19 +179,19 @@ class VTJsonCondition {
 				} else {
 					return false;
 				}
-			case "equal to":
+			case 'equal to':
 				return $fieldValue == $value;
-			case "less than":
+			case 'less than':
 				return $fieldValue < $value;
-			case "greater than":
+			case 'greater than':
 				return $fieldValue > $value;
-			case "does not equal":
+			case 'does not equal':
 				return $fieldValue != $value;
-			case "less than or equal to":
+			case 'less than or equal to':
 				return $fieldValue <= $value;
-			case "greater than or equal to":
+			case 'greater than or equal to':
 				return $fieldValue >= $value;
-			case "is":
+			case 'is':
 				if (preg_match('/([^:]+):boolean$/', $value, $match)) {
 					$value = $match[1];
 					if ($value == 'true') {
@@ -201,8 +202,7 @@ class VTJsonCondition {
 				} else {
 					global $current_user,$adb;
 					$tabid = getTabid($entityData->getModuleName());
-					$sql = "select *, '0' as readonly from vtiger_field where tabid = ? and fieldname=?";
-					$result = $adb->pquery($sql, array($tabid, $cond['fieldname']));
+					$result = $adb->pquery("select *, '0' as readonly from vtiger_field where tabid = ? and fieldname=?", array($tabid, $cond['fieldname']));
 					$webserviceField = WebserviceField::fromQueryResult($adb, $result, 0);
 					$ftype = $webserviceField->getFieldDataType();
 					if ($ftype=='multipicklist') {
@@ -214,7 +214,7 @@ class VTJsonCondition {
 						$rlist = $webserviceField->getReferenceList();
 						foreach ($rlist as $modName) {
 							$wsidrs = $adb->pquery('SELECT id FROM vtiger_ws_entity WHERE name=?', array($modName));
-							if ($wsidrs and $adb->num_rows($wsidrs)>0) {
+							if ($wsidrs && $adb->num_rows($wsidrs)>0) {
 								$wsid = $adb->query_result($wsidrs, 0, 0);
 								$isthesame = ($fieldValue == $wsid.'x'.$value);
 							}
@@ -227,7 +227,7 @@ class VTJsonCondition {
 						return $fieldValue == $value;
 					}
 				}
-			case "is not":
+			case 'is not':
 				if (preg_match('/([^:]+):boolean$/', $value, $match)) {
 					$value = $match[1];
 					if ($value == 'true') {
@@ -238,8 +238,7 @@ class VTJsonCondition {
 				} else {
 					global $current_user,$adb;
 					$tabid = getTabid($entityData->getModuleName());
-					$sql = "select *, '0' as readonly from vtiger_field where tabid = ? and fieldname=?";
-					$result = $adb->pquery($sql, array($tabid, $cond['fieldname']));
+					$result = $adb->pquery("select *, '0' as readonly from vtiger_field where tabid = ? and fieldname=?", array($tabid, $cond['fieldname']));
 					$webserviceField = WebserviceField::fromQueryResult($adb, $result, 0);
 					$ftype = $webserviceField->getFieldDataType();
 					if ($ftype=='multipicklist') {
@@ -251,7 +250,7 @@ class VTJsonCondition {
 						$rlist = $webserviceField->getReferenceList();
 						foreach ($rlist as $modName) {
 							$wsidrs = $adb->pquery('SELECT id FROM vtiger_ws_entity WHERE name=?', array($modName));
-							if ($wsidrs and $adb->num_rows($wsidrs)>0) {
+							if ($wsidrs && $adb->num_rows($wsidrs)>0) {
 								$wsid = $adb->query_result($wsidrs, 0, 0);
 								$isthesame = ($fieldValue == $wsid.'x'.$value);
 							}
@@ -264,12 +263,12 @@ class VTJsonCondition {
 						return $fieldValue != $value;
 					}
 				}
-			case "contains":
+			case 'contains':
 				if (is_array($value)) {
 					return in_array($fieldValue, $value);
 				}
 				return strpos($fieldValue, $value) !== false;
-			case "does not contain":
+			case 'does not contain':
 				if (empty($value)) {
 					unset($value);
 				}
@@ -277,11 +276,11 @@ class VTJsonCondition {
 					return !in_array($fieldValue, $value);
 				}
 				return strpos($fieldValue, $value) === false;
-			case "starts with":
+			case 'starts with':
 				return $this->startsWith($fieldValue, $value);
-			case "ends with":
+			case 'ends with':
 				return $this->endsWith($fieldValue, $value);
-			case "does not start with":
+			case 'does not start with':
 				$val = subStr($fieldValue, 0, 1);
 				$val2 = subStr($value, 0, 1);
 				if ($val === $val2) {
@@ -289,7 +288,7 @@ class VTJsonCondition {
 				} else {
 					return !in_array($fieldValue, $value);
 				}
-			case "does not end with":
+			case 'does not end with':
 				$val = subStr($fieldValue, -1);
 				$val2 = subStr($value, -1);
 				if ($val === $val2) {
@@ -297,9 +296,9 @@ class VTJsonCondition {
 				} else {
 					return !in_array($fieldValue, $value);
 				}
-			case "matches":
+			case 'matches':
 				return preg_match($value, $fieldValue);
-			case "has changed":
+			case 'has changed':
 				$entityDelta = new VTEntityDelta();
 				$idParts = vtws_getIdComponents($entityData->getId());
 				return $entityDelta->hasChanged($entityData->getModuleName(), $idParts[1], $cond['fieldname']);
@@ -307,17 +306,17 @@ class VTJsonCondition {
 				$entityDelta = new VTEntityDelta();
 				$idParts = vtws_getIdComponents($entityData->getId());
 				return $entityDelta->hasChanged($entityData->getModuleName(), $idParts[1], $cond['fieldname'], $value);
-			case "is empty":
+			case 'is empty':
 				if (empty($fieldValue)) {
 					return true;
 				}
 				return false;
-			case "is not empty":
+			case 'is not empty':
 				if (empty($fieldValue)) {
 					return false;
 				}
 				return true;
-			case "before":
+			case 'before':
 				if (empty($fieldValue)) {
 					return false;
 				}
@@ -325,7 +324,7 @@ class VTJsonCondition {
 					return true;
 				}
 				return false;
-			case "after":
+			case 'after':
 				if (empty($fieldValue)) {
 					return false;
 				}
@@ -333,7 +332,7 @@ class VTJsonCondition {
 					return true;
 				}
 				return false;
-			case "between":
+			case 'between':
 				if (empty($fieldValue)) {
 					return false;
 				}
@@ -452,9 +451,8 @@ class VTJsonCondition {
 				return false;
 			default:
 				//Unexpected condition
-				throw new Exception("Found an unexpected condition: " . $condition);
+				throw new Exception('Found an unexpected condition: ' . $condition);
 		}
 	}
 }
-
 ?>

@@ -231,13 +231,9 @@ if (isset($action) && isset($module)) {
 		preg_match("/^disable_sharing/", $action) ||
 		preg_match("/^TodoSave/", $action) ||
 		preg_match("/^RecalculateSharingRules/", $action) ||
-		(preg_match("/^body/", $action) && preg_match("/^Webmails/", $module)) ||
-		(preg_match("/^dlAttachments/", $action) && preg_match("/^Webmails/", $module)) ||
-		(preg_match("/^DetailView/", $action) && preg_match("/^Webmails/", $module)) ||
 		preg_match("/^savewordtemplate/", $action) ||
 		preg_match("/^deletewordtemplate/", $action) ||
 		preg_match("/^mailmergedownloadfile/", $action) ||
-		(preg_match("/^Webmails/", $module) && preg_match("/^get_img/", $action)) ||
 		preg_match("/^download/", $action) ||
 		preg_match("/^getListOfRecords/", $action) ||
 		preg_match("/^iCalExport/", $action)
@@ -379,9 +375,6 @@ if (isset($_SESSION['vtiger_authenticated_user_theme']) && $_SESSION['vtiger_aut
 $theme = basename(vtlib_purify($theme));
 $log->debug('Current theme is: '.$theme);
 
-//Used for current record focus
-$focus = "";
-
 // if the language is not set yet, then set it to the default language.
 if (isset($_SESSION['authenticated_user_language']) && $_SESSION['authenticated_user_language'] != '') {
 	$current_language = $_SESSION['authenticated_user_language'];
@@ -400,23 +393,14 @@ $app_strings = return_application_language($current_language);
 $mod_strings = return_module_language($current_language, $currentModule);
 
 //If DetailView, set focus to record passed in
-if ($action == "DetailView") {
+if ($action == 'DetailView') {
 	if (empty($_REQUEST['record'])) {
 		die('A record number must be specified to view details.');
 	}
-
 	// If we are going to a detail form, load up the record now and use the record to track the viewing.
-	switch ($currentModule) {
-		case 'Webmails':
-			//No need to create a webmail object here
-			break;
-		default:
-			$focus = CRMEntity::getInstance($currentModule);
-			break;
-	}
-
-	if (isset($_REQUEST['record']) && $_REQUEST['record']!='' && $_REQUEST["module"] != "Webmails" && $current_user->id != '') {
+	if (!empty($_REQUEST['record']) && !empty($current_user->id)) {
 		// Only track a viewing if the record was retrieved.
+		$focus = CRMEntity::getInstance($currentModule);
 		$focus->track_view($current_user->id, $currentModule, $_REQUEST['record']);
 	}
 }

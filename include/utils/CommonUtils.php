@@ -425,10 +425,14 @@ function getFieldFromEditViewBlockArray($blocks, $fldlabel) {
 				} else {
 					$col0label = $row[0][1][0];
 				}
-				if ($row[1][0][0]=='10') {
-					$col1label = $row[1][1][0]['displaylabel'];
+				if (!empty($row[1])>0 && count($row[1])>0) {
+					if ($row[1][0][0]=='10') {
+						$col1label = $row[1][1][0]['displaylabel'];
+					} else {
+						$col1label = $row[1][1][0];
+					}
 				} else {
-					$col1label = $row[1][1][0];
+					$col1label = '';
 				}
 				if ($col0label==$fldlabel) {
 					$fieldkey = 0;
@@ -2954,7 +2958,7 @@ function getPickListValues($tablename, $roleid) {
 	$result = $adb->pquery($query, array($roleid));
 	$fldVal = array();
 	while ($row = $adb->fetch_array($result)) {
-		$fldVal [] = $row[$tablename];
+		$fldVal[] = $row[$tablename];
 	}
 	return $fldVal;
 }

@@ -28,7 +28,7 @@ $smarty = new vtigerCRM_Smarty;
 $smarty->assign('CUSTOM_MODULE', 'true');
 
 // Data from the below modules will not be allowed to restore
-$skip_modules = array('Webmails');
+$skip_modules = array();
 $skip_tab_ids = array();
 
 for ($i=0; $i<count($skip_modules); $i++) {
@@ -43,7 +43,7 @@ if (count($skip_tab_ids) > 0) {
 	$sql .= ' AND tabid NOT IN ('. generateQuestionMarks($skip_tab_ids) .')';
 }
 $sql .= ' ORDER BY name';
-$result =$adb->pquery($sql, array($skip_tab_ids));
+$result =$adb->pquery($sql, $skip_tab_ids);
 $noofrows = $adb->num_rows($result);
 
 $module_name =array();

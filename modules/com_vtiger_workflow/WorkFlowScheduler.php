@@ -7,9 +7,9 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * *********************************************************************************** */
-require_once('modules/com_vtiger_workflow/WorkflowScheduler.inc');
-require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
-require_once('modules/Users/Users.php');
+require_once 'modules/com_vtiger_workflow/WorkflowScheduler.inc';
+require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
+require_once 'modules/Users/Users.php';
 
 class WorkFlowScheduler {
 	private $user;
@@ -111,7 +111,7 @@ class WorkFlowScheduler {
 								}
 							}
 							if ($task->executeImmediately == true && $wfminutes==null) {
-								if (empty($task->test) or $task->evaluate($entityCache, $entityData->getId())) {
+								if (empty($task->test) || $task->evaluate($entityCache, $entityData->getId())) {
 									$task->doTask($entityData);
 								}
 							} else {
@@ -126,7 +126,7 @@ class WorkFlowScheduler {
 		$scheduledWorkflows = null;
 	}
 
-	function addWorkflowConditionsToQueryGenerator($queryGenerator, $conditions) {
+	public function addWorkflowConditionsToQueryGenerator($queryGenerator, $conditions) {
 		$conditionMapping = array(
 			'equal to' => 'e',
 			'less than' => 'l',
@@ -248,7 +248,7 @@ class WorkFlowScheduler {
 	 * Special Date functions
 	 * @return <Array>
 	 */
-	function _specialDateTimeOperator() {
+	private function _specialDateTimeOperator() {
 		return array('less than days ago', 'more than days ago', 'in less than', 'in more than', 'days ago', 'days later',
 			'less than hours before', 'less than hours later', 'more than hours later', 'more than hours before', 'is today');
 	}
@@ -258,7 +258,7 @@ class WorkFlowScheduler {
 	 * @param <Array> $condition
 	 * @return <String>
 	 */
-	function _parseValueForDate($condition) {
+	private function _parseValueForDate($condition) {
 		$value = $condition['value'];
 		$operation = $condition['operation'];
 
