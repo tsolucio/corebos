@@ -18,7 +18,7 @@ var alert_arr = {
 	'DELETE_ACCOUNT':'Borrar esta cuenta eliminará las Oportunidades y Cotizaciones que tenga asociadas. ¿Continuar borrando los ',
 	'DELETE_VENDOR':'Borrar este proveedor eliminará las Órdenes de Compra que tenga Asociadas. ¿Continuar borrando los ',
 	'SELECT_MAILID':'Seleccione un e-mail',
-	'OVERWRITE_EXISTING_ACCOUNT1':'¿Sobrescribir la dirección existente con la de la cuenta (',
+	'OVERWRITE_EXISTING_ACCOUNT1':'¿Sobrescribir la dirección existente con la dirección de la cuenta seleccionada (',
 	'OVERWRITE_EXISTING_ACCOUNT2':')?',
 	'OVERWRITE_EXISTING_CONTACT1':'¿Sobrescribir la dirección existente con la dirección del contacto seleccionado (',
 	'OVERWRITE_EXISTING_CONTACT2':')?',
