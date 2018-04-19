@@ -9,62 +9,61 @@
  *************************************************************************************/
 require_once 'modules/WSAPP/synclib/models/BaseModel.php';
 
-class WSAPP_SyncStateModel extends WSAPP_BaseModel{
+class WSAPP_SyncStateModel extends WSAPP_BaseModel {
 
 	// Represents the module which will the synchronize will happen
 	protected $type;
 
-	public function getLastSyncTime(){
+	public function getLastSyncTime() {
 		return $this->get('lastSyncTime');
 	}
 
-	public function setLastSyncTime($lastSyncTime){
-		return $this->set('lastSyncTime',$lastSyncTime);
+	public function setLastSyncTime($lastSyncTime) {
+		return $this->set('lastSyncTime', $lastSyncTime);
 	}
 
-	public function setMoreRecords($more){
-		return $this->set('more',$more);
+	public function setMoreRecords($more) {
+		return $this->set('more', $more);
 	}
 
-	public function hasMoreRecords(){
+	public function hasMoreRecords() {
 		return $this->get('more') == 1;
 	}
 
-	public function getSyncTrackerId(){
+	public function getSyncTrackerId() {
 		return $this->get('synctrackerid');
 	}
 
-	public function setSyncTrackerId($value){
-		return $this->set('synctrackerid',$value);
+	public function setSyncTrackerId($value) {
+		return $this->set('synctrackerid', $value);
 	}
 
-	public function getSyncToken(){
+	public function getSyncToken() {
 		return $this->get('synctoken');
 	}
 
-	public function setSyncToken($syncToken){
-		return $this->set('synctoken',$syncToken);
+	public function setSyncToken($syncToken) {
+		return $this->set('synctoken', $syncToken);
 	}
 
-	public function setType($type){
+	public function setType($type) {
 		$this->type = $type;
 		return $this;
 	}
 
-	public function getType(){
+	public function getType() {
 		return $this->type;
 	}
 
-	public static function getInstanceFromSyncResult($syncResult){
+	public static function getInstanceFromSyncResult($syncResult) {
 		$model = new self();
 		return $model->setLastSyncTime($syncResult['lastModifiedTime'])->setMoreRecords($syncResult['more']);
 	}
 
-	public static function getInstanceFromQueryResult($rowData){
+	public static function getInstanceFromQueryResult($rowData) {
 		$model = new self();
 		return $model->setData($rowData);
 	}
-
 }
 
 ?>

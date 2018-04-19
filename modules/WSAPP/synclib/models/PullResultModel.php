@@ -9,29 +9,29 @@
  *************************************************************************************/
 require_once 'modules/WSAPP/synclib/models/BaseModel.php';
 
-class WSAPP_PullResultModel extends WSAPP_BaseModel{
+class WSAPP_PullResultModel extends WSAPP_BaseModel {
 
-	public function setPulledRecords($records){
-		return $this->set('pulledrecords',$records);
+	public function setPulledRecords($records) {
+		return $this->set('pulledrecords', $records);
 	}
 
-	public function getPulledRecords(){
+	public function getPulledRecords() {
 		return $this->get('pulledrecords');
 	}
 
-	public function setNextSyncState(WSAPP_SyncStateModel $syncStateModel){
-		return $this->set('nextsyncstate',$syncStateModel);
+	public function setNextSyncState(WSAPP_SyncStateModel $syncStateModel) {
+		return $this->set('nextsyncstate', $syncStateModel);
 	}
 
-	public function getNextSyncState(){
+	public function getNextSyncState() {
 		return $this->get('nextsyncstate');
 	}
 
-	public function setPrevSyncState(WSAPP_SyncStateModel $syncStateModel){
-		return $this->set('prevsyncstate',$syncStateModel);
+	public function setPrevSyncState(WSAPP_SyncStateModel $syncStateModel) {
+		return $this->set('prevsyncstate', $syncStateModel);
 	}
 
-	public function getPrevSyncState(){
+	public function getPrevSyncState() {
 		return $this->get('prevsyncstate');
 	}
 }
