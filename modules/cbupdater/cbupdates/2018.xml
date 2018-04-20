@@ -42,4 +42,11 @@
 	<classname>delWebmails</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>albana</author>
+	<description>Fill service column for Google Calendar</description>
+	<filename>build/changeSets/2018/addServiceGCalendar.php</filename>
+	<classname>addServiceGCalendar</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
