@@ -45,8 +45,8 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
 		$currencyid = $quote_focus->column_fields['currency_id'];
 		$rate = $quote_focus->column_fields['conversion_rate'];
 
-		//Added to display the Quote's associated vtiger_products -- when we create vtiger_invoice from Quotes DetailView
-		$associated_prod = getAssociatedProducts("Quotes", $quote_focus);
+		//Added to display the Quote's associated products -- when we create invoice from Quotes DetailView
+		$associated_prod = getAssociatedProducts('Quotes', $quote_focus);
 		$txtTax = ((isset($quote_focus->column_fields['txtTax']) && $quote_focus->column_fields['txtTax'] != '') ? $quote_focus->column_fields['txtTax'] : '0.000');
 		$txtAdj = ((isset($quote_focus->column_fields['txtAdjustment']) && $quote_focus->column_fields['txtAdjustment'] != '') ? $quote_focus->column_fields['txtAdjustment'] : '0.000');
 
@@ -55,7 +55,7 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
 		$smarty->assign('MODE', $quote_focus->mode);
 		$smarty->assign('AVAILABLE_PRODUCTS', 'true');
 	} elseif (isset($_REQUEST['convertmode']) && $_REQUEST['convertmode'] == 'sotoinvoice') {
-		$soid = $_REQUEST['record'];
+		$soid = $record;
 		$so_focus = new SalesOrder();
 		$so_focus->id = $soid;
 		$so_focus->retrieve_entity_info($soid, 'SalesOrder');
@@ -69,15 +69,15 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
 		$focus->column_fields['vtiger_purchaseorder'] = isset($so_focus->column_fields['vtiger_purchaseorder']) ? $so_focus->column_fields['vtiger_purchaseorder'] : '';
 		$focus->column_fields['terms_conditions'] = $so_focus->column_fields['terms_conditions'];
 
-		//Added to display the SalesOrder's associated vtiger_products -- when we create vtiger_invoice from SO DetailView
+		//Added to display the SalesOrder's associated products -- when we create invoice from SO DetailView
 		$associated_prod = getAssociatedProducts('SalesOrder', $so_focus);
 		$txtTax=((isset($so_focus->column_fields['txtTax']) && $so_focus->column_fields['txtTax'] != '') ? $so_focus->column_fields['txtTax'] : '0.000');
 		$txtAdj=((isset($so_focus->column_fields['txtAdjustment']) && $so_focus->column_fields['txtAdjustment']!='') ? $so_focus->column_fields['txtAdjustment']:'0.000');
 
-		$smarty->assign("CONVERT_MODE", vtlib_purify($_REQUEST['convertmode']));
-		$smarty->assign("ASSOCIATEDPRODUCTS", $associated_prod);
-		$smarty->assign("MODE", $so_focus->mode);
-		$smarty->assign("AVAILABLE_PRODUCTS", 'true');
+		$smarty->assign('CONVERT_MODE', vtlib_purify($_REQUEST['convertmode']));
+		$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
+		$smarty->assign('MODE', $so_focus->mode);
+		$smarty->assign('AVAILABLE_PRODUCTS', 'true');
 	} elseif (isset($_REQUEST['convertmode']) && $_REQUEST['convertmode'] == 'update_so_val') {
 		//Updating the Selected SO Value in Edit Mode
 		foreach ($focus->column_fields as $fieldname => $val) {
@@ -86,7 +86,7 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
 				$focus->column_fields[$fieldname] = $value;
 			}
 		}
-		//Handling for dateformat in invoicedate vtiger_field
+		//Handling for dateformat in invoicedate field
 		if ($focus->column_fields['invoicedate'] != '') {
 			$curr_due_date = $focus->column_fields['invoicedate'];
 			$focus->column_fields['invoicedate'] = DateTimeField::convertToDBFormat($curr_due_date);
@@ -119,7 +119,7 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
 				$focus->column_fields[$fieldname] = $value;
 			}
 		}
-		//Handling for dateformat in invoicedate vtiger_field
+		//Handling for dateformat in invoicedate field
 		if ($focus->column_fields['invoicedate'] != '') {
 			$curr_due_date = $focus->column_fields['invoicedate'];
 			$focus->column_fields['invoicedate'] = DateTimeField::convertToDBFormat($curr_due_date);
@@ -128,7 +128,7 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
 		$soid = $focus->column_fields['salesorder_id'];
 		$so_focus = new SalesOrder();
 		$so_focus->id = $soid;
-		$so_focus->retrieve_entity_info($soid, "SalesOrder");
+		$so_focus->retrieve_entity_info($soid, 'SalesOrder');
 		$focus = getConvertSoToInvoice($focus, $so_focus, $soid);
 
 		// Reset the value w.r.t SalesOrder Selected
@@ -137,13 +137,13 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
 
 		//Added to display the SO's associated products -- when we select SO in New Invoice page
 		if (isset($_REQUEST['salesorder_id']) && $_REQUEST['salesorder_id'] != '') {
-			$associated_prod = getAssociatedProducts("SalesOrder", $so_focus, $focus->column_fields['salesorder_id']);
+			$associated_prod = getAssociatedProducts('SalesOrder', $so_focus, $focus->column_fields['salesorder_id']);
 		}
 
-		$smarty->assign("SALESORDER_ID", $focus->column_fields['salesorder_id']);
-		$smarty->assign("ASSOCIATEDPRODUCTS", $associated_prod);
-		$smarty->assign("MODE", $so_focus->mode);
-		$smarty->assign("AVAILABLE_PRODUCTS", 'true');
+		$smarty->assign('SALESORDER_ID', $focus->column_fields['salesorder_id']);
+		$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
+		$smarty->assign('MODE', $so_focus->mode);
+		$smarty->assign('AVAILABLE_PRODUCTS', 'true');
 	} elseif (isset($_REQUEST['convertmode']) && $_REQUEST['convertmode'] == 'potentoinvoice') {
 		$focus->mode = '';
 		$_REQUEST['opportunity_id'] = $_REQUEST['return_id'];

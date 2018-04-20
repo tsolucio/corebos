@@ -8,12 +8,12 @@
  * All Rights Reserved.
  ************************************************************************************/
 $mod_strings = array (
-    'Webforms' => 'Webformulare',
-    'Allows you to manage Webforms' => 'Create and manage webforms which can be used to capture Leads',
-    'LBL_SUCCESS' => 'Vielen Dank. Ihre Nachricht wurde empfangen und wird von uns umgehend bearbeitet.',
-    'LBL_FAILURE' => 'Fehler bei der Übertragung. Bitte noch einmal versuchen.',
-    'LBL_ERROR_CODE' => 'Fehlercode',
-    'LBL_ERROR_MESSAGE' => 'Fehlernachricht',
+	'Webforms' => 'Webformulare',
+	'Allows you to manage Webforms' => 'Create and manage webforms which can be used to capture Leads',
+	'LBL_SUCCESS' => 'Vielen Dank. Ihre Nachricht wurde empfangen und wird von uns umgehend bearbeitet.',
+	'LBL_FAILURE' => 'Fehler bei der Übertragung. Bitte noch einmal versuchen.',
+	'LBL_ERROR_CODE' => 'Fehlercode',
+	'LBL_ERROR_MESSAGE' => 'Fehlernachricht',
 	'LBL_WEBFORM_NAME'=>'Webformular Name',
 	'LBL_DESCRIPTION'=>'Beschreibung',
 	'LBL_MODULE'=>'Modul',
