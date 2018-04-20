@@ -198,3 +198,108 @@ function toogleAccess(elementId) {
 			unlockedImage.style.display = 'none';
 	}
 }
+
+function saveprofile(frm){
+    
+if(frm == 'create'){
+    var file = 'SaveProfile';
+}
+else {
+   file = 'UpdateProfileChanges';  
+}
+
+var mode = document.getElementsByName('mode').item(0).value;
+var profileid = document.getElementsByName('profileid').item(0).value;
+var profile_name = document.getElementsByName('profile_name').item(0).value;
+var profile_description = document.getElementsByName('profile_description').item(0).value;
+var parent_profile = document.getElementsByName('parent_profile').item(0).value;
+var radio_button = document.getElementsByName('radio_button').item(0).value;
+var return_action = document.getElementsByName('return_action').item(0).value;
+if(document.getElementsByName('view_all').item(0).checked == true)
+    var viewall = 'on';
+else {
+    viewall = 'off';
+}
+if(document.getElementsByName('edit_all').item(0).checked == true)
+    var editall = 'on';
+else {
+    editall = 'off';
+}
+var view_all = viewall;
+var edit_all = editall;
+
+sentForm = {};
+
+for(var i = 0;i < document.profileform.elements.length;i++)
+{	if(document.profileform.elements[i].type == 'checkbox')
+	{   
+            if (document.profileform.elements[i].id.indexOf('tab_chk_com_')!=-1) {
+                var split1 = document.profileform.elements[i].id.split("_");
+                var fieldname = split1[3]+'_tab';        
+            }
+            if (document.profileform.elements[i].id.indexOf('tab_chk_1_')!=-1) {
+                var split2 = document.profileform.elements[i].id.split("_");
+                fieldname = split2[3]+'_EditView';        
+            }
+            if (document.profileform.elements[i].id.indexOf('tab_chk_4_')!=-1) {
+                var split3 = document.profileform.elements[i].id.split("_");
+                fieldname = split3[3]+'_DetailView';        
+            }
+            if (document.profileform.elements[i].id.indexOf('tab_chk_2_')!=-1) {
+                var split4 = document.profileform.elements[i].id.split("_");
+                fieldname = split4[3]+'_Delete';        
+            }
+            if (document.profileform.elements[i].id.indexOf('field_util_7')!=-1) {
+                var split5 = document.profileform.elements[i].id.split("_");
+                fieldname = split5[0]+'_CreateView';        
+            }
+            if (document.profileform.elements[i].id.indexOf('_field_')!=-1 && document.profileform.elements[i].id.indexOf('field_util')==-1) {
+                var split6 = document.profileform.elements[i].id.split("_");
+                fieldname = split6[2];        
+            }
+            if (document.profileform.elements[i].id.indexOf('field_util_5')!=-1) {
+                var split7 = document.profileform.elements[i].id.split("_");
+                fieldname = split7[0]+'_Import';        
+            }
+            if (document.profileform.elements[i].id.indexOf('field_util_6')!=-1) {
+                var split8 = document.profileform.elements[i].id.split("_");
+                fieldname = split8[0]+'_Export';        
+            }
+            if (document.profileform.elements[i].id.indexOf('field_util_8')!=-1) {
+                var split9 = document.profileform.elements[i].id.split("_");
+                fieldname = split9[0]+'_Merge';        
+            }
+            if (document.profileform.elements[i].id.indexOf('field_util_9')!=-1) {
+                var split10 = document.profileform.elements[i].id.split("_");
+                fieldname = split10[0]+'_ConvertLead';        
+            }
+            if (document.profileform.elements[i].id.indexOf('field_util_10')!=-1) {
+                var split11 = document.profileform.elements[i].id.split("_");
+                fieldname = split11[0]+'_DuplicatesHandling';        
+            }
+            
+            if (document.getElementsByName(fieldname).item(0)!=null){
+                
+            if (document.getElementsByName(fieldname).item(0).checked == true) {
+                var checked = 'on';
+            }
+            else {
+                checked = 'off';
+            }
+            sentForm[fieldname] = checked;
+
+            }        
+	}
+}
+VtigerJS_DialogBox.block();
+jQuery.ajax({
+        type : 'post',
+        data : sentForm,
+        url : "index.php?module=Users&action=UsersAjax&file="+file+"&mode="+mode+"&profileid="+profileid+"&profile_name="+profile_name+"&profile_description="+profile_description+"&parent_profile="+parent_profile+"&radio_button="+radio_button+"&return_action="+return_action+"&edit_all="+edit_all+"&view_all="+view_all
+}).done(function(msg) { 
+                      window.location.href = msg;
+}).fail(function() {
+                alert('Error with AJAX');
+                VtigerJS_DialogBox.unblock();
+});   
+}

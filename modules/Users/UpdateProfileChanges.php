@@ -167,13 +167,13 @@ foreach($modArr as $fld_module => $fld_label)
 }
 	if($return_action == 'profilePrivileges' || $return_action == 'ListProfiles')
 	{
-		$loc = "Location: index.php?action=".$return_action."&module=Settings&mode=view&parenttab=Settings&profileid=".$profileid."&selected_tab=".$def_tab."&selected_module=".$def_module;
+		$loc = "index.php?action=".$return_action."&module=Settings&mode=view&parenttab=Settings&profileid=".$profileid."&selected_tab=".$def_tab."&selected_module=".$def_module;
 	}
 	else
 	{
-		$loc = "Location: index.php?action=".$return_action."&module=Users&mode=view&parenttab=Settings&profileid=".$profileid."&selected_tab=".$def_tab."&selected_module=".$def_module;
+		$loc = "index.php?action=".$return_action."&module=Users&mode=view&parenttab=Settings&profileid=".$profileid."&selected_tab=".$def_tab."&selected_module=".$def_module;
 	}
-	header($loc);
+	echo $loc;
 
 /** returns value 0 if request permission is on else returns value 1
  * @param $req_per -- Request Permission:: Type varchar

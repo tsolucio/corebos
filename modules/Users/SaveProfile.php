@@ -12,8 +12,18 @@ require_once('include/utils/utils.php');
 global $adb;
 $profilename = vtlib_purify($_REQUEST['profile_name']);
 $description = vtlib_purify($_REQUEST['profile_description']);
+if(isset($_REQUEST['selected_module'])){
 $def_module = vtlib_purify($_REQUEST['selected_module']);
+}
+else{
+$def_module = '';  
+}
+if(isset($_REQUEST['selected_tab'])){
 $def_tab = vtlib_purify($_REQUEST['selected_tab']);
+}
+else{
+$def_tab = '';
+}
 $profile_id = $adb->getUniqueID("vtiger_profile");
 //Inserting values into Profile Table
 $sql1 = "insert into vtiger_profile(profileid, profilename, description) values(?,?,?)";
@@ -54,8 +64,10 @@ $num_act_util_per = $adb->num_rows($act_utility_result);
 		$tab_id = $adb->query_result($tab_perr_result,$i,"tabid");
 		$request_var = $tab_id.'_tab';
 		if($tab_id != 3 && $tab_id != 16)
-		{
-			$permission = $_REQUEST[$request_var];
+		{       
+                    if(isset($_REQUEST[$request_var])){
+                        $permission = $_REQUEST[$request_var]; 
+                    }
 			if($permission == 'on')
 			{
 				$permission_value = 0;
@@ -95,8 +107,9 @@ $num_act_util_per = $adb->num_rows($act_utility_result);
 			{
 				$request_var = $tab_id.'_DetailView';
 			}
-
+                        if(isset($_REQUEST[$request_var])){
 			$permission = $_REQUEST[$request_var];
+                        }
 			if($permission == 'on')
 			{
 				$permission_value = 0;
@@ -126,8 +139,9 @@ $num_act_util_per = $adb->num_rows($act_utility_result);
 		$action_name = getActionname($action_id);
 		$request_var = $tab_id.'_'.$action_name;
 
-
+                if(isset($_REQUEST[$request_var])){
 		$permission = $_REQUEST[$request_var];
+                }
 		if($permission == 'on')
 		{
 			$permission_value = 0;
@@ -151,7 +165,12 @@ foreach($modArr as $fld_module => $fld_label)
 	for($i=0; $i<$noofrows; $i++)
 	{
 		$fieldid =  $adb->query_result($fieldListResult,$i,"fieldid");
-		$visible = $_REQUEST[$fieldid];
+                if(isset($_REQUEST[$fieldid])){
+                    $visible = $_REQUEST[$fieldid];
+                }
+                else{
+                    $visible = '';
+                }
 		if($visible == 'on')
 		{
 			$visible_value = 0;
@@ -161,14 +180,19 @@ foreach($modArr as $fld_module => $fld_label)
 			$visible_value = 1;
 		}
 		$readonlyfieldid = $fieldid.'_readonly';
-		$readOnlyValue = $_REQUEST[$readonlyfieldid];
+                if(isset($_REQUEST[$readonlyfieldid])){
+                    $readOnlyValue = $_REQUEST[$readonlyfieldid];
+                }
+                else{
+                    $readOnlyValue = '';
+                }
 		//Updating the Mandatory vtiger_fields
 		$uitype = $adb->query_result($fieldListResult,$i,"uitype");
 		$displaytype =  $adb->query_result($fieldListResult,$i,"displaytype");
 		$fieldname =  $adb->query_result($fieldListResult,$i,"fieldname");
 		$typeofdata = $adb->query_result($fieldListResult,$i,"typeofdata");
 		$fieldtype = explode("~",$typeofdata);
-		if ($fieldtype[1] == 'M') {
+		if (isset($fieldtype[1]) && $fieldtype[1] == 'M') {
 			$visible_value = 0;
 		}
 		//Updating the database
@@ -176,9 +200,9 @@ foreach($modArr as $fld_module => $fld_label)
 		$adb->pquery($sql11, array($profileid, $tab_id, $fieldid, $visible_value,$readOnlyValue));
 	}
 }
-	$loc = 'Location: index.php?action=ListProfiles&module=Settings&mode=view&parenttab=Settings&profileid='.urlencode(vtlib_purify($profileid)) .
+	$loc = 'index.php?action=ListProfiles&module=Settings&mode=view&parenttab=Settings&profileid='.urlencode(vtlib_purify($profileid)) .
 		'&selected_tab=' . urlencode(vtlib_purify($def_tab)) . '&selected_module=' . urlencode(vtlib_purify($def_module));
-	header($loc);
+	echo $loc;
 
 /** returns value 0 if request permission is on else returns value 1
   * @param $req_per -- Request Permission:: Type varchar
