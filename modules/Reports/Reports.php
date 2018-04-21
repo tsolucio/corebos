@@ -385,7 +385,7 @@ class Reports extends CRMEntity {
 
 		$sql = 'select vtiger_report.*, vtiger_reportmodules.*, vtiger_reportfolder.folderid
 			from vtiger_report
-			inner join vtiger_reportfolder on vtiger_reportfolder.folderid = vtiger_report.folderid";
+			inner join vtiger_reportfolder on vtiger_reportfolder.folderid = vtiger_report.folderid
 			inner join vtiger_reportmodules on vtiger_reportmodules.reportmodulesid = vtiger_report.reportid';
 		$params = array();
 
