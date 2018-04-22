@@ -81,7 +81,6 @@ class corebos_gcontacts {
 
 	public function registerEvents() {
 		global $adb;
-		$adb->query("ALTER TABLE `its4you_googlesync4you_access` ADD `service` varchar(255) NULL ;");
 		$adb->query("CREATE TABLE IF NOT EXISTS vtiger_google_sync_settings (user int(11) DEFAULT NULL,
 			module varchar(50) DEFAULT NULL , clientgroup varchar(255) DEFAULT NULL,
 			direction varchar(50) DEFAULT NULL)");

@@ -27,6 +27,7 @@ class Calendar4You extends CRMEntity {
     public $View = array();
     
     private $modulename = "Calendar4You"; 
+    private $service="GoogleCalendar";
     
     var $log;
     var $db;
@@ -73,15 +74,15 @@ class Calendar4You extends CRMEntity {
     }
     
 public function setgoogleaccessparams($userid){
- $conf=$this->db->query("select * from its4you_googlesync4you_access where userid=$userid ");
- $admin=$this->db->query("select * from its4you_googlesync4you_access where userid=1");
+ $conf=$this->db->query("select * from its4you_googlesync4you_access where userid=$userid and service='$this->service'");
+ $admin=$this->db->query("select * from its4you_googlesync4you_access where userid=1 and service='$this->service'");
  if($this->db->num_rows($conf)==0 && $this->db->num_rows($admin)>0){
  $google_login=$this->db->query_result($admin,0,"google_login");
  $google_apikey=$this->db->query_result($admin,0,"google_apikey");
  $google_keyfile=$this->db->query_result($admin,0,"google_keyfile");
  $google_clientid=$this->db->query_result($admin,0,"google_clientid");
- $sql5 = "INSERT INTO its4you_googlesync4you_access (userid, google_login, google_password,google_apikey,google_keyfile,google_clientid,googleinsert) VALUES (?,?,?,?,?,?,?)";
- $this->db->pquery($sql5,array($userid,$google_login, $google_password,$google_apikey,$google_keyfile,$google_clientid,'1'));
+ $sql5 = "INSERT INTO its4you_googlesync4you_access (userid, google_login, google_password,google_apikey,google_keyfile,google_clientid,googleinsert,service) VALUES (?,?,?,?,?,?,?,?)";
+ $this->db->pquery($sql5,array($userid,$google_login, $google_password,$google_apikey,$google_keyfile,$google_clientid,'1',$this->service));
  }
 }
 
