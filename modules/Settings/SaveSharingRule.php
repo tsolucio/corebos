@@ -7,8 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
-require_once('include/database/PearDatabase.php');
+require_once 'include/database/PearDatabase.php';
 global $adb;
 
 $sharing_module= vtlib_purify($_REQUEST['sharing_module']);
@@ -26,32 +25,25 @@ $module_sharing_access= vtlib_purify($_REQUEST['share_memberType']);
 $mode= vtlib_purify($_REQUEST['mode']);
 
 $relatedShareModuleArr=getRelatedSharingModules($tabid);
-if($mode == 'create')
-{
-	$shareId=addSharingRule($tabid,$share_entity_type,$to_entity_type,$share_entity_id,$to_entity_id,$module_sharing_access);
+if ($mode == 'create') {
+	$shareId=addSharingRule($tabid, $share_entity_type, $to_entity_type, $share_entity_id, $to_entity_id, $module_sharing_access);
 
 	//Adding the Related ModulePermission Sharing
-	foreach($relatedShareModuleArr as $reltabid=>$ds_rm_id)
-	{
+	foreach ($relatedShareModuleArr as $reltabid => $ds_rm_id) {
 		$reltabname=getTabModuleName($reltabid);
-		$relSharePermission= vtlib_purify($_REQUEST[$reltabname.'_accessopt']);	
-		addRelatedModuleSharingPermission($shareId,$tabid,$reltabid,$relSharePermission);	
+		$relSharePermission= vtlib_purify($_REQUEST[$reltabname.'_accessopt']);
+		addRelatedModuleSharingPermission($shareId, $tabid, $reltabid, $relSharePermission);
 	}
-	
-}
-elseif($mode == 'edit')
-{
+} elseif ($mode == 'edit') {
 	$shareId= vtlib_purify($_REQUEST['shareId']);
-	updateSharingRule($shareId,$tabid,$share_entity_type,$to_entity_type,$share_entity_id,$to_entity_id,$module_sharing_access);
+	updateSharingRule($shareId, $tabid, $share_entity_type, $to_entity_type, $share_entity_id, $to_entity_id, $module_sharing_access);
 	//Adding the Related ModulePermission Sharing
-	foreach($relatedShareModuleArr as $reltabid=>$ds_rm_id)
-	{
+	foreach ($relatedShareModuleArr as $reltabid => $ds_rm_id) {
 		$reltabname=getTabModuleName($reltabid);
-		$relSharePermission= vtlib_purify($_REQUEST[$reltabname.'_accessopt']);	
-		updateRelatedModuleSharingPermission($shareId,$tabid,$reltabid,$relSharePermission);	
-	}	
+		$relSharePermission= vtlib_purify($_REQUEST[$reltabname.'_accessopt']);
+		updateRelatedModuleSharingPermission($shareId, $tabid, $reltabid, $relSharePermission);
+	}
 }
 
-$loc = "Location: index.php?action=OrgSharingDetailView&module=Settings&parenttab=Settings";
-header($loc);
+header('Location: index.php?action=OrgSharingDetailView&module=Settings&parenttab=Settings');
 ?>
