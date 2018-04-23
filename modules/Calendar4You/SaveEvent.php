@@ -43,7 +43,11 @@ if ($_REQUEST['mode'] == 'event_drop' || $_REQUEST['mode'] == 'event_resize') {
 		} else {
 			$d = "-";
 		}
-		$allday = ($_REQUEST['allday']=='true' ? '1' : '0');
+		if (empty($_REQUEST['allday'])) {
+			$allday = $focus->column_fields['notime'];
+		} else {
+			$allday = ($_REQUEST['allday']=='true' ? '1' : '0');
+		}
 		if ($allday != $focus->column_fields['notime']) {
 			$minute_drop = 0;
 		} else {
