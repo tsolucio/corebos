@@ -294,6 +294,7 @@ class cbupdaterWorker {
 							$newfield = new Vtiger_Field();
 							$newfield->name = $fname;
 							$newfield->label = (empty($fieldinfo['label']) ? $fname : $fieldinfo['label']);
+							$newfield->helpinfo = (empty($fieldinfo['helpinfo']) ? '' : $fieldinfo['helpinfo']);
 							$newfield->column = $fname;
 							$newfield->columntype = $fieldinfo['columntype'];
 							$newfield->typeofdata = $fieldinfo['typeofdata'];
