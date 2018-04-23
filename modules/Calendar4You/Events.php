@@ -386,6 +386,9 @@ foreach ($Users_Ids as $userid) {
 			if (isset($row['notime'])) {
 				$allDay = ($row['notime'] ? true : false);
 			}
+			if ($allDay) {
+				$user_due_date = date('Y-m-d H:i', strtotime($user_due_date . ' +1 day'));
+			}
 			$Activities[] = array(
 				'id' => $row['crmid'],
 				'typeid' => $activitytypeid,
