@@ -294,7 +294,7 @@ function saveprofile(frm){
 	VtigerJS_DialogBox.block();
 	jQuery.ajax({
 		type : 'post',
-		data : sentForm,
+		data : {'sentvariables':JSON.stringify(sentForm)},
 		url : 'index.php?module=Users&action=UsersAjax&file='+file+'&mode='+mode+'&profileid='+profileid+'&profile_name='+profile_name+'&profile_description='+profile_description+'&parent_profile='+parent_profile+'&radio_button='+radio_button+'&return_action='+return_action+'&edit_all='+edit_all+'&view_all='+view_all
 	}).done(function(msg) { 
 		window.location.href = msg;

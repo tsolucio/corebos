@@ -15,6 +15,8 @@ $profileid = preg_replace('/[^0-9]/', '', $profileid);
 if (empty($profileid)) {
 	die();
 }
+$sentvariables = json_decode(vtlib_purify($_REQUEST['sentvariables']));
+
 $def_module = (isset($_REQUEST['selected_module']) ? urlencode(vtlib_purify($_REQUEST['selected_module'])) : '');
 $def_tab = (isset($_REQUEST['selected_tab']) ? urlencode(vtlib_purify($_REQUEST['selected_tab'])) : '');
 
@@ -49,7 +51,7 @@ for ($i=0; $i<$num_tab_per; $i++) {
 	$tab_id = $adb->query_result($tab_perr_result, $i, "tabid");
 	$request_var = $tab_id.'_tab';
 	if ($tab_id != 3 && $tab_id != 16) {
-		$permission = (isset($_REQUEST[$request_var]) ? $_REQUEST[$request_var] : '');
+		$permission = (isset($sentvariables->$request_var) ? $sentvariables->$request_var : '');
 		if ($permission == 'on') {
 			$permission_value = 0;
 		} else {
@@ -78,7 +80,7 @@ for ($i=0; $i<$num_act_per; $i++) {
 			$request_var = $tab_id.'_DetailView';
 		}
 
-		$permission = (isset($_REQUEST[$request_var]) ? $_REQUEST[$request_var] : '');
+		$permission = (isset($sentvariables->$request_var) ? $sentvariables->$request_var : '');
 		if ($permission == 'on') {
 			$permission_value = 0;
 		} else {
@@ -101,7 +103,7 @@ for ($i=0; $i<$num_act_util_per; $i++) {
 	$action_name = getActionname($action_id);
 	$request_var = $tab_id.'_'.$action_name;
 
-	$permission = (isset($_REQUEST[$request_var]) ? $_REQUEST[$request_var] : '');
+	$permission = (isset($sentvariables->$request_var) ? $sentvariables->$request_var : '');
 	if ($permission == 'on') {
 		$permission_value = 0;
 	} else {
@@ -120,14 +122,14 @@ foreach ($modArr as $fld_module => $fld_label) {
 	$tab_id = getTabid($fld_module);
 	for ($i=0; $i<$noofrows; $i++) {
 		$fieldid = $adb->query_result($fieldListResult, $i, "fieldid");
-		$visible = (isset($_REQUEST[$fieldid]) ? $_REQUEST[$fieldid] : '');
+		$visible = (isset($sentvariables->$fieldid) ? $sentvariables->$fieldid : '');
 		if ($visible == 'on') {
 			$visible_value = 0;
 		} else {
 			$visible_value = 1;
 		}
 		$readonlyfieldid = $fieldid.'_readonly';
-		$readOnlyValue = (isset($_REQUEST[$readonlyfieldid]) ? $_REQUEST[$readonlyfieldid] : 0);
+		$readOnlyValue = (isset($sentvariables->$readonlyfieldid) ? $sentvariables->$readonlyfieldid : 0);
 		//Updating the Mandatory vtiger_fields
 		$uitype = $adb->query_result($fieldListResult, $i, "uitype");
 		$displaytype = $adb->query_result($fieldListResult, $i, "displaytype");

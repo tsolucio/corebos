@@ -22,6 +22,7 @@ if (isset($_REQUEST['selected_tab'])) {
 } else {
 	$def_tab = '';
 }
+$sentvariables = json_decode(vtlib_purify($_REQUEST['sentvariables']));
 $profile_id = $adb->getUniqueID("vtiger_profile");
 //Inserting values into Profile Table
 $sql1 = "insert into vtiger_profile(profileid, profilename, description) values(?,?,?)";
@@ -61,8 +62,8 @@ for ($i=0; $i<$num_tab_per; $i++) {
 	$tab_id = $adb->query_result($tab_perr_result, $i, "tabid");
 	$request_var = $tab_id.'_tab';
 	if ($tab_id != 3 && $tab_id != 16) {
-		if (isset($_REQUEST[$request_var])) {
-			$permission = $_REQUEST[$request_var];
+		if (isset($sentvariables->$request_var)) {
+			$permission = $sentvariables->$request_var;
 		}
 		if ($permission == 'on') {
 			$permission_value = 0;
@@ -92,8 +93,8 @@ for ($i=0; $i<$num_act_per; $i++) {
 		} elseif ($action_name == 'index') {
 			$request_var = $tab_id.'_DetailView';
 		}
-		if (isset($_REQUEST[$request_var])) {
-			$permission = $_REQUEST[$request_var];
+		if (isset($sentvariables->$request_var)) {
+			$permission = $sentvariables->$request_var;
 		}
 		if ($permission == 'on') {
 			$permission_value = 0;
@@ -119,8 +120,8 @@ for ($i=0; $i<$num_act_util_per; $i++) {
 	$action_name = getActionname($action_id);
 	$request_var = $tab_id.'_'.$action_name;
 
-	if (isset($_REQUEST[$request_var])) {
-		$permission = $_REQUEST[$request_var];
+	if (isset($sentvariables->$request_var)) {
+		$permission = $sentvariables->$request_var;
 	}
 	if ($permission == 'on') {
 		$permission_value = 0;
@@ -140,8 +141,8 @@ foreach ($modArr as $fld_module => $fld_label) {
 	$tab_id = getTabid($fld_module);
 	for ($i=0; $i<$noofrows; $i++) {
 		$fieldid =  $adb->query_result($fieldListResult, $i, "fieldid");
-		if (isset($_REQUEST[$fieldid])) {
-			$visible = $_REQUEST[$fieldid];
+		if (isset($sentvariables->$fieldid)) {
+			$visible = $sentvariables->$fieldid;
 		} else {
 			$visible = '';
 		}
@@ -151,8 +152,8 @@ foreach ($modArr as $fld_module => $fld_label) {
 			$visible_value = 1;
 		}
 		$readonlyfieldid = $fieldid.'_readonly';
-		if (isset($_REQUEST[$readonlyfieldid])) {
-			$readOnlyValue = $_REQUEST[$readonlyfieldid];
+		if (isset($sentvariables->$readonlyfieldid)) {
+			$readOnlyValue = $sentvariables->$readonlyfieldid;
 		} else {
 			$readOnlyValue = '';
 		}
