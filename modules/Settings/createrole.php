@@ -7,17 +7,16 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('include/utils/utils.php');
+require_once 'include/utils/utils.php';
 
 global $adb, $theme;
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
+$theme_path='themes/'.$theme.'/';
+$image_path=$theme_path.'images/';
 $smarty = new vtigerCRM_Smarty;
 $profDetails=getAllProfileInfo();
-$smarty->assign("MOD", return_module_language($current_language,'Settings'));
-$smarty->assign("APP", $app_strings);
-if(isset($_REQUEST['roleid']) && $_REQUEST['roleid'] != '')
-{
+$smarty->assign('MOD', return_module_language($current_language, 'Settings'));
+$smarty->assign('APP', $app_strings);
+if (isset($_REQUEST['roleid']) && $_REQUEST['roleid'] != '') {
 	$roleid= vtlib_purify($_REQUEST['roleid']);
 	$mode = vtlib_purify($_REQUEST['mode']);
 	$roleInfo=getRoleInformation($roleid);
@@ -26,44 +25,40 @@ if(isset($_REQUEST['roleid']) && $_REQUEST['roleid'] != '')
 	$parent = $thisRoleDet[3];
 	//retreiving the vtiger_profileid
 	$roleRelatedProfiles=getRoleRelatedProfiles($roleid);
-}
-elseif(isset($_REQUEST['parent']) && $_REQUEST['parent'] != '')
-{
+} elseif (isset($_REQUEST['parent']) && $_REQUEST['parent'] != '') {
 	$roleid = $rolename = '';
 	$mode = 'create';
 	$parent=vtlib_purify($_REQUEST['parent']);
 }
-$smarty->assign("IMAGE_PATH",$image_path);
-$smarty->assign("CMOD", $mod_strings);
-$smarty->assign("THEME", $theme);
+$smarty->assign('IMAGE_PATH', $image_path);
+$smarty->assign('CMOD', $mod_strings);
+$smarty->assign('THEME', $theme);
 
 $parentname=getRoleName($parent);
-$smarty->assign('RETURN_ACTION',(isset($_REQUEST['returnaction']) ? vtlib_purify($_REQUEST['returnaction']) : ''));
-$smarty->assign('ROLEID',$roleid);
-$smarty->assign('MODE',$mode);
-$smarty->assign('PARENT',$parent);
-$smarty->assign('PARENTNAME',$parentname);
-$smarty->assign('ROLENAME',$rolename);
+$smarty->assign('RETURN_ACTION', (isset($_REQUEST['returnaction']) ? vtlib_purify($_REQUEST['returnaction']) : ''));
+$smarty->assign('ROLEID', $roleid);
+$smarty->assign('MODE', $mode);
+$smarty->assign('PARENT', $parent);
+$smarty->assign('PARENTNAME', $parentname);
+$smarty->assign('ROLENAME', $rolename);
 
 $profile_entries=array();
-foreach($profDetails as $profId=>$profName)
-{
+foreach ($profDetails as $profId => $profName) {
 	$profile_entries[]=$profId;
 	$profile_entries[]=$profName;
 }
-$profile_entries=array_chunk($profile_entries,2);
-$smarty->assign("PROFILELISTS",$profile_entries);
+$profile_entries=array_chunk($profile_entries, 2);
+$smarty->assign('PROFILELISTS', $profile_entries);
 
 $selected_profiles = array();
 if ($mode == 'edit') {
-	foreach($roleRelatedProfiles as $relProfId => $relProfName)
-	{
+	foreach ($roleRelatedProfiles as $relProfId => $relProfName) {
 		$selected_profiles[]=$relProfId;
 		$selected_profiles[]=$relProfName;
 	}
-	$selected_profiles=array_chunk($selected_profiles,2);
+	$selected_profiles=array_chunk($selected_profiles, 2);
 }
-$smarty->assign("SELPROFILELISTS",$selected_profiles);
+$smarty->assign('SELPROFILELISTS', $selected_profiles);
 
-$smarty->display("RoleEditView.tpl");
+$smarty->display('RoleEditView.tpl');
 ?>
