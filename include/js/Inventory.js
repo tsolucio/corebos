@@ -163,12 +163,12 @@ function deleteRow(module,i,image_path) {
 	oCurRow = eval(document.getElementById("row"+i));
 	sTemp = oCurRow.cells[0].innerHTML;
 	ibFound = sTemp.indexOf("down_layout.gif");
-
+	var prevLineItemId = document.getElementById('lineitem_id'+iPrevCount) == undefined ? '' : document.getElementById('lineitem_id'+iPrevCount).value;
 	if(i != 2 && ibFound == -1 && iPrevCount != 1) {
 		oPrevRow = eval(document.getElementById("row"+iPrevCount));
 			
 		iPrevCount = eval(iPrevCount);
-		oPrevRow.cells[0].innerHTML = '<img src="themes/softed/images/delete.gif" border="0" onclick="deleteRow(\''+module+'\','+iPrevCount+')" style="cursor:pointer;" title="'+alert_arr.LBL_DELETE_EMAIL+'"><input id="deleted'+iPrevCount+'" name="deleted'+iPrevCount+'" type="hidden" value="0">&nbsp;<a href="javascript:moveUpDown(\'UP\',\''+module+'\','+iPrevCount+')" title="'+alert_arr.MoveUp+'"><img src="themes/images/up_layout.gif" border="0"></a>';
+		oPrevRow.cells[0].innerHTML = '<img src="themes/softed/images/delete.gif" border="0" onclick="deleteRow(\''+module+'\','+iPrevCount+')" style="cursor:pointer;" title="'+alert_arr.LBL_DELETE_EMAIL+'"><input id="deleted'+iPrevCount+'" name="deleted'+iPrevCount+'" type="hidden" value="0"><input id="lineitem_id'+iPrevCount+'" name="lineitem_id'+iPrevCount+'" value="'+prevLineItemId+'" type="hidden">&nbsp;<a href="javascript:moveUpDown(\'UP\',\''+module+'\','+iPrevCount+')" title="'+alert_arr.MoveUp+'"><img src="themes/images/up_layout.gif" border="0"></a>';
 	} else if(iPrevCount == 1) 	{
 		iSwapIndex = i;
 		for(iCount=i;iCount<=iMax-2;iCount++) {
@@ -180,7 +180,7 @@ function deleteRow(module,i,image_path) {
 		if(iSwapIndex == i) {
 			oPrevRow = eval(document.getElementById("row"+iPrevCount));
 			iPrevCount = eval(iPrevCount);
-			oPrevRow.cells[0].innerHTML = '<input type="hidden" id="deleted1" name="deleted1" value="0">&nbsp;';
+			oPrevRow.cells[0].innerHTML = '<input type="hidden" id="deleted1" name="deleted1" value="0"><input id="lineitem_id'+iPrevCount+'" name="lineitem_id'+iPrevCount+'" value="'+prevLineItemId+'" type="hidden">&nbsp;';
 		}
 	}
 	// Product reordering addition ends
