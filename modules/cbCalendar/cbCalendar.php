@@ -985,7 +985,7 @@ class cbCalendar extends CRMEntity {
 	 * @param $activityid integer : activity id
 	 */
 	public static function changeStatus($status, $activityid) {
-		global $log, $$current_user;
+		global $log, $current_user;
 		$log->debug("Entering changeStatus($status, $activityid) method");
 		include_once 'include/Webservices/Revise.php';
 		$element = array(
