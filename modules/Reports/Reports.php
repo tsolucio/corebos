@@ -1004,7 +1004,7 @@ class Reports extends CRMEntity {
 		}
 
 		$sjsStr = '<script type="text/javaScript">
-			public function showDateRange( type ) {
+			function showDateRange( type ) {
 				if (type!="custom") {
 					document.NewReport.startdate.readOnly=true
 					document.NewReport.enddate.readOnly=true
@@ -1019,107 +1019,81 @@ class Reports extends CRMEntity {
 				if( type == "today" ) {
 					document.NewReport.startdate.value = "'.$todayDateTime->getDisplayDate().'";
 					document.NewReport.enddate.value = "'.$todayDateTime->getDisplayDate().'";
-
 				} else if( type == "yesterday" ) {
 					document.NewReport.startdate.value = "'.$yesterdayDateTime->getDisplayDate().'";
 					document.NewReport.enddate.value = "'.$yesterdayDateTime->getDisplayDate().'";
-
 				} else if( type == "tomorrow" ) {
 					document.NewReport.startdate.value = "'.$tomorrowDateTime->getDisplayDate().'";
 					document.NewReport.enddate.value = "'.$tomorrowDateTime->getDisplayDate().'";
-
 				} else if( type == "thisweek" ) {
 					document.NewReport.startdate.value = "'.$thisWeekStartDateTime->getDisplayDate().'";
 					document.NewReport.enddate.value = "'.$thisWeekEndDateTime->getDisplayDate().'";
-
 				} else if( type == "lastweek" ) {
 					document.NewReport.startdate.value = "'.$lastWeekStartDateTime->getDisplayDate().'";
 					document.NewReport.enddate.value = "'.$lastWeekEndDateTime->getDisplayDate().'";
-
 				} else if( type == "nextweek" ) {
 					document.NewReport.startdate.value = "'.$nextWeekStartDateTime->getDisplayDate().'";
 					document.NewReport.enddate.value = "'.$nextWeekEndDateTime->getDisplayDate().'";
-
 				} else if( type == "thismonth" ) {
 					document.NewReport.startdate.value = "'.$currentMonthStartDateTime->getDisplayDate().'";
 					document.NewReport.enddate.value = "'.$currentMonthEndDateTime->getDisplayDate().'";
-
 				} else if( type == "lastmonth" ) {
 					document.NewReport.startdate.value = "'.$lastMonthStartDateTime->getDisplayDate().'";
 					document.NewReport.enddate.value = "'.$lastMonthEndDateTime->getDisplayDate().'";
-
 				} else if( type == "nextmonth" ) {
 					document.NewReport.startdate.value = "'.$nextMonthStartDateTime->getDisplayDate().'";
 					document.NewReport.enddate.value = "'.$nextMonthEndDateTime->getDisplayDate().'";
-
 				} else if( type == "next7days" ) {
 					document.NewReport.startdate.value = "'.$todayDateTime->getDisplayDate().'";
 					document.NewReport.enddate.value = "'.$next7DaysDateTime->getDisplayDate().'";
-
 				} else if( type == "next30days" ) {
 					document.NewReport.startdate.value = "'.$todayDateTime->getDisplayDate().'";
 					document.NewReport.enddate.value = "'.$next30DaysDateTime->getDisplayDate().'";
-
 				} else if( type == "next60days" ) {
 					document.NewReport.startdate.value = "'.$todayDateTime->getDisplayDate().'";
 					document.NewReport.enddate.value = "'.$next60DaysDateTime->getDisplayDate().'";
-
 				} else if( type == "next90days" ) {
 					document.NewReport.startdate.value = "'.$todayDateTime->getDisplayDate().'";
 					document.NewReport.enddate.value = "'.$next90DaysDateTime->getDisplayDate().'";
-
 				} else if( type == "next120days" ) {
 					document.NewReport.startdate.value = "'.$todayDateTime->getDisplayDate().'";
 					document.NewReport.enddate.value = "'.$next120DaysDateTime->getDisplayDate().'";
-
 				} else if( type == "last7days" ) {
 					document.NewReport.startdate.value = "'.$last7DaysDateTime->getDisplayDate().'";
 					document.NewReport.enddate.value = "'.$todayDateTime->getDisplayDate().'";
-
 				} else if( type == "last14days" ) {
 					document.NewReport.startdate.value = "'.$last14DaysDateTime->getDisplayDate().'";
 					document.NewReport.enddate.value =  "'.$todayDateTime->getDisplayDate().'";
-
 				} else if( type == "last30days" ) {
 					document.NewReport.startdate.value = "'.$last30DaysDateTime->getDisplayDate().'";
 					document.NewReport.enddate.value = "'.$todayDateTime->getDisplayDate().'";
-
 				} else if( type == "last60days" ) {
 					document.NewReport.startdate.value = "'.$last60DaysDateTime->getDisplayDate().'";
 					document.NewReport.enddate.value = "'.$todayDateTime->getDisplayDate().'";
-
 				} else if( type == "last90days" ) {
 					document.NewReport.startdate.value = "'.$last90DaysDateTime->getDisplayDate().'";
 					document.NewReport.enddate.value = "'.$todayDateTime->getDisplayDate().'";
-
 				} else if( type == "last120days" ) {
 					document.NewReport.startdate.value = "'.$last120DaysDateTime->getDisplayDate().'";
 					document.NewReport.enddate.value = "'.$todayDateTime->getDisplayDate().'";
-
 				} else if( type == "thisfy" ) {
 					document.NewReport.startdate.value = "'.$currentFYStartDateTime->getDisplayDate().'";
 					document.NewReport.enddate.value = "'.$currentFYEndDateTime->getDisplayDate().'";
-
 				} else if( type == "prevfy" ) {
 					document.NewReport.startdate.value = "'.$lastFYStartDateTime->getDisplayDate().'";
 					document.NewReport.enddate.value = "'.$lastFYEndDateTime->getDisplayDate().'";
-
 				} else if( type == "nextfy" ) {
 					document.NewReport.startdate.value = "'.$nextFYStartDateTime->getDisplayDate().'";
 					document.NewReport.enddate.value = "'.$nextFYEndDateTime->getDisplayDate().'";
-
 				} else if( type == "nextfq" ) {
 					document.NewReport.startdate.value = "'.$nFqStartDateTime->getDisplayDate().'";
 					document.NewReport.enddate.value = "'.$nFqEndDateTime->getDisplayDate().'";
-
 				} else if( type == "prevfq" ) {
 					document.NewReport.startdate.value = "'.$pFqStartDateTime->getDisplayDate().'";
 					document.NewReport.enddate.value = "'.$pFqEndDateTime->getDisplayDate().'";
-
 				} else if( type == "thisfq" ) {
 					document.NewReport.startdate.value = "'.$cFqStartDateTime->getDisplayDate().'";
 					document.NewReport.enddate.value = "'.$cFqEndDateTime->getDisplayDate().'";
-
 				} else {
 					document.NewReport.startdate.value = "";
 					document.NewReport.enddate.value = "";
@@ -1562,6 +1536,7 @@ class Reports extends CRMEntity {
 						$filters['checkboxes'][] = array('name'=>$baseColName.'_MAX:5');
 					}
 				} else {
+					$baseColName = 'cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'];
 					$filters['checkboxes'][] = array('name'=>$baseColName.'_SUM:2');
 					$filters['checkboxes'][] = array('name'=>$baseColName.'_AVG:3');
 					$filters['checkboxes'][] = array('name'=>$baseColName.'_MIN:4');
