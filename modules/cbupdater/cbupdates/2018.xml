@@ -56,4 +56,11 @@
 	<classname>addRetentionFieldToTaxes</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>add Financial Fields</description>
+	<filename>build/changeSets/2018/addFinancialFields.php</filename>
+	<classname>addFinancialFields</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
