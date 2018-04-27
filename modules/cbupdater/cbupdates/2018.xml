@@ -49,4 +49,11 @@
 	<classname>addServiceGCalendar</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Tax retention type and control fields</description>
+	<filename>build/changeSets/2018/addRetentionFieldToTaxes.php</filename>
+	<classname>addRetentionFieldToTaxes</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

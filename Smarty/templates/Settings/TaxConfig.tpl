@@ -99,6 +99,7 @@
 		{if $TAX_COUNT eq 0}
 			<tr><td>{$MOD.LBL_NO_TAXES_AVAILABLE}. {$MOD.LBL_PLEASE} {$MOD.LBL_ADD_TAX_BUTTON}.</td></tr>
 		{else}
+			<tr><th>{$MOD.LBL_TAXCLASS}</th><th>{$MOD.LBL_PERCENTAGE}</th><th>{$MOD.LBL_RETENTION}</th><th>{$MOD.LBL_ENABLED}</th></tr>
 			{foreach item=tax key=count from=$TAX_VALUES}
 
 				<!-- To set the color coding for the taxes which are active and inactive-->
@@ -118,11 +119,18 @@
 						{$tax.taxlabel}
 					{/if}
 				</td>
-				<td width=55% class="cellText small">
+				<td width=45% class="cellText small">
 					{if $EDIT_MODE eq 'true'}
-						<input name="{$tax.taxname}" id="{$tax.taxname}" type="text" value="{$tax.percentage}" class="detailedViewTextBox small">&nbsp;%
+						<input name="{$tax.taxname}" id="{$tax.taxname}" type="text" value="{$tax.percentage}" style="width:65%" class="detailedViewTextBox small">&nbsp;%
 					{else}
 						{$tax.percentage}&nbsp;%
+					{/if}
+				</td>
+				<td width=10% class="cellText small">
+					{if $EDIT_MODE eq 'true'}
+						<input name="{$tax.taxname}retention" id="{$tax.taxname}retention" type="checkbox" {if $tax.retention neq 0}checked{/if}>
+					{else}
+						{if $tax.retention eq 0}{$APP.LBL_NO}{else}{$APP.LBL_YES}{/if}
 					{/if}
 				</td>
 				<td width=10% class="cellText small">

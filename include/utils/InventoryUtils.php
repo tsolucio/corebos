@@ -241,6 +241,9 @@ function getAllTaxes($available = 'all', $sh = '', $mode = '', $id = '') {
 			$taxtypes[$i]['taxlabel'] = html_entity_decode($adb->query_result($res, $i, 'taxlabel'), ENT_QUOTES, $default_charset);
 			$taxtypes[$i]['percentage'] = $adb->query_result($res, $i, 'percentage');
 			$taxtypes[$i]['deleted'] = $adb->query_result($res, $i, 'deleted');
+			if ($sh == '') {
+				$taxtypes[$i]['retention'] = $adb->query_result($res, $i, 'retention');
+			}
 		}
 	} // corebos tax calculation
 	$log->debug("Exit from the function getAllTaxes($available,$sh,$mode,$id)");

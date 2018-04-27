@@ -19,11 +19,16 @@ $sh_tax_details = getAllTaxes('all', 'sh');
 $getlist = false;
 //To save the edited value
 if (isset($_REQUEST['save_tax']) && $_REQUEST['save_tax'] == 'true') {
+	$new_labels = $new_retentions = $new_percentages = array();
 	for ($i=0; $i<count($tax_details); $i++) {
 		$new_labels[$tax_details[$i]['taxid']] = vtlib_purify($_REQUEST[bin2hex($tax_details[$i]['taxlabel'])]);
+		$retention = isset($_REQUEST[$tax_details[$i]['taxname'].'retention']) ? vtlib_purify($_REQUEST[$tax_details[$i]['taxname'].'retention']) : '';
+		$retention = ($retention=='on' ? 1 : 0);
+		$new_retentions[$tax_details[$i]['taxid']] = $retention;
 		$new_percentages[$tax_details[$i]['taxid']] = vtlib_purify($_REQUEST[$tax_details[$i]['taxname']]);
 	}
 	updateTaxPercentages($new_percentages);
+	updateTaxRetentions($new_retentions);
 	echo updateTaxLabels($new_labels);
 	$getlist = true;
 } elseif (isset($_REQUEST['sh_save_tax']) && $_REQUEST['sh_save_tax'] == 'true') {
@@ -126,6 +131,18 @@ function updateTaxPercentages($new_percentages, $sh = '') {
 	$log->debug('Exiting from the function updateTaxPercentages');
 }
 
+function updateTaxRetentions($retentions) {
+	global $adb, $log;
+	$log->debug('Entering into the function updateTaxRetentions');
+	$query = 'update vtiger_inventorytaxinfo set retention=? where taxid=?';
+	foreach ($retentions as $taxid => $new_val) {
+		if ($new_val == 0 || $new_val == 1) {
+			$adb->pquery($query, array($new_val, $taxid));
+		}
+	}
+	$log->debug('Exiting from the function updateTaxRetentions');
+}
+
 /**	Function to update the list of Tax Labels for the taxes
  *	@param array $new_labels - array of tax types and the values like [taxid]=new label ie., [1]=aa, [2]=bb
  *	@param string $sh - sh or empty, if sh passed then update will be done in shipping and handling related table
@@ -178,7 +195,7 @@ function updateTaxLabels($new_labels, $sh = '') {
  *	@param string $sh - sh or empty , if sh passed then the tax will be added in shipping and handling related table
  *	@return void
  */
-function addTaxType($taxlabel, $taxvalue, $sh = '') {
+function addTaxType($taxlabel, $taxvalue, $sh = '', $retention = 0) {
 	global $adb, $log, $currentModule;
 	$log->debug("Entering into function addTaxType($taxlabel, $taxvalue, $sh)");
 
@@ -212,12 +229,50 @@ function addTaxType($taxlabel, $taxvalue, $sh = '') {
 		$taxname = "tax".$taxid;
 		$query = "alter table vtiger_inventoryproductrel add column $taxname decimal(7,3) default NULL";
 
+		$modules = array(
+			array(
+				'name' => 'Invoice',
+				'table' => 'vtiger_invoice',
+				'id' => 'invoiceid'
+			),
+			array(
+				'name' => 'SalesOrder',
+				'table' => 'vtiger_salesorder',
+				'id' => 'salesorderid'
+			),
+			array(
+				'name' => 'Quotes',
+				'table' => 'vtiger_quotes',
+				'id' => 'quoteid'
+			),
+			array(
+				'name' => 'PurchaseOrder',
+				'table' => 'vtiger_purchaseorder',
+				'id' => 'purchaseorderid'
+			)
+		);
 		$event_data = array(
 			'tax_type' => 'tax',
 			'tax_id' => $taxid,
 			'tax_label' => $taxlabel,
 			'tax_value' => $taxvalue
 		);
+		$Vtiger_Utils_Log = false;
+		include_once 'vtlib/Vtiger/Module.php';
+		foreach ($modules as $mod) {
+			$mod_ent = VTiger_Module::getInstance($mod['name']);
+			$block_ent = VTiger_Block::getInstance('LBL_'.$mod['name'].'_FINANCIALINFO', $mod_ent);
+			$field1 = new Vtiger_Field();
+			$field1->name = "sum_$taxname";
+			$field1->label= $taxlabel;
+			$field1->column = "sum_$taxname";
+			$field1->columntype = 'DECIMAL(25,6)';
+			$field1->uitype = 7;
+			$field1->typeofdata = 'NN~O';
+			$field1->displaytype = 2;
+			$field1->presence = 0;
+			$block_ent->addField($field1);
+		}
 	}
 
 	cbEventHandler::do_action('corebos.add.tax', $event_data);
@@ -227,12 +282,12 @@ function addTaxType($taxlabel, $taxvalue, $sh = '') {
 	//if the tax is added as a column then we should add this tax in the list of taxes
 	if ($res) {
 		if ($sh != '' && $sh == 'sh') {
-			$query1 = "insert into vtiger_shippingtaxinfo values(?,?,?,?,?)";
+			$query1 = "insert into vtiger_shippingtaxinfo (taxid,taxname,taxlabel,percentage,deleted) values(?,?,?,?,?)";
+			$params1 = array($taxid, $taxname, $taxlabel, $taxvalue, 0);
 		} else {
-			$query1 = "insert into vtiger_inventorytaxinfo values(?,?,?,?,?)";
+			$query1 = "insert into vtiger_inventorytaxinfo (taxid,taxname,taxlabel,percentage,retention,deleted) values(?,?,?,?,?,?)";
+			$params1 = array($taxid, $taxname, $taxlabel, $taxvalue, $retention, 0);
 		}
-
-		$params1 = array($taxid, $taxname, $taxlabel, $taxvalue, 0);
 		$res1 = $adb->pquery($query1, $params1);
 	}
 
