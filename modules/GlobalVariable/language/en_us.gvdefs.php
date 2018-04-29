@@ -510,6 +510,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'individual | group',
 	'definition' => 'Establish the tax mode on inventory modules to Individual line or Group tax',
 ),
+'Inventory_Show_ShippingHandlingCharges' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Show or hide Shipping and Handling charges',
+),
 'Application_Global_Search_Active' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',

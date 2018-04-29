@@ -342,6 +342,7 @@ function displayCoords(currObj,obj,mode,curr_row)
    </tr>
    <!-- Group Tax - ends -->
 
+{if $SHOW_SHIPHAND_CHARGES}
    <tr valign="top">
 	<td class="crmTableRow small" style="border-right:1px #dadada;">&nbsp;</td>
 	<td class="crmTableRow small" align="right">
@@ -351,6 +352,9 @@ function displayCoords(currObj,obj,mode,curr_row)
 		<input id="shipping_handling_charge" name="shipping_handling_charge" type="text" class="small" style="width:40px" align="right" value="0.00" onBlur="calcSHTax();">
 	</td>
    </tr>
+{else}
+<input id="shipping_handling_charge" name="shipping_handling_charge" type="hidden" value="0.00">
+{/if}
 {if !empty($SH_TAXES)}
    <tr valign="top">
 	<td class="crmTableRow small" style="border-right:1px #dadada;">&nbsp;</td>

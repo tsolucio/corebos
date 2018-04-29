@@ -1530,10 +1530,12 @@ function getDetailAssociatedProducts($module, $focus) {
 	}
 
 	$shAmount = ($focus->column_fields['hdnS_H_Amount'] != '') ? $focus->column_fields['hdnS_H_Amount'] : '0.00';
-	$output .= '<tr id="detailview_inventory_shippingrow">';
-	$output .= '<td align="right" class="crmTableRow small">(+)&nbsp;<b>' . $app_strings['LBL_SHIPPING_AND_HANDLING_CHARGES'] . '</b></td>';
-	$output .= '<td align="right" class="crmTableRow small">' . CurrencyField::convertToUserFormat($shAmount, null, true) . '</td>';
-	$output .= '</tr>';
+	if (GlobalVariable::getVariable('Inventory_Show_ShippingHandlingCharges', 1, $module)) {
+		$output .= '<tr id="detailview_inventory_shippingrow">';
+		$output .= '<td align="right" class="crmTableRow small">(+)&nbsp;<b>' . $app_strings['LBL_SHIPPING_AND_HANDLING_CHARGES'] . '</b></td>';
+		$output .= '<td align="right" class="crmTableRow small">' . CurrencyField::convertToUserFormat($shAmount, null, true) . '</td>';
+		$output .= '</tr>';
+	}
 
 	//calculate S&H tax
 	$shtaxtotal = '0.00';

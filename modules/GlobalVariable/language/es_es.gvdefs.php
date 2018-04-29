@@ -510,6 +510,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'individual | group',
 	'definition' => 'Establecer el modo de impuesto en módulos de inventario a línea individual o grupo de impuestos',
 ),
+'Inventory_Show_ShippingHandlingCharges' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Muestra o esconde la sección de cargos de Manipulación y Transporte.',
+),
 'Application_Global_Search_Active' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',

@@ -423,6 +423,7 @@ so we will get that array, parse that array and fill the details
    </tr>
    <!-- Group Tax - ends -->
 
+{if $SHOW_SHIPHAND_CHARGES}
    <tr valign="top">
 	<td class="crmTableRow small" style="border-right:1px #dadada;">&nbsp;</td>
 	<td class="crmTableRow small" align="right">
@@ -432,6 +433,9 @@ so we will get that array, parse that array and fill the details
 		<input id="shipping_handling_charge" name="shipping_handling_charge" type="text" class="small" style="width:75px;text-align:right" align="right" value="{$FINAL.shipping_handling_charge}" onBlur="calcSHTax();">
 	</td>
    </tr>
+{else}
+<input id="shipping_handling_charge" name="shipping_handling_charge" type="hidden" value="0.00">
+{/if}
 {if !empty($FINAL.sh_taxes)}
    <tr valign="top">
 	<td class="crmTableRow small" style="border-right:1px #dadada;">&nbsp;</td>

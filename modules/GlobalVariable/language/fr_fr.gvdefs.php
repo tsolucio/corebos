@@ -510,6 +510,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'individual | group',
 	'definition' => 'Fixe le mode d\'application des taxes dans le module "Détail Inventaire" en Individuel ou en Groupe.',
 ),
+'Inventory_Show_ShippingHandlingCharges' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Show or hide Shipping and Handling charges',
+),
 'Application_Global_Search_Active' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
