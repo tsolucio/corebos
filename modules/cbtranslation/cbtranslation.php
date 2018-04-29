@@ -214,12 +214,34 @@ class cbtranslation extends CRMEntity {
 	 * Function that returns given language short name, if none is given the current language short name will be returned
 	 * @return <String>
 	 */
-	public static function getShortLanguageName($language = '') {
+	public static function getShortLanguageName($languageLongName = '') {
 		global $current_language;
-		if ($language == '') {
-			$language = $current_language;
+		if ($languageLongName == '') {
+			$languageLongName = $current_language;
 		}
-		return substr($language, 0, 2);
+		return substr($languageLongName, 0, 2);
+	}
+
+	/**
+	 * Function that returns given language long name, if none is given the current language long name will be returned
+	 * @return <String>
+	 */
+	public static function getLongLanguageName($languageShortName = '') {
+		global $current_language;
+		if ($languageShortName == '') {
+			return $current_language;
+		}
+		$lang = array(
+			'de' => 'de_de',
+			'en' => 'en_us',
+			'es' => 'es_es',
+			'fr' => 'fr_fr',
+			'hu' => 'hu_hu',
+			'it' => 'it_it',
+			'nl' => 'nl_nl',
+			'pt' => 'pt_br',
+		);
+		return (isset($lang[$languageShortName]) ? $lang[$languageShortName] : '');
 	}
 
 	/*
@@ -640,6 +662,36 @@ class cbtranslation extends CRMEntity {
 
 		//Fallback if no language found
 		return $key;
+	}
+
+	public static function getMonthName($month, $language = '') {
+		if ($language=='') {
+			global $current_language;
+			$language = $current_language;
+		} elseif (strlen($language) == 2) {
+			$language = self::getLongLanguageName($language);
+		}
+		if (file_exists('modules/Reports/language/'.$language.'.lang.php')) {
+			include 'modules/Reports/language/'.$language.'.lang.php';
+			return $mod_strings['MONTH_STRINGS'][$month];
+		} else {
+			return '';
+		}
+	}
+
+	public static function getWeekName($week, $language = '') {
+		if ($language=='') {
+			global $current_language;
+			$language = $current_language;
+		} elseif (strlen($language) == 2) {
+			$language = self::getLongLanguageName($language);
+		}
+		if (file_exists('modules/Reports/language/'.$language.'.lang.php')) {
+			include 'modules/Reports/language/'.$language.'.lang.php';
+			return $mod_strings['WEEKDAY_STRINGS'][$week];
+		} else {
+			return '';
+		}
 	}
 }
 ?>
