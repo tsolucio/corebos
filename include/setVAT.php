@@ -79,6 +79,12 @@ function setVAT($entity) {
 	$taxsum['pl_dto_global'] = $hdnDiscountAmount;
 	$taxinfo['pl_sh_total'] = array('label'=>'SH Total', 'field' => 'pl_sh_total');
 	$taxsum['pl_sh_total'] = $adb->query_result($ent, 0, 's_h_amount');
+	$taxinfo['pl_sh_tax'] = array('label'=>'SH Tax', 'field' => 'pl_sh_tax');
+	$taxsum['pl_sh_tax'] = 0;
+	foreach (getAllTaxes('available', 'sh', 'edit', $entid) as $taxItem) {
+		$shtax_percent = getInventorySHTaxPercent($entid, $taxItem['taxname']);
+		$taxsum['pl_sh_tax'] = $taxsum['pl_sh_tax'] + ($taxsum['pl_sh_total'] * $shtax_percent / 100);
+	}
 	$query = 'SELECT sum(quantity * listprice) AS extgross,
 		sum(COALESCE( discount_amount, COALESCE( discount_percent * quantity * listprice /100, 0 ) )) AS dtoamount
 		FROM vtiger_inventoryproductrel
