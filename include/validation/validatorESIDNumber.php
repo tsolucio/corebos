@@ -174,6 +174,22 @@ class validatorESIDNumber {
 	 * @param string $documentId
 	 * @return bool
 	 */
+	public function isValidPersonalESID($documentId) {
+		 return $this->isValidDNI($documentId) || $this->isValidNIE($documentId) || $this->isValidNIF($documentId);
+	}
+
+	/**
+	 * @param string $documentId
+	 * @return bool
+	 */
+	public function isValidESID($documentId) {
+		return $this->isValidPersonalESID($documentId) || $this->isValidCIF($documentId);
+	}
+
+	/**
+	 * @param string $documentId
+	 * @return bool
+	 */
 	public function validate($documentId) {
 		$documentFirstEightChars = substr($documentId, 0, static::DOCUMENT_LENGTH_WITHOUT_CODE);
 		$controlCode = $this->getDocumentCode($documentFirstEightChars);
@@ -293,4 +309,12 @@ function isValidNIF($field, $fieldval, $params, $fields) {
 function isValidCIF($field, $fieldval, $params, $fields) {
 	$v = new validatorESIDNumber();
 	return $v->isValidCIF($fieldval);
+}
+function isValidPersonalESID($field, $fieldval, $params, $fields) {
+	$v = new validatorESIDNumber();
+	return $v->isValidPersonalESID($fieldval);
+}
+function isValidESID($field, $fieldval, $params, $fields) {
+	$v = new validatorESIDNumber();
+	return $v->isValidESID($fieldval);
 }
