@@ -463,9 +463,10 @@ class Reports extends CRMEntity {
 				} else {
 					$report_details['editable'] = 'false';
 				}
+				$report_details['export'] = isPermitted($report['primarymodule'], 'export');
 
 				if (isPermitted($report['primarymodule'], 'index') == 'yes') {
-					$returndata [$report['folderid']][] = $report_details;
+					$returndata[$report['folderid']][] = $report_details;
 				}
 			} while ($report = $adb->fetch_array($result));
 		}
