@@ -776,6 +776,33 @@ function returnList(block) {
 }
 
 /**
+ * loops over options and sets disabled and selected properties
+ * @param  {Object} block
+ * @param  {HTML ID} id of select box
+ * @return undefined
+ */
+function setPropertiesOnList(block, selectid) {
+	if (block == null) {
+		return;
+	}
+	var list_length = Object.keys(block).length;
+	for (var i=0; i<list_length; i++) {
+		var option = $(selectid + ' option[value="' + block[i].value + '"]');
+		if (option) {
+			if (block[i].hasOwnProperty('selected') && block[i].selected == true) {
+				option.prop('selected', true);
+			}
+			if (block[i].hasOwnProperty('permission')) {
+				option.prop('permission', 'yes');
+			}
+			if (block[i].hasOwnProperty('disabled')) {
+				option.prop('disabled', true);
+			}
+		}
+	}
+}
+
+/**
  * [fillList description]
  * @param  {Object} block
  * @param  {String} element_id
@@ -786,6 +813,7 @@ function fillList(block,element_id) {
 		$('#'+element_id).html('');
 	}
 	$('#'+element_id).append(html);
+	setPropertiesOnList(block, '#'+element_id);
 }
 
 /**
@@ -794,7 +822,6 @@ function fillList(block,element_id) {
  * @return {HTML} Select list in HTML format
  */
 function returnFullList(block) {
-
 	if (block && block.length > 0) {
 		var $html = $('<select>');
 		for (var i=0; i<block.length; i++) {
@@ -823,6 +850,36 @@ function returnFullList(block) {
 }
 
 /**
+ * loops over options and sets disabled and selected properties
+ * @param  {Object} block
+ * @param  {HTML ID} id of select box
+ * @return undefined
+ */
+function setPropertiesOnListWithOptGroup(block, selectid) {
+	if (block && block.length > 0) {
+		for (var i=0; i<block.length; i++) {
+			var node = block[i];
+			var options_length = 0;
+			if (node.hasOwnProperty('options')) {
+				options_length = node.options.length;
+			}
+			for (var j = 0; j<options_length; j++) {
+				var option = node.options[j];
+				var seloption = $(selectid + ' option[value="' + option.value + '"]');
+				if (seloption) {
+					if (option.hasOwnProperty('disabled')) {
+						seloption.prop('disabled', true);
+					}
+					if (option.hasOwnProperty('selected')) {
+						seloption.prop('selected', true);
+					}
+				}
+			}
+		}
+	}
+}
+
+/**
  * [fillList description]
  * @param  {Object} block
  * @param  {String} element_id
@@ -836,6 +893,7 @@ function fillFullList(block,element_id,has_none=false,label_none='') {
 		$('#'+element_id).html('');
 	}
 	$('#'+element_id).append(html);
+	setPropertiesOnListWithOptGroup(block, '#'+element_id);
 }
 
 /**

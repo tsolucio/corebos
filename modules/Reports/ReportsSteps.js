@@ -274,7 +274,7 @@ wizard.steps({
 				// Add another step
 				if (wizard.find('section').length == 8) {
 					wizard.steps('insert',4, {
-						title: alert_arr.LBL_SPECIFY_GROUPING,
+						title: LBL_SPECIFY_GROUPING,
 						content: '<table class=\'grouping_section\'>' + $('#grouping_section').html() + '</table>'
 					});
 					new_steps_count++;
